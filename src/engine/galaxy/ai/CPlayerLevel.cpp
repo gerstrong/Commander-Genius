@@ -556,6 +556,7 @@ void CPlayerLevel::processJumping()
 		{
 			yinertia = 0;
 			m_jumpheight = 0;
+			falling = true;
 		}
 
 		xinertia += (m_playcontrol[PA_X]>>1);

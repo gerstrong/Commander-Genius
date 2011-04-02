@@ -20,12 +20,38 @@
 #include "CMap.h"
 #include "graphics/CGfxEngine.h"
 #include "options.h"
+#include "engine/CEventContainer.h"
 
 // Enumerations are here
 #include "objenums.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
+
+// The bouncing box used by the object which is used to determine the collisions
+struct BouncingBox{
+	unsigned int x1, x2, y1, y2;
+	BouncingBox(unsigned int l_x1 = 0, unsigned int l_x2 = 0,
+			unsigned int l_y1 = 0, unsigned int l_y2 = 0 ) :
+				x1(l_x1), x2(l_x2),
+				y1(l_y1), y2(l_y2) {}
+};
+
+
+// Event that will be used to move the objects in the game
+struct ObjMove : public CEvent
+{
+	VectorD2<int> m_Vec;
+	ObjMove(const VectorD2<int>& Vector) : m_Vec(Vector) {}
+	ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
+};
+
+// Event that will be used for resizing Bouncing Box of the object
+struct ObjResizeBB : public CEvent
+{
+	BouncingBox m_BB;
+	ObjResizeBB(const BouncingBox& BB) : m_BB(BB) {}
+};
 
 // supported by an object and you should look in player[].psupportingobj
 // for it's index.
@@ -39,13 +65,6 @@ enum direction_t{
 	DOWN
 };
 
-struct BouncingBox{
-	unsigned int x1, x2, y1, y2;
-	BouncingBox(unsigned int l_x1 = 0, unsigned int l_x2 = 0,
-			unsigned int l_y1 = 0, unsigned int l_y2 = 0 ) :
-				x1(l_x1), x2(l_x2),
-				y1(l_y1), y2(l_y2) {}
-};
 
 class CObject {
 public:
@@ -104,6 +123,9 @@ public:
 	bool m_climbing;
 	bool m_jumped;
 
+	// This container will held the triggered events of the object
+	CEventContainer m_EventCont;
+
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes();
 	void calcBouncingBoxeswithPlacement();
@@ -155,6 +177,9 @@ public:
 
 	virtual void process() { }
 	
+	// The object can hold events process them here!
+	void processEvents();
+
 	bool hitdetect(CObject &hitobject);
 	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res);
 	bool hitdetectWithTileProperty(const int& Property, const int& x, const int& y);
@@ -162,10 +187,17 @@ public:
 	void blink(Uint16 frametime);
 
 	// Collision parts
-	bool checkSolidR( int x1, int x2, int y1, int y2);
-	bool checkSolidL( int x1, int x2, int y1, int y2);
-	bool checkSolidU( int x1, int x2, int y1);
-	bool checkSolidD( int x1, int x2, int y2);
+	/**
+	 * \brief 	Those functions check the the collision states and return also a number of what type of block
+	 * 			the collision is happening.
+	 * \return	returns the number of the block property. 0 means no collision. Any other number depends.
+	 * 			1 is blocked, the other depends on the engine. In Keen Galaxy they mostly represent sloped tiles
+	 * 			In vorticons the up part have other numbers which represent ice and slippery.
+	 */
+	int checkSolidR( int x1, int x2, int y1, int y2);
+	int checkSolidL( int x1, int x2, int y1, int y2);
+	int checkSolidU( int x1, int x2, int y1);
+	int checkSolidD( int x1, int x2, int y2);
 
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);

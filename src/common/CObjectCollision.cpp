@@ -379,9 +379,10 @@ bool CObject::hitdetectWithTileProperty(const int& Property, const int& x, const
 		return false;
 }
 
-bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
+int CObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	int blocker;
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 
 	x2 += COLISION_RES;
@@ -394,23 +395,25 @@ bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 	{
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
-			if(TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft)
-				return true;
+			blocker = TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft;
+			if(blocker)
+				return blocker;
 		}
 
-		if(TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bleft)
-			return true;
+		blocker = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bleft;
+		if(blocker)
+			return blocker;
 	}
 
 	if( m_type == OBJ_PLAYER && solid )
 	{
 		if(vorticon)
 		{
-			if( x2 >= (int)((mp_Map->m_width-2)<<CSF) ) return true;
+			if( x2 >= (int)((mp_Map->m_width-2)<<CSF) ) return 1;
 		}
 		else
 		{
-			if( x2 >= (int)((mp_Map->m_width-1)<<CSF) ) return true;
+			if( x2 >= (int)((mp_Map->m_width-1)<<CSF) ) return 1;
 		}
 
 	}
@@ -419,20 +422,18 @@ bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 		if( (Uint16)x2 > ((mp_Map->m_width)<<CSF) )
 		{
 			exists=false; // Out of map?
-			return true;
+			return 1;
 		}
 	}
 
-	return false;
+	return 0;
 }
 
-bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
+int CObject::checkSolidL( int x1, int x2, int y1, int y2)
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
+	int blocker;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-
-	if( vorticon && ( (x1>>STC) != ((x1>>CSF)<<TILE_S) ) )
-		return false;
 
 	x1 -= COLISION_RES;
 
@@ -441,40 +442,39 @@ bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 	{
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
-			if(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
-				return true;
+			blocker = TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright;
+			if(blocker)
+				return blocker;
 		}
 
-		if(TileProperty[mp_Map->at(x1>>CSF, y2>>CSF)].bright)
-			return true;
+		blocker = TileProperty[mp_Map->at(x1>>CSF, y2>>CSF)].bright;
+		if(blocker)
+			return blocker;
 	}
 
+	// borders
 	if( m_type == OBJ_PLAYER && solid )
 	{
 		if(vorticon)
-		{
-			if( x1 <= (2<<CSF) ) return true;
-		}
+			if( x1 <= (2<<CSF) ) return 1;
 		else
-		{
-			if( x1 <= (1<<CSF) ) return true;
-		}
+			if( x1 <= (1<<CSF) ) return 1;
 	}
 	else
 	{
 		if( x1 == 0 )
 		{
 			exists=false; // Out of map?
-			return true;
+			return 1;
 		}
 	}
-
-	return false;
+	return 0;
 }
 
-bool CObject::checkSolidU(int x1, int x2, int y1)
+int CObject::checkSolidU(int x1, int x2, int y1)
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
+	int blocker;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	y1 -= COLISION_RES;
@@ -495,10 +495,10 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 			blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
 
 			if(blocked == 17 && m_climbing)
-				return false;
+				return 0;
 
 			if( blocked >= 2 && blocked <= 7 && checkslopedU(c, y1, blocked))
-				return true;
+				return blocked;
 		}
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y1>>CSF)].bdown;
 		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2-(1<<STC), y1, blocked ))
@@ -534,9 +534,10 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 	return false;
 }
 
-bool CObject::checkSolidD( int x1, int x2, int y2 )
+int CObject::checkSolidD( int x1, int x2, int y2 )
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
+	int blocker;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	y2 += COLISION_RES;
@@ -698,7 +699,7 @@ void CObject::doBouncingBoxResizal(const BouncingBox& new_BBox)
 	unsigned int y2 = getYPosition()+m_BBox.y2;
 
 
-	for(int c=y1 ; c<=y2 ; c += COLISION_RES)
+	for(unsigned int c=y1 ; c<=y2 ; c += COLISION_RES)
 	{
 		// Adjust the left side
 		while(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
@@ -715,7 +716,7 @@ void CObject::doBouncingBoxResizal(const BouncingBox& new_BBox)
 		}
 	}
 
-	for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+	for(unsigned int c=x1 ; c<=x2 ; c += COLISION_RES)
 	{
 		// Adjust the lower side
 		while(TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bup)
@@ -742,10 +743,13 @@ void CObject::moveBitLeft()
 	const unsigned int y2 = getYPosition()+m_BBox.y2;
 
 	if( (blockedl = checkSolidL(x1, x2, y1, y2)) == true)
+	{
 		return;
+	}
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
+	m_Pos.x--;
 }
 
 void CObject::moveBitRight()
@@ -761,6 +765,7 @@ void CObject::moveBitRight()
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
+	m_Pos.x++;
 }
 
 void CObject::moveBitUp()
@@ -769,13 +774,13 @@ void CObject::moveBitUp()
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
 	const unsigned int x2 = getXPosition()+m_BBox.x2;
 	const unsigned int y1 = getYPosition()+m_BBox.y1;
-	const unsigned int y2 = getYPosition()+m_BBox.y2;
 
 	if( (blockedu = checkSolidU(x1, x2, y1)) == true)
 		return;
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
+	m_Pos.y--;
 }
 
 void CObject::moveBitDown()
@@ -783,7 +788,6 @@ void CObject::moveBitDown()
 	/// Now check the neighboring tile to the down
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
 	const unsigned int x2 = getXPosition()+m_BBox.x2;
-	const unsigned int y1 = getYPosition()+m_BBox.y1;
 	const unsigned int y2 = getYPosition()+m_BBox.y2;
 
 	if( (blockedd = checkSolidD(x1, x2, y2)) == true)
@@ -791,6 +795,7 @@ void CObject::moveBitDown()
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
+	m_Pos.y++;
 }
 
 void CObject::move(const VectorD2<int>& dir)
@@ -829,3 +834,20 @@ void CObject::move(const int xoff, const int yoff)
 	}
 }
 
+void CObject::processEvents()
+{
+	while(!m_EventCont.empty())
+	{
+		if( ObjResizeBB* p_ObjResizeBB =  m_EventCont.occurredEvent<ObjResizeBB>())
+		{
+			doBouncingBoxResizal(p_ObjResizeBB->m_BB);
+			m_EventCont.pop_Event();
+		}
+
+		if( ObjMove* p_ObjMove =  m_EventCont.occurredEvent<ObjMove>())
+		{
+			move(p_ObjMove->m_Vec);
+			m_EventCont.pop_Event();
+		}
+	}
+}

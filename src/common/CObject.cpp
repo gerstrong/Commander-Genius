@@ -263,50 +263,7 @@ void CObject::moveLeft(const int& amnt, const bool& force)
 	if(amnt <= 0)
 		return;
 
-	int amount = amnt;
-
-	blockedr = false;
-	// If it is forced don't check for collision
-	if(force) {
-		m_Pos.x -= amount;
-		return;
-	}
-
-	if( m_Pos.y-amount < 0 )
-		return;
-
-	// If object isn't solid it won't be stopped anyway
-	if(!solid)
-	{
-		blockedr = blockedl = false;
-		blockedu = blockedd = false;
-		m_Pos.x -= amount;
-		return;
-	}
-
-	do
-	{
-		performCollisionsSameBox();
-		if(!blockedl)
-		{
-			int y1 = m_Pos.y + m_BBox.y1;
-			int y2 = m_Pos.y + m_BBox.y2;
-
-			if(amount > (1<<STC))
-			{
-				m_Pos.x -= (1<<STC);
-				moveSlopedTiles(getXMidPos()-64, y1, y2, -(1<<STC));
-				amount -= (1<<STC);
-			}
-			else
-			{
-				m_Pos.x -= amount;
-				moveSlopedTiles(getXMidPos()-64, y1, y2, -amount);
-				amount = 0;
-			}
-		}
-		else break;
-	} while( amount > 0 );
+	m_EventCont.add(new ObjMove(-amnt,0));
 }
 
 void CObject::moveRight(const int& amnt, const bool& force)
@@ -314,46 +271,7 @@ void CObject::moveRight(const int& amnt, const bool& force)
 	if(amnt <= 0)
 		return;
 
-	int amount = amnt;
-
-	int y1 = m_Pos.y + m_BBox.y1;
-	int y2 = m_Pos.y + m_BBox.y2;
-
-	blockedl = false;
-	if(force) {
-		m_Pos.x += amount;
-		return;
-	}
-
-	if(!solid)
-	{
-		blockedr = blockedl = false;
-		blockedu = blockedd = false;
-		m_Pos.x += amount;
-		return;
-	}
-
-	// process the walking on tiles
-	do
-	{
-		performCollisionsSameBox();
-		if(!blockedr)
-		{
-			if(amount > (1<<STC))
-			{
-				m_Pos.x += (1<<STC);
-				moveSlopedTiles(getXMidPos()+64, y1, y2, (1<<STC));
-				amount -= (1<<STC);
-			}
-			else
-			{
-				m_Pos.x += amount;
-				moveSlopedTiles(getXMidPos()+64, y1, y2, amount);
-				amount = 0;
-			}
-		}
-		else break;
-	} while( amount > 0 );
+	m_EventCont.add(new ObjMove(amnt,0));
 }
 
 void CObject::moveUp(const int& amnt)
@@ -361,39 +279,7 @@ void CObject::moveUp(const int& amnt)
 	if(amnt <= 0)
 		return;
 
-	int amount = amnt;
-
-	int y1 = m_Pos.y + m_BBox.y1;
-
-	if( y1-amount < 0 )
-		return;
-
-	if(!solid)
-	{
-		blockedr = blockedl = false;
-		blockedu = blockedd = false;
-		m_Pos.y -= amount;
-		return;
-	}
-
-	do
-	{
-		performCollisionsSameBox();
-		if(!blockedu)
-		{
-			if(amount > (1<<STC))
-			{
-				m_Pos.y -= (1<<STC);
-				amount -= (1<<STC);
-			}
-			else
-			{
-				m_Pos.y -= amount;
-				amount = 0;
-			}
-		}
-		else break;
-	} while( amount > 0 );
+	m_EventCont.add(new ObjMove(0,-amnt));
 }
 
 void CObject::moveDown(const int& amnt)
@@ -402,35 +288,7 @@ void CObject::moveDown(const int& amnt)
 	if(amnt <= 0)
 		return;
 
-	blockedu = false;
-	int amount = amnt;
-
-	if(!solid)
-	{
-		blockedr = blockedl = false;
-		blockedu = blockedd = false;
-		m_Pos.y += amount;
-		return;
-	}
-
-	do
-	{
-		performCollisionsSameBox();
-		if(!blockedd)
-		{
-			if(amount > (1<<STC))
-			{
-				m_Pos.y += (1<<STC);
-				amount -= (1<<STC);
-			}
-			else
-			{
-				m_Pos.y += amount;
-				amount = 0;
-			}
-		}
-		else break;
-	} while(amount > 0);
+	m_EventCont.add(new ObjMove(0, amnt));
 }
 
 // This decreases the inertia we have of the object in X-direction.
@@ -490,6 +348,8 @@ Uint32 CObject::getYMidPos()
  */
 void CObject::processFalling()
 {
+	// CAUTION: There is a difference between falling and going down with the gravity...
+
 	if(m_type == OBJ_MESSIE) return;
 
 	// So it reaches the maximum of fallspeed
@@ -498,19 +358,18 @@ void CObject::processFalling()
 		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
 
 		//if( yinertia>40 && !onslope )
-		if( yinertia>0 && !onslope )
+		/*if( yinertia>0 && !onslope )
 			falling = true;
 		else
-			falling = false;
+			falling = false;*/
 
-		// In this case foe is jumping
+		// In this case foe is jumping?
+		// Not sure here. We should use another variable...
 		if(yinertia<0 && !blockedu)
 		{
 			moveUp(-yinertia);
 
 			yinertia += Physics.fallspeed_increase;
-
-			if(yinertia > 0) yinertia = 0;
 		}
 		else if(yinertia>=0 && !blockedd )
 		{
@@ -526,6 +385,10 @@ void CObject::processFalling()
 		// hit floor or ceiling? set inertia to zero
 		if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
 			yinertia = 0;
+
+		// If object is not falling (yinertia >= 0) and blocked he cannot be falling
+		if(blockedd && yinertia>=0)
+			falling = false;
 	}
 	else
 	{
