@@ -130,9 +130,25 @@ public:
 	void moveDown(const int& amnt);
 
 	// new moving parts
+	/**
+	 * \brief	This function checks if there is any collision and resizes the
+	 * 			bounding box of the objects. In case there is some before resizing
+	 * 			move the object the way there won't be any collision.
+	 *
+	 * \param	new_BBox	the new Bouncing Box the object has to get.
+	 */
 	void doBouncingBoxResizal(const BouncingBox& new_BBox);
-	void move(const VectorD2<int>& dir);
 
+	/**
+	 * \brief	This function checks if there is any collision and moves the object safely
+	 * \param	dir	The direction where the object has to go to...
+	 */
+	void move(const VectorD2<int>& dir);
+	void moveBitLeft();
+	void moveBitRight();
+	void moveBitDown();
+	void moveBitUp();
+	void move(const int xoff, const int yoff);
 
 	void decreaseXInertia(const int& value);
 	void InertiaAndFriction_X();

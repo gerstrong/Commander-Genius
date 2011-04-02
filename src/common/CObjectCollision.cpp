@@ -686,14 +686,146 @@ bool CObject::checkslopedD( int c, int y2, char blocked)
 // New Colission based on events and adjustments. read below
 
 //====================================================================================
-
 void CObject::doBouncingBoxResizal(const BouncingBox& new_BBox)
 {
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
+	// Setup up the new bouncing box
+	m_BBox = new_BBox;
+	unsigned int x1 = getXPosition()+m_BBox.x1;
+	unsigned int x2 = getXPosition()+m_BBox.x2;
+	unsigned int y1 = getYPosition()+m_BBox.y1;
+	unsigned int y2 = getYPosition()+m_BBox.y2;
+
+
+	for(int c=y1 ; c<=y2 ; c += COLISION_RES)
+	{
+		// Adjust the left side
+		while(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
+		{
+			move(1,0);
+			x1 = getXPosition()+m_BBox.x1;
+		}
+
+		// Adjust the right side
+		while(TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft)
+		{
+			move(-1,0);
+			x2 = getXPosition()+m_BBox.x2;
+		}
+	}
+
+	for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+	{
+		// Adjust the lower side
+		while(TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bup)
+		{
+			move(0,-1);
+			y1 = getYPosition()+m_BBox.y1;
+		}
+
+		// Adjust the upper side
+		while(TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown)
+		{
+			move(0,1);
+			y2 = getYPosition()+m_BBox.y2;
+		}
+	}
+}
+
+void CObject::moveBitLeft()
+{
+	/// Now check the neighboring tile to the left
+	const unsigned int x1 = getXPosition()+m_BBox.x1;
+	const unsigned int x2 = getXPosition()+m_BBox.x2;
+	const unsigned int y1 = getYPosition()+m_BBox.y1;
+	const unsigned int y2 = getYPosition()+m_BBox.y2;
+
+	if( (blockedl = checkSolidL(x1, x2, y1, y2)) == true)
+		return;
+
+	// if we are here, the tiles aren't blocking us.
+	// TODO: Here we need the Object collision part
+}
+
+void CObject::moveBitRight()
+{
+	/// Now check the neighboring tile to the right
+	const unsigned int x1 = getXPosition()+m_BBox.x1;
+	const unsigned int x2 = getXPosition()+m_BBox.x2;
+	const unsigned int y1 = getYPosition()+m_BBox.y1;
+	const unsigned int y2 = getYPosition()+m_BBox.y2;
+
+	if( (blockedr = checkSolidR(x1, x2, y1, y2)) == true)
+		return;
+
+	// if we are here, the tiles aren't blocking us.
+	// TODO: Here we need the Object collision part
+}
+
+void CObject::moveBitUp()
+{
+	/// Now check the neighboring tile to the up
+	const unsigned int x1 = getXPosition()+m_BBox.x1;
+	const unsigned int x2 = getXPosition()+m_BBox.x2;
+	const unsigned int y1 = getYPosition()+m_BBox.y1;
+	const unsigned int y2 = getYPosition()+m_BBox.y2;
+
+	if( (blockedu = checkSolidU(x1, x2, y1)) == true)
+		return;
+
+	// if we are here, the tiles aren't blocking us.
+	// TODO: Here we need the Object collision part
+}
+
+void CObject::moveBitDown()
+{
+	/// Now check the neighboring tile to the down
+	const unsigned int x1 = getXPosition()+m_BBox.x1;
+	const unsigned int x2 = getXPosition()+m_BBox.x2;
+	const unsigned int y1 = getYPosition()+m_BBox.y1;
+	const unsigned int y2 = getYPosition()+m_BBox.y2;
+
+	if( (blockedd = checkSolidD(x1, x2, y2)) == true)
+		return;
+
+	// if we are here, the tiles aren't blocking us.
+	// TODO: Here we need the Object collision part
 }
 
 void CObject::move(const VectorD2<int>& dir)
 {
+	move(dir.x, dir.y);
+}
 
+void CObject::move(const int xoff, const int yoff)
+{
+	// Let's check if we have to move left or right
+	if(xoff>0)
+	{
+		// move right
+		for(int c=0 ; c<xoff ; c++ )
+			moveBitRight();
+	}
+	else if(xoff<0)
+	{
+		// move right
+		for(int c=0 ; c<-xoff ; c++ )
+			moveBitLeft();
+	}
+
+	// Let's check if we have to move up or down
+	if(yoff>0)
+	{
+		// move down
+		for(int c=0 ; c<yoff ; c++ )
+			moveBitDown();
+	}
+	else if(yoff<0)
+	{
+		// move right
+		for(int c=0 ; c<-yoff ; c++ )
+			moveBitUp();
+	}
 }
 
