@@ -27,10 +27,6 @@ m_blinktime(0),
 m_invincible(false),
 m_Pos(x,y)
 {
-	bboxX1 = 0;
-	bboxX2 = 0;
-	bboxY1 = 0;
-	bboxY2 = 0;
 	falling = false;
 	m_number_of_objects++;
 	exists = true;
@@ -293,8 +289,8 @@ void CObject::moveLeft(const int& amnt, const bool& force)
 		performCollisionsSameBox();
 		if(!blockedl)
 		{
-			int y1 = m_Pos.y + bboxY1;
-			int y2 = m_Pos.y + bboxY2;
+			int y1 = m_Pos.y + m_BBox.y1;
+			int y2 = m_Pos.y + m_BBox.y2;
 
 			if(amount > (1<<STC))
 			{
@@ -320,8 +316,8 @@ void CObject::moveRight(const int& amnt, const bool& force)
 
 	int amount = amnt;
 
-	int y1 = m_Pos.y + bboxY1;
-	int y2 = m_Pos.y + bboxY2;
+	int y1 = m_Pos.y + m_BBox.y1;
+	int y2 = m_Pos.y + m_BBox.y2;
 
 	blockedl = false;
 	if(force) {
@@ -367,7 +363,7 @@ void CObject::moveUp(const int& amnt)
 
 	int amount = amnt;
 
-	int y1 = m_Pos.y + bboxY1;
+	int y1 = m_Pos.y + m_BBox.y1;
 
 	if( y1-amount < 0 )
 		return;
@@ -402,6 +398,7 @@ void CObject::moveUp(const int& amnt)
 
 void CObject::moveDown(const int& amnt)
 {
+	// If zero was given as argument return.
 	if(amnt <= 0)
 		return;
 
@@ -475,17 +472,17 @@ Uint32 CObject::getXPosition()
 Uint32 CObject::getYPosition()
 { return m_Pos.y; }
 Uint32 CObject::getXLeftPos()
-{ return m_Pos.x+bboxX1; }
+{ return m_Pos.x+m_BBox.x1; }
 Uint32 CObject::getXRightPos()
-{ return m_Pos.x+bboxX2; }
+{ return m_Pos.x+m_BBox.x2; }
 Uint32 CObject::getXMidPos()
-{ return m_Pos.x+(bboxX2-bboxX1)/2; }
+{ return m_Pos.x+(m_BBox.x2-m_BBox.x1)/2; }
 Uint32 CObject::getYUpPos()
-{ return m_Pos.y+bboxY1; }
+{ return m_Pos.y+m_BBox.y1; }
 Uint32 CObject::getYDownPos()
-{ return m_Pos.y+bboxY2; }
+{ return m_Pos.y+m_BBox.y2; }
 Uint32 CObject::getYMidPos()
-{ return m_Pos.y+(bboxY2-bboxY1)/2; }
+{ return m_Pos.y+(m_BBox.y2-m_BBox.y1)/2; }
 
 
 /**

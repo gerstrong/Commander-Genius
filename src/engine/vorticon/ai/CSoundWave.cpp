@@ -23,8 +23,8 @@ offscreentime(0)
 	m_type = OBJ_SNDWAVE;
 	setupObjectType(g_pBehaviorEngine->getEpisode());
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
-	bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
+	m_BBox.x1 = rSprite.m_bboxX1;		m_BBox.x2 = rSprite.m_bboxX2;
+	m_BBox.y1 = rSprite.m_bboxY1;		m_BBox.y2 = rSprite.m_bboxY2;
 
 	performCollisions();
 }

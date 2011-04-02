@@ -39,6 +39,14 @@ enum direction_t{
 	DOWN
 };
 
+struct BouncingBox{
+	unsigned int x1, x2, y1, y2;
+	BouncingBox(unsigned int l_x1 = 0, unsigned int l_x2 = 0,
+			unsigned int l_y1 = 0, unsigned int l_y2 = 0 ) :
+				x1(l_x1), x2(l_x2),
+				y1(l_y1), y2(l_y2) {}
+};
+
 class CObject {
 public:
 	CObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
@@ -56,8 +64,7 @@ public:
 	int scrx, scry;           		// x,y pixel position on screen
 	
 	// Bouncing Boxes
-	Uint32 bboxX1, bboxX2;
-	Uint32 bboxY1, bboxY2;
+	BouncingBox m_BBox;
 
 	// if zero, priority tiles will not be honored and object will always
 	// appear in front of the background
@@ -121,6 +128,11 @@ public:
 	void moveRight(const int& amnt, const bool& force = false);
 	void moveUp(const int& amnt);
 	void moveDown(const int& amnt);
+
+	// new moving parts
+	void doBouncingBoxResizal(const BouncingBox& new_BBox);
+	void move(const VectorD2<int>& dir);
+
 
 	void decreaseXInertia(const int& value);
 	void InertiaAndFriction_X();

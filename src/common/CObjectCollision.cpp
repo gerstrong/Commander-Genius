@@ -17,12 +17,12 @@
 void CObject::performCollisionsSameBox()
 {
 	// Left/Right borders
-	blockedl = checkSolidL(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1, m_Pos.y+bboxY2);
-	blockedr = checkSolidR(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1, m_Pos.y+bboxY2);
+	blockedl = checkSolidL(m_Pos.x+m_BBox.x1, m_Pos.x+m_BBox.x2, m_Pos.y+m_BBox.y1, m_Pos.y+m_BBox.y2);
+	blockedr = checkSolidR(m_Pos.x+m_BBox.x1, m_Pos.x+m_BBox.x2, m_Pos.y+m_BBox.y1, m_Pos.y+m_BBox.y2);
 
 	// Upper/Lower borders
-	blockedu = checkSolidU(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1);
-	blockedd = checkSolidD(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY2);
+	blockedu = checkSolidU(m_Pos.x+m_BBox.x1, m_Pos.x+m_BBox.x2, m_Pos.y+m_BBox.y1);
+	blockedd = checkSolidD(m_Pos.x+m_BBox.x1, m_Pos.x+m_BBox.x2, m_Pos.y+m_BBox.y2);
 
 	if(g_pBehaviorEngine->getEpisode() > 3)
 	{ // now check for the sloped tiles
@@ -37,7 +37,7 @@ void CObject::calcBouncingBoxeswithPlacement()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
-    const int diff_y =  bboxY2==0 ? 0 :(int)bboxY2-(int)rSprite.m_bboxY2;
+    const int diff_y =  m_BBox.y2==0 ? 0 :(int)m_BBox.y2-(int)rSprite.m_bboxY2;
 
     calcBouncingBoxes();
 
@@ -51,10 +51,10 @@ void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
-  	bboxX1 = rSprite.m_bboxX1;
-   	bboxX2 = rSprite.m_bboxX2;
-   	bboxY1 = rSprite.m_bboxY1;
-   	bboxY2 = rSprite.m_bboxY2;
+	m_BBox.x1 = rSprite.m_bboxX1;
+	m_BBox.x2 = rSprite.m_bboxX2;
+   	m_BBox.y1 = rSprite.m_bboxY1;
+   	m_BBox.y2 = rSprite.m_bboxY2;
 }
 
 
@@ -66,9 +66,9 @@ const int COLISION_RES = (1<<STC);
 void CObject::performCollisionOnSlopedTiles()
 {
 	const Uint32 halftile = ((1<<CSF)/2);
-	const Uint32 x1 = m_Pos.x + bboxX1;
-	const Uint32 x2 = m_Pos.x + bboxX2;
-	const Uint32 y2 = m_Pos.y + bboxY2;
+	const Uint32 x1 = m_Pos.x + m_BBox.x1;
+	const Uint32 x2 = m_Pos.x + m_BBox.x2;
+	const Uint32 y2 = m_Pos.y + m_BBox.y2;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	onslope = false;
 
@@ -202,7 +202,7 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 		// Now we have to see all the cases for sloped tiles of an object
 		if(xspeed > 0) // when going right...
 		{
-			new_y = y_pos - bboxY2;
+			new_y = y_pos - m_BBox.y2;
 			if( x_r >= 480 ) // At Tile edge
 			{
 				if( yb1>yb2 )
@@ -226,7 +226,7 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 		}
 		else if(xspeed < 0) // Going left
 		{
-			new_y = y_pos - bboxY2;
+			new_y = y_pos - m_BBox.y2;
 			if( x_r <= 32 ) // At Tile edge
 			{
 				if( yb1<yb2 )
@@ -305,7 +305,7 @@ void CObject::moveSlopedTileUp( int x, int y, int xspeed )
 	const int y_pos = y_csf + y_rel;
 
 	// get new position
-	const Uint32 new_y = y_pos - bboxY1 + (1<<STC);
+	const Uint32 new_y = y_pos - m_BBox.y1 + (1<<STC);
 	moveYDir( new_y - m_Pos.y );
 }
 
@@ -316,16 +316,16 @@ bool CObject::hitdetect(CObject &hitobject)
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
 	// get the bounding rectangle of the first object
-	rect1x1 = m_Pos.x + bboxX1;
-	rect1y1 = m_Pos.y + bboxY1;
-	rect1x2 = m_Pos.x + bboxX2;
-	rect1y2 = m_Pos.y + bboxY2;
+	rect1x1 = m_Pos.x + m_BBox.x1;
+	rect1y1 = m_Pos.y + m_BBox.y1;
+	rect1x2 = m_Pos.x + m_BBox.x2;
+	rect1y2 = m_Pos.y + m_BBox.y2;
 
 	// get the bounding rectangle of the second object
-	rect2x1 = hitobject.getXPosition() + hitobject.bboxX1;
-	rect2y1 = hitobject.getYPosition() + hitobject.bboxY1;
-	rect2x2 = hitobject.getXPosition() + hitobject.bboxX2;
-	rect2y2 = hitobject.getYPosition() + hitobject.bboxY2;
+	rect2x1 = hitobject.getXPosition() + hitobject.m_BBox.x1;
+	rect2y1 = hitobject.getYPosition() + hitobject.m_BBox.y1;
+	rect2x2 = hitobject.getXPosition() + hitobject.m_BBox.x2;
+	rect2y2 = hitobject.getYPosition() + hitobject.m_BBox.y2;
 
 	// find out if the rectangles overlap
 	if ((rect1x1 <= rect2x1) && (rect1x2 <= rect2x1)) return false;
@@ -665,5 +665,35 @@ bool CObject::checkslopedD( int c, int y2, char blocked)
 	int yh = yb1 + dy;
 
 	return ( y2%512 > yh );
+}
+
+
+
+
+
+//====================================================================================
+//====================================================================================
+//====================================================================================
+//====================================================================================
+//====================================================================================
+//====================================================================================
+//====================================================================================
+//====================================================================================
+//====================================================================================
+
+//====================================================================================
+
+// New Colission based on events and adjustments. read below
+
+//====================================================================================
+
+void CObject::doBouncingBoxResizal(const BouncingBox& new_BBox)
+{
+
+}
+
+void CObject::move(const VectorD2<int>& dir)
+{
+
 }
 

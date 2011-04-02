@@ -174,9 +174,9 @@ void CPlayer::MountNessieIfAvailable()
 			// Look if Nessie is nearby
 			Uint32 x = getXPosition();
 			Uint32 y = getYPosition();
-			if( x >= nessie_x-dist+(*obj)->bboxX1 and x <= nessie_x+dist+(*obj)->bboxX2 )
+			if( x >= nessie_x-dist+(*obj)->m_BBox.x1 and x <= nessie_x+dist+(*obj)->m_BBox.x2 )
 			{
-				if( y >= nessie_y-dist+(*obj)->bboxY1 and y <= nessie_y+dist+(*obj)->bboxY2 )
+				if( y >= nessie_y-dist+(*obj)->m_BBox.y1 and y <= nessie_y+dist+(*obj)->m_BBox.y2 )
 				{
 					// Mount the Player
 					Messie.mounted[m_index] = true;

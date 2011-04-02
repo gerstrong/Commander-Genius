@@ -26,16 +26,16 @@ m_speed(speed)
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
-	bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
+	m_BBox.x1 = rSprite.m_bboxX1;		m_BBox.x2 = rSprite.m_bboxX2;
+	m_BBox.y1 = rSprite.m_bboxY1;		m_BBox.y2 = rSprite.m_bboxY2;
 
 	state = RAY_STATE_FLY;
 	inhibitfall = true;
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	blockedl = TileProperty[mp_Map->at((m_Pos.x + bboxX1)>>CSF, (m_Pos.y + (bboxY1+bboxY2)/2)>>CSF)].bright;
-	blockedr = TileProperty[mp_Map->at((m_Pos.x + bboxX2)>>CSF, (m_Pos.y + (bboxY1+bboxY2)/2)>>CSF)].bleft;
+	blockedl = TileProperty[mp_Map->at((m_Pos.x + m_BBox.x1)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bright;
+	blockedr = TileProperty[mp_Map->at((m_Pos.x + m_BBox.x2)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bleft;
 
 	if( blockedd || blockedr )
 		getShotByRay(owner.obj_type);
