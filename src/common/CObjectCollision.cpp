@@ -154,7 +154,7 @@ void CObject::performCollisions()
 }
 
 // Basic slope move independent of the left or right move
-void CObject::moveSlopedTiles( int x, int y1, int y2, int xspeed )
+void CObject::adjustSlopedTiles( int x, int y1, int y2, int xspeed )
 {
 	// process the sloped tiles here. Galaxy only or special patch!!
 	if(g_pBehaviorEngine->getEpisode() > 3)
@@ -166,7 +166,7 @@ void CObject::moveSlopedTiles( int x, int y1, int y2, int xspeed )
 
 bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 {
-	if(yinertia<0)
+	if(yinertia!=0)
 		return false;
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
@@ -193,61 +193,8 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 		int y_csf;
 		y_csf = (y>>CSF)<<CSF;
 
-		// Get the new lower corner pos
-		const int y_pos = y_csf + y_rel;
+		m_Pos.y = y_csf - m_BBox.y2 + y_rel - (1<<STC);
 
-		// get new position
-		Uint32 new_y;
-
-		// Now we have to see all the cases for sloped tiles of an object
-		if(xspeed > 0) // when going right...
-		{
-			new_y = y_pos - m_BBox.y2;
-			if( x_r >= 480 ) // At Tile edge
-			{
-				if( yb1>yb2 )
-				{
-					new_y = (new_y>>CSF)<<CSF;
-					dy = m_Pos.y - (new_y+yb2);
-					moveUp( dy );
-					moveRight( dy );
-				}
-				else if( yb1<yb2 )
-				{
-					new_y = (new_y>>CSF)<<CSF;
-					dy = m_Pos.y - (new_y+yb2);
-					moveDown( -dy );
-				}
-			}
-			else // In the Tile itself or walking into...
-			{
-				moveYDir( new_y - m_Pos.y );
-			}
-		}
-		else if(xspeed < 0) // Going left
-		{
-			new_y = y_pos - m_BBox.y2;
-			if( x_r <= 32 ) // At Tile edge
-			{
-				if( yb1<yb2 )
-				{
-					new_y = (new_y>>CSF)<<CSF;
-					dy = (new_y+yb1) - m_Pos.y;
-					moveYDir( dy );
-					moveLeft( dy );
-				}
-				else if( yb1>yb2 )
-				{
-					new_y = (new_y>>CSF)<<CSF;
-					dy = (new_y+yb1) - m_Pos.y;
-					moveDown( -dy );
-				}
-			}
-			else // In the Tile itself or walking into...
-			{
-				moveYDir( new_y - m_Pos.y );
-			}
-		}
 		return true;
 	}
 	else
@@ -455,16 +402,14 @@ int CObject::checkSolidL( int x1, int x2, int y1, int y2)
 	// borders
 	if( m_type == OBJ_PLAYER && solid )
 	{
-		if(vorticon)
-			if( x1 <= (2<<CSF) ) return 1;
-		else
-			if( x1 <= (1<<CSF) ) return 1;
+		if( vorticon && (x1 <= (2<<CSF)) ) return 1;
+		else if( x1 <= (1<<CSF) ) return 1;
 	}
 	else
 	{
 		if( x1 == 0 )
 		{
-			exists=false; // Out of map?
+			exists = false; // Out of map?
 			return 1;
 		}
 	}
@@ -474,7 +419,6 @@ int CObject::checkSolidL( int x1, int x2, int y1, int y2)
 int CObject::checkSolidU(int x1, int x2, int y1)
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
-	int blocker;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	y1 -= COLISION_RES;
@@ -500,16 +444,17 @@ int CObject::checkSolidU(int x1, int x2, int y1)
 			if( blocked >= 2 && blocked <= 7 && checkslopedU(c, y1, blocked))
 				return blocked;
 		}
-		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y1>>CSF)].bdown;
-		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2-(1<<STC), y1, blocked ))
-			return true;
+
+		blocked = TileProperty[mp_Map->at(x2>>CSF, y1>>CSF)].bdown;
+		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2, y1, blocked ))
+			return 1;
 
 		if(blocked == 17 && m_climbing)
-			return false;
+			return 0;
 	}
 
 	if( ((y1+COLISION_RES)>>STC) != (((y1+COLISION_RES)>>CSF)<<TILE_S)  )
-		return false;
+		return 0;
 
 	// Check for right from the object
 	if(solid)
@@ -521,23 +466,22 @@ int CObject::checkSolidU(int x1, int x2, int y1)
 			if(blocked)
 			{
 				if(vorticon)
-					return true;
+					return blocked;
 				else if(blocked == 1)
-					return true;
+					return blocked;
 			}
 		}
 	}
 
 	if( y1 <= ( ((m_type == OBJ_PLAYER) ? 2 : 1)<<CSF) )
-		return true;
+		return 1;
 
-	return false;
+	return 0;
 }
 
 int CObject::checkSolidD( int x1, int x2, int y2 )
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
-	int blocker;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	y2 += COLISION_RES;
@@ -558,21 +502,21 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
 
 			if(blocked == 17 && m_climbing)
-				return false;
+				return 0;
 
 			if( blocked >= 2 && blocked <= 7 && checkslopedD(c, y2, blocked) )
 			//if( blocked )
-				return true;
+				return blocked;
 		}
 
 		blocked = TileProperty[mp_Map->at((x2)>>CSF, y2>>CSF)].bup;
 
 		if(blocked == 17 && m_climbing)
-			return false;
+			return 0;
 
 		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2, y2, blocked) )
 		//if( blocked )
-			return true;
+			return blocked;
 	}
 
 	if( (y2>>STC) != ((y2>>CSF)<<TILE_S) )
@@ -589,7 +533,7 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 			if(blocked)
 			{
 				if( blocked < 2 || blocked > 7 )
-					return true;
+					return blocked;
 			}
 		}
 
@@ -597,7 +541,7 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 		if(blocked)
 		{
 			if( blocked < 2 || blocked > 7 )
-				return true;
+				return blocked;
 		}
 	}
 
@@ -612,7 +556,7 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 		blockedl = TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
 		blockedr = TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
 
-		return true;
+		return 1;
 	}
 
 	return false;
@@ -663,7 +607,7 @@ bool CObject::checkslopedD( int c, int y2, char blocked)
 	getSlopePointsLowerTile(blocked, yb1, yb2);
 
 	int dy = ((yb2-yb1)*(c%512))/512;
-	int yh = yb1 + dy;
+	int yh = yb1 + dy - 32;
 
 	return ( y2%512 > yh );
 }
@@ -743,13 +687,12 @@ void CObject::moveBitLeft()
 	const unsigned int y2 = getYPosition()+m_BBox.y2;
 
 	if( (blockedl = checkSolidL(x1, x2, y1, y2)) == true)
-	{
 		return;
-	}
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
 	m_Pos.x--;
+	adjustSlopedTiles(x1-(1<<STC), y1, y2, -1);
 }
 
 void CObject::moveBitRight()
@@ -766,6 +709,7 @@ void CObject::moveBitRight()
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
 	m_Pos.x++;
+	adjustSlopedTiles(x2+(1<<STC), y1, y2, 1);
 }
 
 void CObject::moveBitUp()

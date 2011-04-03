@@ -90,8 +90,6 @@ void CMapPlayGalaxy::process()
 	}
 
 
-
-
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
 

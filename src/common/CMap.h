@@ -13,8 +13,8 @@
 #include <vector>
 #include <list>
 
-#include "../graphics/CTilemap.h"
-#include "../fileio/TypeDefinitions.h"
+#include "graphics/CTilemap.h"
+#include "fileio/TypeDefinitions.h"
 #include "CPlane.h"
 
 // animation rate of animated tiles

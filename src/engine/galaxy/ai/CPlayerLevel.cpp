@@ -139,6 +139,7 @@ void CPlayerLevel::process()
 		xinertia = 0;
 
 	m_camera.process();
+	m_camera.processEvents();
 
 	supportedbyobject = false;
 }
@@ -404,7 +405,7 @@ void CPlayerLevel::processMoving()
 		}
 		else
 		{
-			// Normal moving
+			// Normal moving, can be while jumping or running
 			if(!m_pfiring)
 			{
 				if( m_playcontrol[PA_X]<0 )
@@ -454,6 +455,17 @@ void CPlayerLevel::processMoving()
 					}
 				}
 
+
+				// What will happen, when on sloped tile...
+				if(onslope)
+				{
+					if( m_playcontrol[PA_X] != 0 )
+						setAction(A_KEEN_RUN);
+					else
+						setAction(A_KEEN_STAND);
+				}
+
+
 				Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
 				Uint32 l_y_up = ( getYUpPos() );
 				Uint32 l_y_down = ( getYDownPos() );
@@ -490,18 +502,15 @@ void CPlayerLevel::processMoving()
 					m_ptogglingswitch = false;
 
 				// Check if Keen hits the floor
-				if( blockedd && !m_cliff_hanging )
+				if( blockedd && !m_cliff_hanging && !getActionNumber(A_KEEN_POGO) )
 				{
-					if(!getActionNumber(A_KEEN_POGO) )
+					if(moving != NONE)
 					{
-						if(moving != NONE)
-						{
-							setAction(A_KEEN_RUN);
-							g_pSound->playSound( SOUND_KEEN_WALK );
-						}
-						else if(m_playcontrol[PA_Y] == 0)
-							setAction(A_KEEN_STAND);
+						setAction(A_KEEN_RUN);
+						g_pSound->playSound( SOUND_KEEN_WALK );
 					}
+					else if(m_playcontrol[PA_Y] == 0)
+						setAction(A_KEEN_STAND);
 				}
 			}
 		}

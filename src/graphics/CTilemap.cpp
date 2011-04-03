@@ -79,6 +79,65 @@ SDL_Surface *CTilemap::getSDLSurface()
 ///// Drawing Routines /////
 ////////////////////////////
 
+#ifdef DEBUG_COLLISION
+
+#define CSF    9
+#define TILE_S			4
+#define STC (CSF-TILE_S)
+
+void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, char blocked)
+{
+	/**
+	 * So far only used in Galaxy. This is the code for sloped tiles downside
+	 * This is performed when Keen walks into a sloped tile
+	 *
+	 * 0	Fall through		1	Flat
+	 * 2	Top -> Middle		3	Middle -> bottom
+	 * 4	Top -> bottom		5	Middle -> top
+	 * 6	Bottom -> middle	7	Bottom -> top
+	 * 8	Unused			9	Deadly, can't land on in God mode
+	 */
+
+	int yb1, yb2;
+
+	if(!blocked)
+		return;
+
+	if( blocked == 2 )
+		yb1 = 0,	yb2 = 256;
+	else if( blocked == 3 )
+		yb1 = 256,	yb2 = 512;
+	else if( blocked == 4 )
+		yb1 = 0,	yb2 = 512;
+	else if( blocked == 5 )
+		yb1 = 256,	yb2 = 0;
+	else if( blocked == 6 )
+		yb1 = 512,	yb2 = 256;
+	else if( blocked == 7 )
+		yb1 = 512,	yb2 = 0;
+	else
+		yb1 = 0, yb2 = 0;
+
+	SDL_Rect sloperect = dst_rect;
+	sloperect.w = 1;
+
+	for( int c = 0 ; c<512 ; c++ )
+	{
+		sloperect.x = dst_rect.x + (c>>STC);
+		sloperect.y = dst_rect.y + ((yb1+c*(yb2-yb1)/512)>>STC);
+		sloperect.h = dst_rect.h - sloperect.y;
+		SDL_FillRect( dst, &sloperect, 0xFFFFFFFF);
+	}
+
+	SDL_Rect line1_rect = dst_rect;
+	line1_rect.h = 1;
+	SDL_FillRect( dst, &line1_rect, 0xFF545454);
+	SDL_Rect line2_rect = dst_rect;
+	line2_rect.w = 1;
+	SDL_FillRect( dst, &line2_rect, 0xFF545454);
+}
+#endif
+
 void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 {
 	SDL_Rect src_rect, dst_rect;
@@ -88,6 +147,13 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 	dst_rect.x = x;		dst_rect.y = y;
 	
 	SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
+
+#ifdef DEBUG_COLLISION
+
+	std::vector<CTileProperties> &TileProp = g_pBehaviorEngine->getTileProperties(1);
+	FillSlopeRect(dst, dst_rect, 0xFFFFFFFF, TileProp[t].bup);
+#endif
+
 }
 
 CTilemap::~CTilemap() {

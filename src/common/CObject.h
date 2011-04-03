@@ -202,7 +202,7 @@ public:
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
 	bool checkslopedD( int c, int y2, char blocked);
-	void moveSlopedTiles( int x, int y1, int y2, int xspeed );
+	void adjustSlopedTiles( int x, int y1, int y2, int xspeed );
 	bool moveSlopedTileDown( int x, int y, int xspeed );
 	void moveSlopedTileUp( int x, int y, int xspeed );
 
