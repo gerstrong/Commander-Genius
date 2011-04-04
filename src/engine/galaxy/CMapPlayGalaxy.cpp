@@ -59,12 +59,12 @@ void CMapPlayGalaxy::process()
 				p_Object->processEvents();
 
 				// Check collision between objects
-				/*for(size_t j=0 ; j<m_ObjectPtr.size() ; j++)
+				for(size_t j=0 ; j<m_ObjectPtr.size() ; j++)
 				{
 					CObject *theOtherObj = m_ObjectPtr[j];
 					if( theOtherObj != p_Object )
 						p_Object->getTouchedBy(*theOtherObj);
-				}*/
+				}
 			}
 		}
 	}

@@ -164,12 +164,12 @@ public:
 	 * \brief	This function checks if there is any collision and moves the object safely
 	 * \param	dir	The direction where the object has to go to...
 	 */
-	void move(const VectorD2<int>& dir);
-	void moveBitLeft();
-	void moveBitRight();
-	void moveBitDown();
-	void moveBitUp();
-	void move(const int xoff, const int yoff);
+	void processMove(const VectorD2<int>& dir);
+	void processMoveBitLeft();
+	void processMoveBitRight();
+	void processMoveBitDown();
+	void processMoveBitUp();
+	void processMove(const int xoff, const int yoff);
 
 	void decreaseXInertia(const int& value);
 	void InertiaAndFriction_X();

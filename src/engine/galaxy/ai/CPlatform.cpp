@@ -52,14 +52,15 @@ void CPlatform::getTouchedBy(CObject &theObject)
 {
 	if(hitdetect(theObject))
 	{
-		if(theObject.m_type != OBJ_PLAYER)
-			return;
+		if(theObject.m_type == OBJ_PLAYER)
+		{
+			CPlayerLevel &Player = static_cast<CPlayerLevel&>(theObject);
 
-		CPlayerLevel *pPlayer = (CPlayerLevel*)(&theObject);
-
-		std::cout << "\nWHOA!  Stay off my platformz, yo.\n";
-
-		pPlayer->supportedbyobject = true;
+			const int m_py2 = Player.getYDownPos();
+			const int m_y2 = getYUpPos()+(4<<STC);
+			if( m_py2 <= m_y2 && !Player.supportedbyobject )
+				Player.supportedbyobject = true;
+		}
 	}
 }
 

@@ -57,7 +57,6 @@ void CObject::calcBouncingBoxes()
    	m_BBox.y2 = rSprite.m_bboxY2;
 }
 
-const int COLISION_RES = (1<<STC);
 /**
  * So far only used in Galaxy. This is the code for sloped tiles downside
  * This is performed when Keen walks into a sloped tile
@@ -279,6 +278,8 @@ bool CObject::hitdetectWithTileProperty(const int& Property, const int& x, const
 	else
 		return false;
 }
+
+const int COLISION_RES = (1<<STC);
 
 int CObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
@@ -569,14 +570,14 @@ void CObject::doBouncingBoxResizal(const BouncingBox& new_BBox)
 		// Adjust the left side
 		while(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
 		{
-			move(1,0);
+			processMove(1,0);
 			x1 = getXPosition()+m_BBox.x1;
 		}
 
 		// Adjust the right side
 		while(TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft)
 		{
-			move(-1,0);
+			processMove(-1,0);
 			x2 = getXPosition()+m_BBox.x2;
 		}
 	}
@@ -586,20 +587,22 @@ void CObject::doBouncingBoxResizal(const BouncingBox& new_BBox)
 		// Adjust the lower side
 		while(TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bup)
 		{
-			move(0,-1);
+			processMove(0,-1);
 			y1 = getYPosition()+m_BBox.y1;
 		}
 
 		// Adjust the upper side
 		while(TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown)
 		{
-			move(0,1);
+			processMove(0,1);
 			y2 = getYPosition()+m_BBox.y2;
 		}
 	}
 }
 
-void CObject::moveBitLeft()
+const int MOVE_RES = 1;
+
+void CObject::processMoveBitLeft()
 {
 	/// Now check the neighboring tile to the left
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
@@ -612,11 +615,11 @@ void CObject::moveBitLeft()
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
-	m_Pos.x--;
+	m_Pos.x-=MOVE_RES;
 	adjustSlopedTiles(x1-(1<<STC), y1, y2);
 }
 
-void CObject::moveBitRight()
+void CObject::processMoveBitRight()
 {
 	/// Now check the neighboring tile to the right
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
@@ -629,11 +632,11 @@ void CObject::moveBitRight()
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
-	m_Pos.x++;
+	m_Pos.x+=MOVE_RES;
 	adjustSlopedTiles(x2+(1<<STC), y1, y2);
 }
 
-void CObject::moveBitUp()
+void CObject::processMoveBitUp()
 {
 	/// Now check the neighboring tile to the up
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
@@ -645,10 +648,10 @@ void CObject::moveBitUp()
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
-	m_Pos.y--;
+	m_Pos.y-=MOVE_RES;
 }
 
-void CObject::moveBitDown()
+void CObject::processMoveBitDown()
 {
 	/// Now check the neighboring tile to the down
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
@@ -660,42 +663,42 @@ void CObject::moveBitDown()
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
-	m_Pos.y++;
+	m_Pos.y+=MOVE_RES;
 }
 
-void CObject::move(const VectorD2<int>& dir)
+void CObject::processMove(const VectorD2<int>& dir)
 {
-	move(dir.x, dir.y);
+	processMove(dir.x, dir.y);
 }
 
-void CObject::move(const int xoff, const int yoff)
+void CObject::processMove(const int xoff, const int yoff)
 {
 	// Let's check if we have to move left or right
 	if(xoff>0)
 	{
 		// move right
-		for(int c=0 ; c<xoff ; c++ )
-			moveBitRight();
+		for(int c=0 ; c<xoff ; c+=MOVE_RES )
+			processMoveBitRight();
 	}
 	else if(xoff<0)
 	{
 		// move right
-		for(int c=0 ; c<-xoff ; c++ )
-			moveBitLeft();
+		for(int c=0 ; c<-xoff ; c+=MOVE_RES )
+			processMoveBitLeft();
 	}
 
 	// Let's check if we have to move up or down
 	if(yoff>0)
 	{
 		// move down
-		for(int c=0 ; c<yoff ; c++ )
-			moveBitDown();
+		for(int c=0 ; c<yoff ; c+=MOVE_RES )
+			processMoveBitDown();
 	}
 	else if(yoff<0)
 	{
 		// move right
-		for(int c=0 ; c<-yoff ; c++ )
-			moveBitUp();
+		for(int c=0 ; c<-yoff ; c+=MOVE_RES )
+			processMoveBitUp();
 	}
 }
 
@@ -711,7 +714,7 @@ void CObject::processEvents()
 
 		if( ObjMove* p_ObjMove =  m_EventCont.occurredEvent<ObjMove>())
 		{
-			move(p_ObjMove->m_Vec);
+			processMove(p_ObjMove->m_Vec);
 			m_EventCont.pop_Event();
 		}
 	}
