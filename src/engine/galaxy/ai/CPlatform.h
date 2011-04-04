@@ -11,6 +11,7 @@
 #define CPLATFORM_H_
 
 #include "common/CObject.h"
+#include "CPlayerLevel.h"
 
 namespace galaxy {
 
@@ -25,6 +26,15 @@ public:
 		std::vector<CObject*>& ObjectPtrs);
 	void process();
 	void getTouchedBy(CObject &theObject);
+
+private:
+
+	void movePlatLeft(const int& amnt);
+	void movePlatRight(const int& amnt);
+	void movePlatUp(const int& amnt);
+	void movePlatDown(const int& amnt);
+
+	CPlayerLevel *mp_CarriedPlayer;
 };
 
 }
