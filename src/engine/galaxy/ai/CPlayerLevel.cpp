@@ -499,7 +499,7 @@ void CPlayerLevel::processMoving()
 						setAction(A_KEEN_RUN);
 						g_pSound->playSound( SOUND_KEEN_WALK );
 					}
-					else if(m_playcontrol[PA_X] == 0)
+					else if(m_playcontrol[PA_X] == 0 && m_playcontrol[PA_Y] == 0)
 						setAction(A_KEEN_STAND);
 				}
 			}
