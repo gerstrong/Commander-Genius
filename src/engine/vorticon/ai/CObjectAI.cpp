@@ -60,6 +60,7 @@ void CObjectAI::process()
 				}
 
 				object.process();
+				object.processEvents();
 
 				std::vector<CObject*>::iterator theOther = m_Objvect.begin();
 				for( ; theOther != m_Objvect.end() ; theOther++ )

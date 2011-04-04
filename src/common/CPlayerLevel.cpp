@@ -83,6 +83,8 @@ void CPlayer::processInLevel()
 		checkObjSolid();
 		if(!inhibitfall) Playerfalling();
 	}
+
+    processEvents();
 }
 
 void CPlayer::touchedExit(int mpx)
@@ -195,8 +197,8 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 	// is it time to start flying off the screen?
 	if (!pdietillfly)
 	{  // time to fly off the screen
-		if (((getYPosition()>>(CSF-4))+96 > mp_Map->m_scrolly) && (getYPosition()>(16<<(CSF-4))))
-		{  // player has not reached top of screen
+		if (((getYPosition()>>STC)+128 > mp_Map->m_scrolly) && (getYPosition()>(48<<STC)))
+		{   // player has not reached top of screen
 			// make player fly up
 			moveUp(-PDIE_RISE_SPEED);
 			if (getXPosition() > (4<<CSF))

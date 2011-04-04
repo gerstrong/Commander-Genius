@@ -459,6 +459,7 @@ void CPlayer::WalkingAnimation()
 void CPlayer::processCamera()
 {
 	mp_camera->process();
+	mp_camera->processEvents();
 }
 
 // handles inertia and friction for the X direction

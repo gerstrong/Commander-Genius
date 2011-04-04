@@ -130,7 +130,6 @@ public:
 	void calcBouncingBoxes();
 	void calcBouncingBoxeswithPlacement();
 	void performCollisionsSameBox();
-	void performCollisionOnSlopedTiles();
 	void performCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility();
@@ -202,9 +201,9 @@ public:
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
 	bool checkslopedD( int c, int y2, char blocked);
-	void adjustSlopedTiles( int x, int y1, int y2, int xspeed );
-	bool moveSlopedTileDown( int x, int y, int xspeed );
-	void moveSlopedTileUp( int x, int y, int xspeed );
+	void adjustSlopedTiles( int x, int y1, int y2 );
+	bool moveSlopedTileDown( int x, int y );
+	void moveSlopedTileUp( int x, int y );
 
 	// getters for positions
 	Uint32 getXPosition();

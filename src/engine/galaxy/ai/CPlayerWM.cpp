@@ -61,6 +61,7 @@ void CPlayerWM::process()
 	}
 
 	m_camera.process();
+	m_camera.processEvents();
 }
 
 /*

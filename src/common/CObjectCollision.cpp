@@ -5,29 +5,29 @@
  *      Author: gerstrong
  *
  *  This is the second cpp file for the CObject Class
- *  It is only meant to be used for colisions
+ *  It is only meant to be used for collisions
  */
 
 #include "CObject.h"
 #include "engine/spritedefines.h"
 
 /*
- * \brief performs collision without bouncing box recalculation
+ * \brief Performs collision without bouncing box recalculation
  */
 void CObject::performCollisionsSameBox()
 {
+	const unsigned int abs_x1 = m_Pos.x+m_BBox.x1;
+	const unsigned int abs_x2 = m_Pos.x+m_BBox.x2;
+	const unsigned int abs_y1 = m_Pos.y+m_BBox.y1;
+	const unsigned int abs_y2 = m_Pos.y+m_BBox.y2;
+
 	// Left/Right borders
-	blockedl = checkSolidL(m_Pos.x+m_BBox.x1, m_Pos.x+m_BBox.x2, m_Pos.y+m_BBox.y1, m_Pos.y+m_BBox.y2);
-	blockedr = checkSolidR(m_Pos.x+m_BBox.x1, m_Pos.x+m_BBox.x2, m_Pos.y+m_BBox.y1, m_Pos.y+m_BBox.y2);
+	blockedl = checkSolidL(abs_x1, abs_x2, abs_y1, abs_y2);
+	blockedr = checkSolidR(abs_x1, abs_x2, abs_y1, abs_y2);
 
 	// Upper/Lower borders
-	blockedu = checkSolidU(m_Pos.x+m_BBox.x1, m_Pos.x+m_BBox.x2, m_Pos.y+m_BBox.y1);
-	blockedd = checkSolidD(m_Pos.x+m_BBox.x1, m_Pos.x+m_BBox.x2, m_Pos.y+m_BBox.y2);
-
-	if(g_pBehaviorEngine->getEpisode() > 3)
-	{ // now check for the sloped tiles
-		performCollisionOnSlopedTiles();
-	}
+	blockedu = checkSolidU(abs_x1, abs_x2, abs_y1);
+	blockedd = checkSolidD(abs_x1, abs_x2, abs_y2);
 }
 
 /*
@@ -57,57 +57,7 @@ void CObject::calcBouncingBoxes()
    	m_BBox.y2 = rSprite.m_bboxY2;
 }
 
-
-/*
- * This function determines if the object is touching a sloped tile
- * and determine the collisions
- */
 const int COLISION_RES = (1<<STC);
-void CObject::performCollisionOnSlopedTiles()
-{
-	const Uint32 halftile = ((1<<CSF)/2);
-	const Uint32 x1 = m_Pos.x + m_BBox.x1;
-	const Uint32 x2 = m_Pos.x + m_BBox.x2;
-	const Uint32 y2 = m_Pos.y + m_BBox.y2;
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	onslope = false;
-
-	for(Uint32 c=y2-halftile ; c<=y2+halftile ; c += COLISION_RES)
-	{
-		char block;
-		block = TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bup;
-		if( block >= 2 && block <= 7 )
-		{
-			onslope = true;
-			break;
-		}
-		block = TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bup;
-		if( block >= 2 && block <= 7 )
-		{
-			onslope = true;
-			break;
-		}
-	}
-
-	if(!onslope)
-	{
-		for(Uint32 c=x1 ; c<=x2 ; c += COLISION_RES)
-		{
-			char block;
-			block = TileProperty[mp_Map->at(c>>CSF, (y2+halftile)>>CSF)].bup;
-			if( block >= 2 && block <= 7 )
-			{
-				onslope = true;
-				break;
-			}
-		}
-	}
-
-	if(onslope)
-	{
-		blockedr = blockedl = false;
-	}
-}
 /**
  * So far only used in Galaxy. This is the code for sloped tiles downside
  * This is performed when Keen walks into a sloped tile
@@ -137,6 +87,33 @@ void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
 		yb1 = 0, yb2 = 0;
 }
 
+/**
+ * So far only used in Galaxy. This is the code for sloped tiles upside
+ *
+ * 0	Jump through		1	Flat bottom
+ * 2	Bottom-> Middle		3	Middle -> top
+ * 4	Bottom -> top		5	Middle -> bottom
+ * 6	Top -> middle		7	Top -> bottom
+ *
+ */
+void getSlopePointsUpperTile(char slope, int &yb1, int &yb2)
+{
+	if( slope == 2 )
+		yb1 = 512,	yb2 = 256;
+	else if( slope == 3 )
+		yb1 = 256,	yb2 = 0;
+	else if( slope == 4 )
+		yb1 = 512,	yb2 = 0;
+	else if( slope == 5 )
+		yb1 = 256,	yb2 = 512;
+	else if( slope == 6 )
+		yb1 = 0,	yb2 = 256;
+	else if( slope == 7 )
+		yb1 = 0,	yb2 = 512;
+	else // 1
+		yb1 = 0,	yb2 = 0;
+}
+
 /*
  * \brief This checks the collision. Very simple pixel based algorithm
  * 		  The collision is per pixel-based
@@ -149,22 +126,22 @@ void CObject::performCollisions()
 	if ( sprite != BLANKSPRITE )
 	{
 		calcBouncingBoxes();
-		performCollisionsSameBox();
+		//performCollisionsSameBox();
 	}
 }
 
 // Basic slope move independent of the left or right move
-void CObject::adjustSlopedTiles( int x, int y1, int y2, int xspeed )
+void CObject::adjustSlopedTiles( int x, int y1, int y2 )
 {
 	// process the sloped tiles here. Galaxy only or special patch!!
 	if(g_pBehaviorEngine->getEpisode() > 3)
 	{
-		if(!moveSlopedTileDown(x, y2, xspeed))
-			moveSlopedTileUp(x, y1, xspeed);
+		if(!moveSlopedTileDown(x, y2))
+			moveSlopedTileUp(x, y1);
 	}
 }
 
-bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
+bool CObject::moveSlopedTileDown( int x, int y )
 {
 	if(yinertia!=0)
 		return false;
@@ -201,59 +178,36 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 		return false;
 }
 
-/**
- * So far only used in Galaxy. This is the code for sloped tiles upside
- *
- * 0	Jump through		1	Flat bottom
- * 2	Bottom-> Middle		3	Middle -> top
- * 4	Bottom -> top		5	Middle -> bottom
- * 6	Top -> middle		7	Top -> bottom
- *
- */
-void CObject::moveSlopedTileUp( int x, int y, int xspeed )
+void CObject::moveSlopedTileUp( int x, int y )
 {
+	if(yinertia!=0)
+		return;
+
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bdown;
 
-	// Let's calculate the exact Y-Coordinate and put the object there...
+	// Check first, if there is a tile on players level
+	if( slope >=2 && slope<=7 )
+	{
+		int yb1, yb2;
+		getSlopePointsUpperTile(slope, yb1, yb2);
 
-	// Calculate the corner y coordinates
-	int yb1, yb2;
+		// Get relative position of the X corner
+		const int L = 512;
+		const int x_r = (x%L);
 
-	if( slope == 2 )
-		yb1 = 512,	yb2 = 256;
-	else if( slope == 3 )
-		yb1 = 256,	yb2 = 0;
-	else if( slope == 4 )
-		yb1 = 512,	yb2 = 0;
-	else if( slope == 5 )
-		yb1 = 256,	yb2 = 512;
-	else if( slope == 6 )
-		yb1 = 0,	yb2 = 256;
-	else if( slope == 7 )
-		yb1 = 0,	yb2 = 512;
-	else
-		return;
+		// get the dy position so the new pos can be computed
+		int dy = ((yb2-yb1)*x_r)/L;
 
-	// Get the upper border pos if the tile
-	const int y_csf = (y>>CSF)<<CSF;
+		// get the new position of the lower corner
+		const int y_rel = yb1 + dy;
 
-	// Get relative position of the X corner
-	const int L = 512;
-	const int x_r = (x%L);
+		// Get the upper border pos if the tile
+		int y_csf;
+		y_csf = (y>>CSF)<<CSF;
 
-	// get the dy position so the new pos can be computed
-	int dy = ((yb2-yb1)*x_r)/L;
-
-	// get the new position of the lower corner
-	const int y_rel = yb1 + dy;
-
-	// Get the new lower corner pos
-	const int y_pos = y_csf + y_rel;
-
-	// get new position
-	const Uint32 new_y = y_pos - m_BBox.y1 + (1<<STC);
-	moveYDir( new_y - m_Pos.y );
+		m_Pos.y = y_csf - m_BBox.y1 + y_rel + (1<<STC);
+	}
 }
 
 // returns nonzero if object1 overlaps object2
@@ -486,7 +440,7 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 
 	y2 += COLISION_RES;
 
-	// Check for sloped tiles here. They must be handled different
+	// Check for sloped tiles here. They must be handled differently
 	if(!vorticon && solid)
 	{
 		char blocked;
@@ -505,11 +459,10 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 				return 0;
 
 			if( blocked >= 2 && blocked <= 7 && checkslopedD(c, y2, blocked) )
-			//if( blocked )
 				return blocked;
 		}
 
-		blocked = TileProperty[mp_Map->at((x2)>>CSF, y2>>CSF)].bup;
+		blocked = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bup;
 
 		if(blocked == 17 && m_climbing)
 			return 0;
@@ -562,7 +515,7 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 	return false;
 }
 
-/* Special slope function for galaxy maps
+/* Special slope function for galaxy
 	0	Jump through		1	Flat bottom
 	2	Bottom-> Middle		3	Middle -> top
 	4	Bottom -> top		5	Middle -> bottom
@@ -572,20 +525,7 @@ bool CObject::checkslopedU( int c, int y1, char blocked)
 {
 	int yb1, yb2;
 
-	if( blocked == 2 )
-		yb1 = 512,	yb2 = 256;
-	else if( blocked == 3 )
-		yb1 = 256,	yb2 = 0;
-	else if( blocked == 4 )
-		yb1 = 512,	yb2 = 0;
-	else if( blocked == 5 )
-		yb1 = 256,	yb2 = 512;
-	else if( blocked == 6 )
-		yb1 = 0,	yb2 = 256;
-	else if( blocked == 7 )
-		yb1 = 0,	yb2 = 512;
-	else
-		yb1 = 512,	yb2 = 512;
+	getSlopePointsUpperTile(blocked, yb1, yb2);
 
 	int dy = ((yb2-yb1-32)*(c%512))/512;
 	int yh = yb1 + dy;
@@ -593,14 +533,14 @@ bool CObject::checkslopedU( int c, int y1, char blocked)
 	return ( (y1%512) < yh );
 }
 
-/* Special slope function for galaxy maps
+/* Special slope function for galaxy
 0	Fall through		1	Flat
 2	Top -> Middle		3	Middle -> bottom
 4	Top -> bottom		5	Middle -> top
 6	Bottom -> middle	7	Bottom -> top
 8	Unused				9	Deadly, can't land on in God mode
  */
-bool CObject::checkslopedD( int c, int y2, char blocked)
+bool CObject::checkslopedD( int c, int y2, char blocked )
 {
 	int yb1, yb2;
 
@@ -612,25 +552,6 @@ bool CObject::checkslopedD( int c, int y2, char blocked)
 	return ( y2%512 > yh );
 }
 
-
-
-
-
-//====================================================================================
-//====================================================================================
-//====================================================================================
-//====================================================================================
-//====================================================================================
-//====================================================================================
-//====================================================================================
-//====================================================================================
-//====================================================================================
-
-//====================================================================================
-
-// New Colission based on events and adjustments. read below
-
-//====================================================================================
 void CObject::doBouncingBoxResizal(const BouncingBox& new_BBox)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
@@ -692,7 +613,7 @@ void CObject::moveBitLeft()
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
 	m_Pos.x--;
-	adjustSlopedTiles(x1-(1<<STC), y1, y2, -1);
+	adjustSlopedTiles(x1-(1<<STC), y1, y2);
 }
 
 void CObject::moveBitRight()
@@ -709,7 +630,7 @@ void CObject::moveBitRight()
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
 	m_Pos.x++;
-	adjustSlopedTiles(x2+(1<<STC), y1, y2, 1);
+	adjustSlopedTiles(x2+(1<<STC), y1, y2);
 }
 
 void CObject::moveBitUp()
@@ -734,7 +655,7 @@ void CObject::moveBitDown()
 	const unsigned int x2 = getXPosition()+m_BBox.x2;
 	const unsigned int y2 = getYPosition()+m_BBox.y2;
 
-	if( (blockedd = checkSolidD(x1, x2, y2)) == true)
+	if( ( blockedd = checkSolidD(x1, x2, y2) ) == true )
 		return;
 
 	// if we are here, the tiles aren't blocking us.

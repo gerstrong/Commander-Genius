@@ -80,8 +80,6 @@ void CPlayerLevel::process()
 
 	processInput();
 
-	performCollisionsSameBox();
-
 	if(supportedbyobject)
 		blockedd = true;
 
@@ -142,6 +140,8 @@ void CPlayerLevel::process()
 	m_camera.processEvents();
 
 	supportedbyobject = false;
+
+	performCollisionsSameBox();
 }
 
 void CPlayerLevel::processInput()
@@ -455,17 +455,6 @@ void CPlayerLevel::processMoving()
 					}
 				}
 
-
-				// What will happen, when on sloped tile...
-				if(onslope)
-				{
-					if( m_playcontrol[PA_X] != 0 )
-						setAction(A_KEEN_RUN);
-					else
-						setAction(A_KEEN_STAND);
-				}
-
-
 				Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
 				Uint32 l_y_up = ( getYUpPos() );
 				Uint32 l_y_down = ( getYDownPos() );
@@ -502,14 +491,15 @@ void CPlayerLevel::processMoving()
 					m_ptogglingswitch = false;
 
 				// Check if Keen hits the floor
-				if( blockedd && !m_cliff_hanging && !getActionNumber(A_KEEN_POGO) )
+				if( blockedd && !m_cliff_hanging &&
+						!getActionNumber(A_KEEN_POGO) && !getActionNumber(A_KEEN_JUMP) )
 				{
 					if(moving != NONE)
 					{
 						setAction(A_KEEN_RUN);
 						g_pSound->playSound( SOUND_KEEN_WALK );
 					}
-					else if(m_playcontrol[PA_Y] == 0)
+					else if(m_playcontrol[PA_X] == 0)
 						setAction(A_KEEN_STAND);
 				}
 			}

@@ -199,11 +199,7 @@ bool CObject::checkforScenario()
 // the current map position
 void CObject::moveToForce(const VectorD2<int> &dir)
 {
-	bool laststate = solid;
-
-	solid = false;
-	moveTo(dir);
-	solid = laststate;
+	m_Pos = dir;
 }
 
 void CObject::moveToForce(const int& new_x, const int& new_y)

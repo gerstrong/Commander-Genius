@@ -225,8 +225,6 @@ void CPlayGameVorticon::showKeensLeft()
 			mp_KeenLeftSfc = NULL;
 		}
 	}
-
-
 }
 
 int CPlayGameVorticon::getTeleporterInfo(int objectID)
@@ -298,7 +296,3 @@ void CPlayGameVorticon::readTeleportDestCoordinatesEP3(int objectID, int &destx,
 		}
 	}
 }
-
-
-
-
