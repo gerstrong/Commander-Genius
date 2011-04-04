@@ -125,7 +125,7 @@ void CObject::performCollisions()
 	if ( sprite != BLANKSPRITE )
 	{
 		calcBouncingBoxes();
-		//performCollisionsSameBox();
+		performCollisionsSameBox();
 	}
 }
 
