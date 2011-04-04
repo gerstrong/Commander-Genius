@@ -169,7 +169,9 @@ bool CObject::moveSlopedTileDown( int x, int y )
 		int y_csf;
 		y_csf = (y>>CSF)<<CSF;
 
-		m_Pos.y = y_csf - m_BBox.y2 + y_rel - (1<<STC);
+		const Uint32 newpos_y = y_csf - m_BBox.y2 + y_rel - (1<<STC);
+		if( m_Pos.y > newpos_y )
+			m_Pos.y = newpos_y;
 
 		return true;
 	}
@@ -205,7 +207,9 @@ void CObject::moveSlopedTileUp( int x, int y )
 		int y_csf;
 		y_csf = (y>>CSF)<<CSF;
 
-		m_Pos.y = y_csf - m_BBox.y1 + y_rel + (1<<STC);
+		Uint32 newpos_y = y_csf - m_BBox.y1 + y_rel + (1<<STC);
+		if( m_Pos.y < newpos_y )
+			m_Pos.y = newpos_y;
 	}
 }
 
