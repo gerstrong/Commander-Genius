@@ -4,7 +4,8 @@
  *  Created on: 06.04.2011
  *      Author: gerstrong
  *
- *  This is the code of the dropping platforms
+ *  This is the code of the dropping platforms.
+ *  In Galaxy this platform falls but can return. If it falls too fast it won't return.
  */
 
 #ifndef CPLATFORMDROP_H_
@@ -27,7 +28,7 @@ public:
 private:
 	int m_delay_for_drop;
 	int m_drop_speed;
-
+	const VectorD2<Uint32> m_Origin;
 };
 
 }
