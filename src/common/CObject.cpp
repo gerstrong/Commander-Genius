@@ -353,18 +353,11 @@ void CObject::processFalling()
 	{
 		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
 
-		//if( yinertia>40 && !onslope )
-		/*if( yinertia>0 && !onslope )
-			falling = true;
-		else
-			falling = false;*/
-
 		// In this case foe is jumping?
 		// Not sure here. We should use another variable...
 		if(yinertia<0 && !blockedu)
 		{
 			moveUp(-yinertia);
-
 			yinertia += Physics.fallspeed_increase;
 		}
 		else if(yinertia>=0 && !blockedd )

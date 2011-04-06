@@ -122,6 +122,7 @@ public:
 	size_t m_ActionBaseOffset;
 	bool m_climbing;
 	bool m_jumped;
+	bool m_jumpdown;
 
 	// This container will held the triggered events of the object
 	CEventContainer m_EventCont;

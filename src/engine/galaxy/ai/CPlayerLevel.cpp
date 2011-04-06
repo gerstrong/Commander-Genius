@@ -139,8 +139,6 @@ void CPlayerLevel::process()
 	m_camera.process();
 	m_camera.processEvents();
 
-	supportedbyobject = false;
-
 	performCollisionsSameBox();
 }
 
@@ -654,15 +652,28 @@ void CPlayerLevel::processFalling()
 	if(!blockedd && !getActionNumber(A_KEEN_FALL) &&
 		( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) ) )
 	{
-		const bool nothing_on_feet = (mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()) == 0);
-		const bool nothing_below_feet = (mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(STC))) == 0);
-		const bool can_fall = (nothing_on_feet && nothing_below_feet) || blockedl || blockedr;
+		// This will check three points and avoid that keen falls from sloped tiles
+		const int &fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
+		const int &fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
+		const int &fall3 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
+		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
+		const CTileProperties &TileProp2 = g_pBehaviorEngine->getTileProperties(1)[fall2];
+		const CTileProperties &TileProp3 = g_pBehaviorEngine->getTileProperties(1)[fall3];
+		const bool nothing_on_feet = (TileProp1.bup == 0);
+		const bool nothing_below_feet = (TileProp2.bup == 0) && (TileProp3.bup == 0);
+		const bool can_fall = (nothing_on_feet && nothing_below_feet);
 
 		if(can_fall)
 		{
 			setAction(A_KEEN_FALL);
 			g_pSound->playSound( SOUND_KEEN_FALL );
 		}
+		else
+		{
+			// Force the player a bit down, so he will never fall from sloped tiles
+			moveDown(100);
+		}
+
 	}
 
 	// If we are falling
@@ -679,6 +690,7 @@ void CPlayerLevel::processFalling()
 		setAction(A_KEEN_FALL);
 	}*/
 
+	// While falling keen can of course move into both x-directions
 	if(getActionNumber(A_KEEN_FALL))
 		xinertia += (m_playcontrol[PA_X]>>1);
 }
@@ -696,7 +708,17 @@ void CPlayerLevel::processLooking()
 		if( m_playcontrol[PA_Y]<0 )
 			setAction(A_KEEN_LOOKUP);
 		else if( m_playcontrol[PA_Y]>0 )
+		{
 			setAction(A_KEEN_LOOKDOWN);
+
+			if ( m_playcontrol[PA_JUMP] > 0 && supportedbyobject )
+			{
+				m_jumpdown = true;
+				supportedbyobject = false;
+				setAction(A_KEEN_FALL);
+				g_pSound->playSound( SOUND_KEEN_FALL );
+			}
+		}
 	}
 }
 
