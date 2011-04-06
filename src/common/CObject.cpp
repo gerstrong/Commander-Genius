@@ -27,21 +27,17 @@ m_blinktime(0),
 m_invincible(false),
 m_Pos(x,y)
 {
+	m_jumpdown = false;
 	falling = false;
 	m_number_of_objects++;
 	exists = true;
 	solid = true;
 	inhibitfall = false;
-
 	canbezapped = false;
 	onscreen = false;
-
-	cansupportplayer = false;
-	
 	yinertia = 0;
 	xinertia = 0;
 	onslope = false;
-
 	scrx = scry = 0;
 	dead = false;
 	hasbeenonscreen = false;
@@ -55,6 +51,7 @@ m_Pos(x,y)
 	m_ActionTicker = 0;
 	m_canturnaround = false;
 	m_climbing = false;
+	supportedbyobject = false;
 
 	if(m_type != OBJ_NONE )
 	{

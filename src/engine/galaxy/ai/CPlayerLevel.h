@@ -54,6 +54,9 @@ public:
 	CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CObject*>& ObjectPtrs, direction_t facedir, CInventory &l_Inventory);
 
+	// Checks if player can fall through a tile
+	bool canFallThroughTile();
+
 	void process();
 	void processInput();
 	void processFiring();
@@ -76,6 +79,8 @@ public:
 	void kill();
 
 	CInventory &m_Inventory;
+
+	bool m_jumpdownfromobject;
 
 private:
 	Uint8 m_animation;

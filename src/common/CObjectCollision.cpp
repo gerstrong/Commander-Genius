@@ -448,7 +448,7 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 	// Check for sloped tiles here. They must be handled differently
 	if(!vorticon && solid)
 	{
-		char blocked;
+		char blockedu;
 
 		if(m_climbing)
 		{
@@ -458,23 +458,23 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+			blockedu = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
 
-			if(blocked == 17 && m_climbing)
+			if( blockedu == 17 && m_climbing)
 				return 0;
 
-			if( blocked >= 2 && blocked <= 7 && checkslopedD(c, y2, blocked) )
-				return blocked;
+			if( blockedu >= 2 && blockedu <= 7 && checkslopedD(c, y2, blockedu) )
+				return blockedu;
 		}
 
-		blocked = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bup;
+		blockedu = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bup;
 
-		if(blocked == 17 && m_climbing)
+		if(blockedu == 17 && m_climbing)
 			return 0;
 
-		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2, y2, blocked)  )
+		if( blockedu >= 2 && blockedu <= 7 && checkslopedD(x2, y2, blockedu)  )
 		//if( blocked )
-			return blocked;
+			return blockedu;
 	}
 
 	if( (y2>>STC) != ((y2>>CSF)<<TILE_S) )
@@ -491,7 +491,18 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 			if(blocked)
 			{
 				if( blocked < 2 || blocked > 7 )
+				{
+					char blockedd = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown;
+
+					if(blockedd == 0 && m_jumpdown)
+						return 0;
+
+					// Jump through
+					//if( blockedd != 0 )
+						//m_jumpdown = false;
+
 					return blocked;
+				}
 			}
 		}
 

@@ -21,7 +21,7 @@ void CPlatform::movePlatLeft(const int& amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
-		if(!mp_CarriedPlayer->m_jumpdown)
+		if(!mp_CarriedPlayer->m_jumpdownfromobject)
 			mp_CarriedPlayer->moveLeft(amnt);
 
 	// Now move the platform itself.
@@ -32,7 +32,7 @@ void CPlatform::movePlatRight(const int& amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
-		if(!mp_CarriedPlayer->m_jumpdown)
+		if(!mp_CarriedPlayer->m_jumpdownfromobject)
 			mp_CarriedPlayer->moveRight(amnt);
 
 	// Now move the platform itself.
@@ -43,7 +43,7 @@ void CPlatform::movePlatUp(const int& amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
-		if(!mp_CarriedPlayer->m_jumpdown)
+		if(!mp_CarriedPlayer->m_jumpdownfromobject)
 			mp_CarriedPlayer->moveUp(amnt);
 
 	// Now move the platform itself.
@@ -54,7 +54,7 @@ void CPlatform::movePlatDown(const int& amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
-		if(!mp_CarriedPlayer->m_jumpdown)
+		if(!mp_CarriedPlayer->m_jumpdownfromobject)
 			mp_CarriedPlayer->moveDown(amnt);
 
 	// Now move the platform itself.
@@ -69,7 +69,7 @@ void CPlatform::process()
 		if(!hitdetect(*mp_CarriedPlayer))
 		{
 			mp_CarriedPlayer->supportedbyobject = false;
-			mp_CarriedPlayer->m_jumpdown = false;
+			mp_CarriedPlayer->m_jumpdownfromobject = false;
 			mp_CarriedPlayer = NULL;
 		}
 	}
@@ -87,7 +87,7 @@ void CPlatform::getTouchedBy(CObject &theObject)
 
 			const int m_py2 = Player.getYDownPos();
 			const int m_y2 = getYUpPos()+(4<<STC);
-			if( m_py2 <= m_y2 && !Player.supportedbyobject && !Player.m_jumpdown )
+			if( m_py2 <= m_y2 && !Player.supportedbyobject && !Player.m_jumpdownfromobject )
 			{
 				mp_CarriedPlayer = &Player;
 				Player.supportedbyobject = true;

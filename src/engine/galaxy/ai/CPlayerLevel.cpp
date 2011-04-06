@@ -644,14 +644,31 @@ void CPlayerLevel::processPogo()
 	}
 }
 
+bool CPlayerLevel::canFallThroughTile()
+{
+	const int &tile = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<STC));
+	const CTileProperties &TileProp = g_pBehaviorEngine->getTileProperties(1)[tile];
+	return ( TileProp.bdown == 0 && TileProp.bup != 0 );
+}
+
 // Falling code
 void CPlayerLevel::processFalling()
 {
 	CObject::processFalling();
 
-	if(!blockedd && !getActionNumber(A_KEEN_FALL) &&
-		( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) ) )
+	// If keen is jumping down, not because he did from an object like a platform,
+	// but a tile where Keen can fall through, process this part of code and
+	// check if Keen is still jumpinto through any object
+	if(!supportedbyobject && m_jumpdown)
 	{
+		if(!canFallThroughTile())
+			m_jumpdown = false;
+	}
+
+	if( !blockedd && !getActionNumber(A_KEEN_FALL) &&
+			( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) ))
+	{
+
 		// This will check three points and avoid that keen falls from sloped tiles
 		const int &fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
 		const int &fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
@@ -673,22 +690,7 @@ void CPlayerLevel::processFalling()
 			// Force the player a bit down, so he will never fall from sloped tiles
 			moveDown(100);
 		}
-
 	}
-
-	// If we are falling
-	/*if( falling && !getActionNumber(A_KEEN_JUMP_SHOOT)
-			&& !getActionNumber(A_KEEN_JUMP_SHOOTUP)
-			&& !getActionNumber(A_KEEN_JUMP_SHOOTDOWN)
-			&& !getActionNumber(A_KEEN_POGO) )
-	{
-		// TODO: This will need additional conditions to handle coming off of a pole.
-		if ( getActionNumber(A_KEEN_RUN) )
-		{
-			g_pSound->playSound( SOUND_KEEN_FALL );
-		}
-		setAction(A_KEEN_FALL);
-	}*/
 
 	// While falling keen can of course move into both x-directions
 	if(getActionNumber(A_KEEN_FALL))
@@ -711,9 +713,11 @@ void CPlayerLevel::processLooking()
 		{
 			setAction(A_KEEN_LOOKDOWN);
 
-			if ( m_playcontrol[PA_JUMP] > 0 && supportedbyobject )
+			const bool jumpdowntile = canFallThroughTile();
+			if ( m_playcontrol[PA_JUMP] > 0 && ( supportedbyobject || jumpdowntile )  )
 			{
-				m_jumpdown = true;
+				m_jumpdownfromobject = supportedbyobject;
+				m_jumpdown = jumpdowntile;
 				supportedbyobject = false;
 				setAction(A_KEEN_FALL);
 				g_pSound->playSound( SOUND_KEEN_FALL );
