@@ -4,7 +4,7 @@ Commander Genius Release :
 v0.3.3.2:
 ---------
 - Thanks to Malvineous IMF Player got a bit faster. He found an interesting slow down in our code
-- Now switches for platform and bridges work
+- Now switches for platforms and bridges work
 - Big IMF Bug I discovered has been fixed which produced crashes on some systems
 - Better Platform code
 - Some PC-Speaker sound improvements

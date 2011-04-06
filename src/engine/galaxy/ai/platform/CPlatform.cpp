@@ -6,24 +6,15 @@
  */
 
 #include "CPlatform.h"
-#include <iostream>
-
-const int MOVE_HORIZ_SPEED = 20;
 
 namespace galaxy {
 
-CPlatform::CPlatform(CMap *pmap, Uint32 x, Uint32 y, direction_t dir,
+CPlatform::CPlatform(CMap *pmap, const Uint32 x, const Uint32 y,
 		std::vector<CObject*>& ObjectPtrs) :
 CObject(pmap, x, y, OBJ_PLATFORM),
 mp_CarriedPlayer(NULL)
 {
-	m_hDir = RIGHT;
-	m_vDir = NONE;
-
 	m_ActionBaseOffset = 0x316A;
-	setActionForce(A_PLATFORM_MOVE);
-	setActionSprite();
-	calcBouncingBoxes();
 }
 
 void CPlatform::movePlatLeft(const int& amnt)
@@ -66,32 +57,12 @@ void CPlatform::movePlatDown(const int& amnt)
 	moveDown(amnt);
 }
 
-
 void CPlatform::process()
 {
-	Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
-
-	// If there is a blocker, change the direction
-	if( object == 31 )
-	{
-		m_hDir = (m_hDir == RIGHT) ? LEFT : RIGHT;
-	}
-
 	// check if someone is still standing on the platform
 	if(mp_CarriedPlayer)
 		if(!hitdetect(*mp_CarriedPlayer))
 			mp_CarriedPlayer = NULL;
-
-	if(m_hDir == RIGHT && blockedr)
-		m_hDir = LEFT;
-
-	if(m_hDir == LEFT && blockedl)
-		m_hDir = RIGHT;
-
-	if(m_hDir == RIGHT)
-		movePlatRight(MOVE_HORIZ_SPEED);
-	else
-		movePlatLeft(MOVE_HORIZ_SPEED);
 
 	processActionRoutine();
 }

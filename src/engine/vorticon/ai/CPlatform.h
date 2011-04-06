@@ -17,7 +17,8 @@ class CPlatform : public CObject
 public:
 	CPlatform(CMap *p_map, Uint32 x, Uint32 y,
 			std::vector<CPlayer>& Player);
-	virtual void process();
+
+	void process();
 
 	void SetAllCanSupportPlayer(bool state);
 	void getTouchedBy(CObject &theObject);

@@ -11,7 +11,7 @@
 #define CPLATFORM_H_
 
 #include "common/CObject.h"
-#include "CPlayerLevel.h"
+#include "engine/galaxy/ai/CPlayerLevel.h"
 
 namespace galaxy {
 
@@ -22,12 +22,12 @@ namespace galaxy {
 
 class CPlatform : public CObject {
 public:
-	CPlatform(CMap *pmap, Uint32 x, Uint32 y, direction_t dir,
+	CPlatform(CMap *pmap, const Uint32 x, const Uint32 y,
 		std::vector<CObject*>& ObjectPtrs);
-	void process();
+	virtual void process();
 	void getTouchedBy(CObject &theObject);
 
-private:
+protected:
 
 	void movePlatLeft(const int& amnt);
 	void movePlatRight(const int& amnt);

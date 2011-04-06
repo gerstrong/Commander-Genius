@@ -23,7 +23,7 @@
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
-#include "engine/galaxy/ai/CPlatform.h"
+#include "engine/galaxy/ai/platforms.h"
 #include "engine/galaxy/ai/CPoisonSlug.h"
 #include "engine/galaxy/ai/CCouncilMember.h"
 
@@ -305,6 +305,19 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	File.close();
 }
 
+//------------------------------------------------//
+// The following part covers the load of the foes
+// Some defines are hardcoded so it is easier to
+// identify what type of foe/stuff is loaded
+
+// Under Construction Platforms:
+// 27-30 & 32 seem to be the actual platforms.  There may be more of numbers lower than 27.
+// 31 seem to be the stoppers, those are not created because the platform
+// get this from the object map directly
+
+const int PLATFORM_LEFT_RIGHT = 30;
+// 31 does not count, because it's a blocker.
+const int PLATFORM_FALL = 32;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
@@ -365,10 +378,11 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		p_newfoe = new galaxy::CPoisonSlug(&Map, x, y-250);
 		break;
 
-	case 27: case 28: case 29: case 30: case 32:
-		//27-30 & 32 seem to be the actual platforms.  There may be more of numbers lower than 27.
-		//31 seems to be the stoppers.
-		p_newfoe = new galaxy::CPlatform(&Map, x, y, NONE, m_ObjectPtr);
+	case 27: case 28: case 29:
+	case PLATFORM_LEFT_RIGHT:
+		p_newfoe = new galaxy::CPlatformHorizontal(&Map, x, y, m_ObjectPtr); break;
+	case PLATFORM_FALL:
+		p_newfoe = new galaxy::CPlatformDrop(&Map, x, y, m_ObjectPtr);
 		break;
 
 	case 33:
