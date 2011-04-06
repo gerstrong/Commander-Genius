@@ -315,10 +315,12 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 // 31 seem to be the stoppers, those are not created because the platform
 // get this from the object map directly
 
-const int PLATFORM_LEFT_RIGHT_ALT = 28;
-const int PLATFORM_LEFT_RIGHT = 30;
+const int PLATFORM_VERT_ALT = 27;
+const int PLATFORM_HORIZ_ALT = 28;
+const int PLATFORM_VERT = 29;
+const int PLATFORM_HORIZ = 30;
 // 31 does not count, because it's a blocker.
-const int PLATFORM_FALL = 32;
+const int PLATFORM_DROP = 32;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
@@ -379,11 +381,12 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		p_newfoe = new galaxy::CPoisonSlug(&Map, x, y-250);
 		break;
 
-	case 27: case 29:
-	case PLATFORM_LEFT_RIGHT_ALT:
-	case PLATFORM_LEFT_RIGHT:
+	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
+		p_newfoe = new galaxy::CPlatformVertical(&Map, x, y, m_ObjectPtr); break;
+	case PLATFORM_HORIZ_ALT:
+	case PLATFORM_HORIZ:
 		p_newfoe = new galaxy::CPlatformHorizontal(&Map, x, y, m_ObjectPtr); break;
-	case PLATFORM_FALL:
+	case PLATFORM_DROP:
 		p_newfoe = new galaxy::CPlatformDrop(&Map, x, y, m_ObjectPtr);
 		break;
 

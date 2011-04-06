@@ -7,13 +7,20 @@
 
 #include "CPlatformVertical.h"
 
+// Vertical platform speed
+const int MOVE_VERT_SPEED = 20;
+
 namespace galaxy {
 
 CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint32 x, const Uint32 y,
 		std::vector<CObject*>& ObjectPtrs) :
 CPlatform(pmap, x, y, ObjectPtrs)
 {
-	// TODO Auto-generated constructor stub
+	m_hDir = NONE;
+	m_vDir = DOWN;
+	setActionForce(A_PLATFORM_MOVE);
+	setActionSprite();
+	calcBouncingBoxes();
 
 }
 
@@ -23,20 +30,17 @@ void CPlatformVertical::process()
 
 	// If there is a blocker, change the direction
 	if( object == 31 )
-	{
-		m_hDir = (m_hDir == RIGHT) ? LEFT : RIGHT;
-	}
+		m_vDir = (m_vDir == UP) ? DOWN : UP;
 
-	if(m_hDir == RIGHT && blockedr)
-		m_hDir = LEFT;
+	if(m_vDir == UP && blockedu)
+		m_vDir = DOWN;
+	else if(m_vDir == DOWN && blockedd)
+		m_vDir = UP;
 
-	if(m_hDir == LEFT && blockedl)
-		m_hDir = RIGHT;
-
-	if(m_hDir == RIGHT)
-		movePlatRight(MOVE_HORIZ_SPEED);
+	if(m_vDir == UP)
+		movePlatUp(MOVE_VERT_SPEED);
 	else
-		movePlatLeft(MOVE_HORIZ_SPEED);
+		movePlatDown(MOVE_VERT_SPEED);
 
 	CPlatform::process();
 }

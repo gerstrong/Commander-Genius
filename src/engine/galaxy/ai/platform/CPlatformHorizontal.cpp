@@ -34,8 +34,7 @@ void CPlatformHorizontal::process()
 
 	if(m_hDir == RIGHT && blockedr)
 		m_hDir = LEFT;
-
-	if(m_hDir == LEFT && blockedl)
+	else if(m_hDir == LEFT && blockedl)
 		m_hDir = RIGHT;
 
 	if(m_hDir == RIGHT)
