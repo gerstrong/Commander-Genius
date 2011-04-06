@@ -91,16 +91,16 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 		{
 			switch(m_basesprite)
 			{
-			case 118:
+			case 118: case 119:
 				Item.m_gem.red++;
 				break;
-			case 120:
+			case 120: case 121:
 				Item.m_gem.yellow++;
 				break;
-			case 122:
+			case 122: case 123:
 				Item.m_gem.blue++;
 				break;
-			case 124:
+			case 124: case 125:
 				Item.m_gem.green++;
 				break;
 			default:

@@ -15,6 +15,8 @@ CObject(pmap, x, y, OBJ_NONE)
 {
 	m_ActionBaseOffset = 0x1FB8;
 	setActionForce(A_COUNCIL_MEMBER_MOVE);
+	setActionSprite();
+	calcBouncingBoxes();
 }
 
 void CCouncilMember::process()
