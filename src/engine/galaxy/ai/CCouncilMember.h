@@ -20,7 +20,10 @@ namespace galaxy {
 class CCouncilMember : public CObject {
 public:
 	CCouncilMember(CMap *pmap, Uint32 x, Uint32 y);
+
 	void process();
+
+	void getTouchedBy(CObject &theObject);
 };
 
 }

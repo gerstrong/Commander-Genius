@@ -15,11 +15,11 @@
 
 namespace galaxy {
 
-const Uint32 MAX_JUMPHEIGHT = 30;
-const Uint32 MIN_JUMPHEIGHT = 10;
+const int MAX_JUMPHEIGHT = 30;
+const int MIN_JUMPHEIGHT = 10;
 
-const Uint32 MAX_POGOHEIGHT = 20;
-const Uint32 MIN_POGOHEIGHT = 5;
+const int MAX_POGOHEIGHT = 20;
+const int MIN_POGOHEIGHT = 5;
 
 const int POGO_START_INERTIA = -100;
 const int POGO_START_INERTIA_MAX = -173;
@@ -992,8 +992,8 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 	Uint32 newX = targetXY >> 8;
 	Uint32 newY = targetXY & 0xFF;
 
-	const Uint32 start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
-	const Uint32 end_tile = start_tile+3;
+	const int start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
+	const int end_tile = start_tile+3;
 
 	/// We found the start of the row, that need to be changed.
 	/// Let apply it to the rest of the bridge
