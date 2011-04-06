@@ -511,12 +511,12 @@ void CPlayerLevel::processMoving()
 void CPlayerLevel::processJumping()
 {
 	m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
-			getActionNumber(A_KEEN_FALL) || falling;
+			getActionNumber(A_KEEN_FALL);
 
 	if( !m_inair && !m_playcontrol[PA_JUMP] )
 		m_jumped = false;
 
-	if(!getActionNumber(A_KEEN_JUMP))
+	if(!getActionNumber(A_KEEN_JUMP) && !getActionNumber(A_KEEN_JUMP+1))
 	{
 		if(blockedd)
 			m_jumpheight = 0;
@@ -555,7 +555,7 @@ void CPlayerLevel::processJumping()
 		{
 			yinertia = 0;
 			m_jumpheight = 0;
-			falling = true;
+			setAction(A_KEEN_FALL);
 		}
 
 		xinertia += (m_playcontrol[PA_X]>>1);
@@ -651,7 +651,22 @@ void CPlayerLevel::processFalling()
 {
 	CObject::processFalling();
 
-	if( falling && !getActionNumber(A_KEEN_JUMP_SHOOT)
+	if(!blockedd && !getActionNumber(A_KEEN_FALL) &&
+		( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) ) )
+	{
+		const bool nothing_on_feet = (mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()) == 0);
+		const bool nothing_below_feet = (mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(STC))) == 0);
+		const bool can_fall = (nothing_on_feet && nothing_below_feet) || blockedl || blockedr;
+
+		if(can_fall)
+		{
+			setAction(A_KEEN_FALL);
+			g_pSound->playSound( SOUND_KEEN_FALL );
+		}
+	}
+
+	// If we are falling
+	/*if( falling && !getActionNumber(A_KEEN_JUMP_SHOOT)
 			&& !getActionNumber(A_KEEN_JUMP_SHOOTUP)
 			&& !getActionNumber(A_KEEN_JUMP_SHOOTDOWN)
 			&& !getActionNumber(A_KEEN_POGO) )
@@ -662,7 +677,7 @@ void CPlayerLevel::processFalling()
 			g_pSound->playSound( SOUND_KEEN_FALL );
 		}
 		setAction(A_KEEN_FALL);
-	}
+	}*/
 
 	if(getActionNumber(A_KEEN_FALL))
 		xinertia += (m_playcontrol[PA_X]>>1);

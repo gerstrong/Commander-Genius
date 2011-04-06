@@ -472,7 +472,7 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 		if(blocked == 17 && m_climbing)
 			return 0;
 
-		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2, y2, blocked) )
+		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2, y2, blocked)  )
 		//if( blocked )
 			return blocked;
 	}
