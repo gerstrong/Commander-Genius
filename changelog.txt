@@ -1,6 +1,15 @@
 Commander Genius Release :
 ==========================
 
+v0.3.4:
+---------
+- Now Council Members trigger and make the level exit. Neat!
+- New Collision Model for Galaxy. Hopefully better especially on sloped tiles. Also that part of the code got smaller
+- Vertical and Drop Platforms work. which will make more level finishables
+- Keen now can jump through some tiles and also leave platforms
+- Now the platforms also move Keen
+- THe Platform AI now have a special directory
+
 v0.3.3.2:
 ---------
 - Thanks to Malvineous IMF Player got a bit faster. He found an interesting slow down in our code
