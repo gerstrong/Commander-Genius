@@ -25,10 +25,9 @@ CMapPlayGalaxy(ExeFile, Inventory)
 bool CLevelPlay::loadLevel(const Uint16 level)
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
+	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory, m_Cheatmode);
 
 	MapLoader.loadMap(m_Map, level);
-	m_MessageBoxes.push_back(new CMessageBoxGalaxy("Keen entered the level:\n " + m_Map.getLevelName()));
 
     // Load the Background Music
 	g_pMusicPlayer->stop();

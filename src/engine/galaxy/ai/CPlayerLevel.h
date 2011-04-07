@@ -10,6 +10,7 @@
 
 #include "common/CObject.h"
 #include "common/Playerdefines.h"
+#include "common/Cheat.h"
 #include "engine/CEvent.h"
 #include "engine/CCamera.h"
 #include "engine/galaxy/CInventory.h"
@@ -52,7 +53,8 @@ namespace galaxy {
 class CPlayerLevel : public CObject {
 public:
 	CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*>& ObjectPtrs, direction_t facedir, CInventory &l_Inventory);
+			std::vector<CObject*>& ObjectPtrs, direction_t facedir,
+			CInventory &l_Inventory, stCheat &Cheatmode);
 
 	// Checks if player can fall through a tile
 	bool canFallThroughTile();
@@ -102,6 +104,7 @@ private:
 	CCamera m_camera;
 
 	bool m_dying;
+	stCheat& m_Cheatmode;
 };
 
 }

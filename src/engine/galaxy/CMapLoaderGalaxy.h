@@ -11,6 +11,7 @@
 #include "fileio/CExeFile.h"
 #include "fileio/TypeDefinitions.h"
 #include "common/CMap.h"
+#include "common/Cheat.h"
 #include "engine/galaxy/CInventory.h"
 #include "common/CObject.h"
 #include <vector>
@@ -24,7 +25,8 @@ namespace galaxy
 class CMapLoaderGalaxy
 {
 public:
-	CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr, CInventory &Inventory);
+	CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr,
+			CInventory &Inventory, stCheat &Cheatmode);
 	size_t getMapheadOffset();
 	bool gotoSignature(std::ifstream &MapFile);
 	bool loadMap(CMap &Map, Uint8 level);
@@ -40,6 +42,7 @@ private:
 	CExeFile &m_ExeFile;
 	std::vector<CObject*>& m_ObjectPtr;
 	CInventory &m_Inventory;
+	stCheat &m_Cheatmode;
 };
 
 }

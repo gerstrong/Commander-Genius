@@ -21,7 +21,7 @@ namespace galaxy {
 
 CPlayerWM::CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
 					std::vector<CObject*>& ObjectPtrs,
-					CInventory &l_Inventory):
+					CInventory &l_Inventory, stCheat &Cheatmode):
 CObject(pmap, x, y, OBJ_PLAYER),
 m_Inventory(l_Inventory),
 m_basesprite(WALKBASEFRAME),
@@ -30,7 +30,8 @@ m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs),
-m_camera(pmap,x,y,this)
+m_camera(pmap,x,y,this),
+m_Cheatmode(Cheatmode)
 {
 	sprite = m_basesprite;
 	performCollisions();
@@ -119,12 +120,12 @@ void CPlayerWM::processMoving()
 		m_vDir = DOWN;
 	}
 
-
-#ifdef DEBUG
-	// TODO: This is Debug Purposes only and must be removed as soon as we have the no clipping cheat in
-	if(g_pInput->getHoldedCommand(IC_STATUS))
+	// In case noclipping was triggered, make it solid, or remove it...
+	if(m_Cheatmode.noclipping)
+	{
 		solid = !solid;
-#endif
+		m_Cheatmode.noclipping = false;
+	}
 
 	// perform actions depending on if the jump button was pressed
 	if(g_pInput->getPressedCommand(IC_JUMP))

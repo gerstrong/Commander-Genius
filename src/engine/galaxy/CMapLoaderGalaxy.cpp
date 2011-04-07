@@ -32,10 +32,12 @@
 namespace galaxy
 {
 
-CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr, CInventory &Inventory):
+CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr,
+		CInventory &Inventory, stCheat &Cheatmode):
 m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
-m_Inventory(Inventory)
+m_Inventory(Inventory),
+m_Cheatmode(Cheatmode)
 {}
 
 // Gets returns the address of the datablock of the exe file, in where the
@@ -362,13 +364,14 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 1:
 	case 2:
 		// This is the player on the map in one level
-		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr, (foe==1) ? RIGHT : LEFT, m_Inventory);
+		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr,
+				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode);
 		break;
 
 	case 3:
 		// This is the player on the world map
 		// Add the Camera into the game scene and attach it to this player
-		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory);
+		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory, m_Cheatmode);
 		break;
 
 	case 4:

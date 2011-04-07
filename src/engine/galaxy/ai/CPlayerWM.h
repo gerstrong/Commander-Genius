@@ -9,6 +9,7 @@
 #define CPLAYERWM_H_
 
 #include "common/CObject.h"
+#include "common/Cheat.h"
 #include "engine/CCamera.h"
 #include "engine/CEvent.h"
 #include "engine/galaxy/CInventory.h"
@@ -18,7 +19,8 @@ namespace galaxy {
 class CPlayerWM : public CObject {
 public:
 	CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*>& ObjectPtrs, CInventory &l_Inventory);
+			std::vector<CObject*>& ObjectPtrs,
+			CInventory &l_Inventory, stCheat &Cheatmode);
 	void process();
 	void processMoving();
 
@@ -40,6 +42,7 @@ private:
 	Uint8 m_animation_ticker;
 	std::vector<CObject*>& m_ObjectPtrs;
 	CCamera m_camera;
+	stCheat &m_Cheatmode;
 };
 
 }

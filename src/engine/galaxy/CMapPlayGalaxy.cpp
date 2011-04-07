@@ -37,14 +37,16 @@ std::string CMapPlayGalaxy::getLevelName()
 	return m_Map.getLevelName();
 }
 
-
 void CMapPlayGalaxy::process()
 {
+	// Check if the engine need to be paused
+	const bool pause = m_Inventory.showStatus() || !m_MessageBoxes.empty();
+
 	// Animate the tiles of the map
-	m_Map.m_animation_enabled = !m_Inventory.showStatus();
+	m_Map.m_animation_enabled = !pause;
 	m_Map.animateAllTiles();
 
-	if(!m_Inventory.showStatus())
+	if(!pause)
 	{
 		for(size_t i=0 ; i<m_ObjectPtr.size() ; i++)
 		{
@@ -82,13 +84,9 @@ void CMapPlayGalaxy::process()
 	}
 
 	// Now only draw the player sprite. So everything expect maked tiles are below his layer
-	for( obj=m_ObjectPtr.begin() ;
-			obj!=m_ObjectPtr.end() ; obj++ )
-	{
+	for( obj = m_ObjectPtr.begin() ; obj!=m_ObjectPtr.end() ; obj++ )
 		if((*obj)->m_type == OBJ_PLAYER)
 			(*obj)->draw();
-	}
-
 
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
@@ -114,10 +112,43 @@ void CMapPlayGalaxy::process()
 			delete(pMB);
 			pMB = NULL;
 			m_MessageBoxes.pop_front();
-			//if(m_MessageBoxes.empty())
-				//m_paused = false;
 		}
 		return;
+	}
+
+
+	//// Special Keyboard Input
+
+	/// Cheat Codes
+	if( g_pInput->getHoldedKey(KF10) )
+	{
+		if(g_pInput->getHoldedKey(KJ))
+		{
+			m_Cheatmode.jump = !m_Cheatmode.jump;
+			std::string jumpstring = "Jump-Cheat has been ";
+			jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
+			m_MessageBoxes.push_back(new CMessageBoxGalaxy(jumpstring));
+		}
+		else if(g_pInput->getHoldedKey(KG))
+		{
+			m_Cheatmode.god = !m_Cheatmode.god;
+			std::string godstring = "God-Mode has been ";
+			godstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
+			m_MessageBoxes.push_back(new CMessageBoxGalaxy(godstring));
+		}
+		else if(g_pInput->getHoldedKey(KI))
+		{
+			m_Cheatmode.items = true;
+			m_MessageBoxes.push_back(new CMessageBoxGalaxy("Get all Items!"));
+			m_Inventory.Item.triggerAllItemsCheat();
+			m_Cheatmode.items = true;
+		}
+		else if(g_pInput->getHoldedKey(KN))
+		{
+			m_Cheatmode.noclipping = true;
+			m_MessageBoxes.push_back(new CMessageBoxGalaxy("No clipping toggle!"));
+		}
+
 	}
 }
 

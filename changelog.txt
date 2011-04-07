@@ -8,7 +8,8 @@ v0.3.4:
 - Vertical and Drop Platforms work. which will make more level finishables
 - Keen now can jump through some tiles and also leave platforms
 - Now the platforms also move Keen
-- THe Platform AI now have a special directory
+- The Platform AI now have a special directory
+- Cheat Codes in Galaxy are implemented: God-mode, Jump-cheat, No clipping and get all items! 
 
 v0.3.3.2:
 ---------

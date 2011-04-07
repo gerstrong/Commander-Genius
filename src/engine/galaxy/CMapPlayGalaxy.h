@@ -13,6 +13,7 @@
 #define CMAPPLAYGALAXY_H_
 
 #include "common/CObject.h"
+#include "common/Cheat.h"
 #include "fileio/CExeFile.h"
 #include "engine/galaxy/CInventory.h"
 #include "engine/galaxy/dialog/CMessageBoxGalaxy.h"
@@ -33,6 +34,9 @@ public:
 	bool isActive();
 	void setActive(const bool value);
 
+	/*
+	 * \brief Just tells the name of the level. Every Galaxy Level with a name
+	 */
 	std::string getLevelName();
 
 	void process();
@@ -46,6 +50,7 @@ protected:
 	CExeFile &m_ExeFile;
 	CInventory &m_Inventory;
 	stOption *mp_option;
+	stCheat m_Cheatmode;
 };
 
 #endif /* CMAPPLAYGALAXY_H_ */

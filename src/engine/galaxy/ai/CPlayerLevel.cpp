@@ -29,7 +29,7 @@ const int POGO_START_INERTIA_IMPOSSIBLE = -200;
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir,
-						CInventory &l_Inventory) :
+						CInventory &l_Inventory, stCheat &Cheatmode) :
 CObject(pmap, x, y, OBJ_PLAYER),
 m_Inventory(l_Inventory),
 m_animation(0),
@@ -37,7 +37,8 @@ m_animation_time(1),
 m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs),
 m_cliff_hanging(false),
-m_camera(pmap,x,y,this)
+m_camera(pmap,x,y,this),
+m_Cheatmode(Cheatmode)
 {
 	m_index = 0;
 	m_timer = 0;
@@ -60,86 +61,6 @@ m_camera(pmap,x,y,this)
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	moveUp(rSprite.m_bboxY2-rSprite.m_bboxY1+(1<<CSF));
 	performCollisions();
-}
-
-void CPlayerLevel::process()
-{
-	// Perform animation cycle
-	if(m_animation_ticker >= m_animation_time)
-	{
-		m_animation++;
-		m_animation_ticker = 0;
-	}
-	else m_animation_ticker++;
-
-	if(m_dying)
-	{
-		processDying();
-		return;
-	}
-
-	processInput();
-
-	if(supportedbyobject)
-		blockedd = true;
-
-	if(getActionNumber(A_KEEN_SLIDE))
-	{
-		processPlaceGem();
-	}
-	else
-	{
-		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-		TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
-
-		if(!getActionNumber(A_KEEN_ENTER_DOOR) )
-			processMoving();
-
-		if(!m_cliff_hanging)
-		{
-			// Check whether we should bump the head
-			if(!blockedd && blockedu && !m_BumpHead)
-			{
-				g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
-				m_BumpHead = true;
-			}
-
-			if(!blockedu)
-				m_BumpHead = false;
-
-			processJumping();
-			processPogo();
-			processFiring();
-
-			if(!m_climbing)
-			{
-				if( getActionNumber(A_KEEN_ENTER_DOOR) && !getActionNumber(A_KEEN_POGO) )
-				{
-					processEnterDoor();
-				}
-				else
-				{
-					processFalling();
-					processLooking();
-					processExiting();
-				}
-			}
-		}
-
-		processLevelMiscFlagsCheck();
-	}
-
-	processActionRoutine();
-
-	moveXDir(xinertia);
-
-	if( !getActionNumber(A_KEEN_POGO) )
-		xinertia = 0;
-
-	m_camera.process();
-	m_camera.processEvents();
-
-	performCollisionsSameBox();
 }
 
 void CPlayerLevel::processInput()
@@ -514,49 +435,99 @@ void CPlayerLevel::processJumping()
 	if( !m_inair && !m_playcontrol[PA_JUMP] )
 		m_jumped = false;
 
-	if(!getActionNumber(A_KEEN_JUMP) && !getActionNumber(A_KEEN_JUMP+1))
+	if( m_Cheatmode.jump && !getActionNumber(A_KEEN_POGO) )
 	{
-		if(blockedd)
-			m_jumpheight = 0;
-
-		// Not jumping? Let's see if we can prepare the player to do so
-		if(m_playcontrol[PA_JUMP] && !m_jumped &&
-				(getActionNumber(A_KEEN_STAND) ||
-						getActionNumber(A_KEEN_RUN) ||
-						getActionNumber(A_KEEN_POLE) ||
-						getActionNumber(A_KEEN_POLE_CLIMB) ||
-						getActionNumber(A_KEEN_POLE_SLIDE)) )
+		if(!getActionNumber(A_KEEN_JUMP) && !getActionNumber(A_KEEN_JUMP+1))
 		{
-			yinertia = -140;
-			setAction(A_KEEN_JUMP);
-			m_jumped = true;
-			m_climbing = false;
-			m_vDir = NONE;
-			g_pSound->playSound( SOUND_KEEN_JUMP );
+			if(blockedd)
+				m_jumpheight = 0;
+
+			// Not jumping? Let's see if we can prepare the player to do so
+			if( m_playcontrol[PA_JUMP] )
+			{
+				yinertia = -140;
+				setAction(A_KEEN_JUMP);
+				m_jumped = true;
+				m_climbing = false;
+				m_vDir = NONE;
+				g_pSound->playSound( SOUND_KEEN_JUMP );
+			}
+		}
+		else
+		{
+			// while button is pressed, make the player jump higher
+			if( m_playcontrol[PA_JUMP] )
+			{
+				if( m_jumpheight <= MIN_JUMPHEIGHT )
+					m_jumpheight++;
+				yinertia = -140;
+			}
+			else
+				m_jumpheight = 0;
+
+			// Set another jump animation if Keen is near yinertia == 0
+			if( yinertia > -10 )
+				setAction(A_KEEN_JUMP+1);
+
+			// If the max. height is reached or the player cancels the jump by release the button
+			// make keen fall
+			if( m_jumpheight == 0 )
+			{
+				yinertia = 0;
+				m_jumpheight = 0;
+				setAction(A_KEEN_FALL);
+			}
+
+			xinertia += (m_playcontrol[PA_X]>>1);
 		}
 	}
 	else
 	{
-		// while button is pressed, make the player jump higher
-		if(m_playcontrol[PA_JUMP] || m_jumpheight <= MIN_JUMPHEIGHT)
-			m_jumpheight++;
-		else
-			m_jumpheight = 0;
 
-		// Set another jump animation if Keen is near yinertia == 0
-		if( yinertia > -10 )
-			setAction(A_KEEN_JUMP+1);
-
-		// If the max. height is reached or the player cancels the jump by release the button
-		// make keen fall
-		if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
+		if(!getActionNumber(A_KEEN_JUMP) && !getActionNumber(A_KEEN_JUMP+1))
 		{
-			yinertia = 0;
-			m_jumpheight = 0;
-			setAction(A_KEEN_FALL);
-		}
+			if(blockedd)
+				m_jumpheight = 0;
 
-		xinertia += (m_playcontrol[PA_X]>>1);
+			// Not jumping? Let's see if we can prepare the player to do so
+			if(m_playcontrol[PA_JUMP] && !m_jumped &&
+					(getActionNumber(A_KEEN_STAND) ||
+							getActionNumber(A_KEEN_RUN) ||
+							getActionNumber(A_KEEN_POLE) ||
+							getActionNumber(A_KEEN_POLE_CLIMB) ||
+							getActionNumber(A_KEEN_POLE_SLIDE)) )
+			{
+				yinertia = -140;
+				setAction(A_KEEN_JUMP);
+				m_jumped = true;
+				m_climbing = false;
+				m_vDir = NONE;
+				g_pSound->playSound( SOUND_KEEN_JUMP );
+			}
+		}
+		else
+		{
+			// while button is pressed, make the player jump higher
+			if(m_playcontrol[PA_JUMP] || m_jumpheight <= MIN_JUMPHEIGHT )
+				m_jumpheight++;
+			else
+				m_jumpheight = 0;
+
+			// Set another jump animation if Keen is near yinertia == 0
+			if( yinertia > -10 )
+				setAction(A_KEEN_JUMP+1);
+
+			// If the max. height is reached or the player cancels the jump by release the button
+			// make keen fall
+			if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
+			{
+				yinertia = 0;
+				m_jumpheight = 0;
+				setAction(A_KEEN_FALL);
+			}
+
+			xinertia += (m_playcontrol[PA_X]>>1);
+		}
 	}
 }
 
@@ -1131,7 +1102,100 @@ void CPlayerLevel::processDying()
 void CPlayerLevel::kill()
 {
 	// TODO: Here were prepare Keen to die, setting that action
-	m_dying = true;
+	if(!m_Cheatmode.god)
+		m_dying = true;
 }
+
+
+//----------------------------------------//
+//---- This is the main process cycle ----//
+//----------------------------------------//
+void CPlayerLevel::process()
+{
+	// Perform animation cycle
+	if(m_animation_ticker >= m_animation_time)
+	{
+		m_animation++;
+		m_animation_ticker = 0;
+	}
+	else m_animation_ticker++;
+
+	if(m_dying)
+	{
+		processDying();
+		return;
+	}
+
+	processInput();
+
+	// If no clipping was triggered change solid state of keen
+	if(m_Cheatmode.noclipping)
+	{
+		solid = !solid;
+		m_Cheatmode.noclipping = false;
+	}
+
+	if(supportedbyobject)
+		blockedd = true;
+
+	if(getActionNumber(A_KEEN_SLIDE))
+	{
+		processPlaceGem();
+	}
+	else
+	{
+		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+		TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
+
+		if(!getActionNumber(A_KEEN_ENTER_DOOR) )
+			processMoving();
+
+		if(!m_cliff_hanging)
+		{
+			// Check whether we should bump the head
+			if(!blockedd && blockedu && !m_BumpHead)
+			{
+				g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
+				m_BumpHead = true;
+			}
+
+			if(!blockedu)
+				m_BumpHead = false;
+
+			processJumping();
+			processPogo();
+			processFiring();
+
+			if(!m_climbing)
+			{
+				if( getActionNumber(A_KEEN_ENTER_DOOR) && !getActionNumber(A_KEEN_POGO) )
+				{
+					processEnterDoor();
+				}
+				else
+				{
+					processFalling();
+					processLooking();
+					processExiting();
+				}
+			}
+		}
+
+		processLevelMiscFlagsCheck();
+	}
+
+	processActionRoutine();
+
+	moveXDir(xinertia);
+
+	if( !getActionNumber(A_KEEN_POGO) )
+		xinertia = 0;
+
+	m_camera.process();
+	m_camera.processEvents();
+
+	performCollisionsSameBox();
+}
+
 
 }
