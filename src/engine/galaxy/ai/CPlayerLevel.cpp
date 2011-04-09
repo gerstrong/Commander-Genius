@@ -266,11 +266,12 @@ void CPlayerLevel::processMoving()
 			if(getActionStatus(A_KEEN_STAND))
 			{
 				m_cliff_hanging = false;
+				solid = true;
 				setAction(A_KEEN_STAND);
 				m_camera.m_freeze = false;
 				setActionSprite();
 				calcBouncingBoxes();
-				moveDown(16*dy);
+				//moveDown(16*dy);
 			}
 		}
 		else
@@ -284,6 +285,10 @@ void CPlayerLevel::processMoving()
 			{
 				m_cliff_hanging = false;
 				setAction(A_KEEN_FALL);
+				solid = true;
+				const int dx = 8<<STC;
+				moveXDir( (m_hDir == LEFT) ? dx : -dx, true);
+				moveDown(4*dx);
 				setActionSprite();
 				calcBouncingBoxes();
 			}
@@ -343,10 +348,11 @@ void CPlayerLevel::processMoving()
 							setAction(A_KEEN_HANG);
 							setActionSprite();
 							calcBouncingBoxes();
-							Uint32 x = (getXPosition()>>CSF)<<CSF;
+							Uint32 x = (((getXPosition()>>CSF))<<CSF)+(8<<STC);
 							Uint32 y = ((getYPosition()>>CSF)+1)<<CSF;
 							moveTo(x,y);
 							m_cliff_hanging = true;
+							solid = false;
 						}
 					}
 				}
@@ -370,6 +376,7 @@ void CPlayerLevel::processMoving()
 							Uint32 y = ((getYPosition()>>CSF)+1)<<CSF;
 							moveTo(x,y);
 							m_cliff_hanging = true;
+							solid = false;
 						}
 					}
 				}
@@ -381,7 +388,6 @@ void CPlayerLevel::processMoving()
 				if( hitdetectWithTileProperty(1, l_x, l_y_up) || hitdetectWithTileProperty(1, l_x, l_y_down) ) // 1 -> stands for pole Property
 				{
 					// Hit pole!
-
 					// calc the proper coord of that tile
 					l_x = (l_x>>CSF)<<CSF;
 					if( (!m_climbing && m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up)) ||
@@ -676,7 +682,7 @@ void CPlayerLevel::processLooking()
 		return;
 
 	// Looking Up and Down Routine
-	if(blockedd && xinertia == 0 )
+	if( blockedd && xinertia == 0 && getActionNumber(A_KEEN_STAND) )
 	{
 		if( m_playcontrol[PA_Y]<0 )
 			setAction(A_KEEN_LOOKUP);
@@ -1195,6 +1201,8 @@ void CPlayerLevel::process()
 	m_camera.processEvents();
 
 	performCollisions();
+
+	processPushOutCollision();
 }
 
 

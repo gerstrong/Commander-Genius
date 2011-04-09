@@ -463,8 +463,8 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 			return blockedu;
 	}
 
-	if( (y2>>STC) != ((y2>>CSF)<<TILE_S) )
-		return false;
+	//if( (y2>>STC) != ((y2>>CSF)<<TILE_S) )
+		//return false;
 
 	// Check for down from the object
 	if(solid)
@@ -482,10 +482,6 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 
 					if(blockedd == 0 && m_jumpdown)
 						return 0;
-
-					// Jump through
-					//if( blockedd != 0 )
-						//m_jumpdown = false;
 
 					return blocked;
 				}
@@ -653,6 +649,87 @@ void CObject::processMove(const int xoff, const int yoff)
 		// move right
 		for(int c=0 ; c<-yoff ; c+=MOVE_RES )
 			processMoveBitUp();
+	}
+}
+
+void CObject::processPushOutCollision()
+{
+	// If he isn't solid don't even care
+	if(!solid)
+		return;
+
+	/// Check if from the lower part (floor) we are blocked
+	// Check colision on floor
+	if(blockedd)
+	{
+		const unsigned int x1 = getXPosition()+m_BBox.x1;
+		const unsigned int x2 = getXPosition()+m_BBox.x2;
+		const unsigned int y2 = getYPosition()+m_BBox.y2-1;
+
+		if( checkSolidD(x1, x2, y2) )
+		{
+			// Push him up to the position where he is not blocked anymore
+			int should_y = y2;
+
+			while( checkSolidD(x1, x2, should_y) )
+				should_y--;
+
+			processMove(0, should_y-y2);
+		}
+	}
+	else if(blockedu)
+	{
+		const unsigned int x1 = getXPosition()+m_BBox.x1;
+		const unsigned int x2 = getXPosition()+m_BBox.x2;
+		const unsigned int y1 = getYPosition()+m_BBox.y1+1;
+
+		if( checkSolidU(x1, x2, y1) )
+		{
+			// Push him down
+			int should_y = y1;
+
+			while( checkSolidU(x1, x2, should_y) )
+				should_y++;
+
+			processMove(0, should_y-y1);
+		}
+	}
+
+	if(blockedl)
+	{
+		const unsigned int x1 = getXPosition()+m_BBox.x1+1;
+		const unsigned int x2 = getXPosition()+m_BBox.x2;
+		const unsigned int y1 = getYPosition()+m_BBox.y1;
+		const unsigned int y2 = getYPosition()+m_BBox.y2;
+
+		if( checkSolidL(x1, x2, y1, y2) )
+		{
+			// Push him right to the position where he is not blocked anymore
+			int should_x = x1;
+
+			while( checkSolidL(should_x, x2, y1, y2) )
+				should_x++;
+
+			processMove(should_x-x1, 0);
+		}
+	}
+	else if(blockedr)
+	{
+		const unsigned int x1 = getXPosition()+m_BBox.x1;
+		const unsigned int x2 = getXPosition()+m_BBox.x2-1;
+		const unsigned int y1 = getYPosition()+m_BBox.y1;
+		const unsigned int y2 = getYPosition()+m_BBox.y2;
+
+		if( checkSolidL(x1, x2, y1, y2) )
+		{
+			// Push him right to the position where he is not blocked anymore
+			int should_x = x2;
+
+			while( checkSolidL(x1, should_x, y1, y2) )
+				should_x--;
+
+			processMove(should_x-x2, 0);
+		}
 	}
 }
 

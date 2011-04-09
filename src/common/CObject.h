@@ -155,6 +155,13 @@ public:
 	void processMoveBitUp();
 	void processMove(const int xoff, const int yoff);
 
+	/*
+	 * \brief As especially in Galaxy some tiles still can get into blocks where they shouldn't
+	 *  	  So this function will pull them out. Same method is used in the original games
+	 *  	  and will give a more Commander Keen like feeling
+	 */
+	void processPushOutCollision();
+
 	void decreaseXInertia(const int& value);
 	void InertiaAndFriction_X();
 

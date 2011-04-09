@@ -57,6 +57,10 @@ void CMapPlayGalaxy::process()
 				// Process the AI of the object as it's given
 				p_Object->process();
 
+				// Check the post-collision stuff, where some
+				// sprites are pushed out in case they get stuck
+				//p_Object->processPushOutCollision();
+
 				// process all the objects' events
 				p_Object->processEvents();
 
