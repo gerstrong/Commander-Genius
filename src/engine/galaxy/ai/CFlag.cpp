@@ -35,7 +35,6 @@ processState(&CFlag::processFlying)
 	calcBouncingBoxes();
 	m_destination.y -= Sprite.m_bboxY2;
 	m_destination.y += (1<<STC);
-	m_destination.y -= (6<<STC);
 }
 
 /**

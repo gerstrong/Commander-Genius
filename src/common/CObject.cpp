@@ -545,7 +545,7 @@ void CObject::draw()
 			col_rect.w = (m_BBox.x2-m_BBox.x1)>>STC;
 			col_rect.h = (m_BBox.y2-m_BBox.y1)>>STC;
 
-			SDL_FillRect(sfc, &col_rect, 0x0);
+			SDL_FillRect(sfc, &col_rect, 0xFFFF0000);
 		#endif
 
 	}

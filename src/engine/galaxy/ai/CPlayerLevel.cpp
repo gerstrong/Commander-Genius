@@ -1194,7 +1194,7 @@ void CPlayerLevel::process()
 	m_camera.process();
 	m_camera.processEvents();
 
-	performCollisionsSameBox();
+	performCollisions();
 }
 
 

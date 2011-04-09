@@ -31,20 +31,6 @@ void CObject::performCollisionsSameBox()
 }
 
 /*
- * \brief Calculate Bouncing Boxes with extra placement.
- */
-void CObject::calcBouncingBoxeswithPlacement()
-{
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-
-    const int diff_y =  m_BBox.y2==0 ? 0 :(int)m_BBox.y2-(int)rSprite.m_bboxY2;
-
-    calcBouncingBoxes();
-
-    moveYDir(diff_y);
-}
-
-/*
  * \brief Calculate Bouncing Boxes
  */
 void CObject::calcBouncingBoxes()
@@ -568,53 +554,6 @@ bool CObject::checkslopedD( int c, int y2, char blocked )
 	return ( y2%512 > yh );
 }
 
-void CObject::doBouncingBoxResizal(const BouncingBox& new_BBox)
-{
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-
-	// Setup up the new bouncing box
-	m_BBox = new_BBox;
-	unsigned int x1 = getXPosition()+m_BBox.x1;
-	unsigned int x2 = getXPosition()+m_BBox.x2;
-	unsigned int y1 = getYPosition()+m_BBox.y1;
-	unsigned int y2 = getYPosition()+m_BBox.y2;
-
-
-	for(unsigned int c=y1 ; c<=y2 ; c += COLISION_RES)
-	{
-		// Adjust the left side
-		while(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
-		{
-			processMove(1,0);
-			x1 = getXPosition()+m_BBox.x1;
-		}
-
-		// Adjust the right side
-		while(TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft)
-		{
-			processMove(-1,0);
-			x2 = getXPosition()+m_BBox.x2;
-		}
-	}
-
-	for(unsigned int c=x1 ; c<=x2 ; c += COLISION_RES)
-	{
-		// Adjust the lower side
-		while(TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bup)
-		{
-			processMove(0,-1);
-			y1 = getYPosition()+m_BBox.y1;
-		}
-
-		// Adjust the upper side
-		while(TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown)
-		{
-			processMove(0,1);
-			y2 = getYPosition()+m_BBox.y2;
-		}
-	}
-}
-
 const int MOVE_RES = 1;
 
 void CObject::processMoveBitLeft()
@@ -721,12 +660,6 @@ void CObject::processEvents()
 {
 	while(!m_EventCont.empty())
 	{
-		if( ObjResizeBB* p_ObjResizeBB =  m_EventCont.occurredEvent<ObjResizeBB>())
-		{
-			doBouncingBoxResizal(p_ObjResizeBB->m_BB);
-			m_EventCont.pop_Event();
-		}
-
 		if( ObjMove* p_ObjMove =  m_EventCont.occurredEvent<ObjMove>())
 		{
 			processMove(p_ObjMove->m_Vec);

@@ -46,13 +46,6 @@ struct ObjMove : public CEvent
 	ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
 };
 
-// Event that will be used for resizing Bouncing Box of the object
-struct ObjResizeBB : public CEvent
-{
-	BouncingBox m_BB;
-	ObjResizeBB(const BouncingBox& BB) : m_BB(BB) {}
-};
-
 // supported by an object and you should look in player[].psupportingobj
 // for it's index.
 #define PSUPPORTEDBYOBJECT         0
@@ -129,7 +122,6 @@ public:
 
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes();
-	void calcBouncingBoxeswithPlacement();
 	void performCollisionsSameBox();
 	void performCollisions();
 	void setScrPos( int px, int py );
@@ -152,15 +144,6 @@ public:
 	void moveDown(const int& amnt);
 
 	// new moving parts
-	/**
-	 * \brief	This function checks if there is any collision and resizes the
-	 * 			bounding box of the objects. In case there is some before resizing
-	 * 			move the object the way there won't be any collision.
-	 *
-	 * \param	new_BBox	the new Bouncing Box the object has to get.
-	 */
-	void doBouncingBoxResizal(const BouncingBox& new_BBox);
-
 	/**
 	 * \brief	This function checks if there is any collision and moves the object safely
 	 * \param	dir	The direction where the object has to go to...

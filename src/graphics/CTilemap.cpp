@@ -126,7 +126,7 @@ void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, char
 		sloperect.x = dst_rect.x + (c>>STC);
 		sloperect.y = dst_rect.y + ((yb1+c*(yb2-yb1)/512)>>STC);
 		sloperect.h = dst_rect.h - sloperect.y;
-		SDL_FillRect( dst, &sloperect, 0xFFFFFFFF);
+		//SDL_FillRect( dst, &sloperect, 0xFFFFFFFF);
 	}
 
 	SDL_Rect line1_rect = dst_rect;
