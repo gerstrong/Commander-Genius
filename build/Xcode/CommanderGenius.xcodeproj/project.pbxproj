@@ -264,8 +264,6 @@
 		23D4C496132C274C00B06391 /* CStatusScreenGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C493132C274C00B06391 /* CStatusScreenGalaxy.cpp */; };
 		23D4C49D132C275D00B06391 /* CCouncilMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C497132C275D00B06391 /* CCouncilMember.cpp */; };
 		23D4C49E132C275D00B06391 /* CCouncilMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C497132C275D00B06391 /* CCouncilMember.cpp */; };
-		23D4C49F132C275D00B06391 /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C499132C275D00B06391 /* CPlatform.cpp */; };
-		23D4C4A0132C275D00B06391 /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C499132C275D00B06391 /* CPlatform.cpp */; };
 		23D4C4A1132C275D00B06391 /* CPoisonSlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C49B132C275D00B06391 /* CPoisonSlug.cpp */; };
 		23D4C4A2132C275D00B06391 /* CPoisonSlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C49B132C275D00B06391 /* CPoisonSlug.cpp */; };
 		23D4C4A5132C27BC00B06391 /* COPLEmulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */; };
@@ -290,6 +288,20 @@
 		23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
 		23F2165412871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
 		23F2165512871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
+		35F1E237134F647400C6230F /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E22F134F647400C6230F /* CPlatform.cpp */; };
+		35F1E238134F647400C6230F /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E22F134F647400C6230F /* CPlatform.cpp */; };
+		35F1E239134F647400C6230F /* CPlatformDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E231134F647400C6230F /* CPlatformDrop.cpp */; };
+		35F1E23A134F647400C6230F /* CPlatformDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E231134F647400C6230F /* CPlatformDrop.cpp */; };
+		35F1E23B134F647400C6230F /* CPlatformHorizontal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E233134F647400C6230F /* CPlatformHorizontal.cpp */; };
+		35F1E23C134F647400C6230F /* CPlatformHorizontal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E233134F647400C6230F /* CPlatformHorizontal.cpp */; };
+		35F1E23D134F647400C6230F /* CPlatformVertical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E235134F647400C6230F /* CPlatformVertical.cpp */; };
+		35F1E23E134F647400C6230F /* CPlatformVertical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E235134F647400C6230F /* CPlatformVertical.cpp */; };
+		35F1E242134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */; };
+		35F1E243134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */; };
+		35F1E247134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */; };
+		35F1E248134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */; };
+		35F1E24A134F73F800C6230F /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35F1E249134F73F800C6230F /* Readme.txt */; };
+		35F1E24B134F73F800C6230F /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35F1E249134F73F800C6230F /* Readme.txt */; };
 		63010C0813400D4A00F212CA /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010BFE13400D4A00F212CA /* CGameControl.cpp */; };
 		63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */; };
 		63010C0A13400D4A00F212CA /* CGameMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0213400D4A00F212CA /* CGameMode.cpp */; };
@@ -604,8 +616,6 @@
 		23D4C494132C274C00B06391 /* CStatusScreenGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStatusScreenGalaxy.h; sourceTree = "<group>"; };
 		23D4C497132C275D00B06391 /* CCouncilMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCouncilMember.cpp; sourceTree = "<group>"; };
 		23D4C498132C275D00B06391 /* CCouncilMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCouncilMember.h; sourceTree = "<group>"; };
-		23D4C499132C275D00B06391 /* CPlatform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatform.cpp; sourceTree = "<group>"; };
-		23D4C49A132C275D00B06391 /* CPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatform.h; sourceTree = "<group>"; };
 		23D4C49B132C275D00B06391 /* CPoisonSlug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPoisonSlug.cpp; sourceTree = "<group>"; };
 		23D4C49C132C275D00B06391 /* CPoisonSlug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPoisonSlug.h; sourceTree = "<group>"; };
 		23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COPLEmulator.cpp; sourceTree = "<group>"; };
@@ -631,6 +641,19 @@
 		23E2A70E1217525E00F0CD34 /* CProfilesMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CProfilesMenu.h; sourceTree = "<group>"; };
 		23E2A70F1217525E00F0CD34 /* CSelectionMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSelectionMenu.h; sourceTree = "<group>"; };
 		23F2165312871F9500A8842A /* CObjectCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectCollision.cpp; sourceTree = "<group>"; };
+		35F1E22F134F647400C6230F /* CPlatform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatform.cpp; sourceTree = "<group>"; };
+		35F1E230134F647400C6230F /* CPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatform.h; sourceTree = "<group>"; };
+		35F1E231134F647400C6230F /* CPlatformDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformDrop.cpp; sourceTree = "<group>"; };
+		35F1E232134F647400C6230F /* CPlatformDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformDrop.h; sourceTree = "<group>"; };
+		35F1E233134F647400C6230F /* CPlatformHorizontal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformHorizontal.cpp; sourceTree = "<group>"; };
+		35F1E234134F647400C6230F /* CPlatformHorizontal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformHorizontal.h; sourceTree = "<group>"; };
+		35F1E235134F647400C6230F /* CPlatformVertical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformVertical.cpp; sourceTree = "<group>"; };
+		35F1E236134F647400C6230F /* CPlatformVertical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformVertical.h; sourceTree = "<group>"; };
+		35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBoxVort.cpp; sourceTree = "<group>"; };
+		35F1E241134F6DA700C6230F /* CMessageBoxVort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBoxVort.h; sourceTree = "<group>"; };
+		35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBoxGalaxy.cpp; sourceTree = "<group>"; };
+		35F1E246134F6DEE00C6230F /* CMessageBoxGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBoxGalaxy.h; sourceTree = "<group>"; };
+		35F1E249134F73F800C6230F /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
 		63010BFE13400D4A00F212CA /* CGameControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameControl.cpp; sourceTree = "<group>"; };
@@ -692,7 +715,6 @@
 		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
 		6350F7DD1044797300A992D5 /* resolutions.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = resolutions.cfg; sourceTree = "<group>"; };
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
-		6350FB0B10449DAA00A992D5 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../../readme.txt; sourceTree = SOURCE_ROOT; };
 		6382949E11562C7100D608A2 /* menufonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = menufonts.bmp; sourceTree = "<group>"; };
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
@@ -1154,10 +1176,10 @@
 				8D0C4E960486CD37000505A6 /* Info.plist */,
 				0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */,
 				1DDD57E20DA1CFC700B32029 /* main.xib */,
-				6350FB0B10449DAA00A992D5 /* readme.txt */,
 				63DCCCBB104CBC3000B3BC10 /* version.h */,
 				6350F7A11044797300A992D5 /* vfsroot */,
 				2374239911FC849B000EEA5B /* Info iPhone.plist */,
+				35F1E249134F73F800C6230F /* Readme.txt */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1190,10 +1212,9 @@
 		23C64A7E11F31D8A0053CA36 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				35F1E22E134F647400C6230F /* platform */,
 				23D4C497132C275D00B06391 /* CCouncilMember.cpp */,
 				23D4C498132C275D00B06391 /* CCouncilMember.h */,
-				23D4C499132C275D00B06391 /* CPlatform.cpp */,
-				23D4C49A132C275D00B06391 /* CPlatform.h */,
 				23D4C49B132C275D00B06391 /* CPoisonSlug.cpp */,
 				23D4C49C132C275D00B06391 /* CPoisonSlug.h */,
 				632903A412EB8E2600963705 /* CBullets.cpp */,
@@ -1247,6 +1268,39 @@
 				23D4C4B3132C281D00B06391 /* COGGPlayer.h */,
 			);
 			path = music;
+			sourceTree = "<group>";
+		};
+		35F1E22E134F647400C6230F /* platform */ = {
+			isa = PBXGroup;
+			children = (
+				35F1E22F134F647400C6230F /* CPlatform.cpp */,
+				35F1E230134F647400C6230F /* CPlatform.h */,
+				35F1E231134F647400C6230F /* CPlatformDrop.cpp */,
+				35F1E232134F647400C6230F /* CPlatformDrop.h */,
+				35F1E233134F647400C6230F /* CPlatformHorizontal.cpp */,
+				35F1E234134F647400C6230F /* CPlatformHorizontal.h */,
+				35F1E235134F647400C6230F /* CPlatformVertical.cpp */,
+				35F1E236134F647400C6230F /* CPlatformVertical.h */,
+			);
+			path = platform;
+			sourceTree = "<group>";
+		};
+		35F1E23F134F6DA700C6230F /* dialog */ = {
+			isa = PBXGroup;
+			children = (
+				35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */,
+				35F1E241134F6DA700C6230F /* CMessageBoxVort.h */,
+			);
+			path = dialog;
+			sourceTree = "<group>";
+		};
+		35F1E244134F6DEE00C6230F /* dialog */ = {
+			isa = PBXGroup;
+			children = (
+				35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */,
+				35F1E246134F6DEE00C6230F /* CMessageBoxGalaxy.h */,
+			);
+			path = dialog;
 			sourceTree = "<group>";
 		};
 		5048396909E3304600765E4B /* Configuration Files */ = {
@@ -1639,6 +1693,7 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
+				35F1E244134F6DEE00C6230F /* dialog */,
 				63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */,
 				63010C0E13400D9300F212CA /* CMapPlayGalaxy.h */,
 				63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */,
@@ -1714,6 +1769,7 @@
 		63CD113411CFF5FB00F60BC8 /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				35F1E23F134F6DA700C6230F /* dialog */,
 				63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */,
 				63B29E6F12EB9A09004A8B7C /* CAudioVorticon.h */,
 				63CD113511CFF5FB00F60BC8 /* ai */,
@@ -2146,6 +2202,7 @@
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				en,
+				English,
 			);
 			mainGroup = 20286C29FDCF999611CA2CEA /* CommanderGenius */;
 			projectDirPath = "";
@@ -2165,6 +2222,7 @@
 				235755D2101A5E5900275638 /* InfoPlist.strings in Resources */,
 				235755D3101A5E5900275638 /* main.xib in Resources */,
 				63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */,
+				35F1E24A134F73F800C6230F /* Readme.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2176,6 +2234,7 @@
 				2374238A11FC849A000EEA5B /* main.xib in Resources */,
 				2374238B11FC849A000EEA5B /* cglogo.icns in Resources */,
 				2331E88611FD4AF400E73953 /* cglogo-iphone.png in Resources */,
+				35F1E24B134F73F800C6230F /* Readme.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2427,7 +2486,6 @@
 				23D4C491132C247B00B06391 /* CDieMenu.cpp in Sources */,
 				23D4C495132C274C00B06391 /* CStatusScreenGalaxy.cpp in Sources */,
 				23D4C49D132C275D00B06391 /* CCouncilMember.cpp in Sources */,
-				23D4C49F132C275D00B06391 /* CPlatform.cpp in Sources */,
 				23D4C4A1132C275D00B06391 /* CPoisonSlug.cpp in Sources */,
 				23D4C4A5132C27BC00B06391 /* COPLEmulator.cpp in Sources */,
 				23D4C4A9132C27FC00B06391 /* CVidConfig.cpp in Sources */,
@@ -2446,6 +2504,12 @@
 				63010C0B13400D4A00F212CA /* CGamePassiveMode.cpp in Sources */,
 				63010C0C13400D4A00F212CA /* CGamePlayMode.cpp in Sources */,
 				63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */,
+				35F1E237134F647400C6230F /* CPlatform.cpp in Sources */,
+				35F1E239134F647400C6230F /* CPlatformDrop.cpp in Sources */,
+				35F1E23B134F647400C6230F /* CPlatformHorizontal.cpp in Sources */,
+				35F1E23D134F647400C6230F /* CPlatformVertical.cpp in Sources */,
+				35F1E242134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */,
+				35F1E247134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2646,7 +2710,6 @@
 				23D4C492132C247B00B06391 /* CDieMenu.cpp in Sources */,
 				23D4C496132C274C00B06391 /* CStatusScreenGalaxy.cpp in Sources */,
 				23D4C49E132C275D00B06391 /* CCouncilMember.cpp in Sources */,
-				23D4C4A0132C275D00B06391 /* CPlatform.cpp in Sources */,
 				23D4C4A2132C275D00B06391 /* CPoisonSlug.cpp in Sources */,
 				23D4C4A6132C27BC00B06391 /* COPLEmulator.cpp in Sources */,
 				23D4C4AA132C27FC00B06391 /* CVidConfig.cpp in Sources */,
@@ -2660,6 +2723,12 @@
 				63AEA5BD132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */,
 				63AEA5C1132D4B6A000344F1 /* CScrollEffect.cpp in Sources */,
 				63010C1013400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */,
+				35F1E238134F647400C6230F /* CPlatform.cpp in Sources */,
+				35F1E23A134F647400C6230F /* CPlatformDrop.cpp in Sources */,
+				35F1E23C134F647400C6230F /* CPlatformHorizontal.cpp in Sources */,
+				35F1E23E134F647400C6230F /* CPlatformVertical.cpp in Sources */,
+				35F1E243134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */,
+				35F1E248134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2687,7 +2756,6 @@
 /* Begin XCBuildConfiguration section */
 		2357563C101A5E5900275638 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
@@ -2719,7 +2787,6 @@
 		};
 		2357563D101A5E5900275638 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
@@ -2753,7 +2820,6 @@
 		};
 		2374239511FC849A000EEA5B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "Albert Zeyer";
@@ -2791,7 +2857,6 @@
 		};
 		2374239611FC849A000EEA5B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "Albert Zeyer";
@@ -2831,7 +2896,6 @@
 		};
 		C0E91ACA08A95435008D54AB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -2846,7 +2910,6 @@
 		};
 		C0E91ACB08A95435008D54AB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
