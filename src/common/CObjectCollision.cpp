@@ -361,7 +361,7 @@ int CObject::checkSolidL( int x1, int x2, int y1, int y2)
 	return 0;
 }
 
-int CObject::checkSolidU(int x1, int x2, int y1)
+int CObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
@@ -398,7 +398,7 @@ int CObject::checkSolidU(int x1, int x2, int y1)
 			return 0;
 	}
 
-	if( ((y1+COLISION_RES)>>STC) != (((y1+COLISION_RES)>>CSF)<<TILE_S)  )
+	if( (((y1+COLISION_RES)>>STC) != (((y1+COLISION_RES)>>CSF)<<TILE_S)) && !push_mode )
 		return 0;
 
 	// Check for right from the object
@@ -424,7 +424,7 @@ int CObject::checkSolidU(int x1, int x2, int y1)
 	return 0;
 }
 
-int CObject::checkSolidD( int x1, int x2, int y2 )
+int CObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
@@ -463,8 +463,8 @@ int CObject::checkSolidD( int x1, int x2, int y2 )
 			return blockedu;
 	}
 
-	//if( (y2>>STC) != ((y2>>CSF)<<TILE_S) )
-		//return false;
+	if( ( (y2>>STC) != ((y2>>CSF)<<TILE_S) ) && !push_mode )
+		return false;
 
 	// Check for down from the object
 	if(solid)
@@ -666,12 +666,12 @@ void CObject::processPushOutCollision()
 		const unsigned int x2 = getXPosition()+m_BBox.x2;
 		const unsigned int y2 = getYPosition()+m_BBox.y2-1;
 
-		if( checkSolidD(x1, x2, y2) )
+		if( checkSolidD(x1, x2, y2, true) /*&& checkSolidU(x1, x2, y2)*/ )
 		{
 			// Push him up to the position where he is not blocked anymore
 			int should_y = y2;
 
-			while( checkSolidD(x1, x2, should_y) )
+			while( checkSolidD(x1, x2, should_y, true) )
 				should_y--;
 
 			processMove(0, should_y-y2);
@@ -683,7 +683,7 @@ void CObject::processPushOutCollision()
 		const unsigned int x2 = getXPosition()+m_BBox.x2;
 		const unsigned int y1 = getYPosition()+m_BBox.y1+1;
 
-		if( checkSolidU(x1, x2, y1) )
+		if( checkSolidU(x1, x2, y1) /*&& checkSolidD(x1, x2, y1)*/ )
 		{
 			// Push him down
 			int should_y = y1;
@@ -702,7 +702,7 @@ void CObject::processPushOutCollision()
 		const unsigned int y1 = getYPosition()+m_BBox.y1;
 		const unsigned int y2 = getYPosition()+m_BBox.y2;
 
-		if( checkSolidL(x1, x2, y1, y2) )
+		if( checkSolidL(x1, x2, y1, y2) /*&& checkSolidR(x1, x2, y1, y2)*/ )
 		{
 			// Push him right to the position where he is not blocked anymore
 			int should_x = x1;
@@ -720,12 +720,12 @@ void CObject::processPushOutCollision()
 		const unsigned int y1 = getYPosition()+m_BBox.y1;
 		const unsigned int y2 = getYPosition()+m_BBox.y2;
 
-		if( checkSolidL(x1, x2, y1, y2) )
+		if( checkSolidR(x1, x2, y1, y2) /*&& checkSolidL(x1, x2, y1, y2)*/ )
 		{
 			// Push him right to the position where he is not blocked anymore
 			int should_x = x2;
 
-			while( checkSolidL(x1, should_x, y1, y2) )
+			while( checkSolidR(x1, should_x, y1, y2) )
 				should_x--;
 
 			processMove(should_x-x2, 0);

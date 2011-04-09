@@ -687,18 +687,19 @@ void CPlayerLevel::processLooking()
 		if( m_playcontrol[PA_Y]<0 )
 			setAction(A_KEEN_LOOKUP);
 		else if( m_playcontrol[PA_Y]>0 )
-		{
 			setAction(A_KEEN_LOOKDOWN);
-
-			const bool jumpdowntile = canFallThroughTile();
-			if ( m_playcontrol[PA_JUMP] > 0 && ( supportedbyobject || jumpdowntile )  )
-			{
-				m_jumpdownfromobject = supportedbyobject;
-				m_jumpdown = jumpdowntile;
-				supportedbyobject = false;
-				setAction(A_KEEN_FALL);
-				g_pSound->playSound( SOUND_KEEN_FALL );
-			}
+	}
+	else if(getActionNumber(A_KEEN_LOOKDOWN))
+	{
+		// We are looking down but could jump down from some platforms
+		const bool jumpdowntile = canFallThroughTile();
+		if ( m_playcontrol[PA_JUMP] > 0 && ( supportedbyobject || jumpdowntile )  )
+		{
+			m_jumpdownfromobject = supportedbyobject;
+			m_jumpdown = jumpdowntile;
+			supportedbyobject = false;
+			setAction(A_KEEN_FALL);
+			g_pSound->playSound( SOUND_KEEN_FALL );
 		}
 	}
 }

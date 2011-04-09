@@ -186,8 +186,8 @@ public:
 	 */
 	int checkSolidR( int x1, int x2, int y1, int y2);
 	int checkSolidL( int x1, int x2, int y1, int y2);
-	int checkSolidU( int x1, int x2, int y1);
-	int checkSolidD( int x1, int x2, int y2);
+	int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
+	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
