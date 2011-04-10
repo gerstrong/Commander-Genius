@@ -37,7 +37,7 @@ CObject(p_map, x, y, OBJ_GUARDROBOT),
 m_ObjectVect(Object)
 {
 	//first time initialization
-	state = TANK_WALK;
+	state = WALK;
 	movedir = RIGHT;
 	fireafterlook = 0;
 	animtimer = 0;
@@ -57,7 +57,7 @@ void CGuardRobot::process()
 {
 	switch(state)
 	{
-	case TANK_LOOK:
+	case LOOK:
 		// animation
 		if (animtimer > LOOK_ANIM_TIME)
 		{
@@ -76,7 +76,7 @@ void CGuardRobot::process()
 			timetillcanfire = (rnd()%(MAX_TIME_TILL_CAN_FIRE-MIN_TIME_TILL_CAN_FIRE))+MIN_TIME_TILL_CAN_FIRE;
 			timetillcanfirecauseonsamelevel = TIME_BEFORE_FIRE_WHEN_SEE;
 			firetimes = 0;
-			state = TANK_WALK;
+			state = WALK;
 			frame = 0;
 			animtimer = 0;
 			timer = 0;
@@ -87,7 +87,7 @@ void CGuardRobot::process()
 
 		break;
 
-	case TANK_WALK:
+	case WALK:
 		// hover animation
 		if (animtimer > WALK_ANIM_TIME)
 		{
@@ -175,7 +175,7 @@ void CGuardRobot::process()
 				frame = 0;
 				timer = 0;
 				animtimer = 0;
-				state = TANK_LOOK;
+				state = LOOK;
 				movedir = RIGHT;
 			}
 		}
@@ -192,7 +192,7 @@ void CGuardRobot::process()
 				frame = 0;
 				timer = 0;
 				animtimer = 0;
-				state = TANK_LOOK;
+				state = LOOK;
 				movedir = LEFT;
 			}
 		}
@@ -202,7 +202,7 @@ void CGuardRobot::process()
 }
 
 // makes the tank start firing
-void CGuardRobot::tank2_fire()
+void CGuardRobot::guard_fire()
 {
 	firetimes = SHOTS_PER_VOLLEY;
 	timetillnextshot = 0;

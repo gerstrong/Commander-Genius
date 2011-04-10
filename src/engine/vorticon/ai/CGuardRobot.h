@@ -20,14 +20,13 @@ public:
 	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
 			 std::vector<CObject*>& Object);
 	void process();
-	void tank2_fire();
+	void guard_fire();
 
 private:
 
 	std::vector<CObject*>& m_ObjectVect;
 
-	enum{ TANK_WALK,TANK_TURN,TANK_WAIT,TANK_WAIT_LOOK,TANK_FIRE,TANK_LOOK
-	} state;
+	enum{ WALK, TURN, WAIT, WAIT_LOOK, FIRE, LOOK } state;
 
 	unsigned int timer,animtimer;
 	unsigned char frame;
