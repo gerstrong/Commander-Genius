@@ -192,9 +192,9 @@ public:
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
 	bool checkslopedD( int c, int y2, char blocked);
-	void adjustSlopedTiles( int x, int y1, int y2 );
-	bool moveSlopedTileDown( int x, int y );
-	void moveSlopedTileUp( int x, int y );
+	void adjustSlopedTiles( int x, int y1, int y2, const int xspeed );
+	bool moveSlopedTileDown( int x, int y, const int xspeed );
+	void moveSlopedTileUp( int x, int y, const int xspeed );
 
 	// getters for positions
 	Uint32 getXPosition();

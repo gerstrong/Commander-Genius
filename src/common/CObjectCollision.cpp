@@ -116,17 +116,17 @@ void CObject::performCollisions()
 }
 
 // Basic slope move independent of the left or right move
-void CObject::adjustSlopedTiles( int x, int y1, int y2 )
+void CObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
 {
 	// process the sloped tiles here. Galaxy only or special patch!!
 	if(g_pBehaviorEngine->getEpisode() > 3)
 	{
-		if(!moveSlopedTileDown(x, y2))
-			moveSlopedTileUp(x, y1);
+		if(!moveSlopedTileDown(x, y2, xspeed))
+			moveSlopedTileUp(x, y1, xspeed);
 	}
 }
 
-bool CObject::moveSlopedTileDown( int x, int y )
+bool CObject::moveSlopedTileDown( int x, int y, const int xspeed )
 {
 	if(yinertia!=0)
 		return false;
@@ -151,7 +151,7 @@ bool CObject::moveSlopedTileDown( int x, int y )
 		// get the new position of the lower corner
 		const int y_rel = yb1 + dy;
 
-		// Get the upper border pos if the tile
+		// Get the upper border pos of the tile
 		int y_csf;
 		y_csf = (y>>CSF)<<CSF;
 
@@ -165,7 +165,7 @@ bool CObject::moveSlopedTileDown( int x, int y )
 		return false;
 }
 
-void CObject::moveSlopedTileUp( int x, int y )
+void CObject::moveSlopedTileUp( int x, int y, const int xspeed )
 {
 	if(yinertia!=0)
 		return;
@@ -335,13 +335,19 @@ int CObject::checkSolidL( int x1, int x2, int y1, int y2)
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
 			blocker = TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright;
-			if(blocker)
+			const bool slope = (TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bup > 1);
+			if(blocker && !slope)
 				return blocker;
+			else if(slope)
+				return 0;
 		}
 
 		blocker = TileProperty[mp_Map->at(x1>>CSF, y2>>CSF)].bright;
-		if(blocker)
+		const bool slope = (TileProperty[mp_Map->at(x1>>CSF, y2>>CSF)].bup > 1);
+		if(blocker && !slope)
 			return blocker;
+		else if(slope)
+			return 0;
 	}
 
 	// borders
@@ -566,7 +572,7 @@ void CObject::processMoveBitLeft()
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
 	m_Pos.x-=MOVE_RES;
-	adjustSlopedTiles(x1-(1<<STC), y1, y2);
+	adjustSlopedTiles(x1-(1<<STC), y1, y2, -MOVE_RES);
 }
 
 void CObject::processMoveBitRight()
@@ -583,7 +589,7 @@ void CObject::processMoveBitRight()
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
 	m_Pos.x+=MOVE_RES;
-	adjustSlopedTiles(x2+(1<<STC), y1, y2);
+	adjustSlopedTiles(x2+(1<<STC), y1, y2, MOVE_RES);
 }
 
 void CObject::processMoveBitUp()
