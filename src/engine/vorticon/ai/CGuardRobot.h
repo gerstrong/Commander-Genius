@@ -21,6 +21,7 @@ public:
 			 std::vector<CObject*>& Object);
 	void process();
 	void guard_fire();
+	void getTouchedBy(CObject &theObject);
 
 private:
 
@@ -34,8 +35,6 @@ private:
 
 	unsigned char movedir;
 
-	unsigned int ponsameleveltime;
-	unsigned char alreadyfiredcauseonsamelevel;
 	unsigned char fireafterlook;
 
 	unsigned int timetillnextshot;

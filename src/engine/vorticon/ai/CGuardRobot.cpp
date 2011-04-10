@@ -16,7 +16,6 @@ const int WAITAFTER_FIRE = 14;
 
 const int TRAVELDIST = 100;
 
-const int SAME_LEVEL_TIME = 150;
 const int SHOTS_PER_VOLLEY = 4;
 const int MIN_TIME_TILL_CAN_FIRE = 31;
 const int MAX_TIME_TILL_CAN_FIRE = 200;
@@ -72,7 +71,6 @@ void CGuardRobot::process()
 		// when time is up go back to moving
 		if (timer > LOOK_TOTALTIME)
 		{
-			alreadyfiredcauseonsamelevel = 0;
 			timetillcanfire = (rnd()%(MAX_TIME_TILL_CAN_FIRE-MIN_TIME_TILL_CAN_FIRE))+MIN_TIME_TILL_CAN_FIRE;
 			timetillcanfirecauseonsamelevel = TIME_BEFORE_FIRE_WHEN_SEE;
 			firetimes = 0;
@@ -150,7 +148,7 @@ void CGuardRobot::process()
 		{  // not firing a volley
 			if (!timetillcanfire)
 			{
-				tank2_fire();
+				guard_fire();
 			}
 			else
 			{
@@ -159,8 +157,6 @@ void CGuardRobot::process()
 
 		}
 
-		// is keen on same level?
-		alreadyfiredcauseonsamelevel = 0;
 		turnaroundtimer = 0;
 
 		if (movedir==LEFT)
@@ -208,4 +204,10 @@ void CGuardRobot::guard_fire()
 	timetillnextshot = 0;
 	timetillcanfire = (rnd()%(MAX_TIME_TILL_CAN_FIRE-MIN_TIME_TILL_CAN_FIRE))+MIN_TIME_TILL_CAN_FIRE;
 	pausetime = FIRE_PAUSE_TIME;
+}
+
+void CGuardRobot::getTouchedBy(CObject &theObject)
+{
+	if (theObject.m_type == OBJ_PLAYER && mp_Map->m_Difficulty >= 2)
+		theObject.kill(); // Only on normal and hard mode when keen touches it, it can die
 }
