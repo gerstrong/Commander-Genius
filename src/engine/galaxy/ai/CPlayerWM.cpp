@@ -35,6 +35,8 @@ m_Cheatmode(Cheatmode)
 {
 	sprite = m_basesprite;
 	performCollisions();
+	m_camera.blockedl;
+	m_camera.setPosition(m_Pos);
 }
 
 /**

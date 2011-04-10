@@ -41,10 +41,11 @@ public:
 
 	bool gotoPos( int x, int y );
 	void resetScrolls();
-	void scrollLeft(void);
-	void scrollRight(void);
-	void scrollUp(void);
-	void scrollDown(void);
+	// If force is enabled it will ignore scroll blockers
+	bool scrollLeft(const bool force=false);
+	bool scrollRight(const bool force=false);
+	bool scrollUp(const bool force=false);
+	bool scrollDown(const bool force=false);
 
 	void redrawAt(int mx, int my);
 	void drawAll();
@@ -54,6 +55,13 @@ public:
 
 	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
+	/*
+	 * \brief
+	 * This will check in horizontal direction if there is a scroll blocker.
+	 * As far known, this is only used in the Galaxy engine
+	 * \param y The y coordinate (CSFed) of the row where to look for that blocker
+	 */
+	bool findScrollHorizontalScrollBlocker(const int y);
 	bool findObject(unsigned int obj, int *xout, int *yout);
 	bool findTile(unsigned int tile, int *xout, int *yout, int plane=1);
 

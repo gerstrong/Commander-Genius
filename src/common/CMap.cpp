@@ -115,6 +115,23 @@ word *CMap::getBackgroundData()
 	return m_Plane[0].getMapDataPtr();
 }
 
+bool CMap::findScrollHorizontalScrollBlocker(const int y)
+{
+	if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
+		return false;
+
+	const int map_y = (y>0) ? (y>>CSF) : 0; // we can't have negative values here!
+	const word* row_ptr = m_Plane[2].getMapDataPtr()+map_y*m_width;
+
+	for(int x=0 ; x<(int)m_width ; x++)
+	{
+		// Check the row for a blocker which has the value 0x19
+		if(*row_ptr == 0x19)
+			return true;
+		row_ptr++;
+	}
+	return false;
+}
 
 // searches the map's object layer for object OBJ.
 // if it is found returns nonzero and places the
@@ -226,26 +243,26 @@ bool CMap::gotoPos(int x, int y)
 	dy = y - m_scrolly;
 	
 	if( dx > 0 )
-		for( int scrollx=0 ; scrollx<dx ; scrollx++) scrollRight();
+		for( int scrollx=0 ; scrollx<dx ; scrollx++) scrollRight(true);
 	else retval = true;
 	
 	if( dx < 0 )
-		for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft();
+		for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft(true);
 	else retval = true;
 	
 	if( dy > 0 )
-		for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown();
+		for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown(true);
 	else retval = true;
 	
 	if( dy < 0 )
-		for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp();
+		for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp(true);
 	else retval = true;
 
 	return retval;
 }
 
 // scrolls the map one pixel right
-void CMap::scrollRight(void)
+bool CMap::scrollRight(const bool force)
 {
 	if(m_scrollx < (m_width<<4) - g_pVideoDriver->getGameResolution().w)
 	{
@@ -262,10 +279,11 @@ void CMap::scrollRight(void)
 			m_scrollpix = 0;
 		}
 	}
+	return true;
 }
 
 // scrolls the map one pixel left
-void CMap::scrollLeft(void)
+bool CMap::scrollLeft(const bool force)
 {
 	if(m_scrollx>0)
 	{
@@ -288,11 +306,17 @@ void CMap::scrollLeft(void)
 			m_scrollpix = 15;
 		} else m_scrollpix--;
 	}
+	return true;
 }
 
-void CMap::scrollDown(void)
+bool CMap::scrollDown(const bool force)
 {
-	if(m_scrolly < (m_height<<4) - g_pVideoDriver->getGameResolution().h )
+	const int res_height = g_pVideoDriver->getGameResolution().h;
+
+	if( !force && findScrollHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
+		return false;
+
+	if(m_scrolly < (m_height<<4) - res_height )
 	{
 		m_scrolly++;
 		m_scrolly_buf = m_scrolly&511;
@@ -307,10 +331,14 @@ void CMap::scrollDown(void)
 			m_scrollpixy = 0;
 		}
 	}
+	return true;
 }
 
-void CMap::scrollUp(void)
+bool CMap::scrollUp(const bool force)
 {
+	if( !force && findScrollHorizontalScrollBlocker(m_scrolly<<STC) )
+		return false;
+
 	if(m_scrolly>0)
 	{
 		m_scrolly--;
@@ -332,6 +360,7 @@ void CMap::scrollUp(void)
 			m_scrollpixy = 15;
 		} else m_scrollpixy--;
 	}
+	return true;
 }
 
 //////////////////////
@@ -351,7 +380,7 @@ void CMap::redrawAt(int mx, int my)
 	const Uint32 num_v_tiles = ScrollSurface->w/16;
 
 	if(  mx >= m_mapx && my >= m_mapy &&
-			mx < m_mapx + num_v_tiles && my < m_mapy + num_h_tiles  	)
+			mx < m_mapx + num_v_tiles && my < m_mapy + num_h_tiles 	)
 	{
 		const Uint16 loc_x = (((mx-m_mapx)<<4)+m_mapxstripepos)&511;
 		const Uint16 loc_y = (((my-m_mapy)<<4)+m_mapystripepos)&511;

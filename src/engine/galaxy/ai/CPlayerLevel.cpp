@@ -61,6 +61,7 @@ m_Cheatmode(Cheatmode)
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	moveUp(rSprite.m_bboxY2-rSprite.m_bboxY1+(1<<CSF));
 	performCollisions();
+	m_camera.setPosition(m_Pos);
 }
 
 void CPlayerLevel::processInput()
@@ -843,12 +844,14 @@ void CPlayerLevel::processEnterDoor()
 		return;
 	}
 
-	//int xpos = ((t%256 - 1)>>CSF) + 15;
-	int ypos = ((t%256 - 1))<<CSF;
-	//int ypos = (t >> 8 << 8);
-	int xpos = (t >> 8)<<CSF;
+	const int ypos = ((t%256 - 1))<<CSF;
+	const int xpos = (t >> 8)<<CSF;
 
-	moveToForce(xpos, ypos);
+	VectorD2<int> new_pos(xpos, ypos);
+	moveToForce(new_pos);
+	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
+	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
+	m_camera.setPosition(new_pos);
 
 	//o->ypos = TILE2MU(*t%256 - 1) + 15;
 	//o->xpos = (*t >> 8 << 8);

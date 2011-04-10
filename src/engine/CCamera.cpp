@@ -31,12 +31,22 @@ void CCamera::attachObject(CObject *p_attacher)
 	mp_AttachedObject = p_attacher;
 }
 
-/**
- * This is main cycle which will be called every Logic loop
- * Here it moves automatically, performs the smooth scrolling
- * and gets the controls to move when it's not attached to an object
- */
-void CCamera::process()
+void CCamera::setPosition(const VectorD2<int>& newpos)
+{
+	int cam_x = newpos.x-((g_pVideoDriver->getGameResolution().w/2)<<STC);
+	int cam_y = newpos.y-((g_pVideoDriver->getGameResolution().h/2)<<STC);
+
+	if(cam_x<0)
+		cam_x = 0;
+
+	if(cam_y<0)
+		cam_y = 0;
+
+	moveToForce(newpos);
+	mp_Map->gotoPos(cam_x>>STC, cam_y>>STC);
+}
+
+void CCamera::process(const bool force)
 {
 	if(m_freeze)
 		return;
@@ -61,10 +71,12 @@ void CCamera::process()
 
 		m_moving = false;
 
+		// Make the camera move and tell if it's scrolling through the m_moving variable
 		if(mp_AttachedObject->getXPosition() > getXPosition())
 		{
 			moveRight(mp_AttachedObject->getXPosition() - getXPosition());
 			m_moving |= true;
+
 		}
 		else if(mp_AttachedObject->getXPosition() < getXPosition())
 		{
@@ -120,24 +132,26 @@ void CCamera::process()
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
-			mp_Map->scrollDown();
+			if(!mp_Map->scrollDown())
+				break;
 		}while(py > down+speed && scroll_y < mp_Map->m_maxscrolly);
 	}
-	else if ( py < up && scroll_y > 32  )
+	else if ( py < up && scroll_y > 32 )
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
-			mp_Map->scrollUp();
+			if(!mp_Map->scrollUp())
+				break;
 		}while(py < up-speed && scroll_y > 32);
 	}
 
 	// This will always snap correctly to the edge
 	while(scroll_x < 32)
-		mp_Map->scrollRight();
+		mp_Map->scrollRight(true);
 	while(scroll_x > mp_Map->m_maxscrollx)
-		mp_Map->scrollLeft();
+		mp_Map->scrollLeft(true);
 	while(scroll_y < 32)
-		mp_Map->scrollDown();
+		mp_Map->scrollDown(true);
 	while(scroll_y > mp_Map->m_maxscrolly)
-		mp_Map->scrollUp();
+		mp_Map->scrollUp(true);
 }

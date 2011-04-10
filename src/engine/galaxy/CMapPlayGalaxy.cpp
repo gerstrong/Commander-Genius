@@ -137,7 +137,7 @@ void CMapPlayGalaxy::process()
 		{
 			m_Cheatmode.god = !m_Cheatmode.god;
 			std::string godstring = "God-Mode has been ";
-			godstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
+			godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
 			m_MessageBoxes.push_back(new CMessageBoxGalaxy(godstring));
 		}
 		else if(g_pInput->getHoldedKey(KI))
