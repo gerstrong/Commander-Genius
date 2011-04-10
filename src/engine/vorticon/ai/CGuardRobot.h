@@ -8,8 +8,8 @@
 #ifndef CGUARDROBOT_H_
 #define CGUARDROBOT_H_
 
-#include "../../../common/CObject.h"
-#include "../../../common/CPlayer.h"
+#include "common/CObject.h"
+#include "common/CPlayer.h"
 
 //reference to ../misc.cpp
 unsigned int rnd(void);
@@ -21,7 +21,6 @@ public:
 			 std::vector<CObject*>& Object);
 	void process();
 	void tank2_fire();
-	void getShotByRay(object_t &obj_type);
 
 private:
 
