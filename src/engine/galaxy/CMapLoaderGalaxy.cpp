@@ -305,6 +305,24 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	}
 
 	File.close();
+
+
+	// Print out information about first plane of the map
+	std::ofstream FileTile("tilelayer.txt");
+
+	// he we go to the adding objects
+	data_ptr = Map.getData(1);
+	for(size_t y=0 ; y<height ; y++)
+	{
+		for(size_t x=0 ; x<width ; x++)
+		{
+			data_ptr++;
+			FileTile << *data_ptr << " ";
+		}
+		FileTile << std::endl;
+	}
+
+	FileTile.close();
 }
 
 //------------------------------------------------//
