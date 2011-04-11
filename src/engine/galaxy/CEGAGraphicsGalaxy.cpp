@@ -167,6 +167,7 @@ bool CEGAGraphicsGalaxy::loadData()
 			g_pGfxEngine->getTileMap(3), true)) return false;
 	if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
 			EpisodeInfo[m_episode-4].IndexSprites )) return false;
+	if(!readTexts())	return false;
 	//k456_export_texts();
 	//k456_export_misc();
 	//k456_export_demos();
@@ -779,6 +780,44 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		SDL_UnlockSurface(sfc);
 	}
 	return true;
+}
+
+/**
+ * This reads the Texts used in Computer Wrist and Ending as Beginning Pages. In-Level texts are not handled here
+ */
+bool CEGAGraphicsGalaxy::readTexts()
+{
+	// g_pBehaviorEngine->addMessage(name, message);
+	 /*char filename[PATH_MAX];
+	FILE *f;
+	int i;
+	int ep = Switches->Episode - 4;
+
+	if(!ExportInitialised)
+		quit("Trying to export texts before initialisation!");
+
+	// Export all the texts
+	printf("Exporting texts: ");
+
+	for(i = 0; i < EpisodeInfo[ep].NumTexts; i++)
+	{
+		// Show that something is happening
+		showprogress((i * 100) / EpisodeInfo[ep].NumTexts);
+
+		if(EgaGraph[EpisodeInfo[ep].IndexTexts + i].data)
+		{
+			// Create the text file
+			sprintf(filename, "%s/%cTXT%04d.txt", Switches->OutputPath, '0' + Switches->Episode, i);
+			f = openfile(filename, "wb", Switches->Backup);
+			if(!f)
+				quit("Can't open text file %s!", filename);
+			fwrite(EgaGraph[EpisodeInfo[ep].IndexTexts + i].data, EgaGraph[EpisodeInfo[ep].IndexTexts + i].len, 1, f);
+			fclose(f);
+		}
+		//printf("\x8\x8\x8\x8");
+	}
+	completemsg();*/
+	 return true;
 }
 
 }

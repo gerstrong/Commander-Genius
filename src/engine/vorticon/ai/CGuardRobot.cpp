@@ -35,7 +35,7 @@ CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
 CObject(p_map, x, y, OBJ_GUARDROBOT),
 m_ObjectVect(Object)
 {
-	//first time initialization
+	// First time initialization
 	state = WALK;
 	movedir = RIGHT;
 	fireafterlook = 0;

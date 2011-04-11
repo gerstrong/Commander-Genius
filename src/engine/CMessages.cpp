@@ -47,6 +47,43 @@ CMessages::extractString( std::string matchingstring, unsigned long start, unsig
 	return make_pair(matchingstring, Text);
 }
 
+bool CMessages::extractEp4Strings()
+{
+	switch(m_version)
+	{
+		case 140:
+		{
+			// TODO: Copy of the Episode 1 Strings. Here the Episode 4 Strings needs the adaptations
+			/*StringMap.insert( extractString( "CTSPACECHEAT", 0x14DEE, 0x14E51 ) );
+			StringMap.insert( extractString( "GODMODEON", 0x14EF6, 0x14F06 ) );
+			StringMap.insert( extractString( "GODMODEOFF", 0x14F07, 0x14F18 ) );
+			StringMap.insert( extractString( "EP1_StatusBox" , 0x15052, 0x150F5, -512 ) );
+			StringMap.insert( extractString( "EP1_SHIP" , 0x1679B, 0x167D3, -512 ) );
+			StringMap.insert( extractString( "LIVES_LEFT" , 0x160D8, 0x160E5, -512 ) );
+			// Message hint Dialogs
+			StringMap.insert( extractString( "EP1_YSIYM_LVL2" , 0x15280, 0x15314, -512 ) );
+			StringMap.insert( extractString( "EP1_YSIYM_LVL6" , 0x1531A, 0x153B2, -512 ) );
+			StringMap.insert( extractString( "EP1_YSIYM_LVL9" , 0x153B4, 0x1544C, -512 ) );
+			StringMap.insert( extractString( "EP1_YSIYM_LVL10" , 0x1544E, 0x154E6, -512 ) );
+			StringMap.insert( extractString( "EP1_YSIYM_LVL11" , 0x154E8, 0x1553E, -512 ) );
+			StringMap.insert( extractString( "EP1_YSIYM_LVL12" , 0x15540, 0x155D9, -512 ) );
+			StringMap.insert( extractString( "EP1_YSIYM_LVL15" , 0x155DB, 0x1565D, -512 ) );
+			// Finale Text
+			StringMap.insert( extractString( "EP1_ESEQ_PART1" , 0x15E24, 0x15EB0, -512 ) );
+			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE1" , 0x15EBD, 0x15EFA, -512 ) );
+			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE2" , 0x15EFB, 0x15F2F, -512 ) );
+			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE3" , 0x15F30, 0x15F7E, -512 ) );
+			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE4" , 0x15F7F, 0x15F9B, -512 ) );
+			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE5" , 0x15F9C, 0x15FE1, -512 ) );
+			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE6" , 0x15FE2, 0x15FF5, -512 ) );
+			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE7" , 0x15FF6, 0x16006, -512 ) );
+			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE8" , 0x16007, 0x16071, -512 ) );
+			StringMap.insert( extractString( "TO_BE_CONTINUED" , 0x16072, 0x16085, -512 ) );*/
+
+		} break;
+	}
+}
+
 bool CMessages::extractGlobalStrings()
 {
 	std::map<std::string, std::string> StringMap; // Structure which stores all the extracted string
@@ -152,6 +189,13 @@ bool CMessages::extractGlobalStrings()
 				} break;
 			}
 		} break;
+
+		case 4:
+		{
+			if(extractEp4Strings())
+				g_pLogFile->textOut(RED,"This version of the game is not supported!");
+		} break;
+
 		default:
 		{
 			g_pLogFile->textOut(RED,"This version of the game is not supported!");

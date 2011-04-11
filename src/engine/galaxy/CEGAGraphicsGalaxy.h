@@ -49,6 +49,7 @@ public:
 	bool readMaskedTilemaps( size_t NumTiles, size_t pbasetilesize,
 			size_t rowlength, size_t IndexOfTiles,
 			CTilemap &Tilemap, bool tileoff );
+	bool readTexts();
 	bool readSprites( size_t NumSprites, size_t IndexSprite );
 
 	void createBitmapsIDs();

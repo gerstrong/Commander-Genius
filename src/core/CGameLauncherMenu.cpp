@@ -168,7 +168,8 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		if( (flags & LOADSTR) == LOADSTR )
 		{
 			// load the strings.
-			// TODO: ...
+			CMessages Messages(p_exedata, Episode, version);
+			Messages.extractGlobalStrings();
 		}
 
 		if( (flags & LOADSND) == LOADSND )
