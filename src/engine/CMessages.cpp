@@ -47,7 +47,7 @@ CMessages::extractString( std::string matchingstring, unsigned long start, unsig
 	return make_pair(matchingstring, Text);
 }
 
-bool CMessages::extractEp4Strings()
+bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 {
 	switch(m_version)
 	{
@@ -188,7 +188,7 @@ bool CMessages::extractGlobalStrings()
 
 		case 4:
 		{
-			if(extractEp4Strings())
+			if(extractEp4Strings(StringMap))
 				g_pLogFile->textOut(RED,"This version of the game is not supported!");
 		} break;
 

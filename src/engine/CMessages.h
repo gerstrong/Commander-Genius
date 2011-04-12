@@ -8,7 +8,7 @@
 #ifndef CMESSAGES_H_
 #define CMESSAGES_H_
 
-#include "../keen.h"
+#include "keen.h"
 #include <string>
 #include <map>
 
@@ -22,7 +22,7 @@ private:
 	std::pair<std::string, std::string>
 	extractString( std::string matchingstring, unsigned long start, unsigned long end, long offset=0 );
 
-	bool extractEp4Strings();
+	bool extractEp4Strings(std::map<std::string, std::string>& StringMap);
 
 	unsigned char *mp_exe;
 	char m_episode;
