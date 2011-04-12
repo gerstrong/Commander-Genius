@@ -34,7 +34,7 @@ private:
 	unsigned char animtimer, dietimer;
 	unsigned char walkframe;
 	signed int scrubdie_inertia_y;
-	int fallinctimer,fallspeed;
+	int fallspeed;
 
 	unsigned char walkdir;
 	unsigned char kickedplayer[MAX_PLAYERS];

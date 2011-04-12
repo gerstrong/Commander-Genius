@@ -13,10 +13,6 @@ enum scrub_actions{
 #define SCRUB_WALK_ANIM_TIME  11
 #define SCRUB_WALK_SPEED      25
 
-#define SCRUB_FALLSPDINCRATE   2
-#define SCRUB_MIN_FALL_SPEED  40
-#define SCRUB_MAX_FALL_SPEED  150
-
 #define SCRUBDIE_START_INERTIA      -10
 #define SCRUBDIE_INERTIA_DECREASE    2
 
@@ -41,11 +37,10 @@ m_Player(Player)
 	animtimer = 0;
 	inhibitfall = true;
 	needinit = false;
-	canbezapped = 1;
+	canbezapped = true;
 
 	performCollisions();
-	dead = 0;
-	fallinctimer = 0;
+	dead = false;
 	fallspeed = 0;
 
 	SetAllCanSupportPlayer(1);
@@ -111,14 +106,16 @@ void CScrub::process()
 		}
 	}
 
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+
 	switch(state)
 	{
 	case SCRUB_DYING:
 		SetAllCanSupportPlayer(0);
 		sprite = SCRUB_FRY_FRAME;
 		moveYDir(scrubdie_inertia_y);
-		if (scrubdie_inertia_y < SCRUB_MAX_FALL_SPEED)
-			scrubdie_inertia_y+=2;
+		if ( scrubdie_inertia_y < Physics.max_fallspeed )
+			scrubdie_inertia_y += Physics.fallspeed_increase;
 
 		dietimer = 0;
 		if (scrubdie_inertia_y >= 0 && blockedd)
@@ -368,14 +365,10 @@ void CScrub::fall()
 	}
 	else
 	{
-		if (fallinctimer > SCRUB_FALLSPDINCRATE)
-		{
-			if (fallspeed < SCRUB_MAX_FALL_SPEED)
-			{
-				fallspeed++;
-			}
-			fallinctimer = 0;
-		} else fallinctimer++;
+		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+
+		if (fallspeed < Physics.max_fallspeed)
+			fallspeed += Physics.fallspeed_increase;
 
 		moveDown(fallspeed);
 	}
@@ -385,8 +378,7 @@ void CScrub::fall()
  */
 void CScrub::preparetoFall()
 {
-	fallinctimer = 0;
-	fallspeed = SCRUB_MIN_FALL_SPEED;
+	fallspeed = 0;
 	state = SCRUB_FALLING;
 	walkdir = LEFT;
 	SetAllCanSupportPlayer(0);
