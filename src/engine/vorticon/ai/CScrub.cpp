@@ -187,8 +187,9 @@ void CScrub::walkLeft(int mx, int my)
 				!TileProperties[mp_Map->at(mx-1, my)].bleft)
 			{
 				// There is no gap
-				moveDown(2<<STC);
-				moveRight(2<<STC);
+				processMove(0,4<<STC);
+				processMove(4<<STC,0);
+				performCollisions();
 				if(blockedr)
 					walkdir = DOWN;
 				else
@@ -239,8 +240,8 @@ void CScrub::walkDown()
 		{	// Move right
 			walkdir = RIGHT;
 			sprite = SCRUB_WALK_RIGHT + walkframe;
-			moveRight(2<<STC);
-			moveUp(2<<STC);
+			processMove(2<<STC,0);
+			processMove(0,-(2<<STC));
 			SetAllCanSupportPlayer(0);
 		}
 
@@ -283,6 +284,7 @@ void CScrub::walkRight(int mx, int my)
 	else
 	{
 		moveRight(SCRUB_WALK_SPEED);
+		processMove(0,-(2<<STC));
 
 		if(!blockedu)
 		{
@@ -292,9 +294,11 @@ void CScrub::walkRight(int mx, int my)
 				!TileProperties[mp_Map->at(mx+1, my)].bright)
 			{
 				// There is no gap the upper-side
-				moveRight(4<<STC);
-				moveUp(2<<STC);
-				moveLeft(6<<STC);
+				processMove(4<<STC,0);
+				processMove(0,-(4<<STC));
+				processMove(-(6<<STC),0);
+				performCollisions();
+
 				Scrub_TurnOnCansupportWhereNotKicked();
 				if(blockedl)
 					walkdir = UP;
@@ -326,8 +330,8 @@ void CScrub::walkUp()
 			walkdir = LEFT;
 			sprite = SCRUB_WALK_LEFT + walkframe;
 			Scrub_TurnOnCansupportWhereNotKicked();
-			moveLeft(2<<STC);
-			moveDown(2<<STC);
+			processMove(-(2<<STC),0);
+			processMove(0,2<<STC);
 		}
 
 		std::vector<CPlayer>::iterator it_player = m_Player.begin();
