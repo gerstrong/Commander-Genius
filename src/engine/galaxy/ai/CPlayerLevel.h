@@ -59,6 +59,11 @@ public:
 	// Checks if player can fall through a tile
 	bool canFallThroughTile();
 
+	/**
+	 * \brief The Player will get 1 UP when that function is launched
+	 */
+	void getAnotherLife(const int &lc_x, const int &lc_y);
+
 	void process();
 	void processInput();
 	void processFiring();

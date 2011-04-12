@@ -18,7 +18,7 @@ struct stItemGalaxy
 	unsigned char &m_difficulty;
 	signed char m_lifes;
 	unsigned long  m_points;
-	int m_lifeAt;
+	unsigned long m_lifeAt;
 	int m_drops;
 	unsigned int m_bullets;
 	struct {

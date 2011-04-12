@@ -53,32 +53,28 @@ bool CMessages::extractEp4Strings()
 	{
 		case 140:
 		{
+
 			// TODO: Copy of the Episode 1 Strings. Here the Episode 4 Strings needs the adaptations
-			/*StringMap.insert( extractString( "CTSPACECHEAT", 0x14DEE, 0x14E51 ) );
-			StringMap.insert( extractString( "GODMODEON", 0x14EF6, 0x14F06 ) );
-			StringMap.insert( extractString( "GODMODEOFF", 0x14F07, 0x14F18 ) );
-			StringMap.insert( extractString( "EP1_StatusBox" , 0x15052, 0x150F5, -512 ) );
-			StringMap.insert( extractString( "EP1_SHIP" , 0x1679B, 0x167D3, -512 ) );
-			StringMap.insert( extractString( "LIVES_LEFT" , 0x160D8, 0x160E5, -512 ) );
-			// Message hint Dialogs
-			StringMap.insert( extractString( "EP1_YSIYM_LVL2" , 0x15280, 0x15314, -512 ) );
-			StringMap.insert( extractString( "EP1_YSIYM_LVL6" , 0x1531A, 0x153B2, -512 ) );
-			StringMap.insert( extractString( "EP1_YSIYM_LVL9" , 0x153B4, 0x1544C, -512 ) );
-			StringMap.insert( extractString( "EP1_YSIYM_LVL10" , 0x1544E, 0x154E6, -512 ) );
-			StringMap.insert( extractString( "EP1_YSIYM_LVL11" , 0x154E8, 0x1553E, -512 ) );
-			StringMap.insert( extractString( "EP1_YSIYM_LVL12" , 0x15540, 0x155D9, -512 ) );
-			StringMap.insert( extractString( "EP1_YSIYM_LVL15" , 0x155DB, 0x1565D, -512 ) );
-			// Finale Text
-			StringMap.insert( extractString( "EP1_ESEQ_PART1" , 0x15E24, 0x15EB0, -512 ) );
-			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE1" , 0x15EBD, 0x15EFA, -512 ) );
-			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE2" , 0x15EFB, 0x15F2F, -512 ) );
-			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE3" , 0x15F30, 0x15F7E, -512 ) );
-			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE4" , 0x15F7F, 0x15F9B, -512 ) );
-			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE5" , 0x15F9C, 0x15FE1, -512 ) );
-			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE6" , 0x15FE2, 0x15FF5, -512 ) );
-			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE7" , 0x15FF6, 0x16006, -512 ) );
-			StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE8" , 0x16007, 0x16071, -512 ) );
-			StringMap.insert( extractString( "TO_BE_CONTINUED" , 0x16072, 0x16085, -512 ) );*/
+			// Level loading Texts
+			StringMap.insert( extractString( "WORLDMAP_LOAD_TEXT", 0x21FF0, 0x2200F ) );
+			StringMap.insert( extractString( "LEVEL1_LOAD_TEXT", 0x22010, 0x2203F ) );
+			StringMap.insert( extractString( "LEVEL2_LOAD_TEXT", 0x22040, 0x2205F ) );
+			StringMap.insert( extractString( "LEVEL3_LOAD_TEXT", 0x22060, 0x2208F ) );
+			StringMap.insert( extractString( "LEVEL4_LOAD_TEXT", 0x22090, 0x220CF ) );
+			StringMap.insert( extractString( "LEVEL5_LOAD_TEXT", 0x220D0, 0x220FF ) );
+			StringMap.insert( extractString( "LEVEL6_LOAD_TEXT", 0x22100, 0x2212F ) );
+			StringMap.insert( extractString( "LEVEL7_LOAD_TEXT", 0x22130, 0x2214F ) );
+			StringMap.insert( extractString( "LEVEL8_LOAD_TEXT", 0x22150, 0x2217F ) );
+			StringMap.insert( extractString( "LEVEL9_LOAD_TEXT", 0x22180, 0x2219F ) );
+			StringMap.insert( extractString( "LEVEL10_LOAD_TEXT", 0x221A0, 0x221CF ) );
+			StringMap.insert( extractString( "LEVEL11_LOAD_TEXT", 0x221D0, 0x221FF ) );
+			StringMap.insert( extractString( "LEVEL12_LOAD_TEXT", 0x22200, 0x2222F ) );
+			StringMap.insert( extractString( "LEVEL13_LOAD_TEXT", 0x22230, 0x2226F ) );
+			StringMap.insert( extractString( "LEVEL14_LOAD_TEXT", 0x22270, 0x222AF ) );
+			StringMap.insert( extractString( "LEVEL15_LOAD_TEXT", 0x222B0, 0x222DF ) );
+			StringMap.insert( extractString( "LEVEL16_LOAD_TEXT", 0x222E0, 0x2230F ) );
+			StringMap.insert( extractString( "LEVEL17_LOAD_TEXT", 0x22310, 0x2233f ) );
+			StringMap.insert( extractString( "LEVEL18_LOAD_TEXT", 0x22340, 0x2237F ) );
 
 		} break;
 	}

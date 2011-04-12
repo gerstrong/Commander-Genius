@@ -64,6 +64,14 @@ m_Cheatmode(Cheatmode)
 	m_camera.setPosition(m_Pos);
 }
 
+void CPlayerLevel::getAnotherLife(const int &lc_x, const int &lc_y)
+{
+	m_Inventory.Item.m_lifes++;
+	g_pSound->playSound( SOUND_EXTRA_LIFE );
+	m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10]));
+}
+
+
 void CPlayerLevel::processInput()
 {
 	// Entry for every player
@@ -918,14 +926,12 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE));
 		m_Item.m_drops++;
 
-		if(m_Item.m_drops==100)
+		if(m_Item.m_drops >= 100)
 		{
 			m_Item.m_drops = 0;
-			m_Item.m_lifes++;
-			g_pSound->playSound( SOUND_EXTRA_LIFE );
-			m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10]));
-
+			getAnotherLife(lc_x, lc_y);
 		}
+
 		g_pSound->playSound( SOUND_GET_DROP );
 	}
 
@@ -948,10 +954,17 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 			case 24: m_Item.m_points += 1000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
 			case 25: m_Item.m_points += 2000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
 			case 26: m_Item.m_points += 5000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
-			case 27: m_Item.m_lifes++;	g_pSound->playSound( SOUND_EXTRA_LIFE );	break;
+			case 27: getAnotherLife(lc_x, lc_y);	break;
 			case 28: m_Item.m_bullets += 5;	g_pSound->playSound( SOUND_GET_AMMO );	break;
 			default: break;
 			}
+
+			if(m_Item.m_points >= m_Item.m_lifeAt)
+			{
+				getAnotherLife(lc_x, lc_y);
+				m_Item.m_lifeAt *= 2;
+			}
+
 		}
 	}
 }
