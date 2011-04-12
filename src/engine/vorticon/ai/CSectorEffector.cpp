@@ -4,9 +4,9 @@
 #include "CSectorEffector.h"
 
 #include "../../spritedefines.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../CLogFile.h"
-#include "../../../graphics/effects/CVibrate.h"
+#include "sdl/sound/CSound.h"
+#include "CLogFile.h"
+#include "graphics/effects/CVibrate.h"
 
 // TODO: It should be renamed to Mangling Machine
 

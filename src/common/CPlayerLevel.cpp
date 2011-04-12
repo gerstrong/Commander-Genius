@@ -300,9 +300,9 @@ void CPlayer::TogglePogo_and_Switches()
 		// if we are standing near a switch hit the switch instead
 		mx = (getXMidPos())>>CSF;
 		
-		for(i=h;i>=0;i-=8)
+		for( i=h ; i>=0 ; i-=8 )
 		{
-			my = (getYPosition()+i)>>CSF;
+			my = (getYPosition()+(i<<STC))>>CSF;
 			
 			t = mp_Map->at(mx, my);
 
