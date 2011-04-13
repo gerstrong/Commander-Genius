@@ -318,9 +318,11 @@ void CObject::InertiaAndFriction_X()
 	decreaseXInertia(friction_rate);
 }
 
-Uint32 CObject::getXPosition()
+VectorD2<Uint32> CObject::getPosition() const
+{ return m_Pos; }
+Uint32 CObject::getXPosition() const
 { return m_Pos.x; }
-Uint32 CObject::getYPosition()
+Uint32 CObject::getYPosition() const
 { return m_Pos.y; }
 Uint32 CObject::getXLeftPos()
 { return m_Pos.x+m_BBox.x1; }

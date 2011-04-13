@@ -197,8 +197,9 @@ public:
 	void moveSlopedTileUp( int x, int y, const int xspeed );
 
 	// getters for positions
-	Uint32 getXPosition();
-	Uint32 getYPosition();
+	VectorD2<Uint32> getPosition() const;
+	Uint32 getXPosition() const;
+	Uint32 getYPosition() const;
 	Uint32 getXLeftPos();
 	Uint32 getXRightPos();
 	Uint32 getXMidPos();
