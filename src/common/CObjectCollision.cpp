@@ -465,7 +465,6 @@ int CObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 			return 0;
 
 		if( blockedu >= 2 && blockedu <= 7 && checkslopedD(x2, y2, blockedu)  )
-		//if( blocked )
 			return blockedu;
 	}
 
