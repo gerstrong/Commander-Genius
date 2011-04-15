@@ -85,6 +85,9 @@ void CPlayer::processInLevel()
 	}
 
     processEvents();
+
+    if(supportedbyobject)
+    	blockedd = true;
 }
 
 void CPlayer::touchedExit(int mpx)

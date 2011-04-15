@@ -135,7 +135,6 @@ void CPlayer::setupforLevelPlay()
     pjustjumped = pjustfell = true;
     pfireframetimer = 0;
     psupportingobject = lastsupportingobject = 0;
-	supportedbyobject = false;
   	object_chosen = false;
     lastpogo = false;
   	hintused = false;
