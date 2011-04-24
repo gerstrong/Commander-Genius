@@ -3,8 +3,6 @@
  *
  *  Created on: 19.10.2009
  *      Author: gerstrong
- *
- *  Used when someone passes arguments to the program
  */
 
 #include "arguments.h"
