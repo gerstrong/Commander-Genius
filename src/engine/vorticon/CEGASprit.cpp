@@ -18,6 +18,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
 #include "common/CObject.h"
+#include "common/tga.h" 
 #include "CResourceLoader.h"
 #include <SDL.h>
 #include <stdio.h>
@@ -268,7 +269,7 @@ char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
 {
 	byte *image, *base;
 	int x,y;
-	int w,h;
+	Uint16 w,h;
 	unsigned char r,g,b,a;
 	int c;
 	Uint8 *pixel, *maskpx;
