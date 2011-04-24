@@ -32,9 +32,6 @@
 #define DOOR_GREEN         4
 #define DOOR_BLUE          5
 
-// Reference to ../common/tga.cpp
-char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int *heightout);
-
 //////////////////////////
 // section of the class //
 //////////////////////////
@@ -88,9 +85,9 @@ bool CEGASprit::loadHead(char *data)
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
 	byte *RawData;
-    SDL_Surface *sfc;
-    Uint8* pixel;
-    Uint32 percent = 0;
+    	SDL_Surface *sfc;
+    	Uint8* pixel;
+    	Uint32 percent = 0;
 	
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 	
@@ -269,7 +266,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 // returns nonzero on failure.
 char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
 {
-	unsigned char *image, *base;
+	byte *image, *base;
 	int x,y;
 	int w,h;
 	unsigned char r,g,b,a;
@@ -277,7 +274,7 @@ char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
 	Uint8 *pixel, *maskpx;
 	
 	// Look in local location than in global, if tga was not found!
-	if (LoadTGA(filename, &image, &w, &h))
+	if (!LoadTGA(filename, &image, w, h))
 		return 1;
 
 	base = image;

@@ -3,12 +3,16 @@
  *
  *  Created on: 23.08.2009
  *      Author: gerstrong
+ *
+ *  Header the read and open code of TGA picture files. Only some icons and the rising points use TGA so far.
+ *  There are much more efficient libs outside which do that job like SDL_Image. We might use those in future...
  */
 
 #ifndef TGA_H_
 #define TGA_H_
 
 #include <SDL.h>
+#include <string>
 
 #ifdef TARGET_WIN32
 #define ulong unsigned long
@@ -43,5 +47,7 @@ typedef struct
 } TGA_HEADER;
 
 #undef uchar
+
+bool LoadTGA(const std::string& filename, Uint8 **image, Uint16 &width, Uint16 &height);
 
 #endif /* TGA_H_ */
