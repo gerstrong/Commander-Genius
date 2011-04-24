@@ -1,8 +1,5 @@
 /* FILEIO.C
- Functions responsible for loading data from files, such as the one that
- decodes the level map files (loadmap()) and the one that loads in the
- tile attribute data contained in ep?attr.dat (loadtileattributes()).
- The functions for loading the graphics (EGALATCH&EGASPRIT) are in latch.c.
+ * Author : Gerhard Stein (gerstrong@gmail.com)
  */
 
 #include <unistd.h>
