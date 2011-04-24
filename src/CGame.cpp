@@ -4,7 +4,10 @@
  *  Created on: 01.05.2009
  *      Author: gerstrong
  *  This Game-engine stripes down the main function
- *  and provides more dynamic control over the game
+ *  and provides more dynamic control over the game engine itself
+ * 
+ *  It also manages the load of drivers and main game cycle itself which we divide
+ *  Logic Per Second and Frames Per second processing
  */
 
 #include <stdlib.h>
