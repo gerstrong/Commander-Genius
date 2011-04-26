@@ -67,7 +67,11 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	if(loadNewMusic)
 	{
 		g_pMusicPlayer->stop();
-		g_pMusicPlayer->LoadfromMusicTable(path, levelname);
+
+		// If no music from the songlist could be loaded try the normal table which
+		// has another format. It is part of HQP
+		if(!g_pMusicPlayer->LoadfromSonglist(path, level))
+			g_pMusicPlayer->LoadfromMusicTable(path, levelname);
 	}
 
 	// decompress map RLEW data

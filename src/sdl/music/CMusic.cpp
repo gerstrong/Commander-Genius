@@ -124,6 +124,59 @@ void CMusic::readWaveform(Uint8* buffer, size_t length)
 	m_busy = false;
 }
 
+bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
+{
+	bool fileloaded = false;
+    std::ifstream Tablefile;
+
+    std::string musicpath = getResourceFilename("songlist.lst", gamepath, false, false);
+
+    if(musicpath != "")
+    	fileloaded = OpenGameFileR(Tablefile, musicpath);
+
+    if(fileloaded)
+    {
+    	std::string str_buf;
+    	std::string music_filename;
+    	char c_buf[256];
+    	int detected_level=-1;
+    	size_t next_pos = 0;
+
+    	while(!Tablefile.eof())
+    	{
+        	Tablefile.getline(c_buf, 256);
+
+        	str_buf = c_buf;
+        	next_pos = str_buf.find(' ')+1;
+        	str_buf = str_buf.substr(next_pos);
+        	next_pos = str_buf.find(' ');
+
+        	// Get level number
+        	detected_level = atoi(str_buf.substr(0, next_pos).c_str());
+
+        	str_buf = str_buf.substr(next_pos);
+        	next_pos = str_buf.find('"')+1;
+        	str_buf = str_buf.substr(next_pos);
+        	next_pos = str_buf.find('"');
+
+        	// Get the music filename to be read
+        	music_filename = str_buf.substr(0, next_pos);
+
+    		if( detected_level == level )	// found the level! Load the song!
+    		{
+    			// Get the song filename and load it!
+    			std::string filename = getResourceFilename( music_filename, gamepath, false, true);
+    			if( load(filename) )
+    				play();
+    			Tablefile.close();
+    			return true;
+    		}
+    	}
+    	Tablefile.close();
+    }
+	return false;
+}
+
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
 {
 	bool fileloaded = false;
