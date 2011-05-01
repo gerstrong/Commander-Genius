@@ -29,7 +29,8 @@ enum scrub_actions{
 CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
 CObject(p_map, x, y, OBJ_SCRUB),
-m_Player(Player)
+m_Player(Player),
+scrubdie_inertia_y(0)
 {
 	walkdir = LEFT;
 	state = SCRUB_FALLING;
@@ -84,16 +85,6 @@ void CScrub::process()
 
 	if (canbezapped)
 	{
-		// if we touch a glowcell, we die!
-		int x = getXPosition();
-		int y = getYPosition();
-		if (mp_Map->at((x+256)>>CSF, (y+256)>>CSF)==TILE_GLOWCELL)
-		{
-			solid=true;
-			state = SCRUB_DYING;
-			dying = true;
-			dietimer = 0;
-		}
 		// die if shot
 		if (HealthPoints <= 0 && state!=SCRUB_DYING )
 		{

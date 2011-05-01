@@ -27,6 +27,10 @@ or directly to me (tulip) at haubaer1981@yahoo.de
 Update Log
 ----------
 
+Release 1.8 (2011-05-01)
+- Added more tunes, more music
+- Updated the HQP tileset of episode 3
+
 Release 1.6 (2010-08-16)
 - Added Spot Sprite for 2nd Player
 - Added some other minor sprites

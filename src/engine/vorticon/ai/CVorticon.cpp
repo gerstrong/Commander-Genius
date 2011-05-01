@@ -61,9 +61,6 @@ void CVorticon::process() {
 
 	if (HealthPoints <= 0 && state != VORT_DYING && state != VORT2_DYING)
 		kill = true;
-	else if (Episode == 2 && mp_Map->at((getXLeftPos()) >> CSF, (getYUpPos())
-			>> CSF) == TILE_GLOWCELL)
-		kill = true;
 
 	if (kill) {
 		animtimer = 0;

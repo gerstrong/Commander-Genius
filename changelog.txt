@@ -1,15 +1,16 @@
 Commander Genius Release :
 ==========================
 
-v0.3.4:
+v0.3.3.3:
 ---------
 - Now Council Members trigger and make the level exit. Neat!
 - New Collision Model for Galaxy. Hopefully better especially on sloped tiles. Also that part of the code got smaller
-- Vertical and Drop Platforms work. which will make more level finishables
+- Vertical and Drop Platforms work which will make more levels finishable
 - Keen now can jump through some tiles and also leave platforms
 - Now the platforms also move Keen
-- The Platform AI now have a special directory
-- Cheat Codes in Galaxy are implemented: God-mode, Jump-cheat, No clipping and get all items! 
+- The Platform AIs have a special directory in the source code
+- Cheat codes in Galaxy are implemented: God-mode, Jump-cheat, No clipping and get all items! 
+- Songlist of some mods can alternatively be used
 
 v0.3.3.2:
 ---------
@@ -25,7 +26,7 @@ v0.3.3.2:
 
 v0.3.3.1:
 ---------
-- Tied up the code!
+- Tied up some code!
 - New Audio System!
 - New Graphics System!
 - Fixes in the IMF Player 

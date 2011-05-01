@@ -416,22 +416,6 @@ void CPlayGameVorticon::handleFKeys()
     	g_pInput->flushKeys();
     }
 
-    /*if (g_pInput->getHoldedKey(KTAB)) // noclip/revive
-    {
-    	for(i=0;i<m_NumPlayers;i++)
-    	{
-    		// resurrect any dead players. the rest of the KTAB magic is
-    		// scattered throughout the various functions.
-    		if (m_Player[i].pdie)
-    		{
-    			m_Player[i].pdie = PDIE_NODIE;
-    			m_Player[i].moveUp(8<<CSF);
-    		}
-
-    		m_Player[i].pfrozentime = 0;
-    	}
-    }*/
-
 	if(g_pInput->getPressedKey(KP) && m_MessageBoxes.empty())
 	{
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);

@@ -70,13 +70,6 @@ m_Object(mp_vec_Obj)
 
 void CVorticonElite::process()
 {
-	int x = getXPosition();
-	int y = getYPosition();
-
-	// if we touch a glowcell, we die!
-	if ( mp_Map->at( x>>CSF, y>>CSF) == TILE_GLOWCELL )
-		HealthPoints--;
-
 	if (HealthPoints <= 0 && state != VORTELITE_DYING)
 	{
 		animtimer = 0;
