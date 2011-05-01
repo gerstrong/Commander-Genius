@@ -123,10 +123,10 @@ void CVorticon::process() {
 		int odds;
 
 		switch (m_Difficulty) {
-		case 0:
+		case 1:
 			odds = getProbability(VORT_JUMP_PROB_EASY);
 			break;
-		case 2:
+		case 3:
 			odds = getProbability(VORT_JUMP_PROB_HARD);
 			break;
 		default:
@@ -134,8 +134,10 @@ void CVorticon::process() {
 			break;
 		}
 
-		if (odds) { // let's jump.
-			if (!m_Dark && !blockedu) {
+		if (odds)
+		{ // let's jump.
+			if (!m_Dark && !blockedu)
+			{
 				initiateJump();
 				goto vort_reprocess;
 			}
@@ -157,11 +159,11 @@ void CVorticon::process() {
 				if (dist_traveled < VORT_TRAPPED_DIST && !m_Dark && blockedd
 						&& !blockedu) {
 					initiateJump();
-					if (rnd() & 1) {
+					if (rnd() & 1)
 						yinertia = -VORT_MAX_JUMP_HEIGHT;
-					} else {
+					else
 						yinertia = -VORT_MIN_JUMP_HEIGHT;
-					}
+
 					goto vort_reprocess;
 				} else
 					dist_traveled = 0;
