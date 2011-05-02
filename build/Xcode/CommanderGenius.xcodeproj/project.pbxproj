@@ -32,9 +32,6 @@
 		235755D2101A5E5900275638 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		235755D3101A5E5900275638 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
 		23575631101A5E5900275638 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
-		23575632101A5E5900275638 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA691013AC7B001643FA /* SDL.framework */; };
-		23575633101A5E5900275638 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA831013AEB5001643FA /* OpenGL.framework */; };
-		23575634101A5E5900275638 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA911013AF1D001643FA /* Cocoa.framework */; };
 		2357564E101A5F8F00275638 /* Ogg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 237421E911FB8554000EEA5B /* GraphicsIDs.cpp */; };
@@ -300,7 +297,6 @@
 		35F1E243134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */; };
 		35F1E247134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */; };
 		35F1E248134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */; };
-		35F1E24A134F73F800C6230F /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35F1E249134F73F800C6230F /* Readme.txt */; };
 		35F1E24B134F73F800C6230F /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35F1E249134F73F800C6230F /* Readme.txt */; };
 		63010C0813400D4A00F212CA /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010BFE13400D4A00F212CA /* CGameControl.cpp */; };
 		63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */; };
@@ -319,6 +315,10 @@
 		632903A712EB8E2600963705 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903A412EB8E2600963705 /* CBullets.cpp */; };
 		632903C412EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
 		632903C512EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
+		634DF5A2136E10F000826A8B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A1136E10F000826A8B /* Cocoa.framework */; };
+		634DF5A5136E10FC00826A8B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A4136E10FC00826A8B /* OpenGL.framework */; };
+		634DF5A7136E110400826A8B /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
+		634DF5B6136E141500826A8B /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63AEA5BC132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */; };
 		63AEA5BD132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */; };
@@ -460,7 +460,6 @@
 		63F4C9881273600000CA4C79 /* CResourceLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63F4C9861273600000CA4C79 /* CResourceLoader.cpp */; };
 		63F4C9891273600000CA4C79 /* CResourceLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63F4C9861273600000CA4C79 /* CResourceLoader.cpp */; };
 		63F4C9E41273668500CA4C79 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
-		63F4C9E51273668500CA4C79 /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA691013AC7B001643FA /* SDL.framework */; };
 		63F4C9E61273668500CA4C79 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 /* End PBXBuildFile section */
 
@@ -472,8 +471,8 @@
 			dstSubfolderSpec = 10;
 			files = (
 				63F4C9E41273668500CA4C79 /* Ogg.framework in Copy Frameworks */,
-				63F4C9E51273668500CA4C79 /* SDL.framework in Copy Frameworks */,
 				63F4C9E61273668500CA4C79 /* Vorbis.framework in Copy Frameworks */,
+				634DF5B6136E141500826A8B /* SDL.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -606,9 +605,6 @@
 		23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		23CE96C211FCCC6D0033FDFF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23CE971F11FCD8860033FDFF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		23D3EA691013AC7B001643FA /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
-		23D3EA831013AEB5001643FA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		23D3EA911013AF1D001643FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		23D4C48E132C244700B06391 /* CRingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRingBuffer.h; sourceTree = "<group>"; };
 		23D4C48F132C247B00B06391 /* CDieMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDieMenu.cpp; sourceTree = "<group>"; };
 		23D4C490132C247B00B06391 /* CDieMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDieMenu.h; sourceTree = "<group>"; };
@@ -680,6 +676,9 @@
 		632903A512EB8E2600963705 /* CBullets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBullets.h; sourceTree = "<group>"; };
 		632903C212EB8F3600963705 /* CPreviews.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPreviews.cpp; sourceTree = "<group>"; };
 		632903C312EB8F3600963705 /* CPreviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPreviews.h; sourceTree = "<group>"; };
+		634DF5A1136E10F000826A8B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		634DF5A4136E10FC00826A8B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
+		634DF5A6136E110400826A8B /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework; sourceTree = DEVELOPER_DIR; };
 		6350F7A51044797300A992D5 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
 		6350F7A61044797300A992D5 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
 		6350F7A71044797300A992D5 /* EGASPRIT.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGASPRIT.CK1; sourceTree = "<group>"; };
@@ -1117,10 +1116,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				634DF5A7136E110400826A8B /* SDL.framework in Frameworks */,
+				634DF5A5136E10FC00826A8B /* OpenGL.framework in Frameworks */,
+				634DF5A2136E10F000826A8B /* Cocoa.framework in Frameworks */,
 				23575631101A5E5900275638 /* Carbon.framework in Frameworks */,
-				23575632101A5E5900275638 /* SDL.framework in Frameworks */,
-				23575633101A5E5900275638 /* OpenGL.framework in Frameworks */,
-				23575634101A5E5900275638 /* Cocoa.framework in Frameworks */,
 				2357564E101A5F8F00275638 /* Ogg.framework in Frameworks */,
 				2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */,
 			);
@@ -1187,11 +1186,11 @@
 		20286C32FDCF999611CA2CEA /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				634DF5A6136E110400826A8B /* SDL.framework */,
+				634DF5A4136E10FC00826A8B /* OpenGL.framework */,
+				634DF5A1136E10F000826A8B /* Cocoa.framework */,
 				20286C33FDCF999611CA2CEA /* Carbon.framework */,
-				23D3EA911013AF1D001643FA /* Cocoa.framework */,
 				2357564C101A5F8F00275638 /* Ogg.framework */,
-				23D3EA831013AEB5001643FA /* OpenGL.framework */,
-				23D3EA691013AC7B001643FA /* SDL.framework */,
 				2357564D101A5F8F00275638 /* Vorbis.framework */,
 			);
 			name = "External Frameworks and Libraries";
@@ -2156,8 +2155,8 @@
 				23A5133B11D4ED880043F6C8 /* copy files (vfsroot) */,
 				235755D4101A5E5900275638 /* Sources */,
 				235755D1101A5E5900275638 /* Resources */,
-				6350FC7A1044F7DE00A992D5 /* Create DMG */,
 				23575630101A5E5900275638 /* Frameworks */,
+				6350FC7A1044F7DE00A992D5 /* Create DMG */,
 			);
 			buildRules = (
 			);
@@ -2222,7 +2221,6 @@
 				235755D2101A5E5900275638 /* InfoPlist.strings in Resources */,
 				235755D3101A5E5900275638 /* main.xib in Resources */,
 				63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */,
-				35F1E24A134F73F800C6230F /* Readme.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2285,7 +2283,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"true\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"cgenius-v${VER}-mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
+			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"true\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"CGenius-${VER}-Mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
