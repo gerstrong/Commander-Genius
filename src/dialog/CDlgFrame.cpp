@@ -8,6 +8,8 @@
 #include "CDlgFrame.h"
 #include "graphics/CGfxEngine.h"
 
+
+
 CDlgFrame::CDlgFrame(int x, int y, int w, int h, Uint8 theme, int tilewidth, int tileheight) {
 	
 	m_8x8tileheight = tilewidth;
@@ -15,11 +17,13 @@ CDlgFrame::CDlgFrame(int x, int y, int w, int h, Uint8 theme, int tilewidth, int
 	
 	m_x = x;
 	m_y = y;
-	m_w = w*m_8x8tilewidth;
-	m_h = h*m_8x8tileheight;
+	resize(w, h);
 	
 	m_theme = theme;
 }
+
+
+
 
 void CDlgFrame::draw(SDL_Surface *dst)
 {
@@ -36,6 +40,16 @@ void CDlgFrame::draw(SDL_Surface *dst)
 		drawGalaxyFrame(dst);
 	}
 }
+
+
+
+void CDlgFrame::resize(const Uint32 width, const Uint32 height)
+{
+	m_w = width; m_h = height;
+}
+
+
+
 
 void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 {
@@ -152,8 +166,4 @@ void CDlgFrame::drawRedFrame(SDL_Surface *dst)
 	Font.drawCharacter(dst, 25, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
 	Font.drawCharacter(dst, 28, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
 	Font.drawCharacter(dst, 30, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
-}
-
-CDlgFrame::~CDlgFrame() {
-	// TODO Auto-generated destructor stub
 }

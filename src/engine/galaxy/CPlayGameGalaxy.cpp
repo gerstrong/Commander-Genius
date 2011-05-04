@@ -9,6 +9,7 @@
 #include "CMapLoaderGalaxy.h"
 
 #include "graphics/CGfxEngine.h"
+#include "dialog/CMessageBoxBitmapGalaxy.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
@@ -111,11 +112,15 @@ void CPlayGameGalaxy::process()
 
 		// process World Map if active. At the start it's enabled
 		if(m_WorldMap.isActive())
+		{
 			m_WorldMap.process();
+		}
 
 		// process World Map if active. At the start it's enabled
 		if(m_LevelPlay.isActive())
+		{
 			m_LevelPlay.process();
+		}
 
 		// We have to show the status screen, do so...
 		if( m_Inventory.showStatus() )
@@ -136,9 +141,10 @@ void CPlayGameGalaxy::process()
 		// Start a new level!
 		if(ev->data > 0xC000)
 		{
+			const Uint16 NewLevel = ev->data - 0xC000;
 			g_pMusicPlayer->stop();
 			m_WorldMap.setActive(false);
-			m_LevelPlay.loadLevel(ev->data - 0xC000);
+			m_LevelPlay.loadLevel(NewLevel);
 			m_LevelName = m_LevelPlay.getLevelName();
 			g_pSound->playSound( SOUND_ENTER_LEVEL );
 			m_LevelPlay.setActive(true);

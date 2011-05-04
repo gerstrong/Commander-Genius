@@ -55,7 +55,7 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 		if(m_y + m_h > 200)
 			m_h = 200-m_y;
 
-		mp_Frame = new CDlgFrame(m_x, m_y, m_w, m_h, theme);
+		mp_Frame = new CDlgFrame(m_x, m_y, m_w*8, m_h*8, theme);
 	}
 	
 	m_twirl.posy = m_y;

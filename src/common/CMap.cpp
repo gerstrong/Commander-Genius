@@ -264,7 +264,7 @@ bool CMap::gotoPos(int x, int y)
 // scrolls the map one pixel right
 bool CMap::scrollRight(const bool force)
 {
-	if(m_scrollx < (m_width<<4) - g_pVideoDriver->getGameResolution().w)
+	if(m_scrollx < ((m_width-2)<<4) - g_pVideoDriver->getGameResolution().w)
 	{
 		m_scrollx++;
 		m_scrollx_buf = m_scrollx&511;
@@ -316,7 +316,7 @@ bool CMap::scrollDown(const bool force)
 	if( !force && findScrollHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
 		return false;
 
-	if(m_scrolly < (m_height<<4) - res_height )
+	if(m_scrolly < ((m_height-2)<<4) - res_height )
 	{
 		m_scrolly++;
 		m_scrolly_buf = m_scrolly&511;

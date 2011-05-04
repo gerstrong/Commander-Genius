@@ -59,7 +59,7 @@ m_Cheatmode(Cheatmode)
 
 	processActionRoutine();
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	moveUp(rSprite.m_bboxY2-rSprite.m_bboxY1+(1<<CSF));
+	processMove(0, (14<<STC)-(rSprite.m_bboxY2-rSprite.m_bboxY1));
 	performCollisions();
 	m_camera.setPosition(m_Pos);
 }

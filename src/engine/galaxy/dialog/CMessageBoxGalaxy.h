@@ -9,12 +9,21 @@
 #define CMESSAGEBOXGALAXY_H_
 
 #include "dialog/CMessageBox.h"
+#include "CVec.h"
 
 class CMessageBoxGalaxy : public CMessageBox {
 public:
+
+	/**
+	 * \brief This constructor creates a typical Keen 4 Message Box
+	 * \param Text 				Message to be shown
+	 */
 	CMessageBoxGalaxy(const std::string& Text);
 
 	void process();
+
+protected:
+	SDL_Rect m_TextPos;
 };
 
 #endif /* CMESSAGEBOXGALAXY_H_ */

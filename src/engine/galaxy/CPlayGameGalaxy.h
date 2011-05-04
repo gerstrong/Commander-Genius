@@ -10,6 +10,7 @@
 
 #include "engine/playgame/CPlayGame.h"
 #include "engine/galaxy/CInventory.h"
+#include "dialog/CMessageBoxGalaxy.h"
 #include "common/CMap.h"
 #include "CWorldMap.h"
 #include "CLevelPlay.h"

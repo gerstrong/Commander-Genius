@@ -10,6 +10,7 @@
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
+#include "dialog/CMessageBoxBitmapGalaxy.h"
 #include "CLogFile.h"
 
 #include "CMapPlayGalaxy.h"
@@ -36,6 +37,9 @@ bool CLevelPlay::loadLevel(const Uint16 level)
     	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
     	g_pMusicPlayer->play();
+
+    // Add the load message
+	m_MessageBoxes.push_back(new CMessageBoxBitmapGalaxy("Level " + itoa(level) + " has been loaded...", 106 ) );
 
 	m_Map.drawAll();
 	return true;

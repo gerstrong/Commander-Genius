@@ -31,30 +31,30 @@ m_twirlframe(0)
 	}
 
 	// try to center that dialog box
-	m_gamerect = g_pVideoDriver->getGameResolution();
+	m_boxrect = g_pVideoDriver->getGameResolution();
 
-	int h = m_gamerect.h;
-	m_gamerect.x = m_gamerect.w/2;
-	m_gamerect.y = m_gamerect.h/2;
+	int h = m_boxrect.h;
+	m_boxrect.x = m_boxrect.w/2;
+	m_boxrect.y = m_boxrect.h/2;
 
-	m_gamerect.h = (m_Lines.size()+2)*8;
-	m_gamerect.w = (m_text_width+2)*8;
+	m_boxrect.h = (m_Lines.size()+2)*8;
+	m_boxrect.w = (m_text_width+2)*8;
 
-	m_gamerect.x -= m_gamerect.w/2;
+	m_boxrect.x -= m_boxrect.w/2;
 
 	if(!lower)
-		m_gamerect.y -= m_gamerect.h/2;
+		m_boxrect.y -= m_boxrect.h/2;
 	else
-		m_gamerect.y = h-m_gamerect.h;
+		m_boxrect.y = h-m_boxrect.h;
 
-	if(leftbound) m_gamerect.x = 0;
+	if(leftbound) m_boxrect.x = 0;
 
 
-	m_gamerect.h /= 8;
-	m_gamerect.w /= 8;
+	m_boxrect.h /= 8;
+	m_boxrect.w /= 8;
 
-	mp_DlgFrame = new CDlgFrame(m_gamerect.x, m_gamerect.y,
-								m_gamerect.w, m_gamerect.h, DLG_THEME_VORTICON);
+	mp_DlgFrame = new CDlgFrame(m_boxrect.x, m_boxrect.y,
+								m_boxrect.w*8, m_boxrect.h*8, DLG_THEME_VORTICON);
 }
 
 // This function is used in your Ship need those parts.
@@ -86,12 +86,12 @@ void CMessageBoxVort::process()
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
-		g_pGfxEngine->getFont(0).drawFont(sfc, m_Lines[i], m_gamerect.x+8, m_gamerect.y+((i+1)*8) );
+		g_pGfxEngine->getFont(0).drawFont(sfc, m_Lines[i], m_boxrect.x+8, m_boxrect.y+((i+1)*8) );
 
 	// Draw additional tiles on the surface if any where defined
 	for(size_t i=0 ; i<m_Tiles.size() ; i++) {
-		g_pGfxEngine->getTileMap(1).drawTile(sfc, m_gamerect.x+m_Tiles[i].x,
-								m_gamerect.y+m_Tiles[i].y, m_Tiles[i].tile);
+		g_pGfxEngine->getTileMap(1).drawTile(sfc, m_boxrect.x+m_Tiles[i].x,
+									m_boxrect.y+m_Tiles[i].y, m_Tiles[i].tile);
 	}
 
 	if(m_keymsg)

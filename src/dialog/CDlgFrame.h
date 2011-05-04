@@ -20,9 +20,15 @@ enum themes{
 class CDlgFrame {
 public:
 	CDlgFrame(int x, int y, int w, int h, Uint8 theme = DLG_THEME_VORTICON, int tilewidth = 8, int tileheight = 8);
-	virtual ~CDlgFrame();
 
 	void draw(SDL_Surface *dst);
+
+	/**
+	 * \brief Resizes the dialog box to new dimensions
+	 * \param width New width of the box
+	 * \param width New height of the box
+	 */
+	void resize(const Uint32 width, const Uint32 height);
 
 	int m_x;
 	int m_y;
@@ -39,6 +45,7 @@ private:
 	void drawOldSchoolFrame(SDL_Surface *dst);
 	void drawGalaxyFrame(SDL_Surface *dst);
 	void drawRedFrame(SDL_Surface *dst);
+
 };
 
 #endif /* CDLGFRAME_H_ */

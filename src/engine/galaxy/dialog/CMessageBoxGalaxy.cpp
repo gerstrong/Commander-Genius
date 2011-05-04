@@ -19,10 +19,10 @@ CMessageBox(Text, false, false, false)
 {
 	// Center that dialog box
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
-	m_gamerect = g_pVideoDriver->getGameResolution();
+	m_boxrect = g_pVideoDriver->getGameResolution();
 
-	m_gamerect.x = m_gamerect.w/2;
-	m_gamerect.y = m_gamerect.h/2;
+	m_boxrect.x = m_boxrect.w/2;
+	m_boxrect.y = m_boxrect.h/2;
 
 	int width = 0;
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
@@ -34,17 +34,17 @@ CMessageBox(Text, false, false, false)
 
 	// TODO: Those hardcoded are only temporary. They need to be removed.
 	m_text_height = Font.getPixelTextHeight();
-	m_gamerect.h = (m_text_height+2)*m_Lines.size()+16;
-	m_gamerect.w = width;
+	m_boxrect.h = (m_text_height+2)*m_Lines.size()+16;
+	m_boxrect.w = width;
 
-	m_gamerect.x -= m_gamerect.w/2;
-	m_gamerect.y -= m_gamerect.h/2;
+	m_boxrect.x -= m_boxrect.w/2;
+	m_boxrect.y -= m_boxrect.h/2;
 
-	m_gamerect.h /= 8;
-	m_gamerect.w /= 8;
+	mp_DlgFrame = new CDlgFrame(m_boxrect.x, m_boxrect.y,
+			m_boxrect.w, m_boxrect.h, DLG_THEME_GALAXY);
 
-	mp_DlgFrame = new CDlgFrame(m_gamerect.x, m_gamerect.y,
-								m_gamerect.w, m_gamerect.h, DLG_THEME_GALAXY);
+	m_TextPos.x = 8;
+	m_TextPos.y = 8;
 }
 
 void CMessageBoxGalaxy::process()
@@ -66,5 +66,5 @@ void CMessageBoxGalaxy::process()
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
-		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, m_Lines[i], m_gamerect.x+8, m_gamerect.y+(i*m_text_height+8) );
+		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, m_Lines[i], m_boxrect.x+m_TextPos.x, m_boxrect.y+(i*m_text_height+m_TextPos.y) );
 }

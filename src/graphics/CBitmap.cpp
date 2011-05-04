@@ -7,7 +7,7 @@
 
 #include "CBitmap.h"
 #include "CPalette.h"
-#include "../FindFile.h"
+#include "FindFile.h"
 
 CBitmap::CBitmap() {
 	m_BitmapSurface = NULL;
