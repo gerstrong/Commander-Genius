@@ -285,7 +285,7 @@ bool CMap::scrollRight(const bool force)
 // scrolls the map one pixel left
 bool CMap::scrollLeft(const bool force)
 {
-	if(m_scrollx>0)
+	if( m_scrollx > 32 )
 	{
 		m_scrollx--;
 		m_scrollx_buf = m_scrollx&511;
@@ -339,7 +339,7 @@ bool CMap::scrollUp(const bool force)
 	if( !force && findScrollHorizontalScrollBlocker(m_scrolly<<STC) )
 		return false;
 
-	if(m_scrolly>0)
+	if( m_scrolly > 32 )
 	{
 		m_scrolly--;
 		m_scrolly_buf = m_scrolly&511;

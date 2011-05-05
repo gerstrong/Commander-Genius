@@ -32,9 +32,6 @@ CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
 CObject(pmap, x, y, OBJ_PLAYER),
 m_Inventory(l_Inventory),
-m_animation(0),
-m_animation_time(1),
-m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs),
 m_cliff_hanging(false),
 m_camera(pmap,x,y,this),
@@ -741,7 +738,7 @@ int CPlayerLevel::processPressUp() {
 	const Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_mid, up_y);
 	int flag = Tile[tile_no].behaviour;
 
-	/* pressing a switch */
+	// pressing a switch
 	if (flag==MISCFLAG_SWITCHPLATON || flag == MISCFLAG_SWITCHPLATOFF ||
 		flag == MISCFLAG_SWITCHBRIDGE)
 	{
@@ -1125,6 +1122,7 @@ void CPlayerLevel::processDying()
 void CPlayerLevel::kill()
 {
 	// TODO: Here were prepare Keen to die, setting that action
+	// We still need that animation when he really dies.
 	if(!m_Cheatmode.god)
 		m_dying = true;
 }
@@ -1135,14 +1133,6 @@ void CPlayerLevel::kill()
 //----------------------------------------//
 void CPlayerLevel::process()
 {
-	// Perform animation cycle
-	if(m_animation_ticker >= m_animation_time)
-	{
-		m_animation++;
-		m_animation_ticker = 0;
-	}
-	else m_animation_ticker++;
-
 	if(m_dying)
 	{
 		processDying();
@@ -1161,7 +1151,7 @@ void CPlayerLevel::process()
 	if(supportedbyobject)
 		blockedd = true;
 
-	if(getActionNumber(A_KEEN_SLIDE))
+	if( getActionNumber(A_KEEN_SLIDE) )
 	{
 		processPlaceGem();
 	}

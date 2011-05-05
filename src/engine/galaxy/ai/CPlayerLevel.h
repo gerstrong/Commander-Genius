@@ -90,9 +90,6 @@ public:
 	bool m_jumpdownfromobject;
 
 private:
-	Uint8 m_animation;
-	Uint8 m_animation_time;
-	Uint8 m_animation_ticker;
 	std::vector<CObject*>& m_ObjectPtrs;
 
 	char m_playcontrol[PA_MAX_ACTIONS];

@@ -96,53 +96,52 @@ void CCamera::process(const bool force)
 		}
 	}
 
-	int px, py, left, up, right, down, speed;
-
 	Uint16& scroll_x = mp_Map->m_scrollx;
 	Uint16& scroll_y = mp_Map->m_scrolly;
 
-	px = (getXPosition()>>STC)-scroll_x;
-	py = (getYPosition()>>STC)-scroll_y;
+	// delta_ is how much we need to scroll in order to get the camera stalled
+	int delta_x = (getXPosition()>>STC)-scroll_x;
+	int delta_y = (getYPosition()>>STC)-scroll_y;
 
 	st_camera_bounds CameraBounds = g_pVideoDriver->getCameraBounds();
-	left = CameraBounds.left;
-	up = CameraBounds.up;
-	right = CameraBounds.right;
-	down = CameraBounds.down;
-	speed = CameraBounds.speed;
+	const int left = CameraBounds.left;
+	const int up = CameraBounds.up;
+	const int right = CameraBounds.right;
+	const int down = CameraBounds.down;
+	const int speed = CameraBounds.speed;
 
 	// left-right scrolling
-	if(px > right && scroll_x < mp_Map->m_maxscrollx)
+	if(delta_x > right && scroll_x < mp_Map->m_maxscrollx)
 	{
 		do{
-			px = (getXPosition()>>STC)-scroll_x;
+			delta_x = (getXPosition()>>STC)-scroll_x;
 			mp_Map->scrollRight();
-		}while(px > right+speed && scroll_x < mp_Map->m_maxscrollx);
+		}while(delta_x > right+speed && scroll_x < mp_Map->m_maxscrollx);
 	}
-	else if(px < left && scroll_x > 32)
+	else if(delta_x < left && scroll_x > 32)
 	{
 		do{
-			px = (getXPosition()>>STC)-scroll_x;
+			delta_x = (getXPosition()>>STC)-scroll_x;
 			mp_Map->scrollLeft();
-		}while(px < left-speed && scroll_x > 32);
+		}while(delta_x < left-speed && scroll_x > 32);
 	}
 
 	// up-down scrolling
-	if (py > down && scroll_y < mp_Map->m_maxscrolly)
+	if (delta_y > down && scroll_y < mp_Map->m_maxscrolly)
 	{
 		do{
-			py = (getYPosition()>>STC)-scroll_y;
+			delta_y = (getYPosition()>>STC)-scroll_y;
 			if(!mp_Map->scrollDown())
 				break;
-		}while(py > down+speed && scroll_y < mp_Map->m_maxscrolly);
+		}while(delta_y > down+speed && scroll_y < mp_Map->m_maxscrolly);
 	}
-	else if ( py < up && scroll_y > 32 )
+	else if ( delta_y < up && scroll_y > 32 )
 	{
 		do{
-			py = (getYPosition()>>STC)-scroll_y;
+			delta_y = (getYPosition()>>STC)-scroll_y;
 			if(!mp_Map->scrollUp())
 				break;
-		}while(py < up-speed && scroll_y > 32);
+		}while(delta_y < up-speed && scroll_y > 32);
 	}
 
 	// This will always snap correctly to the edge

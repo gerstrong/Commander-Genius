@@ -89,8 +89,8 @@ public:
 	Sint16 m_scrollx_buf;		// Amount to move surface in X.
 	Sint16 m_scrolly_buf; 		// Amount to move surface in Y.
 
-	Uint16 m_scrollx;      		// total amount of X scroll
-	Uint16 m_scrolly;    		// amount the scroll buffer is scrolled(y)
+	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
+	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
 
 	// in-game, contains monsters and special object tags like for switches
 	// on world map contains level numbers and flags for things like teleporters
