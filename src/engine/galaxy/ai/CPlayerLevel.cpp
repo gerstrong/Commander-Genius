@@ -901,6 +901,7 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 
 				moveToHorizontal((l_x>>CSF)<<CSF);
 				setAction(A_KEEN_SLIDE);
+				m_placingGem = true;
 				g_pSound->playSound( SOUND_DOOR_OPEN );
 			}
 		}
@@ -1151,9 +1152,10 @@ void CPlayerLevel::process()
 	if(supportedbyobject)
 		blockedd = true;
 
-	if( getActionNumber(A_KEEN_SLIDE) )
+	if( m_placingGem && getActionNumber(A_KEEN_SLIDE) )
 	{
 		processPlaceGem();
+		m_placingGem = false;
 	}
 	else
 	{
