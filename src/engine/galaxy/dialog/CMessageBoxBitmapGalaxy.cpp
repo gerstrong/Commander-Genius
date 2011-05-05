@@ -14,9 +14,6 @@ CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy( const std::string& Text, const
 CMessageBoxGalaxy(Text),
 m_Bitmap(g_pGfxEngine->getBitmap(BitmapId))
 {
-	SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
-
-
 	// Looking if the Bitmap is too big for the Message box. In that case enlarge it!
 	if( m_Bitmap.getHeight() > m_boxrect.h )
 	{
@@ -28,8 +25,10 @@ m_Bitmap(g_pGfxEngine->getBitmap(BitmapId))
 		mp_DlgFrame->resize(m_boxrect.w+m_Bitmap.getWidth()+2, new_height+16);
 
 		// Now calculate new coordinates and remove the box
-		m_boxrect.x = (gamerect.w - m_boxrect.w)/2;
-		m_boxrect.y = (gamerect.h - m_boxrect.h)/2;
+		SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+		m_boxrect.x = (gamerect.w - mp_DlgFrame->m_w)/2;
+		m_boxrect.y = (gamerect.h - mp_DlgFrame->m_h)/2;
+		mp_DlgFrame->setPos(m_boxrect.x, m_boxrect.y);
 	}
 }
 

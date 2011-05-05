@@ -51,6 +51,14 @@ void CDlgFrame::resize(const Uint32 width, const Uint32 height)
 
 
 
+void CDlgFrame::setPos(const Uint32 x, const Uint32 y)
+{
+	m_x = x ; m_y = y;
+}
+
+
+
+
 void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 {
 	CFont &Font = g_pGfxEngine->getFont(0);

@@ -39,7 +39,9 @@ bool CLevelPlay::loadLevel(const Uint16 level)
     	g_pMusicPlayer->play();
 
     // Add the load message
-	m_MessageBoxes.push_back(new CMessageBoxBitmapGalaxy("Level " + itoa(level) + " has been loaded...", 106 ) );
+    const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
+    const std::string loading_text = g_pBehaviorEngine->getString(level_text);
+	m_MessageBoxes.push_back(new CMessageBoxBitmapGalaxy( loading_text, 106 ) );
 
 	m_Map.drawAll();
 	return true;

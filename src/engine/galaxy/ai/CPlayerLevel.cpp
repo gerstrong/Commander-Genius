@@ -40,6 +40,7 @@ m_Cheatmode(Cheatmode)
 	m_index = 0;
 	m_timer = 0;
 	m_dying = false;
+	m_placingGem = false;
 	m_hDir = facedir;
 	m_ActionBaseOffset = 0x98C;
 	m_ptogglingswitch = false;

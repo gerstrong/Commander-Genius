@@ -26,9 +26,16 @@ public:
 	/**
 	 * \brief Resizes the dialog box to new dimensions
 	 * \param width New width of the box
-	 * \param width New height of the box
+	 * \param height New height of the box
 	 */
 	void resize(const Uint32 width, const Uint32 height);
+
+	/**
+	 * \brief Sets the Position of dialog box
+	 * \param x New x Position of the box
+	 * \param y New y Position of the box
+	 */
+	void setPos(const Uint32 x, const Uint32 y);
 
 	int m_x;
 	int m_y;

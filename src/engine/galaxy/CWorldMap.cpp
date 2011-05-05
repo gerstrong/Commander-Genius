@@ -6,6 +6,7 @@
  */
 
 #include "CWorldMap.h"
+#include "dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {
 
@@ -20,6 +21,8 @@ void CWorldMap::init()
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory, m_Cheatmode);
 
 	MapLoader.loadMap(m_Map, 0); // Is it a Map Level?
+    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+	m_MessageBoxes.push_back(new CMessageBoxBitmapGalaxy( loading_text, 106 ) );
 
 	m_Map.drawAll();
 }
