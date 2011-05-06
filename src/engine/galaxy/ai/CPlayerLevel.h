@@ -64,10 +64,56 @@ public:
 	 */
 	void getAnotherLife(const int &lc_x, const int &lc_y);
 
+
+
+	/**
+	 * \description This is the main process cycle
+	 */
 	void process();
+
+
+
+
+	/**
+	 * \description Simple process called while Keen is standing
+	 */
+	void processStanding();
+
+
+
+	/**
+	 * \description Simple process called while Keen is running
+	 */
+	void processRunning();
+
+
+
+	/**
+	 * \description This will verify whether keen has to fall or not.
+	 * 				This function must be called when he might be walking
+	 * 				because it also checks the lower sloped tiles cases
+	 *
+	 * \todo 		This function should also be called by foes in some cases
+	 */
+	bool verifyForFalling();
+
+
+
+
+	/**
+	 * \description Simple process called while Keen is falling down
+	 */
+	void processFalling();
+
+
+
+
+	/*-----------------------------------------------------*/
+	/* Some of the following function will be removed soon */
+	/*-----------------------------------------------------*/
+
 	void processInput();
 	void processFiring();
-	void processFalling();
 	void processMoving();
 	void processJumping();
 	void processPogo();
@@ -108,6 +154,8 @@ private:
 	bool m_dying;
 	bool m_placingGem;
 	stCheat& m_Cheatmode;
+
+	void (CPlayerLevel::*mp_processState)();
 };
 
 }

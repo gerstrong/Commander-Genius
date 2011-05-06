@@ -35,7 +35,8 @@ m_Inventory(l_Inventory),
 m_ObjectPtrs(ObjectPtrs),
 m_cliff_hanging(false),
 m_camera(pmap,x,y,this),
-m_Cheatmode(Cheatmode)
+m_Cheatmode(Cheatmode),
+mp_processState(&CPlayerLevel::processStanding)
 {
 	m_index = 0;
 	m_timer = 0;
@@ -635,53 +636,6 @@ bool CPlayerLevel::canFallThroughTile()
 	return ( TileProp.bdown == 0 && TileProp.bup != 0 );
 }
 
-// Falling code
-void CPlayerLevel::processFalling()
-{
-	CObject::processFalling();
-
-	// If keen is jumping down, not because he did from an object like a platform,
-	// but a tile where Keen can fall through, process this part of code and
-	// check if Keen is still jumpinto through any object
-	if(!supportedbyobject && m_jumpdown)
-	{
-		if(!canFallThroughTile())
-			m_jumpdown = false;
-	}
-
-	if( !blockedd && !getActionNumber(A_KEEN_FALL) &&
-			( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) ))
-	{
-
-		// This will check three points and avoid that keen falls from sloped tiles
-		const int &fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
-		const int &fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
-		const int &fall3 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
-		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
-		const CTileProperties &TileProp2 = g_pBehaviorEngine->getTileProperties(1)[fall2];
-		const CTileProperties &TileProp3 = g_pBehaviorEngine->getTileProperties(1)[fall3];
-		const bool nothing_on_feet = (TileProp1.bup == 0);
-		const bool nothing_below_feet = (TileProp2.bup == 0) && (TileProp3.bup == 0);
-		const bool can_fall = (nothing_on_feet && nothing_below_feet);
-
-		if(can_fall)
-		{
-			setAction(A_KEEN_FALL);
-			g_pSound->playSound( SOUND_KEEN_FALL );
-		}
-		else
-		{
-			// Force the player a bit down, so he will never fall from sloped tiles
-			moveDown(100);
-		}
-	}
-
-	// While falling keen can of course move into both x-directions
-	if(getActionNumber(A_KEEN_FALL))
-		xinertia += (m_playcontrol[PA_X]>>1);
-}
-
-
 // This is for processing the looking routine.
 void CPlayerLevel::processLooking()
 {
@@ -1130,9 +1084,175 @@ void CPlayerLevel::kill()
 }
 
 
-//----------------------------------------//
-//---- This is the main process cycle ----//
-//----------------------------------------//
+/*------------------------------------------------------*/
+/* Old Stuff what is above. Most of it will be removed! */
+/*------------------------------------------------------*/
+
+
+
+
+void CPlayerLevel::processStanding()
+{
+	/// Keen is standing
+
+
+	// He could walk
+	if(  m_playcontrol[PA_X]<0  )
+	{
+		if( !blockedl )
+		{
+			// prepare him to walk to the left
+			m_hDir = LEFT;
+			mp_processState = &CPlayerLevel::processRunning;
+			setAction(A_KEEN_RUN);
+		}
+	}
+	else if(  m_playcontrol[PA_X]>0  )
+	{
+		if( !blockedr )
+		{
+			// prepare him to walk to the right
+			m_hDir = RIGHT;
+			mp_processState = &CPlayerLevel::processRunning;
+			setAction(A_KEEN_RUN);
+		}
+	}
+
+	// TODO: He could jump
+
+	// TODO: He could duck
+
+	// TODO: He could look up
+
+	// TODO: He could shoot
+
+	// TODO: He could use pogo
+}
+
+
+
+
+void CPlayerLevel::processRunning()
+{
+	// Most of the walking routine is done by the action script itself
+
+
+
+
+	// He could stand again, if player doesn't move the dpad
+	if( m_playcontrol[PA_X] == 0 )
+	{
+		mp_processState = &CPlayerLevel::processStanding;
+		setAction(A_KEEN_STAND);
+	}
+	// or he could change the walking direction
+	else if(  m_playcontrol[PA_X]<0  ) // left
+	{
+		// Is he blocked make him stand, else continue walking
+		if( blockedl )
+		{
+			mp_processState = &CPlayerLevel::processStanding;
+			setAction(A_KEEN_STAND);
+		}
+		else
+		{
+			// to the left
+			m_hDir = LEFT;
+		}
+	}
+	else if(  m_playcontrol[PA_X]>0  ) // right
+	{
+		// Is he blocked make him stand, else continue walking
+		if( blockedr )
+		{
+			mp_processState = &CPlayerLevel::processStanding;
+			setAction(A_KEEN_STAND);
+		}
+		else
+		{
+			// walk to the right
+			m_hDir = RIGHT;
+		}
+	}
+
+	if( verifyForFalling() )
+	{
+		mp_processState = &CPlayerLevel::processFalling;
+		setAction(A_KEEN_FALL);
+	}
+
+
+	// TODO: He could jump
+
+	// TODO: He could shoot
+
+	// TODO: He could use pogo
+}
+
+
+
+
+
+bool CPlayerLevel::verifyForFalling()
+{
+	if( !blockedd )
+	{
+		// This will check three points and avoid that keen falls on sloped tiles
+		const int &fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
+		const int &fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
+		const int &fall3 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
+		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
+		const CTileProperties &TileProp2 = g_pBehaviorEngine->getTileProperties(1)[fall2];
+		const CTileProperties &TileProp3 = g_pBehaviorEngine->getTileProperties(1)[fall3];
+		const bool nothing_on_feet = (TileProp1.bup == 0);
+		const bool nothing_below_feet = (TileProp2.bup == 0) && (TileProp3.bup == 0);
+		const bool can_fall = (nothing_on_feet && nothing_below_feet);
+
+		if(can_fall)
+		{
+			return true;
+		}
+		else
+		{
+			// Force the player a bit down, so he will never fall from sloped tiles
+			moveDown(100);
+		}
+	}
+
+	return false;
+}
+
+
+
+// Falling code
+void CPlayerLevel::processFalling()
+{
+	CObject::processFalling();
+
+	// If keen is jumping down, not because he did from an object like a platform,
+	// but a tile where Keen can fall through, process this part of code and
+	// check if Keen is still jumpinto through any object
+	/*if(!supportedbyobject && m_jumpdown)
+	{
+		if(!canFallThroughTile())
+			m_jumpdown = false;
+	}*/
+
+	// While falling keen can of course move into both x-directions
+	if(getActionNumber(A_KEEN_FALL))
+		xinertia += (m_playcontrol[PA_X]>>1);
+
+	if(blockedd)
+	{
+		setAction(A_KEEN_STAND);
+		mp_processState = &CPlayerLevel::processStanding;
+	}
+}
+
+
+
+
+
 void CPlayerLevel::process()
 {
 	if(m_dying)
@@ -1153,7 +1273,9 @@ void CPlayerLevel::process()
 	if(supportedbyobject)
 		blockedd = true;
 
-	if( m_placingGem && getActionNumber(A_KEEN_SLIDE) )
+	(this->*mp_processState)();
+
+	/*if( m_placingGem && getActionNumber(A_KEEN_SLIDE) )
 	{
 		processPlaceGem();
 		m_placingGem = false;
@@ -1198,14 +1320,14 @@ void CPlayerLevel::process()
 		}
 
 		processLevelMiscFlagsCheck();
-	}
+	}*/
 
 	processActionRoutine();
 
-	moveXDir(xinertia);
+	/*moveXDir(xinertia);
 
 	if( !getActionNumber(A_KEEN_POGO) )
-		xinertia = 0;
+		xinertia = 0;*/
 
 	m_camera.process();
 	m_camera.processEvents();

@@ -83,12 +83,12 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 
 
 			// Now the spoken Messages of some Characters like Lindsey and the elders
-			StringMap.insert( extractString( "LINDSAY_TEXT1", ,  ) );
-			StringMap.insert( extractString( "LINDSAY_TEXT2", ,  ) );
+			StringMap.insert( extractString( "LINDSEY_TEXT1", ,  ) );
+			StringMap.insert( extractString( "LINDSEY_TEXT2", ,  ) );
 
-			StringMap.insert( extractString( "LINDSAY_END_TEXT1", ,  ) );
-			StringMap.insert( extractString( "LINDSAY_END_TEXT2", ,  ) );
-			StringMap.insert( extractString( "LINDSAY_START_TEXT", ,  ) );
+			StringMap.insert( extractString( "LINDSEY_END_TEXT1", ,  ) );
+			StringMap.insert( extractString( "LINDSEY_END_TEXT2", ,  ) );
+			StringMap.insert( extractString( "LINDSEY_START_TEXT", ,  ) );
 
 			StringMap.insert( extractString( "CANT_SWIM_TEXT", ,  ) );
 			StringMap.insert( extractString( "SWIM_SUIT_TEXT", ,  ) );
