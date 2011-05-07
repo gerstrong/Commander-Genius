@@ -98,6 +98,14 @@ public:
 	bool verifyForFalling();
 
 
+	/**
+	 * \description Simple function which just process moving in x direction
+	 * 				of the player. It is called by other functions like
+	 * 				processJumping or processFalling. processRunning not,
+	 * 				because it has to stop running when players gets blocked
+	 * 				to left or right.
+	 */
+	void processMovingHorizontal();
 
 
 	/**
@@ -114,7 +122,6 @@ public:
 
 	void processInput();
 	void processFiring();
-	void processMoving();
 	void processJumping();
 	void processPogo();
 	void processLooking();

@@ -15,9 +15,6 @@
 
 namespace galaxy {
 
-const int MAX_JUMPHEIGHT = 30;
-const int MIN_JUMPHEIGHT = 10;
-
 const int MAX_POGOHEIGHT = 20;
 const int MIN_POGOHEIGHT = 5;
 
@@ -258,9 +255,17 @@ void CPlayerLevel::processFiring()
 
 }
 
-void CPlayerLevel::processMoving()
+void CPlayerLevel::processMovingHorizontal()
 {
-	direction_t moving = NONE;
+	// Verify facing directions
+	if(  m_playcontrol[PA_X]<0  ) // left
+		m_hDir = LEFT;
+	else if( m_playcontrol[PA_X]>0  ) // right
+		m_hDir = RIGHT;
+
+	moveXDir(m_playcontrol[PA_X]>>1);
+
+	/*direction_t moving = NONE;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	if(m_cliff_hanging)
@@ -437,13 +442,16 @@ void CPlayerLevel::processMoving()
 				}
 			}
 		}
-	}
+	}*/
 }
+
+
+const int MAX_JUMPHEIGHT = 10;
 
 // Processes the jumping of the player
 void CPlayerLevel::processJumping()
 {
-	m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
+	/*m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
 			getActionNumber(A_KEEN_FALL);
 
 	if( !m_inair && !m_playcontrol[PA_JUMP] )
@@ -468,32 +476,39 @@ void CPlayerLevel::processJumping()
 			}
 		}
 		else
-		{
-			// while button is pressed, make the player jump higher
-			if( m_playcontrol[PA_JUMP] )
+		{*/
+			// while button is pressed, make the player jump higher.
+			// The jump is limited unless he is in jump cheat mode
+			if( m_playcontrol[PA_JUMP] && (m_Cheatmode.jump || m_jumpheight <= MAX_JUMPHEIGHT) )
 			{
-				if( m_jumpheight <= MIN_JUMPHEIGHT )
-					m_jumpheight++;
+				m_jumpheight++;
 				yinertia = -140;
 			}
 			else
-				m_jumpheight = 0;
+			{
+				if(yinertia<0)
+					yinertia+=10;
+				else
+					m_jumpheight = 0;
+			}
 
 			// Set another jump animation if Keen is near yinertia == 0
 			if( yinertia > -10 )
 				setAction(A_KEEN_JUMP+1);
+
+			moveYDir(yinertia);
 
 			// If the max. height is reached or the player cancels the jump by release the button
 			// make keen fall
 			if( m_jumpheight == 0 )
 			{
 				yinertia = 0;
-				m_jumpheight = 0;
 				setAction(A_KEEN_FALL);
+				mp_processState = &CPlayerLevel::processFalling;
 			}
 
-			xinertia += (m_playcontrol[PA_X]>>1);
-		}
+			processMovingHorizontal();
+		/*}
 	}
 	else
 	{
@@ -542,8 +557,10 @@ void CPlayerLevel::processJumping()
 
 			xinertia += (m_playcontrol[PA_X]>>1);
 		}
-	}
+	}*/
 }
+
+
 
 // Here all the pogo code is processed
 void CPlayerLevel::processPogo()
@@ -1119,6 +1136,19 @@ void CPlayerLevel::processStanding()
 	}
 
 	// TODO: He could jump
+	if( m_playcontrol[PA_JUMP] )
+	{
+		// Not jumping? Let's see if we can prepare the player to do so
+		yinertia = -140;
+		m_jumpheight = 0;
+		setAction(A_KEEN_JUMP);
+		mp_processState = &CPlayerLevel::processJumping;
+		m_jumped = true;
+		m_climbing = false;
+		m_vDir = NONE;
+		g_pSound->playSound( SOUND_KEEN_JUMP );
+	}
+
 
 	// TODO: He could duck
 
@@ -1135,9 +1165,6 @@ void CPlayerLevel::processStanding()
 void CPlayerLevel::processRunning()
 {
 	// Most of the walking routine is done by the action script itself
-
-
-
 
 	// He could stand again, if player doesn't move the dpad
 	if( m_playcontrol[PA_X] == 0 )
@@ -1156,7 +1183,7 @@ void CPlayerLevel::processRunning()
 		}
 		else
 		{
-			// to the left
+			// walk to the left
 			m_hDir = LEFT;
 		}
 	}
@@ -1182,7 +1209,19 @@ void CPlayerLevel::processRunning()
 	}
 
 
-	// TODO: He could jump
+	// He could jump
+	if( m_playcontrol[PA_JUMP] )
+	{
+		// Not jumping? Let's see if we can prepare the player to do so
+		yinertia = -140;
+		m_jumpheight = 0;
+		setAction(A_KEEN_JUMP);
+		mp_processState = &CPlayerLevel::processJumping;
+		m_jumped = true;
+		m_climbing = false;
+		m_vDir = NONE;
+		g_pSound->playSound( SOUND_KEEN_JUMP );
+	}
 
 	// TODO: He could shoot
 
@@ -1224,6 +1263,7 @@ bool CPlayerLevel::verifyForFalling()
 
 
 
+
 // Falling code
 void CPlayerLevel::processFalling()
 {
@@ -1239,14 +1279,16 @@ void CPlayerLevel::processFalling()
 	}*/
 
 	// While falling keen can of course move into both x-directions
-	if(getActionNumber(A_KEEN_FALL))
-		xinertia += (m_playcontrol[PA_X]>>1);
+	//if(getActionNumber(A_KEEN_FALL))
+		//xinertia += (m_playcontrol[PA_X]>>1);
 
 	if(blockedd)
 	{
 		setAction(A_KEEN_STAND);
 		mp_processState = &CPlayerLevel::processStanding;
 	}
+
+	processMovingHorizontal();
 }
 
 
@@ -1324,9 +1366,10 @@ void CPlayerLevel::process()
 
 	processActionRoutine();
 
-	/*moveXDir(xinertia);
+	//moveXDir(xinertia);
+	//moveYDir(yinertia);
 
-	if( !getActionNumber(A_KEEN_POGO) )
+	/*if( !getActionNumber(A_KEEN_POGO) )
 		xinertia = 0;*/
 
 	m_camera.process();
