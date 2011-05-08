@@ -30,7 +30,6 @@ const int POGO_START_INERTIA_IMPOSSIBLE = -180;
 
 
 
-
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
@@ -111,17 +110,7 @@ void CPlayerLevel::processInput()
 		m_playcontrol[PA_Y] += 100;
 	}
 
-	/*if(!m_pfiring)
-	{
-		if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
-			m_playcontrol[PA_JUMP]++;
-		else
-			m_playcontrol[PA_JUMP] = 0;
-
-	}
-	else*/
-		m_playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(m_index, IC_JUMP)   ? 1 : 0;
-
+	m_playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(m_index, IC_JUMP)   ? 1 : 0;
 	m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
 
 	// The possibility to charge jumps. This is mainly used for the pogo. it is limited to 50
@@ -575,6 +564,17 @@ bool CPlayerLevel::canFallThroughTile()
 
 
 
+void CPlayerLevel::processLookingUp()
+{
+	if( m_playcontrol[PA_Y]<0 )
+		return;
+
+	setAction(A_KEEN_STAND);
+	mp_processState = &CPlayerLevel::processStanding;
+}
+
+
+
 
 // This is for processing the looking routine.
 void CPlayerLevel::processLooking()
@@ -622,7 +622,7 @@ void CPlayerLevel::processExiting()
 #define		MISCFLAG_DOOR		2
 #define		MISCFLAG_KEYCARDDOOR		32
 
-int CPlayerLevel::processPressUp() {
+void CPlayerLevel::processPressUp() {
 
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	const int x_left = getXLeftPos();
@@ -702,6 +702,8 @@ int CPlayerLevel::processPressUp() {
 				}
 			} else {*/
 				setAction(A_KEEN_ENTER_DOOR);
+				mp_processState = &CPlayerLevel::processEnterDoor;
+				return;
 				//PlayLoopTimer = 110;
 				//o->action = ACTION_KEENENTERDOOR1
 				//o->int16 = 0;
@@ -712,10 +714,17 @@ int CPlayerLevel::processPressUp() {
 			//o->action = ACTION_KEENENTERSLIDE;
 		//}
 		//EnterDoorAttempt = 1;
-		return 1;
 	}
-	return 0;
+
+	// If the above did not happen, then just look up
+	mp_processState = &CPlayerLevel::processLookingUp;
+	setAction(A_KEEN_LOOKUP);
 }
+
+
+
+
+
 
 void CPlayerLevel::processEnterDoor()
 {
@@ -725,6 +734,7 @@ void CPlayerLevel::processEnterDoor()
 		return;
 
 	setAction(A_KEEN_STAND);
+	mp_processState = &CPlayerLevel::processStanding;
 
 	int xmid = getXMidPos();
 	int y1 = getYMidPos();
@@ -763,6 +773,11 @@ void CPlayerLevel::processEnterDoor()
 	return;
 
 }
+
+
+
+
+
 
 // Process the touching of certain tile, like items and hazards...
 void CPlayerLevel::processLevelMiscFlagsCheck()
@@ -832,16 +847,16 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 	}
 }
 
+
+
+
 /**
  * This function checks whether a bridge must be opened or closed and does this kind of work
  * I'm not really happy with that part of the code and I know that it works for Keen 4. Not sure about the
  * other episodes, but it's well though and should...
  */
 
-/**
- * This function will open/close bridges in Keen Galaxy
- * \param lx CSFed Coordinate where the switch has been triggered
- */
+
 void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 {
 	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
@@ -999,10 +1014,12 @@ void CPlayerLevel::kill()
 /* Old Stuff what is above. Most of it will be removed! */
 /*------------------------------------------------------*/
 
+
+
+
 void CPlayerLevel::processStanding()
 {
 	/// Keen is standing
-
 
 	// He could walk
 	if(  m_playcontrol[PA_X]<0  )
@@ -1026,7 +1043,7 @@ void CPlayerLevel::processStanding()
 		}
 	}
 
-	// TODO: He could jump
+	// He could jump
 	if( m_playcontrol[PA_JUMP] )
 	{
 		// Not jumping? Let's see if we can prepare the player to do so
@@ -1045,6 +1062,10 @@ void CPlayerLevel::processStanding()
 
 	// TODO: He could look up
 
+	// He could press up and do further actions
+	if( m_playcontrol[PA_Y] < 0 )
+		mp_processState = &CPlayerLevel::processPressUp;
+
 	// He could shoot
 	if( m_playcontrol[PA_FIRE] /*&& !m_pfiring*/ )
 	{
@@ -1056,9 +1077,6 @@ void CPlayerLevel::processStanding()
 		//m_pfiring = true;
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
 	}
-	//else
-		// This will ensure that the player has to press again for another shot
-		//m_pfiring = false;
 
 	// He could use pogo
 	if( m_playcontrol[PA_POGO] )

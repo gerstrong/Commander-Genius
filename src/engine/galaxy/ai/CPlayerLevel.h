@@ -129,12 +129,28 @@ public:
 	void processJumping();
 	void processPogo();
 	void processLooking();
-	int processPressUp();
+
+	/**
+	 * This function will process everything that happens when player presses ip
+	 */
+	void processLookingUp();
+
+	/**
+	 * This function will process everything that happens when player presses ip
+	 */
+	void processPressUp();
 	void processExiting();
 	void processEnterDoor();
 	void processLevelMiscFlagsCheck();
 
+
+	/**
+	 * This function will open/close bridges in Keen Galaxy
+	 * \param lx CSFed Coordinate where the switch has been triggered
+	 */
 	void PressBridgeSwitch(const Uint32 lx, const Uint32 ly);
+
+
 	void PressPlatformSwitch(const Uint32 lx, const Uint32 ly);
 	void openDoorsTile();
 	void processPlaceGem();
