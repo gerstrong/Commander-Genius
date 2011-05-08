@@ -45,7 +45,6 @@ mp_processState(&CPlayerLevel::processStanding)
 	m_index = 0;
 	m_timer = 0;
 	m_dying = false;
-	m_placingGem = false;
 	m_hDir = facedir;
 	m_ActionBaseOffset = 0x98C;
 	m_ptogglingswitch = false;
@@ -759,40 +758,10 @@ void CPlayerLevel::processEnterDoor()
 // Process the touching of certain tile, like items and hazards...
 void CPlayerLevel::processLevelMiscFlagsCheck()
 {
-	// TODO: Here it a lot we have to do still.
 	// Item which are taken must go into a data structure
 	// animation should also be triggered
 
 	stItemGalaxy &m_Item = m_Inventory.Item;
-
-	// This will change the gemholder to a holder with gem
-	if( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) )
-	{
-		for( Uint32 i=7 ; i<=10 ; i++ )
-		{
-			const int l_x = getXMidPos();
-			const int l_y = getYDownPos()-(3<<STC);
-
-			if( hitdetectWithTileProperty(i, l_x, l_y) )
-			{
-				if(i == 7 && m_Item.m_gem.red > 0)
-					m_Item.m_gem.red--;
-				else if(i == 8 && m_Item.m_gem.yellow > 0)
-					m_Item.m_gem.yellow--;
-				else if(i == 9 && m_Item.m_gem.blue > 0)
-					m_Item.m_gem.blue--;
-				else if(i == 10 && m_Item.m_gem.green > 0)
-					m_Item.m_gem.green--;
-				else
-					break;
-
-				moveToHorizontal((l_x>>CSF)<<CSF);
-				setAction(A_KEEN_SLIDE);
-				m_placingGem = true;
-				g_pSound->playSound( SOUND_DOOR_OPEN );
-			}
-		}
-	}
 
 	int l_x = getXLeftPos();
 	int l_y = getYUpPos();
@@ -987,6 +956,7 @@ void CPlayerLevel::processPlaceGem()
 	m_timer = 0;
 
 	setAction(A_KEEN_STAND);
+	mp_processState = &CPlayerLevel::processStanding;
 
 	int lx = getXMidPos();
 	int ly = getYDownPos()-(3<<STC);
@@ -1167,6 +1137,36 @@ void CPlayerLevel::processRunning()
 		g_pSound->playSound( SOUND_KEEN_POGO );
 		m_pogotoggle = true;
 	}
+
+	// He could place a gem
+	for( Uint32 i=7 ; i<=10 ; i++ )
+	{
+		const int l_x = getXMidPos();
+		const int l_y = getYDownPos()-(3<<STC);
+
+		// This will change the gemholder to a holder with the gem
+		if( hitdetectWithTileProperty(i, l_x, l_y) )
+		{
+			stItemGalaxy &m_Item = m_Inventory.Item;
+
+			if(i == 7 && m_Item.m_gem.red > 0)
+				m_Item.m_gem.red--;
+			else if(i == 8 && m_Item.m_gem.yellow > 0)
+				m_Item.m_gem.yellow--;
+			else if(i == 9 && m_Item.m_gem.blue > 0)
+				m_Item.m_gem.blue--;
+			else if(i == 10 && m_Item.m_gem.green > 0)
+				m_Item.m_gem.green--;
+			else
+				break;
+
+			moveToHorizontal((l_x>>CSF)<<CSF);
+			setAction(A_KEEN_SLIDE);
+			mp_processState = &CPlayerLevel::processPlaceGem;
+			g_pSound->playSound( SOUND_DOOR_OPEN );
+		}
+	}
+
 }
 
 
@@ -1272,12 +1272,7 @@ void CPlayerLevel::process()
 
 	(this->*mp_processState)();
 
-	/*if( m_placingGem && getActionNumber(A_KEEN_SLIDE) )
-	{
-		processPlaceGem();
-		m_placingGem = false;
-	}
-	else
+	/*
 	{
 		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 		TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
@@ -1319,13 +1314,12 @@ void CPlayerLevel::process()
 		processLevelMiscFlagsCheck();
 	}*/
 
+	processLevelMiscFlagsCheck();
+
 	processActionRoutine();
 
 	//moveXDir(xinertia);
 	//moveYDir(yinertia);
-
-	/*if( !getActionNumber(A_KEEN_POGO) )
-		xinertia = 0;*/
 
 	m_camera.process();
 	m_camera.processEvents();

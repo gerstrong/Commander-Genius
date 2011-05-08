@@ -159,7 +159,6 @@ private:
 	CCamera m_camera;
 
 	bool m_dying;
-	bool m_placingGem;
 	stCheat& m_Cheatmode;
 
 	void (CPlayerLevel::*mp_processState)();
