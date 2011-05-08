@@ -15,14 +15,21 @@
 
 namespace galaxy {
 
+
+
+const int MAX_JUMPHEIGHT = 10;
+const int MIN_JUMPHEIGHT = 5;
+
 const int MAX_POGOHEIGHT = 20;
 const int MIN_POGOHEIGHT = 5;
+const int POGO_SLOWDOWN = 4;
 
-const int POGO_START_INERTIA = -100;
-const int POGO_START_INERTIA_MAX = -173;
-const int POGO_X_MAX_INERTIA = 55;
-const int POGO_X_BOOST = 4;
-const int POGO_START_INERTIA_IMPOSSIBLE = -200;
+const int POGO_START_INERTIA = -90;
+const int POGO_START_INERTIA_MAX = -168;
+const int POGO_START_INERTIA_IMPOSSIBLE = -180;
+
+
+
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir,
@@ -118,7 +125,7 @@ void CPlayerLevel::processInput()
 
 	m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
 
-	// The possibility to charge jumps. This is mainly used for the pogo.
+	// The possibility to charge jumps. This is mainly used for the pogo. it is limited to 50
 	if( m_playcontrol[PA_JUMP] > 50) m_playcontrol[PA_JUMP] = 50;
 
 	// Two button firing process
@@ -446,205 +453,109 @@ void CPlayerLevel::processMovingHorizontal()
 }
 
 
-const int MAX_JUMPHEIGHT = 10;
-
-// Processes the jumping of the player
-void CPlayerLevel::processJumping()
-{
-	/*m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
-			getActionNumber(A_KEEN_FALL);
-
-	if( !m_inair && !m_playcontrol[PA_JUMP] )
-		m_jumped = false;
-
-	if( m_Cheatmode.jump && !getActionNumber(A_KEEN_POGO) )
-	{
-		if(!getActionNumber(A_KEEN_JUMP) && !getActionNumber(A_KEEN_JUMP+1))
-		{
-			if(blockedd)
-				m_jumpheight = 0;
-
-			// Not jumping? Let's see if we can prepare the player to do so
-			if( m_playcontrol[PA_JUMP] )
-			{
-				yinertia = -140;
-				setAction(A_KEEN_JUMP);
-				m_jumped = true;
-				m_climbing = false;
-				m_vDir = NONE;
-				g_pSound->playSound( SOUND_KEEN_JUMP );
-			}
-		}
-		else
-		{*/
-			// while button is pressed, make the player jump higher.
-			// The jump is limited unless he is in jump cheat mode
-			if( m_playcontrol[PA_JUMP] && (m_Cheatmode.jump || m_jumpheight <= MAX_JUMPHEIGHT) )
-			{
-				m_jumpheight++;
-				yinertia = -140;
-			}
-			else
-			{
-				if(yinertia<0)
-					yinertia+=10;
-				else
-					m_jumpheight = 0;
-			}
-
-			// Set another jump animation if Keen is near yinertia == 0
-			if( yinertia > -10 )
-				setAction(A_KEEN_JUMP+1);
-
-			moveYDir(yinertia);
-
-			// If the max. height is reached or the player cancels the jump by release the button
-			// make keen fall
-			if( m_jumpheight == 0 )
-			{
-				yinertia = 0;
-				setAction(A_KEEN_FALL);
-				mp_processState = &CPlayerLevel::processFalling;
-			}
-
-			processMovingHorizontal();
-		/*}
-	}
-	else
-	{
-
-		if(!getActionNumber(A_KEEN_JUMP) && !getActionNumber(A_KEEN_JUMP+1))
-		{
-			if(blockedd)
-				m_jumpheight = 0;
-
-			// Not jumping? Let's see if we can prepare the player to do so
-			if(m_playcontrol[PA_JUMP] && !m_jumped &&
-					(getActionNumber(A_KEEN_STAND) ||
-							getActionNumber(A_KEEN_RUN) ||
-							getActionNumber(A_KEEN_POLE) ||
-							getActionNumber(A_KEEN_POLE_CLIMB) ||
-							getActionNumber(A_KEEN_POLE_SLIDE)) )
-			{
-				yinertia = -140;
-				setAction(A_KEEN_JUMP);
-				m_jumped = true;
-				m_climbing = false;
-				m_vDir = NONE;
-				g_pSound->playSound( SOUND_KEEN_JUMP );
-			}
-		}
-		else
-		{
-			// while button is pressed, make the player jump higher
-			if(m_playcontrol[PA_JUMP] || m_jumpheight <= MIN_JUMPHEIGHT )
-				m_jumpheight++;
-			else
-				m_jumpheight = 0;
-
-			// Set another jump animation if Keen is near yinertia == 0
-			if( yinertia > -10 )
-				setAction(A_KEEN_JUMP+1);
-
-			// If the max. height is reached or the player cancels the jump by release the button
-			// make keen fall
-			if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
-			{
-				yinertia = 0;
-				m_jumpheight = 0;
-				setAction(A_KEEN_FALL);
-			}
-
-			xinertia += (m_playcontrol[PA_X]>>1);
-		}
-	}*/
-}
 
 
 
 // Here all the pogo code is processed
 void CPlayerLevel::processPogo()
 {
-	if(m_pfiring)
-		return;
-
 	if(!m_playcontrol[PA_POGO])
 		m_pogotoggle = false;
 
-	if(!getActionNumber(A_KEEN_POGO) && !m_pogotoggle)
+	// while button is pressed, make the player jump higher
+	if(yinertia<0)
 	{
-		if(blockedd)
-			m_jumpheight = 0;
+		if( (m_playcontrol[PA_JUMP] && m_jumpheight <= MAX_POGOHEIGHT) || m_jumpheight <= MIN_POGOHEIGHT )
+			m_jumpheight++;
 
-		// Not pogoing? Let's see if we can prepare the player to do so
-		if( m_playcontrol[PA_POGO] )
-		{
-			if( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) )
-			{
-				if(m_playcontrol[PA_JUMP])
-					yinertia = POGO_START_INERTIA_IMPOSSIBLE;
-				else
-					yinertia = POGO_START_INERTIA;
-
-				m_jumpheight = 0;
-				setAction(A_KEEN_POGO);
-				g_pSound->playSound( SOUND_KEEN_POGO );
-				m_pogotoggle = true;
-			}
-			else if( getActionNumber(A_KEEN_FALL) || getActionNumber(A_KEEN_JUMP) )
-			{
-				m_jumpheight = MAX_POGOHEIGHT;
-				setAction(A_KEEN_POGO);
-				m_pogotoggle = true;
-			}
-		}
+		yinertia+=POGO_SLOWDOWN;
 	}
 	else
 	{
-		// while button is pressed, make the player jump higher
-		if( (m_playcontrol[PA_JUMP] && m_jumpheight <= MAX_POGOHEIGHT) ||
-				m_jumpheight <= MIN_POGOHEIGHT )
-		{
-			m_jumpheight++;
-		}
+		CObject::processFalling();
+		m_jumpheight = 0;
+	}
 
-		// pressed again will make keen fall until hitting the ground
-		if(m_playcontrol[PA_POGO] && !m_pogotoggle)
-		{
+	// pressed again will make keen fall until hitting the ground
+	if(m_playcontrol[PA_POGO] && !m_pogotoggle)
+	{
+		m_jumpheight = 0;
+		setAction(A_KEEN_FALL);
+		mp_processState = &CPlayerLevel::processFalling;
+		m_pogotoggle = true;
+	}
+
+	// When keen hits the floor, start the same pogoinertia again!
+	if(blockedd)
+	{
+		if(m_playcontrol[PA_JUMP])
+			yinertia = POGO_START_INERTIA_MAX;
+		else
+			yinertia = POGO_START_INERTIA;
+
+		m_jumpheight = 0;
+		g_pSound->playSound( SOUND_KEEN_POGO );
+	}
+
+	moveYDir(yinertia);
+
+	processMovingHorizontal();
+}
+
+
+
+
+
+
+// Processes the jumping of the player
+void CPlayerLevel::processJumping()
+{
+	// while button is pressed, make the player jump higher.
+	// The jump is limited unless he is in jump cheat mode
+	if( (m_playcontrol[PA_JUMP] && (m_Cheatmode.jump || m_jumpheight <= MAX_JUMPHEIGHT))
+			|| m_jumpheight <= MIN_JUMPHEIGHT )
+	{
+		m_jumpheight++;
+		yinertia = -140;
+	}
+	else
+	{
+		if(yinertia<0)
+			yinertia+=10;
+		else
 			m_jumpheight = 0;
-			setAction(A_KEEN_FALL);
-			m_pogotoggle = true;
-		}
+	}
 
-		// When keen hits the floor, start the same pogoinertia again!
-		if(blockedd)
-		{
-			if(m_playcontrol[PA_JUMP])
-				yinertia = POGO_START_INERTIA_MAX;
-			else
-				yinertia = POGO_START_INERTIA;
+	// Set another jump animation if Keen is near yinertia == 0
+	if( yinertia > -10 )
+		setAction(A_KEEN_JUMP+1);
 
-			m_jumpheight = 0;
-			g_pSound->playSound( SOUND_KEEN_POGO );
-		}
+	moveYDir(yinertia);
 
-		if(m_playcontrol[PA_X] > 0)
-		{
-			if(xinertia <= POGO_X_MAX_INERTIA)
-				xinertia += POGO_X_BOOST;
-		}
-		else if(m_playcontrol[PA_X] < 0)
-		{
-			if(xinertia >= -POGO_X_MAX_INERTIA)
-				xinertia -= POGO_X_BOOST;
-		}
+	// If the max. height is reached or the player cancels the jump by release the button
+	// make keen fall
+	if( m_jumpheight == 0 )
+	{
+		yinertia = 0;
+		setAction(A_KEEN_FALL);
+		mp_processState = &CPlayerLevel::processFalling;
+	}
 
-		if( blockedr && xinertia > 0 )
-			xinertia -= POGO_X_BOOST;
-		else if( blockedl && xinertia < 0 )
-			xinertia += POGO_X_BOOST;
+	processMovingHorizontal();
+
+	// Now in this mode we could switch to pogoing
+	if( !m_pogotoggle && m_playcontrol[PA_POGO] )
+	{
+		m_jumpheight = MAX_POGOHEIGHT;
+		setAction(A_KEEN_POGO);
+		m_pogotoggle = true;
+		mp_processState = &CPlayerLevel::processPogo;
 	}
 }
+
+
+
+
 
 bool CPlayerLevel::canFallThroughTile()
 {
@@ -652,6 +563,10 @@ bool CPlayerLevel::canFallThroughTile()
 	const CTileProperties &TileProp = g_pBehaviorEngine->getTileProperties(1)[tile];
 	return ( TileProp.bdown == 0 && TileProp.bup != 0 );
 }
+
+
+
+
 
 // This is for processing the looking routine.
 void CPlayerLevel::processLooking()
@@ -1156,7 +1071,20 @@ void CPlayerLevel::processStanding()
 
 	// TODO: He could shoot
 
-	// TODO: He could use pogo
+	// He could use pogo
+	if( m_playcontrol[PA_POGO] )
+	{
+		if(m_playcontrol[PA_JUMP])
+			yinertia = POGO_START_INERTIA_IMPOSSIBLE;
+		else
+			yinertia = POGO_START_INERTIA;
+
+		m_jumpheight = 0;
+		setAction(A_KEEN_POGO);
+		mp_processState = &CPlayerLevel::processPogo;
+		g_pSound->playSound( SOUND_KEEN_POGO );
+		m_pogotoggle = true;
+	}
 }
 
 
@@ -1225,7 +1153,20 @@ void CPlayerLevel::processRunning()
 
 	// TODO: He could shoot
 
-	// TODO: He could use pogo
+	// He could use pogo
+	if( m_playcontrol[PA_POGO] )
+	{
+		if(m_playcontrol[PA_JUMP])
+			yinertia = POGO_START_INERTIA_IMPOSSIBLE;
+		else
+			yinertia = POGO_START_INERTIA;
+
+		m_jumpheight = 0;
+		setAction(A_KEEN_POGO);
+		mp_processState = &CPlayerLevel::processPogo;
+		g_pSound->playSound( SOUND_KEEN_POGO );
+		m_pogotoggle = true;
+	}
 }
 
 
@@ -1289,6 +1230,20 @@ void CPlayerLevel::processFalling()
 	}
 
 	processMovingHorizontal();
+
+	/// While falling Keen could switch to pogo again anytime
+	// but first the player must release the pogo button
+	if(!m_playcontrol[PA_POGO])
+		m_pogotoggle = false;
+
+	// Now we can check if player wants to use it again
+	if( !m_pogotoggle && m_playcontrol[PA_POGO] )
+	{
+		m_jumpheight = 0;
+		setAction(A_KEEN_POGO);
+		m_pogotoggle = true;
+		mp_processState = &CPlayerLevel::processPogo;
+	}
 }
 
 
