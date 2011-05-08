@@ -79,6 +79,10 @@ public:
 	 */
 	void processStanding();
 
+	/**
+	 * \description This will make keen stand in a pose with the gun and shoot if he has bullets
+	 */
+	void processShootWhileStanding();
 
 
 	/**
@@ -147,7 +151,6 @@ private:
 
 	char m_playcontrol[PA_MAX_ACTIONS];
 
-	bool m_pfiring;
 	bool m_ptogglingswitch;
 	int m_jumpheight;
 	bool m_cliff_hanging;

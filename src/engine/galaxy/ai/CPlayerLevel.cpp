@@ -24,7 +24,7 @@ const int MAX_POGOHEIGHT = 20;
 const int MIN_POGOHEIGHT = 5;
 const int POGO_SLOWDOWN = 4;
 
-const int POGO_START_INERTIA = -90;
+const int POGO_START_INERTIA = -100;
 const int POGO_START_INERTIA_MAX = -168;
 const int POGO_START_INERTIA_IMPOSSIBLE = -180;
 
@@ -52,7 +52,7 @@ mp_processState(&CPlayerLevel::processStanding)
 
 	memset(m_playcontrol, 0, PA_MAX_ACTIONS);
 
-	m_pfiring = false;
+	//m_pfiring = false;
 	m_jumpheight = 0;
 	m_climbing = false;
 	m_inair = false;
@@ -111,7 +111,7 @@ void CPlayerLevel::processInput()
 		m_playcontrol[PA_Y] += 100;
 	}
 
-	if(!m_pfiring)
+	/*if(!m_pfiring)
 	{
 		if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
 			m_playcontrol[PA_JUMP]++;
@@ -119,7 +119,7 @@ void CPlayerLevel::processInput()
 			m_playcontrol[PA_JUMP] = 0;
 
 	}
-	else
+	else*/
 		m_playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(m_index, IC_JUMP)   ? 1 : 0;
 
 	m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
@@ -153,12 +153,12 @@ void CPlayerLevel::processInput()
 
 void CPlayerLevel::processFiring()
 {
-	if( m_playcontrol[PA_FIRE] && m_climbing )
+	/*if( m_playcontrol[PA_FIRE] && m_climbing )
 		yinertia = 0;
 
 	stItemGalaxy &m_Item = m_Inventory.Item;
 
-	if( m_playcontrol[PA_FIRE] && !m_pfiring )
+	//if( m_playcontrol[PA_FIRE] && !m_pfiring )
 	{
 		if(m_climbing)
 		{
@@ -256,9 +256,11 @@ void CPlayerLevel::processFiring()
 		}
 	}
 
-	if( m_playcontrol[PA_FIRE] == 0 )
-		m_pfiring = false;
+	//if( m_playcontrol[PA_FIRE] == 0 )
+		//m_pfiring = false;
 
+
+	*/
 }
 
 void CPlayerLevel::processMovingHorizontal()
@@ -997,9 +999,6 @@ void CPlayerLevel::kill()
 /* Old Stuff what is above. Most of it will be removed! */
 /*------------------------------------------------------*/
 
-
-
-
 void CPlayerLevel::processStanding()
 {
 	/// Keen is standing
@@ -1046,7 +1045,20 @@ void CPlayerLevel::processStanding()
 
 	// TODO: He could look up
 
-	// TODO: He could shoot
+	// He could shoot
+	if( m_playcontrol[PA_FIRE] /*&& !m_pfiring*/ )
+	{
+		setAction(A_KEEN_SHOOT);
+		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+		const int newy = getYPosition()+(4<<STC);
+		if(m_Inventory.Item.m_bullets > 0)
+			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+		//m_pfiring = true;
+		mp_processState = &CPlayerLevel::processShootWhileStanding;
+	}
+	//else
+		// This will ensure that the player has to press again for another shot
+		//m_pfiring = false;
 
 	// He could use pogo
 	if( m_playcontrol[PA_POGO] )
@@ -1064,6 +1076,16 @@ void CPlayerLevel::processStanding()
 	}
 }
 
+
+void CPlayerLevel::processShootWhileStanding()
+{
+	// while until player releases the button and get back to stand status
+	if( !m_playcontrol[PA_FIRE] )
+	{
+		setAction(A_KEEN_STAND);
+		mp_processState = &CPlayerLevel::processStanding;
+	}
+}
 
 
 
@@ -1128,7 +1150,17 @@ void CPlayerLevel::processRunning()
 		g_pSound->playSound( SOUND_KEEN_JUMP );
 	}
 
-	// TODO: He could shoot
+	// He could shoot
+	if( m_playcontrol[PA_FIRE] )
+	{
+		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+		const int newy = getYPosition()+(4<<STC);
+		if(m_Inventory.Item.m_bullets > 0)
+			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+
+		setAction(A_KEEN_SHOOT);
+		mp_processState = &CPlayerLevel::processShootWhileStanding;
+	}
 
 	// He could use pogo
 	if( m_playcontrol[PA_POGO] )
