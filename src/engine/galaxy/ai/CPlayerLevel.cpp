@@ -462,7 +462,7 @@ void CPlayerLevel::processPogo()
 		m_pogotoggle = false;
 
 	// while button is pressed, make the player jump higher
-	if(yinertia<0)
+	if( yinertia<0 && !blockedu )
 	{
 		if( (m_playcontrol[PA_JUMP] && m_jumpheight <= MAX_POGOHEIGHT) || m_jumpheight <= MIN_POGOHEIGHT )
 			m_jumpheight++;
@@ -471,6 +471,9 @@ void CPlayerLevel::processPogo()
 	}
 	else
 	{
+		if(blockedu)
+			g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
+
 		CObject::processFalling();
 		m_jumpheight = 0;
 	}
@@ -519,7 +522,7 @@ void CPlayerLevel::processJumping()
 	}
 	else
 	{
-		if(yinertia<0)
+		if( yinertia<0 && !blockedu )
 			yinertia+=10;
 		else
 			m_jumpheight = 0;
@@ -535,6 +538,10 @@ void CPlayerLevel::processJumping()
 	// make keen fall
 	if( m_jumpheight == 0 )
 	{
+		// Check whether we should bump the head
+		if(blockedu)
+			g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
+
 		yinertia = 0;
 		setAction(A_KEEN_FALL);
 		mp_processState = &CPlayerLevel::processFalling;
@@ -1282,13 +1289,6 @@ void CPlayerLevel::process()
 
 		if(!m_cliff_hanging)
 		{
-			// Check whether we should bump the head
-			if(!blockedd && blockedu && !m_BumpHead)
-			{
-				g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
-				m_BumpHead = true;
-			}
-
 			if(!blockedu)
 				m_BumpHead = false;
 

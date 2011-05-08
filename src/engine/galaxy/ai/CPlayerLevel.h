@@ -152,7 +152,6 @@ private:
 	int m_jumpheight;
 	bool m_cliff_hanging;
 	bool m_inair;
-	bool m_BumpHead;
 
 	int m_timer;
 	bool m_pogotoggle;
