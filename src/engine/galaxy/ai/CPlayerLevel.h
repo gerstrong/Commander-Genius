@@ -131,15 +131,26 @@ public:
 	void processLooking();
 
 	/**
-	 * This function will process everything that happens when player presses ip
+	 * This function will be processed while Keen is looking up
 	 */
 	void processLookingUp();
 
 	/**
-	 * This function will process everything that happens when player presses ip
+	 * This function will process everything that happens when player presses up
 	 */
 	void processPressUp();
 	void processExiting();
+
+	/**
+	 * This function will be process will keen is pressing a switch. Placing gem uses
+	 * a different process called processPlaceGem()
+	 * He just slides to that item or tile
+	 */
+	void processSliding();
+
+	/**
+	 * This function will process the going into a door
+	 */
 	void processEnterDoor();
 	void processLevelMiscFlagsCheck();
 

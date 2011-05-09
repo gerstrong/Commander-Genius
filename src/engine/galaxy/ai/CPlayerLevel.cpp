@@ -566,6 +566,19 @@ bool CPlayerLevel::canFallThroughTile()
 
 void CPlayerLevel::processLookingUp()
 {
+	// While looking up, Keen could shoot up!
+	// He could shoot
+	if( m_playcontrol[PA_FIRE] )
+	{
+		setActionForce(A_KEEN_SHOOT+2);
+		const int newx = getXMidPos()-(3<<STC);
+		const int newy = getYUpPos()-(16<<STC);
+		if(m_Inventory.Item.m_bullets > 0)
+			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+		mp_processState = &CPlayerLevel::processShootWhileStanding;
+		return;
+	}
+
 	if( m_playcontrol[PA_Y]<0 )
 		return;
 
@@ -605,6 +618,12 @@ void CPlayerLevel::processLooking()
 	}
 }
 
+
+
+
+
+
+
 // Processes the exiting of the player. Here all cases are held
 void CPlayerLevel::processExiting()
 {
@@ -615,6 +634,13 @@ void CPlayerLevel::processExiting()
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
 	}
 }
+
+
+
+
+
+
+
 
 #define		MISCFLAG_SWITCHPLATON 5
 #define 	MISCFLAG_SWITCHPLATOFF 6
@@ -656,6 +682,9 @@ void CPlayerLevel::processPressUp() {
 			mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
 			PressPlatformSwitch(x_mid, up_y);
 		}
+		setAction(A_KEEN_SLIDE);
+		mp_processState = &CPlayerLevel::processSliding;
+
 	 }
 /*		var2 = o->boxTXmid*256-64;
 		if (o->xpos == var2) {
@@ -719,6 +748,20 @@ void CPlayerLevel::processPressUp() {
 	// If the above did not happen, then just look up
 	mp_processState = &CPlayerLevel::processLookingUp;
 	setAction(A_KEEN_LOOKUP);
+}
+
+
+
+
+
+
+void CPlayerLevel::processSliding()
+{
+	if(!getActionStatus(A_KEEN_STAND))
+		return;
+
+	setAction(A_KEEN_STAND);
+	mp_processState = &CPlayerLevel::processStanding;
 }
 
 
@@ -1067,14 +1110,13 @@ void CPlayerLevel::processStanding()
 		mp_processState = &CPlayerLevel::processPressUp;
 
 	// He could shoot
-	if( m_playcontrol[PA_FIRE] /*&& !m_pfiring*/ )
+	if( m_playcontrol[PA_FIRE] )
 	{
 		setAction(A_KEEN_SHOOT);
 		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 		const int newy = getYPosition()+(4<<STC);
 		if(m_Inventory.Item.m_bullets > 0)
 			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
-		//m_pfiring = true;
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
 	}
 
@@ -1100,8 +1142,16 @@ void CPlayerLevel::processShootWhileStanding()
 	// while until player releases the button and get back to stand status
 	if( !m_playcontrol[PA_FIRE] )
 	{
-		setAction(A_KEEN_STAND);
-		mp_processState = &CPlayerLevel::processStanding;
+		if(getActionNumber(A_KEEN_SHOOT+2))
+		{
+			setAction(A_KEEN_LOOKUP);
+			mp_processState = &CPlayerLevel::processLookingUp;
+		}
+		else
+		{
+			setAction(A_KEEN_STAND);
+			mp_processState = &CPlayerLevel::processStanding;
+		}
 	}
 }
 
