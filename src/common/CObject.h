@@ -113,8 +113,8 @@ public:
 	uint16_t m_ActionTicker;
 	uint16_t m_ActionNumber;
 	size_t m_ActionBaseOffset;
-	bool m_climbing;
 	bool m_jumped;
+	bool m_climbing;
 	bool m_jumpdown;
 
 	// This container will held the triggered events of the object

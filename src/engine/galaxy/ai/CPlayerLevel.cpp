@@ -307,37 +307,7 @@ void CPlayerLevel::processMovingHorizontal()
 	}
 	else
 	{
-		if(m_climbing)
-		{
-			// The climbing section for Keen
-			Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-			Uint32 l_y_up = getYUpPos()-(7<<STC);
-			Uint32 l_y_down = getYDownPos()-(7<<STC);
-			if(m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) )
-			{
-				setAction(A_KEEN_POLE_CLIMB);
-				m_vDir = UP;
-			}
-			else if(m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down) )
-			{
-				setAction(A_KEEN_POLE_SLIDE);
-				m_vDir = DOWN;
-			}
-			else if(m_playcontrol[PA_Y] > 0 && !hitdetectWithTileProperty(1, l_x, l_y_down) )
-			{
-				m_climbing = false;
-			}
-			else if(m_playcontrol[PA_X] != 0)
-			{
-				m_climbing = false;
-			}
-			else // == 0
-			{
-				setAction(A_KEEN_POLE);
-				m_vDir = NONE;
-			}
-		}
-		else
+		//else
 		{
 			// Normal moving, can be while jumping or running
 			if(!m_pfiring)
@@ -548,6 +518,12 @@ void CPlayerLevel::processJumping()
 		m_pogotoggle = true;
 		mp_processState = &CPlayerLevel::processPogo;
 	}
+
+	// Check if keen should stick to the pole
+	if( m_playcontrol[PA_Y] < 0 )
+	{
+		verifyforPole();
+	}
 }
 
 
@@ -590,7 +566,7 @@ void CPlayerLevel::processLookingUp()
 
 
 // This is for processing the looking routine.
-void CPlayerLevel::processLooking()
+/*void CPlayerLevel::processLooking()
 {
 	if(getActionNumber(A_KEEN_SHOOT+2))
 		return;
@@ -616,7 +592,7 @@ void CPlayerLevel::processLooking()
 			g_pSound->playSound( SOUND_KEEN_FALL );
 		}
 	}
-}
+}*/
 
 
 
@@ -755,6 +731,33 @@ void CPlayerLevel::processPressUp() {
 
 
 
+void CPlayerLevel::processPressDucking()
+{
+	if( m_playcontrol[PA_Y]>0 )
+	{
+		const bool jumpdowntile = canFallThroughTile();
+		if ( m_playcontrol[PA_JUMP] > 0 && ( supportedbyobject || jumpdowntile )  )
+		{
+			m_jumpdownfromobject = supportedbyobject;
+			m_jumpdown = jumpdowntile;
+			supportedbyobject = false;
+			setAction(A_KEEN_FALL);
+			g_pSound->playSound( SOUND_KEEN_FALL );
+		}
+
+		return;
+	}
+
+	setAction(A_KEEN_STAND);
+	mp_processState = &CPlayerLevel::processStanding;
+}
+
+
+
+
+
+
+
 void CPlayerLevel::processSliding()
 {
 	if(!getActionStatus(A_KEEN_STAND))
@@ -763,6 +766,7 @@ void CPlayerLevel::processSliding()
 	setAction(A_KEEN_STAND);
 	mp_processState = &CPlayerLevel::processStanding;
 }
+
 
 
 
@@ -1060,6 +1064,101 @@ void CPlayerLevel::kill()
 
 
 
+
+void CPlayerLevel::processPoleClimbing()
+{
+	// This will cancel the pole process and make Keen jump
+	if( m_playcontrol[PA_JUMP] > 0 )
+	{
+		setAction(A_KEEN_JUMP);
+		mp_processState = &CPlayerLevel::processJumping;
+		m_climbing = false;
+		yinertia = 0;
+		m_vDir = NONE;
+		solid = true;
+		return;
+	}
+
+	// Lets check if Keen can move up, down or reaches the end of the pole
+	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	Uint32 l_y_up = getYUpPos()-(7<<STC);
+	Uint32 l_y_down = getYDownPos()+(7<<STC);
+
+	if( m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) )
+	{
+		// Check for the upper side and don't let him move if the pole ended
+		setAction(A_KEEN_POLE_CLIMB);
+		m_vDir = UP;
+
+	}
+	else if( m_playcontrol[PA_Y] > 0 )
+	{
+		l_y_up = getYUpPos()+(16<<STC);
+		// Check for the and upper lower side, upper because the hand can touch the edge in that case
+		if( hitdetectWithTileProperty(1, l_x, l_y_down) || hitdetectWithTileProperty(1, l_x, l_y_up)  )
+		{
+			// Slide down if there is more of the pole
+			setAction(A_KEEN_POLE_SLIDE);
+			m_vDir = DOWN;
+		}
+		else
+		{
+			// Fall down if there isn't any pole to slide down
+			m_climbing = false;
+			setAction(A_KEEN_FALL);
+			mp_processState = &CPlayerLevel::processFalling;
+			m_vDir = NONE;
+			yinertia = 0;
+			solid = true;
+		}
+	}
+	else
+	{
+		setAction(A_KEEN_POLE);
+		m_vDir = NONE;
+	}
+}
+
+
+
+
+
+
+void CPlayerLevel::verifyforPole()
+{
+	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	Uint32 l_y_up = ( getYUpPos() );
+	Uint32 l_y_down = ( getYDownPos() );
+
+
+	// Now check if Player has the chance to climb a pole or something similar
+	if( ( m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) ) ||
+		( m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down) ) ) // 1 -> stands for pole Property
+	{
+		// Hit pole!
+		// calc the proper coord of that tile
+		l_x = (l_x>>CSF)<<CSF;
+		if( ( m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) ) ||
+			( m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down) ) )
+		{
+			// Move to the proper X Coordinates, so Keen really grabs it!
+			moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
+			xinertia = 0;
+
+			// Set Keen in climb mode
+			setAction(A_KEEN_POLE);
+			mp_processState = &CPlayerLevel::processPoleClimbing;
+			m_climbing = true;
+			solid = false;
+		}
+	}
+}
+
+
+
+
+
+
 void CPlayerLevel::processStanding()
 {
 	/// Keen is standing
@@ -1101,13 +1200,18 @@ void CPlayerLevel::processStanding()
 	}
 
 
-	// TODO: He could duck
-
-	// TODO: He could look up
+	// He could duck or use the pole
+	if( m_playcontrol[PA_Y] > 0 )
+	{
+		verifyforPole();
+	}
 
 	// He could press up and do further actions
 	if( m_playcontrol[PA_Y] < 0 )
+	{
 		mp_processState = &CPlayerLevel::processPressUp;
+		verifyforPole();
+	}
 
 	// He could shoot
 	if( m_playcontrol[PA_FIRE] )
@@ -1340,7 +1444,7 @@ void CPlayerLevel::processFalling()
 
 	/// While falling Keen could switch to pogo again anytime
 	// but first the player must release the pogo button
-	if(!m_playcontrol[PA_POGO])
+	if( !m_playcontrol[PA_POGO] )
 		m_pogotoggle = false;
 
 	// Now we can check if player wants to use it again
@@ -1350,6 +1454,12 @@ void CPlayerLevel::processFalling()
 		setAction(A_KEEN_POGO);
 		m_pogotoggle = true;
 		mp_processState = &CPlayerLevel::processPogo;
+	}
+
+	// Check if keen should stick to the pole
+	if( m_playcontrol[PA_Y] < 0 )
+	{
+		verifyforPole();
 	}
 }
 

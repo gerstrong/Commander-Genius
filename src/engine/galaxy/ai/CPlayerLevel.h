@@ -80,6 +80,11 @@ public:
 	void processStanding();
 
 	/**
+	 * \description Verify if Keen can stick to the pole and climb on it!
+	 */
+	void verifyforPole();
+
+	/**
 	 * \description This will make keen stand in a pose with the gun and shoot if he has bullets
 	 */
 	void processShootWhileStanding();
@@ -139,6 +144,17 @@ public:
 	 * This function will process everything that happens when player presses up
 	 */
 	void processPressUp();
+
+	/**
+	 * This function will ensure that Keen keeps ducking
+	 */
+	void processPressDucking();
+
+	/**
+	 * This function will do the cycle when Keen is on the pole
+	 */
+	void processPoleClimbing();
+
 	void processExiting();
 
 	/**
