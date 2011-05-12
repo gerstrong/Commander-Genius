@@ -1068,15 +1068,22 @@ void CPlayerLevel::kill()
 void CPlayerLevel::processPoleClimbing()
 {
 	// This will cancel the pole process and make Keen jump
-	if( m_playcontrol[PA_JUMP] > 0 )
+	if( !m_jumped && m_playcontrol[PA_JUMP] > 0 )
 	{
 		setAction(A_KEEN_JUMP);
+
 		mp_processState = &CPlayerLevel::processJumping;
 		m_climbing = false;
+		m_jumped = true;
 		yinertia = 0;
 		m_vDir = NONE;
 		solid = true;
 		return;
+	}
+	else if(m_playcontrol[PA_JUMP] == 0)
+	{
+		// Ensures that the button must be pressed again for another jump
+		m_jumped = false;
 	}
 
 	// Lets check if Keen can move up, down or reaches the end of the pole
@@ -1124,7 +1131,7 @@ void CPlayerLevel::processPoleClimbing()
 
 
 
-void CPlayerLevel::verifyforPole()
+bool CPlayerLevel::verifyforPole()
 {
 	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
 	Uint32 l_y_up = ( getYUpPos() );
@@ -1150,8 +1157,10 @@ void CPlayerLevel::verifyforPole()
 			mp_processState = &CPlayerLevel::processPoleClimbing;
 			m_climbing = true;
 			solid = false;
+			return true;
 		}
 	}
+	return false;
 }
 
 
@@ -1220,8 +1229,12 @@ void CPlayerLevel::processStanding()
 		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 		const int newy = getYPosition()+(4<<STC);
 		if(m_Inventory.Item.m_bullets > 0)
+		{
+			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
 			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+		}
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
+		return;
 	}
 
 	// He could use pogo
@@ -1328,10 +1341,14 @@ void CPlayerLevel::processRunning()
 		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 		const int newy = getYPosition()+(4<<STC);
 		if(m_Inventory.Item.m_bullets > 0)
+		{
+			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
 			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+		}
 
 		setAction(A_KEEN_SHOOT);
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
+		return;
 	}
 
 	// He could use pogo
