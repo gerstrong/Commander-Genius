@@ -1526,6 +1526,11 @@ void CPlayerLevel::process()
 
 	processLevelMiscFlagsCheck();
 
+	if(!m_dying)
+	{
+		processExiting();
+	}
+
 	processActionRoutine();
 
 	//moveXDir(xinertia);
