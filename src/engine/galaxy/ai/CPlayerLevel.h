@@ -73,21 +73,25 @@ public:
 
 
 
-
 	/**
 	 * \description Simple process called while Keen is standing
 	 */
 	void processStanding();
+
+
 
 	/**
 	 * \description Verify if Keen can stick to the pole and climb on it!
 	 */
 	bool verifyforPole();
 
+
+
 	/**
 	 * \description This will make keen stand in a pose with the gun and shoot if he has bullets
 	 */
 	void processShootWhileStanding();
+
 
 
 	/**
@@ -115,6 +119,7 @@ public:
 	 * 				to left or right.
 	 */
 	void processMovingHorizontal();
+
 
 
 	/**

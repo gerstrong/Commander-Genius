@@ -24,10 +24,11 @@ const int MAX_POGOHEIGHT = 20;
 const int MIN_POGOHEIGHT = 5;
 const int POGO_SLOWDOWN = 4;
 
-const int POGO_START_INERTIA = -100;
-const int POGO_START_INERTIA_MAX = -168;
-const int POGO_START_INERTIA_IMPOSSIBLE = -180;
-
+const int POGO_START_INERTIA_VERT = -100;
+const int POGO_START_INERTIA_MAX_VERT = -168;
+const int POGO_START_INERTIA_IMPOSSIBLE_VERT = -180;
+const int POGO_INERTIA_HOR_MAX = 96;
+const int POGO_INERTIA_HOR_REACTION = 4;
 
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
@@ -416,6 +417,8 @@ void CPlayerLevel::processMovingHorizontal()
 
 
 
+
+
 // Here all the pogo code is processed
 void CPlayerLevel::processPogo()
 {
@@ -428,7 +431,7 @@ void CPlayerLevel::processPogo()
 		if( (m_playcontrol[PA_JUMP] && m_jumpheight <= MAX_POGOHEIGHT) || m_jumpheight <= MIN_POGOHEIGHT )
 			m_jumpheight++;
 
-		yinertia+=POGO_SLOWDOWN;
+		yinertia += POGO_SLOWDOWN;
 	}
 	else
 	{
@@ -446,15 +449,16 @@ void CPlayerLevel::processPogo()
 		setAction(A_KEEN_FALL);
 		mp_processState = &CPlayerLevel::processFalling;
 		m_pogotoggle = true;
+		xinertia = 0;
 	}
 
 	// When keen hits the floor, start the same pogoinertia again!
 	if(blockedd)
 	{
 		if(m_playcontrol[PA_JUMP])
-			yinertia = POGO_START_INERTIA_MAX;
+			yinertia = POGO_START_INERTIA_MAX_VERT;
 		else
-			yinertia = POGO_START_INERTIA;
+			yinertia = POGO_START_INERTIA_VERT;
 
 		m_jumpheight = 0;
 		g_pSound->playSound( SOUND_KEEN_POGO );
@@ -462,7 +466,21 @@ void CPlayerLevel::processPogo()
 
 	moveYDir(yinertia);
 
-	processMovingHorizontal();
+	// Verify facing directions. Here we build up the inertia
+	if(  m_playcontrol[PA_X]<0  ) // left
+	{
+		m_hDir = LEFT;
+		if( xinertia > -POGO_INERTIA_HOR_MAX)
+			xinertia -= POGO_INERTIA_HOR_REACTION;
+	}
+	else if( m_playcontrol[PA_X]>0  ) // right
+	{
+		m_hDir = RIGHT;
+		if( xinertia < +POGO_INERTIA_HOR_MAX)
+			xinertia += POGO_INERTIA_HOR_REACTION;
+	}
+
+	moveXDir(xinertia);
 }
 
 
@@ -1241,9 +1259,9 @@ void CPlayerLevel::processStanding()
 	if( m_playcontrol[PA_POGO] )
 	{
 		if(m_playcontrol[PA_JUMP])
-			yinertia = POGO_START_INERTIA_IMPOSSIBLE;
+			yinertia = POGO_START_INERTIA_IMPOSSIBLE_VERT;
 		else
-			yinertia = POGO_START_INERTIA;
+			yinertia = POGO_START_INERTIA_VERT;
 
 		m_jumpheight = 0;
 		setAction(A_KEEN_POGO);
@@ -1355,9 +1373,9 @@ void CPlayerLevel::processRunning()
 	if( m_playcontrol[PA_POGO] )
 	{
 		if(m_playcontrol[PA_JUMP])
-			yinertia = POGO_START_INERTIA_IMPOSSIBLE;
+			yinertia = POGO_START_INERTIA_IMPOSSIBLE_VERT;
 		else
-			yinertia = POGO_START_INERTIA;
+			yinertia = POGO_START_INERTIA_VERT;
 
 		m_jumpheight = 0;
 		setAction(A_KEEN_POGO);
