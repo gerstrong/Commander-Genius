@@ -112,6 +112,31 @@ public:
 
 
 	/**
+	 * \description verifies whether there is a cliff and Keen can hang on it.
+	 * 				If that the case, the function places him properly
+	 * 				and set the process to processCliffHanging
+	 * \return 		if true, the cliff was detected and Keen will go into cliff
+	 * 				hanging mode.
+	 */
+	bool checkandtriggerforCliffHanging();
+
+
+	/*
+	 * \description Keen hangs here on a cliff and it might decide
+	 * 				whether to fall or climb up
+	 */
+	void processCliffHanging();
+
+
+	/*
+	 * \description This will make Keen climb the cliff up and stand
+	 * 				on the ground. After that it returns to stand action
+	 */
+	void processCliffClimbing();
+
+
+
+	/**
 	 * \description Simple function which just process moving in x direction
 	 * 				of the player. It is called by other functions like
 	 * 				processJumping or processFalling. processRunning not,
@@ -201,8 +226,6 @@ private:
 
 	bool m_ptogglingswitch;
 	int m_jumpheight;
-	bool m_cliff_hanging;
-	bool m_inair;
 
 	int m_timer;
 	bool m_pogotoggle;

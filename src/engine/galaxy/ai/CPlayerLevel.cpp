@@ -27,8 +27,8 @@ const int POGO_SLOWDOWN = 4;
 const int POGO_START_INERTIA_VERT = -100;
 const int POGO_START_INERTIA_MAX_VERT = -168;
 const int POGO_START_INERTIA_IMPOSSIBLE_VERT = -180;
-const int POGO_INERTIA_HOR_MAX = 96;
-const int POGO_INERTIA_HOR_REACTION = 4;
+const int POGO_INERTIA_HOR_MAX = 64;
+const int POGO_INERTIA_HOR_REACTION = 2;
 
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
@@ -37,7 +37,6 @@ CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 CObject(pmap, x, y, OBJ_PLAYER),
 m_Inventory(l_Inventory),
 m_ObjectPtrs(ObjectPtrs),
-m_cliff_hanging(false),
 m_camera(pmap,x,y,this),
 m_Cheatmode(Cheatmode),
 mp_processState(&CPlayerLevel::processStanding)
@@ -55,7 +54,6 @@ mp_processState(&CPlayerLevel::processStanding)
 	//m_pfiring = false;
 	m_jumpheight = 0;
 	m_climbing = false;
-	m_inair = false;
 	m_pogotoggle = false;
 	m_jumped = false;
 
@@ -208,28 +206,6 @@ void CPlayerLevel::processFiring()
 			}
 			m_pfiring = true;
 		}
-		else
-		{
-			if(m_playcontrol[PA_Y] < 0)
-			{
-				setActionForce(A_KEEN_SHOOT+2);
-				const int newx = getXMidPos()-(3<<STC);
-				const int newy = getYUpPos()-(16<<STC);
-				if(m_Item.m_bullets > 0)
-					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
-
-				m_pfiring = true;
-			}
-			else if(!getActionNumber(A_KEEN_LOOKDOWN))
-			{
-				setAction(A_KEEN_SHOOT);
-				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
-				const int newy = getYPosition()+(4<<STC);
-				if(m_Item.m_bullets > 0)
-					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
-				m_pfiring = true;
-			}
-		}
 
 		// One shot less in the inventory when Keens shoots
 		if(m_pfiring)
@@ -253,6 +229,107 @@ void CPlayerLevel::processFiring()
 	*/
 }
 
+
+
+
+
+bool CPlayerLevel::checkandtriggerforCliffHanging()
+{
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	if( m_playcontrol[PA_X]<0 && blockedl )
+	{
+		bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
+		bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
+		if(!check_block && check_block_lower && !getActionNumber(A_KEEN_POGO))
+		{
+			setAction(A_KEEN_HANG);
+			setActionSprite();
+			calcBouncingBoxes();
+			Uint32 x = (((getXPosition()>>CSF))<<CSF)+(16<<STC);
+			Uint32 y = (((getYPosition()>>CSF))<<CSF)+(8<<STC);
+			moveTo(x,y);
+			solid = false;
+			yinertia = 0;
+			mp_processState = &CPlayerLevel::processCliffHanging;
+			return true;
+		}
+	}
+	else if( m_playcontrol[PA_X]>0 && blockedr )
+	{
+		bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
+		bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
+		if(!check_block && check_block_lower && !getActionNumber(A_KEEN_POGO) )
+		{
+			setAction(A_KEEN_HANG);
+			setActionSprite();
+			calcBouncingBoxes();
+			Uint32 x = (((getXPosition()>>CSF)+1)<<CSF) + (2<<STC);
+			Uint32 y = (((getYPosition()>>CSF)+1)<<CSF) - (5<<STC);
+			moveTo(x,y);
+			solid = false;
+			yinertia = 0;
+			mp_processState = &CPlayerLevel::processCliffHanging;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+
+
+
+
+void CPlayerLevel::processCliffHanging()
+{
+	if( m_playcontrol[PA_Y] < 0 )
+	{
+		setAction(A_KEEN_CLIMB);
+		mp_processState = &CPlayerLevel::processCliffClimbing;
+		m_camera.m_freeze = true;
+	}
+	else if( m_playcontrol[PA_Y] > 0 )
+	{
+		setAction(A_KEEN_FALL);
+		solid = true;
+		const int dx = 8<<STC;
+		moveXDir( (m_hDir == LEFT) ? dx : -dx, true);
+		setActionSprite();
+		calcBouncingBoxes();
+		mp_processState = &CPlayerLevel::processFalling;
+	}
+}
+
+
+
+
+
+
+
+void CPlayerLevel::processCliffClimbing()
+{
+	const int dy = 32;
+	const int dx = dy/3;
+	moveUp(dy);
+	moveXDir( (m_hDir == LEFT) ? -dx : dx, true);
+
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	if( getActionStatus(A_KEEN_STAND) && !TileProperty[mp_Map->at(getXMidPos()>>CSF, getYDownPos()>>CSF)].bup )
+	{
+		solid = true;
+		setAction(A_KEEN_STAND);
+		m_camera.m_freeze = false;
+		setActionSprite();
+		calcBouncingBoxes();
+		mp_processState = &CPlayerLevel::processStanding;
+	}
+}
+
+
+
+
+
 void CPlayerLevel::processMovingHorizontal()
 {
 	// Verify facing directions
@@ -268,43 +345,7 @@ void CPlayerLevel::processMovingHorizontal()
 
 	if(m_cliff_hanging)
 	{
-		if(getActionNumber(A_KEEN_CLIMB))
-		{
-			int dy = 32;
-			int dx = dy/2;
-			moveUp(dy);
-			moveXDir( (m_hDir == LEFT) ? -dx : dx, true);
-			if(getActionStatus(A_KEEN_STAND))
-			{
-				m_cliff_hanging = false;
-				solid = true;
-				setAction(A_KEEN_STAND);
-				m_camera.m_freeze = false;
-				setActionSprite();
-				calcBouncingBoxes();
-				//moveDown(16*dy);
-			}
-		}
-		else
-		{
-			if(m_playcontrol[PA_Y] < 0)
-			{
-				setAction(A_KEEN_CLIMB);
-				m_camera.m_freeze = true;
-			}
-			else if(m_playcontrol[PA_Y] > 0)
-			{
-				m_cliff_hanging = false;
-				setAction(A_KEEN_FALL);
-				solid = true;
-				const int dx = 8<<STC;
-				moveXDir( (m_hDir == LEFT) ? dx : -dx, true);
-				moveDown(4*dx);
-				setActionSprite();
-				calcBouncingBoxes();
-			}
-			yinertia = 0;
-		}
+
 	}
 	else
 	{
@@ -313,54 +354,6 @@ void CPlayerLevel::processMovingHorizontal()
 			// Normal moving, can be while jumping or running
 			if(!m_pfiring)
 			{
-				if( m_playcontrol[PA_X]<0 )
-				{
-					if(!blockedl)
-					{
-						// prepare him to walk
-						moving = m_hDir = LEFT;
-					}
-					else
-					{
-						bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
-						bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
-						if(!check_block && check_block_lower && m_inair && !getActionNumber(A_KEEN_POGO))
-						{
-							setAction(A_KEEN_HANG);
-							setActionSprite();
-							calcBouncingBoxes();
-							Uint32 x = (((getXPosition()>>CSF))<<CSF)+(8<<STC);
-							Uint32 y = ((getYPosition()>>CSF)+1)<<CSF;
-							moveTo(x,y);
-							m_cliff_hanging = true;
-							solid = false;
-						}
-					}
-				}
-				else if( m_playcontrol[PA_X]>0 )
-				{
-					if(!blockedr)
-					{
-						// prepare him to walk
-						moving = m_hDir = RIGHT;
-					}
-					else
-					{
-						bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
-						bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
-						if(!check_block && check_block_lower && m_inair && !getActionNumber(A_KEEN_POGO) )
-						{
-							setAction(A_KEEN_HANG);
-							setActionSprite();
-							calcBouncingBoxes();
-							Uint32 x = ((getXPosition()>>CSF)+1)<<CSF;
-							Uint32 y = ((getYPosition()>>CSF)+1)<<CSF;
-							moveTo(x,y);
-							m_cliff_hanging = true;
-							solid = false;
-						}
-					}
-				}
 
 				Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
 				Uint32 l_y_up = ( getYUpPos() );
@@ -548,12 +541,14 @@ void CPlayerLevel::processJumping()
 
 
 
+
 bool CPlayerLevel::canFallThroughTile()
 {
 	const int &tile = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<STC));
 	const CTileProperties &TileProp = g_pBehaviorEngine->getTileProperties(1)[tile];
 	return ( TileProp.bdown == 0 && TileProp.bup != 0 );
 }
+
 
 
 
@@ -565,6 +560,7 @@ void CPlayerLevel::processLookingUp()
 	if( m_playcontrol[PA_FIRE] )
 	{
 		setActionForce(A_KEEN_SHOOT+2);
+		g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
 		const int newx = getXMidPos()-(3<<STC);
 		const int newy = getYUpPos()-(16<<STC);
 		if(m_Inventory.Item.m_bullets > 0)
@@ -678,7 +674,8 @@ void CPlayerLevel::processPressUp() {
 		}
 		setAction(A_KEEN_SLIDE);
 		mp_processState = &CPlayerLevel::processSliding;
-
+		m_timer = 0;
+		return;
 	 }
 /*		var2 = o->boxTXmid*256-64;
 		if (o->xpos == var2) {
@@ -762,7 +759,6 @@ void CPlayerLevel::processPressDucking()
 			setAction(A_KEEN_FALL);
 			g_pSound->playSound( SOUND_KEEN_FALL );
 		}
-
 		return;
 	}
 
@@ -778,11 +774,17 @@ void CPlayerLevel::processPressDucking()
 
 void CPlayerLevel::processSliding()
 {
-	if(!getActionStatus(A_KEEN_STAND))
+	if(m_timer < 10)
+	{
+		m_timer++;
 		return;
-
-	setAction(A_KEEN_STAND);
-	mp_processState = &CPlayerLevel::processStanding;
+	}
+	else
+	{
+		m_timer = 0;
+		setAction(A_KEEN_STAND);
+		mp_processState = &CPlayerLevel::processStanding;
+	}
 }
 
 
@@ -1230,14 +1232,20 @@ void CPlayerLevel::processStanding()
 	// He could duck or use the pole
 	if( m_playcontrol[PA_Y] > 0 )
 	{
-		verifyforPole();
+		if(!verifyforPole())
+		{
+			setAction(A_KEEN_LOOKDOWN);
+			mp_processState = &CPlayerLevel::processPressDucking;
+		}
 	}
 
 	// He could press up and do further actions
 	if( m_playcontrol[PA_Y] < 0 )
 	{
-		mp_processState = &CPlayerLevel::processPressUp;
-		verifyforPole();
+		if(!verifyforPole())
+		{
+			mp_processState = &CPlayerLevel::processPressUp;
+		}
 	}
 
 	// He could shoot
@@ -1360,7 +1368,7 @@ void CPlayerLevel::processRunning()
 		const int newy = getYPosition()+(4<<STC);
 		if(m_Inventory.Item.m_bullets > 0)
 		{
-			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
+			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, newx);
 			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
 		}
 
@@ -1496,6 +1504,10 @@ void CPlayerLevel::processFalling()
 	{
 		verifyforPole();
 	}
+
+	// Check Keen could hang on a cliff and do so if possible
+	if(checkandtriggerforCliffHanging())
+		return;
 }
 
 
