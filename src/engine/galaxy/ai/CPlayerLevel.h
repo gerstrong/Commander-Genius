@@ -161,6 +161,13 @@ public:
 
 	void processInput();
 	void processFiring();
+
+
+	/**
+	 * This function is processed by falling and jumping. It just manages the Shoot in air routines
+	 */
+	void shootInAir();
+
 	void processJumping();
 	void processPogo();
 	void processLooking();
@@ -232,6 +239,7 @@ private:
 	CCamera m_camera;
 
 	bool m_dying;
+	bool m_fired;
 	stCheat& m_Cheatmode;
 
 	void (CPlayerLevel::*mp_processState)();

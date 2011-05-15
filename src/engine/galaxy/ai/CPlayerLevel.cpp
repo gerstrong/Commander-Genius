@@ -44,6 +44,7 @@ mp_processState(&CPlayerLevel::processStanding)
 	m_index = 0;
 	m_timer = 0;
 	m_dying = false;
+	m_fired = false;
 	m_hDir = facedir;
 	m_ActionBaseOffset = 0x98C;
 	m_ptogglingswitch = false;
@@ -137,6 +138,9 @@ void CPlayerLevel::processInput()
 	}
 	else
 		m_playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
+
+	if(!m_playcontrol[PA_FIRE])
+		m_fired = false;
 }
 
 void CPlayerLevel::processFiring()
@@ -169,36 +173,6 @@ void CPlayerLevel::processFiring()
 			else if(!getActionNumber(A_KEEN_POLE_SHOOT))
 			{
 				setAction(A_KEEN_POLE_SHOOT);
-				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
-				const int newy = getYPosition()+(4<<STC);
-				if(m_Item.m_bullets > 0)
-					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
-			}
-			m_pfiring = true;
-		}
-		else if( m_inair )
-		{
-			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_JUMP_SHOOTUP))
-			{
-				setAction(A_KEEN_JUMP_SHOOTUP);
-				const int newx = getXMidPos()-(3<<STC);
-				const int newy = getYUpPos()-(16<<STC);
-				if(m_Item.m_bullets > 0)
-					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
-
-			}
-			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_JUMP_SHOOTDOWN))
-			{
-				setAction(A_KEEN_JUMP_SHOOTDOWN);
-				const int newx = getXMidPos()-(3<<STC);
-				const int newy = getYDownPos();
-				if(m_Item.m_bullets > 0)
-					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
-
-			}
-			else if(!getActionNumber(A_KEEN_JUMP_SHOOT))
-			{
-				setAction(A_KEEN_JUMP_SHOOT);
 				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 				const int newy = getYPosition()+(4<<STC);
 				if(m_Item.m_bullets > 0)
@@ -339,71 +313,6 @@ void CPlayerLevel::processMovingHorizontal()
 		m_hDir = RIGHT;
 
 	moveXDir(m_playcontrol[PA_X]>>1);
-
-	/*direction_t moving = NONE;
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-
-	if(m_cliff_hanging)
-	{
-
-	}
-	else
-	{
-		//else
-		{
-			// Normal moving, can be while jumping or running
-			if(!m_pfiring)
-			{
-
-				Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-				Uint32 l_y_up = ( getYUpPos() );
-				Uint32 l_y_down = ( getYDownPos() );
-				// Now check if Player has the chance to climb a pole or something similar
-				if( hitdetectWithTileProperty(1, l_x, l_y_up) || hitdetectWithTileProperty(1, l_x, l_y_down) ) // 1 -> stands for pole Property
-				{
-					// Hit pole!
-					// calc the proper coord of that tile
-					l_x = (l_x>>CSF)<<CSF;
-					if( (!m_climbing && m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up)) ||
-							( getActionNumber(A_KEEN_STAND) && m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down)) )
-					{
-						m_climbing = true;
-						// Set Keen in climb mode
-						setAction(A_KEEN_POLE);
-
-						// Move to the proper X Coordinates, so Keen really grabs it!
-						moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
-						xinertia = 0;
-					}
-				}
-
-				if( m_playcontrol[PA_Y]<0 )
-				{
-					// player pressed up
-					if( !m_ptogglingswitch)
-					{
-						processPressUp();
-						m_ptogglingswitch = true;
-					}
-				}
-				else
-					m_ptogglingswitch = false;
-
-				// Check if Keen hits the floor
-				if( blockedd && !m_cliff_hanging &&
-						!getActionNumber(A_KEEN_POGO) && !getActionNumber(A_KEEN_JUMP) )
-				{
-					if(moving != NONE)
-					{
-						setAction(A_KEEN_RUN);
-						g_pSound->playSound( SOUND_KEEN_WALK );
-					}
-					else if(m_playcontrol[PA_X] == 0 && m_playcontrol[PA_Y] == 0)
-						setAction(A_KEEN_STAND);
-				}
-			}
-		}
-	}*/
 }
 
 
@@ -479,6 +388,54 @@ void CPlayerLevel::processPogo()
 
 
 
+void CPlayerLevel::shootInAir()
+{
+	// process simple shooting
+	stItemGalaxy &m_Item = m_Inventory.Item;
+	if( m_playcontrol[PA_Y] < 0 )
+	{
+		setActionForce(A_KEEN_JUMP_SHOOTUP);
+		const int newx = getXMidPos()-(3<<STC);
+		const int newy = getYUpPos()-(16<<STC);
+		if(m_Item.m_bullets > 0)
+		{
+			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
+			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+		}
+		else
+			g_pSound->playSound( SOUND_GUN_CLICK );
+	}
+	else if( m_playcontrol[PA_Y] > 0 )
+	{
+		setActionForce(A_KEEN_JUMP_SHOOTDOWN);
+		const int newx = getXMidPos()-(3<<STC);
+		const int newy = getYDownPos();
+		if(m_Item.m_bullets > 0)
+		{
+			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
+			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
+		}
+		else
+			g_pSound->playSound( SOUND_GUN_CLICK );
+	}
+	else
+	{
+		setActionForce(A_KEEN_JUMP_SHOOT);
+		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+		const int newy = getYPosition()+(4<<STC);
+		if(m_Item.m_bullets > 0)
+		{
+			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
+			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+		}
+		else
+			g_pSound->playSound( SOUND_GUN_CLICK );
+	}
+	m_fired = true;
+}
+
+
+
 
 
 // Processes the jumping of the player
@@ -502,7 +459,10 @@ void CPlayerLevel::processJumping()
 
 	// Set another jump animation if Keen is near yinertia == 0
 	if( yinertia > -10 )
-		setAction(A_KEEN_JUMP+1);
+	{
+		if( getActionNumber(A_KEEN_JUMP) )
+			setAction(A_KEEN_JUMP+1);
+	}
 
 	moveYDir(yinertia);
 
@@ -511,11 +471,12 @@ void CPlayerLevel::processJumping()
 	if( m_jumpheight == 0 )
 	{
 		// Check whether we should bump the head
-		if(blockedu)
+		if( blockedu )
 			g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
 
 		yinertia = 0;
-		setAction(A_KEEN_FALL);
+		if( getActionNumber(A_KEEN_JUMP) )
+			setAction(A_KEEN_FALL);
 		mp_processState = &CPlayerLevel::processFalling;
 	}
 
@@ -535,6 +496,10 @@ void CPlayerLevel::processJumping()
 	{
 		verifyforPole();
 	}
+
+	// process Shooting in air
+	if( m_playcontrol[PA_FIRE] && !m_fired )
+		shootInAir();
 }
 
 
@@ -557,15 +522,16 @@ void CPlayerLevel::processLookingUp()
 {
 	// While looking up, Keen could shoot up!
 	// He could shoot
-	if( m_playcontrol[PA_FIRE] )
+	if( m_playcontrol[PA_FIRE] && !m_fired )
 	{
 		setActionForce(A_KEEN_SHOOT+2);
-		g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
+		g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, getXPosition());
 		const int newx = getXMidPos()-(3<<STC);
 		const int newy = getYUpPos()-(16<<STC);
 		if(m_Inventory.Item.m_bullets > 0)
 			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
+		m_fired = true;
 		return;
 	}
 
@@ -575,38 +541,6 @@ void CPlayerLevel::processLookingUp()
 	setAction(A_KEEN_STAND);
 	mp_processState = &CPlayerLevel::processStanding;
 }
-
-
-
-
-// This is for processing the looking routine.
-/*void CPlayerLevel::processLooking()
-{
-	if(getActionNumber(A_KEEN_SHOOT+2))
-		return;
-
-	// Looking Up and Down Routine
-	if( blockedd && xinertia == 0 && getActionNumber(A_KEEN_STAND) )
-	{
-		if( m_playcontrol[PA_Y]<0 )
-			setAction(A_KEEN_LOOKUP);
-		else if( m_playcontrol[PA_Y]>0 )
-			setAction(A_KEEN_LOOKDOWN);
-	}
-	else if(getActionNumber(A_KEEN_LOOKDOWN))
-	{
-		// We are looking down but could jump down from some platforms
-		const bool jumpdowntile = canFallThroughTile();
-		if ( m_playcontrol[PA_JUMP] > 0 && ( supportedbyobject || jumpdowntile )  )
-		{
-			m_jumpdownfromobject = supportedbyobject;
-			m_jumpdown = jumpdowntile;
-			supportedbyobject = false;
-			setAction(A_KEEN_FALL);
-			g_pSound->playSound( SOUND_KEEN_FALL );
-		}
-	}
-}*/
 
 
 
@@ -917,6 +851,8 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 
 
 
+
+
 /**
  * This function checks whether a bridge must be opened or closed and does this kind of work
  * I'm not really happy with that part of the code and I know that it works for Keen 4. Not sure about the
@@ -994,6 +930,11 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 	return;
 }
 
+
+
+
+
+
 /**
  * This function will put/release the blockers of some platforms used in Keen Galaxy
  */
@@ -1011,6 +952,8 @@ void CPlayerLevel::PressPlatformSwitch(const Uint32 lx, const Uint32 ly)
 
 	return;
 }
+
+
 
 void CPlayerLevel::openDoorsTile()
 {
@@ -1030,6 +973,8 @@ void CPlayerLevel::openDoorsTile()
 		next_tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
 	}while(next_tileno == tileno || next_tileno == tileno+18 || next_tileno == tileno+2*18);
 }
+
+
 
 void CPlayerLevel::processPlaceGem()
 {
@@ -1055,6 +1000,9 @@ void CPlayerLevel::processPlaceGem()
 	Uint32 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
 	mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
 }
+
+
+
 
 void CPlayerLevel::processDying()
 {
@@ -1249,7 +1197,7 @@ void CPlayerLevel::processStanding()
 	}
 
 	// He could shoot
-	if( m_playcontrol[PA_FIRE] )
+	if( m_playcontrol[PA_FIRE] && !m_fired )
 	{
 		setAction(A_KEEN_SHOOT);
 		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
@@ -1260,6 +1208,7 @@ void CPlayerLevel::processStanding()
 			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
 		}
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
+		m_fired = true;
 		return;
 	}
 
@@ -1280,6 +1229,8 @@ void CPlayerLevel::processStanding()
 }
 
 
+
+
 void CPlayerLevel::processShootWhileStanding()
 {
 	// while until player releases the button and get back to stand status
@@ -1297,6 +1248,8 @@ void CPlayerLevel::processShootWhileStanding()
 		}
 	}
 }
+
+
 
 
 
@@ -1362,7 +1315,7 @@ void CPlayerLevel::processRunning()
 	}
 
 	// He could shoot
-	if( m_playcontrol[PA_FIRE] )
+	if( m_playcontrol[PA_FIRE] && !m_fired )
 	{
 		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 		const int newy = getYPosition()+(4<<STC);
@@ -1374,6 +1327,7 @@ void CPlayerLevel::processRunning()
 
 		setAction(A_KEEN_SHOOT);
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
+		m_fired = true;
 		return;
 	}
 
@@ -1508,6 +1462,8 @@ void CPlayerLevel::processFalling()
 	// Check Keen could hang on a cliff and do so if possible
 	if(checkandtriggerforCliffHanging())
 		return;
+	if( m_playcontrol[PA_FIRE] && !m_fired )
+		shootInAir();
 }
 
 
@@ -1536,41 +1492,6 @@ void CPlayerLevel::process()
 
 	(this->*mp_processState)();
 
-	/*
-	{
-		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-		TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
-
-		if(!getActionNumber(A_KEEN_ENTER_DOOR) )
-			processMoving();
-
-		if(!m_cliff_hanging)
-		{
-			if(!blockedu)
-				m_BumpHead = false;
-
-			processJumping();
-			processPogo();
-			processFiring();
-
-			if(!m_climbing)
-			{
-				if( getActionNumber(A_KEEN_ENTER_DOOR) && !getActionNumber(A_KEEN_POGO) )
-				{
-					processEnterDoor();
-				}
-				else
-				{
-					processFalling();
-					processLooking();
-					processExiting();
-				}
-			}
-		}
-
-		processLevelMiscFlagsCheck();
-	}*/
-
 	processLevelMiscFlagsCheck();
 
 	if(!m_dying)
@@ -1579,9 +1500,6 @@ void CPlayerLevel::process()
 	}
 
 	processActionRoutine();
-
-	//moveXDir(xinertia);
-	//moveYDir(yinertia);
 
 	m_camera.process();
 	m_camera.processEvents();
