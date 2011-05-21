@@ -13,7 +13,7 @@ namespace galaxy
 const Uint32 speed = 10;
 const Uint32 hittime = 100;
 
-CBullets::CBullets(CMap *pmap, Uint32 x, Uint32 y, direction_t dir) :
+CBullets::CBullets(CMap *pmap, const Uint32 x, const Uint32 y, const direction_t dir) :
 CObject(pmap, x, y, OBJ_RAY)
 {
 	m_hDir = NONE;

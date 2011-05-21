@@ -143,66 +143,53 @@ void CPlayerLevel::processInput()
 		m_fired = false;
 }
 
-void CPlayerLevel::processFiring()
+
+
+
+
+void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const direction_t &dir )
 {
-	/*if( m_playcontrol[PA_FIRE] && m_climbing )
-		yinertia = 0;
-
-	stItemGalaxy &m_Item = m_Inventory.Item;
-
-	//if( m_playcontrol[PA_FIRE] && !m_pfiring )
+	if(m_Inventory.Item.m_bullets > 0)
 	{
-		if(m_climbing)
-		{
-			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_POLE_SHOOTUP))
-			{
-				setAction(A_KEEN_POLE_SHOOTUP);
-				const int newx = getXMidPos()-(3<<STC);
-				const int newy = getYUpPos()-(16<<STC);
-				if(m_Item.m_bullets > 0)
-					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
-			}
-			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_POLE_SHOOTDOWN))
-			{
-				setAction(A_KEEN_POLE_SHOOTDOWN);
-				const int newx = getXMidPos()-(3<<STC);
-				const int newy = getYDownPos();
-				if(m_Item.m_bullets > 0)
-					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
-			}
-			else if(!getActionNumber(A_KEEN_POLE_SHOOT))
-			{
-				setAction(A_KEEN_POLE_SHOOT);
-				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
-				const int newy = getYPosition()+(4<<STC);
-				if(m_Item.m_bullets > 0)
-					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
-			}
-			m_pfiring = true;
-		}
-
-		// One shot less in the inventory when Keens shoots
-		if(m_pfiring)
-		{
-			if(m_Item.m_bullets > 0)
-			{
-				g_pSound->playSound( SOUND_KEEN_FIRE );
-				m_Item.m_bullets--;
-			}
-			else
-			{
-				g_pSound->playSound( SOUND_GUN_CLICK );
-			}
-		}
+		g_pSound->playStereofromCoord( SOUND_KEEN_FIRE , PLAY_NOW, pos.x );
+		m_ObjectPtrs.push_back(new CBullets(mp_Map, pos.x, pos.y, dir));
 	}
-
-	//if( m_playcontrol[PA_FIRE] == 0 )
-		//m_pfiring = false;
-
-
-	*/
+	else
+	{
+		g_pSound->playStereofromCoord( SOUND_GUN_CLICK , PLAY_NOW, pos.x );
+	}
 }
 
+
+
+
+void CPlayerLevel::shootInAir()
+{
+	// process simple shooting
+	stItemGalaxy &m_Item = m_Inventory.Item;
+	if( m_playcontrol[PA_Y] < 0 )
+	{
+		setActionForce(A_KEEN_JUMP_SHOOTUP);
+		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
+		tryToShoot(newVec, UP);
+	}
+	else if( m_playcontrol[PA_Y] > 0 )
+	{
+		setActionForce(A_KEEN_JUMP_SHOOTDOWN);
+		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
+		tryToShoot(newVec, DOWN);
+	}
+	else
+	{
+		setActionForce(A_KEEN_JUMP_SHOOT);
+
+		const VectorD2<int> newVec(getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC)),
+									getYPosition()+(4<<STC));
+		tryToShoot(newVec, m_hDir);
+	}
+	mp_processState = &CPlayerLevel::processFalling;
+	m_fired = true;
+}
 
 
 
@@ -280,7 +267,6 @@ void CPlayerLevel::processCliffHanging()
 
 
 
-
 void CPlayerLevel::processCliffClimbing()
 {
 	const int dy = 32;
@@ -327,6 +313,15 @@ void CPlayerLevel::processPogo()
 	if(!m_playcontrol[PA_POGO])
 		m_pogotoggle = false;
 
+	// process Shooting in air
+	if( m_playcontrol[PA_FIRE] && !m_fired )
+	{
+		xinertia = 0;
+		shootInAir();
+		return;
+	}
+
+
 	// while button is pressed, make the player jump higher
 	if( yinertia<0 && !blockedu )
 	{
@@ -341,6 +336,7 @@ void CPlayerLevel::processPogo()
 			g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
 
 		CObject::processFalling();
+
 		m_jumpheight = 0;
 	}
 
@@ -388,51 +384,7 @@ void CPlayerLevel::processPogo()
 
 
 
-void CPlayerLevel::shootInAir()
-{
-	// process simple shooting
-	stItemGalaxy &m_Item = m_Inventory.Item;
-	if( m_playcontrol[PA_Y] < 0 )
-	{
-		setActionForce(A_KEEN_JUMP_SHOOTUP);
-		const int newx = getXMidPos()-(3<<STC);
-		const int newy = getYUpPos()-(16<<STC);
-		if(m_Item.m_bullets > 0)
-		{
-			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
-			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
-		}
-		else
-			g_pSound->playSound( SOUND_GUN_CLICK );
-	}
-	else if( m_playcontrol[PA_Y] > 0 )
-	{
-		setActionForce(A_KEEN_JUMP_SHOOTDOWN);
-		const int newx = getXMidPos()-(3<<STC);
-		const int newy = getYDownPos();
-		if(m_Item.m_bullets > 0)
-		{
-			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
-			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
-		}
-		else
-			g_pSound->playSound( SOUND_GUN_CLICK );
-	}
-	else
-	{
-		setActionForce(A_KEEN_JUMP_SHOOT);
-		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
-		const int newy = getYPosition()+(4<<STC);
-		if(m_Item.m_bullets > 0)
-		{
-			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
-			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
-		}
-		else
-			g_pSound->playSound( SOUND_GUN_CLICK );
-	}
-	m_fired = true;
-}
+
 
 
 
@@ -474,7 +426,7 @@ void CPlayerLevel::processJumping()
 		if( blockedu )
 			g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
 
-		yinertia = 0;
+		yinertia -= 20;
 		if( getActionNumber(A_KEEN_JUMP) )
 			setAction(A_KEEN_FALL);
 		mp_processState = &CPlayerLevel::processFalling;
@@ -485,10 +437,11 @@ void CPlayerLevel::processJumping()
 	// Now in this mode we could switch to pogoing
 	if( !m_pogotoggle && m_playcontrol[PA_POGO] )
 	{
-		m_jumpheight = MAX_POGOHEIGHT;
+		m_jumpheight = 0;
 		setAction(A_KEEN_POGO);
 		m_pogotoggle = true;
 		mp_processState = &CPlayerLevel::processPogo;
+		return;
 	}
 
 	// Check if keen should stick to the pole
@@ -518,6 +471,7 @@ bool CPlayerLevel::canFallThroughTile()
 
 
 
+
 void CPlayerLevel::processLookingUp()
 {
 	// While looking up, Keen could shoot up!
@@ -526,10 +480,8 @@ void CPlayerLevel::processLookingUp()
 	{
 		setActionForce(A_KEEN_SHOOT+2);
 		g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, getXPosition());
-		const int newx = getXMidPos()-(3<<STC);
-		const int newy = getYUpPos()-(16<<STC);
-		if(m_Inventory.Item.m_bullets > 0)
-			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
+		tryToShoot(newVec, UP);
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
 		m_fired = true;
 		return;
@@ -1035,6 +987,10 @@ void CPlayerLevel::kill()
 
 void CPlayerLevel::processPoleClimbing()
 {
+	// If player is still pressing the fire button wait until he releases it!
+	if(m_fired)
+		return;
+
 	// This will cancel the pole process and make Keen jump
 	if( !m_jumped && m_playcontrol[PA_JUMP] > 0 )
 	{
@@ -1059,15 +1015,39 @@ void CPlayerLevel::processPoleClimbing()
 	Uint32 l_y_up = getYUpPos()-(7<<STC);
 	Uint32 l_y_down = getYDownPos()+(7<<STC);
 
-	if( m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) )
+	if( m_playcontrol[PA_Y] < 0 )
 	{
-		// Check for the upper side and don't let him move if the pole ended
-		setAction(A_KEEN_POLE_CLIMB);
-		m_vDir = UP;
+		// First check player pressed shoot button
+		if( m_playcontrol[PA_FIRE] )
+		{
+			m_fired = true;
+			setActionForce(A_KEEN_POLE_SHOOTUP);
+			const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
+			tryToShoot(newVec, UP);
+			return;
+		}
+
+
+		if( hitdetectWithTileProperty(1, l_x, l_y_up) )
+		{
+			// Check for the upper side and don't let him move if the pole ended
+			setAction(A_KEEN_POLE_CLIMB);
+			m_vDir = UP;
+		}
 
 	}
 	else if( m_playcontrol[PA_Y] > 0 )
 	{
+		// First check player pressed shoot button
+		if( m_playcontrol[PA_FIRE] )
+		{
+			m_fired = true;
+			setActionForce(A_KEEN_POLE_SHOOTDOWN);
+			const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
+			tryToShoot(newVec, DOWN);
+			return;
+		}
+
 		l_y_up = getYUpPos()+(16<<STC);
 		// Check for the and upper lower side, upper because the hand can touch the edge in that case
 		if( hitdetectWithTileProperty(1, l_x, l_y_down) || hitdetectWithTileProperty(1, l_x, l_y_up)  )
@@ -1089,6 +1069,17 @@ void CPlayerLevel::processPoleClimbing()
 	}
 	else
 	{
+		// First check player pressed shoot button
+		if( m_playcontrol[PA_FIRE] )
+		{
+			m_fired = true;
+			setActionForce(A_KEEN_POLE_SHOOT);
+			const VectorD2<int> newVec(getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC)),
+										getYPosition()+(4<<STC));
+			tryToShoot(newVec, m_hDir);
+			return;
+		}
+
 		setAction(A_KEEN_POLE);
 		m_vDir = NONE;
 	}
@@ -1200,13 +1191,9 @@ void CPlayerLevel::processStanding()
 	if( m_playcontrol[PA_FIRE] && !m_fired )
 	{
 		setAction(A_KEEN_SHOOT);
-		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
-		const int newy = getYPosition()+(4<<STC);
-		if(m_Inventory.Item.m_bullets > 0)
-		{
-			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, newx);
-			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
-		}
+		const VectorD2<int> newVec(getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC)),
+									getYPosition()+(4<<STC));
+		tryToShoot(newVec, m_hDir);
 		mp_processState = &CPlayerLevel::processShootWhileStanding;
 		m_fired = true;
 		return;
@@ -1448,6 +1435,7 @@ void CPlayerLevel::processFalling()
 	if( !m_pogotoggle && m_playcontrol[PA_POGO] )
 	{
 		m_jumpheight = 0;
+		yinertia = 0;
 		setAction(A_KEEN_POGO);
 		m_pogotoggle = true;
 		mp_processState = &CPlayerLevel::processPogo;

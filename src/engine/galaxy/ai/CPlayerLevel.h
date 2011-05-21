@@ -173,6 +173,13 @@ public:
 	void processLooking();
 
 	/**
+	 * \brief		This function will try to spawn a shot. If Keen has bullets it will spawn
+	 * 				otherwise, the empty clicking sound is heard
+	 * \param	pos	Coordinates where the shot should be spawned
+	 */
+	void tryToShoot( const VectorD2<int> &pos, const direction_t &dir );
+
+	/**
 	 * This function will be processed while Keen is looking up
 	 */
 	void processLookingUp();
