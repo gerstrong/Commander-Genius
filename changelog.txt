@@ -1,6 +1,11 @@
 Commander Genius Release :
 ==========================
 
+v0.3.3.4:
+---------
+- New automation theorie based actions for AI in the Keen Player galaxy structure, for better and faster gameplay
+- Fixed small issues
+
 v0.3.3.3:
 ---------
 - Now Council Members trigger and make the level exit. Neat!

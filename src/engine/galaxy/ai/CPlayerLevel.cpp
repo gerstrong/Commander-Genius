@@ -45,6 +45,7 @@ mp_processState(&CPlayerLevel::processStanding)
 	m_timer = 0;
 	m_dying = false;
 	m_fired = false;
+	m_EnterDoorAttempt = false;
 	m_hDir = facedir;
 	m_ActionBaseOffset = 0x98C;
 	m_ptogglingswitch = false;
@@ -141,6 +142,9 @@ void CPlayerLevel::processInput()
 
 	if(!m_playcontrol[PA_FIRE])
 		m_fired = false;
+
+	if(m_playcontrol[PA_Y] >= 0)
+		m_EnterDoorAttempt = false;
 }
 
 
@@ -579,7 +583,9 @@ void CPlayerLevel::processPressUp() {
 	flag = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
 
 	// entering a door
-	if (flag == MISCFLAG_DOOR || flag == MISCFLAG_KEYCARDDOOR) {
+
+	if ( !m_EnterDoorAttempt && (flag == MISCFLAG_DOOR || flag == MISCFLAG_KEYCARDDOOR) )
+	{
 		//int var2 = mid_x * 256+96;
 		flag = Tile[mp_Map->getPlaneDataAt(1, x_right, up_y)].behaviour;
 		//if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
@@ -609,6 +615,7 @@ void CPlayerLevel::processPressUp() {
 			} else {*/
 				setAction(A_KEEN_ENTER_DOOR);
 				mp_processState = &CPlayerLevel::processEnterDoor;
+				m_EnterDoorAttempt = true;
 				return;
 				//PlayLoopTimer = 110;
 				//o->action = ACTION_KEENENTERDOOR1

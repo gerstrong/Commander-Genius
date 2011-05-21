@@ -247,6 +247,7 @@ private:
 
 	bool m_dying;
 	bool m_fired;
+	bool m_EnterDoorAttempt;
 	stCheat& m_Cheatmode;
 
 	void (CPlayerLevel::*mp_processState)();

@@ -29,7 +29,9 @@ bool CConfiguration::saveCfgFile()
 		Section &current = sect->second;
 		Section::iterator keyword = current.begin();
 		for(; keyword != current.end() ; keyword++)
+		{
 			file << (keyword->first + " = " + keyword->second + "\n");
+		}
 		file << std::endl;
 	}
 	file.close();
