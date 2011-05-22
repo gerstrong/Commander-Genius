@@ -6,7 +6,6 @@
  */
 
 #include "CMessageBoxBitmapGalaxy.h"
-
 #include "sdl/CVideoDriver.h"
 
 
@@ -19,7 +18,7 @@ m_Bitmap(g_pGfxEngine->getBitmap(BitmapId))
 	{
 		const int new_height = m_Bitmap.getHeight();
 		m_TextPos.x = 10+m_Bitmap.getWidth();
-		m_TextPos.y = ((new_height+16)/2) - 8*m_Lines.size();
+		m_TextPos.y = ( (new_height+16)/2 ) - 8*m_Lines.size();
 
 		// Resize
 		mp_DlgFrame->resize(m_boxrect.w+m_Bitmap.getWidth()+2, new_height+16);

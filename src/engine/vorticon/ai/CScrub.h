@@ -33,7 +33,7 @@ private:
 
 	unsigned char animtimer, dietimer;
 	unsigned char walkframe;
-	signed int scrubdie_inertia_y;
+	int scrubdie_inertia_y;
 	int fallspeed;
 
 	unsigned char walkdir;

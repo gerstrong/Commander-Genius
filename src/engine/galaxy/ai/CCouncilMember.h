@@ -24,6 +24,10 @@ public:
 	void process();
 
 	void getTouchedBy(CObject &theObject);
+
+private:
+	bool	rescued;
+
 };
 
 }

@@ -29,8 +29,8 @@ enum scrub_actions{
 CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
 CObject(p_map, x, y, OBJ_SCRUB),
-m_Player(Player),
-scrubdie_inertia_y(0)
+scrubdie_inertia_y(0),
+m_Player(Player)
 {
 	walkdir = LEFT;
 	state = SCRUB_FALLING;

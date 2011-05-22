@@ -11,7 +11,7 @@
 namespace galaxy {
 
 CWorldMap::CWorldMap(CExeFile &ExeFile,
-		CInventory &Inventory):
+					CInventory &Inventory):
 CMapPlayGalaxy(ExeFile, Inventory)
 {}
 

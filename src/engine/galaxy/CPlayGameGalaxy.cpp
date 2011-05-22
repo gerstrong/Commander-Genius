@@ -136,28 +136,39 @@ void CPlayGameGalaxy::process()
 	// Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
 	// are some of those events.
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	if( EventEnterLevel* ev = EventContainer.occurredEvent<EventEnterLevel>() )
+	std::list<CMessageBoxGalaxy*>& MessageBoxQueue = m_LevelPlay.getMessageBoxQueue();
+
+	if( EventSendBitmapDialogMsg* ev = EventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
-		// Start a new level!
-		if(ev->data > 0xC000)
-		{
-			const Uint16 NewLevel = ev->data - 0xC000;
-			g_pMusicPlayer->stop();
-			m_WorldMap.setActive(false);
-			m_LevelPlay.loadLevel(NewLevel);
-			m_LevelName = m_LevelPlay.getLevelName();
-			g_pSound->playSound( SOUND_ENTER_LEVEL );
-			m_LevelPlay.setActive(true);
-		}
+		MessageBoxQueue.push_back(new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID ) );
 		EventContainer.pop_Event();
 	}
-	else if( EventContainer.occurredEvent<EventExitLevel>() )
+
+	if(MessageBoxQueue.empty())
 	{
-		g_pMusicPlayer->stop();
-		m_LevelPlay.setActive(false);
-		m_WorldMap.setActive(true);
-		m_LevelName = m_WorldMap.getLevelName();
-		m_WorldMap.loadAndPlayMusic();
+		if( EventEnterLevel* ev = EventContainer.occurredEvent<EventEnterLevel>() )
+		{
+			// Start a new level!
+			if(ev->data > 0xC000)
+			{
+				const Uint16 NewLevel = ev->data - 0xC000;
+				g_pMusicPlayer->stop();
+				m_WorldMap.setActive(false);
+				m_LevelPlay.loadLevel(NewLevel);
+				m_LevelName = m_LevelPlay.getLevelName();
+				g_pSound->playSound( SOUND_ENTER_LEVEL );
+				m_LevelPlay.setActive(true);
+			}
+			EventContainer.pop_Event();
+		}
+		else if( EventContainer.occurredEvent<EventExitLevel>() )
+		{
+			g_pMusicPlayer->stop();
+			m_LevelPlay.setActive(false);
+			m_WorldMap.setActive(true);
+			m_LevelName = m_WorldMap.getLevelName();
+			m_WorldMap.loadAndPlayMusic();
+		}
 	}
 }
 

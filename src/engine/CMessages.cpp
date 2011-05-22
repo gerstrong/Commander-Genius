@@ -72,31 +72,31 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractString( "LEVEL15_LOAD_TEXT" , 0x1F4B0, 0x1F4DF ) );
 			StringMap.insert( extractString( "LEVEL16_LOAD_TEXT" , 0x1F4E0, 0x1F50F ) );
 			StringMap.insert( extractString( "LEVEL17_LOAD_TEXT" , 0x1F510, 0x1F53F ) );
-			StringMap.insert( extractString( "LEVEL18_LOAD_TEXT" , 0x1F540, 0x1F57E ) );
+			StringMap.insert( extractString( "LEVEL18_LOAD_TEXT" , 0x1F540, 0x1F57F ) );
 
 			// Elder Janitor Text. Strangely it is the end of the level load text being to only
 			// in that data segment
-			/*StringMap.insert( extractString( "JANITOR_TEXT1", ,  ) );
-			StringMap.insert( extractString( "JANITOR_TEXT2", ,  ) );
-			StringMap.insert( extractString( "JANITOR_TEXT3", ,  ) );
-			StringMap.insert( extractString( "JANITOR_TEXT4", ,  ) );
+			StringMap.insert( extractString( "JANITOR_TEXT1", 0x1F57F, 0x1F5DF ) );
+			StringMap.insert( extractString( "JANITOR_TEXT2", 0x1F5DF, 0x1F62F ) );
+			StringMap.insert( extractString( "JANITOR_TEXT3", 0x1F630, 0x1F650 ) );
+			StringMap.insert( extractString( "JANITOR_TEXT4", 0x1F650, 0x1F680 ) );
 
 
 			// Now the spoken Messages of some Characters like Lindsey and the elders
-			StringMap.insert( extractString( "LINDSEY_TEXT1", ,  ) );
-			StringMap.insert( extractString( "LINDSEY_TEXT2", ,  ) );
+			StringMap.insert( extractString( "LINDSEY_TEXT1", 0x3094C, 0x30998 ) );
+			StringMap.insert( extractString( "LINDSEY_TEXT2", 0x30999, 0x309E3 ) );
 
-			StringMap.insert( extractString( "LINDSEY_END_TEXT1", ,  ) );
-			StringMap.insert( extractString( "LINDSEY_END_TEXT2", ,  ) );
-			StringMap.insert( extractString( "LINDSEY_START_TEXT", ,  ) );
+			StringMap.insert( extractString( "LINDSEY_END_TEXT1", 0x309E3, 0x309F9 ) );
+			StringMap.insert( extractString( "LINDSEY_END_TEXT2", 0x309FA, 0x30A24 ) );
+			StringMap.insert( extractString( "LINDSEY_START_TEXT", 0x30A25, 0x30A3C ) );
 
-			StringMap.insert( extractString( "CANT_SWIM_TEXT", ,  ) );
-			StringMap.insert( extractString( "SWIM_SUIT_TEXT", ,  ) );
+			StringMap.insert( extractString( "CANT_SWIM_TEXT", 0x30A3D, 0x30A4B ) );
+			StringMap.insert( extractString( "SWIM_SUIT_TEXT", 0x30A4C, 0x30A72 ) );
 
 
-			StringMap.insert( extractString( "ELDERS_TEXT1", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT2", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT3", ,  ) );
+			StringMap.insert( extractString( "ELDERS_TEXT1", 0x30A73, 0x30A94 ) );
+			StringMap.insert( extractString( "ELDERS_TEXT2", 0x30A95, 0x30AB6 ) );
+			/*StringMap.insert( extractString( "ELDERS_TEXT3", 0x30AB6,  ) );
 			StringMap.insert( extractString( "ELDERS_TEXT4", ,  ) );
 			StringMap.insert( extractString( "ELDERS_TEXT5", ,  ) );
 			StringMap.insert( extractString( "ELDERS_TEXT6", ,  ) );

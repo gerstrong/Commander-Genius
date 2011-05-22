@@ -32,7 +32,6 @@ CMessageBox(Text, false, false, false)
 			width = newwidth;
 	}
 
-	// TODO: Those hardcoded are only temporary. They need to be removed.
 	m_text_height = Font.getPixelTextHeight();
 	m_boxrect.h = (m_text_height+2)*m_Lines.size()+16;
 	m_boxrect.w = width;

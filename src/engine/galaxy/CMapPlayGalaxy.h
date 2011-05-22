@@ -39,6 +39,11 @@ public:
 	 */
 	std::string getLevelName();
 
+	/**
+	 * \brief Returns the instance of that MessageBox Queue
+	 */
+	std::list<CMessageBoxGalaxy*>& getMessageBoxQueue();
+
 	void process();
 
 protected:

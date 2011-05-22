@@ -37,6 +37,13 @@ std::string CMapPlayGalaxy::getLevelName()
 	return m_Map.getLevelName();
 }
 
+
+std::list<CMessageBoxGalaxy*>& CMapPlayGalaxy::getMessageBoxQueue()
+{
+	std::list<CMessageBoxGalaxy*>& queue = m_MessageBoxes;
+	return queue;
+}
+
 void CMapPlayGalaxy::process()
 {
 	// Check if the engine need to be paused

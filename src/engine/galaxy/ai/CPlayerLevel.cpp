@@ -170,7 +170,6 @@ void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const direction_t &dir 
 void CPlayerLevel::shootInAir()
 {
 	// process simple shooting
-	stItemGalaxy &m_Item = m_Inventory.Item;
 	if( m_playcontrol[PA_Y] < 0 )
 	{
 		setActionForce(A_KEEN_JUMP_SHOOTUP);
