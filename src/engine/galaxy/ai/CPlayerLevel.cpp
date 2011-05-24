@@ -388,6 +388,22 @@ void CPlayerLevel::processPogo()
 			xinertia += POGO_INERTIA_HOR_REACTION;
 	}
 
+
+	// Check if we are hitting walls
+	if( blockedr && xinertia > 0 ) // to the right
+	{
+		xinertia -= POGO_INERTIA_HOR_REACTION;
+		if( xinertia < 0 )
+			xinertia = 0;
+	}
+	else if( blockedl && xinertia < 0 ) // left
+	{
+		xinertia += POGO_INERTIA_HOR_REACTION;
+		if( xinertia > 0 )
+			xinertia = 0;
+	}
+
+
 	moveXDir(xinertia);
 }
 
@@ -1439,6 +1455,20 @@ void CPlayerLevel::processFalling()
 
 	processMovingHorizontal();
 
+	// If Jump mode is enabled he can jump again
+	// This will cancel the pole process and make Keen jump
+	if( m_Cheatmode.jump && m_playcontrol[PA_JUMP] > 0 )
+	{
+		setAction(A_KEEN_JUMP);
+
+		mp_processState = &CPlayerLevel::processJumping;
+		m_climbing = false;
+		m_jumped = true;
+		yinertia = 0;
+		m_vDir = NONE;
+		return;
+	}
+
 	/// While falling Keen could switch to pogo again anytime
 	// but first the player must release the pogo button
 	if( !m_playcontrol[PA_POGO] )
@@ -1465,6 +1495,7 @@ void CPlayerLevel::processFalling()
 		return;
 	if( m_playcontrol[PA_FIRE] && !m_fired )
 		shootInAir();
+
 }
 
 
