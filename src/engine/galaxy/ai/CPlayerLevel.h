@@ -41,7 +41,9 @@ namespace galaxy {
 #define A_KEEN_POLE_SHOOTUP		56
 #define A_KEEN_POLE_SHOOTDOWN	58
 #define A_KEEN_RUN				60
-#define A_KEEN_POGO				64
+#define A_KEEN_POGO_START		64
+#define A_KEEN_POGO_UP			65
+#define A_KEEN_POGO_HIGH		66
 #define A_KEEN_JUMP				67
 #define A_KEEN_FALL				69
 #define A_KEEN_JUMP_SHOOT		71

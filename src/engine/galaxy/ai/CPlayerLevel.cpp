@@ -204,7 +204,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 	{
 		bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
 		bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
-		if(!check_block && check_block_lower && !getActionNumber(A_KEEN_POGO))
+		if(!check_block && check_block_lower &&  mp_processState != &CPlayerLevel::processPogo )
 		{
 			setAction(A_KEEN_HANG);
 			setActionSprite();
@@ -222,7 +222,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 	{
 		bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
 		bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
-		if(!check_block && check_block_lower && !getActionNumber(A_KEEN_POGO) )
+		if(!check_block && check_block_lower && mp_processState != &CPlayerLevel::processPogo )
 		{
 			setAction(A_KEEN_HANG);
 			setActionSprite();
@@ -339,6 +339,7 @@ void CPlayerLevel::processPogo()
 			g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
 
 		CObject::processFalling();
+		setAction(A_KEEN_POGO_UP);
 
 		m_jumpheight = 0;
 	}
@@ -357,9 +358,15 @@ void CPlayerLevel::processPogo()
 	if(blockedd)
 	{
 		if(m_playcontrol[PA_JUMP])
+		{
 			yinertia = POGO_START_INERTIA_MAX_VERT;
+			setAction(A_KEEN_POGO_HIGH);
+		}
 		else
+		{
 			yinertia = POGO_START_INERTIA_VERT;
+			setAction(A_KEEN_POGO_START);
+		}
 
 		m_jumpheight = 0;
 		g_pSound->playSound( SOUND_KEEN_POGO );
@@ -441,7 +448,7 @@ void CPlayerLevel::processJumping()
 	if( !m_pogotoggle && m_playcontrol[PA_POGO] )
 	{
 		m_jumpheight = 0;
-		setAction(A_KEEN_POGO);
+		setAction(A_KEEN_POGO_UP);
 		m_pogotoggle = true;
 		mp_processState = &CPlayerLevel::processPogo;
 		return;
@@ -1214,7 +1221,7 @@ void CPlayerLevel::processStanding()
 			yinertia = POGO_START_INERTIA_VERT;
 
 		m_jumpheight = 0;
-		setAction(A_KEEN_POGO);
+		setAction(A_KEEN_POGO_START);
 		mp_processState = &CPlayerLevel::processPogo;
 		g_pSound->playSound( SOUND_KEEN_POGO );
 		m_pogotoggle = true;
@@ -1333,7 +1340,7 @@ void CPlayerLevel::processRunning()
 			yinertia = POGO_START_INERTIA_VERT;
 
 		m_jumpheight = 0;
-		setAction(A_KEEN_POGO);
+		setAction(A_KEEN_POGO_START);
 		mp_processState = &CPlayerLevel::processPogo;
 		g_pSound->playSound( SOUND_KEEN_POGO );
 		m_pogotoggle = true;
@@ -1442,7 +1449,7 @@ void CPlayerLevel::processFalling()
 	{
 		m_jumpheight = 0;
 		yinertia = 0;
-		setAction(A_KEEN_POGO);
+		setAction(A_KEEN_POGO_START);
 		m_pogotoggle = true;
 		mp_processState = &CPlayerLevel::processPogo;
 	}
