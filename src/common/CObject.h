@@ -128,6 +128,26 @@ public:
 	bool calcVisibility();
 	bool checkforScenario();
 
+
+	/**
+	 * \description This will verify whether object has to fall or not.
+	 * 				This function must be called when it might be moving
+	 * 				because it also checks the lower sloped tiles cases
+	 *
+	 * \todo 		This function should also be called by foes in some cases
+	 */
+	bool verifyForFalling();
+
+	/**
+	 * \description	This function will change the direction of an object when
+	 * 				it detects a coming gap while moving
+	 * \param		speed Amount of CSFed coordinates to move the object back
+	 * 				when it over that gap
+	 */
+	void performCliffStop(const int &speed);
+
+
+
 	// Moving parts
 	void moveToForce(const VectorD2<int> &dir);
 	void moveToForce(const int& new_x, const int& new_y);

@@ -23,7 +23,15 @@ class CPoisonSlug : public CObject {
 public:
 	CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y);
 
+	/**
+	 * When slug is moving normally
+	 */
 	void processCrawling();
+
+
+	/**
+	 * When slug is pooing slime
+	 */
 	void processPooing();
 
 	void process();

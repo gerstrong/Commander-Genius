@@ -13,7 +13,6 @@ namespace galaxy {
 
 const int SLUG_MOVE_SPEED = 1;
 const int SLUG_MOVE_TIMER = 10;
-//const int SLUG_POO_TIME = 1000;
 
 CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y) :
 CObject(pmap, x, y, OBJ_NONE),
@@ -27,8 +26,20 @@ m_timer(0)
 	performCollisions();
 }
 
+
+
+
+
 void CPoisonSlug::processCrawling()
 {
+	performCollisions();
+	processFalling();
+
+
+	// Check if there is a cliff
+	performCliffStop(m_Action.H_anim_move_amount<<1);
+
+
 	if( m_timer < SLUG_MOVE_TIMER )
 	{
 		m_timer++;
@@ -40,7 +51,7 @@ void CPoisonSlug::processCrawling()
 	}
 
 	// Chance to poo
-	if( getProbability(50) )
+	if( getProbability(30) )
 	{
 		m_timer = 0;
 		mp_processState = &CPoisonSlug::processPooing;
@@ -53,7 +64,12 @@ void CPoisonSlug::processCrawling()
 		moveRight( m_Action.H_anim_move_amount<<1 );
 	else
 		moveLeft( m_Action.H_anim_move_amount<<1 );
+
 }
+
+
+
+
 
 void CPoisonSlug::processPooing()
 {
@@ -64,6 +80,10 @@ void CPoisonSlug::processPooing()
 		mp_processState = &CPoisonSlug::processCrawling;
 	}
 }
+
+
+
+
 
 
 void CPoisonSlug::process()

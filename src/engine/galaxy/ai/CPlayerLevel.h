@@ -104,16 +104,6 @@ public:
 
 
 	/**
-	 * \description This will verify whether keen has to fall or not.
-	 * 				This function must be called when he might be walking
-	 * 				because it also checks the lower sloped tiles cases
-	 *
-	 * \todo 		This function should also be called by foes in some cases
-	 */
-	bool verifyForFalling();
-
-
-	/**
 	 * \description verifies whether there is a cliff and Keen can hang on it.
 	 * 				If that the case, the function places him properly
 	 * 				and set the process to processCliffHanging

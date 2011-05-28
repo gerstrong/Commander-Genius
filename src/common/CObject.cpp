@@ -192,6 +192,63 @@ bool CObject::checkforScenario()
    	return false;
 }
 
+
+
+
+
+bool CObject::verifyForFalling()
+{
+	if( !blockedd )
+	{
+		// This will check three points and avoid that keen falls on sloped tiles
+		const int &fall1 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos());
+		const int &fall2 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(1<<(CSF)));
+		const int &fall3 = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<(CSF)));
+		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
+		const CTileProperties &TileProp2 = g_pBehaviorEngine->getTileProperties(1)[fall2];
+		const CTileProperties &TileProp3 = g_pBehaviorEngine->getTileProperties(1)[fall3];
+		const bool nothing_on_feet = (TileProp1.bup == 0);
+		const bool nothing_below_feet = (TileProp2.bup == 0) && (TileProp3.bup == 0);
+		const bool can_fall = (nothing_on_feet && nothing_below_feet);
+
+		if(can_fall)
+		{
+			return true;
+		}
+		else
+		{
+			// Force the player a bit down, so he will never fall from sloped tiles
+			moveDown(100);
+		}
+	}
+
+	return false;
+}
+
+
+
+void CObject::performCliffStop(const int &speed)
+{
+	if(verifyForFalling())
+	{
+		if( m_hDir == RIGHT )
+		{
+			m_hDir = LEFT;
+			moveLeft( speed );
+		}
+		else
+		{
+			m_hDir = RIGHT;
+			moveRight( speed );
+		}
+	}
+}
+
+
+
+
+
+
 // Used in some setup mode, like putting the player to
 // the current map position
 void CObject::moveToForce(const VectorD2<int> &dir)
@@ -359,7 +416,7 @@ void CObject::processFalling()
 			moveUp(-yinertia);
 			yinertia += Physics.fallspeed_increase;
 		}
-		else if(yinertia>=0 && !blockedd )
+		else if( yinertia>=0 && !blockedd )
 		{
 			moveDown(yinertia);
 
