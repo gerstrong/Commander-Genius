@@ -485,15 +485,31 @@ void CObject::processActionRoutine()
 {
 	setActionSprite();
 
-	if(m_hDir == LEFT)
-		moveLeft(m_Action.H_anim_move_amount<<1);
-	else if(m_hDir == RIGHT)
-		moveRight(m_Action.H_anim_move_amount<<1);
+	// Check the Movement Parameter
+	/*
+	 *	This is how the game handles the sprite's movement;
+	 *	and is important only with sprites that have movement
+	 *	not associated with animation (See below.)The variable
+	 *	can have any value between 0-4; zero is used for
+	 *	sprites that don't move (Most common occurrence.),
+	 *	1 for nonanimating sprites that may still need to move or hover in place,
+	 *	2 is the stunned sprite value and is also used where smooth movement is needed
+	 *	3 is used for 'fall' moves such as the Bounder or Mad Mushroom and
+	 *	4 is used for sprites that must hit or land on the ground.
+	 */
 
-	if(m_vDir == UP)
-		moveUp( m_Action.V_anim_move_amount<<1 );
-	else if(m_vDir == DOWN)
-		moveDown( m_Action.V_anim_move_amount<<1 );
+	if( m_Action.Movement_parameter )
+	{
+		if(m_hDir == LEFT )
+			moveLeft( m_Action.H_anim_move_amount<<1 );
+		else if(m_hDir == RIGHT )
+			moveRight( m_Action.H_anim_move_amount<<1 );
+
+		if(m_vDir == UP)
+			moveUp( m_Action.V_anim_move_amount<<1 );
+		else if(m_vDir == DOWN)
+			moveDown( m_Action.V_anim_move_amount<<1 );
+	}
 
 	if( m_ActionTicker > m_Action.Delay )
 	{
@@ -507,7 +523,9 @@ void CObject::processActionRoutine()
 		m_ActionTicker = 0;
 	}
 	else
+	{
 		m_ActionTicker += 2;
+	}
 }
 
 ////

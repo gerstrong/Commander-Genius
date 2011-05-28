@@ -26,7 +26,7 @@ struct ActionFormatType {
 	int16_t Movement_parameter;  // 0-3
 	int16_t Change_h;            // 0/1
 	int16_t Change_v;            // 0/1
-	int16_t Delay;				// (Anim speed)  0-8000
+	int16_t Delay;				 // (Anim speed)  0-8000
 	int16_t H_anim_move_amount;  // +- any value
 	int16_t V_anim_move_amount;  // +- any value
 	int16_t Behavior;            // [Start of behavior codes only]
@@ -34,7 +34,7 @@ struct ActionFormatType {
 	int16_t Check_sprites;       // [Start of check sprite codes only]
 	int16_t Check_segment;       // [Segment values only]
 	int16_t Check_tiles;         // [Start of check tile code only]
-	int16_t Check_segment2;       // [Segment values only]
+	int16_t Check_segment2;      // [Segment values only]
 	int16_t Next_action;         // [Valid actions only]
 
 	/**

@@ -15,13 +15,22 @@
 namespace galaxy {
 
 #define A_SLUG_MOVE			0	/* Ordinary slug_move action */
-#define A_SLUG_POOHING		2
+#define A_SLUG_POOING		2
 #define A_SLUG_STUNNED		3
+#define A_SLUG_STUNNED_ALT	4
 
 class CPoisonSlug : public CObject {
 public:
 	CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y);
+
+	void processCrawling();
+	void processPooing();
+
 	void process();
+
+private:
+	int m_timer;
+	void (CPoisonSlug::*mp_processState)();
 };
 
 }
