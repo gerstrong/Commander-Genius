@@ -43,11 +43,14 @@ void CCouncilMember::getTouchedBy(CObject &theObject)
 			// TODO: Also we need to play the elder sound and the proper Music to it!
 			// TODO: In this part we have to check which level we are and send the proper messages
 
-			std::string elder_text;
-			elder_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-			EventContainer.add( new EventSendBitmapDialogMsg(0, elder_text) );
 
-			EventContainer.add( new EventSendBitmapDialogMsg(1, elder_text) );
+
+			std::string elder_text[2];
+			elder_text[1] = g_pBehaviorEngine->getString("KEEN_NOSWEAT_TEXT");
+			elder_text[2] = g_pBehaviorEngine->getString("ELDERS_TEXT");
+			EventContainer.add( new EventSendBitmapDialogMsg(0, elder_text[0], LEFT) );
+			EventContainer.add( new EventSendBitmapDialogMsg(1, elder_text[1], RIGHT) );
+
 
 
 

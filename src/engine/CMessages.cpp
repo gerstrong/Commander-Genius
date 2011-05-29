@@ -94,19 +94,17 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractString( "SWIM_SUIT_TEXT", 0x30A4C, 0x30A72 ) );
 
 
-			StringMap.insert( extractString( "ELDERS_TEXT1", 0x30A73, 0x30A94 ) );
-			StringMap.insert( extractString( "ELDERS_TEXT2", 0x30A95, 0x30AB6 ) );
-			/*StringMap.insert( extractString( "ELDERS_TEXT3", 0x30AB6,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT4", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT5", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT6", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT7", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT7", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT8", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT9", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXT10", ,  ) );
-			StringMap.insert( extractString( "ELDERS_TEXTLASTONE", ,  ) );
-			*/
+			StringMap.insert( extractString( "KEEN_NOSWEAT_TEXT", 0x30A73, 0x30A92 ) );
+			StringMap.insert( extractString( "KEEN_BEARDED_ONE_TEXT", 0x30A93, 0x30AB2 ) );
+			StringMap.insert( extractString( "KEEN_NO_PROBLEMO_TEXT3", 0x30AB3, 0x30ABF ) );
+			StringMap.insert( extractString( "KEEN_GREAT_TEXT", 0x30AC0, 0x30AC7 ) );
+			StringMap.insert( extractString( "KEEN_LOOKS_LIKE_SAME_GUY_TEXT", 0x30AC8, 0x30AFF ) );
+			StringMap.insert( extractString( "KEEN_GOOD_IDEA_GRAMPS", 0x30B00, 0x30B12 ) );
+			StringMap.insert( extractString( "KEEN_ROAD_RISE_FEET_TEXT", 0x30B13, 0x30B43 ) );
+			StringMap.insert( extractString( "KEEN_WISE_PLAN_TEXT", 0x30B44, 0x30B6A ) );
+			StringMap.insert( extractString( "KEEN_LAST_ELDER_TEXT", 0x30B6B, 0x30BB2 ) );
+			StringMap.insert( extractString( "ELDERS_UNDERWATER_TEXT", 0x30BB3, 0x30C16 ) );
+			StringMap.insert( extractString( "ELDERS_TEXT",  0x30C17, 0x30C6A ) );
 
 		} break;
 	}

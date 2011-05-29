@@ -14,6 +14,7 @@
 #include "CBehaviorEngine.h"
 #include "ActionFormat.h"
 #include "CVec.h"
+#include "direction.h"
 
 // structures for each AI module's data
 #include "engine/vorticon/ai/enemydata.h"
@@ -49,14 +50,6 @@ struct ObjMove : public CEvent
 // supported by an object and you should look in player[].psupportingobj
 // for it's index.
 #define PSUPPORTEDBYOBJECT         0
-
-enum direction_t{
-	NONE,
-	RIGHT,
-	LEFT,
-	UP,
-	DOWN
-};
 
 
 class CObject {

@@ -13,6 +13,7 @@
 
 #include <stdint.h>
 #include <string>
+#include "common/direction.h"
 
 struct CEvent { virtual ~CEvent() {} };
 
@@ -33,12 +34,16 @@ struct EventExitLevel : CEvent {
  *	to the council Members or Princess Lindsey
  */
 struct EventSendBitmapDialogMsg : CEvent {
-	uint16_t BitmapID;
-	std::string Msg;
+	const uint16_t BitmapID;
+	const std::string Msg;
+	const direction_t Direction;
 	EventSendBitmapDialogMsg(const uint16_t &lBitmapID,
-					 	 	 const std::string& lMsg) :
+					 	 	 const std::string& lMsg,
+					 	 	 const direction_t& lDirection = LEFT) :
 							 BitmapID(lBitmapID),
-							 Msg(lMsg) {}
+							 Msg(lMsg),
+							 Direction(lDirection)
+							 {}
 };
 
 

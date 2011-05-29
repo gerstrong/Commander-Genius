@@ -140,7 +140,7 @@ void CPlayGameGalaxy::process()
 
 	if( EventSendBitmapDialogMsg* ev = EventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
-		MessageBoxQueue.push_back(new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID ) );
+		MessageBoxQueue.push_back(new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID, ev->Direction ) );
 		EventContainer.pop_Event();
 	}
 
