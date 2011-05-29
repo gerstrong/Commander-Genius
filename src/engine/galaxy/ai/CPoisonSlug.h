@@ -10,6 +10,7 @@
 #ifndef CPOISONSLUG_H_
 #define CPOISONSLUG_H_
 
+#include <vector>
 #include "common/CObject.h"
 
 namespace galaxy {
@@ -21,7 +22,8 @@ namespace galaxy {
 
 class CPoisonSlug : public CObject {
 public:
-	CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y);
+	CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
+				std::vector<CObject*>&ObjectPtrs);
 
 	/**
 	 * When slug is moving normally
@@ -37,6 +39,7 @@ public:
 	void process();
 
 private:
+	std::vector<CObject*>& m_ObjectPtrs;
 	int m_timer;
 	void (CPoisonSlug::*mp_processState)();
 };

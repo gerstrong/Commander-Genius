@@ -6,6 +6,7 @@
  */
 
 #include "CPoisonSlug.h"
+#include "CSlugSlime.h"
 #include "misc.h"
 
 namespace galaxy {
@@ -14,14 +15,16 @@ namespace galaxy {
 const int SLUG_MOVE_SPEED = 1;
 const int SLUG_MOVE_TIMER = 10;
 
-CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y) :
+CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
+						std::vector<CObject*>&ObjectPtrs) :
 CObject(pmap, x, y, OBJ_NONE),
+m_ObjectPtrs(ObjectPtrs),
 m_timer(0)
 {
 	m_ActionBaseOffset = 0x2012;
-	m_hDir = LEFT;
 	setActionForce(A_SLUG_MOVE);
 	mp_processState = &CPoisonSlug::processCrawling;
+	m_hDir = LEFT;
 	processActionRoutine();
 	performCollisions();
 }
@@ -56,6 +59,7 @@ void CPoisonSlug::processCrawling()
 		m_timer = 0;
 		mp_processState = &CPoisonSlug::processPooing;
 		setAction(A_SLUG_POOING);
+		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, getXLeftPos(), getYDownPos()-(8<<STC)));
 		return;
 	}
 
@@ -75,7 +79,6 @@ void CPoisonSlug::processPooing()
 {
 	if( getActionStatus(A_SLUG_MOVE) )
 	{
-		// TODO: Create that slime
 		setAction(A_SLUG_MOVE);
 		mp_processState = &CPoisonSlug::processCrawling;
 	}
