@@ -10,6 +10,7 @@
 
 #include "CMessageBoxGalaxy.h"
 #include "graphics/CGfxEngine.h"
+#include "common/CObject.h"
 
 class CMessageBoxBitmapGalaxy : public CMessageBoxGalaxy {
 public:
@@ -19,7 +20,8 @@ public:
 	 * \param Text 				Message to be shown
 	 * \param BitmapId 			Bitmap that will be shown to the left side in the box
 	 */
-	CMessageBoxBitmapGalaxy(const std::string& Text, const Uint16 BitmapId );
+	CMessageBoxBitmapGalaxy( const std::string& Text, const Uint16 BitmapId,
+							const direction_t alignment = LEFT );
 
 	/**
 	 * \brief the cycle to be processed for rendering the Message-Box
@@ -28,6 +30,7 @@ public:
 
 private:
 	CBitmap &m_Bitmap;
+	const direction_t m_alignment;
 };
 
 #endif /* CMESSAGEBOXBITMAPGALAXY_H_ */
