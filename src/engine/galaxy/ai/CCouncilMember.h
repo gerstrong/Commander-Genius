@@ -21,13 +21,21 @@ class CCouncilMember : public CObject {
 public:
 	CCouncilMember(CMap *pmap, Uint32 x, Uint32 y);
 
+	/** Process walking of elder here */
+	void processWalking();
+
+	/** Process thinking of elder here */
+	void processThinking();
+
+	/** Normal process routine */
 	void process();
 
 	void getTouchedBy(CObject &theObject);
 
 private:
 	bool	rescued;
-
+	int 	m_timer;
+	void (CCouncilMember::*mp_processState)();
 };
 
 }
