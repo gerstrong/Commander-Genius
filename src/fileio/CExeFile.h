@@ -18,6 +18,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 class CExeFile {
 public:
@@ -29,6 +30,12 @@ public:
 	size_t getExeDataSize() const;
 
 	bool readData(const char episode, const std::string& datadirectory);
+
+	/**
+	 * \brief Tells whether The Exe-File is supported by CG or not.
+	 * 		  This Information is hard-coded in the CExefile constructor
+	 */
+	bool Supported();
 	int getEXEVersion();
 	int getEXECrc();
 	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
@@ -69,6 +76,8 @@ private:
 	unsigned char *m_data_segment;
 	std::string m_datadirectory;
 	std::string m_filename;
+
+	std::map< size_t, std::map<int , bool> > m_supportmap;
 };
 
 #endif /* CEXEFILE_H_ */

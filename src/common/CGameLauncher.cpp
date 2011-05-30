@@ -110,6 +110,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		GameEntry newentry;
 		newentry.crcpass = executable.getEXECrc();
 		newentry.version = executable.getEXEVersion();
+		newentry.supported = executable.Supported();
 		newentry.episode = i;
 		newentry.path    = path;
 		newentry.exefilename = executable.getFileName();
@@ -144,7 +145,8 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		// Save the type information about the exe
 		m_Entries.push_back(newentry);
 		// Add a new menu item
-		mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, m_Entries.size(), newentry.name);
+		mp_LaunchMenu->addObject( newentry.supported ? DLG_OBJ_OPTION_TEXT : DLG_OBJ_DISABLED,
+									1, m_Entries.size(), newentry.name);
 
 		g_pLogFile->textOut(gamespecstring);
 		

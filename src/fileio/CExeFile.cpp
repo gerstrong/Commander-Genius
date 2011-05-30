@@ -10,10 +10,10 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
-#include "../StringUtils.h"
-#include "../FindFile.h"
-#include "../CLogFile.h"
-#include "../fileio/ResourceMgmt.h"
+#include "StringUtils.h"
+#include "FindFile.h"
+#include "CLogFile.h"
+#include "fileio/ResourceMgmt.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete[] x; x=NULL; }
 
@@ -26,7 +26,35 @@ m_data(NULL),
 m_headerdata(NULL),
 m_rawdata(NULL),
 m_datadirectory("")
-{}
+{
+
+	// Setup support map
+	m_supportmap[100274][1] = true;
+	m_supportmap[100484][1] = true;
+	m_supportmap[398][1] = false;
+
+	m_supportmap[118626][2] = true;
+	m_supportmap[118672][2] = true;
+
+	m_supportmap[127598][3] = true;
+	m_supportmap[127616][3] = true;
+
+	m_supportmap[263488][4] = true;
+	m_supportmap[259232][4] = false;
+	m_supportmap[258064][4] = false;
+
+	m_supportmap[266096][5] = true;
+	m_supportmap[262176][5] = false;
+
+	m_supportmap[236112][6] = false;
+	m_supportmap[271696][6] = false;
+
+
+	// TODO: Setup version map
+
+	// TODO: Setup CRC-Map
+
+}
 
 char CExeFile::getEpisode() const
 { return m_episode;	}
@@ -118,6 +146,18 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	g_pLogFile->ftextOut( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
 
 	return true;
+}
+
+bool CExeFile::Supported()
+{
+
+	if( m_supportmap.find(m_datasize) == m_supportmap.end())
+		return false;
+
+	if( m_supportmap[m_datasize].find(m_episode) == m_supportmap[m_datasize].end() )
+		return false;
+
+	return  m_supportmap[m_datasize][m_episode];
 }
 
 int CExeFile::getEXEVersion()

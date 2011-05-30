@@ -31,8 +31,15 @@ struct GameEntry {
 	std::string exefilename;
     std::string name;
     short version;
+    bool supported;
     Uint16 episode;
     bool crcpass;
+
+    GameEntry() :  version(0),
+    			   supported(false),
+    			   episode(0),
+    			   crcpass(false) {}
+
 };
 
 class CGameLauncher {
