@@ -162,6 +162,7 @@ int CExeFile::getEXEVersion()
 			else
 				return 131;
 
+		// For Keen 4
 		case 263488:
 			if(m_episode != 4)
 				return -1;
@@ -172,12 +173,31 @@ int CExeFile::getEXEVersion()
 				return -1;
 			else
 				return 110;
+		case 258064:
+			if(m_episode != 4)
+				return -1;
+			else
+				return 100;
 
+		// For Keen 5
 		case 266096:
 			if(m_episode != 5)
 				return -1;
 			else
 				return 140;
+
+		case 262176:
+			if(m_episode != 5)
+				return -1;
+			else
+				return 100;
+
+		// For Keen 6
+		case 236112:
+			if(m_episode != 6)
+				return -1;
+			else
+				return 100;
 
 		case 271696:
 			if(m_episode != 6)

@@ -117,10 +117,20 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		newentry.name    = scanLabels(executable.getFileName());
 		
 		std::string verstr;
-		if(newentry.version<0) // Version couldn't be read!
+		std::string gamespecstring = "Detected game Name: " + executable.getFileName();
+		if( newentry.version<=0 ) // Version couldn't be read!
+		{
 			verstr = "unknown";
+			gamespecstring += " (Unknown Version)<br>";
+		}
 		else
+		{
 			verstr = "v" + itoa(newentry.version/100) + "." + itoa(newentry.version%100);
+			gamespecstring += " Version: ";
+			gamespecstring += verstr;
+			gamespecstring += "<br>";
+		}
+
 		
 		
 		if( newentry.name.length() <= 0 )
@@ -128,15 +138,16 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 			newentry.name = "Episode: " + itoa(newentry.episode);
 			newentry.name += " " + verstr + " " + newentry.path;
 		}
+
 		newentry.name += " ";
 		
 		// Save the type information about the exe
 		m_Entries.push_back(newentry);
 		// Add a new menu item
 		mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, m_Entries.size(), newentry.name);
+
+		g_pLogFile->textOut(gamespecstring);
 		
-		g_pLogFile->ftextOut("Detected game Name: %s Version: %d<br>", executable.getFileName().c_str()
-							 ,newentry.version );
 		// The original episode 1 exe is needed to load gfx's for game launcher menu
 		if ( m_ep1slot <= -1 && newentry.crcpass == true )
 		{
