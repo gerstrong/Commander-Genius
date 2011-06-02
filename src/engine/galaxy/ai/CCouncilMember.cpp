@@ -8,6 +8,7 @@
 #include "CCouncilMember.h"
 #include "CPlayerLevel.h"
 #include "misc.h"
+#include "sdl/sound/CSound.h"
 
 namespace galaxy {
 
@@ -115,14 +116,13 @@ void CCouncilMember::getTouchedBy(CObject &theObject)
 			// TODO: In this part we have to check which level we are and send the proper messages
 
 
+			g_pSound->playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
 
 			std::string elder_text[2];
-			elder_text[0] = g_pBehaviorEngine->getString("KEEN_NOSWEAT_TEXT");
-			elder_text[1] = g_pBehaviorEngine->getString("ELDERS_TEXT");
+			elder_text[0] = g_pBehaviorEngine->getString("ELDERS_TEXT");
+			elder_text[1] = g_pBehaviorEngine->getString("KEEN_NOSWEAT_TEXT");
 			EventContainer.add( new EventSendBitmapDialogMsg(104, elder_text[0], LEFT) );
 			EventContainer.add( new EventSendBitmapDialogMsg(106, elder_text[1], RIGHT) );
-
-
 
 
 			EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );

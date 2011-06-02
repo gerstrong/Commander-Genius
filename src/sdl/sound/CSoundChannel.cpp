@@ -16,11 +16,11 @@ m_AudioSpec(AudioSpec)
 	m_sound_paused = true;
 	m_sound_forced = false;
 	m_balance = 0;
-	
 }
 
 void CSoundChannel::stopSound()
 {
+	m_balance = 0;
     m_sound_ptr = 0;
     m_sound_playing = false;
 }

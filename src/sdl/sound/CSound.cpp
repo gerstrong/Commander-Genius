@@ -237,12 +237,15 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 
 // if priorities allow, plays the sound "snd".
 // nonzero return value indicates a higher priority sound is playing.
-void CSound::playSound(GameSound snd, char mode)
+void CSound::playSound(	const GameSound snd,
+						const SoundPlayMode mode )
 {
 	playStereosound(snd, mode, 0);
 }
 
-void CSound::playStereofromCoord(GameSound snd, char mode, unsigned int xcoordinate)
+void CSound::playStereofromCoord( const GameSound snd,
+								  const SoundPlayMode mode,
+								  const unsigned int xcoordinate)
 {
     if(AudioSpec.channels == 2)
     {
