@@ -37,7 +37,8 @@ m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
 m_sound_blaster_mode(false),
 mp_SndSlotMap(NULL),
-m_OPL_Player(AudioSpec)
+m_OPL_Player(AudioSpec),
+m_pause_gameplay(false)
 {
 	AudioSpec.channels = 2; // Stereo Sound
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(ANDROID)
@@ -209,12 +210,21 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
     	mixAudio(stream, m_pMixedForm.get(), len, m_MusicVolume, AudioSpec.format);
     }
 
+    bool any_sound_playing = false;
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
    	{
-		snd_chnl->readWaveform( m_pAudioRessources->getSlotPtr(), m_pMixedForm.get(), len);
-   		mixAudio(stream, m_pMixedForm.get(), len, m_SoundVolume, AudioSpec.format);
+		if(snd_chnl->isPlaying())
+		{
+			any_sound_playing |= true;
+			snd_chnl->readWaveform( m_pAudioRessources->getSlotPtr(), m_pMixedForm.get(), len);
+   			mixAudio(stream, m_pMixedForm.get(), len, m_SoundVolume, AudioSpec.format);
+		}
     }
+
+	if(!any_sound_playing)
+		// means no sound is playing
+		m_pause_gameplay = false;
 
 	m_callback_running = false;
 }
@@ -245,7 +255,7 @@ void CSound::playStereofromCoord(GameSound snd, char mode, unsigned int xcoordin
     	playSound(snd, mode);
 }
 
-void CSound::playStereosound(GameSound snd, char mode, short balance)
+void CSound::playStereosound(const GameSound snd, const char mode, const short balance)
 {
 	if( m_mixing_channels == 0 ) return;
 
@@ -263,6 +273,9 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 
 	if (mode==PLAY_NORESTART && isPlaying(snd))
 		return;
+
+	if(mode==PLAY_PAUSEALL)
+		m_pause_gameplay = true;
 
 	// if a forced sound is playing then let it play
 	if (forcedisPlaying()) return;
@@ -312,6 +325,16 @@ void CSound::unloadSoundData()
 
 	m_pAudioRessources.tryDeleteData();
 }
+
+
+
+bool CSound::pauseGamePlay()
+{
+	return m_pause_gameplay;
+}
+
+
+
 
 void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
 {

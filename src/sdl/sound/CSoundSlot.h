@@ -25,9 +25,9 @@ public:
 	
 	void setupAudioSpec(const SDL_AudioSpec *pAudioSpec){ m_pAudioSpec = const_cast<SDL_AudioSpec*>(pAudioSpec); }
 	
-	byte *getSoundData(){ return m_sounddata; }
+	byte *getSoundData() const { return m_sounddata; }
 	SDL_AudioSpec &getAudioSpec() const { return *m_pAudioSpec; }
-	unsigned int getSoundlength() { return m_soundlength; }
+	unsigned int getSoundlength() const { return m_soundlength; }
 	
 	~CSoundSlot();
 

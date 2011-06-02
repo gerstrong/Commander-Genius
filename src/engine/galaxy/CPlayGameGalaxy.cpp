@@ -60,6 +60,9 @@ bool CPlayGameGalaxy::init()
  */
 void CPlayGameGalaxy::process()
 {
+	if(g_pSound->pauseGamePlay())
+		return;
+
 	if(mp_Menu) // In case the menu is open
 	{
 		// draw the title bitmap here!
@@ -127,7 +130,6 @@ void CPlayGameGalaxy::process()
 		{
 			m_Inventory.drawStatus();
 		}
-
 
 		processRendering();
 	}

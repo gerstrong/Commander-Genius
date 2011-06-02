@@ -4,4 +4,3 @@
 #define CGVERSION	"0.3.4-testing"
 
 #endif
-

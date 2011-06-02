@@ -15,12 +15,15 @@
 // sound play modes
 // start playing sound now, unless a higher priority sound is playing
 enum SoundPlayMode{
+// Normal play now
 PLAY_NOW,
 // will not restart the sound if it is already playing.
 PLAY_NORESTART,
 // plays the sound regardless of priority, and does not allow any other
 // sounds to play until it completes.
-PLAY_FORCE
+PLAY_FORCE,
+// This will play the sound and pause the gameplay while it does
+PLAY_PAUSEALL
 };
 
 // 8 bit sound
@@ -53,7 +56,16 @@ public:
 	bool isPlaying() { return m_sound_playing; }
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
 	unsigned char getCurrentsound() { return m_current_sound; }
-	void readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, const Uint32 len);
+
+	/**
+	 * \brief	Reads the sound of a specified slot into the waveform which normally is mixed
+	 * \param	pSndSlot Array to the Collection of slots
+	 * \param	waveform 8-bit data array where the mixform will be written to
+	 * \param	length in bytes that have to be read
+	 * \warning	If there is no sound curently assigned to be played, please don't call that function.
+	 * 			It might crash.
+	 */
+	void readWaveform(CSoundSlot * const pSndSlot, Uint8 * const waveform, const Uint32 len);
 	template <typename T>
 	void transintoStereoChannels(T* waveform, const Uint32 len);
 

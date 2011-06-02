@@ -39,7 +39,7 @@ public:
 	void resumeSounds(void);
 	void playSound(GameSound snd, char mode=PLAY_NOW);
 	void playStereofromCoord(GameSound snd, char mode, unsigned int xcoordinate);
-	void playStereosound(GameSound snd, char mode, short balance);
+	void playStereosound(const GameSound snd, const char mode, const short balance);
 	bool isPlaying(const GameSound snd);
 	void stopSound(const GameSound snd);
 	void destroy(void);
@@ -60,6 +60,9 @@ public:
 	bool loadSoundData(const CExeFile &ExeFile);
 	void unloadSoundData();
 
+	// Tell whether a sound is played which has to stop the gameplay
+	bool pauseGamePlay();
+
 protected:
 	std::vector<CSoundChannel>	m_soundchannel;
 	SmartPointer<CAudioResources> m_pAudioRessources;
@@ -78,6 +81,7 @@ private:
     unsigned char *mp_SndSlotMap;
 
     COPLEmulator m_OPL_Player;
+    bool m_pause_gameplay;
 };
 
 #endif /* CSOUND_H_ */
