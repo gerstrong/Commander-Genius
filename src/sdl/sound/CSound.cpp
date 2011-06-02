@@ -168,8 +168,11 @@ bool CSound::isPlaying(const GameSound snd)
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
 		if (snd_chnl->isPlaying())
-			if (snd_chnl->getCurrentsound() == snd)
+		{
+			CSoundSlot *pSlotToStop = m_pAudioRessources->getSlotPtrAt(snd);
+			if (snd_chnl->getCurrentSoundPtr() == pSlotToStop)
 				return true;
+		}
 	}
 	return false;
 }
@@ -181,8 +184,11 @@ void CSound::stopSound(const GameSound snd)
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
 		if (snd_chnl->isPlaying())
-			if (snd_chnl->getCurrentsound() == snd)
+		{
+			CSoundSlot *pSlotToStop =  m_pAudioRessources->getSlotPtrAt(snd);
+			if( snd_chnl->getCurrentSoundPtr() == pSlotToStop )
 				snd_chnl->stopSound();
+		}
 	}
 }
 
@@ -217,7 +223,7 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 		if(snd_chnl->isPlaying())
 		{
 			any_sound_playing |= true;
-			snd_chnl->readWaveform( m_pAudioRessources->getSlotPtr(), m_pMixedForm.get(), len);
+			snd_chnl->readWaveform( m_pMixedForm.get(), len);
    			mixAudio(stream, m_pMixedForm.get(), len, m_SoundVolume, AudioSpec.format);
 		}
     }
@@ -288,14 +294,14 @@ void CSound::playStereosound(const GameSound snd, const char mode, const short b
 	std::vector<CSoundChannel>::iterator snd_chnl;
 	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
-		CSoundSlot &current_slot = mp_Slots[snd_chnl->getCurrentsound()];
+		CSoundSlot &current_slot = *snd_chnl->getCurrentSoundPtr();
 
 		if ( !snd_chnl->isPlaying() || ( new_slot.priority >= current_slot.priority ) )
 		{
 			if(AudioSpec.channels == 2)
 				snd_chnl->setBalance(balance);
 
-			snd_chnl->setupSound( slotplay, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
+			snd_chnl->setupSound( new_slot, (mode==PLAY_FORCE) ? true : false );
 			break;
 		}
 	}

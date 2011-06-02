@@ -55,38 +55,37 @@ public:
 	void stopSound();
 	bool isPlaying() { return m_sound_playing; }
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
-	unsigned char getCurrentsound() { return m_current_sound; }
+	CSoundSlot *getCurrentSoundPtr() { return mp_current_SndSlot; }
 
 	/**
 	 * \brief	Reads the sound of a specified slot into the waveform which normally is mixed
-	 * \param	pSndSlot Array to the Collection of slots
 	 * \param	waveform 8-bit data array where the mixform will be written to
 	 * \param	length in bytes that have to be read
 	 * \warning	If there is no sound curently assigned to be played, please don't call that function.
-	 * 			It might crash.
+	 * 			It might crash. Call setupSound first before you call this one!
 	 */
-	void readWaveform(CSoundSlot * const pSndSlot, Uint8 * const waveform, const Uint32 len);
+	void readWaveform( Uint8 * const waveform, const Uint32 len );
 	template <typename T>
 	void transintoStereoChannels(T* waveform, const Uint32 len);
 
 	short getBalance() { return m_balance; }
 	void setBalance(short value) { m_balance = value; }
 
-	void setupSound(const unsigned char current_sound,
-					const unsigned int sound_timer,
-					const bool playing,
-					const unsigned int freqtimer,
-					const bool sound_forced,
-					const Uint16 format);
+	/**
+	 * \brief	Sets up the slot to play a sound
+	 * \param	SndSlottoPlay	Reference to the slot that has to be played
+	 * \param	sound_forced	This will play a sound again even if it's already playing. Use this one wise
+	 */
+	void setupSound(CSoundSlot &SndSlottoPlay,
+					const bool sound_forced );
 
 private:
     bool m_sound_playing;           	// true = a sound is currently playing
-    unsigned char m_current_sound;   	    // # of the sound that is currently playing
+    CSoundSlot *mp_current_SndSlot;		// Pointer to the slot of the currently playing sound
     Uint32 m_sound_ptr;               	// position within sound that we're at
 	bool m_sound_paused;             	// true = pause playback
     bool m_sound_forced;
 
-    unsigned int m_desiredfreq;     	// current desired frequency in hz
     short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
 
     SDL_AudioSpec m_AudioSpec;

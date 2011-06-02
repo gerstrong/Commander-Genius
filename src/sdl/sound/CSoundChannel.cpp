@@ -8,13 +8,13 @@
 #include "CSoundChannel.h"
 
 CSoundChannel::CSoundChannel(SDL_AudioSpec AudioSpec) :
-m_AudioSpec(AudioSpec)
+m_AudioSpec(AudioSpec),
+mp_current_SndSlot(NULL)
 {
 	m_sound_ptr = 0;
 	m_sound_playing = false;
 	m_sound_paused = true;
 	m_sound_forced = false;
-	m_desiredfreq = 0;     	// current desired frequency in hz
 	m_balance = 0;
 	
 }
@@ -25,15 +25,11 @@ void CSoundChannel::stopSound()
     m_sound_playing = false;
 }
 
-void CSoundChannel::setupSound(const unsigned char current_sound,
-					const unsigned int sound_timer,
-					const bool playing,
-					const unsigned int freqtimer,
-					const bool sound_forced,
-					const Uint16 format)
+void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
+								const bool sound_forced )
 {
-	m_current_sound = current_sound;
-	m_sound_playing = playing;
+	mp_current_SndSlot = &SndSlottoPlay;
+	m_sound_playing = true;
 	m_sound_ptr = 0;
 	m_sound_forced = sound_forced;
 }
@@ -72,13 +68,12 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 	}
 }
 
-void CSoundChannel::readWaveform(CSoundSlot * const pSndSlot, Uint8 * const waveform, const Uint32 len)
+void CSoundChannel::readWaveform( Uint8 * const waveform, const Uint32 len )
 {
-	const CSoundSlot &SndSlot = pSndSlot[m_current_sound];
+	byte *snddata = mp_current_SndSlot->getSoundData();
+	const Uint32 sndlength = mp_current_SndSlot->getSoundlength();
 
-	byte *snddata = SndSlot.getSoundData();
-	const Uint32 sndlength = SndSlot.getSoundlength();
-	if ((m_sound_ptr + (Uint32)len) >= sndlength)
+	if ((m_sound_ptr + len) >= sndlength)
 	{
 		// Fill up the buffer and the rest with silence
 		const Uint32 len_left = sndlength-m_sound_ptr;

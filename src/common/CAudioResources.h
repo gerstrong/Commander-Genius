@@ -146,6 +146,7 @@ public:
 	bool readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize, const Uint8 formatsize );
 
 	CSoundSlot *getSlotPtr(){	return &m_soundslot[0];	}
+	CSoundSlot *getSlotPtrAt(const unsigned int idx){	return &m_soundslot[idx];	}
 	unsigned int getNumberofSounds() {	return m_soundslot.size();	}
 
 protected:
