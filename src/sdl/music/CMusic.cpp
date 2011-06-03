@@ -23,7 +23,9 @@ mp_player(NULL)
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
 	m_AudioSpec = g_pSound->getAudioSpec();
-	mp_player = new CIMFPlayer(ExeFile, level, m_AudioSpec);
+	CIMFPlayer *imf_player = new CIMFPlayer(m_AudioSpec);
+	imf_player->loadMusicForLevel(ExeFile, level);
+	mp_player = imf_player;
 
 	if(!mp_player->open())
 	{
@@ -46,7 +48,11 @@ bool CMusic::load(const std::string &musicfile)
 		std::string extension = GetFileExtension(musicfile);
 
 		if(strcasecmp(extension.c_str(),"imf") == 0)
-			mp_player = new CIMFPlayer(musicfile, m_AudioSpec);
+		{
+			CIMFPlayer *imf_player = new CIMFPlayer(m_AudioSpec);
+			imf_player->loadMusicFromFile(musicfile);
+			mp_player = imf_player;
+		}
 		else if(strcasecmp(extension.c_str(),"ogg") == 0)
 		{
 #if defined(OGG) || defined(TREMOR)

@@ -22,21 +22,25 @@ const Uint32 GalaxySongAssignments[] =
 	0x03103D,
 };
 
-CIMFPlayer::CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec, COPLEmulator& opl_emulator ) :
+CIMFPlayer::CIMFPlayer( const SDL_AudioSpec& AudioSpec, COPLEmulator& opl_emulator ) :
 m_AudioDevSpec(AudioSpec),
 m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
 m_IMFDelay(0),
 m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
+{}
+
+
+bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 {
-    // Load the IMF File here!
+    // Open the IMF File
 	FILE *fp;
 	word data_size;
 	int read_first;
 
 	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
-    	return;
+    	return false;
 
 	read_first = fread( &data_size, sizeof(word), 1, fp);
     if (data_size == 0) // Is the IMF file of Type-0?
@@ -56,145 +60,179 @@ m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
     {
     	g_pLogFile->textOut("The IMF-File seems to be corrupt.");
     	fclose(fp);
+    	return false;
     }
     else
     {
     	// Put a zero delay to that data structure so it will be rewound correctly!
     	fclose(fp);
+    	return true;
     }
 }
 
-/**
- * \brief 	This function will load music using other dictionaries which are embedded in the Exe File.
- * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
- * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
- */
-CIMFPlayer::CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec, COPLEmulator& opl_emulator ) :
-m_AudioDevSpec(AudioSpec),
-m_opl_emulator(opl_emulator),
-m_numreadysamples(0),
-m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
-m_IMFDelay(0),
-m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
+
+bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
+									 	 	   uint32_t *&audiohedptr,
+									 	 	   uint8_t *&AudioCompFileData)
+
+
 {
 	const int episode = ExeFile.getEpisode();
 
-	if(m_AudioDevSpec.format != 0)
+	if(m_AudioDevSpec.format == 0)
+		return false;
+
+	/// First get the size of the AUDIO.CK? File.
+	uint32_t audiofilecompsize;
+	std::string init_audiofilename = "AUDIO.CK" + itoa(episode);
+
+	std::string audiofilename = getResourceFilename( init_audiofilename, ExeFile.getDataDirectory(), true, false);
+
+	if( audiofilename == "" )
+		return false;
+
+	std::ifstream AudioFile;
+	OpenGameFileR(AudioFile, audiofilename);
+
+	// Read File Size to know much memory we need to allocate
+	AudioFile.seekg( 0, std::ios::end );
+	audiofilecompsize = AudioFile.tellg();
+	AudioFile.seekg( 0, std::ios::beg );
+
+	// create memory so we can store the Audio.ck there and use it later for extraction
+	AudioCompFileData = new uint8_t[audiofilecompsize];
+	AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
+	AudioFile.close();
+
+	// Open the AUDIOHED so we know where tomp_IMF_Data decompress
+	uint32_t number_of_audiorecs = 0;
+	// That size must appear as integer in the ExeFile. Look for it!
+	audiohedptr = (uint32_t*) ExeFile.getHeaderData();
+	bool found = false;
+	for( const uint32_t *endptr = (uint32_t*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
+			audiohedptr < endptr ;
+			audiohedptr++ )
 	{
-		// Open the Huffman dictionary and get AUDIODICT
-		CHuffman Huffman;
-		Huffman.readDictionaryNumber( ExeFile, 0 );
-
-		/// First get the size of the AUDIO.CK? File.
-		uint32_t audiofilecompsize;
-		std::string init_audiofilename = "AUDIO.CK" + itoa(episode);
-
-		std::string audiofilename = getResourceFilename( init_audiofilename, ExeFile.getDataDirectory(), true, false);
-
-		if( audiofilename == "" )
-			return;
-
-		std::ifstream AudioFile;
-		OpenGameFileR(AudioFile, audiofilename);
-
-		// Read File Size and allocate memory so we can read it
-		AudioFile.seekg( 0, std::ios::end );
-		audiofilecompsize = AudioFile.tellg();
-		AudioFile.seekg( 0, std::ios::beg );
-
-		// create memory so we can store the Audio.ck there and use it later for extraction
-		uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
-		AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
-		AudioFile.close();
-
-		// Open the AUDIOHED so we know where tomp_IMF_Data decompress
-		uint32_t number_of_audiorecs = 0;
-		// That size must appear as integer in the ExeFile. Look for it!
-		uint32_t *audiohedptr = (uint32_t*) ExeFile.getHeaderData();
-		bool found = false;
-		for( const uint32_t *endptr = (uint32_t*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
-				audiohedptr < endptr ;
-				audiohedptr++ )
+		if(*audiohedptr == audiofilecompsize)
 		{
-			if(*audiohedptr == audiofilecompsize)
+			for( const uint32_t *startptr = (uint32_t*) ExeFile.getHeaderData() ;
+					audiohedptr > startptr ; audiohedptr-- )
 			{
-				for( const uint32_t *startptr = (uint32_t*) ExeFile.getHeaderData() ;
-						audiohedptr > startptr ; audiohedptr-- )
-				{
-					found = true;
-					// Get the number of Audio files we have
-					number_of_audiorecs++;
-					if(*audiohedptr == 0x0)
-						break;
-				}
-				break;
+				found = true;
+				// Get the number of Audio files we have
+				number_of_audiorecs++;
+				if(*audiohedptr == 0x0)
+					break;
 			}
+			break;
 		}
+	}
 
-		if(!found)
-			return ;
+	if(!found)
+		return false;
 
-		// Find the start of the embedded IMF files
-		bool gap_detected = false;
-		uint32_t music_start = 0;
+	// Find the start of the embedded IMF files
+	bool gap_detected = false;
+	uint32_t music_start = 0;
 
-		for( uint32_t slot = 0 ; slot<number_of_audiorecs ; slot++ )
-		{
-			const uint32_t audio_start = audiohedptr[slot];
-			const uint32_t audio_end = audiohedptr[slot+1];
-
-			if(!gap_detected && audio_start == audio_end)
-				gap_detected = true;
-
-			if(gap_detected && audio_start != audio_end)
-			{
-				music_start = slot+1;
-				break;
-			}
-		}
-
-		// Now get the proper music slot reading the assignment table.
-		Uint16 music_order = 0;
-
-		memcpy( &music_order, ExeFile.getRawData()+GalaxySongAssignments[episode-4]+level*sizeof(Uint16), sizeof(Uint16));
-
-		/// Now we have all the data we need.
-		// decompress every file of AUDIO.CK? using huffman decompression algorithm
-		uint32_t slot = music_start+music_order;
+	for( uint32_t slot = 0 ; slot<number_of_audiorecs ; slot++ )
+	{
 		const uint32_t audio_start = audiohedptr[slot];
 		const uint32_t audio_end = audiohedptr[slot+1];
 
-		if( audio_start < audio_end )
+		if(!gap_detected && audio_start == audio_end)
+			gap_detected = true;
+
+		if(gap_detected && audio_start != audio_end)
 		{
-			const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
-			const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
-			const uint32_t emb_file_data_size = *AudioCompFileData32;
-
-
-			byte imf_data[emb_file_data_size];
-			byte *imf_data_ptr = imf_data;
-			Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imf_data, audio_end-audio_comp_data_start, emb_file_data_size);
-
-			word data_size;
-
-		    if (*imf_data_ptr == 0) // Is the IMF file of Type-0?
-		        data_size = emb_file_data_size;
-		    else
-		    {
-		    	data_size = *((word*)imf_data_ptr);
-		    	imf_data_ptr+=sizeof(word);
-		    }
-
-
-			if(!m_IMF_Data.empty())
-				m_IMF_Data.clear();
-
-		    const word imf_chunks = data_size/sizeof(IMFChunkType);
-			m_IMF_Data.reserve(imf_chunks);
-			memcpy(m_IMF_Data.getStartPtr(), imf_data_ptr, data_size);
+			music_start = slot+1;
+			break;
 		}
 	}
+
+	audiohedptr += music_start;
+
+	return true;
 }
+
+bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
+								const uint8_t *AudioCompFileData,
+								const uint32_t *audiohedptr,
+								const Uint32 slot )
+{
+	const uint32_t audio_start = audiohedptr[slot];
+	const uint32_t audio_end = audiohedptr[slot+1];
+
+	// Open the Huffman dictionary and get AUDIODICT
+	CHuffman Huffman;
+	Huffman.readDictionaryNumber( ExeFile, 0 );
+
+	if( audio_start < audio_end )
+	{
+		const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
+		const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
+		const uint32_t emb_file_data_size = *AudioCompFileData32;
+
+
+		byte imf_data[emb_file_data_size];
+		byte *imf_data_ptr = imf_data;
+		Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imf_data, audio_end-audio_comp_data_start, emb_file_data_size);
+
+		word data_size;
+
+		if (*imf_data_ptr == 0) // Is the IMF file of Type-0?
+			data_size = emb_file_data_size;
+		else
+		{
+			data_size = *((word*)imf_data_ptr);
+			imf_data_ptr+=sizeof(word);
+		}
+
+
+		if(!m_IMF_Data.empty())
+			m_IMF_Data.clear();
+
+		const word imf_chunks = data_size/sizeof(IMFChunkType);
+		m_IMF_Data.reserve(imf_chunks);
+		memcpy(m_IMF_Data.getStartPtr(), imf_data_ptr, data_size);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void CIMFPlayer::freeCompressedAudio(const uint8_t *AudioCompFileData)
+{
+	delete [] AudioCompFileData;
+}
+
+bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
+{
+	// Now get the proper music slot reading the assignment table.
+	Uint16 music_order = 0;
+	const int Idx = ExeFile.getEpisode()-4;
+	memcpy( &music_order, ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16), sizeof(Uint16));
+
+	return loadMusicTrack(ExeFile, music_order);
+}
+
+bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
+{
+	// Now get the proper music slot reading the assignment table.
+	uint8_t *AudioCompFileData = NULL;
+	uint32_t *audiohedptr = NULL;
+
+	readCompressedAudiointoMemory(ExeFile, audiohedptr, AudioCompFileData);
+
+	unpackAudioAt(ExeFile, AudioCompFileData, audiohedptr, track);
+
+	freeCompressedAudio(AudioCompFileData);
+
+	return true;
+}
+
 
 CIMFPlayer::~CIMFPlayer()
 {

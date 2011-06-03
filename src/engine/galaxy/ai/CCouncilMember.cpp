@@ -9,6 +9,7 @@
 #include "CPlayerLevel.h"
 #include "misc.h"
 #include "sdl/sound/CSound.h"
+#include "sdl/music/CMusic.h"
 
 namespace galaxy {
 
@@ -117,6 +118,7 @@ void CCouncilMember::getTouchedBy(CObject &theObject)
 
 
 			g_pSound->playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
+			//g_pMusicPlayer->LoadfromMusicTable();
 
 			std::string elder_text[2];
 			elder_text[0] = g_pBehaviorEngine->getString("ELDERS_TEXT");

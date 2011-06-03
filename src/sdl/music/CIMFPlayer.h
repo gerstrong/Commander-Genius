@@ -25,10 +25,19 @@ struct IMFChunkType
 
 class CIMFPlayer : public CMusicPlayer {
 public:
-	CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec, COPLEmulator& opl_emulator = *g_pSound->getOPLEmulatorPtr());
-	CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec, COPLEmulator& opl_emulator = *g_pSound->getOPLEmulatorPtr());
+	CIMFPlayer( const SDL_AudioSpec &AudioSpec, COPLEmulator& opl_emulator = *g_pSound->getOPLEmulatorPtr());
 
 	~CIMFPlayer();
+
+
+	/**
+	 * \brief 	This function will load music using other dictionaries which are embedded in the Exe File.
+	 * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
+	 * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
+	 */
+	bool loadMusicForLevel(const CExeFile& ExeFile, const int level);
+	bool loadMusicTrack(const CExeFile& ExeFile, const int track);
+	bool loadMusicFromFile(const std::string& filename);
 
 	void OPLUpdate(byte *buffer, const unsigned int length);
 
@@ -37,6 +46,17 @@ public:
 	void readBuffer(Uint8* buffer, Uint32 length);
 
 private:
+	bool readCompressedAudiointoMemory(const CExeFile& ExeFile,
+							 	 	   uint32_t *&audiohedptr,
+							 	 	   uint8_t *&AudioCompFileData);
+
+	bool unpackAudioAt( const CExeFile& ExeFile,
+						const uint8_t *AudioCompFileData,
+						const uint32_t *audiohedptr,
+						const Uint32 slot );
+
+	void freeCompressedAudio(const uint8_t *AudioCompFileData);
+
 	RingBuffer<IMFChunkType> m_IMF_Data;
     const SDL_AudioSpec& m_AudioDevSpec;
     COPLEmulator &m_opl_emulator;
