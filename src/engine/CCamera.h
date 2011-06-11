@@ -48,6 +48,15 @@ public:
 	 * \param force If on the map are scrollblockers, they will be ignored when this is enabled
 	 */
 	void process(const bool force = false);
+
+	/**
+	 * \brief
+	 * This function tells if the attached object is out of the camera view
+	 *
+	 * \return true if the Attached object is outside the camera, else false
+	 */
+
+	bool outOfSight();
 	
 	bool m_attached;
 	bool m_freeze;

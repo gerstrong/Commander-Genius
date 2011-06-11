@@ -16,7 +16,6 @@
 namespace galaxy {
 
 
-
 const int MAX_JUMPHEIGHT = 10;
 const int MIN_JUMPHEIGHT = 5;
 
@@ -983,18 +982,36 @@ void CPlayerLevel::processPlaceGem()
 }
 
 
+void CPlayerLevel::processDead()
+{
+	m_Inventory.Item.m_lifes--;
+	setActionForce(A_KEEN_DIE);
 
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
+	m_dying = false;
+}
+
+const int DIE_FALL_SPEED = 7;
+const int DIE_FALL_MAX_INERTIA = 150;
+const int DIE_RIGHT_INERTIA = 40;
 
 void CPlayerLevel::processDying()
 {
 	// TODO: Here Keen must be falling out the screen, die effect of Keen Galaxy
 
-	m_Inventory.Item.m_lifes--;
-	setActionForce(A_KEEN_DIE);
-	g_pSound->playSound( SOUND_KEEN_DIE );
+	moveYDir(yinertia);
+	moveRight(DIE_RIGHT_INERTIA);
+	yinertia += DIE_FALL_SPEED;
 
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
+
+	if( m_camera.outOfSight() )
+	{
+		mp_processState = &CPlayerLevel::processDead;
+		solid = true;
+		honorPriority = true;
+	}
+
 }
 
 void CPlayerLevel::kill()
@@ -1002,7 +1019,18 @@ void CPlayerLevel::kill()
 	// TODO: Here were prepare Keen to die, setting that action
 	// We still need that animation when he really dies.
 	if(!m_Cheatmode.god)
+	{
+		if(mp_processState == &CPlayerLevel::processDying && yinertia < 0)
+			return;
+
 		m_dying = true;
+		yinertia = -DIE_FALL_MAX_INERTIA;
+		setAction( A_KEEN_DIE + (rand()%2) );
+		solid = false;
+		honorPriority = false;
+		g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
+		mp_processState = &CPlayerLevel::processDying;
+	}
 }
 
 
@@ -1474,41 +1502,38 @@ void CPlayerLevel::processFalling()
 
 void CPlayerLevel::process()
 {
-	if(m_dying)
+	if(!m_dying)
 	{
-		processDying();
-		return;
+		processInput();
+
+		// If no clipping was triggered change solid state of keen
+		if(m_Cheatmode.noclipping)
+		{
+			solid = !solid;
+			m_Cheatmode.noclipping = false;
+		}
+
+		if(supportedbyobject)
+			blockedd = true;
 	}
-
-	processInput();
-
-	// If no clipping was triggered change solid state of keen
-	if(m_Cheatmode.noclipping)
-	{
-		solid = !solid;
-		m_Cheatmode.noclipping = false;
-	}
-
-	if(supportedbyobject)
-		blockedd = true;
 
 	(this->*mp_processState)();
 
 	processLevelMiscFlagsCheck();
 
+	processActionRoutine();
+
 	if(!m_dying)
 	{
 		processExiting();
+
+		m_camera.process();
+		m_camera.processEvents();
+
+		performCollisions();
+
+		processPushOutCollision();
 	}
-
-	processActionRoutine();
-
-	m_camera.process();
-	m_camera.processEvents();
-
-	performCollisions();
-
-	processPushOutCollision();
 }
 
 

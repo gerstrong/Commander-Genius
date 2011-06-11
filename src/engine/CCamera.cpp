@@ -154,3 +154,23 @@ void CCamera::process(const bool force)
 	while(scroll_y > mp_Map->m_maxscrolly)
 		mp_Map->scrollUp(true);
 }
+
+
+bool CCamera::outOfSight()
+{
+	bool outofsight = false;
+
+	const int cam_width = ((g_pVideoDriver->getGameResolution().w/2)<<STC);
+	const int cam_height = ((g_pVideoDriver->getGameResolution().h/2)<<STC);
+
+	if( mp_AttachedObject->getXLeftPos() > getXPosition() + cam_width )
+		outofsight |= true;
+	else if( mp_AttachedObject->getXRightPos() < getXPosition() - cam_width )
+		outofsight |= true;
+	if( mp_AttachedObject->getYUpPos() > getYPosition() + cam_height )
+		outofsight |= true;
+	else if( mp_AttachedObject->getYDownPos() < getYPosition() - cam_height )
+		outofsight |= true;
+
+	return outofsight;
+}

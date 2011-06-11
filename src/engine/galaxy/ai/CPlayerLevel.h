@@ -218,6 +218,7 @@ public:
 	void openDoorsTile();
 	void processPlaceGem();
 
+	void processDead();
 	void processDying();
 	void kill();
 
