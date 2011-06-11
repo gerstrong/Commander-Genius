@@ -148,7 +148,7 @@ void CPlayGameGalaxy::process()
 
 	if(MessageBoxQueue.empty())
 	{
-		if( EventEnterLevel* ev = EventContainer.occurredEvent<EventEnterLevel>() )
+		if( EventEnterLevel *ev = EventContainer.occurredEvent<EventEnterLevel>() )
 		{
 			// Start a new level!
 			if(ev->data > 0xC000)
@@ -163,13 +163,22 @@ void CPlayGameGalaxy::process()
 			}
 			EventContainer.pop_Event();
 		}
-		else if( EventContainer.occurredEvent<EventExitLevel>() )
+		else if( EventExitLevel *ev = EventContainer.occurredEvent<EventExitLevel>() )
 		{
 			g_pMusicPlayer->stop();
 			m_LevelPlay.setActive(false);
 			m_WorldMap.setActive(true);
 			m_LevelName = m_WorldMap.getLevelName();
 			m_WorldMap.loadAndPlayMusic();
+			EventContainer.pop_Event();
+			EventContainer.add( new EventPlayerEndLevel(*ev) );
+		}
+		else if( EventPlayTrack *ev =  EventContainer.occurredEvent<EventPlayTrack>() )
+		{
+			g_pMusicPlayer->stop();
+			if(g_pMusicPlayer->loadTrack(m_ExeFile, ev->track));
+				g_pMusicPlayer->play();
+			EventContainer.pop_Event();
 		}
 	}
 }

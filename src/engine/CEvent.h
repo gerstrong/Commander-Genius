@@ -19,13 +19,26 @@ struct CEvent { virtual ~CEvent() {} };
 
 struct EventEnterLevel : CEvent {
 	uint16_t data;
-	EventEnterLevel(uint16_t d) : data(d) {}
+	EventEnterLevel(const uint16_t d) : data(d) {}
 };
 
 struct EventExitLevel : CEvent {
-	uint16_t levelObject;
-	bool sucess;
-	EventExitLevel(uint16_t l, const bool s) : levelObject(l), sucess(s){}
+	const uint16_t levelObject;
+	const bool sucess;
+	EventExitLevel(const uint16_t l, const bool s) : levelObject(l), sucess(s){}
+};
+
+struct EventPlayerEndLevel : CEvent {
+	const uint16_t levelObject;
+	const bool sucess;
+	EventPlayerEndLevel(const EventExitLevel &ev) :
+					levelObject(ev.levelObject), sucess(ev.sucess) {}
+};
+
+
+struct EventPlayTrack : CEvent {
+	const uint32_t track;
+	EventPlayTrack(const uint16_t t) : track(t) {}
 };
 
 

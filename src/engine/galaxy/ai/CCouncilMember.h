@@ -11,6 +11,8 @@
 #define CCOUNCIL_MEMBER_H_
 
 #include "common/CObject.h"
+#include <map>
+#include <string>
 
 namespace galaxy {
 
@@ -36,6 +38,7 @@ private:
 	bool	rescued;
 	int 	m_timer;
 	void (CCouncilMember::*mp_processState)();
+	std::map<int, std::string>	answermap;
 };
 
 }

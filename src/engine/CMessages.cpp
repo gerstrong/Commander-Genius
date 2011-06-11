@@ -96,7 +96,7 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 
 			StringMap.insert( extractString( "KEEN_NOSWEAT_TEXT", 0x30A71, 0x30A92 ) );
 			StringMap.insert( extractString( "KEEN_BEARDED_ONE_TEXT", 0x30A93, 0x30AB2 ) );
-			StringMap.insert( extractString( "KEEN_NO_PROBLEMO_TEXT3", 0x30AB3, 0x30ABF ) );
+			StringMap.insert( extractString( "KEEN_NO_PROBLEMO_TEXT", 0x30AB3, 0x30ABF ) );
 			StringMap.insert( extractString( "KEEN_GREAT_TEXT", 0x30AC0, 0x30AC7 ) );
 			StringMap.insert( extractString( "KEEN_LOOKS_LIKE_SAME_GUY_TEXT", 0x30AC8, 0x30AFF ) );
 			StringMap.insert( extractString( "KEEN_GOOD_IDEA_GRAMPS", 0x30B00, 0x30B12 ) );

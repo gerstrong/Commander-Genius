@@ -20,6 +20,23 @@ CMusic::CMusic() :
 mp_player(NULL)
 {}
 
+bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
+{
+	m_AudioSpec = g_pSound->getAudioSpec();
+	CIMFPlayer *imf_player = new CIMFPlayer(m_AudioSpec);
+	imf_player->loadMusicTrack(ExeFile, track);
+	mp_player = imf_player;
+
+	if(!mp_player->open())
+	{
+		delete mp_player;
+		mp_player = NULL;
+		return false;
+	}
+	return true;
+}
+
+
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
 	m_AudioSpec = g_pSound->getAudioSpec();

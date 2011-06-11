@@ -55,10 +55,12 @@ void CPlayerWM::process()
 
 	// Events for the Player are processed here.
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	if( EventExitLevel* ev = EventContainer.occurredEvent<EventExitLevel>() )
+	if( EventPlayerEndLevel* ev = EventContainer.occurredEvent<EventPlayerEndLevel>() )
 	{
 		if(ev->sucess)
+		{
 			finishLevel(ev->levelObject);
+		}
 		EventContainer.pop_Event();
 	}
 
