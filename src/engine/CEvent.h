@@ -13,7 +13,9 @@
 
 #include <stdint.h>
 #include <string>
+#include <list>
 #include "common/direction.h"
+#include "SmartPointer.h"
 
 struct CEvent { virtual ~CEvent() {} };
 
@@ -21,6 +23,7 @@ struct EventEnterLevel : CEvent {
 	uint16_t data;
 	EventEnterLevel(const uint16_t d) : data(d) {}
 };
+
 
 struct EventExitLevel : CEvent {
 	const uint16_t levelObject;
@@ -58,6 +61,38 @@ struct EventSendBitmapDialogMsg : CEvent {
 							 Direction(lDirection)
 							 {}
 };
+
+
+/**
+ *	\description This event triggers a MessageBox where you can select multiple item
+ *
+ *	\param		Message This Text will be shown when the Box is triggered
+ *	\param 		OptionStrings The Text to the option which can be selected
+ *							  Depending on the size of the
+ */
+struct EventSendSelectionDialogMsg : CEvent {
+
+	struct Option
+	{
+		std::string text;
+		SmartPointer<CEvent> event;
+	};
+
+	const std::string Message;
+	std::list<Option> Options;
+
+	EventSendSelectionDialogMsg(const std::string& lMsg) :
+								Message(lMsg){}
+
+	void addOption(const std::string& ltext, CEvent *levent)
+	{
+		Option NewOption;
+		NewOption.text = ltext;
+		NewOption.event = levent;
+		Options.push_back(NewOption);
+	}
+};
+
 
 
 #endif /* CEVENT_H_ */

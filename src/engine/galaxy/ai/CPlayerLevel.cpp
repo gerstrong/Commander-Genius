@@ -988,7 +988,10 @@ void CPlayerLevel::processDead()
 	setActionForce(A_KEEN_DIE);
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+
+	EventContainer.add( new EventSendSelectionDialogMsg("Loser!") );
 	EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
+
 	m_dying = false;
 }
 
