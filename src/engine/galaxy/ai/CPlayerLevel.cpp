@@ -992,6 +992,7 @@ void CPlayerLevel::processDead()
 	m_dying = false;
 }
 
+
 const int DIE_FALL_SPEED = 7;
 const int DIE_FALL_MAX_INERTIA = 150;
 const int DIE_RIGHT_INERTIA = 40;

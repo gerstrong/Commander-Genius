@@ -300,9 +300,6 @@ void CVideoDriver::updateScreen()
 // in the upper-left corner during game play ala Doom.
 void CVideoDriver::drawConsoleMessages(void)
 {
-	int i;
-	int y;
-
 	if (!NumConsoleMessages) return;
 	if (!ConsoleExpireTimer)
 	{
@@ -312,8 +309,8 @@ void CVideoDriver::drawConsoleMessages(void)
 	}
 	else ConsoleExpireTimer--;
 
-	y = CONSOLE_MESSAGE_Y;
-	for(i=0;i<NumConsoleMessages;i++)
+	int y = CONSOLE_MESSAGE_Y;
+	for( int i=0 ; i<NumConsoleMessages ; i++ )
 	{
 		g_pGfxEngine->getFont(0).drawFont( mp_VideoEngine->getFGLayerSurface(), cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
 		y += CONSOLE_MESSAGE_SPACING;
@@ -350,6 +347,7 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 	int &right = CameraBounds.right;
 	int &down = CameraBounds.down;
 	int &speed = CameraBounds.speed;
+
 	if(left>right)
 	{
 		i = left-right;
