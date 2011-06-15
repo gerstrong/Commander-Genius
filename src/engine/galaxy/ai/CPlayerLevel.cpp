@@ -987,10 +987,12 @@ void CPlayerLevel::processDead()
 	m_Inventory.Item.m_lifes--;
 	setActionForce(A_KEEN_DIE);
 
+	// Create the Event Selection screen
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
-	EventContainer.add( new EventSendSelectionDialogMsg("Loser!") );
-	EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
+	EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg("Loser!");
+	pdialogevent->addOption("Exit Level", new EventExitLevel(mp_Map->getLevel(), false) );
+	pdialogevent->addOption("Restart Level", new EventRestartLevel(mp_Map->getLevel()) );
+	EventContainer.add( pdialogevent );
 
 	m_dying = false;
 }

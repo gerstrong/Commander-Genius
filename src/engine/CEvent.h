@@ -31,6 +31,12 @@ struct EventExitLevel : CEvent {
 	EventExitLevel(const uint16_t l, const bool s) : levelObject(l), sucess(s){}
 };
 
+struct EventRestartLevel : CEvent {
+	const uint16_t levelObject;
+	EventRestartLevel(const uint16_t l) : levelObject(l) {}
+};
+
+
 struct EventPlayerEndLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;
@@ -62,9 +68,18 @@ struct EventSendBitmapDialogMsg : CEvent {
 							 {}
 };
 
+/**
+ *  \description small structure which holds a matching selection text to an event.
+ *  			 It is used
+ */
+struct TextEventMatchOption
+{
+	std::string text;
+	SmartPointer<CEvent> event;
+};
 
 /**
- *	\description This event triggers a MessageBox where you can select multiple item
+ *	\description This event triggers a MessageBox where you can select multiple items
  *
  *	\param		Message This Text will be shown when the Box is triggered
  *	\param 		OptionStrings The Text to the option which can be selected
@@ -72,21 +87,15 @@ struct EventSendBitmapDialogMsg : CEvent {
  */
 struct EventSendSelectionDialogMsg : CEvent {
 
-	struct Option
-	{
-		std::string text;
-		SmartPointer<CEvent> event;
-	};
-
 	const std::string Message;
-	std::list<Option> Options;
+	std::list<TextEventMatchOption> Options;
 
 	EventSendSelectionDialogMsg(const std::string& lMsg) :
 								Message(lMsg){}
 
 	void addOption(const std::string& ltext, CEvent *levent)
 	{
-		Option NewOption;
+		TextEventMatchOption NewOption;
 		NewOption.text = ltext;
 		NewOption.event = levent;
 		Options.push_back(NewOption);

@@ -10,6 +10,7 @@
 
 #include "graphics/CGfxEngine.h"
 #include "dialog/CMessageBoxBitmapGalaxy.h"
+#include "dialog/CMessageBoxSelection.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
@@ -142,9 +143,15 @@ void CPlayGameGalaxy::process()
 
 	if( EventSendBitmapDialogMsg* ev = EventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
-		MessageBoxQueue.push_back(new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID, ev->Direction ) );
+		MessageBoxQueue.push_back( new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID, ev->Direction ) );
 		EventContainer.pop_Event();
 	}
+	else if( EventSendSelectionDialogMsg* ev = EventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
+	{
+		MessageBoxQueue.push_back( new CMessageBoxSelection( ev->Message, ev->Options ) );
+		EventContainer.pop_Event();
+	}
+
 
 	if(MessageBoxQueue.empty())
 	{
@@ -160,6 +167,17 @@ void CPlayGameGalaxy::process()
 				m_LevelName = m_LevelPlay.getLevelName();
 				g_pSound->playSound( SOUND_ENTER_LEVEL );
 				m_LevelPlay.setActive(true);
+			}
+			EventContainer.pop_Event();
+		}
+		else if( EventRestartLevel *ev = EventContainer.occurredEvent<EventEnterLevel>() )
+		{
+			// Start a new level!
+			if(ev->data > 0xC000)
+			{
+				const Uint16 NewLevel = ev->data - 0xC000;
+				g_pMusicPlayer->stop();
+				m_LevelPlay.loadLevel(NewLevel);
 			}
 			EventContainer.pop_Event();
 		}
@@ -194,18 +212,6 @@ void CPlayGameGalaxy::processInput()
 	}
 }
 
-/*
- * This processes the rendering over all the other stuff. THis is used for extra messages normally
- * blit scrollsurface happens with m_WorldMap or m_LevelPlay
- */
-void CPlayGameGalaxy::processRendering()
-{
-
-}
-
-
-void CPlayGameGalaxy::cleanup()
-{}
 
 CPlayGameGalaxy::~CPlayGameGalaxy()
 {
