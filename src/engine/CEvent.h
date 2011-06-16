@@ -32,8 +32,7 @@ struct EventExitLevel : CEvent {
 };
 
 struct EventRestartLevel : CEvent {
-	const uint16_t levelObject;
-	EventRestartLevel(const uint16_t l) : levelObject(l) {}
+
 };
 
 

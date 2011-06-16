@@ -38,7 +38,7 @@ public:
 	void processInput();
 	void processRendering();
 
-	void cleanup();
+	void cleanup() {};
 
 	virtual ~CPlayGameGalaxy();
 

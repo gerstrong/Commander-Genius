@@ -37,6 +37,11 @@ public:
 	 */
 	void setPos(const Uint32 x, const Uint32 y);
 
+	/**
+	 * Getter for Tile width
+	 */
+	int TileWidth();
+
 	int m_x;
 	int m_y;
 	int m_w;

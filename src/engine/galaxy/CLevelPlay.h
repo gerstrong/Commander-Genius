@@ -18,6 +18,9 @@ class CLevelPlay : public CMapPlayGalaxy {
 public:
 	CLevelPlay(CExeFile &ExeFile, CInventory &Inventory);
 
+	void loadMap(const int level);
+	void reloadLevel();
+
 	bool loadLevel(const Uint16 level);
 };
 

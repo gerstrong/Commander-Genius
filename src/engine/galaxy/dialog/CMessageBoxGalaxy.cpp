@@ -32,6 +32,8 @@ CMessageBox(Text, false, false, false)
 			width = newwidth;
 	}
 
+	width += 16;
+
 	m_text_height = Font.getPixelTextHeight();
 	m_boxrect.h = (m_text_height+2)*m_Lines.size()+16;
 	m_boxrect.w = width;

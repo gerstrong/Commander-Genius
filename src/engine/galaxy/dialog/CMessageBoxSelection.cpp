@@ -25,6 +25,8 @@ m_selection(0)
 	m_boxrect.y = m_boxrect.h/2;
 
 	int width = 0;
+
+	// Get the max width of all the written lines
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
 	{
 		const int newwidth = Font.getPixelTextWidth(m_Lines[i]);
@@ -32,8 +34,18 @@ m_selection(0)
 			width = newwidth;
 	}
 
+	std::list<TextEventMatchOption>::iterator it = m_Options.begin();
+	for( ; it != m_Options.end() ; it++)
+	{
+		const int newwidth = Font.getPixelTextWidth(it->text);
+		if( width < newwidth )
+			width = newwidth;
+	}
+
+	width += 16;
+
 	m_text_height = Font.getPixelTextHeight();
-	m_boxrect.h = (m_text_height+2)*m_Lines.size()+16;
+	m_boxrect.h = (m_text_height+2)*(m_Lines.size()+m_Options.size()+ 1) + 16;
 	m_boxrect.w = width;
 
 	m_boxrect.x -= m_boxrect.w/2;
@@ -62,6 +74,7 @@ void CMessageBoxSelection::process()
 		EventContainer.add( m_Options.front().event );
 
 		m_mustclose = true;
+		g_pInput->flushCommands();
 		return;
 	}
 	else if(g_pInput->getPressedCommand(IC_DOWN))
@@ -91,8 +104,16 @@ void CMessageBoxSelection::process()
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
 		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, m_Lines[i], m_boxrect.x+m_TextPos.x, m_boxrect.y+(i*m_text_height+m_TextPos.y) );
 
-	for( size_t i=0 ; i<m_Options.size() ; i++)
-		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, m_Options.back().text, m_boxrect.x+m_TextPos.x, m_boxrect.y+((m_Lines.size()+i+1)*m_text_height+m_TextPos.y) );
 
+	std::list<TextEventMatchOption>::iterator it = m_Options.begin();
+	for( int i=0 ; it != m_Options.end() ; it++, i++)
+	{
+		if(i == m_selection)
+			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF0000FF);
+		else
+			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);
+
+		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, it->text, m_boxrect.x+m_TextPos.x, m_boxrect.y+((m_Lines.size()+i+1)*m_text_height+m_TextPos.y) );
+	}
 }
 

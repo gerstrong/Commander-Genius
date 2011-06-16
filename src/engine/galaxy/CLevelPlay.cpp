@@ -23,12 +23,12 @@ CMapPlayGalaxy(ExeFile, Inventory)
 { }
 
 
-bool CLevelPlay::loadLevel(const Uint16 level)
+void CLevelPlay::loadMap(const int level)
 {
 	// Load the World map level.
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory, m_Cheatmode);
 
-	MapLoader.loadMap(m_Map, level);
+	MapLoader.loadMap( m_Map, level );
 
     // Load the Background Music
 	g_pMusicPlayer->stop();
@@ -37,6 +37,17 @@ bool CLevelPlay::loadLevel(const Uint16 level)
     	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
     	g_pMusicPlayer->play();
+}
+
+
+void CLevelPlay::reloadLevel()
+{
+	loadMap( m_Map.getLevel() );
+}
+
+bool CLevelPlay::loadLevel(const Uint16 level)
+{
+	loadMap( level );
 
     // Add the load message
     const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";

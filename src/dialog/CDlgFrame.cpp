@@ -23,6 +23,10 @@ CDlgFrame::CDlgFrame(int x, int y, int w, int h, Uint8 theme, int tilewidth, int
 }
 
 
+int CDlgFrame::TileWidth()
+{
+	return m_8x8tilewidth;
+}
 
 
 void CDlgFrame::draw(SDL_Surface *dst)

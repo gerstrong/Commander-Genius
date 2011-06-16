@@ -131,8 +131,6 @@ void CPlayGameGalaxy::process()
 		{
 			m_Inventory.drawStatus();
 		}
-
-		processRendering();
 	}
 
 	// In this part we will poll all the relevant Events that are important for the
@@ -148,6 +146,7 @@ void CPlayGameGalaxy::process()
 	}
 	else if( EventSendSelectionDialogMsg* ev = EventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
 	{
+		g_pMusicPlayer->stop();
 		MessageBoxQueue.push_back( new CMessageBoxSelection( ev->Message, ev->Options ) );
 		EventContainer.pop_Event();
 	}
@@ -170,15 +169,10 @@ void CPlayGameGalaxy::process()
 			}
 			EventContainer.pop_Event();
 		}
-		else if( EventRestartLevel *ev = EventContainer.occurredEvent<EventEnterLevel>() )
+		else if( EventContainer.occurredEvent<EventRestartLevel>() )
 		{
-			// Start a new level!
-			if(ev->data > 0xC000)
-			{
-				const Uint16 NewLevel = ev->data - 0xC000;
-				g_pMusicPlayer->stop();
-				m_LevelPlay.loadLevel(NewLevel);
-			}
+			g_pMusicPlayer->stop();
+			m_LevelPlay.reloadLevel();
 			EventContainer.pop_Event();
 		}
 		else if( EventExitLevel *ev = EventContainer.occurredEvent<EventExitLevel>() )
