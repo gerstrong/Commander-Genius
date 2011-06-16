@@ -496,6 +496,7 @@ bool CPlayerLevel::canFallThroughTile()
 
 
 
+const int MAX_SCROLL_VIEW = (8<<CSF);
 
 void CPlayerLevel::processLookingUp()
 {
@@ -511,6 +512,9 @@ void CPlayerLevel::processLookingUp()
 		m_fired = true;
 		return;
 	}
+
+	if( m_camera.m_relcam.y > -MAX_SCROLL_VIEW )
+		m_camera.m_relcam.y -= (2<<STC);
 
 	if( m_playcontrol[PA_Y]<0 )
 		return;
@@ -673,6 +677,10 @@ void CPlayerLevel::processPressDucking()
 			setAction(A_KEEN_FALL);
 			g_pSound->playSound( SOUND_KEEN_FALL );
 		}
+
+		if( m_camera.m_relcam.y < MAX_SCROLL_VIEW )
+			m_camera.m_relcam.y += (2<<STC);
+
 		return;
 	}
 
@@ -1196,6 +1204,9 @@ void CPlayerLevel::processStanding()
 {
 	/// Keen is standing
 
+	// Center the view after Keen looked up or down
+	centerView();
+
 	// He could walk
 	if(  m_playcontrol[PA_X]<0  )
 	{
@@ -1308,6 +1319,9 @@ void CPlayerLevel::processShootWhileStanding()
 void CPlayerLevel::processRunning()
 {
 	// Most of the walking routine is done by the action script itself
+
+	// Center the view after Keen looked up or down
+	centerView();
 
 	// He could stand again, if player doesn't move the dpad
 	if( m_playcontrol[PA_X] == 0 )
@@ -1504,6 +1518,24 @@ void CPlayerLevel::processFalling()
 
 }
 
+
+
+void CPlayerLevel::centerView()
+{
+	// If keen looked up or down, this will return the camera to initial position
+	if( m_camera.m_relcam.y < 0 )
+	{
+		m_camera.m_relcam.y += (4<<STC);
+		if( m_camera.m_relcam.y > 0 )
+			m_camera.m_relcam.y = 0;
+	}
+	else if( m_camera.m_relcam.y > 0 )
+	{
+		m_camera.m_relcam.y -= (4<<STC);
+		if( m_camera.m_relcam.y < 0 )
+			m_camera.m_relcam.y = 0;
+	}
+}
 
 
 

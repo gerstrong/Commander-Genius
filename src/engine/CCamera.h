@@ -62,6 +62,14 @@ public:
 	bool m_freeze;
 	bool m_moving;
 
+	/**
+	 *
+	 */
+	struct
+	{
+		int x, y;
+	}m_relcam;
+
 private:
 	CObject *mp_AttachedObject;
 };

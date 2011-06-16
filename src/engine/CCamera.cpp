@@ -19,6 +19,8 @@ CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CObject *p_attacher) :
 CObject(pmap, x, y, OBJ_NONE),
 mp_AttachedObject(p_attacher)
 {
+	m_relcam.x = 0;
+	m_relcam.y = 0;
 	sprite = BLANKSPRITE;
 	solid = false;
 	m_attached = true;
@@ -71,27 +73,33 @@ void CCamera::process(const bool force)
 
 		m_moving = false;
 
+		const Uint32 attached_x = mp_AttachedObject->getXPosition() + m_relcam.x;
+		const Uint32 attached_y = mp_AttachedObject->getYPosition() + m_relcam.y;
+		const Uint32 local_x = getXPosition();
+		const Uint32 local_y = getYPosition();
+
+
 		// Make the camera move and tell if it's scrolling through the m_moving variable
-		if(mp_AttachedObject->getXPosition() > getXPosition())
+		if( attached_x > local_x )
 		{
-			moveRight(mp_AttachedObject->getXPosition() - getXPosition());
+			moveRight( attached_x - local_x );
 			m_moving |= true;
 
 		}
-		else if(mp_AttachedObject->getXPosition() < getXPosition())
+		else if( attached_x < local_x )
 		{
-			moveLeft(getXPosition() - mp_AttachedObject->getXPosition());
+			moveLeft( local_x - attached_x );
 			m_moving |= true;
 		}
 
-		if(mp_AttachedObject->getYPosition() > getYPosition())
+		if( attached_y > local_y )
 		{
-			moveDown(mp_AttachedObject->getYPosition() - getYPosition());
+			moveDown( attached_y - local_y );
 			m_moving |= true;
 		}
-		else if(mp_AttachedObject->getYPosition() < getYPosition())
+		else if( attached_y < local_y )
 		{
-			moveUp(getYPosition() - mp_AttachedObject->getYPosition());
+			moveUp( local_y - attached_y );
 			m_moving |= true;
 		}
 	}

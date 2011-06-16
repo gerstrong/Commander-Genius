@@ -67,6 +67,10 @@ public:
 	void getAnotherLife(const int &lc_x, const int &lc_y);
 
 
+	/**
+	 *  \brief This will center Keens view after he looked up or down.
+	 */
+	void centerView();
 
 	/**
 	 * \description This is the main process cycle
@@ -244,6 +248,8 @@ private:
 	stCheat& m_Cheatmode;
 
 	void (CPlayerLevel::*mp_processState)();
+
+
 };
 
 }
