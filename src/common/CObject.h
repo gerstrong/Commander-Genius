@@ -164,7 +164,7 @@ public:
 	void processMove(const VectorD2<int>& dir);
 	void processMoveBitLeft();
 	void processMoveBitRight();
-	void processMoveBitDown();
+	virtual void processMoveBitDown();
 	void processMoveBitUp();
 	void processMove(const int xoff, const int yoff);
 

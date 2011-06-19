@@ -231,6 +231,10 @@ public:
 	bool m_jumpdownfromobject;
 
 private:
+
+	/** \brief Special code when Keen moving down... */
+	void processMoveBitDown();
+
 	std::vector<CObject*>& m_ObjectPtrs;
 
 	char m_playcontrol[PA_MAX_ACTIONS];

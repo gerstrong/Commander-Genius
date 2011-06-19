@@ -9,6 +9,7 @@
 #include "CBullets.h"
 #include "CItemEffect.h"
 #include "common/CBehaviorEngine.h"
+#include "platform/CPlatform.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
@@ -64,6 +65,23 @@ mp_processState(&CPlayerLevel::processStanding)
 	performCollisions();
 	m_camera.setPosition(m_Pos);
 }
+
+
+// This special code is important, so platforms in all cases will catch Keen when he is falling on them
+void CPlayerLevel::processMoveBitDown()
+{
+	for( int i = 0 ; i<m_ObjectPtrs.size() ; i++ )
+	{
+		if( CPlatform *platform = dynamic_cast<CPlatform*>(m_ObjectPtrs[i]) )
+		{
+			platform->getTouchedBy(*this);
+		}
+	}
+
+	CObject::processMoveBitDown();
+}
+
+
 
 void CPlayerLevel::getAnotherLife(const int &lc_x, const int &lc_y)
 {
