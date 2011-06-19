@@ -22,7 +22,8 @@ CPlayerBase(pmap, x, y,
 		ObjectPtrs,
 		facedir,
 		l_Inventory,
-		Cheatmode)
+		Cheatmode),
+m_swimupspeed(0)
 {
 	m_ActionBaseOffset = 0x19EC;
 	setActionForce(A_KEENSWIM_MOVE);
@@ -33,7 +34,11 @@ CPlayerBase(pmap, x, y,
 	performCollisions();
 }
 
-const int movespeed = 40;
+
+
+
+const int MAXMOVESPEED = 20;
+const int MOVESPEED = 40;
 const int WATERFALLSPEED = 20;
 
 void CPlayerDive::process()
@@ -45,13 +50,28 @@ void CPlayerDive::process()
 		m_Cheatmode.noclipping = false;
 	}
 
-	// Swimming
+
+	// If Player presses Jump button, make Keen swim faster
+	if(g_pInput->getPressedCommand(IC_JUMP))
+	{
+		// Slow down the swim speed, by time
+
+		if(getActionNumber(A_KEENSWIM_MOVE))
+			setActionForce(A_KEENSWIM_MOVE+1);
+		else
+			setActionForce(A_KEENSWIM_MOVE);
+
+		if(m_swimupspeed<MAXMOVESPEED)
+			m_swimupspeed = MAXMOVESPEED;
+	}
+
+	// Swimming - Left and Right
 	if(g_pInput->getHoldedCommand(IC_LEFT))
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
 			m_vDir = NONE;
 
-		moveLeft(movespeed);
+		moveLeft(MOVESPEED+m_swimupspeed);
 		m_hDir = LEFT;
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT))
@@ -59,24 +79,32 @@ void CPlayerDive::process()
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
 			m_vDir = NONE;
 
-		moveRight(movespeed);
+		moveRight(MOVESPEED+m_swimupspeed);
 		m_hDir = RIGHT;
 	}
 
-
-	// perform actions depending on if the jump button was pressed
-	if(g_pInput->getHoldedCommand(IC_JUMP))
+	// Up and down swimming
+	if( m_swimupspeed>0 && g_pInput->getHoldedCommand(IC_UP))
 	{
-		if(g_pInput->getHoldedCommand(IC_UP))
-		{
-			//if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-
-			moveUp(movespeed);
-			m_vDir = UP;
-		}
+		moveUp(MOVESPEED+m_swimupspeed);
+		m_vDir = UP;
+	}
+	else
+	{
+		moveDown(WATERFALLSPEED+m_swimupspeed);
+		m_vDir = DOWN;
 	}
 
-	moveDown(WATERFALLSPEED);
+
+	// Slow down the swim speed, by time
+	if(m_swimupspeed>0)
+	{
+		m_swimupspeed--;
+		if(m_swimupspeed<0)
+			m_swimupspeed = 0;
+	}
+
+	processLevelMiscFlagsCheck();
 
 	m_camera.process();
 	m_camera.processEvents();

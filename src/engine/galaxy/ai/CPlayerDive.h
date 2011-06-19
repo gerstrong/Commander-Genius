@@ -25,6 +25,9 @@ public:
 			stCheat &Cheatmode);
 
 	void process();
+
+private:
+	int m_swimupspeed;
 };
 
 }
