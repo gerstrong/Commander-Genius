@@ -16,11 +16,66 @@
 #define CPLAYERBASE_H_
 
 #include "common/CObject.h"
+#include "common/Playerdefines.h"
+#include "engine/CEvent.h"
+#include "common/Cheat.h"
+#include "engine/CCamera.h"
+#include "engine/galaxy/CInventory.h"
 
-/*class CPlayerBase : CObject {
+namespace galaxy
+{
+
+
+#define A_KEEN_DIE				29
+
+
+class CPlayerBase : public CObject {
 public:
-	CPlayerBase();
-	virtual ~CPlayerBase();
-};*/
+	/**
+	 * \description Basic Constructor. An Object always need the pointer to the Map of the level,
+	 * 				Coordinates as also the type of the Object
+	 */
+	CPlayerBase(CMap *pmap,
+				Uint32 x,
+				Uint32 y,
+				std::vector<CObject*>& ObjectPtrs,
+				direction_t facedir,
+				CInventory &l_Inventory,
+				stCheat &Cheatmode);
+
+	/**
+	 * \brief The Player will get 1 UP when that function is launched
+	 */
+	void getAnotherLife(const int &lc_x, const int &lc_y);
+
+	/**
+	 * \description Read the Input of the Player and sets the variables accordingly
+	 */
+	virtual void processInput();
+
+	void processLevelMiscFlagsCheck();
+
+	void processDead();
+	void processDying();
+	void kill();
+
+	CInventory &m_Inventory;
+
+protected:
+
+	std::vector<CObject*>& m_ObjectPtrs;
+
+	char m_playcontrol[PA_MAX_ACTIONS];
+	int m_timer;
+
+	CCamera m_camera;
+	bool m_dying;
+
+	stCheat& m_Cheatmode;
+
+	void (CPlayerBase::*mp_processState)();
+};
+
+};
 
 #endif /* CPLAYERBASE_H_ */

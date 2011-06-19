@@ -8,12 +8,7 @@
 #ifndef CPLAYERLEVEL_H_
 #define CPLAYERLEVEL_H_
 
-#include "common/CObject.h"
-#include "common/Playerdefines.h"
-#include "common/Cheat.h"
-#include "engine/CEvent.h"
-#include "engine/CCamera.h"
-#include "engine/galaxy/CInventory.h"
+#include "CPlayerBase.h"
 
 namespace galaxy {
 
@@ -29,7 +24,7 @@ namespace galaxy {
 #define A_KEEN_ACTION_1			26
 #define A_KEEN_ACTION_2			27
 #define A_KEEN_ACTION_3			28
-#define A_KEEN_DIE				29
+//#define A_KEEN_DIE				29 // defined in CPlayerBase
 #define A_KEEN_SHOOT			33
 #define A_KEEN_ACTION_4			37
 #define A_KEEN_SLIDE			40
@@ -52,20 +47,23 @@ namespace galaxy {
 #define A_KEEN_HANG				80
 #define A_KEEN_CLIMB			82
 
-class CPlayerLevel : public CObject {
+class CPlayerLevel : public CPlayerBase {
 public:
 	CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CObject*>& ObjectPtrs, direction_t facedir,
 			CInventory &l_Inventory, stCheat &Cheatmode);
 
-	// Checks if player can fall through a tile
-	bool canFallThroughTile();
 
 	/**
-	 * \brief The Player will get 1 UP when that function is launched
+	 * \description Read the Input of the Player and sets the variables accordingly
+	 * 				This function is overloaded. Most of the process is done by the
+	 * 				CPlayerBase class.
 	 */
-	void getAnotherLife(const int &lc_x, const int &lc_y);
+	void processInput();
 
+
+	// Checks if player can fall through a tile
+	bool canFallThroughTile();
 
 	/**
 	 *  \brief This will center Keens view after he looked up or down.
@@ -150,12 +148,9 @@ public:
 
 
 
-
-	/*-----------------------------------------------------*/
-	/* Some of the following function will be removed soon */
-	/*-----------------------------------------------------*/
-
-	void processInput();
+	/**
+	 * \description Firing Routine for Keen
+	 */
 	void processFiring();
 
 
@@ -168,12 +163,15 @@ public:
 	void processPogo();
 	void processLooking();
 
+
 	/**
 	 * \brief		This function will try to spawn a shot. If Keen has bullets it will spawn
 	 * 				otherwise, the empty clicking sound is heard
 	 * \param	pos	Coordinates where the shot should be spawned
 	 */
 	void tryToShoot( const VectorD2<int> &pos, const direction_t &dir );
+
+
 
 	/**
 	 * This function will be processed while Keen is looking up
@@ -208,7 +206,6 @@ public:
 	 * This function will process the going into a door
 	 */
 	void processEnterDoor();
-	void processLevelMiscFlagsCheck();
 
 
 	/**
@@ -217,16 +214,10 @@ public:
 	 */
 	void PressBridgeSwitch(const Uint32 lx, const Uint32 ly);
 
-
 	void PressPlatformSwitch(const Uint32 lx, const Uint32 ly);
 	void openDoorsTile();
 	void processPlaceGem();
 
-	void processDead();
-	void processDying();
-	void kill();
-
-	CInventory &m_Inventory;
 
 	bool m_jumpdownfromobject;
 
@@ -235,25 +226,16 @@ private:
 	/** \brief Special code when Keen moving down... */
 	void processMoveBitDown();
 
-	std::vector<CObject*>& m_ObjectPtrs;
-
-	char m_playcontrol[PA_MAX_ACTIONS];
 
 	bool m_ptogglingswitch;
 	int m_jumpheight;
 
-	int m_timer;
 	bool m_pogotoggle;
-	CCamera m_camera;
 
-	bool m_dying;
 	bool m_fired;
 	bool m_EnterDoorAttempt;
-	stCheat& m_Cheatmode;
 
-	void (CPlayerLevel::*mp_processState)();
-
-
+	//void (CPlayerLevel::*mp_processState)();
 };
 
 }
