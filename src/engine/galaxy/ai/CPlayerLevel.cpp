@@ -70,7 +70,7 @@ mp_processState(&CPlayerLevel::processStanding)
 // This special code is important, so platforms in all cases will catch Keen when he is falling on them
 void CPlayerLevel::processMoveBitDown()
 {
-	for( int i = 0 ; i<m_ObjectPtrs.size() ; i++ )
+	for( size_t i = 0 ; i<m_ObjectPtrs.size() ; i++ )
 	{
 		if( CPlatform *platform = dynamic_cast<CPlatform*>(m_ObjectPtrs[i]) )
 		{
@@ -1119,13 +1119,17 @@ void CPlayerLevel::processPoleClimbing()
 		}
 
 
+		// Check for the upper side and don't let him move if the pole ends
 		if( hitdetectWithTileProperty(1, l_x, l_y_up) )
 		{
-			// Check for the upper side and don't let him move if the pole ended
 			setAction(A_KEEN_POLE_CLIMB);
 			m_vDir = UP;
 		}
-
+		else
+		{
+			setAction(A_KEEN_POLE);
+			m_vDir = NONE;
+		}
 	}
 	else if( m_playcontrol[PA_Y] > 0 )
 	{
