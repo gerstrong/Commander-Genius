@@ -7,7 +7,7 @@
 
 #include "CPlayerBase.h"
 
-CPlayerBase::CPlayerBase() {
+/*CPlayerBase::CPlayerBase() {
 	// TODO Auto-generated constructor stub
 
 }
@@ -15,3 +15,4 @@ CPlayerBase::CPlayerBase() {
 CPlayerBase::~CPlayerBase() {
 	// TODO Auto-generated destructor stub
 }
+*/

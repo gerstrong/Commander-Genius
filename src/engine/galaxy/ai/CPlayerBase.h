@@ -17,10 +17,10 @@
 
 #include "common/CObject.h"
 
-class CPlayerBase : CObject {
+/*class CPlayerBase : CObject {
 public:
 	CPlayerBase();
 	virtual ~CPlayerBase();
-};
+};*/
 
 #endif /* CPLAYERBASE_H_ */
