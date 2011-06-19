@@ -267,6 +267,7 @@ void CPlayerLevel::processCliffHanging()
 	if( m_playcontrol[PA_Y] < 0 )
 	{
 		setAction(A_KEEN_CLIMB);
+		honorPriority = false;
 		mp_processState = &CPlayerLevel::processCliffClimbing;
 		m_camera.m_freeze = true;
 	}
@@ -302,6 +303,7 @@ void CPlayerLevel::processCliffClimbing()
 		m_camera.m_freeze = false;
 		setActionSprite();
 		calcBouncingBoxes();
+		honorPriority = true;
 		mp_processState = &CPlayerLevel::processStanding;
 	}
 }
@@ -1066,12 +1068,6 @@ void CPlayerLevel::kill()
 		mp_processState = &CPlayerLevel::processDying;
 	}
 }
-
-
-/*------------------------------------------------------*/
-/* Old Stuff what is above. Most of it will be removed! */
-/*------------------------------------------------------*/
-
 
 
 
