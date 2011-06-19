@@ -267,7 +267,6 @@ void CPlayerLevel::processCliffHanging()
 	if( m_playcontrol[PA_Y] < 0 )
 	{
 		setAction(A_KEEN_CLIMB);
-		honorPriority = false;
 		mp_processState = &CPlayerLevel::processCliffClimbing;
 		m_camera.m_freeze = true;
 	}
@@ -303,7 +302,6 @@ void CPlayerLevel::processCliffClimbing()
 		m_camera.m_freeze = false;
 		setActionSprite();
 		calcBouncingBoxes();
-		honorPriority = true;
 		mp_processState = &CPlayerLevel::processStanding;
 	}
 }
@@ -694,8 +692,10 @@ void CPlayerLevel::processPressDucking()
 			m_jumpdownfromobject = supportedbyobject;
 			m_jumpdown = jumpdowntile;
 			supportedbyobject = false;
+			blockedd = false;
 			setAction(A_KEEN_FALL);
 			g_pSound->playSound( SOUND_KEEN_FALL );
+			mp_processState = &CPlayerLevel::processFalling;
 		}
 
 		if( m_camera.m_relcam.y < MAX_SCROLL_VIEW )
@@ -1475,11 +1475,11 @@ void CPlayerLevel::processFalling()
 	// If keen is jumping down, not because he did from an object like a platform,
 	// but a tile where Keen can fall through, process this part of code and
 	// check if Keen is still jumpinto through any object
-	/*if(!supportedbyobject && m_jumpdown)
+	if(!supportedbyobject && m_jumpdown)
 	{
 		if(!canFallThroughTile())
 			m_jumpdown = false;
-	}*/
+	}
 
 	// While falling keen can of course move into both x-directions
 	//if(getActionNumber(A_KEEN_FALL))
