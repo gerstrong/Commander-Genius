@@ -100,26 +100,26 @@ void CMapPlayGalaxy::process()
 
 	g_pVideoDriver->blitScrollSurface();
 
-	std::vector<CObject*>::iterator obj;
+	std::vector<CObject*>::reverse_iterator obj;
 
 	// Draw all the sprites but no player
-	for( obj=m_ObjectPtr.begin() ;
-			obj!=m_ObjectPtr.end() ; obj++ )
+	for( obj=m_ObjectPtr.rbegin() ;
+			obj!=m_ObjectPtr.rend() ; obj++ )
 	{
 		if((*obj)->honorPriority && (*obj)->m_type != OBJ_PLAYER)
 			(*obj)->draw();
 	}
 
 	// Now only draw the player sprite. So everything expect maked tiles are below his layer
-	for( obj = m_ObjectPtr.begin() ; obj!=m_ObjectPtr.end() ; obj++ )
+	for( obj = m_ObjectPtr.rbegin() ; obj!=m_ObjectPtr.rend() ; obj++ )
 		if((*obj)->m_type == OBJ_PLAYER)
 			(*obj)->draw();
 
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
 
-	for( obj=m_ObjectPtr.begin() ;
-			obj!=m_ObjectPtr.end() ; obj++ )
+	for( obj=m_ObjectPtr.rbegin() ;
+			obj!=m_ObjectPtr.rend() ; obj++ )
 	{
 		if(!(*obj)->honorPriority)
 			(*obj)->draw();

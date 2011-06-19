@@ -37,7 +37,7 @@ m_swimupspeed(0)
 
 
 
-const int MAXMOVESPEED = 20;
+const int MAXMOVESPEED = 15;
 const int MOVESPEED = 40;
 const int WATERFALLSPEED = 20;
 
