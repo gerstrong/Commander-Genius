@@ -19,23 +19,25 @@ const Uint16 SWIMBASEFRAME = 156;
 
 namespace galaxy {
 
-CPlayerWM::CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
-					std::vector<CObject*>& ObjectPtrs,
-					CInventory &l_Inventory, stCheat &Cheatmode):
-CObject(pmap, x, y, OBJ_PLAYER),
-m_Inventory(l_Inventory),
+CPlayerWM::CPlayerWM(CMap *pmap,
+		Uint32 x,
+		Uint32 y,
+		std::vector<CObject*>& ObjectPtrs,
+		CInventory &l_Inventory,
+		stCheat &Cheatmode):
+CPlayerBase(pmap, x, y,
+		    ObjectPtrs,
+		    LEFT,
+		    l_Inventory,
+		    Cheatmode),
 m_basesprite(WALKBASEFRAME),
 m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
-m_animation_ticker(0),
-m_ObjectPtrs(ObjectPtrs),
-m_camera(pmap,x,y,this),
-m_Cheatmode(Cheatmode)
+m_animation_ticker(0)
 {
 	sprite = m_basesprite;
 	performCollisions();
-	m_camera.setPosition(m_Pos);
 }
 
 /**

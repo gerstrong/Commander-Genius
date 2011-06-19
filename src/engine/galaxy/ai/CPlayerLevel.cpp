@@ -55,6 +55,8 @@ CPlayerBase(pmap, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode)
 }
 
 
+
+
 // This special code is important, so platforms in all cases will catch Keen when he is falling on them
 void CPlayerLevel::processMoveBitDown()
 {

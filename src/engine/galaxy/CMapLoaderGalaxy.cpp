@@ -22,6 +22,7 @@
 #include "engine/galaxy/ai/CMiragia.h"
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
+#include "engine/galaxy/ai/CPlayerDive.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/platforms.h"
 #include "engine/galaxy/ai/CPoisonSlug.h"
@@ -268,20 +269,6 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	word width = Map.m_width;
 	word height = Map.m_height;
 
-	/*std::ofstream file("foe.txt");
-	data_ptr = start_data;
-	for(size_t y=0 ; y<height ; y++)
-	{
-		for(size_t x=0 ; x<width ; x++)
-		{
-			file << (*data_ptr);
-			file << " ";
-			data_ptr++;
-		}
-		file << std::endl;
-	}
-	file.close();*/
-
 	// If objects are in the buffer clean them up
 	while(!m_ObjectPtr.empty())
 	{
@@ -415,6 +402,13 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		// Place Miragia in Episode 4 on the Map
 		p_newfoe = new galaxy::CMiragia(&Map, Location);
 		break;
+
+	case 42:
+		// This is Keen in the swimming suit
+		p_newfoe = new galaxy::CPlayerDive(&Map, x, y, m_ObjectPtr,
+						RIGHT, m_Inventory, m_Cheatmode);
+		break;
+
 
 	default:
 		break;

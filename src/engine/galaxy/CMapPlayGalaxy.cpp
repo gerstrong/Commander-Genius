@@ -14,8 +14,14 @@ m_Inventory(Inventory),
 mp_option(g_pBehaviorEngine->m_option)
 {}
 
+
+
+
 bool CMapPlayGalaxy::isActive()
 {	return m_active;	}
+
+
+
 
 void CMapPlayGalaxy::setActive(bool value)
 {
@@ -29,6 +35,9 @@ void CMapPlayGalaxy::setActive(bool value)
 	}
 }
 
+
+
+
 /**
  * return the name of the opened level
  */
@@ -38,11 +47,18 @@ std::string CMapPlayGalaxy::getLevelName()
 }
 
 
+
+
+
 std::list<CMessageBoxGalaxy*>& CMapPlayGalaxy::getMessageBoxQueue()
 {
 	std::list<CMessageBoxGalaxy*>& queue = m_MessageBoxes;
 	return queue;
 }
+
+
+
+
 
 void CMapPlayGalaxy::process()
 {
@@ -162,6 +178,9 @@ void CMapPlayGalaxy::process()
 
 	}
 }
+
+
+
 
 CMapPlayGalaxy::~CMapPlayGalaxy()
 {
