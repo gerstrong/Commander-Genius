@@ -151,6 +151,21 @@ void CPlayer::setupforLevelPlay()
   	checkObjSolid();
 }
 
+
+
+
+
+
+
+
+
+
+// upon starting to walk, keen will quickly increase to
+// PFASTINCMAXSPEED. keen can, at a slower rate,
+// reach up to PMAXSPEED (increased every walk anim frame)
+#define PFASTINCRATE     4        // accel delay rate up to PFASTINCMAXSPEED
+#define PFASTINCRATE_POGO  2      // rate when pogo stick is out
+
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
 void CPlayer::Walking()
 {
@@ -249,8 +264,12 @@ void CPlayer::Walking()
         cur_pfastincrate = PFASTINCRATE;
 
 	if (playcontrol[PA_X] > 0 && !ppogostick)
-	{ // RIGHT key down
+	{   // RIGHT key down
 		// quickly reach PLAYER_FASTINCMAXSPEED
+
+		if( xinertia<0 )
+			xinertia = 0;
+
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia+=(1<<2);
@@ -272,10 +291,12 @@ void CPlayer::Walking()
 	else if (playcontrol[PA_X] < 0 && !ppogostick)
 	{ 	// LEFT key down
 		// quickly reach PFASTINCMAXSPEED
+		if( xinertia>0 )
+			xinertia = 0;
+
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia-=(1<<2);
-			//else xinertia-=(1<<4);
 			else xinertia-=(1<<3);
 			pwalkincreasetimer=0;
 		}
@@ -461,6 +482,15 @@ void CPlayer::processCamera()
 	mp_camera->processEvents();
 }
 
+
+
+// rates at which player slows down while he is walking suddenly player does not
+// move him anymore
+#define PFRICTION_RATE_INAIR      2
+#define PFRICTION_RATE_ONGROUND   14
+#define PFRICTION_RATE_WM         32
+
+
 // handles inertia and friction for the X direction
 // (this is where the xinertia is actually applied to playx)
 void CPlayer::InertiaAndFriction_X()
@@ -540,7 +570,15 @@ void CPlayer::InertiaAndFriction_X()
 			{   // disable friction while frozen
 				// here the wall animation must be applied!
 				if(!psliding)
+				{
+					if( (xinertia>0 && blockedr) ||
+						(xinertia<0 && blockedl) )
+					{
+						friction_rate = 3*friction_rate;
+					}
+
 					decreaseXInertia(friction_rate);
+				}
 			}
 		}
 	}
