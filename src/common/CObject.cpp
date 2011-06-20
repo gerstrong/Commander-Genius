@@ -142,6 +142,10 @@ bool CObject::calcVisibility()
 	// Platform are always active
 	if(m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT) return true;
 
+	// If an object is in the mid-air still moves it still,
+	// until it gets stuck to ceiling, wall or floor
+	if( !blockedd && m_type!=OBJ_SCRUB  ) return true;
+
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 
 	Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
