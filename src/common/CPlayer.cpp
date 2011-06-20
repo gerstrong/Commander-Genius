@@ -236,7 +236,7 @@ void CPlayer::Walking()
     }
 
 	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
-	int pmaxspeed = PhysicsSettings.player.max_x_speed;
+	const int pmaxspeed = PhysicsSettings.player.max_x_speed;
 
 	// when sliding on ice force maximum speed
 	if (psliding)
@@ -286,7 +286,12 @@ void CPlayer::Walking()
 		}
 		
 		// increase up to max speed every time frame is changed
-		if (!pwalkanimtimer && xinertia < pmaxspeed)	xinertia+=(1<<4);
+		if (!pwalkanimtimer && xinertia < pmaxspeed)
+		{
+			xinertia += (1<<4);
+			if(xinertia > pmaxspeed)
+				xinertia = pmaxspeed;
+		}
 	}
 	else if (playcontrol[PA_X] < 0 && !ppogostick)
 	{ 	// LEFT key down
@@ -310,7 +315,12 @@ void CPlayer::Walking()
 		}
 		
 		// decrease down to max speed every time frame is changed
-		if (!pwalkanimtimer && xinertia > -pmaxspeed)	xinertia-=(1<<4);
+		if (!pwalkanimtimer && xinertia > -pmaxspeed)
+		{
+			xinertia -= (1<<4);
+			if(xinertia < -pmaxspeed)
+				xinertia = -pmaxspeed;
+		}
 	}
 	
 	if (playcontrol[PA_Y] > 0)
@@ -376,6 +386,11 @@ void CPlayer::Walking()
 			}
 		}
 	}
+
+	// if we jump against a wall all inertia stops
+	if (xinertia > 0 && blockedr) xinertia = 0;
+	if (xinertia < 0 && blockedl) xinertia = 0;
+
 }
 
 // rate at which player walking animation is shown
@@ -498,6 +513,7 @@ void CPlayer::InertiaAndFriction_X()
 	int friction_rate;
 	treshold = 0;
 	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+
 
 	// Calculate Threshold of your analog device for walking animation speed!
 	if(!pfrozentime && !pfiring)

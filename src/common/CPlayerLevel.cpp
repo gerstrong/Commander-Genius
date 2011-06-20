@@ -60,14 +60,6 @@ void CPlayer::processInLevel()
 			}
 		}
 
-		// Check left and right blocks again, because sometimes a door or mangling machine arm move away
-		int mlx = (getXLeftPos()-1)>>CSF;
-		int mrx = (getXRightPos()+1)>>CSF;
-		int my = getYUpPos()>>CSF;
-		std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
-		blockedr = Tile[mp_Map->at(mrx,my,1)].bleft;
-		blockedl = Tile[mp_Map->at(mlx,my,1)].bright;
-
 		checkSolidDoors();
 
 		InertiaAndFriction_X();
@@ -597,10 +589,6 @@ void CPlayer::JumpAndPogo()
     	if(playcontrol[PA_JUMP] && !blockedu)
     		moveUp(PPOGOUP_SPEED);
     }
-
-	// if we jump against a wall all inertia stops
-	if (xinertia > 0 && blockedr) xinertia = 0;
-	if (xinertia < 0 && blockedl) xinertia = 0;
 }
 
 void CPlayer::Playerfalling()
@@ -668,6 +656,8 @@ void CPlayer::Playerfalling()
 	if (pfalling)
 	{  // nothing solid under player, let's make him fall
 		psemisliding = 0;
+		if(!pfallspeed)
+			pfallspeed = (1<<STC); // Set initial fall position
 
 		// gradually increase the fall speed up to maximum rate
 		if (pfallspeed>PhysicsSettings.max_fallspeed)
