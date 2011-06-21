@@ -160,7 +160,7 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "CTSPACECHEAT", 0x19AC6, 0x19B1B, -512 ) );
 					StringMap.insert( extractString( "GODMODEON", 0x19BE4, 0x19BF4, -512 ) );
 					StringMap.insert( extractString( "GODMODEOFF", 0x19BF5, 0x19C06, -512 ) );
-					StringMap.insert( extractString( "EP2_StatusBox" , 0x19C40, 0x19CCE, -804 ) );
+					StringMap.insert( extractString( "EP2_StatusBox" , 0x19C40, 0x19CAE, -804 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x1A9B2, 0x1A9BF, -776 ) );
 					StringMap.insert( extractString( "EP2_VE_NOJUMPINDARK" , 0x1A2D2, 0x1A391, -774 ) );
 					StringMap.insert( extractString( "EP2_VE_EVILBELTS" , 0x1A391, 0x1A4A6, -774) );
@@ -192,7 +192,7 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "CTSPACECHEAT", 0x1BC9E, 0x1BCF3, -512 ) );
 					StringMap.insert( extractString( "GODMODEON", 0x1BD80, 0x1BD90, -512 ) );
 					StringMap.insert( extractString( "GODMODEOFF", 0x1BD91, 0x1BDA2, -512 ) );
-					StringMap.insert( extractString( "EP3_StatusBox" , 0x1BCF4, 0x1BD7F, -512 ) );
+					StringMap.insert( extractString( "EP3_StatusBox" , 0x1BCF4, 0x1BD60, -512 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x1CAEE, 0x1CAFB, -806 ) );
 					// Ship Messages
 					StringMap.insert( extractString( "EP3_SHIP1" , 0x1D100, 0x1D173, -765) );

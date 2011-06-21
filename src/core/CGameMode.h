@@ -62,7 +62,7 @@ struct GMQuit : CEvent {};
 //////
 class CGameMode {
 public:
-	CGameMode();
+	CGameMode() {}
 
 	virtual void process() = 0;
 	virtual void init() = 0;
