@@ -68,6 +68,7 @@ public:
 	void keencicle();
 	void TogglePogo_and_Switches();
 	void JumpAndPogo();
+	void boostInertia(const int amt);
 	void Playerfalling();
 	void raygun();
 	void bump( CObject &theObject, direction_t direction );

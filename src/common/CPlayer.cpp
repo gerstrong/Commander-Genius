@@ -273,7 +273,7 @@ void CPlayer::Walking()
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia+=(1<<2);
-			else xinertia+=(1<<3);
+			else xinertia += (1<<3);
 			pwalkincreasetimer=0;
 		}
 		else	pwalkincreasetimer++;
@@ -302,7 +302,7 @@ void CPlayer::Walking()
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia-=(1<<2);
-			else xinertia-=(1<<3);
+			else xinertia -= (1<<3);
 			pwalkincreasetimer=0;
 		}
 		else	pwalkincreasetimer++;
@@ -553,7 +553,7 @@ void CPlayer::InertiaAndFriction_X()
 	// (unless we're about to make a pogo jump)
 	if ( pjumping != PPREPAREPOGO && pjumping != PPREPAREJUMP)
 	{
-		int dx=xinertia;
+		int dx = xinertia;
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
 			moveXDir(dx);

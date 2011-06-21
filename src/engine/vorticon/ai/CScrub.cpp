@@ -348,6 +348,18 @@ void CScrub::fall()
 	sprite = SCRUB_WALK_LEFT;
 	if (blockedd)
 	{
+		inhibitfall = true;
+		needinit = false;
+		canbezapped = true;
+
+		performCollisions();
+		dead = false;
+		fallspeed = 0;
+
+		SetAllCanSupportPlayer(1);
+		for( size_t i=0 ; i<m_Player.size() ; i++ )
+			kickedplayer[i] = 0;
+
 		walkdir = LEFT;
 		state = SCRUB_WALK;
 		walkframe = 0;

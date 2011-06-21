@@ -560,10 +560,13 @@ void CPlayer::JumpAndPogo()
 	{
 		if(!ppogostick)
 		{
+			CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+			const int pinitspeed = PhysicsSettings.player.max_x_speed/2;
+
 			if (playcontrol[PA_X] < 0)
-				xinertia-=3;
+					xinertia -= 3;
 			if (playcontrol[PA_X] > 0)
-				xinertia+=3;
+					xinertia += 3;
 		}
 		else if(ppogostick)
 		{
@@ -575,10 +578,7 @@ void CPlayer::JumpAndPogo()
 	}
 	else if(pfalling)
 	{
-		if (playcontrol[PA_X] < 0)
-			xinertia-=3;
-		if (playcontrol[PA_X] > 0)
-			xinertia+=3;
+		boostInertia(3);
 	}
 	
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
@@ -590,6 +590,28 @@ void CPlayer::JumpAndPogo()
     		moveUp(PPOGOUP_SPEED);
     }
 }
+
+void CPlayer::boostInertia(const int amt)
+{
+	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+	const int pinitspeed = PhysicsSettings.player.max_x_speed/2;
+
+	if (playcontrol[PA_X] < 0)
+	{
+		if(xinertia>-pinitspeed && xinertia < 0)
+			xinertia = -pinitspeed;
+		else
+			xinertia -= amt;
+	}
+	if (playcontrol[PA_X] > 0)
+	{
+		if(xinertia<pinitspeed && xinertia > 0)
+			xinertia = pinitspeed;
+		else
+			xinertia += amt;
+	}
+}
+
 
 void CPlayer::Playerfalling()
 {
