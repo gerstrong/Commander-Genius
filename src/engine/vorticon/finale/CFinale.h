@@ -16,7 +16,7 @@
 
 class CFinale {
 public:
-	CFinale(CMap &map);
+	CFinale(CMap &map, std::vector<CObject*> &Object);
 
 	void showEndingText();
 
@@ -32,6 +32,7 @@ protected:
 	std::string m_epilogue_text;
 	int m_Episode;
 	CMap &m_Map;
+	std::vector<CObject*> &m_Object;
 };
 
 #endif /* CFINALE_H_ */

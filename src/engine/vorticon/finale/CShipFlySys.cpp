@@ -30,13 +30,15 @@ m_player(Player) // in this case the player will be the ship flying home
 	// before it was yorp
 	CObject *mark = new CObject(mp_Map, 0,0, OBJ_YORP);
 	mark->m_type = OBJ_YORP;                // doesn't matter
-	mark->exists = false;
+	mark->solid = false;                // doesn't matter
 	mark->sprite = SPR_QUESTION;
 
 	// keep the question or exclamation mark sprite next to the player
 	mark->onscreen = true;
 
 	m_player.mp_object->push_back(mark);
+
+	size_t size = m_player.mp_object->size();
 
 	mp_mark = mark; // We still need to manipulate it!*/
 }

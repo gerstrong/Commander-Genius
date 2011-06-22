@@ -11,10 +11,11 @@
 #include "../../../FindFile.h"
 #include <fstream>
 
-CFinale::CFinale(CMap &map) :
+CFinale::CFinale(CMap &map, std::vector<CObject*> &Object) :
 m_mustfinishgame(false),
 mp_TextViewer(NULL),
-m_Map(map)
+m_Map(map),
+m_Object(Object)
 {}
 
 void CFinale::showEndingText()

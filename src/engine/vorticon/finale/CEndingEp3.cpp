@@ -14,8 +14,8 @@
 #include "common/CMapLoader.h"
 #include "common/Playerdefines.h"
 
-CEndingEp3::CEndingEp3(CMap &map, std::vector<CPlayer> &Player) :
-CFinale(map),
+CEndingEp3::CEndingEp3(CMap &map, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
+CFinale(map, Object),
 m_Player(Player)
 {
 	m_Episode = 3;

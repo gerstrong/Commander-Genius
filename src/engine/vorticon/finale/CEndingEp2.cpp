@@ -17,8 +17,8 @@
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
 
-CEndingEp2::CEndingEp2(CMap &map, std::vector<CPlayer> &Player) :
-CFinale(map),
+CEndingEp2::CEndingEp2(CMap &map, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
+CFinale(map, Object),
 m_Player(Player)
 {
 	m_Episode = 2;

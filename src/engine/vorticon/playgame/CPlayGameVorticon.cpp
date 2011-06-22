@@ -232,6 +232,8 @@ void CPlayGameVorticon::process()
 						collectHighScoreInfo();
 					}
 				}
+
+				m_Player[0].processEvents();
 			}
 		}
 		else // In this case the game is paused
@@ -515,15 +517,15 @@ void CPlayGameVorticon::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mp_Finale = new CEndingEp1(m_Map, m_Player, m_hideobjects);
+		mp_Finale = new CEndingEp1(m_Map, m_Player, m_hideobjects, m_Object);
 	}
 	else if(m_Episode == 2)
 	{
-		mp_Finale = new CEndingEp2(m_Map, m_Player);
+		mp_Finale = new CEndingEp2(m_Map, m_Player, m_Object);
 	}
 	else if(m_Episode == 3)
 	{
-		mp_Finale = new CEndingEp3(m_Map, m_Player);
+		mp_Finale = new CEndingEp3(m_Map, m_Player, m_Object);
 	}
 }
 

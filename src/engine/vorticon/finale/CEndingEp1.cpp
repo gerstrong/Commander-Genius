@@ -14,8 +14,9 @@
 #include "common/CMapLoader.h"
 #include "common/Playerdefines.h"
 
-CEndingEp1::CEndingEp1(CMap &map, std::vector<CPlayer> &Player, bool &hideobjects) :
-	CFinale(map),
+CEndingEp1::CEndingEp1(CMap &map, std::vector<CPlayer> &Player,
+					   bool &hideobjects, std::vector<CObject*> &Object) :
+	CFinale(map, Object),
 	m_Player(Player),
 	m_hideobjects(hideobjects)
 {

@@ -608,7 +608,7 @@ void CObject::draw()
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 
-	if(scry < gameres.w && scry < gameres.h && exists)
+	if( scrx < gameres.w && scry < gameres.h && exists )
 	{
 		Uint16 showX = scrx+Sprite.getXOffset();
 		Uint16 showY = scry+Sprite.getYOffset();

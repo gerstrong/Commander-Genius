@@ -31,7 +31,6 @@ private:
 	int m_alternate_sprite;
 	CMessageBox *mp_MessageBox;
 	CObject *mp_ShootObject;
-	std::vector<CObject*> &m_vect_obj;
 	CObjectAI &m_objectai;
 	Uint32 m_timer;
 	CBitmap *mp_Bitmap;
