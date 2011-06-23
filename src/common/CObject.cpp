@@ -503,6 +503,12 @@ void CObject::kill()
 void CObject::blink(Uint16 frametime)
 {	m_blinktime = frametime; }
 
+void CObject::playSound( const GameSound snd,
+			    const SoundPlayMode mode )
+{
+	g_pSound->playStereofromCoord(snd, mode, scrx);
+}
+
 ////
 // Action format (Galaxy only now...)
 ////

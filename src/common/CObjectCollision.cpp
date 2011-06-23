@@ -135,7 +135,7 @@ bool CObject::moveSlopedTileDown( int x, int y, const int xspeed )
 
 	const char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
 
-	// Check first, if there is a tile on players level
+	// Check first, if there is a tile on objects level
 	if( slope >=2 && slope<=7 )
 	{
 		int yb1, yb2;
@@ -159,10 +159,12 @@ bool CObject::moveSlopedTileDown( int x, int y, const int xspeed )
 		if( m_Pos.y > newpos_y )
 			m_Pos.y = newpos_y;
 
-		return true;
+		onslope = true;
 	}
 	else
-		return false;
+		onslope = false;
+
+	return onslope;
 }
 
 void CObject::moveSlopedTileUp( int x, int y, const int xspeed )
@@ -196,7 +198,11 @@ void CObject::moveSlopedTileUp( int x, int y, const int xspeed )
 		Uint32 newpos_y = y_csf - m_BBox.y1 + y_rel + (1<<STC);
 		if( m_Pos.y < newpos_y )
 			m_Pos.y = newpos_y;
+
+		onslope = true;
 	}
+	else
+		onslope = false;
 }
 
 // returns nonzero if object1 overlaps object2

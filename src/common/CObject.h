@@ -22,6 +22,7 @@
 #include "graphics/CGfxEngine.h"
 #include "options.h"
 #include "engine/CEventContainer.h"
+#include "sdl/sound/CSound.h"
 
 // Enumerations are here
 #include "objenums.h"
@@ -225,6 +226,12 @@ public:
 	virtual void getShotByRay(object_t &obj_type);
 	void kill_intersecting_tile(int mpx, int mpy, CObject &theObject);
 	CMap *getMapPtr() { return mp_Map; }
+
+	/**
+	 *  \description plays certain sound of an object. Stereo will automatically applied when used
+	 */
+	void playSound( const GameSound snd,
+				    const SoundPlayMode mode=PLAY_NOW );
 
 	bool getActionNumber(int16_t ActionNumber);
 	bool getActionStatus(int16_t ActionNumber);

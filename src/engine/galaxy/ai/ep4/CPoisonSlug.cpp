@@ -58,7 +58,8 @@ void CPoisonSlug::processCrawling()
 	{
 		m_timer = 0;
 		mp_processState = &CPoisonSlug::processPooing;
-		setAction(A_SLUG_POOING);
+		setAction( A_SLUG_POOING );
+		playSound( SOUND_SLUG_DEFECATE );
 		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, getXLeftPos(), getYDownPos()-(8<<STC)));
 		return;
 	}

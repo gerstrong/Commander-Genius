@@ -95,12 +95,11 @@ void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const direction_t &dir 
 {
 	if(m_Inventory.Item.m_bullets > 0)
 	{
-		g_pSound->playStereofromCoord( SOUND_KEEN_FIRE , PLAY_NOW, pos.x );
 		m_ObjectPtrs.push_back(new CBullets(mp_Map, pos.x, pos.y, dir));
 	}
 	else
 	{
-		g_pSound->playStereofromCoord( SOUND_GUN_CLICK , PLAY_NOW, pos.x );
+		playSound( SOUND_GUN_CLICK );
 	}
 }
 
@@ -276,7 +275,7 @@ void CPlayerLevel::processPogo()
 	else
 	{
 		if(blockedu)
-			g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
+			playSound( SOUND_KEEN_BUMPHEAD );
 
 		CObject::processFalling();
 		setAction(A_KEEN_POGO_UP);
@@ -309,7 +308,7 @@ void CPlayerLevel::processPogo()
 		}
 
 		m_jumpheight = 0;
-		g_pSound->playSound( SOUND_KEEN_POGO );
+		playSound( SOUND_KEEN_POGO );
 	}
 
 	moveYDir(yinertia);
@@ -390,7 +389,7 @@ void CPlayerLevel::processJumping()
 	{
 		// Check whether we should bump the head
 		if( blockedu )
-			g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
+			playSound( SOUND_KEEN_BUMPHEAD );
 
 		yinertia -= 20;
 		if( getActionNumber(A_KEEN_JUMP) )
@@ -446,7 +445,6 @@ void CPlayerLevel::processLookingUp()
 	if( m_playcontrol[PA_FIRE] && !m_fired )
 	{
 		setActionForce(A_KEEN_SHOOT+2);
-		g_pSound->playStereofromCoord(SOUND_KEEN_FIRE , PLAY_NOW, getXPosition());
 		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
 		tryToShoot(newVec, UP);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
@@ -509,7 +507,7 @@ void CPlayerLevel::processPressUp() {
 	if (flag==MISCFLAG_SWITCHPLATON || flag == MISCFLAG_SWITCHPLATOFF ||
 		flag == MISCFLAG_SWITCHBRIDGE)
 	{
-		g_pSound->playSound( SOUND_GUN_CLICK );
+		playSound( SOUND_GUN_CLICK );
 		setAction(A_KEEN_SLIDE);
 		if(flag == MISCFLAG_SWITCHBRIDGE)
 		{
@@ -617,7 +615,7 @@ void CPlayerLevel::processPressDucking()
 			supportedbyobject = false;
 			blockedd = false;
 			setAction(A_KEEN_FALL);
-			g_pSound->playSound( SOUND_KEEN_FALL );
+			playSound( SOUND_KEEN_FALL );
 			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 		}
 
@@ -1057,7 +1055,7 @@ void CPlayerLevel::processStanding()
 		m_jumped = true;
 		m_climbing = false;
 		m_vDir = NONE;
-		g_pSound->playSound( SOUND_KEEN_JUMP );
+		playSound( SOUND_KEEN_JUMP );
 	}
 
 
@@ -1103,7 +1101,7 @@ void CPlayerLevel::processStanding()
 		m_jumpheight = 0;
 		setAction(A_KEEN_POGO_START);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
-		g_pSound->playSound( SOUND_KEEN_POGO );
+		playSound( SOUND_KEEN_POGO );
 		m_pogotoggle = true;
 	}
 }
@@ -1180,6 +1178,7 @@ void CPlayerLevel::processRunning()
 	{
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 		setAction(A_KEEN_FALL);
+		playSound( SOUND_KEEN_FALL );
 	}
 
 
@@ -1194,7 +1193,7 @@ void CPlayerLevel::processRunning()
 		m_jumped = true;
 		m_climbing = false;
 		m_vDir = NONE;
-		g_pSound->playSound( SOUND_KEEN_JUMP );
+		playSound( SOUND_KEEN_JUMP );
 	}
 
 	// He could shoot
@@ -1204,7 +1203,6 @@ void CPlayerLevel::processRunning()
 		const int newy = getYPosition()+(4<<STC);
 		if(m_Inventory.Item.m_bullets > 0)
 		{
-			g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, newx);
 			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
 		}
 
@@ -1225,7 +1223,7 @@ void CPlayerLevel::processRunning()
 		m_jumpheight = 0;
 		setAction(A_KEEN_POGO_START);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
-		g_pSound->playSound( SOUND_KEEN_POGO );
+		playSound( SOUND_KEEN_POGO );
 		m_pogotoggle = true;
 	}
 
@@ -1254,7 +1252,7 @@ void CPlayerLevel::processRunning()
 			moveToHorizontal((l_x>>CSF)<<CSF);
 			setAction(A_KEEN_SLIDE);
 			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPlaceGem;
-			g_pSound->playSound( SOUND_DOOR_OPEN );
+			playSound( SOUND_DOOR_OPEN );
 		}
 	}
 
@@ -1279,10 +1277,6 @@ void CPlayerLevel::processFalling()
 		if(!canFallThroughTile())
 			m_jumpdown = false;
 	}
-
-	// While falling keen can of course move into both x-directions
-	//if(getActionNumber(A_KEEN_FALL))
-		//xinertia += (m_playcontrol[PA_X]>>1);
 
 	if(blockedd)
 	{

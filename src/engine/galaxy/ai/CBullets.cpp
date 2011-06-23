@@ -6,6 +6,7 @@
  */
 
 #include "CBullets.h"
+#include "sdl/sound/CSound.h"
 
 namespace galaxy
 {
@@ -26,13 +27,17 @@ CObject(pmap, x, y, OBJ_RAY)
 
 	m_ActionBaseOffset = 0x1738;
 	setActionForce(A_KEENSHOT_MOVING);
+	setActionSprite();
+	calcBouncingBoxes();
+	playSound( SOUND_KEEN_FIRE );
 }
 
 void CBullets::process()
 {
-	if( blockedd || blockedu || blockedl || blockedr )
+	if( !getActionNumber(A_KEENSHOT_IMPACT) && (blockedd || blockedu || blockedl || blockedr || onslope) )
 	{
 		setAction(A_KEENSHOT_IMPACT);
+		playSound( SOUND_SHOT_HIT );
 	}
 
 	processActionRoutine();
