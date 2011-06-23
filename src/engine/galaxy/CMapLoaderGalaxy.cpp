@@ -4,6 +4,9 @@
  *
  *  Created on: 29.05.2010
  *      Author: gerstrong
+ *
+ *	This class is responsible for loading the Sprites and Tiles of a memory into the memory.
+ *	TODO: This must be split up for Episodes 4, 5, 6 and Dreams.
  */
 
 #include "CMapLoaderGalaxy.h"
