@@ -12,10 +12,10 @@
 
 class CStunnable: public CObject {
 public:
-	CStunnable(	const CMap *pmap,
-			const Uint32 x,
-			const Uint32 y,
-			const object_t type );
+	CStunnable(	CMap *pmap,
+				Uint32 x,
+				Uint32 y,
+				object_t type );
 };
 
 #endif /* CSTUNNABLE_H_ */

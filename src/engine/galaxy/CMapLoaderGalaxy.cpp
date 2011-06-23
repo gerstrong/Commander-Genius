@@ -19,14 +19,14 @@
 #include "engine/CCamera.h"
 
 // AI Headers
-#include "engine/galaxy/ai/CMiragia.h"
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
-#include "engine/galaxy/ai/CPlayerDive.h"
+#include "engine/galaxy/ai/ep4/CPlayerDive.h"
+#include "engine/galaxy/ai/ep4/CPoisonSlug.h"
+#include "engine/galaxy/ai/ep4/CCouncilMember.h"
+#include "engine/galaxy/ai/ep4/CMiragia.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/platforms.h"
-#include "engine/galaxy/ai/CPoisonSlug.h"
-#include "engine/galaxy/ai/CCouncilMember.h"
 
 #include <fstream>
 

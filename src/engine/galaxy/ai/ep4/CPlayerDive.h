@@ -8,7 +8,7 @@
 #ifndef CPLAYERDIVE_H_
 #define CPLAYERDIVE_H_
 
-#include "CPlayerBase.h"
+#include "engine/galaxy/ai/CPlayerBase.h"
 
 namespace galaxy {
 
