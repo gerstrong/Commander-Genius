@@ -194,7 +194,8 @@ void CPlayerLevel::processCliffHanging()
 	}
 	else if( m_playcontrol[PA_Y] > 0 )
 	{
-		setAction(A_KEEN_FALL);
+		setAction( A_KEEN_FALL );
+		playSound( SOUND_KEEN_FALL );
 		solid = true;
 		const int dx = 8<<STC;
 		moveXDir( (m_hDir == LEFT) ? dx : -dx, true);
@@ -288,6 +289,7 @@ void CPlayerLevel::processPogo()
 	{
 		m_jumpheight = 0;
 		setAction(A_KEEN_FALL);
+		playSound( SOUND_KEEN_FALL );
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 		m_pogotoggle = true;
 		xinertia = 0;
@@ -393,7 +395,10 @@ void CPlayerLevel::processJumping()
 
 		yinertia -= 20;
 		if( getActionNumber(A_KEEN_JUMP) )
+		{
 			setAction(A_KEEN_FALL);
+			playSound( SOUND_KEEN_FALL );
+		}
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 	}
 
@@ -949,6 +954,7 @@ void CPlayerLevel::processPoleClimbing()
 			// Fall down if there isn't any pole to slide down
 			m_climbing = false;
 			setAction(A_KEEN_FALL);
+			playSound( SOUND_KEEN_FALL );
 			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 			m_vDir = NONE;
 			yinertia = 0;
