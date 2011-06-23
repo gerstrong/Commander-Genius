@@ -1163,6 +1163,7 @@ void CPlayerLevel::processRunning()
 		{
 			// walk to the left
 			m_hDir = LEFT;
+			playSound( SOUND_KEEN_WALK2 );
 		}
 	}
 	else if(  m_playcontrol[PA_X]>0  ) // right
@@ -1177,6 +1178,7 @@ void CPlayerLevel::processRunning()
 		{
 			// walk to the right
 			m_hDir = RIGHT;
+			playSound( SOUND_KEEN_WALK2 );
 		}
 	}
 
