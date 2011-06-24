@@ -265,6 +265,7 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 	{
 		m_animation_time = 5;
 		sprite +=  m_animation%3;
+		makeWalkSound();
 	}
 	else
 		sprite +=  2;

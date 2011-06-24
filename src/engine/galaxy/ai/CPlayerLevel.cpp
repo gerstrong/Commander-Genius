@@ -938,7 +938,13 @@ void CPlayerLevel::processPoleClimbing()
 		}
 
 		l_y_up = getYUpPos()+(16<<STC);
-		// Check for the and upper lower side, upper because the hand can touch the edge in that case
+
+		if(!hitdetectWithTileProperty(1, l_x, l_y_down))
+			solid = true;
+		else
+			solid = false;
+
+		// Check for the and upper and lower side, upper because the hand can touch the edge in that case
 		if( hitdetectWithTileProperty(1, l_x, l_y_down) || hitdetectWithTileProperty(1, l_x, l_y_up)  )
 		{
 			// Slide down if there is more of the pole
@@ -949,12 +955,21 @@ void CPlayerLevel::processPoleClimbing()
 		{
 			// Fall down if there isn't any pole to slide down
 			m_climbing = false;
-			setAction(A_KEEN_FALL);
-			playSound( SOUND_KEEN_FALL );
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 			m_vDir = NONE;
 			yinertia = 0;
 			solid = true;
+
+			if(!blockedd)
+			{
+				setAction(A_KEEN_FALL);
+				playSound( SOUND_KEEN_FALL );
+				mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
+			}
+			else
+			{
+				setAction(A_KEEN_STAND);
+				mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+			}
 		}
 	}
 	else
@@ -1133,6 +1148,7 @@ void CPlayerLevel::processShootWhileStanding()
 
 
 
+
 void CPlayerLevel::processRunning()
 {
 	// Most of the walking routine is done by the action script itself
@@ -1147,7 +1163,7 @@ void CPlayerLevel::processRunning()
 		setAction(A_KEEN_STAND);
 	}
 	// or he could change the walking direction
-	else if(  m_playcontrol[PA_X]<0  ) // left
+	else if( m_playcontrol[PA_X]<0 ) // left
 	{
 		// Is he blocked make him stand, else continue walking
 		if( blockedl )
@@ -1159,10 +1175,10 @@ void CPlayerLevel::processRunning()
 		{
 			// walk to the left
 			m_hDir = LEFT;
-			playSound( SOUND_KEEN_WALK2 );
+			makeWalkSound();
 		}
 	}
-	else if(  m_playcontrol[PA_X]>0  ) // right
+	else if( m_playcontrol[PA_X]>0 ) // right
 	{
 		// Is he blocked make him stand, else continue walking
 		if( blockedr )
@@ -1174,7 +1190,7 @@ void CPlayerLevel::processRunning()
 		{
 			// walk to the right
 			m_hDir = RIGHT;
-			playSound( SOUND_KEEN_WALK2 );
+			makeWalkSound();
 		}
 	}
 
@@ -1208,6 +1224,10 @@ void CPlayerLevel::processRunning()
 		if(m_Inventory.Item.m_bullets > 0)
 		{
 			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+		}
+		else
+		{
+			playSound(SOUND_GUN_CLICK);
 		}
 
 		setAction(A_KEEN_SHOOT);

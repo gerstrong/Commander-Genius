@@ -234,8 +234,6 @@ private:
 
 	int m_fire_recharge_time;
 	bool m_EnterDoorAttempt;
-
-	//void (CPlayerLevel::*mp_processState)();
 };
 
 }

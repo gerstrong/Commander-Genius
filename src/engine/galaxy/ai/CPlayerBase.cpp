@@ -28,6 +28,7 @@ m_Cheatmode(Cheatmode),
 mp_processState(NULL)
 {
 	m_index = 0;
+	m_walktimer = 0;
 	m_timer = 0;
 	m_dying = false;
 	m_hDir = facedir;
@@ -195,6 +196,24 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 
 		}
 	}
+}
+
+
+
+
+const int MAX_WALKSOUNDTIMER = 20;
+
+void CPlayerBase::makeWalkSound()
+{
+	const int time = m_walktimer % MAX_WALKSOUNDTIMER;
+
+	// Process walk timer. This is only for the walking sound
+	if( time == MAX_WALKSOUNDTIMER/2 )
+		playSound( SOUND_KEEN_WALK2 );
+	else if( time == 0 )
+		playSound( SOUND_KEEN_WALK );
+
+	m_walktimer++;
 }
 
 

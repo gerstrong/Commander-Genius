@@ -55,6 +55,13 @@ public:
 
 	void processLevelMiscFlagsCheck();
 
+	/**
+	 * Produces the walking sound. To produce that sound correctly, it uses a special timer.
+	 * That's the reason we need that aiding function
+	 */
+	void makeWalkSound();
+
+
 	void processDead();
 	void processDying();
 	void kill();
@@ -74,6 +81,9 @@ protected:
 	stCheat& m_Cheatmode;
 
 	void (CPlayerBase::*mp_processState)();
+
+private:
+	unsigned char m_walktimer;
 };
 
 };
