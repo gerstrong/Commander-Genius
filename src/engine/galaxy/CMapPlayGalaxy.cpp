@@ -6,6 +6,7 @@
  */
 
 #include "CMapPlayGalaxy.h"
+#include "engine/galaxy/ai/CPlayerBase.h"
 
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory) :
 m_active(false),
@@ -74,6 +75,15 @@ void CMapPlayGalaxy::process()
 		for(size_t i=0 ; i<m_ObjectPtr.size() ; i++)
 		{
 			CObject* p_Object = m_ObjectPtr[i];
+
+			// If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
+			// how the death-message or go gameover.
+			if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(p_Object) )
+			{
+				// Is he really dead?
+				if( !player->exists )
+					player->processDead();
+			}
 
 			if(p_Object->exists)
 			{

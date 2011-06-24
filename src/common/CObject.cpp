@@ -159,8 +159,10 @@ bool CObject::calcVisibility()
 
 	// Bullets should disappear when offscreen
 	if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL)
+	{
 		if(!inscreen)
 			exists=false;
+	}
 
 	return inscreen;
 }

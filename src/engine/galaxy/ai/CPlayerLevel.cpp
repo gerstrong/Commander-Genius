@@ -289,7 +289,6 @@ void CPlayerLevel::processPogo()
 	{
 		m_jumpheight = 0;
 		setAction(A_KEEN_FALL);
-		playSound( SOUND_KEEN_FALL );
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 		m_pogotoggle = true;
 		xinertia = 0;
@@ -397,7 +396,6 @@ void CPlayerLevel::processJumping()
 		if( getActionNumber(A_KEEN_JUMP) )
 		{
 			setAction(A_KEEN_FALL);
-			playSound( SOUND_KEEN_FALL );
 		}
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 	}

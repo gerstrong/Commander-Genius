@@ -233,10 +233,9 @@ void CPlayerBase::processDying()
 	moveRight(DIE_RIGHT_INERTIA);
 	yinertia += DIE_FALL_SPEED;
 
-
 	if( m_camera.outOfSight() )
 	{
-		mp_processState = &CPlayerBase::processDead;
+		exists = false;
 		solid = true;
 		honorPriority = true;
 	}
