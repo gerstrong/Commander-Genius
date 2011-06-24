@@ -121,7 +121,7 @@ void CObject::setupObjectType(int Episode)
 	case OBJ_TELEPORTER: sprite = OBJ_TELEPORTER_DEFSPRITE; break;
 	case OBJ_SECTOREFFECTOR: sprite = BLANKSPRITE; break;
 	case OBJ_GOTPOINTS: sprite = PT500_SPRITE; break;
-	default: sprite = BLANKSPRITE;
+	default: sprite = BLANKSPRITE; break;
 	}
 
 }

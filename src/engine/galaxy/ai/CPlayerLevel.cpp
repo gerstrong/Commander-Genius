@@ -278,7 +278,7 @@ void CPlayerLevel::processPogo()
 			playSound( SOUND_KEEN_BUMPHEAD );
 
 		CObject::processFalling();
-		setAction(A_KEEN_POGO_UP);
+		setAction(A_KEEN_POGO_HIGH);
 
 		m_jumpheight = 0;
 	}
@@ -299,14 +299,13 @@ void CPlayerLevel::processPogo()
 		if(m_playcontrol[PA_JUMP])
 		{
 			yinertia = POGO_START_INERTIA_MAX_VERT;
-			setAction(A_KEEN_POGO_HIGH);
 		}
 		else
 		{
 			yinertia = POGO_START_INERTIA_VERT;
-			setAction(A_KEEN_POGO_START);
 		}
 
+		setAction(A_KEEN_POGO_START);
 		m_jumpheight = 0;
 		playSound( SOUND_KEEN_POGO );
 	}
