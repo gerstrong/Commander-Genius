@@ -232,7 +232,7 @@ private:
 
 	bool m_pogotoggle;
 
-	bool m_fired;
+	int m_fire_recharge_time;
 	bool m_EnterDoorAttempt;
 
 	//void (CPlayerLevel::*mp_processState)();

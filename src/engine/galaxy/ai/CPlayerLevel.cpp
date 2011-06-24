@@ -29,6 +29,8 @@ const int POGO_START_INERTIA_IMPOSSIBLE_VERT = -180;
 const int POGO_INERTIA_HOR_MAX = 64;
 const int POGO_INERTIA_HOR_REACTION = 2;
 
+const int FIRE_RECHARGE_TIME = 5;
+
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir,
@@ -37,7 +39,7 @@ CPlayerBase(pmap, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode)
 {
 	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 
-	m_fired = false;
+	m_fire_recharge_time = 0;
 	m_EnterDoorAttempt = false;
 	m_ActionBaseOffset = 0x98C;
 	m_ptogglingswitch = false;
@@ -78,9 +80,6 @@ void CPlayerLevel::processMoveBitDown()
 void CPlayerLevel::processInput()
 {
 	CPlayerBase::processInput();
-
-	if(!m_playcontrol[PA_FIRE])
-		m_fired = false;
 
 	if(m_playcontrol[PA_Y] >= 0)
 		m_EnterDoorAttempt = false;
@@ -130,7 +129,7 @@ void CPlayerLevel::shootInAir()
 		tryToShoot(newVec, m_hDir);
 	}
 	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
-	m_fired = true;
+	m_fire_recharge_time = FIRE_RECHARGE_TIME;
 }
 
 
@@ -257,7 +256,7 @@ void CPlayerLevel::processPogo()
 		m_pogotoggle = false;
 
 	// process Shooting in air
-	if( m_playcontrol[PA_FIRE] && !m_fired )
+	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		xinertia = 0;
 		shootInAir();
@@ -419,7 +418,7 @@ void CPlayerLevel::processJumping()
 	}
 
 	// process Shooting in air
-	if( m_playcontrol[PA_FIRE] && !m_fired )
+	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		shootInAir();
 }
 
@@ -445,13 +444,13 @@ void CPlayerLevel::processLookingUp()
 {
 	// While looking up, Keen could shoot up!
 	// He could shoot
-	if( m_playcontrol[PA_FIRE] && !m_fired )
+	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		setActionForce(A_KEEN_SHOOT+2);
 		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
 		tryToShoot(newVec, UP);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
-		m_fired = true;
+		m_fire_recharge_time = FIRE_RECHARGE_TIME;
 		return;
 	}
 
@@ -875,7 +874,7 @@ void CPlayerLevel::processPlaceGem()
 void CPlayerLevel::processPoleClimbing()
 {
 	// If player is still pressing the fire button wait until he releases it!
-	if(m_fired)
+	if(m_fire_recharge_time)
 		return;
 
 	// This will cancel the pole process and make Keen jump
@@ -907,7 +906,7 @@ void CPlayerLevel::processPoleClimbing()
 		// First check player pressed shoot button
 		if( m_playcontrol[PA_FIRE] )
 		{
-			m_fired = true;
+			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTUP);
 			const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
 			tryToShoot(newVec, UP);
@@ -932,7 +931,7 @@ void CPlayerLevel::processPoleClimbing()
 		// First check player pressed shoot button
 		if( m_playcontrol[PA_FIRE] )
 		{
-			m_fired = true;
+			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTDOWN);
 			const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
 			tryToShoot(newVec, DOWN);
@@ -964,7 +963,7 @@ void CPlayerLevel::processPoleClimbing()
 		// First check player pressed shoot button
 		if( m_playcontrol[PA_FIRE] )
 		{
-			m_fired = true;
+			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOT);
 			const VectorD2<int> newVec(getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC)),
 										getYPosition()+(4<<STC));
@@ -1083,14 +1082,14 @@ void CPlayerLevel::processStanding()
 	}
 
 	// He could shoot
-	if( m_playcontrol[PA_FIRE] && !m_fired )
+	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		setAction(A_KEEN_SHOOT);
 		const VectorD2<int> newVec(getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC)),
 									getYPosition()+(4<<STC));
 		tryToShoot(newVec, m_hDir);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
-		m_fired = true;
+		m_fire_recharge_time = FIRE_RECHARGE_TIME;
 		return;
 	}
 
@@ -1203,7 +1202,7 @@ void CPlayerLevel::processRunning()
 	}
 
 	// He could shoot
-	if( m_playcontrol[PA_FIRE] && !m_fired )
+	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 		const int newy = getYPosition()+(4<<STC);
@@ -1214,7 +1213,7 @@ void CPlayerLevel::processRunning()
 
 		setAction(A_KEEN_SHOOT);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
-		m_fired = true;
+		m_fire_recharge_time = FIRE_RECHARGE_TIME;
 		return;
 	}
 
@@ -1330,7 +1329,7 @@ void CPlayerLevel::processFalling()
 	// Check Keen could hang on a cliff and do so if possible
 	if(checkandtriggerforCliffHanging())
 		return;
-	if( m_playcontrol[PA_FIRE] && !m_fired )
+	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		shootInAir();
 
 }
@@ -1375,6 +1374,12 @@ void CPlayerLevel::process()
 	}
 
 	(this->*mp_processState)();
+
+	// make the fire recharge time decreased if player is not pressing firing button
+	if(m_fire_recharge_time && !m_playcontrol[PA_FIRE])
+	{
+		m_fire_recharge_time--;
+	}
 
 	processLevelMiscFlagsCheck();
 
