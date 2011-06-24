@@ -80,12 +80,9 @@ void CButler::process()
 
 void CButler::getTouchedBy(CObject &theObject)
 {   // push keen
-	if(hitdetect(theObject))
+	if( theObject.m_type == OBJ_PLAYER )
 	{
-		if( theObject.m_type == OBJ_PLAYER )
-		{
-			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-			Player.bump( *this, movedir );
-		}
+		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+		Player.bump( *this, movedir );
 	}
 }

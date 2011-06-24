@@ -11,12 +11,31 @@
  */
 
 #include "CStunnable.h"
+#include "CBullet.h"
+
+namespace galaxy
+{
 
 CStunnable::CStunnable(	CMap *pmap,
 						Uint32 x,
 						Uint32 y,
 						object_t type ):
 CObject(pmap, x, y, type)
+{}
+
+void CStunnable::getTouchedBy(CObject &theObject)
+{
+	if( dynamic_cast<CBullet*>(&theObject) )
+	{
+		theObject.setAction(A_KEENSHOT_IMPACT);
+		theObject.playSound( SOUND_SHOT_HIT );
+	}
+}
+
+
+void CStunnable::processStunned()
 {
 
 }
+
+};

@@ -6,7 +6,7 @@
  */
 
 #include "CPlayerLevel.h"
-#include "CBullets.h"
+#include "CBullet.h"
 #include "common/CBehaviorEngine.h"
 #include "platform/CPlatform.h"
 #include "sdl/CInput.h"
@@ -64,9 +64,12 @@ void CPlayerLevel::processMoveBitDown()
 {
 	for( size_t i = 0 ; i<m_ObjectPtrs.size() ; i++ )
 	{
-		if( CPlatform *platform = dynamic_cast<CPlatform*>(m_ObjectPtrs[i]) )
+		if(m_ObjectPtrs[i]->hitdetect(*this))
 		{
-			platform->getTouchedBy(*this);
+			if( CPlatform *platform = dynamic_cast<CPlatform*>(m_ObjectPtrs[i]) )
+			{
+				platform->getTouchedBy(*this);
+			}
 		}
 	}
 
@@ -94,7 +97,7 @@ void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const direction_t &dir 
 {
 	if(m_Inventory.Item.m_bullets > 0)
 	{
-		m_ObjectPtrs.push_back(new CBullets(mp_Map, pos.x, pos.y, dir));
+		m_ObjectPtrs.push_back(new CBullet(mp_Map, pos.x, pos.y, dir));
 	}
 	else
 	{
@@ -1223,7 +1226,7 @@ void CPlayerLevel::processRunning()
 		const int newy = getYPosition()+(4<<STC);
 		if(m_Inventory.Item.m_bullets > 0)
 		{
-			m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+			m_ObjectPtrs.push_back(new CBullet(mp_Map, newx, newy, m_hDir));
 		}
 		else
 		{

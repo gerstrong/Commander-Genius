@@ -251,7 +251,8 @@ void CVorticon::initiateJump() {
 }
 
 void CVorticon::getTouchedBy(CObject &theObject) {
-	if (theObject.m_type == OBJ_PLAYER) {
+	if (theObject.m_type == OBJ_PLAYER)
+	{
 		if (state != VORT_DYING and !dead and state != VORT2_DYING)
 			theObject.kill();
 	}

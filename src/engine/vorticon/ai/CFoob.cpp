@@ -207,13 +207,10 @@ void CFoob::process()
 
 void CFoob::getTouchedBy(CObject &theObject)
 {
-	if(hitdetect(theObject))
+	if(theObject.m_type == OBJ_PLAYER)
 	{
-		if(theObject.m_type == OBJ_PLAYER)
-		{
-			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-			if(mp_Map->m_Difficulty>2)
-				Player.kill();
-		}
+		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+		if(mp_Map->m_Difficulty>2)
+			Player.kill();
 	}
 }

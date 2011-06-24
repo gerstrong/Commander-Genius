@@ -140,28 +140,25 @@ void CSectorEffector::process()
 
 void CSectorEffector::getTouchedBy(CObject &theObject)
 {
-	if(hitdetect(theObject))
+	bool it_is_mortimer_machine = false;
+
+	it_is_mortimer_machine = (setype == SE_MORTIMER_LEG_LEFT)
+										|| (setype == SE_MORTIMER_LEG_RIGHT)
+										|| (setype == SE_MORTIMER_ARM)
+										|| (setype == SE_MORTIMER_SPARK);
+
+	if(it_is_mortimer_machine)
 	{
-		bool it_is_mortimer_machine = false;
-
-		it_is_mortimer_machine = (setype == SE_MORTIMER_LEG_LEFT)
-								|| (setype == SE_MORTIMER_LEG_RIGHT)
-								|| (setype == SE_MORTIMER_ARM)
-								|| (setype == SE_MORTIMER_SPARK);
-
-		if(it_is_mortimer_machine)
+		if (theObject.m_type == OBJ_PLAYER)
 		{
-			if (theObject.m_type == OBJ_PLAYER)
-			{
-				theObject.kill();
-			}
+			theObject.kill();
 		}
+	}
 
-		if( ( setype == SE_MORTIMER_SPARK || setype == SE_MORTIMER_HEART ) &&
-				HealthPoints>0 && theObject.m_type == OBJ_RAY )
-		{
-			HealthPoints--;
-		}
+	if( ( setype == SE_MORTIMER_SPARK || setype == SE_MORTIMER_HEART ) &&
+			HealthPoints>0 && theObject.m_type == OBJ_RAY )
+	{
+		HealthPoints--;
 	}
 }
 

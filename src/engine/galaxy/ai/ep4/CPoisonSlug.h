@@ -11,7 +11,7 @@
 #define CPOISONSLUG_H_
 
 #include <vector>
-#include "common/CObject.h"
+#include "engine/galaxy/ai/CStunnable.h"
 
 namespace galaxy {
 
@@ -20,7 +20,7 @@ namespace galaxy {
 #define A_SLUG_STUNNED		3
 #define A_SLUG_STUNNED_ALT	4
 
-class CPoisonSlug : public CObject {
+class CPoisonSlug : public CStunnable {
 public:
 	CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
 				std::vector<CObject*>&ObjectPtrs);
@@ -36,12 +36,17 @@ public:
 	 */
 	void processPooing();
 
+
 	void process();
+
+	/**
+	 * What happens if the slug gets touched by another object
+	 */
+	void getTouchedBy(CObject &theObject);
 
 private:
 	std::vector<CObject*>& m_ObjectPtrs;
 	int m_timer;
-	void (CPoisonSlug::*mp_processState)();
 };
 
 }

@@ -99,17 +99,14 @@ void CPlatform::SetAllCanSupportPlayer(bool state)
 
 void CPlatform::getTouchedBy(CObject &theObject)
 {
-	if(hitdetect(theObject))
+	// push player horizontally
+	if( theObject.m_type == OBJ_PLAYER )
 	{
-		// push player horizontally
-		if( theObject.m_type == OBJ_PLAYER )
-		{
-			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-			if(Player.pfalling or !Player.blockedd or !Player.supportedbyobject)
-				Player.push(*this);
-			else if( state == PLATFORM_MOVE )
-				Player.moveXDir( (movedir==LEFT) ? -PLATFORM_MOVE_SPD : PLATFORM_MOVE_SPD);
-		}
+		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+		if(Player.pfalling or !Player.blockedd or !Player.supportedbyobject)
+			Player.push(*this);
+		else if( state == PLATFORM_MOVE )
+			Player.moveXDir( (movedir==LEFT) ? -PLATFORM_MOVE_SPD : PLATFORM_MOVE_SPD);
 	}
 }
 

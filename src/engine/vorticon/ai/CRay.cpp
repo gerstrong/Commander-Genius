@@ -164,7 +164,7 @@ void CRay::moveinAir()
 
 void CRay::getTouchedBy(CObject &theObject)
 {
-	if(hitdetect(theObject) && !theObject.dead && !theObject.dying)
+	if( !theObject.dead && !theObject.dying )
 	{
 		if(theObject.canbezapped && state ==  RAY_STATE_FLY )
 		{

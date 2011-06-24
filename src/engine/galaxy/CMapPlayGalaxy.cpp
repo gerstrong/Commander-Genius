@@ -102,7 +102,10 @@ void CMapPlayGalaxy::process()
 				{
 					CObject *theOtherObj = m_ObjectPtr[j];
 					if( theOtherObj != p_Object )
-						p_Object->getTouchedBy(*theOtherObj);
+					{
+						if( p_Object->hitdetect(*theOtherObj) )
+							p_Object->getTouchedBy(*theOtherObj);
+					}
 				}
 			}
 		}

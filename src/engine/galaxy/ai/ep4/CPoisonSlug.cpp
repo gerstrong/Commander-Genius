@@ -5,6 +5,7 @@
  *      Author: FCTW
  */
 
+
 #include "CPoisonSlug.h"
 #include "CSlugSlime.h"
 #include "misc.h"
@@ -17,13 +18,13 @@ const int SLUG_MOVE_TIMER = 10;
 
 CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>&ObjectPtrs) :
-CObject(pmap, x, y, OBJ_NONE),
+CStunnable(pmap, x, y, OBJ_NONE),
 m_ObjectPtrs(ObjectPtrs),
 m_timer(0)
 {
 	m_ActionBaseOffset = 0x2012;
 	setActionForce(A_SLUG_MOVE);
-	mp_processState = &CPoisonSlug::processCrawling;
+	mp_processState = (void (CStunnable::*)()) &CPoisonSlug::processCrawling;
 	m_hDir = LEFT;
 	processActionRoutine();
 	performCollisions();
@@ -57,7 +58,7 @@ void CPoisonSlug::processCrawling()
 	if( getProbability(30) )
 	{
 		m_timer = 0;
-		mp_processState = &CPoisonSlug::processPooing;
+		mp_processState = (void (CStunnable::*)()) &CPoisonSlug::processPooing;
 		setAction( A_SLUG_POOING );
 		playSound( SOUND_SLUG_DEFECATE );
 		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, getXLeftPos(), getYDownPos()-(8<<STC)));
@@ -81,12 +82,26 @@ void CPoisonSlug::processPooing()
 	if( getActionStatus(A_SLUG_MOVE) )
 	{
 		setAction(A_SLUG_MOVE);
-		mp_processState = &CPoisonSlug::processCrawling;
+		mp_processState = (void (CStunnable::*)()) &CPoisonSlug::processCrawling;
 	}
 }
 
 
+void CPoisonSlug::getTouchedBy(CObject &theObject)
+{
+	if(dead)
+		return;
 
+	CStunnable::getTouchedBy(theObject);
+
+	// Was it a bullet? Than make it stunned.
+	if( dynamic_cast<CBullet*>(&theObject) )
+	{
+		mp_processState = &CStunnable::processStunned;
+		setAction( rand()%2 ? A_SLUG_STUNNED : A_SLUG_STUNNED_ALT );
+		dead = true;
+	}
+}
 
 
 

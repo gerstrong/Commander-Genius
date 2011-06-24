@@ -133,16 +133,13 @@ void CPlatformVert::process()
 
 void CPlatformVert::getTouchedBy(CObject &theObject)
 {
-	if(hitdetect(theObject))
+	// push player horizontally
+	if( theObject.m_type == OBJ_PLAYER )
 	{
-		// push player horizontally
-		if( theObject.m_type == OBJ_PLAYER )
-		{
-			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-			if(Player.pfalling or !Player.supportedbyobject)
-				Player.push(*this);
-			else if( state == PLATVERT_MOVE )
-				Player.moveYDir( (movedir==UP) ? -PLATVERT_MOVE_SPD : PLATVERT_MOVE_SPD);
-		}
+		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+		if(Player.pfalling or !Player.supportedbyobject)
+			Player.push(*this);
+		else if( state == PLATVERT_MOVE )
+			Player.moveYDir( (movedir==UP) ? -PLATVERT_MOVE_SPD : PLATVERT_MOVE_SPD);
 	}
 }

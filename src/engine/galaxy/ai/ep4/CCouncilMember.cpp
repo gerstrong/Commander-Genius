@@ -113,39 +113,35 @@ void CCouncilMember::getTouchedBy(CObject &theObject)
 	if(rescued)
 		return;
 
-	if(hitdetect(theObject))
+	// When Keen touches the Council Member exit the level and add one to the council list
+	if(theObject.m_type == OBJ_PLAYER)
 	{
-		// When Keen touches the Council Member exit the level and add one to the council list
-		if(theObject.m_type == OBJ_PLAYER)
-		{
-			CPlayerLevel &Player = static_cast<CPlayerLevel&>(theObject);
-			int &rescuedelders = Player.m_Inventory.Item.m_special.ep4.elders;
+		CPlayerLevel &Player = static_cast<CPlayerLevel&>(theObject);
+		int &rescuedelders = Player.m_Inventory.Item.m_special.ep4.elders;
 
-			CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-			// TODO: In this part we have to check which level we are and send the proper messages
+		// TODO: In this part we have to check which level we are and send the proper messages
 
-			g_pSound->playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
-			EventContainer.add( new EventPlayTrack(5) );
+		g_pSound->playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
+		EventContainer.add( new EventPlayTrack(5) );
 
-			std::string elder_text[2];
+		std::string elder_text[2];
 
-			elder_text[0] = g_pBehaviorEngine->getString("ELDERS_TEXT");
-			elder_text[1] = g_pBehaviorEngine->getString(answermap[rescuedelders]);
+		elder_text[0] = g_pBehaviorEngine->getString("ELDERS_TEXT");
+		elder_text[1] = g_pBehaviorEngine->getString(answermap[rescuedelders]);
 
-			EventContainer.add( new EventSendBitmapDialogMsg(104, elder_text[0], LEFT) );
-			EventContainer.add( new EventSendBitmapDialogMsg(106, elder_text[1], RIGHT) );
+		EventContainer.add( new EventSendBitmapDialogMsg(104, elder_text[0], LEFT) );
+		EventContainer.add( new EventSendBitmapDialogMsg(106, elder_text[1], RIGHT) );
 
-			if(rescuedelders == 7)
-				EventContainer.add( new EventSendBitmapDialogMsg(106, g_pBehaviorEngine->getString(answermap[8]), RIGHT) );
+		if(rescuedelders == 7)
+			EventContainer.add( new EventSendBitmapDialogMsg(106, g_pBehaviorEngine->getString(answermap[8]), RIGHT) );
 
-			EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
-			rescuedelders++;
+		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		rescuedelders++;
 
-			rescued = true;
-		}
+		rescued = true;
 	}
-
 }
 
 }
