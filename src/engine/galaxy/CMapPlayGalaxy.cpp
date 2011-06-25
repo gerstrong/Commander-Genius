@@ -7,6 +7,7 @@
 
 #include "CMapPlayGalaxy.h"
 #include "engine/galaxy/ai/CPlayerBase.h"
+#include "common/CBehaviorEngine.h"
 
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory) :
 m_active(false),
@@ -188,8 +189,15 @@ void CMapPlayGalaxy::process()
 			m_Cheatmode.noclipping = true;
 			m_MessageBoxes.push_back(new CMessageBoxGalaxy("No clipping toggle!"));
 		}
-
 	}
+
+	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
+	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
+	{
+		m_ObjectPtr.push_back( const_cast<CObject*>(ev->pObject) );
+		EventContainer.pop_Event();
+	}
+
 }
 
 

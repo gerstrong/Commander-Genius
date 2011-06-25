@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include "common/CBehaviorEngine.h"
+
 
 struct ActionFormatType {
 	int16_t Left_sprite;         // 124-400
@@ -42,33 +42,19 @@ struct ActionFormatType {
 	 * \param	sprite_offset	Offset of the sprite. This is per sprite(object) just one and the same
 	 * 							direction
 	 */
-	void setActionFormat( size_t sprite_offset )
-	{
-		byte *ptr = g_pBehaviorEngine->m_ExeFile.getDSegPtr();
-
-		ptr += sprite_offset;
-		memcpy( this, ptr, 15*sizeof(int16_t) );
-	}
+	void setActionFormat( const size_t sprite_offset );
 
 	/**
 	 * \brief just sets the next action format struct
 	 */
-	void setNextActionFormat()
-	{
-		setActionFormat(Next_action);
-	}
+	void setNextActionFormat();
 
 	/**
 	 * \brief	get Action Format of the sprite
 	 * \param	sprite_offset	Offset of the sprite. This is per sprite(object) just one and the same
 	 * 							direction
 	 */
-	bool getActionFormat( size_t sprite_offset )
-	{
-		byte *ptr = g_pBehaviorEngine->m_ExeFile.getDSegPtr();
-		ptr += sprite_offset;
-		return (memcmp( this, ptr, 15*sizeof(int16_t) ) == 0);
-	}
+	bool getActionFormat( const size_t sprite_offset );
 };
 
 #endif /* ACTIONFORMAT_H_ */

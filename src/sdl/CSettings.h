@@ -5,13 +5,13 @@
  *      Author: gerstrong and albert
  */
 
-#ifndef CSETTINGS_H_
-#define CSETTINGS_H_
-
 #include <string>
 #include "common/options.h"
 #include "fileio/CConfiguration.h"
 
+
+#ifndef CSETTINGS_H_
+#define CSETTINGS_H_
 
 class CSettings {
 public:

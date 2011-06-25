@@ -188,7 +188,7 @@ void CPlayGameGalaxy::process()
 		else if( EventPlayTrack *ev =  EventContainer.occurredEvent<EventPlayTrack>() )
 		{
 			g_pMusicPlayer->stop();
-			if(g_pMusicPlayer->loadTrack(m_ExeFile, ev->track));
+			if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
 				g_pMusicPlayer->play();
 			EventContainer.pop_Event();
 		}

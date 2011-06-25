@@ -6,6 +6,7 @@
  */
 
 #include "common/options.h"
+#include "common/CBehaviorEngine.h"
 #include "fileio/CConfiguration.h"
 #include "CLogFile.h"
 #include "FindFile.h"
@@ -14,7 +15,6 @@
 #include "CVideoDriver.h"
 #include "CTimer.h"
 #include "sound/CSound.h"
-#include "common/CBehaviorEngine.h"
 
 /**
  * \brief	The CSettings class handles the saving and loading of all the settings that are saved in

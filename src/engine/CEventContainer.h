@@ -14,6 +14,7 @@
 #include "SmartPointer.h"
 #include <list>
 
+
 class CEventContainer {
 public:
 	bool empty() { return m_EventList.empty(); }

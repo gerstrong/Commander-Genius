@@ -6,6 +6,7 @@
  *
  *  Intendet to represent an event.
  *  Doesn't do any handling.
+ *  TODO: If more events come and this file gets long we might have to split it up.
  */
 
 #ifndef CEVENT_H_
@@ -15,7 +16,12 @@
 #include <string>
 #include <list>
 #include "common/direction.h"
+//#include "common/CObject.h"
 #include "SmartPointer.h"
+#include "CVec.h"
+
+class CObject;
+
 
 struct CEvent { virtual ~CEvent() {} };
 
@@ -99,6 +105,20 @@ struct EventSendSelectionDialogMsg : CEvent {
 		NewOption.event = levent;
 		Options.push_back(NewOption);
 	}
+};
+
+
+/**
+ *	\description This event will spawn a new object
+ *
+ *	\param		pObject Pointer to the allocated memory of the Object. Caution: This allocation
+ */
+struct EventSpawnObject : CEvent {
+
+	const CObject* pObject;
+
+	EventSpawnObject( const CObject* pObject ) :
+					  pObject(pObject) {}
 };
 
 

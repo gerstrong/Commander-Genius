@@ -8,24 +8,27 @@
  *  It also handles the AI if any.
  */
 
+
 #ifndef COBJECT_H_
 #define COBJECT_H_
 
-#include "CBehaviorEngine.h"
+#include "engine/CEventContainer.h"
 #include "ActionFormat.h"
 #include "CVec.h"
 #include "direction.h"
+#include "CBehaviorEngine.h"
 
 // structures for each AI module's data
 #include "engine/vorticon/ai/enemydata.h"
 #include "CMap.h"
 #include "graphics/CGfxEngine.h"
 #include "options.h"
-#include "engine/CEventContainer.h"
 #include "sdl/sound/CSound.h"
+#include "CVec.h"
 
 // Enumerations are here
 #include "objenums.h"
+
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }

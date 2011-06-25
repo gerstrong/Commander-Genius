@@ -12,6 +12,7 @@
  *  of AI they are needed and especially for the collision
  */
 
+
 #ifndef CBEHAVIORENGINE_H_
 #define CBEHAVIORENGINE_H_
 
@@ -26,6 +27,8 @@
 #include "common/options.h"
 
 #include "CSingleton.h"
+
+
 #define g_pBehaviorEngine CBehaviorEngine::Get()
 
 /*
