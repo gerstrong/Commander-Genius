@@ -98,6 +98,7 @@ void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const direction_t &dir 
 	if(m_Inventory.Item.m_bullets > 0)
 	{
 		m_ObjectPtrs.push_back(new CBullet(mp_Map, pos.x, pos.y, dir));
+		m_Inventory.Item.m_bullets--;
 	}
 	else
 	{
@@ -1224,14 +1225,9 @@ void CPlayerLevel::processRunning()
 	{
 		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 		const int newy = getYPosition()+(4<<STC);
-		if(m_Inventory.Item.m_bullets > 0)
-		{
-			m_ObjectPtrs.push_back(new CBullet(mp_Map, newx, newy, m_hDir));
-		}
-		else
-		{
-			playSound(SOUND_GUN_CLICK);
-		}
+
+		const VectorD2<int> newVec(newx, newy);
+		tryToShoot(newVec, m_hDir);
 
 		setAction(A_KEEN_SHOOT);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;

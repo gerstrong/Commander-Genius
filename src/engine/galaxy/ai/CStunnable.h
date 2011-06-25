@@ -22,14 +22,14 @@ public:
 				object_t type );
 
 	/**
-	 * This is the cycle which will animate the stars while the enemy is stunned
-	 */
-	void processStunned();
-
-	/**
 	 * What happens when some objects gets touched, or normally shot
 	 */
 	virtual void getTouchedBy(CObject &theObject);
+
+	/**
+	 * empty cycle which is processed when the object is stunned
+	 */
+	void processStunned();
 
 protected:
 	bool m_stunned;

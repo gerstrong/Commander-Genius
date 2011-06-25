@@ -13,6 +13,9 @@
 
 #include "common/CObject.h"
 
+namespace galaxy
+{
+
 class CSlugSlime : public CObject  {
 public:
 
@@ -21,6 +24,11 @@ public:
 
 	/** Main Process cycle */
 	void process();
+
+	/** What happens when something touches that slime */
+	void getTouchedBy(CObject &theObject);
+};
+
 };
 
 #endif /* CSLUGSLIME_H_ */

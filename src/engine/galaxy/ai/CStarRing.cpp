@@ -17,6 +17,7 @@ CObject(pmap, x, y, type),
 m_animation_timer(0)
 {
 	sprite = STARRING_SPRITE;
+	honorPriority = false;
 }
 
 void CStarRing::process()

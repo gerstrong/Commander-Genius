@@ -6,6 +6,11 @@
  */
 
 #include "CSlugSlime.h"
+#include "engine/galaxy/ai/CPlayerBase.h"
+
+namespace galaxy
+{
+
 
 const int A_SLUGPOISON_NORMAL =	0;
 const int A_SLUGPOISON_FADE = 1;
@@ -19,9 +24,19 @@ CObject(pmap, x, y, OBJ_NONE)
 	performCollisions();
 }
 
+void CSlugSlime::getTouchedBy(CObject &theObject)
+{
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	{
+		player->kill();
+	}
+}
+
 
 void CSlugSlime::process()
 {
 	processFalling();
 	processActionRoutine();
 }
+
+};

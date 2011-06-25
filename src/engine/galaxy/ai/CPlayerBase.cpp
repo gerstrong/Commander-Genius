@@ -269,8 +269,7 @@ void CPlayerBase::processDying()
 
 void CPlayerBase::kill()
 {
-	// TODO: Here were prepare Keen to die, setting that action
-	// We still need that animation when he really dies.
+	// Here were prepare Keen to die, setting the action to die
 	if(!m_Cheatmode.god)
 	{
 		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)

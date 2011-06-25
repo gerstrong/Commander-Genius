@@ -8,6 +8,7 @@
 
 #include "CPoisonSlug.h"
 #include "CSlugSlime.h"
+#include "engine/galaxy/ai/CPlayerBase.h"
 #include "misc.h"
 
 namespace galaxy {
@@ -100,6 +101,11 @@ void CPoisonSlug::getTouchedBy(CObject &theObject)
 		mp_processState = &CStunnable::processStunned;
 		setAction( rand()%2 ? A_SLUG_STUNNED : A_SLUG_STUNNED_ALT );
 		dead = true;
+	}
+
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	{
+		player->kill();
 	}
 }
 
