@@ -217,6 +217,16 @@ void CPlayerBase::makeWalkSound()
 }
 
 
+void CPlayerBase::makeSwimSound()
+{
+	const int time = m_walktimer % MAX_WALKSOUNDTIMER;
+
+	// Process walk timer. This is only for the walking sound
+	if( time == 0 )
+		playSound( SOUND_KEEN_SWIM );
+
+	m_walktimer++;
+}
 
 
 

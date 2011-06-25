@@ -61,6 +61,11 @@ public:
 	 */
 	void makeWalkSound();
 
+	/**
+	 * Same here but with swimming
+	 */
+	void makeSwimSound();
+
 
 	void processDead();
 	void processDying();

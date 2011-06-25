@@ -337,6 +337,8 @@ void CPlayerWM::performSwimmingAnimation()
 
 	m_animation_time = 5;
 	sprite +=  m_animation%2;
+
+	makeSwimSound();
 }
 
 }

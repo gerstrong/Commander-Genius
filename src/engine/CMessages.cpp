@@ -90,8 +90,8 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractString( "LINDSEY_END_TEXT2", 0x309FA, 0x30A24 ) );
 			StringMap.insert( extractString( "LINDSEY_START_TEXT", 0x30A25, 0x30A3C ) );
 
-			StringMap.insert( extractString( "CANT_SWIM_TEXT", 0x30A3D, 0x30A4B ) );
-			StringMap.insert( extractString( "SWIM_SUIT_TEXT", 0x30A4C, 0x30A72 ) );
+			StringMap.insert( extractString( "CANT_SWIM_TEXT", 0x30A3D, 0x30A4A ) );
+			StringMap.insert( extractString( "SWIM_SUIT_TEXT", 0x30A4B, 0x30A72 ) );
 
 
 			StringMap.insert( extractString( "KEEN_NOSWEAT_TEXT", 0x30A71, 0x30A91 ) );
