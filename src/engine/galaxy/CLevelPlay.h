@@ -16,7 +16,7 @@ namespace galaxy {
 
 class CLevelPlay : public CMapPlayGalaxy {
 public:
-	CLevelPlay(CExeFile &ExeFile, CInventory &Inventory);
+	CLevelPlay(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
 
 	void loadMap(const int level);
 	void reloadLevel();

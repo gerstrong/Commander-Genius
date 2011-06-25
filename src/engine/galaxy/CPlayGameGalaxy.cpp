@@ -25,8 +25,8 @@ CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		  CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty ),
 m_Inventory(difficulty, m_LevelName),
-m_WorldMap(ExeFile, m_Inventory),
-m_LevelPlay(ExeFile, m_Inventory),
+m_WorldMap(ExeFile, m_Inventory, m_Cheatmode),
+m_LevelPlay(ExeFile, m_Inventory, m_Cheatmode),
 mp_Menu(NULL),
 m_SavedGame(SavedGame)
 {
@@ -110,6 +110,8 @@ void CPlayGameGalaxy::process()
 			m_Inventory.toggleStatusScreen();
 		}
 
+		const bool msgboxactive = !m_MessageBoxes.empty();
+
 		// process Page if one is open. Could be one of the finale scenes
 		//if(m_Page.isActive())
 		//m_Page.process();
@@ -117,13 +119,13 @@ void CPlayGameGalaxy::process()
 		// process World Map if active. At the start it's enabled
 		if(m_WorldMap.isActive())
 		{
-			m_WorldMap.process();
+			m_WorldMap.process(msgboxactive);
 		}
 
 		// process World Map if active. At the start it's enabled
 		if(m_LevelPlay.isActive())
 		{
-			m_LevelPlay.process();
+			m_LevelPlay.process(msgboxactive);
 		}
 
 		// We have to show the status screen, do so...
@@ -131,13 +133,61 @@ void CPlayGameGalaxy::process()
 		{
 			m_Inventory.drawStatus();
 		}
+
+		// Draw some Textboxes with Messages only if one of those is open and needs to be drawn
+		if(msgboxactive)
+		{
+			CMessageBoxGalaxy *pMB = m_MessageBoxes.front();
+			pMB->process();
+
+			if(pMB->isFinished())
+			{
+				delete(pMB);
+				pMB = NULL;
+				m_MessageBoxes.pop_front();
+			}
+			return;
+		}
+
+		//// Special Keyboard Input
+
+		/// Cheat Codes
+		if( g_pInput->getHoldedKey(KF10) )
+		{
+			if(g_pInput->getHoldedKey(KJ))
+			{
+				m_Cheatmode.jump = !m_Cheatmode.jump;
+				std::string jumpstring = "Jump-Cheat has been ";
+				jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
+				m_MessageBoxes.push_back(new CMessageBoxGalaxy(jumpstring));
+			}
+			else if(g_pInput->getHoldedKey(KG))
+			{
+				m_Cheatmode.god = !m_Cheatmode.god;
+				std::string godstring = "God-Mode has been ";
+				godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
+				m_MessageBoxes.push_back(new CMessageBoxGalaxy(godstring));
+			}
+			else if(g_pInput->getHoldedKey(KI))
+			{
+				m_Cheatmode.items = true;
+				m_MessageBoxes.push_back(new CMessageBoxGalaxy("Get all Items!"));
+				m_Inventory.Item.triggerAllItemsCheat();
+				m_Cheatmode.items = true;
+			}
+			else if(g_pInput->getHoldedKey(KN))
+			{
+				m_Cheatmode.noclipping = true;
+				m_MessageBoxes.push_back(new CMessageBoxGalaxy("No clipping toggle!"));
+			}
+		}
 	}
 
 	// In this part we will poll all the relevant Events that are important for the
 	// Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
 	// are some of those events.
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	std::list<CMessageBoxGalaxy*>& MessageBoxQueue = m_LevelPlay.getMessageBoxQueue();
+	std::list<CMessageBoxGalaxy*>& MessageBoxQueue = m_MessageBoxes;
 
 	if( EventSendBitmapDialogMsg* ev = EventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{

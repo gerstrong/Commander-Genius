@@ -26,7 +26,7 @@ public:
 
 	void startLevel(Uint16 object);
 	void finishLevel(Uint16 object);
-	void checkforSwimming();
+	void checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown);
 
 	void performWalkingAnimation(bool walking);
 	void performSwimmingAnimation();
@@ -38,6 +38,7 @@ private:
 	Uint8 m_animation;
 	Uint8 m_animation_time;
 	Uint8 m_animation_ticker;
+	bool m_cantswim;
 };
 
 }

@@ -11,8 +11,9 @@
 namespace galaxy {
 
 CWorldMap::CWorldMap(CExeFile &ExeFile,
-					CInventory &Inventory):
-CMapPlayGalaxy(ExeFile, Inventory)
+					CInventory &Inventory,
+					stCheat &Cheatmode):
+CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
 {}
 
 void CWorldMap::init()
@@ -22,7 +23,9 @@ void CWorldMap::init()
 
 	MapLoader.loadMap(m_Map, 0); // Is it a Map Level?
     const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-	m_MessageBoxes.push_back(new CMessageBoxBitmapGalaxy( loading_text, 106 ) );
+
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	EventContainer.add( new EventSendBitmapDialogMsg(106, loading_text, LEFT) );
 
 	m_Map.drawAll();
 }

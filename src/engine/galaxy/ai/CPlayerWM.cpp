@@ -34,7 +34,8 @@ m_basesprite(WALKBASEFRAME),
 m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
-m_animation_ticker(0)
+m_animation_ticker(0),
+m_cantswim(false)
 {
 	sprite = m_basesprite;
 	performCollisions();
@@ -86,8 +87,13 @@ void CPlayerWM::processMoving()
 
 	bool walking=false;
 
+	bool bleft, bright, bup, bdown;
+
+	// This will trigger between swim and walkmode
+	checkforSwimming(bleft, bright, bup, bdown);
+
 	// Normal walking
-	if(g_pInput->getHoldedCommand(IC_LEFT))
+	if(g_pInput->getHoldedCommand(IC_LEFT) && !bleft)
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
 			m_vDir = NONE;
@@ -96,7 +102,7 @@ void CPlayerWM::processMoving()
 		walking = true;
 		m_hDir = LEFT;
 	}
-	else if(g_pInput->getHoldedCommand(IC_RIGHT))
+	else if(g_pInput->getHoldedCommand(IC_RIGHT) && !bright)
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
 			m_vDir = NONE;
@@ -106,7 +112,7 @@ void CPlayerWM::processMoving()
 		m_hDir = RIGHT;
 	}
 
-	if(g_pInput->getHoldedCommand(IC_UP))
+	if(g_pInput->getHoldedCommand(IC_UP) && !bup)
 	{
 		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
 			m_hDir = NONE;
@@ -115,7 +121,7 @@ void CPlayerWM::processMoving()
 		walking = true;
 		m_vDir = UP;
 	}
-	else if(g_pInput->getHoldedCommand(IC_DOWN))
+	else if(g_pInput->getHoldedCommand(IC_DOWN) && !bdown)
 	{
 		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
 			m_hDir = NONE;
@@ -147,12 +153,31 @@ void CPlayerWM::processMoving()
 
 	// If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
 	if(m_basesprite == WALKBASEFRAME)
+	{
 		performWalkingAnimation(walking);
+		m_cantswim = false;
+	}
 	else if(m_basesprite == SWIMBASEFRAME)
-		performSwimmingAnimation();
+	{
+		if(m_Inventory.Item.m_special.ep4.swimsuit)
+		{
+			performSwimmingAnimation();
+		}
+		else
+		{
+			if( !m_cantswim )
+			{
+				CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	// This will trigger between swim and walkmode
-	checkforSwimming();
+				g_pSound->playSound( SOUND_CANT_SWIM, PLAY_PAUSEALL );
+				EventContainer.add( new EventSendBitmapDialogMsg(106,
+						g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
+
+				m_cantswim = true;
+			}
+
+		}
+	}
 }
 
 /**
@@ -204,10 +229,12 @@ void CPlayerWM::finishLevel(Uint16 object)
  * 13      Enter water from bottom Keen 4
  * 14      Enter water from left	Keen 4
  */
-void CPlayerWM::checkforSwimming()
+void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown)
 {
 	Uint16 left, right, up, down;
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+
+	bleft = bright = bup = bdown = false;
 
 	left = Tile[mp_Map->at( getXLeftPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
 	right = Tile[mp_Map->at( getXRightPos()>>CSF, getYMidPos()>>CSF, 1)].behaviour;
@@ -216,27 +243,42 @@ void CPlayerWM::checkforSwimming()
 
 	// from top
 	if(up == 11)
+	{
+		bdown = true;
 		m_basesprite = SWIMBASEFRAME;
+	}
 	else if(down == 11)
 		m_basesprite = WALKBASEFRAME;
 
 	// from right
 	if(right == 12)
+	{
+		bleft = true;
 		m_basesprite = SWIMBASEFRAME;
+	}
 	else if(left == 12)
 		m_basesprite = WALKBASEFRAME;
 
 	// from bottom
 	if(down == 13)
+	{
+		bup = true;
 		m_basesprite = SWIMBASEFRAME;
+	}
 	else if(up == 13)
 		m_basesprite = WALKBASEFRAME;
 
 	// from left
 	if(left == 14)
+	{
+		bright = true;
 		m_basesprite = SWIMBASEFRAME;
+	}
 	else if(right == 14)
 		m_basesprite = WALKBASEFRAME;
+
+	if(m_Inventory.Item.m_special.ep4.swimsuit)
+		bleft = bright = bup = bdown = false;
 }
 
 /**

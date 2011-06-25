@@ -18,8 +18,9 @@
 namespace galaxy {
 
 CLevelPlay::CLevelPlay(CExeFile &ExeFile,
-		CInventory &Inventory) :
-CMapPlayGalaxy(ExeFile, Inventory)
+		CInventory &Inventory,
+		stCheat &Cheatmode) :
+CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
 { }
 
 
@@ -52,7 +53,9 @@ bool CLevelPlay::loadLevel(const Uint16 level)
     // Add the load message
     const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
     const std::string loading_text = g_pBehaviorEngine->getString(level_text);
-	m_MessageBoxes.push_back(new CMessageBoxBitmapGalaxy( loading_text, 106 ) );
+
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	EventContainer.add( new EventSendBitmapDialogMsg(106, loading_text, LEFT) );
 
 	m_Map.drawAll();
 	return true;

@@ -28,7 +28,7 @@
 
 class CMapPlayGalaxy {
 public:
-	CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory);
+	CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
 	~CMapPlayGalaxy();
 
 	bool isActive();
@@ -39,23 +39,17 @@ public:
 	 */
 	std::string getLevelName();
 
-	/**
-	 * \brief Returns the instance of that MessageBox Queue
-	 */
-	std::list<CMessageBoxGalaxy*>& getMessageBoxQueue();
-
-	void process();
+	void process(const bool msgboxactive);
 
 protected:
 	std::vector<CObject*> m_ObjectPtr;
-	std::list<CMessageBoxGalaxy*> m_MessageBoxes;
 	bool m_active;
 
 	CMap m_Map;
 	CExeFile &m_ExeFile;
 	CInventory &m_Inventory;
 	stOption *mp_option;
-	stCheat m_Cheatmode;
+	stCheat &m_Cheatmode;
 };
 
 #endif /* CMAPPLAYGALAXY_H_ */

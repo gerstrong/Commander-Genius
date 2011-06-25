@@ -222,6 +222,10 @@ void CPlayerBase::makeWalkSound()
 
 void CPlayerBase::processDead()
 {
+	// must be processed only once!
+	if(dead)
+		return;
+
 	m_Inventory.Item.m_lifes--;
 	setActionForce(A_KEEN_DIE);
 
@@ -235,6 +239,7 @@ void CPlayerBase::processDead()
 	EventContainer.add( pdialogevent );
 
 	m_dying = false;
+	dead = true;
 }
 
 

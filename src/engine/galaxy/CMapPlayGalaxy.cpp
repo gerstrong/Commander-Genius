@@ -9,11 +9,12 @@
 #include "engine/galaxy/ai/CPlayerBase.h"
 #include "common/CBehaviorEngine.h"
 
-CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory) :
+CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode) :
 m_active(false),
 m_ExeFile(ExeFile),
 m_Inventory(Inventory),
-mp_option(g_pBehaviorEngine->m_option)
+mp_option(g_pBehaviorEngine->m_option),
+m_Cheatmode(Cheatmode)
 {}
 
 
@@ -52,20 +53,12 @@ std::string CMapPlayGalaxy::getLevelName()
 
 
 
-std::list<CMessageBoxGalaxy*>& CMapPlayGalaxy::getMessageBoxQueue()
-{
-	std::list<CMessageBoxGalaxy*>& queue = m_MessageBoxes;
-	return queue;
-}
 
 
-
-
-
-void CMapPlayGalaxy::process()
+void CMapPlayGalaxy::process(const bool msgboxactive)
 {
 	// Check if the engine need to be paused
-	const bool pause = m_Inventory.showStatus() || !m_MessageBoxes.empty();
+	const bool pause = m_Inventory.showStatus() || msgboxactive;
 
 	// Animate the tiles of the map
 	m_Map.m_animation_enabled = !pause;
@@ -142,54 +135,6 @@ void CMapPlayGalaxy::process()
 	if(mp_option[OPT_HUD].value )
 		m_Inventory.drawHUD();
 
-	// Draw some Textboxes with Messages only if one of those is open and needs to be drawn
-	if(!m_MessageBoxes.empty())
-	{
-		CMessageBoxGalaxy *pMB = m_MessageBoxes.front();
-		pMB->process();
-
-		if(pMB->isFinished())
-		{
-			delete(pMB);
-			pMB = NULL;
-			m_MessageBoxes.pop_front();
-		}
-		return;
-	}
-
-
-	//// Special Keyboard Input
-
-	/// Cheat Codes
-	if( g_pInput->getHoldedKey(KF10) )
-	{
-		if(g_pInput->getHoldedKey(KJ))
-		{
-			m_Cheatmode.jump = !m_Cheatmode.jump;
-			std::string jumpstring = "Jump-Cheat has been ";
-			jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
-			m_MessageBoxes.push_back(new CMessageBoxGalaxy(jumpstring));
-		}
-		else if(g_pInput->getHoldedKey(KG))
-		{
-			m_Cheatmode.god = !m_Cheatmode.god;
-			std::string godstring = "God-Mode has been ";
-			godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
-			m_MessageBoxes.push_back(new CMessageBoxGalaxy(godstring));
-		}
-		else if(g_pInput->getHoldedKey(KI))
-		{
-			m_Cheatmode.items = true;
-			m_MessageBoxes.push_back(new CMessageBoxGalaxy("Get all Items!"));
-			m_Inventory.Item.triggerAllItemsCheat();
-			m_Cheatmode.items = true;
-		}
-		else if(g_pInput->getHoldedKey(KN))
-		{
-			m_Cheatmode.noclipping = true;
-			m_MessageBoxes.push_back(new CMessageBoxGalaxy("No clipping toggle!"));
-		}
-	}
 
 	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
 	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )

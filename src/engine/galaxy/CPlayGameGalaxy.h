@@ -50,6 +50,8 @@ private:
 	CMenuGalaxy *mp_Menu;
 	CSavedGame &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
+	std::list<CMessageBoxGalaxy*> m_MessageBoxes;
+	stCheat m_Cheatmode;
 };
 
 }

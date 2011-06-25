@@ -28,6 +28,7 @@
 #include "engine/galaxy/ai/ep4/CPoisonSlug.h"
 #include "engine/galaxy/ai/ep4/CCouncilMember.h"
 #include "engine/galaxy/ai/ep4/CMiragia.h"
+#include "engine/galaxy/ai/ep4/CDiveSuit.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/platforms.h"
 
@@ -331,6 +332,8 @@ const int PLATFORM_VERT = 29;
 const int PLATFORM_HORIZ = 30;
 // 31 does not count, because it's a blocker.
 const int PLATFORM_DROP = 32;
+
+const int DIVE_SUIT = 35;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
@@ -404,6 +407,11 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 33:
 		// Place Miragia in Episode 4 on the Map
 		p_newfoe = new galaxy::CMiragia(&Map, Location);
+		break;
+
+	case DIVE_SUIT:
+		// Place Miragia in Episode 4 on the Map
+		p_newfoe = new galaxy::CDiveSuit(&Map, x, y);
 		break;
 
 	case 42:
