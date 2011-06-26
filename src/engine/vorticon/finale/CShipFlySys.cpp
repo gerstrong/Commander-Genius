@@ -38,8 +38,6 @@ m_player(Player) // in this case the player will be the ship flying home
 
 	m_player.mp_object->push_back(mark);
 
-	size_t size = m_player.mp_object->size();
-
 	mp_mark = mark; // We still need to manipulate it!*/
 }
 

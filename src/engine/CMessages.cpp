@@ -47,7 +47,7 @@ CMessages::extractString( std::string matchingstring, unsigned long start, unsig
 	return make_pair(matchingstring, Text);
 }
 
-bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
+void CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 {
 	switch(m_version)
 	{

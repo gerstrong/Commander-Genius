@@ -561,7 +561,6 @@ void CPlayer::JumpAndPogo()
 		if(!ppogostick)
 		{
 			CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
-			const int pinitspeed = PhysicsSettings.player.max_x_speed/2;
 
 			if (playcontrol[PA_X] < 0)
 					xinertia -= 3;

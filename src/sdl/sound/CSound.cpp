@@ -103,6 +103,7 @@ bool CSound::init()
 			break;
 		default:
 			g_pLogFile->ftextOut("  format: UNKNOWN %d<br>", AudioSpec.format );
+			break;
 	}
 	g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
 
@@ -361,5 +362,6 @@ void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
 			break;
 		default:
 			AudioSpec.freq = 44100;
+			break;
 	}
 }

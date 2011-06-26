@@ -500,7 +500,7 @@ static void Operator__Write20(Operator *self, const Chip* chip, Bit8u val ) {
 		Operator__UpdateRates( self, chip );
 	}
 	//With sustain enable the volume doesn't change
-	if ( self->reg20 & MASK_SUSTAIN || ( !self->releaseAdd ) ) {
+	if ( (self->reg20 & MASK_SUSTAIN) || ( !self->releaseAdd ) ) {
 		self->rateZero |= ( 1 << SUSTAIN );
 	} else {
 		self->rateZero &= ~( 1 << SUSTAIN );
