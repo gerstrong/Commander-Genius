@@ -40,6 +40,12 @@ struct BouncingBox{
 			unsigned int l_y1 = 0, unsigned int l_y2 = 0 ) :
 				x1(l_x1), x2(l_x2),
 				y1(l_y1), y2(l_y2) {}
+
+	unsigned int Width()
+	{	return (x2-x1);	}
+
+	unsigned int Height()
+	{	return (y2-y1);	}
 };
 
 

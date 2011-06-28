@@ -47,7 +47,7 @@ CMessages::extractString( std::string matchingstring, unsigned long start, unsig
 	return make_pair(matchingstring, Text);
 }
 
-void CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
+bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 {
 	switch(m_version)
 	{
@@ -105,9 +105,10 @@ void CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractString( "KEEN_LAST_ELDER_TEXT", 0x30B6B, 0x30BB2 ) );
 			StringMap.insert( extractString( "ELDERS_UNDERWATER_TEXT", 0x30BB3, 0x30C16 ) );
 			StringMap.insert( extractString( "ELDERS_TEXT",  0x30C17, 0x30C6A ) );
-
+			return true;
 		} break;
 	}
+	return false;
 }
 
 bool CMessages::extractGlobalStrings()

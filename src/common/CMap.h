@@ -47,7 +47,7 @@ public:
 	bool scrollUp(const bool force=false);
 	bool scrollDown(const bool force=false);
 
-	void redrawAt(int mx, int my);
+	void redrawAt(const Uint32 mx, const Uint32 my);
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );

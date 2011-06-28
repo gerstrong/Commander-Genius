@@ -370,9 +370,7 @@ bool CMap::scrollUp(const bool force)
 // called at start of level to draw the upper-left corner of the map
 // onto the scrollbuffer...from then on the map will only be drawn
 // in stripes as it scrolls around.
-// TODO: This function has a mayor problem! It only works, when tile same on the screen
-// are changed. In Vorticons this might be the case. In Galaxy it's different!
-void CMap::redrawAt(int mx, int my)
+void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 {
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 	// Go throught the list and just draw all the tiles that need to be animated

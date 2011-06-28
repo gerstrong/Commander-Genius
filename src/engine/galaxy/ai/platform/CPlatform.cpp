@@ -6,6 +6,7 @@
  */
 
 #include "CPlatform.h"
+#include "CLogFile.h"
 
 namespace galaxy {
 
@@ -81,7 +82,7 @@ void CPlatform::getTouchedBy(CObject &theObject)
 {
 	if(theObject.m_type == OBJ_PLAYER)
 	{
-		CPlayerLevel &Player = static_cast<CPlayerLevel&>(theObject);
+		CPlayerLevel &Player = dynamic_cast<CPlayerLevel&>(theObject);
 
 		const int m_py2 = Player.getYDownPos();
 		const int m_y2 = getYUpPos()+(4<<STC);

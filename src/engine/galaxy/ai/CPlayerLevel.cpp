@@ -12,6 +12,7 @@
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
+#include "CLogFile.h"
 
 namespace galaxy {
 
@@ -35,7 +36,8 @@ const int FIRE_RECHARGE_TIME = 5;
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
-CPlayerBase(pmap, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode)
+CPlayerBase(pmap, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
+m_jumpdownfromobject(false)
 {
 	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 
@@ -549,17 +551,17 @@ void CPlayerLevel::processPressUp() {
 		return 1;
 	} */
 
-	flag = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
+	int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
 
 	// entering a door
 
-	if ( !m_EnterDoorAttempt && (flag == MISCFLAG_DOOR || flag == MISCFLAG_KEYCARDDOOR) )
+	if ( !m_EnterDoorAttempt && (flag_left == MISCFLAG_DOOR || flag_left == MISCFLAG_KEYCARDDOOR) )
 	{
 		//int var2 = mid_x * 256+96;
-		flag = Tile[mp_Map->getPlaneDataAt(1, x_right, up_y)].behaviour;
+		int flag_right = Tile[mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y)].behaviour;
 		//if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
 		//if (getXPosition() == var2) {
-		if(flag == MISCFLAG_DOOR || flag == MISCFLAG_KEYCARDDOOR) {
+		if(flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR) {
 			/*if (flag == MISCFLAG_KEYCARDDOOR) {
 				if (security_card) {
 					security_card = 0;
@@ -583,6 +585,17 @@ void CPlayerLevel::processPressUp() {
 				}
 			} else {*/
 				setAction(A_KEEN_ENTER_DOOR);
+				setActionSprite();
+				CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+				// Here the Player will be snapped to the center
+
+				const int x_l = (x_left>>CSF);
+				const int x_r = x_l+1;
+				const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
+
+				moveToHorizontal(x_mid);
+
 				mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processEnterDoor;
 				m_EnterDoorAttempt = true;
 				return;
@@ -1388,7 +1401,10 @@ void CPlayerLevel::process()
 		}
 
 		if(supportedbyobject)
+		{
+			g_pLogFile->textOut("Collision Check 2\n");
 			blockedd = true;
+		}
 	}
 
 	(this->*mp_processState)();
