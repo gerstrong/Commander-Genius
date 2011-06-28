@@ -41,6 +41,16 @@ struct BouncingBox{
 				x1(l_x1), x2(l_x2),
 				y1(l_y1), y2(l_y2) {}
 
+	void operator()(const unsigned int l_x1,
+					const unsigned int l_y1,
+					const unsigned int l_x2,
+					const unsigned int l_y2 )
+	{
+		x1 = l_x1; x2 = l_x2;
+		y1 = l_y1; y2 = l_y2;
+	}
+
+
 	unsigned int Width()
 	{	return (x2-x1);	}
 

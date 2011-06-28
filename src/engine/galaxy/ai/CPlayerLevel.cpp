@@ -596,7 +596,7 @@ void CPlayerLevel::processPressUp() {
 
 				moveToHorizontal(x_mid);
 
-				mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processEnterDoor;
+				mp_processState = static_cast<void (CPlayerBase::*)()>(&CPlayerLevel::processEnterDoor);
 				m_EnterDoorAttempt = true;
 				return;
 				//PlayLoopTimer = 110;

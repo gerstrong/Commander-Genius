@@ -20,11 +20,21 @@ namespace galaxy {
 class CMiragia : public CObject {
 public:
 	CMiragia(CMap *pmap, const VectorD2<Uint32> &Location);
+
+	/**
+	 * Main process cycle
+	 */
 	void process();
+
+	/**
+	 * What happens when an object touches me...
+	 */
+	void getTouchedBy(CObject &theObject);
 
 private:
 	Uint8 m_step;
 	enum {FADE_IN, FADE_OUT} m_fade;
+	bool m_empty;
 	Uint8 m_waittime;
 };
 

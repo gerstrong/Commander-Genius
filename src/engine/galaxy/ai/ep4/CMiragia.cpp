@@ -6,6 +6,7 @@
  */
 
 #include "CMiragia.h"
+#include "engine/galaxy/ai/CPlayerWM.h"
 
 namespace galaxy {
 
@@ -16,8 +17,11 @@ CMiragia::CMiragia(CMap *pmap, const VectorD2<Uint32> &Location) :
 CObject(pmap, Location.x, Location.y, OBJ_NONE),
 m_step(0),
 m_fade(FADE_IN),
-m_waittime(WAIT_BETWEEN_FADE_TIME)
-{}
+m_waittime(WAIT_BETWEEN_FADE_TIME),
+m_empty(true)
+{
+	m_BBox(0,0, 6<<CSF, 4<<CSF);
+}
 
 /**
  * main process cycle in which the tiles are interchanged.
@@ -42,6 +46,7 @@ void CMiragia::process()
 					mp_Map->setTile(where_x, where_y, tile, true, 1);
 					const Uint16 object = mp_Map->getPlaneDataAt( 2, l_x, l_y );
 					mp_Map->setTile(where_x, where_y, object, false, 2);
+					m_empty = false;
 				}
 			}
 
@@ -50,10 +55,11 @@ void CMiragia::process()
 				m_waittime = WAIT_BETWEEN_FADE_TIME;
 				m_fade = FADE_OUT;
 			}
-			if(m_step == 0)
+			else if(m_step == 0)
 			{
 				m_waittime = WAIT_BETWEEN_FADE_TIME;
 				m_fade = FADE_IN;
+				m_empty = true;
 			}
 
 			if(m_fade == FADE_IN)
@@ -63,6 +69,23 @@ void CMiragia::process()
 		}
 		else
 			m_waittime--;
+	}
+}
+
+
+
+
+void CMiragia::getTouchedBy(CObject &theObject)
+{
+	// Do that only if nothing of the tiles is seens (Miragia is invisible)
+	if(m_empty)
+	{
+		// Is is touched by the player on the map?
+		if( dynamic_cast<CPlayerWM*>(&theObject) )
+		{
+			// This will reset the Miragia Status time so it does not fade in
+			m_waittime = WAIT_BETWEEN_FADE_TIME;
+		}
 	}
 }
 
