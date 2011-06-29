@@ -7,12 +7,14 @@ v0.3.5:
 - Now Rising points dissappear fading
 - Better Audio read out for Galaxy
 - Stereo Sound fixes
+- CalcVisibility is now also used in Galaxy, what make the engine much faster when having many objects
 
 v0.3.4:
 -------
-- Slugs are smarter and can kill
+- Slugs are smarter and can kill now
 - Keen can get and use diving suit
 - Miragia now plays correctly on map
+- Keen bnow dies correctly and a selection dialog is shown
 
 v0.3.3.4:
 ---------
