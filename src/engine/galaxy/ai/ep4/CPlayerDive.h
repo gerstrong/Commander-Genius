@@ -28,6 +28,7 @@ public:
 
 private:
 	int m_swimupspeed;
+	int m_breathtimer;
 };
 
 }

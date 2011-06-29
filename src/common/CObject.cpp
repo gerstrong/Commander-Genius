@@ -25,7 +25,8 @@ mp_object(NULL),
 mp_Map(pmap),
 m_blinktime(0),
 m_invincible(false),
-m_Pos(x,y)
+m_Pos(x,y),
+transluceny(0)
 {
 	m_jumpdown = false;
 	falling = false;
@@ -140,7 +141,8 @@ bool CObject::calcVisibility()
 	int &visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
 
 	// Platform are always active
-	if(m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT) return true;
+	if( m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT )
+		return true;
 
 	// If an object is in the mid-air still moves it still,
 	// until it gets stuck to ceiling, wall or floor
@@ -626,7 +628,7 @@ void CObject::draw()
 			m_blinktime--;
 		}
 		else
-			Sprite.drawSprite( sfc, showX, showY );
+			Sprite.drawSprite( sfc, showX, showY, (255-transluceny) );
 		hasbeenonscreen = true;
 
 		#ifdef DEBUG_COLLISION

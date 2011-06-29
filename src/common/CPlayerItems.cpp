@@ -334,7 +334,7 @@ void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 		case 500: spr = PT500_SPRITE; break;
 		case 1000: spr = PT1000_SPRITE; break;
 		case 5000: spr = PT5000_SPRITE; break;
-		default: spr = 0;
+		default: spr = 0; break;
 		}
 
 		if (spr) riseBonus(spr, mpx, mpy);

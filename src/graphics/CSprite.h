@@ -33,7 +33,7 @@ public:
 	SDL_Surface *getSDLSurface() { return m_surface; }
 	SDL_Surface *getSDLMaskSurface() { return m_masksurface; }
 
-	void drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
+	void drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
 	void drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 
 	Uint16 getXOffset() { return m_xoffset; }
@@ -57,6 +57,7 @@ private:
 
 	Uint8 m_xsize, m_ysize;
 	Uint16 m_xoffset, m_yoffset;
+	Uint8 m_alpha;
 };
 
 #endif /* CSPRITE_H_ */

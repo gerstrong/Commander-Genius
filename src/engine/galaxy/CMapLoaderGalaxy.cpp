@@ -280,7 +280,17 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		m_ObjectPtr.pop_back();
 	}
 
-	std::ofstream File("objlayer.txt");
+	// he we go to the adding objects
+	data_ptr = start_data;
+	for(size_t y=0 ; y<height ; y++)
+	{
+		for(size_t x=0 ; x<width ; x++)
+		{
+			addFoe(Map, *data_ptr++, x, y);
+		}
+	}
+
+	/*std::ofstream File("objlayer.txt");
 
 	// he we go to the adding objects
 	data_ptr = start_data;
@@ -288,18 +298,16 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
-			addFoe(Map, *data_ptr, x, y);
-			data_ptr++;
-			File << *data_ptr << " ";
+			File << *data_ptr++ << " ";
 		}
 		File << std::endl;
 	}
 
-	File.close();
+	File.close();*/
 
 
 	// Print out information about first plane of the map
-	std::ofstream FileTile("tilelayer.txt");
+	/*std::ofstream FileTile("tilelayer.txt");
 
 	// he we go to the adding objects
 	data_ptr = Map.getData(1);
@@ -313,7 +321,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		FileTile << std::endl;
 	}
 
-	FileTile.close();
+	FileTile.close();*/
 }
 
 //------------------------------------------------//

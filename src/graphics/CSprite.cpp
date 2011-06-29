@@ -15,7 +15,8 @@
 
 CSprite::CSprite() :
 m_surface(NULL),
-m_masksurface(NULL)
+m_masksurface(NULL),
+m_alpha(255)
 {
 	m_xsize = m_ysize = 0;
 	m_bboxX1 = m_bboxY1 = 0;
@@ -180,6 +181,9 @@ void CSprite::applyTranslucency(Uint8 value)
 
 	r = g = b = a = 0;
 
+	if(m_alpha == value)
+		return;
+
 	if(!m_surface) return;
 
 	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
@@ -203,7 +207,10 @@ void CSprite::applyTranslucency(Uint8 value)
 			pixel += m_surface->format->BytesPerPixel;
 		}
 	}
+
 	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+
+	m_alpha = value;
 }
 
 ///
@@ -290,7 +297,7 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
  * \param x				X-Coordinate, indicating the position on dst
  * \param y				Y-Coordinate, indicating the position on dst
  */
-void CSprite::drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
+void CSprite::drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha )
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;
@@ -300,6 +307,7 @@ void CSprite::drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
 	
+	applyTranslucency(alpha);
 	SDL_BlitSurface( m_surface, &src_rect, dst, &dst_rect );
 }
 

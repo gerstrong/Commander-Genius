@@ -1402,7 +1402,6 @@ void CPlayerLevel::process()
 
 		if(supportedbyobject)
 		{
-			g_pLogFile->textOut("Collision Check 2\n");
 			blockedd = true;
 		}
 	}
@@ -1428,7 +1427,12 @@ void CPlayerLevel::process()
 
 		performCollisions();
 
-		processPushOutCollision();
+		// It's not always desired to push out
+		if( mp_processState != &CPlayerLevel::processPogo &&
+			mp_processState != &CPlayerLevel::processFalling )
+		{
+			processPushOutCollision();
+		}
 	}
 }
 

@@ -83,7 +83,10 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		std::string audiofilename = getResourceFilename( init_audiofilename, ExeFile.getDataDirectory(), true, false);
 
 		if( audiofilename == "" )
+		{
+			g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): Audio File not found!");
 			return false;
+		}
 
 		std::ifstream AudioFile;
 		OpenGameFileR(AudioFile, audiofilename);
@@ -123,7 +126,10 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		}
 
 		if(!found)
+		{
+			g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): No audio was found in that file! It seems to be empty.");
 			return false;
+		}
 
 
 		// Find the start of the embedded IMF files
@@ -169,7 +175,10 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 			}
 		}
 	}
-	return false;
+	else
+		g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): Wrong Audio Format");
+
+	return true;
 }
 
 /**

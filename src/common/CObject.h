@@ -275,6 +275,8 @@ protected:
 
 	// Action Format related stuff
 	ActionFormatType m_Action;
+
+	Uint8 transluceny;
 };
 
 #endif /* COBJECT_H_ */

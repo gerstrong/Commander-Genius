@@ -23,7 +23,8 @@ CPlayerBase(pmap, x, y,
 		facedir,
 		l_Inventory,
 		Cheatmode),
-m_swimupspeed(0)
+m_swimupspeed(0),
+m_breathtimer(0)
 {
 	m_ActionBaseOffset = 0x19EC;
 	setActionForce(A_KEENSWIM_MOVE);
@@ -40,6 +41,7 @@ m_swimupspeed(0)
 const int MAXMOVESPEED = 15;
 const int MOVESPEED = 40;
 const int WATERFALLSPEED = 20;
+const int BREATH_TIME = 60;
 
 void CPlayerDive::process()
 {
@@ -103,6 +105,14 @@ void CPlayerDive::process()
 		if(m_swimupspeed<0)
 			m_swimupspeed = 0;
 	}
+
+	if( m_breathtimer >= BREATH_TIME )
+	{
+		playSound(SOUND_BUBBLE);
+		m_breathtimer = 0;
+	}
+	else
+		m_breathtimer++;
 
 	processLevelMiscFlagsCheck();
 

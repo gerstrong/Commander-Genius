@@ -11,7 +11,6 @@
 
 #define GOTPOINTS_SPEED         16
 #define GOTPOINTS_LIFETIME      25
-#define YORPSHIELD_LIFETIME     20
 
 CRisingPoints::CRisingPoints(CMap *p_map, Uint32 x, Uint32 y) :
 CObject(p_map, x, y, OBJ_GOTPOINTS)
@@ -30,8 +29,13 @@ void CRisingPoints::process()
 	// delete it after it's existed for a certain amount of time
 	if (!offscreentime)
 	{
-		exists=false;
-		return;
+		transluceny+=10;
+
+		if(transluceny >= 250)
+		{
+			exists = false;
+			return;
+		}
 	}
 	else offscreentime--;
 }

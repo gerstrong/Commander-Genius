@@ -1,6 +1,19 @@
 Commander Genius Release :
 ==========================
 
+v0.3.5:
+-------
+- Fixes in the finale of Ep1
+- Now Rising points dissappear fading
+- Better Audio read out for Galaxy
+- Stereo Sound fixes
+
+v0.3.4:
+-------
+- Slugs are smarter and can kill
+- Keen can get and use diving suit
+- Miragia now plays correctly on map
+
 v0.3.3.4:
 ---------
 - New automation theorie based actions for AI in the Keen Player galaxy structure, for better and faster gameplay

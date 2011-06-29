@@ -272,7 +272,8 @@ void CPlayGameVorticon::process()
 		else // No game over
 		{
 			// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
-			handleFKeys();
+			if(!mp_Menu)
+				handleFKeys();
 		}
 
 		//////////////////////////////////////////
@@ -351,9 +352,9 @@ void CPlayGameVorticon::handleFKeys()
 	int i;
 
 	// CTSpace Cheat
-    if (g_pInput->getHoldedKey(KC) &&
-		g_pInput->getHoldedKey(KT) &&
-		g_pInput->getHoldedKey(KSPACE))
+	if (g_pInput->getHoldedKey(KC) &&
+			g_pInput->getHoldedKey(KT) &&
+			g_pInput->getHoldedKey(KSPACE))
 	{
 		g_pInput->flushAll();
 		for(i=0;i<m_NumPlayers;i++)
@@ -391,56 +392,38 @@ void CPlayGameVorticon::handleFKeys()
 		g_pVideoDriver->AddConsoleMsg("All items cheat");
 	}
 
-    // GOD cheat -- toggle god mode
-    if ( g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
-    {
-    	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-    	for( ; it_player != m_Player.end() ; it_player++)
-    	{
-    		it_player->godmode ^= 1;
-    		// If player on map, make disable the solid property of the players
-    		if(m_Level == 80)
-    			it_player->solid = !it_player->godmode;
-    		it_player->performCollisions();
-    	}
+	// GOD cheat -- toggle god mode
+	if ( g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
+	{
+		std::vector<CPlayer>::iterator it_player = m_Player.begin();
+		for( ; it_player != m_Player.end() ; it_player++)
+		{
+			it_player->godmode ^= 1;
+			// If player on map, make disable the solid property of the players
+			if(m_Level == 80)
+				it_player->solid = !it_player->godmode;
+			it_player->performCollisions();
+		}
 
-    	g_pVideoDriver->DeleteConsoleMsgs();
-    	if (m_Player[0].godmode)
-    		g_pVideoDriver->AddConsoleMsg("God mode ON");
-    	else
-    		g_pVideoDriver->AddConsoleMsg("God mode OFF");
+		g_pVideoDriver->DeleteConsoleMsgs();
+		if (m_Player[0].godmode)
+			g_pVideoDriver->AddConsoleMsg("God mode ON");
+		else
+			g_pVideoDriver->AddConsoleMsg("God mode OFF");
 
-    	g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
-    	// Show a message like in the original game
+		// Show a message like in the original game
 		m_MessageBoxes.push_back(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
-    	m_paused = true;
-    	g_pInput->flushKeys();
-    }
+		m_paused = true;
+		g_pInput->flushKeys();
+	}
 
 	if(g_pInput->getPressedKey(KP) && m_MessageBoxes.empty())
 	{
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 		m_MessageBoxes.push_back(new CMessageBoxVort("Game Paused"));
 	}
-
-	if(g_pInput->getPressedKey(KF1))
-	{
-		// Show the typical F1 Help
-		// Open the menu
-		//mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame  );
-		//SAFE_DELETE(mp_Menu);
-		//mp_Menu = new CHelpMenuVorticon(DLG_THEME_VORTICON);
-		//mp_Menu->init(F1);
-	}
-
-	/*if(g_pInput->getPressedKey(KF2))
-	{
-		// Debug Menu
-		// Open the menu
-		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame  );
-		mp_Menu->init(DEBUG);
-	}*/
 
 	// Menus will only open if Keen is solid or in god mode. This means neither dying nor teleporting
 	if( m_Player[0].solid || ( m_Player[0].godmode && !m_Player[0].dying ) )

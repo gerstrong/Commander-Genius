@@ -85,7 +85,6 @@ void CSpark::process()
 		if (timer > SPARK_BLOW_DELAY)
 		{
 			timer = 0;
-			mx = mx;
 			my = my+3+blowy;
 			mp_Map->setTile(mx, my, 505, true);
 			// spawn a ZAP! or a ZOT!

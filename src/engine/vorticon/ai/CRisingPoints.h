@@ -8,7 +8,7 @@
 #ifndef CRISINGPOINTS_H_
 #define CRISINGPOINTS_H_
 
-#include "../../../common/CObject.h"
+#include "common/CObject.h"
 
 class CRisingPoints : public CObject
 {

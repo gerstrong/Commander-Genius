@@ -58,11 +58,18 @@ void CEndingEp1::ReturnsToShip()
 		m_Player[0].solid = false;
 		m_Player[0].moveTo(VectorD2<int>(6636, 19968));
 		m_Player[0].sprite = PMAPLEFTFRAME;
-		m_Player[0].processCamera();
+		m_Player[0].processEvents();
 
 		mp_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_ESEQ_PART1"), true);
 
 		m_mustsetup = false;
+	}
+
+	if(m_Player[0].mp_camera->m_moving)
+	{
+		m_starttime = g_pTimer->getTicks();
+		m_Player[0].processCamera();
+		return;
 	}
 
 	if( m_timepassed<50000 && !g_pInput->getPressedAnyCommand() )
