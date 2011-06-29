@@ -45,7 +45,7 @@ void CAutoRay::process()
 		}
 		m_Objvect.push_back(NewRay);
 
-		g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, scrx);
+		playSound(SOUND_TANK_FIRE);
 	}
 }
 

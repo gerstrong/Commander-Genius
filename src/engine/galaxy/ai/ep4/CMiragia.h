@@ -34,8 +34,8 @@ public:
 private:
 	Uint8 m_step;
 	enum {FADE_IN, FADE_OUT} m_fade;
-	bool m_empty;
 	Uint8 m_waittime;
+	bool m_empty;
 };
 
 }

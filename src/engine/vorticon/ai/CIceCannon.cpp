@@ -60,7 +60,7 @@ m_Object(Object)
 
 	veloc_x = speed * vector_x;
 	veloc_y = speed * vector_y;
-	g_pSound->playStereofromCoord(SOUND_CANNONFIRE, PLAY_NOW, getXPosition());
+	playSound(SOUND_CANNONFIRE);
 }
 
 void CIceChunk::process()
@@ -127,7 +127,7 @@ void CIceChunk::smash()
 {
 	if (onscreen)
 	{
-		g_pSound->playStereofromCoord(SOUND_CHUNKSMASH, PLAY_NOW, getXPosition());
+		playSound(SOUND_CHUNKSMASH);
 		CIceBit *chunk;
 
 		// upleft

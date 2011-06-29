@@ -65,7 +65,10 @@ void CObjectAI::process()
 				for( ; theOther != m_Objvect.end() ; theOther++ )
 				{
 					if( *theOther != &object )
-						object.getTouchedBy(**theOther);
+					{
+						if( object.hitdetect(**theOther) )
+							object.getTouchedBy(**theOther);
+					}
 				}
 			}
 

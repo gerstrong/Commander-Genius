@@ -59,7 +59,7 @@ void CSpark::process()
 
 		if ( HealthPoints <= 0 && state == SPARK_ANIMATE )
 		{
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, getXPosition());
+			playSound(SOUND_SHOT_HIT);
 
 			// break the glass and blow out the electric arcs
 			mp_Map->setTile(mx - 2, my, 492, true);
@@ -93,7 +93,7 @@ void CSpark::process()
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->setOwner(m_type, m_index);
 			m_Object.push_back(newobject);
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, newobject->getXPosition());
+			playSound(SOUND_SHOT_HIT);
 
 			blowy++;
 			if (blowy >= 3)
@@ -136,7 +136,7 @@ void CSpark::process()
 				CRay *newobject = new CRay(mp_Map, mx<<CSF, (my+y)<<CSF, DOWN);
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
-				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, newobject->getXPosition());
+				playSound(SOUND_SHOT_HIT);
 				m_Object.push_back(newobject);
 			}
 

@@ -26,6 +26,8 @@
 #define DOOR_GREEN         4
 #define DOOR_BLUE          5
 
+
+
 // let's have keen be able to pick up goodies
 void CPlayer::getgoodies()
 {
@@ -34,6 +36,9 @@ void CPlayer::getgoodies()
 	else if(getGoodie(((getXLeftPos())>>CSF), ((getYDownPos())>>CSF)) ) return; 	// Lower-Left
 	else if(getGoodie(((getXRightPos())>>CSF), ((getYDownPos())>>CSF)) ) return; // Lower-Right
 }
+
+
+
 
 // have keen pick up the goodie at screen pixel position (px, py)
 bool CPlayer::getGoodie(int px, int py)
@@ -61,18 +66,20 @@ bool CPlayer::getGoodie(int px, int py)
 	return false;
 }
 
+
+
+
+
 void CPlayer::procGoodie(int tile, int mpx, int mpy)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	Uint8 behaviour = TileProperty[tile].behaviour;
 	if ( (behaviour > 5 && behaviour < 11) || (behaviour > 17 && behaviour < 22) )
 	{
-		if( getXPosition()%2 == 1 )
-			g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, 0);
-		else
-			g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, 320);
+		playSound(SOUND_GET_BONUS);
 	}
-	else if (behaviour > 10 && behaviour < 16) g_pSound->playSound(SOUND_GET_ITEM, PLAY_NOW);
+	else if (behaviour > 10 && behaviour < 16)
+		playSound(SOUND_GET_ITEM);
 	
 	switch(behaviour)
 	{
@@ -136,31 +143,31 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 		case 16:           // the Holy Pogo Stick
 			inventory.HasPogo = 1;
-			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
+			playSound(SOUND_GET_PART);
 			break;
 			
 		case 11:
 			inventory.canlooseitem[0] = !(inventory.HasJoystick);
 			inventory.HasJoystick = true;
-			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
+			playSound(SOUND_GET_PART);
 			getBonuspoints(10000, mpx, mpy);
 			break;
 		case 12:
 			inventory.canlooseitem[1] = !(inventory.HasBattery);
 			inventory.HasBattery = true;
-			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
+			playSound(SOUND_GET_PART);
 			getBonuspoints(10000, mpx, mpy);
 			break;
 		case 13:
 			inventory.canlooseitem[2] = !(inventory.HasVacuum);
 			inventory.HasVacuum = true;
-			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
+			playSound(SOUND_GET_PART);
 			getBonuspoints(10000, mpx, mpy);
 			break;
 		case 14:
 			inventory.canlooseitem[3] = !(inventory.HasWiskey);
 			inventory.HasWiskey = true;
-			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
+			playSound(SOUND_GET_PART);
 			getBonuspoints(10000, mpx, mpy);
 			break;
 			
@@ -181,7 +188,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 
 		case 28:
 			inventory.charges++;
-			g_pSound->playSound(SOUND_GET_ITEM, PLAY_NOW);
+			playSound(SOUND_GET_ITEM);
 			riseBonus(SHOTUP_SPRITE, mpx, mpy );
 			break;
 			
@@ -198,6 +205,9 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 	}
 }
 
+
+
+
 // make some sprite fly (Points, and items) :-)
 void CPlayer::riseBonus(int spr, int x, int y)
 {
@@ -209,11 +219,14 @@ void CPlayer::riseBonus(int spr, int x, int y)
 	 }
 }
 
+
+
+
 // gives keycard for door doortile to player p
 void CPlayer::give_keycard(int doortile)
 {
 	size_t maxkeycards = (mp_option[OPT_KEYSTACK].value) ? 9 : 1;
-	g_pSound->playSound(SOUND_GET_CARD, PLAY_NOW);
+	playSound(SOUND_GET_CARD);
 
 	if (doortile==DOOR_YELLOW && inventory.HasCardYellow < maxkeycards)
 		inventory.HasCardYellow++;
@@ -224,6 +237,9 @@ void CPlayer::give_keycard(int doortile)
 	else if (doortile==DOOR_BLUE && inventory.HasCardBlue < maxkeycards)
 		inventory.HasCardBlue++;
 }
+
+
+
 
 // take away the specified keycard from the player
 void CPlayer::take_keycard(int doortile)
@@ -237,6 +253,9 @@ void CPlayer::take_keycard(int doortile)
 	else if (doortile==DOOR_BLUE && inventory.HasCardBlue > 0)
 		inventory.HasCardBlue--;
 }
+
+
+
 
 bool CPlayer::showGameHint(int mpx, int mpy)
 {
@@ -283,6 +302,9 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 	return true;
 }
 
+
+
+
 std::string CPlayer::pollHintMessage()
 {
 	if(hintstring != "")
@@ -294,9 +316,12 @@ std::string CPlayer::pollHintMessage()
 	return hintstring;
 }
 
+
+
+
 void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 {
-	g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, rand()%160);
+	playSound(SOUND_GET_BONUS);
 	incScore(numpts);
 	
 	if(mp_option[OPT_RISEBONUS].value)
@@ -316,6 +341,9 @@ void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 	}
 }
 
+
+
+
 void CPlayer::incScore(int numpts)
 {
 	inventory.score += numpts;
@@ -324,51 +352,56 @@ void CPlayer::incScore(int numpts)
 	if (inventory.score >= inventory.extralifeat)
 	{
 		g_pSound->stopSound(SOUND_GET_BONUS);
-		g_pSound->playStereofromCoord(SOUND_EXTRA_LIFE, PLAY_NOW, rand()%160);
+		playSound(SOUND_EXTRA_LIFE);
 		inventory.lives++;
 		inventory.extralifeat += 20000;
 	}
 }
 
+
+
+
 void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 {
-int chgtotile;
-short tilefix=0;
-std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	 
-	 g_pSound->playSound(SOUND_DOOR_OPEN, PLAY_NOW);
-	 take_keycard(doortile);
-	 
-	 // erase door from map
-	 if (m_episode==3)	chgtotile = mp_Map->at(mpx-1, mpy);
-	 else	chgtotile = TileProperty[mp_Map->at(mpx ,mpy)].chgtile;
-	 
-	 if(TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour>1 &&
-	 TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
-	 {	// from a lower part.
-		 mp_Map->setTile(mpx, mpy-1, chgtotile);
-		 tilefix=1;
-	 }
-	 if(TileProperty[mp_Map->at(mpx ,mpy)].behaviour>1 &&
-	 TileProperty[mp_Map->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
-	 { // from a lower part.
-		 mp_Map->setTile(mpx, mpy, chgtotile); // upper?
-	 }
-	 if(TileProperty[mp_Map->at(mpx, mpy+1)].behaviour>1 &&
-	 TileProperty[mp_Map->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
-	 { // from a lower part.
-		 mp_Map->setTile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
-	 }
-	 
-	 // replace the door tiles with a door object, which will do the animation
-	 CDoor *doorobj = new CDoor(mp_Map, mpx<<CSF,(mpy-tilefix)<<CSF, doorsprite);
+	int chgtotile;
+	short tilefix=0;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	 mp_object->push_back(doorobj);
+	playSound(SOUND_DOOR_OPEN);
+	take_keycard(doortile);
+
+	// erase door from map
+	if (m_episode==3)	chgtotile = mp_Map->at(mpx-1, mpy);
+	else	chgtotile = TileProperty[mp_Map->at(mpx ,mpy)].chgtile;
+
+	if(TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour>1 &&
+			TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
+	{	// from a lower part.
+		mp_Map->setTile(mpx, mpy-1, chgtotile);
+		tilefix=1;
+	}
+	if(TileProperty[mp_Map->at(mpx ,mpy)].behaviour>1 &&
+			TileProperty[mp_Map->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
+	{ // from a lower part.
+		mp_Map->setTile(mpx, mpy, chgtotile); // upper?
+	}
+	if(TileProperty[mp_Map->at(mpx, mpy+1)].behaviour>1 &&
+			TileProperty[mp_Map->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
+	{ // from a lower part.
+		mp_Map->setTile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
+	}
+
+	// replace the door tiles with a door object, which will do the animation
+	CDoor *doorobj = new CDoor(mp_Map, mpx<<CSF,(mpy-tilefix)<<CSF, doorsprite);
+
+	mp_object->push_back(doorobj);
 }
+
+
 
 void CPlayer::giveAnkh()
 {
-	g_pSound->playSound(SOUND_ANKH, PLAY_NOW);
+	playSound(SOUND_ANKH);
 	if(ankhtime == 0)
 		mp_object->push_back(new CAnkhShield(*this));
 	ankhtime = PLAY_ANKH_TIME;

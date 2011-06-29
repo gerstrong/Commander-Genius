@@ -93,7 +93,7 @@ void CScrub::process()
 			dietimer = 0;
 			moveUp(10);
 			scrubdie_inertia_y = SCRUBDIE_START_INERTIA;
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
+			playSound(SOUND_SHOT_HIT);
 		}
 	}
 

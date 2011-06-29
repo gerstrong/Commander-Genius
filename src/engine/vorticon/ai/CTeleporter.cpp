@@ -50,7 +50,7 @@ m_Player(mp_vec_Player)
 	else if(idleframe == TELEPORT_IDLEFRAME_EP3)
 		baseframe = TELEPORT_BASEFRAME_EP3;
 
-	g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, scrx);
+	playSound(SOUND_TELEPORT);
 }
 
 void CTeleporter::process()
@@ -143,7 +143,7 @@ void CTeleporter::process()
 					baseframe = TELEPORT_RED_BASEFRAME_EP1;
 				else if(idleframe == TELEPORT_IDLEFRAME_EP3)
 					baseframe = TELEPORT_BASEFRAME_EP3;
-				g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, scrx);
+				playSound(SOUND_TELEPORT);
 			}
 		} break;
 

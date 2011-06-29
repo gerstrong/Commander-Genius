@@ -121,7 +121,8 @@ void CTank::process()
 		if(height_top!=0)
 		{
 			CRay *newobject;
-			if (onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, scrx);
+			if (onscreen)
+				playSound(SOUND_TANK_FIRE);
 			if (movedir==RIGHT)
 				newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, RIGHT);
 			else

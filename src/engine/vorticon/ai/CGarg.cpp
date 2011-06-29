@@ -39,7 +39,7 @@ void CGarg::process()
 		dying = true;
 		sprite = GARG_DYING_FRAME;
 		yinertia = GARGDIE_START_INERTIA;
-		g_pSound->playStereofromCoord(SOUND_GARG_DIE, PLAY_NOW, scrx);
+		playSound(SOUND_GARG_DIE);
 	}
 
 	// Check, if Garg is moving and collides and change directions whenever needed

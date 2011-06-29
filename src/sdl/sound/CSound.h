@@ -45,7 +45,7 @@ public:
 	void playStereosound(const GameSound snd, const char mode, const short balance);
 	bool isPlaying(const GameSound snd);
 	void stopSound(const GameSound snd);
-	void destroy(void);
+	void destroy();
 
 	void setSoundVolume(const Uint8 volume) { m_SoundVolume = volume; }
 	void setMusicVolume(const Uint8 volume) { m_MusicVolume = volume; }

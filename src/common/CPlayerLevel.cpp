@@ -305,7 +305,7 @@ void CPlayer::TogglePogo_and_Switches()
 			if ( TileProperty[t].behaviour == 25  ||  TileProperty[t].behaviour == 26 || TileProperty[t].behaviour == 23 )
 			{
 				// Flip the switch!
-				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>STC);
+				playSound(SOUND_SWITCH_TOGGLE);
 				if ( TileProperty[t].behaviour == 26 && t == TILE_SWITCH_DOWN )
 					mp_Map->changeTile(mx, my, TILE_SWITCH_UP);
 				else if ( TileProperty[t].behaviour == 25 && t == TILE_SWITCH_UP )
@@ -408,7 +408,7 @@ void CPlayer::JumpAndPogo()
 					pjumping = PPOGOING;
 
 					// continously bounce while pogo stick is out
-					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, scrx);
+					playSound(SOUND_KEEN_JUMP);
 
 					// jump high if JUMP key down, else bounce low
 					if (playcontrol[PA_JUMP])
@@ -465,7 +465,7 @@ void CPlayer::JumpAndPogo()
 						pjumpupspeed = (PhysicsSettings.player.maxjumpspeed*(pjumpframe-PPREPAREJUMPFRAME))/5;
 					
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
-					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, scrx);
+					playSound(SOUND_KEEN_JUMP);
 					pjumping = PJUMPUP;
 					
 					// make so if we're jumping left or right
@@ -498,7 +498,7 @@ void CPlayer::JumpAndPogo()
         	{  // immediatly abort the jump
         		if(!bumped)
         		{
-        			g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
+        			playSound(SOUND_KEEN_BUMPHEAD);
             		bumped = true;
         		}
         		pjumpupspeed /= 2;
@@ -624,7 +624,7 @@ void CPlayer::Playerfalling()
 		if (plastfalling == 0)
 		{
 			if (!pjustjumped)
-				g_pSound->playStereofromCoord(SOUND_KEEN_FALL, PLAY_NOW, scrx);
+				playSound( SOUND_KEEN_FALL );
 		}
 	}
 
@@ -698,7 +698,7 @@ void CPlayer::Playerfalling()
 				g_pSound->stopSound(SOUND_KEEN_FALL);  // terminate fall noise
 			// thud noise
 			if (!ppogostick)
-				g_pSound->playStereofromCoord(SOUND_KEEN_LAND, PLAY_NOW, scrx);
+				playSound( SOUND_KEEN_LAND );
 			// fix "sliding" effect when you fall, go one way, then
 			// before you land turn around and as you hit the ground
 			// you're starting to move the other direction
@@ -758,7 +758,7 @@ void CPlayer::raygun()
 				inventory.charges--;
 				pshowdir = pdir;
 				
-				g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, scrx);
+				playSound( SOUND_KEEN_FIRE );
 				
 				ydir = getYPosition()+(9<<STC);
 				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
@@ -772,7 +772,7 @@ void CPlayer::raygun()
 			else
 			{ // uh oh, out of bullets
 				// click!
-				g_pSound->playStereofromCoord(SOUND_GUN_CLICK, PLAY_NOW, scrx);
+				playSound( SOUND_GUN_CLICK );
 				
 			}  // end "do we have charges?"
 		} // end "limit how quickly shots can be fired"
@@ -847,7 +847,7 @@ void CPlayer::bump( CObject &theObject, direction_t direction )
 	if(	pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
 		return;
 
-	g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
+	playSound( SOUND_YORP_BUMP, PLAY_NORESTART );
 
 	if(!pfiring)
 		pshowdir = pdir = direction;

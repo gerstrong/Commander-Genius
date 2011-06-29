@@ -123,7 +123,7 @@ bool CSound::init()
 	return true;
 }
 
-void CSound::destroy(void)
+void CSound::destroy()
 {
 	stopAllSounds();
 
@@ -151,7 +151,7 @@ void CSound::stopAllSounds()
 }
 
 // pauses any currently playing sounds
-void CSound::pauseSound(void)
+void CSound::pauseSound()
 {
 	SDL_PauseAudio(1);
 }

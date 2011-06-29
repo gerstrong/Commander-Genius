@@ -144,7 +144,7 @@ void CMeep::process()
 			newobject->setOwner(OBJ_MEEP, m_index);
 			newobject->solid = false;
 			m_Object.push_back(newobject);
-			g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, scrx);
+			playSound(SOUND_MEEP);
 			state = MEEP_WALK;
 		}
 		else timer++;

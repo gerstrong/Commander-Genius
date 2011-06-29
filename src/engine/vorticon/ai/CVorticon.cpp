@@ -76,7 +76,7 @@ void CVorticon::process() {
 			dying = true;
 		}
 
-		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+		playSound(SOUND_VORT_DIE);
 	}
 
 	vort_reprocess: ;

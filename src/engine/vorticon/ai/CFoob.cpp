@@ -34,7 +34,7 @@ void CFoob::process()
 			animframe = 0;
 			animtimer = 0;
 			state = FOOB_EXPLODE;
-			g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
+			playSound(SOUND_YORP_DIE);
 		}
 	}
 
@@ -63,7 +63,8 @@ void CFoob::process()
 			{
 				state = FOOB_SPOOK;
 				spooktimer = 0;
-				if (onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
+				if (onscreen)
+					playSound(SOUND_YORP_DIE);
 			}
 			else OnSameLevelTime++;
 		}

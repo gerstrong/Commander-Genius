@@ -67,7 +67,7 @@ void CVortikid::process()
 		dying = true;
 		sprite = BABY_FRY_FRAME - ep3;
 		if (onscreen && !g_pSound->isPlaying(SOUND_VORT_DIE))
-			g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+			playSound(SOUND_VORT_DIE);
 
 		if (dir == RIGHT)
 			xinertia = BABY_DIE_INERTIA;

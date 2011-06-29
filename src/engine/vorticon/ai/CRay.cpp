@@ -129,7 +129,7 @@ void CRay::moveinAir()
 			state = RAY_STATE_SETZAPZOT;
 			canbezapped = false;
 			if (onscreen)
-				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
+				playSound(SOUND_SHOT_HIT);
 		}
 		moveRight(m_speed);
 	}
@@ -146,7 +146,8 @@ void CRay::moveinAir()
 		{
 			state = RAY_STATE_SETZAPZOT;
 			canbezapped = false;
-			if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
+			if (onscreen)
+				playSound(SOUND_SHOT_HIT);
 		}
 		moveLeft(m_speed);
 	}
@@ -156,7 +157,8 @@ void CRay::moveinAir()
 		{
 			state = RAY_STATE_SETZAPZOT;
 			canbezapped = false;
-			if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
+			if (onscreen)
+				playSound(SOUND_SHOT_HIT);
 		}
 		moveDown(m_speed);
 	}

@@ -77,7 +77,8 @@ void CVorticonElite::process()
 		state = VORTELITE_DYING;
 		dying = true;
 
-		if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+		if (onscreen)
+			playSound(SOUND_VORT_DIE);
 	}
 
 	if(state == VORTELITE_CHARGE)
@@ -230,7 +231,8 @@ void CVorticonElite::process()
 			// don't shoot other vorticon elite
 			m_Object.push_back(newobject);
 
-			if (onscreen) g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, scrx);
+			if (onscreen)
+				playSound(SOUND_KEEN_FIRE);
 		}
 		else timer++;
 		break;

@@ -47,7 +47,7 @@ void CYorp::process()
 		dietimer = 0;
 		sprite = YORP_DYING_FRAME;
 		yinertia = YORPDIE_START_INERTIA;
-		g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
+		playSound(SOUND_YORP_DIE);
 	}
 
 	switch(state)
@@ -215,7 +215,7 @@ void CYorp::getTouchedBy(CObject &theObject)
 			{
 				if (!m_hardmode)
 				{
-					g_pSound->playStereofromCoord(SOUND_YORP_STUN, PLAY_NOW, scrx);
+					playSound(SOUND_YORP_STUN);
 					state = YORP_STUNNED;
 					looktimes = 0;
 					timer = 0;

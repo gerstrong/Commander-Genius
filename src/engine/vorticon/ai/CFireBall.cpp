@@ -34,7 +34,8 @@ void CFireBall::process()
 	// check if it was shot
 	if (HealthPoints <= 0 && state == RAY_STATE_FLY)
 	{
-		if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
+		if (onscreen)
+			playSound(SOUND_SHOT_HIT);
 		m_type = OBJ_RAY;
 		state = RAY_STATE_SETZAPZOT;
 		inhibitfall = 1;

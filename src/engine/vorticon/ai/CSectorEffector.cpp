@@ -327,7 +327,7 @@ void CSectorEffector::se_mortimer_spark()
 	case MSPARK_DESTROYARMS:
 		if (!timer)
 		{
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, getXPosition());
+			playSound(SOUND_SHOT_HIT);
 			for(x=0;x<3;x++)
 			{
 				mx = MORTIMER_LEFT_ARM_X+x;
@@ -485,7 +485,7 @@ void CSectorEffector::se_mortimer_zapsup()
 			return;
 		}
 
-		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, getXPosition());
+		playSound(SOUND_SHOT_HIT);
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
@@ -555,7 +555,7 @@ void CSectorEffector::se_mortimer_leg_left()
 				{
 					timer = 0;
 					state = LEG_WAIT;
-					g_pSound->playStereofromCoord(SOUND_FOOTSLAM, PLAY_NOW, getXPosition());
+					playSound(SOUND_FOOTSLAM);
 				}
 				else
 				{
@@ -646,7 +646,7 @@ void CSectorEffector::se_mortimer_leg_right()
 				{
 					timer = 0;
 					state = LEG_WAIT;
-					g_pSound->playStereofromCoord(SOUND_FOOTSLAM, PLAY_NOW, getXPosition());
+					playSound(SOUND_FOOTSLAM);
 				}
 				else
 				{

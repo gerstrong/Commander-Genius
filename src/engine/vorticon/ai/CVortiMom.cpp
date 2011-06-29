@@ -112,7 +112,9 @@ void CVortiMom::process()
 												OBJ_MOTHER, m_index);
 			m_Object.push_back(newobject);
 
-			if (onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, scrx);
+			if (onscreen)
+				playSound(SOUND_TANK_FIRE);
+
 			state = MOTHER_WALK;
 		}
 		else timer++;
@@ -127,7 +129,8 @@ void CVortiMom::process()
 				sprite = MOTHER_DEAD_FRAME;
 				dead = true;
 				timer = 0;
-				if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+				if (onscreen)
+					playSound(SOUND_VORT_DIE);
 			}
 			else
 			{

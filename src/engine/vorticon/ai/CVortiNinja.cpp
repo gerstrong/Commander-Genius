@@ -60,7 +60,7 @@ void CVortiNinja::process()
 	{
 		dying = true;
 		dietimer = 0;
-		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+		playSound(SOUND_VORT_DIE);
 	}
 
 
