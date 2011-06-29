@@ -168,13 +168,13 @@ public:
 	void moveToHorizontal(const int& new_x);
 	void moveToVertical(const int& new_y);
 	void moveTo(const VectorD2<Uint32> &new_loc);
-	void moveTo(const int &new_x, const int &new_y);
-	void moveXDir(const int& amount, const bool& force = false);
-	void moveYDir(const int& amount);
-	void moveLeft(const int& amnt, const bool& force = false);
-	void moveRight(const int& amnt, const bool& force = false);
-	void moveUp(const int& amnt);
-	void moveDown(const int& amnt);
+	void moveTo(const int new_x, const int new_y);
+	void moveXDir(const int amount, const bool force = false);
+	void moveYDir(const int amount);
+	void moveLeft(const int amnt, const bool force = false);
+	void moveRight(const int amnt, const bool force = false);
+	void moveUp(const int amnt);
+	void moveDown(const int amnt);
 
 	// new moving parts
 	/**

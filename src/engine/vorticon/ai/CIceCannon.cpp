@@ -60,7 +60,8 @@ m_Object(Object)
 
 	veloc_x = speed * vector_x;
 	veloc_y = speed * vector_y;
-	playSound(SOUND_CANNONFIRE);
+	if(onscreen)
+		playSound(SOUND_CANNONFIRE);
 }
 
 void CIceChunk::process()

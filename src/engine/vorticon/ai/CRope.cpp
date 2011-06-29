@@ -19,6 +19,7 @@ CObject(p_map, x, y, OBJ_ROPE)
 	inhibitfall = true;
 	sprite = OBJ_ROPE_DEFSPRITE;
 	needinit = false;
+	solid = false;
 	droptimer = 0;
 }
 
@@ -54,19 +55,28 @@ void CRope::getShotByRay(object_t &obj_type)
 	{
 		if ( exists && canbezapped )
 		{
-			int x, y;
 			// rope got broke! time to drop the stone
 			state = ROPE_DROPSTONE;
 			droptimer = 0;
 			// hide the rope
 			sprite = BLANKSPRITE;
 			// get upper left corner of the stone
-			x = getXPosition()>>CSF;
-			y = getYPosition()>>CSF;
+			const int x = (getXPosition()>>CSF);
+			const int y = (getYPosition()>>CSF);
 			stoneX = x - 4;
 			stoneY = y + 1;
+
+			// Create a Colision Rect the way, everthing below gets smashed and on the Stone stays unharmed
+			moveTo( (stoneX<<CSF), (stoneY<<CSF)+((1<<CSF)/2) );
+
 			// get color of background
 			bgtile = g_pBehaviorEngine->getPhysicsSettings().misc.changestoneblock;
+
+			// Set BBox so the getTouched Function works on the enemies.
+			m_BBox(0, 0,
+				(STONE_WIDTH<<CSF),
+				(STONE_HEIGHT<<CSF)-((1<<CSF)/2) );
+
 			falldist = 0;
 		}
 	}
@@ -81,25 +91,27 @@ void CRope::rope_movestone()
 	ya = stoneY;
 
 	// move the stone down one space and kill anything in it's path!
-	for(int y=STONE_HEIGHT;y>0;y--)
+	for( int y=STONE_HEIGHT ; y>0 ; y-- )
 	{
-		for(int x=0;x<STONE_WIDTH;x++)
+		for( int x=0 ; x<STONE_WIDTH ; x++ )
 		{
 			mp_Map->setTile(x+xa,y+ya, mp_Map->at(x+xa, y+ya-1), true);
 		}
 	}
 
 	// clear the space at the top
-	for(int x=0;x<STONE_WIDTH;x++)
+	for(int x=0; x<STONE_WIDTH ; x++)
 		mp_Map->setTile(x+xa,ya,bgtile, true);
 
 	stoneY++;
+	moveDown(1<<CSF);
+
 	falldist++;
 }
 
 void CRope::getTouchedBy(CObject &theObject)
 {
-	if(state == ROPE_DROPSTONE && m_type==OBJ_ROPE)
+	if( state == ROPE_DROPSTONE && m_type==OBJ_ROPE )
 	{
 		const int xa = stoneX;
 		const int ya = stoneY;
@@ -109,7 +121,7 @@ void CRope::getTouchedBy(CObject &theObject)
 		{
 			for(int x=0;x<STONE_WIDTH;x++)
 			{
-				// if the stone hits any enemies, kill them
+				// if the stone hits some enemies, kill them
 				kill_intersecting_tile(x+xa, y+ya, theObject);
 			}
 		}

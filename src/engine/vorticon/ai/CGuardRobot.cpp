@@ -119,7 +119,7 @@ void CGuardRobot::process()
 			{
 				CRay *newobject;
 				if (onscreen)
-					playSound(SOUND_TANK_FIRE):
+					playSound(SOUND_TANK_FIRE);
 				if (movedir==RIGHT)
 					newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT);
 				else

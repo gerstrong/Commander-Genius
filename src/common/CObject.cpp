@@ -294,19 +294,19 @@ void CObject::moveTo(const VectorD2<Uint32> &new_loc)
 	moveYDir(amount.y);
 }
 
-void CObject::moveTo(const int &new_x, const int &new_y)
+void CObject::moveTo(const int new_x, const int new_y)
 {
 	moveTo(VectorD2<Uint32>(new_x, new_y));
 }
 
-void CObject::moveXDir(const int& amount, const bool& force)
+void CObject::moveXDir(const int amount, const bool force)
 {
 	if(amount<0)
 		moveLeft(-amount, force);
 	else if(amount>0)
 		moveRight(amount, force);
 }
-void CObject::moveYDir(const int& amount)
+void CObject::moveYDir(const int amount)
 {
 	if(amount<0)
 		moveUp(-amount);
@@ -314,7 +314,7 @@ void CObject::moveYDir(const int& amount)
 		moveDown(amount);
 }
 
-void CObject::moveLeft(const int& amnt, const bool& force)
+void CObject::moveLeft(const int amnt, const bool force)
 {
 	if(amnt <= 0)
 		return;
@@ -322,7 +322,7 @@ void CObject::moveLeft(const int& amnt, const bool& force)
 	m_EventCont.add(new ObjMove(-amnt,0));
 }
 
-void CObject::moveRight(const int& amnt, const bool& force)
+void CObject::moveRight(const int amnt, const bool force)
 {
 	if(amnt <= 0)
 		return;
@@ -330,7 +330,7 @@ void CObject::moveRight(const int& amnt, const bool& force)
 	m_EventCont.add(new ObjMove(amnt,0));
 }
 
-void CObject::moveUp(const int& amnt)
+void CObject::moveUp(const int amnt)
 {
 	if(amnt <= 0)
 		return;
@@ -338,7 +338,7 @@ void CObject::moveUp(const int& amnt)
 	m_EventCont.add(new ObjMove(0,-amnt));
 }
 
-void CObject::moveDown(const int& amnt)
+void CObject::moveDown(const int amnt)
 {
 	// If zero was given as argument return.
 	if(amnt <= 0)
