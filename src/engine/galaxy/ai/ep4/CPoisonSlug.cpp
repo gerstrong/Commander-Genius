@@ -90,7 +90,7 @@ void CPoisonSlug::processPooing()
 
 void CPoisonSlug::getTouchedBy(CObject &theObject)
 {
-	if(dead)
+	if(dead || theObject.dead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
@@ -98,7 +98,7 @@ void CPoisonSlug::getTouchedBy(CObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		mp_processState = &CStunnable::processStunned;
+		mp_processState = &CStunnable::processGettingStunned;
 		setAction( rand()%2 ? A_SLUG_STUNNED : A_SLUG_STUNNED_ALT );
 		dead = true;
 	}

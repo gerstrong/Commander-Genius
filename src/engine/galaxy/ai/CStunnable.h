@@ -19,12 +19,18 @@ public:
 	CStunnable(	CMap *pmap,
 				Uint32 x,
 				Uint32 y,
-				object_t type );
+				object_t type=OBJ_NONE );
 
 	/**
 	 * What happens when some objects gets touched, or normally shot
 	 */
 	virtual void getTouchedBy(CObject &theObject);
+
+	/**
+	 * This happens when the object gets shot.
+	 * The Starring appears when it hits the floor
+	 */
+	void processGettingStunned();
 
 	/**
 	 * empty cycle which is processed when the object is stunned

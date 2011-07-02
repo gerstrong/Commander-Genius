@@ -34,7 +34,13 @@ void CStunnable::getTouchedBy(CObject &theObject)
 	{
 		theObject.setAction(A_KEENSHOT_IMPACT);
 		theObject.playSound( SOUND_SHOT_HIT );
+	}
+}
 
+void CStunnable::processGettingStunned()
+{
+	if(blockedd)
+	{
 		if( !m_invincible )
 		{
 			CSprite &StarRing = g_pGfxEngine->getSprite( STARRING_SPRITE );
@@ -45,6 +51,7 @@ void CStunnable::getTouchedBy(CObject &theObject)
 
 			EventSpawnObject *Ev = new EventSpawnObject( new CStarRing(mp_Map, star_x, star_y, OBJ_NONE) );
 			g_pBehaviorEngine->m_EventList.add( Ev );
+			mp_processState = &CStunnable::processStunned;
 		}
 	}
 }

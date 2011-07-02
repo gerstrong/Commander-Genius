@@ -86,6 +86,7 @@
 					<path value=""/>
 				</doc-comment-owner>
 			</storageModule>
+			<storageModule moduleId="scannerConfiguration"/>
 		</cconfiguration>
 		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457" moduleId="org.eclipse.cdt.core.settings" name="Linux64">
@@ -170,6 +171,7 @@
 					<path value=""/>
 				</doc-comment-owner>
 			</storageModule>
+			<storageModule moduleId="scannerConfiguration"/>
 		</cconfiguration>
 		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399" moduleId="org.eclipse.cdt.core.settings" name="Linux32">
@@ -257,6 +259,7 @@
 					<path value=""/>
 				</doc-comment-owner>
 			</storageModule>
+			<storageModule moduleId="scannerConfiguration"/>
 		</cconfiguration>
 		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.565663007">
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.565663007" moduleId="org.eclipse.cdt.core.settings" name="Win32">
@@ -346,6 +349,7 @@
 					<path value=""/>
 				</doc-comment-owner>
 			</storageModule>
+			<storageModule moduleId="scannerConfiguration"/>
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">

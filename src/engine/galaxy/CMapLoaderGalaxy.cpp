@@ -29,6 +29,7 @@
 #include "engine/galaxy/ai/ep4/CCouncilMember.h"
 #include "engine/galaxy/ai/ep4/CMiragia.h"
 #include "engine/galaxy/ai/ep4/CDiveSuit.h"
+#include "engine/galaxy/ai/ep4/CBounder.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/platforms.h"
 
@@ -396,6 +397,12 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 4:
 		//This is a council member.
 		p_newfoe = new galaxy::CCouncilMember(&Map, x, y-750);
+		break;
+
+	case 12:
+		//This is a Bounder.
+		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
+		p_newfoe = new galaxy::CBounder(&Map, x, y-250);
 		break;
 
 	case 22:

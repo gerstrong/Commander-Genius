@@ -17,8 +17,7 @@ const Uint32 hittime = 100;
 CBullet::CBullet(CMap *pmap, const Uint32 x, const Uint32 y, const direction_t dir) :
 CObject(pmap, x, y, OBJ_RAY)
 {
-	m_hDir = NONE;
-	m_vDir = NONE;
+	m_hDir = NONE;	m_vDir = NONE;
 
 	if(dir == LEFT || dir == RIGHT)
 		m_hDir = dir;
@@ -38,6 +37,7 @@ void CBullet::process()
 	{
 		setAction(A_KEENSHOT_IMPACT);
 		playSound( SOUND_SHOT_HIT );
+		dead = true;
 	}
 
 	processActionRoutine();
