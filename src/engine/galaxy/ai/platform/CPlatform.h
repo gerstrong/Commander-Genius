@@ -22,8 +22,7 @@ namespace galaxy {
 
 class CPlatform : public CObject {
 public:
-	CPlatform(CMap *pmap, const Uint32 x, const Uint32 y,
-		std::vector<CObject*>& ObjectPtrs);
+	CPlatform(CMap *pmap, const Uint32 x, const Uint32 y);
 	virtual void process();
 	void getTouchedBy(CObject &theObject);
 

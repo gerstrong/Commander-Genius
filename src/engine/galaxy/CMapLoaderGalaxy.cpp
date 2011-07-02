@@ -411,12 +411,12 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		break;
 
 	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
-		p_newfoe = new galaxy::CPlatformVertical(&Map, x, y, m_ObjectPtr); break;
+		p_newfoe = new galaxy::CPlatformVertical(&Map, x, y); break;
 	case PLATFORM_HORIZ_ALT:
 	case PLATFORM_HORIZ:
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, x, y, m_ObjectPtr); break;
+		p_newfoe = new galaxy::CPlatformHorizontal(&Map, x, y); break;
 	case PLATFORM_DROP:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, x, y, m_ObjectPtr);
+		p_newfoe = new galaxy::CPlatformDrop(&Map, x, y);
 		break;
 
 	case 33:

@@ -13,7 +13,7 @@
 
 namespace galaxy {
 
-class CBounder : public CStunnable {
+class CBounder : public CStunnable/*, public CPlatform*/ {
 public:
 	CBounder(CMap *pmap, Uint32 x, Uint32 y);
 

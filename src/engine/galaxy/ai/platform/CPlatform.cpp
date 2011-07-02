@@ -10,8 +10,7 @@
 
 namespace galaxy {
 
-CPlatform::CPlatform(CMap *pmap, const Uint32 x, const Uint32 y,
-		std::vector<CObject*>& ObjectPtrs) :
+CPlatform::CPlatform(CMap *pmap, const Uint32 x, const Uint32 y) :
 CObject(pmap, x, y, OBJ_PLATFORM),
 mp_CarriedPlayer(NULL)
 {

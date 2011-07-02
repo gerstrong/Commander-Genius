@@ -9,9 +9,8 @@
 
 namespace galaxy {
 
-CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint32 x, const Uint32 y,
-		std::vector<CObject*>& ObjectPtrs) :
-CPlatform(pmap, x, y, ObjectPtrs)
+CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint32 x, const Uint32 y) :
+CPlatform(pmap, x, y)
 {
 	m_hDir = RIGHT;
 	m_vDir = NONE;

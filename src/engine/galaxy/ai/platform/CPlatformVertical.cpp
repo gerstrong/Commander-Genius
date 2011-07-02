@@ -12,9 +12,8 @@ const int MOVE_VERT_SPEED = 20;
 
 namespace galaxy {
 
-CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint32 x, const Uint32 y,
-		std::vector<CObject*>& ObjectPtrs) :
-CPlatform(pmap, x, y, ObjectPtrs)
+CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint32 x, const Uint32 y) :
+CPlatform(pmap, x, y)
 {
 	m_hDir = NONE;
 	m_vDir = DOWN;

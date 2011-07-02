@@ -70,6 +70,7 @@ void CBounder::processBounce()
 			m_hDir = NONE;
 			break;
 		}
+		return;
 	}
 
 	moveYDir(yinertia);
@@ -91,9 +92,15 @@ void CBounder::process()
 	(this->*mp_processState)();
 
 	if( blockedl )
+	{
 		m_hDir = RIGHT;
+		setAction( A_BOUNDER_MOVE );
+	}
 	else if(blockedr)
+	{
 		m_hDir = LEFT;
+		setAction( A_BOUNDER_MOVE+1 );
+	}
 
 	processActionRoutine();
 }

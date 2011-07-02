@@ -17,8 +17,7 @@ namespace galaxy {
 
 class CPlatformDrop : public CPlatform {
 public:
-	CPlatformDrop(CMap *pmap, const Uint32 x, const Uint32 y,
-			std::vector<CObject*>& ObjectPtrs);
+	CPlatformDrop(CMap *pmap, const Uint32 x, const Uint32 y);
 
 	/**
 	 * \brief Processes the platforms AI. It's just simple moving around of course
