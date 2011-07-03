@@ -14,7 +14,7 @@
 namespace galaxy
 {
 
-class CStunnable: public CObject {
+class CStunnable: public virtual CObject {
 public:
 	CStunnable(	CMap *pmap,
 				Uint32 x,

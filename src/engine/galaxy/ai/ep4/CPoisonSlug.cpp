@@ -19,6 +19,7 @@ const int SLUG_MOVE_TIMER = 10;
 
 CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>&ObjectPtrs) :
+CObject(pmap, x, y, OBJ_NONE),
 CStunnable(pmap, x, y, OBJ_NONE),
 m_ObjectPtrs(ObjectPtrs),
 m_timer(0)

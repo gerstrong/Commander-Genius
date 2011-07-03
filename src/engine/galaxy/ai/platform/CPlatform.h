@@ -20,9 +20,9 @@ namespace galaxy {
 #define A_PLATFORM_DROP	2	/* Dropping platform dropping */
 #define A_PLATFORM_RISE	3	/* Dropping platform rising */
 
-class CPlatform : public CObject {
+class CPlatform : public virtual CObject {
 public:
-	CPlatform(CMap *pmap, const Uint32 x, const Uint32 y);
+	CPlatform(CMap *pmap, Uint32 x, Uint32 y, object_t type);
 	virtual void process();
 	void getTouchedBy(CObject &theObject);
 

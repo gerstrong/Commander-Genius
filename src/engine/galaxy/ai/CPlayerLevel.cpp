@@ -1138,6 +1138,8 @@ void CPlayerLevel::processStanding()
 		playSound( SOUND_KEEN_POGO );
 		m_pogotoggle = true;
 	}
+
+	CObject::processFalling();
 }
 
 
@@ -1428,8 +1430,8 @@ void CPlayerLevel::process()
 		performCollisions();
 
 		// It's not always desired to push out
-		if( mp_processState != &CPlayerLevel::processPogo &&
-			mp_processState != &CPlayerLevel::processFalling )
+		if( (mp_processState != &CPlayerLevel::processPogo) &&
+			(mp_processState != &CPlayerLevel::processFalling) )
 		{
 			processPushOutCollision();
 		}

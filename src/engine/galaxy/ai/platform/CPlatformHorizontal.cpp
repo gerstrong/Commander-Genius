@@ -10,7 +10,8 @@
 namespace galaxy {
 
 CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint32 x, const Uint32 y) :
-CPlatform(pmap, x, y)
+CObject(pmap, x, y, OBJ_PLATFORM),
+CPlatform(pmap, x, y, OBJ_PLATFORM)
 {
 	m_hDir = RIGHT;
 	m_vDir = NONE;
