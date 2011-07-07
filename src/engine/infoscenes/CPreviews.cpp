@@ -48,7 +48,7 @@ int CPreviews::openNextScene()
 	filename += itoa(m_episode);
 
 	// If the we have scene to load, load it, else open the text which ends the preview
-	if(openScene(filename)) // else If there is no scene to show left, open the Text.
+	if(openScene(filename))
 	{
 		this->process_ptr = &CPreviews::drawPreviewScene;
 	}
@@ -71,8 +71,11 @@ int CPreviews::openNextScene()
 bool CPreviews::openScene(const std::string& filename)
 {
 	// This will open one the preview scenes
+	mp_StaticScene.tryDeleteData();
+
 	mp_StaticScene = new CFinaleStaticScene(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), filename);
-	if(mp_StaticScene->mustclose())
+
+	if( mp_StaticScene->mustclose() )
 		return false;
 	else
 		mp_StaticScene->setTimer(1000);

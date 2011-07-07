@@ -27,26 +27,29 @@ void finale_plot( SDL_Surface *sfc, int pix )
 	
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 	Uint8* pixel = (Uint8*) sfc->pixels;
+	const int numPixels = sfc->w*sfc->h;
+	int pixeloffset = 0;
+	Uint8* posPointer = pixel;
 	
 	do
 	{
-		if (pix & mask)
+		pixeloffset = finale_y*(sfc->w) + finale_x;
+
+		if(pixeloffset < numPixels)
 		{
-			if (finale_planecol==1)
+			posPointer = pixel+finale_y*sfc->w + finale_x;
+			if (pix & mask)
 			{
-				if( (finale_y*sfc->w + finale_x) < sfc->w*sfc->h )
-					pixel[finale_y*sfc->w + finale_x] = finale_planecol;
+				if (finale_planecol==1)
+					*posPointer = finale_planecol;
+				else
+				  // merge with previous planes
+					*posPointer |= finale_planecol;
 			}
-			else
-			{  // merge with previous planes
-				if( finale_y*finale_x < sfc->w*sfc->h )
-					pixel[finale_y*sfc->w + finale_x] |= finale_planecol;
+			else if (finale_planecol==1)
+			{
+				*posPointer = 0;
 			}
-		}
-		else if (finale_planecol==1)
-		{
-			if( (finale_y*sfc->w + finale_x) < sfc->w*sfc->h )
-				pixel[finale_y*sfc->w + finale_x] = 0;
 		}
 		
 		finale_x++;
@@ -76,7 +79,7 @@ void finale_plot( SDL_Surface *sfc, int pix )
 		
 	} while(1);
 	
-	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 }
 
 // draws a filename file into the SDL_Surface we are using
@@ -87,23 +90,27 @@ bool finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	int repeatbyte;
 	int i;
 	
-	std::ifstream file;
-	if (!OpenGameFileR(file, getResourceFilename(filename, path, true, false), std::ios::binary))
+ 	std::ifstream file;
+	if (!OpenGameFileR(file, getResourceFilename(filename, path, false, false), std::ios::binary))
 		return false;
 	
+
+	// TODO: Here is big bad bug which makes the game crash...
 	finale_plane_length = fgetl(file)*2;   //length of a plane when decompressed
 	finale_planecol = 1;
 	finale_x = finale_y = 0;
 	finale_count = 0;
 	finale_done = 0;
 	
+	// In case the surface is bigger than the compressed image, fill it with black first
+	SDL_FillRect(sfc,NULL,0);
+
 	// decompress/draw the image
 	do
 	{
-		cmdbyte = file.get();
-		if (cmdbyte<0)
-		{  // EOF
-			return false;
+		if ( file.eof() || (cmdbyte = file.get()) < 0 )
+		{  // EOF (End of File)
+			break;
 		}
 		
 		if (cmdbyte & 0x80)
@@ -120,13 +127,13 @@ bool finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 			//Repeat N + 3 of following byte
 			bytecount = (cmdbyte + 3);
 			repeatbyte = file.get();
-			for(i=0;i<bytecount;i++)
+			for( i=0 ; i<bytecount ; i++ )
 			{
 				finale_plot( sfc, repeatbyte );
 			}
 		}
 		
-	} while(!finale_done);
+	} while( !finale_done );
 	
 	file.close();
 

@@ -12,9 +12,16 @@
 #include "graphics/CGfxEngine.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
-	mp_current_tb(NULL), m_mustclose(false), m_count(0), m_timer(0)
+mp_SceneSurface(NULL),
+mp_current_tb(NULL),
+m_mustclose(false),
+m_count(0),
+m_timer(0)
 {
-	mp_SceneSurface = SDL_CreateRGBSurface( g_pVideoDriver->getBlitSurface()->flags, g_pVideoDriver->getGameResolution().w, g_pVideoDriver->getGameResolution().h, 8, 0, 0, 0, 0);
+	const SDL_Rect resrect =  g_pVideoDriver->getGameResolution();
+	const Uint32 flags = g_pVideoDriver->getBlitSurface()->flags;
+
+	mp_SceneSurface = SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0);
 	SDL_SetColors( mp_SceneSurface, g_pGfxEngine->Palette.m_Palette, 0, 255);
 	if(finale_draw( mp_SceneSurface, scene_file, game_path))
 		SDL_BlitSurface( mp_SceneSurface, NULL, g_pVideoDriver->mp_VideoEngine->getScrollSurface(), NULL );
@@ -98,5 +105,8 @@ CFinaleStaticScene::~CFinaleStaticScene() {
 		delete p_textbox;
 		mp_textbox_list.pop_front();
 	}
-	SDL_FreeSurface(mp_SceneSurface);
+
+	if(mp_SceneSurface)
+		SDL_FreeSurface(mp_SceneSurface);
+	mp_SceneSurface = NULL;
 }
