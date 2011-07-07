@@ -1429,9 +1429,12 @@ void CPlayerLevel::process()
 
 		performCollisions();
 
+		void (CPlayerBase::*PogoProcess)() = static_cast<void (CPlayerBase::*)()>(&CPlayerLevel::processPogo);
+		void (CPlayerBase::*FallProcess)() = static_cast<void (CPlayerBase::*)()>(&CPlayerLevel::processFalling);
+
 		// It's not always desired to push out
-		if( (mp_processState != &CPlayerLevel::processPogo) &&
-			(mp_processState != &CPlayerLevel::processFalling) )
+		if( (mp_processState != PogoProcess) &&
+			(mp_processState != FallProcess) )
 		{
 			processPushOutCollision();
 		}

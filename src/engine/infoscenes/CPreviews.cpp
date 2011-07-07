@@ -68,10 +68,10 @@ int CPreviews::openNextScene()
 	return 0;
 }
 
-bool CPreviews::openScene(const std::string filename)
+bool CPreviews::openScene(const std::string& filename)
 {
 	// This will open one the preview scenes
-	mp_StaticScene = new CFinaleStaticScene(g_pBehaviorEngine->m_ExeFile.getDataDirectory(),filename);
+	mp_StaticScene = new CFinaleStaticScene(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), filename);
 	if(mp_StaticScene->mustclose())
 		return false;
 	else

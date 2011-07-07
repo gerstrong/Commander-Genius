@@ -33,7 +33,7 @@ bounceboost(0)
 
 void CBounder::getTouchedBy(CObject &theObject)
 {
-	if(dead)
+	if(dead || theObject.dead)
 		return;
 
 	CStunnable::getTouchedBy(theObject);

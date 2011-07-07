@@ -40,7 +40,7 @@ private:
 
 	void (CPreviews::*process_ptr)();
 
-	bool openScene(const std::string filename);
+	bool openScene(const std::string& filename);
 };
 
 #endif /* CPREVIEWS_H_ */

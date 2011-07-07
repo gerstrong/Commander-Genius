@@ -66,7 +66,7 @@ void CPlatform::process()
 	// check if someone is still standing on the platform
 	if(mp_CarriedPlayer)
 	{
-		if(!hitdetect(*mp_CarriedPlayer))
+		if(!hitdetect(*mp_CarriedPlayer) || mp_CarriedPlayer->blockedu)
 		{
 			mp_CarriedPlayer->supportedbyobject = false;
 			mp_CarriedPlayer->m_jumpdownfromobject = false;
