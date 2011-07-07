@@ -12,17 +12,13 @@
 		23323783120EBBCF00915252 /* Sampling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323780120EBBCF00915252 /* Sampling.cpp */; };
 		23323784120EBBCF00915252 /* Mixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332377E120EBBCF00915252 /* Mixer.cpp */; };
 		23323785120EBBCF00915252 /* Sampling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323780120EBBCF00915252 /* Sampling.cpp */; };
-		2332378A120EBBE500915252 /* CEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323786120EBBE500915252 /* CEvent.cpp */; };
 		2332378B120EBBE500915252 /* CEventContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323788120EBBE500915252 /* CEventContainer.cpp */; };
-		2332378C120EBBE500915252 /* CEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323786120EBBE500915252 /* CEvent.cpp */; };
 		2332378D120EBBE500915252 /* CEventContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323788120EBBE500915252 /* CEventContainer.cpp */; };
 		23323790120EBBF600915252 /* CLevelPlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332378E120EBBF600915252 /* CLevelPlay.cpp */; };
 		23323791120EBBF600915252 /* CLevelPlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332378E120EBBF600915252 /* CLevelPlay.cpp */; };
 		23323798120EBC0700915252 /* CFlag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323792120EBC0700915252 /* CFlag.cpp */; };
-		23323799120EBC0700915252 /* CMiragia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323794120EBC0700915252 /* CMiragia.cpp */; };
 		2332379A120EBC0700915252 /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323796120EBC0700915252 /* CPlayerLevel.cpp */; };
 		2332379B120EBC0700915252 /* CFlag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323792120EBC0700915252 /* CFlag.cpp */; };
-		2332379C120EBC0700915252 /* CMiragia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323794120EBC0700915252 /* CMiragia.cpp */; };
 		2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323796120EBC0700915252 /* CPlayerLevel.cpp */; };
 		23325AA212117FCB00915252 /* SmartPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23325AA112117FCB00915252 /* SmartPointer.cpp */; };
 		23325AA312117FCB00915252 /* SmartPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23325AA112117FCB00915252 /* SmartPointer.cpp */; };
@@ -211,8 +207,6 @@
 		2374245D11FCA649000EEA5B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245C11FCA649000EEA5B /* UIKit.framework */; };
 		2374246611FCA679000EEA5B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374246511FCA679000EEA5B /* QuartzCore.framework */; };
 		2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374247C11FCA6CB000EEA5B /* iphone_video.m */; };
-		239B34821392FA4C00E61F21 /* CSlugSlime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239B347F1392FA4C00E61F21 /* CSlugSlime.cpp */; };
-		239B34831392FA4C00E61F21 /* CSlugSlime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239B347F1392FA4C00E61F21 /* CSlugSlime.cpp */; };
 		239CC9C1137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239CC9BF137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp */; };
 		239CC9C2137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239CC9BF137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp */; };
 		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
@@ -263,10 +257,6 @@
 		23D4C492132C247B00B06391 /* CDieMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C48F132C247B00B06391 /* CDieMenu.cpp */; };
 		23D4C495132C274C00B06391 /* CStatusScreenGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C493132C274C00B06391 /* CStatusScreenGalaxy.cpp */; };
 		23D4C496132C274C00B06391 /* CStatusScreenGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C493132C274C00B06391 /* CStatusScreenGalaxy.cpp */; };
-		23D4C49D132C275D00B06391 /* CCouncilMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C497132C275D00B06391 /* CCouncilMember.cpp */; };
-		23D4C49E132C275D00B06391 /* CCouncilMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C497132C275D00B06391 /* CCouncilMember.cpp */; };
-		23D4C4A1132C275D00B06391 /* CPoisonSlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C49B132C275D00B06391 /* CPoisonSlug.cpp */; };
-		23D4C4A2132C275D00B06391 /* CPoisonSlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C49B132C275D00B06391 /* CPoisonSlug.cpp */; };
 		23D4C4A5132C27BC00B06391 /* COPLEmulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */; };
 		23D4C4A6132C27BC00B06391 /* COPLEmulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */; };
 		23D4C4A9132C27FC00B06391 /* CVidConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C4A7132C27FC00B06391 /* CVidConfig.cpp */; };
@@ -315,10 +305,25 @@
 		63243C8112ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */; };
 		6329039E12EB8DF500963705 /* dbopl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6329039C12EB8DF500963705 /* dbopl.cpp */; };
 		6329039F12EB8DF500963705 /* dbopl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6329039C12EB8DF500963705 /* dbopl.cpp */; };
-		632903A612EB8E2600963705 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903A412EB8E2600963705 /* CBullets.cpp */; };
-		632903A712EB8E2600963705 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903A412EB8E2600963705 /* CBullets.cpp */; };
 		632903C412EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
 		632903C512EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
+		63385F1713C008D100BC2558 /* ActionFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F1613C008D100BC2558 /* ActionFormat.cpp */; };
+		63385F3913C0091200BC2558 /* CBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F1913C0091200BC2558 /* CBullet.cpp */; };
+		63385F3A13C0091400BC2558 /* CPlayerBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F1B13C0091200BC2558 /* CPlayerBase.cpp */; };
+		63385F3B13C0091500BC2558 /* CStarRing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F1D13C0091200BC2558 /* CStarRing.cpp */; };
+		63385F3C13C0091700BC2558 /* CStunnable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F1F13C0091200BC2558 /* CStunnable.cpp */; };
+		63385F3D13C0091800BC2558 /* CBounder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2213C0091200BC2558 /* CBounder.cpp */; };
+		63385F3E13C0091A00BC2558 /* CCouncilMember.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2413C0091200BC2558 /* CCouncilMember.cpp */; };
+		63385F3F13C0091B00BC2558 /* CDiveSuit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2613C0091200BC2558 /* CDiveSuit.cpp */; };
+		63385F4013C0091D00BC2558 /* CMiragia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2813C0091200BC2558 /* CMiragia.cpp */; };
+		63385F4113C0091F00BC2558 /* CPlayerDive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2A13C0091200BC2558 /* CPlayerDive.cpp */; };
+		63385F4213C0092000BC2558 /* CPoisonSlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2C13C0091200BC2558 /* CPoisonSlug.cpp */; };
+		63385F4313C0092100BC2558 /* CSlugSlime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2E13C0091200BC2558 /* CSlugSlime.cpp */; };
+		63385F4413C0092300BC2558 /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3113C0091200BC2558 /* CPlatform.cpp */; };
+		63385F4513C0092500BC2558 /* CPlatformDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3313C0091200BC2558 /* CPlatformDrop.cpp */; };
+		63385F4613C0092700BC2558 /* CPlatformHorizontal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3513C0091200BC2558 /* CPlatformHorizontal.cpp */; };
+		63385F4713C0092800BC2558 /* CPlatformVertical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3713C0091200BC2558 /* CPlatformVertical.cpp */; };
+		63385F4A13C0095D00BC2558 /* CMessageBoxSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F4813C0095D00BC2558 /* CMessageBoxSelection.cpp */; };
 		634DF5A2136E10F000826A8B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A1136E10F000826A8B /* Cocoa.framework */; };
 		634DF5A5136E10FC00826A8B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A4136E10FC00826A8B /* OpenGL.framework */; };
 		634DF5A7136E110400826A8B /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
@@ -492,7 +497,6 @@
 		2332377F120EBBCF00915252 /* Mixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mixer.h; sourceTree = "<group>"; };
 		23323780120EBBCF00915252 /* Sampling.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sampling.cpp; sourceTree = "<group>"; };
 		23323781120EBBCF00915252 /* Sampling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sampling.h; sourceTree = "<group>"; };
-		23323786120EBBE500915252 /* CEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEvent.cpp; sourceTree = "<group>"; };
 		23323787120EBBE500915252 /* CEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEvent.h; sourceTree = "<group>"; };
 		23323788120EBBE500915252 /* CEventContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEventContainer.cpp; sourceTree = "<group>"; };
 		23323789120EBBE500915252 /* CEventContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEventContainer.h; sourceTree = "<group>"; };
@@ -500,8 +504,6 @@
 		2332378F120EBBF600915252 /* CLevelPlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLevelPlay.h; sourceTree = "<group>"; };
 		23323792120EBC0700915252 /* CFlag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFlag.cpp; sourceTree = "<group>"; };
 		23323793120EBC0700915252 /* CFlag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFlag.h; sourceTree = "<group>"; };
-		23323794120EBC0700915252 /* CMiragia.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMiragia.cpp; sourceTree = "<group>"; };
-		23323795120EBC0700915252 /* CMiragia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiragia.h; sourceTree = "<group>"; };
 		23323796120EBC0700915252 /* CPlayerLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerLevel.cpp; sourceTree = "<group>"; };
 		23323797120EBC0700915252 /* CPlayerLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayerLevel.h; sourceTree = "<group>"; };
 		23325AA112117FCB00915252 /* SmartPointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmartPointer.cpp; sourceTree = "<group>"; };
@@ -534,8 +536,6 @@
 		237424B311FCA77A000EEA5B /* libSDLiPhoneOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLiPhoneOS.a; path = "../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphoneos/libSDLiPhoneOS.a"; sourceTree = SOURCE_ROOT; };
 		239B347D1392FA2300E61F21 /* Cheat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cheat.h; sourceTree = "<group>"; };
 		239B347E1392FA2300E61F21 /* direction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = direction.h; sourceTree = "<group>"; };
-		239B347F1392FA4C00E61F21 /* CSlugSlime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSlugSlime.cpp; sourceTree = "<group>"; };
-		239B34801392FA4C00E61F21 /* CSlugSlime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSlugSlime.h; sourceTree = "<group>"; };
 		239B34811392FA4C00E61F21 /* platforms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platforms.h; sourceTree = "<group>"; };
 		239CC9BF137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBoxBitmapGalaxy.cpp; sourceTree = "<group>"; };
 		239CC9C0137C8605009689BF /* CMessageBoxBitmapGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBoxBitmapGalaxy.h; sourceTree = "<group>"; };
@@ -621,10 +621,6 @@
 		23D4C490132C247B00B06391 /* CDieMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDieMenu.h; sourceTree = "<group>"; };
 		23D4C493132C274C00B06391 /* CStatusScreenGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CStatusScreenGalaxy.cpp; sourceTree = "<group>"; };
 		23D4C494132C274C00B06391 /* CStatusScreenGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStatusScreenGalaxy.h; sourceTree = "<group>"; };
-		23D4C497132C275D00B06391 /* CCouncilMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCouncilMember.cpp; sourceTree = "<group>"; };
-		23D4C498132C275D00B06391 /* CCouncilMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCouncilMember.h; sourceTree = "<group>"; };
-		23D4C49B132C275D00B06391 /* CPoisonSlug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPoisonSlug.cpp; sourceTree = "<group>"; };
-		23D4C49C132C275D00B06391 /* CPoisonSlug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPoisonSlug.h; sourceTree = "<group>"; };
 		23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COPLEmulator.cpp; sourceTree = "<group>"; };
 		23D4C4A4132C27BC00B06391 /* COPLEmulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COPLEmulator.h; sourceTree = "<group>"; };
 		23D4C4A7132C27FC00B06391 /* CVidConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVidConfig.cpp; sourceTree = "<group>"; };
@@ -683,10 +679,42 @@
 		63243C7F12ECDB6C00FE8192 /* CAudioGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioGalaxy.h; sourceTree = "<group>"; };
 		6329039C12EB8DF500963705 /* dbopl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dbopl.cpp; sourceTree = "<group>"; };
 		6329039D12EB8DF500963705 /* dbopl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dbopl.h; sourceTree = "<group>"; };
-		632903A412EB8E2600963705 /* CBullets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBullets.cpp; sourceTree = "<group>"; };
-		632903A512EB8E2600963705 /* CBullets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBullets.h; sourceTree = "<group>"; };
 		632903C212EB8F3600963705 /* CPreviews.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPreviews.cpp; sourceTree = "<group>"; };
 		632903C312EB8F3600963705 /* CPreviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPreviews.h; sourceTree = "<group>"; };
+		63385F1613C008D100BC2558 /* ActionFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActionFormat.cpp; sourceTree = "<group>"; };
+		63385F1913C0091200BC2558 /* CBullet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBullet.cpp; sourceTree = "<group>"; };
+		63385F1A13C0091200BC2558 /* CBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBullet.h; sourceTree = "<group>"; };
+		63385F1B13C0091200BC2558 /* CPlayerBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerBase.cpp; sourceTree = "<group>"; };
+		63385F1C13C0091200BC2558 /* CPlayerBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayerBase.h; sourceTree = "<group>"; };
+		63385F1D13C0091200BC2558 /* CStarRing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CStarRing.cpp; sourceTree = "<group>"; };
+		63385F1E13C0091200BC2558 /* CStarRing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStarRing.h; sourceTree = "<group>"; };
+		63385F1F13C0091200BC2558 /* CStunnable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CStunnable.cpp; sourceTree = "<group>"; };
+		63385F2013C0091200BC2558 /* CStunnable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStunnable.h; sourceTree = "<group>"; };
+		63385F2213C0091200BC2558 /* CBounder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBounder.cpp; sourceTree = "<group>"; };
+		63385F2313C0091200BC2558 /* CBounder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBounder.h; sourceTree = "<group>"; };
+		63385F2413C0091200BC2558 /* CCouncilMember.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCouncilMember.cpp; sourceTree = "<group>"; };
+		63385F2513C0091200BC2558 /* CCouncilMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCouncilMember.h; sourceTree = "<group>"; };
+		63385F2613C0091200BC2558 /* CDiveSuit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDiveSuit.cpp; sourceTree = "<group>"; };
+		63385F2713C0091200BC2558 /* CDiveSuit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDiveSuit.h; sourceTree = "<group>"; };
+		63385F2813C0091200BC2558 /* CMiragia.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMiragia.cpp; sourceTree = "<group>"; };
+		63385F2913C0091200BC2558 /* CMiragia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiragia.h; sourceTree = "<group>"; };
+		63385F2A13C0091200BC2558 /* CPlayerDive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerDive.cpp; sourceTree = "<group>"; };
+		63385F2B13C0091200BC2558 /* CPlayerDive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayerDive.h; sourceTree = "<group>"; };
+		63385F2C13C0091200BC2558 /* CPoisonSlug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPoisonSlug.cpp; sourceTree = "<group>"; };
+		63385F2D13C0091200BC2558 /* CPoisonSlug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPoisonSlug.h; sourceTree = "<group>"; };
+		63385F2E13C0091200BC2558 /* CSlugSlime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSlugSlime.cpp; sourceTree = "<group>"; };
+		63385F2F13C0091200BC2558 /* CSlugSlime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSlugSlime.h; sourceTree = "<group>"; };
+		63385F3113C0091200BC2558 /* CPlatform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatform.cpp; sourceTree = "<group>"; };
+		63385F3213C0091200BC2558 /* CPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatform.h; sourceTree = "<group>"; };
+		63385F3313C0091200BC2558 /* CPlatformDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformDrop.cpp; sourceTree = "<group>"; };
+		63385F3413C0091200BC2558 /* CPlatformDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformDrop.h; sourceTree = "<group>"; };
+		63385F3513C0091200BC2558 /* CPlatformHorizontal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformHorizontal.cpp; sourceTree = "<group>"; };
+		63385F3613C0091200BC2558 /* CPlatformHorizontal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformHorizontal.h; sourceTree = "<group>"; };
+		63385F3713C0091200BC2558 /* CPlatformVertical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformVertical.cpp; sourceTree = "<group>"; };
+		63385F3813C0091200BC2558 /* CPlatformVertical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformVertical.h; sourceTree = "<group>"; };
+		63385F4813C0095D00BC2558 /* CMessageBoxSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBoxSelection.cpp; sourceTree = "<group>"; };
+		63385F4913C0095D00BC2558 /* CMessageBoxSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBoxSelection.h; sourceTree = "<group>"; };
+		63385F4B13C009BE00BC2558 /* resolutionlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resolutionlist.h; sourceTree = "<group>"; };
 		634DF5A1136E10F000826A8B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		634DF5A4136E10FC00826A8B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		634DF5A6136E110400826A8B /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework; sourceTree = DEVELOPER_DIR; };
@@ -1222,24 +1250,24 @@
 		23C64A7E11F31D8A0053CA36 /* ai */ = {
 			isa = PBXGroup;
 			children = (
-				239B347F1392FA4C00E61F21 /* CSlugSlime.cpp */,
-				239B34801392FA4C00E61F21 /* CSlugSlime.h */,
+				63385F1913C0091200BC2558 /* CBullet.cpp */,
+				63385F1A13C0091200BC2558 /* CBullet.h */,
+				63385F1B13C0091200BC2558 /* CPlayerBase.cpp */,
+				63385F1C13C0091200BC2558 /* CPlayerBase.h */,
+				63385F1D13C0091200BC2558 /* CStarRing.cpp */,
+				63385F1E13C0091200BC2558 /* CStarRing.h */,
+				63385F1F13C0091200BC2558 /* CStunnable.cpp */,
+				63385F2013C0091200BC2558 /* CStunnable.h */,
+				63385F2113C0091200BC2558 /* ep4 */,
+				63385F3013C0091200BC2558 /* platform */,
 				239B34811392FA4C00E61F21 /* platforms.h */,
 				35F1E22E134F647400C6230F /* platform */,
-				23D4C497132C275D00B06391 /* CCouncilMember.cpp */,
-				23D4C498132C275D00B06391 /* CCouncilMember.h */,
-				23D4C49B132C275D00B06391 /* CPoisonSlug.cpp */,
-				23D4C49C132C275D00B06391 /* CPoisonSlug.h */,
-				632903A412EB8E2600963705 /* CBullets.cpp */,
-				632903A512EB8E2600963705 /* CBullets.h */,
 				23A1441F12A5380E00E894CF /* CItemEffect.cpp */,
 				23A1442012A5380E00E894CF /* CItemEffect.h */,
 				23A1442112A5380E00E894CF /* CSpriteItem.cpp */,
 				23A1442212A5380E00E894CF /* CSpriteItem.h */,
 				23323792120EBC0700915252 /* CFlag.cpp */,
 				23323793120EBC0700915252 /* CFlag.h */,
-				23323794120EBC0700915252 /* CMiragia.cpp */,
-				23323795120EBC0700915252 /* CMiragia.h */,
 				23323796120EBC0700915252 /* CPlayerLevel.cpp */,
 				23323797120EBC0700915252 /* CPlayerLevel.h */,
 				23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */,
@@ -1310,6 +1338,8 @@
 		35F1E244134F6DEE00C6230F /* dialog */ = {
 			isa = PBXGroup;
 			children = (
+				63385F4813C0095D00BC2558 /* CMessageBoxSelection.cpp */,
+				63385F4913C0095D00BC2558 /* CMessageBoxSelection.h */,
 				239CC9BF137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp */,
 				239CC9C0137C8605009689BF /* CMessageBoxBitmapGalaxy.h */,
 				35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */,
@@ -1353,6 +1383,42 @@
 				6329039D12EB8DF500963705 /* dbopl.h */,
 			);
 			path = hardware;
+			sourceTree = "<group>";
+		};
+		63385F2113C0091200BC2558 /* ep4 */ = {
+			isa = PBXGroup;
+			children = (
+				63385F2213C0091200BC2558 /* CBounder.cpp */,
+				63385F2313C0091200BC2558 /* CBounder.h */,
+				63385F2413C0091200BC2558 /* CCouncilMember.cpp */,
+				63385F2513C0091200BC2558 /* CCouncilMember.h */,
+				63385F2613C0091200BC2558 /* CDiveSuit.cpp */,
+				63385F2713C0091200BC2558 /* CDiveSuit.h */,
+				63385F2813C0091200BC2558 /* CMiragia.cpp */,
+				63385F2913C0091200BC2558 /* CMiragia.h */,
+				63385F2A13C0091200BC2558 /* CPlayerDive.cpp */,
+				63385F2B13C0091200BC2558 /* CPlayerDive.h */,
+				63385F2C13C0091200BC2558 /* CPoisonSlug.cpp */,
+				63385F2D13C0091200BC2558 /* CPoisonSlug.h */,
+				63385F2E13C0091200BC2558 /* CSlugSlime.cpp */,
+				63385F2F13C0091200BC2558 /* CSlugSlime.h */,
+			);
+			path = ep4;
+			sourceTree = "<group>";
+		};
+		63385F3013C0091200BC2558 /* platform */ = {
+			isa = PBXGroup;
+			children = (
+				63385F3113C0091200BC2558 /* CPlatform.cpp */,
+				63385F3213C0091200BC2558 /* CPlatform.h */,
+				63385F3313C0091200BC2558 /* CPlatformDrop.cpp */,
+				63385F3413C0091200BC2558 /* CPlatformDrop.h */,
+				63385F3513C0091200BC2558 /* CPlatformHorizontal.cpp */,
+				63385F3613C0091200BC2558 /* CPlatformHorizontal.h */,
+				63385F3713C0091200BC2558 /* CPlatformVertical.cpp */,
+				63385F3813C0091200BC2558 /* CPlatformVertical.h */,
+			);
+			path = platform;
 			sourceTree = "<group>";
 		};
 		6350F7A11044797300A992D5 /* vfsroot */ = {
@@ -1576,6 +1642,7 @@
 		63CD10B011CFF5FB00F60BC8 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				63385F1613C008D100BC2558 /* ActionFormat.cpp */,
 				239B347D1392FA2300E61F21 /* Cheat.h */,
 				239B347E1392FA2300E61F21 /* direction.h */,
 				63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */,
@@ -1684,7 +1751,6 @@
 				2332C63311EAFAD7000D8F71 /* CCamera.h */,
 				63CD110711CFF5FB00F60BC8 /* CEGAGraphics.cpp */,
 				63CD110811CFF5FB00F60BC8 /* CEGAGraphics.h */,
-				23323786120EBBE500915252 /* CEvent.cpp */,
 				23323787120EBBE500915252 /* CEvent.h */,
 				23323788120EBBE500915252 /* CEventContainer.cpp */,
 				23323789120EBBE500915252 /* CEventContainer.h */,
@@ -2028,6 +2094,7 @@
 		63CD11DD11CFF5FB00F60BC8 /* sdl */ = {
 			isa = PBXGroup;
 			children = (
+				63385F4B13C009BE00BC2558 /* resolutionlist.h */,
 				23D4C4AB132C281D00B06391 /* music */,
 				23D4C4A7132C27FC00B06391 /* CVidConfig.cpp */,
 				23D4C4A8132C27FC00B06391 /* CVidConfig.h */,
@@ -2301,7 +2368,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"true\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"CGenius-${VER}-Mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
+			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"false\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"CGenius-${VER}-Mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2479,11 +2546,9 @@
 				237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */,
 				23323782120EBBCF00915252 /* Mixer.cpp in Sources */,
 				23323783120EBBCF00915252 /* Sampling.cpp in Sources */,
-				2332378A120EBBE500915252 /* CEvent.cpp in Sources */,
 				2332378B120EBBE500915252 /* CEventContainer.cpp in Sources */,
 				23323790120EBBF600915252 /* CLevelPlay.cpp in Sources */,
 				23323798120EBC0700915252 /* CFlag.cpp in Sources */,
-				23323799120EBC0700915252 /* CMiragia.cpp in Sources */,
 				2332379A120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
 				23325AA212117FCB00915252 /* SmartPointer.cpp in Sources */,
 				23E2A7101217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
@@ -2494,15 +2559,12 @@
 				23A1442512A5380E00E894CF /* CItemEffect.cpp in Sources */,
 				23A1442612A5380E00E894CF /* CSpriteItem.cpp in Sources */,
 				6329039E12EB8DF500963705 /* dbopl.cpp in Sources */,
-				632903A612EB8E2600963705 /* CBullets.cpp in Sources */,
 				632903C412EB8F3600963705 /* CPreviews.cpp in Sources */,
 				63B29E7012EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */,
 				63243C7C12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */,
 				63243C8012ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */,
 				23D4C491132C247B00B06391 /* CDieMenu.cpp in Sources */,
 				23D4C495132C274C00B06391 /* CStatusScreenGalaxy.cpp in Sources */,
-				23D4C49D132C275D00B06391 /* CCouncilMember.cpp in Sources */,
-				23D4C4A1132C275D00B06391 /* CPoisonSlug.cpp in Sources */,
 				23D4C4A5132C27BC00B06391 /* COPLEmulator.cpp in Sources */,
 				23D4C4A9132C27FC00B06391 /* CVidConfig.cpp in Sources */,
 				23D4C4B4132C281D00B06391 /* CIMFPlayer.cpp in Sources */,
@@ -2527,7 +2589,23 @@
 				35F1E242134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */,
 				35F1E247134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */,
 				239CC9C1137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp in Sources */,
-				239B34821392FA4C00E61F21 /* CSlugSlime.cpp in Sources */,
+				63385F1713C008D100BC2558 /* ActionFormat.cpp in Sources */,
+				63385F3913C0091200BC2558 /* CBullet.cpp in Sources */,
+				63385F3A13C0091400BC2558 /* CPlayerBase.cpp in Sources */,
+				63385F3B13C0091500BC2558 /* CStarRing.cpp in Sources */,
+				63385F3C13C0091700BC2558 /* CStunnable.cpp in Sources */,
+				63385F3D13C0091800BC2558 /* CBounder.cpp in Sources */,
+				63385F3E13C0091A00BC2558 /* CCouncilMember.cpp in Sources */,
+				63385F3F13C0091B00BC2558 /* CDiveSuit.cpp in Sources */,
+				63385F4013C0091D00BC2558 /* CMiragia.cpp in Sources */,
+				63385F4113C0091F00BC2558 /* CPlayerDive.cpp in Sources */,
+				63385F4213C0092000BC2558 /* CPoisonSlug.cpp in Sources */,
+				63385F4313C0092100BC2558 /* CSlugSlime.cpp in Sources */,
+				63385F4413C0092300BC2558 /* CPlatform.cpp in Sources */,
+				63385F4513C0092500BC2558 /* CPlatformDrop.cpp in Sources */,
+				63385F4613C0092700BC2558 /* CPlatformHorizontal.cpp in Sources */,
+				63385F4713C0092800BC2558 /* CPlatformVertical.cpp in Sources */,
+				63385F4A13C0095D00BC2558 /* CMessageBoxSelection.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2705,11 +2783,9 @@
 				2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */,
 				23323784120EBBCF00915252 /* Mixer.cpp in Sources */,
 				23323785120EBBCF00915252 /* Sampling.cpp in Sources */,
-				2332378C120EBBE500915252 /* CEvent.cpp in Sources */,
 				2332378D120EBBE500915252 /* CEventContainer.cpp in Sources */,
 				23323791120EBBF600915252 /* CLevelPlay.cpp in Sources */,
 				2332379B120EBC0700915252 /* CFlag.cpp in Sources */,
-				2332379C120EBC0700915252 /* CMiragia.cpp in Sources */,
 				2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
 				23325AA312117FCB00915252 /* SmartPointer.cpp in Sources */,
 				23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
@@ -2720,15 +2796,12 @@
 				23A1442312A5380E00E894CF /* CItemEffect.cpp in Sources */,
 				23A1442412A5380E00E894CF /* CSpriteItem.cpp in Sources */,
 				6329039F12EB8DF500963705 /* dbopl.cpp in Sources */,
-				632903A712EB8E2600963705 /* CBullets.cpp in Sources */,
 				632903C512EB8F3600963705 /* CPreviews.cpp in Sources */,
 				63B29E7112EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */,
 				63243C7D12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */,
 				63243C8112ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */,
 				23D4C492132C247B00B06391 /* CDieMenu.cpp in Sources */,
 				23D4C496132C274C00B06391 /* CStatusScreenGalaxy.cpp in Sources */,
-				23D4C49E132C275D00B06391 /* CCouncilMember.cpp in Sources */,
-				23D4C4A2132C275D00B06391 /* CPoisonSlug.cpp in Sources */,
 				23D4C4A6132C27BC00B06391 /* COPLEmulator.cpp in Sources */,
 				23D4C4AA132C27FC00B06391 /* CVidConfig.cpp in Sources */,
 				23D4C4B5132C281D00B06391 /* CIMFPlayer.cpp in Sources */,
@@ -2748,7 +2821,6 @@
 				35F1E243134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */,
 				35F1E248134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */,
 				239CC9C2137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp in Sources */,
-				239B34831392FA4C00E61F21 /* CSlugSlime.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
