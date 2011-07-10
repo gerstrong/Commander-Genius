@@ -9,6 +9,7 @@
 #define CPLATFORMHORIZONTAL_H_
 
 #include "CPlatform.h"
+#include "CEngineParticleSprites.h"
 
 namespace galaxy {
 
@@ -20,6 +21,10 @@ public:
 	 * \brief Processes the platforms AI. It's just simple moving around of course
 	 */
 	void process();
+
+private:
+	CEngineParticleSprites *mp_BoostEngObjLeft;
+	CEngineParticleSprites *mp_BoostEngObjRight;
 };
 
 }

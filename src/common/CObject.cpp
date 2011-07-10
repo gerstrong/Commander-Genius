@@ -607,7 +607,7 @@ void CObject::processActionRoutine()
 // or priority tile!
 void CObject::draw()
 {
-	if( sprite == BLANKSPRITE )
+	if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
 	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);

@@ -94,7 +94,7 @@ public:
 	// if zero, priority tiles will not be honored and object will always
 	// appear in front of the background
 	bool honorPriority;
-	bool dontdraw;
+	bool dontdraw;	// tells the object whether to get drawn or not. The object is still existent in this while
 	bool solid;
 	
 	bool canbezapped;         // if 0 ray will not stop on hitdetect

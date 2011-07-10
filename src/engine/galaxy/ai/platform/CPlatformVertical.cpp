@@ -6,6 +6,7 @@
  */
 
 #include "CPlatformVertical.h"
+#include "common/CBehaviorEngine.h"
 
 // Vertical platform speed
 const int MOVE_VERT_SPEED = 20;
@@ -22,11 +23,17 @@ CPlatform(pmap, x, y, OBJ_PLATFORM)
 	setActionSprite();
 	calcBouncingBoxes();
 
+	// Setup boost effects
+	mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, x+(1<<STC), y+(8<<STC), true, true);
+	mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, x+m_BBox.x2+(4<<STC), y+(8<<STC), true, false);
+
+	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjLeft ) );
+	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjRight ) );
 }
 
 void CPlatformVertical::process()
 {
-	Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+	const Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
 
 	// If there is a blocker, change the direction
 	if( object == 31 )
@@ -38,9 +45,17 @@ void CPlatformVertical::process()
 		m_vDir = UP;
 
 	if(m_vDir == UP)
+	{
+		mp_BoostEngObjLeft->moveUp(MOVE_VERT_SPEED);
+		mp_BoostEngObjRight->moveUp(MOVE_VERT_SPEED);
 		movePlatUp(MOVE_VERT_SPEED);
+	}
 	else
+	{
+		mp_BoostEngObjLeft->moveDown(MOVE_VERT_SPEED);
+		mp_BoostEngObjRight->moveDown(MOVE_VERT_SPEED);
 		movePlatDown(MOVE_VERT_SPEED);
+	}
 
 	CPlatform::process();
 }
