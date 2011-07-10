@@ -138,7 +138,7 @@ void CAudioSettings::processSpecific()
 			else if(m_selection == 2)
 			{
 				m_Mode = !m_Mode;
-				buf = "Mode: ";
+				buf = "Channels: ";
 				buf += m_Mode ? "Stereo" : "Mono";
 				mp_Dialog->setObjectText(2, buf);
 				m_must_restart_sounddriver |= true;
