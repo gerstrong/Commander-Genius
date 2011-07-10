@@ -43,19 +43,14 @@ m_jumpdownfromobject(false)
 
 	m_fire_recharge_time = 0;
 	m_EnterDoorAttempt = false;
-	m_ActionBaseOffset = 0x98C;
 	m_ptogglingswitch = false;
-	setActionForce(A_KEEN_STAND);
 
 	m_jumpheight = 0;
 	m_climbing = false;
 	m_pogotoggle = false;
 	m_jumped = false;
 
-	processActionRoutine();
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	processMove(0, (14<<STC)-(rSprite.m_bboxY2-rSprite.m_bboxY1));
-	performCollisions();
+	setupGalaxyObjectOnMap(0x98C, A_KEEN_STAND);
 }
 
 

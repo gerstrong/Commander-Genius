@@ -24,11 +24,10 @@ CStunnable(pmap, x, y),
 CPlatform(pmap, x, y, OBJ_NONE),
 bounceboost(0)
 {
-	m_ActionBaseOffset = 0x2F12;
-	setActionForce(A_BOUNDER_BOUNCE);
+	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);
 	mp_processState = (void (CStunnable::*)()) &CBounder::processBounce;
 	m_hDir = NONE;
-	performCollisions();
+
 }
 
 void CBounder::getTouchedBy(CObject &theObject)
@@ -40,7 +39,7 @@ void CBounder::getTouchedBy(CObject &theObject)
 	CPlatform::getTouchedBy(theObject);
 
 	// Was it a bullet? Than make it stunned.
-	if( dynamic_cast<CBullet*>(&theObject) )
+	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
 	{
 		mp_processState = &CStunnable::processGettingStunned;
 		setAction( A_BOUNDER_STUNNED );

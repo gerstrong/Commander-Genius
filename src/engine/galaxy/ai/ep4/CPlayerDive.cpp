@@ -26,13 +26,7 @@ CPlayerBase(pmap, x, y,
 m_swimupspeed(0),
 m_breathtimer(0)
 {
-	m_ActionBaseOffset = 0x19EC;
-	setActionForce(A_KEENSWIM_MOVE);
-
-	processActionRoutine();
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	processMove(0, (14<<STC)-(rSprite.m_bboxY2-rSprite.m_bboxY1));
-	performCollisions();
+	setupGalaxyObjectOnMap(0x19EC, A_KEENSWIM_MOVE);
 }
 
 

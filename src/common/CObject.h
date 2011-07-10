@@ -181,6 +181,12 @@ public:
 	 * \brief	This function checks if there is any collision and moves the object safely
 	 * \param	dir	The direction where the object has to go to...
 	 */
+
+	/**
+	 * This setups the object on the Map. This is galaxy engine only so far,
+	 */
+	void setupGalaxyObjectOnMap(const size_t ActionBaseOffset = 0x0,
+								const size_t ActionNumber = 0x0 );
 	void processMove(const VectorD2<int>& dir);
 	void processMoveBitLeft();
 	void processMoveBitRight();

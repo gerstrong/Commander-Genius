@@ -24,12 +24,10 @@ CStunnable(pmap, x, y, OBJ_NONE),
 m_ObjectPtrs(ObjectPtrs),
 m_timer(0)
 {
-	m_ActionBaseOffset = 0x2012;
-	setActionForce(A_SLUG_MOVE);
+	setupGalaxyObjectOnMap(0x2012, A_SLUG_MOVE);
+
 	mp_processState = (void (CStunnable::*)()) &CPoisonSlug::processCrawling;
 	m_hDir = LEFT;
-	processActionRoutine();
-	performCollisions();
 }
 
 

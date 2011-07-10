@@ -18,10 +18,7 @@ const int A_SLUGPOISON_FADE = 1;
 CSlugSlime::CSlugSlime(CMap *pmap, Uint32 x, Uint32 y) :
 CObject(pmap, x, y, OBJ_NONE)
 {
-	m_ActionBaseOffset = 0x20A8;
-	setActionForce(A_SLUGPOISON_NORMAL);
-	processActionRoutine();
-	performCollisions();
+	setupGalaxyObjectOnMap(0x20A8, A_SLUGPOISON_NORMAL);
 }
 
 void CSlugSlime::getTouchedBy(CObject &theObject)

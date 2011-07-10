@@ -22,11 +22,8 @@ CObject(pmap, x, y, OBJ_NONE),
 rescued(false),
 m_timer(0)
 {
-	m_ActionBaseOffset = 0x1FB8;
-	setActionForce(A_COUNCIL_MEMBER_MOVE);
+	setupGalaxyObjectOnMap(0x1FB8, A_COUNCIL_MEMBER_MOVE);
 	mp_processState = &CCouncilMember::processWalking;
-	setActionSprite();
-	calcBouncingBoxes();
 
 	answermap[0] = "KEEN_NOSWEAT_TEXT";
 	answermap[1] = "KEEN_BEARDED_ONE_TEXT";

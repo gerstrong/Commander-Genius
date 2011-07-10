@@ -24,8 +24,7 @@ CObject(pmap, x, y, OBJ_RAY)
 	else if(dir == UP || dir == DOWN)
 		m_vDir = dir;
 
-	m_ActionBaseOffset = 0x1738;
-	setActionForce(A_KEENSHOT_MOVING);
+	setupGalaxyObjectOnMap(0x1738, A_KEENSHOT_MOVING);
 	setActionSprite();
 	calcBouncingBoxes();
 	playSound( SOUND_KEEN_FIRE );

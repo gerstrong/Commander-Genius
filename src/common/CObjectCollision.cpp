@@ -627,6 +627,26 @@ void CObject::processMoveBitDown()
 	m_Pos.y+=MOVE_RES;
 }
 
+
+void CObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
+									 const size_t ActionNumber )
+{
+	m_ActionBaseOffset = ActionBaseOffset;
+	m_climbing = false;
+	m_jumped = false;
+
+	setActionForce(ActionNumber);
+
+	setActionSprite();
+
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+	performCollisions();
+	if((rSprite.m_bboxY2-rSprite.m_bboxY1) < 0)
+		processMove(0, (14<<STC)-(rSprite.m_bboxY2-rSprite.m_bboxY1));
+	processActionRoutine();
+}
+
 void CObject::processMove(const VectorD2<int>& dir)
 {
 	processMove(dir.x, dir.y);

@@ -30,7 +30,7 @@ CObject( pmap, x, y, type )
 
 void CStunnable::getTouchedBy(CObject &theObject)
 {
-	if( dynamic_cast<CBullet*>(&theObject) )
+	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
 	{
 		theObject.setAction(A_KEENSHOT_IMPACT);
 		theObject.playSound( SOUND_SHOT_HIT );
