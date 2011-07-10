@@ -279,14 +279,6 @@
 		23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
 		23F2165412871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
 		23F2165512871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
-		35F1E237134F647400C6230F /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E22F134F647400C6230F /* CPlatform.cpp */; };
-		35F1E238134F647400C6230F /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E22F134F647400C6230F /* CPlatform.cpp */; };
-		35F1E239134F647400C6230F /* CPlatformDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E231134F647400C6230F /* CPlatformDrop.cpp */; };
-		35F1E23A134F647400C6230F /* CPlatformDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E231134F647400C6230F /* CPlatformDrop.cpp */; };
-		35F1E23B134F647400C6230F /* CPlatformHorizontal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E233134F647400C6230F /* CPlatformHorizontal.cpp */; };
-		35F1E23C134F647400C6230F /* CPlatformHorizontal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E233134F647400C6230F /* CPlatformHorizontal.cpp */; };
-		35F1E23D134F647400C6230F /* CPlatformVertical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E235134F647400C6230F /* CPlatformVertical.cpp */; };
-		35F1E23E134F647400C6230F /* CPlatformVertical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E235134F647400C6230F /* CPlatformVertical.cpp */; };
 		35F1E242134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */; };
 		35F1E243134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */; };
 		35F1E247134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */; };
@@ -294,7 +286,6 @@
 		35F1E24B134F73F800C6230F /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35F1E249134F73F800C6230F /* Readme.txt */; };
 		63010C0813400D4A00F212CA /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010BFE13400D4A00F212CA /* CGameControl.cpp */; };
 		63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */; };
-		63010C0A13400D4A00F212CA /* CGameMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0213400D4A00F212CA /* CGameMode.cpp */; };
 		63010C0B13400D4A00F212CA /* CGamePassiveMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0413400D4A00F212CA /* CGamePassiveMode.cpp */; };
 		63010C0C13400D4A00F212CA /* CGamePlayMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0613400D4A00F212CA /* CGamePlayMode.cpp */; };
 		63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
@@ -644,14 +635,6 @@
 		23E2A70E1217525E00F0CD34 /* CProfilesMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CProfilesMenu.h; sourceTree = "<group>"; };
 		23E2A70F1217525E00F0CD34 /* CSelectionMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSelectionMenu.h; sourceTree = "<group>"; };
 		23F2165312871F9500A8842A /* CObjectCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectCollision.cpp; sourceTree = "<group>"; };
-		35F1E22F134F647400C6230F /* CPlatform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatform.cpp; sourceTree = "<group>"; };
-		35F1E230134F647400C6230F /* CPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatform.h; sourceTree = "<group>"; };
-		35F1E231134F647400C6230F /* CPlatformDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformDrop.cpp; sourceTree = "<group>"; };
-		35F1E232134F647400C6230F /* CPlatformDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformDrop.h; sourceTree = "<group>"; };
-		35F1E233134F647400C6230F /* CPlatformHorizontal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformHorizontal.cpp; sourceTree = "<group>"; };
-		35F1E234134F647400C6230F /* CPlatformHorizontal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformHorizontal.h; sourceTree = "<group>"; };
-		35F1E235134F647400C6230F /* CPlatformVertical.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlatformVertical.cpp; sourceTree = "<group>"; };
-		35F1E236134F647400C6230F /* CPlatformVertical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlatformVertical.h; sourceTree = "<group>"; };
 		35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBoxVort.cpp; sourceTree = "<group>"; };
 		35F1E241134F6DA700C6230F /* CMessageBoxVort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBoxVort.h; sourceTree = "<group>"; };
 		35F1E245134F6DEE00C6230F /* CMessageBoxGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBoxGalaxy.cpp; sourceTree = "<group>"; };
@@ -663,7 +646,6 @@
 		63010BFF13400D4A00F212CA /* CGameControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameControl.h; sourceTree = "<group>"; };
 		63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameLauncherMenu.cpp; sourceTree = "<group>"; };
 		63010C0113400D4A00F212CA /* CGameLauncherMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameLauncherMenu.h; sourceTree = "<group>"; };
-		63010C0213400D4A00F212CA /* CGameMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameMode.cpp; sourceTree = "<group>"; };
 		63010C0313400D4A00F212CA /* CGameMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMode.h; sourceTree = "<group>"; };
 		63010C0413400D4A00F212CA /* CGamePassiveMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGamePassiveMode.cpp; sourceTree = "<group>"; };
 		63010C0513400D4A00F212CA /* CGamePassiveMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGamePassiveMode.h; sourceTree = "<group>"; };
@@ -1261,7 +1243,6 @@
 				63385F2113C0091200BC2558 /* ep4 */,
 				63385F3013C0091200BC2558 /* platform */,
 				239B34811392FA4C00E61F21 /* platforms.h */,
-				35F1E22E134F647400C6230F /* platform */,
 				23A1441F12A5380E00E894CF /* CItemEffect.cpp */,
 				23A1442012A5380E00E894CF /* CItemEffect.h */,
 				23A1442112A5380E00E894CF /* CSpriteItem.cpp */,
@@ -1311,21 +1292,6 @@
 			path = music;
 			sourceTree = "<group>";
 		};
-		35F1E22E134F647400C6230F /* platform */ = {
-			isa = PBXGroup;
-			children = (
-				35F1E22F134F647400C6230F /* CPlatform.cpp */,
-				35F1E230134F647400C6230F /* CPlatform.h */,
-				35F1E231134F647400C6230F /* CPlatformDrop.cpp */,
-				35F1E232134F647400C6230F /* CPlatformDrop.h */,
-				35F1E233134F647400C6230F /* CPlatformHorizontal.cpp */,
-				35F1E234134F647400C6230F /* CPlatformHorizontal.h */,
-				35F1E235134F647400C6230F /* CPlatformVertical.cpp */,
-				35F1E236134F647400C6230F /* CPlatformVertical.h */,
-			);
-			path = platform;
-			sourceTree = "<group>";
-		};
 		35F1E23F134F6DA700C6230F /* dialog */ = {
 			isa = PBXGroup;
 			children = (
@@ -1364,7 +1330,6 @@
 				63010BFF13400D4A00F212CA /* CGameControl.h */,
 				63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */,
 				63010C0113400D4A00F212CA /* CGameLauncherMenu.h */,
-				63010C0213400D4A00F212CA /* CGameMode.cpp */,
 				63010C0313400D4A00F212CA /* CGameMode.h */,
 				63010C0413400D4A00F212CA /* CGamePassiveMode.cpp */,
 				63010C0513400D4A00F212CA /* CGamePassiveMode.h */,
@@ -2368,7 +2333,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"false\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"CGenius-${VER}-Mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
+			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"true\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"CGenius-${VER}-Mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2578,14 +2543,9 @@
 				63AEA5C0132D4B6A000344F1 /* CScrollEffect.cpp in Sources */,
 				63010C0813400D4A00F212CA /* CGameControl.cpp in Sources */,
 				63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */,
-				63010C0A13400D4A00F212CA /* CGameMode.cpp in Sources */,
 				63010C0B13400D4A00F212CA /* CGamePassiveMode.cpp in Sources */,
 				63010C0C13400D4A00F212CA /* CGamePlayMode.cpp in Sources */,
 				63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */,
-				35F1E237134F647400C6230F /* CPlatform.cpp in Sources */,
-				35F1E239134F647400C6230F /* CPlatformDrop.cpp in Sources */,
-				35F1E23B134F647400C6230F /* CPlatformHorizontal.cpp in Sources */,
-				35F1E23D134F647400C6230F /* CPlatformVertical.cpp in Sources */,
 				35F1E242134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */,
 				35F1E247134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */,
 				239CC9C1137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp in Sources */,
@@ -2814,10 +2774,6 @@
 				63AEA5BD132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */,
 				63AEA5C1132D4B6A000344F1 /* CScrollEffect.cpp in Sources */,
 				63010C1013400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */,
-				35F1E238134F647400C6230F /* CPlatform.cpp in Sources */,
-				35F1E23A134F647400C6230F /* CPlatformDrop.cpp in Sources */,
-				35F1E23C134F647400C6230F /* CPlatformHorizontal.cpp in Sources */,
-				35F1E23E134F647400C6230F /* CPlatformVertical.cpp in Sources */,
 				35F1E243134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */,
 				35F1E248134F6DEE00C6230F /* CMessageBoxGalaxy.cpp in Sources */,
 				239CC9C2137C8605009689BF /* CMessageBoxBitmapGalaxy.cpp in Sources */,
