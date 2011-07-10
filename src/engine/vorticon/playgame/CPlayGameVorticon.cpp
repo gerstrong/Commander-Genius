@@ -571,8 +571,7 @@ void CPlayGameVorticon::drawObjects()
 	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
 	{
-		if(!(*it_obj)->dontdraw)
-			(*it_obj)->draw();
+		(*it_obj)->draw();
 	}
 
 	// We draw the Player as last, because we want to see him in front of the other objects
