@@ -68,6 +68,7 @@ void CHelpMenu::processSpecific()
 		case 6:
 			mp_InfoScene = new CCredits(m_ExeFile.getDataDirectory(),
 										m_ExeFile.getEpisode());
+			break;
 		case 7:
 			mp_InfoScene = new CPreviews(m_ExeFile);
 			break;
