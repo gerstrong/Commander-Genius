@@ -102,33 +102,6 @@ void CCamera::process(const bool force)
 			moveUp( local_y - attached_y );
 			m_moving |= true;
 		}
-
-		/*if(!m_moving)
-		{
-			// Make the camera move and tell if it's scrolling through the m_moving variable
-			if( attached_x > local_x )
-			{
-				moveRight( attached_x - local_x );
-				m_moving |= true;
-
-			}
-			else if( attached_x < local_x )
-			{
-				moveLeft( local_x - attached_x );
-				m_moving |= true;
-			}
-
-			if( attached_y > local_y )
-			{
-				moveDown( attached_y - local_y );
-				m_moving |= true;
-			}
-			else if( attached_y < local_y )
-			{
-				moveUp( local_y - attached_y );
-				m_moving |= true;
-			}
-		}*/
 	}
 
 	Uint16& scroll_x = mp_Map->m_scrollx;

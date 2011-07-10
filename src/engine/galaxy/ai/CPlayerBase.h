@@ -73,6 +73,8 @@ public:
 
 	CInventory &m_Inventory;
 
+	CCamera m_camera;
+
 protected:
 
 	std::vector<CObject*>& m_ObjectPtrs;
@@ -80,7 +82,7 @@ protected:
 	char m_playcontrol[PA_MAX_ACTIONS];
 	int m_timer;
 
-	CCamera m_camera;
+	//CCamera m_camera;
 	bool m_dying;
 
 	stCheat& m_Cheatmode;
