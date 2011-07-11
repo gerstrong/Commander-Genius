@@ -28,7 +28,8 @@ m_alignment(alignment)
 	else
 		m_TextPos.x = 10+m_Bitmap.getWidth();
 
-	m_TextPos.y = ( (new_height+16)/2 ) - 8*m_Lines.size();
+	// I think this depends on the font height itself. I don't get why 6 is correct here.
+	m_TextPos.y = ( (new_height+16)/2 ) - 6*m_Lines.size();
 
 	// Resize
 	mp_DlgFrame->resize(m_boxrect.w+m_Bitmap.getWidth()+2, new_height+16);
