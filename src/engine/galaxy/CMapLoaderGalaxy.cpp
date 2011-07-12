@@ -26,6 +26,7 @@
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/ep4/CPlayerDive.h"
 #include "engine/galaxy/ai/ep4/CPoisonSlug.h"
+#include "engine/galaxy/ai/ep4/CMadMushroom.h"
 #include "engine/galaxy/ai/ep4/CCouncilMember.h"
 #include "engine/galaxy/ai/ep4/CMiragia.h"
 #include "engine/galaxy/ai/ep4/CDiveSuit.h"
@@ -405,10 +406,18 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		p_newfoe = new galaxy::CBounder(&Map, x, y-250);
 		break;
 
+	case 21:
+		// This is a Mad Mushroom.
+		p_newfoe = new galaxy::CMadMushroom(&Map, x, y);
+		break;
+
+
 	case 22:
-		//This is a Poison Slug.
+		// This is a Poison Slug.
 		p_newfoe = new galaxy::CPoisonSlug(&Map, x, y-250, m_ObjectPtr);
 		break;
+
+
 
 	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
 		p_newfoe = new galaxy::CPlatformVertical(&Map, x, y); break;
