@@ -126,10 +126,13 @@ void CInput::resetControls(int player) {
 	InputCommand[i][IC_QUIT].which = 0;
 
 	#ifdef ANDROID
+	// Joystick input is broken in main menu and dialogs, so disabled for now
+	/*
 	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
 	InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_JOYAXIS;
 	InputCommand[i][IC_UP].joyeventtype = ETYPE_JOYAXIS;
 	InputCommand[i][IC_DOWN].joyeventtype = ETYPE_JOYAXIS;
+	*/
 	#endif
 
 	setTwoButtonFiring(i, false);
@@ -224,7 +227,7 @@ void CInput::loadControlconfig(void)
 			setupInputCommand( InputCommand[i], IC_HELP, value );
 			Configuration.ReadString( section, "Quit", value, "Key 27 (escape)");
 			setupInputCommand( InputCommand[i], IC_QUIT, value );
-			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], true);
+			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
 		}
 	}
 	else

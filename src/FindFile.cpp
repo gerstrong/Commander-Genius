@@ -48,7 +48,7 @@
 
 // include hash_set support
 #	if !defined(STLPORT)
-#		if defined(__GNUC__) &&  __GNUC_PREREQ(4,3)
+#		if defined(__GNUC__) &&  __GNUC_PREREQ(4,3) || defined(ANDROID)
 #			include <tr1/unordered_set>
 #			define hash_set std::tr1::unordered_set
 #		else

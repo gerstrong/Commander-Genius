@@ -17,6 +17,7 @@
 #include "fileio/CSavedGame.h"
 #include "SmartPointer.h"
 #include "CLogFile.h"
+#include "Debug.h"
 
 CGameLauncherMenu::CGameLauncherMenu(bool& first_time, const int start_game_no, const int start_level) :
 mp_GameLauncher(NULL),
@@ -248,5 +249,4 @@ void CGameLauncherMenu::process()
 			EventContainer.add( new GMQuit() );
 		}
 	}
-
 }

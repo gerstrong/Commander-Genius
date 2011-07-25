@@ -104,15 +104,16 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		// Open the AUDIOHED so we know where to decompress
 		uint32_t number_of_audiorecs = 0;
 		// That size must appear as integer in the ExeFile. Look for it!
-		uint32_t *audiohedptr = (uint32_t*) ExeFile.getHeaderData();
+		assert( ExeFile.getHeaderData() % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
+		uint32_t *audiohedptr = (uint32_t*) (void*) ExeFile.getHeaderData();
 		bool found = false;
-		for( const uint32_t *endptr = (uint32_t*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
+		for( const uint32_t *endptr = (uint32_t*) (void*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
 				audiohedptr < endptr ;
 				audiohedptr++ )
 		{
 			if(*audiohedptr == audiofilecompsize)
 			{
-				for( const uint32_t *startptr = (uint32_t*) ExeFile.getHeaderData() ;
+				for( const uint32_t *startptr = (uint32_t*) (void*) ExeFile.getHeaderData() ;
 						audiohedptr > startptr ; audiohedptr-- )
 				{
 					found = true;
@@ -161,8 +162,9 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 			if( audio_start < audio_end )
 			{
+				assert( AudioCompFileData + audio_start % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
 				const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
-				const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
+				const uint32_t *AudioCompFileData32 = (uint32_t*) (void*) (AudioCompFileData + audio_start);
 				outsize = *AudioCompFileData32;
 				byte *imfdata = new byte[outsize];
 

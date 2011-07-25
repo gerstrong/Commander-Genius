@@ -14,6 +14,7 @@
 #include "CLogFile.h"
 #include <fstream>
 #include <string>
+#include <cassert>
 
 const Uint32 GalaxySongAssignments[] =
 {
@@ -107,15 +108,16 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 	// Open the AUDIOHED so we know where tomp_IMF_Data decompress
 	uint32_t number_of_audiorecs = 0;
 	// That size must appear as integer in the ExeFile. Look for it!
-	audiohedptr = (uint32_t*) ExeFile.getHeaderData();
+	assert( ExeFile.getHeaderData() % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
+	audiohedptr = (uint32_t*) (void*) ExeFile.getHeaderData();
 	bool found = false;
-	for( const uint32_t *endptr = (uint32_t*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
+	for( const uint32_t *endptr = (uint32_t*) (void*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
 			audiohedptr < endptr ;
 			audiohedptr++ )
 	{
 		if(*audiohedptr == audiofilecompsize)
 		{
-			for( const uint32_t *startptr = (uint32_t*) ExeFile.getHeaderData() ;
+			for( const uint32_t *startptr = (uint32_t*) (void*) ExeFile.getHeaderData() ;
 					audiohedptr > startptr ; audiohedptr-- )
 			{
 				found = true;
@@ -169,8 +171,9 @@ bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
 
 	if( audio_start < audio_end )
 	{
+		assert( AudioCompFileData + audio_start % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
 		const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
-		const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
+		const uint32_t *AudioCompFileData32 = (uint32_t*) (void*) (AudioCompFileData + audio_start);
 		const uint32_t emb_file_data_size = *AudioCompFileData32;
 
 
@@ -184,7 +187,7 @@ bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
 			data_size = emb_file_data_size;
 		else
 		{
-			data_size = *((word*)imf_data_ptr);
+			data_size = *((word*) (void*) imf_data_ptr);
 			imf_data_ptr+=sizeof(word);
 		}
 
@@ -267,7 +270,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 
 	if(m_AudioDevSpec.format == AUDIO_S16)
 	{
-		Sint16 *buf16 = (Sint16*)buffer;
+		Sint16 *buf16 = (Sint16*) (void*) buffer;
 		for (unsigned int i=0; i<length; ++i)
 		{
 			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)

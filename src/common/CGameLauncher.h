@@ -52,10 +52,9 @@ public:
     void cleanup();
 
 	void process();
-	Uint8 retrievetEpisode(short chosengame);
 
-	char getChosengame(){ return m_chosenGame; }
-	bool setChosenGame(unsigned char chosengame) { m_chosenGame = chosengame; return waschosen();  }
+	int getChosengame(){ return m_chosenGame; }
+	bool setChosenGame(int chosengame) { m_chosenGame = chosengame; return waschosen();  }
 	bool waschosen(){ return (m_chosenGame>=0); }
 	void letchooseagain() { m_chosenGame=-1; }
 
@@ -67,7 +66,7 @@ public:
 private:
 
 	bool m_mustquit;
-	short m_chosenGame;
+	int m_chosenGame;
 	Uint8 m_episode;
 	DirList m_DirList;
 	Sint8 m_ep1slot;

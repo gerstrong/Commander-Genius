@@ -68,7 +68,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
    		{
    			for( unsigned int count=0 ; count<waittimes ; count++ )
    			{
-   				Sint16 *buffer = (Sint16*) waveform_ptr;
+   				Sint16 *buffer = (Sint16*) (void*) waveform_ptr;
 
    				OPLEmulator.Chip__GenerateBlock2( samplesPerMusicTick, mix_buffer );
 

@@ -1152,14 +1152,14 @@ static void Chip__WriteBD(Chip *self, Bit8u val ) {
 #define REGOP( _FUNC_ )															\
 	index = ( ( reg >> 3) & 0x20 ) | ( reg & 0x1f );								\
 	if ( OpOffsetTable[ index ] ) {													\
-		Operator* regOp = (Operator*)( ((char *)self ) + OpOffsetTable[ index ] );	\
+		Operator* regOp = (Operator*) (void*) ( ((char *)self ) + OpOffsetTable[ index ] );	\
                 Operator__ ## _FUNC_ (regOp, self, val); \
 	}
 
 #define REGCHAN( _FUNC_ )																\
 	index = ( ( reg >> 4) & 0x10 ) | ( reg & 0xf );										\
 	if ( ChanOffsetTable[ index ] ) {													\
-		Channel* regChan = (Channel*)( ((char *)self ) + ChanOffsetTable[ index ] );	\
+		Channel* regChan = (Channel*) (void*) ( ((char *)self ) + ChanOffsetTable[ index ] );	\
                 Channel__ ## _FUNC_ (regChan, self, val); \
 	}
 

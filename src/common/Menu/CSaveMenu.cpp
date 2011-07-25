@@ -74,7 +74,7 @@ void CSaveMenu::processSpecific()
 
 			}
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) &&
-					(g_pInput->getPressedKey(KENTER) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) ) )
+					(g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) ) )
 			{
 				saveSelection();
 			}
