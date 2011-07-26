@@ -104,7 +104,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		// Open the AUDIOHED so we know where to decompress
 		uint32_t number_of_audiorecs = 0;
 		// That size must appear as integer in the ExeFile. Look for it!
-		assert( ExeFile.getHeaderData() % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
+		assert( reinterpret_cast<size_t>(ExeFile.getHeaderData()) % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
 		uint32_t *audiohedptr = (uint32_t*) (void*) ExeFile.getHeaderData();
 		bool found = false;
 		for( const uint32_t *endptr = (uint32_t*) (void*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
