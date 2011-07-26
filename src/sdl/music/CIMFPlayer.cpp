@@ -108,7 +108,9 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 	// Open the AUDIOHED so we know where tomp_IMF_Data decompress
 	uint32_t number_of_audiorecs = 0;
 	// That size must appear as integer in the ExeFile. Look for it!
+#if defined(ANDROID)
 	assert( reinterpret_cast<size_t>(ExeFile.getHeaderData()) % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
+#endif
 	// TODO: Not sure, if that is a good idea
 	audiohedptr = (uint32_t*) (void*) ExeFile.getHeaderData();
 	bool found = false;
@@ -172,7 +174,9 @@ bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
 
 	if( audio_start < audio_end )
 	{
+#if defined(ANDROID)
 		assert( AudioCompFileData + audio_start % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
+#endif
 		const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
 		const uint32_t *AudioCompFileData32 = (uint32_t*) (void*) (AudioCompFileData + audio_start);
 		const uint32_t emb_file_data_size = *AudioCompFileData32;
