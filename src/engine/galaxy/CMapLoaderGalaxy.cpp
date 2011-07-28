@@ -21,7 +21,9 @@
 #include "CLogFile.h"
 #include "engine/CCamera.h"
 
-// AI Headers
+/// AI Headers
+
+// Episode 4
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/ep4/CPlayerDive.h"
@@ -31,6 +33,9 @@
 #include "engine/galaxy/ai/ep4/CMiragia.h"
 #include "engine/galaxy/ai/ep4/CDiveSuit.h"
 #include "engine/galaxy/ai/ep4/CBounder.h"
+#include "engine/galaxy/ai/ep4/CDopeFish.h"
+
+// General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/platforms.h"
 
@@ -406,6 +411,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		p_newfoe = new galaxy::CBounder(&Map, x, y-250);
 		break;
 
+
 	case 21:
 		// This is a Mad Mushroom.
 		p_newfoe = new galaxy::CMadMushroom(&Map, x, y);
@@ -416,7 +422,6 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		// This is a Poison Slug.
 		p_newfoe = new galaxy::CPoisonSlug(&Map, x, y-250, m_ObjectPtr);
 		break;
-
 
 
 	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
@@ -442,6 +447,11 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		// This is Keen in the swimming suit
 		p_newfoe = new galaxy::CPlayerDive(&Map, x, y, m_ObjectPtr,
 						RIGHT, m_Inventory, m_Cheatmode);
+		break;
+
+	case 87:
+		// Dope Fish
+		p_newfoe = new galaxy::CDopeFish(&Map, x, y);
 		break;
 
 

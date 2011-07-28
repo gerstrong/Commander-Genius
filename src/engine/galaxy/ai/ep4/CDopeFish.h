@@ -22,13 +22,22 @@ public:
 	// Normal process-cycle
 	void process();
 
+	// Overloaded functions
+	bool isNearby(CObject &theObject);
+
+private:
+	// Basic movement of the Dopefish
+	void moveDope(const int speed);
+
 	// These function are the action that the Dopefish does
 	void processSwim();
 	void processEat();
 	void processBurp();
 
-private:
 	void (CDopeFish::*mp_processState)();
+
+	int m_eatTimer;
+	bool m_burped;
 };
 
 } /* namespace galaxy */
