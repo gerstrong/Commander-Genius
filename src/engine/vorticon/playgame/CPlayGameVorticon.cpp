@@ -599,7 +599,8 @@ void CPlayGameVorticon::drawAllElements()
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
 
-	if(mp_option[OPT_HUD].value && !mp_Finale)
+	if(mp_option[OPT_HUD].value && !mp_Finale &&
+			!m_paused && !mp_Menu && !mp_HighScores)
 	{	// Draw the HUD
 		mp_HUD->render();
 	}
