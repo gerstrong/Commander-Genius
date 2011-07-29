@@ -7,6 +7,7 @@
 
 #include "CDopeFish.h"
 #include "engine/galaxy/ai/ep4/CPlayerDive.h"
+#include "CBigBubble.h"
 
 namespace galaxy {
 
@@ -113,6 +114,8 @@ void CDopeFish::processBurp()
 	if(!m_burped && getActionStatus(A_DOPEFISH_BURPING))
 	{
 		g_pSound->playSound(SOUND_DOPEFISH_BURP);
+		CBigBubble *Bubble = new CBigBubble(mp_Map, getXMidPos()+(1<<CSF), getYMidPos()+(1<<CSF));
+		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Bubble ) );
 		m_burped = true;
 	}
 
@@ -138,7 +141,6 @@ void CDopeFish::getTouchedBy(CObject &theObject)
 void CDopeFish::process()
 {
 	(this->*mp_processState)();
-
 
 	processActionRoutine();
 }

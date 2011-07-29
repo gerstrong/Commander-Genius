@@ -7,7 +7,7 @@
 
 #include "CSpriteItem.h"
 #include "CItemEffect.h"
-#include "CPlayerLevel.h"
+#include "CPlayerBase.h"
 #include "sdl/sound/CSound.h"
 
 namespace galaxy {
@@ -45,7 +45,7 @@ void CSpriteItem::process()
 
 void CSpriteItem::getTouchedBy(CObject &theObject)
 {
-	if( CPlayerLevel* pPlayer = dynamic_cast<CPlayerLevel*>(&theObject) )
+	if( CPlayerBase* pPlayer = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		stItemGalaxy &Item = pPlayer->m_Inventory.Item;
 
