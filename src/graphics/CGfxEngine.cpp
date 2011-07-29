@@ -216,7 +216,8 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name)
 // Process Routines
 ///
 void CGfxEngine::process(){
-	if(mp_Effects){
+	if(mp_Effects)
+	{
 		mp_Effects->process();
 
 		if(runningEffect())

@@ -27,8 +27,11 @@ private:
 };
 
 template<typename T>
-T* CEventContainer::occurredEvent() {
-	if(m_EventList.empty()) return NULL;
+T* CEventContainer::occurredEvent()
+{
+	if(m_EventList.empty())
+		return NULL;
+
 	return dynamic_cast<T*> (m_EventList.front().get());
 }
 

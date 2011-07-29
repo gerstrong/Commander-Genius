@@ -51,7 +51,8 @@ bool CGame::init(int argc, char *argv[])
 		Settings.saveDrvCfg();
 	}
 
-	if(!Settings.loadGameCfg())	Settings.loadDefaultGameCfg();
+	if(!Settings.loadGameCfg())
+		Settings.loadDefaultGameCfg();
 
 	// Setup the Hardware using the settings we have loaded
 	g_pLogFile->textOut(GREEN,"Loading hardware settings...<br>");
