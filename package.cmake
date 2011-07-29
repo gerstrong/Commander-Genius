@@ -1,4 +1,5 @@
-OPTION(CREATE_DEBS "Will create Debian Packages" No)
+OPTION(CREATE_DEBS "Will create DEBs" No)
+OPTION(CREATE_RPMS "Will create RPMs" No)
 
 # Now let's setup the package for installation. You can create the package of the chosen build
 # running make package, and if needed just runs that package
@@ -38,7 +39,7 @@ SET(CPACK_PACKAGE_EXECUTABLES "CGenius" "Commander Genius")
 # This section is only called if the user wants to get debian packages created
 IF(CREATE_DEBS)
 	IF(BUILD_TYPE STREQUAL WIN32)
-		MESSAGE("WARNING: Windows does not use DEB Packages. Those won't be build here...")
+		MESSAGE("NOTE: Windows does not use DEB Packages. Those won't be build here...")
 	ELSE(BUILD_TYPE STREQUAL WIN32)
 		SET(CPACK_GENERATOR "DEB;${CPACK_GENERATOR}") # For Debian, Ubuntu etc...
 		SET(CPACK_DEBIAN_PACKAGE_NAME "CGenius")
@@ -56,6 +57,30 @@ IF(CREATE_DEBS)
 		SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
 	ENDIF(BUILD_TYPE STREQUAL WIN32)
 ENDIF(CREATE_DEBS)
+
+
+# This section is only called if the user wants to get debian packages created
+IF(CREATE_RPMS)
+	IF(BUILD_TYPE STREQUAL WIN32)
+		MESSAGE("NOTE: Windows does not use RPM Packages. Those won't be build here...")
+	ELSE(BUILD_TYPE STREQUAL WIN32)
+		SET(CPACK_GENERATOR "RPM;${CPACK_GENERATOR}") # For Fedora, OpenSuse, etc.
+		SET(CPACK_RPM_PACKAGE_SUMMARY "${CPACK_PACKAGE_DESCRIPTION_SUMMARY}")
+		SET(CPACK_RPM_PACKAGE_NAME "CGenius")
+		SET(CPACK_RPM_PACKAGE_VERSION ${CPACK_PACKAGE_VERSION})
+
+		IF(BUILD_TYPE STREQUAL LINUX64)
+			SET(CPACK_RPM_PACKAGE_ARCHITECTURE x86_64)
+		ENDIF(BUILD_TYPE STREQUAL LINUX64)
+		
+		SET(CPACK_RPM_PACKAGE_RELEASE 1)
+		SET(CPACK_RPM_PACKAGE_LICENSE "GPL 2")
+		SET(CPACK_RPM_PACKAGE_GROUP "Amusements/Games")
+		SET(CPACK_RPM_PACKAGE_VENDOR "${CPACK_PACKAGE_VENDOR}")
+		SET(CPACK_RPM_PACKAGE_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION_SUMMARY}\n .\n ${CPACK_PACKAGE_DESCRIPTION}")
+		SET(CPACK_RPM_PACKAGE_REQUIRES "SDL >= 1.2, libvorbis >= 1.3, mesa-libGL >= 7.7")
+	ENDIF(BUILD_TYPE STREQUAL WIN32)
+ENDIF(CREATE_RPMS)
 
 INCLUDE(CPack)
 
