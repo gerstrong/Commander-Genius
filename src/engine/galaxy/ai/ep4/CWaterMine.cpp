@@ -34,6 +34,8 @@ void CWaterMine::getTouchedBy(CObject &theObject)
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{
 		Player->kill();
+		mp_processState = &CWaterMine::processExplode;
+		setAction(A_MINE_EXPLODE);
 	}
 }
 
