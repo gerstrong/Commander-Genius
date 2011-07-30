@@ -7,7 +7,7 @@
 
 #include "CDopeFish.h"
 #include "engine/galaxy/ai/ep4/CPlayerDive.h"
-#include "CBigBubble.h"
+#include "CBubbles.h"
 
 namespace galaxy {
 
@@ -114,7 +114,7 @@ void CDopeFish::processBurp()
 	if(!m_burped && getActionStatus(A_DOPEFISH_BURPING))
 	{
 		g_pSound->playSound(SOUND_DOPEFISH_BURP);
-		CBigBubble *Bubble = new CBigBubble(mp_Map, getXMidPos()+(1<<CSF), getYMidPos()+(1<<CSF));
+		CBubbles *Bubble = new CBubbles(mp_Map, getXMidPos()+(1<<CSF), getYMidPos()+(1<<CSF), true);
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Bubble ) );
 		m_burped = true;
 	}

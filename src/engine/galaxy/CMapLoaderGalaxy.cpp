@@ -34,6 +34,7 @@
 #include "engine/galaxy/ai/ep4/CDiveSuit.h"
 #include "engine/galaxy/ai/ep4/CBounder.h"
 #include "engine/galaxy/ai/ep4/CDopeFish.h"
+#include "engine/galaxy/ai/ep4/CWaterMine.h"
 
 // General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
@@ -447,6 +448,15 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		// This is Keen in the swimming suit
 		p_newfoe = new galaxy::CPlayerDive(&Map, x, y, m_ObjectPtr,
 						RIGHT, m_Inventory, m_Cheatmode);
+		break;
+
+	case 71:
+		// Watermine vertical
+		p_newfoe = new galaxy::CWaterMine(&Map, x, y, true);
+		break;
+	case 72:
+		// Watermine horizontal
+		p_newfoe = new galaxy::CWaterMine(&Map, x, y, false);
 		break;
 
 	case 87:

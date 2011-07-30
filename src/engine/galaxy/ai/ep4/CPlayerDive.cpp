@@ -7,6 +7,7 @@
 
 #include "CPlayerDive.h"
 #include "sdl/CInput.h"
+#include "CBubbles.h"
 
 
 namespace galaxy {
@@ -32,9 +33,9 @@ m_breathtimer(0)
 
 
 
-const int MAXMOVESPEED = 15;
-const int MOVESPEED = 40;
-const int WATERFALLSPEED = 20;
+const int MAXMOVESPEED = 20;
+const int MOVESPEED = 30;
+const int WATERFALLSPEED = 10;
 const int BREATH_TIME = 60;
 
 void CPlayerDive::process()
@@ -85,6 +86,11 @@ void CPlayerDive::process()
 		moveUp(MOVESPEED+m_swimupspeed);
 		m_vDir = UP;
 	}
+	else if(g_pInput->getHoldedCommand(IC_DOWN))
+	{
+		moveDown(MOVESPEED+m_swimupspeed);
+		m_vDir = DOWN;
+	}
 	else
 	{
 		moveDown(WATERFALLSPEED+m_swimupspeed);
@@ -103,6 +109,9 @@ void CPlayerDive::process()
 	if( m_breathtimer >= BREATH_TIME )
 	{
 		playSound(SOUND_BUBBLE);
+		int dir_offset = (m_hDir==RIGHT) ? +(1<<CSF) : -(1<<CSF) ;
+		CBubbles *Bubble = new CBubbles(mp_Map, getXMidPos()+dir_offset, getYMidPos(), false);
+		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Bubble ) );
 		m_breathtimer = 0;
 	}
 	else
