@@ -72,6 +72,17 @@ bool CDopeFish::isNearby(CObject &theObject)
 	return true;
 }
 
+void CDopeFish::getTouchedBy(CObject &theObject)
+{
+	if(theObject.dead)
+		return;
+
+	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
+	{
+		Player->getEaten();
+	}
+}
+
 void CDopeFish::moveDope(const int speed)
 {
 	if(m_hDir == LEFT)
@@ -124,18 +135,6 @@ void CDopeFish::processBurp()
 		setAction(A_DOPEFISH_SWIM);
 		mp_processState = &CDopeFish::processSwim;
 	}
-}
-
-void CDopeFish::getTouchedBy(CObject &theObject)
-{
-	if(dead || theObject.dead)
-		return;
-
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-	{
-		player->kill();
-	}
-
 }
 
 void CDopeFish::process()

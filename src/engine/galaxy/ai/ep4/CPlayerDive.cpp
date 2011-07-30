@@ -28,9 +28,28 @@ m_swimupspeed(0),
 m_breathtimer(0)
 {
 	setupGalaxyObjectOnMap(0x19EC, A_KEENSWIM_MOVE);
+	mp_processState = (void (CPlayerBase::*)())(&CPlayerDive::processDiving);
 }
 
+const int DIE_FALL_MAX_INERTIA = 150;
 
+void CPlayerDive::kill()
+{
+	// Here were prepare Keen to die, setting the action to die
+	if(!m_Cheatmode.god)
+	{
+		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
+			return;
+
+		g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
+		setupGalaxyObjectOnMap(0x0D2E, (rand()%2));
+		m_dying = true;
+		yinertia = -DIE_FALL_MAX_INERTIA;
+		solid = false;
+		honorPriority = false;
+		mp_processState = &CPlayerBase::processDying;
+	}
+}
 
 
 const int MAXMOVESPEED = 20;
@@ -38,7 +57,7 @@ const int MOVESPEED = 30;
 const int WATERFALLSPEED = 10;
 const int BREATH_TIME = 60;
 
-void CPlayerDive::process()
+void CPlayerDive::processDiving()
 {
 	// In case noclipping was triggered, make it solid, or remove it...
 	if(m_Cheatmode.noclipping)
@@ -117,10 +136,15 @@ void CPlayerDive::process()
 	else
 		m_breathtimer++;
 
-	processLevelMiscFlagsCheck();
-
 	m_camera.process();
 	m_camera.processEvents();
+}
+
+void CPlayerDive::process()
+{
+	(this->*mp_processState)();
+
+	processLevelMiscFlagsCheck();
 
 	processActionRoutine();
 }

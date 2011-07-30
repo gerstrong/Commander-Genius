@@ -16,8 +16,8 @@ class CDopeFish : public CObject {
 public:
 	CDopeFish(CMap *pmap, Uint32 x, Uint32 y);
 
+	// When Dopefish gets touched by something
 	void getTouchedBy(CObject &theObject);
-
 
 	// Normal process-cycle
 	void process();

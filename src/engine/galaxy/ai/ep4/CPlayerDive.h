@@ -24,9 +24,15 @@ public:
 			CInventory &l_Inventory,
 			stCheat &Cheatmode);
 
+	void kill();
 	void process();
 
 private:
+
+
+	void processDiving();
+	void processDead();
+
 	int m_swimupspeed;
 	int m_breathtimer;
 };

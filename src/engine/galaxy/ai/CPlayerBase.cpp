@@ -22,8 +22,8 @@ CPlayerBase::CPlayerBase(
 		stCheat &Cheatmode) :
 CObject(pmap, x, y, OBJ_PLAYER),
 m_Inventory(l_Inventory),
-m_ObjectPtrs(ObjectPtrs),
 m_camera(pmap,x,y,this),
+m_ObjectPtrs(ObjectPtrs),
 m_Cheatmode(Cheatmode),
 mp_processState(NULL)
 {
@@ -230,6 +230,29 @@ void CPlayerBase::makeSwimSound()
 
 
 
+
+
+
+void CPlayerBase::getEaten()
+{
+	// Here were prepare Keen to die, setting the action to die
+	if(!m_Cheatmode.god && !m_dying)
+	{
+		m_dying = true;
+		yinertia = 0;
+		dontdraw = true;
+		solid = false;
+		honorPriority = false;
+		m_timer = 0;
+		g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
+		mp_processState = &CPlayerBase::processGetEaten;
+	}
+}
+
+
+
+
+
 void CPlayerBase::processDead()
 {
 	// must be processed only once!
@@ -273,9 +296,26 @@ void CPlayerBase::processDying()
 		solid = true;
 		honorPriority = true;
 	}
-
 }
 
+
+
+
+const int DIE_GETEATEN_TIME = 120;
+void CPlayerBase::processGetEaten()
+{
+	if(m_timer >= DIE_GETEATEN_TIME)
+	{
+		exists = false;
+		solid = true;
+		honorPriority = true;
+		m_timer = 0;
+	}
+	else
+	{
+		m_timer++;
+	}
+}
 
 
 

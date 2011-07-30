@@ -68,8 +68,18 @@ public:
 
 
 	void processDead();
-	void processDying();
+	virtual void processDying();
 	void kill();
+
+	/**
+	 * Happens when usually the Dopefish eats Keen
+	 */
+	void getEaten();
+
+	/**
+	 * Process the cycle when keen is getting eaten
+	 */
+	void processGetEaten();
 
 	CInventory &m_Inventory;
 
