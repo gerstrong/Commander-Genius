@@ -36,6 +36,7 @@ void CWaterMine::getTouchedBy(CObject &theObject)
 		Player->kill();
 		mp_processState = &CWaterMine::processExplode;
 		setAction(A_MINE_EXPLODE);
+		playSound(SOUND_MINE_EXPLOSION);
 	}
 }
 
