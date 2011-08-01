@@ -17,9 +17,10 @@ namespace galaxy {
 #define A_DOPEFISH_BURPING			5
 #define A_DOPEFISH_BURP_FINISHED	6
 
-const int DOPE_SPEED = 20;
-const int DOPE_BITE_SPEED = 40;
+const int DOPE_SPEED = 30;
+const int DOPE_BITE_SPEED = 60;
 const int CSF_MIN_DISTANCE_TO_CHARGE = 6<<CSF;
+const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
 const int DOPE_EAT_TIMER = 50;
 
 
@@ -43,15 +44,15 @@ bool CDopeFish::isNearby(CObject &theObject)
 		const int dy = player->getYMidPos() - getYMidPos();
 
 
-		if( dx<0 )
+		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 			m_hDir = LEFT;
-		else
+		else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 			m_hDir = RIGHT;
 
-		if( dy<0 )
-			m_vDir = UP;
-		else
-			m_vDir = DOWN;
+		if( dy<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+			m_vDir = (rand()%5) ? UP : DOWN;
+		else if( dy>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+			m_vDir = (rand()%5) ? DOWN : UP;
 
 		if(getActionNumber(A_DOPEFISH_SWIM))
 		{
