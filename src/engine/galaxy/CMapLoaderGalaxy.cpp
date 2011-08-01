@@ -36,6 +36,7 @@
 #include "engine/galaxy/ai/ep4/CDopeFish.h"
 #include "engine/galaxy/ai/ep4/CWaterMine.h"
 #include "engine/galaxy/ai/ep4/CDevilSprite.h"
+#include "engine/galaxy/ai/ep4/CSchoolFish.h"
 
 // General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
@@ -428,6 +429,11 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 23:
 		// This is a Sprite from the well of wishes.
 		p_newfoe = new galaxy::CDevilSprite(&Map, x, y);
+		break;
+
+	case 24:
+		// This is a Sprite from the well of wishes.
+		p_newfoe = new galaxy::CSchoolFish(&Map, x, y);
 		break;
 
 
