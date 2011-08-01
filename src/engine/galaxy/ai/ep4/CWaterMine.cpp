@@ -33,10 +33,15 @@ void CWaterMine::getTouchedBy(CObject &theObject)
 {
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{
+		void (CWaterMine::*ExplodeHandler)() = &CWaterMine::processExplode;
 		Player->kill();
-		mp_processState = &CWaterMine::processExplode;
-		setAction(A_MINE_EXPLODE);
-		playSound(SOUND_MINE_EXPLOSION);
+
+		if(mp_processState != ExplodeHandler)
+		{
+			mp_processState = ExplodeHandler;
+			setAction(A_MINE_EXPLODE);
+			playSound(SOUND_MINE_EXPLOSION);
+		}
 	}
 }
 
