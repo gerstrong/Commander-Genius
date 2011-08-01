@@ -83,7 +83,8 @@ void CWaterMine::processMove()
 
 void CWaterMine::processExplode()
 {
-
+	// This is intententially left empty. The explosion just happens without any extra interaction
+	// because it is taken over be action script
 }
 
 void CWaterMine::process()

@@ -35,6 +35,7 @@
 #include "engine/galaxy/ai/ep4/CBounder.h"
 #include "engine/galaxy/ai/ep4/CDopeFish.h"
 #include "engine/galaxy/ai/ep4/CWaterMine.h"
+#include "engine/galaxy/ai/ep4/CDevilSprite.h"
 
 // General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
@@ -422,6 +423,11 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 22:
 		// This is a Poison Slug.
 		p_newfoe = new galaxy::CPoisonSlug(&Map, x, y-250, m_ObjectPtr);
+		break;
+
+	case 23:
+		// This is a Sprite from the well of wishes.
+		p_newfoe = new galaxy::CDevilSprite(&Map, x, y);
 		break;
 
 

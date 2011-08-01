@@ -16,7 +16,19 @@ class CDevilSprite: public CObject {
 public:
 	CDevilSprite(CMap *pmap, Uint32 x, Uint32 y);
 
+	void getTouchedBy(CObject &theObject);
+	bool isNearby(CObject &theObject);
+
 	void process();
+
+private:
+	void processMove();
+	void processLook();
+	void processShoot();
+
+	void (CDevilSprite::*mp_processState)();
+
+	int m_timer;
 };
 
 } /* namespace galaxy */
