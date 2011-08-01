@@ -42,15 +42,20 @@ void CWaterMine::getTouchedBy(CObject &theObject)
 
 void CWaterMine::processMove()
 {
+	performCollisions();
+
 	if(m_vDir)
 	{
-		const Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+		const Uint16 blockerUp = mp_Map->getPlaneDataAt(2, getXMidPos(), getYUpPos());
+		const Uint16 blockerDown = mp_Map->getPlaneDataAt(2, getXMidPos(), getYDownPos());
 
-		// If there is a blocker, change the direction
-		if( object == 31 )
-			m_vDir = (m_vDir == UP) ? DOWN : UP;
+		// If there is a blocker, block the Watermine
+		if( blockerUp == 31 )
+			blockedu = true;
+		if( blockerDown == 31 )
+			blockedd = true;
 
-
+		// If the mine is really blocked, change the direction
 		if(blockedd)
 			m_vDir = UP;
 		else if(blockedu)
@@ -63,12 +68,16 @@ void CWaterMine::processMove()
 	}
 	else
 	{
-		const Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+		const Uint16 blockerLeft = mp_Map->getPlaneDataAt(2, getXLeftPos(), getYMidPos());
+		const Uint16 blockerRight = mp_Map->getPlaneDataAt(2, getXRightPos(), getYMidPos());
 
-		// If there is a blocker, change the direction
-		if( object == 31 )
-			m_hDir = (m_hDir == RIGHT) ? LEFT : RIGHT;
+		// If there is a blocker, block the Watermine
+		if( blockerLeft == 31 )
+			blockedl = true;
+		if( blockerRight == 31 )
+			blockedr = true;
 
+		// If the mine is really blocked, change the direction
 		if(blockedl)
 			m_hDir = RIGHT;
 		else if(blockedr)
