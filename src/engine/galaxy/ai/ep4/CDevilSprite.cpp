@@ -111,7 +111,7 @@ void CDevilSprite::processShoot()
 	{
 		g_pSound->playSound(SOUND_KEEN_FIRE);
 		int x_coord = getXMidPos();
-		x_coord += (m_hDir == LEFT) ? -(1<<CSF) : +(1<<CSF);
+		x_coord += (m_hDir == LEFT) ? -(8<<STC) : +(8<<STC);
 		CEnemyShot *Spark = new CEnemyShot(mp_Map, x_coord, getYMidPos()-(8<<STC),
 											0x3818, m_hDir, 100);
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Spark ) );
