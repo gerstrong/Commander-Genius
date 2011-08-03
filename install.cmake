@@ -28,7 +28,7 @@ INSTALL(FILES changelog.txt
 # Windows might not have those dlls so we ship them with the packages
 IF(BUILD_TYPE STREQUAL WIN32)
 
-INSTALL(FILES libogg-0.dll libvorbis-0.dll libvorbisenc-2.dll libvorbisfile-3.dll SDL.dll
+INSTALL(FILES libogg-0.dll libvorbis-0.dll libvorbisenc-2.dll libvorbisfile-3.dll SDL.dll libgcc_s_sjlj-1.dll libstdc++-6.dll
 	DESTINATION ${APPDIR})
 ENDIF(BUILD_TYPE STREQUAL WIN32)
 
