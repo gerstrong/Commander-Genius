@@ -290,6 +290,7 @@
 		63010C0C13400D4A00F212CA /* CGamePlayMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0613400D4A00F212CA /* CGamePlayMode.cpp */; };
 		63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
 		63010C1013400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
+		6321B67E13CA3DA900D0ACCC /* CEngineParticleSprites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6321B67C13CA3DA900D0ACCC /* CEngineParticleSprites.cpp */; };
 		63243C7C12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */; };
 		63243C7D12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */; };
 		63243C8012ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */; };
@@ -315,10 +316,17 @@
 		63385F4613C0092700BC2558 /* CPlatformHorizontal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3513C0091200BC2558 /* CPlatformHorizontal.cpp */; };
 		63385F4713C0092800BC2558 /* CPlatformVertical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3713C0091200BC2558 /* CPlatformVertical.cpp */; };
 		63385F4A13C0095D00BC2558 /* CMessageBoxSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F4813C0095D00BC2558 /* CMessageBoxSelection.cpp */; };
+		6347ACDE13E717D7001FE7CB /* CEnemyShot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6347ACDC13E717D7001FE7CB /* CEnemyShot.cpp */; };
+		6347ACEA13E717ED001FE7CB /* CBubbles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6347ACE013E717ED001FE7CB /* CBubbles.cpp */; };
+		6347ACEB13E717EE001FE7CB /* CDevilSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6347ACE213E717ED001FE7CB /* CDevilSprite.cpp */; };
+		6347ACEC13E717F0001FE7CB /* CDopeFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6347ACE413E717ED001FE7CB /* CDopeFish.cpp */; };
+		6347ACED13E717F1001FE7CB /* CMadMushroom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6347ACE613E717ED001FE7CB /* CMadMushroom.cpp */; };
+		6347ACEE13E717F2001FE7CB /* CWaterMine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6347ACE813E717ED001FE7CB /* CWaterMine.cpp */; };
 		634DF5A2136E10F000826A8B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A1136E10F000826A8B /* Cocoa.framework */; };
 		634DF5A5136E10FC00826A8B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A4136E10FC00826A8B /* OpenGL.framework */; };
 		634DF5A7136E110400826A8B /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
 		634DF5B6136E141500826A8B /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
+		6375E9A013EA4335007310EB /* CSchoolFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6375E99E13EA4335007310EB /* CSchoolFish.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63AEA5BC132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */; };
 		63AEA5BD132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */; };
@@ -655,6 +663,8 @@
 		63010C0E13400D9300F212CA /* CMapPlayGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMapPlayGalaxy.h; sourceTree = "<group>"; };
 		6304FC3F10E3EAD800307EAC /* CGLogo.bmp */ = {isa = PBXFileReference; explicitFileType = image.bmp; path = CGLogo.bmp; sourceTree = "<group>"; };
 		6304FE8810E429D000307EAC /* HELPTEXT.CKP */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CKP; sourceTree = "<group>"; };
+		6321B67C13CA3DA900D0ACCC /* CEngineParticleSprites.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEngineParticleSprites.cpp; sourceTree = "<group>"; };
+		6321B67D13CA3DA900D0ACCC /* CEngineParticleSprites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEngineParticleSprites.h; sourceTree = "<group>"; };
 		63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioResources.cpp; sourceTree = "<group>"; };
 		63243C7B12ECDB5E00FE8192 /* CAudioResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioResources.h; sourceTree = "<group>"; };
 		63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioGalaxy.cpp; sourceTree = "<group>"; };
@@ -697,6 +707,18 @@
 		63385F4813C0095D00BC2558 /* CMessageBoxSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBoxSelection.cpp; sourceTree = "<group>"; };
 		63385F4913C0095D00BC2558 /* CMessageBoxSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBoxSelection.h; sourceTree = "<group>"; };
 		63385F4B13C009BE00BC2558 /* resolutionlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resolutionlist.h; sourceTree = "<group>"; };
+		6347ACDC13E717D7001FE7CB /* CEnemyShot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEnemyShot.cpp; sourceTree = "<group>"; };
+		6347ACDD13E717D7001FE7CB /* CEnemyShot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEnemyShot.h; sourceTree = "<group>"; };
+		6347ACE013E717ED001FE7CB /* CBubbles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBubbles.cpp; sourceTree = "<group>"; };
+		6347ACE113E717ED001FE7CB /* CBubbles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBubbles.h; sourceTree = "<group>"; };
+		6347ACE213E717ED001FE7CB /* CDevilSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDevilSprite.cpp; sourceTree = "<group>"; };
+		6347ACE313E717ED001FE7CB /* CDevilSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDevilSprite.h; sourceTree = "<group>"; };
+		6347ACE413E717ED001FE7CB /* CDopeFish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDopeFish.cpp; sourceTree = "<group>"; };
+		6347ACE513E717ED001FE7CB /* CDopeFish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDopeFish.h; sourceTree = "<group>"; };
+		6347ACE613E717ED001FE7CB /* CMadMushroom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMadMushroom.cpp; sourceTree = "<group>"; };
+		6347ACE713E717ED001FE7CB /* CMadMushroom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMadMushroom.h; sourceTree = "<group>"; };
+		6347ACE813E717ED001FE7CB /* CWaterMine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWaterMine.cpp; sourceTree = "<group>"; };
+		6347ACE913E717ED001FE7CB /* CWaterMine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWaterMine.h; sourceTree = "<group>"; };
 		634DF5A1136E10F000826A8B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		634DF5A4136E10FC00826A8B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		634DF5A6136E110400826A8B /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework; sourceTree = DEVELOPER_DIR; };
@@ -735,6 +757,8 @@
 		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
 		6350F7DD1044797300A992D5 /* resolutions.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = resolutions.cfg; sourceTree = "<group>"; };
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
+		6375E99E13EA4335007310EB /* CSchoolFish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSchoolFish.cpp; sourceTree = "<group>"; };
+		6375E99F13EA4335007310EB /* CSchoolFish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSchoolFish.h; sourceTree = "<group>"; };
 		6382949E11562C7100D608A2 /* menufonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = menufonts.bmp; sourceTree = "<group>"; };
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
@@ -1232,6 +1256,8 @@
 		23C64A7E11F31D8A0053CA36 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				6347ACDC13E717D7001FE7CB /* CEnemyShot.cpp */,
+				6347ACDD13E717D7001FE7CB /* CEnemyShot.h */,
 				63385F1913C0091200BC2558 /* CBullet.cpp */,
 				63385F1A13C0091200BC2558 /* CBullet.h */,
 				63385F1B13C0091200BC2558 /* CPlayerBase.cpp */,
@@ -1353,6 +1379,18 @@
 		63385F2113C0091200BC2558 /* ep4 */ = {
 			isa = PBXGroup;
 			children = (
+				6375E99E13EA4335007310EB /* CSchoolFish.cpp */,
+				6375E99F13EA4335007310EB /* CSchoolFish.h */,
+				6347ACE013E717ED001FE7CB /* CBubbles.cpp */,
+				6347ACE113E717ED001FE7CB /* CBubbles.h */,
+				6347ACE213E717ED001FE7CB /* CDevilSprite.cpp */,
+				6347ACE313E717ED001FE7CB /* CDevilSprite.h */,
+				6347ACE413E717ED001FE7CB /* CDopeFish.cpp */,
+				6347ACE513E717ED001FE7CB /* CDopeFish.h */,
+				6347ACE613E717ED001FE7CB /* CMadMushroom.cpp */,
+				6347ACE713E717ED001FE7CB /* CMadMushroom.h */,
+				6347ACE813E717ED001FE7CB /* CWaterMine.cpp */,
+				6347ACE913E717ED001FE7CB /* CWaterMine.h */,
 				63385F2213C0091200BC2558 /* CBounder.cpp */,
 				63385F2313C0091200BC2558 /* CBounder.h */,
 				63385F2413C0091200BC2558 /* CCouncilMember.cpp */,
@@ -1374,6 +1412,8 @@
 		63385F3013C0091200BC2558 /* platform */ = {
 			isa = PBXGroup;
 			children = (
+				6321B67C13CA3DA900D0ACCC /* CEngineParticleSprites.cpp */,
+				6321B67D13CA3DA900D0ACCC /* CEngineParticleSprites.h */,
 				63385F3113C0091200BC2558 /* CPlatform.cpp */,
 				63385F3213C0091200BC2558 /* CPlatform.h */,
 				63385F3313C0091200BC2558 /* CPlatformDrop.cpp */,
@@ -2566,6 +2606,14 @@
 				63385F4613C0092700BC2558 /* CPlatformHorizontal.cpp in Sources */,
 				63385F4713C0092800BC2558 /* CPlatformVertical.cpp in Sources */,
 				63385F4A13C0095D00BC2558 /* CMessageBoxSelection.cpp in Sources */,
+				6321B67E13CA3DA900D0ACCC /* CEngineParticleSprites.cpp in Sources */,
+				6347ACDE13E717D7001FE7CB /* CEnemyShot.cpp in Sources */,
+				6347ACEA13E717ED001FE7CB /* CBubbles.cpp in Sources */,
+				6347ACEB13E717EE001FE7CB /* CDevilSprite.cpp in Sources */,
+				6347ACEC13E717F0001FE7CB /* CDopeFish.cpp in Sources */,
+				6347ACED13E717F1001FE7CB /* CMadMushroom.cpp in Sources */,
+				6347ACEE13E717F2001FE7CB /* CWaterMine.cpp in Sources */,
+				6375E9A013EA4335007310EB /* CSchoolFish.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
