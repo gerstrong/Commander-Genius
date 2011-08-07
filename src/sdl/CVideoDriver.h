@@ -74,7 +74,7 @@ public:
 
 	void setVidConfig(const CVidConfig& VidConf);
 	void setMode(int width, int height,int depth);
-	void setMode(st_resolution &res);
+	void setMode(const st_resolution res);
 	void setSpecialFXMode(bool SpecialFX);
 	void setFilter(short value);
 	void setZoom(short vale);

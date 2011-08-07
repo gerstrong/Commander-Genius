@@ -181,6 +181,9 @@ struct _Chip {
 	//0 or -1 when enabled
 	Bit8s opl3Active;
 
+	// Constructor which sets some variables to zero.
+	_Chip();
+
 };
 
 void Chip__Setup(Chip *self, Bit32u rate );

@@ -443,8 +443,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case PLATFORM_HORIZ:
 		p_newfoe = new galaxy::CPlatformHorizontal(&Map, x, y); break;
 	case PLATFORM_DROP:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, x, y);
-		break;
+		p_newfoe = new galaxy::CPlatformDrop(&Map, x, y); break;
 
 	case 33:
 		// Place Miragia in Episode 4 on the Map

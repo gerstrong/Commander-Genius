@@ -175,16 +175,17 @@ void CLogFile::fltextOut(FONTCOLORS Color, bool List, const char *Text, ...)
 	textOut(Color, List, buffer);
 }
 
+
+
+
 void CLogFile::ftextOut(FONTCOLORS Color, const char *Text, ...)
 {
 	char buffer[MAX_BUFFER];
 	va_list pArgList;
-	
 	va_start(pArgList, Text);
 	vsprintf(buffer, Text, pArgList);
-	va_end(pArgList);
-	
 	textOut(Color, buffer);
+	va_end(pArgList);
 }
 
 void CLogFile::FunctionResult (const char *Name,bool Result)

@@ -40,9 +40,8 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
 	m_AudioSpec = g_pSound->getAudioSpec();
-	CIMFPlayer *imf_player = new CIMFPlayer(m_AudioSpec);
-	imf_player->loadMusicForLevel(ExeFile, level);
-	mp_player = imf_player;
+	mp_player = new CIMFPlayer(m_AudioSpec);
+	(static_cast<CIMFPlayer*>(mp_player))->loadMusicForLevel(ExeFile, level);
 
 	if(!mp_player->open())
 	{

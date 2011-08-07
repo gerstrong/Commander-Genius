@@ -54,6 +54,11 @@ transluceny(0)
 	m_climbing = false;
 	supportedbyobject = false;
 
+	blockedd = false;
+	blockedu = false;
+	blockedl = false;
+	blockedr = false;
+
 	if(m_type != OBJ_NONE )
 	{
 		setupObjectType(g_pBehaviorEngine->getEpisode());

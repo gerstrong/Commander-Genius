@@ -78,7 +78,7 @@ private:
 	Uint8 m_SoundVolume;
 	bool m_sound_blaster_mode;
 
-	SmartPointer<Uint8> m_pMixedForm;	// Mainly used by the callback function. Declared once and allocated
+	std::vector<Uint8> m_MixedForm;	// Mainly used by the callback function. Declared once and allocated
     									// for the whole program
 
     unsigned char *mp_SndSlotMap;

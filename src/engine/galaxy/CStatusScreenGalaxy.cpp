@@ -38,7 +38,10 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
     #endif
 
    	const SDL_Rect& DestRect = g_pVideoDriver->getGameResolution();
-	mp_StatusSurface = SDL_CreateRGBSurface( flags, DestRect.w, DestRect.h, 32, rmask, gmask, bmask, amask);
+   	if(mp_StatusSurface)
+   		SDL_FreeSurface(mp_StatusSurface);
+   	mp_StatusSurface = SDL_CreateRGBSurface( flags, DestRect.w, DestRect.h, 32, rmask, gmask, bmask, amask);
+
 
 	/// Draw the required bitmaps and backgrounds
 	// Draw the support Bitmap and see where the gray rectangle starts...

@@ -23,7 +23,8 @@
 #define MOUSEWRAPPER 1
 #endif
 
-CInput::CInput() {
+CInput::CInput()
+{
 #if defined(WIZ) || defined(GP2X)
     volume_direction = VOLUME_NOCHG;
 	volume = 60-VOLUME_CHANGE_RATE;

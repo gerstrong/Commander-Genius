@@ -63,7 +63,7 @@ void CVideoDriver::resetSettings() {
 	initResolutionList();
 
 	// take the first default resolution. It might be changed if there is a config file already created
-	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
+	setMode( m_Resolutionlist.front() );
 }
 
 // initResolutionList() reads the local list of available resolution.
@@ -170,7 +170,7 @@ void CVideoDriver::setMode(int width, int height,int depth)
 	setMode(res);
 }
 
-void CVideoDriver::setMode(st_resolution &res)
+void CVideoDriver::setMode(const st_resolution res)
 {
 	m_VidConfig.setResolution(res);
 

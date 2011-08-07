@@ -142,8 +142,8 @@ void BlitSurfaceMerge( SDL_Surface *src, SDL_Rect *p_src_rect, SDL_Surface *dst,
 			db |= sb;
 			da |= sa;
 			*pixel_dst32 = SDL_MapRGBA(dst->format, dr, dg, db, da);
-			pixel_src+=src->format->BytesPerPixel;
-			pixel_dst+=dst->format->BytesPerPixel;
+			pixel_src += src->format->BytesPerPixel;
+			pixel_dst += dst->format->BytesPerPixel;
 		}
 	}
 

@@ -97,6 +97,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		AudioFile.seekg( 0, std::ios::beg );
 
 		// create memory so we can store the Audio.ck there and use it later for extraction
+		//uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
 		uint8_t *AudioCompFileData = new uint8_t[audiofilecompsize];
 		AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
 		AudioFile.close();
@@ -131,6 +132,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		if(!found)
 		{
 			g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): No audio was found in that file! It seems to be empty.");
+			delete [] AudioCompFileData;
 			return false;
 		}
 
@@ -155,7 +157,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		CSoundSlot zeroslot;
 		m_soundslot.assign(number_of_total_sounds, zeroslot);
 
-		for(unsigned int snd=0 ; snd<number_of_total_sounds ; snd++)
+		for( unsigned int snd=0 ; snd<number_of_total_sounds ; snd++ )
 		{
 			/// Now we have all the data we need.
 			// decompress every file of AUDIO.CK? using huffman decompression algorithm
@@ -170,7 +172,8 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 				const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
 				const uint32_t *AudioCompFileData32 = (uint32_t*) (void*) (AudioCompFileData + audio_start);
 				outsize = *AudioCompFileData32;
-				byte *imfdata = new byte[outsize];
+				//byte *imfdata = new byte[outsize];
+				byte imfdata[outsize];
 
 				Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
 
@@ -180,6 +183,8 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 					readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, outsize, (m_AudioSpec.format == AUDIO_S16) ? 2 : 1 );
 			}
 		}
+
+		delete [] AudioCompFileData;
 	}
 	else
 		g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): Wrong Audio Format");

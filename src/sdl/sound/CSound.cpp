@@ -87,7 +87,7 @@ bool CSound::init()
 
 	AudioSpec = obtained;
 
-	m_pMixedForm = new Uint8[AudioSpec.size]; // To make sure it's 4-byte aligned use malloc() instead of new()
+	m_MixedForm.reserve(AudioSpec.size);
 
 	g_pLogFile->ftextOut("SDL_AudioSpec:<br>");
 	g_pLogFile->ftextOut("  freq: %d<br>", AudioSpec.freq);
@@ -131,7 +131,8 @@ void CSound::destroy()
 	SDL_CloseAudio();
 	m_mixing_channels = 0;
 
-	m_pMixedForm.tryDeleteData();
+	if(!m_MixedForm.empty())
+		m_MixedForm.clear();
 
 	if(!m_soundchannel.empty())
 		m_soundchannel.clear();
@@ -211,10 +212,12 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 
 	m_callback_running = true;
 
+	Uint8* buffer = m_MixedForm.data();
+
     if (g_pMusicPlayer->playing())
     {
-    	g_pMusicPlayer->readWaveform(m_pMixedForm.get(), len);
-    	mixAudio(stream, m_pMixedForm.get(), len, m_MusicVolume, AudioSpec.format);
+    	g_pMusicPlayer->readWaveform(buffer, len);
+    	mixAudio(stream, buffer, len, m_MusicVolume, AudioSpec.format);
     }
 
     bool any_sound_playing = false;
@@ -224,8 +227,8 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 		if(snd_chnl->isPlaying())
 		{
 			any_sound_playing |= true;
-			snd_chnl->readWaveform( m_pMixedForm.get(), len);
-   			mixAudio(stream, m_pMixedForm.get(), len, m_SoundVolume, AudioSpec.format);
+			snd_chnl->readWaveform( buffer, len);
+   			mixAudio(stream, buffer, len, m_SoundVolume, AudioSpec.format);
 		}
     }
 

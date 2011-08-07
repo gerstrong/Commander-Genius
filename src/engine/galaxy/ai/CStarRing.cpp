@@ -31,6 +31,7 @@ void CStarRing::process()
 		if(sprite > STARRING_SPRITE+2)
 		{
 			sprite = STARRING_SPRITE;
+
 			m_animation_timer = 0;
 		}
 	}

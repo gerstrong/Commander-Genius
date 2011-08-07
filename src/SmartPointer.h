@@ -102,8 +102,10 @@ private:
 		}
 	}
 	
-	void reset() {
-		if(mutex) {
+	void reset()
+	{
+		if(mutex)
+		{
 			lock();
 			(*refCount)--;
 			if(*refCount == 0) {

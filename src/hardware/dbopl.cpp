@@ -40,6 +40,15 @@
 #include <string.h>
 #include "dbopl.h"
 
+_Chip::_Chip()
+{
+	memset(freqMul, 0, 16*sizeof(Bit32u));
+	memset(linearRates, 0, 76*sizeof(Bit32u));
+	memset(attackRates, 0, 76*sizeof(Bit32u));
+	memset(chan, 0, 18*sizeof(Channel));
+}
+
+
 
 #define GCC_UNLIKELY(x) x
 
@@ -337,14 +346,16 @@ static inline void Operator__UpdateDecay(Operator *self, const Chip* chip ) {
 }
 static inline void Operator__UpdateRelease(Operator *self, const Chip* chip ) {
 	Bit8u rate = self->reg80 & 0xf;
-	if ( rate ) {
+	if ( rate )
+	{
 		Bit8u val = (rate << 2) + self->ksr;
 		self->releaseAdd = chip->linearRates[ val ];
 		self->rateZero &= ~(1 << RELEASE);
 		if ( !(self->reg20 & MASK_SUSTAIN ) ) {
 			self->rateZero &= ~( 1 << SUSTAIN );
 		}	
-	} else {
+	} else
+	{
 		self->rateZero |= (1 << RELEASE);
 		self->releaseAdd = 0;
 		if ( !(self->reg20 & MASK_SUSTAIN ) ) {
