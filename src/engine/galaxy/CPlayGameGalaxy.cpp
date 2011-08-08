@@ -232,9 +232,8 @@ void CPlayGameGalaxy::process()
 			m_WorldMap.setActive(true);
 			m_LevelName = m_WorldMap.getLevelName();
 			m_WorldMap.loadAndPlayMusic();
-			const EventExitLevel exiteventinfo = *ev;
+			EventContainer.add( new EventPlayerEndLevel(*ev) );
 			EventContainer.pop_Event();
-			EventContainer.add( new EventPlayerEndLevel(exiteventinfo) );
 		}
 		else if( EventPlayTrack *ev =  EventContainer.occurredEvent<EventPlayTrack>() )
 		{

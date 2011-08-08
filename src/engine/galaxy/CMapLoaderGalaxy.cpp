@@ -37,6 +37,7 @@
 #include "engine/galaxy/ai/ep4/CWaterMine.h"
 #include "engine/galaxy/ai/ep4/CDevilSprite.h"
 #include "engine/galaxy/ai/ep4/CSchoolFish.h"
+#include "engine/galaxy/ai/ep4/CLick.h"
 
 // General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
@@ -460,6 +461,12 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		p_newfoe = new galaxy::CPlayerDive(&Map, x, y, m_ObjectPtr,
 						RIGHT, m_Inventory, m_Cheatmode);
 		break;
+
+	case 47:
+		// This is the Lick
+		p_newfoe = new galaxy::CLick(&Map, x, y);
+		break;
+
 
 	case 71:
 		// Watermine vertical
