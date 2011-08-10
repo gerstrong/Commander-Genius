@@ -37,7 +37,7 @@ m_burped(false)
 
 bool CDopeFish::isNearby(CObject &theObject)
 {
-	if( CPlayerDive *player = dynamic_cast<CPlayerDive*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 
 		const int dx = player->getXMidPos() - getXMidPos();
