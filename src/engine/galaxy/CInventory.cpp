@@ -43,16 +43,35 @@ void CInventory::toggleStatusScreen()
 {
 	mp_StatusScreen->m_showstatus = !mp_StatusScreen->m_showstatus;
 
+	int scroll_pos;
+
+
 	if(mp_StatusScreen->m_showstatus)
 	{
+		int scroll_pos = 0;
+
 		mp_StatusScreen->GenerateStatus();
 		g_pVideoDriver->collectSurfaces();
 		mp_StatusBgrnd = SDL_DisplayFormat(g_pVideoDriver->mp_VideoEngine->getBlitSurface());
-		g_pGfxEngine->pushEffectPtr(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, 8));
+
+		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
+
+		if( ScrollEffect )
+			scroll_pos = ScrollEffect->getScrollPosition();
+
+		g_pGfxEngine->pushEffectPtr(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, 8));
 	}
 	else
 	{
-		g_pGfxEngine->pushEffectPtr(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, -8));
+		// Check if it's already scrolling and get the position
+		scroll_pos = 160;
+
+		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
+
+		if( ScrollEffect )
+			scroll_pos = ScrollEffect->getScrollPosition();
+
+		g_pGfxEngine->pushEffectPtr(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, -8));
 		if(mp_StatusBgrnd)
 			SDL_FreeSurface(mp_StatusBgrnd);
 		mp_StatusBgrnd = NULL;

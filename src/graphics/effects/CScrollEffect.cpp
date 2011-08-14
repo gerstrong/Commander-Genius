@@ -8,16 +8,14 @@
 #include "CScrollEffect.h"
 #include "sdl/CVideoDriver.h"
 
-CScrollEffect::CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground, Sint8 speed) :
+CScrollEffect::CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
+							const Sint16 initialPos, Sint8 speed) :
 m_Speed(speed),
-m_ScrollPos(0),
+m_ScrollPos(initialPos),
 mp_OldSurface(NULL),
 mp_ScrollSurface(pScrollSurface)
 {
 	mp_OldSurface = SDL_DisplayFormat(pBackground);
-
-	 if(m_Speed < 0)
-		 m_ScrollPos = mp_ScrollSurface->h;
 }
 
 void CScrollEffect::process()
@@ -29,7 +27,6 @@ void CScrollEffect::process()
 	src.y = mp_ScrollSurface->h-m_ScrollPos;
 	dest.h = m_ScrollPos;
 
-	//SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
 	SDL_BlitSurface( mp_ScrollSurface, &src, g_pVideoDriver->getBlitSurface(), &dest);
 
 
@@ -47,6 +44,11 @@ void CScrollEffect::process()
 
 		if(m_ScrollPos == mp_ScrollSurface->h) m_finished = true;
 	}
+}
+
+Sint16 CScrollEffect::getScrollPosition()
+{
+	return m_ScrollPos;
 }
 
 CScrollEffect::~CScrollEffect() {

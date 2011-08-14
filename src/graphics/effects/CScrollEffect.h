@@ -14,9 +14,12 @@
 
 class CScrollEffect : public CEffects {
 public:
-	CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground, Sint8 speed);
+	CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
+			const Sint16 initialPos, Sint8 speed);
 
 	void process();
+
+	Sint16 getScrollPosition();
 
 	virtual ~CScrollEffect();
 

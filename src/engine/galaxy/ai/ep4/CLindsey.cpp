@@ -50,7 +50,6 @@ void CLindsey::getTouchedBy(CObject &theObject)
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 		g_pSound->playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
-		EventContainer.add( new EventPlayTrack(5) );
 
 		std::string lindsey_text[3];
 
