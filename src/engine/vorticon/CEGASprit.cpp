@@ -143,8 +143,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		Sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags,
 				g_pGfxEngine->Palette.m_Palette );
 
-		percent = (i*100)/m_numsprites;
-		g_pResourceLoader->setPermilage(200+percent);
+		percent = (i*50)/m_numsprites;
+		g_pResourceLoader->setPermilage(50+percent);
 	}
 
 	g_pResourceLoader->setPermilage(100);
@@ -162,7 +162,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
 			percent = (s*100)/m_numsprites;
-			g_pResourceLoader->setPermilage(300+percent);
+			g_pResourceLoader->setPermilage(100+percent);
 		}
 	}
 
@@ -196,7 +196,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 
 		percent = (s*100)/m_numsprites;
-		g_pResourceLoader->setPermilage(400+percent);
+		g_pResourceLoader->setPermilage(200+percent);
 	}
 
 	g_pResourceLoader->setPermilage(300);
@@ -212,11 +212,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		Sprite.optimizeSurface();
 
-		percent = (s*300)/m_numsprites;
-		g_pResourceLoader->setPermilage(500+percent);
+		percent = (s*50)/m_numsprites;
+		g_pResourceLoader->setPermilage(300+percent);
 	}
 
-	g_pResourceLoader->setPermilage(400);
+	g_pResourceLoader->setPermilage(350);
 
 
 	std::set<std::string> filelist;
@@ -239,19 +239,29 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		}
 
 		percent = (c*150)/listsize;
-		g_pResourceLoader->setPermilage(800+percent);
+		g_pResourceLoader->setPermilage(350+percent);
 	}
 
 	g_pResourceLoader->setPermilage(500);
 
-	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
+	const int NoSprites = g_pGfxEngine->getSpriteVec().size();
+	for(Uint16 s=0 ; s<NoSprites ; s++)
+	{
 		g_pGfxEngine->getSprite(s).applyTransparency();
+
+		percent = (s*250)/NoSprites;
+		g_pResourceLoader->setPermilage(500+percent);
+	}
 	
+	g_pResourceLoader->setPermilage(750);
 	// Apply the sprites for player 2,3 and 4
 	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
+	g_pResourceLoader->setPermilage(900);
+
 
 	// Now create special sprites, like those for effects and the doors!
 	DeriveSpecialSprites( g_pGfxEngine->getTileMap(1), g_pGfxEngine->getSpriteVec() );
+	g_pResourceLoader->setPermilage(950);
 
 	// Here special Effects are applied, only when the option is enabled for it
 	if(g_pVideoDriver->getSpecialFXConfig())

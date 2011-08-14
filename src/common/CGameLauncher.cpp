@@ -11,6 +11,7 @@
 #include "sdl/CInput.h"
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
+#include "CResourceLoader.h"
 #include "FindFile.h"
 #include <iostream>
 #include <fstream>
@@ -44,19 +45,22 @@ bool CGameLauncher::init()
     // Scan VFS DIR_ROOT for exe's
     if (scanExecutables(DIR_ROOT))
         gamedetected = true;
+    g_pResourceLoader->setPermilage(300);
     // Recursivly scan into DIR_ROOT VFS subdir's for exe's
     if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT))
         gamedetected = true;
-	
+    g_pResourceLoader->setPermilage(600);
     // Recursivly scan into DIR_GAMES subdir's for exe's
     if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES))
         gamedetected = true;
+    g_pResourceLoader->setPermilage(900);
 
     // Save any custom labels
     putLabels();
 
     // No games detected then quit
    	mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_Entries.size()+1, !gamedetected ? "No games found! - Quit" : "Quit");
+   	g_pResourceLoader->setPermilage(1000);
 	
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
 	

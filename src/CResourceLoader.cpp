@@ -87,6 +87,7 @@ void CResourceLoader::setPermilage(int permil)
 		m_permil = m_max_permil;
 }
 
+
 /**
  * Progress the shown graphic here
  */
@@ -115,6 +116,7 @@ void CResourceLoader::renderLoadingGraphic()
 		rect.h = 4;
 
 		// RGB - Fade from red to blue
+		// but also use some gradients for the colouring...
 		Uint32 color = 0xFF0000-(((0xFF*m_permil)/1000)<<16);
 		color += ((0x0000FF*m_permil)/1000);
 		SDL_FillRect(sfc, &rect, color);
