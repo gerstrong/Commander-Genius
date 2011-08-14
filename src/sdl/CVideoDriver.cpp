@@ -291,6 +291,12 @@ void CVideoDriver::collectSurfaces()
 	mp_VideoEngine->collectSurfaces();
 }
 
+void CVideoDriver::clearSurfaces()
+{
+	mp_VideoEngine->clearSurfaces();
+}
+
+
 void CVideoDriver::updateScreen()
 {
 	mp_VideoEngine->updateScreen();

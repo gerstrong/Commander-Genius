@@ -73,6 +73,15 @@ void CSDLVideo::collectSurfaces()
 
 	if( getPerSurfaceAlpha(FXSurface) )
 		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+
+
+}
+
+void CSDLVideo::clearSurfaces()
+{
+	SDL_FillRect(FGLayerSurface,NULL, 0x0);
+	SDL_FillRect(FXSurface,NULL, 0x0);
+	SDL_FillRect(BlitSurface,NULL, 0x0);
 }
 
 void CSDLVideo::updateScreen()

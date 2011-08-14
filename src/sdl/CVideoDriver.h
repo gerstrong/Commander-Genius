@@ -45,6 +45,7 @@ public:
 	void setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy);
 
 	void collectSurfaces();
+	void clearSurfaces();
 	void updateScreen();
 
 	void DeleteConsoleMsgs(void);

@@ -99,6 +99,20 @@ void COpenGL::collectSurfaces()
 
 }
 
+void COpenGL::clearSurfaces()
+{
+	SDL_FillRect(FXSurface,NULL, 0x0);
+
+	// Flush the FG-Layer
+	if(m_VidConfig.m_ScaleXFilter == 1)
+		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
+	else
+		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
+
+	SDL_FillRect(BlitSurface,NULL, 0x0);
+}
+
+
 static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false) {
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
@@ -205,11 +219,13 @@ bool COpenGL::init()
 	return true;
 }
 
-void COpenGL::reloadFX(SDL_Surface* surf) {
+void COpenGL::reloadFX(SDL_Surface* surf)
+{
 	loadSurface(m_texFX, surf);
 }
 
-void COpenGL::reloadFG(SDL_Surface* surf) {
+void COpenGL::reloadFG(SDL_Surface* surf)
+{
 	loadSurface(m_texFG, surf);
 }
 

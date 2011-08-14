@@ -42,6 +42,7 @@ public:
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 	bool createSurfaces();
 	void collectSurfaces();
+	void clearSurfaces();
 
 	void updateScreen();
 	bool init();

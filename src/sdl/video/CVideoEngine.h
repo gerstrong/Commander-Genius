@@ -32,6 +32,7 @@ public:
 	virtual bool createSurfaces() = 0;
 	void fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr, unsigned int &width, unsigned int &height);
 	virtual void collectSurfaces() = 0;
+	virtual void clearSurfaces() = 0;
 	void blitScrollSurface();
 	void stop();
 

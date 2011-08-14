@@ -18,6 +18,7 @@ public:
 
 	bool createSurfaces();
 	void collectSurfaces();
+	void clearSurfaces();
 	void updateScreen();
 
 private:

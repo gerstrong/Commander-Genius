@@ -40,6 +40,8 @@ int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, i
 	m_min_permil = min_permil;
 	m_permil = m_min_permil;
 	mp_Thread = threadPool->start(act, threadname);
+	g_pVideoDriver->clearSurfaces();
+
 	int ret = 0;
 	process(&ret);
 	return ret;
