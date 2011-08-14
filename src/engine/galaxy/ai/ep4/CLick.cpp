@@ -28,7 +28,7 @@ CStunnable(pmap, x, y, OBJ_NONE),
 m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x2FC6, A_LICK_HOP);
-	mp_processState = &CLick::processHop;
+	mp_processState = (void (CStunnable::*)()) (&CLick::processHop);
 }
 
 void CLick::process()
@@ -52,6 +52,7 @@ void CLick::getTouchedBy(CObject &theObject)
 	{
 		mp_processState = &CStunnable::processGettingStunned;
 		setAction( A_LICK_STUNNED );
+		theObject.dead = true;
 		dead = true;
 	}
 
@@ -83,7 +84,7 @@ bool CLick::isNearby(CObject &theObject)
 			if( absdx < CSF_MIN_DISTANCE_TO_BREATHE )
 			{
 				setAction(A_LICK_BREATHE);
-				mp_processState = &CLick::processBreathe;
+				mp_processState = (void (CStunnable::*)()) (&CLick::processBreathe);
 				m_timer = LICK_BREATHE_TIMER;
 			}
 		}
@@ -103,7 +104,7 @@ void CLick::processHop()
 
 	if(blockedd)
 	{
-		mp_processState = &CLick::processLand;
+		mp_processState = (void (CStunnable::*)()) (&CLick::processLand);
 		setAction( A_LICK_LAND );
 	}
 }
@@ -111,7 +112,7 @@ void CLick::processHop()
 void CLick::processLand()
 {
 	// After a moment he might hop again
-	mp_processState = &CLick::processHop;
+	mp_processState = (void (CStunnable::*)()) (&CLick::processHop);
 	setAction( A_LICK_HOP );
 
 	yinertia = -100;
@@ -124,7 +125,7 @@ void CLick::processBreathe()
 	m_timer--;
 	if(getActionStatus(A_LICK_HOP+2))
 	{
-		mp_processState = &CLick::processHop;
+		mp_processState = (void (CStunnable::*)()) (&CLick::processHop);
 		setAction( A_LICK_HOP );
 	}
 }

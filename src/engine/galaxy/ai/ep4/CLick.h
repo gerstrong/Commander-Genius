@@ -32,8 +32,6 @@ private:
 	void processBreathe();
 	void processStunned();
 
-	void (CLick::*mp_processState)();
-
 	int m_timer;
 };
 

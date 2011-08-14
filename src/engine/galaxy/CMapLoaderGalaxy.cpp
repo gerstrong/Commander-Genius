@@ -38,6 +38,7 @@
 #include "engine/galaxy/ai/ep4/CDevilSprite.h"
 #include "engine/galaxy/ai/ep4/CSchoolFish.h"
 #include "engine/galaxy/ai/ep4/CLick.h"
+#include "engine/galaxy/ai/ep4/CLindsey.h"
 
 // General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
@@ -407,6 +408,11 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 4:
 		//This is a council member.
 		p_newfoe = new galaxy::CCouncilMember(&Map, x, y-750);
+		break;
+
+	case 6:
+		//This is pincess Lindsey.
+		p_newfoe = new galaxy::CLindsey(&Map, x, y-750);
 		break;
 
 	case 12:

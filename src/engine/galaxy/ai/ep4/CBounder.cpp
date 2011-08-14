@@ -44,6 +44,7 @@ void CBounder::getTouchedBy(CObject &theObject)
 		mp_processState = &CStunnable::processGettingStunned;
 		setAction( A_BOUNDER_STUNNED );
 		dead = true;
+		theObject.dead = true;
 	}
 }
 

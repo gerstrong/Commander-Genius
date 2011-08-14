@@ -100,6 +100,7 @@ void CPoisonSlug::getTouchedBy(CObject &theObject)
 		mp_processState = &CStunnable::processGettingStunned;
 		setAction( rand()%2 ? A_SLUG_STUNNED : A_SLUG_STUNNED_ALT );
 		dead = true;
+		theObject.dead = true;
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
