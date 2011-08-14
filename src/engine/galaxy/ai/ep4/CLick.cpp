@@ -84,6 +84,7 @@ bool CLick::isNearby(CObject &theObject)
 			if( absdx < CSF_MIN_DISTANCE_TO_BREATHE )
 			{
 				setAction(A_LICK_BREATHE);
+				playSound(SOUND_LICK_FIREBREATH);
 				mp_processState = (void (CStunnable::*)()) (&CLick::processBreathe);
 				m_timer = LICK_BREATHE_TIMER;
 			}
