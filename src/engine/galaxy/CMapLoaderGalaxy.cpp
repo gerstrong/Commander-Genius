@@ -395,7 +395,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 1:
 	case 2:
 		// This is the player on the map in one level
-		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr,
+		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y-750, m_ObjectPtr,
 				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode);
 		break;
 

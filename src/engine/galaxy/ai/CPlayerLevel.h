@@ -234,6 +234,7 @@ private:
 
 	int m_fire_recharge_time;
 	bool m_EnterDoorAttempt;
+	bool m_hanging;
 };
 
 }

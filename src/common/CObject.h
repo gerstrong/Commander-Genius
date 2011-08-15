@@ -211,7 +211,7 @@ public:
 
 	bool hitdetect(CObject &hitobject);
 	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res);
-	bool hitdetectWithTileProperty(const int& Property, const int& x, const int& y);
+	bool hitdetectWithTileProperty(const int Property, const int x, const int y);
 	virtual void kill();
 	void blink(Uint16 frametime);
 

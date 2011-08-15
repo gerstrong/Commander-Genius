@@ -265,7 +265,7 @@ bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int 
  * \param Property The Tile Property we are looking
  * \return true if detection worked with that tile having the property, else false
  */
-bool CObject::hitdetectWithTileProperty(const int& Property, const int& x, const int& y)
+bool CObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	const char behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;

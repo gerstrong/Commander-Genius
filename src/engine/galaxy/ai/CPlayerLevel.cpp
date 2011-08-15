@@ -49,6 +49,7 @@ m_jumpdownfromobject(false)
 	m_climbing = false;
 	m_pogotoggle = false;
 	m_jumped = false;
+	m_hanging = false;
 
 	setupGalaxyObjectOnMap(0x98C, A_KEEN_STAND);
 }
@@ -153,6 +154,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			moveTo(x,y);
 			solid = false;
 			yinertia = 0;
+			m_hanging = false;
 			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
 			return true;
 		}
@@ -171,6 +173,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			moveTo(x,y);
 			solid = false;
 			yinertia = 0;
+			m_hanging = false;
 			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
 			return true;
 		}
@@ -186,13 +189,27 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 
 void CPlayerLevel::processCliffHanging()
 {
-	if( m_playcontrol[PA_Y] < 0 )
+	// In case you released the direction
+	if( m_playcontrol[PA_Y] == 0 && m_playcontrol[PA_X] == 0)
+		m_hanging = true;
+
+	if(!m_hanging)
+		return;
+
+	// If you want to climb up
+	if( m_playcontrol[PA_Y] < 0 ||
+		((m_hDir == LEFT) && (m_playcontrol[PA_X] < 0)) ||
+		((m_hDir == RIGHT) && (m_playcontrol[PA_X] > 0))  )
 	{
 		setAction(A_KEEN_CLIMB);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbing;
 		m_camera.m_freeze = true;
 	}
-	else if( m_playcontrol[PA_Y] > 0 )
+
+	// If you want to fall down.
+	else if( m_playcontrol[PA_Y] > 0 ||
+		((m_hDir == LEFT) && (m_playcontrol[PA_X] > 0)) ||
+		((m_hDir == RIGHT) && (m_playcontrol[PA_X] < 0))  )
 	{
 		setAction( A_KEEN_FALL );
 		playSound( SOUND_KEEN_FALL );
@@ -212,20 +229,27 @@ void CPlayerLevel::processCliffHanging()
 
 void CPlayerLevel::processCliffClimbing()
 {
-	const int dy = 32;
+	const int dy = 24;
 	const int dx = dy/3;
 	moveUp(dy);
 	moveXDir( (m_hDir == LEFT) ? -dx : dx, true);
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	if( getActionStatus(A_KEEN_STAND) && !TileProperty[mp_Map->at(getXMidPos()>>CSF, getYDownPos()>>CSF)].bup )
+	if( getActionStatus(A_KEEN_STAND) )
 	{
-		solid = true;
-		setAction(A_KEEN_STAND);
-		m_camera.m_freeze = false;
-		setActionSprite();
-		calcBouncingBoxes();
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+		const int target_x = getXMidPos()>>CSF;
+		const int target_y = getYDownPos()>>CSF;
+		const bool noblock = !TileProperty[mp_Map->at(target_x, target_y)].bup;
+		if(noblock)
+		{
+			moveDown(1<<CSF);
+			solid = true;
+			setAction(A_KEEN_STAND);
+			m_camera.m_freeze = false;
+			setActionSprite();
+			calcBouncingBoxes();
+			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+		}
 	}
 }
 
@@ -910,7 +934,6 @@ void CPlayerLevel::processPoleClimbing()
 	// Lets check if Keen can move up, down or reaches the end of the pole
 	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
 	Uint32 l_y_up = getYUpPos()-(7<<STC);
-	Uint32 l_y_down = getYDownPos()+(7<<STC);
 
 	if( m_playcontrol[PA_Y] < 0 )
 	{
@@ -951,13 +974,15 @@ void CPlayerLevel::processPoleClimbing()
 
 		l_y_up = getYUpPos()+(16<<STC);
 
+		Uint32 l_y_down = getYDownPos()/*+(7<<STC)*/;
 		if(!hitdetectWithTileProperty(1, l_x, l_y_down))
 			solid = true;
 		else
 			solid = false;
 
 		// Check for the and upper and lower side, upper because the hand can touch the edge in that case
-		if( hitdetectWithTileProperty(1, l_x, l_y_down) || hitdetectWithTileProperty(1, l_x, l_y_up)  )
+		const bool up = hitdetectWithTileProperty(1, l_x, l_y_up);
+		if( up && !blockedd )
 		{
 			// Slide down if there is more of the pole
 			setAction(A_KEEN_POLE_SLIDE);
@@ -971,7 +996,9 @@ void CPlayerLevel::processPoleClimbing()
 			yinertia = 0;
 			solid = true;
 
-			if(!blockedd)
+			const bool down = mp_Map->at(l_x>>CSF, l_y_down>>CSF);
+
+			if(!blockedd && !down)
 			{
 				setAction(A_KEEN_FALL);
 				playSound( SOUND_KEEN_FALL );
@@ -979,6 +1006,10 @@ void CPlayerLevel::processPoleClimbing()
 			}
 			else
 			{
+				blockedd = true;
+				moveUp(1<<CSF);
+				moveDown(1<<CSF);
+
 				setAction(A_KEEN_STAND);
 				mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 			}
