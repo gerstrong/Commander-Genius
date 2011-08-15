@@ -197,8 +197,7 @@ void CPlayerLevel::processCliffHanging()
 		return;
 
 	// If you want to climb up
-	if( m_playcontrol[PA_Y] < 0 ||
-		((m_hDir == LEFT) && (m_playcontrol[PA_X] < 0)) ||
+	if( ((m_hDir == LEFT) && (m_playcontrol[PA_X] < 0)) ||
 		((m_hDir == RIGHT) && (m_playcontrol[PA_X] > 0))  )
 	{
 		setAction(A_KEEN_CLIMB);
