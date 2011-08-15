@@ -55,17 +55,27 @@ void CLindsey::getTouchedBy(CObject &theObject)
 
 		g_pSound->playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
 
-		std::string lindsey_text[4];
+		std::string lindsey_text[3];
 
 		lindsey_text[0] = g_pBehaviorEngine->getString(answermap[0]);
-		lindsey_text[1] = g_pBehaviorEngine->getString(answermap[1]);
-		lindsey_text[2] = g_pBehaviorEngine->getString(answermap[2]);
-		lindsey_text[3] = g_pBehaviorEngine->getString(answermap[3+(rand()%2)]);
+
+
+		Uint16 cur_level = mp_Map->getLevel();
+		if(cur_level > 5)
+		{
+			lindsey_text[1] = g_pBehaviorEngine->getString(answermap[1]);
+			lindsey_text[2] = g_pBehaviorEngine->getString(answermap[3]);
+		}
+		else
+		{
+			lindsey_text[1] = g_pBehaviorEngine->getString(answermap[2]);
+			lindsey_text[2] = g_pBehaviorEngine->getString(answermap[4]);
+		}
+
 
 		EventContainer.add( new EventSendBitmapDialogMsg(108, lindsey_text[0], LEFT) );
 		EventContainer.add( new EventSendBitmapDialogMsg(108, lindsey_text[1], LEFT) );
-		EventContainer.add( new EventSendBitmapDialogMsg(108, lindsey_text[2], RIGHT) );
-		EventContainer.add( new EventSendBitmapDialogMsg(106, lindsey_text[3], RIGHT) );
+		EventContainer.add( new EventSendBitmapDialogMsg(106, lindsey_text[2], RIGHT) );
 
 		exists = false;
 	}
