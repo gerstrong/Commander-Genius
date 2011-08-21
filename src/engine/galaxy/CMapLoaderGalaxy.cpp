@@ -360,6 +360,8 @@ const int DIVE_SUIT = 35;
  */
 void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
+	// TODO: Split this function into the one meant for the map, because some enemies are loaded on that WM
+	// that shouldn't
 	x <<= CSF;
 	y <<= CSF;
 
