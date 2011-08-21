@@ -17,7 +17,7 @@ namespace galaxy {
 CSkypest::CSkypest(CMap *pmap, Uint32 x, Uint32 y) :
 CObject(pmap, x, y, OBJ_NONE)
 {
-	setupGalaxyObjectOnMap(0x2486, 0);
+	setupGalaxyObjectOnMap(0x2486, A_SKYPEST_FLY);
 }
 
 void CSkypest::process()

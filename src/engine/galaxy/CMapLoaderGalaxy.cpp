@@ -39,6 +39,7 @@
 #include "engine/galaxy/ai/ep4/CSchoolFish.h"
 #include "engine/galaxy/ai/ep4/CLick.h"
 #include "engine/galaxy/ai/ep4/CLindsey.h"
+#include "engine/galaxy/ai/ep4/CSkypest.h"
 
 // General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
@@ -441,6 +442,11 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 24:
 		// This is a Sprite from the well of wishes.
 		p_newfoe = new galaxy::CSchoolFish(&Map, x, y);
+		break;
+
+	case 25:
+		// This is Skypest.
+		p_newfoe = new galaxy::CSkypest(&Map, x, y);
 		break;
 
 
