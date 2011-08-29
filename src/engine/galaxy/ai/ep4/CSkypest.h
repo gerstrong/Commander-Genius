@@ -18,6 +18,15 @@ public:
 	CSkypest(CMap *pmap, Uint32 x, Uint32 y);
 
 	void process();
+	void getTouchedBy(CObject &theObject);
+	bool isNearby(CObject &theObject);
+
+private:
+
+	void processOnFloor();
+	void processFly();
+
+	void (CSkypest::*mp_processState)();
 };
 
 } /* namespace galaxy */

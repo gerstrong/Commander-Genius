@@ -272,7 +272,6 @@ void CPlayerLevel::processMovingHorizontal()
 
 
 
-
 // Here all the pogo code is processed
 void CPlayerLevel::processPogo()
 {

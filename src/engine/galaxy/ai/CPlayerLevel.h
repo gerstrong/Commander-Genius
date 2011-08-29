@@ -218,6 +218,14 @@ public:
 	void openDoorsTile();
 	void processPlaceGem();
 
+	// Checks if Keen is using the pogo. Skypest needs to know that,
+	// because it might get squashed.
+	bool isPogoing()
+	{
+		return (mp_processState == &CPlayerLevel::processPogo);
+	}
+
+
 
 	bool m_jumpdownfromobject;
 
