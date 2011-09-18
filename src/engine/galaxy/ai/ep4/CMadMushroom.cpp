@@ -68,7 +68,7 @@ void CMadMushroom::process()
 		yinertia = -MUSHROOM_LOW_INERTIA;
 		jumpcounter++;
 
-		if( jumpcounter>=2 )
+		if( jumpcounter>=3 )
 		{
 			yinertia = -MUSHROOM_HIGH_INERTIA;
 			jumpcounter = 0;
