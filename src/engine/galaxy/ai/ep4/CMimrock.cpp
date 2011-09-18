@@ -17,6 +17,7 @@ namespace galaxy {
 #define A_MIMROCK_STUNNED	11
 
 const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
+const int WALK_SPEED = 10;
 
 CMimrock::CMimrock(CMap *pmap, Uint32 x, Uint32 y) :
 CObject(pmap, x, y, OBJ_NONE),
@@ -32,20 +33,16 @@ bool CMimrock::isNearby(CObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-
 		const int dx = player->getXMidPos() - getXMidPos();
-		const int dy = player->getYMidPos() - getYMidPos();
 
+		if( dx>-CSF_DISTANCE_TO_FOLLOW_TOLERANCE &&
+			dx<+CSF_DISTANCE_TO_FOLLOW_TOLERANCE	)
+		{
+			if( dx<0 )
+				m_hDir = LEFT;
+			else
+				m_hDir = RIGHT;
 
-		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-		{
-			m_hDir = LEFT;
-			setAction(A_MIMROCK_WALK);
-			mp_processState = (void (CStunnable::*)()) &CMimrock::processWalk;
-		}
-		else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-		{
-			m_hDir = RIGHT;
 			setAction(A_MIMROCK_WALK);
 			mp_processState = (void (CStunnable::*)()) &CMimrock::processWalk;
 		}
@@ -56,27 +53,36 @@ bool CMimrock::isNearby(CObject &theObject)
 
 void CMimrock::processSit()
 {
-
+	// When sitting the rock doesn't do any thing, so this stays empty for now.
 }
 
 void CMimrock::processWalk()
 {
+	if(m_hDir == LEFT)
+		moveLeft(WALK_SPEED);
+	else
+		moveRight(WALK_SPEED);
 
+	if(getActionStatus(A_MIMROCK_SIT))
+	{
+		setAction(A_MIMROCK_SIT);
+		mp_processState = (void (CStunnable::*)()) &CMimrock::processSit;
+	}
 }
 
 void CMimrock::processJump()
 {
-
+	// TODO: Code here!
 }
 
 void CMimrock::processBounce()
 {
-
+	// TODO: Code here!
 }
 
 void CMimrock::processStunned()
 {
-
+	// TODO: Code here!
 }
 
 void CMimrock::process()
@@ -85,6 +91,8 @@ void CMimrock::process()
 	processFalling();
 
 	(this->*mp_processState)();
+
+	processActionRoutine();
 }
 
 

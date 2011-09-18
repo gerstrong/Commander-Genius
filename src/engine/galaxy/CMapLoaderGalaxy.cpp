@@ -428,7 +428,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 19:
 		//This is a Mimrock.
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		p_newfoe = new galaxy::CMimrock(&Map, x, y-250);
+		p_newfoe = new galaxy::CMimrock(&Map, x, y-(2<<CSF));
 		break;
 
 
