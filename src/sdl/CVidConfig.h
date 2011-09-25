@@ -17,14 +17,23 @@
 	#include <SDL_opengl.h>
 #endif
 
-struct st_resolution
+/**
+ * This structure defines the resolution composed of width height and depth
+ */
+
+struct resolution_t
 {
-	int width,height,depth;
+	resolution_t(const int lwidth=0, const int lheight=0, const int ldepth=0) :
+		width(lwidth),
+		height(lheight),
+		depth(ldepth) {};
 
-	st_resolution(const int lwidth=0, const int lheight=0, const int ldepth=0) :
-	width(lwidth), height(lheight), depth(ldepth) {};
+	resolution_t(const SDL_VideoInfo* InfoPtr) :
+		width(InfoPtr->current_h),
+		height(InfoPtr->current_w),
+		depth(InfoPtr->vfmt->BitsPerPixel) {};
 
-	bool operator==(const st_resolution target)
+	bool operator==(const resolution_t &target)
 	{
 		return (target.depth == depth &&
 				target.height == height &&
@@ -33,9 +42,12 @@ struct st_resolution
 
 	float computeAspectRatio() const
 	{
-		return float(width)/float(height);
+		return (float(width)/float(height));
 	}
 
+	int width;
+	int height;
+	int depth;
 };
 
 struct st_camera_bounds
@@ -60,9 +72,9 @@ public:
 	void reset();
 
 	void setResolution(const int width, const int height, const int depth);
-	void setResolution(const st_resolution& res);
+	void setResolution(const resolution_t& res);
 
-	st_resolution m_Resolution;
+	resolution_t m_Resolution;
 	SDL_Rect m_Gamescreen;	// Also called Screenspace. Here the player will be able to choose a higher resolution for the gameplay.
 	bool Fullscreen;
 	short m_ScaleXFilter;

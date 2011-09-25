@@ -90,7 +90,7 @@ bool CSettings::loadDrvCfg()
 	else
 	{
 		CVidConfig VidConf;
-		st_resolution &res = VidConf.m_Resolution;
+		resolution_t &res = VidConf.m_Resolution;
 		Configuration.ReadInteger("Video", "bpp", &res.depth, 32);
 		Configuration.ReadInteger("Video", "width", &res.width, 320);
 		Configuration.ReadInteger("Video", "height", &res.height, 200);

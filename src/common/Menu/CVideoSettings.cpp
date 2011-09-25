@@ -39,7 +39,7 @@ mp_CameraSettings(NULL)
 	std::string buf;
 	mp_Dialog = new CDialog(29, 11, INPUT_MODE_OPTION, m_dlg_theme);
 	
-	st_resolution &Res = m_Vidconfig.m_Resolution;
+	resolution_t &Res = m_Vidconfig.m_Resolution;
 
 	buf = "Resolution: " + itoa(Res.width) + "x" + itoa(Res.height) + "x" + itoa(Res.depth);
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
@@ -128,17 +128,18 @@ void CVideoSettings::processSpecific(){
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = g_pVideoDriver->m_Resolutionlist.size();
 
-				st_resolution &Res = m_Vidconfig.m_Resolution;
-				buf = "Resolution: " + itoa(Res.width) + "x" + itoa(Res.height) + "x" + itoa(Res.depth);
+				resolution_t &Res = m_Vidconfig.m_Resolution;
+				buf = "Resolution: " + itoa(Res.width) + "x" + itoa(Res.height);
 				mp_Dialog->setObjectText(0,buf);
 			}
 			else if(m_current == 3)
 			{
 
 #ifdef USE_OPENGL
-				if(m_Vidconfig.m_opengl) {
+				if(m_Vidconfig.m_opengl)
+				{
 					mp_Dialog->m_min = 1;
-					mp_Dialog->m_max = 1;
+					mp_Dialog->m_max = 2;
 						buf = "GL Filter: ";
 						buf += (m_Vidconfig.m_opengl_filter==1) ? "Linear" : "Nearest";
 				}
@@ -214,11 +215,11 @@ void CVideoSettings::processSpecific(){
 				
 
 #ifdef USE_OPENGL
-				if(m_Vidconfig.m_opengl) {
+				if(m_Vidconfig.m_opengl)
+				{
 					buf = "GL Filter: ";
 					buf += (m_Vidconfig.m_opengl_filter==1) ? "Linear" : "Nearest";
 					mp_Dialog->setObjectType(3, DLG_OBJ_OPTION_TEXT);
-
 				}
 				else
 #endif
@@ -233,7 +234,8 @@ void CVideoSettings::processSpecific(){
 			else if(m_selection == 3)
 			{
 #ifdef USE_OPENGL
-				if(m_Vidconfig.m_opengl) {
+				if(m_Vidconfig.m_opengl)
+				{
 					m_Vidconfig.m_opengl_filter = !m_Vidconfig.m_opengl_filter;
 				}
 				else

@@ -36,6 +36,7 @@ typedef struct stConsoleMessage
 {
 	char msg[80];
 } stConsoleMessage;
+
 stConsoleMessage cmsg[MAX_CONSOLE_MESSAGES];
 int NumConsoleMessages = 0;
 int ConsoleExpireTimer = 0;
@@ -50,7 +51,9 @@ mp_sbuffery(NULL)
 	resetSettings();
 }
 
-void CVideoDriver::resetSettings() {
+// TODO: This should return something!
+void CVideoDriver::resetSettings()
+{
 
 	m_VidConfig.reset();
 
@@ -67,33 +70,40 @@ void CVideoDriver::resetSettings() {
 
 // initResolutionList() reads the local list of available resolution.
 // This function can only be called internally
+// TODO: This should return something!
 void CVideoDriver::initResolutionList()
 {
-	st_resolution resolution;
+	// This call will get the resolution we have right now and set it up for the system
+	// On Handheld devices this means, they will only take that resolution and that would it be.
+	// On the PC, this is the current resolution but will add others.
+	resolution_t resolution(SDL_GetVideoInfo());
+
+	// We have a resolution list, clear it and create a new one.
+
 	m_Resolutionlist.clear();
 
+// TODO: Not sure if those defines are really needed anymore.
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	resolution.width = 320; //  320;
 	resolution.height = 200; //  480;
-	resolution.depth = 32;
-	m_Resolutionlist.clear();
-	m_Resolutionlist.push_back(resolution);
 #elif defined(ANDROID)
 	resolution.width = 320;
 	resolution.height = 200;
-	resolution.depth = 16;
-	m_Resolutionlist.clear();
-	m_Resolutionlist.push_back(resolution);
-#else
-	char buf[256];
+#endif
 
+	// The best retrieved resolution will be added to our resolution list.
+	m_Resolutionlist.push_back(resolution);
+
+	// Now on non-handheld devices let's check for more resolutions.
+#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR) && !defined(ANDROID)
 	for( unsigned int c=0 ; c<NUM_MAIN_RESOLUTIONS ; c++ )
 	{
-		strcpy(buf, ResolutionsList[c]);
-
-		if(sscanf(buf,"%ix%ix%i", &resolution.width, &resolution.height, &resolution.depth) >= 2)
+		// Depth won't be read anymore! Take the one the system is using actually
+		if(sscanf(ResolutionsList[c],"%ix%i", &resolution.width, &resolution.height) >= 2)
+		{
 			// Now check if it's possible to use this resolution
 			verifyResolution( resolution, SDL_FULLSCREEN );
+		}
 	}
 
 	if(!m_VidConfig.Fullscreen)
@@ -101,11 +111,6 @@ void CVideoDriver::initResolutionList()
 		int e = 1;
 		resolution.width = 320;
 		resolution.height = 200;
-#if defined(WIZ)
-		resolution.depth = 16;
-#else
-		resolution.depth = 32;
-#endif
 
 		int maxwidth = SDL_GetVideoInfo()->current_w;
 
@@ -121,23 +126,21 @@ void CVideoDriver::initResolutionList()
 	}
 #endif
 
-	if(m_Resolutionlist.empty()) {
-		resolution.width = 320;
-		resolution.height = 200;
-		resolution.depth = 32;
-		m_Resolutionlist.push_back(resolution);
+	if(m_Resolutionlist.empty())
+	{
+		g_pLogFile->ftextOut(RED, "Error! The resolution list is empty(). That cannot be! Exiting...\n");
 	}
 
 	m_Resolution_pos = m_Resolutionlist.begin();
 }
 
-void CVideoDriver::verifyResolution( st_resolution& resolution, const int flags )
+void CVideoDriver::verifyResolution( resolution_t& resolution, const int flags )
 {
 	resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags );
 
 	if(resolution.depth)
 	{
-		std::list<st_resolution> :: iterator i;
+		std::list<resolution_t> :: iterator i;
 		for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 		{
 			if(*i == resolution)
@@ -165,11 +168,11 @@ void CVideoDriver::setSpecialFXMode(bool SpecialFX)
 
 void CVideoDriver::setMode(int width, int height,int depth)
 {
-	st_resolution res(width, height, depth);
+	resolution_t res(width, height, depth);
 	setMode(res);
 }
 
-void CVideoDriver::setMode(const st_resolution res)
+void CVideoDriver::setMode(const resolution_t& res)
 {
 	m_VidConfig.setResolution(res);
 
@@ -192,7 +195,7 @@ extern "C" void iPhoneRotateScreen();
 
 bool CVideoDriver::applyMode()
 {
-	const st_resolution &Res = m_VidConfig.m_Resolution;
+	const resolution_t &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
 
 	// Before the resolution is set, check, if the zoom factor is too high!

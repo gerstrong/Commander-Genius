@@ -82,7 +82,7 @@ public:
 
 	void setVidConfig(const CVidConfig& VidConf);
 	void setMode(int width, int height,int depth);
-	void setMode(const st_resolution res);
+	void setMode(const resolution_t& res);
 	void setSpecialFXMode(bool SpecialFX);
 	void setFilter(short value);
 	void setZoom(short vale);
@@ -104,8 +104,8 @@ public:
 	 * \return nothing. It does not return because it always adapts the resolution to some working mode.
 	 *         If video cannot be opened at all, another function of LibSDL will find that out.
 	 */
-	void verifyResolution( st_resolution& resolution, const int flags );
-	st_resolution getResolution() const { return *m_Resolution_pos; }
+	void verifyResolution( resolution_t& resolution, const int flags );
+	resolution_t& getResolution() const { return *m_Resolution_pos; }
 
 	void initResolutionList();
 
@@ -121,8 +121,8 @@ public:
 
 	CVideoEngine *mp_VideoEngine;
 
-	std::list<st_resolution> m_Resolutionlist;
-	std::list<st_resolution> :: iterator m_Resolution_pos;
+	std::list<resolution_t> m_Resolutionlist;
+	std::list<resolution_t> :: iterator m_Resolution_pos;
 
 private:
 

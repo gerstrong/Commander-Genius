@@ -26,7 +26,7 @@ m_Mode(0)
 
 bool CVideoEngine::init()
 {
-	const st_resolution &Res = m_VidConfig.m_Resolution;
+	const resolution_t &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
 
 	// Setup mode depends on some systems.
@@ -101,7 +101,7 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 void CVideoEngine::fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr,
 										unsigned int &width, unsigned int &height)
 {
-	const st_resolution &Res = m_VidConfig.m_Resolution;
+	const resolution_t &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameScreen = m_VidConfig.m_Gamescreen;
 	const int xpos = (Res.width-GameScreen.w*m_VidConfig.Zoom)/2;
 	const int ypos = (Res.height-GameScreen.h*m_VidConfig.Zoom)/2;
@@ -129,7 +129,7 @@ void CVideoEngine::scale2xnofilter(char* restrict dest, char* restrict src, shor
     // to 2x (without filter). This applies to 16 and 32-bit colour depth.
 	// It uses bit shifting method for faster blit!
 	bbp >>= 1;
-	const st_resolution &Res = m_VidConfig.m_Resolution;
+	const resolution_t &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
 
 	for( int i=0, j=0 ; i < GameRect.h ; i++ )
@@ -150,7 +150,7 @@ void CVideoEngine::scale3xnofilter(char* restrict dest, char* restrict src, shor
     // to 2x (without filter). This applies to 16 and 32-bit colour depth.
 	// Optimization of using bit shifting
 	bbp >>= 1;
-	const st_resolution &Res = m_VidConfig.m_Resolution;
+	const resolution_t &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
 
 	for( int i=0, j=0 ; i < GameRect.h ; i++ )
@@ -174,7 +174,7 @@ void CVideoEngine::scale4xnofilter(char* restrict dest, char* restrict src, shor
     // to 4x (without filter). This applies to 16 and 32-bit colour depth.
 	// use bit shifting method for faster blit!
 	bbp >>= 1;
-	const st_resolution &Res = m_VidConfig.m_Resolution;
+	const resolution_t &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
 
 	char* restrict srctemp;

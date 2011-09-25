@@ -87,7 +87,7 @@ void CSDLVideo::clearSurfaces()
 void CSDLVideo::updateScreen()
 {
 	const SDL_Rect &gamerect = m_VidConfig.m_Gamescreen;
-	const st_resolution &Resrect = m_VidConfig.m_Resolution;
+	const resolution_t &Resrect = m_VidConfig.m_Resolution;
 
 	// pointer to the line in VRAM to start blitting to when stretchblitting.
 	// this may not be the first line on the display as it is adjusted to
