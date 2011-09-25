@@ -564,8 +564,6 @@ void CPlayer::JumpAndPogo()
 	{
 		if(!ppogostick)
 		{
-			CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
-
 			if (playcontrol[PA_X] < 0)
 					xinertia -= 3;
 			if (playcontrol[PA_X] > 0)
