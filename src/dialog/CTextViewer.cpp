@@ -5,8 +5,6 @@
  *      Author: gerstrong
  */
 
-#include "keen.h"
-
 #include <fstream>
 
 #include "sdl/CInput.h"

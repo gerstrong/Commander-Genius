@@ -36,11 +36,10 @@
  */
 
 #include <SDL.h>
-#include "../keen.h"
 #include "CTimer.h"
 #include "CVideoDriver.h"
-#include "../CLogFile.h"
-#include "../StringUtils.h"
+#include "CLogFile.h"
+#include "StringUtils.h"
 
 CTimer::CTimer()
 {

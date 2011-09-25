@@ -12,7 +12,6 @@
 
 #include "CPlayer.h"
 
-#include "keen.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"

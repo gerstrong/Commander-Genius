@@ -16,7 +16,6 @@
 #include "video/COpenGL.h"
 #include "resolutionlist.h"
 
-#include "keen.h"
 #include "graphics/CGfxEngine.h"
 #include "scale2x/scalebit.h"
 #include "CLogFile.h"

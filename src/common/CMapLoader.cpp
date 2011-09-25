@@ -6,7 +6,6 @@
  */
 
 #include "CMapLoader.h"
-#include "keen.h"
 #include <iostream>
 #include <fstream>
 #include "FindFile.h"

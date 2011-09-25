@@ -6,8 +6,8 @@
  *      Port by: Gerstrong
  */
 
-#include "../../spritedefines.h"
-#include "../../../sdl/sound/CSound.h"
+#include "engine/spritedefines.h"
+#include "sdl/sound/CSound.h"
 #include "CRay.h"
 #include "CAutoRay.h"
 

@@ -7,7 +7,6 @@
 #include <vector>
 #include <stdio.h>
 
-#include "keen.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
 #include "fileio.h"

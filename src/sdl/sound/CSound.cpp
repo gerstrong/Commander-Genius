@@ -6,7 +6,6 @@
  */
 
 #include "CSound.h"
-#include "keen.h"
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "CLogFile.h"

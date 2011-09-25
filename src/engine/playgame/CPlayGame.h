@@ -18,6 +18,9 @@
 #include <string>
 #include <SDL.h>
 
+const int WM_MAP_NUM = 80;
+
+
 class CPlayGame{
 public:
 	CPlayGame(CExeFile &ExeFile, char level,

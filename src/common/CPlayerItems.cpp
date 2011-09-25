@@ -11,7 +11,6 @@
 
 #include "CPlayer.h"
 
-#include "keen.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
 #include "engine/spritedefines.h"

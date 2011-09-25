@@ -11,7 +11,6 @@
 #include "engine/vorticon/ai/CRay.h"
 #include "engine/vorticon/ai/CBridges.h"
 #include "engine/spritedefines.h"
-#include "keen.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CInput.h"
 #include "sdl/music/CMusic.h"
@@ -279,6 +278,11 @@ void CPlayer::setDir()
 		if (playcontrol[PA_X] > 0) { pdir = pshowdir = RIGHT;  }
 	}
 }
+
+#define TILE_SWITCH_UP             480
+#define TILE_SWITCH_DOWN           493
+#define TILE_LIGHTSWITCH           271
+
 
 // allow Keen to toggle the pogo stick and hit switches
 void CPlayer::TogglePogo_and_Switches()

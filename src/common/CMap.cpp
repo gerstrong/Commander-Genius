@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 
-#include "keen.h"
 #include "CMap.h"
 #include "common/CBehaviorEngine.h"
 #include "FindFile.h"

@@ -14,7 +14,6 @@
 #include "common/CBehaviorEngine.h"
 #include "CLogFile.h"
 #include "engine/CPlanes.h"
-#include "keen.h"
 #include "FindFile.h"
 #include <SDL.h>
 #include <stdio.h>

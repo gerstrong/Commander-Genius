@@ -20,9 +20,14 @@
 #include <string>
 #include "common/CBehaviorEngine.h"
 
-enum level_triggers{
-	LVLTRIG_NONE, LVLTRIG_TANTALUS_RAY, LVLTRIG_BRIDGE, LVLTRIG_LIGHT
+enum level_triggers
+{
+	LVLTRIG_NONE,
+	LVLTRIG_TANTALUS_RAY,
+	LVLTRIG_BRIDGE,
+	LVLTRIG_LIGHT
 };
+
 
 ///
 // Class definition starts here!

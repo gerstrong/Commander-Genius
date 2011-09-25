@@ -11,10 +11,9 @@
 #include <string>
 #include <SDL.h>
 #include <vector>
-#include "../../graphics/CGfxEngine.h"
-#include "../../common/CTileProperties.h"
+#include "graphics/CGfxEngine.h"
+#include "common/CTileProperties.h"
 
-#define MAX_PLAYERS 4
 
 // Reference to palette.c
 char pal_addcolor(unsigned char r, unsigned char g, unsigned char b);

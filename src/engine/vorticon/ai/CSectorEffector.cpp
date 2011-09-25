@@ -3,7 +3,7 @@
 #include "CRay.h"
 #include "CSectorEffector.h"
 
-#include "../../spritedefines.h"
+#include "engine/spritedefines.h"
 #include "sdl/sound/CSound.h"
 #include "CLogFile.h"
 #include "graphics/effects/CVibrate.h"

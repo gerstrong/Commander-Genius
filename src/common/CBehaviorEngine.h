@@ -28,6 +28,7 @@
 
 #include "CSingleton.h"
 
+#define MAX_PLAYERS            4
 
 #define g_pBehaviorEngine CBehaviorEngine::Get()
 

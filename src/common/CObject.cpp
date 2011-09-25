@@ -9,7 +9,6 @@
 #include "CLogFile.h"
 #include "engine/spritedefines.h"
 #include "sdl/CVideoDriver.h"
-#include "keen.h"
 
 int CObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 

@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 
-#include "keen.h"
 #include "StringUtils.h"
 #include "CLogFile.h"
 #include "sdl/CTimer.h"

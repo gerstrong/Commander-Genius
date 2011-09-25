@@ -1,7 +1,6 @@
 #include "CDoor.h"
 
-#include "../../../keen.h"
-#include "../../../graphics/CGfxEngine.h"
+#include "graphics/CGfxEngine.h"
 
 CDoor::CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID):
 CObject(pmap, x, y, OBJ_DOOR)

@@ -6,10 +6,12 @@
  */
 
 #include "CBridges.h"
-#include "../../spritedefines.h"
-#include "../../../CLogFile.h"
+#include "engine/spritedefines.h"
+#include "CLogFile.h"
 
 unsigned int CBridges::m_bgtile = 0;
+
+const int TILE_EXTENDING_PLATFORM = 270;
 
 CBridges::CBridges(CMap *pmap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy):
 CObject(pmap, x, y, OBJ_BRIDGE),

@@ -7,7 +7,6 @@
 
 #include <stdio.h>
 #include "tga.h"
-#include "keen.h"
 #include "fileio.h"
 #include "FindFile.h"
 #include "CLogFile.h"

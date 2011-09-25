@@ -1,5 +1,4 @@
 #include "CButler.h"
-#include "keen.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CBehaviorEngine.h"

@@ -8,7 +8,6 @@
 #ifndef COBJECTAI_H_
 #define COBJECTAI_H_
 
-#include "keen.h"
 #include "common/CMap.h"
 #include "common/CObject.h"
 #include "common/options.h"
@@ -116,8 +115,6 @@ private:
 	Uint8& m_difficulty;
 	int m_gunfiretimer;
 	bool &m_dark;
-	unsigned int m_bgtile; // Used as holder for bridges
-
 };
 
 #endif /* COBJECTAI_H_ */

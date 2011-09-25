@@ -19,7 +19,6 @@
 #include "CBehaviorEngine.h"
 
 // structures for each AI module's data
-#include "engine/vorticon/ai/enemydata.h"
 #include "CMap.h"
 #include "graphics/CGfxEngine.h"
 #include "options.h"

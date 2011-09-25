@@ -11,7 +11,6 @@
 #include "ResourceMgmt.h"
 #include "FindFile.h"
 #include "CLogFile.h"
-#include "keen.h"
 
 const std::string GLOBAL_DIR = "global";
 

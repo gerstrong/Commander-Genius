@@ -7,7 +7,6 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "keen.h"
 #include "sdl/CTimer.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"

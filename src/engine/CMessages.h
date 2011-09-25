@@ -8,7 +8,6 @@
 #ifndef CMESSAGES_H_
 #define CMESSAGES_H_
 
-#include "keen.h"
 #include <string>
 #include <map>
 

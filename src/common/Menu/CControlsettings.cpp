@@ -5,13 +5,14 @@
  *      Author: gerstrong
  */
 
-#include "CControlsettings.h"
+#include "StringUtils.h"
 #include "CSelectionMenu.h"
-#include "keen.h"
+#include "CControlsettings.h"
+#include "common/CBehaviorEngine.h"
+
 #include "sdl/CInput.h"
 #include "sdl/CSettings.h"
 #include "sdl/CVideoDriver.h"
-#include "StringUtils.h"
 
 const std::string actionsnames[MAX_COMMANDS] =
 {

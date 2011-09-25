@@ -1,7 +1,6 @@
 #include "CObjectAI.h"
-#include "../../spritedefines.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../keen.h"
+#include "engine/spritedefines.h"
+#include "sdl/sound/CSound.h"
 #include "CTank.h"
 #include "CRay.h"
 

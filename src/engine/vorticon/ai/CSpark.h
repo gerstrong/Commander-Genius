@@ -8,8 +8,8 @@
 #ifndef CSPARK_H_
 #define CSPARK_H_
 
-#include "../../../common/CObject.h"
-#include "../../spritedefines.h"
+#include "common/CObject.h"
+#include "engine/spritedefines.h"
 
 class CSpark : public CObject {
 public:

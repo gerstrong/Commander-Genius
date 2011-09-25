@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 
-#include "../../keen.h"
 #include "CCredits.h"
 #include "../../sdl/CInput.h"
 #include "../../sdl/CVideoDriver.h"

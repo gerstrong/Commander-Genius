@@ -12,12 +12,12 @@
  *  Please do never ever use them in the engine... !!!!!!
  */
 
-#define MAX_LEVELS     100
+#define MAX_LEVELS_V4     100	// Depracated for older formats
+#define MAX_LEVELS_VORTICON     20
 
 #ifndef OLDSAVEGAMESTRUCTS_H_
 #define OLDSAVEGAMESTRUCTS_H_
 
-#include "keen.h"
 #include "common/Playerdefines.h"
 #include "common/inventory.h"
 
@@ -217,7 +217,7 @@ struct OldSaveGameFormatV4
 
 		 // array of which levels have been completed (have "Done" tiles over them
 		 // on the world map)
-		 int levels_completed[MAX_LEVELS+1];
+		 int levels_completed[MAX_LEVELS_V4+1];
 
 		 // exitXpos: the X pixel position (not <<CSFed) of the frame of the exit
 		 // door. when walking out the door, keen's sprite will not be drawn past

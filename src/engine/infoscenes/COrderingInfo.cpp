@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 
-//#include "../../keen.h"
 #include "COrderingInfo.h"
 #include "../../sdl/CInput.h"
 #include "../../CLogFile.h"

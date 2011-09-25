@@ -1,7 +1,6 @@
-#include "../../../graphics/effects/CVibrate.h"
-#include "../../spritedefines.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../keen.h"
+#include "graphics/effects/CVibrate.h"
+#include "engine/spritedefines.h"
+#include "sdl/sound/CSound.h"
 #include "CVorticon.h"
 #include "CRope.h"
 
