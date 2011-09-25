@@ -335,8 +335,7 @@ void CVideoDriver::DeleteConsoleMsgs(void)
 // other existing messages downwards
 void CVideoDriver::AddConsoleMsg(const char *the_msg)
 {
-	int i;
-	for(i=MAX_CONSOLE_MESSAGES-2;i>=0;i--)
+	for( int i=MAX_CONSOLE_MESSAGES-2 ; i>=0 ; i-- )
 	{
 		strcpy(cmsg[i+1].msg, cmsg[i].msg);
 	}
@@ -375,8 +374,8 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 			up--;
 	}
 
-	bool invalid_value = (left<50) || (up<50) || (right<50) || (down<50) ||
-			(speed<1) || (left>270) || (up>150) || (right>270) || (down>150) || (speed>50);
+	bool invalid_value = (left<50) || (up<50)  || (right<50)  || (down<50)  || (speed<1) ||
+						(left>270) || (up>150) || (right>270) || (down>150) || (speed>50);
 
 	st_camera_bounds &cam = m_VidConfig.m_CameraBounds;
 
@@ -384,37 +383,34 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 		cam.reset();
 	else
 		cam = CameraBounds;
-
 }
 
-CVidConfig &CVideoDriver::getVidConfig() { return m_VidConfig; }
+CVidConfig &CVideoDriver::getVidConfig()
+{ return m_VidConfig;	}
 
-short CVideoDriver::getZoomValue(void){ return m_VidConfig.Zoom; }
+short CVideoDriver::getZoomValue()
+{ return m_VidConfig.Zoom;	}
 
-void CVideoDriver::isFullscreen(bool value) {
-	m_VidConfig.Fullscreen = value;
-}
+void CVideoDriver::isFullscreen(const bool value)
+{	m_VidConfig.Fullscreen = value;	}
 
-short CVideoDriver::getFiltermode(void)
-{
-	if(m_VidConfig.m_ScaleXFilter < 1)
-		m_VidConfig.m_ScaleXFilter = 1;
-	return m_VidConfig.m_ScaleXFilter;
-}
-
-bool CVideoDriver::getFullscreen(void)
+bool CVideoDriver::getFullscreen()
 {	return m_VidConfig.Fullscreen;	}
+
 unsigned int CVideoDriver::getWidth() const
 {	return m_VidConfig.m_Resolution.width;	}
+
 unsigned int CVideoDriver::getHeight() const
 {	return m_VidConfig.m_Resolution.height;	}
+
 unsigned short CVideoDriver::getDepth() const
 {	return m_VidConfig.m_Resolution.depth;	}
-SDL_Surface *CVideoDriver::getScrollSurface(void)
-{	return mp_VideoEngine->getScrollSurface(); }
+
+SDL_Surface *CVideoDriver::getScrollSurface()
+{	return mp_VideoEngine->getScrollSurface();	}
 
 st_camera_bounds &CVideoDriver::getCameraBounds()
-{ return m_VidConfig.m_CameraBounds; }
+{ 	return m_VidConfig.m_CameraBounds;	}
 
 void CVideoDriver::stop()
 {

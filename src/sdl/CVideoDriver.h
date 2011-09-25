@@ -62,10 +62,9 @@ public:
 	void saveCameraBounds(st_camera_bounds &CameraBounds);
 
 	CVidConfig &getVidConfig();
-	short getZoomValue(void);
-	bool getShowFPS(void);
-	short getFiltermode(void);
-	bool getFullscreen(void);
+	short getZoomValue();
+	bool getShowFPS();
+	bool getFullscreen();
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
 	unsigned short getDepth() const;
