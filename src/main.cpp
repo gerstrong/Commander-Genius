@@ -49,18 +49,24 @@
  */
 int main(int argc, char *argv[])
 {
-	if(argc >= 1) {
+	if(argc >= 1)
+	{
 		binary_dir = argv[0];
 		size_t slashpos = findLastPathSep(binary_dir);
-		if(slashpos != std::string::npos)  {
+		if(slashpos != std::string::npos)
+		{
 			binary_dir.erase(slashpos);
 			binary_dir = SystemNativeToUtf8(binary_dir);
-		} else
+		}
+		else
 			binary_dir = ".";
-	} else {
+	}
+	else
+	{
 		warnings << "Binary-argument not given, assuming current dir" << endl;
 		binary_dir = ".";
 	}
+
 	binary_dir = GetAbsolutePath(binary_dir);
 
 	InitThreadPool();
@@ -87,7 +93,7 @@ int main(int argc, char *argv[])
 
 	g_pLogFile->Del();
 
-	printf("Thank you very much for playing this wonderful game!\n\n");
+	std::cout << "Thank you very much for playing this wonderful game!" << std::endl;
 
 	UnInitThreadPool();
 	return 0;

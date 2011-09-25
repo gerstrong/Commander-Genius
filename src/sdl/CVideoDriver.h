@@ -51,6 +51,14 @@ public:
 	void DeleteConsoleMsgs(void);
 	void AddConsoleMsg(const char *the_msg);
 
+
+	/**
+	 * \description This function saves the given camera bounds. It is usually called
+	 * 				by a menu item.
+	 * \param		CameraBounds	The Camera Bound configuration as input.
+	 * 								Those might be corrected depending on how the user
+	 * 								chose them.
+	 */
 	void saveCameraBounds(st_camera_bounds &CameraBounds);
 
 	CVidConfig &getVidConfig();

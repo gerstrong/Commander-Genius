@@ -25,7 +25,7 @@
 #include <iostream>
 #include <fstream>
 
-#define CKLOGFILENAME            	"genius.log"
+const std::string CKLOGFILENAME = "genius.log";
 
 #define MAX_CONSOLE_MESSAGES     	3
 #define CONSOLE_MESSAGE_X        	3
@@ -306,7 +306,9 @@ void CVideoDriver::updateScreen()
 // in the upper-left corner during game play ala Doom.
 void CVideoDriver::drawConsoleMessages(void)
 {
-	if (!NumConsoleMessages) return;
+	if (!NumConsoleMessages)
+		return;
+
 	if (!ConsoleExpireTimer)
 	{
 		NumConsoleMessages--;
@@ -344,10 +346,11 @@ void CVideoDriver::AddConsoleMsg(const char *the_msg)
 	ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
 }
 
+
+
+
 void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 {
-	int i;
-
 	int &left = CameraBounds.left;
 	int &up = CameraBounds.up;
 	int &right = CameraBounds.right;
@@ -356,23 +359,24 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 
 	if(left>right)
 	{
-		i = left-right;
-		i = i/2;
-		left = left-i;
-		right = right+i;
+		const int halfWidth = (left-right)/2;
+		left -= halfWidth;
+		right += halfWidth;
 		if(left>right)
-			left = left-1;
+			left--;
 	}
+
 	if(up>down)
 	{
-		i = up-down;
-		i = i/2;
-		up = up-i;
-		down = down+i;
+		const int halfHeight = (up-down)/2;
+		up -= halfHeight;
+		down += halfHeight;
 		if(up>down)
-			up = up-1;
+			up--;
 	}
-	bool invalid_value = (left<50) || (up<50) || (right<50) || (down<50) || (speed<1) || (left>270) || (up>150) || (right>270) || (down>150) || (speed>50);
+
+	bool invalid_value = (left<50) || (up<50) || (right<50) || (down<50) ||
+			(speed<1) || (left>270) || (up>150) || (right>270) || (down>150) || (speed>50);
 
 	st_camera_bounds &cam = m_VidConfig.m_CameraBounds;
 
@@ -380,6 +384,7 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 		cam.reset();
 	else
 		cam = CameraBounds;
+
 }
 
 CVidConfig &CVideoDriver::getVidConfig() { return m_VidConfig; }

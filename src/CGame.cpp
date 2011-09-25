@@ -19,7 +19,8 @@
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 
-CGame::CGame() : m_firsttime(false),
+CGame::CGame() :
+m_firsttime(false),
 m_Engine(m_firsttime)
 {}
 
@@ -37,7 +38,6 @@ m_Engine(m_firsttime)
  * \return			If the function could setup
  * 					the game, it will return true, else it
  * 					will be false.
- *
  */
 bool CGame::init(int argc, char *argv[])
 {
@@ -89,8 +89,6 @@ bool CGame::loadCKPDrivers()
 	
 	g_pSound->init();
 	
-	// g_pInput is started automatically when needed!
-
 	return true;
 }
 
