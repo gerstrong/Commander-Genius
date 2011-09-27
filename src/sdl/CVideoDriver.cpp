@@ -76,7 +76,7 @@ void CVideoDriver::initResolutionList()
 	// This call will get the resolution we have right now and set it up for the system
 	// On Handheld devices this means, they will only take that resolution and that would it be.
 	// On the PC, this is the current resolution but will add others.
-	resolution_t resolution(SDL_GetVideoInfo());
+	CRect resolution(SDL_GetVideoInfo());
 
 	// We have a resolution list, clear it and create a new one.
 
@@ -99,25 +99,26 @@ void CVideoDriver::initResolutionList()
 	for( unsigned int c=0 ; c<NUM_MAIN_RESOLUTIONS ; c++ )
 	{
 		// Depth won't be read anymore! Take the one the system is using actually
-		if(sscanf(ResolutionsList[c],"%ix%i", &resolution.width, &resolution.height) >= 2)
+		if(sscanf(ResolutionsList[c],"%ix%i", &resolution.w, &resolution.h) >= 2)
 		{
 			// Now check if it's possible to use this resolution
 			verifyResolution( resolution, SDL_FULLSCREEN );
 		}
 	}
 
+	// In case there is no fullscreen, we will adapt the resolution it's best to the window
 	if(!m_VidConfig.Fullscreen)
 	{
 		int e = 1;
-		resolution.width = 320;
-		resolution.height = 200;
+		resolution.w = 320;
+		resolution.h = 200;
 
 		int maxwidth = SDL_GetVideoInfo()->current_w;
 
-		while(resolution.width < maxwidth)
+		while(resolution.w < maxwidth)
 		{
-			resolution.width = 320 * e;
-			resolution.height = 200 * e;
+			resolution.w = 320 * e;
+			resolution.h = 200 * e;
 
 			// Now check if it's possible to use this resolution
 			verifyResolution( resolution, 0 );
@@ -134,13 +135,11 @@ void CVideoDriver::initResolutionList()
 	m_Resolution_pos = m_Resolutionlist.begin();
 }
 
-void CVideoDriver::verifyResolution( resolution_t& resolution, const int flags )
+void CVideoDriver::verifyResolution( CRect& resolution, const int flags )
 {
-	resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags );
-
-	if(resolution.depth)
+	if(SDL_VideoModeOK( resolution.w, resolution.h, 32, flags ))
 	{
-		std::list<resolution_t> :: iterator i;
+		std::list<CRect> :: iterator i;
 		for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 		{
 			if(*i == resolution)
@@ -150,7 +149,7 @@ void CVideoDriver::verifyResolution( resolution_t& resolution, const int flags )
 		if(i == m_Resolutionlist.end())
 		{
 #ifdef DEBUG
-			g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n", resolution.width, resolution.height, resolution.depth);
+			g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n", resolution.w, resolution.h, 32);
 #endif
 			m_Resolutionlist.push_back(resolution);
 		}
@@ -160,7 +159,7 @@ void CVideoDriver::verifyResolution( resolution_t& resolution, const int flags )
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
 {
 	m_VidConfig = VidConf;
-	setMode(m_VidConfig.m_Resolution);
+	setMode(m_VidConfig.m_DisplayRect);
 }
 
 void CVideoDriver::setSpecialFXMode(bool SpecialFX)
@@ -168,11 +167,11 @@ void CVideoDriver::setSpecialFXMode(bool SpecialFX)
 
 void CVideoDriver::setMode(int width, int height,int depth)
 {
-	resolution_t res(width, height, depth);
+	CRect res(width, height);
 	setMode(res);
 }
 
-void CVideoDriver::setMode(const resolution_t& res)
+void CVideoDriver::setMode(const CRect& res)
 {
 	m_VidConfig.setResolution(res);
 
@@ -195,11 +194,11 @@ extern "C" void iPhoneRotateScreen();
 
 bool CVideoDriver::applyMode()
 {
-	const resolution_t &Res = m_VidConfig.m_Resolution;
-	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
+	const CRect &Res = m_VidConfig.m_DisplayRect;
+	const CRect &GameRect = m_VidConfig.m_GameRect;
 
 	// Before the resolution is set, check, if the zoom factor is too high!
-	while(((Res.width/GameRect.w) < m_VidConfig.Zoom || (Res.height/GameRect.h) < m_VidConfig.Zoom) && (m_VidConfig.Zoom > 1))
+	while(((Res.w/GameRect.w) < m_VidConfig.Zoom || (Res.h/GameRect.h) < m_VidConfig.Zoom) && (m_VidConfig.Zoom > 1))
 		m_VidConfig.Zoom--;
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(ANDROID)
@@ -219,7 +218,7 @@ bool CVideoDriver::applyMode()
 	if( m_VidConfig.Zoom == 0 )
 		m_VidConfig.Zoom = 1;
 
-	m_VidConfig.m_Resolution = *m_Resolution_pos;
+	m_VidConfig.m_DisplayRect = *m_Resolution_pos;
 	return true;
 }
 
@@ -262,7 +261,7 @@ bool CVideoDriver::start()
 
 	// Now SDL will tell if the bpp works or changes it, if not supported.
 	// this value is updated here!
-	m_VidConfig.m_Resolution.depth = mp_VideoEngine->getScreenSurface()->format->BitsPerPixel;
+	// m_VidConfig.m_Resolution.depth = mp_VideoEngine->getScreenSurface()->format->BitsPerPixel;
 	retval &= mp_VideoEngine->createSurfaces();
 	m_mustrefresh = true;
 
@@ -306,6 +305,7 @@ void CVideoDriver::updateScreen()
 
 // "Console" here refers to the capability to pop up in-game messages
 // in the upper-left corner during game play ala Doom.
+// TODO: These Messages should be drawn on the blit surface afterwards and not on the FGLayerSurface
 void CVideoDriver::drawConsoleMessages(void)
 {
 	if (!NumConsoleMessages)
@@ -400,13 +400,13 @@ bool CVideoDriver::getFullscreen()
 {	return m_VidConfig.Fullscreen;	}
 
 unsigned int CVideoDriver::getWidth() const
-{	return m_VidConfig.m_Resolution.width;	}
+{	return m_VidConfig.m_DisplayRect.w;	}
 
 unsigned int CVideoDriver::getHeight() const
-{	return m_VidConfig.m_Resolution.height;	}
+{	return m_VidConfig.m_DisplayRect.h;	}
 
 unsigned short CVideoDriver::getDepth() const
-{	return m_VidConfig.m_Resolution.depth;	}
+{	return 32;	}
 
 SDL_Surface *CVideoDriver::getScrollSurface()
 {	return mp_VideoEngine->getScrollSurface();	}

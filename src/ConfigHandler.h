@@ -34,10 +34,11 @@
 
 
 // Value reading
-bool	ReadString(const std::string& filename, const std::string& section, const std::string& key, std::string& value, std::string defaultv, bool abs_fn = false);
-bool	ReadInteger(const std::string& filename, const std::string& section, const std::string& key, int *value, int defaultv);
-bool	ReadFloat(const std::string& filename, const std::string& section, const std::string& key, float *value, float defaultv);
-bool	ReadIntArray(const std::string& filename, const std::string& section, const std::string& key, int *array, int num_items);
+bool		ReadString(const std::string& filename, const std::string& section, const std::string& key, std::string& value, std::string defaultv, bool abs_fn = false);
+bool		ReadInteger(const std::string& filename, const std::string& section, const std::string& key, int *value, int defaultv);
+inline bool ReadInteger(const std::string& filename, const std::string& section, const std::string& key, Uint16 *value, int defaultv);
+bool		ReadFloat(const std::string& filename, const std::string& section, const std::string& key, float *value, float defaultv);
+bool		ReadIntArray(const std::string& filename, const std::string& section, const std::string& key, int *array, int num_items);
 
 
 struct Color;

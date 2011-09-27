@@ -19,36 +19,36 @@ CVideoEngine(VidConfig, p_sbufferx, p_sbuffery)
 bool CSDLVideo::createSurfaces()
 {
 	// This function creates the surfaces which are needed for the game.
-	const SDL_Rect &gamerect = m_VidConfig.m_Gamescreen;
+	const CRect &gamerect = m_VidConfig.m_GameRect;
 	ScrollSurface = createSurface( "ScrollSurface", true,
 			512,
 			512,
-			m_VidConfig.m_Resolution.depth,
+			32,
 			m_Mode, screen->format );
 
-	if (m_VidConfig.m_Resolution.width == gamerect.w )
+/*	if (m_VidConfig.m_Resolution.width == gamerect.w )
 	{
 		g_pLogFile->textOut("Blitsurface = Screen<br>");
 		BlitSurface = screen;
 		m_blitsurface_alloc = false;
 	}
-	else
+	else*/
 	{
 		g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
 
 		BlitSurface = createSurface( "BlitSurface", true,
 				gamerect.w,
 				gamerect.h,
-				m_VidConfig.m_Resolution.depth,
+				32,
 				m_Mode, screen->format );
 
-		m_blitsurface_alloc = true;
+		//m_blitsurface_alloc = true;
 	}
 
 	FGLayerSurface = createSurface( "FGLayerSurface", false,
 			gamerect.w,
 			gamerect.h,
-			m_VidConfig.m_Resolution.depth,
+			32,
 			m_Mode, screen->format );
 
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
@@ -57,7 +57,7 @@ bool CSDLVideo::createSurfaces()
 	FXSurface = createSurface( "FXSurface", false,
 			gamerect.w,
 			gamerect.h,
-			m_VidConfig.m_Resolution.depth,
+			32,
 			m_Mode, screen->format );
 
 	//Set surface alpha
@@ -73,8 +73,6 @@ void CSDLVideo::collectSurfaces()
 
 	if( getPerSurfaceAlpha(FXSurface) )
 		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
-
-
 }
 
 void CSDLVideo::clearSurfaces()
@@ -86,30 +84,36 @@ void CSDLVideo::clearSurfaces()
 
 void CSDLVideo::updateScreen()
 {
-	const SDL_Rect &gamerect = m_VidConfig.m_Gamescreen;
-	const resolution_t &Resrect = m_VidConfig.m_Resolution;
+	const CRect &GameRect = m_VidConfig.m_GameRect;
+	const CRect &FilteredRect = m_VidConfig.m_FilteredRect;
+	const CRect &DisplayRect = m_VidConfig.m_DisplayRect;
+
+
+	// TODO: First apply the conventional filter (GameScreen -> FilteredScreen)
+
+
+	// TODO: Now scale up to the new DisplayRect (GameScreen -> FilteredScreen)
+
 
 	// pointer to the line in VRAM to start blitting to when stretchblitting.
 	// this may not be the first line on the display as it is adjusted to
 	// center the image on the screen when in fullscreen.
-	Uint8 *ScreenPtr;
-	Uint8 *BlitPtr;
-	unsigned int width, height;
+	//Uint8 *ScreenPtr;
+	//Uint8 *BlitPtr;
+	//unsigned int width, height;
 
 	// if we're doing zoom then we have copied the scroll buffer into
 	// another offscreen buffer, and must now stretchblit it to the screen
-	if (m_VidConfig.Zoom == 1 && Resrect.width != gamerect.w )
-	{
+	//if (m_VidConfig.Zoom == 1 && Resrect.width != gamerect.w )
+	//{
 		SDL_Rect scrrect, dstrect;
-		scrrect.y = 0;
-		scrrect.x = 0;
-		dstrect.h = scrrect.h = gamerect.h;
-		dstrect.w = scrrect.w = gamerect.w;
-		dstrect.x = (m_VidConfig.m_Resolution.width-gamerect.w)/2;
-		dstrect.y = (m_VidConfig.m_Resolution.height-gamerect.h)/2;
+		dstrect.x = scrrect.y = 0;
+		dstrect.y = scrrect.x = 0;
+		dstrect.h = scrrect.h = GameRect.h;
+		dstrect.w = scrrect.w = GameRect.w;
 
 		SDL_BlitSurface(BlitSurface, &scrrect, screen, &dstrect);
-	}
+	/*}
 	else
 	{
 		fetchStartScreenPixelPtrs(ScreenPtr, BlitPtr, width, height);
@@ -169,7 +173,7 @@ void CSDLVideo::updateScreen()
 		}
 		SDL_UnlockSurface(screen);
 		SDL_UnlockSurface(BlitSurface);
-	}
+	}*/
 
 	SDL_Flip(screen);
 

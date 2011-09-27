@@ -20,34 +20,24 @@
 /**
  * This structure defines the resolution composed of width height and depth
  */
-
-struct resolution_t
+struct CRect : public SDL_Rect
 {
-	resolution_t(const int lwidth=0, const int lheight=0, const int ldepth=0) :
-		width(lwidth),
-		height(lheight),
-		depth(ldepth) {};
+	CRect( const Uint16 lwidth = 0, const Uint16 lheight = 0 )
+		{ w=lwidth; w=lheight; };
 
-	resolution_t(const SDL_VideoInfo* InfoPtr) :
-		width(InfoPtr->current_h),
-		height(InfoPtr->current_w),
-		depth(InfoPtr->vfmt->BitsPerPixel) {};
+	CRect( const SDL_VideoInfo* InfoPtr )
+		{ w=InfoPtr->current_w; h=InfoPtr->current_w; };
 
-	bool operator==(const resolution_t &target)
+	bool operator==( const CRect &target )
 	{
-		return (target.depth == depth &&
-				target.height == height &&
-				target.width == width);
+		return (target.x == x && target.y == y &&
+				target.w == w && target.h == h);
 	}
 
-	float computeAspectRatio() const
+	float aspectRatio() const
 	{
-		return (float(width)/float(height));
+		return (float(w)/float(h));
 	}
-
-	int width;
-	int height;
-	int depth;
 };
 
 struct st_camera_bounds
@@ -72,10 +62,12 @@ public:
 	void reset();
 
 	void setResolution(const int width, const int height, const int depth);
-	void setResolution(const resolution_t& res);
+	void setResolution(const CRect& res);
 
-	resolution_t m_Resolution;
-	SDL_Rect m_Gamescreen;	// Also called Screenspace. Here the player will be able to choose a higher resolution for the gameplay.
+	CRect m_GameRect;	// Also called Screenspace.
+	CRect m_FilteredRect;	// The resulting after filtering.
+	CRect m_DisplayRect; // The Fullscreen-Resolution or the Window Size
+
 	bool Fullscreen;
 	short m_ScaleXFilter;
 	unsigned short Zoom;

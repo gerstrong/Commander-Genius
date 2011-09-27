@@ -53,7 +53,7 @@ protected:
 	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
 	SDL_Surface *FXSurface;
 
-	bool m_blitsurface_alloc;
+	//bool m_blitsurface_alloc;
 
 	const CVidConfig &m_VidConfig;
 

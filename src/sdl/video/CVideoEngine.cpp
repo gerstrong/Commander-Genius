@@ -16,7 +16,7 @@ BlitSurface(NULL),
 FGLayerSurface(NULL),       // Scroll buffer for Messages
 ScrollSurface(NULL),       // 512x512 scroll buffer
 FXSurface(NULL),
-m_blitsurface_alloc(false),
+//m_blitsurface_alloc(false),
 m_VidConfig(VidConfig),
 mp_sbufferx(p_sbufferx),
 mp_sbuffery(p_sbuffery),
@@ -26,8 +26,8 @@ m_Mode(0)
 
 bool CVideoEngine::init()
 {
-	const resolution_t &Res = m_VidConfig.m_Resolution;
-	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
+	const CRect &Res = m_VidConfig.m_DisplayRect;
+	const CRect &GameRect = m_VidConfig.m_GameRect;
 
 	// Setup mode depends on some systems.
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
@@ -58,7 +58,7 @@ bool CVideoEngine::init()
 		m_Mode |= SDL_FULLSCREEN;
 
 	// And leave the rest to SDL!
-	screen = SDL_SetVideoMode( Res.width, Res.height, Res.depth, m_Mode );
+	screen = SDL_SetVideoMode( Res.w, Res.h, 32, m_Mode );
 
 	if(!screen)
 	{
@@ -70,7 +70,7 @@ bool CVideoEngine::init()
 	// Anyway, it just can point but does not interact yet
  	SDL_ShowCursor(!m_VidConfig.Fullscreen);
 
- 	m_dst_slice = Res.width*screen->format->BytesPerPixel;
+ 	m_dst_slice = Res.w*screen->format->BytesPerPixel;
  	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
 
 	return true;
@@ -98,7 +98,7 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 	return optimized;
 }
 
-void CVideoEngine::fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr,
+/*void CVideoEngine::fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr,
 										unsigned int &width, unsigned int &height)
 {
 	const resolution_t &Res = m_VidConfig.m_Resolution;
@@ -120,8 +120,8 @@ void CVideoEngine::fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr,
 
 	if(yoffset>0)
 		ScreenPtr += yoffset;
-}
-
+}*/
+/*
 //void CVideoEngine::scale2xnofilter(char* dest, char* src, short bbp)
 void CVideoEngine::scale2xnofilter(char* restrict dest, char* restrict src, short bbp)
 {
@@ -174,7 +174,7 @@ void CVideoEngine::scale4xnofilter(char* restrict dest, char* restrict src, shor
     // to 4x (without filter). This applies to 16 and 32-bit colour depth.
 	// use bit shifting method for faster blit!
 	bbp >>= 1;
-	const resolution_t &Res = m_VidConfig.m_Resolution;
+	const CRect &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
 
 	char* restrict srctemp;
@@ -201,7 +201,7 @@ void CVideoEngine::scale4xnofilter(char* restrict dest, char* restrict src, shor
 		memcpy(desttemp+(Res.width<<bbp),srctemp,size);
 		memcpy(desttemp+((Res.width<<bbp)<<1),srctemp,size);
 	}
-}
+}*/
 
 void CVideoEngine::blitScrollSurface() // This is only for tiles
 									   // The name should be changed
@@ -211,7 +211,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 	Sint16 sbufferx, sbuffery;
 	char wraphoz, wrapvrt;
 	int save_dstx, save_dstw, save_srcx, save_srcw;
-	const SDL_Rect &Gamerect = m_VidConfig.m_Gamescreen;
+	const SDL_Rect &Gamerect = m_VidConfig.m_GameRect;
 
 	dstrect.x = 0; dstrect.y = 0;
 
@@ -293,12 +293,13 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 void CVideoEngine::stop()
 {
 	g_pLogFile->textOut(GREEN, "Freeing the following graphical surfaces:<br>\n");
-    if(m_blitsurface_alloc && BlitSurface)
+    if(/*m_blitsurface_alloc &&*/ BlitSurface)
     {
         SDL_FreeSurface(BlitSurface);
         g_pLogFile->textOut("freed BlitSurface<br>");
         BlitSurface=NULL;
     }
+
     if(FGLayerSurface)
     {
         SDL_FreeSurface(FGLayerSurface);

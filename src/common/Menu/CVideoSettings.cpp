@@ -39,9 +39,9 @@ mp_CameraSettings(NULL)
 	std::string buf;
 	mp_Dialog = new CDialog(29, 11, INPUT_MODE_OPTION, m_dlg_theme);
 	
-	resolution_t &Res = m_Vidconfig.m_Resolution;
+	CRect &Res = m_Vidconfig.m_DisplayRect;
 
-	buf = "Resolution: " + itoa(Res.width) + "x" + itoa(Res.height) + "x" + itoa(Res.depth);
+	buf = "Resolution: " + itoa(Res.w) + "x" + itoa(Res.h) + "x" + itoa(32);
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
 	
 	buf = m_Vidconfig.Fullscreen ? "Fullscreen mode" : "Windowed mode";
@@ -128,8 +128,8 @@ void CVideoSettings::processSpecific(){
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = g_pVideoDriver->m_Resolutionlist.size();
 
-				resolution_t &Res = m_Vidconfig.m_Resolution;
-				buf = "Resolution: " + itoa(Res.width) + "x" + itoa(Res.height);
+				CRect &Res = m_Vidconfig.m_DisplayRect;
+				buf = "Resolution: " + itoa(Res.w) + "x" + itoa(Res.h);
 				mp_Dialog->setObjectText(0,buf);
 			}
 			else if(m_current == 3)
@@ -195,7 +195,7 @@ void CVideoSettings::processSpecific(){
 				m_Resolution_pos = m_Resolutionlist.begin();
 				int value = mp_Dialog->m_dlgobject.at(0)->m_Option->m_value;
 				for( ; value>0 ; value-- )	m_Resolution_pos++;
-				m_Vidconfig.m_Resolution = *m_Resolution_pos;
+				m_Vidconfig.m_DisplayRect = *m_Resolution_pos;
 			}
 			else if(m_selection == 1)
 			{

@@ -43,12 +43,11 @@ bool CSettings::saveDrvCfg()
 		Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
 	
 	CVidConfig &VidConf = g_pVideoDriver->getVidConfig();
-	Configuration.WriteInt("Video", "bpp",VidConf.m_Resolution.depth);
 	Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
 	Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
 
-	Configuration.WriteInt("Video", "width", VidConf.m_Resolution.width);
-	Configuration.WriteInt("Video", "height", VidConf.m_Resolution.height);
+	Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
+	Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
 	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #ifdef USE_OPENGL
 	Configuration.WriteInt("Video", "OGLfilter", VidConf.m_opengl_filter);
@@ -90,18 +89,20 @@ bool CSettings::loadDrvCfg()
 	else
 	{
 		CVidConfig VidConf;
-		resolution_t &res = VidConf.m_Resolution;
-		Configuration.ReadInteger("Video", "bpp", &res.depth, 32);
-		Configuration.ReadInteger("Video", "width", &res.width, 320);
-		Configuration.ReadInteger("Video", "height", &res.height, 200);
+		CRect &res = VidConf.m_DisplayRect;
+		//Configuration.ReadInteger("Video", "bpp", &res.depth, 32);
+		int value = 0;
+		Configuration.ReadInteger("Video", "width", &value, 320);
+		res.w = value;
+		Configuration.ReadInteger("Video", "height", &value, 200);
+		res.h = value;
 		
-		if(res.depth*res.width*res.height <= 0)
+		if(res.w*res.h <= 0)
 		{
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file!<br>");
 			return false;
 		}
 
-		int value=0;
 		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
 #ifdef USE_OPENGL
 		Configuration.ReadInteger("Video", "OGLfilter", &VidConf.m_opengl_filter, false);

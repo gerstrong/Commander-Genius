@@ -30,20 +30,20 @@ COpenGL::COpenGL(const CVidConfig &VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sb
 CVideoEngine(VidConfig, p_sbufferx, p_sbuffery),
 m_opengl_buffer(NULL),
 m_texparam(GL_TEXTURE_2D),
-m_aspectratio(m_VidConfig.m_Resolution.computeAspectRatio()),
-m_GamePOTBaseDim(getPowerOfTwo(m_VidConfig.m_Gamescreen.w),
-				getPowerOfTwo(m_VidConfig.m_Gamescreen.h)),
-m_GamePOTVideoDim(getPowerOfTwo(m_VidConfig.m_Resolution.width),
-				getPowerOfTwo(m_VidConfig.m_Resolution.height))
+m_aspectratio(m_VidConfig.m_DisplayRect.aspectRatio()),
+m_GamePOTBaseDim(getPowerOfTwo(m_VidConfig.m_GameRect.w),
+				getPowerOfTwo(m_VidConfig.m_GameRect.h)),
+m_GamePOTVideoDim(getPowerOfTwo(m_VidConfig.m_DisplayRect.w),
+				getPowerOfTwo(m_VidConfig.m_DisplayRect.h))
 {}
 
 bool COpenGL::createSurfaces()
 {
 	// This function creates the surfaces which are needed for the game.
-	const SDL_Rect &gamerect = m_VidConfig.m_Gamescreen;
+	const SDL_Rect &gamerect = m_VidConfig.m_GameRect;
     ScrollSurface = createSurface( "ScrollSurface", true,
 								  512, 512,
-								  m_VidConfig.m_Resolution.depth,
+								  32,
 								  m_Mode, screen->format );
 
     g_pLogFile->textOut("Blitsurface = creatergbsurface<br>");
@@ -51,21 +51,21 @@ bool COpenGL::createSurfaces()
     BlitSurface = createSurface( "BlitSurface", true,
     		getPowerOfTwo(gamerect.w),
     		getPowerOfTwo(gamerect.h),
-    		m_VidConfig.m_Resolution.depth,
+    		32,
     		m_Mode, screen->format );
-    m_blitsurface_alloc = true;
+    //m_blitsurface_alloc = true;
 
 	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
 		FGLayerSurface = createSurface( "FGLayerSurface", true,
 						getPowerOfTwo(gamerect.w),
 						getPowerOfTwo(gamerect.h),
-									m_VidConfig.m_Resolution.depth,
+									32,
 									m_Mode, screen->format );
 		FXSurface = createSurface( "FXSurface", true,
 				getPowerOfTwo(gamerect.w),
 				getPowerOfTwo(gamerect.h),
-						m_VidConfig.m_Resolution.depth,
+						32,
 						m_Mode, screen->format );
 	}
 	else
@@ -73,7 +73,7 @@ bool COpenGL::createSurfaces()
 		FGLayerSurface = createSurface( "FGLayerSurface", false,
 				gamerect.w,
 				gamerect.h,
-				m_VidConfig.m_Resolution.depth,
+				32,
 				m_Mode, screen->format );
 
 		SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
@@ -82,7 +82,7 @@ bool COpenGL::createSurfaces()
 		FXSurface = createSurface( "FXSurface", false,
 				gamerect.w,
 				gamerect.h,
-				m_VidConfig.m_Resolution.depth,
+				32,
 				m_Mode, screen->format );
 
 		//Set surface alpha
@@ -136,13 +136,6 @@ bool COpenGL::init()
 {
 	CVideoEngine::init();
 	const GLint oglfilter = (m_VidConfig.m_opengl_filter==1) ? GL_LINEAR : GL_NEAREST ;
-	if(m_VidConfig.m_Resolution.depth != 32)
-	{
-		// TODO: I know, this is an issue, but I need to investigate, how pixels in SDL are stored when using
-		// 16 bit depth copy it correctly to the OGL Texture
-		g_pLogFile->textOut("Sorry, but OpenGL with 16 bpp is not supported! Please switch to 32 bpp mode!");
-		return false;
-	}
 
 	// Calculate the proper viewport for any resolution
 	float base_width = g_pVideoDriver->getGameResolution().w;
@@ -194,7 +187,7 @@ bool COpenGL::init()
 	
 	if(m_VidConfig.m_ScaleXFilter > 1)
 	{
-		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_VidConfig.m_ScaleXFilter*m_VidConfig.m_Resolution.depth];
+		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_VidConfig.m_ScaleXFilter*4];
 	}
 	else
 	{	// In that case we can do a texture based rendering
