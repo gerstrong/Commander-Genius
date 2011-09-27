@@ -23,7 +23,7 @@
 struct CRect : public SDL_Rect
 {
 	CRect( const Uint16 lwidth = 0, const Uint16 lheight = 0 )
-		{ w=lwidth; w=lheight; };
+		{ w=lwidth; h=lheight; };
 
 	CRect( const SDL_VideoInfo* InfoPtr )
 		{ w=InfoPtr->current_w; h=InfoPtr->current_w; };

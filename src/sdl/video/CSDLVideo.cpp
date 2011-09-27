@@ -34,15 +34,13 @@ bool CSDLVideo::createSurfaces()
 	}
 	else*/
 	{
-		g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
+		g_pLogFile->textOut("Blitsurface created!\n");
 
 		BlitSurface = createSurface( "BlitSurface", true,
 				gamerect.w,
 				gamerect.h,
 				32,
 				m_Mode, screen->format );
-
-		//m_blitsurface_alloc = true;
 	}
 
 	FGLayerSurface = createSurface( "FGLayerSurface", false,
@@ -63,6 +61,8 @@ bool CSDLVideo::createSurfaces()
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
+
+
 
 	return true;
 }

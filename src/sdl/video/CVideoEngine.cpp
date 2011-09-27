@@ -55,16 +55,17 @@ bool CVideoEngine::init()
 
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(m_VidConfig.Fullscreen)
-		m_Mode |= SDL_FULLSCREEN;
-
-	// And leave the rest to SDL!
-	screen = SDL_SetVideoMode( Res.w, Res.h, 32, m_Mode );
-
-	if(!screen)
 	{
-		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
-		return false;
+		m_Mode |= SDL_FULLSCREEN;
 	}
+	else
+	{
+		m_Mode |= SDL_RESIZABLE;
+	}
+
+	// And set the proper Display Dimensions
+	if(!resizeDisplayScreen(Res))
+		return false;
 
 	// If Fullscreen hide the mouse cursor.
 	// Anyway, it just can point but does not interact yet
@@ -72,6 +73,20 @@ bool CVideoEngine::init()
 
  	m_dst_slice = Res.w*screen->format->BytesPerPixel;
  	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
+
+	return true;
+}
+
+bool CVideoEngine::resizeDisplayScreen(const CRect& newDim)
+{
+	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
+	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+
+	if (!screen)
+	{
+		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
+		return false;
+	}
 
 	return true;
 }

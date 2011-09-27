@@ -428,7 +428,7 @@ void CInput::pollEvents()
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
-	//While there's an event to handle
+	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
 	{
 		switch( Event.type )
@@ -459,6 +459,11 @@ void CInput::pollEvents()
 			processMouse(Event);
 			break;
 #endif
+
+		case SDL_VIDEORESIZE:
+			CRect newSize(Event.resize.w, Event.resize.h);
+			g_pVideoDriver->mp_VideoEngine->resizeDisplayScreen(newSize);
+			break;
 		}
 	}
 #ifdef MOUSEWRAPPER

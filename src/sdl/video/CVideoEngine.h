@@ -25,6 +25,7 @@ public:
 	CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
 
 	virtual bool init();
+	bool resizeDisplayScreen(const CRect& newDim);
 	virtual void updateScreen() = 0;
 	virtual void shutdown();
 
