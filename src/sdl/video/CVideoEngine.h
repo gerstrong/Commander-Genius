@@ -50,6 +50,7 @@ protected:
 	void scale4xnofilter(char* restrict dest, char* restrict src, short bbp);
 
 	SDL_Surface *BlitSurface;
+	SDL_Surface *FilteredSurface;
 	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages
 	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
 	SDL_Surface *FXSurface;

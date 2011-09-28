@@ -65,7 +65,6 @@ public:
 	void setResolution(const CRect& res);
 
 	CRect m_GameRect;	// Also called Screenspace.
-	CRect m_FilteredRect;	// The resulting after filtering.
 	CRect m_DisplayRect; // The Fullscreen-Resolution or the Window Size
 
 	bool Fullscreen;

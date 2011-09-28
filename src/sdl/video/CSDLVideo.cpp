@@ -43,9 +43,22 @@ bool CSDLVideo::createSurfaces()
 				m_Mode, screen->format );
 	}
 
+	{
+		g_pLogFile->textOut("FilteredSurface created!\n");
+
+		FilteredSurface = createSurface( "FilteredSurface", true,
+				BlitSurface->w*m_VidConfig.m_ScaleXFilter,
+				BlitSurface->h*m_VidConfig.m_ScaleXFilter,
+				32,
+				m_Mode, screen->format );
+
+	 	m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
+	}
+
+
 	FGLayerSurface = createSurface( "FGLayerSurface", false,
-			gamerect.w,
-			gamerect.h,
+			BlitSurface->w,
+			BlitSurface->h,
 			32,
 			m_Mode, screen->format );
 
@@ -53,8 +66,8 @@ bool CSDLVideo::createSurfaces()
 			SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
 
 	FXSurface = createSurface( "FXSurface", false,
-			gamerect.w,
-			gamerect.h,
+			BlitSurface->w,
+			BlitSurface->h,
 			32,
 			m_Mode, screen->format );
 
@@ -85,14 +98,47 @@ void CSDLVideo::clearSurfaces()
 void CSDLVideo::updateScreen()
 {
 	const CRect &GameRect = m_VidConfig.m_GameRect;
-	const CRect &FilteredRect = m_VidConfig.m_FilteredRect;
 	const CRect &DisplayRect = m_VidConfig.m_DisplayRect;
 
 
-	// TODO: First apply the conventional filter (GameScreen -> FilteredScreen)
+	// TODO: First apply the conventional filter if any (GameScreen -> FilteredScreen)
+	if(m_VidConfig.m_ScaleXFilter > 1)
+	{
+		// In this case we filter up!
+		SDL_LockSurface(BlitSurface);
+		SDL_LockSurface(FilteredSurface);
+
+		scale(m_VidConfig.m_ScaleXFilter, FilteredSurface->pixels, m_dst_slice, BlitSurface->pixels,
+				m_src_slice, screen->format->BytesPerPixel,
+				BlitSurface->w, BlitSurface->h);
+
+		SDL_UnlockSurface(FilteredSurface);
+		SDL_UnlockSurface(BlitSurface);
+	}
+	else
+	{
+		SDL_Rect scrrect, dstrect;
+		dstrect.x = scrrect.y = 0;
+		dstrect.y = scrrect.x = 0;
+		dstrect.h = scrrect.h = BlitSurface->h;
+		dstrect.w = scrrect.w = BlitSurface->w;
+
+		SDL_BlitSurface(BlitSurface, &scrrect, FilteredSurface, &dstrect);
+	}
+
+	// TODO: Now scale up to the new DisplayRect (FilteredScreen -> screen)
+	SDL_Rect scrrect, dstrect;
+	dstrect.x = scrrect.y = 0;
+	dstrect.y = scrrect.x = 0;
+	dstrect.h = scrrect.h = FilteredSurface->h;
+	dstrect.w = scrrect.w = FilteredSurface->w;
+
+	SDL_BlitSurface(FilteredSurface, &scrrect, screen, &dstrect);
 
 
-	// TODO: Now scale up to the new DisplayRect (GameScreen -> FilteredScreen)
+
+
+
 
 
 	// pointer to the line in VRAM to start blitting to when stretchblitting.
@@ -106,13 +152,6 @@ void CSDLVideo::updateScreen()
 	// another offscreen buffer, and must now stretchblit it to the screen
 	//if (m_VidConfig.Zoom == 1 && Resrect.width != gamerect.w )
 	//{
-		SDL_Rect scrrect, dstrect;
-		dstrect.x = scrrect.y = 0;
-		dstrect.y = scrrect.x = 0;
-		dstrect.h = scrrect.h = GameRect.h;
-		dstrect.w = scrrect.w = GameRect.w;
-
-		SDL_BlitSurface(BlitSurface, &scrrect, screen, &dstrect);
 	/*}
 	else
 	{

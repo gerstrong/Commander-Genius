@@ -71,7 +71,6 @@ bool CVideoEngine::init()
 	// Anyway, it just can point but does not interact yet
  	SDL_ShowCursor(!m_VidConfig.Fullscreen);
 
- 	m_dst_slice = Res.w*screen->format->BytesPerPixel;
  	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
 
 	return true;
@@ -313,6 +312,13 @@ void CVideoEngine::stop()
         SDL_FreeSurface(BlitSurface);
         g_pLogFile->textOut("freed BlitSurface<br>");
         BlitSurface=NULL;
+    }
+
+    if(FilteredSurface)
+    {
+        SDL_FreeSurface(FilteredSurface);
+        g_pLogFile->textOut("freed FilteredSurface<br>");
+        FilteredSurface = NULL;
     }
 
     if(FGLayerSurface)
