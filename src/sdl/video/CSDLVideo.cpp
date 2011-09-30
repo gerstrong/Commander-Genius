@@ -95,6 +95,47 @@ void CSDLVideo::clearSurfaces()
 	SDL_FillRect(BlitSurface,NULL, 0x0);
 }
 
+
+void CSDLVideo::scaleNoFilter( 	SDL_Surface *srcSfc,
+								const SDL_Rect *scrrect,
+								SDL_Surface *dstSfc,
+								const SDL_Rect *dstrect )
+{
+	SDL_LockSurface(srcSfc);
+	SDL_LockSurface(dstSfc);
+
+
+	const float dstWidth  = float(dstSfc->w);
+	const float dstHeight = float(dstSfc->h);
+
+	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels);
+	Uint32 *srcPixel = static_cast<Uint32*>(srcSfc->pixels);
+	Uint32 pitch;
+
+	const float wFac = float(srcSfc->w)/dstWidth;
+	const float hFac = float(srcSfc->h)/dstHeight;
+	float xSrc, ySrc;
+
+	ySrc = 0.0f;
+	for( Uint32 yDst = 0, xDst ; yDst<dstHeight ; yDst++ )
+	{
+		xSrc = 0.0f;
+		pitch = Uint32(ySrc)*srcSfc->w;
+		for( xDst = 0; xDst<dstWidth ; xDst++ )
+		{
+			*dstPixel = srcPixel[pitch+Uint32(xSrc)];
+
+			xSrc += wFac;
+			dstPixel++;
+		}
+
+		ySrc += hFac;
+	}
+
+	SDL_UnlockSurface(dstSfc);
+	SDL_UnlockSurface(srcSfc);
+}
+
 void CSDLVideo::updateScreen()
 {
 	const CRect &GameRect = m_VidConfig.m_GameRect;
@@ -104,7 +145,7 @@ void CSDLVideo::updateScreen()
 	// TODO: First apply the conventional filter if any (GameScreen -> FilteredScreen)
 	if(m_VidConfig.m_ScaleXFilter > 1)
 	{
-		// In this case we filter up!
+		// In this case we filter up the transformed resolution!
 		SDL_LockSurface(BlitSurface);
 		SDL_LockSurface(FilteredSurface);
 
@@ -130,12 +171,14 @@ void CSDLVideo::updateScreen()
 	SDL_Rect scrrect, dstrect;
 	dstrect.x = scrrect.y = 0;
 	dstrect.y = scrrect.x = 0;
-	dstrect.h = scrrect.h = FilteredSurface->h;
-	dstrect.w = scrrect.w = FilteredSurface->w;
+	dstrect.h = screen->h;
+	dstrect.w = screen->w;
+	scrrect.h = FilteredSurface->h;
+	scrrect.w = FilteredSurface->w;
 
-	SDL_BlitSurface(FilteredSurface, &scrrect, screen, &dstrect);
+	//SDL_BlitSurface(FilteredSurface, &scrrect, screen, &dstrect);
 
-
+	scaleNoFilter( FilteredSurface, &scrrect, screen, &dstrect );
 
 
 

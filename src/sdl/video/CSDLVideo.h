@@ -2,7 +2,7 @@
  * CSDLVideo.h
  *
  *  Created on: 05.02.2011
- *      Author: gerhard
+ *      Author: gerstrong
  *
  *  This class
  */
@@ -19,6 +19,13 @@ public:
 	bool createSurfaces();
 	void collectSurfaces();
 	void clearSurfaces();
+
+	void scaleNoFilter( 	SDL_Surface *srcSfc,
+									const SDL_Rect *scrrect,
+									SDL_Surface *dstSfc,
+									const SDL_Rect *dstrect );
+
+
 	void updateScreen();
 
 private:
