@@ -2,7 +2,7 @@
  * CVideoEngine.h
  *
  *  Created on: 05.02.2011
- *      Author: gerhard
+ *      Author: gerstrong
  *
  *  This is a base class which will process the video settings on your system.
  *  CVideoDriver calls that Engine through an overloaded Extra class like COpenGL or CSDLVideo
@@ -14,7 +14,7 @@
 #include <SDL.h>
 #include <string>
 
-#include "scale2x/scalebit.h"
+#include "scalers/scalebit.h"
 #include "sdl/CVidConfig.h"
 
 #define restrict

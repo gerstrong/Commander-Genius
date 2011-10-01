@@ -26,34 +26,23 @@ bool CSDLVideo::createSurfaces()
 			32,
 			m_Mode, screen->format );
 
-/*	if (m_VidConfig.m_Resolution.width == gamerect.w )
-	{
-		g_pLogFile->textOut("Blitsurface = Screen<br>");
-		BlitSurface = screen;
-		m_blitsurface_alloc = false;
-	}
-	else*/
-	{
-		g_pLogFile->textOut("Blitsurface created!\n");
+	g_pLogFile->textOut("Blitsurface created!\n");
 
-		BlitSurface = createSurface( "BlitSurface", true,
+	BlitSurface = createSurface( "BlitSurface", true,
 				gamerect.w,
 				gamerect.h,
 				32,
 				m_Mode, screen->format );
-	}
 
-	{
-		g_pLogFile->textOut("FilteredSurface created!\n");
+	g_pLogFile->textOut("FilteredSurface created!\n");
 
-		FilteredSurface = createSurface( "FilteredSurface", true,
+	FilteredSurface = createSurface( "FilteredSurface", true,
 				BlitSurface->w*m_VidConfig.m_ScaleXFilter,
 				BlitSurface->h*m_VidConfig.m_ScaleXFilter,
 				32,
 				m_Mode, screen->format );
 
-	 	m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
-	}
+	 m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
 
 
 	FGLayerSurface = createSurface( "FGLayerSurface", false,

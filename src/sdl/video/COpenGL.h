@@ -23,7 +23,6 @@
 #include <SDL_opengl.h>
 #endif
 
-#include "scale2x/scalebit.h"
 #include "CVideoEngine.h"
 
 // Structure used for dimensions
