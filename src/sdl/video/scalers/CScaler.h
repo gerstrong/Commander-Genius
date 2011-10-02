@@ -8,20 +8,48 @@
 #ifndef CSCALER_H_
 #define CSCALER_H_
 
-namespace galaxy
+#include <SDL.h>
+
+enum scaleOptionType
 {
+	NO_SCALE,
+	SCALEX,
+	DYNAMIC
+};
 
 class CScaler
 {
 
 public:
-	CScaler();
+
+	CScaler() : wFac(1.0f), hFac(1.0f) {}
+
+	/**
+	 * \description This functions takes care of the scaling one surface to another
+	 * \param		dstSfc	Pointer the destination surface
+	 * \param		srcSfc	Pointer the source surface
+	 * \param		scaleOptionType	Type of scale you want to perform
+	 * 				NONE 	= Just blit over it
+	 * 				SCALEX 	= use ScaleX
+	 * 				DYNAMIC = Use the Software Scaler for window resizal recommended
+	 */
+	void scaleUp(	SDL_Surface				*dstSfc,
+					SDL_Surface				*srcSfc,
+					const scaleOptionType	scaleOption);
+
+
+	void setDynamicFactor( const float wFac, const float hFac);
+
+	void setFilterFactor( const Uint32 FilterFactor );
 
 private:
 
-	float wFac;
-	float hFac;
+	void scaleDynamic( 	SDL_Surface *srcSfc,
+						SDL_Surface *dstSfc );
+
+	float 	wFac;
+	float 	hFac;
+	Uint32 	FilterFactor;
 };
 
-} /* namespace galaxy */
 #endif /* CSCALER_H_ */

@@ -87,6 +87,9 @@ bool CVideoEngine::resizeDisplayScreen(const CRect& newDim)
 		return false;
 	}
 
+	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
+							 float(FilteredSurface->h)/float(screen->h));
+
 	return true;
 }
 
@@ -112,110 +115,7 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 	return optimized;
 }
 
-/*void CVideoEngine::fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr,
-										unsigned int &width, unsigned int &height)
-{
-	const resolution_t &Res = m_VidConfig.m_Resolution;
-	const SDL_Rect &GameScreen = m_VidConfig.m_Gamescreen;
-	const int xpos = (Res.width-GameScreen.w*m_VidConfig.Zoom)/2;
-	const int ypos = (Res.height-GameScreen.h*m_VidConfig.Zoom)/2;
-	const int xoffset = xpos*(Res.depth>>3);
-	const int yoffset = ypos*screen->pitch;
-	width = MIN(Res.width, GameScreen.w*m_VidConfig.Zoom);
-	height = MIN(Res.height, GameScreen.h*m_VidConfig.Zoom);
-	width /= m_VidConfig.Zoom;
-	height /= m_VidConfig.Zoom;
 
-	ScreenPtr = (Uint8*) screen->pixels;
-	BlitPtr = (Uint8*) BlitSurface->pixels;
-
-	if(xoffset>0)
-		ScreenPtr += xoffset;
-
-	if(yoffset>0)
-		ScreenPtr += yoffset;
-}*/
-/*
-//void CVideoEngine::scale2xnofilter(char* dest, char* src, short bbp)
-void CVideoEngine::scale2xnofilter(char* restrict dest, char* restrict src, short bbp)
-{
-	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
-    // to 2x (without filter). This applies to 16 and 32-bit colour depth.
-	// It uses bit shifting method for faster blit!
-	bbp >>= 1;
-	const resolution_t &Res = m_VidConfig.m_Resolution;
-	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
-
-	for( int i=0, j=0 ; i < GameRect.h ; i++ )
-	{
-		for( j = 0 ; j < GameRect.w ; j++)
-		{
-			memcpy(dest+((j<<1)<<bbp)+(((i<<1)*Res.width)<<bbp),src+(j<<bbp)+((i*GameRect.w)<<bbp),bbp<<1);
-			memcpy(dest+(((j<<1)+1)<<bbp)+(((i<<1)*Res.width)<<bbp),src+(j<<bbp)+((i*GameRect.w)<<bbp),bbp<<1);
-		}
-		memcpy(dest+(((i<<1)+1)*(Res.width<<bbp)),(dest+(i<<1)*(Res.width<<bbp)),(bbp<<2)*GameRect.w);
-	}
-}
-
-//void CVideoEngine::scale3xnofilter(char *dest, char *src, short bbp)
-void CVideoEngine::scale3xnofilter(char* restrict dest, char* restrict src, short bbp)
-{
-	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
-    // to 2x (without filter). This applies to 16 and 32-bit colour depth.
-	// Optimization of using bit shifting
-	bbp >>= 1;
-	const resolution_t &Res = m_VidConfig.m_Resolution;
-	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
-
-	for( int i=0, j=0 ; i < GameRect.h ; i++ )
-	{
-		for(j = 0; j < GameRect.w ; j++)
-		{
-			// j*3 = (j<<1) + j
-			memcpy(dest+(((j<<1)+j)<<bbp)+((((i<<1) + i)*Res.width)<<bbp),src+(j<<bbp)+((i*GameRect.w)<<bbp),bbp<<1);
-			memcpy(dest+(((j<<1)+j+1)<<bbp)+((((i<<1) + i)*Res.width)<<bbp),src+(j<<bbp)+((i*GameRect.w)<<bbp),bbp<<1);
-			memcpy(dest+(((j<<1)+j+2)<<bbp)+((((i<<1) + i)*Res.width)<<bbp),src+(j<<bbp)+((i*GameRect.w)<<bbp),bbp<<1);
-		}
-		memcpy(dest+((i<<1)+i+1)*(Res.width<<bbp),dest+((i<<1)+i)*(Res.width<<bbp),(3<<bbp)*GameRect.w);
-		memcpy(dest+((i<<1)+i+2)*(Res.width<<bbp),dest+((i<<1)+i)*(Res.width<<bbp),(3<<bbp)*GameRect.w);
-	}
-}
-
-//void CVideoEngine::scale4xnofilter(char *dest, char *src, short bbp)
-void CVideoEngine::scale4xnofilter(char* restrict dest, char* restrict src, short bbp)
-{
-	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
-    // to 4x (without filter). This applies to 16 and 32-bit colour depth.
-	// use bit shifting method for faster blit!
-	bbp >>= 1;
-	const CRect &Res = m_VidConfig.m_Resolution;
-	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
-
-	char* restrict srctemp;
-	char* restrict desttemp;
-	int size;
-
-	for( int i=0, j=0 ; i < GameRect.h ; i++ )
-	{
-		for(j = 0; j < GameRect.w ; j++)
-		{
-			// j*4 = (j<<2)
-			srctemp = src+((j+(i*GameRect.w))<<bbp);
-			desttemp = dest+((4*(j+(i*Res.width)))<<bbp);
-			memcpy(desttemp,srctemp,bbp<<1);
-			memcpy(desttemp+(1<<bbp),srctemp,bbp<<1);
-			memcpy(desttemp+(2<<bbp),srctemp,bbp<<1);
-			memcpy(desttemp+(3<<bbp),srctemp,bbp<<1);
-		}
-		srctemp = dest+(((i<<2)*Res.width)<<bbp);
-		desttemp = dest+((((i<<2)+1)*Res.width)<<bbp);
-		size = GameRect.w*(bbp<<1<<2);
-
-		memcpy(desttemp,srctemp,size);
-		memcpy(desttemp+(Res.width<<bbp),srctemp,size);
-		memcpy(desttemp+((Res.width<<bbp)<<1),srctemp,size);
-	}
-}*/
 
 void CVideoEngine::blitScrollSurface() // This is only for tiles
 									   // The name should be changed

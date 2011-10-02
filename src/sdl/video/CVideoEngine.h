@@ -14,10 +14,9 @@
 #include <SDL.h>
 #include <string>
 
-#include "scalers/scalebit.h"
+#include "scalers/CScaler.h"
 #include "sdl/CVidConfig.h"
 
-#define restrict
 
 class CVideoEngine {
 public:
@@ -25,7 +24,9 @@ public:
 	CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
 
 	virtual bool init();
+
 	bool resizeDisplayScreen(const CRect& newDim);
+
 	virtual void updateScreen() = 0;
 	virtual void shutdown();
 
@@ -45,17 +46,13 @@ public:
 
 protected:
 
-	void scale2xnofilter(char* restrict dest, char* restrict src, short bbp);
-	void scale3xnofilter(char* restrict dest, char* restrict src, short bbp);
-	void scale4xnofilter(char* restrict dest, char* restrict src, short bbp);
-
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FilteredSurface;
 	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages
 	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
 	SDL_Surface *FXSurface;
 
-	//bool m_blitsurface_alloc;
+	CScaler Scaler;
 
 	const CVidConfig &m_VidConfig;
 

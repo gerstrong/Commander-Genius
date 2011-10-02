@@ -9,7 +9,6 @@
 #include "CVideoEngine.h"
 #include "CLogFile.h"
 
-#include "scalers/scalers.h"
 #include "graphics/CGfxEngine.h"
 #include "graphics/PerSurfaceAlpha.h"
 
@@ -19,6 +18,9 @@ CVideoEngine(VidConfig, p_sbufferx, p_sbuffery)
 
 bool CSDLVideo::createSurfaces()
 {
+	// Configure the Scaler
+	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+
 	// This function creates the surfaces which are needed for the game.
 	const CRect &gamerect = m_VidConfig.m_GameRect;
 	ScrollSurface = createSurface( "ScrollSurface", true,
@@ -65,7 +67,9 @@ bool CSDLVideo::createSurfaces()
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
-
+	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
+							 float(FilteredSurface->h)/float(screen->h));
 
 	return true;
 }
@@ -94,90 +98,16 @@ void CSDLVideo::updateScreen()
 
 
 	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
-	scaleUp(FilteredSurface, BlitSurface, SCALEX);
+	Scaler.scaleUp(FilteredSurface, BlitSurface, SCALEX);
+
 
 	// Now scale up to the new DisplayRect (FilteredScreen -> screen)
-	scaleUp(screen, FilteredSurface, DYNAMIC);
+	Scaler.scaleUp(screen, FilteredSurface, DYNAMIC);
 
 
-
-
-
-
-	// pointer to the line in VRAM to start blitting to when stretchblitting.
-	// this may not be the first line on the display as it is adjusted to
-	// center the image on the screen when in fullscreen.
-	//Uint8 *ScreenPtr;
-	//Uint8 *BlitPtr;
-	//unsigned int width, height;
-
-	// if we're doing zoom then we have copied the scroll buffer into
-	// another offscreen buffer, and must now stretchblit it to the screen
-	//if (m_VidConfig.Zoom == 1 && Resrect.width != gamerect.w )
-	//{
-	/*}
-	else
-	{
-		fetchStartScreenPixelPtrs(ScreenPtr, BlitPtr, width, height);
-	}
-
-	if (m_VidConfig.Zoom == 2)
-	{
-		SDL_LockSurface(BlitSurface);
-		SDL_LockSurface(screen);
-
-		if(m_VidConfig.m_ScaleXFilter == 1)
-		{
-			scale2xnofilter((char*)ScreenPtr, (char*)BlitPtr, screen->format->BytesPerPixel);
-		}
-		else if(m_VidConfig.m_ScaleXFilter == 2)
-		{
-			scale(m_VidConfig.m_ScaleXFilter, ScreenPtr, m_dst_slice, BlitPtr,
-					m_src_slice, screen->format->BytesPerPixel,
-					width, height);
-		}
-
-		SDL_UnlockSurface(screen);
-		SDL_UnlockSurface(BlitSurface);
-	}
-	else if (m_VidConfig.Zoom == 3)
-	{
-		SDL_LockSurface(BlitSurface);
-		SDL_LockSurface(screen);
-
-		if(m_VidConfig.m_ScaleXFilter == 1)
-		{
-			scale3xnofilter((char*)ScreenPtr, (char*)BlitPtr, screen->format->BytesPerPixel);
-		}
-		else if(m_VidConfig.m_ScaleXFilter == 2 || m_VidConfig.m_ScaleXFilter == 3)
-		{
-			scale(m_VidConfig.m_ScaleXFilter, ScreenPtr, m_dst_slice, BlitPtr,
-					m_src_slice, screen->format->BytesPerPixel,
-					width, height);
-		}
-		SDL_UnlockSurface(screen);
-		SDL_UnlockSurface(BlitSurface);
-	}
-	else if (m_VidConfig.Zoom == 4)
-	{
-		SDL_LockSurface(BlitSurface);
-		SDL_LockSurface(screen);
-
-		if(m_VidConfig.m_ScaleXFilter == 1)
-		{
-			scale4xnofilter((char*)ScreenPtr, (char*)BlitPtr, screen->format->BytesPerPixel);
-		}
-		else if(m_VidConfig.m_ScaleXFilter >= 2 && m_VidConfig.m_ScaleXFilter <= 4 )
-		{
-			scale(m_VidConfig.m_ScaleXFilter, ScreenPtr, m_dst_slice, BlitPtr,
-					m_src_slice, screen->format->BytesPerPixel,
-					width, height);
-		}
-		SDL_UnlockSurface(screen);
-		SDL_UnlockSurface(BlitSurface);
-	}*/
-
+	// Flip the screen (We use double-buffering on some systems.)
 	SDL_Flip(screen);
+
 
 	// Flush the FG-Layer
 	SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));

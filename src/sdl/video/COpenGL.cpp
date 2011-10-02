@@ -264,9 +264,9 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 		const unsigned dst_slice = m_VidConfig.m_ScaleXFilter*src_slice;
 
 
-		scale(m_VidConfig.m_ScaleXFilter, m_opengl_buffer, dst_slice, surface->pixels,
+		/*scaler(m_VidConfig.m_ScaleXFilter, m_opengl_buffer, dst_slice, surface->pixels,
 				src_slice, surface->format->BytesPerPixel,
-				m_GamePOTBaseDim.w, m_GamePOTBaseDim.h);
+				m_GamePOTBaseDim.w, m_GamePOTBaseDim.h);*/
 
 			glTexImage2D(m_texparam, 0, internalFormat, m_GamePOTBaseDim.w*m_VidConfig.m_ScaleXFilter, m_GamePOTBaseDim.h*m_VidConfig.m_ScaleXFilter,
 														0, externalFormat, GL_UNSIGNED_BYTE, m_opengl_buffer);
