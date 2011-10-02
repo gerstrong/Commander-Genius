@@ -37,6 +37,31 @@ m_GamePOTVideoDim(getPowerOfTwo(m_VidConfig.m_DisplayRect.w),
 				getPowerOfTwo(m_VidConfig.m_DisplayRect.h))
 {}
 
+bool COpenGL::resizeDisplayScreen(const CRect& newDim)
+{
+	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
+	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+
+	if (!screen)
+	{
+		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
+		return false;
+	}
+
+	if(FilteredSurface)
+	{
+		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
+								 float(FilteredSurface->h)/float(screen->h));
+	}
+
+	glViewport( 0.0f, 0.0f,
+			float(FilteredSurface->w),
+			float(FilteredSurface->h) );
+
+	return true;
+}
+
+
 bool COpenGL::createSurfaces()
 {
 	// This function creates the surfaces which are needed for the game.
@@ -53,7 +78,16 @@ bool COpenGL::createSurfaces()
     		getPowerOfTwo(gamerect.h),
     		32,
     		m_Mode, screen->format );
-    //m_blitsurface_alloc = true;
+
+    g_pLogFile->textOut("FilteredSurface = creatergbsurface<br>");
+
+	FilteredSurface = createSurface( "FilteredSurface", true,
+				BlitSurface->w*m_VidConfig.m_ScaleXFilter,
+				BlitSurface->h*m_VidConfig.m_ScaleXFilter,
+				32,
+				m_Mode, screen->format );
+
+	m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
 
 	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
@@ -91,6 +125,11 @@ bool COpenGL::createSurfaces()
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
+	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
+							 float(FilteredSurface->h)/float(screen->h));
+
+
 	return true;
 }
 
@@ -113,7 +152,8 @@ void COpenGL::clearSurfaces()
 }
 
 
-static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false) {
+static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false)
+{
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -264,12 +304,18 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 		const unsigned dst_slice = m_VidConfig.m_ScaleXFilter*src_slice;
 
 
-		/*scaler(m_VidConfig.m_ScaleXFilter, m_opengl_buffer, dst_slice, surface->pixels,
-				src_slice, surface->format->BytesPerPixel,
-				m_GamePOTBaseDim.w, m_GamePOTBaseDim.h);*/
+			// First apply the conventional filter if any (GameScreen -> FilteredScreen)
+			Scaler.scaleUp(FilteredSurface, surface, SCALEX);
 
-			glTexImage2D(m_texparam, 0, internalFormat, m_GamePOTBaseDim.w*m_VidConfig.m_ScaleXFilter, m_GamePOTBaseDim.h*m_VidConfig.m_ScaleXFilter,
-														0, externalFormat, GL_UNSIGNED_BYTE, m_opengl_buffer);
+			SDL_LockSurface(FilteredSurface);
+
+			glTexImage2D(m_texparam, 0, internalFormat,
+						FilteredSurface->w,
+						FilteredSurface->h,
+						0, externalFormat,
+						GL_UNSIGNED_BYTE, FilteredSurface->pixels);
+
+			SDL_UnlockSurface(FilteredSurface);
 	}
 	else
 	{

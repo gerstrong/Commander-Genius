@@ -16,6 +16,26 @@ CSDLVideo::CSDLVideo(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&
 CVideoEngine(VidConfig, p_sbufferx, p_sbuffery)
 {}
 
+bool CSDLVideo::resizeDisplayScreen(const CRect& newDim)
+{
+	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
+	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+
+	if (!screen)
+	{
+		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
+		return false;
+	}
+
+	if(FilteredSurface)
+	{
+		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
+								 float(FilteredSurface->h)/float(screen->h));
+	}
+
+	return true;
+}
+
 bool CSDLVideo::createSurfaces()
 {
 	// Configure the Scaler

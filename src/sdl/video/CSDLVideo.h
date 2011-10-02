@@ -16,6 +16,7 @@ class CSDLVideo : public CVideoEngine {
 public:
 	CSDLVideo(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
 
+	bool resizeDisplayScreen(const CRect& newDim);
 	bool createSurfaces();
 	void collectSurfaces();
 	void clearSurfaces();

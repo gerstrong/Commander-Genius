@@ -25,7 +25,7 @@ public:
 
 	virtual bool init();
 
-	bool resizeDisplayScreen(const CRect& newDim);
+	virtual bool resizeDisplayScreen(const CRect& newDim) = 0;
 
 	virtual void updateScreen() = 0;
 	virtual void shutdown();

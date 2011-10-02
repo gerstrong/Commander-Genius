@@ -8,9 +8,6 @@
 #include "CVideoEngine.h"
 #include "CLogFile.h"
 
-#define	MIN(a,b) (((a)<(b))?(a):(b))
-#define	MAX(a,b) (((a)>(b))?(a):(b))
-
 CVideoEngine::CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
 BlitSurface(NULL),
 FGLayerSurface(NULL),       // Scroll buffer for Messages
@@ -87,8 +84,11 @@ bool CVideoEngine::resizeDisplayScreen(const CRect& newDim)
 		return false;
 	}
 
-	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
-							 float(FilteredSurface->h)/float(screen->h));
+	if(FilteredSurface)
+	{
+		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
+								 float(FilteredSurface->h)/float(screen->h));
+	}
 
 	return true;
 }
