@@ -104,10 +104,15 @@ bool CGame::loadCKPDrivers()
 void CGame::run()
 {
 	CSettings Settings;
+
+
 	do
 	{
+
         // Perform game logic
-        if (g_pTimer->TimeToLogic()) {
+        if (g_pTimer->TimeToLogic())
+        {
+
             // Poll Inputs
             g_pInput->pollEvents();
 			if (g_pInput->getHoldedKey(KF) &&
@@ -119,26 +124,37 @@ void CGame::run()
 				g_pVideoDriver->stop();
 				g_pVideoDriver->start();
 			}
-            // Process Game Control
 
+			// Process Game Control
 			m_Engine.process();
+
         }
 		
+
         // Render the Screen
-        if (g_pTimer->TimeToRender()) {
+        if (g_pTimer->TimeToRender())
+        {
+
         	// Pass all the surfaces to one
         	g_pVideoDriver->collectSurfaces();
+
+
         	// Apply graphical effects if any
         	g_pGfxEngine->process();
+
+
 			// Now you really render the screen
         	// When enabled, it also will apply Filters
             g_pVideoDriver->updateScreen();
+
         }
 		
+
         // delay time remaining in current loop
         g_pTimer->TimeToDelay();
 
-	} while(!m_Engine.mustShutdown() && !g_pInput->getExitEvent());
+	} while(!m_Engine.mustShutdown() &&
+			!g_pInput->getExitEvent());
 }
 
 ///////////////////////////////
