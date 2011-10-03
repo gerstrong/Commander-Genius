@@ -19,7 +19,6 @@
 class CEGAGraphics {
 public:
 	CEGAGraphics(short episode, const std::string& path);
-	virtual ~CEGAGraphics();
 	
 	virtual bool loadData();
 	virtual bool loadData( int version, unsigned char *p_exedata ) {return false;};

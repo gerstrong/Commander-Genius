@@ -42,8 +42,3 @@ bool CEGAGraphics::loadData()
 	return true;
 }
 
-CEGAGraphics::~CEGAGraphics() {
-
-}
-
-

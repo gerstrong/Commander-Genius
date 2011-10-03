@@ -81,12 +81,10 @@ bool CGame::init(int argc, char *argv[])
 // Load the driver needed to start the game
 bool CGame::loadCKPDrivers()
 {
-	// initialize/activate all drivers
-	g_pLogFile->ftextOut("Starting graphics driver...<br>");
-	
-	// The graphics are very important, if the other subsystems fail, warn but continue
+	// Init graphics
 	if (!g_pVideoDriver->start()) return false;
 	
+	// Init the sound
 	g_pSound->init();
 	
 	return true;
@@ -112,22 +110,23 @@ void CGame::run()
         // Perform game logic
         if (g_pTimer->TimeToLogic())
         {
-
             // Poll Inputs
             g_pInput->pollEvents();
-			if (g_pInput->getHoldedKey(KF) &&
-				g_pInput->getHoldedKey(KI) &&
-				g_pInput->getHoldedKey(KX))
-			{
-				Settings.loadDefaultGraphicsCfg();
-				Settings.saveDrvCfg();
-				g_pVideoDriver->stop();
-				g_pVideoDriver->start();
-			}
+
+            // Fix up settings if everything gets messed up
+        	if (g_pInput->getHoldedKey(KF) &&
+        		g_pInput->getHoldedKey(KI) &&
+        		g_pInput->getHoldedKey(KX))
+        	{
+        		Settings.loadDefaultGraphicsCfg();
+        		Settings.saveDrvCfg();
+        		g_pVideoDriver->stop();
+        		g_pVideoDriver->start();
+        	}
+
 
 			// Process Game Control
 			m_Engine.process();
-
         }
 		
 

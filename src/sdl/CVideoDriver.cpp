@@ -229,6 +229,9 @@ bool CVideoDriver::start()
 	// When the program is through executing, call SDL_Quit
 	atexit(SDL_Quit);
 
+
+	g_pLogFile->textOut("Starting graphics driver...<br>");
+
 #ifdef USE_OPENGL
 	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the matrices
 	{

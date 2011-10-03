@@ -78,6 +78,17 @@ bool CGameControl::init(int argc, char *argv[])
 // This function is run every time, the Timer says so, through.
 void CGameControl::process()
 {
+	if (g_pInput->getHoldedKey(KF) &&
+		g_pInput->getHoldedKey(KI) &&
+		g_pInput->getHoldedKey(KX))
+	{
+		Settings.loadDefaultGraphicsCfg();
+		Settings.saveDrvCfg();
+		g_pVideoDriver->stop();
+		g_pVideoDriver->start();
+	}
+
+
 	// process any triggered Game Control related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
 
