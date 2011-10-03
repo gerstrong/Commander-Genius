@@ -8,16 +8,16 @@
  */
 
 #include "CTextBox.h"
-#include "../graphics/CGfxEngine.h"
-#include "../sdl/CVideoDriver.h"
-#include "../sdl/CTimer.h"
-#include "../sdl/CInput.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CTimer.h"
+#include "sdl/CInput.h"
 
 CTextBox::CTextBox(int y, int h, const std::string& message) :
 m_tw_waittime(0)
 {
 	setup(y, h, message);
-	m_surface = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	m_surface = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 }
 
 CTextBox::CTextBox(SDL_Surface *surface, int y, int h, const std::string& message) :

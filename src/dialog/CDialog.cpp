@@ -569,7 +569,7 @@ void CDialog::drawTwirl()
 		
 	}
 	
-	g_pGfxEngine->getCursor()->draw( g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), m_twirl.frame,
+	g_pGfxEngine->getCursor()->draw( g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_twirl.frame,
 									m_dlgobject[m_selected_ID]->m_x,
 									m_twirl.posy );
 }
@@ -584,9 +584,6 @@ CDialog::~CDialog(){
 	
 	while(!m_dlgobject.empty())
 		m_dlgobject.pop_back();
-	
-	m_alpha = 225;
-	SDL_SetAlpha(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), SDL_SRCALPHA, m_alpha );
-	
+
 	if(mp_Frame) delete mp_Frame;
 }

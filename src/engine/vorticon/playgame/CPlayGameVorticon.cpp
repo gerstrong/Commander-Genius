@@ -235,15 +235,10 @@ void CPlayGameVorticon::process()
 				m_Player[0].processEvents();
 			}
 		}
-		else // In this case the game is paused
-		{
-			// Finally draw Dialogs like status screen, game paused, etc.
-			processPauseDialogs();
-		}
 
-
-		// Do the Render Routine here!
+		// Draw all the Stuff here!
 		drawAllElements();
+
 
 		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 		// Only confirmation button is allowes
@@ -603,6 +598,14 @@ void CPlayGameVorticon::drawAllElements()
 	{	// Draw the HUD
 		mp_HUD->render();
 	}
+
+	// Render the dialogs which are seen when the game is paused
+	if( m_paused || !m_MessageBoxes.empty() || !mp_Menu )
+	{
+		// Finally draw Dialogs like status screen, game paused, etc.
+		processPauseDialogs();
+	}
+
 
 }
 ////

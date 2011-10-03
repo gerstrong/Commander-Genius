@@ -307,8 +307,7 @@ void CVideoDriver::updateScreen()
 
 // "Console" here refers to the capability to pop up in-game messages
 // in the upper-left corner during game play ala Doom.
-// TODO: These Messages should be drawn on the blit surface afterwards and not on the FGLayerSurface
-void CVideoDriver::drawConsoleMessages(void)
+void CVideoDriver::drawConsoleMessages()
 {
 	if (!NumConsoleMessages)
 		return;
@@ -324,7 +323,7 @@ void CVideoDriver::drawConsoleMessages(void)
 	int y = CONSOLE_MESSAGE_Y;
 	for( int i=0 ; i<NumConsoleMessages ; i++ )
 	{
-		g_pGfxEngine->getFont(0).drawFont( mp_VideoEngine->getFGLayerSurface(), cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
+		g_pGfxEngine->getFont(0).drawFont( mp_VideoEngine->getBlitSurface(), cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
 		y += CONSOLE_MESSAGE_SPACING;
 	}
 }
