@@ -6,9 +6,9 @@
  */
 
 #include "CIntro.h"
-#include "../sdl/CInput.h"
-#include "../sdl/CVideoDriver.h"
-#include "../sdl/CTimer.h"
+#include "sdl/CInput.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CTimer.h"
 
 CIntro::CIntro()
 {
@@ -17,7 +17,7 @@ CIntro::CIntro()
 	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
 	m_scrolly = 200;
 	m_finished = false;
-	mp_bmp_surface = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	mp_bmp_surface = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	SDL_FillRect(mp_bmp_surface, NULL, 0);
 }
 

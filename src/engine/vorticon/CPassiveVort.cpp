@@ -112,6 +112,12 @@ void CPassiveVort::process()
 		}
 	}
 
+	// Animate the tiles
+	mp_Map->animateAllTiles();
+
+	// Blit the background
+	g_pVideoDriver->blitScrollSurface();
+
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
 	if( m_mode == INTRO )
 	{
@@ -148,12 +154,6 @@ void CPassiveVort::process()
 		cleanup();
 		init(TITLE);
 	}
-
-	// Animate the tiles
-	mp_Map->animateAllTiles();
-
-	// Blit the background
-	g_pVideoDriver->blitScrollSurface();
 
 	if(!m_hideobjects)
 	{

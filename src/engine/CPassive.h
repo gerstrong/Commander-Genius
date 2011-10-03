@@ -14,7 +14,6 @@
 #ifndef CPASSIVE_H_
 #define CPASSIVE_H_
 
-#include "CIntro.h"
 #include "CTitle.h"
 #include "vorticon/CMenuVorticon.h"
 #include "dialog/CTextBox.h"

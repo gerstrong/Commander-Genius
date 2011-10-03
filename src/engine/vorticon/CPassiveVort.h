@@ -10,6 +10,7 @@
 
 #include "engine/CPassive.h"
 #include "common/CBehaviorEngine.h"
+#include "engine/CIntro.h"
 
 namespace vorticon
 {

@@ -98,8 +98,7 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 
 
 void CVideoEngine::blitScrollSurface() // This is only for tiles
-									   // The name should be changed
-{
+{									   // The name should be changed
 	SDL_Rect srcrect;
 	SDL_Rect dstrect;
 	Sint16 sbufferx, sbuffery;
