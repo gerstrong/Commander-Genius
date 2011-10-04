@@ -40,7 +40,6 @@ public:
 
 	SDL_Surface *getBlitSurface() { return BlitSurface; }
 	SDL_Surface *getScreenSurface() { return screen; }
-	SDL_Surface *getFGLayerSurface() { return FGLayerSurface; }
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 	SDL_Surface *getFXSurface() { return FXSurface; }
 
@@ -48,7 +47,6 @@ protected:
 
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FilteredSurface;
-	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages
 	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
 	SDL_Surface *FXSurface;
 

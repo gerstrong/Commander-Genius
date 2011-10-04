@@ -74,7 +74,7 @@ CStory::CStory(CExeFile &ExeFile)
 	Maploader.load(episode, 90, DataDirectory);
 	
 	// Create the Text ViewerBox and stores the text there!
-	mp_TextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), 0, 0, 320, 136);
+	mp_TextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0, 320, 136);
 	mp_TextViewer->formatText(Text);
 	
 	// Now Scroll to the position of the player and center him

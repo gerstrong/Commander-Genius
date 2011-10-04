@@ -55,7 +55,7 @@ void CMessageBoxBitmapGalaxy::process()
 	else
 		bitmap_xcoord = m_boxrect.x+8;
 
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
 	m_Bitmap.draw( sfc,bitmap_xcoord, m_boxrect.y+8 );
 }

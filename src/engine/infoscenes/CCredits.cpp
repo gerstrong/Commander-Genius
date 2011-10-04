@@ -98,7 +98,7 @@ void CCredits::process()
 	for(int j=0 ; j<54 ; j++)
 	{
 		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
-			g_pGfxEngine->getFont(0).drawFont( g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
+			g_pGfxEngine->getFont(0).drawFont( g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
 	}
 	
 	if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )

@@ -10,7 +10,6 @@
 
 CVideoEngine::CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
 BlitSurface(NULL),
-FGLayerSurface(NULL),       // Scroll buffer for Messages
 ScrollSurface(NULL),       // 512x512 scroll buffer
 FXSurface(NULL),
 //m_blitsurface_alloc(false),
@@ -200,12 +199,6 @@ void CVideoEngine::stop()
         FilteredSurface = NULL;
     }
 
-    if(FGLayerSurface)
-    {
-        SDL_FreeSurface(FGLayerSurface);
-        g_pLogFile->textOut("freed FGLayerSurface<br>");
-        FGLayerSurface=NULL;
-    }
     if(ScrollSurface && (ScrollSurface->map != NULL))
     {
         SDL_FreeSurface(ScrollSurface);

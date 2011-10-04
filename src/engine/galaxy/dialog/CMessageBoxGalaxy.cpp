@@ -50,7 +50,7 @@ CMessageBox(Text, false, false, false)
 
 void CMessageBoxGalaxy::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
 	// Look, if somebody pressed a button, and close this dialog!
 	if(g_pInput->getPressedAnyCommand()) {

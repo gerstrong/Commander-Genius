@@ -148,16 +148,16 @@ void CAbout::process()
 	
 	if(m_type == "ID")
 	{
-		mp_bmp->draw( g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), 160-mp_bmp->getWidth()/2, 22);
+		mp_bmp->draw( g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 160-mp_bmp->getWidth()/2, 22);
 	}
 	else if(m_type == "CG")
 	{
 		if(mp_LogoBMP)
-			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), &m_logo_rect);
+			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->mp_VideoEngine->getBlitSurface(), &m_logo_rect);
 	}
 
 	for(std::size_t i=0 ; i<m_lines.size() ; i++)
-		g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), m_lines.at(i), 24, 72+i*8, true);
+		g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_lines.at(i), 24, 72+i*8, true);
 	
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;

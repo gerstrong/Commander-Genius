@@ -68,15 +68,6 @@ bool CSDLVideo::createSurfaces()
 	 m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
 
 
-	FGLayerSurface = createSurface( "FGLayerSurface", false,
-			BlitSurface->w,
-			BlitSurface->h,
-			32,
-			m_Mode, screen->format );
-
-	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
-			SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
-
 	FXSurface = createSurface( "FXSurface", false,
 			BlitSurface->w,
 			BlitSurface->h,
@@ -84,7 +75,6 @@ bool CSDLVideo::createSurfaces()
 			m_Mode, screen->format );
 
 	//Set surface alpha
-	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
@@ -96,15 +86,12 @@ bool CSDLVideo::createSurfaces()
 
 void CSDLVideo::collectSurfaces()
 {
-	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
-
 	if( getPerSurfaceAlpha(FXSurface) )
 		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
 }
 
 void CSDLVideo::clearSurfaces()
 {
-	SDL_FillRect(FGLayerSurface,NULL, 0x0);
 	SDL_FillRect(FXSurface,NULL, 0x0);
 	SDL_FillRect(BlitSurface,NULL, 0x0);
 }
@@ -127,8 +114,4 @@ void CSDLVideo::updateScreen()
 
 	// Flip the screen (We use double-buffering on some systems.)
 	SDL_Flip(screen);
-
-
-	// Flush the FG-Layer
-	SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
 }

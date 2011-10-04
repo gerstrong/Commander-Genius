@@ -129,7 +129,7 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 
 void CHighScores::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	
 	// draw the Bitmaps
 	std::vector<stBitmap>::iterator it_bmp = m_Bitmaps.begin();
@@ -168,7 +168,7 @@ void CHighScores::processShow()
 
 void CHighScores::processWriting()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	
 #ifndef NOKEYBOARD
 	// Get the input

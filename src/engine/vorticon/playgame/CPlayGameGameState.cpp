@@ -165,9 +165,6 @@ bool CPlayGameVorticon::loadGameState()
 		m_Map.m_Dark = dark;
 		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 
-		//Set surface alpha
-		SDL_SetAlpha( g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), SDL_SRCALPHA, 225 );
-
 		return true;
 	}
 

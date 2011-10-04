@@ -91,11 +91,6 @@ bool COpenGL::createSurfaces()
 
 	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
-		FGLayerSurface = createSurface( "FGLayerSurface", true,
-						getPowerOfTwo(gamerect.w),
-						getPowerOfTwo(gamerect.h),
-									32,
-									m_Mode, screen->format );
 		FXSurface = createSurface( "FXSurface", true,
 				getPowerOfTwo(gamerect.w),
 				getPowerOfTwo(gamerect.h),
@@ -104,15 +99,6 @@ bool COpenGL::createSurfaces()
 	}
 	else
 	{
-		FGLayerSurface = createSurface( "FGLayerSurface", false,
-				gamerect.w,
-				gamerect.h,
-				32,
-				m_Mode, screen->format );
-
-		SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
-		SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
-
 		FXSurface = createSurface( "FXSurface", false,
 				gamerect.w,
 				gamerect.h,
@@ -122,7 +108,6 @@ bool COpenGL::createSurfaces()
 		//Set surface alpha
 	}
 
-	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
@@ -141,12 +126,6 @@ void COpenGL::collectSurfaces()
 void COpenGL::clearSurfaces()
 {
 	SDL_FillRect(FXSurface,NULL, 0x0);
-
-	// Flush the FG-Layer
-	if(m_VidConfig.m_ScaleXFilter == 1)
-		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
-	else
-		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
 
 	SDL_FillRect(BlitSurface,NULL, 0x0);
 }
@@ -232,7 +211,6 @@ bool COpenGL::init()
 	else
 	{	// In that case we can do a texture based rendering
 		createTexture(m_texFX, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
-		createTexture(m_texFG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
 		m_opengl_buffer = NULL;
 	}
 	
@@ -255,11 +233,6 @@ bool COpenGL::init()
 void COpenGL::reloadFX(SDL_Surface* surf)
 {
 	loadSurface(m_texFX, surf);
-}
-
-void COpenGL::reloadFG(SDL_Surface* surf)
-{
-	loadSurface(m_texFG, surf);
 }
 
 static void renderTexture(GLuint texture, bool withAlpha = false) {
@@ -358,8 +331,6 @@ void COpenGL::updateScreen()
 
 	if(m_VidConfig.m_ScaleXFilter > 1)
 	{
-		SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
-
 		if(getPerSurfaceAlpha(FXSurface))
 			SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
 	}
@@ -370,12 +341,6 @@ void COpenGL::updateScreen()
 
 	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
-		if(FGLayerSurface)
-		{
-			reloadFG(FGLayerSurface);
-			renderTexture(m_texFG, true);
-		}
-
 		if(FXSurface && getPerSurfaceAlpha(FXSurface))
 		{
 			reloadFX(FXSurface);
@@ -391,15 +356,10 @@ void COpenGL::updateScreen()
 	g_pInput->renderOverlay();
 
 	SDL_GL_SwapBuffers();
-
-	// Flush the FG-Layer
-	if(m_VidConfig.m_ScaleXFilter == 1)
-		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
-	else
-		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
 }
 
-COpenGL::~COpenGL() {
+COpenGL::~COpenGL()
+{
 	if(m_opengl_buffer)
 		delete[] m_opengl_buffer;
 	m_opengl_buffer = NULL;

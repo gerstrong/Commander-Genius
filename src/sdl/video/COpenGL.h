@@ -48,7 +48,6 @@ public:
 	bool init();
 
 	void reloadFX(SDL_Surface* surf);
-	void reloadFG(SDL_Surface* surf);
 
 	virtual ~COpenGL();
 
@@ -63,7 +62,7 @@ private:
 	stDims m_GamePOTVideoDim;
 
 	GLuint	m_texture;
-	GLuint	m_texFX, m_texFG;
+	GLuint	m_texFX;
 };
 
 #endif

@@ -73,10 +73,11 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 #define TWIRL_TIME	5
 void CMessageBoxVort::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
 	// Look, if somebody pressed a button, and close this dialog!
-	if(g_pInput->getPressedAnyCommand()) {
+	if(g_pInput->getPressedAnyCommand())
+	{
 		m_mustclose = true;
 		return;
 	}

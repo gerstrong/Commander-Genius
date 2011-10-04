@@ -239,6 +239,9 @@ void CPlayGameVorticon::process()
 		// Draw all the Stuff here!
 		drawAllElements();
 
+		if( m_Level == WORLD_MAP_LEVEL_VORTICON && m_showKeensLeft )
+			showKeensLeft();
+
 
 		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 		// Only confirmation button is allowes
@@ -326,7 +329,7 @@ void CPlayGameVorticon::process()
 
 		if (g_pVideoDriver->getVidConfig().showfps)
 		{
-			SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+			SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 			std::string tempbuf;
 #ifdef DEBUG
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +

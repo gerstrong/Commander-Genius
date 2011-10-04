@@ -61,7 +61,7 @@ m_selection(0)
 
 void CMessageBoxSelection::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
 	// Look, if somebody pressed a button, and close this dialog!
 	if(g_pInput->getPressedCommand(IC_JUMP))

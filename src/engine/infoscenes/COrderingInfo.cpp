@@ -145,7 +145,7 @@ void COrderingInfo::process()
 	 }
 	 
 	 for(int i=0 ; i<m_numberoflines ; i++)
-		 g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), m_Textline[i], 160-m_Textline[i].size()*4, 8*(i+m_starty), true);
+		 g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_Textline[i], 160-m_Textline[i].size()*4, 8*(i+m_starty), true);
 	
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;
