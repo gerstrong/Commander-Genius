@@ -5,9 +5,6 @@
  *      Author: gerstrong
  */
 
-#include "common/options.h"
-#include "common/CBehaviorEngine.h"
-#include "fileio/CConfiguration.h"
 #include "CLogFile.h"
 #include "FindFile.h"
 #include "ConfigHandler.h"
@@ -15,6 +12,9 @@
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
+#include "common/options.h"
+#include "common/CBehaviorEngine.h"
+#include "fileio/CConfiguration.h"
 
 
 /**
@@ -23,7 +23,8 @@
  *
  * \param	p_option	pointer to an array that stores the options settings of the game
  */
-CSettings::CSettings() {
+CSettings::CSettings()
+{
 	notes << "Reading game options from " << GetFullFileName(CONFIGFILENAME) << endl;
 	notes << "Will write game options to " << GetWriteFullFileName(CONFIGFILENAME, true) << endl;
 }
@@ -239,5 +240,8 @@ bool CSettings::saveGameCfg()
 	Configuration.saveCfgFile();
 	return true;
 }
+
+const std::string CSettings::getConfigFileName() const
+{	return CONFIGFILENAME;	}
 
 CSettings::~CSettings() {}

@@ -100,8 +100,6 @@ bool CGame::loadCKPDrivers()
  */
 void CGame::run()
 {
-	CSettings Settings;
-
 
 	do
 	{

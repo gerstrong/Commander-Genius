@@ -31,6 +31,7 @@ public:
 	bool saveGameCfg();
 	void loadDefaultGameCfg();
 	void setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value);
+	const std::string getConfigFileName() const;
 	virtual ~CSettings();
 };
 

@@ -71,33 +71,45 @@ using std::hash_set;
 
 
 
-void InitSearchPaths() {
+void InitSearchPaths()
+
+{
 	// have to set to find the config at some of the default places
 	InitBaseSearchPaths();
 
+
+
 	int i = 1;
-	while(true) {
+	while(true)
+	{
+
 		std::string value;
-		if(!ReadString(CONFIGFILENAME, "FileHandling", "SearchPath" + itoa(i), value, ""))
+		if(!ReadString(g_pSettings->getConfigFileName(), "FileHandling", "SearchPath" + itoa(i), value, ""))
 			break;
 
 		AddToFileList(&tSearchPaths, value);
 		i++;
+
 	}
 
 	// add the basesearchpaths to the searchpathlist as they should be saved in the end
-	for(searchpathlist::const_iterator p1 = basesearchpaths.begin(); p1 != basesearchpaths.end(); i++,p1++)  {
+	for(searchpathlist::const_iterator p1 = basesearchpaths.begin();
+			p1 != basesearchpaths.end(); i++,p1++)
+	{
 		AddToFileList(&tSearchPaths, *p1);
 	}
 
 	// print the searchpaths, this may be very usefull for the user
 	notes << "I have now the following searchpaths (in this order):\n";
-	for(searchpathlist::const_iterator p2 = tSearchPaths.begin(); p2 != tSearchPaths.end(); p2++) {
+	for(searchpathlist::const_iterator p2 = tSearchPaths.begin();
+			p2 != tSearchPaths.end(); p2++)
+	{
 		std::string path = *p2;
 		ReplaceFileVariables(path);
 		notes << "  " << path << "\n";
 	}
 	notes << " And that's all." << endl;
+
 }
 
 
@@ -106,16 +118,22 @@ searchpathlist tSearchPaths;
 
 
 
-bool IsFileAvailable(const std::string& f, bool absolute) {
+bool IsFileAvailable(const std::string& f, bool absolute)
+{
 	std::string abs_f;
-	if(absolute) {
+
+	if(absolute)
 		abs_f = f;
-	} else
-		if((abs_f = GetFullFileName(f)) == "") return false;
+	else
+	{
+		if((abs_f = GetFullFileName(f)) == "")
+			return false;
+	}
 
 	// remove trailing slashes
 	// don't remove them on WIN, if it is a drive-letter
-	while(abs_f.size() > 0 && (abs_f[abs_f.size()-1] == '\\' || abs_f[abs_f.size()-1] == '/')) {
+	while(abs_f.size() > 0 && (abs_f[abs_f.size()-1] == '\\' || abs_f[abs_f.size()-1] == '/'))
+	{
 #ifdef WIN32
 		if(abs_f.size() > 2 && abs_f[abs_f.size()-2] == ':') break;
 #endif
@@ -140,14 +158,16 @@ bool IsFileAvailable(const std::string& f, bool absolute) {
 //////////////////////
 // Replaces backward slashes with forward slashes (windows only)
 // Used when comparing two paths
-static void ReplaceSlashes(std::string& path)  {
+static void ReplaceSlashes(std::string& path)
+{
 #ifdef WIN32
 	for (std::string::iterator it = path.begin(); it != path.end(); it++)
 		if (*it == '\\') *it = '/';
 #endif
 }
 
-bool EqualPaths(const std::string& path1, const std::string& path2)  {
+bool EqualPaths(const std::string& path1, const std::string& path2)
+{
 	std::string p1 = path1;
 	std::string p2 = path2;
 
