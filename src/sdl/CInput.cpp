@@ -14,6 +14,7 @@
 #include "FindFile.h"
 #include "StringUtils.h"
 #include "fileio/CConfiguration.h"
+#include "common/CSettings.h"
 
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
@@ -524,6 +525,17 @@ void CInput::pollEvents()
 #if defined(WIZ) || defined(GP2X)
 	WIZ_AdjustVolume( volume_direction );
 #endif
+
+    // Fix up settings if everything gets messed up
+	if (g_pInput->getHoldedKey(KF) &&
+		g_pInput->getHoldedKey(KI) &&
+		g_pInput->getHoldedKey(KX))
+	{
+		g_pSettings->loadDefaultGraphicsCfg();
+		g_pSettings->saveDrvCfg();
+		g_pVideoDriver->stop();
+		g_pVideoDriver->start();
+	}
 }
 
 /**

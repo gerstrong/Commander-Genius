@@ -110,18 +110,6 @@ void CGame::run()
             // Poll Inputs
             g_pInput->pollEvents();
 
-            // Fix up settings if everything gets messed up
-        	if (g_pInput->getHoldedKey(KF) &&
-        		g_pInput->getHoldedKey(KI) &&
-        		g_pInput->getHoldedKey(KX))
-        	{
-        		g_pSettings->loadDefaultGraphicsCfg();
-        		g_pSettings->saveDrvCfg();
-        		g_pVideoDriver->stop();
-        		g_pVideoDriver->start();
-        	}
-
-
 			// Process Game Control
 			m_Engine.process();
         }

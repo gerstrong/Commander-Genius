@@ -12,7 +12,7 @@ CVideoEngine::CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sin
 BlitSurface(NULL),
 ScrollSurface(NULL),       // 512x512 scroll buffer
 FXSurface(NULL),
-//m_blitsurface_alloc(false),
+FilteredSurface(NULL),
 m_VidConfig(VidConfig),
 mp_sbufferx(p_sbufferx),
 mp_sbuffery(p_sbuffery),

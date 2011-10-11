@@ -52,11 +52,12 @@ bool COpenGL::resizeDisplayScreen(const CRect& newDim)
 	{
 		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
 								 float(FilteredSurface->h)/float(screen->h));
+
+		glViewport( 0.0f, 0.0f,
+				float(FilteredSurface->w),
+				float(FilteredSurface->h) );
 	}
 
-	glViewport( 0.0f, 0.0f,
-			float(FilteredSurface->w),
-			float(FilteredSurface->h) );
 
 	return true;
 }
@@ -273,9 +274,8 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 
 	if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
 	{
-		const unsigned src_slice = m_GamePOTBaseDim.w*surface->format->BytesPerPixel;
-		const unsigned dst_slice = m_VidConfig.m_ScaleXFilter*src_slice;
-
+		//const unsigned src_slice = m_GamePOTBaseDim.w*surface->format->BytesPerPixel;
+		//const unsigned dst_slice = m_VidConfig.m_ScaleXFilter*src_slice;
 
 			// First apply the conventional filter if any (GameScreen -> FilteredScreen)
 			Scaler.scaleUp(FilteredSurface, surface, SCALEX);
