@@ -68,6 +68,9 @@ public:
 	std::vector<stTeleporterTable>& getTeleporterTable()
 	{ return m_TeleporterTable; }
 
+	CEventContainer &EventList()
+	{	return m_EventList;	}
+
 	void setEpisode(size_t Episode);
 
 	CEventContainer m_EventList;

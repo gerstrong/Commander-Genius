@@ -79,7 +79,7 @@ bool CGameControl::init(int argc, char *argv[])
 void CGameControl::process()
 {
 	// process any triggered Game Control related event
-	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
+	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 
 	if(!EventContainer.empty())
 	{
