@@ -5,11 +5,12 @@
  *      Author: gerstrong
  */
 
-#include "CVideoSettings.h"
 #include "sdl/CInput.h"
 #include "sdl/CTimer.h"
-#include "sdl/CSettings.h"
 #include "StringUtils.h"
+#include "CVideoSettings.h"
+#include "common/CSettings.h"
+
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
@@ -108,8 +109,7 @@ void CVideoSettings::processSpecific(){
 				g_pTimer->setFrameRate(DEFAULT_LPS, m_Autoframeskip, DEFAULT_SYNC);
 				g_pVideoDriver->start();
 				
-				CSettings Settings;
-				Settings.saveDrvCfg();
+				g_pSettings->saveDrvCfg();
 				
 				// And close this menu...
 				m_restartVideo = true;

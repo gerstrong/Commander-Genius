@@ -9,7 +9,6 @@
 #include "core/CGameControl.h"
 #include "CLogFile.h"
 #include "sdl/CTimer.h"
-#include "sdl/CSettings.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
 #include "common/Menu/CHelpMenu.h"

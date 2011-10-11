@@ -18,6 +18,7 @@
 #include "sdl/CInput.h"
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
+#include "common/CSettings.h"
 
 CGame::CGame() :
 m_firsttime(false),
@@ -41,18 +42,16 @@ m_Engine(m_firsttime)
  */
 bool CGame::init(int argc, char *argv[])
 {
-	CSettings Settings;
-	
 	// Check if there are settings on the PC, otherwise use defaults.
-	if(!Settings.loadDrvCfg())
+	if(!g_pSettings->loadDrvCfg())
 	{
 		m_firsttime = true;
 		g_pLogFile->textOut(PURPLE,"First time message: CKP didn't find the driver config file. However, it generated some default values and will save them now.<br>");
-		Settings.saveDrvCfg();
+		g_pSettings->saveDrvCfg();
 	}
 
-	if(!Settings.loadGameCfg())
-		Settings.loadDefaultGameCfg();
+	if(!g_pSettings->loadGameCfg())
+		g_pSettings->loadDefaultGameCfg();
 
 	// Setup the Hardware using the settings we have loaded
 	g_pLogFile->textOut(GREEN,"Loading hardware settings...<br>");
@@ -118,8 +117,8 @@ void CGame::run()
         		g_pInput->getHoldedKey(KI) &&
         		g_pInput->getHoldedKey(KX))
         	{
-        		Settings.loadDefaultGraphicsCfg();
-        		Settings.saveDrvCfg();
+        		g_pSettings->loadDefaultGraphicsCfg();
+        		g_pSettings->saveDrvCfg();
         		g_pVideoDriver->stop();
         		g_pVideoDriver->start();
         	}

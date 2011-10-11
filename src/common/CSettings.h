@@ -13,7 +13,12 @@
 #ifndef CSETTINGS_H_
 #define CSETTINGS_H_
 
-class CSettings {
+#include "CSingleton.h"
+#define g_pSettings	CSettings::Get()
+
+
+class CSettings : public CSingleton<CSettings>
+{
 public:
 	// NOTE: If no option structure is passed, you must be no means use
 	// 	loadGameCfg(), saveGameCfg(), loadDefaultGameCfg(); setOption(..);

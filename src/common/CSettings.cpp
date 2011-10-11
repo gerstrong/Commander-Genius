@@ -12,9 +12,10 @@
 #include "FindFile.h"
 #include "ConfigHandler.h"
 #include "CSettings.h"
-#include "CVideoDriver.h"
-#include "CTimer.h"
-#include "sound/CSound.h"
+#include "sdl/CTimer.h"
+#include "sdl/sound/CSound.h"
+#include "sdl/CVideoDriver.h"
+
 
 /**
  * \brief	The CSettings class handles the saving and loading of all the settings that are saved in

@@ -8,7 +8,7 @@
 #include "COptions.h"
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CSettings.h"
+#include "common/CSettings.h"
 
 COptions::COptions(Uint8 dlg_theme, stOption *p_option) :
 CBaseMenu(dlg_theme),
@@ -33,10 +33,7 @@ void COptions::processSpecific()
 	std::string buf;
 
 	if(m_mustclose) // If menu is about to close save the options
-	{
-		CSettings Settings;
-		Settings.saveGameCfg();
-	}
+		g_pSettings->saveGameCfg();
 
 	if( m_selection != NO_SELECTION)
 	{

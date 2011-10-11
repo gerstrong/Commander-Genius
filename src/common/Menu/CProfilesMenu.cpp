@@ -7,7 +7,7 @@
 
 #include "CProfilesMenu.h"
 #include "common/Menu/CSelectionMenu.h"
-#include "sdl/CSettings.h"
+#include "common/CSettings.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CTimer.h"
 #include "common/CBehaviorEngine.h"
@@ -55,8 +55,7 @@ void CProfilesMenu::processSpecific()
 void CProfilesMenu::setDefaultClassic()
 {
 	stOption *p_option = g_pBehaviorEngine->m_option;
-	CSettings Settings;
-	Settings.loadDrvCfg();
+	g_pSettings->loadDrvCfg();
 	g_pVideoDriver->setSpecialFXMode(false);
 	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
 	CameraBounds.left = 140;
@@ -73,7 +72,7 @@ void CProfilesMenu::setDefaultClassic()
 	p_option[OPT_RISEBONUS].value = 0;
 	p_option[OPT_IMPPOGO].value = 0;
 	p_option[OPT_HUD].value = 0;
-	Settings.saveDrvCfg();
+	g_pSettings->saveDrvCfg();
 }
 
 /**
@@ -82,8 +81,7 @@ void CProfilesMenu::setDefaultClassic()
 void CProfilesMenu::setDefaultEnhanced()
 {
 	stOption *p_option = g_pBehaviorEngine->m_option;
-	CSettings Settings;
-	Settings.loadDrvCfg();
+	g_pSettings->loadDrvCfg();
 	g_pVideoDriver->setSpecialFXMode(true);
 	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
 	CameraBounds.left = 152;
@@ -97,5 +95,5 @@ void CProfilesMenu::setDefaultEnhanced()
 	p_option[OPT_RISEBONUS].value = 1;
 	p_option[OPT_IMPPOGO].value = 1;
 	p_option[OPT_HUD].value = 1;
-	Settings.saveDrvCfg();
+	g_pSettings->saveDrvCfg();
 }

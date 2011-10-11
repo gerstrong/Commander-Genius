@@ -8,7 +8,7 @@
 #include "CAudioSettings.h"
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CSettings.h"
+#include "common/CSettings.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"
@@ -66,7 +66,6 @@ void CAudioSettings::processSpecific()
 		
 		if( m_mustclose )
 		{
-			CSettings Settings;
 			bool wasPlaying = g_pMusicPlayer->playing();
 
 			// Check if the music is playing, stop it and restart it, if necessary
@@ -84,7 +83,7 @@ void CAudioSettings::processSpecific()
 
 			g_pSound->setSoundBlasterMode(m_Soundblaster);
 
-			Settings.saveDrvCfg();
+			g_pSettings->saveDrvCfg();
 
 			if(m_must_restart_sounddriver)
 			{

@@ -28,6 +28,7 @@
 #include "StringUtils.h"
 #include "Debug.h"
 #include "ConfigHandler.h"
+#include "common/CSettings.h"
 
 #ifdef WIN32
 #	ifndef _WIN32_IE

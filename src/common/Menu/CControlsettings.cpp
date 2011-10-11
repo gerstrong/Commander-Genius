@@ -11,7 +11,6 @@
 #include "common/CBehaviorEngine.h"
 
 #include "sdl/CInput.h"
-#include "sdl/CSettings.h"
 #include "sdl/CVideoDriver.h"
 
 const std::string actionsnames[MAX_COMMANDS] =

@@ -9,7 +9,6 @@
 #define CGAME_H_
 
 #include "core/CGameControl.h"
-#include "sdl/CSettings.h"
 
 class CGame {
 public:
@@ -24,7 +23,6 @@ public:
 private:
 	bool m_firsttime;
 	CGameControl m_Engine;
-	CSettings Settings();
 };
 
 #endif /* CGAME_H_ */
