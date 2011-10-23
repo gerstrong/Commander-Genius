@@ -39,7 +39,7 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp, Uint16 wi
 
 	m_ColouredSurface = SDL_DisplayFormat(m_FontSurface);
 
-	return (m_FontSurface != NULL && m_ColouredSurface != NULL );
+	return ( m_FontSurface && m_ColouredSurface );
 }
 
 bool CFont::optimizeSurface()
@@ -260,7 +260,8 @@ void CFont::drawMap(SDL_Surface* dst)
 ///
 // Destruction Routines
 ///
-void CFont::destroySurface(){
+void CFont::destroySurface()
+{
 	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
 	if(m_ColouredSurface) SDL_FreeSurface(m_ColouredSurface);
 	m_ColouredSurface = m_FontSurface = NULL;

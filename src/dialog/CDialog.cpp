@@ -572,6 +572,9 @@ void CDialog::drawTwirl()
 	g_pGfxEngine->getCursor()->draw( g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_twirl.frame,
 									m_dlgobject[m_selected_ID]->m_x,
 									m_twirl.posy );
+
+
+
 }
 
 ///

@@ -10,9 +10,9 @@
 
 CVideoEngine::CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
 BlitSurface(NULL),
+FilteredSurface(NULL),
 ScrollSurface(NULL),       // 512x512 scroll buffer
 FXSurface(NULL),
-FilteredSurface(NULL),
 m_VidConfig(VidConfig),
 mp_sbufferx(p_sbufferx),
 mp_sbuffery(p_sbuffery),
@@ -60,6 +60,7 @@ bool CVideoEngine::init()
 	}
 
 	// And set the proper Display Dimensions
+	// The screen is also setup in this function
 	if(!resizeDisplayScreen(Res))
 		return false;
 
@@ -185,14 +186,15 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 void CVideoEngine::stop()
 {
 	g_pLogFile->textOut(GREEN, "Freeing the following graphical surfaces:<br>\n");
-    if(/*m_blitsurface_alloc &&*/ BlitSurface)
+
+    if( BlitSurface )
     {
         SDL_FreeSurface(BlitSurface);
         g_pLogFile->textOut("freed BlitSurface<br>");
         BlitSurface=NULL;
     }
 
-    if(FilteredSurface)
+    if( FilteredSurface )
     {
         SDL_FreeSurface(FilteredSurface);
         g_pLogFile->textOut("freed FilteredSurface<br>");

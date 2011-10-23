@@ -37,6 +37,25 @@ m_GamePOTVideoDim(getPowerOfTwo(m_VidConfig.m_DisplayRect.w),
 				getPowerOfTwo(m_VidConfig.m_DisplayRect.h))
 {}
 
+void COpenGL::setUpViewPort(const CRect &GameRes, const CRect &newDim)
+{
+	// Calculate the proper viewport for any resolution
+	float base_width = GameRes.w;
+	float base_height = GameRes.h;
+
+	float scale_width = (float)(newDim.w)/base_width;
+	float scale_height = (float)(newDim.h)/base_height;
+
+	float width = ((float)m_GamePOTBaseDim.w)*scale_width;
+	float height = ((float)m_GamePOTBaseDim.h)*scale_height;
+	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height;
+	float xpos = 0.0f; // Not needed because the x-axis of ogl and sdl_surfaces are the same.
+
+	// strange constants here; 225 seems good for pc. 200 is better for iphone
+	// the size is the same as the texture buffers
+	glViewport(xpos, ypos, width, height);
+}
+
 bool COpenGL::resizeDisplayScreen(const CRect& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
@@ -53,9 +72,7 @@ bool COpenGL::resizeDisplayScreen(const CRect& newDim)
 		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
 								 float(FilteredSurface->h)/float(screen->h));
 
-		glViewport( 0.0f, 0.0f,
-				float(FilteredSurface->w),
-				float(FilteredSurface->h) );
+		setUpViewPort(g_pVideoDriver->getGameResolution(), newDim);
 	}
 
 
@@ -157,21 +174,8 @@ bool COpenGL::init()
 	CVideoEngine::init();
 	const GLint oglfilter = (m_VidConfig.m_opengl_filter==1) ? GL_LINEAR : GL_NEAREST ;
 
-	// Calculate the proper viewport for any resolution
-	float base_width = g_pVideoDriver->getGameResolution().w;
-	float base_height = g_pVideoDriver->getGameResolution().h;
-
-	float scale_width = (float)(g_pVideoDriver->getWidth())/base_width;
-	float scale_height = (float)(g_pVideoDriver->getHeight())/base_height;
-
-	float width = ((float)m_GamePOTBaseDim.w)*scale_width;
-	float height = ((float)m_GamePOTBaseDim.h)*scale_height;
-	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height;
-	float xpos = 0.0f; // Not needed because the x-axis of ogl and sdl_surfaces are the same.
-
-	// strange constants here; 225 seems good for pc. 200 is better for iphone
-	// the size is the same as the texture buffers
-	glViewport(xpos, ypos, width, height);
+	// Setup the view port for the first time
+	setUpViewPort(g_pVideoDriver->getGameResolution(), g_pVideoDriver->getResolution());
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -259,6 +263,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 	glBindTexture (m_texparam, texture);
 	SDL_LockSurface(surface);
 	GLint internalFormat, externalFormat;
+
 #if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR) // iPhone always used 32 bits; also GL_BGR is not defined
 	if(surface->format->BitsPerPixel == 24)
 	{

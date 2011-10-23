@@ -48,7 +48,6 @@ public:
 
 	void processInput(int move = 0);
 	void draw();
-	void drawTwirl();
 
 	bool m_nokeyletter;
 	bool m_noise;
@@ -63,6 +62,8 @@ public:
 	std::vector<CDlgObject*> m_dlgobject;
 	
 private:
+	void drawTwirl();
+
 	Uint16 m_x;
 	Uint16 m_y;
 	Uint16 m_w;

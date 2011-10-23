@@ -98,7 +98,7 @@ void CVideoDriver::initResolutionList()
 	for( unsigned int c=0 ; c<NUM_MAIN_RESOLUTIONS ; c++ )
 	{
 		// Depth won't be read anymore! Take the one the system is using actually
-		if(sscanf(ResolutionsList[c],"%ix%i", &resolution.w, &resolution.h) >= 2)
+		if(sscanf(ResolutionsList[c],"%hux%hu", &resolution.w, &resolution.h) >= 2)
 		{
 			// Now check if it's possible to use this resolution
 			verifyResolution( resolution, SDL_FULLSCREEN );
@@ -270,9 +270,11 @@ bool CVideoDriver::start()
 	return retval;
 }
 
-void CVideoDriver::setFilter(short value) { m_VidConfig.m_ScaleXFilter = value; } // 1 means no filter of course
+void CVideoDriver::setFilter(short value)
+{ m_VidConfig.m_ScaleXFilter = value; } // 1 means no filter of course
 
-void CVideoDriver::setZoom(short value) { m_VidConfig.Zoom = value; }
+void CVideoDriver::setZoom(short value)
+{ m_VidConfig.Zoom = value; }
 
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
