@@ -434,16 +434,29 @@ void CVideoDriver::pollDrawingTasks()
 {
 	while(!mDrawTasks.empty())
 	{
+		// Sprite Section
 		if( DrawSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawSpriteTask>() )
 		{
 			CSprite *Sprite = drawSpriteTask->mSpritePtr;
 
-			Sprite->_drawSprite(getBlitSurface(),
+			Sprite->_drawSprite(
+					getBlitSurface(),
 					drawSpriteTask->mx,
 					drawSpriteTask->my,
 					drawSpriteTask->mAlpha);
-
 		}
+		else if( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>() )
+		{
+			CSprite *Sprite = drawSpriteTask->mSpritePtr;
+
+			Sprite->_drawBlinkingSprite(
+					getBlitSurface(),
+					drawSpriteTask->mx,
+					drawSpriteTask->my );
+		}
+
+
+		// If none of the Events fit here, please warn this incident
 		else
 		{
 			g_pLogFile->textOut("Warning: Unknown Drawing task. Please let the developers debug this!");

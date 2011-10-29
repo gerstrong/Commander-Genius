@@ -615,7 +615,6 @@ void CObject::draw()
 		return;
 
 	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
-    SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
 
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -628,7 +627,7 @@ void CObject::draw()
 		Uint16 showY = scry+Sprite.getYOffset();
 		if(m_blinktime > 0)
 		{
-			Sprite.drawBlinkingSprite( sfc, showX, showY );
+			Sprite.drawBlinkingSprite( showX, showY );
 			m_blinktime--;
 		}
 		else
