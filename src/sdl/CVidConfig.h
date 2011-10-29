@@ -17,28 +17,7 @@
 	#include <SDL_opengl.h>
 #endif
 
-/**
- * This structure defines the resolution composed of width height and depth
- */
-struct CRect : public SDL_Rect
-{
-	CRect( const Uint16 lwidth = 0, const Uint16 lheight = 0 )
-		{ w=lwidth; h=lheight; };
-
-	CRect( const SDL_VideoInfo* InfoPtr )
-		{ w=InfoPtr->current_w; h=InfoPtr->current_w; };
-
-	bool operator==( const CRect &target )
-	{
-		return (target.x == x && target.y == y &&
-				target.w == w && target.h == h);
-	}
-
-	float aspectRatio() const
-	{
-		return (float(w)/float(h));
-	}
-};
+#include "Geometry.h"
 
 struct st_camera_bounds
 {
