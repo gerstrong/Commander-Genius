@@ -18,7 +18,8 @@
 #include "sdl/CVidConfig.h"
 
 
-class CVideoEngine {
+class CVideoEngine
+{
 public:
 
 	CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);

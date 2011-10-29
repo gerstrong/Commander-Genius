@@ -424,6 +424,49 @@ void CVideoDriver::stop()
 	mp_VideoEngine = NULL;
 }
 
+
+////
+//// Drawing stuff related Stuff
+////
+
+
+void CVideoDriver::pollDrawingTasks()
+{
+	while(!mDrawTasks.empty())
+	{
+		if( DrawSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawSpriteTask>() )
+		{
+			CSprite *Sprite = drawSpriteTask->mSpritePtr;
+
+			Sprite->_drawSprite(getBlitSurface(),
+					drawSpriteTask->mx,
+					drawSpriteTask->my,
+					drawSpriteTask->mAlpha);
+
+		}
+		else
+		{
+			g_pLogFile->textOut("Warning: Unknown Drawing task. Please let the developers debug this!");
+		}
+
+		mDrawTasks.pop_Event();
+	}
+}
+
+
+void CVideoDriver::clearDrawingTasks()
+{
+	if(!mDrawTasks.empty())
+	{
+		mDrawTasks.clear();
+	}
+}
+
+
+
+
+
+
 CVideoDriver::~CVideoDriver()
 {
  	stop();

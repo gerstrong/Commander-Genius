@@ -5,6 +5,7 @@
  *      Author: gerhard
  */
 
+#include "sdl/CTimer.h"
 #include "CVideoEngine.h"
 #include "CLogFile.h"
 

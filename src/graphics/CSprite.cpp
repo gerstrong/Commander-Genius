@@ -297,7 +297,18 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
  * \param x				X-Coordinate, indicating the position on dst
  * \param y				Y-Coordinate, indicating the position on dst
  */
-void CSprite::drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha )
+void CSprite::drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha )
+{
+	g_pVideoDriver->mDrawTasks.add( new DrawSpriteTask( this, x, y, alpha ) );
+}
+
+/**
+ * \brief The function that blits the sprite to dst (Low-Level)
+ * \param SDL_Surface 	Surface where the sprite will be drawn
+ * \param x				X-Coordinate, indicating the position on dst
+ * \param y				Y-Coordinate, indicating the position on dst
+ */
+void CSprite::_drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha )
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;

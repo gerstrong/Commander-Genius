@@ -632,21 +632,10 @@ void CObject::draw()
 			m_blinktime--;
 		}
 		else
-			Sprite.drawSprite( sfc, showX, showY, (255-transluceny) );
+		{
+			Sprite.drawSprite( showX, showY, (255-transluceny) );
+		}
 		hasbeenonscreen = true;
-
-		#ifdef DEBUG_COLLISION
-			// In this special section we draw the colision rectangle to do further checks. Only in this special Debug mode.
-			SDL_Rect col_rect;
-
-			col_rect.x = showX + (m_BBox.x1>>STC);
-			col_rect.y = showY + (m_BBox.y1>>STC);
-			col_rect.w = (m_BBox.x2-m_BBox.x1)>>STC;
-			col_rect.h = (m_BBox.y2-m_BBox.y1)>>STC;
-
-			SDL_FillRect(sfc, &col_rect, 0xFFFF0000);
-		#endif
-
 	}
 }
 
