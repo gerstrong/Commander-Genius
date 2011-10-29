@@ -39,10 +39,7 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	{
 		// I don't know why we have to shift 6 bytes, but it reproduces the right sound!
 		word sample = *(pcsdata_ptr++);
-		if(formatsize == 2)
-			generateWave(waveform, sample<<6, wave, freqtimer, true, AMP);
-		else
-			generateWave(waveform, sample, wave, freqtimer, true, AMP);
+		generateWave(waveform, sample<<6, wave, freqtimer, true, AMP);
 	}
 
 	if(formatsize == 1)
@@ -172,7 +169,6 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 				const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
 				const uint32_t *AudioCompFileData32 = (uint32_t*) (void*) (AudioCompFileData + audio_start);
 				outsize = *AudioCompFileData32;
-				//byte *imfdata = new byte[outsize];
 				byte imfdata[outsize];
 
 				Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);

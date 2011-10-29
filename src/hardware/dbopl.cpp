@@ -1253,8 +1253,9 @@ Bit32u Chip__WriteAddr(Chip *self, Bit32u port, Bit8u val ) {
 }
 
 void Chip__GenerateBlock2(Chip *self, Bitu total, Bit32s* output ) {
-	while ( total > 0 ) {
-                Channel *ch;
+	while ( total > 0 )
+	{
+        Channel *ch;
 		int count;
 
 		Bit32u samples = Chip__ForwardLFO( self, total );

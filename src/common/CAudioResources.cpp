@@ -32,7 +32,6 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	const byte *AL_Sounddata_start = imfdata_ptr;
 	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;
 
-	//OPLEmulator.ALStopSound();
 	OPLEmulator.ShutAL();
 	Bit8u alBlock = ((AL_Sound.block & 7) << 2) | 0x20;
 	if (!(AL_Sound.inst.mSus | AL_Sound.inst.cSus))
@@ -62,9 +61,10 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 			OPLEmulator.Chip__WriteReg( alFreqL, *AL_Sounddata_ptr );
 			OPLEmulator.Chip__WriteReg( alFreqH, alBlock );
 		}
-		else OPLEmulator.Chip__WriteReg( alFreqH, 0 );
+		else
+			OPLEmulator.Chip__WriteReg( alFreqH, 0 );
 
-   		if(formatsize == 2)
+   		if(formatsize == 2) // 16-Bit Sound
    		{
    			for( unsigned int count=0 ; count<waittimes ; count++ )
    			{
@@ -82,7 +82,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
    				waveform_ptr += samplesPerMusicTick*m_AudioSpec.channels*formatsize;
    			}
    		}
-   		else
+   		else // 8-Bit Sound
    		{
    			for( unsigned int count=0 ; count<waittimes ; count++ )
    			{
