@@ -119,6 +119,8 @@ void CGame::run()
         if (g_pTimer->TimeToRender())
         {
 
+        	// TODO: Here we try to process all the drawing related Events
+
         	// Pass all the surfaces to one
         	g_pVideoDriver->collectSurfaces();
 

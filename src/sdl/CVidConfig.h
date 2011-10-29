@@ -17,7 +17,7 @@
 	#include <SDL_opengl.h>
 #endif
 
-#include "Geometry.h"
+#include "utils/Geometry.h"
 
 struct st_camera_bounds
 {
