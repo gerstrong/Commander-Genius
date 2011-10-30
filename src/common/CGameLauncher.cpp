@@ -7,6 +7,7 @@
 
 #include "CGameLauncher.h"
 #include "CLogFile.h"
+#include "gui/CGUIText.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "graphics/CGfxEngine.h"
@@ -23,6 +24,8 @@ CGameLauncher::CGameLauncher()
     mp_LaunchMenu   = NULL;
     m_ep1slot       = -1;
 	mpLauncherDialog = new CGUIDialog(CRect(50,50,100,100));
+
+	mpLauncherDialog->ControlList.push_back(static_cast<CGUIControl*>(new CGUIText(CRect(50,50,100,100), "text")));
 }
 
 ////

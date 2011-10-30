@@ -13,6 +13,9 @@
 
 #include "CResourceLoader.h"
 #include "utils/Geometry.h"
+#include "CGUIControl.h"
+#include "SmartPointer.h"
+#include <list>
 
 class CGUIDialog
 {
@@ -27,6 +30,9 @@ public:
 
 	// processes the whole rendering of the Dialog
 	void processRendering();
+
+	// List of Controls that the Dialog has.
+	std::list< SmartPointer<CGUIControl> > ControlList;
 
 private:
 	CRect mRect;
