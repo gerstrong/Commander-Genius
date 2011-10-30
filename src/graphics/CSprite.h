@@ -33,8 +33,10 @@ public:
 	SDL_Surface *getSDLSurface() { return m_surface; }
 	SDL_Surface *getSDLMaskSurface() { return m_masksurface; }
 
-	void drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
-	void drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
+	void drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
+	void _drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
+	void drawBlinkingSprite( Uint16 x, Uint16 y );
+	void _drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 
 	Uint16 getXOffset() { return m_xoffset; }
 	Uint16 getYOffset() { return m_yoffset; }

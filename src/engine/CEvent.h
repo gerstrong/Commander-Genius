@@ -16,12 +16,13 @@
 #include <string>
 #include <list>
 #include "common/direction.h"
-//#include "common/CObject.h"
 #include "SmartPointer.h"
 #include "CVec.h"
 
 class CObject;
 
+
+// TODO: These Event Interfaces must go to another file. Those are Inlevel Galaxy Events
 
 struct CEvent { virtual ~CEvent() {} };
 

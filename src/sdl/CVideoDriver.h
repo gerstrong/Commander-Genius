@@ -15,6 +15,8 @@
 #include "CSingleton.h"
 #include "CVidConfig.h"
 #include "video/CVideoEngine.h"
+#include "video/DrawEvents.h"
+#include "engine/CEventContainer.h"
 
 #ifdef USE_OPENGL
 	#include "sdl/video/COpenGL.h"
@@ -51,6 +53,10 @@ public:
 	void DeleteConsoleMsgs(void);
 	void AddConsoleMsg(const char *the_msg);
 
+	// Drawing related stuff
+
+	void pollDrawingTasks();
+	void clearDrawingTasks();
 
 	/**
 	 * \description This function saves the given camera bounds. It is usually called
@@ -120,6 +126,8 @@ public:
 	virtual ~CVideoDriver();
 
 	CVideoEngine *mp_VideoEngine;
+
+	CEventContainer mDrawTasks;
 
 	std::list<CRect> m_Resolutionlist;
 	std::list<CRect> :: iterator m_Resolution_pos;

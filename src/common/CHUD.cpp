@@ -157,12 +157,10 @@ void CHUD::renderGalaxy()
 	lives = (m_lives<99) ? m_lives : 99;
 	charges = (m_charges<99) ? m_charges : 99;
 
-	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
-
 	// Draw the background
 	CSprite &HUDBox = g_pGfxEngine->getSprite(129);
 
-	HUDBox.drawSprite(blitsurface, m_Rect.x, m_Rect.y);
+	HUDBox.drawSprite( m_Rect.x, m_Rect.y);
 
 	SDL_Surface* blitsfc = g_pVideoDriver->getBlitSurface();
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), m_Rect.x+8, m_Rect.y+4, blitsfc );

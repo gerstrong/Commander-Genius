@@ -201,7 +201,7 @@ void CPlayGameVorticon::showKeensLeft()
 			x = 12;
 			for(i=0;i<m_Player[p].inventory.lives&&i<=10;i++)
 			{
-				g_pGfxEngine->getSprite(m_Player[p].playerbaseframe+PMAPDOWNFRAME).drawSprite(boxsurface, x, y );
+				g_pGfxEngine->getSprite(m_Player[p].playerbaseframe+PMAPDOWNFRAME)._drawSprite(boxsurface, x, y );
 				x+=16;
 			}
 			y += 16;

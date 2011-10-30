@@ -563,8 +563,6 @@ void CPlayGameVorticon::drawObjects()
 {
 	if(m_hideobjects) return;
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
-
 	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
 	{

@@ -49,8 +49,6 @@ int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, i
 
 bool CResourceLoader::process(int* ret)
 {
-	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
-
 	if(!mp_Thread)
 		return false;
 	
@@ -60,7 +58,9 @@ bool CResourceLoader::process(int* ret)
 		g_pTimer->TimeToLogic();
 
 		// Render the Screen
-		if (g_pTimer->TimeToRender()) {
+		if (g_pTimer->TimeToRender())
+		{
+			SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
 			renderLoadingGraphic();
 			setPermilage(m_permil+1);
 			g_pVideoDriver->updateScreen();

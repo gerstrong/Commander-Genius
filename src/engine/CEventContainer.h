@@ -18,6 +18,7 @@
 class CEventContainer {
 public:
 	bool empty() { return m_EventList.empty(); }
+	void clear() { m_EventList.clear(); }
 	void add(const SmartPointer<CEvent>& ev) { m_EventList.push_back(ev); }
 	template<typename T> T* occurredEvent();
 	void pop_Event() { m_EventList.pop_front(); }

@@ -118,6 +118,8 @@ void CGame::run()
         // Render the Screen
         if (g_pTimer->TimeToRender())
         {
+        	// Here we try to process all the drawing related Tasks not yet done
+        	g_pVideoDriver->pollDrawingTasks();
 
         	// Pass all the surfaces to one
         	g_pVideoDriver->collectSurfaces();
@@ -132,7 +134,8 @@ void CGame::run()
             g_pVideoDriver->updateScreen();
 
         }
-		
+
+        g_pVideoDriver->clearDrawingTasks();
 
         // delay time remaining in current loop
         g_pTimer->TimeToDelay();

@@ -424,6 +424,74 @@ void CVideoDriver::stop()
 	mp_VideoEngine = NULL;
 }
 
+
+////
+//// Drawing stuff related Stuff
+////
+
+
+void CVideoDriver::pollDrawingTasks()
+{
+	while(!mDrawTasks.empty())
+	{
+		// Sprite Section
+		if( DrawSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawSpriteTask>() )
+		{
+			CSprite *Sprite = drawSpriteTask->mSpritePtr;
+
+			Sprite->_drawSprite(
+					getBlitSurface(),
+					drawSpriteTask->mx,
+					drawSpriteTask->my,
+					drawSpriteTask->mAlpha);
+		}
+		else if( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>() )
+		{
+			CSprite *Sprite = drawSpriteTask->mSpritePtr;
+
+			Sprite->_drawBlinkingSprite(
+					getBlitSurface(),
+					drawSpriteTask->mx,
+					drawSpriteTask->my );
+		}
+
+		// Tiles Section
+		else if( DrawAnimatedTileTask *drawAnimatedTileTask =
+					mDrawTasks.occurredEvent<DrawAnimatedTileTask>() )
+		{
+			CTilemap *TilemapPtr = drawAnimatedTileTask->mTileMapPtr;
+
+			TilemapPtr->drawTile(
+					getBlitSurface(),
+					drawAnimatedTileTask->mx,
+					drawAnimatedTileTask->my,
+					drawAnimatedTileTask->mtile);
+		}
+
+		// If none of the Events fit here, please warn this incident
+		else
+		{
+			g_pLogFile->textOut("Warning: Unknown Drawing task. Please let the developers debug this!");
+		}
+
+		mDrawTasks.pop_Event();
+	}
+}
+
+
+void CVideoDriver::clearDrawingTasks()
+{
+	if(!mDrawTasks.empty())
+	{
+		mDrawTasks.clear();
+	}
+}
+
+
+
+
+
+
 CVideoDriver::~CVideoDriver()
 {
  	stop();
