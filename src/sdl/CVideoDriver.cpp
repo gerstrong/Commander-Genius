@@ -455,6 +455,18 @@ void CVideoDriver::pollDrawingTasks()
 					drawSpriteTask->my );
 		}
 
+		// Tiles Section
+		else if( DrawAnimatedTileTask *drawAnimatedTileTask =
+					mDrawTasks.occurredEvent<DrawAnimatedTileTask>() )
+		{
+			CTilemap *TilemapPtr = drawAnimatedTileTask->mTileMapPtr;
+
+			TilemapPtr->drawTile(
+					getBlitSurface(),
+					drawAnimatedTileTask->mx,
+					drawAnimatedTileTask->my,
+					drawAnimatedTileTask->mtile);
+		}
 
 		// If none of the Events fit here, please warn this incident
 		else
