@@ -16,7 +16,7 @@ mRect(NewRect)
 
 void CGUIDialog::processLogic()
 {
-	g_pVideoDriver->mDr
+	g_pVideoDriver->mDrawTasks.add( new DrawGUIRenderTask(this) );
 }
 
 

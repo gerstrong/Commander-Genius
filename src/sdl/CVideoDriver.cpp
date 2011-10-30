@@ -468,6 +468,13 @@ void CVideoDriver::pollDrawingTasks()
 					drawAnimatedTileTask->mtile);
 		}
 
+		// GUI Rendering based Task
+		else if( DrawGUIRenderTask *renderTask =
+					mDrawTasks.occurredEvent<DrawGUIRenderTask>() )
+		{
+			renderTask->mpDialog->processRendering();
+		}
+
 		// If none of the Events fit here, please warn this incident
 		else
 		{

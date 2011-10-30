@@ -12,6 +12,7 @@
 #include "common/CGameLauncher.h"
 #include "common/Menu/CProfilesMenu.h"
 #include "engine/CEGAGraphics.h"
+#include "gui/CGUIDialog.h"
 #include "SmartPointer.h"
 
 enum load_states{

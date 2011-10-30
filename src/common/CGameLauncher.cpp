@@ -16,11 +16,13 @@
 #include <iostream>
 #include <fstream>
 
-CGameLauncher::CGameLauncher() {
+CGameLauncher::CGameLauncher()
+{
     m_mustquit      = false;
     m_chosenGame    = -1;
     mp_LaunchMenu   = NULL;
-    m_ep1slot       = -1;	
+    m_ep1slot       = -1;
+	mpLauncherDialog = new CGUIDialog(CRect(50,50,100,100));
 }
 
 ////
@@ -189,12 +191,15 @@ void CGameLauncher::process()
     // Did the user press (X)?
     if( g_pInput->getExitEvent() )
         m_mustquit = true;
-	
+
+    mpLauncherDialog->processLogic();
+
+	/*
     // Process Menu Input
     mp_LaunchMenu->processInput();
 	
     // Draw the Start-Menu
-    mp_LaunchMenu->draw();
+    mp_LaunchMenu->draw();*/
 }
 
 void CGameLauncher::getLabels()

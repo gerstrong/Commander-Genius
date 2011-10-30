@@ -10,6 +10,8 @@
 
 #include "dialog/CDialog.h"
 #include "fileio/CExeFile.h"
+#include "gui/CGUIDialog.h"
+#include "SmartPointer.h"
 #include <string>
 #include <vector>
 #include <ostream>
@@ -26,7 +28,8 @@
 // Filenames
 #define GAMESCFG        "games.cfg"
 
-struct GameEntry {
+struct GameEntry
+{
     std::string path;
 	std::string exefilename;
     std::string name;
@@ -74,6 +77,7 @@ private:
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
 	CDialog *mp_LaunchMenu;
+	SmartPointer<CGUIDialog> mpLauncherDialog;
 
 	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);
 	bool scanExecutables(const std::string& path);
