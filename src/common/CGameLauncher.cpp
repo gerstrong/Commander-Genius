@@ -26,8 +26,13 @@ CGameLauncher::CGameLauncher()
     m_ep1slot       = -1;
 	mpLauncherDialog = new CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f));
 
+	CGUITextSelectionList *List = new CGUITextSelectionList();
+
+	List->addText("Keen1");
+	List->addText("Keen2");
+
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-	mpLauncherDialog->addControl(new CGUITextSelectionList(), CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
+	mpLauncherDialog->addControl(List, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
 }
 
 ////

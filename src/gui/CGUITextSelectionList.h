@@ -16,8 +16,7 @@
 
 class CGUITextSelectionList : public CGUIControl {
 public:
-	CGUITextSelectionList();
-
+	void addText(const std::string &text);
 	void processLogic();
 	void processRender();
 
