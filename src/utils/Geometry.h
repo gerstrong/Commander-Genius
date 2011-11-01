@@ -14,13 +14,17 @@
 /**
  * This structure defines the resolution composed of width height and depth
  */
+template <typename T>
 struct CRect : public SDL_Rect
 {
-	CRect( const Uint16 lwidth = 0, const Uint16 lheight = 0 )
+	CRect( const T lwidth = 0,
+		   const T lheight = 0 )
 		{ w=lwidth; h=lheight; }
 
-	CRect( const Uint16 lx, const Uint16 ly,
-		   const Uint16 lw, const Uint16 lh )
+	CRect( const T lx,
+		   const T ly,
+		   const T lw,
+		   const T lh )
 		{ x=lx; y=ly; w=lw; h=lh; }
 
 	CRect( const SDL_VideoInfo* InfoPtr )
@@ -36,6 +40,18 @@ struct CRect : public SDL_Rect
 	{
 		return (float(w)/float(h));
 	}
+
+	SDL_Rect SDLRect()
+	{
+		SDL_Rect Rect;
+		Rect.x = x;
+		Rect.y = y;
+		Rect.w = w;
+		Rect.h = h;
+		return Rect;
+	}
+
+	T x, y, w, h;
 };
 
 #endif /* GEOMETRY_H_ */

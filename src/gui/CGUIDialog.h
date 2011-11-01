@@ -23,7 +23,7 @@ class CGUIDialog
 public:
 
 	// Constructor which needs the Rect for the placement of the Dialog
-	CGUIDialog(const CRect &NewRect);
+	CGUIDialog(const CRect<float> &NewRect);
 
 	// processes the whole logic of the Dialog
 	void processLogic();
@@ -31,11 +31,14 @@ public:
 	// processes the whole rendering of the Dialog
 	void processRendering();
 
-	// List of Controls that the Dialog has.
-	std::list< SmartPointer<CGUIControl> > ControlList;
+	// Adds a control instance to the list of controls to be processed.
+	void addControl(CGUIControl* newControl);
 
 private:
-	CRect mRect;
+	CRect<float> mRect;
+
+	// List of Controls that the Dialog has.
+	std::list< SmartPointer<CGUIControl> > mControlList;
 
 };
 

@@ -75,7 +75,7 @@ void CVideoDriver::initResolutionList()
 	// This call will get the resolution we have right now and set it up for the system
 	// On Handheld devices this means, they will only take that resolution and that would it be.
 	// On the PC, this is the current resolution but will add others.
-	CRect resolution(SDL_GetVideoInfo());
+	CRect<Uint16> resolution(SDL_GetVideoInfo());
 
 	// We have a resolution list, clear it and create a new one.
 
@@ -134,11 +134,11 @@ void CVideoDriver::initResolutionList()
 	m_Resolution_pos = m_Resolutionlist.begin();
 }
 
-void CVideoDriver::verifyResolution( CRect& resolution, const int flags )
+void CVideoDriver::verifyResolution( CRect<Uint16>& resolution, const int flags )
 {
 	if(SDL_VideoModeOK( resolution.w, resolution.h, 32, flags ))
 	{
-		std::list<CRect> :: iterator i;
+		std::list< CRect<Uint16> > :: iterator i;
 		for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 		{
 			if(*i == resolution)
@@ -166,11 +166,11 @@ void CVideoDriver::setSpecialFXMode(bool SpecialFX)
 
 void CVideoDriver::setMode(int width, int height,int depth)
 {
-	CRect res(width, height);
+	CRect<Uint16> res(width, height);
 	setMode(res);
 }
 
-void CVideoDriver::setMode(const CRect& res)
+void CVideoDriver::setMode(const CRect<Uint16>& res)
 {
 	m_VidConfig.setResolution(res);
 
@@ -193,8 +193,8 @@ extern "C" void iPhoneRotateScreen();
 
 bool CVideoDriver::applyMode()
 {
-	const CRect &Res = m_VidConfig.m_DisplayRect;
-	const CRect &GameRect = m_VidConfig.m_GameRect;
+	const CRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
+	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
 
 	// Before the resolution is set, check, if the zoom factor is too high!
 	while(((Res.w/GameRect.w) < m_VidConfig.Zoom || (Res.h/GameRect.h) < m_VidConfig.Zoom) && (m_VidConfig.Zoom > 1))

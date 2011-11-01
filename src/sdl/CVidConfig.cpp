@@ -73,11 +73,11 @@ void CVidConfig::reset()
 
 void CVidConfig::setResolution(const int width, const int height, const int depth)
 {
-	const CRect res(width, height);
+	const CRect<Uint16> res(width, height);
 	setResolution(res);
 }
 
-void CVidConfig::setResolution(const CRect& res)
+void CVidConfig::setResolution(const CRect<Uint16>& res)
 {
 	m_DisplayRect = res;
 }

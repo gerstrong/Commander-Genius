@@ -38,8 +38,8 @@ class COpenGL : public CVideoEngine {
 public:
 	COpenGL(const CVidConfig &VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
 
-	void setUpViewPort(const CRect &GameRes, const CRect &newDim);
-	bool resizeDisplayScreen(const CRect& newDim);
+	void setUpViewPort(const CRect<Uint16> &GameRes, const CRect<Uint16> &newDim);
+	bool resizeDisplayScreen(const CRect<Uint16>& newDim);
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 	bool createSurfaces();
 	void collectSurfaces();

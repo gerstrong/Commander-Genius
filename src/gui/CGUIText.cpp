@@ -9,7 +9,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 
-CGUIText::CGUIText(const CRect &lRect, const std::string& text) :
+CGUIText::CGUIText(const CRect<float> &lRect, const std::string& text) :
 CGUIControl(lRect),
 mText(text)
 {}

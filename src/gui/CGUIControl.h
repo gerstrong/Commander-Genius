@@ -15,13 +15,13 @@
 class CGUIControl
 {
 public:
-	CGUIControl(const CRect &lRect) :
+	CGUIControl(const CRect<float> &lRect) :
 	mRect(lRect) {}
 
 	virtual void processLogic() = 0;
 	virtual void processRender() = 0;
 
-	CRect mRect;
+	CRect<float> mRect;
 };
 
 

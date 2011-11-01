@@ -23,9 +23,9 @@ CGameLauncher::CGameLauncher()
     m_chosenGame    = -1;
     mp_LaunchMenu   = NULL;
     m_ep1slot       = -1;
-	mpLauncherDialog = new CGUIDialog(CRect(50,50,100,100));
+	mpLauncherDialog = new CGUIDialog(CRect<float>(0.0f, 0.0f, 1.0f, 1.0f));
 
-	mpLauncherDialog->ControlList.push_back(static_cast<CGUIControl*>(new CGUIText(CRect(50,50,100,100), "text")));
+	mpLauncherDialog->addControl(new CGUIText(CRect<float>(0.0f, 0.0f, 1.0f, 1.0f), "text"));
 }
 
 ////

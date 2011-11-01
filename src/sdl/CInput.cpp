@@ -462,7 +462,7 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_VIDEORESIZE:
-			CRect newSize(Event.resize.w, Event.resize.h);
+			CRect<Uint16> newSize(Event.resize.w, Event.resize.h);
 			g_pVideoDriver->mp_VideoEngine->resizeDisplayScreen(newSize);
 			break;
 		}

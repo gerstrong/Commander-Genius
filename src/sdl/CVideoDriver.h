@@ -74,7 +74,7 @@ public:
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
 	unsigned short getDepth() const;
-	CRect getGameResolution() const { return m_VidConfig.m_GameRect; }
+	CRect<Uint16> getGameResolution() const { return m_VidConfig.m_GameRect; }
 
 	SDL_Surface *getBlitSurface() { return mp_VideoEngine->getBlitSurface(); }
 
@@ -88,7 +88,7 @@ public:
 
 	void setVidConfig(const CVidConfig& VidConf);
 	void setMode(int width, int height,int depth);
-	void setMode(const CRect& res);
+	void setMode(const CRect<Uint16>& res);
 	void setSpecialFXMode(bool SpecialFX);
 	void setFilter(short value);
 	void setZoom(short vale);
@@ -110,8 +110,8 @@ public:
 	 * \return nothing. It does not return because it always adapts the resolution to some working mode.
 	 *         If video cannot be opened at all, another function of LibSDL will find that out.
 	 */
-	void verifyResolution( CRect& resolution, const int flags );
-	CRect& getResolution() const { return *m_Resolution_pos; }
+	void verifyResolution( CRect<Uint16>& resolution, const int flags );
+	CRect<Uint16>& getResolution() const { return *m_Resolution_pos; }
 
 	void initResolutionList();
 
@@ -129,8 +129,8 @@ public:
 
 	CEventContainer mDrawTasks;
 
-	std::list<CRect> m_Resolutionlist;
-	std::list<CRect> :: iterator m_Resolution_pos;
+	std::list< CRect<Uint16> > m_Resolutionlist;
+	std::list< CRect<Uint16> > :: iterator m_Resolution_pos;
 
 private:
 

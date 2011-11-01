@@ -41,10 +41,10 @@ public:
 	void reset();
 
 	void setResolution(const int width, const int height, const int depth);
-	void setResolution(const CRect& res);
+	void setResolution(const CRect<Uint16>& res);
 
-	CRect m_GameRect;	// Also called Screenspace.
-	CRect m_DisplayRect; // The Fullscreen-Resolution or the Window Size
+	CRect<Uint16> m_GameRect;	// Also called Screenspace.
+	CRect<Uint16> m_DisplayRect; // The Fullscreen-Resolution or the Window Size
 
 	bool Fullscreen;
 	short m_ScaleXFilter;

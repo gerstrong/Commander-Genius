@@ -40,7 +40,7 @@ mp_CameraSettings(NULL)
 	std::string buf;
 	mp_Dialog = new CDialog(29, 11, INPUT_MODE_OPTION, m_dlg_theme);
 	
-	CRect &Res = m_Vidconfig.m_DisplayRect;
+	CRect<Uint16> &Res = m_Vidconfig.m_DisplayRect;
 
 	buf = "Resolution: " + itoa(Res.w) + "x" + itoa(Res.h) + "x" + itoa(32);
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
@@ -128,7 +128,7 @@ void CVideoSettings::processSpecific(){
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = g_pVideoDriver->m_Resolutionlist.size();
 
-				CRect &Res = m_Vidconfig.m_DisplayRect;
+				CRect<Uint16> &Res = m_Vidconfig.m_DisplayRect;
 				buf = "Resolution: " + itoa(Res.w) + "x" + itoa(Res.h);
 				mp_Dialog->setObjectText(0,buf);
 			}

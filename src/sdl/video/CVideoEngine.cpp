@@ -23,8 +23,8 @@ m_Mode(0)
 
 bool CVideoEngine::init()
 {
-	const CRect &Res = m_VidConfig.m_DisplayRect;
-	const CRect &GameRect = m_VidConfig.m_GameRect;
+	const CRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
+	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
 
 	// Setup mode depends on some systems.
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)

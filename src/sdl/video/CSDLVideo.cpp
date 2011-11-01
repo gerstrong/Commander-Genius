@@ -16,7 +16,7 @@ CSDLVideo::CSDLVideo(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&
 CVideoEngine(VidConfig, p_sbufferx, p_sbuffery)
 {}
 
-bool CSDLVideo::resizeDisplayScreen(const CRect& newDim)
+bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
 	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
@@ -42,7 +42,7 @@ bool CSDLVideo::createSurfaces()
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
 
 	// This function creates the surfaces which are needed for the game.
-	const CRect &gamerect = m_VidConfig.m_GameRect;
+	const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
 	ScrollSurface = createSurface( "ScrollSurface", true,
 			512,
 			512,
@@ -100,8 +100,8 @@ void CSDLVideo::clearSurfaces()
 
 void CSDLVideo::updateScreen()
 {
-	const CRect &GameRect = m_VidConfig.m_GameRect;
-	const CRect &DisplayRect = m_VidConfig.m_DisplayRect;
+	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
+	const CRect<Uint16> &DisplayRect = m_VidConfig.m_DisplayRect;
 
 
 	// First apply the conventional filter if any (GameScreen -> FilteredScreen)

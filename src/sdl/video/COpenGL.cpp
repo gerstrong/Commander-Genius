@@ -37,7 +37,7 @@ m_GamePOTVideoDim(getPowerOfTwo(m_VidConfig.m_DisplayRect.w),
 				getPowerOfTwo(m_VidConfig.m_DisplayRect.h))
 {}
 
-void COpenGL::setUpViewPort(const CRect &GameRes, const CRect &newDim)
+void COpenGL::setUpViewPort(const CRect<Uint16> &GameRes, const CRect<Uint16> &newDim)
 {
 	// Calculate the proper viewport for any resolution
 	float base_width = GameRes.w;
@@ -56,7 +56,7 @@ void COpenGL::setUpViewPort(const CRect &GameRes, const CRect &newDim)
 	glViewport(xpos, ypos, width, height);
 }
 
-bool COpenGL::resizeDisplayScreen(const CRect& newDim)
+bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
 	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
