@@ -83,7 +83,7 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 bool COpenGL::createSurfaces()
 {
 	// This function creates the surfaces which are needed for the game.
-	const SDL_Rect &gamerect = m_VidConfig.m_GameRect;
+	const CRect<Uint16> gamerect = m_VidConfig.m_GameRect;
     ScrollSurface = createSurface( "ScrollSurface", true,
 								  512, 512,
 								  32,
@@ -110,8 +110,8 @@ bool COpenGL::createSurfaces()
 	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
 		FXSurface = createSurface( "FXSurface", true,
-				getPowerOfTwo(gamerect.w),
-				getPowerOfTwo(gamerect.h),
+						getPowerOfTwo(gamerect.w),
+						getPowerOfTwo(gamerect.h),
 						32,
 						m_Mode, screen->format );
 	}

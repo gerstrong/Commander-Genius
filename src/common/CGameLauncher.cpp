@@ -11,6 +11,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "graphics/CGfxEngine.h"
+#include "gui/CGUITextSelectionList.h"
 #include "StringUtils.h"
 #include "CResourceLoader.h"
 #include "FindFile.h"
@@ -23,9 +24,10 @@ CGameLauncher::CGameLauncher()
     m_chosenGame    = -1;
     mp_LaunchMenu   = NULL;
     m_ep1slot       = -1;
-	mpLauncherDialog = new CGUIDialog(CRect<float>(0.0f, 0.0f, 1.0f, 1.0f));
+	mpLauncherDialog = new CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f));
 
-	mpLauncherDialog->addControl(new CGUIText(CRect<float>(0.0f, 0.0f, 1.0f, 1.0f), "text"));
+	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+	mpLauncherDialog->addControl(new CGUITextSelectionList(), CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
 }
 
 ////

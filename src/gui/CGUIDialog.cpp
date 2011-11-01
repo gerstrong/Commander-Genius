@@ -11,18 +11,23 @@
 #include "sdl/CVideoDriver.h"
 
 
-CGUIDialog::CGUIDialog(const CRect<float> &NewRect) :
-mRect(NewRect)
-{}
-
-
-void CGUIDialog::addControl(CGUIControl* newControl)
+CGUIDialog::CGUIDialog(const CRect<float> &SrcRect)
 {
-	if(!newControl)
-	{
-		warnings << "Sorry, but this pointer to class-instance is invalid! Please verify\n";
-		return;
-	}
+	CRect<float> NewRect = SrcRect;
+	CRect<float> ScaleRect;
+
+	ScaleRect = g_pVideoDriver->getGameResolution();
+
+	NewRect.transform(ScaleRect);
+	mRect = NewRect;
+}
+
+
+void CGUIDialog::addControl(CGUIControl *newControl, const CRect<float>& ControlRect)
+{
+	CRect<float> NewRect = ControlRect;
+	NewRect.transform(mRect);
+	newControl->mRect = NewRect;
 
 	mControlList.push_back( newControl );
 }
@@ -45,7 +50,8 @@ void CGUIDialog::processRendering()
 {
 	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
 
-	SDL_FillRect(Blitsurface, &mRect, 0x00FFFFFF);
+	SDL_Rect lRect = mRect.SDLRect();
+	SDL_FillRect(Blitsurface, &lRect, 0x00D6D6D6);
 
 	for( std::list<
 		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;

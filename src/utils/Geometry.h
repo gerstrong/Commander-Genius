@@ -41,6 +41,17 @@ struct CRect : public SDL_Rect
 		return (float(w)/float(h));
 	}
 
+	template <typename T2>
+	CRect<T>& operator=( const CRect<T2> &newRect )
+	{
+		CRect<T> retRect;
+		x = static_cast<T>(newRect.x);
+		y = static_cast<T>(newRect.y);
+		w = static_cast<T>(newRect.w);
+		h = static_cast<T>(newRect.h);
+		return *this;
+	}
+
 	SDL_Rect SDLRect()
 	{
 		SDL_Rect Rect;
@@ -50,6 +61,25 @@ struct CRect : public SDL_Rect
 		Rect.h = h;
 		return Rect;
 	}
+
+	void transform(const CRect &scaleRect)
+	{
+		x *= scaleRect.w;
+		x += scaleRect.x;
+		y *= scaleRect.h;
+		y += scaleRect.y;
+		w *= scaleRect.w;
+		h *= scaleRect.h;
+	}
+
+	template <typename T2>
+	void transform(const CRect<T2> &scaleRect)
+	{
+		CRect<T> TRect;
+		TRect = scaleRect;
+		transform(TRect);
+	}
+
 
 	T x, y, w, h;
 };

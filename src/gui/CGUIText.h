@@ -16,7 +16,7 @@
 class CGUIText : public CGUIControl
 {
 public:
-	CGUIText(const CRect<float> &lRect, const std::string& text);
+	CGUIText(const std::string& text);
 
 	void processLogic();
 	void processRender();

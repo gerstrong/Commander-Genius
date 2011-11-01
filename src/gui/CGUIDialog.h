@@ -32,10 +32,10 @@ public:
 	void processRendering();
 
 	// Adds a control instance to the list of controls to be processed.
-	void addControl(CGUIControl* newControl);
+	void addControl(CGUIControl *newControl, const CRect<float>& ControlRect);
 
 private:
-	CRect<float> mRect;
+	CRect<Uint16> mRect;
 
 	// List of Controls that the Dialog has.
 	std::list< SmartPointer<CGUIControl> > mControlList;
