@@ -21,8 +21,8 @@
   */
 const int PC_Speaker_Volume = 20; // in percent
 
-const Uint64 PCSpeakerTime = 1288634;
-//const Uint64 PCSpeakerTime = 0x1234DD;
+//const Uint64 PCSpeakerTime = 1288634;
+const Uint64 PCSpeakerTime = 0x1234DD;
 
 typedef struct
 {
@@ -113,33 +113,35 @@ public:
 	virtual void unloadSound() = 0;
 
 	template <typename T>
-	void generateWave(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, bool IsSigned, const int& AMP)
+	void generateWave(std::vector<T> &waveform, word sample, word prevsample, Uint64 &freqtimer, bool IsSigned, bool isDiscrete, const int& AMP)
 	{
-		const unsigned int wavetime = m_AudioSpec.freq/136;
-		Uint64 changerate = (m_AudioSpec.freq>>1)*Uint64(sample);
-
+		/** If PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74 is defined, we attempt
+		 * to simulate the way vanilla DOSBox v0.74 emulates the PC Speaker.
+		 * Might be useful for some Commander Keen packs with alternate sounds effects.
+		 */
+		const unsigned int wavetime = m_AudioSpec.freq/146;
+		T wave;
+		#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
+		if (sample != 0)
+			freqtimer %= m_AudioSpec.freq*sample/PCSpeakerTime;
+		#else
+		/** On Keen 1-3, separated consecutive samples are always separated.
+		 * On Keen 4-6, though, consecutive samples of the exact sample frequency
+		 * are merged into a single tone. So, we check if we need to begin a new tone.
+		 */
+		if (isDiscrete || (prevsample != sample))
+			freqtimer = 0;
+		#endif
+		if (sample == 0)
+			wave = m_AudioSpec.silence - AMP;
 		for (unsigned int j=0; j<wavetime; j++)
 		{
-			if(changerate == 0)
+			if (sample != 0)
 			{
-				wave = m_AudioSpec.silence - AMP;
-				freqtimer = 0;
+				wave = m_AudioSpec.silence + (((((PCSpeakerTime<<1)*freqtimer/m_AudioSpec.freq/sample)%2)<<1)-1)*AMP;
+				freqtimer++;
 			}
-			else
-			{
-				if (freqtimer > changerate)
-				{
-					freqtimer = 0;
-
-					if (wave == m_AudioSpec.silence - AMP)
-						wave = m_AudioSpec.silence + AMP;
-					else
-						wave = m_AudioSpec.silence - AMP;
-				}
-				else
-					freqtimer += PCSpeakerTime;
-			}
-
+			// Do add.
 			for(Uint8 chnl=0 ; chnl<m_AudioSpec.channels ; chnl++ )
 				waveform.push_back(wave);
 		}
