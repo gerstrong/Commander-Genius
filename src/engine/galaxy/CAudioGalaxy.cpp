@@ -35,12 +35,19 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	int AMP = (formatsize == 2) ? 0x4000 : 0x40;
 	Sint16 wave = AMP;
 
+	std::vector<Sint16> waveform;
+	Uint64 freqtimer = 0;
+	int AMP = (formatsize == 2) ? 0x4000 : 0x40;
+	word prevsample = 0;
+
 	for(unsigned pos=0 ; pos<size ; pos++ )
 	{
-		// I don't know why we have to shift 6 bytes, but it reproduces the right sound!
-		word sample = *(pcsdata_ptr++);
-		generateWave(waveform, sample<<6, wave, freqtimer, true, AMP);
+		// Multiplying by some constant (60 in our case) seems to reproduces the right sound.
+		word sample = *(pcsdata_ptr++) * 60;
+		generateWave(waveform, sample, prevsample, freqtimer, true, false, AMP);
+		prevsample = sample;
 	}
+
 
 	if(formatsize == 1)
 	{
