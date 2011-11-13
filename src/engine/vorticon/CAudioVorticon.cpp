@@ -109,9 +109,10 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 		{
 			buf_ptr = buffer+offset;
 
-			word sample;
+			word prevsample = 0, sample;
 			const int AMP = ((IsSigned ? ((1<<(sizeof(T)*8))>>2)-1 : (1<<(sizeof(T)*8)>>1)-1)*PC_Speaker_Volume)/100;
 			T wave = AMP;
+
 			Uint64 freqtimer = 0;
 
 			do
@@ -121,7 +122,9 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 				if(sample == 0xffff)
 					break;
 
-				generateWave(waveform, sample, wave, freqtimer, IsSigned, AMP);
+				generateWave(waveform, sample, prevsample, freqtimer, IsSigned, true, AMP);
+				prevsample = sample;
+
 
 			}while(1);
 			g_pLogFile->ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());
