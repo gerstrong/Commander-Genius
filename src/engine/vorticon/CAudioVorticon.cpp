@@ -122,7 +122,7 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 				if(sample == 0xffff)
 					break;
 
-				generateWave(waveform, sample, prevsample, freqtimer, IsSigned, true, AMP);
+				generateWave(waveform, sample, prevsample, freqtimer, IsSigned, true, AMP, 145575);
 				prevsample = sample;
 
 

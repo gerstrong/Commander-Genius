@@ -29,22 +29,19 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	soundslot.priority = READWORD(pcsdata_ptr);
 	soundslot.setupAudioSpec(&m_AudioSpec);
 
-
-	std::vector<Sint16> waveform;
-	Uint64 freqtimer = 0;
-	int AMP = (formatsize == 2) ? 0x4000 : 0x40;
-	Sint16 wave = AMP;
-
 	std::vector<Sint16> waveform;
 	Uint64 freqtimer = 0;
 	int AMP = (formatsize == 2) ? 0x4000 : 0x40;
 	word prevsample = 0;
 
-	for(unsigned pos=0 ; pos<size ; pos++ )
+	// Effective number of samples is actually size-1, so we enumerate from 1.
+	// Reason: The vanilla way, right after beginning the very last sample output,
+	// it's stopped. (That should be validated in some way...)
+	for(unsigned pos=1 ; pos<size ; pos++ )
 	{
 		// Multiplying by some constant (60 in our case) seems to reproduces the right sound.
 		word sample = *(pcsdata_ptr++) * 60;
-		generateWave(waveform, sample, prevsample, freqtimer, true, false, AMP);
+		generateWave(waveform, sample, prevsample, freqtimer, true, false, AMP, 140026);
 		prevsample = sample;
 	}
 
