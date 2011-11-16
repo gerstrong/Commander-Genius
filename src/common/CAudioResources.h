@@ -113,17 +113,17 @@ public:
 	virtual void unloadSound() = 0;
 
 	template <typename T>
-	void generateWave(std::vector<T> &waveform, word sample, word prevsample, Uint64 &freqtimer, bool IsSigned, bool isDiscrete, const int& AMP)
+	void generateWave(std::vector<T> &waveform, word sample, word prevsample, Uint64 &freqtimer, bool IsSigned, bool isDiscrete, const int& AMP, unsigned int samplesPer1000Seconds)
 	{
 		/** If PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74 is defined, we attempt
 		 * to simulate the way vanilla DOSBox v0.74 emulates the PC Speaker.
 		 * Might be useful for some Commander Keen packs with alternate sounds effects.
 		 */
-		const unsigned int wavetime = m_AudioSpec.freq/146;
+		const unsigned int wavetime = m_AudioSpec.freq*1000/samplesPer1000Seconds;
 		T wave;
 		#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
-		if (sample != 0)
-			freqtimer %= m_AudioSpec.freq*sample/PCSpeakerTime;
+		if (prevsample != 0)
+		    freqtimer %= m_AudioSpec.freq*prevsample/PCSpeakerTime;
 		#else
 		/** On Keen 1-3, separated consecutive samples are always separated.
 		 * On Keen 4-6, though, consecutive samples of the exact sample frequency
