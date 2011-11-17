@@ -13,17 +13,17 @@
 #include "engine/CEvent.h"
 #include "graphics/CSprite.h"
 #include "graphics/CTilemap.h"
-//#include "gui/CGUIDialog.h"
+#include "gui/CGUIDialog.h"
 
 
 // GUI Based Draw Task
 
-/*struct DrawGUIRenderTask : CEvent
+struct DrawGUIRenderTask : CEvent
 {
 	CGUIDialog	*mpDialog;
 
 	DrawGUIRenderTask(CGUIDialog *pDialog) : mpDialog(pDialog) {}
-};*/
+};
 
 // Tile based Draw Tasks
 
