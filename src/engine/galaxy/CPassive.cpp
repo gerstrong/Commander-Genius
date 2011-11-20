@@ -11,7 +11,7 @@
 #include "graphics/effects/CPixelate.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 
 
 namespace galaxy

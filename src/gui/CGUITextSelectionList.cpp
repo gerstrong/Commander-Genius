@@ -17,6 +17,8 @@ void CGUITextSelectionList::addText(const std::string &text)
 
 void CGUITextSelectionList::processLogic()
 {
+	// Here we check if the mouse-cursor/Touch entry clicked on something!!
+
 
 
 }

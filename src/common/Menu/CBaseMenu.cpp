@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "CBaseMenu.h"
 
 CBaseMenu::CBaseMenu(Uint8 dlg_theme) :

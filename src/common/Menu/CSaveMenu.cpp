@@ -8,7 +8,7 @@
 #include "CSaveMenu.h"
 #include "CBaseMenu.h"
 #include "CConfirmMenu.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 
 #include <ctime>
 

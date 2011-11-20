@@ -14,7 +14,7 @@
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "FindFile.h"
 
 CStory::CStory(CExeFile &ExeFile)

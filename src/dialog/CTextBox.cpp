@@ -11,7 +11,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CTimer.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 
 CTextBox::CTextBox(int y, int h, const std::string& message) :
 m_tw_waittime(0)

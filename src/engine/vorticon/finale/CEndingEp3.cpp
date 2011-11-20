@@ -7,7 +7,7 @@
 
 #include "CEndingEp3.h"
 #include "StringUtils.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/effects/CFlash.h"
 #include "graphics/CGfxEngine.h"

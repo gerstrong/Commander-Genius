@@ -10,7 +10,7 @@
 #include "CPlayerWM.h"
 #include "engine/galaxy/ai/CFlag.h"
 #include "common/CBehaviorEngine.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 

@@ -10,7 +10,7 @@
 #include <string>
 
 #include "CHighScores.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
 #include "FindFile.h"

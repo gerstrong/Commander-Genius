@@ -12,7 +12,7 @@
 #include "CCamera.h"
 #include "CLogFile.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "engine/spritedefines.h"
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CObject *p_attacher) :

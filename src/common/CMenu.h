@@ -13,7 +13,7 @@
 #include "options.h"
 #include "CObject.h"
 #include "Menu/CBaseMenu.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "fileio/CSavedGame.h"
 #include "fileio/CExeFile.h"
 #include "common/CBehaviorEngine.h"

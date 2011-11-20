@@ -7,7 +7,7 @@
 
 #include "CPlayerBase.h"
 #include "CItemEffect.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
 
 namespace galaxy {

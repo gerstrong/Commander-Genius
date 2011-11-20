@@ -9,7 +9,7 @@
 #include "CLogFile.h"
 #include "gui/CGUIText.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "graphics/CGfxEngine.h"
 #include "gui/CGUITextSelectionList.h"
 #include "StringUtils.h"

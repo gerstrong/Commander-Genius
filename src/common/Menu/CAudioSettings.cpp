@@ -6,7 +6,7 @@
  */
 
 #include "CAudioSettings.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "common/CSettings.h"
 #include "sdl/sound/CSound.h"

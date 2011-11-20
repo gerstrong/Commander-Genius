@@ -14,7 +14,7 @@
 #include "../../common/CMapLoader.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CInput.h"
+#include "../../sdl/input/CInput.h"
 #include "../../FindFile.h"
 
 CHelp::CHelp(CExeFile &ExeFile, const std::string &type) :

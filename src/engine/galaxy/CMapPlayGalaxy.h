@@ -19,7 +19,7 @@
 #include "engine/galaxy/dialog/CMessageBoxGalaxy.h"
 #include "common/CBehaviorEngine.h"
 #include "CMapLoaderGalaxy.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"

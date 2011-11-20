@@ -6,7 +6,7 @@
  */
 
 #include "CPlayerDive.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "CBubbles.h"
 
 

@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/CTimer.h"
 #include "StringUtils.h"
 #include "CVideoSettings.h"

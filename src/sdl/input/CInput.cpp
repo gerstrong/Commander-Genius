@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 #include "CInput.h"
-#include "CVideoDriver.h"
+#include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 #include "FindFile.h"
 #include "StringUtils.h"

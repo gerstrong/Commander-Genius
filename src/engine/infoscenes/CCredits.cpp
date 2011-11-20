@@ -6,7 +6,7 @@
  */
 
 #include "CCredits.h"
-#include "../../sdl/CInput.h"
+#include "../../sdl/input/CInput.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../common/CMapLoader.h"

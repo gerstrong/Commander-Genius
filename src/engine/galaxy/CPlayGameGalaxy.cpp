@@ -12,7 +12,7 @@
 #include "dialog/CMessageBoxBitmapGalaxy.h"
 #include "dialog/CMessageBoxSelection.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"

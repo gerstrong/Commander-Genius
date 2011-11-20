@@ -7,7 +7,7 @@
 
 #include "CMessageBoxVort.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "graphics/CGfxEngine.h"
 
 CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :

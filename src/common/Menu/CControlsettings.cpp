@@ -10,7 +10,7 @@
 #include "CControlsettings.h"
 #include "common/CBehaviorEngine.h"
 
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 
 const std::string actionsnames[MAX_COMMANDS] =

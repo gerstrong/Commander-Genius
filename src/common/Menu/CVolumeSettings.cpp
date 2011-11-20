@@ -10,7 +10,7 @@
 #include "CBaseMenu.h"
 #include "CVolumeSettings.h"
 #include "sdl/sound/CSound.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 
 CVolumeSettings::CVolumeSettings(Uint8 dlg_theme) :
 CBaseMenu(dlg_theme)

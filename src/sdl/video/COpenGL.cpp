@@ -8,7 +8,7 @@
 
 #include "COpenGL.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h" // for CInput::renderOverlay
+#include "sdl/input/CInput.h" // for CInput::renderOverlay
 #include "graphics/CGfxEngine.h"
 #include "CLogFile.h"
 #include "graphics/PerSurfaceAlpha.h"

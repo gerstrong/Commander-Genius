@@ -11,7 +11,7 @@
 
 #include "CPixelate.h"
 #include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CInput.h"
+#include "../../sdl/input/CInput.h"
 
 CPixelate::CPixelate(unsigned short speed) :
 mp_OldSurface(NULL),

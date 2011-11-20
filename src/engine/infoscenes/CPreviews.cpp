@@ -10,7 +10,7 @@
 #include "common/CBehaviorEngine.h"
 #include "FindFile.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "StringUtils.h"
 #include "common/CMapLoader.h"
 

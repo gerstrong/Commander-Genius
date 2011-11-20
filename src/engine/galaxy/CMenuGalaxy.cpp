@@ -9,7 +9,7 @@
 
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 
 namespace galaxy
 {

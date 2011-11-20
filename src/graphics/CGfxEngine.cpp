@@ -7,7 +7,7 @@
 
 #include "CGfxEngine.h"
 
-#include "../sdl/CInput.h"
+#include "../sdl/input/CInput.h"
 
 #define SAFE_DELETE(x) 	if(x){ delete x; x=NULL;}
 

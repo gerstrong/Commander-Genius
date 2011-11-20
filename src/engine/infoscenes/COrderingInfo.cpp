@@ -6,7 +6,7 @@
  */
 
 #include "COrderingInfo.h"
-#include "../../sdl/CInput.h"
+#include "../../sdl/input/CInput.h"
 #include "../../CLogFile.h"
 #include "../../fileio/CExeFile.h"
 #include "../../graphics/CGfxEngine.h"

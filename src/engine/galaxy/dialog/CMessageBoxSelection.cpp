@@ -7,7 +7,7 @@
 
 #include "CMessageBoxSelection.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "graphics/CGfxEngine.h"
 
 const int FONT_ID = 0;

@@ -9,7 +9,7 @@
 #include "CBullet.h"
 #include "common/CBehaviorEngine.h"
 #include "platform/CPlatform.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 #include "CLogFile.h"

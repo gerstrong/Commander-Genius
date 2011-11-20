@@ -12,7 +12,7 @@
 #include "common/CMapLoader.h"
 #include "common/CTileProperties.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CInput.h"
+#include "sdl/input/CInput.h"
 
 namespace vorticon
 {

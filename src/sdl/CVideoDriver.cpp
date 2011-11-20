@@ -9,7 +9,7 @@
  *  The Rendering itself is performed under COpenGL or CSDLVideo Class depending on what is enabled.
  */
 #include "CVideoDriver.h"
-#include "CInput.h"
+#include "input/CInput.h"
 #include "CTimer.h"
 
 #include "video/CSDLVideo.h"
