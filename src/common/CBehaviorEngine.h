@@ -73,6 +73,7 @@ public:
 
 	void setEpisode(size_t Episode);
 
+	// TODO: EventList must an own singleton Container, as it very often used.
 	CEventContainer m_EventList;
 	CExeFile m_ExeFile;
 	bool m_is_a_mod;

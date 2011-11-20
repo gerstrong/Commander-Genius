@@ -8,6 +8,7 @@
 #include <SDL.h>
 #include <stdio.h>
 
+#include "InputEvents.h"
 #include "CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
@@ -15,6 +16,7 @@
 #include "StringUtils.h"
 #include "fileio/CConfiguration.h"
 #include "common/CSettings.h"
+#include "common/CBehaviorEngine.h"
 
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
@@ -357,6 +359,7 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
  * \param	device		input of which we are trying to read the event
  * \param	command		command for which we want to assign the event
  * \return 	returns true, if an event was triggered, or false if not.
+ * TODO: This function should be removed in future when everything is event based
  */
 bool CInput::readNewEvent(Uint8 device, int command)
 {
@@ -422,6 +425,9 @@ void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player
  */
 void CInput::pollEvents()
 {
+	CVec Pos;
+	CRect<Uint16> Res = g_pVideoDriver->getResolution();
+
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
 
@@ -462,8 +468,14 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_VIDEORESIZE:
-			CRect<Uint16> newSize(Event.resize.w, Event.resize.h);
-			g_pVideoDriver->mp_VideoEngine->resizeDisplayScreen(newSize);
+			g_pVideoDriver->mp_VideoEngine->resizeDisplayScreen(
+					CRect<Uint16>(Event.resize.w, Event.resize.h) );
+			break;
+
+		case SDL_MOUSEMOTION:
+			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
+			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
+			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos ) );
 			break;
 		}
 	}

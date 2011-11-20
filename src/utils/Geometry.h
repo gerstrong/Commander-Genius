@@ -10,6 +10,7 @@
 #define GEOMETRY_H_
 
 #include <SDL.h>
+#include <CVec.h>
 
 /**
  * This structure defines the resolution composed of width height and depth
@@ -78,6 +79,30 @@ struct CRect : public SDL_Rect
 		CRect<T> TRect;
 		TRect = scaleRect;
 		transform(TRect);
+	}
+
+	// Check whether a point given by a Vector is with that Rect.
+	// The operation is simple but very often used.
+	bool HasPoint(VectorD2<T>& Pos)
+	{
+		// check X coordinate. is it outside, return false
+		if( Pos.x < x || Pos.x > x+w )
+			return false;
+
+		// check Y coordinate. is it outside, return false
+		if( Pos.y < y || Pos.y > y+h )
+			return false;
+
+		return true;
+	}
+
+	template <typename T2>
+	bool HasPoint(VectorD2<T2>& Pos)
+	{
+		VectorD2<T> NewPos;
+		NewPos.x = static_cast<T>(Pos.x);
+		NewPos.y = static_cast<T>(Pos.y);
+		return HasPoint(NewPos);
 	}
 
 
