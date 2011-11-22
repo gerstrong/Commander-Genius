@@ -14,10 +14,19 @@
 #ifndef INPUTEVENTS_H_
 #define INPUTEVENTS_H_
 
+enum MouseEventTypes
+{
+	MOUSEEVENT_MOVED = 0,
+	MOUSEEVENT_BUTTONDOWN,
+	MOUSEEVENT_BUTTONUP
+};
+
 struct MouseMoveEvent : CEvent
 {
 	CVec Pos;
-	MouseMoveEvent(const CVec &New_Pos) : Pos(New_Pos) {}
+	MouseEventTypes Type;
+	MouseMoveEvent(const CVec &New_Pos, MouseEventTypes New_Type ) :
+		Pos(New_Pos), Type(New_Type) {}
 };
 
 

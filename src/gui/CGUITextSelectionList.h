@@ -16,12 +16,19 @@
 
 class CGUITextSelectionList : public CGUIControl {
 public:
+
+	CGUITextSelectionList() :
+	mHoverSelection(0),
+	mSelection(0) {}
+
 	void addText(const std::string &text);
 	void processLogic();
 	void processRender();
 
-
 	std::list<std::string> mItemList;
+
+	int mHoverSelection;
+	int mSelection;
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H_ */

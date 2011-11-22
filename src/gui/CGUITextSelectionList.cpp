@@ -11,6 +11,7 @@
 #include "sdl/input/InputEvents.h"
 #include "common/CBehaviorEngine.h"
 
+const float TEXT_HEIGHT = 10.0f;
 
 void CGUITextSelectionList::addText(const std::string &text)
 {
@@ -21,29 +22,39 @@ void CGUITextSelectionList::processLogic()
 {
 	// Here we check if the mouse-cursor/Touch entry clicked on something!!
 
+	const float bw = g_pVideoDriver->getGameResolution().w;
+	const float bh = g_pVideoDriver->getGameResolution().h;
+
+	const float fx = mRect.x/bw;
+	const float fw = mRect.w/bw;
+	const float fy = mRect.y/bh;
+	const float fh = mRect.h/bh;
+
+	const float y_innerbound_min = fy + static_cast<float>(TEXT_HEIGHT)/bh;
+	const float y_innerbound_max = y_innerbound_min +
+			static_cast<float>( mItemList.size()*TEXT_HEIGHT )/bh;
+
+	CRect<float> rRect(fx, fy, fw, fh);
+
 	if( MouseMoveEvent *mouseevent = g_pBehaviorEngine->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
-		const float bw = g_pVideoDriver->getGameResolution().w;
-		const float bh = g_pVideoDriver->getGameResolution().h;
+		CVec MousePos = mouseevent->Pos;
 
-		const float fx = mRect.x/bw;
-		const float fw = mRect.w/bw;
-		const float fy = mRect.y/bh;
-		const float fh = mRect.h/bh;
+		if( rRect.HasPoint(MousePos) )
+		{
+			if( MousePos.y > y_innerbound_min && MousePos.y < y_innerbound_max )
+			{
+				int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1;
 
-		CRect<float> rRect(fx, fy, fw, fh);
-		/*if( rRect.HasPoint(mouseevent->Pos) )
-			printf("It's in!\n");
-		else
-			printf("It's out!\n");
-
-		printf("Rect (%f, %f, %f, %f) - Coord (%f, %f)\n", rRect.x, rRect.y, rRect.w, rRect.h,
-							mouseevent->Pos.x, mouseevent->Pos.y);*/
-
+				if(mouseevent->Type == MOUSEEVENT_MOVED)
+					mHoverSelection = newselection;
+				else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
+					mSelection = newselection;
+			}
+		}
 
 		g_pBehaviorEngine->m_EventList.pop_Event();
 	}
-
 }
 
 void CGUITextSelectionList::processRender()
@@ -60,9 +71,12 @@ void CGUITextSelectionList::processRender()
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
 	int xpos = mRect.x+16+1;
 	std::list<std::string> :: iterator it = mItemList.begin();
-	for ( int ypos = 1; it != mItemList.end() ; it++, ypos+=10 )
+	for ( int line = 0; it != mItemList.end() ; it++, line++ )
 	{
-		Font.drawFont(Blitsurface, *it, xpos, mRect.y+ypos, false);
+		if(mSelection == line)
+			Font.drawFont(Blitsurface, *it, xpos, mRect.y+10+(line*10), true);
+		else
+			Font.drawFont(Blitsurface, *it, xpos, mRect.y+10+(line*10), false);
 	}
 
 }
