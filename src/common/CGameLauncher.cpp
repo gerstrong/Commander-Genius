@@ -12,6 +12,7 @@
 #include "sdl/input/CInput.h"
 #include "graphics/CGfxEngine.h"
 #include "gui/CGUITextSelectionList.h"
+#include "gui/CGUIButton.h"
 #include "StringUtils.h"
 #include "CResourceLoader.h"
 #include "FindFile.h"
@@ -37,6 +38,7 @@ CGameLauncher::CGameLauncher()
 
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
 	mpLauncherDialog->addControl(List, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
+	mpLauncherDialog->addControl(new CGUIButton("Exit"), CRect<float>(0.1f, 0.90f, 0.2f, 0.05f));
 }
 
 ////

@@ -4,7 +4,7 @@
  *  Created on: 29.10.2011
  *      Author: gerstrong
  *
- *  GUI Class for a Dialog which might carry other controls
+ *  GUI Class for a Dialog which is able to carry other controls
  */
 
 #include "CGUIDialog.h"
@@ -27,8 +27,10 @@ void CGUIDialog::addControl(CGUIControl *newControl, const CRect<float>& RelRect
 
 void CGUIDialog::processLogic()
 {
+	// Render the stuff
 	g_pVideoDriver->mDrawTasks.add( new DrawGUIRenderTask(this) );
 
+	// Prepare the subcontrols for rendering
 	for( std::list<
 		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;
 		 it != mControlList.end() ; it++ )
