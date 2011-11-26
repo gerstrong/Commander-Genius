@@ -28,22 +28,6 @@ CGameLauncher::CGameLauncher()
     mp_LaunchMenu   = NULL;
     m_ep1slot       = -1;
 	mpLauncherDialog = new CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f));
-
-	CGUITextSelectionList *List = new CGUITextSelectionList();
-
-	List->addText("Keen1");
-	List->addText("Keen2");
-	List->addText("Keen3");
-	List->addText("Keen4");
-	List->addText("Keen5");
-	List->addText("Keen6");
-
-	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-	mpLauncherDialog->addControl(List, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
-	mpLauncherDialog->addControl(new CGUIButton( "Exit", new GMQuit() ),
-												CRect<float>(0.1f, 0.90f, 0.2f, 0.05f) );
-	mpLauncherDialog->addControl(new CGUIButton( "Ok", new GMStart(List->mSelection) ),
-												CRect<float>(0.7f, 0.90f, 0.2f, 0.05f) );
 }
 
 ////
@@ -81,8 +65,21 @@ bool CGameLauncher::init()
     // Save any custom labels
     putLabels();
 
-    // No games detected then quit
-   	mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_Entries.size()+1, !gamedetected ? "No games found! - Quit" : "Quit");
+	CGUITextSelectionList *List = new CGUITextSelectionList();
+
+	std::vector<GameEntry>::iterator it = m_Entries.begin();
+    for( ; it != m_Entries.end() ; it++	)
+    {
+    	List->addText(it->name);
+    }
+
+	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+	mpLauncherDialog->addControl(List, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
+	mpLauncherDialog->addControl(new CGUIButton( "Exit", new GMQuit() ),
+												CRect<float>(0.1f, 0.90f, 0.2f, 0.05f) );
+	mpLauncherDialog->addControl(new CGUIButton( "Ok", new GMStart(List->mSelection) ),
+												CRect<float>(0.7f, 0.90f, 0.2f, 0.05f) );
+
    	g_pResourceLoader->setPermilage(1000);
 	
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
@@ -172,9 +169,6 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		
 		// Save the type information about the exe
 		m_Entries.push_back(newentry);
-		// Add a new menu item
-		mp_LaunchMenu->addObject( newentry.supported ? DLG_OBJ_OPTION_TEXT : DLG_OBJ_DISABLED,
-									1, m_Entries.size(), newentry.name);
 
 		g_pLogFile->textOut(gamespecstring);
 		
