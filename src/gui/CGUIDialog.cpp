@@ -16,9 +16,11 @@ mRect(SrcRect)
 {}
 
 
-void CGUIDialog::addControl(CGUIControl *newControl, const CRect<float>& ControlRect)
+void CGUIDialog::addControl(CGUIControl *newControl, const CRect<float>& RelRect)
 {
-	newControl->mRect = ControlRect;
+	CRect<float> AbsRect = RelRect;
+	AbsRect.transform(mRect);
+	newControl->mRect = AbsRect;
 	mControlList.push_back( newControl );
 }
 
@@ -56,7 +58,7 @@ void CGUIDialog::processRendering()
 		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;
 		 it != mControlList.end() ; it++ )
 	{
-		(*it)->processRender(RectDispCoordFloat);
+		(*it)->processRender(screenRect);
 	}
 
 }

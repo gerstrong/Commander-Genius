@@ -426,7 +426,7 @@ void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player
 void CInput::pollEvents()
 {
 	CVec Pos;
-	CRect<Uint16> Res = g_pVideoDriver->getResolution();
+	CRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
 
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
@@ -475,19 +475,19 @@ void CInput::pollEvents()
 		case SDL_MOUSEBUTTONDOWN:
 			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
 			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos,MOUSEEVENT_BUTTONDOWN ) );
+			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
 			break;
 
 		case SDL_MOUSEBUTTONUP:
 			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
 			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos,MOUSEEVENT_BUTTONUP ) );
+			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
 			break;
 
 		case SDL_MOUSEMOTION:
 			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
 			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos,MOUSEEVENT_MOVED ) );
+			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
 			break;
 		}
 	}

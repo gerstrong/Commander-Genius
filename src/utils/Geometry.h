@@ -73,6 +73,7 @@ struct CRect : public SDL_Rect
 		h *= scaleRect.h;
 	}
 
+
 	template <typename T2>
 	void transform(const CRect<T2> &scaleRect)
 	{
@@ -80,6 +81,7 @@ struct CRect : public SDL_Rect
 		TRect = scaleRect;
 		transform(TRect);
 	}
+
 
 	// Check whether a point given by a Vector is with that Rect.
 	// The operation is simple but very often used.

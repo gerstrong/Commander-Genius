@@ -25,10 +25,10 @@ void CGUITextSelectionList::processLogic()
 	const float bw = g_pVideoDriver->getGameResolution().w;
 	const float bh = g_pVideoDriver->getGameResolution().h;
 
-	const float fx = mRect.x/bw;
-	const float fw = mRect.w/bw;
-	const float fy = mRect.y/bh;
-	const float fh = mRect.h/bh;
+	const float fx = mRect.x;
+	const float fw = mRect.w;
+	const float fy = mRect.y;
+	const float fh = mRect.h;
 
 	const float y_innerbound_min = fy + static_cast<float>(TEXT_HEIGHT)/bh;
 	const float y_innerbound_max = y_innerbound_min +
