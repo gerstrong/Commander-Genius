@@ -10,9 +10,11 @@
 #include "gui/CGUIText.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
-#include "graphics/CGfxEngine.h"
 #include "gui/CGUITextSelectionList.h"
 #include "gui/CGUIButton.h"
+#include "graphics/CGfxEngine.h"
+#include "common/CBehaviorEngine.h"
+#include "core/CGameMode.h"
 #include "StringUtils.h"
 #include "CResourceLoader.h"
 #include "FindFile.h"
@@ -38,7 +40,10 @@ CGameLauncher::CGameLauncher()
 
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
 	mpLauncherDialog->addControl(List, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
-	mpLauncherDialog->addControl(new CGUIButton("Exit"), CRect<float>(0.1f, 0.90f, 0.2f, 0.05f));
+	mpLauncherDialog->addControl(new CGUIButton( "Exit", new GMQuit() ),
+												CRect<float>(0.1f, 0.90f, 0.2f, 0.05f) );
+	mpLauncherDialog->addControl(new CGUIButton( "Ok", new GMStart(List->mSelection) ),
+												CRect<float>(0.7f, 0.90f, 0.2f, 0.05f) );
 }
 
 ////
@@ -211,12 +216,12 @@ void CGameLauncher::process()
 
     mpLauncherDialog->processLogic();
 
-	/*
-    // Process Menu Input
-    mp_LaunchMenu->processInput();
-	
-    // Draw the Start-Menu
-    mp_LaunchMenu->draw();*/
+	if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
+	{
+		setChosenGame(Starter->mSlot);
+		g_pBehaviorEngine->m_EventList.pop_Event();
+	}
+
 }
 
 void CGameLauncher::getLabels()

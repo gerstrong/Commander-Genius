@@ -11,6 +11,7 @@
 #include <SDL.h>
 #include <string>
 #include <list>
+#include "engine/CEventContainer.h"
 
 #include "CSingleton.h"
 #define g_pInput	CInput::Get()
@@ -212,6 +213,10 @@ public:
 	void renderOverlay(); // for mouse wrapper gfx or other stuff
 
 	virtual ~CInput();
+
+	// Input Events
+	CEventContainer m_EventList;
+
 
 private:
 	SDL_Event Event;

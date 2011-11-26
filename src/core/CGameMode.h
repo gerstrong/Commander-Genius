@@ -57,6 +57,16 @@ struct GMSwitchToPlayGameMode : CEvent {
 // It's a simple quit event which will force CG to close the App
 struct GMQuit : CEvent {};
 
+// It's a simple quit event which will force CG to close the App
+struct GMStart : CEvent
+{
+	GMStart(int &Slot) :
+	mSlot(Slot)
+	{}
+
+	int &mSlot;
+};
+
 ///////
 // Base Class for the modes
 //////

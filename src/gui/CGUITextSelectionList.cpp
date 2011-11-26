@@ -9,7 +9,7 @@
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/input/InputEvents.h"
-#include "common/CBehaviorEngine.h"
+#include "sdl/input/CInput.h"
 
 const float TEXT_HEIGHT = 10.0f;
 
@@ -36,7 +36,7 @@ void CGUITextSelectionList::processLogic()
 
 	CRect<float> rRect(fx, fy, fw, fh);
 
-	if( MouseMoveEvent *mouseevent = g_pBehaviorEngine->m_EventList.occurredEvent<MouseMoveEvent>() )
+	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
 
@@ -51,9 +51,9 @@ void CGUITextSelectionList::processLogic()
 				else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 					mSelection = newselection;
 			}
-		}
 
-		g_pBehaviorEngine->m_EventList.pop_Event();
+			g_pInput->m_EventList.pop_Event();
+		}
 	}
 }
 

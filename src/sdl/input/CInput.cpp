@@ -475,19 +475,19 @@ void CInput::pollEvents()
 		case SDL_MOUSEBUTTONDOWN:
 			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
 			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
+			m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
 			break;
 
 		case SDL_MOUSEBUTTONUP:
 			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
 			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
+			m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
 			break;
 
 		case SDL_MOUSEMOTION:
 			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
 			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			g_pBehaviorEngine->m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
+			m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
 			break;
 		}
 	}

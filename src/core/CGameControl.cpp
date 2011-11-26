@@ -107,8 +107,10 @@ void CGameControl::process()
 		{
 			mp_GameMode.tryDeleteData();
 			EventContainer.pop_Event();
+
 			return;
 		}
+
 	}
 
 	// Process the game control object

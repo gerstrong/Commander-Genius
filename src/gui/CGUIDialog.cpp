@@ -9,7 +9,7 @@
 
 #include "CGUIDialog.h"
 #include "sdl/CVideoDriver.h"
-
+#include "sdl/input/CInput.h"
 
 CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
 mRect(SrcRect)
@@ -37,6 +37,8 @@ void CGUIDialog::processLogic()
 	{
 		(*it)->processLogic();
 	}
+
+	g_pInput->m_EventList.clear();
 }
 
 
