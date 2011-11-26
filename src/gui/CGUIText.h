@@ -19,7 +19,7 @@ public:
 	CGUIText(const std::string& text);
 
 	void processLogic();
-	void processRender();
+	void processRender(const CRect<float> &RectDispCoordFloat);
 
 private:
 	std::string mText;

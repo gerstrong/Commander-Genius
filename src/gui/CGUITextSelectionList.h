@@ -23,7 +23,7 @@ public:
 
 	void addText(const std::string &text);
 	void processLogic();
-	void processRender();
+	void processRender(const CRect<float> &RectDispCoordFloat);
 
 	std::list<std::string> mItemList;
 

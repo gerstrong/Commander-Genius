@@ -30,6 +30,10 @@ CGameLauncher::CGameLauncher()
 
 	List->addText("Keen1");
 	List->addText("Keen2");
+	List->addText("Keen3");
+	List->addText("Keen4");
+	List->addText("Keen5");
+	List->addText("Keen6");
 
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
 	mpLauncherDialog->addControl(List, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
@@ -79,7 +83,8 @@ bool CGameLauncher::init()
     return true;
 }
 
-struct FileListAdder {
+struct FileListAdder
+{
     void operator()(std::set<std::string>& dirs, const std::string& path) {
         std::string basepath = GetBaseFilename(path);
         if(basepath != "" && basepath[0] != '.') {

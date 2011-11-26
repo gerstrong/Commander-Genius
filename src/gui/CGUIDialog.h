@@ -35,7 +35,7 @@ public:
 	void addControl(CGUIControl *newControl, const CRect<float>& ControlRect);
 
 private:
-	CRect<Uint16> mRect;
+	CRect<float> mRect;
 
 	// List of Controls that the Dialog has.
 	std::list< SmartPointer<CGUIControl> > mControlList;

@@ -57,26 +57,30 @@ void CGUITextSelectionList::processLogic()
 	}
 }
 
-void CGUITextSelectionList::processRender()
+void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat)
 {
 	// Blit the List surface
 	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
 
-	SDL_Rect lRect = mRect.SDLRect();
+	// Transform to the display coordinates
+	CRect<float> displayRect = mRect;
+	displayRect.transform(RectDispCoordFloat);
+
+	SDL_Rect lRect = displayRect.SDLRect();
 	SDL_FillRect(Blitsurface, &lRect, 0x00FFFFFF);
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
-	int xpos = mRect.x+16+1;
+	int xpos = lRect.x+16+1;
 	std::list<std::string> :: iterator it = mItemList.begin();
 	for ( int line = 0; it != mItemList.end() ; it++, line++ )
 	{
 		if(mSelection == line)
-			Font.drawFont(Blitsurface, *it, xpos, mRect.y+10+(line*10), true);
+			Font.drawFont(Blitsurface, *it, xpos, lRect.y+10+(line*10), true);
 		else
-			Font.drawFont(Blitsurface, *it, xpos, mRect.y+10+(line*10), false);
+			Font.drawFont(Blitsurface, *it, xpos, lRect.y+10+(line*10), false);
 	}
 
 }

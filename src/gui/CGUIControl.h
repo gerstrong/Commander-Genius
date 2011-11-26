@@ -18,9 +18,9 @@ public:
 	CGUIControl();
 
 	virtual void processLogic() = 0;
-	virtual void processRender() = 0;
+	virtual void processRender(const CRect<float> &RectDispCoordFloat) = 0;
 
-	CRect<Uint16> mRect;
+	CRect<float> mRect;
 };
 
 

@@ -17,12 +17,17 @@ mText(text)
 void CGUIText::processLogic()
 {
 
-
 }
 
-void CGUIText::processRender()
+void CGUIText::processRender(const CRect<float> &RectDispCoordFloat)
 {
+	// Transform to the display coordinates
+	CRect<float> displayRect = mRect;
+	displayRect.transform(RectDispCoordFloat);
+	SDL_Rect lRect = displayRect.SDLRect();
+
+	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(0);
 
-	Font.drawFontCentered(g_pVideoDriver->getBlitSurface(), mText, mRect.x, mRect.w, mRect.y);
+	Font.drawFontCentered(g_pVideoDriver->getBlitSurface(), mText, lRect.x, lRect.w, lRect.y, false);
 }
