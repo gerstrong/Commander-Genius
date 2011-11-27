@@ -31,7 +31,7 @@ m_twirlframe(0)
 	}
 
 	// try to center that dialog box
-	m_boxrect = g_pVideoDriver->getGameResolution();
+	m_boxrect = g_pVideoDriver->getGameResolution().SDLRect();
 
 	int h = m_boxrect.h;
 	m_boxrect.x = m_boxrect.w/2;

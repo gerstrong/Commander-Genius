@@ -13,6 +13,7 @@
 #include "engine/CEvent.h"
 #include "graphics/CSprite.h"
 #include "graphics/CTilemap.h"
+#include "graphics/CBitmap.h"
 #include "gui/CGUIDialog.h"
 
 
@@ -57,6 +58,19 @@ struct DrawSpriteTask : CEvent
 	DrawSpriteTask(CSprite *SpritePtr, const Uint16 x, const Uint16 y, const Uint8 alpha) :
 		mSpritePtr(SpritePtr), mx(x), my(y), mAlpha(alpha)  {}
 };
+
+
+struct DrawBitmapTask : CEvent
+{
+	CBitmap *mBmpPtr;
+	const Uint16 mx, my;
+	DrawBitmapTask(CBitmap *BmpPtr, const Uint16 x, const Uint16 y):
+		mBmpPtr(BmpPtr), mx(x), my(y) {}
+};
+
+
+struct BlitScrollSurfaceTask : CEvent
+{};
 
 
 #endif /* DRAWEVENTS_H_ */

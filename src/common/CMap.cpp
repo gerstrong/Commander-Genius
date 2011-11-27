@@ -222,7 +222,7 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
  */
 void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
 {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 	const Uint16 x2 = x+gameres.w/16;
 	const Uint16 y2 = y+h;
 

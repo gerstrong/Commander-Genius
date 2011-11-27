@@ -152,7 +152,7 @@ bool CObject::calcVisibility()
 	// until it gets stuck to ceiling, wall or floor
 	if( !blockedd && m_type!=OBJ_SCRUB  ) return true;
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 
 	Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
 							(mp_Map->m_scrollx<<STC)-(visibility<<CSF);
@@ -619,7 +619,7 @@ void CObject::draw()
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 
 	if( scrx < gameres.w && scry < gameres.h && exists )
 	{

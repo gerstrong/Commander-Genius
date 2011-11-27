@@ -17,7 +17,7 @@ m_RunTime(msecs)
 void CVibrate::process()
 {
 	SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
-	SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
 	SDL_Rect newrect;
 
 	// First we need to figure out the coordinates

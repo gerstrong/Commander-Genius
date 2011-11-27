@@ -455,6 +455,17 @@ void CVideoDriver::pollDrawingTasks()
 					drawSpriteTask->my );
 		}
 
+		// Bitmap Section
+		else if( DrawBitmapTask *drawBitmapTask = mDrawTasks.occurredEvent<DrawBitmapTask>() )
+		{
+			CBitmap *Bitmap = drawBitmapTask->mBmpPtr;
+
+			Bitmap->_draw(
+					getBlitSurface(),
+					drawBitmapTask->mx,
+					drawBitmapTask->my);
+		}
+
 		// Tiles Section
 		else if( DrawAnimatedTileTask *drawAnimatedTileTask =
 					mDrawTasks.occurredEvent<DrawAnimatedTileTask>() )
@@ -473,6 +484,11 @@ void CVideoDriver::pollDrawingTasks()
 					mDrawTasks.occurredEvent<DrawGUIRenderTask>() )
 		{
 			renderTask->mpDialog->processRendering();
+		}
+
+		else if( mDrawTasks.occurredEvent<BlitScrollSurfaceTask>() )
+		{
+			blitScrollSurface();
 		}
 
 		// If none of the Events fit here, please warn this incident

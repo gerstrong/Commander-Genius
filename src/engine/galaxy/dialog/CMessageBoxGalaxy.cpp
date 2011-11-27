@@ -19,7 +19,7 @@ CMessageBox(Text, false, false, false)
 {
 	// Center that dialog box
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
-	m_boxrect = g_pVideoDriver->getGameResolution();
+	m_boxrect = g_pVideoDriver->getGameResolution().SDLRect();
 
 	m_boxrect.x = m_boxrect.w/2;
 	m_boxrect.y = m_boxrect.h/2;

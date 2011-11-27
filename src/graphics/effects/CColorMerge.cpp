@@ -28,7 +28,7 @@ void CColorMerge::getSnapshot()
 // Effect cycle
 void CColorMerge::process()
 {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 
 	// Process the effect
 	SDL_SetAlpha( mp_OldSurface, SDL_SRCALPHA, 255-m_Alpha );

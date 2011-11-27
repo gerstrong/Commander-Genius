@@ -16,7 +16,7 @@
  * This structure defines the resolution composed of width height and depth
  */
 template <typename T>
-struct CRect : public SDL_Rect
+struct CRect
 {
 	CRect( const T lwidth = 0,
 		   const T lheight = 0 )
@@ -53,7 +53,7 @@ struct CRect : public SDL_Rect
 		return *this;
 	}
 
-	SDL_Rect SDLRect()
+	SDL_Rect SDLRect() const
 	{
 		SDL_Rect Rect;
 		Rect.x = x;

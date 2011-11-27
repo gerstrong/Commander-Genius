@@ -266,7 +266,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     // Do some post calculations
     // Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
-    SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+    SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
     Map.m_maxscrollx = (Map.m_width<<4) - gamerect.w - 32;
     Map.m_maxscrolly = (Map.m_height<<4) - gamerect.h - 32;
 

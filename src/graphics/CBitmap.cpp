@@ -8,6 +8,7 @@
 #include "CBitmap.h"
 #include "CPalette.h"
 #include "FindFile.h"
+#include "sdl/CVideoDriver.h"
 
 CBitmap::CBitmap() {
 	m_BitmapSurface = NULL;
@@ -80,10 +81,21 @@ void CBitmap::setName(const std::string &name)
 	m_name = name;
 }
 
+/**
+ * \brief The function that blits the sprite to dst
+ * \param SDL_Surface 	Surface where the sprite will be drawn
+ * \param x		 		X-Coordinate, indicating the position on dst
+ * \param y				Y-Coordinate, indicating the position on dst
+ */
+void CBitmap::draw(SDL_Surface *dst, Uint16 x, Uint16 y)
+{
+	g_pVideoDriver->mDrawTasks.add( new DrawBitmapTask( this, x, y ) );
+}
+
 ///
 // Drawing Routines
 ///
-void CBitmap::draw(SDL_Surface *dst, Uint16 x, Uint16 y)
+void CBitmap::_draw(SDL_Surface *dst, Uint16 x, Uint16 y)
 {
 	SDL_Rect dst_rect;
 	dst_rect.x = x;	dst_rect.y = y;

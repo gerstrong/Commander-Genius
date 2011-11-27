@@ -20,7 +20,7 @@ mp_ScrollSurface(pScrollSurface)
 
 void CScrollEffect::process()
 {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 	SDL_Rect dest = gameres;
 	SDL_Rect src = gameres;
 
@@ -51,8 +51,9 @@ Sint16 CScrollEffect::getScrollPosition()
 	return m_ScrollPos;
 }
 
-CScrollEffect::~CScrollEffect() {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+CScrollEffect::~CScrollEffect()
+{
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 
 	// So the final image is loaded correctly
 	//SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);

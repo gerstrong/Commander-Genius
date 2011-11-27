@@ -18,7 +18,7 @@ m_mustclose(false),
 m_count(0),
 m_timer(0)
 {
-	const SDL_Rect resrect =  g_pVideoDriver->getGameResolution();
+	const SDL_Rect resrect =  g_pVideoDriver->getGameResolution().SDLRect();
 	const Uint32 flags = g_pVideoDriver->getBlitSurface()->flags;
 
 	mp_SceneSurface = SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0);

@@ -116,7 +116,7 @@ void CPassiveVort::process()
 	mp_Map->animateAllTiles();
 
 	// Blit the background
-	g_pVideoDriver->blitScrollSurface();
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
 	if( m_mode == INTRO )

@@ -35,7 +35,7 @@ m_alignment(alignment)
 	mp_DlgFrame->resize(m_boxrect.w+m_Bitmap.getWidth()+2, new_height+16);
 
 	// Now calculate new coordinates and remove the box
-	SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
 	m_boxrect.x = (gamerect.w - mp_DlgFrame->m_w)/2;
 	m_boxrect.y = (gamerect.h - mp_DlgFrame->m_h)/2;
 	mp_DlgFrame->setPos(m_boxrect.x, m_boxrect.y);

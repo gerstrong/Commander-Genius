@@ -40,7 +40,7 @@ mp_FadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()))
 void CFlash::process()
 {
 	Uint32 ElapsedTime = g_pTimer->getTicks() - m_StartTime;
-	SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
 
 	SDL_SetAlpha(mp_FadeSurface, SDL_SRCALPHA, m_Alpha);
 

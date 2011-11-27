@@ -106,7 +106,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 		}
 	}
 
-	g_pVideoDriver->blitScrollSurface();
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
 	std::vector<CObject*>::reverse_iterator obj;
 

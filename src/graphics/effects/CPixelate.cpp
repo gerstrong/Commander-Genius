@@ -18,7 +18,7 @@ mp_OldSurface(NULL),
 mp_NewSurface(NULL),
 m_speed(speed)
 {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 	getSnapshot();
 
 	m_line = 0;
@@ -48,7 +48,7 @@ void CPixelate::process()
 	Uint8 *pixel;
 	Uint16 x;
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 
 	if(mp_NewSurface == NULL)
 	{

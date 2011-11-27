@@ -183,7 +183,7 @@ void CPlayGameVorticon::process()
 		mp_HighScores->process();
 
 		// Blit the background
-		g_pVideoDriver->blitScrollSurface();
+		g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
 		if(mp_HighScores->destroyed())
 		{
@@ -306,7 +306,7 @@ void CPlayGameVorticon::process()
 				{
 					mp_Menu->cleanup();
 					SAFE_DELETE(mp_Menu);
-					SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+					SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
 					m_Map.m_maxscrollx = (m_Map.m_width<<4) - gamerect.w - 36;
 					m_Map.m_maxscrolly = (m_Map.m_height<<4) - gamerect.h - 36;
 					m_Map.drawAll();
@@ -586,7 +586,7 @@ void CPlayGameVorticon::drawAllElements()
 	m_Map.animateAllTiles();
 
 	// Blit the background
-	g_pVideoDriver->blitScrollSurface();
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
 	// Draw all objects to the screen
 	drawObjects();

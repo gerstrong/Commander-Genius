@@ -37,7 +37,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
     	const Uint32 amask = 0xFF000000;
     #endif
 
-   	const SDL_Rect& DestRect = g_pVideoDriver->getGameResolution();
+   	const SDL_Rect DestRect = g_pVideoDriver->getGameResolution().SDLRect();
    	if(mp_StatusSurface)
    		SDL_FreeSurface(mp_StatusSurface);
    	mp_StatusSurface = SDL_CreateRGBSurface( flags, DestRect.w, DestRect.h, 32, rmask, gmask, bmask, amask);

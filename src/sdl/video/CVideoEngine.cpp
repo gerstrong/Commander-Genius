@@ -105,7 +105,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 	Sint16 sbufferx, sbuffery;
 	char wraphoz, wrapvrt;
 	int save_dstx, save_dstw, save_srcx, save_srcw;
-	const SDL_Rect &Gamerect = m_VidConfig.m_GameRect;
+	const SDL_Rect Gamerect = m_VidConfig.m_GameRect.SDLRect();
 
 	dstrect.x = 0; dstrect.y = 0;
 

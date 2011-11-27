@@ -30,6 +30,7 @@ public:
 	std::string getName() { return m_name; }
 
 	void draw(SDL_Surface *dst, Uint16 x, Uint16 y);
+	void _draw(SDL_Surface *dst, Uint16 x, Uint16 y);
 
 	void destroySurface();
 
