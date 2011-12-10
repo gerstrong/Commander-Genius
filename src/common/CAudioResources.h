@@ -113,37 +113,59 @@ public:
 	virtual void unloadSound() = 0;
 
 	template <typename T>
-	void generateWave(std::vector<T> &waveform, word sample, word prevsample, Uint64 &freqtimer, bool IsSigned, bool isDiscrete, const int& AMP, unsigned int samplesPer1000Seconds)
+	void generateWave(std::vector<T> &waveform, byte *inBuffer, unsigned int numOfBeeps, bool isVorticons, const int& AMP)
 	{
 		/** If PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74 is defined, we attempt
 		 * to simulate the way vanilla DOSBox v0.74 emulates the PC Speaker.
 		 * Might be useful for some Commander Keen packs with alternate sounds effects.
 		 */
-		const unsigned int wavetime = m_AudioSpec.freq*1000/samplesPer1000Seconds;
-		T wave;
-		#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
-		if (prevsample != 0)
-		    freqtimer %= m_AudioSpec.freq*prevsample/PCSpeakerTime;
-		#else
-		/** On Keen 1-3, separated consecutive samples are always separated.
-		 * On Keen 4-6, though, consecutive samples of the exact sample frequency
-		 * are merged into a single tone. So, we check if we need to begin a new tone.
-		 */
-		if (isDiscrete || (prevsample != sample))
-			freqtimer = 0;
-		#endif
-		if (sample == 0)
-			wave = m_AudioSpec.silence - AMP;
-		for (unsigned int j=0; j<wavetime; j++)
+		Uint64 freqtimer = 0;
+		word prevsample = 0, sample;
+		T wave = m_AudioSpec.silence - AMP;
+		if (isVorticons)
 		{
-			if (sample != 0)
+			const unsigned int wavetime = m_AudioSpec.freq*1000/145575;
+			for (sample = READWORD(inBuffer); sample != 0xffff; sample = READWORD(inBuffer))
 			{
-				wave = m_AudioSpec.silence + (((((PCSpeakerTime<<1)*freqtimer/m_AudioSpec.freq/sample)%2)<<1)-1)*AMP;
-				freqtimer++;
+				#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
+				if (prevsample != 0)
+					freqtimer %= m_AudioSpec.freq*prevsample;
+				#else
+				// On Keen 1-3, separated consecutive samples are always separated.
+				wave = m_AudioSpec.silence - AMP;
+				freqtimer = 0;
+				#endif
+				generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (m_AudioSpec.freq>>1)*Uint64(sample));
+				prevsample = sample;
 			}
-			// Do add.
-			for(Uint8 chnl=0 ; chnl<m_AudioSpec.channels ; chnl++ )
-				waveform.push_back(wave);
+		}
+		/** Effective number of samples is actually size-1, so we enumerate from 1.
+		 * Reason: The vanilla way, right after beginning the very last sample output,
+		 * it's stopped. (That should be validated in some way...)
+		 */
+		else
+		{
+			const unsigned int wavetime = m_AudioSpec.freq*1000/140026;
+			for(unsigned pos=1 ; pos<numOfBeeps ; pos++)
+			{
+				// Multiplying by some constant (60 in our case) seems to reproduces the right sound.
+				sample = *(inBuffer++) * 60;
+				#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
+				if (prevsample != 0)
+					freqtimer %= m_AudioSpec.freq*prevsample;
+				#else
+				/** On Keen 4-6, consecutive samples of the exact
+				 * same frequency are merged into a single tone.
+				 */
+				if (prevsample != sample)
+				{
+					wave = m_AudioSpec.silence - AMP;
+					freqtimer = 0;
+				}
+				#endif
+				generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (m_AudioSpec.freq>>1)*Uint64(sample));
+				prevsample = sample;
+			}
 		}
 	}
 
@@ -156,6 +178,32 @@ public:
 protected:
 	std::vector<CSoundSlot>m_soundslot;
 	const SDL_AudioSpec &m_AudioSpec;
+
+private:
+	template <typename T>
+	void generateBeep(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, const int& AMP, const unsigned int& wavetime, const Uint64& changerate)
+	{
+		if (sample != 0)
+			for (unsigned int j=0; j<wavetime; j++)
+			{
+				if (freqtimer > changerate)
+				{
+					freqtimer %= changerate;
+
+					if (wave == m_AudioSpec.silence - AMP)
+						wave = m_AudioSpec.silence + AMP;
+					else
+						wave = m_AudioSpec.silence - AMP;
+				}
+				freqtimer += PCSpeakerTime;
+
+				for(Uint8 chnl=0 ; chnl<m_AudioSpec.channels ; chnl++ )
+					waveform.push_back(wave);
+			}
+		else
+			for (unsigned int j=0; j<wavetime*m_AudioSpec.channels; j++)
+				waveform.push_back(wave);
+	}
 };
 
 #endif /* CAUDIORESOURCES_H_ */

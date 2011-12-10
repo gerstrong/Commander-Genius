@@ -30,28 +30,22 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	soundslot.setupAudioSpec(&m_AudioSpec);
 
 	std::vector<Sint16> waveform;
-	Uint64 freqtimer = 0;
-	int AMP = (formatsize == 2) ? 0x4000 : 0x40;
-	word prevsample = 0;
+	// There should be a better way of determining if sound is signed or not...
+	int AMP;
+	if ((m_AudioSpec.format == AUDIO_S8) || (m_AudioSpec.format == AUDIO_S16))
+		AMP = ((((1<<(formatsize*8))>>2)-1)*PC_Speaker_Volume)/100;
+	else
+		AMP = ((((1<<(formatsize*8))>>1)-1)*PC_Speaker_Volume)/100;
+	//int AMP = ((IsSigned ? ((1<<(formatsize*8))>>2)-1 : (1<<(formatsize*8)>>1)-1)*PC_Speaker_Volume)/100;
 
-	// Effective number of samples is actually size-1, so we enumerate from 1.
-	// Reason: The vanilla way, right after beginning the very last sample output,
-	// it's stopped. (That should be validated in some way...)
-	for(unsigned pos=1 ; pos<size ; pos++ )
-	{
-		// Multiplying by some constant (60 in our case) seems to reproduces the right sound.
-		word sample = *(pcsdata_ptr++) * 60;
-		generateWave(waveform, sample, prevsample, freqtimer, true, false, AMP, 140026);
-		prevsample = sample;
-	}
-
+	generateWave(waveform, pcsdata_ptr, size, false, AMP);
 
 	if(formatsize == 1)
 	{
 		std::vector<Uint8> wave8;
 		std::vector<Sint16>::iterator it = waveform.begin();
 		for( ; it != waveform.end(); it++ )
-			wave8.push_back((*it) + m_AudioSpec.silence);
+			wave8.push_back(*it);
 		soundslot.setupWaveForm((Uint8*)&wave8[0], wave8.size()*sizeof(Uint8));
 	}
 	else
