@@ -31,6 +31,7 @@ m_must_restart_sounddriver(false)
 	else if( m_Rate == 22050 ) mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 2;
 	else if( m_Rate == 44100 ) mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 3;
 	else if( m_Rate == 48000 ) mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 4;
+	else if( m_Rate == 49716 ) mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 5;
 	
 	m_Format = g_pSound->getAudioSpec().format;
 	std::string buf;
@@ -110,7 +111,7 @@ void CAudioSettings::processSpecific()
 			if(m_current == 0)
 			{
 				mp_Dialog->m_min = 1;
-				mp_Dialog->m_max = 4;
+				mp_Dialog->m_max = 5;
 				setFrequencyFromSlot(mp_Dialog->m_dlgobject.at(0)->m_Option->m_value);
 				mp_Dialog->setObjectText(0, "Rate: " + itoa(m_Rate) + " kHz");
 			}
@@ -179,6 +180,7 @@ void CAudioSettings::setFrequencyFromSlot(int value)
 	case 2: m_Rate = 22050; break;
 	case 3: m_Rate = 44100; break;
 	case 4: m_Rate = 48000; break;
+	case 5: m_Rate = 49716; break;
 	}
 }
 

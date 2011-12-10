@@ -360,6 +360,7 @@ void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
 		case 22050:
 		case 44100:
 		case 48000:
+		case 49716:
 			AudioSpec.freq = freq;
 			break;
 		default:
