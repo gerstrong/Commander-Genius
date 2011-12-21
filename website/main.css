@@ -116,16 +116,15 @@ td, th {
 }
 
 #header #headerImg {
-    padding: 0.45em;
-    width: auto;
-    height: 5.43em;
     float: left;
+    padding: 0.45em;
+    height: 5.43em;
 }
 
 #header ul {
+    width: 600px;
     float: left;
     margin: 1.87em 1.5em 0;
-    width: 600px;
 }
 
 #header li {
@@ -134,9 +133,9 @@ td, th {
     text-indent: -187em;
     font: 0/0 Arial;
     overflow: hidden;
-    color: rgba(255,255,255,0);
+    color: rgba( 255, 255, 255 ,0 );
     vertical-align: bottom;
-    }
+}
 
 #header li a {
     width: 120px;
