@@ -221,7 +221,7 @@ td, th {
 }
 
 #sidebar p {
-    color: #FFF;
+    color: rgb( 255, 255, 255 );
     font-weight: normal;
 }
 
@@ -232,11 +232,11 @@ td, th {
 
 /* ------------------Main Content--------------------------- */
 #mainContent {
-    background: #BBB url("img/navbasebg.jpg") repeat-x top;
-    color: black;
-    width: auto;
-    overflow: hidden;
+    margin-right: 9.37em;
     padding: 1em 0 0;
+    background: rgb( 187, 187, 187 ) url("img/navbasebg.jpg") repeat-x top;
+    color: black;
+    overflow: hidden;
 }
 
 #mainContent div {
