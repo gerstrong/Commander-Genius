@@ -1,62 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns= "http://www.w3.org/1999/xhtml" xml:lang= "en" lang= "en">
-    <head>
-        <!-- Made by Gerstrong & FCTW -->
-        <title>Commander Genius Web-Site</title>
-        <meta http-equiv= "Content-Type" content= "text/html; charset=iso-8859-1" />
-        <meta name= "keywords" content= "Keywords here" />
-        <meta name= "description" content= "Description here" />
-        <meta name= "author" content= "Gerhard Stein, Casey Bird" />
-        <!-- (Robot commands: All, None, Index, No Index, Follow, No Follow) -->
-        <meta name= "robots" content= "index, follow" />
-        <meta name= "revisit-after" content= "30 days" />
-        <meta name= "distribution" content= "global" />
-        <meta name= "rating" content= "general" />
-        <meta name= "Content-Language" content= "english" />
-        <link href= "reset.css" rel= "stylesheet" type= "text/css" />
-        <link href= "main.css" rel= "stylesheet" type= "text/css" />
-        <link rel= "shortcut icon" href= "favicon.ico" />
-    </head>
+<?php
+/**
+ * @author Casey Bird <FromCrimsonToWool+CommanderGenius@Gmail.com>
+ */
 
-    <body>
-        <div id= "header">
-            <img src= "img/toplogo.jpg" height= "87" width= "342" id= "headerImg" alt= "The Bean-With-Bacon" />
-            <ul>
-                <li><a href= "index.html" id= "indexLink" title= "Find out about us. (You know you want to.)">
-                        <img src= "img/buttonAbout.jpg" height= "40" width= "120" alt= "About Us" />
-                        About Us</a></li>
-                <li><a href= "news.html" id= "newsLink" title= "Have you heard what's new?">
-                        <img src= "img/buttonNews.jpg" height= "40" width= "120" alt= "News" />
-                        News</a></li>
-                <li><a href= "download.html" id= "downLink" title= "Get this fantastic interpreter.">
-                        <img src= "img/buttonDown.jpg" height= "40" width= "120" alt= "Download" />
-                        Download</a></li>
-                <li><a href= "http://www.pckf.com/viewforum.php?f=9&amp;sid=c0fa5134d3f3663fbc8b866caa70a3bf" id= "forumLink" title= "Drop by and say hello on our forum.">
-                        <img src= "img/buttonForum.jpg" height= "40" width= "120" alt= "Forum" />
-                        Forum</a></li>
-                <li><a href= "doc/html/index.html" id= "docLink" title= "Delve into our documentation.">
-                        <img src= "img/buttonDoc.jpg" height= "40" width= "120" alt= "Documentation" />
-                        Documentation</a></li>
-                <li><a href= "compat.html" id= "compatLink" title= "View the compatability chart.">
-                        <img src= "img/buttonCompat.jpg" height= "40" width= "120" alt= "Compatability Chart" />
-                        Compatability Chart</a></li>
-                <li><a href= "screens.html" id= "scrLink" title= "Checkout some screenshots of our project.">
-                        <img src= "img/buttonScr.jpg" height= "40" width= "120" alt= "Screenshots" />
-                        Screenshots</a></li>
-                <li><a href= "videos.html" id= "vidLink" title= "Drool over our spiffy videos.">
-                        <img src= "img/buttonVid.jpg" height= "40" width= "120" alt= "Videos" />
-                        Videos</a></li>
-                <li><a href= "links.html" id= "linksLink" title= "See what else we think is cool.">
-                        <img src= "img/buttonLinks.jpg" height= "40" width= "120" alt= "Links" />
-                        Links</a></li>
-                <li><a href= "http://sourceforge.net/apps/trac/clonekeenplus/" id= "tracLink" title= "Help us squash those nasty little bast--BUGS.">
-                        <img src= "img/buttonTrac.jpg" height= "40" width= "120" alt= "Trac" />
-                        Bug Tracker</a></li>
-            </ul>
-        </div>
-
+    include("/home/project-web/clonekeenplus/htdocs/custom/templates/site/header.php");
+    include("/home/project-web/clonekeenplus/htdocs/custom/templates/site/contentHeader.php");
+?>
         <div id= "sidebar">
-            <img src= "img/paris.jpg" height= "157" width= "150" title= "Paris... Why bother saving it?" alt= "Paris... Why bother saving it?" />
+            <img src= "/img/paris.jpg" height= "157" width= "150" title= "Paris... Why bother saving it?" alt= "Paris... Why bother saving it?" />
             <h6>Commander Keen on modern systems!</h6>
             <p>Enjoy the old but good games with better graphics, sound and controls.</p>
             <h6>Commander Keen 4-6!</h6>
@@ -76,11 +27,11 @@
             </div>
 
             <div id= "platforms">
-                <img class= "floatLeft" width= "442" height= "318" alt= "CKP02ans" src= "img/presenv03cg.png" />
+                <img class= "floatLeft" width= "442" height= "318" alt= "CKP02ans" src= "/img/presenv03cg.png" />
                 <h1>Commander Genius Platforms</h1>
 
                 <p>
-                    <img width= "32" height= "30" alt= "Win7" src= "img/win7.png" />
+                    <img width= "32" height= "30" alt= "Win7" src= "/img/win7.png" />
                     Windows (98, ME, 2000, XP, Vista, 7 and others) - Version 0.3.7 -
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.7/CGenius-0.3.7-WIN32.exe/download">Installer (32 bit)</a>
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.7/CGenius-0.3.7-WIN32.zip/download">ZIP Package (32 bit)</a>
@@ -88,45 +39,45 @@
                 </p>
 
                 <p>
-                    <img width= "44" height= "48" alt= "Linux" src= "img/linux.jpg" />
+                    <img width= "44" height= "48" alt= "Linux" src= "/img/linux.jpg" />
                     Linux (Binary only) - Version 0.3.7 -
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.7/CGenius-0.3.7-i386.tar.gz/download">32-bit</a>
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.7/CGenius-0.3.7-amd64.tar.gz/download">64-bit</a>
                 </p>
 
                 <p>
-                    <img width= "48" height= "44" alt= "Linux" src= "img/ubuntu.jpg" />
+                    <img width= "48" height= "44" alt= "Linux" src= "/img/ubuntu.jpg" />
                     Ubuntu Linux (11.04 and higher recommended) and Debian based distros - Version 0.3.7 -
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.7/CGenius-0.3.7-i386.deb/download">32-bit</a>
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.7/CGenius-0.3.7-amd64.deb/download">64-bit</a>
                 </p>
 
                 <p>
-                    <img width= "48" height= "48" alt= "Linux" src= "img/fedorasuse.png" />
+                    <img width= "48" height= "48" alt= "Linux" src= "/img/fedorasuse.png" />
                     Fedora (15+) or OpenSuse (11.4+) and RPM based distros - Version 0.3.7 -
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.7/CGenius-0.3.7-i386.rpm/download">32-bit</a>
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.7/CGenius-0.3.7-amd64.rpm/download">64-bit</a>
                 </p>
 
                 <p>
-                    <img width= "51" height= "48" alt= "MacOsX" src= "img/macosx.jpg" />
+                    <img width= "51" height= "48" alt= "MacOsX" src= "/img/macosx.jpg" />
                     MacOS X (10.3 and later) - v0.3.5 -
                     <a href= "http://sourceforge.net/projects/clonekeenplus/files/Commander%20Genius/Version%200.3.5/CGenius-0.3.5-Mac.dmg/download">Universal</a>
                 </p>
 
                 <p>
-                    <img width= "43" height= "48" alt= "GP2X" src= "img/iphonewallet.jpg" />
+                    <img width= "43" height= "48" alt= "GP2X" src= "/img/iphonewallet.jpg" />
                     iPhone - Commander Genius v0.3.2.x - (Still under construction)
                 </p>
 
                 <p>
-                    <img width= "48" height= "78" alt= "Android" src= "img/google-android.jpg" />
+                    <img width= "48" height= "78" alt= "Android" src= "/img/google-android.jpg" />
                     Google Android Devices
                     <a href= "http://www.androidpit.com/en/android/market/apps/app/net.sourceforge.clonekeenplus/Commander-Genius">Commander Genius 0.3.2.x</a>
                 </p>
 
                 <p>
-                    <img width= "60" height= "48" alt= "GP2X" src= "img/gp2x.jpg" />
+                    <img width= "60" height= "48" alt= "GP2X" src= "/img/gp2x.jpg" />
                     Open Handhelds
                     <a href= "http://dl.openhandhelds.org/cgi-bin/gp2x.cgi?0,0,0,0,20,2832">Commander Genius (GP2X) [0.3.2.6]</a>
                     <a href= "http://dl.openhandhelds.org/cgi-bin/wiz.cgi?0,0,0,0,35,55">Commander Genius (Wiz) [0.3.2.6]</a>
@@ -151,7 +102,7 @@
                 </p>
 
                 <p>
-                    If you want the most recent source code you can also download it per GIT <a href= "http://sourceforge.net/scm/?type=git&amp;group_id=249154">here</a>
+                    If you want the most recent source code you can also download it per GIT <a href= "http://sourceforge.net/scm/?type=git&group_id=249154">here</a>
                 </p>
 
                 <h1>Bugs found?</h1>
@@ -165,7 +116,7 @@
             </div>
 
             <div id= "highQualityPack">
-                <img class= "floatLeft" width= "640" height= "480" alt= "HQP" src= "img/HQP1.png" />
+                <img class= "floatLeft" width= "640" height= "480" alt= "HQP" src= "/img/HQP1.png" />
                 <h1>High Quality Pack (HQP)</h1>
 
                 <p>
@@ -193,7 +144,7 @@
             </div>
 
             <div id= "K1">
-                <img class= "floatLeft" width= "320" height= "200" alt= "Commander Keen 1" src= "img/keen1title.gif" />
+                <img class= "floatLeft" width= "320" height= "200" alt= "Commander Keen 1" src= "/img/keen1title.gif" />
                 <h1>Commander Keen Episode 1: "Marooned on Mars"</h1>
                 <p>
                     If you don't own any Commander Keen game, you will need
@@ -207,15 +158,7 @@
             </div>
         </div>
 
-        <div id= "footer" class= "containCentered">
-            <h6>hosted by</h6>
-            <a href= "http://sourceforge.net" class= "centered">
-                <img src= "http://sflogo.sourceforge.net/sflogo.php?group_id=249154&type=4" alt= "SourceForge.net Logo" height= "37" width= "125" />
-            </a>
-            <p class= "centered">2011 Commander Genius is licensed under GPL</p>
-            <a href= "mailto:gerstrong@gmail.com" class= "baseline centered">by The Commander Genius Team</a>
-        </div>
-
-        <script type= "text/javascript" src= "tracking.js"></script>
-    </body>
-</html>
+<?php
+    include("/home/project-web/clonekeenplus/htdocs/custom/templates/site/contentFooter.php");
+    include("/home/project-web/clonekeenplus/htdocs/custom/templates/site/footer.php");
+?>

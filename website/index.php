@@ -1,62 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns= "http://www.w3.org/1999/xhtml" xml:lang= "en" lang= "en">
-    <head>
-        <!-- Made by Gerstrong & FCTW -->
-        <title>Commander Genius Web-Site</title>
-        <meta http-equiv= "Content-Type" content= "text/html; charset=iso-8859-1" />
-        <meta name= "keywords" content= "Keywords here" />
-        <meta name= "description" content= "Description here" />
-        <meta name= "author" content= "Gerhard Stein, Casey Bird" />
-        <!-- (Robot commands: All, None, Index, No Index, Follow, No Follow) -->
-        <meta name= "robots" content= "index, follow" />
-        <meta name= "revisit-after" content= "30 days" />
-        <meta name= "distribution" content= "global" />
-        <meta name= "rating" content= "general" />
-        <meta name= "Content-Language" content= "english" />
-        <link href= "reset.css" rel= "stylesheet" type= "text/css" />
-        <link href= "main.css" rel= "stylesheet" type= "text/css" />
-        <link rel= "shortcut icon" href= "favicon.ico" />
-    </head>
+<?php
+/**
+ * @author Casey Bird <FromCrimsonToWool+CommanderGenius@Gmail.com>
+ */
 
-    <body>
-        <div id= "header">
-            <img src= "img/toplogo.jpg" height= "87" width= "342" id= "headerImg" alt= "The Bean-With-Bacon" />
-            <ul>
-                <li><a href= "index.html" id= "indexLink" title= "Find out about us. (You know you want to.)">
-                        <img src= "img/buttonAbout.jpg" height= "40" width= "120" alt= "About Us" />
-                        About Us</a></li>
-                <li><a href= "news.html" id= "newsLink" title= "Have you heard what's new?">
-                        <img src= "img/buttonNews.jpg" height= "40" width= "120" alt= "News" />
-                        News</a></li>
-                <li><a href= "download.html" id= "downLink" title= "Get this fantastic interpreter.">
-                        <img src= "img/buttonDown.jpg" height= "40" width= "120" alt= "Download" />
-                        Download</a></li>
-                <li><a href= "http://www.pckf.com/viewforum.php?f=9&sid=c0fa5134d3f3663fbc8b866caa70a3bf" id= "forumLink" title= "Drop by and say hello on our forum.">
-                        <img src= "img/buttonForum.jpg" height= "40" width= "120" alt= "Forum" />
-                        Forum</a></li>
-                <li><a href= "doc/html/index.html" id= "docLink" title= "Delve into our documentation.">
-                        <img src= "img/buttonDoc.jpg" height= "40" width= "120" alt= "Documentation" />
-                        Documentation</a></li>
-                <li><a href= "compat.html" id= "compatLink" title= "View the compatability chart.">
-                        <img src= "img/buttonCompat.jpg" height= "40" width= "120" alt= "Compatability Chart" />
-                        Compatability Chart</a></li>
-                <li><a href= "screens.html" id= "scrLink" title= "Checkout some screenshots of our project.">
-                        <img src= "img/buttonScr.jpg" height= "40" width= "120" alt= "Screenshots" />
-                        Screenshots</a></li>
-                <li><a href= "videos.html" id= "vidLink" title= "Drool over our spiffy videos.">
-                        <img src= "img/buttonVid.jpg" height= "40" width= "120" alt= "Videos" />
-                        Videos</a></li>
-                <li><a href= "links.html" id= "linksLink" title= "See what else we think is cool.">
-                        <img src= "img/buttonLinks.jpg" height= "40" width= "120" alt= "Links" />
-                        Links</a></li>
-                <li><a href= "http://sourceforge.net/apps/trac/clonekeenplus/" id= "tracLink" title= "Help us squash those nasty little bast--BUGS.">
-                        <img src= "img/buttonTrac.jpg" height= "40" width= "120" alt= "Trac" />
-                        Bug Tracker</a></li>
-            </ul>
-        </div>
-
+    include("/home/project-web/clonekeenplus/htdocs/custom/templates/site/header.php");
+    include("/home/project-web/clonekeenplus/htdocs/custom/templates/site/contentHeader.php");
+?>
         <div id= "sidebar">
-            <img src= "img/mainpic1.jpg" height= "157" width= "150" alt= "Spot - The Yorp" />
+            <img src= "/img/mainpic1.jpg" height= "157" width= "150" alt= "Spot - The Yorp" />
             <h6>Commander Keen on modern systems!</h6>
             <p>Enjoy the old but good games with better graphics, sound and controls.</p>
             <h6>Commander Keen 4-6!</h6>
@@ -156,7 +107,7 @@
             </div>
 
             <div id= "supportInfo">
-                <img class= "floatLeft" height= "339" width= "535" alt= "Commander Genius Keen4 - Galaxy" src= "img/keen4coming.png" />
+                <img class= "floatLeft" height= "339" width= "535" alt= "Commander Genius Keen4 - Galaxy" src= "/img/keen4coming.png" />
                 <h3>Goodbye Galaxy and Keen Dreams support</h3>
                 <p>
                     We are working hard on the Commander Genius support
@@ -184,7 +135,7 @@
             </div>
 
             <div id= "features">
-                <img class= "floatLeft" height= "334" width= "535" alt= "2 Player Keening" src= "img/keenvga1.jpg" />
+                <img class= "floatLeft" height= "334" width= "535" alt= "2 Player Keening" src= "/img/keenvga1.jpg" />
                 <h3>Features</h3>
                 <ul>
                     <li>4 Player Mode</li>
@@ -211,11 +162,11 @@
                 </ul>
 
                 <p>Check it out today, it's free!</p>
-                <a href= "download.html">&gt;&gt; Go to the download page here!!</a>
+                <a href= "/download/">&gt;&gt; Go to the download page here!!</a>
             </div>
 
             <div id= "improvement">
-                <img class= "floatLeft" height= "333" width= "535" alt= "Darkness" src= "img/keendark.jpg" />
+                <img class= "floatLeft" height= "333" width= "535" alt= "Darkness" src= "/img/keendark.jpg" />
                 <p>
                     The right hand image that you see is Commander Keen in
                     a dark room when playing the game normally under DOS
@@ -227,15 +178,7 @@
             </div>
         </div>
 
-        <div id= "footer" class= "containCentered">
-            <h6>hosted by</h6>
-            <a href= "http://sourceforge.net" class= "centered">
-                <img src= "http://sflogo.sourceforge.net/sflogo.php?group_id=249154&type=4" alt= "SourceForge.net Logo" height= "37" width= "125" />
-            </a>
-            <p class= "centered">2011 Commander Genius is licensed under GPL</p>
-            <a href= "mailto:gerstrong@gmail.com" class= "baseline">by The Commander Genius Team</a>
-        </div>
-
-        <script type= "text/javascript" src= "tracking.js"></script>
-    </body>
-</html>
+<?php
+    include("/home/project-web/clonekeenplus/htdocs/custom/templates/site/contentFooter.php");
+    include("/home/project-web/clonekeenplus/htdocs/custom/templates/site/footer.php");
+?>

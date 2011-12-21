@@ -110,24 +110,24 @@ td, th {
 }
 
 /* ------------------Header--------------------------- */
-#header {
+#contentHeader {
     width: 100%;
     overflow: hidden;
 }
 
-#header #headerImg {
+#contentHeader #contentHeaderImg {
     float: left;
     padding: 0.45em;
     height: 5.43em;
 }
 
-#header ul {
+#contentHeader ul {
     width: 600px;
     float: left;
     margin: 1.87em 1.5em 0;
 }
 
-#header li {
+#contentHeader li {
     position: relative;
     float: left;
     text-indent: -187em;
@@ -137,63 +137,65 @@ td, th {
     vertical-align: bottom;
 }
 
-#header li a {
+#contentHeader li a {
     width: 120px;
     height: 20px;
     background: transparent none 0 0 no-repeat;
     display: block;
 }
 
-#header li a:hover,
-#header li a:focus {
+#contentHeader li a:hover,
+#contentHeader li a:focus {
     background-position: 0 -20px;
 }
 
-#header li a:active {
-//    background-position: 0 -40px;
+#contentHeader li a:active {
+/*
+    This is intended to be a third color for the nav images to change on click sometime later
+    background-position: 0 -40px;  */
 }
 
-#header li a img {
+#contentHeader li a img {
     display: none;
 }
 
-#header #indexLink {
+#contentHeader #indexLink {
     background-image: url("img/buttonAbout.jpg");
 }
 
-#header #newsLink {
+#contentHeader #newsLink {
     background-image: url('img/buttonNews.jpg');
 }
 
-#header #downLink {
+#contentHeader #downLink {
     background-image: url('img/buttonDown.jpg');
 }
 
-#header #forumLink {
+#contentHeader #forumLink {
     background-image: url('img/buttonForum.jpg');
 }
 
-#header #docLink {
+#contentHeader #docLink {
     background-image: url('img/buttonDoc.jpg');
 }
 
-#header #compatLink {
+#contentHeader #compatLink {
     background-image: url('img/buttonCompat.jpg');
 }
 
-#header #scrLink {
+#contentHeader #scrLink {
     background-image: url('img/buttonScr.jpg');
 }
 
-#header #vidLink {
+#contentHeader #vidLink {
     background-image: url('img/buttonVid.jpg');
 }
 
-#header #linksLink {
+#contentHeader #linksLink {
     background-image: url('img/buttonLinks.jpg');
 }
 
-#header #tracLink {
+#contentHeader #tracLink {
     background-image: url('img/buttonTrac.jpg');
 }
 
@@ -207,13 +209,14 @@ td, th {
 
 #sidebar h6,
 #sidebar p {
-    color: #2271A0;
-    font-weight: bold;
     width: 13em;
+    margin: 0;
+    margin-left: 2em;
+    padding: 0;
     line-height: normal;
     font-size: 0.62em;
-    padding: 0;
-    margin: 0 0 0 2em;
+    font-weight: bold;
+    color: rgb( 34, 113, 160 );
 }
 
 #sidebar h6 {
