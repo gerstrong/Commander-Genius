@@ -97,8 +97,8 @@
                     a better interpreter for the Invasion of the Vorticons
                     Series (Also Galaxy series, Dreams, and mods) they are
                     more than welcome to help us. Just drop our project
-                    leader an Email at:<a href= "mailto:gerstrong@gmail.com">
-                    gerstrong@gmail.com</a>
+                    leader an Email at:
+                    <a href= "mailto:gerstrong@gmail.com">gerstrong@gmail.com</a>
                 </p>
                 <p>
                     We also have an IRC Channel. <em>#CommanderGenius
@@ -162,7 +162,7 @@
                 </ul>
 
                 <p>Check it out today, it's free!</p>
-                <a href= "/download/">&gt;&gt; Go to the download page here!!</a>
+                <a href= "/download">&gt;&gt; Go to the download page here!!</a>
             </div>
 
             <div id= "improvement">

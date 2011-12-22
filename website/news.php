@@ -24,14 +24,14 @@
                 <h2>August 28th 2011</h2>
                 <p>
                     - Updated Commander Genius (ver. 0.3.7).
-                    <a href= "download.html">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
                 <h2>August 3rd 2011</h2>
                 <p>
                     - Updated Commander Genius (ver. 0.3.6.1).
-                    <a href= "download.html">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
@@ -39,28 +39,28 @@
                 <p>
                     - Updated Commander Genius (ver. 0.3.6)
                     - Now RPM Based distros are also available
-                    <a href= "/download/">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
                 <h2>July 10th 2011</h2>
                 <p>
                     - Updated Commander Genius (ver. 0.3.5) for Mac
-                    <a href= "/download/">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
                 <h2>June 29th 2011</h2>
                 <p>
                     - Updated Commander Genius (ver. 0.3.5)
-                    <a href= "/download/">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
                 <h2>May 31st 2011</h2>
                 <p>
                     - Updated Commander Genius (ver. 0.3.3.4)
-                    <a href= "/download/">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
@@ -68,21 +68,21 @@
                 <p>
                     - Updated Commander Genius (ver. 0.3.3.3)
                     - Updated High Quality Pack (ver. 1.8)
-                    <a href= "/download/">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
                 <h2>April 1st 2011</h2>
                 <p>
                     - No, no april joke. Another release is out fro Windows and Linux (0.3.3.2)
-                    <a href= "/download/">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
                 <h2>28FEB11</h2>
                 <p>
                     - As promised the release of CG 0.3.3.1.
-                    <a href= "/download/">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
             </div>
             <div class= "fauxTable">
@@ -90,7 +90,7 @@
                 <p>
                     - Gerhard has updated the Cmake files and the Windows
                     version of Commander Genius now has it's own installer.
-                    <a href= "/download/">Go check it out!</a>
+                    <a href= "/download">Go check it out!</a>
                 </p>
                 <p>
                     - Major overhaul of the website is complete thanks to
