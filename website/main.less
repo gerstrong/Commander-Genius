@@ -1,0 +1,413 @@
+/**
+ * @author Casey Bird <FromCrimsonToWool+CommanderGenius@Gmail.com>
+ *
+ * Notes:
+ * - This file uses LessCSS see LessCSS.org for documentation
+ * - The order of the CSS properties is as follows:
+ *     | width
+ *     | height
+ *     | display
+ *     | position
+ *     | *directionals* (i.e. left, top, etc.)
+ *     | float
+ *     | margin-*
+ *     | border-*
+ *     | padding-*
+ *     | visibility
+ *     | background
+ *     | font-*
+ *     | text-*
+ *     | line-height
+ *     | *line-break*
+ *     | (all non-position affecting CSS properties)
+ * - For colors RGB values are preferred to enable manipulation via JS, etc. later
+ */
+
+/* ----------Site specific colors */
+@white: rgb( 0, 0, 0 );
+@black: rgb( 255, 255, 255 );
+@lightGrey: rgb( 187, 187, 187 );
+@grey: rgb( 153, 153, 153 );
+@mediumGrey: rgb( 128, 128, 128 );
+@darkGrey: rgb( 102, 102, 102 );
+@blackTransparent: rgba( 255, 255, 255 , 0 );
+
+@cgBlue: rgb( 34, 113, 160 );
+
+/* --------------- Basic Elements --------------- */
+body {
+    line-height: 100%;
+    font-size: 100%;
+
+    color: @white;
+    background-color: @white;
+    background-image: url( '/img/stars.jpg' );
+    background-repeat: repeat;
+    background-attachment: fixed;
+
+    * {
+        display: block;
+        position: relative;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+    }
+}
+
+h1 {
+    margin: 0.56em;
+    font-size: 0.87em;
+    font-style: normal;
+    font-weight: bold;
+    font-variant: normal;
+
+    color: @cgBlue;
+}
+
+h2 {
+    margin: 0.56em;
+    font-size: 0.75em;
+    font-weight: bold;
+
+    color: @darkGrey;
+}
+
+h3, h6 {
+    font-weight: bold;
+
+    color: @cgBlue;
+}
+
+p, h3, a, td {
+    margin: 0.75em;
+    font-size: 0.75em;
+}
+
+p {
+    a {
+        margin: 0;
+        font-size: 100%;
+    }
+
+    img {
+        display: inline;
+        vertical-align: middle;
+    }
+}
+
+a {
+    display: inline;
+    text-decoration: none;
+
+    color: @white;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a[href ^="mailto:"] {
+    padding-right: 1.5em;
+
+    background-color: transparent;
+    background-image: url( '/img/icon_mailto.gif' );
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+a[href ^="http"] {
+    padding-right: 1.5em;
+
+    background-color: transparent;
+    background-image: url( '/img/icon_external.gif' );
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+ul, ol {
+    padding: 0;
+    margin: 0;
+
+    list-style-type: none;
+}
+
+li {
+    display: list-item;
+    margin-left: 2.5em;
+    font-size: 0.68em;
+}
+
+ol li {
+    list-style-type: decimal;
+}
+
+ul li {
+    list-style-type: disc;
+}
+
+em {
+    display: inline;
+    font-style: italic;
+}
+
+strong {
+    display: inline;
+    font-weight: bold;
+}
+
+tr {
+    display: table-row;
+}
+
+td, th {
+    display: table-cell;
+    border-width: 0.19em;
+    border-style: outset;
+    border-color: @mediumGrey;
+    padding: 0.2em;
+}
+
+/* ------------------Header--------------------------- */
+#contentHeader {
+    width: 100%;
+    overflow: hidden;
+
+    #contentHeaderImg {
+        height: 5.43em;
+        float: left;
+        padding: 0.45em;
+    }
+
+    ul {
+        width: 600px;
+        float: left;
+        margin-top: 1.87em;
+        margin-bottom: 0;
+        margin-left: 1.5em;
+        margin-right: 1.5em;
+    }
+
+    li {
+        position: relative;
+        float: left;
+        vertical-align: bottom;
+        text-indent: -187em;
+        font: 0/0 Arial;
+        overflow: hidden;
+
+        color: @blackTransparent;
+
+        a {
+            width: 120px;
+            height: 20px;
+            display: block;
+
+            background-color: transparent;
+            background-image: none;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+
+            img {
+                display: none;
+            }
+        }
+
+        a:hover,
+        a:focus {
+            background-position: 0 -20px;
+        }
+
+        a:active {
+        /*
+            This is intended to be a third color for the nav images to change on click sometime later
+            background-position: 0 -40px;  */
+        }
+    }
+
+    #indexLink {
+        background-image: url( '/img/buttonAbout.jpg' );
+    }
+
+    #newsLink {
+        background-image: url( '/img/buttonNews.jpg' );
+    }
+
+    #downLink {
+        background-image: url( '/img/buttonDown.jpg' );
+    }
+
+    #forumLink {
+        background-image: url( '/img/buttonForum.jpg' );
+    }
+
+    #docLink {
+        background-image: url( '/img/buttonDoc.jpg' );
+    }
+
+    #compatLink {
+        background-image: url( '/img/buttonCompat.jpg' );
+    }
+
+    #scrLink {
+        background-image: url( '/img/buttonScr.jpg' );
+    }
+
+    #vidLink {
+        background-image: url( '/img/buttonVid.jpg' );
+    }
+
+    #linksLink {
+        background-image: url( '/img/buttonLinks.jpg' );
+    }
+
+    #tracLink {
+        background-image: url( '/img/buttonTrac.jpg' );
+    }
+}
+
+/* ------------------Sidebar--------------------------- */
+#sidebar {
+    width: 9.37em;
+    float: left;
+    clear: both;
+
+    background-color: @white;
+
+    h6,
+    p {
+        width: 13em;
+        margin: 0;
+        margin-left: 2em;
+        padding: 0;
+        font-size: 0.62em;
+        font-weight: bold;
+        line-height: normal;
+
+        color: @cgBlue;
+    }
+
+    h6 {
+        padding-top: 1.3em;
+    }
+
+    p {
+        font-weight: normal;
+
+        color: @black;
+    }
+
+    a {
+        width: 7em;
+        display: block;
+    }
+}
+
+/* ------------------Main Content--------------------------- */
+#mainContent {
+    margin-right: 9.37em;
+    padding-top: 1em;
+    overflow: hidden;
+
+    color: black;
+    background-color: @lightGrey;
+    background-image: url( '/img/navbasebg.jpg' );
+    background-repeat: repeat-x;
+    background-position: top;
+
+    div {
+        padding-top: 1em;
+        clear: both;
+        overflow: hidden;
+    }
+
+    .fauxTable {
+        margin-top: 1em;
+        padding: 0;
+    }
+}
+
+#ourTeam {
+    .fauxTable {
+        height: 18.81em;
+        float: left;
+        margin: 0;
+        clear: none;
+    }
+
+    h2 {
+        background: none;
+    }
+}
+
+#platforms a {
+    text-decoration: underline;
+}
+
+/* ------------------Footer--------------------------- */
+#footer {
+    h6, p, a {
+        font-size: 0.68em;
+        color: @black;
+    }
+
+    h6 {
+        padding-top: 1em;
+    }
+
+    p {
+        text-align: left;
+    }
+
+    a {
+        width: 11.3em;
+        display: block;
+    }
+
+    a.baseline {
+        width: 19em;
+        display: inline;
+        float: right;
+        margin-top: -1.5em;
+        font-size: 0.625em;
+    }
+}
+
+/* ------------------Common classes--------------------------- */
+.floatLeft {
+    float: left;
+    margin-right: 1em;
+    clear: left;
+}
+
+.floatRight {
+    float: right;
+    margin-left: 1em;
+    clear: right;
+}
+
+.fauxTable{
+    margin: 0;
+    border-width: 0.19em;
+    border-style: ridge;
+    border-color:  @lightGrey;
+    padding: 0;
+
+    h2 {
+        margin: 0;
+        border-bottom: 0.19em ridge @lightGrey;
+        padding-top: 0.37em;
+        padding-bottom: 0.37em;
+        padding-left: 1em;
+        padding-right: 1em;
+        text-align: center;
+
+        background-color: @grey;
+    }
+}
+
+.containCentered {
+    text-align: center;
+}
+
+.centered{
+    margin: 0 auto;
+    text-align: left;
+}
