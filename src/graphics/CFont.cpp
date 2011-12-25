@@ -10,7 +10,8 @@
 #include "../FindFile.h"
 #include <string.h>
 #include "../sdl/CVideoDriver.h"
-
+#include "CGFont.xpm"
+#include "StringUtils.h"
 
 // TODO: We need to add documentation. I'll do that very soon!
 
@@ -66,6 +67,96 @@ bool CFont::optimizeSurface()
 ///// Initialization Routines /////
 ///////////////////////////////////
 
+SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, const Uint32 flags)
+{
+	int width, height, colors;
+
+	// Read the dimensions and amount of colors
+	sscanf(data[0], "%d %d %d", &width, &height, &colors);
+
+	// Create the surface
+	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE, width, height,
+			  	  	  	  	  	  	  	  	 format->BitsPerPixel,
+			  	  	  	  	  	  	  	  	 format->Rmask, format->Gmask,
+			  	  	  	  	  	  	  	  	 format->Bmask, format->Amask );
+
+	// read the data and pass it to the surface
+
+	SDL_LockSurface(sfc);
+
+	std::string textbuf;
+
+	Uint32 *pixel = static_cast<Uint32*>(sfc->pixels);
+	for( int y = 0 ; y < height ; y++)
+	{
+		char *pixel_data = const_cast<char*>(data[colors+1+y]);
+
+		for( int x = 0 ; x < width ; x++)
+		{
+			char new_pix = pixel_data[x];
+
+			// Now get the new pixel
+			for( int c = 0 ; c < colors ; c++)
+			{
+				// Found the entry, get the color
+				if( new_pix == *(data[1+c]) )
+				{
+					textbuf = data[1+c]+4;
+					break;
+				}
+			}
+
+			if( textbuf == "None" )
+			{
+				// no color, make this one transparent
+				*pixel = 0;
+				*pixel = 0xFFFFFFFF;
+			}
+			else
+			{
+				// Get the hexstring.
+				textbuf = textbuf.substr(1);
+
+				// And convert it
+				//*pixel = (from_string<Uint32>(textbuf)) | 0xFF000000;
+				*pixel = 0xFF000000;
+			}
+
+			pixel++;
+		}
+	}
+
+	SDL_UnlockSurface(sfc);
+
+	//SDL_FillRect(sfc, NULL, 0xFFFF0000);
+
+	return sfc;
+}
+
+
+bool CFont::loadinternalFont()
+{
+	if(m_FontSurface)
+	{
+		SDL_FreeSurface(m_FontSurface);
+		SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+		m_FontSurface = loadfromXPMData(CGFont_xpm, blit->format, blit->flags);
+		m_monochrome = true;
+
+		SDL_Surface *temp_surface;
+		temp_surface = SDL_DisplayFormat(m_FontSurface);
+		SDL_FreeSurface(m_FontSurface);
+		m_FontSurface = temp_surface;
+		//SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, 0x0);
+
+		temp_surface = SDL_DisplayFormat(m_FontSurface);
+		SDL_FreeSurface(m_ColouredSurface);
+		m_ColouredSurface = temp_surface;
+		return true;
+	}
+	return false;
+}
+
 bool CFont::loadHiColourFont( const std::string& filename )
 {
 	if(!IsFileAvailable(filename))
@@ -73,13 +164,14 @@ bool CFont::loadHiColourFont( const std::string& filename )
 
 	if(m_FontSurface)
 	{
-		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
+		SDL_Surface *temp_surface = SDL_LoadBMP(filename.c_str());
 		if(temp_surface)
 		{
 			SDL_Surface *displaysurface = SDL_ConvertSurface(temp_surface, m_FontSurface->format, m_FontSurface->flags);
 			SDL_BlitSurface(displaysurface, NULL, m_FontSurface, NULL);
 			SDL_FreeSurface(displaysurface);
 			SDL_FreeSurface(temp_surface);
+			m_FontSurface = temp_surface;
 			return true;
 		}
 	}

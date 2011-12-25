@@ -30,14 +30,12 @@ bool CEGAGraphics::loadData()
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, g_pVideoDriver->getDepth() );
 	Font.optimizeSurface();
 
-	std::string filename = getResourceFilename("gfx/menufonts.bmp", "", true, true);
+	Font.loadinternalFont();
+	//Font.setFGColour(g_pVideoDriver->mp_VideoEngine->getBlitSurface()->format, 0x0, true);
 
-	Font.loadHiColourFont(filename);
-	Font.setFGColour(g_pVideoDriver->mp_VideoEngine->getBlitSurface()->format, 0x0, true);
-
-	g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
-	CCursor *pCursor = g_pGfxEngine->getCursor();
-	pCursor->generateTwirls(Font);
+	//g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
+	//CCursor *pCursor = g_pGfxEngine->getCursor();
+	//pCursor->generateTwirls(Font);
 
 	return true;
 }

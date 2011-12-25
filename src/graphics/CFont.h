@@ -28,6 +28,7 @@ public:
 	SDL_Surface *getSDLSurface() { return m_FontSurface; }
 	SDL_Surface *getSDLColouredSurface() { return m_ColouredSurface; }
 
+	bool loadinternalFont();
 	bool loadHiColourFont( const std::string& filename );
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
