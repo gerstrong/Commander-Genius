@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 	g_pLogFile->CreateLogfile("CGLog.html");
 
 	// The Game Class instance is the main class managing whole
-	// interpreter instance. TODO: It should be singleton
+	// interpreter instance. TODO: It should be a singleton
 	CGame Game;
 	
 	////////////////////////////

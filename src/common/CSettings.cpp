@@ -52,7 +52,8 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
 	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #ifdef USE_OPENGL
-	Configuration.WriteInt("Video", "OGLfilter", VidConf.m_opengl_filter);
+	if(VidConf.m_opengl)
+		Configuration.WriteInt("Video", "OGLfilter", VidConf.m_opengl_filter);
 #endif
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
@@ -106,9 +107,6 @@ bool CSettings::loadDrvCfg()
 		}
 
 		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
-#ifdef USE_OPENGL
-		Configuration.ReadInteger("Video", "OGLfilter", &VidConf.m_opengl_filter, false);
-#endif
 		Configuration.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
@@ -116,6 +114,11 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Video", "filter", &value, 1);
 		VidConf.m_ScaleXFilter = value;
 		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
+#ifdef USE_OPENGL
+		if(VidConf.m_opengl)
+			Configuration.ReadInteger("Video", "OGLfilter", &VidConf.m_opengl_filter, false);
+#endif
+		
 		
 		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);
