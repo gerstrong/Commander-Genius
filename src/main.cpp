@@ -22,14 +22,15 @@
  - The Commander Genius Team
 
  CloneKeen          2003-2005   Caitlin Shaw
- CloneKeenPlus      2008-2011   Gerstrong
- Commander Genius   2009-2011   Tulip, Pickle, DaVince, Albert and Pizza2004
- Commander Genius   2010-2011   Lemm, Commander Spleen, Zear, Pelya and FCTW
+ CloneKeenPlus      2008-2012   Gerstrong
+ Commander Genius   2009-2012   Tulip, Pickle, DaVince, Albert and Pizza2004
+ Commander Genius   2010-2012   Lemm, Commander Spleen, Zear, Pelya and FCTW
  */
 
 #ifdef ANDROID
-#include <SDL_main.h>
+	#include <SDL_main.h>
 #endif
+
 #include "CLogFile.h"
 #include "CGame.h"
 #include "FindFile.h"
@@ -43,23 +44,27 @@
  * 					where the passed arguments are stored
  * 					in the process
  * \return	        This always returns 0. If
- * 					some errors appear, please take a look
+ * 					some errors appear, take a look
  * 					at the Logfile.
  *
  */
 int main(int argc, char *argv[])
 {
+	// Check if CG should look into a given directory
 	if(argc >= 1)
 	{
 		binary_dir = argv[0];
 		size_t slashpos = findLastPathSep(binary_dir);
+		
 		if(slashpos != std::string::npos)
 		{
 			binary_dir.erase(slashpos);
 			binary_dir = SystemNativeToUtf8(binary_dir);
 		}
 		else
+		{
 			binary_dir = ".";
+		}
 	}
 	else
 	{
@@ -74,7 +79,10 @@ int main(int argc, char *argv[])
 
 	g_pLogFile->CreateLogfile("CGLog.html");
 
+	// The Game Class instance is the main class managing whole
+	// interpreter instance. TODO: It should be singleton
 	CGame Game;
+	
 	////////////////////////////
 	// Initialize Game Engine //
 	////////////////////////////
@@ -93,7 +101,7 @@ int main(int argc, char *argv[])
 
 	g_pLogFile->Del();
 
-	std::cout << "Thank you very much for playing this wonderful game!" << std::endl;
+	std::cout << "Thank you very much for playing this game!" << std::endl;
 
 	UnInitThreadPool();
 	return 0;
