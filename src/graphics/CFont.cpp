@@ -110,7 +110,6 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 			{
 				// no color, make this one transparent
 				*pixel = 0;
-				*pixel = 0xFFFFFFFF;
 			}
 			else
 			{
@@ -118,8 +117,7 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 				textbuf = textbuf.substr(1);
 
 				// And convert it
-				//*pixel = (from_string<Uint32>(textbuf)) | 0xFF000000;
-				*pixel = 0xFF000000;
+				*pixel = (from_string<Uint32>(textbuf)) | 0xFF000000;
 			}
 
 			pixel++;
@@ -136,25 +134,14 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 
 bool CFont::loadinternalFont()
 {
-	if(m_FontSurface)
-	{
-		SDL_FreeSurface(m_FontSurface);
-		SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
-		m_FontSurface = loadfromXPMData(CGFont_xpm, blit->format, blit->flags);
-		m_monochrome = true;
+	// Has the Surface to the entire font been loaded?
+	if(!m_FontSurface)
+		return false;
 
-		SDL_Surface *temp_surface;
-		temp_surface = SDL_DisplayFormat(m_FontSurface);
-		SDL_FreeSurface(m_FontSurface);
-		m_FontSurface = temp_surface;
-		//SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, 0x0);
-
-		temp_surface = SDL_DisplayFormat(m_FontSurface);
-		SDL_FreeSurface(m_ColouredSurface);
-		m_ColouredSurface = temp_surface;
-		return true;
-	}
-	return false;
+	SDL_FreeSurface(m_FontSurface);
+	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+	m_FontSurface = loadfromXPMData(CGFont_xpm, blit->format, blit->flags);
+	return true;
 }
 
 bool CFont::loadHiColourFont( const std::string& filename )
@@ -199,19 +186,19 @@ void CFont::setMonochrome(bool value)
 
 void CFont::setBGColour(SDL_PixelFormat* p_pixelformat, Uint32 bgcolour, bool force)
 {
-	if(m_monochrome)
+	/*if(m_monochrome)
 	{
 		SDL_Color *p_Color = m_FontSurface->format->palette->colors;
 
 		if( m_bgcolour != bgcolour || force ) // For the Background
 			SDL_GetRGB(bgcolour, p_pixelformat, &p_Color[0].r, &p_Color[0].g, &p_Color[0].b);
-	}
+	}*/
 }
 
 // Sets the colour used for printing the text
 void CFont::setFGColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, bool force)
 {
-	if(m_monochrome)
+	/*if(m_monochrome)
 	{
 		SDL_Color *p_Color = m_FontSurface->format->palette->colors;
 
@@ -230,7 +217,7 @@ void CFont::setFGColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, bool fo
 			SDL_FillRect(m_ColouredSurface, NULL, m_fgcolour);
 			SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
 		}
-	}
+	}*/
 }
 
 //
@@ -287,7 +274,7 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 {
 	SDL_Rect scrrect, dstrect;
 	
-	scrrect.x = (m_ColouredSurface->w/16)*(character%16);
+	/*scrrect.x = (m_ColouredSurface->w/16)*(character%16);
 	scrrect.y = (m_ColouredSurface->h/16)*(character/16);
 	scrrect.w = dstrect.w = (m_widthtable[character]);
 	scrrect.h = dstrect.h = (m_ColouredSurface->h/16);
@@ -297,6 +284,15 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 		SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
 	else
 		SDL_BlitSurface(m_ColouredSurface, &scrrect, dst, &dstrect);
+		*/
+
+	scrrect.x = (m_FontSurface->w/16)*(character%16);
+	scrrect.y = (m_FontSurface->h/16)*(character/16);
+	scrrect.w = dstrect.w = (m_widthtable[character]);
+	scrrect.h = dstrect.h = (m_FontSurface->h/16);
+	dstrect.x = xoff;	dstrect.y = yoff;
+
+	SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
 }
 
 void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)

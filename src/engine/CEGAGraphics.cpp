@@ -26,6 +26,8 @@ bool CEGAGraphics::loadData()
 	// This is only for the menu. We only need one fontmap
 	g_pGfxEngine->createEmptyFontmaps(1);
 	CFont &Font = g_pGfxEngine->getFont(0);
+
+
 	Font.destroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, g_pVideoDriver->getDepth() );
 	Font.optimizeSurface();
