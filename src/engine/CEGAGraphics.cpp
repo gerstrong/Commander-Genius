@@ -27,11 +27,6 @@ bool CEGAGraphics::loadData()
 	g_pGfxEngine->createEmptyFontmaps(1);
 	CFont &Font = g_pGfxEngine->getFont(0);
 
-
-	Font.destroySurface();
-	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, g_pVideoDriver->getDepth() );
-	Font.optimizeSurface();
-
 	Font.loadinternalFont();
 	//Font.setFGColour(g_pVideoDriver->mp_VideoEngine->getBlitSurface()->format, 0x0, true);
 

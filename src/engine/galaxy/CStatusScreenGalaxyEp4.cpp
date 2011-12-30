@@ -23,7 +23,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	SDL_PixelFormat *pixelformat = mp_StatusSurface->format;
 
 	CFont &Font = g_pGfxEngine->getFont(0);
-	Font.setBGColour(pixelformat, 0xAAAAAA);
+	/*Font.setBGColour(pixelformat, 0xAAAAAA);
 	Font.setFGColour(pixelformat, 0x555555);
 
 	Font.drawFontCentered(mp_StatusSurface, "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
@@ -157,4 +157,5 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	TempRect.y += 8;
 	for( int c=0 ; c<10 ; c++ )
 		Tilemap.drawTile(mp_StatusSurface, TempRect.x+c*8, TempRect.y, 82+c);
+		*/
 }

@@ -37,7 +37,7 @@ bool CMenuGalaxy::init( menutypes menu_type )
 	cleanup();
 
 	CFont &Font = g_pGfxEngine->getFont(1);
-	Font.setBGColour(g_pVideoDriver->mp_VideoEngine->getBlitSurface()->format, 0x545454);
+	//Font.setBGColour(g_pVideoDriver->mp_VideoEngine->getBlitSurface()->format, 0x545454);
 
 	CMenu::init(menu_type);
 

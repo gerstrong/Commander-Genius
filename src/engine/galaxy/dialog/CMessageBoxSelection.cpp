@@ -97,8 +97,8 @@ void CMessageBoxSelection::process()
 	mp_DlgFrame->draw(sfc);
 
 	// Set the proper Font colors
-	g_pGfxEngine->getFont(FONT_ID).setBGColour(sfc->format, 0xFFFFFFFF);
-	g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);
+	//g_pGfxEngine->getFont(FONT_ID).setBGColour(sfc->format, 0xFFFFFFFF);
+	//g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
@@ -108,10 +108,10 @@ void CMessageBoxSelection::process()
 	std::list<TextEventMatchOption>::iterator it = m_Options.begin();
 	for( int i=0 ; it != m_Options.end() ; it++, i++)
 	{
-		if(i == m_selection)
+		/*if(i == m_selection)
 			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF0000FF);
 		else
-			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);
+			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);*/
 
 		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, it->text, m_boxrect.x+m_TextPos.x, m_boxrect.y+((m_Lines.size()+i+1)*m_text_height+m_TextPos.y) );
 	}

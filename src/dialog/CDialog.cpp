@@ -504,7 +504,7 @@ void CDialog::draw()
 		m_dlgobject[i]->render(dst_sfc, m_scroll, false );
 	}
 
-	Font.setFGColour(dst_sfc->format, 0x0); // Set black letter color for the other elements
+	//Font.setFGColour(dst_sfc->format, 0x0); // Set black letter color for the other elements
 	
 	if(m_inputmode == INPUT_MODE_COUNTER)
 	{

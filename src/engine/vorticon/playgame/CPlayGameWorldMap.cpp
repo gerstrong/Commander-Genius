@@ -191,8 +191,8 @@ void CPlayGameVorticon::showKeensLeft()
 
 		rect.x = 8;	rect.y = 16;
 		rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
-		g_pGfxEngine->drawDialogBox( boxsurface, 0, 0, KEENSLEFT_W, boxH, Font.getBGColour(true));
-		SDL_FillRect(boxsurface, &rect, Font.getBGColour(false));
+		//g_pGfxEngine->drawDialogBox( boxsurface, 0, 0, KEENSLEFT_W, boxH, Font.getBGColour(true));
+		//SDL_FillRect(boxsurface, &rect, Font.getBGColour(false));
 		Font.drawFont( boxsurface, g_pBehaviorEngine->getString("LIVES_LEFT"), 36, 8, true);
 
 		y = 20;

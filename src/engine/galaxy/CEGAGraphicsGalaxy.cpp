@@ -540,7 +540,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
 		CFont &Font = g_pGfxEngine->getFont(i);
-		Font.setMonochrome(true);
+		//Font.setMonochrome(true);
 
 		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
 		{
@@ -557,7 +557,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 					maxwidth = FontHead->Width[j];
 			}
 
-			Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, 8, maxwidth*16, FontHead->Height * 16);
+			//Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, 8, maxwidth*16, FontHead->Height * 16);
 
 			SDL_Surface* sfc = Font.getSDLSurface();
 

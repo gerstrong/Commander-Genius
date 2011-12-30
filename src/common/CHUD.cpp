@@ -102,7 +102,7 @@ void CHUD::DrawCircle(int x, int y, int width)
 
 	Uint8 r,g,b;
 	CFont &Font = g_pGfxEngine->getFont(0);
-	Font.getBGColour(false, &r, &g, &b);
+	//Font.getBGColour(false, &r, &g, &b);
 
 	outline.x = x+4;
 	outline.y = y;
@@ -184,7 +184,7 @@ void CHUD::renderVorticon()
 	SDL_BlitSurface( mp_Background, NULL, blitsurface, &m_Rect);
 	
 	CFont &Font = g_pGfxEngine->getFont(0);
-	Font.setFGColour(blitsurface->format, 0x000000);
+	//Font.setFGColour(blitsurface->format, 0x000000);
 	// Draw the score
 	Font.drawFont(blitsurface, getRightAlignedString(itoa(score),9), 5+m_Rect.x, 2+m_Rect.y);
 
@@ -194,7 +194,7 @@ void CHUD::renderVorticon()
 	// Draw the charges
 	Font.drawFont(blitsurface, getRightAlignedString(itoa(charges),2), 62+m_Rect.x, 17+m_Rect.y);
 
-	Font.setFGColour(blitsurface->format, 0x0);
+	//Font.setFGColour(blitsurface->format, 0x0);
 }
 
 /**

@@ -62,8 +62,8 @@ void CMessageBoxGalaxy::process()
 	mp_DlgFrame->draw(sfc);
 
 	// Set the proper Font colors
-	g_pGfxEngine->getFont(FONT_ID).setBGColour(sfc->format, 0xFFFFFFFF);
-	g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);
+	//g_pGfxEngine->getFont(FONT_ID).setBGColour(sfc->format, 0xFFFFFFFF);
+	//g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
