@@ -4,7 +4,7 @@
  *  Created on: 22.09.2009
  *      Author: gerstrong
  *
- *  Auxiliary Class for CGame. It only tell the Game-Engine what to do.
+ *  Auxiliary Class for CGame. It only tells the Game-Engine what to do.
  */
 
 #ifndef CGAMECONTROL_H_
