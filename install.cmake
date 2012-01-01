@@ -18,7 +18,7 @@ INSTALL(DIRECTORY vfsroot/
 	DESTINATION ${SHAREDIR})
 
 # This will copy the readme file. 
-INSTALL(FILES readme.txt 
+INSTALL(FILES README 
 	DESTINATION ${SHAREDIR})
 
 # This will copy the readme file. 
