@@ -128,8 +128,8 @@ EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Xcode OUTPUT_VARIAB
 
 PROJECT(commandergenius)
 
-# Generate the readme.txt file
-configure_file(readme.txt.in readme.txt)
+# Generate the README file
+configure_file(README.in README)
 
 # main includes
 INCLUDE_DIRECTORIES(optional-includes/generated)
