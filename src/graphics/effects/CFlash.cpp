@@ -45,7 +45,7 @@ void CFlash::process()
 	SDL_SetAlpha(mp_FadeSurface, SDL_SRCALPHA, m_Alpha);
 
 	// Blit it and free temp surface
-	SDL_BlitSurface(mp_FadeSurface, &gamerect, g_pVideoDriver->getBlitSurface(), &gamerect);
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_FadeSurface, &gamerect,  &gamerect ) );
 
 	if(m_FadeDir == FADE_IN)
 	{

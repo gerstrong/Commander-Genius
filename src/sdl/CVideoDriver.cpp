@@ -468,6 +468,16 @@ void CVideoDriver::pollDrawingTasks()
 					drawAnimatedTileTask->mtile);
 		}
 
+		// Other Surface Blits
+		else if( BlitSurfaceTask *blitSurfaceTask =
+					mDrawTasks.occurredEvent<BlitSurfaceTask>() )
+		{
+			SDL_BlitSurface( blitSurfaceTask->mSfcToBlit,
+							 blitSurfaceTask->mSrcRect,
+							 getBlitSurface(),
+							 blitSurfaceTask->mDstRect );
+		}
+
 		// If none of the Events fit here, please warn this incident
 		else
 		{

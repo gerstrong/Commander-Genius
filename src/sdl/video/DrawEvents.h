@@ -58,5 +58,14 @@ struct DrawSpriteTask : CEvent
 		mSpritePtr(SpritePtr), mx(x), my(y), mAlpha(alpha)  {}
 };
 
+struct BlitSurfaceTask : CEvent
+{
+	SDL_Surface *mSfcToBlit;
+	SDL_Rect *mSrcRect;
+	SDL_Rect *mDstRect;
+	BlitSurfaceTask( SDL_Surface *sfcToBlit, SDL_Rect *srcRect, SDL_Rect *dstRect ) :
+		mSfcToBlit(sfcToBlit), mSrcRect(srcRect), mDstRect(dstRect)  {}
+};
+
 
 #endif /* DRAWEVENTS_H_ */

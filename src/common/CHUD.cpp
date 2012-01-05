@@ -89,6 +89,8 @@ void CHUD::CreateBackground()
 	SDL_FreeSurface(mp_Background);
 	mp_Background = temp;
 
+	mp_HUDBlit = SDL_DisplayFormatAlpha(mp_Background);
+
 	// Draw the rounded borders
 	DrawCircle(0, 0, 80);
 	DrawCircle(17, 15, 22);
@@ -181,20 +183,24 @@ void CHUD::renderVorticon()
 	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
 
 	// Draw the background
-	SDL_BlitSurface( mp_Background, NULL, blitsurface, &m_Rect);
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_Background, NULL, &m_Rect ) );
+	SDL_BlitSurface(mp_Background, NULL, mp_HUDBlit, NULL );
 	
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.setFGColour(blitsurface->format, 0x000000);
 	// Draw the score
-	Font.drawFont(blitsurface, getRightAlignedString(itoa(score),9), 5+m_Rect.x, 2+m_Rect.y);
+	Font.drawFont(mp_HUDBlit, getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);
 
 	// Draw the lives
-	Font.drawFont(blitsurface, getRightAlignedString(itoa(lives),2), 21+m_Rect.x, 17+m_Rect.y);
+	Font.drawFont(mp_HUDBlit, getRightAlignedString(itoa(lives),2), 15+m_Rect.x, 15+m_Rect.y);
 
 	// Draw the charges
-	Font.drawFont(blitsurface, getRightAlignedString(itoa(charges),2), 62+m_Rect.x, 17+m_Rect.y);
+	Font.drawFont(mp_HUDBlit, getRightAlignedString(itoa(charges),2), 56+m_Rect.x, 15+m_Rect.y);
 
 	Font.setFGColour(blitsurface->format, 0x0);
+
+	// Draw the background
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_HUDBlit, NULL, &m_Rect ) );
 }
 
 /**
@@ -213,4 +219,5 @@ void CHUD::render()
 
 CHUD::~CHUD() {
 	if(mp_Background) SDL_FreeSurface(mp_Background);
+	if(mp_HUDBlit) SDL_FreeSurface(mp_HUDBlit);
 }

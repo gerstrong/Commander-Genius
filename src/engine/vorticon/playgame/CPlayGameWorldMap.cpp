@@ -218,7 +218,7 @@ void CPlayGameVorticon::showKeensLeft()
 		local_rect.w = mp_KeenLeftSfc->w;
 		local_rect.h = mp_KeenLeftSfc->h;
 
-		SDL_BlitSurface(mp_KeenLeftSfc, NULL, p_blitSurface, &local_rect);
+		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_KeenLeftSfc, NULL,  &local_rect ) );
 
 		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		{

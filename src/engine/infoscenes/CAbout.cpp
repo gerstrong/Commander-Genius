@@ -153,7 +153,7 @@ void CAbout::process()
 	else if(m_type == "CG")
 	{
 		if(mp_LogoBMP)
-			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->mp_VideoEngine->getBlitSurface(), &m_logo_rect);
+			g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_LogoBMP, NULL,  &m_logo_rect ) );
 	}
 
 	for(std::size_t i=0 ; i<m_lines.size() ; i++)

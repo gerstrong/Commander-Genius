@@ -38,7 +38,8 @@ void CVibrate::process()
 	newrect.w=gamerect.h;
 
 	// Blit it and free temp surface
-	SDL_BlitSurface(temp, &gamerect, sfc, &newrect);
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( temp, &gamerect,  &newrect ) );
+
 	SDL_FreeSurface(temp);
 
 	// The developer set a time in the constructor. This effect will last for the given time.

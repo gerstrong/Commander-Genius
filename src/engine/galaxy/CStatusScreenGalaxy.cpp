@@ -111,7 +111,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 void CStatusScreenGalaxy::draw()
 {
-	SDL_BlitSurface( mp_StatusSurface, NULL, g_pVideoDriver->getBlitSurface(), NULL );
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_StatusSurface, NULL, NULL ) );
 }
 
 CStatusScreenGalaxy::~CStatusScreenGalaxy() {

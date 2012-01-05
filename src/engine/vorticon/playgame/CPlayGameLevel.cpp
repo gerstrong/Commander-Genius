@@ -13,63 +13,63 @@
 
 void CPlayGameVorticon::processInLevel()
 {
-	if(!m_gameover)
+	if(m_gameover)
+		return;
+
+	// Perform player Objects...
+	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
-		// Perform player Objects...
+		// check if someone has lives
+		if(m_Player[i].inventory.lives==0 && m_Player[i].pdie==PDIE_DEAD)
+			continue;
+
+		// Process the other stuff like, items, jump, etc.
+		m_Player[i].processInLevel();
+
+		// If the player touched a hint trigger in which we have to show a Message, do it so
+		std::string hinttext;
+		if( (hinttext=m_Player[i].pollHintMessage()) != "")
+			m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString(hinttext), false, true) );
+
+		// Check if the first player is dead, and if the others also are...
+		if(i==0) m_alldead = (m_Player[i].pdie == PDIE_DEAD);
+		else m_alldead &= (m_Player[i].pdie == PDIE_DEAD);
+
+		// Now draw the player to the screen
+		m_Player[i].SelectFrame();
+
+		// If Player has toggled a switch for platform extend it!
+		int trigger = m_Player[i].pollLevelTrigger();
+		if( trigger != LVLTRIG_NONE )
+		{
+			processLevelTrigger(trigger);
+		}
+
+		// finished the level
+		if(m_Player[i].level_done == LEVEL_COMPLETE)
+		{
+			mp_level_completed[m_Level] = true;
+			goBacktoMap();
+			break;
+		}
+		else if(m_Player[i].level_done == LEVEL_TELEPORTER)
+		{	// This happens, when keen used the inlevel teleporter...
+			goBacktoMap();
+			teleportPlayerFromLevel(m_Player[i], m_checkpoint_x, m_checkpoint_y);
+			break;
+		}
+	}
+
+	// Check if all players are dead. In that case, go back to map
+	if(m_alldead)
+	{
+		g_pMusicPlayer->stop();
+		m_gameover = true; // proof contrary case
 		for( int i=0 ; i<m_NumPlayers ; i++ )
-		{
-			// check if someone has lives
-			if(m_Player[i].inventory.lives==0 && m_Player[i].pdie==PDIE_DEAD)
-				continue;
+			m_gameover &= ( m_Player[i].inventory.lives < 0 );
 
-			// Process the other stuff like, items, jump, etc.
-			m_Player[i].processInLevel();
-
-			// If the player touched a hint trigger in which we have to show a Message, do it so
-			std::string hinttext;
-			if( (hinttext=m_Player[i].pollHintMessage()) != "")
-				m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString(hinttext), false, true) );
-
-			// Check if the first player is dead, and if the others also are...
-			if(i==0) m_alldead = (m_Player[i].pdie == PDIE_DEAD);
-			else m_alldead &= (m_Player[i].pdie == PDIE_DEAD);
-
-			// Now draw the player to the screen
-			m_Player[i].SelectFrame();
-
-			// If Player has toggled a switch for platform extend it!
-			int trigger = m_Player[i].pollLevelTrigger();
-			if( trigger != LVLTRIG_NONE )
-			{
-				processLevelTrigger(trigger);
-			}
-
-			// finished the level
-			if(m_Player[i].level_done == LEVEL_COMPLETE)
-			{
-				mp_level_completed[m_Level] = true;
-				goBacktoMap();
-				break;
-			}
-			else if(m_Player[i].level_done == LEVEL_TELEPORTER)
-			{	// This happens, when keen used the inlevel teleporter...
-				goBacktoMap();
-				teleportPlayerFromLevel(m_Player[i], m_checkpoint_x, m_checkpoint_y);
-				break;
-			}
-		}
-
-		// Check if all players are dead. In that case, go back to map
-		if(m_alldead)
-		{
-			g_pMusicPlayer->stop();
-			m_gameover = true; // proof contrary case
-			for( int i=0 ; i<m_NumPlayers ; i++ )
-				m_gameover &= ( m_Player[i].inventory.lives < 0 );
-
-			if(!m_gameover) // Check if no player has lives left and must go in game over mode.
-				goBacktoMap();
-		}
+		if(!m_gameover) // Check if no player has lives left and must go in game over mode.
+			goBacktoMap();
 	}
 }
 
