@@ -70,13 +70,7 @@ void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 	// first draw the blank rect
 	int i, j;
 
-	SDL_Rect rect;
-	rect.x = m_x;
-	rect.y = m_y;
-	rect.w = m_w - m_8x8tilewidth;
-	rect.h = m_h - m_8x8tileheight;
-
-	SDL_FillRect(dst, &rect, Font.getBGColour(false));
+	SDL_FillRect(dst, NULL, 0xFFFFFFFF);
 
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 		Font.drawCharacter(dst, 32, m_w - m_8x8tilewidth, m_y + j); // for the last tile
