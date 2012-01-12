@@ -1,6 +1,12 @@
 Commander Genius Release :
 ==========================
 
+v0.3.7.2 Beta:
+--------------
+- Lots of speed ups
+- Better Galaxy Support
+- Better Sound Support
+
 v0.3.5:
 -------
 - Fixes in the finale of Ep1

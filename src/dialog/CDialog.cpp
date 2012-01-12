@@ -528,6 +528,9 @@ void CDialog::draw()
 
 
 	// Workaround! This class will be replaced by something better
+	if(!mp_Frame)
+		return;
+
 	framerect.x = mp_Frame->m_x;
 	framerect.y = mp_Frame->m_y;
 	framerect.w = mp_Frame->m_w;
