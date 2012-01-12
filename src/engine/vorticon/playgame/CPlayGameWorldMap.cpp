@@ -167,13 +167,6 @@ void CPlayGameVorticon::showKeensLeft()
 
 	if(!mp_KeenLeftSfc)
 	{
-		SDL_Surface *p_blitSurface = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
-		const Uint32 rmask = p_blitSurface->format->Rmask;
-		const Uint32 gmask = p_blitSurface->format->Gmask;
-		const Uint32 bmask = p_blitSurface->format->Bmask;
-		const Uint32 amask = p_blitSurface->format->Amask;
-		const Uint8 bpp = p_blitSurface->format->BitsPerPixel;
-
 		int x,y,i,p;
 		int boxY, boxH;
 		CFont &Font = g_pGfxEngine->getFont(0);
@@ -187,7 +180,7 @@ void CPlayGameVorticon::showKeensLeft()
 		SDL_Rect rect;
 		rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
 		rect.w = (KEENSLEFT_W+1)*8;	rect.h = (boxH)*8;
-		SDL_Surface *boxsurface = SDL_CreateRGBSurface(p_blitSurface->flags, rect.w, rect.h, bpp, rmask, gmask, bmask, amask);
+		SDL_Surface *boxsurface = SDL_CreateRGBSurface( SDL_SWSURFACE, rect.w, rect.h, 32, 0, 0, 0, 0 );
 
 		rect.x = 8;	rect.y = 16;
 		rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
@@ -207,18 +200,17 @@ void CPlayGameVorticon::showKeensLeft()
 			y += 16;
 		}
 
-		mp_KeenLeftSfc = SDL_DisplayFormat(boxsurface);
+		const SDL_Surface *blit = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+		mp_KeenLeftSfc = SDL_ConvertSurface( boxsurface, blit->format, blit->flags );
 		SDL_FreeSurface(boxsurface);
 	}
 	else
 	{
-		SDL_Rect local_rect;
-		local_rect.x = (KEENSLEFT_X+1)*8;
-		local_rect.y = (KEENSLEFT_Y - m_NumPlayers + 2)*8;
-		local_rect.w = mp_KeenLeftSfc->w;
-		local_rect.h = mp_KeenLeftSfc->h;
+		keenleft_rect.x = (KEENSLEFT_X+1)*8;
+		keenleft_rect.y = (KEENSLEFT_Y - m_NumPlayers + 2)*8;
+		keenleft_rect.w = mp_KeenLeftSfc->w;
+		keenleft_rect.h = mp_KeenLeftSfc->h;
 
-		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_KeenLeftSfc, NULL,  &local_rect ) );
 
 		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		{
@@ -226,6 +218,9 @@ void CPlayGameVorticon::showKeensLeft()
 			SDL_FreeSurface(mp_KeenLeftSfc);
 			mp_KeenLeftSfc = NULL;
 		}
+
+		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_KeenLeftSfc, NULL,  &keenleft_rect ) );
+
 	}
 }
 
