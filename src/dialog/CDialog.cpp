@@ -58,7 +58,7 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 		mp_Frame = new CDlgFrame(m_x, m_y, m_w*8, m_h*8, theme);
 	}
 	
-	m_twirl.posy = m_y;
+	m_twirl.posy = 8;
 	m_twirl.frame = 0;
 	m_twirl.timer = 0;
 	
