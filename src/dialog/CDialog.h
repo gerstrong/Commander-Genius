@@ -81,12 +81,15 @@ private:
 	CDlgFrame *mp_Frame;
 	Uint8 m_alpha;
 	Uint8 m_Font_ID;
+	SDL_Surface *mDialogSfc;
 
 	struct{
 		Uint8  frame;
 		Uint8  timer;
 		Uint16 posy;
 	} m_twirl;
+
+	SDL_Rect framerect;
 };
 
 #endif /* CDIALOG_H_ */

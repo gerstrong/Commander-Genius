@@ -13,6 +13,7 @@
 #include "engine/CEvent.h"
 #include "graphics/CSprite.h"
 #include "graphics/CTilemap.h"
+#include "SmartPointer.h"
 //#include "gui/CGUIDialog.h"
 
 
@@ -63,7 +64,9 @@ struct BlitSurfaceTask : CEvent
 	SDL_Surface *mSfcToBlit;
 	SDL_Rect *mSrcRect;
 	SDL_Rect *mDstRect;
-	BlitSurfaceTask( SDL_Surface *sfcToBlit, SDL_Rect *srcRect, SDL_Rect *dstRect ) :
+	BlitSurfaceTask( SDL_Surface *sfcToBlit,
+					 SDL_Rect *srcRect,
+					 SDL_Rect *dstRect ) :
 		mSfcToBlit(sfcToBlit), mSrcRect(srcRect), mDstRect(dstRect)  {}
 };
 

@@ -115,6 +115,38 @@ void CPassiveVort::process()
 	// Animate the tiles
 	mp_Map->animateAllTiles();
 
+	// If Menu is open show it!
+	if( mp_Menu )
+	{
+		mp_Menu->processSpecific();
+
+		if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSavedGame::LOAD) // Start a normal game
+		{
+			m_NumPlayers = mp_Menu->getNumPlayers();
+			m_Difficulty = mp_Menu->getDifficulty();
+			SAFE_DELETE(mp_Menu);
+			cleanup();
+			m_mode = STARTGAME;
+		}
+		else if(mp_Menu->getExitEvent())
+		{
+			SAFE_DELETE(mp_Menu);
+			cleanup();
+			m_mode = SHUTDOWN;
+		}
+		else if(mp_Menu->getChooseGame())
+		{
+			SAFE_DELETE(mp_Menu);
+			m_modeg = true;
+		}
+		else if( m_RestartVideo ) // When some video settings has been changed
+		{
+			cleanup();
+			init(m_mode);
+			m_RestartVideo = false;
+		}
+	}
+
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface();
 
@@ -169,37 +201,6 @@ void CPassiveVort::process()
 	if(mp_PressAnyBox != NULL)
 		mp_PressAnyBox->process();
 
-	// If Menu is open show it!
-	if( mp_Menu != NULL )
-	{
-		mp_Menu->processSpecific();
-
-		if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSavedGame::LOAD) // Start a normal game
-		{
-			m_NumPlayers = mp_Menu->getNumPlayers();
-			m_Difficulty = mp_Menu->getDifficulty();
-			SAFE_DELETE(mp_Menu);
-			cleanup();
-			m_mode = STARTGAME;
-		}
-		else if(mp_Menu->getExitEvent())
-		{
-			SAFE_DELETE(mp_Menu);
-			cleanup();
-			m_mode = SHUTDOWN;
-		}
-		else if(mp_Menu->getChooseGame())
-		{
-			SAFE_DELETE(mp_Menu);
-			m_modeg = true;
-		}
-		else if( m_RestartVideo ) // When some video settings has been changed
-		{
-			cleanup();
-			init(m_mode);
-			m_RestartVideo = false;
-		}
-	}
 }
 
 void CPassiveVort::cleanup()
