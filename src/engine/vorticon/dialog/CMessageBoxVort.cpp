@@ -50,11 +50,18 @@ m_twirlframe(0)
 	if(leftbound) m_boxrect.x = 0;
 
 
+	SDL_Surface *tempsfc = SDL_CreateRGBSurface( SDL_SWSURFACE, m_boxrect.w, m_boxrect.h, 32, 0, 0, 0, 0 );
+	const SDL_Surface *blit = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+	MsgBoxSfc = SDL_ConvertSurface( tempsfc, blit->format, blit->flags );
+	SDL_FreeSurface(tempsfc);
+
+
 	m_boxrect.h /= 8;
 	m_boxrect.w /= 8;
 
 	mp_DlgFrame = new CDlgFrame(m_boxrect.x, m_boxrect.y,
 								m_boxrect.w*8, m_boxrect.h*8, DLG_THEME_VORTICON);
+
 }
 
 // This function is used in your Ship need those parts.
@@ -73,8 +80,6 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 #define TWIRL_TIME	5
 void CMessageBoxVort::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
-
 	// Look, if somebody pressed a button, and close this dialog!
 	if(g_pInput->getPressedAnyCommand())
 	{
@@ -83,16 +88,16 @@ void CMessageBoxVort::process()
 	}
 
 	// Draw the empty Dialog Box
-	mp_DlgFrame->draw(sfc);
+	mp_DlgFrame->draw(MsgBoxSfc);
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
-		g_pGfxEngine->getFont(0).drawFont(sfc, m_Lines[i], m_boxrect.x+8, m_boxrect.y+((i+1)*8) );
+		g_pGfxEngine->getFont(0).drawFont(MsgBoxSfc, m_Lines[i], 8, ((i+1)*8) );
 
 	// Draw additional tiles on the surface if any where defined
 	for(size_t i=0 ; i<m_Tiles.size() ; i++)
 	{
-		g_pGfxEngine->getTileMap(1).drawTile(sfc, m_boxrect.x+m_Tiles[i].x,
+		g_pGfxEngine->getTileMap(1).drawTile(MsgBoxSfc, m_boxrect.x+m_Tiles[i].x,
 									m_boxrect.y+m_Tiles[i].y, m_Tiles[i].tile);
 	}
 
@@ -108,8 +113,18 @@ void CMessageBoxVort::process()
 				m_twirlframe++;
 		}
 		else m_twirltimer++;
-		g_pGfxEngine->getCursor()->draw( sfc, m_twirlframe,
+		g_pGfxEngine->getCursor()->draw( MsgBoxSfc, m_twirlframe,
 				mp_DlgFrame->m_x+(mp_DlgFrame->m_w-16),
 				mp_DlgFrame->m_y+(mp_DlgFrame->m_h-16));
 	}
+
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( MsgBoxSfc, NULL, &m_boxrect ) );
+}
+
+CMessageBoxVort::~CMessageBoxVort()
+{
+	if(MsgBoxSfc)
+		SDL_FreeSurface(MsgBoxSfc);
+
+	g_pVideoDriver->mDrawTasks.clear();
 }
