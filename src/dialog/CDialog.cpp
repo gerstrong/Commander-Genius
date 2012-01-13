@@ -474,6 +474,10 @@ void CDialog::draw()
 	// Get the font which is proper for the dialog
 	CFont &Font = g_pGfxEngine->getFont(m_Font_ID);
 
+	if(m_theme == DLG_THEME_GALAXY)
+		SDL_FillRect(mDialogSfc, NULL, Font.getBGColour(false) );
+
+
 	// Render the empty Dialog frame if any
 	if(mp_Frame)
 	{
@@ -528,15 +532,13 @@ void CDialog::draw()
 
 
 	// Workaround! This class will be replaced by something better
-	if(!mp_Frame)
-		return;
-
-	framerect.x = mp_Frame->m_x;
-	framerect.y = mp_Frame->m_y;
-	framerect.w = mp_Frame->m_w;
-	framerect.h = mp_Frame->m_h;
+	framerect.x = m_x;
+	framerect.y = m_y;
+	framerect.w = m_w;
+	framerect.h = m_h;
 
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mDialogSfc, NULL, &framerect ) );
+
 }
 
 #define TWIRL_TIME	5

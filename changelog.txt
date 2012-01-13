@@ -1,8 +1,9 @@
 Commander Genius Release :
 ==========================
 
-v0.3.7.2 Beta:
---------------
+v0.3.8 Alpha:
+-------------
+- More Enemies in Galaxy Support
 - Lots of speed ups
 - Better Galaxy Support
 - Better Sound Support
