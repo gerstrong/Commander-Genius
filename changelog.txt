@@ -3,6 +3,7 @@ Commander Genius Release :
 
 v0.3.8 Alpha:
 -------------
+- Resizable Windows and playable at any resolution
 - More Enemies in Galaxy Support
 - Lots of speed ups
 - Better Galaxy Support
