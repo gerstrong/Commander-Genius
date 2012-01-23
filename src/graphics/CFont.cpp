@@ -91,10 +91,9 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 bool CFont::loadinternalFont()
 {
 	// Has the Surface to the entire font been loaded?
-	if(!mFontSurface)
-		return false;
+	if(mFontSurface)
+		SDL_FreeSurface(mFontSurface);
 
-	SDL_FreeSurface(mFontSurface);
 	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
 	mFontSurface = loadfromXPMData(CGFont_xpm, blit->format, blit->flags);
 	return true;
