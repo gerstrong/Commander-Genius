@@ -557,7 +557,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 					maxwidth = FontHead->Width[j];
 			}
 
-			//Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, 8, maxwidth*16, FontHead->Height * 16);
+			Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, 8, maxwidth*16, FontHead->Height * 16);
 
 			SDL_Surface* sfc = Font.getSDLSurface();
 

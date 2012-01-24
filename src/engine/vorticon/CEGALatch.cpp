@@ -171,19 +171,19 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	// Setup the twirl
 	//g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
-	CCursor *pCursor = g_pGfxEngine->getCursor();
-	pCursor->generateTwirls(Font);
+	//CCursor *pCursor = g_pGfxEngine->getCursor();
+	//pCursor->generateTwirls(Font);
 
 	// The second fontmap of the extra tilemap code goes here! (for example Sliders)
-	CFont &Font2 = g_pGfxEngine->getFont(1);
-	Font2.destroySurface();
+	//CFont &Font2 = g_pGfxEngine->getFont(1);
+	//Font2.destroySurface();
 	//Font2.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	//Font2.optimizeSurface();
 
-	filename = getResourceFilename("gfx/extratiles.bmp", path, true, true);
+	//filename = getResourceFilename("gfx/extratiles.bmp", path, true, true);
 
-	if(filename == "") // That essential file was not found! Try to exit
-		return false;
+	//if(filename == "") // That essential file was not found! Try to exit
+		//return false;
 
 	//Font2.loadHiColourFont(filename);
 

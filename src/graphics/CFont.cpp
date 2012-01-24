@@ -26,6 +26,17 @@ mFontSurface(NULL)
 ///// Initialization Routines /////
 ///////////////////////////////////
 
+bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
+							Uint8 bpp, Uint16 width, Uint16 height)
+{
+	mFontSurface = SDL_CreateRGBSurface(Flags, width,
+			height, bpp, 0, 0, 0, 0);
+	SDL_SetColors(mFontSurface, Palette, 0, 255);
+	SDL_SetColorKey(mFontSurface, SDL_SRCCOLORKEY, COLORKEY);
+
+	return ( mFontSurface != NULL );
+}
+
 SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, const Uint32 flags)
 {
 	int width, height, colors;

@@ -73,14 +73,18 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
-	int xpos = lRect.x+16+1;
+	const int xpos = lRect.x+16+1;
+	const int ypos = lRect.y+10;
+	lRect.h = 10;
 	std::list<std::string> :: iterator it = mItemList.begin();
 	for ( int line = 0; it != mItemList.end() ; it++, line++ )
 	{
 		if(mSelection == line)
-			Font.drawFont(Blitsurface, *it, xpos, lRect.y+10+(line*10), true);
-		else
-			Font.drawFont(Blitsurface, *it, xpos, lRect.y+10+(line*10), false);
+		{
+			lRect.y = ypos+(line*10)-1;
+			SDL_FillRect(Blitsurface, &lRect, 0x00C5C5F1);
+		}
+		Font.drawFont(Blitsurface, *it, xpos, ypos+(line*10), false);
 	}
 
 }
