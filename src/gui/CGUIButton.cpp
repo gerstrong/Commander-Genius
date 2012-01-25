@@ -66,8 +66,6 @@ void CGUIButton::processRender(const CRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
-	// efefef
-
 	if( mButtonUp )
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
