@@ -112,5 +112,6 @@ private:
 	CHighScores *mp_HighScores;
 	CHUD *mp_HUD;
 	SDL_Surface *mp_KeenLeftSfc;
+	SDL_Rect keenleft_rect;
 };
 #endif /* CPlayGameVorticon_H_ */

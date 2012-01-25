@@ -39,6 +39,7 @@ private:
 	unsigned int &m_charges;
 
 	SDL_Surface *mp_Background;
+	SDL_Surface *mp_HUDBlit;
 };
 
 #endif /* CHUD_H_ */

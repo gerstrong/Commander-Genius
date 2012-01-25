@@ -119,6 +119,7 @@ void CGame::run()
         // Render the Screen
         if (g_pTimer->TimeToRender())
         {
+
         	// Here we try to process all the drawing related Tasks not yet done
         	g_pVideoDriver->pollDrawingTasks();
 

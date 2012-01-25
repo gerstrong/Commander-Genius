@@ -66,21 +66,27 @@ void CGUIButton::processRender(const CRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
+	// efefef
+
 	if( mButtonUp )
 	{
-		SDL_FillRect( blitsfc, &lRect, 0x000000FF );
+		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
 	}
 	else if( mButtonDown )
 	{
-		SDL_FillRect( blitsfc, &lRect, 0x0000FF00 );
+		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
 	}
 	else if( mHovered )
 	{
-		SDL_FillRect( blitsfc, &lRect, 0x00FF0000 );
+		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
+	}
+	else
+	{
+		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
 	}
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(0);
 
-	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, false );
+	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
 }

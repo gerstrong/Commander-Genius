@@ -70,36 +70,30 @@ void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 	// first draw the blank rect
 	int i, j;
 
-	SDL_Rect rect;
-	rect.x = m_x;
-	rect.y = m_y;
-	rect.w = m_w - m_8x8tilewidth;
-	rect.h = m_h - m_8x8tileheight;
-
-	//SDL_FillRect(dst, &rect, Font.getBGColour(false));
+	SDL_FillRect(dst, NULL, 0xFFFFFFFF);
 
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
-		Font.drawCharacter(dst, 32,m_x + m_w - m_8x8tilewidth, m_y + j); // for the last tile
+		Font.drawCharacter(dst, 32, m_w - m_8x8tilewidth, m_y + j); // for the last tile
 
 	// then the borders
 	for( i = m_8x8tilewidth ; i < m_w-m_8x8tilewidth ; i+= m_8x8tilewidth )
 	{
-		Font.drawCharacter(dst, 2, m_x + i, m_y); // 2 is one upper-border
-		Font.drawCharacter(dst, 7, m_x + i, m_y + m_h - m_8x8tileheight); // 7 is also the lower-border
+		Font.drawCharacter(dst, 2,  i, 0); // 2 is one upper-border
+		Font.drawCharacter(dst, 7,  i, m_h - m_8x8tileheight); // 7 is also the lower-border
 	}
-	Font.drawCharacter(dst, 2, m_x + m_w - m_8x8tilewidth, m_y); // for the last tile
-	Font.drawCharacter(dst, 2, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight); // for the last tile
+	Font.drawCharacter(dst, 2,  m_w - m_8x8tilewidth, 0); // for the last tile
+	Font.drawCharacter(dst, 2,  m_w - m_8x8tilewidth, m_h - m_8x8tileheight); // for the last tile
 	for( j = m_8x8tileheight ; j < m_h-m_8x8tileheight ; j+= m_8x8tileheight )
 	{
-		Font.drawCharacter(dst, 4, m_x, m_y + j ); // 4 is one left-border
-		Font.drawCharacter(dst, 5, m_x + m_w - m_8x8tilewidth, m_y + j ); // 5 is the right-border
+		Font.drawCharacter(dst, 4, 0, j ); // 4 is one left-border
+		Font.drawCharacter(dst, 5, 0 + m_w - m_8x8tilewidth, j ); // 5 is the right-border
 	}
 
 	// At last the corners
-	Font.drawCharacter(dst, 1, m_x, m_y ); // Upper-Left corner
-	Font.drawCharacter(dst, 3, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
-	Font.drawCharacter(dst, 6, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
-	Font.drawCharacter(dst, 8, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
+	Font.drawCharacter(dst, 1, 0, 0 ); // Upper-Left corner
+	Font.drawCharacter(dst, 3, m_w - m_8x8tilewidth, 0 ); // Upper-Right corner
+	Font.drawCharacter(dst, 6, 0, m_h - m_8x8tileheight ); // Lower-Left corner
+	Font.drawCharacter(dst, 8, m_w - m_8x8tilewidth, m_h - m_8x8tileheight ); // Lower-Right corner
 }
 
 void CDlgFrame::drawGalaxyFrame(SDL_Surface *dst)

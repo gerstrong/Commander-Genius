@@ -111,4 +111,39 @@ struct CRect
 	T x, y, w, h;
 };
 
+
+
+/**
+ * \brief Draws rect different than the SDL_Fillrect, because it has a contour and is filled
+ * \param sfc Surface where to draw it
+ * \param rect pointer to the given rect in which it has to be drawn. If it's NULL, than the dimensions
+ * 			   of sfc is used
+ * \param thickness Thickness of the contour
+ * \param ContourColor Color of the contour
+ */
+void drawRect( SDL_Surface *sfc,
+			   SDL_Rect *rect,
+			   const int thickness,
+			   const Uint32 &ContourColor );
+
+/**
+ * \brief Draws rect different than the SDL_Fillrect, because it has a contour and is filled
+ * \param sfc Surface where to draw it
+ * \param rect pointer to the given rect in which it has to be drawn. If it's NULL, than the dimensions
+ * 			   of sfc is used
+ * \param thickness Thickness of the contour
+ * \param ContourColor Color of the contour
+ * \param FillColor Fill-color of the rect
+ */
+void drawRect( SDL_Surface *sfc,
+			   SDL_Rect *rect,
+			   const int thickness,
+			   const Uint32 &ContourColor,
+			   const Uint32 &FillColor );
+
+
+
+
+
+
 #endif /* GEOMETRY_H_ */

@@ -33,7 +33,7 @@ void CColorMerge::process()
 	// Process the effect
 	SDL_SetAlpha( mp_OldSurface, SDL_SRCALPHA, 255-m_Alpha );
 
-	SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_OldSurface, &gameres,  &gameres ) );
 
 	if(m_Alpha + m_Speed > 255) m_Alpha = 255;
 	else m_Alpha += m_Speed;

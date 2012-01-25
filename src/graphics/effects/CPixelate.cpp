@@ -106,7 +106,8 @@ void CPixelate::process()
 		m_finished = true;
 	}
 
-	SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_OldSurface, &gameres,  &gameres ) );
+
 }
 
 CPixelate::~CPixelate()

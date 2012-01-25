@@ -274,6 +274,12 @@ ENDIF(TREMOR)
 
 # Set binary(executable) file name. In Windows this filename needs the exe extension
 # The Windows Version has an icon in the executable
+
+
+SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+
+
 IF(BUILD_TYPE STREQUAL WIN32)
 	SET_TARGET_PROPERTIES(commandergenius PROPERTIES OUTPUT_NAME "build/${BUILD_DIR}/CGenius.exe")
 	ADD_CUSTOM_COMMAND(TARGET commandergenius PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )

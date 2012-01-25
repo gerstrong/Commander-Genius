@@ -3,6 +3,7 @@
  *
  *  Created on: 20.03.2009
  *      Author: gerstrong
+ *  \Caution: Due Date Jan 11th 2012 - This Class will be depracated soon!
  */
 
 #include "StringUtils.h"
@@ -57,7 +58,7 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 		mp_Frame = new CDlgFrame(m_x, m_y, m_w*8, m_h*8, theme);
 	}
 	
-	m_twirl.posy = m_y;
+	m_twirl.posy = 8;
 	m_twirl.frame = 0;
 	m_twirl.timer = 0;
 	
@@ -69,6 +70,11 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 	m_switch = 0;
 	m_scroll = 0;
 	m_alpha = 128;
+
+	const SDL_Surface *blit = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+	SDL_Surface *tmpsfc = SDL_CreateRGBSurface( SDL_SWSURFACE, m_w*8, m_h*8, 32, 0, 0, 0, 0 );
+	mDialogSfc = SDL_ConvertSurface( tmpsfc, blit->format, blit->flags );
+	SDL_FreeSurface(tmpsfc);
 }
 
 ///
@@ -94,7 +100,7 @@ void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 	if( m_theme == DLG_THEME_GALAXY && type == DLG_OBJ_TEXT )
 		type = DLG_OBJ_DISABLED;
 	DlgObject->create( type, m_dlgobject.size(),
-					  m_x+(x*8), m_y+(y*8),
+					  (x*8), (y*8),
 					  text, m_w-((x-m_x)/8)-5,
 					  m_Font_ID, m_theme);
 	m_dlgobject.push_back(DlgObject);
@@ -458,36 +464,38 @@ void CDialog::processInput(int move)
 
 void CDialog::draw()
 {
-	SDL_Surface *dst_sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
-	
 	// This will make the font shading effect
 	if(m_alpha < 230)
 	{
-		SDL_SetAlpha(dst_sfc, SDL_SRCALPHA, m_alpha );
+		SDL_SetAlpha(mDialogSfc, SDL_SRCALPHA, m_alpha );
 		m_alpha+=20;
 	}
 	
 	// Get the font which is proper for the dialog
 	CFont &Font = g_pGfxEngine->getFont(m_Font_ID);
 
+/*	if(m_theme == DLG_THEME_GALAXY)
+		SDL_FillRect(mDialogSfc, NULL, Font.getBGColour(false) );*/
+
+
 	// Render the empty Dialog frame if any
 	if(mp_Frame)
 	{
-		mp_Frame->draw(dst_sfc);
+		mp_Frame->draw(mDialogSfc);
 
 		// Draw the to icon up or down accordingly
 		if( m_scroll>0 ) // Up Arrow
 		{
-			Font.drawCharacter(dst_sfc, 15,
-					mp_Frame->m_x+mp_Frame->m_w-16,
-					mp_Frame->m_y+8);
+			Font.drawCharacter(mDialogSfc, 15,
+					mp_Frame->m_w-16,
+					8);
 		}
 		if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
 				( m_scroll+m_h-2 != m_dlgobject.size() )) // Down Arrow
 		{
-			Font.drawCharacter(dst_sfc , 19,
-					mp_Frame->m_x+mp_Frame->m_w-16,
-					mp_Frame->m_y+mp_Frame->m_h-16);
+			Font.drawCharacter(mDialogSfc , 19,
+					mp_Frame->m_w-16,
+					mp_Frame->m_h-16);
 		}
 	}
 	
@@ -501,26 +509,36 @@ void CDialog::draw()
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
 		m_dlgobject[i]->setSelection( i==m_selected_ID ? true : false);
-		m_dlgobject[i]->render(dst_sfc, m_scroll, false );
+		m_dlgobject[i]->render(mDialogSfc, m_scroll, false );
 	}
 
-	//Font.setFGColour(dst_sfc->format, 0x0); // Set black letter color for the other elements
+	//	Font.setFGColour(mDialogSfc->format, 0x0); // Set black letter color for the other elements
 	
 	if(m_inputmode == INPUT_MODE_COUNTER)
 	{
 		if(m_int>m_min)
-			Font.drawCharacter(dst_sfc, 21,
-							   m_dlgobject[m_selected_ID]->m_x+16,
-							   m_dlgobject[m_selected_ID]->m_y);
+			Font.drawCharacter(mDialogSfc, 21,
+							   16,
+							   0);
 		if(m_int<m_max)
-			Font.drawCharacter(dst_sfc, 17,
-							   m_dlgobject[m_selected_ID]->m_x+16+m_dlgobject[m_selected_ID]->m_Option->m_text.length()*8,
-							   m_dlgobject[m_selected_ID]->m_y);
+			Font.drawCharacter(mDialogSfc, 17,
+							   16+m_dlgobject[m_selected_ID]->m_Option->m_text.length()*8,
+							   0);
 	}
 	
 	// Render the twirl
 	if(m_theme != DLG_THEME_GALAXY)
 		drawTwirl();
+
+
+	// Workaround! This class will be replaced by something better
+	framerect.x = m_x;
+	framerect.y = m_y;
+	framerect.w = m_w;
+	framerect.h = m_h;
+
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mDialogSfc, NULL, &framerect ) );
+
 }
 
 #define TWIRL_TIME	5
@@ -569,11 +587,9 @@ void CDialog::drawTwirl()
 		
 	}
 	
-	/*g_pGfxEngine->getCursor()->draw( g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_twirl.frame,
+	g_pGfxEngine->getCursor()->draw( mDialogSfc, m_twirl.frame,
 									m_dlgobject[m_selected_ID]->m_x,
-									m_twirl.posy );*/
-
-
+									m_twirl.posy );
 
 }
 
@@ -588,5 +604,11 @@ CDialog::~CDialog(){
 	while(!m_dlgobject.empty())
 		m_dlgobject.pop_back();
 
+
+	// Clear Task Queue
+	g_pVideoDriver->clearDrawingTasks();
+
+
 	if(mp_Frame) delete mp_Frame;
+	if(mDialogSfc) SDL_FreeSurface(mDialogSfc);
 }

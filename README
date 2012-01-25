@@ -2,17 +2,27 @@
              Commander Genius                
               (CloneKeenPlus)               
                                             
-    (c)2008-2012            Gerstrong       
-    (c)2009-2012            Albert          
-    (c)2009-2012            Pizza2004       
-    (c)2009-2012            Pickle          
-    (c)2009-2012            Tulip           
-    (c)2010-2012            FCTW            
+    (c)2008-2011            Gerstrong       
+    (c)2009-2011            Albert          
+    (c)2009-2011            Pizza2004       
+    (c)2009-2011            Pickle          
+    (c)2009-2011            Tulip           
+    (c)2009-2011            DaVince         
+    (c)2010-2011            FCTW            
+    (c)2010-2011            Furan           
            Released under GNU/GPL           
                                             
-           Release v${CG_VERSION} 
-           Build: ${BUILD_TYPE}                                       
+           Release v0.3.7 
+           Build:                                        
 **********************************************
+
+NOTE: Updaters since 0.3.1.3!
+The savegames are still there but will be stored
+in special directories so you don't get messed up
+with mods. If you have your game at directory 
+"games/keen1", than the savegames will be loaded
+and saved under "save/games/keen1". If you never
+had saved games, don't worry about that message. 
 
 Thanks for downloading Commander Genius!
 

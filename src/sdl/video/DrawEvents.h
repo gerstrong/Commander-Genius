@@ -15,6 +15,7 @@
 #include "graphics/CTilemap.h"
 #include "graphics/CBitmap.h"
 #include "gui/CGUIDialog.h"
+#include "SmartPointer.h"
 
 
 // GUI Based Draw Task
@@ -57,6 +58,17 @@ struct DrawSpriteTask : CEvent
 	const Uint8	mAlpha;
 	DrawSpriteTask(CSprite *SpritePtr, const Uint16 x, const Uint16 y, const Uint8 alpha) :
 		mSpritePtr(SpritePtr), mx(x), my(y), mAlpha(alpha)  {}
+};
+
+struct BlitSurfaceTask : CEvent
+{
+	SDL_Surface *mSfcToBlit;
+	SDL_Rect *mSrcRect;
+	SDL_Rect *mDstRect;
+	BlitSurfaceTask( SDL_Surface *sfcToBlit,
+					 SDL_Rect *srcRect,
+					 SDL_Rect *dstRect ) :
+		mSfcToBlit(sfcToBlit), mSrcRect(srcRect), mDstRect(dstRect)  {}
 };
 
 

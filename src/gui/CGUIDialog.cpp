@@ -56,7 +56,7 @@ void CGUIDialog::processRendering()
 	RectDispCoord = RectDispCoordFloat;
 	SDL_Rect lRect = RectDispCoord.SDLRect();
 
-	SDL_FillRect(Blitsurface, &lRect, 0x00D6D6D6);
+	SDL_FillRect(Blitsurface, &lRect, 0x00E6E6E6);
 
 	for( std::list<
 		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;

@@ -92,25 +92,22 @@ void CSDLVideo::collectSurfaces()
 
 void CSDLVideo::clearSurfaces()
 {
-	SDL_FillRect(FXSurface,NULL, 0x0);
-	SDL_FillRect(BlitSurface,NULL, 0x0);
+	SDL_FillRect(FXSurface, NULL, 0x0);
+	SDL_FillRect(BlitSurface, NULL, 0x0);
 }
 
 
 
 void CSDLVideo::updateScreen()
 {
-	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
-	const CRect<Uint16> &DisplayRect = m_VidConfig.m_DisplayRect;
-
-
 	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
 	Scaler.scaleUp(FilteredSurface, BlitSurface, SCALEX);
-
 
 	// Now scale up to the new DisplayRect (FilteredScreen -> screen)
 	Scaler.scaleUp(screen, FilteredSurface, DYNAMIC);
 
+	// Clear Surface
+	SDL_FillRect(BlitSurface, NULL, 0xFF000000);
 
 	// Flip the screen (We use double-buffering on some systems.)
 	SDL_Flip(screen);

@@ -24,7 +24,8 @@ m_timer(0)
 	mp_SceneSurface = SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0);
 	SDL_SetColors( mp_SceneSurface, g_pGfxEngine->Palette.m_Palette, 0, 255);
 	if(finale_draw( mp_SceneSurface, scene_file, game_path))
-		SDL_BlitSurface( mp_SceneSurface, NULL, g_pVideoDriver->mp_VideoEngine->getScrollSurface(), NULL );
+		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_SceneSurface, NULL,  NULL ) );
+
 	else
 		m_mustclose = true;
 }

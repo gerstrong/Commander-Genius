@@ -40,7 +40,11 @@
 #include "scale2x.h"
 #include "scale3x.h"
 
-#include <alloca.h>
+#ifdef __MINGW32__
+	#include <malloc.h>
+#else
+	#include <alloca.h>
+#endif
 
 #include <assert.h>
 #include <stdlib.h>

@@ -67,12 +67,12 @@ void CScaler::scaleUp(	SDL_Surface				*dstSfc,
 						SDL_Surface				*srcSfc,
 						const scaleOptionType	scaleOption )
 {
-	SDL_LockSurface( srcSfc );
-	SDL_LockSurface( dstSfc );
-
-
 	if( scaleOption == SCALEX && FilterFactor > 1 )
 	{
+
+		SDL_LockSurface( srcSfc );
+		SDL_LockSurface( dstSfc );
+
 		scale( 	FilterFactor,
 				dstSfc->pixels,
 				dstSfc->pitch,
@@ -82,12 +82,18 @@ void CScaler::scaleUp(	SDL_Surface				*dstSfc,
 				srcSfc->w,
 				srcSfc->h	);
 
+		SDL_UnlockSurface( dstSfc );
+		SDL_UnlockSurface( srcSfc );
 	}
 	else if( scaleOption == DYNAMIC )
 	{
+		SDL_LockSurface( srcSfc );
+		SDL_LockSurface( dstSfc );
 
 		scaleDynamic( srcSfc, dstSfc );
 
+		SDL_UnlockSurface( dstSfc );
+		SDL_UnlockSurface( srcSfc );
 	}
 	else
 	{
@@ -101,11 +107,6 @@ void CScaler::scaleUp(	SDL_Surface				*dstSfc,
 		SDL_BlitSurface(srcSfc, &scrrect, dstSfc, &dstrect);
 
 	}
-
-
-
-	SDL_UnlockSurface( dstSfc );
-	SDL_UnlockSurface( srcSfc );
 }
 
 
