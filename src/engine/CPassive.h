@@ -19,6 +19,7 @@
 #include "dialog/CTextBox.h"
 #include "common/CMap.h"
 #include "common/CObject.h"
+#include "gui/CGUIDialog.h"
 #include <string>
 #include <vector>
 
@@ -50,7 +51,7 @@ public:
 	
 	char m_mode;
 	
-	CMenuVorticon *mp_Menu;
+	SmartPointer<CGUIDialog> mpMenuDialog;
 
 protected:
 	char m_Episode;

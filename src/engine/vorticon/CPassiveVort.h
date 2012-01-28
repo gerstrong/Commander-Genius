@@ -12,6 +12,11 @@
 #include "common/CBehaviorEngine.h"
 #include "engine/CIntro.h"
 
+#include "gui/CGUIDialog.h"
+#include "gui/CGUIButton.h"
+#include "gui/CGUIText.h"
+
+
 namespace vorticon
 {
 

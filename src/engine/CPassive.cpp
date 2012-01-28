@@ -12,7 +12,6 @@
 CPassive::CPassive()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-	mp_Menu = NULL;
 	m_modeg = false;
 	m_mode = INTRO;
 	m_Episode = ExeFile.getEpisode();

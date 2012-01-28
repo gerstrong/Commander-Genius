@@ -13,6 +13,7 @@
 #include "common/CTileProperties.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
+#include "core/CGameMode.h"
 
 namespace vorticon
 {
@@ -28,12 +29,26 @@ m_RestartVideo(false)
 	m_GoDemo = false;
 	m_hideobjects = false;
 	m_textsize = 0;
+
+	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
+	mpMenuDialog->addControl(new CGUIText("Main Menu"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+	mpMenuDialog->addControl(new CGUIButton( "Start Game",
+												new GMQuit() ),
+												CRect<float>(0.05f, 0.15f, 0.9f, 0.1f) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ),
+												CRect<float>(0.05f, 0.25f, 0.9f, 0.1f) );
+
 }
 
 bool CPassiveVort::init(char mode)
 {
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	m_mode = mode;
+
+
+
+
 	if( m_mode == INTRO )
 	{
 		mp_IntroScreen = new CIntro();
@@ -68,7 +83,7 @@ bool CPassiveVort::init(char mode)
 void CPassiveVort::process()
 {
 	// Open the Main-Menu or close the opened one?
-	if( !mp_Menu )
+	/*if( !mp_Menu )
 	{
 		if (mp_PressAnyBox==NULL && m_mode == TITLE)
 		{
@@ -110,13 +125,14 @@ void CPassiveVort::process()
 			init(m_mode);
 			m_RestartVideo = false;
 		}
-	}
+	}*/
+
 
 	// Animate the tiles
 	mp_Map->animateAllTiles();
 
 	// If Menu is open show it!
-	if( mp_Menu )
+	/*if( mp_Menu )
 	{
 		mp_Menu->processSpecific();
 
@@ -145,7 +161,7 @@ void CPassiveVort::process()
 			init(m_mode);
 			m_RestartVideo = false;
 		}
-	}
+	}*/
 
 	// Blit the background
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
@@ -167,7 +183,7 @@ void CPassiveVort::process()
 	{
 		mp_TitleScreen->process();
 
-		if( !mp_Menu )
+		/*if( !mp_Menu )
 		{
 			if( mp_TitleScreen->isFinished() )
 			{
@@ -177,7 +193,7 @@ void CPassiveVort::process()
 				init(DEMO);
 				return;
 			}
-		}
+		}*/
 	}
 	else if( m_mode == DEMO )
 	{
@@ -200,6 +216,8 @@ void CPassiveVort::process()
 	// If Menu is not open show "Press Any Key"
 	if(mp_PressAnyBox != NULL)
 		mp_PressAnyBox->process();
+
+	mpMenuDialog->processLogic();
 
 }
 
