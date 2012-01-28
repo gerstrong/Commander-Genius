@@ -46,7 +46,7 @@ bool CGame::init(int argc, char *argv[])
 	if(!g_pSettings->loadDrvCfg())
 	{
 		m_firsttime = true;
-		g_pLogFile->textOut(RED,"First time message: CKP didn't find the driver config file. ");
+		g_pLogFile->textOut(RED,"First time message: CG didn't find the driver config file. ");
 		g_pLogFile->textOut(RED,"However, it generated some default values and will save them now.\n");
 		g_pSettings->saveDrvCfg();
 	}
