@@ -45,6 +45,27 @@ void CGamePassiveMode::process()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	mp_Passive->process();
 
+	if(!EventContainer.empty())
+	{
+		if( StartGameplayEvent* p_Launcher = EventContainer.occurredEvent<StartGameplayEvent>() )
+		{
+			const int Episode = mp_Passive->getEpisode();
+			//const int Numplayers = mp_Passive->getNumPlayers();
+			//const int Difficulty = mp_Passive->getDifficulty();
+			const int Numplayers = 1;
+			const int Difficulty = 1;
+			std::string DataDirectory = mp_Passive->getGamePath();
+			CSavedGame SavedGame = mp_Passive->getSavedGameBlock();
+
+			EventContainer.pop_Event();
+
+			EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory, SavedGame ) );
+			return;
+		}
+
+	}
+
+
 	// check here what the player chose from the menu over the passive mode.
 	// NOTE: Demo is not part of playgame anymore!!
 	if(mp_Passive->getchooseGame())
@@ -52,18 +73,6 @@ void CGamePassiveMode::process()
 		// TODO: Some of game resources are still not cleaned up here!
 		g_pSound->unloadSoundData();
 		EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
-		return;
-	}
-
-	if(mp_Passive->mustStartGame())
-	{
-		const int Episode = mp_Passive->getEpisode();
-		const int Numplayers = mp_Passive->getNumPlayers();
-		const int Difficulty = mp_Passive->getDifficulty();
-		std::string DataDirectory = mp_Passive->getGamePath();
-		CSavedGame SavedGame = mp_Passive->getSavedGameBlock();
-
-		EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory, SavedGame ) );
 		return;
 	}
 

@@ -67,6 +67,9 @@ struct GMStart : CEvent
 	int &mSlot;
 };
 
+// Start the Gameplay
+struct StartGameplayEvent : CEvent {};
+
 ///////
 // Base Class for the modes
 //////

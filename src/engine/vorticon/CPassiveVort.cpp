@@ -30,10 +30,11 @@ m_RestartVideo(false)
 	m_hideobjects = false;
 	m_textsize = 0;
 
+
 	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
 	mpMenuDialog->addControl(new CGUIText("Main Menu"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
 	mpMenuDialog->addControl(new CGUIButton( "Start Game",
-												new GMQuit() ),
+												new StartGameplayEvent() ),
 												CRect<float>(0.05f, 0.15f, 0.9f, 0.1f) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ),
