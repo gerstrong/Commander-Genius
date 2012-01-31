@@ -10,10 +10,24 @@
 #include "CGUIDialog.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
+#include "sdl/extensions.h"
 
 CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
 mRect(SrcRect)
 {}
+
+
+void CGUIDialog::setBackground(const Background background)
+{
+	//SDL_Rect lRect = RectDispCoord.SDLRect();
+	const SDL_Rect lRect = mRect.SDLRect();
+	mpBackgroundSfc = CG_CreateRGBSurface( lRect );
+
+	/*if( background == NONE )
+	{
+		SDL_FillRect( mpBackgroundSfc., &lRect, 0x00E6E6E6 );
+	}*/
+}
 
 
 void CGUIDialog::addControl(CGUIControl *newControl, const CRect<float>& RelRect)
@@ -56,7 +70,7 @@ void CGUIDialog::processRendering()
 	RectDispCoord = RectDispCoordFloat;
 	SDL_Rect lRect = RectDispCoord.SDLRect();
 
-	SDL_FillRect(Blitsurface, &lRect, 0x00E6E6E6);
+	SDL_FillRect( Blitsurface, &lRect, 0x00E6E6E6 );
 
 	for( std::list<
 		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;

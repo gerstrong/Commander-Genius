@@ -22,8 +22,18 @@ class CGUIDialog
 
 public:
 
+	enum Background
+	{
+		NONE,
+		VORTICON,
+		VORTICONADVANCED
+	};
+
 	// Constructor which needs the Rect for the placement of the Dialog
 	CGUIDialog(const CRect<float> &NewRect);
+
+	// Set the Background
+	void setBackground(const Background background);
 
 	// processes the whole logic of the Dialog
 	void processLogic();
@@ -39,6 +49,9 @@ private:
 
 	// List of Controls that the Dialog has.
 	std::list< SmartPointer<CGUIControl> > mControlList;
+
+	// SDl_Surface of the Background
+	SmartPointer<SDL_Surface>	mpBackgroundSfc;
 
 };
 

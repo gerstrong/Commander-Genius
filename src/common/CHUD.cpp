@@ -9,6 +9,7 @@
 #include "common/CBehaviorEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/video/colourconvert.h"
+#include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
 
@@ -37,22 +38,8 @@ void CHUD::CreateBackground()
 {
 	// Create a surface for that
 	SDL_Surface *temp;
-	const Uint32 flags = 0;
-	// For some reason the Alpha mask doesn't work, if blitsurface == screensurface. Not sure if every system is affected of that.
-	// Maybe I write a function for the proper masks...
-	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-		const Uint32 rmask = 0xFF000000;
-		const Uint32 gmask = 0x00FF0000;
-		const Uint32 bmask = 0x0000FF00;
-    	const Uint32 amask = 0x000000FF;
-    #else
-    	const Uint32 rmask = 0x000000FF;
-    	const Uint32 gmask = 0x0000FF00;
-    	const Uint32 bmask = 0x00FF0000;
-    	const Uint32 amask = 0xFF000000;
-    #endif
-
-	mp_Background = SDL_CreateRGBSurface( flags, m_Rect.w, m_Rect.h, 32, rmask, gmask, bmask, amask);
+	int flags = 0;
+	mp_Background = CG_CreateRGBSurface( m_Rect );
 
 	SDL_Rect headsrcrect, headdstrect;
 	headsrcrect.x = 0;
@@ -179,8 +166,6 @@ void CHUD::renderVorticon()
 	score = (m_score<999999999) ? m_score : 999999999;
 	lives = (m_lives<99) ? m_lives : 99;
 	charges = (m_charges<99) ? m_charges : 99;
-
-	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
 
 	// Draw the background
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_Background, NULL, &m_Rect ) );

@@ -12,6 +12,7 @@
 #include "CStatusScreen.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/extensions.h"
 #include "StringUtils.h"
 #include "common/Playerdefines.h"
 #include "common/CBehaviorEngine.h"
@@ -62,14 +63,7 @@ void CStatusScreen::draw()
 
 SDL_Surface* CStatusScreen::CreateStatusSfc()
 {
-	SDL_Surface *p_blitSurface = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
-	const Uint32 rmask = p_blitSurface->format->Rmask;
-	const Uint32 gmask = p_blitSurface->format->Gmask;
-	const Uint32 bmask = p_blitSurface->format->Bmask;
-	const Uint32 amask = p_blitSurface->format->Amask;
-	const Uint8 bpp = p_blitSurface->format->BitsPerPixel;
-
-	return SDL_CreateRGBSurface(p_blitSurface->flags, m_StatusRect.w, m_StatusRect.h, bpp, rmask, gmask, bmask, amask);
+	return CG_CreateRGBSurface( m_StatusRect );
 }
 
 std::string CStatusScreen::fetchDifficultyText()
