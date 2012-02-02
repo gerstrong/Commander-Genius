@@ -14,7 +14,9 @@
 
 CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
 mRect(SrcRect)
-{}
+{
+	setBackground(NONE);
+}
 
 
 void CGUIDialog::setBackground(const Background background)
@@ -23,10 +25,12 @@ void CGUIDialog::setBackground(const Background background)
 	const SDL_Rect lRect = mRect.SDLRect();
 	mpBackgroundSfc = CG_CreateRGBSurface( lRect );
 
-	/*if( background == NONE )
-	{
-		SDL_FillRect( mpBackgroundSfc., &lRect, 0x00E6E6E6 );
-	}*/
+
+	if( background == NONE )
+		drawBackround = &CGUIDialog::drawEmptyBackround;
+	else
+		drawBackround = &CGUIDialog::drawEmptyBackround;
+
 }
 
 
@@ -56,6 +60,12 @@ void CGUIDialog::processLogic()
 }
 
 
+void CGUIDialog::drawEmptyBackround(SDL_Rect Rect)
+{
+	SDL_FillRect( g_pVideoDriver->getBlitSurface(), &Rect, 0x00E6E6E6 );
+}
+
+
 void CGUIDialog::processRendering()
 {
 	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
@@ -69,6 +79,8 @@ void CGUIDialog::processRendering()
 	CRect<Uint16> RectDispCoord;
 	RectDispCoord = RectDispCoordFloat;
 	SDL_Rect lRect = RectDispCoord.SDLRect();
+
+	(this->*drawBackround)(lRect);
 
 	SDL_FillRect( Blitsurface, &lRect, 0x00E6E6E6 );
 

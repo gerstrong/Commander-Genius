@@ -19,3 +19,4 @@ template <> void SmartPointer_ObjectDeinit<SDL_Surface>( SDL_Surface * obj )
 {
 	SDL_FreeSurface(obj);
 }
+

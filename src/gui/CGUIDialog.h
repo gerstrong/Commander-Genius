@@ -35,6 +35,9 @@ public:
 	// Set the Background
 	void setBackground(const Background background);
 
+	// Empty Background draw function. Just fills the Rect with a standard gray color
+	void drawEmptyBackround(SDL_Rect Rect);
+
 	// processes the whole logic of the Dialog
 	void processLogic();
 
@@ -50,8 +53,11 @@ private:
 	// List of Controls that the Dialog has.
 	std::list< SmartPointer<CGUIControl> > mControlList;
 
-	// SDl_Surface of the Background
+	// SDL_Surface of the Background
 	SmartPointer<SDL_Surface>	mpBackgroundSfc;
+
+	// Pointer to the function that will be in charge of drawing the background
+	void (CGUIDialog::*drawBackround)(SDL_Rect);
 
 };
 
