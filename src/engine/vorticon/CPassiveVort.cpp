@@ -32,7 +32,7 @@ m_RestartVideo(false)
 
 
 	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
-	//mpMenuDialog->setBackground(CGUIDialog::VORTICON);
+	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 	mpMenuDialog->addControl(new CGUIText("Main Menu"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
 	mpMenuDialog->addControl(new CGUIButton( "Start Game",
 												new StartGameplayEvent() ),

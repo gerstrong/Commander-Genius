@@ -38,6 +38,9 @@ public:
 	// Empty Background draw function. Just fills the Rect with a standard gray color
 	void drawEmptyBackround(SDL_Rect Rect);
 
+	// Vorticon Menu draw function
+	void drawVorticonBackround(SDL_Rect Rect);
+
 	// processes the whole logic of the Dialog
 	void processLogic();
 

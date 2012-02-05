@@ -11,6 +11,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "sdl/extensions.h"
+#include "graphics/CGfxEngine.h"
 
 CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
 mRect(SrcRect)
@@ -26,8 +27,8 @@ void CGUIDialog::setBackground(const Background background)
 	mpBackgroundSfc = CG_CreateRGBSurface( lRect );
 
 
-	if( background == NONE )
-		drawBackround = &CGUIDialog::drawEmptyBackround;
+	if( background == VORTICON )
+		drawBackround = &CGUIDialog::drawVorticonBackround;
 	else
 		drawBackround = &CGUIDialog::drawEmptyBackround;
 
@@ -66,9 +67,61 @@ void CGUIDialog::drawEmptyBackround(SDL_Rect Rect)
 }
 
 
+void CGUIDialog::drawVorticonBackround( SDL_Rect Rect )
+{
+	// Now lets draw the text of the list control
+	CFont &Font = g_pGfxEngine->getFont(0);
+
+	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
+
+
+
+	// Draw the character so the classical vorticon menu is drawn
+
+	// Start with the blank space (normally it's white. Might be different in some mods)
+	for( int x=Rect.x+8 ; x<Rect.x+Rect.w-8 ; x+=8 )
+	{
+		for( int y=Rect.y+8 ; y<Rect.y+Rect.h-2*8 ; y+=8 )
+		{
+			Font.drawCharacter( Blitsurface, 32, x, y );
+		}
+	}
+
+
+	Font.drawCharacter( Blitsurface, 1, Rect.x, Rect.y );
+
+	for( int x=Rect.x+8 ; x<Rect.x+Rect.w-8 ; x+=8 )
+	{
+		Font.drawCharacter( Blitsurface, 2, x, Rect.y );
+	}
+
+	Font.drawCharacter( Blitsurface, 3, Rect.x+Rect.w-8, Rect.y );
+
+
+
+	for( int x=Rect.x+8 ; x<Rect.x+Rect.w-8 ; x+=8 )
+	{
+		Font.drawCharacter( Blitsurface, 7, x, Rect.y+Rect.h-2*8 );
+	}
+
+	for( int y=Rect.y+8 ; y<Rect.y+Rect.h-16 ; y+=8 )
+	{
+		Font.drawCharacter( Blitsurface, 4, Rect.x, y );
+	}
+
+	for( int y=Rect.y+8 ; y<Rect.y+Rect.h-16 ; y+=8 )
+	{
+		Font.drawCharacter( Blitsurface, 5, Rect.x+Rect.w-8, y );
+	}
+
+	Font.drawCharacter( Blitsurface, 6, Rect.x, Rect.y+Rect.h-2*8 );
+	Font.drawCharacter( Blitsurface, 8, Rect.x+Rect.w-8, Rect.y+Rect.h-2*8 );
+
+}
+
+
 void CGUIDialog::processRendering()
 {
-	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
 	CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
 	CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 	CRect<float> RectDispCoordFloat = mRect;
@@ -81,8 +134,6 @@ void CGUIDialog::processRendering()
 	SDL_Rect lRect = RectDispCoord.SDLRect();
 
 	(this->*drawBackround)(lRect);
-
-	SDL_FillRect( Blitsurface, &lRect, 0x00E6E6E6 );
 
 	for( std::list<
 		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;
