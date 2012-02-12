@@ -18,9 +18,24 @@
 class CGUIButton : public CGUIControl
 {
 public:
-	CGUIButton(const std::string& text, const SmartPointer<CEvent> ev);
+
+	enum Style
+	{
+		NONE,
+		VORTICON
+	};
+
+	CGUIButton(const std::string& text,
+			const SmartPointer<CEvent> ev,
+			const Style	style = NONE);
 
 	void processLogic();
+
+	void drawNoStyle(SDL_Rect& lRect);
+
+	void drawVorticonStyle(SDL_Rect& lRect);
+
+
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
 private:
@@ -29,6 +44,9 @@ private:
 	bool mButtonUp;
 	std::string mText;
 	SmartPointer<CEvent> mEvent;
+
+
+	void (CGUIButton::*drawButton)(SDL_Rect&);
 };
 
 #endif /* CGUIBUTTON_H_ */

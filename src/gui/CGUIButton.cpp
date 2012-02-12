@@ -12,14 +12,26 @@
 #include "sdl/CVideoDriver.h"
 #include "common/CBehaviorEngine.h"
 #include "core/CGameMode.h"
+#include "sdl/CTimer.h"
 
-CGUIButton::CGUIButton(const std::string& text, const SmartPointer<CEvent> ev) :
+
+int twirliconID;
+
+
+CGUIButton::CGUIButton(	const std::string& text,
+						const SmartPointer<CEvent> ev,
+						const Style	style ) :
 mHovered(false),
 mButtonDown(false),
 mButtonUp(false),
 mText(text),
-mEvent(ev)
-{}
+mEvent(ev),
+drawButton(&CGUIButton::drawNoStyle)
+{
+	twirliconID = 10;
+	if(style == VORTICON)
+		drawButton = &CGUIButton::drawVorticonStyle;
+}
 
 
 void CGUIButton::processLogic()
@@ -57,14 +69,41 @@ void CGUIButton::processLogic()
 	}
 }
 
-void CGUIButton::processRender(const CRect<float> &RectDispCoordFloat)
+
+void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 {
+
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
-	// Transform to the display coordinates
-	CRect<float> displayRect = mRect;
-	displayRect.transform(RectDispCoordFloat);
-	SDL_Rect lRect = displayRect.SDLRect();
+	// Now lets draw the text of the list control
+	CFont &Font = g_pGfxEngine->getFont(0);
+
+	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
+
+
+	if( g_pTimer->HasTimeElapsed(100) )
+	{
+		twirliconID++;
+
+		if(twirliconID == 15)
+			twirliconID = 9;
+	}
+
+	if( mButtonDown )
+	{
+		Font.drawCharacter( blitsfc, twirliconID, lRect.x+12, lRect.y );
+	}
+	else if( mHovered )
+	{
+		Font.drawCharacter( blitsfc, twirliconID, lRect.x+8, lRect.y );
+	}
+
+}
+
+
+void CGUIButton::drawNoStyle(SDL_Rect& lRect)
+{
+	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
 	if( mButtonUp )
 	{
@@ -87,4 +126,15 @@ void CGUIButton::processRender(const CRect<float> &RectDispCoordFloat)
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+}
+
+
+void CGUIButton::processRender(const CRect<float> &RectDispCoordFloat)
+{
+	// Transform to the display coordinates
+	CRect<float> displayRect = mRect;
+	displayRect.transform(RectDispCoordFloat);
+	SDL_Rect lRect = displayRect.SDLRect();
+
+	(this->*drawButton)(lRect);
 }

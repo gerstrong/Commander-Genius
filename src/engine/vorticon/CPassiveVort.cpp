@@ -33,13 +33,12 @@ m_RestartVideo(false)
 
 	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
-	//mpMenuDialog->addControl(new CGUIText("Main Menu"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-	mpMenuDialog->addControl(new CGUIButton( "Start Game",
-												new StartGameplayEvent() ),
-												CRect<float>(0.05f, 0.08f, 0.9f, 0.1f) );
+	mpMenuDialog->addControl(new CGUIButton( "New Game",
+												new StartGameplayEvent(), CGUIButton::VORTICON ),
+												CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ),
-												CRect<float>(0.05f, 0.18f, 0.9f, 0.1f) );
+	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit(), CGUIButton::VORTICON ),
+												CRect<float>(0.05f, 0.16f, 0.9f, 0.07f) );
 
 }
 
@@ -47,8 +46,6 @@ bool CPassiveVort::init(char mode)
 {
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	m_mode = mode;
-
-
 
 
 	if( m_mode == INTRO )
