@@ -12,8 +12,10 @@
 #include "../sdl/CVideoDriver.h"
 #include "CGFont.xpm"
 #include "StringUtils.h"
+#include "sdl/extensions.h"
 
-// TODO: We need to add documentation. I'll do that very soon!
+
+
 
 CFont::CFont() :
 mFontSurface(NULL)
@@ -22,9 +24,16 @@ mFontSurface(NULL)
 }
 
 
+
+
+
 ///////////////////////////////////
 ///// Initialization Routines /////
 ///////////////////////////////////
+
+
+
+
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 							Uint8 bpp, Uint16 width, Uint16 height)
@@ -36,6 +45,10 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 
 	return ( mFontSurface != NULL );
 }
+
+
+
+
 
 SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, const Uint32 flags)
 {
@@ -99,6 +112,9 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 }
 
 
+
+
+
 bool CFont::loadinternalFont()
 {
 	// Has the Surface to the entire font been loaded?
@@ -120,6 +136,8 @@ void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 
 
 
+
+
 unsigned int CFont::getPixelTextWidth( const std::string& text )
 {
 	unsigned int c = 0, width = 0;
@@ -131,10 +149,42 @@ unsigned int CFont::getPixelTextWidth( const std::string& text )
 	return width;
 }
 
+
+
+
+
 unsigned int CFont::getPixelTextHeight()
 {
 	return mFontSurface->h/16;
 }
+
+
+
+
+
+Uint32 CFont::getBGColour(const bool highlight)
+{
+	SDL_LockSurface(mFontSurface);
+
+	const Uint32 color = getPixel(mFontSurface, 0, highlight ? 80 : 16 );
+
+	SDL_UnlockSurface(mFontSurface);
+
+	return color;
+}
+
+
+
+
+
+void  CFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
+{
+	SDL_GetRGB( getBGColour(highlight), mFontSurface->format, r, g, b);
+}
+
+
+
+
 
 ////////////////////////////
 ///// Drawing Routines /////

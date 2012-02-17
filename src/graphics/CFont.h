@@ -46,6 +46,15 @@ public:
 	unsigned int getPixelTextHeight();
 
 
+	/**
+	 * \brief gets the background color of the font
+	 */
+	Uint32 getBGColour(const bool highlight = false);
+
+	/**
+	 * \brief Components-version
+	 */
+	void getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight = false);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
 	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false);

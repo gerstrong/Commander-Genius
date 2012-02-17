@@ -90,8 +90,8 @@ void CHUD::DrawCircle(int x, int y, int width)
 	SDL_Rect text, outline;
 
 	Uint8 r,g,b;
-	//CFont &Font = g_pGfxEngine->getFont(0);
-	//Font.getBGColour(false, &r, &g, &b);
+	CFont &Font = g_pGfxEngine->getFont(0);
+	Font.getBGColour(&r, &g, &b);
 
 	outline.x = x+4;
 	outline.y = y;
