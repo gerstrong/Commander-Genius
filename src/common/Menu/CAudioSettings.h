@@ -19,7 +19,6 @@ public:
 	CAudioSettings(Uint8 dlg_theme, CExeFile &ExeFile);
 	void processSpecific();
 	void setFrequencyFromSlot(int value);
-	virtual ~CAudioSettings();
 
 private:
 

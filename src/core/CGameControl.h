@@ -12,6 +12,7 @@
 
 #include "common/CGameLauncher.h"
 #include "common/options.h"
+#include "common/Menu/CMenuController.h"
 #include "fileio/CSavedGame.h"
 #include "engine/CEGAGraphics.h"
 #include "engine/CMessages.h"
@@ -43,6 +44,8 @@ protected:
 	int m_startGame_no;
 	int m_startLevel;
 	bool m_show_finale;
+
+	CMenuController mMenuController;
 };
 
 #endif /* CGAMECONTROL_H_ */

@@ -12,7 +12,7 @@ CCameraSettings::CCameraSettings(Uint8 dlg_theme):
 CBaseMenu(dlg_theme),
 m_CameraBounds(g_pVideoDriver->getCameraBounds())
 {
-	std::string buf;
+	/*std::string buf;
 	mp_Dialog = new CDialog(18, 13, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Adjust Bounds: ");
@@ -27,12 +27,12 @@ m_CameraBounds(g_pVideoDriver->getCameraBounds())
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 10, " Speed (1-50):  ");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, " "+itoa(m_CameraBounds.speed));
 
-	mp_Dialog->setInputMode(INPUT_MODE_COUNTER);
+	mp_Dialog->setInputMode(INPUT_MODE_COUNTER);*/
 }
 
 void CCameraSettings::processSpecific()
 {
-	if(mp_Dialog->getSelection() == 2)
+	/*if(mp_Dialog->getSelection() == 2)
 	{
 		mp_Dialog->m_min = 50;
 		mp_Dialog->m_max = 270;
@@ -61,16 +61,16 @@ void CCameraSettings::processSpecific()
 		mp_Dialog->m_min = 1;
 		mp_Dialog->m_max = 50;
 		mp_Dialog->m_length = 2;
-	}
+	}*/
 
-	m_CameraBounds.left = atoi(mp_Dialog->m_dlgobject.at(2)->m_Option->m_text);
+	/*m_CameraBounds.left = atoi(mp_Dialog->m_dlgobject.at(2)->m_Option->m_text);
 	m_CameraBounds.right = atoi(mp_Dialog->m_dlgobject.at(4)->m_Option->m_text);
 	m_CameraBounds.up = atoi(mp_Dialog->m_dlgobject.at(6)->m_Option->m_text);
 	m_CameraBounds.down = atoi(mp_Dialog->m_dlgobject.at(8)->m_Option->m_text);
-	m_CameraBounds.speed = atoi(mp_Dialog->m_dlgobject.at(10)->m_Option->m_text);
+	m_CameraBounds.speed = atoi(mp_Dialog->m_dlgobject.at(10)->m_Option->m_text);*/
 
 #ifndef NOKEYBOARD
-	if( m_selection != NO_SELECTION)
+	/*if( m_selection != NO_SELECTION)
 	{
 		if(mp_Dialog->getInputMode(INPUT_MODE_COUNTER))
 		{
@@ -97,7 +97,7 @@ void CCameraSettings::processSpecific()
 			mp_Dialog->setInputMode(INPUT_MODE_COUNTER);
 			m_selection = NO_SELECTION;
 		}
-	}
+	}*/
 #endif
 }
 

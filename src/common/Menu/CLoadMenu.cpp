@@ -12,7 +12,7 @@ CLoadMenu::CLoadMenu(Uint8 dlg_theme, CSavedGame &SavedGame) :
 CBaseMenu(dlg_theme),
 m_SavedGame(SavedGame)
 {
-	mp_Dialog = new CDialog(MENU_WIDTH, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
+	/*mp_Dialog = new CDialog(MENU_WIDTH, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
 	// Load the state-file list
 	std::vector<std::string> StateFileList = m_SavedGame.getSlotList();
@@ -28,12 +28,12 @@ m_SavedGame(SavedGame)
 		}
 
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
-	}
+	}*/
 }
 
 void CLoadMenu::processSpecific()
 {
-	if( m_selection != NO_SELECTION)
+	/*if( m_selection != NO_SELECTION)
 	{
 		if(mp_Dialog->m_name == m_SavedGame.getEmptyString())
 		{
@@ -46,11 +46,11 @@ void CLoadMenu::processSpecific()
 			m_mustclose = true;
 		}
 		m_selection = NO_SELECTION;
-	}
+	}*/
 }
 
 CLoadMenu::~CLoadMenu()
 {
-	if(mp_Dialog) delete mp_Dialog;
-	mp_Dialog = NULL;
+	/*if(mp_Dialog) delete mp_Dialog;
+	mp_Dialog = NULL;*/
 }

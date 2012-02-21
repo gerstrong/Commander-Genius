@@ -14,7 +14,7 @@ COptions::COptions(Uint8 dlg_theme, stOption *p_option) :
 CBaseMenu(dlg_theme),
 mp_option(g_pBehaviorEngine->m_option)
 {
-	int i;
+	/*int i;
 	std::string buf;
 
 	mp_Dialog = new CDialog(27, NUM_OPTIONS+2, INPUT_MODE_UP_DOWN, dlg_theme);
@@ -25,12 +25,12 @@ mp_option(g_pBehaviorEngine->m_option)
 		buf = mp_option[i].menuname + " " + getSwitchString(mp_option[i].value);
 		mp_Dialog->m_dlgobject.at(i)->m_Option->m_FontMapID = 1;
 		mp_Dialog->setObjectText(i, buf);
-	}
+	}*/
 }
 
 void COptions::processSpecific()
 {
-	std::string buf;
+	/*std::string buf;
 
 	if(m_mustclose) // If menu is about to close save the options
 		g_pSettings->saveGameCfg();
@@ -43,10 +43,5 @@ void COptions::processSpecific()
 
 		mp_Dialog->setObjectText(m_selection, buf);
 		m_selection = NO_SELECTION;
-	}
-}
-
-COptions::~COptions() {
-	if(mp_Dialog) delete mp_Dialog;
-	mp_Dialog = NULL;
+	}*/
 }

@@ -17,7 +17,7 @@ class CVolumeSettings : public CBaseMenu
 public:
 	CVolumeSettings(Uint8 dlg_theme);
 	void processSpecific();
-	virtual ~CVolumeSettings();
+
 };
 
 #endif /* CVOLUMESETTINGS_H_ */

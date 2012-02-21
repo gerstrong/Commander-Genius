@@ -21,7 +21,7 @@ m_Resolutionlist(g_pVideoDriver->m_Resolutionlist),
 m_restartVideo(restartVideo),
 mp_CameraSettings(NULL)
 {
-	m_current = -1;
+	/*m_current = -1;
 	m_changed = false;
 	
 	g_pVideoDriver->initResolutionList();
@@ -90,12 +90,13 @@ mp_CameraSettings(NULL)
 	mp_Dialog->m_dlgobject.at(7)->m_Option->m_FontMapID = 1;
 	mp_Dialog->setObjectText(7, buf);
 
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Adjust Camera Bounds");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Adjust Camera Bounds");*/
 }
 
-void CVideoSettings::processSpecific(){
+void CVideoSettings::processSpecific()
+{
 	
-	if(!mp_CameraSettings)
+	/*if(!mp_CameraSettings)
 	{
 		std::string buf;
 		m_changed = true;
@@ -296,5 +297,5 @@ void CVideoSettings::processSpecific(){
 			SAFE_DELETE(mp_CameraSettings);
 			m_suspended = false;
 		}
-	}
+	}*/
 }

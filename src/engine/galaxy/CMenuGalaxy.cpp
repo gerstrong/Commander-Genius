@@ -36,7 +36,7 @@ bool CMenuGalaxy::init( menutypes menu_type )
 {
 	cleanup();
 
-	CFont &Font = g_pGfxEngine->getFont(1);
+	//CFont &Font = g_pGfxEngine->getFont(1);
 	//Font.setBGColour(g_pVideoDriver->mp_VideoEngine->getBlitSurface()->format, 0x545454);
 
 	CMenu::init(menu_type);
@@ -107,11 +107,11 @@ void CMenuGalaxy::processMainMenu()
 			else if( m_selection == 6 ) // Choose Game
 				m_choosegame = true;
 		}
-		else if( m_menu_mode == ACTIVE )
+		/*else if( m_menu_mode == ACTIVE )
 		{
 			if( m_selection == 5 ) // Back to Game
 				m_mustclose = true;
-		}
+		}*/
 	}
 
 	if( m_selection == 3 ) // Show Highscores

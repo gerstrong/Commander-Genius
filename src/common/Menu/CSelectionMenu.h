@@ -35,29 +35,29 @@ public:
 
 		height = item_list.size()+2;
 
-		mp_Dialog = new CDialog(width, height, INPUT_MODE_UP_DOWN, dlg_theme);
+		/*mp_Dialog = new CDialog(width, height, INPUT_MODE_UP_DOWN, dlg_theme);
 
 		item = item_list.begin();
 		for(size_t pos=1; item != item_list.end() ; item++, pos++)
 			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, pos, *item);
 
-		mp_Dialog->setSelection(defaultselection);
+		mp_Dialog->setSelection(defaultselection);*/
 	}
 
 	void processSpecific()
 	{
-		if( m_selection != NO_SELECTION)
+		/*if( m_selection != NO_SELECTION)
 		{
 			m_selecteditem = m_selection + 1;
 			m_mustclose = true;
-		}
+		}*/
 	}
 
 	virtual ~CSelectionMenu()
 	{
-		if(mp_Dialog)
+		/*if(mp_Dialog)
 			delete mp_Dialog;
-		mp_Dialog = NULL;
+		mp_Dialog = NULL;*/
 	}
 
 private:

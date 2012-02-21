@@ -29,17 +29,6 @@ m_RestartVideo(false)
 	m_GoDemo = false;
 	m_hideobjects = false;
 	m_textsize = 0;
-
-
-	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
-	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
-	mpMenuDialog->addControl(new CGUIButton( "New Game",
-												new StartGameplayEvent(), CGUIButton::VORTICON ),
-												CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
-
-	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit(), CGUIButton::VORTICON ),
-												CRect<float>(0.05f, 0.16f, 0.9f, 0.07f) );
-
 }
 
 bool CPassiveVort::init(char mode)
@@ -215,8 +204,6 @@ void CPassiveVort::process()
 	// If Menu is not open show "Press Any Key"
 	if(mp_PressAnyBox != NULL)
 		mp_PressAnyBox->process();
-
-	mpMenuDialog->processLogic();
 
 }
 

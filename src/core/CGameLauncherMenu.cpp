@@ -193,8 +193,8 @@ void CGameLauncherMenu::process()
 		mp_FirstTimeMenu->processSpecific();
 		mp_FirstTimeMenu->postProcess();
 
-		if(mp_FirstTimeMenu->mustClose())
-			mp_FirstTimeMenu.tryDeleteData();
+		/*if(mp_FirstTimeMenu->mustClose())
+			mp_FirstTimeMenu.tryDeleteData();*/
 	}
 	else
 	{

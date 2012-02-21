@@ -20,7 +20,7 @@ mp_OverwriteMenu(NULL),
 m_SavedGame(SavedGame),
 m_overwrite(false)
 {
-	std::string text;
+	/*std::string text;
 	mp_Dialog = new CDialog(MENU_WIDTH, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
 	m_selection = NO_SELECTION;
 
@@ -36,12 +36,12 @@ m_overwrite(false)
 			mp_Dialog->m_name = text;
 		}
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
-	}
+	}*/
 }
 
 void CSaveMenu::processSpecific()
 {
-	if(!mp_OverwriteMenu)
+	/*if(!mp_OverwriteMenu)
 	{
 		if( m_selection != NO_SELECTION )
 		{
@@ -110,20 +110,15 @@ void CSaveMenu::processSpecific()
 			}
 
 		}
-	}
+	}*/
 }
 
 void CSaveMenu::saveSelection()
 {
-	mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
+	/*mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
 
 	m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
 	m_selection = NO_SELECTION;
-	mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
+	mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);*/
 }
 
-CSaveMenu::~CSaveMenu()
-{
-	if(mp_Dialog) delete mp_Dialog;
-	mp_Dialog = NULL;
-}

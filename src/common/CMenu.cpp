@@ -40,7 +40,7 @@ m_restartVideo(restartVideo)
 
 void CMenu::init( menutypes menu_type )
 {
-	m_menu_type = menu_type;
+	/*m_menu_type = menu_type;
 	m_selection = NO_SELECTION; // Nothing has been selected yet.
 
 	switch(m_menu_type)
@@ -80,12 +80,12 @@ void CMenu::init( menutypes menu_type )
 		m_SubMenus.push_back(new CLoadMenu(m_dlg_theme, m_SavedGame)); break;
 	default:
 		break;
-	}
+	}*/
 }
 
 void CMenu::initMainMenu()
 {
-	mp_Dialog = new CDialog(17, 10, INPUT_MODE_UP_DOWN,m_dlg_theme);
+	/*mp_Dialog = new CDialog(17, 10, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
 	// Being at Intro, Title or Demo mode
 	if( m_menu_mode == PASSIVE )
@@ -110,7 +110,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
-	}
+	}*/
 }
 
 ////
@@ -118,7 +118,7 @@ void CMenu::initMainMenu()
 ////
 void CMenu::process()
 {
-	if( g_pInput->getHoldedKey(KM) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
+	/*if( g_pInput->getHoldedKey(KM) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
 	{
 		cleanup();
 		init(MODCONF);
@@ -173,12 +173,12 @@ void CMenu::process()
 		}
 
 		processMainMenu();
-	}
+	}*/
 }
 
 void CMenu::processMainMenu()
 {
-	if( m_selection != NO_SELECTION )
+	/*if( m_selection != NO_SELECTION )
 	{
 		if( m_menu_mode == PASSIVE )
 		{
@@ -207,7 +207,7 @@ void CMenu::processMainMenu()
 			case 7: init(QUIT);break;
 			}
 		}
-	}
+	}*/
 }
 
 ////
@@ -216,16 +216,16 @@ void CMenu::processMainMenu()
 void CMenu::cleanup()
 {
 	// Close the old menu
-	while(!m_SubMenus.empty())
+	/*while(!m_SubMenus.empty())
 	{
 		delete m_SubMenus.front();
 		m_SubMenus.pop_back();
 	}
-	SAFE_DELETE(mp_Dialog);
+	SAFE_DELETE(mp_Dialog);*/
 }
 
 
 CMenu::~CMenu()
 {
-	cleanup();
+	//cleanup();
 }

@@ -23,7 +23,7 @@ m_must_restart_sounddriver(false)
 {
 	m_current = -1;
 	
-	mp_Dialog = new CDialog(30, 7, INPUT_MODE_OPTION,m_dlg_theme);
+	/*mp_Dialog = new CDialog(30, 7, INPUT_MODE_OPTION,m_dlg_theme);
 	
 	m_Rate = g_pSound->getAudioSpec().freq;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Rate: " + itoa(m_Rate) +" kHz");
@@ -55,13 +55,13 @@ m_must_restart_sounddriver(false)
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
 	mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = m_Soundblaster;
 
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Adjust Volume");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Adjust Volume");*/
 
 }
 
 void CAudioSettings::processSpecific()
 {
-	if(!m_suspended)
+	/*if(!m_suspended)
 	{
 		std::string buf;
 		
@@ -169,7 +169,7 @@ void CAudioSettings::processSpecific()
 			SAFE_DELETE(mp_VolumeMenu);
 			m_suspended = false;
 		}
-	}
+	}*/
 }
 
 void CAudioSettings::setFrequencyFromSlot(int value)
@@ -184,7 +184,3 @@ void CAudioSettings::setFrequencyFromSlot(int value)
 	}
 }
 
-CAudioSettings::~CAudioSettings() {
-	if(mp_Dialog) delete mp_Dialog;
-	mp_Dialog = NULL;
-}

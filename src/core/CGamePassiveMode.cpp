@@ -9,6 +9,7 @@
 #include "sdl/sound/CSound.h"
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/galaxy/CPassive.h"
+#include "common/Menu/CMenuController.h"
 
 CGamePassiveMode::CGamePassiveMode(const std::string& DataDirectory, const int& Episode) :
 m_DataDirectory(DataDirectory),
@@ -47,7 +48,7 @@ void CGamePassiveMode::process()
 
 	if(!EventContainer.empty())
 	{
-		if( StartGameplayEvent* p_Launcher = EventContainer.occurredEvent<StartGameplayEvent>() )
+		if( StartGameplayEvent* pLauncher = EventContainer.occurredEvent<StartGameplayEvent>() )
 		{
 			const int Episode = mp_Passive->getEpisode();
 			//const int Numplayers = mp_Passive->getNumPlayers();
@@ -60,6 +61,7 @@ void CGamePassiveMode::process()
 			EventContainer.pop_Event();
 
 			EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory, SavedGame ) );
+			EventContainer.add( new CloseMenuEvent() );
 			return;
 		}
 
@@ -81,5 +83,6 @@ void CGamePassiveMode::process()
 	{
 		EventContainer.add( new GMQuit() );
 	}
+
 
 }

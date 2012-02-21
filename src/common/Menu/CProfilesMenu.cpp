@@ -21,12 +21,13 @@ CBaseMenu(dlg_theme)
 	profile_list.push_back("Classic mode");
 	profile_list.push_back("Enhanced mode");
 
-	mp_SubMenu = new CSelectionMenu<int>( m_selection, profile_list, m_dlg_theme );
+	//mp_SubMenu = new CSelectionMenu<int>( m_selection, profile_list, m_dlg_theme );
 }
 
 void CProfilesMenu::processSpecific()
 {
-	if(mp_SubMenu.get()) {
+	/*if(mp_SubMenu.get())
+	{
 		mp_SubMenu->processCommon();
 		mp_SubMenu->processSpecific();
 		mp_SubMenu->postProcess();		
@@ -46,7 +47,7 @@ void CProfilesMenu::processSpecific()
 	{
 		mp_SubMenu = NULL;
 		m_mustclose = true;
-	}
+	}*/
 }
 
 /**

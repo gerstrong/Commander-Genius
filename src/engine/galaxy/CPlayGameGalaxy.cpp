@@ -69,7 +69,7 @@ void CPlayGameGalaxy::process()
 		// draw the title bitmap here!
 		m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);
 
-		if(mp_Menu->mustClose())
+		/*if(mp_Menu->mustClose())
 		{
 			g_pMusicPlayer->play();
 			delete mp_Menu;
@@ -80,7 +80,7 @@ void CPlayGameGalaxy::process()
 		else if(mp_Menu->mustEndGame())
 			m_endgame = true;
 		else
-			mp_Menu->process();
+			mp_Menu->process();*/
 	}
 	else
 	{

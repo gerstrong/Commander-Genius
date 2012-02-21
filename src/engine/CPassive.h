@@ -51,8 +51,6 @@ public:
 	
 	char m_mode;
 	
-	SmartPointer<CGUIDialog> mpMenuDialog;
-
 protected:
 	char m_Episode;
 	char m_NumPlayers;

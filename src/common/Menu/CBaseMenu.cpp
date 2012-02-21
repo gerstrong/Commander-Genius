@@ -8,34 +8,18 @@
 #include "sdl/input/CInput.h"
 #include "CBaseMenu.h"
 
-CBaseMenu::CBaseMenu(Uint8 dlg_theme) :
+CBaseMenu::CBaseMenu(const Uint8 dlgTheme) /*:
 	m_mustclose(false),
 	m_selection(NO_SELECTION),
 	mp_Dialog(NULL),
 	m_dlg_theme(dlg_theme),
 	m_suspended(false),
-	m_noenter(false)
+	m_noenter(false)*/
 {}
 
-std::string CBaseMenu::getSwitchString(const bool value)
+void CBaseMenu::process()
 {
-	std::string text;
-	if(m_dlg_theme == DLG_THEME_GALAXY)
-	{
-		text = (value==true) ? "on" : "off";
-	}
-	else
-	{
-		const int start_off = (value==true) ? 28 : 20;
-		for(int c=start_off ; c<start_off+4 ; c++)
-			text += c;
-	}
-	return text;
-}
-
-void CBaseMenu::processCommon()
-{
-	if(!m_suspended)
+	/*if(!m_suspended)
 	{
 		// Get Input for selection
 		if(!m_noenter)
@@ -53,30 +37,11 @@ void CBaseMenu::processCommon()
 			m_mustclose = true;
 		}
 
-	}
+	}*/
+
 }
 
-void CBaseMenu::postProcess()
+CBaseMenu::~CBaseMenu()
 {
-	if(!m_suspended)
-	{
-		if(!mp_Dialog)
-		{
-			m_mustclose = true;
-			return;
-		}
-
-		mp_Dialog->processInput();
-		mp_Dialog->draw();
-	}
 
 }
-
-bool CBaseMenu::mustClose()
-{	return m_mustclose;	}
-
-CBaseMenu::~CBaseMenu() {
-	if(mp_Dialog) delete mp_Dialog;
-	mp_Dialog = NULL;
-}
-

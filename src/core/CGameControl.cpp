@@ -17,6 +17,9 @@
 #include "core/CGamePassiveMode.h"
 #include "core/CGamePlayMode.h"
 
+#include "common/Menu/CMenuController.h"
+#include "common/Menu/CMainMenu.h"
+
 #include "arguments.h"
 
 CGameControl::CGameControl(bool &firsttime) :
@@ -93,6 +96,7 @@ void CGameControl::process()
 		{
 			mp_GameMode = new CGamePassiveMode( p_Passive->m_DataDirectory, p_Passive->m_Episode );
 			mp_GameMode->init();
+			g_pBehaviorEngine->EventList().add( new OpenMenuEvent( new CMainMenu(DLG_THEME_VORTICON) ) );
 			EventContainer.pop_Event();
 		}
 		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
@@ -110,9 +114,10 @@ void CGameControl::process()
 
 			return;
 		}
-
 	}
 
 	// Process the game control object
 	mp_GameMode->process();
+
+	mMenuController.process();
 }
