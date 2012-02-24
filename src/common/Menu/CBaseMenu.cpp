@@ -39,6 +39,8 @@ void CBaseMenu::process()
 
 	}*/
 
+	mpMenuDialog->processLogic();
+
 }
 
 CBaseMenu::~CBaseMenu()

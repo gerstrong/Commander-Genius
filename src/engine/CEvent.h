@@ -32,6 +32,12 @@ struct EventEnterLevel : CEvent {
 };
 
 
+struct InvokeEvent : CEvent
+{
+	virtual void operator()() = 0;
+};
+
+
 struct EventExitLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;

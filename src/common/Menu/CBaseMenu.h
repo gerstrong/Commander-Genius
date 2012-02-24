@@ -11,6 +11,8 @@
 const int NO_SELECTION = -1;
 
 #include "dialog/CDialog.h"
+#include "SmartPointer.h"
+#include "gui/CGUIDialog.h"
 
 // Which Menu has to be shown?
 
@@ -43,6 +45,10 @@ public:
 	virtual void process();
 
 	virtual ~CBaseMenu();
+
+protected:
+	SmartPointer<CGUIDialog> mpMenuDialog;
+
 };
 
 #endif /* CBASEMENU_H_ */

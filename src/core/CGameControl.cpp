@@ -114,6 +114,13 @@ void CGameControl::process()
 
 			return;
 		}
+		else if( InvokeEvent *iEv = EventContainer.occurredEvent<InvokeEvent>() )
+		{
+			(*iEv)();
+			EventContainer.pop_Event();
+
+			return;
+		}
 	}
 
 	// Process the game control object

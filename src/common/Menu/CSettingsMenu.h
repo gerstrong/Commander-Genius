@@ -16,16 +16,13 @@
 class CSettingsMenu : public CBaseMenu
 {
 public:
-	CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, bool &restartVideo, int selection );
-	CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, bool &restartVideo );
+	CSettingsMenu( Uint8 dlgtheme );
 	void processSpecific();
 
 private:
 	CExeFile &m_ExeFile;
 	CBaseMenu *mp_SubMenu;
 	stOption *mp_option;
-	bool &m_restartVideo;
-	Uint8 m_profileselection;
 };
 
 #endif /* CSETTINGSMENU_H_ */

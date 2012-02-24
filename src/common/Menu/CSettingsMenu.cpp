@@ -13,16 +13,16 @@
 #include "CProfilesMenu.h"
 #include "sdl/CTimer.h"
 #include "sdl/CVideoDriver.h"
+#include "gui/CGUIButton.h"
+
+#include "core/CGameControl.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
-CSettingsMenu::CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, bool &restartVideo, int selection )
+CSettingsMenu::CSettingsMenu( Uint8 dlgtheme )
 : CBaseMenu(dlgtheme),
-m_ExeFile(ExeFile),
-mp_SubMenu(NULL),
-mp_option(g_pBehaviorEngine->m_option),
-m_restartVideo(restartVideo),
-m_profileselection(0)
+m_ExeFile(g_pBehaviorEngine->m_ExeFile),
+mp_option(g_pBehaviorEngine->m_option)
 {
 	/*mp_Dialog = new CDialog(13, 7, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
@@ -33,23 +33,35 @@ m_profileselection(0)
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Profile");
 
 	m_selection = selection;*/
-}
 
-CSettingsMenu::CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, bool &restartVideo ) :
-CBaseMenu(dlgtheme),
-m_ExeFile(ExeFile),
-mp_SubMenu(NULL),
-mp_option(g_pBehaviorEngine->m_option),
-m_restartVideo(restartVideo),
-m_profileselection(0)
-{
-	/*mp_Dialog = new CDialog(13, 7, INPUT_MODE_UP_DOWN,m_dlg_theme);
+	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
+	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Graphics");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Options");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Profile");*/
+	mpMenuDialog->addControl(new CGUIButton( "Graphics",
+									new GMQuit(),
+									CGUIButton::VORTICON ),
+								CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Audio",
+									new GMQuit(),
+									CGUIButton::VORTICON ),
+								CRect<float>(0.05f, 0.16f, 0.9f, 0.07f) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Options",
+									new GMQuit(),
+									CGUIButton::VORTICON ),
+								CRect<float>(0.05f, 0.24f, 0.9f, 0.07f) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Controls",
+									new GMQuit(),
+									CGUIButton::VORTICON ),
+								CRect<float>(0.05f, 0.32f, 0.9f, 0.07f) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Profile",
+									new GMQuit(),
+									CGUIButton::VORTICON ),
+								CRect<float>(0.05f, 0.40f, 0.9f, 0.07f) );
+
 }
 
 void CSettingsMenu::processSpecific()

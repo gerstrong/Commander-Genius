@@ -10,6 +10,8 @@
 #include "sdl/CVideoDriver.h"
 #include "common/CSettings.h"
 
+
+
 COptions::COptions(Uint8 dlg_theme, stOption *p_option) :
 CBaseMenu(dlg_theme),
 mp_option(g_pBehaviorEngine->m_option)
