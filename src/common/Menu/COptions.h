@@ -9,15 +9,11 @@
 #define COPTIONS_H_
 
 #include "CBaseMenu.h"
-#include "common/CBehaviorEngine.h"
 
 class COptions : public CBaseMenu {
 public:
-	COptions(Uint8 dlg_theme, stOption *p_option);
-	void processSpecific();
+	COptions( const Uint8 dlg_theme );
 
-private:
-	stOption *mp_option;
 };
 
 #endif /* COPTIONS_H_ */

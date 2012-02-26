@@ -31,13 +31,22 @@ const std::string actionsnames[MAX_COMMANDS] =
 		"Quit:        "
 };
 
-#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
-
-CControlsettings::CControlsettings( Uint8 dlg_theme ) :
-CBaseMenu(dlg_theme),
+CControlsettings::CControlsettings( const Uint8 dlg_theme ) :
+CBaseMenu(dlg_theme)/*,
 m_chosenPlayer(0),
-m_waiting_for_input(false)
+m_waiting_for_input(false)*/
 {
+
+	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
+	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
+
+	/*mpMenuDialog->addControl(new CGUIButton( "Video",
+									new OpenMenuEvent( new CVideoSettings(dlgtheme) ),
+									CGUIButton::VORTICON ),
+								CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );*/
+
+
+
 	/*m_suspended = true;
 
 	std::list<std::string> players_list;
@@ -57,8 +66,8 @@ m_waiting_for_input(false)
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, MAX_COMMANDS+2, "Reset Controls");*/
 }
 
-void CControlsettings::setControlsText()
-{
+//void CControlsettings::setControlsText()
+//{
 	// Here it sets up the items after the player number was chosen
 	// Then create the controls selection screen
 	/*std::string buf, buf2;
@@ -73,10 +82,10 @@ void CControlsettings::setControlsText()
 	buf = "Two Button Firing " + getSwitchString(g_pInput->getTwoButtonFiring(m_chosenPlayer-1));
 	mp_Dialog->m_dlgobject.at(MAX_COMMANDS)->m_Option->m_FontMapID = 1;
 	mp_Dialog->setObjectText(MAX_COMMANDS, buf);*/
-}
+//}
 
-void CControlsettings::processSpecific()
-{	
+//void CControlsettings::processSpecific()
+//{
 	/*if(!m_suspended)
 	{
 		if(m_waiting_for_input) // This part only happens, when waiting for an input
@@ -103,10 +112,10 @@ void CControlsettings::processSpecific()
 				setControlsText();
 		}
 	}*/
-}
+//}
 
-void CControlsettings::processWaitInput()
-{
+//void CControlsettings::processWaitInput()
+//{
 	/*int item = m_selection;
 	while( !g_pInput->readNewEvent(m_chosenPlayer-1,item) );
 
@@ -120,49 +129,5 @@ void CControlsettings::processWaitInput()
 	mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
 	m_selection = -1;
 	m_waiting_for_input = false;*/
-}
+//}
 
-void CControlsettings::processSelection()
-{
-	/*if( m_mustclose ) // if the menu must close, save the settings
-	{
-		g_pInput->saveControlconfig();
-		m_selection = NO_SELECTION;
-	}
-	
-	if( m_selection != NO_SELECTION) // Normal selection function
-	{
-		if( m_selection < MAX_COMMANDS+2 )
-		{
-			if(m_selection < MAX_COMMANDS)
-			{
-				std::string buf, buf2;
-				m_waiting_for_input = true;
-				g_pInput->flushAll();
-
-				buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
-				buf = buf.erase(actionsnames[m_selection].size());
-
-				buf2 = "*Waiting for Input*";
-				mp_Dialog->setObjectText(m_selection, buf + buf2);
-				mp_Dialog->setInputMode(INPUT_MODE_NOTHING);
-			}
-			else if(m_selection == MAX_COMMANDS)
-			{
-				std::string buf;
-				bool twb = g_pInput->getTwoButtonFiring(m_chosenPlayer-1);
-				twb = !twb;
-				g_pInput->setTwoButtonFiring(m_chosenPlayer-1, twb);
-				buf = "Two Button Firing " + getSwitchString(g_pInput->getTwoButtonFiring(m_chosenPlayer-1));
-				mp_Dialog->setObjectText(m_selection, buf);
-				m_selection = -1;
-			}
-			else if(m_selection == MAX_COMMANDS+1)
-			{
-				g_pInput->resetControls(m_chosenPlayer);
-				setControlsText();
-				m_selection = -1;
-			}
-		}
-	}*/
-}

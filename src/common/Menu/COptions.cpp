@@ -11,11 +11,19 @@
 #include "common/CSettings.h"
 
 
-
-COptions::COptions(Uint8 dlg_theme, stOption *p_option) :
-CBaseMenu(dlg_theme),
-mp_option(g_pBehaviorEngine->m_option)
+COptions::COptions( const Uint8 dlg_theme ) :
+CBaseMenu(dlg_theme)
 {
+
+	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
+	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
+
+	/*mpMenuDialog->addControl(new CGUIButton( "Video",
+									new OpenMenuEvent( new CVideoSettings(dlgtheme) ),
+									CGUIButton::VORTICON ),
+								CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );*/
+
+
 	/*int i;
 	std::string buf;
 
@@ -30,8 +38,8 @@ mp_option(g_pBehaviorEngine->m_option)
 	}*/
 }
 
-void COptions::processSpecific()
-{
+//void COptions::processSpecific()
+//{
 	/*std::string buf;
 
 	if(m_mustclose) // If menu is about to close save the options
@@ -46,4 +54,4 @@ void COptions::processSpecific()
 		mp_Dialog->setObjectText(m_selection, buf);
 		m_selection = NO_SELECTION;
 	}*/
-}
+//}

@@ -16,11 +16,9 @@
 class CSettingsMenu : public CBaseMenu
 {
 public:
-	CSettingsMenu( Uint8 dlgtheme );
+	CSettingsMenu( const Uint8 dlgtheme );
 
 private:
-	CExeFile &m_ExeFile;
-	stOption *mp_option;
 };
 
 #endif /* CSETTINGSMENU_H_ */

@@ -15,7 +15,7 @@
 #include "sdl/CTimer.h"
 
 
-int twirliconID;
+int CGUIButton::twirliconID = 10;
 
 
 CGUIButton::CGUIButton(	const std::string& text,
@@ -28,9 +28,10 @@ mText(text),
 mEvent(ev),
 drawButton(&CGUIButton::drawNoStyle)
 {
-	twirliconID = 10;
+
 	if(style == VORTICON)
 		drawButton = &CGUIButton::drawVorticonStyle;
+
 }
 
 

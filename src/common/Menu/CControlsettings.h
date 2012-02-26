@@ -12,16 +12,15 @@
 
 class CControlsettings : public CBaseMenu {
 public:
-	CControlsettings(Uint8 m_DlgTheme);
-	void setControlsText();
+	CControlsettings(const Uint8 m_DlgTheme);
 
-	void createControlItems();
-	void processSpecific();
+	//void createControlItems();
+	//void processSpecific();
 
 private:
 
-	void processWaitInput();
-	void processSelection();
+	//void processWaitInput();
+	//void processSelection();
 
 	Uint8 m_chosenPlayer;
 	bool m_waiting_for_input;

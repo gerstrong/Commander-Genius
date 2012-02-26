@@ -47,6 +47,8 @@ private:
 
 
 	void (CGUIButton::*drawButton)(SDL_Rect&);
+
+	static int twirliconID;
 };
 
 #endif /* CGUIBUTTON_H_ */
