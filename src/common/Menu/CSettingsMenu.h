@@ -17,11 +17,9 @@ class CSettingsMenu : public CBaseMenu
 {
 public:
 	CSettingsMenu( Uint8 dlgtheme );
-	void processSpecific();
 
 private:
 	CExeFile &m_ExeFile;
-	CBaseMenu *mp_SubMenu;
 	stOption *mp_option;
 };
 

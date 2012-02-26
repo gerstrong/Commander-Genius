@@ -24,16 +24,6 @@ CSettingsMenu::CSettingsMenu( Uint8 dlgtheme )
 m_ExeFile(g_pBehaviorEngine->m_ExeFile),
 mp_option(g_pBehaviorEngine->m_option)
 {
-	/*mp_Dialog = new CDialog(13, 7, INPUT_MODE_UP_DOWN,m_dlg_theme);
-
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Graphics");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Options");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Profile");
-
-	m_selection = selection;*/
-
 	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
@@ -64,36 +54,4 @@ mp_option(g_pBehaviorEngine->m_option)
 
 }
 
-void CSettingsMenu::processSpecific()
-{
-	/*if(!mp_SubMenu)
-	{
-		if( m_selection != NO_SELECTION)
-		{
-			switch(m_selection)
-			{
-			case 0: mp_SubMenu = new CVideoSettings(m_dlg_theme, m_restartVideo); break;
-			case 1: mp_SubMenu = new CAudioSettings(m_dlg_theme, m_ExeFile); break;
-			case 2: mp_SubMenu = new COptions(m_dlg_theme, mp_option); break;
-			case 3: mp_SubMenu = new CControlsettings(m_dlg_theme); break;
-			case 4: mp_SubMenu = new CProfilesMenu(m_dlg_theme); break;
-			}
-
-			m_selection = NO_SELECTION;
-			m_suspended = true;
-		}
-	}
-	else
-	{
-		mp_SubMenu->processCommon();
-		mp_SubMenu->processSpecific();
-		mp_SubMenu->postProcess();
-
-		if(mp_SubMenu->mustClose())
-		{
-			SAFE_DELETE(mp_SubMenu);
-			m_suspended = false;
-		}
-	}*/
-}
 
