@@ -61,7 +61,6 @@ private:
 
 	// Pointer to the function that will be in charge of drawing the background
 	void (CGUIDialog::*drawBackround)(SDL_Rect);
-
 };
 
 #endif /* CGUIDIALOG_H_ */

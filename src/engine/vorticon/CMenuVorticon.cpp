@@ -17,7 +17,7 @@
 
 #define SELMOVE_SPD         3
 
-CMenuVorticon::CMenuVorticon( char menu_mode, CMap &Map, CSavedGame &SavedGame,
+/*CMenuVorticon::CMenuVorticon( char menu_mode, CMap &Map, CSavedGame &SavedGame,
 			 bool &restartVideo, bool &hideobjects ) :
 CMenu(menu_mode, SavedGame,
 	DLG_THEME_VORTICON, restartVideo),
@@ -27,11 +27,11 @@ m_hideobjects(hideobjects)
 {
 	initMainMenu();
 }
-
+*/
 ////
 // Process Routines
 ////
-void CMenuVorticon::processSpecific()
+/*void CMenuVorticon::processSpecific()
 {
 	// Information Mode?
 	if(!mp_InfoScene) // show a normal menu
@@ -86,3 +86,4 @@ CMenuVorticon::~CMenuVorticon()
 	cleanup();
 	SAFE_DELETE(mp_InfoScene);
 }
+*/

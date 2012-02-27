@@ -375,23 +375,23 @@ void CPlayGameVorticon::handleFKeys()
 		// F2 - Sound Menu
 		if ( g_pInput->getPressedKey(KF2) )
 		{
-			mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
-					m_SavedGame,  m_restartVideo, m_hideobjects );
-			mp_Menu->init(AUDIO);
+			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
+				//	m_SavedGame,  m_restartVideo, m_hideobjects );
+			//mp_Menu->init(AUDIO);
 		}
 		// F3 - Controls Menu
 		else if ( g_pInput->getPressedKey(KF3) )
 		{
-			mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
-					m_SavedGame,  m_restartVideo, m_hideobjects );
-			mp_Menu->init(CONTROLS);
+			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
+				//	m_SavedGame,  m_restartVideo, m_hideobjects );
+			//mp_Menu->init(CONTROLS);
 		}
 		// F5 - save game
 		else if ( g_pInput->getPressedKey(KF5) )
 		{
-			mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
-					m_SavedGame,  m_restartVideo, m_hideobjects );
-			mp_Menu->init(SAVE);
+			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
+				//	m_SavedGame,  m_restartVideo, m_hideobjects );
+			//mp_Menu->init(SAVE);
 		}
 	}
 }

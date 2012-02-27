@@ -14,7 +14,7 @@
 #include <list>
 #include <string>
 
-CProfilesMenu::CProfilesMenu(Uint8 dlg_theme) :
+/*CProfilesMenu::CProfilesMenu(Uint8 dlg_theme) :
 CBaseMenu(dlg_theme)
 {
 	std::list<std::string> profile_list;
@@ -25,7 +25,7 @@ CBaseMenu(dlg_theme)
 }
 
 void CProfilesMenu::processSpecific()
-{
+{*/
 	/*if(mp_SubMenu.get())
 	{
 		mp_SubMenu->processCommon();
@@ -48,12 +48,12 @@ void CProfilesMenu::processSpecific()
 		mp_SubMenu = NULL;
 		m_mustclose = true;
 	}*/
-}
+//}
 
 /**
  * \brief This sets the default settings for a classic gameplay
  */
-void CProfilesMenu::setDefaultClassic()
+/*void CProfilesMenu::setDefaultClassic()
 {
 	stOption *p_option = g_pBehaviorEngine->m_option;
 	g_pSettings->loadDrvCfg();
@@ -74,12 +74,12 @@ void CProfilesMenu::setDefaultClassic()
 	p_option[OPT_IMPPOGO].value = 0;
 	p_option[OPT_HUD].value = 0;
 	g_pSettings->saveDrvCfg();
-}
+}*/
 
 /**
  * \brief This sets the default settings for an enhanced gameplay
  */
-void CProfilesMenu::setDefaultEnhanced()
+/*void CProfilesMenu::setDefaultEnhanced()
 {
 	stOption *p_option = g_pBehaviorEngine->m_option;
 	g_pSettings->loadDrvCfg();
@@ -97,4 +97,4 @@ void CProfilesMenu::setDefaultEnhanced()
 	p_option[OPT_IMPPOGO].value = 1;
 	p_option[OPT_HUD].value = 1;
 	g_pSettings->saveDrvCfg();
-}
+}*/

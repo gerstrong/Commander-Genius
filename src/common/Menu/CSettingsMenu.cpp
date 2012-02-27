@@ -20,9 +20,8 @@
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
 CSettingsMenu::CSettingsMenu( const Uint8 dlgtheme ) :
-CBaseMenu(dlgtheme)
+CBaseMenu( dlgtheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
-	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
 	mpMenuDialog->addControl(new CGUIButton( "Video",
@@ -45,10 +44,10 @@ CBaseMenu(dlgtheme)
 									CGUIButton::VORTICON ),
 								CRect<float>(0.05f, 0.32f, 0.9f, 0.07f) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Profile",
+	/*mpMenuDialog->addControl(new CGUIButton( "Profile",
 									new OpenMenuEvent( new CProfilesMenu(dlgtheme) ),
 									CGUIButton::VORTICON ),
-								CRect<float>(0.05f, 0.40f, 0.9f, 0.07f) );
+								CRect<float>(0.05f, 0.40f, 0.9f, 0.07f) );*/
 
 }
 

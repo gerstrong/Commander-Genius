@@ -38,6 +38,9 @@ public:
 
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
+	void setText(const std::string& text)
+	{	mText = text;	}
+
 private:
 	bool mHovered;
 	bool mButtonDown;

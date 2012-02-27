@@ -21,9 +21,9 @@ m_Difficulty(0)
 void CGamePassiveMode::init()
 {
 	// Create mp_PassiveMode object used for the screens while Player is not playing
-	if(m_Episode >= 4)
+	/*if(m_Episode >= 4)
 		mp_Passive = new galaxy::CPassiveGalaxy();
-	else
+	else*/
 		mp_Passive = new vorticon::CPassiveVort();
 
 	if( m_Endgame == true )

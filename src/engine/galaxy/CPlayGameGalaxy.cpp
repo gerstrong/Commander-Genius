@@ -250,7 +250,7 @@ void CPlayGameGalaxy::processInput()
 	// open the menu
 	if(g_pInput->getPressedCommand(IC_QUIT))
 	{
-		mp_Menu = new CMenuGalaxy(ACTIVE, m_SavedGame, m_restartVideo);
+		//mp_Menu = new CMenuGalaxy(ACTIVE, m_SavedGame, m_restartVideo);
 		m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
 		g_pMusicPlayer->pause();
 	}

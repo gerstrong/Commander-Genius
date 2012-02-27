@@ -15,10 +15,9 @@
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
 CAudioSettings::CAudioSettings(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme)
+CBaseMenu(dlg_theme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
-	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
-	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
+	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
 	mpMenuDialog->addControl(new CGUIButton( "Quit",
 										     new GMQuit(),

@@ -13,7 +13,7 @@
 #include "Menu/CLoadMenu.h"
 #include "Menu/CSelectionMenu.h"
 
-CMenu::CMenu(char menu_mode,
+/*CMenu::CMenu(char menu_mode,
 		 CSavedGame &SavedGame,
 		 Uint8 DlgTheme,
 		 bool &restartVideo) :
@@ -39,7 +39,7 @@ m_restartVideo(restartVideo)
 {}
 
 void CMenu::init( menutypes menu_type )
-{
+{*/
 	/*m_menu_type = menu_type;
 	m_selection = NO_SELECTION; // Nothing has been selected yet.
 
@@ -81,10 +81,10 @@ void CMenu::init( menutypes menu_type )
 	default:
 		break;
 	}*/
-}
+/*}
 
 void CMenu::initMainMenu()
-{
+{*/
 	/*mp_Dialog = new CDialog(17, 10, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
 	// Being at Intro, Title or Demo mode
@@ -111,13 +111,13 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 	}*/
-}
+/*}
 
 ////
 // Process
 ////
 void CMenu::process()
-{
+{*/
 	/*if( g_pInput->getHoldedKey(KM) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
 	{
 		cleanup();
@@ -174,10 +174,10 @@ void CMenu::process()
 
 		processMainMenu();
 	}*/
-}
+/*}
 
 void CMenu::processMainMenu()
-{
+{*/
 	/*if( m_selection != NO_SELECTION )
 	{
 		if( m_menu_mode == PASSIVE )
@@ -208,13 +208,13 @@ void CMenu::processMainMenu()
 			}
 		}
 	}*/
-}
+/*}
 
 ////
 // Cleanup Routines
 ////
 void CMenu::cleanup()
-{
+{*/
 	// Close the old menu
 	/*while(!m_SubMenus.empty())
 	{
@@ -222,10 +222,10 @@ void CMenu::cleanup()
 		m_SubMenus.pop_back();
 	}
 	SAFE_DELETE(mp_Dialog);*/
-}
+//}
 
 
-CMenu::~CMenu()
+/*CMenu::~CMenu()
 {
 	//cleanup();
-}
+}*/

@@ -47,7 +47,7 @@ void CGameLauncherMenu::init()
 	if(m_firsttime)
 	{
 		m_firsttime = false;
-		mp_FirstTimeMenu = new CProfilesMenu(DLG_THEME_RED);
+		//mp_FirstTimeMenu = new CProfilesMenu(DLG_THEME_RED);
 	}
 
 	// Load the graphics for menu and background.
@@ -190,7 +190,7 @@ void CGameLauncherMenu::process()
 	if(!mp_FirstTimeMenu.empty())
 	{
 		mp_FirstTimeMenu->processCommon();
-		mp_FirstTimeMenu->processSpecific();
+		//mp_FirstTimeMenu->processSpecific();
 		mp_FirstTimeMenu->postProcess();
 
 		/*if(mp_FirstTimeMenu->mustClose())

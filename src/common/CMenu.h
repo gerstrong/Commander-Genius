@@ -18,13 +18,13 @@
 #include "fileio/CExeFile.h"
 #include "common/CBehaviorEngine.h"
 
-class CMenu : public CBaseMenu
+class CMenu //: public CBaseMenu
 {
 public:
-	CMenu(char menu_mode,
+	/*CMenu(char menu_mode,
 			 CSavedGame &SavedGame,
 			 Uint8 DlgTheme,
-			 bool &restartVideo );
+			 bool &restartVideo );*/
 
 	// Getters
 	bool getChooseGame() { return m_choosegame; }
@@ -49,7 +49,7 @@ public:
 
 	void cleanup();
 
-	virtual ~CMenu();
+	//virtual ~CMenu();
 
 	bool m_demoback;
 

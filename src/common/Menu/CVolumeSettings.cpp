@@ -12,9 +12,9 @@
 #include "sdl/sound/CSound.h"
 #include "sdl/input/CInput.h"
 
-CVolumeSettings::CVolumeSettings(Uint8 dlg_theme) :
+/*CVolumeSettings::CVolumeSettings(Uint8 dlg_theme) :
 CBaseMenu(dlg_theme)
-{
+{*/
 	/*mp_Dialog = new CDialog(24, 7, INPUT_MODE_UP_DOWN, m_dlg_theme);
 	m_noenter = true;
 
@@ -34,10 +34,10 @@ CBaseMenu(dlg_theme)
 	mp_Dialog->setInputMode(INPUT_MODE_SLIDER);
 	mp_Dialog->processInput();
 	mp_Dialog->setSelection(2);*/
-}
+/*}
 
 void CVolumeSettings::processSpecific()
-{
+{*/
 	/*if(mp_Dialog->getSelection() == 2)
 	{
 		g_pSound->setMusicVolume(mp_Dialog->m_dlgobject.at(2)->m_Option->m_value*8);
@@ -48,4 +48,4 @@ void CVolumeSettings::processSpecific()
 		g_pSound->setSoundVolume(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value*8);
 		mp_Dialog->m_noise = true;
 	}*/
-}
+//}

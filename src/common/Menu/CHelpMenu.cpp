@@ -17,7 +17,7 @@
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
-CHelpMenu::CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
+/*CHelpMenu::CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
 		CExeFile &ExeFile,
 		bool &hideobjects) :
 CBaseMenu(dlg_theme),
@@ -26,7 +26,7 @@ mp_InfoScene(p_InfoScene),
 m_Episode(ExeFile.getEpisode()),
 m_GamePath(ExeFile.getDataDirectory()),
 m_hideobjects(hideobjects)
-{
+{*/
 	/*mp_Dialog = new CDialog(18, 10, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Menu");
@@ -37,7 +37,7 @@ m_hideobjects(hideobjects)
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "About CG");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Previews!");*/
-}
+/*}
 
 void CHelpMenu::processSpecific()
 {
@@ -77,9 +77,9 @@ void CHelpMenu::processSpecific()
 		m_selection = NO_SELECTION;
 		m_mustclose = true;
 	}*/
-}
+/*}
 
 CHelpMenu::~CHelpMenu()
 {
 	//SAFE_DELETE(mp_Dialog);
-}
+}*/

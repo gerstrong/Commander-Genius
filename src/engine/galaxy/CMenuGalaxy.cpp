@@ -20,7 +20,7 @@ namespace galaxy
 /**
  * \brief sets the menu up when it's opened (initialization)
  */
-CMenuGalaxy::CMenuGalaxy( char menu_mode, CSavedGame &SavedGame,
+/*CMenuGalaxy::CMenuGalaxy( char menu_mode, CSavedGame &SavedGame,
 		  bool &restartVideo ) :
 CMenu( menu_mode, SavedGame, DLG_THEME_GALAXY, restartVideo),
 processPtr(&CMenuGalaxy::processMainMenu),
@@ -50,7 +50,7 @@ bool CMenuGalaxy::init( menutypes menu_type )
 		break;
 	}
 	return true;
-}
+}*/
 
 ///
 // Processes
@@ -61,7 +61,7 @@ bool CMenuGalaxy::init( menutypes menu_type )
 void CMenuGalaxy::process()
 {
 	// Process the Menu Type logic.
-	CMenu::process();
+	//CMenu::process();
 
 	if(processPtr)
 		(this->*processPtr)();
@@ -122,6 +122,7 @@ void CMenuGalaxy::processMainMenu()
 
 CMenuGalaxy::~CMenuGalaxy()
 {
+
 }
 
 }

@@ -7,15 +7,27 @@
 
 #include "sdl/input/CInput.h"
 #include "CBaseMenu.h"
+#include "common/Menu/CMenuController.h"
 
-CBaseMenu::CBaseMenu(const Uint8 dlgTheme) /*:
-	m_mustclose(false),
+CBaseMenu::CBaseMenu(const Uint8 dlgTheme, const CRect<float>& rect) :
+	/*m_mustclose(false),
 	m_selection(NO_SELECTION),
 	mp_Dialog(NULL),
 	m_dlg_theme(dlg_theme),
 	m_suspended(false),
 	m_noenter(false)*/
-{}
+mpMenuDialog(new CGUIDialog(rect) )
+{
+
+	/*mpReturnButton = new CGUIButton( "x",
+								new CloseMenuEvent(),
+								CGUIButton::NONE );*/
+
+	mpMenuDialog->addControl( new CGUIButton( "x",
+			new CloseMenuEvent(),
+			CGUIButton::NONE ), CRect<float>(0.0f, 0.0f, 0.14f, 0.14f) );
+
+}
 
 void CBaseMenu::process()
 {
@@ -43,7 +55,7 @@ void CBaseMenu::process()
 
 }
 
-CBaseMenu::~CBaseMenu()
+/*CBaseMenu::~CBaseMenu()
 {
 
-}
+}*/

@@ -32,12 +32,11 @@ const std::string actionsnames[MAX_COMMANDS] =
 };
 
 CControlsettings::CControlsettings( const Uint8 dlg_theme ) :
-CBaseMenu(dlg_theme)/*,
+CBaseMenu( dlg_theme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )/*,
 m_chosenPlayer(0),
 m_waiting_for_input(false)*/
 {
 
-	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
 	/*mpMenuDialog->addControl(new CGUIButton( "Video",

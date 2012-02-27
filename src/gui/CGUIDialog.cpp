@@ -75,7 +75,6 @@ void CGUIDialog::drawVorticonBackround( SDL_Rect Rect )
 	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
 
 
-
 	// Draw the character so the classical vorticon menu is drawn
 
 	// Start with the blank space (normally it's white. Might be different in some mods)

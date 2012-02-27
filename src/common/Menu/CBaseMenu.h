@@ -13,6 +13,7 @@ const int NO_SELECTION = -1;
 #include "dialog/CDialog.h"
 #include "SmartPointer.h"
 #include "gui/CGUIDialog.h"
+#include "gui/CGUIButton.h"
 
 // Which Menu has to be shown?
 
@@ -37,18 +38,32 @@ enum menumodes{
 	ACTIVE, PASSIVE
 };
 
-class CBaseMenu {
+class CBaseMenu
+{
 public:
-	CBaseMenu(const Uint8 dlgTheme);
+
+	enum Property
+	{
+		CLOSEABLE,
+		CANGOBACK
+	};
+
+
+	CBaseMenu( const Uint8 dlgTheme, const CRect<float>& rect );
 
 	// Processes the stuff that the menus have in common
 	virtual void process();
 
-	virtual ~CBaseMenu();
+	//virtual ~CBaseMenu();
+	void setProperty( const Property newProperty )
+	{
+		//mpReturnButton->setText( newProperty == CLOSEABLE ? "x" : "\021" );
+	}
 
 protected:
 	SmartPointer<CGUIDialog> mpMenuDialog;
 
+	SmartPointer<CGUIButton> mpReturnButton;
 };
 
 #endif /* CBASEMENU_H_ */

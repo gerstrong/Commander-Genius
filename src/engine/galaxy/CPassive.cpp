@@ -17,11 +17,11 @@
 namespace galaxy
 {
 
-CPassiveGalaxy::CPassiveGalaxy() :
+/*CPassiveGalaxy::CPassiveGalaxy() :
 processMode(&CPassiveGalaxy::processIntro),
 m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
 mp_Menu(new CMenuGalaxy(PASSIVE, m_SavedGame, m_restartVideo))
-{ }
+{ }*/
 
 bool CPassiveGalaxy::init(char mode)
 {

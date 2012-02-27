@@ -17,9 +17,8 @@
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
 CVideoSettings::CVideoSettings(const Uint8 dlg_theme) :
-CBaseMenu(dlg_theme)
+CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 {
-	mpMenuDialog = new CGUIDialog(CRect<float>(0.25f, 0.24f, 0.5f, 0.5f));
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
 	std::list<std::string>	List;

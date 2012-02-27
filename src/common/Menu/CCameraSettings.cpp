@@ -8,10 +8,10 @@
 #include "CCameraSettings.h"
 #include "../../StringUtils.h"
 
-CCameraSettings::CCameraSettings(Uint8 dlg_theme):
+/*CCameraSettings::CCameraSettings(Uint8 dlg_theme):
 CBaseMenu(dlg_theme),
 m_CameraBounds(g_pVideoDriver->getCameraBounds())
-{
+{*/
 	/*std::string buf;
 	mp_Dialog = new CDialog(18, 13, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
@@ -28,10 +28,10 @@ m_CameraBounds(g_pVideoDriver->getCameraBounds())
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, " "+itoa(m_CameraBounds.speed));
 
 	mp_Dialog->setInputMode(INPUT_MODE_COUNTER);*/
-}
+/*}
 
 void CCameraSettings::processSpecific()
-{
+{*/
 	/*if(mp_Dialog->getSelection() == 2)
 	{
 		mp_Dialog->m_min = 50;
@@ -99,9 +99,9 @@ void CCameraSettings::processSpecific()
 		}
 	}*/
 #endif
-}
+/*}
 
 CCameraSettings::~CCameraSettings()
 {
 	g_pVideoDriver->saveCameraBounds(m_CameraBounds);
-}
+}*/

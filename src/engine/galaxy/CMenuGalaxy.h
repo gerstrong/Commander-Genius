@@ -34,7 +34,8 @@ public:
 	void (CMenuGalaxy::*processPtr)();
 	CBitmap m_TitleBmp;
 
-	struct {
+	struct
+	{
 		int x;
 		int y;
 	} m_title_coord;

@@ -45,7 +45,8 @@ struct GameEntry
 
 };
 
-class CGameLauncher {
+class CGameLauncher
+{
 public:
 	CGameLauncher();
 
