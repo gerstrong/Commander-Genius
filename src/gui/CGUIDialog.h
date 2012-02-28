@@ -48,7 +48,8 @@ public:
 	void processRendering();
 
 	// Adds a control instance to the list of controls to be processed.
-	void addControl(CGUIControl *newControl, const CRect<float>& ControlRect);
+	void addControl( const SmartPointer<CGUIControl> newControl,
+			 	 	 const CRect<float>& RelRect );
 
 private:
 	CRect<float> mRect;
@@ -61,6 +62,8 @@ private:
 
 	// Pointer to the function that will be in charge of drawing the background
 	void (CGUIDialog::*drawBackround)(SDL_Rect);
+
 };
+
 
 #endif /* CGUIDIALOG_H_ */

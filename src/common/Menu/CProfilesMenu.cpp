@@ -14,17 +14,25 @@
 #include <list>
 #include <string>
 
-/*CProfilesMenu::CProfilesMenu(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme)
+CProfilesMenu::CProfilesMenu( const Uint8 dlgTheme ) :
+CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 {
-	std::list<std::string> profile_list;
+	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
+
+	/*mpMenuDialog->addControl(new CGUIButton( "Quit",
+										     new GMQuit(),
+										     CGUIButton::VORTICON ),
+								CRect<float>(0.08f, 0.08f, 0.3f, 0.07f) );*/
+
+
+	/*std::list<std::string> profile_list;
 	profile_list.push_back("Classic mode");
-	profile_list.push_back("Enhanced mode");
+	profile_list.push_back("Enhanced mode");*/
 
 	//mp_SubMenu = new CSelectionMenu<int>( m_selection, profile_list, m_dlg_theme );
 }
 
-void CProfilesMenu::processSpecific()
+/*void CProfilesMenu::processSpecific()
 {*/
 	/*if(mp_SubMenu.get())
 	{

@@ -24,30 +24,32 @@ CBaseMenu( dlgtheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
+	const CGUIButton::Style buttonStyle = CGUIButton::VORTICON;
+
 	mpMenuDialog->addControl(new CGUIButton( "Video",
 									new OpenMenuEvent( new CVideoSettings(dlgtheme) ),
-									CGUIButton::VORTICON ),
+									buttonStyle ),
 								CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Audio",
 									new OpenMenuEvent( new CAudioSettings(dlgtheme) ),
-									CGUIButton::VORTICON ),
+									buttonStyle ),
 								CRect<float>(0.05f, 0.16f, 0.9f, 0.07f) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Options",
 									new OpenMenuEvent( new COptions(dlgtheme) ),
-									CGUIButton::VORTICON ),
+									buttonStyle ),
 								CRect<float>(0.05f, 0.24f, 0.9f, 0.07f) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Controls",
 									new OpenMenuEvent( new CControlsettings(dlgtheme) ),
-									CGUIButton::VORTICON ),
-								CRect<float>(0.05f, 0.32f, 0.9f, 0.07f) );
+									buttonStyle ),
+								CRect<float>(0.05f, 0.325f, 0.9f, 0.07f) );
 
-	/*mpMenuDialog->addControl(new CGUIButton( "Profile",
+	mpMenuDialog->addControl(new CGUIButton( "Profile",
 									new OpenMenuEvent( new CProfilesMenu(dlgtheme) ),
-									CGUIButton::VORTICON ),
-								CRect<float>(0.05f, 0.40f, 0.9f, 0.07f) );*/
+									buttonStyle ),
+								CRect<float>(0.05f, 0.40f, 0.9f, 0.07f) );
 
 }
 

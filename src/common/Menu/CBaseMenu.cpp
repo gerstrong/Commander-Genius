@@ -16,16 +16,17 @@ CBaseMenu::CBaseMenu(const Uint8 dlgTheme, const CRect<float>& rect) :
 	m_dlg_theme(dlg_theme),
 	m_suspended(false),
 	m_noenter(false)*/
-mpMenuDialog(new CGUIDialog(rect) )
+mpMenuDialog( new CGUIDialog(rect) )
 {
 
-	/*mpReturnButton = new CGUIButton( "x",
-								new CloseMenuEvent(),
-								CGUIButton::NONE );*/
+	CGUIButton*		pButton	=	new CGUIButton( "x",
+											new CloseMenuEvent(),
+											CGUIButton::NONE );
 
-	mpMenuDialog->addControl( new CGUIButton( "x",
-			new CloseMenuEvent(),
-			CGUIButton::NONE ), CRect<float>(0.0f, 0.0f, 0.14f, 0.14f) );
+	mpMenuDialog->addControl( pButton,
+							  CRect<float>(0.0f, 0.0f, 0.14f, 0.14f) );
+
+	mpReturnButton = pButton;
 
 }
 

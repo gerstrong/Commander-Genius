@@ -57,13 +57,13 @@ public:
 	//virtual ~CBaseMenu();
 	void setProperty( const Property newProperty )
 	{
-		//mpReturnButton->setText( newProperty == CLOSEABLE ? "x" : "\021" );
+		mpReturnButton->setText( newProperty == CLOSEABLE ? "x" : "\025" );
 	}
 
 protected:
 	SmartPointer<CGUIDialog> mpMenuDialog;
 
-	SmartPointer<CGUIButton> mpReturnButton;
+	CGUIButton *mpReturnButton;
 };
 
 #endif /* CBASEMENU_H_ */

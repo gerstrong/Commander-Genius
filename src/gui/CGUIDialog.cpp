@@ -35,7 +35,8 @@ void CGUIDialog::setBackground(const Background background)
 }
 
 
-void CGUIDialog::addControl(CGUIControl *newControl, const CRect<float>& RelRect)
+void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
+							 const CRect<float>& RelRect )
 {
 	CRect<float> AbsRect = RelRect;
 	AbsRect.transform(mRect);

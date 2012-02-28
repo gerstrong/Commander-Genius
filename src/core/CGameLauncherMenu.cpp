@@ -189,9 +189,9 @@ void CGameLauncherMenu::process()
 	// If the firsttime menu is open, process it
 	if(!mp_FirstTimeMenu.empty())
 	{
-		mp_FirstTimeMenu->processCommon();
+		//mp_FirstTimeMenu->processCommon();
 		//mp_FirstTimeMenu->processSpecific();
-		mp_FirstTimeMenu->postProcess();
+		//mp_FirstTimeMenu->postProcess();
 
 		/*if(mp_FirstTimeMenu->mustClose())
 			mp_FirstTimeMenu.tryDeleteData();*/

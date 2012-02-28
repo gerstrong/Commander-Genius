@@ -14,15 +14,15 @@
 //class CProfilesMenu : public CBaseMenu {
 class CProfilesMenu : public CBaseMenu {
 public:
-	CProfilesMenu(Uint8 dlg_theme);
-	void processCommon() {}
+	CProfilesMenu( const Uint8 dlgTheme );
+	/*void processCommon() {}
 	void processSpecific();
 	void postProcess() {}
 	void setDefaultClassic();
-	void setDefaultEnhanced();
+	void setDefaultEnhanced();*/
 
 private:
-	SmartPointer<CBaseMenu> mp_SubMenu;
+	//SmartPointer<CBaseMenu> mp_SubMenu;
 };
 
 #endif /* CPROFILESMENU_H_ */
