@@ -21,7 +21,9 @@ class CVideoSettings : public CBaseMenu {
 public:
 	CVideoSettings(const Uint8 dlg_theme);
 
-	~CVideoSettings();
+	void init();
+
+	void release();
 
 private:
 

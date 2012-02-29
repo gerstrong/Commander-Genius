@@ -28,10 +28,6 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 	 	 	 	 	 	 	 	 	 	 	 List,
 	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
 
-
-	mpFPSSelection->setSelection( itoa( g_pTimer->getFrameRate() ) );
-
-
 	mpMenuDialog->addControl( mpFPSSelection, CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
 
 
@@ -107,7 +103,14 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Adjust Camera Bounds");*/
 }
 
-CVideoSettings::~CVideoSettings()
+void CVideoSettings::init()
+{
+	// Save up the changed stuff
+	mpFPSSelection->setSelection( itoa( g_pTimer->getFrameRate() ) );
+}
+
+
+void CVideoSettings::release()
 {
 	// Save up the changed stuff
 	g_pTimer->setFPS( atoi(mpFPSSelection->getSelection().c_str() ));
