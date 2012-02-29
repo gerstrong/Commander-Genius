@@ -10,6 +10,7 @@
 
 void CMenuController::process()
 {
+
 	// process any triggered Game Control related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 
@@ -19,6 +20,7 @@ void CMenuController::process()
 		if( OpenMenuEvent* openMenu = EventContainer.occurredEvent<OpenMenuEvent>() )
 		{
 			mpMenu = openMenu->mMenuDialogPointer;
+			mpMenu->init();
 
 			if( !mMenuStack.empty() )
 				mpMenu->setProperty( CBaseMenu::CANGOBACK );
@@ -29,6 +31,7 @@ void CMenuController::process()
 
 		if( EventContainer.occurredEvent<CloseMenuEvent>() )
 		{
+			mpMenu->release();
 			mMenuStack.pop_back();
 			mpMenu = mMenuStack.back();
 			EventContainer.pop_Event();

@@ -53,6 +53,10 @@ public:
 
 	virtual ~CBaseMenu() { };
 
+	virtual void init() {};
+
+	virtual void release() {};
+
 	// Processes the stuff that the menus have in common
 	virtual void process();
 
