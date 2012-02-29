@@ -130,7 +130,7 @@ bool CSettings::loadDrvCfg()
 
 		int framerate;
 		Configuration.ReadInteger("Video", "autoframeskip", &framerate, 60);
-		g_pTimer->setFrameRate(DEFAULT_LPS, framerate, DEFAULT_SYNC);
+		g_pTimer->setFPS( framerate );
 
 
 		int audio_rate, audio_channels, audio_format;
@@ -159,7 +159,7 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 	g_pVideoDriver->isFullscreen(false);
 	g_pVideoDriver->setOGLFilter(false);
 	g_pVideoDriver->setZoom(1);
-	g_pTimer->setFrameRate(DEFAULT_LPS, 60, DEFAULT_SYNC);
+	g_pTimer->setFPS(60);
 	g_pVideoDriver->setFilter(1);
 	g_pVideoDriver->enableOpenGL(false);
 }

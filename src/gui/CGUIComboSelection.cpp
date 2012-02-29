@@ -33,6 +33,38 @@ drawButton(&CGUIComboSelection::drawNoStyle)
 		drawButton = &CGUIComboSelection::drawVorticonStyle;
 }
 
+const std::string& CGUIComboSelection::getSelection()
+{
+	return *mOLCurrent;
+}
+
+void CGUIComboSelection::setSelection( const std::string& selectionText )
+{
+
+	std::list<std::string>::const_iterator ptr = mOLCurrent;
+
+	do
+	{
+
+		if( *mOLCurrent == selectionText )
+			return;
+
+		// Cycle through the Optionslist and find the entry
+		mOLCurrent++;
+		if( mOLCurrent == mOptionsList.end() )
+			mOLCurrent =  mOptionsList.begin();
+
+	} while( ptr != mOLCurrent );
+
+	// Getting at this point means, that this option never existed
+	mOptionsList.push_back( selectionText );
+	mOLCurrent = mOptionsList.end();
+	mOLCurrent--;
+
+}
+
+
+
 
 void CGUIComboSelection::processLogic()
 {

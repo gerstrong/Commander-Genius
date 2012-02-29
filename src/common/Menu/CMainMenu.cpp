@@ -16,6 +16,7 @@
 CMainMenu::CMainMenu( const Uint8 dlgTheme  ) :
 CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
+
 	// Create the Menu Dialog and entries
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
@@ -29,4 +30,5 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit(), CGUIButton::VORTICON ),
 												CRect<float>(0.05f, 0.24f, 0.9f, 0.07f) );
+
 }

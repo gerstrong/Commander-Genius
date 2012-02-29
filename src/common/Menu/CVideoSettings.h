@@ -15,11 +15,17 @@
 #include <SDL.h>
 #include <string>
 
+#include "gui/CGUIComboSelection.h"
+
 class CVideoSettings : public CBaseMenu {
 public:
 	CVideoSettings(const Uint8 dlg_theme);
 
+	~CVideoSettings();
+
 private:
+
+	CGUIComboSelection	*mpFPSSelection;
 
 	/*CVidConfig m_Vidconfig;
 	std::list< CRect<Uint16> > m_Resolutionlist;

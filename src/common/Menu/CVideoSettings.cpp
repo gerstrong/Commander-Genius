@@ -11,25 +11,29 @@
 #include "CVideoSettings.h"
 #include "common/CSettings.h"
 
-#include "gui/CGUIComboSelection.h"
-
-
-#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
 CVideoSettings::CVideoSettings(const Uint8 dlg_theme) :
 CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 {
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
+	// Create the fps config selection control
 	std::list<std::string>	List;
+	for( int i = 10 ; i <= 120 ; i += 10 )
+	{
+		List.push_back( itoa (i) );
+	}
 
-	List.push_back("320x200");
-	List.push_back("640x400");
+	mpFPSSelection = new CGUIComboSelection( "FPS",
+	 	 	 	 	 	 	 	 	 	 	 List,
+	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
 
-	mpMenuDialog->addControl(new CGUIComboSelection( "Resolution",
-											 	 	 List,
-											 	 	 CGUIComboSelection::VORTICON ),
-											 	 	 CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
+
+	mpFPSSelection->setSelection( itoa( g_pTimer->getFrameRate() ) );
+
+
+	mpMenuDialog->addControl( mpFPSSelection, CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
+
 
 	/*m_current = -1;
 	m_changed = false;
@@ -101,4 +105,10 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 	mp_Dialog->setObjectText(7, buf);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Adjust Camera Bounds");*/
+}
+
+CVideoSettings::~CVideoSettings()
+{
+	// Save up the changed stuff
+	g_pTimer->setFPS( atoi(mpFPSSelection->getSelection().c_str() ));
 }

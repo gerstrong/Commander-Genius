@@ -49,7 +49,7 @@ CTimer::CTimer()
 	m_FrameSkip = false;
 	m_Ticks = 0;
 
-	setFrameRate(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
+	setRates(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
 #if defined(WIZ)
 	WIZ_ptimer_init();
 #endif
@@ -57,7 +57,7 @@ CTimer::CTimer()
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
 }
 
-void CTimer::setFrameRate( int logicrate, int framerate, int syncrate )
+void CTimer::setRates( int logicrate, int framerate, int syncrate )
 {
 	int looprate, factor;
 
@@ -94,6 +94,13 @@ void CTimer::setFrameRate( int logicrate, int framerate, int syncrate )
 
 	CalculateIntervals();
 }
+
+
+void CTimer::setFPS( const int framerate )
+{
+	setRates(DEFAULT_LPS, framerate, DEFAULT_SYNC);
+}
+
 
 void CTimer::CalculateIntervals()
 {
@@ -212,11 +219,11 @@ void CTimer::TimeToDelay( void )
     	/*
 	// FrameCap Limit Down
 	if (delay>duration/2)
-	    setFrameRate(DEFAULT_LPS, m_FrameRate+20, DEFAULT_SYNC);
+	    setRates(DEFAULT_LPS, m_FrameRate+20, DEFAULT_SYNC);
 
 	// FrameCap Limit Down
 	if (m_SkipPS>m_FrameRate/4)
-	    setFrameRate(DEFAULT_LPS, m_FrameRate-20, DEFAULT_SYNC);
+	    setRates(DEFAULT_LPS, m_FrameRate-20, DEFAULT_SYNC);
     	 */
 #ifdef DEBUG
     	g_pLogFile->ftextOut( "LOOP %d LPS %d FPS %d Skip %d\n", m_LoopPS, m_LPS, m_FPS, m_SkipPS );

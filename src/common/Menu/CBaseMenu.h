@@ -51,10 +51,11 @@ public:
 
 	CBaseMenu( const Uint8 dlgTheme, const CRect<float>& rect );
 
+	virtual ~CBaseMenu() { };
+
 	// Processes the stuff that the menus have in common
 	virtual void process();
 
-	//virtual ~CBaseMenu();
 	void setProperty( const Property newProperty )
 	{
 		mpReturnButton->setText( newProperty == CLOSEABLE ? "x" : "\025" );
