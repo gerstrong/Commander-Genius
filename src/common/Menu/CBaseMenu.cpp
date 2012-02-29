@@ -19,12 +19,9 @@ CBaseMenu::CBaseMenu(const Uint8 dlgTheme, const CRect<float>& rect) :
 mpMenuDialog( new CGUIDialog(rect) )
 {
 
-	CGUIButton*		pButton	=	new CGUIButton( "x",
-											new CloseMenuEvent(),
-											CGUIButton::NONE );
+	CGUIButton*	pButton	= new CGUIButton( "x", new CloseMenuEvent(), CGUIButton::NONE );
 
-	mpMenuDialog->addControl( pButton,
-							  CRect<float>(0.0f, 0.0f, 0.14f, 0.14f) );
+	mpMenuDialog->addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
 
 	mpReturnButton = pButton;
 
