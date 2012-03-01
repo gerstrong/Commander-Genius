@@ -17,6 +17,7 @@
 
 #include "core/CGameControl.h"
 
+
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
 CSettingsMenu::CSettingsMenu( const Uint8 dlgtheme ) :

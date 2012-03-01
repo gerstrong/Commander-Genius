@@ -27,6 +27,7 @@ public:
 
 private:
 
+	CGUIComboSelection	*mpOGLFilterSelection;
 	CGUIComboSelection	*mpFPSSelection;
 
 	/*CVidConfig m_Vidconfig;

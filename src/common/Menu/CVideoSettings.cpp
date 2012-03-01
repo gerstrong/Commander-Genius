@@ -7,9 +7,10 @@
 
 #include "sdl/input/CInput.h"
 #include "sdl/CTimer.h"
-#include "StringUtils.h"
 #include "CVideoSettings.h"
 #include "common/CSettings.h"
+#include "StringUtils.h"
+#include "Utils.h"
 
 
 CVideoSettings::CVideoSettings(const Uint8 dlg_theme) :
@@ -20,15 +21,33 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 	// Create the fps config selection control
 	std::list<std::string>	List;
 	for( int i = 10 ; i <= 120 ; i += 10 )
-	{
 		List.push_back( itoa (i) );
-	}
 
 	mpFPSSelection = new CGUIComboSelection( "FPS",
 	 	 	 	 	 	 	 	 	 	 	 List,
 	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
-
 	mpMenuDialog->addControl( mpFPSSelection, CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
+
+
+	mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
+											filledStrList( 2, "NEAREST", "LINEAR" ),
+	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
+	mpMenuDialog->addControl( mpOGLFilterSelection, CRect<float>(0.05f, 0.15f, 0.9f, 0.07f) );
+
+
+
+	/*
+OGLfilter = 1
+OpenGL = true
+autoframeskip = 60
+filter = 2
+fullscreen = false
+height = 1000
+scale = 1
+showfps = 0
+specialfx = true
+width = 1000
+	 * */
 
 
 	/*m_current = -1;
@@ -105,7 +124,7 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 
 void CVideoSettings::init()
 {
-	// Save up the changed stuff
+	// Load the config into the GUI
 	mpFPSSelection->setSelection( itoa( g_pTimer->getFrameRate() ) );
 }
 
@@ -114,4 +133,6 @@ void CVideoSettings::release()
 {
 	// Save up the changed stuff
 	g_pTimer->setFPS( atoi(mpFPSSelection->getSelection().c_str() ));
+
+	// TODO: At this point we also must save the settings
 }
