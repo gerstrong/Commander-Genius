@@ -16,6 +16,7 @@
 #include <string>
 
 #include "gui/CGUIComboSelection.h"
+#include "gui/CGUISwitch.h"
 
 class CVideoSettings : public CBaseMenu {
 public:
@@ -29,6 +30,12 @@ private:
 
 	CGUIComboSelection	*mpOGLFilterSelection;
 	CGUIComboSelection	*mpFPSSelection;
+	CGUISwitch			*mpOpenGLSwitch;
+	CGUIComboSelection	*mpScalerSelection;
+	CGUISwitch			*mpFullScreenSwitch;
+	CGUISwitch			*mpShowFPSSwitch;
+	CGUISwitch			*mpSFXSwitch;
+
 
 	/*CVidConfig m_Vidconfig;
 	std::list< CRect<Uint16> > m_Resolutionlist;

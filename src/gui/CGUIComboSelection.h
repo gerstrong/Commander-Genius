@@ -8,8 +8,8 @@
 #ifndef CGUICOMBOSELECTION_H_
 #define CGUICOMBOSELECTION_H_
 
-#include "CGUIControl.h"
 #include <string>
+#include "CGUIControl.h"
 #include "engine/CEvent.h"
 #include "SmartPointer.h"
 
