@@ -35,6 +35,10 @@ void CGUIDialog::setBackground(const Background background)
 }
 
 
+
+
+
+
 void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
 							 const CRect<float>& RelRect )
 {
@@ -43,6 +47,42 @@ void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
 	newControl->mRect = AbsRect;
 	mControlList.push_back( newControl );
 }
+
+
+
+
+void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl )
+{
+	mControlList.push_back( newControl );
+	fit();
+}
+
+
+
+
+void CGUIDialog::fit()
+{
+	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
+	it++;
+
+	size_t numControls = mControlList.size();
+	const float charHeight = ( 1.0f/(float)(numControls+2) );
+
+	for( size_t c = 1; it != mControlList.end() ; it++, c++ )
+	{
+		CRect<float> rect(	0.05f,
+							charHeight*(float)c,
+							mRect.w,
+							charHeight-0.01f );
+
+		rect.transform(mRect);
+
+		(*it)->setRect( rect );
+	}
+
+}
+
+
 
 
 void CGUIDialog::processLogic()
@@ -96,8 +136,6 @@ void CGUIDialog::drawVorticonBackround( SDL_Rect Rect )
 	}
 
 	Font.drawCharacter( Blitsurface, 3, Rect.x+Rect.w-8, Rect.y );
-
-
 
 	for( int x=Rect.x+8 ; x<Rect.x+Rect.w-8 ; x+=8 )
 	{

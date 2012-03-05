@@ -21,14 +21,12 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
 	CGUIButton *button = new CGUIButton( "New Game", new StartGameplayEvent(), CGUIButton::VORTICON );
-	mpMenuDialog->addControl( button, CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl( button );
 
 	mpMenuDialog->addControl(new CGUIButton( "Settings",
 												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
-												CGUIButton::VORTICON ),
-												CRect<float>(0.05f, 0.16f, 0.9f, 0.07f) );
+												CGUIButton::VORTICON ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit(), CGUIButton::VORTICON ),
-												CRect<float>(0.05f, 0.24f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit(), CGUIButton::VORTICON ) );
 
 }

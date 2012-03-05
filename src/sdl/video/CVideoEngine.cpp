@@ -67,7 +67,7 @@ bool CVideoEngine::init()
 
 	// If Fullscreen hide the mouse cursor.
 	// Anyway, it just can point but does not interact yet
- 	SDL_ShowCursor(!m_VidConfig.Fullscreen);
+ 	SDL_ShowCursor(true);
 
  	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
 

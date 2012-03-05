@@ -26,54 +26,42 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.4f) )
 	mpFPSSelection = new CGUIComboSelection( "FPS",
 	 	 	 	 	 	 	 	 	 	 	 List,
 	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
-	mpMenuDialog->addControl( mpFPSSelection, CRect<float>(0.05f, 0.10f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl( mpFPSSelection );
 
 
 	mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
 											filledStrList( 2, "nearest", "linear" ),
 	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
-	mpMenuDialog->addControl( mpOGLFilterSelection, CRect<float>(0.05f, 0.20f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl( mpOGLFilterSelection );
 
 
 
 	mpOpenGLSwitch = new CGUISwitch( "OpenGL",
 									  CGUISwitch::VORTICON );
-	mpMenuDialog->addControl( mpOpenGLSwitch, CRect<float>(0.05f, 0.36f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl( mpOpenGLSwitch );
 
 
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
 												filledStrList( 4, "none", "2x", "3x", "4x" ),
 												CGUIComboSelection::VORTICON );
-	mpMenuDialog->addControl( mpScalerSelection, CRect<float>(0.05f, 0.45f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl( mpScalerSelection );
 
 
 
 	mpFullScreenSwitch = new CGUISwitch( "Fullscreen",
 									  	 CGUISwitch::VORTICON );
-	mpMenuDialog->addControl( mpFullScreenSwitch, CRect<float>(0.05f, 0.54f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl( mpFullScreenSwitch );
 
 
 	mpShowFPSSwitch = new CGUISwitch( "Show FPS",
 									  	 CGUISwitch::VORTICON );
-	mpMenuDialog->addControl( mpShowFPSSwitch, CRect<float>(0.05f, 0.63f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl( mpShowFPSSwitch );
 
 
 	mpSFXSwitch = new CGUISwitch( "Special FX",
 								  CGUISwitch::VORTICON );
-	mpMenuDialog->addControl( mpSFXSwitch, CRect<float>(0.05f, 0.72f, 0.9f, 0.07f) );
+	mpMenuDialog->addControl( mpSFXSwitch );
 
-
-	/*
-OpenGL = true
-autoframeskip = 60
-filter = 2
-fullscreen = false
-height = 1000
-scale = 1
-showfps = 0
-specialfx = true
-width = 1000
-	 * */
 
 
 	/*m_current = -1;
@@ -154,20 +142,42 @@ void CVideoSettings::init()
 	std::string OGLFilterStr;
 
 	// Load the config into the GUI
-	mpOGLFilterSelection->setSelection( VidConf.m_opengl_filter==1 ? "Nearest" : "Linear" );
+	mpOGLFilterSelection->setSelection( VidConf.m_opengl_filter==1 ? "nearest" : "linear" );
 	mpFPSSelection->setSelection( itoa( g_pTimer->getFrameRate() ) );
-	mpOpenGLSwitch->setSelection( VidConf.m_opengl );
-	mpScalerSelection->setSelection( VidConf.m_ScaleXFilter==1 ? "None" : itoa(VidConf.m_ScaleXFilter) + "x" );
-	mpFullScreenSwitch->setSelection( VidConf.Fullscreen );
-	mpShowFPSSwitch->setSelection( VidConf.showfps );
-	mpSFXSwitch->setSelection( VidConf.m_special_fx );
+	mpOpenGLSwitch->enable( VidConf.m_opengl );
+	mpScalerSelection->setSelection( VidConf.m_ScaleXFilter==1 ? "none" : itoa(VidConf.m_ScaleXFilter) + "x" );
+	mpFullScreenSwitch->enable( VidConf.Fullscreen );
+	mpShowFPSSwitch->enable( VidConf.showfps );
+	mpSFXSwitch->enable( VidConf.m_special_fx );
 }
 
 
 void CVideoSettings::release()
 {
 	// Save up the changed stuff
+	g_pVideoDriver->setOGLFilter( mpOGLFilterSelection->getSelection() == "nearest" ? 0 : 1 );
 	g_pTimer->setFPS( atoi(mpFPSSelection->getSelection().c_str() ));
+	g_pVideoDriver->enableOpenGL( mpOpenGLSwitch->isEnabled() );
 
-	// TODO: At this point we also must save the settings
+	CVidConfig &VidConf = g_pVideoDriver->getVidConfig();
+	std::string scalerStr = mpScalerSelection->getSelection();
+	if( scalerStr != "none" )
+		VidConf.m_ScaleXFilter = scalerStr.at(0)-'0';
+	else
+		VidConf.m_ScaleXFilter = 1;
+
+	VidConf.Fullscreen = mpFullScreenSwitch->isEnabled();
+	VidConf.showfps = mpShowFPSSwitch->isEnabled();
+	VidConf.m_special_fx = mpSFXSwitch->isEnabled();
+
+
+	// At this point we also must apply and save the settings
+	if (g_pVideoDriver->applyMode())
+	{
+		g_pSettings->saveDrvCfg();
+	}
+	else
+	{	// if applying fails reject the changes
+		g_pSettings->loadDrvCfg();
+	}
 }

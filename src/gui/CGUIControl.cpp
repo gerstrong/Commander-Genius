@@ -13,3 +13,4 @@ CGUIControl::CGUIControl()
 	CRect<float> NewRect(0.0f, 0.0f, 0.0f, 0.0f);
 	mRect = NewRect;
 }
+

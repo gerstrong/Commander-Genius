@@ -51,6 +51,10 @@ public:
 	void addControl( const SmartPointer<CGUIControl> newControl,
 			 	 	 const CRect<float>& RelRect );
 
+	void addControl( const SmartPointer<CGUIControl> newControl );
+
+	void fit();
+
 private:
 	CRect<float> mRect;
 
