@@ -33,6 +33,7 @@ public:
 
 
 	void increment();
+	void decrement();
 
 	const int getSelection();
 	void setSelection( const int value );
@@ -55,6 +56,8 @@ private:
 	const int mEndValue;
 	const int mDeltaValue;
 	int mValue;
+	bool mIncSel;
+	bool mDecSel;
 	static int mTwirliconID;
 
 	void (CGUINumberControl::*drawButton)(SDL_Rect&);

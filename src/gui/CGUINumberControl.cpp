@@ -31,6 +31,8 @@ mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue),
 mValue(value),
+mIncSel(false),
+mDecSel(false),
 drawButton(&CGUINumberControl::drawNoStyle)
 {
 	if(style == VORTICON)
@@ -43,6 +45,11 @@ void CGUINumberControl::increment()
 	setSelection(mValue+mDeltaValue);
 }
 
+void CGUINumberControl::decrement()
+{
+	setSelection(mValue-mDeltaValue);
+}
+
 
 const int CGUINumberControl::getSelection()
 {
@@ -52,7 +59,7 @@ const int CGUINumberControl::getSelection()
 void CGUINumberControl::setSelection( int value )
 {
 
-	if( mStartValue<value )
+	if( mStartValue>value )
 		mValue = mStartValue;
 	else if( mEndValue<value )
 		mValue = mEndValue;
@@ -75,6 +82,14 @@ void CGUINumberControl::processLogic()
 		{
 			if(mouseevent->Type == MOUSEEVENT_MOVED)
 			{
+				mDecSel = false;
+				mIncSel = false;
+
+				if( MousePos.x < mRect.x+(mRect.w)/2.0f )
+					mDecSel = true;
+				else if( MousePos.x > mRect.x+(mRect.w)/2.0f )
+					mIncSel = true;
+
 				mHovered = true;
 				g_pInput->m_EventList.pop_Event();
 			}
@@ -89,17 +104,31 @@ void CGUINumberControl::processLogic()
 				mHovered = true;
 				mButtonDown = false;
 
-				// Cycle through the Optionslist
-				increment();
 
-				if( mValue > mEndValue )
-					mValue = mStartValue;
+				if( MousePos.x < mRect.x+(mRect.w)/2.0f )
+				{
+					// Cycle through the values
+					if( mValue <= mStartValue )
+						mValue = mEndValue;
+					else
+						decrement();
+				}
+				else if( MousePos.x > mRect.x+(mRect.w)/2.0f )
+				{
+					// Cycle through the values
+					if( mValue >= mEndValue )
+						mValue = mStartValue;
+					else
+						increment();
+				}
 
 				g_pInput->m_EventList.pop_Event();
 			}
 		}
 		else
 		{
+			mIncSel = false;
+			mDecSel = false;
 			mHovered = false;
 			mButtonDown = false;
 			mButtonUp = false;
@@ -118,7 +147,10 @@ void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
-	const std::string text = itoa(mValue);
+
+	std::string text = (mDecSel) ? "\023 " : "  ";
+	text += itoa(mValue);
+	text += (mIncSel) ? " \017" : "  ";
 	Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
 
 

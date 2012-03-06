@@ -26,8 +26,8 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 		List.push_back( itoa (i) );
 
 	mpFPSSelection = new CGUINumberControl( "FPS",
-											 10, 120, 10,
-	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
+											 10, 120, 10, 60,
+											 CGUINumberControl::VORTICON );
 	mpMenuDialog->addControl( mpFPSSelection );
 
 
