@@ -15,15 +15,11 @@
 #include "sdl/CTimer.h"
 
 
-int CGUIButton::twirliconID = 10;
 
 
 CGUIButton::CGUIButton(	const std::string& text,
 						const SmartPointer<CEvent> ev,
 						const Style	style ) :
-mHovered(false),
-mButtonDown(false),
-mButtonUp(false),
 mText(text),
 mEvent(ev),
 drawButton(&CGUIButton::drawNoStyle)
@@ -87,23 +83,7 @@ void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 
-
-	if( g_pTimer->HasTimeElapsed(100) )
-	{
-		twirliconID++;
-
-		if(twirliconID == 15)
-			twirliconID = 9;
-	}
-
-	if( mButtonDown )
-	{
-		Font.drawCharacter( blitsfc, twirliconID, lRect.x+12, lRect.y );
-	}
-	else if( mHovered )
-	{
-		Font.drawCharacter( blitsfc, twirliconID, lRect.x+8, lRect.y );
-	}
+	drawTwirl(lRect);
 
 }
 

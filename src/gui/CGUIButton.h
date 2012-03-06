@@ -43,16 +43,11 @@ public:
 
 
 private:
-	bool mHovered;
-	bool mButtonDown;
-	bool mButtonUp;
 	std::string mText;
 	SmartPointer<CEvent> mEvent;
 
-
 	void (CGUIButton::*drawButton)(SDL_Rect&);
 
-	static int twirliconID;
 };
 
 #endif /* CGUIBUTTON_H_ */

@@ -15,15 +15,9 @@
 #include "sdl/CTimer.h"
 
 
-int CGUIComboSelection::mTwirliconID = 10;
-
-
 CGUIComboSelection::CGUIComboSelection(	const std::string& text,
 										const std::list<std::string>& optionsList,
 										const Style	style ) :
-mHovered(false),
-mButtonDown(false),
-mButtonUp(false),
 mText(text),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
@@ -122,23 +116,7 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 	const std::string text = (*mOLCurrent);
 	Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
 
-
-	if( g_pTimer->HasTimeElapsed(100) )
-	{
-		mTwirliconID++;
-
-		if(mTwirliconID == 15)
-			mTwirliconID = 9;
-	}
-
-	if( mButtonDown )
-	{
-		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+12, lRect.y );
-	}
-	else if( mHovered )
-	{
-		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+8, lRect.y );
-	}
+	drawTwirl(lRect);
 
 }
 

@@ -24,9 +24,6 @@ CGUINumberControl::CGUINumberControl(	const std::string& text,
 										const int value,
 										const Style	style ) :
 mText(text),
-mHovered(false),
-mButtonDown(false),
-mButtonUp(false),
 mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue),
@@ -56,7 +53,7 @@ const int CGUINumberControl::getSelection()
 	return mValue;
 }
 
-void CGUINumberControl::setSelection( int value )
+void CGUINumberControl::setSelection( const int value )
 {
 
 	if( mStartValue>value )
@@ -154,22 +151,7 @@ void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 	Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
 
 
-	if( g_pTimer->HasTimeElapsed(100) )
-	{
-		mTwirliconID++;
-
-		if(mTwirliconID == 15)
-			mTwirliconID = 9;
-	}
-
-	if( mButtonDown )
-	{
-		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+12, lRect.y );
-	}
-	else if( mHovered )
-	{
-		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+8, lRect.y );
-	}
+	drawTwirl(lRect);
 
 }
 

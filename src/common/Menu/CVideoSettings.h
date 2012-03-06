@@ -38,16 +38,6 @@ private:
 	CGUISwitch			*mpSFXSwitch;
 	CGUIButton			*mpCameraButton;
 
-
-	/*CVidConfig m_Vidconfig;
-	std::list< CRect<Uint16> > m_Resolutionlist;
-	std::list< CRect<Uint16> >::iterator m_Resolution_pos;
-	int m_current; //used to show what is currently selected without actually changing the value
-	bool m_changed;
-	std::string m_usedSoftwareVideoDriver;
-	bool &m_restartVideo;
-	CCameraSettings	*mp_CameraSettings;
-	int m_Autoframeskip;*/
 };
 
 #endif /* CVIDEOSETTINGS_H_ */

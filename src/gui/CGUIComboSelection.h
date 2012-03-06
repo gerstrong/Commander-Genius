@@ -41,11 +41,7 @@ public:
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
 private:
-	bool mHovered;
-	bool mButtonDown;
-	bool mButtonUp;
 	std::string mText;
-	static int mTwirliconID;
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
 

@@ -49,9 +49,6 @@ public:
 
 private:
 	std::string	mText;
-	bool mHovered;
-	bool mButtonDown;
-	bool mButtonUp;
 	const int mStartValue;
 	const int mEndValue;
 	const int mDeltaValue;
