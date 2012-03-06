@@ -24,7 +24,12 @@ public:
 	void setRect( const CRect<float>& rect )
 	{	mRect = rect;	}
 
+	void enable(const bool value)
+	{	mEnabled = value;	};
+
+
 	CRect<float> mRect;
+	bool mEnabled;
 };
 
 

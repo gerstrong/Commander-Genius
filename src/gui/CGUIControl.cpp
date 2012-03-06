@@ -8,7 +8,8 @@
 #include "CGUIControl.h"
 #include "sdl/CVideoDriver.h"
 
-CGUIControl::CGUIControl()
+CGUIControl::CGUIControl() :
+mEnabled(true)
 {
 	CRect<float> NewRect(0.0f, 0.0f, 0.0f, 0.0f);
 	mRect = NewRect;

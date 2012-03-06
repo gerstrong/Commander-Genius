@@ -1,11 +1,11 @@
 /*
- * CGUIButton.cpp
+ * CGUINumberControl.cpp
  *
- *  Created on: 26.11.2011
+ *  Created on: 06.03.2012
  *      Author: gerstrong
  */
 
-#include "CGUIButton.h"
+#include "CGUINumberControl.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/input/CInput.h"
 #include "sdl/input/InputEvents.h"
@@ -14,32 +14,58 @@
 #include "core/CGameMode.h"
 #include "sdl/CTimer.h"
 
+int CGUINumberControl::mTwirliconID = 10;
 
-int CGUIButton::twirliconID = 10;
 
-
-CGUIButton::CGUIButton(	const std::string& text,
-						const SmartPointer<CEvent> ev,
-						const Style	style ) :
+CGUINumberControl::CGUINumberControl(	const std::string& text,
+										const int startValue,
+										const int endValue,
+										const int deltaValue,
+										const int value,
+										const Style	style ) :
+mText(text),
 mHovered(false),
 mButtonDown(false),
 mButtonUp(false),
-mText(text),
-mEvent(ev),
-drawButton(&CGUIButton::drawNoStyle)
+mStartValue(startValue),
+mEndValue(endValue),
+mDeltaValue(deltaValue),
+mValue(value),
+drawButton(&CGUINumberControl::drawNoStyle)
+{
+	if(style == VORTICON)
+		drawButton = &CGUINumberControl::drawVorticonStyle;
+}
+
+
+void CGUINumberControl::increment()
+{
+	setSelection(mValue+mDeltaValue);
+}
+
+
+const int CGUINumberControl::getSelection()
+{
+	return mValue;
+}
+
+void CGUINumberControl::setSelection( int value )
 {
 
-	if(style == VORTICON)
-		drawButton = &CGUIButton::drawVorticonStyle;
+	if( mStartValue<value )
+		mValue = mStartValue;
+	else if( mEndValue<value )
+		mValue = mEndValue;
+	else
+		mValue = value;
 
 }
 
 
-void CGUIButton::processLogic()
-{
-	if(!mEnabled)
-		return;
 
+
+void CGUINumberControl::processLogic()
+{
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
@@ -60,7 +86,15 @@ void CGUIButton::processLogic()
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
 				mButtonUp = true;
-				g_pBehaviorEngine->m_EventList.add(mEvent);
+				mHovered = true;
+				mButtonDown = false;
+
+				// Cycle through the Optionslist
+				increment();
+
+				if( mValue > mEndValue )
+					mValue = mStartValue;
+
 				g_pInput->m_EventList.pop_Event();
 			}
 		}
@@ -74,11 +108,8 @@ void CGUIButton::processLogic()
 }
 
 
-void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
+void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 {
-	if(!mEnabled)
-		return;
-
 
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
@@ -86,32 +117,33 @@ void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
+	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
+	const std::string text = itoa(mValue);
+	Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
 
 
 	if( g_pTimer->HasTimeElapsed(100) )
 	{
-		twirliconID++;
+		mTwirliconID++;
 
-		if(twirliconID == 15)
-			twirliconID = 9;
+		if(mTwirliconID == 15)
+			mTwirliconID = 9;
 	}
 
 	if( mButtonDown )
 	{
-		Font.drawCharacter( blitsfc, twirliconID, lRect.x+12, lRect.y );
+		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+12, lRect.y );
 	}
 	else if( mHovered )
 	{
-		Font.drawCharacter( blitsfc, twirliconID, lRect.x+8, lRect.y );
+		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+8, lRect.y );
 	}
 
 }
 
 
-void CGUIButton::drawNoStyle(SDL_Rect& lRect)
+void CGUINumberControl::drawNoStyle(SDL_Rect& lRect)
 {
-	if(!mEnabled)
-		return;
 
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
@@ -136,15 +168,18 @@ void CGUIButton::drawNoStyle(SDL_Rect& lRect)
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+
 }
 
 
-void CGUIButton::processRender(const CRect<float> &RectDispCoordFloat)
+void CGUINumberControl::processRender(const CRect<float> &RectDispCoordFloat)
 {
+
 	// Transform to the display coordinates
 	CRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
 	(this->*drawButton)(lRect);
+
 }

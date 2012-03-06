@@ -41,6 +41,7 @@ public:
 	void setText(const std::string& text)
 	{	mText = text;	}
 
+
 private:
 	bool mHovered;
 	bool mButtonDown;

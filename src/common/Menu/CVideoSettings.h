@@ -17,6 +17,7 @@
 
 #include "gui/CGUIComboSelection.h"
 #include "gui/CGUISwitch.h"
+#include "gui/CGUINumberControl.h"
 
 class CVideoSettings : public CBaseMenu {
 public:
@@ -29,12 +30,13 @@ public:
 private:
 
 	CGUIComboSelection	*mpOGLFilterSelection;
-	CGUIComboSelection	*mpFPSSelection;
+	CGUINumberControl	*mpFPSSelection;
 	CGUISwitch			*mpOpenGLSwitch;
 	CGUIComboSelection	*mpScalerSelection;
 	CGUISwitch			*mpFullScreenSwitch;
 	CGUISwitch			*mpShowFPSSwitch;
 	CGUISwitch			*mpSFXSwitch;
+	CGUIButton			*mpCameraButton;
 
 
 	/*CVidConfig m_Vidconfig;

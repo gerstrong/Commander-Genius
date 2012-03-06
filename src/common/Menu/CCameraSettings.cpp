@@ -8,10 +8,10 @@
 #include "CCameraSettings.h"
 #include "../../StringUtils.h"
 
-/*CCameraSettings::CCameraSettings(Uint8 dlg_theme):
-CBaseMenu(dlg_theme),
+CCameraSettings::CCameraSettings(Uint8 dlg_theme):
+CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.4f) ),
 m_CameraBounds(g_pVideoDriver->getCameraBounds())
-{*/
+{
 	/*std::string buf;
 	mp_Dialog = new CDialog(18, 13, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
@@ -28,9 +28,9 @@ m_CameraBounds(g_pVideoDriver->getCameraBounds())
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, " "+itoa(m_CameraBounds.speed));
 
 	mp_Dialog->setInputMode(INPUT_MODE_COUNTER);*/
-/*}
+}
 
-void CCameraSettings::processSpecific()
+/*void CCameraSettings::processSpecific()
 {*/
 	/*if(mp_Dialog->getSelection() == 2)
 	{
@@ -69,7 +69,7 @@ void CCameraSettings::processSpecific()
 	m_CameraBounds.down = atoi(mp_Dialog->m_dlgobject.at(8)->m_Option->m_text);
 	m_CameraBounds.speed = atoi(mp_Dialog->m_dlgobject.at(10)->m_Option->m_text);*/
 
-#ifndef NOKEYBOARD
+//#ifndef NOKEYBOARD
 	/*if( m_selection != NO_SELECTION)
 	{
 		if(mp_Dialog->getInputMode(INPUT_MODE_COUNTER))
@@ -98,10 +98,16 @@ void CCameraSettings::processSpecific()
 			m_selection = NO_SELECTION;
 		}
 	}*/
-#endif
-/*}
+//#endif
+/*}*/
 
-CCameraSettings::~CCameraSettings()
+void CCameraSettings::init()
 {
-	g_pVideoDriver->saveCameraBounds(m_CameraBounds);
-}*/
+
+}
+
+
+void CCameraSettings::release()
+{
+
+}

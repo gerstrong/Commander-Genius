@@ -15,8 +15,10 @@ class CCameraSettings : public CBaseMenu
 {
 public:
 	CCameraSettings(Uint8 dlg_theme);
-	void processSpecific();
-	virtual ~CCameraSettings();
+
+	void init();
+
+	void release();
 
 private:
 	st_camera_bounds m_CameraBounds;
