@@ -57,12 +57,13 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 	mpOpenGLSwitch = new CGUISwitch( "OpenGL",
 									  CGUISwitch::VORTICON );
 	mpMenuDialog->addControl( mpOpenGLSwitch );
-#endif
 
 	mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
 											filledStrList( 2, "nearest", "linear" ),
 	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
 	mpMenuDialog->addControl( mpOGLFilterSelection );
+#endif
+
 
 
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
@@ -108,9 +109,10 @@ void CVideoSettings::init()
 	mUserVidConf = g_pVideoDriver->getVidConfig();
 
 	// Load the config into the GUI
-	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==1 ? "nearest" : "linear" );
-	mpFPSSelection->setSelection( g_pTimer->getFrameRate() );
+	mpFPSSelection->setSelection( mUserVidConf.m_targetfps );
 	mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
+	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==1 ? "nearest" : "linear" );
+	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
 	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpShowFPSSwitch->enable( mUserVidConf.showfps );
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );
@@ -130,12 +132,12 @@ void CVideoSettings::release()
 {
 	// Save up the changed stuff
 
-	g_pTimer->setFPS( mpFPSSelection->getSelection() );
+	mUserVidConf.m_targetfps = mpFPSSelection->getSelection();
 
 #ifdef USE_OPENGL
-	g_pVideoDriver->setOGLFilter( mpOGLFilterSelection->getSelection() == "nearest" ? 0 : 1 );
+	mUserVidConf.m_opengl_filter = mpOGLFilterSelection->getSelection() == "linear" ? GL_LINEAR : GL_NEAREST;
+	mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
 #endif
-	g_pVideoDriver->enableOpenGL( mpOpenGLSwitch->isEnabled() );
 
 	std::string scalerStr = mpScalerSelection->getSelection();
 	if( scalerStr != "none" )
