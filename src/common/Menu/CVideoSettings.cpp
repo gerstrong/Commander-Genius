@@ -88,15 +88,17 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 
 
 
-	mpFullScreenSwitch = new CGUIButton( "Unknown mode",
-										new toggleFullscreenFunctor(*this),
-										CGUIButton::VORTICON );
-	mpMenuDialog->addControl( mpFullScreenSwitch );
-
 	mpResolutionSelection = new CGUIComboSelection( "Mode",
 													filledStrList(1, "?x?"),
 													CGUIComboSelection::VORTICON );
 	mpMenuDialog->addControl( mpResolutionSelection );
+
+
+
+	mpFullScreenSwitch = new CGUIButton( "Unknown mode",
+										new toggleFullscreenFunctor(*this),
+										CGUIButton::VORTICON );
+	mpMenuDialog->addControl( mpFullScreenSwitch );
 
 }
 
@@ -143,6 +145,10 @@ void CVideoSettings::release()
 
 	mUserVidConf.showfps = mpShowFPSSwitch->isEnabled();
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
+
+
+	const std::string res = mpResolutionSelection->getSelection();
+	sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
 
 
 	CVidConfig oldVidConf = g_pVideoDriver->getVidConfig();
