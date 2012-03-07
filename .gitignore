@@ -8,3 +8,14 @@ Makefile
 .settings
 .svn
 *.dmg
+CMakeCache.txt
+CPackConfig.cmake
+CPackSourceConfig.cmake
+Debug/*
+*~
+build/*
+cmake_install.cmake
+install_manifest.txt
+*.dll
+*.dll
+readme.txt
