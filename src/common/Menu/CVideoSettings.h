@@ -27,16 +27,19 @@ public:
 
 	void release();
 
+	CVidConfig 			mUserVidConf;
+
 private:
 
 	CGUIComboSelection	*mpOGLFilterSelection;
 	CGUINumberControl	*mpFPSSelection;
 	CGUISwitch			*mpOpenGLSwitch;
 	CGUIComboSelection	*mpScalerSelection;
-	CGUISwitch			*mpFullScreenSwitch;
 	CGUISwitch			*mpShowFPSSwitch;
 	CGUISwitch			*mpSFXSwitch;
 	CGUIButton			*mpCameraButton;
+	CGUIButton			*mpFullScreenSwitch;
+	CGUIComboSelection	*mpResolutionSelection;
 
 };
 

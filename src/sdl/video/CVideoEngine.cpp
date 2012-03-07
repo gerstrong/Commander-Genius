@@ -23,7 +23,6 @@ m_Mode(0)
 
 bool CVideoEngine::init()
 {
-	const CRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
 	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
 
 	// Setup mode depends on some systems.
@@ -52,17 +51,13 @@ bool CVideoEngine::init()
 
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(m_VidConfig.Fullscreen)
-	{
 		m_Mode |= SDL_FULLSCREEN;
-	}
 	else
-	{
 		m_Mode |= SDL_RESIZABLE;
-	}
 
 	// And set the proper Display Dimensions
 	// The screen is also setup in this function
-	if(!resizeDisplayScreen(Res))
+	if( !resizeDisplayScreen(m_VidConfig.m_DisplayRect) )
 		return false;
 
 	// If Fullscreen hide the mouse cursor.

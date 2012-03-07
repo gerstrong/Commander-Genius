@@ -32,7 +32,7 @@ struct EventEnterLevel : CEvent {
 };
 
 
-struct InvokeEvent : CEvent
+struct InvokeFunctorEvent : CEvent
 {
 	virtual void operator()() = 0;
 };

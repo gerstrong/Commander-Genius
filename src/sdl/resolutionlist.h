@@ -15,7 +15,7 @@
 
 #include <string>
 
-const char* ResolutionsList[] =
+static const char* ResolutionsList[] =
 {
 "320x200",
 "320x240",

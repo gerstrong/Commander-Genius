@@ -84,7 +84,7 @@ void CGameControl::process()
 	// process any triggered Game Control related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 
-	if(!EventContainer.empty())
+	if( !EventContainer.empty() )
 	{
 		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 		{
@@ -114,7 +114,7 @@ void CGameControl::process()
 
 			return;
 		}
-		else if( InvokeEvent *iEv = EventContainer.occurredEvent<InvokeEvent>() )
+		else if( InvokeFunctorEvent *iEv = EventContainer.occurredEvent<InvokeFunctorEvent>() )
 		{
 			(*iEv)();
 			EventContainer.pop_Event();

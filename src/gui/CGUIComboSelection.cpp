@@ -27,6 +27,7 @@ drawButton(&CGUIComboSelection::drawNoStyle)
 		drawButton = &CGUIComboSelection::drawVorticonStyle;
 }
 
+
 const std::string& CGUIComboSelection::getSelection()
 {
 	return *mOLCurrent;
@@ -60,8 +61,31 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
 
 
 
+
+void CGUIComboSelection::setList(const char **strArray, const int numElem)
+{
+	if(!mOptionsList.empty())
+		mOptionsList.clear();
+
+
+	for( int i=0 ; i<numElem ; i++ )
+	{
+		mOptionsList.push_back( strArray[i] );
+	}
+
+	mOLCurrent = mOptionsList.begin();
+
+}
+
+
+
+
+
 void CGUIComboSelection::processLogic()
 {
+	if(!mEnabled)
+		return;
+
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
@@ -105,6 +129,8 @@ void CGUIComboSelection::processLogic()
 
 void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 {
+	if(!mEnabled)
+		return;
 
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
@@ -123,6 +149,8 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 
 void CGUIComboSelection::drawNoStyle(SDL_Rect& lRect)
 {
+	if(!mEnabled)
+		return;
 
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 

@@ -9,6 +9,7 @@
 
 #include <limits.h>
 #include <cassert>
+#include <SDL.h>
 #include <SDL_mutex.h>
 
 #ifdef DEBUG

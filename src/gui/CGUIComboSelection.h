@@ -29,7 +29,10 @@ public:
 			const Style	style = NONE);
 
 	const std::string& getSelection();
+
 	void setSelection( const std::string& selectionText );
+
+	void setList(const char **strArray, const int numElem);
 
 	void processLogic();
 

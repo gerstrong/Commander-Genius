@@ -226,7 +226,7 @@ void CTimer::TimeToDelay( void )
 	    setRates(DEFAULT_LPS, m_FrameRate-20, DEFAULT_SYNC);
     	 */
 #ifdef DEBUG
-    	g_pLogFile->ftextOut( "LOOP %d LPS %d FPS %d Skip %d\n", m_LoopPS, m_LPS, m_FPS, m_SkipPS );
+    	//g_pLogFile->ftextOut( "LOOP %d LPS %d FPS %d Skip %d\n", m_LoopPS, m_LPS, m_FPS, m_SkipPS );
 #endif
     }
 }

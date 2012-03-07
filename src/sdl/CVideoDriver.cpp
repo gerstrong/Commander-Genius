@@ -105,7 +105,7 @@ void CVideoDriver::initResolutionList()
 		}
 	}
 
-	// In case there is no fullscreen, we will adapt the resolution it's best to the window
+	// In case there is no fullscreen, we will adapt the resolution it fits best to the window
 	if(!m_VidConfig.Fullscreen)
 	{
 		int e = 1;
@@ -207,10 +207,7 @@ bool CVideoDriver::applyMode()
 	resetSettings();
 #endif
 
-	// Check if some zoom/filter modes are illogical
-	// TODO: Make this call better to understand
-	// It must be able to change the resolution, and if it fails, roll back.
-
+	// Check if some zoom/filter modes are illogical and roll them back accordingly
 	if( (m_VidConfig.Zoom == 3 && m_VidConfig.m_ScaleXFilter == 1) && !m_VidConfig.m_opengl )
 		m_VidConfig.Zoom = 2;
 
@@ -220,6 +217,8 @@ bool CVideoDriver::applyMode()
 	m_VidConfig.m_DisplayRect = *m_Resolution_pos;
 	return true;
 }
+
+
 
 bool CVideoDriver::start()
 {
@@ -233,7 +232,7 @@ bool CVideoDriver::start()
 	g_pLogFile->textOut("Starting graphics driver...<br>");
 
 #ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the matrices
+	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the
 	{
 		mp_VideoEngine = new COpenGL(m_VidConfig, mp_sbufferx, mp_sbuffery);
 		retval = mp_VideoEngine->init();
@@ -270,8 +269,10 @@ bool CVideoDriver::start()
 	return retval;
 }
 
+
 void CVideoDriver::setFilter(short value)
 { m_VidConfig.m_ScaleXFilter = value; } // 1 means no filter of course
+
 
 void CVideoDriver::setZoom(short value)
 { m_VidConfig.Zoom = value; }
@@ -519,9 +520,6 @@ void CVideoDriver::clearDrawingTasks()
 		mDrawTasks.clear();
 	}
 }
-
-
-
 
 
 
