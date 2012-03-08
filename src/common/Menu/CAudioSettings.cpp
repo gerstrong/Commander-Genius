@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 
+#include "common/CSettings.h"
 #include "CAudioSettings.h"
 #include "StringUtils.h"
 
@@ -15,7 +16,7 @@
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
 CAudioSettings::CAudioSettings(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
+CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
 {
 
 	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
@@ -25,7 +26,7 @@ CBaseMenu(dlg_theme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 									 CGUIComboSelection::VORTICON );
 	mpMenuDialog->addControl( mpRate );
 
-	mpStereo = new CGUISwitch( "Mode", CGUISwitch::VORTICON );
+	mpStereo = new CGUISwitch( "Stereo", CGUISwitch::VORTICON );
 	mpMenuDialog->addControl( mpStereo );
 
 	mpDepth = new CGUIComboSelection( "Depth",
@@ -58,6 +59,11 @@ void CAudioSettings::init()
 {
 	mAudioSpec = g_pSound->getAudioSpec();
 	mSoundblaster = g_pSound->getSoundBlasterMode();
+
+	mpRate->setSelection( itoa(mAudioSpec.freq) );
+	mpStereo->enable( mAudioSpec.channels == 2 );
+	mpDepth->setSelection( mAudioSpec.format == AUDIO_S8 ? "8-bit" : "16-bit" );
+	mpSBToggle->setSelection( mSoundblaster ? "soundblaster" : "pc speaker" );
 }
 
 
@@ -82,4 +88,6 @@ void CAudioSettings::release()
 	mSoundblaster = ( mpSBToggle->getSelection() == "soundblaster" ? true : false );
 
 	g_pSound->setSettings(mAudioSpec, mSoundblaster);
+
+	g_pSettings->saveDrvCfg();
 }

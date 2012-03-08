@@ -23,7 +23,7 @@
 
 // This central list tells which frequencies can be used for your soundcard.
 // In case you want to add some more, just modify this list
-static const unsigned int numAvailableRates = 6;
+static const unsigned int numAvailableRates = 5;
 static const int availableRates[numAvailableRates]=
 {
 		11025,
