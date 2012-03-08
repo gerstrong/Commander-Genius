@@ -19,6 +19,21 @@
 
 #include <fstream>
 
+
+
+// This central list tells which frequencies can be used for your soundcard.
+// In case you want to add some more, just modify this list
+static const unsigned int numAvailableRates = 6;
+static const int availableRates[numAvailableRates]=
+{
+		11025,
+		22050,
+		44100,
+		48000,
+		49716
+};
+
+
 #define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL;
 
 // define a callback function we can work with
@@ -347,29 +362,48 @@ bool CSound::pauseGamePlay()
 
 
 
+std::list<std::string> CSound::getAvailableRateList() const
+{
+	std::list<std::string> rateStrList;
 
-void CSound::setSettings( const int freq,
-						  const bool stereo,
-						  const Uint16 format,
-						  const bool useSB )
+	for( unsigned int i=0 ; i<numAvailableRates ; i++ )
+		rateStrList.push_back( itoa(availableRates[i]) );
+
+	return rateStrList;
+}
+
+
+
+void CSound::setSettings( const SDL_AudioSpec& audioSpec,
+	 	  	  	  	  	  const bool useSB )
 {
 	m_sound_blaster_mode = useSB;
 
-	AudioSpec.channels = (stereo==true) ? 2 : 1;
-	AudioSpec.format = format;
+	AudioSpec = audioSpec;
 
-	switch(freq)
+	// Check if rate matches to those available in the system
+	for( unsigned int i=0 ; i<numAvailableRates ; i++ )
 	{
-		case 0: break; // means that the actual frequency stays untouched
-		case 11025:
-		case 22050:
-		case 44100:
-		case 48000:
-		case 49716:
-			AudioSpec.freq = freq;
+		if( availableRates[i] == audioSpec.freq )
+		{
+			AudioSpec = audioSpec;
 			break;
-		default:
-			AudioSpec.freq = 44100;
-			break;
+		}
 	}
+}
+
+
+
+void CSound::setSettings( const int rate,
+						  const int channels,
+						  const int format,
+	 	  	  	  	  	  const bool useSB )
+{
+	SDL_AudioSpec nAudio = AudioSpec;
+
+	nAudio.freq = rate;
+	nAudio.channels = channels;
+	nAudio.format = format;
+
+	setSettings(nAudio, useSB);
 }

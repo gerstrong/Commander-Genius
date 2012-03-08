@@ -20,36 +20,36 @@ CBaseMenu(dlg_theme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
-	/*mpRate = new CGUIComboSelection( "Rate",
-									 ...,
+	mpRate = new CGUIComboSelection( "rate",
+									 g_pSound->getAvailableRateList(),
 									 CGUIComboSelection::VORTICON );
 	mpMenuDialog->addControl( mpRate );
 
-	mpModeSelection = new CGUIComboSelection( "Mode",
-									 ...,
-									 CGUIComboSelection::VORTICON );
-	mpMenuDialog->addControl( mpModeSelection );
+	mpStereo = new CGUISwitch( "Mode", CGUISwitch::VORTICON );
+	mpMenuDialog->addControl( mpStereo );
 
 	mpDepth = new CGUIComboSelection( "Depth",
-									 ...,
+									  filledStrList( 2, "8-bit", "16-bit" ),
 									 CGUIComboSelection::VORTICON );
 	mpMenuDialog->addControl( mpDepth );
 
 	mpSBToggle = new CGUIComboSelection( "Soundcard",
-									 ...,
-									 CGUIComboSelection::VORTICON );
+										 filledStrList( 2, "pc speaker", "soundblaster" ),
+										 CGUISwitch::VORTICON );
 	mpMenuDialog->addControl( mpSBToggle );
 
 	mpSoundVolume = new CGUINumberControl( "Sound Volume",
-			 	 	 	 	 	 	 	 	 ...,
-			 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
+											0, SDL_MIX_MAXVOLUME, 8,
+											g_pSound->getSoundVolume(),
+											CGUINumberControl::VORTICON );
 	mpMenuDialog->addControl( mpSoundVolume );
 
 
 	mpMusicVolume = new CGUINumberControl( "Music Volume",
-	 	 	 	 ...,
-	 	 	 	 CGUIComboSelection::VORTICON );
-	mpMenuDialog->addControl( mpMusicVolume );*/
+											0, SDL_MIX_MAXVOLUME, 8,
+				 	 	 	 	 	 	 	g_pSound->getMusicVolume(),
+				 	 	 	 	 	 	 	CGUINumberControl::VORTICON );
+	mpMenuDialog->addControl( mpMusicVolume );
 
 }
 
@@ -58,12 +58,28 @@ void CAudioSettings::init()
 {
 	mAudioSpec = g_pSound->getAudioSpec();
 	mSoundblaster = g_pSound->getSoundBlasterMode();
+}
 
 
+void CAudioSettings::process()
+{
+	CBaseMenu::process();
+
+	const int nSVolume = mpSoundVolume->getSelection();
+	const int nMVolume = mpMusicVolume->getSelection();
+
+	g_pSound->setSoundVolume(nSVolume);
+	g_pSound->setMusicVolume(nMVolume);
 }
 
 
 void CAudioSettings::release()
 {
+	mAudioSpec.freq = atoi( mpRate->getSelection().c_str() );
+	mAudioSpec.channels = mpStereo->isEnabled() ? 2 : 1;
+	mAudioSpec.format = mpDepth->getSelection() == "8-bit" ? AUDIO_S8 : AUDIO_S16;
 
+	mSoundblaster = ( mpSBToggle->getSelection() == "soundblaster" ? true : false );
+
+	g_pSound->setSettings(mAudioSpec, mSoundblaster);
 }

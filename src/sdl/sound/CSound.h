@@ -58,9 +58,12 @@ public:
 	bool getSoundBlasterMode() {	return m_sound_blaster_mode;	}
 	COPLEmulator *getOPLEmulatorPtr() { return &m_OPL_Player; }
 
-	void setSettings( const int freq,
-			 	 	  const bool stereo,
-			 	 	  const Uint16 format,
+	void setSettings( const int rate,
+							  const int channels,
+							  const int format,
+		 	  	  	  	  	  const bool useSB );
+
+	void setSettings( const SDL_AudioSpec& audioSpec,
 			 	 	  const bool useSB );
 
 	bool loadSoundData(const CExeFile &ExeFile);
@@ -68,6 +71,9 @@ public:
 
 	// Tell whether a sound is played which has to stop the gameplay
 	bool pauseGamePlay();
+
+	// Returns as list of strings the frequencies
+	std::list<std::string> getAvailableRateList() const;
 
 protected:
 	std::vector<CSoundChannel>	m_soundchannel;

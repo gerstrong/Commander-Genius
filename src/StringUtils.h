@@ -113,6 +113,7 @@ inline char* itoa(int val, char* buf, int base) {
 //
 // HINT: use these where possible
 
+const std::list<std::string> filledStrList( const size_t amount, const char *first, ... );
 std::string		getRightAlignedString(std::string text, size_t size);
 bool 			endofText(const std::string& Text);
 void			TrimSpaces(std::string& szLine);

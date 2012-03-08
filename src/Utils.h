@@ -58,7 +58,8 @@ private:
 
 
 template<typename T>
-std::vector<T> ListAsVector(const std::list<T>& l) {
+std::vector<T> ListAsVector(const std::list<T>& l)
+{
 	return std::vector<T>(l.begin(), l.end());
 }
 
@@ -87,32 +88,6 @@ const std::list<_T> filledList( const size_t amount, _T first, ... )
 
 	return list;
 }
-
-
-static const std::list<std::string> filledStrList( const size_t amount, const char *first, ... )
-{
-	char *item;
-	va_list vl;
-
-	std::list<std::string> list;
-
-	item = const_cast<char*>( first );
-	list.push_back(item);
-
-	va_start(vl, first);
-
-	for ( size_t i=1 ; i<amount ; i++ )
-	{
-		item = const_cast<char*>( va_arg(vl, const char*) );
-		list.push_back(item);
-	}
-
-	va_end(vl);
-
-	return list;
-
-}
-
 
 
 #endif

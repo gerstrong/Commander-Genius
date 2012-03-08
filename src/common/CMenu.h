@@ -56,10 +56,10 @@ public:
 	CDialog *mp_Dialog;
 
 protected:
-	CExeFile &m_ExeFile;
+	//CExeFile &m_ExeFile;
 	char m_Episode;
 	std::string m_GamePath;
-	CSavedGame &m_SavedGame;
+	//CSavedGame &m_SavedGame;
 	char m_menu_mode;
 
 	bool m_choosegame;
@@ -72,7 +72,7 @@ protected:
 	Uint8 m_NumPlayers;
 	Uint8 m_Difficulty;
 	int  m_saveslot;
-	bool &m_restartVideo;
+	//bool &m_restartVideo;
 
 	std::list<CBaseMenu*> m_SubMenus;
 

@@ -88,7 +88,8 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 {
 	int curheader = 0x10;
 	word offset;
-	int garbage, nr_of_sounds;
+	//int garbage,
+	int	nr_of_sounds;
 	char name[12];
 
 	memset(name,0,12);
@@ -101,7 +102,8 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 		buf_ptr = buffer+curheader;
 		offset = READWORD(buf_ptr);
 		Priority = *buf_ptr++;
-		garbage = *buf_ptr++;
+		buf_ptr++;
+		//garbage = *buf_ptr++;
 
 		for(int i=0;i<12;i++) name[i] = *buf_ptr++;
 

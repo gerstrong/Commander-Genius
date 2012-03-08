@@ -25,15 +25,17 @@ public:
 
 	void init();
 
+	void process();
+
 	void release();
 
 
 private:
 
 	CGUIComboSelection	*mpRate;
-	CGUIComboSelection	*mpModeSelection;
+	CGUISwitch			*mpStereo;
 	CGUIComboSelection	*mpDepth;
-	CGUISwitch 			*mpSBToggle;
+	CGUIComboSelection	*mpSBToggle;
 	CGUINumberControl	*mpSoundVolume;
 	CGUINumberControl	*mpMusicVolume;
 

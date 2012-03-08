@@ -28,6 +28,7 @@ public:
 			const std::list<std::string>& optionsList,
 			const Style	style = NONE);
 
+
 	const std::string& getSelection();
 
 	void setSelection( const std::string& selectionText );

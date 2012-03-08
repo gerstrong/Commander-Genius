@@ -13,6 +13,7 @@
 #include "common/CBehaviorEngine.h"
 #include "core/CGameMode.h"
 #include "sdl/CTimer.h"
+#include "Utils.h"
 
 
 CGUIComboSelection::CGUIComboSelection(	const std::string& text,
@@ -26,7 +27,6 @@ drawButton(&CGUIComboSelection::drawNoStyle)
 	if(style == VORTICON)
 		drawButton = &CGUIComboSelection::drawVorticonStyle;
 }
-
 
 const std::string& CGUIComboSelection::getSelection()
 {
