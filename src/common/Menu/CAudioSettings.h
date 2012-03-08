@@ -14,19 +14,31 @@
 #include <SDL.h>
 #include <string>
 
+#include "gui/CGUIComboSelection.h"
+#include "gui/CGUISwitch.h"
+#include "gui/CGUINumberControl.h"
+
+
 class CAudioSettings : public CBaseMenu {
 public:
 	CAudioSettings(Uint8 dlg_theme);
-	void processSpecific();
-	void setFrequencyFromSlot(int value);
+
+	void init();
+
+	void release();
+
 
 private:
 
-	/*int m_Rate;
-	int m_current; //used to show what is currently selected without actually changing the value
-	Uint16 m_Format;
-	int m_Mode;
-	bool m_Soundblaster;*/
+	CGUIComboSelection	*mpRate;
+	CGUIComboSelection	*mpModeSelection;
+	CGUIComboSelection	*mpDepth;
+	CGUISwitch 			*mpSBToggle;
+	CGUINumberControl	*mpSoundVolume;
+	CGUINumberControl	*mpMusicVolume;
+
+	SDL_AudioSpec	mAudioSpec;
+	bool mSoundblaster;
 };
 
 #endif /* CAUDIOSETTINGS_H_ */

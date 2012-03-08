@@ -348,8 +348,13 @@ bool CSound::pauseGamePlay()
 
 
 
-void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
+void CSound::setSettings( const int freq,
+						  const bool stereo,
+						  const Uint16 format,
+						  const bool useSB )
 {
+	m_sound_blaster_mode = useSB;
+
 	AudioSpec.channels = (stereo==true) ? 2 : 1;
 	AudioSpec.format = format;
 

@@ -20,9 +20,50 @@ CBaseMenu(dlg_theme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
-	mpMenuDialog->addControl(new CGUIButton( "Quit",
-										     new GMQuit(),
-										     CGUIButton::VORTICON ),
-								CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );
+	/*mpRate = new CGUIComboSelection( "Rate",
+									 ...,
+									 CGUIComboSelection::VORTICON );
+	mpMenuDialog->addControl( mpRate );
+
+	mpModeSelection = new CGUIComboSelection( "Mode",
+									 ...,
+									 CGUIComboSelection::VORTICON );
+	mpMenuDialog->addControl( mpModeSelection );
+
+	mpDepth = new CGUIComboSelection( "Depth",
+									 ...,
+									 CGUIComboSelection::VORTICON );
+	mpMenuDialog->addControl( mpDepth );
+
+	mpSBToggle = new CGUIComboSelection( "Soundcard",
+									 ...,
+									 CGUIComboSelection::VORTICON );
+	mpMenuDialog->addControl( mpSBToggle );
+
+	mpSoundVolume = new CGUINumberControl( "Sound Volume",
+			 	 	 	 	 	 	 	 	 ...,
+			 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
+	mpMenuDialog->addControl( mpSoundVolume );
+
+
+	mpMusicVolume = new CGUINumberControl( "Music Volume",
+	 	 	 	 ...,
+	 	 	 	 CGUIComboSelection::VORTICON );
+	mpMenuDialog->addControl( mpMusicVolume );*/
+
+}
+
+
+void CAudioSettings::init()
+{
+	mAudioSpec = g_pSound->getAudioSpec();
+	mSoundblaster = g_pSound->getSoundBlasterMode();
+
+
+}
+
+
+void CAudioSettings::release()
+{
 
 }
