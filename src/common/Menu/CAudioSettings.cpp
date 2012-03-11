@@ -13,8 +13,6 @@
 
 #include "core/CGameControl.h"
 
-#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
-
 CAudioSettings::CAudioSettings(Uint8 dlg_theme) :
 CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
 {
@@ -71,11 +69,8 @@ void CAudioSettings::process()
 {
 	CBaseMenu::process();
 
-	const int nSVolume = mpSoundVolume->getSelection();
-	const int nMVolume = mpMusicVolume->getSelection();
-
-	g_pSound->setSoundVolume(nSVolume);
-	g_pSound->setMusicVolume(nMVolume);
+	g_pSound->setSoundVolume( mpSoundVolume->getSelection() );
+	g_pSound->setMusicVolume( mpMusicVolume->getSelection() );
 }
 
 
