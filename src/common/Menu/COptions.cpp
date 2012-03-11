@@ -12,45 +12,37 @@
 
 
 COptions::COptions( const Uint8 dlg_theme ) :
-CBaseMenu( dlg_theme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
+CBaseMenu( dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, NUM_OPTIONS*0.05f) ),
+mpOption(g_pBehaviorEngine->m_option)
 {
 
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
-	/*mpMenuDialog->addControl(new CGUIButton( "Video",
-									new OpenMenuEvent( new CVideoSettings(dlgtheme) ),
-									CGUIButton::VORTICON ),
-								CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );*/
-
-
-	/*int i;
-	std::string buf;
-
-	mp_Dialog = new CDialog(27, NUM_OPTIONS+2, INPUT_MODE_UP_DOWN, dlg_theme);
-	
-	for( i = 0 ; i < NUM_OPTIONS ; i++ )
+	for( int i = 0 ; i < NUM_OPTIONS ; i++ )
 	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i+1, "");
-		buf = mp_option[i].menuname + " " + getSwitchString(mp_option[i].value);
-		mp_Dialog->m_dlgobject.at(i)->m_Option->m_FontMapID = 1;
-		mp_Dialog->setObjectText(i, buf);
-	}*/
+		mpOptionList.push_back( new CGUISwitch(mpOption[i].menuname,
+											   CGUISwitch::VORTICON) );
+		mpMenuDialog->addControl( mpOptionList.back() );
+	}
+
 }
 
-//void COptions::processSpecific()
-//{
-	/*std::string buf;
+void COptions::init()
+{
+	std::list<CGUISwitch*>::iterator it = mpOptionList.begin();
 
-	if(m_mustclose) // If menu is about to close save the options
-		g_pSettings->saveGameCfg();
+	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
+		(*it)->enable( mpOption[i].value );
 
-	if( m_selection != NO_SELECTION)
-	{
-		//
-		mp_option[m_selection].value = !mp_option[m_selection].value;
-		buf = mp_option[m_selection].menuname + " " + getSwitchString(mp_option[m_selection].value);
+}
 
-		mp_Dialog->setObjectText(m_selection, buf);
-		m_selection = NO_SELECTION;
-	}*/
-//}
+
+void COptions::process()
+{
+	CBaseMenu::process();
+
+	std::list<CGUISwitch*>::iterator it = mpOptionList.begin();
+
+	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
+		mpOption[i].value = (*it)->isEnabled();
+}
