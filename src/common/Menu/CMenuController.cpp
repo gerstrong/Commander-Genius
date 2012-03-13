@@ -7,6 +7,7 @@
 
 #include "CMenuController.h"
 #include "common/CBehaviorEngine.h"
+#include "common/Menu/CControlsettings.h"
 
 void CMenuController::process()
 {
@@ -36,6 +37,16 @@ void CMenuController::process()
 			mpMenu = mMenuStack.back();
 			EventContainer.pop_Event();
 		}
+
+		if( OpenControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenControlMenuEvent>() )
+		{
+			EventContainer.pop_Event();
+
+			EventContainer.add( new OpenMenuEvent(
+									new CControlsettings(ctrlMenu->mDlgTheme,
+														 ctrlMenu->mNumPlayers) ) );
+		}
+
 
 	}
 

@@ -40,7 +40,7 @@ CBaseMenu( dlgtheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 									buttonStyle ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Controls",
-									new OpenMenuEvent( new CControlsettings(dlgtheme) ),
+									new OpenMenuEvent( new CPlayerControl(dlgtheme) ),
 									buttonStyle ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Profile",

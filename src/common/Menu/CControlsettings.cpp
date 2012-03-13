@@ -31,18 +31,12 @@ const std::string actionsnames[MAX_COMMANDS] =
 		"Quit:        "
 };
 
-CControlsettings::CControlsettings( const Uint8 dlg_theme ) :
-CBaseMenu( dlg_theme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )/*,
-m_chosenPlayer(0),
-m_waiting_for_input(false)*/
+CControlsettings::CControlsettings( const Uint8 dlgTheme, const int selectedPlayer ) :
+CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) ),
+mSelectedPlayer(selectedPlayer)
 {
 
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
-
-	/*mpMenuDialog->addControl(new CGUIButton( "Video",
-									new OpenMenuEvent( new CVideoSettings(dlgtheme) ),
-									CGUIButton::VORTICON ),
-								CRect<float>(0.05f, 0.08f, 0.9f, 0.07f) );*/
 
 
 
@@ -64,6 +58,26 @@ m_waiting_for_input(false)*/
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, MAX_COMMANDS+1, "");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, MAX_COMMANDS+2, "Reset Controls");*/
 }
+
+void CControlsettings::init()
+{
+
+	std::list<std::string> playerList;
+	for( size_t i=1 ; i <= MAX_PLAYERS ; i++ )
+		playerList.push_back( "Player " + itoa(i) );
+
+
+	/*SmartPointer<CEvent> omEvent = new OpenMenuEvent(
+										new CSelectionMenu<int>(
+													mChosenPlayer,
+													playerList,
+													0 ) );
+	g_pBehaviorEngine->EventList().add( omEvent );*/
+
+	// In case nothing was selected
+}
+
+
 
 //void CControlsettings::setControlsText()
 //{

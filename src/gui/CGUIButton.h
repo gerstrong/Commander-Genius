@@ -41,6 +41,8 @@ public:
 	void setText(const std::string& text)
 	{	mText = text;	}
 
+	std::string getText()
+	{	return mText;	}
 
 private:
 	std::string mText;

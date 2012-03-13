@@ -29,6 +29,8 @@ public:
 	void enable(const bool value)
 	{	mEnabled = value;	};
 
+	bool Up()
+	{	return mButtonUp;	}
 
 	void drawTwirl( const SDL_Rect& lRect );
 

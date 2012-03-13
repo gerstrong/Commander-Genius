@@ -14,55 +14,47 @@
 #include <string>
 #include <list>
 #include "CBaseMenu.h"
+#include "common/Menu/CMenuController.h"
+#include "common/CBehaviorEngine.h"
 
-template <class T_Out>
-class CSelectionMenu : public CBaseMenu {
+
+/*class CSelectionMenu : public CBaseMenu
+{
 public:
-	CSelectionMenu(T_Out &output_selection,
-			const std::list<std::string> item_list,
-			const Uint8 dlg_theme,
-			const Uint8 defaultselection = 0) :
-		CBaseMenu(dlg_theme),
-		m_selecteditem(output_selection)
+	CSelectionMenu(const Uint8 dlg_theme) :
+		CBaseMenu(dlg_theme, CRect<float>(0.10f, 0.10f , 0.10f, 0.10f ) ),
+		mSelected(output_selection)
 	{
-		Uint16 width, height;
 
-		width = 0;
-		std::list<std::string>::const_iterator item = item_list.begin();
-		for(; item != item_list.end() ; item++)
-			if( width < item->size()+5 )
-				width = item->size()+5;
+		mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
-		height = item_list.size()+2;
-
-		/*mp_Dialog = new CDialog(width, height, INPUT_MODE_UP_DOWN, dlg_theme);
-
-		item = item_list.begin();
-		for(size_t pos=1; item != item_list.end() ; item++, pos++)
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, pos, *item);
-
-		mp_Dialog->setSelection(defaultselection);*/
 	}
 
-	void processSpecific()
+	int fetchSelOptionButtonID()
 	{
-		/*if( m_selection != NO_SELECTION)
+
+		std::list<CGUIButton*>::iterator button = mpButtonList.begin();
+		for( int i=0 ; button != mpButtonList.end() ; button++, i++ )
 		{
-			m_selecteditem = m_selection + 1;
-			m_mustclose = true;
-		}*/
+			if( (*button)->Up() )
+				return i;
+		}
+
+		return -1;
+
 	}
 
-	virtual ~CSelectionMenu()
-	{
-		/*if(mp_Dialog)
-			delete mp_Dialog;
-		mp_Dialog = NULL;*/
-	}
+
+	virtual void init() = 0;
+
+	virtual void release() = 0;
 
 private:
-	T_Out &m_selecteditem;
-};
+	int mSelected;
+	std::list<CGUIButton*> mpButtonList;
+};*/
+
+
 
 
 #endif /* CSELECTIONMENU_H_ */
