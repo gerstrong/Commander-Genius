@@ -573,23 +573,28 @@ const std::string* getSpecialSearchPathForTheme() {
 }
 
 
-class CheckSearchpathForFile { public:
-	const std::string& filename;
-	std::string* result;
-	std::string* searchpath;
-	CheckSearchpathForFile(const std::string& f, std::string* r, std::string* s) : filename(f), result(r), searchpath(s) {}
+class CheckSearchpathForFile
+{
+	public:
+		const std::string& filename;
+		std::string* result;
+		std::string* searchpath;
+		CheckSearchpathForFile(const std::string& f, std::string* r, std::string* s) :
+			filename(f), result(r), searchpath(s) {}
 
-	bool operator() (const std::string& spath) {
-		std::string tmp = spath + filename;
-		if(GetExactFileName(tmp, *result)) {
-			// we got here, if the file exists
-			if(searchpath) *searchpath = spath;
-			return false; // stop checking next searchpaths
+		bool operator() (const std::string& spath)
+		{
+			std::string tmp = spath + filename;
+			if(GetExactFileName(tmp, *result))
+			{
+				// we got here, if the file exists
+				if(searchpath) *searchpath = spath;
+				return false; // stop checking next searchpaths
+			}
+
+			// go to the next searchpath
+			return true;
 		}
-
-		// go to the next searchpath
-		return true;
-	}
 };
 
 std::string GetFullFileName(const std::string& path, std::string* searchpath) {

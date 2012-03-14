@@ -58,7 +58,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
 	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
-	Configuration.WriteInt("Video", "showfps", VidConf.showfps);
+	Configuration.SetKeyword("Video", "showfps", VidConf.showfps);
 	
 	st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 	Configuration.WriteInt("Bound", "left", CameraBounds.left);
