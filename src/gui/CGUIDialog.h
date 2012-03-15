@@ -53,7 +53,11 @@ public:
 
 	void addControl( const SmartPointer<CGUIControl> newControl );
 
+
 	void fit();
+
+	std::list< SmartPointer<CGUIControl> >& getControlList()
+	{	return mControlList;	}
 
 private:
 	CRect<float> mRect;

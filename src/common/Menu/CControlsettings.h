@@ -10,8 +10,9 @@
 
 #include "CBaseMenu.h"
 #include "gui/CGUIButton.h"
+#include "gui/CGUISwitch.h"
 #include "engine/CEvent.h"
-#include <list>
+#include <vector>
 
 
 class CControlsettings : public CBaseMenu
@@ -21,12 +22,15 @@ public:
 
 	void init();
 
+	void release();
+
 private:
 
 	int mSelectedPlayer;
 	bool mWaitingForInput;
 
-	std::list<CGUIButton*> mpButtonList;
+	std::vector<CGUIButton*> mpButtonList;
+	CGUISwitch *mpTwoButtonSwitch;
 };
 
 // Create the Control-Menu for the indicated Player
@@ -37,6 +41,7 @@ struct OpenControlMenuEvent : CEvent
 
 	Uint8 mDlgTheme;
 	int mNumPlayers;
+	std::list<CGUIButton*> mpButtonList;
 };
 
 class CPlayerControl : public CBaseMenu

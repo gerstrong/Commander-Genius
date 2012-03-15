@@ -65,6 +65,7 @@ public:
 		mpReturnButton->setText( newProperty == CLOSEABLE ? "x" : "\025" );
 	}
 
+
 protected:
 	SmartPointer<CGUIDialog> mpMenuDialog;
 

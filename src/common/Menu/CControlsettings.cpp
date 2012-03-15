@@ -31,50 +31,107 @@ const std::string actionsnames[MAX_COMMANDS] =
 		"Quit:        "
 };
 
-CControlsettings::CControlsettings( const Uint8 dlgTheme, const int selectedPlayer ) :
-CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) ),
+
+
+
+/**
+ * \brief This sets the default settings for a classic gameplay
+ */
+class ReadInputEvent : public InvokeFunctorEvent
+{
+public:
+
+	ReadInputEvent( const int selPlayer,
+					const int command,
+					std::vector<CGUIButton*> &buttonList ) :
+		mSelPlayer(selPlayer),
+		mCommand(command),
+		mButtonList(buttonList)
+		{}
+
+	void operator()()
+	{
+		while( !g_pInput->readNewEvent(mSelPlayer-1, mCommand) );
+
+		const std::string buf = actionsnames[mCommand];
+		const std::string buf2 = g_pInput->getEventName(mCommand, mSelPlayer-1);
+		mButtonList.at(mCommand)->setText(buf + buf2);
+	}
+
+	int mSelPlayer;
+	int mCommand;
+	std::vector<CGUIButton*> &mButtonList;
+};
+
+
+/**
+ * \brief This sets the default settings for a classic gameplay
+ */
+class ResetInputEvent : public InvokeFunctorEvent
+{
+public:
+
+	ResetInputEvent( const int selPlayer ) :
+		mSelPlayer(selPlayer)
+		{}
+
+	void operator()()
+	{
+		g_pInput->resetControls(mSelPlayer);
+	}
+
+	int mSelPlayer;
+};
+
+
+
+CControlsettings::CControlsettings( const Uint8 dlgTheme,
+									const int selectedPlayer ) :
+CBaseMenu( dlgTheme, CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
 mSelectedPlayer(selectedPlayer)
 {
 
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
-
-
-	/*m_suspended = true;
-
-	std::list<std::string> players_list;
-	for(size_t i=1 ; i<=MAX_PLAYERS ; i++)
-		players_list.push_back(itoa(i) + " Player");
-
-	// first create the players selection screen
-	mp_SubMenu = new CSelectionMenu<Uint8>( m_chosenPlayer, players_list, dlg_theme );
-
-	// Then create the controls selection screen
-	mp_Dialog = new CDialog(36, 18, INPUT_MODE_UP_DOWN, m_dlg_theme);
-
-	for(unsigned int i=0 ; i<MAX_COMMANDS ; i++)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i+1, actionsnames[i]);
-
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, MAX_COMMANDS+1, "");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, MAX_COMMANDS+2, "Reset Controls");*/
 }
 
 void CControlsettings::init()
 {
 
-	std::list<std::string> playerList;
-	for( size_t i=1 ; i <= MAX_PLAYERS ; i++ )
-		playerList.push_back( "Player " + itoa(i) );
+	if(!mpButtonList.empty())
+		mpButtonList.clear();
+
+	for(unsigned int i=0 ; i<MAX_COMMANDS ; i++)
+	{
+		const std::string buf = actionsnames[i];
+		const std::string buf2 = g_pInput->getEventName( i, mSelectedPlayer-1 );
+
+		CGUIButton	*guiButton = new CGUIButton( buf+buf2,
+	 	 	 	 	 	 	 	 	 	 	 	 new ReadInputEvent(mSelectedPlayer, i, mpButtonList),
+	 	 	 	 	 	 	 	 	 	 	 	 CGUIButton::VORTICON );
+
+		mpButtonList.push_back( guiButton );
+		mpMenuDialog->addControl( guiButton );
+	}
+
+	mpTwoButtonSwitch = new CGUISwitch( "Two Button Firing",
+										CGUISwitch::VORTICON );
+
+	mpTwoButtonSwitch->enable(g_pInput->getTwoButtonFiring(mSelectedPlayer-1));
+
+	mpMenuDialog->addControl( mpTwoButtonSwitch );
+	mpMenuDialog->addControl( new CGUIButton( "Reset Controls",
+	 	 	 	 	 	 	 	 	 	 	  new ResetInputEvent(mSelectedPlayer-1),
+	 	 	 	 	 	 	 	 	 	 	  CGUIButton::VORTICON ) );
+
+}
 
 
-	/*SmartPointer<CEvent> omEvent = new OpenMenuEvent(
-										new CSelectionMenu<int>(
-													mChosenPlayer,
-													playerList,
-													0 ) );
-	g_pBehaviorEngine->EventList().add( omEvent );*/
 
-	// In case nothing was selected
+void CControlsettings::release()
+{
+	g_pInput->setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
+	g_pInput->saveControlconfig();
 }
 
 
@@ -127,20 +184,4 @@ void CControlsettings::init()
 	}*/
 //}
 
-//void CControlsettings::processWaitInput()
-//{
-	/*int item = m_selection;
-	while( !g_pInput->readNewEvent(m_chosenPlayer-1,item) );
-
-	std::string buf;
-	std::string buf2;
-
-	buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
-	buf = buf.erase(actionsnames[item].size());
-	buf2 = g_pInput->getEventName(item, m_chosenPlayer-1);
-	mp_Dialog->setObjectText(m_selection, buf + buf2);
-	mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
-	m_selection = -1;
-	m_waiting_for_input = false;*/
-//}
 
