@@ -134,7 +134,7 @@ enum InputCommands{
 	IC_FIRE,
 	IC_STATUS,
 	IC_HELP,
-	IC_QUIT,
+	IC_BACK,
 	MAX_COMMANDS
 };
 

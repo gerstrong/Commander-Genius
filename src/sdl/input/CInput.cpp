@@ -90,7 +90,7 @@ void CInput::resetControls(int player) {
 	InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
 
 	InputCommand[i][IC_HELP].keysym = SDLK_F1;
-	InputCommand[i][IC_QUIT].keysym = SDLK_ESCAPE;
+	InputCommand[i][IC_BACK].keysym = SDLK_ESCAPE;
 
 	// And those are the default joystick handlings, but they are disabled by default
 	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_KEYBOARD;
@@ -125,9 +125,9 @@ void CInput::resetControls(int player) {
 	InputCommand[i][IC_HELP].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_HELP].joybutton = 4;
 	InputCommand[i][IC_HELP].which = 0;
-	InputCommand[i][IC_QUIT].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_QUIT].joybutton = 5;
-	InputCommand[i][IC_QUIT].which = 0;
+	InputCommand[i][IC_BACK].joyeventtype = ETYPE_KEYBOARD;
+	InputCommand[i][IC_BACK].joybutton = 5;
+	InputCommand[i][IC_BACK].which = 0;
 
 	#ifdef ANDROID
 	// Joystick input is broken in main menu and dialogs, so disabled for now
@@ -229,8 +229,8 @@ void CInput::loadControlconfig(void)
 			setupInputCommand( InputCommand[i], IC_STATUS, value );
 			Configuration.ReadString( section, "Help", value, "Key 282 (f1)");
 			setupInputCommand( InputCommand[i], IC_HELP, value );
-			Configuration.ReadString( section, "Quit", value, "Key 27 (escape)");
-			setupInputCommand( InputCommand[i], IC_QUIT, value );
+			Configuration.ReadString( section, "Back", value, "Key 27 (escape)");
+			setupInputCommand( InputCommand[i], IC_BACK, value );
 			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
 		}
 	}
@@ -268,7 +268,7 @@ void CInput::saveControlconfig()
 		Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, i));
 		Configuration.WriteString(section, "Status", getEventName(IC_STATUS, i));
 		Configuration.WriteString(section, "Help", getEventName(IC_HELP, i));
-		Configuration.WriteString(section, "Quit", getEventName(IC_QUIT, i));
+		Configuration.WriteString(section, "Back", getEventName(IC_BACK, i));
 		Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
 	}
 	Configuration.saveCfgFile();
@@ -1110,7 +1110,7 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
 
 		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
-		{ &InputCommand[0][IC_QUIT],	KQUIT,	5*w/6, 0, w/6, h/6},
+		{ &InputCommand[0][IC_BACK],	KQUIT,	5*w/6, 0, w/6, h/6},
 		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
 	//	{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
 	};

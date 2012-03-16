@@ -97,7 +97,7 @@ void CPreviews::showText()
 	// This is called after the preview screens were shown
 	mp_TextViewer->process();
 
-	if( mp_TextViewer->hasClosed() || g_pInput->getPressedCommand(IC_QUIT) )
+	if( mp_TextViewer->hasClosed() || g_pInput->getPressedCommand(IC_BACK) )
 	{
 		m_destroy_me = true;
 	}

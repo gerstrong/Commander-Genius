@@ -309,7 +309,8 @@ inline std::string itoa(unsigned long num, short base=10)  {
 }
 
 // std::string itoa
-inline std::string itoa(long num, short base=10)  {
+inline std::string itoa(long num, short base=10)
+{
 	if(num >= 0)
 		return itoa((unsigned long)num, base);
 	else

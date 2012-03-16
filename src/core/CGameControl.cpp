@@ -96,7 +96,6 @@ void CGameControl::process()
 		{
 			mp_GameMode = new CGamePassiveMode( p_Passive->m_DataDirectory, p_Passive->m_Episode );
 			mp_GameMode->init();
-			g_pBehaviorEngine->EventList().add( new OpenMenuEvent( new CMainMenu(DLG_THEME_VORTICON) ) );
 			EventContainer.pop_Event();
 		}
 		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )

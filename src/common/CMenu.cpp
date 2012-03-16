@@ -159,7 +159,7 @@ void CMenu::process()
 				}
 			}
 
-			if( g_pInput->getPressedCommand(IC_QUIT) )
+			if( g_pInput->getPressedCommand(IC_BACK) )
 			{
 				if(m_menu_mode == PASSIVE)
 					m_SubMenus.push_back(new CConfirmMenu("   Quit the game?   ", m_quit, m_dlg_theme));

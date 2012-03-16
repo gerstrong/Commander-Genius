@@ -32,8 +32,6 @@ const std::string actionsnames[MAX_COMMANDS] =
 };
 
 
-
-
 /**
  * \brief This sets the default settings for a classic gameplay
  */
@@ -133,55 +131,3 @@ void CControlsettings::release()
 	g_pInput->setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
 	g_pInput->saveControlconfig();
 }
-
-
-
-//void CControlsettings::setControlsText()
-//{
-	// Here it sets up the items after the player number was chosen
-	// Then create the controls selection screen
-	/*std::string buf, buf2;
-
-	for(unsigned int i=0 ; i<MAX_COMMANDS ; i++)
-	{
-		buf2 = g_pInput->getEventName(IC_LEFT+i, m_chosenPlayer-1);
-		buf = actionsnames[i] + buf2;
-		mp_Dialog->setObjectText(i, buf);
-	}
-	
-	buf = "Two Button Firing " + getSwitchString(g_pInput->getTwoButtonFiring(m_chosenPlayer-1));
-	mp_Dialog->m_dlgobject.at(MAX_COMMANDS)->m_Option->m_FontMapID = 1;
-	mp_Dialog->setObjectText(MAX_COMMANDS, buf);*/
-//}
-
-//void CControlsettings::processSpecific()
-//{
-	/*if(!m_suspended)
-	{
-		if(m_waiting_for_input) // This part only happens, when waiting for an input
-			processWaitInput();
-		else
-			processSelection();
-	}
-	else
-	{
-		mp_SubMenu->processCommon();
-		mp_SubMenu->processSpecific();
-		mp_SubMenu->postProcess();
-
-		if(mp_SubMenu->mustClose())
-		{
-			SAFE_DELETE(mp_SubMenu);
-			m_suspended = false;
-			if(m_chosenPlayer == 0)
-			{
-				m_mustclose = true;
-				m_suspended = true;
-			}
-			else
-				setControlsText();
-		}
-	}*/
-//}
-
-
