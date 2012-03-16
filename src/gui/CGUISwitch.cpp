@@ -6,6 +6,7 @@
  */
 
 #include "CGUISwitch.h"
+#include "StringUtils.h"
 
 CGUISwitch::CGUISwitch(	const std::string& text,
 						const Style	style ) :

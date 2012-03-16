@@ -17,6 +17,8 @@
 #include <SDL.h>
 #include <map>
 #include <vector>
+#include <list>
+
 #include "CSoundChannel.h"
 #include "fileio/CExeFile.h"
 #include "common/CAudioResources.h"
