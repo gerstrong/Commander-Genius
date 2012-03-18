@@ -15,11 +15,11 @@
 #define CPASSIVE_H_
 
 #include "CTitle.h"
-#include "vorticon/CMenuVorticon.h"
 #include "dialog/CTextBox.h"
 #include "common/CMap.h"
 #include "common/CObject.h"
 #include "gui/CGUIDialog.h"
+#include "fileio/CSavedGame.h"
 #include <string>
 #include <vector>
 

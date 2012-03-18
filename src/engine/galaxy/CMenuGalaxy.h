@@ -11,18 +11,16 @@
 #include "graphics/CBitmap.h"
 #include "graphics/CFont.h"
 #include "dialog/CDialog.h"
-
-#include "common/CMenu.h"
+#include "fileio/CSavedGame.h"
 
 namespace galaxy
 {
 
-class CMenuGalaxy : public CMenu
+class CMenuGalaxy //: public CMenu
 {
 public:
 	CMenuGalaxy( char menu_mode, CSavedGame &SavedGame,
 			 bool &restartVideo );
-	bool init( menutypes menu_type = MAIN );
 
 	void drawMenuBorder();
 

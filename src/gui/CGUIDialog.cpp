@@ -91,9 +91,8 @@ void CGUIDialog::processLogic()
 	g_pVideoDriver->mDrawTasks.add( new DrawGUIRenderTask(this) );
 
 	// Prepare the subcontrols for rendering
-	for( std::list<
-		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;
-		 it != mControlList.end() ; it++ )
+	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
+	for( ; it != mControlList.end() ; it++ )
 	{
 		(*it)->processLogic();
 	}

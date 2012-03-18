@@ -14,10 +14,11 @@ const int NO_SELECTION = -1;
 #include "SmartPointer.h"
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIButton.h"
+#include <list>
 
 // Which Menu has to be shown?
 
-enum menutypes{
+/*enum menutypes{
 	MAIN, NEW, OVERWRITE,
 	CONTROLPLAYERS, STORY,
 	HIGHSCORES, ABOUTCG,
@@ -29,9 +30,9 @@ enum menutypes{
 	F1, HELP, ENDGAME, QUIT,
 	BOUNDS, VOLUME, MENU_DEBUG,
 	MODCONF
-};
+};*/
 
-const unsigned int NUM_MENUS = MODCONF+1;
+//const unsigned int NUM_MENUS = MODCONF+1;
 
 // Active means, when the player is playing, PASSIVE when the Player is not playing
 enum menumodes{
@@ -60,6 +61,11 @@ public:
 	// Processes the stuff that the menus have in common
 	virtual void process();
 
+	void sendEvent(SmartPointer<CEvent> command)
+	{
+		mEventList.push_back(command);
+	}
+
 	void setProperty( const Property newProperty )
 	{
 		mpReturnButton->setText( newProperty == CLOSEABLE ? "x" : "\025" );
@@ -68,8 +74,9 @@ public:
 
 protected:
 	SmartPointer<CGUIDialog> mpMenuDialog;
-
 	CGUIButton *mpReturnButton;
+	std::list< SmartPointer<CEvent> > mEventList;
+
 };
 
 #endif /* CBASEMENU_H_ */

@@ -23,6 +23,7 @@ mpMenuDialog( new CGUIDialog(rect) )
 
 void CBaseMenu::process()
 {
+
 	mpMenuDialog->processLogic();
 
 }

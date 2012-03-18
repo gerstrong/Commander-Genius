@@ -97,16 +97,16 @@ void CMenuGalaxy::processMainMenu()
 {
 	drawMenuBorder();
 
-	if( m_selection != -1)
+	//if( m_selection != -1)
 	{
-		if( m_menu_mode == PASSIVE )
+		/*if( m_menu_mode == PASSIVE )
 		{
 			if( m_selection == 5 ) // Back to Demo
 				m_demoback = true;
 
 			else if( m_selection == 6 ) // Choose Game
 				m_choosegame = true;
-		}
+		}*/
 		/*else if( m_menu_mode == ACTIVE )
 		{
 			if( m_selection == 5 ) // Back to Game
@@ -114,7 +114,7 @@ void CMenuGalaxy::processMainMenu()
 		}*/
 	}
 
-	if( m_selection == 3 ) // Show Highscores
+	//if( m_selection == 3 ) // Show Highscores
 	{
 		// TODO: Code here will a special case and must be done!
 	}

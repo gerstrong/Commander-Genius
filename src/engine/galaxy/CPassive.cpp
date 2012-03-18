@@ -83,7 +83,7 @@ void CPassiveGalaxy::processMenu()
 			g_pGfxEngine->killEffect();
 	}
 
-	if(mp_Menu->getExitEvent())
+	/*if(mp_Menu->getExitEvent())
 	{
 		SAFE_DELETE(mp_Menu);
 		cleanup();
@@ -104,7 +104,7 @@ void CPassiveGalaxy::processMenu()
 		m_Difficulty = mp_Menu->getDifficulty();
 		SAFE_DELETE(mp_Menu);
 		m_mode = STARTGAME;
-	}
+	}*/
 
 }
 

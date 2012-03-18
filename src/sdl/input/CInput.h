@@ -12,6 +12,7 @@
 #include <string>
 #include <list>
 #include "engine/CEventContainer.h"
+#include "InputEvents.h"
 
 #include "CSingleton.h"
 #define g_pInput	CInput::Get()
@@ -119,24 +120,6 @@ enum keys{
 };
 
 const unsigned int KEYTABLE_SIZE = 160;
-
-enum InputCommands{
-	IC_LEFT,
-	IC_RIGHT,
-	IC_UP,
-	IC_DOWN,
-	IC_UPPERLEFT,
-	IC_UPPERRIGHT,
-	IC_LOWERLEFT,
-	IC_LOWERRIGHT,
-	IC_JUMP,
-	IC_POGO,
-	IC_FIRE,
-	IC_STATUS,
-	IC_HELP,
-	IC_BACK,
-	MAX_COMMANDS
-};
 
 #define NUM_INPUTS			4
 

@@ -2,7 +2,7 @@
  * CMainMenu.cpp
  *
  *  Created on: 19.02.2012
- *      Author: gerstrong
+ *      Author: gerstrong and pizza2004
  */
 
 #include "CMainMenu.h"

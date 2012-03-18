@@ -66,6 +66,29 @@ void CMenuController::process()
 		}
 
 
+		// Command (Keyboard/Joystick) are handled here
+		if( g_pInput->getPressedCommand(IC_LEFT) )
+		{
+			mpMenu->sendEvent(new CommandEvent(IC_LEFT));
+		}
+		else if( g_pInput->getPressedCommand(IC_RIGHT) )
+		{
+			mpMenu->sendEvent(new CommandEvent(IC_RIGHT));
+		}
+		else if( g_pInput->getPressedCommand(IC_UP) )
+		{
+			mpMenu->sendEvent(new CommandEvent(IC_UP));
+		}
+		else if( g_pInput->getPressedCommand(IC_DOWN) )
+		{
+			mpMenu->sendEvent(new CommandEvent(IC_DOWN));
+		}
+		else if( g_pInput->getPressedCommand(IC_STATUS) )
+		{
+			mpMenu->sendEvent(new CommandEvent(IC_STATUS));
+		}
+
+
 	}
 
 	if( !mMenuStack.empty() )

@@ -20,7 +20,6 @@
 #include "common/CHUD.h"
 #include "engine/vorticon/ai/CObjectAI.h"
 #include "engine/vorticon/ai/CEGABitmap.h"
-#include "engine/vorticon/CMenuVorticon.h"
 #include "engine/vorticon/finale/CEndingEp1.h"
 #include "engine/vorticon/finale/CEndingEp2.h"
 #include "engine/vorticon/finale/CEndingEp3.h"
@@ -100,7 +99,7 @@ private:
 	bool mp_level_completed[MAX_LEVELS_VORTICON];
 
 	CMap m_Map;
-	CMenuVorticon *mp_Menu;
+	//CMenuVorticon *mp_Menu;
 	std::vector<CPlayer> m_Player;
 	CObjectAI *mp_ObjectAI;
 	CFinale *mp_Finale;

@@ -32,7 +32,6 @@ mp_HUD(NULL),
 mp_KeenLeftSfc(NULL)
 {
 	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
-	mp_Menu = NULL;
 	mp_Finale = NULL;
 	mp_gameoverbmp = NULL;
 
@@ -269,8 +268,7 @@ void CPlayGameVorticon::process()
 		else // No game over
 		{
 			// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
-			if(!mp_Menu)
-				handleFKeys();
+			handleFKeys();
 		}
 
 
@@ -542,13 +540,13 @@ void CPlayGameVorticon::drawAllElements()
 	m_Map.drawForegroundTiles();
 
 	if(mp_option[OPT_HUD].value && !mp_Finale &&
-			!m_paused && !mp_Menu && !mp_HighScores)
+			!m_paused && !mp_HighScores)
 	{	// Draw the HUD
 		mp_HUD->render();
 	}
 
 	// Render the dialogs which are seen when the game is paused
-	if( m_paused || !m_MessageBoxes.empty() || !mp_Menu )
+	if( m_paused || !m_MessageBoxes.empty() )
 	{
 		// Finally draw Dialogs like status screen, game paused, etc.
 		processPauseDialogs();

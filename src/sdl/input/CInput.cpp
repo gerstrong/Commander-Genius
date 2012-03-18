@@ -18,6 +18,8 @@
 #include "common/CSettings.h"
 #include "common/CBehaviorEngine.h"
 
+// Input Events
+
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
 #endif
