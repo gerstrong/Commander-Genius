@@ -26,8 +26,15 @@ public:
 	{	mRect = rect;	}
 
 
-	void enable(const bool value)
+	void enable( const bool value )
 	{	mEnabled = value;	};
+
+	void setHovered( const bool value )
+	{	mHovered = value;	}
+
+	bool getHovered()
+	{	return mHovered;	}
+
 
 	bool Up()
 	{	return mButtonUp;	}

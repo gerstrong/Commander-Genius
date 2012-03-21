@@ -8,13 +8,15 @@
  */
 
 #include "CGUIDialog.h"
+#include "CGUIButton.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
 
 CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
-mRect(SrcRect)
+mRect(SrcRect),
+mSelection(0)
 {
 	setBackground(NONE);
 }
@@ -59,6 +61,36 @@ void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl )
 
 
 
+void CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
+{
+	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
+	{
+		if(ev->mCommand == IC_DOWN)
+		{
+			mSelection++;
+		}
+		else if(ev->mCommand == IC_UP)
+		{
+			mSelection--;
+		}
+
+		if( mSelection >= static_cast<int>(mControlList.size()) )
+			mSelection = 0;
+
+		if( mSelection < 0 )
+			mSelection = mControlList.size()-1;
+
+		std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
+		for( int i=0 ; it != mControlList.end() ; it++, i++ )
+		{
+			(*it)->setHovered( (i == mSelection) );
+		}
+
+
+	}
+}
+
+
 
 void CGUIDialog::fit()
 {
@@ -92,9 +124,21 @@ void CGUIDialog::processLogic()
 
 	// Prepare the subcontrols for rendering
 	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
-	for( ; it != mControlList.end() ; it++ )
+	for( int sel=0 ; it != mControlList.end() ; it++, sel++ )
 	{
-		(*it)->processLogic();
+		CGUIControl *ctrl = (*it).get();
+
+		ctrl->processLogic();
+
+		if( CGUIButton *button = dynamic_cast<CGUIButton*>(ctrl) )
+		{
+			if( button->getHovered() )
+			{
+				mSelection = sel;
+			}
+
+		}
+
 	}
 
 	g_pInput->m_EventList.clear();

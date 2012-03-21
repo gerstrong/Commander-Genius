@@ -16,24 +16,6 @@ const int NO_SELECTION = -1;
 #include "gui/CGUIButton.h"
 #include <list>
 
-// Which Menu has to be shown?
-
-/*enum menutypes{
-	MAIN, NEW, OVERWRITE,
-	CONTROLPLAYERS, STORY,
-	HIGHSCORES, ABOUTCG,
-	ABOUTID, ORDERING,
-	LOAD, SAVE, START,
-	DIFFICULTY, CONFIGURE,
-	GRAPHICS, CONTROLS,
-	AUDIO, OPTIONS,
-	F1, HELP, ENDGAME, QUIT,
-	BOUNDS, VOLUME, MENU_DEBUG,
-	MODCONF
-};*/
-
-//const unsigned int NUM_MENUS = MODCONF+1;
-
 // Active means, when the player is playing, PASSIVE when the Player is not playing
 enum menumodes{
 	ACTIVE, PASSIVE
@@ -63,7 +45,7 @@ public:
 
 	void sendEvent(SmartPointer<CEvent> command)
 	{
-		mEventList.push_back(command);
+		mpMenuDialog->sendEvent(command);
 	}
 
 	void setProperty( const Property newProperty )

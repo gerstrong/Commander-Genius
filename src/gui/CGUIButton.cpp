@@ -62,6 +62,7 @@ void CGUIButton::processLogic()
 		}
 		else
 		{
+
 			mHovered = false;
 			mButtonDown = false;
 			mButtonUp = false;

@@ -15,6 +15,7 @@
 #include "utils/Geometry.h"
 #include "CGUIControl.h"
 #include "SmartPointer.h"
+#include "engine/CEvent.h"
 #include <list>
 
 class CGUIDialog
@@ -53,6 +54,7 @@ public:
 
 	void addControl( const SmartPointer<CGUIControl> newControl );
 
+	void sendEvent( const SmartPointer<CEvent> &command );
 
 	void fit();
 
@@ -71,6 +73,7 @@ private:
 	// Pointer to the function that will be in charge of drawing the background
 	void (CGUIDialog::*drawBackround)(SDL_Rect);
 
+	int mSelection;
 };
 
 
