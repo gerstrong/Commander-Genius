@@ -30,6 +30,14 @@ drawButton(&CGUIButton::drawNoStyle)
 
 }
 
+void CGUIButton::sendEvent(const InputCommands command)
+{
+	if(command == IC_STATUS)
+	{
+		g_pBehaviorEngine->m_EventList.add(mEvent);
+	}
+}
+
 
 void CGUIButton::processLogic()
 {

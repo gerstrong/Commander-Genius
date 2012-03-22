@@ -84,6 +84,10 @@ void CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 		for( int i=0 ; it != mControlList.end() ; it++, i++ )
 		{
 			(*it)->setHovered( (i == mSelection) );
+
+			if(i == mSelection)
+				(*it)->sendEvent(ev->mCommand);
+
 		}
 
 

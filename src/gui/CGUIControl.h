@@ -11,6 +11,7 @@
 #define CGUICONTROL_H_
 
 #include "utils/Geometry.h"
+#include "sdl/input/InputEvents.h"
 
 class CGUIControl
 {
@@ -38,6 +39,10 @@ public:
 
 	bool Up()
 	{	return mButtonUp;	}
+
+
+	virtual void sendEvent(const InputCommands command) {};
+
 
 	void drawTwirl( const SDL_Rect& lRect );
 

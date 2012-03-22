@@ -29,6 +29,8 @@ public:
 			const SmartPointer<CEvent> ev,
 			const Style	style = NONE);
 
+	void sendEvent(const InputCommands command);
+
 	void processLogic();
 
 	void drawNoStyle(SDL_Rect& lRect);
