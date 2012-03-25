@@ -8,10 +8,13 @@
 #include "CLoadMenu.h"
 #include "fileio/CSavedGame.h"
 
-/*CLoadMenu::CLoadMenu(Uint8 dlg_theme, CSavedGame &SavedGame) :
-CBaseMenu(dlg_theme),
-m_SavedGame(SavedGame)
-{*/
+CLoadMenu::CLoadMenu(Uint8 dlg_theme) :
+CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )//,
+//m_SavedGame(SavedGame)
+{
+
+	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
+
 	/*mp_Dialog = new CDialog(MENU_WIDTH, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
 	// Load the state-file list
@@ -29,9 +32,9 @@ m_SavedGame(SavedGame)
 
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
 	}*/
-/*}
+}
 
-void CLoadMenu::processSpecific()
+/*void CLoadMenu::processSpecific()
 {*/
 	/*if( m_selection != NO_SELECTION)
 	{

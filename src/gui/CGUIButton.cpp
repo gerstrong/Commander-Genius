@@ -16,7 +16,6 @@
 
 
 
-
 CGUIButton::CGUIButton(	const std::string& text,
 						const SmartPointer<CEvent> ev,
 						const Style	style ) :

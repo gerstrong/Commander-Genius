@@ -14,12 +14,16 @@
 class CLoadMenu : public CBaseMenu
 {
 public:
-	CLoadMenu(Uint8 dlg_theme, CSavedGame &SavedGame);
-	void processSpecific();
-	virtual ~CLoadMenu();
+	CLoadMenu(Uint8 dlg_theme);
+
+	//void init();
+
+	//void process();
+
+	//void release();
 
 private:
-	CSavedGame &m_SavedGame;
+	//CSavedGame &m_SavedGame;
 };
 
 #endif /* CLOADMENU_H_ */
