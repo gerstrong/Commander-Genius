@@ -39,4 +39,4 @@ bool CPlayGame::getExitEvent() { return m_exitgame; }
 char CPlayGame::getEpisode() { return m_Episode; }
 char CPlayGame::getNumPlayers() { return m_NumPlayers; }
 char CPlayGame::getDifficulty() { return m_Difficulty; }
-CSavedGame CPlayGame::getSavedGameBlock() { return m_SavedGame; }
+CSaveGameController CPlayGame::getSavedGameBlock() { return m_SavedGame; }

@@ -12,12 +12,14 @@
 
 #include <ctime>
 
-/*CSaveMenu::CSaveMenu(Uint8 dlg_theme, CSavedGame &SavedGame) :
-CBaseMenu(dlg_theme),
+CSaveMenu::CSaveMenu(Uint8 dlg_theme) :
+CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
 mp_OverwriteMenu(NULL),
-m_SavedGame(SavedGame),
 m_overwrite(false)
-{*/
+{
+
+	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
+
 	/*std::string text;
 	mp_Dialog = new CDialog(MENU_WIDTH, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
 	m_selection = NO_SELECTION;
@@ -35,9 +37,9 @@ m_overwrite(false)
 		}
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
 	}*/
-/*}
+}
 
-void CSaveMenu::processSpecific()
+/*void CSaveMenu::processSpecific()
 {*/
 	/*if(!mp_OverwriteMenu)
 	{

@@ -25,7 +25,7 @@ private:
 	const std::string m_DataDirectory;
 	const int m_Episode;
 	bool m_Endgame;
-	CSavedGame m_SavedGame;
+	CSaveGameController m_SavedGame;
 	int m_Difficulty;
 };
 

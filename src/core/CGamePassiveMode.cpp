@@ -56,7 +56,7 @@ void CGamePassiveMode::process()
 			const int Numplayers = 1;
 			const int Difficulty = 1;
 			std::string DataDirectory = mp_Passive->getGamePath();
-			CSavedGame SavedGame = mp_Passive->getSavedGameBlock();
+			CSaveGameController SavedGame = mp_Passive->getSavedGameBlock();
 
 			EventContainer.pop_Event();
 

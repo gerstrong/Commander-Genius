@@ -11,7 +11,7 @@
 #define CPlayGameVorticon_H_
 
 #include "graphics/CGfxEngine.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 #include "common/CPlayer.h"
 #include "common/CTileProperties.h"
 #include "common/CObject.h"
@@ -46,7 +46,7 @@ public:
 
 	CPlayGameVorticon(CExeFile &ExeFile, char level,
 			  char numplayers, Uint8& difficulty,
-			  const bool finale, CSavedGame &SavedGame);
+			  const bool finale, CSaveGameController &SavedGame);
 
 	void setupPlayers();
 	bool init();
@@ -104,7 +104,6 @@ private:
 	CObjectAI *mp_ObjectAI;
 	CFinale *mp_Finale;
 	CEGABitmap *mp_gameoverbmp;
-	CSavedGame &m_SavedGame;
 	std::list<CMessageBoxVort*> m_MessageBoxes;
 	bool m_showKeensLeft;
 	std::vector<CObject*> m_Object;

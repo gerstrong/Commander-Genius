@@ -6,11 +6,10 @@
  */
 
 #include "CLoadMenu.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 
 CLoadMenu::CLoadMenu(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )//,
-//m_SavedGame(SavedGame)
+CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
 {
 
 	mpMenuDialog->setBackground( CGUIDialog::VORTICON );

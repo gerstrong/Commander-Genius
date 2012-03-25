@@ -1,5 +1,5 @@
 /*
- * CSavedGameCoder.h
+ * CSaveGameControllerCoder.h
  *
  *  Created on: 24.11.2009
  *      Author: gerstrong
@@ -19,7 +19,7 @@
 // This functions are used for enconding/decoding a variable to the game data format.
 // It makes everything platform independent
 template <class S>
-void CSavedGame::encodeData(S structure)
+void CSaveGameController::encodeData(S structure)
 {
 	size_t size = sizeof(S);
 	byte sizebuf[sizeof(size_t)];
@@ -35,7 +35,7 @@ void CSavedGame::encodeData(S structure)
 }
 
 template <class S>
-void CSavedGame::decodeData(S &structure)
+void CSaveGameController::decodeData(S &structure)
 {
 	size_t det_size = 0;
 	size_t req_size = sizeof(S);

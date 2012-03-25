@@ -123,7 +123,7 @@ void CPassiveVort::process()
 	{
 		mp_Menu->processSpecific();
 
-		if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSavedGame::LOAD) // Start a normal game
+		if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSaveGameController::LOAD) // Start a normal game
 		{
 			m_NumPlayers = mp_Menu->getNumPlayers();
 			m_Difficulty = mp_Menu->getDifficulty();

@@ -10,14 +10,14 @@
 
 #include "CGameMode.h"
 #include "engine/playgame/CPlayGame.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 #include "SmartPointer.h"
 #include <string>
 
 class CGamePlayMode : public CGameMode {
 public:
 	CGamePlayMode( const int Episode, const int Numplayers,
-			const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame, bool& show_finale,
+			const int Difficulty, const std::string& DataDirectory, CSaveGameController& SavedGame, bool& show_finale,
 			const int startLevel = -1);
 
 	void init();
@@ -30,7 +30,7 @@ private:
 	Uint8 m_Numplayers;
 	Uint8 m_Difficulty;
 	std::string m_DataDirectory;
-	CSavedGame m_SavedGame;
+	CSaveGameController m_SavedGame;
 	SmartPointer<CPlayGame> mp_PlayGame;
 };
 

@@ -28,7 +28,7 @@ class CPlayGameGalaxy : public CPlayGame
 public:
 	CPlayGameGalaxy(CExeFile &ExeFile, char level,
 			 char numplayers, Uint8& difficulty,
-			  CSavedGame &SavedGame);
+			  CSaveGameController &SavedGame);
 
 	bool loadGameState();
 	bool init();
@@ -48,7 +48,7 @@ private:
 	CWorldMap m_WorldMap;
 	CLevelPlay m_LevelPlay;
 	CMenuGalaxy *mp_Menu;
-	CSavedGame &m_SavedGame;
+	CSaveGameController &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
 	std::list<CMessageBoxGalaxy*> m_MessageBoxes;
 	stCheat m_Cheatmode;

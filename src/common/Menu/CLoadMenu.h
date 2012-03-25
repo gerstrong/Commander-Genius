@@ -9,7 +9,7 @@
 #define CLOADMENU_H_
 
 #include "CBaseMenu.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 
 class CLoadMenu : public CBaseMenu
 {
@@ -23,7 +23,7 @@ public:
 	//void release();
 
 private:
-	//CSavedGame &m_SavedGame;
+	//CSaveGameController &m_SavedGame;
 };
 
 #endif /* CLOADMENU_H_ */

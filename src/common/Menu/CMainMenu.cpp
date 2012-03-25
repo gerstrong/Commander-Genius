@@ -9,6 +9,7 @@
 #include "common/Menu/CMenuController.h"
 #include "common/Menu/CSettingsMenu.h"
 #include "common/Menu/CLoadMenu.h"
+#include "common/Menu/CSaveMenu.h"
 #include "common/CBehaviorEngine.h"
 #include "gui/CGUIButton.h"
 #include "core/CGameMode.h"
@@ -26,6 +27,10 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	mpMenuDialog->addControl(new CGUIButton( "Load",
 												new OpenMenuEvent( new CLoadMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Save",
+												new OpenMenuEvent( new CSaveMenu(dlgTheme) ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Settings",

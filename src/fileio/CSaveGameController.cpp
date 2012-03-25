@@ -1,14 +1,14 @@
 /*
- * CSavedGame.cpp
+ * CSaveGameController.cpp
  *
  *  Created on: 13.08.2009
- *      Author:      Caitlin Shaw
- *      Adaptation : Gerstrong
+ *      Author		: Caitlin Shaw
+ *      Adaptations : Gerstrong
  *  Routines for handling save&load of savegames
  */
 
 #include "FindFile.h"
-#include "CSavedGame.h"
+#include "CSaveGameController.h"
 #include "common/CBehaviorEngine.h"
 #include <ctime>
 
@@ -18,7 +18,8 @@ char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 
 // Initialization Routines
-CSavedGame::CSavedGame() {
+CSaveGameController::CSaveGameController()
+{
 	m_Command = NONE;
 	m_offset = 0;
 
@@ -34,19 +35,19 @@ CSavedGame::CSavedGame() {
 	setEpisode(g_pBehaviorEngine->getEpisode());
 }
 
-void CSavedGame::setGameDirectory(const std::string& game_directory)
+void CSaveGameController::setGameDirectory(const std::string& game_directory)
 {
 	m_savedir = JoinPaths("save", game_directory);
 }
 
-void CSavedGame::setEpisode(char Episode)
+void CSaveGameController::setEpisode(char Episode)
 {	m_Episode = Episode;	}
 
-void CSavedGame::setLevel(int Level)
+void CSaveGameController::setLevel(int Level)
 {	m_Level = Level;	}
 
 // Retrieves the data size of the next block
-Uint32 CSavedGame::getDataSize(std::ifstream &StateFile) {
+Uint32 CSaveGameController::getDataSize(std::ifstream &StateFile) {
 	Uint32 size=0;
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++) {
 		size += StateFile.get() << (i*8);
@@ -55,10 +56,10 @@ Uint32 CSavedGame::getDataSize(std::ifstream &StateFile) {
 }
 
 // Return a string that just says empty
-std::string CSavedGame::getEmptyString()
+std::string CSaveGameController::getEmptyString()
 {	return m_emptyString;	}
 
-std::string CSavedGame::getUnnamedSlotName()
+std::string CSaveGameController::getUnnamedSlotName()
 {
 	std::string text;
 	time_t rawtime;
@@ -77,7 +78,7 @@ std::string CSavedGame::getUnnamedSlotName()
 }
 
 // Read the data of size and stores it in the buffer
-void CSavedGame::readData(char *buffer, Uint32 size, std::ifstream &StateFile) {
+void CSaveGameController::readData(char *buffer, Uint32 size, std::ifstream &StateFile) {
 	for(Uint32 i=0 ; i<size ; i++) {
 		buffer[i] = StateFile.get();
 	}
@@ -100,7 +101,7 @@ struct StateFileListFiller {
 // This method returns the the list of files we can use for the menu
 // It will filter by episode and sort the list by number of slot
 // It also takes care of the slotname resolution
-std::vector<std::string> CSavedGame::getSlotList()
+std::vector<std::string> CSaveGameController::getSlotList()
 {
 	std::vector<std::string> filelist;
 	std::string buf;
@@ -132,7 +133,7 @@ std::vector<std::string> CSavedGame::getSlotList()
 
 /* --- Functions for older savegames START --- */
 
-bool CSavedGame::IsOldSGVersion5(const std::string& fname)
+bool CSaveGameController::IsOldSGVersion5(const std::string& fname)
 {
 	const char *verify = "CKSAVE";
 	FILE* fp = OpenGameFile(fname, "rb");
@@ -157,7 +158,7 @@ bool CSavedGame::IsOldSGVersion5(const std::string& fname)
 	return true;
 }
 
-bool CSavedGame::IsOldSGVersion4(const std::string& fname)
+bool CSaveGameController::IsOldSGVersion4(const std::string& fname)
 {
 	FILE* fp = OpenGameFile(fname, "rb");
 	if (!fp) return false;
@@ -172,7 +173,7 @@ bool CSavedGame::IsOldSGVersion4(const std::string& fname)
 /**
  * This to find the proper old save game version
  */
-int CSavedGame::getOldSGVersion(const std::string& fname)
+int CSaveGameController::getOldSGVersion(const std::string& fname)
 {
 	if(IsOldSGVersion5(fname))
 		return 5;
@@ -183,7 +184,7 @@ int CSavedGame::getOldSGVersion(const std::string& fname)
 }
 
 // This function converts savegame all files from old versions of CG to the new format
-void CSavedGame::convertAllOldFormats()
+void CSaveGameController::convertAllOldFormats()
 {
 	for(size_t slot=0 ; slot<=9 ; slot++ )
 		convertOldFormat(slot);
@@ -192,7 +193,7 @@ void CSavedGame::convertAllOldFormats()
 /**
  * This function loads the savegame of the 5th version
  */
-bool CSavedGame::loadSaveGameVersion5(const std::string &fname, OldSaveGameFormatV5& old)
+bool CSaveGameController::loadSaveGameVersion5(const std::string &fname, OldSaveGameFormatV5& old)
 {
 	FILE *fp;
 	unsigned char episode, level, lives, numplayers;
@@ -247,7 +248,7 @@ bool CSavedGame::loadSaveGameVersion5(const std::string &fname, OldSaveGameForma
 	return true;
 }
 
-bool CSavedGame::loadSaveGameVersion4(const std::string &fname, OldSaveGameFormatV4& old)
+bool CSaveGameController::loadSaveGameVersion4(const std::string &fname, OldSaveGameFormatV4& old)
 {
 	FILE *fp;
 	//unsigned char episode, level, lives;
@@ -288,7 +289,7 @@ bool CSavedGame::loadSaveGameVersion4(const std::string &fname, OldSaveGameForma
 }
 
 // Converts one old savegame file to the new format...
-bool CSavedGame::convertOldFormat(size_t slot)
+bool CSaveGameController::convertOldFormat(size_t slot)
 {
 	// TODO: Old CG 0.3.0.4 Code Handle with care
 	std::string fname;
@@ -328,7 +329,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 		//
 		// Now let's save it into a new format
 		//
-		/// Save the Game in the CSavedGame object
+		/// Save the Game in the CSaveGameController object
 		// store the episode, level and difficulty
 		encodeData(old.LevelControl.episode);
 		encodeData(old.LevelControl.curlevel);
@@ -390,7 +391,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 		//
 		// Now let's save it into a new format
 		//
-		/// Save the Game in the CSavedGame object
+		/// Save the Game in the CSaveGameController object
 		// store the episode, level and difficulty
 		encodeData(old.LevelControl.episode);
 		encodeData(old.LevelControl.curlevel);
@@ -455,7 +456,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 // this is seperated out of game_load for modularity because menumanager.c
 // also uses it, in it's save-game "preview" menu on the load game screen
-void CSavedGame::readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players)
+void CSaveGameController::readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players)
 {
 	fseek(fp, SG_HEADERSIZE, SEEK_SET);		// skip past the CKSAVE%c
 	*episode = fgetc(fp);
@@ -467,7 +468,7 @@ void CSavedGame::readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives
 /* --- Functions for older savegames END --- */
 
 // From judging the filename it tells you at what position this slot was saved!
-Uint32 CSavedGame::getSlotNumber(const std::string &filename)
+Uint32 CSaveGameController::getSlotNumber(const std::string &filename)
 {
 	int pos = filename.find("cksave") + strlen("cksave");
 	std::string buf = filename.substr(pos);
@@ -477,7 +478,7 @@ Uint32 CSavedGame::getSlotNumber(const std::string &filename)
 }
 
 // This method returns the name of the slot
-std::string CSavedGame::getSlotName(const std::string &filename)
+std::string CSaveGameController::getSlotName(const std::string &filename)
 {
 	char version;
 	std::ifstream StateFile;
@@ -511,7 +512,7 @@ std::string CSavedGame::getSlotName(const std::string &filename)
  * \param SaveSlot 	Slot where to check for the file
  * \return true if it exists, else false
  */
-bool CSavedGame::Fileexists( int SaveSlot )
+bool CSaveGameController::Fileexists( int SaveSlot )
 {
 	std::string filename = m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
 	return IsFileAvailable(filename);
@@ -519,7 +520,7 @@ bool CSavedGame::Fileexists( int SaveSlot )
 
 // This method is called by the menu. It assures that the
 // PlayGame instance will call save() and get the right data.
-bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
+bool CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name)
 {
 	m_statefilename =  m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
 	m_statename = Name;
@@ -534,7 +535,7 @@ bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 
 // This method is called by the menu. It assures that the
 // PlayGame instance will call load() and get the right data.
-bool CSavedGame::prepareLoadGame(int SaveSlot)
+bool CSaveGameController::prepareLoadGame(int SaveSlot)
 {
 	const std::string savefile = "cksave" + itoa(SaveSlot) + ".ck"+itoa(m_Episode);
 	m_statefilename = JoinPaths(m_savedir, savefile);
@@ -546,7 +547,7 @@ bool CSavedGame::prepareLoadGame(int SaveSlot)
 	return true;
 }
 
-bool CSavedGame::load()
+bool CSaveGameController::load()
 {
 	Uint32 size;
 	std::ifstream StateFile;
@@ -583,7 +584,7 @@ bool CSavedGame::load()
 }
 
 // This function checks if the file we want to read or save already exists
-bool CSavedGame::alreadyExits()
+bool CSaveGameController::alreadyExits()
 {
 	std::ifstream StateFile;
 	std::string fullpath = GetFullFileName(m_statefilename);
@@ -600,7 +601,7 @@ bool CSavedGame::alreadyExits()
 
 // This function writes all the data from the CPlayGame and CMenu Instances to a file,
 // closes it and flushes the data block.
-bool CSavedGame::save()
+bool CSaveGameController::save()
 {
 	std::ofstream StateFile;
 	std::string fullpath = GetFullFileName(m_statefilename);
@@ -657,7 +658,7 @@ bool CSavedGame::save()
 }
 
 // Adds data of size to the main data block
-void CSavedGame::addData(byte *data, Uint32 size) {
+void CSaveGameController::addData(byte *data, Uint32 size) {
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
 	{
 		Uint32 datasize;
@@ -670,7 +671,7 @@ void CSavedGame::addData(byte *data, Uint32 size) {
 }
 
 // Read data of size from the main data block
-void CSavedGame::readDataBlock(byte *data) {
+void CSaveGameController::readDataBlock(byte *data) {
 	Uint32 datasize=0;
 	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32));
 	m_offset += sizeof(Uint32);

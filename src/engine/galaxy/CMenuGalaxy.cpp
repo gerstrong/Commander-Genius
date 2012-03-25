@@ -20,7 +20,7 @@ namespace galaxy
 /**
  * \brief sets the menu up when it's opened (initialization)
  */
-/*CMenuGalaxy::CMenuGalaxy( char menu_mode, CSavedGame &SavedGame,
+/*CMenuGalaxy::CMenuGalaxy( char menu_mode, CSaveGameController &SavedGame,
 		  bool &restartVideo ) :
 CMenu( menu_mode, SavedGame, DLG_THEME_GALAXY, restartVideo),
 processPtr(&CMenuGalaxy::processMainMenu),

@@ -13,7 +13,7 @@
 #include "common/CGameLauncher.h"
 #include "common/options.h"
 #include "common/Menu/CMenuController.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 #include "engine/CEGAGraphics.h"
 #include "engine/CMessages.h"
 #include "engine/CPassive.h"

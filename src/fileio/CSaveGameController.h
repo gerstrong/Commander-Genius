@@ -1,5 +1,5 @@
 /*
- * CSavedGame.h
+ * CSaveGameController.h
  *
  *  Created on: 13.08.2009
  *      Author: gerstrong
@@ -18,6 +18,7 @@
 #include "StringUtils.h"
 
 #include "fileio/TypeDefinitions.h"
+#include "CSingleton.h"
 
 #include "Oldsavegamestructs.h"
 
@@ -30,14 +31,18 @@
 const int MENU_WIDTH = 40;
 const int TEXT_WIDTH = 40-4;
 
-class CSavedGame {
+#define gpSaveGameController CSaveGameController::Get()
+
+class CSaveGameController : public CSingleton<CSaveGameController>
+{
 public:
-	enum SavedGameCommands{
+	enum SavedGameCommands
+	{
 		NONE, SAVE, LOAD
 	};
 
 	// Initialization
-	CSavedGame();
+	CSaveGameController();
 
 	// Setters
 	void setGameDirectory(const std::string& game_directory);

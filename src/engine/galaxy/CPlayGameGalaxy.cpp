@@ -22,7 +22,7 @@ namespace galaxy
 
 CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		 char numplayers, Uint8& difficulty,
-		  CSavedGame &SavedGame) :
+		  CSaveGameController &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty ),
 m_Inventory(difficulty, m_LevelName),
 m_WorldMap(ExeFile, m_Inventory, m_Cheatmode),

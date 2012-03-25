@@ -19,7 +19,7 @@
 #include "common/CMap.h"
 #include "common/CObject.h"
 #include "gui/CGUIDialog.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 #include <string>
 #include <vector>
 
@@ -40,7 +40,7 @@ public:
 	char getEpisode() { return m_Episode; }
 	char getNumPlayers() { return m_NumPlayers; }
 	char getDifficulty() { return m_Difficulty; }
-	CSavedGame getSavedGameBlock() { return m_SavedGame; }
+	CSaveGameController getSavedGameBlock() { return m_SavedGame; }
 	std::string getGamePath() { return m_DataDirectory; }
 	
 	bool getchooseGame() { return m_modeg; }
@@ -57,6 +57,6 @@ protected:
 	char m_Difficulty;
 	bool m_modeg;
 	std::string m_DataDirectory;
-	CSavedGame m_SavedGame;
+	CSaveGameController m_SavedGame;
 };
 #endif /* CPASSIVE_H_ */

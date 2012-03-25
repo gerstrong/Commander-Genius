@@ -11,7 +11,7 @@
 #include "graphics/CBitmap.h"
 #include "graphics/CFont.h"
 #include "dialog/CDialog.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 
 namespace galaxy
 {
@@ -19,7 +19,7 @@ namespace galaxy
 class CMenuGalaxy //: public CMenu
 {
 public:
-	CMenuGalaxy( char menu_mode, CSavedGame &SavedGame,
+	CMenuGalaxy( char menu_mode, CSaveGameController &SavedGame,
 			 bool &restartVideo );
 
 	void drawMenuBorder();

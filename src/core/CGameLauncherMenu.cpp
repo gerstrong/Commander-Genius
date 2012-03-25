@@ -14,7 +14,7 @@
 #include "engine/CMessages.h"
 #include "sdl/sound/CSound.h"
 #include "common/CBehaviorEngine.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 #include "SmartPointer.h"
 #include "CLogFile.h"
 #include "Debug.h"
@@ -225,7 +225,7 @@ void CGameLauncherMenu::process()
 					{
 						// Now look if there are any old savegames that need to be converted
 						CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-						CSavedGame savedgames;
+						CSaveGameController savedgames;
 						savedgames.setGameDirectory(DataDirectory);
 						savedgames.setEpisode(Episode);
 						savedgames.convertAllOldFormats();

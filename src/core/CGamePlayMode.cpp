@@ -11,7 +11,7 @@
 #include "graphics/effects/CColorMerge.h"
 
 CGamePlayMode::CGamePlayMode(const int Episode, const int Numplayers,
-		const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame, bool& show_finale,
+		const int Difficulty, const std::string& DataDirectory, CSaveGameController& SavedGame, bool& show_finale,
 		const int startLevel) :
 m_startLevel(startLevel),
 m_show_finale(show_finale),
@@ -52,7 +52,7 @@ void CGamePlayMode::init()
 
 	m_show_finale = false; // just show it once!!
 
-	if(m_SavedGame.getCommand() == CSavedGame::LOAD)
+	if(m_SavedGame.getCommand() == CSaveGameController::LOAD)
 		ok &= mp_PlayGame->loadGameState();
 	else
 	{

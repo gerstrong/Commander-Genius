@@ -14,7 +14,7 @@
 #include "fileio/CExeFile.h"
 #include "common/options.h"
 #include "common/CBehaviorEngine.h"
-#include "fileio/CSavedGame.h"
+#include "fileio/CSaveGameController.h"
 #include <string>
 #include <SDL.h>
 
@@ -38,7 +38,7 @@ public:
 	char getEpisode();
 	char getNumPlayers();
 	char getDifficulty();
-	CSavedGame getSavedGameBlock();
+	CSaveGameController getSavedGameBlock();
 
 protected:
 	unsigned char m_NumPlayers;
@@ -69,7 +69,7 @@ protected:
 	bool m_restartVideo;
 
 	stOption *mp_option;
-	CSavedGame m_SavedGame;
+	CSaveGameController m_SavedGame;
 };
 
 #endif /* CPLAYGAME_H_ */
