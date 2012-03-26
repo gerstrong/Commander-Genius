@@ -48,8 +48,16 @@ void CGUIInputText::processLogic()
 
 		if(g_pInput->getPressedIsTypingKey())
 		{
-			mText += g_pInput->getPressedTypingKey();
+			std::string c = g_pInput->getPressedTypingKey();
+
+			mText.append(c);
 		}
+
+		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (mText.length() > 0))
+		{
+			mText.erase(mText.length()-1);
+		}
+
 	}
 	else
 	{
@@ -106,7 +114,14 @@ void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(0);
 
-	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
+	if( mText == "" )
+	{
+		Font.drawFont( blitsfc, gpSaveGameController->getEmptyString(), lRect.x+24, lRect.y, false );
+	}
+	else
+	{
+		Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
+	}
 
 	drawTwirl(lRect);
 
@@ -140,7 +155,7 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(0);
 
-	if(mText.empty())
+	if( mText == "" )
 	{
 		Font.drawFontCentered( blitsfc, gpSaveGameController->getEmptyString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
 	}

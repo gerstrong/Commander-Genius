@@ -14,7 +14,7 @@
 #include <ctime>
 
 CSaveMenu::CSaveMenu(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.0f, 0.1f, 1.0f, 0.8f) ),
+CBaseMenu(dlg_theme, CRect<float>(0.0f, 0.0f, 1.0f, 1.0f) ),
 mp_OverwriteMenu(NULL),
 m_overwrite(false)
 {
@@ -28,7 +28,7 @@ m_overwrite(false)
 
 	for(Uint32 i=1;i<=20;i++)
 	{
-		text = ""jklhn;
+		text = "";
 		if(i <= StateFileList.size())
 			text = StateFileList.at(i-1);
 

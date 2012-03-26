@@ -29,7 +29,7 @@
 
 // Savegame/Loadgame Menu common stuff
 const int MENU_WIDTH = 40;
-const int TEXT_WIDTH = 40-4;
+const int TEXT_WIDTH = 32;
 
 #define gpSaveGameController CSaveGameController::Get()
 
