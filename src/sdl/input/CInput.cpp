@@ -835,13 +835,13 @@ bool CInput::getPulsedKey(int key, int msec)
 }
 
 /**
- * \brief	normally called, when a save game or high score entry is being made. It will return a charakter that was typed.
+ * \brief	normally called, when a save game or high score entry is being made. It will return a character that was typed.
  * \return	character as std::string, which was entered
  */
-std::string CInput::getPressedTypingKey(void)
+char CInput::getPressedTypingKey(void)
 {
 	int i;
-	std::string buf;
+	char buf;
 
 	for(i=KA ; i<=KZ ; i++)
 	{

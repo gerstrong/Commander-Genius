@@ -9,34 +9,31 @@
 #include "CBaseMenu.h"
 #include "CConfirmMenu.h"
 #include "sdl/input/CInput.h"
+#include "gui/CGUIInputText.h"
 
 #include <ctime>
 
 CSaveMenu::CSaveMenu(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
+CBaseMenu(dlg_theme, CRect<float>(0.0f, 0.1f, 1.0f, 0.8f) ),
 mp_OverwriteMenu(NULL),
 m_overwrite(false)
 {
 
 	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
-	/*std::string text;
-	mp_Dialog = new CDialog(MENU_WIDTH, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
-	m_selection = NO_SELECTION;
+	std::string text;
 
 	// Load the state-file list
-	std::vector<std::string> StateFileList = m_SavedGame.getSlotList();
+	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 
 	for(Uint32 i=1;i<=20;i++)
 	{
-		text = m_SavedGame.getEmptyString();
+		text = ""jklhn;
 		if(i <= StateFileList.size())
-		{
 			text = StateFileList.at(i-1);
-			mp_Dialog->m_name = text;
-		}
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
-	}*/
+
+		mpMenuDialog->addControl(new CGUIInputText( text, CGUIInputText::VORTICON ) );
+	}
 }
 
 /*void CSaveMenu::processSpecific()

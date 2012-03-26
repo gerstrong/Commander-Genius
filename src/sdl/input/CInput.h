@@ -155,7 +155,7 @@ public:
 	bool getPulsedKey(int key, int msec);
 	bool getPressedIsTypingKey(void);
 	bool getPressedIsNumKey(void);
-	std::string getPressedTypingKey(void);
+	char getPressedTypingKey(void);
 	std::string getPressedNumKey(void);
 	bool getPressedAnyKey(void);
 	void sendKey(int key);

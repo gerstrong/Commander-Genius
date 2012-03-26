@@ -24,8 +24,7 @@ public:
 	};
 
 	CGUIInputText(const std::string& text,
-			const SmartPointer<CEvent> ev,
-			const Style	style);
+				  const Style	style);
 
 	void sendEvent(const InputCommands command);
 
@@ -46,7 +45,7 @@ public:
 
 private:
 	std::string mText;
-	SmartPointer<CEvent> mEvent;
+	bool mTyping;
 
 	void (CGUIInputText::*drawButton)(SDL_Rect&);
 

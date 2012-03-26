@@ -174,7 +174,7 @@ void CHighScores::processWriting()
 	// Get the input
 	if(g_pInput->getPressedIsTypingKey() && (m_Name[m_Place].length() < 13))
 	{
-		m_Name[m_Place].append(g_pInput->getPressedTypingKey());
+		m_Name[m_Place] += g_pInput->getPressedTypingKey();
 	}
 	
 	if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (m_Name[m_Place].length() > 0))

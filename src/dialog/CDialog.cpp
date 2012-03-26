@@ -3,7 +3,7 @@
  *
  *  Created on: 20.03.2009
  *      Author: gerstrong
- *  \Caution: Due Date Jan 11th 2012 - This Class will be depracated soon!
+ *  \Caution: Due Date Jan 11th 2012 - This Class will be deprecated soon!
  */
 
 #include "StringUtils.h"
@@ -16,7 +16,7 @@
 #include "CDialog.h"
 
 // TODO: This class must get a super class and we need two new classes for galaxy and vorticon engines.
-// Their menu display are way too different
+// Their menu displays are way too different
 
 CDialog::CDialog(Uint16 w, Uint16 h, char inputmode, Uint8 theme) :
 m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
@@ -164,7 +164,7 @@ void CDialog::processInput(int move)
 		// Get the input
 		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < m_length))
 		{
-			m_name.append(g_pInput->getPressedTypingKey());
+			m_name += g_pInput->getPressedTypingKey();
 		}
 		
 		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (m_name.length() > 0))

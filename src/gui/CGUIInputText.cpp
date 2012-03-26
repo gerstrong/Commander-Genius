@@ -16,18 +16,23 @@
 
 
 CGUIInputText::CGUIInputText( const std::string& text,
-							  const SmartPointer<CEvent> ev,
-							  const Style	style )
+							  const Style	style ) :
+mText(text),
+mTyping(false),
+drawButton(&CGUIInputText::drawNoStyle)
 {
-	// TODO Auto-generated constructor stub
+
+	if(style == VORTICON)
+		drawButton = &CGUIInputText::drawVorticonStyle;
 
 }
+
 
 void CGUIInputText::sendEvent(const InputCommands command)
 {
 	if(command == IC_STATUS)
 	{
-		g_pBehaviorEngine->m_EventList.add(mEvent);
+		mTyping = !mTyping;
 	}
 }
 
@@ -36,6 +41,24 @@ void CGUIInputText::processLogic()
 {
 	if(!mEnabled)
 		return;
+
+	// process the typing here!
+	if(mTyping)
+	{
+
+		if(g_pInput->getPressedIsTypingKey())
+		{
+			mText += g_pInput->getPressedTypingKey();
+		}
+	}
+	else
+	{
+		mButtonDown = false;
+		mButtonUp = false;
+	}
+
+	if(!mButtonDown)
+		mTyping = false;
 
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
@@ -52,12 +75,12 @@ void CGUIInputText::processLogic()
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 			{
 				mButtonDown = true;
+				mTyping = !mTyping;
 				g_pInput->m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
 				mButtonUp = true;
-				g_pBehaviorEngine->m_EventList.add(mEvent);
 				g_pInput->m_EventList.pop_Event();
 			}
 		}
@@ -117,7 +140,14 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(0);
 
-	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+	if(mText.empty())
+	{
+		Font.drawFontCentered( blitsfc, gpSaveGameController->getEmptyString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
+	}
+	else
+	{
+		Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+	}
 }
 
 
