@@ -44,8 +44,17 @@ public:
 	{	return mText;	}
 
 private:
+
+	// Returns the string that has to be displayed on the gui
+	// It should say empty if it's so or a character when ticking
+	// while user is typing.
+	std::string getInputString();
+
+
 	std::string mText;
 	bool mTyping;
+	int mTypeTick;
+	bool mTick;
 
 	void (CGUIInputText::*drawButton)(SDL_Rect&);
 

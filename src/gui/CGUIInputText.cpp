@@ -15,10 +15,15 @@
 #include "sdl/CTimer.h"
 
 
+const int MAX_TICK = 8; // Units in a logical loop
+
+
 CGUIInputText::CGUIInputText( const std::string& text,
 							  const Style	style ) :
 mText(text),
 mTyping(false),
+mTypeTick(0),
+mTick(false),
 drawButton(&CGUIInputText::drawNoStyle)
 {
 
@@ -105,6 +110,7 @@ void CGUIInputText::processLogic()
 
 void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 {
+
 	if(!mEnabled)
 		return;
 
@@ -114,18 +120,12 @@ void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(0);
 
-	if( mText == "" )
-	{
-		Font.drawFont( blitsfc, gpSaveGameController->getEmptyString(), lRect.x+24, lRect.y, false );
-	}
-	else
-	{
-		Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
-	}
+	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
 
 	drawTwirl(lRect);
 
 }
+
 
 
 void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
@@ -155,14 +155,7 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(0);
 
-	if( mText == "" )
-	{
-		Font.drawFontCentered( blitsfc, gpSaveGameController->getEmptyString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
-	}
-	else
-	{
-		Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
-	}
+	Font.drawFontCentered( blitsfc, getInputString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
 }
 
 
@@ -174,4 +167,29 @@ void CGUIInputText::processRender(const CRect<float> &RectDispCoordFloat)
 	SDL_Rect lRect = displayRect.SDLRect();
 
 	(this->*drawButton)(lRect);
+}
+
+
+std::string CGUIInputText::getInputString()
+{
+
+	if( mText == "" )
+		return gpSaveGameController->getEmptyString();
+
+	std::string text;
+	text = mText;
+
+	if(!mTyping)
+		return text;
+
+	if(mTick)
+		text += "|";
+
+	if(mTypeTick%MAX_TICK == 0)
+		mTick = !mTick;
+
+	mTypeTick++;
+
+	return text;
+
 }
