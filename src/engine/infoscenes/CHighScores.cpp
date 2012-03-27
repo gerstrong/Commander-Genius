@@ -24,7 +24,7 @@ const int BLINK_TIME = 60;
 using namespace std;
 
 
-CHighScores::CHighScores(int Episode, const std::string &DataDirectory, bool saving_mode) :
+CHighScores::CHighScores( const bool saving_mode) :
 m_Place(0), m_blink(true), m_blinkctr(0)
 {
 	m_CursorPosition = 0;
@@ -49,14 +49,14 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 	// Which process function will be cycled trough
 	mp_process = &CHighScores::processShow;
 	
-	m_Episode = Episode;
-	m_DataDirectory = DataDirectory;
+	m_Episode = g_pBehaviorEngine->getEpisode();
+	m_DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
 	
 	loadHighScoreTable();
 	
 	// Load the map for the background
 	CMapLoader MapLoader(&m_Map);
-	MapLoader.load(m_Episode, 90, DataDirectory, false);
+	MapLoader.load(m_Episode, 90, m_DataDirectory, false);
 	
     m_Map.gotoPos(HIGHSCORETABLE_X, HIGHSCORETABLE_Y);
 	

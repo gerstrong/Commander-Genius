@@ -15,7 +15,7 @@
 #include "core/CGameMode.h"
 
 
-CMainMenu::CMainMenu( const Uint8 dlgTheme  ) :
+CMainMenu::CMainMenu( const Uint8 dlgTheme ) :
 CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
 
@@ -34,6 +34,14 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Settings",
+												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "High Scores",
+												new StartHighscoresEvent(),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Info",
 												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
 												CGUIButton::VORTICON ) );
 

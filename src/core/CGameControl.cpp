@@ -86,6 +86,7 @@ void CGameControl::process()
 
 	if( !EventContainer.empty() )
 	{
+
 		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 		{
 			mp_GameMode = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );

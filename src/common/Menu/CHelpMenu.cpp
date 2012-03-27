@@ -7,7 +7,6 @@
 
 #include "CHelpMenu.h"
 
-#include "engine/infoscenes/CHighScores.h"
 #include "engine/infoscenes/CStory.h"
 #include "engine/infoscenes/CCredits.h"
 #include "engine/infoscenes/COrderingInfo.h"

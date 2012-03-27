@@ -9,7 +9,9 @@
 #include "sdl/sound/CSound.h"
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/galaxy/CPassive.h"
+#include "engine/infoscenes/CHighScores.h"
 #include "common/Menu/CMenuController.h"
+
 
 CGamePassiveMode::CGamePassiveMode(const std::string& DataDirectory, const int& Episode) :
 m_DataDirectory(DataDirectory),
@@ -44,7 +46,18 @@ void CGamePassiveMode::init()
 void CGamePassiveMode::process()
 {
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+
+	if( !mpInfoScene.empty() )
+	{
+		mpInfoScene->process();
+		if( mpInfoScene->destroyed() )
+			mpInfoScene.tryDeleteData();
+
+		return;
+	}
+
 	mp_Passive->process();
+
 
 	if(!EventContainer.empty())
 	{
@@ -61,6 +74,13 @@ void CGamePassiveMode::process()
 			EventContainer.pop_Event();
 
 			EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory, SavedGame ) );
+			EventContainer.add( new CloseMenuEvent() );
+			return;
+		}
+		else if( EventContainer.occurredEvent<StartHighscoresEvent>() )
+		{
+			mpInfoScene = new CHighScores;
+			EventContainer.pop_Event();
 			EventContainer.add( new CloseMenuEvent() );
 			return;
 		}

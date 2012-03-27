@@ -225,7 +225,7 @@ void CPlayGameVorticon::process()
 
 					if(!m_gameover)
 					{
-						mp_HighScores = new CHighScores(m_Episode, m_Gamepath, true);
+						mp_HighScores = new CHighScores(true);
 						collectHighScoreInfo();
 					}
 				}
@@ -251,7 +251,7 @@ void CPlayGameVorticon::process()
 
 				if( g_pInput->getPressedAnyCommand() )
 				{
-					mp_HighScores = new CHighScores(m_Episode, m_Gamepath, true);
+					mp_HighScores = new CHighScores(true);
 
 					collectHighScoreInfo();
 				}

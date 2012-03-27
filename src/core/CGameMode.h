@@ -11,6 +11,7 @@
 #define CGAMEMODE_H_
 
 #include "engine/CEvent.h"
+#include "engine/infoscenes/CInfoScene.h"
 #include "fileio/CSaveGameController.h"
 #include <string>
 
@@ -69,6 +70,10 @@ struct GMStart : CEvent
 
 // Start the Gameplay
 struct StartGameplayEvent : CEvent {};
+
+struct StartHighscoresEvent : CEvent
+{};
+
 
 ///////
 // Base Class for the modes

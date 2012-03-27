@@ -19,10 +19,11 @@ struct stBitmap{
 	SDL_Rect rect;
 };
 
-class CHighScores : public CInfoScene {
+class CHighScores : public CInfoScene
+{
 public:
 
-	CHighScores(int Episode, const std::string &DataDirectory, bool saving_mode);
+	CHighScores( const bool saving_mode = false );
 	void writeEP1HighScore(int score, bool extra[4]);
 	void writeEP2HighScore(int score, int cities_saved);
 	void writeHighScoreCommon(int score);
