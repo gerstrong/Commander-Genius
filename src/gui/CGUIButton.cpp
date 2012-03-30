@@ -11,7 +11,7 @@
 #include "sdl/input/InputEvents.h"
 #include "sdl/CVideoDriver.h"
 #include "common/CBehaviorEngine.h"
-#include "core/CGameMode.h"
+#include "core/mode/CGameMode.h"
 #include "sdl/CTimer.h"
 
 

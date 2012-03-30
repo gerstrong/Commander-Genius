@@ -9,6 +9,7 @@
 #include "CResourceLoader.h"
 #include "fileio/CPatcher.h"
 
+#include "CGameMain.h"
 #include "engine/vorticon/CEGAGraphicsVort.h"
 #include "engine/galaxy/CEGAGraphicsGalaxy.h"
 #include "engine/CMessages.h"
@@ -229,6 +230,8 @@ void CGameLauncherMenu::process()
 						savedgames.setGameDirectory(DataDirectory);
 						savedgames.setEpisode(Episode);
 						savedgames.convertAllOldFormats();
+
+						EventContainer.add( new StartMainGameEvent );
 
 						if(m_start_level == -1) // Starts normally
 							EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, Episode) );

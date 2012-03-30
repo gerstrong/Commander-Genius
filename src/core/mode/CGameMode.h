@@ -18,15 +18,6 @@
 ///////////////////////
 // Events Structure  //
 ///////////////////////
-// This event switches to the GameLauncher
-struct GMSwitchToGameLauncher : CEvent {
-	const int m_ChosenGame;
-	const int m_StartLevel;
-	GMSwitchToGameLauncher(	const int ChosenGame=-1, const int StartLevel=-1 ) :
-		m_ChosenGame(ChosenGame),
-		m_StartLevel(StartLevel){}
-};
-
 // This event switches to the PassiveMode
 struct GMSwitchToPassiveMode : CEvent {
 	const std::string m_DataDirectory;

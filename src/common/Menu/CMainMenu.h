@@ -8,13 +8,16 @@
 #include "CBaseMenu.h"
 #include "SmartPointer.h"
 #include "gui/CGUIDialog.h"
+#include "engine/CEvent.h"
 
 #ifndef CMAINMENU_H_
 #define CMAINMENU_H_
 
-class CMainMenu : public CBaseMenu {
+class CMainMenu : public CBaseMenu
+{
 public:
 	CMainMenu(const Uint8 dlgTheme);
 };
+
 
 #endif /* CMAINMENU_H_ */

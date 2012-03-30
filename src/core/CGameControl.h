@@ -13,13 +13,14 @@
 #include "common/CGameLauncher.h"
 #include "common/options.h"
 #include "common/Menu/CMenuController.h"
+#include "core/CBaseEngine.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/CEGAGraphics.h"
 #include "engine/CMessages.h"
 #include "engine/CPassive.h"
 #include "engine/playgame/CPlayGame.h"
 #include "core/CGameControl.h"
-#include "core/CGameMode.h"
+#include "core/mode/CGameMode.h"
 #include "SmartPointer.h"
 
 #include <string>
@@ -34,11 +35,11 @@ public:
 	void process();
 	
 	// getters and setters
-	bool mustShutdown(){ return (mp_GameMode.get()==NULL); }
+	bool mustShutdown(){ return (mpEngine.get()==NULL); }
 	
 protected:
 
-	SmartPointer<CGameMode> mp_GameMode;
+	SmartPointer<CBaseEngine> mpEngine;
 
 	bool &m_firsttime;
 	int m_startGame_no;

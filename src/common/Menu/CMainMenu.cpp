@@ -12,7 +12,7 @@
 #include "common/Menu/CSaveMenu.h"
 #include "common/CBehaviorEngine.h"
 #include "gui/CGUIButton.h"
-#include "core/CGameMode.h"
+#include "core/mode/CGameMode.h"
 
 
 CMainMenu::CMainMenu( const Uint8 dlgTheme ) :

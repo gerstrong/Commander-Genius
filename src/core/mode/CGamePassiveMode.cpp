@@ -11,6 +11,7 @@
 #include "engine/galaxy/CPassive.h"
 #include "engine/infoscenes/CHighScores.h"
 #include "common/Menu/CMenuController.h"
+#include "core/CGameLauncherMenu.h"
 
 
 CGamePassiveMode::CGamePassiveMode(const std::string& DataDirectory, const int& Episode) :

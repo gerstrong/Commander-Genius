@@ -8,8 +8,9 @@
 #ifndef CGAMELAUNCHERMENU_H_
 #define CGAMELAUNCHERMENU_H_
 
-#include "CGameMode.h"
+#include "mode/CGameMode.h"
 #include "common/CGameLauncher.h"
+#include "core/CBaseEngine.h"
 #include "common/Menu/CProfilesMenu.h"
 #include "engine/CEGAGraphics.h"
 #include "gui/CGUIDialog.h"
@@ -22,7 +23,8 @@ LOADSND=0x04,
 LOADALL=0xFF
 };
 
-class CGameLauncherMenu : public CGameMode {
+class CGameLauncherMenu : public CBaseEngine
+{
 public:
 	CGameLauncherMenu(bool& first_time, const int start_game_no = -1, const int start_level = -1);
 
@@ -40,5 +42,16 @@ private:
 
 	SmartPointer<CEGAGraphics> mp_EGAGraphics;
 };
+
+// Events
+// This event switches to the GameLauncher
+struct GMSwitchToGameLauncher : CEvent {
+	const int m_ChosenGame;
+	const int m_StartLevel;
+	GMSwitchToGameLauncher(	const int ChosenGame=-1, const int StartLevel=-1 ) :
+		m_ChosenGame(ChosenGame),
+		m_StartLevel(StartLevel){}
+};
+
 
 #endif /* CGAMELAUNCHERMENU_H_ */

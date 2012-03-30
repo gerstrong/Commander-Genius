@@ -13,12 +13,14 @@
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
 
-#include "core/CGameLauncherMenu.h"
-#include "core/CGamePassiveMode.h"
-#include "core/CGamePlayMode.h"
-
 #include "common/Menu/CMenuController.h"
 #include "common/Menu/CMainMenu.h"
+
+#include "CGameMain.h"
+#include "CGameLauncherMenu.h"
+#include "mode/CGamePlayMode.h"
+#include "mode/CGamePassiveMode.h"
+
 
 #include "arguments.h"
 
@@ -89,27 +91,19 @@ void CGameControl::process()
 
 		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 		{
-			mp_GameMode = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );
-			mp_GameMode->init();
+			mpEngine = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );
+			mpEngine->init();
 			EventContainer.pop_Event();
 		}
-		else if( GMSwitchToPassiveMode* p_Passive = EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
+		else if( EventContainer.occurredEvent<StartMainGameEvent>() )
 		{
-			mp_GameMode = new CGamePassiveMode( p_Passive->m_DataDirectory, p_Passive->m_Episode );
-			mp_GameMode->init();
-			EventContainer.pop_Event();
-		}
-		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
-		{
-			mp_GameMode = new CGamePlayMode( p_PlayGame->m_Episode, p_PlayGame->m_Numplayers,
-					p_PlayGame->m_Difficulty, p_PlayGame->m_DataDirectory,
-					p_PlayGame->m_SavedGame, m_show_finale, p_PlayGame->m_startlevel);
-			mp_GameMode->init();
+			mpEngine = new CGameMain();
+			mpEngine->init();
 			EventContainer.pop_Event();
 		}
 		else if( EventContainer.occurredEvent<GMQuit>() )
 		{
-			mp_GameMode.tryDeleteData();
+			mpEngine.tryDeleteData();
 			EventContainer.pop_Event();
 
 			return;
@@ -124,7 +118,7 @@ void CGameControl::process()
 	}
 
 	// Process the game control object
-	mp_GameMode->process();
+	mpEngine->process();
 
 	mMenuController.process();
 }

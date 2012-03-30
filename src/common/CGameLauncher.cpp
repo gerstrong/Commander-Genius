@@ -14,7 +14,7 @@
 #include "gui/CGUIButton.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CBehaviorEngine.h"
-#include "core/CGameMode.h"
+#include "core/mode/CGameMode.h"
 #include "StringUtils.h"
 #include "CResourceLoader.h"
 #include "FindFile.h"
