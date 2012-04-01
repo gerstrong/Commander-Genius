@@ -52,7 +52,8 @@ void CMenuController::process()
 		{
 			mpMenu->release();
 			mMenuStack.pop_back();
-			mpMenu = mMenuStack.back();
+			if(!mMenuStack.empty())
+				mpMenu = mMenuStack.back();
 			EventContainer.pop_Event();
 		}
 
