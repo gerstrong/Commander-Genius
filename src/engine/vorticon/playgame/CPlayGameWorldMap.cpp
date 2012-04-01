@@ -167,7 +167,7 @@ void CPlayGameVorticon::showKeensLeft()
 	{
 		int x,y,i,p;
 		int boxY, boxH;
-		CFont &Font = g_pGfxEngine->getFont(0);
+		CFont &Font = g_pGfxEngine->getFont(1);
 
 		const unsigned int KEENSLEFT_W = 24;
 		const unsigned int KEENSLEFT_H = 4;

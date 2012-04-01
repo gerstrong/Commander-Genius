@@ -65,7 +65,7 @@ void CDlgFrame::setPos(const Uint32 x, const Uint32 y)
 
 void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 {
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 
 	// first draw the blank rect
 	int i, j;
@@ -142,7 +142,7 @@ void CDlgFrame::drawGalaxyFrame(SDL_Surface *dst)
 
 void CDlgFrame::drawRedFrame(SDL_Surface *dst)
 {
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 	
 	// first draw the blank rect
 	int i, j;

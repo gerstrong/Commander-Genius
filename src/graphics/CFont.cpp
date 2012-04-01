@@ -90,48 +90,14 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 
 		for( int x = 0 ; x < width ; x++)
 		{
-			char newPix = pixel_data[x];
-
-			// Now get the new pixel
-			/*for( int c = 0 ; c < colors ; c++)
-			{
-				// Found the entry, get the color
-				if( new_pix == *(data[1+c]) )
-				{
-					textbuf = data[1+c]+4;
-					break;
-				}
-			}*/
-
-
-			//*pixel = colorMap[newPix] | 0xFF000000;
+			const char newPix = pixel_data[x];
 
 			if( newPix == ' ' )
-			{
 				color = 0;
-			}
 			else
-			{
 				color = colorMap[newPix] | 0xFF000000;
 
-			}
 			*pixel = color;
-
-
-			/*if( textbuf == "None" )
-			{
-				// no color, make this one transparent
-				*pixel = 0;
-			}
-			else
-			{
-				// Get the hexstring.
-				textbuf = textbuf.substr(1);
-
-				// And convert it
-				*pixel = (from_string<Uint32>(textbuf)) | 0xFF000000;
-			}*/
-
 			pixel++;
 		}
 	}

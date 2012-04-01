@@ -92,7 +92,7 @@ void CMessageBoxVort::process()
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
-		g_pGfxEngine->getFont(0).drawFont(MsgBoxSfc, m_Lines[i], 8, ((i+1)*8) );
+		g_pGfxEngine->getFont(1).drawFont(MsgBoxSfc, m_Lines[i], 8, ((i+1)*8) );
 
 	// Draw additional tiles on the surface if any where defined
 	for(size_t i=0 ; i<m_Tiles.size() ; i++)

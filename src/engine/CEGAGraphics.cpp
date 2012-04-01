@@ -28,11 +28,6 @@ bool CEGAGraphics::loadData()
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	Font.loadinternalFont();
-	//Font.setFGColour(g_pVideoDriver->mp_VideoEngine->getBlitSurface()->format, 0x0, true);
-
-	//g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
-	//CCursor *pCursor = g_pGfxEngine->getCursor();
-	//pCursor->generateTwirls(Font);
 
 	return true;
 }

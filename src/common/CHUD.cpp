@@ -90,7 +90,7 @@ void CHUD::DrawCircle(int x, int y, int width)
 	SDL_Rect text, outline;
 
 	Uint8 r,g,b;
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 	Font.getBGColour(&r, &g, &b);
 
 	outline.x = x+4;
@@ -171,7 +171,7 @@ void CHUD::renderVorticon()
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_Background, NULL, &m_Rect ) );
 	SDL_BlitSurface(mp_Background, NULL, mp_HUDBlit, NULL );
 	
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 	//Font.setFGColour(blitsurface->format, 0x000000);
 	// Draw the score
 	Font.drawFont(mp_HUDBlit, getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);

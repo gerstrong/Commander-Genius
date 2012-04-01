@@ -281,7 +281,7 @@ void CPlayGameVorticon::process()
 #else
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
-			g_pGfxEngine->getFont(0).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
+			g_pGfxEngine->getFont(1).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
 
 		}
 	}

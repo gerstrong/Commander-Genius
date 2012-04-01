@@ -56,7 +56,7 @@ void CTextBox::setAttribs(Uint8 tw_waittime, bool highlight )
 void CTextBox::process()
 {
 	m_time_passed = g_pTimer->getTicks() - m_time_start;
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 
 	if(m_border) SDL_FillRect(m_surface, &m_rect, SDL_MapRGB(m_surface->format, 0,0,0));
 	if( m_tw_waittime == 0) // means no typewritting mode!

@@ -85,7 +85,7 @@ void CStatusScreen::createInventorySfcEp1()
 	/*int x,t,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 
 	m_StatusRect.x = 5*8;
 	m_StatusRect.y = 5*8;
@@ -214,7 +214,7 @@ void CStatusScreen::createInventorySfcEp2()
 	/*int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 
@@ -334,7 +334,7 @@ void CStatusScreen::createInventorySfcEp3()
 	/*int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 
