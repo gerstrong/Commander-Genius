@@ -64,7 +64,8 @@ void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 
 // This will store the effect pointer the developer created in one function
 // You need this call to make you effect work!
-void CGfxEngine::pushEffectPtr(CEffects *pEffect) {
+void CGfxEngine::pushEffectPtr(CEffects *pEffect)
+{
 	SAFE_DELETE(mp_Effects);
 	mp_Effects = pEffect;
 }

@@ -536,7 +536,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 	int ep = m_episode - 4;
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
 
-	g_pGfxEngine->createEmptyFontmaps(EpisodeInfo[ep].NumFonts);
+	g_pGfxEngine->createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
 		CFont &Font = g_pGfxEngine->getFont(i);

@@ -158,7 +158,7 @@ void CGUIDialog::drawEmptyBackround(SDL_Rect Rect)
 void CGUIDialog::drawVorticonBackround( SDL_Rect Rect )
 {
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 
 	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
 

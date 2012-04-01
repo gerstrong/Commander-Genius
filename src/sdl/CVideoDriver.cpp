@@ -326,7 +326,7 @@ void CVideoDriver::drawConsoleMessages()
 	int y = CONSOLE_MESSAGE_Y;
 	for( int i=0 ; i<NumConsoleMessages ; i++ )
 	{
-		g_pGfxEngine->getFont(0).drawFont( mp_VideoEngine->getBlitSurface(), cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
+		g_pGfxEngine->getFont(1).drawFont( mp_VideoEngine->getBlitSurface(), cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
 		y += CONSOLE_MESSAGE_SPACING;
 	}
 }

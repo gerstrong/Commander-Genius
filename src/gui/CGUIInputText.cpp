@@ -118,7 +118,7 @@ void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
 
@@ -153,7 +153,7 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 	}
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	Font.drawFontCentered( blitsfc, getInputString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
 }

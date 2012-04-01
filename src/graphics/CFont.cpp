@@ -8,12 +8,12 @@
 #include "CFont.h"
 #include "CPalette.h"
 #include "../FindFile.h"
-#include <string.h>
 #include "../sdl/CVideoDriver.h"
 #include "CGFont.xpm"
 #include "StringUtils.h"
 #include "sdl/extensions.h"
-
+#include <string.h>
+#include <cstdlib>
 
 
 
@@ -63,8 +63,23 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 			  	  	  	  	  	  	  	  	 format->Rmask, format->Gmask,
 			  	  	  	  	  	  	  	  	 format->Bmask, format->Amask );
 
-	// read the data and pass it to the surface
+	// Read the data and pass it to the surface
 	SDL_LockSurface(sfc);
+
+	// Now get the colors which has that XPM File
+	std::map<char,Uint32> colorMap;
+	char charCode, dummy;
+	char colorCode[7];
+	Uint32 color;
+	std::stringstream ss;
+	memset(colorCode, 0, 7*sizeof(char) );
+	for( int c=0; c<colors ; c++ )
+	{
+		sscanf(data[c+1], "%c\t%c #%s", &charCode, &dummy, colorCode);
+		color = strtol( colorCode, NULL, 16 );
+		colorMap[charCode] = color;
+	}
+
 
 	std::string textbuf;
 
@@ -75,10 +90,10 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 
 		for( int x = 0 ; x < width ; x++)
 		{
-			char new_pix = pixel_data[x];
+			char newPix = pixel_data[x];
 
 			// Now get the new pixel
-			for( int c = 0 ; c < colors ; c++)
+			/*for( int c = 0 ; c < colors ; c++)
 			{
 				// Found the entry, get the color
 				if( new_pix == *(data[1+c]) )
@@ -86,9 +101,24 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 					textbuf = data[1+c]+4;
 					break;
 				}
-			}
+			}*/
 
-			if( textbuf == "None" )
+
+			//*pixel = colorMap[newPix] | 0xFF000000;
+
+			if( newPix == ' ' )
+			{
+				color = 0;
+			}
+			else
+			{
+				color = colorMap[newPix] | 0xFF000000;
+
+			}
+			*pixel = color;
+
+
+			/*if( textbuf == "None" )
 			{
 				// no color, make this one transparent
 				*pixel = 0;
@@ -100,7 +130,7 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 
 				// And convert it
 				*pixel = (from_string<Uint32>(textbuf)) | 0xFF000000;
-			}
+			}*/
 
 			pixel++;
 		}
@@ -122,7 +152,7 @@ bool CFont::loadinternalFont()
 		SDL_FreeSurface(mFontSurface);
 
 	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
-	mFontSurface = loadfromXPMData(CGFont_xpm, blit->format, blit->flags);
+	mFontSurface = loadfromXPMData( CGFont_xpm, blit->format, blit->flags );
 	return true;
 }
 

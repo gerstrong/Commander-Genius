@@ -18,6 +18,7 @@ int CGUIControl::mTwirliconID = 10;
 
 CGUIControl::CGUIControl() :
 mEnabled(true),
+mFontID(0),
 mHovered(false),
 mButtonDown(false),
 mButtonUp(false)
@@ -34,7 +35,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	if( g_pTimer->HasTimeElapsed(100) )
 	{

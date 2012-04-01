@@ -25,7 +25,10 @@ mOLCurrent( mOptionsList.begin() ),
 drawButton(&CGUIComboSelection::drawNoStyle)
 {
 	if(style == VORTICON)
+	{
+		mFontID = 1;
 		drawButton = &CGUIComboSelection::drawVorticonStyle;
+	}
 }
 
 const std::string& CGUIComboSelection::getSelection()
@@ -135,7 +138,7 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
@@ -172,7 +175,7 @@ void CGUIComboSelection::drawNoStyle(SDL_Rect& lRect)
 	}
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
 

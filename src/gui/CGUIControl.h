@@ -51,6 +51,7 @@ public:
 	bool mEnabled;
 
 protected:
+	int	mFontID;
 	bool mHovered;
 	bool mButtonDown;
 	bool mButtonUp;

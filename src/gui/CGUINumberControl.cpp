@@ -140,7 +140,7 @@ void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
@@ -179,7 +179,7 @@ void CGUINumberControl::drawNoStyle(SDL_Rect& lRect)
 	}
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
 

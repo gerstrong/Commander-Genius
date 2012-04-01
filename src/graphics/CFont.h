@@ -19,7 +19,8 @@
 #include <string>
 #include <vector>
 
-class CFont {
+class CFont
+{
 public:
 	CFont();
 

@@ -145,7 +145,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	g_pGfxEngine->freeFonts();
 	g_pGfxEngine->createEmptyFontmaps(2);
-	CFont &Font = g_pGfxEngine->getFont(0);
+
+	g_pGfxEngine->getFont(0).loadinternalFont();
+
+	CFont &Font = g_pGfxEngine->getFont(1);
 	Font.destroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	sfc = Font.getSDLSurface();
@@ -159,38 +162,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		Planes.readPlaneofTiles(p, pixel, 16, 8, m_fonttiles);
 
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-
-	// Load Hi-Colour VGA, SVGA 8x8 Tiles into the fontmap
-	filename = getResourceFilename("gfx/fonts.bmp", path, false);
-
-	//Font.optimizeSurface();
-	/*if(Font.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
-		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");*/
-
-	//Font.setFGColour(Font.getSDLSurface()->format, 0x0, true);
-
-	// Setup the twirl
-	//g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
-	//CCursor *pCursor = g_pGfxEngine->getCursor();
-	//pCursor->generateTwirls(Font);
-
-	// The second fontmap of the extra tilemap code goes here! (for example Sliders)
-	//CFont &Font2 = g_pGfxEngine->getFont(1);
-	//Font2.destroySurface();
-	//Font2.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
-	//Font2.optimizeSurface();
-
-	//filename = getResourceFilename("gfx/extratiles.bmp", path, true, true);
-
-	//if(filename == "") // That essential file was not found! Try to exit
-		//return false;
-
-	//Font2.loadHiColourFont(filename);
-
-	//Font2.setFGColour(Font2.getSDLSurface()->format, 0x0, true);
-
-	// Load 32x32 Tiles
-	// TODO: Add a read method for 32x32 Tiles
 
 	// ** read the 16x16 tiles **
 	Planes.setOffsets(plane1 + m_tiles16location,
