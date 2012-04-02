@@ -26,7 +26,6 @@ CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  const bool finale, CSaveGameController &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty),
 mp_ObjectAI(NULL),
-mp_HighScores(NULL),
 mp_HUD(NULL),
 mp_KeenLeftSfc(NULL)
 {
@@ -176,7 +175,7 @@ void CPlayGameVorticon::process()
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
 
-	if(mp_HighScores) // Are we requesting Highscores
+	/*if(mp_HighScores) // Are we requesting Highscores
 	{
 		mp_HighScores->process();
 
@@ -188,7 +187,7 @@ void CPlayGameVorticon::process()
 			SAFE_DELETE(mp_HighScores);
 			m_endgame = true;
 		}
-	}
+	}*/
 	else // No, we are in the middle of the game
 	{
 		if( !m_paused && m_MessageBoxes.empty() ) // Game is not paused, no messages have to be shown and no menu is open
@@ -225,7 +224,7 @@ void CPlayGameVorticon::process()
 
 					if(!m_gameover)
 					{
-						mp_HighScores = new CHighScores(true);
+						//mp_HighScores = new CHighScores(true);
 						collectHighScoreInfo();
 					}
 				}
@@ -251,7 +250,7 @@ void CPlayGameVorticon::process()
 
 				if( g_pInput->getPressedAnyCommand() )
 				{
-					mp_HighScores = new CHighScores(true);
+					//mp_HighScores = new CHighScores(true);
 
 					collectHighScoreInfo();
 				}
@@ -481,7 +480,7 @@ void CPlayGameVorticon::collectHighScoreInfo()
 		extra[2] = m_Player[0].inventory.HasVacuum;
 		extra[3] = m_Player[0].inventory.HasWiskey;
 
-		mp_HighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
+		//mp_HighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
 	}
 	else if(m_Episode == 2)
 	{
@@ -496,10 +495,10 @@ void CPlayGameVorticon::collectHighScoreInfo()
 		if (mp_level_completed[15]) saved_cities++;
 		if (mp_level_completed[16]) saved_cities++;
 
-		mp_HighScores->writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
+		//mp_HighScores->writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
 	}
-	else
-		mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
+	//else
+		//mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
 }
 
 // This function draws the objects that need to be seen on the screen
@@ -539,7 +538,7 @@ void CPlayGameVorticon::drawAllElements()
 	m_Map.drawForegroundTiles();
 
 	if(mp_option[OPT_HUD].value && !mp_Finale &&
-			!m_paused && !mp_HighScores)
+			!m_paused )
 	{	// Draw the HUD
 		mp_HUD->render();
 	}

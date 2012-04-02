@@ -107,7 +107,7 @@ private:
 	std::list<CMessageBoxVort*> m_MessageBoxes;
 	bool m_showKeensLeft;
 	std::vector<CObject*> m_Object;
-	CHighScores *mp_HighScores;
+	//CHighScores *mp_HighScores;
 	CHUD *mp_HUD;
 	SDL_Surface *mp_KeenLeftSfc;
 	SDL_Rect keenleft_rect;
