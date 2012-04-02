@@ -23,9 +23,10 @@ protected:
 
 private:
 
+	SmartPointer<CInfoScene> mpInfoScene;
 	SmartPointer<CGameMode>	mpGameMode;
 
-	bool mShowFinale; // This should be an event
+	//bool mShowFinale; // This should be an event
 };
 
 

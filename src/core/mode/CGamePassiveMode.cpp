@@ -27,50 +27,44 @@ void CGamePassiveMode::init()
 	/*if(m_Episode >= 4)
 		mp_Passive = new galaxy::CPassiveGalaxy();
 	else*/
-		mp_Passive = new vorticon::CPassiveVort();
+		mpPassive = new vorticon::CPassiveVort();
 
 	if( m_Endgame == true )
 	{
 		m_Endgame = false;
 		// TODO: Overload this function for galaxy
-		if( mp_Passive->init(mp_Passive->TITLE) ) return;
+		if( mpPassive->init(mpPassive->TITLE) ) return;
 	}
 	else
 	{
-		if( mp_Passive->init() ) return;
+		if( mpPassive->init() ) return;
 	}
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
+
 }
 
 void CGamePassiveMode::process()
 {
+
+	mpPassive->process();
+
+	// Process Events
+
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
-	if( !mpInfoScene.empty() )
-	{
-		mpInfoScene->process();
-		if( mpInfoScene->destroyed() )
-			mpInfoScene.tryDeleteData();
-
-		return;
-	}
-
-	mp_Passive->process();
-
 
 	if(!EventContainer.empty())
 	{
 		if( StartGameplayEvent* pLauncher = EventContainer.occurredEvent<StartGameplayEvent>() )
 		{
-			const int Episode = mp_Passive->getEpisode();
+			const int Episode = mpPassive->getEpisode();
 			//const int Numplayers = mp_Passive->getNumPlayers();
 			//const int Difficulty = mp_Passive->getDifficulty();
 			const int Numplayers = 1;
 			const int Difficulty = 1;
-			std::string DataDirectory = mp_Passive->getGamePath();
-			CSaveGameController SavedGame = mp_Passive->getSavedGameBlock();
+			std::string DataDirectory = mpPassive->getGamePath();
+			CSaveGameController SavedGame = mpPassive->getSavedGameBlock();
 
 			EventContainer.pop_Event();
 
@@ -78,20 +72,15 @@ void CGamePassiveMode::process()
 			EventContainer.add( new CloseMenuEvent() );
 			return;
 		}
-		else if( EventContainer.occurredEvent<StartHighscoresEvent>() )
-		{
-			mpInfoScene = new CHighScores;
-			EventContainer.pop_Event();
-			EventContainer.add( new CloseMenuEvent() );
-			return;
-		}
 
 	}
 
 
+	// TODO: Event are processed here! Needs some adaptation
+
 	// check here what the player chose from the menu over the passive mode.
 	// NOTE: Demo is not part of playgame anymore!!
-	if(mp_Passive->getchooseGame())
+	if(mpPassive->getchooseGame())
 	{
 		// TODO: Some of game resources are still not cleaned up here!
 		g_pSound->unloadSoundData();
@@ -100,7 +89,7 @@ void CGamePassiveMode::process()
 	}
 
 	// User wants to exit. Called from the PassiveMode
-	if(mp_Passive->getExitEvent())
+	if(mpPassive->getExitEvent())
 	{
 		EventContainer.add( new GMQuit() );
 	}

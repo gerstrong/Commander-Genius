@@ -22,8 +22,7 @@
 // Creation Routine
 ////
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
-		  char numplayers, Uint8& difficulty,
-		  const bool finale, CSaveGameController &SavedGame) :
+		  char numplayers, Uint8& difficulty, CSaveGameController &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty),
 mp_ObjectAI(NULL),
 mp_HUD(NULL),
@@ -61,7 +60,7 @@ mp_KeenLeftSfc(NULL)
 	else
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_HARD);
 
-	if(finale) m_level_command = GOTO_FINALE;
+	//if(finale) m_level_command = GOTO_FINALE;
 }
 
 // Setup all the players, when one level is started

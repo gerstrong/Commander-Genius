@@ -64,7 +64,8 @@ extern std::map< void *, SDL_mutex * > * SmartPointer_CollisionDetector;
  class SmartObject;*/
 
 template < typename _Type, typename _SpecificInitFunctor = NopFunctor<void*> >
-class SmartPointer { //friend class SmartObject<_Type>;
+class SmartPointer
+{ //friend class SmartObject<_Type>;
 private:
 	_Type* obj;
 	int* refCount;

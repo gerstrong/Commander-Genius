@@ -16,6 +16,7 @@
 #include "FindFile.h"
 #include "sdl/CVideoDriver.h"
 #include "common/CMapLoader.h"
+#include "sdl/extensions.h"
 
 const int HIGHSCORETABLE_X = 1344;
 const int HIGHSCORETABLE_Y = 32;
@@ -47,7 +48,7 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 	memset(m_Cities, 0, 8*sizeof(unsigned int));
 	
 	// Which process function will be cycled trough
-	mp_process = &CHighScores::processShow;
+	mp_process = &CHighScores::processShowing;
 	
 	m_Episode = g_pBehaviorEngine->getEpisode();
 	m_DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
@@ -55,14 +56,14 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 	loadHighScoreTable();
 	
 	// Load the map for the background
-	CMapLoader MapLoader(&m_Map);
+	CMapLoader MapLoader(&mMap);
 	MapLoader.load(m_Episode, 90, m_DataDirectory, false);
 	
-    m_Map.gotoPos(HIGHSCORETABLE_X, HIGHSCORETABLE_Y);
+    mMap.gotoPos(HIGHSCORETABLE_X, HIGHSCORETABLE_Y);
 	
     // Draw Background. This is only needed once, since Scrollsurface
     // won't be cleared every update screen
-    m_Map.drawAll();
+    mMap.drawAll();
 	
 	// Setup the Bitmaps that will be shown
 	stBitmap bmp;
@@ -105,10 +106,10 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 		{
 			for( int i=0 ; i<8 ; i++ )
 			{
-				if(m_Extra[i][0]) m_Map.setTile(98, 5+i, joy_tile+(i%4), true);
-				if(m_Extra[i][1]) m_Map.setTile(99, 5+i, bat_tile+((i+1)%4), true);
-				if(m_Extra[i][2]) m_Map.setTile(100, 5+i, vac_tile+((i+2)%4), true);
-				if(m_Extra[i][3]) m_Map.setTile(101, 5+i, wsk_tile+((i+3)%4), true);
+				if(m_Extra[i][0]) mMap.setTile(98, 5+i, joy_tile+(i%4), true);
+				if(m_Extra[i][1]) mMap.setTile(99, 5+i, bat_tile+((i+1)%4), true);
+				if(m_Extra[i][2]) mMap.setTile(100, 5+i, vac_tile+((i+2)%4), true);
+				if(m_Extra[i][3]) mMap.setTile(101, 5+i, wsk_tile+((i+3)%4), true);
 			}
 		}
 	}
@@ -125,11 +126,26 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 	bmp.rect.w = bmp.p_Bitmap->getWidth();
 	bmp.rect.h = bmp.p_Bitmap->getHeight();
 	m_Bitmaps.push_back(bmp);
+
+	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+
+	mpTextSfc = SDL_DisplayFormatAlpha(temp);
+	SDL_FreeSurface(temp);
+
 }
 
 void CHighScores::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+	// TODO: here we have to process input events
+
+	// Process Drawing related stuff
+	SDL_Surface *sfc = mpTextSfc.get();
+	CFont &Font = g_pGfxEngine->getFont(1);
+
+	mMap.animateAllTiles();
+
+	// Blit the background
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 	
 	// draw the Bitmaps
 	std::vector<stBitmap>::iterator it_bmp = m_Bitmaps.begin();
@@ -144,23 +160,24 @@ void CHighScores::process()
 		int x = (m_Episode == 3) ? 69 : 40;
 		int x2 = (m_Episode == 3) ? 255 : 202;
 		int y = (m_Episode == 2) ? 56 : 52;
-		g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[i],x,y+(i<<4), true);
-		g_pGfxEngine->getFont(0).drawFont(sfc, m_Score[i],x2-((m_Score[i].size())<<3),y+(i<<4), true);
+		Font.drawFont(sfc, m_Name[i], x, y+(i<<4), true);
+		Font.drawFont(sfc, m_Score[i], x2-((m_Score[i].size())<<3), y+(i<<4), true);
 	}
 	
 	// Here it must be split up into Episodes 1, 2 and 3.
 	if(m_Episode == 2)
 	{
 		for( Uint8 i=0 ; i<8 ; i++ )
-			g_pGfxEngine->getFont(0).drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
+			Font.drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
 	}
 	
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(sfc, NULL, NULL) );
+
 	(this->*mp_process)();
-	
-	m_Map.animateAllTiles();
+
 }
 
-void CHighScores::processShow()
+void CHighScores::processShowing()
 {
 	if(g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;
@@ -186,7 +203,7 @@ void CHighScores::processWriting()
 	{
 		// Save the Table and change to show mode, which can be closed by any other key
 		saveHighScoreTable();
-		mp_process = &CHighScores::processShow;
+		mp_process = &CHighScores::processShowing;
 	}
 	
 	
@@ -279,10 +296,10 @@ void CHighScores::writeEP1HighScore(int score, bool extra[4])
 		// Put the Tiles, of the parts that were collected
 		for( int i=0 ; i<8 ; i++ )
 		{
-			if(m_Extra[i][0]) m_Map.setTile(98,5+i,221, true);
-			if(m_Extra[i][1]) m_Map.setTile(99,5+i,237, true);
-			if(m_Extra[i][2]) m_Map.setTile(100,5+i,241, true);
-			if(m_Extra[i][3]) m_Map.setTile(101,5+i,245, true);
+			if(m_Extra[i][0]) mMap.setTile(98,5+i,221, true);
+			if(m_Extra[i][1]) mMap.setTile(99,5+i,237, true);
+			if(m_Extra[i][2]) mMap.setTile(100,5+i,241, true);
+			if(m_Extra[i][3]) mMap.setTile(101,5+i,245, true);
 		}
 	}
 }

@@ -18,7 +18,6 @@ namespace vorticon
 {
 
 CPassiveVort::CPassiveVort() :
-mp_Map(NULL),
 mp_Option(g_pBehaviorEngine->m_option),
 m_RestartVideo(false)
 {
@@ -26,7 +25,6 @@ m_RestartVideo(false)
 	mp_TitleScreen = NULL;
 	mp_PressAnyBox=NULL;
 	m_GoDemo = false;
-	m_hideobjects = false;
 	m_textsize = 0;
 }
 
@@ -35,26 +33,25 @@ bool CPassiveVort::init(char mode)
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	m_mode = mode;
 
-
 	if( m_mode == INTRO )
 	{
 		mp_IntroScreen = new CIntro();
-		mp_Map = new CMap;
-		CMapLoader MapLoader( mp_Map );
+		mpMap = new CMap;
+		CMapLoader MapLoader( mpMap );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
-		mp_Map->gotoPos( 64+5*320, 32); // Coordinates of star sky
-		mp_Map->drawAll();
+		mpMap->gotoPos( 64+5*320, 32); // Coordinates of star sky
+		mpMap->drawAll();
 		mp_IntroScreen->init();
-		mp_Map->changeTileArrayY(8, 15, 2, 560);
+		mpMap->changeTileArrayY(8, 15, 2, 560);
 	}
 	else if( m_mode == TITLE )
 	{
-		mp_Map = new CMap;
-		CMapLoader MapLoader( mp_Map );
+		mpMap = new CMap;
+		CMapLoader MapLoader( mpMap );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
-		mp_Map->gotoPos( 32, 32 ); // Coordinates of title screen
-		mp_Map->drawAll();
-		mp_TitleScreen = new CTitle(m_object, *mp_Map);
+		mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
+		mpMap->drawAll();
+		mp_TitleScreen = new CTitle(mObject, *mpMap );
 		mp_TitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
@@ -63,7 +60,6 @@ bool CPassiveVort::init(char mode)
 	}
 	else
 		return false;
-
 	return true;
 }
 
@@ -114,10 +110,6 @@ void CPassiveVort::process()
 		}
 	}*/
 
-
-	// Animate the tiles
-	mp_Map->animateAllTiles();
-
 	// If Menu is open show it!
 	/*if( mp_Menu )
 	{
@@ -150,11 +142,16 @@ void CPassiveVort::process()
 		}
 	}*/
 
+	// Process Drawing related stuff
+	// Animate the tiles
+	mpMap->animateAllTiles();
+
 	// Blit the background
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
+
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
-	if( m_mode == INTRO )
+	/*if( m_mode == INTRO )
 	{
 		// Intro code goes here!
 		mp_IntroScreen->process();
@@ -168,7 +165,7 @@ void CPassiveVort::process()
 	}
 	else if( m_mode == TITLE )
 	{
-		mp_TitleScreen->process();
+		mp_TitleScreen->process();*/
 
 		/*if( !mp_Menu )
 		{
@@ -181,16 +178,16 @@ void CPassiveVort::process()
 				return;
 			}
 		}*/
-	}
+	/*}
 	else if( m_mode == DEMO )
 	{
 		// TODO: Demo modes are processed here!
 		// TODO: Implement Demos here!
 		cleanup();
 		init(TITLE);
-	}
+	}*/
 
-	if(!m_hideobjects)
+	/*if(!m_hideobjects)
 	{
 		// Make the Objects do its jobs
 		std::vector<CObject*>::iterator i;
@@ -202,22 +199,23 @@ void CPassiveVort::process()
 
 	// If Menu is not open show "Press Any Key"
 	if(mp_PressAnyBox != NULL)
-		mp_PressAnyBox->process();
+		mp_PressAnyBox->process();*/
 
 }
 
 void CPassiveVort::cleanup()
 {
-	if(!m_object.empty())
+	/*if(!m_object.empty())
 	{
 		for(std::vector<CObject*>::iterator obj = m_object.begin() ; obj!=m_object.end() ; obj++)
 			SAFE_DELETE(*obj);
 		m_object.clear();
-	}
+	}*/
 
 	SAFE_DELETE(mp_IntroScreen);
 	SAFE_DELETE(mp_TitleScreen);
-	SAFE_DELETE(mp_Map);
+	SAFE_DELETE(mpMap);
 }
 
 }
+

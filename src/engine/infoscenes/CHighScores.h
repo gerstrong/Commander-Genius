@@ -11,6 +11,7 @@
 #include "../../common/CMap.h"
 #include "../../graphics/CBitmap.h"
 #include "CInfoScene.h"
+#include "SmartPointer.h"
 #include <string>
 #include <vector>
 
@@ -31,7 +32,7 @@ public:
 	void process();
 
 private:
-	CMap m_Map;
+	CMap mMap;
 
 	std::string		m_Name[16];
 	std::string		m_Score[8];
@@ -43,8 +44,9 @@ private:
 	char					m_Episode;
 	char					m_CurrentLetter;
 	std::string				m_DataDirectory;
-	std::string				m_Name2;
 	std::vector<stBitmap>	m_Bitmaps;
+
+	SmartPointer<SDL_Surface> mpTextSfc;
 
 	// This cycle will wait for the input of name and hit of enter
 	bool m_blink;
@@ -52,7 +54,7 @@ private:
 
 	void (CHighScores::*mp_process)();
 	
-	void processShow();
+	void processShowing();
 	void processWriting();
 
 	bool saveHighScoreTable();

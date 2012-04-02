@@ -7,8 +7,11 @@
 
 #include "CGameMain.h"
 #include "common/CBehaviorEngine.h"
+#include "common/Menu/CMenuController.h"
 #include "mode/CGamePassiveMode.h"
 #include "mode/CGamePlayMode.h"
+#include "engine/infoscenes/CHighScores.h"
+#include "sdl/CVideoDriver.h"
 
 void CGameMain::init()
 {
@@ -34,14 +37,36 @@ void CGameMain::process()
 		{
 			mpGameMode = new CGamePlayMode( p_PlayGame->m_Episode, p_PlayGame->m_Numplayers,
 					p_PlayGame->m_Difficulty, p_PlayGame->m_DataDirectory,
-					p_PlayGame->m_SavedGame, mShowFinale, p_PlayGame->m_startlevel);
+					p_PlayGame->m_SavedGame, p_PlayGame->m_startlevel);
 			mpGameMode->init();
 			EventContainer.pop_Event();
+			EventContainer.add( new CloseMenuEvent() );
 		}
+		else if( EventContainer.occurredEvent<StartHighscoresEvent>() )
+		{
+			mpInfoScene = new CHighScores;
+
+			EventContainer.pop_Event();
+			EventContainer.add( new CloseMenuEvent() );
+			return;
+		}
+
 
 	}
 
-	// Process the game mode object
-	mpGameMode->process();
+	if( !mpInfoScene.empty() )
+	{
+		mpInfoScene->process();
+		if( mpInfoScene->destroyed() )
+			mpInfoScene.tryDeleteData();
+
+	}
+	else
+	{
+		// Process the game mode object
+		mpGameMode->process();
+	}
+
+	// TODO: At this point some dialogs and menus should be drawn here!
 
 }

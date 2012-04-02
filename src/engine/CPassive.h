@@ -24,7 +24,8 @@
 #include <vector>
 
 
-class CPassive {
+class CPassive
+{
 public:
 	enum Modes{
 		INTRO, TITLE, DEMO, STARTGAME, SHUTDOWN

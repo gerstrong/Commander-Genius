@@ -27,8 +27,7 @@
 CGameControl::CGameControl(bool &firsttime) :
 m_firsttime(firsttime),
 m_startGame_no(-1),
-m_startLevel(-1),
-m_show_finale(false)
+m_startLevel(-1)
 {}
 
 ////
@@ -69,7 +68,6 @@ bool CGameControl::init(int argc, char *argv[])
 		argument = getArgument( argc, argv, "-finale" );
 		m_startGame_no = atoi(argument.c_str()+strlen("-finale"))-1;
 		m_startLevel = WM_MAP_NUM;
-		m_show_finale = true;
 	}
 
 	EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );

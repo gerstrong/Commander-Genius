@@ -44,7 +44,6 @@ protected:
 	bool &m_firsttime;
 	int m_startGame_no;
 	int m_startLevel;
-	bool m_show_finale;
 
 	CMenuController mMenuController;
 };

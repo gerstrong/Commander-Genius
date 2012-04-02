@@ -36,18 +36,17 @@ private:
 	CTitle *mp_TitleScreen;
 	CTextBox *mp_PressAnyBox;
 	CTilemap *mp_Tilemap;
-	CMap *mp_Map;
+	//SmartPointer<CMap> mpMap;
+	CMap *mpMap;
 	stOption *mp_Option;
 
 	SDL_Surface *mp_Scrollsurface;
 
-	std::vector<CObject*> m_object;
-
 	int m_textsize;
 	bool m_GoDemo;
-	bool m_hideobjects;
 	char *m_text;
 	bool m_RestartVideo;
+	std::vector<CObject*> mObject;
 };
 
 }

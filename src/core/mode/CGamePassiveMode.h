@@ -11,6 +11,7 @@
 #include "CGameMode.h"
 #include "engine/CPassive.h"
 #include "engine/infoscenes/CInfoScene.h"
+#include "common/CMap.h"
 #include "SmartPointer.h"
 
 class CGamePassiveMode : public CGameMode {
@@ -21,15 +22,14 @@ public:
 	void process();
 
 private:
-	SmartPointer<CPassive> mp_Passive;
-
-	SmartPointer<CInfoScene> mpInfoScene;
+	SmartPointer<CPassive> mpPassive;
 
 	const std::string m_DataDirectory;
 	const int m_Episode;
 	bool m_Endgame;
 	CSaveGameController m_SavedGame;
 	int m_Difficulty;
+
 };
 
 #endif /* CGAMEPASSIVEMODE_H_ */

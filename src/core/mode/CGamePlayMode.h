@@ -17,7 +17,7 @@
 class CGamePlayMode : public CGameMode {
 public:
 	CGamePlayMode( const int Episode, const int Numplayers,
-			const int Difficulty, const std::string& DataDirectory, CSaveGameController& SavedGame, bool& show_finale,
+			const int Difficulty, const std::string& DataDirectory, CSaveGameController& SavedGame,
 			const int startLevel = -1);
 
 	void init();
@@ -25,13 +25,18 @@ public:
 
 private:
 	int m_startLevel;
-	bool &m_show_finale;
 	int m_Episode;
 	Uint8 m_Numplayers;
 	Uint8 m_Difficulty;
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
 	SmartPointer<CPlayGame> mp_PlayGame;
+
+	bool mHideSprites;
+
+	std::vector<CObject*> mObject;
+	SmartPointer<CMap> mpMap;
+
 };
 
 #endif /* CGAMEPLAYMODE_H_ */

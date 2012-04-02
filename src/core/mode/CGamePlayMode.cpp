@@ -11,15 +11,15 @@
 #include "graphics/effects/CColorMerge.h"
 
 CGamePlayMode::CGamePlayMode(const int Episode, const int Numplayers,
-		const int Difficulty, const std::string& DataDirectory, CSaveGameController& SavedGame, bool& show_finale,
+		const int Difficulty, const std::string& DataDirectory, CSaveGameController& SavedGame,
 		const int startLevel) :
 m_startLevel(startLevel),
-m_show_finale(show_finale),
 m_Episode(Episode),
 m_Numplayers(Numplayers),
 m_Difficulty(Difficulty),
 m_DataDirectory(DataDirectory),
-m_SavedGame(SavedGame)
+m_SavedGame(SavedGame),
+mHideSprites(false)
 {}
 
 void CGamePlayMode::init()
@@ -46,11 +46,9 @@ void CGamePlayMode::init()
 			m_startLevel = WORLD_MAP_LEVEL_VORTICON;
 		mp_PlayGame = new CPlayGameVorticon( ExeFile, m_startLevel,
 											m_Numplayers, m_Difficulty,
-											m_show_finale,
 											m_SavedGame);
 	}
 
-	m_show_finale = false; // just show it once!!
 
 	if(m_SavedGame.getCommand() == CSaveGameController::LOAD)
 		ok &= mp_PlayGame->loadGameState();
@@ -95,4 +93,23 @@ void CGamePlayMode::process()
 	{
 		EventContainer.add( new GMQuit() );
 	}
+
+
+	// Process Drawing related stuff
+	// Animate the tiles
+	mpMap->animateAllTiles();
+
+	// Blit the background
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
+
+	if(!mHideSprites)
+	{
+		// Make the Objects do its jobs
+		std::vector<CObject*>::iterator it;
+		for( it=mObject.begin() ; it!=mObject.end() ; it++ )
+		{
+			(*it)->process();
+		}
+	}
+
 }
