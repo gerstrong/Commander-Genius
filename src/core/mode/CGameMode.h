@@ -69,7 +69,8 @@ struct StartHighscoresEvent : CEvent
 ///////
 // Base Class for the modes
 //////
-class CGameMode {
+class CGameMode
+{
 public:
 	CGameMode() {}
 

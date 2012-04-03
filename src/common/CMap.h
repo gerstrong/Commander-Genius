@@ -16,6 +16,7 @@
 #include "graphics/CTilemap.h"
 #include "fileio/TypeDefinitions.h"
 #include "CPlane.h"
+#include "engine/CEvent.h"
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME      256
@@ -25,7 +26,8 @@
 #define STC (CSF-TILE_S)
 
 
-class CMap {
+class CMap
+{
 public:
 	CMap();
 
@@ -126,5 +128,17 @@ private:
 	Uint16 m_Level;
 	std::string m_LevelName;
 };
+
+
+
+// CMap related Events
+/**
+ * \description	you might use this event in case you want to release the scrollbuffer and give another instance
+ * 				chance to use it.
+ * 				You should invoke this, when an instance with a CMap Object owned the Scrollbuffers
+ */
+struct ResetScrollSurface : CEvent
+{};
+
 
 #endif /* CMAP_H_ */

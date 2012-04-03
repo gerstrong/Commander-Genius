@@ -149,6 +149,19 @@ void CPassiveVort::process()
 	// Blit the background
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+
+	if(!EventContainer.empty())
+	{
+		if( EventContainer.occurredEvent<ResetScrollSurface>() )
+		{
+			g_pVideoDriver->setMapDelegation(*mpMap);
+			mpMap->drawAll();
+			EventContainer.pop_Event();
+			return;
+		}
+	}
+
 
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
 	/*if( m_mode == INTRO )

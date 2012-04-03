@@ -279,11 +279,11 @@ void CVideoDriver::setZoom(short value)
 
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
-// It might have when a level-map is loaded.
-void CVideoDriver::setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy)
+// it might have when a level-map is loaded.
+void CVideoDriver::setMapDelegation(CMap &map)
 {
-	mp_sbufferx = pbufx;
-	mp_sbuffery = pbufy;
+	mp_sbufferx = &map.m_scrollx_buf;
+	mp_sbuffery = &map.m_scrolly_buf;
 }
 void CVideoDriver::blitScrollSurface() // This is only for tiles
 									   // Therefore the name should be changed

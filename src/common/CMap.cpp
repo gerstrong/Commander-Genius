@@ -401,8 +401,8 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 }
 
 // draws all the map area. This is used for the title screen, when game starts and other passive scenes.
-// Don't use it, when the game is scrolling. Use redrawAt instead,
-// for the correct and fast update of tiles.
+// Don't use it, when the game is scrolling.
+// for the correct and fast update of tiles use redrawAt instead.
 void CMap::drawAll()
 {
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();

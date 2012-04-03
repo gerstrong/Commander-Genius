@@ -134,6 +134,17 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 
 }
 
+
+
+CHighScores::~CHighScores()
+{
+	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	EventContainer.add(new ResetScrollSurface);
+}
+
+
+
+
 void CHighScores::process()
 {
 	// TODO: here we have to process input events

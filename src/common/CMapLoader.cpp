@@ -182,7 +182,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	mp_map->m_maxscrolly = (mp_map->m_height<<4) - gamerect.h - 32;
 
 	// Set Scrollbuffer
-	g_pVideoDriver->setScrollBuffer(&mp_map->m_scrollx_buf, &mp_map->m_scrolly_buf);
+	g_pVideoDriver->setMapDelegation(*mp_map);
 
 	return true;
 }

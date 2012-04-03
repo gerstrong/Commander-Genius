@@ -72,7 +72,6 @@ void CGamePassiveMode::process()
 			EventContainer.add( new CloseMenuEvent() );
 			return;
 		}
-
 	}
 
 

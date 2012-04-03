@@ -27,7 +27,9 @@
 class CPassive
 {
 public:
-	enum Modes{
+
+	enum Modes
+	{
 		INTRO, TITLE, DEMO, STARTGAME, SHUTDOWN
 	};
 	

@@ -15,7 +15,8 @@
 #include <string>
 #include <vector>
 
-struct stBitmap{
+struct stBitmap
+{
 	CBitmap *p_Bitmap;
 	SDL_Rect rect;
 };
@@ -25,6 +26,8 @@ class CHighScores : public CInfoScene
 public:
 
 	CHighScores( const bool saving_mode = false );
+	virtual ~CHighScores();
+
 	void writeEP1HighScore(int score, bool extra[4]);
 	void writeEP2HighScore(int score, int cities_saved);
 	void writeHighScoreCommon(int score);

@@ -17,6 +17,7 @@
 #include "video/CVideoEngine.h"
 #include "video/DrawEvents.h"
 #include "engine/CEventContainer.h"
+#include "common/CMap.h"
 
 #ifdef USE_OPENGL
 	#include "sdl/video/COpenGL.h"
@@ -44,7 +45,7 @@ public:
 	void drawConsoleMessages();
 
 	void blitScrollSurface();
-	void setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy);
+	void setMapDelegation(CMap &map);
 
 	void collectSurfaces();
 	void clearSurfaces();

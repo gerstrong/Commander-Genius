@@ -14,7 +14,8 @@
 #include "common/CMap.h"
 #include "SmartPointer.h"
 
-class CGamePassiveMode : public CGameMode {
+class CGamePassiveMode : public CGameMode
+{
 public:
 	CGamePassiveMode(const std::string& DataDirectory, const int& Episode);
 
