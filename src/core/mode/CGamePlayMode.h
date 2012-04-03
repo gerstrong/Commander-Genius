@@ -31,12 +31,6 @@ private:
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
 	SmartPointer<CPlayGame> mp_PlayGame;
-
-	bool mHideSprites;
-
-	std::vector<CObject*> mObject;
-	SmartPointer<CMap> mpMap;
-
 };
 
 #endif /* CGAMEPLAYMODE_H_ */

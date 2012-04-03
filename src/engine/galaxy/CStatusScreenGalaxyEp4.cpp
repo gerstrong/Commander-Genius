@@ -20,7 +20,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	SDL_Rect EditRect;
 	drawBase(EditRect);
 
-	SDL_PixelFormat *pixelformat = mp_StatusSurface->format;
+	SDL_PixelFormat *pixelformat = mpStatusSurface->format;
 
 	CFont &Font = g_pGfxEngine->getFont(0);
 	/*Font.setBGColour(pixelformat, 0xAAAAAA);

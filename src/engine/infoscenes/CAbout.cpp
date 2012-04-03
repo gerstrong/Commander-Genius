@@ -16,7 +16,6 @@
 #include "fileio/ResourceMgmt.h"
 
 CAbout::CAbout(CExeFile &ExeFile, const std::string &type) :
-mp_LogoBMP(NULL),
 m_type(type)
 {
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
@@ -100,7 +99,7 @@ m_type(type)
 	else if(type == "CG")
 	{
 		std::string path = getResourceFilename("gfx/CGLogo.bmp", ExeFile.getDataDirectory(), true, true);
-		mp_LogoBMP = SDL_LoadBMP(GetFullFileName(path).c_str());
+		mpLogoBMP = SDL_LoadBMP(GetFullFileName(path).c_str());
 		
 		m_lines.push_back("Commander Genius is an interpreter");
 		m_lines.push_back("made with the goal of recreating");
@@ -132,10 +131,10 @@ m_type(type)
 	m_logo_rect.x = m_logo_rect.y = 0;
 	m_logo_rect.h = m_logo_rect.w = 0;
 	
-	if(mp_LogoBMP)
+	if(!mpLogoBMP.empty())
 	{
-		m_logo_rect.w = mp_LogoBMP->w;
-		m_logo_rect.h = mp_LogoBMP->h;
+		m_logo_rect.w = mpLogoBMP->w;
+		m_logo_rect.h = mpLogoBMP->h;
 		m_logo_rect.x = 160-m_logo_rect.w/2;
 		m_logo_rect.y = 22;
 	}
@@ -152,8 +151,8 @@ void CAbout::process()
 	}
 	else if(m_type == "CG")
 	{
-		if(mp_LogoBMP)
-			g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_LogoBMP, NULL,  &m_logo_rect ) );
+		if(!mpLogoBMP.empty())
+			g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpLogoBMP, NULL,  &m_logo_rect ) );
 	}
 
 	for(std::size_t i=0 ; i<m_lines.size() ; i++)
@@ -163,6 +162,3 @@ void CAbout::process()
 		m_destroy_me=true;
 }
 
-CAbout::~CAbout() {
-	if(mp_LogoBMP) SDL_FreeSurface(mp_LogoBMP);
-}

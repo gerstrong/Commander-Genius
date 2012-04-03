@@ -26,8 +26,6 @@ public:
 	bool isClosed() {	return m_closed;	}
 	void close() {	m_closing = true;	}
 
-	~CStatusScreen();
-
 private:
 
 	SDL_Surface* CreateStatusSfc();
@@ -40,7 +38,7 @@ private:
 
 	bool m_closing, m_closed;
 
-	SDL_Surface* mp_StatusSfc;
+	SmartPointer <SDL_Surface> mpStatusSfc;
 	SDL_Rect m_StatusRect;
 	const Uint8 &m_difficulty;
 };

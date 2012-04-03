@@ -108,7 +108,7 @@ private:
 	std::vector<CObject*> m_Object;
 	//CHighScores *mp_HighScores;
 	CHUD *mp_HUD;
-	SDL_Surface *mp_KeenLeftSfc;
+	SmartPointer<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;
 };
 #endif /* CPlayGameVorticon_H_ */

@@ -16,8 +16,7 @@
 CHUD::CHUD(unsigned long &score, signed char &lives, unsigned int &charges) :
 m_score(score),
 m_lives(lives),
-m_charges(charges),
-mp_Background(NULL)
+m_charges(charges)
 {
 	m_Rect.x = 4;
 	m_Rect.y = 2;
@@ -39,7 +38,7 @@ void CHUD::CreateBackground()
 	// Create a surface for that
 	SDL_Surface *temp;
 	int flags = 0;
-	mp_Background = CG_CreateRGBSurface( m_Rect );
+	mpBackground = CG_CreateRGBSurface( m_Rect );
 
 	SDL_Rect headsrcrect, headdstrect;
 	headsrcrect.x = 0;
@@ -50,8 +49,8 @@ void CHUD::CreateBackground()
 	headdstrect.y = m_Rect.y+11;
 
 	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
-	temp = SDL_ConvertSurface( KeenHeadSprite.getSDLSurface(), mp_Background->format, flags );
-	BlitSurfaceMerge( temp, &headsrcrect, mp_Background, &headdstrect );
+	temp = SDL_ConvertSurface( KeenHeadSprite.getSDLSurface(), mpBackground->format, flags );
+	BlitSurfaceMerge( temp, &headsrcrect, mpBackground.get(), &headdstrect );
 	SDL_FreeSurface(temp);
 
 	int sprite=0;
@@ -67,16 +66,15 @@ void CHUD::CreateBackground()
 	headdstrect.x = m_Rect.x+45-(headsrcrect.w/2);
 	headdstrect.y = m_Rect.y+19-(headsrcrect.h/2);
 
-	temp = SDL_ConvertSurface( KeenGunSprite.getSDLSurface(), mp_Background->format, flags );
-	BlitSurfaceMerge( temp, &headsrcrect, mp_Background, &headdstrect );
+	temp = SDL_ConvertSurface( KeenGunSprite.getSDLSurface(), mpBackground->format, flags );
+	BlitSurfaceMerge( temp, &headsrcrect, mpBackground.get(), &headdstrect );
 	SDL_FreeSurface(temp);
 
 
-	temp = SDL_DisplayFormatAlpha(mp_Background);
-	SDL_FreeSurface(mp_Background);
-	mp_Background = temp;
+	temp = SDL_DisplayFormatAlpha(mpBackground.get());
+	mpBackground = temp;
 
-	mp_HUDBlit = SDL_DisplayFormatAlpha(mp_Background);
+	mpHUDBlit = SDL_DisplayFormatAlpha(mpBackground.get());
 
 	// Draw the rounded borders
 	DrawCircle(0, 0, 80);
@@ -97,37 +95,37 @@ void CHUD::DrawCircle(int x, int y, int width)
 	outline.y = y;
 	outline.w = width-8;
 	outline.h = 12;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
+	SDL_FillRect(mpBackground.get(), &outline, SDL_MapRGBA(mpBackground->format, 0,0,0,255)); // Black
 	outline.x = x+2;
 	outline.y = y+1;
 	outline.w = width-4;
 	outline.h = 10;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
+	SDL_FillRect(mpBackground.get(), &outline, SDL_MapRGBA(mpBackground->format, 0,0,0,255)); // Black
 	outline.x = x+1;
 	outline.y = y+2;
 	outline.w = width-2;
 	outline.h = 8;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
+	SDL_FillRect(mpBackground.get(), &outline, SDL_MapRGBA(mpBackground->format, 0,0,0,255)); // Black
 	outline.x = x;
 	outline.y = y+4;
 	outline.w = width;
 	outline.h = 4;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
+	SDL_FillRect(mpBackground.get(), &outline, SDL_MapRGBA(mpBackground->format, 0,0,0,255)); // Black
 	text.x = x+4;
 	text.y = y+1;
 	text.w = width-8;
 	text.h = 10;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // Background colour
+	SDL_FillRect(mpBackground.get(), &text, SDL_MapRGBA(mpBackground->format, r,g,b,255)); // Background colour
 	text.x = x+2;
 	text.y = y+2;
 	text.w = width-4;
 	text.h = 8;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // Background colour
+	SDL_FillRect(mpBackground.get(), &text, SDL_MapRGBA(mpBackground->format, r,g,b,255)); // Background colour
 	text.x = x+1;
 	text.y = y+4;
 	text.w = width-2;
 	text.h = 4;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // Background colour
+	SDL_FillRect(mpBackground.get(), &text, SDL_MapRGBA(mpBackground->format, r,g,b,255)); // Background colour
 }
 
 /**
@@ -168,24 +166,24 @@ void CHUD::renderVorticon()
 	charges = (m_charges<99) ? m_charges : 99;
 
 	// Draw the background
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_Background, NULL, &m_Rect ) );
-	SDL_BlitSurface(mp_Background, NULL, mp_HUDBlit, NULL );
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpBackground, NULL, &m_Rect ) );
+	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 	
 	CFont &Font = g_pGfxEngine->getFont(1);
 	//Font.setFGColour(blitsurface->format, 0x000000);
 	// Draw the score
-	Font.drawFont(mp_HUDBlit, getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);
+	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);
 
 	// Draw the lives
-	Font.drawFont(mp_HUDBlit, getRightAlignedString(itoa(lives),2), 15+m_Rect.x, 15+m_Rect.y);
+	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15+m_Rect.x, 15+m_Rect.y);
 
 	// Draw the charges
-	Font.drawFont(mp_HUDBlit, getRightAlignedString(itoa(charges),2), 56+m_Rect.x, 15+m_Rect.y);
+	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(charges),2), 56+m_Rect.x, 15+m_Rect.y);
 
 	//Font.setFGColour(blitsurface->format, 0x0);
 
 	// Draw the background
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_HUDBlit, NULL, &m_Rect ) );
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
 }
 
 /**
@@ -201,8 +199,3 @@ void CHUD::render()
 		renderGalaxy();
 }
 
-
-CHUD::~CHUD() {
-	if(mp_Background) SDL_FreeSurface(mp_Background);
-	if(mp_HUDBlit) SDL_FreeSurface(mp_HUDBlit);
-}

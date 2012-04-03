@@ -14,11 +14,11 @@
 #include "../../graphics/CBitmap.h"
 #include "../../common/CMap.h"
 #include "../../fileio/CExeFile.h"
+#include "SmartPointer.h"
 
 class CAbout : public CInfoScene {
 public:
 	CAbout(CExeFile &ExeFile, const std::string &type);
-	virtual ~CAbout();
 	
 	void process();
 	
@@ -28,7 +28,7 @@ private:
 	
 	CMap *mp_Map;
 	SDL_Surface *mp_Scrollsurface;
-	SDL_Surface *mp_LogoBMP;
+	SmartPointer <SDL_Surface> mpLogoBMP;
 	SDL_Rect m_logo_rect;
 	std::vector<std::string> m_lines;
 	std::string m_type;

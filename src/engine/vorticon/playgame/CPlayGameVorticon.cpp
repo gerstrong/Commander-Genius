@@ -25,8 +25,7 @@ CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  char numplayers, Uint8& difficulty, CSaveGameController &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty),
 mp_ObjectAI(NULL),
-mp_HUD(NULL),
-mp_KeenLeftSfc(NULL)
+mp_HUD(NULL)
 {
 	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
 	mp_Finale = NULL;
@@ -67,9 +66,6 @@ mp_KeenLeftSfc(NULL)
 void CPlayGameVorticon::setupPlayers()
 {
 	m_showKeensLeft=false;
-	if(mp_KeenLeftSfc)
-		SDL_FreeSurface(mp_KeenLeftSfc);
-	mp_KeenLeftSfc = NULL;
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player!=m_Player.end() ; it_player++ )
 	for (int i=0 ; i<m_NumPlayers ; i++)
@@ -563,7 +559,8 @@ void CPlayGameVorticon::cleanup()
 	m_Object.clear();
 }
 
-CPlayGameVorticon::~CPlayGameVorticon() {
+CPlayGameVorticon::~CPlayGameVorticon()
+{
 	m_Player.clear();
 	if(mp_Finale) delete mp_Finale;
 	mp_Finale = NULL;

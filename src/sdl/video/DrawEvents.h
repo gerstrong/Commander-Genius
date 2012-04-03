@@ -62,13 +62,27 @@ struct DrawSpriteTask : CEvent
 
 struct BlitSurfaceTask : CEvent
 {
-	SDL_Surface *mSfcToBlit;
-	SDL_Rect *mSrcRect;
-	SDL_Rect *mDstRect;
-	BlitSurfaceTask( SDL_Surface *sfcToBlit,
+	SmartPointer<SDL_Surface> mSfcToBlit;
+	SmartPointer<SDL_Rect> mSrcRect;
+	SmartPointer<SDL_Rect> mDstRect;
+	BlitSurfaceTask( SmartPointer<SDL_Surface> sfcToBlit,
 					 SDL_Rect *srcRect,
 					 SDL_Rect *dstRect ) :
-		mSfcToBlit(sfcToBlit), mSrcRect(srcRect), mDstRect(dstRect)  {}
+	mSfcToBlit(sfcToBlit)
+	{
+		if(srcRect) // because SDL can have NULL-Pointers in the Rect sources
+		{			// Copy these objects, because they might vanish!
+			SDL_Rect *src = new SDL_Rect;
+			*src = *srcRect;
+			mSrcRect = src;
+		}
+		if(dstRect)
+		{
+			SDL_Rect *dst = new SDL_Rect;
+			*dst = *dstRect;
+			mDstRect = dst;
+		}
+	}
 };
 
 

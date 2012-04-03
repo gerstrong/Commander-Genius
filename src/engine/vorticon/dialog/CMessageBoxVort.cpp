@@ -52,7 +52,7 @@ m_twirlframe(0)
 
 	SDL_Surface *tempsfc = SDL_CreateRGBSurface( SDL_SWSURFACE, m_boxrect.w, m_boxrect.h, 32, 0, 0, 0, 0 );
 	const SDL_Surface *blit = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
-	MsgBoxSfc = SDL_ConvertSurface( tempsfc, blit->format, blit->flags );
+	mMsgBoxSfc = SDL_ConvertSurface( tempsfc, blit->format, blit->flags );
 	SDL_FreeSurface(tempsfc);
 
 
@@ -88,16 +88,16 @@ void CMessageBoxVort::process()
 	}
 
 	// Draw the empty Dialog Box
-	mp_DlgFrame->draw(MsgBoxSfc);
+	mp_DlgFrame->draw(mMsgBoxSfc.get());
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
-		g_pGfxEngine->getFont(1).drawFont(MsgBoxSfc, m_Lines[i], 8, ((i+1)*8) );
+		g_pGfxEngine->getFont(1).drawFont(mMsgBoxSfc.get(), m_Lines[i], 8, ((i+1)*8) );
 
 	// Draw additional tiles on the surface if any where defined
 	for(size_t i=0 ; i<m_Tiles.size() ; i++)
 	{
-		g_pGfxEngine->getTileMap(1).drawTile(MsgBoxSfc, m_boxrect.x+m_Tiles[i].x,
+		g_pGfxEngine->getTileMap(1).drawTile(mMsgBoxSfc.get(), m_boxrect.x+m_Tiles[i].x,
 									m_boxrect.y+m_Tiles[i].y, m_Tiles[i].tile);
 	}
 
@@ -113,18 +113,10 @@ void CMessageBoxVort::process()
 				m_twirlframe++;
 		}
 		else m_twirltimer++;
-		g_pGfxEngine->getCursor()->draw( MsgBoxSfc, m_twirlframe,
+		g_pGfxEngine->getCursor()->draw( mMsgBoxSfc.get(), m_twirlframe,
 				mp_DlgFrame->m_x+(mp_DlgFrame->m_w-16),
 				mp_DlgFrame->m_y+(mp_DlgFrame->m_h-16));
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( MsgBoxSfc, NULL, &m_boxrect ) );
-}
-
-CMessageBoxVort::~CMessageBoxVort()
-{
-	if(MsgBoxSfc)
-		SDL_FreeSurface(MsgBoxSfc);
-
-	g_pVideoDriver->mDrawTasks.clear();
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mMsgBoxSfc, NULL, &m_boxrect ) );
 }

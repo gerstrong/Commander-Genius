@@ -40,7 +40,7 @@ private:
 
 	std::list<CMessageBoxVort*> mp_textbox_list;
 	std::vector<bitmap_structure> m_BitmapVector;
-	SDL_Surface *mp_SceneSurface;
+	SmartPointer<SDL_Surface> mpSceneSurface;
 	CMessageBoxVort *mp_current_tb;
 	bool m_mustclose;
 	Uint8 m_count;

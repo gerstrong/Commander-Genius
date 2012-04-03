@@ -467,7 +467,7 @@ void CDialog::draw()
 	// This will make the font shading effect
 	if(m_alpha < 230)
 	{
-		SDL_SetAlpha(mDialogSfc, SDL_SRCALPHA, m_alpha );
+		SDL_SetAlpha(mDialogSfc.get(), SDL_SRCALPHA, m_alpha );
 		m_alpha+=20;
 	}
 	
@@ -481,19 +481,19 @@ void CDialog::draw()
 	// Render the empty Dialog frame if any
 	if(mp_Frame)
 	{
-		mp_Frame->draw(mDialogSfc);
+		mp_Frame->draw(mDialogSfc.get());
 
 		// Draw the to icon up or down accordingly
 		if( m_scroll>0 ) // Up Arrow
 		{
-			Font.drawCharacter(mDialogSfc, 15,
+			Font.drawCharacter(mDialogSfc.get(), 15,
 					mp_Frame->m_w-16,
 					8);
 		}
 		if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
 				( m_scroll+m_h-2 != m_dlgobject.size() )) // Down Arrow
 		{
-			Font.drawCharacter(mDialogSfc , 19,
+			Font.drawCharacter(mDialogSfc.get() , 19,
 					mp_Frame->m_w-16,
 					mp_Frame->m_h-16);
 		}
@@ -509,7 +509,7 @@ void CDialog::draw()
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
 		m_dlgobject[i]->setSelection( i==m_selected_ID ? true : false);
-		m_dlgobject[i]->render(mDialogSfc, m_scroll, false );
+		m_dlgobject[i]->render(mDialogSfc.get(), m_scroll, false );
 	}
 
 	//	Font.setFGColour(mDialogSfc->format, 0x0); // Set black letter color for the other elements
@@ -517,11 +517,11 @@ void CDialog::draw()
 	if(m_inputmode == INPUT_MODE_COUNTER)
 	{
 		if(m_int>m_min)
-			Font.drawCharacter(mDialogSfc, 21,
+			Font.drawCharacter(mDialogSfc.get(), 21,
 							   16,
 							   0);
 		if(m_int<m_max)
-			Font.drawCharacter(mDialogSfc, 17,
+			Font.drawCharacter(mDialogSfc.get(), 17,
 							   16+m_dlgobject[m_selected_ID]->m_Option->m_text.length()*8,
 							   0);
 	}
@@ -587,7 +587,7 @@ void CDialog::drawTwirl()
 		
 	}
 	
-	g_pGfxEngine->getCursor()->draw( mDialogSfc, m_twirl.frame,
+	g_pGfxEngine->getCursor()->draw( mDialogSfc.get(), m_twirl.frame,
 									m_dlgobject[m_selected_ID]->m_x,
 									m_twirl.posy );
 
@@ -610,5 +610,4 @@ CDialog::~CDialog(){
 
 
 	if(mp_Frame) delete mp_Frame;
-	if(mDialogSfc) SDL_FreeSurface(mDialogSfc);
 }

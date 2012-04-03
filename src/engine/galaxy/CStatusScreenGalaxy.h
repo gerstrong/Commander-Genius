@@ -11,13 +11,13 @@
 #define CSTATUSSCREENGALAXY_H_
 
 #include <SDL.h>
-#include "ItemsGalaxy.h"
 #include <string>
+#include "ItemsGalaxy.h"
+#include "SmartPointer.h"
 
 class CStatusScreenGalaxy {
 public:
 	CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName);
-	~CStatusScreenGalaxy();
 
 	// This will generate the status screen. It must be derived by other classes, depending on the Episode
 	virtual void GenerateStatus() = 0;
@@ -28,13 +28,13 @@ public:
 
 	// return the pointer to the allocated status screen surface
 	SDL_Surface *getStatusSfc()
-	{	return	mp_StatusSurface;	}
+	{	return	mpStatusSurface.get();	}
 
 	// Draw the status
 	void draw();
 
 	bool m_showstatus;
-	SDL_Surface *mp_StatusSurface;
+	SmartPointer <SDL_Surface> mpStatusSurface;
 	const stItemGalaxy& m_Item;
 	const std::string &m_LevelName;
 };

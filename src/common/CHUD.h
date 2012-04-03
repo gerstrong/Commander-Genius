@@ -10,9 +10,10 @@
  */
 
 #include <SDL.h>
+#include <string>
 #include "Playerdefines.h"
 #include "engine/spritedefines.h"
-#include <string>
+#include "SmartPointer.h"
 
 #ifndef CHUD_H_
 #define CHUD_H_
@@ -22,8 +23,6 @@ public:
 	CHUD(unsigned long &score, signed char &lives, unsigned int &charges);
 
 	void render();
-
-	virtual ~CHUD();
 
 private:
 
@@ -38,8 +37,8 @@ private:
 	signed char &m_lives;
 	unsigned int &m_charges;
 
-	SDL_Surface *mp_Background;
-	SDL_Surface *mp_HUDBlit;
+	SmartPointer <SDL_Surface> mpBackground;
+	SmartPointer <SDL_Surface> mpHUDBlit;
 };
 
 #endif /* CHUD_H_ */

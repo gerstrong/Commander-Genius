@@ -11,6 +11,7 @@
 #include <vector>
 #include <SDL.h>
 #include "CDlgObject.h"
+#include "SmartPointer.h"
 
 // INPUT_MODE_NOTHING 		== do nothing
 // INPUT_MODE_TEXT 			== text input
@@ -81,9 +82,10 @@ private:
 	CDlgFrame *mp_Frame;
 	Uint8 m_alpha;
 	Uint8 m_Font_ID;
-	SDL_Surface *mDialogSfc;
+	SmartPointer <SDL_Surface> mDialogSfc;
 
-	struct{
+	struct
+	{
 		Uint8  frame;
 		Uint8  timer;
 		Uint16 posy;

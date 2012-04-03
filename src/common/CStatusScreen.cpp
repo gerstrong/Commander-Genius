@@ -27,7 +27,6 @@ CStatusScreen::CStatusScreen
  m_ankhtime(ankhtime),
  m_closing(false),
  m_closed(false),
- mp_StatusSfc(NULL),
  m_difficulty(difficulty)
 {
 	m_episode = episode;
@@ -57,7 +56,7 @@ void CStatusScreen::draw()
 
 	if(!m_closed)
 	{
-		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_StatusSfc, NULL, &m_StatusRect ) );
+		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpStatusSfc, NULL, &m_StatusRect ) );
 	}
 }
 
@@ -444,10 +443,4 @@ void CStatusScreen::createInventorySfcEp3()
 
 	mp_StatusSfc = SDL_DisplayFormat(p_surface);
 	SDL_FreeSurface(p_surface);*/
-}
-
-CStatusScreen::~CStatusScreen()
-{
-	if(mp_StatusSfc)
-		SDL_FreeSurface(mp_StatusSfc);
 }

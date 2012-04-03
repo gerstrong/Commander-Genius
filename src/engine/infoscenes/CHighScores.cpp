@@ -182,7 +182,7 @@ void CHighScores::process()
 			Font.drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
 	}
 	
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(sfc, NULL, NULL) );
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
 
 	(this->*mp_process)();
 

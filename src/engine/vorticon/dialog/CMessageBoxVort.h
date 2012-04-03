@@ -9,12 +9,11 @@
 #define CMESSAGEBOXVORT_H_
 
 #include "dialog/CMessageBox.h"
+#include "SmartPointer.h"
 
 class CMessageBoxVort : public CMessageBox {
 public:
 	CMessageBoxVort(const std::string& Text, bool lower = false, bool keymsg = false, bool leftbound = false);
-
-	virtual ~CMessageBoxVort();
 
 	/**
 	 * \brief This will add an extra tile to the message box. Mostly used by the dialog "Ship missing" in Keen 1
@@ -32,7 +31,7 @@ private:
 	Uint8 m_twirltimer;
 	Uint8 m_twirlframe;
 
-	SDL_Surface *MsgBoxSfc;
+	SmartPointer <SDL_Surface> mMsgBoxSfc;
 };
 
 #endif /* CMESSAGEBOXVORT_H_ */

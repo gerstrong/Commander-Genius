@@ -13,7 +13,6 @@
 
 CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName) :
 m_showstatus(false),
-mp_StatusSurface(NULL),
 m_Item(Item),
 m_LevelName(LevelName)
 {}
@@ -38,9 +37,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
     #endif
 
    	const SDL_Rect DestRect = g_pVideoDriver->getGameResolution().SDLRect();
-   	if(mp_StatusSurface)
-   		SDL_FreeSurface(mp_StatusSurface);
-   	mp_StatusSurface = SDL_CreateRGBSurface( flags, DestRect.w, DestRect.h, 32, rmask, gmask, bmask, amask);
+   	mpStatusSurface = SDL_CreateRGBSurface( flags, DestRect.w, DestRect.h, 32, rmask, gmask, bmask, amask);
 
 
 	/// Draw the required bitmaps and backgrounds
@@ -52,8 +49,8 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	CBitmap &SupportBmp = g_pGfxEngine->getMaskedBitmap(2);
 	SDL_Rect SupportRect = SupportBmp.getRect();
 	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0;
-	temp = SDL_ConvertSurface( SupportBmp.getSDLSurface(), mp_StatusSurface->format, flags );
-	BlitSurfaceMerge( temp, &SupportRect, mp_StatusSurface, &Dest );
+	temp = SDL_ConvertSurface( SupportBmp.getSDLSurface(), mpStatusSurface->format, flags );
+	BlitSurfaceMerge( temp, &SupportRect, mpStatusSurface.get(), &Dest );
 	SDL_FreeSurface(temp);
 
 	// Draw the gray surface
@@ -62,46 +59,46 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	BackRect.h = 152;
 	BackRect.x = (DestRect.w-BackRect.w)/2;
 	BackRect.y = SupportRect.h;
-	SDL_FillRect( mp_StatusSurface, &BackRect, 0xFFAAAAAA); //gray
+	SDL_FillRect( mpStatusSurface.get(), &BackRect, 0xFFAAAAAA); //gray
 
 	// Draw the cables Bitmap
 	CBitmap &Cables_Bitmap = g_pGfxEngine->getMaskedBitmap(1);
 	SDL_Rect CableRect = Cables_Bitmap.getRect();
 	Dest.x = BackRect.x - CableRect.w;	Dest.y = 0;
-	temp = SDL_ConvertSurface( Cables_Bitmap.getSDLSurface(), mp_StatusSurface->format, flags );
-	BlitSurfaceMerge( temp, &CableRect, mp_StatusSurface, &Dest );
+	temp = SDL_ConvertSurface( Cables_Bitmap.getSDLSurface(), mpStatusSurface->format, flags );
+	BlitSurfaceMerge( temp, &CableRect, mpStatusSurface.get(), &Dest );
 	SDL_FreeSurface(temp);
 
 	// Now draw the borders
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
 
 	// Upper Left corner
-	Tilemap.drawTile(mp_StatusSurface, BackRect.x, BackRect.y, 54);
+	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x, BackRect.y, 54);
 
 	// Upper Part
 	for(int c=1 ; c<(BackRect.w/8)-1 ; c++)
-		Tilemap.drawTile(mp_StatusSurface, BackRect.x+c*8, BackRect.y, 55);
+		Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+c*8, BackRect.y, 55);
 
 	// Upper Right Part
-	Tilemap.drawTile(mp_StatusSurface, BackRect.x+BackRect.w-8, BackRect.y, 56);
+	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+BackRect.w-8, BackRect.y, 56);
 
 	// Left Part
 	for(int c=1 ; c<(BackRect.h/8)-1 ; c++)
-		Tilemap.drawTile(mp_StatusSurface, BackRect.x, BackRect.y+c*8, 57);
+		Tilemap.drawTile(mpStatusSurface.get(), BackRect.x, BackRect.y+c*8, 57);
 
 	// Right Part
 	for(int c=1 ; c<(BackRect.h/8)-1 ; c++)
-		Tilemap.drawTile(mp_StatusSurface, BackRect.x+BackRect.w-8, BackRect.y+c*8, 59);
+		Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+BackRect.w-8, BackRect.y+c*8, 59);
 
 	// Lower Left Part
-	Tilemap.drawTile(mp_StatusSurface, BackRect.x, BackRect.y+BackRect.h-8, 60);
+	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x, BackRect.y+BackRect.h-8, 60);
 
 	// Lower Part
 	for(int c=1 ; c<(BackRect.w/8)-1 ; c++)
-		Tilemap.drawTile(mp_StatusSurface, BackRect.x+c*8, BackRect.y+BackRect.h-8, 61);
+		Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+c*8, BackRect.y+BackRect.h-8, 61);
 
 	// Lower Right Part
-	Tilemap.drawTile(mp_StatusSurface, BackRect.x+BackRect.w-8, BackRect.y+BackRect.h-8, 62);
+	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x+BackRect.w-8, BackRect.y+BackRect.h-8, 62);
 
 	EditRect.x = BackRect.x+16;
 	EditRect.y = BackRect.y+12;
@@ -111,10 +108,5 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 void CStatusScreenGalaxy::draw()
 {
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_StatusSurface, NULL, NULL ) );
-}
-
-CStatusScreenGalaxy::~CStatusScreenGalaxy() {
-	if(mp_StatusSurface)
-		SDL_FreeSurface(mp_StatusSurface);
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpStatusSurface, NULL, NULL ) );
 }

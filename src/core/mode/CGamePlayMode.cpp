@@ -18,8 +18,7 @@ m_Episode(Episode),
 m_Numplayers(Numplayers),
 m_Difficulty(Difficulty),
 m_DataDirectory(DataDirectory),
-m_SavedGame(SavedGame),
-mHideSprites(false)
+m_SavedGame(SavedGame)
 {}
 
 void CGamePlayMode::init()
@@ -97,7 +96,7 @@ void CGamePlayMode::process()
 
 	// Process Drawing related stuff
 	// Animate the tiles
-	mpMap->animateAllTiles();
+	/*mpMap->animateAllTiles();
 
 	// Blit the background
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
@@ -110,6 +109,6 @@ void CGamePlayMode::process()
 		{
 			(*it)->process();
 		}
-	}
+	}*/
 
 }

@@ -496,10 +496,10 @@ void CVideoDriver::pollDrawingTasks()
 		else if( BlitSurfaceTask *blitSurfaceTask =
 					mDrawTasks.occurredEvent<BlitSurfaceTask>() )
 		{
-			SDL_BlitSurface( blitSurfaceTask->mSfcToBlit,
-							 blitSurfaceTask->mSrcRect,
+			SDL_BlitSurface( blitSurfaceTask->mSfcToBlit.get(),
+							 blitSurfaceTask->mSrcRect.get(),
 							 getBlitSurface(),
-							 blitSurfaceTask->mDstRect );
+							 blitSurfaceTask->mDstRect.get() );
 		}
 
 		// If none of the Events fit here, please warn this incident

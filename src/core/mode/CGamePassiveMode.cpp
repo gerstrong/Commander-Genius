@@ -69,7 +69,6 @@ void CGamePassiveMode::process()
 			EventContainer.pop_Event();
 
 			EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory, SavedGame ) );
-			EventContainer.add( new CloseMenuEvent() );
 			return;
 		}
 	}

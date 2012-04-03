@@ -12,7 +12,6 @@
 #include "graphics/CGfxEngine.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
-mp_SceneSurface(NULL),
 mp_current_tb(NULL),
 m_mustclose(false),
 m_count(0),
@@ -21,10 +20,10 @@ m_timer(0)
 	const SDL_Rect resrect =  g_pVideoDriver->getGameResolution().SDLRect();
 	const Uint32 flags = g_pVideoDriver->getBlitSurface()->flags;
 
-	mp_SceneSurface = SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0);
-	SDL_SetColors( mp_SceneSurface, g_pGfxEngine->Palette.m_Palette, 0, 255);
-	if(finale_draw( mp_SceneSurface, scene_file, game_path))
-		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_SceneSurface, NULL,  NULL ) );
+	mpSceneSurface = SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0);
+	SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
+	if(finale_draw( mpSceneSurface.get(), scene_file, game_path))
+		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSceneSurface, NULL,  NULL ) );
 
 	else
 		m_mustclose = true;
@@ -98,7 +97,8 @@ void CFinaleStaticScene::process()
 	}
 }
 
-CFinaleStaticScene::~CFinaleStaticScene() {
+CFinaleStaticScene::~CFinaleStaticScene()
+{
 	CMessageBoxVort *p_textbox;
 	while(!mp_textbox_list.empty())
 	{
@@ -107,7 +107,4 @@ CFinaleStaticScene::~CFinaleStaticScene() {
 		mp_textbox_list.pop_front();
 	}
 
-	if(mp_SceneSurface)
-		SDL_FreeSurface(mp_SceneSurface);
-	mp_SceneSurface = NULL;
 }
