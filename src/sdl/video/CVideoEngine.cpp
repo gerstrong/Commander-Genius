@@ -9,14 +9,14 @@
 #include "CVideoEngine.h"
 #include "CLogFile.h"
 
-CVideoEngine::CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
+CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
 BlitSurface(NULL),
 FilteredSurface(NULL),
 ScrollSurface(NULL),       // 512x512 scroll buffer
 FXSurface(NULL),
 m_VidConfig(VidConfig),
-mp_sbufferx(p_sbufferx),
-mp_sbuffery(p_sbuffery),
+mSbufferx(0),
+mSbuffery(0),
 screen(NULL),
 m_Mode(0)
 {}
@@ -104,8 +104,8 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 
 	dstrect.x = 0; dstrect.y = 0;
 
-	srcrect.x =	sbufferx = *mp_sbufferx;
-	srcrect.y = sbuffery = *mp_sbuffery;
+	srcrect.x =	sbufferx = mSbufferx;
+	srcrect.y = sbuffery = mSbuffery;
 
 	dstrect.w = (Gamerect.w>sbufferx) ? Gamerect.w-sbufferx : Gamerect.w ;
 	dstrect.h = (Gamerect.h>sbuffery) ? Gamerect.h-sbuffery : Gamerect.h ;

@@ -22,7 +22,7 @@ class CVideoEngine
 {
 public:
 
-	CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
+	CVideoEngine(const CVidConfig& VidConfig);
 
 	virtual bool init();
 
@@ -44,6 +44,18 @@ public:
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 	SDL_Surface *getFXSurface() { return FXSurface; }
 
+	void resetScrollbuffer()
+	{
+		mSbufferx = 0;
+		mSbuffery = 0;
+	}
+
+	inline void UpdateScrollBufX(const Sint16 SBufferX)
+	{		mSbufferx = SBufferX&511;	}
+
+	inline void UpdateScrollBufY(const Sint16 SBufferY)
+	{		mSbuffery = SBufferY&511;	}
+
 protected:
 
 	SDL_Surface *BlitSurface;
@@ -55,8 +67,8 @@ protected:
 
 	const CVidConfig &m_VidConfig;
 
-	Sint16 *&mp_sbufferx;
-	Sint16 *&mp_sbuffery;
+	Sint16 mSbufferx;
+	Sint16 mSbuffery;
 
 	SDL_Surface *screen;                // the actual video memory/window
 

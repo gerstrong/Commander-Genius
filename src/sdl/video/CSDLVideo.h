@@ -12,9 +12,10 @@
 
 #include "sdl/video/CVideoEngine.h"
 
-class CSDLVideo : public CVideoEngine {
+class CSDLVideo : public CVideoEngine
+{
 public:
-	CSDLVideo(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
+	CSDLVideo(const CVidConfig& VidConfig);
 
 	bool resizeDisplayScreen(const CRect<Uint16>& newDim);
 	bool createSurfaces();

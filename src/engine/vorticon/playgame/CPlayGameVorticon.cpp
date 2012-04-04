@@ -170,63 +170,49 @@ void CPlayGameVorticon::process()
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
 
-	/*if(mp_HighScores) // Are we requesting Highscores
+
+	if( !m_paused && m_MessageBoxes.empty() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
-		mp_HighScores->process();
-
-		// Blit the background
-		g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-
-		if(mp_HighScores->destroyed())
+		if (!mp_Finale) // Hasn't the game yet been finished?
 		{
-			SAFE_DELETE(mp_HighScores);
-			m_endgame = true;
-		}
-	}*/
-	else // No, we are in the middle of the game
-	{
-		if( !m_paused && m_MessageBoxes.empty() ) // Game is not paused, no messages have to be shown and no menu is open
-		{
-			if (!mp_Finale) // Hasn't the game yet been finished?
+			// Perform AIs
+			mp_ObjectAI->process();
+
+			/// The following functions must be worldmap dependent
+			if( m_Level == WORLD_MAP_LEVEL_VORTICON )
+				processOnWorldMap();
+			else
+				processInLevel();
+
+			// Does one of the players need to pause the game?
+			for( int i=0 ; i<m_NumPlayers ; i++ )
 			{
-				// Perform AIs
-				mp_ObjectAI->process();
+				// Did he open the status screen?
+				if(m_Player[i].m_showStatusScreen)
+					m_paused = true; // this is processed in processPauseDialogs!
 
-				/// The following functions must be worldmap dependent
-				if( m_Level == WORLD_MAP_LEVEL_VORTICON )
-					processOnWorldMap();
-				else
-					processInLevel();
-
-				// Does one of the players need to pause the game?
-				for( int i=0 ; i<m_NumPlayers ; i++ )
-				{
-					// Did he open the status screen?
-					if(m_Player[i].m_showStatusScreen)
-						m_paused = true; // this is processed in processPauseDialogs!
-
-					if(!m_Player[0].pdie)
-						m_Player[0].processCamera();
-				}
-			}
-			else // In this case the Game has been finished, goto to the cutscenes
-			{
-				mp_Finale->process();
-
-				if(mp_Finale->getHasFinished())
-				{
-					SAFE_DELETE(mp_Finale);
-
-					if(!m_gameover)
-					{
-						//mp_HighScores = new CHighScores(true);
-						collectHighScoreInfo();
-					}
-				}
-
-				m_Player[0].processEvents();
+				if(!m_Player[0].pdie)
+					m_Player[0].processCamera();
 			}
 		}
+		else // In this case the Game has been finished, goto to the cutscenes
+		{
+			mp_Finale->process();
+
+			if(mp_Finale->getHasFinished())
+			{
+				SAFE_DELETE(mp_Finale);
+
+				if(!m_gameover)
+				{
+					//mp_HighScores = new CHighScores(true);
+					collectHighScoreInfo();
+				}
+			}
+
+			m_Player[0].processEvents();
+		}
+
 
 		// Draw all the Stuff here!
 		drawAllElements();
@@ -545,6 +531,19 @@ void CPlayGameVorticon::drawAllElements()
 		processPauseDialogs();
 	}
 
+
+	// Process Related Events.
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+
+	if(!EventContainer.empty())
+	{
+		if( EventContainer.occurredEvent<ResetScrollSurface>() )
+		{
+			g_pVideoDriver->updateScrollBuffer(m_Map);
+			EventContainer.pop_Event();
+			return;
+		}
+	}
 
 }
 ////

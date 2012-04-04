@@ -12,8 +12,8 @@
 #include "graphics/CGfxEngine.h"
 #include "graphics/PerSurfaceAlpha.h"
 
-CSDLVideo::CSDLVideo(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
-CVideoEngine(VidConfig, p_sbufferx, p_sbuffery)
+CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :
+CVideoEngine(VidConfig)
 {}
 
 bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)

@@ -93,22 +93,4 @@ void CGamePlayMode::process()
 		EventContainer.add( new GMQuit() );
 	}
 
-
-	// Process Drawing related stuff
-	// Animate the tiles
-	/*mpMap->animateAllTiles();
-
-	// Blit the background
-	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-
-	if(!mHideSprites)
-	{
-		// Make the Objects do its jobs
-		std::vector<CObject*>::iterator it;
-		for( it=mObject.begin() ; it!=mObject.end() ; it++ )
-		{
-			(*it)->process();
-		}
-	}*/
-
 }

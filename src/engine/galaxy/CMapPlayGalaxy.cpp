@@ -34,7 +34,7 @@ void CMapPlayGalaxy::setActive(bool value)
 	{
 		m_Map.drawAll();
 	    // Set Scrollbuffer
-	    g_pVideoDriver->setMapDelegation(m_Map);
+	    g_pVideoDriver->updateScrollBuffer(m_Map);
 	}
 }
 

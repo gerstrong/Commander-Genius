@@ -43,9 +43,7 @@ int ConsoleExpireTimer = 0;
 
 CVideoDriver::CVideoDriver() :
 mp_VideoEngine(NULL),
-m_mustrefresh(false),
-mp_sbufferx(NULL),
-mp_sbuffery(NULL)
+m_mustrefresh(false)
 {
 	resetSettings();
 }
@@ -234,7 +232,7 @@ bool CVideoDriver::start()
 #ifdef USE_OPENGL
 	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the
 	{
-		mp_VideoEngine = new COpenGL(m_VidConfig, mp_sbufferx, mp_sbuffery);
+		mp_VideoEngine = new COpenGL(m_VidConfig);
 		retval = mp_VideoEngine->init();
 
 		if(!retval)
@@ -242,14 +240,14 @@ bool CVideoDriver::start()
 			delete mp_VideoEngine;
 			m_VidConfig.m_opengl = false;
 			applyMode();
-			mp_VideoEngine = new CSDLVideo(m_VidConfig, mp_sbufferx, mp_sbuffery);
+			mp_VideoEngine = new CSDLVideo(m_VidConfig);
 			retval = mp_VideoEngine->init();
 		}
 	}
 	else
 	{
 #endif
-		mp_VideoEngine = new CSDLVideo(m_VidConfig, mp_sbufferx, mp_sbuffery);
+		mp_VideoEngine = new CSDLVideo(m_VidConfig);
 		retval = mp_VideoEngine->init();
 
 #ifdef USE_OPENGL
@@ -280,10 +278,11 @@ void CVideoDriver::setZoom(short value)
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
-void CVideoDriver::setMapDelegation(CMap &map)
+void CVideoDriver::updateScrollBuffer(CMap &map)
 {
-	mp_sbufferx = &map.m_scrollx_buf;
-	mp_sbuffery = &map.m_scrolly_buf;
+	map.drawAll();
+	mp_VideoEngine->UpdateScrollBufX(map.m_scrollx);
+	mp_VideoEngine->UpdateScrollBufY(map.m_scrolly);
 }
 void CVideoDriver::blitScrollSurface() // This is only for tiles
 									   // Therefore the name should be changed

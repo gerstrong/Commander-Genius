@@ -36,7 +36,7 @@ Uint16 getPowerOfTwo(Uint16 value);
 
 class COpenGL : public CVideoEngine {
 public:
-	COpenGL(const CVidConfig &VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
+	COpenGL(const CVidConfig &VidConfig);
 
 	void setUpViewPort(const CRect<Uint16> &GameRes, const CRect<Uint16> &newDim);
 	bool resizeDisplayScreen(const CRect<Uint16>& newDim);

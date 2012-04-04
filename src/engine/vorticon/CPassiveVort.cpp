@@ -155,7 +155,7 @@ void CPassiveVort::process()
 	{
 		if( EventContainer.occurredEvent<ResetScrollSurface>() )
 		{
-			g_pVideoDriver->setMapDelegation(*mpMap);
+			g_pVideoDriver->updateScrollBuffer(*mpMap);
 			EventContainer.pop_Event();
 			return;
 		}

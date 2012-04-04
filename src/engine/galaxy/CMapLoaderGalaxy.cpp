@@ -271,7 +271,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     Map.m_maxscrolly = (Map.m_height<<4) - gamerect.h - 32;
 
     // Set Scrollbuffer
-    g_pVideoDriver->setMapDelegation(Map);
+    g_pVideoDriver->updateScrollBuffer(Map);
 
     return true;
 }

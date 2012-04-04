@@ -45,7 +45,7 @@ public:
 	void drawConsoleMessages();
 
 	void blitScrollSurface();
-	void setMapDelegation(CMap &map);
+	void updateScrollBuffer(CMap &map);
 
 	void collectSurfaces();
 	void clearSurfaces();
@@ -137,8 +137,5 @@ private:
 
 	CVidConfig m_VidConfig;
 	bool m_mustrefresh;
-
-	Sint16 *mp_sbufferx;
-	Sint16 *mp_sbuffery;
 };
 #endif /* CVIDEODRIVER_H_ */

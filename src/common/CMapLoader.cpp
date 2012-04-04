@@ -182,7 +182,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	mp_map->m_maxscrolly = (mp_map->m_height<<4) - gamerect.h - 32;
 
 	// Set Map Delegation Object. This only gets the Pointer to the map instances x-y-scroll-buffers
-	g_pVideoDriver->setMapDelegation(*mp_map);
+	g_pVideoDriver->updateScrollBuffer(*mp_map);
 
 	return true;
 }
