@@ -6,17 +6,18 @@
  */
 
 #include "CFinale.h"
-#include "../../../sdl/CVideoDriver.h"
-#include "../../../CLogFile.h"
-#include "../../../FindFile.h"
+#include "sdl/CVideoDriver.h"
+#include "CLogFile.h"
+#include "FindFile.h"
 #include <fstream>
 
 CFinale::CFinale(CMap &map, std::vector<CObject*> &Object) :
 m_mustfinishgame(false),
 mp_TextViewer(NULL),
-m_Map(map),
 m_Object(Object)
-{}
+{
+	//mMap =  new CMap(map);
+}
 
 void CFinale::showEndingText()
 {
@@ -24,7 +25,7 @@ void CFinale::showEndingText()
 	{
 		std::string text;
 		mp_TextViewer = new CTextViewer(0, 0, 320, 120);
-		mp_TextViewer->loadTextfromFile(m_Map.m_gamepath + "endtext.ck" + itoa(m_Episode));
+		mp_TextViewer->loadTextfromFile(mMap->m_gamepath + "endtext.ck" + itoa(m_Episode));
 	}
 
 	mp_TextViewer->process();

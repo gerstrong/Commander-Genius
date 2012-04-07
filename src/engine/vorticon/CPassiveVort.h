@@ -36,8 +36,7 @@ private:
 	CTitle *mp_TitleScreen;
 	CTextBox *mp_PressAnyBox;
 	CTilemap *mp_Tilemap;
-	//SmartPointer<CMap> mpMap;
-	CMap *mpMap;
+	SmartPointer<CMap> mpMap;
 	stOption *mp_Option;
 
 	SDL_Surface *mp_Scrollsurface;

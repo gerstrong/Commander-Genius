@@ -19,23 +19,18 @@ CPreviews::CPreviews(CExeFile &ExeFile)
 	m_episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
-	mp_Map = new CMap();
+	mpMap = new CMap();
 
-	CMapLoader Maploader(mp_Map);
+	CMapLoader Maploader(mpMap);
 	Maploader.load(m_episode, 90, DataDirectory);
 
-	mp_Map->gotoPos( 0, 0 );
+	mpMap->gotoPos( 0, 0 );
 
 	// draw level map
-	mp_Map->drawAll();
+	mpMap->drawAll();
 
 	m_scene_number = 1;
 	openNextScene();
-}
-
-CPreviews::~CPreviews()
-{
-	delete mp_Map;
 }
 
 int CPreviews::openNextScene()

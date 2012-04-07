@@ -52,14 +52,14 @@ bool CPlayGameVorticon::loadGameState()
 			m_Player.clear();
 
 		m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
-				 mp_level_completed, m_Object, m_Map) );
+				 mp_level_completed, m_Object, *mMap.get() ) );
 		for( size_t i=0 ; i < m_Player.size() ; i++ )
 		{
 			m_Player.at(i).m_index = i;
 			m_Player.at(i).setDatatoZero();
 		}
 
-		CMapLoader Maploader(&m_Map, &m_Player);
+		CMapLoader Maploader(mMap, &m_Player);
 		Maploader.mp_objvect = &m_Object;
 		m_checkpointset = checkpointset;
 		Maploader.m_checkpointset = m_checkpointset;
@@ -94,7 +94,7 @@ bool CPlayGameVorticon::loadGameState()
 
 			if(i >= m_Object.size())
 			{
-				CObject *object = new CObject( &m_Map, 0, 0, OBJ_NONE);
+				CObject *object = new CObject( mMap.get(), 0, 0, OBJ_NONE);
 				object->exists = false;
 				m_Object.push_back(object);
 			}
@@ -135,14 +135,14 @@ bool CPlayGameVorticon::loadGameState()
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
 
 		// Load the map_data as it was left last
-		m_SavedGame.decodeData(m_Map.m_width);
-		m_SavedGame.decodeData(m_Map.m_height);
-		m_SavedGame.readDataBlock( reinterpret_cast<byte*>(m_Map.getForegroundData()) );
+		m_SavedGame.decodeData(mMap->m_width);
+		m_SavedGame.decodeData(mMap->m_height);
+		m_SavedGame.readDataBlock( reinterpret_cast<byte*>(mMap->getForegroundData()) );
 
 		// Load completed levels
 		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
 
-		m_Player[0].setMapData(&m_Map);
+		m_Player[0].setMapData(mMap.get());
 		m_Player[0].mp_camera->attachObject(&m_Player[0]);
 
 		while(m_Player[0].mp_camera->m_moving)
@@ -151,19 +151,19 @@ bool CPlayGameVorticon::loadGameState()
 			m_Player[0].mp_camera->processEvents();
 		}
 
-		m_Map.drawAll();
+		mMap->drawAll();
 
 		// Create the special merge effect (Fadeout)
 		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
 
-		mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player,
+		mp_ObjectAI = new CObjectAI(mMap.get(), m_Object, m_Player,
 									m_NumPlayers, m_Episode, m_Level,
-									m_Difficulty, m_Map.m_Dark);
+									m_Difficulty, mMap->m_Dark);
 		setupPlayers();
 
-		m_Map.m_Dark = dark;
-		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
+		mMap->m_Dark = dark;
+		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
 
 		return true;
 	}
@@ -187,7 +187,7 @@ bool CPlayGameVorticon::saveGameState()
 	m_SavedGame.encodeData(m_checkpointset);
 	m_SavedGame.encodeData(m_checkpoint_x);
 	m_SavedGame.encodeData(m_checkpoint_y);
-	m_SavedGame.encodeData(m_Map.m_Dark);
+	m_SavedGame.encodeData(mMap->m_Dark);
 
 	// Save number of Players
 	m_SavedGame.encodeData(m_NumPlayers);
@@ -229,9 +229,10 @@ bool CPlayGameVorticon::saveGameState()
 	}
 
 	// Save the map_data as it is left
-	m_SavedGame.encodeData(m_Map.m_width);
-	m_SavedGame.encodeData(m_Map.m_height);
-	m_SavedGame.addData( reinterpret_cast<byte*>(m_Map.getForegroundData()), 2*m_Map.m_width*m_Map.m_height );
+	m_SavedGame.encodeData(mMap->m_width);
+	m_SavedGame.encodeData(mMap->m_height);
+	m_SavedGame.addData( reinterpret_cast<byte*>(mMap->getForegroundData()),
+													2*mMap->m_width*mMap->m_height );
 
 	// store completed levels
 	m_SavedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );

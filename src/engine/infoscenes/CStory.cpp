@@ -25,7 +25,7 @@ void CStory::init()
 	std::string DataDirectory = ExeFile.getDataDirectory();
 
 	mpMap = new CMap();
-	CMapLoader Maploader(mpMap.get());
+	CMapLoader Maploader(mpMap);
 
 	std::string Text;
 

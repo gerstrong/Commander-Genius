@@ -20,7 +20,6 @@
 class CPreviews : public CInfoScene {
 public:
 	CPreviews(CExeFile &ExeFile);
-	~CPreviews();
 	int openNextScene();
 
 	void process();
@@ -33,8 +32,7 @@ private:
 	int m_scene_number;
 	SmartPointer<CFinaleStaticScene> mp_StaticScene;
 	SmartPointer<CTextViewer> mp_TextViewer; // Used for the preview text...
-	//SmartPointer<CMap> mp_Map;
-	CMap *mp_Map;
+	SmartPointer<CMap> mpMap;
 
 	SDL_Surface *mp_Scrollsurface;
 

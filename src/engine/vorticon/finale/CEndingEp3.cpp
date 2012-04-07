@@ -47,27 +47,27 @@ void CEndingEp3::HonorScene()
 	if(m_mustsetup)
 	{
 		//Initialization
-		std::string path = m_Map.m_gamepath;
-		CMapLoader MapLoader(&m_Map, &m_Player);
+		std::string path = mMap->m_gamepath;
+		CMapLoader MapLoader(mMap, &m_Player);
 		MapLoader.load(3, 81, path);
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(VectorD2<int>(244<<STC, 104<<STC));
 		m_Player[0].sprite = 0;
 
-		m_Map.gotoPos(32, 32);
-		m_Map.drawAll();
+		mMap->gotoPos(32, 32);
+		mMap->drawAll();
 
 		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE1"), true));
 		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE2"), true));
 		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE3"), true));
 		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE4"), true));
 
-		int newtile = m_Map.at(2,12);
+		int newtile = mMap->at(2,12);
 		for(int x=0 ; x<22 ; x++) // This changes to the Oh No! Tiles to normal Stone-Tiles
 		{
-			m_Map.changeTile( x, 15, newtile);
-			m_Map.changeTile( x, 16, newtile);
+			mMap->changeTile( x, 15, newtile);
+			mMap->changeTile( x, 16, newtile);
 		}
 
 		m_mustsetup = false;
@@ -123,11 +123,11 @@ void CEndingEp3::AwardScene()
 	{
 		//Initialization
 		m_Player[0].hideplayer = true;
-		m_Map.gotoPos(0,0);
-		m_Map.resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
-		m_Map.m_animation_enabled = false; // Needed, because the other map is still loaded
-		m_Map.drawAll();
-		mp_FinaleStaticScene = new CFinaleStaticScene(m_Map.m_gamepath, "finale.ck3");
+		mMap->gotoPos(0,0);
+		mMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
+		mMap->m_animation_enabled = false; // Needed, because the other map is still loaded
+		mMap->drawAll();
+		mp_FinaleStaticScene = new CFinaleStaticScene(mMap->m_gamepath, "finale.ck3");
 
 		mp_FinaleStaticScene->push_string("THE_END", 6000);
 
@@ -143,7 +143,7 @@ void CEndingEp3::AwardScene()
 		// Shutdown code here!
 		delete mp_FinaleStaticScene;
 		mp_FinaleStaticScene = NULL;
-		m_Map.m_animation_enabled = true;
+		mMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}

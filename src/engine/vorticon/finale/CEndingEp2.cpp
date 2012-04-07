@@ -51,26 +51,26 @@ void CEndingEp2::HeadsForEarth()
 	if(m_mustsetup)
 	{
 		//Initialization
-		std::string path = m_Map.m_gamepath;
-		CMapLoader MapLoader(&m_Map, &m_Player);
+		std::string path = mMap->m_gamepath;
+		CMapLoader MapLoader(mMap, &m_Player);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].sprite = SPR_VORTICON_MOTHERSHIP;
 		m_Player[0].solid = false;
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], &m_Map, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 );
+		mp_ShipFlySys = new CShipFlySys( m_Player[0], mMap.get(), SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 );
 
-		m_Map.gotoPos(0, 0);
+		mMap->gotoPos(0, 0);
 		mp_ShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 672, DDOWNRIGHT);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 150, DDOWN);
 		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
-		m_Map.drawAll();
+		mMap->drawAll();
 		mp_ShipFlySys->m_ShipQueuePtr = 0;
 
 		int x, y;
-		m_Map.findTile(593, &x, &y);
+		mMap->findTile(593, &x, &y);
 		m_Player[0].moveTo(VectorD2<int>(x<<CSF, y<<CSF));
 
 		mp_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP2_ESEQ_PART1"), true);
@@ -108,21 +108,21 @@ void CEndingEp2::LimpsHome()
 {
 	if(m_mustsetup)
 	{	//Initialization
-		std::string path = m_Map.m_gamepath;
-		CMapLoader MapLoader(&m_Map, &m_Player);
+		std::string path = mMap->m_gamepath;
+		CMapLoader MapLoader(mMap, &m_Player);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(VectorD2<int>(8<<CSF, 26<<CSF));
 		m_Player[0].solid = false;
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], &m_Map, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP );
+		mp_ShipFlySys = new CShipFlySys( m_Player[0], mMap.get(), SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP );
 
-		m_Map.gotoPos(LIMPSHOME_X, LIMPSHOME_Y);
+		mMap->gotoPos(LIMPSHOME_X, LIMPSHOME_Y);
 		mp_ShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 80, DUPLEFT);
 		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
-		m_Map.drawAll();
+		mMap->drawAll();
 		mp_ShipFlySys->m_ShipQueuePtr = 0;
 
 		mp_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP2_ESEQ_PART2"), true);
@@ -162,11 +162,11 @@ void CEndingEp2::SnowedOutside()
 	if(m_mustsetup)
 	{
 		//Initialization
-		m_Map.gotoPos(0,0);
-		m_Map.resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
-		m_Map.m_animation_enabled = false; // Needed, because the other map is still loaded
+		mMap->gotoPos(0,0);
+		mMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
+		mMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
-		mp_FinaleStaticScene = new CFinaleStaticScene(m_Map.m_gamepath, "finale.ck2");
+		mp_FinaleStaticScene = new CFinaleStaticScene(mMap->m_gamepath, "finale.ck2");
 
 		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE1", 6000);
 		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE2", 6000);
@@ -185,7 +185,7 @@ void CEndingEp2::SnowedOutside()
 		// Shutdown code here!
 		delete mp_FinaleStaticScene;
 		mp_FinaleStaticScene = NULL;
-		m_Map.m_animation_enabled = true;
+		mMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}

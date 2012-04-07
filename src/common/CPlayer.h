@@ -32,11 +32,13 @@ enum level_triggers
 ///
 // Class definition starts here!
 ///
-class CPlayer : public CObject {
+class CPlayer : public CObject
+{
 public:
 
 	// direction defines used for various things
-	enum e_playingmodes{
+	enum e_playingmodes
+	{
 		NONE, WORLDMAP, LEVELPLAY
 	};
 

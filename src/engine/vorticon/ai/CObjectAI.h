@@ -16,7 +16,8 @@
 #include "graphics/CGfxEngine.h"
 #include <vector>
 
-class CObjectAI {
+class CObjectAI
+{
 public:
 	CObjectAI(CMap *p_map, std::vector<CObject*> &objvect, std::vector<CPlayer> &Player,
 			 int NumPlayers, int episode, int level,

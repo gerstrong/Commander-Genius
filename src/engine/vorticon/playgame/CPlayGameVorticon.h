@@ -27,6 +27,7 @@
 #include "sdl/music/CMusic.h"
 #include "engine/infoscenes/CHighScores.h"
 #include "engine/playgame/CPlayGame.h"
+#include "SmartPointer.h"
 #include <SDL.h>
 #include <string>
 #include <vector>
@@ -97,8 +98,7 @@ public:
 private:
 	bool mp_level_completed[MAX_LEVELS_VORTICON];
 
-	CMap m_Map;
-	//CMenuVorticon *mp_Menu;
+	SmartPointer<CMap> mMap;
 	std::vector<CPlayer> m_Player;
 	CObjectAI *mp_ObjectAI;
 	CFinale *mp_Finale;

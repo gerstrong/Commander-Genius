@@ -51,7 +51,7 @@ bool CPassiveVort::init(char mode)
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
 		mpMap->drawAll();
-		mp_TitleScreen = new CTitle(mObject, *mpMap );
+		mp_TitleScreen = new CTitle(mObject, *mpMap.get() );
 		mp_TitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
@@ -155,7 +155,7 @@ void CPassiveVort::process()
 	{
 		if( EventContainer.occurredEvent<ResetScrollSurface>() )
 		{
-			g_pVideoDriver->updateScrollBuffer(*mpMap);
+			g_pVideoDriver->updateScrollBuffer( mpMap );
 			EventContainer.pop_Event();
 			return;
 		}
@@ -226,7 +226,6 @@ void CPassiveVort::cleanup()
 
 	SAFE_DELETE(mp_IntroScreen);
 	SAFE_DELETE(mp_TitleScreen);
-	SAFE_DELETE(mpMap);
 }
 
 }

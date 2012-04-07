@@ -37,7 +37,7 @@ public:
 	void process();
 
 private:
-	CMap mMap;
+	SmartPointer<CMap> mpMap;
 
 	std::string		m_Name[16];
 	std::string		m_Score[8];

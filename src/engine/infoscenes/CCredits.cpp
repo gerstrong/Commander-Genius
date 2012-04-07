@@ -13,12 +13,12 @@
 
 CCredits::CCredits(const std::string &datadirectory, const char &episode) {
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
-	mp_Map = new CMap;
+	mpMap = new CMap;
 
-	CMapLoader Maploader(mp_Map);
+	CMapLoader Maploader(mpMap);
 	
 	Maploader.load(episode, 90, datadirectory);
-	mp_Map->gotoPos( 104<<4, 16 );
+	mpMap->gotoPos( 104<<4, 16 );
 	
 	m_scrolltext[0] = "Commander Genius";
 	m_scrolltext[1] = "aka CloneKeenPlus";
@@ -84,7 +84,7 @@ CCredits::CCredits(const std::string &datadirectory, const char &episode) {
 
 void CCredits::process()
 {
-	mp_Map->animateAllTiles();
+	mpMap->animateAllTiles();
 	
 	if(m_timer<2) m_timer++;
 	else

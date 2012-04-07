@@ -26,7 +26,7 @@ private:
 	static const int m_numberoflines=11;	// number of lines to print
 	CBitmap* mp_bmp;
 	
-	CMap *mp_Map;
+	SmartPointer<CMap> mpMap;
 	SDL_Surface *mp_Scrollsurface;
 	SmartPointer <SDL_Surface> mpLogoBMP;
 	SDL_Rect m_logo_rect;

@@ -14,12 +14,15 @@
 #include "options.h"
 #include "sdl/music/CMusic.h"
 #include "common/CBehaviorEngine.h"
+#include "SmartPointer.h"
 #include <string>
 #include <vector>
 
-class CMapLoader {
+class CMapLoader
+{
 public:
-	CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect = NULL);
+	CMapLoader(SmartPointer<CMap> &map,
+				std::vector<CPlayer> *p_PlayerVect = NULL);
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true, bool stategame=false );
 	
@@ -33,7 +36,7 @@ public:
 	std::vector<CObject*> *mp_objvect;
 
 private:
-	CMap *mp_map;
+	SmartPointer<CMap>& mpMap;
 	std::vector<CPlayer> *mp_vec_Player;
 };
 

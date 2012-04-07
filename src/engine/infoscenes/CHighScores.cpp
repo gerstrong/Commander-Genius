@@ -64,14 +64,15 @@ void CHighScores::init()
 	loadHighScoreTable();
 	
 	// Load the map for the background
-	CMapLoader MapLoader(&mMap);
+	mpMap = new CMap();
+	CMapLoader MapLoader(mpMap);
 	MapLoader.load(m_Episode, 90, m_DataDirectory, false);
 	
-    mMap.gotoPos(HIGHSCORETABLE_X, HIGHSCORETABLE_Y);
+    mpMap->gotoPos(HIGHSCORETABLE_X, HIGHSCORETABLE_Y);
 	
     // Draw Background. This is only needed once, since Scrollsurface
     // won't be cleared every update screen
-    mMap.drawAll();
+    mpMap->drawAll();
 	
 	// Setup the Bitmaps that will be shown
 	stBitmap bmp;
@@ -114,10 +115,10 @@ void CHighScores::init()
 		{
 			for( int i=0 ; i<8 ; i++ )
 			{
-				if(m_Extra[i][0]) mMap.setTile(98, 5+i, joy_tile+(i%4), true);
-				if(m_Extra[i][1]) mMap.setTile(99, 5+i, bat_tile+((i+1)%4), true);
-				if(m_Extra[i][2]) mMap.setTile(100, 5+i, vac_tile+((i+2)%4), true);
-				if(m_Extra[i][3]) mMap.setTile(101, 5+i, wsk_tile+((i+3)%4), true);
+				if(m_Extra[i][0]) mpMap->setTile(98, 5+i, joy_tile+(i%4), true);
+				if(m_Extra[i][1]) mpMap->setTile(99, 5+i, bat_tile+((i+1)%4), true);
+				if(m_Extra[i][2]) mpMap->setTile(100, 5+i, vac_tile+((i+2)%4), true);
+				if(m_Extra[i][3]) mpMap->setTile(101, 5+i, wsk_tile+((i+3)%4), true);
 			}
 		}
 	}
@@ -160,7 +161,7 @@ void CHighScores::process()
 	SDL_Surface *sfc = mpTextSfc.get();
 	CFont &Font = g_pGfxEngine->getFont(1);
 
-	mMap.animateAllTiles();
+	mpMap->animateAllTiles();
 
 	// Blit the background
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
@@ -314,10 +315,10 @@ void CHighScores::writeEP1HighScore(int score, bool extra[4])
 		// Put the Tiles, of the parts that were collected
 		for( int i=0 ; i<8 ; i++ )
 		{
-			if(m_Extra[i][0]) mMap.setTile(98,5+i,221, true);
-			if(m_Extra[i][1]) mMap.setTile(99,5+i,237, true);
-			if(m_Extra[i][2]) mMap.setTile(100,5+i,241, true);
-			if(m_Extra[i][3]) mMap.setTile(101,5+i,245, true);
+			if(m_Extra[i][0]) mpMap->setTile(98,5+i,221, true);
+			if(m_Extra[i][1]) mpMap->setTile(99,5+i,237, true);
+			if(m_Extra[i][2]) mpMap->setTile(100,5+i,241, true);
+			if(m_Extra[i][3]) mpMap->setTile(101,5+i,245, true);
 		}
 	}
 }

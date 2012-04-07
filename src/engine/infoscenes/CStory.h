@@ -25,7 +25,6 @@ public:
 
 
 private:
-	//CMap *mpMap;
 	SmartPointer<CMap> mpMap;
 	SmartPointer<CTextViewer> mpTextViewer;
 };

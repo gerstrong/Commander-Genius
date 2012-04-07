@@ -27,6 +27,7 @@ CPlayGame(ExeFile, level, numplayers, difficulty),
 mp_ObjectAI(NULL),
 mp_HUD(NULL)
 {
+	mMap = new CMap();
 	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
 	mp_Finale = NULL;
 	mp_gameoverbmp = NULL;
@@ -36,7 +37,7 @@ mp_HUD(NULL)
 
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
 			mp_level_completed,
-			m_Object, m_Map));
+			m_Object, *mMap.get() ) );
 
 	for(int i=0 ; i<m_NumPlayers ; i++)
 	{
@@ -89,11 +90,11 @@ void CPlayGameVorticon::setupPlayers()
 		it_player->w = sprite.getWidth()<<STC;
 		it_player->h = sprite.getHeight();//<<STC;
 		it_player->m_level = m_Level;
-		m_Map.m_Dark = false;
-		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
+		mMap->m_Dark = false;
+		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
 
 		// Set the pointers to the map and object data
-		it_player->setMapData(&m_Map);
+		it_player->setMapData(mMap.get());
 		it_player->exists = true;
 		if(it_player->m_playingmode == CPlayer::WORLDMAP) it_player->solid=!(it_player->godmode);
 	}
@@ -106,11 +107,11 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
-	CMapLoader MapLoader( &m_Map, &m_Player );
+	CMapLoader MapLoader( mMap, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
 
-	m_Map.m_Difficulty = m_Difficulty;
+	mMap->m_Difficulty = m_Difficulty;
 
 	// load level map
 	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
@@ -118,10 +119,10 @@ bool CPlayGameVorticon::init()
 
 	//// If those worked fine, continue the initialization
 	// draw level map
-	m_Map.drawAll();
+	mMap->drawAll();
 
 	// Now Scroll to the position of the player and center him
-	m_Map.gotoPos( 32, 64 ); // Assure that the edges are never seen
+	mMap->gotoPos( 32, 64 ); // Assure that the edges are never seen
 
 	setupPlayers();
 
@@ -131,9 +132,9 @@ bool CPlayGameVorticon::init()
 	g_pInput->flushAll();
 
 	// Initialize the AI
-	mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player,
+	mp_ObjectAI = new CObjectAI(mMap.get(), m_Object, m_Player,
 								m_NumPlayers, m_Episode, m_Level,
-								m_Difficulty, m_Map.m_Dark);
+								m_Difficulty, mMap->m_Dark);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyFinales();
@@ -240,7 +241,7 @@ void CPlayGameVorticon::process()
 			{
 				CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 				g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-				mp_gameoverbmp = new CEGABitmap(&m_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
+				mp_gameoverbmp = new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap);
 				mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 			}
 		}
@@ -421,15 +422,15 @@ void CPlayGameVorticon::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mp_Finale = new CEndingEp1(m_Map, m_Player, m_hideobjects, m_Object);
+		mp_Finale = new CEndingEp1(*mMap.get(), m_Player, m_hideobjects, m_Object);
 	}
 	else if(m_Episode == 2)
 	{
-		mp_Finale = new CEndingEp2(m_Map, m_Player, m_Object);
+		mp_Finale = new CEndingEp2(*mMap.get(), m_Player, m_Object);
 	}
 	else if(m_Episode == 3)
 	{
-		mp_Finale = new CEndingEp3(m_Map, m_Player, m_Object);
+		mp_Finale = new CEndingEp3(*mMap.get(), m_Player, m_Object);
 	}
 }
 
@@ -437,7 +438,7 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
 {
 	int destx, desty;
 
-	CTeleporter *teleporter = new CTeleporter(&m_Map, m_Player, origx, origy);
+	CTeleporter *teleporter = new CTeleporter(mMap.get(), m_Player, origx, origy);
 	player.beingteleported = true;
 	player.solid = false;
 	destx = g_pBehaviorEngine->getTeleporterTableAt(5).x;
@@ -454,12 +455,12 @@ void CPlayGameVorticon::collectHighScoreInfo()
 {
 	if(m_Episode == 1)
 	{
-		bool extra[4];
+		//bool extra[4];
 
-		extra[0] = m_Player[0].inventory.HasJoystick;
+		/*extra[0] = m_Player[0].inventory.HasJoystick;
 		extra[1] = m_Player[0].inventory.HasBattery;
 		extra[2] = m_Player[0].inventory.HasVacuum;
-		extra[3] = m_Player[0].inventory.HasWiskey;
+		extra[3] = m_Player[0].inventory.HasWiskey;*/
 
 		//mp_HighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
 	}
@@ -507,7 +508,7 @@ void CPlayGameVorticon::drawObjects()
 void CPlayGameVorticon::drawAllElements()
 {
 	// Animate the tiles of the map
-	m_Map.animateAllTiles();
+	mMap->animateAllTiles();
 
 	// Blit the background
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
@@ -516,7 +517,7 @@ void CPlayGameVorticon::drawAllElements()
 	drawObjects();
 
 	// Draw masked tiles here!
-	m_Map.drawForegroundTiles();
+	mMap->drawForegroundTiles();
 
 	if(mp_option[OPT_HUD].value && !mp_Finale &&
 			!m_paused )
@@ -539,7 +540,7 @@ void CPlayGameVorticon::drawAllElements()
 	{
 		if( EventContainer.occurredEvent<ResetScrollSurface>() )
 		{
-			g_pVideoDriver->updateScrollBuffer(m_Map);
+			g_pVideoDriver->updateScrollBuffer(mMap);
 			EventContainer.pop_Event();
 			return;
 		}

@@ -26,7 +26,7 @@ private:
 	int m_timer;
 	int m_scrolly;
 	
-	CMap *mp_Map;
+	SmartPointer<CMap> mpMap;
 	SDL_Surface *mp_Scrollsurface;
 };
 

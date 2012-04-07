@@ -27,7 +27,7 @@ private:
 	int m_starty;			// start of y-coordinate in textheights
 	int m_numberoflines;	// number of lines to print
 	
-	CMap m_Map;
+	SmartPointer<CMap> mpMap;
 	SDL_Surface *mp_Scrollsurface;
 };
 

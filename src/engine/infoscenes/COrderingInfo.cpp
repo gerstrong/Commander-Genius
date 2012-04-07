@@ -6,12 +6,12 @@
  */
 
 #include "COrderingInfo.h"
-#include "../../sdl/input/CInput.h"
-#include "../../CLogFile.h"
-#include "../../fileio/CExeFile.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../common/CMapLoader.h"
+#include "sdl/input/CInput.h"
+#include "CLogFile.h"
+#include "fileio/CExeFile.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "common/CMapLoader.h"
 
 COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 	std::string datadirectory = ExeFile.getDataDirectory();
@@ -19,10 +19,10 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 
-	CMapLoader Maploader(&m_Map);
+	CMapLoader Maploader(mpMap);
 	
 	Maploader.load(episode, 90, datadirectory);
-	m_Map.gotoPos( 22<<4, 32 );
+	mpMap->gotoPos( 22<<4, 32 );
 	
 	// Get the offset where in the data the info is...
 	size_t offset = 0;
@@ -37,15 +37,15 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
 			for(int i=0; i<20 ; i++)
 			{
-				m_Map.changeTile(22+i, 15, 14*13);
-				m_Map.changeTile(22+i, 16, 14*13+3);
+				mpMap->changeTile(22+i, 15, 14*13);
+				mpMap->changeTile(22+i, 16, 14*13+3);
 			}
 
 			break;
 		case 2:
 			m_starty = 3; // start of y-coordinate in textheights
 			m_numberoflines = 19; // numberof lines to print
-			m_Map.gotoPos( 22<<4, 28 );
+			mpMap->gotoPos( 22<<4, 28 );
 			if(ExeFile.getEXEVersion() == 131)
 				offset = 0x1ACD9-512;
 			break;
@@ -56,7 +56,7 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 				offset = 0x1CDED-512;
 			break;
 	}
-	m_Map.drawAll();
+	mpMap->drawAll();
 
 	// Read the strings and save them the string array of the class
 	if(offset)

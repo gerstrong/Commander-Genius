@@ -31,7 +31,7 @@ protected:
 	CTextViewer *mp_TextViewer; // Used for Epilogue
 	std::string m_epilogue_text;
 	int m_Episode;
-	CMap &m_Map;
+	SmartPointer<CMap> mMap;
 	std::vector<CObject*> &m_Object;
 };
 

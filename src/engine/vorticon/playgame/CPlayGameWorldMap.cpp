@@ -247,8 +247,8 @@ void CPlayGameVorticon::teleportPlayer(int objectID, CPlayer &player)
 {
 	int destx, desty;
 	int origx, origy;
-	m_Map.findObject(objectID, &origx, &origy);
-	CTeleporter *teleporter = new CTeleporter(&m_Map, m_Player,origx<<CSF, origy<<CSF);
+	mMap->findObject(objectID, &origx, &origy);
+	CTeleporter *teleporter = new CTeleporter( mMap.get(), m_Player,origx<<CSF, origy<<CSF);
 	teleporter->solid = false;
 	teleporter->direction = TELEPORTING_IN;
 	if(m_Episode == 1)
@@ -289,7 +289,7 @@ void CPlayGameVorticon::readTeleportDestCoordinatesEP3(int objectID, int &destx,
 
 	for(int i=newObject; i<newObject+0x10 ; i++)
 	{
-		if(m_Map.findObject(i, &destx, &desty))
+		if(mMap->findObject(i, &destx, &desty))
 		{
 			destx <<= TILE_S;
 			desty <<= TILE_S;

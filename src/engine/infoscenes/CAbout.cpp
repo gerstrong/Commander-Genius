@@ -19,11 +19,11 @@ CAbout::CAbout(CExeFile &ExeFile, const std::string &type) :
 m_type(type)
 {
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
-	mp_Map = new CMap;
-	CMapLoader Maploader(mp_Map);
+	mpMap = new CMap;
+	CMapLoader Maploader(mpMap);
 	
 	Maploader.load(ExeFile.getEpisode(), 90, ExeFile.getDataDirectory());
-	mp_Map->gotoPos( 1008, 28 );
+	mpMap->gotoPos( 1008, 28 );
 	
 	// Load the SDL_Bitmap
 	if(type == "ID")
@@ -48,7 +48,7 @@ m_type(type)
 					offset = 0x1CA70-512;
 				break;
 		}
-		mp_Map->drawAll();
+		mpMap->drawAll();
 		
 		// Read the strings and save them the string array of the class
 		if(offset)
@@ -122,8 +122,8 @@ m_type(type)
 			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
 			for(int i=0; i<30 ; i++)
 			{
-				mp_Map->changeTile(22+i, 15, 14*13);
-				mp_Map->changeTile(22+i, 16, 14*13+3);
+				mpMap->changeTile(22+i, 15, 14*13);
+				mpMap->changeTile(22+i, 16, 14*13+3);
 			}
 			break;
 	}
@@ -143,7 +143,7 @@ m_type(type)
 
 void CAbout::process()
 {	 
-	mp_Map->animateAllTiles();
+	mpMap->animateAllTiles();
 	
 	if(m_type == "ID")
 	{
