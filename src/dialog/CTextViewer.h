@@ -13,7 +13,8 @@
 #include <string>
 #include "SmartPointer.h"
 
-class CTextViewer {
+class CTextViewer
+{
 public:
 	CTextViewer(int x, int y, int w, int h);
 

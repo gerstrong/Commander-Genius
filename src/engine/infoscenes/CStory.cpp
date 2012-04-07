@@ -25,7 +25,7 @@ void CStory::init()
 	std::string DataDirectory = ExeFile.getDataDirectory();
 
 	mpMap = new CMap();
-	CMapLoader Maploader(mpMap);
+	CMapLoader Maploader(mpMap.get());
 
 	std::string Text;
 
@@ -87,11 +87,7 @@ void CStory::init()
 
 void CStory::process()
 {
-	// NOTE: Animation is performed here too, because the story plane is drawn over the other
-	// map that is open. That is desired!
 	mpMap->animateAllTiles();
-
-	// Blit the background
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
 	if(!mpTextViewer.empty())
@@ -106,9 +102,6 @@ void CStory::process()
 
 void CStory::teardown()
 {
-	if(mpMap)
-		delete mpMap;
-
 	mpMap = NULL;
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 	EventContainer.add(new ResetScrollSurface);

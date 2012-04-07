@@ -28,8 +28,8 @@
 
 class CMap
 {
-public:
 
+public:
 	CMap();
 
 	void setTileMap( CTilemap &Tilemap );

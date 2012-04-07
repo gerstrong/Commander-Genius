@@ -14,8 +14,6 @@
 #include <iostream>
 #include <fstream>
 
-#define SAFE_DELETE_ARRAY(x)	if(x) { delete [] x; x = NULL; }
-
 CMap::CMap():
 m_width(0), m_height(0),
 m_worldmap(false),

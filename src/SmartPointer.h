@@ -41,7 +41,6 @@ class CGameScript;
 // Specialized de-init functions, for each simple struct-like type that has no destructor
 template <> void SmartPointer_ObjectDeinit<SDL_Surface>( SDL_Surface * obj );
 template <> void SmartPointer_ObjectDeinit<SoundSample> ( SoundSample * obj ); // Calls FreeSoundSample(obj);
-template <> void SmartPointer_ObjectDeinit<CMap> ( CMap * obj ); // Requires to be defined elsewhere
 template <> void SmartPointer_ObjectDeinit<CGameScript> ( CGameScript * obj ); // Requires to be defined elsewhere
 
 #ifdef DEBUG
