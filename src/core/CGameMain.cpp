@@ -42,9 +42,11 @@ void CGameMain::process()
 			EventContainer.pop_Event();
 			EventContainer.add( new CloseMenuEvent() );
 		}
-		else if( EventContainer.occurredEvent<StartHighscoresEvent>() )
+		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
 		{
-			mpInfoScene = new CHighScores;
+			mpInfoScene->teardown();
+			mpInfoScene = scene->mpScene;
+			mpInfoScene->init();
 
 			EventContainer.pop_Event();
 			EventContainer.add( new CloseMenuEvent() );

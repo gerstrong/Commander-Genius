@@ -8,8 +8,8 @@
 #ifndef CHIGHSCORES_H_
 #define CHIGHSCORES_H_
 
-#include "../../common/CMap.h"
-#include "../../graphics/CBitmap.h"
+#include "common/CMap.h"
+#include "graphics/CBitmap.h"
 #include "CInfoScene.h"
 #include "SmartPointer.h"
 #include <string>
@@ -25,8 +25,10 @@ class CHighScores : public CInfoScene
 {
 public:
 
-	CHighScores( const bool saving_mode = false );
-	virtual ~CHighScores();
+	CHighScores();
+
+	void init();
+	void teardown();
 
 	void writeEP1HighScore(int score, bool extra[4]);
 	void writeEP2HighScore(int score, int cities_saved);

@@ -25,12 +25,18 @@ const int BLINK_TIME = 60;
 using namespace std;
 
 
-CHighScores::CHighScores( const bool saving_mode) :
+CHighScores::CHighScores() :
 m_Place(0), m_blink(true), m_blinkctr(0)
+{}
+
+
+void CHighScores::init()
 {
 	m_CursorPosition = 0;
 	m_CurrentLetter = 32;
 	
+	bool saving_mode = false;
+
 	// Set default Scores
 	m_Name[0] = "Gerstrong";
 	m_Name[1] = "Tulip";
@@ -131,17 +137,15 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 
 	mpTextSfc = SDL_DisplayFormatAlpha(temp);
 	SDL_FreeSurface(temp);
-
 }
 
 
 
-CHighScores::~CHighScores()
+void CHighScores::teardown()
 {
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 	EventContainer.add(new ResetScrollSurface);
 }
-
 
 
 

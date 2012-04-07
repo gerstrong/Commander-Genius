@@ -11,6 +11,7 @@
 #include "common/Menu/CLoadMenu.h"
 #include "common/Menu/CSaveMenu.h"
 #include "common/Menu/CHelpMenu.h"
+#include "engine/infoscenes/CHighScores.h"
 #include "common/CBehaviorEngine.h"
 #include "gui/CGUIButton.h"
 #include "core/mode/CGameMode.h"
@@ -39,7 +40,7 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "High Scores",
-												new StartHighscoresEvent(),
+												new StartInfoSceneEvent( new CHighScores ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Info",

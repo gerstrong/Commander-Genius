@@ -62,9 +62,6 @@ struct GMStart : CEvent
 // Start the Gameplay
 struct StartGameplayEvent : CEvent {};
 
-struct StartHighscoresEvent : CEvent
-{};
-
 
 ///////
 // Base Class for the modes
