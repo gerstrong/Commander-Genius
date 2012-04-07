@@ -4,28 +4,34 @@
  *  Created on: 16.11.2009
  *      Author: gerstrong
  *
- *  This class is used for showing the page of the story
+ *  This class is used for showing the page of a vorticon story
+ *  Can also be used for other informational things
  */
+
+#include "CHelp.h"
+#include "fileio/CExeFile.h"
+#include "common/CMapLoader.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/input/CInput.h"
+#include "FindFile.h"
 
 #include <fstream>
 
-#include "CHelp.h"
-#include "../../fileio/CExeFile.h"
-#include "../../common/CMapLoader.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/input/CInput.h"
-#include "../../FindFile.h"
 
-CHelp::CHelp(CExeFile &ExeFile, const std::string &type) :
-mp_TextViewer(NULL)
+CHelp::CHelp(const std::string &type) :
+mTextType(type)
+{}
+
+void CHelp::init()
 {
 	std::string Text;
-	std::string DataDirectory = ExeFile.getDataDirectory();
-	char episode = ExeFile.getEpisode();
+	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+	const std::string DataDirectory = ExeFile.getDataDirectory();
+	const char episode = ExeFile.getEpisode();
 	
 	// Read the Storytext
-	if(type == "Game")
+	if(mTextType == "Game")
 	{
 		if(episode==1)
 		{
@@ -87,26 +93,30 @@ mp_TextViewer(NULL)
 		Text.erase(Text.size()-1);
 	}
 
-	// Create the Text ViewerBox and stores the text there!
-	mp_TextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 8, 320, 160);
-	mp_TextViewer->formatText(Text);
+	// Creates the Text ViewerBox and stores the text there!
+	mpTextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 8, 320, 160);
+	mpTextViewer->formatText(Text);
 }
 
-void CHelp::process() {
+void CHelp::teardown()
+{
+	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	EventContainer.add(new ResetScrollSurface);
+}
+
+
+void CHelp::process()
+{
 	// NOTE: Animation is performed here too, because the story plane is drawn over the other
 	// map that is open. That is desired!
 
-	if(mp_TextViewer)
+	if(!mpTextViewer.empty())
 	{
-		mp_TextViewer->process();
-		if(mp_TextViewer->hasClosed())
+		mpTextViewer->process();
+		if(mpTextViewer->hasClosed())
 			m_destroy_me=true;
 	}
 	else
 		m_destroy_me=true;
-}
-
-CHelp::~CHelp() {
-	delete mp_TextViewer;
 }
 

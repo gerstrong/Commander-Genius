@@ -61,6 +61,23 @@ void CMenuController::process()
 			EventContainer.pop_Event();
 		}
 
+		if( EventContainer.occurredEvent<CloseAllMenusEvent>() )
+		{
+			while(!mMenuStack.empty())
+			{
+				mpMenu->release();
+
+				mMenuStack.pop_back();
+
+				if(!mMenuStack.empty())
+					mpMenu = mMenuStack.back();
+				else
+					mpMenu = NULL;
+			}
+
+			EventContainer.pop_Event();
+		}
+
 		if( OpenControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenControlMenuEvent>() )
 		{
 			EventContainer.pop_Event();

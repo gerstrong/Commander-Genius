@@ -40,7 +40,7 @@ void CGameMain::process()
 					p_PlayGame->m_SavedGame, p_PlayGame->m_startlevel);
 			mpGameMode->init();
 			EventContainer.pop_Event();
-			EventContainer.add( new CloseMenuEvent() );
+			EventContainer.add( new CloseAllMenusEvent() );
 		}
 		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
 		{
@@ -48,7 +48,7 @@ void CGameMain::process()
 			mpInfoScene->init();
 
 			EventContainer.pop_Event();
-			EventContainer.add( new CloseMenuEvent() );
+			EventContainer.add( new CloseAllMenusEvent() );
 			return;
 		}
 

@@ -26,7 +26,9 @@ using namespace std;
 
 
 CHighScores::CHighScores() :
-m_Place(0), m_blink(true), m_blinkctr(0)
+m_Place(0),
+m_blink(true),
+m_blinkctr(0)
 {}
 
 

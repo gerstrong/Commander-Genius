@@ -22,15 +22,15 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 	// Create the Menu Dialog and entries
 	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
-	/*mpMenuDialog->addControl(new CGUIButton( "The Menu",
-												new OpenMenuEvent( new CLoadMenu(dlgTheme) ),
+	mpMenuDialog->addControl(new CGUIButton( "The Menu",
+												new StartInfoSceneEvent( new CHelp("Menu") ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "The Game",
-												new OpenMenuEvent( new CSaveMenu(dlgTheme) ),
+												new StartInfoSceneEvent( new CHelp("Game") ),
 												CGUIButton::VORTICON ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "The Story",
+	/*mpMenuDialog->addControl(new CGUIButton( "The Story",
 												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
 												CGUIButton::VORTICON ) );
 

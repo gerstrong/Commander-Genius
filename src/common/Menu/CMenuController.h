@@ -27,6 +27,9 @@ struct OpenMenuEvent : CEvent
 struct CloseMenuEvent : CEvent
 {};
 
+struct CloseAllMenusEvent : CEvent
+{};
+
 /**
  * Class Declaration
  */
