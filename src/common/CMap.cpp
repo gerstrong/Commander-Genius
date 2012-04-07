@@ -28,7 +28,6 @@ m_animtiletimer(0),
 m_Background(false)
 {
 	m_Level = 0;
-	resetScrolls();
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }
 

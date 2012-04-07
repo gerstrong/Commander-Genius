@@ -44,7 +44,6 @@ void CGameMain::process()
 		}
 		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
 		{
-			mpInfoScene->teardown();
 			mpInfoScene = scene->mpScene;
 			mpInfoScene->init();
 
@@ -60,7 +59,10 @@ void CGameMain::process()
 	{
 		mpInfoScene->process();
 		if( mpInfoScene->destroyed() )
+		{
+			mpInfoScene->teardown();
 			mpInfoScene.tryDeleteData();
+		}
 
 	}
 	else
