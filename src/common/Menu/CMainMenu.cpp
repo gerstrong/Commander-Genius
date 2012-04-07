@@ -10,6 +10,7 @@
 #include "common/Menu/CSettingsMenu.h"
 #include "common/Menu/CLoadMenu.h"
 #include "common/Menu/CSaveMenu.h"
+#include "common/Menu/CHelpMenu.h"
 #include "common/CBehaviorEngine.h"
 #include "gui/CGUIButton.h"
 #include "core/mode/CGameMode.h"
@@ -42,7 +43,7 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Info",
-												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												new OpenMenuEvent( new CHelpMenu(dlgTheme) ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit(), CGUIButton::VORTICON ) );

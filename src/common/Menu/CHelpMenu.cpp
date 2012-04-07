@@ -14,33 +14,53 @@
 #include "engine/infoscenes/CHelp.h"
 #include "engine/infoscenes/CPreviews.h"
 
-#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
-/*CHelpMenu::CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
-		CExeFile &ExeFile,
-		bool &hideobjects) :
-CBaseMenu(dlg_theme),
-m_ExeFile(ExeFile),
-mp_InfoScene(p_InfoScene),
-m_Episode(ExeFile.getEpisode()),
-m_GamePath(ExeFile.getDataDirectory()),
-m_hideobjects(hideobjects)
-{*/
-	/*mp_Dialog = new CDialog(18, 10, INPUT_MODE_UP_DOWN,m_dlg_theme);
-
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Menu");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Game");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "The Story");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Ordering Info");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About ID");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "About CG");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Previews!");*/
-/*}
-
-void CHelpMenu::processSpecific()
+CHelpMenu::CHelpMenu( const Uint8 dlgTheme ) :
+CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
-	/*if( m_selection != NO_SELECTION)
+
+	// Create the Menu Dialog and entries
+	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
+
+	/*mpMenuDialog->addControl(new CGUIButton( "The Menu",
+												new OpenMenuEvent( new CLoadMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "The Game",
+												new OpenMenuEvent( new CSaveMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "The Story",
+												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
+												new StartHighscoresEvent(),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "About ID",
+												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "About CG",
+												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Credits",
+												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Previews!",
+												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												CGUIButton::VORTICON ) );*/
+
+
+}
+
+
+/*void CHelpMenu::processSpecific()
+{
+	if( m_selection != NO_SELECTION)
 	{
 		//m_Map.m_animation_enabled = false;
 		// no cleanups here, because later we return back to that menu
@@ -75,10 +95,6 @@ void CHelpMenu::processSpecific()
 		m_hideobjects = true;
 		m_selection = NO_SELECTION;
 		m_mustclose = true;
-	}*/
-/*}
-
-CHelpMenu::~CHelpMenu()
-{
-	//SAFE_DELETE(mp_Dialog);
+	}
 }*/
+
