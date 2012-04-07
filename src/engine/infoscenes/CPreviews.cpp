@@ -57,7 +57,7 @@ int CPreviews::openNextScene()
 		std::string filename = JoinPaths(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), "previews.ck");
 		filename += itoa(g_pBehaviorEngine->getEpisode());
 
-		mp_TextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 8, 320, 160);
+		mp_TextViewer = new CTextViewer(0, 8, 320, 160);
 
 		if(!mp_TextViewer->loadTextfromFile(filename))
 			m_destroy_me = true;

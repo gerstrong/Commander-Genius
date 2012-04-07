@@ -14,9 +14,7 @@
 #include "sdl/CVideoDriver.h"
 
 void CGameMain::init()
-{
-
-}
+{}
 
 
 void CGameMain::process()

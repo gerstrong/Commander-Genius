@@ -30,28 +30,28 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												new StartInfoSceneEvent( new CHelp("Game") ),
 												CGUIButton::VORTICON ) );
 
-	/*mpMenuDialog->addControl(new CGUIButton( "The Story",
-												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+	mpMenuDialog->addControl(new CGUIButton( "The Story",
+												new StartInfoSceneEvent( new CStory ),
 												CGUIButton::VORTICON ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
-												new StartHighscoresEvent(),
+	/*mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
+												new StartInfoSceneEvent(),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "About ID",
-												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												new StartInfoSceneEvent( new CSettingsMenu(dlgTheme) ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "About CG",
-												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												new StartInfoSceneEvent( new CSettingsMenu(dlgTheme) ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Credits",
-												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												new StartInfoSceneEvent( new CSettingsMenu(dlgTheme) ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Previews!",
-												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												new StartInfoSceneEvent( new CSettingsMenu(dlgTheme) ),
 												CGUIButton::VORTICON ) );*/
 
 

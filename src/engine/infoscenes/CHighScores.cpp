@@ -145,6 +145,7 @@ void CHighScores::init()
 
 void CHighScores::teardown()
 {
+	mpTextSfc.tryDeleteData();
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 	EventContainer.add(new ResetScrollSurface);
 }

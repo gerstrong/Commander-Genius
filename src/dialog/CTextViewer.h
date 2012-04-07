@@ -11,10 +11,11 @@
 #include <SDL.h>
 #include <vector>
 #include <string>
+#include "SmartPointer.h"
 
 class CTextViewer {
 public:
-	CTextViewer(SDL_Surface *TextVSfc, int x, int y, int w, int h);
+	CTextViewer(int x, int y, int w, int h);
 
 	void initialize();
 	void renderBox();
@@ -52,7 +53,7 @@ private:
 	bool m_mustclose;
 	int m_timer;
 
-	SDL_Surface *m_TextVSfc;
+	SmartPointer<SDL_Surface> mpTextVSfc;
 };
 
 #endif /* CTEXTVIEWER_H_ */

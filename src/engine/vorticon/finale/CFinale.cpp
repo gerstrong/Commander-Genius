@@ -23,7 +23,7 @@ void CFinale::showEndingText()
 	if(!mp_TextViewer)
 	{
 		std::string text;
-		mp_TextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0, 320, 120);
+		mp_TextViewer = new CTextViewer(0, 0, 320, 120);
 		mp_TextViewer->loadTextfromFile(m_Map.m_gamepath + "endtext.ck" + itoa(m_Episode));
 	}
 

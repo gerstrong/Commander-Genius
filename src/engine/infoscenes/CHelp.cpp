@@ -94,7 +94,7 @@ void CHelp::init()
 	}
 
 	// Creates the Text ViewerBox and stores the text there!
-	mpTextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 8, 320, 160);
+	mpTextViewer = new CTextViewer(0, 8, 320, 160);
 	mpTextViewer->formatText(Text);
 }
 

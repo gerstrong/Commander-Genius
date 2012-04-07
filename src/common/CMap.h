@@ -29,6 +29,7 @@
 class CMap
 {
 public:
+
 	CMap();
 
 	void setTileMap( CTilemap &Tilemap );
@@ -77,10 +78,13 @@ public:
 	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
 
-	unsigned int getlevelat(unsigned int x, unsigned int y)	{
-		return m_objectlayer[x>>4][y>>4];	}
+	unsigned int getlevelat(unsigned int x, unsigned int y)
+	{
+		return m_objectlayer[x>>4][y>>4];
+	}
 
-	Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y){
+	Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y)
+	{
 		return m_Plane[plane].getMapDataAt(x>>CSF, y>>CSF);
 	}
 

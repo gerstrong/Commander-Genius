@@ -23,6 +23,8 @@ public:
 
 	virtual void teardown() = 0;
 
+	virtual ~CInfoScene() { }
+
 	bool destroyed() { return m_destroy_me; }
 
 protected:

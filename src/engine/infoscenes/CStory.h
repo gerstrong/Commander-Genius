@@ -12,20 +12,21 @@
 #include "common/CMap.h"
 #include "dialog/CTextViewer.h"
 #include "fileio/CExeFile.h"
+#include "SmartPointer.h"
 #include <string.h>
 
-class CStory : public CInfoScene {
+class CStory : public CInfoScene
+{
 public:
-	CStory(CExeFile &ExeFile);
 
+	void init();
 	void process();
+	void teardown();
 
-	virtual ~CStory();
 
 private:
-	CMap *mp_Map;
-	CTextViewer *mp_TextViewer;
-	SDL_Surface *mp_Scrollsurface;
+	CMap *mpMap;
+	SmartPointer<CTextViewer> mpTextViewer;
 };
 
 #endif /* CSTORY_H_ */

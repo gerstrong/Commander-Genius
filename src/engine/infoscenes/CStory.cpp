@@ -17,16 +17,18 @@
 #include "sdl/input/CInput.h"
 #include "FindFile.h"
 
-CStory::CStory(CExeFile &ExeFile)
-{
-	char episode = ExeFile.getEpisode();
-	std::string DataDirectory = ExeFile.getDataDirectory();
-	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
-	mp_Map = new CMap;
 
-	CMapLoader Maploader(mp_Map);
+void CStory::init()
+{
+	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+	const char episode = ExeFile.getEpisode();
+	std::string DataDirectory = ExeFile.getDataDirectory();
+
+	mpMap = new CMap();
+	CMapLoader Maploader(mpMap);
+
 	std::string Text;
-	
+
 	// Read the Storytext
 	if(episode==1)
 	{
@@ -74,32 +76,40 @@ CStory::CStory(CExeFile &ExeFile)
 	Maploader.load(episode, 90, DataDirectory);
 	
 	// Create the Text ViewerBox and stores the text there!
-	mp_TextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0, 320, 136);
-	mp_TextViewer->formatText(Text);
+	mpTextViewer = new CTextViewer(0, 0, 320, 136);
+
+	mpTextViewer->formatText(Text);
 	
-	// Now Scroll to the position of the player and center him
-	
-	mp_Map->gotoPos( 32+2*320, 32 );
-	
-	// draw level map
-	mp_Map->drawAll();
+	// Scroll to the map where you see Keen with his rocket.
+	mpMap->gotoPos( 32+2*320, 32 );
+	mpMap->drawAll();
 }
 
-void CStory::process() {
+void CStory::process()
+{
 	// NOTE: Animation is performed here too, because the story plane is drawn over the other
 	// map that is open. That is desired!
-	
-	// Animate the tiles
-	mp_Map->animateAllTiles();
-	
-	mp_TextViewer->process();
-	
-	if(mp_TextViewer->hasClosed())
+	mpMap->animateAllTiles();
+
+	// Blit the background
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
+
+	if(!mpTextViewer.empty())
+	{
+		mpTextViewer->process();
+		if(mpTextViewer->hasClosed())
+			m_destroy_me=true;
+	}
+	else
 		m_destroy_me=true;
 }
 
-CStory::~CStory() {
-	SAFE_DELETE(mp_TextViewer);
-	SAFE_DELETE(mp_Map);
-}
+void CStory::teardown()
+{
+	if(mpMap)
+		delete mpMap;
 
+	mpMap = NULL;
+	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	EventContainer.add(new ResetScrollSurface);
+}
