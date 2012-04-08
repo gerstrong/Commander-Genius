@@ -23,7 +23,6 @@ public:
 	void process();
 	void teardown();
 
-
 private:
 	SmartPointer<CMap> mpMap;
 	SmartPointer<CTextViewer> mpTextViewer;

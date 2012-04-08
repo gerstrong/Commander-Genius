@@ -12,12 +12,16 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "common/CMapLoader.h"
+#include "sdl/extensions.h"
 
-COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
+
+void COrderingInfo::init()
+{
+	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	std::string datadirectory = ExeFile.getDataDirectory();
 	char episode = ExeFile.getEpisode();
 
-	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
+	mpMap = new CMap;
 
 	CMapLoader Maploader(mpMap);
 	
@@ -32,7 +36,7 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 			m_starty = 4; // start of y-coordinate in textheights
 			m_numberoflines = 21; // numberof lines to print
 			if(ExeFile.getEXEVersion() == 131)
-				offset = 0x1652B-512;
+				offset = 0x1632B;
 
 			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
 			for(int i=0; i<20 ; i++)
@@ -47,13 +51,13 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 			m_numberoflines = 19; // numberof lines to print
 			mpMap->gotoPos( 22<<4, 28 );
 			if(ExeFile.getEXEVersion() == 131)
-				offset = 0x1ACD9-512;
+				offset = 0x1AAD9;
 			break;
 		case 3:
 			m_starty = 4; // start of y-coordinate in textheights
 			m_numberoflines = 17; // numberof lines to print
 			if(ExeFile.getEXEVersion() == 131)
-				offset = 0x1CDED-512;
+				offset = 0x1CBED;
 			break;
 	}
 	mpMap->drawAll();
@@ -84,7 +88,7 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 		}
 	}
 	
-	//This just makes them all line up exactly like in the original games.
+	// This just makes them all line up exactly like in the original games.
 	switch(episode)
 	{
 		case 1:
@@ -133,23 +137,43 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 			m_Textline[16] = m_Textline[16] + "  ";
 			break;
 	}
+
+	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	mpTextSfc = SDL_DisplayFormatAlpha(temp);
+	SDL_FreeSurface(temp);
 }
 
 void COrderingInfo::process()
 {	 
-	 if(!m_Textline.size())
-	 {
-		 g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
-		 m_destroy_me=true;
-		 return;
-	 }
-	 
-	 for(int i=0 ; i<m_numberoflines ; i++)
-		 g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_Textline[i], 160-m_Textline[i].size()*4, 8*(i+m_starty), true);
-	
+
+	mpMap->animateAllTiles();
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
+
+	if(m_Textline.empty())
+	{
+		g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
+		m_destroy_me=true;
+		return;
+	}
+
+	for(int i=0 ; i<m_numberoflines ; i++)
+	{
+		g_pGfxEngine->getFont(1).drawFont(mpTextSfc.get(), m_Textline[i],
+											160-m_Textline[i].size()*4, 8*(i+m_starty), true);
+	}
+
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
+
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;
 }
 
-COrderingInfo::~COrderingInfo() {
+void COrderingInfo::teardown()
+{
+	if(!m_Textline.empty())
+		m_Textline.clear();
+	mpTextSfc = NULL;
+	mpMap = NULL;
+	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	EventContainer.add(new ResetScrollSurface);
 }

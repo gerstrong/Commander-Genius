@@ -137,7 +137,6 @@ void CHighScores::init()
 	m_Bitmaps.push_back(bmp);
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-
 	mpTextSfc = SDL_DisplayFormatAlpha(temp);
 	SDL_FreeSurface(temp);
 }

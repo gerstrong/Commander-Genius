@@ -11,15 +11,15 @@
 #include <vector>
 #include <string>
 #include "CInfoScene.h"
-#include "../../common/CMap.h"
-#include "../../fileio/CExeFile.h"
+#include "common/CMap.h"
+#include "fileio/CExeFile.h"
 
-class COrderingInfo : public CInfoScene {
+class COrderingInfo : public CInfoScene
+{
 public:
-	COrderingInfo( CExeFile &ExeFile );
-	virtual ~COrderingInfo();
-	
+	void init();
 	void process();
+	void teardown();
 	
 private:
 	std::vector<std::string> m_Textline;
@@ -28,7 +28,7 @@ private:
 	int m_numberoflines;	// number of lines to print
 	
 	SmartPointer<CMap> mpMap;
-	SDL_Surface *mp_Scrollsurface;
+	SmartPointer<SDL_Surface> mpTextSfc;
 };
 
 #endif /* CORDERINGINFO_H_ */

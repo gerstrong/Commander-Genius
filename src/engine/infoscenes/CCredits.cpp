@@ -6,10 +6,10 @@
  */
 
 #include "CCredits.h"
-#include "../../sdl/input/CInput.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../common/CMapLoader.h"
+#include "sdl/input/CInput.h"
+#include "sdl/CVideoDriver.h"
+#include "graphics/CGfxEngine.h"
+#include "common/CMapLoader.h"
 
 CCredits::CCredits(const std::string &datadirectory, const char &episode) {
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();

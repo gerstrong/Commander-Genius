@@ -34,67 +34,26 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												new StartInfoSceneEvent( new CStory ),
 												CGUIButton::VORTICON ) );
 
-	/*mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
-												new StartInfoSceneEvent(),
+	mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
+												new StartInfoSceneEvent( new COrderingInfo ),
 												CGUIButton::VORTICON ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "About ID",
-												new StartInfoSceneEvent( new CSettingsMenu(dlgTheme) ),
+	/*mpMenuDialog->addControl(new CGUIButton( "About ID",
+												new StartInfoSceneEvent( new CAbout("ID") ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "About CG",
-												new StartInfoSceneEvent( new CSettingsMenu(dlgTheme) ),
+												new StartInfoSceneEvent( new CAbout("CG") ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Credits",
-												new StartInfoSceneEvent( new CSettingsMenu(dlgTheme) ),
+												new StartInfoSceneEvent( new CCredits() ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Previews!",
-												new StartInfoSceneEvent( new CSettingsMenu(dlgTheme) ),
+												new StartInfoSceneEvent( new CPreviews() ),
 												CGUIButton::VORTICON ) );*/
-
 
 }
 
-
-/*void CHelpMenu::processSpecific()
-{
-	if( m_selection != NO_SELECTION)
-	{
-		//m_Map.m_animation_enabled = false;
-		// no cleanups here, because later we return back to that menu
-		switch(m_selection)
-		{
-		case 0:
-			mp_InfoScene = new CHelp(m_ExeFile, "Menu");
-			break;
-		case 1:
-			mp_InfoScene = new CHelp(m_ExeFile, "Game");
-			break;
-		case 2:
-			mp_InfoScene = new CStory(m_ExeFile);
-			break;
-		case 3:
-			mp_InfoScene = new COrderingInfo(m_ExeFile);
-			break;
-		case 4:
-			mp_InfoScene = new CAbout(m_ExeFile, "ID");
-			break;
-		case 5:
-			mp_InfoScene = new CAbout(m_ExeFile, "CG");
-			break;
-		case 6:
-			mp_InfoScene = new CCredits(m_ExeFile.getDataDirectory(),
-										m_ExeFile.getEpisode());
-			break;
-		case 7:
-			mp_InfoScene = new CPreviews(m_ExeFile);
-			break;
-		}
-		m_hideobjects = true;
-		m_selection = NO_SELECTION;
-		m_mustclose = true;
-	}
-}*/
 
