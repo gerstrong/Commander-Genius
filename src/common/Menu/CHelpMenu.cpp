@@ -38,7 +38,7 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												new StartInfoSceneEvent( new COrderingInfo ),
 												CGUIButton::VORTICON ) );
 
-	/*mpMenuDialog->addControl(new CGUIButton( "About ID",
+	mpMenuDialog->addControl(new CGUIButton( "About ID",
 												new StartInfoSceneEvent( new CAbout("ID") ),
 												CGUIButton::VORTICON ) );
 
@@ -46,7 +46,7 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												new StartInfoSceneEvent( new CAbout("CG") ),
 												CGUIButton::VORTICON ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Credits",
+	/*mpMenuDialog->addControl(new CGUIButton( "Credits",
 												new StartInfoSceneEvent( new CCredits() ),
 												CGUIButton::VORTICON ) );
 

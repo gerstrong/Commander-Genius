@@ -14,11 +14,15 @@
 #include "sdl/CVideoDriver.h"
 #include "common/CMapLoader.h"
 #include "fileio/ResourceMgmt.h"
+#include "sdl/extensions.h"
 
-CAbout::CAbout(CExeFile &ExeFile, const std::string &type) :
+CAbout::CAbout(const std::string &type) :
 m_type(type)
+{}
+
+void CAbout::init()
 {
-	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
+	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap = new CMap;
 	CMapLoader Maploader(mpMap);
 	
@@ -26,7 +30,7 @@ m_type(type)
 	mpMap->gotoPos( 1008, 28 );
 	
 	// Load the SDL_Bitmap
-	if(type == "ID")
+	if(m_type == "ID")
 	{
 		mp_bmp = g_pGfxEngine->getBitmap("IDLOGO");
 		
@@ -96,7 +100,7 @@ m_type(type)
 			}
 		}
 	}
-	else if(type == "CG")
+	else if(m_type == "CG")
 	{
 		std::string path = getResourceFilename("gfx/CGLogo.bmp", ExeFile.getDataDirectory(), true, true);
 		mpLogoBMP = SDL_LoadBMP(GetFullFileName(path).c_str());
@@ -138,13 +142,19 @@ m_type(type)
 		m_logo_rect.x = 160-m_logo_rect.w/2;
 		m_logo_rect.y = 22;
 	}
+
+	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	mpDrawSfc = SDL_DisplayFormatAlpha(temp);
+	SDL_FreeSurface(temp);
 }
 
 
 void CAbout::process()
 {	 
 	mpMap->animateAllTiles();
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 	
+
 	if(m_type == "ID")
 	{
 		mp_bmp->draw( g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 160-mp_bmp->getWidth()/2, 22);
@@ -156,9 +166,23 @@ void CAbout::process()
 	}
 
 	for(std::size_t i=0 ; i<m_lines.size() ; i++)
-		g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_lines.at(i), 24, 72+i*8, true);
+	{
+		g_pGfxEngine->getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
+	}
+
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpDrawSfc, NULL, NULL) );
 	
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;
+}
+
+void CAbout::teardown()
+{
+	if(!m_lines.empty())
+		m_lines.clear();
+	mpDrawSfc = NULL;
+	mpMap = NULL;
+	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	EventContainer.add(new ResetScrollSurface);
 }
 

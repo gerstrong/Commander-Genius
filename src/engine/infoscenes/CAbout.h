@@ -11,27 +11,30 @@
 #include <vector>
 #include <string>
 #include "CInfoScene.h"
-#include "../../graphics/CBitmap.h"
-#include "../../common/CMap.h"
-#include "../../fileio/CExeFile.h"
+#include "graphics/CBitmap.h"
+#include "common/CMap.h"
+#include "fileio/CExeFile.h"
 #include "SmartPointer.h"
 
-class CAbout : public CInfoScene {
+class CAbout : public CInfoScene
+{
 public:
-	CAbout(CExeFile &ExeFile, const std::string &type);
+	CAbout(const std::string &type);
 	
+	void init();
 	void process();
+	void teardown();
 	
 private:
 	static const int m_numberoflines=11;	// number of lines to print
 	CBitmap* mp_bmp;
 	
-	SmartPointer<CMap> mpMap;
-	SDL_Surface *mp_Scrollsurface;
+	SmartPointer <CMap> mpMap;
 	SmartPointer <SDL_Surface> mpLogoBMP;
 	SDL_Rect m_logo_rect;
 	std::vector<std::string> m_lines;
 	std::string m_type;
+	SmartPointer<SDL_Surface> mpDrawSfc;
 };
 
 #endif /* CABOUT_H_ */

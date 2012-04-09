@@ -145,7 +145,8 @@ void CGUIDialog::processLogic()
 
 	}
 
-	g_pInput->m_EventList.clear();
+	if(!g_pInput->m_EventList.empty())
+		g_pInput->m_EventList.clear();
 }
 
 
