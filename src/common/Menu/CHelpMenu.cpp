@@ -46,13 +46,13 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												new StartInfoSceneEvent( new CAbout("CG") ),
 												CGUIButton::VORTICON ) );
 
-	/*mpMenuDialog->addControl(new CGUIButton( "Credits",
+	mpMenuDialog->addControl(new CGUIButton( "Credits",
 												new StartInfoSceneEvent( new CCredits() ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Previews!",
 												new StartInfoSceneEvent( new CPreviews() ),
-												CGUIButton::VORTICON ) );*/
+												CGUIButton::VORTICON ) );
 
 }
 

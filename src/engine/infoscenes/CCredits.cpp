@@ -10,14 +10,16 @@
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CMapLoader.h"
+#include "sdl/extensions.h"
 
-CCredits::CCredits(const std::string &datadirectory, const char &episode) {
-	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
+void CCredits::init()
+{
+	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap = new CMap;
 
 	CMapLoader Maploader(mpMap);
 	
-	Maploader.load(episode, 90, datadirectory);
+	Maploader.load( ExeFile.getEpisode(), 90, ExeFile.getDataDirectory() );
 	mpMap->gotoPos( 104<<4, 16 );
 	
 	m_scrolltext[0] = "Commander Genius";
@@ -80,11 +82,16 @@ CCredits::CCredits(const std::string &datadirectory, const char &episode) {
 
 	for(int j=0 ; j<54 ; j++)
 		m_mid[j] = 160-(m_scrolltext[j].size()*4);
+
+	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	mpDrawSfc = SDL_DisplayFormatAlpha(temp);
+	SDL_FreeSurface(temp);
 }
 
 void CCredits::process()
 {
 	mpMap->animateAllTiles();
+	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 	
 	if(m_timer<2) m_timer++;
 	else
@@ -98,13 +105,21 @@ void CCredits::process()
 	for(int j=0 ; j<54 ; j++)
 	{
 		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
-			g_pGfxEngine->getFont(0).drawFont( g_pVideoDriver->mp_VideoEngine->getBlitSurface(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
+		{
+			g_pGfxEngine->getFont(1).drawFont( mpDrawSfc.get(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
+		}
 	}
 	
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpDrawSfc, NULL, NULL) );
+
 	if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 		m_destroy_me = true;
 }
 
-CCredits::~CCredits() {
+void CCredits::teardown()
+{
+	mpDrawSfc = NULL;
+	mpMap = NULL;
+	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	EventContainer.add(new ResetScrollSurface);
 }
-

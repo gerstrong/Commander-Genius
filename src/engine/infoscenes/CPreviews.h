@@ -17,12 +17,14 @@
 #include "SmartPointer.h"
 
 
-class CPreviews : public CInfoScene {
+class CPreviews : public CInfoScene
+{
 public:
-	CPreviews(CExeFile &ExeFile);
 	int openNextScene();
 
+	void init();
 	void process();
+	void teardown();
 
 	void drawPreviewScene();
 	void showText();
@@ -33,8 +35,6 @@ private:
 	SmartPointer<CFinaleStaticScene> mp_StaticScene;
 	SmartPointer<CTextViewer> mp_TextViewer; // Used for the preview text...
 	SmartPointer<CMap> mpMap;
-
-	SDL_Surface *mp_Scrollsurface;
 
 	void (CPreviews::*process_ptr)();
 

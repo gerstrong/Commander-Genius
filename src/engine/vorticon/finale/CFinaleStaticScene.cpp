@@ -24,7 +24,6 @@ m_timer(0)
 	SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
 	if(finale_draw( mpSceneSurface.get(), scene_file, game_path))
 		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSceneSurface, NULL,  NULL ) );
-
 	else
 		m_mustclose = true;
 }
@@ -53,6 +52,11 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
 
 void CFinaleStaticScene::process()
 {
+	if(!mpSceneSurface.empty())
+	{
+		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSceneSurface, NULL,  NULL ) );
+	}
+
 	if(m_timer)
 	{
 		m_timer--;
@@ -87,7 +91,8 @@ void CFinaleStaticScene::process()
 			{
 				if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
 				{ // show it!
-					i->p_bitmap->draw(g_pVideoDriver->mp_VideoEngine->getScrollSurface(), i->dest_rect.x, i->dest_rect.y);
+					i->p_bitmap->draw(g_pVideoDriver->mp_VideoEngine->getScrollSurface(),
+										i->dest_rect.x, i->dest_rect.y);
 				}
 			}
 

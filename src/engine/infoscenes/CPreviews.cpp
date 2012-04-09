@@ -13,12 +13,13 @@
 #include "sdl/input/CInput.h"
 #include "StringUtils.h"
 #include "common/CMapLoader.h"
+#include "sdl/extensions.h"
 
-CPreviews::CPreviews(CExeFile &ExeFile)
+void CPreviews::init()
 {
+	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	m_episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
-	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	mpMap = new CMap();
 
 	CMapLoader Maploader(mpMap);
@@ -102,5 +103,11 @@ void CPreviews::process()
 {
 	// Here only the variable for the scene function should be called. Use a pointer to function for that...
 	(*this.*process_ptr)();
+}
+
+void CPreviews::teardown()
+{
+	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	EventContainer.add(new ResetScrollSurface);
 }
 

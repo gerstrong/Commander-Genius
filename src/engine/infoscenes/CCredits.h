@@ -11,14 +11,14 @@
 #include <vector>
 #include <string>
 #include "CInfoScene.h"
-#include "../../common/CMap.h"
+#include "common/CMap.h"
 
 class CCredits : public CInfoScene {
 public:
-	CCredits(const std::string &datadirectory, const char &episode);
-	virtual ~CCredits();
 	
+	void init();
 	void process();
+	void teardown();
 	
 private:
 	std::string m_scrolltext[54];
@@ -27,7 +27,7 @@ private:
 	int m_scrolly;
 	
 	SmartPointer<CMap> mpMap;
-	SDL_Surface *mp_Scrollsurface;
+	SmartPointer<SDL_Surface> mpDrawSfc;
 };
 
 #endif /* CCREDITS_H_ */
