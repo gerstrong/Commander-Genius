@@ -18,7 +18,7 @@ CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text) :
 CMessageBox(Text, false, false, false)
 {
 	// Center that dialog box
-	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
+	/*CFont &Font = g_pGfxEngine->getFont(FONT_ID);
 	m_boxrect = g_pVideoDriver->getGameResolution().SDLRect();
 
 	m_boxrect.x = m_boxrect.w/2;
@@ -45,7 +45,7 @@ CMessageBox(Text, false, false, false)
 			m_boxrect.w, m_boxrect.h, DLG_THEME_GALAXY);
 
 	m_TextPos.x = 8;
-	m_TextPos.y = 8;
+	m_TextPos.y = 8;*/
 }
 
 void CMessageBoxGalaxy::process()
@@ -59,7 +59,7 @@ void CMessageBoxGalaxy::process()
 	}
 
 	// Draw the empty Dialog Box
-	mp_DlgFrame->draw(sfc);
+	/*mp_DlgFrame->draw(sfc);
 
 	// Set the proper Font colors
 	//g_pGfxEngine->getFont(FONT_ID).setBGColour(sfc->format, 0xFFFFFFFF);
@@ -67,5 +67,5 @@ void CMessageBoxGalaxy::process()
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
-		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, m_Lines[i], m_boxrect.x+m_TextPos.x, m_boxrect.y+(i*m_text_height+m_TextPos.y) );
+		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, m_Lines[i], m_boxrect.x+m_TextPos.x, m_boxrect.y+(i*m_text_height+m_TextPos.y) );*/
 }

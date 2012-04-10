@@ -15,7 +15,7 @@ CMessageBoxGalaxy(Text),
 m_Bitmap(g_pGfxEngine->getBitmap(BitmapId)),
 m_alignment(alignment)
 {
-	int new_height = m_boxrect.h;
+	/*int new_height = m_boxrect.h;
 
 	// Looking if the Bitmap is too big for the Message box. In that case enlarge it!
 	if( m_Bitmap.getHeight() > m_boxrect.h )
@@ -39,7 +39,7 @@ m_alignment(alignment)
 	m_boxrect.x = (gamerect.w - mp_DlgFrame->m_w)/2;
 	m_boxrect.y = (gamerect.h - mp_DlgFrame->m_h)/2;
 	mp_DlgFrame->setPos(m_boxrect.x, m_boxrect.y);
-
+*/
 }
 
 
@@ -50,12 +50,12 @@ void CMessageBoxBitmapGalaxy::process()
 	int bitmap_xcoord;
 
 	// now compute where the bitmap is to be drawn
-	if( m_alignment == RIGHT )
+	/*if( m_alignment == RIGHT )
 		bitmap_xcoord = mp_DlgFrame->m_x+mp_DlgFrame->m_w-(m_Bitmap.getWidth()+8);
 	else
 		bitmap_xcoord = m_boxrect.x+8;
 
 	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
-	m_Bitmap.draw( sfc,bitmap_xcoord, m_boxrect.y+8 );
+	m_Bitmap.draw( sfc,bitmap_xcoord, m_boxrect.y+8 );*/
 }

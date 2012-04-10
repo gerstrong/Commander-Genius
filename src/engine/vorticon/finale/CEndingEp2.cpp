@@ -80,7 +80,7 @@ void CEndingEp2::HeadsForEarth()
 
 	if(mp_Textbox)
 	{
-		mp_Textbox->process();
+		mp_Textbox->processLogic();
 
 		if(mp_Textbox->isFinished())
 		{
@@ -133,7 +133,7 @@ void CEndingEp2::LimpsHome()
 
 	if(mp_Textbox)
 	{
-		mp_Textbox->process();
+		mp_Textbox->processLogic();
 
 		if(mp_Textbox->isFinished())
 		{

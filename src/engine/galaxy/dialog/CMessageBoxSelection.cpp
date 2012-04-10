@@ -18,7 +18,7 @@ m_Options(Options),
 m_selection(0)
 {
 	// Center that dialog box
-	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
+	/*CFont &Font = g_pGfxEngine->getFont(FONT_ID);
 	m_boxrect = g_pVideoDriver->getGameResolution().SDLRect();
 
 	m_boxrect.x = m_boxrect.w/2;
@@ -55,13 +55,13 @@ m_selection(0)
 			m_boxrect.w, m_boxrect.h, DLG_THEME_GALAXY);
 
 	m_TextPos.x = 8;
-	m_TextPos.y = 8;
+	m_TextPos.y = 8;*/
 }
 
 
 void CMessageBoxSelection::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+	/*SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
 	// Look, if somebody pressed a button, and close this dialog!
 	if(g_pInput->getPressedCommand(IC_JUMP))
@@ -107,13 +107,13 @@ void CMessageBoxSelection::process()
 
 	std::list<TextEventMatchOption>::iterator it = m_Options.begin();
 	for( int i=0 ; it != m_Options.end() ; it++, i++)
-	{
+	{*/
 		/*if(i == m_selection)
 			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF0000FF);
 		else
 			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);*/
 
-		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, it->text, m_boxrect.x+m_TextPos.x, m_boxrect.y+((m_Lines.size()+i+1)*m_text_height+m_TextPos.y) );
-	}
+		/*g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, it->text, m_boxrect.x+m_TextPos.x, m_boxrect.y+((m_Lines.size()+i+1)*m_text_height+m_TextPos.y) );
+	}*/
 }
 

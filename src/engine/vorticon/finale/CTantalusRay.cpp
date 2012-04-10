@@ -44,7 +44,7 @@ void CTantalusRay::process()
 {
 	if(mp_MessageBox)
 	{
-		mp_MessageBox->process();
+		mp_MessageBox->processLogic();
 
 		if(mp_MessageBox->isFinished())
 		{

@@ -11,11 +11,11 @@
 #include "graphics/CGfxEngine.h"
 
 CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
-CMessageBox(Text, lower, keymsg, leftbound),
-m_twirltimer(0),
-m_twirlframe(0)
+CMessageBox(Text, lower, keymsg, leftbound)
 {
-	std::string buf;
+
+
+	/*std::string buf;
 	if(m_keymsg)
 	{
 		m_Lines.push_back("");
@@ -61,7 +61,7 @@ m_twirlframe(0)
 
 	mp_DlgFrame = new CDlgFrame(m_boxrect.x, m_boxrect.y,
 								m_boxrect.w*8, m_boxrect.h*8, DLG_THEME_VORTICON);
-
+*/
 }
 
 // This function is used in your Ship need those parts.
@@ -77,8 +77,8 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	m_Tiles.push_back(tileholder);
 }
 
-#define TWIRL_TIME	5
-void CMessageBoxVort::process()
+//#define TWIRL_TIME	5
+/*void CMessageBoxVort::process()
 {
 	// Look, if somebody pressed a button, and close this dialog!
 	if(g_pInput->getPressedAnyCommand())
@@ -119,4 +119,4 @@ void CMessageBoxVort::process()
 	}
 
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mMsgBoxSfc, NULL, &m_boxrect ) );
-}
+}*/

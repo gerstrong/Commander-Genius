@@ -11,7 +11,8 @@
 #include "dialog/CMessageBox.h"
 #include "SmartPointer.h"
 
-class CMessageBoxVort : public CMessageBox {
+class CMessageBoxVort : public CMessageBox
+{
 public:
 	CMessageBoxVort(const std::string& Text, bool lower = false, bool keymsg = false, bool leftbound = false);
 
@@ -20,18 +21,8 @@ public:
 	 */
 	void addTileAt(Uint16 tile, Uint16 x, Uint16 y);
 
-	/**
-	 * \brief This is called every time, the box needs to be redrawn.
-	 */
-	void process();
-
 private:
 	std::vector<TileHolder> m_Tiles;
-
-	Uint8 m_twirltimer;
-	Uint8 m_twirlframe;
-
-	SmartPointer <SDL_Surface> mMsgBoxSfc;
 };
 
 #endif /* CMESSAGEBOXVORT_H_ */

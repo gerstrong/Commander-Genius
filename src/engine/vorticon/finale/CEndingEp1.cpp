@@ -75,7 +75,7 @@ void CEndingEp1::ReturnsToShip()
 	if( m_timepassed<50000 && !g_pInput->getPressedAnyCommand() )
 	{
 		// perform a machine typing like dialog.
-		mp_Textbox->process();
+		mp_Textbox->processLogic();
 	}
 	else
 	{

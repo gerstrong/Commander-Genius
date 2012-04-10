@@ -14,7 +14,6 @@
 
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIButton.h"
-#include "gui/CGUIText.h"
 
 
 namespace vorticon

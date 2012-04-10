@@ -77,7 +77,7 @@ void CEndingEp3::HonorScene()
 	{
 		CMessageBoxVort *pMB = m_TextBoxes.front();
 
-		pMB->process();
+		pMB->processLogic();
 
 		if(pMB->isFinished())
 		{

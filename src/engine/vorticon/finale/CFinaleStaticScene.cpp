@@ -97,7 +97,7 @@ void CFinaleStaticScene::process()
 			}
 
 			// Draw Frame and the text like type writing
-			mp_current_tb->process();
+			mp_current_tb->processLogic();
 		}
 	}
 }

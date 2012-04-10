@@ -19,7 +19,8 @@
 #include "gui/CGUINumberControl.h"
 
 
-class CAudioSettings : public CBaseMenu {
+class CAudioSettings : public CBaseMenu
+{
 public:
 	CAudioSettings(Uint8 dlg_theme);
 
