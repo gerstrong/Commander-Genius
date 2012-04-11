@@ -11,10 +11,30 @@
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
 
+// This is a local functor that is invoked when the dialog has be closed
+struct CloseDialog : public InvokeFunctorEvent
+{
+	CloseDialog(bool &mustClose) : mMustClose(mustClose) {}
+
+	void operator()()
+	{		mMustClose = true;	}
+
+	bool &mMustClose;
+};
+
 CMessageBox::CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
 CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f)),
 m_mustclose(false)
 {
+	const char closeChar = 0x1F;
+	std::string closeString;
+	closeString = closeChar;
+	CGUIButton*	pButton	= new CGUIButton( closeString, new CloseDialog(m_mustclose), CGUIButton::NONE );
+
+	addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/0.8f, 0.06f/0.8f) );
+
+	mpReturnButton = pButton;
+
 	setBackground( CGUIDialog::VORTICON );
 
 	mpTextCtrl = new CGUIText( Text );

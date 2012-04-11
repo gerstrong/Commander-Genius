@@ -213,59 +213,59 @@ void CPlayGameVorticon::process()
 
 			m_Player[0].processEvents();
 		}
+	}
+
+	// Draw all the Stuff here!
+	drawAllElements();
+
+	if( m_Level == WORLD_MAP_LEVEL_VORTICON && m_showKeensLeft )
+		showKeensLeft();
 
 
-		// Draw all the Stuff here!
-		drawAllElements();
-
-		if( m_Level == WORLD_MAP_LEVEL_VORTICON && m_showKeensLeft )
-			showKeensLeft();
-
-
-		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
-		// Only confirmation button is allowes
-		if(m_gameover && !mp_Finale) // game over mode
+	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
+	// Only confirmation button is allowes
+	if(m_gameover && !mp_Finale) // game over mode
+	{
+		if(mp_gameoverbmp != NULL)
 		{
-			if(mp_gameoverbmp != NULL)
-			{
-				mp_gameoverbmp->process();
+			mp_gameoverbmp->process();
 
-				if( g_pInput->getPressedAnyCommand() )
-				{
-					//mp_HighScores = new CHighScores(true);
-
-					collectHighScoreInfo();
-				}
-			}
-			else // Bitmap must first be created
+			if( g_pInput->getPressedAnyCommand() )
 			{
-				CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
-				g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-				mp_gameoverbmp = new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap);
-				mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+				//mp_HighScores = new CHighScores(true);
+
+				collectHighScoreInfo();
 			}
 		}
-		else // No game over
+		else // Bitmap must first be created
 		{
-			// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
-			handleFKeys();
-		}
-
-
-		if (g_pVideoDriver->getVidConfig().showfps)
-		{
-			SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
-			std::string tempbuf;
-#ifdef DEBUG
-			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-								"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
-#else
-			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
-#endif
-			g_pGfxEngine->getFont(1).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
-
+			CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
+			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
+			mp_gameoverbmp = new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap);
+			mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 		}
 	}
+	else // No game over
+	{
+		// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
+		handleFKeys();
+	}
+
+
+	if (g_pVideoDriver->getVidConfig().showfps)
+	{
+		SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+		std::string tempbuf;
+#ifdef DEBUG
+		tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+				"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
+#else
+		tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
+#endif
+		g_pGfxEngine->getFont(1).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
+
+	}
+
 }
 
 

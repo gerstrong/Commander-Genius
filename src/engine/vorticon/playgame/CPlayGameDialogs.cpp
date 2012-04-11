@@ -23,13 +23,13 @@ void CPlayGameVorticon::processPauseDialogs()
 		CMessageBoxVort *pMB = m_MessageBoxes.front();
 		pMB->processLogic();
 
-		/*if( pMB->isFinished() )
+		if( pMB->isFinished() )
 		{
 			SAFE_DELETE(pMB);
 			m_MessageBoxes.pop_front();
 			if(m_MessageBoxes.empty())
 				m_paused = false;
-		}*/
+		}
 		return;
 	}
 
