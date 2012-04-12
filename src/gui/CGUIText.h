@@ -21,8 +21,12 @@ public:
 	void processLogic();
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
+	// Defines in character units how tall and wide the entire text is.
+	CRect<int> mTextDim;
+
 private:
 	std::list<std::string> mTextList;
+
 };
 
 #endif /* CGUITEXT_H_ */

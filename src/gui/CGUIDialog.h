@@ -63,8 +63,10 @@ public:
 	std::list< SmartPointer<CGUIControl> >& getControlList()
 	{	return mControlList;	}
 
-private:
+protected:
 	CRect<float> mRect;
+
+private:
 
 	// List of Controls that the Dialog has.
 	std::list< SmartPointer<CGUIControl> > mControlList;

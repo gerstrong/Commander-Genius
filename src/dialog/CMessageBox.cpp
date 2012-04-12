@@ -38,31 +38,27 @@ m_mustclose(false)
 	setBackground( CGUIDialog::VORTICON );
 
 	mpTextCtrl = new CGUIText( Text );
-	addControl( mpTextCtrl );
 
-	// Split up the text in lines, so can calculate the textbox dimensions
-	/*std::string buf = "";
-	for( size_t i=0 ; i<Text.size() ; i++ )
-	{
-		if( endofText(Text.substr(i)) )
-		{
-			if( m_text_width<buf.size() ) m_text_width=buf.size();
+	// Those formulas work well with our constellation but I don't think they are perfect.
+	// They transform the Message Box the way the text fits perfectly in.
+	mRect.w = (mpTextCtrl->mTextDim.w+2)*0.028f;
+	mRect.h = (mpTextCtrl->mTextDim.h+2)*0.05f;
+	mRect.x = (1.0f - mRect.w)/2.0f;
+	mRect.y = (1.0f - mRect.h)/2.0f;
 
-			m_Lines.push_back(buf);
-			buf.clear();
-		}
-		else
-			buf += Text[i];
-	}
+	// now let's center the long text...
+	CRect<float> TextRect;
+	TextRect.x = 0.055f/mRect.w;
+	TextRect.y = 0.05f/mRect.h;
+	TextRect.w = 0.9f;
+	TextRect.h = 0.9f;
 
-	size_t pos = 0;
-	if(!buf.empty())
-		while( (pos = buf.find('\n')) != std::string::npos )
-			buf.erase(pos,1);
-	m_Lines.push_back(buf);
+	addControl( mpTextCtrl, TextRect );
 
-	if( m_text_width<buf.size() )
-		m_text_width=buf.size();*/
+	CRect<float> closeRect = pButton->mRect;
+	closeRect.x = mRect.x;
+	closeRect.y = mRect.y;
+	pButton->setRect(closeRect);
 }
 
 void CMessageBox::processLogic()

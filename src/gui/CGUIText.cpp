@@ -12,12 +12,16 @@
 CGUIText::CGUIText(const std::string& text)
 {
 	// Split up the text in lines
+	mTextDim.w = 0;
 	// TODO: I think there is a more elegant way to achieve this!
 	std::string buf = "";
 	for( size_t i=0 ; i<text.size() ; i++ )
 	{
 		if( endofText(text.substr(i)) )
 		{
+			if( mTextDim.w<buf.size() )
+				mTextDim.w=buf.size();
+
 			mTextList.push_back(buf);
 			buf.clear();
 		}
@@ -30,6 +34,11 @@ CGUIText::CGUIText(const std::string& text)
 		while( (pos = buf.find('\n')) != std::string::npos )
 			buf.erase(pos,1);
 	mTextList.push_back(buf);
+
+	if( mTextDim.w<buf.size() )
+		mTextDim.w=buf.size();
+
+	mTextDim.h = mTextList.size();
 }
 
 
