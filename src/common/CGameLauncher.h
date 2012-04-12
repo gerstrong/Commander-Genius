@@ -77,7 +77,6 @@ private:
     std::vector<GameEntry> m_Entries;
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
-	CDialog *mp_LaunchMenu;
 	SmartPointer<CGUIDialog> mpLauncherDialog;
 
 	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);

@@ -22,7 +22,7 @@ public:
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
 private:
-	std::string mText;
+	std::list<std::string> mTextList;
 };
 
 #endif /* CGUITEXT_H_ */

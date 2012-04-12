@@ -67,7 +67,7 @@ m_mustclose(false)
 
 void CMessageBox::processLogic()
 {
-	// TODO: Here we need to process the close logic.
+	// TODO: Here we need to process the close logic, The (X) already work, but command must be caught here!
 
 	CGUIDialog::processLogic();
 }

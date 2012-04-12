@@ -22,9 +22,9 @@
 
 struct DrawGUIRenderTask : CEvent
 {
-	CGUIDialog	*mpDialog;
+	CGUIDialog *mpDialog;
 
-	DrawGUIRenderTask(CGUIDialog *pDialog) : mpDialog(pDialog) {}
+	DrawGUIRenderTask( CGUIDialog *pDialog ) : mpDialog(pDialog) {}
 };
 
 // Tile based Draw Tasks

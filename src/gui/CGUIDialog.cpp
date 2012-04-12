@@ -21,6 +21,12 @@ mSelection(0)
 	setBackground(NONE);
 }
 
+CGUIDialog::~CGUIDialog()
+{
+	if(!g_pVideoDriver->mDrawTasks.empty())
+		g_pVideoDriver->mDrawTasks.clear();
+}
+
 
 void CGUIDialog::setBackground(const Background background)
 {

@@ -25,7 +25,6 @@ CGameLauncher::CGameLauncher()
 {
     m_mustquit      = false;
     m_chosenGame    = -1;
-    mp_LaunchMenu   = NULL;
     m_ep1slot       = -1;
 	mpLauncherDialog = new CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f));
 }
@@ -36,9 +35,6 @@ CGameLauncher::CGameLauncher()
 bool CGameLauncher::init()
 {
     bool gamedetected = false;
-	
-    // Initialize the menu
-    mp_LaunchMenu = new CDialog(40, 25, INPUT_MODE_UP_DOWN, DLG_THEME_RED);
 	
     // Scan for games...
     m_DirList.clear();
@@ -192,7 +188,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 void CGameLauncher::process()
 {
     // Gather input states
-    if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+    /*if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
     {
         Uint8 selection = mp_LaunchMenu->getSelection();
         if( selection >= m_Entries.size() )
@@ -204,11 +200,14 @@ void CGameLauncher::process()
         {
             m_chosenGame = selection;
         }
-    }
+    }*/
 	
     // Did the user press (X)?
     if( g_pInput->getExitEvent() )
+    {
         m_mustquit = true;
+        return;
+    }
 
     mpLauncherDialog->processLogic();
 
@@ -309,6 +308,6 @@ void CGameLauncher::putLabels()
 void CGameLauncher::cleanup()
 {	
     // destroy the menu
-    if (mp_LaunchMenu) delete mp_LaunchMenu, mp_LaunchMenu = NULL;
+
 }
 

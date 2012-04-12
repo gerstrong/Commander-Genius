@@ -33,6 +33,8 @@ public:
 	// Constructor which needs the Rect for the placement of the Dialog
 	CGUIDialog(const CRect<float> &NewRect);
 
+	~CGUIDialog();
+
 	// Set the Background
 	void setBackground(const Background background);
 

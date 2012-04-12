@@ -78,7 +78,8 @@ private:
 		
 		if( newObj == NULL )
 			return;
-		if(!mutex) {
+		if(!mutex)
+		{
 			mutex = SDL_CreateMutex();
 			obj = newObj;
 			refCount = new int;
