@@ -95,9 +95,7 @@ void CGameControl::process()
 		}
 		else if( EventContainer.occurredEvent<StartMainGameEvent>() )
 		{
-			mpEngine = new CGameMain();
-			CGameMain *pGameMain = dynamic_cast<CGameMain*>(mpEngine.get());
-			mMenuController.setPlaying(pGameMain->isPlayingGame());
+			mpEngine = new CGameMain(mMenuController.mOpenedGamePlay);
 			mpEngine->init();
 			EventContainer.pop_Event();
 		}

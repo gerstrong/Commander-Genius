@@ -14,10 +14,7 @@
 class CGameMain : public CBaseEngine
 {
 public:
-	CGameMain() {};
-
-	bool isPlayingGame()
-	{		return (dynamic_cast<GMSwitchToPlayGameMode*>(mpGameMode.get())!=NULL);	}
+	CGameMain(bool &openedGamePlay) : mOpenedGamePlay(openedGamePlay) {};
 
 protected:
 
@@ -30,6 +27,7 @@ private:
 	SmartPointer<CGameMode>	mpGameMode;
 
 	//bool mShowFinale; // This should be an event
+	bool &mOpenedGamePlay;
 };
 
 

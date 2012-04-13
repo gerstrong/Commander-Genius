@@ -43,15 +43,12 @@ public:
 
 	void process();
 
-	void setPlaying(const bool openedGamePlay)
-	{	mOpenedGamePlay = openedGamePlay;	}
+	bool mOpenedGamePlay;
 
 private:
 
 	SmartPointer<CBaseMenu> mpMenu;
 	std::list< SmartPointer<CBaseMenu> > mMenuStack;
-
-	bool mOpenedGamePlay;
 };
 
 #endif /* CMENUCONTROLLER_H_ */

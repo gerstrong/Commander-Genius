@@ -29,6 +29,7 @@ void CGameMain::process()
 		{
 			mpGameMode = new CGamePassiveMode( p_Passive->m_DataDirectory, p_Passive->m_Episode );
 			mpGameMode->init();
+			mOpenedGamePlay = false;
 			EventContainer.pop_Event();
 		}
 		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
@@ -37,6 +38,7 @@ void CGameMain::process()
 					p_PlayGame->m_Difficulty, p_PlayGame->m_DataDirectory,
 					p_PlayGame->m_SavedGame, p_PlayGame->m_startlevel);
 			mpGameMode->init();
+			mOpenedGamePlay = true;
 			EventContainer.pop_Event();
 			EventContainer.add( new CloseAllMenusEvent() );
 		}
