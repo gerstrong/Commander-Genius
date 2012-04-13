@@ -39,14 +39,19 @@ class CMenuController
 {
 
 public:
+	CMenuController() : mOpenedGamePlay(false) {}
 
 	void process();
+
+	void setPlaying(const bool openedGamePlay)
+	{	mOpenedGamePlay = openedGamePlay;	}
 
 private:
 
 	SmartPointer<CBaseMenu> mpMenu;
 	std::list< SmartPointer<CBaseMenu> > mMenuStack;
 
+	bool mOpenedGamePlay;
 };
 
 #endif /* CMENUCONTROLLER_H_ */

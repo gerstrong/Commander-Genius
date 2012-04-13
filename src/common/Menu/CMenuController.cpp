@@ -23,7 +23,7 @@ void CMenuController::process()
 	{
 		if( mMenuStack.empty() ) // If no menu is open, open the main menu
 		{
-			EventContainer.add( new OpenMenuEvent( new CMainMenu(DLG_THEME_VORTICON) ) );
+			EventContainer.add( new OpenMenuEvent( new CMainMenu(DLG_THEME_VORTICON, mOpenedGamePlay) ) );
 		}
 		else // Close the menu which is open. Might go back if it is a submenu
 		{

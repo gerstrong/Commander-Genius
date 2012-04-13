@@ -17,7 +17,7 @@
 #include "core/mode/CGameMode.h"
 
 
-CMainMenu::CMainMenu( const Uint8 dlgTheme ) :
+CMainMenu::CMainMenu( const Uint8 dlgTheme, const bool openedGamePlay ) :
 CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
 
@@ -27,13 +27,17 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 	CGUIButton *button = new CGUIButton( "New Game", new StartGameplayEvent(), CGUIButton::VORTICON );
 	mpMenuDialog->addControl( button );
 
-	mpMenuDialog->addControl(new CGUIButton( "Load",
-												new OpenMenuEvent( new CLoadMenu(dlgTheme) ),
-												CGUIButton::VORTICON ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Save",
-												new OpenMenuEvent( new CSaveMenu(dlgTheme) ),
-												CGUIButton::VORTICON ) );
+	CGUIButton *loadButton = new CGUIButton( "Load",
+										new OpenMenuEvent( new CLoadMenu(dlgTheme) ),
+										CGUIButton::VORTICON );
+	mpMenuDialog->addControl( loadButton );
+
+	CGUIButton *saveButton = new CGUIButton( "Save",
+									new OpenMenuEvent( new CSaveMenu(dlgTheme) ),
+									CGUIButton::VORTICON );
+	mpMenuDialog->addControl( saveButton );
+	saveButton->mEnabled = openedGamePlay;
 
 	mpMenuDialog->addControl(new CGUIButton( "Settings",
 												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),

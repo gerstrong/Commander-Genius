@@ -16,6 +16,9 @@ class CGameMain : public CBaseEngine
 public:
 	CGameMain() {};
 
+	bool isPlayingGame()
+	{		return (dynamic_cast<GMSwitchToPlayGameMode*>(mpGameMode.get())!=NULL);	}
+
 protected:
 
 	void init();
