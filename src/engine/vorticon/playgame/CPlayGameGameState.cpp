@@ -18,8 +18,10 @@
 ///////////////////////////
 bool CPlayGameVorticon::loadGameState()
 {
+	CSaveGameController &savedGame = *(gpSaveGameController);
+
 	// This fills the datablock from CSavedGame object
-	if(m_SavedGame.load())
+	if(savedGame.load())
 	{
 		// Create the special merge effect (Fadeout)
 		CColorMerge *pColorMergeFX = new CColorMerge(8);
@@ -29,23 +31,23 @@ bool CPlayGameVorticon::loadGameState()
 
 		// get the episode, level and difficulty
 		char newLevel;
-		m_SavedGame.decodeData(m_Episode);
-		m_SavedGame.decodeData(newLevel);
+		savedGame.decodeData(m_Episode);
+		savedGame.decodeData(newLevel);
 
 		bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
 		m_Level = newLevel;
 
-		m_SavedGame.decodeData(m_Difficulty);
+		savedGame.decodeData(m_Difficulty);
 
 		bool dark, checkpointset;
 		int checkx, checky;
-		m_SavedGame.decodeData(checkpointset);
-		m_SavedGame.decodeData(checkx);
-		m_SavedGame.decodeData(checky);
-		m_SavedGame.decodeData(dark);
+		savedGame.decodeData(checkpointset);
+		savedGame.decodeData(checkx);
+		savedGame.decodeData(checky);
+		savedGame.decodeData(dark);
 
 		// Load number of Players
-		m_SavedGame.decodeData(m_NumPlayers);
+		savedGame.decodeData(m_NumPlayers);
 
 		if(!m_Player.empty())
 			m_Player.clear();
@@ -74,20 +76,20 @@ bool CPlayGameVorticon::loadGameState()
 		for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) {
 			int x, y;
 			player->setupforLevelPlay();
-			m_SavedGame.decodeData(x);
-			m_SavedGame.decodeData(y);
+			savedGame.decodeData(x);
+			savedGame.decodeData(y);
 			player->moveToForce(VectorD2<int>(x,y));
-			m_SavedGame.decodeData(player->blockedd);
-			m_SavedGame.decodeData(player->blockedu);
-			m_SavedGame.decodeData(player->blockedl);
-			m_SavedGame.decodeData(player->blockedr);
-			m_SavedGame.decodeData(player->inventory);
+			savedGame.decodeData(player->blockedd);
+			savedGame.decodeData(player->blockedu);
+			savedGame.decodeData(player->blockedl);
+			savedGame.decodeData(player->blockedr);
+			savedGame.decodeData(player->inventory);
 			player->pdie = 0;
 		}
 
 		// load the number of objects on screen
 		Uint32 size;
-		m_SavedGame.decodeData(size);
+		savedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size  ; i++ ) {
 			unsigned int x,y;
 
@@ -100,24 +102,24 @@ bool CPlayGameVorticon::loadGameState()
 
 			CObject* object = m_Object.at(i);
 
-			m_SavedGame.decodeData(object->m_type);
-			m_SavedGame.decodeData(x);
-			m_SavedGame.decodeData(y);
+			savedGame.decodeData(object->m_type);
+			savedGame.decodeData(x);
+			savedGame.decodeData(y);
 			object->moveToForce(VectorD2<int>(x,y));
-			m_SavedGame.decodeData(object->dead);
-			m_SavedGame.decodeData(object->onscreen);
-			m_SavedGame.decodeData(object->hasbeenonscreen);
-			m_SavedGame.decodeData(object->exists);
-			m_SavedGame.decodeData(object->blockedd);
-			m_SavedGame.decodeData(object->blockedu);
-			m_SavedGame.decodeData(object->blockedl);
-			m_SavedGame.decodeData(object->blockedr);
-			m_SavedGame.decodeData(object->HealthPoints);
-			m_SavedGame.decodeData(object->canbezapped);
-			m_SavedGame.decodeData(object->cansupportplayer);
-			m_SavedGame.decodeData(object->inhibitfall);
-			m_SavedGame.decodeData(object->honorPriority);
-			m_SavedGame.decodeData(object->sprite);
+			savedGame.decodeData(object->dead);
+			savedGame.decodeData(object->onscreen);
+			savedGame.decodeData(object->hasbeenonscreen);
+			savedGame.decodeData(object->exists);
+			savedGame.decodeData(object->blockedd);
+			savedGame.decodeData(object->blockedu);
+			savedGame.decodeData(object->blockedl);
+			savedGame.decodeData(object->blockedr);
+			savedGame.decodeData(object->HealthPoints);
+			savedGame.decodeData(object->canbezapped);
+			savedGame.decodeData(object->cansupportplayer);
+			savedGame.decodeData(object->inhibitfall);
+			savedGame.decodeData(object->honorPriority);
+			savedGame.decodeData(object->sprite);
 			object->performCollisions();
 
 			if(object->m_type == OBJ_DOOR or
@@ -134,12 +136,12 @@ bool CPlayGameVorticon::loadGameState()
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
 
 		// Load the map_data as it was left last
-		m_SavedGame.decodeData(mMap->m_width);
-		m_SavedGame.decodeData(mMap->m_height);
-		m_SavedGame.readDataBlock( reinterpret_cast<byte*>(mMap->getForegroundData()) );
+		savedGame.decodeData(mMap->m_width);
+		savedGame.decodeData(mMap->m_height);
+		savedGame.readDataBlock( reinterpret_cast<byte*>(mMap->getForegroundData()) );
 
 		// Load completed levels
-		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
+		savedGame.readDataBlock( (byte*)(mp_level_completed));
 
 		m_Player[0].setMapData(mMap.get());
 		m_Player[0].mp_camera->attachObject(&m_Player[0]);
@@ -175,66 +177,68 @@ bool CPlayGameVorticon::saveGameState()
 	size_t i;
 	size_t size;
 
+	CSaveGameController &savedGame = *(gpSaveGameController);
+
 	/// Save the Game in the CSavedGame object
 	// store the episode, level and difficulty
-	m_SavedGame.encodeData(m_Episode);
-	m_SavedGame.encodeData(m_Level);
-	m_SavedGame.encodeData(m_Difficulty);
+	savedGame.encodeData(m_Episode);
+	savedGame.encodeData(m_Level);
+	savedGame.encodeData(m_Difficulty);
 
 	// Also the last checkpoint is stored. This is the level entered from map
 	// in Commander Keen games
-	m_SavedGame.encodeData(m_checkpointset);
-	m_SavedGame.encodeData(m_checkpoint_x);
-	m_SavedGame.encodeData(m_checkpoint_y);
-	m_SavedGame.encodeData(mMap->m_Dark);
+	savedGame.encodeData(m_checkpointset);
+	savedGame.encodeData(m_checkpoint_x);
+	savedGame.encodeData(m_checkpoint_y);
+	savedGame.encodeData(mMap->m_Dark);
 
 	// Save number of Players
-	m_SavedGame.encodeData(m_NumPlayers);
+	savedGame.encodeData(m_NumPlayers);
 
 	// Now save the inventory of every player
 	for( i=0 ; i<m_NumPlayers ; i++ )
 	{
-		m_SavedGame.encodeData(m_Player[i].getXPosition());
-		m_SavedGame.encodeData(m_Player[i].getYPosition());
-		m_SavedGame.encodeData(m_Player[i].blockedd);
-		m_SavedGame.encodeData(m_Player[i].blockedu);
-		m_SavedGame.encodeData(m_Player[i].blockedl);
-		m_SavedGame.encodeData(m_Player[i].blockedr);
-		m_SavedGame.encodeData(m_Player[i].inventory);
+		savedGame.encodeData(m_Player[i].getXPosition());
+		savedGame.encodeData(m_Player[i].getYPosition());
+		savedGame.encodeData(m_Player[i].blockedd);
+		savedGame.encodeData(m_Player[i].blockedu);
+		savedGame.encodeData(m_Player[i].blockedl);
+		savedGame.encodeData(m_Player[i].blockedr);
+		savedGame.encodeData(m_Player[i].inventory);
 	}
 
 	size = m_Object.size();
 	// save the number of objects on screen
-	m_SavedGame.encodeData(size);
+	savedGame.encodeData(size);
 	for( i=0 ; i<size ; i++) {
 		// save all the objects states
-		m_SavedGame.encodeData(m_Object[i]->m_type);
-		m_SavedGame.encodeData(m_Object[i]->getXPosition());
-		m_SavedGame.encodeData(m_Object[i]->getYPosition());
-		m_SavedGame.encodeData(m_Object[i]->dead);
-		m_SavedGame.encodeData(m_Object[i]->onscreen);
-		m_SavedGame.encodeData(m_Object[i]->hasbeenonscreen);
-		m_SavedGame.encodeData(m_Object[i]->exists);
-		m_SavedGame.encodeData(m_Object[i]->blockedd);
-		m_SavedGame.encodeData(m_Object[i]->blockedu);
-		m_SavedGame.encodeData(m_Object[i]->blockedl);
-		m_SavedGame.encodeData(m_Object[i]->blockedr);
-		m_SavedGame.encodeData(m_Object[i]->HealthPoints);
-		m_SavedGame.encodeData(m_Object[i]->canbezapped);
-		m_SavedGame.encodeData(m_Object[i]->cansupportplayer);
-		m_SavedGame.encodeData(m_Object[i]->inhibitfall);
-		m_SavedGame.encodeData(m_Object[i]->honorPriority);
-		m_SavedGame.encodeData(m_Object[i]->sprite);
+		savedGame.encodeData(m_Object[i]->m_type);
+		savedGame.encodeData(m_Object[i]->getXPosition());
+		savedGame.encodeData(m_Object[i]->getYPosition());
+		savedGame.encodeData(m_Object[i]->dead);
+		savedGame.encodeData(m_Object[i]->onscreen);
+		savedGame.encodeData(m_Object[i]->hasbeenonscreen);
+		savedGame.encodeData(m_Object[i]->exists);
+		savedGame.encodeData(m_Object[i]->blockedd);
+		savedGame.encodeData(m_Object[i]->blockedu);
+		savedGame.encodeData(m_Object[i]->blockedl);
+		savedGame.encodeData(m_Object[i]->blockedr);
+		savedGame.encodeData(m_Object[i]->HealthPoints);
+		savedGame.encodeData(m_Object[i]->canbezapped);
+		savedGame.encodeData(m_Object[i]->cansupportplayer);
+		savedGame.encodeData(m_Object[i]->inhibitfall);
+		savedGame.encodeData(m_Object[i]->honorPriority);
+		savedGame.encodeData(m_Object[i]->sprite);
 	}
 
 	// Save the map_data as it is left
-	m_SavedGame.encodeData(mMap->m_width);
-	m_SavedGame.encodeData(mMap->m_height);
-	m_SavedGame.addData( reinterpret_cast<byte*>(mMap->getForegroundData()),
+	savedGame.encodeData(mMap->m_width);
+	savedGame.encodeData(mMap->m_height);
+	savedGame.addData( reinterpret_cast<byte*>(mMap->getForegroundData()),
 													2*mMap->m_width*mMap->m_height );
 
 	// store completed levels
-	m_SavedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );
+	savedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );
 
-	return m_SavedGame.save();
+	return savedGame.save();
 }

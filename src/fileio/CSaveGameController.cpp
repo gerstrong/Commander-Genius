@@ -531,7 +531,7 @@ bool CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name
 
 	m_offset = 0;
 
-	g_pBehaviorEngine->EventList().add( new SaveGameFunctorEvent() );
+	g_pBehaviorEngine->EventList().add( new SaveGameEvent() );
 
 	return true;
 }
@@ -544,7 +544,7 @@ bool CSaveGameController::prepareLoadGame(int SaveSlot)
 	m_statefilename = JoinPaths(m_savedir, savefile);
     m_datablock.clear();
 
-    g_pBehaviorEngine->EventList().add( new LoadGameFunctorEvent() );
+    g_pBehaviorEngine->EventList().add( new LoadGameEvent() );
 
 	return true;
 }

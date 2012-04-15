@@ -27,6 +27,7 @@ public:
 			 char numplayers, Uint8& difficulty);
 
 	virtual bool loadGameState() = 0;
+	virtual bool saveGameState() = 0;
 	virtual void process() = 0;
 	virtual bool init() = 0;
 	virtual void cleanup() = 0;
@@ -69,7 +70,6 @@ protected:
 	bool m_restartVideo;
 
 	stOption *mp_option;
-	CSaveGameController m_SavedGame;
 };
 
 #endif /* CPLAYGAME_H_ */

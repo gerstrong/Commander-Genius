@@ -35,8 +35,7 @@ void CGameMain::process()
 		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
 		{
 			mpGameMode = new CGamePlayMode( p_PlayGame->m_Episode, p_PlayGame->m_Numplayers,
-					p_PlayGame->m_Difficulty, p_PlayGame->m_DataDirectory,
-					p_PlayGame->m_SavedGame, p_PlayGame->m_startlevel);
+					p_PlayGame->m_Difficulty, p_PlayGame->m_DataDirectory, p_PlayGame->m_startlevel);
 			mpGameMode->init();
 			mOpenedGamePlay = true;
 			EventContainer.pop_Event();

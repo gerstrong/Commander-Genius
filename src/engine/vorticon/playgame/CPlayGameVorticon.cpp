@@ -115,7 +115,7 @@ bool CPlayGameVorticon::init()
 
 	// load level map
 	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
-	m_SavedGame.setLevel(m_Level);
+	gpSaveGameController->setLevel(m_Level);
 
 	//// If those worked fine, continue the initialization
 	// draw level map

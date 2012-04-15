@@ -103,21 +103,11 @@ private:
 };
 
 
-struct SaveGameFunctorEvent : public InvokeFunctorEvent
-{
-	void operator()()
-	{
-		gpSaveGameController->save();
-	}
-};
+struct SaveGameEvent : public CEvent
+{};
 
-struct LoadGameFunctorEvent : public InvokeFunctorEvent
-{
-	void operator()()
-	{
-		gpSaveGameController->load();
-	}
-};
+struct LoadGameEvent : public CEvent
+{};
 
 
 #include "CSavedGameCoder.h"

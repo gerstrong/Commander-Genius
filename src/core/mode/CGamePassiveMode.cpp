@@ -64,12 +64,18 @@ void CGamePassiveMode::process()
 			const int Numplayers = 1;
 			const int Difficulty = 1;
 			std::string DataDirectory = mpPassive->getGamePath();
-			CSaveGameController SavedGame = mpPassive->getSavedGameBlock();
 
 			EventContainer.pop_Event();
 
-			EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory, SavedGame ) );
+			EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory ) );
 			return;
+		}
+
+		if( EventContainer.occurredEvent<LoadGameEvent>() )
+		{
+			// In this case let's pop this event and add the same one, the way the loading is finished within the playgame object
+			EventContainer.pop_Event();
+			EventContainer.add( new LoadGameEvent() );
 		}
 	}
 

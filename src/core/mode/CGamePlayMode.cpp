@@ -11,14 +11,13 @@
 #include "graphics/effects/CColorMerge.h"
 
 CGamePlayMode::CGamePlayMode(const int Episode, const int Numplayers,
-		const int Difficulty, const std::string& DataDirectory, CSaveGameController& SavedGame,
+		const int Difficulty, const std::string& DataDirectory,
 		const int startLevel) :
 m_startLevel(startLevel),
 m_Episode(Episode),
 m_Numplayers(Numplayers),
 m_Difficulty(Difficulty),
-m_DataDirectory(DataDirectory),
-m_SavedGame(SavedGame)
+m_DataDirectory(DataDirectory)
 {}
 
 void CGamePlayMode::init()
@@ -56,11 +55,6 @@ void CGamePlayMode::init()
 
 	g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
-	if( EventContainer.occurredEvent<SaveGameFunctorEvent>() )
-	{
-		ok &= mp_PlayGame->loadGameState();
-	}
-
 
 	if(!ok)
 	{
@@ -75,6 +69,20 @@ void CGamePlayMode::process()
 
 	mp_PlayGame->process();
 
+
+	if( EventContainer.occurredEvent<LoadGameEvent>() )
+	{
+		mp_PlayGame->loadGameState();
+		EventContainer.pop_Event();
+	}
+
+	if( EventContainer.occurredEvent<SaveGameEvent>() )
+	{
+		mp_PlayGame->saveGameState();
+		EventContainer.pop_Event();
+	}
+
+
 	if( mp_PlayGame->getEndGame() )
 	{
 		m_startLevel = 0;
@@ -84,9 +92,8 @@ void CGamePlayMode::process()
 	{ // Start another new game
 		m_Numplayers = mp_PlayGame->getNumPlayers();
 		m_Difficulty = mp_PlayGame->getDifficulty();
-		m_SavedGame = mp_PlayGame->getSavedGameBlock();
 
-		EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, m_Numplayers, m_Difficulty, m_DataDirectory, m_SavedGame) );
+		EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, m_Numplayers, m_Difficulty, m_DataDirectory) );
 	}
 	else if( mp_PlayGame->getExitEvent() )
 	{

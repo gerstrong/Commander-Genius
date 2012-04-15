@@ -31,6 +31,7 @@ public:
 			  CSaveGameController &SavedGame);
 
 	bool loadGameState();
+	bool saveGameState();
 	bool init();
 
 	void process();

@@ -36,6 +36,10 @@ m_SavedGame(SavedGame)
 bool CPlayGameGalaxy::loadGameState()
 {	return false;	}
 
+bool CPlayGameGalaxy::saveGameState()
+{	return false;	}
+
+
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
 {

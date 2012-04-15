@@ -14,10 +14,11 @@
 #include "SmartPointer.h"
 #include <string>
 
-class CGamePlayMode : public CGameMode {
+class CGamePlayMode : public CGameMode
+{
 public:
 	CGamePlayMode( const int Episode, const int Numplayers,
-			const int Difficulty, const std::string& DataDirectory, CSaveGameController& SavedGame,
+			const int Difficulty, const std::string& DataDirectory,
 			const int startLevel = -1);
 
 	void init();
