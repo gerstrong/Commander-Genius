@@ -12,6 +12,8 @@
 #include "common/CBehaviorEngine.h"
 #include <ctime>
 
+
+
 void sgrle_initdecompression(void);
 void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes);
@@ -20,10 +22,9 @@ void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 // Initialization Routines
 CSaveGameController::CSaveGameController()
 {
-	m_Command = NONE;
 	m_offset = 0;
 
-	int spacelen = ((TEXT_WIDTH-6)/2);
+	const int spacelen = ((TEXT_WIDTH-6)/2);
 
 	for(int c=0 ; c<spacelen ; c++)
 		m_emptyString += " ";
@@ -78,14 +79,16 @@ std::string CSaveGameController::getUnnamedSlotName()
 }
 
 // Read the data of size and stores it in the buffer
-void CSaveGameController::readData(char *buffer, Uint32 size, std::ifstream &StateFile) {
+void CSaveGameController::readData(char *buffer, Uint32 size, std::ifstream &StateFile)
+{
 	for(Uint32 i=0 ; i<size ; i++) {
 		buffer[i] = StateFile.get();
 	}
 }
 
 // Used here for filtering the filetypes
-struct StateFileListFiller {
+struct StateFileListFiller
+{
 	std::set<std::string> list;
 
 	bool operator() (const std::string& filename) {
@@ -520,15 +523,15 @@ bool CSaveGameController::Fileexists( int SaveSlot )
 
 // This method is called by the menu. It assures that the
 // PlayGame instance will call save() and get the right data.
-bool CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name)
+bool CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name )
 {
 	m_statefilename =  m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
 	m_statename = Name;
 	m_datablock.clear();
 
-	// This will make the CPlayGame instance call save
-	m_Command = SAVE;
 	m_offset = 0;
+
+	g_pBehaviorEngine->EventList().add( new SaveGameFunctorEvent() );
 
 	return true;
 }
@@ -541,8 +544,7 @@ bool CSaveGameController::prepareLoadGame(int SaveSlot)
 	m_statefilename = JoinPaths(m_savedir, savefile);
     m_datablock.clear();
 
-	// This will make the CPlayGame instance call save
-	m_Command = LOAD;
+    g_pBehaviorEngine->EventList().add( new LoadGameFunctorEvent() );
 
 	return true;
 }
@@ -575,7 +577,6 @@ bool CSaveGameController::load()
 
 	// Done!
 	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully loaded. Size: "+itoa(m_datablock.size())+"\n");
-	m_Command = NONE;
 	m_offset = 0;
 	m_statefilename.clear();
 	m_statename.clear();
@@ -607,9 +608,9 @@ bool CSaveGameController::save()
 	std::string fullpath = GetFullFileName(m_statefilename);
 	bool open = OpenGameFileW( StateFile, m_statefilename, std::ofstream::binary );
 
-    if (!open) {
+    if (!open)
+    {
     	g_pLogFile->textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
-    	m_Command = NONE;
     	return false;
     }
 
@@ -629,13 +630,15 @@ bool CSaveGameController::save()
 	primitive_buffer[offset++] = SAVEGAMEVERSION;
 	primitive_buffer[offset++] = m_statename.size();
 
-	for( Uint32 i=0; i<m_statename.size() ; i++ ){
+	for( Uint32 i=0; i<m_statename.size() ; i++ )
+	{
 		primitive_buffer[offset++] = m_statename[i];
 	}
 
 	// Write the collected data block
 	std::vector<byte>::iterator pos = m_datablock.begin();
-	for( size_t i=0; i<m_datablock.size() ; i++ ){
+	for( size_t i=0; i<m_datablock.size() ; i++ )
+	{
 		primitive_buffer[offset++] = *pos;
 		pos++;
 	}
@@ -650,7 +653,6 @@ bool CSaveGameController::save()
 
 	// Done!
 	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully saved. Size: "+itoa(size)+"\n");
-	m_Command = NONE;
 	m_statefilename.clear();
 	m_statename.clear();
 
@@ -658,7 +660,8 @@ bool CSaveGameController::save()
 }
 
 // Adds data of size to the main data block
-void CSaveGameController::addData(byte *data, Uint32 size) {
+void CSaveGameController::addData(byte *data, Uint32 size)
+{
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
 	{
 		Uint32 datasize;
@@ -671,7 +674,8 @@ void CSaveGameController::addData(byte *data, Uint32 size) {
 }
 
 // Read data of size from the main data block
-void CSaveGameController::readDataBlock(byte *data) {
+void CSaveGameController::readDataBlock(byte *data)
+{
 	Uint32 datasize=0;
 	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32));
 	m_offset += sizeof(Uint32);

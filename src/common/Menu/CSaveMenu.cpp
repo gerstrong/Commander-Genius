@@ -10,11 +10,12 @@
 #include "CConfirmMenu.h"
 #include "sdl/input/CInput.h"
 #include "gui/CGUIInputText.h"
-
-#include <ctime>
+#include "fileio/CSaveGameController.h"
+#include "common/CBehaviorEngine.h"
+#include "common/Menu/CMenuController.h"
 
 CSaveMenu::CSaveMenu(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.0f, 0.0f, 1.0f, 1.0f) ),
+CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
 mp_OverwriteMenu(NULL),
 m_overwrite(false)
 {
@@ -36,86 +37,25 @@ m_overwrite(false)
 	}
 }
 
-/*void CSaveMenu::processSpecific()
-{*/
-	/*if(!mp_OverwriteMenu)
+void CSaveMenu::sendEvent(SmartPointer<CEvent> command)
+{
+	// Before all events are sent to the dialog which handles selection catch some specific events
+	// required for the saving process.
+	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
 	{
-		if( m_selection != NO_SELECTION )
+		const int sel = mpMenuDialog->Selection();
+		if( sel > 0 )
 		{
-			if( mp_Dialog->getInputMode(INPUT_MODE_UP_DOWN) )
+			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
 			{
-				if( m_SavedGame.getSlotList().size() > m_selection )
-					mp_Dialog->m_name = m_SavedGame.getSlotList().at(m_selection);
-
-				if( m_SavedGame.getSlotList().size() > m_selection && mp_Dialog->m_name != m_SavedGame.getEmptyString() )
-				{
-					mp_OverwriteMenu = new CConfirmMenu("Overwrite?", m_overwrite, m_dlg_theme);
-					m_suspended = true;
-				}
-				else
-				{
-#ifndef NOKEYBOARD
-					mp_Dialog->m_name = "Slot" + itoa(m_selection);
-					mp_Dialog->m_length = TEXT_WIDTH;
-					mp_Dialog->setInputMode(INPUT_MODE_TEXT);
-#else
-
-					mp_Dialog->m_name = m_SavedGame.getUnnamedSlotName();
-					mp_Dialog->m_length = TEXT_WIDTH;
-
-					// save right away
-					saveSelection();
-#endif
-					return;
-				}
-
-			}
-			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) &&
-					(g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) ) )
-			{
-				saveSelection();
+				const CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
+				gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
+				g_pBehaviorEngine->EventList().add( new CloseAllMenusEvent() );
+				return;
 			}
 		}
 	}
-	else
-	{
-		mp_OverwriteMenu->processCommon();
-		mp_OverwriteMenu->processSpecific();
-		mp_OverwriteMenu->postProcess();
 
-		if(mp_OverwriteMenu->mustClose())
-		{
-			SAFE_DELETE(mp_OverwriteMenu);
-			m_suspended = false;
-			mp_Dialog->m_length = TEXT_WIDTH;
-
-			if(m_overwrite)
-			{
-#ifndef NOKEYBOARD
-				mp_Dialog->setInputMode(INPUT_MODE_TEXT);
-#else
-				mp_Dialog->m_name = m_SavedGame.getUnnamedSlotName();
-				mp_Dialog->m_length = TEXT_WIDTH;
-				saveSelection();
-#endif
-
-			}
-			else
-			{
-				mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
-				m_selection = NO_SELECTION;
-			}
-
-		}
-	}*/
-/*}
-
-void CSaveMenu::saveSelection()
-{*/
-	/*mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
-
-	m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
-	m_selection = NO_SELECTION;
-	mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);*/
-//}
+	mpMenuDialog->sendEvent(command);
+}
 

@@ -24,6 +24,7 @@ m_SavedGame(SavedGame)
 void CGamePlayMode::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	// If no level has been set or is out of bound, set it to map.
 	if(m_startLevel > 100 || m_startLevel < 0 )
@@ -48,22 +49,21 @@ void CGamePlayMode::init()
 											m_SavedGame);
 	}
 
+	// Create the special merge effect (Fadeout)
+	CColorMerge *pColorMergeFX = new CColorMerge(8);
 
-	if(m_SavedGame.getCommand() == CSaveGameController::LOAD)
-		ok &= mp_PlayGame->loadGameState();
-	else
+	ok &= mp_PlayGame->init();
+
+	g_pGfxEngine->pushEffectPtr(pColorMergeFX);
+
+	if( EventContainer.occurredEvent<SaveGameFunctorEvent>() )
 	{
-		// Create the special merge effect (Fadeout)
-		CColorMerge *pColorMergeFX = new CColorMerge(8);
-
-		ok &= mp_PlayGame->init();
-
-		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
+		ok &= mp_PlayGame->loadGameState();
 	}
+
 
 	if(!ok)
 	{
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode));
 	}
 }

@@ -7,52 +7,53 @@
 
 #include "CLoadMenu.h"
 #include "fileio/CSaveGameController.h"
+#include "common/CBehaviorEngine.h"
+#include "gui/CGUIText.h"
+#include "gui/CGUIButton.h"
+#include "common/Menu/CMenuController.h"
+#include "core/mode/CGameMode.h"
+
+
+struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
+{
+	LoadGameSlotFunctorEvent(const Uint32 slot) : mSlot(slot) {}
+
+	void operator()()
+	{
+		g_pBehaviorEngine->EventList().add( new CloseAllMenusEvent() );
+		g_pBehaviorEngine->EventList().add( new StartGameplayEvent() );
+		gpSaveGameController->prepareLoadGame(mSlot);
+
+	}
+
+	Uint32 mSlot;
+};
+
 
 CLoadMenu::CLoadMenu(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
+CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 {
 
 	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
-	/*mp_Dialog = new CDialog(MENU_WIDTH, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
-
 	// Load the state-file list
-	std::vector<std::string> StateFileList = m_SavedGame.getSlotList();
+	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 
-	for(Uint32 i=1;i<=20;i++)
+	for( Uint32 i=1 ; i<=20 ; i++ )
 	{
-		std::string text = m_SavedGame.getEmptyString();
+		std::string text = gpSaveGameController->getEmptyString();
 
-		if(i <= StateFileList.size())
+		if( i <= StateFileList.size() )
 		{
 			text = StateFileList.at(i-1);
-			mp_Dialog->m_name = text;
-		}
-
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
-	}*/
-}
-
-/*void CLoadMenu::processSpecific()
-{*/
-	/*if( m_selection != NO_SELECTION)
-	{
-		if(mp_Dialog->m_name == m_SavedGame.getEmptyString())
-		{
-			//TODO: Message saying can't load, it is empty.  Also, we need to add a check to
-			// see if it is corrupt, or something to prevent old saves from crashing due to incompatibility.
+			mpMenuDialog->addControl( new CGUIButton( text,
+														new LoadGameSlotFunctorEvent(i),
+														CGUIButton::VORTICON ) );
 		}
 		else
 		{
-			m_SavedGame.prepareLoadGame(m_selection + 1);
-			m_mustclose = true;
-		}
-		m_selection = NO_SELECTION;
-	}*/
-/*}
 
-CLoadMenu::~CLoadMenu()
-{*/
-	/*if(mp_Dialog) delete mp_Dialog;
-	mp_Dialog = NULL;*/
-//}
+			mpMenuDialog->addControl( new CGUIText( text ) );
+		}
+	}
+}

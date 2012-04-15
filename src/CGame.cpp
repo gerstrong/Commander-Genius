@@ -25,6 +25,25 @@ m_firsttime(false),
 m_Engine(m_firsttime)
 {}
 
+
+///////////////////////////////
+// Cleanup Game Engine here! //
+///////////////////////////////
+/**
+ * \brief  			This function cleans up all the used engines and the singleton
+ * 					classes that were used during the program.
+ * 					This can happen at the end of the program
+ * 					or when an engine may be changed.
+ */
+CGame::~CGame()
+{
+	g_pInput->Del();
+	g_pSound->destroy();
+	g_pVideoDriver->Del();
+	g_pTimer->Del();
+	g_pLogFile->Del();
+}
+
 //////////////////////////////////
 // Initialize Game Engine here! //
 //////////////////////////////////
@@ -146,18 +165,3 @@ void CGame::run()
 			!g_pInput->getExitEvent());
 }
 
-///////////////////////////////
-// Cleanup Game Engine here! //
-///////////////////////////////
-/**
- * \brief  			This function cleans up all the used engines and the singleton
- * 					classes that were used during the program. This can happen at the end of the program
- * 					or when an engine may be changed.
- */
-void CGame::cleanup()
-{
-    g_pInput->Del();
-    g_pSound->destroy();
-    g_pVideoDriver->Del();
-    g_pTimer->Del();
-}

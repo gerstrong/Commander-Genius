@@ -15,8 +15,8 @@ class CSaveMenu : public CBaseMenu
 {
 public:
 	CSaveMenu(Uint8 dlg_theme);
-	void processSpecific();
-	void saveSelection();
+	void processSpecific(){};
+	void sendEvent(SmartPointer<CEvent> command);
 
 private:
 	CConfirmMenu *mp_OverwriteMenu;

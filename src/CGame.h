@@ -13,6 +13,7 @@
 class CGame {
 public:
 	CGame();
+	~CGame();
 	
 	bool init(int argc, char *argv[]);
 	bool loadCKPDrivers();

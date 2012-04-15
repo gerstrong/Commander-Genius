@@ -40,7 +40,7 @@ public:
 	void setText(const std::string& text)
 	{	mText = text;	}
 
-	std::string getText()
+	std::string getText() const
 	{	return mText;	}
 
 private:

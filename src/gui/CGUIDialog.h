@@ -33,8 +33,6 @@ public:
 	// Constructor which needs the Rect for the placement of the Dialog
 	CGUIDialog(const CRect<float> &NewRect);
 
-	~CGUIDialog();
-
 	// Set the Background
 	void setBackground(const Background background);
 
@@ -63,6 +61,12 @@ public:
 	std::list< SmartPointer<CGUIControl> >& getControlList()
 	{	return mControlList;	}
 
+	const int Selection() const
+	{	return mSelection;	}
+
+	CGUIControl* CurrentControl()
+	{	return 	mpCurrentCtrl;	}
+
 protected:
 	CRect<float> mRect;
 
@@ -78,6 +82,8 @@ private:
 	void (CGUIDialog::*drawBackround)(SDL_Rect);
 
 	int mSelection;
+
+	CGUIControl *mpCurrentCtrl;
 };
 
 

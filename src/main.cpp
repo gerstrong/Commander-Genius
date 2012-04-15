@@ -97,9 +97,9 @@ int main(int argc, char *argv[])
 	/////////////////////////
 	// Cleanup Game Engine //
 	/////////////////////////
-	Game.cleanup();
+	//Game.cleanup();
 
-	g_pLogFile->Del();
+
 
 	std::cout << "Thank you very much for playing this game!" << std::endl;
 

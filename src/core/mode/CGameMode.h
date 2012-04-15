@@ -28,7 +28,8 @@ struct GMSwitchToPassiveMode : CEvent {
 };
 
 // This event switches to the PlayGameMode
-struct GMSwitchToPlayGameMode : CEvent {
+struct GMSwitchToPlayGameMode : CEvent
+{
 	const int m_Episode;
 	const int m_Numplayers;
 	const int m_Difficulty;

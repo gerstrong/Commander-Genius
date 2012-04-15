@@ -25,7 +25,8 @@
 
 #include <string>
 
-class CGameControl {
+class CGameControl
+{
 public:
 
 	CGameControl(bool &firsttime);

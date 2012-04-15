@@ -16,10 +16,9 @@
 
 #include "CLogFile.h"
 #include "StringUtils.h"
-
 #include "fileio/TypeDefinitions.h"
 #include "CSingleton.h"
-
+#include "engine/CEvent.h"
 #include "Oldsavegamestructs.h"
 
 #define SG_HEADERSIZE			7
@@ -31,15 +30,14 @@
 const int MENU_WIDTH = 40;
 const int TEXT_WIDTH = 32;
 
+
+
 #define gpSaveGameController CSaveGameController::Get()
+
 
 class CSaveGameController : public CSingleton<CSaveGameController>
 {
 public:
-	enum SavedGameCommands
-	{
-		NONE, SAVE, LOAD
-	};
 
 	// Initialization
 	CSaveGameController();
@@ -81,7 +79,6 @@ public:
 	bool load();
 	bool alreadyExits();
 	
-	char getCommand() { return m_Command; }
 	std::string getEmptyString();
 	std::string getUnnamedSlotName();
 
@@ -99,12 +96,29 @@ private:
 	std::string m_statename;
 	char m_Episode;
 	int m_Level;
-	char m_Command;
 	Uint32 m_offset;
 	std::string m_emptyString;
 
 	std::vector<byte> m_datablock;
 };
+
+
+struct SaveGameFunctorEvent : public InvokeFunctorEvent
+{
+	void operator()()
+	{
+		gpSaveGameController->save();
+	}
+};
+
+struct LoadGameFunctorEvent : public InvokeFunctorEvent
+{
+	void operator()()
+	{
+		gpSaveGameController->load();
+	}
+};
+
 
 #include "CSavedGameCoder.h"
 

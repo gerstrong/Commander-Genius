@@ -9,6 +9,7 @@
 
 #include "CGUIDialog.h"
 #include "CGUIButton.h"
+#include "CGUIInputText.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "sdl/extensions.h"
@@ -19,12 +20,6 @@ mRect(SrcRect),
 mSelection(0)
 {
 	setBackground(NONE);
-}
-
-CGUIDialog::~CGUIDialog()
-{
-	if(!g_pVideoDriver->mDrawTasks.empty())
-		g_pVideoDriver->mDrawTasks.clear();
 }
 
 
@@ -45,8 +40,6 @@ void CGUIDialog::setBackground(const Background background)
 
 
 
-
-
 void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
 							 const CRect<float>& RelRect )
 {
@@ -55,7 +48,6 @@ void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
 	newControl->mRect = AbsRect;
 	mControlList.push_back( newControl );
 }
-
 
 
 
@@ -92,7 +84,9 @@ void CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 			(*it)->setHovered( (i == mSelection) );
 
 			if(i == mSelection)
+			{
 				(*it)->sendEvent(ev->mCommand);
+			}
 
 		}
 
@@ -140,10 +134,11 @@ void CGUIDialog::processLogic()
 
 		ctrl->processLogic();
 
-		if( CGUIButton *button = dynamic_cast<CGUIButton*>(ctrl) )
+		if( dynamic_cast<CGUIButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
 		{
-			if( button->getHovered() )
+			if( ctrl->getHovered() )
 			{
+				mpCurrentCtrl = ctrl;
 				mSelection = sel;
 			}
 

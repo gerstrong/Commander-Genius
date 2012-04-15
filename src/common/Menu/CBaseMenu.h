@@ -17,9 +17,10 @@ const int NO_SELECTION = -1;
 #include <list>
 
 // Active means, when the player is playing, PASSIVE when the Player is not playing
-enum menumodes{
+enum menumodes
+{
 	ACTIVE, PASSIVE
-};
+}; // TODO: Remove this!
 
 class CBaseMenu
 {
@@ -43,7 +44,7 @@ public:
 	// Processes the stuff that the menus have in common
 	virtual void process();
 
-	void sendEvent(SmartPointer<CEvent> command)
+	virtual void sendEvent(SmartPointer<CEvent> command)
 	{
 		mpMenuDialog->sendEvent(command);
 	}

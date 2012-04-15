@@ -12,7 +12,6 @@
 #include "common/CMapLoader.h"
 #include "SmartPointer.h"
 
-#define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 
 ///////////////////////////
 // Game State Management //
