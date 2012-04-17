@@ -20,6 +20,7 @@ public:
 	CGamePassiveMode(const std::string& DataDirectory, const int& Episode);
 
 	void init();
+	void switchToGamePlayMode();
 	void process();
 
 private:

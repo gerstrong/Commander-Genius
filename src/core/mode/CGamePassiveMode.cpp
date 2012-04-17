@@ -45,6 +45,17 @@ void CGamePassiveMode::init()
 
 }
 
+void CGamePassiveMode::switchToGamePlayMode()
+{
+	const int Episode = mpPassive->getEpisode();
+	//const int Numplayers = mp_Passive->getNumPlayers();
+	//const int Difficulty = mp_Passive->getDifficulty();
+	const int Numplayers = 1;
+	const int Difficulty = 1;
+	std::string DataDirectory = mpPassive->getGamePath();
+	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory ) );
+}
+
 void CGamePassiveMode::process()
 {
 
@@ -58,16 +69,8 @@ void CGamePassiveMode::process()
 	{
 		if( StartGameplayEvent* pLauncher = EventContainer.occurredEvent<StartGameplayEvent>() )
 		{
-			const int Episode = mpPassive->getEpisode();
-			//const int Numplayers = mp_Passive->getNumPlayers();
-			//const int Difficulty = mp_Passive->getDifficulty();
-			const int Numplayers = 1;
-			const int Difficulty = 1;
-			std::string DataDirectory = mpPassive->getGamePath();
-
 			EventContainer.pop_Event();
-
-			EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory ) );
+			switchToGamePlayMode();
 			return;
 		}
 
@@ -75,6 +78,9 @@ void CGamePassiveMode::process()
 		{
 			// In this case let's pop this event and add the same one, the way the loading is finished within the playgame object
 			EventContainer.pop_Event();
+			switchToGamePlayMode();
+
+			// The same caught event is pushed again but this time it will be polled by the GamePlay object which in the next cycles will be running!
 			EventContainer.add( new LoadGameEvent() );
 		}
 	}
