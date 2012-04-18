@@ -9,17 +9,12 @@
 #define CDLGFRAME_H_
 
 #include <SDL.h>
+#include "common/CBehaviorEngine.h"
 
-enum themes{
-	DLG_THEME_NONE,
-	DLG_THEME_VORTICON,
-	DLG_THEME_GALAXY,
-	DLG_THEME_RED
-};
 
 class CDlgFrame {
 public:
-	CDlgFrame(int x, int y, int w, int h, Uint8 theme = DLG_THEME_VORTICON, int tilewidth = 8, int tileheight = 8);
+	CDlgFrame(int x, int y, int w, int h, int tilewidth = 8, int tileheight = 8);
 
 	void draw(SDL_Surface *dst);
 
@@ -52,11 +47,10 @@ private:
 	int m_8x8tileheight;
 	int m_8x8tilewidth;
 
-	Uint8 m_theme;
+	EngineType m_theme;
 
-	void drawOldSchoolFrame(SDL_Surface *dst);
+	void drawVorticonFrame(SDL_Surface *dst);
 	void drawGalaxyFrame(SDL_Surface *dst);
-	void drawRedFrame(SDL_Surface *dst);
 
 };
 

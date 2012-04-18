@@ -14,7 +14,7 @@
 class CProfilesMenu : public CBaseMenu
 {
 public:
-	CProfilesMenu( const Uint8 dlgTheme );
+	CProfilesMenu();
 };
 
 #endif /* CPROFILESMENU_H_ */

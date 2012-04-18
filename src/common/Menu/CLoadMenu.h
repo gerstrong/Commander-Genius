@@ -14,7 +14,7 @@
 class CLoadMenu : public CBaseMenu
 {
 public:
-	CLoadMenu(Uint8 dlg_theme);
+	CLoadMenu();
 
 	//void init();
 

@@ -27,7 +27,6 @@ CPlayGame(ExeFile, level, numplayers, difficulty ),
 m_Inventory(difficulty, m_LevelName),
 m_WorldMap(ExeFile, m_Inventory, m_Cheatmode),
 m_LevelPlay(ExeFile, m_Inventory, m_Cheatmode),
-mp_Menu(NULL),
 m_SavedGame(SavedGame)
 {
 	m_WorldMap.init();
@@ -68,10 +67,10 @@ void CPlayGameGalaxy::process()
 	if(g_pSound->pauseGamePlay())
 		return;
 
-	if(mp_Menu) // In case the menu is open
+	/*if(mp_Menu) // In case the menu is open
 	{
 		// draw the title bitmap here!
-		m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);
+		m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);*/
 
 		/*if(mp_Menu->mustClose())
 		{
@@ -85,8 +84,8 @@ void CPlayGameGalaxy::process()
 			m_endgame = true;
 		else
 			mp_Menu->process();*/
-	}
-	else
+	/*}
+	else*/
 	{
 		processInput();
 
@@ -261,10 +260,5 @@ void CPlayGameGalaxy::processInput()
 }
 
 
-CPlayGameGalaxy::~CPlayGameGalaxy()
-{
-	if(mp_Menu)
-		delete mp_Menu;
-}
 
 }

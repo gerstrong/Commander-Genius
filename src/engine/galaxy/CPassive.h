@@ -23,12 +23,11 @@ public:
 	void process();
 	void processIntro();
 	void processTitle();
-	void processMenu();
 
 	void (CPassiveGalaxy::*processMode)();
 
 	CBitmap m_BackgroundBitmap;
-	CMenuGalaxy *mp_Menu;
+	//CMenuGalaxy *mp_Menu;
 	bool m_restartVideo;
 };
 

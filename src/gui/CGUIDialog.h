@@ -16,6 +16,7 @@
 #include "CGUIControl.h"
 #include "SmartPointer.h"
 #include "engine/CEvent.h"
+#include "graphics/CBitmap.h"
 #include <list>
 
 class CGUIDialog
@@ -26,21 +27,20 @@ public:
 	enum Background
 	{
 		NONE,
-		VORTICON,
-		VORTICONADVANCED
+		VORTICON
 	};
 
 	// Constructor which needs the Rect for the placement of the Dialog
 	CGUIDialog(const CRect<float> &NewRect);
-
-	// Set the Background
-	void setBackground(const Background background);
 
 	// Empty Background draw function. Just fills the Rect with a standard gray color
 	void drawEmptyBackround(SDL_Rect Rect);
 
 	// Vorticon Menu draw function
 	void drawVorticonBackround(SDL_Rect Rect);
+
+	// Galaxy Menu draw function
+	void drawGalaxyBackround(SDL_Rect Rect);
 
 	// processes the whole logic of the Dialog
 	void processLogic();
@@ -84,6 +84,8 @@ private:
 	int mSelection;
 
 	CGUIControl *mpCurrentCtrl;
+
+	CBitmap *mpBackgroundBitmap;
 };
 
 

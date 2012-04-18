@@ -8,7 +8,6 @@
 #ifndef CGAMELAUNCHER_H_
 #define CGAMELAUNCHER_H_
 
-#include "dialog/CDialog.h"
 #include "fileio/CExeFile.h"
 #include "gui/CGUIDialog.h"
 #include "SmartPointer.h"

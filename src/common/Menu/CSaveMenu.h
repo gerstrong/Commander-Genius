@@ -14,7 +14,7 @@
 class CSaveMenu : public CBaseMenu
 {
 public:
-	CSaveMenu(Uint8 dlg_theme);
+	CSaveMenu();
 	void processSpecific(){};
 	void sendEvent(SmartPointer<CEvent> command);
 

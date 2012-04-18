@@ -28,11 +28,9 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 };
 
 
-CLoadMenu::CLoadMenu(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
+CLoadMenu::CLoadMenu() :
+CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 {
-
-	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
 	// Load the state-file list
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();

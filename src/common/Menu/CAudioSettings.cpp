@@ -13,11 +13,9 @@
 
 #include "core/CGameControl.h"
 
-CAudioSettings::CAudioSettings(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
+CAudioSettings::CAudioSettings() :
+CBaseMenu(CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
 {
-
-	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
 	mpRate = new CGUIComboSelection( "rate",
 									 g_pSound->getAvailableRateList(),

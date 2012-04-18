@@ -7,6 +7,9 @@
  *  An Object of the dialog controls that can be selected and maybe manipulated
  */
 
+// This Class is also deprecated
+
+
 #include "CDlgObject.h"
 #include "../graphics/CFont.h"
 #include "../sdl/CVideoDriver.h"
@@ -23,11 +26,11 @@ m_colour(0x0)
 // Creation Routine
 ///
 void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y,
-		const std::string &text, unsigned int delimiter, Uint8 Fontmap_ID, Uint8 theme)
+		const std::string &text, unsigned int delimiter, Uint8 Fontmap_ID)
 {
-	m_type = type;
+	m_type = g_pBehaviorEngine->getEngine();
 	m_ID = ID;
-	m_theme = theme;
+	m_theme = g_pBehaviorEngine->getEngine();
 	
 	m_x = x;
 	m_y = y;
@@ -73,7 +76,7 @@ void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 	{
 		Uint32 colourdir;
 
-		if(m_theme == DLG_THEME_GALAXY)
+		if(m_theme == ENGINE_GALAXY)
 			colourdir = m_selected ? 0x54fc54 : 0x208c20;
 		else
 			colourdir = m_selected ? 0x0000FF : 0x000000;
@@ -86,7 +89,7 @@ void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, m_colour);
 	}
 	else if(m_type == DLG_OBJ_DISABLED)
-		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, (m_theme == DLG_THEME_GALAXY) ? 0x6E906E : 0x7F7F7F ); // +16 because selection icon needs space
+		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, (m_theme == ENGINE_GALAXY) ? 0x6E906E : 0x7F7F7F ); // +16 because selection icon needs space
 	else if(m_type == DLG_OBJ_TEXT)
 		m_Option->draw(dst, m_x, m_y-8*scrollamt, true);
 }

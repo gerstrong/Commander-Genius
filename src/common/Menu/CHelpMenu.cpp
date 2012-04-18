@@ -15,13 +15,11 @@
 #include "engine/infoscenes/CPreviews.h"
 
 
-CHelpMenu::CHelpMenu( const Uint8 dlgTheme ) :
-CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
+CHelpMenu::CHelpMenu() :
+CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
 
 	// Create the Menu Dialog and entries
-	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
-
 	mpMenuDialog->addControl(new CGUIButton( "The Menu",
 												new StartInfoSceneEvent( new CHelp("Menu") ),
 												CGUIButton::VORTICON ) );

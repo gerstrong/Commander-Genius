@@ -16,7 +16,7 @@
 class CCameraSettings : public CBaseMenu
 {
 public:
-	CCameraSettings(Uint8 dlg_theme);
+	CCameraSettings();
 
 	void init();
 

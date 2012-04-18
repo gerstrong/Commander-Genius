@@ -41,14 +41,11 @@ public:
 
 	void cleanup() {};
 
-	virtual ~CPlayGameGalaxy();
-
 private:
 	std::string m_LevelName;
 	CInventory m_Inventory;
 	CWorldMap m_WorldMap;
 	CLevelPlay m_LevelPlay;
-	CMenuGalaxy *mp_Menu;
 	CSaveGameController &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
 	std::list<CMessageBoxGalaxy*> m_MessageBoxes;

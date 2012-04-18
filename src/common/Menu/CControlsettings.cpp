@@ -83,15 +83,10 @@ public:
 
 
 
-CControlsettings::CControlsettings( const Uint8 dlgTheme,
-									const int selectedPlayer ) :
-CBaseMenu( dlgTheme, CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
+CControlsettings::CControlsettings( const int selectedPlayer ) :
+CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
 mSelectedPlayer(selectedPlayer)
-{
-
-	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
-
-}
+{}
 
 void CControlsettings::init()
 {

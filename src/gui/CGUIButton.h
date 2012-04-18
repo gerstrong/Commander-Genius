@@ -22,7 +22,8 @@ public:
 	enum Style
 	{
 		NONE,
-		VORTICON
+		VORTICON,
+		GALAXY
 	};
 
 	CGUIButton(const std::string& text,

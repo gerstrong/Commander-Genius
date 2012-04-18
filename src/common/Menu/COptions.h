@@ -15,7 +15,7 @@
 
 class COptions : public CBaseMenu {
 public:
-	COptions( const Uint8 dlg_theme );
+	COptions();
 
 	void init();
 

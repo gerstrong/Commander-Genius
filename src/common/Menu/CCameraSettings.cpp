@@ -9,12 +9,10 @@
 #include "common/CSettings.h"
 #include "StringUtils.h"
 
-CCameraSettings::CCameraSettings(Uint8 dlg_theme):
-CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.4f) ),
+CCameraSettings::CCameraSettings():
+CBaseMenu(CRect<float>(0.15f, 0.24f, 0.7f, 0.4f) ),
 m_CameraBounds(g_pVideoDriver->getCameraBounds())
 {
-
-	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
 	mpLeftAdjust = new CGUINumberControl( "Left",
 											 50, 270, 10, 60,

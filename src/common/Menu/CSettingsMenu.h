@@ -16,7 +16,7 @@
 class CSettingsMenu : public CBaseMenu
 {
 public:
-	CSettingsMenu( const Uint8 dlgtheme );
+	CSettingsMenu();
 
 private:
 };

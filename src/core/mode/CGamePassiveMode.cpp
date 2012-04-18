@@ -24,9 +24,9 @@ m_Difficulty(0)
 void CGamePassiveMode::init()
 {
 	// Create mp_PassiveMode object used for the screens while Player is not playing
-	/*if(m_Episode >= 4)
-		mp_Passive = new galaxy::CPassiveGalaxy();
-	else*/
+	if(m_Episode >= 4)
+		mpPassive = new galaxy::CPassiveGalaxy();
+	else
 		mpPassive = new vorticon::CPassiveVort();
 
 	if( m_Endgame == true )
@@ -84,9 +84,6 @@ void CGamePassiveMode::process()
 			EventContainer.add( new LoadGameEvent() );
 		}
 	}
-
-
-	// TODO: Event are processed here! Needs some adaptation
 
 	// check here what the player chose from the menu over the passive mode.
 	// NOTE: Demo is not part of playgame anymore!!

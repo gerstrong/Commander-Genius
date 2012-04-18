@@ -16,7 +16,7 @@
 class CMainMenu : public CBaseMenu
 {
 public:
-	CMainMenu(const Uint8 dlgTheme, const bool openedGamePlay);
+	CMainMenu(const bool openedGamePlay);
 };
 
 

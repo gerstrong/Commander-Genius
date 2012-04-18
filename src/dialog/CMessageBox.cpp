@@ -35,8 +35,6 @@ m_mustclose(false)
 
 	mpReturnButton = pButton;
 
-	setBackground( CGUIDialog::VORTICON );
-
 	mpTextCtrl = new CGUIText( Text );
 
 	// Those formulas work well with our constellation but I don't think they are perfect.

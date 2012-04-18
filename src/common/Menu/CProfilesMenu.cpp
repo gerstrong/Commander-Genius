@@ -74,11 +74,9 @@ public:
 	}
 };
 
-CProfilesMenu::CProfilesMenu( const Uint8 dlgTheme ) :
-CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
+CProfilesMenu::CProfilesMenu() :
+CBaseMenu( CRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 {
-	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
-
 	mpMenuDialog->addControl(new CGUIButton( "Classic mode",
 										     new SetDefaultClassic(),
 										     CGUIButton::VORTICON ) );

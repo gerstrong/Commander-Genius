@@ -9,7 +9,7 @@
 #include "CBaseMenu.h"
 #include "common/Menu/CMenuController.h"
 
-CBaseMenu::CBaseMenu(const Uint8 dlgTheme, const CRect<float>& rect) :
+CBaseMenu::CBaseMenu(const CRect<float>& rect) :
 mpMenuDialog( new CGUIDialog(rect) )
 {
 	const char closeChar = 0x1F;

@@ -11,12 +11,10 @@
 #include "common/CSettings.h"
 
 
-COptions::COptions( const Uint8 dlg_theme ) :
-CBaseMenu( dlg_theme, CRect<float>(0.1f, 0.24f, 0.8f, NUM_OPTIONS*0.05f) ),
+COptions::COptions() :
+CBaseMenu( CRect<float>(0.1f, 0.24f, 0.8f, NUM_OPTIONS*0.05f) ),
 mpOption(g_pBehaviorEngine->m_option)
 {
-
-	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
 
 	for( int i = 0 ; i < NUM_OPTIONS ; i++ )
 	{

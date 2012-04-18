@@ -10,17 +10,10 @@
 
 const int NO_SELECTION = -1;
 
-#include "dialog/CDialog.h"
 #include "SmartPointer.h"
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIButton.h"
 #include <list>
-
-// Active means, when the player is playing, PASSIVE when the Player is not playing
-enum menumodes
-{
-	ACTIVE, PASSIVE
-}; // TODO: Remove this!
 
 class CBaseMenu
 {
@@ -33,7 +26,7 @@ public:
 	};
 
 
-	CBaseMenu( const Uint8 dlgTheme, const CRect<float>& rect );
+	CBaseMenu( const CRect<float>& rect );
 
 	virtual ~CBaseMenu() { };
 

@@ -98,8 +98,10 @@ EngineType CBehaviorEngine::getEngine()
 {
 	if( m_Episode >= 4 && m_Episode <= 6 )
 		return ENGINE_GALAXY;
-	else
+	else if(m_Episode >= 1 && m_Episode <= 3)
 		return ENGINE_VORTICON;
+	else
+		return ENGINE_LAUNCHER;
 }
 
 void CBehaviorEngine::setEpisode(size_t Episode)

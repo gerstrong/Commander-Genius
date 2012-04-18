@@ -14,30 +14,29 @@
 #include "sdl/input/CInput.h"
 #include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
+#include "common/CBehaviorEngine.h"
 
 CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
 mRect(SrcRect),
 mSelection(0)
 {
-	setBackground(NONE);
-}
-
-
-void CGUIDialog::setBackground(const Background background)
-{
-	//SDL_Rect lRect = RectDispCoord.SDLRect();
 	const SDL_Rect lRect = mRect.SDLRect();
 	mpBackgroundSfc = CG_CreateRGBSurface( lRect );
 
-
-	if( background == VORTICON )
+	if( g_pBehaviorEngine->getEngine() == ENGINE_VORTICON )
+	{
 		drawBackround = &CGUIDialog::drawVorticonBackround;
+	}
+	else if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
+	{
+		drawBackround = &CGUIDialog::drawGalaxyBackround;
+		mpBackgroundBitmap = g_pGfxEngine->getBitmap("KEENSWATCH");
+	}
 	else
+	{
 		drawBackround = &CGUIDialog::drawEmptyBackround;
-
+	}
 }
-
-
 
 
 void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
@@ -156,7 +155,6 @@ void CGUIDialog::drawEmptyBackround(SDL_Rect Rect)
 	SDL_FillRect( g_pVideoDriver->getBlitSurface(), &Rect, 0x00E6E6E6 );
 }
 
-
 void CGUIDialog::drawVorticonBackround( SDL_Rect Rect )
 {
 	// Now lets draw the text of the list control
@@ -205,6 +203,15 @@ void CGUIDialog::drawVorticonBackround( SDL_Rect Rect )
 	Font.drawCharacter( Blitsurface, 8, Rect.x+Rect.w-8, Rect.y+Rect.h-2*8 );
 
 }
+
+
+void CGUIDialog::drawGalaxyBackround(SDL_Rect Rect)
+{
+
+	mpBackgroundBitmap->_draw(g_pVideoDriver->getBlitSurface(), 0, 0);
+
+}
+
 
 
 void CGUIDialog::processRendering()

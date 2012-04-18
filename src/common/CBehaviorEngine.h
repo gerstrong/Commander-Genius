@@ -38,6 +38,7 @@
  */
 enum EngineType
 {
+	ENGINE_LAUNCHER,
 	ENGINE_VORTICON,
 	ENGINE_GALAXY
 };

@@ -556,7 +556,8 @@ bool CSaveGameController::load()
 	std::string fullpath = GetFullFileName(m_statefilename);
 	OpenGameFileR( StateFile, m_statefilename, std::ofstream::binary );
 
-    if (!StateFile.is_open()) {
+    if (!StateFile.is_open())
+    {
     	g_pLogFile->textOut("Error loading \"" + fullpath + "\". Please check the status of that file.\n" );
     	return false;
     }

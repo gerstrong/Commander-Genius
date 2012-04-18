@@ -13,7 +13,7 @@
 class CHelpMenu : public CBaseMenu
 {
 public:
-	CHelpMenu(const Uint8 dlgTheme);
+	CHelpMenu();
 };
 
 #endif /* CHELPMENU_H_ */

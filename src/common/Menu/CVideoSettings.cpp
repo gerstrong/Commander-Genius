@@ -36,11 +36,9 @@ private:
 };
 
 
-CVideoSettings::CVideoSettings(const Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
+CVideoSettings::CVideoSettings() :
+CBaseMenu(CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 {
-	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
-
 	// Create the fps config selection control
 	std::list<std::string>	List;
 	for( int i = 10 ; i <= 120 ; i += 10 )
@@ -83,7 +81,7 @@ CBaseMenu(dlg_theme, CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 
 
 	mpCameraButton = new CGUIButton( "Camera",
-									new OpenMenuEvent( new CCameraSettings(dlg_theme) ),
+									new OpenMenuEvent( new CCameraSettings() ),
 									CGUIButton::VORTICON );
 	mpMenuDialog->addControl( mpCameraButton );
 

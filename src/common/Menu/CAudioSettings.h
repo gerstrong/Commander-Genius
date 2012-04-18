@@ -22,7 +22,7 @@
 class CAudioSettings : public CBaseMenu
 {
 public:
-	CAudioSettings(Uint8 dlg_theme);
+	CAudioSettings();
 
 	void init();
 

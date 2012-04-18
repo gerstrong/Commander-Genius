@@ -12,7 +12,8 @@
 #include <vector>
 #include <string>
 
-class CBitmap {
+class CBitmap
+{
 public:
 	CBitmap();
 

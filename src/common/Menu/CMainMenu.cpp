@@ -17,30 +17,26 @@
 #include "core/mode/CGameMode.h"
 
 
-CMainMenu::CMainMenu( const Uint8 dlgTheme, const bool openedGamePlay ) :
-CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
+CMainMenu::CMainMenu( const bool openedGamePlay ) :
+CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
-
-	// Create the Menu Dialog and entries
-	mpMenuDialog->setBackground(CGUIDialog::VORTICON);
-
 	CGUIButton *button = new CGUIButton( "New Game", new StartGameplayEvent(), CGUIButton::VORTICON );
 	mpMenuDialog->addControl( button );
 
 
 	CGUIButton *loadButton = new CGUIButton( "Load",
-										new OpenMenuEvent( new CLoadMenu(dlgTheme) ),
+										new OpenMenuEvent( new CLoadMenu() ),
 										CGUIButton::VORTICON );
 	mpMenuDialog->addControl( loadButton );
 
 	CGUIButton *saveButton = new CGUIButton( "Save",
-									new OpenMenuEvent( new CSaveMenu(dlgTheme) ),
+									new OpenMenuEvent( new CSaveMenu() ),
 									CGUIButton::VORTICON );
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
 	mpMenuDialog->addControl(new CGUIButton( "Settings",
-												new OpenMenuEvent( new CSettingsMenu(dlgTheme) ),
+												new OpenMenuEvent( new CSettingsMenu() ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "High Scores",
@@ -48,7 +44,7 @@ CBaseMenu( dlgTheme, CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Info",
-												new OpenMenuEvent( new CHelpMenu(dlgTheme) ),
+												new OpenMenuEvent( new CHelpMenu() ),
 												CGUIButton::VORTICON ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit(), CGUIButton::VORTICON ) );

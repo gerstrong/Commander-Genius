@@ -14,13 +14,11 @@
 #include "common/CBehaviorEngine.h"
 #include "common/Menu/CMenuController.h"
 
-CSaveMenu::CSaveMenu(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme, CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
+CSaveMenu::CSaveMenu() :
+CBaseMenu(CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
 mp_OverwriteMenu(NULL),
 m_overwrite(false)
 {
-
-	mpMenuDialog->setBackground( CGUIDialog::VORTICON );
 
 	std::string text;
 
