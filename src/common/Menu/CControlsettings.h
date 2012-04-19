@@ -56,8 +56,7 @@ public:
 		{
 			const std::string	playerStr = "Player " + itoa(i);
 			mpButtonList.push_back( new CGUIButton( playerStr,
-													new OpenControlMenuEvent(i),
-													CGUIButton::VORTICON ) );
+													new OpenControlMenuEvent(i) ) );
 			mpMenuDialog->addControl( mpButtonList.back() );
 		}
 

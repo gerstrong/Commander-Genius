@@ -21,6 +21,7 @@ public:
 
 	enum Style
 	{
+		UNSET,
 		NONE,
 		VORTICON,
 		GALAXY
@@ -28,7 +29,7 @@ public:
 
 	CGUIButton(const std::string& text,
 			const SmartPointer<CEvent> ev,
-			const Style	style = NONE);
+			const Style style=UNSET);
 
 	void sendEvent(const InputCommands command);
 

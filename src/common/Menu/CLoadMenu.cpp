@@ -43,8 +43,7 @@ CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 		{
 			text = StateFileList.at(i-1);
 			mpMenuDialog->addControl( new CGUIButton( text,
-														new LoadGameSlotFunctorEvent(i),
-														CGUIButton::VORTICON ) );
+														new LoadGameSlotFunctorEvent(i) ) );
 		}
 		else
 		{

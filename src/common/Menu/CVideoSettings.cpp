@@ -81,22 +81,19 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 
 
 	mpCameraButton = new CGUIButton( "Camera",
-									new OpenMenuEvent( new CCameraSettings() ),
-									CGUIButton::VORTICON );
+									new OpenMenuEvent( new CCameraSettings() ) );
 	mpMenuDialog->addControl( mpCameraButton );
 
 
 
 	mpResolutionSelection = new CGUIComboSelection( "Mode",
-													filledStrList(1, "?x?"),
-													CGUIComboSelection::VORTICON );
+													filledStrList(1, "?x?") );
 	mpMenuDialog->addControl( mpResolutionSelection );
 
 
 
 	mpFullScreenSwitch = new CGUIButton( "Unknown mode",
-										new toggleFullscreenFunctor(*this),
-										CGUIButton::VORTICON );
+										new toggleFullscreenFunctor(*this) );
 	mpMenuDialog->addControl( mpFullScreenSwitch );
 
 }

@@ -100,8 +100,7 @@ void CControlsettings::init()
 		const std::string buf2 = g_pInput->getEventName( i, mSelectedPlayer-1 );
 
 		CGUIButton	*guiButton = new CGUIButton( buf+buf2,
-	 	 	 	 	 	 	 	 	 	 	 	 new ReadInputEvent(mSelectedPlayer, i, mpButtonList),
-	 	 	 	 	 	 	 	 	 	 	 	 CGUIButton::VORTICON );
+	 	 	 	 	 	 	 	 	 	 	 	 new ReadInputEvent(mSelectedPlayer, i, mpButtonList) );
 
 		mpButtonList.push_back( guiButton );
 		mpMenuDialog->addControl( guiButton );
@@ -114,8 +113,7 @@ void CControlsettings::init()
 
 	mpMenuDialog->addControl( mpTwoButtonSwitch );
 	mpMenuDialog->addControl( new CGUIButton( "Reset Controls",
-	 	 	 	 	 	 	 	 	 	 	  new ResetInputEvent(mSelectedPlayer-1),
-	 	 	 	 	 	 	 	 	 	 	  CGUIButton::VORTICON ) );
+	 	 	 	 	 	 	 	 	 	 	  new ResetInputEvent(mSelectedPlayer-1) ) );
 
 }
 

@@ -15,7 +15,7 @@ mpMenuDialog( new CGUIDialog(rect) )
 	const char closeChar = 0x1F;
 	std::string closeString;
 	closeString = closeChar;
-	CGUIButton*	pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::NONE );
+	CGUIButton*	pButton	= new CGUIButton( closeString, new CloseMenuEvent() );
 
 	mpMenuDialog->addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
 

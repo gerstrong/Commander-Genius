@@ -21,36 +21,28 @@ CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	// Create the Menu Dialog and entries
 	mpMenuDialog->addControl(new CGUIButton( "The Menu",
-												new StartInfoSceneEvent( new CHelp("Menu") ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new CHelp("Menu") ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "The Game",
-												new StartInfoSceneEvent( new CHelp("Game") ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new CHelp("Game") ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "The Story",
-												new StartInfoSceneEvent( new CStory ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new CStory ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
-												new StartInfoSceneEvent( new COrderingInfo ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new COrderingInfo ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "About ID",
-												new StartInfoSceneEvent( new CAbout("ID") ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new CAbout("ID") ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "About CG",
-												new StartInfoSceneEvent( new CAbout("CG") ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new CAbout("CG") ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Credits",
-												new StartInfoSceneEvent( new CCredits() ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new CCredits() ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Previews!",
-												new StartInfoSceneEvent( new CPreviews() ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new CPreviews() ) ) );
 
 }
 

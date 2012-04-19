@@ -20,33 +20,28 @@
 CMainMenu::CMainMenu( const bool openedGamePlay ) :
 CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
-	CGUIButton *button = new CGUIButton( "New Game", new StartGameplayEvent(), CGUIButton::VORTICON );
+	CGUIButton *button = new CGUIButton( "New Game", new StartGameplayEvent() );
 	mpMenuDialog->addControl( button );
 
 
 	CGUIButton *loadButton = new CGUIButton( "Load",
-										new OpenMenuEvent( new CLoadMenu() ),
-										CGUIButton::VORTICON );
+										new OpenMenuEvent( new CLoadMenu() ) );
 	mpMenuDialog->addControl( loadButton );
 
 	CGUIButton *saveButton = new CGUIButton( "Save",
-									new OpenMenuEvent( new CSaveMenu() ),
-									CGUIButton::VORTICON );
+									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
 	mpMenuDialog->addControl(new CGUIButton( "Settings",
-												new OpenMenuEvent( new CSettingsMenu() ),
-												CGUIButton::VORTICON ) );
+												new OpenMenuEvent( new CSettingsMenu() ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "High Scores",
-												new StartInfoSceneEvent( new CHighScores ),
-												CGUIButton::VORTICON ) );
+												new StartInfoSceneEvent( new CHighScores ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Info",
-												new OpenMenuEvent( new CHelpMenu() ),
-												CGUIButton::VORTICON ) );
+												new OpenMenuEvent( new CHelpMenu() ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit(), CGUIButton::VORTICON ) );
+	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ) );
 
 }

@@ -13,22 +13,39 @@
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/CTimer.h"
-
+#include <map>
 
 
 CGUIButton::CGUIButton(	const std::string& text,
 						const SmartPointer<CEvent> ev,
-						const Style	style ) :
+						const Style style ) :
 mText(text),
 mEvent(ev),
 drawButton(&CGUIButton::drawNoStyle)
 {
+	std::map< Style, EngineType > mapping;
 
-	if(style == VORTICON)
+	mapping[UNSET] 		= g_pBehaviorEngine->getEngine();
+	mapping[NONE] 		= ENGINE_LAUNCHER;
+	mapping[VORTICON]	= ENGINE_VORTICON;
+	mapping[GALAXY] 	= ENGINE_GALAXY;
+
+
+	switch( mapping[style] )
 	{
+	case ENGINE_VORTICON:
 		mFontID = 1;
 		drawButton = &CGUIButton::drawVorticonStyle;
+		break;
+	default:
+		break;
 	}
+	/*else if( g_pBehaviorEngine->getEngine() == ENGINE_VORTICON )
+	{
+		mFontID = 2;
+		drawButton = &CGUIButton::drawGalaxyStyle;
+
+	}*/
 
 }
 
