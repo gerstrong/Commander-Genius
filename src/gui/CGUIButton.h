@@ -11,9 +11,12 @@
 #define CGUIBUTTON_H_
 
 #include "CGUIControl.h"
-#include <string>
 #include "engine/CEvent.h"
 #include "SmartPointer.h"
+#include "common/CBehaviorEngine.h"
+#include <string>
+#include <map>
+
 
 class CGUIButton : public CGUIControl
 {
@@ -39,6 +42,8 @@ public:
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
+	void drawGalaxyStyle(SDL_Rect& lRect);
+
 
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
@@ -49,8 +54,15 @@ public:
 	{	return mText;	}
 
 private:
+
+	void setupButtonSurface();
+
 	std::string mText;
 	SmartPointer<CEvent> mEvent;
+	SmartPointer<SDL_Surface> mpTextDarkSfc;
+	SmartPointer<SDL_Surface> mpTextLightSfc;
+	SmartPointer<SDL_Surface> mpTextDisabledSfc;
+	std::map< Style, EngineType > mMapping;
 
 	void (CGUIButton::*drawButton)(SDL_Rect&);
 

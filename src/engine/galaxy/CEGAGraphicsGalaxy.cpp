@@ -592,7 +592,10 @@ bool CEGAGraphicsGalaxy::readfonts()
 							pixelpos = pixel + (rect.y+y)*sfc->pitch+rect.x;
 							for( x = 0 ; x < rect.w ; x++ )
 							{
-								pixelpos[x] = getBit(*(pointer + FontHead->Offset[j] + (y*bw) + x/8 ), 7-(x%8) )*0xF;
+								Uint8 color = getBit(*(pointer + FontHead->Offset[j] + (y*bw) + x/8 ), 7-(x%8) )*0xF;
+								if(color == 0x0) // Put a mask on black colors in font always
+									color = COLORKEY;
+								pixelpos[x] = color;
 							}
 						}
 					}

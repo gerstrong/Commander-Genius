@@ -131,6 +131,40 @@ void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 }
 
 
+SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fgColor )
+{
+	SDL_Rect rect;
+	rect.x = rect.y = 0;
+	rect.w = getPixelTextWidth(text);
+	rect.h = getPixelTextHeight();
+
+	SDL_Surface *pColoredTextSurface = CG_CreateRGBSurface(rect);
+
+	// Here comes the main part. We have to manipulate the Surface the way it gets
+	// the given color
+	SDL_Color color[16];
+	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
+	SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
+
+	// Change palette colors to the desired one
+	SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
+	SDL_SetColors( mFontSurface, color, 0, 16);
+
+	drawFont( pColoredTextSurface, text, 0, 0);
+
+	// Change palette colors back to the white one
+	//SDL_GetRGB(0xFFFFFF, pPixelformat, &pColor[15].r, &pColor[15].g, &pColor[15].b);
+	//SDL_SetColors( mFontSurface, pColor, 0, 16);
+
+	// Adapt the newly created surface to the running screen.
+	SDL_Surface *temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
+	SDL_FreeSurface(pColoredTextSurface);
+	pColoredTextSurface = temp;
+
+
+	return pColoredTextSurface;
+}
+
 
 
 

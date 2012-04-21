@@ -33,6 +33,8 @@ public:
 	// Constructor which needs the Rect for the placement of the Dialog
 	CGUIDialog(const CRect<float> &NewRect);
 
+	~CGUIDialog();
+
 	// Empty Background draw function. Just fills the Rect with a standard gray color
 	void drawEmptyBackround(SDL_Rect Rect);
 
