@@ -27,7 +27,7 @@ void CGameMain::process()
 
 		if( GMSwitchToPassiveMode* p_Passive = EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
 		{
-			mpGameMode = new CGamePassiveMode( p_Passive->m_DataDirectory, p_Passive->m_Episode );
+			mpGameMode = new CGamePassiveMode();
 			mpGameMode->init();
 			mOpenedGamePlay = false;
 			EventContainer.pop_Event();

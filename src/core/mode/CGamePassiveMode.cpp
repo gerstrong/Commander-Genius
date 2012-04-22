@@ -14,9 +14,7 @@
 #include "core/CGameLauncherMenu.h"
 
 
-CGamePassiveMode::CGamePassiveMode(const std::string& DataDirectory, const int& Episode) :
-m_DataDirectory(DataDirectory),
-m_Episode(Episode),
+CGamePassiveMode::CGamePassiveMode() :
 m_Endgame(false),
 m_Difficulty(0)
 {}
@@ -24,7 +22,8 @@ m_Difficulty(0)
 void CGamePassiveMode::init()
 {
 	// Create mp_PassiveMode object used for the screens while Player is not playing
-	if(m_Episode >= 4)
+	const int episode = g_pBehaviorEngine->getEpisode();
+	if(episode >= 4)
 		mpPassive = new galaxy::CPassiveGalaxy();
 	else
 		mpPassive = new vorticon::CPassiveVort();
@@ -47,13 +46,13 @@ void CGamePassiveMode::init()
 
 void CGamePassiveMode::switchToGamePlayMode()
 {
-	const int Episode = mpPassive->getEpisode();
+	const int episode = g_pBehaviorEngine->getEpisode();
 	//const int Numplayers = mp_Passive->getNumPlayers();
 	//const int Difficulty = mp_Passive->getDifficulty();
 	const int Numplayers = 1;
 	const int Difficulty = 1;
 	std::string DataDirectory = mpPassive->getGamePath();
-	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory ) );
+	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, Difficulty, DataDirectory ) );
 }
 
 void CGamePassiveMode::process()

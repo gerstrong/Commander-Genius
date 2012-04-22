@@ -40,7 +40,11 @@ mSelection(0)
 
 CGUIDialog::~CGUIDialog()
 {
-	g_pVideoDriver->clearDrawingTasks();
+	CVideoDriver *pVideoDriver = CVideoDriver::GetNoPtrChk();
+	if( pVideoDriver ) // This checks if the video object still exists, because if
+	{								   // deleting Drawing drawing is not needed anymore
+		pVideoDriver->clearDrawingTasks();
+	}
 }
 
 

@@ -19,8 +19,7 @@ namespace galaxy
 
 CPassiveGalaxy::CPassiveGalaxy() :
 processMode(&CPassiveGalaxy::processIntro),
-m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE"))/*,
-mp_Menu(new CMenuGalaxy(PASSIVE, m_SavedGame, m_restartVideo))*/
+m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE"))
 { }
 
 bool CPassiveGalaxy::init(char mode)
@@ -53,21 +52,6 @@ void CPassiveGalaxy::processTitle()
 {
 	// draw the title bitmap here!
 	m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);
-	
-	/*if ( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
-	{
-		if(g_pGfxEngine->applyingEffects())
-		{
-			g_pGfxEngine->killEffect();
-		}
-		else
-		{
-			// Now we process the Galaxy Menu
-			processMode = &CPassiveGalaxy::processMenu;
-			m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
-			g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
-		}
-	}*/
 }
 
 

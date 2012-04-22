@@ -17,7 +17,7 @@
 class CGamePassiveMode : public CGameMode
 {
 public:
-	CGamePassiveMode(const std::string& DataDirectory, const int& Episode);
+	CGamePassiveMode();
 
 	void init();
 	void switchToGamePlayMode();
@@ -26,8 +26,6 @@ public:
 private:
 	SmartPointer<CPassive> mpPassive;
 
-	const std::string m_DataDirectory;
-	const int m_Episode;
 	bool m_Endgame;
 	CSaveGameController m_SavedGame;
 	int m_Difficulty;
