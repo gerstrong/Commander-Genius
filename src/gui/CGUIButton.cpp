@@ -134,20 +134,6 @@ void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 
 }
 
-void CGUIButton::drawGalaxyStyle(SDL_Rect& lRect)
-{
-	if(!mEnabled)
-		return;
-
-
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-
-	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(mFontID);
-
-	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
-}
-
 
 void CGUIButton::drawGalaxyStyle(SDL_Rect& lRect)
 {
