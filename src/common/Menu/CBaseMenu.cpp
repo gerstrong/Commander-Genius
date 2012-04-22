@@ -15,9 +15,18 @@ mpMenuDialog( new CGUIDialog(rect) )
 	const char closeChar = 0x1F;
 	std::string closeString;
 	closeString = closeChar;
-	CGUIButton*	pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::NONE );
+	CGUIButton*	pButton;
 
-	mpMenuDialog->addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
+	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::GALAXY );
+		mpMenuDialog->addControl( pButton, CRect<float>(0.0f, 0.0f, 0.03f/rect.w, 0.03f/rect.h) );
+	}
+	else
+	{
+		pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::NONE );
+		mpMenuDialog->addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
+	}
 
 	mpReturnButton = pButton;
 

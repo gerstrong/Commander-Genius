@@ -128,6 +128,12 @@ void CGUIDialog::fit()
 
 
 
+void CGUIDialog::setPosition(const float x, const float y)
+{
+	mRect.x = x;
+	mRect.y = y;
+}
+
 
 void CGUIDialog::processLogic()
 {
