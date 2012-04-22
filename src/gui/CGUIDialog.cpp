@@ -38,6 +38,11 @@ mSelection(0)
 	}
 }
 
+CGUIDialog::~CGUIDialog()
+{
+	g_pVideoDriver->clearDrawingTasks();
+}
+
 
 void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
 							 const CRect<float>& RelRect )

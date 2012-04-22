@@ -31,6 +31,10 @@ public:
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
 
+	/**
+	 * Allocates a colored surface with the given Text printed in.
+	 */
+	SDL_Surface* fetchColoredTextSfc(const std::string& text, const Uint32 fgColor );
 
 	/*
 	 * \brief This will retrieve the total width in pixels of the Font.
