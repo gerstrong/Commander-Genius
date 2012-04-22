@@ -10,9 +10,21 @@
 #include "FindFile.h"
 #include "sdl/CVideoDriver.h"
 
-CBitmap::CBitmap() {
+CBitmap::CBitmap()
+{
 	m_BitmapSurface = NULL;
 	m_name = "";
+}
+
+CBitmap::CBitmap(const CBitmap &bitmap) :
+m_ImageRect(bitmap.getRect()),
+m_name(bitmap.getName()),
+m_BitmapSurface(NULL)
+{
+	//SDL_Surface *sfc = const_cast<SDL_Surface*>(bitmap.getSDLSurface());
+	SDL_Surface *sfc = bitmap.getSDLSurface();
+	if( sfc != NULL )
+		m_BitmapSurface = SDL_DisplayFormat( sfc );
 }
 
 ///
@@ -65,10 +77,10 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 ///
 // Getters and Setters
 ///
-SDL_Surface *CBitmap::getSDLSurface()
+/*SDL_Surface *CBitmap::getSDLSurface()
 {
 	return m_BitmapSurface;
-}
+}*/
 
 void CBitmap::setDimensions(const Uint16 w, const Uint16 h)
 {
@@ -83,11 +95,10 @@ void CBitmap::setName(const std::string &name)
 
 /**
  * \brief The function that blits the sprite to dst
- * \param SDL_Surface 	Surface where the sprite will be drawn
  * \param x		 		X-Coordinate, indicating the position on dst
  * \param y				Y-Coordinate, indicating the position on dst
  */
-void CBitmap::draw(SDL_Surface *dst, Uint16 x, Uint16 y)
+void CBitmap::draw(Uint16 x, Uint16 y)
 {
 	g_pVideoDriver->mDrawTasks.add( new DrawBitmapTask( this, x, y ) );
 }

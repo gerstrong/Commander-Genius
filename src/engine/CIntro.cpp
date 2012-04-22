@@ -55,15 +55,15 @@ void CIntro::process()
 	
 	if(mp_bm[0] != NULL)
 	{
-		mp_bm[1]->draw( mp_bmp_surface, m_mid[1], m_scrolly+11);
+		mp_bm[1]->draw( m_mid[1], m_scrolly+11);
 
 		if(m_scrolly<=42) // Show this, when scrolling is finished
 		{
-			mp_bm[0]->draw( mp_bmp_surface, m_mid[0], m_scrolly);
-			mp_bm[2]->draw( mp_bmp_surface, m_mid[2], m_scrolly+40);
-			mp_bm[3]->draw( mp_bmp_surface, m_mid[3], m_scrolly+52);
-			mp_bm[4]->draw( mp_bmp_surface, m_mid[4], m_scrolly+66);
-			mp_bm[5]->draw( mp_bmp_surface, m_mid[5], m_scrolly+108);
+			mp_bm[0]->draw( m_mid[0], m_scrolly);
+			mp_bm[2]->draw( m_mid[2], m_scrolly+40);
+			mp_bm[3]->draw( m_mid[3], m_scrolly+52);
+			mp_bm[4]->draw( m_mid[4], m_scrolly+66);
+			mp_bm[5]->draw( m_mid[5], m_scrolly+108);
 		}
 	}
 	

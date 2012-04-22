@@ -34,6 +34,8 @@ public:
 
 	virtual void release() {};
 
+	void setMenuLabel(const std::string &label);
+
 	// Processes the stuff that the menus have in common
 	virtual void process();
 

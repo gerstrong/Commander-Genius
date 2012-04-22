@@ -22,7 +22,7 @@ CObject(p_Map,0,0, OBJ_NONE)
 ///
 void CEGABitmap::process()
 {
-	mp_Bitmap->draw( mp_Surface, scrx, scry);
+	mp_Bitmap->draw( scrx, scry );
 }
 
 CEGABitmap::~CEGABitmap() {

@@ -169,7 +169,7 @@ void CHighScores::process()
 	std::vector<stBitmap>::iterator it_bmp = m_Bitmaps.begin();
 	for(; it_bmp != m_Bitmaps.end() ; it_bmp++)
 	{
-		it_bmp->p_Bitmap->draw(sfc, it_bmp->rect.x, it_bmp->rect.y);
+		it_bmp->p_Bitmap->draw(it_bmp->rect.x, it_bmp->rect.y);
 	}
 	
 	// Print the text of the highscores

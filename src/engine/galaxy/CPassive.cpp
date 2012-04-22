@@ -51,7 +51,7 @@ void CPassiveGalaxy::processIntro()
 void CPassiveGalaxy::processTitle()
 {
 	// draw the title bitmap here!
-	m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);
+	m_BackgroundBitmap.draw(0, 0);
 }
 
 

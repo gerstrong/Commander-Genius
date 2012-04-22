@@ -60,7 +60,7 @@ public:
 	std::vector<CTilemap> &getTileMaps() { return Tilemap; }
 	CBitmap &getBitmap(Uint16 slot) { return Bitmap.at(slot); }
 	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
-	CBitmap *getBitmap(const std::string &name);
+	CBitmap *getBitmap(const std::string &name) const;
 
 	CEffects *Effect() { return mp_Effects; }
 	bool applyingEffects() { return mp_Effects!=NULL; }

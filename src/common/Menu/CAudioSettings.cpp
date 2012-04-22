@@ -48,6 +48,8 @@ CBaseMenu(CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
 				 	 	 	 	 	 	 	CGUINumberControl::VORTICON );
 	mpMenuDialog->addControl( mpMusicVolume );
 
+	setMenuLabel("SNDEFFMENULABEL");
+
 }
 
 

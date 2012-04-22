@@ -96,6 +96,7 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 										new toggleFullscreenFunctor(*this) );
 	mpMenuDialog->addControl( mpFullScreenSwitch );
 
+	setMenuLabel("CONFIGMENULABEL");
 }
 
 void CVideoSettings::init()

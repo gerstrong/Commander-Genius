@@ -39,6 +39,7 @@ m_CameraBounds(g_pVideoDriver->getCameraBounds())
 											 CGUINumberControl::VORTICON );
 	mpMenuDialog->addControl( mpSpeedAdjust );
 
+	setMenuLabel("OPTIONSMENULABEL");
 }
 
 

@@ -200,7 +200,7 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 // Getters
 ///
 
-CBitmap *CGfxEngine::getBitmap(const std::string &name)
+CBitmap *CGfxEngine::getBitmap(const std::string &name) const
 {
 	std::string s_name;
 	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
@@ -208,7 +208,7 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name)
 		s_name = Bitmap[i].getName();
 
 		if(s_name == name)
-			return &Bitmap[i];
+			return const_cast<CBitmap*>(&Bitmap[i]);
 	}
 	return NULL;
 }

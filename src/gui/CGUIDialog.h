@@ -60,6 +60,7 @@ public:
 
 	void fit();
 
+	void setRect(const CRect<float> &rect);
 	void setPosition(const float x, const float y);
 
 	std::list< SmartPointer<CGUIControl> >& getControlList()

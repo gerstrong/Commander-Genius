@@ -33,6 +33,8 @@ m_overwrite(false)
 
 		mpMenuDialog->addControl(new CGUIInputText( text, CGUIInputText::VORTICON ) );
 	}
+
+	setMenuLabel("SAVEMENULABEL");
 }
 
 void CSaveMenu::sendEvent(SmartPointer<CEvent> command)

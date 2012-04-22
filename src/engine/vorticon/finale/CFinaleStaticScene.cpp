@@ -91,8 +91,7 @@ void CFinaleStaticScene::process()
 			{
 				if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
 				{ // show it!
-					i->p_bitmap->draw(g_pVideoDriver->mp_VideoEngine->getScrollSurface(),
-										i->dest_rect.x, i->dest_rect.y);
+					i->p_bitmap->draw(i->dest_rect.x, i->dest_rect.y);
 				}
 			}
 

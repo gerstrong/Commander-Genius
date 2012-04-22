@@ -127,6 +127,11 @@ void CGUIDialog::fit()
 }
 
 
+void CGUIDialog::setRect(const CRect<float> &rect)
+{
+	mRect = rect;
+}
+
 
 void CGUIDialog::setPosition(const float x, const float y)
 {
@@ -162,6 +167,7 @@ void CGUIDialog::processLogic()
 
 	if(!g_pInput->m_EventList.empty())
 		g_pInput->m_EventList.clear();
+
 }
 
 

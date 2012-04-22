@@ -8,6 +8,7 @@
 #include "sdl/input/CInput.h"
 #include "CBaseMenu.h"
 #include "common/Menu/CMenuController.h"
+#include "gui/CGUIBitmap.h"
 
 CBaseMenu::CBaseMenu(const CRect<float>& rect) :
 mpMenuDialog( new CGUIDialog(rect) )
@@ -30,7 +31,23 @@ mpMenuDialog( new CGUIDialog(rect) )
 
 	mpReturnButton = pButton;
 
+	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		CRect<float> rect(0.35f, 0.28f, 0.5f, 0.5f);
+		mpMenuDialog->setRect(rect);
+	}
+
 }
+
+void CBaseMenu::setMenuLabel(const std::string &label)
+{
+	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		CRect<float> rect(-0.08f, -0.08f, 1.0f, 1.0f);
+		mpMenuDialog->addControl(new CGUIBitmap(label), rect);
+	}
+}
+
 
 void CBaseMenu::process()
 {

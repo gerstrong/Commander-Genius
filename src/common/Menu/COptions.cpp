@@ -23,6 +23,7 @@ mpOption(g_pBehaviorEngine->m_option)
 		mpMenuDialog->addControl( mpOptionList.back() );
 	}
 
+	setMenuLabel("OPTIONSMENULABEL");
 }
 
 void COptions::init()

@@ -115,6 +115,7 @@ void CControlsettings::init()
 	mpMenuDialog->addControl( new CGUIButton( "Reset Controls",
 	 	 	 	 	 	 	 	 	 	 	  new ResetInputEvent(mSelectedPlayer-1) ) );
 
+	setMenuLabel("MOVEMENULABEL");
 }
 
 

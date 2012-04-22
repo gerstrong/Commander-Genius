@@ -81,7 +81,7 @@ void CMenuGalaxy::drawMenuBorder()
 	SDL_FillRect(blit, &rect, 0x54fc54);
 
 	// And this the bitmap itself
-	m_TitleBmp.draw(blit, m_title_coord.x, m_title_coord.y);
+	m_TitleBmp.draw( m_title_coord.x, m_title_coord.y);
 
 	// This one draws a line at the down part
 	rect.y = m_title_coord.y+90;

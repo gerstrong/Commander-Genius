@@ -111,7 +111,7 @@ void CResourceLoader::renderLoadingGraphic()
 		SDL_Rect rect;
 		int width = Bitmap.getWidth();
 		int height = Bitmap.getHeight();
-		Bitmap.draw(sfc, (320-width)/2, (200-height)/2);
+		Bitmap.draw((320-width)/2, (200-height)/2);
 		rect.x = (320-width)/2;
 		rect.w = (width*m_permil)/1000;
 		rect.y = (200+height)/2;
