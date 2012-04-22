@@ -39,6 +39,8 @@ public:
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
+	void drawGalaxyStyle(SDL_Rect& lRect);
+
 
 	void processRender(const CRect<float> &RectDispCoordFloat);
 

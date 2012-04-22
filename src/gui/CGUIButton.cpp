@@ -37,15 +37,13 @@ drawButton(&CGUIButton::drawNoStyle)
 		mFontID = 1;
 		drawButton = &CGUIButton::drawVorticonStyle;
 		break;
+	case ENGINE_GALAXY:
+		mFontID = 1;
+		drawButton = &CGUIButton::drawGalaxyStyle;
+		break;
 	default:
 		break;
 	}
-	/*else if( g_pBehaviorEngine->getEngine() == ENGINE_VORTICON )
-	{
-		mFontID = 2;
-		drawButton = &CGUIButton::drawGalaxyStyle;
-
-	}*/
 
 }
 
@@ -113,6 +111,20 @@ void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 
 	drawTwirl(lRect);
 
+}
+
+void CGUIButton::drawGalaxyStyle(SDL_Rect& lRect)
+{
+	if(!mEnabled)
+		return;
+
+
+	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+
+	// Now lets draw the text of the list control
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
+
+	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 }
 
 

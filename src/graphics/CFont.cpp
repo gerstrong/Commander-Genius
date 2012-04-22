@@ -157,7 +157,6 @@ unsigned int CFont::getPixelTextHeight()
 
 
 
-
 Uint32 CFont::getBGColour(const bool highlight)
 {
 	SDL_LockSurface(mFontSurface);
