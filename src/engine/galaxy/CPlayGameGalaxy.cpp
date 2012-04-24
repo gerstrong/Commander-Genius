@@ -143,7 +143,7 @@ void CPlayGameGalaxy::process()
 			CMessageBoxGalaxy *pMB = mMessageBoxes.front().get();
 			pMB->process();
 
-			if(pMB->m_mustclose)
+			if(pMB->isFinished())
 			{
 				mMessageBoxes.pop_front();
 			}
@@ -192,6 +192,7 @@ void CPlayGameGalaxy::process()
 	if( EventSendBitmapDialogMsg* ev = EventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
 		CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID, ev->Direction );
+		pMsgBox->init();
 		//CMessageBoxGalaxy *pMsgBox = new CMessageBoxGalaxy( ev->Msg );
 
 		mMessageBoxes.push_back( pMsgBox );

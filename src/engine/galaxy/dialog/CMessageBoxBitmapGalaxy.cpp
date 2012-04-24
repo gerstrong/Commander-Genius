@@ -7,55 +7,51 @@
 
 #include "CMessageBoxBitmapGalaxy.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/extensions.h"
 
+const int FONT_ID = 0;
 
-CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy( const std::string& Text, const Uint16 BitmapId,
-											const direction_t alignment ) :
-CMessageBoxGalaxy(Text)//,
-//m_Bitmap(g_pGfxEngine->getBitmap(BitmapId)),
-//m_alignment(alignment)
+CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy( const std::string& Text,
+														 const Uint16 BitmapId,
+														 const direction_t alignment ) :
+CMessageBoxGalaxy(Text),
+mBitmap(g_pGfxEngine->getBitmap(BitmapId)),
+mAlignment(alignment)
 {
-	/*int new_height = m_boxrect.h;
 
 	// Looking if the Bitmap is too big for the Message box. In that case enlarge it!
-	if( m_Bitmap.getHeight() > m_boxrect.h )
+	if( (mBitmap.getHeight()+26) > mMBRect.h )
 	{
-		new_height = m_Bitmap.getHeight();
+		mMBRect.h = mBitmap.getHeight()+26;
 	}
 
-	if( m_alignment == RIGHT )
-		m_TextPos.x = 10;
-	else
-		m_TextPos.x = 10+m_Bitmap.getWidth();
+	mMBRect.w += (mBitmap.getWidth()+32);
 
-	// I think this depends on the font height itself. I don't get why 6 is correct here.
-	m_TextPos.y = ( (new_height+16)/2 ) - 6*m_Lines.size();
+	mMBRect.x = (320-mMBRect.w)/2;
+	mMBRect.y = (200-mMBRect.h)/2;
 
-	// Resize
-	mp_DlgFrame->resize(m_boxrect.w+m_Bitmap.getWidth()+2, new_height+16);
+	mpMBSurface	= CG_CreateRGBSurface( mMBRect );
+	mpMBSurface = SDL_DisplayFormatAlpha( mpMBSurface.get() );
 
-	// Now calculate new coordinates and remove the box
-	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
-	m_boxrect.x = (gamerect.w - mp_DlgFrame->m_w)/2;
-	m_boxrect.y = (gamerect.h - mp_DlgFrame->m_h)/2;
-	mp_DlgFrame->setPos(m_boxrect.x, m_boxrect.y);
-*/
 }
 
-
-void CMessageBoxBitmapGalaxy::process()
+void CMessageBoxBitmapGalaxy::init()
 {
-	CMessageBoxGalaxy::process();
+	initGalaxyFrame();
 
-	//int bitmap_xcoord;
+	SDL_Rect rect = mMBRect;
 
-	// now compute where the bitmap is to be drawn
-	/*if( m_alignment == RIGHT )
-		bitmap_xcoord = mp_DlgFrame->m_x+mp_DlgFrame->m_w-(m_Bitmap.getWidth()+8);
-	else
-		bitmap_xcoord = m_boxrect.x+8;
+	rect.x = 16;
 
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+	// Move text to the right if bitmap is on the left side
+	if( mAlignment == LEFT )
+		rect.x += mBitmap.getWidth();
 
-	m_Bitmap.draw( sfc,bitmap_xcoord, m_boxrect.y+8 );*/
+	rect.w -= 16;
+	rect.h -= 8;
+	rect.y = (rect.h-mTextHeight)/2;
+
+	initText(rect);
+
+	mBitmap._draw( mpMBSurface.get(), 10, 10 );
 }

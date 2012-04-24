@@ -47,6 +47,25 @@ const std::list<std::string> filledStrList( const size_t amount, const char *fir
 }
 
 /**
+ * Returns of a given string the number of lines
+ */
+unsigned int calcNumLines(const std::string& text)
+{
+	unsigned int numLines = 1;
+
+	if(text.size() == 0)
+		return 0;
+
+	for( unsigned int i=0 ; i<text.size() ; i++ )
+	{
+		if ( endofText( text.substr(i) ) )
+			numLines++;
+	}
+
+	return numLines;
+}
+
+/**
  * Formats a string they way it looks like it's right aligned
  */
 std::string getRightAlignedString(std::string text, size_t size)

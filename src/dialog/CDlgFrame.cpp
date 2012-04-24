@@ -8,7 +8,8 @@
 #include "CDlgFrame.h"
 #include "graphics/CGfxEngine.h"
 
-CDlgFrame::CDlgFrame(int x, int y, int w, int h, int tilewidth, int tileheight) {
+CDlgFrame::CDlgFrame(int x, int y, int w, int h, int tilewidth, int tileheight)
+{
 	
 	m_8x8tileheight = tilewidth;
 	m_8x8tilewidth = tileheight;
@@ -35,7 +36,7 @@ void CDlgFrame::draw(SDL_Surface *dst)
 	}
 	else if(m_theme == ENGINE_GALAXY )
 	{
-		drawGalaxyFrame(dst);
+		//drawGalaxyFrame(dst);
 	}
 }
 
@@ -90,47 +91,6 @@ void CDlgFrame::drawVorticonFrame(SDL_Surface *dst)
 	Font.drawCharacter(dst, 8, m_w - m_8x8tilewidth, m_h - m_8x8tileheight ); // Lower-Right corner
 }
 
-void CDlgFrame::drawGalaxyFrame(SDL_Surface *dst)
-{
-	// first draw the blank rect
-	SDL_Rect rect;
-	rect.x = m_x + m_8x8tilewidth;
-	rect.y = m_y + m_8x8tileheight;
-	rect.w = m_w - m_8x8tilewidth*2;
-	rect.h = m_h - m_8x8tileheight*2;
 
-	SDL_FillRect(dst, &rect, 0xFFFFFF);
-
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(3);
-
-	/// Now draw the borders
-	// Upper Left corner
-	Tilemap.drawTile(dst, m_x, m_y, 0);
-
-	// Upper border
-	for(int x=m_8x8tilewidth ; x<(m_w-m_8x8tilewidth) ; x+=m_8x8tilewidth)
-		Tilemap.drawTile(dst, m_x+x, m_y, 1);
-
-	// Upper Right corner
-	Tilemap.drawTile(dst, m_x+m_w-m_8x8tilewidth, m_y, 2);
-
-	// Left border
-	for(int y=m_8x8tileheight ; y<(m_h-m_8x8tileheight) ; y+=m_8x8tileheight)
-		Tilemap.drawTile(dst, m_x, m_y+y, 3);
-
-	// Right border
-	for(int y=m_8x8tileheight ; y<(m_h-m_8x8tileheight) ; y+=m_8x8tileheight)
-		Tilemap.drawTile(dst, m_x+m_w-m_8x8tilewidth, m_y+y, 5);
-
-	// Lower Left corner
-	Tilemap.drawTile(dst, m_x, m_y+m_h-m_8x8tileheight, 6);
-
-	// Lower border
-	for(int x=m_8x8tilewidth ; x<(m_w-m_8x8tilewidth) ; x+=m_8x8tilewidth)
-		Tilemap.drawTile(dst, m_x+x, m_y+m_h-m_8x8tileheight, 7);
-
-	// Lower Right corner
-	Tilemap.drawTile(dst, m_x+m_w-m_8x8tilewidth, m_y+m_h-m_8x8tileheight, 8);
-}
 
 

@@ -27,6 +27,14 @@ m_charges(charges)
 
 	if( Episode>=1 && Episode<=3 )
 		CreateBackground();
+	else
+	{
+		CSprite &HUDBox = g_pGfxEngine->getSprite(129);
+		m_Rect.h = HUDBox.getHeight()+2;
+		m_Rect.w = HUDBox.getWidth()+2;
+		mpHUDBlit = CG_CreateRGBSurface( m_Rect );
+		mpHUDBlit = SDL_DisplayFormatAlpha( mpHUDBlit.get() );
+	}
 }
 
 /**
@@ -144,15 +152,15 @@ void CHUD::renderGalaxy()
 	lives = (m_lives<99) ? m_lives : 99;
 	charges = (m_charges<99) ? m_charges : 99;
 
-	// Draw the background
+	// Draw the HUD with all the digits
+	SDL_Surface* blitsfc = mpHUDBlit.get();
 	CSprite &HUDBox = g_pGfxEngine->getSprite(129);
-
-	HUDBox.drawSprite( m_Rect.x, m_Rect.y);
-
-	SDL_Surface* blitsfc = g_pVideoDriver->getBlitSurface();
+	HUDBox._drawSprite( blitsfc, m_Rect.x, m_Rect.y );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), m_Rect.x+8, m_Rect.y+4, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2), m_Rect.x+64, m_Rect.y+20, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), m_Rect.x+24, m_Rect.y+20, blitsfc );
+
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -166,7 +174,6 @@ void CHUD::renderVorticon()
 	charges = (m_charges<99) ? m_charges : 99;
 
 	// Draw the background
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpBackground, NULL, &m_Rect ) );
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 	
 	CFont &Font = g_pGfxEngine->getFont(1);
@@ -182,7 +189,6 @@ void CHUD::renderVorticon()
 
 	//Font.setFGColour(blitsurface->format, 0x0);
 
-	// Draw the background
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
 }
 

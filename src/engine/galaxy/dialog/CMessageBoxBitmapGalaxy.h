@@ -25,14 +25,11 @@ public:
 							const direction_t alignment = LEFT );
 	virtual ~CMessageBoxBitmapGalaxy() {};
 
-	/**
-	 * \brief the cycle to be processed for rendering the Message-Box
-	 */
-	void process();
+	virtual void init();
 
 private:
-	//CBitmap &m_Bitmap;
-	//const direction_t m_alignment;
+	CBitmap &mBitmap;
+	const direction_t mAlignment;
 };
 
 #endif /* CMESSAGEBOXBITMAPGALAXY_H_ */

@@ -8,10 +8,12 @@
 #ifndef CMESSAGEBOXGALAXY_H_
 #define CMESSAGEBOXGALAXY_H_
 
-#include "dialog/CMessageBox.h"
 #include "CVec.h"
+#include <string>
+#include <SDL.h>
+#include "SmartPointer.h"
 
-class CMessageBoxGalaxy //: public CMessageBox
+class CMessageBoxGalaxy
 {
 public:
 
@@ -22,13 +24,25 @@ public:
 	CMessageBoxGalaxy(const std::string& Text);
 	virtual ~CMessageBoxGalaxy() {};
 
+	virtual void init();
+
 	virtual void process();
 
-	bool m_mustclose;
+	const bool isFinished() const
+	{	return mMustClose;	}
+
 
 protected:
-	SDL_Rect m_TextPos;
 
+	void initGalaxyFrame();
+	void initText(const SDL_Rect &rect);
+
+
+	bool mMustClose;
+	SDL_Rect mMBRect;
+	std::string mText;
+	SmartPointer<SDL_Surface> mpMBSurface;
+	unsigned int mTextHeight;
 };
 
 #endif /* CMESSAGEBOXGALAXY_H_ */

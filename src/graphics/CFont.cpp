@@ -136,7 +136,7 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	SDL_Rect rect;
 	rect.x = rect.y = 0;
 	rect.w = getPixelTextWidth(text);
-	rect.h = getPixelTextHeight();
+	rect.h = getPixelTextHeight()*calcNumLines(text);
 
 	SDL_Surface *pColoredTextSurface = CG_CreateRGBSurface(rect);
 
@@ -152,10 +152,6 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 
 	drawFont( pColoredTextSurface, text, 0, 0);
 
-	// Change palette colors back to the white one
-	//SDL_GetRGB(0xFFFFFF, pPixelformat, &pColor[15].r, &pColor[15].g, &pColor[15].b);
-	//SDL_SetColors( mFontSurface, pColor, 0, 16);
-
 	// Adapt the newly created surface to the running screen.
 	SDL_Surface *temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
 	SDL_FreeSurface(pColoredTextSurface);
@@ -170,12 +166,25 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 
 unsigned int CFont::getPixelTextWidth( const std::string& text )
 {
-	unsigned int c = 0, width = 0;
+	unsigned int c = 0, width = 0, len = 0;
 	for( ; c<text.size() ; c++)
 	{
-		const int e = text[c];
-		width += (mWidthtable[e]+1);
+		if ( endofText( text.substr(c) ) )
+		{
+			if(len > width)
+				width = len;
+			len = 0;
+		}
+		else
+		{
+			const int e = text[c];
+			len += (mWidthtable[e]+1);
+		}
 	}
+
+	if(len > width)
+		width = len;
+
 	return width;
 }
 
@@ -268,7 +277,7 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 	Uint16 xmidpos = 0;
 
 	for( unsigned int i=0 ; i<text.size() ; i++)
-		xmidpos += mWidthtable[text[i]];
+		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
 
 	xmidpos = (width-xmidpos)/2+x;
 
@@ -281,7 +290,7 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 	Uint16 ymidpos = 0;
 
 	for( unsigned int i=0 ; i<text.size() ; i++)
-		xmidpos += mWidthtable[text[i]];
+		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
 
 	xmidpos = (width-xmidpos)/2+x;
 	ymidpos = yoff + (height - 8)/2;

@@ -34,6 +34,7 @@ class CMessageBox : public CGUIDialog
 public:
 	// Init functions
 	CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound);
+	virtual ~CMessageBox() {}
 
 	/** Processing
 	 * There are dialog boxes in both engines. They have are different and must be overloaded with this function.
