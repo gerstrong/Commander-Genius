@@ -113,7 +113,7 @@ void CPlayGameGalaxy::process()
 			m_Inventory.toggleStatusScreen();
 		}
 
-		const bool msgboxactive = !m_MessageBoxes.empty();
+		const bool msgboxactive = !mMessageBoxes.empty();
 
 		// process Page if one is open. Could be one of the finale scenes
 		//if(m_Page.isActive())
@@ -140,14 +140,12 @@ void CPlayGameGalaxy::process()
 		// Draw some Textboxes with Messages only if one of those is open and needs to be drawn
 		if(msgboxactive)
 		{
-			CMessageBoxGalaxy *pMB = m_MessageBoxes.front();
+			CMessageBoxGalaxy *pMB = mMessageBoxes.front().get();
 			pMB->process();
 
-			if(pMB->isFinished())
+			if(pMB->m_mustclose)
 			{
-				delete(pMB);
-				pMB = NULL;
-				m_MessageBoxes.pop_front();
+				mMessageBoxes.pop_front();
 			}
 			return;
 		}
@@ -162,26 +160,26 @@ void CPlayGameGalaxy::process()
 				m_Cheatmode.jump = !m_Cheatmode.jump;
 				std::string jumpstring = "Jump-Cheat has been ";
 				jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
-				m_MessageBoxes.push_back(new CMessageBoxGalaxy(jumpstring));
+				mMessageBoxes.push_back(new CMessageBoxGalaxy(jumpstring));
 			}
 			else if(g_pInput->getHoldedKey(KG))
 			{
 				m_Cheatmode.god = !m_Cheatmode.god;
 				std::string godstring = "God-Mode has been ";
 				godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
-				m_MessageBoxes.push_back(new CMessageBoxGalaxy(godstring));
+				mMessageBoxes.push_back(new CMessageBoxGalaxy(godstring));
 			}
 			else if(g_pInput->getHoldedKey(KI))
 			{
 				m_Cheatmode.items = true;
-				m_MessageBoxes.push_back(new CMessageBoxGalaxy("Get all Items!"));
+				mMessageBoxes.push_back(new CMessageBoxGalaxy("Get all Items!"));
 				m_Inventory.Item.triggerAllItemsCheat();
 				m_Cheatmode.items = true;
 			}
 			else if(g_pInput->getHoldedKey(KN))
 			{
 				m_Cheatmode.noclipping = true;
-				m_MessageBoxes.push_back(new CMessageBoxGalaxy("No clipping toggle!"));
+				mMessageBoxes.push_back(new CMessageBoxGalaxy("No clipping toggle!"));
 			}
 		}
 	}
@@ -190,22 +188,24 @@ void CPlayGameGalaxy::process()
 	// Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
 	// are some of those events.
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	std::list<CMessageBoxGalaxy*>& MessageBoxQueue = m_MessageBoxes;
 
 	if( EventSendBitmapDialogMsg* ev = EventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
-		MessageBoxQueue.push_back( new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID, ev->Direction ) );
+		CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID, ev->Direction );
+		//CMessageBoxGalaxy *pMsgBox = new CMessageBoxGalaxy( ev->Msg );
+
+		mMessageBoxes.push_back( pMsgBox );
 		EventContainer.pop_Event();
 	}
 	else if( EventSendSelectionDialogMsg* ev = EventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
 	{
 		g_pMusicPlayer->stop();
-		MessageBoxQueue.push_back( new CMessageBoxSelection( ev->Message, ev->Options ) );
+		mMessageBoxes.push_back( new CMessageBoxSelection( ev->Message, ev->Options ) );
 		EventContainer.pop_Event();
 	}
 
 
-	if(MessageBoxQueue.empty())
+	if(mMessageBoxes.empty())
 	{
 		if( EventEnterLevel *ev = EventContainer.occurredEvent<EventEnterLevel>() )
 		{
@@ -254,7 +254,7 @@ void CPlayGameGalaxy::processInput()
 	if(g_pInput->getPressedCommand(IC_BACK))
 	{
 		//mp_Menu = new CMenuGalaxy(ACTIVE, m_SavedGame, m_restartVideo);
-		m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
+		//m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
 		g_pMusicPlayer->pause();
 	}
 }

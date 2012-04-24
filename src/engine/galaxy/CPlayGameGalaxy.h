@@ -15,7 +15,9 @@
 #include "CWorldMap.h"
 #include "CLevelPlay.h"
 #include "CMenuGalaxy.h"
+#include "SmartPointer.h"
 #include <vector>
+#include <list>
 #include <string>
 
 const int WORLD_MAP_LEVEL_GALAXY=0;
@@ -48,7 +50,7 @@ private:
 	CLevelPlay m_LevelPlay;
 	CSaveGameController &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
-	std::list<CMessageBoxGalaxy*> m_MessageBoxes;
+	std::list< SmartPointer<CMessageBoxGalaxy> > mMessageBoxes;
 	stCheat m_Cheatmode;
 };
 

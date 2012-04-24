@@ -11,7 +11,8 @@
 #include "dialog/CMessageBox.h"
 #include "CVec.h"
 
-class CMessageBoxGalaxy : public CMessageBox {
+class CMessageBoxGalaxy //: public CMessageBox
+{
 public:
 
 	/**
@@ -19,11 +20,15 @@ public:
 	 * \param Text 				Message to be shown
 	 */
 	CMessageBoxGalaxy(const std::string& Text);
+	virtual ~CMessageBoxGalaxy() {};
 
-	void process();
+	virtual void process();
+
+	bool m_mustclose;
 
 protected:
 	SDL_Rect m_TextPos;
+
 };
 
 #endif /* CMESSAGEBOXGALAXY_H_ */

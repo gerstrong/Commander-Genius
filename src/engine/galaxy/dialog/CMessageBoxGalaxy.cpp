@@ -14,8 +14,8 @@
 
 const int FONT_ID = 0;
 
-CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text) :
-CMessageBox(Text, false, false, false)
+CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text) /*:
+CMessageBox(Text, false, false, false)*/
 {
 	// Center that dialog box
 	/*CFont &Font = g_pGfxEngine->getFont(FONT_ID);
@@ -50,10 +50,11 @@ CMessageBox(Text, false, false, false)
 
 void CMessageBoxGalaxy::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+	//SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
 	// Look, if somebody pressed a button, and close this dialog!
-	if(g_pInput->getPressedAnyCommand()) {
+	if(g_pInput->getPressedAnyCommand())
+	{
 		m_mustclose = true;
 		return;
 	}

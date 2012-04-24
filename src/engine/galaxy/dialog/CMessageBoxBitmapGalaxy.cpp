@@ -11,9 +11,9 @@
 
 CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy( const std::string& Text, const Uint16 BitmapId,
 											const direction_t alignment ) :
-CMessageBoxGalaxy(Text),
-m_Bitmap(g_pGfxEngine->getBitmap(BitmapId)),
-m_alignment(alignment)
+CMessageBoxGalaxy(Text)//,
+//m_Bitmap(g_pGfxEngine->getBitmap(BitmapId)),
+//m_alignment(alignment)
 {
 	/*int new_height = m_boxrect.h;
 
@@ -47,7 +47,7 @@ void CMessageBoxBitmapGalaxy::process()
 {
 	CMessageBoxGalaxy::process();
 
-	int bitmap_xcoord;
+	//int bitmap_xcoord;
 
 	// now compute where the bitmap is to be drawn
 	/*if( m_alignment == RIGHT )

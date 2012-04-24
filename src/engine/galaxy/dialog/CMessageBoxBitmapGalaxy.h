@@ -12,7 +12,8 @@
 #include "graphics/CGfxEngine.h"
 #include "common/CObject.h"
 
-class CMessageBoxBitmapGalaxy : public CMessageBoxGalaxy {
+class CMessageBoxBitmapGalaxy : public CMessageBoxGalaxy
+{
 public:
 
 	/**
@@ -22,15 +23,16 @@ public:
 	 */
 	CMessageBoxBitmapGalaxy( const std::string& Text, const Uint16 BitmapId,
 							const direction_t alignment = LEFT );
+	virtual ~CMessageBoxBitmapGalaxy() {};
 
 	/**
 	 * \brief the cycle to be processed for rendering the Message-Box
 	 */
-	virtual void process();
+	void process();
 
 private:
-	CBitmap &m_Bitmap;
-	const direction_t m_alignment;
+	//CBitmap &m_Bitmap;
+	//const direction_t m_alignment;
 };
 
 #endif /* CMESSAGEBOXBITMAPGALAXY_H_ */
