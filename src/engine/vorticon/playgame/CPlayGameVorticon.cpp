@@ -171,8 +171,11 @@ void CPlayGameVorticon::process()
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
 
+	if( g_pBehaviorEngine->paused() )
+		return;
 
-	if( !m_paused && m_MessageBoxes.empty() ) // Game is not paused, no messages have to be shown and no menu is open
+
+	if( m_MessageBoxes.empty() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if (!mp_Finale) // Hasn't the game yet been finished?
 		{
@@ -189,8 +192,8 @@ void CPlayGameVorticon::process()
 			for( int i=0 ; i<m_NumPlayers ; i++ )
 			{
 				// Did he open the status screen?
-				if(m_Player[i].m_showStatusScreen)
-					m_paused = true; // this is processed in processPauseDialogs!
+				/*if(m_Player[i].m_showStatusScreen)
+					m_paused = true; // this is processed in processPauseDialogs!*/
 
 				if(!m_Player[0].pdie)
 					m_Player[0].processCamera();
@@ -308,7 +311,6 @@ void CPlayGameVorticon::handleFKeys()
 				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
 
 				m_MessageBoxes.push_back(new CMessageBoxVort(Text));
-				m_paused = true;
 			}
 		}
 		g_pVideoDriver->AddConsoleMsg("All items cheat");
@@ -337,7 +339,6 @@ void CPlayGameVorticon::handleFKeys()
 
 		// Show a message like in the original game
 		m_MessageBoxes.push_back(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
-		m_paused = true;
 		g_pInput->flushKeys();
 	}
 
@@ -519,14 +520,13 @@ void CPlayGameVorticon::drawAllElements()
 	// Draw masked tiles here!
 	mMap->drawForegroundTiles();
 
-	if(mp_option[OPT_HUD].value && !mp_Finale &&
-			!m_paused )
+	if(mp_option[OPT_HUD].value && !mp_Finale  )
 	{	// Draw the HUD
 		mp_HUD->render();
 	}
 
 	// Render the dialogs which are seen when the game is paused
-	if( m_paused || !m_MessageBoxes.empty() )
+	if( !m_MessageBoxes.empty() )
 	{
 		// Finally draw Dialogs like status screen, game paused, etc.
 		processPauseDialogs();

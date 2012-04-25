@@ -11,6 +11,7 @@
 #include "common/Menu/CMainMenu.h"
 #include "sdl/input/CInput.h"
 
+
 void CMenuController::process()
 {
 
@@ -24,6 +25,7 @@ void CMenuController::process()
 		if( mMenuStack.empty() ) // If no menu is open, open the main menu
 		{
 			EventContainer.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
+			g_pBehaviorEngine->setPause(true);
 		}
 		else // Close the menu which is open. Might go back if it is a submenu
 		{
@@ -50,30 +52,14 @@ void CMenuController::process()
 
 		if( EventContainer.occurredEvent<CloseMenuEvent>() )
 		{
-			mpMenu->release();
-			mMenuStack.pop_back();
-
-			if(!mMenuStack.empty())
-				mpMenu = mMenuStack.back();
-			else
-				mpMenu = NULL;
-
+			popBackMenu();
 			EventContainer.pop_Event();
 		}
 
 		if( EventContainer.occurredEvent<CloseAllMenusEvent>() )
 		{
 			while(!mMenuStack.empty())
-			{
-				mpMenu->release();
-
-				mMenuStack.pop_back();
-
-				if(!mMenuStack.empty())
-					mpMenu = mMenuStack.back();
-				else
-					mpMenu = NULL;
-			}
+				popBackMenu();
 
 			EventContainer.pop_Event();
 		}
@@ -95,4 +81,21 @@ void CMenuController::process()
 	}
 
 }
+
+void CMenuController::popBackMenu()
+{
+	mpMenu->release();
+	mMenuStack.pop_back();
+
+	if(!mMenuStack.empty())
+	{
+		mpMenu = mMenuStack.back();
+	}
+	else
+	{
+		g_pBehaviorEngine->setPause(false);
+		mpMenu = NULL;
+	}
+}
+
 

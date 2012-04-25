@@ -59,7 +59,6 @@ protected:
 		START_LEVEL, GOTO_FINALE
 	} m_level_command;
 
-	bool m_paused;
 	bool m_gameover;
 	bool m_alldead;
 	bool m_showPauseDialog;

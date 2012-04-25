@@ -65,7 +65,6 @@ private:
 	std::map< Style, EngineType > mMapping;
 
 	void (CGUIButton::*drawButton)(SDL_Rect&);
-
 };
 
 #endif /* CGUIBUTTON_H_ */

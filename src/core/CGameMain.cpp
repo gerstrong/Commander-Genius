@@ -7,10 +7,11 @@
 
 #include "CGameMain.h"
 #include "common/CBehaviorEngine.h"
-#include "common/Menu/CMenuController.h"
 #include "mode/CGamePassiveMode.h"
 #include "mode/CGamePlayMode.h"
 #include "engine/infoscenes/CHighScores.h"
+#include "core/mode/CGameMode.h"
+#include "common/Menu/CMenuController.h"
 #include "sdl/CVideoDriver.h"
 
 void CGameMain::init()

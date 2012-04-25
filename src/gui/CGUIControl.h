@@ -46,6 +46,8 @@ public:
 
 	void drawTwirl( const SDL_Rect& lRect );
 
+	void drawBlinker( const SDL_Rect& lRect );
+
 
 	CRect<float> mRect;
 	bool mEnabled;

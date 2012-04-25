@@ -15,6 +15,7 @@
 #include "StringUtils.h"
 
 
+
 CGUIButton::CGUIButton(	const std::string& text,
 						const SmartPointer<CEvent> ev,
 						const Style style ) :
@@ -62,9 +63,9 @@ void CGUIButton::setupButtonSurface()
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
-	mpTextDarkSfc = Font.fetchColoredTextSfc(mText, SDL_MapRGB( format, 38, 134, 38));
-	mpTextLightSfc = Font.fetchColoredTextSfc(mText, SDL_MapRGB( format, 84, 234, 84));
-	mpTextDisabledSfc = Font.fetchColoredTextSfc(mText, SDL_MapRGB( format, 123, 150, 123));
+	mpTextDarkSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38));
+	mpTextLightSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84));
+	mpTextDisabledSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123));
 }
 
 
@@ -79,8 +80,6 @@ void CGUIButton::sendEvent(const InputCommands command)
 
 void CGUIButton::processLogic()
 {
-	if(!mEnabled)
-		return;
 
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
@@ -92,18 +91,31 @@ void CGUIButton::processLogic()
 			if(mouseevent->Type == MOUSEEVENT_MOVED)
 			{
 				mHovered = true;
+
+				if(!mEnabled)
+					return;
+
 				g_pInput->m_EventList.pop_Event();
+				return;
 			}
-			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
+
+			if(!mEnabled)
+				return;
+
+
+			if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 			{
 				mButtonDown = true;
 				g_pInput->m_EventList.pop_Event();
+				return;
 			}
-			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
+
+			if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
 				mButtonUp = true;
 				g_pBehaviorEngine->m_EventList.add(mEvent);
 				g_pInput->m_EventList.pop_Event();
+				return;
 			}
 		}
 		else
@@ -114,6 +126,7 @@ void CGUIButton::processLogic()
 			mButtonUp = false;
 		}
 	}
+
 }
 
 
@@ -142,17 +155,20 @@ void CGUIButton::drawGalaxyStyle(SDL_Rect& lRect)
 	if(!mEnabled)
 	{
 		SDL_BlitSurface(mpTextDisabledSfc.get(), NULL, blitsfc, &lRect);
-		return;
+	}
+	else
+	{
+		if(mHovered)
+		{
+			SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
+		}
+		else // Button is not hovered
+		{
+			SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
+		}
 	}
 
-	if(mHovered)
-	{
-		SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
-	}
-	else // Button is not hovered
-	{
-		SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
-	}
+	drawBlinker(lRect);
 }
 
 

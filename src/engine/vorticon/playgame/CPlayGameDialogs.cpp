@@ -27,8 +27,6 @@ void CPlayGameVorticon::processPauseDialogs()
 		{
 			SAFE_DELETE(pMB);
 			m_MessageBoxes.pop_front();
-			if(m_MessageBoxes.empty())
-				m_paused = false;
 		}
 		return;
 	}
@@ -39,7 +37,7 @@ void CPlayGameVorticon::processPauseDialogs()
 		all_status_screens_closed &= m_Player[i].drawStatusScreen();
 	}
 	
-	if(all_status_screens_closed) m_paused = false; // unpause the game
+	//if(all_status_screens_closed) m_paused = false; // unpause the game
 }
 
 void CPlayGameVorticon::showPausedGameDlg()

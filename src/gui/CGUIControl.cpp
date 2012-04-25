@@ -55,3 +55,28 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 	}
 
 }
+
+
+
+void CGUIControl::drawBlinker( const SDL_Rect& lRect )
+{
+	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+
+	if( g_pTimer->HasTimeElapsed(500) )
+		mTwirliconID = !mTwirliconID;
+
+
+	int tile;
+
+	if(!mEnabled)
+	{
+		tile = (mHovered && mTwirliconID) ? 97 : 96;
+	}
+	else
+	{
+		tile = (mTwirliconID && mHovered) ? 93 : 92;
+	}
+
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+	Tilemap.drawTile(blitsfc, lRect.x, lRect.y, tile);
+}

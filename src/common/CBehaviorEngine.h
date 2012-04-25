@@ -52,6 +52,8 @@ typedef struct{
 class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 {
 public:
+	CBehaviorEngine() : mPausedGamePlay(false) {}
+
 	void addMessage(const std::string &name,
 					const std::string &message);
 
@@ -74,6 +76,12 @@ public:
 
 	void setEpisode(size_t Episode);
 
+	void setPause(const bool value)
+	{	mPausedGamePlay = value;	}
+
+	bool paused()
+	{	return mPausedGamePlay;	}
+
 	// TODO: EventList must an own singleton Container, as it very often used.
 	CEventContainer m_EventList;
 	CExeFile m_ExeFile;
@@ -89,6 +97,8 @@ private:
 													  // used by Episode 1 especially
 	int numStrings;
 	size_t m_Episode;
+
+	bool mPausedGamePlay;
 };
 
 #endif /* CBEHAVIORENGINE_H_ */

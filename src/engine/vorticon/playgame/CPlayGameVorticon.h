@@ -42,7 +42,8 @@ DOOR_GREEN = 4,
 DOOR_BLUE =  5
 };
 
-class CPlayGameVorticon : public CPlayGame {
+class CPlayGameVorticon : public CPlayGame
+{
 public:
 
 	CPlayGameVorticon(CExeFile &ExeFile, char level,

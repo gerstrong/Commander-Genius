@@ -43,9 +43,14 @@ public:
 
 	void process();
 
+	bool active()
+	{	return	!mMenuStack.empty();	}
+
 	bool mOpenedGamePlay;
 
 private:
+
+	void popBackMenu();
 
 	SmartPointer<CBaseMenu> mpMenu;
 	std::list< SmartPointer<CBaseMenu> > mMenuStack;
