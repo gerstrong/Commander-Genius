@@ -20,21 +20,26 @@ CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
 mRect(SrcRect),
 mSelection(0)
 {
-	const SDL_Rect lRect = mRect.SDLRect();
-	mpBackgroundSfc = CG_CreateRGBSurface( lRect );
-
 	if( g_pBehaviorEngine->getEngine() == ENGINE_VORTICON )
 	{
-		drawBackround = &CGUIDialog::drawVorticonBackround;
+		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
+		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
+		mpBackgroundSfc = SDL_DisplayFormatAlpha( mpBackgroundSfc.get() );
+		initVorticonBackground( lRect );
 	}
 	else if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
 	{
-		drawBackround = &CGUIDialog::drawGalaxyBackround;
-		mpBackgroundBitmap = g_pGfxEngine->getBitmap("KEENSWATCH");
+		const SDL_Rect lRect = g_pVideoDriver->getGameResolution().SDLRect();
+		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
+		mpBackgroundSfc = SDL_DisplayFormatAlpha( mpBackgroundSfc.get() );
+		initGalaxyBackround( lRect );
 	}
 	else
 	{
-		drawBackround = &CGUIDialog::drawEmptyBackround;
+		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
+		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
+		mpBackgroundSfc = SDL_DisplayFormatAlpha( mpBackgroundSfc.get() );
+		initEmptyBackround();
 	}
 }
 
@@ -46,6 +51,7 @@ CGUIDialog::~CGUIDialog()
 		pVideoDriver->clearDrawingTasks();
 	}
 }
+
 
 
 void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
@@ -208,84 +214,99 @@ void CGUIDialog::processLogic()
 }
 
 
-void CGUIDialog::drawEmptyBackround(SDL_Rect Rect)
+void CGUIDialog::initEmptyBackround()
 {
-	SDL_FillRect( g_pVideoDriver->getBlitSurface(), &Rect, 0x00E6E6E6 );
+	SDL_FillRect( mpBackgroundSfc.get(), NULL, 0xFFE6E6E6 );
 }
 
-void CGUIDialog::drawVorticonBackround( SDL_Rect Rect )
+void CGUIDialog::initVorticonBackground( SDL_Rect Rect )
 {
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(1);
 
-	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *backSfc = mpBackgroundSfc.get();
 
 
 	// Draw the character so the classical vorticon menu is drawn
 
 	// Start with the blank space (normally it's white. Might be different in some mods)
-	for( int x=Rect.x+8 ; x<Rect.x+Rect.w-8 ; x+=8 )
+	for( int x=8 ; x<Rect.w-8 ; x+=8 )
 	{
-		for( int y=Rect.y+8 ; y<Rect.y+Rect.h-2*8 ; y+=8 )
+		for( int y=8 ; y<Rect.h-2*8 ; y+=8 )
 		{
-			Font.drawCharacter( Blitsurface, 32, x, y );
+			Font.drawCharacter( backSfc, 32, x, y );
 		}
 	}
 
 
-	Font.drawCharacter( Blitsurface, 1, Rect.x, Rect.y );
+	// Now draw the borders
+	Font.drawCharacter( backSfc, 1, 0, 0 );
 
-	for( int x=Rect.x+8 ; x<Rect.x+Rect.w-8 ; x+=8 )
+	for( int x=8 ; x<Rect.w-8 ; x+=8 )
 	{
-		Font.drawCharacter( Blitsurface, 2, x, Rect.y );
+		Font.drawCharacter( backSfc, 2, x, 0 );
 	}
 
-	Font.drawCharacter( Blitsurface, 3, Rect.x+Rect.w-8, Rect.y );
+	Font.drawCharacter( backSfc, 3, Rect.w-8, 0 );
 
-	for( int x=Rect.x+8 ; x<Rect.x+Rect.w-8 ; x+=8 )
+	for( int x=8 ; x<Rect.w-8 ; x+=8 )
 	{
-		Font.drawCharacter( Blitsurface, 7, x, Rect.y+Rect.h-2*8 );
+		Font.drawCharacter( backSfc, 7, x, Rect.h-2*8 );
 	}
 
-	for( int y=Rect.y+8 ; y<Rect.y+Rect.h-16 ; y+=8 )
+	for( int y=8 ; y<Rect.h-16 ; y+=8 )
 	{
-		Font.drawCharacter( Blitsurface, 4, Rect.x, y );
+		Font.drawCharacter( backSfc, 4, 0, y );
 	}
 
-	for( int y=Rect.y+8 ; y<Rect.y+Rect.h-16 ; y+=8 )
+	for( int y=8 ; y<Rect.h-16 ; y+=8 )
 	{
-		Font.drawCharacter( Blitsurface, 5, Rect.x+Rect.w-8, y );
+		Font.drawCharacter( backSfc, 5, Rect.w-8, y );
 	}
 
-	Font.drawCharacter( Blitsurface, 6, Rect.x, Rect.y+Rect.h-2*8 );
-	Font.drawCharacter( Blitsurface, 8, Rect.x+Rect.w-8, Rect.y+Rect.h-2*8 );
+	Font.drawCharacter( backSfc, 6, 0, Rect.h-2*8 );
+	Font.drawCharacter( backSfc, 8, Rect.w-8, Rect.h-2*8 );
 
 }
 
 
-void CGUIDialog::drawGalaxyBackround(SDL_Rect Rect)
+void CGUIDialog::initGalaxyBackround(SDL_Rect Rect)
 {
+	// Besides the Background Bitmap we need to draw two scores. One is underline the other upper line
+	SDL_Surface *backSfc = mpBackgroundSfc.get();
 
-	mpBackgroundBitmap->_draw(g_pVideoDriver->getBlitSurface(), 0, 0);
+	g_pGfxEngine->getBitmap("KEENSWATCH")->_draw(backSfc, 0, 0);
+
+	Uint32 color = SDL_MapRGB( backSfc->format, 84, 234, 84);
+	SDL_Rect scoreRect;
+	scoreRect.w = 150;
+	scoreRect.h = 1;
+	scoreRect.x = 80;
+	scoreRect.y = 55;
+
+	SDL_FillRect(backSfc, &scoreRect, color);
+
+	scoreRect.y = 143;
+
+	SDL_FillRect(backSfc, &scoreRect, color);
 
 }
-
 
 
 void CGUIDialog::processRendering()
 {
+	SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
 	CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
 	CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
-	CRect<float> RectDispCoordFloat = mRect;
 
-	// Transform to the blit coordinates
-	RectDispCoordFloat.transform(screenRect);
-
-	CRect<Uint16> RectDispCoord;
-	RectDispCoord = RectDispCoordFloat;
-	SDL_Rect lRect = RectDispCoord.SDLRect();
-
-	(this->*drawBackround)(lRect);
+	if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
+	{
+		SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL );
+	}
+	else
+	{
+		SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), &lRect );
+	}
 
 	for( std::list<
 		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;

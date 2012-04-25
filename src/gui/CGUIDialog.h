@@ -36,13 +36,13 @@ public:
 	~CGUIDialog();
 
 	// Empty Background draw function. Just fills the Rect with a standard gray color
-	void drawEmptyBackround(SDL_Rect Rect);
+	void initEmptyBackround();
 
 	// Vorticon Menu draw function
-	void drawVorticonBackround(SDL_Rect Rect);
+	void initVorticonBackground(SDL_Rect Rect);
 
 	// Galaxy Menu draw function
-	void drawGalaxyBackround(SDL_Rect Rect);
+	void initGalaxyBackround(SDL_Rect Rect);
 
 	// processes the whole logic of the Dialog
 	void processLogic();
@@ -83,14 +83,9 @@ private:
 	// SDL_Surface of the Background
 	SmartPointer<SDL_Surface>	mpBackgroundSfc;
 
-	// Pointer to the function that will be in charge of drawing the background
-	void (CGUIDialog::*drawBackround)(SDL_Rect);
-
 	int mSelection;
 
 	CGUIControl *mpCurrentCtrl;
-
-	CBitmap *mpBackgroundBitmap;
 };
 
 

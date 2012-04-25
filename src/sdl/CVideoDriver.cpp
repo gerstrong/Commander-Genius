@@ -521,6 +521,21 @@ void CVideoDriver::pollDrawingTasks()
 }
 
 
+SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
+{
+	CRect<Uint16> GameRes = getGameResolution();
+	CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
+	CRect<float> RectDispCoordFloat = rect;
+
+	// Transform to the blit coordinates
+	RectDispCoordFloat.transform(screenRect);
+
+	CRect<Uint16> RectDispCoord;
+	RectDispCoord = RectDispCoordFloat;
+	return RectDispCoord.SDLRect();
+}
+
+
 void CVideoDriver::clearDrawingTasks()
 {
 	if(!mDrawTasks.empty())

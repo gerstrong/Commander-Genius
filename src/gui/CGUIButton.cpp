@@ -64,7 +64,7 @@ void CGUIButton::setupButtonSurface()
 
 	mpTextDarkSfc = Font.fetchColoredTextSfc(mText, SDL_MapRGB( format, 38, 134, 38));
 	mpTextLightSfc = Font.fetchColoredTextSfc(mText, SDL_MapRGB( format, 84, 234, 84));
-	mpTextDisabledSfc = Font.fetchColoredTextSfc(mText, SDL_MapRGB( format, 123, 123, 123));
+	mpTextDisabledSfc = Font.fetchColoredTextSfc(mText, SDL_MapRGB( format, 123, 150, 123));
 }
 
 

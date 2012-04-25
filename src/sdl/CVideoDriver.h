@@ -59,6 +59,7 @@ public:
 	// Drawing related stuff
 
 	void pollDrawingTasks();
+	SDL_Rect toBlitRect(const CRect<float> &rect);
 	void clearDrawingTasks();
 
 	/**
