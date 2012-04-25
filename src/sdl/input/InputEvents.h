@@ -17,7 +17,7 @@
 
 enum InputCommands
 {
-	IC_LEFT,
+	IC_LEFT = 1,
 	IC_RIGHT,
 	IC_UP,
 	IC_DOWN,

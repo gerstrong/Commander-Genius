@@ -74,18 +74,56 @@ void CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 		if(ev->mCommand == IC_DOWN)
 		{
 			mSelection++;
+
+			// Ensures that disabled items are skipped
+			std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
+			for( int i=0 ; it != mControlList.end() ; it++, i++ )
+			{
+				if( i ==  mSelection )
+					break;
+			}
+
+			for( ; it != mControlList.end() ; it++ )
+			{
+				if( (*it)->mEnabled )
+					break;
+
+				mSelection++;
+			}
+
+			if( mSelection >= static_cast<int>(mControlList.size()) )
+				mSelection = 0;
+
+
 		}
 		else if(ev->mCommand == IC_UP)
 		{
 			mSelection--;
+
+			if( mSelection < 0 )
+				mSelection = mControlList.size()-1;
+
+			// Ensures that disabled items are skipped
+			std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
+			for( int i=0 ; it != mControlList.end() ; it++, i++ )
+			{
+				if( i ==  mSelection )
+					break;
+			}
+
+			for( ; it != mControlList.end() ; it++ )
+			{
+				if( (*it)->mEnabled )
+					break;
+
+				mSelection--;
+			}
 		}
 
-		if( mSelection >= static_cast<int>(mControlList.size()) )
-			mSelection = 0;
 
-		if( mSelection < 0 )
-			mSelection = mControlList.size()-1;
 
+
+		// Send all the other events the active control element
 		std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
 		for( int i=0 ; it != mControlList.end() ; it++, i++ )
 		{
@@ -97,7 +135,6 @@ void CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 			}
 
 		}
-
 
 	}
 }

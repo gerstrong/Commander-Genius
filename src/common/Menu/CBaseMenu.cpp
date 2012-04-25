@@ -52,11 +52,11 @@ void CBaseMenu::setMenuLabel(const std::string &label)
 void CBaseMenu::process()
 {
 	// Command (Keyboard/Joystick) are handled here
-	for( InputCommands cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
+	for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
 	{
 		if( g_pInput->getPressedCommand(cmd) )
 		{
-			sendEvent(new CommandEvent(cmd));
+			sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
 			break;
 		}
 	}
