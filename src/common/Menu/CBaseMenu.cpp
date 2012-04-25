@@ -51,28 +51,16 @@ void CBaseMenu::setMenuLabel(const std::string &label)
 
 void CBaseMenu::process()
 {
-
 	// Command (Keyboard/Joystick) are handled here
-	if( g_pInput->getPressedCommand(IC_LEFT) )
+	for( InputCommands cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
 	{
-		sendEvent(new CommandEvent(IC_LEFT));
+		if( g_pInput->getPressedCommand(cmd) )
+		{
+			sendEvent(new CommandEvent(cmd));
+			break;
+		}
 	}
-	else if( g_pInput->getPressedCommand(IC_RIGHT) )
-	{
-		sendEvent(new CommandEvent(IC_RIGHT));
-	}
-	else if( g_pInput->getPressedCommand(IC_UP) )
-	{
-		sendEvent(new CommandEvent(IC_UP));
-	}
-	else if( g_pInput->getPressedCommand(IC_DOWN) )
-	{
-		sendEvent(new CommandEvent(IC_DOWN));
-	}
-	else if( g_pInput->getPressedCommand(IC_STATUS) )
-	{
-		sendEvent(new CommandEvent(IC_STATUS));
-	}
+
 
 	mpMenuDialog->processLogic();
 
