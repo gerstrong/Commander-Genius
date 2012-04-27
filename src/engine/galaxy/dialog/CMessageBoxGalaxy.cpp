@@ -4,7 +4,9 @@
  *  Created on: 30.03.2011
  *      Author: gerstrong
  *
- *  This
+ *  This class basically handles the message boxes seen 
+ *  within the galaxy games. This box is shown whenever there is a Dialog between
+ *  Keen and one of the oracles.
  */
 
 #include "CMessageBoxGalaxy.h"
@@ -12,6 +14,7 @@
 #include "sdl/input/CInput.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"
+#include "StringUtils.h"
 
 const int FONT_ID = 0;
 
