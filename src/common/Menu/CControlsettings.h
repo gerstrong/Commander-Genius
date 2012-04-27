@@ -14,6 +14,7 @@
 #include "gui/CGUISwitch.h"
 #include "engine/CEvent.h"
 #include <vector>
+#include <map>
 
 
 class CControlsettings : public CBaseMenu
@@ -32,6 +33,7 @@ private:
 
 	std::vector<CGUIButton*> mpButtonList;
 	CGUISwitch *mpTwoButtonSwitch;
+	std::map<InputCommands, std::string> mCommandName;
 };
 
 // Create the Control-Menu for the indicated Player
