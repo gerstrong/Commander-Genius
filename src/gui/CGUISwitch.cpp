@@ -8,7 +8,6 @@
 #include "CGUISwitch.h"
 #include "StringUtils.h"
 
-CGUISwitch::CGUISwitch(	const std::string& text,
-						const Style	style ) :
-CGUIComboSelection( text, filledStrList( 2, "off", "on" ), style )
+CGUISwitch::CGUISwitch( const std::string& text ) :
+CGUIComboSelection( text, filledStrList( 2, "off", "on" ) )
 {}

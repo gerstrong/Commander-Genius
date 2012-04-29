@@ -18,16 +18,10 @@ class CGUIComboSelection : public CGUIControl
 {
 public:
 
-	enum Style
-	{
-		NONE,
-		VORTICON
-	};
-
 	CGUIComboSelection(	const std::string& text,
-			const std::list<std::string>& optionsList,
-			const Style	style = NONE);
+			const std::list<std::string>& optionsList);
 
+	void setupButtonSurface();
 
 	const std::string& getSelection();
 
@@ -41,6 +35,7 @@ public:
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
+	void drawGalaxyStyle(SDL_Rect& lRect);
 
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
@@ -48,6 +43,11 @@ private:
 	std::string mText;
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
+
+	SmartPointer<SDL_Surface> mpTextDarkSfc;
+	SmartPointer<SDL_Surface> mpTextLightSfc;
+	SmartPointer<SDL_Surface> mpTextDisabledSfc;
+
 
 	void (CGUIComboSelection::*drawButton)(SDL_Rect&);
 

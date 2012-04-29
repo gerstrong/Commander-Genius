@@ -110,8 +110,7 @@ void CControlsettings::init()
 
 	}
 
-	mpTwoButtonSwitch = new CGUISwitch( "Two Button Firing",
-										CGUISwitch::VORTICON );
+	mpTwoButtonSwitch = new CGUISwitch( "Two Button Firing" );
 
 	mpTwoButtonSwitch->enable(g_pInput->getTwoButtonFiring(mSelectedPlayer-1));
 

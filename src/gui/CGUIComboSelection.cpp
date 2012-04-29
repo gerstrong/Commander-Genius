@@ -16,19 +16,35 @@
 #include "Utils.h"
 
 
-CGUIComboSelection::CGUIComboSelection(	const std::string& text,
-										const std::list<std::string>& optionsList,
-										const Style	style ) :
+CGUIComboSelection::CGUIComboSelection( const std::string& text,
+										     const std::list<std::string>& optionsList ) :
 mText(text),
 mOptionsList( optionsList ),
 mOLCurrent( mOptionsList.begin() ),
 drawButton(&CGUIComboSelection::drawNoStyle)
 {
-	if(style == VORTICON)
+
+	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
 	{
 		mFontID = 1;
 		drawButton = &CGUIComboSelection::drawVorticonStyle;
 	}
+	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		mFontID = 1;
+		setupButtonSurface();
+		drawButton = &CGUIComboSelection::drawGalaxyStyle;
+	}
+}
+
+void CGUIComboSelection::setupButtonSurface()
+{
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
+	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+
+	mpTextDarkSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38));
+	mpTextLightSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84));
+	mpTextDisabledSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123));
 }
 
 const std::string& CGUIComboSelection::getSelection()
@@ -147,6 +163,30 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 
 	drawTwirl(lRect);
 
+}
+
+
+void CGUIComboSelection::drawGalaxyStyle(SDL_Rect& lRect)
+{
+	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+
+	if(!mEnabled)
+	{
+		SDL_BlitSurface(mpTextDisabledSfc.get(), NULL, blitsfc, &lRect);
+	}
+	else
+	{
+		if(mHovered)
+		{
+			SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
+		}
+		else // Button is not hovered
+		{
+			SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
+		}
+	}
+
+	drawBlinker(lRect);
 }
 
 

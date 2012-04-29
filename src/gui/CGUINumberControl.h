@@ -18,12 +18,6 @@ class CGUINumberControl: public CGUIControl
 {
 public:
 
-	enum Style
-	{
-		NONE,
-		VORTICON
-	};
-
 	CGUINumberControl(	const std::string& text,
 			const int startValue,
 			const int endValue,

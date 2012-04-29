@@ -17,12 +17,6 @@ class CGUIInputText : public CGUIControl
 {
 public:
 
-	enum Style
-	{
-		NONE,
-		VORTICON
-	};
-
 	CGUIInputText(const std::string& text,
 				  const Style	style);
 

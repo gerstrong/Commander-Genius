@@ -27,8 +27,16 @@ mTick(false),
 drawButton(&CGUIInputText::drawNoStyle)
 {
 
-	if(style == VORTICON)
+	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
+	{
+		mFontID = 1;
 		drawButton = &CGUIInputText::drawVorticonStyle;
+	}
+	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		mFontID = 1;
+		drawButton = &CGUIInputText::drawVorticonStyle;
+	}
 
 }
 

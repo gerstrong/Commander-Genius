@@ -22,14 +22,6 @@ class CGUIButton : public CGUIControl
 {
 public:
 
-	enum Style
-	{
-		UNSET,
-		NONE,
-		VORTICON,
-		GALAXY
-	};
-
 	CGUIButton(const std::string& text,
 			const SmartPointer<CEvent> ev,
 			const Style style=UNSET);

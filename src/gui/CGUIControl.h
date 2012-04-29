@@ -15,8 +15,16 @@
 
 class CGUIControl
 {
-
 public:
+	enum Style
+	{
+		UNSET,
+		NONE,
+		VORTICON,
+		GALAXY
+	};
+
+
 	CGUIControl();
 
 	virtual void processLogic() = 0;

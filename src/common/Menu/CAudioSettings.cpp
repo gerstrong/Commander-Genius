@@ -18,34 +18,29 @@ CBaseMenu(CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
 {
 
 	mpRate = new CGUIComboSelection( "rate",
-									 g_pSound->getAvailableRateList(),
-									 CGUIComboSelection::VORTICON );
+									 g_pSound->getAvailableRateList());
 	mpMenuDialog->addControl( mpRate );
 
-	mpStereo = new CGUISwitch( "Stereo", CGUISwitch::VORTICON );
+	mpStereo = new CGUISwitch( "Stereo" );
 	mpMenuDialog->addControl( mpStereo );
 
 	mpDepth = new CGUIComboSelection( "Depth",
-									  filledStrList( 2, "8-bit", "16-bit" ),
-									 CGUIComboSelection::VORTICON );
+									  filledStrList( 2, "8-bit", "16-bit" ) );
 	mpMenuDialog->addControl( mpDepth );
 
 	mpSBToggle = new CGUIComboSelection( "Soundcard",
-										 filledStrList( 2, "pc speaker", "soundblaster" ),
-										 CGUISwitch::VORTICON );
+										 filledStrList( 2, "pc speaker", "soundblaster" ) );
 	mpMenuDialog->addControl( mpSBToggle );
 
 	mpSoundVolume = new CGUINumberControl( "Sound Volume",
 											0, SDL_MIX_MAXVOLUME, 8,
-											g_pSound->getSoundVolume(),
-											CGUINumberControl::VORTICON );
+											g_pSound->getSoundVolume() );
 	mpMenuDialog->addControl( mpSoundVolume );
 
 
 	mpMusicVolume = new CGUINumberControl( "Music Volume",
 											0, SDL_MIX_MAXVOLUME, 8,
-				 	 	 	 	 	 	 	g_pSound->getMusicVolume(),
-				 	 	 	 	 	 	 	CGUINumberControl::VORTICON );
+				 	 	 	 	 	 	 	g_pSound->getMusicVolume() );
 	mpMenuDialog->addControl( mpMusicVolume );
 
 	setMenuLabel("SNDEFFMENULABEL");

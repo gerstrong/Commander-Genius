@@ -18,8 +18,7 @@ mpOption(g_pBehaviorEngine->m_option)
 
 	for( int i = 0 ; i < NUM_OPTIONS ; i++ )
 	{
-		mpOptionList.push_back( new CGUISwitch(mpOption[i].menuname,
-											   CGUISwitch::VORTICON) );
+		mpOptionList.push_back( new CGUISwitch(mpOption[i].menuname) );
 		mpMenuDialog->addControl( mpOptionList.back() );
 	}
 

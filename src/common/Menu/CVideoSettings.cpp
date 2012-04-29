@@ -52,31 +52,26 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
 
 #ifdef USE_OPENGL
 
-	mpOpenGLSwitch = new CGUISwitch( "OpenGL",
-									  CGUISwitch::VORTICON );
+	mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
 	mpMenuDialog->addControl( mpOpenGLSwitch );
 
 	mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
-											filledStrList( 2, "nearest", "linear" ),
-	 	 	 	 	 	 	 	 	 	 	 CGUIComboSelection::VORTICON );
+											filledStrList( 2, "nearest", "linear" ) );
 	mpMenuDialog->addControl( mpOGLFilterSelection );
 #endif
 
 
 
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
-												filledStrList( 4, "none", "2x", "3x", "4x" ),
-												CGUIComboSelection::VORTICON );
+												filledStrList( 4, "none", "2x", "3x", "4x" ) );
 	mpMenuDialog->addControl( mpScalerSelection );
 
 
-	mpShowFPSSwitch = new CGUISwitch( "Show FPS",
-									  	 CGUISwitch::VORTICON );
+	mpShowFPSSwitch = new CGUISwitch( "Show FPS" );
 	mpMenuDialog->addControl( mpShowFPSSwitch );
 
 
-	mpSFXSwitch = new CGUISwitch( "Special FX",
-								  CGUISwitch::VORTICON );
+	mpSFXSwitch = new CGUISwitch( "Special FX" );
 	mpMenuDialog->addControl( mpSFXSwitch );
 
 
