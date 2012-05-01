@@ -21,8 +21,7 @@ CGUINumberControl::CGUINumberControl(	const std::string& text,
 										const int startValue,
 										const int endValue,
 										const int deltaValue,
-										const int value,
-										const Style	style ) :
+										const int value) :
 mText(text),
 mStartValue(startValue),
 mEndValue(endValue),
@@ -32,8 +31,17 @@ mIncSel(false),
 mDecSel(false),
 drawButton(&CGUINumberControl::drawNoStyle)
 {
-	if(style == VORTICON)
+	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
+	{
+		mFontID = 1;
 		drawButton = &CGUINumberControl::drawVorticonStyle;
+	}
+	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		mFontID = 1;
+		drawButton = &CGUINumberControl::drawGalaxyStyle;
+		setupButtonSurface();
+	}
 }
 
 
@@ -63,6 +71,18 @@ void CGUINumberControl::setSelection( const int value )
 	else
 		mValue = value;
 
+}
+
+
+void CGUINumberControl::setupButtonSurface()
+{
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
+	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+
+	const std::string showText = "  " + mText + ": " + itoa(mValue);
+	mpTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
+	mpTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
+	mpTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));
 }
 
 
@@ -119,6 +139,11 @@ void CGUINumberControl::processLogic()
 						increment();
 				}
 
+				if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+				{
+					setupButtonSurface();
+				}
+
 				g_pInput->m_EventList.pop_Event();
 			}
 		}
@@ -132,6 +157,35 @@ void CGUINumberControl::processLogic()
 		}
 	}
 }
+
+
+
+
+
+void CGUINumberControl::drawGalaxyStyle(SDL_Rect& lRect)
+{
+	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+
+	if(!mEnabled)
+	{
+		SDL_BlitSurface(mpTextDisabledSfc.get(), NULL, blitsfc, &lRect);
+	}
+	else
+	{
+		if(mHovered)
+		{
+			SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
+		}
+		else // Button is not hovered
+		{
+			SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
+		}
+	}
+
+	drawBlinker(lRect);
+}
+
+
 
 
 void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)

@@ -37,16 +37,15 @@ private:
 
 
 CVideoSettings::CVideoSettings() :
-CBaseMenu(CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
+//CBaseMenu(CRect<float>(0.15f, 0.24f, 0.7f, 0.5f) )
+CBaseMenu(CRect<float>(0.25f, 0.24f, 0.45f, 0.5f) )
 {
 	// Create the fps config selection control
 	std::list<std::string>	List;
 	for( int i = 10 ; i <= 120 ; i += 10 )
 		List.push_back( itoa (i) );
 
-	mpFPSSelection = new CGUINumberControl( "FPS",
-											 10, 120, 10, 60,
-											 CGUINumberControl::VORTICON );
+	mpFPSSelection = new CGUINumberControl( "FPS", 10, 120, 10, 60 );
 	mpMenuDialog->addControl( mpFPSSelection );
 
 

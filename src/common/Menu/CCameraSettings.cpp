@@ -15,28 +15,23 @@ m_CameraBounds(g_pVideoDriver->getCameraBounds())
 {
 
 	mpLeftAdjust = new CGUINumberControl( "Left",
-											 50, 270, 10, 60,
-											 CGUINumberControl::VORTICON );
+											 50, 270, 10, 60);
 	mpMenuDialog->addControl( mpLeftAdjust );
 
 	mpRightAdjust = new CGUINumberControl( "Right",
-											 50, 270, 10, 60,
-											 CGUINumberControl::VORTICON );
+											 50, 270, 10, 60 );
 	mpMenuDialog->addControl( mpRightAdjust );
 
 	mpTopAdjust = new CGUINumberControl( "Top",
-											 50, 150, 10, 60,
-											 CGUINumberControl::VORTICON );
+											 50, 150, 10, 60 );
 	mpMenuDialog->addControl( mpTopAdjust );
 
 	mpBottomAdjust = new CGUINumberControl( "Bottom",
-											 50, 150, 10, 60,
-											 CGUINumberControl::VORTICON );
+											 50, 150, 10, 60 );
 	mpMenuDialog->addControl( mpBottomAdjust );
 
 	mpSpeedAdjust = new CGUINumberControl( "Speed",
-											 1, 50, 1, 60,
-											 CGUINumberControl::VORTICON );
+											 1, 50, 1, 60 );
 	mpMenuDialog->addControl( mpSpeedAdjust );
 
 	setMenuLabel("OPTIONSMENULABEL");

@@ -21,7 +21,7 @@ public:
 	CGUIComboSelection(	const std::string& text,
 			const std::list<std::string>& optionsList);
 
-	void setupButtonSurface();
+	void setupButtonSurface(const std::string &optionText);
 
 	const std::string& getSelection();
 

@@ -32,19 +32,19 @@ drawButton(&CGUIComboSelection::drawNoStyle)
 	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
 		mFontID = 1;
-		setupButtonSurface();
 		drawButton = &CGUIComboSelection::drawGalaxyStyle;
 	}
 }
 
-void CGUIComboSelection::setupButtonSurface()
+void CGUIComboSelection::setupButtonSurface(const std::string &optionText)
 {
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
-	mpTextDarkSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38));
-	mpTextLightSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84));
-	mpTextDisabledSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123));
+	const std::string showText = "  " + mText + ": " + optionText;
+	mpTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
+	mpTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
+	mpTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));
 }
 
 const std::string& CGUIComboSelection::getSelection()
@@ -61,7 +61,14 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
 	{
 
 		if( *mOLCurrent == selectionText )
+		{
+			if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+			{
+				setupButtonSurface(selectionText);
+			}
+
 			return;
+		}
 
 		// Cycle through the Optionslist and find the entry
 		mOLCurrent++;
@@ -74,7 +81,6 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
 	mOptionsList.push_back( selectionText );
 	mOLCurrent = mOptionsList.end();
 	mOLCurrent--;
-
 }
 
 
@@ -132,6 +138,11 @@ void CGUIComboSelection::processLogic()
 				mOLCurrent++;
 				if( mOLCurrent == mOptionsList.end() )
 					mOLCurrent =  mOptionsList.begin();
+
+				if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+				{
+					setupButtonSurface(*mOLCurrent);
+				}
 
 				g_pInput->m_EventList.pop_Event();
 			}

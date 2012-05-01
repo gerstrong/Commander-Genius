@@ -22,8 +22,7 @@ public:
 			const int startValue,
 			const int endValue,
 			const int deltaValue,
-			const int value,
-			const Style	style = NONE);
+			const int value );
 
 
 	void increment();
@@ -32,9 +31,13 @@ public:
 	const int getSelection();
 	void setSelection( const int value );
 
+	void setupButtonSurface();
+
 	void processLogic();
 
 	void drawNoStyle(SDL_Rect& lRect);
+
+	void drawGalaxyStyle(SDL_Rect& lRect);
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
@@ -50,6 +53,11 @@ private:
 	bool mIncSel;
 	bool mDecSel;
 	static int mTwirliconID;
+
+	SmartPointer<SDL_Surface> mpTextDarkSfc;
+	SmartPointer<SDL_Surface> mpTextLightSfc;
+	SmartPointer<SDL_Surface> mpTextDisabledSfc;
+
 
 	void (CGUINumberControl::*drawButton)(SDL_Rect&);
 
