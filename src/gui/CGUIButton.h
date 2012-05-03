@@ -40,7 +40,10 @@ public:
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
 	void setText(const std::string& text)
-	{	mText = text;	}
+	{
+		mText = text;
+		setupButtonSurface();
+	}
 
 	std::string getText()
 	{	return mText;	}

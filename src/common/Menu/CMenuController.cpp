@@ -64,13 +64,31 @@ void CMenuController::process()
 			EventContainer.pop_Event();
 		}
 
+
+		if( OpenMovementControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenMovementControlMenuEvent>() )
+		{
+			const int players = ctrlMenu->mNumPlayers;
+			EventContainer.pop_Event();
+			EventContainer.add( new OpenMenuEvent(
+									new CControlSettingsMovement(players) ) );
+		}
+
+		if( OpenButtonsControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenButtonsControlMenuEvent>() )
+		{
+			const int players = ctrlMenu->mNumPlayers;
+			EventContainer.pop_Event();
+			EventContainer.add( new OpenMenuEvent(
+									new CControlSettingsButtons(players) ) );
+		}
+
 		if( OpenControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenControlMenuEvent>() )
 		{
+			const int players = ctrlMenu->mNumPlayers;
 			EventContainer.pop_Event();
-
 			EventContainer.add( new OpenMenuEvent(
-									new CControlsettings(ctrlMenu->mNumPlayers) ) );
+									new CControlsettings(players) ) );
 		}
+
 
 	}
 

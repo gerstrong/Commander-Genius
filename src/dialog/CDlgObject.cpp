@@ -11,9 +11,9 @@
 
 
 #include "CDlgObject.h"
-#include "../graphics/CFont.h"
-#include "../sdl/CVideoDriver.h"
-#include "../sdl/video/colourconvert.h"
+#include "graphics/CFont.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/video/colourconvert.h"
 
 CDlgObject::CDlgObject() :
 m_Option(NULL),

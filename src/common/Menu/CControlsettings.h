@@ -17,6 +17,7 @@
 #include <map>
 
 
+// Main Class for Controller Config
 class CControlsettings : public CBaseMenu
 {
 public:
@@ -29,22 +30,70 @@ public:
 private:
 
 	int mSelectedPlayer;
-	bool mWaitingForInput;
+
+	CGUISwitch *mpTwoButtonSwitch;
+};
+
+
+// Movement config Part
+class CControlSettingsMovement : public CBaseMenu
+{
+public:
+	CControlSettingsMovement(const int selectedPlayer);
+
+	void init();
+	void release();
+
+private:
+
+	int mSelectedPlayer;
 
 	std::vector<CGUIButton*> mpButtonList;
-	CGUISwitch *mpTwoButtonSwitch;
+	std::map<InputCommands, std::string> mCommandName;
+};
+
+
+
+// Buttons config Part
+class CControlSettingsButtons : public CBaseMenu
+{
+public:
+	CControlSettingsButtons(const int selectedPlayer);
+
+	void init();
+	void release();
+
+private:
+
+	int mSelectedPlayer;
+
+	std::vector<CGUIButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 };
 
 // Create the Control-Menu for the indicated Player
+
 struct OpenControlMenuEvent : CEvent
 {
 	OpenControlMenuEvent(const int option) :
 		mNumPlayers(option) {};
 
 	int mNumPlayers;
-	std::list<CGUIButton*> mpButtonList;
 };
+
+struct OpenButtonsControlMenuEvent : OpenControlMenuEvent
+{
+	OpenButtonsControlMenuEvent(const int option) :
+		OpenControlMenuEvent(option) {};
+};
+
+struct OpenMovementControlMenuEvent : OpenControlMenuEvent
+{
+	OpenMovementControlMenuEvent(const int option) :
+		OpenControlMenuEvent(option) {};
+
+};
+
 
 class CPlayerControl : public CBaseMenu
 {

@@ -301,11 +301,12 @@ std::string CInput::getEventName(int command, unsigned char input)
 	}
 	else // In case only keyboard was triggered
 	{
-		buf = "Key ";
-		buf += itoa(InputCommand[input][command].keysym);
-		buf += " (";
-		buf += SDL_GetKeyName(InputCommand[input][command].keysym);
-		buf += ")";
+		//buf = "Key ";
+		//buf += itoa(InputCommand[input][command].keysym);
+		//buf += " (";
+		//buf += SDL_GetKeyName(InputCommand[input][command].keysym);
+		buf = SDL_GetKeyName(InputCommand[input][command].keysym);
+		//buf += ")";
 	}
 
 	return buf;

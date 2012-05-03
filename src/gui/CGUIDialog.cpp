@@ -16,6 +16,8 @@
 #include "graphics/CGfxEngine.h"
 #include "common/CBehaviorEngine.h"
 
+const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
+
 CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
 mRect(SrcRect),
 mSelection(0)
@@ -47,7 +49,7 @@ CGUIDialog::~CGUIDialog()
 {
 	CVideoDriver *pVideoDriver = CVideoDriver::GetNoPtrChk();
 	if( pVideoDriver ) // This checks if the video object still exists, because if
-	{								   // deleting Drawing drawing is not needed anymore
+	{								   // deleting drawing routine, it is not needed anymore
 		pVideoDriver->clearDrawingTasks();
 	}
 }
@@ -55,7 +57,7 @@ CGUIDialog::~CGUIDialog()
 
 
 void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
-							 const CRect<float>& RelRect )
+							    const CRect<float>& RelRect )
 {
 	CRect<float> AbsRect = RelRect;
 	AbsRect.transform(mRect);

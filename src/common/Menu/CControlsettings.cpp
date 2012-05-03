@@ -23,13 +23,17 @@ public:
 
 	ReadInputEvent( const int selPlayer,
 					const InputCommands command,
-					const std::string &commandName,
-					std::vector<CGUIButton*> &buttonList ) :
+					const std::string &commandName ) :
 		mSelPlayer(selPlayer),
 		mCommand(command),
 		mCommandName(commandName),
-		mButtonList(buttonList)
+		mpButton(NULL)
 		{}
+
+	void setButtonPtr(CGUIButton* button)
+	{
+		mpButton = button;
+	}
 
 	void operator()()
 	{
@@ -37,13 +41,13 @@ public:
 
 		const std::string buf = mCommandName;
 		const std::string buf2 = g_pInput->getEventName(mCommand, mSelPlayer-1);
-		mButtonList.at(mCommand)->setText(buf + buf2);
+		mpButton->setText(buf + buf2);
 	}
 
 	int mSelPlayer;
 	InputCommands mCommand;
 	const std::string mCommandName;
-	std::vector<CGUIButton*> &mButtonList;
+	CGUIButton* mpButton;
 };
 
 
@@ -72,25 +76,53 @@ CControlsettings::CControlsettings( const int selectedPlayer ) :
 CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
 mSelectedPlayer(selectedPlayer)
 {
+	CGUIButton *button;
 
-	mCommandName[IC_LEFT]		= "Left:        ";
-	mCommandName[IC_RIGHT]		= "Right:       ";
-	mCommandName[IC_UP]			= "Up:          ";
-	mCommandName[IC_DOWN]		= "Down:        ";
-	mCommandName[IC_UPPERLEFT]	= "Upper left:  ";
-	mCommandName[IC_UPPERRIGHT] = "Upper right: ";
-	mCommandName[IC_LOWERLEFT] 	= "Lower left:  ";
-	mCommandName[IC_LOWERRIGHT]	= "Lower right: ";
-	mCommandName[IC_JUMP] 		= "Jump:        ";
-	mCommandName[IC_POGO] 		= "Pogo:        ";
-	mCommandName[IC_FIRE]		= "Fire:        ";
-	mCommandName[IC_STATUS] 	= "Status:      ";
-	mCommandName[IC_HELP] 		= "Help:        ";
-	mCommandName[IC_BACK] 		= "Back:        ";
+	button = new CGUIButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer) );
+	mpMenuDialog->addControl( button );
+
+	button = new CGUIButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
+	mpMenuDialog->addControl( button );
+
+	mpTwoButtonSwitch = new CGUISwitch( "Two Button Fire" );
+	mpTwoButtonSwitch->enable(g_pInput->getTwoButtonFiring(mSelectedPlayer-1));
+
+	mpMenuDialog->addControl( mpTwoButtonSwitch );
+	mpMenuDialog->addControl( new CGUIButton( "Reset Controls",
+	 	 	 	 	 	 	 	 	 	 	  new ResetInputEvent(mSelectedPlayer-1) ) );
+
 }
 
 void CControlsettings::init()
+{}
+
+
+
+void CControlsettings::release()
 {
+	g_pInput->setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
+	g_pInput->saveControlconfig();
+}
+
+
+
+// Movements Parts of the Control Settings
+CControlSettingsMovement::CControlSettingsMovement(const int selectedPlayer) :
+CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
+mSelectedPlayer(selectedPlayer)
+{}
+
+
+void CControlSettingsMovement::init()
+{
+	mCommandName[IC_LEFT]		= "Left:   ";
+	mCommandName[IC_RIGHT]		= "Right:  ";
+	mCommandName[IC_UP]			= "Up:     ";
+	mCommandName[IC_DOWN]		= "Down:   ";
+	mCommandName[IC_UPPERLEFT]	= "U-left: ";
+	mCommandName[IC_UPPERRIGHT] = "U-right:";
+	mCommandName[IC_LOWERLEFT] 	= "D-left: ";
+	mCommandName[IC_LOWERRIGHT]	= "D-right:";
 
 	if(!mpButtonList.empty())
 		mpButtonList.clear();
@@ -101,30 +133,66 @@ void CControlsettings::init()
 		const std::string buf = it->second;
 		const std::string buf2 = g_pInput->getEventName( it->first, mSelectedPlayer-1 );
 
-		CGUIButton	*guiButton = new CGUIButton( buf+buf2,
-	 	 	 	 	 	 	 	 	 	 	 	 new ReadInputEvent(mSelectedPlayer, it->first,
-	 	 	 	 	 	 	 	 	 	 	 			 	 	 	 it->second, mpButtonList) );
+		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
+		CGUIButton	*guiButton = new CGUIButton( buf+buf2, rie );
+		rie->setButtonPtr(guiButton);
+
+		mpButtonList.push_back( guiButton );
+		mpMenuDialog->addControl( guiButton );
+	}
+
+	setMenuLabel("MOVEMENULABEL");
+}
+
+void CControlSettingsMovement::release()
+{
+	if(!mCommandName.empty())
+		mCommandName.clear();
+}
+
+
+
+// Movements Parts of the Control Settings
+CControlSettingsButtons::CControlSettingsButtons(const int selectedPlayer) :
+CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
+mSelectedPlayer(selectedPlayer)
+{}
+
+
+void CControlSettingsButtons::init()
+{
+	mCommandName[IC_JUMP] 		= "Jump:   ";
+	mCommandName[IC_POGO] 		= "Pogo:   ";
+	mCommandName[IC_FIRE]		= "Fire:   ";
+	mCommandName[IC_STATUS] 	= "Status: ";
+	mCommandName[IC_HELP] 		= "Help:   ";
+	mCommandName[IC_BACK] 		= "Back:   ";
+
+	if(!mpButtonList.empty())
+		mpButtonList.clear();
+
+	std::map<InputCommands, std::string>::iterator it = mCommandName.begin();
+	for ( ; it != mCommandName.end(); it++ )
+	{
+		const std::string buf = it->second;
+		const std::string buf2 = g_pInput->getEventName( it->first, mSelectedPlayer-1 );
+
+		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
+		CGUIButton	*guiButton = new CGUIButton( buf+buf2, rie );
+		rie->setButtonPtr(guiButton);
+
 
 		mpButtonList.push_back( guiButton );
 		mpMenuDialog->addControl( guiButton );
 
 	}
 
-	mpTwoButtonSwitch = new CGUISwitch( "Two Button Firing" );
-
-	mpTwoButtonSwitch->enable(g_pInput->getTwoButtonFiring(mSelectedPlayer-1));
-
-	mpMenuDialog->addControl( mpTwoButtonSwitch );
-	mpMenuDialog->addControl( new CGUIButton( "Reset Controls",
-	 	 	 	 	 	 	 	 	 	 	  new ResetInputEvent(mSelectedPlayer-1) ) );
-
-	setMenuLabel("MOVEMENULABEL");
+	setMenuLabel("BUTTONMENULABEL");
 }
 
-
-
-void CControlsettings::release()
+void CControlSettingsButtons::release()
 {
-	g_pInput->setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
-	g_pInput->saveControlconfig();
+	if(!mCommandName.empty())
+		mCommandName.clear();
 }
+
