@@ -25,7 +25,7 @@ m_overwrite(false)
 	// Load the state-file list
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 
-	for(Uint32 i=1;i<=20;i++)
+	for(Uint32 i=1;i<=8;i++)
 	{
 		text = "";
 		if(i <= StateFileList.size())

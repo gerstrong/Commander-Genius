@@ -35,7 +35,7 @@ CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	// Load the state-file list
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 
-	for( Uint32 i=1 ; i<=20 ; i++ )
+	for( Uint32 i=1 ; i<=8 ; i++ )
 	{
 		std::string text = gpSaveGameController->getEmptyString();
 
