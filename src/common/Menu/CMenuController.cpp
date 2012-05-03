@@ -10,6 +10,7 @@
 #include "common/Menu/CControlsettings.h"
 #include "common/Menu/CMainMenu.h"
 #include "sdl/input/CInput.h"
+#include "sdl/music/CMusic.h"
 
 
 void CMenuController::process()
@@ -26,6 +27,7 @@ void CMenuController::process()
 		{
 			EventContainer.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
 			g_pBehaviorEngine->setPause(true);
+			g_pMusicPlayer->pause();
 		}
 		else // Close the menu which is open. Might go back if it is a submenu
 		{
@@ -54,6 +56,9 @@ void CMenuController::process()
 		{
 			popBackMenu();
 			EventContainer.pop_Event();
+
+			if(EventContainer.empty())
+				g_pMusicPlayer->play();
 		}
 
 		if( EventContainer.occurredEvent<CloseAllMenusEvent>() )
@@ -62,9 +67,10 @@ void CMenuController::process()
 				popBackMenu();
 
 			EventContainer.pop_Event();
+			g_pMusicPlayer->play();
 		}
 
-
+		// Control Menu Events
 		if( OpenMovementControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenMovementControlMenuEvent>() )
 		{
 			const int players = ctrlMenu->mNumPlayers;
