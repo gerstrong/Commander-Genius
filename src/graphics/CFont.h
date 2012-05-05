@@ -31,6 +31,8 @@ public:
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
 
+	void setupColor( const Uint32 fgColor );
+
 	/**
 	 * Allocates a colored surface with the given Text printed in.
 	 */
