@@ -8,11 +8,11 @@
  */
 
 #include "CTitle.h"
-#include "../sdl/CTimer.h"
-#include "../sdl/CVideoDriver.h"
+#include "sdl/CTimer.h"
+#include "sdl/CVideoDriver.h"
 #include "vorticon/ai/CEGABitmap.h"
-#include "../graphics/effects/CColorMerge.h"
-#include "../graphics/effects/CPixelate.h"
+#include "graphics/effects/CColorMerge.h"
+#include "graphics/effects/CPixelate.h"
 
 ////
 // Creation Routine
@@ -32,9 +32,9 @@ bool CTitle::init(int Episode)
 	m_time = 10; // show the title screen for 10 secs.
 	pSurface = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	if(!g_pVideoDriver->getSpecialFXConfig())
-		g_pGfxEngine->setupEffect(new CColorMerge(8));
+		g_pGfxEngine->setupEffect(new CColorMerge(16));
 	else
-		g_pGfxEngine->setupEffect(new CPixelate(8));
+		g_pGfxEngine->setupEffect(new CPixelate(16));
 	
 	if( (pBitmap = g_pGfxEngine->getBitmap("TITLE")) != NULL )
 	{

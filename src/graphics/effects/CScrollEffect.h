@@ -11,6 +11,7 @@
 #include <SDL.h>
 
 #include "CEffects.h"
+#include "SmartPointer.h"
 
 class CScrollEffect : public CEffects
 {
@@ -22,14 +23,13 @@ public:
 
 	Sint16 getScrollPosition();
 
-	virtual ~CScrollEffect();
-
 private:
 
-	Sint8 m_Speed;
-	Sint16 m_ScrollPos;
-	SDL_Surface *mp_OldSurface;
-	SDL_Surface *mp_ScrollSurface;
+	Sint8 mSpeed;
+	Sint8 mInitialSpeed;
+	Sint16 mScrollPos;
+	SmartPointer<SDL_Surface> mpOldSurface;
+	SDL_Surface *mpScrollSurface;
 };
 
 #endif /* CSCROLLEFFECT_H_ */
