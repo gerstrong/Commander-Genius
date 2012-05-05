@@ -10,6 +10,7 @@
 
 #include "CEffects.h"
 #include "sdl/CTimer.h"
+#include "SmartPointer.h"
 
 class CVibrate : public CEffects
 {
@@ -18,13 +19,13 @@ public:
 
 	void process();
 
-	virtual ~CVibrate();
-
 private:
 	Uint32 m_StartTime;
 	Uint32 m_RunTime;
 
 	char m_dir_x, m_dir_y;
+
+	SmartPointer<SDL_Surface> mpVibSfc;
 };
 
 #endif /* CVIBRATE_H_ */

@@ -216,15 +216,15 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name) const
 ///
 void CGfxEngine::process()
 {
-	/*if(!mpEffects.empty())
+	if(!mpEffects.empty())
 	{
 		mpEffects->process();
 
-		if( runningEffect() )
+		if( !runningEffect() )
 		{
 			killEffect();
 		}
-	}*/
+	}
 }
 
 bool CGfxEngine::runningEffect()

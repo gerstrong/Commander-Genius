@@ -18,16 +18,17 @@
 class CEffects
 {
 public:
-	CEffects();
+	CEffects() :
+	mFinished(false) {}
 
-	bool finished() { return m_finished; }
+	bool finished() { return mFinished; }
 
 	virtual void process() = 0;
 
-	virtual ~CEffects();
+	virtual ~CEffects() {}
 
 protected:
-	bool m_finished;
+	bool mFinished;
 };
 
 #endif /* CEFFECTS_H_ */

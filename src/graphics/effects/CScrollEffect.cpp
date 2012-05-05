@@ -27,22 +27,22 @@ void CScrollEffect::process()
 	src.y = mp_ScrollSurface->h-m_ScrollPos;
 	dest.h = m_ScrollPos;
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_ScrollSurface, &src,  &dest ) );
-
+	SDL_BlitSurface( mp_ScrollSurface, NULL,
+					 g_pVideoDriver->getBlitSurface(), NULL );
 
 	if(m_Speed < 0)
 	{
 		if(m_ScrollPos + m_Speed < 0) m_ScrollPos = 0;
 		else m_ScrollPos += m_Speed;
 
-		if(m_ScrollPos == 0) m_finished = true;
+		if(m_ScrollPos == 0) mFinished = true;
 	}
 	else
 	{
 		if(m_ScrollPos + m_Speed > mp_OldSurface->h) m_ScrollPos = mp_ScrollSurface->h;
 		else m_ScrollPos += m_Speed;
 
-		if(m_ScrollPos == mp_ScrollSurface->h) m_finished = true;
+		if(m_ScrollPos == mp_ScrollSurface->h) mFinished = true;
 	}
 }
 

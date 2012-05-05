@@ -8,40 +8,35 @@
  */
 
 #include "CColorMerge.h"
-#include "../../sdl/CVideoDriver.h"
+#include "sdl/CVideoDriver.h"
 
 CColorMerge::CColorMerge(Uint8 speed) :
 m_Speed(speed),
-m_Alpha(0),
-mp_OldSurface(NULL)
+m_Alpha(0)
 {
 	getSnapshot();
+	mTimer.ResetSecondsTimer();
 }
 
 // use this function. If you don't that, the effect won't work.
 void CColorMerge::getSnapshot()
 {
 	g_pVideoDriver->collectSurfaces();
-	if(!mp_OldSurface) mp_OldSurface = SDL_DisplayFormat(g_pVideoDriver->mp_VideoEngine->getBlitSurface());
+	mpOldSurface = SDL_DisplayFormat( g_pVideoDriver->mp_VideoEngine->getBlitSurface() );
 }
 
 // Effect cycle
 void CColorMerge::process()
 {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
-
 	// Process the effect
-	SDL_SetAlpha( mp_OldSurface, SDL_SRCALPHA, 255-m_Alpha );
+	SDL_SetAlpha( mpOldSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_OldSurface, &gameres,  &gameres ) );
+	SDL_BlitSurface( mpOldSurface.get(), NULL,
+					 g_pVideoDriver->getBlitSurface(), NULL );
 
 	if(m_Alpha + m_Speed > 255) m_Alpha = 255;
 	else m_Alpha += m_Speed;
 
-	if(m_Alpha == 255) m_finished = true;
-}
+	if(m_Alpha == 255) mFinished = true;
 
-CColorMerge::~CColorMerge()
-{
-	if(mp_OldSurface) SDL_FreeSurface(mp_OldSurface);
 }

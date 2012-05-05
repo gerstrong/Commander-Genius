@@ -97,7 +97,7 @@ void CEndingEp3::PaparazziScene()
 {
 	if(m_mustsetup)
 	{
-		m_Timer.ResetSecondsTimer();
+		mTimer.ResetSecondsTimer();
 		g_pGfxEngine->setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
 		m_mustsetup = false;
 	}
@@ -107,7 +107,7 @@ void CEndingEp3::PaparazziScene()
 
 	m_counter++;
 
-	if(m_Timer.HasTimeElapsed(3000))
+	if(mTimer.HasTimeElapsed(3000))
 	{
 		m_step++;
 		m_mustsetup = true;

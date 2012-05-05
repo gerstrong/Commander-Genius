@@ -12,7 +12,8 @@
 
 #include "CEffects.h"
 
-class CScrollEffect : public CEffects {
+class CScrollEffect : public CEffects
+{
 public:
 	CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
 			const Sint16 initialPos, Sint8 speed);

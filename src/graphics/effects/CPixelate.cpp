@@ -10,8 +10,8 @@
  */
 
 #include "CPixelate.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/input/CInput.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/input/CInput.h"
 
 CPixelate::CPixelate(unsigned short speed) :
 mp_OldSurface(NULL),
@@ -103,10 +103,11 @@ void CPixelate::process()
 	if( m_lines_completed >= m_line )
 	{
 		// In this case the algorithm has finished
-		m_finished = true;
+		mFinished = true;
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mp_OldSurface, &gameres,  &gameres ) );
+	SDL_BlitSurface( mp_OldSurface, NULL,
+					 g_pVideoDriver->getBlitSurface(), NULL );
 
 }
 

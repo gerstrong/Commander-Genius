@@ -13,7 +13,8 @@
 #define CFLASH_H_
 
 #include "CEffects.h"
-#include "../../sdl/CTimer.h"
+#include "sdl/CTimer.h"
+#include "SmartPointer.h"
 
 class CFlash : public CEffects
 {
@@ -26,7 +27,6 @@ public:
 
 	void process();
 
-	virtual ~CFlash();
 private:
 
 	enum fade_dir{ FADE_IN, FADE_OUT };
@@ -40,7 +40,7 @@ private:
 	char m_FadeDir;
 	Uint8 m_Style;
 	Uint8 m_MaxAlpha;
-	SDL_Surface *mp_FadeSurface;
+	SmartPointer<SDL_Surface> mpFadeSurface;
 };
 
 #endif /* CFLASH_H_ */

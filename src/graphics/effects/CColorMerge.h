@@ -16,7 +16,10 @@
 #include <SDL.h>
 
 #include "CEffects.h"
-#include "../CBitmap.h"
+#include "SmartPointer.h"
+#include "graphics/CBitmap.h"
+#include "sdl/CTimer.h"
+
 
 class CColorMerge : public CEffects
 {
@@ -25,14 +28,14 @@ public:
 
 	void process();
 
-	virtual ~CColorMerge();
-
 private:
 	void getSnapshot();
 
 	Uint8 m_Speed;
 	Uint8 m_Alpha;
-	SDL_Surface *mp_OldSurface;
+	CTimer mTimer;
+
+	SmartPointer<SDL_Surface> mpOldSurface;
 };
 
 #endif /* CCOLORMERGE_H_ */

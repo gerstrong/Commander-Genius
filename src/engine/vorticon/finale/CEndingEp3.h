@@ -32,7 +32,7 @@ private:
 	bool m_mustsetup;
 	Uint32 m_starttime;
 	Uint32 m_timepassed;
-	CTimer m_Timer;
+	CTimer mTimer;
 	int m_counter;
 
 	std::vector<CPlayer> &m_Player;

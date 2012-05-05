@@ -28,7 +28,7 @@ void CVibrate::process()
 	else { m_dir_x = 0; m_dir_y = 0; }
 
 	// then erase the entire old surface ...
-	SDL_Surface *temp = SDL_DisplayFormat(sfc);
+	mpVibSfc = SDL_DisplayFormat(sfc);
 	SDL_FillRect(sfc, &gamerect, SDL_MapRGB(sfc->format, 0,0,0));
 
 	// ... and create that moved to some direction;
@@ -38,16 +38,10 @@ void CVibrate::process()
 	newrect.w = gamerect.h;
 
 	// Blit it and free temp surface
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( temp, &gamerect,  &newrect ) );
-
-	SDL_FreeSurface(temp);
+	SDL_BlitSurface( mpVibSfc.get(), &gamerect,
+					 g_pVideoDriver->getBlitSurface(), &newrect );
 
 	// The developer set a time in the constructor. This effect will last for the given time.
 	if(g_pTimer->getTicks() - m_StartTime >= m_RunTime)
-		m_finished = true;
-}
-
-CVibrate::~CVibrate()
-{
-	// Nothing to do here!
+		mFinished = true;
 }
