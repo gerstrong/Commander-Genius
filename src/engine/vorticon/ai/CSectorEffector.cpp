@@ -278,7 +278,7 @@ void CSectorEffector::se_mortimer_spark()
 		if (HealthPoints <= 0)
 		{
 			set_mortimer_surprised(true);
-			g_pGfxEngine->pushEffectPtr(new CVibrate(200));
+			g_pGfxEngine->setupEffect(new CVibrate(200));
 			mp_Map->redrawAt(getXPosition()>>CSF, getYPosition()>>CSF);
 
 			// if there are any sparks left, destroy the spark,
@@ -391,7 +391,7 @@ void CSectorEffector::se_mortimer_heart()
 			set_mortimer_surprised(true);
 
 			// destroy Mortimer's machine
-			g_pGfxEngine->pushEffectPtr(new CVibrate(10000));
+			g_pGfxEngine->setupEffect(new CVibrate(10000));
 
 			// kill all enemies
 			for(std::vector<CObject*>::iterator obj = m_Object.begin()

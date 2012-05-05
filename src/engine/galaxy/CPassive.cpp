@@ -44,7 +44,7 @@ void CPassiveGalaxy::processIntro()
 
 	m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
 
-	g_pGfxEngine->pushEffectPtr(new CPixelate(2));
+	g_pGfxEngine->setupEffect(new CPixelate(2));
 }
 
 // Just show the title screen with the pixelation effect

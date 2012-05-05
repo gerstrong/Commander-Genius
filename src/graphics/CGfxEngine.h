@@ -18,9 +18,10 @@
 #include "CPalette.h"
 #include "CCursor.h"
 #include "effects/CEffects.h"
+#include "SmartPointer.h"
 #include <vector>
 
-#include "../CSingleton.h"
+#include "CSingleton.h"
 #define g_pGfxEngine CGfxEngine::Get()
 
 enum backgroundcolours{
@@ -40,7 +41,7 @@ public:
 	void createEmptyTilemap(size_t num);
 	void createEmptyCursorMap(SDL_Surface *surface);
 	
-	void pushEffectPtr(CEffects *pEffect);
+	void setupEffect(CEffects *pEffect);
 
 	void drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface);
 	void drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface);
@@ -62,8 +63,8 @@ public:
 	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
 	CBitmap *getBitmap(const std::string &name) const;
 
-	CEffects *Effect() { return mp_Effects; }
-	bool applyingEffects() { return mp_Effects!=NULL; }
+	CEffects *Effect() { return mpEffects.get(); }
+	bool applyingEffects() { return !mpEffects.empty(); }
 	
 	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }
 	std::vector<CSprite> &getSpriteVec() { return Sprite; }
@@ -80,7 +81,7 @@ private:
 	std::vector<CTilemap> Tilemap;
 	std::vector<CFont> Font;
 	SDL_Surface *m_fxsurface;
-	CEffects *mp_Effects;
+	SmartPointer<CEffects> mpEffects;
 	std::vector<CBitmap> Bitmap;
 	std::vector<CBitmap> maskedBitmap;
 	std::vector<CSprite> Sprite;

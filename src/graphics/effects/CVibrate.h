@@ -9,7 +9,7 @@
 #define CVIBRATE_H_
 
 #include "CEffects.h"
-#include "../../sdl/CTimer.h"
+#include "sdl/CTimer.h"
 
 class CVibrate : public CEffects
 {

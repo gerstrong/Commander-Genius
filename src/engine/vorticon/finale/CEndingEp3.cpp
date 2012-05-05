@@ -98,12 +98,12 @@ void CEndingEp3::PaparazziScene()
 	if(m_mustsetup)
 	{
 		m_Timer.ResetSecondsTimer();
-		g_pGfxEngine->pushEffectPtr(new CFlash(500, 32, 0xFFFFFF, 200));
+		g_pGfxEngine->setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
 		m_mustsetup = false;
 	}
 
 	if(m_counter==30 || m_counter==60 || m_counter==90)
-		g_pGfxEngine->pushEffectPtr(new CFlash(500, 32, 0xFFFFFF, 200));
+		g_pGfxEngine->setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
 
 	m_counter++;
 

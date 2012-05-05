@@ -32,9 +32,9 @@ bool CTitle::init(int Episode)
 	m_time = 10; // show the title screen for 10 secs.
 	pSurface = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	if(!g_pVideoDriver->getSpecialFXConfig())
-		g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
+		g_pGfxEngine->setupEffect(new CColorMerge(8));
 	else
-		g_pGfxEngine->pushEffectPtr(new CPixelate(8));
+		g_pGfxEngine->setupEffect(new CPixelate(8));
 	
 	if( (pBitmap = g_pGfxEngine->getBitmap("TITLE")) != NULL )
 	{

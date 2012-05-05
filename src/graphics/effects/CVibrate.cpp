@@ -6,7 +6,7 @@
  */
 
 #include "CVibrate.h"
-#include "../../sdl/CVideoDriver.h"
+#include "sdl/CVideoDriver.h"
 
 CVibrate::CVibrate(Uint32 msecs) :
 m_StartTime(g_pTimer->getTicks()),
@@ -32,10 +32,10 @@ void CVibrate::process()
 	SDL_FillRect(sfc, &gamerect, SDL_MapRGB(sfc->format, 0,0,0));
 
 	// ... and create that moved to some direction;
-	newrect.x=m_dir_x;
-	newrect.w=gamerect.w;
-	newrect.y=m_dir_y;
-	newrect.w=gamerect.h;
+	newrect.x = m_dir_x;
+	newrect.w = gamerect.w;
+	newrect.y = m_dir_y;
+	newrect.w = gamerect.h;
 
 	// Blit it and free temp surface
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( temp, &gamerect,  &newrect ) );
@@ -47,6 +47,7 @@ void CVibrate::process()
 		m_finished = true;
 }
 
-CVibrate::~CVibrate(){
+CVibrate::~CVibrate()
+{
 	// Nothing to do here!
 }

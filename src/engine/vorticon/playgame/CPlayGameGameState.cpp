@@ -155,7 +155,7 @@ bool CPlayGameVorticon::loadGameState()
 		mMap->drawAll();
 
 		// Create the special merge effect (Fadeout)
-		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
+		g_pGfxEngine->setupEffect(pColorMergeFX);
 
 
 		mp_ObjectAI = new CObjectAI(mMap.get(), m_Object, m_Player,

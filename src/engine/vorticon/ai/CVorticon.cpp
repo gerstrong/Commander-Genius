@@ -68,7 +68,7 @@ void CVorticon::process() {
 		if (Episode == 1) {
 			// White Fade and back
 			if(m_Player[0].mp_option[OPT_FLASHEFFECT].value)
-				g_pGfxEngine->pushEffectPtr(new CFlash(3000, 8, 0xFFFFFF, 200));
+				g_pGfxEngine->setupEffect(new CFlash(3000, 8, 0xFFFFFF, 200));
 			state = VORT_DYING;
 			dying = true;
 		} else {

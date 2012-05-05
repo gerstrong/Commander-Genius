@@ -31,7 +31,7 @@ void CRope::process()
 		{
 			droptimer = STONE_DROP_RATE;
 			rope_movestone();
-			g_pGfxEngine->pushEffectPtr(new CVibrate(400));
+			g_pGfxEngine->setupEffect(new CVibrate(400));
 
 			// check if we've hit the ground yet
 			for(int x=2;x<STONE_WIDTH-2;x++)

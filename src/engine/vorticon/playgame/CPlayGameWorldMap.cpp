@@ -76,7 +76,7 @@ void CPlayGameVorticon::processOnWorldMap()
 						cleanup();
 						init();
 
-						g_pGfxEngine->pushEffectPtr(pColorMergeFX);
+						g_pGfxEngine->setupEffect(pColorMergeFX);
 					}
 					break;
 				}
@@ -124,7 +124,7 @@ void CPlayGameVorticon::goBacktoMap()
 	init();
 
 	// Second Snapshot for merge
-	g_pGfxEngine->pushEffectPtr(pColorMergeFX);
+	g_pGfxEngine->setupEffect(pColorMergeFX);
 }
 
 void CPlayGameVorticon::YourShipNeedsTheseParts()

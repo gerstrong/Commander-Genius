@@ -59,7 +59,7 @@ void CInventory::toggleStatusScreen()
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
 
-		g_pGfxEngine->pushEffectPtr(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, 8));
+		g_pGfxEngine->setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, 8));
 	}
 	else
 	{
@@ -71,7 +71,7 @@ void CInventory::toggleStatusScreen()
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
 
-		g_pGfxEngine->pushEffectPtr(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, -8));
+		g_pGfxEngine->setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, -8));
 		if(mp_StatusBgrnd)
 			SDL_FreeSurface(mp_StatusBgrnd);
 		mp_StatusBgrnd = NULL;

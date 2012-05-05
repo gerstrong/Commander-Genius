@@ -60,12 +60,16 @@ drawButton(&CGUIButton::drawNoStyle)
 
 void CGUIButton::setupButtonSurface()
 {
+	if( drawButton == &CGUIButton::drawNoStyle )
+		return;
+
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
 	mpTextDarkSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38));
 	mpTextLightSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84));
 	mpTextDisabledSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123));
+
 }
 
 

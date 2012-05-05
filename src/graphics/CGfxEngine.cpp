@@ -7,13 +7,12 @@
 
 #include "CGfxEngine.h"
 
-#include "../sdl/input/CInput.h"
+#include "sdl/input/CInput.h"
 
 #define SAFE_DELETE(x) 	if(x){ delete x; x=NULL;}
 
 CGfxEngine::CGfxEngine() :
 m_fxsurface(NULL),
-mp_Effects(NULL),
 mp_Cursor(NULL)
 {}
 
@@ -64,10 +63,9 @@ void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 
 // This will store the effect pointer the developer created in one function
 // You need this call to make you effect work!
-void CGfxEngine::pushEffectPtr(CEffects *pEffect)
+void CGfxEngine::setupEffect(CEffects *pEffect)
 {
-	SAFE_DELETE(mp_Effects);
-	mp_Effects = pEffect;
+	mpEffects = pEffect;
 }
 
 /**
@@ -218,29 +216,30 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name) const
 ///
 void CGfxEngine::process()
 {
-	/*if(mp_Effects)
+	/*if(!mpEffects.empty())
 	{
-		mp_Effects->process();
+		mpEffects->process();
 
-		if(runningEffect())
+		if( runningEffect() )
 		{
 			killEffect();
 		}
 	}*/
 }
 
-bool CGfxEngine::runningEffect(){
-	return ( mp_Effects && mp_Effects->finished());
+bool CGfxEngine::runningEffect()
+{
+	return ( !mpEffects.empty() && !mpEffects->finished() );
 }
 
 // Kills the effect when called
 void CGfxEngine::killEffect()
 {
-	SAFE_DELETE(mp_Effects);
+	mpEffects = NULL;
 }
 
-CGfxEngine::~CGfxEngine() {
-	SAFE_DELETE(mp_Effects);
+CGfxEngine::~CGfxEngine()
+{
 	freeCursor();
 	freeBitmaps(maskedBitmap);
 	freeBitmaps(Bitmap);

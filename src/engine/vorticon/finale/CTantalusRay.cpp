@@ -37,7 +37,7 @@ m_timer(0),
 mp_Bitmap(g_pGfxEngine->getBitmap("GAMEOVER")),
 mp_process(&CTantalusRay::shootray)
 {
-	g_pGfxEngine->pushEffectPtr( new CVibrate(2000) );
+	g_pGfxEngine->setupEffect( new CVibrate(2000) );
 }
 
 void CTantalusRay::process()

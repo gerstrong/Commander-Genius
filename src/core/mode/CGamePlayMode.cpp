@@ -53,7 +53,7 @@ void CGamePlayMode::init()
 
 	ok &= mp_PlayGame->init();
 
-	g_pGfxEngine->pushEffectPtr(pColorMergeFX);
+	g_pGfxEngine->setupEffect(pColorMergeFX);
 
 
 	if(!ok)
