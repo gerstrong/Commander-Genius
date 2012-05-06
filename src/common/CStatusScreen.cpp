@@ -81,7 +81,7 @@ std::string CStatusScreen::fetchDifficultyText()
 
 void CStatusScreen::createInventorySfcEp1()
 {
-	/*int x,t,i,j;
+	int x,t,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
 	CFont &Font = g_pGfxEngine->getFont(1);
@@ -204,13 +204,13 @@ void CStatusScreen::createInventorySfcEp1()
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-	mp_StatusSfc = SDL_DisplayFormat(p_surface);
-	SDL_FreeSurface(p_surface);*/
+	mpStatusSfc = SDL_DisplayFormat(p_surface);
+	SDL_FreeSurface(p_surface);
 }
 
 void CStatusScreen::createInventorySfcEp2()
 {
-	/*int x,i,j;
+	int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
 	CFont &Font = g_pGfxEngine->getFont(1);
@@ -324,13 +324,13 @@ void CStatusScreen::createInventorySfcEp2()
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-	mp_StatusSfc = SDL_DisplayFormat(p_surface);
-	SDL_FreeSurface(p_surface);*/
+	mpStatusSfc = SDL_DisplayFormat(p_surface);
+	SDL_FreeSurface(p_surface);
 }
 
 void CStatusScreen::createInventorySfcEp3()
 {
-	/*int x,i,j;
+	int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
 	CFont &Font = g_pGfxEngine->getFont(1);
@@ -441,6 +441,6 @@ void CStatusScreen::createInventorySfcEp3()
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-	mp_StatusSfc = SDL_DisplayFormat(p_surface);
-	SDL_FreeSurface(p_surface);*/
+	mpStatusSfc = SDL_DisplayFormat(p_surface);
+	SDL_FreeSurface(p_surface);
 }
