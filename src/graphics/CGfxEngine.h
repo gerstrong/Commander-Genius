@@ -69,7 +69,7 @@ public:
 	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }
 	std::vector<CSprite> &getSpriteVec() { return Sprite; }
 	CFont &getFont(Uint8 index) { return Font.at(index); }
-	CCursor *getCursor() { return mp_Cursor; }
+	CCursor *getCursor() { return mpCursor.get(); }
 	bool runningEffect();
 	
 	void process();
@@ -85,7 +85,7 @@ private:
 	std::vector<CBitmap> Bitmap;
 	std::vector<CBitmap> maskedBitmap;
 	std::vector<CSprite> Sprite;
-	CCursor *mp_Cursor;
+	SmartPointer<CCursor> mpCursor;
 };
 
 #endif /* CGFXENGINE_H_ */

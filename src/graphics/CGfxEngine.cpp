@@ -9,11 +9,8 @@
 
 #include "sdl/input/CInput.h"
 
-#define SAFE_DELETE(x) 	if(x){ delete x; x=NULL;}
-
 CGfxEngine::CGfxEngine() :
-m_fxsurface(NULL),
-mp_Cursor(NULL)
+m_fxsurface(NULL)
 {}
 
 ///
@@ -58,7 +55,7 @@ void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
 void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 {
 	freeCursor();
-	mp_Cursor = new CCursor(surface);
+	mpCursor = new CCursor(surface);
 }
 
 // This will store the effect pointer the developer created in one function
@@ -97,7 +94,7 @@ void CGfxEngine::drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Sur
 ///
 void CGfxEngine::freeCursor()
 {
-	SAFE_DELETE(mp_Cursor);
+	mpCursor = NULL;
 }
 void CGfxEngine::freeTilemap()
 {
@@ -216,8 +213,6 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name) const
 ///
 void CGfxEngine::process()
 {
-	return;
-
 	if(!mpEffects.empty())
 	{
 		mpEffects->process();
