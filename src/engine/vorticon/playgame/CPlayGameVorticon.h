@@ -97,6 +97,10 @@ public:
 	virtual ~CPlayGameVorticon();
 
 private:
+
+	// Tell whether any of the Players' status screen is open
+	bool StatusScreenOpen();
+
 	bool mp_level_completed[MAX_LEVELS_VORTICON];
 
 	SmartPointer<CMap> mMap;

@@ -96,39 +96,39 @@ void CStatusScreen::createInventorySfcEp1()
 	SDL_Surface *p_surface = CreateStatusSfc();
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 
-	g_pGfxEngine->drawDialogBox( p_surface, 0, 0, dlgW,dlgH, Font.getBGColour(true));
+	g_pGfxEngine->drawDialogBox( p_surface, 0, 0, dlgW,dlgH, Font.getBGColour(p_surface->format, true));
 	Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP1_StatusBox"), 1<<3, 1<<3, true);
 	
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
 	rect.x = 8;	rect.w = 12*8; // Score
 	rect.y = 2*8;	rect.h = 1*8;
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
 	rect.x = 14*8;	rect.w = 15*8; // Extra keen at
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
 	rect.x = 8;	rect.w = 14*8; // Keens
 	rect.y = 4*8;	rect.h = 3*8;
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
 	rect.x = 16*8;	rect.w = 13*8; // Ship Parts
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
 	rect.x = 8;	rect.w = 8*8; // Raygun
 	rect.y = 8*8;	rect.h = 3*8;
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
 	rect.x = 10*8;	rect.w = 6*8; // Pogo
 	rect.h = 5*8;
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
 	rect.x = 17*8;	rect.w = 12*8; // Keycards
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
 	rect.x = 8;	rect.w = 8*8; // Charge
 	rect.y = 12*8;	rect.h = 1*8;
-	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
 
 	// fill in what we have
 	// 321: joystick/battery/vacuum/fuel not gotten

@@ -52,11 +52,15 @@ public:
 	 */
 	unsigned int getPixelTextHeight();
 
-
 	/**
 	 * \brief gets the background color of the font
 	 */
 	Uint32 getBGColour(const bool highlight = false);
+
+	/**
+	 * \brief gets the background color of the font
+	 */
+	Uint32 getBGColour(SDL_PixelFormat *format, const bool highlight = false);
 
 	/**
 	 * \brief Components-version

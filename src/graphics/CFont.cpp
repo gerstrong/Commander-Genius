@@ -204,17 +204,23 @@ unsigned int CFont::getPixelTextHeight()
 }
 
 
-
-
 Uint32 CFont::getBGColour(const bool highlight)
 {
-	SDL_LockSurface(mFontSurface);
+	SDL_PixelFormat *format = SDL_GetVideoSurface()->format;
 
-	const Uint32 color = getPixel(mFontSurface, 0, highlight ? 80 : 16 );
+	return getBGColour(format, highlight);
+}
 
-	SDL_UnlockSurface(mFontSurface);
 
-	return color;
+
+
+Uint32 CFont::getBGColour(SDL_PixelFormat *format, const bool highlight)
+{
+	Uint8 r, g, b;
+
+	getBGColour( &r, &g, &b, highlight );
+
+	return SDL_MapRGB(format, r, g, b);
 }
 
 
@@ -223,7 +229,13 @@ Uint32 CFont::getBGColour(const bool highlight)
 
 void  CFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
 {
-	SDL_GetRGB( getBGColour(highlight), mFontSurface->format, r, g, b);
+	SDL_LockSurface(mFontSurface);
+
+	const Uint32 color = getPixel(mFontSurface, 0, highlight ? 80 : 16 );
+
+	SDL_UnlockSurface(mFontSurface);
+
+	SDL_GetRGB( color, mFontSurface->format, r, g, b);
 }
 
 

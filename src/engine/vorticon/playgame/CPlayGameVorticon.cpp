@@ -162,6 +162,18 @@ bool CPlayGameVorticon::init()
 	return true;
 }
 
+bool CPlayGameVorticon::StatusScreenOpen()
+{
+	bool isOpen = false;
+	for( unsigned short i=0 ; i<m_NumPlayers ; i++ )
+	{
+		isOpen |= m_Player[i].m_showStatusScreen;
+	}
+
+	return isOpen;
+}
+
+
 ////
 // Process Routine
 ////
@@ -175,7 +187,7 @@ void CPlayGameVorticon::process()
 		return;
 
 
-	if( m_MessageBoxes.empty() ) // Game is not paused, no messages have to be shown and no menu is open
+	if( m_MessageBoxes.empty() && !StatusScreenOpen()  ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if (!mp_Finale) // Hasn't the game yet been finished?
 		{
@@ -523,6 +535,11 @@ void CPlayGameVorticon::drawAllElements()
 	if(mp_option[OPT_HUD].value && !mp_Finale  )
 	{	// Draw the HUD
 		mp_HUD->render();
+	}
+
+	for( short i=0 ; i<m_NumPlayers ; i++ )
+	{
+		m_Player[i].drawStatusScreen();
 	}
 
 	// Render the dialogs which are seen when the game is paused
