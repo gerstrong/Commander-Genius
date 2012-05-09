@@ -60,7 +60,7 @@ drawButton(&CGUIButton::drawNoStyle)
 
 void CGUIButton::setupButtonSurface()
 {
-	if( drawButton == &CGUIButton::drawNoStyle )
+	if( drawButton == &CGUIButton::drawNoStyle  )
 		return;
 
 	CFont &Font = g_pGfxEngine->getFont(mFontID);

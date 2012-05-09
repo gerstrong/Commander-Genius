@@ -33,6 +33,8 @@ public:
 
 	void setupColor( const Uint32 fgColor );
 
+	Uint32 getFGColor();
+
 	/**
 	 * Allocates a colored surface with the given Text printed in.
 	 */

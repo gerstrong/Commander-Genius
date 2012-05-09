@@ -17,7 +17,7 @@ CAudioSettings::CAudioSettings() :
 CBaseMenu(CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
 {
 
-	mpRate = new CGUIComboSelection( "rate",
+	mpRate = new CGUIComboSelection( "Rate",
 									 g_pSound->getAvailableRateList());
 	mpMenuDialog->addControl( mpRate );
 
@@ -28,17 +28,17 @@ CBaseMenu(CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
 									  filledStrList( 2, "8-bit", "16-bit" ) );
 	mpMenuDialog->addControl( mpDepth );
 
-	mpSBToggle = new CGUIComboSelection( "Soundcard",
-										 filledStrList( 2, "pc speaker", "soundblaster" ) );
+	mpSBToggle = new CGUIComboSelection( "Card",
+										 filledStrList( 2, "PC Speaker", "Soundblaster" ) );
 	mpMenuDialog->addControl( mpSBToggle );
 
-	mpSoundVolume = new CGUINumberControl( "Sound Volume",
+	mpSoundVolume = new CGUINumberControl( "Sound Vol",
 											0, SDL_MIX_MAXVOLUME, 8,
 											g_pSound->getSoundVolume() );
 	mpMenuDialog->addControl( mpSoundVolume );
 
 
-	mpMusicVolume = new CGUINumberControl( "Music Volume",
+	mpMusicVolume = new CGUINumberControl( "Music Vol",
 											0, SDL_MIX_MAXVOLUME, 8,
 				 	 	 	 	 	 	 	g_pSound->getMusicVolume() );
 	mpMenuDialog->addControl( mpMusicVolume );
@@ -56,7 +56,7 @@ void CAudioSettings::init()
 	mpRate->setSelection( itoa(mAudioSpec.freq) );
 	mpStereo->enable( mAudioSpec.channels == 2 );
 	mpDepth->setSelection( mAudioSpec.format == AUDIO_S8 ? "8-bit" : "16-bit" );
-	mpSBToggle->setSelection( mSoundblaster ? "soundblaster" : "pc speaker" );
+	mpSBToggle->setSelection( mSoundblaster ? "Soundblaster" : "PC Speaker" );
 }
 
 
@@ -75,7 +75,7 @@ void CAudioSettings::release()
 	mAudioSpec.channels = mpStereo->isEnabled() ? 2 : 1;
 	mAudioSpec.format = mpDepth->getSelection() == "8-bit" ? AUDIO_S8 : AUDIO_S16;
 
-	mSoundblaster = ( mpSBToggle->getSelection() == "soundblaster" ? true : false );
+	mSoundblaster = ( mpSBToggle->getSelection() == "Soundblaster" ? true : false );
 
 	g_pSound->setSettings(mAudioSpec, mSoundblaster);
 

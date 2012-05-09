@@ -144,6 +144,18 @@ void CFont::setupColor( const Uint32 fgColor )
 	SDL_SetColors( mFontSurface, color, 0, 16);
 }
 
+Uint32 CFont::getFGColor()
+{
+	// Here comes the main part. We have to manipulate the Surface the way it gets
+	// the given color
+	SDL_Color color[16];
+	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
+	SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
+
+	// Change palette colors to the desired one
+	return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
+}
+
 
 SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fgColor )
 {
@@ -154,6 +166,8 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 
 	SDL_Surface *pColoredTextSurface = CG_CreateRGBSurface(rect);
 
+	const Uint32 oldColor = getFGColor();
+
 	setupColor( fgColor );
 
 	drawFont( pColoredTextSurface, text, 0, 0);
@@ -163,6 +177,7 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
 
+	setupColor( oldColor );
 
 	return pColoredTextSurface;
 }
