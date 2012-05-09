@@ -51,7 +51,7 @@ bool CPassiveVort::init(char mode)
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
 		mpMap->drawAll();
-		mp_TitleScreen = new CTitle(mObject, *mpMap.get() );
+		mp_TitleScreen = new CTitle( *mpMap.get() );
 		mp_TitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
@@ -65,83 +65,6 @@ bool CPassiveVort::init(char mode)
 
 void CPassiveVort::process()
 {
-	// Open the Main-Menu or close the opened one?
-	/*if( !mp_Menu )
-	{
-		if (mp_PressAnyBox==NULL && m_mode == TITLE)
-		{
-			mp_PressAnyBox = new CTextBox(150, 10," PRESS ANY KEY ");
-			mp_PressAnyBox->setAttribs(0, true);
-			mp_PressAnyBox->enableBorders(true);
-		}
-
-		if ( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
-		{
-			// Close the "Press Any Key" box
-			if(g_pGfxEngine->Effect()) // some effect is running? Close it!
-				g_pGfxEngine->killEffect();
-
-			g_pInput->flushAll();
-			if (m_mode != TITLE)
-			{
-				cleanup();
-				init(TITLE);
-			}
-			else
-			{
-				SAFE_DELETE(mp_PressAnyBox);
-				mp_Menu = new CMenuVorticon( PASSIVE, *mp_Map, m_SavedGame,
-						m_RestartVideo, m_hideobjects);
-			}
-		}
-	}
-	else // Close menu
-	{
-		if ( mp_Menu->m_demoback )
-		{
-			SAFE_DELETE(mp_Menu);
-			mp_Map->drawAll();
-		}
-		else if( m_RestartVideo )
-		{
-			cleanup();
-			init(m_mode);
-			m_RestartVideo = false;
-		}
-	}*/
-
-	// If Menu is open show it!
-	/*if( mp_Menu )
-	{
-		mp_Menu->processSpecific();
-
-		if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSaveGameController::LOAD) // Start a normal game
-		{
-			m_NumPlayers = mp_Menu->getNumPlayers();
-			m_Difficulty = mp_Menu->getDifficulty();
-			SAFE_DELETE(mp_Menu);
-			cleanup();
-			m_mode = STARTGAME;
-		}
-		else if(mp_Menu->getExitEvent())
-		{
-			SAFE_DELETE(mp_Menu);
-			cleanup();
-			m_mode = SHUTDOWN;
-		}
-		else if(mp_Menu->getChooseGame())
-		{
-			SAFE_DELETE(mp_Menu);
-			m_modeg = true;
-		}
-		else if( m_RestartVideo ) // When some video settings has been changed
-		{
-			cleanup();
-			init(m_mode);
-			m_RestartVideo = false;
-		}
-	}*/
-
 	// Process Drawing related stuff
 	// Animate the tiles
 	mpMap->animateAllTiles();
@@ -163,7 +86,7 @@ void CPassiveVort::process()
 
 
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
-	/*if( m_mode == INTRO )
+	if( m_mode == INTRO )
 	{
 		// Intro code goes here!
 		mp_IntroScreen->process();
@@ -177,40 +100,18 @@ void CPassiveVort::process()
 	}
 	else if( m_mode == TITLE )
 	{
-		mp_TitleScreen->process();*/
-
-		/*if( !mp_Menu )
-		{
-			if( mp_TitleScreen->isFinished() )
-			{
-				// The Title screen was shown enough time, shut it down
-				// and load Demo environment
-				cleanup();
-				init(DEMO);
-				return;
-			}
-		}*/
-	/*}
+		mp_TitleScreen->process();
+	}
 	else if( m_mode == DEMO )
 	{
 		// TODO: Demo modes are processed here!
 		// TODO: Implement Demos here!
 		cleanup();
 		init(TITLE);
-	}*/
-
-	/*if(!m_hideobjects)
-	{
-		// Make the Objects do its jobs
-		std::vector<CObject*>::iterator i;
-		for( i=m_object.begin() ; i!=m_object.end() ; i++ )
-		{
-			(*i)->process();
-		}
 	}
 
 	// If Menu is not open show "Press Any Key"
-	if(mp_PressAnyBox != NULL)
+	/*if(mp_PressAnyBox != NULL)
 		mp_PressAnyBox->process();*/
 
 }

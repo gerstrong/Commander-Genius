@@ -17,19 +17,18 @@
 ////
 // Creation Routine
 ////
-CTitle::CTitle(std::vector<CObject*> &Objects, CMap &map) :
-m_objects(Objects),
-m_time(0),
-m_map(map)
+CTitle::CTitle( CMap &map ) :
+mTime(0),
+mMap(map)
 {}
 
 bool CTitle::init(int Episode)
 {
-	CObject *p_object;
+	CObject *pObject;
 	SDL_Surface *pSurface;
 	CBitmap *pBitmap;
 	g_pTimer->ResetSecondsTimer();
-	m_time = 10; // show the title screen for 10 secs.
+	mTime = 10; // show the title screen for 10 secs.
 	pSurface = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	if(!g_pVideoDriver->getSpecialFXConfig())
 		g_pGfxEngine->setupEffect(new CColorMerge(16));
@@ -38,23 +37,23 @@ bool CTitle::init(int Episode)
 	
 	if( (pBitmap = g_pGfxEngine->getBitmap("TITLE")) != NULL )
 	{
-		p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
-		p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
-		m_objects.push_back(p_object);
+		pObject = new CEGABitmap( &mMap, pSurface, pBitmap );
+		pObject->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
+		mObjects.push_back(pObject);
 	}
 
 	if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
 	{
 		pBitmap = g_pGfxEngine->getBitmap("F1HELP");
-		p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
+		pObject = new CEGABitmap( &mMap, pSurface, pBitmap );
 
-		p_object->setScrPos( (Episode == 3) ? 128 : 96, 182 );
-		m_objects.push_back(p_object);
+		pObject->setScrPos( (Episode == 3) ? 128 : 96, 182 );
+		mObjects.push_back(pObject);
 	}
 	
-	m_map.changeTileArrayY(2, 15, 2, g_pGfxEngine->getTileMap(1).EmptyBackgroundTile());
+	mMap.changeTileArrayY(2, 15, 2, g_pGfxEngine->getTileMap(1).EmptyBackgroundTile());
 
-	m_finished = false;
+	mFinished = false;
 
 	return true;
 }
@@ -64,19 +63,13 @@ bool CTitle::init(int Episode)
 ////
 void CTitle::process()
 {
-	if( m_time == 0) m_finished = true;
-	else m_time -= g_pTimer->HasSecElapsed();
-}
+	if( mTime == 0) mFinished = true;
+	else mTime -= g_pTimer->HasSecElapsed();
 
-////
-// Cleanup Routine
-////
-CTitle::~CTitle() {
-	while( !m_objects.empty() )
+	std::vector< SmartPointer<CObject> >::iterator obj = mObjects.begin();
+	for( ; obj != mObjects.end() ; obj++ )
 	{
-		if(m_objects.back())
-			delete m_objects.back();
-		m_objects.pop_back();
+		obj->get()->process();
 	}
-}
 
+}

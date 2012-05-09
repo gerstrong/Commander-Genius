@@ -18,26 +18,27 @@
 
 #include <SDL.h>
 #include <vector>
-#include "../graphics/CGfxEngine.h"
-#include "../common/CObject.h"
-#include "../common/CMap.h"
+#include "graphics/CGfxEngine.h"
+#include "common/CObject.h"
+#include "common/CMap.h"
+#include "SmartPointer.h"
 
-class CTitle {
+class CTitle
+{
 public:
 
-	CTitle(std::vector<CObject*> &Objects, CMap &map);
-	virtual ~CTitle();
+	CTitle(CMap &map);
 
 	bool init(int Episode);
 	void process();
 
 	bool isFinished()
-	{ return m_finished; }
+	{ return mFinished; }
 
 private:
-	std::vector<CObject*> &m_objects;
-	bool m_finished;
-	unsigned int m_time;
-	CMap &m_map;
+	std::vector< SmartPointer<CObject> > mObjects;
+	bool mFinished;
+	unsigned int mTime;
+	CMap &mMap;
 };
 #endif /* CTITLE_H_ */

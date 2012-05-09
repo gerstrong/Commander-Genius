@@ -14,7 +14,8 @@
 #include "common/CObject.h"
 #include <SDL.h>
 
-class CEGABitmap : public CObject {
+class CEGABitmap : public CObject
+{
 public:
 	CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap);
 	void setPos(int px, int py);
