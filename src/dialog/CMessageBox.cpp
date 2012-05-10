@@ -44,12 +44,12 @@ m_mustclose(false)
 	mRect.x = (1.0f - mRect.w)/2.0f;
 	mRect.y = (1.0f - mRect.h)/2.0f;
 
-	// now let's center the long text...
+	// now let's center that long text...
 	CRect<float> TextRect;
 	TextRect.x = 0.055f/mRect.w;
 	TextRect.y = 0.05f/mRect.h;
-	TextRect.w = 0.9f;
-	TextRect.h = 0.9f;
+	TextRect.w = 0.95f;
+	TextRect.h = 0.95f;
 
 	addControl( mpTextCtrl, TextRect );
 
@@ -57,11 +57,13 @@ m_mustclose(false)
 	closeRect.x = mRect.x;
 	closeRect.y = mRect.y;
 	pButton->setRect(closeRect);
+	initBackground();
 }
 
 void CMessageBox::processLogic()
 {
-	// TODO: Here we need to process the close logic, The (X) already work, but command must be caught here!
+	if(g_pInput->getPressedAnyCommand())
+		m_mustclose = true;
 
 	CGUIDialog::processLogic();
 }

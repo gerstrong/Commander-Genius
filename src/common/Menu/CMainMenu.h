@@ -7,7 +7,6 @@
 
 #include "CBaseMenu.h"
 #include "SmartPointer.h"
-#include "gui/CGUIDialog.h"
 #include "engine/CEvent.h"
 
 #ifndef CMAINMENU_H_

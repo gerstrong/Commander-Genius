@@ -49,6 +49,9 @@ public:
 	{	return mButtonUp;	}
 
 
+	void setDown( const bool value )
+	{	mHovered = value;	}
+
 	virtual void sendEvent(const InputCommands command) {};
 
 

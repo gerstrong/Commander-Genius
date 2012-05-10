@@ -29,6 +29,9 @@ public:
 
 	~CGUIDialog();
 
+	// Automatic Background draw function. It creates the background depending on what engine is currently running
+	void initBackground();
+
 	// Empty Background draw function. Just fills the Rect with a standard gray color
 	void initEmptyBackround();
 

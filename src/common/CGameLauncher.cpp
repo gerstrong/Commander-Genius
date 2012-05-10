@@ -27,6 +27,7 @@ CGameLauncher::CGameLauncher()
     m_chosenGame    = -1;
     m_ep1slot       = -1;
 	mpLauncherDialog = new CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f));
+	mpLauncherDialog->initBackground();
 }
 
 ////

@@ -16,6 +16,8 @@ mpMenuDialog( new CGUIDialog(rect) )
 	std::string closeString;
 	CGUIButton*	pButton;
 
+	mpMenuDialog->initBackground();
+
 	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
 		CRect<float> rect(0.30f, 0.28f, 0.5f, 0.5f);
@@ -32,6 +34,7 @@ mpMenuDialog( new CGUIDialog(rect) )
 		mpMenuDialog->addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
 	}
 
+	pButton->setDown(true);
 	mpReturnButton = pButton;
 
 }

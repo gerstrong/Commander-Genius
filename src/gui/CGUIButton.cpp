@@ -185,15 +185,15 @@ void CGUIButton::drawNoStyle(SDL_Rect& lRect)
 
 	if( mButtonUp )
 	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
+		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00BFBFBF );
 	}
 	else if( mButtonDown )
 	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
+		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
 	}
 	else if( mHovered )
 	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
+		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
 	}
 	else
 	{
