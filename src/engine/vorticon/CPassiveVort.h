@@ -33,7 +33,6 @@ public:
 private:
 	CIntro *mp_IntroScreen;
 	CTitle *mp_TitleScreen;
-	CTextBox *mp_PressAnyBox;
 	CTilemap *mp_Tilemap;
 	SmartPointer<CMap> mpMap;
 	stOption *mp_Option;

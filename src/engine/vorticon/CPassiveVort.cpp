@@ -23,7 +23,6 @@ m_RestartVideo(false)
 {
 	mp_IntroScreen = NULL;
 	mp_TitleScreen = NULL;
-	mp_PressAnyBox=NULL;
 	m_GoDemo = false;
 	m_textsize = 0;
 }
@@ -109,11 +108,6 @@ void CPassiveVort::process()
 		cleanup();
 		init(TITLE);
 	}
-
-	// If Menu is not open show "Press Any Key"
-	/*if(mp_PressAnyBox != NULL)
-		mp_PressAnyBox->process();*/
-
 }
 
 void CPassiveVort::cleanup()

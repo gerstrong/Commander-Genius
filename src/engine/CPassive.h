@@ -15,7 +15,6 @@
 #define CPASSIVE_H_
 
 #include "CTitle.h"
-#include "dialog/CTextBox.h"
 #include "common/CMap.h"
 #include "common/CObject.h"
 #include "gui/CGUIDialog.h"
