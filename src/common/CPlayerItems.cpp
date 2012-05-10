@@ -322,22 +322,19 @@ void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 {
 	playSound(SOUND_GET_BONUS);
 	incScore(numpts);
-	
-	if(mp_option[OPT_RISEBONUS].value)
+
+	int spr;
+	switch(numpts)
 	{
-		int spr;
-		switch(numpts)
-		{
 		case 100: spr = PT100_SPRITE; break;
 		case 200: spr = PT200_SPRITE; break;
 		case 500: spr = PT500_SPRITE; break;
 		case 1000: spr = PT1000_SPRITE; break;
 		case 5000: spr = PT5000_SPRITE; break;
 		default: spr = 0; break;
-		}
-
-		if (spr) riseBonus(spr, mpx, mpy);
 	}
+
+	if (spr) riseBonus(spr, mpx, mpy);
 }
 
 

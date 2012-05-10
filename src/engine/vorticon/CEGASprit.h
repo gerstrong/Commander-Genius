@@ -55,7 +55,7 @@ private:
 		// in DOS but are ignored here.
 	}*EGASpriteModell;
 
-	char LoadTGASprite( const std::string &filename, CSprite &sprite );
+	void generateSprite( const int points, CSprite &sprite );
 	void LoadSpecialSprites( std::vector<CSprite> &sprite );
 	void DerivePlayerSprites( std::vector<CSprite> &sprites );
 	void DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &sprites );

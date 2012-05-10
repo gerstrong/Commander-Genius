@@ -190,7 +190,7 @@ private:
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);
 	void procGoodie(int tile, int mpx, int mpy);
-	void riseBonus(int spr, int x, int y);
+	void riseBonus(const int points, const int x, const int y);
 	void getBonuspoints(int numpts, int mpx, int mpy);
 	void incScore(int numpts);
 	void openDoor(int doortile, int doorsprite, int mpx, int mpy);

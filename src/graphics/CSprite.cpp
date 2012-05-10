@@ -7,9 +7,11 @@
 
 #include "CSprite.h"
 #include "CPalette.h"
-#include "../FindFile.h"
+#include "FindFile.h"
 #include <string.h>
-#include "../sdl/CVideoDriver.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/extensions.h"
+#include "graphics/CGfxEngine.h"
 
 #define SAFE_DELETE(x) { if(x) SDL_FreeSurface(x); x = NULL; }
 
@@ -55,6 +57,79 @@ bool CSprite::optimizeSurface()
 	else
         return false;
 }
+
+
+
+void CSprite::generateSprite( const int points )
+{
+	Uint32 color = 0;
+	Uint8 r,g,b,a;
+	std::string pointStr = itoa(points);
+
+	setSize( pointStr.size()*8, 8);
+
+	createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette  );
+	optimizeSurface();
+
+	SDL_FillRect(m_surface, NULL, 0xFFFFFFFF);
+
+	CFont &smallFont = g_pGfxEngine->getFont(2);
+
+	// Create Text Borders TODO: Make this code to draw better looking fonts
+	smallFont.drawFont( m_surface, pointStr, -1,  0 );
+	smallFont.drawFont( m_surface, pointStr,  0, -1 );
+	smallFont.drawFont( m_surface, pointStr,  1, 0 );
+	smallFont.drawFont( m_surface, pointStr,  0, 1 );
+
+	// Now draw the alternate font. It just has another color.
+	smallFont.drawFont( m_surface, pointStr, 0,  0, true );
+
+	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+
+	// This makes the white pixel transparent TODO: This and other must get more elegant
+	Uint8 *pixel = (Uint8*)m_surface->pixels;
+
+	for( Uint8 y=0 ; y<m_surface->h ; y++ )
+	{
+		for( Uint8 x=0 ; x<m_surface->w ; x++ )
+		{
+			memcpy( &color, pixel, m_surface->format->BytesPerPixel );
+
+			SDL_GetRGBA( color, m_surface->format, &r, &g, &b, &a );
+
+			if( color == 0xFFFFFFFF ) // White
+				a = 0;
+
+			color = SDL_MapRGBA( m_surface->format, r, g, b, a );
+
+			memcpy( pixel, &color, m_surface->format->BytesPerPixel );
+
+			pixel += m_surface->format->BytesPerPixel;
+		}
+	}
+	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+
+
+	//SDL_BlitSurface(tilemap.getSDLSurface(), &tile_rect, src_sfc, NULL);
+
+	/*sprite.setSize( pointStr.size()*8, 8);
+	sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette );
+	sprite.optimizeSurface();
+
+	SDL_Surface *sfc = sprite.getSDLSurface();
+	//SDL_Surface *msksfc = sprite.getSDLMaskSurface();
+
+	CFont &smallFont = g_pGfxEngine->getFont(2);
+	//smallFont.drawFont( sfc, pointStr, 0, 0 );
+	SDL_FillRect(sfc, NULL, 0x8800FF88);*/
+
+	m_bboxX1=0;
+	m_bboxY1=0;
+	m_bboxX2=getWidth();
+	m_bboxY2=getHeight();
+}
+
+
 
 bool CSprite::loadHQSprite( const std::string& filename )
 {
@@ -106,7 +181,6 @@ void CSprite::readMask(SDL_Surface *displaysurface)
 
 			Uint32 mask32 = (r+g+b)/(3*16);
 			mask = 15-mask32;
-			//mask = 15;
 
 			memcpy( maskpx, &mask, 1 );
 
@@ -134,9 +208,11 @@ void CSprite::applyTransparency()
 	Uint32 colour, mask;
 	Uint8 r,g,b,a;
 	
+	if(!m_masksurface) return;
+
 	if(!m_surface) return;
 
-	if(m_surface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat
+	if(m_surface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat before ???
 	{
 		SDL_BlitSurface(m_masksurface, NULL, m_surface, NULL);
 		return;

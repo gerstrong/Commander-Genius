@@ -91,9 +91,7 @@
 #define SHOTUP_SPRITE		(MAX_SPRITES-16)		// rising single shot (ep3)
 #define ANKHUP_SPRITE		(MAX_SPRITES-17)		// rising single shot (ep3)
 #define GUNUP_SPRITE		(MAX_SPRITES-18)		// rising ray gun
-#define SHOTS_SPRITE		(MAX_SPRITES-19)		// invincibility force field, used in editor and in "yorps have forcefields" mode
 #define VERSION_SPRITE		(MAX_SPRITES-20)		// version text shown in lower-right corner at startup
-#define LIVES_SPRITE		(MAX_SPRITES-21)		// says "Demo"
 #define OSD_LIVES_SPRITE	(MAX_SPRITES-22)
 #define OSD_AMMO_SPRITE		(MAX_SPRITES-23)
 #define OSD_YORPS_SPRITE	(MAX_SPRITES-24)

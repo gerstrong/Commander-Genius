@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 #include "CRisingPoints.h"
+#include "graphics/CGfxEngine.h"
 
 // GotPoints object (rising numbers when you get a bonus item)
 // (this wasn't in original Keen)
@@ -21,6 +22,7 @@ CObject(p_map, x, y, OBJ_GOTPOINTS)
 	honorPriority = false;
 	needinit = 0;
 }
+
 
 void CRisingPoints::process()
 {

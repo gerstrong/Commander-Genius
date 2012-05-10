@@ -7,9 +7,10 @@
 
 #include "CFont.h"
 #include "CPalette.h"
-#include "../FindFile.h"
-#include "../sdl/CVideoDriver.h"
+#include "FindFile.h"
+#include "sdl/CVideoDriver.h"
 #include "CGFont.xpm"
+#include "alternatefont.xpm"
 #include "StringUtils.h"
 #include "sdl/extensions.h"
 #include <string.h>
@@ -108,6 +109,17 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 }
 
 
+
+bool CFont::loadAlternateFont()
+{
+	// Has the Surface to the entire font been loaded?
+	if(mFontSurface)
+		SDL_FreeSurface(mFontSurface);
+
+	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+	mFontSurface = loadfromXPMData( alternatefont_xpm, blit->format, blit->flags );
+	return true;
+}
 
 
 

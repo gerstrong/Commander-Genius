@@ -614,6 +614,8 @@ void CObject::draw()
 	if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
+
+
 	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
 
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;

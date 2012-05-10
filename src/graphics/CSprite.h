@@ -25,6 +25,7 @@ public:
 	void copy( CSprite &Destination, SDL_Color *Palette );
 	void replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny );
 
+	void generateSprite( const int points );
 	bool loadHQSprite( const std::string& filename );
 	
 	void setSize(Uint8 w, Uint8 h) { m_xsize = w; m_ysize = h; }

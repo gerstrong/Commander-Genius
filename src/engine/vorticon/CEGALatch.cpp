@@ -144,7 +144,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// extra icons. For example sliders are in that map
 
 	g_pGfxEngine->freeFonts();
-	g_pGfxEngine->createEmptyFontmaps(2);
+	g_pGfxEngine->createEmptyFontmaps(3);
 
 	g_pGfxEngine->getFont(0).loadinternalFont();
 
@@ -152,6 +152,9 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	Font.destroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	sfc = Font.getSDLSurface();
+
+	g_pGfxEngine->getFont(2).loadAlternateFont();
+
 
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 

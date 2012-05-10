@@ -20,6 +20,7 @@
 #include "common/CObject.h"
 #include "common/tga.h" 
 #include "CResourceLoader.h"
+#include "graphics/CGfxEngine.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>
@@ -205,7 +206,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	
 	// Now load the special TGA Sprites if some are available
-	LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
+	//LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
 
 	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
@@ -253,6 +254,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		g_pResourceLoader->setPermilage(500+percent);
 	}
 	
+	LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
+
 	g_pResourceLoader->setPermilage(750);
 	// Apply the sprites for player 2,3 and 4
 	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
@@ -272,83 +275,15 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	return true;
 }
 
-// load a 32-bit RGBA TGA file into sprite 's', and add colors to the palette
-// as needed so that it can be shown exactly as found in the file.
-// returns nonzero on failure.
-char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
-{
-	byte *image, *base;
-	int x,y;
-	Uint16 w,h;
-	unsigned char r,g,b,a;
-	int c;
-	Uint8 *pixel, *maskpx;
-	
-	// Look in local location than in global, if tga was not found!
-	if (!LoadTGA(filename, &image, w, h))
-		return 1;
-
-	base = image;
-	sprite.setSize(w, h);
-	sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette );
-	
-	SDL_Surface *sfc = sprite.getSDLSurface();
-	SDL_Surface *msksfc = sprite.getSDLMaskSurface();
-	
-	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
-	if(SDL_MUSTLOCK(msksfc))	SDL_LockSurface(msksfc);
-	
-	pixel = (Uint8*) sfc->pixels;
-	maskpx = (Uint8*) msksfc->pixels;
-	
-	for(y=h-1;y>=0;y--)
-	{
-		for(x=0;x<w;x++)
-		{
-			b = *image++; g = *image++; r = *image++; a = *image++;
-			if (a & 128)
-			{
-				c = g_pGfxEngine->Palette.getcolor(r, g, b);
-				if (c==-1) c = g_pGfxEngine->Palette.addcolor(r, g, b);
-				if (c==-1) return 1;
-				
-				pixel[y*w + x] = c;
-				maskpx[y*w + x] = 15;
-			}
-			else
-				maskpx[y*w + x] = 0;
-		}
-	}
-	
-	if(SDL_MUSTLOCK(msksfc)) SDL_UnlockSurface(msksfc);
-	if(SDL_MUSTLOCK(sfc))	 SDL_UnlockSurface(sfc);
-	
-	sprite.m_bboxX1=0;
-	sprite.m_bboxY1=0;
-	sprite.m_bboxX2=sprite.getWidth();
-	sprite.m_bboxY2=sprite.getHeight();
-	
-	delete [] base;
-	
-	return 0;
-}
-
 // load special clonekeen-specific sprites from the .raw files
 // Code by Caitlin Shaw
 void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 {
-	LoadTGASprite(getResourceFilename("gfx/100.tga", m_gamepath, false, true), sprite[PT100_SPRITE] );
-	LoadTGASprite(getResourceFilename("gfx/200.tga", m_gamepath, false, true), sprite[PT200_SPRITE] );
-	LoadTGASprite(getResourceFilename("gfx/500.tga", m_gamepath, false, true), sprite[PT500_SPRITE] );
-	LoadTGASprite(getResourceFilename("gfx/1000.tga", m_gamepath, false, true), sprite[PT1000_SPRITE] );
-	LoadTGASprite(getResourceFilename("gfx/5000.tga", m_gamepath, false, true), sprite[PT5000_SPRITE] );
-	LoadTGASprite(getResourceFilename("gfx/lives.tga", m_gamepath, false, true), sprite[LIVES_SPRITE] );
-	LoadTGASprite(getResourceFilename("gfx/shots.tga", m_gamepath, false, true), sprite[SHOTS_SPRITE] );
-	//LoadTGASprite("arrowud.tga", sprite[ARROWUD_SPRITE] );
-	//LoadTGASprite("arrowul.tga", sprite[ARROWUL_SPRITE] );
-	//LoadTGASprite("arrowur.tga", sprite[ARROWUR_SPRITE] );
-	//LoadTGASprite("arrowu.tga", sprite[ARROWU_SPRITE] );
-	//LoadTGASprite("arrowd.tga", sprite[ARROWD_SPRITE] );
+	sprite[PT100_SPRITE].generateSprite( 100 );
+	sprite[PT200_SPRITE].generateSprite( 200 );
+	sprite[PT500_SPRITE].generateSprite( 500 );
+	sprite[PT1000_SPRITE].generateSprite( 1000 );
+	sprite[PT5000_SPRITE].generateSprite( 5000 );
 }
 
 void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )

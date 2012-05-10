@@ -27,6 +27,8 @@ public:
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp=8, Uint16 width = 128, Uint16 height = 128);
 	SDL_Surface *getSDLSurface() { return mFontSurface; }
 
+	bool loadAlternateFont();
+
 	bool loadinternalFont();
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
