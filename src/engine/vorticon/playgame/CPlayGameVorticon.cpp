@@ -183,10 +183,6 @@ void CPlayGameVorticon::process()
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
 
-	if( g_pBehaviorEngine->paused() )
-		return;
-
-
 	if( m_MessageBoxes.empty() && !StatusScreenOpen()  ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if (!mp_Finale) // Hasn't the game yet been finished?
@@ -194,21 +190,26 @@ void CPlayGameVorticon::process()
 			// Perform AIs
 			mp_ObjectAI->process();
 
-			/// The following functions must be worldmap dependent
-			if( m_Level == WORLD_MAP_LEVEL_VORTICON )
-				processOnWorldMap();
-			else
-				processInLevel();
 
-			// Does one of the players need to pause the game?
-			for( int i=0 ; i<m_NumPlayers ; i++ )
+			if( !g_pBehaviorEngine->paused() )
 			{
-				// Did he open the status screen?
-				/*if(m_Player[i].m_showStatusScreen)
+				/// The following functions must be worldmap dependent
+				if( m_Level == WORLD_MAP_LEVEL_VORTICON )
+					processOnWorldMap();
+				else
+					processInLevel();
+
+				// Does one of the players need to pause the game?
+				for( int i=0 ; i<m_NumPlayers ; i++ )
+				{
+					// Did he open the status screen?
+					/*if(m_Player[i].m_showStatusScreen)
 					m_paused = true; // this is processed in processPauseDialogs!*/
 
-				if(!m_Player[0].pdie)
-					m_Player[0].processCamera();
+					if(!m_Player[0].pdie)
+						m_Player[0].processCamera();
+				}
+
 			}
 		}
 		else // In this case the Game has been finished, goto to the cutscenes

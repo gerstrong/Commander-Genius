@@ -289,7 +289,7 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 {
 	// create the sprites for player 2, 3 and 4
-	for(size_t i=0;i<48;i++)
+	for( size_t i=0 ; i<48 ; i++ )
 	{
 		size_t s = SECOND_PLAYER_BASEFRAME+i;
 		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );

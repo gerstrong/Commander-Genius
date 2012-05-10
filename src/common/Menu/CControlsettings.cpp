@@ -73,7 +73,7 @@ public:
 
 
 CControlsettings::CControlsettings( const int selectedPlayer ) :
-CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
+CBaseMenu( CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
 mSelectedPlayer(selectedPlayer)
 {
 	CGUIButton *button;
