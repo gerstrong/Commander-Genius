@@ -126,7 +126,6 @@ void CGfxEngine::freeSprites()
 	while( !Sprite.empty() )
 	{
 		CSprite &sprite = Sprite.back();
-		sprite.freeSurfaces();
 		Sprite.pop_back();
 	}
 }

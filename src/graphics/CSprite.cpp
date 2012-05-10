@@ -16,8 +16,6 @@
 #define SAFE_DELETE(x) { if(x) SDL_FreeSurface(x); x = NULL; }
 
 CSprite::CSprite() :
-m_surface(NULL),
-m_masksurface(NULL),
 m_alpha(255)
 {
 	m_xsize = m_ysize = 0;
@@ -32,30 +30,23 @@ m_alpha(255)
 
 bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 {
-	if(m_surface) SDL_FreeSurface(m_surface);
-	m_surface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
-	SDL_SetColors( m_surface, Palette, 0, 255);
-	SDL_SetColorKey( m_surface, SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
-	if(m_masksurface) SDL_FreeSurface(m_masksurface);
-	m_masksurface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
-	SDL_SetColors( m_masksurface, Palette, 0, 255);
-	SDL_SetColorKey( m_masksurface, SDL_SRCCOLORKEY, COLORKEY ); // color key.
+	mpSurface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
+	SDL_SetColors( mpSurface.get(), Palette, 0, 255);
+	SDL_SetColorKey( mpSurface.get(), SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
+
+	mpMasksurface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
+	SDL_SetColors( mpMasksurface.get(), Palette, 0, 255);
+	SDL_SetColorKey( mpMasksurface.get(), SDL_SRCCOLORKEY, COLORKEY ); // color key.
 	
-	return ( !m_surface && !m_masksurface );
+	return ( mpSurface.empty() && mpMasksurface.empty() );
 }
 
 bool CSprite::optimizeSurface()
 {
-	if(m_surface)
-	{
-		SDL_Surface *temp_surface;
-		temp_surface = SDL_DisplayFormatAlpha(m_surface);
-		SDL_FreeSurface(m_surface);
-		m_surface = temp_surface;
-        return true;
-	}
-	else
-        return false;
+	if(!mpSurface.empty())
+		mpSurface = SDL_DisplayFormatAlpha(mpSurface.get());
+
+    return true;
 }
 
 
@@ -71,57 +62,44 @@ void CSprite::generateSprite( const int points )
 	createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette  );
 	optimizeSurface();
 
-	SDL_FillRect(m_surface, NULL, 0xFFFFFFFF);
+	SDL_FillRect(mpSurface.get(), NULL, 0xFFFFFFFF);
 
 	CFont &smallFont = g_pGfxEngine->getFont(2);
 
 	// Create Text Borders TODO: Make this code to draw better looking fonts
-	smallFont.drawFont( m_surface, pointStr, -1,  0 );
-	smallFont.drawFont( m_surface, pointStr,  0, -1 );
-	smallFont.drawFont( m_surface, pointStr,  1, 0 );
-	smallFont.drawFont( m_surface, pointStr,  0, 1 );
+	smallFont.drawFont( mpSurface.get(), pointStr, -1,  0 );
+	smallFont.drawFont( mpSurface.get(), pointStr,  0, -1 );
+	smallFont.drawFont( mpSurface.get(), pointStr,  1, 0 );
+	smallFont.drawFont( mpSurface.get(), pointStr,  0, 1 );
 
 	// Now draw the alternate font. It just has another color.
-	smallFont.drawFont( m_surface, pointStr, 0,  0, true );
+	smallFont.drawFont( mpSurface.get(), pointStr, 0,  0, true );
 
-	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
 
 	// This makes the white pixel transparent TODO: This and other must get more elegant
-	Uint8 *pixel = (Uint8*)m_surface->pixels;
+	Uint8 *pixel = (Uint8*)mpSurface->pixels;
 
-	for( Uint8 y=0 ; y<m_surface->h ; y++ )
+	for( Uint8 y=0 ; y<mpSurface->h ; y++ )
 	{
-		for( Uint8 x=0 ; x<m_surface->w ; x++ )
+		for( Uint8 x=0 ; x<mpSurface->w ; x++ )
 		{
-			memcpy( &color, pixel, m_surface->format->BytesPerPixel );
+			memcpy( &color, pixel, mpSurface->format->BytesPerPixel );
 
-			SDL_GetRGBA( color, m_surface->format, &r, &g, &b, &a );
+			SDL_GetRGBA( color, mpSurface->format, &r, &g, &b, &a );
 
 			if( color == 0xFFFFFFFF ) // White
 				a = 0;
 
-			color = SDL_MapRGBA( m_surface->format, r, g, b, a );
+			color = SDL_MapRGBA( mpSurface->format, r, g, b, a );
 
-			memcpy( pixel, &color, m_surface->format->BytesPerPixel );
+			memcpy( pixel, &color, mpSurface->format->BytesPerPixel );
 
-			pixel += m_surface->format->BytesPerPixel;
+			pixel += mpSurface->format->BytesPerPixel;
 		}
 	}
-	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
 
-
-	//SDL_BlitSurface(tilemap.getSDLSurface(), &tile_rect, src_sfc, NULL);
-
-	/*sprite.setSize( pointStr.size()*8, 8);
-	sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette );
-	sprite.optimizeSurface();
-
-	SDL_Surface *sfc = sprite.getSDLSurface();
-	//SDL_Surface *msksfc = sprite.getSDLMaskSurface();
-
-	CFont &smallFont = g_pGfxEngine->getFont(2);
-	//smallFont.drawFont( sfc, pointStr, 0, 0 );
-	SDL_FillRect(sfc, NULL, 0x8800FF88);*/
 
 	m_bboxX1=0;
 	m_bboxY1=0;
@@ -133,17 +111,15 @@ void CSprite::generateSprite( const int points )
 
 bool CSprite::loadHQSprite( const std::string& filename )
 {
-	if(m_surface)
+	if(!mpSurface.empty())
 	{
-		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
-		if(temp_surface)
+		SmartPointer<SDL_Surface> temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
+		if(!temp_surface.empty())
 		{
-			SDL_Surface *displaysurface = SDL_ConvertSurface(temp_surface, m_surface->format, m_surface->flags);
-			readMask(displaysurface);
-			readBBox(displaysurface);
-			SDL_BlitSurface(displaysurface, NULL, m_surface, NULL);
-			SDL_FreeSurface(displaysurface);
-			SDL_FreeSurface(temp_surface);
+			SmartPointer<SDL_Surface> displaysurface = SDL_ConvertSurface(temp_surface.get(), mpSurface->format, mpSurface->flags);
+			readMask(displaysurface.get());
+			readBBox(displaysurface.get());
+			SDL_BlitSurface(displaysurface.get(), NULL, mpSurface.get(), NULL);
 			return true;
 		}
 	}
@@ -166,9 +142,9 @@ void CSprite::readMask(SDL_Surface *displaysurface)
 	w = (displaysurface->w)/3;
 
 	if(SDL_MUSTLOCK(displaysurface)) SDL_LockSurface(displaysurface);
-	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
+	if(SDL_MUSTLOCK(mpMasksurface.get())) SDL_LockSurface(mpMasksurface.get());
 
-	maskpx = (Uint8*)m_masksurface->pixels;
+	maskpx = (Uint8*)mpMasksurface->pixels;
 	pixel = (Uint8*)displaysurface->pixels + (displaysurface->w/3)*displaysurface->format->BytesPerPixel;
 
 	for( Uint8 y=0 ; y<h ; y++ )
@@ -184,12 +160,12 @@ void CSprite::readMask(SDL_Surface *displaysurface)
 
 			memcpy( maskpx, &mask, 1 );
 
-			pixel += m_surface->format->BytesPerPixel;
-			maskpx += m_masksurface->format->BytesPerPixel;
+			pixel += mpSurface->format->BytesPerPixel;
+			maskpx += mpSurface->format->BytesPerPixel;
 		}
-		pixel += 2*w*m_surface->format->BytesPerPixel;
+		pixel += 2*w*mpSurface->format->BytesPerPixel;
 	}
-	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
+	if(SDL_MUSTLOCK(mpMasksurface.get())) SDL_LockSurface(mpMasksurface.get());
 	if(SDL_MUSTLOCK(displaysurface)) SDL_LockSurface(displaysurface);
 }
 
@@ -208,45 +184,43 @@ void CSprite::applyTransparency()
 	Uint32 colour, mask;
 	Uint8 r,g,b,a;
 	
-	if(!m_masksurface) return;
+	if(mpSurface.empty() || mpMasksurface.empty()) return;
 
-	if(!m_surface) return;
-
-	if(m_surface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat before ???
+	if(mpSurface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat before ???
 	{
-		SDL_BlitSurface(m_masksurface, NULL, m_surface, NULL);
+		SDL_BlitSurface(mpMasksurface.get(), NULL, mpSurface.get(), NULL);
 		return;
 	}
 	
-	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
-	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
+	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
+	if(SDL_MUSTLOCK(mpMasksurface.get())) SDL_LockSurface(mpMasksurface.get());
 	
-	pixel = (Uint8*)m_surface->pixels;
-	maskpx = (Uint8*)m_masksurface->pixels;
+	pixel = (Uint8*)mpSurface->pixels;
+	maskpx = (Uint8*)mpMasksurface->pixels;
 	
 	for( Uint8 y=0 ; y<m_ysize ; y++ )
 	{
 		for( Uint8 x=0 ; x<m_xsize ; x++ )
 		{
-			memcpy( &colour, pixel, m_surface->format->BytesPerPixel );
-			memcpy( &mask, pixel, m_surface->format->BytesPerPixel );
+			memcpy( &colour, pixel, mpSurface->format->BytesPerPixel );
+			memcpy( &mask, pixel, mpSurface->format->BytesPerPixel );
 			
-			SDL_GetRGBA( colour, m_surface->format, &r, &g, &b, &a );
+			SDL_GetRGBA( colour, mpSurface->format, &r, &g, &b, &a );
 
 			if(*maskpx<16)
 				a = (255*(*maskpx))/15;
 			else a = 255;
 
-			colour = SDL_MapRGBA( m_surface->format, r, g, b, a );
+			colour = SDL_MapRGBA( mpSurface->format, r, g, b, a );
 
-			memcpy( pixel, &colour, m_surface->format->BytesPerPixel );
+			memcpy( pixel, &colour, mpSurface->format->BytesPerPixel );
 			
-			pixel += m_surface->format->BytesPerPixel;
-			maskpx += m_masksurface->format->BytesPerPixel;
+			pixel += mpSurface->format->BytesPerPixel;
+			maskpx += mpMasksurface->format->BytesPerPixel;
 		}
 	}
-	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
-	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+	if(SDL_MUSTLOCK(mpMasksurface)) SDL_LockSurface(mpMasksurface.get());
+	if(SDL_MUSTLOCK(mpSurface)) SDL_LockSurface(mpSurface.get());
 }
 
 void CSprite::applyTranslucency(Uint8 value)
@@ -260,31 +234,31 @@ void CSprite::applyTranslucency(Uint8 value)
 	if(m_alpha == value)
 		return;
 
-	if(!m_surface) return;
+	if(mpSurface.empty()) return;
 
-	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
 
-	pixel = (Uint8*)m_surface->pixels;
+	pixel = (Uint8*)mpSurface->pixels;
 
 	for( Uint8 y=0 ; y<m_ysize ; y++ )
 	{
 		for( Uint8 x=0 ; x<m_xsize ; x++ )
 		{
-			memcpy( &colour, pixel, m_surface->format->BytesPerPixel );
+			memcpy( &colour, pixel, mpSurface->format->BytesPerPixel );
 
-			SDL_GetRGBA( colour, m_surface->format, &r, &g, &b, &a );
+			SDL_GetRGBA( colour, mpSurface->format, &r, &g, &b, &a );
 
 			if(a!=0) a = value;
 
-			colour = SDL_MapRGBA( m_surface->format, r, g, b, a );
+			colour = SDL_MapRGBA( mpSurface->format, r, g, b, a );
 
-			memcpy( pixel, &colour, m_surface->format->BytesPerPixel );
+			memcpy( pixel, &colour, mpSurface->format->BytesPerPixel );
 
-			pixel += m_surface->format->BytesPerPixel;
+			pixel += mpSurface->format->BytesPerPixel;
 		}
 	}
 
-	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
 
 	m_alpha = value;
 }
@@ -308,10 +282,10 @@ void CSprite::copy( CSprite &Destination, SDL_Color *Palette )
 	Destination.m_bboxY2 = m_bboxY2;
 	Destination.setSize(m_xsize, m_ysize);
 	
-	Destination.createSurface( m_surface->flags, Palette );
+	Destination.createSurface( mpSurface->flags, Palette );
 	
 	SDL_FillRect(Destination.getSDLSurface(), NULL, COLORKEY);
-	SDL_BlitSurface( m_surface, NULL, Destination.getSDLSurface(), NULL);
+	SDL_BlitSurface( mpSurface.get(), NULL, Destination.getSDLSurface(), NULL);
 }
 
 // replaces all instances of color find in sprite s with
@@ -323,8 +297,8 @@ void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 	Uint16 x,y;
 	Uint8* pixel;
 	
-	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
-	pixel = (Uint8*) m_surface->pixels;
+	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
+	pixel = (Uint8*) mpSurface->pixels;
 	for(y=miny;y<m_ysize;y++)
 	{
 		for(x=0;x<m_xsize;x++)
@@ -333,7 +307,7 @@ void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 				pixel[y*m_xsize + x] = replace;
 		}
 	}
-	if(SDL_MUSTLOCK(m_surface)) SDL_UnlockSurface(m_surface);
+	if(SDL_MUSTLOCK(mpSurface.get())) SDL_UnlockSurface(mpSurface.get());
 }
 
 void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
@@ -395,7 +369,7 @@ void CSprite::_drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, con
 	src_rect.h = dst_rect.h;
 	
 	applyTranslucency(alpha);
-	SDL_BlitSurface( m_surface, &src_rect, dst, &dst_rect );
+	SDL_BlitSurface( mpSurface.get(), &src_rect, dst, &dst_rect );
 }
 
 /**
@@ -425,22 +399,8 @@ void CSprite::_drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
 
-	SDL_Surface *blanksfc =	SDL_DisplayFormatAlpha(m_surface);
-	blitMaskedSprite(blanksfc, m_surface, 0xFFFFFF);
+	SDL_Surface *blanksfc =	SDL_DisplayFormatAlpha(mpSurface.get());
+	blitMaskedSprite(blanksfc, mpSurface.get(), 0xFFFFFF);
 	SDL_BlitSurface( blanksfc, &src_rect, dst, &dst_rect );
 	SDL_FreeSurface(blanksfc);
 }
-
-
-void CSprite::freeSurfaces()
-{
-	if(m_surface) SDL_FreeSurface(m_surface);
-	if(m_masksurface) SDL_FreeSurface(m_masksurface);
-	m_masksurface = NULL;
-	m_surface = NULL;
-}
-
-CSprite::~CSprite() {
-	freeSurfaces();
-}
-
