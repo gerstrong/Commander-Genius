@@ -45,6 +45,9 @@ void CMenuController::process()
 			mpMenu = openMenu->mMenuDialogPointer;
 			mpMenu->init();
 
+			// Select the second element. The first one (0) is the close button.
+			mpMenu->select(1);
+
 			if( !mMenuStack.empty() )
 				mpMenu->setProperty( CBaseMenu::CANGOBACK );
 

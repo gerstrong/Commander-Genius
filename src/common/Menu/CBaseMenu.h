@@ -32,6 +32,8 @@ public:
 
 	virtual void init() {};
 
+	void select(const size_t value);
+
 	virtual void release() {};
 
 	void setMenuLabel(const std::string &label);

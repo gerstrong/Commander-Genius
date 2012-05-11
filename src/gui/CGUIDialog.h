@@ -53,6 +53,7 @@ public:
 
 	void addControl( const SmartPointer<CGUIControl> newControl );
 
+
 	void sendEvent( const SmartPointer<CEvent> &command );
 
 	void fit();
@@ -70,6 +71,12 @@ public:
 	{	return 	mpCurrentCtrl;	}
 
 protected:
+
+	void selectPrevItem();
+
+	void selectNextItem();
+
+
 	CRect<float> mRect;
 
 private:

@@ -39,6 +39,17 @@ mpMenuDialog( new CGUIDialog(rect) )
 
 }
 
+
+void CBaseMenu::select(const size_t value)
+{
+	if(value >= mpMenuDialog->getControlList().size())
+		return;
+
+	for(size_t c=0 ; c<value ; c++)
+		mpMenuDialog->sendEvent( new CommandEvent(IC_DOWN) );
+}
+
+
 void CBaseMenu::setMenuLabel(const std::string &label)
 {
 	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
