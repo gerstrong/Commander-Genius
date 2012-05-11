@@ -84,7 +84,7 @@ public:
 
 	bool isOpenGL(void) { return m_VidConfig.m_opengl; }
 #ifdef USE_OPENGL
-	unsigned char getOGLFilter(void) { return (m_VidConfig.m_opengl_filter==GL_LINEAR); }
+	unsigned char getOGLFilter(void) { return m_VidConfig.m_opengl_filter; }
 #else
 	unsigned char getOGLFilter(void) { return 0; }
 #endif
@@ -98,7 +98,7 @@ public:
 	void setZoom(short vale);
 #ifdef USE_OPENGL
 	void enableOpenGL(bool value) { m_VidConfig.m_opengl = value; }
-	void setOGLFilter(unsigned char value) { m_VidConfig.m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
+	void setOGLFilter(GLint value) { m_VidConfig.m_opengl_filter = value; }
 #else
 	void enableOpenGL(bool value) { m_VidConfig.m_opengl = false; }
 	void setOGLFilter(unsigned char value) { }

@@ -53,7 +53,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #ifdef USE_OPENGL
 	if(VidConf.m_opengl)
-		Configuration.WriteInt("Video", "OGLfilter", VidConf.m_opengl_filter);
+		Configuration.WriteString("Video", "OGLfilter", VidConf.m_opengl_filter == GL_NEAREST ? "nearest" : "linear" );
 #endif
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
@@ -116,7 +116,11 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
 #ifdef USE_OPENGL
 		if(VidConf.m_opengl)
-			Configuration.ReadInteger("Video", "OGLfilter", &VidConf.m_opengl_filter, false);
+		{
+			std::string oglFilter;
+			Configuration.ReadString("Video", "OGLfilter",  oglFilter, "nearest");
+			VidConf.m_opengl_filter = (oglFilter == "nearest") ? GL_NEAREST : GL_LINEAR;
+		}
 #endif
 		
 		
@@ -156,7 +160,7 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
 	g_pVideoDriver->setMode(320,200,32);
 	g_pVideoDriver->isFullscreen(false);
-	g_pVideoDriver->setOGLFilter(false);
+	g_pVideoDriver->setOGLFilter(GL_NEAREST);
 	g_pVideoDriver->setZoom(1);
 	g_pTimer->setFPS(60);
 	g_pVideoDriver->setFilter(1);

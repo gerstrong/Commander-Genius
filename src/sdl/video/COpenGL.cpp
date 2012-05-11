@@ -172,7 +172,7 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 bool COpenGL::init()
 {
 	CVideoEngine::init();
-	const GLint oglfilter = (m_VidConfig.m_opengl_filter==1) ? GL_LINEAR : GL_NEAREST ;
+	const GLint oglfilter = m_VidConfig.m_opengl_filter;
 
 	// Setup the view port for the first time
 	setUpViewPort(g_pVideoDriver->getGameResolution(), g_pVideoDriver->getResolution());

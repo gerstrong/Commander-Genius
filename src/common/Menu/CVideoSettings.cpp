@@ -100,7 +100,7 @@ void CVideoSettings::init()
 	// Load the config into the GUI
 	mpFPSSelection->setSelection( mUserVidConf.m_targetfps );
 	mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
-	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==1 ? "nearest" : "linear" );
+	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==GL_LINEAR ? "linear" : "nearest" );
 	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
 	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpShowFPSSwitch->enable( mUserVidConf.showfps );
