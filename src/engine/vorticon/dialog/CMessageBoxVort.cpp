@@ -25,4 +25,8 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	tileholder.y = y;
 
 	m_Tiles.push_back(tileholder);
+
+	// new CGUIImage(...); // TODO...
+
+	//addControl( mpTextCtrl, TextRect );
 }

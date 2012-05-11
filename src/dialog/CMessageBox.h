@@ -52,12 +52,6 @@ public:
 protected:
 	bool m_mustclose;
 	CGUIButton *mpReturnButton;
-	/*bool m_keymsg;
-	Uint32 m_text_width;
-	Uint32 m_text_height;
-	std::vector<std::string> m_Lines;
-	SmartPointer<CDlgFrame> mp_DlgFrame;
-	SDL_Rect m_boxrect;*/
 
 	CGUIText *mpTextCtrl;
 };

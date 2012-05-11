@@ -51,12 +51,16 @@ void CPlayGameVorticon::processOnWorldMap()
 					break;
 
 				case LVLS_SHIP:
+				{
 					if (m_Episode==1)
 						YourShipNeedsTheseParts();
 					else if (m_Episode==3)
 						ShipEp3();
 
-					break;
+					g_pInput->flushCommands();
+
+				}
+				break;
 
 				default: // a regular level
 					// Check if Level has been completed or the Level-Replayability is enabled
