@@ -37,17 +37,21 @@ bool CTitle::init(int Episode)
 	
 	if( (pBitmap = g_pGfxEngine->getBitmap("TITLE")) != NULL )
 	{
+		const int width = 160-(pBitmap->getWidth()/2);
 		pObject = new CEGABitmap( &mMap, pSurface, pBitmap );
-		pObject->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
+		pObject->setScrPos( width, 0 );
 		mObjects.push_back(pObject);
+		pBitmap->_draw( pSurface, width, 0);
+		pObject->draw();
 	}
 
 	if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
 	{
+		const int width = (Episode == 3) ? 128 : 96;
 		pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 		pObject = new CEGABitmap( &mMap, pSurface, pBitmap );
-
-		pObject->setScrPos( (Episode == 3) ? 128 : 96, 182 );
+		pObject->setScrPos( width, 182 );
+		pBitmap->_draw( pSurface, width, 182);
 		mObjects.push_back(pObject);
 	}
 	
