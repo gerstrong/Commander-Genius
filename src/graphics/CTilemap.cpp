@@ -75,6 +75,18 @@ SDL_Surface *CTilemap::getSDLSurface()
 	return m_Tilesurface;
 }
 
+
+
+////////////////////////////
+/////    Getters       /////
+////////////////////////////
+
+
+int CTilemap::getDimension()
+{
+	return (1<<m_pbasesize);
+}
+
 ////////////////////////////
 ///// Drawing Routines /////
 ////////////////////////////

@@ -11,11 +11,15 @@
 #include <SDL.h>
 #include <vector>
 #include <string>
+#include "SmartPointer.h"
 
 class CBitmap
 {
 public:
+
 	CBitmap();
+
+	CBitmap(const SmartPointer<SDL_Surface> &bmpSfc);
 
 	explicit CBitmap(const CBitmap &bitmap);
 
@@ -25,33 +29,28 @@ public:
 
 	SDL_Surface *getSDLSurface() const
 	{
-		return m_BitmapSurface;
+		return mpBitmapSurface.get();
 	}
-
-	void setSDLSurface(SDL_Surface *surface)
-	{	m_BitmapSurface = surface;	}
 
 	void setDimensions(const Uint16 w, const Uint16 h);
 	void setName(const std::string &name);
 	void setColorPalette(SDL_Color *Palette);
-	Uint16 getWidth() { return m_ImageRect.w; }
-	Uint16 getHeight() { return m_ImageRect.h; }
+	Uint16 getWidth() { return mImageRect.w; }
+	Uint16 getHeight() { return mImageRect.h; }
 
-	SDL_Rect getRect() const {	return m_ImageRect;	}
-	void setRect(SDL_Rect &rect) { m_ImageRect = rect; }
+	SDL_Rect getRect() const {	return mImageRect;	}
+	void setRect(SDL_Rect &rect) { mImageRect = rect; }
 
-	std::string getName() const { return m_name; }
-	void setName(std::string &name) { m_name = name; }
+	std::string getName() const { return mName; }
+	void setName(std::string &name) { mName = name; }
 
 	void draw(Uint16 x, Uint16 y);
 	void _draw(SDL_Surface *dst, Uint16 x, Uint16 y);
 
-	void destroySurface();
-
 private:
-	SDL_Rect m_ImageRect;
-	std::string m_name;
-	SDL_Surface *m_BitmapSurface;
+	SDL_Rect mImageRect;
+	std::string mName;
+	SmartPointer<SDL_Surface> mpBitmapSurface;
 };
 
 #endif /* CBITMAP_H_ */

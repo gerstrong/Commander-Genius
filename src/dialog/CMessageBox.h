@@ -21,14 +21,6 @@
 #include <vector>
 
 
-// Holder for some tile that have to be drawn
-struct TileHolder
-{
-	Uint16 tile;
-	Uint16 x;
-	Uint16 y;
-};
-
 class CMessageBox : public CGUIDialog
 {
 public:

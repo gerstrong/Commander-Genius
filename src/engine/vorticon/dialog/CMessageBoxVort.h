@@ -21,8 +21,6 @@ public:
 	 */
 	void addTileAt(Uint16 tile, Uint16 x, Uint16 y);
 
-private:
-	std::vector<TileHolder> m_Tiles;
 };
 
 #endif /* CMESSAGEBOXVORT_H_ */

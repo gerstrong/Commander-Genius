@@ -8,6 +8,13 @@
 #include "CGUIBitmap.h"
 #include "graphics/CGfxEngine.h"
 
+CGUIBitmap::CGUIBitmap(const SmartPointer<CBitmap>& pBitmap)
+{
+	mpBitmap = pBitmap;
+}
+
+
+
 CGUIBitmap::CGUIBitmap(const std::string &text)
 {
 
@@ -15,10 +22,12 @@ CGUIBitmap::CGUIBitmap(const std::string &text)
 
 }
 
-void CGUIBitmap::processLogic()
-{
 
-}
+
+void CGUIBitmap::processLogic()
+{}
+
+
 
 void CGUIBitmap::processRender(const CRect<float> &RectDispCoordFloat)
 {

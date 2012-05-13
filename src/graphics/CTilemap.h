@@ -23,6 +23,8 @@ public:
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 
+	int getDimension();
+
 	int EmptyBackgroundTile() { return m_EmptyBackgroundTile; }
 
 	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);

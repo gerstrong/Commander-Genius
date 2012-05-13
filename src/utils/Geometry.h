@@ -18,6 +18,14 @@
 template <typename T>
 struct CRect
 {
+	template <typename T2>
+	CRect( CRect<T2> rect )
+	{
+		x = rect.x;		y = rect.y;
+		w = rect.w;		h = rect.h;
+	}
+
+
 	CRect( const T lwidth = 0,
 		   const T lheight = 0 )
 		{ w=lwidth; h=lheight; }
@@ -61,6 +69,16 @@ struct CRect
 		Rect.w = w;
 		Rect.h = h;
 		return Rect;
+	}
+
+	void transformInverse(const CRect &scaleRect)
+	{
+		x /= scaleRect.w;
+		x -= scaleRect.x;
+		y /= scaleRect.h;
+		y -= scaleRect.y;
+		w /= scaleRect.w;
+		h /= scaleRect.h;
 	}
 
 	void transform(const CRect &scaleRect)

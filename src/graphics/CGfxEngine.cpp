@@ -116,7 +116,6 @@ void CGfxEngine::freeBitmaps(std::vector<CBitmap> &Bitmap)
 	while ( !Bitmap.empty() )
 	{
 		CBitmap &bitmap = Bitmap.back();
-		bitmap.destroySurface();
 		Bitmap.pop_back();
 	}
 }
