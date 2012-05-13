@@ -48,7 +48,7 @@ m_mustclose(false)
 	CRect<float> TextRect;
 	TextRect.x = 0.055f/mRect.w;
 	TextRect.y = 0.05f/mRect.h;
-	TextRect.w = 0.95f;
+	TextRect.w = 0.85f;
 	TextRect.h = 0.95f;
 
 	addControl( mpTextCtrl, TextRect );

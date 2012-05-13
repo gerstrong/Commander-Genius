@@ -30,19 +30,16 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	rect.w = rect.h = tileDim;
 	SmartPointer<SDL_Surface> bmpSfc = CG_CreateRGBSurface(rect);
 
+	SDL_FillRect(bmpSfc.get(), NULL, 0xFFFFFFFF);
 	tilemap.drawTile(bmpSfc.get(), 0, 0, tile);
-
-	SDL_FillRect(bmpSfc.get(), NULL, 0x0000FF00);
 
 	rect.x = x;	rect.y = y;
 
-	/*CRect<float> fRect( x, y, 16.0f, 16.0f);
+	CRect<float> fRect( x, y, 16.0f, 16.0f);
 
 	CRect<float> gameRect = g_pVideoDriver->getGameResolution();
 	fRect.transformInverse(gameRect);
-	fRect.transform(mRect);*/
-
-	CRect<float> fRect( 0.0f, 0.0f, 1.0f, 1.0f);
+	fRect.transform(mRect);
 
 	SmartPointer<CBitmap> pBitmap = new CBitmap(bmpSfc);
 

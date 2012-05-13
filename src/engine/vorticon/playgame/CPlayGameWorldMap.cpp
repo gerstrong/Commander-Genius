@@ -149,9 +149,9 @@ void CPlayGameVorticon::YourShipNeedsTheseParts()
 
 	// draw needed parts
 	if (!joy) MessageBox->addTileAt(321,5<<3, 4<<3);
-	if (!bat) MessageBox->addTileAt(322,8<<3, 4<<3);
-	if (!vac) MessageBox->addTileAt(323,11<<3,4<<3);
-	if (!wis) MessageBox->addTileAt(324,14<<3,4<<3);
+	if (!bat) MessageBox->addTileAt(322,14<<3, 4<<3);
+	if (!vac) MessageBox->addTileAt(323,23<<3,4<<3);
+	if (!wis) MessageBox->addTileAt(324,31<<3,4<<3);
 	m_MessageBoxes.push_back(MessageBox);
 }
 
