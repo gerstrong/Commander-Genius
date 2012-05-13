@@ -47,7 +47,9 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 	// Create upper stomp support
 	CBitmap &SupportBmp = g_pGfxEngine->getMaskedBitmap(2);
-	SDL_Rect SupportRect = SupportBmp.getRect();
+	SDL_Rect SupportRect;
+	SupportRect.w = SupportBmp.getSDLSurface()->w;
+	SupportRect.h = SupportBmp.getSDLSurface()->h;
 	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0;
 	temp = SDL_ConvertSurface( SupportBmp.getSDLSurface(), mpStatusSurface->format, flags );
 	BlitSurfaceMerge( temp, &SupportRect, mpStatusSurface.get(), &Dest );
@@ -63,7 +65,9 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 	// Draw the cables Bitmap
 	CBitmap &Cables_Bitmap = g_pGfxEngine->getMaskedBitmap(1);
-	SDL_Rect CableRect = Cables_Bitmap.getRect();
+	SDL_Rect CableRect;
+	CableRect.w = Cables_Bitmap.getSDLSurface()->w;
+	CableRect.h = Cables_Bitmap.getSDLSurface()->h;
 	Dest.x = BackRect.x - CableRect.w;	Dest.y = 0;
 	temp = SDL_ConvertSurface( Cables_Bitmap.getSDLSurface(), mpStatusSurface->format, flags );
 	BlitSurfaceMerge( temp, &CableRect, mpStatusSurface.get(), &Dest );

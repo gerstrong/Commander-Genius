@@ -20,7 +20,6 @@ CBitmap::CBitmap(const SmartPointer<SDL_Surface> &bmpSfc)
 }
 
 CBitmap::CBitmap(const CBitmap &bitmap) :
-mImageRect(bitmap.getRect()),
 mName(bitmap.getName())
 {
 	SDL_Surface *sfc = bitmap.getSDLSurface();
@@ -31,9 +30,9 @@ mName(bitmap.getName())
 ///
 // Creation Routines
 ///
-bool CBitmap::createSurface(Uint32 flags, SDL_Color *Palette)
+bool CBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
 {
-	mpBitmapSurface = SDL_CreateRGBSurface(flags, mImageRect.w, mImageRect.h, 8, 0, 0, 0, 0);
+	mpBitmapSurface = SDL_CreateRGBSurface(flags, rect.w, rect.h, 8, 0, 0, 0, 0);
 	SDL_SetColors(mpBitmapSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey(mpBitmapSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
 	return (!mpBitmapSurface.empty());
@@ -77,12 +76,6 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 ///
 
 
-void CBitmap::setDimensions(const Uint16 w, const Uint16 h)
-{
-	mImageRect.w = w;
-	mImageRect.h = h;
-}
-
 void CBitmap::setName(const std::string &name)
 {
 	mName = name;
@@ -105,9 +98,6 @@ void CBitmap::_draw(SDL_Surface *dst, Uint16 x, Uint16 y)
 {
 	SDL_Rect dst_rect;
 	dst_rect.x = x;	dst_rect.y = y;
-	dst_rect.w = mImageRect.w;
-	dst_rect.h = mImageRect.h;
 	
-	if( dst_rect.w>0 && dst_rect.h>0 )
-		SDL_BlitSurface(mpBitmapSurface.get(), NULL, dst, &dst_rect);
+	SDL_BlitSurface(mpBitmapSurface.get(), NULL, dst, &dst_rect);
 }

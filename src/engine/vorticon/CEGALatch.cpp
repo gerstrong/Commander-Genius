@@ -45,7 +45,8 @@ RawData(NULL)
 
 bool CEGALatch::loadHead( char *data, short m_episode )
 {
-	Uint16 height, width;
+	SDL_Rect bmpRect;
+	bmpRect.x = bmpRect.y = 0;
 
 	data += m_bitmaptablelocation;
 
@@ -55,10 +56,10 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		std::string name;
 		//char name[9];
 		CBitmap &Bitmap = g_pGfxEngine->getBitmap(i);
-		memcpy(&width,data+16*i,2);
-		memcpy(&height,data+16*i+2,2);
+		memcpy(&bmpRect.w,data+16*i,2);
+		memcpy(&bmpRect.h,data+16*i+2,2);
 		name = static_cast<const char*>(data+16*i+8);
-		width *= 8; // The width is always divided by eight when read
+		bmpRect.w *= 8; // The width is always divided by eight while read, so we need to extend it back to res coords
 
 		name = name.substr(0,8); // Cut the rest of data down, if junk detected in the exe file
 		TrimSpaces(name);
@@ -86,7 +87,9 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 				Bitmap.setName( default_names[i] );
 			}
 		}
-		Bitmap.setDimensions(width,height);
+		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags,
+							bmpRect,
+							g_pGfxEngine->Palette.m_Palette);
 	}
 	return true;
 }
@@ -211,13 +214,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// decode bitmaps into the BitmapData structure. The bitmaps are
 	// loaded into one continuous stream of image data, with the bitmaps[]
 	// array giving pointers to where each bitmap starts within the stream.
-
-	// In case there is a strange mod or defect episode, put some names to them!
-	for(int b=0 ; b<m_bitmaps ; b++)
-	{
-	    CBitmap &bitmap = g_pGfxEngine->getBitmap(b);
-		bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, g_pGfxEngine->Palette.m_Palette);
-	}
 
 	for(int p=0 ; p<4 ; p++)
 	{

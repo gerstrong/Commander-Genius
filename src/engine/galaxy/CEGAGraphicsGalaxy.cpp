@@ -622,11 +622,15 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
 	g_pGfxEngine->createEmptyBitmaps(EpisodeInfo[ep].NumBitmaps);
 
+	SDL_Rect bmpRect;
+	bmpRect.x = bmpRect.y = 0;
+
 	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
 	{
 		CBitmap &Bitmap = g_pGfxEngine->getBitmap(i);
-		Bitmap.setDimensions(BmpHead[i].Width*8, BmpHead[i].Height);
-		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, Palette);
+		bmpRect.w = BmpHead[i].Width*8;
+		bmpRect.h = BmpHead[i].Height;
+		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, bmpRect, Palette);
 
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexBitmaps + i).data,
@@ -649,11 +653,17 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 
 	g_pGfxEngine->createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
 
+
+	SDL_Rect bmpRect;
+	bmpRect.x = bmpRect.y = 0;
+
 	for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
 	{
 		CBitmap &Bitmap = g_pGfxEngine->getMaskedBitmap(i);
-		Bitmap.setDimensions(BmpMaskedHead[i].Width*8, BmpMaskedHead[i].Height);
-		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, Palette);
+		bmpRect.w = BmpMaskedHead[i].Width*8;
+		bmpRect.h = BmpMaskedHead[i].Height;
+
+		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, bmpRect, Palette);
 
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
