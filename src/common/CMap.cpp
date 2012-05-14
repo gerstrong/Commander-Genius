@@ -330,6 +330,9 @@ bool CMap::scrollDown(const bool force)
 	return true;
 }
 
+
+
+
 bool CMap::scrollUp(const bool force)
 {
 	if( !force && findScrollHorizontalScrollBlocker(m_scrolly<<STC) )
@@ -358,6 +361,9 @@ bool CMap::scrollUp(const bool force)
 	}
 	return true;
 }
+
+
+
 
 //////////////////////
 // Drawing Routines //
@@ -399,13 +405,16 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 
 // draws all the map area. This is used for the title screen, when game starts and other passive scenes.
 // Don't use it, when the game is scrolling.
-// for the correct and fast update of tiles use redrawAt instead.
+// For an faster update of tiles use redrawAt instead.
 void CMap::drawAll()
 {
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
 	Uint32 num_h_tiles = ScrollSurface->h/16;
 	Uint32 num_v_tiles = ScrollSurface->w/16;
+
+	g_pVideoDriver->mp_VideoEngine->UpdateScrollBufX(m_scrollx);
+	g_pVideoDriver->mp_VideoEngine->UpdateScrollBufY(m_scrolly);
 
 	if(num_v_tiles+m_mapx >= m_width)
 		num_v_tiles = m_width-m_mapx;
@@ -571,6 +580,8 @@ void CMap::animateAllTiles()
 	if(g_pVideoDriver->getRefreshSignal())
 	{
 		drawAll();
+
+		g_pVideoDriver->blitScrollSurface();
 		g_pVideoDriver->setRefreshSignal(false);
 	}
 

@@ -260,7 +260,6 @@ bool CVideoDriver::start()
 
 	// Now SDL will tell if the bpp works or changes it, if not supported.
 	// this value is updated here!
-	// m_VidConfig.m_Resolution.depth = mp_VideoEngine->getScreenSurface()->format->BitsPerPixel;
 	retval &= mp_VideoEngine->createSurfaces();
 	m_mustrefresh = true;
 
@@ -269,7 +268,7 @@ bool CVideoDriver::start()
 
 
 void CVideoDriver::setFilter(short value)
-{ m_VidConfig.m_ScaleXFilter = value; } // 1 means no filter of course
+{ m_VidConfig.m_ScaleXFilter = value; } // 1 means no filter
 
 
 void CVideoDriver::setZoom(short value)
