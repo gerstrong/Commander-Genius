@@ -13,6 +13,7 @@
 #include "gui/CGUIButton.h"
 #include "gui/CGUISwitch.h"
 #include "engine/CEvent.h"
+#include "CSelectionMenu.h"
 #include <vector>
 #include <map>
 
@@ -73,13 +74,14 @@ private:
 
 // Create the Control-Menu for the indicated Player
 
-struct OpenControlMenuEvent : CEvent
-{
-	OpenControlMenuEvent(const int option) :
-		mNumPlayers(option) {};
 
-	int mNumPlayers;
+
+struct OpenControlMenuEvent : SelectionEvent
+{
+	OpenControlMenuEvent(const int players) :
+		SelectionEvent(players) {};
 };
+
 
 struct OpenButtonsControlMenuEvent : OpenControlMenuEvent
 {
@@ -93,29 +95,6 @@ struct OpenMovementControlMenuEvent : OpenControlMenuEvent
 		OpenControlMenuEvent(option) {};
 
 };
-
-
-class CPlayerControl : public CBaseMenu
-{
-
-public:
-	CPlayerControl() :
-		CBaseMenu( CRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
-	{
-
-		for( int i = 1 ; i <= MAX_PLAYERS ; i++ )
-		{
-			const std::string	playerStr = "Player " + itoa(i);
-			mpButtonList.push_back( new CGUIButton( playerStr,
-													new OpenControlMenuEvent(i) ) );
-			mpMenuDialog->addControl( mpButtonList.back() );
-		}
-
-	}
-
-	std::list<CGUIButton*> mpButtonList;
-};
-
 
 
 #endif /* CCONTROLSETTINGS_H_ */

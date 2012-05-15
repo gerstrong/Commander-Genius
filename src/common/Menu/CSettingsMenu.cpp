@@ -11,6 +11,7 @@
 #include "COptions.h"
 #include "CControlsettings.h"
 #include "CProfilesMenu.h"
+#include "CSelectionMenu.h"
 #include "sdl/CTimer.h"
 #include "sdl/CVideoDriver.h"
 #include "gui/CGUIButton.h"
@@ -33,7 +34,7 @@ CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 									new OpenMenuEvent( new COptions() ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Controls",
-									new OpenMenuEvent( new CPlayerControl() ) ) );
+									new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Profile",
 									new OpenMenuEvent( new CProfilesMenu() ) ) );

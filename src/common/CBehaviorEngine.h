@@ -43,6 +43,15 @@ enum EngineType
 	ENGINE_GALAXY
 };
 
+
+enum Difficulty
+{
+	EASY,
+	NORMAL,
+	HARD
+};
+
+
 typedef struct{
 	Uint8 objectnumber1; // Andy (Adurdin) calls that sprite, not all his numbers seem to be right
 	Uint8 objectnumber2; // Alternate number
@@ -52,7 +61,9 @@ typedef struct{
 class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 {
 public:
-	CBehaviorEngine() : mPausedGamePlay(false) {}
+	CBehaviorEngine() : 	mPlayers(0),
+							mDifficulty(EASY),
+							mPausedGamePlay(false) {}
 
 	void addMessage(const std::string &name,
 					const std::string &message);
@@ -87,6 +98,10 @@ public:
 	CExeFile m_ExeFile;
 	bool m_is_a_mod;
 	stOption m_option[NUM_OPTIONS];
+
+	unsigned int mPlayers;
+	Difficulty mDifficulty;
+
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];

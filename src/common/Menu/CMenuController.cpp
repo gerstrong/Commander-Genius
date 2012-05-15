@@ -76,7 +76,7 @@ void CMenuController::process()
 		// Control Menu Events
 		if( OpenMovementControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenMovementControlMenuEvent>() )
 		{
-			const int players = ctrlMenu->mNumPlayers;
+			const int players = ctrlMenu->mSelection;
 			EventContainer.pop_Event();
 			EventContainer.add( new OpenMenuEvent(
 									new CControlSettingsMovement(players) ) );
@@ -84,7 +84,7 @@ void CMenuController::process()
 
 		if( OpenButtonsControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenButtonsControlMenuEvent>() )
 		{
-			const int players = ctrlMenu->mNumPlayers;
+			const int players = ctrlMenu->mSelection;
 			EventContainer.pop_Event();
 			EventContainer.add( new OpenMenuEvent(
 									new CControlSettingsButtons(players) ) );
@@ -92,7 +92,7 @@ void CMenuController::process()
 
 		if( OpenControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenControlMenuEvent>() )
 		{
-			const int players = ctrlMenu->mNumPlayers;
+			const int players = ctrlMenu->mSelection;
 			EventContainer.pop_Event();
 			EventContainer.add( new OpenMenuEvent(
 									new CControlsettings(players) ) );

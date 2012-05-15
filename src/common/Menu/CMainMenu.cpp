@@ -8,6 +8,7 @@
 #include "CMainMenu.h"
 #include "common/Menu/CMenuController.h"
 #include "common/Menu/CSettingsMenu.h"
+#include "common/Menu/CSelectionMenu.h"
 #include "common/Menu/CLoadMenu.h"
 #include "common/Menu/CSaveMenu.h"
 #include "common/Menu/CHelpMenu.h"
@@ -21,7 +22,8 @@ CMainMenu::CMainMenu( const bool openedGamePlay ) :
 CBaseMenu( CRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
 
-	CGUIButton *button = new CGUIButton( "New Game", new StartGameplayEvent() );
+	CGUIButton *button = new CGUIButton( "New Game",
+									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>() ) );
 	mpMenuDialog->addControl( button );
 
 

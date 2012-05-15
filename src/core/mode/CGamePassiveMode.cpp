@@ -12,6 +12,8 @@
 #include "engine/infoscenes/CHighScores.h"
 #include "common/Menu/CMenuController.h"
 #include "core/CGameLauncherMenu.h"
+#include "common/Menu/CSelectionMenu.h"
+
 
 
 CGamePassiveMode::CGamePassiveMode() :
@@ -66,12 +68,24 @@ void CGamePassiveMode::process()
 
 	if(!EventContainer.empty())
 	{
-		if( StartGameplayEvent* pLauncher = EventContainer.occurredEvent<StartGameplayEvent>() )
+
+		if( NewGamePlayersEvent* pLauncher = EventContainer.occurredEvent<NewGamePlayersEvent>() )
 		{
 			EventContainer.pop_Event();
+			g_pBehaviorEngine->mPlayers = pLauncher->mSelection;
+			EventContainer.add( new OpenMenuEvent(new CDifficultySelection) );
+			return;
+		}
+
+		if( StartNewGameEvent* pStart = EventContainer.occurredEvent<StartNewGameEvent>() )
+		{
+
+			EventContainer.pop_Event();
+			g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
 			switchToGamePlayMode();
 			return;
 		}
+
 
 		if( EventContainer.occurredEvent<LoadGameEvent>() )
 		{
