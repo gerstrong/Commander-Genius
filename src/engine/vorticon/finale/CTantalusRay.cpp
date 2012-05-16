@@ -27,8 +27,8 @@ const int EARTHCHUNK_BIG_DN = 66;
 const int EARTHCHUNK_SMALL_UP = 68;
 const int EARTHCHUNK_SMALL_DN = 70;
 
-CTantalusRay::CTantalusRay(CMap &Map, std::vector<CObject*> &vect_obj, CObjectAI &objectai) :
-CFinale(Map, vect_obj),
+CTantalusRay::CTantalusRay(const SmartPointer<CMap> &pMap, std::vector<CObject*> &vect_obj, CObjectAI &objectai) :
+CFinale(pMap, vect_obj),
 m_mustsetup(true),
 m_alternate_sprite(0),
 mp_MessageBox(new CMessageBoxVort("Uh-Oh")),
@@ -62,8 +62,8 @@ void CTantalusRay::shootray()
 {
 	if(m_mustsetup)
 	{
-		CMapLoader Maploader(mMap);
-		Maploader.load(2,81, mMap->m_gamepath, false);
+		CMapLoader Maploader(mpMap);
+		Maploader.load(2,81, mpMap->m_gamepath, false);
 
 		while(!m_Object.empty())
 		{
@@ -71,9 +71,9 @@ void CTantalusRay::shootray()
 			m_Object.pop_back();
 		}
 
-		mMap->drawAll();
+		mpMap->drawAll();
 
-		CObject* ShootObject = new CRay(mMap.get(), 4<<CSF, 4<<CSF, RIGHT, OBJ_NONE, 0);
+		CObject* ShootObject = new CRay(mpMap.get(), 4<<CSF, 4<<CSF, RIGHT, OBJ_NONE, 0);
 		ShootObject->solid = false;
 		ShootObject->exists = ShootObject->onscreen = true;
 		m_Object.push_back(ShootObject);
@@ -91,7 +91,7 @@ void CTantalusRay::shootray()
 		int x = (shot_x>>STC)-160;
 		int y = (shot_y>>STC)-100;
 		if( x>0 && y>0 )
-			mMap->gotoPos( x, y);
+			mpMap->gotoPos( x, y);
 
 		mp_ShootObject->sprite = TANTALUS_SPRITE + m_alternate_sprite;
 		m_alternate_sprite ^= 1;
@@ -113,7 +113,7 @@ void CTantalusRay::explodeEarth()
 		if (m_step<16)
 		{
 			CEarthExplosion *EarthExplosion;
-			EarthExplosion = new CEarthExplosion(mMap.get(),shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC));
+			EarthExplosion = new CEarthExplosion(mpMap.get(),shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC));
 			EarthExplosion->solid = false;
 			m_Object.push_back(EarthExplosion);
 		}
@@ -125,7 +125,7 @@ void CTantalusRay::explodeEarth()
 		case 5:
 			for(int i=0;i<=9;i++)
 			{
-				chunk = new CEarthChunk(mMap.get(),shot_x+(14<<STC), shot_y);
+				chunk = new CEarthChunk(mpMap.get(),shot_x+(14<<STC), shot_y);
 				chunk->m_Direction = EC_UPLEFTLEFT;
 
 				if (i > 4)
@@ -135,36 +135,36 @@ void CTantalusRay::explodeEarth()
 
 			break;
 		case 6:
-			chunk = new CEarthChunk(mMap.get(),shot_x+(16<<STC), shot_y+(16<<STC));
+			chunk = new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(16<<STC));
 			m_Object.push_back(chunk);
 			break;
 		case 7:
-			chunk = new CEarthChunk(mMap.get(),shot_x+(24<<STC), shot_y-(8<<STC));
+			chunk = new CEarthChunk(mpMap.get(),shot_x+(24<<STC), shot_y-(8<<STC));
 			m_Object.push_back(chunk);
 		case 8:
-			chunk = new CEarthChunk(mMap.get(),shot_x+(16<<STC), shot_y+(4<<STC));
+			chunk = new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(4<<STC));
 			m_Object.push_back(chunk);
 		case 10:
 			// spawn four big fragments of the earth to go flying off
-			chunk = new CEarthChunk(mMap.get(),shot_x+(8<<STC), shot_y);
+			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
 			chunk->m_Direction = EC_UPLEFT;
 			chunk->sprite = EARTHCHUNK_BIG_UP;
 			chunk->solid = false;
 			m_Object.push_back(chunk);
 
-			chunk = new CEarthChunk(mMap.get(),shot_x+(8<<STC), shot_y);
+			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
 			chunk->m_Direction = EC_UPRIGHT;
 			chunk->sprite = EARTHCHUNK_BIG_UP;
 			chunk->solid = false;
 			m_Object.push_back(chunk);
 
-			chunk = new CEarthChunk(mMap.get(),shot_x+(8<<STC), shot_y);
+			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
 			chunk->m_Direction = EC_DOWNRIGHT;
 			chunk->sprite = EARTHCHUNK_BIG_DN;
 			chunk->solid = false;
 			m_Object.push_back(chunk);
 
-			chunk = new CEarthChunk(mMap.get(),shot_x+(8<<STC), shot_y);
+			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
 			chunk->m_Direction = EC_DOWNLEFT;
 			chunk->sprite = EARTHCHUNK_BIG_DN;
 			chunk->solid = false;
@@ -173,7 +173,7 @@ void CTantalusRay::explodeEarth()
 			// Hide the Earth!!!
 			for(int ex = 0; ex<3 ; ex++)
 				for(int ey = 0; ey<3 ; ey++)
-					mMap->changeTile((shot_x>>CSF)+ex, (shot_y>>CSF)+ey, 561);
+					mpMap->changeTile((shot_x>>CSF)+ex, (shot_y>>CSF)+ey, 561);
 			break;
 		case 32:
 			while(!m_Object.empty())

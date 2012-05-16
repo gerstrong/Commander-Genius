@@ -13,13 +13,13 @@
 #include "CShipFlySys.h"
 #include "../ai/CYorp.h"
 
-CShipFlySys::CShipFlySys(CPlayer &Player, CMap *p_Map, int ship_rightsprite, int ship_leftsprite) :
-m_player(Player) // in this case the player will be the ship flying home
+CShipFlySys::CShipFlySys(CPlayer &Player, SmartPointer<CMap> &pMap, int ship_rightsprite, int ship_leftsprite) :
+m_player(Player), // in this case the player will be the ship flying home
+mpMap(pMap)
 {
 	m_playsprite_right = ship_rightsprite;
 	m_playsprite_left = ship_leftsprite;
 
-	mp_Map = p_Map;
 	m_finished = false;
 	m_scrollingon = true;
 	m_ShipQueuePtr = 0;
@@ -28,7 +28,7 @@ m_player(Player) // in this case the player will be the ship flying home
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
 	// before it was yorp
-	CObject *mark = new CObject(mp_Map, 0,0, OBJ_YORP);
+	CObject *mark = new CObject(mpMap.get(), 0,0, OBJ_YORP);
 	mark->m_type = OBJ_YORP;                // doesn't matter
 	mark->solid = false;                // doesn't matter
 	mark->sprite = SPR_QUESTION;

@@ -11,33 +11,26 @@
 #include "FindFile.h"
 #include <fstream>
 
-CFinale::CFinale(CMap &map, std::vector<CObject*> &Object) :
+CFinale::CFinale(const SmartPointer<CMap> &pMap, std::vector<CObject*> &Object) :
 m_mustfinishgame(false),
-mp_TextViewer(NULL),
+mpMap(pMap),
 m_Object(Object)
-{
-	//mMap =  new CMap(map);
-}
+{}
 
 void CFinale::showEndingText()
 {
-	if(!mp_TextViewer)
+	if(mpTextViewer.empty())
 	{
 		std::string text;
-		mp_TextViewer = new CTextViewer(0, 0, 320, 120);
-		mp_TextViewer->loadTextfromFile(mMap->m_gamepath + "endtext.ck" + itoa(m_Episode));
+		mpTextViewer = new CTextViewer(0, 0, 320, 120);
+		mpTextViewer->loadTextfromFile(mpMap->m_gamepath + "endtext.ck" + itoa(m_Episode));
 	}
 
-	mp_TextViewer->process();
+	mpTextViewer->process();
 
-	if(mp_TextViewer->hasClosed())
+	if(mpTextViewer->hasClosed())
 	{
-		delete mp_TextViewer;
-		mp_TextViewer = NULL;
+		mpTextViewer = NULL;
 		m_step++;
 	}
-}
-
-CFinale::~CFinale() {
-	if(mp_TextViewer)	delete mp_TextViewer;
 }

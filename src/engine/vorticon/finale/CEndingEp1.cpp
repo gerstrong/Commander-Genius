@@ -14,9 +14,9 @@
 #include "common/CMapLoader.h"
 #include "common/Playerdefines.h"
 
-CEndingEp1::CEndingEp1(CMap &map, std::vector<CPlayer> &Player,
+CEndingEp1::CEndingEp1(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player,
 					   bool &hideobjects, std::vector<CObject*> &Object) :
-	CFinale(map, Object),
+	CFinale(pMap, Object),
 	m_Player(Player),
 	m_hideobjects(hideobjects)
 {
@@ -26,7 +26,7 @@ CEndingEp1::CEndingEp1(CMap &map, std::vector<CPlayer> &Player,
 	m_timepassed = 0;
 	m_mustsetup = true;
 	m_mustfinishgame = false;
-	mp_Textbox = NULL;
+	mpTextbox = NULL;
 }
 
 void CEndingEp1::process()
@@ -51,7 +51,7 @@ void CEndingEp1::ReturnsToShip()
 	if(m_mustsetup)
 	{
 		//Initialization
-		mMap->gotoPos( 40, 540 );
+		mpMap->gotoPos( 40, 540 );
 
   	    // draw keen next to his ship
 		m_Player[0].hideplayer = false;
@@ -60,7 +60,7 @@ void CEndingEp1::ReturnsToShip()
 		m_Player[0].sprite = PMAPLEFTFRAME;
 		m_Player[0].processEvents();
 
-		mp_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_ESEQ_PART1"), true);
+		mpTextbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_ESEQ_PART1"), true);
 
 		m_mustsetup = false;
 	}
@@ -75,15 +75,14 @@ void CEndingEp1::ReturnsToShip()
 	if( m_timepassed<50000 && !g_pInput->getPressedAnyCommand() )
 	{
 		// perform a machine typing like dialog.
-		mp_Textbox->processLogic();
+		mpTextbox->processLogic();
 	}
 	else
 	{
 		// Shutdown code here!
 		m_step++;
 		m_mustsetup = true;
-		delete mp_Textbox;
-		mp_Textbox = NULL;
+		mpTextbox = NULL;
 	}
 }
 
@@ -92,56 +91,55 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	if(m_mustsetup)
 	{
 		//Initialization
-		std::string path = mMap->m_gamepath;
-		CMapLoader MapLoader(mMap, &m_Player);
+		std::string path = mpMap->m_gamepath;
+		CMapLoader MapLoader(mpMap, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(VectorD2<int>(6<<CSF, 5<<CSF));
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], mMap.get(), SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
+		mpShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
 
-		mMap->gotoPos(0,0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 60, DUP);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 12, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 673, DDOWNRIGHT);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 25, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 120, DDOWN);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 18, 0);
-		mp_ShipFlySys->addShipQueue(CMD_SPAWNSPR, 0, SPR_QUESTION);
-		mp_ShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 88, 0);
-		mp_ShipFlySys->addShipQueue(CMD_REMOVESPR, 0, 0);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 12, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 175, DLEFT);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 38, 0);
-		mp_ShipFlySys->addShipQueue(CMD_SPAWNSPR, 0, SPR_EXCLAMATION);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 125, 0);
-		mp_ShipFlySys->addShipQueue(CMD_REMOVESPR, 0, 0);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 12, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 175, DRIGHT);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 6, 0);
-		mp_ShipFlySys->addShipQueue(CMD_ENABLESCROLLING, 0, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 116, DDOWN);
-		mp_ShipFlySys->addShipQueue(CMD_FADEOUT, 0, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 25, DDOWN);
-		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
-		mMap->drawAll();
-		mp_ShipFlySys->m_ShipQueuePtr = 0;
+		mpMap->gotoPos(0,0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 60, DUP);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 12, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 673, DDOWNRIGHT);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 25, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 120, DDOWN);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 18, 0);
+		mpShipFlySys->addShipQueue(CMD_SPAWNSPR, 0, SPR_QUESTION);
+		mpShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 88, 0);
+		mpShipFlySys->addShipQueue(CMD_REMOVESPR, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 12, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 175, DLEFT);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 38, 0);
+		mpShipFlySys->addShipQueue(CMD_SPAWNSPR, 0, SPR_EXCLAMATION);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 125, 0);
+		mpShipFlySys->addShipQueue(CMD_REMOVESPR, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 12, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 175, DRIGHT);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 6, 0);
+		mpShipFlySys->addShipQueue(CMD_ENABLESCROLLING, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 116, DDOWN);
+		mpShipFlySys->addShipQueue(CMD_FADEOUT, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 25, DDOWN);
+		mpShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
+		mpMap->drawAll();
+		mpShipFlySys->m_ShipQueuePtr = 0;
 
 		m_mustsetup = false;
 	}
 
-	if( !mp_ShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
+	if( !mpShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
 	{
 		// process the normal ship flying level and do all the inited commands
-		mp_ShipFlySys->process();
+		mpShipFlySys->process();
 	}
 	else
 	{
 		// Shutdown code here!
-		delete mp_ShipFlySys;
-		mp_ShipFlySys = NULL;
+		mpShipFlySys = NULL;
 		m_step++;
 		m_mustsetup = true;
 	}
@@ -153,38 +151,37 @@ void CEndingEp1::BackAtHome()
 	{
 		//Initialization
 		m_hideobjects = true;
-		mMap->gotoPos(0,0);
-		mMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
-		mMap->m_animation_enabled = false; // Needed, because the other map is still loaded
+		mpMap->gotoPos(0,0);
+		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
+		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
-		mp_FinaleStaticScene = new CFinaleStaticScene(mMap->m_gamepath, "finale.ck1");
+		mpFinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck1");
 
-		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE1", 6000);
-		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE2", 6000);
-		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE3", 6000);
-		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE4", 5000);
-		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE5", 5000);
-		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE6", 6000);
-		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE7", 6000);
-		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE8", 8000);
+		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE1", 6000);
+		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE2", 6000);
+		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE3", 6000);
+		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE4", 5000);
+		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE5", 5000);
+		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE6", 6000);
+		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE7", 6000);
+		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE8", 8000);
 
 		// The Bitmaps of the Window Lights on should drawn at Page 4
-		mp_FinaleStaticScene->showBitmapAt("WINDON", 2, 6, 80, 0);
-		mp_FinaleStaticScene->showBitmapAt("WINDOFF", 6, 8, 80, 0);
+		mpFinaleStaticScene->showBitmapAt("WINDON", 2, 6, 80, 0);
+		mpFinaleStaticScene->showBitmapAt("WINDOFF", 6, 8, 80, 0);
 
 		m_mustsetup = false;
 	}
 
-	if( !mp_FinaleStaticScene->mustclose() )
+	if( !mpFinaleStaticScene->mustclose() )
 	{
-		mp_FinaleStaticScene->process();
+		mpFinaleStaticScene->process();
 	}
 	else
 	{
 		// Shutdown code here!
-		delete mp_FinaleStaticScene;
-		mp_FinaleStaticScene = NULL;
-		mMap->m_animation_enabled = true;
+		mpFinaleStaticScene = NULL;
+		mpMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}
@@ -196,8 +193,8 @@ void CEndingEp1::ShipFlyEarthToMShip()
 	{	//Initialization
 		int x, y;
 		m_hideobjects = false;
-		std::string path = mMap->m_gamepath;
-		CMapLoader MapLoader(mMap, &m_Player);
+		std::string path = mpMap->m_gamepath;
+		CMapLoader MapLoader(mpMap, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
@@ -205,34 +202,33 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		y = 23<<CSF;
 		m_Player[0].moveTo(VectorD2<int>(x,y));
 
-		mMap->gotoPos((x>>STC)-100, (y>>STC)-160);
+		mpMap->gotoPos((x>>STC)-100, (y>>STC)-160);
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], mMap.get(), SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
+		mpShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
 
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 58, DUP);
-		mp_ShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 13, DUPLEFT);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 208, DLEFT);
-		mp_ShipFlySys->addShipQueue(CMD_FADEOUT, 0, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 25, DDOWN);
-		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 58, DUP);
+		mpShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 13, DUPLEFT);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 208, DLEFT);
+		mpShipFlySys->addShipQueue(CMD_FADEOUT, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 25, DDOWN);
+		mpShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
 
-		mMap->drawAll();
-		mp_ShipFlySys->m_ShipQueuePtr = 0;
+		mpMap->drawAll();
+		mpShipFlySys->m_ShipQueuePtr = 0;
 
 		m_mustsetup = false;
 	}
 
-	if( !mp_ShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
+	if( !mpShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
 	{
 		// process the normal ship flying level and do all the inited commands
-		mp_ShipFlySys->process();
+		mpShipFlySys->process();
 	}
 	else
 	{
 		// Shutdown code here!
-		delete mp_ShipFlySys;
-		mp_ShipFlySys = NULL;
+		mpShipFlySys = NULL;
 		m_step++;
 		m_mustsetup = true;
 	}

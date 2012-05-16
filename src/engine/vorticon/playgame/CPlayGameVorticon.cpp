@@ -436,15 +436,15 @@ void CPlayGameVorticon::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mp_Finale = new CEndingEp1(*mMap.get(), m_Player, m_hideobjects, m_Object);
+		mp_Finale = new CEndingEp1(mMap, m_Player, m_hideobjects, m_Object);
 	}
 	else if(m_Episode == 2)
 	{
-		mp_Finale = new CEndingEp2(*mMap.get(), m_Player, m_Object);
+		mp_Finale = new CEndingEp2(mMap, m_Player, m_Object);
 	}
 	else if(m_Episode == 3)
 	{
-		mp_Finale = new CEndingEp3(*mMap.get(), m_Player, m_Object);
+		mp_Finale = new CEndingEp3(mMap, m_Player, m_Object);
 	}
 }
 

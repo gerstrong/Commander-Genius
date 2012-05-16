@@ -52,6 +52,31 @@ const std::string& CGUIComboSelection::getSelection()
 	return *mOLCurrent;
 }
 
+
+void CGUIComboSelection::cycleOption()
+{
+	// Cycle through the Optionslist
+	mOLCurrent++;
+	if( mOLCurrent == mOptionsList.end() )
+		mOLCurrent =  mOptionsList.begin();
+
+	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		setupButtonSurface(*mOLCurrent);
+	}
+}
+
+
+
+void CGUIComboSelection::sendEvent(const InputCommands command)
+{
+	if(command == IC_STATUS || command == IC_JUMP)
+	{
+		cycleOption();
+	}
+}
+
+
 void CGUIComboSelection::setSelection( const std::string& selectionText )
 {
 
@@ -70,10 +95,7 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
 			return;
 		}
 
-		// Cycle through the Optionslist and find the entry
-		mOLCurrent++;
-		if( mOLCurrent == mOptionsList.end() )
-			mOLCurrent =  mOptionsList.begin();
+		cycleOption();
 
 	} while( ptr != mOLCurrent );
 
@@ -101,8 +123,6 @@ void CGUIComboSelection::setList(const char **strArray, const int numElem)
 	mOLCurrent = mOptionsList.begin();
 
 }
-
-
 
 
 
@@ -134,15 +154,7 @@ void CGUIComboSelection::processLogic()
 				mHovered = true;
 				mButtonDown = false;
 
-				// Cycle through the Optionslist
-				mOLCurrent++;
-				if( mOLCurrent == mOptionsList.end() )
-					mOLCurrent =  mOptionsList.begin();
-
-				if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-				{
-					setupButtonSurface(*mOLCurrent);
-				}
+				cycleOption();
 
 				g_pInput->m_EventList.pop_Event();
 			}

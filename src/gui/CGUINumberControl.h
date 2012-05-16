@@ -28,6 +28,8 @@ public:
 	void increment();
 	void decrement();
 
+	void sendEvent(const InputCommands command);
+
 	const int getSelection();
 	void setSelection( const int value );
 

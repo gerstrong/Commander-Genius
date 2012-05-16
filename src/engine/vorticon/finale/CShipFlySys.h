@@ -9,6 +9,7 @@
 #define CSHIPFLYSYS_H_
 
 #include "common/CPlayer.h"
+#include "SmartPointer.h"
 
 #define CMD_MOVE                0
 #define CMD_WAIT                1
@@ -54,7 +55,7 @@ typedef struct stShipQueue
 
 class CShipFlySys {
 public:
-	CShipFlySys(CPlayer &Player, CMap *p_Map, int ship_rightsprite, int ship_leftsprite);
+	CShipFlySys(CPlayer &Player, SmartPointer<CMap> &pMap, int ship_rightsprite, int ship_leftsprite);
 	void addShipQueue(int cmd, int time, int flag1);
 	bool EndOfQueue() { return m_finished; }
 	void process();
@@ -68,7 +69,7 @@ private:
 	bool m_scrollingon;
 	CPlayer &m_player;
 	CObject *mp_mark;
-	CMap *mp_Map;
+	SmartPointer<CMap> mpMap;
 	int m_playsprite_left;
 	int m_playsprite_right;
 };

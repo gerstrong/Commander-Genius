@@ -14,8 +14,8 @@
 #include "common/CMapLoader.h"
 #include "common/Playerdefines.h"
 
-CEndingEp3::CEndingEp3(CMap &map, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
-CFinale(map, Object),
+CEndingEp3::CEndingEp3(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
+CFinale(pMap, Object),
 m_Player(Player)
 {
 	m_Episode = 3;
@@ -47,27 +47,27 @@ void CEndingEp3::HonorScene()
 	if(m_mustsetup)
 	{
 		//Initialization
-		std::string path = mMap->m_gamepath;
-		CMapLoader MapLoader(mMap, &m_Player);
+		std::string path = mpMap->m_gamepath;
+		CMapLoader MapLoader(mpMap, &m_Player);
 		MapLoader.load(3, 81, path);
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(VectorD2<int>(244<<STC, 104<<STC));
 		m_Player[0].sprite = 0;
 
-		mMap->gotoPos(32, 32);
-		mMap->drawAll();
+		mpMap->gotoPos(32, 32);
+		mpMap->drawAll();
 
 		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE1"), true));
 		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE2"), true));
 		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE3"), true));
 		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE4"), true));
 
-		int newtile = mMap->at(2,12);
+		int newtile = mpMap->at(2,12);
 		for(int x=0 ; x<22 ; x++) // This changes to the Oh No! Tiles to normal Stone-Tiles
 		{
-			mMap->changeTile( x, 15, newtile);
-			mMap->changeTile( x, 16, newtile);
+			mpMap->changeTile( x, 15, newtile);
+			mpMap->changeTile( x, 16, newtile);
 		}
 
 		m_mustsetup = false;
@@ -123,11 +123,11 @@ void CEndingEp3::AwardScene()
 	{
 		//Initialization
 		m_Player[0].hideplayer = true;
-		mMap->gotoPos(0,0);
-		mMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
-		mMap->m_animation_enabled = false; // Needed, because the other map is still loaded
-		mMap->drawAll();
-		mp_FinaleStaticScene = new CFinaleStaticScene(mMap->m_gamepath, "finale.ck3");
+		mpMap->gotoPos(0,0);
+		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
+		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
+		mpMap->drawAll();
+		mp_FinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck3");
 
 		mp_FinaleStaticScene->push_string("THE_END", 6000);
 
@@ -143,7 +143,7 @@ void CEndingEp3::AwardScene()
 		// Shutdown code here!
 		delete mp_FinaleStaticScene;
 		mp_FinaleStaticScene = NULL;
-		mMap->m_animation_enabled = true;
+		mpMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}

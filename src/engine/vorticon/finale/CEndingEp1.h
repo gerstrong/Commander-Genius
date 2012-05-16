@@ -12,12 +12,13 @@
 #include "common/CMap.h"
 #include "common/CPlayer.h"
 #include "engine/vorticon/dialog/CMessageBoxVort.h"
+#include "SmartPointer.h"
 #include <vector>
 #include <SDL.h>
 
 class CEndingEp1 : public CFinale {
 public:
-	CEndingEp1(CMap &map, std::vector<CPlayer> &Player, bool &hideobjects, std::vector<CObject*> &Object);
+	CEndingEp1(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, bool &hideobjects, std::vector<CObject*> &Object);
 	void process();
 
 	void ReturnsToShip();
@@ -31,9 +32,9 @@ private:
 	Uint32 m_timepassed;
 
 	std::vector<CPlayer> &m_Player;
-	CShipFlySys *mp_ShipFlySys;
-	CFinaleStaticScene *mp_FinaleStaticScene;
-	CMessageBoxVort *mp_Textbox;
+	SmartPointer<CShipFlySys> mpShipFlySys;
+	SmartPointer<CFinaleStaticScene> mpFinaleStaticScene;
+	SmartPointer<CMessageBoxVort> mpTextbox;
 
 	bool &m_hideobjects;
 };

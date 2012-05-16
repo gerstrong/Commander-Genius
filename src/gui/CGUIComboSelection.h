@@ -25,6 +25,10 @@ public:
 
 	const std::string& getSelection();
 
+	void cycleOption();
+
+	void sendEvent(const InputCommands command);
+
 	void setSelection( const std::string& selectionText );
 
 	void setList(const char **strArray, const int numElem);
