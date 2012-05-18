@@ -12,22 +12,24 @@
 
 const int FONT_ID = 0;
 
-CMessageBoxSelection::CMessageBoxSelection( const std::string& Text, const std::list<TextEventMatchOption> &Options ) :
+
+
+/*CMessageBoxSelection::CMessageBoxSelection( const std::string& Text, const std::list<TextEventMatchOption> &Options ) :
 CMessageBoxGalaxy(Text),
 m_Options(Options),
 m_selection(0)
-{
+{*/
 	// Center that dialog box
 	/*CFont &Font = g_pGfxEngine->getFont(FONT_ID);
-	m_boxrect = g_pVideoDriver->getGameResolution().SDLRect();
+	mMBRect = g_pVideoDriver->getGameResolution().SDLRect();
 
-	m_boxrect.x = m_boxrect.w/2;
-	m_boxrect.y = m_boxrect.h/2;
+	mMBRect.x = m_boxrect.w/2;
+	mMBRect.y = m_boxrect.h/2;
 
 	int width = 0;
 
 	// Get the max width of all the written lines
-	for( size_t i=0 ; i<m_Lines.size() ; i++)
+	for( size_t i=0 ; i<mLines.size() ; i++)
 	{
 		const int newwidth = Font.getPixelTextWidth(m_Lines[i]);
 		if( width < newwidth )
@@ -45,22 +47,22 @@ m_selection(0)
 	width += 16;
 
 	m_text_height = Font.getPixelTextHeight();
-	m_boxrect.h = (m_text_height+2)*(m_Lines.size()+m_Options.size()+ 1) + 16;
-	m_boxrect.w = width;
+	mMBRect.h = (m_text_height+2)*(m_Lines.size()+m_Options.size()+ 1) + 16;
+	mMBRect.w = width;
 
-	m_boxrect.x -= m_boxrect.w/2;
-	m_boxrect.y -= m_boxrect.h/2;
+	mMBRect.x -= m_boxrect.w/2;
+	mMBRect.y -= m_boxrect.h/2;
 
-	mp_DlgFrame = new CDlgFrame(m_boxrect.x, m_boxrect.y,
-			m_boxrect.w, m_boxrect.h, DLG_THEME_GALAXY);
+	mp_DlgFrame = new CDlgFrame(mMBRect.x, mMBRect.y,
+			mMBRect.w, mMBRect.h, DLG_THEME_GALAXY);
 
-	m_TextPos.x = 8;
-	m_TextPos.y = 8;*/
-}
+	mMBRect.x = 8;
+	mMBRect.y = 8;*/
+/*}
 
 
 void CMessageBoxSelection::process()
-{
+{*/
 	/*SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
 	// Look, if somebody pressed a button, and close this dialog!
@@ -107,13 +109,13 @@ void CMessageBoxSelection::process()
 
 	std::list<TextEventMatchOption>::iterator it = m_Options.begin();
 	for( int i=0 ; it != m_Options.end() ; it++, i++)
-	{*/
-		/*if(i == m_selection)
+	{
+		if(i == m_selection)
 			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF0000FF);
 		else
-			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);*/
+			g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);
 
-		/*g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, it->text, m_boxrect.x+m_TextPos.x, m_boxrect.y+((m_Lines.size()+i+1)*m_text_height+m_TextPos.y) );
+		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, it->text, m_boxrect.x+m_TextPos.x, m_boxrect.y+((m_Lines.size()+i+1)*m_text_height+m_TextPos.y) );
 	}*/
-}
+/*}*/
 

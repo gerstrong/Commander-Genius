@@ -12,7 +12,8 @@
 #include "common/CBehaviorEngine.h"
 
 
-class CDlgFrame {
+class CDlgFrame
+{
 public:
 	CDlgFrame(int x, int y, int w, int h, int tilewidth = 8, int tileheight = 8);
 

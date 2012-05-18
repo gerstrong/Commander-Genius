@@ -264,12 +264,14 @@ void CPlayerBase::processDead()
 
 	// Create the Event Selection screen
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	std::string loosemsg = "You didn't make it past\n";
+	/*std::string loosemsg = "You didn't make it past\n";
 	loosemsg 			+= mp_Map->getLevelName();
 	EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
 	pdialogevent->addOption("Try Again", new EventRestartLevel() );
 	pdialogevent->addOption("Exit to World Map", new EventExitLevel(mp_Map->getLevel(), false) );
-	EventContainer.add( pdialogevent );
+	EventContainer.add( pdialogevent );*/
+
+	EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
 
 	m_dying = false;
 	dead = true;

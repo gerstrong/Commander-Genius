@@ -197,12 +197,12 @@ void CPlayGameGalaxy::process()
 		mMessageBoxes.push_back( pMsgBox );
 		EventContainer.pop_Event();
 	}
-	else if( EventSendSelectionDialogMsg* ev = EventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
+	/*else if( EventSendSelectionDialogMsg* ev = EventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
 	{
 		g_pMusicPlayer->stop();
 		mMessageBoxes.push_back( new CMessageBoxSelection( ev->Message, ev->Options ) );
 		EventContainer.pop_Event();
-	}
+	}*/
 
 
 	if(mMessageBoxes.empty())
