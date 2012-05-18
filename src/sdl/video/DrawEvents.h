@@ -65,7 +65,7 @@ struct BlitSurfaceTask : CEvent
 	SmartPointer<SDL_Surface> mSfcToBlit;
 	SmartPointer<SDL_Rect> mSrcRect;
 	SmartPointer<SDL_Rect> mDstRect;
-	BlitSurfaceTask( SmartPointer<SDL_Surface> sfcToBlit,
+	BlitSurfaceTask( SmartPointer<SDL_Surface> &sfcToBlit,
 					 SDL_Rect *srcRect,
 					 SDL_Rect *dstRect ) :
 	mSfcToBlit(sfcToBlit)

@@ -34,7 +34,7 @@ public:
 	void draw();
 
 	bool m_showstatus;
-	SmartPointer <SDL_Surface> mpStatusSurface;
+	SmartPointer<SDL_Surface> mpStatusSurface;
 	const stItemGalaxy& m_Item;
 	const std::string &m_LevelName;
 };

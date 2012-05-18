@@ -18,7 +18,6 @@ CStatusScreenGalaxy(Item, LevelName)
 void CStatusScreenGalaxyEp4::GenerateStatus()
 {
 	SDL_Rect EditRect;
-	SmartPointer<SDL_Surface> pTextSfc; // temperorary
 	drawBase(EditRect);
 
 	CFont &Font = g_pGfxEngine->getFont(0);
