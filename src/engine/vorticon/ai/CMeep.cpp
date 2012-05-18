@@ -43,7 +43,7 @@ m_Object(Object)
 	animframe = 0;
 	animtimer = 0;
 
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty==HARD)
 		HealthPoints++;
 }
 

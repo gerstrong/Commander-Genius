@@ -15,7 +15,7 @@
 class CStatusScreen {
 public:
 	CStatusScreen
-	(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe, const Uint8& difficulty );
+	(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe);
 
 	void draw();
 	std::string fetchDifficultyText();
@@ -40,7 +40,6 @@ private:
 
 	SmartPointer <SDL_Surface> mpStatusSfc;
 	SDL_Rect m_StatusRect;
-	const Uint8 &m_difficulty;
 };
 
 #endif /* CSTATUSSCREEN_H_ */

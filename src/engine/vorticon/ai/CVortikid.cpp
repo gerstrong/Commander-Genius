@@ -41,7 +41,7 @@ m_Player(mp_vec_Player)
 	if (g_pBehaviorEngine->getEpisode()==3) ep3 = true; else ep3 = false;
 	sprite = BABY_WALK_RIGHT_FRAME - ep3;
 
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		HealthPoints++;
 }
 

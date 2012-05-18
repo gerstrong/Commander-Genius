@@ -240,7 +240,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 		default:             // level marker
 
 			// Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
-			if(episode == 1 && mpMap->m_Difficulty > 2)
+			if(episode == 1 && g_pBehaviorEngine->mDifficulty >= HARD)
 			{
 				if(t == 5)
 					t = 9;

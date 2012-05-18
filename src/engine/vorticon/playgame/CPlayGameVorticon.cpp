@@ -22,8 +22,8 @@
 // Creation Routine
 ////
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
-		  char numplayers, Uint8& difficulty, CSaveGameController &SavedGame) :
-CPlayGame(ExeFile, level, numplayers, difficulty),
+		  char numplayers, CSaveGameController &SavedGame) :
+CPlayGame(ExeFile, level, numplayers),
 mp_ObjectAI(NULL),
 mp_HUD(NULL)
 {
@@ -53,9 +53,9 @@ mp_HUD(NULL)
 
 	m_showPauseDialog = false;
 
-	if(m_Difficulty==0)
+	if(g_pBehaviorEngine->mDifficulty==EASY)
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_EASY);
-	else if(m_Difficulty==1)
+	else if(g_pBehaviorEngine->mDifficulty==NORMAL)
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS);
 	else
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_HARD);
@@ -111,7 +111,6 @@ bool CPlayGameVorticon::init()
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
 
-	mMap->m_Difficulty = m_Difficulty;
 
 	// load level map
 	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
@@ -134,7 +133,7 @@ bool CPlayGameVorticon::init()
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(mMap.get(), m_Object, m_Player,
 								m_NumPlayers, m_Episode, m_Level,
-								m_Difficulty, mMap->m_Dark);
+								mMap->m_Dark);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyFinales();

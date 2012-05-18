@@ -424,7 +424,7 @@ void CPlayer::JumpAndPogo()
 								if(!pogofirsttime)
 								{
 									const int jump = PhysicsSettings.player.maxjumpspeed;
-                                    const int pogo = (mp_Map->m_Difficulty == 1) ?
+                                    const int pogo = (g_pBehaviorEngine->mDifficulty >= NORMAL) ?
 													(11*PhysicsSettings.player.maxpogospeed)/10
                                     				: PhysicsSettings.player.maxpogospeed;
                                    	pjumpupspeed = 3*(pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;

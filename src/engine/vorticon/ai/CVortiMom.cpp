@@ -25,9 +25,9 @@ m_Object(Object)
 
 	blockedr = blockedl = 0;
 
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty>NORMAL)
 		HealthPoints++;
-	else if(mp_Map->m_Difficulty < 2)
+	else if(g_pBehaviorEngine->mDifficulty<NORMAL)
 		HealthPoints--;
 }
 
@@ -52,7 +52,7 @@ void CVortiMom::process()
 	{
 	case MOTHER_WALK:
 
-		prob = (mp_Map->m_Difficulty>1) ? MOTHER_SPIT_PROB_HARD : MOTHER_SPIT_PROB;
+		prob = (g_pBehaviorEngine->mDifficulty>NORMAL) ? MOTHER_SPIT_PROB_HARD : MOTHER_SPIT_PROB;
 		if (getProbability(prob))
 		{
 			if (onscreen)

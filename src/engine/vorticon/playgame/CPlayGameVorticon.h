@@ -47,7 +47,7 @@ class CPlayGameVorticon : public CPlayGame
 public:
 
 	CPlayGameVorticon(CExeFile &ExeFile, char level,
-			  char numplayers, Uint8& difficulty, CSaveGameController &SavedGame);
+			  char numplayers,  CSaveGameController &SavedGame);
 
 	void setupPlayers();
 	bool init();

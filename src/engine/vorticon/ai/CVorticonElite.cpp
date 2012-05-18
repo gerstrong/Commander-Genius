@@ -62,9 +62,9 @@ m_Object(mp_vec_Obj)
 	canbezapped = true;
 	m_speed = 0;
 
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		HealthPoints++;
-	else if(mp_Map->m_Difficulty < 2)
+	else if(g_pBehaviorEngine->mDifficulty < NORMAL)
 		HealthPoints--;
 }
 

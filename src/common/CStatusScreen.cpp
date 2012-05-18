@@ -21,13 +21,11 @@
 
 #define FADE_SPEED	10
 
-CStatusScreen::CStatusScreen
-(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe, const Uint8& difficulty ) :
+CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe ) :
  mp_level_completed(p_level_completed),
  m_ankhtime(ankhtime),
  m_closing(false),
- m_closed(false),
- m_difficulty(difficulty)
+ m_closed(false)
 {
 	m_episode = episode;
 	mp_inventory = p_inventory;
@@ -68,11 +66,11 @@ SDL_Surface* CStatusScreen::CreateStatusSfc()
 std::string CStatusScreen::fetchDifficultyText()
 {
 	std::string out;
-	if(m_difficulty == 1)
+	if(g_pBehaviorEngine->mDifficulty == EASY)
 		out = "Easy-";
-	else if(m_difficulty == 2)
+	else if(g_pBehaviorEngine->mDifficulty == NORMAL)
 		out = "Normal-";
-	else if(m_difficulty == 3)
+	else if(g_pBehaviorEngine->mDifficulty == HARD)
 		out = "Hard-";
 	out += "Mode";
 

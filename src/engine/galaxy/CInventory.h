@@ -19,9 +19,10 @@
 #include <string>
 #include <SDL.h>
 
-class CInventory {
+class CInventory
+{
 public:
-	CInventory(Uint8& difficulty, const std::string& levelname);
+	CInventory(const std::string& levelname);
 	void reset();
 
 	// This function draws the HUD on the Screen

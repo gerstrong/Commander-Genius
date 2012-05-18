@@ -56,7 +56,7 @@ void CSoundWave::process()
 			exists=false;
 		else
 		{
-			if (mp_Map->m_Difficulty>1)
+			if(g_pBehaviorEngine->mDifficulty>=NORMAL)
 				moveRight(SNDWAVE_SPEED_FAST);
 			else
 				moveRight(SNDWAVE_SPEED);
@@ -70,7 +70,7 @@ void CSoundWave::process()
 			exists = false;
 		else
 		{
-			if (mp_Map->m_Difficulty>1)
+			if (g_pBehaviorEngine->mDifficulty>=NORMAL)
 				moveLeft(SNDWAVE_SPEED_FAST);
 			else
 				moveLeft(SNDWAVE_SPEED);

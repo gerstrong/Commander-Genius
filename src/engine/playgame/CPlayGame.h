@@ -24,7 +24,7 @@ const int WM_MAP_NUM = 80;
 class CPlayGame{
 public:
 	CPlayGame(CExeFile &ExeFile, char level,
-			 char numplayers, Uint8& difficulty);
+			 char numplayers);
 
 	virtual bool loadGameState() = 0;
 	virtual bool saveGameState() = 0;
@@ -38,7 +38,6 @@ public:
 	bool getExitEvent();
 	char getEpisode();
 	char getNumPlayers();
-	char getDifficulty();
 	CSaveGameController getSavedGameBlock();
 
 protected:
@@ -49,7 +48,6 @@ protected:
 	short m_Level;
 	bool m_startgame;
 	bool m_exitgame;
-	Uint8& m_Difficulty;
 
 	Uint32  m_NumSprites;
 

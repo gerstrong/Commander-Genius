@@ -25,9 +25,9 @@ m_Player(Player)
 {
 	canbezapped = true;
 	HealthPoints = 4;
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		HealthPoints++;
-	else if(mp_Map->m_Difficulty < 2)
+	else if(g_pBehaviorEngine->mDifficulty < NORMAL)
 		HealthPoints--;
 	init();
 }
@@ -36,7 +36,7 @@ void CVortiNinja::init()
 {
 	state = NINJA_STAND;
 	timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
-	if (mp_Map->m_Difficulty>1) timetillkick /= 3;
+	if(g_pBehaviorEngine->mDifficulty > NORMAL) timetillkick /= 3;
 
 	if (m_Player[0].getXPosition() < getXPosition())
 		dir = LEFT;
@@ -153,9 +153,9 @@ void CVortiNinja::process()
 		}
 
 		if(longjump)
-			xinertia = (mp_Map->m_Difficulty>1) ? 150 : 120;
+			xinertia = (g_pBehaviorEngine->mDifficulty > NORMAL) ? 150 : 120;
 		else
-			xinertia = (mp_Map->m_Difficulty>1) ? 95 : 75;
+			xinertia = (g_pBehaviorEngine->mDifficulty > NORMAL) ? 95 : 75;
 
 		if (dir==LEFT)
 			xinertia = -xinertia;

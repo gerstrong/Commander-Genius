@@ -15,7 +15,7 @@
 CYorp::CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
 CObject(p_map,x,y, OBJ_YORP),
-m_hardmode(mp_Map->m_Difficulty>2),
+m_hardmode(g_pBehaviorEngine->mDifficulty > NORMAL),
 m_vec_Player(mp_vec_Player),
 state(YORP_LOOK),
 looktimes(YORP_NUM_LOOKS+1),
@@ -30,7 +30,7 @@ movedir(LEFT)
 	sprite = OBJ_YORP_DEFSPRITE;
 	canbezapped = true;
 
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		HealthPoints++;
 }
 

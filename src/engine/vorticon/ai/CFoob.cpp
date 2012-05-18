@@ -15,7 +15,7 @@ m_Player(Player)
 	canbezapped = 1;
 	dead = 0;
 
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty==HARD)
 		HealthPoints++;
 }
 
@@ -117,7 +117,7 @@ void CFoob::process()
 			else
 				dir = LEFT;
 			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if (mp_Map->m_Difficulty>2)
+			if (g_pBehaviorEngine->mDifficulty==HARD)
 				dir = LEFT ? RIGHT : LEFT;
 
 		}
@@ -148,7 +148,7 @@ void CFoob::process()
 				xinertia = FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
-			else if ((mp_Map->m_Difficulty>2))
+			else if(g_pBehaviorEngine->mDifficulty==HARD)
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -165,7 +165,7 @@ void CFoob::process()
 				xinertia = -FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
-			else if ((mp_Map->m_Difficulty>2))
+			else if(g_pBehaviorEngine->mDifficulty==HARD)
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -211,7 +211,7 @@ void CFoob::getTouchedBy(CObject &theObject)
 	if(theObject.m_type == OBJ_PLAYER)
 	{
 		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-		if(mp_Map->m_Difficulty>2)
+		if(g_pBehaviorEngine->mDifficulty==HARD)
 			Player.kill();
 	}
 }

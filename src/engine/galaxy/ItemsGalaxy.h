@@ -12,10 +12,7 @@
 
 struct stItemGalaxy
 {
-	stItemGalaxy(unsigned char &difficulty) : m_difficulty(difficulty)
-	{}
 
-	unsigned char &m_difficulty;
 	signed char m_lifes;
 	unsigned long  m_points;
 	unsigned long m_lifeAt;

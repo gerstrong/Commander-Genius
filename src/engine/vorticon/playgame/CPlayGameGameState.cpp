@@ -37,7 +37,7 @@ bool CPlayGameVorticon::loadGameState()
 		bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
 		m_Level = newLevel;
 
-		savedGame.decodeData(m_Difficulty);
+		savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
 
 		bool dark, checkpointset;
 		int checkx, checky;
@@ -160,7 +160,7 @@ bool CPlayGameVorticon::loadGameState()
 
 		mp_ObjectAI = new CObjectAI(mMap.get(), m_Object, m_Player,
 									m_NumPlayers, m_Episode, m_Level,
-									m_Difficulty, mMap->m_Dark);
+									mMap->m_Dark);
 		setupPlayers();
 
 		mMap->m_Dark = dark;
@@ -183,7 +183,7 @@ bool CPlayGameVorticon::saveGameState()
 	// store the episode, level and difficulty
 	savedGame.encodeData(m_Episode);
 	savedGame.encodeData(m_Level);
-	savedGame.encodeData(m_Difficulty);
+	savedGame.encodeData(g_pBehaviorEngine->mDifficulty);
 
 	// Also the last checkpoint is stored. This is the level entered from map
 	// in Commander Keen games

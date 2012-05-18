@@ -209,6 +209,6 @@ void CGuardRobot::guard_fire()
 
 void CGuardRobot::getTouchedBy(CObject &theObject)
 {
-	if (theObject.m_type == OBJ_PLAYER && mp_Map->m_Difficulty >= 2)
-		theObject.kill(); // Only on normal and hard mode when keen touches it, it can die
+	if (theObject.m_type == OBJ_PLAYER && g_pBehaviorEngine->mDifficulty>=NORMAL)
+		theObject.kill(); // Only on normal and hard mode when keen touches it, he can die
 }

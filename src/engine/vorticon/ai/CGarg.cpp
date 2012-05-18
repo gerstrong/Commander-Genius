@@ -18,10 +18,10 @@ movedir(0),
 detectedPlayer(0),
 detectedPlayerIndex(0),
 m_Player(m_vec_Player),
-m_hardmode(p_map->m_Difficulty > 2)
+m_hardmode(g_pBehaviorEngine->mDifficulty==HARD)
 {
 	canbezapped = true;
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty==HARD)
 		HealthPoints++;
 }
 

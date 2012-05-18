@@ -24,7 +24,7 @@ CRay(p_map, x, y, dir, byType, byID)
 	if(dir == LEFT)
 		m_Pos -= VectorD2<Uint32>(14<<STC,0);
 
-	m_speed = (mp_Map->m_Difficulty>1) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
+	m_speed = (g_pBehaviorEngine->mDifficulty>=NORMAL) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
 	sprite = (m_Direction == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;
 	performCollisions();
 }

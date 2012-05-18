@@ -46,7 +46,7 @@ enum EngineType
 
 enum Difficulty
 {
-	EASY,
+	EASY = 1,
 	NORMAL,
 	HARD
 };

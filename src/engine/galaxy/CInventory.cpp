@@ -15,8 +15,7 @@
 //#include "CStatusScreenGalaxyEp6.h"
 
 
-CInventory::CInventory(Uint8& difficulty, const std::string& levelname) :
-Item(difficulty),
+CInventory::CInventory(const std::string& levelname) :
 m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets),
 mp_StatusScreen(NULL),
 mp_StatusBgrnd(NULL),

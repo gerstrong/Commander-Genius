@@ -10,7 +10,6 @@
 CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
 		Uint32 y, char hp, object_t objtype) :
 	CObject(p_map, x, y, objtype),
-	m_Difficulty(mp_Map->m_Difficulty),
 	m_Dark(mp_Map->m_Dark),
 	m_Player(m_vec_Player)
 {
@@ -22,9 +21,9 @@ CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
 	HealthPoints = hp;
 	canbezapped = true;
 
-	if(mp_Map->m_Difficulty > 2)
+	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		HealthPoints++;
-	else if( mp_Map->m_Difficulty < 2 && HealthPoints > 1 )
+	else if( g_pBehaviorEngine->mDifficulty < NORMAL && HealthPoints > 1 )
 		HealthPoints--;
 
 	short Episode = g_pBehaviorEngine->getEpisode();
@@ -122,11 +121,12 @@ void CVorticon::process() {
 		dist_traveled++;
 		int odds;
 
-		switch (m_Difficulty) {
-		case 1:
+		switch (g_pBehaviorEngine->mDifficulty)
+		{
+		case EASY:
 			odds = getProbability(VORT_JUMP_PROB_EASY);
 			break;
-		case 3:
+		case HARD:
 			odds = getProbability(VORT_JUMP_PROB_HARD);
 			break;
 		default:

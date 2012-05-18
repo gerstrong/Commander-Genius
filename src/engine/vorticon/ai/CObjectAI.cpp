@@ -10,11 +10,9 @@
 #include "CLogFile.h"
 
 CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject*> &objvect, std::vector<CPlayer> &Player,
-					 int NumPlayers, int episode, int level,
-					 Uint8& difficulty, bool &dark) :
+					 int NumPlayers, int episode, int level, bool &dark) :
 m_Objvect(objvect),
 m_Player(Player),
-m_difficulty(difficulty),
 m_dark(dark)
 {
 	mp_Map = p_map;

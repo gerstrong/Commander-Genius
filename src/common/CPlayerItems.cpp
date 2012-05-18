@@ -135,7 +135,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 		case 15:           // raygun
 			riseBonus(GUNUP_SPRITE, mpx, mpy);
-			if (mp_Map->m_Difficulty == 0)
+			if (g_pBehaviorEngine->mDifficulty <= EASY)
 				inventory.charges += 8;
 			else 
 			inventory.charges += 5;

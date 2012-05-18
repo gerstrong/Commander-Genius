@@ -236,7 +236,7 @@ void CGameLauncherMenu::process()
 						if(m_start_level == -1) // Starts normally
 							EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, Episode) );
 						else // This happens, when a level was passed as argument when launching CG
-							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1, 1, DataDirectory, m_start_level) );
+							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1,  DataDirectory, m_start_level) );
 					}
 				}
 			}

@@ -12,7 +12,7 @@ m_Player(Player),
 m_Object(Object)
 {
 	m_type = OBJ_TANK;
-	hardmode = (mp_Map->m_Difficulty>1);
+	hardmode = (g_pBehaviorEngine->mDifficulty>=NORMAL);
 	state = TANK_WALK;
 	movedir = RIGHT;
 	animtimer = 0;

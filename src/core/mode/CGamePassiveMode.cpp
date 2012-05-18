@@ -50,11 +50,9 @@ void CGamePassiveMode::switchToGamePlayMode()
 {
 	const int episode = g_pBehaviorEngine->getEpisode();
 	//const int Numplayers = mp_Passive->getNumPlayers();
-	//const int Difficulty = mp_Passive->getDifficulty();
 	const int Numplayers = 1;
-	const int Difficulty = 1;
 	std::string DataDirectory = mpPassive->getGamePath();
-	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, Difficulty, DataDirectory ) );
+	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
 }
 
 void CGamePassiveMode::process()

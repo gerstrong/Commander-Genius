@@ -15,7 +15,8 @@
 #include "ItemsGalaxy.h"
 #include "SmartPointer.h"
 
-class CStatusScreenGalaxy {
+class CStatusScreenGalaxy
+{
 public:
 	CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName);
 
