@@ -53,7 +53,8 @@ CInput::CInput()
  * 		  is executed
  * \param	player	Number of player of which the controls will be reset (1-4)
  */
-void CInput::resetControls(int player) {
+void CInput::resetControls(int player)
+{
 	int i;
 
 	if(player == 0)
@@ -306,12 +307,7 @@ std::string CInput::getEventName(int command, unsigned char input)
 	}
 	else // In case only keyboard was triggered
 	{
-		//buf = "Key ";
-		//buf += itoa(InputCommand[input][command].keysym);
-		//buf += " (";
-		//buf += SDL_GetKeyName(InputCommand[input][command].keysym);
 		buf = SDL_GetKeyName(InputCommand[input][command].keysym);
-		//buf += ")";
 	}
 
 	return buf;
@@ -344,10 +340,15 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 			buf2 = buf.substr(pos);
 			pInput[action].joyvalue = (buf2 == "+") ? +1 : -1;
 		}
-		else // Should normally be B
+		else if(buf2 == "B")
 		{
 			pInput[action].joyeventtype = ETYPE_JOYBUTTON;
 			pInput[action].joybutton = atoi(buf);
+		}
+		else // Should normally be H
+		{
+			pInput[action].joyeventtype = ETYPE_JOYHAT;
+			pInput[action].joyhatval = atoi(buf);
 		}
 		return;
 	}
@@ -626,7 +627,7 @@ void CInput::processJoystickHat()
 			{
 				InputCommand[j][i].active = false;
 				// Joystick hats are configured for this event !!
-				if(Event.jhat.value == InputCommand[j][i].joyhatval && Event.jhat.which == InputCommand[j][i].which )
+				if( Event.jhat.which == InputCommand[j][i].which && Event.jhat.value & InputCommand[j][i].joyhatval )
 					InputCommand[j][i].active = true;
 			}
 		}

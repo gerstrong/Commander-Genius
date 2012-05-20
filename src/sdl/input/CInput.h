@@ -123,10 +123,11 @@ const unsigned int KEYTABLE_SIZE = 160;
 
 #define NUM_INPUTS			4
 
-#define ETYPE_KEYBOARD	 	0
-#define ETYPE_JOYAXIS 		1
-#define ETYPE_JOYBUTTON 	2
-#define ETYPE_JOYHAT	 	3
+enum EType
+{
+	ETYPE_KEYBOARD, ETYPE_JOYAXIS,
+	ETYPE_JOYBUTTON, ETYPE_JOYHAT,
+};
 
 typedef struct stInputCommand
 {
