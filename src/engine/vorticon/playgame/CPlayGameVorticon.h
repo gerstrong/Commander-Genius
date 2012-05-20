@@ -106,9 +106,9 @@ private:
 	SmartPointer<CMap> mMap;
 	std::vector<CPlayer> m_Player;
 	CObjectAI *mp_ObjectAI;
-	CFinale *mp_Finale;
-	CEGABitmap *mp_gameoverbmp;
-	std::list<CMessageBoxVort*> m_MessageBoxes;
+	SmartPointer<CFinale> mpFinale;
+	SmartPointer<CEGABitmap> mpGameoverBmp;
+	std::list< SmartPointer<CMessageBoxVort> > mMessageBoxes;
 	bool m_showKeensLeft;
 	std::vector<CObject*> m_Object;
 	//CHighScores *mp_HighScores;

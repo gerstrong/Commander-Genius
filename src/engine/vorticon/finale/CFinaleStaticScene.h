@@ -24,11 +24,11 @@ struct bitmap_structure {
 // Prototype Reference to finale.cpp. This one still uses old C code.
 bool finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path);
 
-class CFinaleStaticScene {
+class CFinaleStaticScene
+{
 public:
 	CFinaleStaticScene(const std::string &game_path, const std::string &scene_file);
 
-	void push_string(const std::string &text, Uint32 delay);
 	void showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y);
 	void setTimer(Uint16 timer) {	m_timer = timer;	}
 	void process();
@@ -38,10 +38,8 @@ public:
 
 private:
 
-	std::list<CMessageBoxVort*> mp_textbox_list;
 	std::vector<bitmap_structure> m_BitmapVector;
 	SmartPointer<SDL_Surface> mpSceneSurface;
-	CMessageBoxVort *mp_current_tb;
 	bool m_mustclose;
 	Uint8 m_count;
 	Uint16 m_timer; // Only used, if no Text to display is set. Example is the preview section

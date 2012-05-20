@@ -27,8 +27,9 @@ const int EARTHCHUNK_BIG_DN = 66;
 const int EARTHCHUNK_SMALL_UP = 68;
 const int EARTHCHUNK_SMALL_DN = 70;
 
-CTantalusRay::CTantalusRay(const SmartPointer<CMap> &pMap, std::vector<CObject*> &vect_obj, CObjectAI &objectai) :
-CFinale(pMap, vect_obj),
+CTantalusRay::CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+								const SmartPointer<CMap> &pMap, std::vector<CObject*> &vect_obj, CObjectAI &objectai) :
+CFinale(messageBoxes, pMap, vect_obj),
 m_mustsetup(true),
 m_alternate_sprite(0),
 mp_MessageBox(new CMessageBoxVort("Uh-Oh")),

@@ -152,14 +152,14 @@ void CPlayGameVorticon::YourShipNeedsTheseParts()
 	if (!bat) MessageBox->addTileAt(322,14<<3, 4<<3);
 	if (!vac) MessageBox->addTileAt(323,23<<3,4<<3);
 	if (!wis) MessageBox->addTileAt(324,31<<3,4<<3);
-	m_MessageBoxes.push_back(MessageBox);
+	mMessageBoxes.push_back(MessageBox);
 }
 
 void CPlayGameVorticon::ShipEp3()
 {
 	// get one of four random strings and display it!!
 	std::string strname = "EP3_SHIP"+ itoa((rand()%4)+1);
-	m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString(strname)));
+	mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString(strname)));
 }
 
 void CPlayGameVorticon::showKeensLeft()

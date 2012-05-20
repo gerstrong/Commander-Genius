@@ -15,9 +15,14 @@
 #include "SmartPointer.h"
 #include <string>
 
-class CFinale {
+class CFinale
+{
 public:
-	CFinale(const SmartPointer<CMap> &pMap, std::vector<CObject*> &Object);
+	CFinale(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+			const SmartPointer<CMap> &pMap,
+			std::vector<CObject*> &Object);
+
+	void addMsgBoxString(const std::string &text);
 
 	void showEndingText();
 
@@ -30,6 +35,7 @@ protected:
 	SmartPointer<CTextViewer> mpTextViewer; // Used for Epilogue
 	std::string m_epilogue_text;
 	int m_Episode;
+	std::list< SmartPointer<CMessageBoxVort> > &mMessageBoxes;
 	SmartPointer<CMap> mpMap;
 	std::vector<CObject*> &m_Object;
 };

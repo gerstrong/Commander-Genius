@@ -19,7 +19,8 @@
 class CTantalusRay : public CFinale
 {
 public:
-	CTantalusRay(const SmartPointer<CMap> &pMap, std::vector<CObject*> &vect_obj, CObjectAI &objectai);
+	CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+				const SmartPointer<CMap> &pMap, std::vector<CObject*> &vect_obj, CObjectAI &objectai);
 
 	void process();
 

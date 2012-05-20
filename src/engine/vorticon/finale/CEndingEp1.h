@@ -19,8 +19,14 @@
 class CEndingEp1 : public CFinale
 {
 public:
-	CEndingEp1(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, bool &hideobjects, std::vector<CObject*> &Object);
+	CEndingEp1(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+				const SmartPointer<CMap> &pMap,
+				std::vector<CPlayer> &Player,
+				bool &hideobjects,
+				std::vector<CObject*> &Object);
+
 	void process();
+
 
 	void ReturnsToShip();
 	void ShipFlyMarsToEarth();
@@ -35,7 +41,6 @@ private:
 	std::vector<CPlayer> &m_Player;
 	SmartPointer<CShipFlySys> mpShipFlySys;
 	SmartPointer<CFinaleStaticScene> mpFinaleStaticScene;
-	SmartPointer<CMessageBoxVort> mpTextbox;
 
 	bool &m_hideobjects;
 };

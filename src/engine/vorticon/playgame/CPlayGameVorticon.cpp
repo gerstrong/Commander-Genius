@@ -29,8 +29,6 @@ mp_HUD(NULL)
 {
 	mMap = new CMap();
 	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
-	mp_Finale = NULL;
-	mp_gameoverbmp = NULL;
 
 	if(!m_Player.empty())
 		m_Player.clear();
@@ -149,12 +147,12 @@ bool CPlayGameVorticon::init()
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
 	{
-		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER"),false, true));
-		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
-		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
-		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
-		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
-		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
+		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER"),false, true));
+		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
+		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
+		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
+		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
+		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
 		g_pSound->playSound(SOUND_MORTIMER);
 	}
 
@@ -182,9 +180,9 @@ void CPlayGameVorticon::process()
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
 
-	if( m_MessageBoxes.empty() && !StatusScreenOpen()  ) // Game is not paused, no messages have to be shown and no menu is open
+	if( mpFinale.empty() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
-		if (!mp_Finale) // Hasn't the game yet been finished?
+		if(mMessageBoxes.empty() && !StatusScreenOpen())
 		{
 			// Perform AIs
 			mp_ObjectAI->process();
@@ -208,27 +206,11 @@ void CPlayGameVorticon::process()
 					if(!m_Player[0].pdie)
 						m_Player[0].processCamera();
 				}
-
-			}
-		}
-		else // In this case the Game has been finished, goto to the cutscenes
-		{
-			mp_Finale->process();
-
-			if(mp_Finale->getHasFinished())
-			{
-				SAFE_DELETE(mp_Finale);
-
-				if(!m_gameover)
-				{
-					//mp_HighScores = new CHighScores(true);
-					collectHighScoreInfo();
-				}
 			}
 
-			m_Player[0].processEvents();
 		}
 	}
+
 
 	// Draw all the Stuff here!
 	drawAllElements();
@@ -237,13 +219,14 @@ void CPlayGameVorticon::process()
 		showKeensLeft();
 
 
+
 	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 	// Only confirmation button is allowes
-	if(m_gameover && !mp_Finale) // game over mode
+	if(m_gameover && mpFinale.empty()) // game over mode
 	{
-		if(mp_gameoverbmp != NULL)
+		if( !mpGameoverBmp.empty() )
 		{
-			mp_gameoverbmp->process();
+			mpGameoverBmp->process();
 
 			if( g_pInput->getPressedAnyCommand() )
 			{
@@ -256,8 +239,8 @@ void CPlayGameVorticon::process()
 		{
 			CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-			mp_gameoverbmp = new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap);
-			mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+			mpGameoverBmp = new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap);
+			mpGameoverBmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 		}
 	}
 	else // No game over
@@ -322,7 +305,7 @@ void CPlayGameVorticon::handleFKeys()
 
 				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
 
-				m_MessageBoxes.push_back(new CMessageBoxVort(Text));
+				mMessageBoxes.push_back(new CMessageBoxVort(Text));
 			}
 		}
 		g_pVideoDriver->AddConsoleMsg("All items cheat");
@@ -350,14 +333,14 @@ void CPlayGameVorticon::handleFKeys()
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
 		// Show a message like in the original game
-		m_MessageBoxes.push_back(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
+		mMessageBoxes.push_back(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
 		g_pInput->flushKeys();
 	}
 
-	if(g_pInput->getPressedKey(KP) && m_MessageBoxes.empty())
+	if(g_pInput->getPressedKey(KP) && mMessageBoxes.empty())
 	{
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
-		m_MessageBoxes.push_back(new CMessageBoxVort("Game Paused"));
+		mMessageBoxes.push_back(new CMessageBoxVort("Game Paused"));
 	}
 
 	// Menus will only open if Keen is solid or in god mode. This means neither dying nor teleporting
@@ -435,15 +418,15 @@ void CPlayGameVorticon::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mp_Finale = new CEndingEp1(mMap, m_Player, m_hideobjects, m_Object);
+		mpFinale = new CEndingEp1(mMessageBoxes, mMap, m_Player, m_hideobjects, m_Object);
 	}
 	else if(m_Episode == 2)
 	{
-		mp_Finale = new CEndingEp2(mMap, m_Player, m_Object);
+		mpFinale = new CEndingEp2(mMessageBoxes, mMap, m_Player, m_Object);
 	}
 	else if(m_Episode == 3)
 	{
-		mp_Finale = new CEndingEp3(mMap, m_Player, m_Object);
+		mpFinale = new CEndingEp3(mMessageBoxes, mMap, m_Player, m_Object);
 	}
 }
 
@@ -532,7 +515,7 @@ void CPlayGameVorticon::drawAllElements()
 	// Draw masked tiles here!
 	mMap->drawForegroundTiles();
 
-	if(mp_option[OPT_HUD].value && !mp_Finale  )
+	if(mp_option[OPT_HUD].value && mpFinale.empty()  )
 	{	// Draw the HUD
 		mp_HUD->render();
 	}
@@ -542,8 +525,30 @@ void CPlayGameVorticon::drawAllElements()
 		m_Player[i].drawStatusScreen();
 	}
 
+
+
+	if(!mpFinale.empty()) // Finale processing if it is opened
+	{
+		mpFinale->process();
+
+		if(mpFinale->getHasFinished())
+		{
+			mpFinale = NULL;
+
+			if(!m_gameover)
+			{
+				//mp_HighScores = new CHighScores(true);
+				collectHighScoreInfo();
+			}
+		}
+
+		m_Player[0].processEvents();
+	}
+
+
+
 	// Render the dialogs which are seen when the game is paused
-	if( !m_MessageBoxes.empty() )
+	if( !mMessageBoxes.empty() )
 	{
 		// Finally draw Dialogs like status screen, game paused, etc.
 		processPauseDialogs();
@@ -579,10 +584,8 @@ void CPlayGameVorticon::cleanup()
 CPlayGameVorticon::~CPlayGameVorticon()
 {
 	m_Player.clear();
-	if(mp_Finale) delete mp_Finale;
-	mp_Finale = NULL;
-	if(mp_gameoverbmp) delete mp_gameoverbmp;
-	mp_gameoverbmp = NULL;
+	mpFinale = NULL;
+	mpGameoverBmp = NULL;
 	SAFE_DELETE(mp_ObjectAI);
 	SAFE_DELETE(mp_HUD);
 }

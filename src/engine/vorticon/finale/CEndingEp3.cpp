@@ -14,8 +14,9 @@
 #include "common/CMapLoader.h"
 #include "common/Playerdefines.h"
 
-CEndingEp3::CEndingEp3(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
-CFinale(pMap, Object),
+CEndingEp3::CEndingEp3(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+						const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
+CFinale(messageBoxes, pMap, Object),
 m_Player(Player)
 {
 	m_Episode = 3;
@@ -129,7 +130,7 @@ void CEndingEp3::AwardScene()
 		mpMap->drawAll();
 		mp_FinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck3");
 
-		mp_FinaleStaticScene->push_string("THE_END", 6000);
+		addMsgBoxString("THE_END");
 
 		m_mustsetup = false;
 	}

@@ -18,16 +18,16 @@ void CPlayGameVorticon::processPauseDialogs()
 		return;
 	}
 	
-	if(!m_MessageBoxes.empty())
+	if(!mMessageBoxes.empty())
 	{
-		CMessageBoxVort *pMB = m_MessageBoxes.front();
+		SmartPointer<CMessageBoxVort> pMB = mMessageBoxes.front();
 		pMB->processLogic();
 
 		if( pMB->isFinished() )
 		{
-			SAFE_DELETE(pMB);
-			m_MessageBoxes.pop_front();
+			mMessageBoxes.pop_front();
 		}
+
 		return;
 	}
 

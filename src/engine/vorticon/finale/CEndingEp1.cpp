@@ -14,9 +14,10 @@
 #include "common/CMapLoader.h"
 #include "common/Playerdefines.h"
 
-CEndingEp1::CEndingEp1(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player,
-					   bool &hideobjects, std::vector<CObject*> &Object) :
-	CFinale(pMap, Object),
+CEndingEp1::CEndingEp1(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+						const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player,
+					    bool &hideobjects, std::vector<CObject*> &Object) :
+	CFinale(messageBoxes, pMap, Object),
 	m_Player(Player),
 	m_hideobjects(hideobjects)
 {
@@ -26,7 +27,6 @@ CEndingEp1::CEndingEp1(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Pla
 	m_timepassed = 0;
 	m_mustsetup = true;
 	m_mustfinishgame = false;
-	mpTextbox = NULL;
 }
 
 void CEndingEp1::process()
@@ -46,6 +46,8 @@ void CEndingEp1::process()
 	}
 }
 
+
+
 void CEndingEp1::ReturnsToShip()
 {
 	if(m_mustsetup)
@@ -60,7 +62,7 @@ void CEndingEp1::ReturnsToShip()
 		m_Player[0].sprite = PMAPLEFTFRAME;
 		m_Player[0].processEvents();
 
-		mpTextbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_ESEQ_PART1"), true);
+		addMsgBoxString("EP1_ESEQ_PART1");
 
 		m_mustsetup = false;
 	}
@@ -72,16 +74,16 @@ void CEndingEp1::ReturnsToShip()
 		return;
 	}
 
-	if( m_timepassed<50000 && !g_pInput->getPressedAnyCommand() )
+	/*if( m_timepassed<50000 && !g_pInput->getPressedAnyCommand() )
 	{
 		mpTextbox->processLogic();
 	}
-	else
+	else*/
+	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
 		m_step++;
 		m_mustsetup = true;
-		mpTextbox = NULL;
 	}
 }
 
@@ -144,6 +146,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	}
 }
 
+
 void CEndingEp1::BackAtHome()
 {
 	if(m_mustsetup)
@@ -156,14 +159,14 @@ void CEndingEp1::BackAtHome()
 		m_Player[0].hideplayer = true;
 		mpFinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck1");
 
-		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE1", 6000);
-		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE2", 6000);
-		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE3", 6000);
-		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE4", 5000);
-		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE5", 5000);
-		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE6", 6000);
-		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE7", 6000);
-		mpFinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE8", 8000);
+		addMsgBoxString("EP1_ESEQ_PART2_PAGE1");
+		addMsgBoxString("EP1_ESEQ_PART2_PAGE2");
+		addMsgBoxString("EP1_ESEQ_PART2_PAGE3");
+		addMsgBoxString("EP1_ESEQ_PART2_PAGE4");
+		addMsgBoxString("EP1_ESEQ_PART2_PAGE5");
+		addMsgBoxString("EP1_ESEQ_PART2_PAGE6");
+		addMsgBoxString("EP1_ESEQ_PART2_PAGE7");
+		addMsgBoxString("EP1_ESEQ_PART2_PAGE8");
 
 		// The Bitmaps of the Window Lights on should drawn at Page 4
 		mpFinaleStaticScene->showBitmapAt("WINDON", 2, 6, 80, 0);
@@ -172,11 +175,7 @@ void CEndingEp1::BackAtHome()
 		m_mustsetup = false;
 	}
 
-	if( !mpFinaleStaticScene->mustclose() )
-	{
-		mpFinaleStaticScene->process();
-	}
-	else
+	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
 		mpFinaleStaticScene = NULL;
@@ -184,6 +183,11 @@ void CEndingEp1::BackAtHome()
 		m_step++;
 		m_mustsetup = true;
 	}
+	else
+	{
+		mpFinaleStaticScene->process();
+	}
+
 }
 
 void CEndingEp1::ShipFlyEarthToMShip()

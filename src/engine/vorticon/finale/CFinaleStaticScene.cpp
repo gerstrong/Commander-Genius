@@ -10,9 +10,9 @@
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
+#include "sdl/extensions.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
-mp_current_tb(NULL),
 m_mustclose(false),
 m_count(0),
 m_timer(0)
@@ -22,20 +22,18 @@ m_timer(0)
 
 	mpSceneSurface = SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0);
 	SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
-	if(finale_draw( mpSceneSurface.get(), scene_file, game_path))
-		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSceneSurface, NULL,  NULL ) );
+
+
+	if( finale_draw( mpSceneSurface.get(), scene_file, game_path) )
+	{
+		mpSceneSurface = SDL_DisplayFormatAlpha(mpSceneSurface.get());
+	}
 	else
+	{
 		m_mustclose = true;
+	}
 }
 
-void CFinaleStaticScene::push_string(const std::string &text, Uint32 delay)
-{
-	CMessageBoxVort *p_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString(text), true, false, true);
-
-	mp_textbox_list.push_back(p_Textbox);
-
-	mp_current_tb = mp_textbox_list.front();
-}
 
 void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y)
 {
@@ -63,7 +61,7 @@ void CFinaleStaticScene::process()
 	}
 	else
 	{
-		if( mp_textbox_list.empty() ) { m_mustclose = true; return; }
+		/*if( mp_textbox_list.empty() ) { m_mustclose = true; return; }
 
 		mp_current_tb = mp_textbox_list.front();
 
@@ -83,7 +81,7 @@ void CFinaleStaticScene::process()
 			if(!mp_textbox_list.empty())
 				mp_current_tb = mp_textbox_list.front();
 		}
-		else
+		else*/
 		{
 			// Draw any requested Bitmap
 			for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
@@ -96,19 +94,10 @@ void CFinaleStaticScene::process()
 			}
 
 			// Draw Frame and the text like type writing
-			mp_current_tb->processLogic();
+			//mp_current_tb->processLogic();
 		}
 	}
 }
 
 CFinaleStaticScene::~CFinaleStaticScene()
-{
-	CMessageBoxVort *p_textbox;
-	while(!mp_textbox_list.empty())
-	{
-		p_textbox = &*mp_textbox_list.front();
-		delete p_textbox;
-		mp_textbox_list.pop_front();
-	}
-
-}
+{}

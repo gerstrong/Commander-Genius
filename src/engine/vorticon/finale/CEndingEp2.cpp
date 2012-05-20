@@ -17,8 +17,9 @@
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
 
-CEndingEp2::CEndingEp2(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
-CFinale(pMap, Object),
+CEndingEp2::CEndingEp2(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+		const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
+CFinale(messageBoxes, pMap, Object),
 m_Player(Player)
 {
 	m_Episode = 2;
@@ -73,7 +74,7 @@ void CEndingEp2::HeadsForEarth()
 		mpMap->findTile(593, &x, &y);
 		m_Player[0].moveTo(VectorD2<int>(x<<CSF, y<<CSF));
 
-		mp_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP2_ESEQ_PART1"), true);
+		addMsgBoxString("EP2_ESEQ_PART1");
 
 		m_mustsetup = false;
 	}
@@ -125,7 +126,7 @@ void CEndingEp2::LimpsHome()
 		mpMap->drawAll();
 		mp_ShipFlySys->m_ShipQueuePtr = 0;
 
-		mp_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP2_ESEQ_PART2"), true);
+		addMsgBoxString("EP2_ESEQ_PART2");
 
 		m_mustsetup = false;
 	}
@@ -166,12 +167,18 @@ void CEndingEp2::SnowedOutside()
 		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
 		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
-		mp_FinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck2");
+		mp_FinaleStaticScene = new CFinaleStaticScene( mpMap->m_gamepath, "finale.ck2" );
 
-		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE1", 6000);
+		/*mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE1", 6000);
 		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE2", 6000);
 		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE3", 6000);
-		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE4", 6000);
+		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE4", 6000);*/
+
+		addMsgBoxString("EP2_ESEQ_PART1");
+		addMsgBoxString("EP2_ESEQ_PART2");
+		addMsgBoxString("EP2_ESEQ_PART3");
+		addMsgBoxString("EP2_ESEQ_PART4");
+
 
 		m_mustsetup = false;
 	}

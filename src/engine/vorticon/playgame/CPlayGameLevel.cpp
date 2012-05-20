@@ -29,7 +29,7 @@ void CPlayGameVorticon::processInLevel()
 		// If the player touched a hint trigger in which we have to show a Message, do it so
 		std::string hinttext;
 		if( (hinttext=m_Player[i].pollHintMessage()) != "")
-			m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString(hinttext), false, true) );
+			mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString(hinttext), false, true) );
 
 		// Check if the first player is dead, and if the others also are...
 		if(i==0) m_alldead = (m_Player[i].pdie == PDIE_DEAD);
@@ -83,7 +83,7 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 		mMap->m_Dark = false;
 		g_pMusicPlayer->stop();
 		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
-		mp_Finale = new CTantalusRay(mMap, m_Object, *mp_ObjectAI);
+		mpFinale = new CTantalusRay(mMessageBoxes, mMap, m_Object, *mp_ObjectAI);
 		m_gameover = true;
 	}
 	else if (trigger == LVLTRIG_BRIDGE)

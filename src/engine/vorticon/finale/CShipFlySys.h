@@ -53,7 +53,8 @@ typedef struct stShipQueue
 	int flag1;
 } stShipQueue;
 
-class CShipFlySys {
+class CShipFlySys
+{
 public:
 	CShipFlySys(CPlayer &Player, SmartPointer<CMap> &pMap, int ship_rightsprite, int ship_leftsprite);
 	void addShipQueue(int cmd, int time, int flag1);
