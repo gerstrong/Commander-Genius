@@ -125,7 +125,8 @@ const unsigned int KEYTABLE_SIZE = 160;
 
 #define ETYPE_KEYBOARD	 	0
 #define ETYPE_JOYAXIS 		1
-#define ETYPE_JOYBUTTON 	5
+#define ETYPE_JOYBUTTON 	2
+#define ETYPE_JOYHAT	 	3
 
 typedef struct stInputCommand
 {
@@ -141,7 +142,8 @@ typedef struct stInputCommand
 	unsigned short joybutton;
 	int joyvalue;	// in which direction the axis needs to be moved
 	int joymotion;	// in which direction the axis is really moved
-}stInputCommand;
+	int joyhatval;	// in which direction the hat is really moved
+} stInputCommand;
 
 class CInput : public CSingleton<CInput>
 {
@@ -217,7 +219,8 @@ private:
 	bool firsttime_immediate_keytable[KEYTABLE_SIZE];
 
 	void processKeys(int value);
-	void processJoystickAxis(void);
+	void processJoystickAxis();
+	void processJoystickHat();
 	void processJoystickButton(int value);
 
 	void processMouse();

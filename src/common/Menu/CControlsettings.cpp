@@ -108,7 +108,7 @@ void CControlsettings::release()
 
 // Movements Parts of the Control Settings
 CControlSettingsMovement::CControlSettingsMovement(const int selectedPlayer) :
-CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
+CBaseMenu( CRect<float>(0.01f, (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
 mSelectedPlayer(selectedPlayer)
 {}
 
@@ -154,7 +154,7 @@ void CControlSettingsMovement::release()
 
 // Movements Parts of the Control Settings
 CControlSettingsButtons::CControlSettingsButtons(const int selectedPlayer) :
-CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS+2)*0.06f) ),
+CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS/2.0f+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
 mSelectedPlayer(selectedPlayer)
 {}
 

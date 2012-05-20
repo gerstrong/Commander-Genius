@@ -16,7 +16,8 @@
 #include <vector>
 #include <SDL.h>
 
-class CEndingEp1 : public CFinale {
+class CEndingEp1 : public CFinale
+{
 public:
 	CEndingEp1(const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, bool &hideobjects, std::vector<CObject*> &Object);
 	void process();

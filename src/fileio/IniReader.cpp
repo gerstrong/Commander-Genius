@@ -27,7 +27,8 @@ IniReader::IniReader(const std::string& filename, KeywordList& keywords) : m_fil
 
 IniReader::~IniReader() {}
 
-bool IniReader::Parse() {
+bool IniReader::Parse()
+{
 	FILE* f = OpenGameFile(m_filename, "r");
 	if(f == NULL)
 		return false;

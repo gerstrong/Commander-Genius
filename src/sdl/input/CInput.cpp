@@ -160,23 +160,24 @@ bool CInput::startJoyDriver()
 	}
 	else
 	{
-		int i=0;
-		size_t joynum;
-		joynum = SDL_NumJoysticks();
-		if(joynum)
+		const size_t joyNum = SDL_NumJoysticks();
+		if( joyNum > 0 )
 		{
-			g_pLogFile->ftextOut("Detected %i joystick(s).<br>\n", joynum );
+			SDL_JoystickEventState(SDL_ENABLE);
+			g_pLogFile->ftextOut("Detected %i joystick(s).<br>\n", joyNum );
 			g_pLogFile->textOut("The names of the joysticks are:<br>");
 
-			for( i=0; i < SDL_NumJoysticks(); i++ )
+			for( size_t i=0; i < joyNum; i++ )
+			{
 				g_pLogFile->ftextOut("    %s<br>", SDL_JoystickName(i));
 
-			SDL_JoystickEventState(SDL_ENABLE);
+				SDL_Joystick *pJoystick = SDL_JoystickOpen(i);
+				mp_Joysticks.push_back(pJoystick);
 
-			for(size_t c=0 ; c<joynum ; c++)
-			{
-				SDL_Joystick *p_Joystick = SDL_JoystickOpen(c);
-				mp_Joysticks.push_back(p_Joystick);
+				g_pLogFile->ftextOut("     Axes: %i<br>", SDL_JoystickNumAxes(pJoystick));
+				g_pLogFile->ftextOut("     Buttons: %i <br>", SDL_JoystickNumButtons(pJoystick));
+				g_pLogFile->ftextOut("     Balls: %i <br>", SDL_JoystickNumBalls(pJoystick));
+				g_pLogFile->ftextOut("     Hats: %i<br>", SDL_JoystickNumHats(pJoystick));
 			}
 		}
 		else
@@ -299,6 +300,10 @@ std::string CInput::getEventName(int command, unsigned char input)
 	{
 		buf = "Joy" + itoa(InputCommand[input][command].which) + "-B" + itoa(InputCommand[input][command].joybutton);
 	}
+	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYHAT)
+	{
+		buf = "Joy" + itoa(InputCommand[input][command].which) + "-H" + itoa(InputCommand[input][command].joyhatval);
+	}
 	else // In case only keyboard was triggered
 	{
 		//buf = "Key ";
@@ -389,11 +394,13 @@ bool CInput::readNewEvent(Uint8 device, int command)
 				exit(0);
 #endif
 				break;
+
 			case SDL_KEYDOWN:
 				lokalInput.joyeventtype = ETYPE_KEYBOARD;
 				lokalInput.keysym = Event.key.keysym.sym;
 				return true;
 				break;
+
 			case SDL_JOYBUTTONDOWN:
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
@@ -405,11 +412,20 @@ bool CInput::readNewEvent(Uint8 device, int command)
 				return true;
 #endif
 				break;
+
 			case SDL_JOYAXISMOTION:
 				lokalInput.joyeventtype = ETYPE_JOYAXIS;
 				lokalInput.joyaxis = Event.jaxis.axis;
 				lokalInput.which = Event.jaxis.which;
 				lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
+				return true;
+				break;
+
+			case SDL_JOYHATMOTION:
+				lokalInput.joyeventtype = ETYPE_JOYHAT;
+				lokalInput.joyhatval = Event.jhat.value;
+				lokalInput.which = Event.jhat.which;
+
 				return true;
 				break;
 		}
@@ -462,6 +478,11 @@ void CInput::pollEvents()
 		case SDL_JOYBUTTONUP:
 			processJoystickButton(0);
 			break;
+
+		case SDL_JOYHATMOTION:
+			processJoystickHat();
+			break;
+
 #ifdef MOUSEWRAPPER
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
@@ -589,6 +610,24 @@ void CInput::processJoystickAxis(void)
 					else
 						InputCommand[j][i].active = false;
 				}
+			}
+		}
+	}
+}
+
+void CInput::processJoystickHat()
+{
+	for(int j=0 ; j<NUM_INPUTS ; j++)
+	{
+		for(int i=0 ; i<MAX_COMMANDS ; i++)
+		{
+			// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
+			if(InputCommand[j][i].joyeventtype == ETYPE_JOYHAT)
+			{
+				InputCommand[j][i].active = false;
+				// Joystick hats are configured for this event !!
+				if(Event.jhat.value == InputCommand[j][i].joyhatval && Event.jhat.which == InputCommand[j][i].which )
+					InputCommand[j][i].active = true;
 			}
 		}
 	}
