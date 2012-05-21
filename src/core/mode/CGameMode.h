@@ -68,4 +68,5 @@ public:
 	virtual void init() = 0;
 };
 
+
 #endif /* CGAMEMODE_H_ */

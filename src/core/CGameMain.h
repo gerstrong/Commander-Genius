@@ -18,6 +18,8 @@ public:
 
 protected:
 
+	void switchToGamePlayMode();
+
 	void init();
 	void process();
 

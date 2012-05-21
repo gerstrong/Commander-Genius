@@ -46,14 +46,6 @@ void CGamePassiveMode::init()
 
 }
 
-void CGamePassiveMode::switchToGamePlayMode()
-{
-	const int episode = g_pBehaviorEngine->getEpisode();
-	//const int Numplayers = mp_Passive->getNumPlayers();
-	const int Numplayers = 1;
-	std::string DataDirectory = mpPassive->getGamePath();
-	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
-}
 
 void CGamePassiveMode::process()
 {
@@ -64,37 +56,11 @@ void CGamePassiveMode::process()
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	if(!EventContainer.empty())
+	/*if(!EventContainer.empty())
 	{
 
-		if( NewGamePlayersEvent* pLauncher = EventContainer.occurredEvent<NewGamePlayersEvent>() )
-		{
-			EventContainer.pop_Event();
-			g_pBehaviorEngine->mPlayers = pLauncher->mSelection;
-			EventContainer.add( new OpenMenuEvent(new CDifficultySelection) );
-			return;
-		}
 
-		if( StartNewGameEvent* pStart = EventContainer.occurredEvent<StartNewGameEvent>() )
-		{
-
-			EventContainer.pop_Event();
-			g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
-			switchToGamePlayMode();
-			return;
-		}
-
-
-		if( EventContainer.occurredEvent<LoadGameEvent>() )
-		{
-			// In this case let's pop this event and add the same one, the way the loading is finished within the playgame object
-			EventContainer.pop_Event();
-			switchToGamePlayMode();
-
-			// The same caught event is pushed again but this time it will be polled by the GamePlay object which in the next cycles will be running!
-			EventContainer.add( new LoadGameEvent() );
-		}
-	}
+	}*/
 
 	// check here what the player chose from the menu over the passive mode.
 	// NOTE: Demo is not part of playgame anymore!!

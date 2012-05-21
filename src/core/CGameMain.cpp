@@ -12,10 +12,25 @@
 #include "engine/infoscenes/CHighScores.h"
 #include "core/mode/CGameMode.h"
 #include "common/Menu/CMenuController.h"
+#include "common/Menu/CSelectionMenu.h"
 #include "sdl/CVideoDriver.h"
+
+
+void CGameMain::switchToGamePlayMode()
+{
+	const int episode = g_pBehaviorEngine->getEpisode();
+	//const int Numplayers = mp_Passive->getNumPlayers();
+	const int Numplayers = 1;
+	std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
+	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
+}
+
+
 
 void CGameMain::init()
 {}
+
+
 
 
 void CGameMain::process()
@@ -26,7 +41,7 @@ void CGameMain::process()
 	if( !EventContainer.empty() )
 	{
 
-		if( GMSwitchToPassiveMode* p_Passive = EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
+		if( EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
 		{
 			mpGameMode = new CGamePassiveMode();
 			mpGameMode->init();
@@ -50,6 +65,34 @@ void CGameMain::process()
 			EventContainer.pop_Event();
 			EventContainer.add( new CloseAllMenusEvent() );
 			return;
+		}
+		else if( NewGamePlayersEvent* pLauncher = EventContainer.occurredEvent<NewGamePlayersEvent>() )
+		{
+			EventContainer.pop_Event();
+			g_pBehaviorEngine->mPlayers = pLauncher->mSelection;
+			EventContainer.add( new OpenMenuEvent(new CDifficultySelection) );
+			return;
+		}
+
+		else if( StartNewGameEvent* pStart = EventContainer.occurredEvent<StartNewGameEvent>() )
+		{
+
+			EventContainer.pop_Event();
+			g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
+			switchToGamePlayMode();
+			return;
+		}
+
+		else if( EventContainer.occurredEvent<LoadGameEvent>() &&
+				 (dynamic_cast<CGamePlayMode*>(mpGameMode.get()) == NULL) ) // If GamePlayMode is not running but loading is requested...
+		{
+			// In this case let's pop this event and add the same one, the way the loading is finished within the playgame object
+			EventContainer.pop_Event();
+
+			switchToGamePlayMode();
+
+			// The same caught event is pushed again but this time it will be polled by the GamePlay object which in the next cycles will be running!
+			EventContainer.add( new LoadGameEvent() );
 		}
 
 

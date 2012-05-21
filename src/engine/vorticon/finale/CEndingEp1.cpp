@@ -203,7 +203,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		m_Player[0].hideplayer = false;
 		x = 48<<CSF;
 		y = 23<<CSF;
-		m_Player[0].moveTo(VectorD2<int>(x,y));
+		m_Player[0].moveTo( VectorD2<int>(x,y) );
 
 		mpMap->gotoPos((x>>STC)-100, (y>>STC)-160);
 

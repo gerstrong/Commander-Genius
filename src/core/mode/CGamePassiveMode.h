@@ -20,7 +20,6 @@ public:
 	CGamePassiveMode();
 
 	void init();
-	void switchToGamePlayMode();
 	void process();
 
 private:
