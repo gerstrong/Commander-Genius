@@ -37,7 +37,7 @@ CGameLauncher::CGameLauncher()
 bool CGameLauncher::init()
 {
     bool gamedetected = false;
-	
+
     // Scan for games...
     m_DirList.clear();
     m_Entries.clear();
@@ -60,24 +60,28 @@ bool CGameLauncher::init()
         gamedetected = true;
     g_pResourceLoader->setPermilage(900);
 
+    if(!gamedetected)
+    	return false;
+
     // Save any custom labels
     putLabels();
 
-	CGUITextSelectionList *List = new CGUITextSelectionList();
+	CGUITextSelectionList *list = new CGUITextSelectionList();
 
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
     for( ; it != m_Entries.end() ; it++	)
     {
-    	List->addText(it->name);
+    	list->addText(it->name);
     }
 
+    list->setConfirmButtonEvent(new GMStart(list->mSelection));
 
 
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-	mpLauncherDialog->addControl(List, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
+	mpLauncherDialog->addControl(list, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
 	mpLauncherDialog->addControl(new CGUIButton( "Exit", new GMQuit() ),
 												CRect<float>(0.1f, 0.915f, 0.2f, 0.07f) );
-	mpLauncherDialog->addControl(new CGUIButton( "Ok", new GMStart(List->mSelection) ),
+	mpLauncherDialog->addControl(new CGUIButton( "Ok", new GMStart(list->mSelection) ),
 												CRect<float>(0.7f, 0.915f, 0.2f, 0.07f) );
 
    	g_pResourceLoader->setPermilage(1000);
@@ -211,7 +215,18 @@ void CGameLauncher::process()
         return;
     }
 
-    mpLauncherDialog->processLogic();
+
+	// Command (Keyboard/Joystick) are handled here
+	for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
+	{
+		if( g_pInput->getPressedCommand(cmd) )
+		{
+			mpLauncherDialog->sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+			break;
+		}
+	}
+
+	mpLauncherDialog->processLogic();
 
 	if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
 	{

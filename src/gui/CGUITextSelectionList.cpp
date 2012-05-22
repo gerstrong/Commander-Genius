@@ -6,12 +6,42 @@
  */
 
 #include "CGUITextSelectionList.h"
+#include "common/CBehaviorEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/input/InputEvents.h"
 #include "sdl/input/CInput.h"
 
 const float TEXT_HEIGHT = 10.0f;
+
+void CGUITextSelectionList::setConfirmButtonEvent(const SmartPointer<CEvent> ev)
+{
+	mConfirmEvent = ev;
+}
+
+void CGUITextSelectionList::sendEvent(const InputCommands command)
+{
+	if(command == IC_UP)
+	{
+		mSelection--;
+
+		if(mSelection < 0)
+			mSelection = mItemList.size()-1;
+	}
+	else if(command == IC_DOWN)
+	{
+		mSelection++;
+
+		if(mSelection >= static_cast<int>(mItemList.size()) )
+			mSelection = 0;
+	}
+	else if(command == IC_STATUS || command == IC_JUMP)
+	{
+		if(!mConfirmEvent.empty())
+			g_pBehaviorEngine->m_EventList.add(mConfirmEvent);
+	}
+
+}
 
 void CGUITextSelectionList::addText(const std::string &text)
 {
@@ -22,7 +52,7 @@ void CGUITextSelectionList::processLogic()
 {
 	// Here we check if the mouse-cursor/Touch entry clicked on something!!
 
-	const float bw = g_pVideoDriver->getGameResolution().w;
+	//const float bw = g_pVideoDriver->getGameResolution().w;
 	const float bh = g_pVideoDriver->getGameResolution().h;
 
 	const float fx = mRect.x;

@@ -21,6 +21,9 @@ public:
 	mHoverSelection(0),
 	mSelection(0) {}
 
+	void setConfirmButtonEvent(const SmartPointer<CEvent> ev);
+
+	void sendEvent(const InputCommands command);
 	void addText(const std::string &text);
 	void processLogic();
 	void processRender(const CRect<float> &RectDispCoordFloat);
@@ -29,6 +32,8 @@ public:
 
 	int mHoverSelection;
 	int mSelection;
+
+	SmartPointer<CEvent> mConfirmEvent;
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H_ */
