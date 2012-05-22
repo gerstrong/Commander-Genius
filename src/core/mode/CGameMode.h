@@ -19,7 +19,8 @@
 // Events Structure  //
 ///////////////////////
 // This event switches to the PassiveMode
-struct GMSwitchToPassiveMode : CEvent {
+struct GMSwitchToPassiveMode : CEvent
+{
 	const std::string m_DataDirectory;
 	const int m_Episode;
 	GMSwitchToPassiveMode( const std::string& DataDirectory, const int& Episode ) :
@@ -46,7 +47,7 @@ struct GMSwitchToPlayGameMode : CEvent
 // It's a simple quit event which will force CG to close the App
 struct GMQuit : CEvent {};
 
-// It's a simple quit event which will force CG to close the App
+// It's a simple start event which will force CG launch a game from a specified slot
 struct GMStart : CEvent
 {
 	GMStart(int &Slot) :

@@ -29,7 +29,7 @@ CGUIDialog::~CGUIDialog()
 {
 	CVideoDriver *pVideoDriver = CVideoDriver::GetNoPtrChk();
 	if( pVideoDriver ) // This checks if the video object still exists, because if
-	{								   // deleting drawing routine, it is not needed anymore
+	{				   // deleting drawing routine, it is not needed anymore
 		pVideoDriver->clearDrawingTasks();
 	}
 }

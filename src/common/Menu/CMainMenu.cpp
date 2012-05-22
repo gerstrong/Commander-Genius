@@ -16,6 +16,7 @@
 #include "common/CBehaviorEngine.h"
 #include "gui/CGUIButton.h"
 #include "core/mode/CGameMode.h"
+#include "core/CGameLauncherMenu.h"
 
 
 CMainMenu::CMainMenu( const bool openedGamePlay ) :
@@ -44,6 +45,8 @@ CBaseMenu( CRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 
 	mpMenuDialog->addControl(new CGUIButton( "Info",
 												new OpenMenuEvent( new CHelpMenu() ) ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "End Game", new GMSwitchToGameLauncher() ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ) );
 

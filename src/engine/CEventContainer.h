@@ -17,6 +17,8 @@
 
 class CEventContainer {
 public:
+
+	size_t size() { return m_EventList.size(); }
 	bool empty() { return m_EventList.empty(); }
 	void clear() { m_EventList.clear(); }
 	void add(const SmartPointer<CEvent>& ev) { m_EventList.push_back(ev); }

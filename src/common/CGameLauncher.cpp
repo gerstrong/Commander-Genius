@@ -23,6 +23,7 @@
 
 CGameLauncher::CGameLauncher()
 {
+	g_pBehaviorEngine->setEpisode(0);
     m_mustquit      = false;
     m_chosenGame    = -1;
     m_ep1slot       = -1;

@@ -13,6 +13,12 @@
 #include "sdl/music/CMusic.h"
 
 
+void CMenuController::emptyMenuStack()
+{
+	while(!mMenuStack.empty())
+		popBackMenu();
+}
+
 void CMenuController::process()
 {
 
@@ -66,8 +72,7 @@ void CMenuController::process()
 
 		if( EventContainer.occurredEvent<CloseAllMenusEvent>() )
 		{
-			while(!mMenuStack.empty())
-				popBackMenu();
+			emptyMenuStack();
 
 			EventContainer.pop_Event();
 			g_pMusicPlayer->play();

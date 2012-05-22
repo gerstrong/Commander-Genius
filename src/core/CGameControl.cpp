@@ -21,6 +21,8 @@
 #include "mode/CGamePlayMode.h"
 #include "mode/CGamePassiveMode.h"
 
+#include "sdl/CVideoDriver.h"
+
 
 #include "arguments.h"
 
@@ -89,6 +91,7 @@ void CGameControl::process()
 
 		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 		{
+			mMenuController.emptyMenuStack();
 			mpEngine = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );
 			mpEngine->init();
 			EventContainer.pop_Event();

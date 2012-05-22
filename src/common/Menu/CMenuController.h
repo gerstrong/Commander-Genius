@@ -41,6 +41,8 @@ class CMenuController
 public:
 	CMenuController() : mOpenedGamePlay(false) {}
 
+	void emptyMenuStack();
+
 	void process();
 
 	bool active()

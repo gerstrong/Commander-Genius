@@ -44,7 +44,8 @@ private:
 
 // Events
 // This event switches to the GameLauncher
-struct GMSwitchToGameLauncher : CEvent {
+struct GMSwitchToGameLauncher : CEvent
+{
 	const int m_ChosenGame;
 	const int m_StartLevel;
 	GMSwitchToGameLauncher(	const int ChosenGame=-1, const int StartLevel=-1 ) :
