@@ -18,28 +18,15 @@ namespace vorticon
 class CPassiveVort : public CPassive
 {
 public:
-	CPassiveVort();
 
 	bool init(char mode = INTRO);
 
 	void process();
 
-	void cleanup();
-
 private:
-	CIntro *mp_IntroScreen;
-	CTitle *mp_TitleScreen;
-	CTilemap *mp_Tilemap;
+	SmartPointer<CIntro> mpIntroScreen;
+	SmartPointer<CTitle> mpTitleScreen;
 	SmartPointer<CMap> mpMap;
-	stOption *mp_Option;
-
-	SDL_Surface *mp_Scrollsurface;
-
-	int m_textsize;
-	bool m_GoDemo;
-	char *m_text;
-	bool m_RestartVideo;
-	std::vector<CObject*> mObject;
 };
 
 }
