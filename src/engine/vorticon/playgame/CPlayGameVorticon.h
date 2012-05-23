@@ -67,7 +67,7 @@ public:
 	void drawAllElements();
 	void handleFKeys();
 	void verifyFinales();
-	void collectHighScoreInfo();
+	void collectHighScoreInfo(SmartPointer<CHighScores> &pHighScores);
 	void createFinale();
 
 	// Collision stuff stored in CPlayGameVorticonCollision.cpp
@@ -111,7 +111,6 @@ private:
 	std::list< SmartPointer<CMessageBoxVort> > mMessageBoxes;
 	bool m_showKeensLeft;
 	std::vector<CObject*> m_Object;
-	SmartPointer<CHighScores> mpHighScores;
 	CHUD *mp_HUD;
 	SmartPointer<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;

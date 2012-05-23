@@ -227,16 +227,6 @@ public:
 	SmartPointer& operator=(const SmartPointer<_Derived>& pt)
 	{
 		// okay before we do this check that child/parent relation
-
-#ifdef DEBUG
-		if( (!dynamic_cast<_Derived*>(obj) ) && !static_cast<_Derived*>(obj))
-		{
-			errors << "Error these two classes you are passing here are not related Sorry!";
-			assert(false);
-		}
-#endif
-
-
 		if(mutex == pt.Mutex()) return *this; // ignore this case
 		reset();
 		mutex = pt.Mutex();
@@ -244,6 +234,15 @@ public:
 		{
 			lock();
 			obj = pt.Obj(); refCount = pt.RefCount();
+
+#ifdef DEBUG
+			if( (!dynamic_cast<_Type*>(obj) ) && !static_cast<_Type*>(obj) )
+			{
+				errors << "Error these two classes you are passing here are not related Sorry!";
+				assert(false);
+			}
+#endif
+
 			incCounter();
 			unlock();
 		} else { obj = NULL; refCount = NULL; }

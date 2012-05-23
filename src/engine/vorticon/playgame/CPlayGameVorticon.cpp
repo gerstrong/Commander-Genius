@@ -11,6 +11,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/input/CInput.h"
+#include "core/mode/CGameMode.h"
 #include "common/CMapLoader.h"
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
@@ -65,6 +66,7 @@ mp_HUD(NULL)
 void CPlayGameVorticon::setupPlayers()
 {
 	m_showKeensLeft=false;
+	mpKeenLeftSfc.tryDeleteData();
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player!=m_Player.end() ; it_player++ )
 	for (int i=0 ; i<m_NumPlayers ; i++)
@@ -232,10 +234,11 @@ void CPlayGameVorticon::process()
 
 			if( g_pInput->getPressedAnyCommand() )
 			{
-				mpHighScores = new CHighScores();
-				collectHighScoreInfo();
+				SmartPointer<CHighScores> pHighScores = new CHighScores();
+				collectHighScoreInfo(pHighScores);
+				g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
+				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
 
-				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( mpHighScores ));
 			}
 		}
 		else // Bitmap must first be created
@@ -450,7 +453,7 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
 	m_Object.push_back(teleporter);
 }
 
-void CPlayGameVorticon::collectHighScoreInfo()
+void CPlayGameVorticon::collectHighScoreInfo(SmartPointer<CHighScores> &pHighScores)
 {
 	if(m_Episode == 1)
 	{
@@ -461,7 +464,7 @@ void CPlayGameVorticon::collectHighScoreInfo()
 		extra[2] = m_Player[0].inventory.HasVacuum;
 		extra[3] = m_Player[0].inventory.HasWiskey;
 
-		mpHighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
+		pHighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
 	}
 	else if(m_Episode == 2)
 	{
@@ -476,10 +479,10 @@ void CPlayGameVorticon::collectHighScoreInfo()
 		if (mp_level_completed[15]) saved_cities++;
 		if (mp_level_completed[16]) saved_cities++;
 
-		mpHighScores->writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
+		pHighScores->writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
 	}
 	else
-		mpHighScores->writeHighScoreCommon(m_Player[0].inventory.score);
+		pHighScores->writeHighScoreCommon(m_Player[0].inventory.score);
 }
 
 // This function draws the objects that need to be seen on the screen
@@ -540,10 +543,10 @@ void CPlayGameVorticon::drawAllElements()
 
 			if(!m_gameover)
 			{
-				mpHighScores = new CHighScores();
-				collectHighScoreInfo();
-
-				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( mpHighScores ));
+				SmartPointer<CHighScores> pHighScores = new CHighScores();
+				collectHighScoreInfo(pHighScores);
+				g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
+				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
 			}
 		}
 
