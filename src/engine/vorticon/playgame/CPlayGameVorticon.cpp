@@ -180,6 +180,8 @@ void CPlayGameVorticon::process()
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
 
+
+
 	if( mpFinale.empty() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if(mMessageBoxes.empty() && !StatusScreenOpen())
@@ -231,8 +233,9 @@ void CPlayGameVorticon::process()
 			if( g_pInput->getPressedAnyCommand() )
 			{
 				mpHighScores = new CHighScores();
-
 				collectHighScoreInfo();
+
+				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( mpHighScores ));
 			}
 		}
 		else // Bitmap must first be created
@@ -539,6 +542,8 @@ void CPlayGameVorticon::drawAllElements()
 			{
 				mpHighScores = new CHighScores();
 				collectHighScoreInfo();
+
+				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( mpHighScores ));
 			}
 		}
 

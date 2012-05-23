@@ -63,7 +63,8 @@ extern std::map< void *, SDL_mutex * > * SmartPointer_CollisionDetector;
 
 template < typename _Type, typename _SpecificInitFunctor = NopFunctor<void*> >
 class SmartPointer
-{ //friend class SmartObject<_Type>;
+{
+	//friend class SmartObject<_Type>;
 private:
 	_Type* obj;
 	int* refCount;
@@ -177,6 +178,7 @@ private:
 	}
 	
 public:
+
 	SmartPointer() : obj(NULL), refCount(NULL), mutex(NULL) {
 		//printf("SmartPointer::construc(%10p %10p %10p %10p %3i)\n", this, obj, refCount, mutex, refCount?*refCount:-99);
 		_SpecificInitFunctor()(this);
@@ -188,8 +190,21 @@ public:
 	
 	// Default copy constructor and operator=
 	// If you specify any template<> params here these funcs will be silently ignored by compiler
-	SmartPointer(const SmartPointer& pt) : obj(NULL), refCount(NULL), mutex(NULL) { operator=(pt); }
-	SmartPointer& operator=(const SmartPointer& pt) {
+	SmartPointer(const SmartPointer& pt) : obj(NULL), refCount(NULL), mutex(NULL)
+	{
+		operator=(pt);
+	}
+
+	// Constructor with a derived class as template
+	template <typename _Derived>
+	SmartPointer(const SmartPointer<_Derived>& pt) : obj(NULL), refCount(NULL), mutex(NULL)
+	{
+		operator=(pt);
+	}
+
+
+	SmartPointer& operator=(const SmartPointer& pt)
+	{
 		if(mutex == pt.mutex) return *this; // ignore this case
 		reset();
 		mutex = pt.mutex;
@@ -201,7 +216,41 @@ public:
 		} else { obj = NULL; refCount = NULL; }
 		return *this;
 	}
+
+
+	_Type* Obj() const { return obj; }
+	int* RefCount() const { return refCount; }
+	SDL_mutex* Mutex() const { return mutex; }
+
+	// This version mixes two different pointer types. That's dangerous yet valid, if there is a class connection (child or parent class)
+	template <typename _Derived>
+	SmartPointer& operator=(const SmartPointer<_Derived>& pt)
+	{
+		// okay before we do this check that child/parent relation
+
+#ifdef DEBUG
+		if( (!dynamic_cast<_Derived*>(obj) ) && !static_cast<_Derived*>(obj))
+		{
+			errors << "Error these two classes you are passing here are not related Sorry!";
+			assert(false);
+		}
+#endif
+
+
+		if(mutex == pt.Mutex()) return *this; // ignore this case
+		reset();
+		mutex = pt.Mutex();
+		if(mutex)
+		{
+			lock();
+			obj = pt.Obj(); refCount = pt.RefCount();
+			incCounter();
+			unlock();
+		} else { obj = NULL; refCount = NULL; }
+		return *this;
+	}
 	
+
 	// WARNING: Be careful, don't assign a pointer to different SmartPointer objects,
 	// else they will get freed twice in the end. Always copy the SmartPointer itself.
 	// In short: SmartPointer ptr(SomeObj); SmartPointer ptr1( ptr.get() ); // It's wrong, don't do that.
@@ -258,9 +307,10 @@ public:
 	
 };
 
-/*
- template< typename _Obj>
- class SmartObject : public SmartPointer< SmartObject<_Obj> > {
+
+/*template< typename _Obj>
+class SmartObject : public SmartPointer< SmartObject<_Obj> >
+{
  public:
  typedef SmartPointer< SmartObject<_Obj> > SmartPtrType;
  SmartObject() { SmartPtrType :: operator =( this ); }
@@ -268,9 +318,8 @@ public:
  private:
  // overwrite to disable this op=
  SmartPtrType& operator=(const SmartPtrType& pt) { assert(false); }
- 
  };
- */
+*/
 
 
 

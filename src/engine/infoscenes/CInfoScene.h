@@ -32,10 +32,10 @@ protected:
 
 struct StartInfoSceneEvent : CEvent
 {
-	StartInfoSceneEvent(CInfoScene *scene) :
+	StartInfoSceneEvent(SmartPointer<CInfoScene> scene) :
 		mpScene(scene) {}
 
-	CInfoScene *mpScene;
+	SmartPointer<CInfoScene> mpScene;
 };
 
 
