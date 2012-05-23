@@ -225,6 +225,7 @@ void CPlayGameVorticon::showKeensLeft()
 		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		{
 			m_showKeensLeft = false;
+			mpKeenLeftSfc.tryDeleteData();
 		}
 
 		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpKeenLeftSfc, NULL,  &keenleft_rect ) );

@@ -111,7 +111,7 @@ private:
 	std::list< SmartPointer<CMessageBoxVort> > mMessageBoxes;
 	bool m_showKeensLeft;
 	std::vector<CObject*> m_Object;
-	//CHighScores *mp_HighScores;
+	SmartPointer<CHighScores> mpHighScores;
 	CHUD *mp_HUD;
 	SmartPointer<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;

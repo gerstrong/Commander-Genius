@@ -230,7 +230,7 @@ void CPlayGameVorticon::process()
 
 			if( g_pInput->getPressedAnyCommand() )
 			{
-				//mp_HighScores = new CHighScores(true);
+				mpHighScores = new CHighScores();
 
 				collectHighScoreInfo();
 			}
@@ -451,14 +451,14 @@ void CPlayGameVorticon::collectHighScoreInfo()
 {
 	if(m_Episode == 1)
 	{
-		//bool extra[4];
+		bool extra[4];
 
-		/*extra[0] = m_Player[0].inventory.HasJoystick;
+		extra[0] = m_Player[0].inventory.HasJoystick;
 		extra[1] = m_Player[0].inventory.HasBattery;
 		extra[2] = m_Player[0].inventory.HasVacuum;
-		extra[3] = m_Player[0].inventory.HasWiskey;*/
+		extra[3] = m_Player[0].inventory.HasWiskey;
 
-		//mp_HighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
+		mpHighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
 	}
 	else if(m_Episode == 2)
 	{
@@ -473,10 +473,10 @@ void CPlayGameVorticon::collectHighScoreInfo()
 		if (mp_level_completed[15]) saved_cities++;
 		if (mp_level_completed[16]) saved_cities++;
 
-		//mp_HighScores->writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
+		mpHighScores->writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
 	}
-	//else
-		//mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
+	else
+		mpHighScores->writeHighScoreCommon(m_Player[0].inventory.score);
 }
 
 // This function draws the objects that need to be seen on the screen
@@ -537,7 +537,7 @@ void CPlayGameVorticon::drawAllElements()
 
 			if(!m_gameover)
 			{
-				//mp_HighScores = new CHighScores(true);
+				mpHighScores = new CHighScores();
 				collectHighScoreInfo();
 			}
 		}
@@ -584,8 +584,6 @@ void CPlayGameVorticon::cleanup()
 CPlayGameVorticon::~CPlayGameVorticon()
 {
 	m_Player.clear();
-	mpFinale = NULL;
-	mpGameoverBmp = NULL;
 	SAFE_DELETE(mp_ObjectAI);
 	SAFE_DELETE(mp_HUD);
 }
