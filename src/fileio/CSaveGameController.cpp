@@ -24,14 +24,6 @@ CSaveGameController::CSaveGameController()
 {
 	m_offset = 0;
 
-	const int spacelen = ((TEXT_WIDTH-6)/2);
-
-	for(int c=0 ; c<spacelen ; c++)
-		m_emptyString += " ";
-	m_emptyString += "EMPTY";
-	for(int c=0 ; c<spacelen ; c++)
-		m_emptyString += " ";
-
 	setGameDirectory(g_pBehaviorEngine->m_ExeFile.getDataDirectory());
 	setEpisode(g_pBehaviorEngine->getEpisode());
 }
@@ -57,9 +49,6 @@ Uint32 CSaveGameController::getDataSize(std::ifstream &StateFile) {
 }
 
 // Return a string that just says empty
-std::string CSaveGameController::getEmptyString()
-{	return m_emptyString;	}
-
 std::string CSaveGameController::getUnnamedSlotName()
 {
 	std::string text;
@@ -125,7 +114,7 @@ std::vector<std::string> CSaveGameController::getSlotList()
 			buf = getSlotName(*i);
 
 			if(pos+1 > filelist.size())
-				filelist.resize(pos+1, m_emptyString);
+				filelist.resize(pos+1, "");
 
 			filelist.at(pos) = buf;
 		}

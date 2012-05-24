@@ -43,10 +43,10 @@ drawButton(&CGUIInputText::drawNoStyle)
 
 void CGUIInputText::sendEvent(const InputCommands command)
 {
-	if(command == IC_STATUS)
+	/*if(command == IC_STATUS)
 	{
 		mTyping = !mTyping;
-	}
+	}*/
 }
 
 
@@ -78,8 +78,8 @@ void CGUIInputText::processLogic()
 		mButtonUp = false;
 	}
 
-	if(!mButtonDown)
-		mTyping = false;
+	/*if(!mButtonDown)
+		mTyping = false;*/
 
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
@@ -180,10 +180,6 @@ void CGUIInputText::processRender(const CRect<float> &RectDispCoordFloat)
 
 std::string CGUIInputText::getInputString()
 {
-
-	if( mText == "" )
-		return gpSaveGameController->getEmptyString();
-
 	std::string text;
 	text = mText;
 

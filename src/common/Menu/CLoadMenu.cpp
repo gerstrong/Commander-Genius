@@ -37,7 +37,7 @@ CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 
 	for( Uint32 i=1 ; i<=8 ; i++ )
 	{
-		std::string text = gpSaveGameController->getEmptyString();
+		std::string text = "Slot " + itoa(i);
 
 		if( i <= StateFileList.size() )
 		{

@@ -26,11 +26,6 @@
 #define OLDSAVEGAMEVERSION5		'5'
 #define OLDSAVEGAMEVERSION4		'4'
 
-// Savegame/Loadgame Menu common stuff
-const int MENU_WIDTH = 40;
-const int TEXT_WIDTH = 32;
-
-
 
 #define gpSaveGameController CSaveGameController::Get()
 
@@ -79,7 +74,6 @@ public:
 	bool load();
 	bool alreadyExits();
 	
-	std::string getEmptyString();
 	std::string getUnnamedSlotName();
 
 private:
@@ -97,7 +91,6 @@ private:
 	char m_Episode;
 	int m_Level;
 	Uint32 m_offset;
-	std::string m_emptyString;
 
 	std::vector<byte> m_datablock;
 };

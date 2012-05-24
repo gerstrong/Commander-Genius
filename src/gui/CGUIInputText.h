@@ -37,6 +37,9 @@ public:
 	std::string getText() const
 	{	return mText;	}
 
+	bool Typing() const { return mTyping; }
+	void setTypeMode( const bool value ) { mTyping = value; }
+
 private:
 
 	// Returns the string that has to be displayed on the gui

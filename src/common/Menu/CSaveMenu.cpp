@@ -19,15 +19,12 @@ CBaseMenu(CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
 mp_OverwriteMenu(NULL),
 m_overwrite(false)
 {
-
-	std::string text;
-
 	// Load the state-file list
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 
 	for(Uint32 i=1;i<=8;i++)
 	{
-		text = "";
+		std::string text = "Slot " + itoa(i);
 		if(i <= StateFileList.size())
 			text = StateFileList.at(i-1);
 
@@ -48,9 +45,17 @@ void CSaveMenu::sendEvent(SmartPointer<CEvent> command)
 		{
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
 			{
-				const CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
-				gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
-				g_pBehaviorEngine->EventList().add( new CloseAllMenusEvent() );
+				CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
+
+				if(pInput->Typing())
+				{
+					gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
+					g_pBehaviorEngine->EventList().add( new CloseAllMenusEvent() );
+				}
+				else
+				{
+					pInput->setTypeMode(true);
+				}
 				return;
 			}
 		}
