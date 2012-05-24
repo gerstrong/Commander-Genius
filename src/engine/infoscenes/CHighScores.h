@@ -27,6 +27,8 @@ public:
 
 	CHighScores();
 
+	void fetchScoreTable();
+
 	void init();
 	void teardown();
 
@@ -56,6 +58,7 @@ private:
 	// This cycle will wait for the input of name and hit of enter
 	bool m_blink;
 	int m_blinkctr;
+	bool mTableLoaded;
 
 	void (CHighScores::*mp_process)();
 	

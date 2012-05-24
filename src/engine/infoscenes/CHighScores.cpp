@@ -20,26 +20,22 @@
 
 const int HIGHSCORETABLE_X = 1344;
 const int HIGHSCORETABLE_Y = 32;
-const int BLINK_TIME = 60;
+const int BLINK_TIME = 25;
 
 using namespace std;
 
 
 CHighScores::CHighScores() :
 m_Place(0),
-m_blink(true),
-m_blinkctr(0)
+m_blink(false),
+m_blinkctr(0),
+mTableLoaded(false)
 {}
 
 
-void CHighScores::init()
+void CHighScores::fetchScoreTable()
 {
-	m_CursorPosition = 0;
-	m_CurrentLetter = 32;
-	
-	bool saving_mode = false;
-
-	// Set default Scores
+	// Set default Scores, but something might when a saved table is loaded
 	m_Name[0] = "Gerstrong";
 	m_Name[1] = "Tulip";
 	m_Name[2] = "Albert";
@@ -55,13 +51,28 @@ void CHighScores::init()
 	memset(m_Extra, 0, 8*4*sizeof(bool));
 	memset(m_Cities, 0, 8*sizeof(unsigned int));
 	
-	// Which process function will be cycled trough
+	// Which process function will be cycled trough? Yeah, just showing. But some
 	mp_process = &CHighScores::processShowing;
 	
 	m_Episode = g_pBehaviorEngine->getEpisode();
 	m_DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
 	
 	loadHighScoreTable();
+
+	mTableLoaded = true;
+}
+
+
+void CHighScores::init()
+{
+	m_CursorPosition = 0;
+	m_CurrentLetter = 32;
+
+	bool saving_mode = false;
+
+
+	if(!mTableLoaded)
+		fetchScoreTable();
 	
 	// Load the map for the background
 	mpMap = new CMap();
@@ -178,7 +189,17 @@ void CHighScores::process()
 		int x = (m_Episode == 3) ? 69 : 40;
 		int x2 = (m_Episode == 3) ? 255 : 202;
 		int y = (m_Episode == 2) ? 56 : 52;
-		Font.drawFont(sfc, m_Name[i], x, y+(i<<4), true);
+
+		std::string actualName = m_Name[i];
+
+		// This cleans up the text. We need that because otherwise when user deletes his name while writing
+		// it might leave tracks
+		Font.drawFont(sfc, std::string(13,' '), x, y+(i<<4), true);
+
+		if(i == m_Place)
+			actualName += (m_blink == true) ? "|" : " ";
+
+		Font.drawFont(sfc, actualName, x, y+(i<<4), true);
 		Font.drawFont(sfc, m_Score[i], x2-((m_Score[i].size())<<3), y+(i<<4), true);
 	}
 	
@@ -203,8 +224,7 @@ void CHighScores::processShowing()
 
 void CHighScores::processWriting()
 {
-	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
-	
+
 #ifndef NOKEYBOARD
 	// Get the input
 	if(g_pInput->getPressedIsTypingKey() && (m_Name[m_Place].length() < 13))
@@ -225,16 +245,13 @@ void CHighScores::processWriting()
 	}
 	
 	
-	int x = (m_Episode == 3) ? 69 : 40;
-	int y = (m_Episode == 2) ? 56 : 52;
-	if(m_blink)	g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+"|",x, y+(m_Place<<4), true);
-	else g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+" ",x, y+(m_Place<<4), true);
-	
-	if(m_blinkctr > BLINK_TIME){
+	if(m_blinkctr > BLINK_TIME)
+	{
 		m_blinkctr = 0;
 		m_blink = !m_blink;
 	}
-	else m_blinkctr++;
+	else
+		m_blinkctr++;
 #else
 	m_CurrentLetter = m_Name[m_Place].at(m_CursorPosition);
 	// Get the input

@@ -455,6 +455,8 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
 
 void CPlayGameVorticon::collectHighScoreInfo(SmartPointer<CHighScores> &pHighScores)
 {
+	pHighScores->fetchScoreTable();
+
 	if(m_Episode == 1)
 	{
 		bool extra[4];
