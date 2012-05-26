@@ -185,19 +185,19 @@ void CGUIButton::drawNoStyle(SDL_Rect& lRect)
 
 	if( mButtonUp )
 	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00BFBFBF );
+		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFBFBFBF );
 	}
 	else if( mButtonDown )
 	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
+		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFCFCFCF );
 	}
 	else if( mHovered )
 	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
+		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFDFDFDF );
 	}
 	else
 	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
+		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFFFFFFF );
 	}
 
 	// Now lets draw the text of the list control

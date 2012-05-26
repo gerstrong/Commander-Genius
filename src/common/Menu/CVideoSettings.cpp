@@ -98,7 +98,7 @@ void CVideoSettings::init()
 	mUserVidConf = g_pVideoDriver->getVidConfig();
 
 	// Load the config into the GUI
-	mpFPSSelection->setSelection( mUserVidConf.m_targetfps );
+	mpFPSSelection->setSelection( g_pTimer->getFrameRate() );
 	mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
 	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==GL_LINEAR ? "linear" : "nearest" );
 	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
@@ -121,7 +121,7 @@ void CVideoSettings::release()
 {
 	// Save up the changed stuff
 
-	mUserVidConf.m_targetfps = mpFPSSelection->getSelection();
+	g_pTimer->setFPS( mpFPSSelection->getSelection() );
 
 #ifdef USE_OPENGL
 	mUserVidConf.m_opengl_filter = mpOGLFilterSelection->getSelection() == "linear" ? GL_LINEAR : GL_NEAREST;

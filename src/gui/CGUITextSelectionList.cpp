@@ -97,7 +97,7 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 	displayRect.transform(RectDispCoordFloat);
 
 	SDL_Rect lRect = displayRect.SDLRect();
-	SDL_FillRect(Blitsurface, &lRect, 0x00FFFFFF);
+	SDL_FillRect(Blitsurface, &lRect, 0xFFFFFFFF);
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
@@ -112,7 +112,7 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 		if(mSelection == line)
 		{
 			lRect.y = ypos+(line*10)-1;
-			SDL_FillRect(Blitsurface, &lRect, 0x00C5C5F1);
+			SDL_FillRect(Blitsurface, &lRect, 0xFFC5C5F1);
 		}
 		Font.drawFont(Blitsurface, *it, xpos, ypos+(line*10), false);
 	}

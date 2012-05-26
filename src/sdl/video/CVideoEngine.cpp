@@ -29,10 +29,10 @@ bool CVideoEngine::init()
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
 	m_Mode = SDL_SWSURFACE;
 #elif defined(GP2X)
-	m_Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
+	m_Mode = SDL_HWSURFACE;
 #else
 	// Support for double-buffering
-	m_Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;
+	m_Mode = SDL_HWPALETTE | SDL_HWSURFACE;
 #endif
 
 	// Enable OpenGL
@@ -47,7 +47,12 @@ bool CVideoEngine::init()
 
 		m_Mode |= SDL_OPENGL;
 	}
+	else
 #endif
+	{
+		m_Mode |= SDL_DOUBLEBUF;
+	}
+
 
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(m_VidConfig.Fullscreen)

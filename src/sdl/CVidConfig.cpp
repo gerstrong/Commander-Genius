@@ -46,7 +46,6 @@ void CVidConfig::reset()
 #endif
 	m_ScaleXFilter=1;
 	Zoom=1;
-	m_targetfps = 60;	// Enable automatic frameskipping by default at 30
 
 #ifdef USE_OPENGL
 	m_opengl_filter = GL_NEAREST;
@@ -66,7 +65,6 @@ void CVidConfig::reset()
 	m_opengl = true;
 	Zoom = 1;
 	m_ScaleXFilter = 1;
-	m_targetfps = 30;
 	m_aspect_correction = false;
 #endif
 }

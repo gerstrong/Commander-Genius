@@ -49,7 +49,6 @@ public:
 	bool Fullscreen;
 	short m_ScaleXFilter;
 	unsigned short Zoom;
-	unsigned int m_targetfps;	// Used for automatic frame skipping
 	bool m_opengl;
 	bool m_aspect_correction;
 	bool m_special_fx;
