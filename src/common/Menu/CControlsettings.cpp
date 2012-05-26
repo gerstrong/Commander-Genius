@@ -73,7 +73,7 @@ public:
 
 
 CControlsettings::CControlsettings( const int selectedPlayer ) :
-CBaseMenu( CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
+CBaseMenu( CRect<float>(0.1f, 0.25f, 0.8f, 0.5f) ),
 mSelectedPlayer(selectedPlayer)
 {
 	CGUIButton *button;
@@ -87,7 +87,23 @@ mSelectedPlayer(selectedPlayer)
 	mpTwoButtonSwitch = new CGUISwitch( "Two Button Fire" );
 	mpTwoButtonSwitch->enable(g_pInput->getTwoButtonFiring(mSelectedPlayer-1));
 
+	mpAnalogSwitch = new CGUISwitch( "Analog Movement" );
+	mpAnalogSwitch->enable(g_pInput->isAnalog(mSelectedPlayer-1));
+
+	mpSuperPogoSwitch = new CGUISwitch( "Super Pogo" );
+	mpSuperPogoSwitch->enable(g_pInput->SuperPogo(mSelectedPlayer-1));
+
+	mpImpPogoSwitch = new CGUISwitch( "Impossible Pogo" );
+	mpImpPogoSwitch->enable(g_pInput->ImpossiblePogo(mSelectedPlayer-1));
+
+	mpAutoGunSwitch = new CGUISwitch( "Auto Gun" );
+	mpAutoGunSwitch->enable(g_pInput->AutoGun(mSelectedPlayer-1));
+
 	mpMenuDialog->addControl( mpTwoButtonSwitch );
+	mpMenuDialog->addControl( mpAnalogSwitch );
+	mpMenuDialog->addControl( mpSuperPogoSwitch );
+	mpMenuDialog->addControl( mpImpPogoSwitch );
+	mpMenuDialog->addControl( mpAutoGunSwitch );
 	mpMenuDialog->addControl( new CGUIButton( "Reset Controls",
 	 	 	 	 	 	 	 	 	 	 	  new ResetInputEvent(mSelectedPlayer-1) ) );
 
@@ -101,6 +117,10 @@ void CControlsettings::init()
 void CControlsettings::release()
 {
 	g_pInput->setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
+	g_pInput->enableAnalog(mSelectedPlayer-1, mpAnalogSwitch->isEnabled() );
+	g_pInput->setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
+	g_pInput->setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
+	g_pInput->setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
 	g_pInput->saveControlconfig();
 }
 

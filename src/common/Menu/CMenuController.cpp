@@ -103,14 +103,34 @@ void CMenuController::process()
 									new CControlsettings(players) ) );
 		}
 
-
 	}
 
 
+
+	// Process Menu if open
 	if( !mMenuStack.empty() )
 	{
 		mpMenu->process();
 	}
+
+
+	// If you click, then open the menu
+	if(!g_pInput->m_EventList.empty())
+	{
+		if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
+		{
+			// Here we check if the mouse-cursor/Touch entry clicked on our Button
+			if(mouseevent->Type == MOUSEEVENT_BUTTONUP && mMenuStack.empty())
+			{
+				EventContainer.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
+				g_pBehaviorEngine->setPause(true);
+				g_pMusicPlayer->pause();
+			}
+
+			g_pInput->m_EventList.pop_Event();
+		}
+	}
+
 
 }
 

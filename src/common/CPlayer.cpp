@@ -652,23 +652,23 @@ void CPlayer::ProcessInput()
 	
 	if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
 	{
-		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_LEFT) && mp_option[OPT_ANALOGJOYSTICK].value ? -g_pInput->getJoyValue(m_index, IC_LEFT) : 100;
+		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_LEFT) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_LEFT) : 100;
 		playcontrol[PA_X] -= newval;
 	}
 	else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
 	{
-		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_RIGHT) && mp_option[OPT_ANALOGJOYSTICK].value ? g_pInput->getJoyValue(m_index, IC_RIGHT) : 100;
+		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_RIGHT) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_RIGHT) : 100;
 		playcontrol[PA_X] += newval;
 	}
 	
 	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
 	{
-		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_DOWN) && mp_option[OPT_ANALOGJOYSTICK].value ? g_pInput->getJoyValue(m_index, IC_DOWN) : 100;
+		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_DOWN) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_DOWN) : 100;
 		playcontrol[PA_Y] += newval;
 	}
 	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
 	{
-		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_UP) && mp_option[OPT_ANALOGJOYSTICK].value ? -g_pInput->getJoyValue(m_index, IC_UP) : 100;
+		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_UP) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_UP) : 100;
 		playcontrol[PA_Y] -= newval;
 	}
 

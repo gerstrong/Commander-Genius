@@ -12,7 +12,7 @@
 
 
 COptions::COptions() :
-CBaseMenu( CRect<float>(0.1f, 0.24f, 0.8f, NUM_OPTIONS*0.05f) ),
+CBaseMenu( CRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
 mpOption(g_pBehaviorEngine->m_option)
 {
 

@@ -178,7 +178,19 @@ public:
 	bool getTwoButtonFiring(int player);
 	void setTwoButtonFiring(int player, bool value);
 
-	void cancelExitEvent(void);
+	bool isAnalog(const int player);
+	void enableAnalog(const int player, const bool value);
+
+	bool SuperPogo(const int player) { return mSuperPogo[player]; }
+	void setSuperPogo(const int player, const bool value) { mSuperPogo[player] = value; }
+
+	bool ImpossiblePogo(const int player) { return mImpPogo[player]; }
+	void setImpossiblePogo(const int player, const bool value) { mImpPogo[player] = value; }
+
+	bool AutoGun(const int player) { return mFullyAutomatic[player]; }
+	void setAutoGun(const int player, const bool value) { mFullyAutomatic[player] = value; }
+
+
 
 	std::string getEventName(int position, unsigned char input);
 	bool readNewEvent(Uint8 device, int position);
@@ -210,6 +222,10 @@ private:
 
 	stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS];
 	bool TwoButtonFiring[NUM_INPUTS];
+	bool mAnalogAxesMovement[NUM_INPUTS];
+	bool mSuperPogo[NUM_INPUTS];
+	bool mImpPogo[NUM_INPUTS];
+	bool mFullyAutomatic[NUM_INPUTS];
 
 	bool m_exit;
 	int m_cmdpulse;

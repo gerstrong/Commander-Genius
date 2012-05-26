@@ -417,9 +417,9 @@ void CPlayer::JumpAndPogo()
 					// jump high if JUMP key down, else bounce low
 					if (playcontrol[PA_JUMP])
 					{
-						if (!mp_option[OPT_SUPERPOGO].value)
+						if( !g_pInput->SuperPogo(m_index) )
 						{  // normal high pogo jump
-							if(playcontrol[PA_JUMP] > 12 || !mp_option[OPT_IMPPOGO].value)
+							if( playcontrol[PA_JUMP] > 12 || !g_pInput->ImpossiblePogo(m_index) )
 							{
 								if(!pogofirsttime)
 								{
@@ -733,7 +733,7 @@ void CPlayer::raygun()
 		ppogostick = false;            // put away pogo stick if out
 		
 		// limit how quickly shots can be fired
-		if ( !plastfire || mp_option[OPT_FULLYAUTOMATIC].value )
+		if ( !plastfire || g_pInput->AutoGun(m_index) )
 		{
 			if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ_FA) canRefire = true;
 			else canRefire = false;
@@ -894,7 +894,7 @@ void CPlayer::checkSolidDoors()
 	int my2 = getYDownPos();
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	for( size_t my=my1 ; my<my2 ; my+=(1<<STC) )
+	for( int my=my1 ; my<my2 ; my+=(1<<STC) )
 	{
 		if( (TileProperty[mp_Map->at(mx1>>CSF, my>>CSF)].behaviour>1 &&
 				TileProperty[mp_Map->at(mx1>>CSF, my>>CSF)].behaviour<6 ) )
@@ -903,7 +903,7 @@ void CPlayer::checkSolidDoors()
 		}
 	}
 
-	for( size_t my=my1 ; my<my2 ; my+=(1<<STC) )
+	for( int my=my1 ; my<my2 ; my+=(1<<STC) )
 	{
 		if( (TileProperty[mp_Map->at(mx2>>CSF, my>>CSF)].behaviour>1 &&
 				TileProperty[mp_Map->at(mx2>>CSF, my>>CSF)].behaviour<6 ) )
@@ -912,7 +912,7 @@ void CPlayer::checkSolidDoors()
 		}
 	}
 
-	for( size_t mx=mx1 ; mx<mx2 ; mx+=(1<<STC) )
+	for( int mx=mx1 ; mx<mx2 ; mx+=(1<<STC) )
 	{
 		if( (TileProperty[mp_Map->at(mx>>CSF, my1>>CSF)].behaviour>1 &&
 				TileProperty[mp_Map->at(mx>>CSF, my1>>CSF)].behaviour<6 ) )
@@ -921,7 +921,7 @@ void CPlayer::checkSolidDoors()
 		}
 	}
 
-	for( size_t mx=mx1 ; mx<mx2 ; mx+=(1<<STC) )
+	for( int mx=mx1 ; mx<mx2 ; mx+=(1<<STC) )
 	{
 		if( (TileProperty[mp_Map->at(mx>>CSF, my2>>CSF)].behaviour>1 &&
 				TileProperty[mp_Map->at(mx>>CSF, my2>>CSF)].behaviour<6 ) )

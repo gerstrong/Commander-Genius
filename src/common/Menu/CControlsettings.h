@@ -33,6 +33,10 @@ private:
 	int mSelectedPlayer;
 
 	CGUISwitch *mpTwoButtonSwitch;
+	CGUISwitch *mpAnalogSwitch;
+	CGUISwitch *mpSuperPogoSwitch;
+	CGUISwitch *mpImpPogoSwitch;
+	CGUISwitch *mpAutoGunSwitch;
 };
 
 

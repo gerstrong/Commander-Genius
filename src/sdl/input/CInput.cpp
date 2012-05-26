@@ -235,7 +235,9 @@ void CInput::loadControlconfig(void)
 			setupInputCommand( InputCommand[i], IC_HELP, value );
 			Configuration.ReadString( section, "Back", value, "Key 27 (escape)");
 			setupInputCommand( InputCommand[i], IC_BACK, value );
+
 			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
+			Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
 		}
 	}
 	else
@@ -274,6 +276,7 @@ void CInput::saveControlconfig()
 		Configuration.WriteString(section, "Help", getEventName(IC_HELP, i));
 		Configuration.WriteString(section, "Back", getEventName(IC_BACK, i));
 		Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
+		Configuration.SetKeyword(section, "Analog", mAnalogAxesMovement[i]);
 	}
 	Configuration.saveCfgFile();
 }
@@ -435,10 +438,12 @@ bool CInput::readNewEvent(Uint8 device, int command)
 }
 
 bool CInput::getExitEvent(void) {	return m_exit;	}
-void CInput::cancelExitEvent(void) { m_exit=false; }
 
 bool CInput::getTwoButtonFiring(int player) { return TwoButtonFiring[player]; }
 void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player]=value; }
+
+bool CInput::isAnalog(const int player) { return mAnalogAxesMovement[player]; }
+void CInput::enableAnalog(const int player, const bool value) { mAnalogAxesMovement[player]=value; }
 
 /**
  * \brief	Called every logic cycle. This triggers the events that occur and process them trough various functions
@@ -1306,7 +1311,8 @@ static void drawButton(TouchButton& button, bool down) {
 
 #endif
 
-void CInput::renderOverlay() {
+void CInput::renderOverlay()
+{
 #ifdef USE_OPENGL // only ogl supported yet (and probably worth)
 #if defined(MOUSEWRAPPER)
 	static bool showControls = true;

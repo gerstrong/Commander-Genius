@@ -34,13 +34,10 @@ public:
 		CameraBounds.down = 130;
 		CameraBounds.speed = 5;
 		g_pTimer->setFPS(30);
-		p_option[OPT_SUPERPOGO].value = 0;
 		p_option[OPT_ALLOWPKING].value = 0;
 		p_option[OPT_KEYSTACK].value = 0;
-		p_option[OPT_ANALOGJOYSTICK].value = 0;
 		p_option[OPT_LVLREPLAYABILITY].value = 0;
 		p_option[OPT_RISEBONUS].value = 0;
-		p_option[OPT_IMPPOGO].value = 0;
 		p_option[OPT_HUD].value = 0;
 		g_pSettings->saveDrvCfg();
 	}
@@ -66,9 +63,7 @@ public:
 		CameraBounds.speed = 20;
 		g_pTimer->setFPS(60);
 		p_option[OPT_KEYSTACK].value = 1;
-		p_option[OPT_ANALOGJOYSTICK].value = 1;
 		p_option[OPT_RISEBONUS].value = 1;
-		p_option[OPT_IMPPOGO].value = 1;
 		p_option[OPT_HUD].value = 1;
 		g_pSettings->saveDrvCfg();
 	}
