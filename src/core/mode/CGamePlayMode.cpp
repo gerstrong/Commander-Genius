@@ -87,7 +87,7 @@ void CGamePlayMode::process()
 	}
 	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game
-		m_Numplayers = mp_PlayGame->getNumPlayers();
+		m_Numplayers = g_pBehaviorEngine->mPlayers;
 		EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, m_Numplayers, m_DataDirectory) );
 	}
 	else if( mp_PlayGame->getExitEvent() )

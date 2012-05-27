@@ -40,7 +40,6 @@ public:
 	
 	// Getters
 	char getEpisode() { return m_Episode; }
-	char getNumPlayers() { return m_NumPlayers; }
 	char getDifficulty() { return m_Difficulty; }
 	CSaveGameController getSavedGameBlock() { return m_SavedGame; }
 	std::string getGamePath() { return m_DataDirectory; }
@@ -55,7 +54,6 @@ public:
 	
 protected:
 	char m_Episode;
-	char m_NumPlayers;
 	char m_Difficulty;
 	bool m_modeg;
 	std::string m_DataDirectory;

@@ -16,6 +16,5 @@ CPassive::CPassive()
 	m_mode = INTRO;
 	m_Episode = ExeFile.getEpisode();
 	m_DataDirectory = ExeFile.getDataDirectory();
-	m_NumPlayers = 0; // because no game chosen
 }
 

@@ -18,8 +18,7 @@
 void CGameMain::switchToGamePlayMode()
 {
 	const int episode = g_pBehaviorEngine->getEpisode();
-	//const int Numplayers = mp_Passive->getNumPlayers();
-	const int Numplayers = 1;
+	const int Numplayers = g_pBehaviorEngine->mPlayers;
 	std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
 	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
 }
@@ -65,10 +64,10 @@ void CGameMain::process()
 			EventContainer.add( new CloseAllMenusEvent() );
 			return;
 		}
-		else if( NewGamePlayersEvent* pLauncher = EventContainer.occurredEvent<NewGamePlayersEvent>() )
+		else if( NewGamePlayersEvent* pNewGame = EventContainer.occurredEvent<NewGamePlayersEvent>() )
 		{
 			EventContainer.pop_Event();
-			g_pBehaviorEngine->mPlayers = pLauncher->mSelection;
+			g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
 			EventContainer.add( new OpenMenuEvent(new CDifficultySelection) );
 			return;
 		}
