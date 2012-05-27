@@ -745,7 +745,6 @@
 		6350F7C51044797300A992D5 /* SOUNDS.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SOUNDS.CK1; sourceTree = "<group>"; };
 		6350F7C61044797300A992D5 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STORYTXT.CK1; sourceTree = "<group>"; };
 		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
-		6350F7DD1044797300A992D5 /* resolutions.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = resolutions.cfg; sourceTree = "<group>"; };
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
 		6375E99E13EA4335007310EB /* CSchoolFish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSchoolFish.cpp; sourceTree = "<group>"; };
 		6375E99F13EA4335007310EB /* CSchoolFish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSchoolFish.h; sourceTree = "<group>"; };
@@ -1463,7 +1462,6 @@
 			children = (
 				6350F7A41044797300A992D5 /* games */,
 				63D4A6ED107FEB7C00E43500 /* global */,
-				6350F7DD1044797300A992D5 /* resolutions.cfg */,
 			);
 			includeInIndex = 1;
 			name = vfsroot;
@@ -2950,7 +2948,7 @@
 					"-DOGG",
 				);
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -2983,7 +2981,7 @@
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
@@ -3071,10 +3069,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -3083,8 +3081,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
-				SDKROOT = macosx;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				SDKROOT = macosx10.6;
 				SEPARATE_STRIP = YES;
 			};
 			name = Release;
