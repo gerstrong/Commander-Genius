@@ -223,6 +223,7 @@ public:
 	bool isPogoing()
 	{
 		return (mp_processState == &CPlayerLevel::processPogo);
+		return (mp_processState == (void (CPlayerBase::*)()) &CPlayerLevel::processPogo );
 	}
 
 
