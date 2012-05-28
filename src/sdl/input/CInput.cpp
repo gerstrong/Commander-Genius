@@ -260,7 +260,6 @@ void CInput::saveControlconfig()
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
 	{
 		section = "input" + itoa(i);
-
 		Configuration.WriteString(section, "Left", getEventName(IC_LEFT, i));
 		Configuration.WriteString(section, "Up", getEventName(IC_UP, i));
 		Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, i));
