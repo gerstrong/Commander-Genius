@@ -111,9 +111,14 @@ void CSprite::generateSprite( const int points )
 
 bool CSprite::loadHQSprite( const std::string& filename )
 {
+	if(!IsFileAvailable(filename))
+		return false;
+
 	if(!mpSurface.empty())
 	{
-		SmartPointer<SDL_Surface> temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
+		const std::string fullpath = GetFullFileName(filename);
+
+		SmartPointer<SDL_Surface> temp_surface = SDL_LoadBMP( fullpath.c_str() );
 		if(!temp_surface.empty())
 		{
 			SmartPointer<SDL_Surface> displaysurface = SDL_ConvertSurface(temp_surface.get(), mpSurface->format, mpSurface->flags);
@@ -141,8 +146,10 @@ void CSprite::readMask(SDL_Surface *displaysurface)
 	h = displaysurface->h;
 	w = (displaysurface->w)/3;
 
-	if(SDL_MUSTLOCK(displaysurface)) SDL_LockSurface(displaysurface);
-	if(SDL_MUSTLOCK(mpMasksurface.get())) SDL_LockSurface(mpMasksurface.get());
+	if(SDL_MUSTLOCK(displaysurface))
+		SDL_LockSurface(displaysurface);
+	if(SDL_MUSTLOCK(mpMasksurface.get()))
+		SDL_LockSurface(mpMasksurface.get());
 
 	maskpx = (Uint8*)mpMasksurface->pixels;
 	pixel = (Uint8*)displaysurface->pixels + (displaysurface->w/3)*displaysurface->format->BytesPerPixel;
@@ -161,12 +168,15 @@ void CSprite::readMask(SDL_Surface *displaysurface)
 			memcpy( maskpx, &mask, 1 );
 
 			pixel += mpSurface->format->BytesPerPixel;
-			maskpx += mpSurface->format->BytesPerPixel;
+			maskpx += mpMasksurface->format->BytesPerPixel;
 		}
 		pixel += 2*w*mpSurface->format->BytesPerPixel;
 	}
-	if(SDL_MUSTLOCK(mpMasksurface.get())) SDL_LockSurface(mpMasksurface.get());
-	if(SDL_MUSTLOCK(displaysurface)) SDL_LockSurface(displaysurface);
+
+	if(SDL_MUSTLOCK(mpMasksurface.get()))
+		SDL_UnlockSurface(mpMasksurface.get());
+	if(SDL_MUSTLOCK(displaysurface))
+		SDL_UnlockSurface(displaysurface);
 }
 
 /**
