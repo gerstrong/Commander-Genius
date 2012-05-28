@@ -418,11 +418,19 @@ bool CInput::readNewEvent(Uint8 device, int command)
 				break;
 
 			case SDL_JOYAXISMOTION:
-				lokalInput.joyeventtype = ETYPE_JOYAXIS;
-				lokalInput.joyaxis = Event.jaxis.axis;
-				lokalInput.which = Event.jaxis.which;
-				lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
-				return true;
+
+				// Deadzone check. Double, because being a
+				// new event to be read it should make better to configure
+				if( (Event.jaxis.value > 2*m_joydeadzone ) ||
+				    (Event.jaxis.value < -2*m_joydeadzone ) )
+				{
+					lokalInput.joyeventtype = ETYPE_JOYAXIS;
+					lokalInput.joyaxis = Event.jaxis.axis;
+					lokalInput.which = Event.jaxis.which;
+					lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
+					return true;
+				}
+
 				break;
 
 			case SDL_JOYHATMOTION:
