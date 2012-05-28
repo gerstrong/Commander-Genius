@@ -37,13 +37,14 @@ public:
 
 	void drawNoStyle(SDL_Rect& lRect);
 
-	void drawVorticonStyle(SDL_Rect& lRect);
+	virtual void drawVorticonStyle(SDL_Rect& lRect);
 
 	void drawGalaxyStyle(SDL_Rect& lRect);
 
-	void processRender(const CRect<float> &RectDispCoordFloat);
+	virtual void processRender(const CRect<float> &RectDispCoordFloat);
 
-private:
+protected:
+
 	std::string mText;
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
@@ -51,7 +52,6 @@ private:
 	SmartPointer<SDL_Surface> mpTextDarkSfc;
 	SmartPointer<SDL_Surface> mpTextLightSfc;
 	SmartPointer<SDL_Surface> mpTextDisabledSfc;
-
 
 	void (CGUIComboSelection::*drawButton)(SDL_Rect&);
 

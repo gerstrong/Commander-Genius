@@ -21,6 +21,10 @@ public:
 
 	bool isEnabled()
 	{	return CGUIComboSelection::getSelection() == "on";	}
+
+	void drawVorticonStyle(SDL_Rect& lRect);
+
+	void processRender(const CRect<float> &RectDispCoordFloat);
 };
 
 #endif /* CGUISWITCH_H_ */
