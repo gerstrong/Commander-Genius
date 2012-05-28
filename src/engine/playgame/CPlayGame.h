@@ -46,6 +46,7 @@ protected:
 	CExeFile &m_ExeFile;
 	char m_Episode;
 	short m_Level;
+	int mCamLead;
 	bool m_startgame;
 	bool m_exitgame;
 

@@ -45,6 +45,7 @@ public:
 	CPlayer(const char &Episode, short &Level,
 			 bool *mp_level_completed,
 			 std::vector<CObject*> &m_Object, CMap &map);
+	void setupCameraObject();
 	void setDatatoZero();
 	void setDefaultStartValues();
 	void setMapData(CMap *p_map){ mp_Map=p_map; }

@@ -41,9 +41,10 @@ mp_HUD(NULL)
 	for(int i=0 ; i<m_NumPlayers ; i++)
 	{
 		// Put some important Player properties
-		CPlayer &thisPlayer = m_Player.at(i);
+		CPlayer &thisPlayer = m_Player[i];
 		thisPlayer.m_index = i;
 		thisPlayer.setDatatoZero();
+		thisPlayer.setupCameraObject();
 		thisPlayer.mp_camera->attachObject(&thisPlayer);
 	}
 
@@ -196,20 +197,32 @@ void CPlayGameVorticon::process()
 			{
 				/// The following functions must be worldmap dependent
 				if( m_Level == WORLD_MAP_LEVEL_VORTICON )
-					processOnWorldMap();
-				else
-					processInLevel();
-
-				// Does one of the players need to pause the game?
-				for( int i=0 ; i<m_NumPlayers ; i++ )
 				{
-					// Did he open the status screen?
-					/*if(m_Player[i].m_showStatusScreen)
-					m_paused = true; // this is processed in processPauseDialogs!*/
+					processOnWorldMap();
 
+					// Only the first Player may control camera here!
 					if(!m_Player[0].pdie)
 						m_Player[0].processCamera();
 				}
+				else
+				{
+					processInLevel();
+
+					if(m_Player[mCamLead].pdie)
+					{
+						for( int i=0 ; i<m_NumPlayers ; i++ )
+						{
+							if(m_Player[i].pdie)
+								cycleCamLead();
+						}
+					}
+					else
+					{
+						// Process Players' Cameras
+						m_Player[mCamLead].processCamera();
+					}
+				}
+
 			}
 
 		}
@@ -273,6 +286,15 @@ void CPlayGameVorticon::process()
 }
 
 
+void CPlayGameVorticon::cycleCamLead()
+{
+	mCamLead++;
+
+	if( mCamLead >= m_NumPlayers  )
+		mCamLead = 0;
+}
+
+
 void CPlayGameVorticon::handleFKeys()
 {
 	int i;
@@ -316,6 +338,13 @@ void CPlayGameVorticon::handleFKeys()
 		}
 		g_pVideoDriver->AddConsoleMsg("All items cheat");
 	}
+
+	// Cycle Cam Code
+	if ( g_pInput->getPressedKey(KC) )
+	{
+		cycleCamLead();
+	}
+
 
 	// GOD cheat -- toggle god mode
 	if ( g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )

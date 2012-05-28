@@ -65,6 +65,7 @@ public:
 	void processObjectsAI();
 	void drawObjects();
 	void drawAllElements();
+	void cycleCamLead();
 	void handleFKeys();
 	void verifyFinales();
 	void collectHighScoreInfo(SmartPointer<CHighScores> &pHighScores);

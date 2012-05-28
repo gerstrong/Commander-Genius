@@ -34,10 +34,10 @@ mp_levels_completed(mp_level_completed),
 mp_option(g_pBehaviorEngine->m_option),
 mp_StatusScr(NULL)
 {
-	mp_camera = new CCamera(&map, 0, 0);
 	mp_object = &m_Object;
 	canbezapped = true;
 	m_index = 0;
+
 
 	pjumping = PNOJUMP;
 	pfalling = false;
@@ -53,6 +53,13 @@ mp_StatusScr(NULL)
     setDefaultStartValues();
     setDatatoZero();
 }
+
+
+void CPlayer::setupCameraObject()
+{
+	mp_camera = new CCamera(mp_Map, 0, 0);
+}
+
 
 // Sets the player data to the initial value,
 // We also could put that in the init list of the constructor,

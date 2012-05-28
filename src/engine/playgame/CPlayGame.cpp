@@ -27,6 +27,7 @@ mp_option(g_pBehaviorEngine->m_option)
 	m_hideobjects = false;
 	m_checkpoint_x = m_checkpoint_y = 0;
 	m_checkpointset = false;
+	mCamLead = 0;
 }
 
 
