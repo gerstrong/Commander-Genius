@@ -1101,6 +1101,15 @@ bool CInput::getPressedAnyCommand(int player)
 	return false;
 }
 
+bool CInput::getPressedAnyButtonCommand(const int player)
+{
+	for(int i=IC_JUMP ; i<MAX_COMMANDS ; i++)
+		if(getPressedCommand(player,i))
+			return true;
+
+	return false;
+}
+
 /**
  * \brief	This will forget every command that was triggered
  */

@@ -172,7 +172,8 @@ public:
 	bool getHoldedCommand(int command);
 	bool getPressedCommand(int command);
 	bool getPressedCommand(int player, int command);
-	bool getPressedAnyCommand(int player);
+	bool getPressedAnyCommand(const int player);
+	bool getPressedAnyButtonCommand(const int player);
 	bool getExitEvent(void);
 
 	bool getTwoButtonFiring(int player);

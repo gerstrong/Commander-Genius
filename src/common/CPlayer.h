@@ -197,7 +197,7 @@ private:
 	void openDoor(int doortile, int doorsprite, int mpx, int mpy);
 	void giveAnkh();
 
-	CStatusScreen *mp_StatusScr;
+	SmartPointer<CStatusScreen> mpStatusScr;
 
 	bool lastpogo;
  	bool bumped;

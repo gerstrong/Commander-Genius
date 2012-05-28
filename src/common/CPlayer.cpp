@@ -31,8 +31,7 @@ m_episode(Episode),
 m_level(Level),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
 mp_levels_completed(mp_level_completed),
-mp_option(g_pBehaviorEngine->m_option),
-mp_StatusScr(NULL)
+mp_option(g_pBehaviorEngine->m_option)
 {
 	mp_object = &m_Object;
 	canbezapped = true;
@@ -863,20 +862,19 @@ bool CPlayer::drawStatusScreen()
 {
 	if(m_showStatusScreen)
 	{
-		if(mp_StatusScr == NULL)
-			mp_StatusScr = new CStatusScreen(m_episode, &inventory, mp_levels_completed, ankhtime, playerbaseframe);
+		if(mpStatusScr.empty())
+			mpStatusScr = new CStatusScreen(m_episode, &inventory, mp_levels_completed, ankhtime, playerbaseframe);
 		
-		mp_StatusScr->draw();
+		mpStatusScr->draw();
 		
-		if( mp_StatusScr->isClosed() )
+		if( mpStatusScr->isClosed() )
 		{
 			m_showStatusScreen = false;
-			delete mp_StatusScr;
-			mp_StatusScr = NULL;
+			mpStatusScr = NULL;
 		}
-		else if( g_pInput->getPressedAnyCommand() )
+		else if( g_pInput->getPressedAnyButtonCommand(m_index) )
 		{
-			mp_StatusScr->close();
+			mpStatusScr->close();
 			g_pInput->flushCommands();
 		}
 		return false;
