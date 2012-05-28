@@ -44,3 +44,9 @@ void COptions::process()
 	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
 		mpOption[i].value = (*it)->isEnabled();
 }
+
+void COptions::release()
+{
+
+	g_pSettings->saveGameOptions();
+}

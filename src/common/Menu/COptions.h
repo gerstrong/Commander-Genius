@@ -13,13 +13,16 @@
 #include "common/CBehaviorEngine.h"
 #include <list>
 
-class COptions : public CBaseMenu {
+class COptions : public CBaseMenu
+{
 public:
 	COptions();
 
 	void init();
 
 	void process();
+
+	void release();
 
 private:
 	std::list<CGUISwitch*> mpOptionList;

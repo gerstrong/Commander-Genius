@@ -70,7 +70,7 @@ bool CGame::init(int argc, char *argv[])
 		g_pSettings->saveDrvCfg();
 	}
 
-	if(!g_pSettings->loadGameCfg())
+	if(!g_pSettings->loadGameOptions())
 		g_pSettings->loadDefaultGameCfg();
 
 	// Setup the Hardware using the settings we have loaded

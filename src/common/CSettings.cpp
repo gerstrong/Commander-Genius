@@ -205,7 +205,7 @@ void CSettings::loadDefaultGameCfg()
  *
  * \return			true if options could be loaded, else false
  */
-bool CSettings::loadGameCfg()
+bool CSettings::loadGameOptions()
 {
 	int i;
 	CConfiguration Configuration(CONFIGFILENAME);
@@ -229,7 +229,7 @@ bool CSettings::loadGameCfg()
 /**
  * \brief  Saves the options in the settings
  */
-bool CSettings::saveGameCfg()
+bool CSettings::saveGameOptions()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
 
