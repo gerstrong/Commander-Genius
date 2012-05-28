@@ -24,7 +24,7 @@ CBaseMenu( CRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
 
 	CGUIButton *button = new CGUIButton( "New Game",
-									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>() ) );
+									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
 	mpMenuDialog->addControl( button );
 
 

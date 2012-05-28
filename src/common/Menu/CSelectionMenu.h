@@ -45,13 +45,17 @@ class CPlayersSelection : public CBaseMenu
 {
 
 public:
-	CPlayersSelection() :
+	CPlayersSelection(bool numFirst = false) :
 		CBaseMenu( CRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
 	{
-
+		std::string	playerStr;
 		for( int i = 1 ; i <= MAX_PLAYERS ; i++ )
 		{
-			const std::string	playerStr = "Player " + itoa(i);
+			if(numFirst)
+				playerStr = itoa(i) + " Player";
+			else
+				playerStr = "Player " + itoa(i);
+
 			mpButtonList.push_back( new CGUIButton( playerStr,
 													new _T(i) ) );
 			mpMenuDialog->addControl( mpButtonList.back() );
