@@ -79,10 +79,11 @@ bool CGameLauncher::init()
 
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
 	mpLauncherDialog->addControl(list, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
-	mpLauncherDialog->addControl(new CGUIButton( "Exit", new GMQuit() ),
-												CRect<float>(0.1f, 0.915f, 0.2f, 0.07f) );
-	mpLauncherDialog->addControl(new CGUIButton( "Ok", new GMStart(list->mSelection) ),
-												CRect<float>(0.7f, 0.915f, 0.2f, 0.07f) );
+	mpLauncherDialog->addControl(new CGUIButton( "x", new GMQuit() ),
+												CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
+
+	mpLauncherDialog->addControl(new CGUIButton( "Start >", new GMStart(list->mSelection) ),
+												CRect<float>(0.65f, 0.915f, 0.3f, 0.07f) );
 
    	g_pResourceLoader->setPermilage(1000);
 	
