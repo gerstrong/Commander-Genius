@@ -45,8 +45,6 @@ protected:
 	bool &m_firsttime;
 	int m_startGame_no;
 	int m_startLevel;
-
-	CMenuController mMenuController;
 };
 
 #endif /* CGAMECONTROL_H_ */

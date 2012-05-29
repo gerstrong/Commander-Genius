@@ -19,6 +19,18 @@ void CMenuController::emptyMenuStack()
 		popBackMenu();
 }
 
+
+void CMenuController::openMainMenu()
+{
+	if(!mLocked)
+	{
+		g_pBehaviorEngine->EventList().add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
+		g_pBehaviorEngine->setPause(true);
+		g_pMusicPlayer->pause();
+	}
+}
+
+
 void CMenuController::process()
 {
 
@@ -31,9 +43,7 @@ void CMenuController::process()
 	{
 		if( mMenuStack.empty() ) // If no menu is open, open the main menu
 		{
-			EventContainer.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
-			g_pBehaviorEngine->setPause(true);
-			g_pMusicPlayer->pause();
+			openMainMenu();
 		}
 		else // Close the menu which is open. Might go back if it is a submenu
 		{
@@ -122,9 +132,7 @@ void CMenuController::process()
 			// Here we check if the mouse-cursor/Touch entry clicked on our Button
 			if(mouseevent->Type == MOUSEEVENT_BUTTONUP && mMenuStack.empty())
 			{
-				EventContainer.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
-				g_pBehaviorEngine->setPause(true);
-				g_pMusicPlayer->pause();
+				openMainMenu();
 			}
 
 			g_pInput->m_EventList.pop_Event();

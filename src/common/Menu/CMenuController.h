@@ -7,9 +7,13 @@
 
 #include "CBaseMenu.h"
 #include "engine/CEvent.h"
+#include "CSingleton.h"
 
 #ifndef CMENUCONTROLLER_H_
 #define CMENUCONTROLLER_H_
+
+
+#define gpMenuController CMenuController::Get()
 
 
 /**
@@ -35,18 +39,24 @@ struct CloseAllMenusEvent : CEvent
  */
 
 
-class CMenuController
+class CMenuController : public CSingleton<CMenuController>
 {
 
 public:
-	CMenuController() : mOpenedGamePlay(false) {}
+	CMenuController() : mOpenedGamePlay(false),
+                          mLocked(false) {}
 
 	void emptyMenuStack();
+
+	void openMainMenu();
 
 	void process();
 
 	bool active()
 	{	return	!mMenuStack.empty();	}
+
+	void lock(const bool value)
+	{	mLocked = value;	}
 
 	bool mOpenedGamePlay;
 
@@ -56,6 +66,8 @@ private:
 
 	SmartPointer<CBaseMenu> mpMenu;
 	std::list< SmartPointer<CBaseMenu> > mMenuStack;
+
+	bool mLocked;
 };
 
 #endif /* CMENUCONTROLLER_H_ */

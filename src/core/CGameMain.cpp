@@ -57,6 +57,7 @@ void CGameMain::process()
 		}
 		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
 		{
+			gpMenuController->lock(true);
 			mpInfoScene = scene->mpScene;
 			mpInfoScene->init();
 
@@ -103,6 +104,7 @@ void CGameMain::process()
 		{
 			mpInfoScene->teardown();
 			mpInfoScene = NULL;
+			gpMenuController->lock(false);
 		}
 	}
 	else

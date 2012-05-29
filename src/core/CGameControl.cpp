@@ -91,14 +91,14 @@ void CGameControl::process()
 
 		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 		{
-			mMenuController.emptyMenuStack();
+			gpMenuController->emptyMenuStack();
 			mpEngine = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );
 			mpEngine->init();
 			EventContainer.pop_Event();
 		}
 		else if( EventContainer.occurredEvent<StartMainGameEvent>() )
 		{
-			mpEngine = new CGameMain(mMenuController.mOpenedGamePlay);
+			mpEngine = new CGameMain(gpMenuController->mOpenedGamePlay);
 			mpEngine->init();
 			EventContainer.pop_Event();
 		}
@@ -121,5 +121,5 @@ void CGameControl::process()
 	// Process the game control object
 	mpEngine->process();
 
-	mMenuController.process();
+	gpMenuController->process();
 }
