@@ -18,6 +18,11 @@
 void CGameMain::switchToGamePlayMode()
 {
 	const int episode = g_pBehaviorEngine->getEpisode();
+
+	// If you get here, you always have at least one player
+	if(g_pBehaviorEngine->mPlayers <= 0)
+		g_pBehaviorEngine->mPlayers = 1;
+
 	const int Numplayers = g_pBehaviorEngine->mPlayers;
 	std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
 	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
@@ -88,8 +93,6 @@ void CGameMain::process()
 			// In this case let's pop this event and add the same one, the way the loading is finished within the playgame object
 			EventContainer.pop_Event();
 
-			// Setting the players to 1 helps to load everything correctly TODO: This is a workaround should be removed later...
-			g_pBehaviorEngine->mPlayers = 1;
 			switchToGamePlayMode();
 
 			// The same caught event is pushed again but this time it will be polled by the GamePlay object which in the next cycles will be running!

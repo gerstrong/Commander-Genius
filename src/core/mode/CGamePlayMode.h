@@ -22,6 +22,9 @@ public:
 			const int startLevel = -1);
 
 	void init();
+
+	void loadGame();
+
 	void process();
 
 private:

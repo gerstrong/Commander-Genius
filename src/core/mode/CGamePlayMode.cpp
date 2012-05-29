@@ -59,6 +59,7 @@ void CGamePlayMode::init()
 	}
 }
 
+
 void CGamePlayMode::process()
 {
 	// The player is playing the game. It also includes scenes like ending
