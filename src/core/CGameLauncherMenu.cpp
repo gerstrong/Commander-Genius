@@ -146,7 +146,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
-			g_pSound->loadSoundData(ExeFile);
+			g_pSound->loadSoundData();
 		}
 
 		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
@@ -178,7 +178,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
-			g_pSound->loadSoundData(ExeFile);
+			g_pSound->loadSoundData();
 		}
 	}
 	return true;

@@ -8,6 +8,7 @@
 #include "common/CSettings.h"
 #include "CAudioSettings.h"
 #include "StringUtils.h"
+#include "sdl/music/CMusic.h"
 
 #include "gui/CGUIButton.h"
 
@@ -52,11 +53,13 @@ void CAudioSettings::init()
 {
 	mAudioSpec = g_pSound->getAudioSpec();
 	mSoundblaster = g_pSound->getSoundBlasterMode();
+	mSoundVolume = mpSoundVolume->getSelection();
 
 	mpRate->setSelection( itoa(mAudioSpec.freq) );
 	mpStereo->enable( mAudioSpec.channels == 2 );
-	mpDepth->setSelection( mAudioSpec.format == AUDIO_S8 ? "8-bit" : "16-bit" );
+	mpDepth->setSelection( mAudioSpec.format == AUDIO_U8 ? "8-bit" : "16-bit" );
 	mpSBToggle->setSelection( mSoundblaster ? "Soundblaster" : "PC Speaker" );
+	g_pMusicPlayer->play();
 }
 
 
@@ -64,7 +67,12 @@ void CAudioSettings::process()
 {
 	CBaseMenu::process();
 
-	g_pSound->setSoundVolume( mpSoundVolume->getSelection() );
+	if( mSoundVolume != mpSoundVolume->getSelection() )
+		g_pSound->playSound(SOUND_GET_ITEM);
+
+	mSoundVolume = mpSoundVolume->getSelection();
+
+	g_pSound->setSoundVolume( mSoundVolume );
 	g_pSound->setMusicVolume( mpMusicVolume->getSelection() );
 }
 
@@ -73,11 +81,16 @@ void CAudioSettings::release()
 {
 	mAudioSpec.freq = atoi( mpRate->getSelection().c_str() );
 	mAudioSpec.channels = mpStereo->isEnabled() ? 2 : 1;
-	mAudioSpec.format = mpDepth->getSelection() == "8-bit" ? AUDIO_S8 : AUDIO_S16;
+	mAudioSpec.format = mpDepth->getSelection() == "8-bit" ? AUDIO_U8 : AUDIO_S16;
 
 	mSoundblaster = ( mpSBToggle->getSelection() == "Soundblaster" ? true : false );
 
+	g_pSound->unloadSoundData();
+	g_pSound->destroy();
 	g_pSound->setSettings(mAudioSpec, mSoundblaster);
+	g_pSound->init();
+	g_pSound->loadSoundData();
+	g_pMusicPlayer->reload();
 
 	g_pSettings->saveDrvCfg();
 }

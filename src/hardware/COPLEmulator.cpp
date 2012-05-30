@@ -19,7 +19,8 @@ m_AudioDevSpec(AudioSpec),
 m_imf_clock_rate(KEEN_IMF_CLOCK_RATE)
 {}
 
-COPLEmulator::~COPLEmulator() {
+COPLEmulator::~COPLEmulator()
+{
 	shutdown();
 }
 

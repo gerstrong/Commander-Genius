@@ -13,6 +13,7 @@
 #include "FindFile.h"
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/Mixer.h"
+#include "common/CBehaviorEngine.h"
 
 #include "engine/vorticon/CAudioVorticon.h"
 #include "engine/galaxy/CAudioGalaxy.h"
@@ -44,30 +45,29 @@ inline static void CCallback(void *unused, Uint8 *stream, int len)
 }
 
 CSound::CSound() :
-m_pAudioRessources(NULL),
 m_callback_running(false),
 m_mixing_channels(0),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
 m_sound_blaster_mode(false),
 mp_SndSlotMap(NULL),
-m_OPL_Player(AudioSpec),
+m_OPL_Player(mAudioSpec),
 m_pause_gameplay(false)
 {
-	AudioSpec.channels = 2; // Stereo Sound
+	mAudioSpec.channels = 2; // Stereo Sound
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(ANDROID)
-	AudioSpec.format = AUDIO_S16; // 16-bit sound
+	mAudioSpec.format = AUDIO_S16; // 16-bit sound
 #else
-	AudioSpec.format = AUDIO_U8; // 8-bit sound
+	mAudioSpec.format = AUDIO_U8; // 8-bit sound
 #endif
-	AudioSpec.freq = 44100; // high quality
+	mAudioSpec.freq = 44100; // high quality
 }
 
 CSound::~CSound()
 {
 	while(m_callback_running);
 
-	m_pAudioRessources.tryDeleteData();
+	m_pAudioRessources = NULL;
 }
 
 bool CSound::init()
@@ -77,37 +77,37 @@ bool CSound::init()
 	SDL_AudioSpec obtained;
 
 	// now start up the SDL sound system
-	AudioSpec.silence = 0;
+	mAudioSpec.silence = 0;
 
-	switch (AudioSpec.freq)
+	switch (mAudioSpec.freq)
 	{
-		case 11025: AudioSpec.samples = 256; break;
-		case 22050: AudioSpec.samples = 512; break;
-		default: AudioSpec.samples = 1024; break;
+		case 11025: mAudioSpec.samples = 256; break;
+		case 22050: mAudioSpec.samples = 512; break;
+		default: mAudioSpec.samples = 1024; break;
 	}
-	AudioSpec.callback = CCallback;
-	AudioSpec.userdata = NULL;
+	mAudioSpec.callback = CCallback;
+	mAudioSpec.userdata = NULL;
 
 	// Initialize variables
-	if( SDL_OpenAudio(&AudioSpec, &obtained) < 0 )
+	if( SDL_OpenAudio(&mAudioSpec, &obtained) < 0 )
 	{
 		g_pLogFile->ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
 		g_pLogFile->ftextOut("Sound will be disabled.<br>");
-		AudioSpec.channels = 0;
-		AudioSpec.format = 0;
-		AudioSpec.freq = 0;
+		mAudioSpec.channels = 0;
+		mAudioSpec.format = 0;
+		mAudioSpec.freq = 0;
 		return false;
 	}
 
-	AudioSpec = obtained;
+	mAudioSpec = obtained;
 
-	m_MixedForm.reserve(AudioSpec.size);
+	m_MixedForm.reserve(mAudioSpec.size);
 
 	g_pLogFile->ftextOut("SDL_AudioSpec:<br>");
-	g_pLogFile->ftextOut("  freq: %d<br>", AudioSpec.freq);
-	g_pLogFile->ftextOut("  channels: %d<br>", AudioSpec.channels);
-	g_pLogFile->ftextOut("  audio buffer size: %d<br>", AudioSpec.size);
-	switch( AudioSpec.format )
+	g_pLogFile->ftextOut("  freq: %d<br>", mAudioSpec.freq);
+	g_pLogFile->ftextOut("  channels: %d<br>", mAudioSpec.channels);
+	g_pLogFile->ftextOut("  audio buffer size: %d<br>", mAudioSpec.size);
+	switch( mAudioSpec.format )
 	{
 		case AUDIO_U8:
 			g_pLogFile->ftextOut("  format: AUDIO_U8<br>" );
@@ -116,7 +116,7 @@ bool CSound::init()
 			g_pLogFile->ftextOut("  format: AUDIO_S16<br>" );
 			break;
 		default:
-			g_pLogFile->ftextOut("  format: UNKNOWN %d<br>", AudioSpec.format );
+			g_pLogFile->ftextOut("  format: UNKNOWN %d<br>", mAudioSpec.format );
 			break;
 	}
 	g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
@@ -125,7 +125,7 @@ bool CSound::init()
 
 	if(!m_soundchannel.empty())
 		m_soundchannel.clear();
-	m_soundchannel.assign(m_mixing_channels, CSoundChannel(AudioSpec));
+	m_soundchannel.assign(m_mixing_channels, CSoundChannel(mAudioSpec));
 
 	SDL_PauseAudio(0);
 
@@ -141,7 +141,7 @@ void CSound::destroy()
 {
 	stopAllSounds();
 
-	SDL_PauseAudio(1);
+	SDL_LockAudio();
 	SDL_CloseAudio();
 	m_mixing_channels = 0;
 
@@ -231,7 +231,7 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
     if (g_pMusicPlayer->playing())
     {
     	g_pMusicPlayer->readWaveform(buffer, len);
-    	mixAudio(stream, buffer, len, m_MusicVolume, AudioSpec.format);
+    	mixAudio(stream, buffer, len, m_MusicVolume, mAudioSpec.format);
     }
 
     bool any_sound_playing = false;
@@ -242,7 +242,7 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 		{
 			any_sound_playing |= true;
 			snd_chnl->readWaveform( buffer, len);
-   			mixAudio(stream, buffer, len, m_SoundVolume, AudioSpec.format);
+   			mixAudio(stream, buffer, len, m_SoundVolume, mAudioSpec.format);
 		}
     }
 
@@ -265,7 +265,7 @@ void CSound::playStereofromCoord( const GameSound snd,
 								  const SoundPlayMode mode,
 								  const unsigned int xcoordinate)
 {
-    if(AudioSpec.channels == 2)
+    if(mAudioSpec.channels == 2)
     {
     	int bal;
 
@@ -319,7 +319,7 @@ void CSound::playStereosound(const GameSound snd, const char mode, const short b
 
 		if ( !snd_chnl->isPlaying() || ( new_slot.priority >= current_slot.priority ) )
 		{
-			if(AudioSpec.channels == 2)
+			if(mAudioSpec.channels == 2)
 				snd_chnl->setBalance(balance);
 
 			snd_chnl->setupSound( new_slot, (mode==PLAY_FORCE) ? true : false );
@@ -328,29 +328,34 @@ void CSound::playStereosound(const GameSound snd, const char mode, const short b
 	}
 }
 
-bool CSound::loadSoundData(const CExeFile &ExeFile)
+bool CSound::loadSoundData()
 {
+	const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	if(ExeFile.getEpisode() >= 1 && ExeFile.getEpisode() <= 3) // Vorticon based Keengame
 	{
-		m_pAudioRessources = new CAudioVorticon(ExeFile, AudioSpec);
+		m_pAudioRessources = new CAudioVorticon(ExeFile, mAudioSpec);
 		mp_SndSlotMap = const_cast<unsigned char*>(SndSlotMapVort);
 		return(m_pAudioRessources->loadSoundData());
 	}
 	else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
 	{
-		m_pAudioRessources = new CAudioGalaxy(ExeFile, AudioSpec);
+		m_pAudioRessources = new CAudioGalaxy(ExeFile, mAudioSpec);
 		mp_SndSlotMap = const_cast<unsigned char*>(SndSlotMapGalaxy);
 		return(m_pAudioRessources->loadSoundData());
 	}
+
+	SDL_UnlockAudio();
 
 	return false;
 }
 
 void CSound::unloadSoundData()
 {
+	SDL_LockAudio();
 	while(m_callback_running);
 
-	m_pAudioRessources.tryDeleteData();
+	m_pAudioRessources = NULL;
+	SDL_UnlockAudio();
 }
 
 
@@ -379,17 +384,17 @@ void CSound::setSettings( const SDL_AudioSpec& audioSpec,
 {
 	m_sound_blaster_mode = useSB;
 
-	AudioSpec = audioSpec;
-
 	// Check if rate matches to those available in the system
 	for( unsigned int i=0 ; i<numAvailableRates ; i++ )
 	{
 		if( availableRates[i] == audioSpec.freq )
 		{
-			AudioSpec = audioSpec;
+			mAudioSpec = audioSpec;
 			break;
 		}
 	}
+
+
 }
 
 
@@ -399,7 +404,7 @@ void CSound::setSettings( const int rate,
 						  const int format,
 	 	  	  	  	  	  const bool useSB )
 {
-	SDL_AudioSpec nAudio = AudioSpec;
+	SDL_AudioSpec nAudio = mAudioSpec;
 
 	nAudio.freq = rate;
 	nAudio.channels = channels;

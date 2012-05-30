@@ -22,8 +22,8 @@ mp_player(NULL)
 
 bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 {
-	m_AudioSpec = g_pSound->getAudioSpec();
-	CIMFPlayer *imf_player = new CIMFPlayer(m_AudioSpec);
+	//m_AudioSpec = g_pSound->getAudioSpec();
+	CIMFPlayer *imf_player = new CIMFPlayer(g_pSound->getAudioSpec());
 	imf_player->loadMusicTrack(ExeFile, track);
 	mp_player = imf_player;
 
@@ -39,8 +39,8 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
-	m_AudioSpec = g_pSound->getAudioSpec();
-	mp_player = new CIMFPlayer(m_AudioSpec);
+	//m_AudioSpec = g_pSound->getAudioSpec();
+	mp_player = new CIMFPlayer(g_pSound->getAudioSpec());
 	(static_cast<CIMFPlayer*>(mp_player))->loadMusicForLevel(ExeFile, level);
 
 	if(!mp_player->open())
@@ -57,15 +57,15 @@ bool CMusic::load(const std::string &musicfile)
 	if(musicfile == "")
 		return false;
 
-	m_AudioSpec = g_pSound->getAudioSpec();
+	const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
 
-	if(m_AudioSpec.format != 0)
+	if(audioSpec.format != 0)
 	{
 		std::string extension = GetFileExtension(musicfile);
 
 		if(strcasecmp(extension.c_str(),"imf") == 0)
 		{
-			CIMFPlayer *imf_player = new CIMFPlayer(m_AudioSpec);
+			CIMFPlayer *imf_player = new CIMFPlayer(audioSpec);
 			imf_player->loadMusicFromFile(musicfile);
 			mp_player = imf_player;
 		}
@@ -73,7 +73,7 @@ bool CMusic::load(const std::string &musicfile)
 		{
 #if defined(OGG) || defined(TREMOR)
 
-			mp_player = new COGGPlayer(musicfile, m_AudioSpec);
+			mp_player = new COGGPlayer(musicfile, audioSpec);
 #else
 			g_pLogFile->ftextOut("Music Manager: Either OGG or TREMOR-Support is disabled! Please use another build<br>");
 			return false;
@@ -100,8 +100,6 @@ void CMusic::reload()
 {
 	if(!mp_player)
 		return;
-
-	m_AudioSpec = g_pSound->getAudioSpec();
 
 	mp_player->reload();
 }
@@ -239,7 +237,8 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
 	return false;
 }
 
-CMusic::~CMusic() {
+CMusic::~CMusic()
+{
 	stop();
 }
 

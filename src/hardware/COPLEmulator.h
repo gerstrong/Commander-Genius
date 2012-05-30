@@ -50,9 +50,11 @@ typedef struct
     byte    unused[3];
 } Instrument;
 
-class COPLEmulator {
+class COPLEmulator
+{
 public:
 	COPLEmulator(const SDL_AudioSpec &AudioSpec);
+
 	~COPLEmulator();
 
 	/**

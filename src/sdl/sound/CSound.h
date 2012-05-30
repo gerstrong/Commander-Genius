@@ -55,7 +55,7 @@ public:
 	Uint8 getMusicVolume() { return m_MusicVolume; }
 
 
-	SDL_AudioSpec	getAudioSpec() const  { return AudioSpec; }
+	const SDL_AudioSpec	&getAudioSpec() const  { return const_cast<const SDL_AudioSpec&>(mAudioSpec); }
 	unsigned short 	getMixingchannels() const { return m_mixing_channels; }
 	bool getSoundBlasterMode() {	return m_sound_blaster_mode;	}
 	COPLEmulator *getOPLEmulatorPtr() { return &m_OPL_Player; }
@@ -68,7 +68,7 @@ public:
 	void setSettings( const SDL_AudioSpec& audioSpec,
 			 	 	  const bool useSB );
 
-	bool loadSoundData(const CExeFile &ExeFile);
+	bool loadSoundData();
 	void unloadSoundData();
 
 	// Tell whether a sound is played which has to stop the gameplay
@@ -81,7 +81,7 @@ protected:
 	std::vector<CSoundChannel>	m_soundchannel;
 	SmartPointer<CAudioResources> m_pAudioRessources;
 	bool m_callback_running;
-	SDL_AudioSpec AudioSpec;
+	SDL_AudioSpec mAudioSpec;
 
 private:
 	unsigned short m_mixing_channels;

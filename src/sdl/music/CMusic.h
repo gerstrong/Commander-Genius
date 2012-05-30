@@ -48,7 +48,7 @@ public:
 		return false;
 	}
 
-	SDL_AudioSpec m_AudioSpec;
+	//SDL_AudioSpec m_AudioSpec;
 	CMusicPlayer *mp_player;
 	bool m_busy;
 };

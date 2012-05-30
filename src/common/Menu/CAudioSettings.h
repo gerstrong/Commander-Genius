@@ -42,6 +42,9 @@ private:
 
 	SDL_AudioSpec	mAudioSpec;
 	bool mSoundblaster;
+
+	// This one does not really set the volume at all, it only verifies, if it changed...
+	int mSoundVolume;
 };
 
 #endif /* CAUDIOSETTINGS_H_ */
