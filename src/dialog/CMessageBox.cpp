@@ -39,8 +39,8 @@ m_mustclose(false)
 
 	// Those formulas work well with our constellation but I don't think they are perfect.
 	// They transform the Message Box the way the text fits perfectly in.
-	mRect.w = (mpTextCtrl->mTextDim.w+2)*0.028f;
-	mRect.h = (mpTextCtrl->mTextDim.h+2)*0.05f;
+	mRect.w = (mpTextCtrl->mTextDim.w)*0.028f + 0.056f;
+	mRect.h = (mpTextCtrl->mTextDim.h)*0.045f + 0.13f;
 	mRect.x = (1.0f - mRect.w)/2.0f;
 	mRect.y = (1.0f - mRect.h)/2.0f;
 
@@ -52,6 +52,7 @@ m_mustclose(false)
 	TextRect.h = 0.95f;
 
 	addControl( mpTextCtrl, TextRect );
+
 
 	CRect<float> closeRect = pButton->mRect;
 	closeRect.x = mRect.x;

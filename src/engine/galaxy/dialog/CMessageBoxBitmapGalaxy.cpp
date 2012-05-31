@@ -53,5 +53,8 @@ void CMessageBoxBitmapGalaxy::init()
 
 	initText(rect);
 
-	mBitmap._draw( mpMBSurface.get(), 10, 10 );
+	const Uint16 bmpX = ( mAlignment == LEFT ) ? 10 : mMBRect.w-(mBitmap.getWidth()+32);
+
+
+	mBitmap._draw( mpMBSurface.get(), bmpX, 10 );
 }

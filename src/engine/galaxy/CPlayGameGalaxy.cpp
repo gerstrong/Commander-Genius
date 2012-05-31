@@ -66,6 +66,8 @@ void CPlayGameGalaxy::process()
 	if(g_pSound->pauseGamePlay())
 		return;
 
+	CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
+
 	/*if(mp_Menu) // In case the menu is open
 	{
 		// draw the title bitmap here!
@@ -144,13 +146,12 @@ void CPlayGameGalaxy::process()
 
 			if(pMB->isFinished())
 			{
-				mMessageBoxes.pop_front();
+			mMessageBoxes.pop_front();
 			}
 			return;
 		}
 
 		//// Special Keyboard Input
-
 		/// Cheat Codes
 		if( g_pInput->getHoldedKey(KF10) )
 		{
@@ -159,43 +160,50 @@ void CPlayGameGalaxy::process()
 				m_Cheatmode.jump = !m_Cheatmode.jump;
 				std::string jumpstring = "Jump-Cheat has been ";
 				jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
-				mMessageBoxes.push_back(new CMessageBoxGalaxy(jumpstring));
+				eventContainer.add( new EventSendDialog(jumpstring) );
 			}
 			else if(g_pInput->getHoldedKey(KG))
 			{
 				m_Cheatmode.god = !m_Cheatmode.god;
 				std::string godstring = "God-Mode has been ";
 				godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
-				mMessageBoxes.push_back(new CMessageBoxGalaxy(godstring));
+				eventContainer.add( new EventSendDialog(godstring) );
 			}
 			else if(g_pInput->getHoldedKey(KI))
 			{
 				m_Cheatmode.items = true;
-				mMessageBoxes.push_back(new CMessageBoxGalaxy("Get all Items!"));
+				eventContainer.add( new EventSendDialog("Get all Items!") );
 				m_Inventory.Item.triggerAllItemsCheat();
 				m_Cheatmode.items = true;
 			}
 			else if(g_pInput->getHoldedKey(KN))
 			{
 				m_Cheatmode.noclipping = true;
-				mMessageBoxes.push_back(new CMessageBoxGalaxy("No clipping toggle!"));
+				eventContainer.add( new EventSendDialog("No clipping toggle!") );
 			}
 		}
+
 	}
 
 	// In this part we will poll all the relevant Events that are important for the
 	// Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
 	// are some of those events.
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	if( EventSendBitmapDialogMsg* ev = EventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
+	if( EventSendBitmapDialogMsg *ev = eventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
 		CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID, ev->Direction );
 		pMsgBox->init();
-		//CMessageBoxGalaxy *pMsgBox = new CMessageBoxGalaxy( ev->Msg );
 
 		mMessageBoxes.push_back( pMsgBox );
-		EventContainer.pop_Event();
+		eventContainer.pop_Event();
+	}
+	else if( EventSendDialog *ev = eventContainer.occurredEvent<EventSendDialog>() )
+	{
+		CMessageBoxGalaxy *pMsgBox = new CMessageBoxGalaxy( ev->Msg );
+		pMsgBox->init();
+
+		mMessageBoxes.push_back( pMsgBox );
+		eventContainer.pop_Event();
 	}
 	/*else if( EventSendSelectionDialogMsg* ev = EventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
 	{
@@ -207,7 +215,7 @@ void CPlayGameGalaxy::process()
 
 	if(mMessageBoxes.empty())
 	{
-		if( EventEnterLevel *ev = EventContainer.occurredEvent<EventEnterLevel>() )
+		if( EventEnterLevel *ev = eventContainer.occurredEvent<EventEnterLevel>() )
 		{
 			// Start a new level!
 			if(ev->data > 0xC000)
@@ -220,30 +228,30 @@ void CPlayGameGalaxy::process()
 				g_pSound->playSound( SOUND_ENTER_LEVEL );
 				m_LevelPlay.setActive(true);
 			}
-			EventContainer.pop_Event();
+			eventContainer.pop_Event();
 		}
-		else if( EventContainer.occurredEvent<EventRestartLevel>() )
+		else if( eventContainer.occurredEvent<EventRestartLevel>() )
 		{
 			g_pMusicPlayer->stop();
 			m_LevelPlay.reloadLevel();
-			EventContainer.pop_Event();
+			eventContainer.pop_Event();
 		}
-		else if( EventExitLevel *ev = EventContainer.occurredEvent<EventExitLevel>() )
+		else if( EventExitLevel *ev = eventContainer.occurredEvent<EventExitLevel>() )
 		{
 			g_pMusicPlayer->stop();
 			m_LevelPlay.setActive(false);
 			m_WorldMap.setActive(true);
 			m_LevelName = m_WorldMap.getLevelName();
 			m_WorldMap.loadAndPlayMusic();
-			EventContainer.add( new EventPlayerEndLevel(*ev) );
-			EventContainer.pop_Event();
+			eventContainer.add( new EventPlayerEndLevel(*ev) );
+			eventContainer.pop_Event();
 		}
-		else if( EventPlayTrack *ev =  EventContainer.occurredEvent<EventPlayTrack>() )
+		else if( EventPlayTrack *ev =  eventContainer.occurredEvent<EventPlayTrack>() )
 		{
 			g_pMusicPlayer->stop();
 			if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
 				g_pMusicPlayer->play();
-			EventContainer.pop_Event();
+			eventContainer.pop_Event();
 		}
 	}
 }

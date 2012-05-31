@@ -67,18 +67,26 @@ struct EventPlayTrack : CEvent {
  *	Event designated for a Bitmap Message like those when Keen talks
  *	to the council Members or Princess Lindsey
  */
-struct EventSendBitmapDialogMsg : CEvent {
-	const uint16_t BitmapID;
+struct EventSendDialog : CEvent
+{
 	const std::string Msg;
+	EventSendDialog(const std::string& lMsg) :
+					 Msg(lMsg) {}
+};
+
+struct EventSendBitmapDialogMsg : EventSendDialog
+{
+	const uint16_t BitmapID;
 	const direction_t Direction;
 	EventSendBitmapDialogMsg(const uint16_t &lBitmapID,
 					 	 	 const std::string& lMsg,
 					 	 	 const direction_t& lDirection = LEFT) :
+					 	 	 EventSendDialog(lMsg),
 							 BitmapID(lBitmapID),
-							 Msg(lMsg),
 							 Direction(lDirection)
 							 {}
 };
+
 
 /**
  *  \description small structure which holds a matching selection text to an event.
