@@ -24,7 +24,8 @@ m_bitStream(0)
 	m_Audio_cvt.buf = NULL;
 }
 
-COGGPlayer::~COGGPlayer() {
+COGGPlayer::~COGGPlayer()
+{
 	close();
 }
 
@@ -41,6 +42,7 @@ int ov_fopen(char *path,OggVorbis_File *vf)
 
 bool COGGPlayer::open()
 {
+	mLoadedTune = false;
 	// If Ogg detected, decode it into the stream psound->sound_buffer.
 	// It must fit into the Audio_cvt structure, so that it can be converted
 
@@ -48,10 +50,9 @@ bool COGGPlayer::open()
         return false;
 
     vorbis_info*    vorbisInfo;    // some formatting data
-    vorbis_comment* vorbisComment; // user comments
 
     vorbisInfo = ov_info(&m_oggStream, -1);
-    vorbisComment = ov_comment(&m_oggStream, -1);
+    ov_comment(&m_oggStream, -1);
 
     m_AudioFileSpec.format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
 
@@ -73,7 +74,9 @@ bool COGGPlayer::open()
 	m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
 	m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
 
-    return true;
+	mLoadedTune = true;
+
+    return mLoadedTune;
 }
 
 bool COGGPlayer::readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec )
@@ -163,7 +166,7 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 
 void COGGPlayer::close()
 {
-	if(m_Audio_cvt.buf)
+ 	if(m_Audio_cvt.buf)
 		delete [] m_Audio_cvt.buf;
 	m_Audio_cvt.buf = NULL;
 
@@ -171,6 +174,7 @@ void COGGPlayer::close()
 	m_music_pos = 0;
 	m_pcm_size = 0;
 	m_playing = false;
+	mLoadedTune = false;
 	ov_clear(&m_oggStream);
 }
 

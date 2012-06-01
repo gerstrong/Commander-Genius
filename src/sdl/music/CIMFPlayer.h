@@ -23,7 +23,8 @@ struct IMFChunkType
 	word Delay;
 };
 
-class CIMFPlayer : public CMusicPlayer {
+class CIMFPlayer : public CMusicPlayer
+{
 public:
 	CIMFPlayer( const SDL_AudioSpec &AudioSpec, COPLEmulator& opl_emulator = *g_pSound->getOPLEmulatorPtr());
 

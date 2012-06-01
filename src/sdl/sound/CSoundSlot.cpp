@@ -42,11 +42,10 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
     	char array[BUFFER_SIZE];
     	std::vector<char> buffer;
         vorbis_info*    vorbisInfo;    // some formatting data
-        vorbis_comment* vorbisComment; // user comments
 
     	int bitStream;
         vorbisInfo = ov_info(&oggStream, -1);
-        vorbisComment = ov_comment(&oggStream, -1);
+        ov_comment(&oggStream, -1);
         pspec->format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
         pspec->channels = vorbisInfo->channels;
         pspec->freq = vorbisInfo->rate;

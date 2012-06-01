@@ -29,6 +29,7 @@ public:
 
 protected:
 	bool m_playing;
+	bool mLoadedTune;
 };
 
 #endif /* CMUSICPLAYER_H_ */

@@ -24,7 +24,8 @@
 #include <SDL.h>
 #include <string>
 
-class COGGPlayer : public CMusicPlayer {
+class COGGPlayer : public CMusicPlayer
+{
 public:
 	COGGPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec);
 	virtual ~COGGPlayer();
