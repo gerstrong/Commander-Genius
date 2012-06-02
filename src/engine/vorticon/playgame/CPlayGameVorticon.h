@@ -115,5 +115,7 @@ private:
 	CHUD *mp_HUD;
 	SmartPointer<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;
+
+	SmartPointer<SDL_Surface> mpFPSSurface;
 };
 #endif /* CPlayGameVorticon_H_ */

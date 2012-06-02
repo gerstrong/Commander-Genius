@@ -20,7 +20,10 @@
 
 class CHUD {
 public:
-	CHUD(unsigned long &score, signed char &lives, unsigned int &charges);
+	CHUD(unsigned long &score,
+		 signed char &lives,
+		 unsigned int &charges,
+		 int *camlead = NULL); // TODO: Must be removed later and replaced by a reference
 
 	void render();
 
@@ -39,6 +42,7 @@ private:
 
 	SmartPointer <SDL_Surface> mpBackground;
 	SmartPointer <SDL_Surface> mpHUDBlit;
+	int *mpCamlead;
 };
 
 #endif /* CHUD_H_ */

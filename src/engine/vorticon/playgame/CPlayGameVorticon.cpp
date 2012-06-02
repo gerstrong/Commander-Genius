@@ -16,8 +16,8 @@
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
 #include "engine/vorticon/ai/CTeleporter.h"
-
-#define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
+#include "common/Menu/CMenuController.h"
+#include "sdl/extensions.h"
 
 ////
 // Creation Routine
@@ -48,8 +48,8 @@ mp_HUD(NULL)
 		thisPlayer.mp_camera->attachObject(&thisPlayer);
 	}
 
-	// Create completed level list
-	memset(mp_level_completed,false,MAX_LEVELS_VORTICON*sizeof(bool));
+	// Set the whole completed level list to false
+	memset( mp_level_completed, false, MAX_LEVELS_VORTICON*sizeof(bool));
 
 	m_showPauseDialog = false;
 
@@ -59,8 +59,6 @@ mp_HUD(NULL)
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS);
 	else
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_HARD);
-
-	//if(finale) m_level_command = GOTO_FINALE;
 }
 
 // Setup all the players, when one level is started
@@ -103,7 +101,7 @@ void CPlayGameVorticon::setupPlayers()
 	stInventory &inventory = m_Player.at(0).inventory;
 
 	if(mp_HUD) delete mp_HUD;
-	mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges);
+	mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges, &mCamLead);
 }
 
 bool CPlayGameVorticon::init()
@@ -185,7 +183,7 @@ void CPlayGameVorticon::process()
 
 
 
-	if( mpFinale.empty() ) // Game is not paused, no messages have to be shown and no menu is open
+	if( mpFinale.empty() && !gpMenuController->active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if(mMessageBoxes.empty() && !StatusScreenOpen())
 		{
@@ -272,7 +270,17 @@ void CPlayGameVorticon::process()
 
 	if (g_pVideoDriver->getVidConfig().showfps)
 	{
-		SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
+		SDL_Rect rect;
+		rect.x = 5;
+		rect.y = 5;
+		rect.w = 300;
+		rect.h = 10;
+
+		if(mpFPSSurface.empty())
+		{
+			mpFPSSurface = CG_CreateRGBSurface(rect);
+		}
+
 		std::string tempbuf;
 #ifdef DEBUG
 		tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
@@ -280,7 +288,9 @@ void CPlayGameVorticon::process()
 #else
 		tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
-		g_pGfxEngine->getFont(1).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
+		g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 0,0, true);
+
+		g_pVideoDriver->mDrawTasks.add(new BlitSurfaceTask(mpFPSSurface, NULL, &rect ));
 
 	}
 

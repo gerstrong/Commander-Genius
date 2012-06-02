@@ -13,15 +13,17 @@
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
 
-CHUD::CHUD(unsigned long &score, signed char &lives, unsigned int &charges) :
+CHUD::CHUD(unsigned long &score, signed char &lives,
+		   unsigned int &charges, int *camlead) :
 m_score(score),
 m_lives(lives),
-m_charges(charges)
+m_charges(charges),
+mpCamlead(camlead)
 {
 	m_Rect.x = 4;
 	m_Rect.y = 2;
 	m_Rect.w = 80;
-	m_Rect.h = 29;
+	m_Rect.h = 32;
 
 	size_t Episode = g_pBehaviorEngine->getEpisode();
 
@@ -88,6 +90,8 @@ void CHUD::CreateBackground()
 	DrawCircle(0, 0, 80);
 	DrawCircle(17, 15, 22);
 	DrawCircle(58, 15, 22);
+	if(g_pBehaviorEngine->mPlayers > 1)
+		DrawCircle(0, 0, 15);
 }
 
 // Draw a circle on the surface
@@ -177,17 +181,25 @@ void CHUD::renderVorticon()
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 	
 	CFont &Font = g_pGfxEngine->getFont(1);
-	//Font.setFGColour(blitsurface->format, 0x000000);
-	// Draw the score
-	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);
-
 	// Draw the lives
 	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15+m_Rect.x, 15+m_Rect.y);
 
 	// Draw the charges
 	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(charges),2), 56+m_Rect.x, 15+m_Rect.y);
 
-	//Font.setFGColour(blitsurface->format, 0x0);
+	// In multiplayer mode we show a number indicating the cam owner
+	if( mpCamlead && g_pBehaviorEngine->mPlayers > 1 )
+	{
+		// Draw the Player which controls the camera
+		Font.drawFont(mpHUDBlit.get(), itoa((*mpCamlead)+1), m_Rect.x, m_Rect.y);
+
+		// Draw the score
+		Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),7), 16+m_Rect.x, m_Rect.y);
+	}
+	else
+	{
+		Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);
+	}
 
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
 }
