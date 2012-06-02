@@ -13,6 +13,7 @@
 
 #include "fileio/CExeFile.h"
 #include "sdl/music/CMusicPlayer.h"
+#include "SmartPointer.h"
 
 #include <SDL.h>
 #include <string>
@@ -24,7 +25,6 @@
 class CMusic : public CSingleton<CMusic>
 {
 public:
-	CMusic();
 	virtual ~CMusic();
 
 	/**
@@ -43,13 +43,12 @@ public:
 
 	bool playing()
 	{
-		if(mp_player)
-			return mp_player->playing();
+		if(!mpPlayer.empty())
+			return mpPlayer->playing();
 		return false;
 	}
 
-	//SDL_AudioSpec m_AudioSpec;
-	CMusicPlayer *mp_player;
+	SmartPointer<CMusicPlayer> mpPlayer;
 	bool m_busy;
 };
 

@@ -73,7 +73,7 @@ void CStory::init()
 			Text.push_back(text_data[i]);
 	}
 	
-	Maploader.load(episode, 90, DataDirectory);
+	Maploader.load(episode, 90, DataDirectory, false);
 	
 	// Create the Text ViewerBox and stores the text there!
 	mpTextViewer = new CTextViewer(0, 0, 320, 136);

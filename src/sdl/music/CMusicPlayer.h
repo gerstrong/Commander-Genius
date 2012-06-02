@@ -14,7 +14,8 @@
 
 #include <SDL.h>
 
-class CMusicPlayer {
+class CMusicPlayer
+{
 public:
 	CMusicPlayer();
 	virtual ~CMusicPlayer();
@@ -29,7 +30,6 @@ public:
 
 protected:
 	bool m_playing;
-	bool mLoadedTune;
 };
 
 #endif /* CMUSICPLAYER_H_ */

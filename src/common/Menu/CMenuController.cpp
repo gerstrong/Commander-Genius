@@ -77,10 +77,7 @@ void CMenuController::process()
 			EventContainer.pop_Event();
 
 			if(EventContainer.empty())
-			{
-				g_pMusicPlayer->reload();
 				g_pMusicPlayer->play();
-			}
 		}
 
 		if( EventContainer.occurredEvent<CloseAllMenusEvent>() )
@@ -88,7 +85,6 @@ void CMenuController::process()
 			emptyMenuStack();
 
 			EventContainer.pop_Event();
-			g_pMusicPlayer->reload();
 			g_pMusicPlayer->play();
 		}
 

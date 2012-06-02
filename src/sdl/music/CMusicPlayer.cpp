@@ -8,8 +8,7 @@
 #include "CMusicPlayer.h"
 
 CMusicPlayer::CMusicPlayer() :
-m_playing(false),
-mLoadedTune(false)
+m_playing(false)
 {}
 
 CMusicPlayer::~CMusicPlayer()
@@ -23,7 +22,6 @@ void CMusicPlayer::reload()
 
 void CMusicPlayer::play(const bool value)
 {
-	if(mLoadedTune)
-		m_playing = value;
+	m_playing = value;
 }
 

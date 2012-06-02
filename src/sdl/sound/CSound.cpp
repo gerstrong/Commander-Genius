@@ -344,18 +344,13 @@ bool CSound::loadSoundData()
 		return(m_pAudioRessources->loadSoundData());
 	}
 
-	SDL_UnlockAudio();
-
 	return false;
 }
 
 void CSound::unloadSoundData()
 {
-	SDL_LockAudio();
 	while(m_callback_running);
-
 	m_pAudioRessources = NULL;
-	SDL_UnlockAudio();
 }
 
 

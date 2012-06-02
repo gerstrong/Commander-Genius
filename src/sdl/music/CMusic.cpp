@@ -16,21 +16,16 @@
 #include "sdl/music/CIMFPlayer.h"
 #include <fstream>
 
-CMusic::CMusic() :
-mp_player(NULL)
-{}
-
 bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 {
 	//m_AudioSpec = g_pSound->getAudioSpec();
-	CIMFPlayer *imf_player = new CIMFPlayer(g_pSound->getAudioSpec());
-	imf_player->loadMusicTrack(ExeFile, track);
-	mp_player = imf_player;
+	CIMFPlayer *imfPlayer = new CIMFPlayer(g_pSound->getAudioSpec());
+	imfPlayer->loadMusicTrack(ExeFile, track);
+	mpPlayer = imfPlayer;
 
-	if(!mp_player->open())
+	if(!mpPlayer->open())
 	{
-		delete mp_player;
-		mp_player = NULL;
+		mpPlayer = NULL;
 		return false;
 	}
 	return true;
@@ -40,13 +35,12 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
 	//m_AudioSpec = g_pSound->getAudioSpec();
-	mp_player = new CIMFPlayer(g_pSound->getAudioSpec());
-	(static_cast<CIMFPlayer*>(mp_player))->loadMusicForLevel(ExeFile, level);
+	mpPlayer = new CIMFPlayer(g_pSound->getAudioSpec());
+	(static_cast<CIMFPlayer*>(mpPlayer.get()))->loadMusicForLevel(ExeFile, level);
 
-	if(!mp_player->open())
+	if(!mpPlayer->open())
 	{
-		delete mp_player;
-		mp_player = NULL;
+		mpPlayer = NULL;
 		return false;
 	}
 	return true;
@@ -65,26 +59,25 @@ bool CMusic::load(const std::string &musicfile)
 
 		if(strcasecmp(extension.c_str(),"imf") == 0)
 		{
-			CIMFPlayer *imf_player = new CIMFPlayer(audioSpec);
-			imf_player->loadMusicFromFile(musicfile);
-			mp_player = imf_player;
+			CIMFPlayer *imfPlayer = new CIMFPlayer(audioSpec);
+			imfPlayer->loadMusicFromFile(musicfile);
+			mpPlayer = imfPlayer;
 		}
 		else if(strcasecmp(extension.c_str(),"ogg") == 0)
 		{
 #if defined(OGG) || defined(TREMOR)
 
-			mp_player = new COGGPlayer(musicfile, audioSpec);
+			mpPlayer = new COGGPlayer(musicfile, audioSpec);
 #else
 			g_pLogFile->ftextOut("Music Manager: Either OGG or TREMOR-Support is disabled! Please use another build<br>");
 			return false;
 #endif
 		}
 
-		if(!mp_player->open())
+		if(!mpPlayer->open())
 		{
 			g_pLogFile->textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
-			delete mp_player;
-			mp_player = NULL;
+			mpPlayer = NULL;
 			return false;
 		}
 		return true;
@@ -98,48 +91,48 @@ bool CMusic::load(const std::string &musicfile)
 
 void CMusic::reload()
 {
-	if(!mp_player)
+	if(mpPlayer.empty())
 		return;
 
-	mp_player->reload();
+	mpPlayer->reload();
 }
 
 void CMusic::play()
 {
-	if(!mp_player)
+	if(mpPlayer.empty())
 		return;
 
-	mp_player->play(true);
+	mpPlayer->play(true);
 }
 
 void CMusic::pause()
 {
-	if(!mp_player)
+	if(mpPlayer.empty())
 		return;
 
-	mp_player->play(false);
+	mpPlayer->play(false);
 }
 
 void CMusic::stop()
 {
-	if(!mp_player)
+	if(mpPlayer.empty())
 		return;
 
 	// wait until the last chunk has been played, and only shutdown then.
 	while(m_busy);
 
-	mp_player->close();
+	mpPlayer->close();
 }
 
 // length only refers to the part(buffer) that has to be played
 void CMusic::readWaveform(Uint8* buffer, size_t length)
 {
-	if( !mp_player )
+	if( mpPlayer.empty() )
 		return;
 
 	m_busy = true;
 
-	mp_player->readBuffer(buffer, length);
+	mpPlayer->readBuffer(buffer, length);
 
 	m_busy = false;
 }

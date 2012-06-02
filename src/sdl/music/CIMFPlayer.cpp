@@ -36,10 +36,9 @@ m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
 bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 {
     // Open the IMF File
-	mLoadedTune = false;
 	FILE *fp;
 	word data_size;
-	//int read_first;
+	bool ok = false;
 
 	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
     	return false;
@@ -59,17 +58,13 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     m_IMF_Data.reserve(imf_chunks);
 
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
-    {
     	g_pLogFile->textOut("The IMF-File seems to be corrupt.");
-    }
     else
-    {
-    	mLoadedTune = true;
-    }
+    	ok = true;
 
     fclose(fp);
 
-    return mLoadedTune;
+    return ok;
 }
 
 
@@ -220,14 +215,11 @@ void CIMFPlayer::freeCompressedAudio(const uint8_t *AudioCompFileData)
 bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 {
 	// Now get the proper music slot reading the assignment table.
-	mLoadedTune = false;
 	Uint16 music_order = 0;
 	const int Idx = ExeFile.getEpisode()-4;
 	memcpy( &music_order, ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16), sizeof(Uint16));
 
-	mLoadedTune = loadMusicTrack(ExeFile, music_order);
-
-	return mLoadedTune;
+	return loadMusicTrack(ExeFile, music_order);
 }
 
 bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
@@ -235,17 +227,15 @@ bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 	// Now get the proper music slot reading the assignment table.
 	uint8_t *AudioCompFileData = NULL;
 	uint32_t *audiohedptr = NULL;
-	mLoadedTune = false;
 
 	readCompressedAudiointoMemory(ExeFile, audiohedptr, AudioCompFileData);
 
 	unpackAudioAt(ExeFile, AudioCompFileData, audiohedptr, track);
 
-	// I think we need a better and more stable check here!
+	// TODO: I think we need a better and more stable check here!
 	freeCompressedAudio(AudioCompFileData);
 
-	mLoadedTune = true;
-	return mLoadedTune;
+	return true;
 }
 
 
@@ -260,10 +250,7 @@ bool CIMFPlayer::open()
 	m_numreadysamples = m_IMFDelay = 0;
 	m_samplesPerMusicTick = m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate();
 
-	// Only if there is data load tell me that's loaded!
-	mLoadedTune = !m_IMF_Data.empty();
-
-	return mLoadedTune;
+	return !m_IMF_Data.empty();
 }
 
 void CIMFPlayer::close()
@@ -273,7 +260,6 @@ void CIMFPlayer::close()
 	m_opl_emulator.shutdown();
 
 	play(false);
-	mLoadedTune = false;
 	m_IMF_Data.gotoStart();
 	return;
 }
