@@ -22,6 +22,10 @@ const int TANTALUS_SPRITE = 58;
 const int SHOT_SPD_X = (42*6);
 const int SHOT_SPD_Y = (18*6);
 
+const int EARTH_COORD_X = 47;
+const int EARTH_COORD_Y = 21;
+
+
 const int EARTHCHUNK_BIG_UP = 64;
 const int EARTHCHUNK_BIG_DN = 66;
 const int EARTHCHUNK_SMALL_UP = 68;
@@ -56,6 +60,8 @@ void CTantalusRay::process()
 	else
 	{
 		(this->*mp_process)();
+
+		m_objectai.process();
 	}
 }
 
@@ -74,7 +80,7 @@ void CTantalusRay::shootray()
 
 		mpMap->drawAll();
 
-		CObject* ShootObject = new CRay(mpMap.get(), 4<<CSF, 4<<CSF, RIGHT, OBJ_NONE, 0);
+		CObject* ShootObject = new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, OBJ_NONE, 0);
 		ShootObject->solid = false;
 		ShootObject->exists = ShootObject->onscreen = true;
 		m_Object.push_back(ShootObject);
@@ -92,12 +98,12 @@ void CTantalusRay::shootray()
 		int x = (shot_x>>STC)-160;
 		int y = (shot_y>>STC)-100;
 		if( x>0 && y>0 )
-			mpMap->gotoPos( x, y);
+			mpMap->gotoPos(x, y);
 
 		mp_ShootObject->sprite = TANTALUS_SPRITE + m_alternate_sprite;
 		m_alternate_sprite ^= 1;
 
-		if( (shot_x>>CSF) >= 47)
+		if( (shot_x>>CSF) >= EARTH_COORD_X)
 		{
 			m_Object.pop_back();
 			m_mustsetup = true;
@@ -142,9 +148,11 @@ void CTantalusRay::explodeEarth()
 		case 7:
 			chunk = new CEarthChunk(mpMap.get(),shot_x+(24<<STC), shot_y-(8<<STC));
 			m_Object.push_back(chunk);
+			break;
 		case 8:
 			chunk = new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(4<<STC));
 			m_Object.push_back(chunk);
+			break;
 		case 10:
 			// spawn four big fragments of the earth to go flying off
 			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
@@ -171,10 +179,14 @@ void CTantalusRay::explodeEarth()
 			chunk->solid = false;
 			m_Object.push_back(chunk);
 
-			// Hide the Earth!!!
-			for(int ex = 0; ex<3 ; ex++)
-				for(int ey = 0; ey<3 ; ey++)
-					mpMap->changeTile((shot_x>>CSF)+ex, (shot_y>>CSF)+ey, 561);
+			// Hide the Earth!!! Now it's destroyed
+			for(int ex = 0; ex<4 ; ex++)
+			{
+				for(int ey = 0; ey<4 ; ey++)
+				{
+					mpMap->changeTile(EARTH_COORD_X+ex, EARTH_COORD_Y+ey, 561);
+				}
+			}
 			break;
 		case 32:
 			while(!m_Object.empty())
@@ -191,6 +203,5 @@ void CTantalusRay::explodeEarth()
 	}
 	else m_timer--;
 
-	m_objectai.process();
 }
 

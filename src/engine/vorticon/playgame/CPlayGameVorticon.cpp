@@ -82,6 +82,7 @@ void CPlayGameVorticon::setupPlayers()
 			it_player->sprite = PSTANDFRAME;
 			it_player->solid=true;
 		}
+		it_player->dontdraw = false;
 		it_player->pdie = PDIE_NODIE;
 
 		// Calibrate Player to the right position, so it won't fall when level starts

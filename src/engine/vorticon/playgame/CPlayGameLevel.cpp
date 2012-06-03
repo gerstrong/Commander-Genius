@@ -84,6 +84,7 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 		g_pMusicPlayer->stop();
 		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
 		mpFinale = new CTantalusRay(mMessageBoxes, mMap, m_Object, *mp_ObjectAI);
+		m_Player[0].dontdraw = true;
 		m_gameover = true;
 	}
 	else if (trigger == LVLTRIG_BRIDGE)
