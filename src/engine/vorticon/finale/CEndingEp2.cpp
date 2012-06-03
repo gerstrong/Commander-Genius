@@ -28,8 +28,6 @@ m_Player(Player)
 	m_timepassed = 0;
 	m_mustsetup = true;
 	m_mustfinishgame = false;
-
-	mp_Textbox = NULL;
 }
 
 void CEndingEp2::process()
@@ -60,15 +58,15 @@ void CEndingEp2::HeadsForEarth()
 		m_Player[0].sprite = SPR_VORTICON_MOTHERSHIP;
 		m_Player[0].solid = false;
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 );
+		mpShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 );
 
 		mpMap->gotoPos(0, 0);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 672, DDOWNRIGHT);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 150, DDOWN);
-		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 672, DDOWNRIGHT);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 150, DDOWN);
+		mpShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
 		mpMap->drawAll();
-		mp_ShipFlySys->m_ShipQueuePtr = 0;
+		mpShipFlySys->m_ShipQueuePtr = 0;
 
 		int x, y;
 		mpMap->findTile(593, &x, &y);
@@ -79,30 +77,20 @@ void CEndingEp2::HeadsForEarth()
 		m_mustsetup = false;
 	}
 
-	if(mp_Textbox)
-	{
-		mp_Textbox->processLogic();
 
-		if(mp_Textbox->isFinished())
-		{
-			SAFE_DELETE(mp_Textbox);
-		}
+	// process the normal ship flying level and do all the inited commands
+	if( !mpShipFlySys->EndOfQueue() || !mMessageBoxes.empty() )
+	{
+		mpShipFlySys->process();
 	}
 	else
-	{	// process the normal ship flying level and do all the inited commands
-		if( !mp_ShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
-		{
-			mp_ShipFlySys->process();
-		}
-		else
-		{
-			// Shutdown code here!
-			delete mp_ShipFlySys;
-			mp_ShipFlySys = NULL;
-			m_step++;
-			m_mustsetup = true;
-		}
+	{
+		// Shutdown code here!
+		mpShipFlySys = NULL;
+		m_step++;
+		m_mustsetup = true;
 	}
+
 }
 
 void CEndingEp2::LimpsHome()
@@ -117,14 +105,14 @@ void CEndingEp2::LimpsHome()
 		m_Player[0].moveTo(VectorD2<int>(8<<CSF, 26<<CSF));
 		m_Player[0].solid = false;
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP );
+		mpShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP );
 
 		mpMap->gotoPos(LIMPSHOME_X, LIMPSHOME_Y);
-		mp_ShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
-		mp_ShipFlySys->addShipQueue(CMD_MOVE, 80, DUPLEFT);
-		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
+		mpShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
+		mpShipFlySys->addShipQueue(CMD_MOVE, 80, DUPLEFT);
+		mpShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
 		mpMap->drawAll();
-		mp_ShipFlySys->m_ShipQueuePtr = 0;
+		mpShipFlySys->m_ShipQueuePtr = 0;
 
 		addMsgBoxString("EP2_ESEQ_PART2");
 
@@ -132,30 +120,19 @@ void CEndingEp2::LimpsHome()
 	}
 
 
-	if(mp_Textbox)
+	// process the normal ship flying level and do all the inited commands
+	if( !mpShipFlySys->EndOfQueue() || !mMessageBoxes.empty() )
 	{
-		mp_Textbox->processLogic();
-
-		if(mp_Textbox->isFinished())
-		{
-			SAFE_DELETE(mp_Textbox);
-		}
+		mpShipFlySys->process();
 	}
 	else
-	{	// process the normal ship flying level and do all the inited commands
-		if( !mp_ShipFlySys->EndOfQueue() & !g_pInput->getPressedAnyCommand() )
-		{
-			mp_ShipFlySys->process();
-		}
-		else
-		{
-			// Shutdown code here!
-			delete mp_ShipFlySys;
-			mp_ShipFlySys = NULL;
-			m_step++;
-			m_mustsetup = true;
-		}
+	{
+		// Shutdown code here!
+		mpShipFlySys = NULL;
+		m_step++;
+		m_mustsetup = true;
 	}
+
 }
 
 void CEndingEp2::SnowedOutside()
@@ -167,12 +144,7 @@ void CEndingEp2::SnowedOutside()
 		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
 		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
-		mp_FinaleStaticScene = new CFinaleStaticScene( mpMap->m_gamepath, "finale.ck2" );
-
-		/*mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE1", 6000);
-		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE2", 6000);
-		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE3", 6000);
-		mp_FinaleStaticScene->push_string("EP2_ESEQ_PART3_PAGE4", 6000);*/
+		mpFinaleStaticScene = new CFinaleStaticScene( mpMap->m_gamepath, "finale.ck2" );
 
 		addMsgBoxString("EP2_ESEQ_PART1");
 		addMsgBoxString("EP2_ESEQ_PART2");
@@ -183,24 +155,19 @@ void CEndingEp2::SnowedOutside()
 		m_mustsetup = false;
 	}
 
-	if( !mp_FinaleStaticScene->mustclose() )
-	{
-		mp_FinaleStaticScene->process();
-	}
-	else
+	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
-		delete mp_FinaleStaticScene;
-		mp_FinaleStaticScene = NULL;
+		mpFinaleStaticScene = NULL;
 		mpMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}
+	else
+	{
+		mpFinaleStaticScene->process();
+	}
 
-}
-
-CEndingEp2::~CEndingEp2() {
-	// TODO Auto-generated destructor stub
 }
 
 

@@ -27,8 +27,6 @@ public:
 	void PaparazziScene();
 	void AwardScene();
 
-	virtual ~CEndingEp3();
-
 private:
 	bool m_mustsetup;
 	Uint32 m_starttime;
@@ -37,9 +35,8 @@ private:
 	int m_counter;
 
 	std::vector<CPlayer> &m_Player;
-	CFinaleStaticScene *mp_FinaleStaticScene;
 
-	std::list<CMessageBoxVort*> m_TextBoxes;
+	SmartPointer<CFinaleStaticScene> mpFinaleStaticScene;
 };
 
 #endif /* CENDINGEP3_H_ */

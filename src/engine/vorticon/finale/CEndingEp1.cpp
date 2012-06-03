@@ -74,11 +74,7 @@ void CEndingEp1::ReturnsToShip()
 		return;
 	}
 
-	/*if( m_timepassed<50000 && !g_pInput->getPressedAnyCommand() )
-	{
-		mpTextbox->processLogic();
-	}
-	else*/
+
 	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
@@ -132,7 +128,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 		m_mustsetup = false;
 	}
 
-	if( !mpShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
+	if( !mpShipFlySys->EndOfQueue() && mMessageBoxes.empty() )
 	{
 		// process the normal ship flying level and do all the inited commands
 		mpShipFlySys->process();
@@ -223,7 +219,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		m_mustsetup = false;
 	}
 
-	if( !mpShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
+	if( !mpShipFlySys->EndOfQueue() && mMessageBoxes.empty() )
 	{
 		// process the normal ship flying level and do all the inited commands
 		mpShipFlySys->process();

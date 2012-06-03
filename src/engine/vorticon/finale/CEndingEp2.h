@@ -26,18 +26,18 @@ public:
 	void LimpsHome();
 	void SnowedOutside();
 
-	virtual ~CEndingEp2();
 
 private:
 	bool m_mustsetup;
 	Uint32 m_starttime;
 	Uint32 m_timepassed;
 
-	std::vector<CPlayer> &m_Player;
-	CShipFlySys *mp_ShipFlySys;
-	CFinaleStaticScene *mp_FinaleStaticScene;
 
-	CMessageBoxVort *mp_Textbox;
+	std::vector<CPlayer> &m_Player;
+	SmartPointer<CShipFlySys> mpShipFlySys;
+	SmartPointer<CFinaleStaticScene> mpFinaleStaticScene;
+
+	//CMessageBoxVort *mp_Textbox;
 };
 
 #endif /* CENDINGEP2_H_ */

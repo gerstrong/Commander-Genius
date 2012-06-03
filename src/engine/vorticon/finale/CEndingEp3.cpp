@@ -59,10 +59,10 @@ void CEndingEp3::HonorScene()
 		mpMap->gotoPos(32, 32);
 		mpMap->drawAll();
 
-		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE1"), true));
-		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE2"), true));
-		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE3"), true));
-		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE4"), true));
+		addMsgBoxString("EP3_ESEQ_PAGE1");
+		addMsgBoxString("EP3_ESEQ_PAGE2");
+		addMsgBoxString("EP3_ESEQ_PAGE3");
+		addMsgBoxString("EP3_ESEQ_PAGE4");
 
 		int newtile = mpMap->at(2,12);
 		for(int x=0 ; x<22 ; x++) // This changes to the Oh No! Tiles to normal Stone-Tiles
@@ -74,19 +74,7 @@ void CEndingEp3::HonorScene()
 		m_mustsetup = false;
 	}
 
-	if(!m_TextBoxes.empty())
-	{
-		CMessageBoxVort *pMB = m_TextBoxes.front();
-
-		pMB->processLogic();
-
-		if(pMB->isFinished())
-		{
-			delete pMB;
-			m_TextBoxes.pop_front();
-		}
-	}
-	else
+	if( mMessageBoxes.empty() )
 	{
 		m_step++;
 		m_mustsetup = true;
@@ -128,34 +116,25 @@ void CEndingEp3::AwardScene()
 		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
 		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		mpMap->drawAll();
-		mp_FinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck3");
+		mpFinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck3");
 
 		addMsgBoxString("THE_END");
 
 		m_mustsetup = false;
 	}
 
-	if( !mp_FinaleStaticScene->mustclose() )
-	{
-		mp_FinaleStaticScene->process();
-	}
-	else
+	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
-		delete mp_FinaleStaticScene;
-		mp_FinaleStaticScene = NULL;
+		mpFinaleStaticScene = NULL;
 		mpMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}
-}
-
-CEndingEp3::~CEndingEp3() {
-	while(!m_TextBoxes.empty())
+	else
 	{
-		delete m_TextBoxes.front();
-		m_TextBoxes.pop_front();
+		mpFinaleStaticScene->process();
 	}
 
-	SAFE_DELETE(mp_FinaleStaticScene);
 }
+

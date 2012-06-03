@@ -39,7 +39,7 @@ m_mustclose(false)
 
 	// Those formulas work well with our constellation but I don't think they are perfect.
 	// They transform the Message Box the way the text fits perfectly in.
-	mRect.w = (mpTextCtrl->mTextDim.w)*0.028f + 0.056f;
+	mRect.w = (mpTextCtrl->mTextDim.w)*0.038f + 0.046f;
 	mRect.h = (mpTextCtrl->mTextDim.h)*0.045f + 0.13f;
 	mRect.x = (1.0f - mRect.w)/2.0f;
 	mRect.y = (1.0f - mRect.h)/2.0f;
@@ -48,11 +48,15 @@ m_mustclose(false)
 	CRect<float> TextRect;
 	TextRect.x = 0.055f/mRect.w;
 	TextRect.y = 0.05f/mRect.h;
-	TextRect.w = 0.85f;
+	TextRect.w = 0.95f;
 	TextRect.h = 0.95f;
 
-	addControl( mpTextCtrl, TextRect );
+	if(lower) // if lower is enabled, try to snap the Dlg to the bottom off the screen.
+	{
+		mRect.y = 1.0f - mRect.h;
+	}
 
+	addControl( mpTextCtrl, TextRect );
 
 	CRect<float> closeRect = pButton->mRect;
 	closeRect.x = mRect.x;
