@@ -22,79 +22,85 @@ void CPlayGameVorticon::processOnWorldMap()
 {
 	int useobject;
 
-	// Perform player Objects...
-	m_Player[0].processWorldMap();
-
-	// entered a level, used ship, teleporter, etc.
-	if( !m_Player[0].hideplayer && !m_Player[0].beingteleported )
+	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
-		useobject = m_Player[0].getNewObject();
-		if( useobject != 0 )
+		CPlayer &player = m_Player[i];
+
+		// Perform player Objects...
+		player.processWorldMap();
+
+		// entered a level, used ship, teleporter, etc.
+		if( !player.hideplayer && !player.beingteleported )
 		{
-			// If it is teleporter, make the Player teleport
-			int TeleportID;
-			if( (TeleportID = getTeleporterInfo(useobject)) != 0 )
+			useobject = player.getNewObject();
+			if( useobject != 0 )
 			{
-				teleportPlayer(TeleportID, m_Player[0]);
-			}
-			else
-			{
-				// If it is level, change the playgame mode and load the new map. Nessie is
-				// a special case in Episode 3
-				switch(useobject)
+				// If it is teleporter, make the Player teleport
+				int TeleportID;
+				if( (TeleportID = getTeleporterInfo(useobject)) != 0 )
 				{
-				case NESSIE_WEED:
-				case NESSIE_PATH: break;
-				case NESSIE_LAND:
-					m_Player[0].MountNessieIfAvailable();
-					g_pInput->flushAll();
-					break;
-
-				case LVLS_SHIP:
-				{
-					if (m_Episode==1)
-						YourShipNeedsTheseParts();
-					else if (m_Episode==3)
-						ShipEp3();
-
-					g_pInput->flushCommands();
-
+					teleportPlayer(TeleportID, player);
 				}
-				break;
-
-				default: // a regular level
-					// Check if Level has been completed or the Level-Replayability is enabled
-					if( !mp_level_completed[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
+				else
+				{
+					// If it is level, change the playgame mode and load the new map. Nessie is
+					// a special case in Episode 3
+					switch(useobject)
 					{
-						// Create the special merge effect
-						CColorMerge *pColorMergeFX = new CColorMerge(8);
+					case NESSIE_WEED:
+					case NESSIE_PATH: break;
+					case NESSIE_LAND:
+						player.MountNessieIfAvailable();
+						g_pInput->flushAll();
+						break;
 
-						m_level_command = START_LEVEL;
-						m_Level = useobject & 0x7fff;
-						g_pMusicPlayer->stop();
-						m_Player[0].playSound(SOUND_ENTER_LEVEL);
-						// save where on the map, the player entered. This is a checkpoint!
-						m_checkpoint_x = m_Player[0].getXPosition();
-						m_checkpoint_y = m_Player[0].getYPosition();
-						m_checkpointset = true;
-						cleanup();
-						init();
+					case LVLS_SHIP:
+					{
+						if (m_Episode==1)
+							YourShipNeedsTheseParts();
+						else if (m_Episode==3)
+							ShipEp3();
 
-						g_pGfxEngine->setupEffect(pColorMergeFX);
+						g_pInput->flushCommands();
+
 					}
 					break;
+
+					default: // a regular level
+						// Check if Level has been completed or the Level-Replayability is enabled
+						if( !mp_level_completed[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
+						{
+							// Create the special merge effect
+							CColorMerge *pColorMergeFX = new CColorMerge(8);
+
+							m_level_command = START_LEVEL;
+							m_Level = useobject & 0x7fff;
+							g_pMusicPlayer->stop();
+							player.playSound(SOUND_ENTER_LEVEL);
+							// save where on the map, the player entered. This is a checkpoint!
+							m_checkpoint_x = player.getXPosition();
+							m_checkpoint_y = player.getYPosition();
+							m_checkpointset = true;
+							cleanup();
+							init();
+
+							g_pGfxEngine->setupEffect(pColorMergeFX);
+						}
+						break;
+					}
 				}
 			}
 		}
-	}
 
-	if(m_Player[0].mounted)
-	{
-		if(g_pInput->getPressedAnyCommand(0))
+		if(player.mounted)
 		{
-			m_Player[0].UnmountNessie();
-			g_pInput->flushAll();
+			if(g_pInput->getPressedAnyCommand(0))
+			{
+				player.UnmountNessie();
+				g_pInput->flushAll();
+			}
 		}
+
 	}
 }
 
@@ -123,6 +129,23 @@ void CPlayGameVorticon::goBacktoMap()
 		player->inventory.HasCardBlue = 0;
 		player->inventory.HasCardGreen = 0;
 		player->inventory.HasCardRed = 0;
+
+
+		// Now, that the level is complete, sprite can be shown again, and now goto map!
+		int width = player->w>>(CSF-4);
+
+		if(width > 0)
+		{
+			int frame = player->playerbaseframe;
+			if(g_pBehaviorEngine->getEpisode() == 3) frame++;
+
+			g_pGfxEngine->getSprite(frame+0).setWidth(width);
+			g_pGfxEngine->getSprite(frame+1).setWidth(width);
+			g_pGfxEngine->getSprite(frame+2).setWidth(width);
+			g_pGfxEngine->getSprite(frame+3).setWidth(width);
+		}
+
+
 	}
 	cleanup();
 	init();

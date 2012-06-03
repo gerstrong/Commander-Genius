@@ -67,7 +67,8 @@ void CPlayGameVorticon::setupPlayers()
 	m_showKeensLeft=false;
 	mpKeenLeftSfc.tryDeleteData();
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for( ; it_player!=m_Player.end() ; it_player++ )
+
+	for( ; it_player != m_Player.end() ; it_player++ )
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
 		if( m_Level == WORLD_MAP_LEVEL_VORTICON )
@@ -196,31 +197,25 @@ void CPlayGameVorticon::process()
 			{
 				/// The following functions must be worldmap dependent
 				if( m_Level == WORLD_MAP_LEVEL_VORTICON )
-				{
 					processOnWorldMap();
+				else
+					processInLevel();
 
-					// Only the first Player may control camera here!
-					if(!m_Player[0].pdie)
-						m_Player[0].processCamera();
+
+				if(m_Player[mCamLead].pdie)
+				{
+					for( int i=0 ; i<m_NumPlayers ; i++ )
+					{
+						if(m_Player[i].pdie)
+							cycleCamLead();
+					}
 				}
 				else
 				{
-					processInLevel();
-
-					if(m_Player[mCamLead].pdie)
-					{
-						for( int i=0 ; i<m_NumPlayers ; i++ )
-						{
-							if(m_Player[i].pdie)
-								cycleCamLead();
-						}
-					}
-					else
-					{
-						// Process Players' Cameras
-						m_Player[mCamLead].processCamera();
-					}
+					// Process Players' Cameras
+					m_Player[mCamLead].processCamera();
 				}
+
 
 			}
 
@@ -541,7 +536,8 @@ void CPlayGameVorticon::drawObjects()
 
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	std::vector<CPlayer>::iterator it_end = ( m_Level!=WORLD_MAP_LEVEL_VORTICON) ? m_Player.end() : m_Player.begin()+1;
+	//std::vector<CPlayer>::iterator it_end = ( m_Level!=WORLD_MAP_LEVEL_VORTICON) ? m_Player.end() : m_Player.begin()+1;
+	std::vector<CPlayer>::iterator it_end = m_Player.end();
 	for (; it_player != it_end ; it_player++)
 	{
 		if(!it_player->beingteleported)

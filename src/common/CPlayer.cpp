@@ -768,16 +768,6 @@ void CPlayer::ProcessExitLevel()
 
 	if (level_done_timer > LEVEL_DONE_TOTAL_WAIT_TIME)
 	{
-		// Now, that the level is complete, sprite can be shown again, and now goto map!
-		int width = w>>(CSF-4);
-		int frame = playerbaseframe;
-		if(m_episode == 3) frame++;
-
-		g_pGfxEngine->getSprite(frame+0).setWidth(width);
-		g_pGfxEngine->getSprite(frame+1).setWidth(width);
-		g_pGfxEngine->getSprite(frame+2).setWidth(width);
-		g_pGfxEngine->getSprite(frame+3).setWidth(width);
-
 		level_done_timer = 0;
 		level_done = LEVEL_COMPLETE;
 		for(size_t i = 0 ; i<4 ; i++)
