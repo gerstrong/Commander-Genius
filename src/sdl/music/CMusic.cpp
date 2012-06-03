@@ -69,7 +69,7 @@ bool CMusic::load(const std::string &musicfile)
 
 			mpPlayer = new COGGPlayer(musicfile, audioSpec);
 #else
-			g_pLogFile->ftextOut("Music Manager: Either OGG or TREMOR-Support is disabled! Please use another build<br>");
+			g_pLogFile->ftextOut("Music Manager: Neither OGG or TREMOR-Support are disabled! Please use another build<br>");
 			return false;
 #endif
 		}
@@ -127,6 +127,8 @@ void CMusic::stop()
 // length only refers to the part(buffer) that has to be played
 void CMusic::readWaveform(Uint8* buffer, size_t length)
 {
+	m_busy = false;
+
 	if( mpPlayer.empty() )
 		return;
 

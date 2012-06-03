@@ -76,7 +76,7 @@ void CMenuController::process()
 			popBackMenu();
 			EventContainer.pop_Event();
 
-			if(EventContainer.empty())
+			if(mMenuStack.empty())
 				g_pMusicPlayer->play();
 		}
 

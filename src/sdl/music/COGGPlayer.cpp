@@ -81,6 +81,9 @@ bool COGGPlayer::readOGGStream( OggVorbis_File  &oggStream, char *buffer, const 
 	long bytes = 0;
 	unsigned long pos = 0;
 
+	m_reading_stream = true;
+
+
 	while( pos<size )
 	{
 		if(m_pcm_size<=0)
@@ -99,9 +102,11 @@ bool COGGPlayer::readOGGStream( OggVorbis_File  &oggStream, char *buffer, const 
 			pos = size;
 			m_bitStream = 0;
 			m_music_pos = 0;
+			m_reading_stream = false;
 			return true;
 		}
 	}
+	m_reading_stream = false;
 	return false;
 }
 
@@ -120,8 +125,6 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 {
 	if(!m_playing)
 		return;
-
-	m_reading_stream = true;
 
 	bool rewind = false;
 
@@ -158,7 +161,6 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 		play(true);
 	}
 
-	m_reading_stream = false;
 }
 
 void COGGPlayer::close()
