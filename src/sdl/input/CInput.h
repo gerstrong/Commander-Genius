@@ -129,7 +129,7 @@ enum EType
 	ETYPE_JOYBUTTON, ETYPE_JOYHAT,
 };
 
-typedef struct stInputCommand
+struct stInputCommand
 {
 	bool active;
 	bool lastactive;
@@ -144,7 +144,7 @@ typedef struct stInputCommand
 	int joyvalue;	// in which direction the axis needs to be moved
 	int joymotion;	// in which direction the axis is really moved
 	int joyhatval;	// in which direction the hat is really moved
-} stInputCommand;
+};
 
 class CInput : public CSingleton<CInput>
 {

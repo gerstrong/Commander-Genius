@@ -123,7 +123,7 @@ bool COGGPlayer::readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buf
 
 void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 {
-	if(!m_playing)
+	if(!m_playing || !m_Audio_cvt.buf)
 		return;
 
 	bool rewind = false;

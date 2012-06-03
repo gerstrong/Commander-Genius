@@ -634,13 +634,18 @@ void CInput::processJoystickHat()
 	{
 		for(int i=0 ; i<MAX_COMMANDS ; i++)
 		{
-			// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
-			if(InputCommand[j][i].joyeventtype == ETYPE_JOYHAT)
+			stInputCommand &command = InputCommand[j][i];
+
+			if( command.joyeventtype == ETYPE_JOYHAT &&
+				command.which == Event.jhat.which )
 			{
-				InputCommand[j][i].active = false;
-				// Joystick hats are configured for this event !!
-				if( Event.jhat.which == InputCommand[j][i].which && Event.jhat.value & InputCommand[j][i].joyhatval )
-					InputCommand[j][i].active = true;
+				command.active = false;
+				// Check if Joystick hats are configured for this event
+				if(
+					(Event.jhat.value & command.joyhatval) )
+				{
+					command.active = true;
+				}
 			}
 		}
 	}
@@ -1142,7 +1147,8 @@ void CInput::flushKeys(void)
 	memset(firsttime_immediate_keytable,false,KEYTABLE_SIZE);
 }
 
-struct TouchButton {
+struct TouchButton
+{
 	stInputCommand* cmd;
 	int immediateIndex;
 	int x, y, w, h;
