@@ -28,23 +28,31 @@ CBaseMenu( CRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 	mpMenuDialog->addControl( button );
 
 
+	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
+
 	CGUIButton *loadButton = new CGUIButton( "Load",
 										new OpenMenuEvent( new CLoadMenu() ) );
 	mpMenuDialog->addControl( loadButton );
+	loadButton->mEnabled = false;
 
 	CGUIButton *saveButton = new CGUIButton( "Save",
 									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
-	saveButton->mEnabled = openedGamePlay;
+	//saveButton->mEnabled = openedGamePlay;
+	saveButton->mEnabled = false;
 
 	mpMenuDialog->addControl(new CGUIButton( "Settings",
 												new OpenMenuEvent( new CSettingsMenu() ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "High Scores",
-												new StartInfoSceneEvent( new CHighScores ) ) );
+	CGUIButton *highscoreButton = new CGUIButton( "High Scores",
+													new StartInfoSceneEvent( new CHighScores ) );
+	mpMenuDialog->addControl( highscoreButton );
+	highscoreButton->mEnabled = false;
 
-	mpMenuDialog->addControl(new CGUIButton( "Info",
-												new OpenMenuEvent( new CHelpMenu() ) ) );
+	CGUIButton *infoButton = new CGUIButton( "Info",
+											new OpenMenuEvent( new CHelpMenu() ) );
+	mpMenuDialog->addControl( infoButton );
+	infoButton->mEnabled = false;
 
 	mpMenuDialog->addControl(new CGUIButton( "End Game", new GMSwitchToGameLauncher() ) );
 
