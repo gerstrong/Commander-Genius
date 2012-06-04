@@ -295,7 +295,7 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 		default:
 			return false;
 		}
-		mp_Map->setTile(mpx, mpy+1, 432,true);
+		mp_Map->setTile(mpx, mpy+1, 13*14, true);
 	}
 	hintused = true;
 	return true;
