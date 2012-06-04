@@ -7,33 +7,35 @@
     (c)2009-2012            Pizza2004       
     (c)2009-2012            Pickle          
     (c)2009-2012            Tulip           
-    (c)2010-2012            FCTW            
            Released under GNU/GPL           
                                             
-           Release v0.3.8-Alpha 
+           Release v0.4.0-Beta 
            Build: LINUX64                                       
 **********************************************
 
-Thanks for downloading Commander Genius!
+Welcome to Commander Genius!
 
 Commander Genius is an open-source clone of
-Commander Keen, which allows you to play the
-original three games, and a majority of the mods
+Commander Keen which allows you to play
+the games, and a majority of the mods
 made for it.  All of the original data files
 are required to do so, however, we convienently
 include Episode 1 and 4 for your enjoyment.
+
+So far Commander Keen 1-4 are supported. Keen 1-3
+have full support. Keen 4 has partial support, it's entire
+gameplay is there, but some things are missing, but are being added
 
 Commander Genius runs on Linux/X11, Windows,
 MacOS X, Wiz, GP2X and the iPhone, with plans
 to release on other platforms in the future.
 If you think you would like to port it,
 please send us a message and we will do our
-best to help you understand the code.
+best to help you.
 
 The main goal of Commander Genius is to copy
 the original gameplay feeling as much as possible, 
 although there're also a number of improvements like:
-- MMX Support
 - Mod Support
 - OpenGL Acceleration
 - Better graphical Effects
@@ -44,22 +46,38 @@ although there're also a number of improvements like:
 - Ingame Menu
 - Named Save Slots
 - Unrestricted Joystick Support
-- and more!
+- and many more!
 
-Before it was called CloneKeenPlus, but some 
-major rewrites in the code had to be done.
-We now call it Commander Genius!  
-After all this coding, we have retained 
-only a very small portion of the
-original CloneKeen code, but it was its base 
-that allowed it to happen. Due that fact
-we still honor Caitlin Shaw and all that
-effort she put onto that engine in the past.
 
-The Commander Genius source code may be freely
+- History -
+===========
+
+The first engine was CloneKeen by developer named Caitlin Shaw.
+Since the engine was left abandonned for most of the part, Gerstrong
+took it and created the fork called CloneKeenPlus and fixed some problems
+CloneKeen had. This fork comes from the 0.83 Version. A 0.84 version
+has been released since.
+
+
+After CloneKeenPlus, Commander Genius was born. 
+It is a complete rewrite of the engine in C++. The transition to
+Commander Genius means a transition from C to C++ code mostly using OOP.
+After all this coding, we have retained only a small portion of the
+original CloneKeen code.
+
+
+- License -
+===========
+
+The Commander Genius source code may be freely 
 distributed and modified as per the GPL, just
 please remember to give credit to the original
 authors. We worked very hard on it!
+
+- Setup  -
+==========
+
+We suppose you already have installed the copy of your game, so what's next, well?
 
 Setting up the data of the game:
 
@@ -73,22 +91,22 @@ Setting up the data of the game:
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
    will find the executable in the root directory of the extracted game.
    Under Linux it is called "CGenius", under Windows "CGenius.exe".    
- * If you want better sounds and music, please download the high quality pack (HQP).
+ * If you want improved sounds and music, just download the High Quality Pack (HQP).
    Read that readme of HQP for more information in how to use those resources.
-   Also try out our new tilesets. They are awesome!
    Using HQP you might have to copy some resources to the specific game directory so
    CG would detect it. For example you might want to copy ck1tiles.bmp to ./games/keen1/
- * If your monitor and graphic card support a special resolution, you can add it by
-   modifying "resolutions.cfg" with your favorite text-editor. It can be found in the
-   "./data" directory and you simply have to add in resolutions as "width"x"height"x"depth"
-   (depth should always be 32 in the case of a normal computer. Embedded System can use 16 
-   for better performance).
  
-Howto use Commander Genius (If you didn't compile it):
- * Go to the game directory.
+How to launch Commander Genius (If you didn't compile it):
+ * Go to the program's directory.
  * Under Windows you start "CGenius.exe", under Linux "./CGenius"
 
-Howto compile it under Ubuntu (testet on Lucid):
+
+Getting the most recent Source Code:
+ * Well, as many projects it is hosted on GitHub.
+ * From the Linux Console type: "git clone git://github.com/gerstrong/Commander-Genius.git" (without the double quotation marks)   
+
+
+How to compile it under Ubuntu:
  * This is based on the source code that we provide on our website
  * As we know which packages are needed, because we use Ubuntu, here is an extra guide. 
  * Install through Synaptic or "sudo apt-get install" following packages:
@@ -117,6 +135,7 @@ Compiling CG on any Linux/UNIX (other than Ubuntu):
  * Then, you can run "CGenius". Copy the files, 
    wherever you want them together with the data directory. 
    "make install" does not work though.
+   
 
 We also provide CMake for wiz. If you want to compile it for embedded systems.
 We had support for Linux and Win32, but since there is a bug when build, for
@@ -124,71 +143,86 @@ different Linux build (32-bit or 64-bit) we only use it for embedded systems.
 Also check out the CMakeLists.txt for more information.
    
 - VIDEO SYSTEM -
+================
 Being cross-platform, there are many methods to detect different resolutions on a system.
 
 Generally it is not necessary, because many resolutions are already supported, but if 
 you want to support other resolutions that you don't find in the options list just modify the
-"resolutions.cfg" file by hand. CG always reads this file and checks whether your card and 
-monitor support it.
+"cgenius.cfg" file by hand. CG always reads this file and checks whether your card and 
+monitor support it and if possible use it. But, use it at your own risk.
 
 CAUTION: This is recommended for advanced users who know what they do. The team won't take 
 any responsibility if you use a wrong configuration. If you want to see other resolutions to 
 in future versions of CG, mail us ;-).
 
 - GAME PLAY -
+=============
 Before you play the game, you should take a look at the controls. Normally LAlt, Ctrl, Space and Enter
-are the action keys. You can also assign joystick buttons and axes to those actions.
+are the action keys. You can also assign joystick buttons, axes and hats to those actions.
 
-- HOT KEYS -
-F2 for soundmenu
-F3 for controls menu
-F5 for save menu
 
 - CHEAT CODES -
+===============
 There are a full assortment of cheat codes available. Some cheats must first
 be enabled with -cheat or through the options->game menu. C+T+SPACE and G+O+D will
 always work.
 
+
+Vorticon Keen (1-3):
 KEY        	ACTION             DESCRIPTION
 G+O+D	   	godmode		   In god mode you are invincible!
-C+T+SPACE  	All Items          Gives all items, similar to the original.
+C+T+SPACE  	All Items      Gives all items, similar to the original.
 F+I+X		Restore		   Restores the settings as they were in the first time. Use this if
-				   CG doesn't display anything
+						   CG doesn't display anything
+
+Galaxy Keen (4):						   
+KEY        	ACTION             DESCRIPTION
+F10+G	   	godmode		   In god mode you are invincible!
+F10+I	  	All Items      Gives all items, similar to the original.
+F10+J	  	Fly	      	   This will make Keen fly at any time
+F10+N	  	No Clip	       With this cheat you will go through walls. Be careful, you might also fall
+                           through the floor sometimes
+F+I+X		Restore		   Restores the settings as they were in the first time. Use this if
+						   CG doesn't display anything
+						   
 
 - SAVE/LOAD GAME -
-The game can be saved by pressing F3 at any point during the game or using the menu.
-The game will be saved in the exact position it was left (unlike the original which only
-allowed save at the map).
+==================
+The game can be saved from the menu at any time. Keen will be saved at the exact position it was left. 
+(unlike in the original game which only allowed save on the map).
 
-- DEMO -
-This feature is disabled for now, but we hope to reenable it soon!
+In Keen 4 this feature is not avaalable
+
 
 - FAQ -
+=======
 Q: Commander Genius is slow? Please help!
-A: You can decrease the fps under settings->video what is very
-   recommended for any system. OpenGL may also help on some systems with ScaleX disabled. 
-   Try to lower the resolution, a lower filter, or decrease some stuff in the sound section.
+A: You can decrease the fps under settings->video. OpenGL may also help on some systems with ScaleX disabled. 
+   Try to lower the resolution, a lower filter, or decrease some stuff in the sounds section.
    Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
-   the program. Also HQP requieres more resources take that into mind.
+   the program. Also HQP requires more resources. Take that into the mind.
    
 Q: When can I play Keen 4, 5 and 6 on CG?
-A: That is a good question! We currently are working on the support and piece by piece more functionalities of those
-   great games will be there. Just get every update we release and more stuff for those games will be starting
-   to work. ;-) 
+A: Well, Keen 4 is mostly playable, but some enemies are missing as also other features, like cutscenes and help screen.
+   We are working very hard on that. When Keen 4 is fully playable with everything cramed, Keen 5 and 6 are next
+   We also want to support Mods here, like Keen 7, 8 and 9. As the Duke authors said: "when it's done".
+ 
   
   
 - BUG! -
-So you really found one or more bugs? Please report me those per e-mail (gerstrong@gmail.com) or at
-the SourceForge.Net Trac system we offer and they will be checked by all of us. 
+========
+So you really found one or more bugs? Please report us those at
+GitHub issues and they might get fixed. 
 Depending on the priority, we are going to fix them as soon as possible. 
 Sending us the "CGLog.html" or "stdout.txt" file might help tracking the error.
-Also remember to test the version from the testing repo we sometimes provide. 
+Also remember to test the lastest version from the testing repo we sometimes provide. 
 Your error might have been already fixed there. If there is no testing version after the release, 
 just report it. ;-)
 
-http://sourceforge.net/apps/trac/clonekeenplus/
+http://github.com/gerstrong/Commander-Genius/issues
 
 - ACKNOWLEDGEMENTS -
+====================
 Many thanks to people who has helped me so far in this project with their
 suggestions:
 
@@ -207,24 +241,24 @@ ZidaneA (For his music tracks!)
 Iv4n
 
 Also many special thanks to Martin Hauber (Tulip) who has been supporting me all the time in testing
-the Windows version of CKP and giving me access to new information. Without you it wouldn't be so great now!
+the Windows version of CKP and giving me access to a lot of information about the games. 
+Without you it wouldn't be that great!
 
-And also special thanks to Chad Ian Anderson (Pizza2004) in helping us in many points of the game. Even in 
-difficult times he always supported us.
+And also special thanks to Chad Ian Anderson (Pizza2004) in helping us so much in many points of the game. 
+Even in difficult times he always supported us.
 
 Furthermore special thanks to Scott (Pickle) and Albert Zeyer
 for his changes. They helped out a lot on the quality of the code and performance incrate.
 
+Also special thanks to ny00123 for helping to test the most recent 0.4 version.
+
 I'm sure, there were more people who helped us and we forgot to mention, but
 many thanks to them also.
 
-Also lots of thanks to all of you, the project has become so great, and will be a nice
-port for Commander Keen games!
-
-And yes, it's no rumor, we are working on Keen 4 support! Stay tuned!
+And many thanks to all of you, the project has become that awesome!
 
 ****************************************************************************
 For questions, comments, or updates to the source tree
-please contact: gerstrong@gmail.com or go thru
+please contact: gerstrong@gmail.com or go through
 SourceForge at http://clonekeenplus.sourceforge.net/
 ****************************************************************************
