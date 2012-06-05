@@ -166,8 +166,9 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		
 		if( newentry.name.length() <= 0 )
 		{
-			newentry.name = "Episode: " + itoa(newentry.episode);
-			newentry.name += " " + verstr + " " + newentry.path;
+			//newentry.name = "Episode: " + itoa(newentry.episode);
+			//newentry.name += " " + verstr + " " + newentry.path;
+			newentry.name = newentry.path;
 		}
 
 		newentry.name += " ";

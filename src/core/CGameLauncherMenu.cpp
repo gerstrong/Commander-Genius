@@ -21,7 +21,6 @@
 #include "Debug.h"
 
 CGameLauncherMenu::CGameLauncherMenu(bool& first_time, const int start_game_no, const int start_level) :
-mp_GameLauncher(NULL),
 m_firsttime(first_time),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
