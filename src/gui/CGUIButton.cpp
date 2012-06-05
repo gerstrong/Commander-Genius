@@ -136,19 +136,20 @@ void CGUIButton::processLogic()
 
 void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 {
-	if(!mEnabled)
-		return;
-
-
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
 	// Now lets draw the text of the button
-	CFont &Font = g_pGfxEngine->getFont(mFontID);
-
-	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
-
-	drawTwirl(lRect);
-
+	if(mEnabled)
+	{
+		CFont &Font = g_pGfxEngine->getFont(mFontID);
+		Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
+		drawTwirl(lRect);
+	}
+	else
+	{
+		CFont &Font = g_pGfxEngine->getFont(0);
+		Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
+	}
 }
 
 

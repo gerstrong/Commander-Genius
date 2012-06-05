@@ -22,6 +22,7 @@
 #include "mode/CGamePassiveMode.h"
 
 #include "sdl/CVideoDriver.h"
+#include "sdl/input/CInput.h"
 
 
 #include "arguments.h"
@@ -118,8 +119,18 @@ void CGameControl::process()
 		}
 	}
 
-	// Process the game control object
+	// Process the game control object if no effects are being processed
 	mpEngine->process();
 
-	gpMenuController->process();
+	if(!g_pGfxEngine->runningEffect())
+	{
+		gpMenuController->process();
+	}
+	else // but if some Command is triggered, cancel the effect
+	{
+		if( g_pInput->getPressedAnyCommand() || g_pInput->mouseClicked() )
+		{
+			g_pGfxEngine->killEffect();
+		}
+	}
 }

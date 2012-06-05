@@ -90,10 +90,12 @@ void CPlayGameGalaxy::process()
 	{
 		processInput();
 
+		const bool msgboxactive = !mMessageBoxes.empty();
+
 		// Trigger the Status screen here
 		if(m_Inventory.showStatus())
 		{
-			if(g_pInput->getPressedAnyCommand())
+			if( g_pInput->getPressedAnyButtonCommand(0) )
 			{
 				g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
 				m_Inventory.toggleStatusScreen();
@@ -101,7 +103,7 @@ void CPlayGameGalaxy::process()
 		}
 		else
 		{
-			if(g_pInput->getPressedCommand(IC_STATUS))
+			if(!msgboxactive && g_pInput->getPressedCommand(IC_STATUS))
 			{
 				g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
 				m_Inventory.toggleStatusScreen();
@@ -109,12 +111,11 @@ void CPlayGameGalaxy::process()
 		}
 
 
-		if(g_pInput->getPressedCommand(IC_STATUS))
+
+		/*if( !msgboxactive && g_pInput->getPressedCommand(IC_STATUS)  )
 		{
 			m_Inventory.toggleStatusScreen();
-		}
-
-		const bool msgboxactive = !mMessageBoxes.empty();
+		}*/
 
 		// process Page if one is open. Could be one of the finale scenes
 		//if(m_Page.isActive())
@@ -145,9 +146,8 @@ void CPlayGameGalaxy::process()
 			pMB->process();
 
 			if(pMB->isFinished())
-			{
-			mMessageBoxes.pop_front();
-			}
+				mMessageBoxes.pop_front();
+
 			return;
 		}
 

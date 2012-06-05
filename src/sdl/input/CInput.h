@@ -163,6 +163,7 @@ public:
 	bool getPressedAnyKey(void);
 	void sendKey(int key);
 
+	bool mouseClicked();
 	bool getPressedAnyCommand();
 	bool getPulsedCommand(int command, int msec);
 	bool getPulsedCommand(int player, int command, int msec);

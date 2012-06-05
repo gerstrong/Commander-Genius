@@ -115,7 +115,6 @@ void CGfxEngine::freeBitmaps(std::vector<CBitmap> &Bitmap)
 {
 	while ( !Bitmap.empty() )
 	{
-		CBitmap &bitmap = Bitmap.back();
 		Bitmap.pop_back();
 	}
 }
@@ -124,7 +123,6 @@ void CGfxEngine::freeSprites()
 {
 	while( !Sprite.empty() )
 	{
-		CSprite &sprite = Sprite.back();
 		Sprite.pop_back();
 	}
 }

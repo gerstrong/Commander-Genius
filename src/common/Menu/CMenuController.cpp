@@ -125,21 +125,10 @@ void CMenuController::process()
 
 
 	// If you click, then open the menu
-	if(!g_pInput->m_EventList.empty())
+	if( g_pInput->mouseClicked() && mMenuStack.empty() )
 	{
-		if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
-		{
-			// Here we check if the mouse-cursor/Touch entry clicked on our Button
-			if(mouseevent->Type == MOUSEEVENT_BUTTONUP && mMenuStack.empty())
-			{
-				openMainMenu();
-			}
-
-			g_pInput->m_EventList.pop_Event();
-		}
+		openMainMenu();
 	}
-
-
 }
 
 void CMenuController::popBackMenu()

@@ -385,6 +385,8 @@ bool CInput::readNewEvent(Uint8 device, int command)
 #endif
 
 	memset(&lokalInput, 0, sizeof(stInputCommand));
+	if(!m_EventList.empty())
+		m_EventList.clear();
 
 	while( SDL_PollEvent( &Event ) )
 	{
@@ -1087,6 +1089,29 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
 
 	return false;
 }
+
+
+bool CInput::mouseClicked()
+{
+	// If you click, then open the menu
+	std::list< SmartPointer<CEvent> >::iterator it = m_EventList.begin();
+
+	for( ; it != m_EventList.end() ; it++ )
+	{
+		if( MouseMoveEvent *mouseevent = dynamic_cast<MouseMoveEvent*> (it->get()) )
+		{
+			// Here we check if the mouse-cursor/Touch entry clicked on our Button
+			if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
+			{
+				m_EventList.erase(it);
+				return true;
+			}
+
+		}
+	}
+	return false;
+}
+
 
 bool CInput::getPressedAnyCommand()
 {
