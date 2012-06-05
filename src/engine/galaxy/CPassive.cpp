@@ -44,6 +44,7 @@ void CPassiveGalaxy::processIntro()
 
 	m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
 
+	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
 	g_pGfxEngine->setupEffect(new CPixelate(4));
 }
 
