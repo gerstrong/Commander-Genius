@@ -39,17 +39,19 @@ m_mustclose(false)
 
 	// Those formulas work well with our constellation but I don't think they are perfect.
 	// They transform the Message Box the way the text fits perfectly in.
-	mRect.w = (mpTextCtrl->mTextDim.w)*0.038f + 0.046f;
-	mRect.h = (mpTextCtrl->mTextDim.h)*0.045f + 0.13f;
+	const float screenW = g_pVideoDriver->getGameResolution().w;
+	const float screenH = g_pVideoDriver->getGameResolution().h;
+	mRect.w = static_cast<float>( (mpTextCtrl->mTextDim.w+4)*8 )/screenW;
+	mRect.h = static_cast<float>( (mpTextCtrl->mTextDim.h+3)*8 )/screenH;
 	mRect.x = (1.0f - mRect.w)/2.0f;
 	mRect.y = (1.0f - mRect.h)/2.0f;
 
 	// now let's center that long text...
 	CRect<float> TextRect;
-	TextRect.x = 0.055f/mRect.w;
-	TextRect.y = 0.05f/mRect.h;
-	TextRect.w = 0.95f;
-	TextRect.h = 0.95f;
+	TextRect.w = ((mpTextCtrl->mTextDim.w*8)/screenW) / mRect.w;
+	TextRect.h = ((mpTextCtrl->mTextDim.h*8)/screenH) / mRect.h;
+	TextRect.x = (2.5f*TextRect.w)/(static_cast<float>(mpTextCtrl->mTextDim.w));
+	TextRect.y = (1.0f*TextRect.h)/(static_cast<float>(mpTextCtrl->mTextDim.h));
 
 	if(lower) // if lower is enabled, try to snap the Dlg to the bottom off the screen.
 	{

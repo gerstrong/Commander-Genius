@@ -19,10 +19,49 @@
 #include "core/CGameLauncherMenu.h"
 
 
-CMainMenu::CMainMenu( const bool openedGamePlay ) :
-CBaseMenu( CRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
+void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 {
+	CGUIButton *button = new CGUIButton( "New Game",
+									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
+	mpMenuDialog->addControl( button );
 
+
+	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
+
+	CGUIButton *loadButton = new CGUIButton( "Load",
+										new OpenMenuEvent( new CLoadMenu() ) );
+	mpMenuDialog->addControl( loadButton );
+	loadButton->mEnabled = true;
+
+	CGUIButton *saveButton = new CGUIButton( "Save",
+									new OpenMenuEvent( new CSaveMenu() ) );
+	mpMenuDialog->addControl( saveButton );
+	saveButton->mEnabled = openedGamePlay;
+
+	mpMenuDialog->addControl(new CGUIButton( "Settings",
+												new OpenMenuEvent( new CSettingsMenu() ) ) );
+
+	CGUIButton *highscoreButton = new CGUIButton( "High Scores",
+													new StartInfoSceneEvent( new CHighScores ) );
+	mpMenuDialog->addControl( highscoreButton );
+	highscoreButton->mEnabled = true;
+
+	CGUIButton *infoButton = new CGUIButton( "Info",
+											new OpenMenuEvent( new CHelpMenu() ) );
+	mpMenuDialog->addControl( infoButton );
+	infoButton->mEnabled = true;
+
+	mpMenuDialog->addControl(new CGUIButton( "End Game", new GMSwitchToGameLauncher() ) );
+
+	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ) );
+
+	setMenuLabel("MAINMENULABEL");
+
+}
+
+
+void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
+{
 	CGUIButton *button = new CGUIButton( "New Game",
 									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
 	mpMenuDialog->addControl( button );
@@ -59,4 +98,20 @@ CBaseMenu( CRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ) );
 
 	setMenuLabel("MAINMENULABEL");
+
+}
+
+
+
+CMainMenu::CMainMenu( const bool openedGamePlay ) :
+CBaseMenu( CRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
+{
+	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		createGalaxyMenu(openedGamePlay);
+	}
+	else if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
+	{
+		createVorticonMenu(openedGamePlay);
+	}
 }
