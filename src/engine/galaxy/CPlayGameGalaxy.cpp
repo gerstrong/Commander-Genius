@@ -16,6 +16,7 @@
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"
+#include "common/Menu/CMenuController.h"
 
 namespace galaxy
 {
@@ -63,30 +64,12 @@ bool CPlayGameGalaxy::init()
  */
 void CPlayGameGalaxy::process()
 {
-	if(g_pSound->pauseGamePlay())
+	if(g_pSound->pauseGamePlay() )
 		return;
 
 	CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
 
-	/*if(mp_Menu) // In case the menu is open
-	{
-		// draw the title bitmap here!
-		m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);*/
-
-		/*if(mp_Menu->mustClose())
-		{
-			g_pMusicPlayer->play();
-			delete mp_Menu;
-			mp_Menu = NULL;
-		}
-		else if(mp_Menu->getExitEvent())
-			m_exitgame = true;
-		else if(mp_Menu->mustEndGame())
-			m_endgame = true;
-		else
-			mp_Menu->process();*/
-	/*}
-	else*/
+	if( !gpMenuController->active() )
 	{
 		processInput();
 
