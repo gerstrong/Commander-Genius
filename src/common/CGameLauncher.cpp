@@ -78,7 +78,7 @@ bool CGameLauncher::init()
 
 
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-	mpLauncherDialog->addControl(list, CRect<float>(0.0f, 0.05f, 1.0f, 0.85f));
+	mpLauncherDialog->addControl(list, CRect<float>(0.01f, 0.05f, 0.49f, 0.94f));
 	mpLauncherDialog->addControl(new CGUIButton( "x", new GMQuit() ),
 												CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
 
