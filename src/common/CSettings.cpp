@@ -59,6 +59,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
 	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
 	Configuration.SetKeyword("Video", "showfps", VidConf.showfps);
+	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
 	
 	st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 	Configuration.WriteInt("Bound", "left", CameraBounds.left);
@@ -111,6 +112,7 @@ bool CSettings::loadDrvCfg()
 		VidConf.Zoom = value;
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
 		Configuration.ReadKeyword("Video", "showfps", &VidConf.showfps, false);
+		Configuration.ReadKeyword("Video", "vsync", &VidConf.vsync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
 		VidConf.m_ScaleXFilter = value;
 		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);

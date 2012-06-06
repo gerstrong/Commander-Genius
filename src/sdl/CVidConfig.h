@@ -53,6 +53,7 @@ public:
 	bool m_aspect_correction;
 	bool m_special_fx;
 	bool showfps;
+	bool vsync;
 
 #ifdef USE_OPENGL
 	GLint m_opengl_filter;

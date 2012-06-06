@@ -37,14 +37,14 @@ private:
 
 
 CVideoSettings::CVideoSettings() :
-CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.5f) )
+CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 {
 	// Create the fps config selection control
 	std::list<std::string>	List;
 	for( int i = 10 ; i <= 120 ; i += 10 )
 		List.push_back( itoa (i) );
 
-	mpFPSSelection = new CGUINumberControl( "FPS", 10, 120, 10, 60 );
+	mpFPSSelection = new CGUINumberControl( "FPS", 10, 120, 10, 60, false );
 	mpMenuDialog->addControl( mpFPSSelection );
 
 
@@ -63,6 +63,10 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.5f) )
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
 												filledStrList( 4, "none", "2x", "3x", "4x" ) );
 	mpMenuDialog->addControl( mpScalerSelection );
+
+
+	mpVSyncSwitch = new CGUISwitch( "VSync" );
+	mpMenuDialog->addControl( mpVSyncSwitch );
 
 
 	mpShowFPSSwitch = new CGUISwitch( "Show FPS" );
@@ -104,6 +108,7 @@ void CVideoSettings::init()
 	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
 	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpShowFPSSwitch->enable( mUserVidConf.showfps );
+	mpVSyncSwitch->enable( mUserVidConf.vsync );
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );
 	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
 
@@ -135,6 +140,7 @@ void CVideoSettings::release()
 		mUserVidConf.m_ScaleXFilter = 1;
 
 	mUserVidConf.showfps = mpShowFPSSwitch->isEnabled();
+	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
 

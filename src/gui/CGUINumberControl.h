@@ -22,7 +22,8 @@ public:
 			const int startValue,
 			const int endValue,
 			const int deltaValue,
-			const int value );
+			const int value,
+			const bool slider = true);
 
 
 	void increment();
@@ -59,6 +60,7 @@ private:
 	bool mIncSel;
 	bool mDecSel;
 	static int mTwirliconID;
+	const bool mSlider;
 
 	SmartPointer<SDL_Surface> mpTextDarkSfc;
 	SmartPointer<SDL_Surface> mpTextLightSfc;

@@ -35,6 +35,7 @@ private:
 	CGUINumberControl	*mpFPSSelection;
 	CGUISwitch			*mpOpenGLSwitch;
 	CGUIComboSelection	*mpScalerSelection;
+	CGUISwitch			*mpVSyncSwitch;
 	CGUISwitch			*mpShowFPSSwitch;
 	CGUISwitch			*mpSFXSwitch;
 	CGUIButton			*mpCameraButton;

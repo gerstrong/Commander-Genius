@@ -106,9 +106,6 @@ void CSDLVideo::updateScreen()
 	// Now scale up to the new DisplayRect (FilteredScreen -> screen)
 	Scaler.scaleUp(screen, FilteredSurface, DYNAMIC);
 
-	// Clear Surface
-	SDL_FillRect(BlitSurface, NULL, 0xFF000000);
-
 	// Flip the screen (We use double-buffering on some systems.)
 	SDL_Flip(screen);
 }

@@ -32,25 +32,31 @@ bool CVideoEngine::init()
 	m_Mode = SDL_HWSURFACE;
 #else
 	// Support for double-buffering
-	m_Mode = SDL_HWPALETTE | SDL_HWSURFACE;
+	m_Mode = SDL_HWPALETTE;
 #endif
 
 	// Enable OpenGL
 #ifdef USE_OPENGL
 	if(m_VidConfig.m_opengl)
 	{
-		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+		if(m_VidConfig.vsync)
+		{
+			SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	#if SDL_VERSION_ATLEAST(1, 3, 0)
 	#else
 		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
 	#endif
+		}
 
 		m_Mode |= SDL_OPENGL;
 	}
 	else
 #endif
 	{
-		m_Mode |= SDL_DOUBLEBUF;
+		if(m_VidConfig.vsync)
+		{
+			m_Mode |= (SDL_DOUBLEBUF | SDL_HWSURFACE);
+		}
 	}
 
 

@@ -24,7 +24,8 @@ CGUINumberControl::CGUINumberControl(	const std::string& text,
 										const int startValue,
 										const int endValue,
 										const int deltaValue,
-										const int value) :
+										const int value,
+										const bool slider ) :
 mText(text),
 mStartValue(startValue),
 mEndValue(endValue),
@@ -32,6 +33,7 @@ mDeltaValue(deltaValue),
 mValue(value),
 mIncSel(false),
 mDecSel(false),
+mSlider(slider),
 drawButton(&CGUINumberControl::drawNoStyle)
 {
 	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
@@ -237,7 +239,21 @@ void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
 
-	g_pGfxEngine->getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
+	if(mSlider)
+	{
+		g_pGfxEngine->getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
+	}
+	else
+	{
+		std::string text = (mDecSel) ? "\025" : " ";
+		text += itoa(mValue);
+		if(mIncSel)
+			text += static_cast<char>(17);
+		else
+			text += " ";
+
+		Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
+	}
 
 	drawTwirl(lRect);
 
