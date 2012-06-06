@@ -29,6 +29,7 @@ CGameLauncher::CGameLauncher()
     m_ep1slot       = -1;
 	mpLauncherDialog = new CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f));
 	mpLauncherDialog->initBackground();
+	mSelection = -1;
 }
 
 ////
@@ -66,24 +67,29 @@ bool CGameLauncher::init()
     // Save any custom labels
     putLabels();
 
-	CGUITextSelectionList *list = new CGUITextSelectionList();
+    mpSelList = new CGUITextSelectionList();
 
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
     for( ; it != m_Entries.end() ; it++	)
     {
-    	list->addText(it->name);
+    	mpSelList->addText(it->name);
     }
 
-    list->setConfirmButtonEvent(new GMStart(list->mSelection));
+    mpSelList->setConfirmButtonEvent(new GMStart(mpSelList->mSelection));
 
 
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-	mpLauncherDialog->addControl(list, CRect<float>(0.01f, 0.05f, 0.49f, 0.94f));
+	mpLauncherDialog->addControl(mpSelList, CRect<float>(0.01f, 0.05f, 0.49f, 0.94f));
 	mpLauncherDialog->addControl(new CGUIButton( "x", new GMQuit() ),
 												CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
 
-	mpLauncherDialog->addControl(new CGUIButton( "Start >", new GMStart(list->mSelection) ),
+	mpLauncherDialog->addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ),
 												CRect<float>(0.65f, 0.915f, 0.3f, 0.07f) );
+
+	mpEpisodeText = new CGUIText("Game");
+	mpVersionText = new CGUIText("Version");
+	mpLauncherDialog->addControl(mpEpisodeText, CRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
+	mpLauncherDialog->addControl(mpVersionText, CRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
 
    	g_pResourceLoader->setPermilage(1000);
 	
@@ -195,21 +201,6 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 ////
 void CGameLauncher::process()
 {
-    // Gather input states
-    /*if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
-    {
-        Uint8 selection = mp_LaunchMenu->getSelection();
-        if( selection >= m_Entries.size() )
-        {
-            // outside the number of games, that exist. This means exit was triggered.
-            m_mustquit = true;
-        }
-        else
-        {
-            m_chosenGame = selection;
-        }
-    }*/
-	
     // Did the user press (X)?
     if( g_pInput->getExitEvent() )
     {
@@ -226,6 +217,17 @@ void CGameLauncher::process()
 			mpLauncherDialog->sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
 			break;
 		}
+	}
+
+	// Check if the selection changed. Update the right data panel
+	if(mSelection != mpSelList->mSelection)
+	{
+		mSelection = mpSelList->mSelection;
+		const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
+		mpEpisodeText->setText(nameText);
+		float fVer = m_Entries[mSelection].version;
+		fVer /= 100.0f;
+		mpVersionText->setText("Version: " + ftoa(fVer));
 	}
 
 	mpLauncherDialog->processLogic();

@@ -10,6 +10,8 @@
 
 #include "fileio/CExeFile.h"
 #include "gui/CGUIDialog.h"
+#include "gui/CGUIText.h"
+#include "gui/CGUITextSelectionList.h"
 #include "SmartPointer.h"
 #include <string>
 #include <vector>
@@ -77,6 +79,11 @@ private:
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
 	SmartPointer<CGUIDialog> mpLauncherDialog;
+
+	CGUIText *mpEpisodeText;
+	CGUIText *mpVersionText;
+	CGUITextSelectionList *mpSelList;
+	int mSelection;
 
 	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);
 	bool scanExecutables(const std::string& path);

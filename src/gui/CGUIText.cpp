@@ -12,6 +12,15 @@
 
 CGUIText::CGUIText(const std::string& text)
 {
+	setText(text);
+}
+
+
+void CGUIText::setText(const std::string& text)
+{
+	if(!mTextList.empty())
+		mTextList.clear();
+
 	// Split up the text in lines
 	mTextDim.w = 0;
 	// TODO: I think there is a more elegant way to achieve this!

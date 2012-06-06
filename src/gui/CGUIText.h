@@ -18,6 +18,8 @@ class CGUIText : public CGUIControl
 public:
 	CGUIText(const std::string& text);
 
+	void setText(const std::string& text);
+
 	void processLogic();
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
