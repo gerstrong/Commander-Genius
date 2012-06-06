@@ -15,7 +15,7 @@
 #include "core/CGameControl.h"
 
 CAudioSettings::CAudioSettings() :
-CBaseMenu(CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) )
+CBaseMenu(CRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 {
 
 	mpRate = new CGUIComboSelection( "Rate",

@@ -16,6 +16,9 @@
 
 int CGUINumberControl::mTwirliconID = 10;
 
+const int SLIDER_WIDTH = 16;
+
+
 
 CGUINumberControl::CGUINumberControl(	const std::string& text,
 										const int startValue,
@@ -88,11 +91,36 @@ void CGUINumberControl::setSelection( const int value )
 }
 
 
+std::string CGUINumberControl::sliderStr()
+{
+	int ch;
+	ch = (mDecSel) ? 8 : 1;
+	std::string slider;
+	slider = static_cast<char>(ch);
+
+	const int sVal = (SLIDER_WIDTH-3)*(mValue - mStartValue) / (mEndValue - mStartValue);
+
+	for( int l=0 ; l<sVal ; l++)
+		slider += '\04';
+
+	slider += '\05';
+
+	for( int l=0 ; l<(SLIDER_WIDTH-3)-sVal ; l++)
+		slider += '\06';
+
+	ch = (mIncSel) ? 9 : 7;
+	slider += static_cast<char>(ch);
+
+	return slider;
+}
+
+
 void CGUINumberControl::setupButtonSurface()
 {
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
+	//sliderVal(mValue);
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
 	mpTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
 	mpTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
@@ -139,17 +167,13 @@ void CGUINumberControl::processLogic()
 				if( MousePos.x < mRect.x+(mRect.w)/2.0f )
 				{
 					// Cycle through the values
-					if( mValue <= mStartValue )
-						mValue = mEndValue;
-					else
+					if( mValue > mStartValue )
 						decrement();
 				}
 				else if( MousePos.x > mRect.x+(mRect.w)/2.0f )
 				{
 					// Cycle through the values
-					if( mValue >= mEndValue )
-						mValue = mStartValue;
-					else
+					if( mValue < mEndValue )
 						increment();
 				}
 
@@ -213,11 +237,7 @@ void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
 
-	std::string text = (mDecSel) ? "\023 " : "  ";
-	text += itoa(mValue);
-	text += (mIncSel) ? " \017" : "  ";
-	Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
-
+	g_pGfxEngine->getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
 
 	drawTwirl(lRect);
 

@@ -47,6 +47,10 @@ public:
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
 private:
+
+	// draws the slider to the corresponding value
+	std::string sliderStr();
+
 	std::string	mText;
 	const int mStartValue;
 	const int mEndValue;
