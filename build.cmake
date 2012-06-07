@@ -1,8 +1,8 @@
 
 if (CMAKE_SIZEOF_VOID_P MATCHES 8)
-	MESSAGE( "Yes" )
+	MESSAGE( "64-Bit: Yes" )
 else (CMAKE_SIZEOF_VOID_P MATCHES 8)
-	MESSAGE( "No" )
+	MESSAGE( "64-Bit: No" )
 endif (CMAKE_SIZEOF_VOID_P MATCHES 8)
 
 OPTION(DEBUG "enable debug build" No)
@@ -52,7 +52,6 @@ IF (BUILD_TYPE STREQUAL GP2X OR
                 SET(OGG Yes)
 
                 include_directories(${USRDIR}/DGE/include)
-                #include_directories(${USRDIR}/DGE/include/SDL)
                 include_directories(${USRDIR}/DGE/include/vorbis)
                 link_directories(${USRDIR}/DGE/lib/target)
                 ADD_DEFINITIONS(-DCAANOO)
@@ -131,9 +130,7 @@ EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Xcode OUTPUT_VARIAB
 
 PROJECT(commandergenius)
 
-find_package(PkgConfig)
-pkg_check_modules(SDL sdl)
-INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+
 
 
 # Generate the README file
@@ -176,7 +173,9 @@ IF(UNIX)
 		IF(HAVE_64_BIT)
 			ADD_DEFINITIONS(-D__i386__)
 			ADD_DEFINITIONS(-m32)
-			set(CMAKE_LIBRARY_PATH ${CMAKE_FIND_ROOT_PATH}/lib32)
+			set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${CMAKE_FIND_ROOT_PATH}/lib/i386-linux-gnu")
+			set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${CMAKE_FIND_ROOT_PATH}/lib/i386-linux-gnu/mesa")
+			link_directories(${CMAKE_LIBRARY_PATH})
 		ELSE(HAVE_64_BIT)
 		ENDIF(HAVE_64_BIT)
 		SET(BUILD_DIR Linux32)
@@ -195,6 +194,18 @@ IF(UNIX)
 	SET(OPTIMIZE_COMPILER_FLAG -O3)
 ENDIF(UNIX)
 
+find_package(PkgConfig)
+pkg_check_modules(SDL sdl)
+INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+
+find_package(OpenGL)
+if (OPENGL_FOUND)
+    MESSAGE("OpenGL Correctly Found")
+    include_directories(${OPENGL_INCLUDE_DIR})
+ else (OPENGL_FOUND)
+    MESSAGE("OpenGL environment missing")
+ endif (OPENGL_FOUND)
+
 
 # Extra Flags for the compilation
 IF (OGG)
@@ -210,12 +221,6 @@ IF (TREMOR)
 	ENDIF (BUILD_TYPE STREQUAL DINGOO)
 	ADD_DEFINITIONS(-DTREMOR)
 ENDIF (TREMOR)
-
-# SDL Part
-#FIND_PACKAGE(SDL REQUIRED)
-#IF( NOT SDL_FOUND )
-#	MESSAGE("Sorry, SDL was not found!")
-#ENDIF(NOT SDL_FOUND)
 
 
 
@@ -238,11 +243,12 @@ IF(BUILD_TYPE STREQUAL WIN32)
 	TARGET_LINK_LIBRARIES(commandergenius opengl32)
 ENDIF(BUILD_TYPE STREQUAL WIN32)
 
-SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -L${CMAKE_LIBRARY_PATH})
+#SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -L${CMAKE_LIBRARY_PATH})
 
 IF(BUILD_TYPE STREQUAL LINUX32)
 	IF(HAVE_64_BIT)
-		SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -m32)
+		set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -m32)
+		set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} -m32)
 	ENDIF(HAVE_64_BIT)
 ENDIF(BUILD_TYPE STREQUAL LINUX32)
 
@@ -272,10 +278,6 @@ ENDIF(TREMOR)
 
 # Set binary(executable) file name. In Windows this filename needs the exe extension
 # The Windows Version has an icon in the executable
-
-
-SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
-SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 
 
 IF(BUILD_TYPE STREQUAL WIN32)
@@ -311,10 +313,12 @@ MESSAGE( "CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}" )
 MESSAGE( "CMAKE_LIBRARY_PATH = ${CMAKE_LIBRARY_PATH}" )
 MESSAGE( "SDL_INCLUDE_PATH = ${SDL_INCLUDE_DIR}" )
 MESSAGE( "SDL_LIBRARIES = ${SDL_LIBRARIES}" )
-
 MESSAGE( "Compile it with OpenGL : OPENGL = ${OPENGL}" )
 MESSAGE( "We use OGG Vorbis : OGG = ${OGG}" )
 MESSAGE( "We use Tremor : TREMOR = ${TREMOR}" )
+
+MESSAGE( "CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}" )
+MESSAGE( "CMAKE_C_FLAGS = ${CMAKE_C_FLAGS}" )
 MESSAGE( "You are on 64-bit System : HAVE_64_BIT = ${HAVE_64_BIT}" )
 MESSAGE( "USRDIR = ${USRDIR}" )
 MESSAGE( "Commander Genius Version : CG_VERSION = ${CG_VERSION}" )
