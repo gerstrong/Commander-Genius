@@ -34,7 +34,7 @@ public:
 
 	void setTileMap( CTilemap &Tilemap );
 
-	void setLevel(Uint16 Level);
+	void setLevel( const Uint16 level );
 	Uint16 getLevel();
 
 	void setLevelName( const std::string& name );

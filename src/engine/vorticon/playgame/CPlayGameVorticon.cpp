@@ -26,7 +26,6 @@ CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  char numplayers, CSaveGameController &SavedGame) :
 CPlayGame(ExeFile, level, numplayers),
 mp_ObjectAI(NULL),
-mp_HUD(NULL)
 {
 	mMap = new CMap();
 	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
@@ -102,7 +101,6 @@ void CPlayGameVorticon::setupPlayers()
 
 	stInventory &inventory = m_Player.at(0).inventory;
 
-	if(mp_HUD) delete mp_HUD;
 	mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges, &mCamLead);
 }
 
@@ -347,7 +345,7 @@ void CPlayGameVorticon::handleFKeys()
 	}
 
 	// Cycle Cam Code
-	if ( g_pInput->getPressedKey(KC) )
+	if( g_pInput->getPressedCommand(mCamLead, IC_CAMLEAD) )
 	{
 		cycleCamLead();
 	}
@@ -633,5 +631,4 @@ CPlayGameVorticon::~CPlayGameVorticon()
 {
 	m_Player.clear();
 	SAFE_DELETE(mp_ObjectAI);
-	SAFE_DELETE(mp_HUD);
 }

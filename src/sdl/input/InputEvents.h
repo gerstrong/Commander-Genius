@@ -29,6 +29,7 @@ enum InputCommands
 	IC_POGO,
 	IC_FIRE,
 	IC_STATUS,
+	IC_CAMLEAD,
 	IC_HELP,
 	IC_BACK,
 	MAX_COMMANDS

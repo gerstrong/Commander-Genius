@@ -185,6 +185,7 @@ void CControlSettingsButtons::init()
 	mCommandName[IC_POGO] 		= "Pogo:   ";
 	mCommandName[IC_FIRE]		= "Fire:   ";
 	mCommandName[IC_STATUS] 	= "Status: ";
+	mCommandName[IC_CAMLEAD] 	= "Camlead:";
 	mCommandName[IC_HELP] 		= "Help:   ";
 	mCommandName[IC_BACK] 		= "Back:   ";
 

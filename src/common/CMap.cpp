@@ -32,8 +32,8 @@ m_Background(false)
 // Initialization Routine //
 ////////////////////////////
 
-void CMap::setLevel(Uint16 Level)
-{	m_Level = Level;	}
+void CMap::setLevel( const Uint16 level )
+{	m_Level = level;	}
 
 Uint16 CMap::getLevel()
 {	return m_Level;	}

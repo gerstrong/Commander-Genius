@@ -92,6 +92,7 @@ void CInput::resetControls(int player)
 	InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
 	InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
 
+	InputCommand[i][IC_CAMLEAD].keysym = SDLK_c;
 	InputCommand[i][IC_HELP].keysym = SDLK_F1;
 	InputCommand[i][IC_BACK].keysym = SDLK_ESCAPE;
 
@@ -125,11 +126,14 @@ void CInput::resetControls(int player)
 	InputCommand[i][IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_STATUS].joybutton = 3;
 	InputCommand[i][IC_STATUS].which = 0;
+	InputCommand[i][IC_CAMLEAD].joyeventtype = ETYPE_KEYBOARD;
+	InputCommand[i][IC_CAMLEAD].joybutton = 4;
+	InputCommand[i][IC_CAMLEAD].which = 0;
 	InputCommand[i][IC_HELP].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_HELP].joybutton = 4;
+	InputCommand[i][IC_HELP].joybutton = 5;
 	InputCommand[i][IC_HELP].which = 0;
 	InputCommand[i][IC_BACK].joyeventtype = ETYPE_KEYBOARD;
-	InputCommand[i][IC_BACK].joybutton = 5;
+	InputCommand[i][IC_BACK].joybutton = 6;
 	InputCommand[i][IC_BACK].which = 0;
 
 	#ifdef ANDROID
@@ -231,6 +235,8 @@ void CInput::loadControlconfig(void)
 			setupInputCommand( InputCommand[i], IC_FIRE, value );
 			Configuration.ReadString( section, "Status", value, "Key 13 (return)");
 			setupInputCommand( InputCommand[i], IC_STATUS, value );
+			Configuration.ReadString( section, "Camlead", value, "Key 99 (c)");
+			setupInputCommand( InputCommand[i], IC_CAMLEAD, value );
 			Configuration.ReadString( section, "Help", value, "Key 282 (f1)");
 			setupInputCommand( InputCommand[i], IC_HELP, value );
 			Configuration.ReadString( section, "Back", value, "Key 27 (escape)");
@@ -272,6 +278,7 @@ void CInput::saveControlconfig()
 		Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, i));
 		Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, i));
 		Configuration.WriteString(section, "Status", getEventName(IC_STATUS, i));
+		Configuration.WriteString(section, "Camlead", getEventName(IC_CAMLEAD, i));
 		Configuration.WriteString(section, "Help", getEventName(IC_HELP, i));
 		Configuration.WriteString(section, "Back", getEventName(IC_BACK, i));
 		Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
