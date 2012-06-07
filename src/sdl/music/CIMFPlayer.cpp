@@ -43,7 +43,11 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
     	return false;
 
-	/*read_first =*/ fread( &data_size, sizeof(word), 1, fp);
+	int read_first = fread( &data_size, sizeof(word), 1, fp);
+
+	if( read_first == 0)
+		return false;
+
     if (data_size == 0) // Is the IMF file of Type-0?
     {
         fseek(fp, 0, SEEK_END);

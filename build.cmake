@@ -6,7 +6,6 @@ else (CMAKE_SIZEOF_VOID_P MATCHES 8)
 endif (CMAKE_SIZEOF_VOID_P MATCHES 8)
 
 OPTION(DEBUG "enable debug build" No)
-OPTION(SDL "SDL support (will not work without)" Yes)
 OPTION(OPENGL "OpenGL support" Yes)
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
@@ -16,6 +15,7 @@ IF (DEBUG)
 ELSE (DEBUG)
 	SET(CMAKE_BUILD_TYPE Release)
 ENDIF (DEBUG)
+
 
 # Platform specific things can be put here
 # Compilers and other specific variables can be found here:
@@ -52,7 +52,7 @@ IF (BUILD_TYPE STREQUAL GP2X OR
                 SET(OGG Yes)
 
                 include_directories(${USRDIR}/DGE/include)
-                include_directories(${USRDIR}/DGE/include/SDL)
+                #include_directories(${USRDIR}/DGE/include/SDL)
                 include_directories(${USRDIR}/DGE/include/vorbis)
                 link_directories(${USRDIR}/DGE/lib/target)
                 ADD_DEFINITIONS(-DCAANOO)
@@ -112,6 +112,9 @@ ENDIF (BUILD_TYPE STREQUAL GP2X OR
     BUILD_TYPE STREQUAL PANDORA OR
     BUILD_TYPE STREQUAL NANONOTE)
 
+
+
+
 # Check wether in what system it is configured
 IF(NOT HAVE_64_BIT AND BUILD_TYPE STREQUAL LINUX64)
 	MESSAGE( "Warning: Building 64-bit Version on 32-bit machine is not supported!" )
@@ -127,6 +130,11 @@ EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Wiz OUTPUT_VARIABLE
 EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Xcode OUTPUT_VARIABLE NULL)
 
 PROJECT(commandergenius)
+
+find_package(PkgConfig)
+pkg_check_modules(SDL sdl)
+INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+
 
 # Generate the README file
 configure_file(README.in README)
@@ -203,11 +211,13 @@ IF (TREMOR)
 	ADD_DEFINITIONS(-DTREMOR)
 ENDIF (TREMOR)
 
+# SDL Part
+#FIND_PACKAGE(SDL REQUIRED)
+#IF( NOT SDL_FOUND )
+#	MESSAGE("Sorry, SDL was not found!")
+#ENDIF(NOT SDL_FOUND)
 
-IF (SDL)
-	set(SDL_INCLUDE_PATH ${CMAKE_INCLUDE_PATH}/SDL)
-	INCLUDE_DIRECTORIES(${SDL_INCLUDE_PATH})
-ENDIF (SDL)
+
 
 IF (OPENGL)
 	ADD_DEFINITIONS(-DGL)
@@ -222,23 +232,11 @@ ENDIF(DEBUG)
 ADD_EXECUTABLE(commandergenius ${ALL_SRCS})
 
 # Linking part under Linux
-IF(SDL)	
-	IF(BUILD_TYPE STREQUAL WIN32)
-		TARGET_LINK_LIBRARIES(commandergenius mingw32)
-		TARGET_LINK_LIBRARIES(commandergenius SDLmain)
-		TARGET_LINK_LIBRARIES(commandergenius SDL)
-		TARGET_LINK_LIBRARIES(commandergenius glu32)
-		TARGET_LINK_LIBRARIES(commandergenius opengl32)
-	ELSEIF(BUILD_TYPE STREQUAL LINUX32)
-		IF(HAVE_64_BIT)
-			TARGET_LINK_LIBRARIES(commandergenius SDL)
-		ELSE(HAVE_64_BIT)
-			TARGET_LINK_LIBRARIES(commandergenius SDL)
-		ENDIF(HAVE_64_BIT)
-	ELSE(BUILD_TYPE STREQUAL LINUX32)
-		TARGET_LINK_LIBRARIES(commandergenius SDL)
-	ENDIF(BUILD_TYPE STREQUAL WIN32)
-ENDIF(SDL)
+IF(BUILD_TYPE STREQUAL WIN32)
+	TARGET_LINK_LIBRARIES(commandergenius mingw32)
+	TARGET_LINK_LIBRARIES(commandergenius glu32)
+	TARGET_LINK_LIBRARIES(commandergenius opengl32)
+ENDIF(BUILD_TYPE STREQUAL WIN32)
 
 SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -L${CMAKE_LIBRARY_PATH})
 
@@ -298,6 +296,9 @@ IF(NOT DEFINED BUILD_TYPE)
 ENDIF(NOT DEFINED BUILD_TYPE)
 
 
+target_link_libraries(commandergenius ${SDL_LIBRARIES})
+
+
 MESSAGE( "BUILD_TYPE = ${BUILD_TYPE}" )
 MESSAGE( "BUILD_DIR = ${BUILD_DIR}" )
 MESSAGE( "DEBUG = ${DEBUG}" )
@@ -308,7 +309,9 @@ MESSAGE( "CMAKE_FIND_ROOT_PATH = ${CMAKE_FIND_ROOT_PATH}" )
 MESSAGE( "CMAKE_INCLUDE_PATH = ${CMAKE_INCLUDE_PATH}" )
 MESSAGE( "CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}" )
 MESSAGE( "CMAKE_LIBRARY_PATH = ${CMAKE_LIBRARY_PATH}" )
-MESSAGE( "SDL_INCLUDE_PATH = ${SDL_INCLUDE_PATH}" )
+MESSAGE( "SDL_INCLUDE_PATH = ${SDL_INCLUDE_DIR}" )
+MESSAGE( "SDL_LIBRARIES = ${SDL_LIBRARIES}" )
+
 MESSAGE( "Compile it with OpenGL : OPENGL = ${OPENGL}" )
 MESSAGE( "We use OGG Vorbis : OGG = ${OGG}" )
 MESSAGE( "We use Tremor : TREMOR = ${TREMOR}" )
