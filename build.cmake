@@ -131,8 +131,6 @@ EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Xcode OUTPUT_VARIAB
 PROJECT(commandergenius)
 
 
-
-
 # Generate the README file
 configure_file(README.in README)
 
@@ -148,10 +146,10 @@ IF(UNIX)
 
 	IF(BUILD_TYPE STREQUAL WIN32)
 
-		set(PREFIX /usr/i686-pc-mingw32/sys-root/mingw)
+		set(PREFIX /usr/i686-w64-mingw32)
 		set(CMAKE_PREFIX_PATH ${PREFIX})
-		set(CMAKE_C_COMPILER i686-pc-mingw32-gcc)
-		set(CMAKE_CXX_COMPILER i686-pc-mingw32-g++)
+		set(CMAKE_C_COMPILER i686-w64-mingw32-gcc)
+		set(CMAKE_CXX_COMPILER i686-w64-mingw32-g++)
 		set(CMAKE_INCLUDE_PATH ${PREFIX}/include)
 		set(CMAKE_FIND_ROOT_PATH ${PREFIX})
 		set(CMAKE_INSTALL_PREFIX ${PREFIX})
