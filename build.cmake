@@ -194,7 +194,7 @@ ENDIF(UNIX)
 
 find_package(PkgConfig)
 pkg_check_modules(SDL sdl)
-INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
 
 find_package(OpenGL)
 if (OPENGL_FOUND)
