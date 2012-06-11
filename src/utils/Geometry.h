@@ -37,7 +37,7 @@ struct CRect
 		{ x=lx; y=ly; w=lw; h=lh; }
 
 	CRect( const SDL_VideoInfo* InfoPtr )
-		{ w=InfoPtr->current_w; h=InfoPtr->current_w; };
+		{ w=InfoPtr->current_w; h=InfoPtr->current_h; };
 
 	bool operator==( const CRect &target )
 	{

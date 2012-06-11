@@ -112,7 +112,6 @@ void CVideoSettings::init()
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );
 	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
 
-	// only show resolutions if we are in Fullscreen!
 	mpResolutionSelection->setList( ResolutionsList, NUM_MAIN_RESOLUTIONS );
 	std::string resStr;
 	resStr = itoa(mUserVidConf.m_DisplayRect.w);

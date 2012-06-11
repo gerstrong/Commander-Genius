@@ -47,7 +47,7 @@ static const char* ResolutionsList[] =
 "2560x2048"
 };
 
-const unsigned int NUM_MAIN_RESOLUTIONS = 26;
+const unsigned int NUM_MAIN_RESOLUTIONS = sizeof(ResolutionsList)/sizeof(char*);
 
 #ifndef RESOLUTIONLIST_H_
 #define RESOLUTIONLIST_H_

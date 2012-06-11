@@ -62,6 +62,7 @@ void CVideoDriver::resetSettings()
 	initResolutionList();
 
 	// take the first default resolution. It might be changed if there is a config file already created
+	// If there are at least two possible resolutions choose the second one, as this is normally one basic small resolution
 	setMode( m_Resolutionlist.front() );
 }
 
@@ -74,6 +75,7 @@ void CVideoDriver::initResolutionList()
 	// On Handheld devices this means, they will only take that resolution and that would it be.
 	// On the PC, this is the current resolution but will add others.
 	CRect<Uint16> resolution(SDL_GetVideoInfo());
+	CRect<Uint16> desktopResolution(resolution);
 
 	// We have a resolution list, clear it and create a new one.
 
@@ -87,9 +89,6 @@ void CVideoDriver::initResolutionList()
 	resolution.width = 320;
 	resolution.height = 200;
 #endif
-
-	// The best retrieved resolution will be added to our resolution list.
-	m_Resolutionlist.push_back(resolution);
 
 	// Now on non-handheld devices let's check for more resolutions.
 #if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR) && !defined(ANDROID)
@@ -128,6 +127,9 @@ void CVideoDriver::initResolutionList()
 	{
 		g_pLogFile->ftextOut(RED, "Error! The resolution list is empty(). That cannot be! Exiting...\n");
 	}
+
+	// The last resolution in the list is the desktop normally, therefore the highest
+	m_Resolutionlist.push_back(desktopResolution);
 
 	m_Resolution_pos = m_Resolutionlist.begin();
 }

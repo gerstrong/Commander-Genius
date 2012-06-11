@@ -32,7 +32,8 @@ struct st_camera_bounds
 	}
 };
 
-class CVidConfig {
+class CVidConfig
+{
 public:
 
 	CVidConfig();
