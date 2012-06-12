@@ -43,7 +43,7 @@ bool CSDLVideo::createSurfaces()
 
 	// This function creates the surfaces which are needed for the game.
 	const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
-	ScrollSurface = createSurface( "ScrollSurface", true,
+	ScrollSurface = createSurface( "ScrollSurface", false,//true,
 			512,
 			512,
 			32,

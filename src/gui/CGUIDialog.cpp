@@ -41,21 +41,21 @@ void CGUIDialog::initBackground()
 	{
 		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
 		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
-		mpBackgroundSfc = SDL_DisplayFormatAlpha( mpBackgroundSfc.get() );
+		mpBackgroundSfc = SDL_DisplayFormat( mpBackgroundSfc.get() );
 		initVorticonBackground( lRect );
 	}
 	else if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
 	{
 		const SDL_Rect lRect = g_pVideoDriver->getGameResolution().SDLRect();
 		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
-		mpBackgroundSfc = SDL_DisplayFormatAlpha( mpBackgroundSfc.get() );
+		mpBackgroundSfc = SDL_DisplayFormat( mpBackgroundSfc.get() );
 		initGalaxyBackround( lRect );
 	}
 	else
 	{
 		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
 		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
-		mpBackgroundSfc = SDL_DisplayFormatAlpha( mpBackgroundSfc.get() );
+		mpBackgroundSfc = SDL_DisplayFormat( mpBackgroundSfc.get() );
 		initEmptyBackround();
 	}
 }
@@ -171,12 +171,12 @@ void CGUIDialog::fit()
 	it++;
 
 	size_t numControls = mControlList.size();
-	const float charHeight = ( 1.0f/(float)(numControls+2) );
+	const float charHeight = ( 1.0f/(float)(numControls+1) );
 
 	for( size_t c = 1; it != mControlList.end() ; it++, c++ )
 	{
 		CRect<float> rect(	0.05f,
-							charHeight*(float)c,
+							charHeight*((float)c),
 							mRect.w,
 							charHeight-0.01f );
 
@@ -236,7 +236,9 @@ void CGUIDialog::processLogic()
 
 void CGUIDialog::initEmptyBackround()
 {
-	SDL_FillRect( mpBackgroundSfc.get(), NULL, 0xFFE6E6E6 );
+	SDL_Surface *sfc = mpBackgroundSfc.get();
+	SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );
+	//SDL_FillRect( sfc, NULL, 0x5500FF00 );
 }
 
 void CGUIDialog::initVorticonBackground( SDL_Rect Rect )
@@ -252,7 +254,7 @@ void CGUIDialog::initVorticonBackground( SDL_Rect Rect )
 	// Start with the blank space (normally it's white. Might be different in some mods)
 	for( int x=8 ; x<Rect.w-8 ; x+=8 )
 	{
-		for( int y=8 ; y<Rect.h-2*8 ; y+=8 )
+		for( int y=8 ; y<Rect.h-8 ; y+=8 )
 		{
 			Font.drawCharacter( backSfc, 32, x, y );
 		}
@@ -271,21 +273,21 @@ void CGUIDialog::initVorticonBackground( SDL_Rect Rect )
 
 	for( int x=8 ; x<Rect.w-8 ; x+=8 )
 	{
-		Font.drawCharacter( backSfc, 7, x, Rect.h-2*8 );
+		Font.drawCharacter( backSfc, 7, x, Rect.h-8 );
 	}
 
-	for( int y=8 ; y<Rect.h-16 ; y+=8 )
+	for( int y=8 ; y<Rect.h-8 ; y+=8 )
 	{
 		Font.drawCharacter( backSfc, 4, 0, y );
 	}
 
-	for( int y=8 ; y<Rect.h-16 ; y+=8 )
+	for( int y=8 ; y<Rect.h-8 ; y+=8 )
 	{
 		Font.drawCharacter( backSfc, 5, Rect.w-8, y );
 	}
 
-	Font.drawCharacter( backSfc, 6, 0, Rect.h-2*8 );
-	Font.drawCharacter( backSfc, 8, Rect.w-8, Rect.h-2*8 );
+	Font.drawCharacter( backSfc, 6, 0, Rect.h-8 );
+	Font.drawCharacter( backSfc, 8, Rect.w-8, Rect.h-8 );
 
 }
 

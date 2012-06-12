@@ -9,6 +9,9 @@
 
 #include "extensions.h"
 
+#include "sdl/CVideoDriver.h"
+
+
 
 Uint32 getPixel(SDL_Surface *surface, int x, int y)
 {
@@ -69,13 +72,15 @@ SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
 {
 	Colormask mask = getColourMask32bit();
 
-	return SDL_CreateRGBSurface( SDL_SWSURFACE, // TODO: Must be changed in future for better hardware support
-								rect.w,
-								rect.h,
-								32, // TODO: Must be changed in future for better 16 bpp support
-								mask.r,
-								mask.g,
-								mask.b,
-								mask.a );
+	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE, // TODO: Must be changed in future for better hardware support
+			rect.w,
+			rect.h,
+			32, // TODO: Must be changed in future for better 16 bpp support
+			mask.r,
+			mask.g,
+			mask.b,
+			mask.a );
+
+	return sfc;
 }
 

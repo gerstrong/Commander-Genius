@@ -42,7 +42,7 @@ m_mustclose(false)
 	const float screenW = g_pVideoDriver->getGameResolution().w;
 	const float screenH = g_pVideoDriver->getGameResolution().h;
 	mRect.w = static_cast<float>( (mpTextCtrl->mTextDim.w+4)*8 )/screenW;
-	mRect.h = static_cast<float>( (mpTextCtrl->mTextDim.h+3)*8 )/screenH;
+	mRect.h = static_cast<float>( (mpTextCtrl->mTextDim.h+2)*8 )/screenH;
 	mRect.x = (1.0f - mRect.w)/2.0f;
 	mRect.y = (1.0f - mRect.h)/2.0f;
 
