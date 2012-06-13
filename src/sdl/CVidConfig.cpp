@@ -49,7 +49,7 @@ void CVidConfig::reset()
 	Zoom=1;
 
 #ifdef USE_OPENGL
-	m_opengl_filter = GL_NEAREST;
+	m_opengl_filter = GL_LINEAR;
 #endif
 
 	m_opengl = false; // Must stay optional for better compatibility

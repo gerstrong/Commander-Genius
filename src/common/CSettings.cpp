@@ -51,7 +51,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
 	Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
 	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
-#ifdef USE_OPENGL
+#if defined(USE_OPENGL) && !defined(ANDROID)
 	if(VidConf.m_opengl)
 		Configuration.WriteString("Video", "OGLfilter", VidConf.m_opengl_filter == GL_NEAREST ? "nearest" : "linear" );
 #endif
@@ -116,11 +116,13 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Video", "filter", &value, 1);
 		VidConf.m_ScaleXFilter = value;
 		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
-#ifdef USE_OPENGL
+
+#if defined(USE_OPENGL) && !defined(ANDROID)
 		if(VidConf.m_opengl)
 		{
 			std::string oglFilter;
 			Configuration.ReadString("Video", "OGLfilter",  oglFilter, "nearest");
+
 			VidConf.m_opengl_filter = (oglFilter == "nearest") ? GL_NEAREST : GL_LINEAR;
 		}
 #endif
@@ -162,7 +164,7 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
 	g_pVideoDriver->setMode(320,200,32);
 	g_pVideoDriver->isFullscreen(false);
-	g_pVideoDriver->setOGLFilter(GL_NEAREST);
+	g_pVideoDriver->setOGLFilter(GL_LINEAR);
 	g_pVideoDriver->setZoom(1);
 	g_pTimer->setFPS(60);
 	g_pVideoDriver->setFilter(1);

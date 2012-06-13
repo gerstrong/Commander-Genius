@@ -127,7 +127,7 @@ void CVideoSettings::release()
 
 	g_pTimer->setFPS( mpFPSSelection->getSelection() );
 
-#ifdef USE_OPENGL
+#if defined(USE_OPENGL)
 	mUserVidConf.m_opengl_filter = mpOGLFilterSelection->getSelection() == "linear" ? GL_LINEAR : GL_NEAREST;
 	mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
 #endif
