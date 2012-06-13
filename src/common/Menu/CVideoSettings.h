@@ -31,9 +31,15 @@ public:
 
 private:
 
-	CGUIComboSelection	*mpOGLFilterSelection;
+
 	CGUINumberControl	*mpFPSSelection;
+
+#undef USE_OPENGL
+#if defined(USE_OPENGL)
 	CGUISwitch			*mpOpenGLSwitch;
+	CGUIComboSelection	*mpOGLFilterSelection;
+#endif
+
 	CGUIComboSelection	*mpScalerSelection;
 	CGUISwitch			*mpVSyncSwitch;
 	CGUISwitch			*mpShowFPSSwitch;

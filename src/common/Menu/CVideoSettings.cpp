@@ -48,7 +48,7 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpFPSSelection );
 
 
-#ifdef USE_OPENGL
+#if defined(USE_OPENGL)
 
 	mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
 	mpMenuDialog->addControl( mpOpenGLSwitch );
@@ -103,9 +103,14 @@ void CVideoSettings::init()
 
 	// Load the config into the GUI
 	mpFPSSelection->setSelection( g_pTimer->getFrameRate() );
+
+#if defined(USE_OPENGL)
 	mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
 	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==GL_LINEAR ? "linear" : "nearest" );
 	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
+#endif
+
+
 	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpShowFPSSwitch->enable( mUserVidConf.showfps );
 	mpVSyncSwitch->enable( mUserVidConf.vsync );
