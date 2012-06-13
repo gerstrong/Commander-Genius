@@ -18,15 +18,16 @@ Uint32 getPixel(SDL_Surface *surface, int x, int y)
     int bpp = surface->format->BytesPerPixel;
     /* Here p is the address to the pixel we want to retrieve */
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+    Uint32 pixColor;
 
     switch(bpp)
     {
     case 1:
-    	return *p;
+    	pixColor = *p;
     	break;
 
     case 2:
-    	return *(Uint16 *)p;
+    	pixColor = *(reinterpret_cast<Uint16*>(p));
     	break;
 
     case 3:
@@ -37,12 +38,14 @@ Uint32 getPixel(SDL_Surface *surface, int x, int y)
     	break;
 
     case 4:
-    	return *(Uint32 *)p;
+    	pixColor = *(reinterpret_cast<Uint32*>(p));
     	break;
 
     default:
     	return 0;       /* shouldn't happen, but avoids warnings */
     }
+
+    return pixColor;
 }
 
 
