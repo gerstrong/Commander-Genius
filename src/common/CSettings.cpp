@@ -164,11 +164,16 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
 	g_pVideoDriver->setMode(320,200,32);
 	g_pVideoDriver->isFullscreen(false);
+
+#if defined(USE_OPENGL) && !defined(ANDROID)
+	g_pVideoDriver->enableOpenGL(false);
 	g_pVideoDriver->setOGLFilter(GL_LINEAR);
+#endif
+
 	g_pVideoDriver->setZoom(1);
 	g_pTimer->setFPS(60);
 	g_pVideoDriver->setFilter(1);
-	g_pVideoDriver->enableOpenGL(false);
+
 }
 
 /**
