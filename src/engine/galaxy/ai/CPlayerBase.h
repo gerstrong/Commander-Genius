@@ -89,7 +89,7 @@ protected:
 
 	std::vector<CObject*>& m_ObjectPtrs;
 
-	char m_playcontrol[PA_MAX_ACTIONS];
+	Sint16 m_playcontrol[PA_MAX_ACTIONS];
 	int m_timer;
 
 	//CCamera m_camera;
