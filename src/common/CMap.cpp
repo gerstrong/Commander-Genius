@@ -568,7 +568,7 @@ Uint8 CMap::getAnimtiletimer()
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
 	g_pVideoDriver->mDrawTasks.add(
-			new DrawAnimatedTileTask(&(m_Tilemaps.at(1)),mx, my, tile ) );
+			new DrawAnimatedTileTask( &(m_Tilemaps.at(1)), mx, my, tile ) );
 }
 
 void CMap::animateAllTiles()

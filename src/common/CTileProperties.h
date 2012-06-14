@@ -24,9 +24,9 @@ public:
 
 	// Tile Properties start here!
 	unsigned char animationtime;
-	char behaviour;
-	char bup,bright,bdown,bleft;
-	char slippery;
+	signed char behaviour;
+	signed char bup,bright,bdown,bleft;
+	signed char slippery;
 private:
 };
 

@@ -147,7 +147,7 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
 	{
 		TileUnmaskedProperties[j].animationtime = data[j];
-		TileUnmaskedProperties[j].nextTile = static_cast<char>(data[NumUnMaskedTiles+j]);
+		TileUnmaskedProperties[j].nextTile = static_cast<Sint8>(data[NumUnMaskedTiles+j]);
 	}
 
 	std::vector<CTileProperties> &TileMaskedProperties = g_pBehaviorEngine->getTileProperties(1);
@@ -158,7 +158,7 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 		TileMaskedProperties[j].bdown 			= data[j+2*NumUnMaskedTiles+2*NumMaskedTiles];
 		TileMaskedProperties[j].bleft 			= data[j+2*NumUnMaskedTiles+3*NumMaskedTiles];
 
-		TileMaskedProperties[j].nextTile 		= static_cast<char>(data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
+		TileMaskedProperties[j].nextTile 		= static_cast<Sint8>(data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
 		TileMaskedProperties[j].behaviour 		= data[j+2*NumUnMaskedTiles+5*NumMaskedTiles];
 		TileMaskedProperties[j].animationtime 	= data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];
 	}
