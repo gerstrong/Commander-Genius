@@ -37,7 +37,7 @@ private:
 	Uint8 m_Speed;
 	Uint32 m_Color;
 	Uint8 m_Alpha;
-	char m_FadeDir;
+	fade_dir m_FadeDir;
 	Uint8 m_Style;
 	Uint8 m_MaxAlpha;
 	SmartPointer<SDL_Surface> mpFadeSurface;

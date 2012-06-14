@@ -102,20 +102,6 @@ void CPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 	}
 }
 
-// adds a color onto the end of the palette and returns it's index.
-// if the palette is full, returns -1.
-char CPalette::addcolor(unsigned char r, unsigned char g, unsigned char b)
-{
-	if (m_numcolors >= 255) return -1;
-	
-	m_Palette[m_numcolors].r = r;
-	m_Palette[m_numcolors].g = g;
-	m_Palette[m_numcolors].b = b;
-	
-	m_numcolors++;
-	return (m_numcolors-1);
-}
-
 ///
 // Getters and Setters
 ///

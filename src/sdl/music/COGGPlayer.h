@@ -36,7 +36,7 @@ public:
 
 private:
 	bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec );
-	bool readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
+	bool readOGGStreamAndResample( OggVorbis_File  &oggStream, Uint8 *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
 
 	OggVorbis_File  m_oggStream;
 	const std::string m_filename;

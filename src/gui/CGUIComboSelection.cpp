@@ -116,9 +116,7 @@ void CGUIComboSelection::setList(const char **strArray, const int numElem)
 
 
 	for( int i=0 ; i<numElem ; i++ )
-	{
 		mOptionsList.push_back( strArray[i] );
-	}
 
 	mOLCurrent = mOptionsList.begin();
 

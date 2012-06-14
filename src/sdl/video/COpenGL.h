@@ -34,7 +34,8 @@ struct stDims{
 
 Uint16 getPowerOfTwo(Uint16 value);
 
-class COpenGL : public CVideoEngine {
+class COpenGL : public CVideoEngine
+{
 public:
 	COpenGL(const CVidConfig &VidConfig);
 
@@ -50,11 +51,7 @@ public:
 
 	void reloadFX(SDL_Surface* surf);
 
-	virtual ~COpenGL();
-
 private:
-	char*		m_opengl_buffer;	// Used for internal ScaleX filtering
-
 	unsigned int	m_texparam;
 
 	float	m_aspectratio;

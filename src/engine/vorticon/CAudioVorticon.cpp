@@ -36,7 +36,7 @@ Uint8* CAudioVorticon::loadSoundStream(Uint32 &buffer_size, Uint8* exedata)
 	buffer_size = 0;
 	const std::string gamepath = m_ExeFile.getDataDirectory();
 	const std::string soundfile = "sounds.ck" + itoa(m_ExeFile.getEpisode());
-	g_pLogFile->ftextOut("sound_load_all(): trying to open the game audio...<br>");
+	g_pLogFile->ftextOut("loadSoundStream(): trying to open the game audio...<br>");
 
 	std::ifstream file;
 	if(!OpenGameFileR(file, getResourceFilename(soundfile, gamepath, false, true), std::ios::binary))
@@ -184,7 +184,7 @@ bool CAudioVorticon::loadSoundData()
 	const std::string soundfile = "sounds.ck" + itoa(episode);
 	const std::string DataDirectory = m_ExeFile.getDataDirectory();
 
-	g_pLogFile->ftextOut("sound_load_all(): loading all sounds...<br>");
+	g_pLogFile->ftextOut("loadSoundData(): loading all sounds...<br>");
 
 	Uint32 buffer_size;
 	Uint8 *buffer = loadSoundStream( buffer_size, m_ExeFile.getRawData() );

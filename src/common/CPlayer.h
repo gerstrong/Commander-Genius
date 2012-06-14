@@ -157,7 +157,7 @@ public:
 	char keyprocstate;
 	char wm_lastenterstate;
 
-	char pdie, pdieframe, pdietimer;
+	unsigned char pdie, pdieframe, pdietimer;
 	int pdietillfly;
 	signed int pdie_xvect;
 	bool psliding;

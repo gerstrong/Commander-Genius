@@ -247,7 +247,7 @@ bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int 
 	{
 		for( int j=0 ; j<lh ; j+=res )
 		{
-			const char behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
+			const signed char behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
 			if(behavior == Property || behavior == Property-128 ) // -128 for foreground properties
 			{
 				lx = lx+i;
@@ -268,7 +268,7 @@ bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int 
 bool CObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
-	const char behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
+	const signed char behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
 	if(behavior == Property || behavior == Property-128 ) // +128 for foreground properties
 		return true;
 	else

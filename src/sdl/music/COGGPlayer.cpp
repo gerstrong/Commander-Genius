@@ -110,13 +110,13 @@ bool COGGPlayer::readOGGStream( OggVorbis_File  &oggStream, char *buffer, const 
 	return false;
 }
 
-bool COGGPlayer::readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
+bool COGGPlayer::readOGGStreamAndResample( OggVorbis_File  &oggStream, Uint8 *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
 {
-	char buf[input_size];
+	Uint8 buf[input_size];
 
-	bool eof = readOGGStream( oggStream, buf, input_size, OGGAudioSpec );
+	bool eof = readOGGStream( oggStream, reinterpret_cast<char*>(buf), input_size, OGGAudioSpec );
 
-	resample((Uint8*)buffer, (Uint8*)buf, output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
+	resample( buffer, buf, output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
 
 	return eof;
 }
@@ -141,11 +141,11 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 		insize++;
 		insize *= mult;
 
-		rewind = readOGGStreamAndResample(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
+		rewind = readOGGStreamAndResample(m_oggStream, m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
 	}
 	else
 	{
-		rewind = readOGGStream(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, m_AudioFileSpec);
+		rewind = readOGGStream(m_oggStream, reinterpret_cast<char*>(m_Audio_cvt.buf), m_Audio_cvt.len, m_AudioFileSpec);
 	}
 
 	// then convert it into SDL Audio buffer

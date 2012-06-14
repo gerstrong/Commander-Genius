@@ -28,7 +28,6 @@ Uint16 getPowerOfTwo(Uint16 value)
 // depending on what resolution has been chosen, it is mostly 320x200 or 320x240
 COpenGL::COpenGL(const CVidConfig &VidConfig) :
 CVideoEngine(VidConfig),
-m_opengl_buffer(NULL),
 m_texparam(GL_TEXTURE_2D),
 m_aspectratio(m_VidConfig.m_DisplayRect.aspectRatio()),
 m_GamePOTBaseDim(getPowerOfTwo(m_VidConfig.m_GameRect.w),
@@ -209,14 +208,9 @@ bool COpenGL::init()
 
 	createTexture(m_texture, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
 	
-	if(m_VidConfig.m_ScaleXFilter > 1)
-	{
-		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_VidConfig.m_ScaleXFilter*4];
-	}
-	else
+	if(m_VidConfig.m_ScaleXFilter <= 1)
 	{	// In that case we can do a texture based rendering
 		createTexture(m_texFX, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
-		m_opengl_buffer = NULL;
 	}
 	
 	// If there were any errors
@@ -361,13 +355,6 @@ void COpenGL::updateScreen()
 	g_pInput->renderOverlay();
 
 	SDL_GL_SwapBuffers();
-}
-
-COpenGL::~COpenGL()
-{
-	if(m_opengl_buffer)
-		delete[] m_opengl_buffer;
-	m_opengl_buffer = NULL;
 }
 
 #endif // USE_OPENGL

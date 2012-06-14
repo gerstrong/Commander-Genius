@@ -106,88 +106,56 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 
 void CVideoEngine::blitScrollSurface() // This is only for tiles
 {									   // The name should be changed
-	SDL_Rect srcrect;
-	SDL_Rect dstrect;
+	SDL_Rect srcrect, dstrect;
 	Sint16 sbufferx, sbuffery;
-	char wraphoz, wrapvrt;
-	int save_dstx, save_dstw, save_srcx, save_srcw;
 	const SDL_Rect Gamerect = m_VidConfig.m_GameRect.SDLRect();
 
 	dstrect.x = 0; dstrect.y = 0;
-
 	srcrect.x =	sbufferx = mSbufferx;
 	srcrect.y = sbuffery = mSbuffery;
 
+	const bool wraphoz = (sbufferx > (512-Gamerect.w));
+	const bool wrapvrt = (sbuffery > (512-Gamerect.h));
+
 	dstrect.w = (Gamerect.w>sbufferx) ? Gamerect.w-sbufferx : Gamerect.w ;
 	dstrect.h = (Gamerect.h>sbuffery) ? Gamerect.h-sbuffery : Gamerect.h ;
-
-	if (sbufferx > (Uint16)(512-Gamerect.w))
-	{ // need to wrap right side
-		srcrect.w = (512-sbufferx);
-		wraphoz = 1;
-	}
-	else
-	{ // single blit for whole horizontal copy
-		srcrect.w = Gamerect.w;
-		wraphoz = 0;
-	}
-
-	if (sbuffery > (Uint16)(512-Gamerect.h))
-	{ // need to wrap on bottom
-		srcrect.h = (512-sbuffery);
-		wrapvrt = 1;
-	}
-	else
-	{ // single blit for whole bottom copy
-		srcrect.h = Gamerect.h;
-		wrapvrt = 0;
-	}
+	srcrect.w = wraphoz ? (512-sbufferx) : Gamerect.w;
+	srcrect.h = wrapvrt ? (512-sbuffery) : Gamerect.h;
 
 	SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
 
-	if (wraphoz && wrapvrt)
-	{
-		// first do same thing we do for wraphoz
-		save_dstx = dstrect.x;
-		save_dstw = dstrect.w;
-		save_srcx = srcrect.x;
-		save_srcw = srcrect.w;
-		dstrect.x = srcrect.w;
-		dstrect.w = Gamerect.w - dstrect.x;
-		srcrect.x = 0;
-		srcrect.w = (Gamerect.w - srcrect.w);
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+	const Uint16 saveDstw = dstrect.w;
+	const Uint16 saveSrcw = srcrect.w;
 
-		// now repeat for the bottom
-		// (lower-right square)
-		dstrect.y = srcrect.h;
-		dstrect.h = Gamerect.h - dstrect.y;
-		srcrect.y = 0;
-		srcrect.h = (Gamerect.h - srcrect.h);
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-		// (lower-left square)
-		dstrect.x = save_dstx;
-		dstrect.w = save_dstw;
-		srcrect.x = save_srcx;
-		srcrect.w = save_srcw;
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-	}
-	else if (wraphoz)
+	if (wraphoz)
 	{
 		dstrect.x = srcrect.w;
 		dstrect.w = Gamerect.w - dstrect.x;
 		srcrect.x = 0;
 		srcrect.w = Gamerect.w - srcrect.w;
 		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+
+		if(!wrapvrt)
+			return;
 	}
-	else if (wrapvrt)
+
+	if (wrapvrt)
 	{
 		dstrect.y = srcrect.h;
 		dstrect.h = Gamerect.h - dstrect.y;
 		srcrect.y = 0;
-		srcrect.h = (Gamerect.h - srcrect.h);
+		srcrect.h = Gamerect.h - srcrect.h;
 		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+
+		if(!wraphoz)
+			return;
 	}
+
+	srcrect.x = sbufferx;
+	srcrect.w = saveSrcw;
+	dstrect.x = 0;
+	dstrect.w = saveDstw;
+	SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
 }
 
 void CVideoEngine::stop()

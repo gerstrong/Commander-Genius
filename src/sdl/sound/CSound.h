@@ -35,7 +35,6 @@ public:
 
 	void stopAllSounds();
 	bool forcedisPlaying(void);
-	char sound_load_all(const std::string& path);
 	void callback(void *unused, Uint8 *stream, int len);
 	void pauseSound(void);
 	void resumeSounds(void);

@@ -40,7 +40,6 @@ public:
 	void setdark(bool dark);
 	void setdarkness(Uint8 darkness);
 
-	char addcolor(unsigned char r, unsigned char g, unsigned char b);
 	int getcolor(unsigned char r, unsigned char g, unsigned char b);
 
 	bool in_progress(void);
