@@ -74,6 +74,7 @@ inline Colormask getColourMask32bit()
 SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
 {
 	//SDL_Surface *video = SDL_GetVideoSurface();
+	Colormask mask = getColourMask32bit();
 
 	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
 			rect.w,
