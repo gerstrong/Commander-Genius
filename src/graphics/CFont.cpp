@@ -18,8 +18,7 @@
 
 
 
-CFont::CFont() :
-mFontSurface(NULL)
+CFont::CFont()
 {
 	memset(&mWidthtable, 8, 256);
 }
@@ -41,10 +40,10 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 {
 	mFontSurface = SDL_CreateRGBSurface(Flags, width,
 			height, 8, 0, 0, 0, 0);
-	SDL_SetColors(mFontSurface, Palette, 0, 255);
-	SDL_SetColorKey(mFontSurface, SDL_SRCCOLORKEY, COLORKEY);
+	SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
+	SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
 
-	return ( mFontSurface != NULL );
+	return ( !mFontSurface.empty() );
 }
 
 
@@ -63,6 +62,12 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 			  	  	  	  	  	  	  	  	 format->BitsPerPixel,
 			  	  	  	  	  	  	  	  	 format->Rmask, format->Gmask,
 			  	  	  	  	  	  	  	  	 format->Bmask, format->Amask );
+
+	bool usesAlpha = (sfc->flags & SDL_SRCALPHA);
+	const Uint32 colorkey = SDL_MapRGB(sfc->format, 0xFF, 0x00, 0xFF);
+
+	if(!usesAlpha)
+		SDL_SetColorKey( sfc, SDL_SRCCOLORKEY|SDL_RLEACCEL, colorkey );
 
 	// Read the data and pass it to the surface
 	SDL_LockSurface(sfc);
@@ -94,9 +99,28 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 			const char newPix = pixel_data[x];
 
 			if( newPix == ' ' )
-				color = 0;
+			{
+				if(usesAlpha)
+					color = SDL_MapRGBA(sfc->format, 0, 0, 0, 0);
+				else
+					color = colorkey;
+			}
 			else
-				color = colorMap[newPix] | 0xFF000000;
+			{
+				color = colorMap[newPix];
+				if(usesAlpha)
+					color = SDL_MapRGBA(sfc->format,
+										(color>>16) & 0xFF,
+										(color>>8)  & 0xFF,
+										(color>>0)  & 0xFF,
+										0xFF);
+				else
+					color = SDL_MapRGB(sfc->format,
+										(color>>16) & 0xFF,
+										(color>>8)  & 0xFF,
+										(color>>0)  & 0xFF);
+
+			}
 
 			*pixel = color;
 			pixel++;
@@ -113,8 +137,6 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 bool CFont::loadAlternateFont()
 {
 	// Has the Surface to the entire font been loaded?
-	if(mFontSurface)
-		SDL_FreeSurface(mFontSurface);
 
 	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
 	mFontSurface = loadfromXPMData( alternatefont_xpm, blit->format, blit->flags );
@@ -125,10 +147,6 @@ bool CFont::loadAlternateFont()
 
 bool CFont::loadinternalFont()
 {
-	// Has the Surface to the entire font been loaded?
-	if(mFontSurface)
-		SDL_FreeSurface(mFontSurface);
-
 	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
 	mFontSurface = loadfromXPMData( CGFont_xpm, blit->format, blit->flags );
 	return true;
@@ -153,7 +171,7 @@ void CFont::setupColor( const Uint32 fgColor )
 
 	// Change palette colors to the desired one
 	SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
-	SDL_SetColors( mFontSurface, color, 0, 16);
+	SDL_SetColors( mFontSurface.get(), color, 0, 16);
 }
 
 Uint32 CFont::getFGColor()
@@ -256,11 +274,11 @@ Uint32 CFont::getBGColour(SDL_PixelFormat *format, const bool highlight)
 
 void  CFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
 {
-	SDL_LockSurface(mFontSurface);
+	SDL_LockSurface(mFontSurface.get());
 
-	const Uint32 color = getPixel(mFontSurface, 0, highlight ? 80 : 16 );
+	const Uint32 color = getPixel(mFontSurface.get(), 0, highlight ? 80 : 16 );
 
-	SDL_UnlockSurface(mFontSurface);
+	SDL_UnlockSurface(mFontSurface.get());
 
 	SDL_GetRGB( color, mFontSurface->format, r, g, b);
 }
@@ -282,7 +300,7 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	scrrect.h = dstrect.h = (mFontSurface->h/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
 
-	SDL_BlitSurface(mFontSurface, &scrrect, dst, &dstrect);
+	SDL_BlitSurface(mFontSurface.get(), &scrrect, dst, &dstrect);
 }
 
 void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
@@ -346,7 +364,7 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 
 void CFont::drawMap(SDL_Surface* dst)
 {
-	SDL_BlitSurface(mFontSurface,NULL,dst,NULL);
+	SDL_BlitSurface(mFontSurface.get(), NULL, dst, NULL);
 }
 
 ///
@@ -354,8 +372,7 @@ void CFont::drawMap(SDL_Surface* dst)
 ///
 void CFont::destroySurface()
 {
-	if(mFontSurface) SDL_FreeSurface(mFontSurface);
-		mFontSurface = NULL;
+	mFontSurface = NULL;
 }
 
 CFont::~CFont()

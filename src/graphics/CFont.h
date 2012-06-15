@@ -18,6 +18,7 @@
 #include <SDL.h>
 #include <string>
 #include <vector>
+#include "SmartPointer.h"
 
 class CFont
 {
@@ -25,7 +26,7 @@ public:
 	CFont();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint16 width = 128, Uint16 height = 128);
-	SDL_Surface *getSDLSurface() { return mFontSurface; }
+	SDL_Surface *getSDLSurface() { return mFontSurface.get(); }
 
 	bool loadAlternateFont();
 
@@ -82,7 +83,7 @@ public:
 	~CFont();
 
 private:
-	SDL_Surface *mFontSurface;
+	SmartPointer<SDL_Surface> mFontSurface;
 	Uint8 mWidthtable[256];
 };
 
