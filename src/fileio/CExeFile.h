@@ -15,6 +15,7 @@
 #define CEXEFILE_H_
 
 #include "fileio/crc.h"
+#include "TypeDefinitions.h"
 
 #include <vector>
 #include <string>

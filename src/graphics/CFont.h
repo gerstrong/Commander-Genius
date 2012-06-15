@@ -24,7 +24,7 @@ class CFont
 public:
 	CFont();
 
-	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp=8, Uint16 width = 128, Uint16 height = 128);
+	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint16 width = 128, Uint16 height = 128);
 	SDL_Surface *getSDLSurface() { return mFontSurface; }
 
 	bool loadAlternateFont();

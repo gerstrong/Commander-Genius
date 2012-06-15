@@ -205,7 +205,7 @@ void CPlayGameVorticon::showKeensLeft()
 		SDL_Rect rect;
 		rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
 		rect.w = (KEENSLEFT_W+1)*8;	rect.h = (boxH)*8;
-		SDL_Surface *boxsurface = SDL_CreateRGBSurface( SDL_SWSURFACE, rect.w, rect.h, 32, 0, 0, 0, 0 );
+		SDL_Surface *boxsurface = SDL_CreateRGBSurface( SDL_SWSURFACE, rect.w, rect.h, RES_BPP, 0, 0, 0, 0 );
 
 		rect.x = 8;	rect.y = 16;
 		rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;

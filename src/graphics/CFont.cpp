@@ -37,10 +37,10 @@ mFontSurface(NULL)
 
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
-							Uint8 bpp, Uint16 width, Uint16 height)
+							Uint16 width, Uint16 height)
 {
 	mFontSurface = SDL_CreateRGBSurface(Flags, width,
-			height, bpp, 0, 0, 0, 0);
+			height, 8, 0, 0, 0, 0);
 	SDL_SetColors(mFontSurface, Palette, 0, 255);
 	SDL_SetColorKey(mFontSurface, SDL_SRCCOLORKEY, COLORKEY);
 

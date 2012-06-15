@@ -85,7 +85,7 @@ bool COpenGL::createSurfaces()
 	const CRect<Uint16> gamerect = m_VidConfig.m_GameRect;
     ScrollSurface = createSurface( "ScrollSurface", true,
 								  512, 512,
-								  32,
+								  RES_BPP,
 								  m_Mode, screen->format );
 
     g_pLogFile->textOut("Blitsurface = creatergbsurface<br>");
@@ -93,7 +93,7 @@ bool COpenGL::createSurfaces()
     BlitSurface = createSurface( "BlitSurface", true,
     		getPowerOfTwo(gamerect.w),
     		getPowerOfTwo(gamerect.h),
-    		32,
+    		RES_BPP,
     		m_Mode, screen->format );
 
     g_pLogFile->textOut("FilteredSurface = creatergbsurface<br>");
@@ -101,7 +101,7 @@ bool COpenGL::createSurfaces()
 	FilteredSurface = createSurface( "FilteredSurface", true,
 				BlitSurface->w*m_VidConfig.m_ScaleXFilter,
 				BlitSurface->h*m_VidConfig.m_ScaleXFilter,
-				32,
+				RES_BPP,
 				m_Mode, screen->format );
 
 	m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
@@ -111,7 +111,7 @@ bool COpenGL::createSurfaces()
 		FXSurface = createSurface( "FXSurface", true,
 						getPowerOfTwo(gamerect.w),
 						getPowerOfTwo(gamerect.h),
-						32,
+						RES_BPP,
 						m_Mode, screen->format );
 	}
 	else
@@ -119,7 +119,7 @@ bool COpenGL::createSurfaces()
 		FXSurface = createSurface( "FXSurface", false,
 				gamerect.w,
 				gamerect.h,
-				32,
+				RES_BPP,
 				m_Mode, screen->format );
 
 		//Set surface alpha

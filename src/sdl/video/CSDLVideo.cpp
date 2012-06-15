@@ -46,7 +46,7 @@ bool CSDLVideo::createSurfaces()
 	ScrollSurface = createSurface( "ScrollSurface", false,//true,
 			512,
 			512,
-			32,
+			RES_BPP,
 			m_Mode, screen->format );
 
 	g_pLogFile->textOut("Blitsurface created!\n");
@@ -54,7 +54,7 @@ bool CSDLVideo::createSurfaces()
 	BlitSurface = createSurface( "BlitSurface", true,
 				gamerect.w,
 				gamerect.h,
-				32,
+				RES_BPP,
 				m_Mode, screen->format );
 
 	g_pLogFile->textOut("FilteredSurface created!\n");
@@ -62,7 +62,7 @@ bool CSDLVideo::createSurfaces()
 	FilteredSurface = createSurface( "FilteredSurface", true,
 				BlitSurface->w*m_VidConfig.m_ScaleXFilter,
 				BlitSurface->h*m_VidConfig.m_ScaleXFilter,
-				32,
+				RES_BPP,
 				m_Mode, screen->format );
 
 	 m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
@@ -71,7 +71,7 @@ bool CSDLVideo::createSurfaces()
 	FXSurface = createSurface( "FXSurface", false,
 			BlitSurface->w,
 			BlitSurface->h,
-			32,
+			RES_BPP,
 			m_Mode, screen->format );
 
 	//Set surface alpha

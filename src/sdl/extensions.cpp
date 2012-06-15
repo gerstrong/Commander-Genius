@@ -78,7 +78,7 @@ SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
 	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE, // TODO: Must be changed in future for better hardware support
 			rect.w,
 			rect.h,
-			32, // TODO: Must be changed in future for better 16 bpp support
+			RES_BPP, // TODO: Must be changed in future for better 16 bpp support
 			mask.r,
 			mask.g,
 			mask.b,
