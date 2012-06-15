@@ -34,7 +34,6 @@ CFont::CFont()
 
 
 
-
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 							Uint16 width, Uint16 height)
 {

@@ -42,6 +42,8 @@ public:
 
 	void setFilterFactor( const Uint32 FilterFactor );
 
+	Uint32 filterFactor() { return FilterFactor; }
+
 private:
 
 	void scaleDynamic( 	SDL_Surface *srcSfc,

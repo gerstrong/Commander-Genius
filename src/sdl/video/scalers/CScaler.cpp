@@ -30,6 +30,15 @@ void CScaler::setFilterFactor( const Uint32 FilterFactor )
 void CScaler::scaleDynamic( SDL_Surface *srcSfc,
 							SDL_Surface *dstSfc )
 {
+	const bool equalWidth  = (dstSfc->w == srcSfc->w);
+	const bool equalHeight = (dstSfc->h == srcSfc->h);
+
+	if(equalWidth && equalHeight)
+	{
+		SDL_BlitSurface(srcSfc, NULL, dstSfc, NULL);
+		return;
+	}
+
 	const float dstWidth  = float(dstSfc->w);
 	const float dstHeight = float(dstSfc->h);
 
@@ -47,13 +56,22 @@ void CScaler::scaleDynamic( SDL_Surface *srcSfc,
 	for( Uint32 yDst = 0, xDst ; yDst<dstHeight ; yDst++ )
 	{
 		xSrc = 0.0f;
-		pitch = Uint32(ySrc)*srcSfc->w;
-		for( xDst = 0; xDst<dstWidth ; xDst++ )
-		{
-			*dstPixel = srcPixel[pitch+Uint32(xSrc)];
 
-			xSrc += l_wFac;
-			dstPixel++;
+		pitch = Uint32(ySrc)*srcSfc->w;
+		if(equalWidth)
+		{
+			memcpy(dstPixel, srcPixel+pitch, srcSfc->pitch);
+		}
+		else
+		{
+
+			for( xDst = 0; xDst<dstWidth ; xDst++ )
+			{
+				*dstPixel = srcPixel[pitch+Uint32(xSrc)];
+
+				xSrc += l_wFac;
+				dstPixel++;
+			}
 		}
 
 		ySrc += l_hFac;

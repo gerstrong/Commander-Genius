@@ -49,7 +49,7 @@ bool CSDLVideo::createSurfaces()
 			RES_BPP,
 			m_Mode, screen->format );
 
-	g_pLogFile->textOut("Blitsurface created!\n");
+	g_pLogFile->textOut("Blitsurface creation!\n");
 
 	BlitSurface = createSurface( "BlitSurface", true,
 				gamerect.w,
@@ -57,7 +57,7 @@ bool CSDLVideo::createSurfaces()
 				RES_BPP,
 				m_Mode, screen->format );
 
-	g_pLogFile->textOut("FilteredSurface created!\n");
+	g_pLogFile->textOut("FilteredSurface creation!\n");
 
 	FilteredSurface = createSurface( "FilteredSurface", true,
 				BlitSurface->w*m_VidConfig.m_ScaleXFilter,
@@ -100,11 +100,24 @@ void CSDLVideo::clearSurfaces()
 
 void CSDLVideo::updateScreen()
 {
-	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
-	Scaler.scaleUp(FilteredSurface, BlitSurface, SCALEX);
+	if( Scaler.filterFactor() <= 1 )
+	{
+		SDL_Rect scrrect, dstrect;
+		dstrect.x = scrrect.y = 0;
+		dstrect.y = scrrect.x = 0;
+		dstrect.h = scrrect.h = BlitSurface->h;
+		dstrect.w = scrrect.w = BlitSurface->w;
 
-	// Now scale up to the new DisplayRect (FilteredScreen -> screen)
-	Scaler.scaleUp(screen, FilteredSurface, DYNAMIC);
+		SDL_BlitSurface(BlitSurface, &scrrect, screen, &dstrect);
+	}
+	else
+	{
+		// First apply the conventional filter if any (GameScreen -> FilteredScreen)
+		Scaler.scaleUp(FilteredSurface, BlitSurface, SCALEX);
+
+		// Now scale up to the new DisplayRect (FilteredScreen -> screen)
+		Scaler.scaleUp(screen, FilteredSurface, DYNAMIC);
+	}
 
 	// Flip the screen (We use double-buffering on some systems.)
 	SDL_Flip(screen);
