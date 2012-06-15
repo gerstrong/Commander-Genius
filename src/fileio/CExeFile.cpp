@@ -343,16 +343,17 @@ bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imgl
 	return false;
 }
 
-unsigned char* CExeFile::getRawData() const
+byte* CExeFile::getRawData() const
 {	return m_rawdata;	}
 
-unsigned char* CExeFile::getHeaderData() const
+byte* CExeFile::getHeaderData() const
 {	return m_headerdata;	}
 
-unsigned char* CExeFile::getDSegPtr() const
+byte* CExeFile::getDSegPtr() const
 {	return m_data_segment; }
 
-CExeFile::~CExeFile() {
+CExeFile::~CExeFile()
+{
 	SAFE_DELETE_ARRAY(m_data);
 }
 

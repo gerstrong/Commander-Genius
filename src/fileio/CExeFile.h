@@ -40,9 +40,9 @@ public:
 	int getEXECrc();
 	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
 	
-	unsigned char* getRawData() const;
-	unsigned char* getHeaderData() const;
-	unsigned char* getDSegPtr() const;
+	byte* getRawData() const;
+	byte* getHeaderData() const;
+	byte* getDSegPtr() const;
 
 	~CExeFile();
 
@@ -70,10 +70,10 @@ private:
 	size_t m_headersize;
 	int m_episode;
 	unsigned int m_crc;
-	unsigned char *m_data;
-	unsigned char *m_headerdata;
-	unsigned char *m_rawdata;
-	unsigned char *m_data_segment;
+	byte *m_data;
+	byte *m_headerdata;
+	byte *m_rawdata;
+	byte *m_data_segment;
 	std::string m_datadirectory;
 	std::string m_filename;
 
