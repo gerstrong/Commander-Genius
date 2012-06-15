@@ -203,7 +203,13 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	drawFont( pColoredTextSurface, text, 0, 0);
 
 	// Adapt the newly created surface to the running screen.
-	SDL_Surface *temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
+	SDL_Surface *temp;
+
+	if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
+		temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
+	else // or
+		temp = SDL_DisplayFormat(pColoredTextSurface);
+
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
 

@@ -13,7 +13,7 @@
 
 #include <SDL.h>
 
-const unsigned int RES_BPP = 16;
+const unsigned int RES_BPP = 32;
 
 #ifdef USE_OPENGL
 	#include <SDL_opengl.h>

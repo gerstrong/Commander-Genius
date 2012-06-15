@@ -73,16 +73,26 @@ inline Colormask getColourMask32bit()
 
 SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
 {
-	Colormask mask = getColourMask32bit();
+	//SDL_Surface *video = SDL_GetVideoSurface();
 
-	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE, // TODO: Must be changed in future for better hardware support
+	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
 			rect.w,
 			rect.h,
-			RES_BPP, // TODO: Must be changed in future for better 16 bpp support
+			RES_BPP,
 			mask.r,
 			mask.g,
 			mask.b,
 			mask.a );
+
+
+	/*SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
+			rect.w,
+			rect.h,
+			RES_BPP,
+			video->format->Rmask,
+			video->format->Gmask,
+			video->format->Bmask,
+			video->format->Amask);*/
 
 	return sfc;
 }
