@@ -100,7 +100,9 @@ void CSDLVideo::clearSurfaces()
 
 void CSDLVideo::updateScreen()
 {
-	if( Scaler.filterFactor() <= 1 )
+	if( Scaler.filterFactor() <= 1 &&
+			BlitSurface->h == screen->h &&
+			BlitSurface->w == screen->w )
 	{
 		SDL_Rect scrrect, dstrect;
 		dstrect.x = scrrect.y = 0;

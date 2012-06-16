@@ -34,7 +34,6 @@ private:
 
 	CGUINumberControl	*mpFPSSelection;
 
-#undef USE_OPENGL
 #if defined(USE_OPENGL)
 	CGUISwitch			*mpOpenGLSwitch;
 	CGUIComboSelection	*mpOGLFilterSelection;
