@@ -59,10 +59,6 @@ public:
 
 				CGUIButton *button = new CGUIButton( playerStr, new _T(i) );
 
-				#if defined (SINGLEPLAYER)
-					button->setAutoActivation();
-				#endif
-
 				mpButtonList.push_back( button );
 				mpMenuDialog->addControl( mpButtonList.back() );
 			}
