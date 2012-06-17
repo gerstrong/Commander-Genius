@@ -12,6 +12,7 @@
 #define CVIDCONFIG_H_
 
 #include <SDL.h>
+#include "hardware/Configurator.h"
 
 const unsigned int RES_BPP = 32;
 
@@ -58,11 +59,12 @@ public:
 	bool showfps;
 	bool vsync;
 
-#ifdef USE_OPENGL
+	st_camera_bounds m_CameraBounds;
+
+#if defined(USE_OPENGL)
 	GLint m_opengl_filter;
 #endif
 
-	st_camera_bounds m_CameraBounds;
 };
 
 #endif /* CVIDCONFIG_H_ */

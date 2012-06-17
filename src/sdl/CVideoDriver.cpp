@@ -200,12 +200,6 @@ bool CVideoDriver::applyMode()
 	while(((Res.w/GameRect.w) < m_VidConfig.Zoom || (Res.h/GameRect.h) < m_VidConfig.Zoom) && (m_VidConfig.Zoom > 1))
 		m_VidConfig.Zoom--;
 
-#if defined(EMBEDDED)
-	// Force the default settings on iPhone.
-	// There is no reason yet to play with it, most likely other settings will
-	// either not work, will crash or will just be totally screwed up.
-	resetSettings();
-#endif
 
 	// Check if some zoom/filter modes are illogical and roll them back accordingly
 	if( (m_VidConfig.Zoom == 3 && m_VidConfig.m_ScaleXFilter == 1) && !m_VidConfig.m_opengl )

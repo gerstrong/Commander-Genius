@@ -4,6 +4,8 @@
  *  Created on: 04.06.2009
  *      Author: gerstrong
  */
+#include "hardware/Configurator.h"
+
 #ifdef USE_OPENGL
 
 #include "COpenGL.h"

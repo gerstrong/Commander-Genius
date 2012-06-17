@@ -10,12 +10,12 @@
 #include "StringUtils.h"
 
 CCameraSettings::CCameraSettings():
-CBaseMenu(CRect<float>(0.15f, 0.24f, 0.7f, 0.4f) ),
+CBaseMenu(CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
 m_CameraBounds(g_pVideoDriver->getCameraBounds())
 {
 
 	mpLeftAdjust = new CGUINumberControl( "Left",
-											 50, 270, 10, 60);
+											 50, 270, 10, 60 );
 	mpMenuDialog->addControl( mpLeftAdjust );
 
 	mpRightAdjust = new CGUINumberControl( "Right",
@@ -31,7 +31,7 @@ m_CameraBounds(g_pVideoDriver->getCameraBounds())
 	mpMenuDialog->addControl( mpBottomAdjust );
 
 	mpSpeedAdjust = new CGUINumberControl( "Speed",
-											 1, 50, 1, 60 );
+											 1, 50, 1, 25 );
 	mpMenuDialog->addControl( mpSpeedAdjust );
 
 	setMenuLabel("OPTIONSMENULABEL");
@@ -57,6 +57,8 @@ void CCameraSettings::release()
 	m_CameraBounds.up = mpTopAdjust->getSelection();
 	m_CameraBounds.down = mpBottomAdjust->getSelection();
 	m_CameraBounds.speed = mpSpeedAdjust->getSelection();
+
+	g_pVideoDriver->saveCameraBounds(m_CameraBounds);
 
 	g_pSettings->saveDrvCfg();
 }

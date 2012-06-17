@@ -38,7 +38,11 @@ private:
 
 
 CVideoSettings::CVideoSettings() :
+#if defined(EMBEDDED)
+CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.25f) )
+#else
 CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
+#endif
 {
 	// Create the fps config selection control
 	std::list<std::string>	List;
@@ -65,13 +69,11 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpSFXSwitch = new CGUISwitch( "Special FX" );
 	mpMenuDialog->addControl( mpSFXSwitch );
 
-
+#if !defined(EMBEDDED)
 	mpCameraButton = new CGUIButton( "Camera",
 									new OpenMenuEvent( new CCameraSettings() ) );
 	mpMenuDialog->addControl( mpCameraButton );
 
-
-#if !defined(EMBEDDED)
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
 												filledStrList( 4, "none", "2x", "3x", "4x" ) );
 	mpMenuDialog->addControl( mpScalerSelection );
@@ -156,6 +158,8 @@ void CVideoSettings::release()
 	mUserVidConf.showfps = mpShowFPSSwitch->isEnabled();
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
+	// In case the user changed something in the camera settings, reload that.
+	mUserVidConf.m_CameraBounds = g_pVideoDriver->getCameraBounds();
 
 	CVidConfig oldVidConf = g_pVideoDriver->getVidConfig();
 	g_pVideoDriver->setVidConfig(mUserVidConf);
