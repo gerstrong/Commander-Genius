@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 
+#include "hardware/Configurator.h"
 #include "common/CSettings.h"
 #include "sdl/input/CInput.h"
 #include "sdl/CTimer.h"
@@ -49,7 +50,6 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
 
 #if defined(USE_OPENGL)
-
 	mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
 	mpMenuDialog->addControl( mpOpenGLSwitch );
 
@@ -57,17 +57,6 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 											filledStrList( 2, "nearest", "linear" ) );
 	mpMenuDialog->addControl( mpOGLFilterSelection );
 #endif
-
-
-
-	mpScalerSelection = new CGUIComboSelection( "Scaler",
-												filledStrList( 4, "none", "2x", "3x", "4x" ) );
-	mpMenuDialog->addControl( mpScalerSelection );
-
-
-	mpVSyncSwitch = new CGUISwitch( "VSync" );
-	mpMenuDialog->addControl( mpVSyncSwitch );
-
 
 	mpShowFPSSwitch = new CGUISwitch( "Show FPS" );
 	mpMenuDialog->addControl( mpShowFPSSwitch );
@@ -82,6 +71,14 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpCameraButton );
 
 
+#if !defined(EMBEDDED)
+	mpScalerSelection = new CGUIComboSelection( "Scaler",
+												filledStrList( 4, "none", "2x", "3x", "4x" ) );
+	mpMenuDialog->addControl( mpScalerSelection );
+
+
+	mpVSyncSwitch = new CGUISwitch( "VSync" );
+	mpMenuDialog->addControl( mpVSyncSwitch );
 
 	mpResolutionSelection = new CGUIComboSelection( "Mode",
 													filledStrList(1, "?x?") );
@@ -92,29 +89,32 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpFullScreenSwitch = new CGUIButton( "Unknown mode",
 										new toggleFullscreenFunctor(*this) );
 	mpMenuDialog->addControl( mpFullScreenSwitch );
+#endif
 
 	setMenuLabel("CONFIGMENULABEL");
 }
 
 void CVideoSettings::init()
 {
-	std::string OGLFilterStr;
 	mUserVidConf = g_pVideoDriver->getVidConfig();
 
 	// Load the config into the GUI
 	mpFPSSelection->setSelection( g_pTimer->getFrameRate() );
 
 #if defined(USE_OPENGL)
+	std::string OGLFilterStr;
 	mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
 	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==GL_LINEAR ? "linear" : "nearest" );
 	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
 #endif
 
-
-	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpShowFPSSwitch->enable( mUserVidConf.showfps );
-	mpVSyncSwitch->enable( mUserVidConf.vsync );
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );
+
+
+#if !defined(EMBEDDED)
+	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : itoa(mUserVidConf.m_ScaleXFilter) + "x" );
+	mpVSyncSwitch->enable( mUserVidConf.vsync );
 	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
 
 	mpResolutionSelection->setList( ResolutionsList, NUM_MAIN_RESOLUTIONS );
@@ -123,6 +123,8 @@ void CVideoSettings::init()
 	resStr += "x";
 	resStr += itoa(mUserVidConf.m_DisplayRect.h);
 	mpResolutionSelection->setSelection(resStr);
+#endif
+
 }
 
 
@@ -137,19 +139,22 @@ void CVideoSettings::release()
 	mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
 #endif
 
+#if !defined(EMBEDDED)
+	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
 	std::string scalerStr = mpScalerSelection->getSelection();
+
+	const std::string res = mpResolutionSelection->getSelection();
+	sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h )
+
 	if( scalerStr != "none" )
 		mUserVidConf.m_ScaleXFilter = scalerStr.at(0)-'0';
 	else
 		mUserVidConf.m_ScaleXFilter = 1;
+#endif
+
 
 	mUserVidConf.showfps = mpShowFPSSwitch->isEnabled();
-	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
-
-
-	const std::string res = mpResolutionSelection->getSelection();
-	sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
 
 
 	CVidConfig oldVidConf = g_pVideoDriver->getVidConfig();

@@ -22,7 +22,7 @@
 void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 {
 
-#if defined (EMBEDDED)
+#if defined (SINGLEPLAYER)
 	g_pBehaviorEngine->mPlayers = 1;
 	CGUIButton *button = new CGUIButton( "New Game",
 										new OpenMenuEvent(new CDifficultySelection) );
