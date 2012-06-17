@@ -373,7 +373,7 @@ bool CEGAGraphicsGalaxy::begin()
 	assert(m_episode >= 4);
 	int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc
 
-	unsigned char *p_data = m_Exefile.getHeaderData();
+	byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
 
 	//if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
 	if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))

@@ -346,7 +346,7 @@ bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imgl
 byte* CExeFile::getRawData() const
 {	return m_rawdata;	}
 
-byte* CExeFile::getHeaderData() const
+void* CExeFile::getHeaderData() const
 {	return m_headerdata;	}
 
 byte* CExeFile::getDSegPtr() const

@@ -96,18 +96,16 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 {
 	int version;
 	unsigned char *p_exedata;
-	unsigned char *p_exeheader;
 
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 
     version = ExeFile.getEXEVersion();
 	p_exedata = ExeFile.getRawData();
-	p_exeheader = ExeFile.getHeaderData();
 
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
 	if( Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
 
-	if(p_exeheader == NULL)
+	if( ExeFile.getHeaderData() == NULL)
 	{
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
 		return false;

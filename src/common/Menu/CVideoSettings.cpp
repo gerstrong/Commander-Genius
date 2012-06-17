@@ -146,7 +146,7 @@ void CVideoSettings::release()
 	std::string scalerStr = mpScalerSelection->getSelection();
 
 	const std::string res = mpResolutionSelection->getSelection();
-	sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h )
+	sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
 
 	if( scalerStr != "none" )
 		mUserVidConf.m_ScaleXFilter = scalerStr.at(0)-'0';

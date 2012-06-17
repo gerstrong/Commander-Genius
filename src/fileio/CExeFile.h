@@ -42,7 +42,7 @@ public:
 	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
 	
 	byte* getRawData() const;
-	byte* getHeaderData() const;
+	void* getHeaderData() const;
 	byte* getDSegPtr() const;
 
 	~CExeFile();
@@ -72,7 +72,7 @@ private:
 	int m_episode;
 	unsigned int m_crc;
 	byte *m_data;
-	byte *m_headerdata;
+	void *m_headerdata;
 	byte *m_rawdata;
 	byte *m_data_segment;
 	std::string m_datadirectory;
