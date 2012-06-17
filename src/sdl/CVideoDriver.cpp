@@ -91,7 +91,7 @@ void CVideoDriver::initResolutionList()
 #endif
 
 	// Now on non-handheld devices let's check for more resolutions.
-#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR) && !defined(ANDROID)
+#if !defined(EMBEDDED)
 	for( unsigned int c=0 ; c<NUM_MAIN_RESOLUTIONS ; c++ )
 	{
 		// Depth won't be read anymore! Take the one the system is using actually
@@ -200,7 +200,7 @@ bool CVideoDriver::applyMode()
 	while(((Res.w/GameRect.w) < m_VidConfig.Zoom || (Res.h/GameRect.h) < m_VidConfig.Zoom) && (m_VidConfig.Zoom > 1))
 		m_VidConfig.Zoom--;
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(ANDROID)
+#if defined(EMBEDDED)
 	// Force the default settings on iPhone.
 	// There is no reason yet to play with it, most likely other settings will
 	// either not work, will crash or will just be totally screwed up.

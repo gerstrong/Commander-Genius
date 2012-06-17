@@ -40,9 +40,6 @@ void CVidConfig::reset()
 #else
 	m_DisplayRect.w=320;
 	m_DisplayRect.h=200;
-#if defined(ANDROID)
-	//m_Resolution.=16;
-#endif
 	Fullscreen=false;
 #endif
 	m_ScaleXFilter=1;
