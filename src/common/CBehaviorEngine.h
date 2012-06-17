@@ -19,6 +19,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "hardware/Configurator.h"
 #include "fileio/CExeFile.h"
 #include "CTileProperties.h"
 #include "CPhysicsSettings.h"
@@ -28,7 +29,11 @@
 
 #include "CSingleton.h"
 
-#define MAX_PLAYERS            4
+#if defined (SINGLEPLAYER)
+const unsigned int MAX_PLAYERS = 1;
+#else
+const unsigned int MAX_PLAYERS = 4;
+#endif
 
 #define g_pBehaviorEngine CBehaviorEngine::Get()
 

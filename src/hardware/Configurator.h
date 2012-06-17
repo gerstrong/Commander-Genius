@@ -12,6 +12,7 @@
 #ifndef CONFIGURATOR_H_
 #define CONFIGURATOR_H_
 
+#define EMBEDDED
 
 #if defined(ANDROID)
 	#define EMBEDDED

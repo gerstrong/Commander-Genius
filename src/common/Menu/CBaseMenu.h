@@ -56,7 +56,6 @@ protected:
 	SmartPointer<CGUIDialog> mpMenuDialog;
 	CGUIButton *mpReturnButton;
 	std::list< SmartPointer<CEvent> > mEventList;
-
 };
 
 #endif /* CBASEMENU_H_ */

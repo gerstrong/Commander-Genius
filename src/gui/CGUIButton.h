@@ -48,6 +48,9 @@ public:
 	std::string getText()
 	{	return mText;	}
 
+	void setAutoActivation()
+	{	mAutoActivation = true;	}
+
 private:
 
 	void setupButtonSurface();
@@ -60,6 +63,9 @@ private:
 	std::map< Style, EngineType > mMapping;
 
 	void (CGUIButton::*drawButton)(SDL_Rect&);
+
+	// Auto activation means that as soon it's enabled and process the event will be triggered immediately
+	bool mAutoActivation;
 };
 
 #endif /* CGUIBUTTON_H_ */

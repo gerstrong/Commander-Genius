@@ -21,8 +21,17 @@
 
 void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 {
+
+#if defined (EMBEDDED)
+	g_pBehaviorEngine->mPlayers = 1;
+	CGUIButton *button = new CGUIButton( "New Game",
+										new OpenMenuEvent(new CDifficultySelection) );
+#else
 	CGUIButton *button = new CGUIButton( "New Game",
 									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
+
+#endif
+
 	mpMenuDialog->addControl( button );
 
 
@@ -62,8 +71,10 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 
 void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 {
+	g_pBehaviorEngine->mPlayers = 1;
+
 	CGUIButton *button = new CGUIButton( "New Game",
-									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
+										new OpenMenuEvent(new CDifficultySelection) );
 	mpMenuDialog->addControl( button );
 
 

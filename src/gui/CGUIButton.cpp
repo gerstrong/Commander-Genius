@@ -21,7 +21,8 @@ CGUIButton::CGUIButton(	const std::string& text,
 						const Style style ) :
 mText(text),
 mEvent(ev),
-drawButton(&CGUIButton::drawNoStyle)
+drawButton(&CGUIButton::drawNoStyle),
+mAutoActivation(false)
 {
 	mMapping[UNSET] 	= g_pBehaviorEngine->getEngine();
 	mMapping[NONE] 		= ENGINE_LAUNCHER;
@@ -84,6 +85,11 @@ void CGUIButton::sendEvent(const InputCommands command)
 
 void CGUIButton::processLogic()
 {
+	if(mAutoActivation)
+	{
+		g_pBehaviorEngine->m_EventList.add(mEvent);
+	}
+
 
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
@@ -102,6 +108,7 @@ void CGUIButton::processLogic()
 				g_pInput->m_EventList.pop_Event();
 				return;
 			}
+
 
 			if(!mEnabled)
 				return;

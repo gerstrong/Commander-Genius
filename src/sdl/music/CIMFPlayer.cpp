@@ -175,14 +175,10 @@ bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
 
 	if( audio_start < audio_end )
 	{
-/*#if defined(ANDROID)
-		assert( AudioCompFileData + audio_start % 4 == 0 ); // Make sure the pointer is aligned, or we'll get segfault on Android
-#endif*/
 		const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
-		//const uint32_t *AudioCompFileData32 = (uint32_t*) (void*) (AudioCompFileData + audio_start);
-		const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(AudioCompFileData + audio_start);
-		const uint32_t emb_file_data_size = *AudioCompFileData32;
 
+		uint32_t emb_file_data_size;
+		memcpy( &emb_file_data_size, AudioCompFileData + audio_start, sizeof(uint32_t) );
 
 		byte imf_data[emb_file_data_size];
 		byte *imf_data_ptr = imf_data;
