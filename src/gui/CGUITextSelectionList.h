@@ -32,6 +32,7 @@ public:
 
 	int mHoverSelection;
 	int mSelection;
+	int mTextWidthLimit;
 
 	SmartPointer<CEvent> mConfirmEvent;
 };

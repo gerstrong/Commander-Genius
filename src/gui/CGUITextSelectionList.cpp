@@ -105,7 +105,9 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
 	const int xpos = lRect.x+16+1;
 	const int ypos = lRect.y+10;
+	unsigned int textlimitWidth = (lRect.w-16)/8;
 	lRect.h = 10;
+	std::string trimmedText;
 	std::list<std::string> :: iterator it = mItemList.begin();
 	for ( int line = 0; it != mItemList.end() ; it++, line++ )
 	{
@@ -114,7 +116,12 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 			lRect.y = ypos+(line*10)-1;
 			SDL_FillRect(Blitsurface, &lRect, 0xFFC5C5F1);
 		}
-		Font.drawFont(Blitsurface, *it, xpos, ypos+(line*10), false);
+
+		trimmedText = *it;
+		if(trimmedText.size() > textlimitWidth)
+			trimmedText = trimmedText.substr(0, textlimitWidth);
+
+		Font.drawFont(Blitsurface, trimmedText, xpos, ypos+(line*10), false);
 	}
 
 }
