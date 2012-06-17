@@ -308,10 +308,6 @@ void CGUIDialog::initGalaxyBackround(SDL_Rect Rect)
 
 	SDL_FillRect(backSfc, &scoreRect, color);
 
-	scoreRect.y = 143;
-
-	SDL_FillRect(backSfc, &scoreRect, color);
-
 }
 
 

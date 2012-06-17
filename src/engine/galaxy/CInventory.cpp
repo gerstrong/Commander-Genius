@@ -9,6 +9,7 @@
 #include "common/CBehaviorEngine.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/input/CInput.h"
 #include "graphics/effects/CScrollEffect.h"
 #include "CStatusScreenGalaxyEp4.h"
 //#include "CStatusScreenGalaxyEp5.h"
@@ -42,9 +43,6 @@ void CInventory::toggleStatusScreen()
 {
 	mp_StatusScreen->m_showstatus = !mp_StatusScreen->m_showstatus;
 
-	int scroll_pos;
-
-
 	if(mp_StatusScreen->m_showstatus)
 	{
 		int scroll_pos = 0;
@@ -63,7 +61,7 @@ void CInventory::toggleStatusScreen()
 	else
 	{
 		// Check if it's already scrolling and get the position
-		scroll_pos = 160;
+		int scroll_pos = 160;
 
 		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
 
@@ -75,6 +73,8 @@ void CInventory::toggleStatusScreen()
 			SDL_FreeSurface(mp_StatusBgrnd);
 		mp_StatusBgrnd = NULL;
 	}
+
+	g_pInput->flushAll();
 }
 
 
