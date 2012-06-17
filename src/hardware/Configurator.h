@@ -12,8 +12,6 @@
 #ifndef CONFIGURATOR_H_
 #define CONFIGURATOR_H_
 
-#define ANDROID
-
 #if defined(ANDROID)
 	#define EMBEDDED
 	#undef USE_OPENGL
