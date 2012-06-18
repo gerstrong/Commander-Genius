@@ -125,8 +125,18 @@ void CCouncilMember::getTouchedBy(CObject &theObject)
 
 		std::string elder_text[2];
 
-		elder_text[0] = g_pBehaviorEngine->getString("ELDERS_TEXT");
-		elder_text[1] = g_pBehaviorEngine->getString(answermap[rescuedelders]);
+		if(Player.m_Inventory.Item.m_special.ep4.swimsuit) // Under water the text is a bit different
+		{
+			elder_text[0] = g_pBehaviorEngine->getString("ELDERS_UNDERWATER_TEXT");
+			elder_text[1] = "";
+		}
+		else
+		{
+			elder_text[0] = g_pBehaviorEngine->getString("ELDERS_TEXT");
+			elder_text[1] = g_pBehaviorEngine->getString(answermap[rescuedelders]);
+		}
+
+
 
 		EventContainer.add( new EventSendBitmapDialogMsg(104, elder_text[0], LEFT) );
 		EventContainer.add( new EventSendBitmapDialogMsg(106, elder_text[1], RIGHT) );
