@@ -13,8 +13,6 @@
 #include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
 
-#define SAFE_DELETE(x) { if(x) SDL_FreeSurface(x); x = NULL; }
-
 CSprite::CSprite() :
 m_alpha(255)
 {

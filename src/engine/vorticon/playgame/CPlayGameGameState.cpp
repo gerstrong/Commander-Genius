@@ -159,7 +159,7 @@ bool CPlayGameVorticon::loadGameState()
 		g_pGfxEngine->setupEffect(pColorMergeFX);
 
 
-		mp_ObjectAI = new CSpriteObjectAI(mMap.get(), m_Object, m_Player,
+		mpObjectAI = new CSpriteObjectAI(mMap.get(), m_Object, m_Player,
 									m_NumPlayers, m_Episode, m_Level,
 									mMap->m_Dark);
 		setupPlayers();

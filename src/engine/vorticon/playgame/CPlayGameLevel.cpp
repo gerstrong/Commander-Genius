@@ -83,7 +83,7 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 		mMap->m_Dark = false;
 		g_pMusicPlayer->stop();
 		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
-		mpFinale = new CTantalusRay(mMessageBoxes, mMap, m_Object, *mp_ObjectAI);
+		mpFinale = new CTantalusRay(mMessageBoxes, mMap, m_Object, *(mpObjectAI.get()) );
 		m_Player[0].dontdraw = true;
 		m_gameover = true;
 	}

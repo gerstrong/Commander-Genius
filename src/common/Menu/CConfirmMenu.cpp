@@ -7,8 +7,6 @@
 
 #include "CConfirmMenu.h"
 
-#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
-
 /*CConfirmMenu::CConfirmMenu(const std::string &question, bool &to_be_confirmed, Uint8 dlg_theme) :
 CBaseMenu(dlg_theme),
 m_question(question),
@@ -39,9 +37,4 @@ void CConfirmMenu::processSpecific()
 		m_to_be_confirmed = (m_selection == 1) ? true : false;
 		m_mustclose = true;
 	}*/
-/*}
-
-CConfirmMenu::~CConfirmMenu()
-{
-	//SAFE_DELETE(mp_Dialog);
-}*/
+/*}*/

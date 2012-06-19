@@ -106,7 +106,7 @@ private:
 
 	SmartPointer<CMap> mMap;
 	std::vector<CPlayer> m_Player;
-	CSpriteObjectAI *mp_ObjectAI;
+	SmartPointer<CSpriteObjectAI> mpObjectAI;
 	SmartPointer<CFinale> mpFinale;
 	SmartPointer<CEGABitmap> mpGameoverBmp;
 	std::list< SmartPointer<CMessageBoxVort> > mMessageBoxes;

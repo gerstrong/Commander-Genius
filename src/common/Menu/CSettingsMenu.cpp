@@ -19,8 +19,6 @@
 #include "core/CGameControl.h"
 
 
-#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
-
 CSettingsMenu::CSettingsMenu() :
 CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 {

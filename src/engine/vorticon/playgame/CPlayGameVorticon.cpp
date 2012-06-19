@@ -24,8 +24,7 @@
 ////
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  char numplayers, CSaveGameController &SavedGame) :
-CPlayGame(ExeFile, level, numplayers),
-mp_ObjectAI(NULL)
+CPlayGame(ExeFile, level, numplayers)
 {
 	mMap = new CMap();
 	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
@@ -130,7 +129,7 @@ bool CPlayGameVorticon::init()
 	g_pInput->flushAll();
 
 	// Initialize the AI
-	mp_ObjectAI = new CSpriteObjectAI(mMap.get(), m_Object, m_Player,
+	mpObjectAI = new CSpriteObjectAI(mMap.get(), m_Object, m_Player,
 								m_NumPlayers, m_Episode, m_Level,
 								mMap->m_Dark);
 
@@ -188,7 +187,7 @@ void CPlayGameVorticon::process()
 		if(mMessageBoxes.empty() && !StatusScreenOpen())
 		{
 			// Perform AIs
-			mp_ObjectAI->process();
+			mpObjectAI->process();
 
 
 			if( !g_pBehaviorEngine->paused() )
@@ -620,7 +619,6 @@ void CPlayGameVorticon::drawAllElements()
 ////
 void CPlayGameVorticon::cleanup()
 {
-	SAFE_DELETE(mp_ObjectAI);
 	std::vector<CSpriteObject*>::iterator obj = m_Object.begin();
 	for( ; obj != m_Object.end() ; obj++ )
 		delete (*obj);
@@ -630,5 +628,4 @@ void CPlayGameVorticon::cleanup()
 CPlayGameVorticon::~CPlayGameVorticon()
 {
 	m_Player.clear();
-	SAFE_DELETE(mp_ObjectAI);
 }
