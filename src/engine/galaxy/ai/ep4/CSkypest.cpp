@@ -17,7 +17,7 @@ namespace galaxy {
 const int FLY_SPEED = 50;
 
 CSkypest::CSkypest(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE)
+CSpriteObject(pmap, x, y, OBJ_NONE)
 {
 	setupGalaxyObjectOnMap(0x2486, A_SKYPEST_FLY);
 	mp_processState = &CSkypest::processFly;
@@ -25,7 +25,7 @@ CObject(pmap, x, y, OBJ_NONE)
 	m_vDir = UP;
 }
 
-bool CSkypest::isNearby(CObject &theObject)
+bool CSkypest::isNearby(CSpriteObject &theObject)
 {
 	if(getActionStatus(A_SKYPEST_LICKEYES))
 	{
@@ -42,7 +42,7 @@ bool CSkypest::isNearby(CObject &theObject)
 	return true;
 }
 
-void CSkypest::getTouchedBy(CObject &theObject)
+void CSkypest::getTouchedBy(CSpriteObject &theObject)
 {
 	if(dead || theObject.dead)
 		return;

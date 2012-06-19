@@ -18,7 +18,7 @@ const Uint16 SPEED = 64;
 
 CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 			const VectorD2<Uint32> &Destination) :
-CObject(pmap, Location.x, Location.y, OBJ_NONE),
+CSpriteObject(pmap, Location.x, Location.y, OBJ_NONE),
 m_location(Location),
 m_destination(Destination),
 m_baseframe(FLYING_BASEFRAME),
@@ -32,7 +32,7 @@ processState(&CFlag::processFlying)
 	m_destination.x += (6<<STC);
 	CSprite &Sprite = g_pGfxEngine->getSprite(WAVING_BASEFRAME);
 	sprite = WAVING_BASEFRAME;
-	calcBouncingBoxes();
+	calcBoundingBoxes();
 	m_destination.y -= Sprite.m_bboxY2;
 	m_destination.y += (1<<STC);
 }

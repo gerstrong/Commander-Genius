@@ -340,7 +340,7 @@ void CPlayer::TogglePogo_and_Switches()
 					if(mp_Map->m_PlatExtending)
 					{
 						// Find the object responsible for extending
-						std::vector<CObject*>::iterator obj = mp_object->begin();
+						std::vector<CSpriteObject*>::iterator obj = mp_object->begin();
 						for( ; obj != mp_object->end() ; obj++ )
 						{
 							if((*obj)->m_type == OBJ_BRIDGE && (*obj)->exists &&
@@ -844,7 +844,7 @@ const int bumpamount = 160;
 // yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
 // if solid = true, object acts like a solid "wall".
-void CPlayer::bump( CObject &theObject, direction_t direction )
+void CPlayer::bump( CSpriteObject &theObject, direction_t direction )
 {
 	if(	pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
 		return;
@@ -860,7 +860,7 @@ void CPlayer::bump( CObject &theObject, direction_t direction )
 }
 
 // Scrub, etc "push".
-void CPlayer::push( CObject &theObject )
+void CPlayer::push( CSpriteObject &theObject )
 {
 	if(	dead || level_done!=LEVEL_NOT_DONE )
 		return;

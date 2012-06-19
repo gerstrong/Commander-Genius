@@ -25,7 +25,7 @@ const int CSF_MIN_DISTANCE_X_TO_LOOK = 10<<CSF;
 const int CSF_MIN_DISTANCE_Y_TO_LOOK = 1<<CSF;
 
 CDevilSprite::CDevilSprite(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x37A0, A_SPRITE_MOVE);
@@ -34,7 +34,7 @@ m_timer(0)
 	m_vDir = UP;
 }
 
-void CDevilSprite::getTouchedBy(CObject &theObject)
+void CDevilSprite::getTouchedBy(CSpriteObject &theObject)
 {
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{
@@ -42,7 +42,7 @@ void CDevilSprite::getTouchedBy(CObject &theObject)
 	}
 }
 
-bool CDevilSprite::isNearby(CObject &theObject)
+bool CDevilSprite::isNearby(CSpriteObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{

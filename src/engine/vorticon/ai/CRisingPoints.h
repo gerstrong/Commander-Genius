@@ -8,9 +8,9 @@
 #ifndef CRISINGPOINTS_H_
 #define CRISINGPOINTS_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
-class CRisingPoints : public CObject
+class CRisingPoints : public CSpriteObject
 {
 public:
 	CRisingPoints(CMap *p_map, Uint32 x, Uint32 y);

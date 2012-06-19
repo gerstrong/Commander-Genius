@@ -1,20 +1,20 @@
 /*
- * CObjectCollision.cpp
+ * CSpriteObjectCollision.cpp
  *
  *  Created on: 01.11.2010
  *      Author: gerstrong
  *
- *  This is the second cpp file for the CObject Class
+ *  This is the second cpp file for the CSpriteObject Class
  *  It is only meant to be used for collisions
  */
 
-#include "CObject.h"
+#include "CSpriteObject.h"
 #include "engine/spritedefines.h"
 
 /*
  * \brief Performs collision without bouncing box recalculation
  */
-void CObject::performCollisionsSameBox()
+void CSpriteObject::performCollisionsSameBox()
 {
 	const unsigned int abs_x1 = m_Pos.x+m_BBox.x1;
 	const unsigned int abs_x2 = m_Pos.x+m_BBox.x2;
@@ -33,7 +33,7 @@ void CObject::performCollisionsSameBox()
 /*
  * \brief Calculate Bouncing Boxes
  */
-void CObject::calcBouncingBoxes()
+void CSpriteObject::calcBoundingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
@@ -103,20 +103,20 @@ void getSlopePointsUpperTile(char slope, int &yb1, int &yb2)
  * \brief This checks the collision. Very simple pixel based algorithm
  * 		  The collision is per pixel-based
  */
-void CObject::performCollisions()
+void CSpriteObject::performCollisions()
 {
 	blockedr = blockedl = false;
 	blockedu = blockedd = false;
 
 	if ( sprite != BLANKSPRITE )
 	{
-		calcBouncingBoxes();
+		calcBoundingBoxes();
 		performCollisionsSameBox();
 	}
 }
 
 // Basic slope move independent of the left or right move
-void CObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
+void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
 {
 	// process the sloped tiles here. Galaxy only or special patch!!
 	if(g_pBehaviorEngine->getEpisode() > 3)
@@ -126,7 +126,7 @@ void CObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
 	}
 }
 
-bool CObject::moveSlopedTileDown( int x, int y, const int xspeed )
+bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
 {
 	if(yinertia!=0)
 		return false;
@@ -167,7 +167,7 @@ bool CObject::moveSlopedTileDown( int x, int y, const int xspeed )
 	return onslope;
 }
 
-void CObject::moveSlopedTileUp( int x, int y, const int xspeed )
+void CSpriteObject::moveSlopedTileUp( int x, int y, const int xspeed )
 {
 	if(yinertia!=0)
 		return;
@@ -206,7 +206,7 @@ void CObject::moveSlopedTileUp( int x, int y, const int xspeed )
 }
 
 // returns nonzero if object1 overlaps object2
-bool CObject::hitdetect(CObject &hitobject)
+bool CSpriteObject::hitdetect(CSpriteObject &hitobject)
 {
 	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
@@ -239,7 +239,7 @@ bool CObject::hitdetect(CObject &hitobject)
  * \param from x
  * \return true if detection worked with that tile having the property, else false
  */
-bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res)
+bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res)
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 
@@ -265,7 +265,7 @@ bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int 
  * \param Property The Tile Property we are looking
  * \return true if detection worked with that tile having the property, else false
  */
-bool CObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
+bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	const signed char behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
@@ -277,7 +277,7 @@ bool CObject::hitdetectWithTileProperty(const int Property, const int x, const i
 
 const int COLISION_RES = (1<<STC);
 
-int CObject::checkSolidR( int x1, int x2, int y1, int y2)
+int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	int blocker;
@@ -327,7 +327,7 @@ int CObject::checkSolidR( int x1, int x2, int y1, int y2)
 	return 0;
 }
 
-int CObject::checkSolidL( int x1, int x2, int y1, int y2)
+int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	int blocker;
@@ -373,7 +373,7 @@ int CObject::checkSolidL( int x1, int x2, int y1, int y2)
 	return 0;
 }
 
-int CObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
+int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
@@ -436,7 +436,7 @@ int CObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 	return 0;
 }
 
-int CObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
+int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
@@ -530,7 +530,7 @@ int CObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	4	Bottom -> top		5	Middle -> bottom
 	6	Top -> middle		7	Top -> bottom
  */
-bool CObject::checkslopedU( int c, int y1, char blocked)
+bool CSpriteObject::checkslopedU( int c, int y1, char blocked)
 {
 	int yb1, yb2;
 
@@ -549,7 +549,7 @@ bool CObject::checkslopedU( int c, int y1, char blocked)
 6	Bottom -> middle	7	Bottom -> top
 8	Unused				9	Deadly, can't land on in God mode
  */
-bool CObject::checkslopedD( int c, int y2, char blocked )
+bool CSpriteObject::checkslopedD( int c, int y2, char blocked )
 {
 	int yb1, yb2;
 
@@ -563,7 +563,7 @@ bool CObject::checkslopedD( int c, int y2, char blocked )
 
 const int MOVE_RES = 1;
 
-void CObject::processMoveBitLeft()
+void CSpriteObject::processMoveBitLeft()
 {
 	/// Now check the neighboring tile to the left
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
@@ -580,7 +580,7 @@ void CObject::processMoveBitLeft()
 	adjustSlopedTiles(x1-(1<<STC), y1, y2, -MOVE_RES);
 }
 
-void CObject::processMoveBitRight()
+void CSpriteObject::processMoveBitRight()
 {
 	/// Now check the neighboring tile to the right
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
@@ -597,7 +597,7 @@ void CObject::processMoveBitRight()
 	adjustSlopedTiles(x2+(1<<STC), y1, y2, MOVE_RES);
 }
 
-void CObject::processMoveBitUp()
+void CSpriteObject::processMoveBitUp()
 {
 	/// Now check the neighboring tile to the up
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
@@ -612,7 +612,7 @@ void CObject::processMoveBitUp()
 	m_Pos.y-=MOVE_RES;
 }
 
-void CObject::processMoveBitDown()
+void CSpriteObject::processMoveBitDown()
 {
 	/// Now check the neighboring tile to the down
 	const unsigned int x1 = getXPosition()+m_BBox.x1;
@@ -628,7 +628,7 @@ void CObject::processMoveBitDown()
 }
 
 
-void CObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
+void CSpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 									 const size_t ActionNumber )
 {
 	m_ActionBaseOffset = ActionBaseOffset;
@@ -647,12 +647,12 @@ void CObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 	processActionRoutine();
 }
 
-void CObject::processMove(const VectorD2<int>& dir)
+void CSpriteObject::processMove(const VectorD2<int>& dir)
 {
 	processMove(dir.x, dir.y);
 }
 
-void CObject::processMove(const int xoff, const int yoff)
+void CSpriteObject::processMove(const int xoff, const int yoff)
 {
 	// Let's check if we have to move left or right
 	if(xoff>0)
@@ -683,7 +683,7 @@ void CObject::processMove(const int xoff, const int yoff)
 	}
 }
 
-void CObject::processPushOutCollision()
+void CSpriteObject::processPushOutCollision()
 {
 	// If he isn't solid don't even care
 	if(!solid)
@@ -764,7 +764,7 @@ void CObject::processPushOutCollision()
 	}
 }
 
-void CObject::processEvents()
+void CSpriteObject::processEvents()
 {
 	while(!m_EventCont.empty())
 	{

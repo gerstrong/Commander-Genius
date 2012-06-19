@@ -51,7 +51,7 @@
 namespace galaxy
 {
 
-CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr,
+CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CSpriteObject*>& ObjectPtr,
 		CInventory &Inventory, stCheat &Cheatmode):
 m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
@@ -366,7 +366,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	x <<= CSF;
 	y <<= CSF;
 
-	CObject *p_newfoe = NULL;
+	CSpriteObject *p_newfoe = NULL;
 	VectorD2<Uint32> Location(x,y);
 
 	// Point Item Sprites (Candies, etc...)

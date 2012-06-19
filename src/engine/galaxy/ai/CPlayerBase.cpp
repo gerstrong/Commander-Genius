@@ -16,11 +16,11 @@ CPlayerBase::CPlayerBase(
 		CMap *pmap,
 		Uint32 x,
 		Uint32 y,
-		std::vector<CObject*>& ObjectPtrs,
+		std::vector<CSpriteObject*>& ObjectPtrs,
 		direction_t facedir,
 		CInventory &l_Inventory,
 		stCheat &Cheatmode) :
-CObject(pmap, x, y, OBJ_PLAYER),
+CSpriteObject(pmap, x, y, OBJ_PLAYER),
 m_Inventory(l_Inventory),
 m_camera(pmap,x,y,this),
 m_ObjectPtrs(ObjectPtrs),

@@ -46,7 +46,7 @@ const unsigned int VORTELITE_WALK_ANIM_TIME = 6;
 const int PLAYER_DISTANCE = (6<<CSF); // distance the player should stay away, so Vortelite won't run.
 
 CVorticonElite::CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-		std::vector<CObject*> &mp_vec_Obj,
+		std::vector<CSpriteObject*> &mp_vec_Obj,
 		Uint32 x, Uint32 y ) :
 CVorticon(p_map,mp_vec_Player, x, y, 4, OBJ_VORTELITE),
 m_Object(mp_vec_Obj)
@@ -63,14 +63,14 @@ m_Object(mp_vec_Obj)
 	m_speed = 0;
 
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
-		HealthPoints++;
+		mHealthPoints++;
 	else if(g_pBehaviorEngine->mDifficulty < NORMAL)
-		HealthPoints--;
+		mHealthPoints--;
 }
 
 void CVorticonElite::process()
 {
-	if (HealthPoints <= 0 && state != VORTELITE_DYING)
+	if (mHealthPoints <= 0 && state != VORTELITE_DYING)
 	{
 		animtimer = 0;
 		frame = 0;
@@ -294,11 +294,11 @@ void CVorticonElite::initiatejump()
 
 void CVorticonElite::getShotByRay(object_t &obj_type)
 {
-	if( !m_invincible && HealthPoints>0 && obj_type != OBJ_GUARDROBOT)
+	if( !m_invincible && mHealthPoints>0 && obj_type != OBJ_GUARDROBOT)
 	{
-		if(HealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+		if(mHealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
 			blink(10);
-		HealthPoints--;
+		mHealthPoints--;
 	}
 }
 

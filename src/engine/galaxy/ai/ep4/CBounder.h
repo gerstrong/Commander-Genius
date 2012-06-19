@@ -18,7 +18,7 @@ class CBounder : public CStunnable, public CPlatform
 public:
 	CBounder(CMap *pmap, Uint32 x, Uint32 y);
 
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 	void processBounce();
 
 	void movePlayerUp(const int amnt);

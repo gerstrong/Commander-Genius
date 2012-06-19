@@ -32,7 +32,7 @@ CRay(p_map, x, y, dir, byType, byID)
 void CFireBall::process()
 {
 	// check if it was shot
-	if (HealthPoints <= 0 && state == RAY_STATE_FLY)
+	if (mHealthPoints <= 0 && state == RAY_STATE_FLY)
 	{
 		if (onscreen)
 			playSound(SOUND_SHOT_HIT);

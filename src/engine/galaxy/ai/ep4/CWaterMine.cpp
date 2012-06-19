@@ -16,7 +16,7 @@ namespace galaxy {
 const int MINE_SPEED = 10;
 
 CWaterMine::CWaterMine(CMap *pmap, Uint32 x, Uint32 y, const bool vertical) :
-CObject(pmap, x, y, OBJ_NONE)
+CSpriteObject(pmap, x, y, OBJ_NONE)
 {
 	m_vDir = m_hDir = NONE;
 
@@ -29,7 +29,7 @@ CObject(pmap, x, y, OBJ_NONE)
 	mp_processState = &CWaterMine::processMove;
 }
 
-void CWaterMine::getTouchedBy(CObject &theObject)
+void CWaterMine::getTouchedBy(CSpriteObject &theObject)
 {
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{

@@ -8,10 +8,10 @@
 #ifndef CSCRUB_H_
 #define CSCRUB_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 #include "../../../common/CPlayer.h"
 
-class CScrub : public CObject
+class CScrub : public CSpriteObject
 {
 public:
 	CScrub(CMap *p_map, Uint32 x, Uint32 y,

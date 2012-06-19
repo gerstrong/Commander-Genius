@@ -160,7 +160,7 @@ void CPlayer::selectFrameOnWorldMap()
 void CPlayer::MountNessieIfAvailable()
 {
 	// Look for the Nessie object
-	std::vector<CObject*>::iterator obj = mp_object->begin();
+	std::vector<CSpriteObject*>::iterator obj = mp_object->begin();
 	for(; obj != mp_object->end() ; obj++)
 	{
 		if((*obj)->m_type == OBJ_MESSIE)
@@ -206,7 +206,7 @@ void CPlayer::UnmountNessie()
 			if(mp_Map->getObjectat(x+dx, y+dy) == NESSIE_LAND)
 			{
 				// Look for the Nessie object
-				std::vector<CObject*>::iterator obj = mp_object->begin();
+				std::vector<CSpriteObject*>::iterator obj = mp_object->begin();
 				for(; obj != mp_object->end() ; obj++)
 				{
 					if((*obj)->m_type == OBJ_MESSIE)

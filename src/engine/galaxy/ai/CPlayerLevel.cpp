@@ -34,7 +34,7 @@ const int FIRE_RECHARGE_TIME = 5;
 
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
-						std::vector<CObject*>& ObjectPtrs, direction_t facedir,
+						std::vector<CSpriteObject*>& ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
 CPlayerBase(pmap, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
 m_jumpdownfromobject(false)
@@ -71,7 +71,7 @@ void CPlayerLevel::processMoveBitDown()
 		}
 	}
 
-	CObject::processMoveBitDown();
+	CSpriteObject::processMoveBitDown();
 }
 
 
@@ -148,7 +148,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 		{
 			setAction(A_KEEN_HANG);
 			setActionSprite();
-			calcBouncingBoxes();
+			calcBoundingBoxes();
 			Uint32 x = (((getXPosition()>>CSF))<<CSF)+(16<<STC);
 			Uint32 y = (((getYPosition()>>CSF))<<CSF)+(8<<STC);
 			moveTo(x,y);
@@ -167,7 +167,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 		{
 			setAction(A_KEEN_HANG);
 			setActionSprite();
-			calcBouncingBoxes();
+			calcBoundingBoxes();
 			Uint32 x = (((getXPosition()>>CSF)+1)<<CSF) + (2<<STC);
 			Uint32 y = (((getYPosition()>>CSF)+1)<<CSF) - (5<<STC);
 			moveTo(x,y);
@@ -216,7 +216,7 @@ void CPlayerLevel::processCliffHanging()
 		const int dx = 8<<STC;
 		moveXDir( (m_hDir == LEFT) ? dx : -dx, true);
 		setActionSprite();
-		calcBouncingBoxes();
+		calcBoundingBoxes();
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 	}
 }
@@ -246,7 +246,7 @@ void CPlayerLevel::processCliffClimbing()
 			setAction(A_KEEN_STAND);
 			m_camera.m_freeze = false;
 			setActionSprite();
-			calcBouncingBoxes();
+			calcBoundingBoxes();
 			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 		}
 	}
@@ -300,7 +300,7 @@ void CPlayerLevel::processPogo()
 		if(blockedu)
 			playSound( SOUND_KEEN_BUMPHEAD );
 
-		CObject::processFalling();
+		CSpriteObject::processFalling();
 		setAction(A_KEEN_POGO_HIGH);
 
 		m_jumpheight = 0;
@@ -1163,7 +1163,7 @@ void CPlayerLevel::processStanding()
 		m_pogotoggle = true;
 	}
 
-	CObject::processFalling();
+	CSpriteObject::processFalling();
 }
 
 
@@ -1329,7 +1329,7 @@ void CPlayerLevel::processRunning()
 // Falling code
 void CPlayerLevel::processFalling()
 {
-	CObject::processFalling();
+	CSpriteObject::processFalling();
 
 	// If keen is jumping down, not because he did from an object like a platform,
 	// but a tile where Keen can fall through, process this part of code and

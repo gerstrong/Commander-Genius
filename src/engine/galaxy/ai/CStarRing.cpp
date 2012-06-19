@@ -13,7 +13,7 @@ namespace galaxy
 const unsigned int STARRING_ANIMATION_TIME = 5;
 
 CStarRing::CStarRing(CMap *pmap, Uint32 x, Uint32 y, object_t type) :
-CObject(pmap, x, y, type),
+CSpriteObject(pmap, x, y, type),
 m_animation_timer(0)
 {
 	sprite = STARRING_SPRITE;

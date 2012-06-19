@@ -15,14 +15,11 @@
 #include "CLogFile.h"
 #include "fileio/ResourceMgmt.h"
 
-#define SAFE_DELETE_ARRAY(x) if(x) { delete[] x; x=NULL; }
-
 CExeFile::CExeFile() :
 m_datasize(0),
 m_headersize(0),
 m_episode(0),
 m_crc(0),
-m_data(NULL),
 m_headerdata(NULL),
 m_rawdata(NULL),
 m_datadirectory("")
@@ -100,7 +97,6 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	m_datasize = File.tellg();
 	File.seekg(0,std::ios::beg);
 
-	SAFE_DELETE_ARRAY(m_data);
 	unsigned char* m_data_temp = new unsigned char[m_datasize];
 	File.read((char*)m_data_temp, m_datasize);
 
@@ -112,20 +108,20 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	if(UnLZEXE.decompress(m_data_temp, decdata))
 	{
 		m_datasize = decdata.size();
-		m_data = new unsigned char[m_datasize];
+		mData.resize(m_datasize);
 		m_headersize = UnLZEXE.HeaderSize();
-		memcpy(m_data, &decdata[0], m_datasize);
+		memcpy(mData.data(), &decdata[0], m_datasize);
 	}
 	else
 	{
-		m_data = new unsigned char[m_datasize];
-		memcpy(m_data, m_data_temp,m_datasize);
+		mData.resize(m_datasize);
+		memcpy(mData.data(), m_data_temp,m_datasize);
 	}
 
-	m_headerdata = m_data;
+	m_headerdata = mData.data();
 	m_headersize = UnLZEXE.HeaderSize();
 	if(!m_headersize) m_headersize = 512;
-	m_rawdata = m_data + m_headersize;
+	m_rawdata = mData.data() + m_headersize;
 
 	const size_t offset_map[] = {
 			/*Dummy:*/ 0x0,
@@ -141,7 +137,7 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 
 	delete[] m_data_temp;
 
-	m_crc = getcrc32( m_data, m_datasize );
+	m_crc = getcrc32( mData.data(), m_datasize );
 
 	g_pLogFile->ftextOut( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
 
@@ -352,8 +348,4 @@ void* CExeFile::getHeaderData() const
 byte* CExeFile::getDSegPtr() const
 {	return m_data_segment; }
 
-CExeFile::~CExeFile()
-{
-	SAFE_DELETE_ARRAY(m_data);
-}
 

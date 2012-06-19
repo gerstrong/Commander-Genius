@@ -8,21 +8,21 @@
 #ifndef CMADMUSHROOM_H_
 #define CMADMUSHROOM_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy
 {
 
-class CMadMushroom : public CObject
+class CMadMushroom : public CSpriteObject
 {
 public:
 	CMadMushroom(CMap *pmap, Uint32 x, Uint32 y);
 
 	// Checks if some object is nearby. Here the mushroom turns to watch the player
-	bool isNearby(CObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 
 	// When something touches the bouncing mushroom
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 	// Happens every LPS. Here the Bouncing AI is handled
 	void process();

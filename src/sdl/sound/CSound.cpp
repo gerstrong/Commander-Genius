@@ -35,8 +35,6 @@ static const int availableRates[numAvailableRates]=
 };
 
 
-#define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL;
-
 // define a callback function we can work with
 inline static void CCallback(void *unused, Uint8 *stream, int len)
 {

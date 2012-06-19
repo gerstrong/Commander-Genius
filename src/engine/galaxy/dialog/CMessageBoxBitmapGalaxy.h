@@ -10,7 +10,7 @@
 
 #include "CMessageBoxGalaxy.h"
 #include "graphics/CGfxEngine.h"
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 class CMessageBoxBitmapGalaxy : public CMessageBoxGalaxy
 {

@@ -17,7 +17,7 @@
 #include "fileio/lz.h"
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/tga.h" 
 #include "CResourceLoader.h"
 #include "graphics/CGfxEngine.h"
@@ -137,7 +137,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(i);
 		Sprite.setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
-		Sprite.setBouncingBoxCoordinates( (EGASpriteModell[i].hitbox_l << STC),
+		Sprite.setBoundingBoxCoordinates( (EGASpriteModell[i].hitbox_l << STC),
 				(EGASpriteModell[i].hitbox_u << STC),
 				(EGASpriteModell[i].hitbox_r << STC),
 				(EGASpriteModell[i].hitbox_b << STC) );

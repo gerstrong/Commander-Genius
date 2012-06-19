@@ -19,7 +19,7 @@ class CEndingEp2 : public CFinale
 {
 public:
 	CEndingEp2(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-				const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CObject*> &Object);
+				const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CSpriteObject*> &Object);
 
 	void process();
 	void HeadsForEarth();

@@ -12,16 +12,16 @@ enum ropestates{
 ROPE_IDLE, ROPE_DROPSTONE
 };
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 
-class CRope : public CObject
+class CRope : public CSpriteObject
 {
 public:
 	CRope(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 	void getShotByRay(object_t &obj_type);
 	void rope_movestone();
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	ropestates state;

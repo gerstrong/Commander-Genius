@@ -23,12 +23,12 @@ CStunnable::CStunnable(	CMap *pmap,
 						Uint32 x,
 						Uint32 y,
 						object_t type ) :
-CObject( pmap, x, y, type )
+CSpriteObject( pmap, x, y, type )
 {
 	m_invincible = false;
 }
 
-void CStunnable::getTouchedBy(CObject &theObject)
+void CStunnable::getTouchedBy(CSpriteObject &theObject)
 {
 	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
 	{

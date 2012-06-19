@@ -23,7 +23,7 @@ const int LICK_HOP_X_SPEED = 50;
 const int LICK_BREATHE_TIMER = 100;
 
 CLick::CLick(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 CStunnable(pmap, x, y, OBJ_NONE),
 m_timer(0)
 {
@@ -40,7 +40,7 @@ void CLick::process()
 	processFalling();
 }
 
-void CLick::getTouchedBy(CObject &theObject)
+void CLick::getTouchedBy(CSpriteObject &theObject)
 {
 	if(dead || theObject.dead)
 		return;
@@ -66,7 +66,7 @@ void CLick::getTouchedBy(CObject &theObject)
 }
 
 
-bool CLick::isNearby(CObject &theObject)
+bool CLick::isNearby(CSpriteObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{

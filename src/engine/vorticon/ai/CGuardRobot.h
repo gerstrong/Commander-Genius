@@ -8,24 +8,24 @@
 #ifndef CGUARDROBOT_H_
 #define CGUARDROBOT_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/CPlayer.h"
 
 //reference to ../misc.cpp
 unsigned int rnd(void);
 
-class CGuardRobot : public CObject
+class CGuardRobot : public CSpriteObject
 {
 public:
 	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
-			 std::vector<CObject*>& Object);
+			 std::vector<CSpriteObject*>& Object);
 	void process();
 	void guard_fire();
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 
-	std::vector<CObject*>& m_ObjectVect;
+	std::vector<CSpriteObject*>& m_ObjectVect;
 
 	enum{ WALK, TURN, WAIT, WAIT_LOOK, FIRE, LOOK } state;
 

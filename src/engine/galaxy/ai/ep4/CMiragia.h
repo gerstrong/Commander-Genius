@@ -12,12 +12,12 @@
 #ifndef CMIRAGIA_H_
 #define CMIRAGIA_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "CVec.h"
 
 namespace galaxy {
 
-class CMiragia : public CObject {
+class CMiragia : public CSpriteObject {
 public:
 	CMiragia(CMap *pmap, const VectorD2<Uint32> &Location);
 
@@ -29,7 +29,7 @@ public:
 	/**
 	 * What happens when an object touches me...
 	 */
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	Uint8 m_step;

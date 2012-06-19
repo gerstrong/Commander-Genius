@@ -28,7 +28,7 @@ mpMap(pMap)
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
 	// before it was yorp
-	CObject *mark = new CObject(mpMap.get(), 0,0, OBJ_YORP);
+	CSpriteObject *mark = new CSpriteObject(mpMap.get(), 0,0, OBJ_YORP);
 	mark->m_type = OBJ_YORP;                // doesn't matter
 	mark->solid = false;                // doesn't matter
 	mark->sprite = SPR_QUESTION;

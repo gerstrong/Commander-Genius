@@ -8,22 +8,22 @@
 #ifndef CDOPEFISH_H_
 #define CDOPEFISH_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
-class CDopeFish : public CObject {
+class CDopeFish : public CSpriteObject {
 public:
 	CDopeFish(CMap *pmap, Uint32 x, Uint32 y);
 
 	// When Dopefish gets touched by something
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 	// Normal process-cycle
 	void process();
 
 	// Overloaded functions
-	bool isNearby(CObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 
 private:
 	// Basic movement of the Dopefish

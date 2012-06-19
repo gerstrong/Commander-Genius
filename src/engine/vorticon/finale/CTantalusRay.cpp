@@ -32,7 +32,7 @@ const int EARTHCHUNK_SMALL_UP = 68;
 const int EARTHCHUNK_SMALL_DN = 70;
 
 CTantalusRay::CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-								const SmartPointer<CMap> &pMap, std::vector<CObject*> &vect_obj, CObjectAI &objectai) :
+								const SmartPointer<CMap> &pMap, std::vector<CSpriteObject*> &vect_obj, CSpriteObjectAI &objectai) :
 CFinale(messageBoxes, pMap, vect_obj),
 m_mustsetup(true),
 m_alternate_sprite(0),
@@ -80,7 +80,7 @@ void CTantalusRay::shootray()
 
 		mpMap->drawAll();
 
-		CObject* ShootObject = new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, OBJ_NONE, 0);
+		CSpriteObject* ShootObject = new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, OBJ_NONE, 0);
 		ShootObject->solid = false;
 		ShootObject->exists = ShootObject->onscreen = true;
 		m_Object.push_back(ShootObject);

@@ -8,7 +8,7 @@
 #ifndef CITEMEFFECT_H_
 #define CITEMEFFECT_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 
 namespace galaxy {
@@ -33,7 +33,7 @@ enum item_effect_type
 	ANIMATE
 };
 
-class CItemEffect : public CObject {
+class CItemEffect : public CSpriteObject {
 public:
 	CItemEffect(CMap *pmap, Uint32 x, Uint32 y, Uint16 l_sprite, item_effect_type ieffect = FLOAT);
 	void process();

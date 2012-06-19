@@ -23,7 +23,7 @@ class CVorticonElite : public CVorticon
 {
 public:
 	CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-			std::vector<CObject*> &mp_vec_Obj,
+			std::vector<CSpriteObject*> &mp_vec_Obj,
 			Uint32 x, Uint32 y );
 	void process();
 	void initiatejump();
@@ -40,7 +40,7 @@ private:
 	int m_speed;
 
 	int dist_traveled;
-	std::vector<CObject*>& m_Object;
+	std::vector<CSpriteObject*>& m_Object;
 };
 
 #endif /* CVORTICONELITE_H_ */

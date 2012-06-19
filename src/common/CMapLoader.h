@@ -10,7 +10,7 @@
 
 #include "CMap.h"
 #include "CPlayer.h"
-#include "CObject.h"
+#include "CSpriteObject.h"
 #include "options.h"
 #include "sdl/music/CMusic.h"
 #include "common/CBehaviorEngine.h"
@@ -33,7 +33,7 @@ public:
 	
 	bool m_checkpointset;
 	bool m_NessieAlreadySpawned;
-	std::vector<CObject*> *mp_objvect;
+	std::vector<CSpriteObject*> *mp_objvect;
 
 private:
 	SmartPointer<CMap>& mpMap;

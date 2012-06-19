@@ -8,13 +8,13 @@
 #ifndef CSTUNNABLE_H_
 #define CSTUNNABLE_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "engine/galaxy/ai/CBullet.h"
 
 namespace galaxy
 {
 
-class CStunnable: public virtual CObject {
+class CStunnable: public virtual CSpriteObject {
 public:
 	CStunnable(	CMap *pmap,
 				Uint32 x,
@@ -24,7 +24,7 @@ public:
 	/**
 	 * What happens when some objects gets touched, or normally shot
 	 */
-	virtual void getTouchedBy(CObject &theObject);
+	virtual void getTouchedBy(CSpriteObject &theObject);
 
 	/**
 	 * This happens when the object gets shot.

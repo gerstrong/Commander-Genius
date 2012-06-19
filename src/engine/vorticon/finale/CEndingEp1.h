@@ -23,7 +23,7 @@ public:
 				const SmartPointer<CMap> &pMap,
 				std::vector<CPlayer> &Player,
 				bool &hideobjects,
-				std::vector<CObject*> &Object);
+				std::vector<CSpriteObject*> &Object);
 
 	void process();
 

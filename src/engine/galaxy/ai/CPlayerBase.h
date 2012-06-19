@@ -15,7 +15,7 @@
 #ifndef CPLAYERBASE_H_
 #define CPLAYERBASE_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/Playerdefines.h"
 #include "engine/CEvent.h"
 #include "common/Cheat.h"
@@ -29,7 +29,7 @@ namespace galaxy
 #define A_KEEN_DIE				29
 
 
-class CPlayerBase : public CObject {
+class CPlayerBase : public CSpriteObject {
 public:
 	/**
 	 * \description Basic Constructor. An Object always need the pointer to the Map of the level,
@@ -38,7 +38,7 @@ public:
 	CPlayerBase(CMap *pmap,
 				Uint32 x,
 				Uint32 y,
-				std::vector<CObject*>& ObjectPtrs,
+				std::vector<CSpriteObject*>& ObjectPtrs,
 				direction_t facedir,
 				CInventory &l_Inventory,
 				stCheat &Cheatmode);
@@ -87,7 +87,7 @@ public:
 
 protected:
 
-	std::vector<CObject*>& m_ObjectPtrs;
+	std::vector<CSpriteObject*>& m_ObjectPtrs;
 
 	Sint16 m_playcontrol[PA_MAX_ACTIONS];
 	int m_timer;

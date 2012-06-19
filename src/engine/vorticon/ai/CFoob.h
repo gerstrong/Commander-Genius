@@ -10,7 +10,7 @@
 #ifndef CFOOB_H_
 #define CFOOB_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/CPlayer.h"
 #include <vector>
 
@@ -35,12 +35,12 @@
 #define FOOB_EXPLODE_FRAME      97
 #define FOOB_DEAD_FRAME         101
 
-class CFoob : public CObject
+class CFoob : public CSpriteObject
 {
 public:
 	CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player);
 	void process();
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	enum FOOB_ACTIONS

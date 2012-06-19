@@ -24,7 +24,7 @@ mMap(map)
 
 bool CTitle::init(int Episode)
 {
-	CObject *pObject;
+	CSpriteObject *pObject;
 	SDL_Surface *pSurface;
 	CBitmap *pBitmap;
 	g_pTimer->ResetSecondsTimer();
@@ -70,7 +70,7 @@ void CTitle::process()
 	if( mTime == 0) mFinished = true;
 	else mTime -= g_pTimer->HasSecElapsed();
 
-	std::vector< SmartPointer<CObject> >::iterator obj = mObjects.begin();
+	std::vector< SmartPointer<CSpriteObject> >::iterator obj = mObjects.begin();
 	for( ; obj != mObjects.end() ; obj++ )
 	{
 		obj->get()->process();

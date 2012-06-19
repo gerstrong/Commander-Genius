@@ -16,14 +16,14 @@ const int MUSHROOM_LOW_INERTIA = 60;
 const int MUSHROOM_HIGH_INERTIA = 150;
 
 CMadMushroom::CMadMushroom(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 jumpcounter(0)
 {
 	setupGalaxyObjectOnMap(0x20E4, A_MUSHROOM_BOUNCE);
 }
 
 
-bool CMadMushroom::isNearby(CObject &theObject)
+bool CMadMushroom::isNearby(CSpriteObject &theObject)
 {
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
@@ -38,7 +38,7 @@ bool CMadMushroom::isNearby(CObject &theObject)
 
 
 
-void CMadMushroom::getTouchedBy(CObject &theObject)
+void CMadMushroom::getTouchedBy(CSpriteObject &theObject)
 {
 	if(theObject.dead)
 		return;

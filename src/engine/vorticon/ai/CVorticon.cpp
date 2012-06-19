@@ -1,4 +1,4 @@
-#include "CObjectAI.h"
+#include "CSpriteObjectAI.h"
 #include "misc.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
@@ -9,7 +9,7 @@
 // depending on levelcontrol.Episode).
 CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
 		Uint32 y, char hp, object_t objtype) :
-	CObject(p_map, x, y, objtype),
+	CSpriteObject(p_map, x, y, objtype),
 	m_Dark(mp_Map->m_Dark),
 	m_Player(m_vec_Player)
 {
@@ -18,13 +18,13 @@ CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
 	state = VORT_LOOK;
 	timer = 0;
 	dist_traveled = VORT_TRAPPED_DIST + 1;
-	HealthPoints = hp;
+	mHealthPoints = hp;
 	canbezapped = true;
 
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
-		HealthPoints++;
-	else if( g_pBehaviorEngine->mDifficulty < NORMAL && HealthPoints > 1 )
-		HealthPoints--;
+		mHealthPoints++;
+	else if( g_pBehaviorEngine->mDifficulty < NORMAL && mHealthPoints > 1 )
+		mHealthPoints--;
 
 	short Episode = g_pBehaviorEngine->getEpisode();
 	// copy in animation frame indexes for the current ep
@@ -58,7 +58,7 @@ void CVorticon::process() {
 	bool kill = false;
 	short Episode = g_pBehaviorEngine->getEpisode();
 
-	if (HealthPoints <= 0 && state != VORT_DYING && state != VORT2_DYING)
+	if (mHealthPoints <= 0 && state != VORT_DYING && state != VORT2_DYING)
 		kill = true;
 
 	if (kill) {
@@ -250,7 +250,7 @@ void CVorticon::initiateJump() {
 	state = VORT_JUMP;
 }
 
-void CVorticon::getTouchedBy(CObject &theObject) {
+void CVorticon::getTouchedBy(CSpriteObject &theObject) {
 	if (theObject.m_type == OBJ_PLAYER)
 	{
 		if (state != VORT_DYING and !dead and state != VORT2_DYING)

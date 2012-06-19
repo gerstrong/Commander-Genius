@@ -20,7 +20,7 @@ const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
 const int WALK_SPEED = 10;
 
 CMimrock::CMimrock(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 CStunnable(pmap, x, y, OBJ_NONE)
 {
 	setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
@@ -29,7 +29,7 @@ CStunnable(pmap, x, y, OBJ_NONE)
 }
 
 
-bool CMimrock::isNearby(CObject &theObject)
+bool CMimrock::isNearby(CSpriteObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{

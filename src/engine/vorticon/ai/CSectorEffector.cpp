@@ -1,5 +1,5 @@
 
-#include "CObjectAI.h"
+#include "CSpriteObjectAI.h"
 #include "CRay.h"
 #include "CSectorEffector.h"
 
@@ -68,8 +68,8 @@
 int mortimer_surprisedcount = 0;
 
 CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player, std::vector<CObject*>& Object, unsigned int se_type) :
-CObject(p_map, x, y, OBJ_SECTOREFFECTOR),
+		std::vector<CPlayer>& Player, std::vector<CSpriteObject*>& Object, unsigned int se_type) :
+CSpriteObject(p_map, x, y, OBJ_SECTOREFFECTOR),
 setype(se_type),
 timer(0),
 m_Player(Player),
@@ -138,7 +138,7 @@ void CSectorEffector::process()
 
 }
 
-void CSectorEffector::getTouchedBy(CObject &theObject)
+void CSectorEffector::getTouchedBy(CSpriteObject &theObject)
 {
 	bool it_is_mortimer_machine = false;
 
@@ -156,9 +156,9 @@ void CSectorEffector::getTouchedBy(CObject &theObject)
 	}
 
 	if( ( setype == SE_MORTIMER_SPARK || setype == SE_MORTIMER_HEART ) &&
-			HealthPoints>0 && theObject.m_type == OBJ_RAY )
+			mHealthPoints>0 && theObject.m_type == OBJ_RAY )
 	{
-		HealthPoints--;
+		mHealthPoints--;
 	}
 }
 
@@ -275,7 +275,7 @@ void CSectorEffector::se_mortimer_spark()
 		}
 		else timer++;
 
-		if (HealthPoints <= 0)
+		if (mHealthPoints <= 0)
 		{
 			set_mortimer_surprised(true);
 			g_pGfxEngine->setupEffect(new CVibrate(200));
@@ -283,7 +283,7 @@ void CSectorEffector::se_mortimer_spark()
 
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms
-			for(std::vector<CObject*>::iterator obj = m_Object.begin()
+			for(std::vector<CSpriteObject*>::iterator obj = m_Object.begin()
 					; obj != m_Object.end() ; obj++)
 			{
 				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
@@ -308,7 +308,7 @@ void CSectorEffector::se_mortimer_spark()
 			sprite = BLANKSPRITE;
 
 			// destroy the sector effectors controlling his arms
-			for(std::vector<CObject*>::iterator obj = m_Object.begin()
+			for(std::vector<CSpriteObject*>::iterator obj = m_Object.begin()
 					; obj != m_Object.end() ; obj++)
 			{
 				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
@@ -385,7 +385,7 @@ void CSectorEffector::se_mortimer_heart()
 		}
 		else timer++;
 
-		if (HealthPoints <= 0)
+		if (mHealthPoints <= 0)
 		{
 			sprite = BLANKSPRITE;
 			set_mortimer_surprised(true);
@@ -394,7 +394,7 @@ void CSectorEffector::se_mortimer_heart()
 			g_pGfxEngine->setupEffect(new CVibrate(10000));
 
 			// kill all enemies
-			for(std::vector<CObject*>::iterator obj = m_Object.begin()
+			for(std::vector<CSpriteObject*>::iterator obj = m_Object.begin()
 					; obj != m_Object.end() ; obj++)
 			{
 				if((*obj)->m_type==OBJ_SECTOREFFECTOR)

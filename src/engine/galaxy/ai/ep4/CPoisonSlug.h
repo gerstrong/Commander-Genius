@@ -23,7 +23,7 @@ namespace galaxy {
 class CPoisonSlug : public CStunnable {
 public:
 	CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
-				std::vector<CObject*>&ObjectPtrs);
+				std::vector<CSpriteObject*>&ObjectPtrs);
 
 	/**
 	 * When slug is moving normally
@@ -42,10 +42,10 @@ public:
 	/**
 	 * What happens if the slug gets touched by another object
 	 */
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
-	std::vector<CObject*>& m_ObjectPtrs;
+	std::vector<CSpriteObject*>& m_ObjectPtrs;
 	int m_timer;
 };
 

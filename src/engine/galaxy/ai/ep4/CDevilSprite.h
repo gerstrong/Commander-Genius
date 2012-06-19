@@ -8,16 +8,16 @@
 #ifndef CDEVILSPRITE_H_
 #define CDEVILSPRITE_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
-class CDevilSprite: public CObject {
+class CDevilSprite: public CSpriteObject {
 public:
 	CDevilSprite(CMap *pmap, Uint32 x, Uint32 y);
 
-	void getTouchedBy(CObject &theObject);
-	bool isNearby(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 
 	void process();
 

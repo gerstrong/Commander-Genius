@@ -31,8 +31,8 @@ const unsigned int LOOK_TOTALTIME = 25;
 const int FIRE_PAUSE_TIME = 25;
 
 CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CObject*>& Object) :
-CObject(p_map, x, y, OBJ_GUARDROBOT),
+		std::vector<CSpriteObject*>& Object) :
+CSpriteObject(p_map, x, y, OBJ_GUARDROBOT),
 m_ObjectVect(Object)
 {
 	// First time initialization
@@ -207,7 +207,7 @@ void CGuardRobot::guard_fire()
 	pausetime = FIRE_PAUSE_TIME;
 }
 
-void CGuardRobot::getTouchedBy(CObject &theObject)
+void CGuardRobot::getTouchedBy(CSpriteObject &theObject)
 {
 	if (theObject.m_type == OBJ_PLAYER && g_pBehaviorEngine->mDifficulty>=NORMAL)
 		theObject.kill(); // Only on normal and hard mode when keen touches it, he can die

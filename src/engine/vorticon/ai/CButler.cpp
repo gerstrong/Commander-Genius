@@ -5,7 +5,7 @@
 
 CButler::CButler(CMap *pmap, Uint32 x, Uint32 y,
 		std::vector<CPlayer> &PlayerVect) :
-CObject(pmap, x, y-(1<<STC), OBJ_BUTLER),
+CSpriteObject(pmap, x, y-(1<<STC), OBJ_BUTLER),
 m_Player(PlayerVect)
 {
 	 state = BUTLER_WALK;
@@ -77,7 +77,7 @@ void CButler::process()
 	 }
 }
 
-void CButler::getTouchedBy(CObject &theObject)
+void CButler::getTouchedBy(CSpriteObject &theObject)
 {   // push keen
 	if( theObject.m_type == OBJ_PLAYER )
 	{

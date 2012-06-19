@@ -121,7 +121,7 @@ void CPlayGameVorticon::goBacktoMap()
 	for( ; player != m_Player.end() ; player++ )
 	{
 		player->level_done = LEVEL_NOT_DONE;
-		player->HealthPoints = 1;
+		player->mHealthPoints = 1;
 
 		// Restore checkpoint
 		player->moveToForce(m_checkpoint_x,m_checkpoint_y);

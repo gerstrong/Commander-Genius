@@ -15,7 +15,7 @@ const Uint32 speed = 10;
 const Uint32 hittime = 100;
 
 CBullet::CBullet(CMap *pmap, const Uint32 x, const Uint32 y, const direction_t dir) :
-CObject(pmap, x, y, OBJ_RAY)
+CSpriteObject(pmap, x, y, OBJ_RAY)
 {
 	m_hDir = NONE;	m_vDir = NONE;
 
@@ -26,7 +26,7 @@ CObject(pmap, x, y, OBJ_RAY)
 
 	setupGalaxyObjectOnMap(0x1738, A_KEENSHOT_MOVING);
 	setActionSprite();
-	calcBouncingBoxes();
+	calcBoundingBoxes();
 	playSound( SOUND_KEEN_FIRE );
 }
 

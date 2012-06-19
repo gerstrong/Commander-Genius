@@ -18,8 +18,8 @@ const int SLUG_MOVE_SPEED = 1;
 const int SLUG_MOVE_TIMER = 10;
 
 CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
-						std::vector<CObject*>&ObjectPtrs) :
-CObject(pmap, x, y, OBJ_NONE),
+						std::vector<CSpriteObject*>&ObjectPtrs) :
+CSpriteObject(pmap, x, y, OBJ_NONE),
 CStunnable(pmap, x, y, OBJ_NONE),
 m_ObjectPtrs(ObjectPtrs),
 m_timer(0)
@@ -87,7 +87,7 @@ void CPoisonSlug::processPooing()
 }
 
 
-void CPoisonSlug::getTouchedBy(CObject &theObject)
+void CPoisonSlug::getTouchedBy(CSpriteObject &theObject)
 {
 	if(dead || theObject.dead)
 		return;

@@ -11,7 +11,7 @@
 #ifndef SE_H_
 #define SE_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 
 // "Sector Effector" types
 enum sector_effector_type{
@@ -24,11 +24,11 @@ enum sector_effector_type{
 	SE_MORTIMER_RANDOMZAPS
 };
 
-class CSectorEffector : public CObject
+class CSectorEffector : public CSpriteObject
 {
 public:
 	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player, std::vector<CObject*>& Object, unsigned int se_type);
+			std::vector<CPlayer>& Player, std::vector<CSpriteObject*>& Object, unsigned int se_type);
 	void process();
 	void se_mortimer_arm();
 	void se_mortimer_spark();
@@ -39,7 +39,7 @@ public:
 	void se_mortimer_randomzaps();
 	void set_mortimer_surprised(bool yes);
 
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 	void getShotByRay(object_t &obj_type){};
 
 //private:
@@ -55,7 +55,7 @@ public:
 	int mx,my;
 
 	std::vector<CPlayer>& m_Player;
-	std::vector<CObject*>& m_Object;
+	std::vector<CSpriteObject*>& m_Object;
 };
 
 #endif /* SE_H_ */

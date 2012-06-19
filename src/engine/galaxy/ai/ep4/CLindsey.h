@@ -10,17 +10,17 @@
 #ifndef CLINDSEY_H_
 #define CLINDSEY_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
-class CLindsey : public CObject {
+class CLindsey : public CSpriteObject {
 public:
 	CLindsey(CMap *pmap, Uint32 x, Uint32 y);
 
 	void process();
 
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	int m_timer;

@@ -25,8 +25,8 @@ enum meep_actions{
 
 CMeep::CMeep(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player,
-		std::vector<CObject*>& Object) :
-CObject(p_map,x,y, OBJ_MEEP),
+		std::vector<CSpriteObject*>& Object) :
+CSpriteObject(p_map,x,y, OBJ_MEEP),
 m_Player(Player),
 m_Object(Object)
 {
@@ -44,7 +44,7 @@ m_Object(Object)
 	animtimer = 0;
 
 	if(g_pBehaviorEngine->mDifficulty==HARD)
-		HealthPoints++;
+		mHealthPoints++;
 }
 
 void CMeep::process()
@@ -63,7 +63,7 @@ void CMeep::process()
 		}
 	}
 
-	if (HealthPoints <= 0 && state != MEEP_DYING )
+	if (mHealthPoints <= 0 && state != MEEP_DYING )
 	{
 		timer = 0;
 		state = MEEP_DYING;

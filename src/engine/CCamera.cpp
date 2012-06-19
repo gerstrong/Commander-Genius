@@ -15,8 +15,8 @@
 #include "sdl/input/CInput.h"
 #include "engine/spritedefines.h"
 
-CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CObject *p_attacher) :
-CObject(pmap, x, y, OBJ_NONE),
+CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
+CSpriteObject(pmap, x, y, OBJ_NONE),
 mp_AttachedObject(p_attacher)
 {
 	m_relcam.x = 0;
@@ -28,7 +28,7 @@ mp_AttachedObject(p_attacher)
 	m_moving = true;
 }
 
-void CCamera::attachObject(CObject *p_attacher)
+void CCamera::attachObject(CSpriteObject *p_attacher)
 {
 	mp_AttachedObject = p_attacher;
 }

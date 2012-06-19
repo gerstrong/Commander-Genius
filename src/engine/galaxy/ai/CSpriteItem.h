@@ -12,22 +12,22 @@
 #ifndef CSPRITEITEM_H_
 #define CSPRITEITEM_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
 
-class CSpriteItem : public CObject{
+class CSpriteItem : public CSpriteObject{
 public:
 	CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*>& ObjectPtrs, Uint32 sprite);
+			std::vector<CSpriteObject*>& ObjectPtrs, Uint32 sprite);
 	void process();
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	int m_timer;
 	Uint32 m_basesprite;
-	std::vector<CObject*>& m_ObjectPtrs;
+	std::vector<CSpriteObject*>& m_ObjectPtrs;
 };
 
 }

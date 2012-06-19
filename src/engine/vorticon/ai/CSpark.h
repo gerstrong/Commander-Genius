@@ -8,13 +8,13 @@
 #ifndef CSPARK_H_
 #define CSPARK_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "engine/spritedefines.h"
 
-class CSpark : public CObject {
+class CSpark : public CSpriteObject {
 public:
 	CSpark(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*>& Object);
+			std::vector<CSpriteObject*>& Object);
 	void process();
 
 private:
@@ -26,7 +26,7 @@ private:
 	unsigned int frame;
 	int blowx,blowy;
 
-	std::vector<CObject*>& m_Object;
+	std::vector<CSpriteObject*>& m_Object;
 };
 
 #endif /* CSPARK_H_ */

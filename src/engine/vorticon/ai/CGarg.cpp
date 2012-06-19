@@ -5,7 +5,7 @@
 
 CGarg::CGarg(CMap *p_map, std::vector<CPlayer> &m_vec_Player,
 		Uint32 x, Uint32 y) :
-CObject(p_map, x,y,OBJ_GARG),
+CSpriteObject(p_map, x,y,OBJ_GARG),
 state(GARG_LOOK),
 looktimes(GARG_NUM_LOOKS+1),
 lookframe(0),
@@ -22,7 +22,7 @@ m_hardmode(g_pBehaviorEngine->mDifficulty==HARD)
 {
 	canbezapped = true;
 	if(g_pBehaviorEngine->mDifficulty==HARD)
-		HealthPoints++;
+		mHealthPoints++;
 }
 
 void CGarg::process()
@@ -32,7 +32,7 @@ void CGarg::process()
 		m_Player[touchedBy].kill();
 
 	// did the garg get shot?
-	if (HealthPoints <= 0 && state != GARG_DYING )
+	if (mHealthPoints <= 0 && state != GARG_DYING )
 	{
 		// die, you stupid garg, die!
 		state = GARG_DYING;

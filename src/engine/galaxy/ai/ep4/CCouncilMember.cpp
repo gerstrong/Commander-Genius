@@ -18,7 +18,7 @@ const int ELDER_MOVE_TIMER = 10;
 
 
 CCouncilMember::CCouncilMember(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 rescued(false),
 m_timer(0)
 {
@@ -105,7 +105,7 @@ void CCouncilMember::process()
 
 
 
-void CCouncilMember::getTouchedBy(CObject &theObject)
+void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 {
 	if(rescued)
 		return;

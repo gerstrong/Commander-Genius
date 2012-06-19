@@ -13,7 +13,7 @@ const int LINDSEY_MOVE_SPEED = 20;
 const int LINDSEY_MOVE_TIME = 60;
 
 CLindsey::CLindsey(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x38EA, 0);
@@ -46,7 +46,7 @@ void CLindsey::process()
 	processActionRoutine();
 }
 
-void CLindsey::getTouchedBy(CObject &theObject)
+void CLindsey::getTouchedBy(CSpriteObject &theObject)
 {
 	// When Keen touches the pincess give that hint
 	if(theObject.m_type == OBJ_PLAYER)

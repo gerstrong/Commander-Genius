@@ -130,7 +130,7 @@ bool CPlayGameVorticon::init()
 	g_pInput->flushAll();
 
 	// Initialize the AI
-	mp_ObjectAI = new CObjectAI(mMap.get(), m_Object, m_Player,
+	mp_ObjectAI = new CSpriteObjectAI(mMap.get(), m_Object, m_Player,
 								m_NumPlayers, m_Episode, m_Level,
 								mMap->m_Dark);
 
@@ -526,7 +526,7 @@ void CPlayGameVorticon::drawObjects()
 {
 	if(m_hideobjects) return;
 
-	std::vector<CObject*>::iterator it_obj = m_Object.begin();
+	std::vector<CSpriteObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
 	{
 		(*it_obj)->draw();
@@ -621,7 +621,7 @@ void CPlayGameVorticon::drawAllElements()
 void CPlayGameVorticon::cleanup()
 {
 	SAFE_DELETE(mp_ObjectAI);
-	std::vector<CObject*>::iterator obj = m_Object.begin();
+	std::vector<CSpriteObject*>::iterator obj = m_Object.begin();
 	for( ; obj != m_Object.end() ; obj++ )
 		delete (*obj);
 	m_Object.clear();

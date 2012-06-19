@@ -7,12 +7,12 @@
 
 CVortiMom::CVortiMom(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player,
-		std::vector<CObject*>& Object) :
-CObject(p_map, x, y, OBJ_MOTHER),
+		std::vector<CSpriteObject*>& Object) :
+CSpriteObject(p_map, x, y, OBJ_MOTHER),
 m_Player(Player),
 m_Object(Object)
 {
-	HealthPoints = MOTHER_HP;
+	mHealthPoints = MOTHER_HP;
 	state = MOTHER_WALK;
 	animframe = 0;
 	animtimer = 0;
@@ -26,9 +26,9 @@ m_Object(Object)
 	blockedr = blockedl = 0;
 
 	if(g_pBehaviorEngine->mDifficulty>NORMAL)
-		HealthPoints++;
+		mHealthPoints++;
 	else if(g_pBehaviorEngine->mDifficulty<NORMAL)
-		HealthPoints--;
+		mHealthPoints--;
 }
 
 void CVortiMom::process()
@@ -124,7 +124,7 @@ void CVortiMom::process()
 		sprite = MOTHER_HURT_FRAME;
 		if (timer > MOTHER_HURT_SHOW_TIME)
 		{
-			if (HealthPoints <= 0)
+			if (mHealthPoints <= 0)
 			{
 				sprite = MOTHER_DEAD_FRAME;
 				dead = true;
@@ -149,12 +149,12 @@ void CVortiMom::process()
 
 void CVortiMom::getShotByRay(object_t &obj_type)
 {
-	if( state != MOTHER_HURT && HealthPoints>0 )
+	if( state != MOTHER_HURT && mHealthPoints>0 )
 	{
-		if(HealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+		if(mHealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
 			blink(10);
 		sprite = MOTHER_HURT_FRAME;
-		HealthPoints--;
+		mHealthPoints--;
 		state = MOTHER_HURT;
 
 	}

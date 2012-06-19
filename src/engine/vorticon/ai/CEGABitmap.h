@@ -11,10 +11,10 @@
 #define CEGABITMAP_H_
 
 #include "graphics/CBitmap.h"
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include <SDL.h>
 
-class CEGABitmap : public CObject
+class CEGABitmap : public CSpriteObject
 {
 public:
 	CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap);

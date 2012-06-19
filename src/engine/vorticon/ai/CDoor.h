@@ -8,7 +8,7 @@
 #ifndef CDOOR_H_
 #define CDOOR_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 
 // "AI" for the door object (to do the animation when a door
 // opens, the door tiles are removed and replaced with a sprite
@@ -17,7 +17,7 @@
 
 #define DOOR_OPEN_SPEED    1
 
-class CDoor : public CObject
+class CDoor : public CSpriteObject
 {
 public:
 	CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID);

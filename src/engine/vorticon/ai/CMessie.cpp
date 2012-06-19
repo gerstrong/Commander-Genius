@@ -20,7 +20,7 @@ void nessie_find_next_checkpoint(int o);
 
 CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
-CObject(p_map, x, y, OBJ_MESSIE),
+CSpriteObject(p_map, x, y, OBJ_MESSIE),
 m_Player(Player)
 {
 	m_hDir = LEFT, m_vDir = DOWN;

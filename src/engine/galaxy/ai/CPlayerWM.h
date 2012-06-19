@@ -17,7 +17,7 @@ public:
 	CPlayerWM(CMap *pmap,
 			Uint32 x,
 			Uint32 y,
-			std::vector<CObject*>& ObjectPtrs,
+			std::vector<CSpriteObject*>& ObjectPtrs,
 			CInventory &l_Inventory,
 			stCheat &Cheatmode);
 

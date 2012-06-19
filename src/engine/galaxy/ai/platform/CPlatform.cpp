@@ -11,7 +11,7 @@
 namespace galaxy {
 
 CPlatform::CPlatform(CMap *pmap, Uint32 x, Uint32 y, object_t type) :
-CObject(pmap, x, y, type),
+CSpriteObject(pmap, x, y, type),
 mp_CarriedPlayer(NULL)
 {
 	m_ActionBaseOffset = 0x316A;
@@ -77,7 +77,7 @@ void CPlatform::process()
 	processActionRoutine();
 }
 
-void CPlatform::getTouchedBy(CObject &theObject)
+void CPlatform::getTouchedBy(CSpriteObject &theObject)
 {
 	if(theObject.m_type == OBJ_PLAYER)
 	{

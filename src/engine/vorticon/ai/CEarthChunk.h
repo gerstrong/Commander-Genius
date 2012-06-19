@@ -26,9 +26,9 @@ EC_DOWNLEFT,
 EC_DOWNRIGHT
 };
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
-class CEarthChunk : public CObject
+class CEarthChunk : public CSpriteObject
 {
 public:
 	CEarthChunk(CMap *pmap, Uint32 x, Uint32 y);

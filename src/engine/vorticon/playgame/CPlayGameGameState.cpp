@@ -95,12 +95,12 @@ bool CPlayGameVorticon::loadGameState()
 
 			if(i >= m_Object.size())
 			{
-				CObject *object = new CObject( mMap.get(), 0, 0, OBJ_NONE);
+				CSpriteObject *object = new CSpriteObject( mMap.get(), 0, 0, OBJ_NONE);
 				object->exists = false;
 				m_Object.push_back(object);
 			}
 
-			CObject* object = m_Object.at(i);
+			CSpriteObject* object = m_Object.at(i);
 
 			savedGame.decodeData(object->m_type);
 			savedGame.decodeData(x);
@@ -114,7 +114,7 @@ bool CPlayGameVorticon::loadGameState()
 			savedGame.decodeData(object->blockedu);
 			savedGame.decodeData(object->blockedl);
 			savedGame.decodeData(object->blockedr);
-			savedGame.decodeData(object->HealthPoints);
+			savedGame.decodeData(object->mHealthPoints);
 			savedGame.decodeData(object->canbezapped);
 			savedGame.decodeData(object->cansupportplayer);
 			savedGame.decodeData(object->inhibitfall);
@@ -159,7 +159,7 @@ bool CPlayGameVorticon::loadGameState()
 		g_pGfxEngine->setupEffect(pColorMergeFX);
 
 
-		mp_ObjectAI = new CObjectAI(mMap.get(), m_Object, m_Player,
+		mp_ObjectAI = new CSpriteObjectAI(mMap.get(), m_Object, m_Player,
 									m_NumPlayers, m_Episode, m_Level,
 									mMap->m_Dark);
 		setupPlayers();
@@ -224,7 +224,7 @@ bool CPlayGameVorticon::saveGameState()
 		savedGame.encodeData(m_Object[i]->blockedu);
 		savedGame.encodeData(m_Object[i]->blockedl);
 		savedGame.encodeData(m_Object[i]->blockedr);
-		savedGame.encodeData(m_Object[i]->HealthPoints);
+		savedGame.encodeData(m_Object[i]->mHealthPoints);
 		savedGame.encodeData(m_Object[i]->canbezapped);
 		savedGame.encodeData(m_Object[i]->cansupportplayer);
 		savedGame.encodeData(m_Object[i]->inhibitfall);

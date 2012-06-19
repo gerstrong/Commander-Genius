@@ -6,7 +6,7 @@
 #define RAY_AUTO_SPEED		120
 #define RAY_ZAPZOT_TIME    	10
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/CPlayer.h"
 #include "common/objenums.h"
 #include <vector>
@@ -14,7 +14,7 @@
 // reference to ../misc.cpp
 unsigned int rnd(void);
 
-class CRay : public CObject
+class CRay : public CSpriteObject
 {
 public:
 	CRay(CMap *p_map, Uint32 x, Uint32 y,
@@ -24,7 +24,7 @@ public:
 	void moveinAir();
 	void setOwner(object_t type, unsigned int index);
 	void setSpeed(size_t speed);
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 	void getShotByRay(object_t &obj_type);
 	bool isFlying();
 	void setZapped();

@@ -10,7 +10,7 @@
 
 #include <SDL.h>
 #include "inventory.h"
-#include "CObject.h"
+#include "CSpriteObject.h"
 #include "CMap.h"
 #include "CStatusScreen.h"
 #include "Playerdefines.h"
@@ -32,7 +32,7 @@ enum level_triggers
 ///
 // Class definition starts here!
 ///
-class CPlayer : public CObject
+class CPlayer : public CSpriteObject
 {
 public:
 
@@ -44,7 +44,7 @@ public:
 
 	CPlayer(const char &Episode, short &Level,
 			 bool *mp_level_completed,
-			 std::vector<CObject*> &m_Object, CMap &map);
+			 std::vector<CSpriteObject*> &m_Object, CMap &map);
 	void setupCameraObject();
 	void setDatatoZero();
 	void setDefaultStartValues();
@@ -79,8 +79,8 @@ public:
 	void boostInertia(const int amt);
 	void Playerfalling();
 	void raygun();
-	void bump( CObject &theObject, direction_t direction );
-	void push( CObject &theObject );
+	void bump( CSpriteObject &theObject, direction_t direction );
+	void push( CSpriteObject &theObject );
 	void checkSolidDoors();
 	void SelectFrame();
 	int pollLevelTrigger();

@@ -19,7 +19,7 @@
 #include "SmartPointer.h"
 #include "CVec.h"
 
-class CObject;
+class CSpriteObject;
 
 
 // TODO: These Event Interfaces must go to another file. Those are Inlevel Galaxy Events
@@ -130,9 +130,9 @@ struct EventSendSelectionDialogMsg : CEvent {
  */
 struct EventSpawnObject : CEvent {
 
-	const CObject* pObject;
+	const CSpriteObject* pObject;
 
-	EventSpawnObject( const CObject* pObject ) :
+	EventSpawnObject( const CSpriteObject* pObject ) :
 					  pObject(pObject) {}
 };
 

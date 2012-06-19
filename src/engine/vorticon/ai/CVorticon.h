@@ -2,7 +2,7 @@
 #ifndef __CVORTICON__
 #define __CVORTICON__
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 #include "../../../common/CPlayer.h"
 #include <vector>
 
@@ -57,14 +57,14 @@
 
 #define VORT_TRAPPED_DIST        160
 
-class CVorticon : public CObject
+class CVorticon : public CSpriteObject
 {
 public:
 	CVorticon( CMap *p_map, std::vector<CPlayer> &m_vec_Player,
 			Uint32 x, Uint32 y, char hp=1, object_t objtype=OBJ_VORT);
 	void process();
 	void initiateJump();
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 protected:
 	int m_Level;

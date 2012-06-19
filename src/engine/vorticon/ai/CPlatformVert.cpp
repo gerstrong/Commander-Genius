@@ -131,7 +131,7 @@ void CPlatformVert::process()
 	}
 }
 
-void CPlatformVert::getTouchedBy(CObject &theObject)
+void CPlatformVert::getTouchedBy(CSpriteObject &theObject)
 {
 	// push player horizontally
 	if( theObject.m_type == OBJ_PLAYER )

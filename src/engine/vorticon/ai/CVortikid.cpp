@@ -27,7 +27,7 @@ BABY_JUMP_BIG, BABY_JUMP_SMALL
 
 CVortikid::CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CObject(p_map, x, y, OBJ_BABY),
+CSpriteObject(p_map, x, y, OBJ_BABY),
 m_Player(mp_vec_Player)
 {
 	bool ep3;
@@ -42,7 +42,7 @@ m_Player(mp_vec_Player)
 	sprite = BABY_WALK_RIGHT_FRAME - ep3;
 
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
-		HealthPoints++;
+		mHealthPoints++;
 }
 
 void CVortikid::process()
@@ -60,7 +60,7 @@ void CVortikid::process()
 	}
 
 	// got hit?
-	if (HealthPoints <= 0 && state != BABY_DYING)
+	if (mHealthPoints <= 0 && state != BABY_DYING)
 	{
 		dietimer = 0;
 		state = BABY_DYING;

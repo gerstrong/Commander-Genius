@@ -14,8 +14,8 @@
 #define SPARK_ANIMRATE          5
 
 CSpark::CSpark(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CObject*>& Object) :
-CObject(pmap, x, y, OBJ_SPARK),
+		std::vector<CSpriteObject*>& Object) :
+CSpriteObject(pmap, x, y, OBJ_SPARK),
 timer(0), frame(0),
 blowx(0), blowy(0),
 m_Object(Object)
@@ -57,7 +57,7 @@ void CSpark::process()
 			timer = 0;
 		} else timer++;
 
-		if ( HealthPoints <= 0 && state == SPARK_ANIMATE )
+		if ( mHealthPoints <= 0 && state == SPARK_ANIMATE )
 		{
 			playSound(SOUND_SHOT_HIT);
 

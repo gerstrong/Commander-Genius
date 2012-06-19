@@ -8,7 +8,7 @@
 #ifndef CVORTIMOM_H_
 #define CVORTIMOM_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 #include "../../../common/CPlayer.h"
 #include <vector>
 
@@ -39,12 +39,12 @@ MOTHER_HURT
 #define MOTHER_HURT_FRAME        91
 #define MOTHER_DEAD_FRAME	 92
 
-class CVortiMom : public CObject
+class CVortiMom : public CSpriteObject
 {
 public:
 	CVortiMom(CMap *p_map, Uint32 x, Uint32 y,
 			std::vector<CPlayer>& Player,
-			std::vector<CObject*>& Object);
+			std::vector<CSpriteObject*>& Object);
 	void process();
 	void getShotByRay(object_t &obj_type);
 
@@ -57,7 +57,7 @@ private:
 
 
 	std::vector<CPlayer>& m_Player;
-	std::vector<CObject*>& m_Object;
+	std::vector<CSpriteObject*>& m_Object;
 };
 
 #endif /* CVORTIMOM_H_ */

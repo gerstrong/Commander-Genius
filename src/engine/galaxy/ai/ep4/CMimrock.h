@@ -18,7 +18,7 @@ public:
 
 	CMimrock(CMap *pmap, Uint32 x, Uint32 y);
 
-	bool isNearby(CObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 	void process();
 	void processSit();
 	void processWalk();

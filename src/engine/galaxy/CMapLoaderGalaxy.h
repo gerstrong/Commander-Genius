@@ -13,7 +13,7 @@
 #include "common/CMap.h"
 #include "common/Cheat.h"
 #include "engine/galaxy/CInventory.h"
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include <vector>
 
 #include <string>
@@ -25,7 +25,7 @@ namespace galaxy
 class CMapLoaderGalaxy
 {
 public:
-	CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr,
+	CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CSpriteObject*>& ObjectPtr,
 			CInventory &Inventory, stCheat &Cheatmode);
 	size_t getMapheadOffset();
 	bool gotoSignature(std::ifstream &MapFile);
@@ -40,7 +40,7 @@ private:
 			word magic_word);
 
 	CExeFile &m_ExeFile;
-	std::vector<CObject*>& m_ObjectPtr;
+	std::vector<CSpriteObject*>& m_ObjectPtr;
 	CInventory &m_Inventory;
 	stCheat &m_Cheatmode;
 };

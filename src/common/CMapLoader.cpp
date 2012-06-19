@@ -144,7 +144,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 
 	if(mp_objvect && stategame == false)
 	{
-		std::vector<CObject*>::iterator obj = mp_objvect->begin();
+		std::vector<CSpriteObject*>::iterator obj = mp_objvect->begin();
 		for( ; obj != mp_objvect->end() ; obj++ )
 		{
 			delete *obj;
@@ -316,7 +316,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 		}
 		else
 		{
-			CObject *enemyobject = NULL;
+			CSpriteObject *enemyobject = NULL;
 
 			switch(t)
 			{

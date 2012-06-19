@@ -8,10 +8,10 @@
 #ifndef CBRIDGES_H_
 #define CBRIDGES_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 
 
-class CBridges : public CObject
+class CBridges : public CSpriteObject
 {
 public:
 	CBridges(CMap *pmap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy);

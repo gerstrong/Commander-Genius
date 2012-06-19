@@ -8,7 +8,7 @@
 #ifndef CBUTLER_H_
 #define CBUTLER_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 #include "../../../common/CPlayer.h"
 #include <vector>
 
@@ -32,13 +32,13 @@
 #define BUTLER_TURNRIGHT_FRAME   97
 
 
-class CButler : public CObject
+class CButler : public CSpriteObject
 {
 public:
 	CButler(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CPlayer> &PlayerVect);
 	void process();
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	// AI for "butler" robot (ep1)

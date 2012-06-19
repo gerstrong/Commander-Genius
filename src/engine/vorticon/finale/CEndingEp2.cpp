@@ -18,7 +18,7 @@ const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
 
 CEndingEp2::CEndingEp2(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-		const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CObject*> &Object) :
+		const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CSpriteObject*> &Object) :
 CFinale(messageBoxes, pMap, Object),
 m_Player(Player)
 {

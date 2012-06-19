@@ -19,7 +19,7 @@ const int MAX_BOUNCE_BOOST = -115;
 const int HOR_SPEED = 40;
 
 CBounder::CBounder(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 CStunnable(pmap, x, y),
 CPlatform(pmap, x, y, OBJ_NONE),
 bounceboost(0)
@@ -30,7 +30,7 @@ bounceboost(0)
 
 }
 
-void CBounder::getTouchedBy(CObject &theObject)
+void CBounder::getTouchedBy(CSpriteObject &theObject)
 {
 	if(dead || theObject.dead)
 		return;

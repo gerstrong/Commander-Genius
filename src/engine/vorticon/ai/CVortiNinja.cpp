@@ -19,16 +19,16 @@
 unsigned int rnd(void);
 
 CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player) :
-CObject(p_map, x, y, OBJ_NINJA),
+CSpriteObject(p_map, x, y, OBJ_NINJA),
 longjump(false),
 m_Player(Player)
 {
 	canbezapped = true;
-	HealthPoints = 4;
+	mHealthPoints = 4;
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
-		HealthPoints++;
+		mHealthPoints++;
 	else if(g_pBehaviorEngine->mDifficulty < NORMAL)
-		HealthPoints--;
+		mHealthPoints--;
 	init();
 }
 
@@ -56,7 +56,7 @@ void CVortiNinja::process()
 			state != NINJA_DYING)
 		m_Player[touchedBy].kill();
 
-	if (HealthPoints <= 0 && !dying)
+	if (mHealthPoints <= 0 && !dying)
 	{
 		dying = true;
 		dietimer = 0;

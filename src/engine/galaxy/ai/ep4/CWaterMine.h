@@ -10,18 +10,18 @@
 #ifndef CWATERMINE_H_
 #define CWATERMINE_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
-class CWaterMine: public CObject {
+class CWaterMine: public CSpriteObject {
 public:
 	CWaterMine(CMap *pmap, Uint32 x, Uint32 y, const bool vertical);
 
 	void process();
 
 	// What happens when some object touches another one
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 

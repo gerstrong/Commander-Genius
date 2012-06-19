@@ -12,22 +12,22 @@
  *  the active Level viewer feature.
  */
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 #ifndef CCAMERA_H_
 #define CCAMERA_H_
 
-class CCamera : public CObject
+class CCamera : public CSpriteObject
 {
 public:
-	CCamera(CMap *pmap, Uint32 x, Uint32 y, CObject *p_attacher=NULL);
+	CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher=NULL);
 
 	/**
 	 * \brief Whenever the object where the camera has to follow up is created it needs to be attached
 	 *        in order to follow it.
 	 * \return p_attacher Object Pointer like the player to which the camera will follow.
 	 */
-	void attachObject(CObject *p_attacher);
+	void attachObject(CSpriteObject *p_attacher);
 
 	/**
 	 * \brief This will put the camera to the given coordinate
@@ -71,7 +71,7 @@ public:
 	}m_relcam;
 
 private:
-	CObject *mp_AttachedObject;
+	CSpriteObject *mp_AttachedObject;
 };
 
 #endif /* CCAMERA_H_ */

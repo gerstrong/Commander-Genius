@@ -26,7 +26,7 @@ const int TELEPORTER_NUMFRAMES_EP1 = 20;
 
 CTeleporter::CTeleporter(CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CObject(p_map, x, y, OBJ_TELEPORTER),
+CSpriteObject(p_map, x, y, OBJ_TELEPORTER),
 m_Player(mp_vec_Player)
 {
 	int mx, my;

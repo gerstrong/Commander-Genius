@@ -25,8 +25,8 @@
 ///
 CPlayer::CPlayer(const char &Episode, short &Level,
 				 bool *mp_level_completed,
-				 std::vector<CObject*> &m_Object, CMap &map) :
-CObject(&map, 0, 0, OBJ_PLAYER),
+				 std::vector<CSpriteObject*> &m_Object, CMap &map) :
+CSpriteObject(&map, 0, 0, OBJ_PLAYER),
 m_episode(Episode),
 m_level(Level),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
@@ -810,7 +810,7 @@ bool CPlayer::checkObjSolid()
 {
 	supportedbyobject = false;
 
-	std::vector<CObject*>::iterator it_obj = mp_object->begin();
+	std::vector<CSpriteObject*>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
 	{
 		if((*it_obj)->cansupportplayer)

@@ -8,7 +8,7 @@
 #ifndef _CTELEPORTER_H_
 #define _CTELEPORTER_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 #include "../../../common/CPlayer.h"
 
 enum teleportation_state{
@@ -17,7 +17,7 @@ TELEPORTING_SCROLL,
 TELEPORTING_IN
 };
 
-class CTeleporter : public CObject
+class CTeleporter : public CSpriteObject
 {
 public:
 	CTeleporter(CMap *p_map, std::vector<CPlayer> &mp_vec_Player,

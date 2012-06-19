@@ -8,22 +8,22 @@
 #ifndef CAUTORAY_H_
 #define CAUTORAY_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 
 #define GUNFIRE_TIMER 128
 
 
-class CAutoRay : public CObject
+class CAutoRay : public CSpriteObject
 {
 public:
 	enum stRayAlignment{ VERTICAL, HORIZONTAL };
 	CAutoRay(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*> &Objvect, stRayAlignment type);
+			std::vector<CSpriteObject*> &Objvect, stRayAlignment type);
 	void process();
 
 
 private:
-	std::vector<CObject*> &m_Objvect;
+	std::vector<CSpriteObject*> &m_Objvect;
 	stRayAlignment m_type;
 };
 

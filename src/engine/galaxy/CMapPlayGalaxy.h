@@ -12,7 +12,7 @@
 #ifndef CMAPPLAYGALAXY_H_
 #define CMAPPLAYGALAXY_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/Cheat.h"
 #include "fileio/CExeFile.h"
 #include "engine/galaxy/CInventory.h"
@@ -42,7 +42,7 @@ public:
 	void process(const bool msgboxactive);
 
 protected:
-	std::vector<CObject*> m_ObjectPtr;
+	std::vector<CSpriteObject*> m_ObjectPtr;
 	bool m_active;
 
 	CMap m_Map;

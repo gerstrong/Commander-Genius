@@ -19,7 +19,7 @@ public:
 	CPlayerDive(CMap *pmap,
 			Uint32 x,
 			Uint32 y,
-			std::vector<CObject*>& ObjectPtrs,
+			std::vector<CSpriteObject*>& ObjectPtrs,
 			direction_t facedir,
 			CInventory &l_Inventory,
 			stCheat &Cheatmode);

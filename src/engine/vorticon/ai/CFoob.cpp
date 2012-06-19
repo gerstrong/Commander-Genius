@@ -3,7 +3,7 @@
 #include "graphics/CGfxEngine.h"
 
 CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player):
-CObject(p_map,x,y, OBJ_FOOB),
+CSpriteObject(p_map,x,y, OBJ_FOOB),
 m_Player(Player)
 {
 	state = FOOB_WALK;
@@ -16,7 +16,7 @@ m_Player(Player)
 	dead = 0;
 
 	if(g_pBehaviorEngine->mDifficulty==HARD)
-		HealthPoints++;
+		mHealthPoints++;
 }
 
 void CFoob::process()
@@ -27,7 +27,7 @@ void CFoob::process()
 
 	if (!hasbeenonscreen) return;
 
-	if ( (HealthPoints <=0 && state != FOOB_EXPLODE) || touchPlayer)
+	if ( (mHealthPoints <=0 && state != FOOB_EXPLODE) || touchPlayer)
 	{
 		if (state != FOOB_EXPLODE)
 		{
@@ -206,7 +206,7 @@ void CFoob::process()
 	}
 }
 
-void CFoob::getTouchedBy(CObject &theObject)
+void CFoob::getTouchedBy(CSpriteObject &theObject)
 {
 	if(theObject.m_type == OBJ_PLAYER)
 	{

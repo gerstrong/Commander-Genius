@@ -17,7 +17,7 @@ const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 1<<CSF;
 const int FISH_SPEED = 40;
 
 CSchoolFish::CSchoolFish(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 m_moveSpeed(0)
 {
 	setupGalaxyObjectOnMap(0x3692, A_DOPEFISHFOOD_NORMAL);
@@ -25,7 +25,7 @@ m_moveSpeed(0)
 	m_vDir = DOWN;
 }
 
-bool CSchoolFish::isNearby(CObject &theObject)
+bool CSchoolFish::isNearby(CSpriteObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{

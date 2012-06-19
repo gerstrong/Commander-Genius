@@ -23,8 +23,8 @@ public:
 
 	void process();
 
-	void getTouchedBy(CObject &theObject);
-	bool isNearby(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 
 private:
 	void processHop();

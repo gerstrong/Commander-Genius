@@ -8,17 +8,17 @@
 #ifndef CDIVESUIT_H_
 #define CDIVESUIT_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
-class CDiveSuit: public CObject {
+class CDiveSuit: public CSpriteObject {
 public:
 	CDiveSuit(CMap *pmap, Uint32 x, Uint32 y);
 
 private:
 	void process();
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 	bool taken;
 };

@@ -11,17 +11,17 @@
 namespace galaxy {
 
 CDiveSuit::CDiveSuit(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 taken(false)
 {
 	sprite = 306;
-	calcBouncingBoxes();
+	calcBoundingBoxes();
 }
 
 void CDiveSuit::process()
 {}
 
-void CDiveSuit::getTouchedBy(CObject &theObject)
+void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 {
 	if(taken)
 		return;

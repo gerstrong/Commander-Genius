@@ -14,7 +14,7 @@ namespace galaxy {
 
 CEnemyShot::CEnemyShot(CMap *pmap, const Uint32 x, const Uint32 y,
 		const int actionFormatOffset, const direction_t dir, const int speed) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 m_speed(speed)
 {
 	setupGalaxyObjectOnMap(actionFormatOffset, 0);
@@ -29,7 +29,7 @@ m_speed(speed)
 
 }
 
-void CEnemyShot::getTouchedBy(CObject &theObject)
+void CEnemyShot::getTouchedBy(CSpriteObject &theObject)
 {
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{

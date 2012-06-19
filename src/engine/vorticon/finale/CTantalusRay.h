@@ -10,9 +10,9 @@
 
 #include "CFinale.h"
 #include "engine/vorticon/dialog/CMessageBoxVort.h"
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/CMap.h"
-#include "engine/vorticon/ai/CObjectAI.h"
+#include "engine/vorticon/ai/CSpriteObjectAI.h"
 #include "graphics/CBitmap.h"
 #include "sdl/CVideoDriver.h"
 
@@ -20,7 +20,7 @@ class CTantalusRay : public CFinale
 {
 public:
 	CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-				const SmartPointer<CMap> &pMap, std::vector<CObject*> &vect_obj, CObjectAI &objectai);
+				const SmartPointer<CMap> &pMap, std::vector<CSpriteObject*> &vect_obj, CSpriteObjectAI &objectai);
 
 	void process();
 
@@ -31,8 +31,8 @@ private:
 	bool m_mustsetup;
 	int m_alternate_sprite;
 	CMessageBox *mp_MessageBox;
-	CObject *mp_ShootObject;
-	CObjectAI &m_objectai;
+	CSpriteObject *mp_ShootObject;
+	CSpriteObjectAI &m_objectai;
 	Uint32 m_timer;
 	CBitmap *mp_Bitmap;
 

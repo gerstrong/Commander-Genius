@@ -28,7 +28,7 @@ enum scrub_actions{
 
 CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
-CObject(p_map, x, y, OBJ_SCRUB),
+CSpriteObject(p_map, x, y, OBJ_SCRUB),
 scrubdie_inertia_y(0),
 m_Player(Player)
 {
@@ -86,7 +86,7 @@ void CScrub::process()
 	if (canbezapped)
 	{
 		// die if shot
-		if (HealthPoints <= 0 && state!=SCRUB_DYING )
+		if (mHealthPoints <= 0 && state!=SCRUB_DYING )
 		{
 			solid=true;
 			state = SCRUB_DYING;

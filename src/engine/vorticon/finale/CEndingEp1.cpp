@@ -16,7 +16,7 @@
 
 CEndingEp1::CEndingEp1(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
 						const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player,
-					    bool &hideobjects, std::vector<CObject*> &Object) :
+					    bool &hideobjects, std::vector<CSpriteObject*> &Object) :
 	CFinale(messageBoxes, pMap, Object),
 	m_Player(Player),
 	m_hideobjects(hideobjects)

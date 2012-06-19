@@ -16,12 +16,12 @@ const int A_SLUGPOISON_NORMAL =	0;
 const int A_SLUGPOISON_FADE = 1;
 
 CSlugSlime::CSlugSlime(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE)
+CSpriteObject(pmap, x, y, OBJ_NONE)
 {
 	setupGalaxyObjectOnMap(0x20A8, A_SLUGPOISON_NORMAL);
 }
 
-void CSlugSlime::getTouchedBy(CObject &theObject)
+void CSlugSlime::getTouchedBy(CSpriteObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{

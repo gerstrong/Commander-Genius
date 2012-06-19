@@ -11,14 +11,14 @@
 #ifndef CSTARRING_H_
 #define CSTARRING_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy
 {
 
 const unsigned int STARRING_SPRITE = 40;
 
-class CStarRing : public CObject {
+class CStarRing : public CSpriteObject {
 public:
 	CStarRing(CMap *pmap, Uint32 x, Uint32 y, object_t type);
 

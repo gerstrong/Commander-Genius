@@ -12,9 +12,9 @@ unsigned int rnd(void);
 const int GUNFIRE_TIMER_EP1 = 64;
 
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
-	std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
+	std::vector<CPlayer>& Player, std::vector<CSpriteObject*>& Object,
 	int vector_x, int vector_y ) :
-CObject(p_map,x,y, OBJ_ICECANNON),
+CSpriteObject(p_map,x,y, OBJ_ICECANNON),
 m_Player(Player),
 m_Object(Object)
 {
@@ -41,8 +41,8 @@ void CIceCannon::process()
 }
 
 CIceChunk::CIceChunk(CMap *p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy,
-		std::vector<CPlayer>& Player, std::vector<CObject*>& Object) :
-CObject(p_map, x, y, OBJ_ICECHUNK),
+		std::vector<CPlayer>& Player, std::vector<CSpriteObject*>& Object) :
+CSpriteObject(p_map, x, y, OBJ_ICECHUNK),
 vector_x(vx),
 vector_y(vy),
 m_Player(Player),
@@ -156,7 +156,7 @@ const int ICEBIT_SPEED = 80;
 const int ICESHARD_TIME = 25;
 
 CIceBit::CIceBit(CMap *p_map, Uint32 x, Uint32 y, Uint32 vec_x, Uint32 vec_y ) :
-CObject(p_map, x, y, OBJ_ICEBIT),
+CSpriteObject(p_map, x, y, OBJ_ICEBIT),
 vector_x(vec_x),
 vector_y(vec_y)
 {

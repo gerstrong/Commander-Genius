@@ -8,7 +8,7 @@
 #ifndef CVORTININJA_H_
 #define CVORTININJA_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 #include "../../../common/CPlayer.h"
 
 // Ninja AI (the black, bear-like karate-kicking creature in ep3)
@@ -16,7 +16,7 @@ enum ninja_actions{
 	NINJA_STAND, NINJA_KICK, NINJA_DYING
 };
 
-class CVortiNinja : public CObject
+class CVortiNinja : public CSpriteObject
 {
 public:
 	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player);

@@ -8,7 +8,7 @@
 #ifndef TANKEP2_H_
 #define TANKEP2_H_
 
-#include "../../../common/CObject.h"
+#include "../../../common/CSpriteObject.h"
 #include "../../../common/CPlayer.h"
 
 #define TANK_SAME_LEVEL_TIME   25
@@ -54,15 +54,15 @@ unsigned int rnd(void);
 
 // this same struct is used for both ep1 and ep2 "tanks", although
 // they have seperate ai modules
-class CTank : public CObject
+class CTank : public CSpriteObject
 {
 public:
 	CTank(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
+			std::vector<CPlayer>& Player, std::vector<CSpriteObject*>& Object,
 			object_t objtype=OBJ_TANK);
 	virtual void process();
 
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 protected:
 	// Tank Robot
@@ -90,7 +90,7 @@ protected:
 	unsigned int turnaroundtimer;
 	int pausetime;
 	std::vector<CPlayer>& m_Player;
-	std::vector<CObject*>& m_Object;
+	std::vector<CSpriteObject*>& m_Object;
 	bool hardmode;
 };
 

@@ -11,12 +11,12 @@
 #ifndef CSLUGSLIME_H_
 #define CSLUGSLIME_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy
 {
 
-class CSlugSlime : public CObject  {
+class CSlugSlime : public CSpriteObject  {
 public:
 
 	/** Standard Constructor for the slug poo */
@@ -26,7 +26,7 @@ public:
 	void process();
 
 	/** What happens when something touches that slime */
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 };
 
 };

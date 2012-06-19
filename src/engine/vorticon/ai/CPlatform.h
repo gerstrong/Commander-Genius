@@ -8,11 +8,11 @@
 #ifndef CPLATFORM_H_
 #define CPLATFORM_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/CPlayer.h"
 #include <vector>
 
-class CPlatform : public CObject
+class CPlatform : public CSpriteObject
 {
 public:
 	CPlatform(CMap *p_map, Uint32 x, Uint32 y,
@@ -21,7 +21,7 @@ public:
 	void process();
 
 	void SetAllCanSupportPlayer(bool state);
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 protected:
 	unsigned char state;
@@ -40,7 +40,7 @@ public:
 	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y,
 			std::vector<CPlayer>& Player);
 	void process();
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 };
 
 #endif /* CPLATFORM_H_ */

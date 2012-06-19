@@ -31,7 +31,7 @@ public:
 	
 	void setSize(Uint8 w, Uint8 h) { m_xsize = w; m_ysize = h; }
 	void setOffset(Uint16 x, Uint16 y) { m_xoffset = x; m_yoffset = y; }
-	void setBouncingBoxCoordinates( Uint16 bboxx1, Uint16 bboxy1, Uint16 bboxx2, Uint16 bboxy2 );
+	void setBoundingBoxCoordinates( Uint16 bboxx1, Uint16 bboxy1, Uint16 bboxx2, Uint16 bboxy2 );
 	SDL_Surface *getSDLSurface() { return mpSurface.get(); }
 	SDL_Surface *getSDLMaskSurface() { return mpMasksurface.get(); }
 

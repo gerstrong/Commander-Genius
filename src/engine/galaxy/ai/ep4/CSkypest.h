@@ -9,17 +9,17 @@
 #ifndef CSKYPEST_H_
 #define CSKYPEST_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
-class CSkypest : public CObject {
+class CSkypest : public CSpriteObject {
 public:
 	CSkypest(CMap *pmap, Uint32 x, Uint32 y);
 
 	void process();
-	void getTouchedBy(CObject &theObject);
-	bool isNearby(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 
 private:
 

@@ -13,7 +13,7 @@
 
 CFinale::CFinale(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
 					const SmartPointer<CMap> &pMap,
-					std::vector<CObject*> &Object) :
+					std::vector<CSpriteObject*> &Object) :
 m_mustfinishgame(false),
 mMessageBoxes(messageBoxes),
 mpMap(pMap),

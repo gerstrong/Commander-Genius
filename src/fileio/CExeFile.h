@@ -45,8 +45,6 @@ public:
 	void* getHeaderData() const;
 	byte* getDSegPtr() const;
 
-	~CExeFile();
-
 private:
 
 	struct EXE_HEADER
@@ -71,7 +69,7 @@ private:
 	size_t m_headersize;
 	int m_episode;
 	unsigned int m_crc;
-	byte *m_data;
+	std::vector<byte> mData;
 	void *m_headerdata;
 	byte *m_rawdata;
 	byte *m_data_segment;

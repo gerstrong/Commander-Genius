@@ -10,16 +10,16 @@
 #ifndef CSCHOOLFISH_H_
 #define CSCHOOLFISH_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy
 {
 
-class CSchoolFish : public CObject {
+class CSchoolFish : public CSpriteObject {
 public:
 	CSchoolFish(CMap *pmap, Uint32 x, Uint32 y);
 
-	bool isNearby(CObject &theObject);
+	bool isNearby(CSpriteObject &theObject);
 
 	void process();
 

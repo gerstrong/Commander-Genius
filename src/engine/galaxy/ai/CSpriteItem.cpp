@@ -16,15 +16,15 @@ namespace galaxy {
 const int MAX_ANIMATION_TIMER = 20;
 
 CSpriteItem::CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CObject*>& ObjectPtrs, Uint32 sprite) :
-CObject(pmap, x, y, OBJ_NONE),
+		std::vector<CSpriteObject*>& ObjectPtrs, Uint32 sprite) :
+CSpriteObject(pmap, x, y, OBJ_NONE),
 m_ObjectPtrs(ObjectPtrs)
 {
 	m_index = sprite;
 	m_basesprite = sprite;
 	m_timer = (y*256+x)%MAX_ANIMATION_TIMER;
 	this->sprite = (m_timer%2 == 0) ? m_basesprite : m_basesprite+1;
-	calcBouncingBoxes();
+	calcBoundingBoxes();
 	inhibitfall = true;
 }
 
@@ -43,7 +43,7 @@ void CSpriteItem::process()
 
 }
 
-void CSpriteItem::getTouchedBy(CObject &theObject)
+void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 {
 	if( CPlayerBase* pPlayer = dynamic_cast<CPlayerBase*>(&theObject) )
 	{

@@ -11,14 +11,14 @@
 namespace galaxy {
 
 CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint32 x, const Uint32 y) :
-CObject(pmap, x, y, OBJ_PLATFORM),
+CSpriteObject(pmap, x, y, OBJ_PLATFORM),
 CPlatform(pmap, x, y, OBJ_PLATFORM)
 {
 	m_hDir = RIGHT;
 	m_vDir = NONE;
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
-	calcBouncingBoxes();
+	calcBoundingBoxes();
 
 	// Setup boost effects
 	mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, x, y+(4<<STC), false, true);

@@ -11,16 +11,16 @@
 #ifndef CENEMYSHOT_H_
 #define CENEMYSHOT_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
-class CEnemyShot : public CObject {
+class CEnemyShot : public CSpriteObject {
 public:
 	CEnemyShot(CMap *pmap, const Uint32 x, const Uint32 y,
 			const int actionFormatOffset, const direction_t dir, const int speed);
 
-	void getTouchedBy(CObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 	void process();
 

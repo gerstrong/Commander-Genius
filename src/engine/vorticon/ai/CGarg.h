@@ -8,7 +8,7 @@
 #ifndef CGARG_H_
 #define CGARG_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/CPlayer.h"
 #include <vector>
 
@@ -40,7 +40,7 @@
 // Reference to ../misc.cpp
 unsigned int rnd(void);
 
-class CGarg : public CObject
+class CGarg : public CSpriteObject
 {
 public:
 	CGarg(CMap *p_map, std::vector<CPlayer> &m_vec_Player,

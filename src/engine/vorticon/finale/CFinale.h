@@ -20,7 +20,7 @@ class CFinale
 public:
 	CFinale(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
 			const SmartPointer<CMap> &pMap,
-			std::vector<CObject*> &Object);
+			std::vector<CSpriteObject*> &Object);
 
 	void addMsgBoxString(const std::string &text);
 
@@ -37,7 +37,7 @@ protected:
 	int m_Episode;
 	std::list< SmartPointer<CMessageBoxVort> > &mMessageBoxes;
 	SmartPointer<CMap> mpMap;
-	std::vector<CObject*> &m_Object;
+	std::vector<CSpriteObject*> &m_Object;
 };
 
 #endif /* CFINALE_H_ */

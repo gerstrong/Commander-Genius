@@ -10,7 +10,7 @@
 #define BIGCHUNKSPD     16
 
 CEarthChunk::CEarthChunk(CMap *pmap, Uint32 x, Uint32 y):
-CObject(pmap,x,y,OBJ_EARTHCHUNK)
+CSpriteObject(pmap,x,y,OBJ_EARTHCHUNK)
 {
 	inhibitfall = true;
 	onscreen = true;

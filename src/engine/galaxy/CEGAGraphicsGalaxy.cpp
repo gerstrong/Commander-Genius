@@ -22,7 +22,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "fileio/CTileLoader.h"
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "engine/CPlanes.h"
 #include <fstream>
 #include <cstring>
@@ -736,7 +736,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		int boxX2 = ((Head.Rx2) << (STC-TILE_S));
 		int boxY2 = ((Head.Ry2) << (STC-TILE_S));
 
-		Sprite.setBouncingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
+		Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 
 		Sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags,
 				g_pGfxEngine->Palette.m_Palette );

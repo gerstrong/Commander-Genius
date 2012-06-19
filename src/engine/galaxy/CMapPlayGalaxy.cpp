@@ -68,7 +68,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	{
 		for(size_t i=0 ; i<m_ObjectPtr.size() ; i++)
 		{
-			CObject* p_Object = m_ObjectPtr[i];
+			CSpriteObject* p_Object = m_ObjectPtr[i];
 
 			// If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
 			// how the death-message or go gameover.
@@ -94,7 +94,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 				// Check collision between objects
 				for(size_t j=0 ; j<m_ObjectPtr.size() ; j++)
 				{
-					CObject *theOtherObj = m_ObjectPtr[j];
+					CSpriteObject *theOtherObj = m_ObjectPtr[j];
 					if( theOtherObj != p_Object )
 					{
 						p_Object->isNearby(*theOtherObj);
@@ -108,7 +108,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
-	std::vector<CObject*>::reverse_iterator obj;
+	std::vector<CSpriteObject*>::reverse_iterator obj;
 
 	// Draw all the sprites but no player
 	for( obj=m_ObjectPtr.rbegin() ;
@@ -140,7 +140,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
 	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
 	{
-		m_ObjectPtr.push_back( const_cast<CObject*>(ev->pObject) );
+		m_ObjectPtr.push_back( const_cast<CSpriteObject*>(ev->pObject) );
 		EventContainer.pop_Event();
 	}
 

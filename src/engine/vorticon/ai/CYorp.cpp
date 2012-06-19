@@ -14,7 +14,7 @@
 
 CYorp::CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CObject(p_map,x,y, OBJ_YORP),
+CSpriteObject(p_map,x,y, OBJ_YORP),
 m_hardmode(g_pBehaviorEngine->mDifficulty > NORMAL),
 m_vec_Player(mp_vec_Player),
 state(YORP_LOOK),
@@ -31,7 +31,7 @@ movedir(LEFT)
 	canbezapped = true;
 
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
-		HealthPoints++;
+		mHealthPoints++;
 }
 
 void CYorp::process()
@@ -39,7 +39,7 @@ void CYorp::process()
 	if (!hasbeenonscreen) return;
 
 	// did the poor guy get shot?
-	if( HealthPoints <= 0 && state != YORP_DYING )
+	if( mHealthPoints <= 0 && state != YORP_DYING )
 	{
 		// what'd you kill an innocent yorp for, you bastard!
 		state = YORP_DYING;
@@ -203,7 +203,7 @@ void CYorp::processDying()
 	}
 }
 
-void CYorp::getTouchedBy(CObject &theObject)
+void CYorp::getTouchedBy(CSpriteObject &theObject)
 {
 	if(theObject.m_type == OBJ_PLAYER)
 	{

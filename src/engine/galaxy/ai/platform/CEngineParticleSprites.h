@@ -11,11 +11,11 @@
 #ifndef CENGINEPARTICLESPRITES_H_
 #define CENGINEPARTICLESPRITES_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 
 namespace galaxy {
 
-class CEngineParticleSprites : public CObject {
+class CEngineParticleSprites : public CSpriteObject {
 public:
 	CEngineParticleSprites(	CMap *pmap,
 			const Uint32 x,

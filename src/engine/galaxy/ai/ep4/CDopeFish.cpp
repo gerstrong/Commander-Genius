@@ -25,7 +25,7 @@ const int DOPE_EAT_TIMER = 50;
 
 
 CDopeFish::CDopeFish(CMap *pmap, Uint32 x, Uint32 y) :
-CObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y, OBJ_NONE),
 m_eatTimer(0),
 m_burped(false)
 {
@@ -35,7 +35,7 @@ m_burped(false)
 	m_vDir = UP;
 }
 
-bool CDopeFish::isNearby(CObject &theObject)
+bool CDopeFish::isNearby(CSpriteObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
@@ -73,7 +73,7 @@ bool CDopeFish::isNearby(CObject &theObject)
 	return true;
 }
 
-void CDopeFish::getTouchedBy(CObject &theObject)
+void CDopeFish::getTouchedBy(CSpriteObject &theObject)
 {
 	if(theObject.dead)
 		return;

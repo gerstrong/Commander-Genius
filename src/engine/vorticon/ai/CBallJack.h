@@ -8,11 +8,11 @@
 #ifndef CBALLJACK_H_
 #define CBALLJACK_H_
 
-#include "common/CObject.h"
+#include "common/CSpriteObject.h"
 #include "common/CPlayer.h"
 #include <vector>
 
-class CBallJack : public CObject
+class CBallJack : public CSpriteObject
 {
 public:
 	CBallJack(CMap *pmap, Uint32 x, Uint32 y,
