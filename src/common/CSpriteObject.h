@@ -30,7 +30,8 @@
 
 
 // The bouncing box used by the object which is used to determine the collisions
-struct BoundingBox{
+struct BoundingBox
+{
 	unsigned int x1, x2, y1, y2;
 	BoundingBox(unsigned int l_x1 = 0, unsigned int l_x2 = 0,
 			unsigned int l_y1 = 0, unsigned int l_y2 = 0 ) :
@@ -48,10 +49,10 @@ struct BoundingBox{
 
 
 	unsigned int Width()
-	{	return (x2-x1);	}
+	{	return (x2-x1);		}
 
 	unsigned int Height()
-	{	return (y2-y1);	}
+	{	return (y2-y1);		}
 };
 
 
@@ -261,6 +262,8 @@ public:
 	void processActionRoutine();
 
 	void draw();
+
+
 
 	virtual ~CSpriteObject();
 
