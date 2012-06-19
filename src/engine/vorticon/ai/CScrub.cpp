@@ -37,7 +37,6 @@ m_Player(Player)
 	walkframe = 0;
 	animtimer = 0;
 	inhibitfall = true;
-	needinit = false;
 	canbezapped = true;
 
 	performCollisions();
@@ -349,7 +348,6 @@ void CScrub::fall()
 	if (blockedd)
 	{
 		inhibitfall = true;
-		needinit = false;
 		canbezapped = true;
 
 		performCollisions();

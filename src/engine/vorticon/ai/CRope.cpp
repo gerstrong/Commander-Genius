@@ -17,7 +17,6 @@ CSpriteObject(p_map, x, y, OBJ_ROPE)
 	canbezapped = 1;
 	inhibitfall = true;
 	sprite = OBJ_ROPE_DEFSPRITE;
-	needinit = false;
 	solid = false;
 	droptimer = 0;
 }

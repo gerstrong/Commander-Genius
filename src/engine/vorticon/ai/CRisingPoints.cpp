@@ -20,7 +20,6 @@ CSpriteObject(p_map, x, y, OBJ_GOTPOINTS)
 	inhibitfall = true;
 	solid = false;
 	honorPriority = false;
-	needinit = 0;
 }
 
 

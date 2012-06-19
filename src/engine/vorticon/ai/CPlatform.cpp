@@ -24,7 +24,6 @@ m_Player(Player)
 
 	blockedl = blockedr = false;
 	inhibitfall = 1;
-	needinit = 0;
 	canbezapped = 1;
 	SetAllCanSupportPlayer(1);
 }

@@ -25,7 +25,6 @@ CPlatform(p_map, x, y, Player)
 	blockedu = false;
 	blockedd = true;
 	inhibitfall = 1;
-	needinit = 0;
 	canbezapped = 1;
 	SetAllCanSupportPlayer(1);
 

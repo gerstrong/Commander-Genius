@@ -91,7 +91,6 @@ m_Object(Object)
 		dir = UP;
 		state = LEG_GO;
 		inhibitfall = 1;
-		needinit = false;
 		break;
 	case SE_MORTIMER_SPARK:
 		state = MSPARK_IDLE;
@@ -296,7 +295,6 @@ void CSectorEffector::se_mortimer_spark()
 						if (SE.m_index!=m_index)
 						{	// other sparks still exist
 							setype = SE_MORTIMER_RANDOMZAPS;
-							needinit = true;
 							return;
 						}
 					}
@@ -338,7 +336,6 @@ void CSectorEffector::se_mortimer_spark()
 					CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, DOWN);
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
-					newobject->needinit = false;
 					m_Object.push_back(newobject);
 				}
 
@@ -350,7 +347,6 @@ void CSectorEffector::se_mortimer_spark()
 					CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, DOWN);
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
-					newobject->needinit = false;
 					m_Object.push_back(newobject);
 				}
 
@@ -455,7 +451,6 @@ void CSectorEffector::se_mortimer_heart()
 				CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, DOWN);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
 				newobject->inhibitfall = true;
-				newobject->needinit = false;
 				m_Object.push_back(newobject);
 			}
 
@@ -492,7 +487,6 @@ void CSectorEffector::se_mortimer_zapsup()
 			CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, DOWN);
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->inhibitfall = true;
-			newobject->needinit = false;
 			m_Object.push_back(newobject);
 
 			if (destroytiles)
@@ -728,7 +722,6 @@ void CSectorEffector::se_mortimer_randomzaps()
 		CRay *newobject = new CRay(mp_Map,x<<CSF, y<<CSF, RIGHT );
 		newobject->state = CRay::RAY_STATE_SETZAPZOT;
 		newobject->inhibitfall = true;
-		newobject->needinit = false;
 		m_Object.push_back(newobject);
 
 		timer = TIME_BETWEEN_ZAPS;

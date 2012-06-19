@@ -20,7 +20,9 @@ class CTantalusRay : public CFinale
 {
 public:
 	CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-				const SmartPointer<CMap> &pMap, std::vector<CSpriteObject*> &vect_obj, CSpriteObjectAI &objectai);
+				const SmartPointer<CMap> &pMap,
+				std::vector<CSpriteObject*> &vect_obj,
+				SmartPointer<CSpriteObjectAI> &objectai);
 
 	void process();
 
@@ -32,7 +34,7 @@ private:
 	int m_alternate_sprite;
 	CMessageBox *mp_MessageBox;
 	CSpriteObject *mp_ShootObject;
-	CSpriteObjectAI &m_objectai;
+	SmartPointer<CSpriteObjectAI> mObjectAI;
 	Uint32 m_timer;
 	CBitmap *mp_Bitmap;
 

@@ -32,12 +32,14 @@ const int EARTHCHUNK_SMALL_UP = 68;
 const int EARTHCHUNK_SMALL_DN = 70;
 
 CTantalusRay::CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-								const SmartPointer<CMap> &pMap, std::vector<CSpriteObject*> &vect_obj, CSpriteObjectAI &objectai) :
+								const SmartPointer<CMap> &pMap,
+								std::vector<CSpriteObject*> &vect_obj,
+								SmartPointer<CSpriteObjectAI> &objectai) :
 CFinale(messageBoxes, pMap, vect_obj),
 m_mustsetup(true),
 m_alternate_sprite(0),
 mp_MessageBox(new CMessageBoxVort("Uh-Oh")),
-m_objectai(objectai),
+mObjectAI(objectai),
 m_timer(0),
 mp_Bitmap(g_pGfxEngine->getBitmap("GAMEOVER")),
 mp_process(&CTantalusRay::shootray)
@@ -61,7 +63,7 @@ void CTantalusRay::process()
 	{
 		(this->*mp_process)();
 
-		m_objectai.process();
+		mObjectAI->process();
 	}
 }
 

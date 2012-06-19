@@ -38,7 +38,6 @@ m_Player(Player)
 	desty = 0;
 	inhibitfall = 1;
 	canbezapped = 0;
-	needinit = 0;
 
 	for(size_t i=0;i<=NESSIETRAILLEN;i++)
 	{
