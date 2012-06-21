@@ -88,6 +88,8 @@ public:
 
 protected:
 
+	bool checkMapBoundaryR(const int x2);
+
 	std::vector<CSpriteObject*>& m_ObjectPtrs;
 
 	Sint16 m_playcontrol[PA_MAX_ACTIONS];

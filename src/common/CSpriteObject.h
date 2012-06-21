@@ -29,6 +29,8 @@
 #include "objenums.h"
 
 
+const int COLISION_RES = (1<<STC);
+
 // The bouncing box used by the object which is used to determine the collisions
 struct BoundingBox{
 	unsigned int x1, x2, y1, y2;
@@ -218,6 +220,8 @@ public:
 	int checkSolidL( int x1, int x2, int y1, int y2);
 	int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
+
+	virtual bool checkMapBoundaryR(const int x2);
 
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);

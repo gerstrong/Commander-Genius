@@ -86,6 +86,8 @@ public:
 	int pollLevelTrigger();
 	void getShotByRay(object_t &obj_type);
 
+	bool checkMapBoundaryR(const int x2);
+
 	// Used for both situations
 	void processCamera();
 	void InertiaAndFriction_X();

@@ -343,6 +343,13 @@ void CPlayerBase::kill()
 }
 
 
+bool CPlayerBase::checkMapBoundaryR(const int x2)
+{
+	if( solid && x2 >= (int)((mp_Map->m_width-1)<<CSF) )
+		return true;
+
+	return false;
+}
 
 
 

@@ -10,3 +10,4 @@
 CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type) :
 CSpriteObject(pmap, x, y, type)
 {}
+

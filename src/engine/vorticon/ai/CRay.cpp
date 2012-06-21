@@ -111,18 +111,18 @@ void CRay::moveinAir()
 {
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	CSprite &raysprite = g_pGfxEngine->getSprite(sprite);
-	bool hitlethal;
+	//bool hitlethal; // TODO: Why is this here?
 
 	if (m_Direction == RIGHT)
 	{
 		// don't go through bonklethal tiles, even if they're not solid
 		// (for the arms on mortimer's machine)
-		if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, (getYPosition()>>CSF)+1)).behaviour == 1)
+		/*if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, (getYPosition()>>CSF)+1)).behaviour == 1)
 			hitlethal = true;
 		else if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
 			hitlethal = true;
 		else
-			hitlethal = false;
+			hitlethal = false;*/
 
 		if (blockedr)
 		{
@@ -135,12 +135,12 @@ void CRay::moveinAir()
 	}
 	else if (m_Direction == LEFT)
 	{
-		if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, (getYPosition()+1)>>CSF)).behaviour == 1)
+		/*if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, (getYPosition()+1)>>CSF)).behaviour == 1)
 			hitlethal = true;
 		else if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
 			hitlethal = true;
 		else
-			hitlethal = false;
+			hitlethal = false;*/
 
 		if (blockedl)
 		{

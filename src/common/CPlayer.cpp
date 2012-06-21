@@ -806,6 +806,15 @@ void CPlayer::freeze()
 	playcontrol[PA_X] = 0;
 }
 
+
+bool CPlayer::checkMapBoundaryR(const int x2)
+{
+	if( solid && x2 >= (int)((mp_Map->m_width-2)<<CSF) )
+		return true;
+
+	return false;
+}
+
 bool CPlayer::checkObjSolid()
 {
 	supportedbyobject = false;
