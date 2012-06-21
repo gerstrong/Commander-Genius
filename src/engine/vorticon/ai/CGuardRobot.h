@@ -8,24 +8,24 @@
 #ifndef CGUARDROBOT_H_
 #define CGUARDROBOT_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "common/CPlayer.h"
 
 //reference to ../misc.cpp
 unsigned int rnd(void);
 
-class CGuardRobot : public CSpriteObject
+class CGuardRobot : public CVorticonSpriteObject
 {
 public:
 	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
-			 std::vector<CSpriteObject*>& Object);
+			 std::vector<CVorticonSpriteObject*>& Object);
 	void process();
 	void guard_fire();
-	void getTouchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 
 private:
 
-	std::vector<CSpriteObject*>& m_ObjectVect;
+	std::vector<CVorticonSpriteObject*>& m_ObjectVect;
 
 	enum{ WALK, TURN, WAIT, WAIT_LOOK, FIRE, LOOK } state;
 

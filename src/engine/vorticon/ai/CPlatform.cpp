@@ -14,7 +14,7 @@
 
 CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
-CSpriteObject(p_map, x, y, OBJ_PLATFORM),
+CVorticonSpriteObject(p_map, x, y, OBJ_PLATFORM),
 m_Player(Player)
 {
 	animframe = 0;
@@ -96,7 +96,7 @@ void CPlatform::SetAllCanSupportPlayer(bool state)
 	}
 }
 
-void CPlatform::getTouchedBy(CSpriteObject &theObject)
+void CPlatform::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	// push player horizontally
 	if( theObject.m_type == OBJ_PLAYER )

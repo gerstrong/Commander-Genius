@@ -7,8 +7,8 @@
 
 CVortiMom::CVortiMom(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player,
-		std::vector<CSpriteObject*>& Object) :
-CSpriteObject(p_map, x, y, OBJ_MOTHER),
+		std::vector<CVorticonSpriteObject*>& Object) :
+CVorticonSpriteObject(p_map, x, y, OBJ_MOTHER),
 m_Player(Player),
 m_Object(Object)
 {

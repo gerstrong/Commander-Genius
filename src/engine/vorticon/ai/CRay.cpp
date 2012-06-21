@@ -1,4 +1,4 @@
-#include "CSpriteObjectAI.h"
+#include "CVorticonSpriteObjectAI.h"
 #include "sdl/sound/CSound.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
@@ -12,7 +12,7 @@
 CRay::CRay(CMap *p_map, Uint32 x, Uint32 y,
 		direction_t dir, object_t byType, size_t byID,
 		size_t speed) :
-CSpriteObject(p_map, x, y, OBJ_RAY),
+CVorticonSpriteObject(p_map, x, y, OBJ_RAY),
 m_Direction(dir),
 m_speed(speed)
 {
@@ -52,7 +52,7 @@ void CRay::setSpeed(size_t speed)
 
 void CRay::process()
 {
-	std::vector<CSpriteObject*>::iterator it_obj;
+	std::vector<CVorticonSpriteObject*>::iterator it_obj;
 	switch(state)
 	{
 		case RAY_STATE_FLY:
@@ -164,7 +164,7 @@ void CRay::moveinAir()
 	}
 }
 
-void CRay::getTouchedBy(CSpriteObject &theObject)
+void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if( !theObject.dead && !theObject.dying )
 	{

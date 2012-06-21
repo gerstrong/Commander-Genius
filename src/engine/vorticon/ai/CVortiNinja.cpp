@@ -19,7 +19,7 @@
 unsigned int rnd(void);
 
 CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player) :
-CSpriteObject(p_map, x, y, OBJ_NINJA),
+CVorticonSpriteObject(p_map, x, y, OBJ_NINJA),
 longjump(false),
 m_Player(Player)
 {

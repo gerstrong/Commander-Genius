@@ -1,4 +1,4 @@
-#include "CSpriteObjectAI.h"
+#include "CVorticonSpriteObjectAI.h"
 #include "misc.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
@@ -9,7 +9,7 @@
 // depending on levelcontrol.Episode).
 CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
 		Uint32 y, char hp, object_t objtype) :
-	CSpriteObject(p_map, x, y, objtype),
+	CVorticonSpriteObject(p_map, x, y, objtype),
 	m_Dark(mp_Map->m_Dark),
 	m_Player(m_vec_Player)
 {
@@ -250,7 +250,7 @@ void CVorticon::initiateJump() {
 	state = VORT_JUMP;
 }
 
-void CVorticon::getTouchedBy(CSpriteObject &theObject) {
+void CVorticon::getTouchedBy(CVorticonSpriteObject &theObject) {
 	if (theObject.m_type == OBJ_PLAYER)
 	{
 		if (state != VORT_DYING and !dead and state != VORT2_DYING)

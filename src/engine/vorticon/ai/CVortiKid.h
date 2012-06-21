@@ -8,7 +8,7 @@
 #ifndef CVORTIKID_H_
 #define CVORTIKID_H_
 
-#include "../../../common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "../../../common/CPlayer.h"
 #include <vector>
 
@@ -16,7 +16,7 @@ enum vort_baby_actions{
 	BABY_RUN, BABY_DYING
 };
 
-class CVortikid : public CSpriteObject
+class CVortikid : public CVorticonSpriteObject
 {
 public:
 	CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,

@@ -1,12 +1,12 @@
 /*
- * CMapLoaderGalaxy.h
+ * CVorticonMapLoaderGalaxy.h
  *
  *  Created on: 29.05.2010
  *      Author: gerstrong
  */
 
-#ifndef CMAPLOADERGALAXY_H_
-#define CMAPLOADERGALAXY_H_
+#ifndef CVorticonMapLoaderGALAXY_H_
+#define CVorticonMapLoaderGALAXY_H_
 
 #include "fileio/CExeFile.h"
 #include "fileio/TypeDefinitions.h"
@@ -22,10 +22,10 @@
 namespace galaxy
 {
 
-class CMapLoaderGalaxy
+class CVorticonMapLoaderGalaxy
 {
 public:
-	CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CSpriteObject*>& ObjectPtr,
+	CVorticonMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CSpriteObject*>& ObjectPtr,
 			CInventory &Inventory, stCheat &Cheatmode);
 	size_t getMapheadOffset();
 	bool gotoSignature(std::ifstream &MapFile);
@@ -47,4 +47,4 @@ private:
 
 }
 
-#endif /* CMAPLOADERGALAXY_H_ */
+#endif /* CVorticonMapLoaderGALAXY_H_ */

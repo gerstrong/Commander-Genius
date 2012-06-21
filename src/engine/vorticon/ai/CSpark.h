@@ -8,13 +8,13 @@
 #ifndef CSPARK_H_
 #define CSPARK_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "engine/spritedefines.h"
 
-class CSpark : public CSpriteObject {
+class CSpark : public CVorticonSpriteObject {
 public:
 	CSpark(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CSpriteObject*>& Object);
+			std::vector<CVorticonSpriteObject*>& Object);
 	void process();
 
 private:
@@ -26,7 +26,7 @@ private:
 	unsigned int frame;
 	int blowx,blowy;
 
-	std::vector<CSpriteObject*>& m_Object;
+	std::vector<CVorticonSpriteObject*>& m_Object;
 };
 
 #endif /* CSPARK_H_ */

@@ -26,9 +26,9 @@ EC_DOWNLEFT,
 EC_DOWNRIGHT
 };
 
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 
-class CEarthChunk : public CSpriteObject
+class CEarthChunk : public CVorticonSpriteObject
 {
 public:
 	CEarthChunk(CMap *pmap, Uint32 x, Uint32 y);

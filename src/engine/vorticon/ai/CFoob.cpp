@@ -3,7 +3,7 @@
 #include "graphics/CGfxEngine.h"
 
 CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player):
-CSpriteObject(p_map,x,y, OBJ_FOOB),
+CVorticonSpriteObject(p_map,x,y, OBJ_FOOB),
 m_Player(Player)
 {
 	state = FOOB_WALK;
@@ -206,7 +206,7 @@ void CFoob::process()
 	}
 }
 
-void CFoob::getTouchedBy(CSpriteObject &theObject)
+void CFoob::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if(theObject.m_type == OBJ_PLAYER)
 	{

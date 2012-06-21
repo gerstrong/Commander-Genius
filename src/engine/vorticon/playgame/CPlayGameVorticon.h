@@ -14,11 +14,11 @@
 #include "fileio/CSaveGameController.h"
 #include "common/CPlayer.h"
 #include "common/CTileProperties.h"
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "common/CMap.h"
 #include "common/options.h"
 #include "common/CHUD.h"
-#include "engine/vorticon/ai/CSpriteObjectAI.h"
+#include "engine/vorticon/ai/CVorticonSpriteObjectAI.h"
 #include "engine/vorticon/ai/CEGABitmap.h"
 #include "engine/vorticon/finale/CEndingEp1.h"
 #include "engine/vorticon/finale/CEndingEp2.h"
@@ -106,12 +106,12 @@ private:
 
 	SmartPointer<CMap> mMap;
 	std::vector<CPlayer> m_Player;
-	SmartPointer<CSpriteObjectAI> mpObjectAI;
+	SmartPointer<CVorticonSpriteObjectAI> mpObjectAI;
 	SmartPointer<CFinale> mpFinale;
 	SmartPointer<CEGABitmap> mpGameoverBmp;
 	std::list< SmartPointer<CMessageBoxVort> > mMessageBoxes;
 	bool m_showKeensLeft;
-	std::vector<CSpriteObject*> m_Object;
+	std::vector<CVorticonSpriteObject*> m_Object;
 	SmartPointer<CHUD> mp_HUD;
 	SmartPointer<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;

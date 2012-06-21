@@ -8,11 +8,11 @@
 #ifndef CPLATFORM_H_
 #define CPLATFORM_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "common/CPlayer.h"
 #include <vector>
 
-class CPlatform : public CSpriteObject
+class CPlatform : public CVorticonSpriteObject
 {
 public:
 	CPlatform(CMap *p_map, Uint32 x, Uint32 y,
@@ -21,7 +21,7 @@ public:
 	void process();
 
 	void SetAllCanSupportPlayer(bool state);
-	void getTouchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 
 protected:
 	unsigned char state;
@@ -40,7 +40,7 @@ public:
 	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y,
 			std::vector<CPlayer>& Player);
 	void process();
-	void getTouchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 };
 
 #endif /* CPLATFORM_H_ */

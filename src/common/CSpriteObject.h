@@ -9,8 +9,8 @@
  */
 
 
-#ifndef COBJECT_H_
-#define COBJECT_H_
+#ifndef __CSPRITEOBJECT_H_
+#define __CSPRITEOBJECT_H_
 
 #include "engine/CEventContainer.h"
 #include "ActionFormat.h"
@@ -110,8 +110,6 @@ public:
 	
 	bool dead, dying;
 	
-	bool needinit; // Deprecated. Is only there so savegame mode still works.
-
 	bool m_canturnaround;
 
 	// This is used for action format only
@@ -264,6 +262,7 @@ public:
 
 	virtual ~CSpriteObject();
 
+
 protected:
 	CMap *mp_Map;
 
@@ -277,6 +276,7 @@ protected:
 	ActionFormatType m_Action;
 
 	Uint8 transluceny;
+
 };
 
-#endif /* COBJECT_H_ */
+#endif // __CSPRITEOBJECT_H_

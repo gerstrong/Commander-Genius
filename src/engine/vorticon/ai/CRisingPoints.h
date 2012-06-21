@@ -8,9 +8,9 @@
 #ifndef CRISINGPOINTS_H_
 #define CRISINGPOINTS_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 
-class CRisingPoints : public CSpriteObject
+class CRisingPoints : public CVorticonSpriteObject
 {
 public:
 	CRisingPoints(CMap *p_map, Uint32 x, Uint32 y);

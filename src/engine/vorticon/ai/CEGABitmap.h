@@ -11,18 +11,15 @@
 #define CEGABITMAP_H_
 
 #include "graphics/CBitmap.h"
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include <SDL.h>
 
-class CEGABitmap : public CSpriteObject
+class CEGABitmap : public CVorticonSpriteObject
 {
 public:
 	CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap);
 	void setPos(int px, int py);
 	void process();
-	virtual ~CEGABitmap();
-
-	//int scrx, scry;
 
 private:
 	SDL_Surface *mp_Surface;

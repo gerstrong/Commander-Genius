@@ -10,7 +10,7 @@
 
 #include <SDL.h>
 #include "inventory.h"
-#include "CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "CMap.h"
 #include "CStatusScreen.h"
 #include "Playerdefines.h"
@@ -32,7 +32,7 @@ enum level_triggers
 ///
 // Class definition starts here!
 ///
-class CPlayer : public CSpriteObject
+class CPlayer : public CVorticonSpriteObject
 {
 public:
 
@@ -44,7 +44,7 @@ public:
 
 	CPlayer(const char &Episode, short &Level,
 			 bool *mp_level_completed,
-			 std::vector<CSpriteObject*> &m_Object, CMap &map);
+			 std::vector<CVorticonSpriteObject*> &m_Object, CMap &map);
 	void setupCameraObject();
 	void setDatatoZero();
 	void setDefaultStartValues();

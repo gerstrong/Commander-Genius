@@ -9,7 +9,7 @@
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 void CCredits::init()
@@ -17,7 +17,7 @@ void CCredits::init()
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap = new CMap;
 
-	CMapLoader Maploader(mpMap);
+	CVorticonMapLoader Maploader(mpMap);
 	
 	Maploader.load( ExeFile.getEpisode(), 90, ExeFile.getDataDirectory() );
 	mpMap->gotoPos( 104<<4, 16 );

@@ -8,7 +8,7 @@
 #ifndef CBUTLER_H_
 #define CBUTLER_H_
 
-#include "../../../common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "../../../common/CPlayer.h"
 #include <vector>
 
@@ -32,13 +32,13 @@
 #define BUTLER_TURNRIGHT_FRAME   97
 
 
-class CButler : public CSpriteObject
+class CButler : public CVorticonSpriteObject
 {
 public:
 	CButler(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CPlayer> &PlayerVect);
 	void process();
-	void getTouchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 
 private:
 	// AI for "butler" robot (ep1)

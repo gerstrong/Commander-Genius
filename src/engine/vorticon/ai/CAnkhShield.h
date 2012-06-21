@@ -23,7 +23,8 @@
 #define PLAY_ANKH_TIME      (ANKH_STAGE1_TIME+ANKH_STAGE2_TIME+ANKH_STAGE3_TIME)
 // these correspond stage 1,2 and 3 respectively
 
-class CAnkhShield :public CSpriteObject{
+class CAnkhShield : public CVorticonSpriteObject
+{
 public:
 	CAnkhShield(CPlayer &attachedPlayer);
 	void process();

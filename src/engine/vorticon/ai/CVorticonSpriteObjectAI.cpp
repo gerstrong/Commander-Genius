@@ -1,16 +1,18 @@
 /*
- * CSpriteObjectAI.cpp
+ * CVorticonSpriteObjectAI.cpp
  *
  *  Created on: 26.10.2009
  *      Author: gerstrong
  */
 
-#include "CSpriteObjectAI.h"
+#include "CVorticonSpriteObjectAI.h"
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 
-CSpriteObjectAI::CSpriteObjectAI(CMap *p_map, std::vector<CSpriteObject*> &objvect, std::vector<CPlayer> &Player,
-					 int NumPlayers, int episode, int level, bool &dark) :
+CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(CMap *p_map, std::vector<CVorticonSpriteObject*> &objvect,
+					 std::vector<CPlayer> &Player,
+					 int NumPlayers, int episode,
+					 int level, bool &dark) :
 m_Objvect(objvect),
 m_Player(Player),
 m_dark(dark)
@@ -25,11 +27,11 @@ m_dark(dark)
 //////////////////
 // AI Processes //
 //////////////////
-void CSpriteObjectAI::process()
+void CVorticonSpriteObjectAI::process()
 {
 	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
 	{
-		CSpriteObject &object = *m_Objvect.at(i);
+		CVorticonSpriteObject &object = *m_Objvect.at(i);
 
 		if( object.checkforScenario() )
 		{
@@ -59,7 +61,7 @@ void CSpriteObjectAI::process()
 
 				object.process();
 
-				std::vector<CSpriteObject*>::iterator theOther = m_Objvect.begin();
+				std::vector<CVorticonSpriteObject*>::iterator theOther = m_Objvect.begin();
 				for( ; theOther != m_Objvect.end() ; theOther++ )
 				{
 					if( *theOther != &object )
@@ -76,7 +78,7 @@ void CSpriteObjectAI::process()
 	}
 
 	// Try always to remove the last objects if they aren't used anymore!
-	CSpriteObject* p_object;
+	CVorticonSpriteObject* p_object;
 	while(m_Objvect.size()>0)
 	{
 		p_object = m_Objvect.at( m_Objvect.size()-1 );
@@ -93,7 +95,7 @@ void CSpriteObjectAI::process()
 	else m_gunfiretimer=0;
 }
 
-void CSpriteObjectAI::SetAllCanSupportPlayer(CSpriteObject &object, bool state)
+void CVorticonSpriteObjectAI::SetAllCanSupportPlayer(CVorticonSpriteObject &object, bool state)
 {
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
@@ -111,19 +113,19 @@ void CSpriteObjectAI::SetAllCanSupportPlayer(CSpriteObject &object, bool state)
 ///
 // Cleanup Routine
 ///
-void CSpriteObjectAI::deleteAllObjects()
+void CVorticonSpriteObjectAI::deleteAllObjects()
 {
 	// The real delete happens, when all the AI is done
 	// If the last object was deleted, throw it out of the list
 	if(!m_Objvect.empty())
 	{
-		std::vector<CSpriteObject*>::iterator obj=m_Objvect.begin();
+		std::vector<CVorticonSpriteObject*>::iterator obj=m_Objvect.begin();
 		for( ; obj != m_Objvect.end() ; obj++ )
 			delete *obj;
 		m_Objvect.clear();
 	}
 }
 
-CSpriteObjectAI::~CSpriteObjectAI() {
+CVorticonSpriteObjectAI::~CVorticonSpriteObjectAI() {
 	deleteAllObjects();
 }

@@ -130,7 +130,7 @@ void CPlatformVert::process()
 	}
 }
 
-void CPlatformVert::getTouchedBy(CSpriteObject &theObject)
+void CPlatformVert::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	// push player horizontally
 	if( theObject.m_type == OBJ_PLAYER )

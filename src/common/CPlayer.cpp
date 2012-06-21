@@ -25,15 +25,15 @@
 ///
 CPlayer::CPlayer(const char &Episode, short &Level,
 				 bool *mp_level_completed,
-				 std::vector<CSpriteObject*> &m_Object, CMap &map) :
-CSpriteObject(&map, 0, 0, OBJ_PLAYER),
+				 std::vector<CVorticonSpriteObject*> &m_Object, CMap &map) :
+CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER),
 m_episode(Episode),
 m_level(Level),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
 mp_levels_completed(mp_level_completed),
 mp_option(g_pBehaviorEngine->m_option)
 {
-	mp_object = &m_Object;
+	//mp_object = &m_Object;
 	canbezapped = true;
 	m_index = 0;
 

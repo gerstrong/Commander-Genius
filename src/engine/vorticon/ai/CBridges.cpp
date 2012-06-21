@@ -14,7 +14,7 @@ unsigned int CBridges::m_bgtile = 0;
 const int TILE_EXTENDING_PLATFORM = 270;
 
 CBridges::CBridges(CMap *pmap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy):
-CSpriteObject(pmap, x, y, OBJ_BRIDGE),
+CVorticonSpriteObject(pmap, x, y, OBJ_BRIDGE),
 m_state(EXTEND),
 m_platx(platx),
 m_platy(platy),

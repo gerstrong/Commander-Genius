@@ -1,13 +1,13 @@
-#include "CSpriteObjectAI.h"
+#include "CVorticonSpriteObjectAI.h"
 #include "engine/spritedefines.h"
 #include "sdl/sound/CSound.h"
 #include "CTank.h"
 #include "CRay.h"
 
 CTank::CTank(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player, std::vector<CSpriteObject*>& Object,
+		std::vector<CPlayer>& Player, std::vector<CVorticonSpriteObject*>& Object,
 		object_t objtype) :
-CSpriteObject(p_map, x, y, objtype),
+CVorticonSpriteObject(p_map, x, y, objtype),
 m_Player(Player),
 m_Object(Object)
 {
@@ -185,7 +185,7 @@ void CTank::process()
 	}
 }
 
-void CTank::getTouchedBy(CSpriteObject &theObject)
+void CTank::getTouchedBy(CVorticonSpriteObject &theObject)
 {   // push keen
 	if( theObject.m_type == OBJ_PLAYER )
 	{

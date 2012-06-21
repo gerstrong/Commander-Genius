@@ -1,12 +1,12 @@
 /*
- * CMapLoader.h
+ * CVorticonMapLoader.h
  *
  *  Created on: 09.10.2009
  *      Author: gerstrong
  */
 
-#ifndef CMAPLOADER_H_
-#define CMAPLOADER_H_
+#ifndef CVorticonMapLoader_H_
+#define CVorticonMapLoader_H_
 
 #include "CMap.h"
 #include "CPlayer.h"
@@ -18,10 +18,10 @@
 #include <string>
 #include <vector>
 
-class CMapLoader
+class CVorticonMapLoader
 {
 public:
-	CMapLoader(SmartPointer<CMap> &map,
+	CVorticonMapLoader(SmartPointer<CMap> &map,
 				std::vector<CPlayer> *p_PlayerVect = NULL);
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true, bool stategame=false );
@@ -33,11 +33,11 @@ public:
 	
 	bool m_checkpointset;
 	bool m_NessieAlreadySpawned;
-	std::vector<CSpriteObject*> *mp_objvect;
+	std::vector<CVorticonSpriteObject*> *mp_objvect;
 
 private:
 	SmartPointer<CMap>& mpMap;
 	std::vector<CPlayer> *mp_vec_Player;
 };
 
-#endif /* CMAPLOADER_H_ */
+#endif /* CVorticonMapLoader_H_ */

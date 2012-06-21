@@ -1,11 +1,11 @@
 /*
- * CMapLoader.cpp
+ * CVorticonMapLoader.cpp
  *
  *  Created on: 09.10.2009
  *      Author: gerstrong
  */
 
-#include "CMapLoader.h"
+#include "CVorticonMapLoader.h"
 #include <iostream>
 #include <fstream>
 #include "FindFile.h"
@@ -42,7 +42,7 @@
 #include "engine/vorticon/ai/CIceCannon.h"
 #include "engine/vorticon/ai/CSpark.h"
 
-CMapLoader::CMapLoader( SmartPointer<CMap> &map,
+CVorticonMapLoader::CVorticonMapLoader( SmartPointer<CMap> &map,
 						std::vector<CPlayer> *p_PlayerVect ) :
 mpMap(map),
 mp_vec_Player(p_PlayerVect)
@@ -53,7 +53,7 @@ mp_vec_Player(p_PlayerVect)
 }
 
 // Loads the map into the memory
-bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
+bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
 {
 	std::string levelname = "level";
 	if(level < 10) levelname += "0";
@@ -144,7 +144,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 
 	if(mp_objvect && stategame == false)
 	{
-		std::vector<CSpriteObject*>::iterator obj = mp_objvect->begin();
+		std::vector<CVorticonSpriteObject*>::iterator obj = mp_objvect->begin();
 		for( ; obj != mp_objvect->end() ; obj++ )
 		{
 			delete *obj;
@@ -188,7 +188,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	return true;
 }
 
-void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
+void CVorticonMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 {
 	// Special cases. Those happen normally, when levels are replayed.
 	// For example if one player has battery, the level won't show that item
@@ -197,7 +197,7 @@ void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 	mpMap->setTile(x, y, t);
 }
 
-void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
+void CVorticonMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
 	// This function add sprites on the map. Most of the objects are invisible.
 	// TODO : Please convert this into ifs. There are more conditions than just switch.agree
@@ -292,7 +292,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 	}
 }
 
-void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
+void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
 	mpMap->m_objectlayer[x][y] = t;
 
@@ -316,7 +316,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 		}
 		else
 		{
-			CSpriteObject *enemyobject = NULL;
+			CVorticonSpriteObject *enemyobject = NULL;
 
 			switch(t)
 			{
@@ -494,7 +494,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
  * \param curmapY		Y-Coordinate of the map not CSFed
  * \param episode		Episode of the game
  */
-void CMapLoader::fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level)
+void CVorticonMapLoader::fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level)
 {
 	if( episode == 1 && level == 14 )
 	{

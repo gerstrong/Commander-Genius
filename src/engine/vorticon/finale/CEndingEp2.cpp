@@ -11,14 +11,14 @@
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "common/Playerdefines.h"
 
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
 
 CEndingEp2::CEndingEp2(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-		const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CSpriteObject*> &Object) :
+		const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object) :
 CFinale(messageBoxes, pMap, Object),
 m_Player(Player)
 {
@@ -51,7 +51,7 @@ void CEndingEp2::HeadsForEarth()
 	{
 		//Initialization
 		std::string path = mpMap->m_gamepath;
-		CMapLoader MapLoader(mpMap, &m_Player);
+		CVorticonMapLoader MapLoader(mpMap, &m_Player);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
@@ -98,7 +98,7 @@ void CEndingEp2::LimpsHome()
 	if(m_mustsetup)
 	{	//Initialization
 		std::string path = mpMap->m_gamepath;
-		CMapLoader MapLoader(mpMap, &m_Player);
+		CVorticonMapLoader MapLoader(mpMap, &m_Player);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;

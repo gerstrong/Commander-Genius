@@ -15,7 +15,7 @@
 #include "StringUtils.h"
 #include "FindFile.h"
 #include "sdl/CVideoDriver.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 const int HIGHSCORETABLE_X = 1344;
@@ -76,7 +76,7 @@ void CHighScores::init()
 	
 	// Load the map for the background
 	mpMap = new CMap();
-	CMapLoader MapLoader(mpMap);
+	CVorticonMapLoader MapLoader(mpMap);
 	MapLoader.load(m_Episode, 90, m_DataDirectory, false);
 	
     mpMap->gotoPos(HIGHSCORETABLE_X, HIGHSCORETABLE_Y);

@@ -46,7 +46,7 @@ const unsigned int VORTELITE_WALK_ANIM_TIME = 6;
 const int PLAYER_DISTANCE = (6<<CSF); // distance the player should stay away, so Vortelite won't run.
 
 CVorticonElite::CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-		std::vector<CSpriteObject*> &mp_vec_Obj,
+		std::vector<CVorticonSpriteObject*> &mp_vec_Obj,
 		Uint32 x, Uint32 y ) :
 CVorticon(p_map,mp_vec_Player, x, y, 4, OBJ_VORTELITE),
 m_Object(mp_vec_Obj)
