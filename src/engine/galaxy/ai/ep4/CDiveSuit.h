@@ -8,11 +8,12 @@
 #ifndef CDIVESUIT_H_
 #define CDIVESUIT_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
-class CDiveSuit: public CSpriteObject {
+class CDiveSuit: public CGalaxySpriteObject
+{
 public:
 	CDiveSuit(CMap *pmap, Uint32 x, Uint32 y);
 

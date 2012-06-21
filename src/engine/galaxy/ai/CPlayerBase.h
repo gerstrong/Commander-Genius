@@ -15,7 +15,7 @@
 #ifndef CPLAYERBASE_H_
 #define CPLAYERBASE_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 #include "common/Playerdefines.h"
 #include "engine/CEvent.h"
 #include "common/Cheat.h"
@@ -29,7 +29,7 @@ namespace galaxy
 #define A_KEEN_DIE				29
 
 
-class CPlayerBase : public CSpriteObject
+class CPlayerBase : public CGalaxySpriteObject
 {
 public:
 	/**
@@ -88,7 +88,9 @@ public:
 
 protected:
 
+	bool checkMapBoundaryL(const int x1);
 	bool checkMapBoundaryR(const int x2);
+	bool checkMapBoundaryU(const int y1);
 
 	std::vector<CSpriteObject*>& m_ObjectPtrs;
 

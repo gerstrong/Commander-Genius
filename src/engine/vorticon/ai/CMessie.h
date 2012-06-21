@@ -26,6 +26,7 @@ public:
 	void process();
 	void move_nessie();
 	void nessie_find_next_checkpoint();
+	void processFalling() {}
 //private:
 
 	char state;

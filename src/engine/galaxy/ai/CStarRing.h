@@ -11,16 +11,17 @@
 #ifndef CSTARRING_H_
 #define CSTARRING_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy
 {
 
 const unsigned int STARRING_SPRITE = 40;
 
-class CStarRing : public CSpriteObject {
+class CStarRing : public CGalaxySpriteObject
+{
 public:
-	CStarRing(CMap *pmap, Uint32 x, Uint32 y, object_t type);
+	CStarRing(CMap *pmap, Uint32 x, Uint32 y);
 
 private:
 	void process();

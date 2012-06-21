@@ -17,7 +17,7 @@ const int MAX_ANIMATION_TIMER = 20;
 
 CSpriteItem::CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
 		std::vector<CSpriteObject*>& ObjectPtrs, Uint32 sprite) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
+CGalaxySpriteObject(pmap, x, y),
 m_ObjectPtrs(ObjectPtrs)
 {
 	m_index = sprite;

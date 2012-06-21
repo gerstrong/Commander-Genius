@@ -12,12 +12,13 @@
 #ifndef CMIRAGIA_H_
 #define CMIRAGIA_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 #include "CVec.h"
 
 namespace galaxy {
 
-class CMiragia : public CSpriteObject {
+class CMiragia : public CGalaxySpriteObject
+{
 public:
 	CMiragia(CMap *pmap, const VectorD2<Uint32> &Location);
 

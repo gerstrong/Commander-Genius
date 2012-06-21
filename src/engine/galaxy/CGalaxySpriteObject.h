@@ -12,7 +12,8 @@
 
 class CGalaxySpriteObject: public CSpriteObject
 {
-	CGalaxySpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
+public:
+	CGalaxySpriteObject(CMap *pmap, Uint32 x, Uint32 y);
 };
 
 #endif /* CGALAXYSPRITEOBJECT_H_ */

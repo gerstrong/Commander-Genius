@@ -69,9 +69,8 @@ struct ObjMove : public CEvent
 class CSpriteObject
 {
 public:
-	CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
+	CSpriteObject(CMap *pmap, Uint32 x, Uint32 y);
 	
-	object_t m_type;        		// yorp, vorticon, etc.
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
 	char mHealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;
@@ -126,14 +125,11 @@ public:
 	// This container will held the triggered events of the object
 	CEventContainer m_EventCont;
 
-	void setupObjectType(int Episode);
 	void calcBoundingBoxes();
 	void performCollisionsSameBox();
 	void performCollisions();
 	void setScrPos( int px, int py );
-	bool calcVisibility();
-	bool checkforScenario();
-
+	virtual bool calcVisibility();
 
 	/**
 	 * \description This will verify whether object has to fall or not.
@@ -221,7 +217,10 @@ public:
 	int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 
+	virtual bool checkMapBoundaryL(const int x1);
 	virtual bool checkMapBoundaryR(const int x2);
+	virtual bool checkMapBoundaryU(const int y1);
+
 
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
@@ -241,7 +240,7 @@ public:
 	Uint32 getYDownPos();
 	Uint32 getYMidPos();
 	
-	void processFalling();
+	virtual void processFalling();
 	virtual void getTouchedBy(CSpriteObject &theObject) {};
 	virtual bool isNearby(CSpriteObject &theObject) { return true; }
 	virtual void getShotByRay(object_t &obj_type);

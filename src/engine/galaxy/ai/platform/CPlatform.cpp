@@ -10,8 +10,8 @@
 
 namespace galaxy {
 
-CPlatform::CPlatform(CMap *pmap, Uint32 x, Uint32 y, object_t type) :
-CSpriteObject(pmap, x, y, type),
+CPlatform::CPlatform(CMap *pmap, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, x, y),
 mp_CarriedPlayer(NULL)
 {
 	m_ActionBaseOffset = 0x316A;
@@ -90,5 +90,12 @@ void CPlatform::getTouchedBy(CSpriteObject &theObject)
 		}
 	}
 }
+
+
+bool CPlatform::calcVisibility()
+{
+	return true;
+}
+
 
 }

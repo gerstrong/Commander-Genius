@@ -9,11 +9,11 @@
 #ifndef CSKYPEST_H_
 #define CSKYPEST_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
-class CSkypest : public CSpriteObject {
+class CSkypest : public CGalaxySpriteObject {
 public:
 	CSkypest(CMap *pmap, Uint32 x, Uint32 y);
 

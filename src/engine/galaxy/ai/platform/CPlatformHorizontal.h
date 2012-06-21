@@ -13,7 +13,8 @@
 
 namespace galaxy {
 
-class CPlatformHorizontal : public CPlatform {
+class CPlatformHorizontal : public CPlatform
+{
 public:
 	CPlatformHorizontal(CMap *pmap, Uint32 x, Uint32 y);
 

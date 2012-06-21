@@ -275,6 +275,7 @@ bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, c
 		return false;
 }
 
+
 bool CSpriteObject::checkMapBoundaryR(const int x2)
 {
 	if( (Uint16)x2 > ((mp_Map->m_width)<<CSF) ) // Out of map?
@@ -285,11 +286,32 @@ bool CSpriteObject::checkMapBoundaryR(const int x2)
 	return false;
 }
 
+
+bool CSpriteObject::checkMapBoundaryL(const int x1)
+{
+	if( x1 == 0 ) // Out of map?
+	{
+		exists = false; // deactivate it!
+		return true;
+	}
+
+	return false;
+}
+
+
+bool CSpriteObject::checkMapBoundaryU(const int y1)
+{
+	if( y1 <= (1<<CSF) )
+		return true;
+
+	return false;
+}
+
+
 int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	int blocker;
-	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 
 	x2 += COLISION_RES;
 
@@ -316,7 +338,6 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 
 int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 {
-	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	int blocker;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
@@ -343,21 +364,7 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 			return 0;
 	}
 
-	// borders
-	if( m_type == OBJ_PLAYER && solid )
-	{
-		if( vorticon && (x1 <= (2<<CSF)) ) return 1;
-		else if( x1 <= (1<<CSF) ) return 1;
-	}
-	else
-	{
-		if( x1 == 0 )
-		{
-			exists = false; // Out of map?
-			return 1;
-		}
-	}
-	return 0;
+	return checkMapBoundaryL(x1) ? 1 : 0;
 }
 
 int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
@@ -417,10 +424,7 @@ int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 		}
 	}
 
-	if( y1 <= ( ((m_type == OBJ_PLAYER) ? 2 : 1)<<CSF) )
-		return 1;
-
-	return 0;
+	return checkMapBoundaryU(y1) ? 1 : 0;
 }
 
 int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )

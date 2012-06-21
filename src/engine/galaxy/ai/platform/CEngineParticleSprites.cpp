@@ -16,7 +16,7 @@ CEngineParticleSprites::CEngineParticleSprites(	CMap *pmap,
 												const Uint32 y,
 												const bool vert,
 												const bool leftside ) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
+CGalaxySpriteObject(pmap, x, y),
 m_vert(vert),
 m_timer(0)
 {

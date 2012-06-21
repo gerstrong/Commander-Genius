@@ -8,11 +8,12 @@
 #ifndef CDEVILSPRITE_H_
 #define CDEVILSPRITE_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
-class CDevilSprite: public CSpriteObject {
+class CDevilSprite: public CGalaxySpriteObject
+{
 public:
 	CDevilSprite(CMap *pmap, Uint32 x, Uint32 y);
 

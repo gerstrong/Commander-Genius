@@ -8,11 +8,12 @@
 #ifndef CDOPEFISH_H_
 #define CDOPEFISH_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
-class CDopeFish : public CSpriteObject {
+class CDopeFish : public CGalaxySpriteObject
+{
 public:
 	CDopeFish(CMap *pmap, Uint32 x, Uint32 y);
 

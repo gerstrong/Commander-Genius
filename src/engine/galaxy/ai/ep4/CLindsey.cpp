@@ -14,7 +14,7 @@ const int LINDSEY_MOVE_SPEED = 20;
 const int LINDSEY_MOVE_TIME = 60;
 
 CLindsey::CLindsey(CMap *pmap, Uint32 x, Uint32 y) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
+CGalaxySpriteObject(pmap, x, y),
 m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x38EA, 0);

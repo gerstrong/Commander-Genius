@@ -815,6 +815,24 @@ bool CPlayer::checkMapBoundaryR(const int x2)
 	return false;
 }
 
+bool CPlayer::checkMapBoundaryL(const int x1)
+{
+	if( solid && x1 <= (2<<CSF) )
+		return true;
+
+	return false;
+}
+
+
+bool CPlayer::checkMapBoundaryU(const int y1)
+{
+	if( y1 <= (2<<CSF) )
+		return true;
+
+	return false;
+}
+
+
 bool CPlayer::checkObjSolid()
 {
 	supportedbyobject = false;

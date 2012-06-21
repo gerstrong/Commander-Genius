@@ -19,8 +19,8 @@ const int HOVER_SPEED = 25;
 namespace galaxy {
 
 CPlatformDrop::CPlatformDrop(CMap *pmap, const Uint32 x, const Uint32 y) :
-CSpriteObject(pmap, x, y, OBJ_PLATFORM),
-CPlatform(pmap, x, y, OBJ_PLATFORM),
+CGalaxySpriteObject(pmap, x, y),
+CPlatform(pmap, x, y),
 m_delay_for_drop(0),
 m_drop_speed(0),
 m_Origin(m_Pos)

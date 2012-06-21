@@ -10,12 +10,13 @@
 #ifndef CSCHOOLFISH_H_
 #define CSCHOOLFISH_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy
 {
 
-class CSchoolFish : public CSpriteObject {
+class CSchoolFish : public CGalaxySpriteObject
+{
 public:
 	CSchoolFish(CMap *pmap, Uint32 x, Uint32 y);
 

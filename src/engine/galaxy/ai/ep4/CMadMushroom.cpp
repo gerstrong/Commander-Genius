@@ -8,7 +8,8 @@
 #include "CMadMushroom.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 
-namespace galaxy {
+namespace galaxy
+{
 
 const int A_MUSHROOM_BOUNCE = 0;
 
@@ -16,7 +17,7 @@ const int MUSHROOM_LOW_INERTIA = 60;
 const int MUSHROOM_HIGH_INERTIA = 150;
 
 CMadMushroom::CMadMushroom(CMap *pmap, Uint32 x, Uint32 y) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
+CGalaxySpriteObject(pmap, x, y),
 jumpcounter(0)
 {
 	setupGalaxyObjectOnMap(0x20E4, A_MUSHROOM_BOUNCE);

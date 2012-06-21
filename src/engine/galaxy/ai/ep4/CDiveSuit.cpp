@@ -11,7 +11,7 @@
 namespace galaxy {
 
 CDiveSuit::CDiveSuit(CMap *pmap, Uint32 x, Uint32 y) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
+CGalaxySpriteObject(pmap, x, y),
 taken(false)
 {
 	sprite = 306;

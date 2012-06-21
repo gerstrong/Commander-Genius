@@ -14,6 +14,14 @@ class CVorticonSpriteObject : public CSpriteObject
 {
 public:
 	CVorticonSpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
+
+	void setupObjectType(const int Episode);
+	bool checkforScenario();
+
+	bool calcVisibility();
+
+	object_t m_type;        		// yorp, vorticon, etc.
+
 };
 
 #endif /* CVORTICONSPRITEOBJECT_H_ */
