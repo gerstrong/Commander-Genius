@@ -27,8 +27,8 @@ mpMap(pMap)
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
-	// before it was yorp
-	CVorticonSpriteObject *mark = new CVorticonSpriteObject(mpMap.get(), 0,0, OBJ_YORP);
+	// before it was yorp // TODO: This doesn't work anyway! Check!
+	/*CVorticonSpriteObject *mark = new CVorticonSpriteObject(mpMap.get(), 0,0, OBJ_YORP);
 	mark->m_type = OBJ_YORP;                // doesn't matter
 	mark->solid = false;                // doesn't matter
 	mark->sprite = SPR_QUESTION;
@@ -36,9 +36,9 @@ mpMap(pMap)
 	// keep the question or exclamation mark sprite next to the player
 	mark->onscreen = true;
 
-	m_player.mp_object->push_back(mark);
+	m_player.mp_object->push_back(mark);*/
 
-	mp_mark = mark; // We still need to manipulate it!*/
+	//mp_mark = mark; // We still need to manipulate it!*/
 }
 
 void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
@@ -51,7 +51,7 @@ void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
 
 void CShipFlySys::process()
 {
-	int x,y;
+	//int x,y;
 	 // execute the current command in the queue
 	 switch(m_shipqueue[m_ShipQueuePtr].cmd)
 	 {
@@ -86,18 +86,18 @@ void CShipFlySys::process()
 			 break;
 		 }
 
-		 x = m_player.getXPosition();
-		 y = m_player.getYPosition();
+		 //x = m_player.getXPosition();
+		 //y = m_player.getYPosition();
 
-		 mp_mark->moveTo(VectorD2<int>(x + (1<<CSF), y - (1<<CSF)));
+		 //mp_mark->moveTo(VectorD2<int>(x + (1<<CSF), y - (1<<CSF)));
 	 break;
 	 case CMD_SPAWNSPR:
-		 mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;
-		 mp_mark->exists = true;
+		 //mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;
+		 //mp_mark->exists = true;
 		 break;
 	 case CMD_REMOVESPR:
-		 mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;
-		 mp_mark->exists = false;
+		 //mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;
+		 //mp_mark->exists = false;
 		 break;
 	 case CMD_ENABLESCROLLING:
 		 m_scrollingon = true;
@@ -124,7 +124,8 @@ void CShipFlySys::process()
 }
 
 
-CShipFlySys::~CShipFlySys() {
-	delete mp_mark;
-	m_player.mp_object->pop_back();
+CShipFlySys::~CShipFlySys()
+{
+	//delete mp_mark;
+	//m_player.mp_object->pop_back();
 }

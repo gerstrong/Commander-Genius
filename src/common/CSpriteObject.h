@@ -95,7 +95,7 @@ public:
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
 
 	bool cansupportplayer;
-	std::vector<CSpriteObject*> *mp_object;
+	//std::vector<CSpriteObject*> *mp_object;
 	
 	bool blockedl, blockedr, blockedu, blockedd;
 	bool onslope;

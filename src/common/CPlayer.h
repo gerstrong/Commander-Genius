@@ -207,6 +207,8 @@ private:
 	int level_done_timer;
 
 	level_triggers m_Level_Trigger;
+
+	std::vector<CVorticonSpriteObject*> *mp_object;
 };
 
 #endif /* CPLAYER_H_ */

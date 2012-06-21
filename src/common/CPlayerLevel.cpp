@@ -340,7 +340,7 @@ void CPlayer::TogglePogo_and_Switches()
 					if(mp_Map->m_PlatExtending)
 					{
 						// Find the object responsible for extending
-						std::vector<CSpriteObject*>::iterator obj = mp_object->begin();
+						std::vector<CVorticonSpriteObject*>::iterator obj = mp_object->begin();
 						for( ; obj != mp_object->end() ; obj++ )
 						{
 							if((*obj)->m_type == OBJ_BRIDGE && (*obj)->exists &&

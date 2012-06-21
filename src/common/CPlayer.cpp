@@ -33,7 +33,7 @@ pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjump
 mp_levels_completed(mp_level_completed),
 mp_option(g_pBehaviorEngine->m_option)
 {
-	//mp_object = &m_Object;
+	mp_object = &m_Object;
 	canbezapped = true;
 	m_index = 0;
 
@@ -810,7 +810,7 @@ bool CPlayer::checkObjSolid()
 {
 	supportedbyobject = false;
 
-	std::vector<CSpriteObject*>::iterator it_obj = mp_object->begin();
+	std::vector<CVorticonSpriteObject*>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
 	{
 		if((*it_obj)->cansupportplayer)
