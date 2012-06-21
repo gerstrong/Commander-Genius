@@ -79,16 +79,14 @@ void CPlatform::process()
 
 void CPlatform::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.m_type == OBJ_PLAYER)
+	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		CPlayerLevel &Player = dynamic_cast<CPlayerLevel&>(theObject);
-
-		const int m_py2 = Player.getYDownPos();
+		const int m_py2 = player->getYDownPos();
 		const int m_y2 = getYUpPos()+(4<<STC);
-		if( m_py2 <= m_y2 && !Player.supportedbyobject && !Player.m_jumpdownfromobject )
+		if( m_py2 <= m_y2 && !player->supportedbyobject && !player->m_jumpdownfromobject )
 		{
-			mp_CarriedPlayer = &Player;
-			Player.supportedbyobject = true;
+			mp_CarriedPlayer = player;
+			player->supportedbyobject = true;
 		}
 	}
 }

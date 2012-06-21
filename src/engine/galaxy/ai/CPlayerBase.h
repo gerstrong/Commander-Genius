@@ -29,7 +29,8 @@ namespace galaxy
 #define A_KEEN_DIE				29
 
 
-class CPlayerBase : public CSpriteObject {
+class CPlayerBase : public CSpriteObject
+{
 public:
 	/**
 	 * \description Basic Constructor. An Object always need the pointer to the Map of the level,

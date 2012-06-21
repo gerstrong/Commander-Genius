@@ -6,6 +6,7 @@
  */
 
 #include "CLindsey.h"
+#include "../CPlayerLevel.h"
 
 namespace galaxy {
 
@@ -49,7 +50,7 @@ void CLindsey::process()
 void CLindsey::getTouchedBy(CSpriteObject &theObject)
 {
 	// When Keen touches the pincess give that hint
-	if(theObject.m_type == OBJ_PLAYER)
+	if( dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 

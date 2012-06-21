@@ -110,18 +110,27 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 
 	std::vector<CSpriteObject*>::reverse_iterator obj;
 
-	// Draw all the sprites but no player
+	// Draw all the sprites without player
+	// The player sprites are drawn as last
+	galaxy::CPlayerBase *player = NULL;
 	for( obj=m_ObjectPtr.rbegin() ;
 			obj!=m_ObjectPtr.rend() ; obj++ )
 	{
-		if((*obj)->honorPriority && (*obj)->m_type != OBJ_PLAYER)
+
+		if( galaxy::CPlayerBase* newplayer = dynamic_cast<galaxy::CPlayerBase*>(*obj) )
+		{
+			player = newplayer;
+			continue;
+		}
+
+		if((*obj)->honorPriority )
 			(*obj)->draw();
 	}
 
-	// Now only draw the player sprite. So everything expect maked tiles are below his layer
-	for( obj = m_ObjectPtr.rbegin() ; obj!=m_ObjectPtr.rend() ; obj++ )
-		if((*obj)->m_type == OBJ_PLAYER)
-			(*obj)->draw();
+	if(player)
+	{
+		player->draw();
+	}
 
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();

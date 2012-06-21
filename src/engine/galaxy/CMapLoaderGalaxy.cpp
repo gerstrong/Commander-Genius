@@ -434,7 +434,7 @@ void CVorticonMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 
 	case 21:
 		// This is a Mad Mushroom.
-		p_newfoe = new galaxy::CMadMushroom(&Map, x, y);
+		p_newfoe = new galaxy::CMadMushroom(&Map, x, y-(2<<CSF));
 		break;
 
 
