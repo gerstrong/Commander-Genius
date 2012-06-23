@@ -164,7 +164,7 @@ struct OldSaveGameFormatV5
 	   char pdie, pdieframe, pdietimer;
 	   int pdietillfly;
 	   signed int pdie_xvect;
-	   int psupportingtile, psupportingobject, lastsupportingobject;
+	   int psupportingtile, psupportingobject;
 	   char psliding;
 	   char psemisliding;
 	   bool ppogostick;
@@ -337,7 +337,7 @@ struct OldSaveGameFormatV4
 		   char pdie, pdieframe, pdietimer;
 		   int pdietillfly;
 		   signed int pdie_xvect;
-		   int psupportingtile, psupportingobject, lastsupportingobject;
+		   int psupportingtile, psupportingobject;
 		   char psliding;
 		   char psemisliding;
 		   bool ppogostick;

@@ -20,7 +20,6 @@ CSpriteItem::CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
 CGalaxySpriteObject(pmap, x, y),
 m_ObjectPtrs(ObjectPtrs)
 {
-	m_index = sprite;
 	m_basesprite = sprite;
 	m_timer = (y*256+x)%MAX_ANIMATION_TIMER;
 	this->sprite = (m_timer%2 == 0) ? m_basesprite : m_basesprite+1;

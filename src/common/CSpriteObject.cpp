@@ -16,7 +16,6 @@ int CSpriteObject::m_number_of_objects = 0; // The current number of total objec
 // Initialization Routine
 ///
 CSpriteObject::CSpriteObject(CMap *pmap, Uint32 x, Uint32 y) :
-m_index(m_number_of_objects),
 mHealthPoints(1),
 sprite(BLANKSPRITE),
 mp_Map(pmap),
@@ -41,7 +40,6 @@ transluceny(0)
 	hasbeenonscreen = false;
 	honorPriority = true;
 	dontdraw = false;
-	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
 	dying = false;
 	m_ActionBaseOffset = 0x0;

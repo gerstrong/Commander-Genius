@@ -71,7 +71,6 @@ class CSpriteObject
 public:
 	CSpriteObject(CMap *pmap, Uint32 x, Uint32 y);
 	
-	unsigned int m_index;        	// Like an ID for some objects that need this implementation
 	char mHealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
@@ -96,19 +95,14 @@ public:
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
 
 	bool cansupportplayer;
-	//std::vector<CSpriteObject*> *mp_object;
 	
 	bool blockedl, blockedr, blockedu, blockedd;
 	bool onslope;
 	bool falling;
 	signed int xinertia, yinertia;
-	unsigned char xinertiatimer;
-	unsigned int psupportingobject, lastsupportingobject;
+	unsigned int psupportingobject;
 	bool supportedbyobject;
-	
-	unsigned char touchPlayer;      // 1=hit detection with player
-	unsigned char touchedBy;        // which player was hit
-	
+
 	bool dead, dying;
 	
 	bool m_canturnaround;

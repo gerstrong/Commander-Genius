@@ -23,11 +23,11 @@ CPlayerBase::CPlayerBase(
 CGalaxySpriteObject(pmap, x, y),
 m_Inventory(l_Inventory),
 m_camera(pmap,x,y,this),
+mPlayerNum(0),
 m_ObjectPtrs(ObjectPtrs),
 m_Cheatmode(Cheatmode),
 mp_processState(NULL)
 {
-	m_index = 0;
 	m_walktimer = 0;
 	m_timer = 0;
 	m_dying = false;
@@ -62,45 +62,45 @@ void CPlayerBase::processInput()
 	m_playcontrol[PA_X] = 0;
 	m_playcontrol[PA_Y] = 0;
 
-	if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
+	if(g_pInput->getHoldedCommand(mPlayerNum, IC_LEFT))
 		m_playcontrol[PA_X] -= 100;
-	else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
+	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_RIGHT))
 		m_playcontrol[PA_X] += 100;
 
-	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
+	if(g_pInput->getHoldedCommand(mPlayerNum, IC_DOWN))
 		m_playcontrol[PA_Y] += 100;
-	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
+	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_UP))
 		m_playcontrol[PA_Y] -= 100;
 
-	if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
+	if(g_pInput->getHoldedCommand(mPlayerNum, IC_UPPERLEFT))
 	{
 		m_playcontrol[PA_X] -= 100;
 		m_playcontrol[PA_Y] -= 100;
 	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_UPPERRIGHT))
+	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_UPPERRIGHT))
 	{
 		m_playcontrol[PA_X] += 100;
 		m_playcontrol[PA_Y] -= 100;
 	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERLEFT))
+	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_LOWERLEFT))
 	{
 		m_playcontrol[PA_X] -= 100;
 		m_playcontrol[PA_Y] += 100;
 	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERRIGHT))
+	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_LOWERRIGHT))
 	{
 		m_playcontrol[PA_X] += 100;
 		m_playcontrol[PA_Y] += 100;
 	}
 
-	m_playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(m_index, IC_JUMP)   ? 1 : 0;
-	m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
+	m_playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(mPlayerNum, IC_JUMP)   ? 1 : 0;
+	m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(mPlayerNum, IC_POGO)   ? 1 : 0;
 
 	// The possibility to charge jumps. This is mainly used for the pogo. it is limited to 50
 	if( m_playcontrol[PA_JUMP] > 50) m_playcontrol[PA_JUMP] = 50;
 
 	// Two button firing process
-	if(g_pInput->getTwoButtonFiring(m_index))
+	if(g_pInput->getTwoButtonFiring(mPlayerNum))
 	{
 		if(m_playcontrol[PA_JUMP] && m_playcontrol[PA_POGO])
 		{
@@ -121,7 +121,7 @@ void CPlayerBase::processInput()
 	}
 	else
 	{
-		m_playcontrol[PA_FIRE] = g_pInput->getHoldedCommand(m_index, IC_FIRE) ? 1 : 0;
+		m_playcontrol[PA_FIRE] = g_pInput->getHoldedCommand(mPlayerNum, IC_FIRE) ? 1 : 0;
 	}
 }
 

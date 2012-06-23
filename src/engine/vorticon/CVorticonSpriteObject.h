@@ -20,7 +20,11 @@ public:
 
 	bool calcVisibility();
 
+	unsigned int m_index;        	// Like an ID for some objects that need this implementation
 	object_t m_type;        		// yorp, vorticon, etc.
+
+	unsigned char touchPlayer;      // 1=hit detection with player
+	unsigned char touchedBy;        // which player was hit
 
 };
 

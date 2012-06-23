@@ -466,7 +466,7 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	}
 
 	if( ( (y2>>STC) != ((y2>>CSF)<<TILE_S) ) && !push_mode )
-		return false;
+		return 0;
 
 	// Check for down from the object
 	if(solid)
@@ -512,7 +512,7 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 		return 1;
 	}
 
-	return false;
+	return 0;
 }
 
 /* Special slope function for galaxy

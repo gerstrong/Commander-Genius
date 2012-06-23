@@ -139,7 +139,7 @@ void CPlayer::setupforLevelPlay()
     keyprocstate = 0;         // KPROC_IDLE
     pjustjumped = pjustfell = true;
     pfireframetimer = 0;
-    psupportingobject = lastsupportingobject = 0;
+    psupportingobject = 0;
   	object_chosen = false;
     lastpogo = false;
   	hintused = false;
