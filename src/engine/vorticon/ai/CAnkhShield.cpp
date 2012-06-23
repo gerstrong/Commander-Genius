@@ -12,7 +12,7 @@ const unsigned int ANKH_FLICKER_DELAY = 3;
 const unsigned int ANKH_SHIELD_FRAME = 61;
 
 CAnkhShield::CAnkhShield(CPlayer &attachedPlayer) :
-CSpriteObject(attachedPlayer.getMapPtr(),
+CVorticonSpriteObject(attachedPlayer.getMapPtr(),
 		attachedPlayer.getXPosition(),
 		attachedPlayer.getYPosition(),
 		OBJ_ANKHSHIELD),

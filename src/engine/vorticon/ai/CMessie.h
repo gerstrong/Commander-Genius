@@ -8,7 +8,7 @@
 #ifndef CMESSIE_H_
 #define CMESSIE_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "common/CPlayer.h"
 
 // World Map Code for Nessie
@@ -18,7 +18,7 @@ const int NESSIE_LAND = 8704;
 
 const int NESSIETRAILLEN = 5;
 
-class CMessie : public CSpriteObject
+class CMessie : public CVorticonSpriteObject
 {
 public:
 	CMessie(CMap *p_map, Uint32 x, Uint32 y,
@@ -26,6 +26,7 @@ public:
 	void process();
 	void move_nessie();
 	void nessie_find_next_checkpoint();
+	void processFalling() {}
 //private:
 
 	char state;

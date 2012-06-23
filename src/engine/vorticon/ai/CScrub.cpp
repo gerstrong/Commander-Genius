@@ -28,7 +28,7 @@ enum scrub_actions{
 
 CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
-CSpriteObject(p_map, x, y, OBJ_SCRUB),
+CVorticonSpriteObject(p_map, x, y, OBJ_SCRUB),
 scrubdie_inertia_y(0),
 m_Player(Player)
 {

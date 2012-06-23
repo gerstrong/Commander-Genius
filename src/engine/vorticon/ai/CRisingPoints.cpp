@@ -14,7 +14,7 @@
 #define GOTPOINTS_LIFETIME      25
 
 CRisingPoints::CRisingPoints(CMap *p_map, Uint32 x, Uint32 y) :
-CSpriteObject(p_map, x, y, OBJ_GOTPOINTS)
+CVorticonSpriteObject(p_map, x, y, OBJ_GOTPOINTS)
 {
 	offscreentime = GOTPOINTS_LIFETIME;
 	inhibitfall = true;

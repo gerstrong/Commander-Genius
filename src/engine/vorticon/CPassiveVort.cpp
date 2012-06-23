@@ -8,7 +8,7 @@
 #include "CPassiveVort.h"
 
 #include "graphics/CGfxEngine.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "common/CTileProperties.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
@@ -25,7 +25,7 @@ bool CPassiveVort::init(char mode)
 	{
 		mpIntroScreen = new CIntro();
 		mpMap = new CMap;
-		CMapLoader MapLoader( mpMap );
+		CVorticonMapLoader MapLoader( mpMap );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mpMap->gotoPos( 64+5*320, 32); // Coordinates of star sky
 		mpMap->drawAll();
@@ -35,7 +35,7 @@ bool CPassiveVort::init(char mode)
 	else if( m_mode == TITLE )
 	{
 		mpMap = new CMap;
-		CMapLoader MapLoader( mpMap );
+		CVorticonMapLoader MapLoader( mpMap );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
 		mpMap->drawAll();

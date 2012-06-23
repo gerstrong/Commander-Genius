@@ -10,7 +10,7 @@
 #include <fstream>
 
 #include "CStory.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
@@ -25,7 +25,7 @@ void CStory::init()
 	std::string DataDirectory = ExeFile.getDataDirectory();
 
 	mpMap = new CMap();
-	CMapLoader Maploader(mpMap);
+	CVorticonMapLoader Maploader(mpMap);
 
 	std::string Text;
 

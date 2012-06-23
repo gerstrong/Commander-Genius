@@ -9,7 +9,8 @@
 #include "engine/galaxy/ai/ep4/CPlayerDive.h"
 #include "CBubbles.h"
 
-namespace galaxy {
+namespace galaxy
+{
 
 #define A_DOPEFISH_SWIM				0
 #define A_DOPEFISH_EAT				2
@@ -25,7 +26,7 @@ const int DOPE_EAT_TIMER = 50;
 
 
 CDopeFish::CDopeFish(CMap *pmap, Uint32 x, Uint32 y) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
+CGalaxySpriteObject(pmap, x, y),
 m_eatTimer(0),
 m_burped(false)
 {

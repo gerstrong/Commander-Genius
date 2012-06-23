@@ -14,8 +14,8 @@
 #define SPARK_ANIMRATE          5
 
 CSpark::CSpark(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CSpriteObject*>& Object) :
-CSpriteObject(pmap, x, y, OBJ_SPARK),
+		std::vector<CVorticonSpriteObject*>& Object) :
+CVorticonSpriteObject(pmap, x, y, OBJ_SPARK),
 timer(0), frame(0),
 blowx(0), blowy(0),
 m_Object(Object)

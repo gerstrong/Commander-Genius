@@ -17,7 +17,7 @@
 #include "fileio/lz.h"
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
-#include "common/CSpriteObject.h"
+#include "CVorticonSpriteObject.h"
 #include "common/tga.h" 
 #include "CResourceLoader.h"
 #include "graphics/CGfxEngine.h"

@@ -1,4 +1,4 @@
-#include "CSpriteObjectAI.h"
+#include "CVorticonSpriteObjectAI.h"
 #include "sdl/sound/CSound.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
@@ -12,7 +12,7 @@
 CRay::CRay(CMap *p_map, Uint32 x, Uint32 y,
 		direction_t dir, object_t byType, size_t byID,
 		size_t speed) :
-CSpriteObject(p_map, x, y, OBJ_RAY),
+CVorticonSpriteObject(p_map, x, y, OBJ_RAY),
 m_Direction(dir),
 m_speed(speed)
 {
@@ -52,7 +52,7 @@ void CRay::setSpeed(size_t speed)
 
 void CRay::process()
 {
-	std::vector<CSpriteObject*>::iterator it_obj;
+	std::vector<CVorticonSpriteObject*>::iterator it_obj;
 	switch(state)
 	{
 		case RAY_STATE_FLY:
@@ -111,18 +111,18 @@ void CRay::moveinAir()
 {
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	CSprite &raysprite = g_pGfxEngine->getSprite(sprite);
-	bool hitlethal;
+	//bool hitlethal; // TODO: Why is this here?
 
 	if (m_Direction == RIGHT)
 	{
 		// don't go through bonklethal tiles, even if they're not solid
 		// (for the arms on mortimer's machine)
-		if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, (getYPosition()>>CSF)+1)).behaviour == 1)
+		/*if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, (getYPosition()>>CSF)+1)).behaviour == 1)
 			hitlethal = true;
 		else if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
 			hitlethal = true;
 		else
-			hitlethal = false;
+			hitlethal = false;*/
 
 		if (blockedr)
 		{
@@ -135,12 +135,12 @@ void CRay::moveinAir()
 	}
 	else if (m_Direction == LEFT)
 	{
-		if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, (getYPosition()+1)>>CSF)).behaviour == 1)
+		/*if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, (getYPosition()+1)>>CSF)).behaviour == 1)
 			hitlethal = true;
 		else if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
 			hitlethal = true;
 		else
-			hitlethal = false;
+			hitlethal = false;*/
 
 		if (blockedl)
 		{
@@ -164,7 +164,7 @@ void CRay::moveinAir()
 	}
 }
 
-void CRay::getTouchedBy(CSpriteObject &theObject)
+void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if( !theObject.dead && !theObject.dying )
 	{

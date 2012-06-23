@@ -10,7 +10,7 @@
 #ifndef CFOOB_H_
 #define CFOOB_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "common/CPlayer.h"
 #include <vector>
 
@@ -35,12 +35,12 @@
 #define FOOB_EXPLODE_FRAME      97
 #define FOOB_DEAD_FRAME         101
 
-class CFoob : public CSpriteObject
+class CFoob : public CVorticonSpriteObject
 {
 public:
 	CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player);
 	void process();
-	void getTouchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 
 private:
 	enum FOOB_ACTIONS

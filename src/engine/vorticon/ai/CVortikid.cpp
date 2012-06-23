@@ -27,7 +27,7 @@ BABY_JUMP_BIG, BABY_JUMP_SMALL
 
 CVortikid::CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CSpriteObject(p_map, x, y, OBJ_BABY),
+CVorticonSpriteObject(p_map, x, y, OBJ_BABY),
 m_Player(mp_vec_Player)
 {
 	bool ep3;

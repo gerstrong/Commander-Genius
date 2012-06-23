@@ -8,22 +8,22 @@
 #ifndef CAUTORAY_H_
 #define CAUTORAY_H_
 
-#include "../../../common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 
 #define GUNFIRE_TIMER 128
 
 
-class CAutoRay : public CSpriteObject
+class CAutoRay : public CVorticonSpriteObject
 {
 public:
 	enum stRayAlignment{ VERTICAL, HORIZONTAL };
 	CAutoRay(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CSpriteObject*> &Objvect, stRayAlignment type);
+			std::vector<CVorticonSpriteObject*> &Objvect, stRayAlignment type);
 	void process();
 
 
 private:
-	std::vector<CSpriteObject*> &m_Objvect;
+	std::vector<CVorticonSpriteObject*> &m_Objvect;
 	stRayAlignment m_type;
 };
 

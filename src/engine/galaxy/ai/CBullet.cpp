@@ -15,7 +15,7 @@ const Uint32 speed = 10;
 const Uint32 hittime = 100;
 
 CBullet::CBullet(CMap *pmap, const Uint32 x, const Uint32 y, const direction_t dir) :
-CSpriteObject(pmap, x, y, OBJ_RAY)
+CSpriteObject(pmap, x, y)
 {
 	m_hDir = NONE;	m_vDir = NONE;
 

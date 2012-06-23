@@ -8,13 +8,14 @@
 #include "CMiragia.h"
 #include "engine/galaxy/ai/CPlayerWM.h"
 
-namespace galaxy {
+namespace galaxy
+{
 
 const Uint16 ANIMATION_TIME = 32;
 const Uint16 WAIT_BETWEEN_FADE_TIME = 8;
 
 CMiragia::CMiragia(CMap *pmap, const VectorD2<Uint32> &Location) :
-CSpriteObject(pmap, Location.x, Location.y, OBJ_NONE),
+CGalaxySpriteObject(pmap, Location.x, Location.y),
 m_step(0),
 m_fade(FADE_IN),
 m_waittime(WAIT_BETWEEN_FADE_TIME),

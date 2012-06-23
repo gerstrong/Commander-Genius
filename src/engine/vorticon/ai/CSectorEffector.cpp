@@ -1,5 +1,5 @@
 
-#include "CSpriteObjectAI.h"
+#include "CVorticonSpriteObjectAI.h"
 #include "CRay.h"
 #include "CSectorEffector.h"
 
@@ -68,8 +68,8 @@
 int mortimer_surprisedcount = 0;
 
 CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player, std::vector<CSpriteObject*>& Object, unsigned int se_type) :
-CSpriteObject(p_map, x, y, OBJ_SECTOREFFECTOR),
+		std::vector<CPlayer>& Player, std::vector<CVorticonSpriteObject*>& Object, unsigned int se_type) :
+CVorticonSpriteObject(p_map, x, y, OBJ_SECTOREFFECTOR),
 setype(se_type),
 timer(0),
 m_Player(Player),
@@ -137,7 +137,7 @@ void CSectorEffector::process()
 
 }
 
-void CSectorEffector::getTouchedBy(CSpriteObject &theObject)
+void CSectorEffector::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	bool it_is_mortimer_machine = false;
 
@@ -282,7 +282,7 @@ void CSectorEffector::se_mortimer_spark()
 
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms
-			for(std::vector<CSpriteObject*>::iterator obj = m_Object.begin()
+			for(std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin()
 					; obj != m_Object.end() ; obj++)
 			{
 				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
@@ -306,7 +306,7 @@ void CSectorEffector::se_mortimer_spark()
 			sprite = BLANKSPRITE;
 
 			// destroy the sector effectors controlling his arms
-			for(std::vector<CSpriteObject*>::iterator obj = m_Object.begin()
+			for(std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin()
 					; obj != m_Object.end() ; obj++)
 			{
 				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
@@ -390,7 +390,7 @@ void CSectorEffector::se_mortimer_heart()
 			g_pGfxEngine->setupEffect(new CVibrate(10000));
 
 			// kill all enemies
-			for(std::vector<CSpriteObject*>::iterator obj = m_Object.begin()
+			for(std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin()
 					; obj != m_Object.end() ; obj++)
 			{
 				if((*obj)->m_type==OBJ_SECTOREFFECTOR)

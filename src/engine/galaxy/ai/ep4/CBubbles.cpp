@@ -14,7 +14,7 @@ namespace galaxy {
 const int BUBBLE_FLOAT_SPEED = 40;
 
 CBubbles::CBubbles(CMap *pmap, Uint32 x, Uint32 y, const bool bigbubble) :
-CSpriteObject(pmap, x, y, OBJ_NONE)
+CGalaxySpriteObject(pmap, x, y)
 {
 
 	if(bigbubble)

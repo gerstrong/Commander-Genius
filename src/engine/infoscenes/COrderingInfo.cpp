@@ -11,7 +11,7 @@
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 
@@ -23,7 +23,7 @@ void COrderingInfo::init()
 
 	mpMap = new CMap;
 
-	CMapLoader Maploader(mpMap);
+	CVorticonMapLoader Maploader(mpMap);
 	
 	Maploader.load(episode, 90, datadirectory);
 	mpMap->gotoPos( 22<<4, 32 );

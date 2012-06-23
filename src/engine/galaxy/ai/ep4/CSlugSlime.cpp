@@ -16,7 +16,7 @@ const int A_SLUGPOISON_NORMAL =	0;
 const int A_SLUGPOISON_FADE = 1;
 
 CSlugSlime::CSlugSlime(CMap *pmap, Uint32 x, Uint32 y) :
-CSpriteObject(pmap, x, y, OBJ_NONE)
+CGalaxySpriteObject(pmap, x, y)
 {
 	setupGalaxyObjectOnMap(0x20A8, A_SLUGPOISON_NORMAL);
 }

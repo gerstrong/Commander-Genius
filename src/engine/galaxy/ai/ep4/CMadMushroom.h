@@ -8,12 +8,12 @@
 #ifndef CMADMUSHROOM_H_
 #define CMADMUSHROOM_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy
 {
 
-class CMadMushroom : public CSpriteObject
+class CMadMushroom : public CGalaxySpriteObject
 {
 public:
 	CMadMushroom(CMap *pmap, Uint32 x, Uint32 y);

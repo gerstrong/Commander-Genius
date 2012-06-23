@@ -12,12 +12,13 @@
 #ifndef CSPRITEITEM_H_
 #define CSPRITEITEM_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
 
-class CSpriteItem : public CSpriteObject{
+class CSpriteItem : public CGalaxySpriteObject
+{
 public:
 	CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CSpriteObject*>& ObjectPtrs, Uint32 sprite);

@@ -10,11 +10,11 @@
 #ifndef CLINDSEY_H_
 #define CLINDSEY_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
-class CLindsey : public CSpriteObject {
+class CLindsey : public CGalaxySpriteObject {
 public:
 	CLindsey(CMap *pmap, Uint32 x, Uint32 y);
 

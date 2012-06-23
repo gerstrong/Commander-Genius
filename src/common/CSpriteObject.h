@@ -9,8 +9,8 @@
  */
 
 
-#ifndef COBJECT_H_
-#define COBJECT_H_
+#ifndef __CSPRITEOBJECT_H_
+#define __CSPRITEOBJECT_H_
 
 #include "engine/CEventContainer.h"
 #include "ActionFormat.h"
@@ -28,6 +28,8 @@
 // Enumerations are here
 #include "objenums.h"
 
+
+const int COLISION_RES = (1<<STC);
 
 // The bouncing box used by the object which is used to determine the collisions
 struct BoundingBox
@@ -68,9 +70,8 @@ struct ObjMove : public CEvent
 class CSpriteObject
 {
 public:
-	CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
+	CSpriteObject(CMap *pmap, Uint32 x, Uint32 y);
 	
-	object_t m_type;        		// yorp, vorticon, etc.
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
 	char mHealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;
@@ -96,7 +97,7 @@ public:
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
 
 	bool cansupportplayer;
-	std::vector<CSpriteObject*> *mp_object;
+	//std::vector<CSpriteObject*> *mp_object;
 	
 	bool blockedl, blockedr, blockedu, blockedd;
 	bool onslope;
@@ -111,8 +112,6 @@ public:
 	
 	bool dead, dying;
 	
-	bool needinit; // Deprecated. Is only there so savegame mode still works.
-
 	bool m_canturnaround;
 
 	// This is used for action format only
@@ -127,14 +126,11 @@ public:
 	// This container will held the triggered events of the object
 	CEventContainer m_EventCont;
 
-	void setupObjectType(int Episode);
 	void calcBoundingBoxes();
 	void performCollisionsSameBox();
 	void performCollisions();
 	void setScrPos( int px, int py );
-	bool calcVisibility();
-	bool checkforScenario();
-
+	virtual bool calcVisibility();
 
 	/**
 	 * \description This will verify whether object has to fall or not.
@@ -222,6 +218,11 @@ public:
 	int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 
+	virtual bool checkMapBoundaryL(const int x1);
+	virtual bool checkMapBoundaryR(const int x2);
+	virtual bool checkMapBoundaryU(const int y1);
+
+
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
 	bool checkslopedD( int c, int y2, char blocked);
@@ -240,7 +241,7 @@ public:
 	Uint32 getYDownPos();
 	Uint32 getYMidPos();
 	
-	void processFalling();
+	virtual void processFalling();
 	virtual void getTouchedBy(CSpriteObject &theObject) {};
 	virtual bool isNearby(CSpriteObject &theObject) { return true; }
 	virtual void getShotByRay(object_t &obj_type);
@@ -267,6 +268,7 @@ public:
 
 	virtual ~CSpriteObject();
 
+
 protected:
 	CMap *mp_Map;
 
@@ -280,6 +282,7 @@ protected:
 	ActionFormatType m_Action;
 
 	Uint8 transluceny;
+
 };
 
-#endif /* COBJECT_H_ */
+#endif // __CSPRITEOBJECT_H_

@@ -20,8 +20,8 @@ const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
 const int WALK_SPEED = 10;
 
 CMimrock::CMimrock(CMap *pmap, Uint32 x, Uint32 y) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
-CStunnable(pmap, x, y, OBJ_NONE)
+CGalaxySpriteObject(pmap, x, y),
+CStunnable(pmap, x, y)
 {
 	setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
 	mp_processState = (void (CStunnable::*)()) &CMimrock::processSit;

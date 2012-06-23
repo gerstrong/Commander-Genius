@@ -11,12 +11,12 @@
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "common/Playerdefines.h"
 
 CEndingEp1::CEndingEp1(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
 						const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player,
-					    bool &hideobjects, std::vector<CSpriteObject*> &Object) :
+					    bool &hideobjects, std::vector<CVorticonSpriteObject*> &Object) :
 	CFinale(messageBoxes, pMap, Object),
 	m_Player(Player),
 	m_hideobjects(hideobjects)
@@ -89,7 +89,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	{
 		//Initialization
 		std::string path = mpMap->m_gamepath;
-		CMapLoader MapLoader(mpMap, &m_Player);
+		CVorticonMapLoader MapLoader(mpMap, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
@@ -193,7 +193,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		int x, y;
 		m_hideobjects = false;
 		std::string path = mpMap->m_gamepath;
-		CMapLoader MapLoader(mpMap, &m_Player);
+		CVorticonMapLoader MapLoader(mpMap, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;

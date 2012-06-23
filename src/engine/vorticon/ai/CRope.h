@@ -12,16 +12,16 @@ enum ropestates{
 ROPE_IDLE, ROPE_DROPSTONE
 };
 
-#include "../../../common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 
-class CRope : public CSpriteObject
+class CRope : public CVorticonSpriteObject
 {
 public:
 	CRope(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 	void getShotByRay(object_t &obj_type);
 	void rope_movestone();
-	void getTouchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 
 private:
 	ropestates state;

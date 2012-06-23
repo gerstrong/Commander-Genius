@@ -19,7 +19,7 @@ CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
 void CWorldMap::init()
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory, m_Cheatmode);
+	CVorticonMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory, m_Cheatmode);
 
 	MapLoader.loadMap(m_Map, 0); // Is it a Map Level?
     const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");

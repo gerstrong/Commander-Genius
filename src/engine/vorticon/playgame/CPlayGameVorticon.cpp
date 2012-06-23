@@ -12,7 +12,7 @@
 #include "sdl/sound/CSound.h"
 #include "sdl/input/CInput.h"
 #include "core/mode/CGameMode.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
 #include "engine/vorticon/ai/CTeleporter.h"
@@ -105,7 +105,7 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
-	CMapLoader MapLoader( mMap, &m_Player );
+	CVorticonMapLoader MapLoader( mMap, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
 
@@ -129,7 +129,7 @@ bool CPlayGameVorticon::init()
 	g_pInput->flushAll();
 
 	// Initialize the AI
-	mpObjectAI = new CSpriteObjectAI(mMap.get(), m_Object, m_Player,
+	mpObjectAI = new CVorticonSpriteObjectAI(mMap.get(), m_Object, m_Player,
 								m_NumPlayers, m_Episode, m_Level,
 								mMap->m_Dark);
 
@@ -525,7 +525,7 @@ void CPlayGameVorticon::drawObjects()
 {
 	if(m_hideobjects) return;
 
-	std::vector<CSpriteObject*>::iterator it_obj = m_Object.begin();
+	std::vector<CVorticonSpriteObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
 	{
 		(*it_obj)->draw();
@@ -619,7 +619,7 @@ void CPlayGameVorticon::drawAllElements()
 ////
 void CPlayGameVorticon::cleanup()
 {
-	std::vector<CSpriteObject*>::iterator obj = m_Object.begin();
+	std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin();
 	for( ; obj != m_Object.end() ; obj++ )
 		delete (*obj);
 	m_Object.clear();

@@ -8,10 +8,10 @@
 #ifndef CBRIDGES_H_
 #define CBRIDGES_H_
 
-#include "../../../common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 
 
-class CBridges : public CSpriteObject
+class CBridges : public CVorticonSpriteObject
 {
 public:
 	CBridges(CMap *pmap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy);

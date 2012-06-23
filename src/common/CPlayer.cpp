@@ -25,8 +25,8 @@
 ///
 CPlayer::CPlayer(const char &Episode, short &Level,
 				 bool *mp_level_completed,
-				 std::vector<CSpriteObject*> &m_Object, CMap &map) :
-CSpriteObject(&map, 0, 0, OBJ_PLAYER),
+				 std::vector<CVorticonSpriteObject*> &m_Object, CMap &map) :
+CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER),
 m_episode(Episode),
 m_level(Level),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
@@ -806,11 +806,38 @@ void CPlayer::freeze()
 	playcontrol[PA_X] = 0;
 }
 
+
+bool CPlayer::checkMapBoundaryR(const int x2)
+{
+	if( solid && x2 >= (int)((mp_Map->m_width-2)<<CSF) )
+		return true;
+
+	return false;
+}
+
+bool CPlayer::checkMapBoundaryL(const int x1)
+{
+	if( solid && x1 <= (2<<CSF) )
+		return true;
+
+	return false;
+}
+
+
+bool CPlayer::checkMapBoundaryU(const int y1)
+{
+	if( y1 <= (2<<CSF) )
+		return true;
+
+	return false;
+}
+
+
 bool CPlayer::checkObjSolid()
 {
 	supportedbyobject = false;
 
-	std::vector<CSpriteObject*>::iterator it_obj = mp_object->begin();
+	std::vector<CVorticonSpriteObject*>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
 	{
 		if((*it_obj)->cansupportplayer)

@@ -12,8 +12,8 @@
 #include "CAutoRay.h"
 
 CAutoRay::CAutoRay(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CSpriteObject*> &Objvect, stRayAlignment type) :
-CSpriteObject(pmap, x, y, (type==HORIZONTAL) ? OBJ_AUTORAY : OBJ_AUTORAY_V),
+		std::vector<CVorticonSpriteObject*> &Objvect, stRayAlignment type) :
+CVorticonSpriteObject(pmap, x, y, (type==HORIZONTAL) ? OBJ_AUTORAY : OBJ_AUTORAY_V),
 m_Objvect(Objvect),
 m_type(type)
 {

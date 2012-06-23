@@ -14,7 +14,8 @@ namespace galaxy {
 
 #define A_KEENSWIM_MOVE	0
 
-class CPlayerDive: public CPlayerBase {
+class CPlayerDive : public CPlayerBase
+{
 public:
 	CPlayerDive(CMap *pmap,
 			Uint32 x,

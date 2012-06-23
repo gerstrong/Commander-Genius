@@ -10,7 +10,7 @@
 #ifndef CPLATFORM_H_
 #define CPLATFORM_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 
 namespace galaxy {
@@ -20,11 +20,14 @@ namespace galaxy {
 #define A_PLATFORM_DROP	2	/* Dropping platform dropping */
 #define A_PLATFORM_RISE	3	/* Dropping platform rising */
 
-class CPlatform : public virtual CSpriteObject {
+class CPlatform : public virtual CGalaxySpriteObject
+{
 public:
-	CPlatform(CMap *pmap, Uint32 x, Uint32 y, object_t type);
+	CPlatform(CMap *pmap, Uint32 x, Uint32 y);
 	virtual void process();
 	void getTouchedBy(CSpriteObject &theObject);
+
+	virtual bool calcVisibility();
 
 protected:
 

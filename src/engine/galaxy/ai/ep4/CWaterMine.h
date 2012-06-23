@@ -10,11 +10,12 @@
 #ifndef CWATERMINE_H_
 #define CWATERMINE_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
-class CWaterMine: public CSpriteObject {
+class CWaterMine: public CGalaxySpriteObject
+{
 public:
 	CWaterMine(CMap *pmap, Uint32 x, Uint32 y, const bool vertical);
 

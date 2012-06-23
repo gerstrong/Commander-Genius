@@ -16,7 +16,7 @@
 #include "engine/spritedefines.h"
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
+CSpriteObject(pmap, x, y),
 mp_AttachedObject(p_attacher)
 {
 	m_relcam.x = 0;

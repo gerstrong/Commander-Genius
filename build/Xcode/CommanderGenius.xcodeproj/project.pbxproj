@@ -37,7 +37,12 @@
 		237422DD11FC849A000EEA5B /* CBehaviorEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */; };
 		237422DE11FC849A000EEA5B /* CGameLauncher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */; };
 		237422DF11FC849A000EEA5B /* CMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B511CFF5FB00F60BC8 /* CMap.cpp */; };
+<<<<<<< HEAD
 		237422E011FC849A000EEA5B /* CMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */; };
+=======
+		237422E011FC849A000EEA5B /* CVorticonMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */; };
+		237422E211FC849A000EEA5B /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */; };
+>>>>>>> 0616245eb665d6a0d8447499c252381b3d11d3c0
 		237422E311FC849A000EEA5B /* CPhysicsSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */; };
 		237422E411FC849A000EEA5B /* CPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */; };
 		237422E511FC849A000EEA5B /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C111CFF5FB00F60BC8 /* CPlayer.cpp */; };
@@ -74,7 +79,7 @@
 		2374230811FC849A000EEA5B /* CPlanes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110F11CFF5FB00F60BC8 /* CPlanes.cpp */; };
 		2374230911FC849A000EEA5B /* CTitle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111111CFF5FB00F60BC8 /* CTitle.cpp */; };
 		2374230A11FC849A000EEA5B /* CEGAGraphicsGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111411CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.cpp */; };
-		2374230B11FC849A000EEA5B /* CMapLoaderGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */; };
+		2374230B11FC849A000EEA5B /* CVorticonMapLoaderGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111611CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.cpp */; };
 		2374230C11FC849A000EEA5B /* CMenuGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111811CFF5FB00F60BC8 /* CMenuGalaxy.cpp */; };
 		2374230D11FC849A000EEA5B /* CPassive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111A11CFF5FB00F60BC8 /* CPassive.cpp */; };
 		2374230E11FC849A000EEA5B /* CPlayGameGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */; };
@@ -324,7 +329,12 @@
 		63CD120911CFF5FC00F60BC8 /* CBehaviorEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */; };
 		63CD120A11CFF5FC00F60BC8 /* CGameLauncher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */; };
 		63CD120B11CFF5FC00F60BC8 /* CMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B511CFF5FB00F60BC8 /* CMap.cpp */; };
+<<<<<<< HEAD
 		63CD120C11CFF5FC00F60BC8 /* CMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */; };
+=======
+		63CD120C11CFF5FC00F60BC8 /* CVorticonMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */; };
+		63CD120E11CFF5FC00F60BC8 /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */; };
+>>>>>>> 0616245eb665d6a0d8447499c252381b3d11d3c0
 		63CD120F11CFF5FC00F60BC8 /* CPhysicsSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */; };
 		63CD121011CFF5FC00F60BC8 /* CPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */; };
 		63CD121111CFF5FC00F60BC8 /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C111CFF5FB00F60BC8 /* CPlayer.cpp */; };
@@ -361,7 +371,7 @@
 		63CD123511CFF5FC00F60BC8 /* CPlanes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110F11CFF5FB00F60BC8 /* CPlanes.cpp */; };
 		63CD123611CFF5FC00F60BC8 /* CTitle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111111CFF5FB00F60BC8 /* CTitle.cpp */; };
 		63CD123711CFF5FC00F60BC8 /* CEGAGraphicsGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111411CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.cpp */; };
-		63CD123811CFF5FC00F60BC8 /* CMapLoaderGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */; };
+		63CD123811CFF5FC00F60BC8 /* CVorticonMapLoaderGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111611CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.cpp */; };
 		63CD123911CFF5FC00F60BC8 /* CMenuGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111811CFF5FB00F60BC8 /* CMenuGalaxy.cpp */; };
 		63CD123A11CFF5FC00F60BC8 /* CPassive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111A11CFF5FB00F60BC8 /* CPassive.cpp */; };
 		63CD123B11CFF5FC00F60BC8 /* CPlayGameGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */; };
@@ -851,8 +861,15 @@
 		63CD10B411CFF5FB00F60BC8 /* CGameLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameLauncher.h; sourceTree = "<group>"; };
 		63CD10B511CFF5FB00F60BC8 /* CMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMap.cpp; sourceTree = "<group>"; };
 		63CD10B611CFF5FB00F60BC8 /* CMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMap.h; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMapLoader.cpp; sourceTree = "<group>"; };
 		63CD10B811CFF5FB00F60BC8 /* CMapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMapLoader.h; sourceTree = "<group>"; };
+=======
+		63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVorticonMapLoader.cpp; sourceTree = "<group>"; };
+		63CD10B811CFF5FB00F60BC8 /* CVorticonMapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVorticonMapLoader.h; sourceTree = "<group>"; };
+		63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObject.cpp; sourceTree = "<group>"; };
+		63CD10BC11CFF5FB00F60BC8 /* CObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObject.h; sourceTree = "<group>"; };
+>>>>>>> 0616245eb665d6a0d8447499c252381b3d11d3c0
 		63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPhysicsSettings.cpp; sourceTree = "<group>"; };
 		63CD10BE11CFF5FB00F60BC8 /* CPhysicsSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPhysicsSettings.h; sourceTree = "<group>"; };
 		63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlane.cpp; sourceTree = "<group>"; };
@@ -928,8 +945,8 @@
 		63CD111211CFF5FB00F60BC8 /* CTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTitle.h; sourceTree = "<group>"; };
 		63CD111411CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGAGraphicsGalaxy.cpp; sourceTree = "<group>"; };
 		63CD111511CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGAGraphicsGalaxy.h; sourceTree = "<group>"; };
-		63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMapLoaderGalaxy.cpp; sourceTree = "<group>"; };
-		63CD111711CFF5FB00F60BC8 /* CMapLoaderGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMapLoaderGalaxy.h; sourceTree = "<group>"; };
+		63CD111611CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVorticonMapLoaderGalaxy.cpp; sourceTree = "<group>"; };
+		63CD111711CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVorticonMapLoaderGalaxy.h; sourceTree = "<group>"; };
 		63CD111811CFF5FB00F60BC8 /* CMenuGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMenuGalaxy.cpp; sourceTree = "<group>"; };
 		63CD111911CFF5FB00F60BC8 /* CMenuGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMenuGalaxy.h; sourceTree = "<group>"; };
 		63CD111A11CFF5FB00F60BC8 /* CPassive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPassive.cpp; sourceTree = "<group>"; };
@@ -1696,8 +1713,10 @@
 				23A11A9011DE888400747BFA /* CHUD.h */,
 				63CD10B511CFF5FB00F60BC8 /* CMap.cpp */,
 				63CD10B611CFF5FB00F60BC8 /* CMap.h */,
-				63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */,
-				63CD10B811CFF5FB00F60BC8 /* CMapLoader.h */,
+				63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */,
+				63CD10B811CFF5FB00F60BC8 /* CVorticonMapLoader.h */,
+				63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */,
+				63CD10BC11CFF5FB00F60BC8 /* CObject.h */,
 				63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */,
 				63CD10BE11CFF5FB00F60BC8 /* CPhysicsSettings.h */,
 				63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */,
@@ -1827,8 +1846,8 @@
 				23A1441C12A5380100E894CF /* CInventory.h */,
 				2332378E120EBBF600915252 /* CLevelPlay.cpp */,
 				2332378F120EBBF600915252 /* CLevelPlay.h */,
-				63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */,
-				63CD111711CFF5FB00F60BC8 /* CMapLoaderGalaxy.h */,
+				63CD111611CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.cpp */,
+				63CD111711CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.h */,
 				63CD111811CFF5FB00F60BC8 /* CMenuGalaxy.cpp */,
 				63CD111911CFF5FB00F60BC8 /* CMenuGalaxy.h */,
 				63CD111A11CFF5FB00F60BC8 /* CPassive.cpp */,
@@ -2462,7 +2481,8 @@
 				63CD120911CFF5FC00F60BC8 /* CBehaviorEngine.cpp in Sources */,
 				63CD120A11CFF5FC00F60BC8 /* CGameLauncher.cpp in Sources */,
 				63CD120B11CFF5FC00F60BC8 /* CMap.cpp in Sources */,
-				63CD120C11CFF5FC00F60BC8 /* CMapLoader.cpp in Sources */,
+				63CD120C11CFF5FC00F60BC8 /* CVorticonMapLoader.cpp in Sources */,
+				63CD120E11CFF5FC00F60BC8 /* CObject.cpp in Sources */,
 				63CD120F11CFF5FC00F60BC8 /* CPhysicsSettings.cpp in Sources */,
 				63CD121011CFF5FC00F60BC8 /* CPlane.cpp in Sources */,
 				63CD121111CFF5FC00F60BC8 /* CPlayer.cpp in Sources */,
@@ -2499,7 +2519,7 @@
 				63CD123511CFF5FC00F60BC8 /* CPlanes.cpp in Sources */,
 				63CD123611CFF5FC00F60BC8 /* CTitle.cpp in Sources */,
 				63CD123711CFF5FC00F60BC8 /* CEGAGraphicsGalaxy.cpp in Sources */,
-				63CD123811CFF5FC00F60BC8 /* CMapLoaderGalaxy.cpp in Sources */,
+				63CD123811CFF5FC00F60BC8 /* CVorticonMapLoaderGalaxy.cpp in Sources */,
 				63CD123911CFF5FC00F60BC8 /* CMenuGalaxy.cpp in Sources */,
 				63CD123A11CFF5FC00F60BC8 /* CPassive.cpp in Sources */,
 				63CD123B11CFF5FC00F60BC8 /* CPlayGameGalaxy.cpp in Sources */,
@@ -2713,7 +2733,8 @@
 				237422DD11FC849A000EEA5B /* CBehaviorEngine.cpp in Sources */,
 				237422DE11FC849A000EEA5B /* CGameLauncher.cpp in Sources */,
 				237422DF11FC849A000EEA5B /* CMap.cpp in Sources */,
-				237422E011FC849A000EEA5B /* CMapLoader.cpp in Sources */,
+				237422E011FC849A000EEA5B /* CVorticonMapLoader.cpp in Sources */,
+				237422E211FC849A000EEA5B /* CObject.cpp in Sources */,
 				237422E311FC849A000EEA5B /* CPhysicsSettings.cpp in Sources */,
 				237422E411FC849A000EEA5B /* CPlane.cpp in Sources */,
 				237422E511FC849A000EEA5B /* CPlayer.cpp in Sources */,
@@ -2750,7 +2771,7 @@
 				2374230811FC849A000EEA5B /* CPlanes.cpp in Sources */,
 				2374230911FC849A000EEA5B /* CTitle.cpp in Sources */,
 				2374230A11FC849A000EEA5B /* CEGAGraphicsGalaxy.cpp in Sources */,
-				2374230B11FC849A000EEA5B /* CMapLoaderGalaxy.cpp in Sources */,
+				2374230B11FC849A000EEA5B /* CVorticonMapLoaderGalaxy.cpp in Sources */,
 				2374230C11FC849A000EEA5B /* CMenuGalaxy.cpp in Sources */,
 				2374230D11FC849A000EEA5B /* CPassive.cpp in Sources */,
 				2374230E11FC849A000EEA5B /* CPlayGameGalaxy.cpp in Sources */,

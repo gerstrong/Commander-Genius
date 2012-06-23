@@ -13,9 +13,11 @@
 
 #include "CPlatform.h"
 
-namespace galaxy {
+namespace galaxy
+{
 
-class CPlatformDrop : public CPlatform {
+class CPlatformDrop : public CPlatform
+{
 public:
 	CPlatformDrop(CMap *pmap, const Uint32 x, const Uint32 y);
 

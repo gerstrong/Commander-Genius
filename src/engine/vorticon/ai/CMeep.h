@@ -8,15 +8,15 @@
 #ifndef CMEEP_H_
 #define CMEEP_H_
 
-#include "../../../common/CSpriteObject.h"
+#include "engine/vorticon/CVorticonSpriteObject.h"
 #include "../../../common/CPlayer.h"
 
-class CMeep : public CSpriteObject
+class CMeep : public CVorticonSpriteObject
 {
 public:
 	CMeep(CMap *p_map, Uint32 x, Uint32 y,
 			std::vector<CPlayer>& Player,
-			std::vector<CSpriteObject*>& Object);
+			std::vector<CVorticonSpriteObject*>& Object);
 	void process();
 private:
 	char state;
@@ -26,7 +26,7 @@ private:
 	int timer;
 
 	std::vector<CPlayer>& m_Player;
-	std::vector<CSpriteObject*>& m_Object;
+	std::vector<CVorticonSpriteObject*>& m_Object;
 };
 
 #endif /* CMEEP_H_ */

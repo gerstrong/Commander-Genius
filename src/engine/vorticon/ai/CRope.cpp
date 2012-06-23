@@ -11,7 +11,7 @@
 #define STONE_DROP_RATE      6
 
 CRope::CRope(CMap *p_map, Uint32 x, Uint32 y) :
-CSpriteObject(p_map, x, y, OBJ_ROPE)
+CVorticonSpriteObject(p_map, x, y, OBJ_ROPE)
 {
 	state = ROPE_IDLE;
 	canbezapped = 1;
@@ -107,7 +107,7 @@ void CRope::rope_movestone()
 	falldist++;
 }
 
-void CRope::getTouchedBy(CSpriteObject &theObject)
+void CRope::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if( state == ROPE_DROPSTONE && m_type==OBJ_ROPE )
 	{

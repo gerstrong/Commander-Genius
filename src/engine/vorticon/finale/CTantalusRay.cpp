@@ -10,7 +10,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/input/CInput.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 
 #include "engine/vorticon/ai/CRay.h"
 #include "engine/vorticon/ai/CEarthExplosion.h"
@@ -33,8 +33,8 @@ const int EARTHCHUNK_SMALL_DN = 70;
 
 CTantalusRay::CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
 								const SmartPointer<CMap> &pMap,
-								std::vector<CSpriteObject*> &vect_obj,
-								SmartPointer<CSpriteObjectAI> &objectai) :
+								std::vector<CVorticonSpriteObject*> &vect_obj,
+								SmartPointer<CVorticonSpriteObjectAI> &objectai) :
 CFinale(messageBoxes, pMap, vect_obj),
 m_mustsetup(true),
 m_alternate_sprite(0),
@@ -71,7 +71,7 @@ void CTantalusRay::shootray()
 {
 	if(m_mustsetup)
 	{
-		CMapLoader Maploader(mpMap);
+		CVorticonMapLoader Maploader(mpMap);
 		Maploader.load(2,81, mpMap->m_gamepath, false);
 
 		while(!m_Object.empty())
@@ -82,7 +82,7 @@ void CTantalusRay::shootray()
 
 		mpMap->drawAll();
 
-		CSpriteObject* ShootObject = new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, OBJ_NONE, 0);
+		CVorticonSpriteObject* ShootObject = new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, OBJ_NONE, 0);
 		ShootObject->solid = false;
 		ShootObject->exists = ShootObject->onscreen = true;
 		m_Object.push_back(ShootObject);

@@ -9,7 +9,7 @@
 #include "StringUtils.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/CVideoDriver.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "SmartPointer.h"
 
 
@@ -60,7 +60,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_Player.at(i).setDatatoZero();
 		}
 
-		CMapLoader Maploader(mMap, &m_Player);
+		CVorticonMapLoader Maploader(mMap, &m_Player);
 		Maploader.mp_objvect = &m_Object;
 		m_checkpointset = checkpointset;
 		Maploader.m_checkpointset = m_checkpointset;
@@ -90,17 +90,18 @@ bool CPlayGameVorticon::loadGameState()
 		// load the number of objects on screen
 		Uint32 size;
 		savedGame.decodeData(size);
-		for( Uint32 i=0 ; i<size  ; i++ ) {
+		for( Uint32 i=0 ; i<size  ; i++ )
+		{
 			unsigned int x,y;
 
 			if(i >= m_Object.size())
 			{
-				CSpriteObject *object = new CSpriteObject( mMap.get(), 0, 0, OBJ_NONE);
+				CVorticonSpriteObject *object = new CVorticonSpriteObject( mMap.get(), 0, 0, OBJ_NONE);
 				object->exists = false;
 				m_Object.push_back(object);
 			}
 
-			CSpriteObject* object = m_Object.at(i);
+			CVorticonSpriteObject* object = dynamic_cast<CVorticonSpriteObject*>(m_Object.at(i));
 
 			savedGame.decodeData(object->m_type);
 			savedGame.decodeData(x);
@@ -141,7 +142,7 @@ bool CPlayGameVorticon::loadGameState()
 		savedGame.readDataBlock( reinterpret_cast<byte*>(mMap->getForegroundData()) );
 
 		// Load completed levels
-		savedGame.readDataBlock( (byte*)(mp_level_completed));
+		savedGame.readDataBlock( (byte*)(mp_level_completed) );
 
 		m_Player[0].setMapData(mMap.get());
 		m_Player[0].setupCameraObject();
@@ -159,7 +160,7 @@ bool CPlayGameVorticon::loadGameState()
 		g_pGfxEngine->setupEffect(pColorMergeFX);
 
 
-		mpObjectAI = new CSpriteObjectAI(mMap.get(), m_Object, m_Player,
+		mpObjectAI = new CVorticonSpriteObjectAI(mMap.get(), m_Object, m_Player,
 									m_NumPlayers, m_Episode, m_Level,
 									mMap->m_Dark);
 		setupPlayers();

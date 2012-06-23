@@ -20,7 +20,7 @@ CPlayerBase::CPlayerBase(
 		direction_t facedir,
 		CInventory &l_Inventory,
 		stCheat &Cheatmode) :
-CSpriteObject(pmap, x, y, OBJ_PLAYER),
+CGalaxySpriteObject(pmap, x, y),
 m_Inventory(l_Inventory),
 m_camera(pmap,x,y,this),
 m_ObjectPtrs(ObjectPtrs),
@@ -342,6 +342,30 @@ void CPlayerBase::kill()
 	}
 }
 
+
+bool CPlayerBase::checkMapBoundaryR(const int x2)
+{
+	if( solid && x2 >= (int)((mp_Map->m_width-1)<<CSF) )
+		return true;
+
+	return false;
+}
+
+bool CPlayerBase::checkMapBoundaryL(const int x1)
+{
+	if( solid && x1 <= (1<<CSF) )
+		return true;
+
+	return false;
+}
+
+bool CPlayerBase::checkMapBoundaryU(const int y1)
+{
+	if( y1 <= (2<<CSF) )
+		return true;
+
+	return false;
+}
 
 
 

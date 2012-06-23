@@ -12,7 +12,7 @@
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "fileio/ResourceMgmt.h"
 #include "sdl/extensions.h"
 
@@ -24,7 +24,7 @@ void CAbout::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap = new CMap;
-	CMapLoader Maploader(mpMap);
+	CVorticonMapLoader Maploader(mpMap);
 	
 	Maploader.load(ExeFile.getEpisode(), 90, ExeFile.getDataDirectory());
 	mpMap->gotoPos( 1008, 28 );

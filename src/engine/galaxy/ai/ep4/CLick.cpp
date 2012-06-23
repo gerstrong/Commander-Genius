@@ -23,8 +23,8 @@ const int LICK_HOP_X_SPEED = 50;
 const int LICK_BREATHE_TIMER = 100;
 
 CLick::CLick(CMap *pmap, Uint32 x, Uint32 y) :
-CSpriteObject(pmap, x, y, OBJ_NONE),
-CStunnable(pmap, x, y, OBJ_NONE),
+CGalaxySpriteObject(pmap, x, y),
+CStunnable(pmap, x, y),
 m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x2FC6, A_LICK_HOP);

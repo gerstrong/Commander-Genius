@@ -10,7 +10,7 @@
 
 #include "CHelp.h"
 #include "fileio/CExeFile.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"

@@ -11,7 +11,7 @@
 // Initialization Routine
 ///
 CEGABitmap::CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap) :
-CSpriteObject(p_Map,0,0, OBJ_NONE)
+CVorticonSpriteObject(p_Map,0,0, OBJ_NONE)
 {
 	mp_Surface = pSurface;
 	mp_Bitmap = pBitmap;
@@ -23,8 +23,4 @@ CSpriteObject(p_Map,0,0, OBJ_NONE)
 void CEGABitmap::process()
 {
 	mp_Bitmap->draw( scrx, scry );
-}
-
-CEGABitmap::~CEGABitmap() {
-	// TODO Auto-generated destructor stub
 }

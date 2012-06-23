@@ -10,11 +10,11 @@
 #ifndef CBUBBLES_H_
 #define CBUBBLES_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
-class CBubbles: public CSpriteObject
+class CBubbles: public CGalaxySpriteObject
 {
 public:
 	CBubbles(CMap *pmap, Uint32 x, Uint32 y, const bool bigbubble);

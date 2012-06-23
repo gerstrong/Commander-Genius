@@ -12,7 +12,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "StringUtils.h"
-#include "common/CMapLoader.h"
+#include "common/CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 void CPreviews::init()
@@ -22,7 +22,7 @@ void CPreviews::init()
 	std::string DataDirectory = ExeFile.getDataDirectory();
 	mpMap = new CMap();
 
-	CMapLoader Maploader(mpMap);
+	CVorticonMapLoader Maploader(mpMap);
 	Maploader.load(m_episode, 90, DataDirectory);
 
 	mpMap->gotoPos( 0, 0 );

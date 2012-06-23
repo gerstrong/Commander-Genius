@@ -69,7 +69,7 @@ private:
 	bool m_finished;
 	bool m_scrollingon;
 	CPlayer &m_player;
-	CSpriteObject *mp_mark;
+	//CVorticonSpriteObject *mp_mark;
 	SmartPointer<CMap> mpMap;
 	int m_playsprite_left;
 	int m_playsprite_right;

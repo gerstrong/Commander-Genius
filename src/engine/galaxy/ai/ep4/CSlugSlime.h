@@ -11,12 +11,13 @@
 #ifndef CSLUGSLIME_H_
 #define CSLUGSLIME_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy
 {
 
-class CSlugSlime : public CSpriteObject  {
+class CSlugSlime : public CGalaxySpriteObject
+{
 public:
 
 	/** Standard Constructor for the slug poo */

@@ -5,9 +5,9 @@
  *      Author: gerstrong
  */
 
+#include "engine/spritedefines.h"
 #include "CSpriteObject.h"
 #include "CLogFile.h"
-#include "engine/spritedefines.h"
 #include "sdl/CVideoDriver.h"
 
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
@@ -15,12 +15,10 @@ int CSpriteObject::m_number_of_objects = 0; // The current number of total objec
 ///
 // Initialization Routine
 ///
-CSpriteObject::CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type) :
-m_type(type),
+CSpriteObject::CSpriteObject(CMap *pmap, Uint32 x, Uint32 y) :
 m_index(m_number_of_objects),
 mHealthPoints(1),
 sprite(BLANKSPRITE),
-mp_object(NULL),
 mp_Map(pmap),
 m_blinktime(0),
 m_invincible(false),
@@ -57,79 +55,8 @@ transluceny(0)
 	blockedu = false;
 	blockedl = false;
 	blockedr = false;
-
-	if(m_type != OBJ_NONE )
-	{
-		setupObjectType(g_pBehaviorEngine->getEpisode());
-		performCollisions();
-	}
 }
 
-void CSpriteObject::setupObjectType(int Episode)
-{
-	switch(m_type)
-	{
-	// Mainly Episode 1
-	case OBJ_GARG: sprite = OBJ_GARG_DEFSPRITE; break;
-	case OBJ_BUTLER: sprite = OBJ_BUTLER_DEFSPRITE; break;
-	case OBJ_TANK: sprite = OBJ_BUTLER_DEFSPRITE; break;
-	case OBJ_ICECHUNK: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
-	case OBJ_ICEBIT: sprite = OBJ_ICEBIT_DEFSPRITE; break;
-	case OBJ_ICECANNON: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
-	case OBJ_ROPE: sprite = OBJ_ROPE_DEFSPRITE; break;
-
-	// Mainly Episode 2
-	case OBJ_SCRUB: sprite = OBJ_SCRUB_DEFSPRITE; break;
-	case OBJ_GUARDROBOT: sprite = OBJ_TANKEP2_DEFSPRITE; break;
-	case OBJ_VORTELITE: sprite = OBJ_VORTELITE_DEFSPRITE; break;
-	case OBJ_SPARK: sprite = OBJ_SPARK_DEFSPRITE_EP2; break;
-
-	// Mainly Episode 3
-	case OBJ_FOOB: sprite = OBJ_FOOB_DEFSPRITE; break;
-	case OBJ_NINJA: sprite = OBJ_NINJA_DEFSPRITE; break;
-	case OBJ_MOTHER: sprite = OBJ_MOTHER_DEFSPRITE; break;
-	case OBJ_MEEP: sprite = OBJ_MEEP_DEFSPRITE; break;
-	case OBJ_BALL: sprite = OBJ_BALL_DEFSPRITE; break;
-	case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
-	case OBJ_MESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
-	case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
-	case OBJ_SNDWAVE: sprite = OBJ_SNDWAVE_DEFSPRITE; break;
-
-	case OBJ_VORT:
-		{
-			if(Episode == 1) sprite = OBJ_VORT_DEFSPRITE_EP1;
-			else if(Episode == 2) sprite = OBJ_VORT_DEFSPRITE_EP2;
-			else if(Episode == 3) sprite = OBJ_VORT_DEFSPRITE_EP3;
-		}break;
-
-	case OBJ_BABY:
-	{
-		if(Episode == 2) sprite = OBJ_BABY_DEFSPRITE_EP2;
-		else sprite = OBJ_BABY_DEFSPRITE_EP3;
-	}break;
-
-	case OBJ_PLATFORM:
-	case OBJ_PLATVERT:
-	{
-		if(Episode == 2) sprite = OBJ_PLATFORM_DEFSPRITE_EP2;
-		else sprite = OBJ_PLATFORM_DEFSPRITE_EP3;
-	}break;
-
-
-	case OBJ_AUTORAY: {
-		if(Episode == 1) sprite = ENEMYRAY;
-		else if(Episode == 2) sprite = ENEMYRAYEP2;
-		sprite = ENEMYRAYEP3;
-	}break;
-
-	case OBJ_DOOR: sprite = DOOR_YELLOW_SPRITE; break;
-	case OBJ_TELEPORTER: sprite = OBJ_TELEPORTER_DEFSPRITE; break;
-	case OBJ_SECTOREFFECTOR: sprite = BLANKSPRITE; break;
-	case OBJ_GOTPOINTS: sprite = PT500_SPRITE; break;
-	default: sprite = BLANKSPRITE; break;
-	}
-
-}
 
 void CSpriteObject::setScrPos( int px, int py )
 {
@@ -144,66 +71,17 @@ bool CSpriteObject::calcVisibility()
 {
 	int &visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
 
-	// Platform are always active
-	if( m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT )
-		return true;
-
-	// If an object is in the mid-air still moves it still,
-	// until it gets stuck to ceiling, wall or floor
-	if( !blockedd && m_type!=OBJ_SCRUB  ) return true;
-
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 
-	Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
+	const Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
 							(mp_Map->m_scrollx<<STC)-(visibility<<CSF);
-	Uint32 right = ((mp_Map->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
-	Uint32 up = (((mp_Map->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
+	const Uint32 right = ((mp_Map->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
+	const Uint32 up = (((mp_Map->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
 							(mp_Map->m_scrolly<<STC)-(visibility<<CSF);
-	Uint32 down = ((mp_Map->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
+	const Uint32 down = ((mp_Map->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
 
-	bool inscreen = ( right > m_Pos.x && left < m_Pos.x && down > m_Pos.y && up < m_Pos.y );
-
-	// Bullets should disappear when offscreen
-	if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL)
-	{
-		if(!inscreen)
-			exists=false;
-	}
-
-	return inscreen;
+	return ( right > m_Pos.x && left < m_Pos.x && down > m_Pos.y && up < m_Pos.y );
 }
-
-/**
- * This function will check if the enemy is in the limited scenario,
- * so it will triggered. Happens normally when the Object is seen on the screen.
- */
-bool CSpriteObject::checkforScenario()
-{
-	if ( !exists || m_type==OBJ_PLAYER ) return false;
-
-	if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK
-			|| m_type == OBJ_BRIDGE || m_type == OBJ_NONE ) return true;
-
-	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
-	if(!mp_Map->m_worldmap)
-		if(!calcVisibility()) return false;
-
-   	onscreen = true;
-
-   	if (hasbeenonscreen ||
-		m_type==OBJ_RAY || m_type==OBJ_ROPE ||
-		m_type==OBJ_ICECANNON ||
-		m_type==OBJ_ICECHUNK || m_type==OBJ_PLATFORM ||
-		m_type==OBJ_PLATVERT || m_type==OBJ_YORP ||
-		m_type==OBJ_FOOB || m_type==OBJ_SCRUB ||
-		m_type == OBJ_SECTOREFFECTOR)
-	{
-		return true;
-    }
-
-   	return false;
-}
-
 
 
 
@@ -413,8 +291,6 @@ Uint32 CSpriteObject::getYMidPos()
 void CSpriteObject::processFalling()
 {
 	// CAUTION: There is a difference between falling and going down with the gravity...
-
-	if(m_type == OBJ_MESSIE) return;
 
 	// So it reaches the maximum of fallspeed
 	if(!inhibitfall && !m_climbing)
