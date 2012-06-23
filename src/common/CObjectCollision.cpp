@@ -501,17 +501,6 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
 		exists=false; // Out of map?
 
-	// This is a special case for foes which can turn around when they walk over an edge before they fall
-	if(m_canturnaround &&
-		( !TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup ||
-		  !TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup ) )
-	{
-		blockedl = TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
-		blockedr = TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
-
-		return 1;
-	}
-
 	return 0;
 }
 

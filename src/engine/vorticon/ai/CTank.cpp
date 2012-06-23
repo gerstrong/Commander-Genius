@@ -23,7 +23,6 @@ m_Object(Object)
 	dist_to_travel = TANK_MAXTRAVELDIST;
 	canbezapped = true;  // will stop bullets but are not harmed
 	m_invincible = true;
-	m_canturnaround = true;
 }
 
 void CTank::process()
@@ -193,3 +192,22 @@ void CTank::getTouchedBy(CVorticonSpriteObject &theObject)
 		Player.bump( *this, movedir );
 	}
 }
+
+int CTank::checkSolidD( int x1, int x2, int y2, const bool push_mode )
+{
+	CSpriteObject::checkSolidD(x1, x2, y2, push_mode);
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	// This is a special case for foes which can turn around when they walk over an edge before they fall
+	if( !TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup ||
+		!TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup )
+	{
+		blockedl = TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
+		blockedr = TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
+
+		return 1;
+	}
+
+	return 0;
+}
+

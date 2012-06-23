@@ -45,7 +45,6 @@ transluceny(0)
 	m_ActionBaseOffset = 0x0;
 	m_vDir = m_hDir = NONE;
 	m_ActionTicker = 0;
-	m_canturnaround = false;
 	m_climbing = false;
 	supportedbyobject = false;
 

@@ -40,6 +40,8 @@ public:
 	void process();
 	void getTouchedBy(CVorticonSpriteObject &theObject);
 
+	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
+
 private:
 	// AI for "butler" robot (ep1)
 	enum {

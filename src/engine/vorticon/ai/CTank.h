@@ -64,6 +64,8 @@ public:
 
 	void getTouchedBy(CVorticonSpriteObject &theObject);
 
+	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
+
 protected:
 	// Tank Robot
 	enum{ TANK_WALK,TANK_TURN,TANK_WAIT,TANK_WAIT_LOOK,TANK_FIRE,TANK_LOOK

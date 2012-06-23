@@ -105,10 +105,7 @@ public:
 
 	bool dead, dying;
 	
-	bool m_canturnaround;
-
 	// This is used for action format only
-	// Hopefully in Vorticons we also can use that structure some time
 	uint16_t m_ActionTicker;
 	uint16_t m_ActionNumber;
 	size_t m_ActionBaseOffset;
@@ -209,7 +206,7 @@ public:
 	int checkSolidR( int x1, int x2, int y1, int y2);
 	int checkSolidL( int x1, int x2, int y1, int y2);
 	int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
+	virtual int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 
 	virtual bool checkMapBoundaryL(const int x1);
 	virtual bool checkMapBoundaryR(const int x2);
