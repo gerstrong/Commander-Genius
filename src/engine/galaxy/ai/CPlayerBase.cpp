@@ -9,6 +9,7 @@
 #include "CItemEffect.h"
 #include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
+#include "SmartPointer.h"
 
 namespace galaxy {
 
@@ -16,7 +17,7 @@ CPlayerBase::CPlayerBase(
 		CMap *pmap,
 		Uint32 x,
 		Uint32 y,
-		std::vector<CSpriteObject*>& ObjectPtrs,
+		std::vector< SmartPointer<CSpriteObject> >& ObjectPtrs,
 		direction_t facedir,
 		CInventory &l_Inventory,
 		stCheat &Cheatmode) :

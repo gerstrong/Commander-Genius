@@ -23,13 +23,13 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"
+#include "SmartPointer.h"
 #include <vector>
 #include <list>
 
 class CMapPlayGalaxy {
 public:
 	CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
-	~CMapPlayGalaxy();
 
 	bool isActive();
 	void setActive(const bool value);
@@ -49,7 +49,7 @@ public:
 
 
 protected:
-	std::vector<CSpriteObject*> m_ObjectPtr;
+	std::vector< SmartPointer<CSpriteObject> > m_ObjectPtr;
 	bool m_active;
 
 	CMap m_Map;

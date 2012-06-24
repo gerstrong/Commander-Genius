@@ -21,6 +21,7 @@
 #include "common/Cheat.h"
 #include "engine/CCamera.h"
 #include "engine/galaxy/CInventory.h"
+#include "SmartPointer.h"
 
 namespace galaxy
 {
@@ -39,7 +40,7 @@ public:
 	CPlayerBase(CMap *pmap,
 				Uint32 x,
 				Uint32 y,
-				std::vector<CSpriteObject*>& ObjectPtrs,
+				std::vector< SmartPointer<CSpriteObject> >& ObjectPtrs,
 				direction_t facedir,
 				CInventory &l_Inventory,
 				stCheat &Cheatmode);
@@ -94,7 +95,7 @@ protected:
 
 	unsigned short mPlayerNum;
 
-	std::vector<CSpriteObject*>& m_ObjectPtrs;
+	std::vector< SmartPointer<CSpriteObject> >& m_ObjectPtrs;
 
 	Sint16 m_playcontrol[PA_MAX_ACTIONS];
 	int m_timer;

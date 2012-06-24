@@ -34,7 +34,7 @@ const int FIRE_RECHARGE_TIME = 5;
 
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
-						std::vector<CSpriteObject*>& ObjectPtrs, direction_t facedir,
+						std::vector< SmartPointer<CSpriteObject> > &ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
 CPlayerBase(pmap, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
 m_jumpdownfromobject(false)
@@ -64,7 +64,7 @@ void CPlayerLevel::processMoveBitDown()
 	{
 		if(m_ObjectPtrs[i]->hitdetect(*this))
 		{
-			if( CPlatform *platform = dynamic_cast<CPlatform*>(m_ObjectPtrs[i]) )
+			if( CPlatform *platform = dynamic_cast<CPlatform*>(m_ObjectPtrs[i].get()) )
 			{
 				platform->getTouchedBy(*this);
 			}

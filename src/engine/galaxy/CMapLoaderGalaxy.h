@@ -14,6 +14,7 @@
 #include "common/Cheat.h"
 #include "engine/galaxy/CInventory.h"
 #include "common/CSpriteObject.h"
+#include "SmartPointer.h"
 #include <vector>
 
 #include <string>
@@ -25,7 +26,8 @@ namespace galaxy
 class CVorticonMapLoaderGalaxy
 {
 public:
-	CVorticonMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CSpriteObject*>& ObjectPtr,
+	CVorticonMapLoaderGalaxy(CExeFile &ExeFile,
+			std::vector< SmartPointer<CSpriteObject> > &ObjectPtr,
 			CInventory &Inventory, stCheat &Cheatmode);
 	size_t getMapheadOffset();
 	bool gotoSignature(std::ifstream &MapFile);
@@ -40,7 +42,7 @@ private:
 			word magic_word);
 
 	CExeFile &m_ExeFile;
-	std::vector<CSpriteObject*>& m_ObjectPtr;
+	std::vector< SmartPointer<CSpriteObject> > &m_ObjectPtr;
 	CInventory &m_Inventory;
 	stCheat &m_Cheatmode;
 };

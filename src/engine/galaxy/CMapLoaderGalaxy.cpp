@@ -51,7 +51,8 @@
 namespace galaxy
 {
 
-CVorticonMapLoaderGalaxy::CVorticonMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CSpriteObject*>& ObjectPtr,
+CVorticonMapLoaderGalaxy::CVorticonMapLoaderGalaxy(CExeFile &ExeFile,
+		std::vector< SmartPointer<CSpriteObject> > &ObjectPtr,
 		CInventory &Inventory, stCheat &Cheatmode):
 m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
@@ -288,11 +289,9 @@ void CVorticonMapLoaderGalaxy::spawnFoes(CMap &Map)
 	word height = Map.m_height;
 
 	// If objects are in the buffer clean them up
-	while(!m_ObjectPtr.empty())
-	{
-		delete m_ObjectPtr.back();
-		m_ObjectPtr.pop_back();
-	}
+
+	if(!m_ObjectPtr.empty())
+		m_ObjectPtr.clear();
 
 	// he we go to the adding objects
 	data_ptr = start_data;
