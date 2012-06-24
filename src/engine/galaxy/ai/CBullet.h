@@ -10,7 +10,7 @@
 #ifndef CBULLET_H_
 #define CBULLET_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy
 {
@@ -61,7 +61,7 @@ namespace galaxy
 };
 */
 
-class CBullet : public CSpriteObject {
+class CBullet : public CGalaxySpriteObject {
 public:
 	CBullet(CMap *pmap, Uint32 x, Uint32 y, direction_t dir);
 	void process();

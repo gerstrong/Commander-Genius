@@ -11,11 +11,12 @@
 #ifndef CENEMYSHOT_H_
 #define CENEMYSHOT_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 
 namespace galaxy {
 
-class CEnemyShot : public CSpriteObject {
+class CEnemyShot : public CGalaxySpriteObject
+{
 public:
 	CEnemyShot(CMap *pmap, const Uint32 x, const Uint32 y,
 			const int actionFormatOffset, const direction_t dir, const int speed);

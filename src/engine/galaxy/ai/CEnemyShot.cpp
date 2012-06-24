@@ -14,7 +14,7 @@ namespace galaxy {
 
 CEnemyShot::CEnemyShot(CMap *pmap, const Uint32 x, const Uint32 y,
 		const int actionFormatOffset, const direction_t dir, const int speed) :
-CSpriteObject(pmap, x, y),
+CGalaxySpriteObject(pmap, x, y),
 m_speed(speed)
 {
 	setupGalaxyObjectOnMap(actionFormatOffset, 0);

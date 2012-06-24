@@ -104,14 +104,6 @@ public:
 	bool supportedbyobject;
 
 	bool dead, dying;
-	
-	// This is used for action format only
-	uint16_t m_ActionTicker;
-	uint16_t m_ActionNumber;
-	size_t m_ActionBaseOffset;
-	bool m_jumped;
-	bool m_climbing;
-	bool m_jumpdown;
 
 	// This container will held the triggered events of the object
 	CEventContainer m_EventCont;
@@ -162,11 +154,6 @@ public:
 	 * \param	dir	The direction where the object has to go to...
 	 */
 
-	/**
-	 * This setups the object on the Map. This is galaxy engine only so far,
-	 */
-	void setupGalaxyObjectOnMap(const size_t ActionBaseOffset = 0x0,
-								const size_t ActionNumber = 0x0 );
 	void processMove(const VectorD2<int>& dir);
 	void processMoveBitLeft();
 	void processMoveBitRight();
@@ -205,7 +192,7 @@ public:
 	 */
 	int checkSolidR( int x1, int x2, int y1, int y2);
 	int checkSolidL( int x1, int x2, int y1, int y2);
-	int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
+	virtual int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
 	virtual int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 
 	virtual bool checkMapBoundaryL(const int x1);
@@ -243,14 +230,6 @@ public:
 	 */
 	void playSound( const GameSound snd,
 				    const SoundPlayMode mode=PLAY_NOW );
-
-	bool getActionNumber(int16_t ActionNumber);
-	bool getActionStatus(int16_t ActionNumber);
-	int16_t getActionNumber();
-	void setActionForce(size_t ActionNumber);
-	void setAction(size_t ActionNumber);
-	void setActionSprite();
-	void processActionRoutine();
 
 	void draw();
 

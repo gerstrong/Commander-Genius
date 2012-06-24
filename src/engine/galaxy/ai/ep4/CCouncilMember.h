@@ -10,7 +10,7 @@
 #ifndef CCOUNCIL_MEMBER_H_
 #define CCOUNCIL_MEMBER_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 #include <map>
 #include <string>
 
@@ -19,7 +19,7 @@ namespace galaxy {
 #define A_COUNCIL_MEMBER_MOVE		0	/* Ordinary walking council member. */
 #define A_COUNCIL_MEMBER_THINK		2	/* Council member stopping to ponder. */
 
-class CCouncilMember : public CSpriteObject
+class CCouncilMember : public CGalaxySpriteObject
 {
 public:
 	CCouncilMember(CMap *pmap, Uint32 x, Uint32 y);

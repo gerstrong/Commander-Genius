@@ -29,10 +29,11 @@ CGalaxySpriteObject( pmap, x, y )
 
 void CStunnable::getTouchedBy(CSpriteObject &theObject)
 {
-	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
+	CBullet *bullet = dynamic_cast<CBullet*>(&theObject);
+	if( theObject.exists && bullet != NULL )
 	{
-		theObject.setAction(A_KEENSHOT_IMPACT);
-		theObject.playSound( SOUND_SHOT_HIT );
+		bullet->setAction(A_KEENSHOT_IMPACT);
+		bullet->playSound( SOUND_SHOT_HIT );
 	}
 }
 
