@@ -41,6 +41,13 @@ public:
 
 	void process(const bool msgboxactive);
 
+	// Push data to Savegame-Controller
+	void operator>>(CSaveGameController &savedGame);
+
+	// This is for loading the game
+	void operator<<(CSaveGameController &savedGame);
+
+
 protected:
 	std::vector<CSpriteObject*> m_ObjectPtr;
 	bool m_active;

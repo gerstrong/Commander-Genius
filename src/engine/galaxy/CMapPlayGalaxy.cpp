@@ -155,6 +155,17 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 
 }
 
+// Saves the inventory using the Savegamecontroller.
+void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
+{
+
+}
+
+// This is for loading the game
+void CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
+{
+
+}
 
 
 

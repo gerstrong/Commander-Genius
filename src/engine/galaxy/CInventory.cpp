@@ -91,4 +91,14 @@ void CInventory::drawStatus()
 	mp_StatusScreen->draw();
 }
 
+void CInventory::operator>>(CSaveGameController &savedGame)
+{
+	savedGame.encodeData(Item);
+}
+
+void CInventory::operator<<(CSaveGameController &savedGame)
+{
+	savedGame.decodeData(Item);
+}
+
 

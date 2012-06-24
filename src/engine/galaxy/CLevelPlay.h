@@ -14,7 +14,8 @@
 
 namespace galaxy {
 
-class CLevelPlay : public CMapPlayGalaxy {
+class CLevelPlay : public CMapPlayGalaxy
+{
 public:
 	CLevelPlay(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
 

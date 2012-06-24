@@ -41,4 +41,5 @@ void CWorldMap::loadAndPlayMusic()
 		g_pMusicPlayer->play();
 }
 
+
 }

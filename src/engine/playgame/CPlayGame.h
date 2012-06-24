@@ -21,7 +21,8 @@
 const int WM_MAP_NUM = 80;
 
 
-class CPlayGame{
+class CPlayGame
+{
 public:
 	CPlayGame(CExeFile &ExeFile, char level,
 			 char numplayers);

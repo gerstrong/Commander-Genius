@@ -15,6 +15,7 @@
 #include "common/CHUD.h"
 #include "ItemsGalaxy.h"
 #include "CStatusScreenGalaxy.h"
+#include "fileio/CSaveGameController.h"
 #include "SmartPointer.h"
 #include <string>
 #include <SDL.h>
@@ -37,6 +38,12 @@ public:
 
 	// make the status get opened or closed
 	void toggleStatusScreen();
+
+	// Saves the inventory using the Savegamecontroller.
+	void operator>>(CSaveGameController &savedGame);
+
+	// This is for loading the game
+	void operator<<(CSaveGameController &savedGame);
 
 	stItemGalaxy Item;
 

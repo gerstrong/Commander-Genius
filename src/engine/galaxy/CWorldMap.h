@@ -14,7 +14,8 @@
 
 namespace galaxy {
 
-class CWorldMap : public CMapPlayGalaxy {
+class CWorldMap : public CMapPlayGalaxy
+{
 public:
 	CWorldMap(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
 

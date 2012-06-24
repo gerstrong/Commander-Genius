@@ -212,7 +212,8 @@ bool CPlayGameVorticon::saveGameState()
 	size = m_Object.size();
 	// save the number of objects on screen
 	savedGame.encodeData(size);
-	for( i=0 ; i<size ; i++) {
+	for( i=0 ; i<size ; i++)
+	{
 		// save all the objects states
 		savedGame.encodeData(m_Object[i]->m_type);
 		savedGame.encodeData(m_Object[i]->getXPosition());
