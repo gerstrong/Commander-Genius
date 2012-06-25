@@ -45,7 +45,7 @@ public:
 	void operator>>(CSaveGameController &savedGame);
 
 	// This is for loading the game
-	void operator<<(CSaveGameController &savedGame);
+	bool operator<<(CSaveGameController &savedGame);
 
 
 protected:
