@@ -50,7 +50,7 @@ namespace galaxy {
 class CPlayerLevel : public CPlayerBase {
 public:
 	CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector< SmartPointer<CSpriteObject> > &ObjectPtrs, direction_t facedir,
+			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
 			CInventory &l_Inventory, stCheat &Cheatmode);
 
 

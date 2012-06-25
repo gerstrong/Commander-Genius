@@ -13,7 +13,7 @@
 #include "common/CMap.h"
 #include "common/Cheat.h"
 #include "engine/galaxy/CInventory.h"
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 #include "SmartPointer.h"
 #include <vector>
 
@@ -23,11 +23,11 @@
 namespace galaxy
 {
 
-class CVorticonMapLoaderGalaxy
+class CMapLoaderGalaxy
 {
 public:
-	CVorticonMapLoaderGalaxy(CExeFile &ExeFile,
-			std::vector< SmartPointer<CSpriteObject> > &ObjectPtr,
+	CMapLoaderGalaxy(CExeFile &ExeFile,
+			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtr,
 			CInventory &Inventory, stCheat &Cheatmode);
 	size_t getMapheadOffset();
 	bool gotoSignature(std::ifstream &MapFile);
@@ -42,7 +42,7 @@ private:
 			word magic_word);
 
 	CExeFile &m_ExeFile;
-	std::vector< SmartPointer<CSpriteObject> > &m_ObjectPtr;
+	std::vector< SmartPointer<CGalaxySpriteObject> > &m_ObjectPtr;
 	CInventory &m_Inventory;
 	stCheat &m_Cheatmode;
 };

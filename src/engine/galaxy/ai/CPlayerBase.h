@@ -40,7 +40,7 @@ public:
 	CPlayerBase(CMap *pmap,
 				Uint32 x,
 				Uint32 y,
-				std::vector< SmartPointer<CSpriteObject> >& ObjectPtrs,
+				std::vector< SmartPointer<CGalaxySpriteObject> >& ObjectPtrs,
 				direction_t facedir,
 				CInventory &l_Inventory,
 				stCheat &Cheatmode);
@@ -95,7 +95,7 @@ protected:
 
 	unsigned short mPlayerNum;
 
-	std::vector< SmartPointer<CSpriteObject> >& m_ObjectPtrs;
+	std::vector< SmartPointer<CGalaxySpriteObject> >& m_ObjectPtrs;
 
 	Sint16 m_playcontrol[PA_MAX_ACTIONS];
 	int m_timer;

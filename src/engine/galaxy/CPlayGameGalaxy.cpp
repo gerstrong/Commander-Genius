@@ -34,15 +34,26 @@ m_SavedGame(SavedGame)
 
 bool CPlayGameGalaxy::loadGameState()
 {
-	return false;
+	CSaveGameController &savedGame = *(gpSaveGameController);
 
+	/// Save the Game in the CSavedGame object
+	// store the episode, level and difficulty
+	savedGame.decodeData(m_Episode);
+	savedGame.decodeData(m_Level);
+	savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
+
+	// Save number of Players
+	savedGame.decodeData(m_NumPlayers);
+
+	m_Inventory << savedGame;
+	m_WorldMap << savedGame;
+	m_LevelPlay << savedGame;
+
+	return savedGame.load();
 }
 
 bool CPlayGameGalaxy::saveGameState()
 {
-	//size_t i;
-	//size_t size;
-
 	CSaveGameController &savedGame = *(gpSaveGameController);
 
 	/// Save the Game in the CSavedGame object
@@ -57,53 +68,6 @@ bool CPlayGameGalaxy::saveGameState()
 	m_Inventory >> savedGame;
 	m_WorldMap >> savedGame;
 	m_LevelPlay >> savedGame;
-
-	/*// Now save the inventory of every player
-	for( i=0 ; i<m_NumPlayers ; i++ )
-	{
-
-		savedGame.encodeData(m_Player[i].getXPosition());
-		savedGame.encodeData(m_Player[i].getYPosition());
-		savedGame.encodeData(m_Player[i].blockedd);
-		savedGame.encodeData(m_Player[i].blockedu);
-		savedGame.encodeData(m_Player[i].blockedl);
-		savedGame.encodeData(m_Player[i].blockedr);
-		savedGame.encodeData(m_Player[i].inventory);
-	}
-
-	size = m_Object.size();
-	// save the number of objects on screen
-	savedGame.encodeData(size);
-	for( i=0 ; i<size ; i++)
-	{
-		// save all the objects states
-		savedGame.encodeData(m_Object[i]->m_type);
-		savedGame.encodeData(m_Object[i]->getXPosition());
-		savedGame.encodeData(m_Object[i]->getYPosition());
-		savedGame.encodeData(m_Object[i]->dead);
-		savedGame.encodeData(m_Object[i]->onscreen);
-		savedGame.encodeData(m_Object[i]->hasbeenonscreen);
-		savedGame.encodeData(m_Object[i]->exists);
-		savedGame.encodeData(m_Object[i]->blockedd);
-		savedGame.encodeData(m_Object[i]->blockedu);
-		savedGame.encodeData(m_Object[i]->blockedl);
-		savedGame.encodeData(m_Object[i]->blockedr);
-		savedGame.encodeData(m_Object[i]->mHealthPoints);
-		savedGame.encodeData(m_Object[i]->canbezapped);
-		savedGame.encodeData(m_Object[i]->cansupportplayer);
-		savedGame.encodeData(m_Object[i]->inhibitfall);
-		savedGame.encodeData(m_Object[i]->honorPriority);
-		savedGame.encodeData(m_Object[i]->sprite);
-	}
-
-	// Save the map_data as it is left
-	savedGame.encodeData(mMap->m_width);
-	savedGame.encodeData(mMap->m_height);
-	savedGame.addData( reinterpret_cast<byte*>(mMap->getForegroundData()),
-													2*mMap->m_width*mMap->m_height );
-
-	// store completed levels
-	savedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );*/
 
 	return savedGame.save();
 }

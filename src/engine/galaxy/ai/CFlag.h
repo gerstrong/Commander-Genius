@@ -11,12 +11,13 @@
 #ifndef CFLAG_H_
 #define CFLAG_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 #include "CVec.h"
 
 namespace galaxy  {
 
-class CFlag : public CSpriteObject {
+class CFlag : public CGalaxySpriteObject
+{
 public:
 	CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 			const VectorD2<Uint32> &Destination);

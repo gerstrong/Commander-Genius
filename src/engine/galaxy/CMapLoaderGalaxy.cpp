@@ -51,8 +51,8 @@
 namespace galaxy
 {
 
-CVorticonMapLoaderGalaxy::CVorticonMapLoaderGalaxy(CExeFile &ExeFile,
-		std::vector< SmartPointer<CSpriteObject> > &ObjectPtr,
+CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile,
+		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtr,
 		CInventory &Inventory, stCheat &Cheatmode):
 m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
@@ -61,7 +61,7 @@ m_Cheatmode(Cheatmode)
 {}
 
 // Gets returns the address of the datablock of the exe file, in where the
-size_t CVorticonMapLoaderGalaxy::getMapheadOffset()
+size_t CMapLoaderGalaxy::getMapheadOffset()
 {
 	size_t offset = 0;
 
@@ -77,7 +77,7 @@ size_t CVorticonMapLoaderGalaxy::getMapheadOffset()
 	return offset;
 }
 
-bool CVorticonMapLoaderGalaxy::gotoSignature(std::ifstream &MapFile)
+bool CMapLoaderGalaxy::gotoSignature(std::ifstream &MapFile)
 {
 	char c;
 	while(!MapFile.eof())
@@ -101,7 +101,7 @@ bool CVorticonMapLoaderGalaxy::gotoSignature(std::ifstream &MapFile)
 	return false;
 }
 
-void CVorticonMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
+void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 										CMap &Map, size_t PlaneNumber,
 										longword offset, longword length,
 										word magic_word)
@@ -154,7 +154,7 @@ void CVorticonMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 }
 
 
-bool CVorticonMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
+bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 {
 	// Get the MAPHEAD Location from within the Exe File
 
@@ -281,7 +281,7 @@ bool CVorticonMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
  * @brief	This will setup the enemies on the map. They are pushed in a objects vector,
  * 			so they can interact all the time
  */
-void CVorticonMapLoaderGalaxy::spawnFoes(CMap &Map)
+void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 {
 	word *start_data = Map.getData(2);
 	word *data_ptr;
@@ -358,14 +358,14 @@ const int DIVE_SUIT = 35;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
-void CVorticonMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
+void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
 	// TODO: Split this function into the one meant for the map, because some enemies are loaded on that WM
 	// that shouldn't
 	x <<= CSF;
 	y <<= CSF;
 
-	CSpriteObject *p_newfoe = NULL;
+	CGalaxySpriteObject *p_newfoe = NULL;
 	VectorD2<Uint32> Location(x,y);
 
 	// Point Item Sprites (Candies, etc...)

@@ -22,14 +22,14 @@ class CSpriteItem : public CGalaxySpriteObject
 {
 public:
 	CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector< SmartPointer<CSpriteObject> > &ObjectPtrs, Uint32 sprite);
+			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, Uint32 sprite);
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	int m_timer;
 	Uint32 m_basesprite;
-	std::vector< SmartPointer<CSpriteObject> > &m_ObjectPtrs;
+	std::vector< SmartPointer<CGalaxySpriteObject> > &m_ObjectPtrs;
 };
 
 }

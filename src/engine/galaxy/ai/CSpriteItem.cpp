@@ -16,7 +16,7 @@ namespace galaxy {
 const int MAX_ANIMATION_TIMER = 20;
 
 CSpriteItem::CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector< SmartPointer<CSpriteObject> > &ObjectPtrs, Uint32 sprite) :
+		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, Uint32 sprite) :
 CGalaxySpriteObject(pmap, x, y),
 m_ObjectPtrs(ObjectPtrs)
 {

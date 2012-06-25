@@ -12,10 +12,10 @@
 #ifndef CMAPPLAYGALAXY_H_
 #define CMAPPLAYGALAXY_H_
 
-#include "common/CSpriteObject.h"
 #include "common/Cheat.h"
 #include "fileio/CExeFile.h"
 #include "engine/galaxy/CInventory.h"
+#include "engine/galaxy/CGalaxySpriteObject.h"
 #include "engine/galaxy/dialog/CMessageBoxGalaxy.h"
 #include "common/CBehaviorEngine.h"
 #include "CMapLoaderGalaxy.h"
@@ -49,14 +49,14 @@ public:
 
 
 protected:
-	std::vector< SmartPointer<CSpriteObject> > m_ObjectPtr;
-	bool m_active;
+	std::vector< SmartPointer<CGalaxySpriteObject> > mObjectPtr;
+	bool mActive;
 
-	CMap m_Map;
-	CExeFile &m_ExeFile;
-	CInventory &m_Inventory;
-	stOption *mp_option;
-	stCheat &m_Cheatmode;
+	CMap mMap;
+	CExeFile &mExeFile;
+	CInventory &mInventory;
+	stOption *mpOption;
+	stCheat &mCheatmode;
 };
 
 #endif /* CMAPPLAYGALAXY_H_ */

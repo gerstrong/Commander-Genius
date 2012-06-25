@@ -12,12 +12,13 @@
 
 namespace galaxy {
 
-class CPlayerWM : public CPlayerBase {
+class CPlayerWM : public CPlayerBase
+{
 public:
 	CPlayerWM(CMap *pmap,
 			Uint32 x,
 			Uint32 y,
-			std::vector< SmartPointer<CSpriteObject> > &ObjectPtrs,
+			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 			CInventory &l_Inventory,
 			stCheat &Cheatmode);
 

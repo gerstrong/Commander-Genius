@@ -18,7 +18,7 @@ const int SLUG_MOVE_SPEED = 1;
 const int SLUG_MOVE_TIMER = 10;
 
 CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector< SmartPointer<CSpriteObject> >&ObjectPtrs) :
+		std::vector< SmartPointer<CGalaxySpriteObject> >&ObjectPtrs) :
 CGalaxySpriteObject(pmap, x, y),
 CStunnable(pmap, x, y),
 m_ObjectPtrs(ObjectPtrs),

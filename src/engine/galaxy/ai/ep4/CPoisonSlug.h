@@ -24,7 +24,7 @@ class CPoisonSlug : public CStunnable
 {
 public:
 	CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
-				std::vector< SmartPointer<CSpriteObject> >&ObjectPtrs);
+				std::vector< SmartPointer<CGalaxySpriteObject> >&ObjectPtrs);
 
 	/**
 	 * When slug is moving normally
@@ -46,7 +46,7 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 
 private:
-	std::vector< SmartPointer<CSpriteObject> > &m_ObjectPtrs;
+	std::vector< SmartPointer<CGalaxySpriteObject> > &m_ObjectPtrs;
 	int m_timer;
 };
 

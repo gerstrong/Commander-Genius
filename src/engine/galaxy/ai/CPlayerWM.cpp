@@ -22,7 +22,7 @@ namespace galaxy {
 CPlayerWM::CPlayerWM(CMap *pmap,
 		Uint32 x,
 		Uint32 y,
-		std::vector< SmartPointer<CSpriteObject> > &ObjectPtrs,
+		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 		CInventory &l_Inventory,
 		stCheat &Cheatmode):
 CPlayerBase(pmap, x, y,

@@ -27,14 +27,14 @@ CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
 void CLevelPlay::loadMap(const int level)
 {
 	// Load the World map level.
-	CVorticonMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory, m_Cheatmode);
+	CMapLoaderGalaxy MapLoader(mExeFile, mObjectPtr, mInventory, mCheatmode);
 
-	MapLoader.loadMap( m_Map, level );
+	MapLoader.loadMap( mMap, level );
 
     // Load the Background Music
 	g_pMusicPlayer->stop();
 
-    if(!g_pMusicPlayer->load(m_ExeFile, level))
+    if( !g_pMusicPlayer->load(mExeFile, level) )
     	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
     	g_pMusicPlayer->play();
@@ -43,7 +43,7 @@ void CLevelPlay::loadMap(const int level)
 
 void CLevelPlay::reloadLevel()
 {
-	loadMap( m_Map.getLevel() );
+	loadMap( mMap.getLevel() );
 }
 
 bool CLevelPlay::loadLevel(const Uint16 level)
@@ -57,7 +57,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	EventContainer.add( new EventSendBitmapDialogMsg(106, loading_text, LEFT) );
 
-	m_Map.drawAll();
+	mMap.drawAll();
 	return true;
 }
 
