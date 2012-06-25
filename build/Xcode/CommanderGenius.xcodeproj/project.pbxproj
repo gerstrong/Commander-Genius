@@ -37,8 +37,12 @@
 		237422DD11FC849A000EEA5B /* CBehaviorEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */; };
 		237422DE11FC849A000EEA5B /* CGameLauncher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */; };
 		237422DF11FC849A000EEA5B /* CMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B511CFF5FB00F60BC8 /* CMap.cpp */; };
+<<<<<<< HEAD
+		237422E011FC849A000EEA5B /* CMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */; };
+=======
 		237422E011FC849A000EEA5B /* CVorticonMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */; };
 		237422E211FC849A000EEA5B /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */; };
+>>>>>>> 0616245eb665d6a0d8447499c252381b3d11d3c0
 		237422E311FC849A000EEA5B /* CPhysicsSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */; };
 		237422E411FC849A000EEA5B /* CPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */; };
 		237422E511FC849A000EEA5B /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C111CFF5FB00F60BC8 /* CPlayer.cpp */; };
@@ -88,7 +92,6 @@
 		2374231511FC849A000EEA5B /* CStory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112E11CFF5FB00F60BC8 /* CStory.cpp */; };
 		2374231611FC849A000EEA5B /* CPlayGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113111CFF5FB00F60BC8 /* CPlayGame.cpp */; };
 		2374231711FC849A000EEA5B /* CEGABitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113A11CFF5FB00F60BC8 /* CEGABitmap.cpp */; };
-		2374231811FC849A000EEA5B /* CObjectAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */; };
 		2374231911FC849A000EEA5B /* CEGAGraphicsVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */; };
 		2374231A11FC849A000EEA5B /* CEGALatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115F11CFF5FB00F60BC8 /* CEGALatch.cpp */; };
 		2374231B11FC849A000EEA5B /* CEGASprit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116111CFF5FB00F60BC8 /* CEGASprit.cpp */; };
@@ -309,6 +312,8 @@
 		634DF5A7136E110400826A8B /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
 		634DF5B6136E141500826A8B /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
 		6375E9A013EA4335007310EB /* CSchoolFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6375E99E13EA4335007310EB /* CSchoolFish.cpp */; };
+		638814F6159273E100308DAC /* CSpriteObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638814F4159273E100308DAC /* CSpriteObject.cpp */; };
+		638814F9159273FA00308DAC /* CSpriteObjectAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638814F7159273FA00308DAC /* CSpriteObjectAI.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63AEA5BC132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */; };
 		63AEA5BD132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */; };
@@ -324,8 +329,12 @@
 		63CD120911CFF5FC00F60BC8 /* CBehaviorEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */; };
 		63CD120A11CFF5FC00F60BC8 /* CGameLauncher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */; };
 		63CD120B11CFF5FC00F60BC8 /* CMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B511CFF5FB00F60BC8 /* CMap.cpp */; };
+<<<<<<< HEAD
+		63CD120C11CFF5FC00F60BC8 /* CMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */; };
+=======
 		63CD120C11CFF5FC00F60BC8 /* CVorticonMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */; };
 		63CD120E11CFF5FC00F60BC8 /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */; };
+>>>>>>> 0616245eb665d6a0d8447499c252381b3d11d3c0
 		63CD120F11CFF5FC00F60BC8 /* CPhysicsSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */; };
 		63CD121011CFF5FC00F60BC8 /* CPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */; };
 		63CD121111CFF5FC00F60BC8 /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C111CFF5FB00F60BC8 /* CPlayer.cpp */; };
@@ -375,7 +384,6 @@
 		63CD124211CFF5FC00F60BC8 /* CStory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112E11CFF5FB00F60BC8 /* CStory.cpp */; };
 		63CD124311CFF5FC00F60BC8 /* CPlayGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113111CFF5FB00F60BC8 /* CPlayGame.cpp */; };
 		63CD124811CFF5FC00F60BC8 /* CEGABitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113A11CFF5FB00F60BC8 /* CEGABitmap.cpp */; };
-		63CD124911CFF5FC00F60BC8 /* CObjectAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */; };
 		63CD126311CFF5FC00F60BC8 /* CEGAGraphicsVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */; };
 		63CD126411CFF5FC00F60BC8 /* CEGALatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115F11CFF5FB00F60BC8 /* CEGALatch.cpp */; };
 		63CD126511CFF5FC00F60BC8 /* CEGASprit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116111CFF5FB00F60BC8 /* CEGASprit.cpp */; };
@@ -749,6 +757,11 @@
 		6375E99E13EA4335007310EB /* CSchoolFish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSchoolFish.cpp; sourceTree = "<group>"; };
 		6375E99F13EA4335007310EB /* CSchoolFish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSchoolFish.h; sourceTree = "<group>"; };
 		6382949E11562C7100D608A2 /* menufonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = menufonts.bmp; sourceTree = "<group>"; };
+		638814F4159273E100308DAC /* CSpriteObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteObject.cpp; sourceTree = "<group>"; };
+		638814F5159273E100308DAC /* CSpriteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteObject.h; sourceTree = "<group>"; };
+		638814F7159273FA00308DAC /* CSpriteObjectAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteObjectAI.cpp; sourceTree = "<group>"; };
+		638814F8159273FA00308DAC /* CSpriteObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteObjectAI.h; sourceTree = "<group>"; };
+		638814FA1592740C00308DAC /* Configurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurator.h; sourceTree = "<group>"; };
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
@@ -848,10 +861,15 @@
 		63CD10B411CFF5FB00F60BC8 /* CGameLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameLauncher.h; sourceTree = "<group>"; };
 		63CD10B511CFF5FB00F60BC8 /* CMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMap.cpp; sourceTree = "<group>"; };
 		63CD10B611CFF5FB00F60BC8 /* CMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMap.h; sourceTree = "<group>"; };
+<<<<<<< HEAD
+		63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMapLoader.cpp; sourceTree = "<group>"; };
+		63CD10B811CFF5FB00F60BC8 /* CMapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMapLoader.h; sourceTree = "<group>"; };
+=======
 		63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVorticonMapLoader.cpp; sourceTree = "<group>"; };
 		63CD10B811CFF5FB00F60BC8 /* CVorticonMapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVorticonMapLoader.h; sourceTree = "<group>"; };
 		63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObject.cpp; sourceTree = "<group>"; };
 		63CD10BC11CFF5FB00F60BC8 /* CObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObject.h; sourceTree = "<group>"; };
+>>>>>>> 0616245eb665d6a0d8447499c252381b3d11d3c0
 		63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPhysicsSettings.cpp; sourceTree = "<group>"; };
 		63CD10BE11CFF5FB00F60BC8 /* CPhysicsSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPhysicsSettings.h; sourceTree = "<group>"; };
 		63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlane.cpp; sourceTree = "<group>"; };
@@ -955,8 +973,6 @@
 		63CD113311CFF5FB00F60BC8 /* spritedefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spritedefines.h; sourceTree = "<group>"; };
 		63CD113A11CFF5FB00F60BC8 /* CEGABitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGABitmap.cpp; sourceTree = "<group>"; };
 		63CD113B11CFF5FB00F60BC8 /* CEGABitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGABitmap.h; sourceTree = "<group>"; };
-		63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectAI.cpp; sourceTree = "<group>"; };
-		63CD113D11CFF5FB00F60BC8 /* CObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObjectAI.h; sourceTree = "<group>"; };
 		63CD114011CFF5FB00F60BC8 /* enemydata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enemydata.h; sourceTree = "<group>"; };
 		63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGAGraphicsVort.cpp; sourceTree = "<group>"; };
 		63CD115E11CFF5FB00F60BC8 /* CEGAGraphicsVort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGAGraphicsVort.h; sourceTree = "<group>"; };
@@ -1391,6 +1407,7 @@
 		6329039B12EB8DF500963705 /* hardware */ = {
 			isa = PBXGroup;
 			children = (
+				638814FA1592740C00308DAC /* Configurator.h */,
 				23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */,
 				23D4C4A4132C27BC00B06391 /* COPLEmulator.h */,
 				6329039C12EB8DF500963705 /* dbopl.cpp */,
@@ -1677,6 +1694,8 @@
 		63CD10B011CFF5FB00F60BC8 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				638814F4159273E100308DAC /* CSpriteObject.cpp */,
+				638814F5159273E100308DAC /* CSpriteObject.h */,
 				63FEB3191572AE3900E17333 /* CSettings.cpp */,
 				63FEB31A1572AE3900E17333 /* CSettings.h */,
 				63385F1613C008D100BC2558 /* ActionFormat.cpp */,
@@ -1899,6 +1918,8 @@
 		63CD113511CFF5FB00F60BC8 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				638814F7159273FA00308DAC /* CSpriteObjectAI.cpp */,
+				638814F8159273FA00308DAC /* CSpriteObjectAI.h */,
 				23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */,
 				23C64A8311F31D9C0053CA36 /* CAnkhShield.h */,
 				23A11B7411E7C3F900747BFA /* CAutoRay.cpp */,
@@ -1931,8 +1952,6 @@
 				23A11B8A11E7C3F900747BFA /* CMeep.h */,
 				23A11B8B11E7C3F900747BFA /* CMessie.cpp */,
 				23A11B8C11E7C3F900747BFA /* CMessie.h */,
-				63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */,
-				63CD113D11CFF5FB00F60BC8 /* CObjectAI.h */,
 				23A11B8D11E7C3F900747BFA /* CPlatform.cpp */,
 				23A11B8E11E7C3F900747BFA /* CPlatform.h */,
 				23A11B8F11E7C3F900747BFA /* CPlatformVert.cpp */,
@@ -2513,7 +2532,6 @@
 				63CD124211CFF5FC00F60BC8 /* CStory.cpp in Sources */,
 				63CD124311CFF5FC00F60BC8 /* CPlayGame.cpp in Sources */,
 				63CD124811CFF5FC00F60BC8 /* CEGABitmap.cpp in Sources */,
-				63CD124911CFF5FC00F60BC8 /* CObjectAI.cpp in Sources */,
 				63CD126311CFF5FC00F60BC8 /* CEGAGraphicsVort.cpp in Sources */,
 				63CD126411CFF5FC00F60BC8 /* CEGALatch.cpp in Sources */,
 				63CD126511CFF5FC00F60BC8 /* CEGASprit.cpp in Sources */,
@@ -2700,6 +2718,8 @@
 				63FEB3651572AF8600E17333 /* scale3x.cpp in Sources */,
 				63FEB3661572AF8600E17333 /* scalebit.cpp in Sources */,
 				63FEB36A1572AFA300E17333 /* Geometry.cpp in Sources */,
+				638814F6159273E100308DAC /* CSpriteObject.cpp in Sources */,
+				638814F9159273FA00308DAC /* CSpriteObjectAI.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2764,7 +2784,6 @@
 				2374231511FC849A000EEA5B /* CStory.cpp in Sources */,
 				2374231611FC849A000EEA5B /* CPlayGame.cpp in Sources */,
 				2374231711FC849A000EEA5B /* CEGABitmap.cpp in Sources */,
-				2374231811FC849A000EEA5B /* CObjectAI.cpp in Sources */,
 				2374231911FC849A000EEA5B /* CEGAGraphicsVort.cpp in Sources */,
 				2374231A11FC849A000EEA5B /* CEGALatch.cpp in Sources */,
 				2374231B11FC849A000EEA5B /* CEGASprit.cpp in Sources */,
