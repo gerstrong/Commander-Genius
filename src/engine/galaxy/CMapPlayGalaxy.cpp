@@ -158,7 +158,6 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 // Saves the inventory using the Savegamecontroller.
 void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 {
-
 	size_t size = mObjectPtr.size();
 	// save the number of objects on screen
 	savedGame.encodeData(size);
@@ -183,6 +182,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( (*it)->inhibitfall );
 		savedGame.encodeData( (*it)->honorPriority );
 		savedGame.encodeData( (*it)->sprite );
+		savedGame.encodeData( (*it)->m_ActionNumber );
 	}
 
 	savedGame.encodeData( mActive );
@@ -190,8 +190,10 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	// Save the map_data as it is left
 	savedGame.encodeData(mMap.m_width);
 	savedGame.encodeData(mMap.m_height);
+	savedGame.addData( reinterpret_cast<byte*>(mMap.getBackgroundData()),
+													mMap.m_width*mMap.m_height*sizeof(word) );
 	savedGame.addData( reinterpret_cast<byte*>(mMap.getForegroundData()),
-													2*mMap.m_width*mMap.m_height );
+													mMap.m_width*mMap.m_height*sizeof(word) );
 }
 
 // This is for loading the game
