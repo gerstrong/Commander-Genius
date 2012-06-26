@@ -83,13 +83,12 @@ void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 	CGUIButton *loadButton = new CGUIButton( "Load",
 										new OpenMenuEvent( new CLoadMenu() ) );
 	mpMenuDialog->addControl( loadButton );
-	loadButton->mEnabled = false;
+	loadButton->mEnabled = true;
 
 	CGUIButton *saveButton = new CGUIButton( "Save",
 									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
-	//saveButton->mEnabled = openedGamePlay;
-	saveButton->mEnabled = false;
+	saveButton->mEnabled = openedGamePlay;
 
 	mpMenuDialog->addControl(new CGUIButton( "Settings",
 												new OpenMenuEvent( new CSettingsMenu() ) ) );

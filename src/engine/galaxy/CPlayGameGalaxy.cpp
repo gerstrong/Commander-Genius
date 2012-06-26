@@ -53,7 +53,8 @@ bool CPlayGameGalaxy::loadGameState()
 	// Load number of Players
 	savedGame.decodeData(m_NumPlayers);
 
-	// TODO: We need to load both Levels first, before we do the writing from the saved state.
+	// We need to load both Levels first, before we do the writing from the saved state.
+	init(); // This will do the job
 
 	m_Inventory << savedGame;
 	m_WorldMap << savedGame;
