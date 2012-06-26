@@ -17,6 +17,7 @@
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"
 #include "common/Menu/CMenuController.h"
+#include "graphics/effects/CColorMerge.h"
 
 namespace galaxy
 {
@@ -36,18 +37,30 @@ bool CPlayGameGalaxy::loadGameState()
 {
 	CSaveGameController &savedGame = *(gpSaveGameController);
 
+	// This fills the datablock from CSavedGame object
+	if(!savedGame.load())
+		return false;
+
+	// Create the special merge effect (Fadeout)
+	CColorMerge *pColorMergeFX = new CColorMerge(8);
+
 	/// Save the Game in the CSavedGame object
 	// store the episode, level and difficulty
 	savedGame.decodeData(m_Episode);
 	savedGame.decodeData(m_Level);
 	savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
 
-	// Save number of Players
+	// Load number of Players
 	savedGame.decodeData(m_NumPlayers);
+
+	// TODO: We need to load both Levels first, before we do the writing from the saved state.
 
 	m_Inventory << savedGame;
 	m_WorldMap << savedGame;
 	m_LevelPlay << savedGame;
+
+	// Create the special merge effect (Fadeout)
+	g_pGfxEngine->setupEffect(pColorMergeFX);
 
 	return savedGame.load();
 }
