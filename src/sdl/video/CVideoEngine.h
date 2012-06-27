@@ -56,6 +56,9 @@ public:
 	inline void UpdateScrollBufY(const Sint16 SBufferY)
 	{		mSbuffery = SBufferY&511;	}
 
+	void readScrollBuffer(Sint16 &x, Sint16 &y)
+	{	x = mSbufferx; y = mSbuffery;}
+
 protected:
 
 	SDL_Surface *BlitSurface;

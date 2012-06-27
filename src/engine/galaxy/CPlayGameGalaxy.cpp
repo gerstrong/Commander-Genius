@@ -55,10 +55,16 @@ bool CPlayGameGalaxy::loadGameState()
 	// We need to load both Levels first, before we do the writing from the saved state.
 
 	m_Inventory << savedGame;
+
+	bool active;
+	savedGame.decodeData( active );
+	m_WorldMap.setActive(active);
 	m_WorldMap << savedGame;
-	m_LevelPlay << savedGame;
 
-
+	savedGame.decodeData( active );
+	m_LevelPlay.setActive(active);
+	if(active)
+		m_LevelPlay << savedGame;
 
 	// Create the special merge effect (Fadeout)
 	g_pGfxEngine->setupEffect(pColorMergeFX);
@@ -79,8 +85,17 @@ bool CPlayGameGalaxy::saveGameState()
 	savedGame.encodeData(m_NumPlayers);
 
 	m_Inventory >> savedGame;
+
+	bool active = m_WorldMap.isActive();
+	savedGame.encodeData( active );
 	m_WorldMap >> savedGame;
-	m_LevelPlay >> savedGame;
+
+	active = m_LevelPlay.isActive();
+	savedGame.encodeData( active );
+
+	if( active )
+		m_LevelPlay >> savedGame;
+
 
 	return savedGame.save();
 }

@@ -447,6 +447,7 @@ void CMap::drawAll()
 			}
 		}
 	}
+
 }
 
 // draw a horizontal stripe, for vertical scrolling

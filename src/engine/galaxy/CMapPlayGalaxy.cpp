@@ -190,8 +190,6 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( (*it)->m_ActionNumber );
 	}
 
-	savedGame.encodeData( mActive );
-
 	// Save the map_data as it is left
 	savedGame.encodeData(mMap.m_width);
 	savedGame.encodeData(mMap.m_height);
@@ -201,6 +199,8 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	savedGame.addData( reinterpret_cast<byte*>(mMap.getBackgroundData()), mapSize );
 	savedGame.addData( reinterpret_cast<byte*>(mMap.getForegroundData()), mapSize );
 }
+
+
 
 // This is for loading the game
 bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
@@ -267,9 +267,8 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 		if(!obj.exists)
 			mObjectPtr.pop_back();
-	}
 
-	savedGame.decodeData( mActive );
+	}
 
 	// Save the map_data as it is left
 	savedGame.decodeData(mMap.m_width);
@@ -278,8 +277,6 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getBackgroundData()) );
 	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getForegroundData()) );
 
-	if( mMap.m_width * mMap.m_height > 0 )
-		mMap.drawAll();
 
 	return true;
 }
