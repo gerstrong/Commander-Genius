@@ -16,7 +16,7 @@ namespace galaxy
 class CMadMushroom : public CGalaxySpriteObject
 {
 public:
-	CMadMushroom(CMap *pmap, Uint32 x, Uint32 y);
+	CMadMushroom(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	// Checks if some object is nearby. Here the mushroom turns to watch the player
 	bool isNearby(CSpriteObject &theObject);

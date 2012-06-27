@@ -24,8 +24,8 @@ const int SPRITE_MOVE_SPEED = 20;
 const int CSF_MIN_DISTANCE_X_TO_LOOK = 10<<CSF;
 const int CSF_MIN_DISTANCE_Y_TO_LOOK = 1<<CSF;
 
-CDevilSprite::CDevilSprite(CMap *pmap, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, x, y),
+CDevilSprite::CDevilSprite(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y),
 m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x37A0, A_SPRITE_MOVE);
@@ -112,7 +112,7 @@ void CDevilSprite::processShoot()
 		g_pSound->playSound(SOUND_KEEN_FIRE);
 		int x_coord = getXMidPos();
 		x_coord += (m_hDir == LEFT) ? -(8<<STC) : +(8<<STC);
-		CEnemyShot *Spark = new CEnemyShot(mp_Map, x_coord, getYMidPos()-(8<<STC),
+		CEnemyShot *Spark = new CEnemyShot(mp_Map, 0, x_coord, getYMidPos()-(8<<STC),
 											0x3818, m_hDir, 100);
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Spark ) );
 	}

@@ -15,8 +15,8 @@ namespace galaxy
 const int A_SLUGPOISON_NORMAL =	0;
 const int A_SLUGPOISON_FADE = 1;
 
-CSlugSlime::CSlugSlime(CMap *pmap, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, x, y)
+CSlugSlime::CSlugSlime(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y)
 {
 	setupGalaxyObjectOnMap(0x20A8, A_SLUGPOISON_NORMAL);
 }

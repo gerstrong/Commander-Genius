@@ -19,7 +19,7 @@ namespace galaxy {
 class CLick : public CStunnable
 {
 public:
-	CLick(CMap *pmap, Uint32 x, Uint32 y);
+	CLick(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void process();
 

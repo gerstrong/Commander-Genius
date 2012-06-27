@@ -23,7 +23,7 @@ namespace galaxy {
 class CPlatform : public virtual CGalaxySpriteObject
 {
 public:
-	CPlatform(CMap *pmap, Uint32 x, Uint32 y);
+	CPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 	virtual void process();
 	void getTouchedBy(CSpriteObject &theObject);
 

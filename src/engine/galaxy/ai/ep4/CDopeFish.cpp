@@ -25,8 +25,8 @@ const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
 const int DOPE_EAT_TIMER = 50;
 
 
-CDopeFish::CDopeFish(CMap *pmap, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, x, y),
+CDopeFish::CDopeFish(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y),
 m_eatTimer(0),
 m_burped(false)
 {
@@ -127,7 +127,7 @@ void CDopeFish::processBurp()
 	if(!m_burped && getActionStatus(A_DOPEFISH_BURPING))
 	{
 		g_pSound->playSound(SOUND_DOPEFISH_BURP);
-		CBubbles *Bubble = new CBubbles(mp_Map, getXMidPos()+(1<<CSF), getYMidPos()+(1<<CSF), true);
+		CBubbles *Bubble = new CBubbles(mp_Map, 0, getXMidPos()+(1<<CSF), getYMidPos()+(1<<CSF), true);
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Bubble ) );
 		m_burped = true;
 	}

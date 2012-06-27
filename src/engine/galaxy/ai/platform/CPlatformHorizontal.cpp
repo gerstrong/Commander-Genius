@@ -10,9 +10,9 @@
 
 namespace galaxy {
 
-CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint32 x, const Uint32 y) :
-CGalaxySpriteObject(pmap, x, y),
-CPlatform(pmap, x, y)
+CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y),
+CPlatform(pmap, foeID, x, y)
 {
 	m_hDir = RIGHT;
 	m_vDir = NONE;
@@ -21,8 +21,8 @@ CPlatform(pmap, x, y)
 	calcBoundingBoxes();
 
 	// Setup boost effects
-	mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, x, y+(4<<STC), false, true);
-	mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, x+m_BBox.x2+(4<<STC), y+(4<<STC), false, false);
+	mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, 0, x, y+(4<<STC), false, true);
+	mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, 0, x+m_BBox.x2+(4<<STC), y+(4<<STC), false, false);
 
 	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjLeft ) );
 	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjRight ) );

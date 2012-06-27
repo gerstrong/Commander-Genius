@@ -17,7 +17,7 @@ namespace galaxy {
 class CWaterMine: public CGalaxySpriteObject
 {
 public:
-	CWaterMine(CMap *pmap, Uint32 x, Uint32 y, const bool vertical);
+	CWaterMine(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const bool vertical);
 
 	void process();
 

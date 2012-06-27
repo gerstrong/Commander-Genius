@@ -15,7 +15,7 @@ namespace galaxy {
 class CDevilSprite: public CGalaxySpriteObject
 {
 public:
-	CDevilSprite(CMap *pmap, Uint32 x, Uint32 y);
+	CDevilSprite(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void getTouchedBy(CSpriteObject &theObject);
 	bool isNearby(CSpriteObject &theObject);

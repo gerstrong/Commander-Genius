@@ -17,7 +17,8 @@ namespace galaxy
 class CStunnable: public virtual CGalaxySpriteObject
 {
 public:
-	CStunnable(	CMap *pmap,
+	CStunnable(CMap *pmap,
+				const Uint16 foeID,
 				Uint32 x,
 				Uint32 y );
 

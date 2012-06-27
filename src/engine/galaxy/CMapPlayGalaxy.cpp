@@ -8,6 +8,7 @@
 #include "CMapPlayGalaxy.h"
 #include "engine/galaxy/ai/CPlayerBase.h"
 #include "common/CBehaviorEngine.h"
+#include "CMapLoaderGalaxy.h"
 
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode) :
 mActive(false),
@@ -158,6 +159,9 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 // Saves the inventory using the Savegamecontroller.
 void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 {
+	const Uint16 level = mMap.getLevel();
+	savedGame.encodeData( level );
+
 	size_t size = mObjectPtr.size();
 	// save the number of objects on screen
 	savedGame.encodeData(size);
@@ -166,6 +170,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	for( ; it != mObjectPtr.end() ; it++ )
 	{
 		// save all the objects states
+		savedGame.encodeData( (*it)->mFoeID );
 		savedGame.encodeData( (*it)->getXPosition() );
 		savedGame.encodeData( (*it)->getYPosition() );
 		savedGame.encodeData( (*it)->dead );
@@ -190,42 +195,78 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	// Save the map_data as it is left
 	savedGame.encodeData(mMap.m_width);
 	savedGame.encodeData(mMap.m_height);
-	savedGame.addData( reinterpret_cast<byte*>(mMap.getBackgroundData()),
-													mMap.m_width*mMap.m_height*sizeof(word) );
-	savedGame.addData( reinterpret_cast<byte*>(mMap.getForegroundData()),
-													mMap.m_width*mMap.m_height*sizeof(word) );
+
+	const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
+
+	savedGame.addData( reinterpret_cast<byte*>(mMap.getBackgroundData()), mapSize );
+	savedGame.addData( reinterpret_cast<byte*>(mMap.getForegroundData()), mapSize );
 }
 
 // This is for loading the game
 bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 {
+	Uint16 level;
+	savedGame.decodeData( level );
+
+	// Load the World map level.
+	galaxy::CMapLoaderGalaxy MapLoader(mExeFile, mObjectPtr, mInventory, mCheatmode);
+
+	MapLoader.loadMap( mMap, level );
+
+    // Load the Background Music
+	g_pMusicPlayer->stop();
+
+    if( !g_pMusicPlayer->load(mExeFile, level) )
+    	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    else
+    	g_pMusicPlayer->play();
+
+
 	// load the number of objects on screen
 	Uint32 size;
 	Uint32 x, y;
+	Uint16 foeID;
+	uint16_t actionNumber;
 	savedGame.decodeData(size);
 
-	std::vector< SmartPointer<CGalaxySpriteObject> >::iterator it = mObjectPtr.begin();
-	for( ; it != mObjectPtr.end() ; it++ )
+	// Now load the previously created objects
+
+	if(!mObjectPtr.empty())
+		mObjectPtr.clear();
+
+	for( Uint32 i=0 ; i<size ; i++ )
 	{
-		// save all the objects states
+		savedGame.decodeData(foeID);
 		savedGame.decodeData(x);
 		savedGame.decodeData(y);
-		(*it)->moveToForce(VectorD2<int>(x,y));
-		savedGame.decodeData( (*it)->dead );
-		savedGame.decodeData( (*it)->onscreen );
-		savedGame.decodeData( (*it)->hasbeenonscreen );
-		savedGame.decodeData( (*it)->exists );
-		savedGame.decodeData( (*it)->blockedd );
-		savedGame.decodeData( (*it)->blockedu );
-		savedGame.decodeData( (*it)->blockedl );
-		savedGame.decodeData( (*it)->blockedr );
-		savedGame.decodeData( (*it)->mHealthPoints );
-		savedGame.decodeData( (*it)->canbezapped );
-		savedGame.decodeData( (*it)->cansupportplayer );
-		savedGame.decodeData( (*it)->inhibitfall );
-		savedGame.decodeData( (*it)->honorPriority );
-		savedGame.decodeData( (*it)->sprite );
-		savedGame.decodeData( (*it)->m_ActionNumber );
+
+		MapLoader.addFoe(mMap, foeID, x, y);
+
+		CGalaxySpriteObject &obj = *(mObjectPtr.back().get());
+
+		savedGame.decodeData( obj.dead );
+		savedGame.decodeData( obj.onscreen );
+		savedGame.decodeData( obj.hasbeenonscreen );
+		savedGame.decodeData( obj.exists );
+		savedGame.decodeData( obj.blockedd );
+		savedGame.decodeData( obj.blockedu );
+		savedGame.decodeData( obj.blockedl );
+		savedGame.decodeData( obj.blockedr );
+		savedGame.decodeData( obj.mHealthPoints );
+		savedGame.decodeData( obj.canbezapped );
+		savedGame.decodeData( obj.cansupportplayer );
+		savedGame.decodeData( obj.inhibitfall );
+		savedGame.decodeData( obj.honorPriority );
+		savedGame.decodeData( obj.sprite );
+		savedGame.decodeData( actionNumber );
+		obj.setActionForce(actionNumber);
+
+		// remove non existing objects, they only are problematic
+		if(obj.dead)
+			obj.exists = false;
+
+		if(!obj.exists)
+			mObjectPtr.pop_back();
 	}
 
 	savedGame.decodeData( mActive );
@@ -236,6 +277,9 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getBackgroundData()) );
 	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getForegroundData()) );
+
+	if( mMap.m_width * mMap.m_height > 0 )
+		mMap.drawAll();
 
 	return true;
 }

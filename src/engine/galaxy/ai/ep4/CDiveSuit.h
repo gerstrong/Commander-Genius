@@ -15,7 +15,7 @@ namespace galaxy {
 class CDiveSuit: public CGalaxySpriteObject
 {
 public:
-	CDiveSuit(CMap *pmap, Uint32 x, Uint32 y);
+	CDiveSuit(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 private:
 	void process();

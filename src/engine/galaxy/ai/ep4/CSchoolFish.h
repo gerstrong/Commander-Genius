@@ -18,7 +18,7 @@ namespace galaxy
 class CSchoolFish : public CGalaxySpriteObject
 {
 public:
-	CSchoolFish(CMap *pmap, Uint32 x, Uint32 y);
+	CSchoolFish(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	bool isNearby(CSpriteObject &theObject);
 

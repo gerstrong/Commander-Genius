@@ -16,7 +16,7 @@ namespace galaxy {
 class CBounder : public CStunnable, public CPlatform
 {
 public:
-	CBounder(CMap *pmap, Uint32 x, Uint32 y);
+	CBounder(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void getTouchedBy(CSpriteObject &theObject);
 	void processBounce();

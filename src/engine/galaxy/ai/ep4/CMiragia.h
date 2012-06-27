@@ -20,7 +20,7 @@ namespace galaxy {
 class CMiragia : public CGalaxySpriteObject
 {
 public:
-	CMiragia(CMap *pmap, const VectorD2<Uint32> &Location);
+	CMiragia(CMap *pmap, const Uint16 foeID, const VectorD2<Uint32> &Location);
 
 	/**
 	 * Main process cycle

@@ -16,7 +16,7 @@ namespace galaxy {
 
 class CLindsey : public CGalaxySpriteObject {
 public:
-	CLindsey(CMap *pmap, Uint32 x, Uint32 y);
+	CLindsey(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void process();
 

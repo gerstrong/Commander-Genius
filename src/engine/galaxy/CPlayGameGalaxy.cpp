@@ -47,23 +47,23 @@ bool CPlayGameGalaxy::loadGameState()
 	/// Save the Game in the CSavedGame object
 	// store the episode, level and difficulty
 	savedGame.decodeData(m_Episode);
-	savedGame.decodeData(m_Level);
 	savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
 
 	// Load number of Players
 	savedGame.decodeData(m_NumPlayers);
 
 	// We need to load both Levels first, before we do the writing from the saved state.
-	init(); // This will do the job
 
 	m_Inventory << savedGame;
 	m_WorldMap << savedGame;
 	m_LevelPlay << savedGame;
 
+
+
 	// Create the special merge effect (Fadeout)
 	g_pGfxEngine->setupEffect(pColorMergeFX);
 
-	return savedGame.load();
+	return true;
 }
 
 bool CPlayGameGalaxy::saveGameState()
@@ -73,7 +73,6 @@ bool CPlayGameGalaxy::saveGameState()
 	/// Save the Game in the CSavedGame object
 	// store the episode, level and difficulty
 	savedGame.encodeData(m_Episode);
-	savedGame.encodeData(m_Level);
 	savedGame.encodeData(g_pBehaviorEngine->mDifficulty);
 
 	// Save number of Players

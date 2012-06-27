@@ -43,7 +43,11 @@ public:
 	bool createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height);
 
 	bool gotoPos( int x, int y );
+
+
 	void resetScrolls();
+
+
 	// If force is enabled it will ignore scroll blockers
 	bool scrollLeft(const bool force=false);
 	bool scrollRight(const bool force=false);

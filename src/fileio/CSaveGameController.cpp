@@ -84,7 +84,10 @@ struct StateFileListFiller
 		std::string ext = GetFileExtension(filename);
 		if (stringcaseequal(ext, "ck1") ||
 			stringcaseequal(ext, "ck2") ||
-			stringcaseequal(ext, "ck3") )
+			stringcaseequal(ext, "ck3") ||
+			stringcaseequal(ext, "ck4") ||
+			stringcaseequal(ext, "ck5") ||
+			stringcaseequal(ext, "ck6") )
 			list.insert(filename);
 
 		return true;
@@ -655,7 +658,7 @@ void CSaveGameController::addData(byte *data, Uint32 size)
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
 	{
 		Uint32 datasize;
-		datasize = size&( 0xFF<<(i*8) );
+		datasize = size & ( 0xFF<<(i*8) );
 		datasize >>= (i*8);
 		m_datablock.push_back( static_cast<byte>(datasize) );
 	}
@@ -667,9 +670,11 @@ void CSaveGameController::addData(byte *data, Uint32 size)
 void CSaveGameController::readDataBlock(byte *data)
 {
 	Uint32 datasize=0;
-	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32));
+	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32) );
 	m_offset += sizeof(Uint32);
 
-	memcpy(data, &m_datablock[m_offset], datasize);
+	if(datasize > 0)
+		memcpy(data, &m_datablock[m_offset], datasize);
+
 	m_offset += datasize;
 }

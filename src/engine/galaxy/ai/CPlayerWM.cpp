@@ -20,12 +20,13 @@ const Uint16 SWIMBASEFRAME = 156;
 namespace galaxy {
 
 CPlayerWM::CPlayerWM(CMap *pmap,
+		const Uint16 foeID,
 		Uint32 x,
 		Uint32 y,
 		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 		CInventory &l_Inventory,
 		stCheat &Cheatmode):
-CPlayerBase(pmap, x, y,
+CPlayerBase(pmap, foeID, x, y,
 		    ObjectPtrs,
 		    LEFT,
 		    l_Inventory,
@@ -211,7 +212,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 		VectorD2<Uint32> src(getXPosition(), getYPosition());
 		VectorD2<Uint32> dst((x<<CSF), (y<<CSF));
 
-		CFlag *pFlag = new CFlag(mp_Map, src, dst);
+		CFlag *pFlag = new CFlag(mp_Map, 0, src, dst);
 		m_ObjectPtrs.push_back(pFlag);
 		g_pSound->playSound( SOUND_FLAG_APPEAR );
 

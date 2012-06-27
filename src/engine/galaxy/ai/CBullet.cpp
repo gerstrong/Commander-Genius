@@ -14,8 +14,8 @@ namespace galaxy
 const Uint32 speed = 10;
 const Uint32 hittime = 100;
 
-CBullet::CBullet(CMap *pmap, const Uint32 x, const Uint32 y, const direction_t dir) :
-CGalaxySpriteObject(pmap, x, y)
+CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const direction_t dir) :
+CGalaxySpriteObject(pmap, foeID, x, y)
 {
 	m_hDir = NONE;	m_vDir = NONE;
 

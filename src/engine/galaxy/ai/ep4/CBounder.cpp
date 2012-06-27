@@ -18,10 +18,10 @@ namespace galaxy
 const int MAX_BOUNCE_BOOST = -115;
 const int HOR_SPEED = 40;
 
-CBounder::CBounder(CMap *pmap, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, x, y),
-CStunnable(pmap, x, y),
-CPlatform(pmap, x, y),
+CBounder::CBounder(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y),
+CStunnable(pmap, foeID, x, y),
+CPlatform(pmap, foeID, x, y),
 bounceboost(0)
 {
 	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);

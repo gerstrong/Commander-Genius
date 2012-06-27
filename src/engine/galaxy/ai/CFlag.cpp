@@ -16,9 +16,9 @@ const Uint16 WAVING_BASEFRAME = 181;
 const Uint16 ANIMATION_TIME = 8;
 const Uint16 SPEED = 64;
 
-CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
+CFlag::CFlag(CMap *pmap, const Uint16 foeID, const VectorD2<Uint32> &Location,
 			const VectorD2<Uint32> &Destination) :
-CGalaxySpriteObject(pmap, Location.x, Location.y),
+CGalaxySpriteObject(pmap, foeID, Location.x, Location.y),
 m_location(Location),
 m_destination(Destination),
 m_baseframe(FLYING_BASEFRAME),

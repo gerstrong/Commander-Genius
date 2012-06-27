@@ -38,7 +38,7 @@ enum item_effect_type
 class CItemEffect : public CGalaxySpriteObject
 {
 public:
-	CItemEffect(CMap *pmap, Uint32 x, Uint32 y, Uint16 l_sprite, item_effect_type ieffect = FLOAT);
+	CItemEffect(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint16 l_sprite, item_effect_type ieffect = FLOAT);
 	void process();
 
 private:

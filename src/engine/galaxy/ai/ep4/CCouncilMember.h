@@ -22,7 +22,7 @@ namespace galaxy {
 class CCouncilMember : public CGalaxySpriteObject
 {
 public:
-	CCouncilMember(CMap *pmap, Uint32 x, Uint32 y);
+	CCouncilMember(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	/** Process walking of elder here */
 	void processWalking();

@@ -299,7 +299,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
-			addFoe(Map, *data_ptr++, x, y);
+			addFoe(Map, *data_ptr++, x<<CSF, y<<CSF);
 		}
 	}
 
@@ -360,11 +360,6 @@ const int DIVE_SUIT = 35;
  */
 void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
-	// TODO: Split this function into the one meant for the map, because some enemies are loaded on that WM
-	// that shouldn't
-	x <<= CSF;
-	y <<= CSF;
-
 	CGalaxySpriteObject *p_newfoe = NULL;
 	VectorD2<Uint32> Location(x,y);
 
@@ -374,13 +369,13 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		if( foe == i )
 		{
 			const Uint32 newsprite = 103+2*(i-61);
-			p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, newsprite);
+			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, newsprite);
 		}
 	}
 
 	if( foe == 68 )
 	{
-		p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, 127);
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, 127);
 	}
 
 	for( Uint32 i=57 ; i<=60 ; i++ )
@@ -388,7 +383,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		if( foe == i )
 		{
 			const Uint32 newsprite = 118+2*(i-57);
-			p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, newsprite);
+			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, newsprite);
 		}
 	}
 
@@ -398,108 +393,108 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 1:
 	case 2:
 		// This is the player on the map in one level
-		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y-750, m_ObjectPtr,
+		p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y-750, m_ObjectPtr,
 				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode);
 		break;
 
 	case 3:
 		// This is the player on the world map
 		// Add the Camera into the game scene and attach it to this player
-		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory, m_Cheatmode);
+		p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, m_ObjectPtr, m_Inventory, m_Cheatmode);
 		break;
 
 	case 4:
 		//This is a council member.
-		p_newfoe = new galaxy::CCouncilMember(&Map, x, y-750);
+		p_newfoe = new galaxy::CCouncilMember(&Map, foe, x, y-750);
 		break;
 
 	case 6:
 		//This is pincess Lindsey.
-		p_newfoe = new galaxy::CLindsey(&Map, x, y-750);
+		p_newfoe = new galaxy::CLindsey(&Map, foe, x, y-750);
 		break;
 
 	case 12:
 		//This is a Bounder.
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		p_newfoe = new galaxy::CBounder(&Map, x, y-250);
+		p_newfoe = new galaxy::CBounder(&Map, foe, x, y-250);
 		break;
 
 	case 19:
 		//This is a Mimrock.
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		p_newfoe = new galaxy::CMimrock(&Map, x, y-(2<<CSF));
+		p_newfoe = new galaxy::CMimrock(&Map, foe, x, y-(2<<CSF));
 		break;
 
 
 	case 21:
 		// This is a Mad Mushroom.
-		p_newfoe = new galaxy::CMadMushroom(&Map, x, y-(2<<CSF));
+		p_newfoe = new galaxy::CMadMushroom(&Map, foe, x, y-(2<<CSF));
 		break;
 
 
 	case 22:
 		// This is a Poison Slug.
-		p_newfoe = new galaxy::CPoisonSlug(&Map, x, y-250, m_ObjectPtr);
+		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y-250, m_ObjectPtr);
 		break;
 
 	case 23:
 		// This is a Sprite from the well of wishes.
-		p_newfoe = new galaxy::CDevilSprite(&Map, x, y);
+		p_newfoe = new galaxy::CDevilSprite(&Map, foe, x, y);
 		break;
 
 	case 24:
 		// This is a Sprite from the well of wishes.
-		p_newfoe = new galaxy::CSchoolFish(&Map, x, y);
+		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
 		break;
 
 	case 25:
 		// This is Skypest.
-		p_newfoe = new galaxy::CSkypest(&Map, x, y);
+		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
 		break;
 
 
 	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
-		p_newfoe = new galaxy::CPlatformVertical(&Map, x, y); break;
+		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y); break;
 	case PLATFORM_HORIZ_ALT:
 	case PLATFORM_HORIZ:
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, x, y); break;
+		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, x, y); break;
 	case PLATFORM_DROP:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, x, y); break;
+		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y); break;
 
 	case 33:
 		// Place Miragia in Episode 4 on the Map
-		p_newfoe = new galaxy::CMiragia(&Map, Location);
+		p_newfoe = new galaxy::CMiragia(&Map, foe, Location);
 		break;
 
 	case DIVE_SUIT:
 		// Place Miragia in Episode 4 on the Map
-		p_newfoe = new galaxy::CDiveSuit(&Map, x, y);
+		p_newfoe = new galaxy::CDiveSuit(&Map, foe, x, y);
 		break;
 
 	case 42:
 		// This is Keen in the swimming suit
-		p_newfoe = new galaxy::CPlayerDive(&Map, x, y, m_ObjectPtr,
+		p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y, m_ObjectPtr,
 						RIGHT, m_Inventory, m_Cheatmode);
 		break;
 
 	case 47:
 		// This is the Lick
-		p_newfoe = new galaxy::CLick(&Map, x, y);
+		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 
 
 	case 71:
 		// Watermine vertical
-		p_newfoe = new galaxy::CWaterMine(&Map, x, y, true);
+		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, true);
 		break;
 	case 72:
 		// Watermine horizontal
-		p_newfoe = new galaxy::CWaterMine(&Map, x, y, false);
+		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, false);
 		break;
 
 	case 87:
 		// Dope Fish
-		p_newfoe = new galaxy::CDopeFish(&Map, x, y);
+		p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y);
 		break;
 
 

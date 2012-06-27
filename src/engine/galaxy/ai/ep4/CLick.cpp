@@ -22,9 +22,9 @@ const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
 const int LICK_HOP_X_SPEED = 50;
 const int LICK_BREATHE_TIMER = 100;
 
-CLick::CLick(CMap *pmap, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, x, y),
-CStunnable(pmap, x, y),
+CLick::CLick(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y),
+CStunnable(pmap, foeID, x, y),
 m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x2FC6, A_LICK_HOP);

@@ -17,10 +17,10 @@ namespace galaxy {
 const int SLUG_MOVE_SPEED = 1;
 const int SLUG_MOVE_TIMER = 10;
 
-CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y,
+CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 		std::vector< SmartPointer<CGalaxySpriteObject> >&ObjectPtrs) :
-CGalaxySpriteObject(pmap, x, y),
-CStunnable(pmap, x, y),
+CGalaxySpriteObject(pmap, foeID, x, y),
+CStunnable(pmap, foeID, x, y),
 m_ObjectPtrs(ObjectPtrs),
 m_timer(0)
 {
@@ -61,7 +61,7 @@ void CPoisonSlug::processCrawling()
 		mp_processState = (void (CStunnable::*)()) &CPoisonSlug::processPooing;
 		setAction( A_SLUG_POOING );
 		playSound( SOUND_SLUG_DEFECATE );
-		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, getXLeftPos(), getYDownPos()-(8<<STC)));
+		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, 0, getXLeftPos(), getYDownPos()-(8<<STC)));
 		return;
 	}
 

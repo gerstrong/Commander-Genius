@@ -16,7 +16,7 @@ class CMimrock: public CStunnable
 {
 public:
 
-	CMimrock(CMap *pmap, Uint32 x, Uint32 y);
+	CMimrock(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	bool isNearby(CSpriteObject &theObject);
 	void process();

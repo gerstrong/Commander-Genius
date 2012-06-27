@@ -16,8 +16,8 @@ namespace galaxy {
 const int itemEffectTime = 50;
 const int itemEffectTime_Animation = 14;
 
-CItemEffect::CItemEffect(CMap *pmap, Uint32 x, Uint32 y, Uint16 l_sprite, item_effect_type ieffect) :
-CGalaxySpriteObject(pmap, x, y)
+CItemEffect::CItemEffect(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint16 l_sprite, item_effect_type ieffect) :
+CGalaxySpriteObject(pmap, foeID, x, y)
 {
 	m_timer = 0;
 	sprite = l_sprite-124;

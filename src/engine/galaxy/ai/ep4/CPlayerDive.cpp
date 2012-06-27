@@ -13,13 +13,14 @@
 namespace galaxy {
 
 CPlayerDive::CPlayerDive(CMap *pmap,
+		const Uint16 foeID,
 		Uint32 x,
 		Uint32 y,
 		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 		direction_t facedir,
 		CInventory &l_Inventory,
 		stCheat &Cheatmode) :
-CPlayerBase(pmap, x, y,
+CPlayerBase(pmap, foeID, x, y,
 		ObjectPtrs,
 		facedir,
 		l_Inventory,
@@ -129,7 +130,7 @@ void CPlayerDive::processDiving()
 	{
 		playSound(SOUND_BUBBLE);
 		int dir_offset = (m_hDir==RIGHT) ? +(1<<CSF) : -(1<<CSF) ;
-		CBubbles *Bubble = new CBubbles(mp_Map, getXMidPos()+dir_offset, getYMidPos(), false);
+		CBubbles *Bubble = new CBubbles(mp_Map, 0, getXMidPos()+dir_offset, getYMidPos(), false);
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Bubble ) );
 		m_breathtimer = 0;
 	}

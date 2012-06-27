@@ -20,9 +20,10 @@ namespace galaxy
 {
 
 CStunnable::CStunnable(	CMap *pmap,
+						const Uint16 foeID,
 						Uint32 x,
 						Uint32 y ) :
-CGalaxySpriteObject( pmap, x, y )
+CGalaxySpriteObject( pmap, foeID, x, y )
 {
 	m_invincible = false;
 }
@@ -49,7 +50,7 @@ void CStunnable::processGettingStunned()
 			const Uint32 star_x = getXMidPos() - ( (StarRing.getWidth()<<STC)/2 );
 			const Uint32 star_y = getYUpPos()  - ( StarRing.getHeight()<<STC );
 
-			EventSpawnObject *Ev = new EventSpawnObject( new CStarRing(mp_Map, star_x, star_y) );
+			EventSpawnObject *Ev = new EventSpawnObject( new CStarRing(mp_Map, 0, star_x, star_y) );
 			g_pBehaviorEngine->m_EventList.add( Ev );
 			mp_processState = &CStunnable::processStunned;
 		}

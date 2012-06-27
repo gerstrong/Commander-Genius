@@ -10,8 +10,8 @@
 
 namespace galaxy {
 
-CPlatform::CPlatform(CMap *pmap, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, x, y),
+CPlatform::CPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y),
 mp_CarriedPlayer(NULL)
 {
 	m_ActionBaseOffset = 0x316A;

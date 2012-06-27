@@ -21,7 +21,7 @@ namespace galaxy {
 class CSpriteItem : public CGalaxySpriteObject
 {
 public:
-	CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
+	CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, Uint32 sprite);
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);

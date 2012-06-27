@@ -14,9 +14,9 @@ const int MOVE_VERT_SPEED = 20;
 namespace galaxy
 {
 
-CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint32 x, const Uint32 y) :
-CGalaxySpriteObject(pmap, x, y),
-CPlatform(pmap, x, y)
+CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y),
+CPlatform(pmap, foeID, x, y)
 {
 	m_hDir = NONE;
 	m_vDir = DOWN;
@@ -25,8 +25,8 @@ CPlatform(pmap, x, y)
 	calcBoundingBoxes();
 
 	// Setup boost effects
-	mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, x+(1<<STC), y+(8<<STC), true, true);
-	mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, x+m_BBox.x2+(4<<STC), y+(8<<STC), true, false);
+	mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, 0, x+(1<<STC), y+(8<<STC), true, true);
+	mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, 0, x+m_BBox.x2+(4<<STC), y+(8<<STC), true, false);
 
 	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjLeft ) );
 	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjRight ) );

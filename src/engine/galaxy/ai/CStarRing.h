@@ -21,7 +21,7 @@ const unsigned int STARRING_SPRITE = 40;
 class CStarRing : public CGalaxySpriteObject
 {
 public:
-	CStarRing(CMap *pmap, Uint32 x, Uint32 y);
+	CStarRing(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 private:
 	void process();

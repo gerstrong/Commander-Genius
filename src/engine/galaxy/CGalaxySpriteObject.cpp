@@ -7,8 +7,9 @@
 
 #include "CGalaxySpriteObject.h"
 
-CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, Uint32 x, Uint32 y) :
+CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CSpriteObject(pmap, x, y),
+mFoeID(foeID),
 m_ActionTicker(0),
 m_ActionNumber(0),
 m_ActionBaseOffset(0x0),

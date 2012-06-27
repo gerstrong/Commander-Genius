@@ -31,24 +31,25 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 CLoadMenu::CLoadMenu() :
 CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 {
-
 	// Load the state-file list
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
+	std::vector<std::string>::iterator it = StateFileList.begin();
 
-	for( Uint32 i=1 ; i<=8 ; i++ )
+	Uint32 i=1;
+	CGUIButton *button;
+	std::string text;
+
+	for( ; it != StateFileList.end() ; i++,it++ )
 	{
-		std::string text = "Slot " + itoa(i);
+		text = *it;
 
-		if( i <= StateFileList.size() )
+		if( !text.empty() )
 		{
-			text = StateFileList.at(i-1);
-			mpMenuDialog->addControl( new CGUIButton( text,
-														new LoadGameSlotFunctorEvent(i) ) );
-		}
-		else
-		{
+			button = new CGUIButton( text,
+									new LoadGameSlotFunctorEvent(i) );
+			mpMenuDialog->addControl( button );
 
-			mpMenuDialog->addControl( new CGUIText( text ) );
+			button->enable( true );
 		}
 	}
 

@@ -13,7 +13,7 @@
 class CGalaxySpriteObject: public CSpriteObject
 {
 public:
-	CGalaxySpriteObject(CMap *pmap, Uint32 x, Uint32 y);
+	CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void setupGalaxyObjectOnMap(const size_t ActionBaseOffset = 0x0,
 								const size_t ActionNumber = 0x0 );
@@ -32,6 +32,7 @@ public:
 	void processActionRoutine();
 
 	// This is used for action format only
+	uint16_t mFoeID;
 	uint16_t m_ActionTicker;
 	uint16_t m_ActionNumber;
 	size_t m_ActionBaseOffset;

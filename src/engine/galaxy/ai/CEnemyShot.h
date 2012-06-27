@@ -18,7 +18,7 @@ namespace galaxy {
 class CEnemyShot : public CGalaxySpriteObject
 {
 public:
-	CEnemyShot(CMap *pmap, const Uint32 x, const Uint32 y,
+	CEnemyShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
 			const int actionFormatOffset, const direction_t dir, const int speed);
 
 	void getTouchedBy(CSpriteObject &theObject);

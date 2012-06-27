@@ -18,8 +18,8 @@ const int ELDER_MOVE_SPEED = 1;
 const int ELDER_MOVE_TIMER = 10;
 
 
-CCouncilMember::CCouncilMember(CMap *pmap, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, x, y),
+CCouncilMember::CCouncilMember(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, foeID, x, y),
 rescued(false),
 m_timer(0)
 {

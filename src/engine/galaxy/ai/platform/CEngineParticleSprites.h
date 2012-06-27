@@ -19,6 +19,7 @@ class CEngineParticleSprites : public CGalaxySpriteObject
 {
 public:
 	CEngineParticleSprites(	CMap *pmap,
+			const Uint16 foeID,
 			const Uint32 x,
 			const Uint32 y,
 			const bool vert,

@@ -21,7 +21,7 @@ class CSlugSlime : public CGalaxySpriteObject
 public:
 
 	/** Standard Constructor for the slug poo */
-	CSlugSlime(CMap *pmap, Uint32 x, Uint32 y);
+	CSlugSlime(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	/** Main Process cycle */
 	void process();

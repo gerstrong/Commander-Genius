@@ -13,9 +13,10 @@
 
 namespace galaxy {
 
-class CSkypest : public CGalaxySpriteObject {
+class CSkypest : public CGalaxySpriteObject
+{
 public:
-	CSkypest(CMap *pmap, Uint32 x, Uint32 y);
+	CSkypest(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);

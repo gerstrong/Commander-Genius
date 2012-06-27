@@ -27,7 +27,8 @@
 #include <vector>
 #include <list>
 
-class CMapPlayGalaxy {
+class CMapPlayGalaxy
+{
 public:
 	CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
 
@@ -46,6 +47,9 @@ public:
 
 	// This is for loading the game
 	bool operator<<(CSaveGameController &savedGame);
+
+	CMap &getMapObj()
+	{	return mMap	;}
 
 
 protected:

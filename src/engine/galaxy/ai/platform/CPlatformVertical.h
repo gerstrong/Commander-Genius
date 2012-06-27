@@ -17,7 +17,7 @@ namespace galaxy {
 
 class CPlatformVertical : public CPlatform {
 public:
-	CPlatformVertical(CMap *pmap, const Uint32 x, const Uint32 y);
+	CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	void process();
 
