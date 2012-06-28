@@ -21,7 +21,8 @@ public:
 		UNSET,
 		NONE,
 		VORTICON,
-		GALAXY
+		GALAXY,
+		GALAXY_BORDERED
 	};
 
 

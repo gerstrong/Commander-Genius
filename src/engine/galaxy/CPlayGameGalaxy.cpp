@@ -266,12 +266,15 @@ void CPlayGameGalaxy::process()
 			if(ev->data > 0xC000)
 			{
 				const Uint16 NewLevel = ev->data - 0xC000;
-				g_pMusicPlayer->stop();
-				m_WorldMap.setActive(false);
-				m_LevelPlay.loadLevel(NewLevel);
-				m_LevelName = m_LevelPlay.getLevelName();
-				g_pSound->playSound( SOUND_ENTER_LEVEL );
-				m_LevelPlay.setActive(true);
+				if(NewLevel < 50)
+				{
+					g_pMusicPlayer->stop();
+					m_WorldMap.setActive(false);
+					m_LevelPlay.loadLevel(NewLevel);
+					m_LevelName = m_LevelPlay.getLevelName();
+					g_pSound->playSound( SOUND_ENTER_LEVEL );
+					m_LevelPlay.setActive(true);
+				}
 			}
 			eventContainer.pop_Event();
 		}

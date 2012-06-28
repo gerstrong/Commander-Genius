@@ -24,7 +24,7 @@ m_overwrite(false)
 
 	for(Uint32 i=1;i<=8;i++)
 	{
-		std::string text = "Slot " + itoa(i);
+		std::string text = "EMPTY";
 		if(i <= StateFileList.size())
 			text = StateFileList.at(i-1);
 

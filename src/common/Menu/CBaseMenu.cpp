@@ -22,7 +22,7 @@ mpMenuDialog( new CGUIDialog(rect) )
 	{
 		CRect<float> rect(0.30f, 0.28f, 0.5f, 0.5f);
 		mpMenuDialog->setRect(rect);
-		closeString = "<<";
+		closeString = "x";
 		pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::GALAXY );
 		mpMenuDialog->addControl( pButton, CRect<float>(-0.1f, 0.1f, 0.03f/rect.w, 0.03f/rect.h) );
 	}

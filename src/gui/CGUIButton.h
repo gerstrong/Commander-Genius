@@ -34,6 +34,8 @@ public:
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
+	void drawGalaxyBorderedStyle(SDL_Rect& lRect);
+
 	void drawGalaxyStyle(SDL_Rect& lRect);
 
 

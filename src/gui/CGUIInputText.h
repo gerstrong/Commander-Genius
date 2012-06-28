@@ -28,6 +28,8 @@ public:
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
+	void drawGalaxyStyle(SDL_Rect& lRect);
+
 
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
@@ -52,6 +54,8 @@ private:
 	bool mTyping;
 	int mTypeTick;
 	bool mTick;
+
+	SmartPointer<SDL_Surface> mpTextSfc;
 
 	void (CGUIInputText::*drawButton)(SDL_Rect&);
 

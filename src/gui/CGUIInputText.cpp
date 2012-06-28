@@ -13,6 +13,7 @@
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/CTimer.h"
+#include "sdl/extensions.h"
 
 
 const int MAX_TICK = 8; // Units in a logical loop
@@ -35,7 +36,7 @@ drawButton(&CGUIInputText::drawNoStyle)
 	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
 		mFontID = 1;
-		drawButton = &CGUIInputText::drawVorticonStyle;
+		drawButton = &CGUIInputText::drawGalaxyStyle;
 	}
 
 }
@@ -116,6 +117,38 @@ void CGUIInputText::processLogic()
 }
 
 
+void CGUIInputText::drawGalaxyStyle(SDL_Rect& lRect)
+{
+	if(!mEnabled)
+		return;
+
+	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+
+	// Now lets draw the text of the list control
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
+
+	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+
+
+	const Uint32 oldcolor = Font.getFGColor();
+
+
+	Uint32 newcolor;
+
+	if(mHovered || mButtonDown)
+		newcolor = SDL_MapRGB( format, 84, 234, 84);
+	else
+		newcolor = SDL_MapRGB( format, 38, 134, 38);
+
+	Font.setupColor( newcolor );
+
+	drawEmptyRect( blitsfc, &lRect, newcolor);
+
+	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y+2, false );
+
+	Font.setupColor( oldcolor );
+}
+
 void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 {
 
@@ -131,10 +164,7 @@ void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
 
 	drawTwirl(lRect);
-
 }
-
-
 
 void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 {

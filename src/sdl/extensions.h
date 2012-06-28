@@ -22,5 +22,7 @@ inline Colormask getColourMask32bit();
 
 SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect );
 
+void drawEmptyRect(SDL_Surface *sfc, SDL_Rect *pRect, Uint32 color);
+
 
 #endif /* SDL_EXTENSIONS_H_ */

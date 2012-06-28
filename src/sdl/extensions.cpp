@@ -49,6 +49,29 @@ Uint32 getPixel(SDL_Surface *surface, int x, int y)
 }
 
 
+void drawEmptyRect(SDL_Surface *sfc, SDL_Rect *pRect, Uint32 color)
+{
+	SDL_Rect tempRect = *pRect;
+
+	tempRect.h = 1;
+
+	SDL_FillRect(sfc, &tempRect, color);
+
+	tempRect.y = pRect->y + pRect->h - 1;
+
+	SDL_FillRect(sfc, &tempRect, color);
+
+	tempRect.w = 1;
+	tempRect.h = pRect->h;
+	tempRect.y = pRect->y;
+
+	SDL_FillRect(sfc, &tempRect, color);
+
+	tempRect.x = pRect->x + pRect->w - 1;
+
+	SDL_FillRect(sfc, &tempRect, color);
+
+}
 
 
 inline Colormask getColourMask32bit()

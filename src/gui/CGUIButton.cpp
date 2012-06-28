@@ -12,6 +12,7 @@
 #include "sdl/CVideoDriver.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/CTimer.h"
+#include "sdl/extensions.h"
 #include "StringUtils.h"
 
 
@@ -28,7 +29,7 @@ mAutoActivation(false)
 	mMapping[NONE] 		= ENGINE_LAUNCHER;
 	mMapping[VORTICON]	= ENGINE_VORTICON;
 	mMapping[GALAXY] 	= ENGINE_GALAXY;
-
+	mMapping[GALAXY_BORDERED] = ENGINE_GALAXY;
 
 	switch( mMapping[style] )
 	{
@@ -43,7 +44,10 @@ mAutoActivation(false)
 	case ENGINE_GALAXY:
 	{
 		mFontID = 1;
-		drawButton = &CGUIButton::drawGalaxyStyle;
+		if(style == GALAXY_BORDERED)
+			drawButton = &CGUIButton::drawGalaxyBorderedStyle;
+		else
+			drawButton = &CGUIButton::drawGalaxyStyle;
 		setupButtonSurface();
 		break;
 	}
@@ -157,6 +161,37 @@ void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 		CFont &Font = g_pGfxEngine->getFont(0);
 		Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
 	}
+}
+
+
+
+void CGUIButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
+{
+	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+
+	// Now lets draw the text of the list control
+	CFont &Font = g_pGfxEngine->getFont(mFontID);
+
+	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+
+	const Uint32 oldcolor = Font.getFGColor();
+
+	Uint32 newcolor;
+
+	if(!mEnabled)
+		newcolor = SDL_MapRGB( format, 123, 150, 123);
+	else if(mHovered || mButtonDown)
+		newcolor = SDL_MapRGB( format, 84, 234, 84);
+	else
+		newcolor = SDL_MapRGB( format, 38, 134, 38);
+
+	Font.setupColor( newcolor );
+
+	drawEmptyRect( blitsfc, &lRect, newcolor);
+
+	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y+2, false );
+
+	Font.setupColor( oldcolor );
 }
 
 

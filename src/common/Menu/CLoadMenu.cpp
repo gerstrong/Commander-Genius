@@ -39,18 +39,30 @@ CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	CGUIButton *button;
 	std::string text;
 
-	for( ; it != StateFileList.end() ; i++,it++ )
+	for( ; it != StateFileList.end() && i<8 ; i++,it++ )
 	{
 		text = *it;
 
 		if( !text.empty() )
 		{
 			button = new CGUIButton( text,
-									new LoadGameSlotFunctorEvent(i) );
+									new LoadGameSlotFunctorEvent(i),
+									CGUIButton::GALAXY_BORDERED );
 			mpMenuDialog->addControl( button );
 
 			button->enable( true );
 		}
+	}
+
+	for( int j = i ; j<8 ; j++ )
+	{
+		text = "Empty";
+		button = new CGUIButton( text,
+								new LoadGameSlotFunctorEvent(j),
+								CGUIButton::GALAXY_BORDERED );
+		mpMenuDialog->addControl( button );
+
+		button->enable( false );
 	}
 
 	setMenuLabel("LOADMENULABEL");
