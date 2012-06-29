@@ -16,7 +16,6 @@
 #include "fileio/CExeFile.h"
 #include "engine/galaxy/CInventory.h"
 #include "engine/galaxy/CGalaxySpriteObject.h"
-#include "engine/galaxy/dialog/CMessageBoxGalaxy.h"
 #include "common/CBehaviorEngine.h"
 #include "CMapLoaderGalaxy.h"
 #include "sdl/input/CInput.h"

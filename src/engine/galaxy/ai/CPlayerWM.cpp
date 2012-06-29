@@ -64,6 +64,8 @@ void CPlayerWM::process()
 		if(ev->sucess)
 		{
 			finishLevel(ev->levelObject);
+		    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+			EventContainer.add( new EventSendBitmapDialogMsg(106, loading_text, LEFT) );
 		}
 		EventContainer.pop_Event();
 	}
@@ -212,7 +214,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 		VectorD2<Uint32> src(getXPosition(), getYPosition());
 		VectorD2<Uint32> dst((x<<CSF), (y<<CSF));
 
-		CFlag *pFlag = new CFlag(mp_Map, 0, src, dst);
+		CFlag *pFlag = new CFlag(mp_Map, src, dst);
 		m_ObjectPtrs.push_back(pFlag);
 		g_pSound->playSound( SOUND_FLAG_APPEAR );
 

@@ -46,6 +46,8 @@
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/platforms.h"
 
+#include "engine/galaxy/ai/CFlag.h"
+
 #include <fstream>
 
 namespace galaxy
@@ -347,14 +349,14 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 // 31 seem to be the stoppers, those are not created because the platform
 // get this from the object map directly
 
-const int PLATFORM_VERT_ALT = 27;
-const int PLATFORM_HORIZ_ALT = 28;
-const int PLATFORM_VERT = 29;
-const int PLATFORM_HORIZ = 30;
+const unsigned int PLATFORM_VERT_ALT = 27;
+const unsigned int PLATFORM_HORIZ_ALT = 28;
+const unsigned int PLATFORM_VERT = 29;
+const unsigned int PLATFORM_HORIZ = 30;
 // 31 does not count, because it's a blocker.
-const int PLATFORM_DROP = 32;
+const unsigned int PLATFORM_DROP = 32;
 
-const int DIVE_SUIT = 35;
+const unsigned int DIVE_SUIT = 35;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
@@ -387,6 +389,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		}
 	}
 
+	VectorD2<Uint32> loc(x,y);
 
 	switch(foe)
 	{
@@ -495,6 +498,10 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 87:
 		// Dope Fish
 		p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y);
+		break;
+
+	case CFlag::FOE_ID:
+		p_newfoe = new galaxy::CFlag(&Map, loc, loc);
 		break;
 
 

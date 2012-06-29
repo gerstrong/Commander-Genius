@@ -19,7 +19,9 @@ namespace galaxy  {
 class CFlag : public CGalaxySpriteObject
 {
 public:
-	CFlag(CMap *pmap, const Uint16 foeID, const VectorD2<Uint32> &Location,
+	static const unsigned int FOE_ID = 500;
+
+	CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 			const VectorD2<Uint32> &Destination);
 
 	// The flag is flying when player throws it.
