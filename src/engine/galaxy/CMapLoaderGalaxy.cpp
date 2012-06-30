@@ -301,7 +301,9 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
-			addFoe(Map, *data_ptr++, x<<CSF, y<<CSF);
+			CGalaxySpriteObject *pNewfoe = addFoe(Map, *data_ptr++, x<<CSF, y<<CSF);
+			if(pNewfoe)
+				m_ObjectPtr.push_back(pNewfoe);
 		}
 	}
 
@@ -360,7 +362,7 @@ const unsigned int DIVE_SUIT = 35;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
-void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
+CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
 	CGalaxySpriteObject *p_newfoe = NULL;
 	VectorD2<Uint32> Location(x,y);
@@ -509,8 +511,8 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		break;
 	}
 
-	if(p_newfoe)
-		m_ObjectPtr.push_back(p_newfoe);
+
+	return p_newfoe;
 }
 
 }

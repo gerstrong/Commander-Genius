@@ -33,7 +33,7 @@ public:
 	bool gotoSignature(std::ifstream &MapFile);
 	bool loadMap(CMap &Map, Uint8 level);
 	void spawnFoes(CMap &Map);
-	void addFoe(CMap &Map, word foe, size_t x, size_t y);
+	CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
 
 private:
 	void unpackPlaneData(std::ifstream &MapFile,

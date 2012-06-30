@@ -240,31 +240,32 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData(x);
 		savedGame.decodeData(y);
 
-		MapLoader.addFoe(mMap, foeID, x, y);
+		CGalaxySpriteObject *pNewfoe = MapLoader.addFoe(mMap, foeID, x, y);
 
-		CGalaxySpriteObject &obj = *(mObjectPtr.back().get());
 
-		savedGame.decodeData( obj.dead );
-		savedGame.decodeData( obj.onscreen );
-		savedGame.decodeData( obj.hasbeenonscreen );
-		savedGame.decodeData( obj.exists );
-		savedGame.decodeData( obj.blockedd );
-		savedGame.decodeData( obj.blockedu );
-		savedGame.decodeData( obj.blockedl );
-		savedGame.decodeData( obj.blockedr );
-		savedGame.decodeData( obj.mHealthPoints );
-		savedGame.decodeData( obj.canbezapped );
-		savedGame.decodeData( obj.cansupportplayer );
-		savedGame.decodeData( obj.inhibitfall );
-		savedGame.decodeData( obj.honorPriority );
-		savedGame.decodeData( obj.sprite );
+		// TODO: Be careful here is a bad Null Pointer inside that structure
+		if(pNewfoe == NULL)
+			pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
+
+		savedGame.decodeData( pNewfoe->dead );
+		savedGame.decodeData( pNewfoe->onscreen );
+		savedGame.decodeData( pNewfoe->hasbeenonscreen );
+		savedGame.decodeData( pNewfoe->exists );
+		savedGame.decodeData( pNewfoe->blockedd );
+		savedGame.decodeData( pNewfoe->blockedu );
+		savedGame.decodeData( pNewfoe->blockedl );
+		savedGame.decodeData( pNewfoe->blockedr );
+		savedGame.decodeData( pNewfoe->mHealthPoints );
+		savedGame.decodeData( pNewfoe->canbezapped );
+		savedGame.decodeData( pNewfoe->cansupportplayer );
+		savedGame.decodeData( pNewfoe->inhibitfall );
+		savedGame.decodeData( pNewfoe->honorPriority );
+		savedGame.decodeData( pNewfoe->sprite );
 		savedGame.decodeData( actionNumber );
-		obj.setActionForce(actionNumber);
+		pNewfoe->setActionForce(actionNumber);
 
-		// remove non existing objects, we don't need them
-		if(!obj.exists)
-			mObjectPtr.pop_back();
-
+		if(pNewfoe->exists)
+			mObjectPtr.push_back(pNewfoe);
 	}
 
 	// Save the map_data as it is left
