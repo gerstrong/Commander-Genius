@@ -26,7 +26,7 @@ public:
 	bool getActionNumber(int16_t ActionNumber);
 	bool getActionStatus(int16_t ActionNumber);
 	int16_t getActionNumber();
-	void setActionForce(size_t ActionNumber);
+	virtual void setActionForce(const size_t ActionNumber);
 	void setAction(size_t ActionNumber);
 	void setActionSprite();
 	void processActionRoutine();

@@ -185,7 +185,7 @@ int16_t CGalaxySpriteObject::getActionNumber()
 {	return m_ActionNumber;	}
 
 
-void CGalaxySpriteObject::setActionForce(size_t ActionNumber)
+void CGalaxySpriteObject::setActionForce(const size_t ActionNumber)
 {
 	m_ActionNumber = ActionNumber;
 	m_Action.setActionFormat(m_ActionBaseOffset + 30*m_ActionNumber);

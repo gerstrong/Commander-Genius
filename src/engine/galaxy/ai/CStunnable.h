@@ -10,6 +10,7 @@
 
 #include "engine/galaxy/CGalaxySpriteObject.h"
 #include "engine/galaxy/ai/CBullet.h"
+#include <map>
 
 namespace galaxy
 {
@@ -38,9 +39,12 @@ public:
 	 */
 	void processStunned();
 
+	void setActionForce(const size_t ActionNumber);
+
 protected:
 	bool m_stunned;
 	void (CStunnable::*mp_processState)();
+	std::map< size_t, void (CStunnable::*)() > mActionMap;
 };
 
 }

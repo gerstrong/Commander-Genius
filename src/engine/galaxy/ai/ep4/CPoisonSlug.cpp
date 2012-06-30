@@ -14,6 +14,14 @@
 namespace galaxy {
 
 
+enum SLUGACTIONS
+{
+A_SLUG_MOVE = 0,	/* Ordinary slug_move action */
+A_SLUG_POOING = 2,
+A_SLUG_STUNNED = 3,
+A_SLUG_STUNNED_ALT = 4
+};
+
 const int SLUG_MOVE_SPEED = 1;
 const int SLUG_MOVE_TIMER = 10;
 
@@ -24,9 +32,13 @@ CStunnable(pmap, foeID, x, y),
 m_ObjectPtrs(ObjectPtrs),
 m_timer(0)
 {
+	mActionMap[A_SLUG_MOVE] = (void (CStunnable::*)()) &CPoisonSlug::processCrawling;
+	mActionMap[A_SLUG_POOING] = (void (CStunnable::*)()) &CPoisonSlug::processPooing;
+	mActionMap[A_SLUG_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_SLUG_STUNNED_ALT] = &CStunnable::processGettingStunned;
+
 	setupGalaxyObjectOnMap(0x2012, A_SLUG_MOVE);
 
-	mp_processState = (void (CStunnable::*)()) &CPoisonSlug::processCrawling;
 	m_hDir = LEFT;
 }
 
@@ -58,7 +70,6 @@ void CPoisonSlug::processCrawling()
 	if( getProbability(30) )
 	{
 		m_timer = 0;
-		mp_processState = (void (CStunnable::*)()) &CPoisonSlug::processPooing;
 		setAction( A_SLUG_POOING );
 		playSound( SOUND_SLUG_DEFECATE );
 		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, 0, getXLeftPos(), getYDownPos()-(8<<STC)));
@@ -80,10 +91,7 @@ void CPoisonSlug::processCrawling()
 void CPoisonSlug::processPooing()
 {
 	if( getActionStatus(A_SLUG_MOVE) )
-	{
 		setAction(A_SLUG_MOVE);
-		mp_processState = (void (CStunnable::*)()) &CPoisonSlug::processCrawling;
-	}
 }
 
 
@@ -97,7 +105,6 @@ void CPoisonSlug::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		mp_processState = &CStunnable::processGettingStunned;
 		setAction( rand()%2 ? A_SLUG_STUNNED : A_SLUG_STUNNED_ALT );
 		dead = true;
 		theObject.dead = true;
