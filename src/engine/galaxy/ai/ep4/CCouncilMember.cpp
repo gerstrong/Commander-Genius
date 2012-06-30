@@ -126,7 +126,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		std::string elder_text[2];
 
-		if(player->m_Inventory.Item.m_special.ep4.swimsuit) // Under water the text is a bit different
+		if( mp_Map->getLevel() == 17 ) // Under water the text is a bit different
 		{
 			elder_text[0] = g_pBehaviorEngine->getString("ELDERS_UNDERWATER_TEXT");
 			elder_text[1] = "";
