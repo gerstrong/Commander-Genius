@@ -12,7 +12,6 @@
 namespace galaxy {
 
 const Uint16 FLYING_BASEFRAME = 174;
-const Uint16 WAVING_BASEFRAME = 181;
 
 const Uint16 ANIMATION_TIME = 8;
 const Uint16 SPEED = 64;
@@ -27,15 +26,8 @@ processState(&CFlag::processFlying)
 {
 	solid = false;
 	honorPriority = false;
-
-
-	// Here we move the coordinates in order get it positioned correctly in the pole
-	m_destination.x += (6<<STC);
-	CSprite &Sprite = g_pGfxEngine->getSprite(WAVING_BASEFRAME);
 	sprite = WAVING_BASEFRAME;
 	calcBoundingBoxes();
-	m_destination.y -= Sprite.m_bboxY2;
-	m_destination.y += (1<<STC);
 }
 
 /**

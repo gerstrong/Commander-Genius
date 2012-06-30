@@ -14,6 +14,8 @@
 #include "engine/galaxy/CGalaxySpriteObject.h"
 #include "CVec.h"
 
+const Uint16 WAVING_BASEFRAME = 181;
+
 namespace galaxy  {
 
 class CFlag : public CGalaxySpriteObject

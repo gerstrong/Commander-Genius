@@ -377,10 +377,13 @@ void CPlayerBase::setActionForce(const size_t ActionNumber)
 {
 	CGalaxySpriteObject::setActionForce(ActionNumber);
 
+	if(mActionMap.empty())
+		return;
+
 	if( mActionMap.find(ActionNumber) != mActionMap.end() )
 		mp_processState = mActionMap[ActionNumber];
 	else
-		setActionForce(0); // This might happen, when the action-map is incomplete
+		setActionForce(mActionMap.begin()->first); // This might happen, when the action-map is incomplete
 }
 
 

@@ -212,7 +212,18 @@ void CPlayerWM::finishLevel(Uint16 object)
 	{
 		// spawn the flag
 		VectorD2<Uint32> src(getXPosition(), getYPosition());
-		VectorD2<Uint32> dst((x<<CSF), (y<<CSF));
+
+		// Here we move the coordinates in order get it positioned correctly in the pole
+		CSprite &FlagSprite = g_pGfxEngine->getSprite(WAVING_BASEFRAME);
+
+		unsigned int csfX = (x<<CSF);
+		unsigned int csfY = (y<<CSF);
+
+		csfX += (6<<STC);
+		csfY -= FlagSprite.m_bboxY2;
+		csfY += (1<<STC);
+		VectorD2<Uint32> dst(csfX, csfY);
+
 
 		CFlag *pFlag = new CFlag(mp_Map, src, dst);
 		m_ObjectPtrs.push_back(pFlag);
