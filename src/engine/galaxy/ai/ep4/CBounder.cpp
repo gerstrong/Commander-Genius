@@ -10,10 +10,13 @@
 namespace galaxy
 {
 
-#define A_BOUNDER_BOUNCE	0
-#define A_BOUNDER_MOVE		2
-//#define A_BOUNDER_ONFLOOR	4
-#define A_BOUNDER_STUNNED	5
+enum BOUNDER_ACTION
+{
+A_BOUNDER_BOUNCE = 0,
+A_BOUNDER_MOVE = 2,
+A_BOUNDER_ONFLOOR = 4,
+A_BOUNDER_STUNNED = 5
+};
 
 const int MAX_BOUNCE_BOOST = -115;
 const int HOR_SPEED = 40;
@@ -24,8 +27,12 @@ CStunnable(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y),
 bounceboost(0)
 {
+	mActionMap[A_BOUNDER_BOUNCE] = (void (CStunnable::*)()) &CBounder::processBounce;
+	//mActionMap[A_BOUNDER_MOVE] = (void (CStunnable::*)()) &CBounder::;
+	//mActionMap[A_BOUNDER_ONFLOOR] = (void (CStunnable::*)()) &CBounder::;
+	mActionMap[A_BOUNDER_STUNNED] = &CStunnable::processGettingStunned;
+
 	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);
-	mp_processState = (void (CStunnable::*)()) &CBounder::processBounce;
 	m_hDir = NONE;
 
 }
@@ -41,7 +48,6 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
 	{
-		mp_processState = &CStunnable::processGettingStunned;
 		setAction( A_BOUNDER_STUNNED );
 		dead = true;
 		theObject.dead = true;
@@ -109,7 +115,6 @@ void CBounder::movePlayerUp(const int amnt)
 	if(mp_CarriedPlayer)
 	{
 		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			//mp_CarriedPlayer->moveUp(amnt);
 			mp_CarriedPlayer->yinertia = yinertia;
 	}
 }
@@ -120,7 +125,6 @@ void CBounder::movePlayerDown(const int amnt)
 	if(mp_CarriedPlayer)
 	{
 		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			//mp_CarriedPlayer->moveDown(amnt);
 			mp_CarriedPlayer->yinertia = yinertia;
 	}
 }
@@ -130,8 +134,6 @@ void CBounder::process()
 {
 	if(yinertia < 0)
 		movePlayerUp(-yinertia);
-	//else if(yinertia > 0)
-		//movePlayerDown(10);
 
 
 	// Bounce
