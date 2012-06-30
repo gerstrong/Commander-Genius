@@ -261,10 +261,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData( actionNumber );
 		obj.setActionForce(actionNumber);
 
-		// remove non existing objects, they only are problematic
-		if(obj.dead)
-			obj.exists = false;
-
+		// remove non existing objects, we don't need them
 		if(!obj.exists)
 			mObjectPtr.pop_back();
 
