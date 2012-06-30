@@ -10,11 +10,14 @@
 
 namespace galaxy {
 
-#define A_MIMROCK_SIT		0
-#define A_MIMROCK_WALK		1
-#define A_MIMROCK_JUMP		7
-#define A_MIMROCK_BOUNCE	10
-#define A_MIMROCK_STUNNED	11
+enum MIMROCK_ACTION
+{
+A_MIMROCK_SIT = 0,
+A_MIMROCK_WALK = 1,
+A_MIMROCK_JUMP = 7,
+A_MIMROCK_BOUNCE = 10,
+A_MIMROCK_STUNNED = 11
+};
 
 const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
 const int WALK_SPEED = 10;
@@ -23,8 +26,13 @@ CMimrock::CMimrock(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 CStunnable(pmap, foeID, x, y)
 {
+	mActionMap[A_MIMROCK_SIT] = (void (CStunnable::*)()) &CMimrock::processSit;
+	mActionMap[A_MIMROCK_WALK] = (void (CStunnable::*)()) &CMimrock::processWalk;
+	mActionMap[A_MIMROCK_JUMP] = (void (CStunnable::*)()) &CMimrock::processJump;
+	mActionMap[A_MIMROCK_BOUNCE] = (void (CStunnable::*)()) &CMimrock::processBounce;
+	mActionMap[A_MIMROCK_STUNNED] = &CStunnable::processStunned;
+
 	setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
-	mp_processState = (void (CStunnable::*)()) &CMimrock::processSit;
 	m_hDir = NONE;
 }
 
@@ -44,7 +52,6 @@ bool CMimrock::isNearby(CSpriteObject &theObject)
 				m_hDir = RIGHT;
 
 			setAction(A_MIMROCK_WALK);
-			mp_processState = (void (CStunnable::*)()) &CMimrock::processWalk;
 		}
 	}
 
@@ -53,7 +60,7 @@ bool CMimrock::isNearby(CSpriteObject &theObject)
 
 void CMimrock::processSit()
 {
-	// When sitting the rock doesn't do any thing, so this stays empty for now.
+	// When sitting the rock doesn't do any thing, so this stays empty.
 }
 
 void CMimrock::processWalk()
@@ -64,10 +71,8 @@ void CMimrock::processWalk()
 		moveRight(WALK_SPEED);
 
 	if(getActionStatus(A_MIMROCK_SIT))
-	{
 		setAction(A_MIMROCK_SIT);
-		mp_processState = (void (CStunnable::*)()) &CMimrock::processSit;
-	}
+
 }
 
 void CMimrock::processJump()
@@ -76,11 +81,6 @@ void CMimrock::processJump()
 }
 
 void CMimrock::processBounce()
-{
-	// TODO: Code here!
-}
-
-void CMimrock::processStunned()
 {
 	// TODO: Code here!
 }
