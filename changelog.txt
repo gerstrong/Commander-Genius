@@ -11,6 +11,8 @@ v0.4.0 Beta3: (Alpha as of Beta 1 and 2 changes are put here also)
 - New video rendering engine
 - Improved handheld support
 - Improved AIs in Galaxy engine
+- Improved Multiplayer Experience. Now there is a special cambutton, so players can cooperate
+- More Input devices are now supported.
 - New Galaxy AIs
 - fixed about 30 bugs
 
