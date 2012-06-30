@@ -74,9 +74,14 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 		}
 
 
-		EventContainer.add( new EventSendBitmapDialogMsg(108, lindsey_text[0], LEFT) );
-		EventContainer.add( new EventSendBitmapDialogMsg(108, lindsey_text[1], LEFT) );
-		EventContainer.add( new EventSendBitmapDialogMsg(106, lindsey_text[2], RIGHT) );
+		std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
+
+		msgs.push_back( new EventSendBitmapDialogMsg(108, lindsey_text[0], LEFT) );
+		msgs.push_back( new EventSendBitmapDialogMsg(108, lindsey_text[1], LEFT) );
+		msgs.push_back( new EventSendBitmapDialogMsg(106, lindsey_text[2], RIGHT) );
+
+		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+
 
 		exists = false;
 	}

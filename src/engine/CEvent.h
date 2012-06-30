@@ -89,6 +89,22 @@ struct EventSendBitmapDialogMsg : EventSendDialog
 
 
 /**
+ * This event collects a vector of EventSendBitmapDialogMsg event, so all
+ * the message boxes are loading at once and display one by one holding the paused game
+ */
+
+struct EventSendBitmapDialogMessages : CEvent
+{
+	EventSendBitmapDialogMessages( std::vector< SmartPointer<EventSendBitmapDialogMsg> > lMsgs ) :
+		msgs(lMsgs) {}
+
+	std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
+};
+
+
+
+
+/**
  *  \description small structure which holds a matching selection text to an event.
  *  			 It is used
  */
