@@ -63,7 +63,7 @@ void CStunnable::processStunned()
 
 void CStunnable::setActionForce(const size_t ActionNumber)
 {
-	CGalaxySpriteObject::setAction(ActionNumber);
+	CGalaxySpriteObject::setActionForce(ActionNumber);
 
 	if( mActionMap.find(ActionNumber) != mActionMap.end() )
 		mp_processState = mActionMap[ActionNumber];
