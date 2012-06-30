@@ -27,7 +27,10 @@ namespace galaxy
 {
 
 
-#define A_KEEN_DIE				29
+enum PLAYER_GLOBAL_ACTIONS
+{
+A_KEEN_DIE = 29
+};
 
 
 class CPlayerBase : public CGalaxySpriteObject
@@ -94,6 +97,8 @@ protected:
 	bool checkMapBoundaryR(const int x2);
 	bool checkMapBoundaryU(const int y1);
 
+	void setActionForce(const size_t ActionNumber);
+
 	unsigned short mPlayerNum;
 
 	std::vector< SmartPointer<CGalaxySpriteObject> >& m_ObjectPtrs;
@@ -105,10 +110,12 @@ protected:
 
 	stCheat& m_Cheatmode;
 
-	void (CPlayerBase::*mp_processState)();
 
-private:
+protected:
+
+	void (CPlayerBase::*mp_processState)();
 	unsigned char m_walktimer;
+	std::map< size_t, void (CPlayerBase::*)() > mActionMap;
 };
 
 };

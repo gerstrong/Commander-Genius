@@ -37,9 +37,34 @@ CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
 CPlayerBase(pmap, foeID, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
-m_jumpdownfromobject(false)
+m_jumpdownfromobject(false),
+mPlacingGem(false)
 {
-	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+	mActionMap[A_KEEN_LOOKUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
+	mActionMap[A_KEEN_LOOKDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processPressDucking;
+	mActionMap[A_KEEN_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
+	mActionMap[A_KEEN_SHOOT_UP] = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
+	mActionMap[A_KEEN_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processSliding;
+	mActionMap[A_KEEN_ENTER_DOOR] = static_cast<void (CPlayerBase::*)()>(&CPlayerLevel::processEnterDoor);
+	mActionMap[A_KEEN_POLE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
+	mActionMap[A_KEEN_POLE_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
+	mActionMap[A_KEEN_POLE_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
+	mActionMap[A_KEEN_POLE_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
+	mActionMap[A_KEEN_POLE_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
+	mActionMap[A_KEEN_POLE_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
+	mActionMap[A_KEEN_RUN] = (void (CPlayerBase::*)()) &CPlayerLevel::processRunning;
+	mActionMap[A_KEEN_POGO_START] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
+	mActionMap[A_KEEN_POGO_UP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
+	mActionMap[A_KEEN_POGO_HIGH] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
+	mActionMap[A_KEEN_JUMP] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
+	mActionMap[A_KEEN_JUMP_DOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
+	mActionMap[A_KEEN_FALL] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
+	mActionMap[A_KEEN_JUMP_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
+	mActionMap[A_KEEN_JUMP_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
+	mActionMap[A_KEEN_JUMP_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
+	mActionMap[A_KEEN_HANG] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
+	mActionMap[A_KEEN_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbing;
 
 	m_fire_recharge_time = 0;
 	m_EnterDoorAttempt = false;
@@ -130,7 +155,6 @@ void CPlayerLevel::shootInAir()
 									getYPosition()+(4<<STC));
 		tryToShoot(newVec, m_hDir);
 	}
-	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 	m_fire_recharge_time = FIRE_RECHARGE_TIME;
 }
 
@@ -155,7 +179,6 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			solid = false;
 			yinertia = 0;
 			m_hanging = false;
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
 			return true;
 		}
 	}
@@ -174,7 +197,6 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			solid = false;
 			yinertia = 0;
 			m_hanging = false;
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
 			return true;
 		}
 	}
@@ -201,7 +223,6 @@ void CPlayerLevel::processCliffHanging()
 		((m_hDir == RIGHT) && (m_playcontrol[PA_X] > 0))  )
 	{
 		setAction(A_KEEN_CLIMB);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbing;
 		m_camera.m_freeze = true;
 	}
 
@@ -217,7 +238,6 @@ void CPlayerLevel::processCliffHanging()
 		moveXDir( (m_hDir == LEFT) ? dx : -dx, true);
 		setActionSprite();
 		calcBoundingBoxes();
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 	}
 }
 
@@ -243,11 +263,10 @@ void CPlayerLevel::processCliffClimbing()
 		{
 			moveDown(1<<CSF);
 			solid = true;
-			setAction(A_KEEN_STAND);
 			m_camera.m_freeze = false;
 			setActionSprite();
 			calcBoundingBoxes();
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+			setAction(A_KEEN_STAND);
 		}
 	}
 }
@@ -311,7 +330,6 @@ void CPlayerLevel::processPogo()
 	{
 		m_jumpheight = 0;
 		setAction(A_KEEN_FALL);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 		m_pogotoggle = true;
 		xinertia = 0;
 	}
@@ -400,7 +418,7 @@ void CPlayerLevel::processJumping()
 	if( yinertia > -10 )
 	{
 		if( getActionNumber(A_KEEN_JUMP) )
-			setAction(A_KEEN_JUMP+1);
+			setAction(A_KEEN_JUMP_DOWN);
 	}
 
 	moveYDir(yinertia);
@@ -415,10 +433,8 @@ void CPlayerLevel::processJumping()
 
 		yinertia -= 20;
 		if( getActionNumber(A_KEEN_JUMP) )
-		{
 			setAction(A_KEEN_FALL);
-		}
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
+
 	}
 
 	processMovingHorizontal();
@@ -429,7 +445,6 @@ void CPlayerLevel::processJumping()
 		m_jumpheight = 0;
 		setAction(A_KEEN_POGO_UP);
 		m_pogotoggle = true;
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
 		return;
 	}
 
@@ -465,13 +480,11 @@ const int MAX_SCROLL_VIEW = (8<<CSF);
 void CPlayerLevel::processLookingUp()
 {
 	// While looking up, Keen could shoot up!
-	// He could shoot
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
-		setActionForce(A_KEEN_SHOOT+2);
+		setActionForce(A_KEEN_SHOOT_UP);
 		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
 		tryToShoot(newVec, UP);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
 		m_fire_recharge_time = FIRE_RECHARGE_TIME;
 		return;
 	}
@@ -483,7 +496,6 @@ void CPlayerLevel::processLookingUp()
 		return;
 
 	setAction(A_KEEN_STAND);
-	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 }
 
 
@@ -532,7 +544,7 @@ void CPlayerLevel::processPressUp() {
 		flag == MISCFLAG_SWITCHBRIDGE)
 	{
 		playSound( SOUND_GUN_CLICK );
-		setAction(A_KEEN_SLIDE);
+		//setAction(A_KEEN_SLIDE);
 		if(flag == MISCFLAG_SWITCHBRIDGE)
 		{
 			Uint32 newtile;
@@ -551,7 +563,6 @@ void CPlayerLevel::processPressUp() {
 			PressPlatformSwitch(x_mid, up_y);
 		}
 		setAction(A_KEEN_SLIDE);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processSliding;
 		m_timer = 0;
 		return;
 	 }
@@ -613,7 +624,6 @@ void CPlayerLevel::processPressUp() {
 
 				moveToHorizontal(x_mid);
 
-				mp_processState = static_cast<void (CPlayerBase::*)()>(&CPlayerLevel::processEnterDoor);
 				m_EnterDoorAttempt = true;
 				return;
 				//PlayLoopTimer = 110;
@@ -629,7 +639,6 @@ void CPlayerLevel::processPressUp() {
 	}
 
 	// If the above did not happen, then just look up
-	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
 	setAction(A_KEEN_LOOKUP);
 }
 
@@ -651,7 +660,6 @@ void CPlayerLevel::processPressDucking()
 			blockedd = false;
 			setAction(A_KEEN_FALL);
 			playSound( SOUND_KEEN_FALL );
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 		}
 
 		if( m_camera.m_relcam.y < MAX_SCROLL_VIEW )
@@ -661,7 +669,6 @@ void CPlayerLevel::processPressDucking()
 	}
 
 	setAction(A_KEEN_STAND);
-	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 }
 
 
@@ -672,16 +679,33 @@ void CPlayerLevel::processPressDucking()
 
 void CPlayerLevel::processSliding()
 {
+	if(mPlacingGem)
+	{
+		if(m_timer == 0 || m_timer == 5 || m_timer == 8)
+		{
+			openDoorsTile();
+		}
+	}
+
 	if(m_timer < 10)
 	{
 		m_timer++;
 		return;
 	}
-	else
+
+
+	m_timer = 0;
+	setAction(A_KEEN_STAND);
+
+	if(mPlacingGem)
 	{
-		m_timer = 0;
-		setAction(A_KEEN_STAND);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+		int lx = getXMidPos();
+		int ly = getYDownPos()-(3<<STC);
+
+		Uint32 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
+		mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
+		mPlacingGem = false;
+		playSound( SOUND_DOOR_OPEN );
 	}
 }
 
@@ -699,7 +723,6 @@ void CPlayerLevel::processEnterDoor()
 		return;
 
 	setAction(A_KEEN_STAND);
-	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 
 	int xmid = getXMidPos();
 	int y1 = getYMidPos();
@@ -871,36 +894,6 @@ void CPlayerLevel::openDoorsTile()
 
 
 
-void CPlayerLevel::processPlaceGem()
-{
-	if(m_timer == 0 || m_timer == 5 || m_timer == 8)
-	{
-		openDoorsTile();
-	}
-
-	if(m_timer < 10)
-	{
-		m_timer++;
-		return;
-	}
-
-	m_timer = 0;
-
-	setAction(A_KEEN_STAND);
-	mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
-
-	int lx = getXMidPos();
-	int ly = getYDownPos()-(3<<STC);
-
-	Uint32 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
-	mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
-}
-
-
-
-
-
-
 
 
 
@@ -914,8 +907,6 @@ void CPlayerLevel::processPoleClimbing()
 	if( !m_jumped && m_playcontrol[PA_JUMP] > 0 )
 	{
 		setAction(A_KEEN_JUMP);
-
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
 		m_climbing = false;
 		m_jumped = true;
 		yinertia = 0;
@@ -1000,7 +991,6 @@ void CPlayerLevel::processPoleClimbing()
 			{
 				setAction(A_KEEN_FALL);
 				playSound( SOUND_KEEN_FALL );
-				mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 			}
 			else
 			{
@@ -1009,7 +999,6 @@ void CPlayerLevel::processPoleClimbing()
 				moveDown(1<<CSF);
 
 				setAction(A_KEEN_STAND);
-				mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 			}
 		}
 	}
@@ -1059,7 +1048,6 @@ bool CPlayerLevel::verifyforPole()
 
 			// Set Keen in climb mode
 			setAction(A_KEEN_POLE);
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
 			m_climbing = true;
 			solid = false;
 			return true;
@@ -1081,25 +1069,17 @@ void CPlayerLevel::processStanding()
 	centerView();
 
 	// He could walk
-	if(  m_playcontrol[PA_X]<0  )
+	if(  m_playcontrol[PA_X]<0 && !blockedl  )
 	{
-		if( !blockedl )
-		{
-			// prepare him to walk to the left
-			m_hDir = LEFT;
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processRunning;
-			setAction(A_KEEN_RUN);
-		}
+		// prepare him to walk to the left
+		m_hDir = LEFT;
+		setAction(A_KEEN_RUN);
 	}
-	else if(  m_playcontrol[PA_X]>0  )
+	else if(  m_playcontrol[PA_X]>0 && !blockedr )
 	{
-		if( !blockedr )
-		{
-			// prepare him to walk to the right
-			m_hDir = RIGHT;
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processRunning;
-			setAction(A_KEEN_RUN);
-		}
+		// prepare him to walk to the right
+		m_hDir = RIGHT;
+		setAction(A_KEEN_RUN);
 	}
 
 	// He could jump
@@ -1109,7 +1089,6 @@ void CPlayerLevel::processStanding()
 		yinertia = -140;
 		m_jumpheight = 0;
 		setAction(A_KEEN_JUMP);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
 		m_jumped = true;
 		m_climbing = false;
 		m_vDir = NONE;
@@ -1121,10 +1100,7 @@ void CPlayerLevel::processStanding()
 	if( m_playcontrol[PA_Y] > 0 )
 	{
 		if(!verifyforPole())
-		{
 			setAction(A_KEEN_LOOKDOWN);
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPressDucking;
-		}
 	}
 
 	// He could press up and do further actions
@@ -1158,7 +1134,6 @@ void CPlayerLevel::processStanding()
 
 		m_jumpheight = 0;
 		setAction(A_KEEN_POGO_START);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
 		playSound( SOUND_KEEN_POGO );
 		m_pogotoggle = true;
 	}
@@ -1174,16 +1149,10 @@ void CPlayerLevel::processShootWhileStanding()
 	// while until player releases the button and get back to stand status
 	if( !m_playcontrol[PA_FIRE] )
 	{
-		if(getActionNumber(A_KEEN_SHOOT+2))
-		{
+		if(getActionNumber(A_KEEN_SHOOT_UP))
 			setAction(A_KEEN_LOOKUP);
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
-		}
 		else
-		{
 			setAction(A_KEEN_STAND);
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
-		}
 	}
 }
 
@@ -1202,7 +1171,6 @@ void CPlayerLevel::processRunning()
 	// He could stand again, if player doesn't move the dpad
 	if( m_playcontrol[PA_X] == 0 )
 	{
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 		setAction(A_KEEN_STAND);
 	}
 	// or he could change the walking direction
@@ -1211,7 +1179,6 @@ void CPlayerLevel::processRunning()
 		// Is he blocked make him stand, else continue walking
 		if( blockedl )
 		{
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 			setAction(A_KEEN_STAND);
 		}
 		else
@@ -1226,7 +1193,6 @@ void CPlayerLevel::processRunning()
 		// Is he blocked make him stand, else continue walking
 		if( blockedr )
 		{
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 			setAction(A_KEEN_STAND);
 		}
 		else
@@ -1239,7 +1205,6 @@ void CPlayerLevel::processRunning()
 
 	if( verifyForFalling() )
 	{
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
 		setAction(A_KEEN_FALL);
 		playSound( SOUND_KEEN_FALL );
 	}
@@ -1252,7 +1217,6 @@ void CPlayerLevel::processRunning()
 		yinertia = -140;
 		m_jumpheight = 0;
 		setAction(A_KEEN_JUMP);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
 		m_jumped = true;
 		m_climbing = false;
 		m_vDir = NONE;
@@ -1284,7 +1248,6 @@ void CPlayerLevel::processRunning()
 
 		m_jumpheight = 0;
 		setAction(A_KEEN_POGO_START);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
 		playSound( SOUND_KEEN_POGO );
 		m_pogotoggle = true;
 	}
@@ -1312,9 +1275,8 @@ void CPlayerLevel::processRunning()
 				break;
 
 			moveToHorizontal((l_x>>CSF)<<CSF);
+			mPlacingGem = true;
 			setAction(A_KEEN_SLIDE);
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPlaceGem;
-			playSound( SOUND_DOOR_OPEN );
 		}
 	}
 
@@ -1343,7 +1305,6 @@ void CPlayerLevel::processFalling()
 	if(blockedd)
 	{
 		setAction(A_KEEN_STAND);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	}
 
 	processMovingHorizontal();
@@ -1353,8 +1314,6 @@ void CPlayerLevel::processFalling()
 	if( m_Cheatmode.jump && m_playcontrol[PA_JUMP] > 0 )
 	{
 		setAction(A_KEEN_JUMP);
-
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
 		m_climbing = false;
 		m_jumped = true;
 		yinertia = 0;
@@ -1374,7 +1333,6 @@ void CPlayerLevel::processFalling()
 		yinertia = 0;
 		setAction(A_KEEN_POGO_START);
 		m_pogotoggle = true;
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
 	}
 
 	// Check if keen should stick to the pole

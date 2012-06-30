@@ -30,6 +30,9 @@ m_ObjectPtrs(ObjectPtrs),
 m_Cheatmode(Cheatmode),
 mp_processState(NULL)
 {
+	mActionMap[A_KEEN_DIE] = &CPlayerBase::processDying;
+	mActionMap[A_KEEN_DIE+1] = &CPlayerBase::processDying;
+
 	m_walktimer = 0;
 	m_timer = 0;
 	m_dying = false;
@@ -340,7 +343,6 @@ void CPlayerBase::kill()
 		solid = false;
 		honorPriority = false;
 		g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
-		mp_processState = &CPlayerBase::processDying;
 	}
 }
 
@@ -369,6 +371,17 @@ bool CPlayerBase::checkMapBoundaryU(const int y1)
 	return false;
 }
 
+
+
+void CPlayerBase::setActionForce(const size_t ActionNumber)
+{
+	CGalaxySpriteObject::setActionForce(ActionNumber);
+
+	if( mActionMap.find(ActionNumber) != mActionMap.end() )
+		mp_processState = mActionMap[ActionNumber];
+	else
+		setActionForce(0); // This might happen, when the action-map is incomplete
+}
 
 
 

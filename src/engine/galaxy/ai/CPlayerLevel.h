@@ -12,40 +12,46 @@
 
 namespace galaxy {
 
-#define A_KEEN_STAND			0
-#define A_KEEN_BORED			1
-#define A_KEEN_QUESTION			2
-#define A_KEEN_MOON				8
-#define A_KEEN_BOOK_OPEN		11
-#define A_KEEN_BOOK_READ		15
-#define A_KEEN_BOOK_CLOSE		18
-#define A_KEEN_LOOKUP			21
-#define A_KEEN_LOOKDOWN			23
-#define A_KEEN_ACTION_1			26
-#define A_KEEN_ACTION_2			27
-#define A_KEEN_ACTION_3			28
-//#define A_KEEN_DIE				29 // defined in CPlayerBase
-#define A_KEEN_SHOOT			33
-#define A_KEEN_ACTION_4			37
-#define A_KEEN_SLIDE			40
-#define A_KEEN_ENTER_DOOR		41
-#define A_KEEN_POLE				46
-#define A_KEEN_POLE_CLIMB		47
-#define A_KEEN_POLE_SLIDE		50
-#define A_KEEN_POLE_SHOOT		54
-#define A_KEEN_POLE_SHOOTUP		56
-#define A_KEEN_POLE_SHOOTDOWN	58
-#define A_KEEN_RUN				60
-#define A_KEEN_POGO_START		64
-#define A_KEEN_POGO_UP			65
-#define A_KEEN_POGO_HIGH		66
-#define A_KEEN_JUMP				67
-#define A_KEEN_FALL				69
-#define A_KEEN_JUMP_SHOOT		71
-#define A_KEEN_JUMP_SHOOTUP		74
-#define A_KEEN_JUMP_SHOOTDOWN	77
-#define A_KEEN_HANG				80
-#define A_KEEN_CLIMB			82
+enum PLAYER_LEVEL_ACTION
+{
+A_KEEN_STAND = 0,
+A_KEEN_BORED = 1,
+A_KEEN_QUESTION	 = 2,
+A_KEEN_MOON	 = 8,
+A_KEEN_BOOK_OPEN = 11,
+A_KEEN_BOOK_READ = 15,
+A_KEEN_BOOK_CLOSE = 18,
+A_KEEN_LOOKUP = 21,
+A_KEEN_LOOKDOWN	 = 23,
+A_KEEN_ACTION_1	 = 26,
+A_KEEN_ACTION_2	 = 27,
+A_KEEN_ACTION_3 = 28,
+//A_KEEN_DIE = 29 // defined in CPlayerBase
+A_KEEN_SHOOT = 33,
+A_KEEN_SHOOT_UP = 35,
+A_KEEN_ACTION_4 = 37,
+A_KEEN_SLIDE = 40,
+A_KEEN_ENTER_DOOR = 41,
+A_KEEN_POLE	 = 46,
+A_KEEN_POLE_CLIMB = 47,
+A_KEEN_POLE_SLIDE = 50,
+A_KEEN_POLE_SHOOT = 54,
+A_KEEN_POLE_SHOOTUP = 56,
+A_KEEN_POLE_SHOOTDOWN = 58,
+A_KEEN_RUN = 60,
+A_KEEN_POGO_START = 64,
+A_KEEN_POGO_UP = 65,
+A_KEEN_POGO_HIGH = 66,
+A_KEEN_JUMP	 = 67,
+A_KEEN_JUMP_DOWN = 68,
+A_KEEN_FALL	 = 69,
+A_KEEN_JUMP_SHOOT = 71,
+A_KEEN_JUMP_SHOOTUP	 = 74,
+A_KEEN_JUMP_SHOOTDOWN = 77,
+A_KEEN_HANG	 = 80,
+A_KEEN_CLIMB = 82
+};
+
 
 class CPlayerLevel : public CPlayerBase {
 public:
@@ -216,7 +222,6 @@ public:
 
 	void PressPlatformSwitch(const Uint32 lx, const Uint32 ly);
 	void openDoorsTile();
-	void processPlaceGem();
 
 	// Checks if Keen is using the pogo. Skypest needs to know that,
 	// because it might get squashed.
@@ -228,6 +233,7 @@ public:
 
 
 	bool m_jumpdownfromobject;
+	bool mPlacingGem;
 
 private:
 
