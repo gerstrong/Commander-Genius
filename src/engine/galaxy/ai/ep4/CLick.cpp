@@ -11,10 +11,13 @@
 
 namespace galaxy {
 
-#define A_LICK_HOP			0
-#define A_LICK_LAND			3
-#define A_LICK_BREATHE		4
-#define A_LICK_STUNNED		12
+enum LICK_ACTIONS
+{
+A_LICK_HOP = 0,
+A_LICK_LAND = 3,
+A_LICK_BREATHE = 4,
+A_LICK_STUNNED = 12
+};
 
 const int CSF_MIN_DISTANCE_TO_BREATHE = 2<<CSF;
 const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
@@ -27,8 +30,12 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 CStunnable(pmap, foeID, x, y),
 m_timer(0)
 {
+	mActionMap[A_LICK_HOP] = (void (CStunnable::*)()) (&CLick::processHop);
+	mActionMap[A_LICK_LAND] = (void (CStunnable::*)()) (&CLick::processLand);
+	mActionMap[A_LICK_BREATHE] = (void (CStunnable::*)()) (&CLick::processBreathe);
+	mActionMap[A_LICK_STUNNED] = &CStunnable::processGettingStunned;
+
 	setupGalaxyObjectOnMap(0x2FC6, A_LICK_HOP);
-	mp_processState = (void (CStunnable::*)()) (&CLick::processHop);
 }
 
 void CLick::process()
@@ -50,7 +57,6 @@ void CLick::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		mp_processState = &CStunnable::processGettingStunned;
 		setAction( A_LICK_STUNNED );
 		theObject.dead = true;
 		dead = true;
@@ -85,7 +91,6 @@ bool CLick::isNearby(CSpriteObject &theObject)
 			{
 				setAction(A_LICK_BREATHE);
 				playSound(SOUND_LICK_FIREBREATH);
-				mp_processState = (void (CStunnable::*)()) (&CLick::processBreathe);
 				m_timer = LICK_BREATHE_TIMER;
 			}
 		}
@@ -105,7 +110,6 @@ void CLick::processHop()
 
 	if(blockedd)
 	{
-		mp_processState = (void (CStunnable::*)()) (&CLick::processLand);
 		setAction( A_LICK_LAND );
 	}
 }
@@ -113,7 +117,6 @@ void CLick::processHop()
 void CLick::processLand()
 {
 	// After a moment he might hop again
-	mp_processState = (void (CStunnable::*)()) (&CLick::processHop);
 	setAction( A_LICK_HOP );
 
 	yinertia = -100;
@@ -125,10 +128,7 @@ void CLick::processBreathe()
 	// Breathe for a brief moment
 	m_timer--;
 	if(getActionStatus(A_LICK_HOP+2))
-	{
-		mp_processState = (void (CStunnable::*)()) (&CLick::processHop);
 		setAction( A_LICK_HOP );
-	}
 }
 
 
