@@ -24,8 +24,8 @@ const int HOR_SPEED = 40;
 CBounder::CBounder(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 CStunnable(pmap, foeID, x, y),
-CPlatform(pmap, foeID, x, y),
-bounceboost(0)
+bounceboost(0),
+mp_CarriedPlayer(NULL)
 {
 	mActionMap[A_BOUNDER_BOUNCE] = (void (CStunnable::*)()) &CBounder::processBounce;
 	//mActionMap[A_BOUNDER_MOVE] = (void (CStunnable::*)()) &CBounder::;
@@ -43,7 +43,17 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 		return;
 
 	CStunnable::getTouchedBy(theObject);
-	CPlatform::getTouchedBy(theObject);
+
+	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+	{
+		const int m_py2 = player->getYDownPos();
+		const int m_y2 = getYUpPos()+(4<<STC);
+		if( m_py2 <= m_y2 && !player->supportedbyobject && !player->m_jumpdownfromobject )
+		{
+			mp_CarriedPlayer = player;
+			player->supportedbyobject = true;
+		}
+	}
 
 	// Was it a bullet? Than make it stunned.
 	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
@@ -109,6 +119,32 @@ void CBounder::processBounce()
 	}
 }
 
+void CBounder::movePlatLeft(const int amnt)
+{
+	// First move the object on platform if any
+	if(mp_CarriedPlayer)
+	{
+		if(!mp_CarriedPlayer->m_jumpdownfromobject)
+			mp_CarriedPlayer->moveLeft(amnt);
+	}
+
+	// Now move the platform itself.
+	moveLeft(amnt);
+}
+
+void CBounder::movePlatRight(const int amnt)
+{
+	// First move the object on platform if any
+	if(mp_CarriedPlayer)
+	{
+		if(!mp_CarriedPlayer->m_jumpdownfromobject)
+			mp_CarriedPlayer->moveRight(amnt);
+	}
+
+	// Now move the platform itself.
+	moveRight(amnt);
+}
+
 void CBounder::movePlayerUp(const int amnt)
 {
 	// First move the object on platform if any
@@ -132,8 +168,8 @@ void CBounder::movePlayerDown(const int amnt)
 
 void CBounder::process()
 {
-	if(yinertia < 0)
-		movePlayerUp(-yinertia);
+	/*if(yinertia < 0)
+		movePlayerUp(-yinertia);*/
 
 
 	// Bounce
@@ -154,7 +190,19 @@ void CBounder::process()
 		setAction( A_BOUNDER_MOVE+1 );
 	}
 
-	CPlatform::process();
+	// check if someone is still standing on the platform
+	if(mp_CarriedPlayer)
+	{
+		if(!hitdetect(*mp_CarriedPlayer) || mp_CarriedPlayer->blockedu)
+		{
+			mp_CarriedPlayer->supportedbyobject = false;
+			mp_CarriedPlayer->m_jumpdownfromobject = false;
+			mp_CarriedPlayer = NULL;
+		}
+	}
+
+	processActionRoutine();
 }
+
 
 };

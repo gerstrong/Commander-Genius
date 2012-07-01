@@ -9,11 +9,11 @@
 #define CBOUNDER_H_
 
 #include "engine/galaxy/ai/CStunnable.h"
-#include "engine/galaxy/ai/platform/CPlatform.h"
+#include "engine/galaxy/ai/CPlayerLevel.h"
 
 namespace galaxy {
 
-class CBounder : public CStunnable, public CPlatform
+class CBounder : public CStunnable
 {
 public:
 	CBounder(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
@@ -21,6 +21,8 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	void processBounce();
 
+	void movePlatLeft(const int amnt);
+	void movePlatRight(const int amnt);
 	void movePlayerUp(const int amnt);
 	void movePlayerDown(const int amnt);
 
@@ -28,6 +30,8 @@ public:
 
 private:
 	int bounceboost;
+
+	CPlayerLevel *mp_CarriedPlayer;
 };
 
 };
