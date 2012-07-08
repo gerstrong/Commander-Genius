@@ -96,6 +96,10 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 				for(size_t j=0 ; j<mObjectPtr.size() ; j++)
 				{
 					CSpriteObject *theOtherObj = mObjectPtr[j].get();
+
+					if( !theOtherObj->exists )
+						continue;
+
 					if( theOtherObj != p_Object )
 					{
 						p_Object->isNearby(*theOtherObj);

@@ -7,6 +7,7 @@
 
 #include "CMadMushroom.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
+#include "engine/galaxy/ai/CBullet.h"
 
 namespace galaxy
 {
@@ -18,7 +19,6 @@ const int MUSHROOM_HIGH_INERTIA = 150;
 
 CMadMushroom::CMadMushroom(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
-CStunnable(pmap, foeID, x, y),
 jumpcounter(0)
 {
 	setupGalaxyObjectOnMap(0x20E4, A_MUSHROOM_BOUNCE);
@@ -42,10 +42,15 @@ bool CMadMushroom::isNearby(CSpriteObject &theObject)
 
 void CMadMushroom::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.dead)
+	if(theObject.dead )
 		return;
 
-	CStunnable::getTouchedBy(theObject);
+	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )
+	{
+		bullet->setAction(A_KEENSHOT_IMPACT);
+		bullet->playSound( SOUND_SHOT_HIT );
+		bullet->dead = true;
+	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
