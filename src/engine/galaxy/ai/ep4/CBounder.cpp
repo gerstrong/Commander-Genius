@@ -103,12 +103,12 @@ void CBounder::processBounce()
 void CBounder::processOnFloor()
 {
 	yinertia = MAX_BOUNCE_BOOST;
-	playSound( SOUND_KEEN_POGO );
+	playSound( SOUND_BOUNDER_BOUNCE );
 
 	// Decide whether go left, right or just bounce up.
-	// TODO: This will depend on the position of the player, when he is on the object
 	switch( rand() % 3 )
 	{
+	case 1:
 		m_hDir = LEFT;
 		break;
 	case 2:
@@ -119,7 +119,7 @@ void CBounder::processOnFloor()
 		break;
 	}
 
-	// If player is standing on bounder, he can control him a bit
+	// If player is standing on bounder, he can control him a bit also
 	if(mpInteractPlayer)
 	{
 		if(mpInteractPlayer->supportedbyobject)

@@ -15,7 +15,7 @@ const unsigned char SndSlotMapGalaxy[]=
 {
 //52,52,
 0,1,
-28,7,
+2,7,
 23,20,
 15,
 7,
@@ -77,6 +77,7 @@ const unsigned char SndSlotMapGalaxy[]=
 41,
 42,
 46,
+28,
 
 47,
 48,

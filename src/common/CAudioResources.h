@@ -21,7 +21,6 @@
   */
 const int PC_Speaker_Volume = 20; // in percent
 
-//const Uint64 PCSpeakerTime = 1288634;
 const Uint64 PCSpeakerTime = 0x1234DD;
 
 typedef struct
@@ -31,7 +30,8 @@ typedef struct
 } AdLibSound;
 
 // Game Sounds
-enum GameSound{
+enum GameSound
+{
 
 // Common Blocks
 SOUND_KEEN_WALK, SOUND_KEEN_WALK2,
@@ -98,6 +98,8 @@ SOUND_BERKELOID_FIREBALL_LANDING,
 SOUND_DARTGUN_SHOOT,
 SOUND_DOPEFISH_BURP,
 SOUND_SLUG_DEFECATE,
+SOUND_BOUNDER_BOUNCE,
+
 SOUND_PLAYER_PADDLE,
 SOUND_COMPUTER_PADDLE,
 SOUND_HIT_SIDEWALL,
@@ -105,7 +107,8 @@ SOUND_COMPUTER_POINT,
 SOUND_PLAYER_POINT
 };
 
-class CAudioResources {
+class CAudioResources
+{
 public:
 	CAudioResources(const SDL_AudioSpec &AudioSpec);
 
