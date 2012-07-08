@@ -18,6 +18,7 @@
 #include "common/direction.h"
 #include "SmartPointer.h"
 #include "CVec.h"
+#include <vector>
 
 class CGalaxySpriteObject;
 
