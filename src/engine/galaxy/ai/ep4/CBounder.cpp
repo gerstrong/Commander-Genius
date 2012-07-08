@@ -25,11 +25,12 @@ CBounder::CBounder(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 CStunnable(pmap, foeID, x, y),
 bounceboost(0),
-mp_CarriedPlayer(NULL)
+mpInteractPlayer(NULL)
 {
 	mActionMap[A_BOUNDER_BOUNCE] = (void (CStunnable::*)()) &CBounder::processBounce;
-	//mActionMap[A_BOUNDER_MOVE] = (void (CStunnable::*)()) &CBounder::;
-	//mActionMap[A_BOUNDER_ONFLOOR] = (void (CStunnable::*)()) &CBounder::;
+	mActionMap[A_BOUNDER_MOVE] = (void (CStunnable::*)()) &CBounder::processBounce;
+	mActionMap[A_BOUNDER_MOVE+1] = (void (CStunnable::*)()) &CBounder::processBounce;
+	mActionMap[A_BOUNDER_ONFLOOR] = (void (CStunnable::*)()) &CBounder::processOnFloor;
 	mActionMap[A_BOUNDER_STUNNED] = &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);
@@ -46,16 +47,16 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
+		mpInteractPlayer = player;
+
 		const int m_py2 = player->getYDownPos();
 		const int m_y2 = getYUpPos()+(4<<STC);
 		if( m_py2 <= m_y2 && !player->supportedbyobject && !player->m_jumpdownfromobject )
-		{
-			mp_CarriedPlayer = player;
 			player->supportedbyobject = true;
-		}
+
 	}
 
-	// Was it a bullet? Than make it stunned.
+	// Was it a bullet? Then make it stunned.
 	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
 	{
 		setAction( A_BOUNDER_STUNNED );
@@ -69,112 +70,180 @@ void CBounder::processBounce()
 	// When bounder hits the floor start the inertia again.
 	if(blockedd || onslope)
 	{
-		yinertia = MAX_BOUNCE_BOOST;
-		playSound( SOUND_KEEN_POGO );
-
-		// Decide whether go left, right or just bounce up.
-		// TODO: This will depend on the position of the player, when he is on the object
-		switch( rand() % 3 )
-		{
-		case 0:
-			setAction( A_BOUNDER_MOVE+1 );
-			m_hDir = LEFT;
-			break;
-		case 2:
-			setAction( A_BOUNDER_MOVE );
-			m_hDir = RIGHT;
-			break;
-		default:
-			setAction( A_BOUNDER_BOUNCE );
-			m_hDir = NONE;
-			break;
-		}
-
+		setAction( A_BOUNDER_ONFLOOR );
 		return;
 	}
 
-	// If Bounder is falling down and Player stands on it, make him move with him
-	if( yinertia > 0 && mp_CarriedPlayer)
+
+	// Will block the player when bounder touches him, but he is not riding him
+	if( mpInteractPlayer )
 	{
-		CPlayerLevel *Player = dynamic_cast<CPlayerLevel*>(mp_CarriedPlayer);
-		if( !Player->m_jumpdownfromobject )
+		if(!mpInteractPlayer->supportedbyobject)
 		{
-			if( Player->getActionStatus(A_KEEN_STAND) ||
-				Player->getActionStatus(A_KEEN_RUN)  )
-			{
-				Player->yinertia = yinertia;
-			}
+			const int mMidPX = mpInteractPlayer->getXMidPos();
+			const int mMidX = getXMidPos();
+
+			if( mMidPX > mMidX + (4<<STC) )
+				mpInteractPlayer->blockedl = 1;
+			else if( mMidPX < mMidX - (4<<STC) )
+				mpInteractPlayer->blockedr = 1;
 		}
 	}
 
-
-
 	if(m_hDir == LEFT)
 	{
-		movePlatLeft(HOR_SPEED);
+		moveLeft(HOR_SPEED, false);
 	}
 	else if(m_hDir == RIGHT)
 	{
-		movePlatRight(HOR_SPEED);
+		moveRight(HOR_SPEED, false);
+	}
+}
+
+void CBounder::processOnFloor()
+{
+	yinertia = MAX_BOUNCE_BOOST;
+	playSound( SOUND_KEEN_POGO );
+
+	// Decide whether go left, right or just bounce up.
+	// TODO: This will depend on the position of the player, when he is on the object
+	switch( rand() % 3 )
+	{
+		m_hDir = LEFT;
+		break;
+	case 2:
+		m_hDir = RIGHT;
+		break;
+	default:
+		m_hDir = NONE;
+		break;
+	}
+
+	// If player is standing on bounder, he can control him a bit
+	if(mpInteractPlayer)
+	{
+		if(mpInteractPlayer->supportedbyobject)
+		{
+			const int mMidPX = mpInteractPlayer->getXMidPos();
+			const int mMidX = getXMidPos();
+
+			if( mMidPX > mMidX + (4<<STC) )
+				m_hDir = RIGHT;
+			else if( mMidPX < mMidX - (4<<STC) )
+				m_hDir = LEFT;
+			else
+				m_hDir = NONE;
+		}
+
+	}
+
+	switch(m_hDir)
+	{
+	case LEFT:
+		setAction( A_BOUNDER_MOVE+1 );
+		break;
+	case RIGHT:
+		setAction( A_BOUNDER_MOVE );
+		break;
+	default:
+		setAction( A_BOUNDER_BOUNCE );
+		break;
 	}
 }
 
 void CBounder::movePlatLeft(const int amnt)
 {
 	// First move the object on platform if any
-	if(mp_CarriedPlayer)
+	if(mpInteractPlayer)
 	{
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			mp_CarriedPlayer->moveLeft(amnt);
+		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
+			mpInteractPlayer->moveLeft(amnt);
 	}
 
 	// Now move the platform itself.
-	moveLeft(amnt);
+	//moveLeft(amnt);
 }
 
 void CBounder::movePlatRight(const int amnt)
 {
 	// First move the object on platform if any
-	if(mp_CarriedPlayer)
+	if(mpInteractPlayer)
 	{
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			mp_CarriedPlayer->moveRight(amnt);
+		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
+			mpInteractPlayer->moveRight(amnt);
 	}
 
 	// Now move the platform itself.
-	moveRight(amnt);
+	//moveRight(amnt);
 }
 
 void CBounder::movePlayerUp(const int amnt)
 {
 	// First move the object on platform if any
-	if(mp_CarriedPlayer)
+	if(mpInteractPlayer)
 	{
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			mp_CarriedPlayer->yinertia = yinertia;
+		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
+		{
+			//mp_CarriedPlayer->yinertia = yinertia;
+			mpInteractPlayer->moveUp(amnt);
+		}
 	}
 }
 
 void CBounder::movePlayerDown(const int amnt)
 {
 	// First move the object on platform if any
-	if(mp_CarriedPlayer)
+	if( mpInteractPlayer )
 	{
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			mp_CarriedPlayer->yinertia = yinertia;
+		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
+		{
+			//mp_CarriedPlayer->yinertia = yinertia;
+			mpInteractPlayer->moveDown(amnt);
+		}
 	}
+
+
 }
+
+
+
+
+
+void CBounder::moveLeft(const int amnt, const bool force)
+{
+	CSpriteObject::moveLeft(amnt, force);
+	movePlatLeft(amnt);
+}
+
+void CBounder::moveRight(const int amnt, const bool force)
+{
+	CSpriteObject::moveRight(amnt, force);
+	movePlatRight(amnt);
+
+}
+
+void CBounder::moveUp(const int amnt)
+{
+	CSpriteObject::moveUp(amnt);
+	movePlayerUp(amnt);
+}
+
+void CBounder::moveDown(const int amnt)
+{
+	CSpriteObject::moveDown(amnt);
+	movePlayerDown(amnt);
+}
+
+
+
 
 
 void CBounder::process()
 {
-	/*if(yinertia < 0)
-		movePlayerUp(-yinertia);*/
-
-
 	// Bounce
 	performCollisions();
 	processFalling();
+
 
 
 	(this->*mp_processState)();
@@ -191,13 +260,27 @@ void CBounder::process()
 	}
 
 	// check if someone is still standing on the platform
-	if(mp_CarriedPlayer)
+	if( mpInteractPlayer )
 	{
-		if(!hitdetect(*mp_CarriedPlayer) || mp_CarriedPlayer->blockedu)
+
+		if( !hitdetect(*mpInteractPlayer) )
 		{
-			mp_CarriedPlayer->supportedbyobject = false;
-			mp_CarriedPlayer->m_jumpdownfromobject = false;
-			mp_CarriedPlayer = NULL;
+			mpInteractPlayer->supportedbyobject = false;
+			mpInteractPlayer->m_jumpdownfromobject = false;
+			mpInteractPlayer = NULL;
+		}
+		else if(mpInteractPlayer->supportedbyobject)
+		{
+
+			const int m_py2 = mpInteractPlayer->getYDownPos();
+			const int m_y2 = getYUpPos()+(2<<STC);
+			const int moveY = m_y2 - m_py2;
+
+			if( moveY < 0 )
+				movePlayerUp(-moveY);
+			else if( moveY > 0 )
+				movePlayerDown(moveY);
+
 		}
 	}
 

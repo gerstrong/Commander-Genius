@@ -23,6 +23,7 @@ class CVideoEngine
 public:
 
 	CVideoEngine(const CVidConfig& VidConfig);
+	~CVideoEngine();
 
 	virtual bool init();
 

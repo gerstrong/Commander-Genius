@@ -102,7 +102,7 @@ private:
 	void teleporter_ai(CVorticonSpriteObject &object);
 
 	void killplayer(int theplayer);
-	void SetAllCanSupportPlayer(CVorticonSpriteObject &object, bool state);
+	//void SetAllCanSupportPlayer(CVorticonSpriteObject &object, bool state);
 	void kill_all_intersecting_tile(int mpx, int mpy, CVorticonSpriteObject &theObject);
 
 	// Variables

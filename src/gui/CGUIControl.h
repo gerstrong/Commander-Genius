@@ -27,6 +27,7 @@ public:
 
 
 	CGUIControl();
+	virtual ~CGUIControl() {}
 
 	virtual void processLogic() = 0;
 	virtual void processRender(const CRect<float> &RectDispCoordFloat) = 0;

@@ -144,10 +144,10 @@ public:
 	void moveTo(const int new_x, const int new_y);
 	void moveXDir(const int amount, const bool force = false);
 	void moveYDir(const int amount);
-	void moveLeft(const int amnt, const bool force = false);
-	void moveRight(const int amnt, const bool force = false);
-	void moveUp(const int amnt);
-	void moveDown(const int amnt);
+	virtual void moveLeft(const int amnt, const bool force = false);
+	virtual void moveRight(const int amnt, const bool force = false);
+	virtual void moveUp(const int amnt);
+	virtual void moveDown(const int amnt);
 
 	// new moving parts
 	/**

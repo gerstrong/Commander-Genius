@@ -95,7 +95,7 @@ void CVorticonSpriteObjectAI::process()
 	else m_gunfiretimer=0;
 }
 
-void CVorticonSpriteObjectAI::SetAllCanSupportPlayer(CVorticonSpriteObject &object, bool state)
+/*void CVorticonSpriteObjectAI::SetAllCanSupportPlayer(CVorticonSpriteObject &object, bool state)
 {
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
@@ -108,7 +108,7 @@ void CVorticonSpriteObjectAI::SetAllCanSupportPlayer(CVorticonSpriteObject &obje
 			it_player->blockedd=false;
 		}
 	}
-}
+}*/
 
 ///
 // Cleanup Routine

@@ -20,18 +20,24 @@ public:
 
 	void getTouchedBy(CSpriteObject &theObject);
 	void processBounce();
+	void processOnFloor();
 
 	void movePlatLeft(const int amnt);
 	void movePlatRight(const int amnt);
 	void movePlayerUp(const int amnt);
 	void movePlayerDown(const int amnt);
 
+	void moveLeft(const int amnt, const bool force);
+	void moveRight(const int amnt, const bool force);
+	void moveUp(const int amnt);
+	void moveDown(const int amnt);
+
 	void process();
 
 private:
 	int bounceboost;
 
-	CPlayerLevel *mp_CarriedPlayer;
+	CPlayerLevel *mpInteractPlayer;
 };
 
 };

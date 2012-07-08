@@ -21,6 +21,11 @@ screen(NULL),
 m_Mode(0)
 {}
 
+
+CVideoEngine::~CVideoEngine()
+{}
+
+
 bool CVideoEngine::init()
 {
 	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
