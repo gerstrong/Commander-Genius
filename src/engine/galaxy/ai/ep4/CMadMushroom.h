@@ -8,12 +8,12 @@
 #ifndef CMADMUSHROOM_H_
 #define CMADMUSHROOM_H_
 
-#include "engine/galaxy/CGalaxySpriteObject.h"
+#include "engine/galaxy/ai/CStunnable.h"
 
 namespace galaxy
 {
 
-class CMadMushroom : public CGalaxySpriteObject
+class CMadMushroom : public CStunnable
 {
 public:
 	CMadMushroom(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
