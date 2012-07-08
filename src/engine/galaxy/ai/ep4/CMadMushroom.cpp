@@ -73,6 +73,11 @@ void CMadMushroom::process()
 		{
 			yinertia = -MUSHROOM_HIGH_INERTIA;
 			jumpcounter = 0;
+			playSound( SOUND_BOUNCE_HIGH );
+		}
+		else
+		{
+			playSound( SOUND_BOUNCE_LOW );
 		}
 
 		m_jumped = true;

@@ -103,7 +103,7 @@ void CBounder::processBounce()
 void CBounder::processOnFloor()
 {
 	yinertia = MAX_BOUNCE_BOOST;
-	playSound( SOUND_BOUNDER_BOUNCE );
+	playSound( SOUND_BOUNCE_LOW );
 
 	// Decide whether go left, right or just bounce up.
 	switch( rand() % 3 )

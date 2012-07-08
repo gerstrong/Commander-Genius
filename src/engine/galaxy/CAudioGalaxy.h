@@ -78,6 +78,7 @@ const unsigned char SndSlotMapGalaxy[]=
 42,
 46,
 28,
+16,
 
 47,
 48,
