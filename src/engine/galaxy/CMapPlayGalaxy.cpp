@@ -275,12 +275,15 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	// Save the map_data as it is left
 	savedGame.decodeData(mMap.m_width);
 	savedGame.decodeData(mMap.m_height);
+	//mMap.resetScrolls();
 
 	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getBackgroundData()) );
 	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getForegroundData()) );
 
 	if( mMap.m_width * mMap.m_height > 0 )
+	{
 		mMap.drawAll();
+	}
 
 	return true;
 }

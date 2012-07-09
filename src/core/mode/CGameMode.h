@@ -41,7 +41,8 @@ struct GMSwitchToPlayGameMode : CEvent
 				m_Episode(Episode),
 				m_Numplayers(Numplayers),
 				m_DataDirectory(DataDirectory),
-				m_startlevel(startlevel) {}
+				m_startlevel(startlevel)
+				{}
 };
 
 // It's a simple quit event which will force CG to close the App
@@ -64,6 +65,7 @@ class CGameMode
 {
 public:
 	CGameMode() {}
+	virtual ~CGameMode() {}
 
 	virtual void process() = 0;
 	virtual void init() = 0;

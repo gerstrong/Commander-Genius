@@ -24,6 +24,7 @@ m_Tilemaps(g_pGfxEngine->getTileMaps()),
 m_animtiletimer(0),
 m_Background(false)
 {
+	resetScrolls();
 	m_Level = 0;
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }

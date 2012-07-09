@@ -59,6 +59,12 @@ void CGamePlayMode::init()
 	}
 }
 
+void CGamePlayMode::loadGame()
+{
+	mp_PlayGame->process();
+	mp_PlayGame->loadGameState();
+}
+
 
 void CGamePlayMode::process()
 {
@@ -66,13 +72,6 @@ void CGamePlayMode::process()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	mp_PlayGame->process();
-
-
-	if( EventContainer.occurredEvent<LoadGameEvent>() )
-	{
-		mp_PlayGame->loadGameState();
-		EventContainer.pop_Event();
-	}
 
 	if( EventContainer.occurredEvent<SaveGameEvent>() )
 	{

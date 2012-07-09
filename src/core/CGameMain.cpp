@@ -87,16 +87,22 @@ void CGameMain::process()
 			return;
 		}
 
-		else if( EventContainer.occurredEvent<LoadGameEvent>() &&
-				 (dynamic_cast<CGamePlayMode*>(mpGameMode.get()) == NULL) ) // If GamePlayMode is not running but loading is requested...
+		else if( EventContainer.occurredEvent<LoadGameEvent>() ) // If GamePlayMode is not running but loading is requested...
 		{
-			// In this case let's pop this event and add the same one, the way the loading is finished within the playgame object
+			mpGameMode = new CGamePlayMode( g_pBehaviorEngine->getEpisode(),
+											1,
+											g_pBehaviorEngine->m_ExeFile.getDataDirectory(),
+											0);
+
+			mpGameMode->init();
+
+			CGamePlayMode *pCGM = dynamic_cast<CGamePlayMode*>(mpGameMode.get());
+
+			pCGM->loadGame();
+
+			mOpenedGamePlay = true;
 			EventContainer.pop_Event();
-
-			switchToGamePlayMode();
-
-			// The same caught event is pushed again but this time it will be polled by the GamePlay object which in the next cycles will be running!
-			EventContainer.add( new LoadGameEvent() );
+			EventContainer.add( new CloseAllMenusEvent() );
 		}
 
 
@@ -117,7 +123,4 @@ void CGameMain::process()
 		// Process the game mode object
 		mpGameMode->process();
 	}
-
-	// TODO: At this point some dialogs and menus should be drawn here!
-
 }
