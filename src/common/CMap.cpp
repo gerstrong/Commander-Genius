@@ -80,9 +80,7 @@ void CMap::resetScrolls()
 Uint16 CMap::at(Uint16 x, Uint16 y, Uint16 t)
 {
 	if(x < m_width && y < m_height )
-	{
 		return m_Plane[t].getMapDataAt(x,y);
-	}
 	else
 		return 0;
 }

@@ -22,7 +22,6 @@ const int MAX_BOUNCE_BOOST = -115;
 const int HOR_SPEED = 40;
 
 CBounder::CBounder(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
 CStunnable(pmap, foeID, x, y),
 bounceboost(0),
 mpInteractPlayer(NULL)
