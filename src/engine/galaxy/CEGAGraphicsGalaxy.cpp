@@ -728,6 +728,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
 		CSprite &Sprite = g_pGfxEngine->getSprite(i);
 		Sprite.setSize( Head.Width*8, Head.Height );
+
 		Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
 
 		// Setup the collision information
@@ -791,6 +792,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 			}
 		}
 		SDL_UnlockSurface(sfc);
+
 	}
 	return true;
 }

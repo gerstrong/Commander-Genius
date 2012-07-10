@@ -80,6 +80,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 					player->processDead();
 			}
 
+
 			if( p_Object->exists && p_Object->calcVisibility() )
 			{
 				// Process the AI of the object as it's given

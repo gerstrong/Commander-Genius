@@ -9,21 +9,32 @@
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CBullet.h"
 
-namespace galaxy {
+namespace galaxy
+{
+
+
+const int A_EGG_NORMAL = 0;
+const int A_EGG_BROKEN = 1;
+const int A_EGG_SHELL = 2;
+
 
 CEgg::CEgg(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y)
-{}
+{
+	setupGalaxyObjectOnMap(0x2120, A_EGG_NORMAL);
+}
 
 void CEgg::hatch()
 {
-
+	setAction(A_EGG_BROKEN);
+	setActionSprite();
 }
+
 
 
 void CEgg::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.dead )
+	if( !getActionNumber(A_EGG_NORMAL) || theObject.dead )
 		return;
 
 	if( CBullet *bullet = dynamic_cast<CBullet*>(&theObject) )
@@ -34,10 +45,21 @@ void CEgg::getTouchedBy(CSpriteObject &theObject)
 		hatch();
 	}
 
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		hatch();
 	}
+}
+
+void CEgg::process()
+{
+
+	processFalling();
+
+	performCollisions();
+
+	//processActionRoutine();
+
 }
 
 } /* namespace galaxy */
