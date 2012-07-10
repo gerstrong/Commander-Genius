@@ -424,6 +424,13 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		p_newfoe = new galaxy::CBounder(&Map, foe, x, y-250);
 		break;
 
+	/*case 13:
+		// I think this is an egg
+		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
+		p_newfoe = new galaxy::CBounder(&Map, foe, x, y-250);
+		break;*/
+
+
 	case 19:
 		//This is a Mimrock.
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
