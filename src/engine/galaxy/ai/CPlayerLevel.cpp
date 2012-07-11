@@ -382,7 +382,6 @@ void CPlayerLevel::processPogo()
 			xinertia = 0;
 	}
 
-
 	moveXDir(xinertia);
 }
 

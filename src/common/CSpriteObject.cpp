@@ -227,24 +227,23 @@ void CSpriteObject::moveDown(const int amnt)
 // This decreases the inertia we have of the object in X-direction.
 // It should be used for objects, where it must be assured, that the inertia can get
 // zero and not pass that limit
-void CSpriteObject::decreaseXInertia(const int& value)
+void CSpriteObject::decreaseXInertia(const int value)
 {
-	if(xinertia < 0) {
+	if(xinertia < 0)
+	{
 		if(xinertia+value > 0) xinertia = 0;
 		else xinertia += value;
 	}
-	else if(xinertia > 0) {
+	else if(xinertia > 0)
+	{
 		if(xinertia-value < 0) xinertia = 0;
 		else xinertia -= value;
 	}
 }
 
 // handles inertia and friction for the X direction
-// (this is where the xinertia is actually applied to playx)
-void CSpriteObject::InertiaAndFriction_X()
+void CSpriteObject::InertiaAndFriction_X(const int friction_rate)
 {
-	const int friction_rate = 10;
-
 	int dx=xinertia;
 	// check first if the player is not blocked
 	if( (!blockedr and dx>0) or (!blockedl and dx<0) )

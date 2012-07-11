@@ -169,8 +169,8 @@ public:
 	 */
 	void processPushOutCollision();
 
-	void decreaseXInertia(const int& value);
-	void InertiaAndFriction_X();
+	void decreaseXInertia(const int value);
+	void InertiaAndFriction_X(const int friction_rate = 10);
 
 	virtual void process() { }
 	
