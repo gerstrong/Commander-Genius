@@ -133,7 +133,6 @@ void CBlueBird::processFlying()
 
 void CBlueBird::processStunned()
 {
-	//Put some stun time here
 	if( getActionStatus(A_EAGLE_WALKING) )
 		setAction(A_EAGLE_WALKING);
 }

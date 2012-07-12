@@ -43,6 +43,7 @@
 #include "engine/galaxy/ai/ep4/CMimrock.h"
 #include "engine/galaxy/ai/ep4/CEgg.h"
 #include "engine/galaxy/ai/ep4/CBlueBird.h"
+#include "engine/galaxy/ai/ep4/CThunderCloud.h"
 
 
 // General stuff
@@ -419,6 +420,11 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 	case 6:
 		//This is pincess Lindsey.
 		p_newfoe = new galaxy::CLindsey(&Map, foe, x, y-750);
+		break;
+
+	case 9:
+		//This is the Thunder Cloud
+		p_newfoe = new galaxy::CThunderCloud(&Map, foe, x, y);
 		break;
 
 	case 12:

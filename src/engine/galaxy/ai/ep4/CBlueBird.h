@@ -20,15 +20,18 @@ public:
 	void setActionForce(const size_t ActionNumber);
 
 	bool isNearby(CSpriteObject &theObject);
-	void processHatched();
-	void processWalking();
-	void processFlying();
-	void processStunned();
 
 	void getTouchedBy(CSpriteObject &theObject);
 	void process();
 
 private:
+
+	void processHatched();
+	void processWalking();
+	void processFlying();
+	void processStunned();
+
+
 	void (CBlueBird::*mpProcessState)();
 	std::map< size_t, void (CBlueBird::*)() > mActionMap;
 	int mTimer;
