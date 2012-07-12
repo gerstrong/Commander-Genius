@@ -243,8 +243,6 @@ void CBounder::process()
 	performCollisions();
 	processFalling();
 
-
-
 	(this->*mp_processState)();
 
 	if( blockedl )

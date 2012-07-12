@@ -42,6 +42,8 @@
 #include "engine/galaxy/ai/ep4/CSkypest.h"
 #include "engine/galaxy/ai/ep4/CMimrock.h"
 #include "engine/galaxy/ai/ep4/CEgg.h"
+#include "engine/galaxy/ai/ep4/CBlueBird.h"
+
 
 // General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
@@ -428,7 +430,10 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 	case 13:
 		// This is an egg
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		p_newfoe = new galaxy::CEgg(&Map, foe, x, y-(2<<CSF));
+		if( g_pBehaviorEngine->mDifficulty > 1 )
+			p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y-(2<<CSF));
+		else
+			p_newfoe = new galaxy::CEgg(&Map, foe, x, y-(2<<CSF));
 		break;
 
 

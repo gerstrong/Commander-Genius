@@ -8,6 +8,7 @@
 #include "CEgg.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CBullet.h"
+#include "engine/galaxy/ai/ep4/CBlueBird.h"
 
 namespace galaxy
 {
@@ -31,11 +32,12 @@ void CEgg::hatch()
 	setAction(A_EGG_BROKEN);
 	setActionSprite();
 
-	// Create
+	// Create the shards.
 	CEgg *shard1 = new CEgg( getMapPtr(), mFoeID, getXMidPos(), getYMidPos()-(8<<STC) );
 	CEgg *shard2 = new CEgg( getMapPtr(), mFoeID, getXMidPos(), getYMidPos()-(8<<STC) );
 	CEgg *shard3 = new CEgg( getMapPtr(), mFoeID, getXMidPos(), getYMidPos()-(8<<STC) );
 
+	// Some impulse values for the shards when Egg is shot
 	shard1->xinertia =  -70;
 	shard1->yinertia =  -60;
 	shard2->xinertia = -100;
@@ -54,6 +56,9 @@ void CEgg::hatch()
 	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( shard1 ) );
 	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( shard2 ) );
 	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( shard3 ) );
+
+	CBlueBird *blueBird = new CBlueBird( getMapPtr(), mFoeID, getXMidPos(), getYMidPos() );
+	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( blueBird ) );
 }
 
 
