@@ -168,16 +168,24 @@ bool CCamera::outOfSight()
 {
 	bool outofsight = false;
 
-	const int cam_width = ((g_pVideoDriver->getGameResolution().w/2)<<STC);
-	const int cam_height = ((g_pVideoDriver->getGameResolution().h/2)<<STC);
+	const int cam_width = ((g_pVideoDriver->getGameResolution().w/2)<<(CSF-STC));
+	const int cam_height = ((g_pVideoDriver->getGameResolution().h/2)<<(CSF-STC));
 
-	if( mp_AttachedObject->getXLeftPos() > getXPosition() + cam_width )
+	const int camX = getXPosition();
+	const int camY = getYPosition();
+
+	const int playerLeft = mp_AttachedObject->getXLeftPos();
+	const int playerRight = mp_AttachedObject->getXRightPos();
+	const int playerUp = mp_AttachedObject->getYUpPos();
+	const int playerDown = mp_AttachedObject->getYDownPos();
+
+	if( playerLeft > camX + cam_width )
 		outofsight |= true;
-	else if( mp_AttachedObject->getXRightPos() < getXPosition() - cam_width )
+	else if( playerRight < camX - cam_width )
 		outofsight |= true;
-	if( mp_AttachedObject->getYUpPos() > getYPosition() + cam_height )
+	if( playerUp > camY + cam_height )
 		outofsight |= true;
-	else if( mp_AttachedObject->getYDownPos() < getYPosition() - cam_height )
+	else if( playerDown < camY - cam_height )
 		outofsight |= true;
 
 	return outofsight;
