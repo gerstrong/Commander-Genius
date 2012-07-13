@@ -147,10 +147,10 @@ struct EventSendSelectionDialogMsg : CEvent {
  */
 struct EventSpawnObject : CEvent {
 
-	const CGalaxySpriteObject* pObject;
+	const CGalaxySpriteObject *pObject;
 
 	EventSpawnObject( const CGalaxySpriteObject* pObject ) :
-					  pObject(pObject) {}
+					  pObject( pObject ) {}
 };
 
 

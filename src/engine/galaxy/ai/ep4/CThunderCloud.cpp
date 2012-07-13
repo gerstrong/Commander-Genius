@@ -25,7 +25,8 @@ const int STRIKE_TIME = 80;
 
 CThunderCloud::CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
-mTimer(0)
+mTimer(0),
+mpBolt(NULL)
 {
 	mActionMap[A_CLOUD_ASLEEP] = &CThunderCloud::processAsleep;
 	mActionMap[A_CLOUD_WAKING] = &CThunderCloud::processWaking;
@@ -83,7 +84,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 				m_hDir = RIGHT;
 		}
 
-		if( player->getYMidPos() > getYMidPos() )
+		if( mpBolt == NULL && player->getYMidPos() > getYMidPos() )
 		{
 			const unsigned int playXStrikeLeft = player->getXMidPos() - DIST_TO_STRIKE;
 			const unsigned int playXStrikeRight = player->getXMidPos() + DIST_TO_STRIKE;
@@ -94,6 +95,8 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 					getProbability(90) )
 			{
 				setAction(A_CLOUD_STRIKING);
+				mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos()-(1<<STC) );
+				g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mpBolt ) );
 			}
 
 
@@ -116,9 +119,6 @@ void CThunderCloud::processWaking()
 
 void CThunderCloud::processMoving()
 {
-	if( getActionStatus(A_CLOUD_STRIKING) )
-		setAction(A_CLOUD_STRIKING);
-
 	// Move normally in the direction
 	if( m_hDir == RIGHT )
 		moveRight( MOVE_SPEED );
@@ -131,7 +131,7 @@ void CThunderCloud::processStriking()
 	if( getActionStatus(A_CLOUD_STRIKING+1) )
 		setAction(A_CLOUD_STRIKING);
 
-	if( mTimer % STRIKE_TIME == 0)
+	if( mpBolt == NULL && mTimer % STRIKE_TIME == 0)
 	{
 		setAction(A_CLOUD_MOVING);
 		setActionSprite();
@@ -142,6 +142,12 @@ void CThunderCloud::processStriking()
 
 void CThunderCloud::process()
 {
+	if( mpBolt )
+	{
+		if(!mpBolt->exists)
+			mpBolt = NULL; // This can be done because the object container will care deleting the it.
+	}
+
 	performCollisions();
 	processFalling();
 
@@ -156,6 +162,38 @@ void CThunderCloud::process()
 
 	if( getActionStatus(A_CLOUD_WAKING) || getActionStatus(A_CLOUD_STRIKING) )
 		processActionRoutine();
+}
+
+
+
+
+/**
+ * The thunderbold itself.
+ */
+const int A_LIGHTNING_STRIKE = 0;
+
+CThunderBolt::CThunderBolt(CMap *pmap,Uint32 x, Uint32 y) :
+CGalaxySpriteObject(pmap, 0, x, y)
+{
+	setupGalaxyObjectOnMap(0x2A44, A_LIGHTNING_STRIKE);
+	inhibitfall = false;
+}
+
+void CThunderBolt::getTouchedBy(CSpriteObject &theObject)
+{
+	if(theObject.dead )
+		return;
+
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	{
+		player->kill();
+	}
+}
+
+void CThunderBolt::process()
+{
+	performCollisions();
+	processActionRoutine();
 }
 
 

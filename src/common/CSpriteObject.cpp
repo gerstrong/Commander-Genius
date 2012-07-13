@@ -424,7 +424,8 @@ void CSpriteObject::draw()
 ///
 // Cleanup Routine
 ///
-CSpriteObject::~CSpriteObject() {
+CSpriteObject::~CSpriteObject()
+{
 	if(m_number_of_objects > 0)
 		m_number_of_objects--;
 }

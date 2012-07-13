@@ -9,9 +9,23 @@
 #define CTHUNDERCLOUD_H_
 
 #include "engine/galaxy/CGalaxySpriteObject.h"
+#include "SmartPointer.h"
 
 namespace galaxy
 {
+
+
+class CThunderBolt: public CGalaxySpriteObject
+{
+public:
+	CThunderBolt(CMap *pmap, Uint32 x, Uint32 y);
+	void getTouchedBy(CSpriteObject &theObject);
+
+	void process();
+
+};
+
+
 
 class CThunderCloud: public CGalaxySpriteObject
 {
@@ -34,7 +48,9 @@ private:
 	void (CThunderCloud::*mpProcessState)();
 	std::map< size_t, void (CThunderCloud::*)() > mActionMap;
 	int mTimer;
+	CThunderBolt *mpBolt;
 };
+
 
 } /* namespace galaxy */
 #endif /* CTHUNDERCLOUD_H_ */
