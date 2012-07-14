@@ -357,11 +357,6 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
  */
 void CSprite::drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha )
 {
-	if(m_alpha != 255)
-	{
-		printf("Hey\n");
-	}
-
 	g_pVideoDriver->mDrawTasks.add( new DrawSpriteTask( this, x, y, alpha ) );
 }
 

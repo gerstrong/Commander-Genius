@@ -13,7 +13,7 @@ namespace galaxy {
 #define A_MINE_MOVE			0
 #define A_MINE_EXPLODE		1
 
-const int MINE_SPEED = 10;
+const int MINE_SPEED = 20;
 
 CWaterMine::CWaterMine(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const bool vertical) :
 CGalaxySpriteObject(pmap, foeID, x, y)

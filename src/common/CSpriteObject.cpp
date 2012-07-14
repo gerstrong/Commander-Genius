@@ -62,7 +62,7 @@ void CSpriteObject::setScrPos( int px, int py )
 // This used for objects that only can trigger, when it's really worth to do so.
 bool CSpriteObject::calcVisibility()
 {
-	int &visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
+	int visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 

@@ -7,6 +7,7 @@
 
 #include "CDopeFish.h"
 #include "engine/galaxy/ai/ep4/CPlayerDive.h"
+#include "engine/galaxy/ai/ep4/CSchoolFish.h"
 #include "CBubbles.h"
 
 namespace galaxy
@@ -20,8 +21,9 @@ const int A_DOPEFISH_BURP_FINISHED = 6;
 
 const int DOPE_SPEED = 30;
 const int DOPE_BITE_SPEED = 60;
-const int CSF_MIN_DISTANCE_TO_CHARGE = 6<<CSF;
+const int CSF_MIN_DISTANCE_TO_CHARGE = 1<<CSF;
 const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
+const int CSF_DISTANCE_TO_FOLLOW = 20<<CSF;
 const int DOPE_EAT_TIMER = 50;
 
 
@@ -38,7 +40,8 @@ m_burped(false)
 
 bool CDopeFish::isNearby(CSpriteObject &theObject)
 {
-	if( dynamic_cast<CPlayerBase*>(&theObject) )
+	if( dynamic_cast<CPlayerBase*>(&theObject) ||
+		dynamic_cast<CSchoolFish*>(&theObject) )
 	{
 		const int objX = theObject.getXMidPos();
 		const int objY = theObject.getYMidPos();
@@ -46,6 +49,16 @@ bool CDopeFish::isNearby(CSpriteObject &theObject)
 		const int fishY = getYMidPos();
 		const int dx = objX - fishX;
 		const int dy = objY - fishY;
+
+
+		if( objX < fishX - CSF_DISTANCE_TO_FOLLOW ||
+			objX > fishX + CSF_DISTANCE_TO_FOLLOW )
+			return false;
+
+		if( objY < fishY - CSF_DISTANCE_TO_FOLLOW ||
+			objY > fishY + CSF_DISTANCE_TO_FOLLOW )
+			return false;
+
 
 		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 			m_hDir = LEFT;
@@ -83,7 +96,8 @@ void CDopeFish::getTouchedBy(CSpriteObject &theObject)
 
 	if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
 	{
-		Player->getEaten();
+		if( getActionNumber(A_DOPEFISH_EAT) )
+			Player->getEaten();
 	}
 }
 

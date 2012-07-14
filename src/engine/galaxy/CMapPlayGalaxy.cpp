@@ -104,6 +104,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 					if( theOtherObj != p_Object )
 					{
 						p_Object->isNearby(*theOtherObj);
+
 						if( p_Object->hitdetect(*theOtherObj) )
 							p_Object->getTouchedBy(*theOtherObj);
 					}
