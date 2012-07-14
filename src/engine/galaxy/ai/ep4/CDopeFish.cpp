@@ -12,11 +12,11 @@
 namespace galaxy
 {
 
-#define A_DOPEFISH_SWIM				0
-#define A_DOPEFISH_EAT				2
-#define A_DOPEFISH_START_BURP		3
-#define A_DOPEFISH_BURPING			5
-#define A_DOPEFISH_BURP_FINISHED	6
+const int A_DOPEFISH_SWIM = 0;
+const int A_DOPEFISH_EAT = 2;
+const int A_DOPEFISH_START_BURP = 3;
+const int A_DOPEFISH_BURPING = 5;
+const int A_DOPEFISH_BURP_FINISHED = 6;
 
 const int DOPE_SPEED = 30;
 const int DOPE_BITE_SPEED = 60;
@@ -38,12 +38,14 @@ m_burped(false)
 
 bool CDopeFish::isNearby(CSpriteObject &theObject)
 {
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-
-		const int dx = player->getXMidPos() - getXMidPos();
-		const int dy = player->getYMidPos() - getYMidPos();
-
+		const int objX = theObject.getXMidPos();
+		const int objY = theObject.getYMidPos();
+		const int fishX = getXMidPos();
+		const int fishY = getYMidPos();
+		const int dx = objX - fishX;
+		const int dy = objY - fishY;
 
 		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 			m_hDir = LEFT;
