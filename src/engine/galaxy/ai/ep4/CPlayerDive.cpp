@@ -12,6 +12,9 @@
 
 namespace galaxy {
 
+const int A_KEENSWIM_MOVE = 0;
+
+
 CPlayerDive::CPlayerDive(CMap *pmap,
 		const Uint16 foeID,
 		Uint32 x,
@@ -28,8 +31,9 @@ CPlayerBase(pmap, foeID, x, y,
 m_swimupspeed(0),
 m_breathtimer(0)
 {
+	mActionMap[A_KEENSWIM_MOVE] = (void (CPlayerBase::*)()) &CPlayerDive::processDiving;
+
 	setupGalaxyObjectOnMap(0x19EC, A_KEENSWIM_MOVE);
-	mp_processState = (void (CPlayerBase::*)())(&CPlayerDive::processDiving);
 }
 
 const int DIE_FALL_MAX_INERTIA = 150;

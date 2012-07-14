@@ -12,8 +12,6 @@
 
 namespace galaxy {
 
-#define A_KEENSWIM_MOVE	0
-
 class CPlayerDive : public CPlayerBase
 {
 public:
