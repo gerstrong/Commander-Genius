@@ -87,18 +87,7 @@ void CButler::getTouchedBy(CVorticonSpriteObject &theObject)
 
 int CButler::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	CSpriteObject::checkSolidD(x1, x2, y2, push_mode);
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	turnAroundOnCliff( x1, x2, y2 );
 
-	// This is a special case for foes which can turn around when they walk over an edge before they fall
-	if( !TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup ||
-		!TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup )
-	{
-		blockedl = TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
-		blockedr = TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
-
-		return 1;
-	}
-
-	return 0;
+	return CSpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }

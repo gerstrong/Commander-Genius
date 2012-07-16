@@ -177,6 +177,8 @@ public:
 	// The object can hold events process them here!
 	void processEvents();
 
+	bool turnAroundOnCliff( int x1, int x2, int y2 );
+
 	bool hitdetect(CSpriteObject &hitobject);
 	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res);
 	bool hitdetectWithTileProperty(const int Property, const int x, const int y);

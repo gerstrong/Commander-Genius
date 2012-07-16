@@ -116,9 +116,19 @@ void CPoisonSlug::getTouchedBy(CSpriteObject &theObject)
 }
 
 
+int CPoisonSlug::checkSolidD( int x1, int x2, int y2, const bool push_mode )
+{
+	turnAroundOnCliff( x1, x2, y2 );
+
+	return CSpriteObject::checkSolidD(x1, x2, y2, push_mode);
+}
+
 
 void CPoisonSlug::process()
 {
+	performCollisions();
+	processFalling();
+
 	(this->*mp_processState)();
 
 	if( blockedl )

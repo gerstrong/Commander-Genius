@@ -16,7 +16,7 @@ const int NESSIE_PATH = 8192;
 const int NESSIE_WEED = 8448;
 const int NESSIE_LAND = 8704;
 
-const int NESSIETRAILLEN = 5;
+const unsigned int NESSIETRAILLEN = 5;
 
 class CMessie : public CVorticonSpriteObject
 {
