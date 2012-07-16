@@ -274,7 +274,7 @@ void CSprite::applyTranslucency(Uint8 value)
 ///
 // Getters and Setters
 ///
-void CSprite::setBoundingBoxCoordinates( Uint16 bboxx1, Uint16 bboxy1, Uint16 bboxx2, Uint16 bboxy2 )
+void CSprite::setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 )
 {
 	m_bboxX1 = bboxx1;
 	m_bboxY1 = bboxy1;

@@ -30,8 +30,8 @@ public:
 	bool loadHQSprite( const std::string& filename );
 	
 	void setSize(Uint8 w, Uint8 h) { m_xsize = w; m_ysize = h; }
-	void setOffset(Uint16 x, Uint16 y) { m_xoffset = x; m_yoffset = y; }
-	void setBoundingBoxCoordinates( Uint16 bboxx1, Uint16 bboxy1, Uint16 bboxx2, Uint16 bboxy2 );
+	void setOffset(Sint16 x, Sint16 y) { m_xoffset = x; m_yoffset = y; }
+	void setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 );
 	SDL_Surface *getSDLSurface() { return mpSurface.get(); }
 	SDL_Surface *getSDLMaskSurface() { return mpMasksurface.get(); }
 
@@ -48,15 +48,15 @@ public:
 	void setHeight(Uint8 h) { m_ysize=h; };
 
 	// bounding box for hit detection
-	Uint32 m_bboxX1, m_bboxY1;
-	Uint32 m_bboxX2, m_bboxY2;
+	Sint32 m_bboxX1, m_bboxY1;
+	Sint32 m_bboxX2, m_bboxY2;
 
 private:
 	SmartPointer<SDL_Surface> mpSurface;
 	SmartPointer<SDL_Surface> mpMasksurface;
 
 	Uint8 m_xsize, m_ysize;
-	Uint16 m_xoffset, m_yoffset;
+	Sint16 m_xoffset, m_yoffset;
 	Uint8 m_alpha;
 };
 

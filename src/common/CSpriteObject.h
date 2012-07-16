@@ -34,16 +34,16 @@ const int COLISION_RES = (1<<STC);
 // The bouncing box used by the object which is used to determine the collisions
 struct BoundingBox
 {
-	unsigned int x1, x2, y1, y2;
-	BoundingBox(unsigned int l_x1 = 0, unsigned int l_x2 = 0,
-			unsigned int l_y1 = 0, unsigned int l_y2 = 0 ) :
+	int x1, x2, y1, y2;
+	BoundingBox(int l_x1 = 0, int l_x2 = 0,
+			int l_y1 = 0, int l_y2 = 0 ) :
 				x1(l_x1), x2(l_x2),
 				y1(l_y1), y2(l_y2) {}
 
-	void operator()(const unsigned int l_x1,
-					const unsigned int l_y1,
-					const unsigned int l_x2,
-					const unsigned int l_y2 )
+	void operator()(const int l_x1,
+					const int l_y1,
+					const int l_x2,
+					const int l_y2 )
 	{
 		x1 = l_x1; x2 = l_x2;
 		y1 = l_y1; y2 = l_y2;
