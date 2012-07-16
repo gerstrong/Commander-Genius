@@ -9,8 +9,8 @@
     (c)2009-2012            Tulip           
            Released under GNU/GPL           
                                             
-           Release v0.4.0-Beta2 
-           Build: WIN32                                       
+           Release v0.4.0-Beta3 
+           Build: LINUX64                                       
 **********************************************
 
 Welcome to Commander Genius!
@@ -191,7 +191,7 @@ F+I+X		Restore		   Restores the settings as they were in the first time. Use thi
 The game can be saved from the menu at any time. Keen will be saved at the exact position it was left. 
 (unlike in the original game which only allowed save on the map).
 
-In Keen 4 this feature is not avialable
+In Keen 4 this feature is not avaalable
 
 
 - FAQ -

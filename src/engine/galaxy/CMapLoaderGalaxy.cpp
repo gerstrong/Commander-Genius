@@ -43,6 +43,7 @@
 #include "engine/galaxy/ai/ep4/CSkypest.h"
 #include "engine/galaxy/ai/ep4/CMimrock.h"
 #include "engine/galaxy/ai/ep4/CEgg.h"
+#include "engine/galaxy/ai/ep4/CBerkeloid.h"
 #include "engine/galaxy/ai/ep4/CBlueBird.h"
 #include "engine/galaxy/ai/ep4/CThunderCloud.h"
 
@@ -382,11 +383,13 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		}
 	}
 
+	// Neuronal-stunner
 	if( foe == 68 )
 	{
 		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, 127);
 	}
 
+	// Gems
 	for( Uint32 i=57 ; i<=60 ; i++ )
 	{
 		if( foe == i )
@@ -516,6 +519,12 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 	case 47:
 		// This is the Lick
 		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		break;
+
+
+	case 50:
+		//This is the CBerkeloid
+		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
 		break;
 
 
