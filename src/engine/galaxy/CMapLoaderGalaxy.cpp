@@ -39,6 +39,7 @@
 #include "engine/galaxy/ai/ep4/CSchoolFish.h"
 #include "engine/galaxy/ai/ep4/CLick.h"
 #include "engine/galaxy/ai/ep4/CLindsey.h"
+#include "engine/galaxy/ai/ep4/CWormmouth.h"
 #include "engine/galaxy/ai/ep4/CSkypest.h"
 #include "engine/galaxy/ai/ep4/CMimrock.h"
 #include "engine/galaxy/ai/ep4/CEgg.h"
@@ -422,6 +423,17 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		p_newfoe = new galaxy::CLindsey(&Map, foe, x, y-750);
 		break;
 
+	case 7:
+		// This is a wormmouth.
+		p_newfoe = new galaxy::CWormmouth(&Map, foe, x, y);
+		break;
+
+	case 8:
+		// This is Skypest.
+		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
+		break;
+
+
 	case 9:
 		//This is the Thunder Cloud
 		p_newfoe = new galaxy::CThunderCloud(&Map, foe, x, y);
@@ -471,10 +483,10 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
 		break;
 
-	case 25:
+	/*case 25:
 		// This is Skypest.
 		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
-		break;
+		break;*/
 
 
 	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
