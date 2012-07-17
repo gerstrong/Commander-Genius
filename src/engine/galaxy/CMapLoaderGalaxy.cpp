@@ -32,6 +32,7 @@
 #include "engine/galaxy/ai/ep4/CCouncilMember.h"
 #include "engine/galaxy/ai/ep4/CMiragia.h"
 #include "engine/galaxy/ai/ep4/CDiveSuit.h"
+#include "engine/galaxy/ai/ep4/CArachnut.h"
 #include "engine/galaxy/ai/ep4/CBounder.h"
 #include "engine/galaxy/ai/ep4/CDopeFish.h"
 #include "engine/galaxy/ai/ep4/CWaterMine.h"
@@ -464,6 +465,11 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		p_newfoe = new galaxy::CMimrock(&Map, foe, x, y-(2<<CSF));
 		break;
 
+	case 20:
+		// This is an Arachnut.
+		p_newfoe = new galaxy::CArachnut(&Map, foe, x, y);
+		break;
+
 
 	case 21:
 		// This is a Mad Mushroom.
@@ -519,6 +525,12 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 	case 47:
 		// This is the Lick
 		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		break;
+
+	case 48: // I guess this happens in normal mode
+		// This is the Lick
+		if( g_pBehaviorEngine->mDifficulty > 1 )
+			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 
 
