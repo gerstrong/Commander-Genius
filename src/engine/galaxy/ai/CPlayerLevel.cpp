@@ -77,6 +77,12 @@ mPlacingGem(false)
 	m_hanging = false;
 
 	setupGalaxyObjectOnMap(0x98C, A_KEEN_STAND);
+
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	performCollisions();
+	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
+	if(!processActionRoutine())
+			exists = false;
 }
 
 
@@ -1399,7 +1405,9 @@ void CPlayerLevel::process()
 
 	processLevelMiscFlagsCheck();
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
+
 
 	if(!m_dying)
 	{

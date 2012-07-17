@@ -33,6 +33,11 @@ CStunnable(pmap, foeID, x, y)
 
 	setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
 	m_hDir = NONE;
+
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	performCollisions();
+	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
+	processActionRoutine();
 }
 
 
@@ -91,7 +96,8 @@ void CMimrock::process()
 
 	(this->*mp_processState)();
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 }
 
 

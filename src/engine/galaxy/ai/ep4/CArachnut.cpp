@@ -92,7 +92,8 @@ void CArachnut::process()
 	}
 
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 }
 
 } /* namespace galaxy */

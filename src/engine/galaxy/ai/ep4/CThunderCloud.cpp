@@ -160,8 +160,10 @@ void CThunderCloud::process()
 
 	mTimer++;
 
-	if( getActionStatus(A_CLOUD_WAKING) || getActionStatus(A_CLOUD_STRIKING) )
+	/*if( getActionStatus(A_CLOUD_WAKING) || getActionStatus(A_CLOUD_STRIKING) )*/
+	{
 		processActionRoutine();
+	}
 }
 
 
@@ -193,7 +195,9 @@ void CThunderBolt::getTouchedBy(CSpriteObject &theObject)
 void CThunderBolt::process()
 {
 	performCollisions();
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
+
 }
 
 

@@ -175,7 +175,8 @@ void CBlueBird::process()
 
 	(this->*mpProcessState)();
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 }
 
 } /* namespace galaxy */

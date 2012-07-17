@@ -125,7 +125,8 @@ void CBerkeloid::process()
 	else if(blockedr)
 		m_hDir = LEFT;
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 
 }
 
@@ -209,7 +210,8 @@ void CBerkFlame::process()
 
 	(this->*mpProcessState)();
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 
 }
 

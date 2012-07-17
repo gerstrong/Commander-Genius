@@ -47,6 +47,7 @@
 #include "engine/galaxy/ai/ep4/CBerkeloid.h"
 #include "engine/galaxy/ai/ep4/CBlueBird.h"
 #include "engine/galaxy/ai/ep4/CThunderCloud.h"
+#include "engine/galaxy/ai/ep4/CTreasureEater.h"
 
 
 // General stuff
@@ -407,7 +408,7 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 	case 1:
 	case 2:
 		// This is the player on the map in one level
-		p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y-750, m_ObjectPtr,
+		p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
 				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode);
 		break;
 
@@ -458,11 +459,15 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 			p_newfoe = new galaxy::CEgg(&Map, foe, x, y-(2<<CSF));
 		break;
 
+	case 18:
+		// This might be the treasure eater.
+		p_newfoe = new galaxy::CTreasureEater(&Map, foe, x, y);
+		break;
 
 	case 19:
 		//This is a Mimrock.
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		p_newfoe = new galaxy::CMimrock(&Map, foe, x, y-(2<<CSF));
+		p_newfoe = new galaxy::CMimrock(&Map, foe, x, y);
 		break;
 
 	case 20:
@@ -473,7 +478,7 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 
 	case 21:
 		// This is a Mad Mushroom.
-		p_newfoe = new galaxy::CMadMushroom(&Map, foe, x, y-(2<<CSF));
+		p_newfoe = new galaxy::CMadMushroom(&Map, foe, x, y);
 		break;
 
 
@@ -522,14 +527,20 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 						RIGHT, m_Inventory, m_Cheatmode);
 		break;
 
-	case 47:
+	case 46:
 		// This is the Lick
 		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 
-	case 48: // I guess this happens in normal mode
+	case 47:
 		// This is the Lick
 		if( g_pBehaviorEngine->mDifficulty > 1 )
+			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		break;
+
+	case 48:
+		// This is the Lick
+		if( g_pBehaviorEngine->mDifficulty > 2 )
 			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 

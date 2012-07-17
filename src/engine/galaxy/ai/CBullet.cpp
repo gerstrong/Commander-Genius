@@ -39,7 +39,9 @@ void CBullet::process()
 		dead = true;
 	}
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
+
 }
 
 }

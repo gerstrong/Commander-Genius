@@ -57,7 +57,9 @@ void CEnemyShot::process()
 		exists = false;
 	}
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
+
 }
 
 } /* namespace galaxy */

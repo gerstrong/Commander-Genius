@@ -33,7 +33,9 @@ void CSlugSlime::getTouchedBy(CSpriteObject &theObject)
 void CSlugSlime::process()
 {
 	processFalling();
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
+
 }
 
 };

@@ -151,7 +151,8 @@ void CPlayerDive::process()
 
 	processLevelMiscFlagsCheck();
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 }
 
 }

@@ -33,7 +33,8 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 	performCollisions();
 	if((rSprite.m_bboxY2-rSprite.m_bboxY1) < 0)
 		processMove(0, (14<<STC)-(rSprite.m_bboxY2-rSprite.m_bboxY1));
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 }
 
 /**
@@ -208,8 +209,9 @@ void CGalaxySpriteObject::setActionSprite()
 
 
 // This new function will setup the sprite based on the Action format
-void CGalaxySpriteObject::processActionRoutine()
+bool CGalaxySpriteObject::processActionRoutine()
 {
+	bool endOfAction = true;
 	setActionSprite();
 
 	// Check the Movement Parameter
@@ -245,7 +247,7 @@ void CGalaxySpriteObject::processActionRoutine()
 			if(m_Action.Next_action != 0)
 				m_Action.setNextActionFormat();
 			else
-				exists = false;
+				endOfAction = false;
 		}
 		m_ActionTicker = 0;
 	}
@@ -253,4 +255,6 @@ void CGalaxySpriteObject::processActionRoutine()
 	{
 		m_ActionTicker += 2;
 	}
+
+	return endOfAction;
 }

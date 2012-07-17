@@ -113,9 +113,10 @@ void CSkypest::processFly()
 
 void CSkypest::process()
 {
-	processActionRoutine();
-
 	(this->*mp_processState)();
+
+	if(!processActionRoutine())
+			exists = false;
 }
 
 } /* namespace galaxy */

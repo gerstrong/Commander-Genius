@@ -90,7 +90,8 @@ void CWormmouth::getTouchedBy(CSpriteObject &theObject)
 		setAction( A_WORMMOUTH_STUNNED );
 		dead = true;
 		theObject.dead = true;
-		processActionRoutine();
+		if(!processActionRoutine())
+				exists = false;
 		performCollisions();
 		processGettingStunned();
 	}

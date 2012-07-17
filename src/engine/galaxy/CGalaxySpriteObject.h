@@ -29,7 +29,7 @@ public:
 	virtual void setActionForce(const size_t ActionNumber);
 	void setAction(size_t ActionNumber);
 	void setActionSprite();
-	void processActionRoutine();
+	bool processActionRoutine();
 
 	// This is used for action format only
 	uint16_t mFoeID;

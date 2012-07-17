@@ -23,7 +23,9 @@ CStunnable::CStunnable(	CMap *pmap,
 						const Uint16 foeID,
 						Uint32 x,
 						Uint32 y ) :
-CGalaxySpriteObject( pmap, foeID, x, y )
+CGalaxySpriteObject( pmap, foeID, x, y ),
+m_stunned(false),
+mp_processState(NULL)
 {
 	m_invincible = false;
 }

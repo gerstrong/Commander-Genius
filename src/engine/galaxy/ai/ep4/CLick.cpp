@@ -8,6 +8,7 @@
 #include "CLick.h"
 
 #include "engine/galaxy/ai/CPlayerBase.h"
+#include "misc.h"
 
 namespace galaxy {
 
@@ -41,7 +42,8 @@ void CLick::process()
 {
 	(this->*mp_processState)();
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 
 	processFalling();
 }
@@ -73,14 +75,18 @@ void CLick::getTouchedBy(CSpriteObject &theObject)
 
 bool CLick::isNearby(CSpriteObject &theObject)
 {
+
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		const int dx = player->getXMidPos() - getXMidPos();
 
-		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-			m_hDir = LEFT;
-		else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-			m_hDir = RIGHT;
+		if( getProbability(80) )
+		{
+			if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+				m_hDir = LEFT;
+			else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+				m_hDir = RIGHT;
+		}
 
 		if(getActionNumber(A_LICK_LAND))
 		{

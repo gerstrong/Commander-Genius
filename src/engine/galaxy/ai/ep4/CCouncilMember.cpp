@@ -100,7 +100,8 @@ void CCouncilMember::process()
 	else if(blockedr)
 		m_hDir = LEFT;
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 }
 
 

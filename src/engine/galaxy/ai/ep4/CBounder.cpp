@@ -281,7 +281,8 @@ void CBounder::process()
 		}
 	}
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 }
 
 

@@ -106,7 +106,9 @@ void CWaterMine::process()
 {
 	(this->*mp_processState)();
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
+
 }
 
 } /* namespace galaxy */

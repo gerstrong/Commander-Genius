@@ -44,7 +44,8 @@ void CLindsey::process()
 
 	m_timer--;
 
-	processActionRoutine();
+	if(!processActionRoutine())
+			exists = false;
 }
 
 void CLindsey::getTouchedBy(CSpriteObject &theObject)
