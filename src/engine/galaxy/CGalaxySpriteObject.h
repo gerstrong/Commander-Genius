@@ -39,6 +39,7 @@ public:
 	bool m_jumped;
 	bool m_climbing;
 	bool m_jumpdown;
+	bool mEndOfAction;
 };
 
 #endif /* CGALAXYSPRITEOBJECT_H_ */

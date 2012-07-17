@@ -24,7 +24,14 @@ public:
 	void processTeleporting();
 	void processHopping();
 
+	void checkForItem();
 	void process();
+
+private:
+
+	int mTimer;
+	bool mTeleported;
+	bool mStolen;
 };
 
 } /* namespace galaxy */

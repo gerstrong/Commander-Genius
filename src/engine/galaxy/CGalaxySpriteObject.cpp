@@ -14,7 +14,8 @@ m_ActionTicker(0),
 m_ActionNumber(0),
 m_ActionBaseOffset(0x0),
 m_climbing(false),
-m_jumpdown(false)
+m_jumpdown(false),
+mEndOfAction(false)
 {}
 
 void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
@@ -188,6 +189,7 @@ int16_t CGalaxySpriteObject::getActionNumber()
 
 void CGalaxySpriteObject::setActionForce(const size_t ActionNumber)
 {
+	mEndOfAction = false;
 	m_ActionNumber = ActionNumber;
 	m_Action.setActionFormat(m_ActionBaseOffset + 30*m_ActionNumber);
 }
@@ -211,7 +213,7 @@ void CGalaxySpriteObject::setActionSprite()
 // This new function will setup the sprite based on the Action format
 bool CGalaxySpriteObject::processActionRoutine()
 {
-	bool endOfAction = true;
+	mEndOfAction = false;
 	setActionSprite();
 
 	// Check the Movement Parameter
@@ -240,6 +242,9 @@ bool CGalaxySpriteObject::processActionRoutine()
 			moveDown( m_Action.V_anim_move_amount<<1 );
 	}
 
+	if(mEndOfAction)
+		return false;
+
 	if( m_ActionTicker > m_Action.Delay )
 	{
 		if( m_Action.Delay != 0 )
@@ -247,7 +252,7 @@ bool CGalaxySpriteObject::processActionRoutine()
 			if(m_Action.Next_action != 0)
 				m_Action.setNextActionFormat();
 			else
-				endOfAction = false;
+				mEndOfAction = true;
 		}
 		m_ActionTicker = 0;
 	}
@@ -256,5 +261,5 @@ bool CGalaxySpriteObject::processActionRoutine()
 		m_ActionTicker += 2;
 	}
 
-	return endOfAction;
+	return !mEndOfAction;
 }
