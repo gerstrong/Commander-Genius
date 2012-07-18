@@ -26,7 +26,6 @@ A_KEEN_LOOKDOWN	 = 23,
 A_KEEN_ACTION_1	 = 26,
 A_KEEN_ACTION_2	 = 27,
 A_KEEN_ACTION_3 = 28,
-//A_KEEN_DIE = 29 // defined in CPlayerBase
 A_KEEN_SHOOT = 33,
 A_KEEN_SHOOT_UP = 35,
 A_KEEN_ACTION_4 = 37,
@@ -53,7 +52,8 @@ A_KEEN_CLIMB = 82
 };
 
 
-class CPlayerLevel : public CPlayerBase {
+class CPlayerLevel : public CPlayerBase
+{
 public:
 	CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
@@ -249,6 +249,7 @@ private:
 	int m_fire_recharge_time;
 	bool m_EnterDoorAttempt;
 	bool m_hanging;
+	int mPoleGrabTime;
 };
 
 }

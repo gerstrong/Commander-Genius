@@ -32,13 +32,16 @@ const int POGO_INERTIA_HOR_REACTION = 2;
 
 const int FIRE_RECHARGE_TIME = 5;
 
+const int MAX_POLE_GRAB_TIME = 19;
+
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
 CPlayerBase(pmap, foeID, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
 m_jumpdownfromobject(false),
-mPlacingGem(false)
+mPlacingGem(false),
+mPoleGrabTime(0)
 {
 	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_LOOKUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
@@ -914,6 +917,7 @@ void CPlayerLevel::processPoleClimbing()
 		setAction(A_KEEN_JUMP);
 		m_climbing = false;
 		m_jumped = true;
+		mPoleGrabTime = 0;
 		yinertia = 0;
 		m_vDir = NONE;
 		solid = true;
@@ -1028,35 +1032,39 @@ void CPlayerLevel::processPoleClimbing()
 
 
 
-
-
 bool CPlayerLevel::verifyforPole()
 {
-	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-	Uint32 l_y_up = ( getYUpPos() );
-	Uint32 l_y_down = ( getYDownPos() );
+	// TODO: Something strange here? Ticks?
+	if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
+		return false;
 
+	mPoleGrabTime = 0;
+
+	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	l_x = (l_x>>CSF)<<CSF;
+	const int l_y_up = ( getYUpPos() ) - 192;
+	const int l_y_down = ( ( getYDownPos() >> CSF ) + 1 ) << CSF;
+
+	const int yDir = (m_playcontrol[PA_Y] < 0) ? -1 : 1;
 
 	// Now check if Player has the chance to climb a pole or something similar
-	if( ( m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) ) ||
-		( m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down) ) ) // 1 -> stands for pole Property
+	if( ( yDir < 0 && ( hitdetectWithTileProperty(1, l_x, l_y_up) & 0x7F) == 1 ) ||
+		( yDir > 0 && ( hitdetectWithTileProperty(1, l_x, l_y_down) & 0x7F) == 1 ) ) // 1 -> stands for pole Property
 	{
-		// Hit pole!
-		// calc the proper coord of that tile
-		l_x = (l_x>>CSF)<<CSF;
-		if( ( m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) ) ||
-			( m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down) ) )
-		{
-			// Move to the proper X Coordinates, so Keen really grabs it!
-			moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
-			xinertia = 0;
+		// Move to the proper X Coordinates, so Keen really grabs it!
+		moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
 
-			// Set Keen in climb mode
-			setAction(A_KEEN_POLE);
-			m_climbing = true;
-			solid = false;
-			return true;
-		}
+		xinertia = 0;
+
+		next.x = 0;
+		next.y = 64*yDir;
+
+		// Set Keen in climb mode
+		setAction(A_KEEN_POLE);
+		m_climbing = true;
+		mClipped = false;
+		solid = false;
+		return true;
 	}
 	return false;
 }
@@ -1394,6 +1402,9 @@ void CPlayerLevel::process()
 			blockedd = true;
 		}
 	}
+
+	if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
+		 mPoleGrabTime++;
 
 	(this->*mp_processState)();
 

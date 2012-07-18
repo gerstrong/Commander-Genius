@@ -35,9 +35,11 @@ public:
 	uint16_t mFoeID;
 	uint16_t m_ActionTicker;
 	uint16_t m_ActionNumber;
+	VectorD2<int> next;
 	size_t m_ActionBaseOffset;
 	bool m_jumped;
 	bool m_climbing;
+	bool mClipped;
 	bool m_jumpdown;
 	bool mEndOfAction;
 };

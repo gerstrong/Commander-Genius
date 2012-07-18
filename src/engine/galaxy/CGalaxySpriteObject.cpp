@@ -12,8 +12,10 @@ CSpriteObject(pmap, x, y),
 mFoeID(foeID),
 m_ActionTicker(0),
 m_ActionNumber(0),
+next(0,0),
 m_ActionBaseOffset(0x0),
 m_climbing(false),
+mClipped(false),
 m_jumpdown(false),
 mEndOfAction(false)
 {}
@@ -204,9 +206,9 @@ void CGalaxySpriteObject::setAction(size_t ActionNumber)
 void CGalaxySpriteObject::setActionSprite()
 {
 	if(m_hDir == LEFT || m_hDir == NONE)
-		sprite = m_Action.Left_sprite-124;
+		sprite = m_Action.spriteLeft-124;
 	else if(m_hDir == RIGHT)
-		sprite = m_Action.Right_sprite-124;
+		sprite = m_Action.spriteRight-124;
 }
 
 
@@ -229,25 +231,25 @@ bool CGalaxySpriteObject::processActionRoutine()
 	 *	4 is used for sprites that must hit or land on the ground.
 	 */
 
-	if( m_Action.Movement_parameter )
+	if( m_Action.type > 0 )
 	{
 		if(m_hDir == LEFT )
-			moveLeft( m_Action.H_anim_move_amount<<1 );
+			moveLeft( m_Action.velX<<1 );
 		else if(m_hDir == RIGHT )
-			moveRight( m_Action.H_anim_move_amount<<1 );
+			moveRight( m_Action.velX<<1 );
 
 		if(m_vDir == UP)
-			moveUp( m_Action.V_anim_move_amount<<1 );
+			moveUp( m_Action.velY<<1 );
 		else if(m_vDir == DOWN)
-			moveDown( m_Action.V_anim_move_amount<<1 );
+			moveDown( m_Action.velY<<1 );
 	}
 
 	if(mEndOfAction)
 		return false;
 
-	if( m_ActionTicker > m_Action.Delay )
+	if( m_ActionTicker > m_Action.timer )
 	{
-		if( m_Action.Delay != 0 )
+		if( m_Action.timer != 0 )
 		{
 			if(m_Action.Next_action != 0)
 				m_Action.setNextActionFormat();
