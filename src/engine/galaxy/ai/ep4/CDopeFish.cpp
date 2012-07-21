@@ -34,8 +34,8 @@ m_burped(false)
 {
 	setupGalaxyObjectOnMap(0x35C0, A_DOPEFISH_SWIM);
 	mp_processState = &CDopeFish::processSwim;
-	m_hDir = RIGHT;
-	m_vDir = UP;
+	xDirection = RIGHT;
+	yDirection = UP;
 }
 
 bool CDopeFish::isNearby(CSpriteObject &theObject)
@@ -61,14 +61,14 @@ bool CDopeFish::isNearby(CSpriteObject &theObject)
 
 
 		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 
 		if( dy<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-			m_vDir = (rand()%5) ? UP : DOWN;
+			yDirection = (rand()%5) ? UP : DOWN;
 		else if( dy>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-			m_vDir = (rand()%5) ? DOWN : UP;
+			yDirection = (rand()%5) ? DOWN : UP;
 
 		if(getActionNumber(A_DOPEFISH_SWIM))
 		{
@@ -103,12 +103,12 @@ void CDopeFish::getTouchedBy(CSpriteObject &theObject)
 
 void CDopeFish::moveDope(const int speed)
 {
-	if(m_hDir == LEFT)
+	if(xDirection == LEFT)
 		moveLeft(speed);
 	else
 		moveRight(speed);
 
-	if(m_vDir == UP)
+	if(yDirection == UP)
 		moveUp(speed);
 	else
 		moveDown(speed);

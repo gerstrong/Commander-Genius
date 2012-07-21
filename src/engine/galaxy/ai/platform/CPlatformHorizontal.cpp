@@ -14,8 +14,8 @@ CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint16 foeID, const U
 CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y)
 {
-	m_hDir = RIGHT;
-	m_vDir = NONE;
+	xDirection = RIGHT;
+	yDirection = NONE;
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
 	calcBoundingBoxes();
@@ -40,24 +40,24 @@ void CPlatformHorizontal::process()
 	// If there is a blocker, change the direction
 	if( object == 31 )
 	{
-		m_hDir = (m_hDir == RIGHT) ? LEFT : RIGHT;
+		xDirection = (xDirection == RIGHT) ? LEFT : RIGHT;
 	}
 
 	// direction change is processed here!
-	if(m_hDir == RIGHT && blockedr)
+	if(xDirection == RIGHT && blockedr)
 	{
 		mp_BoostEngObjLeft->dontdraw = true;
 		mp_BoostEngObjRight->dontdraw = false;
-		m_hDir = LEFT;
+		xDirection = LEFT;
 	}
-	else if(m_hDir == LEFT && blockedl)
+	else if(xDirection == LEFT && blockedl)
 	{
 		mp_BoostEngObjLeft->dontdraw = false;
 		mp_BoostEngObjRight->dontdraw = true;
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	}
 
-	if(m_hDir == RIGHT)
+	if(xDirection == RIGHT)
 	{
 		mp_BoostEngObjLeft->moveRight(MOVE_HORIZ_SPEED);
 		mp_BoostEngObjRight->moveRight(MOVE_HORIZ_SPEED);

@@ -32,7 +32,7 @@ CStunnable(pmap, foeID, x, y)
 	mActionMap[A_MIMROCK_STUNNED] = &CStunnable::processStunned;
 
 	setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
-	m_hDir = NONE;
+	xDirection = NONE;
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
@@ -51,9 +51,9 @@ bool CMimrock::isNearby(CSpriteObject &theObject)
 			dx<+CSF_DISTANCE_TO_FOLLOW_TOLERANCE	)
 		{
 			if( dx<0 )
-				m_hDir = LEFT;
+				xDirection = LEFT;
 			else
-				m_hDir = RIGHT;
+				xDirection = RIGHT;
 
 			setAction(A_MIMROCK_WALK);
 		}
@@ -69,7 +69,7 @@ void CMimrock::processSit()
 
 void CMimrock::processWalk()
 {
-	if(m_hDir == LEFT)
+	if(xDirection == LEFT)
 		moveLeft(WALK_SPEED);
 	else
 		moveRight(WALK_SPEED);

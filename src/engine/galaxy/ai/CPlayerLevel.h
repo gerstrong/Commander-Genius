@@ -52,12 +52,35 @@ A_KEEN_CLIMB = 82
 };
 
 
+struct KeenState
+{
+	KeenState() :
+		jumpTimer(0), poleGrabTime(0),
+		jumpIsPressed(false), jumpWasPressed(false),
+		pogoIsPressed(false), pogoWasPressed(false)
+		{}
+
+	int jumpTimer;
+	int poleGrabTime;
+	bool jumpIsPressed;
+	bool jumpWasPressed;
+	bool pogoIsPressed;
+	bool pogoWasPressed;
+};
+
+
 class CPlayerLevel : public CPlayerBase
 {
 public:
 	CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
 			CInventory &l_Inventory, stCheat &Cheatmode);
+
+
+	/**
+	 * \brief	handles the input when keen standing on ground.
+	 */
+	void handleInputOnGround();
 
 
 	/**
@@ -175,7 +198,7 @@ public:
 	 * 				otherwise, the empty clicking sound is heard
 	 * \param	pos	Coordinates where the shot should be spawned
 	 */
-	void tryToShoot( const VectorD2<int> &pos, const direction_t &dir );
+	void tryToShoot( const VectorD2<int> &pos, const int xDir, const int yDir );
 
 
 
@@ -240,6 +263,7 @@ private:
 	/** \brief Special code when Keen moving down... */
 	void processMoveBitDown();
 
+	KeenState state;
 
 	bool m_ptogglingswitch;
 	int m_jumpheight;
@@ -250,6 +274,7 @@ private:
 	bool m_EnterDoorAttempt;
 	bool m_hanging;
 	int mPoleGrabTime;
+
 };
 
 }

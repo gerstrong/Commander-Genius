@@ -14,6 +14,12 @@ m_ActionTicker(0),
 m_ActionNumber(0),
 next(0,0),
 m_ActionBaseOffset(0x0),
+nextX(0),
+nextY(0),
+user1(0),
+user2(0),
+user3(0),
+user4(0),
 m_climbing(false),
 mClipped(false),
 m_jumpdown(false),
@@ -205,9 +211,9 @@ void CGalaxySpriteObject::setAction(size_t ActionNumber)
 // Sets the proper sprite of action format to the local object
 void CGalaxySpriteObject::setActionSprite()
 {
-	if(m_hDir == LEFT || m_hDir == NONE)
+	if(xDirection == LEFT || xDirection == NONE)
 		sprite = m_Action.spriteLeft-124;
-	else if(m_hDir == RIGHT)
+	else if(xDirection == RIGHT)
 		sprite = m_Action.spriteRight-124;
 }
 
@@ -233,14 +239,14 @@ bool CGalaxySpriteObject::processActionRoutine()
 
 	if( m_Action.type > 0 )
 	{
-		if(m_hDir == LEFT )
+		if(xDirection == LEFT )
 			moveLeft( m_Action.velX<<1 );
-		else if(m_hDir == RIGHT )
+		else if(xDirection == RIGHT )
 			moveRight( m_Action.velX<<1 );
 
-		if(m_vDir == UP)
+		if(yDirection == UP)
 			moveUp( m_Action.velY<<1 );
-		else if(m_vDir == DOWN)
+		else if(yDirection == DOWN)
 			moveDown( m_Action.velY<<1 );
 	}
 

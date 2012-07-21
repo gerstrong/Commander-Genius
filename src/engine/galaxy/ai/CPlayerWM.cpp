@@ -99,39 +99,39 @@ void CPlayerWM::processMoving()
 	if(g_pInput->getHoldedCommand(IC_LEFT) && !bleft)
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			m_vDir = NONE;
+			yDirection = NONE;
 
 		moveLeft(movespeed);
 		walking = true;
-		m_hDir = LEFT;
+		xDirection = LEFT;
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT) && !bright)
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			m_vDir = NONE;
+			yDirection = NONE;
 
 		moveRight(movespeed);
 		walking = true;
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	}
 
 	if(g_pInput->getHoldedCommand(IC_UP) && !bup)
 	{
 		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-			m_hDir = NONE;
+			xDirection = NONE;
 
 		moveUp(movespeed);
 		walking = true;
-		m_vDir = UP;
+		yDirection = UP;
 	}
 	else if(g_pInput->getHoldedCommand(IC_DOWN) && !bdown)
 	{
 		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-			m_hDir = NONE;
+			xDirection = NONE;
 
 		moveDown(movespeed);
 		walking = true;
-		m_vDir = DOWN;
+		yDirection = DOWN;
 	}
 
 	// In case noclipping was triggered, make it solid, or remove it...
@@ -300,19 +300,19 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
  */
 void CPlayerWM::performWalkingAnimation(bool walking)
 {
-	if(m_hDir == RIGHT && m_vDir == NONE)
+	if(xDirection == RIGHT && yDirection == NONE)
 		sprite = m_basesprite + 3;
-	else if(m_hDir == NONE && m_vDir == UP)
+	else if(xDirection == NONE && yDirection == UP)
 		sprite = m_basesprite + 6;
-	else if(m_hDir == NONE && m_vDir == DOWN)
+	else if(xDirection == NONE && yDirection == DOWN)
 		sprite = m_basesprite + 9;
-	else if(m_hDir == RIGHT && m_vDir == DOWN)
+	else if(xDirection == RIGHT && yDirection == DOWN)
 		sprite = m_basesprite + 12;
-	else if(m_hDir == LEFT && m_vDir == DOWN)
+	else if(xDirection == LEFT && yDirection == DOWN)
 		sprite = m_basesprite + 15;
-	else if(m_hDir == LEFT && m_vDir == UP)
+	else if(xDirection == LEFT && yDirection == UP)
 		sprite = m_basesprite + 18;
-	else if(m_hDir == RIGHT && m_vDir == UP)
+	else if(xDirection == RIGHT && yDirection == UP)
 		sprite = m_basesprite + 21;
 	else
 		sprite = m_basesprite;
@@ -332,19 +332,19 @@ void CPlayerWM::performWalkingAnimation(bool walking)
  */
 void CPlayerWM::performSwimmingAnimation()
 {
-	if(m_hDir == RIGHT && m_vDir == NONE)
+	if(xDirection == RIGHT && yDirection == NONE)
 		sprite = m_basesprite + 2;
-	else if(m_hDir == NONE && m_vDir == DOWN)
+	else if(xDirection == NONE && yDirection == DOWN)
 		sprite = m_basesprite + 4;
-	else if(m_hDir == LEFT && m_vDir == NONE)
+	else if(xDirection == LEFT && yDirection == NONE)
 		sprite = m_basesprite + 6;
-	else if(m_hDir == RIGHT && m_vDir == UP)
+	else if(xDirection == RIGHT && yDirection == UP)
 		sprite = m_basesprite + 8;
-	else if(m_hDir == RIGHT && m_vDir == DOWN)
+	else if(xDirection == RIGHT && yDirection == DOWN)
 		sprite = m_basesprite + 10;
-	else if(m_hDir == LEFT && m_vDir == DOWN)
+	else if(xDirection == LEFT && yDirection == DOWN)
 		sprite = m_basesprite + 12;
-	else if(m_hDir == LEFT && m_vDir == UP)
+	else if(xDirection == LEFT && yDirection == UP)
 		sprite = m_basesprite + 14;
 	else
 		sprite = m_basesprite;

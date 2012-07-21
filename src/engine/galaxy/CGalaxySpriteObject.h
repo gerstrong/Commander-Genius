@@ -37,6 +37,15 @@ public:
 	uint16_t m_ActionNumber;
 	VectorD2<int> next;
 	size_t m_ActionBaseOffset;
+
+	int nextX;
+	int nextY;
+
+	int user1;
+	int user2;
+	int user3;
+	int user4;
+
 	bool m_jumped;
 	bool m_climbing;
 	bool mClipped;

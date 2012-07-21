@@ -23,7 +23,7 @@ CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y,
 		CVorticonSpriteObject(p_map, x, y, OBJ_MESSIE),
 m_Player(Player)
 {
-	m_hDir = LEFT, m_vDir = DOWN;
+	xDirection = LEFT, yDirection = DOWN;
 	onscreen = true;
 	solid = false;
 
@@ -108,13 +108,13 @@ void CMessie::process()
 				bool godown = (desty > getYPosition());
 
 				if(goleft && !godown)
-					m_hDir = LEFT, m_vDir = UP;
+					xDirection = LEFT, yDirection = UP;
 				else if(goleft && godown)
-					m_hDir = LEFT, m_vDir = DOWN;
+					xDirection = LEFT, yDirection = DOWN;
 				else if(!goleft && !godown)
-					m_hDir = RIGHT, m_vDir = UP;
+					xDirection = RIGHT, yDirection = UP;
 				else if(!goleft && godown)
-					m_hDir = RIGHT, m_vDir = DOWN;
+					xDirection = RIGHT, yDirection = DOWN;
 			}
 		}
 		move_nessie();
@@ -136,13 +136,13 @@ void CMessie::process()
 void CMessie::move_nessie()
 {
 	// select proper frame based on up/down and left/right direction flags
-	if (m_hDir == LEFT && m_vDir == DOWN)
+	if (xDirection == LEFT && yDirection == DOWN)
 		baseframe = NESSIE_DOWNLEFT_FRAME;
-	else if (m_hDir == RIGHT && m_vDir == DOWN)
+	else if (xDirection == RIGHT && yDirection == DOWN)
 		baseframe = NESSIE_DOWNRIGHT_FRAME;
-	else if (m_hDir == LEFT && m_vDir == UP)
+	else if (xDirection == LEFT && yDirection == UP)
 		baseframe = NESSIE_UPLEFT_FRAME;
-	else if (m_hDir == RIGHT && m_vDir == UP)
+	else if (xDirection == RIGHT && yDirection == UP)
 		baseframe = NESSIE_UPRIGHT_FRAME;
 
 	// head to destination

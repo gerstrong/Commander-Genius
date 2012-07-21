@@ -90,35 +90,35 @@ void CPlayerDive::processDiving()
 	if(g_pInput->getHoldedCommand(IC_LEFT))
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			m_vDir = NONE;
+			yDirection = NONE;
 
 		moveLeft(MOVESPEED+m_swimupspeed);
-		m_hDir = LEFT;
+		xDirection = LEFT;
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT))
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			m_vDir = NONE;
+			yDirection = NONE;
 
 		moveRight(MOVESPEED+m_swimupspeed);
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	}
 
 	// Up and down swimming
 	if( m_swimupspeed>0 && g_pInput->getHoldedCommand(IC_UP))
 	{
 		moveUp(MOVESPEED+m_swimupspeed);
-		m_vDir = UP;
+		yDirection = UP;
 	}
 	else if(g_pInput->getHoldedCommand(IC_DOWN))
 	{
 		moveDown(MOVESPEED+m_swimupspeed);
-		m_vDir = DOWN;
+		yDirection = DOWN;
 	}
 	else
 	{
 		moveDown(WATERFALLSPEED+m_swimupspeed);
-		m_vDir = DOWN;
+		yDirection = DOWN;
 	}
 
 
@@ -133,7 +133,7 @@ void CPlayerDive::processDiving()
 	if( m_breathtimer >= BREATH_TIME )
 	{
 		playSound(SOUND_BUBBLE);
-		int dir_offset = (m_hDir==RIGHT) ? +(1<<CSF) : -(1<<CSF) ;
+		int dir_offset = (xDirection==RIGHT) ? +(1<<CSF) : -(1<<CSF) ;
 		CBubbles *Bubble = new CBubbles(mp_Map, 0, getXMidPos()+dir_offset, getYMidPos(), false);
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Bubble ) );
 		m_breathtimer = 0;

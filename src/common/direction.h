@@ -12,12 +12,13 @@
 #define DIRECTION_H_
 
 
-enum direction_t{
-	NONE,
-	RIGHT,
-	LEFT,
-	UP,
-	DOWN
+enum direction_t
+{
+	NONE = 0,
+	RIGHT = 1,
+	LEFT = -1,
+	UP = -1,
+	DOWN = 1
 };
 
 #endif /* DIRECTION_H_ */

@@ -83,9 +83,9 @@ bool CLick::isNearby(CSpriteObject &theObject)
 		if( getProbability(80) )
 		{
 			if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-				m_hDir = LEFT;
+				xDirection = LEFT;
 			else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-				m_hDir = RIGHT;
+				xDirection = RIGHT;
 		}
 
 		if(getActionNumber(A_LICK_LAND))
@@ -108,9 +108,9 @@ bool CLick::isNearby(CSpriteObject &theObject)
 void CLick::processHop()
 {
 	// Move left or right according to set direction
-	if(m_hDir == RIGHT)
+	if(xDirection == RIGHT)
 		moveRight(LICK_HOP_X_SPEED);
-	else if(m_hDir == LEFT)
+	else if(xDirection == LEFT)
 		moveLeft(LICK_HOP_X_SPEED);
 
 	if(blockedd)

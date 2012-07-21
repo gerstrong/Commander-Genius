@@ -33,7 +33,7 @@ mpInteractPlayer(NULL)
 	mActionMap[A_BOUNDER_STUNNED] = &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);
-	m_hDir = NONE;
+	xDirection = NONE;
 
 }
 
@@ -89,11 +89,11 @@ void CBounder::processBounce()
 		}
 	}
 
-	if(m_hDir == LEFT)
+	if(xDirection == LEFT)
 	{
 		moveLeft(HOR_SPEED, false);
 	}
-	else if(m_hDir == RIGHT)
+	else if(xDirection == RIGHT)
 	{
 		moveRight(HOR_SPEED, false);
 	}
@@ -108,13 +108,13 @@ void CBounder::processOnFloor()
 	switch( rand() % 3 )
 	{
 	case 1:
-		m_hDir = LEFT;
+		xDirection = LEFT;
 		break;
 	case 2:
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 		break;
 	default:
-		m_hDir = NONE;
+		xDirection = NONE;
 		break;
 	}
 
@@ -127,16 +127,16 @@ void CBounder::processOnFloor()
 			const int mMidX = getXMidPos();
 
 			if( mMidPX > mMidX + (4<<STC) )
-				m_hDir = RIGHT;
+				xDirection = RIGHT;
 			else if( mMidPX < mMidX - (4<<STC) )
-				m_hDir = LEFT;
+				xDirection = LEFT;
 			else
-				m_hDir = NONE;
+				xDirection = NONE;
 		}
 
 	}
 
-	switch(m_hDir)
+	switch(xDirection)
 	{
 	case LEFT:
 		setAction( A_BOUNDER_MOVE+1 );
@@ -247,12 +247,12 @@ void CBounder::process()
 
 	if( blockedl )
 	{
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 		setAction( A_BOUNDER_MOVE );
 	}
 	else if(blockedr)
 	{
-		m_hDir = LEFT;
+		xDirection = LEFT;
 		setAction( A_BOUNDER_MOVE+1 );
 	}
 

@@ -21,8 +21,8 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 m_moveSpeed(0)
 {
 	setupGalaxyObjectOnMap(0x3692, A_DOPEFISHFOOD_NORMAL);
-	m_hDir = RIGHT;
-	m_vDir = DOWN;
+	xDirection = RIGHT;
+	yDirection = DOWN;
 }
 
 bool CSchoolFish::isNearby(CSpriteObject &theObject)
@@ -34,20 +34,20 @@ bool CSchoolFish::isNearby(CSpriteObject &theObject)
 
 		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 		{
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		}
 		else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 		{
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 		}
 
 		if( dy<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 		{
-			m_vDir = (rand()%5) ? UP : DOWN;
+			yDirection = (rand()%5) ? UP : DOWN;
 		}
 		else if( dy>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 		{
-			m_vDir = (rand()%5) ? DOWN : UP;
+			yDirection = (rand()%5) ? DOWN : UP;
 		}
 
 		int absdx = (dx<0) ? -dx : dx;
@@ -70,14 +70,14 @@ void CSchoolFish::process()
 	// Only move the fish, when it gets speed, which only happens, when Keen is nearby them
 	if(m_moveSpeed)
 	{
-		if(m_hDir == LEFT)
+		if(xDirection == LEFT)
 			moveLeft(m_moveSpeed);
-		else if(m_hDir == RIGHT)
+		else if(xDirection == RIGHT)
 			moveRight(m_moveSpeed);
 
-		if(m_vDir == UP)
+		if(yDirection == UP)
 			moveUp(m_moveSpeed);
-		else if(m_vDir == DOWN)
+		else if(yDirection == DOWN)
 			moveDown(m_moveSpeed);
 	}
 

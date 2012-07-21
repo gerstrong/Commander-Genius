@@ -35,9 +35,9 @@ bool CMadMushroom::isNearby(CSpriteObject &theObject)
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		if( player->getXMidPos() < getXMidPos() )
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		else
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 	}
 
 	return true;

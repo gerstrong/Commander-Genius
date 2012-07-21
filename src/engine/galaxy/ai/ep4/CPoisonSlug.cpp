@@ -38,7 +38,7 @@ m_timer(0)
 
 	setupGalaxyObjectOnMap(0x2012, A_SLUG_MOVE);
 
-	m_hDir = LEFT;
+	xDirection = LEFT;
 }
 
 
@@ -76,7 +76,7 @@ void CPoisonSlug::processCrawling()
 	}
 
 	// Move normally in the direction
-	if( m_hDir == RIGHT )
+	if( xDirection == RIGHT )
 		moveRight( m_Action.velX<<1 );
 	else
 		moveLeft( m_Action.velX<<1 );
@@ -132,9 +132,9 @@ void CPoisonSlug::process()
 	(this->*mp_processState)();
 
 	if( blockedl )
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	else if(blockedr)
-		m_hDir = LEFT;
+		xDirection = LEFT;
 
 	if(!processActionRoutine())
 			exists = false;

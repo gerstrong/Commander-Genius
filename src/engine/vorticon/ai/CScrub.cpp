@@ -32,7 +32,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_SCRUB),
 scrubdie_inertia_y(0),
 m_Player(Player)
 {
-	walkdir = LEFT;
+	xDirection = -1;
 	state = SCRUB_FALLING;
 	walkframe = 0;
 	animtimer = 0;
@@ -73,9 +73,9 @@ void CScrub::process()
 		{
 			if(it_player->getYDownPos() > getYMidPos())
 			{
-				if(it_player->getXMidPos() < getXMidPos() && walkdir != UP)
+				if(it_player->getXMidPos() < getXMidPos() && yDirection >= 0 )
 					it_player->push(*this);
-				else if (walkdir != DOWN)
+				else if (yDirection <= 0)
 					it_player->push(*this);
 
 			}
@@ -119,21 +119,15 @@ void CScrub::process()
 		break;
 	case SCRUB_WALK:
 
-		switch(walkdir)
-		{
-		case LEFT:
+
+		if(xDirection < 0)
 			walkLeft( (getXLeftPos())>>CSF, (getYMidPos())>>CSF);
-			break;
-		case RIGHT:
+		else if(xDirection > 0)
 			walkRight( (getXRightPos())>>CSF, (getYMidPos())>>CSF);
-			break;
-		case DOWN:
-			walkDown();
-			break;
-		case UP:
+		else if(yDirection < 0)
 			walkUp();
-			break;
-		}
+		else if(yDirection > 0)
+			walkDown();
 
 		// walk animation
 		if (animtimer > SCRUB_WALK_ANIM_TIME)
@@ -159,7 +153,7 @@ void CScrub::walkLeft(int mx, int my)
 	if (blockedl)
 	{
 		sprite = SCRUB_WALK_UP + walkframe;
-		walkdir = UP;
+		yDirection = -1;
 		Scrub_TurnOnCansupportWhereNotKicked();
 	}
 	else
@@ -178,7 +172,7 @@ void CScrub::walkLeft(int mx, int my)
 				processMove(4<<STC,0);
 				performCollisions();
 				if(blockedr)
-					walkdir = DOWN;
+					yDirection = 1;
 				else
 					preparetoFall();
 			}
@@ -215,7 +209,7 @@ void CScrub::walkDown()
 
 	if (blockedd)
 	{
-		walkdir = LEFT;
+		xDirection = -1;
 		sprite = SCRUB_WALK_LEFT + walkframe;
 		Scrub_TurnOnCansupportWhereNotKicked();
 	}
@@ -225,7 +219,7 @@ void CScrub::walkDown()
 
 		if(!blockedr) // upper-right, if yes, go right! (ceiling)
 		{	// Move right
-			walkdir = RIGHT;
+			xDirection = 1;
 			sprite = SCRUB_WALK_RIGHT + walkframe;
 			processMove(2<<STC,0);
 			processMove(0,-(2<<STC));
@@ -264,7 +258,7 @@ void CScrub::walkRight(int mx, int my)
 
 	if (blockedr)
 	{
-		walkdir = DOWN;
+		yDirection = 1;
 		sprite = SCRUB_WALK_DOWN + walkframe;
 		Scrub_TurnOnCansupportWhereNotKicked();
 	}
@@ -288,7 +282,7 @@ void CScrub::walkRight(int mx, int my)
 
 				Scrub_TurnOnCansupportWhereNotKicked();
 				if(blockedl)
-					walkdir = UP;
+					yDirection = -1;
 				else
 					preparetoFall();
 			}
@@ -304,7 +298,7 @@ void CScrub::walkUp()
 	sprite = SCRUB_WALK_UP + walkframe;
 	if (blockedu)
 	{
-		walkdir = RIGHT;
+		xDirection = 1;
 		sprite = SCRUB_WALK_RIGHT + walkframe;
 		SetAllCanSupportPlayer(0);
 	}
@@ -314,7 +308,7 @@ void CScrub::walkUp()
 
 		if(	!blockedl )
 		{	// Move Left!
-			walkdir = LEFT;
+			xDirection = -1;
 			sprite = SCRUB_WALK_LEFT + walkframe;
 			Scrub_TurnOnCansupportWhereNotKicked();
 			processMove(-(2<<STC),0);
@@ -358,7 +352,7 @@ void CScrub::fall()
 		for( size_t i=0 ; i<m_Player.size() ; i++ )
 			kickedplayer[i] = 0;
 
-		walkdir = LEFT;
+		xDirection = -1;
 		state = SCRUB_WALK;
 		walkframe = 0;
 		animtimer = 0;
@@ -381,7 +375,7 @@ void CScrub::preparetoFall()
 {
 	fallspeed = 0;
 	state = SCRUB_FALLING;
-	walkdir = LEFT;
+	xDirection = -1;
 	SetAllCanSupportPlayer(0);
 }
 

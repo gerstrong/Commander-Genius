@@ -34,7 +34,7 @@ mStolen(false)
 	mActionMap[A_SMIRKY_STUNNED] = &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap( 0x31E2, A_SMIRKY_LOOK );
-	m_hDir = LEFT;
+	xDirection = LEFT;
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
@@ -59,9 +59,9 @@ bool CTreasureEater::isNearby(CSpriteObject &theObject)
 	/*if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		if( player->getXMidPos() < getXMidPos() )
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		else
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 	}*/
 
 	return true;
@@ -183,9 +183,9 @@ void CTreasureEater::process()
 	checkForItem();
 
 	if( blockedl )
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	else if( blockedr )
-		m_hDir = LEFT;
+		xDirection = LEFT;
 
 	(this->*mp_processState)();
 

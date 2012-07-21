@@ -30,8 +30,8 @@ m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x37A0, A_SPRITE_MOVE);
 	mp_processState = &CDevilSprite::processMove;
-	m_hDir = LEFT;
-	m_vDir = UP;
+	xDirection = LEFT;
+	yDirection = UP;
 }
 
 void CDevilSprite::getTouchedBy(CSpriteObject &theObject)
@@ -51,9 +51,9 @@ bool CDevilSprite::isNearby(CSpriteObject &theObject)
 
 
 		if( dx<0 )
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		else
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 
 		if(getActionNumber(A_SPRITE_MOVE))
 		{
@@ -77,11 +77,11 @@ void CDevilSprite::processMove()
 	if(m_timer <= 0)
 	{
 		m_timer = SPRITE_MOVE_DELAY;
-		m_vDir = (m_vDir==UP) ? DOWN : UP;
+		yDirection = (yDirection==UP) ? DOWN : UP;
 	}
 
 
-	if(m_vDir == UP)
+	if(yDirection == UP)
 		moveUp(SPRITE_MOVE_SPEED);
 	else
 		moveDown(SPRITE_MOVE_SPEED);
@@ -111,9 +111,9 @@ void CDevilSprite::processShoot()
 	{
 		g_pSound->playSound(SOUND_KEEN_FIRE);
 		int x_coord = getXMidPos();
-		x_coord += (m_hDir == LEFT) ? -(8<<STC) : +(8<<STC);
+		x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
 		CEnemyShot *Spark = new CEnemyShot(mp_Map, 0, x_coord, getYMidPos()-(8<<STC),
-											0x3818, m_hDir, 100);
+											0x3818, xDirection, yDirection,  100);
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Spark ) );
 	}
 

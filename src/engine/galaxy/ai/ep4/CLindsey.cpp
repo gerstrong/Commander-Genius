@@ -33,11 +33,11 @@ void CLindsey::process()
 	if(m_timer <= 0)
 	{
 		m_timer = LINDSEY_MOVE_SPEED;
-		m_vDir = (m_vDir==UP) ? DOWN : UP;
+		yDirection = (yDirection==UP) ? DOWN : UP;
 	}
 
 
-	if(m_vDir == UP)
+	if(yDirection == UP)
 		moveUp(LINDSEY_MOVE_SPEED);
 	else
 		moveDown(LINDSEY_MOVE_SPEED);

@@ -77,8 +77,8 @@ public:
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
 	unsigned int sprite;      		// which sprite should this object be drawn with
-	direction_t m_hDir;				// the direction to where the object is looking/heading to
-	direction_t m_vDir;				// same for vertical
+	int xDirection;					// the direction to where the object is looking/heading to
+	int yDirection;					// same for vertical
 
 	int scrx, scry;           		// x,y pixel position on screen
 	

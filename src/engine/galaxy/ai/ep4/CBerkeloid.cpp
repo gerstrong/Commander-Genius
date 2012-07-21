@@ -71,9 +71,9 @@ bool CBerkeloid::isNearby(CSpriteObject &theObject)
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		if( player->getXMidPos() < getXMidPos() )
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		else
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 	}
 
 	return true;
@@ -97,7 +97,7 @@ void CBerkeloid::processMoving()
 	{
 		setAction( A_BERKELOID_THROW );
 		playSound( SOUND_BERKELOID_WINDUP );
-		CBerkFlame *flame = new CBerkFlame( getMapPtr(), getXMidPos(), getYUpPos(), m_hDir );
+		CBerkFlame *flame = new CBerkFlame( getMapPtr(), getXMidPos(), getYUpPos(), xDirection );
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( flame ) );
 		return;
 	}
@@ -121,9 +121,9 @@ void CBerkeloid::process()
 	(this->*mpProcessState)();
 
 	if( blockedl )
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	else if(blockedr)
-		m_hDir = LEFT;
+		xDirection = LEFT;
 
 	if(!processActionRoutine())
 			exists = false;
@@ -144,14 +144,14 @@ const int A_FLAME_LANDED = 2;
 
 const int FLAME_INERTIAX = 150;
 
-CBerkFlame::CBerkFlame(CMap *pmap, Uint32 x, Uint32 y, direction_t dir) :
+CBerkFlame::CBerkFlame(CMap *pmap, Uint32 x, Uint32 y, const int xDir) :
 CGalaxySpriteObject(pmap, 0, x, y),
 mpProcessState(NULL)
 {
 	mActionMap[A_FLAME_THROWN] = &CBerkFlame::processThrown;
 	mActionMap[A_FLAME_LANDED] = &CBerkFlame::processLanded;
 
-	m_hDir = dir;
+	xDirection = xDir;
 	xinertia = FLAME_INERTIAX;
 
 	setupGalaxyObjectOnMap(0x2CD8, A_FLAME_THROWN);
@@ -187,7 +187,7 @@ void CBerkFlame::processThrown()
 		setAction(A_FLAME_LANDED);
 
 	// Move normally in the direction
-	if( m_hDir == RIGHT )
+	if( xDirection == RIGHT )
 		moveRight( xinertia );
 	else
 		moveLeft( xinertia );

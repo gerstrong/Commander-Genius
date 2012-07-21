@@ -21,8 +21,8 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 {
 	setupGalaxyObjectOnMap(0x2486, A_SKYPEST_FLY);
 	mp_processState = &CSkypest::processFly;
-	m_hDir = RIGHT;
-	m_vDir = UP;
+	xDirection = RIGHT;
+	yDirection = UP;
 }
 
 bool CSkypest::isNearby(CSpriteObject &theObject)
@@ -34,9 +34,9 @@ bool CSkypest::isNearby(CSpriteObject &theObject)
 			const int dx = player->getXMidPos() - getXMidPos();
 
 			if( dx<0 )
-				m_hDir = LEFT;
+				xDirection = LEFT;
 			else
-				m_hDir = RIGHT;
+				xDirection = RIGHT;
 		}
 	}
 	return true;
@@ -81,33 +81,33 @@ void CSkypest::processFly()
 	// Flying to the direction Code
 	if(blockedd)
 	{
-		m_vDir = UP;
+		yDirection = UP;
 		mp_processState = &CSkypest::processOnFloor;
 		setAction(A_SKYPEST_LICKEYES);
 	}
 	else if(blockedu)
 	{
-		m_vDir = DOWN;
+		yDirection = DOWN;
 	}
 
 	if(blockedl)
 	{
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	}
 	else if(blockedr)
 	{
-		m_hDir = LEFT;
+		xDirection = LEFT;
 	}
 
 	// When someting is blocking change the direction
-	if(m_vDir == UP)
+	if(yDirection == UP)
 		moveUp(FLY_SPEED);
-	else if(m_vDir == DOWN)
+	else if(yDirection == DOWN)
 		moveDown(FLY_SPEED);
 
-	if(m_hDir == LEFT)
+	if(xDirection == LEFT)
 		moveLeft(FLY_SPEED);
-	else if(m_hDir == RIGHT)
+	else if(xDirection == RIGHT)
 		moveRight(FLY_SPEED);
 }
 

@@ -70,7 +70,7 @@ void CCouncilMember::processWalking()
 	}
 
 	// Move normally in the direction
-	if( m_hDir == RIGHT )
+	if( xDirection == RIGHT )
 		moveRight( m_Action.velX<<1 );
 	else
 		moveLeft( m_Action.velX<<1 );
@@ -96,9 +96,9 @@ void CCouncilMember::process()
 	(this->*mp_processState)();
 
 	if( blockedl )
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	else if(blockedr)
-		m_hDir = LEFT;
+		xDirection = LEFT;
 
 	if(!processActionRoutine())
 			exists = false;

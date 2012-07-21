@@ -36,7 +36,7 @@ mp_processState(NULL)
 	m_walktimer = 0;
 	m_timer = 0;
 	m_dying = false;
-	m_hDir = facedir;
+	xDirection = facedir;
 
 	memset(m_playcontrol, 0, PA_MAX_ACTIONS);
 	m_camera.setPosition(m_Pos);

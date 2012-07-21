@@ -41,7 +41,7 @@ transluceny(0)
 	dontdraw = false;
 	cansupportplayer = false;
 	dying = false;
-	m_vDir = m_hDir = NONE;
+	yDirection = xDirection = NONE;
 	supportedbyobject = false;
 
 	blockedd = false;
@@ -114,14 +114,14 @@ void CSpriteObject::performCliffStop(const int &speed)
 {
 	if(verifyForFalling())
 	{
-		if( m_hDir == RIGHT )
+		if( xDirection == RIGHT )
 		{
-			m_hDir = LEFT;
+			xDirection = LEFT;
 			moveLeft( speed );
 		}
 		else
 		{
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 			moveRight( speed );
 		}
 	}

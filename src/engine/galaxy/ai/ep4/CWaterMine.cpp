@@ -18,12 +18,12 @@ const int MINE_SPEED = 20;
 CWaterMine::CWaterMine(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const bool vertical) :
 CGalaxySpriteObject(pmap, foeID, x, y)
 {
-	m_vDir = m_hDir = NONE;
+	yDirection = xDirection = NONE;
 
 	if(vertical)
-		m_vDir = DOWN;
+		yDirection = DOWN;
 	else
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 
 	setupGalaxyObjectOnMap(0x3890, A_MINE_MOVE);
 	mp_processState = &CWaterMine::processMove;
@@ -50,7 +50,7 @@ void CWaterMine::processMove()
 {
 	performCollisions();
 
-	if(m_vDir)
+	if(yDirection)
 	{
 		const Uint16 blockerUp = mp_Map->getPlaneDataAt(2, getXMidPos(), getYUpPos());
 		const Uint16 blockerDown = mp_Map->getPlaneDataAt(2, getXMidPos(), getYDownPos());
@@ -63,11 +63,11 @@ void CWaterMine::processMove()
 
 		// If the mine is really blocked, change the direction
 		if(blockedd)
-			m_vDir = UP;
+			yDirection = UP;
 		else if(blockedu)
-			m_vDir = DOWN;
+			yDirection = DOWN;
 
-		if(m_vDir == DOWN)
+		if(yDirection == DOWN)
 			moveDown(MINE_SPEED);
 		else
 			moveUp(MINE_SPEED);
@@ -85,11 +85,11 @@ void CWaterMine::processMove()
 
 		// If the mine is really blocked, change the direction
 		if(blockedl)
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 		else if(blockedr)
-			m_hDir = LEFT;
+			xDirection = LEFT;
 
-		if(m_hDir == LEFT)
+		if(xDirection == LEFT)
 			moveLeft(MINE_SPEED);
 		else
 			moveRight(MINE_SPEED);

@@ -29,8 +29,8 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 		setupGalaxyObjectOnMap(0x1A64, action_type);
 	}
 
-	m_hDir = NONE;
-	m_vDir = UP;
+	xDirection = NONE;
+	yDirection = UP;
 	honorPriority = false;
 	solid = false;
 }

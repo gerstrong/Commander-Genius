@@ -48,7 +48,7 @@ private:
 class CBerkFlame : public CGalaxySpriteObject
 {
 public:
-	CBerkFlame(CMap *pmap, Uint32 x, Uint32 y, direction_t dir);
+	CBerkFlame(CMap *pmap, Uint32 x, Uint32 y, const int xDir);
 
 	void setActionForce(const size_t ActionNumber);
 

@@ -33,7 +33,7 @@ mTimer(0)
 	mActionMap[A_EAGLE_STUNNED] = &CBlueBird::processStunned;
 
 	setupGalaxyObjectOnMap( 0x21B6, A_EAGLE_HATCHED );
-	m_hDir = LEFT;
+	xDirection = LEFT;
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
@@ -60,14 +60,14 @@ bool CBlueBird::isNearby(CSpriteObject &theObject)
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		if( player->getXMidPos() < getXMidPos() )
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		else
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 
 		if( player->getYMidPos() < getYMidPos() )
-			m_vDir = UP;
+			yDirection = UP;
 		else
-			m_vDir = DOWN;
+			yDirection = DOWN;
 	}
 
 	return true;
@@ -94,7 +94,7 @@ void CBlueBird::processWalking()
 	mTimer++;
 
 	// Move normally in the direction
-	if( m_hDir == RIGHT )
+	if( xDirection == RIGHT )
 		moveRight( WALK_SPEED );
 	else
 		moveLeft( WALK_SPEED );
@@ -114,12 +114,12 @@ void CBlueBird::processFlying()
 		mTimer++;
 
 		// Move normally in the direction
-		if( m_hDir == RIGHT )
+		if( xDirection == RIGHT )
 			moveRight( FLY_SPEED );
 		else
 			moveLeft( FLY_SPEED );
 
-		if( m_vDir == UP )
+		if( yDirection == UP )
 			moveUp( FLY_SPEED );
 		else
 			moveDown( FLY_SPEED );
@@ -163,14 +163,14 @@ void CBlueBird::process()
 	processFalling();
 
 	if( blockedl )
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	else if( blockedr )
-		m_hDir = LEFT;
+		xDirection = LEFT;
 
 	if( blockedu )
-		m_vDir = DOWN;
+		yDirection = DOWN;
 	else if( blockedu )
-		m_vDir = UP;
+		yDirection = UP;
 
 
 	(this->*mpProcessState)();

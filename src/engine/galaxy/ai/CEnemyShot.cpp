@@ -13,19 +13,14 @@ namespace galaxy {
 
 
 CEnemyShot::CEnemyShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
-		const int actionFormatOffset, const direction_t dir, const int speed) :
+		const int actionFormatOffset, const int xDir, const int yDir, const int speed) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 m_speed(speed)
 {
 	setupGalaxyObjectOnMap(actionFormatOffset, 0);
 
-	m_hDir = m_vDir = NONE;
-
-	// Translate into two variable horizontal and vertical style
-	if(dir == RIGHT || dir == LEFT)
-		m_hDir = dir;
-	else
-		m_vDir = dir;
+	xDirection = xDir;
+	yDirection = yDir;
 
 }
 
@@ -40,14 +35,14 @@ void CEnemyShot::getTouchedBy(CSpriteObject &theObject)
 
 void CEnemyShot::process()
 {
-	if(m_hDir == LEFT)
+	if(xDirection == LEFT)
 		moveLeft(m_speed);
-	else if(m_hDir == RIGHT)
+	else if(xDirection == RIGHT)
 		moveRight(m_speed);
 
-	if(m_vDir == UP)
+	if(yDirection == UP)
 		moveUp(m_speed);
-	else if(m_vDir == DOWN)
+	else if(yDirection == DOWN)
 		moveDown(m_speed);
 
 	// If it collides against something, make it non-existent

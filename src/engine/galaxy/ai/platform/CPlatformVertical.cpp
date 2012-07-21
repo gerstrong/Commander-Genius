@@ -18,8 +18,8 @@ CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint3
 CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y)
 {
-	m_hDir = NONE;
-	m_vDir = DOWN;
+	xDirection = NONE;
+	yDirection = DOWN;
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
 	calcBoundingBoxes();
@@ -38,14 +38,14 @@ void CPlatformVertical::process()
 
 	// If there is a blocker, change the direction
 	if( object == 31 )
-		m_vDir = (m_vDir == UP) ? DOWN : UP;
+		yDirection = (yDirection == UP) ? DOWN : UP;
 
-	if(m_vDir == UP && blockedu)
-		m_vDir = DOWN;
-	else if(m_vDir == DOWN && blockedd)
-		m_vDir = UP;
+	if(yDirection == UP && blockedu)
+		yDirection = DOWN;
+	else if(yDirection == DOWN && blockedd)
+		yDirection = UP;
 
-	if(m_vDir == UP)
+	if(yDirection == UP)
 	{
 		mp_BoostEngObjLeft->moveUp(MOVE_VERT_SPEED);
 		mp_BoostEngObjRight->moveUp(MOVE_VERT_SPEED);

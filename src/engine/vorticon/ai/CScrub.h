@@ -36,7 +36,6 @@ private:
 	int scrubdie_inertia_y;
 	int fallspeed;
 
-	unsigned char walkdir;
 	unsigned char kickedplayer[MAX_PLAYERS];
 	std::vector<CPlayer>& m_Player;
 };

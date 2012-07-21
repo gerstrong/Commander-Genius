@@ -40,8 +40,7 @@ CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
 CPlayerBase(pmap, foeID, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
 m_jumpdownfromobject(false),
-mPlacingGem(false),
-mPoleGrabTime(0)
+mPlacingGem(false)
 {
 	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_LOOKUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
@@ -89,6 +88,58 @@ mPoleGrabTime(0)
 }
 
 
+void CPlayerLevel::handleInputOnGround()
+{
+	int px = m_playcontrol[PA_X];
+	int py = m_playcontrol[PA_Y];
+
+	/*if(px)
+	{
+		setAction(A_KEEN_RUN);
+		CK_KeenRunningThink(obj);
+		nextX = xDirection * currentAction->velX * (CK_GetTicksPerFrame())/4;
+		return;
+	}*/
+
+	/*if( state.jumpIsPressed && !state.jumpWasPressed)
+	{
+		mJumpWasPressed = true;
+		mVelX = 0;
+		mVelY = -40;
+		mNextY = 0;
+		state.jumpTimer = 18;
+		setAction(A_KEEN_JUMP);
+		return;
+	}
+
+	if( state.pogoIsPressed && !state.pogoWasPressed)
+	{
+		state.pogoWasPressed = true;
+		mVelX = 0;
+		mVelY = -48;
+		setAction(A_KEEN_POGO);
+		mNextY = 0;
+		state.jumpTimer = 24;
+		return;
+	}
+
+	if(ck_inputFrame.yDirection == -1)
+	{
+		if (CK_KeenTryClimbPole(obj)) return;
+	}
+	else if(ck_inputFrame.yDirection == 1)
+	{
+		// Try poles.
+		if (CK_KeenTryClimbPole(obj)) return;
+		// Keen looks down.
+		obj->currentAction = &CK_ACT_keenLookDown1;
+		setAction(A_KEEN_LOOK_DOWN);
+		return;
+	}*/
+
+}
+
+
 
 
 // This special code is important, so platforms in all cases will catch Keen when he is falling on them
@@ -125,11 +176,11 @@ void CPlayerLevel::processInput()
 
 
 
-void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const direction_t &dir )
+void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const int xDir, const int yDir )
 {
 	if(m_Inventory.Item.m_bullets > 0)
 	{
-		m_ObjectPtrs.push_back(new CBullet(mp_Map, 0, pos.x, pos.y, dir));
+		m_ObjectPtrs.push_back(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir));
 		m_Inventory.Item.m_bullets--;
 	}
 	else
@@ -148,21 +199,21 @@ void CPlayerLevel::shootInAir()
 	{
 		setActionForce(A_KEEN_JUMP_SHOOTUP);
 		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
-		tryToShoot(newVec, UP);
+		tryToShoot(newVec, 0, -1);
 	}
 	else if( m_playcontrol[PA_Y] > 0 )
 	{
 		setActionForce(A_KEEN_JUMP_SHOOTDOWN);
 		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
-		tryToShoot(newVec, DOWN);
+		tryToShoot(newVec, 0, 1);
 	}
 	else
 	{
 		setActionForce(A_KEEN_JUMP_SHOOT);
 
-		const VectorD2<int> newVec(getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC)),
+		const VectorD2<int> newVec(getXPosition() + ((xDirection < 0) ? -(16<<STC) : (16<<STC)),
 									getYPosition()+(4<<STC));
-		tryToShoot(newVec, m_hDir);
+		tryToShoot(newVec, xDirection, yDirection);
 	}
 	m_fire_recharge_time = FIRE_RECHARGE_TIME;
 }
@@ -228,8 +279,8 @@ void CPlayerLevel::processCliffHanging()
 		return;
 
 	// If you want to climb up
-	if( ((m_hDir == LEFT) && (m_playcontrol[PA_X] < 0)) ||
-		((m_hDir == RIGHT) && (m_playcontrol[PA_X] > 0))  )
+	if( ((xDirection == LEFT) && (m_playcontrol[PA_X] < 0)) ||
+		((xDirection == RIGHT) && (m_playcontrol[PA_X] > 0))  )
 	{
 		setAction(A_KEEN_CLIMB);
 		m_camera.m_freeze = true;
@@ -237,14 +288,14 @@ void CPlayerLevel::processCliffHanging()
 
 	// If you want to fall down.
 	else if( m_playcontrol[PA_Y] > 0 ||
-		((m_hDir == LEFT) && (m_playcontrol[PA_X] > 0)) ||
-		((m_hDir == RIGHT) && (m_playcontrol[PA_X] < 0))  )
+		((xDirection == LEFT) && (m_playcontrol[PA_X] > 0)) ||
+		((xDirection == RIGHT) && (m_playcontrol[PA_X] < 0))  )
 	{
 		setAction( A_KEEN_FALL );
 		playSound( SOUND_KEEN_FALL );
 		solid = true;
 		const int dx = 8<<STC;
-		moveXDir( (m_hDir == LEFT) ? dx : -dx, true);
+		moveXDir( (xDirection == LEFT) ? dx : -dx, true);
 		setActionSprite();
 		calcBoundingBoxes();
 	}
@@ -260,7 +311,7 @@ void CPlayerLevel::processCliffClimbing()
 	const int dy = 24;
 	const int dx = dy/3;
 	moveUp(dy);
-	moveXDir( (m_hDir == LEFT) ? -dx : dx, true);
+	moveXDir( (xDirection == LEFT) ? -dx : dx, true);
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	if( getActionStatus(A_KEEN_STAND) )
@@ -288,9 +339,9 @@ void CPlayerLevel::processMovingHorizontal()
 {
 	// Verify facing directions
 	if(  m_playcontrol[PA_X]<0  ) // left
-		m_hDir = LEFT;
+		xDirection = LEFT;
 	else if( m_playcontrol[PA_X]>0  ) // right
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 
 	moveXDir(m_playcontrol[PA_X]>>1);
 }
@@ -365,13 +416,13 @@ void CPlayerLevel::processPogo()
 	// Verify facing directions. Here we build up the inertia
 	if(  m_playcontrol[PA_X]<0  ) // left
 	{
-		m_hDir = LEFT;
+		xDirection = LEFT;
 		if( xinertia > -POGO_INERTIA_HOR_MAX)
 			xinertia -= POGO_INERTIA_HOR_REACTION;
 	}
 	else if( m_playcontrol[PA_X]>0  ) // right
 	{
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 		if( xinertia < +POGO_INERTIA_HOR_MAX)
 			xinertia += POGO_INERTIA_HOR_REACTION;
 	}
@@ -492,7 +543,7 @@ void CPlayerLevel::processLookingUp()
 	{
 		setActionForce(A_KEEN_SHOOT_UP);
 		const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
-		tryToShoot(newVec, UP);
+		tryToShoot(newVec, 0, -1);
 		m_fire_recharge_time = FIRE_RECHARGE_TIME;
 		return;
 	}
@@ -919,7 +970,7 @@ void CPlayerLevel::processPoleClimbing()
 		m_jumped = true;
 		mPoleGrabTime = 0;
 		yinertia = 0;
-		m_vDir = NONE;
+		yDirection = NONE;
 		solid = true;
 		return;
 	}
@@ -941,7 +992,7 @@ void CPlayerLevel::processPoleClimbing()
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTUP);
 			const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYUpPos()-(16<<STC));
-			tryToShoot(newVec, UP);
+			tryToShoot(newVec, 0, -1);
 			return;
 		}
 
@@ -950,12 +1001,12 @@ void CPlayerLevel::processPoleClimbing()
 		if( hitdetectWithTileProperty(1, l_x, l_y_up) )
 		{
 			setAction(A_KEEN_POLE_CLIMB);
-			m_vDir = UP;
+			yDirection = UP;
 		}
 		else
 		{
 			setAction(A_KEEN_POLE);
-			m_vDir = NONE;
+			yDirection = NONE;
 		}
 	}
 	else if( m_playcontrol[PA_Y] > 0 )
@@ -966,7 +1017,7 @@ void CPlayerLevel::processPoleClimbing()
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTDOWN);
 			const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
-			tryToShoot(newVec, DOWN);
+			tryToShoot(newVec, 0, 1);
 			return;
 		}
 
@@ -984,13 +1035,13 @@ void CPlayerLevel::processPoleClimbing()
 		{
 			// Slide down if there is more of the pole
 			setAction(A_KEEN_POLE_SLIDE);
-			m_vDir = DOWN;
+			yDirection = DOWN;
 		}
 		else
 		{
 			// Fall down if there isn't any pole to slide down
 			m_climbing = false;
-			m_vDir = NONE;
+			yDirection = NONE;
 			yinertia = 0;
 			solid = true;
 
@@ -1018,14 +1069,14 @@ void CPlayerLevel::processPoleClimbing()
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOT);
-			const VectorD2<int> newVec(getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC)),
+			const VectorD2<int> newVec(getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC)),
 										getYPosition()+(4<<STC));
-			tryToShoot(newVec, m_hDir);
+			tryToShoot(newVec, xDirection, yDirection);
 			return;
 		}
 
 		setAction(A_KEEN_POLE);
-		m_vDir = NONE;
+		yDirection = NONE;
 	}
 }
 
@@ -1074,9 +1125,38 @@ bool CPlayerLevel::verifyforPole()
 
 
 
+
+
+
+/// Keen standing routine
 void CPlayerLevel::processStanding()
 {
-	/// Keen is standing
+	int px = m_playcontrol[PA_X];
+	int py = m_playcontrol[PA_Y];
+
+	if( px || py || state.jumpIsPressed || state.pogoIsPressed )
+	{
+		//setAction(A_KEEN_STAND);
+
+		handleInputOnGround();
+		return;
+	}
+
+	// He could duck or use the pole
+	if( py > 0 )
+	{
+		if(!verifyforPole())
+			setAction(A_KEEN_LOOKDOWN);
+	}
+
+	// He could press up and do further actions
+	if( py < 0 )
+	{
+		if(!verifyforPole())
+		{
+			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPressUp;
+		}
+	}
 
 	// Center the view after Keen looked up or down
 	centerView();
@@ -1085,13 +1165,13 @@ void CPlayerLevel::processStanding()
 	if(  m_playcontrol[PA_X]<0 && !blockedl  )
 	{
 		// prepare him to walk to the left
-		m_hDir = LEFT;
+		xDirection = LEFT;
 		setAction(A_KEEN_RUN);
 	}
 	else if(  m_playcontrol[PA_X]>0 && !blockedr )
 	{
 		// prepare him to walk to the right
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 		setAction(A_KEEN_RUN);
 	}
 
@@ -1104,34 +1184,20 @@ void CPlayerLevel::processStanding()
 		setAction(A_KEEN_JUMP);
 		m_jumped = true;
 		m_climbing = false;
-		m_vDir = NONE;
+		yDirection = 0;
 		playSound( SOUND_KEEN_JUMP );
 	}
 
 
-	// He could duck or use the pole
-	if( m_playcontrol[PA_Y] > 0 )
-	{
-		if(!verifyforPole())
-			setAction(A_KEEN_LOOKDOWN);
-	}
 
-	// He could press up and do further actions
-	if( m_playcontrol[PA_Y] < 0 )
-	{
-		if(!verifyforPole())
-		{
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPressUp;
-		}
-	}
 
 	// He could shoot
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		setAction(A_KEEN_SHOOT);
-		const VectorD2<int> newVec(getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC)),
+		const VectorD2<int> newVec(getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC)),
 									getYPosition()+(4<<STC));
-		tryToShoot(newVec, m_hDir);
+		tryToShoot(newVec, xDirection, yDirection);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
 		m_fire_recharge_time = FIRE_RECHARGE_TIME;
 		return;
@@ -1197,7 +1263,7 @@ void CPlayerLevel::processRunning()
 		else
 		{
 			// walk to the left
-			m_hDir = LEFT;
+			xDirection = LEFT;
 			makeWalkSound();
 		}
 	}
@@ -1211,7 +1277,7 @@ void CPlayerLevel::processRunning()
 		else
 		{
 			// walk to the right
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 			makeWalkSound();
 		}
 	}
@@ -1232,18 +1298,18 @@ void CPlayerLevel::processRunning()
 		setAction(A_KEEN_JUMP);
 		m_jumped = true;
 		m_climbing = false;
-		m_vDir = NONE;
+		yDirection = NONE;
 		playSound( SOUND_KEEN_JUMP );
 	}
 
 	// He could shoot
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
-		const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+		const int newx = getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC));
 		const int newy = getYPosition()+(4<<STC);
 
 		const VectorD2<int> newVec(newx, newy);
-		tryToShoot(newVec, m_hDir);
+		tryToShoot(newVec, xDirection, yDirection);
 
 		setAction(A_KEEN_SHOOT);
 		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
@@ -1330,7 +1396,7 @@ void CPlayerLevel::processFalling()
 		m_climbing = false;
 		m_jumped = true;
 		yinertia = 0;
-		m_vDir = NONE;
+		yDirection = NONE;
 		return;
 	}
 

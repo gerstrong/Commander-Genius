@@ -32,7 +32,7 @@ mTimer(0)
 
 	setupGalaxyObjectOnMap(0x26DE, A_WORMMOUTH_MOVE);
 
-	m_hDir = LEFT;
+	xDirection = LEFT;
 }
 
 
@@ -52,9 +52,9 @@ bool CWormmouth::isNearby(CSpriteObject &theObject)
 
 		if( getActionNumber(A_WORMMOUTH_LOOK) )
 		{
-			if( playerX < wormmouthX && m_hDir != LEFT )
+			if( playerX < wormmouthX && xDirection != LEFT )
 				mTurnAround = true;
-			else if( playerX > wormmouthX && m_hDir != RIGHT )
+			else if( playerX > wormmouthX && xDirection != RIGHT )
 				mTurnAround = true;
 		}
 
@@ -112,10 +112,10 @@ void CWormmouth::processMoving()
 {
 	if( mTurnAround )
 	{
-		if( m_hDir == LEFT )
-			m_hDir = RIGHT;
+		if( xDirection == LEFT )
+			xDirection = RIGHT;
 		else
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		mTurnAround = false;
 		setAction( A_WORMMOUTH_LOOK );
 	}
@@ -169,9 +169,9 @@ void CWormmouth::process()
 		return;
 
 	if( blockedl )
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	else if(blockedr)
-		m_hDir = LEFT;
+		xDirection = LEFT;
 
 	processActionRoutine();
 }

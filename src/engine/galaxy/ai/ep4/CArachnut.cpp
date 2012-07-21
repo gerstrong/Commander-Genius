@@ -22,7 +22,7 @@ CArachnut::CArachnut(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y)
 {
 	setupGalaxyObjectOnMap( 0x2378, A_ARACHNUT_WALK );
-	m_hDir = LEFT;
+	xDirection = LEFT;
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
@@ -38,14 +38,14 @@ bool CArachnut::isNearby(CSpriteObject &theObject)
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		if( player->getXMidPos() < getXMidPos() )
-			m_hDir = LEFT;
+			xDirection = LEFT;
 		else
-			m_hDir = RIGHT;
+			xDirection = RIGHT;
 
 		if( player->getYMidPos() < getYMidPos() )
-			m_vDir = UP;
+			yDirection = UP;
 		else
-			m_vDir = DOWN;
+			yDirection = DOWN;
 	}
 
 	return true;
@@ -75,9 +75,9 @@ void CArachnut::process()
 	processFalling();
 
 	if( blockedl )
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	else if( blockedr )
-		m_hDir = LEFT;
+		xDirection = LEFT;
 
 	if( getActionStatus(A_ARACHNUT_WALK) )
 		setAction(A_ARACHNUT_WALK);
@@ -85,7 +85,7 @@ void CArachnut::process()
 	if( getActionNumber(A_ARACHNUT_WALK) )
 	{
 		// Move normally in the direction
-		if( m_hDir == RIGHT )
+		if( xDirection == RIGHT )
 			moveRight( WALK_SPEED );
 		else
 			moveLeft( WALK_SPEED );

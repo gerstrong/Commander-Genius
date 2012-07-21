@@ -79,9 +79,9 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 		if( getProbability(80) && getActionStatus(A_CLOUD_MOVING) )
 		{
 			if( player->getXMidPos() < getXMidPos() )
-				m_hDir = LEFT;
+				xDirection = LEFT;
 			else
-				m_hDir = RIGHT;
+				xDirection = RIGHT;
 		}
 
 		if( mpBolt == NULL && player->getYMidPos() > getYMidPos() )
@@ -120,7 +120,7 @@ void CThunderCloud::processWaking()
 void CThunderCloud::processMoving()
 {
 	// Move normally in the direction
-	if( m_hDir == RIGHT )
+	if( xDirection == RIGHT )
 		moveRight( MOVE_SPEED );
 	else
 		moveLeft( MOVE_SPEED );
@@ -152,9 +152,9 @@ void CThunderCloud::process()
 	processFalling();
 
 	if( blockedl )
-		m_hDir = RIGHT;
+		xDirection = RIGHT;
 	else if( blockedr )
-		m_hDir = LEFT;
+		xDirection = LEFT;
 
 	(this->*mpProcessState)();
 

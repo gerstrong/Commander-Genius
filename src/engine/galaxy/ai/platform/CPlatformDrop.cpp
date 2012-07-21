@@ -25,8 +25,8 @@ m_delay_for_drop(0),
 m_drop_speed(0),
 m_Origin(m_Pos)
 {
-	m_hDir = NONE;
-	m_vDir = NONE;
+	xDirection = NONE;
+	yDirection = NONE;
 	solid = false;
 	setActionForce(A_PLATFORM_DROP);
 	setActionSprite();
