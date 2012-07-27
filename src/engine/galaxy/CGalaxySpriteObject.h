@@ -18,6 +18,12 @@ public:
 	void setupGalaxyObjectOnMap(const size_t ActionBaseOffset = 0x0,
 								const size_t ActionNumber = 0x0 );
 
+	void performPhysAccelHor( const int accX, const int velLimit );
+	void performPhysDampHorz();
+	void performGravityLow();
+	void performGravityMid();
+	void performGravityHigh();
+
 	void processFalling();
 
 	int checkSolidU(int x1, int x2, int y1, const bool push_mode=false );
@@ -40,6 +46,10 @@ public:
 
 	int nextX;
 	int nextY;
+
+	//TileInfo for surrounding tiles.
+	int topTI, bottomTI, leftTI, rightTI;
+
 
 	int user1;
 	int user2;

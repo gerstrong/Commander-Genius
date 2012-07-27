@@ -52,6 +52,9 @@ public:
     int getLogicPerSec( void ) { return m_LPS; }
     int getFramesPerSec( void ) { return m_FPS; }
 
+    int getTicksPerFrame();
+
+
     Uint32 getTicks() { return timerTicks(); }
 
 private:

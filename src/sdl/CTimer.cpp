@@ -231,6 +231,18 @@ void CTimer::TimeToDelay( void )
     }
 }
 
+
+int CTimer::getTicksPerFrame()
+{
+	int ratio = m_LogicRate/m_FrameRate;
+
+	if(ratio < 1)
+		ratio = 1;
+
+	return ratio;
+}
+
+
 //////////////////////////////////////////////////////////
 // Those are for measuring the time in the game itself. //
 //////////////////////////////////////////////////////////

@@ -277,6 +277,43 @@ Uint32 CSpriteObject::getYMidPos()
 { return m_Pos.y+(m_BBox.y2-m_BBox.y1)/2; }
 
 
+void CSpriteObject::processFallPhysics(const int boost)
+{
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+
+	// In this case foe is jumping?
+	// Not sure here. We should use another variable...
+	if(yinertia<0 && !blockedu)
+	{
+		moveUp(-yinertia);
+		yinertia += boost;
+	}
+	else if( yinertia>=0 && !blockedd )
+	{
+		moveDown(yinertia);
+
+		// gradually increase the fall speed up to maximum rate
+		if (yinertia>Physics.max_fallspeed)
+			yinertia = Physics.max_fallspeed;
+		else if (yinertia<Physics.max_fallspeed)
+			yinertia += boost;
+	}
+
+	// hit floor or ceiling? set inertia to zero
+	if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
+		yinertia = 0;
+
+	// If object is not falling (yinertia >= 0) and blocked he cannot be falling
+	if(blockedd && yinertia>=0)
+		falling = false;
+}
+
+void CSpriteObject::processFallPhysics()
+{
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	processFallPhysics(Physics.fallspeed_increase);
+}
+
 /**
  * processes falling of an object. Can be player or any other foe
  */
@@ -287,33 +324,7 @@ void CSpriteObject::processFalling()
 	// So it reaches the maximum of fallspeed
 	if(!inhibitfall)
 	{
-		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
-
-		// In this case foe is jumping?
-		// Not sure here. We should use another variable...
-		if(yinertia<0 && !blockedu)
-		{
-			moveUp(-yinertia);
-			yinertia += Physics.fallspeed_increase;
-		}
-		else if( yinertia>=0 && !blockedd )
-		{
-			moveDown(yinertia);
-
-			// gradually increase the fall speed up to maximum rate
-			if (yinertia>Physics.max_fallspeed)
-				yinertia = Physics.max_fallspeed;
-			else if (yinertia<Physics.max_fallspeed)
-				yinertia += Physics.fallspeed_increase;
-		}
-
-		// hit floor or ceiling? set inertia to zero
-		if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
-			yinertia = 0;
-
-		// If object is not falling (yinertia >= 0) and blocked he cannot be falling
-		if(blockedd && yinertia>=0)
-			falling = false;
+		processFallPhysics();
 	}
 	else
 	{

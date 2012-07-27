@@ -77,6 +77,7 @@ public:
 			CInventory &l_Inventory, stCheat &Cheatmode);
 
 
+	void prepareToShoot();
 	/**
 	 * \brief	handles the input when keen standing on ground.
 	 */
@@ -98,6 +99,11 @@ public:
 	 *  \brief This will center Keens view after he looked up or down.
 	 */
 	void centerView();
+
+
+	/**
+	 * Input handles
+	 */
 
 	/**
 	 * \description This is the main process cycle
@@ -171,6 +177,13 @@ public:
 
 
 	/**
+	 * \brief Checks if Keen must fall.
+	 */
+	void verifyFalling();
+
+
+
+	/**
 	 * \description Simple process called while Keen is falling down
 	 */
 	void processFalling();
@@ -188,8 +201,14 @@ public:
 	 */
 	void shootInAir();
 
+	void verifyJumpAndFall();
+
 	void processJumping();
+
+	void processPogoCommon();
+	void processPogoBounce();
 	void processPogo();
+
 	void processLooking();
 
 
@@ -215,12 +234,19 @@ public:
 	/**
 	 * This function will ensure that Keen keeps ducking
 	 */
-	void processPressDucking();
+	void processLookingDown();
 
 	/**
 	 * This function will do the cycle when Keen is on the pole
 	 */
-	void processPoleClimbing();
+
+	void performPoleHandleInput();
+
+	void processPoleClimbingSit();
+
+	void processPoleClimbingUp();
+
+	void processPoleClimbingDown();
 
 	void processExiting();
 

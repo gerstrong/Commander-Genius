@@ -11,6 +11,7 @@
 #include "platform/CPlatform.h"
 #include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
+#include "sdl/CTimer.h"
 #include "CVec.h"
 #include "CLogFile.h"
 
@@ -34,6 +35,12 @@ const int FIRE_RECHARGE_TIME = 5;
 
 const int MAX_POLE_GRAB_TIME = 19;
 
+const int MAX_SCROLL_VIEW = (8<<CSF);
+
+int ck_KeenRunXVels[8] = {0, 0, 4, 4, 8, -4, -4, -8};
+
+int ck_KeenPoleOffs[3] = {-8, 0, 8};
+
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
@@ -43,28 +50,30 @@ m_jumpdownfromobject(false),
 mPlacingGem(false)
 {
 	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+	mActionMap[A_KEEN_QUESTION] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+	mActionMap[A_KEEN_BORED] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_LOOKUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
-	mActionMap[A_KEEN_LOOKDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processPressDucking;
+	mActionMap[A_KEEN_LOOKDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingDown;
 	mActionMap[A_KEEN_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
 	mActionMap[A_KEEN_SHOOT_UP] = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
 	mActionMap[A_KEEN_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processSliding;
 	mActionMap[A_KEEN_ENTER_DOOR] = static_cast<void (CPlayerBase::*)()>(&CPlayerLevel::processEnterDoor);
-	mActionMap[A_KEEN_POLE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
-	mActionMap[A_KEEN_POLE_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
-	mActionMap[A_KEEN_POLE_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
-	mActionMap[A_KEEN_POLE_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
-	mActionMap[A_KEEN_POLE_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
-	mActionMap[A_KEEN_POLE_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbing;
+	mActionMap[A_KEEN_POLE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingSit;
+	mActionMap[A_KEEN_POLE_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingUp;
+	mActionMap[A_KEEN_POLE_SLIDE] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingDown;
+	mActionMap[A_KEEN_POLE_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingSit;
+	mActionMap[A_KEEN_POLE_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingUp;
+	mActionMap[A_KEEN_POLE_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processPoleClimbingDown;
 	mActionMap[A_KEEN_RUN] = (void (CPlayerBase::*)()) &CPlayerLevel::processRunning;
-	mActionMap[A_KEEN_POGO_START] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
+	mActionMap[A_KEEN_POGO_START] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogoBounce;
 	mActionMap[A_KEEN_POGO_UP] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
 	mActionMap[A_KEEN_POGO_HIGH] = (void (CPlayerBase::*)()) &CPlayerLevel::processPogo;
 	mActionMap[A_KEEN_JUMP] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
-	mActionMap[A_KEEN_JUMP_DOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
-	mActionMap[A_KEEN_FALL] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
-	mActionMap[A_KEEN_JUMP_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
-	mActionMap[A_KEEN_JUMP_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
-	mActionMap[A_KEEN_JUMP_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processFalling;
+	mActionMap[A_KEEN_JUMP_DOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
+	mActionMap[A_KEEN_FALL] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
+	mActionMap[A_KEEN_JUMP_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
+	mActionMap[A_KEEN_JUMP_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
+	mActionMap[A_KEEN_JUMP_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
 	mActionMap[A_KEEN_HANG] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
 	mActionMap[A_KEEN_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbing;
 
@@ -88,25 +97,206 @@ mPlacingGem(false)
 }
 
 
+
+
+
+
+bool CPlayerLevel::verifyforPole()
+{
+	// TODO: Something strange here? Ticks?
+	if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
+		return false;
+
+	mPoleGrabTime = 0;
+
+	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	l_x = (l_x>>CSF)<<CSF;
+	const int l_y_up = ( getYUpPos() ) + (4<<STC);
+	const int l_y_down = ( ( getYDownPos() >> CSF ) + 1 ) << CSF;
+
+	const int yDir = (m_playcontrol[PA_Y] < 0) ? -1 : 1;
+
+	// Now check if Player has the chance to climb a pole or something similar
+	if( ( yDir < 0 && ( hitdetectWithTileProperty(1, l_x, l_y_up) & 0x7F) == 1 ) ||
+		( yDir > 0 && ( hitdetectWithTileProperty(1, l_x, l_y_down) & 0x7F) == 1 ) ) // 1 -> stands for pole Property
+	{
+		// Move to the proper X Coordinates, so Keen really grabs it!
+		moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
+
+		xinertia = 0;
+
+		next.x = 0;
+		next.y = 64*yDir;
+
+		// Set Keen in climb mode
+		setAction(A_KEEN_POLE);
+		m_climbing = true;
+		mClipped = false;
+		solid = false;
+		return true;
+	}
+	return false;
+}
+
+
+const int POGO_START_INERTIA = 125; // 48 In K5 Disassemble
+
+
+void CPlayerLevel::processRunning()
+{
+	prepareToShoot();
+
+	int px = m_playcontrol[PA_X];
+	int py = m_playcontrol[PA_Y];
+
+	// Most of the walking routine is done by the action script itself
+
+	// Center the view after Keen looked up or down
+	centerView();
+
+	// He could stand again, if player doesn't move the dpad
+	if( px == 0 )
+	{
+		setAction(A_KEEN_STAND);
+		yDirection = 0;
+		handleInputOnGround();
+		return;
+	}
+	else
+	{
+		makeWalkSound();
+	}
+
+
+	if ( py == -1)
+	{
+		if ( verifyforPole() ) return;
+	}
+	else if ( py == 1)
+	{
+		if ( verifyforPole() ) return;
+	}
+
+
+	xDirection = 0;
+	if( px < 0 )
+	{
+		xDirection = -1;
+	}
+	else if( px > 0 )
+	{
+		xDirection = 1;
+	}
+
+
+	if (state.jumpIsPressed && !state.jumpWasPressed)
+	{
+		state.jumpWasPressed = true;
+		xinertia = xDirection * 16;
+		yinertia = -90;
+		nextX = nextY = 0;
+		state.jumpTimer = 18;
+		setAction(A_KEEN_JUMP);
+		return;
+	}
+
+	if (state.pogoIsPressed && !state.pogoWasPressed)
+	{
+		state.pogoWasPressed = true;
+		xinertia = xDirection * 16;
+		yinertia = -POGO_START_INERTIA;
+		nextX = 0;
+		state.jumpTimer = 24;
+		playSound( SOUND_KEEN_POGO );
+		setAction(A_KEEN_POGO_START);
+		return;
+	}
+
+
+	if (verifyForFalling())
+	{
+		xinertia = xDirection * 8;
+		yinertia = 0;
+		setAction(A_KEEN_FALL);
+		state.jumpTimer = 0;
+	}
+
+	if ( (blockedl && xDirection == -1) || (blockedr && xDirection == 1))
+	{
+		setAction(A_KEEN_STAND);
+		yDirection = 0;
+	}
+
+	// He could place a gem
+	for( Uint32 i=7 ; i<=10 ; i++ )
+	{
+		const int l_x = getXMidPos();
+		const int l_y = getYDownPos()-(3<<STC);
+
+		// This will change the gemholder to a holder with the gem
+		if( hitdetectWithTileProperty(i, l_x, l_y) )
+		{
+			stItemGalaxy &m_Item = m_Inventory.Item;
+
+			if(i == 7 && m_Item.m_gem.red > 0)
+				m_Item.m_gem.red--;
+			else if(i == 8 && m_Item.m_gem.yellow > 0)
+				m_Item.m_gem.yellow--;
+			else if(i == 9 && m_Item.m_gem.blue > 0)
+				m_Item.m_gem.blue--;
+			else if(i == 10 && m_Item.m_gem.green > 0)
+				m_Item.m_gem.green--;
+			else
+				break;
+
+			moveToHorizontal((l_x>>CSF)<<CSF);
+			mPlacingGem = true;
+			setAction(A_KEEN_SLIDE);
+		}
+	}
+
+}
+
+
+void CPlayerLevel::prepareToShoot()
+{
+	// He could shoot
+	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+	{
+		const int newx = getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC));
+		const int newy = getYPosition()+(4<<STC);
+
+		const VectorD2<int> newVec(newx, newy);
+		tryToShoot(newVec, xDirection, yDirection);
+
+		setAction(A_KEEN_SHOOT);
+		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
+		m_fire_recharge_time = FIRE_RECHARGE_TIME;
+		return;
+	}
+}
+
 void CPlayerLevel::handleInputOnGround()
 {
 	int px = m_playcontrol[PA_X];
 	int py = m_playcontrol[PA_Y];
 
-	/*if(px)
+
+	if(px)
 	{
 		setAction(A_KEEN_RUN);
-		CK_KeenRunningThink(obj);
-		nextX = xDirection * currentAction->velX * (CK_GetTicksPerFrame())/4;
-		return;
-	}*/
+		processRunning();
 
-	/*if( state.jumpIsPressed && !state.jumpWasPressed)
+		nextX = (xDirection * m_Action.velX * g_pTimer->getTicksPerFrame())/4;
+		return;
+	}
+
+	if( state.jumpIsPressed && !state.jumpWasPressed)
 	{
-		mJumpWasPressed = true;
-		mVelX = 0;
-		mVelY = -40;
-		mNextY = 0;
+		state.jumpWasPressed = true;
+		xinertia = 0;
+		yinertia = -90;
+		nextY = 0;
 		state.jumpTimer = 18;
 		setAction(A_KEEN_JUMP);
 		return;
@@ -115,29 +305,171 @@ void CPlayerLevel::handleInputOnGround()
 	if( state.pogoIsPressed && !state.pogoWasPressed)
 	{
 		state.pogoWasPressed = true;
-		mVelX = 0;
-		mVelY = -48;
-		setAction(A_KEEN_POGO);
-		mNextY = 0;
+		xinertia = 0;
+		yinertia = -POGO_START_INERTIA;
+		setAction(A_KEEN_POGO_START);
+		playSound( SOUND_KEEN_POGO );
+		nextY = 0;
 		state.jumpTimer = 24;
 		return;
 	}
 
-	if(ck_inputFrame.yDirection == -1)
+	// He could duck or use the pole
+	if( py > 0 )
 	{
-		if (CK_KeenTryClimbPole(obj)) return;
-	}
-	else if(ck_inputFrame.yDirection == 1)
-	{
-		// Try poles.
-		if (CK_KeenTryClimbPole(obj)) return;
-		// Keen looks down.
-		obj->currentAction = &CK_ACT_keenLookDown1;
-		setAction(A_KEEN_LOOK_DOWN);
+		if(verifyforPole()) return;
+
+		setAction(A_KEEN_LOOKDOWN);
 		return;
-	}*/
+	}
+
+	// He could press up and do further actions
+	if( py < 0 )
+	{
+		if(!verifyforPole())
+		{
+			//mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPressUp;
+			processPressUp();
+		}
+	}
+
 
 }
+
+
+
+/// Keen standing routine
+void CPlayerLevel::processStanding()
+{
+	prepareToShoot();
+
+	verifyFalling();
+
+	int px = m_playcontrol[PA_X];
+	int py = m_playcontrol[PA_Y];
+
+	if (verifyForFalling())
+	{
+		xinertia = xDirection * 8;
+		yinertia = 0;
+		setAction(A_KEEN_FALL);
+		state.jumpTimer = 0;
+	}
+
+	if( px || py || state.jumpIsPressed || state.pogoIsPressed )
+	{
+		user1 = user2 = 0;
+		handleInputOnGround();
+
+		return;
+	}
+
+	//TODO: If not on platform
+	user1 += g_pTimer->getTicksPerFrame();
+
+	if (user2 == 0 && user1 > 200)
+	{
+		user2++;
+		setAction(A_KEEN_QUESTION);
+		user1 = 0;
+		return;
+	}
+
+	if (user2 == 1 && user1 > 300)
+	{
+		user2++;
+		setAction(A_KEEN_BORED);
+		user1 = 0;
+		return;
+	}
+
+	if (user2 == 2 && user1 > 700)
+	{
+		user2++;
+		setAction(A_KEEN_BOOK_OPEN);
+		user1 = 0;
+	}
+
+	// Center the view after Keen looked up or down
+	centerView();
+
+}
+
+
+
+
+
+void CPlayerLevel::processLookingDown()
+{
+	verifyFalling();
+
+	//Try to jump down
+	if (state.jumpIsPressed && !state.jumpWasPressed && (blockedd&7) == 1)
+	{
+		state.jumpWasPressed = true;
+
+		//printf("Tryin' to jump down\n");
+		//If the tiles below the player are blocking on any side but the top, they cannot be jumped through
+		/*int tile1 = CA_TileAtPos(obj->clipRects.tileXmid, obj->clipRects.tileY2, 1);
+		int tile2 = CA_TileAtPos(obj->clipRects.tileXmid, obj->clipRects.tileY2+1, 1);
+
+		if (TI_ForeLeft(tile1) || TI_ForeBottom(tile1) || TI_ForeRight(tile1))
+			return;
+
+		if (TI_ForeLeft(tile2) || TI_ForeBottom(tile2) || TI_ForeRight(tile2))
+			return;
+
+		#define max(a,b) ((a>b)?a:b)
+
+		int deltay = max(g_pTimer->getTicksPerFrame(),4) << 4;
+
+		//TODO: Moving platforms
+
+		clipRects.unitY2 += deltay;
+		posY += deltay;
+		nextX = 0;
+		nextY = 0;
+		g_pSound->play
+		setAction(A_KEEN_FALL);
+		xinertia = yinertia = 0;*/
+		playSound( SOUND_KEEN_FALL );
+		return;
+	}
+
+
+	if ( m_playcontrol[PA_Y] <= 0 || m_playcontrol[PA_X] != 0 || (state.jumpIsPressed && !state.jumpWasPressed)
+		|| (state.pogoIsPressed && !state.pogoWasPressed))
+	{
+		setAction(A_KEEN_STAND);
+		yDirection = 0;
+		return;
+	}
+
+
+	if( m_playcontrol[PA_Y]>0 )
+	{
+		const bool jumpdowntile = canFallThroughTile();
+		if ( m_playcontrol[PA_JUMP] > 0 && ( supportedbyobject || jumpdowntile )  )
+		{
+			m_jumpdownfromobject = supportedbyobject;
+			m_jumpdown = jumpdowntile;
+			supportedbyobject = false;
+			blockedd = false;
+			setAction(A_KEEN_FALL);
+			playSound( SOUND_KEEN_FALL );
+		}
+
+		if( m_camera.m_relcam.y < MAX_SCROLL_VIEW )
+			m_camera.m_relcam.y += (2<<STC);
+
+		return;
+	}
+
+	setAction(A_KEEN_STAND);
+}
+
+
+
 
 
 
@@ -169,6 +501,15 @@ void CPlayerLevel::processInput()
 
 	if(m_playcontrol[PA_Y] >= 0)
 		m_EnterDoorAttempt = false;
+
+	state.jumpWasPressed = state.jumpIsPressed;
+	state.pogoWasPressed = state.pogoIsPressed;
+
+	state.jumpIsPressed = m_playcontrol[PA_JUMP];
+	state.pogoIsPressed = m_playcontrol[PA_POGO];
+
+	if (!state.jumpIsPressed) state.jumpWasPressed = false;
+	if (!state.pogoIsPressed) state.pogoWasPressed = false;
 }
 
 
@@ -327,6 +668,7 @@ void CPlayerLevel::processCliffClimbing()
 			setActionSprite();
 			calcBoundingBoxes();
 			setAction(A_KEEN_STAND);
+			yDirection = 0;
 		}
 	}
 }
@@ -347,15 +689,141 @@ void CPlayerLevel::processMovingHorizontal()
 }
 
 
+void CPlayerLevel::processPogoCommon()
+{
+	if (blockedl && xDirection == -1)
+		xinertia = 0;
+	if (blockedr && xDirection == 1)
+		xinertia = 0;
 
+
+	if (blockedu)
+	{
+		//TODO: Something to do with poles (push keen into the centre)
+		if (blockedu == 17)	//Pole
+		{
+			//obj->posY -= 32;
+			//obj->clipRects.unitY1 -= 32;
+			xinertia = 0;
+			//obj->posX = (obj->clipRects.tileXmid << 8) - 32;
+		}
+		else
+		{
+			//TODO: sounds
+			if (blockedu > 1)
+			{
+				yinertia += 16;
+				if (yinertia < 0)
+					yinertia = 0;
+			}
+			else
+			{
+				if( yinertia < 0 )
+				{
+					// TODO: Play bong Sound.
+					yinertia = 0;
+				}
+			}
+			state.jumpTimer = 0;
+		}
+	}
+
+
+
+	// Houston, we've landed!
+	if(blockedd)
+	{
+		//yinertia = 0; // Not sure if that's correct
+		//TODO: Deadly surfaces and fuse breakage.
+		if (state.jumpTimer == 0)
+		{
+			yinertia = -POGO_START_INERTIA;
+			playSound( SOUND_KEEN_POGO );
+			state.jumpTimer = 24;
+			setAction(A_KEEN_POGO_UP);
+		}
+	}
+}
+
+
+void CPlayerLevel::processPogoBounce()
+{
+	processPogoCommon();
+
+	yinertia = -POGO_START_INERTIA;
+	//nextY = 6 * yinertia;
+	state.jumpTimer = 24;
+
+	if( !getActionStatus(A_KEEN_POGO_START) )
+		setAction(A_KEEN_POGO_UP);
+}
 
 
 
 // Here all the pogo code is processed
 void CPlayerLevel::processPogo()
 {
-	if(!m_playcontrol[PA_POGO])
-		m_pogotoggle = false;
+	processPogoCommon();
+
+	if (!state.jumpTimer)
+	{
+		if (g_pBehaviorEngine->mDifficulty == EASY)
+		{
+			performGravityMid();
+		}
+		else
+		{
+			performGravityHigh();
+		}
+	}
+	else
+	{
+		if (state.jumpIsPressed || state.jumpTimer <= 9)
+			performGravityLow();
+		else
+			performGravityHigh();
+
+		if (state.jumpTimer < 2)
+			state.jumpTimer = 0;
+		else
+			state.jumpTimer--;
+
+		if (!state.jumpTimer && m_Action.Next_action )
+			//m_Action.setNextActionFormat();
+			setAction(A_KEEN_POGO_HIGH);
+	}
+
+
+	if (m_playcontrol[PA_X])
+	{
+		//if (!xinertia)
+		{
+			if(m_playcontrol[PA_X]<0)
+				xDirection = -1;
+			else if(m_playcontrol[PA_X]>0)
+				xDirection = 1;
+		}
+		performPhysAccelHor(xDirection, 48);
+	}
+	else
+	{
+		//obj->nextX += obj->velX * CK_GetTicksPerFrame();
+		if (xinertia < 0) xDirection = -1;
+		else if (xinertia > 0) xDirection = 1;
+	}
+
+	if (state.pogoIsPressed && !state.pogoWasPressed)
+	{
+		state.pogoWasPressed = true;
+		setAction(A_KEEN_FALL);
+	}
+
+	moveXDir(xinertia);
+
+
+	// TODO: This is old stuff, needs to be removed
+	/*if(!m_playcontrol[PA_POGO])
+		m_pogotoggle = false;*/
 
 	// process Shooting in air
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
@@ -364,154 +832,222 @@ void CPlayerLevel::processPogo()
 		shootInAir();
 		return;
 	}
-
-
-	// while button is pressed, make the player jump higher
-	if( yinertia<0 && !blockedu )
-	{
-		if( (m_playcontrol[PA_JUMP] && m_jumpheight <= MAX_POGOHEIGHT) || m_jumpheight <= MIN_POGOHEIGHT )
-			m_jumpheight++;
-
-		yinertia += POGO_SLOWDOWN;
-	}
-	else
-	{
-		if(blockedu)
-			playSound( SOUND_KEEN_BUMPHEAD );
-
-		CSpriteObject::processFalling();
-		setAction(A_KEEN_POGO_HIGH);
-
-		m_jumpheight = 0;
-	}
-
-	// pressed again will make keen fall until hitting the ground
-	if(m_playcontrol[PA_POGO] && !m_pogotoggle)
-	{
-		m_jumpheight = 0;
-		setAction(A_KEEN_FALL);
-		m_pogotoggle = true;
-		xinertia = 0;
-	}
-
-	// When keen hits the floor, start the same pogoinertia again!
-	if(blockedd)
-	{
-		if(m_playcontrol[PA_JUMP])
-		{
-			yinertia = POGO_START_INERTIA_MAX_VERT;
-		}
-		else
-		{
-			yinertia = POGO_START_INERTIA_VERT;
-		}
-
-		setAction(A_KEEN_POGO_START);
-		m_jumpheight = 0;
-		playSound( SOUND_KEEN_POGO );
-	}
-
-	moveYDir(yinertia);
-
-	// Verify facing directions. Here we build up the inertia
-	if(  m_playcontrol[PA_X]<0  ) // left
-	{
-		xDirection = LEFT;
-		if( xinertia > -POGO_INERTIA_HOR_MAX)
-			xinertia -= POGO_INERTIA_HOR_REACTION;
-	}
-	else if( m_playcontrol[PA_X]>0  ) // right
-	{
-		xDirection = RIGHT;
-		if( xinertia < +POGO_INERTIA_HOR_MAX)
-			xinertia += POGO_INERTIA_HOR_REACTION;
-	}
-
-
-	// Check if we are hitting walls
-	if( blockedr && xinertia > 0 ) // to the right
-	{
-		xinertia -= POGO_INERTIA_HOR_REACTION;
-		if( xinertia < 0 )
-			xinertia = 0;
-	}
-	else if( blockedl && xinertia < 0 ) // left
-	{
-		xinertia += POGO_INERTIA_HOR_REACTION;
-		if( xinertia > 0 )
-			xinertia = 0;
-	}
-
-	moveXDir(xinertia);
 }
 
 
+/*
+
+void CK_KeenReadThink(CK_object *obj)
+{
+	if (IN_GetKeyState(IN_SC_LeftArrow) || IN_GetKeyState(IN_SC_RightArrow))
+	{
+		obj->currentAction = &CK_ACT_keenStowBook1;
+		obj->user1 = obj->user2 = 0;
+	}
+}
+
+*/
 
 
+void CPlayerLevel::verifyJumpAndFall()
+{
+	if ( blockedl && xDirection == -1)
+	{
+		xinertia = 0;
+	}
+	if ( blockedr && xDirection == 1)
+	{
+		xinertia = 0;
+	}
+
+	// Did we hit our head on the ceiling?
+	if (blockedu)
+	{
+		//TODO: Something to do with poles (push keen into the centre)
+		if (blockedu == 17)	//Pole
+		{
+			/*obj->posY -= 32;
+			obj->clipRects.unitY1 -= 32;*/
+			xinertia = 0;
+			//obj->posX = (obj->clipRects.tileXmid << 8) - 32;
+		}
+		else
+		{
+			//TODO: sounds
+			if (blockedu > 1)
+			{
+				yinertia += 16;
+				if (yinertia < 0)
+					yinertia = 0;
+			}
+			else
+			{
+				if( yinertia<0 )
+					yinertia = 0;
+			}
+			state.jumpTimer = 0;
+		}
+	}
 
 
+	// If keen is jumping down, not because he did from an object like a platform,
+	// but a tile where Keen can fall through, process this part of code and
+	// check if Keen is still jumpinto through any object
+	if(!supportedbyobject && m_jumpdown)
+	{
+		if(!canFallThroughTile())
+			m_jumpdown = false;
+	}
 
+	// Have we landed?
+	if (blockedd)
+	{
+		//obj->deltaPosY = 0;
+		//TODO: Check if deadly.
 
+		//TODO: Check if fuse.
+
+		if (state.jumpTimer == 0) // Or standing on a platform.
+		{
+			user1 = user2 = 0;	// Being on the ground is boring.
+			yDirection = 0;
+
+			//TODO: Finish these
+			if( m_playcontrol[PA_X] != 0 )
+			{
+				setAction(A_KEEN_RUN);
+			}
+			else
+			{
+				setAction(A_KEEN_STAND);
+			}
+
+		}
+	}
+	/*else if (deltaPosY > 0)
+	{
+		int temp6 = obj->clipRects.unitY1 - obj->deltaPosY;
+		int temp8 = ((obj->clipRects.unitY1 - 64) & 0xFF00) + 64;
+		int temp10 = (temp8 >> 8) -1;
+
+		if (temp6 < temp8 && obj->clipRects.unitY1 >= temp8)
+		{
+			printf("Preparing to hang!\n");
+			if (ck_inputFrame.xDirection == -1)
+			{
+				int tileX = obj->clipRects.tileX1 - ((obj->rightTI)?1:0);
+				int tileY = temp10;
+				int upperTile = CA_TileAtPos(tileX, tileY, 1);
+				int lowerTile = CA_TileAtPos(tileX, tileY+1, 1);
+				printf("[%d,%d]: RightTI: %d, UpperTile = %d [%d], LowerTile = %d, [%d]\n",tileX, tileY, obj->rightTI, upperTile, TI_ForeRight(upperTile), lowerTile, TI_ForeRight(lowerTile));
+				if ( (!TI_ForeLeft(upperTile) && !TI_ForeRight(upperTile) && !TI_ForeTop(upperTile) && !TI_ForeBottom(upperTile)) &&
+					TI_ForeRight(lowerTile) && TI_ForeTop(lowerTile))
+				{
+					obj->xDirection = -1;
+					obj->clipped = false;
+					obj->posX = (obj->posX & 0xFF00) + 128;
+					obj->posY = (temp8 - 64);
+					obj->velY = obj->deltaPosY = 0;
+					CK_SetAction2(obj, &CK_ACT_keenHang1);
+					printf("Hung left!\n");
+				} else printf("Couldn't hang left!\n");
+			}
+			else if (ck_inputFrame.xDirection == 1)
+			{
+				int tileX = obj->clipRects.tileX2 + ((obj->leftTI)?1:0);
+				int tileY = temp10;
+				int upperTile = CA_TileAtPos(tileX, tileY, 1);
+				int lowerTile = CA_TileAtPos(tileX, tileY+1, 1);
+
+				if (!TI_ForeLeft(upperTile) && !TI_ForeRight(upperTile) && !TI_ForeTop(upperTile) && !TI_ForeBottom(upperTile) &&
+					TI_ForeLeft(lowerTile) && TI_ForeTop(lowerTile))
+				{
+					obj->xDirection = 1;
+					obj->clipped = false;
+					obj->posX = (obj->posX & 0xFF00) + 256;
+					obj->posY = (temp8 - 64);
+					obj->velY = obj->deltaPosY = 0;
+					CK_SetAction2(obj, &CK_ACT_keenHang1);
+				}
+			}
+		}
+	}*/
+
+	//RF_AddSpriteDraw(&obj->sde, obj->posX, obj->posY, obj->gfxChunk, 0, obj->zLayer);
+}
 
 
 // Processes the jumping of the player
 void CPlayerLevel::processJumping()
 {
-	// while button is pressed, make the player jump higher.
-	// The jump is limited unless he is in jump cheat mode
-	if( (m_playcontrol[PA_JUMP] && (m_Cheatmode.jump || m_jumpheight <= MAX_JUMPHEIGHT))
-			|| m_jumpheight <= MIN_JUMPHEIGHT )
+	verifyJumpAndFall();
+	if (state.jumpTimer)
 	{
-		m_jumpheight++;
-		yinertia = -140;
+		if(state.jumpTimer > 0 && !m_Cheatmode.jump)
+			state.jumpTimer--;
+
+		// Stop moving up if we've let go of control.
+		if (!state.jumpIsPressed)
+			state.jumpTimer = 0;
+
+		//yinertia = -90;
+
+		moveYDir(yinertia);
+
 	}
 	else
 	{
-		if( yinertia<0 && !blockedu )
-			yinertia+=10;
-		else
-			m_jumpheight = 0;
+		if(g_pBehaviorEngine->mDifficulty == EASY)
+		{
+			performGravityMid();
+		}
+		else	// Normal or Hard
+		{
+			performGravityHigh();
+		}
+
+		if( yinertia >0 && !getActionStatus(A_KEEN_FALL) && !getActionStatus(A_KEEN_FALL+1)  )
+		{
+			m_Action.setNextActionFormat();
+		}
 	}
 
-	// Set another jump animation if Keen is near yinertia == 0
-	if( yinertia > -10 )
+
+	//Move horizontally
+	if ( m_playcontrol[PA_X] != 0 )
 	{
-		if( getActionNumber(A_KEEN_JUMP) )
-			setAction(A_KEEN_JUMP_DOWN);
+		xDirection = (m_playcontrol[PA_X] < 0) ? -1 : 1;
+		performPhysAccelHor(xDirection*4, 48);
 	}
+	else performPhysDampHorz();
 
-	moveYDir(yinertia);
+	moveXDir(xinertia);
 
-	// If the max. height is reached or the player cancels the jump by release the button
-	// make keen fall
-	if( m_jumpheight == 0 )
+	if (state.pogoIsPressed && !state.pogoWasPressed)
 	{
-		// Check whether we should bump the head
-		if( blockedu )
-			playSound( SOUND_KEEN_BUMPHEAD );
-
-		yinertia -= 20;
-		if( getActionNumber(A_KEEN_JUMP) )
-			setAction(A_KEEN_FALL);
-
-	}
-
-	processMovingHorizontal();
-
-	// Now in this mode we could switch to pogoing
-	if( !m_pogotoggle && m_playcontrol[PA_POGO] )
-	{
-		m_jumpheight = 0;
+		state.pogoWasPressed = true;
 		setAction(A_KEEN_POGO_UP);
-		m_pogotoggle = true;
+		state.jumpTimer = 0;
 		return;
 	}
 
-	// Check if keen should stick to the pole
-	if( m_playcontrol[PA_Y] < 0 )
+	if (m_playcontrol[PA_Y] < 0)
 	{
 		verifyforPole();
 	}
+
+
+	if( m_Cheatmode.jump && (state.jumpIsPressed && !state.jumpWasPressed) )
+	{
+			state.jumpWasPressed = true;
+			yinertia = -90;
+			state.jumpTimer = 18;
+			setAction(A_KEEN_JUMP);
+			return;
+	}
+
+	if(checkandtriggerforCliffHanging())
+		return;
 
 	// process Shooting in air
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
@@ -534,7 +1070,6 @@ bool CPlayerLevel::canFallThroughTile()
 
 
 
-const int MAX_SCROLL_VIEW = (8<<CSF);
 
 void CPlayerLevel::processLookingUp()
 {
@@ -555,6 +1090,7 @@ void CPlayerLevel::processLookingUp()
 		return;
 
 	setAction(A_KEEN_STAND);
+	yDirection = 0;
 }
 
 
@@ -706,29 +1242,6 @@ void CPlayerLevel::processPressUp() {
 
 
 
-void CPlayerLevel::processPressDucking()
-{
-	if( m_playcontrol[PA_Y]>0 )
-	{
-		const bool jumpdowntile = canFallThroughTile();
-		if ( m_playcontrol[PA_JUMP] > 0 && ( supportedbyobject || jumpdowntile )  )
-		{
-			m_jumpdownfromobject = supportedbyobject;
-			m_jumpdown = jumpdowntile;
-			supportedbyobject = false;
-			blockedd = false;
-			setAction(A_KEEN_FALL);
-			playSound( SOUND_KEEN_FALL );
-		}
-
-		if( m_camera.m_relcam.y < MAX_SCROLL_VIEW )
-			m_camera.m_relcam.y += (2<<STC);
-
-		return;
-	}
-
-	setAction(A_KEEN_STAND);
-}
 
 
 
@@ -782,6 +1295,7 @@ void CPlayerLevel::processEnterDoor()
 		return;
 
 	setAction(A_KEEN_STAND);
+	yDirection = 0;
 
 	int xmid = getXMidPos();
 	int y1 = getYMidPos();
@@ -952,39 +1466,84 @@ void CPlayerLevel::openDoorsTile()
 }
 
 
+/*
 
-
-
-
-void CPlayerLevel::processPoleClimbing()
+void CK_KeenHangThink(CK_object *obj)
 {
-	// If player is still pressing the fire button wait until he releases it!
-	if(m_fire_recharge_time)
-		return;
-
-	// This will cancel the pole process and make Keen jump
-	if( !m_jumped && m_playcontrol[PA_JUMP] > 0 )
+	printf("Just hangin'...\n");
+	if (ck_inputFrame.yDirection == -1 || ck_inputFrame.xDirection == obj->xDirection)
 	{
-		setAction(A_KEEN_JUMP);
-		m_climbing = false;
-		m_jumped = true;
-		mPoleGrabTime = 0;
-		yinertia = 0;
-		yDirection = NONE;
-		solid = true;
-		return;
+		printf("Goin' up!\n");
+		obj->currentAction = &CK_ACT_keenPull1;
+
+		obj->clipped = false;
+
+		if(obj->xDirection == 1)
+		{
+			obj->nextY = -256;
+		}
+		else
+		{
+			obj->nextY = -128;
+		}
+		//TODO: Set keen->zlayer 3
+
+		//if (obj->xDirection == 1)
+		//{
+
+
 	}
-	else if(m_playcontrol[PA_JUMP] == 0)
+	else if (ck_inputFrame.yDirection == 1 || (ck_inputFrame.xDirection && ck_inputFrame.xDirection != obj->xDirection))
 	{
-		// Ensures that the button must be pressed again for another jump
-		m_jumped = false;
+		printf("Goin' Down!\n");
+		// Drop down.
+		obj->currentAction = &CK_ACT_keenFall1;
+		obj->clipped = true;
 	}
+}
 
-	// Lets check if Keen can move up, down or reaches the end of the pole
-	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-	Uint32 l_y_up = getYUpPos()-(7<<STC);
+void CK_KeenPullThink1(CK_object *obj)
+{
+	if (obj->xDirection == 1)
+		obj->nextX = 128;
+	else
+		obj->nextY = -128;
+}
 
-	if( m_playcontrol[PA_Y] < 0 )
+void CK_KeenPullThink2(CK_object *obj)
+{
+	printf("PullThink2\n");
+	obj->nextX = obj->xDirection * 128;
+	obj->nextY = -128;
+}
+
+void CK_KeenPullThink3(CK_object *obj)
+{
+	printf("PullThink3\n");
+	obj->nextY = -128;
+}
+
+void CK_KeenPullThink4(CK_object *obj)
+{
+	printf("PullThink4\n");
+	obj->nextY = 128;
+	obj->clipped = true;
+	obj->zLayer = 1;
+}
+
+ */
+
+
+void CPlayerLevel::performPoleHandleInput()
+{
+	const int px = m_playcontrol[PA_X];
+	const int py = m_playcontrol[PA_Y];
+
+	if ( px )
+		xDirection = (px>0) ? 1 : -1;
+
+	// Shooting things. *ZAP!*
+	if( py < 0 )
 	{
 		// First check player pressed shoot button
 		if( m_playcontrol[PA_FIRE] )
@@ -996,20 +1555,8 @@ void CPlayerLevel::processPoleClimbing()
 			return;
 		}
 
-
-		// Check for the upper side and don't let him move if the pole ends
-		if( hitdetectWithTileProperty(1, l_x, l_y_up) )
-		{
-			setAction(A_KEEN_POLE_CLIMB);
-			yDirection = UP;
-		}
-		else
-		{
-			setAction(A_KEEN_POLE);
-			yDirection = NONE;
-		}
 	}
-	else if( m_playcontrol[PA_Y] > 0 )
+	else if( py > 0 )
 	{
 		// First check player pressed shoot button
 		if( m_playcontrol[PA_FIRE] )
@@ -1019,47 +1566,6 @@ void CPlayerLevel::processPoleClimbing()
 			const VectorD2<int> newVec(getXMidPos()-(3<<STC), getYDownPos());
 			tryToShoot(newVec, 0, 1);
 			return;
-		}
-
-		l_y_up = getYUpPos()+(16<<STC);
-
-		Uint32 l_y_down = getYDownPos()/*+(7<<STC)*/;
-		if(!hitdetectWithTileProperty(1, l_x, l_y_down))
-			solid = true;
-		else
-			solid = false;
-
-		// Check for the and upper and lower side, upper because the hand can touch the edge in that case
-		const bool up = hitdetectWithTileProperty(1, l_x, l_y_up);
-		if( up && !blockedd )
-		{
-			// Slide down if there is more of the pole
-			setAction(A_KEEN_POLE_SLIDE);
-			yDirection = DOWN;
-		}
-		else
-		{
-			// Fall down if there isn't any pole to slide down
-			m_climbing = false;
-			yDirection = NONE;
-			yinertia = 0;
-			solid = true;
-
-			const bool down = mp_Map->at(l_x>>CSF, l_y_down>>CSF);
-
-			if(!blockedd && !down)
-			{
-				setAction(A_KEEN_FALL);
-				playSound( SOUND_KEEN_FALL );
-			}
-			else
-			{
-				blockedd = true;
-				moveUp(1<<CSF);
-				moveDown(1<<CSF);
-
-				setAction(A_KEEN_STAND);
-			}
 		}
 	}
 	else
@@ -1078,148 +1584,210 @@ void CPlayerLevel::processPoleClimbing()
 		setAction(A_KEEN_POLE);
 		yDirection = NONE;
 	}
+
+
+	if (state.jumpIsPressed && !state.jumpWasPressed)
+	{
+		state.jumpWasPressed = false;
+		//TODO: Play A sound!
+		xinertia = ck_KeenPoleOffs[px+1];
+		yinertia = -80;
+		state.jumpTimer = 10;
+		setAction(A_KEEN_JUMP);
+		yDirection = 1;
+		m_climbing = false;
+		m_jumped = true;
+		mPoleGrabTime = 0;
+		solid = true;
+		state.poleGrabTime = 0;
+	}
+
+	return;
 }
 
 
-
-
-bool CPlayerLevel::verifyforPole()
+void CPlayerLevel::processPoleClimbingSit()
 {
-	// TODO: Something strange here? Ticks?
-	if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
-		return false;
-
-	mPoleGrabTime = 0;
+	const int px = m_playcontrol[PA_X];
+	const int py = m_playcontrol[PA_Y];
 
 	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-	l_x = (l_x>>CSF)<<CSF;
-	const int l_y_up = ( getYUpPos() ) - 192;
-	const int l_y_down = ( ( getYDownPos() >> CSF ) + 1 ) << CSF;
+	Uint32 l_y_up = getYUpPos();
+	Uint32 l_y_down = getYDownPos();
 
-	const int yDir = (m_playcontrol[PA_Y] < 0) ? -1 : 1;
 
-	// Now check if Player has the chance to climb a pole or something similar
-	if( ( yDir < 0 && ( hitdetectWithTileProperty(1, l_x, l_y_up) & 0x7F) == 1 ) ||
-		( yDir > 0 && ( hitdetectWithTileProperty(1, l_x, l_y_down) & 0x7F) == 1 ) ) // 1 -> stands for pole Property
+	if ( py > 0 )
 	{
-		// Move to the proper X Coordinates, so Keen really grabs it!
-		moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
-
-		xinertia = 0;
-
-		next.x = 0;
-		next.y = 64*yDir;
-
-		// Set Keen in climb mode
-		setAction(A_KEEN_POLE);
-		m_climbing = true;
-		mClipped = false;
-		solid = false;
-		return true;
+		setAction(A_KEEN_POLE_SLIDE);
+		yDirection = 1;
+		processPoleClimbingDown();
+		return;
 	}
-	return false;
-}
-
-
-
-
-
-
-
-
-
-/// Keen standing routine
-void CPlayerLevel::processStanding()
-{
-	int px = m_playcontrol[PA_X];
-	int py = m_playcontrol[PA_Y];
-
-	if( px || py || state.jumpIsPressed || state.pogoIsPressed )
+	else if ( py < 0 )
 	{
-		//setAction(A_KEEN_STAND);
 
-		handleInputOnGround();
+		// Check for the upper side and don't let him move if the pole ends
+		if( hitdetectWithTileProperty(1, l_x, l_y_up) )
+		{
+			setAction(A_KEEN_POLE_CLIMB);
+			yDirection = UP;
+		}
+		else
+		{
+			setAction(A_KEEN_POLE);
+			yDirection = NONE;
+		}
+
 		return;
 	}
 
-	// He could duck or use the pole
-	if( py > 0 )
+
+	if ( px )
 	{
-		if(!verifyforPole())
-			setAction(A_KEEN_LOOKDOWN);
+
+		// This will check three points and avoid that keen falls on sloped tiles
+		const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down+(1<<CSF));
+		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
+		const bool leavePole = (TileProp1.bup != 0);
+
+		if ( leavePole )
+		{
+			//playSound( SOUND_KEEN_FALL );
+
+			state.jumpWasPressed = false;
+			state.jumpIsPressed = true;
+			//TODO: Play A sound!
+
+			int dir = 1;
+			if(px < 0)
+				dir = 0;
+			else if(px > 0)
+				dir = 2;
+
+			xinertia = ck_KeenPoleOffs[dir];
+			yinertia = -20;
+			state.jumpTimer = 10;
+			solid = true;
+			setAction(A_KEEN_JUMP);
+			yDirection = 1;
+			m_climbing = false;
+			m_jumped = true;
+			mPoleGrabTime = 0;
+			state.poleGrabTime = 0;
+
+			return;
+		}
+
 	}
 
-	// He could press up and do further actions
-	if( py < 0 )
+	performPoleHandleInput();
+}
+
+
+
+void CPlayerLevel::processPoleClimbingUp()
+{
+	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	Uint32 l_y_up = getYUpPos();
+
+	/*if ((blockedu & 127) != 1)
 	{
-		if(!verifyforPole())
+		setAction(A_KEEN_POLE);
+		//processPoleClimbingSit();
+		//return;
+	}*/
+
+	// Check for the upper side and don't let him move if the pole ends
+	if( hitdetectWithTileProperty(1, l_x, l_y_up) )
+	{
+		setAction(A_KEEN_POLE_CLIMB);
+		yDirection = UP;
+	}
+	else
+	{
+		setAction(A_KEEN_POLE);
+		yDirection = NONE;
+	}
+
+	performPoleHandleInput();
+}
+
+
+
+void CPlayerLevel::processPoleClimbingDown()
+{
+	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	Uint32 l_y_up = getYUpPos()+(16<<STC);
+	Uint32 l_y_down = getYDownPos();
+
+	if(!hitdetectWithTileProperty(1, l_x, l_y_down))
+		solid = true;
+	else
+		solid = false;
+
+	// Check for the and upper and lower side, upper because the hand can touch the edge in that case
+	const bool up = hitdetectWithTileProperty(1, l_x, l_y_up);
+	if( up && !blockedd )
+	{
+		// Slide down if there is more of the pole
+		setAction(A_KEEN_POLE_SLIDE);
+		yDirection = DOWN;
+	}
+	else
+	{
+		// Fall down if there isn't any pole to slide down
+		m_climbing = false;
+		yDirection = NONE;
+		yinertia = 0;
+		solid = true;
+
+		const bool down = mp_Map->at(l_x>>CSF, l_y_down>>CSF);
+
+		// Check if keen is trying to climb through the floor.
+		// It's quite a strange clipping error if he succeeds.
+		if(!(blockedd & 127) && !down)
 		{
-			mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPressUp;
+			state.jumpTimer = 0;
+			xinertia = ck_KeenPoleOffs[xDirection + 1];
+			yinertia = 0;
+
+			setAction(A_KEEN_FALL);
+			playSound( SOUND_KEEN_FALL );
+		}
+		else
+		{
+			blockedd = true;
+			moveUp(1<<CSF);
+			moveDown(1<<CSF);
+
+			setAction(A_KEEN_STAND);
+			yDirection = 0;
+
+			/*int yReset = -(obj->clipRects.unitY2 & 255) - 1;
+			obj->posY += yReset;
+			obj->clipRects.unitY2 += yReset;
+			obj->clipRects.tileY2 += -1;
+			obj->clipped = true;*/
+			setAction(A_KEEN_LOOKDOWN);
+			//CK_SetAction2(obj, &CK_ACT_keenLookDown1);
+
 		}
 	}
 
-	// Center the view after Keen looked up or down
-	centerView();
-
-	// He could walk
-	if(  m_playcontrol[PA_X]<0 && !blockedl  )
+	if (m_playcontrol[PA_Y] == 0)
 	{
-		// prepare him to walk to the left
-		xDirection = LEFT;
-		setAction(A_KEEN_RUN);
-	}
-	else if(  m_playcontrol[PA_X]>0 && !blockedr )
-	{
-		// prepare him to walk to the right
-		xDirection = RIGHT;
-		setAction(A_KEEN_RUN);
-	}
-
-	// He could jump
-	if( m_playcontrol[PA_JUMP] )
-	{
-		// Not jumping? Let's see if we can prepare the player to do so
-		yinertia = -140;
-		m_jumpheight = 0;
-		setAction(A_KEEN_JUMP);
-		m_jumped = true;
-		m_climbing = false;
+		setAction(A_KEEN_POLE);
 		yDirection = 0;
-		playSound( SOUND_KEEN_JUMP );
 	}
-
-
-
-
-	// He could shoot
-	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+	else if (m_playcontrol[PA_Y] < 0)
 	{
-		setAction(A_KEEN_SHOOT);
-		const VectorD2<int> newVec(getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC)),
-									getYPosition()+(4<<STC));
-		tryToShoot(newVec, xDirection, yDirection);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
-		m_fire_recharge_time = FIRE_RECHARGE_TIME;
-		return;
+		setAction(A_KEEN_POLE_CLIMB);
+		yDirection = -1;
 	}
 
-	// He could use pogo
-	if( m_playcontrol[PA_POGO] )
-	{
-		if(m_playcontrol[PA_JUMP])
-			yinertia = POGO_START_INERTIA_IMPOSSIBLE_VERT;
-		else
-			yinertia = POGO_START_INERTIA_VERT;
+	performPoleHandleInput();
 
-		m_jumpheight = 0;
-		setAction(A_KEEN_POGO_START);
-		playSound( SOUND_KEEN_POGO );
-		m_pogotoggle = true;
-	}
-
-	CSpriteObject::processFalling();
 }
-
 
 
 
@@ -1228,6 +1796,7 @@ void CPlayerLevel::processShootWhileStanding()
 	// while until player releases the button and get back to stand status
 	if( !m_playcontrol[PA_FIRE] )
 	{
+		yDirection = 0;
 		if(getActionNumber(A_KEEN_SHOOT_UP))
 			setAction(A_KEEN_LOOKUP);
 		else
@@ -1235,134 +1804,16 @@ void CPlayerLevel::processShootWhileStanding()
 	}
 }
 
-
-
-
-
-
-void CPlayerLevel::processRunning()
+void CPlayerLevel::verifyFalling()
 {
-	// Most of the walking routine is done by the action script itself
-
-	// Center the view after Keen looked up or down
-	centerView();
-
-	// He could stand again, if player doesn't move the dpad
-	if( m_playcontrol[PA_X] == 0 )
+	if (CSpriteObject::verifyForFalling())
 	{
-		setAction(A_KEEN_STAND);
-	}
-	// or he could change the walking direction
-	else if( m_playcontrol[PA_X]<0 ) // left
-	{
-		// Is he blocked make him stand, else continue walking
-		if( blockedl )
-		{
-			setAction(A_KEEN_STAND);
-		}
-		else
-		{
-			// walk to the left
-			xDirection = LEFT;
-			makeWalkSound();
-		}
-	}
-	else if( m_playcontrol[PA_X]>0 ) // right
-	{
-		// Is he blocked make him stand, else continue walking
-		if( blockedr )
-		{
-			setAction(A_KEEN_STAND);
-		}
-		else
-		{
-			// walk to the right
-			xDirection = RIGHT;
-			makeWalkSound();
-		}
-	}
-
-	if( verifyForFalling() )
-	{
+		xinertia = xDirection * 16;
+		yinertia = 0;
 		setAction(A_KEEN_FALL);
-		playSound( SOUND_KEEN_FALL );
+		state.jumpTimer = 0;
 	}
-
-
-	// He could jump
-	if( m_playcontrol[PA_JUMP] )
-	{
-		// Not jumping? Let's see if we can prepare the player to do so
-		yinertia = -140;
-		m_jumpheight = 0;
-		setAction(A_KEEN_JUMP);
-		m_jumped = true;
-		m_climbing = false;
-		yDirection = NONE;
-		playSound( SOUND_KEEN_JUMP );
-	}
-
-	// He could shoot
-	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
-	{
-		const int newx = getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC));
-		const int newy = getYPosition()+(4<<STC);
-
-		const VectorD2<int> newVec(newx, newy);
-		tryToShoot(newVec, xDirection, yDirection);
-
-		setAction(A_KEEN_SHOOT);
-		mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
-		m_fire_recharge_time = FIRE_RECHARGE_TIME;
-		return;
-	}
-
-	// He could use pogo
-	if( m_playcontrol[PA_POGO] )
-	{
-		if(m_playcontrol[PA_JUMP])
-			yinertia = POGO_START_INERTIA_IMPOSSIBLE_VERT;
-		else
-			yinertia = POGO_START_INERTIA_VERT;
-
-		m_jumpheight = 0;
-		setAction(A_KEEN_POGO_START);
-		playSound( SOUND_KEEN_POGO );
-		m_pogotoggle = true;
-	}
-
-	// He could place a gem
-	for( Uint32 i=7 ; i<=10 ; i++ )
-	{
-		const int l_x = getXMidPos();
-		const int l_y = getYDownPos()-(3<<STC);
-
-		// This will change the gemholder to a holder with the gem
-		if( hitdetectWithTileProperty(i, l_x, l_y) )
-		{
-			stItemGalaxy &m_Item = m_Inventory.Item;
-
-			if(i == 7 && m_Item.m_gem.red > 0)
-				m_Item.m_gem.red--;
-			else if(i == 8 && m_Item.m_gem.yellow > 0)
-				m_Item.m_gem.yellow--;
-			else if(i == 9 && m_Item.m_gem.blue > 0)
-				m_Item.m_gem.blue--;
-			else if(i == 10 && m_Item.m_gem.green > 0)
-				m_Item.m_gem.green--;
-			else
-				break;
-
-			moveToHorizontal((l_x>>CSF)<<CSF);
-			mPlacingGem = true;
-			setAction(A_KEEN_SLIDE);
-		}
-	}
-
 }
-
-
-
 
 
 
@@ -1370,8 +1821,6 @@ void CPlayerLevel::processRunning()
 // Falling code
 void CPlayerLevel::processFalling()
 {
-	CSpriteObject::processFalling();
-
 	// If keen is jumping down, not because he did from an object like a platform,
 	// but a tile where Keen can fall through, process this part of code and
 	// check if Keen is still jumpinto through any object
@@ -1384,6 +1833,7 @@ void CPlayerLevel::processFalling()
 	if(blockedd)
 	{
 		setAction(A_KEEN_STAND);
+		yDirection = 0;
 	}
 
 	processMovingHorizontal();
@@ -1446,7 +1896,6 @@ void CPlayerLevel::centerView()
 			m_camera.m_relcam.y = 0;
 	}
 }
-
 
 
 

@@ -221,6 +221,8 @@ public:
 	Uint32 getYDownPos();
 	Uint32 getYMidPos();
 	
+	void processFallPhysics(const int boost);
+	void processFallPhysics();
 	virtual void processFalling();
 	virtual void getTouchedBy(CSpriteObject &theObject) {};
 	virtual bool isNearby(CSpriteObject &theObject) { return true; }

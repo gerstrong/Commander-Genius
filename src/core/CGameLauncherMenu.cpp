@@ -177,8 +177,12 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 			// Load the sound data
 			g_pSound->loadSoundData();
 		}
+
+		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+
+		return true;
 	}
-	return true;
+	return false;
 }
 
 

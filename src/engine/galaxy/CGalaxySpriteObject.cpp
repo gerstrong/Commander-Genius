@@ -16,6 +16,10 @@ next(0,0),
 m_ActionBaseOffset(0x0),
 nextX(0),
 nextY(0),
+topTI(0),
+bottomTI(0),
+leftTI(0),
+rightTI(0),
 user1(0),
 user2(0),
 user3(0),
@@ -45,6 +49,70 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 	if(!processActionRoutine())
 			exists = false;
 }
+
+
+/**
+ * Some Physics
+ */
+
+void CGalaxySpriteObject::performPhysAccelHor( const int accX, const int velLimit )
+{
+
+	bool isNegative = (xinertia < 0);
+
+	xinertia += accX;
+
+	if( xinertia != isNegative )
+	{
+		isNegative = (xinertia < 0);
+		xDirection = isNegative?-1:1;
+	}
+
+	if(xinertia < 0)
+	{
+		if( xinertia < -velLimit )
+			xinertia = -velLimit;
+	}
+	else
+	{
+		if( xinertia > velLimit )
+			xinertia = velLimit;
+	}
+}
+
+
+void CGalaxySpriteObject::performPhysDampHorz()
+{
+	if (xinertia < 0)
+	{
+		xinertia++;
+	}
+	else if (xinertia > 0)
+	{
+		xinertia--;
+	}
+}
+
+void CGalaxySpriteObject::performGravityLow()
+{
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	processFallPhysics(Physics.fallspeed_increase/4);
+}
+
+void CGalaxySpriteObject::performGravityMid()
+{
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	processFallPhysics(3*Physics.fallspeed_increase/4);
+}
+
+void CGalaxySpriteObject::performGravityHigh()
+{
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	processFallPhysics(Physics.fallspeed_increase);
+}
+
+
+
 
 /**
  * processes falling of an object. Can be player or any other foe

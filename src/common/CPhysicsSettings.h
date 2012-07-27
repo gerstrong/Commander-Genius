@@ -19,6 +19,7 @@
 class CPhysicsSettings {
 public:
 	CPhysicsSettings();
+
 	void loadGameConstants(int episode, byte* data);
 
 	struct playersettings{

@@ -14,8 +14,8 @@ namespace galaxy
 
 const int A_MUSHROOM_BOUNCE = 0;
 
-const int MUSHROOM_LOW_INERTIA = 60;
-const int MUSHROOM_HIGH_INERTIA = 150;
+const int MUSHROOM_LOW_INERTIA = 85;
+const int MUSHROOM_HIGH_INERTIA = 212;
 
 CMadMushroom::CMadMushroom(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
@@ -68,7 +68,7 @@ void CMadMushroom::getTouchedBy(CSpriteObject &theObject)
 void CMadMushroom::process()
 {
 
-	processFalling();
+	performGravityMid();
 
 	performCollisions();
 
