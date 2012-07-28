@@ -33,6 +33,7 @@ void CButler::process()
 
 		 if (movedir==LEFT)
 		 {  // move left
+			 xDirection = LEFT;
 			 sprite = BUTLER_WALK_LEFT_FRAME + frame;
 			 if (!blockedl )
 			 {
@@ -49,6 +50,7 @@ void CButler::process()
 		 }
 		 else
 		 {  // move right
+			 xDirection = RIGHT;
 			 sprite = BUTLER_WALK_RIGHT_FRAME + frame;
 			 if (!blockedr )
 			 {

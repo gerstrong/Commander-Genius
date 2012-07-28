@@ -47,7 +47,8 @@ CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						CInventory &l_Inventory, stCheat &Cheatmode) :
 CPlayerBase(pmap, foeID, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
 m_jumpdownfromobject(false),
-mPlacingGem(false)
+mPlacingGem(false),
+mPoleGrabTime(0)
 {
 	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_QUESTION] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
@@ -437,8 +438,9 @@ void CPlayerLevel::processLookingDown()
 	}
 
 
-	if ( m_playcontrol[PA_Y] <= 0 || m_playcontrol[PA_X] != 0 || (state.jumpIsPressed && !state.jumpWasPressed)
-		|| (state.pogoIsPressed && !state.pogoWasPressed))
+	if ( m_playcontrol[PA_Y] <= 0 || m_playcontrol[PA_X] != 0
+			|| (state.jumpIsPressed && !state.jumpWasPressed)
+			|| (state.pogoIsPressed && !state.pogoWasPressed))
 	{
 		setAction(A_KEEN_STAND);
 		yDirection = 0;
@@ -455,6 +457,8 @@ void CPlayerLevel::processLookingDown()
 			m_jumpdown = jumpdowntile;
 			supportedbyobject = false;
 			blockedd = false;
+			yinertia = 0;
+			xinertia = 0;
 			setAction(A_KEEN_FALL);
 			playSound( SOUND_KEEN_FALL );
 		}
@@ -1546,7 +1550,7 @@ void CPlayerLevel::performPoleHandleInput()
 	if( py < 0 )
 	{
 		// First check player pressed shoot button
-		if( m_playcontrol[PA_FIRE] )
+		if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTUP);
@@ -1559,7 +1563,7 @@ void CPlayerLevel::performPoleHandleInput()
 	else if( py > 0 )
 	{
 		// First check player pressed shoot button
-		if( m_playcontrol[PA_FIRE] )
+		if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOTDOWN);
@@ -1571,7 +1575,7 @@ void CPlayerLevel::performPoleHandleInput()
 	else
 	{
 		// First check player pressed shoot button
-		if( m_playcontrol[PA_FIRE] )
+		if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOT);

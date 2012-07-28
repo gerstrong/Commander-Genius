@@ -34,6 +34,7 @@ void CTank::process()
 		// is keen on same level?
 		if (movedir==LEFT)
 		{  // move left
+			xDirection = LEFT;
 			sprite = TANK_WALK_LEFT_FRAME + frame;
 			xinertia = -TANK_WALK_SPEED;
 			if( blockedl )
@@ -49,6 +50,7 @@ void CTank::process()
 		}
 		else
 		{  // move right
+			xDirection = RIGHT;
 			sprite = TANK_WALK_RIGHT_FRAME + frame;
 			xinertia = TANK_WALK_SPEED;
 			if ( blockedr )

@@ -43,7 +43,7 @@ m_timer(0)
 void CCouncilMember::processWalking()
 {
 	performCollisions();
-	processFalling();
+	performGravityLow();
 
 
 	// Check if there is a cliff and move him back in case

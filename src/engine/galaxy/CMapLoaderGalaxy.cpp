@@ -529,18 +529,19 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 
 	case 46:
 		// This is the Lick
-		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		if( g_pBehaviorEngine->mDifficulty >= HARD )
+			p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
 		break;
 
 	case 47:
 		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty > 1 )
+		if( g_pBehaviorEngine->mDifficulty >= NORMAL )
 			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 
 	case 48:
 		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty > 2 )
+		if( g_pBehaviorEngine->mDifficulty >= HARD )
 			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 

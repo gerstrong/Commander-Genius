@@ -24,7 +24,11 @@ const int CSF_MIN_DISTANCE_TO_BREATHE = 2<<CSF;
 const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
 
 const int LICK_HOP_X_SPEED = 50;
+const int LICK_HOP_Y_SPEED = 50;
+
 const int LICK_BREATHE_TIMER = 100;
+const int LICK_HOP_TIME = 20;
+const int LICK_LAND_TIME = 20;
 
 CLick::CLick(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CStunnable(pmap, foeID, x, y),
@@ -36,16 +40,24 @@ m_timer(0)
 	mActionMap[A_LICK_STUNNED] = &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x2FC6, A_LICK_HOP);
+
+	xDirection = LEFT;
 }
 
 void CLick::process()
 {
+	performCollisions();
+	performGravityMid();
+
+	if( blockedl )
+		xDirection = RIGHT;
+	else if( blockedr )
+		xDirection = LEFT;
+
 	(this->*mp_processState)();
 
 	if(!processActionRoutine())
 			exists = false;
-
-	processFalling();
 }
 
 void CLick::getTouchedBy(CSpriteObject &theObject)
@@ -76,17 +88,21 @@ void CLick::getTouchedBy(CSpriteObject &theObject)
 bool CLick::isNearby(CSpriteObject &theObject)
 {
 
+	if( !getProbability(80) )
+		return false;
+
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
+		const int dy = abs(player->getYMidPos() - getYMidPos());
 		const int dx = player->getXMidPos() - getXMidPos();
 
-		if( getProbability(80) )
-		{
-			if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-				xDirection = LEFT;
-			else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-				xDirection = RIGHT;
-		}
+		if( dy > CSF_MIN_DISTANCE_TO_BREATHE )
+			return false;
+
+		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+			xDirection = LEFT;
+		else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+			xDirection = RIGHT;
 
 		if(getActionNumber(A_LICK_LAND))
 		{
@@ -113,27 +129,36 @@ void CLick::processHop()
 	else if(xDirection == LEFT)
 		moveLeft(LICK_HOP_X_SPEED);
 
-	if(blockedd)
+	m_timer--;
+	if( m_timer <= 0 )
 	{
 		setAction( A_LICK_LAND );
+		m_timer = LICK_LAND_TIME;
 	}
 }
 
 void CLick::processLand()
 {
 	// After a moment he might hop again
-	setAction( A_LICK_HOP );
-
-	yinertia = -100;
-	blockedd = false;
+	m_timer--;
+	if(blockedd && m_timer <= 0)
+	{
+		setAction( A_LICK_HOP );
+		m_timer = LICK_HOP_TIME;
+		yinertia = -LICK_HOP_Y_SPEED;
+	}
 }
 
 void CLick::processBreathe()
 {
 	// Breathe for a brief moment
 	m_timer--;
-	if(getActionStatus(A_LICK_HOP+2))
+	if(getActionStatus(A_LICK_HOP+2) || m_timer <= 0)
+	{
+		m_timer = LICK_HOP_TIME;
 		setAction( A_LICK_HOP );
+		yinertia = -LICK_HOP_Y_SPEED;
+	}
 }
 
 

@@ -29,7 +29,6 @@ CPhysicsSettings::CPhysicsSettings()
 	// Pogo values
 	player.pogoforce_x = 30;
 
-	misc.visibility = 3;
 	misc.ctspace_ammo = 100;
 	misc.ctspace_keys = 1;
 }
@@ -46,10 +45,12 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 		// Galaxy Engine
 		fallspeed_increase = 7;
 		max_fallspeed = 175; // Factor 2.5 to the original assembly it is
+		misc.visibility = 7;
 	}
 	else
 	{
 		// Vorticon Engine
+		misc.visibility = 3;
 		fallspeed_increase = 4;
 		max_fallspeed = 104;
 

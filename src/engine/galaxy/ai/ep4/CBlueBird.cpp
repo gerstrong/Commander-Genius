@@ -160,7 +160,7 @@ void CBlueBird::getTouchedBy(CSpriteObject &theObject)
 void CBlueBird::process()
 {
 	performCollisions();
-	processFalling();
+	performGravityLow();
 
 	if( blockedl )
 		xDirection = RIGHT;

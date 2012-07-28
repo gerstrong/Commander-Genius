@@ -241,7 +241,7 @@ void CBounder::process()
 {
 	// Bounce
 	performCollisions();
-	processFalling();
+	performGravityMid();
 
 	(this->*mp_processState)();
 

@@ -85,7 +85,7 @@ void CEgg::getTouchedBy(CSpriteObject &theObject)
 void CEgg::process()
 {
 
-	processFalling();
+	performGravityLow();
 
 	performCollisions();
 

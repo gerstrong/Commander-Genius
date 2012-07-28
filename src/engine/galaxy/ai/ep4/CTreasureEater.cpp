@@ -50,19 +50,13 @@ bool CTreasureEater::isNearby(CSpriteObject &theObject)
 	if( !getProbability(80) )
 		return false;
 
+	// TODO: identify one item and try to get it!
 	/*if( getActionNumber(A_SMIRKY_LOOK) )
 	{
 
 	}*/
 
-	// identify one item and try to get it!
-	/*if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-		if( player->getXMidPos() < getXMidPos() )
-			xDirection = LEFT;
-		else
-			xDirection = RIGHT;
-	}*/
+
 
 	return true;
 }
@@ -178,7 +172,9 @@ void CTreasureEater::checkForItem()
 void CTreasureEater::process()
 {
 	performCollisions();
-	processFalling();
+
+	if(!inhibitfall)
+		performGravityMid();
 
 	checkForItem();
 

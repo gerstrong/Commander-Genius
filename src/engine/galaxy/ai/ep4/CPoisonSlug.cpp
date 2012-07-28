@@ -39,6 +39,12 @@ m_timer(0)
 	setupGalaxyObjectOnMap(0x2012, A_SLUG_MOVE);
 
 	xDirection = LEFT;
+
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	performCollisions();
+	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
+	if(!processActionRoutine())
+			exists = false;
 }
 
 
@@ -47,12 +53,8 @@ m_timer(0)
 
 void CPoisonSlug::processCrawling()
 {
-	performCollisions();
-	processFalling();
-
-
 	// Check if there is a cliff
-	performCliffStop(m_Action.velX<<1);
+	//performCliffStop(m_Action.velX<<1);
 
 
 	if( m_timer < SLUG_MOVE_TIMER )
@@ -77,9 +79,13 @@ void CPoisonSlug::processCrawling()
 
 	// Move normally in the direction
 	if( xDirection == RIGHT )
+	{
 		moveRight( m_Action.velX<<1 );
+	}
 	else
+	{
 		moveLeft( m_Action.velX<<1 );
+	}
 
 }
 
@@ -120,14 +126,16 @@ int CPoisonSlug::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	turnAroundOnCliff( x1, x2, y2 );
 
-	return CSpriteObject::checkSolidD(x1, x2, y2, push_mode);
+	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
 
 
 void CPoisonSlug::process()
 {
 	performCollisions();
-	processFalling();
+
+	if(!blockedd)
+		performGravityMid();
 
 	(this->*mp_processState)();
 
@@ -137,7 +145,7 @@ void CPoisonSlug::process()
 		xDirection = LEFT;
 
 	if(!processActionRoutine())
-			exists = false;
+		exists = false;
 }
 
 }

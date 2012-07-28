@@ -92,7 +92,7 @@ void CMimrock::processBounce()
 void CMimrock::process()
 {
 	performCollisions();
-	processFalling();
+	performGravityLow();
 
 	(this->*mp_processState)();
 

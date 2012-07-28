@@ -72,7 +72,7 @@ void CArachnut::getTouchedBy(CSpriteObject &theObject)
 void CArachnut::process()
 {
 	performCollisions();
-	processFalling();
+	performGravityLow();
 
 	if( blockedl )
 		xDirection = RIGHT;
