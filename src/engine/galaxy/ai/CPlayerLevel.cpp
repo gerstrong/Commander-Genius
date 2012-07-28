@@ -880,7 +880,7 @@ void CPlayerLevel::verifyJumpAndFall()
 		}
 		else
 		{
-			//TODO: sounds
+			playSound( SOUND_KEEN_BUMPHEAD );
 			if (blockedu > 1)
 			{
 				yinertia += 16;
