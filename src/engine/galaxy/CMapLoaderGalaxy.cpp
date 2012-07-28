@@ -23,38 +23,10 @@
 
 /// AI Headers
 
-// Episode 4
+// General stuff
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
-#include "engine/galaxy/ai/ep4/CPlayerDive.h"
-#include "engine/galaxy/ai/ep4/CPoisonSlug.h"
-#include "engine/galaxy/ai/ep4/CMadMushroom.h"
-#include "engine/galaxy/ai/ep4/CCouncilMember.h"
-#include "engine/galaxy/ai/ep4/CMiragia.h"
-#include "engine/galaxy/ai/ep4/CDiveSuit.h"
-#include "engine/galaxy/ai/ep4/CArachnut.h"
-#include "engine/galaxy/ai/ep4/CBounder.h"
-#include "engine/galaxy/ai/ep4/CDopeFish.h"
-#include "engine/galaxy/ai/ep4/CWaterMine.h"
-#include "engine/galaxy/ai/ep4/CDevilSprite.h"
-#include "engine/galaxy/ai/ep4/CSchoolFish.h"
-#include "engine/galaxy/ai/ep4/CLick.h"
-#include "engine/galaxy/ai/ep4/CLindsey.h"
-#include "engine/galaxy/ai/ep4/CWormmouth.h"
-#include "engine/galaxy/ai/ep4/CSkypest.h"
-#include "engine/galaxy/ai/ep4/CMimrock.h"
-#include "engine/galaxy/ai/ep4/CEgg.h"
-#include "engine/galaxy/ai/ep4/CBerkeloid.h"
-#include "engine/galaxy/ai/ep4/CBlueBird.h"
-#include "engine/galaxy/ai/ep4/CThunderCloud.h"
-#include "engine/galaxy/ai/ep4/CTreasureEater.h"
-
-
-// General stuff
 #include "engine/galaxy/ai/CSpriteItem.h"
-#include "engine/galaxy/ai/platforms.h"
-
-#include "engine/galaxy/ai/CFlag.h"
 
 #include <fstream>
 
@@ -354,26 +326,12 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 // Some defines are hardcoded so it is easier to
 // identify what type of foe/stuff is loaded
 
-// Under Construction Platforms:
-// 27-30 & 32 seem to be the actual platforms.  There may be more of numbers lower than 27.
-// 31 seem to be the stoppers, those are not created because the platform
-// get this from the object map directly
-
-const unsigned int PLATFORM_VERT_ALT = 27;
-const unsigned int PLATFORM_HORIZ_ALT = 28;
-const unsigned int PLATFORM_VERT = 29;
-const unsigned int PLATFORM_HORIZ = 30;
-// 31 does not count, because it's a blocker.
-const unsigned int PLATFORM_DROP = 32;
-
-const unsigned int DIVE_SUIT = 35;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
 CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
 	CGalaxySpriteObject *p_newfoe = NULL;
-	VectorD2<Uint32> Location(x,y);
 
 	// Point Item Sprites (Candies, etc...)
 	for( Uint32 i=61 ; i<=67 ; i++ )
@@ -401,8 +359,6 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		}
 	}
 
-	VectorD2<Uint32> loc(x,y);
-
 	switch(foe)
 	{
 	case 1:
@@ -417,164 +373,8 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		// Add the Camera into the game scene and attach it to this player
 		p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, m_ObjectPtr, m_Inventory, m_Cheatmode);
 		break;
-
-	case 4:
-		//This is a council member.
-		p_newfoe = new galaxy::CCouncilMember(&Map, foe, x, y-750);
-		break;
-
-	case 6:
-		//This is pincess Lindsey.
-		p_newfoe = new galaxy::CLindsey(&Map, foe, x, y-750);
-		break;
-
-	case 7:
-		// This is a wormmouth.
-		p_newfoe = new galaxy::CWormmouth(&Map, foe, x, y);
-		break;
-
-	case 8:
-		// This is Skypest.
-		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
-		break;
-
-
-	case 9:
-		//This is the Thunder Cloud
-		p_newfoe = new galaxy::CThunderCloud(&Map, foe, x, y);
-		break;
-
-	case 12:
-		//This is a Bounder.
-		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		p_newfoe = new galaxy::CBounder(&Map, foe, x, y-250);
-		break;
-
-	case 13:
-		// This is an egg
-		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		if( g_pBehaviorEngine->mDifficulty > 1 )
-			p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y-(2<<CSF));
-		else
-			p_newfoe = new galaxy::CEgg(&Map, foe, x, y-(2<<CSF));
-		break;
-
-	case 18:
-		// This might be the treasure eater.
-		p_newfoe = new galaxy::CTreasureEater(&Map, foe, x, y);
-		break;
-
-	case 19:
-		//This is a Mimrock.
-		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		p_newfoe = new galaxy::CMimrock(&Map, foe, x, y);
-		break;
-
-	case 20:
-		// This is an Arachnut.
-		p_newfoe = new galaxy::CArachnut(&Map, foe, x, y);
-		break;
-
-
-	case 21:
-		// This is a Mad Mushroom.
-		p_newfoe = new galaxy::CMadMushroom(&Map, foe, x, y);
-		break;
-
-
-	case 22:
-		// This is a Poison Slug.
-		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y-250, m_ObjectPtr);
-		break;
-
-	case 23:
-		// This is a Sprite from the well of wishes.
-		p_newfoe = new galaxy::CDevilSprite(&Map, foe, x, y);
-		break;
-
-	case 24:
-		// This is a Sprite from the well of wishes.
-		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
-		break;
-
-	/*case 25:
-		// This is Skypest.
-		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
-		break;*/
-
-
-	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
-		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y); break;
-	case PLATFORM_HORIZ_ALT:
-	case PLATFORM_HORIZ:
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, x, y); break;
-	case PLATFORM_DROP:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y); break;
-
-	case 33:
-		// Place Miragia in Episode 4 on the Map
-		p_newfoe = new galaxy::CMiragia(&Map, foe, Location);
-		break;
-
-	case DIVE_SUIT:
-		// Place Miragia in Episode 4 on the Map
-		p_newfoe = new galaxy::CDiveSuit(&Map, foe, x, y);
-		break;
-
-	case 42:
-		// This is Keen in the swimming suit
-		p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y, m_ObjectPtr,
-						RIGHT, m_Inventory, m_Cheatmode);
-		break;
-
-	case 46:
-		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= HARD )
-			p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
-		break;
-
-	case 47:
-		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= NORMAL )
-			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
-		break;
-
-	case 48:
-		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= HARD )
-			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
-		break;
-
-
-	case 50:
-		//This is the CBerkeloid
-		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
-		break;
-
-
-	case 71:
-		// Watermine vertical
-		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, true);
-		break;
-	case 72:
-		// Watermine horizontal
-		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, false);
-		break;
-
-	case 87:
-		// Dope Fish
-		p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y);
-		break;
-
-	case CFlag::FOE_ID:
-		p_newfoe = new galaxy::CFlag(&Map, loc, loc);
-		break;
-
-
-	default:
-		break;
+	default: break;
 	}
-
 
 	return p_newfoe;
 }

@@ -6,7 +6,7 @@
  */
 
 #include "CLevelPlay.h"
-#include "CMapLoaderGalaxy.h"
+#include "ep4/CMapLoaderGalaxyEp4.h"
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
@@ -27,9 +27,12 @@ CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
 void CLevelPlay::loadMap(const int level)
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(mExeFile, mObjectPtr, mInventory, mCheatmode);
+	SmartPointer<CMapLoaderGalaxy> MapLoader;
 
-	MapLoader.loadMap( mMap, level );
+	if(g_pBehaviorEngine->getEpisode() == 4)
+		MapLoader = new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode);
+
+	MapLoader->loadMap( mMap, level );
 
     // Load the Background Music
 	g_pMusicPlayer->stop();

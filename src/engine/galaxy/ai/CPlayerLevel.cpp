@@ -198,6 +198,7 @@ void CPlayerLevel::processRunning()
 		nextX = nextY = 0;
 		state.jumpTimer = 18;
 		setAction(A_KEEN_JUMP);
+		playSound( SOUND_KEEN_JUMP );
 		return;
 	}
 
@@ -219,6 +220,7 @@ void CPlayerLevel::processRunning()
 		xinertia = xDirection * 8;
 		yinertia = 0;
 		setAction(A_KEEN_FALL);
+		playSound( SOUND_KEEN_FALL );
 		state.jumpTimer = 0;
 	}
 
@@ -300,6 +302,7 @@ void CPlayerLevel::handleInputOnGround()
 		nextY = 0;
 		state.jumpTimer = 18;
 		setAction(A_KEEN_JUMP);
+		playSound( SOUND_KEEN_JUMP );
 		return;
 	}
 
@@ -354,6 +357,7 @@ void CPlayerLevel::processStanding()
 		xinertia = xDirection * 8;
 		yinertia = 0;
 		setAction(A_KEEN_FALL);
+		playSound( SOUND_KEEN_FALL );
 		state.jumpTimer = 0;
 	}
 
@@ -459,7 +463,7 @@ void CPlayerLevel::processLookingDown()
 			blockedd = false;
 			yinertia = 0;
 			xinertia = 0;
-			setAction(A_KEEN_FALL);
+			setAction(A_KEEN_JUMP_DOWN);
 			playSound( SOUND_KEEN_FALL );
 		}
 
@@ -1598,6 +1602,7 @@ void CPlayerLevel::performPoleHandleInput()
 		yinertia = -80;
 		state.jumpTimer = 10;
 		setAction(A_KEEN_JUMP);
+		playSound( SOUND_KEEN_JUMP );
 		yDirection = 1;
 		m_climbing = false;
 		m_jumped = true;
@@ -1815,6 +1820,7 @@ void CPlayerLevel::verifyFalling()
 		xinertia = xDirection * 16;
 		yinertia = 0;
 		setAction(A_KEEN_FALL);
+		playSound( SOUND_KEEN_FALL );
 		state.jumpTimer = 0;
 	}
 }

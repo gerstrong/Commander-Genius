@@ -264,21 +264,20 @@ bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx
 bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	const int x_left = (x1-(1<<STC))>>CSF;
+	const int x_right = (x2+(1<<STC))>>CSF;
+	const int y_bottom = (y2+(1<<STC))>>CSF;
 
-	const int floor = TileProperty[mp_Map->at((x1)>>CSF, (y2+(1<<STC))>>CSF)].bup;
-	const int cliffleft = TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
-	const int cliffright = TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
+	const int floorleft = TileProperty[mp_Map->at(x_left, y_bottom)].bup;
+	const int floorright = TileProperty[mp_Map->at(x_right, y_bottom)].bup;
 
-	if(floor != 1)
-		return 0;
-
-	if( !cliffleft && xDirection == LEFT )
+	if( !floorleft && xDirection == LEFT && floorright==1 )
 	{
 		blockedl = TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
 		return 1;
 	}
 
-	if( !cliffright && xDirection == RIGHT )
+	if( !floorright && xDirection == RIGHT && floorleft==1 )
 	{
 		blockedr = TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
 		return 2;
