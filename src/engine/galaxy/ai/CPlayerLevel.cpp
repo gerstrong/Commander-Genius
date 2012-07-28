@@ -717,7 +717,7 @@ void CPlayerLevel::processPogoCommon()
 		}
 		else
 		{
-			//TODO: sounds
+			playSound( SOUND_KEEN_BUMPHEAD );
 			if (blockedu > 1)
 			{
 				yinertia += 16;
@@ -728,7 +728,6 @@ void CPlayerLevel::processPogoCommon()
 			{
 				if( yinertia < 0 )
 				{
-					// TODO: Play bong Sound.
 					yinertia = 0;
 				}
 			}

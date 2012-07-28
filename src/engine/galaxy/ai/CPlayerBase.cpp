@@ -48,7 +48,7 @@ mp_processState(NULL)
 
 
 
-void CPlayerBase::getAnotherLife(const int &lc_x, const int &lc_y)
+void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool display)
 {
 	m_Inventory.Item.m_lifes++;
 	g_pSound->playSound( SOUND_EXTRA_LIFE );
@@ -163,7 +163,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 		if(m_Item.m_drops >= 100)
 		{
 			m_Item.m_drops = 0;
-			getAnotherLife(lc_x, lc_y);
+			getAnotherLife(lc_x, lc_y, false);
 		}
 
 		g_pSound->playSound( SOUND_GET_DROP );
@@ -188,14 +188,14 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 			case 24: m_Item.m_points += 1000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
 			case 25: m_Item.m_points += 2000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
 			case 26: m_Item.m_points += 5000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
-			case 27: getAnotherLife(lc_x, lc_y);	break;
+			case 27: getAnotherLife(lc_x, lc_y, true);	break;
 			case 28: m_Item.m_bullets += 5;	g_pSound->playSound( SOUND_GET_AMMO );	break;
 			default: break;
 			}
 
 			if(m_Item.m_points >= m_Item.m_lifeAt)
 			{
-				getAnotherLife(lc_x, lc_y);
+				getAnotherLife(lc_x, lc_y, false);
 				m_Item.m_lifeAt *= 2;
 			}
 

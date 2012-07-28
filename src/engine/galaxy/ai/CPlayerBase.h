@@ -52,7 +52,7 @@ public:
 	/**
 	 * \brief The Player will get 1 UP when that function is launched
 	 */
-	void getAnotherLife(const int &lc_x, const int &lc_y);
+	void getAnotherLife(const int lc_x, const int lc_y, const bool display);
 
 	/**
 	 * \description Read the Input of the Player and sets the variables accordingly
