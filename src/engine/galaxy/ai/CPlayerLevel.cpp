@@ -88,7 +88,14 @@ mPoleGrabTime(0)
 	m_jumped = false;
 	m_hanging = false;
 
-	setupGalaxyObjectOnMap(0x98C, A_KEEN_STAND);
+	size_t address;
+
+	if(g_pBehaviorEngine->getEpisode() == 4)
+		address = 0x98C;
+	else
+		address = 0x888;
+
+	setupGalaxyObjectOnMap(address, A_KEEN_STAND);
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
