@@ -31,6 +31,8 @@ void CLevelPlay::loadMap(const int level)
 
 	if(g_pBehaviorEngine->getEpisode() == 4)
 		MapLoader = new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode);
+	else
+		MapLoader = new CMapLoaderGalaxy(mExeFile, mObjectPtr, mInventory, mCheatmode);
 
 	MapLoader->loadMap( mMap, level );
 

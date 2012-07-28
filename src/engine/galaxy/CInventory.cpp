@@ -12,7 +12,8 @@
 #include "sdl/input/CInput.h"
 #include "graphics/effects/CScrollEffect.h"
 #include "CStatusScreenGalaxyEp4.h"
-//#include "CStatusScreenGalaxyEp5.h"
+
+#include "CStatusScreenGalaxyEp5.h"
 //#include "CStatusScreenGalaxyEp6.h"
 
 
@@ -28,8 +29,8 @@ m_LevelName(levelname)
 
 	if(Episode == 4)
 		mp_StatusScreen = new CStatusScreenGalaxyEp4(Item, m_LevelName);
-//	else if(Episode == 5)
-//		mp_StatusScreen = new CStatusScreenGalaxyEp5(Item, m_LevelName);
+	else if(Episode == 5)
+		mp_StatusScreen = new CStatusScreenGalaxyEp5(Item, m_LevelName);
 //	else if(Episode == 6)
 //		mp_StatusScreen = new CStatusScreenGalaxyEp6(Item, m_LevelName);
 }
