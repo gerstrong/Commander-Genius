@@ -21,7 +21,8 @@ public:
 			Uint32 y,
 			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 			CInventory &l_Inventory,
-			stCheat &Cheatmode);
+			stCheat &Cheatmode,
+			const unsigned int actionoffset);
 
 	void process();
 	void processMoving();
@@ -35,6 +36,7 @@ public:
 
 private:
 	Uint16 m_basesprite;
+	Uint16 walkBaseFrame;
 	direction_t m_looking_dir;
 
 	Uint8 m_animation;

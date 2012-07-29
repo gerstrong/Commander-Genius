@@ -7,6 +7,7 @@
 
 #include "CLevelPlay.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
+#include "ep5/CMapLoaderGalaxyEp5.h"
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
@@ -31,8 +32,8 @@ void CLevelPlay::loadMap(const int level)
 
 	if(g_pBehaviorEngine->getEpisode() == 4)
 		MapLoader = new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode);
-	else
-		MapLoader = new CMapLoaderGalaxy(mExeFile, mObjectPtr, mInventory, mCheatmode);
+	else if(g_pBehaviorEngine->getEpisode() == 5)
+		MapLoader = new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode);
 
 	MapLoader->loadMap( mMap, level );
 
@@ -60,7 +61,11 @@ bool CLevelPlay::loadLevel(const Uint16 level)
     const std::string loading_text = g_pBehaviorEngine->getString(level_text);
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	EventContainer.add( new EventSendBitmapDialogMsg(106, loading_text, LEFT) );
+
+	if(g_pBehaviorEngine->getEpisode() == 4 )
+		EventContainer.add( new EventSendBitmapDialogMsg(106, loading_text, LEFT) );
+	else
+		EventContainer.add( new EventSendBitmapDialogMsg(1, loading_text, LEFT) );
 
 	mMap.drawAll();
 	return true;

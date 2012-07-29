@@ -19,11 +19,17 @@ CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
 void CWorldMap::init()
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(mExeFile, mObjectPtr, mInventory, mCheatmode);
+	SmartPointer<CMapLoaderGalaxy> MapLoader;
 
-	MapLoader.loadMap(mMap, 0); // Is it a Map Level?
-    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+	if(g_pBehaviorEngine->getEpisode() == 4)
+		MapLoader = new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode);
+	else if(g_pBehaviorEngine->getEpisode() == 5)
+		MapLoader = new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode);
 
+	MapLoader->loadMap( mMap, 0 );
+
+
+	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	if(g_pBehaviorEngine->getEpisode() == 4 )

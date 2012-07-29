@@ -14,7 +14,6 @@
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 
-const Uint16 WALKBASEFRAME = 130;
 const Uint16 SWIMBASEFRAME = 156;
 
 namespace galaxy {
@@ -25,21 +24,38 @@ CPlayerWM::CPlayerWM(CMap *pmap,
 		Uint32 y,
 		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 		CInventory &l_Inventory,
-		stCheat &Cheatmode):
+		stCheat &Cheatmode,
+		const unsigned int actionoffset):
 CPlayerBase(pmap, foeID, x, y,
 		    ObjectPtrs,
 		    LEFT,
 		    l_Inventory,
 		    Cheatmode),
-m_basesprite(WALKBASEFRAME),
+m_basesprite(0),
+walkBaseFrame(0),
 m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
 m_cantswim(false)
 {
-	sprite = m_basesprite;
+
+	// TODO: Another Workaround
+	if(g_pBehaviorEngine->getEpisode() == 4)
+	{
+		setupGalaxyObjectOnMap(actionoffset, 0);
+	}
+	else
+		sprite = 115;
+
+
+	// TODO: Temporary workaround
+	sprite += 15;
+	walkBaseFrame = sprite;
+	m_basesprite = walkBaseFrame;
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
+	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 }
 
 /**
@@ -83,7 +99,7 @@ void CPlayerWM::processMoving()
 	int movespeed;
 	if(m_basesprite == SWIMBASEFRAME)
 		movespeed = 25;
-	else if(m_basesprite == WALKBASEFRAME)
+	else if(m_basesprite == walkBaseFrame)
 		movespeed = 50;
 	else
 		movespeed = 0;
@@ -155,7 +171,7 @@ void CPlayerWM::processMoving()
 	}
 
 	// If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
-	if(m_basesprite == WALKBASEFRAME)
+	if(m_basesprite == walkBaseFrame)
 	{
 		performWalkingAnimation(walking);
 		m_cantswim = false;
@@ -262,7 +278,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		m_basesprite = SWIMBASEFRAME;
 	}
 	else if(down == 11)
-		m_basesprite = WALKBASEFRAME;
+		m_basesprite = walkBaseFrame;
 
 	// from right
 	if(right == 12)
@@ -271,7 +287,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		m_basesprite = SWIMBASEFRAME;
 	}
 	else if(left == 12)
-		m_basesprite = WALKBASEFRAME;
+		m_basesprite = walkBaseFrame;
 
 	// from bottom
 	if(down == 13)
@@ -280,7 +296,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		m_basesprite = SWIMBASEFRAME;
 	}
 	else if(up == 13)
-		m_basesprite = WALKBASEFRAME;
+		m_basesprite = walkBaseFrame;
 
 	// from left
 	if(left == 14)
@@ -289,7 +305,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		m_basesprite = SWIMBASEFRAME;
 	}
 	else if(right == 14)
-		m_basesprite = WALKBASEFRAME;
+		m_basesprite = walkBaseFrame;
 
 	if(m_Inventory.Item.m_special.ep4.swimsuit)
 		bleft = bright = bup = bdown = false;
