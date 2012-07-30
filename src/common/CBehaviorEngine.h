@@ -109,6 +109,9 @@ public:
 	unsigned int mPlayers;
 	Difficulty mDifficulty;
 
+	EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
+	{	return &EpisodeInfoStruct[episode-4];	}
+
 	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
 	{	pEpisodeInfo = epStruct;	}
 

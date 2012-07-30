@@ -7,6 +7,9 @@
 
 #include "CGalaxySpriteObject.h"
 
+
+static int spriteOffset;
+
 CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CSpriteObject(pmap, x, y),
 mFoeID(foeID),
@@ -28,7 +31,9 @@ m_climbing(false),
 mClipped(false),
 m_jumpdown(false),
 mEndOfAction(false)
-{}
+{
+	spriteOffset = g_pBehaviorEngine->getEpisodeInfoStructRef(g_pBehaviorEngine->getEpisode());
+}
 
 void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 									 const size_t ActionNumber )
@@ -280,9 +285,9 @@ void CGalaxySpriteObject::setAction(size_t ActionNumber)
 void CGalaxySpriteObject::setActionSprite()
 {
 	if(xDirection == LEFT || xDirection == NONE)
-		sprite = m_Action.spriteLeft-124;
+		sprite = m_Action.spriteLeft-spriteOffset;
 	else if(xDirection == RIGHT)
-		sprite = m_Action.spriteRight-124;
+		sprite = m_Action.spriteRight-spriteOffset;
 }
 
 

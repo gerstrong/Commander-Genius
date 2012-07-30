@@ -4,8 +4,12 @@
                                             
     (c)2008-2012            Gerstrong       
     (c)2009-2012            Albert          
-    (c)2009-2012            Pizza2004
     (c)2009-2012            Tulip           
+
+Porting:
+    (c)2009-2012            Pizza2004 (MacOs X)
+    (c)2010-2012            Pelya (Android)
+
            Released under GNU/GPL           
                                             
            Release v${CG_VERSION} 

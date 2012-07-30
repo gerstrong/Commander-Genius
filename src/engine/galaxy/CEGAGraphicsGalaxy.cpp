@@ -122,6 +122,7 @@ CEGAGraphics(ExeFile.getEpisode(), ExeFile.getDataDirectory()),
 m_Exefile(ExeFile)
 {
 	createBitmapsIDs();
+	setEpisodeInfoStructPtr(EpisodeInfo);
 }
 
 int CEGAGraphicsGalaxy::getNumSprites()
