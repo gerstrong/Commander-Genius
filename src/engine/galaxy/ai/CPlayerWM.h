@@ -37,6 +37,7 @@ public:
 private:
 	Uint16 m_basesprite;
 	Uint16 walkBaseFrame;
+	Uint16 swimBaseFrame;
 	direction_t m_looking_dir;
 
 	Uint8 m_animation;

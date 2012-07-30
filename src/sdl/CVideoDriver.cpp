@@ -1,4 +1,3 @@
-
 /*
  * CVideoDriver.cpp
  *
@@ -40,37 +39,33 @@ stConsoleMessage cmsg[MAX_CONSOLE_MESSAGES];
 int NumConsoleMessages = 0;
 int ConsoleExpireTimer = 0;
 
-
 CVideoDriver::CVideoDriver() :
-mp_VideoEngine(NULL),
-m_mustrefresh(false)
-{
+		mp_VideoEngine(NULL), m_mustrefresh(false) {
 	resetSettings();
 }
 
 // TODO: This should return something!
-void CVideoDriver::resetSettings()
-{
+void CVideoDriver::resetSettings() {
 
 	m_VidConfig.reset();
 
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
-		g_pLogFile->textOut(RED,"Could not initialize SDL: %s<br>", SDL_GetError());
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
+		g_pLogFile->textOut(RED, "Could not initialize SDL: %s<br>",
+				SDL_GetError());
 	else
-		g_pLogFile->textOut(GREEN,"SDL was successfully initialized!<br>");
+		g_pLogFile->textOut(GREEN, "SDL was successfully initialized!<br>");
 
 	initResolutionList();
 
 	// take the first default resolution. It might be changed if there is a config file already created
 	// If there are at least two possible resolutions choose the second one, as this is normally one basic small resolution
-	setMode( m_Resolutionlist.front() );
+	setMode(m_Resolutionlist.front());
 }
 
 // initResolutionList() reads the local list of available resolution.
 // This function can only be called internally
 // TODO: This should return something!
-void CVideoDriver::initResolutionList()
-{
+void CVideoDriver::initResolutionList() {
 	// This call will get the resolution we have right now and set it up for the system
 	// On Handheld devices this means, they will only take that resolution and that would it be.
 	// On the PC, this is the current resolution but will add others.
@@ -84,7 +79,7 @@ void CVideoDriver::initResolutionList()
 // TODO: Not sure if those defines are really needed anymore.
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	resolution.w = 320; //  320;
-	resolution.h = 200; //  480;
+	resolution.h = 200;//  480;
 #elif defined(ANDROID)
 	resolution.w = 320;
 	resolution.h = 200;
@@ -92,41 +87,33 @@ void CVideoDriver::initResolutionList()
 
 	// Now on non-handheld devices let's check for more resolutions.
 #if !defined(EMBEDDED)
-	for( unsigned int c=0 ; c<NUM_MAIN_RESOLUTIONS ; c++ )
-	{
+	for (unsigned int c = 0; c < NUM_MAIN_RESOLUTIONS; c++) {
 		// Depth won't be read anymore! Take the one the system is using actually
-		if(sscanf(ResolutionsList[c],"%hux%hu", &resolution.w, &resolution.h) >= 2)
-		{
+		if (sscanf(ResolutionsList[c], "%hux%hu", &resolution.w, &resolution.h)
+				>= 2) {
 			// Now check if it's possible to use this resolution
-			verifyResolution( resolution, SDL_FULLSCREEN );
+			verifyResolution(resolution, SDL_FULLSCREEN);
 		}
 	}
 
 	// In case there is no fullscreen, we will adapt the resolution it fits best to the window
-	if(!m_VidConfig.Fullscreen)
-	{
+	if (!m_VidConfig.Fullscreen) {
 		int e = 1;
 		resolution.w = 320;
 		resolution.h = 200;
 
 		int maxwidth = SDL_GetVideoInfo()->current_w;
 
-		while(resolution.w < maxwidth)
-		{
+		while (resolution.w < maxwidth) {
 			resolution.w = 320 * e;
 			resolution.h = 200 * e;
 
 			// Now check if it's possible to use this resolution
-			verifyResolution( resolution, 0 );
+			verifyResolution(resolution, 0);
 			e++;
 		}
 	}
 #endif
-
-	if(m_Resolutionlist.empty())
-	{
-		g_pLogFile->ftextOut(RED, "Error! The resolution list is empty(). That cannot be! Exiting...\n");
-	}
 
 	// The last resolution in the list is the desktop normally, therefore the highest
 	m_Resolutionlist.push_back(desktopResolution);
@@ -134,54 +121,50 @@ void CVideoDriver::initResolutionList()
 	m_Resolution_pos = m_Resolutionlist.begin();
 }
 
-void CVideoDriver::verifyResolution( CRect<Uint16>& resolution, const int flags )
-{
-	if(SDL_VideoModeOK( resolution.w, resolution.h, 32, flags ))
-	{
-		std::list< CRect<Uint16> > :: iterator i;
-		for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
-		{
-			if(*i == resolution)
+void CVideoDriver::verifyResolution(CRect<Uint16>& resolution,
+		const int flags) {
+	if (SDL_VideoModeOK(resolution.w, resolution.h, 32, flags)) {
+		std::list<CRect<Uint16> >::iterator i;
+		for (i = m_Resolutionlist.begin(); i != m_Resolutionlist.end(); i++) {
+			if (*i == resolution)
 				break;
 		}
 
-		if(i == m_Resolutionlist.end())
-		{
+		if (i == m_Resolutionlist.end()) {
 #ifdef DEBUG
-			g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n", resolution.w, resolution.h, 32);
+			g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n",
+					resolution.w, resolution.h, 32);
 #endif
 			m_Resolutionlist.push_back(resolution);
 		}
 	}
 }
 
-void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
-{
+void CVideoDriver::setVidConfig(const CVidConfig& VidConf) {
 	m_VidConfig = VidConf;
 	setMode(m_VidConfig.m_DisplayRect);
 }
 
-void CVideoDriver::setSpecialFXMode(bool SpecialFX)
-{	m_VidConfig.m_special_fx = SpecialFX;	}
+void CVideoDriver::setSpecialFXMode(bool SpecialFX) {
+	m_VidConfig.m_special_fx = SpecialFX;
+}
 
-void CVideoDriver::setMode(int width, int height,int depth)
-{
+void CVideoDriver::setMode(int width, int height, int depth) {
 	CRect<Uint16> res(width, height);
 	setMode(res);
 }
 
-void CVideoDriver::setMode(const CRect<Uint16>& res)
-{
+void CVideoDriver::setMode(const CRect<Uint16>& res) {
 	m_VidConfig.setResolution(res);
 
 	// TODO: Cycle through the list until the matching resolution is matched. If it doesn't exist
 	// add it;
-	for(m_Resolution_pos = m_Resolutionlist.begin() ; m_Resolution_pos != m_Resolutionlist.end() ; m_Resolution_pos++)
-		if( *m_Resolution_pos == res )
+	for (m_Resolution_pos = m_Resolutionlist.begin();
+			m_Resolution_pos != m_Resolutionlist.end(); m_Resolution_pos++)
+		if (*m_Resolution_pos == res)
 			break;
 
-	if(m_Resolution_pos == m_Resolutionlist.end())
-	{
+	if (m_Resolution_pos == m_Resolutionlist.end()) {
 		m_Resolutionlist.push_back(res);
 		m_Resolution_pos--;
 	}
@@ -191,57 +174,51 @@ void CVideoDriver::setMode(const CRect<Uint16>& res)
 extern "C" void iPhoneRotateScreen();
 #endif
 
-bool CVideoDriver::applyMode()
-{
+bool CVideoDriver::applyMode() {
 	const CRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
 	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
 
 	// Before the resolution is set, check, if the zoom factor is too high!
-	while(((Res.w/GameRect.w) < m_VidConfig.Zoom || (Res.h/GameRect.h) < m_VidConfig.Zoom) && (m_VidConfig.Zoom > 1))
+	while (((Res.w / GameRect.w) < m_VidConfig.Zoom
+			|| (Res.h / GameRect.h) < m_VidConfig.Zoom)
+			&& (m_VidConfig.Zoom > 1))
 		m_VidConfig.Zoom--;
 
-
 	// Check if some zoom/filter modes are illogical and roll them back accordingly
-	if( (m_VidConfig.Zoom == 3 && m_VidConfig.m_ScaleXFilter == 1) && !m_VidConfig.m_opengl )
+	if ((m_VidConfig.Zoom == 3 && m_VidConfig.m_ScaleXFilter == 1)
+			&& !m_VidConfig.m_opengl)
 		m_VidConfig.Zoom = 2;
 
-	if( m_VidConfig.Zoom == 0 )
+	if (m_VidConfig.Zoom == 0)
 		m_VidConfig.Zoom = 1;
 
 	m_VidConfig.m_DisplayRect = *m_Resolution_pos;
 	return true;
 }
 
-
-
-bool CVideoDriver::start()
-{
+bool CVideoDriver::start() {
 	bool retval;
 	std::string caption = "Commander Genius";
 	SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 	// When the program is through executing, call SDL_Quit
 	atexit(SDL_Quit);
 
-
 	g_pLogFile->textOut("Starting graphics driver...<br>");
 
 #ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the
+	if (m_VidConfig.m_opengl) // If OpenGL could be set, initialize the
 	{
 		mp_VideoEngine = new COpenGL(m_VidConfig);
 		retval = mp_VideoEngine->init();
 
-		if(!retval)
-		{
+		if (!retval) {
 			delete mp_VideoEngine;
 			m_VidConfig.m_opengl = false;
 			applyMode();
 			mp_VideoEngine = new CSDLVideo(m_VidConfig);
 			retval = mp_VideoEngine->init();
 		}
-	}
-	else
-	{
+	} else {
 #endif
 		mp_VideoEngine = new CSDLVideo(m_VidConfig);
 		retval = mp_VideoEngine->init();
@@ -262,262 +239,230 @@ bool CVideoDriver::start()
 	return retval;
 }
 
+void CVideoDriver::setFilter(short value) {
+	m_VidConfig.m_ScaleXFilter = value;
+} // 1 means no filter
 
-void CVideoDriver::setFilter(short value)
-{ m_VidConfig.m_ScaleXFilter = value; } // 1 means no filter
-
-
-void CVideoDriver::setZoom(short value)
-{ m_VidConfig.Zoom = value; }
-
+void CVideoDriver::setZoom(short value) {
+	m_VidConfig.Zoom = value;
+}
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
-void CVideoDriver::updateScrollBuffer(SmartPointer<CMap> &map)
-{
+void CVideoDriver::updateScrollBuffer(SmartPointer<CMap> &map) {
 	map->drawAll();
 	mp_VideoEngine->UpdateScrollBufX(map->m_scrollx);
 	mp_VideoEngine->UpdateScrollBufY(map->m_scrolly);
 }
 
 // TODO: Replace this by the upper function. Will be deprecated
-void CVideoDriver::updateScrollBuffer(CMap &map)
-{
+void CVideoDriver::updateScrollBuffer(CMap &map) {
 	map.drawAll();
 	mp_VideoEngine->UpdateScrollBufX(map.m_scrollx);
 	mp_VideoEngine->UpdateScrollBufY(map.m_scrolly);
 }
 
 void CVideoDriver::blitScrollSurface() // This is only for tiles
-									   // Therefore the name should be changed
+// Therefore the name should be changed
 {
 	mp_VideoEngine->blitScrollSurface();
 	drawConsoleMessages();
 }
 
-void CVideoDriver::collectSurfaces()
-{
+void CVideoDriver::collectSurfaces() {
 	mp_VideoEngine->collectSurfaces();
 }
 
-void CVideoDriver::clearSurfaces()
-{
+void CVideoDriver::clearSurfaces() {
 	mp_VideoEngine->clearSurfaces();
 }
 
-
-void CVideoDriver::updateScreen()
-{
+void CVideoDriver::updateScreen() {
 	mp_VideoEngine->updateScreen();
 }
 
 // "Console" here refers to the capability to pop up in-game messages
 // in the upper-left corner during game play ala Doom.
-void CVideoDriver::drawConsoleMessages()
-{
+void CVideoDriver::drawConsoleMessages() {
 	if (!NumConsoleMessages)
 		return;
 
-	if (!ConsoleExpireTimer)
-	{
+	if (!ConsoleExpireTimer) {
 		NumConsoleMessages--;
-		if (!NumConsoleMessages) return;
+		if (!NumConsoleMessages)
+			return;
 		ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
-	}
-	else ConsoleExpireTimer--;
+	} else
+		ConsoleExpireTimer--;
 
 	int y = CONSOLE_MESSAGE_Y;
-	for( int i=0 ; i<NumConsoleMessages ; i++ )
-	{
-		g_pGfxEngine->getFont(1).drawFont( mp_VideoEngine->getBlitSurface(), cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
+	for (int i = 0; i < NumConsoleMessages; i++) {
+		g_pGfxEngine->getFont(1).drawFont(mp_VideoEngine->getBlitSurface(),
+				cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
 		y += CONSOLE_MESSAGE_SPACING;
 	}
 }
 
 // removes all console messages
-void CVideoDriver::DeleteConsoleMsgs(void)
-{
+void CVideoDriver::DeleteConsoleMsgs(void) {
 	NumConsoleMessages = 0;
 }
 
 // adds a console msg to the top of the screen and scrolls any
 // other existing messages downwards
-void CVideoDriver::AddConsoleMsg(const char *the_msg)
-{
-	for( int i=MAX_CONSOLE_MESSAGES-2 ; i>=0 ; i-- )
-	{
-		strcpy(cmsg[i+1].msg, cmsg[i].msg);
+void CVideoDriver::AddConsoleMsg(const char *the_msg) {
+	for (int i = MAX_CONSOLE_MESSAGES - 2; i >= 0; i--) {
+		strcpy(cmsg[i + 1].msg, cmsg[i].msg);
 	}
 	strcpy(cmsg[0].msg, the_msg);
 
-	if (NumConsoleMessages < MAX_CONSOLE_MESSAGES) NumConsoleMessages++;
+	if (NumConsoleMessages < MAX_CONSOLE_MESSAGES)
+		NumConsoleMessages++;
 	ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
 }
 
-
-
-
-void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
-{
+void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds) {
 	int &left = CameraBounds.left;
 	int &up = CameraBounds.up;
 	int &right = CameraBounds.right;
 	int &down = CameraBounds.down;
 	int &speed = CameraBounds.speed;
 
-	if(left>right)
-	{
-		const int halfWidth = (left-right)/2;
+	if (left > right) {
+		const int halfWidth = (left - right) / 2;
 		left -= halfWidth;
 		right += halfWidth;
-		if(left>right)
+		if (left > right)
 			left--;
 	}
 
-	if(up>down)
-	{
-		const int halfHeight = (up-down)/2;
+	if (up > down) {
+		const int halfHeight = (up - down) / 2;
 		up -= halfHeight;
 		down += halfHeight;
-		if(up>down)
+		if (up > down)
 			up--;
 	}
 
-	bool invalid_value = (left<50) || (up<50)  || (right<50)  || (down<50)  || (speed<1) ||
-						(left>270) || (up>150) || (right>270) || (down>150) || (speed>50);
+	bool invalid_value = (left < 50) || (up < 50) || (right < 50) || (down < 50)
+			|| (speed < 1) || (left > 270) || (up > 150) || (right > 270)
+			|| (down > 150) || (speed > 50);
 
 	st_camera_bounds &cam = m_VidConfig.m_CameraBounds;
 
-	if(invalid_value)
+	if (invalid_value)
 		cam.reset();
 	else
 		cam = CameraBounds;
 }
 
-CVidConfig &CVideoDriver::getVidConfig()
-{ return m_VidConfig;	}
+CVidConfig &CVideoDriver::getVidConfig() {
+	return m_VidConfig;
+}
 
-short CVideoDriver::getZoomValue()
-{ return m_VidConfig.Zoom;	}
+short CVideoDriver::getZoomValue() {
+	return m_VidConfig.Zoom;
+}
 
-void CVideoDriver::isFullscreen(const bool value)
-{	m_VidConfig.Fullscreen = value;	}
+void CVideoDriver::isFullscreen(const bool value) {
+	m_VidConfig.Fullscreen = value;
+}
 
-bool CVideoDriver::getFullscreen()
-{	return m_VidConfig.Fullscreen;	}
+bool CVideoDriver::getFullscreen() {
+	return m_VidConfig.Fullscreen;
+}
 
-unsigned int CVideoDriver::getWidth() const
-{	return m_VidConfig.m_DisplayRect.w;	}
+unsigned int CVideoDriver::getWidth() const {
+	return m_VidConfig.m_DisplayRect.w;
+}
 
-unsigned int CVideoDriver::getHeight() const
-{	return m_VidConfig.m_DisplayRect.h;	}
+unsigned int CVideoDriver::getHeight() const {
+	return m_VidConfig.m_DisplayRect.h;
+}
 
-unsigned short CVideoDriver::getDepth() const
-{	return 32;	}
+unsigned short CVideoDriver::getDepth() const {
+	return 32;
+}
 
-SDL_Surface *CVideoDriver::getScrollSurface()
-{	return mp_VideoEngine->getScrollSurface();	}
+SDL_Surface *CVideoDriver::getScrollSurface() {
+	return mp_VideoEngine->getScrollSurface();
+}
 
-st_camera_bounds &CVideoDriver::getCameraBounds()
-{ 	return m_VidConfig.m_CameraBounds;	}
+st_camera_bounds &CVideoDriver::getCameraBounds() {
+	return m_VidConfig.m_CameraBounds;
+}
 
-void CVideoDriver::stop()
-{
-	if(mp_VideoEngine)
+void CVideoDriver::stop() {
+	if (mp_VideoEngine)
 		delete mp_VideoEngine;
 	mp_VideoEngine = NULL;
 }
-
 
 ////
 //// Drawing stuff related Stuff
 ////
 
-
-void CVideoDriver::pollDrawingTasks()
-{
-	while(!mDrawTasks.empty())
-	{
+void CVideoDriver::pollDrawingTasks() {
+	while (!mDrawTasks.empty()) {
 		// Sprite Section
-		if( DrawSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawSpriteTask>() )
-		{
+		if ( DrawSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawSpriteTask>()) {
 			CSprite *Sprite = drawSpriteTask->mSpritePtr;
 
-			Sprite->_drawSprite(
-					getBlitSurface(),
-					drawSpriteTask->mx,
-					drawSpriteTask->my,
-					drawSpriteTask->mAlpha);
-		}
-		else if( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>() )
-		{
+			Sprite->_drawSprite(getBlitSurface(), drawSpriteTask->mx,
+					drawSpriteTask->my, drawSpriteTask->mAlpha);
+		} else if ( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>()) {
 			CSprite *Sprite = drawSpriteTask->mSpritePtr;
 
-			Sprite->_drawBlinkingSprite(
-					getBlitSurface(),
-					drawSpriteTask->mx,
-					drawSpriteTask->my );
+			Sprite->_drawBlinkingSprite(getBlitSurface(), drawSpriteTask->mx,
+					drawSpriteTask->my);
 		}
 
 		// Bitmap Section
-		else if( DrawBitmapTask *drawBitmapTask = mDrawTasks.occurredEvent<DrawBitmapTask>() )
-		{
+		else if ( DrawBitmapTask *drawBitmapTask = mDrawTasks.occurredEvent<DrawBitmapTask>()) {
 			CBitmap *Bitmap = drawBitmapTask->mBmpPtr;
 
-			Bitmap->_draw(
-					getBlitSurface(),
-					drawBitmapTask->mx,
+			Bitmap->_draw(getBlitSurface(), drawBitmapTask->mx,
 					drawBitmapTask->my);
 		}
 
 		// Tiles Section
-		else if( DrawAnimatedTileTask *drawAnimatedTileTask =
-					mDrawTasks.occurredEvent<DrawAnimatedTileTask>() )
-		{
+		else if ( DrawAnimatedTileTask *drawAnimatedTileTask =
+		mDrawTasks.occurredEvent<DrawAnimatedTileTask>()) {
 			CTilemap *TilemapPtr = drawAnimatedTileTask->mTileMapPtr;
 
-			TilemapPtr->drawTile(
-					getBlitSurface(),
-					drawAnimatedTileTask->mx,
-					drawAnimatedTileTask->my,
-					drawAnimatedTileTask->mtile);
+			TilemapPtr->drawTile(getBlitSurface(), drawAnimatedTileTask->mx,
+					drawAnimatedTileTask->my, drawAnimatedTileTask->mtile);
 		}
 
 		// GUI Rendering based Task
-		else if( DrawGUIRenderTask *renderTask =
-					mDrawTasks.occurredEvent<DrawGUIRenderTask>() )
-		{
+		else if ( DrawGUIRenderTask *renderTask =
+		mDrawTasks.occurredEvent<DrawGUIRenderTask>()) {
 			renderTask->mpDialog->processRendering();
 		}
 
-		else if( mDrawTasks.occurredEvent<BlitScrollSurfaceTask>() )
-		{
+		else if (mDrawTasks.occurredEvent<BlitScrollSurfaceTask>()) {
 			blitScrollSurface();
 		}
 
 		// Other Surface Blits
-		else if( BlitSurfaceTask *blitSurfaceTask =
-					mDrawTasks.occurredEvent<BlitSurfaceTask>() )
-		{
-			SDL_BlitSurface( blitSurfaceTask->mSfcToBlit.get(),
-							 blitSurfaceTask->mSrcRect.get(),
-							 getBlitSurface(),
-							 blitSurfaceTask->mDstRect.get() );
+		else if ( BlitSurfaceTask *blitSurfaceTask =
+		mDrawTasks.occurredEvent<BlitSurfaceTask>()) {
+			SDL_BlitSurface(blitSurfaceTask->mSfcToBlit.get(),
+					blitSurfaceTask->mSrcRect.get(), getBlitSurface(),
+					blitSurfaceTask->mDstRect.get());
 		}
 
 		// If none of the Events fit here, please warn this incident
-		else
-		{
-			g_pLogFile->textOut("Warning: Unknown Drawing task. Please let the developers debug this!");
+		else {
+			g_pLogFile->textOut(
+					"Warning: Unknown Drawing task. Please let the developers debug this!");
 		}
 
 		mDrawTasks.pop_Event();
 	}
 }
 
-
-SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
-{
+SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect) {
 	CRect<Uint16> GameRes = getGameResolution();
 	CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 	CRect<float> RectDispCoordFloat = rect;
@@ -530,18 +475,12 @@ SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
 	return RectDispCoord.SDLRect();
 }
 
-
-void CVideoDriver::clearDrawingTasks()
-{
-	if(!mDrawTasks.empty())
-	{
+void CVideoDriver::clearDrawingTasks() {
+	if (!mDrawTasks.empty()) {
 		mDrawTasks.clear();
 	}
 }
 
-
-
-CVideoDriver::~CVideoDriver()
-{
- 	stop();
+CVideoDriver::~CVideoDriver() {
+	stop();
 }

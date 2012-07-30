@@ -84,14 +84,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 2:
 		// This is the player on the map in one level
 		p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode);
+				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x98C);
 		break;
 
 	case 3:
 		// This is the player on the world map
 		// Add the Camera into the game scene and attach it to this player
 		p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y,
-										m_ObjectPtr, m_Inventory, m_Cheatmode, 0x150A);
+										m_ObjectPtr, m_Inventory, m_Cheatmode, 0x15C2);
 
 		break;
 

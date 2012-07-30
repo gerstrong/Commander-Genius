@@ -74,7 +74,8 @@ class CPlayerLevel : public CPlayerBase
 public:
 	CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
-			CInventory &l_Inventory, stCheat &Cheatmode);
+			CInventory &l_Inventory, stCheat &Cheatmode,
+			const size_t offset);
 
 
 	void prepareToShoot();

@@ -63,7 +63,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 2:
 		// This is the player on the map in one level
 		p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode);
+				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x888);
 		break;
 
 	case 3:
@@ -76,13 +76,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 
 
 
-	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
+	/*case PLATFORM_VERT: case PLATFORM_VERT_ALT:
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y); break;
 	case PLATFORM_HORIZ_ALT:
 	case PLATFORM_HORIZ:
 		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, x, y); break;
 	case PLATFORM_DROP:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y); break;
+		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y); break;*/
 
 
 	default:

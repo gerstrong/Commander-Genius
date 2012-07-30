@@ -44,7 +44,8 @@ int ck_KeenPoleOffs[3] = {-8, 0, 8};
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
-						CInventory &l_Inventory, stCheat &Cheatmode) :
+						CInventory &l_Inventory, stCheat &Cheatmode,
+						const size_t offset) :
 CPlayerBase(pmap, foeID, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
 m_jumpdownfromobject(false),
 mPlacingGem(false),
@@ -88,14 +89,23 @@ mPoleGrabTime(0)
 	m_jumped = false;
 	m_hanging = false;
 
-	size_t address;
+	/*for(size_t add = 0x098C ; add <= 0x3ABB ; add += 0x2 )
+	{
+		m_Action.spriteLeft = 0;
+		m_Action.spriteRight = 0;
+		m_Action.setActionFormat(add);
+		setActionSprite();
 
-	if(g_pBehaviorEngine->getEpisode() == 4)
-		address = 0x98C;
-	else
-		address = 0x888;
+		for(int sp = 130+124 ; sp <= 155+124 ; sp++)
+		{
+			if( m_Action.spriteLeft == sp || m_Action.spriteRight == sp)
+			{
+				printf("sprite %i and %i found at %x\n", m_Action.spriteLeft, m_Action.spriteRight, add);
+			}
+		}
+	}*/
 
-	setupGalaxyObjectOnMap(address, A_KEEN_STAND);
+	setupGalaxyObjectOnMap(offset, A_KEEN_STAND);
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();

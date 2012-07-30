@@ -14,8 +14,6 @@
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 
-const Uint16 SWIMBASEFRAME = 156;
-
 namespace galaxy {
 
 CPlayerWM::CPlayerWM(CMap *pmap,
@@ -39,19 +37,13 @@ m_animation_time(1),
 m_animation_ticker(0),
 m_cantswim(false)
 {
-
-	// TODO: Another Workaround
-	if(g_pBehaviorEngine->getEpisode() == 4)
-	{
-		setupGalaxyObjectOnMap(actionoffset, 0);
-	}
-	else
-		sprite = 115;
-
+	m_ActionBaseOffset = actionoffset;
+	CGalaxySpriteObject::setActionForce(0);
+	setActionSprite();
 
 	// TODO: Temporary workaround
-	sprite += 15;
 	walkBaseFrame = sprite;
+	swimBaseFrame = walkBaseFrame + 24;
 	m_basesprite = walkBaseFrame;
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
@@ -97,7 +89,7 @@ void CPlayerWM::processMoving()
 {
 	// Check if the player is swimming or walking and setup the proper speed
 	int movespeed;
-	if(m_basesprite == SWIMBASEFRAME)
+	if(m_basesprite == swimBaseFrame)
 		movespeed = 25;
 	else if(m_basesprite == walkBaseFrame)
 		movespeed = 50;
@@ -176,7 +168,7 @@ void CPlayerWM::processMoving()
 		performWalkingAnimation(walking);
 		m_cantswim = false;
 	}
-	else if(m_basesprite == SWIMBASEFRAME)
+	else if(m_basesprite == swimBaseFrame)
 	{
 		if(m_Inventory.Item.m_special.ep4.swimsuit)
 		{
@@ -275,7 +267,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 	if(up == 11)
 	{
 		bdown = true;
-		m_basesprite = SWIMBASEFRAME;
+		m_basesprite = swimBaseFrame;
 	}
 	else if(down == 11)
 		m_basesprite = walkBaseFrame;
@@ -284,7 +276,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 	if(right == 12)
 	{
 		bleft = true;
-		m_basesprite = SWIMBASEFRAME;
+		m_basesprite = swimBaseFrame;
 	}
 	else if(left == 12)
 		m_basesprite = walkBaseFrame;
@@ -293,7 +285,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 	if(down == 13)
 	{
 		bup = true;
-		m_basesprite = SWIMBASEFRAME;
+		m_basesprite = swimBaseFrame;
 	}
 	else if(up == 13)
 		m_basesprite = walkBaseFrame;
@@ -302,7 +294,7 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 	if(left == 14)
 	{
 		bright = true;
-		m_basesprite = SWIMBASEFRAME;
+		m_basesprite = swimBaseFrame;
 	}
 	else if(right == 14)
 		m_basesprite = walkBaseFrame;
@@ -317,21 +309,21 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 void CPlayerWM::performWalkingAnimation(bool walking)
 {
 	if(xDirection == RIGHT && yDirection == NONE)
-		sprite = m_basesprite + 3;
+		sprite = m_basesprite + 1;
 	else if(xDirection == NONE && yDirection == UP)
-		sprite = m_basesprite + 6;
+		sprite = m_basesprite + 4;
 	else if(xDirection == NONE && yDirection == DOWN)
-		sprite = m_basesprite + 9;
+		sprite = m_basesprite + 7;
 	else if(xDirection == RIGHT && yDirection == DOWN)
-		sprite = m_basesprite + 12;
+		sprite = m_basesprite + 10;
 	else if(xDirection == LEFT && yDirection == DOWN)
-		sprite = m_basesprite + 15;
+		sprite = m_basesprite + 13;
 	else if(xDirection == LEFT && yDirection == UP)
-		sprite = m_basesprite + 18;
+		sprite = m_basesprite + 16;
 	else if(xDirection == RIGHT && yDirection == UP)
-		sprite = m_basesprite + 21;
+		sprite = m_basesprite + 19;
 	else
-		sprite = m_basesprite;
+		sprite = m_basesprite - 2;
 
 	if(walking)
 	{
