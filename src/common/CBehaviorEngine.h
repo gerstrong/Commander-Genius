@@ -19,13 +19,13 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "engine/galaxy/EGAStructs.h"
 #include "hardware/Configurator.h"
 #include "fileio/CExeFile.h"
 #include "CTileProperties.h"
 #include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
 #include "engine/CEventContainer.h"
-#include "engine/galaxy/EGAStructs.h"
 #include "common/options.h"
 
 #include "CSingleton.h"
@@ -110,10 +110,10 @@ public:
 	Difficulty mDifficulty;
 
 	EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
-	{	return &EpisodeInfoStruct[episode-4];	}
+	{	return &pEpisodeInfo[episode-4];	}
 
 	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
-	{	pEpisodeInfo = epStruct;	}
+	{	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
 
 
 private:

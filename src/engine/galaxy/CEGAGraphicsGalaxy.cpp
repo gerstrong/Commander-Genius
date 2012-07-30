@@ -20,7 +20,6 @@
 #include "FindFile.h"
 #include "CLogFile.h"
 #include "StringUtils.h"
-#include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "fileio/CTileLoader.h"
 #include "common/CSpriteObject.h"
@@ -36,7 +35,8 @@ namespace galaxy
 // i.e. KEEN4E.EXE + 0x2E00 to EndOfFile=0x3D740
 // It seems that the standard shareware KDREAMS.EXE starts at 0x1C00
 
-static EpisodeInfoStruct EpisodeInfo[] = {
+static EpisodeInfoStruct EpisodeInfo[] =
+{
 	{	/* Episode 4 */
 		0x3D740,	/* ExeImageSize */
 		0x21080,	/* OffEgaHead */
@@ -122,7 +122,7 @@ CEGAGraphics(ExeFile.getEpisode(), ExeFile.getDataDirectory()),
 m_Exefile(ExeFile)
 {
 	createBitmapsIDs();
-	setEpisodeInfoStructPtr(EpisodeInfo);
+	g_pBehaviorEngine->setEpisodeInfoStructPtr(EpisodeInfo);
 }
 
 int CEGAGraphicsGalaxy::getNumSprites()

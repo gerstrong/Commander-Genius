@@ -16,10 +16,11 @@
 #include "../CEGAGraphics.h"
 #include "../../graphics/CTilemap.h"
 
+#include "EGAStructs.h"
+
 namespace galaxy
 {
 
-#include "EGAStructs.h"
 //
 class CEGAGraphicsGalaxy : public ::CEGAGraphics
 {

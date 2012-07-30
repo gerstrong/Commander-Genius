@@ -6,7 +6,7 @@
  */
 
 #include "CGalaxySpriteObject.h"
-
+#include "common/CBehaviorEngine.h"
 
 static int spriteOffset;
 
@@ -32,7 +32,8 @@ mClipped(false),
 m_jumpdown(false),
 mEndOfAction(false)
 {
-	spriteOffset = g_pBehaviorEngine->getEpisodeInfoStructRef(g_pBehaviorEngine->getEpisode());
+	EpisodeInfoStruct* eiStructPtr = g_pBehaviorEngine->getEpisodeInfoStructRef(g_pBehaviorEngine->getEpisode());
+	spriteOffset = eiStructPtr->IndexSprites;
 }
 
 void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
