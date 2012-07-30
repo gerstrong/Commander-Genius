@@ -39,7 +39,7 @@ public:
 	void se_mortimer_randomzaps();
 	void set_mortimer_surprised(bool yes);
 
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 	void getShotByRay(object_t &obj_type){};
 
 //private:

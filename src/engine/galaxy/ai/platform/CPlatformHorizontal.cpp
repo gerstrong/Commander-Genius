@@ -15,7 +15,7 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y)
 {
 	xDirection = RIGHT;
-	yDirection = NONE;
+	yDirection = 0;
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
 	calcBoundingBoxes();

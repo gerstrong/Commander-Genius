@@ -250,8 +250,8 @@ void CPlayer::setDir()
 	if (psliding && pjumping < PJUMPED)
 	{
 		bool stuck = false;
-		if (pshowdir == LEFT && blockedl) stuck = true;
-		if (pshowdir == RIGHT && blockedr) stuck = true;
+		if (pShowDir.x == LEFT && blockedl) stuck = true;
+		if (pShowDir.x == RIGHT && blockedr) stuck = true;
 		if (stuck)
 		{
 			// jumped off an ice block into a wall?
@@ -269,13 +269,13 @@ void CPlayer::setDir()
 	
 	if (!pjumping && !pfiring)
 	{
-		if (playcontrol[PA_X] < 0 && xinertia < 0) { pdir = pshowdir = LEFT; }
-		if (playcontrol[PA_X] > 0 && xinertia > 0) { pdir = pshowdir = RIGHT; }
+		if (playcontrol[PA_X] < 0 && xinertia < 0) { pDir.x = pShowDir.x = LEFT; }
+		if (playcontrol[PA_X] > 0 && xinertia > 0) { pDir.x = pShowDir.x = RIGHT; }
 	}
 	else
 	{
-		if (playcontrol[PA_X] < 0) { pdir = pshowdir = LEFT;  }
-		if (playcontrol[PA_X] > 0) { pdir = pshowdir = RIGHT;  }
+		if (playcontrol[PA_X] < 0) { pDir.x = pShowDir.x = LEFT;  }
+		if (playcontrol[PA_X] > 0) { pDir.x = pShowDir.x = RIGHT;  }
 	}
 }
 
@@ -479,8 +479,8 @@ void CPlayer::JumpAndPogo()
 					pwalkframe = 1;
 					if ( psliding )
 					{ // on ice, always jump direction facing
-						if (pshowdir==LEFT) pdir=LEFT;
-						else pdir=RIGHT;
+						if (pShowDir.x==LEFT) pDir.x=LEFT;
+						else pDir.x=RIGHT;
 					}
 					else
 						pjumpdir = UP;
@@ -754,19 +754,19 @@ void CPlayer::raygun()
 			{  // we have enough charges
 				int xdir, ydir;
 
-				// In case the player hasn't any direction assignedyet, because he can only shoot in those two directions
-				if(pdir != LEFT) pdir = RIGHT;
+				// In case the player hasn't any direction assigned yet, because he can only shoot in those two directions
+				if(pDir.x != LEFT) pDir.x = RIGHT;
 
 				inventory.charges--;
-				pshowdir = pdir;
+				pShowDir = pDir;
 				
 				playSound( SOUND_KEEN_FIRE );
 				
 				ydir = getYPosition()+(9<<STC);
-				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
+				if (pDir.x == RIGHT) xdir = getXRightPos()+xinertia;
 				else xdir = getXLeftPos()+xinertia-(16<<STC);
 
-				CRay *rayobject = new CRay(mp_Map, xdir, ydir, pdir, OBJ_PLAYER, m_index);
+				CRay *rayobject = new CRay(mp_Map, xdir, ydir, static_cast<direction_t>(pDir.x), OBJ_PLAYER, m_index);
 				rayobject->setSpeed(124);
 				
 				mp_object->push_back(rayobject);
@@ -818,7 +818,7 @@ void CPlayer::SelectFrame()
 	
     // if he's going left switch the frame selected above to the
     // appropriate one for the left direction
-    if (pshowdir==LEFT && !pdie && !pfrozentime)
+    if (pShowDir.x == LEFT && !pdie && !pfrozentime)
     {
 		if (pfiring)
 		{
@@ -852,7 +852,7 @@ void CPlayer::bump( CSpriteObject &theObject, direction_t direction )
 	playSound( SOUND_YORP_BUMP, PLAY_NORESTART );
 
 	if(!pfiring)
-		pshowdir = pdir = direction;
+		pShowDir.x = pDir.x = direction;
 
 	xinertia = (direction==RIGHT) ? bumpamount : -bumpamount;
 
@@ -875,13 +875,13 @@ void CPlayer::push( CSpriteObject &theObject )
 	if( midx < obj_midx )
 	{
 		moveLeft(rx - obj_lx);
-		pdir = pshowdir = LEFT;
+		pDir.x = pShowDir.x = LEFT;
 	}
 
 	if( midx > obj_midx )
 	{
 		moveRight(obj_rx - lx);
-		pdir = pshowdir = RIGHT;
+		pDir.x = pShowDir.x = RIGHT;
 	}
 	pwalking = true;
 }

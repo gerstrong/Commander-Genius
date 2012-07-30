@@ -437,7 +437,8 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
 
 			if( blocked && (blocked < 2 || blocked > 7) )
-				return TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown;
+				//return TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown;
+				return blocked;
 		}
 
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;

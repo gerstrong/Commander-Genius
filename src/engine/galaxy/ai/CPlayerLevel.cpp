@@ -1606,7 +1606,7 @@ void CPlayerLevel::performPoleHandleInput()
 		}
 
 		setAction(A_KEEN_POLE);
-		yDirection = NONE;
+		yDirection = 0;
 	}
 
 
@@ -1660,7 +1660,7 @@ void CPlayerLevel::processPoleClimbingSit()
 		else
 		{
 			setAction(A_KEEN_POLE);
-			yDirection = NONE;
+			yDirection = 0;
 		}
 
 		return;
@@ -1731,7 +1731,7 @@ void CPlayerLevel::processPoleClimbingUp()
 	else
 	{
 		setAction(A_KEEN_POLE);
-		yDirection = NONE;
+		yDirection = 0;
 	}
 
 	performPoleHandleInput();
@@ -1762,7 +1762,7 @@ void CPlayerLevel::processPoleClimbingDown()
 	{
 		// Fall down if there isn't any pole to slide down
 		m_climbing = false;
-		yDirection = NONE;
+		yDirection = 0;
 		yinertia = 0;
 		solid = true;
 
@@ -1872,7 +1872,7 @@ void CPlayerLevel::processFalling()
 		m_climbing = false;
 		m_jumped = true;
 		yinertia = 0;
-		yDirection = NONE;
+		yDirection = 0;
 		return;
 	}
 

@@ -48,21 +48,21 @@ void CPlayer::setWorldMapdir()
 {
 	bool exception=false;
 	dpadcount = 0;
-	if (playcontrol[PA_X] < 0) { pdir = LEFT; dpadcount++; }
-	if (playcontrol[PA_X] > 0) { pdir = RIGHT; dpadcount++; }
-	if (playcontrol[PA_Y] < 0) { pdir = UP; dpadcount++; }
-	if (playcontrol[PA_Y] > 0) { pdir = DOWN; dpadcount++; }
+	if (playcontrol[PA_X] < 0) { pDir.x = LEFT; pDir.y = 0; dpadcount++; }
+	if (playcontrol[PA_X] > 0) { pDir.x = RIGHT; pDir.y = 0; dpadcount++; }
+	if (playcontrol[PA_Y] < 0) { pDir.y = UP; pDir.x = 0; dpadcount++; }
+	if (playcontrol[PA_Y] > 0) { pDir.y = DOWN; pDir.x = 0; dpadcount++; }
 	
-	if ( pshowdir==UP && !playcontrol[PA_Y] < 0) exception = true;
-	if ( pshowdir==DOWN && !playcontrol[PA_Y] > 0) exception = true;
-	if ( pshowdir==LEFT && !playcontrol[PA_X] < 0) exception = true;
-	if ( pshowdir==RIGHT && !playcontrol[PA_X] > 0) exception = true;
+	if ( pShowDir.y == UP && !playcontrol[PA_Y] < 0) exception = true;
+	if ( pShowDir.y == DOWN && !playcontrol[PA_Y] > 0) exception = true;
+	if ( pShowDir.x == LEFT && !playcontrol[PA_X] < 0) exception = true;
+	if ( pShowDir.x == RIGHT && !playcontrol[PA_X] > 0) exception = true;
 	
-	if (playcontrol[PA_Y] < 0) pshowdir = UP;
-	if (playcontrol[PA_Y] > 0) pshowdir = DOWN;
+	if (playcontrol[PA_Y] < 0) pShowDir.y = UP;
+	if (playcontrol[PA_Y] > 0) pShowDir.y = DOWN;
 
 	if (dpadcount==1 || dpadlastcount==0 || exception)
-		pshowdir = pdir;
+		pShowDir = pDir;
 
 	dpadlastcount = dpadcount;
 }
@@ -147,10 +147,10 @@ void CPlayer::verifySolidLevels()
 void CPlayer::selectFrameOnWorldMap()
 {
     // select base frame for current direction
-    if (pshowdir==RIGHT) sprite = playerbaseframe + PMAPRIGHTFRAME;
-    else if (pshowdir==LEFT) sprite = playerbaseframe + PMAPLEFTFRAME;
-    else if (pshowdir==UP) sprite = playerbaseframe + PMAPUPFRAME;
-    else if (pshowdir==DOWN) sprite = playerbaseframe + PMAPDOWNFRAME;
+    if (pShowDir.x==RIGHT) sprite = playerbaseframe + PMAPRIGHTFRAME;
+    else if (pShowDir.x==LEFT) sprite = playerbaseframe + PMAPLEFTFRAME;
+    else if (pShowDir.y==UP) sprite = playerbaseframe + PMAPUPFRAME;
+    else if (pShowDir.y==DOWN) sprite = playerbaseframe + PMAPDOWNFRAME;
 
     // add in walk frame if walking
     if (pwalking) sprite += pwalkframe;

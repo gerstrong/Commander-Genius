@@ -137,7 +137,7 @@ void CSectorEffector::process()
 
 }
 
-void CSectorEffector::getTouchedBy(CVorticonSpriteObject &theObject)
+void CSectorEffector::getTouchedBy(CSpriteObject &theObject)
 {
 	bool it_is_mortimer_machine = false;
 
@@ -148,14 +148,16 @@ void CSectorEffector::getTouchedBy(CVorticonSpriteObject &theObject)
 
 	if(it_is_mortimer_machine)
 	{
-		if (theObject.m_type == OBJ_PLAYER)
+		if (CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 		{
-			theObject.kill();
+			player->kill();
 		}
 	}
 
+	CVorticonSpriteObject *theVObjectPtr = dynamic_cast<CVorticonSpriteObject*>(&theObject);
+
 	if( ( setype == SE_MORTIMER_SPARK || setype == SE_MORTIMER_HEART ) &&
-			mHealthPoints>0 && theObject.m_type == OBJ_RAY )
+			mHealthPoints>0 && theVObjectPtr->m_type == OBJ_RAY )
 	{
 		mHealthPoints--;
 	}

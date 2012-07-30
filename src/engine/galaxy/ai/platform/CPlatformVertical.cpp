@@ -18,7 +18,7 @@ CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint3
 CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y)
 {
-	xDirection = NONE;
+	xDirection = 0;
 	yDirection = DOWN;
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();

@@ -61,7 +61,7 @@ public:
 	CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 			Uint32 x, Uint32 y );
 	void process();
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	void processLooking();

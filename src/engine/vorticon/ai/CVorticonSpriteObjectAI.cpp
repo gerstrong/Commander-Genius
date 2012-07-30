@@ -67,7 +67,9 @@ void CVorticonSpriteObjectAI::process()
 					if( *theOther != &object )
 					{
 						if( object.hitdetect(**theOther) )
+						{
 							object.getTouchedBy(**theOther);
+						}
 					}
 				}
 			}

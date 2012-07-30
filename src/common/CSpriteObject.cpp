@@ -41,7 +41,7 @@ transluceny(0)
 	dontdraw = false;
 	cansupportplayer = false;
 	dying = false;
-	yDirection = xDirection = NONE;
+	yDirection = xDirection = 0;
 	supportedbyobject = false;
 
 	blockedd = false;

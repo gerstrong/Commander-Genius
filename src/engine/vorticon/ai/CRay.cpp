@@ -61,6 +61,7 @@ void CRay::process()
 		case RAY_STATE_SETZAPZOT:
 			setZapped();
 			// ... and fall through
+			break;
 		case RAY_STATE_ZAPZOT:
 			gotZapped();
 			break;
@@ -109,8 +110,8 @@ void CRay::gotZapped()
 
 void CRay::moveinAir()
 {
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
-	CSprite &raysprite = g_pGfxEngine->getSprite(sprite);
+	//std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
+	//CSprite &raysprite = g_pGfxEngine->getSprite(sprite);
 	//bool hitlethal; // TODO: Why is this here?
 
 	if (m_Direction == RIGHT)
@@ -164,14 +165,15 @@ void CRay::moveinAir()
 	}
 }
 
-void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
+void CRay::getTouchedBy(CSpriteObject &theObject)
 {
 	if( !theObject.dead && !theObject.dying )
 	{
 		if(theObject.canbezapped && state ==  RAY_STATE_FLY )
 		{
 			// Check, if it's not form the same object
-			if(theObject.m_type != owner.obj_type)
+			CVorticonSpriteObject *theObjPtr = dynamic_cast<CVorticonSpriteObject*>(&theObject);
+			if(theObjPtr->m_type != owner.obj_type)
 			{
 				state = RAY_STATE_SETZAPZOT;
 				canbezapped = false;

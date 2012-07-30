@@ -107,7 +107,7 @@ void CPlayerWM::processMoving()
 	if(g_pInput->getHoldedCommand(IC_LEFT) && !bleft)
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			yDirection = NONE;
+			yDirection = 0;
 
 		moveLeft(movespeed);
 		walking = true;
@@ -116,7 +116,7 @@ void CPlayerWM::processMoving()
 	else if(g_pInput->getHoldedCommand(IC_RIGHT) && !bright)
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			yDirection = NONE;
+			yDirection = 0;
 
 		moveRight(movespeed);
 		walking = true;
@@ -126,7 +126,7 @@ void CPlayerWM::processMoving()
 	if(g_pInput->getHoldedCommand(IC_UP) && !bup)
 	{
 		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-			xDirection = NONE;
+			xDirection = 0;
 
 		moveUp(movespeed);
 		walking = true;
@@ -135,7 +135,7 @@ void CPlayerWM::processMoving()
 	else if(g_pInput->getHoldedCommand(IC_DOWN) && !bdown)
 	{
 		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-			xDirection = NONE;
+			xDirection = 0;
 
 		moveDown(movespeed);
 		walking = true;
@@ -308,11 +308,11 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
  */
 void CPlayerWM::performWalkingAnimation(bool walking)
 {
-	if(xDirection == RIGHT && yDirection == NONE)
+	if(xDirection == RIGHT && yDirection == 0)
 		sprite = m_basesprite + 1;
-	else if(xDirection == NONE && yDirection == UP)
+	else if(xDirection == 0 && yDirection == UP)
 		sprite = m_basesprite + 4;
-	else if(xDirection == NONE && yDirection == DOWN)
+	else if(xDirection == 0 && yDirection == DOWN)
 		sprite = m_basesprite + 7;
 	else if(xDirection == RIGHT && yDirection == DOWN)
 		sprite = m_basesprite + 10;
@@ -340,11 +340,11 @@ void CPlayerWM::performWalkingAnimation(bool walking)
  */
 void CPlayerWM::performSwimmingAnimation()
 {
-	if(xDirection == RIGHT && yDirection == NONE)
+	if(xDirection == RIGHT && yDirection == 0)
 		sprite = m_basesprite + 2;
-	else if(xDirection == NONE && yDirection == DOWN)
+	else if(xDirection == 0 && yDirection == DOWN)
 		sprite = m_basesprite + 4;
-	else if(xDirection == LEFT && yDirection == NONE)
+	else if(xDirection == LEFT && yDirection == 0)
 		sprite = m_basesprite + 6;
 	else if(xDirection == RIGHT && yDirection == UP)
 		sprite = m_basesprite + 8;

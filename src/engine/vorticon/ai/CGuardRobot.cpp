@@ -207,8 +207,11 @@ void CGuardRobot::guard_fire()
 	pausetime = FIRE_PAUSE_TIME;
 }
 
-void CGuardRobot::getTouchedBy(CVorticonSpriteObject &theObject)
+void CGuardRobot::getTouchedBy(CSpriteObject &theObject)
 {
-	if (theObject.m_type == OBJ_PLAYER && g_pBehaviorEngine->mDifficulty>=NORMAL)
-		theObject.kill(); // Only on normal and hard mode when keen touches it, he can die
+	if ( g_pBehaviorEngine->mDifficulty>=NORMAL )
+	{
+		if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+			player->kill(); // Only on normal and hard mode when keen touches it, he can die
+	}
 }

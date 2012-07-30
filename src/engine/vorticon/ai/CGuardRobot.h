@@ -21,7 +21,7 @@ public:
 			 std::vector<CVorticonSpriteObject*>& Object);
 	void process();
 	void guard_fire();
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 

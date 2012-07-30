@@ -206,12 +206,11 @@ void CFoob::process()
 	}
 }
 
-void CFoob::getTouchedBy(CVorticonSpriteObject &theObject)
+void CFoob::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.m_type == OBJ_PLAYER)
+	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{
-		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
 		if(g_pBehaviorEngine->mDifficulty==HARD)
-			Player.kill();
+			player->kill();
 	}
 }

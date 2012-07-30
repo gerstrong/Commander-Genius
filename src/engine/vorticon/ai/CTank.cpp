@@ -186,12 +186,11 @@ void CTank::process()
 	}
 }
 
-void CTank::getTouchedBy(CVorticonSpriteObject &theObject)
+void CTank::getTouchedBy(CSpriteObject &theObject)
 {   // push keen
-	if( theObject.m_type == OBJ_PLAYER )
+	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
 	{
-		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-		Player.bump( *this, movedir );
+		player->bump( *this, movedir );
 	}
 }
 

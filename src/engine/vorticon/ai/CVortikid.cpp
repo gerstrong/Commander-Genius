@@ -78,7 +78,7 @@ void CVortikid::process()
 	// touched player
 	if (touchPlayer && state!=BABY_DYING && !m_Player[touchedBy].pfrozentime)
 	{
-		m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = dir;
+		m_Player[touchedBy].pDir.x = m_Player[touchedBy].pShowDir.x = dir;
 		m_Player[touchedBy].freeze();
 	}
 

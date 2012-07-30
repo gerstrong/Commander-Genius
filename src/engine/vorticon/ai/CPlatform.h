@@ -21,7 +21,7 @@ public:
 	void process();
 
 	void SetAllCanSupportPlayer(bool state);
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 protected:
 	unsigned char state;
@@ -40,7 +40,7 @@ public:
 	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y,
 			std::vector<CPlayer>& Player);
 	void process();
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 };
 
 #endif /* CPLATFORM_H_ */

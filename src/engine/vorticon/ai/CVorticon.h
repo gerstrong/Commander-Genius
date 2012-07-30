@@ -64,7 +64,7 @@ public:
 			Uint32 x, Uint32 y, char hp=1, object_t objtype=OBJ_VORT);
 	void process();
 	void initiateJump();
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 protected:
 	int m_Level;

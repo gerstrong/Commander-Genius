@@ -38,7 +38,7 @@ public:
 	CButler(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CPlayer> &PlayerVect);
 	void process();
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 

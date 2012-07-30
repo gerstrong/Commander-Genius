@@ -18,7 +18,7 @@ const int MINE_SPEED = 20;
 CWaterMine::CWaterMine(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const bool vertical) :
 CGalaxySpriteObject(pmap, foeID, x, y)
 {
-	yDirection = xDirection = NONE;
+	yDirection = xDirection = 0;
 
 	if(vertical)
 		yDirection = DOWN;

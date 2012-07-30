@@ -173,7 +173,9 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 
 			if (++resetcnt==resetpt) curmapx = curmapy = 0;
 		}
+
 	}
+
 	planeitems.clear();
 
 	// Do some post calculations
@@ -481,7 +483,8 @@ void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int 
 				break;
 			}
 
-			if(enemyobject)
+
+			if(enemyobject != NULL)
 				mp_objvect->push_back(enemyobject);
 		}
 	}

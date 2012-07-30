@@ -32,7 +32,7 @@ CStunnable(pmap, foeID, x, y)
 	mActionMap[A_MIMROCK_STUNNED] = &CStunnable::processStunned;
 
 	setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
-	xDirection = NONE;
+	xDirection = 0;
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();

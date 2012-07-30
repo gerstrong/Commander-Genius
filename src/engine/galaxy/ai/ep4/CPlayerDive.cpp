@@ -90,7 +90,7 @@ void CPlayerDive::processDiving()
 	if(g_pInput->getHoldedCommand(IC_LEFT))
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			yDirection = NONE;
+			yDirection = 0;
 
 		moveLeft(MOVESPEED+m_swimupspeed);
 		xDirection = LEFT;
@@ -98,7 +98,7 @@ void CPlayerDive::processDiving()
 	else if(g_pInput->getHoldedCommand(IC_RIGHT))
 	{
 		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			yDirection = NONE;
+			yDirection = 0;
 
 		moveRight(MOVESPEED+m_swimupspeed);
 		xDirection = RIGHT;

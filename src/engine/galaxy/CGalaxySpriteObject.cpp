@@ -285,7 +285,7 @@ void CGalaxySpriteObject::setAction(size_t ActionNumber)
 // Sets the proper sprite of action format to the local object
 void CGalaxySpriteObject::setActionSprite()
 {
-	if(xDirection == LEFT || xDirection == NONE)
+	if(xDirection == LEFT || xDirection == 0)
 		sprite = m_Action.spriteLeft-spriteOffset;
 	else if(xDirection == RIGHT)
 		sprite = m_Action.spriteRight-spriteOffset;

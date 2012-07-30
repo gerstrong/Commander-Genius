@@ -40,7 +40,7 @@ class CFoob : public CVorticonSpriteObject
 public:
 	CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player);
 	void process();
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	enum FOOB_ACTIONS

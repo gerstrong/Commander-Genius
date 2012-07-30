@@ -14,7 +14,7 @@
 
 enum direction_t
 {
-	NONE = 0,
+	CENTER = 0,
 	RIGHT = 1,
 	LEFT = -1,
 	UP = -1,

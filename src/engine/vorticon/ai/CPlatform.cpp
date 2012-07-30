@@ -96,16 +96,15 @@ void CPlatform::SetAllCanSupportPlayer(bool state)
 	}
 }
 
-void CPlatform::getTouchedBy(CVorticonSpriteObject &theObject)
+void CPlatform::getTouchedBy(CSpriteObject &theObject)
 {
 	// push player horizontally
-	if( theObject.m_type == OBJ_PLAYER )
+	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{
-		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-		if(Player.pfalling or !Player.blockedd or !Player.supportedbyobject)
-			Player.push(*this);
+		if(player->pfalling or !player->blockedd or !player->supportedbyobject)
+			player->push(*this);
 		else if( state == PLATFORM_MOVE )
-			Player.moveXDir( (movedir==LEFT) ? -PLATFORM_MOVE_SPD : PLATFORM_MOVE_SPD);
+			player->moveXDir( (movedir==LEFT) ? -PLATFORM_MOVE_SPD : PLATFORM_MOVE_SPD);
 	}
 }
 

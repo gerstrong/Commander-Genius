@@ -152,7 +152,8 @@ public:
 	unsigned char pjumpfloattimer;
 	size_t ankhtime;
 
-	direction_t pdir,pshowdir,lastpdir;
+
+	VectorD2<int> pDir,pShowDir,lastPDir;
 
 	char pfireframetimer;
 	bool inhibitwalking;

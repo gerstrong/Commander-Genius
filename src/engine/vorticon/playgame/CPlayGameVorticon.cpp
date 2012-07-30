@@ -108,7 +108,7 @@ bool CPlayGameVorticon::init()
 	CVorticonMapLoader MapLoader( mMap, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
-
+	mpObjectAI = NULL;
 
 	// load level map
 	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
@@ -130,8 +130,8 @@ bool CPlayGameVorticon::init()
 
 	// Initialize the AI
 	mpObjectAI = new CVorticonSpriteObjectAI(mMap.get(), m_Object, m_Player,
-								m_NumPlayers, m_Episode, m_Level,
-								mMap->m_Dark);
+			m_NumPlayers, m_Episode, m_Level,
+			mMap->m_Dark);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyFinales();

@@ -78,12 +78,13 @@ void CButler::process()
 	 }
 }
 
-void CButler::getTouchedBy(CVorticonSpriteObject &theObject)
+void CButler::getTouchedBy(CSpriteObject &theObject)
 {   // push keen
-	if( theObject.m_type == OBJ_PLAYER )
+
+
+	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
 	{
-		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-		Player.bump( *this, movedir );
+		player->bump( *this, movedir );
 	}
 }
 

@@ -74,8 +74,14 @@ void CPlayer::setDatatoZero()
 	ankhtime = 0;
     exists = true;
 	onscreen = true;
-	pfallspeed = 0,
-	pdir = pshowdir = (m_level==80) ? DOWN : RIGHT;
+	pfallspeed = 0;
+
+	if(m_level==80)
+		pShowDir = VectorD2<direction_t>(CENTER,DOWN);
+	else
+		pShowDir = VectorD2<direction_t>(RIGHT,CENTER);
+
+	pDir = pShowDir;
 	inhibitfall = hideplayer = false;
   	pwalkframe = pwalkframea = 0;
     dpadcount = 0;
@@ -131,7 +137,7 @@ void CPlayer::setupforLevelPlay()
 {
 	plastfalling = true;
 	solid = true;
-	pshowdir = RIGHT;
+	pShowDir.x = RIGHT;
 	ppogostick = false;
 	pjumping = PNOJUMP;
     psliding = psemisliding = false;
@@ -181,8 +187,8 @@ void CPlayer::Walking()
 
     // this prevents a "slipping" effect if you jump, say, right, then
     // start walking left just as you hit the ground
-    if (pjustjumped && ((xinertia > 0 && pdir==LEFT) ||
-                        (xinertia < 0 && pdir==RIGHT)))
+    if (pjustjumped && ((xinertia > 0 && pDir.x == LEFT) ||
+                        (xinertia < 0 && pDir.x == RIGHT)))
     {
     	if(!ppogostick)
     		xinertia = 0;
@@ -201,10 +207,10 @@ void CPlayer::Walking()
 		// don't move!.
 		if (pjustfell && psemisliding)
 		{
-			if (pdir==RIGHT)
-				pjustfell = blockedr ? 0 : pdir;
+			if (pDir.x==RIGHT)
+				pjustfell = blockedr ? 0 : pDir.x;
 			else
-				pjustfell = blockedl ? 0 : pdir;
+				pjustfell = blockedl ? 0 : pDir.x;
 		}
     }
 	
@@ -212,7 +218,7 @@ void CPlayer::Walking()
     if ((psemisliding && xinertia!=0) || (((playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) || (( (playcontrol[PA_Y] < 0) || (playcontrol[PA_Y] > 0)) && m_playingmode == WORLDMAP )) && !inhibitwalking))
     {
 		// we just started walking or we changed directions suddenly?
-		if (pwalking == 0 || ((lastpdir==RIGHT && pdir==LEFT)||(lastpdir==LEFT && pdir==RIGHT)))
+		if (pwalking == 0 || ((lastPDir.x==RIGHT && pDir.x==LEFT)||(lastPDir.x==LEFT && pDir.x==RIGHT)))
 		{
 			pwalkanimtimer = 0;
 			pwalkframe = 1;
@@ -225,7 +231,7 @@ void CPlayer::Walking()
 				pinertia_y = 0;
 			}
 			
-			lastpdir = pdir;
+			lastPDir = pDir;
 			pwalking = 1;
 		}
     }
@@ -252,9 +258,9 @@ void CPlayer::Walking()
 			// reset walk frame because we have no walk animation while on ice
 			pwalkframe = 0;
 			// keep player sliding at maximum speed
-			if (pdir==RIGHT)
+			if (pDir.x==RIGHT)
 				xinertia = pmaxspeed;
-			else if (pdir==LEFT)
+			else if (pDir.x==LEFT)
 				xinertia = -pmaxspeed;
 		}
 		return;
@@ -456,10 +462,10 @@ void CPlayer::WalkingAnimation()
 
 						// Check if the player walking against walls (solid tiles)
 						bool obs=false;
-						obs |= (blockedu && pdir == UP);
-						obs |= (blockedd && pdir == DOWN);
-						obs |= (blockedl && pdir == LEFT);
-						obs |= (blockedr && pdir == RIGHT);
+						obs |= (blockedu && pDir.y == UP);
+						obs |= (blockedd && pDir.y == DOWN);
+						obs |= (blockedl && pDir.x == LEFT);
+						obs |= (blockedr && pDir.x == RIGHT);
 						
 						if (obs)
 							playSound(SOUND_KEEN_BUMPHEAD);
@@ -751,7 +757,7 @@ void CPlayer::ProcessExitLevel()
 		walkbehindexitdoor();
 
         // keep him going right
-        pdir = pshowdir = RIGHT;
+		pDir.x = pShowDir.x = RIGHT;
         // make keen walk slowly through the exit door
         playcontrol[PA_X] = 80;
         if (xinertia > PMAXEXITDOORSPEED)

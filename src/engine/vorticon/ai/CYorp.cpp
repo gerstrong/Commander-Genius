@@ -203,15 +203,14 @@ void CYorp::processDying()
 	}
 }
 
-void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
+void CYorp::getTouchedBy(CSpriteObject &theObject)
 {
-	if(theObject.m_type == OBJ_PLAYER)
+	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{
-		CPlayer &tb_player = dynamic_cast<CPlayer&>(theObject);
 		// code for the yorps to push keen, and code for them to get stunned
-		if (state != YORP_STUNNED && state != YORP_DYING  && !tb_player.pdie)
+		if (state != YORP_STUNNED && state != YORP_DYING  && !player->pdie)
 		{
-			if ( tb_player.getYDownPos() < getYDownPos()-(1<<CSF) )
+			if ( player->getYDownPos() < getYDownPos()-(1<<CSF) )
 			{
 				if (!m_hardmode)
 				{
@@ -220,24 +219,24 @@ void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
 					looktimes = 0;
 					timer = 0;
 					lookposition = 0;
-					tb_player.ppogostick = false;
+					player->ppogostick = false;
 				}
 
 				// make the yorp look a little less "soft" by
 				// offering a bit of resistance
 				// (actually, having keen do a small jump)
-				tb_player.pjumptime = 0;
-				tb_player.pjumpupdecreaserate = 0;
-				tb_player.pjumpupspeed = 7;
-				tb_player.pjumping = PJUMPUP;
-				tb_player.pjustjumped = true;
+				player->pjumptime = 0;
+				player->pjumpupdecreaserate = 0;
+				player->pjumpupspeed = 7;
+				player->pjumping = PJUMPUP;
+				player->pjustjumped = true;
 			}
 			else
 			{
 				// if yorp is moving, also push in direction he's moving
 				// in. this allows walking through a yorp if he is walking
 				// away from Keen
-				tb_player.bump( *this, movedir );
+				player->bump( *this, movedir );
 			}
 		}
 	}

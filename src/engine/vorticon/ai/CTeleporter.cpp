@@ -106,7 +106,7 @@ void CTeleporter::process()
 			x = destx<<CSF;
 			y = desty<<CSF;
 			moveTo(VectorD2<int>(x, y));
-			m_Player[player].pdir = DOWN;
+			m_Player[player].pDir.y = DOWN;
 			m_Player[player].beingteleported = true;
 			m_Player[player].solid = false;
 
