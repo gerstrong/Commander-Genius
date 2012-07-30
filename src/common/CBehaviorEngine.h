@@ -25,6 +25,7 @@
 #include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
 #include "engine/CEventContainer.h"
+#include "engine/galaxy/EGAStructs.h"
 #include "common/options.h"
 
 #include "CSingleton.h"
@@ -68,7 +69,8 @@ class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 public:
 	CBehaviorEngine() : 	mPlayers(0),
 							mDifficulty(EASY),
-							mPausedGamePlay(false) {}
+							mPausedGamePlay(false),
+							pEpisodeInfo(NULL) {}
 
 	void addMessage(const std::string &name,
 					const std::string &message);
@@ -107,6 +109,9 @@ public:
 	unsigned int mPlayers;
 	Difficulty mDifficulty;
 
+	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
+	{	pEpisodeInfo = epStruct;	}
+
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];
@@ -119,6 +124,8 @@ private:
 	size_t m_Episode;
 
 	bool mPausedGamePlay;
+
+	EpisodeInfoStruct *pEpisodeInfo;
 };
 
 #endif /* CBEHAVIORENGINE_H_ */
