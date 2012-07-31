@@ -72,7 +72,7 @@ void CPlayerWM::process()
 		{
 			finishLevel(ev->levelObject);
 		    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-			EventContainer.add( new EventSendBitmapDialogMsg(106, loading_text, LEFT) );
+			EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );
 		}
 		EventContainer.pop_Event();
 	}
@@ -180,7 +180,7 @@ void CPlayerWM::processMoving()
 				CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 				g_pSound->playSound( SOUND_CANT_SWIM, PLAY_PAUSEALL );
-				EventContainer.add( new EventSendBitmapDialogMsg(105,
+				EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(105),
 						g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
 
 				m_cantswim = true;

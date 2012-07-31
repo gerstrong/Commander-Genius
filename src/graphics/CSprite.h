@@ -47,6 +47,9 @@ public:
 	void setWidth(Uint8 w) { m_xsize=w; };
 	void setHeight(Uint8 h) { m_ysize=h; };
 
+	std::string getName() const { return mName; }
+	void setName(const std::string &name) { mName = name; }
+
 	// bounding box for hit detection
 	Sint32 m_bboxX1, m_bboxY1;
 	Sint32 m_bboxX2, m_bboxY2;
@@ -55,6 +58,7 @@ private:
 	SmartPointer<SDL_Surface> mpSurface;
 	SmartPointer<SDL_Surface> mpMasksurface;
 
+	std::string mName;
 	Uint8 m_xsize, m_ysize;
 	Sint16 m_xoffset, m_yoffset;
 	Uint8 m_alpha;

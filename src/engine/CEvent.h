@@ -18,6 +18,7 @@
 #include "common/direction.h"
 #include "SmartPointer.h"
 #include "CVec.h"
+#include "graphics/CBitmap.h"
 #include <vector>
 
 class CGalaxySpriteObject;
@@ -77,13 +78,13 @@ struct EventSendDialog : CEvent
 
 struct EventSendBitmapDialogMsg : EventSendDialog
 {
-	const uint16_t BitmapID;
+	const CBitmap &BitmapRef;
 	const direction_t Direction;
-	EventSendBitmapDialogMsg(const uint16_t &lBitmapID,
+	EventSendBitmapDialogMsg(const CBitmap &lBitmapRef,
 					 	 	 const std::string& lMsg,
 					 	 	 const direction_t& lDirection = LEFT) :
 					 	 	 EventSendDialog(lMsg),
-							 BitmapID(lBitmapID),
+					 	 	 BitmapRef(lBitmapRef),
 							 Direction(lDirection)
 							 {}
 };

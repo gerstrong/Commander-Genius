@@ -18,6 +18,7 @@ CHUD::CHUD(unsigned long &score, signed char &lives,
 m_score(score),
 m_lives(lives),
 m_charges(charges),
+mpHUDBox(NULL),
 mpCamlead(camlead)
 {
 	m_Rect.x = 4;
@@ -31,9 +32,9 @@ mpCamlead(camlead)
 		CreateBackground();
 	else
 	{
-		CSprite &HUDBox = g_pGfxEngine->getSprite(129);
-		m_Rect.h = HUDBox.getHeight()+2;
-		m_Rect.w = HUDBox.getWidth()+2;
+		mpHUDBox = g_pGfxEngine->getSprite("HUDBACKGROUND");
+		m_Rect.h = mpHUDBox->getHeight()+2;
+		m_Rect.w = mpHUDBox->getWidth()+2;
 		mpHUDBlit = CG_CreateRGBSurface( m_Rect );
 		mpHUDBlit = SDL_DisplayFormatAlpha( mpHUDBlit.get() );
 	}
@@ -158,8 +159,7 @@ void CHUD::renderGalaxy()
 
 	// Draw the HUD with all the digits
 	SDL_Surface* blitsfc = mpHUDBlit.get();
-	CSprite &HUDBox = g_pGfxEngine->getSprite(129);
-	HUDBox._drawSprite( blitsfc, m_Rect.x, m_Rect.y );
+	mpHUDBox->_drawSprite( blitsfc, m_Rect.x, m_Rect.y );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), m_Rect.x+8, m_Rect.y+4, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2), m_Rect.x+64, m_Rect.y+20, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), m_Rect.x+24, m_Rect.y+20, blitsfc );

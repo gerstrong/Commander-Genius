@@ -141,12 +141,12 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
 
-		msgs.push_back( new EventSendBitmapDialogMsg(104, elder_text[0], LEFT) );
-		msgs.push_back( new EventSendBitmapDialogMsg(106, elder_text[1], RIGHT) );
+		msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT) );
+		msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), elder_text[1], RIGHT) );
 
 
 		if(rescuedelders == 7)
-			msgs.push_back( new EventSendBitmapDialogMsg(106, g_pBehaviorEngine->getString(answermap[8]), RIGHT) );
+			msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT) );
 
 
 		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );

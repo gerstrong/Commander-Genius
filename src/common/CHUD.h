@@ -14,6 +14,7 @@
 #include "Playerdefines.h"
 #include "engine/spritedefines.h"
 #include "SmartPointer.h"
+#include "graphics/CSprite.h"
 
 #ifndef CHUD_H_
 #define CHUD_H_
@@ -39,6 +40,7 @@ private:
 	unsigned long &m_score;
 	signed char &m_lives;
 	unsigned int &m_charges;
+	CSprite *mpHUDBox;
 
 	SmartPointer <SDL_Surface> mpBackground;
 	SmartPointer <SDL_Surface> mpHUDBlit;

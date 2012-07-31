@@ -32,10 +32,7 @@ void CWorldMap::init()
 	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	if(g_pBehaviorEngine->getEpisode() == 4 )
-		EventContainer.add( new EventSendBitmapDialogMsg(106, loading_text, LEFT) );
-	else
-		EventContainer.add( new EventSendBitmapDialogMsg(1, loading_text, LEFT) );
+	EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );
 
 	mMap.drawAll();
 }

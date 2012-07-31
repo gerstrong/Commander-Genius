@@ -236,7 +236,7 @@ void CPlayGameGalaxy::process()
 
 	if( EventSendBitmapDialogMsg *ev = eventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
-		CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapID, ev->Direction );
+		CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction );
 		pMsgBox->init();
 
 		mMessageBoxes.push_back( pMsgBox );
@@ -247,7 +247,7 @@ void CPlayGameGalaxy::process()
 		std::vector< SmartPointer<EventSendBitmapDialogMsg> >::iterator it = ev->msgs.begin();
 		for( ; it != ev->msgs.end() ; it++ )
 		{
-			CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( (*it)->Msg, (*it)->BitmapID, (*it)->Direction );
+			CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( (*it)->Msg, (*it)->BitmapRef, (*it)->Direction );
 			pMsgBox->init();
 
 			mMessageBoxes.push_back( pMsgBox );

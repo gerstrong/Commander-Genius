@@ -63,6 +63,8 @@ public:
 	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
 	CBitmap *getBitmap(const std::string &name) const;
 
+	CSprite *getSprite(const std::string &name) const;
+
 	CEffects *Effect() { return mpEffects.get(); }
 	bool applyingEffects() { return !mpEffects.empty(); }
 	

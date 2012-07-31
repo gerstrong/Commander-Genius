@@ -71,15 +71,6 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 	return false;
 }
 
-///
-// Getters and Setters
-///
-
-
-void CBitmap::setName(const std::string &name)
-{
-	mName = name;
-}
 
 /**
  * \brief The function that blits the sprite to dst
@@ -94,7 +85,7 @@ void CBitmap::draw(Uint16 x, Uint16 y)
 ///
 // Drawing Routines
 ///
-void CBitmap::_draw(SDL_Surface *dst, Uint16 x, Uint16 y)
+void CBitmap::_draw(SDL_Surface *dst, Uint16 x, Uint16 y) const
 {
 	SDL_Rect dst_rect;
 	dst_rect.x = x;	dst_rect.y = y;

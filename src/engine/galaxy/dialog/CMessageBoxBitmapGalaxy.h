@@ -21,14 +21,14 @@ public:
 	 * \param Text 				Message to be shown
 	 * \param BitmapId 			Bitmap that will be shown to the left side in the box
 	 */
-	CMessageBoxBitmapGalaxy( const std::string& Text, const Uint16 BitmapId,
+	CMessageBoxBitmapGalaxy( const std::string& Text, const CBitmap &BitmapRef,
 							const direction_t alignment = LEFT );
 	virtual ~CMessageBoxBitmapGalaxy() {};
 
 	virtual void init();
 
 private:
-	CBitmap &mBitmap;
+	const CBitmap &mBitmap;
 	const direction_t mAlignment;
 };
 

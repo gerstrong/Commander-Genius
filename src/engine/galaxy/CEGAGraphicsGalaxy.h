@@ -60,6 +60,7 @@ private:
 	std::vector<ChunkStruct> m_egagraph;
 
 	std::string m_BitmapNameMap[4][1000];
+	std::string m_SpriteNameMap[4][1000];
 
 	CExeFile &m_Exefile;
 };

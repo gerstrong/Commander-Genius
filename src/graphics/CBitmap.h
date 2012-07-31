@@ -32,15 +32,14 @@ public:
 		return mpBitmapSurface.get();
 	}
 
-	void setName(const std::string &name);
-	Uint16 getWidth() { return mpBitmapSurface->w; }
-	Uint16 getHeight() { return mpBitmapSurface->h; }
+	Uint16 getWidth() const { return mpBitmapSurface->w; }
+	Uint16 getHeight() const { return mpBitmapSurface->h; }
 
 	std::string getName() const { return mName; }
-	void setName(std::string &name) { mName = name; }
+	void setName(const std::string &name) { mName = name; }
 
 	void draw(Uint16 x, Uint16 y);
-	void _draw(SDL_Surface *dst, Uint16 x, Uint16 y);
+	void _draw(SDL_Surface *dst, Uint16 x, Uint16 y) const;
 
 private:
 	std::string mName;

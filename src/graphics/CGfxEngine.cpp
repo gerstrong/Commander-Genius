@@ -6,6 +6,7 @@
  */
 
 #include "CGfxEngine.h"
+#include "CLogFile.h"
 
 #include "sdl/input/CInput.h"
 
@@ -194,13 +195,35 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 CBitmap *CGfxEngine::getBitmap(const std::string &name) const
 {
 	std::string s_name;
-	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
+	for(unsigned int i=0 ; i<Bitmap.size() ; i++)
 	{
 		s_name = Bitmap[i].getName();
 
 		if(s_name == name)
 			return const_cast<CBitmap*>(&Bitmap[i]);
 	}
+
+	std::string error = "Ooops! Wrong TextID ";
+	error += "name";
+	error += "used!";
+	g_pLogFile->textOut(error);
+
+	return NULL;
+}
+
+CSprite *CGfxEngine::getSprite(const std::string &name) const
+{
+	std::string s_name;
+	for(unsigned int i=0 ; i<Sprite.size() ; i++)
+	{
+		s_name = Sprite[i].getName();
+
+		if(s_name == name)
+			return const_cast<CSprite*>(&Sprite[i]);
+	}
+
+
+
 	return NULL;
 }
 

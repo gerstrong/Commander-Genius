@@ -19,8 +19,8 @@
 const Uint32 GalaxySongAssignments[] =
 {
 	0x02F206,
-	0x030679,
-	0x03103D,
+	0x03067A,
+	0x03103E,
 };
 
 CIMFPlayer::CIMFPlayer( const SDL_AudioSpec& AudioSpec, COPLEmulator& opl_emulator ) :

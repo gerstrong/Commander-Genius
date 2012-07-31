@@ -719,6 +719,8 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 	// Create all the sprites
 	g_pGfxEngine->createEmptySprites(NumSprites);
 
+	int ep = m_episode - 4;
+
 	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
 	SpriteHeadStruct SprHead[NumSprites];
 	memcpy( SprHead, &(m_egagraph.at(2).data.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
@@ -795,6 +797,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		}
 		SDL_UnlockSurface(sfc);
 
+		Sprite.setName(m_SpriteNameMap[ep][i]);
 	}
 	return true;
 }
