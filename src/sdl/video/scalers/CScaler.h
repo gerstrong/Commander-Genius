@@ -44,14 +44,21 @@ public:
 
 	Uint32 filterFactor() { return FilterFactor; }
 
+	void setFilterType( bool IsNormal );
+
+	//bool filterType() { return IsFilterNormal; }
+
 private:
 
 	void scaleDynamic( 	SDL_Surface *srcSfc,
+						SDL_Surface *dstSfc );
+	void scaleNormal( 	SDL_Surface *srcSfc,
 						SDL_Surface *dstSfc );
 
 	float 	wFac;
 	float 	hFac;
 	Uint32 	FilterFactor;
+	bool    IsFilterNormal;
 };
 
 #endif /* CSCALER_H_ */

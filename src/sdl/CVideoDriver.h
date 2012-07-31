@@ -95,6 +95,7 @@ public:
 	void setMode(const CRect<Uint16>& res);
 	void setSpecialFXMode(bool SpecialFX);
 	void setFilter(short value);
+	void setScaleType(bool IsNormal);
 	void setZoom(short vale);
 #ifdef USE_OPENGL
 	void enableOpenGL(bool value) { m_VidConfig.m_opengl = value; }

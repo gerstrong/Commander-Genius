@@ -40,6 +40,7 @@ bool CSDLVideo::createSurfaces()
 {
 	// Configure the Scaler
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+	Scaler.setFilterType(m_VidConfig.m_normal_scale);
 
 	// This function creates the surfaces which are needed for the game.
 	const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
@@ -78,6 +79,7 @@ bool CSDLVideo::createSurfaces()
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+	Scaler.setFilterType(m_VidConfig.m_normal_scale);
 	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
 							 float(FilteredSurface->h)/float(screen->h));
 

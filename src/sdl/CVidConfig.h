@@ -52,6 +52,7 @@ public:
 
 	bool Fullscreen;
 	short m_ScaleXFilter;
+	bool m_normal_scale;
 	unsigned short Zoom;
 	bool m_opengl;
 	bool m_aspect_correction;

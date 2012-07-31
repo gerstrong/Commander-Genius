@@ -43,6 +43,7 @@ void CVidConfig::reset()
 	Fullscreen=false;
 #endif
 	m_ScaleXFilter=1;
+	m_normal_scale=true;
 	Zoom=1;
 
 #ifdef USE_OPENGL
@@ -61,8 +62,6 @@ void CVidConfig::reset()
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_opengl = true;
-	Zoom = 1;
-	m_ScaleXFilter = 1;
 	m_aspect_correction = false;
 #endif
 }

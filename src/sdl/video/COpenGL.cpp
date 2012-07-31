@@ -130,6 +130,7 @@ bool COpenGL::createSurfaces()
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+	Scaler.setFilterType(m_VidConfig.m_normal_scale);
 	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
 							 float(FilteredSurface->h)/float(screen->h));
 

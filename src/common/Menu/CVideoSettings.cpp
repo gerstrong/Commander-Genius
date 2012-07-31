@@ -75,8 +75,9 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpCameraButton );
 
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
-												filledStrList( 4, "none", "2x", "3x", "4x" ) );
+												filledStrList( 7, "none", "normal2x", "normal3x", "normal4x", "scale2x", "scale3x", "scale4x" ) );
 	mpMenuDialog->addControl( mpScalerSelection );
+
 
 
 	mpVSyncSwitch = new CGUISwitch( "VSync" );
@@ -115,7 +116,7 @@ void CVideoSettings::init()
 
 
 #if !defined(EMBEDDED)
-	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : itoa(mUserVidConf.m_ScaleXFilter) + "x" );
+	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : (mUserVidConf.m_normal_scale ? "normal" : "scale") + itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpVSyncSwitch->enable( mUserVidConf.vsync );
 	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
 
@@ -149,7 +150,13 @@ void CVideoSettings::release()
 	sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
 
 	if( scalerStr != "none" )
-		mUserVidConf.m_ScaleXFilter = scalerStr.at(0)-'0';
+	{
+		mUserVidConf.m_normal_scale = (scalerStr.at(0) == 'n');
+		if (mUserVidConf.m_normal_scale)
+			mUserVidConf.m_ScaleXFilter = scalerStr.at(6)-'0';
+		else
+			mUserVidConf.m_ScaleXFilter = scalerStr.at(5)-'0';
+	}
 	else
 		mUserVidConf.m_ScaleXFilter = 1;
 #endif

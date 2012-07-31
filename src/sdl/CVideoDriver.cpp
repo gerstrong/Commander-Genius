@@ -247,6 +247,9 @@ void CVideoDriver::setZoom(short value) {
 	m_VidConfig.Zoom = value;
 }
 
+void CVideoDriver::setScaleType(bool IsNormal)
+{ m_VidConfig.m_normal_scale = IsNormal; }
+
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
 void CVideoDriver::updateScrollBuffer(SmartPointer<CMap> &map) {
