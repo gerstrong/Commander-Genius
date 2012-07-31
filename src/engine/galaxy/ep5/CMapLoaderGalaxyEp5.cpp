@@ -71,7 +71,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		// Add the Camera into the game scene and attach it to this player
 		p_newfoe = new galaxy::CPlayerWM(&Map,
 											foe, x, y, m_ObjectPtr,
-											m_Inventory, m_Cheatmode, 0x13B6 );
+											m_Inventory, m_Cheatmode, 0x146e );
 		break;
 
 

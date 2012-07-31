@@ -41,7 +41,6 @@ m_cantswim(false)
 	CGalaxySpriteObject::setActionForce(0);
 	setActionSprite();
 
-	// TODO: Temporary workaround
 	walkBaseFrame = sprite;
 	swimBaseFrame = walkBaseFrame + 24;
 	m_basesprite = walkBaseFrame;
