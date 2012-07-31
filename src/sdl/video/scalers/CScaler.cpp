@@ -66,6 +66,7 @@ void CScaler::scaleDynamic( SDL_Surface *srcSfc,
 		if(equalWidth)
 		{
 			memcpy(dstPixel, srcPixel+pitch, srcSfc->pitch);
+			dstPixel += dstSfc->w;
 		}
 		else
 		{
