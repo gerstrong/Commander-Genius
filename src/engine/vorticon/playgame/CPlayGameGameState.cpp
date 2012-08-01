@@ -19,6 +19,7 @@
 bool CPlayGameVorticon::loadGameState()
 {
 	CSaveGameController &savedGame = *(gpSaveGameController);
+	mpObjectAI = NULL;
 
 	// This fills the datablock from CSavedGame object
 	if(savedGame.load())

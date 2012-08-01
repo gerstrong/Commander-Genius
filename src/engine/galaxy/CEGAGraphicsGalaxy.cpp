@@ -500,13 +500,6 @@ bool CEGAGraphicsGalaxy::begin()
 		}
 	}
 
-	// Set up pointers to bitmap and sprite tables if not doing KDR operations
-	//if (ep < 4) {
-		//BmpHead = (BitmapHeadStruct *)m_egagraph[0].data;
-		//BmpMaskedHead = (BitmapHeadStruct *)m_EgaGraph[1].data;
-		//SprHead = (SpriteHeadStruct *)m_EgaGraph[2].data;
-	//}
-
 	File.close();
 	return true;
 }
