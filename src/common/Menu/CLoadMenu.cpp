@@ -11,6 +11,7 @@
 #include "gui/CGUIText.h"
 #include "gui/CGUIButton.h"
 #include "common/Menu/CMenuController.h"
+#include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 
 
@@ -32,6 +33,9 @@ CLoadMenu::CLoadMenu() :
 CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 {
 	// Load the state-file list
+	const CGUIControl::Style style =
+			( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY ) ?
+					CGUIButton::GALAXY_BORDERED : CGUIButton::VORTICON;
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 	std::vector<std::string>::iterator it = StateFileList.begin();
 
@@ -47,7 +51,7 @@ CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 		{
 			button = new CGUIButton( text,
 									new LoadGameSlotFunctorEvent(i),
-									CGUIButton::GALAXY_BORDERED );
+									style );
 			mpMenuDialog->addControl( button );
 
 			button->enable( true );
@@ -59,7 +63,7 @@ CBaseMenu( CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 		text = "Empty";
 		button = new CGUIButton( text,
 								new LoadGameSlotFunctorEvent(j),
-								CGUIButton::GALAXY_BORDERED );
+								style );
 		mpMenuDialog->addControl( button );
 
 		button->enable( false );

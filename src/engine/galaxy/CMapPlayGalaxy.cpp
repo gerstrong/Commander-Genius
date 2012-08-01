@@ -8,7 +8,9 @@
 #include "CMapPlayGalaxy.h"
 #include "engine/galaxy/ai/CPlayerBase.h"
 #include "common/CBehaviorEngine.h"
-#include "CMapLoaderGalaxy.h"
+#include "ep4/CMapLoaderGalaxyEp4.h"
+#include "ep5/CMapLoaderGalaxyEp5.h"
+#include "CLogFile.h"
 
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode) :
 mActive(false),
@@ -214,10 +216,21 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	Uint16 level;
 	savedGame.decodeData( level );
 
-	// Load the World map level.
-	galaxy::CMapLoaderGalaxy MapLoader(mExeFile, mObjectPtr, mInventory, mCheatmode);
+	SmartPointer<galaxy::CMapLoaderGalaxy> mapLoader;
+	const unsigned int episode = g_pBehaviorEngine->getEpisode();
 
-	MapLoader.loadMap( mMap, level );
+	if(episode == 4)
+		mapLoader = new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode);
+	else if(episode == 5)
+		mapLoader = new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode);
+	else
+	{
+		g_pLogFile->textOut("Error loading the file. This episode is not supported!");
+		return false;
+	}
+
+	// Load the World map level.
+	mapLoader->loadMap( mMap, level );
 
     // Load the Background Music
 	g_pMusicPlayer->stop();
@@ -246,7 +259,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData(x);
 		savedGame.decodeData(y);
 
-		CGalaxySpriteObject *pNewfoe = MapLoader.addFoe(mMap, foeID, x, y);
+		CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
 
 
 		// TODO: Be careful here is a bad Null Pointer inside that structure
