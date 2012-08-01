@@ -22,8 +22,9 @@ public:
 	mSelection(0) {}
 
 	void setConfirmButtonEvent(const SmartPointer<CEvent> ev);
+	void setBackButtonEvent(const SmartPointer<CEvent> ev);
 
-	void sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommands command);
 	void addText(const std::string &text);
 	void processLogic();
 	void processRender(const CRect<float> &RectDispCoordFloat);
@@ -35,6 +36,7 @@ public:
 	int mTextWidthLimit;
 
 	SmartPointer<CEvent> mConfirmEvent;
+	SmartPointer<CEvent> mBackEvent;
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H_ */

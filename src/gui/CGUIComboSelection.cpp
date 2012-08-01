@@ -68,12 +68,14 @@ void CGUIComboSelection::cycleOption()
 
 
 
-void CGUIComboSelection::sendEvent(const InputCommands command)
+bool CGUIComboSelection::sendEvent(const InputCommands command)
 {
 	if(command == IC_STATUS || command == IC_JUMP)
 	{
 		cycleOption();
+		return true;
 	}
+	return false;
 }
 
 

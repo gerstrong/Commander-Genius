@@ -19,7 +19,12 @@ void CGUITextSelectionList::setConfirmButtonEvent(const SmartPointer<CEvent> ev)
 	mConfirmEvent = ev;
 }
 
-void CGUITextSelectionList::sendEvent(const InputCommands command)
+void CGUITextSelectionList::setBackButtonEvent(const SmartPointer<CEvent> ev)
+{
+	mBackEvent = ev;
+}
+
+bool CGUITextSelectionList::sendEvent(const InputCommands command)
 {
 	if(command == IC_UP)
 	{
@@ -27,6 +32,7 @@ void CGUITextSelectionList::sendEvent(const InputCommands command)
 
 		if(mSelection < 0)
 			mSelection = mItemList.size()-1;
+		return true;
 	}
 	else if(command == IC_DOWN)
 	{
@@ -34,12 +40,23 @@ void CGUITextSelectionList::sendEvent(const InputCommands command)
 
 		if(mSelection >= static_cast<int>(mItemList.size()) )
 			mSelection = 0;
+		return true;
 	}
-	else if(command == IC_STATUS || command == IC_JUMP)
+	else if(command == IC_STATUS || command == IC_JUMP ||
+			 command == IC_POGO || command == IC_FIRE)
 	{
 		if(!mConfirmEvent.empty())
 			g_pBehaviorEngine->m_EventList.add(mConfirmEvent);
+		return true;
 	}
+	else if(command == IC_BACK)
+	{
+		if(!mBackEvent.empty())
+			g_pBehaviorEngine->m_EventList.add(mBackEvent);
+		return true;
+	}
+	else
+		return false;
 
 }
 

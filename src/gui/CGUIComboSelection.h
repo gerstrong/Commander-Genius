@@ -27,7 +27,7 @@ public:
 
 	void cycleOption();
 
-	void sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommands command);
 
 	void setSelection( const std::string& selectionText );
 

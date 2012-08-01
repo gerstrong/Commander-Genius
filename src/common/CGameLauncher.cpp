@@ -76,12 +76,13 @@ bool CGameLauncher::init()
     }
 
     mpSelList->setConfirmButtonEvent(new GMStart(mpSelList->mSelection));
+    mpSelList->setBackButtonEvent(new GMQuit());
 
 
 	mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-	mpLauncherDialog->addControl(mpSelList, CRect<float>(0.01f, 0.05f, 0.49f, 0.94f));
 	mpLauncherDialog->addControl(new CGUIButton( "x", new GMQuit() ),
 												CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
+	mpLauncherDialog->addControl(mpSelList, CRect<float>(0.01f, 0.07f, 0.49f, 0.92f));
 
 	mpLauncherDialog->addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ),
 												CRect<float>(0.65f, 0.915f, 0.3f, 0.07f) );
@@ -90,6 +91,9 @@ bool CGameLauncher::init()
 	mpVersionText = new CGUIText("Version");
 	mpLauncherDialog->addControl(mpEpisodeText, CRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
 	mpLauncherDialog->addControl(mpVersionText, CRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
+
+	// This way it goes right to the selection list.
+	mpLauncherDialog->setSelection(2);
 
    	g_pResourceLoader->setPermilage(1000);
 	

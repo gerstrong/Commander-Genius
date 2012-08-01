@@ -54,7 +54,7 @@ public:
 	void setDown( const bool value )
 	{	mHovered = value;	}
 
-	virtual void sendEvent(const InputCommands command) {};
+	virtual bool sendEvent(const InputCommands command) { return false; }
 
 
 	void drawTwirl( const SDL_Rect& lRect );

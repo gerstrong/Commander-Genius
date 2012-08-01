@@ -26,7 +26,7 @@ public:
 			const SmartPointer<CEvent> ev,
 			const Style style=UNSET);
 
-	void sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommands command);
 
 	void processLogic();
 

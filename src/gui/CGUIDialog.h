@@ -54,7 +54,7 @@ public:
 	void addControl( const SmartPointer<CGUIControl> newControl );
 
 
-	void sendEvent( const SmartPointer<CEvent> &command );
+	bool sendEvent( const SmartPointer<CEvent> &command );
 
 	void fit();
 
@@ -66,6 +66,8 @@ public:
 
 	const int Selection() const
 	{	return mSelection;	}
+
+	void setSelection(const unsigned int sel);
 
 	CGUIControl* CurrentControl()
 	{	return 	mpCurrentCtrl;	}

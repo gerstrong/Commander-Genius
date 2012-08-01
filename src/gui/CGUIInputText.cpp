@@ -42,12 +42,13 @@ drawButton(&CGUIInputText::drawNoStyle)
 }
 
 
-void CGUIInputText::sendEvent(const InputCommands command)
+bool CGUIInputText::sendEvent(const InputCommands command)
 {
 	/*if(command == IC_STATUS)
 	{
 		mTyping = !mTyping;
 	}*/
+	return false;
 }
 
 

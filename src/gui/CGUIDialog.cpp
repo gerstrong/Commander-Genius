@@ -70,6 +70,9 @@ void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
 	AbsRect.transform(mRect);
 	newControl->mRect = AbsRect;
 	mControlList.push_back( newControl );
+
+	if(mControlList.size() == 1)
+		mpCurrentCtrl = newControl.get();
 }
 
 
@@ -78,18 +81,25 @@ void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl )
 {
 	mControlList.push_back( newControl );
 	fit();
+
+	if(mControlList.size() == 1)
+		mpCurrentCtrl = newControl.get();
+
 }
 
 
 
 void CGUIDialog::selectPrevItem()
 {
+	if(mpCurrentCtrl->getHovered())
+		mpCurrentCtrl->setHovered(false);
+
 	mSelection--;
 
 	if( mSelection < 0 )
 		mSelection = mControlList.size()-1;
 
-	// Ensures that disabled items are skipped
+
 	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
 	for( int i=0 ; it != mControlList.end() ; it++, i++ )
 	{
@@ -97,19 +107,29 @@ void CGUIDialog::selectPrevItem()
 			break;
 	}
 
-	for( ; it != mControlList.end() ; it++ )
+	// Ensures that disabled items are skipped
+	for( ; it != mControlList.end() ; it-- )
 	{
 		if( (*it)->mEnabled )
 			break;
 
 		mSelection--;
 	}
+
+	(*it)->setHovered(true);
+	mpCurrentCtrl = it->get();
 }
 
 
 void CGUIDialog::selectNextItem()
 {
+	if(mpCurrentCtrl->getHovered())
+		mpCurrentCtrl->setHovered(false);
+
 	mSelection++;
+
+	if( mSelection >= static_cast<int>(mControlList.size()) )
+		mSelection = 0;
 
 	// Find the right control!
 	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
@@ -118,6 +138,7 @@ void CGUIDialog::selectNextItem()
 		if( i ==  mSelection )
 			break;
 	}
+
 	// Ensures that disabled items are skipped
 	for( ; it != mControlList.end() ; it++ )
 	{
@@ -127,26 +148,34 @@ void CGUIDialog::selectNextItem()
 		mSelection++;
 	}
 
-	if( mSelection >= static_cast<int>(mControlList.size()) )
-		mSelection = 0;
-
+	(*it)->setHovered(true);
+	mpCurrentCtrl = it->get();
 }
 
 
+void CGUIDialog::setSelection(const unsigned int sel)
+{
+	const int steps = sel-mSelection;
 
-void CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
+	if(steps == 0)
+		return;
+
+	if(steps > 0)
+	{
+		for(int c=0 ; c<steps ; c++)
+			selectNextItem();
+	}
+	else
+	{
+		for(int c=0 ; c<-steps ; c++)
+			selectPrevItem();
+	}
+}
+
+bool CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 {
 	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
 	{
-		if(ev->mCommand == IC_DOWN)
-		{
-			selectNextItem();
-		}
-		else if(ev->mCommand == IC_UP)
-		{
-			selectPrevItem();
-		}
-
 		// Send all the other events the active control element
 		std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
 		for( int i=0 ; it != mControlList.end() ; it++, i++ )
@@ -155,12 +184,24 @@ void CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 
 			if(i == mSelection)
 			{
-				(*it)->sendEvent(ev->mCommand);
+				if( (*it)->sendEvent(ev->mCommand) )
+					return true;
 			}
-
 		}
 
+		if(ev->mCommand == IC_DOWN)
+		{
+			selectNextItem();
+			return true;
+		}
+		else if(ev->mCommand == IC_UP)
+		{
+			selectPrevItem();
+			return true;
+		}
 	}
+
+	return false;
 }
 
 

@@ -20,7 +20,7 @@ public:
 	CGUIInputText(const std::string& text,
 				  const Style	style);
 
-	void sendEvent(const InputCommands command);
+	bool sendEvent(const InputCommands command);
 
 	void processLogic();
 

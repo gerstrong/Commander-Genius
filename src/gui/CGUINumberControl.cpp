@@ -61,16 +61,19 @@ void CGUINumberControl::decrement()
 }
 
 
-void CGUINumberControl::sendEvent(const InputCommands command)
+bool CGUINumberControl::sendEvent(const InputCommands command)
 {
 	if(command == IC_STATUS || command == IC_JUMP || command == IC_RIGHT)
 	{
 		increment();
+		return true;
 	}
 	else if(command == IC_LEFT)
 	{
 		decrement();
+		return true;
 	}
+	return false;
 }
 
 

@@ -78,12 +78,14 @@ void CGUIButton::setupButtonSurface()
 }
 
 
-void CGUIButton::sendEvent(const InputCommands command)
+bool CGUIButton::sendEvent(const InputCommands command)
 {
 	if(command == IC_STATUS || command == IC_JUMP)
 	{
 		g_pBehaviorEngine->m_EventList.add(mEvent);
+		return true;
 	}
+	return false;
 }
 
 
