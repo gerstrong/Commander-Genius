@@ -30,12 +30,9 @@ bool CVideoEngine::init()
 {
 	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
 
-
 	// Setup mode depends on some systems.
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
 	m_Mode = SDL_SWSURFACE;
-	m_VidConfig.m_DisplayRect.w = 320;
-	m_VidConfig.m_DisplayRect.h = 200;
 #elif defined(GP2X)
 	m_Mode = SDL_HWSURFACE;
 #else

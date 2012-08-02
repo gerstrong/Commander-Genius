@@ -161,6 +161,10 @@ void CVideoSettings::release()
 		mUserVidConf.m_ScaleXFilter = 1;
 #endif
 
+#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
+	mUserVidConf.m_DisplayRect.w = 320;
+	mUserVidConf.m_DisplayRect.h = 200;
+#endif
 
 	mUserVidConf.showfps = mpShowFPSSwitch->isEnabled();
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();

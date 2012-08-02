@@ -42,6 +42,7 @@ void CVidConfig::reset()
 	m_DisplayRect.h=200;
 	Fullscreen=false;
 #endif
+
 	m_ScaleXFilter=1;
 	m_normal_scale=true;
 	Zoom=1;
