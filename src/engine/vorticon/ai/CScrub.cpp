@@ -153,6 +153,7 @@ void CScrub::walkLeft(int mx, int my)
 	if (blockedl)
 	{
 		sprite = SCRUB_WALK_UP + walkframe;
+		xDirection = 0;
 		yDirection = -1;
 		Scrub_TurnOnCansupportWhereNotKicked();
 	}
@@ -172,7 +173,10 @@ void CScrub::walkLeft(int mx, int my)
 				processMove(4<<STC,0);
 				performCollisions();
 				if(blockedr)
+				{
+					xDirection = 0;
 					yDirection = 1;
+				}
 				else
 					preparetoFall();
 			}
@@ -209,6 +213,7 @@ void CScrub::walkDown()
 
 	if (blockedd)
 	{
+		yDirection = 0;
 		xDirection = -1;
 		sprite = SCRUB_WALK_LEFT + walkframe;
 		Scrub_TurnOnCansupportWhereNotKicked();
@@ -219,6 +224,7 @@ void CScrub::walkDown()
 
 		if(!blockedr) // upper-right, if yes, go right! (ceiling)
 		{	// Move right
+			yDirection = 0;
 			xDirection = 1;
 			sprite = SCRUB_WALK_RIGHT + walkframe;
 			processMove(2<<STC,0);
@@ -258,6 +264,7 @@ void CScrub::walkRight(int mx, int my)
 
 	if (blockedr)
 	{
+		xDirection = 0;
 		yDirection = 1;
 		sprite = SCRUB_WALK_DOWN + walkframe;
 		Scrub_TurnOnCansupportWhereNotKicked();
@@ -282,7 +289,10 @@ void CScrub::walkRight(int mx, int my)
 
 				Scrub_TurnOnCansupportWhereNotKicked();
 				if(blockedl)
+				{
+					xDirection = 0;
 					yDirection = -1;
+				}
 				else
 					preparetoFall();
 			}
@@ -298,6 +308,7 @@ void CScrub::walkUp()
 	sprite = SCRUB_WALK_UP + walkframe;
 	if (blockedu)
 	{
+		yDirection = 0;
 		xDirection = 1;
 		sprite = SCRUB_WALK_RIGHT + walkframe;
 		SetAllCanSupportPlayer(0);
@@ -308,6 +319,7 @@ void CScrub::walkUp()
 
 		if(	!blockedl )
 		{	// Move Left!
+			yDirection = 0;
 			xDirection = -1;
 			sprite = SCRUB_WALK_LEFT + walkframe;
 			Scrub_TurnOnCansupportWhereNotKicked();
@@ -352,6 +364,7 @@ void CScrub::fall()
 		for( size_t i=0 ; i<m_Player.size() ; i++ )
 			kickedplayer[i] = 0;
 
+		yDirection = 0;
 		xDirection = -1;
 		state = SCRUB_WALK;
 		walkframe = 0;
@@ -375,6 +388,7 @@ void CScrub::preparetoFall()
 {
 	fallspeed = 0;
 	state = SCRUB_FALLING;
+	yDirection = 0;
 	xDirection = -1;
 	SetAllCanSupportPlayer(0);
 }
