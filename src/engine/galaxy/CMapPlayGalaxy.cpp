@@ -261,7 +261,6 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 		CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
 
-
 		// TODO: Be careful here is a bad Null Pointer inside that structure
 		if(pNewfoe == NULL)
 			pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
@@ -281,7 +280,6 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData( pNewfoe->honorPriority );
 		savedGame.decodeData( pNewfoe->sprite );
 		savedGame.decodeData( actionNumber );
-		pNewfoe->setActionForce(actionNumber);
 
 		if(pNewfoe->exists)
 			mObjectPtr.push_back(pNewfoe);
