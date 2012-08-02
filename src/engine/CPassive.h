@@ -50,6 +50,8 @@ public:
 	
 	virtual void cleanup() {};
 	
+	void createOutlinedText(const int splash_x, const int splash_y, const std::string &text);
+
 	char m_mode;
 	
 protected:
@@ -58,5 +60,6 @@ protected:
 	bool m_modeg;
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
+	SmartPointer<SDL_Surface> mpTextSfc;
 };
 #endif /* CPASSIVE_H_ */

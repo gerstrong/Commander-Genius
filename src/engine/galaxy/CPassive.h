@@ -9,6 +9,7 @@
 #define CPASSIVE_GALAXY_H_
 
 #include "../CPassive.h"
+#include <string>
 
 namespace galaxy
 {
@@ -28,7 +29,6 @@ public:
 	CBitmap m_BackgroundBitmap;
 	bool m_restartVideo;
 
-	SmartPointer<SDL_Surface> mpTextSfc;
 };
 
 }

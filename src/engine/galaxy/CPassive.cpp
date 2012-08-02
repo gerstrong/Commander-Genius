@@ -52,9 +52,10 @@ void CPassiveGalaxy::processIntro()
 	mpTextSfc = SDL_DisplayFormatAlpha(temp);
 	SDL_FreeSurface(temp);
 
-	SDL_Surface *sfc = mpTextSfc.get();
-	CFont &Font = g_pGfxEngine->getFont(1);
-	Font.drawFont(sfc, "Press Back for Menu", 10, 10, true);
+	createOutlinedText( 5, 170, "Press" );
+	createOutlinedText( 5, 180, "Back(Esc)" );
+	createOutlinedText( 5, 190, "for Menu" );
+
 }
 
 // Just show the title screen with the pixelation effect

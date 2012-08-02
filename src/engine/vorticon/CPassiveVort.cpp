@@ -12,6 +12,7 @@
 #include "common/CTileProperties.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
+#include "sdl/extensions.h"
 #include "core/mode/CGameMode.h"
 
 namespace vorticon
@@ -20,6 +21,16 @@ namespace vorticon
 bool CPassiveVort::init(char mode)
 {
 	m_mode = mode;
+
+
+	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	mpTextSfc = SDL_DisplayFormatAlpha(temp);
+	SDL_FreeSurface(temp);
+
+	createOutlinedText( 5, 170, "Press" );
+	createOutlinedText( 5, 180, "Back(Esc)" );
+	createOutlinedText( 5, 190, "for Menu" );
+
 
 	if( m_mode == INTRO )
 	{
@@ -95,6 +106,9 @@ void CPassiveVort::process()
 		// TODO: Implement Demos here!
 		init(TITLE);
 	}
+
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
+
 }
 
 }
