@@ -14,6 +14,8 @@
 #include "common/CBehaviorEngine.h"
 #include "common/Menu/CMenuController.h"
 
+const std::string EMPTY_TEXT = "EMPTY";
+
 CSaveMenu::CSaveMenu() :
 CBaseMenu(CRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
 mp_OverwriteMenu(NULL),
@@ -24,7 +26,7 @@ m_overwrite(false)
 
 	for(Uint32 i=1;i<=8;i++)
 	{
-		std::string text = "EMPTY";
+		std::string text = EMPTY_TEXT;
 		if(i <= StateFileList.size())
 			text = StateFileList.at(i-1);
 
@@ -54,6 +56,8 @@ void CSaveMenu::sendEvent(SmartPointer<CEvent> command)
 				}
 				else
 				{
+					if(pInput->getText() == EMPTY_TEXT)
+						pInput->setText("");
 					pInput->setTypeMode(true);
 				}
 				return;
