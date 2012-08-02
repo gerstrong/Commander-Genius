@@ -14,7 +14,6 @@
 #include "sdl/sound/CSound.h"
 
 #include "common/Menu/CMenuController.h"
-#include "common/Menu/CMainMenu.h"
 
 #include "CGameMain.h"
 #include "CGameLauncherMenu.h"

@@ -9,7 +9,6 @@
 #define CPASSIVE_GALAXY_H_
 
 #include "../CPassive.h"
-#include "CMenuGalaxy.h"
 
 namespace galaxy
 {
@@ -27,8 +26,9 @@ public:
 	void (CPassiveGalaxy::*processMode)();
 
 	CBitmap m_BackgroundBitmap;
-	//CMenuGalaxy *mp_Menu;
 	bool m_restartVideo;
+
+	SmartPointer<SDL_Surface> mpTextSfc;
 };
 
 }

@@ -14,7 +14,6 @@
 #include "common/CMap.h"
 #include "CWorldMap.h"
 #include "CLevelPlay.h"
-#include "CMenuGalaxy.h"
 #include "SmartPointer.h"
 #include <vector>
 #include <list>

@@ -12,6 +12,7 @@
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
+#include "sdl/extensions.h"
 
 
 namespace galaxy
@@ -46,6 +47,14 @@ void CPassiveGalaxy::processIntro()
 
 	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
 	g_pGfxEngine->setupEffect(new CPixelate(4));
+
+	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	mpTextSfc = SDL_DisplayFormatAlpha(temp);
+	SDL_FreeSurface(temp);
+
+	SDL_Surface *sfc = mpTextSfc.get();
+	CFont &Font = g_pGfxEngine->getFont(1);
+	Font.drawFont(sfc, "Press Back for Menu", 10, 10, true);
 }
 
 // Just show the title screen with the pixelation effect
@@ -53,6 +62,8 @@ void CPassiveGalaxy::processTitle()
 {
 	// draw the title bitmap here!
 	m_BackgroundBitmap.draw(0, 0);
+
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
 }
 
 
