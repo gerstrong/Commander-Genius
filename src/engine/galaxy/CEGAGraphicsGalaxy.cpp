@@ -9,7 +9,7 @@
  *  EGAHEAD and EGADICT are normally files that have been embedded
  *  into the executable.
  *  EGAGRAPH is a seperate file which contains the graphics itself
- *  All thre files are needed to extract the graphics
+ *  All three files are needed to extract the graphics
  */
 
 #include "CEGAGraphicsGalaxy.h"
@@ -362,6 +362,92 @@ void CEGAGraphicsGalaxy::extractMaskedTile(SDL_Surface *sfc, std::vector<unsigne
 	}
 }
 
+
+
+
+bool CEGAGraphicsGalaxy::readEGAHead()
+{
+	// The file can be embedded in an exe file or separate on disk. Look for the disk one first!
+
+	// Now read the EGAGRAPH
+	std::string filename;
+	if (m_episode <= 6) filename =  m_path + "EGAHEAD.CK" + itoa(m_episode);
+	else filename =  m_path + "KDREAMSHEAD.EGA"; // Not sure about that one
+	const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc
+
+	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+	byte *p_head;
+
+	std::vector<char> EgaGraphData;
+
+	if(File) // File exists!
+	{
+		size_t egagraphlen = 0;
+		File.seekg(1,std::ios::end);
+		egagraphlen = File.tellg();
+		if(egagraphlen != 0) // File not empty!
+		{
+			egagraphlen--;
+			File.seekg(0,std::ios::beg);
+
+			char b;
+			while(!File.eof())
+			{
+				File.get(b);
+				EgaGraphData.push_back(b);
+			}
+
+			p_head = reinterpret_cast<byte*>(&EgaGraphData.front());
+		}
+	} // no external file. Read it from the exe then
+	else
+	{
+		byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
+
+		// The stuff is Huffman compressed. Use an instance for that
+		unsigned long exeheaderlen = 0;
+		unsigned long exeimglen = 0;
+
+		//if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
+		if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
+			return false;
+
+		// Read the EGAHEAD
+		p_head = p_data + exeheaderlen + EpisodeInfo[ep].OffEgaHead;
+	}
+
+	unsigned long offset = 0;
+	unsigned long offset_limit;
+
+	// For some reason, MultiMania's KDR support uses a slightly different limit
+	// in offset ops. We're not in DOS, so we don't have to worry about
+	// memory here >:P
+	if (ep < 3) offset_limit = 0x00FFFFFF;
+	else offset_limit = 0xFFFFFFFF;
+
+	for(size_t i = 0 ; i < EpisodeInfo[ep].NumChunks ; i++)
+	{
+		if (ep != 3)
+		{
+			memcpy(&offset, p_head,3); // Keen 4-6
+			p_head += 3;
+			offset &= offset_limit;
+		}
+		else
+		{
+			memcpy(&offset, p_head,4); // KeenDreams
+			p_head += 4;
+		}
+		m_egahead.push_back(offset);
+	}
+
+	return true;
+}
+
+
+
+
+
 /**
  * \brief	prepares to load the data. Does a bit of extraction
  * \return 	returns true, if loading was successful
@@ -382,35 +468,13 @@ bool CEGAGraphicsGalaxy::begin()
 		return false;
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
-	//Huffman.readDictionaryAt(p_data, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
 	Huffman.readDictionaryNumber( m_Exefile, 1 );
 
-	// Now we go to EGAHEAD
-	// TODO: Implement a structure which will look for the files first and take them if possible
-
-	// Read the EGAHEAD
-	unsigned char *p_head = p_data + exeheaderlen + EpisodeInfo[ep].OffEgaHead;
-	unsigned long offset = 0;
-	unsigned long offset_limit;
-
-	// For some reason, MultiMania's KDR support uses a slightly different limit
-	// in offset ops. We're not in DOS, so we don't have to worry about
-	// memory here >:P
-	if (ep < 3) offset_limit = 0x00FFFFFF;
-	else offset_limit = 0xFFFFFFFF;
-
-	for(size_t i = 0 ; i < EpisodeInfo[ep].NumChunks ; i++)
+	// Now we go for EGAHEAD
+	if(!readEGAHead())
 	{
-		if (ep != 3) {
-			memcpy(&offset, p_head,3); // Keen 4-6
-			p_head += 3;
-			offset &= offset_limit;
-		}
-		else {
-			memcpy(&offset, p_head,4); // KeenDreams
-			p_head += 4;
-		}
-		m_egahead.push_back(offset);
+		g_pLogFile->textOut("Error! Couldn't read EGAHEAD from this game!");
+		return false;
 	}
 
 	// Now read the EGAGRAPH
@@ -446,6 +510,15 @@ bool CEGAGraphicsGalaxy::begin()
 	m_egagraph.assign(EpisodeInfo[ep].NumChunks, ChunkTemplate);
 
 	unsigned long inlen = 0, outlen = 0;
+
+	unsigned long offset = 0;
+	unsigned long offset_limit;
+
+	// For some reason, MultiMania's KDR support uses a slightly different limit
+	// in offset ops. We're not in DOS, so we don't have to worry about
+	// memory here >:P
+	if (ep < 3) offset_limit = 0x00FFFFFF;
+	else offset_limit = 0xFFFFFFFF;
 
 	// Now lets decompress the graphics
 	for(size_t i = 0; i < EpisodeInfo[ep].NumChunks; i++)

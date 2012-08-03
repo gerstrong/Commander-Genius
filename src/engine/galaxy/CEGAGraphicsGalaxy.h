@@ -41,6 +41,7 @@ public:
 
 	bool begin();
 	Uint8 getBit(unsigned char data, Uint8 leftshift);
+	bool readEGAHead();
 	bool readfonts();
 	bool readBitmaps();
 	bool readMaskedBitmaps();
