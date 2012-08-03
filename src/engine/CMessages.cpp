@@ -219,7 +219,7 @@ bool CMessages::extractGlobalStrings()
 
 		case 4:
 		{
-			if(extractEp4Strings(StringMap))
+			if(!extractEp4Strings(StringMap))
 				g_pLogFile->textOut(RED,"This version of the game is not supported!");
 		} break;
 

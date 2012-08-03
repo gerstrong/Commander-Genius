@@ -368,8 +368,6 @@ void CEGAGraphicsGalaxy::extractMaskedTile(SDL_Surface *sfc, std::vector<unsigne
 bool CEGAGraphicsGalaxy::readEGAHead()
 {
 	// The file can be embedded in an exe file or separate on disk. Look for the disk one first!
-
-	// Now read the EGAGRAPH
 	std::string filename;
 	if (m_episode <= 6) filename =  m_path + "EGAHEAD.CK" + itoa(m_episode);
 	else filename =  m_path + "KDREAMSHEAD.EGA"; // Not sure about that one
@@ -467,8 +465,21 @@ bool CEGAGraphicsGalaxy::begin()
 	if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
 		return false;
 
+	std::string filename;
+
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
-	Huffman.readDictionaryNumber( m_Exefile, 1 );
+	// Try to read it either from a file
+	if (m_episode <= 6) filename =  m_path + "EGADICT.CK" + itoa(m_episode);
+	else filename =  m_path + "KDREAMSDICT.EGA"; // Not sure here!
+
+	if( Huffman.readDictionaryFromFile(filename) )
+	{
+		g_pLogFile->textOut("EGADICT was read from external file");
+	}
+	else
+	{
+		Huffman.readDictionaryNumber( m_Exefile, 1 ); // or from the embedded Exe file
+	}
 
 	// Now we go for EGAHEAD
 	if(!readEGAHead())
@@ -478,7 +489,6 @@ bool CEGAGraphicsGalaxy::begin()
 	}
 
 	// Now read the EGAGRAPH
-	std::string filename;
 	if (m_episode <= 6) filename =  m_path + "EGAGRAPH.CK" + itoa(m_episode);
 	else filename =  m_path + "KDREAMS.EGA";
 

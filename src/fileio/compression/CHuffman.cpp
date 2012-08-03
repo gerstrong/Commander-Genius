@@ -6,9 +6,10 @@
  */
 
 #include "CHuffman.h"
-#include <cstring>
+#include "FindFile.h"
+#include <fstream>
 
-#define DICT_SIG_BYTES  6
+const unsigned int DICT_SIG_BYTES = 6;
 const uint8_t DICTSIG[DICT_SIG_BYTES] = { 0xFD, 0x01, 0x00, 0x00, 0x00, 0x00 };
 
 bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum )
@@ -18,7 +19,7 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
 
     for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
     {
-        if( memcmp(data_ptr,DICTSIG, DICT_SIG_BYTES) == 0 )
+        if( memcmp(data_ptr, DICTSIG, DICT_SIG_BYTES) == 0 )
         {
         	if(dictnumleft == 0)
         	{
@@ -33,6 +34,19 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
     }
     return false;
 }
+
+bool CHuffman::readDictionaryFromFile( const std::string &filename )
+{
+	std::ifstream file; OpenGameFileR(file, filename, std::ios::binary);
+
+	if(!file)
+		return false;
+
+	file.read(reinterpret_cast<char*>(m_nodes), DICT_SIZE*sizeof(nodestruct));
+
+	return true;
+}
+
 
 
 void CHuffman::readDictionaryAt( byte *p_exedata, unsigned long offset)

@@ -14,6 +14,7 @@
 
 #include "fileio/TypeDefinitions.h"
 #include "fileio/CExeFile.h"
+#include <string>
 
 #define DICT_SIZE       256
 
@@ -30,12 +31,13 @@ class CHuffman
 {
 public:
 	bool readDictionaryNumber( const CExeFile& ExeFile, const int dictnum );
+	bool readDictionaryFromFile( const std::string &filename );
 	void readDictionaryAt( byte *p_exedata, unsigned long offset);
 	void expand(byte *pin, byte *pout, unsigned long inlen, unsigned long outlen);
 
 private:
 
-	nodestruct m_nodes[256];
+	nodestruct m_nodes[DICT_SIZE];
 	//compstruct m_comptable[256];
 };
 
