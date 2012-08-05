@@ -50,6 +50,9 @@ public:
 
 private:
 
+	void scaleDynamicLinear( SDL_Surface *srcSfc,
+								SDL_Surface *dstSfc );
+
 	void scaleDynamic( 	SDL_Surface *srcSfc,
 						SDL_Surface *dstSfc );
 	void scaleNormal( 	SDL_Surface *srcSfc,
