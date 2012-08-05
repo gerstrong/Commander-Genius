@@ -148,9 +148,24 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	int l_w = getXRightPos() - getXLeftPos();
 	int l_h = getYDownPos() - getYUpPos();
 
+
 	// Deadly hazards! Here Keen dying routine will be triggered
 	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 1<<STC))
+	{
+		if(!m_Cheatmode.god)
+			kill();
+	}
+
+	// Another property of the tiles may kill keen, also in god mode
+	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	// TODO: Workaround! It seems that the deadly tiles are 17 tiles behind. Not sure, why!
+	const int tileIDl = mp_Map->getPlaneDataAt(1, l_x, (l_y+l_h)+(1<<STC));
+	const int tileIDr = mp_Map->getPlaneDataAt(1, l_x+l_w, (l_y+l_h)+(1<<STC));
+	if(Tile[tileIDl].bup == 9 && Tile[tileIDr].bup == 9 )
+	{
 		kill();
+	}
+
 
 	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 1<<STC))
 	{
@@ -332,18 +347,15 @@ void CPlayerBase::processGetEaten()
 void CPlayerBase::kill()
 {
 	// Here were prepare Keen to die, setting the action to die
-	if(!m_Cheatmode.god)
-	{
-		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
-			return;
+	if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
+		return;
 
-		m_dying = true;
-		yinertia = -DIE_FALL_MAX_INERTIA;
-		setAction( A_KEEN_DIE + (rand()%2) );
-		solid = false;
-		honorPriority = false;
-		g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
-	}
+	m_dying = true;
+	yinertia = -DIE_FALL_MAX_INERTIA;
+	setAction( A_KEEN_DIE + (rand()%2) );
+	solid = false;
+	honorPriority = false;
+	g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
 }
 
 
