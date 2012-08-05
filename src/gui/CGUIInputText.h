@@ -40,7 +40,7 @@ public:
 	{	return mText;	}
 
 	bool Typing() const { return mTyping; }
-	void setTypeMode( const bool value ) { mTyping = value; }
+	void setTypeMode( const bool value );
 
 private:
 
