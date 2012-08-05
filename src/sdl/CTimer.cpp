@@ -59,38 +59,39 @@ CTimer::CTimer()
 
 void CTimer::setRates( int logicrate, int framerate, int syncrate )
 {
-	int looprate, factor;
+	// Check limits
+	if (logicrate <= 0)
+		logicrate = DEFAULT_LPS;
+
+	if (framerate <= 0)
+		framerate = DEFAULT_FPS;
 
 	// Set all of the desired rates
 	m_SyncRate  = syncrate;
 	m_LogicRate = logicrate;
 	m_FrameRate = framerate;
 
-	// Check limits
-	if (m_LogicRate <= 0)
-		m_LogicRate = DEFAULT_LPS;
-
-	if (m_FrameRate <= 0)
-		m_FrameRate = DEFAULT_FPS;
-
-	// Pick highest rate
-	if (m_FrameRate >= m_LogicRate)
-	{
-		m_LoopRate = m_FrameRate;
-	}
-	else
-	{
-		m_LoopRate = m_LogicRate;
-	}
+	// Find the smallest number that both rates divide,
+	// or lcm(logicrate, framerate).
 
 	// Find a number that is factor for both rates
-	for ( factor=0; factor<=10; factor++ )
+	// Old Code by Scott (Pickle)
+	/*for ( factor=0; factor<=10; factor++ )
 	{
 		looprate = m_LoopRate+(20*factor);
 		if (looprate%m_LogicRate==0 && looprate%m_FrameRate==0)
 			break;
 	}
-	m_LoopRate = looprate;
+	m_LoopRate = looprate;*/
+
+	while (logicrate != framerate)
+	{
+		if (logicrate < framerate)
+			logicrate += m_LogicRate;
+		else
+			framerate += m_FrameRate;
+	}
+	m_LoopRate = logicrate;
 
 	CalculateIntervals();
 }
