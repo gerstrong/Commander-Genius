@@ -786,8 +786,6 @@
 		6382949E11562C7100D608A2 /* menufonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = menufonts.bmp; sourceTree = "<group>"; };
 		638814F4159273E100308DAC /* CSpriteObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteObject.cpp; sourceTree = "<group>"; };
 		638814F5159273E100308DAC /* CSpriteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteObject.h; sourceTree = "<group>"; };
-		638814F7159273FA00308DAC /* CSpriteObjectAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteObjectAI.cpp; sourceTree = "<group>"; };
-		638814F8159273FA00308DAC /* CSpriteObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteObjectAI.h; sourceTree = "<group>"; };
 		638814FA1592740C00308DAC /* Configurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurator.h; sourceTree = "<group>"; };
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
@@ -888,15 +886,6 @@
 		63CD10B411CFF5FB00F60BC8 /* CGameLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameLauncher.h; sourceTree = "<group>"; };
 		63CD10B511CFF5FB00F60BC8 /* CMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMap.cpp; sourceTree = "<group>"; };
 		63CD10B611CFF5FB00F60BC8 /* CMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMap.h; sourceTree = "<group>"; };
-<<<<<<< HEAD
-		63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMapLoader.cpp; sourceTree = "<group>"; };
-		63CD10B811CFF5FB00F60BC8 /* CMapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMapLoader.h; sourceTree = "<group>"; };
-=======
-		63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVorticonMapLoader.cpp; sourceTree = "<group>"; };
-		63CD10B811CFF5FB00F60BC8 /* CVorticonMapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVorticonMapLoader.h; sourceTree = "<group>"; };
-		63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObject.cpp; sourceTree = "<group>"; };
-		63CD10BC11CFF5FB00F60BC8 /* CObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObject.h; sourceTree = "<group>"; };
->>>>>>> 0616245eb665d6a0d8447499c252381b3d11d3c0
 		63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPhysicsSettings.cpp; sourceTree = "<group>"; };
 		63CD10BE11CFF5FB00F60BC8 /* CPhysicsSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPhysicsSettings.h; sourceTree = "<group>"; };
 		63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlane.cpp; sourceTree = "<group>"; };
@@ -972,10 +961,8 @@
 		63CD111211CFF5FB00F60BC8 /* CTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTitle.h; sourceTree = "<group>"; };
 		63CD111411CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGAGraphicsGalaxy.cpp; sourceTree = "<group>"; };
 		63CD111511CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGAGraphicsGalaxy.h; sourceTree = "<group>"; };
-		63CD111611CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVorticonMapLoaderGalaxy.cpp; sourceTree = "<group>"; };
-		63CD111711CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVorticonMapLoaderGalaxy.h; sourceTree = "<group>"; };
-		63CD111811CFF5FB00F60BC8 /* CMenuGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMenuGalaxy.cpp; sourceTree = "<group>"; };
-		63CD111911CFF5FB00F60BC8 /* CMenuGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMenuGalaxy.h; sourceTree = "<group>"; };
+		63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMapLoaderGalaxy.cpp; sourceTree = "<group>"; };
+		63CD111711CFF5FB00F60BC8 /* CMapLoaderGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMapLoaderGalaxy.h; sourceTree = "<group>"; };
 		63CD111A11CFF5FB00F60BC8 /* CPassive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPassive.cpp; sourceTree = "<group>"; };
 		63CD111B11CFF5FB00F60BC8 /* CPassive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPassive.h; sourceTree = "<group>"; };
 		63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGameGalaxy.cpp; sourceTree = "<group>"; };
@@ -1000,7 +987,6 @@
 		63CD113311CFF5FB00F60BC8 /* spritedefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spritedefines.h; sourceTree = "<group>"; };
 		63CD113A11CFF5FB00F60BC8 /* CEGABitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGABitmap.cpp; sourceTree = "<group>"; };
 		63CD113B11CFF5FB00F60BC8 /* CEGABitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGABitmap.h; sourceTree = "<group>"; };
-		63CD114011CFF5FB00F60BC8 /* enemydata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enemydata.h; sourceTree = "<group>"; };
 		63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGAGraphicsVort.cpp; sourceTree = "<group>"; };
 		63CD115E11CFF5FB00F60BC8 /* CEGAGraphicsVort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGAGraphicsVort.h; sourceTree = "<group>"; };
 		63CD115F11CFF5FB00F60BC8 /* CEGALatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGALatch.cpp; sourceTree = "<group>"; };
@@ -1446,6 +1432,20 @@
 		63385F2113C0091200BC2558 /* ep4 */ = {
 			isa = PBXGroup;
 			children = (
+				63479F9215D5BEBD00613499 /* CArachnut.cpp */,
+				63479F9315D5BEBD00613499 /* CArachnut.h */,
+				63479F9415D5BEBD00613499 /* CBerkeloid.cpp */,
+				63479F9515D5BEBD00613499 /* CBerkeloid.h */,
+				63479F9615D5BEBD00613499 /* CBlueBird.cpp */,
+				63479F9715D5BEBD00613499 /* CBlueBird.h */,
+				63479F9815D5BEBD00613499 /* CEgg.cpp */,
+				63479F9915D5BEBD00613499 /* CEgg.h */,
+				63479F9A15D5BEBD00613499 /* CThunderCloud.cpp */,
+				63479F9B15D5BEBD00613499 /* CThunderCloud.h */,
+				63479F9C15D5BEBD00613499 /* CTreasureEater.cpp */,
+				63479F9D15D5BEBD00613499 /* CTreasureEater.h */,
+				63479F9E15D5BEBD00613499 /* CWormmouth.cpp */,
+				63479F9F15D5BEBD00613499 /* CWormmouth.h */,
 				63FEB3231572AEA700E17333 /* CLick.cpp */,
 				63FEB3241572AEA700E17333 /* CLick.h */,
 				63FEB3251572AEA700E17333 /* CLindsey.cpp */,
@@ -1499,6 +1499,24 @@
 				63385F3813C0091200BC2558 /* CPlatformVertical.h */,
 			);
 			path = platform;
+			sourceTree = "<group>";
+		};
+		63479F8A15D5BE8B00613499 /* ep4 */ = {
+			isa = PBXGroup;
+			children = (
+				63479F8B15D5BE8B00613499 /* CMapLoaderGalaxyEp4.cpp */,
+				63479F8C15D5BE8B00613499 /* CMapLoaderGalaxyEp4.h */,
+			);
+			path = ep4;
+			sourceTree = "<group>";
+		};
+		63479F8D15D5BE8B00613499 /* ep5 */ = {
+			isa = PBXGroup;
+			children = (
+				63479F8E15D5BE8B00613499 /* CMapLoaderGalaxyEp5.cpp */,
+				63479F8F15D5BE8B00613499 /* CMapLoaderGalaxyEp5.h */,
+			);
+			path = ep5;
 			sourceTree = "<group>";
 		};
 		6350F7A11044797300A992D5 /* vfsroot */ = {
@@ -1721,6 +1739,8 @@
 		63CD10B011CFF5FB00F60BC8 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				63479F8015D5BE2500613499 /* CVorticonMapLoader.cpp */,
+				63479F8115D5BE2500613499 /* CVorticonMapLoader.h */,
 				638814F4159273E100308DAC /* CSpriteObject.cpp */,
 				638814F5159273E100308DAC /* CSpriteObject.h */,
 				63FEB3191572AE3900E17333 /* CSettings.cpp */,
@@ -1740,10 +1760,6 @@
 				23A11A9011DE888400747BFA /* CHUD.h */,
 				63CD10B511CFF5FB00F60BC8 /* CMap.cpp */,
 				63CD10B611CFF5FB00F60BC8 /* CMap.h */,
-				63CD10B711CFF5FB00F60BC8 /* CVorticonMapLoader.cpp */,
-				63CD10B811CFF5FB00F60BC8 /* CVorticonMapLoader.h */,
-				63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */,
-				63CD10BC11CFF5FB00F60BC8 /* CObject.h */,
 				63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */,
 				63CD10BE11CFF5FB00F60BC8 /* CPhysicsSettings.h */,
 				63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */,
@@ -1856,6 +1872,12 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
+				63479F8A15D5BE8B00613499 /* ep4 */,
+				63479F8D15D5BE8B00613499 /* ep5 */,
+				63479F8415D5BE6F00613499 /* CGalaxySpriteObject.cpp */,
+				63479F8515D5BE6F00613499 /* CGalaxySpriteObject.h */,
+				63479F8615D5BE6F00613499 /* CStatusScreenGalaxyEp5.cpp */,
+				63479F8715D5BE6F00613499 /* CStatusScreenGalaxyEp5.h */,
 				35F1E244134F6DEE00C6230F /* dialog */,
 				63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */,
 				63010C0E13400D9300F212CA /* CMapPlayGalaxy.h */,
@@ -1873,10 +1895,8 @@
 				23A1441C12A5380100E894CF /* CInventory.h */,
 				2332378E120EBBF600915252 /* CLevelPlay.cpp */,
 				2332378F120EBBF600915252 /* CLevelPlay.h */,
-				63CD111611CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.cpp */,
-				63CD111711CFF5FB00F60BC8 /* CVorticonMapLoaderGalaxy.h */,
-				63CD111811CFF5FB00F60BC8 /* CMenuGalaxy.cpp */,
-				63CD111911CFF5FB00F60BC8 /* CMenuGalaxy.h */,
+				63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */,
+				63CD111711CFF5FB00F60BC8 /* CMapLoaderGalaxy.h */,
 				63CD111A11CFF5FB00F60BC8 /* CPassive.cpp */,
 				63CD111B11CFF5FB00F60BC8 /* CPassive.h */,
 				63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */,
@@ -1924,6 +1944,8 @@
 		63CD113411CFF5FB00F60BC8 /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				63479FAA15D5BF2B00613499 /* CVorticonSpriteObject.cpp */,
+				63479FAB15D5BF2B00613499 /* CVorticonSpriteObject.h */,
 				35F1E23F134F6DA700C6230F /* dialog */,
 				63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */,
 				63B29E6F12EB9A09004A8B7C /* CAudioVorticon.h */,
@@ -1945,8 +1967,8 @@
 		63CD113511CFF5FB00F60BC8 /* ai */ = {
 			isa = PBXGroup;
 			children = (
-				638814F7159273FA00308DAC /* CSpriteObjectAI.cpp */,
-				638814F8159273FA00308DAC /* CSpriteObjectAI.h */,
+				63479FA715D5BF1D00613499 /* CVorticonSpriteObjectAI.cpp */,
+				63479FA815D5BF1D00613499 /* CVorticonSpriteObjectAI.h */,
 				23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */,
 				23C64A8311F31D9C0053CA36 /* CAnkhShield.h */,
 				23A11B7411E7C3F900747BFA /* CAutoRay.cpp */,
@@ -2012,7 +2034,6 @@
 				23A11BAB11E7C3F900747BFA /* CVortiNinja.h */,
 				23A11BAC11E7C3F900747BFA /* CYorp.cpp */,
 				23A11BAD11E7C3F900747BFA /* CYorp.h */,
-				63CD114011CFF5FB00F60BC8 /* enemydata.h */,
 			);
 			path = ai;
 			sourceTree = "<group>";
@@ -2508,8 +2529,6 @@
 				63CD120911CFF5FC00F60BC8 /* CBehaviorEngine.cpp in Sources */,
 				63CD120A11CFF5FC00F60BC8 /* CGameLauncher.cpp in Sources */,
 				63CD120B11CFF5FC00F60BC8 /* CMap.cpp in Sources */,
-				63CD120C11CFF5FC00F60BC8 /* CVorticonMapLoader.cpp in Sources */,
-				63CD120E11CFF5FC00F60BC8 /* CObject.cpp in Sources */,
 				63CD120F11CFF5FC00F60BC8 /* CPhysicsSettings.cpp in Sources */,
 				63CD121011CFF5FC00F60BC8 /* CPlane.cpp in Sources */,
 				63CD121111CFF5FC00F60BC8 /* CPlayer.cpp in Sources */,
@@ -2546,8 +2565,7 @@
 				63CD123511CFF5FC00F60BC8 /* CPlanes.cpp in Sources */,
 				63CD123611CFF5FC00F60BC8 /* CTitle.cpp in Sources */,
 				63CD123711CFF5FC00F60BC8 /* CEGAGraphicsGalaxy.cpp in Sources */,
-				63CD123811CFF5FC00F60BC8 /* CVorticonMapLoaderGalaxy.cpp in Sources */,
-				63CD123911CFF5FC00F60BC8 /* CMenuGalaxy.cpp in Sources */,
+				63CD123811CFF5FC00F60BC8 /* CMapLoaderGalaxy.cpp in Sources */,
 				63CD123A11CFF5FC00F60BC8 /* CPassive.cpp in Sources */,
 				63CD123B11CFF5FC00F60BC8 /* CPlayGameGalaxy.cpp in Sources */,
 				63CD123C11CFF5FC00F60BC8 /* CAbout.cpp in Sources */,
@@ -2746,7 +2764,20 @@
 				63FEB3661572AF8600E17333 /* scalebit.cpp in Sources */,
 				63FEB36A1572AFA300E17333 /* Geometry.cpp in Sources */,
 				638814F6159273E100308DAC /* CSpriteObject.cpp in Sources */,
-				638814F9159273FA00308DAC /* CSpriteObjectAI.cpp in Sources */,
+				63479F8215D5BE2500613499 /* CVorticonMapLoader.cpp in Sources */,
+				63479F8815D5BE6F00613499 /* CGalaxySpriteObject.cpp in Sources */,
+				63479F8915D5BE6F00613499 /* CStatusScreenGalaxyEp5.cpp in Sources */,
+				63479F9015D5BE8B00613499 /* CMapLoaderGalaxyEp4.cpp in Sources */,
+				63479F9115D5BE8B00613499 /* CMapLoaderGalaxyEp5.cpp in Sources */,
+				63479FA015D5BEBD00613499 /* CArachnut.cpp in Sources */,
+				63479FA115D5BEBD00613499 /* CBerkeloid.cpp in Sources */,
+				63479FA215D5BEBD00613499 /* CBlueBird.cpp in Sources */,
+				63479FA315D5BEBD00613499 /* CEgg.cpp in Sources */,
+				63479FA415D5BEBD00613499 /* CThunderCloud.cpp in Sources */,
+				63479FA515D5BEBD00613499 /* CTreasureEater.cpp in Sources */,
+				63479FA615D5BEBD00613499 /* CWormmouth.cpp in Sources */,
+				63479FA915D5BF1D00613499 /* CVorticonSpriteObjectAI.cpp in Sources */,
+				63479FAC15D5BF2B00613499 /* CVorticonSpriteObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2760,8 +2791,6 @@
 				237422DD11FC849A000EEA5B /* CBehaviorEngine.cpp in Sources */,
 				237422DE11FC849A000EEA5B /* CGameLauncher.cpp in Sources */,
 				237422DF11FC849A000EEA5B /* CMap.cpp in Sources */,
-				237422E011FC849A000EEA5B /* CVorticonMapLoader.cpp in Sources */,
-				237422E211FC849A000EEA5B /* CObject.cpp in Sources */,
 				237422E311FC849A000EEA5B /* CPhysicsSettings.cpp in Sources */,
 				237422E411FC849A000EEA5B /* CPlane.cpp in Sources */,
 				237422E511FC849A000EEA5B /* CPlayer.cpp in Sources */,
@@ -2798,8 +2827,7 @@
 				2374230811FC849A000EEA5B /* CPlanes.cpp in Sources */,
 				2374230911FC849A000EEA5B /* CTitle.cpp in Sources */,
 				2374230A11FC849A000EEA5B /* CEGAGraphicsGalaxy.cpp in Sources */,
-				2374230B11FC849A000EEA5B /* CVorticonMapLoaderGalaxy.cpp in Sources */,
-				2374230C11FC849A000EEA5B /* CMenuGalaxy.cpp in Sources */,
+				2374230B11FC849A000EEA5B /* CMapLoaderGalaxy.cpp in Sources */,
 				2374230D11FC849A000EEA5B /* CPassive.cpp in Sources */,
 				2374230E11FC849A000EEA5B /* CPlayGameGalaxy.cpp in Sources */,
 				2374230F11FC849A000EEA5B /* CAbout.cpp in Sources */,
