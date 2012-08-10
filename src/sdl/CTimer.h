@@ -46,9 +46,7 @@ public:
 
     int getLogicRate() { return m_LogicRate; }
     int getFrameRate() { return m_FrameRate; }
-    void setRates( const unsigned int logicrate,
-    			     const unsigned int framerate,
-    				 const unsigned int syncrate );
+    void setRates( int logicrate, int framerate, int syncrate );
     void setFPS( const int framerate );
 
     int getLogicPerSec( void ) { return m_LPS; }

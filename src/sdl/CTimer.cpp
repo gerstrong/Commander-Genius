@@ -57,38 +57,39 @@ CTimer::CTimer()
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
 }
 
-
-
-void CTimer::setRates( const unsigned int logicrate,
-						  const unsigned int framerate,
-						  const unsigned int syncrate )
+void CTimer::setRates( int logicrate, int framerate, int syncrate )
 {
+	// Check limits
+	if (logicrate <= 0)
+		logicrate = DEFAULT_LPS;
+
+	if (framerate <= 0)
+		framerate = DEFAULT_FPS;
+
 	// Set all of the desired rates
 	m_SyncRate  = syncrate;
 	m_LogicRate = logicrate;
 	m_FrameRate = framerate;
 
-	// Check limits
-	if (m_LogicRate <= 0)
-		m_LogicRate = DEFAULT_LPS;
-
-	if (m_FrameRate <= 0)
-		m_FrameRate = DEFAULT_FPS;
-
-
 	// Find the smallest number that both rates divide,
 	// or lcm(logicrate, framerate).
 
-	unsigned int looprate = m_LogicRate;
-	unsigned int framerateMult = m_FrameRate;
-
 	// Find a number that is factor for both rates
-	while (looprate != framerateMult)
+	// Old Code by Scott (Pickle)
+	/*for ( factor=0; factor<=10; factor++ )
 	{
-		if (looprate < framerateMult)
-			looprate += m_LogicRate;
+		looprate = m_LoopRate+(20*factor);
+		if (looprate%m_LogicRate==0 && looprate%m_FrameRate==0)
+			break;
+	}
+	m_LoopRate = looprate;*/
+
+	while (logicrate != framerate)
+	{
+		if (logicrate < framerate)
+			logicrate += m_LogicRate;
 		else
-			framerateMult += m_FrameRate;
+			framerate += m_FrameRate;
 	}
 	m_LoopRate = logicrate;
 
