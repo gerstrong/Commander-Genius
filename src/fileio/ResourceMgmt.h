@@ -16,12 +16,18 @@
 
 #define gpResource CResource::Get()
 
-struct CResource : public <CSingleton>
+struct CResource : public CSingleton<CResource>
 {
 	std::string egaheadFilename;
 	std::string egagraphFilename;
 	std::string mapheadFilename;
 	std::string gamemapsFilename;
+
+	void setupFilenames(const unsigned int episode)
+	{
+		egagraphFilename = "egagraph.ck" + itoa(episode);
+		gamemapsFilename = "gamemaps.ck" + itoa(episode);
+	}
 };
 
 

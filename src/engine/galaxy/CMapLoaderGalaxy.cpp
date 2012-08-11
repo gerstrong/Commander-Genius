@@ -136,13 +136,19 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 
 bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 {
-	// Get the MAPHEAD Location from within the Exe File
+	// Get the MAPHEAD Location from within the Exe File or an external file
+
+	std::vector<char> mapHeadContainer;
 
     Map.gotoPos(0,0);
     Map.setLevel(level);
 
-	size_t offset = getMapheadOffset();
-	byte *Maphead = m_ExeFile.getRawData() + offset;
+	byte *Maphead = NULL;
+
+	// TODO: In case there is an external file read it into the container
+	//if()
+
+	Maphead = m_ExeFile.getRawData() + getMapheadOffset();
 	word magic_word;
 	longword level_offset;
 	std::string path;
@@ -157,7 +163,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
 	// Open the Gamemaps file
 	path = m_ExeFile.getDataDirectory();
-	std::string gamemapfile = "gamemaps.ck"+itoa(m_ExeFile.getEpisode());
+	std::string gamemapfile = gpResource->gamemapsFilename;
 
 	std::ifstream MapFile;
 	if(OpenGameFileR(MapFile, getResourceFilename(gamemapfile,path,true,false), std::ios::binary))

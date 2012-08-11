@@ -126,7 +126,7 @@ void CScaler::scaleDynamicLinear( SDL_Surface *srcSfc,
 	ySrc = 0.0f;
 	for( Uint32 yDst = 0, xDst ; yDst<dstHeight ; yDst++ )
 	{
-		ySrcInt = Uint32(ySrc);
+		//ySrcInt = Uint32(ySrc);
 		//ySmallWeight = ySrc-Uint32(ySrc);
 		//yHighWeight  = 1 - ySmallWeight;
 		bY = Uint8((ySrc-Uint32(ySrc))*256);
@@ -281,7 +281,8 @@ void CScaler::scaleNormal( SDL_Surface *srcSfc,
 	const Uint32 dstWidth  = Uint32(dstSfc->w);
 	const Uint16 dstPitch  = dstSfc->pitch;
 
-	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels), *origDstPixel = dstPixel;
+	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels);
+	*origDstPixel = dstPixel;
 	Uint32 *srcPixel = static_cast<Uint32*>(srcSfc->pixels);
 	Uint32 zoomIndex;
 
