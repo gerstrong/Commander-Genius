@@ -137,21 +137,38 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 {
 	// Get the MAPHEAD Location from within the Exe File or an external file
-
 	std::vector<char> mapHeadContainer;
+	std::string path = m_ExeFile.getDataDirectory();
+
 
     Map.gotoPos(0,0);
     Map.setLevel(level);
 
-	byte *Maphead = NULL;
+	// In case no external file was read, let's use data from the embedded data
+	byte *Maphead = m_ExeFile.getRawData() + getMapheadOffset();
 
-	// TODO: In case there is an external file read it into the container
-	//if()
+	// In case there is an external file read it into the container and replace the pointer
+	if(gpResource->mapheadFilename != "")
+	{
+		std::ifstream MapHeadFile;
+		if(OpenGameFileR(MapHeadFile, getResourceFilename(gpResource->mapheadFilename,path,true,false), std::ios::binary))
+		{
+			// get length of file:
+			MapHeadFile.seekg (0, std::ios::end);
+			unsigned int length = MapHeadFile.tellg();
+			MapHeadFile.seekg (0, std::ios::beg);
+			mapHeadContainer.resize(length);
+			MapHeadFile.read(&mapHeadContainer[0],length*sizeof(char));
+			Maphead = reinterpret_cast<byte*>(&mapHeadContainer[0]);
+		}
+		else
+		{
+			g_pLogFile->textOut("ERROR The MapHead File was not found. Please check that file or take a look into your patch file");
+		}
+	}
 
-	Maphead = m_ExeFile.getRawData() + getMapheadOffset();
 	word magic_word;
 	longword level_offset;
-	std::string path;
 
 	// Get the magic number of the level data from MAPHEAD Located in the EXE-File.
 	// This is used for the decompression.
@@ -162,7 +179,6 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 	level_offset = READLONGWORD(Maphead);
 
 	// Open the Gamemaps file
-	path = m_ExeFile.getDataDirectory();
 	std::string gamemapfile = gpResource->gamemapsFilename;
 
 	std::ifstream MapFile;

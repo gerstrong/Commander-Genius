@@ -282,7 +282,7 @@ void CScaler::scaleNormal( SDL_Surface *srcSfc,
 	const Uint16 dstPitch  = dstSfc->pitch;
 
 	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels);
-	*origDstPixel = dstPixel;
+	Uint32 *origDstPixel = dstPixel;
 	Uint32 *srcPixel = static_cast<Uint32*>(srcSfc->pixels);
 	Uint32 zoomIndex;
 

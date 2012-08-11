@@ -72,14 +72,20 @@ bool Cunlzexe::decompress(BYTE *compressed_data, std::vector<BYTE> &outdata){
 
     int ver=0;
 
-    if(rdhead(compressed_data,&ver)!=SUCCESS){
+    if(rdhead(compressed_data,&ver)!=SUCCESS)
+    {
         return false;
     }
-    if(mkreltbl(compressed_data, outdata,ver)!=SUCCESS) {
+
+    if(mkreltbl(compressed_data, outdata,ver)!=SUCCESS)
+    {
         return false;
     }
+
     m_headersize = outdata.size();
-    if(unpack(compressed_data, outdata)!=SUCCESS) {
+
+    if(unpack(compressed_data, outdata)!=SUCCESS)
+    {
         return false;
     }
     wrhead(outdata);
@@ -153,7 +159,8 @@ static BYTE sig90 [] = {			/* v0.8 */
 }, sigbuf [sizeof sig90];
 
 /* EXE header test (is it LZEXE file?) */
-int Cunlzexe::rdhead(BYTE *data_ptr ,int *ver){
+int Cunlzexe::rdhead(BYTE *data_ptr ,int *ver)
+{
     long entry;
 
     memcpy(ihead, data_ptr, sizeof ihead);
@@ -176,7 +183,8 @@ int Cunlzexe::rdhead(BYTE *data_ptr ,int *ver){
 }
 
 /* make relocation table */
-int Cunlzexe::mkreltbl(BYTE *p_data, std::vector<BYTE> &outdata,int ver) {
+int Cunlzexe::mkreltbl(BYTE *p_data, std::vector<BYTE> &outdata,int ver)
+{
     long fpos;
     int i;
 
@@ -193,29 +201,34 @@ int Cunlzexe::mkreltbl(BYTE *p_data, std::vector<BYTE> &outdata,int ver) {
     ohead[0x0c]=0x1c;		/* start position of relocation table */
     outdata.assign(0x1cL,0);
 
-    switch(ver){
+    switch(ver)
+    {
     case 90: i=reloc90(p_data, outdata, fpos);
              break;
     case 91: i=reloc91(p_data, outdata, fpos);
              break;
     default: i=FAILURE; break;
     }
-    if(i!=SUCCESS){
+
+    if(i!=SUCCESS)
+    {
         printf("error at relocation table.\n");
         return (FAILURE);
     }
 
     fpos = outdata.size();
-    i= (0x200 - (int) fpos) & 0x1ff;
-    ohead[4]= (int) ((fpos+i)>>4);
+    i = (0x200 - (int) fpos) & 0x1ff;
+    ohead[4] = (int) ((fpos+i)>>4);
 
     for( ; i>0; i--)
     	outdata.push_back(0);
 
     return(SUCCESS);
 }
+
 /* for LZEXE ver 0.90 */
-int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
+int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos)
+{
     unsigned int c;
     WORD_16BIT rel_count=0;
     WORD_16BIT rel_seg,rel_off;
@@ -223,7 +236,8 @@ int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
      p_data += fpos+0x19d;
 
     rel_seg=0;
-    do{
+    do
+    {
         c=get16bitWord(p_data);
         p_data += 2;
         for(;c>0;c--) {
@@ -252,15 +266,19 @@ int Cunlzexe::reloc91(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
     for(;;) {
     	temp = *p_data;
     	p_data++;
-        if((span=temp)==0) {
+        if((span=temp)==0)
+        {
             span = (BYTE) *p_data;
             p_data++;
             span+= ((BYTE) *p_data)<<8;
             p_data++;
-            if(span==0){
+            if(span==0)
+            {
                 rel_seg += 0x0fff;
                 continue;
-            } else if(span==1){
+            }
+            else if(span==1)
+            {
                 break;
             }
         }
@@ -275,9 +293,10 @@ int Cunlzexe::reloc91(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
     return(SUCCESS);
 }
 
-/*---------------------*/
+/*-----------------------*/
 /* decompression routine */
-int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata){
+int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata)
+{
     int len;
     short span;
     bitstream bits;
@@ -291,9 +310,10 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata){
     initial_outpos = outpos = (long)ohead[4]<<4;
     initbits(&bits, p_input, inpos);
     printf(" unpacking.");
-    for(;;){
-
-        if(p-data>0x4000){
+    for(;;)
+    {
+        if(p-data>0x4000)
+        {
         	if(outdata.size() < 0x2000+outpos)
         		outdata.resize(0x2000+outpos);
         	memcpy(&outdata[0]+outpos, data, (sizeof data[0])*0x2000);
@@ -303,25 +323,29 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata){
             memmove(data,data+0x2000,p-data);
             putchar('.');
         }
-        if(getbit(&bits, inpos)) {
+        if(getbit(&bits, inpos))
+        {
         	*p++=p_input[inpos];
         	inpos++;
             continue;
         }
-        if(!getbit(&bits, inpos)) {
+        if(!getbit(&bits, inpos))
+        {
             len=getbit(&bits, inpos)<<1;
             len |= getbit(&bits, inpos);
             len += 2;
             span = p_input[inpos] | 0xff00;
             inpos++;
-        } else {
+        } else
+        {
         	span = p_input[inpos];
         	inpos++;
         	len = p_input[inpos];
         	inpos++;
             span |= ((len & ~0x07)<<5) | 0xe000;
             len = (len & 0x07)+2;
-            if (len==2) {
+            if (len==2)
+            {
                 len = p_input[inpos];
                 inpos++;
 
@@ -334,7 +358,8 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata){
                     len++;
             }
         }
-        for( ;len>0;len--,p++){
+        for( ;len>0;len--,p++)
+        {
             *p=*(p+span);
         }
     }
@@ -388,7 +413,8 @@ int Cunlzexe::getbit(bitstream *p, unsigned long &inpos) {
     return b;
 }
 
-unsigned long Cunlzexe::HeaderSize(){
+unsigned long Cunlzexe::HeaderSize()
+{
 	return m_headersize;
 }
 
