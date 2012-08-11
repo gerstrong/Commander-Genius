@@ -149,10 +149,11 @@ void CPatcher::patchMemory()
 		PatchItem.keyword.clear();
 		PatchItem.value.clear();
 	}
-	// If we want a dump, make it happen here!!
+	// If we want a dump, make it happen here!! :D
 }
 
-struct PatchListFiller {
+struct PatchListFiller
+{
 	std::set<std::string> list;
 	
 	bool operator() (const std::string& filename) {

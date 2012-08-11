@@ -128,6 +128,8 @@ private:
 
 	bool mPausedGamePlay;
 
+
+
 	EpisodeInfoStruct *pEpisodeInfo;
 };
 

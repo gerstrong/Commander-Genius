@@ -14,6 +14,9 @@
 #include "core/mode/CGameMode.h"
 #include "sdl/CTimer.h"
 #include "sdl/extensions.h"
+#ifdef ANDROID
+#include <SDL_screenkeyboard.h>
+#endif
 
 
 const int MAX_TICK = 8; // Units in a logical loop
@@ -227,4 +230,21 @@ std::string CGUIInputText::getInputString()
 
 	return text;
 
+}
+
+void CGUIInputText::setTypeMode( const bool value )
+{
+#ifdef ANDROID
+	if(!mTyping && value)
+	{
+		// Invoke Android native text edit field with on-screen keyboard
+		char buf[256];
+		strncpy(buf, mText.c_str(), sizeof(buf));
+		buf[sizeof(buf) - 1] = 0;
+		SDL_ANDROID_GetScreenKeyboardTextInput(buf, sizeof(buf) - 1);
+		mText = buf;
+	}
+#endif
+
+	mTyping = value;
 }
