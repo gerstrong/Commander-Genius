@@ -116,7 +116,7 @@ void CScaler::scaleDynamicLinear( SDL_Surface *srcSfc,
 	const float l_hFac = hFac;
 
 	float xSrc, ySrc;
-	Uint32 xSrcInt, ySrcInt;
+	Uint32 xSrcInt;
 
 	//int channel;
 

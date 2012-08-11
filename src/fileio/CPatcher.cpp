@@ -12,6 +12,8 @@
 #include "FindFile.h"
 #include "StringUtils.h"
 #include "CLogFile.h"
+#include "fileio/ResourceMgmt.h"
+
 
 CPatcher::CPatcher(CExeFile &ExeFile, bool &is_a_mod) :
 m_is_a_mod(is_a_mod)
@@ -71,6 +73,24 @@ void CPatcher::patchMemory()
 			TrimSpaces(patch_file_name);
 
 			patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
+		}
+		else if(PatchItem.keyword == "egahead")
+		{
+			std::string newfileName = PatchItem.value.front();
+			TrimSpaces(newfileName);
+			gpResource->egaheadFilename = newfileName;
+		}
+		else if(PatchItem.keyword == "gamemaps")
+		{
+			std::string newfileName = PatchItem.value.front();
+			TrimSpaces(newfileName);
+			gpResource->gamemapsFilename = newfileName;
+		}
+		else if(PatchItem.keyword == "maphead")
+		{
+			std::string newfileName = PatchItem.value.front();
+			TrimSpaces(newfileName);
+			gpResource->mapheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "patch" )
 		{

@@ -11,6 +11,20 @@
 #include <string>
 #include <set>
 #include "StringUtils.h"
+#include "CSingleton.h"
+
+
+#define gpResource CResource::Get()
+
+struct CResource : public <CSingleton>
+{
+	std::string egaheadFilename;
+	std::string egagraphFilename;
+	std::string mapheadFilename;
+	std::string gamemapsFilename;
+};
+
+
 
 struct FileListAdder {
     void operator()(std::set<std::string>& dirs, const std::string& path) {
