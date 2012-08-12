@@ -68,23 +68,25 @@ void Cunlzexe::put16bitWord(WORD_16BIT value, std::vector<BYTE> &outdata)
 	outdata.push_back( value>>8 );
 }
 
-bool Cunlzexe::decompress(BYTE *compressed_data, std::vector<BYTE> &outdata){
+bool Cunlzexe::decompress(BYTE *data, std::vector<BYTE> &outdata)
+{
 
     int ver=0;
 
-    if(rdhead(compressed_data,&ver)!=SUCCESS)
+
+    if(rdhead(data,&ver)!=SUCCESS)
     {
-        return false;
+    	return false;
     }
 
-    if(mkreltbl(compressed_data, outdata,ver)!=SUCCESS)
+    if(mkreltbl(data, outdata, ver)!=SUCCESS)
     {
         return false;
     }
 
     m_headersize = outdata.size();
 
-    if(unpack(compressed_data, outdata)!=SUCCESS)
+    if(unpack(data, outdata)!=SUCCESS)
     {
         return false;
     }
@@ -254,10 +256,11 @@ int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos)
     return(SUCCESS);
 }
 /* for LZEXE ver 0.91*/
-int Cunlzexe::reloc91(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
+int Cunlzexe::reloc91(BYTE *p_data, std::vector<BYTE> &outdata, long fpos)
+{
     WORD_16BIT span;
     WORD_16BIT rel_count=0;
-    WORD_16BIT rel_seg,rel_off;
+    WORD_16BIT rel_seg, rel_off;
 
     p_data += fpos+0x158;
     				/* 0x158=compressed relocation table address */

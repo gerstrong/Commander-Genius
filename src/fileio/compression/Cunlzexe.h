@@ -22,7 +22,7 @@ class Cunlzexe
 {
 public:
 	Cunlzexe();
-	bool decompress(BYTE *compressed_data, std::vector<BYTE> &outdata);
+	bool decompress(BYTE *data, std::vector<BYTE> &outdata);
 	unsigned long HeaderSize();
 	virtual ~Cunlzexe();
 

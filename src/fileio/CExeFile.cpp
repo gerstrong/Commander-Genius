@@ -62,6 +62,20 @@ std::string CExeFile::getDataDirectory() const
 size_t CExeFile::getExeDataSize() const
 { return m_datasize;	}
 
+unsigned long CExeFile::fetchUncompressedHeaderSize(void *m_headerdata)
+{
+	byte *hdata = reinterpret_cast<byte*>(m_headerdata);
+	for( unsigned long c=0 ; c<m_datasize ; c++)
+	{
+		if( hdata[c] == 0xBA && c % 0x200 == 0 )
+			return c;
+	}
+
+	g_pLogFile->textOut("The Exe file has an invalid header size!");
+
+	return 0;
+}
+
 bool CExeFile::readData(const char episode, const std::string& datadirectory)
 {
 	crc32_init();
@@ -120,7 +134,9 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 
 	m_headerdata = mData.data();
 	m_headersize = UnLZEXE.HeaderSize();
-	if(!m_headersize) m_headersize = 512;
+	if(!m_headersize)
+		m_headersize = fetchUncompressedHeaderSize(m_headerdata);
+
 	m_rawdata = mData.data() + m_headersize;
 
 	const size_t offset_map[] = {
