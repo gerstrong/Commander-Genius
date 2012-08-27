@@ -73,7 +73,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 		/// First get the size of the AUDIO.CK? File.
 		uint32_t audiofilecompsize;
-		std::string init_audiofilename = "AUDIO.CK" + itoa(episode);
+		std::string init_audiofilename = gpResource->audioFilename;
 
 		std::string audiofilename = getResourceFilename( init_audiofilename, ExeFile.getDataDirectory(), true, false);
 

@@ -65,6 +65,8 @@ void CPatcher::patchMemory()
 		{
 			std::string newbuf = PatchItem.value.front();
 
+			replace(newbuf, "\"", ""); // In case some patches use the \" remove it!
+
 			// Seperate the offset and the filename
 			long offset;
 			size_t p = newbuf.find(' ');
