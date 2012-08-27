@@ -145,7 +145,23 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 	byte *Maphead = m_ExeFile.getRawData() + offset;
 	word magic_word;
 	longword level_offset;
-	std::string path;
+	std::string path = m_ExeFile.getDataDirectory();
+	std::vector<char> mapHeadData;
+
+	// Check if there is header file
+	std::ifstream MapHeadFile;
+	std::string gamemapfile = "maphead.ck" + itoa(m_ExeFile.getEpisode());
+	if(OpenGameFileR(MapHeadFile, getResourceFilename(gamemapfile,path,false,false), std::ios::binary))
+	{
+		MapHeadFile.seekg (0, std::ios::end);
+		const unsigned int length = MapHeadFile.tellg();
+		MapHeadFile.seekg (0, std::ios::beg);
+
+		mapHeadData.resize(length, 0);
+
+		MapHeadFile.read(&mapHeadData[0], length);
+		Maphead = (byte*)&mapHeadData[0];
+	}
 
 	// Get the magic number of the level data from MAPHEAD Located in the EXE-File.
 	// This is used for the decompression.
@@ -156,8 +172,13 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 	level_offset = READLONGWORD(Maphead);
 
 	// Open the Gamemaps file
-	path = m_ExeFile.getDataDirectory();
-	std::string gamemapfile = "gamemaps.ck"+itoa(m_ExeFile.getEpisode());
+	gamemapfile = "editmaps.ck" + itoa(m_ExeFile.getEpisode());
+
+
+	// Check if the mod file is alternate. If not, use the normal game mods.
+	if(getResourceFilename(gamemapfile,path,false,false) == "")
+		gamemapfile = "gamemaps.ck" + itoa(m_ExeFile.getEpisode());
+
 
 	std::ifstream MapFile;
 	if(OpenGameFileR(MapFile, getResourceFilename(gamemapfile,path,true,false), std::ios::binary))

@@ -31,6 +31,20 @@ void CGfxEngine::createEmptySprites(Uint16 num_sprites)
 	Sprite.assign(num_sprites, sprite);
 }
 
+void CGfxEngine::dumpSprites()
+{
+	for(size_t i = 0; i < Sprite.size(); i++)
+	{
+		CSprite &thisSprite = Sprite[i];
+
+		// Temporary for testing!!
+		std::string fname = "sprite";
+		fname += itoa(i);
+		fname += ".bmp";
+		SDL_SaveBMP(thisSprite.getSDLSurface(), fname.c_str());
+	}
+}
+
 void CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
 {
 	freeBitmaps(Bitmap);

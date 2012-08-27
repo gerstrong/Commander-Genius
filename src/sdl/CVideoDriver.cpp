@@ -405,15 +405,20 @@ void CVideoDriver::stop() {
 //// Drawing stuff related Stuff
 ////
 
-void CVideoDriver::pollDrawingTasks() {
-	while (!mDrawTasks.empty()) {
+void CVideoDriver::pollDrawingTasks()
+{
+	while (!mDrawTasks.empty())
+	{
 		// Sprite Section
-		if ( DrawSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawSpriteTask>()) {
+		if ( DrawSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawSpriteTask>())
+		{
 			CSprite *Sprite = drawSpriteTask->mSpritePtr;
 
 			Sprite->_drawSprite(getBlitSurface(), drawSpriteTask->mx,
 					drawSpriteTask->my, drawSpriteTask->mAlpha);
-		} else if ( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>()) {
+		}
+		else if ( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>())
+		{
 			CSprite *Sprite = drawSpriteTask->mSpritePtr;
 
 			Sprite->_drawBlinkingSprite(getBlitSurface(), drawSpriteTask->mx,
@@ -421,7 +426,8 @@ void CVideoDriver::pollDrawingTasks() {
 		}
 
 		// Bitmap Section
-		else if ( DrawBitmapTask *drawBitmapTask = mDrawTasks.occurredEvent<DrawBitmapTask>()) {
+		else if ( DrawBitmapTask *drawBitmapTask = mDrawTasks.occurredEvent<DrawBitmapTask>())
+		{
 			CBitmap *Bitmap = drawBitmapTask->mBmpPtr;
 
 			Bitmap->_draw(getBlitSurface(), drawBitmapTask->mx,
@@ -430,7 +436,8 @@ void CVideoDriver::pollDrawingTasks() {
 
 		// Tiles Section
 		else if ( DrawAnimatedTileTask *drawAnimatedTileTask =
-		mDrawTasks.occurredEvent<DrawAnimatedTileTask>()) {
+		mDrawTasks.occurredEvent<DrawAnimatedTileTask>())
+		{
 			CTilemap *TilemapPtr = drawAnimatedTileTask->mTileMapPtr;
 
 			TilemapPtr->drawTile(getBlitSurface(), drawAnimatedTileTask->mx,
@@ -439,24 +446,28 @@ void CVideoDriver::pollDrawingTasks() {
 
 		// GUI Rendering based Task
 		else if ( DrawGUIRenderTask *renderTask =
-		mDrawTasks.occurredEvent<DrawGUIRenderTask>()) {
+		mDrawTasks.occurredEvent<DrawGUIRenderTask>())
+		{
 			renderTask->mpDialog->processRendering();
 		}
 
-		else if (mDrawTasks.occurredEvent<BlitScrollSurfaceTask>()) {
+		else if (mDrawTasks.occurredEvent<BlitScrollSurfaceTask>())
+		{
 			blitScrollSurface();
 		}
 
 		// Other Surface Blits
 		else if ( BlitSurfaceTask *blitSurfaceTask =
-		mDrawTasks.occurredEvent<BlitSurfaceTask>()) {
+					mDrawTasks.occurredEvent<BlitSurfaceTask>())
+		{
 			SDL_BlitSurface(blitSurfaceTask->mSfcToBlit.get(),
 					blitSurfaceTask->mSrcRect.get(), getBlitSurface(),
 					blitSurfaceTask->mDstRect.get());
 		}
 
 		// If none of the Events fit here, please warn this incident
-		else {
+		else
+		{
 			g_pLogFile->textOut(
 					"Warning: Unknown Drawing task. Please let the developers debug this!");
 		}
@@ -465,7 +476,8 @@ void CVideoDriver::pollDrawingTasks() {
 	}
 }
 
-SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect) {
+SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
+{
 	CRect<Uint16> GameRes = getGameResolution();
 	CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 	CRect<float> RectDispCoordFloat = rect;

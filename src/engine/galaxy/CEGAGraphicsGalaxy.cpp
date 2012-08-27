@@ -875,6 +875,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
 		Sprite.setName(m_SpriteNameMap[ep][i]);
 	}
+
 	return true;
 }
 

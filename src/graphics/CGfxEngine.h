@@ -35,6 +35,7 @@ public:
 	virtual ~CGfxEngine();
 	
 	void createEmptySprites(Uint16 num_sprites);
+	void dumpSprites();
 	void createEmptyBitmaps(Uint16 num_bmps);
 	void createEmptyMaskedBitmaps(Uint16 num_bmps);
 	void createEmptyFontmaps(Uint8 num_fonts);
