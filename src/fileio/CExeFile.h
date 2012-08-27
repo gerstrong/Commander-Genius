@@ -30,6 +30,8 @@ public:
 	std::string getFileName() { return m_filename; }
 	size_t getExeDataSize() const;
 
+	unsigned long fetchUncompressedHeaderSize(void *m_headerdata);
+
 	bool readData(const char episode, const std::string& datadirectory);
 
 	/**

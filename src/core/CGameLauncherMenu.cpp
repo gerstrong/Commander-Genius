@@ -13,6 +13,7 @@
 #include "engine/vorticon/CEGAGraphicsVort.h"
 #include "engine/galaxy/CEGAGraphicsGalaxy.h"
 #include "engine/CMessages.h"
+#include "fileio/ResourceMgmt.h"
 #include "sdl/sound/CSound.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/CSaveGameController.h"
@@ -110,6 +111,8 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
 		return false;
 	}
+
+	gpResource->setupFilenames(Episode);
 
 	// Patch the EXE-File-Data directly in the memory.
 	CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
