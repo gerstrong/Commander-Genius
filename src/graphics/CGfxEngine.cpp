@@ -7,6 +7,7 @@
 
 #include "CGfxEngine.h"
 #include "CLogFile.h"
+#include "StringUtils.h"
 
 #include "sdl/input/CInput.h"
 
