@@ -90,7 +90,7 @@ void CTimer::setRates( const unsigned int logicrate,
 		else
 			framerateMult += m_FrameRate;
 	}
-	m_LoopRate = logicrate;
+	m_LoopRate = looprate;
 
 	CalculateIntervals();
 }
