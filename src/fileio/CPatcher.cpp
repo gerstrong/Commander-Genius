@@ -26,6 +26,7 @@ m_is_a_mod(is_a_mod)
 	m_is_a_mod = false;
 }
 
+
 void CPatcher::patchMemory()
 {
 	if(!loadPatchfile()) return;
@@ -68,13 +69,16 @@ void CPatcher::patchMemory()
 			replace(newbuf, "\"", ""); // In case some patches use the \" remove it!
 
 			// Seperate the offset and the filename
-			long offset;
 			size_t p = newbuf.find(' ');
-			sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset);
-			std::string patch_file_name = newbuf.substr(p);
-			TrimSpaces(patch_file_name);
 
-			patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
+			long offset;
+			if( readIntValue(newbuf.substr(0,p), offset) )
+			{
+				std::string patch_file_name = newbuf.substr(p);
+				TrimSpaces(patch_file_name);
+
+				patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
+			}
 		}
 		else if(PatchItem.keyword == "egahead")
 		{
@@ -171,7 +175,6 @@ void CPatcher::patchMemory()
 		PatchItem.keyword.clear();
 		PatchItem.value.clear();
 	}
-	// If we want a dump, make it happen here!! :D
 }
 
 struct PatchListFiller

@@ -76,6 +76,12 @@ unsigned long CExeFile::fetchUncompressedHeaderSize(void *m_headerdata)
 	return 0;
 }
 
+void CExeFile::dumpFile(const std::string& filename)
+{
+	std::ofstream ofile( filename.c_str() );
+	ofile.write( reinterpret_cast<char*>(m_headerdata), m_datasize );
+}
+
 bool CExeFile::readData(const char episode, const std::string& datadirectory)
 {
 	crc32_init();

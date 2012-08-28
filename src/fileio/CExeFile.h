@@ -32,6 +32,9 @@ public:
 
 	unsigned long fetchUncompressedHeaderSize(void *m_headerdata);
 
+	// in case you just want to see the Exe-File which CG sustains in the memory
+	void dumpFile(const std::string& filename);
+
 	bool readData(const char episode, const std::string& datadirectory);
 
 	/**
