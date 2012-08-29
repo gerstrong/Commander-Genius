@@ -454,7 +454,7 @@ void CPlayerLevel::processLookingDown()
 		g_pSound->play
 		setAction(A_KEEN_FALL);
 		xinertia = yinertia = 0;*/
-		playSound( SOUND_KEEN_FALL );
+		//playSound( SOUND_KEEN_FALL );
 		return;
 	}
 
@@ -471,17 +471,21 @@ void CPlayerLevel::processLookingDown()
 
 	if( m_playcontrol[PA_Y]>0 )
 	{
-		const bool jumpdowntile = canFallThroughTile();
-		if ( m_playcontrol[PA_JUMP] > 0 && ( supportedbyobject || jumpdowntile )  )
+
+		if ( m_playcontrol[PA_JUMP] > 0 && !onslope  )
 		{
-			m_jumpdownfromobject = supportedbyobject;
-			m_jumpdown = jumpdowntile;
-			supportedbyobject = false;
-			blockedd = false;
-			yinertia = 0;
-			xinertia = 0;
-			setAction(A_KEEN_JUMP_DOWN);
-			playSound( SOUND_KEEN_FALL );
+			const bool jumpdowntile = canFallThroughTile();
+			if( supportedbyobject || jumpdowntile )
+			{
+				m_jumpdownfromobject = supportedbyobject;
+				m_jumpdown = jumpdowntile;
+				supportedbyobject = false;
+				blockedd = false;
+				yinertia = 0;
+				xinertia = 0;
+				setAction(A_KEEN_JUMP_DOWN);
+				playSound( SOUND_KEEN_FALL );
+			}
 		}
 
 		if( m_camera.m_relcam.y < MAX_SCROLL_VIEW )
@@ -1085,7 +1089,7 @@ void CPlayerLevel::processJumping()
 
 bool CPlayerLevel::canFallThroughTile()
 {
-	const int &tile = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(2<<STC));
+	const int tile = mp_Map->getPlaneDataAt(1, getXMidPos(), getYDownPos()+(5<<STC));
 	const CTileProperties &TileProp = g_pBehaviorEngine->getTileProperties(1)[tile];
 	return ( TileProp.bdown == 0 && TileProp.bup != 0 );
 }

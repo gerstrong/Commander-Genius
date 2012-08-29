@@ -30,7 +30,7 @@ public:
 	int checkSolidD(int x1, int x2, int y2, const bool push_mode=false );
 
 	bool getActionNumber(int16_t ActionNumber);
-	bool getActionStatus(int16_t ActionNumber);
+	virtual bool getActionStatus(int16_t ActionNumber);
 	int16_t getActionNumber();
 	virtual void setActionForce(const size_t ActionNumber);
 	void setAction(size_t ActionNumber);

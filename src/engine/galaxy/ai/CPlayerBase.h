@@ -27,9 +27,46 @@ namespace galaxy
 {
 
 
-enum PLAYER_GLOBAL_ACTIONS
+enum PLAYER_ACTIONS
 {
-A_KEEN_DIE = 29
+A_KEEN_STAND = 0,
+A_KEEN_ON_PLAT,
+A_KEEN_BORED,
+A_KEEN_QUESTION,
+A_KEEN_MOON,
+A_KEEN_BOOK_OPEN,
+A_KEEN_BOOK_READ,
+A_KEEN_BOOK_CLOSE,
+A_KEEN_LOOKUP,
+A_KEEN_LOOKDOWN,
+A_KEEN_ACTION_1,
+A_KEEN_ACTION_2,
+A_KEEN_ACTION_3,
+A_KEEN_DIE,
+A_KEEN_SHOOT,
+A_KEEN_SHOOT_UP,
+A_KEEN_ACTION_4,
+A_KEEN_SLIDE,
+A_KEEN_ENTER_DOOR,
+A_KEEN_POLE,
+A_KEEN_POLE_CLIMB,
+A_KEEN_POLE_SLIDE,
+A_KEEN_POLE_SHOOT,
+A_KEEN_POLE_SHOOTUP,
+A_KEEN_POLE_SHOOTDOWN,
+A_KEEN_RUN,
+A_KEEN_POGO_START,
+A_KEEN_POGO_UP,
+A_KEEN_POGO_HIGH,
+A_KEEN_JUMP,
+A_KEEN_JUMP_DOWN,
+A_KEEN_FALL,
+A_KEEN_JUMP_SHOOT,
+A_KEEN_JUMP_SHOOTUP,
+A_KEEN_JUMP_SHOOTDOWN,
+A_KEEN_HANG,
+A_KEEN_CLIMB,
+NUM_KEEN_ACTIONS
 };
 
 
@@ -48,6 +85,18 @@ public:
 				direction_t facedir,
 				CInventory &l_Inventory,
 				stCheat &Cheatmode);
+
+
+	/**
+	 * Overloaded getActionStatus which uses the episodes' map
+	 */
+	bool getActionStatus(int16_t ActionNumber);
+
+	/**
+	 * Overloaded setActionForce which uses the action for the player
+	 */
+	void setActionForce(const size_t ActionNumber);
+
 
 	/**
 	 * \brief The Player will get 1 UP when that function is launched
@@ -97,8 +146,6 @@ protected:
 	bool checkMapBoundaryR(const int x2);
 	bool checkMapBoundaryU(const int y1);
 
-	void setActionForce(const size_t ActionNumber);
-
 	unsigned short mPlayerNum;
 
 	std::vector< SmartPointer<CGalaxySpriteObject> >& m_ObjectPtrs;
@@ -116,6 +163,11 @@ protected:
 	void (CPlayerBase::*mp_processState)();
 	unsigned char m_walktimer;
 	std::map< size_t, void (CPlayerBase::*)() > mActionMap;
+
+	// Assignment for the same player for all the episodes
+	//const int mEpisodeActionNumMap[4][100] = // TODO!
+	static const int mEpisodeActionNumMap[1][NUM_KEEN_ACTIONS];
+
 };
 
 };
