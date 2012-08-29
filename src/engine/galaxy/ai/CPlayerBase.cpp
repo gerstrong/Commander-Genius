@@ -13,7 +13,7 @@
 
 namespace galaxy {
 
-const int CPlayerBase::mEpisodeActionNumMap[1][NUM_KEEN_ACTIONS] =
+const int CPlayerBase::mEpisodeActionNumMap[2][NUM_KEEN_ACTIONS] =
 {
 		// Episode 4
 		{
@@ -53,11 +53,49 @@ const int CPlayerBase::mEpisodeActionNumMap[1][NUM_KEEN_ACTIONS] =
 				74, // A_KEEN_JUMP_SHOOTUP
 				77, // A_KEEN_JUMP_SHOOTDOWN
 				80, // A_KEEN_HANG
-				82  //A_KEEN_CLIMB
-		}//,
+				82  // A_KEEN_CLIMB
+		},
 
 		// Episode 5
-		//{},
+		{
+				0,  // A_KEEN_STAND
+				1,  // A_KEEN_ON_PLAT
+				2,  // A_KEEN_BORED
+				3,  // A_KEEN_QUESTION
+				8,  // A_KEEN_MOON
+				11, // A_KEEN_BOOK_OPEN
+				15, // A_KEEN_BOOK_READ
+				18, // A_KEEN_BOOK_CLOSE
+				19, // A_KEEN_LOOKUP
+				21, // A_KEEN_LOOKDOWN
+				26, // A_KEEN_ACTION_1
+				27, // A_KEEN_ACTION_2
+				28, // A_KEEN_ACTION_3
+				27, // A_KEEN_DIE
+				29, // A_KEEN_SHOOT
+				31, // A_KEEN_SHOOT_UP
+				37, // A_KEEN_ACTION_4
+				32, // A_KEEN_SLIDE
+				36, // A_KEEN_ENTER_DOOR
+				45, // A_KEEN_POLE
+				46, // A_KEEN_POLE_CLIMB
+				49, // A_KEEN_POLE_SLIDE
+				53, // A_KEEN_POLE_SHOOT
+				55, // A_KEEN_POLE_SHOOTUP
+				57, // A_KEEN_POLE_SHOOTDOWN
+				59, // A_KEEN_RUN
+				63, // A_KEEN_POGO_START
+				64, // A_KEEN_POGO_UP
+				65, // A_KEEN_POGO_HIGH
+				66, // A_KEEN_JUMP
+				67, // A_KEEN_JUMP_DOWN
+				68, // A_KEEN_FALL
+				70, // A_KEEN_JUMP_SHOOT
+				73, // A_KEEN_JUMP_SHOOTUP
+				76, // A_KEEN_JUMP_SHOOTDOWN
+				79, // A_KEEN_HANG
+				81  // A_KEEN_CLIMB
+		}//,
 
 		// Episode 6
 		//{},
@@ -446,16 +484,20 @@ bool CPlayerBase::checkMapBoundaryU(const int y1)
 
 bool CPlayerBase::getActionStatus(int16_t ActionNumber)
 {
-	return (m_Action.getActionFormat(m_ActionBaseOffset + 30*mEpisodeActionNumMap[0][ActionNumber]));
+	const int epID = g_pBehaviorEngine->getEpisode()-4;
+	const int relOff = mEpisodeActionNumMap[epID][ActionNumber];
+
+	return (m_Action.getActionFormat(m_ActionBaseOffset + 30*relOff));
 }
 
 
 
 void CPlayerBase::setActionForce(const size_t ActionNumber)
 {
+	const int epID = g_pBehaviorEngine->getEpisode()-4;
 	mEndOfAction = false;
 	m_ActionNumber = ActionNumber;
-	m_Action.setActionFormat(m_ActionBaseOffset + 30*mEpisodeActionNumMap[0][m_ActionNumber]);
+	m_Action.setActionFormat(m_ActionBaseOffset + 30*mEpisodeActionNumMap[epID][m_ActionNumber]);
 
 
 	if(mActionMap.empty())
@@ -467,7 +509,7 @@ void CPlayerBase::setActionForce(const size_t ActionNumber)
 	{
 		mEndOfAction = false;
 		m_ActionNumber = mActionMap.begin()->first;
-		m_Action.setActionFormat(m_ActionBaseOffset + 30*mEpisodeActionNumMap[0][m_ActionNumber]);
+		m_Action.setActionFormat(m_ActionBaseOffset + 30*mEpisodeActionNumMap[epID][m_ActionNumber]);
 	}
 }
 

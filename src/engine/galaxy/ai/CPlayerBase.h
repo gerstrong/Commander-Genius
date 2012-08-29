@@ -165,8 +165,7 @@ protected:
 	std::map< size_t, void (CPlayerBase::*)() > mActionMap;
 
 	// Assignment for the same player for all the episodes
-	//const int mEpisodeActionNumMap[4][100] = // TODO!
-	static const int mEpisodeActionNumMap[1][NUM_KEEN_ACTIONS];
+	static const int mEpisodeActionNumMap[2][NUM_KEEN_ACTIONS];
 
 };
 
