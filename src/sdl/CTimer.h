@@ -23,7 +23,6 @@
 #endif
 
 #define MSPERSEC        1000
-#define DEFAULT_SYNC    3
 #define DEFAULT_LPS     60
 #define DEFAULT_FPS     60
 
@@ -34,9 +33,11 @@ class CTimer : public CSingleton<CTimer>
 public:
     CTimer();
     virtual ~CTimer();
-
+#if 0
     void CalculateIntervals( void );
-    bool TimeToLogic();
+#endif
+    void ResetCounters();
+    int TimeToLogic();
     bool TimeToRender();
     void TimeToDelay();
 
@@ -47,11 +48,9 @@ public:
     int getLogicRate() { return m_LogicRate; }
     int getFrameRate() { return m_FrameRate; }
     void setRates( const unsigned int logicrate,
-    			     const unsigned int framerate,
-    				 const unsigned int syncrate );
+    			     const unsigned int framerate);
     void setFPS( const int framerate );
 
-    int getLogicPerSec( void ) { return m_LPS; }
     int getFramesPerSec( void ) { return m_FPS; }
 
     int getTicksPerFrame();
@@ -60,15 +59,12 @@ public:
     Uint32 getTicks() { return timerTicks(); }
 
 private:
-    int m_LPS, m_LogicCount, m_LogicRate, m_LogicInterval;
-    int m_FPS, m_FrameCount, m_FrameRate, m_FrameInterval;
-    int m_LoopPS, m_LoopRate, m_LoopCount, m_LoopDuration;
-    int m_SkipPS, m_FrameCountSkip, m_Ticks;
-    int m_SyncCount, m_SyncRate, m_SyncDuration;
-    bool m_FrameSkip;
+    int m_LogicRate, m_LogicDuration;
+    int m_FrameRate, m_FrameDuration;
+    int m_FPS, m_FrameCount;
 
-    ulong m_LPSCountTime, m_FPSCountTime;
-    ulong m_LoopStartTime, m_SyncStartTime;
+    ulong m_LogicUpdateTime, m_FrameUpdateTime;
+    ulong m_FPSCountTime;
     ulong m_LastSecTime;
 };
 

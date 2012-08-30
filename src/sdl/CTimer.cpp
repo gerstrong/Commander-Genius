@@ -43,28 +43,33 @@
 
 CTimer::CTimer()
 {
-	m_FPSCountTime = m_LoopPS = m_LPS = m_FPS = 0;
-	m_SyncCount = m_LoopCount = m_LogicCount = m_FrameCount = 0;
-	m_FrameCountSkip = m_SkipPS = 0;
-	m_FrameSkip = false;
-	m_Ticks = 0;
-
-	setRates(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
 #if defined(WIZ)
 	WIZ_ptimer_init();
 #endif
-	m_SyncStartTime = m_LoopStartTime = timerTicks();
+	setRates(DEFAULT_LPS, DEFAULT_FPS);
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
 }
 
 
 
+void CTimer::ResetCounters()
+{
+	m_FPSCountTime = m_FPS = 0;
+	m_FrameCount = 0;
+	// Update times for logic and rendering
+	ulong curtime = timerTicks();
+	// m_LogicUpdateTime is measured in time units defined as follows:
+	// MSPERSEC is the time for a single logic "tick".
+	m_LogicUpdateTime = curtime*m_LogicRate;
+	// Similarly, for m_FrameUpdateTime, MSPERSEC is the time for a frame.
+	m_FrameUpdateTime = curtime*m_FrameRate;
+}
+
+
 void CTimer::setRates( const unsigned int logicrate,
-						  const unsigned int framerate,
-						  const unsigned int syncrate )
+						  const unsigned int framerate)
 {
 	// Set all of the desired rates
-	m_SyncRate  = syncrate;
 	m_LogicRate = logicrate;
 	m_FrameRate = framerate;
 
@@ -75,58 +80,36 @@ void CTimer::setRates( const unsigned int logicrate,
 	if (m_FrameRate <= 0)
 		m_FrameRate = DEFAULT_FPS;
 
-
-	// Find the smallest number that both rates divide,
-	// or lcm(logicrate, framerate).
-
-	unsigned int looprate = m_LogicRate;
-	unsigned int framerateMult = m_FrameRate;
-
-	// Find a number that is factor for both rates
-	while (looprate != framerateMult)
-	{
-		if (looprate < framerateMult)
-			looprate += m_LogicRate;
-		else
-			framerateMult += m_FrameRate;
-	}
-	m_LoopRate = looprate;
-
-	CalculateIntervals();
+	ResetCounters();
 }
 
 
 void CTimer::setFPS( const int framerate )
 {
-	setRates(DEFAULT_LPS, framerate, DEFAULT_SYNC);
+	setRates(DEFAULT_LPS, framerate);
 }
 
-
+#if 0
 void CTimer::CalculateIntervals()
 {
-	float looprate;
+	m_LogicDuration = MSPERSEC / m_LogicRate;
+	m_FrameDuration = MSPERSEC / m_FrameRate;
 
-	// Determine the number of loops needed for each logic and frame loop rates
-	m_LogicInterval = m_LoopRate / m_LogicRate;
-	m_FrameInterval = m_LoopRate / m_FrameRate;
-	// Calculate the amount of time each loop Sync should last (floats keep from losing accuracy with integers)
-	looprate = (float)MSPERSEC / (float)m_LoopRate;
-	m_LoopDuration  = (int)looprate;
-	looprate = looprate * (float)m_SyncRate;
-	m_SyncDuration  = (int)looprate;
-
-	g_pLogFile->ftextOut( "LoopRate %d LogicRate %d FrameRate %d\n", m_LoopRate, m_LogicRate, m_FrameRate );
-	g_pLogFile->ftextOut( "LogicInt %d FrameInt %d LoopDur %d SyncDur %d\n", m_LogicInterval, m_FrameInterval, m_LoopDuration, m_SyncDuration );
+	g_pLogFile->ftextOut( "LogicDuration %d FrameDuration %d\n", m_LogicDuration, m_FrameDuration );
 }
+#endif
 
-bool CTimer::TimeToLogic()
+// Returns the amount of logic "ticks" that we should process
+int CTimer::TimeToLogic()
 {
-	bool result = false;
+	int result = 0;
+	ulong curtime = timerTicks()*m_LogicRate;
 
-	if (m_LoopCount % m_LogicInterval == 0)
+	if ((signed)(curtime - m_LogicUpdateTime) >= 0)
 	{
-		result = true;
-		m_LogicCount++;
+		result = (curtime-m_LogicUpdateTime)/MSPERSEC+1;
+		m_LogicUpdateTime += result*MSPERSEC;
+		//m_LogicUpdateTime = curtime+MSPERSEC;
 	}
 
 	return result;
@@ -135,18 +118,20 @@ bool CTimer::TimeToLogic()
 bool CTimer::TimeToRender()
 {
 	bool result = false;
+	ulong curtime = timerTicks()*m_FrameRate;
 
-	if (m_FrameSkip == true)
+	if ((signed)(curtime - m_FrameUpdateTime) >= 0)
 	{
-		m_FrameCountSkip++;
-	}
-	else
-	{
-		if (m_LoopCount % m_FrameInterval == 0)
-		{
-			result = true;
-			m_FrameCount++;
-		}
+		result = true;
+		m_FrameCount++;
+		//m_FrameUpdateTime += MSPERSEC;
+		m_FrameUpdateTime += ((curtime-m_FrameUpdateTime)/MSPERSEC+1)*MSPERSEC;
+		//m_FrameUpdateTime = curtime;
+		//m_FrameUpdateTime = curtime+MSPERSEC;
+#if 0
+		if ((signed)(curtime - m_FrameUpdateTime) >= 0)
+			m_FrameUpdateTime = curtime;
+#endif
 	}
 
 	return result;
@@ -154,81 +139,16 @@ bool CTimer::TimeToRender()
 
 void CTimer::TimeToDelay( void )
 {
-	signed int duration;
-	signed int starttime;
-	signed int delay;
-
-	unsigned int curtime = timerTicks();
-	m_LoopCount++;
-	m_SyncCount++;
-
-	// If the Sync rate is met, check time took
-	if (m_SyncCount>=m_SyncRate)
+	// Free some CPU cycles
+	timerDelay(1);
+	// Update the FPS counter
+	ulong curtime = timerTicks();
+	if (curtime - m_FPSCountTime >= MSPERSEC)
 	{
-		duration = m_SyncDuration;
-		starttime = m_SyncStartTime;
+		m_FPS = m_FrameCount;
+		m_FrameCount = 0;
+		m_FPSCountTime = curtime;
 	}
-    else
-    {
-    	duration = m_LoopDuration;
-    	starttime = m_LoopStartTime;
-    }
-
-    // Delay for the remaining time
-    delay = duration + m_Ticks - (signed int)(curtime - starttime);
-    // Cap the delay
-    if (delay>duration)
-    {
-    	delay = duration/4;
-    }
-
-    if (delay>=0)
-    {
-    	m_Ticks = 0;
-    	m_FrameSkip = false;
-
-    	if (delay>0)
-    		timerDelay(delay);
-    }
-    else if (delay<0)
-    {
-    	m_FrameSkip = true;
-    	m_Ticks += (signed int)(curtime - starttime) - duration;
-    }
-
-    // If the Sync rate is met, check time took
-    if (m_SyncCount>=m_SyncRate)
-    {
-    	m_SyncCount = 0;
-    	m_SyncStartTime = m_LoopStartTime = timerTicks();
-    }
-    else
-    {
-    	m_LoopStartTime = timerTicks();
-    }    
-
-    // Display the loops/logic/frames per second
-    if( curtime - m_FPSCountTime >= MSPERSEC  )
-    {
-    	m_LoopPS = m_LoopCount;
-    	m_LPS    = m_LogicCount;
-    	m_FPS    = m_FrameCount;
-    	m_SkipPS = m_FrameCountSkip;
-    	m_LoopCount = m_LogicCount = m_FrameCount = m_FrameCountSkip = 0;
-    	m_FPSCountTime = curtime;
-    	/*
-	// FrameCap Limit Down
-	if (delay>duration/2)
-	    setRates(DEFAULT_LPS, m_FrameRate+20, DEFAULT_SYNC);
-
-	// FrameCap Limit Down
-	if (m_SkipPS>m_FrameRate/4)
-	    setRates(DEFAULT_LPS, m_FrameRate-20, DEFAULT_SYNC);
-    	 */
-#ifdef DEBUG
-    	//g_pLogFile->ftextOut( "LOOP %d LPS %d FPS %d Skip %d\n", m_LoopPS, m_LPS, m_FPS, m_SkipPS );
-#endif
-    }
 }
 
 

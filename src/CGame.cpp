@@ -120,12 +120,14 @@ bool CGame::loadCKPDrivers()
  */
 void CGame::run()
 {
+	int logicTicks, logicLoopVar;
 
 	do
 	{
 
         // Perform game logic
-        if (g_pTimer->TimeToLogic())
+        logicTicks = g_pTimer->TimeToLogic();
+        for (logicLoopVar = 0; logicLoopVar < logicTicks; logicLoopVar++)
         {
             // Poll Inputs
             g_pInput->pollEvents();
@@ -136,7 +138,7 @@ void CGame::run()
 		
 
         // Render the Screen
-        if (g_pTimer->TimeToRender())
+        if(!g_pVideoDriver->mDrawTasks.empty() && g_pTimer->TimeToRender())
         {
 
         	// Here we try to process all the drawing related Tasks not yet done
@@ -156,7 +158,7 @@ void CGame::run()
 
         }
 
-        g_pVideoDriver->clearDrawingTasks();
+        //g_pVideoDriver->clearDrawingTasks();
 
         // delay time remaining in current loop
         g_pTimer->TimeToDelay();
