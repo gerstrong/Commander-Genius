@@ -8,6 +8,9 @@
 #include "CBullet.h"
 #include "sdl/sound/CSound.h"
 
+size_t bulletActionMap[] =
+{	0x1738, 0x1502,0x153E	};
+
 namespace galaxy
 {
 
@@ -20,7 +23,9 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	xDirection = xDir;
 	yDirection = yDir;
 
-	setupGalaxyObjectOnMap(0x1738, A_KEENSHOT_MOVING);
+	const size_t ep = g_pBehaviorEngine->getEpisode();
+
+	setupGalaxyObjectOnMap(bulletActionMap[ep-4], A_KEENSHOT_MOVING);
 	setActionSprite();
 	calcBoundingBoxes();
 	playSound( SOUND_KEEN_FIRE );
