@@ -327,7 +327,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	/*std::ofstream FileTile("tilelayer.txt");
 
 	// he we go to the adding objects
-	data_ptr = Map.getData(1);
+	data_ptr = Map.getData(2);
 	for(size_t y=0 ; y<height ; y++)
 	{
 		for(size_t x=0 ; x<width ; x++)

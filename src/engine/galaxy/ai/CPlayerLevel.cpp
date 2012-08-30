@@ -1329,10 +1329,11 @@ void CPlayerLevel::processEnterDoor()
 	int y1 = getYMidPos();
 
 	Uint32 t = mp_Map->getPlaneDataAt(2, xmid, y1);
-	if (t == 0) {
+	if (t == 0) { // I think in Episode 5 it exits the level
 		//level_state = 13;
 		//o->action = ACTION_KEENENTEREDDOOR;
 		// TODO: Figure out what this does
+		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
 		return;
 	}
 
