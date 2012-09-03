@@ -137,24 +137,6 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 	bool gap_detected = false;
 	uint32_t music_start = 0;
 
-	/*for( uint32_t slot = 0 ; slot<number_of_audiorecs ; slot++ )
-	{
-		const uint32_t audio_start = audiohedptr[slot];
-		const uint32_t audio_end = audiohedptr[slot+1];
-
-		if(!gap_detected && audio_start == audio_end)
-		{
-			gap_detected = true;
-		}
-
-		if(gap_detected && audio_start != audio_end)
-		{
-			//music_start = slot+1;
-			music_start = slot;
-			break;
-		}
-	}*/
-
 	for( uint32_t slot = number_of_audiorecs-2 ; slot>=0 ; slot-- )
 	{
 		const uint32_t audio_start = audiohedptr[slot];
