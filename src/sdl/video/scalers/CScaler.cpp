@@ -32,22 +32,23 @@ void CScaler::setFilterType( bool IsNormal )
 /**
  * Scale functions
  */
-void CScaler::scaleDynamic( SDL_Surface *srcSfc,
-							SDL_Surface *dstSfc )
+void CScaler::scaleDynamic( SDL_Surface *srcSfc, SDL_Surface *dstSfc,
+							const CRect<Uint16>& dstRect)
 {
-	const bool equalWidth  = (dstSfc->w == srcSfc->w);
-	const bool equalHeight = (dstSfc->h == srcSfc->h);
+	const bool equalWidth  = (dstRect.w == srcSfc->w);
+	const bool equalHeight = (dstRect.h == srcSfc->h);
 
 	if(equalWidth && equalHeight)
 	{
-		SDL_BlitSurface(srcSfc, NULL, dstSfc, NULL);
+		SDL_Rect sdldstrect;
+		sdldstrect.x = dstRect.x; sdldstrect.y = dstRect.y;
+		sdldstrect.w = dstRect.w; sdldstrect.h = dstRect.h;
+		SDL_BlitSurface(srcSfc, NULL, dstSfc, &sdldstrect);
 		return;
 	}
 
-	const float dstWidth  = float(dstSfc->w);
-	const float dstHeight = float(dstSfc->h);
-
-	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels);
+	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels)
+	                   +dstRect.x+dstRect.y*dstSfc->w;
 	Uint32 *srcPixel = static_cast<Uint32*>(srcSfc->pixels);
 	Uint32 pitch;
 
@@ -58,7 +59,7 @@ void CScaler::scaleDynamic( SDL_Surface *srcSfc,
 	float xSrc, ySrc;
 
 	ySrc = 0.0f;
-	for( Uint32 yDst = 0, xDst ; yDst<dstHeight ; yDst++ )
+	for( Uint32 yDst = 0, xDst ; yDst<dstRect.h ; yDst++ )
 	{
 		xSrc = 0.0f;
 
@@ -71,13 +72,14 @@ void CScaler::scaleDynamic( SDL_Surface *srcSfc,
 		else
 		{
 
-			for( xDst = 0; xDst<dstWidth ; xDst++ )
+			for( xDst = 0; xDst<dstRect.w ; xDst++ )
 			{
 				*dstPixel = srcPixel[pitch+Uint32(xSrc)];
 
 				xSrc += l_wFac;
 				dstPixel++;
 			}
+			dstPixel += dstSfc->w-dstRect.w;
 		}
 
 		ySrc += l_hFac;
@@ -303,7 +305,8 @@ void CScaler::scaleNormal( SDL_Surface *srcSfc,
 
 void CScaler::scaleUp(	SDL_Surface				*dstSfc,
 						SDL_Surface				*srcSfc,
-						const scaleOptionType	scaleOption )
+						const scaleOptionType	scaleOption,
+						const CRect<Uint16>& dstRect )
 {
 	if( scaleOption == SCALEX && FilterFactor > 1 )
 	{
@@ -331,7 +334,7 @@ void CScaler::scaleUp(	SDL_Surface				*dstSfc,
 		SDL_LockSurface( srcSfc );
 		SDL_LockSurface( dstSfc );
 
-		scaleDynamic( srcSfc, dstSfc );
+		scaleDynamic( srcSfc, dstSfc, dstRect );
 
 		SDL_UnlockSurface( dstSfc );
 		SDL_UnlockSurface( srcSfc );

@@ -28,6 +28,7 @@ public:
 	virtual bool init();
 
 	virtual bool resizeDisplayScreen(const CRect<Uint16>& newDim) = 0;
+	void aspectCorrectResizing(const CRect<Uint16>& newDim);
 
 	virtual void updateScreen() = 0;
 	virtual void shutdown();
@@ -80,6 +81,9 @@ protected:
 	unsigned m_dst_slice, m_src_slice;
 
 	unsigned int m_Mode;
+
+	// A sub-rectangle where an aspect-corrected frame is displayed
+	CRect<Uint16> aspectCorrectionRect;
 };
 
 #endif /* CVIDEOENGINE_H_ */

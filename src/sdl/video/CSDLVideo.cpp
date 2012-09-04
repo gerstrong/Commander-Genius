@@ -27,10 +27,12 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 		return false;
 	}
 
+	aspectCorrectResizing(newDim);
+
 	if(FilteredSurface)
 	{
-		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
-								 float(FilteredSurface->h)/float(screen->h));
+		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
+								 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 	}
 
 	return true;
@@ -80,8 +82,8 @@ bool CSDLVideo::createSurfaces()
 
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
-	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
-							 float(FilteredSurface->h)/float(screen->h));
+	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
+							 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 
 	return true;
 }
@@ -103,12 +105,14 @@ void CSDLVideo::clearSurfaces()
 void CSDLVideo::updateScreen()
 {
 	if( Scaler.filterFactor() <= 1 &&
-			BlitSurface->h == screen->h &&
-			BlitSurface->w == screen->w )
+			BlitSurface->h == aspectCorrectionRect.h &&
+			BlitSurface->w == aspectCorrectionRect.w )
 	{
 		SDL_Rect scrrect, dstrect;
-		dstrect.x = scrrect.y = 0;
-		dstrect.y = scrrect.x = 0;
+		scrrect.y = 0;
+		scrrect.x = 0;
+		dstrect.y = aspectCorrectionRect.y;
+		dstrect.x = aspectCorrectionRect.x;
 		dstrect.h = scrrect.h = BlitSurface->h;
 		dstrect.w = scrrect.w = BlitSurface->w;
 
@@ -117,10 +121,10 @@ void CSDLVideo::updateScreen()
 	else
 	{
 		// First apply the conventional filter if any (GameScreen -> FilteredScreen)
-		Scaler.scaleUp(FilteredSurface, BlitSurface, SCALEX);
+		Scaler.scaleUp(FilteredSurface, BlitSurface, SCALEX, aspectCorrectionRect);
 
 		// Now scale up to the new DisplayRect (FilteredScreen -> screen)
-		Scaler.scaleUp(screen, FilteredSurface, DYNAMIC);
+		Scaler.scaleUp(screen, FilteredSurface, DYNAMIC, aspectCorrectionRect);
 	}
 
 	// Flip the screen (We use double-buffering on some systems.)

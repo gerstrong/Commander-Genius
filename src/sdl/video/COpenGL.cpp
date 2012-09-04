@@ -49,8 +49,13 @@ void COpenGL::setUpViewPort(const CRect<Uint16> &GameRes, const CRect<Uint16> &n
 
 	float width = ((float)m_GamePOTBaseDim.w)*scale_width;
 	float height = ((float)m_GamePOTBaseDim.h)*scale_height;
+#if 0 
 	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height;
 	float xpos = 0.0f; // Not needed because the x-axis of ogl and sdl_surfaces are the same.
+#endif
+	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height+newDim.y;
+	// No more than newDim.x is added here because the x-axis of ogl and sdl_surfaces are the same.
+	float xpos = newDim.x;
 
 	// strange constants here; 225 seems good for pc. 200 is better for iphone
 	// the size is the same as the texture buffers
@@ -68,12 +73,14 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 		return false;
 	}
 
+	aspectCorrectResizing(newDim);
+
 	if(FilteredSurface)
 	{
-		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
-								 float(FilteredSurface->h)/float(screen->h));
+		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
+								 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 
-		setUpViewPort(g_pVideoDriver->getGameResolution(), newDim);
+		setUpViewPort(g_pVideoDriver->getGameResolution(), aspectCorrectionRect);
 	}
 
 
@@ -131,8 +138,8 @@ bool COpenGL::createSurfaces()
 
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
-	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(screen->w),
-							 float(FilteredSurface->h)/float(screen->h));
+	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
+							 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 
 
 	return true;
@@ -177,7 +184,7 @@ bool COpenGL::init()
 	const GLint oglfilter = m_VidConfig.m_opengl_filter;
 
 	// Setup the view port for the first time
-	setUpViewPort(g_pVideoDriver->getGameResolution(), g_pVideoDriver->getResolution());
+	setUpViewPort(g_pVideoDriver->getGameResolution(), aspectCorrectionRect);
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -280,7 +287,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 		//const unsigned dst_slice = m_VidConfig.m_ScaleXFilter*src_slice;
 
 			// First apply the conventional filter if any (GameScreen -> FilteredScreen)
-			Scaler.scaleUp(FilteredSurface, surface, SCALEX);
+			Scaler.scaleUp(FilteredSurface, surface, SCALEX, aspectCorrectionRect);
 
 			SDL_LockSurface(FilteredSurface);
 

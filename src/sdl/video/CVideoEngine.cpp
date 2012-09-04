@@ -85,6 +85,22 @@ bool CVideoEngine::init()
 	return true;
 }
 
+void CVideoEngine::aspectCorrectResizing(const CRect<Uint16>& newDim)
+{
+	if (3*newDim.w >= 4*newDim.h) // Wider than 4:3, so shrink newDim.w
+	{
+		aspectCorrectionRect.h = newDim.h-newDim.h%3;
+		aspectCorrectionRect.w = newDim.h/3*4;
+	}
+	else // Taller than 4:3 so shrink newDim.h
+	{
+		aspectCorrectionRect.w = newDim.w-newDim.w%4;
+		aspectCorrectionRect.h = newDim.w/4*3;
+	}
+	aspectCorrectionRect.x = (newDim.w-aspectCorrectionRect.w)/2;
+	aspectCorrectionRect.y = (newDim.h-aspectCorrectionRect.h)/2;
+}
+
 SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format )
 {
 	SDL_Surface *temporary, *optimized;

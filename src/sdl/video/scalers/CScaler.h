@@ -9,6 +9,7 @@
 #define CSCALER_H_
 
 #include <SDL.h>
+#include <utils/Geometry.h>
 
 enum scaleOptionType
 {
@@ -35,7 +36,8 @@ public:
 	 */
 	void scaleUp(	SDL_Surface				*dstSfc,
 					SDL_Surface				*srcSfc,
-					const scaleOptionType	scaleOption);
+					const scaleOptionType	scaleOption,
+					const CRect<Uint16>& dstRect );
 
 
 	void setDynamicFactor( const float wFac, const float hFac);
@@ -54,7 +56,8 @@ private:
 								SDL_Surface *dstSfc );
 
 	void scaleDynamic( 	SDL_Surface *srcSfc,
-						SDL_Surface *dstSfc );
+	                   	SDL_Surface *dstSfc,
+						const CRect<Uint16>& dstRect );
 	void scaleNormal( 	SDL_Surface *srcSfc,
 						SDL_Surface *dstSfc );
 
