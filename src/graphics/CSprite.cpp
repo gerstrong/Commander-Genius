@@ -373,9 +373,19 @@ void CSprite::_drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, con
 	dst_rect.w = m_xsize;	dst_rect.h = m_ysize;
 
 	src_rect.x = 0;	src_rect.y = 0;
+	
+	const int max_width = g_pVideoDriver->getGameResolution().w;
+	const int max_height = g_pVideoDriver->getGameResolution().h;
+
+	if( m_xsize + x > max_width )
+		dst_rect.w = max_width - x;
+
+	if( m_ysize + y > max_height )
+		dst_rect.h = max_height - y;
+
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
-	
+
 	applyTranslucency(alpha);
 	SDL_BlitSurface( mpSurface.get(), &src_rect, dst, &dst_rect );
 }
