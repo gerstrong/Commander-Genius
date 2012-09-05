@@ -13,7 +13,8 @@
 #include <SDL.h>
 #include <string>
 
-class CTilemap {
+class CTilemap
+{
 public:
 	CTilemap();
 

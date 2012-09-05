@@ -158,7 +158,19 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 	SDL_Rect src_rect, dst_rect;
 	src_rect.x = (t%m_column)<<m_pbasesize;
 	src_rect.y = (t/m_column)<<m_pbasesize;
-	src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = 1<<m_pbasesize;
+	const int size = 1<<m_pbasesize;
+	src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = size;
+
+/*	const int max_width = g_pVideoDriver->getGameResolution().w;
+	const int max_height = g_pVideoDriver->getGameResolution().h;*/
+
+	/*if( x + size > max_width )
+		src_rect.w = max_width-x;
+
+	if( y + size > max_height )
+		src_rect.h = max_height-y;*/
+
+
 	dst_rect.x = x;		dst_rect.y = y;
 	
 	SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);

@@ -434,7 +434,7 @@ void CVideoDriver::pollDrawingTasks()
 					drawBitmapTask->my);
 		}
 
-		// Tiles Section
+		// Tiles Section which are in front or/and animated
 		else if ( DrawAnimatedTileTask *drawAnimatedTileTask =
 		mDrawTasks.occurredEvent<DrawAnimatedTileTask>())
 		{
