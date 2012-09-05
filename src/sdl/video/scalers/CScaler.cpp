@@ -294,6 +294,8 @@ void CScaler::scaleNormal( SDL_Surface *srcSfc,
 		for( xSrc = 0 ; xSrc<srcWidth ; xSrc++, srcPixel++ )
 			for( zoomIndex = 0; zoomIndex < FilterFactor; zoomIndex++, dstPixel++ )
 				*dstPixel = *srcPixel;
+		// Maybe a POT surface is used
+		dstPixel+=dstWidth-(dstPixel-origDstPixel);
 		// Now we make copies of the stretched row
 		for( zoomIndex = 1; zoomIndex < FilterFactor; zoomIndex++, dstPixel+=dstWidth )
 			memcpy(dstPixel, origDstPixel, dstPitch);

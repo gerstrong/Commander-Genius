@@ -39,7 +39,7 @@ class COpenGL : public CVideoEngine
 public:
 	COpenGL(const CVidConfig &VidConfig);
 
-	void setUpViewPort(const CRect<Uint16> &GameRes, const CRect<Uint16> &newDim);
+	void setUpViewPort(const CRect<Uint16> &newDim);
 	bool resizeDisplayScreen(const CRect<Uint16>& newDim);
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 	bool createSurfaces();
@@ -56,8 +56,7 @@ private:
 
 	float	m_aspectratio;
 
-	stDims m_GamePOTBaseDim;
-	stDims m_GamePOTVideoDim;
+	stDims m_GameScaleDim, m_GamePOTScaleDim;
 
 	GLuint	m_texture;
 	GLuint	m_texFX;
