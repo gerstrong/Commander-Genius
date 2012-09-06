@@ -69,6 +69,9 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpSFXSwitch = new CGUISwitch( "Special FX" );
 	mpMenuDialog->addControl( mpSFXSwitch );
 
+	mpAspectSwitch = new CGUISwitch( "Aspect Correct" );
+	mpMenuDialog->addControl( mpAspectSwitch );
+
 #if !defined(EMBEDDED)
 	mpCameraButton = new CGUIButton( "Camera",
 									new OpenMenuEvent( new CCameraSettings() ) );
@@ -114,6 +117,7 @@ void CVideoSettings::init()
 	mpShowFPSSwitch->enable( mUserVidConf.showfps );
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );
 
+	mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
 
 #if !defined(EMBEDDED)
 	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : (mUserVidConf.m_normal_scale ? "normal" : "scale") + itoa(mUserVidConf.m_ScaleXFilter) + "x" );
@@ -143,6 +147,7 @@ void CVideoSettings::release()
 #endif
 
 #if !defined(EMBEDDED)
+	mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();
 	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
 	std::string scalerStr = mpScalerSelection->getSelection();
 

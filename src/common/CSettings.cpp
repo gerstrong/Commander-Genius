@@ -178,6 +178,7 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 
 	g_pVideoDriver->setZoom(1);
 	g_pTimer->setFPS(60);
+	g_pVideoDriver->setAspectCorrection(true);
 	g_pVideoDriver->setFilter(1);
 	g_pVideoDriver->setScaleType(true);
 
