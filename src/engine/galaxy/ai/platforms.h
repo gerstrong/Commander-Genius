@@ -13,6 +13,7 @@
 
 #include "engine/galaxy/ai/platform/CPlatformHorizontal.h"
 #include "engine/galaxy/ai/platform/CPlatformVertical.h"
+#include "engine/galaxy/ai/platform/CVarPlatform.h"
 #include "engine/galaxy/ai/platform/CPlatformDrop.h"
 
 #endif /* PLATFORMS_H_ */
