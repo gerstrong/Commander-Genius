@@ -856,7 +856,6 @@ bool CPlayer::checkObjSolid()
 				{	// In this case the object pushs the player down!
 					pjumping = PNOJUMP;
 					int dy = (*it_obj)->getYDownPos() - getYUpPos();
-					//supportedbyobject = true;
 					blockedu = true;
 					moveDown(dy);
 				}

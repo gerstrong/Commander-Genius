@@ -52,6 +52,7 @@ mPlacingGem(false),
 mPoleGrabTime(0)
 {
 	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+	mActionMap[A_KEEN_ON_PLAT] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_QUESTION] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_BORED] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_LOOKUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
@@ -159,6 +160,14 @@ bool CPlayerLevel::verifyforPole()
 
 const int POGO_START_INERTIA = 125; // 48 In K5 Disassemble
 
+void CPlayerLevel::makeHimStand()
+{
+	if(supportedbyobject)
+		setAction(A_KEEN_ON_PLAT);
+	else
+		setAction(A_KEEN_STAND);
+}
+
 
 void CPlayerLevel::processRunning()
 {
@@ -175,7 +184,7 @@ void CPlayerLevel::processRunning()
 	// He could stand again, if player doesn't move the dpad
 	if( px == 0 )
 	{
-		setAction(A_KEEN_STAND);
+		makeHimStand();
 		yDirection = 0;
 		handleInputOnGround();
 		return;
@@ -243,7 +252,7 @@ void CPlayerLevel::processRunning()
 
 	if ( (blockedl && xDirection == -1) || (blockedr && xDirection == 1))
 	{
-		setAction(A_KEEN_STAND);
+		makeHimStand();
 		yDirection = 0;
 	}
 
@@ -386,30 +395,32 @@ void CPlayerLevel::processStanding()
 		return;
 	}
 
-	//TODO: If not on platform
-	user1 += g_pTimer->getTicksPerFrame();
-
-	if (user2 == 0 && user1 > 200)
+	if( getActionStatus(A_KEEN_STAND) )
 	{
-		user2++;
-		setAction(A_KEEN_QUESTION);
-		user1 = 0;
-		return;
-	}
+		user1 += g_pTimer->getTicksPerFrame();
 
-	if (user2 == 1 && user1 > 300)
-	{
-		user2++;
-		setAction(A_KEEN_BORED);
-		user1 = 0;
-		return;
-	}
+		if (user2 == 0 && user1 > 200)
+		{
+			user2++;
+			setAction(A_KEEN_QUESTION);
+			user1 = 0;
+			return;
+		}
 
-	if (user2 == 2 && user1 > 700)
-	{
-		user2++;
-		setAction(A_KEEN_BOOK_OPEN);
-		user1 = 0;
+		if (user2 == 1 && user1 > 300)
+		{
+			user2++;
+			setAction(A_KEEN_BORED);
+			user1 = 0;
+			return;
+		}
+
+		if (user2 == 2 && user1 > 700)
+		{
+			user2++;
+			setAction(A_KEEN_BOOK_OPEN);
+			user1 = 0;
+		}
 	}
 
 	// Center the view after Keen looked up or down
@@ -463,7 +474,7 @@ void CPlayerLevel::processLookingDown()
 			|| (state.jumpIsPressed && !state.jumpWasPressed)
 			|| (state.pogoIsPressed && !state.pogoWasPressed))
 	{
-		setAction(A_KEEN_STAND);
+		makeHimStand();
 		yDirection = 0;
 		return;
 	}
@@ -494,7 +505,7 @@ void CPlayerLevel::processLookingDown()
 		return;
 	}
 
-	setAction(A_KEEN_STAND);
+	makeHimStand();
 }
 
 
@@ -684,7 +695,7 @@ void CPlayerLevel::processCliffClimbing()
 	moveXDir( (xDirection == LEFT) ? -dx : dx, true);
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	if( getActionStatus(A_KEEN_STAND) )
+	if( getActionStatus(A_KEEN_STAND) || getActionStatus(A_KEEN_ON_PLAT) )
 	{
 		const int target_x = getXMidPos()>>CSF;
 		const int target_y = getYDownPos()>>CSF;
@@ -696,7 +707,7 @@ void CPlayerLevel::processCliffClimbing()
 			m_camera.m_freeze = false;
 			setActionSprite();
 			calcBoundingBoxes();
-			setAction(A_KEEN_STAND);
+			makeHimStand();
 			yDirection = 0;
 		}
 	}
@@ -947,7 +958,7 @@ void CPlayerLevel::verifyJumpAndFall()
 			}
 			else
 			{
-				setAction(A_KEEN_STAND);
+				makeHimStand();
 			}
 
 		}
@@ -1117,7 +1128,7 @@ void CPlayerLevel::processLookingUp()
 	if( m_playcontrol[PA_Y]<0 )
 		return;
 
-	setAction(A_KEEN_STAND);
+	makeHimStand();
 	yDirection = 0;
 }
 
@@ -1295,7 +1306,7 @@ void CPlayerLevel::processSliding()
 
 
 	m_timer = 0;
-	setAction(A_KEEN_STAND);
+	makeHimStand();
 
 	if(mPlacingGem)
 	{
@@ -1319,7 +1330,7 @@ void CPlayerLevel::processEnterDoor()
 {
 	moveUp(16);
 
-	if(!getActionStatus(A_KEEN_STAND))
+	if(!getActionStatus(A_KEEN_STAND) || !getActionStatus(A_KEEN_ON_PLAT) )
 		return;
 
 	setAction(A_KEEN_STAND);
@@ -1790,7 +1801,7 @@ void CPlayerLevel::processPoleClimbingDown()
 			moveUp(1<<CSF);
 			moveDown(1<<CSF);
 
-			setAction(A_KEEN_STAND);
+			makeHimStand();
 			yDirection = 0;
 
 			/*int yReset = -(obj->clipRects.unitY2 & 255) - 1;
@@ -1830,7 +1841,7 @@ void CPlayerLevel::processShootWhileStanding()
 		if(getActionNumber(A_KEEN_SHOOT_UP))
 			setAction(A_KEEN_LOOKUP);
 		else
-			setAction(A_KEEN_STAND);
+			makeHimStand();
 	}
 }
 
@@ -1863,7 +1874,7 @@ void CPlayerLevel::processFalling()
 
 	if(blockedd)
 	{
-		setAction(A_KEEN_STAND);
+		makeHimStand();
 		yDirection = 0;
 	}
 

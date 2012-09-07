@@ -95,6 +95,11 @@ public:
 	void processShootWhileStanding();
 
 
+	/**
+	 * \description Makes Keen stand. In Keen 5 he stands different on platforms
+	 */
+	void makeHimStand();
+
 
 	/**
 	 * \description Simple process called while Keen is running
