@@ -1330,7 +1330,7 @@ void CPlayerLevel::processEnterDoor()
 {
 	moveUp(16);
 
-	if(!getActionStatus(A_KEEN_STAND) || !getActionStatus(A_KEEN_ON_PLAT) )
+	if(!getActionStatus(A_KEEN_STAND) && !getActionStatus(A_KEEN_ON_PLAT) )
 		return;
 
 	setAction(A_KEEN_STAND);
