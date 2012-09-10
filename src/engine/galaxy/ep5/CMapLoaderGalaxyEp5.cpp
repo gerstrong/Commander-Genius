@@ -31,7 +31,6 @@ CMapLoaderGalaxy( ExeFile, ObjectPtr, Inventory, Cheatmode)
 // 31 seem to be the stoppers, those are not created because the platform
 // get this from the object map directly
 
-const unsigned int PLATFORM_VERT_ALT = 27;
 const unsigned int PLATFORM_HORIZ_ALT = 28;
 const unsigned int PLATFORM_VERT = 29;
 const unsigned int PLATFORM_HORIZ = 30;
@@ -75,6 +74,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			break;
 
 
+	case 27:
+			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C );
+			break;
 	case 36:
 			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, UP, 0x1B5E);
 			break;
