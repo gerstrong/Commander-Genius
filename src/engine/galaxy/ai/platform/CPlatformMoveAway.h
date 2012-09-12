@@ -37,7 +37,8 @@ public:
 
 private:
 	const VectorD2<Uint32> m_Origin;
-	void (CPlatformMoveAway::*mpActionProc)() ;
+	void (CPlatformMoveAway::*mpActionProc)();
+	int mSpeed;
 };
 
 }

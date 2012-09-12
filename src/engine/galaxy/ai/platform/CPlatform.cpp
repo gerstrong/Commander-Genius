@@ -17,7 +17,23 @@ mp_CarriedPlayer(NULL)
 	m_ActionBaseOffset = 0x316A;
 }
 
-void CPlatform::movePlatLeft(const int& amnt)
+void CPlatform::movePlatX(const int amnt)
+{
+	if(amnt > 0)
+		movePlatRight(amnt);
+	else if(amnt < 0)
+		movePlatLeft(-amnt);
+}
+
+void CPlatform::movePlatY(const int amnt)
+{
+	if(amnt > 0)
+		movePlatDown(amnt);
+	else if(amnt < 0)
+		movePlatUp(-amnt);
+}
+
+void CPlatform::movePlatLeft(const int amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
@@ -28,7 +44,7 @@ void CPlatform::movePlatLeft(const int& amnt)
 	moveLeft(amnt);
 }
 
-void CPlatform::movePlatRight(const int& amnt)
+void CPlatform::movePlatRight(const int amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
@@ -39,7 +55,7 @@ void CPlatform::movePlatRight(const int& amnt)
 	moveRight(amnt);
 }
 
-void CPlatform::movePlatUp(const int& amnt)
+void CPlatform::movePlatUp(const int amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
@@ -50,7 +66,7 @@ void CPlatform::movePlatUp(const int& amnt)
 	moveUp(amnt);
 }
 
-void CPlatform::movePlatDown(const int& amnt)
+void CPlatform::movePlatDown(const int amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)

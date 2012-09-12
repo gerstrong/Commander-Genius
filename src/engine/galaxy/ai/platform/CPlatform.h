@@ -34,10 +34,13 @@ public:
 
 protected:
 
-	void movePlatLeft(const int& amnt);
-	void movePlatRight(const int& amnt);
-	void movePlatUp(const int& amnt);
-	void movePlatDown(const int& amnt);
+	void movePlatX(const int amnt);
+	void movePlatY(const int amnt);
+
+	void movePlatLeft(const int amnt);
+	void movePlatRight(const int amnt);
+	void movePlatUp(const int amnt);
+	void movePlatDown(const int amnt);
 
 	CPlayerLevel *mp_CarriedPlayer;
 };

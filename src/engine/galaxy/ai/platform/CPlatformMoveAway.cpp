@@ -11,16 +11,19 @@
 const int DROP_MAX_SPEED_LIMIT = 200;
 
 // Times the cycle has to run through until Speed is raised
-const int DROP_SPEED_ACC = 5;
+const int MOVE_SPEED_ACC = 1;
 
 // Speed at what the Platform might return to the original position
-const int HOVER_SPEED = 25;
+const int MOVE_NORMAL_SPEED = 25;
+
+// Top Speed at which the plat moves away
+const int MOVE_MAX_SPEED = 100;
 
 // The distance to get the platform moved
-const int CSF_DISTANCE_TO_FOLLOW_GETAWAY = 1<<CSF;
+const int CSF_DISTANCE_TO_FOLLOW_GETAWAY = 2<<CSF;
 
 // The distance to get the platform moved
-const int CSF_DISTANCE_TO_GETBACK = 10<<CSF;
+const int CSF_DISTANCE_TO_GETBACK = 7<<CSF;
 
 
 namespace galaxy {
@@ -57,6 +60,7 @@ bool CPlatformMoveAway::isNearby(CSpriteObject &theObject)
 			if( absdx < CSF_DISTANCE_TO_FOLLOW_GETAWAY && absdy < CSF_DISTANCE_TO_FOLLOW_GETAWAY )
 			{
 				mpActionProc = &CPlatformMoveAway::processMoveAway;
+				mSpeed = MOVE_MAX_SPEED;
 			}
 		}
 
@@ -68,21 +72,50 @@ bool CPlatformMoveAway::isNearby(CSpriteObject &theObject)
 
 void CPlatformMoveAway::processMoveAway()
 {
-	moveYDir(yDirection);
-	moveXDir(xDirection);
+	const int x2 = m_Pos.x;
+	const int y2 = m_Pos.y;
+	const int x1 = m_Origin.x;
+	const int y1 = m_Origin.y;
 
-	if( (m_Pos-m_Origin).GetLength() > CSF_DISTANCE_TO_GETBACK )
+	VectorD2<int> dist(x2-x1, y2-y1);
+
+
+	movePlatY(yDirection*mSpeed);
+	movePlatX(xDirection*mSpeed);
+
+	if( mSpeed > MOVE_NORMAL_SPEED )
+		mSpeed -= MOVE_SPEED_ACC;
+
+	const int absdx = (dist.x<0) ? -dist.x : dist.x;
+	const int absdy = (dist.y<0) ? -dist.y : dist.y;
+
+
+	if( absdx > CSF_DISTANCE_TO_GETBACK ||
+		absdy > CSF_DISTANCE_TO_GETBACK)
 	{
 		mpActionProc = &CPlatformMoveAway::processMoveBack;
+		mSpeed = MOVE_NORMAL_SPEED;
 	}
 }
 
 
 void CPlatformMoveAway::processMoveBack()
 {
-	moveDir(m_Pos-m_Origin);
+	const int x2 = m_Pos.x;
+	const int y2 = m_Pos.y;
+	const int x1 = m_Origin.x;
+	const int y1 = m_Origin.y;
 
-	if( (m_Pos-m_Origin).GetLength() == 0 )
+	VectorD2<int> dist(x2-x1, y2-y1);
+
+	movePlatY(-yDirection*mSpeed);
+	movePlatX(-xDirection*mSpeed);
+
+	const int absdx = (dist.x<0) ? -dist.x : dist.x;
+	const int absdy = (dist.y<0) ? -dist.y : dist.y;
+
+	if( absdx < MOVE_MAX_SPEED &&
+	    absdy < MOVE_MAX_SPEED )
 	{
 		mpActionProc = &CPlatformMoveAway::processStay;
 	}
@@ -100,7 +133,7 @@ void CPlatformMoveAway::process()
 {
 
 	// Player is standing on the platform or the platform is already falling too fast
-	(this->mpActionProc);
+	(this->*mpActionProc)();
 
 	CPlatform::process();
 }
