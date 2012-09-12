@@ -19,7 +19,16 @@ namespace galaxy
 class CPlatformMoveAway : public CPlatform
 {
 public:
-	CPlatformMoveAway(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+	CPlatformMoveAway(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+			const direction_t vertdir, const direction_t hordir, const int actionOffset);
+
+	bool isNearby(CSpriteObject &theObject);
+
+	void processMoveAway();
+
+	void processMoveBack();
+
+	void processStay();
 
 	/**
 	 * \brief Processes the platforms AI. It's just simple moving around of course
@@ -27,9 +36,8 @@ public:
 	void process();
 
 private:
-	int m_delay_for_drop;
-	int m_drop_speed;
 	const VectorD2<Uint32> m_Origin;
+	void (CPlatformMoveAway::*mpActionProc)() ;
 };
 
 }

@@ -83,6 +83,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 38:
 			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, DOWN, 0x1B5E);
 			break;
+	case 40:
+			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, LEFT, CENTER, 0x1B7C);
+			break;
 	case 80:
 			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, UP, 0x1B7C);
 			break;
