@@ -40,6 +40,7 @@ private:
 #endif
 
 	CGUIComboSelection	*mpScalerSelection;
+	CGUISwitch			*mpAspectSwitch;
 	CGUISwitch			*mpVSyncSwitch;
 	CGUISwitch			*mpShowFPSSwitch;
 	CGUISwitch			*mpSFXSwitch;

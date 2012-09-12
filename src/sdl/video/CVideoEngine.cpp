@@ -87,6 +87,13 @@ bool CVideoEngine::init()
 
 void CVideoEngine::aspectCorrectResizing(const CRect<Uint16>& newDim)
 {
+	if (!m_VidConfig.m_aspect_correction)
+	{
+		aspectCorrectionRect.x = aspectCorrectionRect.y = 0;
+		aspectCorrectionRect.w = newDim.w;
+		aspectCorrectionRect.h = newDim.h;
+		return;
+	}
 	if (3*newDim.w >= 4*newDim.h) // Wider than 4:3, so shrink newDim.w
 	{
 		aspectCorrectionRect.h = newDim.h-newDim.h%3;

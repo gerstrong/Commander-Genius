@@ -32,28 +32,27 @@ COpenGL::COpenGL(const CVidConfig &VidConfig) :
 CVideoEngine(VidConfig),
 m_texparam(GL_TEXTURE_2D),
 m_aspectratio(m_VidConfig.m_DisplayRect.aspectRatio()),
-m_GamePOTBaseDim(getPowerOfTwo(m_VidConfig.m_GameRect.w),
-				getPowerOfTwo(m_VidConfig.m_GameRect.h)),
-m_GamePOTVideoDim(getPowerOfTwo(m_VidConfig.m_DisplayRect.w),
-				getPowerOfTwo(m_VidConfig.m_DisplayRect.h))
+m_GameScaleDim(m_VidConfig.m_GameRect.w*m_VidConfig.m_ScaleXFilter,
+				m_VidConfig.m_GameRect.h*m_VidConfig.m_ScaleXFilter),
+m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.h))
 {}
 
-void COpenGL::setUpViewPort(const CRect<Uint16> &GameRes, const CRect<Uint16> &newDim)
+void COpenGL::setUpViewPort(const CRect<Uint16> &newDim)
 {
 	// Calculate the proper viewport for any resolution
-	float base_width = GameRes.w;
-	float base_height = GameRes.h;
+	float base_width = m_GameScaleDim.w;
+	float base_height = m_GameScaleDim.h;
 
 	float scale_width = (float)(newDim.w)/base_width;
 	float scale_height = (float)(newDim.h)/base_height;
 
-	float width = ((float)m_GamePOTBaseDim.w)*scale_width;
-	float height = ((float)m_GamePOTBaseDim.h)*scale_height;
+	float width = ((float)m_GamePOTScaleDim.w)*scale_width;
+	float height = ((float)m_GamePOTScaleDim.h)*scale_height;
 #if 0 
 	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height;
 	float xpos = 0.0f; // Not needed because the x-axis of ogl and sdl_surfaces are the same.
 #endif
-	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height+newDim.y;
+	float ypos = (base_height-m_GamePOTScaleDim.h)*scale_height+newDim.y;
 	// No more than newDim.x is added here because the x-axis of ogl and sdl_surfaces are the same.
 	float xpos = newDim.x;
 
@@ -80,7 +79,7 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
 								 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 
-		setUpViewPort(g_pVideoDriver->getGameResolution(), aspectCorrectionRect);
+		setUpViewPort(aspectCorrectionRect);
 	}
 
 
@@ -100,16 +99,14 @@ bool COpenGL::createSurfaces()
     g_pLogFile->textOut("Blitsurface = creatergbsurface<br>");
 
     BlitSurface = createSurface( "BlitSurface", true,
-    		getPowerOfTwo(gamerect.w),
-    		getPowerOfTwo(gamerect.h),
+    		gamerect.w, gamerect.h,
     		RES_BPP,
     		m_Mode, screen->format );
 
     g_pLogFile->textOut("FilteredSurface = creatergbsurface<br>");
 
 	FilteredSurface = createSurface( "FilteredSurface", true,
-				BlitSurface->w*m_VidConfig.m_ScaleXFilter,
-				BlitSurface->h*m_VidConfig.m_ScaleXFilter,
+				m_GamePOTScaleDim.w, m_GamePOTScaleDim.h,
 				RES_BPP,
 				m_Mode, screen->format );
 
@@ -118,8 +115,8 @@ bool COpenGL::createSurfaces()
 	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
 		FXSurface = createSurface( "FXSurface", true,
-						getPowerOfTwo(gamerect.w),
-						getPowerOfTwo(gamerect.h),
+						gamerect.w,
+						gamerect.h,
 						RES_BPP,
 						m_Mode, screen->format );
 	}
@@ -184,7 +181,7 @@ bool COpenGL::init()
 	const GLint oglfilter = m_VidConfig.m_opengl_filter;
 
 	// Setup the view port for the first time
-	setUpViewPort(g_pVideoDriver->getGameResolution(), aspectCorrectionRect);
+	setUpViewPort(aspectCorrectionRect);
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -216,11 +213,11 @@ bool COpenGL::init()
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
 
-	createTexture(m_texture, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
+	createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
 	
 	if(m_VidConfig.m_ScaleXFilter <= 1)
 	{	// In that case we can do a texture based rendering
-		createTexture(m_texFX, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
+		createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
 	}
 	
 	// If there were any errors
@@ -265,7 +262,6 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 {
 	glBindTexture (m_texparam, texture);
-	SDL_LockSurface(surface);
 	GLint internalFormat, externalFormat;
 
 #if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR) // iPhone always used 32 bits; also GL_BGR is not defined
@@ -281,31 +277,28 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 		externalFormat = GL_BGRA;
 	}
 
+	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
 	if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
 	{
-		//const unsigned src_slice = m_GamePOTBaseDim.w*surface->format->BytesPerPixel;
-		//const unsigned dst_slice = m_VidConfig.m_ScaleXFilter*src_slice;
-
-			// First apply the conventional filter if any (GameScreen -> FilteredScreen)
-			Scaler.scaleUp(FilteredSurface, surface, SCALEX, aspectCorrectionRect);
-
-			SDL_LockSurface(FilteredSurface);
-
-			glTexImage2D(m_texparam, 0, internalFormat,
-						FilteredSurface->w,
-						FilteredSurface->h,
-						0, externalFormat,
-						GL_UNSIGNED_BYTE, FilteredSurface->pixels);
-
-			SDL_UnlockSurface(FilteredSurface);
+		SDL_LockSurface(FilteredSurface);
+		SDL_LockSurface(surface);
+		Scaler.scaleUp(FilteredSurface, surface, SCALEX, aspectCorrectionRect);
+		SDL_UnlockSurface(surface);
 	}
-	else
+	else // Otherwise, blit to a POT-sized surface
 	{
-			glTexImage2D(m_texparam, 0, internalFormat, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h,
-														0, externalFormat, GL_UNSIGNED_BYTE, surface->pixels);
+		// While blitting, no involved surface should be locked.
+		SDL_BlitSurface(surface, NULL, FilteredSurface, NULL);
+		SDL_LockSurface(FilteredSurface);
 	}
 
-	SDL_UnlockSurface(surface);
+	glTexImage2D(m_texparam, 0, internalFormat,
+				FilteredSurface->w,
+				FilteredSurface->h,
+				0, externalFormat,
+				GL_UNSIGNED_BYTE, FilteredSurface->pixels);
+
+	SDL_UnlockSurface(FilteredSurface);
 }
 
 void COpenGL::updateScreen()
