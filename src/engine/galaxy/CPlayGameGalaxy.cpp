@@ -275,7 +275,7 @@ void CPlayGameGalaxy::process()
 		if( EventEnterLevel *ev = eventContainer.occurredEvent<EventEnterLevel>() )
 		{
 			// In Keen 5, 6 there teleporters
-			if(ev->data < 0xC000)
+			if(ev->data < 0xC000 && ev->data > 0x100)
 			{
 				g_pLogFile->ftextOut("Teleporters/Elevators not yet implemented!");
 
