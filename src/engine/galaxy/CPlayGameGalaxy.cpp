@@ -274,8 +274,18 @@ void CPlayGameGalaxy::process()
 	{
 		if( EventEnterLevel *ev = eventContainer.occurredEvent<EventEnterLevel>() )
 		{
-			// Start a new level!
-			if(ev->data > 0xC000)
+			// In Keen 5, 6 there teleporters
+			if(ev->data < 0xC000)
+			{
+				g_pLogFile->ftextOut("Teleporters/Elevators not yet implemented!");
+
+				const Uint32 filter = ev->data & 0xFFFF;
+				const Uint32 newPosX = (filter & 0xFF00) >> 8;
+				const Uint32 newPosY = (filter & 0x00FF);
+
+				g_pLogFile->ftextOut("Pos would be (%d, %d)", newPosX, newPosY);
+			}
+			else	// Start a new level!
 			{
 				const Uint16 NewLevel = ev->data - 0xC000;
 				if(NewLevel < 50)
