@@ -10,7 +10,7 @@ SET(APPDIR games)
 ENDIF(BUILD_TYPE STREQUAL WIN32)
 
 # This will install the application itself
-INSTALL(TARGETS commandergenius 
+INSTALL(TARGETS CommanderGenius 
 	DESTINATION ${APPDIR})
 
 # This will copy the resources files to the proper directory

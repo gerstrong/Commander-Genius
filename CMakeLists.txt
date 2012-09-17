@@ -4,8 +4,9 @@
 cmake_minimum_required(VERSION 2.8)
 
 MESSAGE( "Preparing the Build-System for Commander Genius" )
-EXEC_PROGRAM(sh ARGS ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
+execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
 string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
+
 
 INCLUDE(build.cmake)
 
