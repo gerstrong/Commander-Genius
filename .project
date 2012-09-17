@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>CommanderGenius</name>
+	<name>commandergenius-Release@Commander-Genius</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -9,74 +9,1326 @@
 			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
 			<triggers>clean,full,incremental,</triggers>
 			<arguments>
-				<dictionary>
-					<key>?name?</key>
-					<value></value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.append_environment</key>
-					<value>true</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.autoBuildTarget</key>
-					<value>all</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.buildArguments</key>
-					<value></value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.buildCommand</key>
-					<value>make</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.buildLocation</key>
-					<value>${workspace_loc:/CommanderGenius/Debug}</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.cleanBuildTarget</key>
-					<value>clean</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.contents</key>
-					<value>org.eclipse.cdt.make.core.activeConfigSettings</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.enableAutoBuild</key>
-					<value>false</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.enableCleanBuild</key>
-					<value>true</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.enableFullBuild</key>
-					<value>true</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.fullBuildTarget</key>
-					<value>all</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.stopOnError</key>
-					<value>true</value>
-				</dictionary>
-				<dictionary>
-					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
-					<value>true</value>
-				</dictionary>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder</name>
+			<triggers>full,incremental,</triggers>
 			<arguments>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.cdt.core.cnature</nature>
 		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>[Subprojects]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/org.eclipse.ltk.core.refactoring.prefs</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/.settings/org.eclipse.ltk.core.refactoring.prefs</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/ActionFormat.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/ActionFormat.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CAbout.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/infoscenes/CAbout.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CAnkhShield.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CAnkhShield.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CArachnut.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CArachnut.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CAudioGalaxy.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CAudioGalaxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CAudioResources.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CAudioResources.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CAudioSettings.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CAudioSettings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CAudioVorticon.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/CAudioVorticon.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CAutoRay.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CAutoRay.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBallJack.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CBallJack.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBaseEngine.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/core/CBaseEngine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBaseMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CBaseMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBehaviorEngine.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CBehaviorEngine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBerkeloid.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CBerkeloid.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBitmap.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/CBitmap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBlueBird.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CBlueBird.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBounder.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CBounder.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBridges.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CBridges.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBubbles.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CBubbles.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CBullet.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CBullet.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CButler.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CButler.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CCamera.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/CCamera.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CCameraSettings.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CCameraSettings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CCarmack.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/compression/CCarmack.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CColorMerge.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/effects/CColorMerge.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CConfiguration.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/CConfiguration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CConfirmMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CConfirmMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CControlsettings.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CControlsettings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CCouncilMember.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CCouncilMember.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CCredits.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/infoscenes/CCredits.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CCursor.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/CCursor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CDevilSprite.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CDevilSprite.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CDiveSuit.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CDiveSuit.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CDlgFrame.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/dialog/CDlgFrame.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CDlgObject.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/dialog/CDlgObject.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CDlgOptionText.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/dialog/CDlgOptionText.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CDoor.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CDoor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CDopeFish.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CDopeFish.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEGABitmap.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CEGABitmap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEGAGraphics.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/CEGAGraphics.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEGAGraphicsGalaxy.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CEGAGraphicsGalaxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEGAGraphicsVort.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/CEGAGraphicsVort.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEGALatch.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/CEGALatch.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEGASprit.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/CEGASprit.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEarthChunk.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CEarthChunk.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEarthExplosion.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CEarthExplosion.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEgg.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CEgg.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEndingEp1.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/finale/CEndingEp1.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEndingEp2.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/finale/CEndingEp2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEndingEp3.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/finale/CEndingEp3.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEnemyShot.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CEnemyShot.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEngineParticleSprites.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/platform/CEngineParticleSprites.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CEventContainer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/CEventContainer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CExeFile.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/CExeFile.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CFinale.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/finale/CFinale.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CFinaleStaticScene.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/finale/CFinaleStaticScene.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CFireBall.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CFireBall.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CFlag.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CFlag.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CFlash.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/effects/CFlash.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CFont.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/CFont.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CFoob.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CFoob.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUIBitmap.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUIBitmap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUIButton.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUIButton.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUIComboSelection.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUIComboSelection.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUIControl.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUIControl.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUIDialog.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUIDialog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUIInputText.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUIInputText.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUINumberControl.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUINumberControl.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUISwitch.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUISwitch.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUIText.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUIText.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGUITextSelectionList.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/gui/CGUITextSelectionList.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGalaxySpriteObject.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CGalaxySpriteObject.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGame.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/CGame.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGameControl.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/core/CGameControl.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGameLauncher.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CGameLauncher.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGameLauncherMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/core/CGameLauncherMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGameMain.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/core/CGameMain.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGamePassiveMode.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/core/mode/CGamePassiveMode.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGamePlayMode.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/core/mode/CGamePlayMode.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGarg.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CGarg.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGfxEngine.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/CGfxEngine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CGuardRobot.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CGuardRobot.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CHUD.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CHUD.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CHelp.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/infoscenes/CHelp.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CHelpMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CHelpMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CHighScores.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/infoscenes/CHighScores.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CHuffman.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/compression/CHuffman.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CIMFPlayer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/music/CIMFPlayer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CIceCannon.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CIceCannon.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CInfoScene.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/infoscenes/CInfoScene.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CInput.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/input/CInput.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CIntro.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/CIntro.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CInventory.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CInventory.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CItemEffect.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CItemEffect.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CLevelPlay.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CLevelPlay.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CLick.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CLick.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CLindsey.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CLindsey.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CLoadMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CLoadMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CLogFile.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/CLogFile.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMadMushroom.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CMadMushroom.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMainMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CMainMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMap.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CMap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMapLoaderGalaxy.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CMapLoaderGalaxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMapLoaderGalaxyEp4.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ep4/CMapLoaderGalaxyEp4.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMapLoaderGalaxyEp5.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ep5/CMapLoaderGalaxyEp5.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMapPlayGalaxy.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CMapPlayGalaxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMeep.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CMeep.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMenuController.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CMenuController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMessageBox.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/dialog/CMessageBox.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMessageBoxBitmapGalaxy.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/dialog/CMessageBoxBitmapGalaxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMessageBoxGalaxy.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/dialog/CMessageBoxGalaxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMessageBoxSelection.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/dialog/CMessageBoxSelection.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMessageBoxVort.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/dialog/CMessageBoxVort.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMessages.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/CMessages.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMessie.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CMessie.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMimrock.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CMimrock.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMiragia.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CMiragia.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMusic.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/music/CMusic.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CMusicPlayer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/music/CMusicPlayer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/COGGPlayer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/music/COGGPlayer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/COPLEmulator.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/hardware/COPLEmulator.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CObjectCollision.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CObjectCollision.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/COpenGL.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/video/COpenGL.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/COptions.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/COptions.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/COrderingInfo.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/infoscenes/COrderingInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPalette.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/CPalette.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPassive.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CPassive.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPassiveVort.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/CPassiveVort.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPatcher.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/CPatcher.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPatcherUtils.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/CPatcherUtils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPhysicsSettings.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CPhysicsSettings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPixelate.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/effects/CPixelate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlane.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CPlane.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlanes.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/CPlanes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlatform.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/platform/CPlatform.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlatformDrop.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/platform/CPlatformDrop.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlatformHorizontal.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/platform/CPlatformHorizontal.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlatformMoveAway.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/platform/CPlatformMoveAway.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlatformVert.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CPlatformVert.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlatformVertical.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/platform/CPlatformVertical.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayGame.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/playgame/CPlayGame.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayGameDialogs.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/playgame/CPlayGameDialogs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayGameGalaxy.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CPlayGameGalaxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayGameGameState.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/playgame/CPlayGameGameState.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayGameLevel.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/playgame/CPlayGameLevel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayGameVorticon.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/playgame/CPlayGameVorticon.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayGameVorticonWM.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/playgame/CPlayGameVorticonWM.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayGameWorldMap.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/playgame/CPlayGameWorldMap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CPlayer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayerBase.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CPlayerBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayerDive.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CPlayerDive.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayerItems.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CPlayerItems.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayerLevel.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CPlayerLevel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPlayerWM.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CPlayerWM.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPoisonSlug.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CPoisonSlug.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CPreviews.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/infoscenes/CPreviews.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CProfilesMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CProfilesMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CRLE.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/compression/CRLE.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CRay.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CRay.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CResourceLoader.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/CResourceLoader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CRisingPoints.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CRisingPoints.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CRope.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CRope.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSDLVideo.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/video/CSDLVideo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSaveGameController.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/CSaveGameController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSaveMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CSaveMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CScaler.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/video/scalers/CScaler.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSchoolFish.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CSchoolFish.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CScrollEffect.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/effects/CScrollEffect.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CScrub.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CScrub.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSectorEffector.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CSectorEffector.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSettings.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CSettings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSettingsMenu.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CSettingsMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CShipFlySys.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/finale/CShipFlySys.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSkypest.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CSkypest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSlugSlime.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CSlugSlime.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSound.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/sound/CSound.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSoundChannel.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/sound/CSoundChannel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSoundSlot.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/sound/CSoundSlot.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSoundWave.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CSoundWave.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSpark.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CSpark.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSprite.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/CSprite.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSpriteItem.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CSpriteItem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CSpriteObject.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CSpriteObject.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CStarRing.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CStarRing.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CStatusScreen.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CStatusScreen.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CStatusScreenGalaxy.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CStatusScreenGalaxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CStatusScreenGalaxyEp4.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CStatusScreenGalaxyEp4.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CStatusScreenGalaxyEp5.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CStatusScreenGalaxyEp5.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CStory.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/infoscenes/CStory.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CStunnable.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/CStunnable.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTank.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CTank.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTantalusRay.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/finale/CTantalusRay.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTeleporter.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CTeleporter.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTextViewer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/dialog/CTextViewer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CThunderCloud.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CThunderCloud.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTileLoader.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/CTileLoader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTileProperties.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CTileProperties.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTilemap.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/CTilemap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTimer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/CTimer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTitle.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/CTitle.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CTreasureEater.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CTreasureEater.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVarPlatform.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/platform/CVarPlatform.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVibrate.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/graphics/effects/CVibrate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVidConfig.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/CVidConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVideoDriver.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/CVideoDriver.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVideoEngine.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/video/CVideoEngine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVideoSettings.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CVideoSettings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVolumeSettings.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/Menu/CVolumeSettings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVortiMom.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CVortiMom.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVortiNinja.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CVortiNinja.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVorticon.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CVorticon.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVorticonElite.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CVorticonElite.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVorticonMapLoader.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/CVorticonMapLoader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVorticonSpriteObject.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/CVorticonSpriteObject.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVorticonSpriteObjectAI.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CVorticonSpriteObjectAI.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CVortikid.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CVortikid.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CWaterMine.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CWaterMine.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CWorldMap.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/CWorldMap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CWormmouth.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/ai/ep4/CWormmouth.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CYorp.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/ai/CYorp.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/ConfigHandler.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/ConfigHandler.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/CrashHandler.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/CrashHandler.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/Cunlzexe.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/compression/Cunlzexe.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/Debug.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/Debug.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/FindFile.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/FindFile.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/Geometry.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/utils/Geometry.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/GraphicsIDs.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/galaxy/GraphicsIDs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/IniReader.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/IniReader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/Mixer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/sound/Mixer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/ResourceMgmt.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/ResourceMgmt.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/Sampling.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/sound/Sampling.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/SmartPointer.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/SmartPointer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/StringBuf.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/StringBuf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/StringUtils.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/StringUtils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/ThreadPool.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/ThreadPool.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/Unicode.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/Unicode.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/arguments.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/arguments.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/colourconvert.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/video/colourconvert.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/crc.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/crc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/dbopl.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/hardware/dbopl.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/extensions.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/extensions.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/fileio.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/finale.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/engine/vorticon/finale/finale.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/lz.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/lz.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/main.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/main.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/misc.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/misc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/scale2x.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/video/scalers/scale2x.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/scale3x.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/video/scalers/scale3x.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/scalebit.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/video/scalers/scalebit.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/sgrle.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/fileio/compression/sgrle.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/tga.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/common/tga.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] commandergenius/Source Files/wizgp2x.cpp</name>
+			<type>1</type>
+			<location>/home/gerstrong/workspace/Commander-Genius/src/sdl/sys/wizgp2x.cpp</location>
+		</link>
+	</linkedResources>
 </projectDescription>

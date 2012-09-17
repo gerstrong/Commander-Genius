@@ -1,451 +1,331 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?fileVersion 4.0.0?>
-
-<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+<?fileVersion 5.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage2">
 	<storageModule moduleId="org.eclipse.cdt.core.settings">
-		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.debug.628712671">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.debug.628712671" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+		<cconfiguration id="0.652490747">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.652490747" moduleId="org.eclipse.cdt.core.settings" name="Default">
 				<externalSettings/>
 				<extensions>
 					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="" artifactName="CommanderGenius" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GmakeErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.debug.628712671" name="Debug" parent="cdt.managedbuild.config.gnu.cross.exe.debug.628712671" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
-					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.628712671." name="/" resourcePath="">
-						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.base.12968022" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.15543418" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-							<builder buildPath="${workspace_loc:/CommanderGenius/Debug}" id="cdt.managedbuild.builder.gnu.cross.585491280" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.builder.gnu.cross"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1262770742" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1728576183" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
-								<option id="gnu.cpp.compiler.option.include.paths.1230616762" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
-									<listOptionValue builtIn="false" value="/usr/include/SDL"/>
-									<listOptionValue builtIn="false" value="/usr/include/vorbis"/>
-									<listOptionValue builtIn="false" value="/usr/include/ogg"/>
-								</option>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1129603258" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="DEBUG"/>
-									<listOptionValue builtIn="false" value="USE_OPENGL"/>
-									<listOptionValue builtIn="false" value="OGG"/>
-								</option>
-								<option id="gnu.cpp.compiler.option.optimization.level.1932699948" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.debugging.level.651852619" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.warnings.toerrors.216271773" name="Warnings as errors (-Werror)" superClass="gnu.cpp.compiler.option.warnings.toerrors" value="false" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.other.other.737225815" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0" valueType="string"/>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2024816918" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-							</tool>
-							<tool command="gcc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.base.146745021" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
-								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.863139461" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.debugging.level.933549414" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.712687651" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.466515189" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
-							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.base.1883965219" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
-								<option id="gnu.cpp.link.option.libs.650499560" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="vorbisfile"/>
-									<listOptionValue builtIn="false" value="GL"/>
-									<listOptionValue builtIn="false" value="SDL"/>
-								</option>
-								<option id="gnu.cpp.link.option.paths.982917586" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
-								<option id="gnu.cpp.link.option.flags.1653726517" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1278940909" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
-									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
-									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
-								</inputType>
-							</tool>
-							<tool command="as" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.base.1205826083" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1822186338" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
-					<sourceEntries>
-						<entry excluding="tools|src/engine/vorticon/ai/autoray.cpp|src/engine/vorticon/ai/yorp.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-					</sourceEntries>
-				</configuration>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-			<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
-				<buildTargets>
-					<target name="Windows" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-						<buildCommand>make</buildCommand>
-						<buildArguments/>
-						<buildTarget>Windows</buildTarget>
-						<stopOnError>true</stopOnError>
-						<useDefaultCommand>true</useDefaultCommand>
-						<runAllBuilders>true</runAllBuilders>
-					</target>
-				</buildTargets>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
-				<doc-comment-owner id="org.eclipse.cdt.internal.ui.text.doctools.NullDocCommentOwner">
-					<path value=""/>
-				</doc-comment-owner>
-			</storageModule>
-		</cconfiguration>
-		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457" moduleId="org.eclipse.cdt.core.settings" name="Linux64">
-				<externalSettings/>
-				<extensions>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="" artifactName="CommanderGenius" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GmakeErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457" name="Linux64" parent="cdt.managedbuild.config.gnu.cross.exe.release.1352187457" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
-					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457." name="/" resourcePath="">
-						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.base.302417081" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.1670383598" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-							<builder buildPath="${workspace_loc:/CommanderGenius/Linux64}" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator" id="cdt.managedbuild.builder.xlupc.exe.debug.1675667966" keepEnvironmentInBuildfile="false" name="Gnu Make Builder"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.2070944351" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1571012076" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
-								<option id="gnu.cpp.compiler.option.optimization.level.311749438" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.debugging.level.923710212" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1896779923" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="SDL"/>
-									<listOptionValue builtIn="false" value="USE_OPENGL"/>
-									<listOptionValue builtIn="false" value="OGG"/>
-								</option>
-								<option id="gnu.cpp.compiler.option.include.paths.1328215425" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
-									<listOptionValue builtIn="false" value="/usr/include/SDL"/>
-									<listOptionValue builtIn="false" value="/usr/include/vorbis"/>
-									<listOptionValue builtIn="false" value="/usr/include/ogg"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2042587986" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-							</tool>
-							<tool errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.base.590295487" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
-								<option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.1930930057" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.debugging.level.646356044" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1299718921" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1146471542" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
-							<tool errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.base.1730395881" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
-								<option id="gnu.cpp.link.option.libs.1549691255" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="SDL"/>
-									<listOptionValue builtIn="false" value="GL"/>
-									<listOptionValue builtIn="false" value="vorbis"/>
-									<listOptionValue builtIn="false" value="vorbisfile"/>
-									<listOptionValue builtIn="false" value="ogg"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1125897742" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
-									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
-									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
-								</inputType>
-							</tool>
-							<tool errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.base.997055905" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1102064233" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
-					<sourceEntries>
-						<entry excluding="tools" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-					</sourceEntries>
-				</configuration>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-			<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
-				<buildTargets>
-					<target name="Windows" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-						<buildCommand>make</buildCommand>
-						<buildArguments/>
-						<buildTarget>Windows</buildTarget>
-						<stopOnError>true</stopOnError>
-						<useDefaultCommand>true</useDefaultCommand>
-						<runAllBuilders>true</runAllBuilders>
-					</target>
-				</buildTargets>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
-				<doc-comment-owner id="org.eclipse.cdt.internal.ui.text.doctools.NullDocCommentOwner">
-					<path value=""/>
-				</doc-comment-owner>
-			</storageModule>
-		</cconfiguration>
-		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399" moduleId="org.eclipse.cdt.core.settings" name="Linux32">
-				<externalSettings/>
-				<extensions>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="" artifactName="CommanderGenius" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GmakeErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399" name="Linux32" parent="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
-					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399." name="/" resourcePath="">
-						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.base.1335498553" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.55319756" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-							<builder buildPath="${workspace_loc:/CommanderGenius/Linux32}" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator" id="cdt.managedbuild.builder.xlupc.exe.debug.890568766" keepEnvironmentInBuildfile="false" name="Gnu Make Builder"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1156949921" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.base.764956634" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
-								<option id="gnu.cpp.compiler.option.optimization.level.2056875714" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.debugging.level.1114030223" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1922895646" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="SDL"/>
-									<listOptionValue builtIn="false" value="USE_OPENGL"/>
-									<listOptionValue builtIn="false" value="OGG"/>
-								</option>
-								<option id="gnu.cpp.compiler.option.include.paths.1561000388" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
-									<listOptionValue builtIn="false" value="/usr/include/SDL"/>
-									<listOptionValue builtIn="false" value="/usr/include/vorbis"/>
-									<listOptionValue builtIn="false" value="/usr/include/ogg"/>
-								</option>
-								<option id="gnu.cpp.compiler.option.other.other.1400899136" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0" valueType="string"/>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1003856045" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-							</tool>
-							<tool errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.base.1283247142" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
-								<option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.72456108" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.debugging.level.1359896009" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1614439145" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.430367726" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
-							<tool errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.base.2034671217" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
-								<option id="gnu.cpp.link.option.libs.846876159" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="SDL"/>
-									<listOptionValue builtIn="false" value="GL"/>
-									<listOptionValue builtIn="false" value="vorbis"/>
-									<listOptionValue builtIn="false" value="vorbisfile"/>
-									<listOptionValue builtIn="false" value="ogg"/>
-								</option>
-								<option id="gnu.cpp.link.option.paths.1601673629" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
-								<option id="gnu.cpp.link.option.flags.1654234518" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.860790232" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
-									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
-									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
-								</inputType>
-							</tool>
-							<tool errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.base.2030903062" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.112530703" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
-					<sourceEntries>
-						<entry excluding="tools" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-					</sourceEntries>
-				</configuration>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-			<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
-				<buildTargets>
-					<target name="Windows" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-						<buildCommand>make</buildCommand>
-						<buildArguments/>
-						<buildTarget>Windows</buildTarget>
-						<stopOnError>true</stopOnError>
-						<useDefaultCommand>true</useDefaultCommand>
-						<runAllBuilders>true</runAllBuilders>
-					</target>
-				</buildTargets>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
-				<doc-comment-owner id="org.eclipse.cdt.internal.ui.text.doctools.NullDocCommentOwner">
-					<path value=""/>
-				</doc-comment-owner>
-			</storageModule>
-		</cconfiguration>
-		<cconfiguration id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.565663007">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.565663007" moduleId="org.eclipse.cdt.core.settings" name="Win32">
-				<externalSettings/>
-				<extensions>
 					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.Cygwin_PE" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="" artifactName="CommanderGenius" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GmakeErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.565663007" name="Win32" parent="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.565663007" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
-					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.565663007." name="/" resourcePath="">
-						<toolChain errorParsers="" id="cdt.managedbuild.toolchain.gnu.mingw.base.2145652788" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.base">
-							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base.5013128" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
-							<builder buildPath="${workspace_loc:/CommanderGenius/Win32}" errorParsers="" id="cdt.managedbuild.tool.gnu.builder.mingw.base.1620299489" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
-							<tool errorParsers="org.eclipse.cdt.core.GASErrorParser" id="cdt.managedbuild.tool.gnu.assembler.mingw.base.1856870809" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.229561315" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+				<configuration artifactName="${ProjName}" buildProperties="" description="" errorParsers="org.eclipse.cdt.core.VCErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="0.652490747" name="Default" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+					<folderInfo id="0.652490747." name="/" resourcePath="">
+						<toolChain errorParsers="" id="org.eclipse.cdt.build.core.prefbase.toolchain.1910333065" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.PE;org.eclipse.cdt.core.GNU_ELF;org.eclipse.cdt.core.Cygwin_PE" id="org.eclipse.cdt.build.core.prefbase.toolchain.1910333065.575938549" name=""/>
+							<builder arguments="-C ${ProjDirPath}/Build VERBOSE=1 -j" command="make" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.CWDLocator" id="org.eclipse.cdt.build.core.settings.default.builder.148866957" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+							<tool errorParsers="org.eclipse.cdt.core.VCErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="org.eclipse.cdt.build.core.settings.holder.libs.1173189738" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+							<tool errorParsers="org.eclipse.cdt.core.VCErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="org.eclipse.cdt.build.core.settings.holder.929833034" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1208065199" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.883396392" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
-							<tool command="i586-mingw32msvc-g++" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.258567402" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
-								<option id="gnu.cpp.compiler.option.include.paths.1230123127" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
-									<listOptionValue builtIn="false" value="/usr/include/GL"/>
-									<listOptionValue builtIn="false" value="/usr/include/SDL"/>
-									<listOptionValue builtIn="false" value="/usr/include"/>
-									<listOptionValue builtIn="false" value="/usr/include/vorbis"/>
-									<listOptionValue builtIn="false" value="/usr/include/ogg"/>
-								</option>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.2021709213" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="SDL"/>
-									<listOptionValue builtIn="false" value="USE_OPENGL"/>
-									<listOptionValue builtIn="false" value="OGG"/>
-								</option>
-								<option id="gnu.cpp.compiler.option.optimization.level.649431806" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.debugging.level.2053077862" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.407700145" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							<tool errorParsers="org.eclipse.cdt.core.VCErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="org.eclipse.cdt.build.core.settings.holder.639570522" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1853042588" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
-							<tool command="i586-mingw32msvc-gcc" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.281938211" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
-								<option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.495259746" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" value="gnu.c.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.debugging.level.1812229718" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1077603642" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.1016629341" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base"/>
-							<tool command="i586-mingw32msvc-g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT}.exe ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.601184483" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
-								<option id="gnu.cpp.link.option.libs.174317735" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="SDL"/>
-									<listOptionValue builtIn="false" value="GL"/>
-									<listOptionValue builtIn="false" value="vorbis"/>
-									<listOptionValue builtIn="false" value="vorbisfile"/>
-									<listOptionValue builtIn="false" value="ogg"/>
-								</option>
-								<option id="gnu.cpp.link.option.flags.2112871847" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>
-								<option id="gnu.cpp.link.option.paths.631160994" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
-								<option id="gnu.cpp.link.option.userobjs.1474149403" name="Other objects" superClass="gnu.cpp.link.option.userobjs"/>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.141107449" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
-									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
-									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
-								</inputType>
+							<tool errorParsers="org.eclipse.cdt.core.VCErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser" id="org.eclipse.cdt.build.core.settings.holder.1666193741" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1290085013" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<sourceEntries>
-						<entry excluding="tools" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
-					</sourceEntries>
 				</configuration>
 			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-			<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
-				<buildTargets>
-					<target name="Windows" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-						<buildCommand>make</buildCommand>
-						<buildArguments/>
-						<buildTarget>Windows</buildTarget>
-						<stopOnError>true</stopOnError>
-						<useDefaultCommand>true</useDefaultCommand>
-						<runAllBuilders>true</runAllBuilders>
-					</target>
-				</buildTargets>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
-				<doc-comment-owner id="org.eclipse.cdt.internal.ui.text.doctools.NullDocCommentOwner">
-					<path value=""/>
-				</doc-comment-owner>
-			</storageModule>
 		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.pathentry">
+		<pathentry excluding="**/CMakeFiles/" kind="out" path=""/>
+		<pathentry kind="mac" name="OGG" path="" value=""/>
+		<pathentry kind="mac" name="GL" path="" value=""/>
+		<pathentry kind="mac" name="USE_OPENGL" path="" value=""/>
+		<pathentry kind="mac" name="__STDC__" path="" value="1"/>
+		<pathentry kind="mac" name="__STDC_HOSTED__" path="" value="1"/>
+		<pathentry kind="mac" name="__GNUC__" path="" value="4"/>
+		<pathentry kind="mac" name="__GNUC_MINOR__" path="" value="7"/>
+		<pathentry kind="mac" name="__GNUC_PATCHLEVEL__" path="" value=" "/>
+		<pathentry kind="mac" name="__VERSION__" path="" value="&quot;4.7.0 20120507 (Red Hat 4.7.0-5)&quot;"/>
+		<pathentry kind="mac" name="__GNUC_RH_RELEASE__" path="" value="5"/>
+		<pathentry kind="mac" name="__ATOMIC_RELAXED" path="" value=" "/>
+		<pathentry kind="mac" name="__ATOMIC_SEQ_CST" path="" value="5"/>
+		<pathentry kind="mac" name="__ATOMIC_ACQUIRE" path="" value="2"/>
+		<pathentry kind="mac" name="__ATOMIC_RELEASE" path="" value="3"/>
+		<pathentry kind="mac" name="__ATOMIC_ACQ_REL" path="" value="4"/>
+		<pathentry kind="mac" name="__ATOMIC_CONSUME" path="" value="1"/>
+		<pathentry kind="mac" name="__FINITE_MATH_ONLY__" path="" value=" "/>
+		<pathentry kind="mac" name="_LP64" path="" value="1"/>
+		<pathentry kind="mac" name="__LP64__" path="" value="1"/>
+		<pathentry kind="mac" name="__SIZEOF_INT__" path="" value="4"/>
+		<pathentry kind="mac" name="__SIZEOF_LONG__" path="" value="8"/>
+		<pathentry kind="mac" name="__SIZEOF_LONG_LONG__" path="" value="8"/>
+		<pathentry kind="mac" name="__SIZEOF_SHORT__" path="" value="2"/>
+		<pathentry kind="mac" name="__SIZEOF_FLOAT__" path="" value="4"/>
+		<pathentry kind="mac" name="__SIZEOF_DOUBLE__" path="" value="8"/>
+		<pathentry kind="mac" name="__SIZEOF_LONG_DOUBLE__" path="" value="16"/>
+		<pathentry kind="mac" name="__SIZEOF_SIZE_T__" path="" value="8"/>
+		<pathentry kind="mac" name="__CHAR_BIT__" path="" value="8"/>
+		<pathentry kind="mac" name="__BIGGEST_ALIGNMENT__" path="" value="16"/>
+		<pathentry kind="mac" name="__ORDER_LITTLE_ENDIAN__" path="" value="1234"/>
+		<pathentry kind="mac" name="__ORDER_BIG_ENDIAN__" path="" value="4321"/>
+		<pathentry kind="mac" name="__ORDER_PDP_ENDIAN__" path="" value="3412"/>
+		<pathentry kind="mac" name="__BYTE_ORDER__" path="" value="__ORDER_LITTLE_ENDIAN__"/>
+		<pathentry kind="mac" name="__FLOAT_WORD_ORDER__" path="" value="__ORDER_LITTLE_ENDIAN__"/>
+		<pathentry kind="mac" name="__SIZEOF_POINTER__" path="" value="8"/>
+		<pathentry kind="mac" name="__SIZE_TYPE__" path="" value="long unsigned int"/>
+		<pathentry kind="mac" name="__PTRDIFF_TYPE__" path="" value="long int"/>
+		<pathentry kind="mac" name="__WCHAR_TYPE__" path="" value="int"/>
+		<pathentry kind="mac" name="__WINT_TYPE__" path="" value="unsigned int"/>
+		<pathentry kind="mac" name="__INTMAX_TYPE__" path="" value="long int"/>
+		<pathentry kind="mac" name="__UINTMAX_TYPE__" path="" value="long unsigned int"/>
+		<pathentry kind="mac" name="__CHAR16_TYPE__" path="" value="short unsigned int"/>
+		<pathentry kind="mac" name="__CHAR32_TYPE__" path="" value="unsigned int"/>
+		<pathentry kind="mac" name="__SIG_ATOMIC_TYPE__" path="" value="int"/>
+		<pathentry kind="mac" name="__INT8_TYPE__" path="" value="signed char"/>
+		<pathentry kind="mac" name="__INT16_TYPE__" path="" value="short int"/>
+		<pathentry kind="mac" name="__INT32_TYPE__" path="" value="int"/>
+		<pathentry kind="mac" name="__INT64_TYPE__" path="" value="long int"/>
+		<pathentry kind="mac" name="__UINT8_TYPE__" path="" value="unsigned char"/>
+		<pathentry kind="mac" name="__UINT16_TYPE__" path="" value="short unsigned int"/>
+		<pathentry kind="mac" name="__UINT32_TYPE__" path="" value="unsigned int"/>
+		<pathentry kind="mac" name="__UINT64_TYPE__" path="" value="long unsigned int"/>
+		<pathentry kind="mac" name="__INT_LEAST8_TYPE__" path="" value="signed char"/>
+		<pathentry kind="mac" name="__INT_LEAST16_TYPE__" path="" value="short int"/>
+		<pathentry kind="mac" name="__INT_LEAST32_TYPE__" path="" value="int"/>
+		<pathentry kind="mac" name="__INT_LEAST64_TYPE__" path="" value="long int"/>
+		<pathentry kind="mac" name="__UINT_LEAST8_TYPE__" path="" value="unsigned char"/>
+		<pathentry kind="mac" name="__UINT_LEAST16_TYPE__" path="" value="short unsigned int"/>
+		<pathentry kind="mac" name="__UINT_LEAST32_TYPE__" path="" value="unsigned int"/>
+		<pathentry kind="mac" name="__UINT_LEAST64_TYPE__" path="" value="long unsigned int"/>
+		<pathentry kind="mac" name="__INT_FAST8_TYPE__" path="" value="signed char"/>
+		<pathentry kind="mac" name="__INT_FAST16_TYPE__" path="" value="long int"/>
+		<pathentry kind="mac" name="__INT_FAST32_TYPE__" path="" value="long int"/>
+		<pathentry kind="mac" name="__INT_FAST64_TYPE__" path="" value="long int"/>
+		<pathentry kind="mac" name="__UINT_FAST8_TYPE__" path="" value="unsigned char"/>
+		<pathentry kind="mac" name="__UINT_FAST16_TYPE__" path="" value="long unsigned int"/>
+		<pathentry kind="mac" name="__UINT_FAST32_TYPE__" path="" value="long unsigned int"/>
+		<pathentry kind="mac" name="__UINT_FAST64_TYPE__" path="" value="long unsigned int"/>
+		<pathentry kind="mac" name="__INTPTR_TYPE__" path="" value="long int"/>
+		<pathentry kind="mac" name="__UINTPTR_TYPE__" path="" value="long unsigned int"/>
+		<pathentry kind="mac" name="__GXX_ABI_VERSION" path="" value="1002"/>
+		<pathentry kind="mac" name="__SCHAR_MAX__" path="" value="127"/>
+		<pathentry kind="mac" name="__SHRT_MAX__" path="" value="32767"/>
+		<pathentry kind="mac" name="__INT_MAX__" path="" value="2147483647"/>
+		<pathentry kind="mac" name="__LONG_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__LONG_LONG_MAX__" path="" value="9223372036854775807LL"/>
+		<pathentry kind="mac" name="__WCHAR_MAX__" path="" value="2147483647"/>
+		<pathentry kind="mac" name="__WCHAR_MIN__" path="" value="(-__WCHAR_MAX__ - 1)"/>
+		<pathentry kind="mac" name="__WINT_MAX__" path="" value="4294967295U"/>
+		<pathentry kind="mac" name="__WINT_MIN__" path="" value="0U"/>
+		<pathentry kind="mac" name="__PTRDIFF_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__SIZE_MAX__" path="" value="18446744073709551615UL"/>
+		<pathentry kind="mac" name="__INTMAX_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__INTMAX_C(c)" path="" value="c ## L"/>
+		<pathentry kind="mac" name="__UINTMAX_MAX__" path="" value="18446744073709551615UL"/>
+		<pathentry kind="mac" name="__UINTMAX_C(c)" path="" value="c ## UL"/>
+		<pathentry kind="mac" name="__SIG_ATOMIC_MAX__" path="" value="2147483647"/>
+		<pathentry kind="mac" name="__SIG_ATOMIC_MIN__" path="" value="(-__SIG_ATOMIC_MAX__ - 1)"/>
+		<pathentry kind="mac" name="__INT8_MAX__" path="" value="127"/>
+		<pathentry kind="mac" name="__INT16_MAX__" path="" value="32767"/>
+		<pathentry kind="mac" name="__INT32_MAX__" path="" value="2147483647"/>
+		<pathentry kind="mac" name="__INT64_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__UINT8_MAX__" path="" value="255"/>
+		<pathentry kind="mac" name="__UINT16_MAX__" path="" value="65535"/>
+		<pathentry kind="mac" name="__UINT32_MAX__" path="" value="4294967295U"/>
+		<pathentry kind="mac" name="__UINT64_MAX__" path="" value="18446744073709551615UL"/>
+		<pathentry kind="mac" name="__INT_LEAST8_MAX__" path="" value="127"/>
+		<pathentry kind="mac" name="__INT8_C(c)" path="" value="c"/>
+		<pathentry kind="mac" name="__INT_LEAST16_MAX__" path="" value="32767"/>
+		<pathentry kind="mac" name="__INT16_C(c)" path="" value="c"/>
+		<pathentry kind="mac" name="__INT_LEAST32_MAX__" path="" value="2147483647"/>
+		<pathentry kind="mac" name="__INT32_C(c)" path="" value="c"/>
+		<pathentry kind="mac" name="__INT_LEAST64_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__INT64_C(c)" path="" value="c ## L"/>
+		<pathentry kind="mac" name="__UINT_LEAST8_MAX__" path="" value="255"/>
+		<pathentry kind="mac" name="__UINT8_C(c)" path="" value="c"/>
+		<pathentry kind="mac" name="__UINT_LEAST16_MAX__" path="" value="65535"/>
+		<pathentry kind="mac" name="__UINT16_C(c)" path="" value="c"/>
+		<pathentry kind="mac" name="__UINT_LEAST32_MAX__" path="" value="4294967295U"/>
+		<pathentry kind="mac" name="__UINT32_C(c)" path="" value="c ## U"/>
+		<pathentry kind="mac" name="__UINT_LEAST64_MAX__" path="" value="18446744073709551615UL"/>
+		<pathentry kind="mac" name="__UINT64_C(c)" path="" value="c ## UL"/>
+		<pathentry kind="mac" name="__INT_FAST8_MAX__" path="" value="127"/>
+		<pathentry kind="mac" name="__INT_FAST16_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__INT_FAST32_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__INT_FAST64_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__UINT_FAST8_MAX__" path="" value="255"/>
+		<pathentry kind="mac" name="__UINT_FAST16_MAX__" path="" value="18446744073709551615UL"/>
+		<pathentry kind="mac" name="__UINT_FAST32_MAX__" path="" value="18446744073709551615UL"/>
+		<pathentry kind="mac" name="__UINT_FAST64_MAX__" path="" value="18446744073709551615UL"/>
+		<pathentry kind="mac" name="__INTPTR_MAX__" path="" value="9223372036854775807L"/>
+		<pathentry kind="mac" name="__UINTPTR_MAX__" path="" value="18446744073709551615UL"/>
+		<pathentry kind="mac" name="__FLT_EVAL_METHOD__" path="" value=" "/>
+		<pathentry kind="mac" name="__DEC_EVAL_METHOD__" path="" value="2"/>
+		<pathentry kind="mac" name="__FLT_RADIX__" path="" value="2"/>
+		<pathentry kind="mac" name="__FLT_MANT_DIG__" path="" value="24"/>
+		<pathentry kind="mac" name="__FLT_DIG__" path="" value="6"/>
+		<pathentry kind="mac" name="__FLT_MIN_EXP__" path="" value="(-125)"/>
+		<pathentry kind="mac" name="__FLT_MIN_10_EXP__" path="" value="(-37)"/>
+		<pathentry kind="mac" name="__FLT_MAX_EXP__" path="" value="128"/>
+		<pathentry kind="mac" name="__FLT_MAX_10_EXP__" path="" value="38"/>
+		<pathentry kind="mac" name="__FLT_DECIMAL_DIG__" path="" value="9"/>
+		<pathentry kind="mac" name="__FLT_MAX__" path="" value="3.40282346638528859812e+38F"/>
+		<pathentry kind="mac" name="__FLT_MIN__" path="" value="1.17549435082228750797e-38F"/>
+		<pathentry kind="mac" name="__FLT_EPSILON__" path="" value="1.19209289550781250000e-7F"/>
+		<pathentry kind="mac" name="__FLT_DENORM_MIN__" path="" value="1.40129846432481707092e-45F"/>
+		<pathentry kind="mac" name="__FLT_HAS_DENORM__" path="" value="1"/>
+		<pathentry kind="mac" name="__FLT_HAS_INFINITY__" path="" value="1"/>
+		<pathentry kind="mac" name="__FLT_HAS_QUIET_NAN__" path="" value="1"/>
+		<pathentry kind="mac" name="__DBL_MANT_DIG__" path="" value="53"/>
+		<pathentry kind="mac" name="__DBL_DIG__" path="" value="15"/>
+		<pathentry kind="mac" name="__DBL_MIN_EXP__" path="" value="(-1021)"/>
+		<pathentry kind="mac" name="__DBL_MIN_10_EXP__" path="" value="(-307)"/>
+		<pathentry kind="mac" name="__DBL_MAX_EXP__" path="" value="1024"/>
+		<pathentry kind="mac" name="__DBL_MAX_10_EXP__" path="" value="308"/>
+		<pathentry kind="mac" name="__DBL_DECIMAL_DIG__" path="" value="17"/>
+		<pathentry kind="mac" name="__DBL_MAX__" path="" value="((double)1.79769313486231570815e+308L)"/>
+		<pathentry kind="mac" name="__DBL_MIN__" path="" value="((double)2.22507385850720138309e-308L)"/>
+		<pathentry kind="mac" name="__DBL_EPSILON__" path="" value="((double)2.22044604925031308085e-16L)"/>
+		<pathentry kind="mac" name="__DBL_DENORM_MIN__" path="" value="((double)4.94065645841246544177e-324L)"/>
+		<pathentry kind="mac" name="__DBL_HAS_DENORM__" path="" value="1"/>
+		<pathentry kind="mac" name="__DBL_HAS_INFINITY__" path="" value="1"/>
+		<pathentry kind="mac" name="__DBL_HAS_QUIET_NAN__" path="" value="1"/>
+		<pathentry kind="mac" name="__LDBL_MANT_DIG__" path="" value="64"/>
+		<pathentry kind="mac" name="__LDBL_DIG__" path="" value="18"/>
+		<pathentry kind="mac" name="__LDBL_MIN_EXP__" path="" value="(-16381)"/>
+		<pathentry kind="mac" name="__LDBL_MIN_10_EXP__" path="" value="(-4931)"/>
+		<pathentry kind="mac" name="__LDBL_MAX_EXP__" path="" value="16384"/>
+		<pathentry kind="mac" name="__LDBL_MAX_10_EXP__" path="" value="4932"/>
+		<pathentry kind="mac" name="__DECIMAL_DIG__" path="" value="21"/>
+		<pathentry kind="mac" name="__LDBL_MAX__" path="" value="1.18973149535723176502e+4932L"/>
+		<pathentry kind="mac" name="__LDBL_MIN__" path="" value="3.36210314311209350626e-4932L"/>
+		<pathentry kind="mac" name="__LDBL_EPSILON__" path="" value="1.08420217248550443401e-19L"/>
+		<pathentry kind="mac" name="__LDBL_DENORM_MIN__" path="" value="3.64519953188247460253e-4951L"/>
+		<pathentry kind="mac" name="__LDBL_HAS_DENORM__" path="" value="1"/>
+		<pathentry kind="mac" name="__LDBL_HAS_INFINITY__" path="" value="1"/>
+		<pathentry kind="mac" name="__LDBL_HAS_QUIET_NAN__" path="" value="1"/>
+		<pathentry kind="mac" name="__DEC32_MANT_DIG__" path="" value="7"/>
+		<pathentry kind="mac" name="__DEC32_MIN_EXP__" path="" value="(-94)"/>
+		<pathentry kind="mac" name="__DEC32_MAX_EXP__" path="" value="97"/>
+		<pathentry kind="mac" name="__DEC32_MIN__" path="" value="1E-95DF"/>
+		<pathentry kind="mac" name="__DEC32_MAX__" path="" value="9.999999E96DF"/>
+		<pathentry kind="mac" name="__DEC32_EPSILON__" path="" value="1E-6DF"/>
+		<pathentry kind="mac" name="__DEC32_SUBNORMAL_MIN__" path="" value="0.000001E-95DF"/>
+		<pathentry kind="mac" name="__DEC64_MANT_DIG__" path="" value="16"/>
+		<pathentry kind="mac" name="__DEC64_MIN_EXP__" path="" value="(-382)"/>
+		<pathentry kind="mac" name="__DEC64_MAX_EXP__" path="" value="385"/>
+		<pathentry kind="mac" name="__DEC64_MIN__" path="" value="1E-383DD"/>
+		<pathentry kind="mac" name="__DEC64_MAX__" path="" value="9.999999999999999E384DD"/>
+		<pathentry kind="mac" name="__DEC64_EPSILON__" path="" value="1E-15DD"/>
+		<pathentry kind="mac" name="__DEC64_SUBNORMAL_MIN__" path="" value="0.000000000000001E-383DD"/>
+		<pathentry kind="mac" name="__DEC128_MANT_DIG__" path="" value="34"/>
+		<pathentry kind="mac" name="__DEC128_MIN_EXP__" path="" value="(-6142)"/>
+		<pathentry kind="mac" name="__DEC128_MAX_EXP__" path="" value="6145"/>
+		<pathentry kind="mac" name="__DEC128_MIN__" path="" value="1E-6143DL"/>
+		<pathentry kind="mac" name="__DEC128_MAX__" path="" value="9.999999999999999999999999999999999E6144DL"/>
+		<pathentry kind="mac" name="__DEC128_EPSILON__" path="" value="1E-33DL"/>
+		<pathentry kind="mac" name="__DEC128_SUBNORMAL_MIN__" path="" value="0.000000000000000000000000000000001E-6143DL"/>
+		<pathentry kind="mac" name="__REGISTER_PREFIX__" path="" value=" "/>
+		<pathentry kind="mac" name="__USER_LABEL_PREFIX__" path="" value=" "/>
+		<pathentry kind="mac" name="__GNUC_GNU_INLINE__" path="" value="1"/>
+		<pathentry kind="mac" name="__NO_INLINE__" path="" value="1"/>
+		<pathentry kind="mac" name="__GCC_HAVE_SYNC_COMPARE_AND_SWAP_1" path="" value="1"/>
+		<pathentry kind="mac" name="__GCC_HAVE_SYNC_COMPARE_AND_SWAP_2" path="" value="1"/>
+		<pathentry kind="mac" name="__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4" path="" value="1"/>
+		<pathentry kind="mac" name="__GCC_HAVE_SYNC_COMPARE_AND_SWAP_8" path="" value="1"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_BOOL_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_CHAR_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_CHAR16_T_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_CHAR32_T_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_WCHAR_T_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_SHORT_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_INT_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_LONG_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_LLONG_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_TEST_AND_SET_TRUEVAL" path="" value="1"/>
+		<pathentry kind="mac" name="__GCC_ATOMIC_POINTER_LOCK_FREE" path="" value="2"/>
+		<pathentry kind="mac" name="__GCC_HAVE_DWARF2_CFI_ASM" path="" value="1"/>
+		<pathentry kind="mac" name="__PRAGMA_REDEFINE_EXTNAME" path="" value="1"/>
+		<pathentry kind="mac" name="__SIZEOF_INT128__" path="" value="16"/>
+		<pathentry kind="mac" name="__SIZEOF_WCHAR_T__" path="" value="4"/>
+		<pathentry kind="mac" name="__SIZEOF_WINT_T__" path="" value="4"/>
+		<pathentry kind="mac" name="__SIZEOF_PTRDIFF_T__" path="" value="8"/>
+		<pathentry kind="mac" name="__amd64" path="" value="1"/>
+		<pathentry kind="mac" name="__amd64__" path="" value="1"/>
+		<pathentry kind="mac" name="__x86_64" path="" value="1"/>
+		<pathentry kind="mac" name="__x86_64__" path="" value="1"/>
+		<pathentry kind="mac" name="__k8" path="" value="1"/>
+		<pathentry kind="mac" name="__k8__" path="" value="1"/>
+		<pathentry kind="mac" name="__MMX__" path="" value="1"/>
+		<pathentry kind="mac" name="__SSE__" path="" value="1"/>
+		<pathentry kind="mac" name="__SSE2__" path="" value="1"/>
+		<pathentry kind="mac" name="__SSE_MATH__" path="" value="1"/>
+		<pathentry kind="mac" name="__SSE2_MATH__" path="" value="1"/>
+		<pathentry kind="mac" name="__gnu_linux__" path="" value="1"/>
+		<pathentry kind="mac" name="__linux" path="" value="1"/>
+		<pathentry kind="mac" name="__linux__" path="" value="1"/>
+		<pathentry kind="mac" name="linux" path="" value="1"/>
+		<pathentry kind="mac" name="__unix" path="" value="1"/>
+		<pathentry kind="mac" name="__unix__" path="" value="1"/>
+		<pathentry kind="mac" name="unix" path="" value="1"/>
+		<pathentry kind="mac" name="__ELF__" path="" value="1"/>
+		<pathentry kind="mac" name="__DECIMAL_BID_FORMAT__" path="" value="1"/>
+		<pathentry kind="mac" name="__cplusplus" path="" value="199711L"/>
+		<pathentry kind="mac" name="__GNUG__" path="" value="4"/>
+		<pathentry kind="mac" name="__GXX_WEAK__" path="" value="1"/>
+		<pathentry kind="mac" name="__DEPRECATED" path="" value="1"/>
+		<pathentry kind="mac" name="__GXX_RTTI" path="" value="1"/>
+		<pathentry kind="mac" name="__EXCEPTIONS" path="" value="1"/>
+		<pathentry kind="mac" name="_GNU_SOURCE" path="" value="1"/>
+		<pathentry include="/home/gerstrong/workspace/Commander-Genius/optional-includes/generated" kind="inc" path="" system="true"/>
+		<pathentry include="/home/gerstrong/workspace/Commander-Genius/src" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include/SDL" kind="inc" path="" system="true"/>
+		<pathentry include="/vorbis" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/lib/gcc/x86_64-redhat-linux/4.7.0/include" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/local/include" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include/c++/4.7.0" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include/c++/4.7.0/x86_64-redhat-linux" kind="inc" path="" system="true"/>
+		<pathentry include="/usr/include/c++/4.7.0/backward" kind="inc" path="" system="true"/>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="CommanderGenius.cdt.managedbuild.target.gnu.cross.exe.1037347008" name="Executable"/>
+		<project id="Commander-Genius.null.329215050" name="Commander-Genius"/>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/clonekeenplus"/>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
+		<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
+			<buildOutputProvider>
+				<openAction enabled="true" filePath=""/>
+				<parser enabled="true"/>
+			</buildOutputProvider>
+			<scannerInfoProvider id="specsFile">
+				<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="/usr/bin/gcc" useDefault="true"/>
+				<parser enabled="true"/>
+			</scannerInfoProvider>
+		</profile>
 		<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
 			<buildOutputProvider>
 				<openAction enabled="true" filePath=""/>
 				<parser enabled="true"/>
 			</buildOutputProvider>
 			<scannerInfoProvider id="makefileGenerator">
-				<runAction arguments="-f ${project_name}_scd.mk" command="make" useDefault="true"/>
+				<runAction arguments="-f ${project_name}_scd.mk" command="/usr/bin/gmake" useDefault="true"/>
 				<parser enabled="true"/>
 			</scannerInfoProvider>
 		</profile>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.628712671;cdt.managedbuild.config.gnu.cross.exe.debug.628712671.;cdt.managedbuild.tool.gnu.c.compiler.base.958167318;cdt.managedbuild.tool.gnu.c.compiler.input.827316866">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
-			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
-				<buildOutputProvider>
-					<openAction enabled="true" filePath=""/>
-					<parser enabled="true"/>
-				</buildOutputProvider>
-				<scannerInfoProvider id="makefileGenerator">
-					<runAction arguments="-f ${project_name}_scd.mk" command="make" useDefault="true"/>
-					<parser enabled="true"/>
-				</scannerInfoProvider>
-			</profile>
+		<scannerConfigBuildInfo instanceId="0.652490747">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399;cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399.;cdt.managedbuild.tool.gnu.c.compiler.base.1283247142;cdt.managedbuild.tool.gnu.c.compiler.input.1614439145">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
-			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
-				<buildOutputProvider>
-					<openAction enabled="true" filePath=""/>
-					<parser enabled="true"/>
-				</buildOutputProvider>
-				<scannerInfoProvider id="makefileGenerator">
-					<runAction arguments="-f ${project_name}_scd.mk" command="make" useDefault="true"/>
-					<parser enabled="true"/>
-				</scannerInfoProvider>
-			</profile>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.628712671;cdt.managedbuild.config.gnu.cross.exe.debug.628712671.;cdt.managedbuild.tool.gnu.c.compiler.base.146745021;cdt.managedbuild.tool.gnu.c.compiler.input.712687651">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
-			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
-				<buildOutputProvider>
-					<openAction enabled="true" filePath=""/>
-					<parser enabled="true"/>
-				</buildOutputProvider>
-				<scannerInfoProvider id="makefileGenerator">
-					<runAction arguments="-f ${project_name}_scd.mk" command="make" useDefault="true"/>
-					<parser enabled="true"/>
-				</scannerInfoProvider>
-			</profile>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399;cdt.managedbuild.config.gnu.cross.exe.release.1352187457.1419947399.;cdt.managedbuild.tool.gnu.cpp.compiler.base.764956634;cdt.managedbuild.tool.gnu.cpp.compiler.input.1003856045">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
-			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
-				<buildOutputProvider>
-					<openAction enabled="true" filePath=""/>
-					<parser enabled="true"/>
-				</buildOutputProvider>
-				<scannerInfoProvider id="makefileGenerator">
-					<runAction arguments="-f ${project_name}_scd.mk" command="make" useDefault="true"/>
-					<parser enabled="true"/>
-				</scannerInfoProvider>
-			</profile>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.628712671;cdt.managedbuild.config.gnu.cross.exe.debug.628712671.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1880800842;cdt.managedbuild.tool.gnu.cpp.compiler.input.1330706771">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
-			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
-				<buildOutputProvider>
-					<openAction enabled="true" filePath=""/>
-					<parser enabled="true"/>
-				</buildOutputProvider>
-				<scannerInfoProvider id="makefileGenerator">
-					<runAction arguments="-f ${project_name}_scd.mk" command="make" useDefault="true"/>
-					<parser enabled="true"/>
-				</scannerInfoProvider>
-			</profile>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.628712671;cdt.managedbuild.config.gnu.cross.exe.debug.628712671.;cdt.managedbuild.tool.gnu.cpp.compiler.base.1728576183;cdt.managedbuild.tool.gnu.cpp.compiler.input.2024816918">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
-			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
-				<buildOutputProvider>
-					<openAction enabled="true" filePath=""/>
-					<parser enabled="true"/>
-				</buildOutputProvider>
-				<scannerInfoProvider id="makefileGenerator">
-					<runAction arguments="-f ${project_name}_scd.mk" command="make" useDefault="true"/>
-					<parser enabled="true"/>
-				</scannerInfoProvider>
-			</profile>
-		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Default">
+			<resource resourceType="PROJECT" workspacePath="/Commander-Genius"/>
+		</configuration>
 	</storageModule>
 </cproject>

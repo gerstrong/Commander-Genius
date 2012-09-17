@@ -291,7 +291,7 @@ void CHighScores::processWriting()
 	{
 		// Save the Table and change to show mode, which can be closed by any other key
 		saveHighScoreTable();
-		mp_process = &CHighScores::processShow;
+		mp_process = &CHighScores::processShowing;
 	}
 	
 	
