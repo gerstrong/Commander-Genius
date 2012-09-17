@@ -29,12 +29,14 @@ void CVidConfig::reset()
 	showfps = true;
 	vsync = true;
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
-	m_Resolution.width=320;
-	m_Resolution.height=240;
+	//m_Resolution.width=320;
+	//m_Resolution.height=240;
+	m_DisplayRect.w=320;
+	m_DisplayRect.h=240;
 #if defined(GP2X) || defined(NANONOTE)
-	m_Resolution.depth=32;
+	//m_Resolution.depth=32;
 #else
-	m_Resolution.depth=16;
+	//m_Resolution.depth=16;
 #endif
 	Fullscreen=true;
 #else
