@@ -248,7 +248,7 @@ void CPlayerWM::verifyTeleportation()
 
 // Elevator
 
-const int SLOW_TELEPORT_WALK_SPEED = 3;
+const int SLOW_TELEPORT_WALK_SPEED = 4;
 
 void CPlayerWM::processEnteringElevator()
 {
@@ -261,8 +261,8 @@ void CPlayerWM::processEnteringElevator()
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
 
-	vec_norm.x /= dist_x;
-	vec_norm.y /= dist_y;
+	vec_norm.x = vec.x/dist_x;
+	vec_norm.y = vec.y/dist_y;
 
 	moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
 
@@ -271,6 +271,7 @@ void CPlayerWM::processEnteringElevator()
 	{
 		moveDir(vec);
 		mProcessPtr = &CPlayerWM::processClosingElevator;
+		performWalkingAnimation(false);
 	}
 
 	performWalkingAnimation(true);

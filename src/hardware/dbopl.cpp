@@ -327,10 +327,10 @@ static inline void Operator__UpdateAttack(Operator *self, const Chip* chip ) {
 	if ( rate ) {
 		Bit8u val = (rate << 2) + self->ksr;
 		self->attackAdd = chip->attackRates[ val ];
-		self->rateZero &= ~(1 << ATTACK);
+		self->rateZero &= ~(1 << OPS_ATTACK);
 	} else {
 		self->attackAdd = 0;
-		self->rateZero |= (1 << ATTACK);
+		self->rateZero |= (1 << OPS_ATTACK);
 	}
 }
 static inline void Operator__UpdateDecay(Operator *self, const Chip* chip ) {
@@ -338,10 +338,10 @@ static inline void Operator__UpdateDecay(Operator *self, const Chip* chip ) {
 	if ( rate ) {
 		Bit8u val = (rate << 2) + self->ksr;
 		self->decayAdd = chip->linearRates[ val ];
-		self->rateZero &= ~(1 << DECAY);
+		self->rateZero &= ~(1 << OPS_DECAY);
 	} else {
 		self->decayAdd = 0;
-		self->rateZero |= (1 << DECAY);
+		self->rateZero |= (1 << OPS_DECAY);
 	}
 }
 static inline void Operator__UpdateRelease(Operator *self, const Chip* chip ) {
@@ -350,16 +350,16 @@ static inline void Operator__UpdateRelease(Operator *self, const Chip* chip ) {
 	{
 		Bit8u val = (rate << 2) + self->ksr;
 		self->releaseAdd = chip->linearRates[ val ];
-		self->rateZero &= ~(1 << RELEASE);
+		self->rateZero &= ~(1 << OPS_RELEASE);
 		if ( !(self->reg20 & MASK_SUSTAIN ) ) {
-			self->rateZero &= ~( 1 << SUSTAIN );
+			self->rateZero &= ~( 1 << OPS_SUSTAIN );
 		}	
 	} else
 	{
-		self->rateZero |= (1 << RELEASE);
+		self->rateZero |= (1 << OPS_RELEASE);
 		self->releaseAdd = 0;
 		if ( !(self->reg20 & MASK_SUSTAIN ) ) {
-			self->rateZero |= ( 1 << SUSTAIN );
+			self->rateZero |= ( 1 << OPS_SUSTAIN );
 		}	
 	}
 }
@@ -422,9 +422,9 @@ static Bits Operator__TemplateVolume(Operator *self, OperatorState yes) {
 	Bit32s vol = self->volume;
 	Bit32s change;
 	switch ( yes ) {
-	case OFF:
+	case OPS_OFF:
 		return ENV_MAX;
-	case ATTACK:
+	case OPS_ATTACK:
 		change = Operator__RateForward( self, self->attackAdd );
 		if ( !change )
 			return vol;
@@ -432,34 +432,34 @@ static Bits Operator__TemplateVolume(Operator *self, OperatorState yes) {
 		if ( vol < ENV_MIN ) {
 			self->volume = ENV_MIN;
 			self->rateIndex = 0;
-			Operator__SetState( self, DECAY );
+			Operator__SetState( self, OPS_DECAY );
 			return ENV_MIN;
 		}
 		break;
-	case DECAY:
+	case OPS_DECAY:
 		vol += Operator__RateForward( self, self->decayAdd );
 		if ( GCC_UNLIKELY(vol >= self->sustainLevel) ) {
 			//Check if we didn't overshoot max attenuation, then just go off
 			if ( GCC_UNLIKELY(vol >= ENV_MAX) ) {
 				self->volume = ENV_MAX;
-				Operator__SetState( self, OFF );
+				Operator__SetState( self, OPS_OFF );
 				return ENV_MAX;
 			}
 			//Continue as sustain
 			self->rateIndex = 0;
-			Operator__SetState( self, SUSTAIN );
+			Operator__SetState( self, OPS_SUSTAIN );
 		}
 		break;
-	case SUSTAIN:
+	case OPS_SUSTAIN:
 		if ( self->reg20 & MASK_SUSTAIN ) {
 			return vol;
 		}
 		//In sustain phase, but not sustaining, do regular release
-	case RELEASE: 
+	case OPS_RELEASE:
 		vol += Operator__RateForward( self, self->releaseAdd );;
 		if ( GCC_UNLIKELY(vol >= ENV_MAX) ) {
 			self->volume = ENV_MAX;
-			Operator__SetState( self, OFF );
+			Operator__SetState( self, OPS_OFF );
 			return ENV_MAX;
 		}
 		break;
@@ -474,18 +474,18 @@ static Bits Operator__TemplateVolume(Operator *self, OperatorState yes) {
         return Operator__TemplateVolume(self, mode); \
     }
 
-TEMPLATE_VOLUME(OFF)
-TEMPLATE_VOLUME(RELEASE)
-TEMPLATE_VOLUME(SUSTAIN)
-TEMPLATE_VOLUME(ATTACK)
-TEMPLATE_VOLUME(DECAY)
+TEMPLATE_VOLUME(OPS_OFF)
+TEMPLATE_VOLUME(OPS_RELEASE)
+TEMPLATE_VOLUME(OPS_SUSTAIN)
+TEMPLATE_VOLUME(OPS_ATTACK)
+TEMPLATE_VOLUME(OPS_DECAY)
 
 static const VolumeHandler VolumeHandlerTable[5] = {
-        &Operator__TemplateVolumeOFF,
-        &Operator__TemplateVolumeRELEASE,
-        &Operator__TemplateVolumeSUSTAIN,
-        &Operator__TemplateVolumeDECAY,
-        &Operator__TemplateVolumeATTACK,
+        &Operator__TemplateVolumeOPS_OFF,
+        &Operator__TemplateVolumeOPS_RELEASE,
+        &Operator__TemplateVolumeOPS_SUSTAIN,
+        &Operator__TemplateVolumeOPS_DECAY,
+        &Operator__TemplateVolumeOPS_ATTACK,
 };
 
 static inline Bitu Operator__ForwardVolume(Operator *self) {
@@ -512,9 +512,9 @@ static void Operator__Write20(Operator *self, const Chip* chip, Bit8u val ) {
 	}
 	//With sustain enable the volume doesn't change
 	if ( (self->reg20 & MASK_SUSTAIN) || ( !self->releaseAdd ) ) {
-		self->rateZero |= ( 1 << SUSTAIN );
+		self->rateZero |= ( 1 << OPS_SUSTAIN );
 	} else {
-		self->rateZero &= ~( 1 << SUSTAIN );
+		self->rateZero &= ~( 1 << OPS_SUSTAIN );
 	}
 	//Frequency multiplier or vibrato changed
 	if ( change & (0xf | MASK_VIBRATO) ) {
@@ -605,7 +605,7 @@ static void Operator__KeyOn(Operator *self, Bit8u mask ) {
 		self->waveIndex = 0;
 #endif
 		self->rateIndex = 0;
-		Operator__SetState( self, ATTACK );
+		Operator__SetState( self, OPS_ATTACK );
 	}
 	self->keyOn |= mask;
 }
@@ -613,8 +613,8 @@ static void Operator__KeyOn(Operator *self, Bit8u mask ) {
 static void Operator__KeyOff(Operator *self, Bit8u mask ) {
 	self->keyOn &= ~mask;
 	if ( !self->keyOn ) {
-		if ( self->state != OFF ) {
-			Operator__SetState( self, RELEASE );
+		if ( self->state != OPS_OFF ) {
+			Operator__SetState( self, OPS_RELEASE );
 		}
 	}
 }
@@ -662,8 +662,8 @@ static void Operator__Operator(Operator *self) {
 	self->reg60 = 0;
 	self->reg80 = 0;
 	self->regE0 = 0;
-	Operator__SetState( self, OFF );
-	self->rateZero = (1 << OFF);
+	Operator__SetState( self, OPS_OFF );
+	self->rateZero = (1 << OPS_OFF);
 	self->sustainLevel = ENV_MAX;
 	self->currentLevel = ENV_MAX;
 	self->totalLevel = ENV_MAX;

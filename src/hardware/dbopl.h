@@ -81,11 +81,11 @@ enum {
 };
 
 enum OperatorState{
-        OFF = 0,
-        RELEASE,
-        SUSTAIN,
-        DECAY,
-        ATTACK,
+	OPS_OFF = 0,
+	OPS_RELEASE,
+	OPS_SUSTAIN,
+	OPS_DECAY,
+	OPS_ATTACK,
 };
 
 struct _Operator {
