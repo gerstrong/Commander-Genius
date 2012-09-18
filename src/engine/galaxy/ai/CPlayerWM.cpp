@@ -255,7 +255,7 @@ void CPlayerWM::processEnteringElevator()
 
 	VectorD2<int> vec = target-pos;
 
-	vec / vec.GetLength2();
+	//vec / vec.GetLength2();
 
 	moveDir(vec);
 
