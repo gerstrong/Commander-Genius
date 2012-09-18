@@ -27,6 +27,16 @@ public:
 	void process();
 	void processMoving();
 
+	// Episode 5 and 6: Those processes make Keen walk through elevators and teleporters
+	void verifyTeleportation();
+	void processEnteringElevator();
+	void processClosingElevator();
+	void processElevating();
+	void processOpeningElevator();
+	void processLeavingElevator();
+
+	void processEnteringTeleporter();
+
 	void startLevel(Uint16 object);
 	void finishLevel(Uint16 object);
 	void checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown);
@@ -44,6 +54,9 @@ private:
 	Uint8 m_animation_time;
 	Uint8 m_animation_ticker;
 	bool m_cantswim;
+	VectorD2<int> target;
+
+	void (CPlayerWM::*mProcessPtr)();
 };
 
 }

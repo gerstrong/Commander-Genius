@@ -47,6 +47,8 @@ m_cantswim(false)
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
 	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
+
+	mProcessPtr = &CPlayerWM::processMoving;
 }
 
 /**
@@ -62,7 +64,8 @@ void CPlayerWM::process()
 	}
 	else m_animation_ticker++;
 
-	processMoving();
+	//processMoving();
+	(this->*mProcessPtr)();
 
 	// Events for the Player are processed here.
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
@@ -101,6 +104,10 @@ void CPlayerWM::processMoving()
 
 	// This will trigger between swim and walkmode
 	checkforSwimming(bleft, bright, bup, bdown);
+
+	// In Episode 5 and 5 there are teleporters. Verify those teleporters and elevators
+	if(g_pBehaviorEngine->getEpisode() >= 5)
+		verifyTeleportation();
 
 	// Normal walking
 	if(g_pInput->getHoldedCommand(IC_LEFT) && !bleft)
@@ -189,6 +196,69 @@ void CPlayerWM::processMoving()
 		}
 	}
 }
+
+
+void CPlayerWM::verifyTeleportation()
+{
+	//target -> change it when the touched tile is known
+	const int x = getXMidPos();
+	const int y = getYUpPos();
+
+	// Check if Keen touches a teleporter or elevator
+	const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
+	if(object < 0xC000 && object > 0x100)
+	{
+		//const Uint32 filter = object & 0xFFFF;
+		//const Uint32 newPosX = (filter & 0xFF00) >> 8;
+		//const Uint32 newPosY = (filter & 0x00FF);
+
+		target.x = ( x >> CSF ) << CSF;
+		target.y = ( y >> CSF ) << CSF;
+
+		bool isElevator = false;
+
+		// Elevator are double the size. Check that! Else it must be an teleporter
+		if(object == mp_Map->getPlaneDataAt( 2, x - (1<<CSF), y ))
+			isElevator |= true;
+		if(object == mp_Map->getPlaneDataAt( 2, x + (1<<CSF), y ))
+			isElevator |= true;
+
+		if(isElevator)
+			mProcessPtr = &CPlayerWM::processEnteringElevator;
+		else
+			mProcessPtr = &CPlayerWM::processEnteringTeleporter;
+	}
+
+	// TODO: In that case get the tile where to go and make him move or
+
+	// TODO: In that case get the tile where to move and make him move until teleporter hides him
+}
+
+
+void CPlayerWM::processEnteringElevator()
+{
+	performWalkingAnimation(true);
+}
+
+void CPlayerWM::processClosingElevator()
+{}
+
+void CPlayerWM::processElevating()
+{}
+
+void CPlayerWM::processOpeningElevator()
+{}
+
+void CPlayerWM::processLeavingElevator()
+{}
+
+
+void CPlayerWM::processEnteringTeleporter()
+{}
+
+
+
+
 
 /**
  * This function will help starting the level for Commander Keen
