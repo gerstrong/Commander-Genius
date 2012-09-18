@@ -36,6 +36,8 @@ public:
 	void processLeavingElevator();
 
 	void processEnteringTeleporter();
+	void processWarpInTeleporter();
+	void processLeavingTeleporter();
 
 	void startLevel(Uint16 object);
 	void finishLevel(Uint16 object);

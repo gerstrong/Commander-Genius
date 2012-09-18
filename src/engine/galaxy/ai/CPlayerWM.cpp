@@ -219,43 +219,96 @@ void CPlayerWM::verifyTeleportation()
 
 		// Elevator are double the size. Check that! Else it must be an teleporter
 		if(object == mp_Map->getPlaneDataAt( 2, x - (1<<CSF), y ))
+		{
 			isElevator |= true;
+		}
 		if(object == mp_Map->getPlaneDataAt( 2, x + (1<<CSF), y ))
+		{
+			target.x = x + (1<<CSF);
 			isElevator |= true;
+		}
 
+		// In that case get the tile where to go and make him move or ...
 		if(isElevator)
+		{
 			mProcessPtr = &CPlayerWM::processEnteringElevator;
-		else
+		}
+		else // ... make him move until teleporter hides him.
+		{
 			mProcessPtr = &CPlayerWM::processEnteringTeleporter;
+			// TODO: Activate teleporter animation
+		}
 	}
 
-	// TODO: In that case get the tile where to go and make him move or
 
-	// TODO: In that case get the tile where to move and make him move until teleporter hides him
+
+
 }
 
 
+// Elevator
+
 void CPlayerWM::processEnteringElevator()
 {
+	// TODO: Move him to the target
+
 	performWalkingAnimation(true);
 }
 
 void CPlayerWM::processClosingElevator()
-{}
+{
+	// TODO: Make the player close the elevator
+
+	// TODO: If done make him invisible and transport him through the level. !solid
+}
 
 void CPlayerWM::processElevating()
-{}
+{
+	// TODO: Move the player
+
+	// TODO: When he reaches the target. make him visible and start opening the elevator
+}
 
 void CPlayerWM::processOpeningElevator()
-{}
+{
+	// TODO: Open until it's open
+
+	// TODO: get new walk out target
+}
 
 void CPlayerWM::processLeavingElevator()
-{}
+{
+	// TODO: walk to target
 
+	// TODO: When done set him solid
+}
+
+
+// Teleporter
 
 void CPlayerWM::processEnteringTeleporter()
-{}
+{
+	// TODO: he moves to target into the teleporter
 
+	// TODO: When finished make him !solid and invisible
+
+	// TODO: Deactivate animation
+}
+
+
+void CPlayerWM::processWarpInTeleporter()
+{
+	// TODO: This should just change the location
+
+	// TODO: When done make visible again and activate teleport animation
+}
+
+void CPlayerWM::processLeavingTeleporter()
+{
+	// TODO: he moves to target out the teleporter
+
+	// TODO: When finished make him solid
+}
 
 
 
