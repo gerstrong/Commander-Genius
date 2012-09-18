@@ -20,10 +20,10 @@
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 <storageModule moduleId="org.eclipse.cdt.core.pathentry">
 <pathentry excluding="**/CMakeFiles/" kind="out" path=""/>
+<pathentry kind="mac" name="DINGOO" path="" value=""/>
+<pathentry kind="mac" name="NOKEYBOARD" path="" value=""/>
 <pathentry kind="mac" name="TARGET_LNX" path="" value=""/>
-<pathentry kind="mac" name="OGG" path="" value=""/>
-<pathentry kind="mac" name="GL" path="" value=""/>
-<pathentry kind="mac" name="USE_OPENGL" path="" value=""/>
+<pathentry kind="mac" name="TREMOR" path="" value=""/>
 <pathentry kind="mac" name="DEBUG" path="" value=""/>
 <pathentry kind="mac" name="__STDC__" path="" value="1"/>
 <pathentry kind="mac" name="__STDC_HOSTED__" path="" value="1"/>
@@ -262,9 +262,12 @@
 <pathentry kind="mac" name="__GXX_RTTI" path="" value="1"/>
 <pathentry kind="mac" name="__EXCEPTIONS" path="" value="1"/>
 <pathentry kind="mac" name="_GNU_SOURCE" path="" value="1"/>
+<pathentry include="/opt/opendingux-toolchain/usr/include/tremor" kind="inc" path="" system="true"/>
+<pathentry include="/opt/opendingux-toolchain/usr/include" kind="inc" path="" system="true"/>
+<pathentry include="/opt/opendingux-toolchain/usr/include/vorbis" kind="inc" path="" system="true"/>
 <pathentry include="/home/gerstrong/workspace/Commander-Genius/src" kind="inc" path="" system="true"/>
 <pathentry include="/usr/include/SDL" kind="inc" path="" system="true"/>
-<pathentry include="/usr/include/vorbis" kind="inc" path="" system="true"/>
+<pathentry include="/tremor" kind="inc" path="" system="true"/>
 <pathentry include="/usr/lib/gcc/x86_64-redhat-linux/4.7.0/include" kind="inc" path="" system="true"/>
 <pathentry include="/usr/local/include" kind="inc" path="" system="true"/>
 <pathentry include="/usr/include" kind="inc" path="" system="true"/>
@@ -5758,7 +5761,7 @@
 <parser enabled="true"/>
 </buildOutputProvider>
 <scannerInfoProvider id="specsFile">
-<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="/usr/bin/gcc" useDefault="true"/>
+<runAction arguments="-E -P -v -dD ${plugin_state_location}/${specs_file}" command="/opt/opendingux-toolchain/usr//bin/mipsel-linux-gcc" useDefault="true"/>
 <parser enabled="true"/>
 </scannerInfoProvider>
 </profile>

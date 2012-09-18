@@ -173,12 +173,15 @@ pkg_check_modules(SDL sdl)
 	
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
 
-find_package(OpenGL)
-if (OPENGL_FOUND)
+
+if(OPENGL)
+  find_package(OpenGL)
+   if (OPENGL_FOUND)
     include_directories(${OPENGL_INCLUDE_DIR})
- else (OPENGL_FOUND)
+  else (OPENGL_FOUND)
     MESSAGE("OpenGL environment missing")
- endif (OPENGL_FOUND)
+  endif (OPENGL_FOUND)
+endif()
 
 
 # Try to use Ogg if enabled
