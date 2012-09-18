@@ -51,7 +51,7 @@ typedef Bits (*VolumeHandler)(Operator *self);
 typedef Channel* (*SynthHandler)(Channel *self, Chip* chip, Bit32u samples, Bit32s* output );
 
 //Different synth modes that can generate blocks of data
-typedef enum {
+enum SynthMode {
 	sm2AM,
 	sm2FM,
 	sm3AM,
@@ -64,7 +64,7 @@ typedef enum {
 	sm6Start,
 	sm2Percussion,
 	sm3Percussion,
-} SynthMode;
+};
 
 //Shifts for the values contained in chandata variable
 enum {
@@ -77,16 +77,17 @@ enum {
         MASK_KSR = 0x10,
         MASK_SUSTAIN = 0x20,
         MASK_VIBRATO = 0x40,
-        MASK_TREMOLO = 0x80,
+        MASK_TREMOLO = 0x80
 };
 
-typedef enum {
-        OFF,
+enum OperatorState
+{
+        OFF = 0,
         RELEASE,
         SUSTAIN,
         DECAY,
-        ATTACK,
-} OperatorState;
+        ATTACK
+};
 
 struct _Operator {
 	VolumeHandler volHandler;

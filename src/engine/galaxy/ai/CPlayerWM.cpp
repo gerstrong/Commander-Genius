@@ -248,16 +248,30 @@ void CPlayerWM::verifyTeleportation()
 
 // Elevator
 
+const int SLOW_TELEPORT_WALK_SPEED = 3;
+
 void CPlayerWM::processEnteringElevator()
 {
 	// Move him to the target
 	VectorD2<int> pos(getXPosition(), getYPosition());
 
 	VectorD2<int> vec = target-pos;
+	VectorD2<int> vec_norm;
 
-	//vec / vec.GetLength2();
+	const int dist_x = abs(vec.x);
+	const int dist_y = abs(vec.y);
 
-	moveDir(vec);
+	vec_norm.x /= dist_x;
+	vec_norm.y /= dist_y;
+
+	moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+
+	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+		dist_y < SLOW_TELEPORT_WALK_SPEED)
+	{
+		moveDir(vec);
+		mProcessPtr = &CPlayerWM::processClosingElevator;
+	}
 
 	performWalkingAnimation(true);
 }
