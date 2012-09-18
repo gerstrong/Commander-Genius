@@ -250,7 +250,14 @@ void CPlayerWM::verifyTeleportation()
 
 void CPlayerWM::processEnteringElevator()
 {
-	// TODO: Move him to the target
+	// Move him to the target
+	VectorD2<int> pos(getXPosition(), getYPosition());
+
+	VectorD2<int> vec = target-pos;
+
+	vec / vec.GetLength2();
+
+	moveDir(vec);
 
 	performWalkingAnimation(true);
 }

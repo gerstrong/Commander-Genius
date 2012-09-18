@@ -80,13 +80,13 @@ enum {
         MASK_TREMOLO = 0x80,
 };
 
-typedef enum {
-        OFF,
+enum OperatorState{
+        OFF = 0,
         RELEASE,
         SUSTAIN,
         DECAY,
         ATTACK,
-} OperatorState;
+};
 
 struct _Operator {
 	VolumeHandler volHandler;
