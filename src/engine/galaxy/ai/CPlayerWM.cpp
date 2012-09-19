@@ -249,19 +249,17 @@ void CPlayerWM::verifyTeleportation()
 }
 
 
-// Elevator
-
-const int SLOW_TELEPORT_WALK_SPEED = 4;
+// Elevators
+const int SLOW_TELEPORT_WALK_SPEED = 8;
+const int ELEVATOR_SPEED = 128;
+const int ELEVATOR_CLOSE_TIME = 5;
 
 void CPlayerWM::processEnteringElevator()
 {
 	// Move him to the target
 	VectorD2<int> pos(getXPosition(), getYPosition());
-
 	VectorD2<int> vec = target-pos;
 
-	//vec.x = (vec.x >> CSF) << CSF;
-	//vec.y = (vec.y >> CSF) << CSF;
 
 	VectorD2<int> vec_norm = vec;
 
@@ -273,10 +271,14 @@ void CPlayerWM::processEnteringElevator()
 	if(dist_y != 0)
 		vec_norm.y = vec.y/dist_y;
 
+	yDirection = vec_norm.y;
+
+
 	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
 		dist_y < SLOW_TELEPORT_WALK_SPEED)
 	{
 		moveDir(vec);
+		// TODO: Play Elevator open sound
 		mProcessPtr = &CPlayerWM::processClosingElevator;
 		performWalkingAnimation(false);
 		elevator_frames = 5;
@@ -300,7 +302,7 @@ void CPlayerWM::processClosingElevator()
 	const Uint16 tile4 = mp_Map->getPlaneDataAt( 1, x<<CSF, (y-1)<<CSF );
 
 	elevator_close_timer++;
-	if(elevator_close_timer >= 10)
+	if(elevator_close_timer >= ELEVATOR_CLOSE_TIME)
 	{
 		elevator_close_timer = 0;
 
@@ -315,6 +317,27 @@ void CPlayerWM::processClosingElevator()
 		if(elevator_frames == 0)
 		{
 			// If done make him invisible and transport him through the level. !solid
+
+			// TODO: get new target where to move
+			//target -> change it when the touched tile is known
+			const int x = getXMidPos();
+			const int y = getYMidPos();
+
+			// Check if Keen touches a teleporter or elevator
+			const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
+			const Uint32 filter = object & 0xFFFF;
+			const Uint32 newPosX = (filter & 0xFF00) >> 8;
+			const Uint32 newPosY = (filter & 0x00FF);
+
+			// Set new target
+			target.x = ((newPosX+1)<<CSF);
+			target.y = (newPosY<<CSF);
+
+			// make him invisible
+			solid = false;
+			dontdraw = true;
+
+			// change process
 			mProcessPtr = &CPlayerWM::processElevating;
 		}
 	}
@@ -322,21 +345,107 @@ void CPlayerWM::processClosingElevator()
 
 void CPlayerWM::processElevating()
 {
-	// TODO: Move the player
+	// Move the player to the target
+	VectorD2<int> pos(getXPosition(), getYPosition());
+	VectorD2<int> vec = target-pos;
 
-	// TODO: When he reaches the target. make him visible and start opening the elevator
+
+	VectorD2<int> vec_norm = vec;
+
+	const int dist_x = abs(vec.x);
+	const int dist_y = abs(vec.y);
+
+	if(dist_x != 0)
+		vec_norm.x = vec.x/dist_x;
+	if(dist_y != 0)
+		vec_norm.y = vec.y/dist_y;
+
+	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+		dist_y < SLOW_TELEPORT_WALK_SPEED)
+	{
+		// TODO: When he reaches the target. make him visible and start opening the elevator
+		moveDir(vec);
+		// TODO: Play Elevator open sound
+		mProcessPtr = &CPlayerWM::processOpeningElevator;
+		performWalkingAnimation(false);
+		elevator_frames = 5;
+		elevator_close_timer = 0;
+	}
+	else
+	{
+		moveDir(vec_norm*ELEVATOR_SPEED);
+	}
 }
 
 void CPlayerWM::processOpeningElevator()
 {
-	// TODO: Open until it's open
+	// Open until it's wide open
+	const int x = getXMidPos() >> CSF;
+	const int y = getYMidPos() >> CSF;
+	const Uint16 tile1 = mp_Map->getPlaneDataAt( 1, x<<CSF, y<<CSF );
+	const Uint16 tile2 = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
+	const Uint16 tile3 = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
+	const Uint16 tile4 = mp_Map->getPlaneDataAt( 1, x<<CSF, (y-1)<<CSF );
 
-	// TODO: get new walk out target
+	elevator_close_timer++;
+	if(elevator_close_timer >= ELEVATOR_CLOSE_TIME)
+	{
+		elevator_close_timer = 0;
+
+		// Make the player close the elevator
+		mp_Map->setTile(x, y, tile1+2, true);
+		mp_Map->setTile(x-1, y, tile2+2, true);
+		mp_Map->setTile(x-1, y-1, tile3+2, true);
+		mp_Map->setTile(x, y-1, tile4+2, true);
+
+		elevator_frames--;
+
+		if(elevator_frames == 0)
+		{
+			// make him visible
+			dontdraw = false;
+
+			target.y += (1<<CSF);
+
+			// and walk out
+			mProcessPtr = &CPlayerWM::processLeavingElevator;
+		}
+	}
 }
 
 void CPlayerWM::processLeavingElevator()
 {
-	// TODO: walk to target
+	// Move him to the target
+	VectorD2<int> pos(getXPosition(), getYPosition());
+	VectorD2<int> vec = target-pos;
+
+
+	VectorD2<int> vec_norm = vec;
+
+	const int dist_x = abs(vec.x);
+	const int dist_y = abs(vec.y);
+
+	if(dist_x != 0)
+		vec_norm.x = vec.x/dist_x;
+	if(dist_y != 0)
+		vec_norm.y = vec.y/dist_y;
+
+	yDirection = vec_norm.y;
+
+	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+		dist_y < SLOW_TELEPORT_WALK_SPEED)
+	{
+		// When done set him solid
+		solid = true;
+		moveDir(vec);
+		mProcessPtr = &CPlayerWM::processMoving;
+	}
+	else
+	{
+		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+	}
+
+	performWalkingAnimation(true);
 
 	// TODO: When done set him solid
 }
