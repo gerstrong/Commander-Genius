@@ -201,8 +201,8 @@ void CPlayerWM::processMoving()
 void CPlayerWM::verifyTeleportation()
 {
 	//target -> change it when the touched tile is known
-	const int x = getXMidPos();
-	const int y = getYUpPos();
+	int x = getXMidPos();
+	int y = getYUpPos();
 
 	// Check if Keen touches a teleporter or elevator
 	const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
@@ -212,21 +212,27 @@ void CPlayerWM::verifyTeleportation()
 		//const Uint32 newPosX = (filter & 0xFF00) >> 8;
 		//const Uint32 newPosY = (filter & 0x00FF);
 
-		target.x = ( x >> CSF ) << CSF;
-		target.y = ( y >> CSF ) << CSF;
+		x = (x >> CSF);
+		y = (y >> CSF);
 
 		bool isElevator = false;
 
 		// Elevator are double the size. Check that! Else it must be an teleporter
-		if(object == mp_Map->getPlaneDataAt( 2, x - (1<<CSF), y ))
+		if(object == mp_Map->getPlaneDataAt( 2, (x-1) << CSF, y << CSF ))
 		{
 			isElevator |= true;
 		}
-		if(object == mp_Map->getPlaneDataAt( 2, x + (1<<CSF), y ))
+		if(object == mp_Map->getPlaneDataAt( 2, (x+1) << CSF, y << CSF ))
 		{
-			target.x = x + (1<<CSF);
+			x = x + 1;
 			isElevator |= true;
 		}
+
+		x = (x << CSF);
+		y = (y << CSF);
+
+		target.x = x;
+		target.y = y;
 
 		// In that case get the tile where to go and make him move or ...
 		if(isElevator)
@@ -250,12 +256,12 @@ const int SLOW_TELEPORT_WALK_SPEED = 4;
 void CPlayerWM::processEnteringElevator()
 {
 	// Move him to the target
-	VectorD2<int> pos(getXMidPos(), getYPosition());
+	VectorD2<int> pos(getXPosition(), getYPosition());
 
 	VectorD2<int> vec = target-pos;
 
-	vec.x = (vec.x >> CSF) << CSF;
-	vec.y = (vec.y >> CSF) << CSF;
+	//vec.x = (vec.x >> CSF) << CSF;
+	//vec.y = (vec.y >> CSF) << CSF;
 
 	VectorD2<int> vec_norm = vec;
 
@@ -267,8 +273,6 @@ void CPlayerWM::processEnteringElevator()
 	if(dist_y != 0)
 		vec_norm.y = vec.y/dist_y;
 
-	moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
-
 	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
 		dist_y < SLOW_TELEPORT_WALK_SPEED)
 	{
@@ -278,6 +282,10 @@ void CPlayerWM::processEnteringElevator()
 		elevator_frames = 5;
 		elevator_close_timer = 0;
 	}
+	else
+	{
+		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+	}
 
 	performWalkingAnimation(true);
 }
@@ -286,7 +294,10 @@ void CPlayerWM::processClosingElevator()
 {
 	const int x = getXMidPos() >> CSF;
 	const int y = getYMidPos() >> CSF;
-	const Uint16 tile = mp_Map->getPlaneDataAt( 1, x<<CSF, y<<CSF );
+	const Uint16 tile1 = mp_Map->getPlaneDataAt( 1, x<<CSF, y<<CSF );
+	const Uint16 tile2 = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, y<<CSF );
+	const Uint16 tile3 = mp_Map->getPlaneDataAt( 1, (x-1)<<CSF, (y-1)<<CSF );
+	const Uint16 tile4 = mp_Map->getPlaneDataAt( 1, x<<CSF, (y-1)<<CSF );
 
 	elevator_close_timer++;
 	if(elevator_close_timer >= 10)
@@ -294,7 +305,10 @@ void CPlayerWM::processClosingElevator()
 		elevator_close_timer = 0;
 
 		// Make the player close the elevator
-		mp_Map->setTile(x, y, tile-2, true);
+		mp_Map->setTile(x, y, tile1-2, true);
+		mp_Map->setTile(x-1, y, tile2-2, true);
+		mp_Map->setTile(x-1, y-1, tile3-2, true);
+		mp_Map->setTile(x, y-1, tile4-2, true);
 
 		elevator_frames--;
 
