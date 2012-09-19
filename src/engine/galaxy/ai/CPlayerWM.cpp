@@ -240,9 +240,6 @@ void CPlayerWM::verifyTeleportation()
 		}
 	}
 
-
-
-
 }
 
 
@@ -253,16 +250,22 @@ const int SLOW_TELEPORT_WALK_SPEED = 4;
 void CPlayerWM::processEnteringElevator()
 {
 	// Move him to the target
-	VectorD2<int> pos(getXPosition(), getYPosition());
+	VectorD2<int> pos(getXMidPos(), getYPosition());
 
 	VectorD2<int> vec = target-pos;
-	VectorD2<int> vec_norm;
+
+	vec.x = (vec.x >> CSF) << CSF;
+	vec.y = (vec.y >> CSF) << CSF;
+
+	VectorD2<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
 
-	vec_norm.x = vec.x/dist_x;
-	vec_norm.y = vec.y/dist_y;
+	if(dist_x != 0)
+		vec_norm.x = vec.x/dist_x;
+	if(dist_y != 0)
+		vec_norm.y = vec.y/dist_y;
 
 	moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
 
@@ -272,6 +275,8 @@ void CPlayerWM::processEnteringElevator()
 		moveDir(vec);
 		mProcessPtr = &CPlayerWM::processClosingElevator;
 		performWalkingAnimation(false);
+		elevator_frames = 5;
+		elevator_close_timer = 0;
 	}
 
 	performWalkingAnimation(true);
@@ -279,9 +284,26 @@ void CPlayerWM::processEnteringElevator()
 
 void CPlayerWM::processClosingElevator()
 {
-	// TODO: Make the player close the elevator
+	const int x = getXMidPos() >> CSF;
+	const int y = getYMidPos() >> CSF;
+	const Uint16 tile = mp_Map->getPlaneDataAt( 1, x<<CSF, y<<CSF );
 
-	// TODO: If done make him invisible and transport him through the level. !solid
+	elevator_close_timer++;
+	if(elevator_close_timer >= 10)
+	{
+		elevator_close_timer = 0;
+
+		// Make the player close the elevator
+		mp_Map->setTile(x, y, tile-2, true);
+
+		elevator_frames--;
+
+		if(elevator_frames == 0)
+		{
+			// If done make him invisible and transport him through the level. !solid
+			mProcessPtr = &CPlayerWM::processElevating;
+		}
+	}
 }
 
 void CPlayerWM::processElevating()

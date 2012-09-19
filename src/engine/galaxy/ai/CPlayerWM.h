@@ -57,6 +57,8 @@ private:
 	Uint8 m_animation_ticker;
 	bool m_cantswim;
 	VectorD2<int> target;
+	int elevator_close_timer;
+	int elevator_frames;
 
 	void (CPlayerWM::*mProcessPtr)();
 };

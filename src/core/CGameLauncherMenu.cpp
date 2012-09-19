@@ -117,7 +117,6 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 	// Patch the EXE-File-Data directly in the memory.
 	CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
 	Patcher.patchMemory();
-	ExeFile.dumpFile("exedata.dat");
 
 	g_pBehaviorEngine->setEpisode(Episode);
 
