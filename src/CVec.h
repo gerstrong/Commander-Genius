@@ -53,6 +53,14 @@ struct VectorD2 {
 	
 	_T Cross(const VectorD2& oth) const { return x * oth.y - y * oth.x; }
 	
+	// Returns the directions of the vector like (1,-1) or (0,1)
+	VectorD2 dir() const
+	{
+		const int dirx = (x!=0) ? x/abs(x) : 0;
+		const int diry = (y!=0) ? y/abs(y) : 0;
+		return VectorD2(dirx, diry);
+	}
+
 	// Overloads
 	VectorD2 operator*(const float scalar) const {		
 		return VectorD2(x*scalar,y*scalar);
@@ -99,6 +107,7 @@ struct VectorD2 {
 		return *this;
 	}
 	
+
 	template<typename _T2>
 	bool operator<(const VectorD2<_T2> & op) const {
 		return ((y == op.y && (x < op.x))
