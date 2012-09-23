@@ -268,7 +268,6 @@ private:
 	bool m_EnterDoorAttempt;
 	bool m_hanging;
 	int mPoleGrabTime;
-	VectorD2<int> target;
 
 };
 

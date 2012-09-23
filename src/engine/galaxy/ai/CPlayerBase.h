@@ -116,6 +116,14 @@ public:
 	 */
 	void makeWalkSound();
 
+
+	/**
+	 * Make keen move with x/y speed move towards a target which is held in the variable "mTarget"
+	 * it only moves towards, this routines is exec'd several times in order achieve a smooth transition.
+	 */
+	void guideToTarget(const VectorD2<int> &speed);
+
+
 	/**
 	 * Same here but with swimming
 	 */
@@ -167,6 +175,7 @@ protected:
 	// Assignment for the same player for all the episodes
 	static const int mEpisodeActionNumMap[2][NUM_KEEN_ACTIONS];
 
+	VectorD2<int> mTarget;
 };
 
 };

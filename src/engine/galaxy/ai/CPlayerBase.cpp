@@ -318,6 +318,34 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 
 
 
+void CPlayerBase::guideToTarget(const VectorD2<int> &speed)
+{
+	// Check x and y diff
+	const int xDiff = mTarget.x - getXMidPos();
+	const int yDiff = mTarget.y - getYMidPos();
+	const int xAbsDiff = abs(xDiff);
+	const int yAbsDiff = abs(yDiff);
+
+	// obtained speed
+	VectorD2<int> obtSpeed = speed;
+
+	while( xAbsDiff < obtSpeed.x )
+		obtSpeed.x /= 2;
+
+	while( yAbsDiff < obtSpeed.y )
+		obtSpeed.y /= 2;
+
+	// Give the speed its right direction.
+	obtSpeed.x *= xDiff;
+	obtSpeed.y *= yDiff;
+	obtSpeed.x = (xAbsDiff != 0) ? obtSpeed.x / xAbsDiff : 0;
+	obtSpeed.y = (yAbsDiff != 0) ? obtSpeed.y / yAbsDiff : 0;
+
+	moveDir(obtSpeed);
+}
+
+
+
 
 const int MAX_WALKSOUNDTIMER = 20;
 
