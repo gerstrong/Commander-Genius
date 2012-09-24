@@ -609,7 +609,9 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 	{
 		bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
 		bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
-		if(!check_block && check_block_lower &&  mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
+
+		if(!check_block && check_block_lower &&
+				mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
 		{
 			setAction(A_KEEN_HANG);
 			setActionSprite();
@@ -618,6 +620,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			Uint32 y = (((getYPosition()>>CSF))<<CSF)+(8<<STC);
 			moveTo(x,y);
 			solid = false;
+			xinertia = 0;
 			yinertia = 0;
 			m_hanging = false;
 			return true;
@@ -627,7 +630,9 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 	{
 		bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
 		bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
-		if(!check_block && check_block_lower && mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
+
+		if(!check_block && check_block_lower &&
+				mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
 		{
 			setAction(A_KEEN_HANG);
 			setActionSprite();
@@ -636,6 +641,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			Uint32 y = (((getYPosition()>>CSF)+1)<<CSF) - (5<<STC);
 			moveTo(x,y);
 			solid = false;
+			xinertia = 0;
 			yinertia = 0;
 			m_hanging = false;
 			return true;
@@ -689,7 +695,7 @@ void CPlayerLevel::processCliffHanging()
 
 
 const int PLAYER_CLIMB_SPEED_Y = 24;
-const int PLAYER_CLIMB_SPEED_X = PLAYER_CLIMB_SPEED_Y;
+const int PLAYER_CLIMB_SPEED_X = (3*PLAYER_CLIMB_SPEED_Y)/4;
 
 void CPlayerLevel::processCliffClimbing()
 {
