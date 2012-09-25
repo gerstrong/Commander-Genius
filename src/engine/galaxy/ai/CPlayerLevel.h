@@ -268,6 +268,7 @@ private:
 	bool m_EnterDoorAttempt;
 	bool m_hanging;
 	int mPoleGrabTime;
+	int mClimbSpeedX;
 
 };
 

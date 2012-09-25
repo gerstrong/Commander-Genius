@@ -93,6 +93,11 @@ public:
 	bool getActionStatus(int16_t ActionNumber);
 
 	/**
+	 * returns the Sprite ID from the given action
+	 */
+	int getSpriteIDFromAction(const int16_t ActionNumber);
+
+	/**
 	 * Overloaded setActionForce which uses the action for the player
 	 */
 	void setActionForce(const size_t ActionNumber);

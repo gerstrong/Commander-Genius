@@ -695,32 +695,58 @@ void CPlayerLevel::processCliffHanging()
 
 
 const int PLAYER_CLIMB_SPEED_Y = 24;
-const int PLAYER_CLIMB_SPEED_X = (3*PLAYER_CLIMB_SPEED_Y)/4;
 
 void CPlayerLevel::processCliffClimbing()
 {
 	if(mTarget.x < 0 || mTarget.y < 0)
 	{
-		if(xDirection<0) // left up
+		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+		const int spriteID = getSpriteIDFromAction(A_KEEN_STAND);
+		CSprite &standSpr = g_pGfxEngine->getSprite(spriteID);
+
+
+		if( xDirection < 0 ) // left upper
 		{
-			const int height = ( getYDownPos() - getYPosition() )/2;
+			const int height = (standSpr.getHeight() << (CSF-STC)) - (5<<STC);
+
+			mClimbSpeedX = (5*PLAYER_CLIMB_SPEED_Y)/8;
+
 			const int xMove = (((xDirection)<<CSF)*4)/3;
-			mTarget.x = getXMidPos() + xMove;
-			mTarget.y = getYUpPos() - height;
+			int yPos = getYPosition();
 
+			mTarget.x = getXMidPos() + xMove;
+			mTarget.y = ((yPos>>CSF)<<CSF);
+
+			int block = TileProperty[mp_Map->at((mTarget.x>>CSF), (mTarget.y>>CSF))].bup;
+
+			if(block)
+				mTarget.y -= (1<<CSF);
+
+			mTarget.y -= height;
 		}
-		else // right up
+		else // right upper
 		{
-			const int height = ( getYDownPos() - getYPosition() )/2 + (4<<STC);
-			const int xMove = (((xDirection)<<CSF)*2)/3;
-			mTarget.x = getXMidPos() + xMove;
-			mTarget.y = getYUpPos() - height;
+			const int height = (standSpr.getHeight() << (CSF-STC)) - (8<<STC);
 
+			mClimbSpeedX = (3*PLAYER_CLIMB_SPEED_Y)/8;
+
+			const int xMove = (((xDirection)<<CSF)*2)/6;
+			const int yPos = getYPosition();
+
+			mTarget.x = getXMidPos() + xMove;
+			mTarget.y = ((yPos>>CSF)<<CSF);
+
+			int block = TileProperty[mp_Map->at((mTarget.x>>CSF), (mTarget.y>>CSF))].bup;
+
+			if(block)
+				mTarget.y -= (1<<CSF);
+
+			mTarget.y -= height;
 		}
 	}
 
 	// This is where Keen climbs the cliff up.
-	guideToTarget( VectorD2<int>(PLAYER_CLIMB_SPEED_X, PLAYER_CLIMB_SPEED_Y) );
+	guideToTarget( VectorD2<int>(mClimbSpeedX, PLAYER_CLIMB_SPEED_Y) );
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	if( getActionStatus(A_KEEN_STAND) || getActionStatus(A_KEEN_ON_PLAT) )
@@ -730,7 +756,7 @@ void CPlayerLevel::processCliffClimbing()
 
 		const int abs_x = abs(xDiff);
 		const int abs_y = abs(yDiff);
-		if( abs_x < PLAYER_CLIMB_SPEED_X && abs_y < PLAYER_CLIMB_SPEED_Y )
+		if( abs_x < mClimbSpeedX && abs_y < PLAYER_CLIMB_SPEED_Y )
 		{
 			moveDown(1<<CSF);
 			solid = true;

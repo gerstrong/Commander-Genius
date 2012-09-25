@@ -121,8 +121,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CThunderCloud(&Map, foe, x, y);
 		break;
 
+	case 11:
+		// This is an inchworm.
+		//p_newfoe = new galaxy::CInchworm(&Map, foe, x, y-250);
+		break;
+
 	case 12:
-		//This is a Bounder.
+		// This is a Bounder.
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
 		p_newfoe = new galaxy::CBounder(&Map, foe, x, y-250);
 		break;

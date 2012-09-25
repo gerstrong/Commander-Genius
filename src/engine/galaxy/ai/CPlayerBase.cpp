@@ -519,6 +519,22 @@ bool CPlayerBase::getActionStatus(int16_t ActionNumber)
 }
 
 
+int CPlayerBase::getSpriteIDFromAction(const int16_t ActionNumber)
+{
+	ActionFormatType action;
+
+	const int epID = g_pBehaviorEngine->getEpisode()-4;
+	const int relOff = mEpisodeActionNumMap[epID][ActionNumber];
+
+	action.setActionFormat(m_ActionBaseOffset + 30*relOff);
+
+	if( xDirection < 0 )
+		return action.spriteLeft;
+	else
+		return action.spriteRight;
+}
+
+
 
 void CPlayerBase::setActionForce(const size_t ActionNumber)
 {
