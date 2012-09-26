@@ -56,7 +56,6 @@ void CPoisonSlug::processCrawling()
 	// Check if there is a cliff
 	//performCliffStop(m_Action.velX<<1);
 
-
 	if( m_timer < SLUG_MOVE_TIMER )
 	{
 		m_timer++;

@@ -32,6 +32,7 @@
 #include "engine/galaxy/ai/ep4/CBlueBird.h"
 #include "engine/galaxy/ai/ep4/CThunderCloud.h"
 #include "engine/galaxy/ai/ep4/CTreasureEater.h"
+#include "engine/galaxy/ai/ep4/CInchWorm.h"
 
 // TODO: I'm note sure yet, if those are really common platforms
 #include "engine/galaxy/ai/platforms.h"
@@ -123,7 +124,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 11:
 		// This is an inchworm.
-		//p_newfoe = new galaxy::CInchworm(&Map, foe, x, y-250);
+		p_newfoe = new galaxy::CInchWorm(&Map, foe, x, y);
 		break;
 
 	case 12:
@@ -229,10 +230,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 
 	case 50:
-		//This is the CBerkeloid
+		// This is the Berkeloid
 		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
 		break;
 
+	/*case 67:
+		// This is the Foot
+		p_newfoe = new galaxy::CFoot(&Map, foe, x, y);
+		break;*/
 
 	case 71:
 		// Watermine vertical
