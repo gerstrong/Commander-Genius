@@ -13,7 +13,7 @@ CFoot::CFoot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y)
 {
 	// TODO Auto-generated constructor stub
-
 }
+
 
 } /* namespace galaxy */

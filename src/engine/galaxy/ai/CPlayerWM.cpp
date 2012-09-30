@@ -14,6 +14,8 @@
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 
+const int A_KEEN_RIDING_ON_FOOT = 94;
+
 namespace galaxy {
 
 CPlayerWM::CPlayerWM(CMap *pmap,
@@ -79,6 +81,20 @@ void CPlayerWM::process()
 		}
 		EventContainer.pop_Event();
 	}
+
+	if( EventPlayerRideFoot* ev = EventContainer.occurredEvent<EventPlayerRideFoot>() )
+	{
+		finishLevel(ev->levelObject);
+		solid = false;
+
+		// TODO: Here we need to set the coordinates calculated to where Keen has to go.
+		// target = ?
+
+		setAction(A_KEEN_RIDING_ON_FOOT);
+		mProcessPtr = &CPlayerWM::processRiding;
+	}
+
+
 
 	m_camera.process();
 	m_camera.processEvents();
@@ -194,6 +210,39 @@ void CPlayerWM::processMoving()
 			}
 
 		}
+	}
+}
+
+const int RIDE_SPEED = 32;
+
+void CPlayerWM::processRiding()
+{
+	// Ride while trying to reach the destination coords
+	// Move the player to the target
+	VectorD2<int> pos(getXPosition(), getYPosition());
+	VectorD2<int> vec = target-pos;
+
+	VectorD2<int> vec_norm = vec;
+
+	const int dist_x = abs(vec.x);
+	const int dist_y = abs(vec.y);
+
+	if(dist_x != 0)
+		vec_norm.x = vec.x/dist_x;
+	if(dist_y != 0)
+		vec_norm.y = vec.y/dist_y;
+
+	if( dist_x < RIDE_SPEED &&	dist_y < RIDE_SPEED)
+	{
+		// When he reaches the target. make him visible and start opening the elevator
+		moveDir(vec);
+		setAction(0);
+		mProcessPtr = &CPlayerWM::processMoving;
+		solid = true;
+	}
+	else
+	{
+		moveDir(vec_norm*RIDE_SPEED);
 	}
 }
 

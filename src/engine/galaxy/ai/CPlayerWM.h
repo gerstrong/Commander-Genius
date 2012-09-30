@@ -27,6 +27,9 @@ public:
 	void process();
 	void processMoving();
 
+	// Episode 4 only. When Keen is riding on the foot
+	void processRiding();
+
 	// Episode 5 and 6: Those processes make Keen walk through elevators and teleporters
 	void verifyTeleportation();
 	void processEnteringElevator();

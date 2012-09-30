@@ -60,14 +60,14 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 			mInchWormContacts++;
 		}
 
-		/*if(mInchWormContacts >= 11)
+		if(mInchWormContacts >= 11)
 		{
-			if(!g_pBehaviorEngine->m_EventList.find<CFoot>()) // if you find the event in the queue don't create another.
+			/*if(!g_pBehaviorEngine->m_EventList.find<CFoot>()) // if you find the event in the queue don't create another.
 			{
 				CFoot *foot = new CFoot( getMapPtr(), getXMidPos(), getYUpPos()-(3<<CSF), RIGHT );
 				g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( foot ) );
-			}
-		}*/
+			}*/
+		}
 	}
 
 	return true;

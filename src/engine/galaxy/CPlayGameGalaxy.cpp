@@ -305,6 +305,16 @@ void CPlayGameGalaxy::process()
 			eventContainer.add( new EventPlayerEndLevel(*ev) );
 			eventContainer.pop_Event();
 		}
+		else if( EventExitLevelWithFoot *ev = eventContainer.occurredEvent<EventExitLevelWithFoot>() )
+		{
+			g_pMusicPlayer->stop();
+			m_LevelPlay.setActive(false);
+			m_WorldMap.setActive(true);
+			m_LevelName = m_WorldMap.getLevelName();
+			m_WorldMap.loadAndPlayMusic();
+			eventContainer.add( new EventPlayerRideFoot(*ev) );
+			eventContainer.pop_Event();
+		}
 		else if( EventPlayTrack *ev =  eventContainer.occurredEvent<EventPlayTrack>() )
 		{
 			g_pMusicPlayer->stop();
