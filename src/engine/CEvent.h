@@ -46,6 +46,12 @@ struct EventExitLevel : CEvent {
 	EventExitLevel(const uint16_t l, const bool s) : levelObject(l), sucess(s){}
 };
 
+struct EventExitLevelWithFoot : CEvent {
+	const uint16_t levelObject;
+	EventExitLevelWithFoot(const uint16_t l) : levelObject(l) {}
+};
+
+
 struct EventRestartLevel : CEvent {
 
 };
@@ -56,6 +62,12 @@ struct EventPlayerEndLevel : CEvent {
 	const bool sucess;
 	EventPlayerEndLevel(const EventExitLevel ev) :
 					levelObject(ev.levelObject), sucess(ev.sucess) {}
+};
+
+struct EventPlayerRideFoot : CEvent {
+	const uint16_t levelObject;
+	EventPlayerRideFoot(const EventExitLevelWithFoot ev) :
+					levelObject(ev.levelObject) {}
 };
 
 
