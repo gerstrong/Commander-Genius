@@ -155,5 +155,16 @@ struct EventSpawnObject : CEvent {
 };
 
 
+struct EventSpawnFoot : CEvent {
+
+	const int x,y;
+	const int foeID;
+
+	EventSpawnFoot( const int lx, const int ly, const int lfoe ) :
+					  x(lx), y(ly), foeID(lfoe) {}
+};
+
+
+
 
 #endif /* CEVENT_H_ */

@@ -10,6 +10,8 @@
 #include "common/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
+#include "ai/ep4/CInchWorm.h"
+#include "ai/ep4/CFoot.h"
 #include "CLogFile.h"
 
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode) :
@@ -160,6 +162,29 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	{
 		mObjectPtr.push_back( const_cast<CGalaxySpriteObject*>(ev->pObject) );
 		EventContainer.pop_Event();
+	}
+
+	// Special Case where the Foot is created
+	if( EventSpawnFoot *ev =  EventContainer.occurredEvent<EventSpawnFoot>() )
+	{
+		// kill all the InchWorms in that case, so they can't do any spawning
+		for( obj=mObjectPtr.rbegin() ;
+			 obj!=mObjectPtr.rend() ;
+			 obj++ )
+		{
+			galaxy::CInchWorm *inchworm = dynamic_cast<galaxy::CInchWorm*>(obj->get());
+			if( inchworm != NULL )
+			{
+				inchworm->exists = false;
+			}
+		}
+
+
+		// Create the foot
+		mObjectPtr.push_back( new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, ev->x, ev->y-(5<<CSF)) );
+
+		// Flush all the pending events. This help catch cases when more than one more of the worms try to create the foot
+		EventContainer.clear();
 	}
 
 }

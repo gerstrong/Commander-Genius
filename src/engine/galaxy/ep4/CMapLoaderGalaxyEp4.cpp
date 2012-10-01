@@ -237,7 +237,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 67:
 		// This is the Foot
-		p_newfoe = new galaxy::CFoot(&Map, foe, x, y);
+		p_newfoe = new galaxy::CFoot(&Map, foe, 0x2EF4, x, y);
 		break;
 
 	case 71:
