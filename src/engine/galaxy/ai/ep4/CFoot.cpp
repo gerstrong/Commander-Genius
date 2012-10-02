@@ -14,6 +14,7 @@ namespace galaxy {
 CFoot::CFoot(CMap *pmap, const Uint16 foeID, const int actionID, const Uint32 x, const Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y)
 {
+	y -= (3<<CSF);
 	setupGalaxyObjectOnMap(actionID, 0);
 	xDirection = RIGHT;
 
