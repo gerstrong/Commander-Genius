@@ -53,7 +53,8 @@ const int CPlayerBase::mEpisodeActionNumMap[2][NUM_KEEN_ACTIONS] =
 				74, // A_KEEN_JUMP_SHOOTUP
 				77, // A_KEEN_JUMP_SHOOTDOWN
 				80, // A_KEEN_HANG
-				82  // A_KEEN_CLIMB
+				82, // A_KEEN_CLIMB
+				94	// A_KEEN_RIDING_ON_FOOT
 		},
 
 		// Episode 5
@@ -133,15 +134,6 @@ mp_processState(NULL)
 	m_camera.setPosition(m_Pos);
 }
 
-
-
-
-/*void CPlayerBase::setActionForce(const size_t ActionNumber)
-{
-	mEndOfAction = false;
-	m_ActionNumber = ActionNumber;
-	m_Action.setActionFormat(m_ActionBaseOffset + 30*mEpisodeActionNumMap[0][m_ActionNumber]);
-}*/
 
 
 

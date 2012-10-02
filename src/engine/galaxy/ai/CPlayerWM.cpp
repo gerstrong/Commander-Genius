@@ -14,8 +14,6 @@
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 
-const int A_KEEN_RIDING_ON_FOOT = 94;
-
 namespace galaxy {
 
 CPlayerWM::CPlayerWM(CMap *pmap,
@@ -53,6 +51,62 @@ m_cantswim(false)
 	mProcessPtr = &CPlayerWM::processMoving;
 }
 
+
+/**
+ * Before Keen rides on the foot we get the location where to ride
+ */
+VectorD2<int> CPlayerWM::fetchFootDestCoord()
+{
+	VectorD2<int> location1;
+	VectorD2<int> location2;
+	int coordData;
+
+	const byte *dataPtr = g_pBehaviorEngine->m_ExeFile.getRawData();
+	//const byte *dataPtr = g_pBehaviorEngine->m_ExeFile.getDSegPtr(); // only Zeros here!
+	//const byte *dataPtr = (byte*) g_pBehaviorEngine->m_ExeFile.getHeaderData();
+
+	memcpy(&coordData, dataPtr+0xDE43, sizeof(int));
+	location1.x = coordData & 0xFF;
+	memcpy(&coordData, dataPtr+0xDE58, sizeof(int));
+	location1.y = coordData & 0xFF;
+
+	memcpy(&coordData, dataPtr+0xDE78, sizeof(int));
+	location2.x = coordData & 0xFF;
+	memcpy(&coordData, dataPtr+0xDE8C, sizeof(int));
+	location2.y = coordData & 0xFF;
+
+
+	// Check for the first location
+	VectorD2<int> vec1;
+	VectorD2<int> vec2;
+
+	VectorD2<int> levelCoord;
+
+	levelCoord = getPosition();
+
+	levelCoord.x >>= CSF;
+	levelCoord.y >>= CSF;
+
+	vec1.x = levelCoord.x - location1.x;
+	vec1.y = levelCoord.y - location1.y;
+	vec2.x = levelCoord.x - location2.x;
+	vec2.y = levelCoord.y - location2.y;
+
+	const int dist1 = vec1.GetLength2();
+	const int dist2 = vec2.GetLength2();
+
+	VectorD2<int> newCoord;
+
+	if(dist2 > dist1)
+		newCoord = location2;
+	else
+		newCoord = location1;
+
+	newCoord.x <<= CSF;
+	newCoord.y <<= CSF;
+	return newCoord;
+}
+
 /**
  * The main process cycle for the player itself only on the map
  */
@@ -66,7 +120,6 @@ void CPlayerWM::process()
 	}
 	else m_animation_ticker++;
 
-	//processMoving();
 	(this->*mProcessPtr)();
 
 	// Events for the Player are processed here.
@@ -87,11 +140,15 @@ void CPlayerWM::process()
 		finishLevel(ev->levelObject);
 		solid = false;
 
-		// TODO: Here we need to set the coordinates calculated to where Keen has to go.
-		// target = ?
+		// Here we need to set the coordinates calculated to where Keen has to go.
+		target = fetchFootDestCoord();
 
-		setAction(A_KEEN_RIDING_ON_FOOT);
+		//setAction(A_KEEN_RIDING_ON_FOOT);
+		// 0x1492 seems to be the foot
+		m_Action.setActionFormat(0x1492);
+		setActionSprite();
 		mProcessPtr = &CPlayerWM::processRiding;
+		EventContainer.pop_Event();
 	}
 
 
@@ -243,6 +300,7 @@ void CPlayerWM::processRiding()
 	else
 	{
 		moveDir(vec_norm*RIDE_SPEED);
+		processActionRoutine();
 	}
 }
 
@@ -257,10 +315,6 @@ void CPlayerWM::verifyTeleportation()
 	const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
 	if(object < 0xC000 && object > 0x100)
 	{
-		//const Uint32 filter = object & 0xFFFF;
-		//const Uint32 newPosX = (filter & 0xFF00) >> 8;
-		//const Uint32 newPosY = (filter & 0x00FF);
-
 		x = (x >> CSF);
 		y = (y >> CSF);
 

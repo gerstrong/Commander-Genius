@@ -71,6 +71,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	CGalaxySpriteObject* commonfoe = CMapLoaderGalaxy::addFoe(Map, foe, x, y);
 
+
 	// If a foe was found, that is common in all the galaxy games, just return.
 	if( commonfoe )
 		return commonfoe;

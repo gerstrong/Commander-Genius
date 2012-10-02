@@ -368,7 +368,7 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 	CGalaxySpriteObject *p_newfoe = NULL;
 
 	// Point Item Sprites (Candies, etc...)
-	for( Uint32 i=61 ; i<=67 ; i++ )
+	for( Uint32 i=61 ; i<67 ; i++ )
 	{
 		if( foe == i )
 		{

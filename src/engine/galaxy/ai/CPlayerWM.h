@@ -24,6 +24,8 @@ public:
 			stCheat &Cheatmode,
 			const unsigned int actionoffset);
 
+	VectorD2<int> fetchFootDestCoord();
+
 	void process();
 	void processMoving();
 
