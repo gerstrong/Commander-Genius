@@ -26,6 +26,7 @@ m_Background(false)
 {
 	resetScrolls();
 	m_Level = 0;
+	isSecret = false;
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }
 
