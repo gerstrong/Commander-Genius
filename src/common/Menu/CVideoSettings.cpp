@@ -73,10 +73,6 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpAspectSwitch );
 
 #if !defined(EMBEDDED)
-	mpCameraButton = new CGUIButton( "Camera",
-									new OpenMenuEvent( new CCameraSettings() ) );
-	mpMenuDialog->addControl( mpCameraButton );
-
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
 												filledStrList( 7, "none", "normal2x", "normal3x", "normal4x", "scale2x", "scale3x", "scale4x" ) );
 	mpMenuDialog->addControl( mpScalerSelection );

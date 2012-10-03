@@ -11,6 +11,7 @@
 #include <SDL.h>
 #include <string>
 #include <list>
+#include "utils/Geometry.h"
 #include "engine/CEventContainer.h"
 #include "InputEvents.h"
 
@@ -150,6 +151,13 @@ class CInput : public CSingleton<CInput>
 {
 public:
 	CInput();
+
+	/**
+	 * \brief transforms a mouse click from the screen coordinates to the relative coordinates
+	 */
+	void transMouseRelCoord(CVec &Pos,
+							const SDL_MouseMotionEvent motion,
+							const CRect<Uint16> &transformRect);
 
 	void pollEvents();
 

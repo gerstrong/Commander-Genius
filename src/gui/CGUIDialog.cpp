@@ -279,7 +279,6 @@ void CGUIDialog::initEmptyBackround()
 {
 	SDL_Surface *sfc = mpBackgroundSfc.get();
 	SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );
-	//SDL_FillRect( sfc, NULL, 0x5500FF00 );
 }
 
 void CGUIDialog::initVorticonBackground( SDL_Rect Rect )

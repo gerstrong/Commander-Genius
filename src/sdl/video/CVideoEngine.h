@@ -45,6 +45,7 @@ public:
 	SDL_Surface *getScreenSurface() { return screen; }
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 	SDL_Surface *getFXSurface() { return FXSurface; }
+	CRect<Uint16> &getAspectCorrRect() { return aspectCorrectionRect; }
 
 	void resetScrollbuffer()
 	{

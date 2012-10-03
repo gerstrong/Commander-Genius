@@ -451,6 +451,16 @@ void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player
 bool CInput::isAnalog(const int player) { return mAnalogAxesMovement[player]; }
 void CInput::enableAnalog(const int player, const bool value) { mAnalogAxesMovement[player]=value; }
 
+
+void CInput::transMouseRelCoord(CVec &Pos,
+								const SDL_MouseMotionEvent motion,
+								const CRect<Uint16> &transformRect)
+{
+	Pos.x = ( static_cast<float>(motion.x-transformRect.x)/static_cast<float>(transformRect.w) );
+	Pos.y = ( static_cast<float>(motion.y-transformRect.y)/static_cast<float>(transformRect.h) );
+}
+
+
 /**
  * \brief	Called every logic cycle. This triggers the events that occur and process them trough various functions
  */
@@ -509,21 +519,18 @@ void CInput::pollEvents()
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
-			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
+			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mp_VideoEngine->getAspectCorrRect());
+			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
-			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
+			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mp_VideoEngine->getAspectCorrRect());
+			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
 			break;
 
 		case SDL_MOUSEMOTION:
-			Pos.x = ( static_cast<float>(Event.motion.x)/static_cast<float>(Res.w) );
-			Pos.y = ( static_cast<float>(Event.motion.y)/static_cast<float>(Res.h) );
-			m_EventList.add(	new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
+			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mp_VideoEngine->getAspectCorrRect());
+			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
 			break;
 		}
 	}

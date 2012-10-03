@@ -14,11 +14,17 @@ namespace galaxy {
 CFoot::CFoot(CMap *pmap, const Uint16 foeID, const int actionID, const Uint32 x, const Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y)
 {
-	moveUp(3<<CSF);
 	setupGalaxyObjectOnMap(actionID, 0);
 	xDirection = RIGHT;
 
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	m_Pos.y -= (rSprite.getHeight()<<(CSF-STC));
+	m_Pos.y -= (1<<CSF);
+
+	honorPriority = true;
+
 	performCollisions();
+	processActionRoutine();
 }
 
 void CFoot::getTouchedBy(CSpriteObject &theObject)

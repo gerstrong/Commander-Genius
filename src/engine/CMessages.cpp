@@ -76,10 +76,10 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 
 			// Elder Janitor Text. Strangely it is the end of the level load text being to only
 			// in that data segment
-			StringMap.insert( extractString( "JANITOR_TEXT1", 0x1F57F, 0x1F5DF ) );
-			StringMap.insert( extractString( "JANITOR_TEXT2", 0x1F5DF, 0x1F62F ) );
-			StringMap.insert( extractString( "JANITOR_TEXT3", 0x1F630, 0x1F650 ) );
-			StringMap.insert( extractString( "JANITOR_TEXT4", 0x1F650, 0x1F680 ) );
+			StringMap.insert( extractString( "JANITOR_TEXT1", 0x1F580, 0x1F5DF ) );
+			StringMap.insert( extractString( "JANITOR_TEXT2", 0x1F5E0, 0x1F62F ) );
+			StringMap.insert( extractString( "JANITOR_TEXT3", 0x1F630, 0x1F64F ) );
+			StringMap.insert( extractString( "JANITOR_TEXT4", 0x1F650, 0x1F688 ) );
 
 
 			// Now the spoken Messages of some Characters like Lindsey and the elders

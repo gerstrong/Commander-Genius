@@ -118,6 +118,9 @@ void CSpriteObject::performCollisions()
 // Basic slope move independent of the left or right move
 void CSpriteObject::adjustSlopedTiles( int x, int y1, int y2, const int xspeed )
 {
+	if(!solid)
+		return;
+
 	// process the sloped tiles here. Galaxy only or special patch!!
 	if(g_pBehaviorEngine->getEpisode() > 3)
 	{

@@ -19,6 +19,7 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	// Keen 4 Bitmap IDs
 	m_BitmapNameMap[0][97]  = "KEENSWATCH";
 	m_BitmapNameMap[0][103] = "TITLE";
+	m_BitmapNameMap[0][105] = "KEENTALKING";
 	m_BitmapNameMap[0][106] = "KEENTHUMBSUP";
 	m_SpriteNameMap[0][129] = "HUDBACKGROUND";
 

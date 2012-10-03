@@ -33,6 +33,9 @@ public:
 	/** Normal process routine */
 	void process();
 
+	/** called when keen talks to the janitor. Happens in the secret level*/
+	void performJanitorMode();
+
 	void getTouchedBy(CSpriteObject &theObject);
 
 private:

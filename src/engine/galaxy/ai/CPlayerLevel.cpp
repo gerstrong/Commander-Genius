@@ -162,7 +162,7 @@ const int POGO_START_INERTIA = 125; // 48 In K5 Disassemble
 
 void CPlayerLevel::makeHimStand()
 {
-	if(supportedbyobject)
+	if(supportedbyobject && g_pBehaviorEngine->getEpisode() == 5)
 		setAction(A_KEEN_ON_PLAT);
 	else
 		setAction(A_KEEN_STAND);
@@ -395,7 +395,7 @@ void CPlayerLevel::processStanding()
 		return;
 	}
 
-	if( getActionStatus(A_KEEN_STAND) )
+	if( getActionStatus(A_KEEN_STAND) && !supportedbyobject )
 	{
 		user1 += g_pTimer->getTicksPerFrame();
 

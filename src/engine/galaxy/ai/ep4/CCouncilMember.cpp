@@ -105,6 +105,28 @@ void CCouncilMember::process()
 }
 
 
+void CCouncilMember::performJanitorMode()
+{
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+
+	std::string elder_text[4];
+
+	elder_text[0] = g_pBehaviorEngine->getString("JANITOR_TEXT1");
+	elder_text[1] = g_pBehaviorEngine->getString("JANITOR_TEXT2");
+	elder_text[2] = g_pBehaviorEngine->getString("JANITOR_TEXT3");
+	elder_text[3] = g_pBehaviorEngine->getString("JANITOR_TEXT4");
+
+	std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
+
+	msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT) );
+	msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[1], LEFT) );
+	msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTALKING"), elder_text[2], RIGHT) );
+	msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[3], LEFT) );
+
+	EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+
+	rescued = true;
+}
 
 
 void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
@@ -121,6 +143,13 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 		// TODO: In this part we have to check which level we are and send the proper messages
+
+		if(mp_Map->isSecret)
+		{
+			performJanitorMode();
+			return;
+		}
+
 
 		g_pSound->playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
 		EventContainer.add( new EventPlayTrack(5) );
@@ -152,11 +181,8 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
 
 		// If the level is secret don't exit yes
-		if(!mp_Map->isSecret)
-		{
-			EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
-			rescuedelders++;
-		}
+		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		rescuedelders++;
 
 		rescued = true;
 	}

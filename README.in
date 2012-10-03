@@ -5,6 +5,7 @@
     (c)2008-2012            Gerstrong       
     (c)2009-2012            Albert          
     (c)2009-2012            Tulip           
+    (c)2009-2012            NY00123
 
 Porting:
     (c)2009-2012            Pizza2004 (MacOs X)
@@ -25,12 +26,13 @@ made for it.  All of the original data files
 are required to do so, however, we convienently
 include Episode 1 and 4 for your enjoyment.
 
-So far Commander Keen 1-4 are supported. Keen 1-3
-have full support. Keen 4 has partial support, it's entire
-gameplay is there, but some things are missing, but are being added
+So far Commander Keen 1-5 are supported. Keen 1-3
+have full support. Keen 4 some support, it's entire
+gameplay is there, but some things are missing, 
+but are being added as the version number advances
 
 Commander Genius runs on Linux/X11, Windows,
-MacOS X, Wiz, GP2X and the iPhone, with plans
+MacOS X, Wiz, and GP2X, with plans
 to release on other platforms in the future.
 If you think you would like to port it,
 please send us a message and we will do our
@@ -39,6 +41,7 @@ best to help you.
 The main goal of Commander Genius is to copy
 the original gameplay feeling as much as possible, 
 although there're also a number of improvements like:
+
 - Mod Support
 - OpenGL Acceleration
 - Better graphical Effects
@@ -47,9 +50,46 @@ although there're also a number of improvements like:
   provide better sounds and even music you might never have heard
   in this game before
 - Ingame Menu
-- Named Save Slots
+- Named save slots
 - Unrestricted Joystick Support
 - and many more!
+
+
+- Mission -
+===========
+
+The mission of Commmander Genius held by opensource developers is to revive
+the gameplay experience games we had in the 90s when those games were popular.
+
+Now modern hardware offers much more, than what we had since. Commander Genius
+tries to take advantage of that modern hardware and yet bring an awesome 
+bit of old school experience to the Commander Keen games.
+
+It is bit hard to define what that experience is obviously because many people
+experienced that gameplay differently. Some people had soundblaster, others didn't.
+Some had a joystick, others prefered keyboard.
+
+So getting an experience like old school is difficult for everyone.
+
+So what does Commander Genius do? Interpreting those games on modern systems. 
+It can draw more colors on your screen and fix issues the original 
+games had back then. For example Vorticon Keen has two-button firing as option. 
+All buttons can be mapped to any input device. Well, the mouse is still for menus.
+
+The original Keen games also have some bugs and given that the hardware 
+was very limited back then, it has some weird frameskips. There are many details
+that are different in when using Commander Genius. So the conclusion is as follows.
+
+If you really want a vanilla feeling, even feel the lack of hardware support and 
+eventual slowdowns, we encourage you playing Commander Keen on Dosbox. 
+Many people are out there that think to be the right way to play it.
+
+Commander Genius wants to be more like a new Jump'n'Run game that interprets 
+Commander Keen. Billy Blaze visits all the levels you played before in the 
+DOS-Version taking advantage of your powerful computer or smartphone. 
+That's strength of Commander Genius! if you are one of those people who want
+to experience Commander Keen some new ways, then this is the software for you!
+
 
 
 - History -
@@ -74,13 +114,21 @@ original CloneKeen code.
 
 The Commander Genius source code may be freely 
 distributed and modified as per the GPL, just
-please remember to give credit to the original
-authors. We worked very hard on it!
+remember to give credit to the original
+authors. We work very hard on on this project!
 
 - Setup  -
 ==========
 
-We suppose you already have installed the copy of your game, so what's next, well?
+You have two options:
+
+1.- Get one of the bundled versions, run it's setup and you can play episodes 1 and 4. 
+Those games are in a directory where you can put other Keen games and mods. That subdirectory
+is called "games". Anyway you can start playing right off those two games. Enjoy!
+
+If you want to accostumize more out of it, well then continue reading
+
+2.- We suppose you already have installed the copy of your game, so what's next, well?
 
 Setting up the data of the game:
 
@@ -203,7 +251,7 @@ Q: Commander Genius is slow? Please help!
 A: You can decrease the fps under settings->video. OpenGL may also help on some systems with ScaleX disabled. 
    Try to lower the resolution, a lower filter, or decrease some stuff in the sounds section.
    Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
-   the program. Also HQP requires more resources. Take that into the mind.
+   the program. Also HQP requires more resources.
    
 Q: When can I play Keen 4, 5 and 6 on CG?
 A: Well, Keen 4 is mostly playable, but some enemies are missing as also other features, like cutscenes and help screen.

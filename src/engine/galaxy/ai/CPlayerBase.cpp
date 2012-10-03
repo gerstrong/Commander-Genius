@@ -242,8 +242,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	// Deadly hazards! Here Keen dying routine will be triggered
 	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 1<<STC))
 	{
-		if(!m_Cheatmode.god)
-			kill();
+		kill();
 	}
 
 	// Another property of the tiles may kill keen, also in god mode
@@ -253,7 +252,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	const int tileIDr = mp_Map->getPlaneDataAt(1, l_x+l_w, (l_y+l_h)+(1<<STC));
 	if(Tile[tileIDl].bup == 9 && Tile[tileIDr].bup == 9 )
 	{
-		kill();
+		kill(true);
 	}
 
 
@@ -462,8 +461,11 @@ void CPlayerBase::processGetEaten()
 
 
 
-void CPlayerBase::kill()
+void CPlayerBase::kill(const bool force)
 {
+	if(m_Cheatmode.god && !force)
+		return;
+
 	// Here were prepare Keen to die, setting the action to die
 	if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
 		return;

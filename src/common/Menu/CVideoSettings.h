@@ -44,7 +44,6 @@ private:
 	CGUISwitch			*mpVSyncSwitch;
 	CGUISwitch			*mpShowFPSSwitch;
 	CGUISwitch			*mpSFXSwitch;
-	CGUIButton			*mpCameraButton;
 	CGUIButton			*mpFullScreenSwitch;
 	CGUIComboSelection	*mpResolutionSelection;
 

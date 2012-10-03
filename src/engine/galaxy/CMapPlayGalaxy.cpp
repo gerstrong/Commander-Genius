@@ -90,10 +90,6 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 				// Process the AI of the object as it's given
 				p_Object->process();
 
-				// Check the post-collision stuff, where some
-				// sprites are pushed out in case they get stuck
-				//p_Object->processPushOutCollision();
-
 				// process all the objects' events
 				p_Object->processEvents();
 
@@ -181,7 +177,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 
 
 		// Create the foot
-		mObjectPtr.push_back( new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, ev->x, ev->y-(2<<CSF)) );
+		mObjectPtr.push_back( new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, ev->x, ev->y-(4<<CSF)) );
 
 		// Flush all the pending events. This help catch cases when more than one more of the worms try to create the foot
 		EventContainer.clear();

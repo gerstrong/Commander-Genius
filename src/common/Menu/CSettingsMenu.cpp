@@ -7,6 +7,7 @@
 
 #include "CSettingsMenu.h"
 #include "CVideoSettings.h"
+#include "CCameraSettings.h"
 #include "CAudioSettings.h"
 #include "COptions.h"
 #include "CControlsettings.h"
@@ -47,6 +48,12 @@ CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 #else
 	mpMenuDialog->addControl(new CGUIButton( "Controls",
 									new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
+#endif
+
+
+#if !defined(EMBEDDED)
+	mpMenuDialog->addControl( new CGUIButton( "Camera",
+									new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
 
 	mpMenuDialog->addControl(new CGUIButton( "Profile",
