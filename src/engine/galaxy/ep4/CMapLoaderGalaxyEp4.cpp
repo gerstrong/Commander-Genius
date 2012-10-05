@@ -123,7 +123,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		//This is the Thunder Cloud
 		p_newfoe = new galaxy::CThunderCloud(&Map, foe, x, y);
 		break;
-
+		
+	case 10:
+		// This is the Foot
+		Map.isSecret = true;
+		p_newfoe = new galaxy::CFoot(&Map, foe, 0x2EF4, x, y);
+		break;
+		
 	case 11:
 		// This is an inchworm.
 		p_newfoe = new galaxy::CInchWorm(&Map, foe, x, y);
@@ -234,12 +240,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 50:
 		// This is the Berkeloid
 		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
-		break;
-
-	case 67: // TODO: Still wrong!
-		// This is the Foot
-		Map.isSecret = true;
-		p_newfoe = new galaxy::CFoot(&Map, foe, 0x2EF4, x, y);
 		break;
 
 	case 71:
