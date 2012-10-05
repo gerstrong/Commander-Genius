@@ -16,7 +16,6 @@
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
-#include "graphics/effects/CColorMerge.h"
 #include "engine/spritedefines.h"
 #include <stdlib.h>
 

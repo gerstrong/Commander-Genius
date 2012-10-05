@@ -24,7 +24,7 @@
 class CColorMerge : public CEffects
 {
 public:
-	CColorMerge(Uint8 speed);
+	CColorMerge(const Uint8 speed);
 
 	void process();
 

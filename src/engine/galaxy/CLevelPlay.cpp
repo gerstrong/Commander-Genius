@@ -11,6 +11,7 @@
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
+#include "graphics/effects/CColorMerge.h"
 #include "dialog/CMessageBoxBitmapGalaxy.h"
 #include "CLogFile.h"
 
@@ -50,12 +51,17 @@ void CLevelPlay::loadMap(const int level)
 void CLevelPlay::reloadLevel()
 {
 	loadMap( mMap.getLevel() );
+	// Create the special merge effect (Fadeout)
+	g_pGfxEngine->setupEffect(new CColorMerge(8));	
 }
 
 bool CLevelPlay::loadLevel(const Uint16 level)
 {
 	loadMap( level );
-
+	
+	// Create the special merge effect (Fadeout)
+	g_pGfxEngine->setupEffect(new CColorMerge(8));
+	
     // Add the load message
     const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
     const std::string loading_text = g_pBehaviorEngine->getString(level_text);

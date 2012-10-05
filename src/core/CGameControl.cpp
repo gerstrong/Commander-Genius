@@ -121,15 +121,13 @@ void CGameControl::process()
 	// Process the game control object if no effects are being processed
 	mpEngine->process();
 
-	if(!g_pGfxEngine->runningEffect())
-	{
-		gpMenuController->process();
-	}
-	else // but if some Command is triggered, cancel the effect
+	if(g_pGfxEngine->runningEffect())
 	{
 		if( g_pInput->getPressedAnyCommand() || g_pInput->mouseClicked() )
 		{
 			g_pGfxEngine->killEffect();
 		}
 	}
+	
+	gpMenuController->process();
 }

@@ -236,7 +236,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
 		break;
 
-	case 67:
+	case 67: // TODO: Still wrong!
 		// This is the Foot
 		Map.isSecret = true;
 		p_newfoe = new galaxy::CFoot(&Map, foe, 0x2EF4, x, y);

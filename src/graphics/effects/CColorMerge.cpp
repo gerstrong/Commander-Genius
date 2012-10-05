@@ -10,7 +10,7 @@
 #include "CColorMerge.h"
 #include "sdl/CVideoDriver.h"
 
-CColorMerge::CColorMerge(Uint8 speed) :
+CColorMerge::CColorMerge(const Uint8 speed) :
 m_Speed(speed),
 m_Alpha(0)
 {
@@ -33,10 +33,16 @@ void CColorMerge::process()
 
 	SDL_BlitSurface( mpOldSurface.get(), NULL,
 					 g_pVideoDriver->getBlitSurface(), NULL );
+	
+	const int sum = m_Alpha + m_Speed;
 
-	if(m_Alpha + m_Speed > 255) m_Alpha = 255;
-	else m_Alpha += m_Speed;
-
-	if(m_Alpha == 255) mFinished = true;
-
+	if(sum > 255)
+	{
+	  m_Alpha = 255;
+	  mFinished = true;
+	}
+	else 
+	{
+	  m_Alpha += m_Speed;
+	}
 }

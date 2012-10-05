@@ -130,36 +130,30 @@ void CGame::run()
         logicTicks = g_pTimer->TimeToLogic();
         for (logicLoopVar = 0; logicLoopVar < logicTicks; logicLoopVar++)
         {
-            // Poll Inputs
-            g_pInput->pollEvents();
+		// Poll Inputs
+		g_pInput->pollEvents();
 
-			// Process Game Control
-			m_Engine.process();
+		// Process Game Control
+		m_Engine.process();			
         }
 		
 
         // Render the Screen
-        if(!g_pVideoDriver->mDrawTasks.empty() && g_pTimer->TimeToRender())
+        if(g_pTimer->TimeToRender() && !g_pVideoDriver->mDrawTasks.empty())
         {
-
         	// Here we try to process all the drawing related Tasks not yet done
-        	g_pVideoDriver->pollDrawingTasks();
+		g_pVideoDriver->pollDrawingTasks();
 
         	// Pass all the surfaces to one
         	g_pVideoDriver->collectSurfaces();
-
-
-        	// Apply graphical effects if any
+		
+		// Apply graphical effects if any. It does not render, it only prepares for the rendering task.
         	g_pGfxEngine->process();
-
-
-			// Now you really render the screen
+		
+		// Now you really render the screen
         	// When enabled, it also will apply Filters
-            g_pVideoDriver->updateScreen();
-
+		g_pVideoDriver->updateScreen();
         }
-
-        //g_pVideoDriver->clearDrawingTasks();
 
         // delay time remaining in current loop
         g_pTimer->TimeToDelay();
