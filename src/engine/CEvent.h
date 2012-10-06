@@ -152,7 +152,6 @@ struct EventSendSelectionDialogMsg : CEvent {
 	}
 };
 
-
 /**
  *	\description This event will spawn a new object
  *

@@ -142,7 +142,8 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 {
 	m_Inventory.Item.m_lifes++;
 	g_pSound->playSound( SOUND_EXTRA_LIFE );
-	m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10]));
+	if(display)
+	    m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10]));
 }
 
 
@@ -267,7 +268,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 		if(m_Item.m_drops >= 100)
 		{
 			m_Item.m_drops = 0;
-			getAnotherLife(lc_x, lc_y, false);
+			getAnotherLife(lc_x, lc_y, true);
 		}
 
 		g_pSound->playSound( SOUND_GET_DROP );

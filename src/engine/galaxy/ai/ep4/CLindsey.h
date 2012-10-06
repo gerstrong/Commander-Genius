@@ -25,6 +25,7 @@ public:
 private:
 	int m_timer;
 	std::map<int, std::string>	answermap;
+	bool prepareToVanish;
 };
 
 } /* namespace galaxy */

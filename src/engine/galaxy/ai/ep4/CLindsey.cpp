@@ -15,7 +15,8 @@ const int LINDSEY_MOVE_TIME = 60;
 
 CLindsey::CLindsey(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
-m_timer(0)
+m_timer(0),
+prepareToVanish(false)
 {
 	setupGalaxyObjectOnMap(0x38EA, 0);
 
@@ -30,22 +31,25 @@ m_timer(0)
 
 void CLindsey::process()
 {
-	if(m_timer <= 0)
-	{
-		m_timer = LINDSEY_MOVE_SPEED;
-		yDirection = (yDirection==UP) ? DOWN : UP;
-	}
-
-
-	if(yDirection == UP)
-		moveUp(LINDSEY_MOVE_SPEED);
-	else
-		moveDown(LINDSEY_MOVE_SPEED);
-
-	m_timer--;
-
-	if(!processActionRoutine())
-			exists = false;
+    if(prepareToVanish)
+	exists = false;
+    
+    if(m_timer <= 0)
+    {
+	m_timer = LINDSEY_MOVE_SPEED;
+	yDirection = (yDirection==UP) ? DOWN : UP;
+    }
+    
+    
+    if(yDirection == UP)
+	moveUp(LINDSEY_MOVE_SPEED);
+    else
+	moveDown(LINDSEY_MOVE_SPEED);
+    
+    m_timer--;
+    
+    if(!processActionRoutine())
+	exists = false;
 }
 
 void CLindsey::getTouchedBy(CSpriteObject &theObject)
@@ -82,9 +86,8 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 		msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), lindsey_text[2], RIGHT) );
 
 		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
-
-
-		exists = false;
+		
+		prepareToVanish = true;
 	}
 }
 

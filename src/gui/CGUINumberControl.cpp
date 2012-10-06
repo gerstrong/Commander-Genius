@@ -22,11 +22,11 @@ const int SLIDER_WIDTH = 16;
 
 
 CGUINumberControl::CGUINumberControl(	const std::string& text,
-										const int startValue,
-										const int endValue,
-										const int deltaValue,
-										const int value,
-										const bool slider ) :
+					const int startValue,
+					const int endValue,
+					const int deltaValue,
+					const int value,
+					const bool slider ) :
 mText(text),
 mStartValue(startValue),
 mEndValue(endValue),
