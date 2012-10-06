@@ -104,8 +104,8 @@ void CCamera::process(const bool force)
 		}
 	}
 
-	const Uint16 scroll_x = mp_Map->m_scrollx;
-	const Uint16 scroll_y = mp_Map->m_scrolly;
+	Uint16 &scroll_x = mp_Map->m_scrollx;
+	Uint16 &scroll_y = mp_Map->m_scrolly;
 
 	// delta is how much we need to scroll in order to get the camera stalled
 	int delta_x = (getXPosition()>>STC)-scroll_x;

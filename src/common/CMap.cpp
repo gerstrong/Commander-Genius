@@ -166,7 +166,7 @@ bool CMap::findVerticalScrollBlocker(const int x)
 	    right++;
 	}
 	
-	return true;
+	return true;	
 }
 
 
