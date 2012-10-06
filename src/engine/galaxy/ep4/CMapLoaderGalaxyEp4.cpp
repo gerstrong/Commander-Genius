@@ -188,11 +188,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
 		break;
 
-	/*case 25:
-		// This is Skypest.
-		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
-		break;*/
-
 
 	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, UP, 0x316A); break;

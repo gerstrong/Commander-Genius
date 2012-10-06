@@ -123,14 +123,16 @@ void CCamera::process(const bool force)
 	{
 		do{
 			delta_x = (getXPosition()>>STC)-scroll_x;
-			mp_Map->scrollRight();
+			if(!mp_Map->scrollRight())
+			    break;
 		}while(delta_x > right+speed && scroll_x < mp_Map->m_maxscrollx);
 	}
 	else if(delta_x < left && scroll_x > 32)
 	{
 		do{
 			delta_x = (getXPosition()>>STC)-scroll_x;
-			mp_Map->scrollLeft();
+			if(!mp_Map->scrollLeft())
+			    break;
 		}while(delta_x < left-speed && scroll_x > 32);
 	}
 

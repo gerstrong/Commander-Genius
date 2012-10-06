@@ -272,7 +272,8 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
     Map.m_maxscrollx = (Map.m_width<<4) - gamerect.w - 32;
     Map.m_maxscrolly = (Map.m_height<<4) - gamerect.h - 32;
-
+    Map.collectBlockersCoordiantes();
+    
     // Set Scrollbuffer
     g_pVideoDriver->updateScrollBuffer(Map);
 

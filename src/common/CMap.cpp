@@ -110,22 +110,90 @@ word *CMap::getBackgroundData()
 	return m_Plane[0].getMapDataPtr();
 }
 
-bool CMap::findHorizontalScrollBlocker(const int y)
+void CMap::collectBlockersCoordiantes()
 {
-	if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
-		return false;
+    scrollBlockX.clear();
+    scrollBlockY.clear();
 
-	const int map_y = (y>0) ? (y>>CSF) : 0; // we can't have negative values here!
-	const word* row_ptr = m_Plane[2].getMapDataPtr()+map_y*m_width;
-
-	for(int x=0 ; x<(int)m_width ; x++)
+    scrollBlockY.push_back(1<<CSF);
+    scrollBlockX.push_back(1<<CSF);
+ 
+    if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+    {
+	const word* map_ptr = m_Plane[2].getMapDataPtr();
+	
+	for(int y=0 ; y<(int)m_height ; y++)
 	{
-		// Check the row for a blocker which has the value 0x19
-		if(*row_ptr == 0x19)
-			return true;
-		row_ptr++;
+	    for(int x=0 ; x<(int)m_width ; x++)
+	    {
+		// Check the row for a blocker which has the proper value
+		if(*map_ptr == 0x19)
+		    scrollBlockY.push_back(y<<(CSF));
+		if(*map_ptr == 0x1A)
+		    scrollBlockX.push_back(x<<(CSF));
+		map_ptr++;
+	    }
 	}
-	return false;
+	
+    }
+    
+    scrollBlockY.push_back((m_height-1)<<(CSF));
+    scrollBlockX.push_back((m_width-1)<<(CSF));
+	
+}
+
+
+bool CMap::findVerticalScrollBlocker(const int x)
+{    	
+	std::vector<int>::iterator left = scrollBlockX.begin();
+	std::vector<int>::iterator right= left;
+	right++;
+	
+	for( ; right != scrollBlockX.end() ; )
+	{
+	    const int blockXleft = *left;
+	    const int blockXright = *right;
+	    
+	    if( x > blockXleft && x < blockXright )
+	    {
+		if(x-(1<<CSF) <= blockXleft)
+		    break;
+
+		return false;
+	    }
+	    
+	    left++;
+	    right++;
+	}
+	
+	return true;
+}
+
+
+bool CMap::findHorizontalScrollBlocker(const int y)
+{	
+	std::vector<int>::iterator up = scrollBlockY.begin();
+	std::vector<int>::iterator down= up;
+	down++;
+	
+	for( ; down != scrollBlockY.end() ; )
+	{
+	    const int blockYup = *up;
+	    const int blockYdown = *down;
+	    
+	    if( y > blockYup && y < blockYdown )
+	    {
+		if(y-(1<<CSF) <= blockYup)
+		    break;
+
+		return false;
+	    }
+	    
+	    up++;
+	    down++;
+	}
+	
+	return true;
 }
 
 // searches the map's object layer for object OBJ.
@@ -259,6 +327,12 @@ bool CMap::gotoPos(int x, int y)
 // scrolls the map one pixel right
 bool CMap::scrollRight(const bool force)
 {
+        const int res_width = g_pVideoDriver->getGameResolution().w;
+    
+    	if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
+		return false;
+
+    
 	if(m_scrollx < ((m_width-2)<<4) - g_pVideoDriver->getGameResolution().w)
 	{
 		m_scrollx++;
@@ -280,6 +354,9 @@ bool CMap::scrollRight(const bool force)
 // scrolls the map one pixel left
 bool CMap::scrollLeft(const bool force)
 {
+    	if( !force && findVerticalScrollBlocker((m_scrollx-2)<<STC) )
+		return false;
+    
 	if( m_scrollx > 32 )
 	{
 		m_scrollx--;
@@ -334,7 +411,7 @@ bool CMap::scrollDown(const bool force)
 
 bool CMap::scrollUp(const bool force)
 {
-	if( !force && findHorizontalScrollBlocker(m_scrolly<<STC) )
+	if( !force && findHorizontalScrollBlocker((m_scrolly-1)<<STC) )
 		return false;
 
 	if( m_scrolly > 32 )

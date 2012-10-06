@@ -183,6 +183,7 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
 	mpMap->m_maxscrollx = (mpMap->m_width<<4) - gamerect.w - 32;
 	mpMap->m_maxscrolly = (mpMap->m_height<<4) - gamerect.h - 32;
+	mpMap->collectBlockersCoordiantes();
 
 	// Set Map Delegation Object. This only gets the Pointer to the map instances x-y-scroll-buffers
 	g_pVideoDriver->updateScrollBuffer( mpMap );

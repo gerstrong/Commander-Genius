@@ -94,6 +94,12 @@ public:
 	word *getData(Uint8 PlaneNum);
 	word *getForegroundData();
 	word *getBackgroundData();
+	
+	/**
+	 * This awesome method collects the coordinates in where the blockers are, so the checking routine obtains them at a faster way
+	 */
+	void collectBlockersCoordiantes();
+	
 
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
 	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
@@ -115,7 +121,9 @@ public:
 
 private:
     
+	bool findVerticalScrollBlocker(const int x);
     	bool findHorizontalScrollBlocker(const int y);
+	
 
 
 	Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe
@@ -134,6 +142,8 @@ private:
 	bool m_Background; // This variable holds, whether we have a background to draw or not.
 	Uint16 m_Level;
 	std::string m_LevelName;
+	std::vector<int> scrollBlockX;
+	std::vector<int> scrollBlockY;
 };
 
 
