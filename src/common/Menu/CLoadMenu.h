@@ -9,21 +9,11 @@
 #define CLOADMENU_H_
 
 #include "CBaseMenu.h"
-#include "fileio/CSaveGameController.h"
 
 class CLoadMenu : public CBaseMenu
 {
 public:
 	CLoadMenu();
-
-	//void init();
-
-	//void process();
-
-	//void release();
-
-private:
-	//CSaveGameController &m_SavedGame;
 };
 
 #endif /* CLOADMENU_H_ */

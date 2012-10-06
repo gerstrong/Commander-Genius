@@ -14,12 +14,10 @@
 #include "common/options.h"
 #include "common/Menu/CMenuController.h"
 #include "core/CBaseEngine.h"
-#include "fileio/CSaveGameController.h"
 #include "engine/CEGAGraphics.h"
 #include "engine/CMessages.h"
 #include "engine/CPassive.h"
 #include "engine/playgame/CPlayGame.h"
-#include "core/CGameControl.h"
 #include "core/mode/CGameMode.h"
 #include "SmartPointer.h"
 

@@ -12,7 +12,6 @@
 
 #include "engine/CEvent.h"
 #include "engine/infoscenes/CInfoScene.h"
-#include "fileio/CSaveGameController.h"
 #include <string>
 
 ///////////////////////

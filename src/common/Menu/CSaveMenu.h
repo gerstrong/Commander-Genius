@@ -9,7 +9,6 @@
 #define CSAVEMENU_H_
 
 #include "CConfirmMenu.h"
-#include "fileio/CSaveGameController.h"
 
 class CSaveMenu : public CBaseMenu
 {

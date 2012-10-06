@@ -121,44 +121,43 @@ bool CGame::loadCKPDrivers()
  */
 void CGame::run()
 {
-	int logicTicks, logicLoopVar;
-
-	do
+    int logicTicks, logicLoopVar;
+    
+    do
+    {
+	
+	// Perform game logic
+	logicTicks = g_pTimer->TimeToLogic();
+	for (logicLoopVar = 0; logicLoopVar < logicTicks; logicLoopVar++)
 	{
-
-        // Perform game logic
-        logicTicks = g_pTimer->TimeToLogic();
-        for (logicLoopVar = 0; logicLoopVar < logicTicks; logicLoopVar++)
-        {
-		// Poll Inputs
-		g_pInput->pollEvents();
-
-		// Process Game Control
-		m_Engine.process();			
-        }
-		
-
-        // Render the Screen
-        if(g_pTimer->TimeToRender() && !g_pVideoDriver->mDrawTasks.empty())
-        {
-        	// Here we try to process all the drawing related Tasks not yet done
-		g_pVideoDriver->pollDrawingTasks();
-
-        	// Pass all the surfaces to one
-        	g_pVideoDriver->collectSurfaces();
-		
-		// Apply graphical effects if any. It does not render, it only prepares for the rendering task.
-        	g_pGfxEngine->process();
-		
-		// Now you really render the screen
-        	// When enabled, it also will apply Filters
-		g_pVideoDriver->updateScreen();
-        }
-
-        // delay time remaining in current loop
-        g_pTimer->TimeToDelay();
-
-	} while(!m_Engine.mustShutdown() &&
-			!g_pInput->getExitEvent());
+	    // Poll Inputs
+	    g_pInput->pollEvents();
+	    
+	    // Process Game Control
+	    m_Engine.process();			
+	}
+	
+	
+	// Render the Screen
+	if(g_pTimer->TimeToRender() && !g_pVideoDriver->mDrawTasks.empty())
+	{
+	    // Here we try to process all the drawing related Tasks not yet done
+	    g_pVideoDriver->pollDrawingTasks();
+	    
+	    // Pass all the surfaces to one
+	    g_pVideoDriver->collectSurfaces();
+	    
+	    // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
+	    g_pGfxEngine->process();
+	    
+	    // Now you really render the screen
+	    // When enabled, it also will apply Filters
+	    g_pVideoDriver->updateScreen();
+	}
+	
+	// delay time remaining in current loop
+	g_pTimer->TimeToDelay();
+	
+    } while(!m_Engine.mustShutdown() && !g_pInput->getExitEvent());
 }
 

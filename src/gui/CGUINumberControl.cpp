@@ -13,6 +13,7 @@
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/CTimer.h"
+#include "StringUtils.h"
 
 int CGUINumberControl::mTwirliconID = 10;
 
@@ -125,7 +126,6 @@ void CGUINumberControl::setupButtonSurface()
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
-	//sliderVal(mValue);
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
 	mpTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
 	mpTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));

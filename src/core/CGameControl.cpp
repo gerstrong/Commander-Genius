@@ -12,6 +12,7 @@
 #include "fileio.h"
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
+#include "fileio/CSaveGameController.h"
 
 #include "common/Menu/CMenuController.h"
 
