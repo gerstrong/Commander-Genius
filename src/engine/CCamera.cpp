@@ -125,7 +125,7 @@ void CCamera::process(const bool force)
 			delta_x = (getXPosition()>>STC)-scroll_x;
 			if(!mp_Map->scrollRight())
 			    break;
-		}while(delta_x > right+speed && scroll_x < mp_Map->m_maxscrollx);
+		}while(delta_x > right+speed /*&& scroll_x < mp_Map->m_maxscrollx*/);
 	}
 	else if(delta_x < left && scroll_x > 32)
 	{
@@ -133,7 +133,7 @@ void CCamera::process(const bool force)
 			delta_x = (getXPosition()>>STC)-scroll_x;
 			if(!mp_Map->scrollLeft())
 			    break;
-		}while(delta_x < left-speed && scroll_x > 32);
+		}while(delta_x < left-speed /*&& scroll_x > 32*/);
 	}
 
 	// up-down scrolling
@@ -143,7 +143,7 @@ void CCamera::process(const bool force)
 			delta_y = (getYPosition()>>STC)-scroll_y;
 			if(!mp_Map->scrollDown())
 				break;
-		}while(delta_y > down+speed && scroll_y < mp_Map->m_maxscrolly);
+		}while(delta_y > down+speed /*&& scroll_y < mp_Map->m_maxscrolly*/);
 	}
 	else if ( delta_y < up && scroll_y > 32 )
 	{
@@ -151,7 +151,7 @@ void CCamera::process(const bool force)
 			delta_y = (getYPosition()>>STC)-scroll_y;
 			if(!mp_Map->scrollUp())
 				break;
-		}while(delta_y < up-speed && scroll_y > 32);
+		}while(delta_y < up-speed /*&& scroll_y > 32*/);
 	}
 
 	// This will always snap correctly to the edges
