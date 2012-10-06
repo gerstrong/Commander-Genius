@@ -68,7 +68,6 @@ public:
 	 * As far known, this is only used in the Galaxy engine
 	 * \param y The y coordinate (CSFed) of the row where to look for that blocker
 	 */
-	bool findScrollHorizontalScrollBlocker(const int y);
 	bool findObject(unsigned int obj, int *xout, int *yout);
 	bool findTile(unsigned int tile, int *xout, int *yout, int plane=1);
 
@@ -115,6 +114,9 @@ public:
 	bool isSecret;
 
 private:
+    
+    	bool findHorizontalScrollBlocker(const int y);
+
 
 	Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe
 	Uint16 m_mapx;           	// map X location shown at scrollbuffer row 0

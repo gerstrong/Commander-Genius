@@ -104,10 +104,10 @@ void CCamera::process(const bool force)
 		}
 	}
 
-	Uint16& scroll_x = mp_Map->m_scrollx;
-	Uint16& scroll_y = mp_Map->m_scrolly;
+	const Uint16 scroll_x = mp_Map->m_scrollx;
+	const Uint16 scroll_y = mp_Map->m_scrolly;
 
-	// delta_ is how much we need to scroll in order to get the camera stalled
+	// delta is how much we need to scroll in order to get the camera stalled
 	int delta_x = (getXPosition()>>STC)-scroll_x;
 	int delta_y = (getYPosition()>>STC)-scroll_y;
 
@@ -152,7 +152,7 @@ void CCamera::process(const bool force)
 		}while(delta_y < up-speed && scroll_y > 32);
 	}
 
-	// This will always snap correctly to the edge
+	// This will always snap correctly to the edges
 	while(scroll_x < 32)
 		mp_Map->scrollRight(true);
 	while(scroll_x > mp_Map->m_maxscrollx)

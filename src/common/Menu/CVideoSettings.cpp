@@ -7,6 +7,7 @@
 
 #include "hardware/Configurator.h"
 #include "common/CSettings.h"
+#include "CCameraSettings.h"
 #include "sdl/input/CInput.h"
 #include "sdl/CTimer.h"
 #include "sdl/resolutionlist.h"

@@ -9,7 +9,6 @@
 #define CVIDEOSETTINGS_H_
 
 #include "CBaseMenu.h"
-#include "CCameraSettings.h"
 #include "sdl/CVideoDriver.h"
 #include <SDL.h>
 #include <string>

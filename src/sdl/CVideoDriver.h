@@ -45,8 +45,10 @@ public:
 	void drawConsoleMessages();
 
 	void blitScrollSurface();
-	void updateScrollBuffer(SmartPointer<CMap> &map);
 	void updateScrollBuffer(CMap &map);
+	void updateScrollBuffer(SmartPointer<CMap> &map)
+	{ updateScrollBuffer(*map.get()); }	
+	
 
 
 	void collectSurfaces();

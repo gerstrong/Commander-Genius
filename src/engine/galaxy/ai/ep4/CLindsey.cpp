@@ -54,40 +54,43 @@ void CLindsey::process()
 
 void CLindsey::getTouchedBy(CSpriteObject &theObject)
 {
-	// When Keen touches the pincess give that hint
+    if(prepareToVanish)
+	return;
+    
+    // When Keen touches the pincess give that hint
 	if( dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
-		g_pSound->playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
-
-		std::string lindsey_text[3];
-
-		lindsey_text[0] = g_pBehaviorEngine->getString(answermap[0]);
-
-
-		Uint16 cur_level = mp_Map->getLevel();
-		if(cur_level > 5)
-		{
-			lindsey_text[1] = g_pBehaviorEngine->getString(answermap[1]);
-			lindsey_text[2] = g_pBehaviorEngine->getString(answermap[3]);
-		}
-		else
-		{
-			lindsey_text[1] = g_pBehaviorEngine->getString(answermap[2]);
-			lindsey_text[2] = g_pBehaviorEngine->getString(answermap[4]);
-		}
-
-
-		std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
-
-		msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(108), lindsey_text[0], LEFT) );
-		msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(108), lindsey_text[1], LEFT) );
-		msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), lindsey_text[2], RIGHT) );
-
-		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
-		
-		prepareToVanish = true;
+	    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	    
+	    g_pSound->playSound(SOUND_GET_WETSUIT, PLAY_PAUSEALL);
+	    
+	    std::string lindsey_text[3];
+	    
+	    lindsey_text[0] = g_pBehaviorEngine->getString(answermap[0]);
+	    
+	    
+	    Uint16 cur_level = mp_Map->getLevel();
+	    if(cur_level > 5)
+	    {
+		lindsey_text[1] = g_pBehaviorEngine->getString(answermap[1]);
+		lindsey_text[2] = g_pBehaviorEngine->getString(answermap[3]);
+	    }
+	    else
+	    {
+		lindsey_text[1] = g_pBehaviorEngine->getString(answermap[2]);
+		lindsey_text[2] = g_pBehaviorEngine->getString(answermap[4]);
+	    }
+	    
+	    
+	    std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
+	    
+	    msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(108), lindsey_text[0], LEFT) );
+	    msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(108), lindsey_text[1], LEFT) );
+	    msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), lindsey_text[2], RIGHT) );
+	    
+	    EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+	    
+	    prepareToVanish = true;
 	}
 }
 

@@ -252,14 +252,8 @@ void CVideoDriver::setScaleType(bool IsNormal)
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
-void CVideoDriver::updateScrollBuffer(SmartPointer<CMap> &map) {
-	map->drawAll();
-	mp_VideoEngine->UpdateScrollBufX(map->m_scrollx);
-	mp_VideoEngine->UpdateScrollBufY(map->m_scrolly);
-}
-
-// TODO: Replace this by the upper function. Will be deprecated
-void CVideoDriver::updateScrollBuffer(CMap &map) {
+void CVideoDriver::updateScrollBuffer(CMap &map) 
+{
 	map.drawAll();
 	mp_VideoEngine->UpdateScrollBufX(map.m_scrollx);
 	mp_VideoEngine->UpdateScrollBufY(map.m_scrolly);
@@ -324,7 +318,8 @@ void CVideoDriver::AddConsoleMsg(const char *the_msg) {
 	ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
 }
 
-void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds) {
+void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds) 
+{
 	int &left = CameraBounds.left;
 	int &up = CameraBounds.up;
 	int &right = CameraBounds.right;

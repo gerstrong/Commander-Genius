@@ -110,7 +110,7 @@ word *CMap::getBackgroundData()
 	return m_Plane[0].getMapDataPtr();
 }
 
-bool CMap::findScrollHorizontalScrollBlocker(const int y)
+bool CMap::findHorizontalScrollBlocker(const int y)
 {
 	if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
 		return false;
@@ -129,8 +129,8 @@ bool CMap::findScrollHorizontalScrollBlocker(const int y)
 }
 
 // searches the map's object layer for object OBJ.
-// if it is found returns nonzero and places the
-// coordinates of the first occurance of the object
+// if it is found returns non-zero and places the
+// coordinates of the first occurrence of the object
 // in (xout,yout)
 bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 {
@@ -308,7 +308,7 @@ bool CMap::scrollDown(const bool force)
 {
 	const int res_height = g_pVideoDriver->getGameResolution().h;
 
-	if( !force && findScrollHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
+	if( !force && findHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
 		return false;
 
 	if(m_scrolly < ((m_height-2)<<4) - res_height )
@@ -334,7 +334,7 @@ bool CMap::scrollDown(const bool force)
 
 bool CMap::scrollUp(const bool force)
 {
-	if( !force && findScrollHorizontalScrollBlocker(m_scrolly<<STC) )
+	if( !force && findHorizontalScrollBlocker(m_scrolly<<STC) )
 		return false;
 
 	if( m_scrolly > 32 )
