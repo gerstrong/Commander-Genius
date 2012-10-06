@@ -143,6 +143,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     Map.gotoPos(0,0);
     Map.setLevel(level);
+    Map.isSecret = false;
 
 	// In case no external file was read, let's use data from the embedded data
 	byte *Maphead = m_ExeFile.getRawData() + getMapheadOffset();
