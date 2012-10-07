@@ -180,9 +180,6 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 
 	// Do some post calculations
 	// Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
-	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
-	mpMap->m_maxscrollx = (mpMap->m_width<<4) - gamerect.w - 32;
-	mpMap->m_maxscrolly = (mpMap->m_height<<4) - gamerect.h - 32;
 	mpMap->collectBlockersCoordiantes();
 
 	// Set Map Delegation Object. This only gets the Pointer to the map instances x-y-scroll-buffers

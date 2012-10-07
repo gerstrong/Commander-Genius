@@ -55,6 +55,12 @@ public:
 	 *
 	 * \return true if the Attached object is outside the camera, else false
 	 */
+	
+	/**
+	 * in case the map is loaded or the player warped to another point, 
+	 * this function will adjust the camera to the proper edges in the level
+	 */
+	void reAdjust();
 
 	bool outOfSight();
 	

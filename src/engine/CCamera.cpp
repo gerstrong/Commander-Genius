@@ -52,6 +52,11 @@ void CCamera::process(const bool force)
 {
 	if(m_freeze)
 		return;
+	
+	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
+	const int maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 32;
+	const int maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 32;
+	
 
 	if(!m_attached)
 	{	// This means, that there is no attached object. Let the camera scroll freely!
@@ -119,7 +124,7 @@ void CCamera::process(const bool force)
 	const int speed = CameraBounds.speed;
 
 	// left-right scrolling
-	if(delta_x > right && scroll_x < mp_Map->m_maxscrollx)
+	if(delta_x > right && scroll_x < maxscrollx)
 	{
 		do{
 			delta_x = (getXPosition()>>STC)-scroll_x;
@@ -137,7 +142,7 @@ void CCamera::process(const bool force)
 	}
 
 	// up-down scrolling
-	if (delta_y > down && scroll_y < mp_Map->m_maxscrolly)
+	if (delta_y > down && scroll_y < maxscrolly)
 	{
 		do{
 			delta_y = (getYPosition()>>STC)-scroll_y;
@@ -153,15 +158,25 @@ void CCamera::process(const bool force)
 				break;
 		}while(delta_y < up-speed);
 	}
-	
+}
+
+void CCamera::reAdjust() 
+{
+  	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
+	const int maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 32;
+	const int maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 32;
+  
+	Uint16 &scroll_x = mp_Map->m_scrollx;
+	Uint16 &scroll_y = mp_Map->m_scrolly;
+
 	// This will always snap correctly to the edges
 	while(scroll_x < 32)
 		mp_Map->scrollRight(true);
-	while(scroll_x > mp_Map->m_maxscrollx)
+	while(scroll_x > maxscrollx)
 		mp_Map->scrollLeft(true);
 	while(scroll_y < 32)
 		mp_Map->scrollDown(true);
-	while(scroll_y > mp_Map->m_maxscrolly)
+	while(scroll_y > maxscrolly)
 		mp_Map->scrollUp(true);
 }
 

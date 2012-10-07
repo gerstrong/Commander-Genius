@@ -111,7 +111,6 @@ public:
 	Uint32 m_width, m_height;            // size of the map
 	bool m_worldmap;             // if 1, this is the world map
 
-	unsigned int m_maxscrollx, m_maxscrolly;
 	std::string m_gamepath;
 
 	bool m_animation_enabled;
