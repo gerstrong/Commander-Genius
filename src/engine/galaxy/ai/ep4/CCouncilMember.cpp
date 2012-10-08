@@ -180,8 +180,8 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
 
-		// If the level is secret don't exit yes
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		m_Inventory.Item.m_gem.empty();
 		rescuedelders++;
 
 		rescued = true;

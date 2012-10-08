@@ -1202,6 +1202,7 @@ void CPlayerLevel::processExiting()
 	{
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		m_Inventory.Item.m_gem.empty();
 	}
 }
 
@@ -1303,6 +1304,7 @@ void CPlayerLevel::processPressUp() {
 				}
 			} else {*/
 				setAction(A_KEEN_ENTER_DOOR);
+				
 				setActionSprite();
 				CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
@@ -1401,6 +1403,7 @@ void CPlayerLevel::processEnterDoor()
 		//o->action = ACTION_KEENENTEREDDOOR;
 		// TODO: Figure out what this does
 		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		m_Inventory.Item.m_gem.empty();
 		return;
 	}
 

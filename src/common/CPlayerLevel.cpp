@@ -130,7 +130,7 @@ void CPlayer::walkbehindexitdoor()
 
 void CPlayer::kill()
 {
-	kill(false);
+    kill(false);
 }
 
 void CPlayer::kill(bool force)

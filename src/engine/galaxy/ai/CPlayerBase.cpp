@@ -435,6 +435,7 @@ void CPlayerBase::processDying()
 		exists = false;
 		solid = true;
 		honorPriority = true;
+		m_Inventory.Item.m_gem.empty();
 	}
 }
 
@@ -464,13 +465,16 @@ void CPlayerBase::processGetEaten()
 
 void CPlayerBase::kill(const bool force)
 {
-	if(m_Cheatmode.god && !force)
-		return;
-
-	// Here were prepare Keen to die, setting the action to die
+    if(getActionNumber(A_KEEN_ENTER_DOOR))
+	return;
+    
+    if(m_Cheatmode.god && !force)
+	return;
+    
+    // Here were prepare Keen to die, setting the action to die
 	if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
-		return;
-
+	    return;
+	
 	m_dying = true;
 	yinertia = -DIE_FALL_MAX_INERTIA;
 	setAction( A_KEEN_DIE + (rand()%2) );
