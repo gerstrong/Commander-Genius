@@ -46,6 +46,8 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 
 	moveToForce(newpos);
 	mp_Map->gotoPos(cam_x>>STC, cam_y>>STC);
+	
+	reAdjust();
 }
 
 void CCamera::process(const bool force)
@@ -162,22 +164,53 @@ void CCamera::process(const bool force)
 
 void CCamera::reAdjust() 
 {
-  	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
-	const int maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 32;
-	const int maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 32;
+	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
   
 	Uint16 &scroll_x = mp_Map->m_scrollx;
 	Uint16 &scroll_y = mp_Map->m_scrolly;
+	const int x = getXPosition();
+	const int y = getYPosition();
+
+	// Check for the nearest vertical edges	
+	int blockYup, blockYdown, blockXleft, blockXright;
+	
+	mp_Map->fetchNearestVertBlockers(x, blockXleft, blockXright);
+	mp_Map->fetchNearestHorBlockers(y, blockYup, blockYdown);
+	
+	blockXleft >>= STC;
+	blockXright >>= STC;
+	blockYup >>= STC;
+	blockYdown >>= STC;  
 
 	// This will always snap correctly to the edges
-	while(scroll_x < 32)
-		mp_Map->scrollRight(true);
-	while(scroll_x > maxscrollx)
-		mp_Map->scrollLeft(true);
-	while(scroll_y < 32)
-		mp_Map->scrollDown(true);
-	while(scroll_y > maxscrolly)
-		mp_Map->scrollUp(true);
+	if(scroll_x < blockXleft)
+	{
+	    for(int amt=0 ; amt<gamerect.w ; amt++ )
+		mp_Map->scrollRight();
+	    for(int amt=0 ; amt<gamerect.w ; amt++ )
+		mp_Map->scrollLeft();
+	}
+	if(scroll_x > blockXright - gamerect.w)
+	{
+    	    for(int amt=0 ; amt<gamerect.w ; amt++ )
+		mp_Map->scrollLeft();
+	    for(int amt=0 ; amt<gamerect.w ; amt++ )
+		mp_Map->scrollRight();
+	}	
+	if(scroll_y < blockYup)
+	{
+	    for(int amt=0 ; amt<gamerect.h ; amt++ )
+		mp_Map->scrollDown();
+	    for(int amt=0 ; amt<gamerect.h ; amt++ )
+		mp_Map->scrollUp();
+	}
+	if(scroll_y > blockYdown - gamerect.h)
+	{
+	    for(int amt=0 ; amt<gamerect.h ; amt++ )
+		mp_Map->scrollUp();
+	    for(int amt=0 ; amt<gamerect.h ; amt++ )
+		mp_Map->scrollDown();
+	}
 }
 
 

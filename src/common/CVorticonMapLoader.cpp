@@ -135,6 +135,7 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 		if(t > 255)
 			t=0; // If there are some invalid values in the file
 	}
+	mpMap->collectBlockersCoordiantes();
 
 	// now do the sprites
 	// get sprite data
@@ -177,10 +178,6 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 	}
 
 	planeitems.clear();
-
-	// Do some post calculations
-	// Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
-	mpMap->collectBlockersCoordiantes();
 
 	// Set Map Delegation Object. This only gets the Pointer to the map instances x-y-scroll-buffers
 	g_pVideoDriver->updateScrollBuffer( mpMap );

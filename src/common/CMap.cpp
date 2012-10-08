@@ -142,59 +142,85 @@ void CMap::collectBlockersCoordiantes()
 	
 }
 
+void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord)
+{
+    int blockXleft, blockXright;
+    std::vector<int>::iterator left  = scrollBlockX.begin();
+    std::vector<int>::iterator right = left;
+    right++;
+
+    // Find the vertical edges coordinates
+    for( ; right != scrollBlockX.end() ; )
+    {
+	blockXleft = *left;
+	blockXright = *right;
+	
+	if( x > blockXleft && x < blockXright )
+	{
+	    leftCoord = blockXleft;
+	    rightCoord = blockXright;
+	    return;
+	}
+	
+	left++;
+	right++;
+    }
+    
+    leftCoord = blockXleft;
+    rightCoord = blockXright;    
+}
+
+void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
+{
+    int blockYup, blockYdown;
+    std::vector<int>::iterator up = scrollBlockY.begin();
+    std::vector<int>::iterator down= up;
+    down++;
+    
+    for( ; down != scrollBlockY.end() ; )
+    {
+	const int blockYup = *up;
+	const int blockYdown = *down;
+	
+	if( y > blockYup && y < blockYdown )
+	{
+	    upCoord = blockYup;
+	    downCoord = blockYdown;
+	    return;
+	}
+	
+	up++;
+	down++;
+    }
+    upCoord = blockYup;
+    downCoord = blockYdown;
+}
+
+
+
 
 bool CMap::findVerticalScrollBlocker(const int x)
 {    	
-	std::vector<int>::iterator left = scrollBlockX.begin();
-	std::vector<int>::iterator right= left;
-	right++;
-	
-	for( ; right != scrollBlockX.end() ; )
-	{
-	    const int blockXleft = *left;
-	    const int blockXright = *right;
-	    
-	    if( x > blockXleft && x < blockXright )
-	    {
-		if(x-(1<<CSF) <= blockXleft)
-		    break;
+    int blockXleft, blockXright;
 
-		return false;
-	    }
-	    
-	    left++;
-	    right++;
-	}
-	
-	return true;	
+    fetchNearestVertBlockers(x, blockXleft, blockXright);
+    
+    if(x-(1<<CSF) < blockXleft)
+	return true;
+    return false;
 }
 
 
 bool CMap::findHorizontalScrollBlocker(const int y)
 {	
-	std::vector<int>::iterator up = scrollBlockY.begin();
-	std::vector<int>::iterator down= up;
-	down++;
-	
-	for( ; down != scrollBlockY.end() ; )
-	{
-	    const int blockYup = *up;
-	    const int blockYdown = *down;
-	    
-	    if( y > blockYup && y < blockYdown )
-	    {
-		if(y-(1<<CSF) <= blockYup)
-		    break;
-
-		return false;
-	    }
-	    
-	    up++;
-	    down++;
-	}
-	
+    int blockYup, blockYdown;
+    fetchNearestHorBlockers(y, blockYup, blockYdown);
+    
+    if(y-(1<<CSF) < blockYup)
 	return true;
+    return false;
 }
+
 
 // searches the map's object layer for object OBJ.
 // if it is found returns non-zero and places the
@@ -347,8 +373,9 @@ bool CMap::scrollRight(const bool force)
 			if (m_mapxstripepos >= 512) m_mapxstripepos = 0;
 			m_scrollpix = 0;
 		}
+		return true;
 	}
-	return true;
+	return false;
 }
 
 // scrolls the map one pixel left
@@ -377,8 +404,9 @@ bool CMap::scrollLeft(const bool force)
 
 			m_scrollpix = 15;
 		} else m_scrollpix--;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 bool CMap::scrollDown(const bool force)
@@ -402,8 +430,9 @@ bool CMap::scrollDown(const bool force)
 			if (m_mapystripepos >= 512) m_mapystripepos = 0;
 			m_scrollpixy = 0;
 		}
+		return true;
 	}
-	return true;
+	return false;
 }
 
 
@@ -434,8 +463,9 @@ bool CMap::scrollUp(const bool force)
 
 			m_scrollpixy = 15;
 		} else m_scrollpixy--;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 

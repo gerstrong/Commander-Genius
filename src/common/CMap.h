@@ -100,6 +100,9 @@ public:
 	 */
 	void collectBlockersCoordiantes();
 	
+	void fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord);
+	void fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord);
+	
 
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
 	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y

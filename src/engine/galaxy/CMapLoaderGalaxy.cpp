@@ -249,6 +249,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
 				unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
 			}
+			Map.collectBlockersCoordiantes();
 			MapFile.close();
 
 			// Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
@@ -264,14 +265,10 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 		}
 	}
 	else
+	{
 		return false;
+	}
 
-	// TODO: Now load the player and enemies
-
-    // Do some post calculations
-    // Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
-    Map.collectBlockersCoordiantes();
-    
     // Set Scrollbuffer
     g_pVideoDriver->updateScrollBuffer(Map);
 
