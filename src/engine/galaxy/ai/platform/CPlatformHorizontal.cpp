@@ -51,31 +51,40 @@ const int MOVE_HORIZ_SPEED = 20;
 void CPlatformHorizontal::process()
 {
 	const Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+	
+	performCollisions();
 
 	// If there is a blocker, change the direction
 	if( object == 31 )
 	{
 		xDirection = (xDirection == RIGHT) ? LEFT : RIGHT;
 	}
+	
+	if(blockedr)
+	{
+	    xDirection = LEFT;
+	}
+	else if(blockedl)
+	{
+	    xDirection = RIGHT;
+	}
 
 	// direction change is processed here!
-	if(xDirection == RIGHT && blockedr)
+	if(xDirection == RIGHT)
 	{
 		if(mp_BoostEngObjLeft)
 		{
 			mp_BoostEngObjLeft->dontdraw = true;
 			mp_BoostEngObjRight->dontdraw = false;
 		}
-		xDirection = LEFT;
 	}
-	else if(xDirection == LEFT && blockedl)
+	else if(xDirection == LEFT)
 	{
 		if(mp_BoostEngObjLeft)
 		{
 			mp_BoostEngObjLeft->dontdraw = false;
 			mp_BoostEngObjRight->dontdraw = true;
 		}
-		xDirection = RIGHT;
 	}
 
 	if(xDirection == RIGHT)

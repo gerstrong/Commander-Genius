@@ -25,7 +25,7 @@ m_timer(0)
 {
 	setupGalaxyObjectOnMap(0x1FB8, A_COUNCIL_MEMBER_MOVE);
 	mp_processState = &CCouncilMember::processWalking;
-
+	
 	answermap[0] = "KEEN_NOSWEAT_TEXT";
 	answermap[1] = "KEEN_BEARDED_ONE_TEXT";
 	answermap[2] = "KEEN_NO_PROBLEMO_TEXT";
@@ -44,7 +44,6 @@ void CCouncilMember::processWalking()
 {
 	performCollisions();
 	performGravityLow();
-
 
 	// Check if there is a cliff and move him back in case
 	performCliffStop(m_Action.velX<<1);

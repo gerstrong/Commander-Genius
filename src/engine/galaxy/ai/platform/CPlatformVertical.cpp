@@ -57,6 +57,8 @@ void CPlatformVertical::process()
 {
 	const Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
 
+	performCollisions();
+	
 	// If there is a blocker, change the direction
 	if( object == 31 )
 		yDirection = (yDirection == UP) ? DOWN : UP;

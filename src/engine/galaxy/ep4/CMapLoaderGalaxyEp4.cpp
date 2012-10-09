@@ -99,12 +99,12 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 4:
 		//This is a council member.
-		p_newfoe = new galaxy::CCouncilMember(&Map, foe, x, y-750);
+		p_newfoe = new galaxy::CCouncilMember(&Map, foe, x, y);
 		break;
 
 	case 6:
 		//This is pincess Lindsey.
-		p_newfoe = new galaxy::CLindsey(&Map, foe, x, y-750);
+		p_newfoe = new galaxy::CLindsey(&Map, foe, x, y);
 		break;
 
 	case 7:
@@ -137,16 +137,16 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 12:
 		// This is a Bounder.
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
-		p_newfoe = new galaxy::CBounder(&Map, foe, x, y-250);
+		p_newfoe = new galaxy::CBounder(&Map, foe, x, y);
 		break;
 
 	case 13:
 		// This is an egg
 		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
 		if( g_pBehaviorEngine->mDifficulty > 1 )
-			p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y-(2<<CSF));
+			p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y);
 		else
-			p_newfoe = new galaxy::CEgg(&Map, foe, x, y-(2<<CSF));
+			p_newfoe = new galaxy::CEgg(&Map, foe, x, y);
 		break;
 
 	case 18:
@@ -174,7 +174,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 22:
 		// This is a Poison Slug.
-		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y-250, m_ObjectPtr);
+		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y, m_ObjectPtr);
 		break;
 
 	case 23:
