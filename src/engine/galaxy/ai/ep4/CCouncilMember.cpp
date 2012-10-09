@@ -181,7 +181,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
 
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
-		m_Inventory.Item.m_gem.empty();
+		player->m_Inventory.Item.m_gem.empty();
 		rescuedelders++;
 
 		rescued = true;
