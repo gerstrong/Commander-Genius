@@ -129,8 +129,6 @@ void CPlayerWM::process()
 		if(ev->sucess)
 		{
 			finishLevel(ev->levelObject);
-		    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-			EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );
 		}
 		EventContainer.pop_Event();
 	}
@@ -631,8 +629,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 
 		// Mark the tileinfo on the map as marked!!
 		mp_Map->setTile( x, y, 0, true, 2);
-	}
-	g_pSound->playSound( SOUND_LEVEL_DONE );
+	}	
 }
 
 /**

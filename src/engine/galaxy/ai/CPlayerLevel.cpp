@@ -10,7 +10,9 @@
 #include "common/CBehaviorEngine.h"
 #include "platform/CPlatform.h"
 #include "sdl/input/CInput.h"
+#include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
+
 #include "sdl/CTimer.h"
 #include "CVec.h"
 #include "CLogFile.h"
@@ -89,6 +91,7 @@ mPoleGrabTime(0)
 	m_pogotoggle = false;
 	m_jumped = false;
 	m_hanging = false;
+	mExitTouched = false;
 
 	/*for(size_t add = 0x098C ; add <= 0x3ABB ; add += 0x2 )
 	{
@@ -1200,9 +1203,14 @@ void CPlayerLevel::processExiting()
 	Uint32 x = getXMidPos();
 	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
 	{
+		g_pSound->playSound( SOUND_LEVEL_DONE );
+		g_pMusicPlayer->stop();
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );		
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
 		m_Inventory.Item.m_gem.empty();
+		mExitTouched = true;
 	}
 }
 
@@ -1402,6 +1410,9 @@ void CPlayerLevel::processEnterDoor()
 		//level_state = 13;
 		//o->action = ACTION_KEENENTEREDDOOR;
 		// TODO: Figure out what this does
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
 		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
 		m_Inventory.Item.m_gem.empty();
 		return;
@@ -2002,6 +2013,9 @@ void CPlayerLevel::centerView()
 
 void CPlayerLevel::process()
 {
+    if(mExitTouched)
+	return;
+    
 	if(!m_dying)
 	{
 		processInput();
@@ -2036,7 +2050,7 @@ void CPlayerLevel::process()
 			exists = false;
 
 
-	if(!m_dying)
+	if(!m_dying && !mExitTouched)
 	{
 		processExiting();
 

@@ -251,6 +251,7 @@ public:
 
 	bool m_jumpdownfromobject;
 	bool mPlacingGem;
+	bool mExitTouched;
 
 private:
 

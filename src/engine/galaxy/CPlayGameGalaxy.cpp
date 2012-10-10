@@ -297,7 +297,6 @@ void CPlayGameGalaxy::process()
 		}
 		else if( EventExitLevel *ev = eventContainer.occurredEvent<EventExitLevel>() )
 		{
-			g_pMusicPlayer->stop();
 			m_LevelPlay.setActive(false);
 			m_WorldMap.setActive(true);
 			m_LevelName = m_WorldMap.getLevelName();
