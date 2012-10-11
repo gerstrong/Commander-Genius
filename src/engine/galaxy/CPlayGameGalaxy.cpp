@@ -241,9 +241,9 @@ void CPlayGameGalaxy::process()
 		
 		
 		// Create the special merge effect (Fadeout) if requested
-		if( ev->mpColorMerge != NULL)
-		{
-		    SDL_Surface *fxSfc = ev->mpColorMerge->getSfc();
+		if( g_pGfxEngine->runningEffect() && ev->mpColorMerge != NULL )
+		{		    
+		    SDL_Surface *fxSfc = ev->mpColorMerge->getSfc().get();
 		    SDL_Rect cutRect = pMsgBox->getRect();
 		    SDL_Surface *msgSfc = pMsgBox->getSfc();		    
 		    SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);		    

@@ -132,6 +132,8 @@ int CPoisonSlug::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 void CPoisonSlug::process()
 {
 	performCollisions();
+	
+	return;
 
 	if(!blockedd)
 		performGravityMid();

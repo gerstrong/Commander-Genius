@@ -30,8 +30,8 @@ public:
 	void process();
 	
 	void setCutRect(const SDL_Rect &cutRect);
-	SDL_Surface *getSfc()
-	{  return mpOldSurface.get();  }
+	SmartPointer<SDL_Surface> &getSfc()
+	{  return mpOldSurface;  }
 
 private:
 	void getSnapshot();		
