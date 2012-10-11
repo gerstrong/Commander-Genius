@@ -66,7 +66,7 @@ void CPoisonSlug::processCrawling()
 		m_timer = 0;
 		setAction( A_SLUG_POOING );
 		playSound( SOUND_SLUG_DEFECATE );
-		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, 0, getXLeftPos(), getYDownPos()-(8<<STC)));
+		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, 0, getXLeftPos(), getYDownPos()-(1<<CSF)));
 		return;
 	}
 
