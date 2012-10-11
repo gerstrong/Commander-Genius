@@ -39,12 +39,6 @@ m_timer(0)
 	setupGalaxyObjectOnMap(0x2012, A_SLUG_MOVE);
 
 	xDirection = LEFT;
-
-	//CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	//performCollisions();
-	//processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
-	//if(!processActionRoutine())
-	//		exists = false;
 }
 
 
