@@ -15,9 +15,12 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 mInchWormContacts(0)
 {
 	setupGalaxyObjectOnMap(0x2E9A, 0);
-	xDirection = RIGHT;
+	xDirection = LEFT;
 
 	performCollisions();
+	
+	processMove(0,-(1<<CSF));
+	processMove(0,1<<CSF);
 }
 
 
