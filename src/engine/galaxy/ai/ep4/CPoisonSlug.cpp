@@ -40,11 +40,11 @@ m_timer(0)
 
 	xDirection = LEFT;
 
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	performCollisions();
-	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
-	if(!processActionRoutine())
-			exists = false;
+	//CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	//performCollisions();
+	//processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
+	//if(!processActionRoutine())
+	//		exists = false;
 }
 
 
@@ -133,8 +133,6 @@ void CPoisonSlug::process()
 {
 	performCollisions();
 	
-	return;
-
 	if(!blockedd)
 		performGravityMid();
 

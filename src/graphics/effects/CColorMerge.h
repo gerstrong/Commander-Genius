@@ -24,24 +24,22 @@
 class CColorMerge : public CEffects
 {
 public:
-	CColorMerge(const Uint8 speed, const SDL_Rect &cutRect);
 	CColorMerge(const Uint8 speed);
 
 	void process();
 	
-	void setCutRect(const SDL_Rect &cutRect);
 	SmartPointer<SDL_Surface> &getSfc()
 	{  return mpOldSurface;  }
-
-private:
+	
 	void getSnapshot();		
 
+private:
+	
 	Uint8 m_Speed;
 	Uint8 m_Alpha;
 	CTimer mTimer;
 
 	SmartPointer<SDL_Surface> mpOldSurface;
-	SDL_Rect mCutRect;
 };
 
 #endif /* CCOLORMERGE_H_ */

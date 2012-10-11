@@ -296,7 +296,7 @@ void CPlayerLevel::prepareToShoot()
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		const int newx = getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC));
-		const int newy = getYPosition()+(4<<STC);
+		const int newy = getYPosition()+(6<<STC);
 
 		const VectorD2<int> newVec(newx, newy);
 		tryToShoot(newVec, xDirection, yDirection);
@@ -1207,9 +1207,8 @@ void CPlayerLevel::processExiting()
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
-		CColorMerge *colorMerge = new CColorMerge(2);
-		g_pGfxEngine->setupEffect(colorMerge);		
-		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT, colorMerge) );				
+		g_pGfxEngine->setupEffect(new CColorMerge(2));		
+		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
 		m_Inventory.Item.m_gem.empty();
 		mExitTouched = true;
 	}

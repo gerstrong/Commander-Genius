@@ -237,16 +237,20 @@ void CPlayGameGalaxy::process()
 	if( EventSendBitmapDialogMsg *ev = eventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
 		CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction );
-		pMsgBox->init();
-		
+		pMsgBox->init();		
 		
 		// Create the special merge effect (Fadeout) if requested
-		if( g_pGfxEngine->runningEffect() && ev->mpColorMerge != NULL )
-		{		    
-		    SDL_Surface *fxSfc = ev->mpColorMerge->getSfc().get();
-		    SDL_Rect cutRect = pMsgBox->getRect();
-		    SDL_Surface *msgSfc = pMsgBox->getSfc();		    
-		    SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);		    
+		if( g_pGfxEngine->runningEffect() )
+		{
+		    CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(g_pGfxEngine->Effect());
+		    if( pColorMerge != NULL )
+			//if( g_pGfxEngine->runningEffect() && ev->mpColorMerge != NULL )
+		    {		    
+			SDL_Surface *fxSfc = pColorMerge->getSfc().get();
+			SDL_Rect cutRect = pMsgBox->getRect();
+			SDL_Surface *msgSfc = pMsgBox->getSfc();		    
+			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);		    
+		    }
 		}
 
 		mMessageBoxes.push_back( pMsgBox );
