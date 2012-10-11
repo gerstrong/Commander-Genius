@@ -27,6 +27,12 @@ public:
 	virtual void init();
 
 	virtual void process();
+	
+	SDL_Surface *getSfc()
+	{ return mpMBSurface.get(); }
+	
+	SDL_Rect getRect() const
+	{ return mMBRect; }
 
 	const bool isFinished() const
 	{	return mMustClose;	}

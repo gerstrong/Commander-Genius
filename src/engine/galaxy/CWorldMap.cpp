@@ -32,7 +32,9 @@ void CWorldMap::init()
 	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );
+	CColorMerge *colorMerge = new CColorMerge(2);
+	g_pGfxEngine->setupEffect(colorMerge);
+	EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT, colorMerge) );
 
 	mMap.drawAll();
 }

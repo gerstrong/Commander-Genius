@@ -361,7 +361,6 @@ void CPlayerLevel::handleInputOnGround()
 	{
 		if(!verifyforPole())
 		{
-			//mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processPressUp;
 			processPressUp();
 		}
 	}
@@ -383,11 +382,11 @@ void CPlayerLevel::processStanding()
 
 	if (verifyForFalling())
 	{
-		xinertia = xDirection * 8;
-		yinertia = 0;
-		setAction(A_KEEN_FALL);
-		playSound( SOUND_KEEN_FALL );
-		state.jumpTimer = 0;
+	    xinertia = xDirection * 8;
+	    yinertia = 0;
+	    setAction(A_KEEN_FALL);
+	    playSound( SOUND_KEEN_FALL );
+	    state.jumpTimer = 0;
 	}
 
 	if( px || py || state.jumpIsPressed || state.pogoIsPressed )
@@ -1207,8 +1206,10 @@ void CPlayerLevel::processExiting()
 		g_pMusicPlayer->stop();
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );		
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		CColorMerge *colorMerge = new CColorMerge(2);
+		g_pGfxEngine->setupEffect(colorMerge);		
+		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT, colorMerge) );				
 		m_Inventory.Item.m_gem.empty();
 		mExitTouched = true;
 	}

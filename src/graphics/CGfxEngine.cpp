@@ -78,7 +78,7 @@ void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 // You need this call to make you effect work!
 void CGfxEngine::setupEffect(CEffects *pEffect)
 {
-	mpEffects = pEffect;
+    mpEffects = pEffect;
 }
 
 /**

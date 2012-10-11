@@ -19,6 +19,7 @@
 #include "SmartPointer.h"
 #include "CVec.h"
 #include "graphics/CBitmap.h"
+#include "graphics/effects/CColorMerge.h"
 #include <vector>
 
 class CGalaxySpriteObject;
@@ -92,13 +93,16 @@ struct EventSendBitmapDialogMsg : EventSendDialog
 {
 	const CBitmap &BitmapRef;
 	const direction_t Direction;
+	CColorMerge *mpColorMerge;
 	EventSendBitmapDialogMsg(const CBitmap &lBitmapRef,
-					 	 	 const std::string& lMsg,
-					 	 	 const direction_t& lDirection = LEFT) :
-					 	 	 EventSendDialog(lMsg),
-					 	 	 BitmapRef(lBitmapRef),
-							 Direction(lDirection)
-							 {}
+				 const std::string& lMsg,
+				 const direction_t& lDirection = LEFT,
+				 CColorMerge *pColorMerge = NULL) :
+				  EventSendDialog(lMsg),
+				  BitmapRef(lBitmapRef),
+				  Direction(lDirection),
+				  mpColorMerge(pColorMerge)
+				  {}
 };
 
 

@@ -238,6 +238,16 @@ void CPlayGameGalaxy::process()
 	{
 		CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction );
 		pMsgBox->init();
+		
+		
+		// Create the special merge effect (Fadeout) if requested
+		if( ev->mpColorMerge != NULL)
+		{
+		    SDL_Surface *fxSfc = ev->mpColorMerge->getSfc();
+		    SDL_Rect cutRect = pMsgBox->getRect();
+		    SDL_Surface *msgSfc = pMsgBox->getSfc();		    
+		    SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);		    
+		}
 
 		mMessageBoxes.push_back( pMsgBox );
 		eventContainer.pop_Event();
