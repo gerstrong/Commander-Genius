@@ -40,13 +40,14 @@
 #include "CVideoDriver.h"
 #include "CLogFile.h"
 #include "StringUtils.h"
+#include "common/CBehaviorEngine.h"
 
 CTimer::CTimer()
 {
 #if defined(WIZ)
 	WIZ_ptimer_init();
 #endif
-	setRates(DEFAULT_LPS, DEFAULT_FPS);
+	setRates(DEFAULT_LPS_VORTICON, DEFAULT_FPS);
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
 }
 
@@ -67,7 +68,7 @@ void CTimer::ResetCounters()
 
 
 void CTimer::setRates( const unsigned int logicrate,
-						  const unsigned int framerate)
+			const unsigned int framerate)
 {
 	// Set all of the desired rates
 	m_LogicRate = logicrate;
@@ -75,7 +76,12 @@ void CTimer::setRates( const unsigned int logicrate,
 
 	// Check limits
 	if (m_LogicRate <= 0)
-		m_LogicRate = DEFAULT_LPS;
+	{
+	    if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+		m_LogicRate = DEFAULT_LPS_GALAXY;
+	    else
+		m_LogicRate = DEFAULT_LPS_VORTICON;
+	}
 
 	if (m_FrameRate <= 0)
 		m_FrameRate = DEFAULT_FPS;

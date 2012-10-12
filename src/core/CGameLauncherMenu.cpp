@@ -100,7 +100,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 
-    version = ExeFile.getEXEVersion();
+	version = ExeFile.getEXEVersion();
 	p_exedata = ExeFile.getRawData();
 
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
@@ -122,6 +122,8 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 
 	if( Episode == 1 || Episode == 2 || Episode == 3 ) // Vorticon resources
 	{
+		g_pTimer->setLPS( DEFAULT_LPS_VORTICON );
+	    
 		g_pBehaviorEngine->readTeleporterTable(p_exedata);
 
 		if( (flags & LOADGFX) == LOADGFX )
@@ -155,7 +157,8 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 	}
 	else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
 	{
-		// TODO: Lots of coding
+		g_pTimer->setLPS( DEFAULT_LPS_GALAXY );
+		
 		if( (flags & LOADGFX) == LOADGFX )
 		{
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
