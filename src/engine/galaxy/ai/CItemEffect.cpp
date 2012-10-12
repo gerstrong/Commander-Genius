@@ -39,9 +39,9 @@ void CItemEffect::process()
 	{
 		if(m_timer >= itemEffectTime)
 		{
-		    transluceny+=10;
+		    transluceny += 20;
 
-		    if(transluceny >= 250)
+		    if(transluceny >= 240)
 		    {
 			    exists = false;
 			    return;

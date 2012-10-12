@@ -75,34 +75,29 @@ void CPlatformHorizontal::process()
 		if(mp_BoostEngObjLeft)
 		{
 			mp_BoostEngObjLeft->dontdraw = true;
-			mp_BoostEngObjRight->dontdraw = false;
+			mp_BoostEngObjLeft->moveRight(MOVE_HORIZ_SPEED);
 		}
+		if(mp_BoostEngObjRight)
+		{
+			mp_BoostEngObjRight->dontdraw = false;
+			mp_BoostEngObjRight->moveRight(MOVE_HORIZ_SPEED);
+		}
+		
+		movePlatRight(MOVE_HORIZ_SPEED);
 	}
 	else if(xDirection == LEFT)
 	{
 		if(mp_BoostEngObjLeft)
 		{
 			mp_BoostEngObjLeft->dontdraw = false;
-			mp_BoostEngObjRight->dontdraw = true;
-		}
-	}
-
-	if(xDirection == RIGHT)
-	{
-		if(mp_BoostEngObjLeft)
-		{
-			mp_BoostEngObjLeft->moveRight(MOVE_HORIZ_SPEED);
-			mp_BoostEngObjRight->moveRight(MOVE_HORIZ_SPEED);
-		}
-		movePlatRight(MOVE_HORIZ_SPEED);
-	}
-	else
-	{
-		if(mp_BoostEngObjLeft)
-		{
 			mp_BoostEngObjLeft->moveLeft(MOVE_HORIZ_SPEED);
-			mp_BoostEngObjRight->moveLeft(MOVE_HORIZ_SPEED);
 		}
+		if(mp_BoostEngObjRight)
+		{
+			mp_BoostEngObjRight->dontdraw = true;
+			mp_BoostEngObjLeft->moveRight(MOVE_HORIZ_SPEED);
+		}
+		
 		movePlatLeft(MOVE_HORIZ_SPEED);
 	}
 

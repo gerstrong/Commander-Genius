@@ -24,6 +24,7 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	yDirection = yDir;
 
 	const size_t ep = g_pBehaviorEngine->getEpisode();
+	transluceny = 90;
 
 	setupGalaxyObjectOnMap(bulletActionMap[ep-4], A_KEENSHOT_MOVING);
 	setActionSprite();
@@ -33,6 +34,16 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 
 void CBullet::process()
 {
+    int trans = transluceny;
+    
+    if( trans > 30 )    
+	trans -= 10;
+    else
+	trans = 30;
+        
+    transluceny = trans;
+    
+    
 	if( !getActionNumber(A_KEENSHOT_IMPACT) && (blockedd || blockedu || blockedl || blockedr || onslope) )
 	{
 		setAction(A_KEENSHOT_IMPACT);
