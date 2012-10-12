@@ -241,6 +241,14 @@ void CSprite::applyTranslucency(Uint8 value)
 
 	if(m_alpha == value)
 		return;
+	
+	SDL_PixelFormat *format = mpSurface->format;	
+	
+	if(format->BitsPerPixel < 24)
+	{
+	    SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, value);
+	    m_alpha = value;
+	}
 
 	if(mpSurface.empty()) return;
 
@@ -252,17 +260,17 @@ void CSprite::applyTranslucency(Uint8 value)
 	{
 		for( Uint8 x=0 ; x<m_xsize ; x++ )
 		{
-			memcpy( &colour, pixel, mpSurface->format->BytesPerPixel );
+			memcpy( &colour, pixel, format->BytesPerPixel );
 
-			SDL_GetRGBA( colour, mpSurface->format, &r, &g, &b, &a );
+			SDL_GetRGBA( colour, format, &r, &g, &b, &a );
 
 			if(a!=0) a = value;
 
-			colour = SDL_MapRGBA( mpSurface->format, r, g, b, a );
+			colour = SDL_MapRGBA( format, r, g, b, a );
 
-			memcpy( pixel, &colour, mpSurface->format->BytesPerPixel );
+			memcpy( pixel, &colour, format->BytesPerPixel );
 
-			pixel += mpSurface->format->BytesPerPixel;
+			pixel += format->BytesPerPixel;
 		}
 	}
 

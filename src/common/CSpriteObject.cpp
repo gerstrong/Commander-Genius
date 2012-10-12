@@ -426,7 +426,7 @@ void CSpriteObject::draw()
 		}
 		else
 		{
-			Sprite.drawSprite( showX, showY, (255-transluceny) );
+		    Sprite.drawSprite( showX, showY, (255-transluceny) );
 		}
 		hasbeenonscreen = true;
 	}

@@ -32,7 +32,8 @@ const int got_sprite_item_pics[] =
 enum item_effect_type
 {
 	FLOAT,
-	ANIMATE
+	ANIMATE,
+	FADEOUT
 };
 
 class CItemEffect : public CGalaxySpriteObject

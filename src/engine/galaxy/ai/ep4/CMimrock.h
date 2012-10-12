@@ -18,6 +18,7 @@ public:
 
 	CMimrock(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
+	void getTouchedBy(CSpriteObject &theObject);
 	bool isNearby(CSpriteObject &theObject);
 	void process();
 	void processSit();

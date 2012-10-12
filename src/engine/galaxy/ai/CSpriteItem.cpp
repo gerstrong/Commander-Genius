@@ -75,7 +75,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			g_pSound->playSound( SOUND_GET_AMMO );
 		}
 
-		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite));
+		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
 
 
 		// Now add the stuff to the inventory

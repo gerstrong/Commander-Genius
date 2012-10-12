@@ -27,7 +27,7 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 }
 
 void CItemEffect::process()
-{
+{    
 	if(m_ieffect == FLOAT)
 	{
 		if(m_timer >= itemEffectTime)
@@ -35,6 +35,21 @@ void CItemEffect::process()
 
 		moveUp(16);
 	}
+	else if(m_ieffect == FADEOUT)
+	{
+		if(m_timer >= itemEffectTime)
+		{
+		    transluceny+=10;
+
+		    if(transluceny >= 250)
+		    {
+			    exists = false;
+			    return;
+		    }
+		}
+
+		moveUp(16);
+	}	
 	else if(m_ieffect == ANIMATE)
 	{
 		if(m_timer >= itemEffectTime_Animation)

@@ -143,7 +143,7 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 	m_Inventory.Item.m_lifes++;
 	g_pSound->playSound( SOUND_EXTRA_LIFE );
 	if(display)
-	    m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10]));
+	    m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10], FADEOUT));
 }
 
 
@@ -283,7 +283,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;
 			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-			m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21]));
+			m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21], FADEOUT));
 
 			switch(i)
 			{

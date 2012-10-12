@@ -41,6 +41,18 @@ CStunnable(pmap, foeID, x, y)
 }
 
 
+void CMimrock::getTouchedBy(CSpriteObject &theObject)
+{
+    if( getActionNumber(A_MIMROCK_WALK) || getActionNumber(A_MIMROCK_JUMP) || getActionNumber(A_MIMROCK_BOUNCE) )
+    {
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	{
+		player->kill();
+	}
+    }
+}
+
+
 bool CMimrock::isNearby(CSpriteObject &theObject)
 {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
