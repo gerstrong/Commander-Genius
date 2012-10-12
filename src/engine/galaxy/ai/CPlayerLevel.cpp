@@ -619,7 +619,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			setActionSprite();
 			calcBoundingBoxes();
 			Uint32 x = (((getXPosition()>>CSF))<<CSF)+(12<<STC);
-			Uint32 y = (((getYUpPos()>>CSF))<<CSF)-(4<<STC);
+			Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);
 			moveTo(x,y);
 			solid = false;
 			xinertia = 0;
@@ -640,7 +640,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			setActionSprite();
 			calcBoundingBoxes();
 			Uint32 x = (((getXPosition()>>CSF)+1)<<CSF)+(2<<STC);
-			Uint32 y = (((getYUpPos()>>CSF))<<CSF)-(4<<STC);			
+			Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);			
 			moveTo(x,y);
 			solid = false;
 			xinertia = 0;
