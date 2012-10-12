@@ -86,7 +86,12 @@ void CTimer::setRates( const unsigned int logicrate,
 
 void CTimer::setFPS( const int framerate )
 {
-	setRates(DEFAULT_LPS, framerate);
+	setRates(m_LogicRate, framerate);
+}
+
+void CTimer::setLPS( const int logicrate )
+{
+	setRates(logicrate, m_FrameRate);
 }
 
 #if 0

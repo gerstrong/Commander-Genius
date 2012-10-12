@@ -75,8 +75,7 @@ void CPlayerDive::processDiving()
 	// If Player presses Jump button, make Keen swim faster
 	if(g_pInput->getPressedCommand(IC_JUMP))
 	{
-		// Slow down the swim speed, by time
-
+		// Animate more Keen when pressing Jump button
 		if(getActionNumber(A_KEENSWIM_MOVE))
 			setActionForce(A_KEENSWIM_MOVE+1);
 		else
@@ -105,11 +104,12 @@ void CPlayerDive::processDiving()
 	}
 
 	// Up and down swimming
-	if( m_swimupspeed>0 && g_pInput->getHoldedCommand(IC_UP))
+	if( g_pInput->getHoldedCommand(IC_UP))
 	{
 		moveUp(MOVESPEED+m_swimupspeed);
 		yDirection = UP;
 	}
+	
 	else if(g_pInput->getHoldedCommand(IC_DOWN))
 	{
 		moveDown(MOVESPEED+m_swimupspeed);

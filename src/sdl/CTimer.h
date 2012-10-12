@@ -23,7 +23,7 @@
 #endif
 
 #define MSPERSEC        1000
-#define DEFAULT_LPS     60
+#define DEFAULT_LPS     70
 #define DEFAULT_FPS     60
 
 typedef unsigned long  ulong;
@@ -50,6 +50,7 @@ public:
     void setRates( const unsigned int logicrate,
     			     const unsigned int framerate);
     void setFPS( const int framerate );
+    void setLPS( const int logicrate );
 
     int getFramesPerSec( void ) { return m_FPS; }
 

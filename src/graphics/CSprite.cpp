@@ -238,6 +238,8 @@ void CSprite::applyTranslucency(Uint8 value)
 	Uint8 r,g,b,a;
 
 	r = g = b = a = 0;
+	
+	if(mpSurface.empty()) return;
 
 	if(m_alpha == value)
 		return;
@@ -249,8 +251,7 @@ void CSprite::applyTranslucency(Uint8 value)
 	    SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, value);
 	    m_alpha = value;
 	}
-
-	if(mpSurface.empty()) return;
+	
 
 	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
 
