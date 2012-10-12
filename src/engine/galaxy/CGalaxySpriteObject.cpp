@@ -53,8 +53,6 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 
 	int moveup = (15<<STC);
 	moveup -= ((rSprite.getHeight()+1)<<STC);
-	//int moveup = (15<<STC)-(rSprite.m_bboxY2-rSprite.m_bboxY1);
-	//processMove(0, (15<<STC)-(rSprite.m_bboxY2-rSprite.m_bboxY1));
 	m_Pos.y += moveup;
 	processMove(0, (1<<STC));
 	

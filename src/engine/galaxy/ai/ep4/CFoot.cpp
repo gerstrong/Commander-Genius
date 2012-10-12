@@ -17,10 +17,6 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	setupGalaxyObjectOnMap(actionID, 0);
 	xDirection = RIGHT;
 
-	/*CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	m_Pos.y -= (rSprite.getHeight()<<(CSF-STC));
-	m_Pos.y -= (1<<CSF);*/
-
 	honorPriority = true;
 
 	performCollisions();

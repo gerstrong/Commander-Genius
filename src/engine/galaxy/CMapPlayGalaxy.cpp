@@ -12,6 +12,7 @@
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ai/ep4/CInchWorm.h"
 #include "ai/ep4/CFoot.h"
+#include "ai/ep4/CSmokePuff.h"
 #include "CLogFile.h"
 
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode) :
@@ -176,8 +177,18 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 		}
 
 
-		// Create the foot
-		mObjectPtr.push_back( new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, ev->x, ev->y-(4<<CSF)) );
+		// Create the foot with Smoke Puff
+		int posX = ev->x;
+		int posY = ev->y-(4<<CSF);
+		for( int x=0 ; x<3 ; x++ )
+		{
+		    for( int y=0 ; y<3 ; y++ )
+		    {
+			mObjectPtr.push_back( new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+((y+1)<<CSF)) );
+		    }
+		}
+				
+		mObjectPtr.push_back( new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY) );
 
 		// Flush all the pending events. This help catch cases when more than one more of the worms try to create the foot
 		EventContainer.clear();
