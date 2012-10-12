@@ -609,8 +609,8 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	if( m_playcontrol[PA_X]<0 && blockedl )
 	{
-		bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
-		bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
+		bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)-1)].bright;
+		bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
 
 		if(!check_block && check_block_lower &&
 				mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
@@ -618,8 +618,8 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			setAction(A_KEEN_HANG);
 			setActionSprite();
 			calcBoundingBoxes();
-			Uint32 x = (((getXPosition()>>CSF))<<CSF)+(16<<STC);
-			Uint32 y = (((getYPosition()>>CSF))<<CSF)+(8<<STC);
+			Uint32 x = (((getXPosition()>>CSF))<<CSF)+(12<<STC);
+			Uint32 y = (((getYUpPos()>>CSF))<<CSF)-(4<<STC);
 			moveTo(x,y);
 			solid = false;
 			xinertia = 0;
@@ -630,8 +630,8 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 	}
 	else if( m_playcontrol[PA_X]>0 && blockedr )
 	{
-		bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
-		bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
+		bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)-1)].bleft;
+		bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
 
 		if(!check_block && check_block_lower &&
 				mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
@@ -639,8 +639,8 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			setAction(A_KEEN_HANG);
 			setActionSprite();
 			calcBoundingBoxes();
-			Uint32 x = (((getXPosition()>>CSF)+1)<<CSF) + (2<<STC);
-			Uint32 y = (((getYPosition()>>CSF)+1)<<CSF) - (5<<STC);
+			Uint32 x = (((getXPosition()>>CSF)+1)<<CSF)+(2<<STC);
+			Uint32 y = (((getYUpPos()>>CSF))<<CSF)-(4<<STC);			
 			moveTo(x,y);
 			solid = false;
 			xinertia = 0;
