@@ -1,19 +1,19 @@
 #!/bin/sh
 
 # Windows Version
-cmake . -DBUILD_TYPE=WIN32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1 -DCREATE_DEBS=0
-make package
+cmake . -DBUILD_TARGET=WIN32 -DCMAKE_BUILD_TYPE=Release -DOGG=yes -DTREMOR=NO
+make package -j 4
 rm CMakeFiles -R
 
 # Linux 64-bit Version
-cmake . -DBUILD_TYPE=LINUX64 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1 -DCREATE_DEBS=1 -DCREATE_RPMS=1
-make package
+cmake . -DBUILD_TARGET=LINUX -DCMAKE_BUILD_TYPE=Release -DOGG=yes -DTREMOR=NO -DCREATE_DEBS=1 -DCREATE_RPMS=1
+make package -j 4
 rm CMakeFiles -R
 
 # Linux 32-bit Version
-cmake . -DBUILD_TYPE=LINUX32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1 -DCREATE_DEBS=1 -DCREATE_RPMS=1
-make package
-rm CMakeFiles -R
+#cmake . -DBUILD_TYPE=LINUX -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1 -DCREATE_DEBS=1 -DCREATE_RPMS=1
+#make package
+#rm CMakeFiles -R
 
 #clean up the packaged files
 rm _CPack_Packages -R

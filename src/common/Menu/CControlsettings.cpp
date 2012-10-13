@@ -137,10 +137,10 @@ void CControlSettingsMovement::init()
 {
 	mCommandName[IC_LEFT]		= "Left:   ";
 	mCommandName[IC_RIGHT]		= "Right:  ";
-	mCommandName[IC_UP]			= "Up:     ";
+	mCommandName[IC_UP]		= "Up:     ";
 	mCommandName[IC_DOWN]		= "Down:   ";
 	mCommandName[IC_UPPERLEFT]	= "U-left: ";
-	mCommandName[IC_UPPERRIGHT] = "U-right:";
+	mCommandName[IC_UPPERRIGHT] 	= "U-right:";
 	mCommandName[IC_LOWERLEFT] 	= "D-left: ";
 	mCommandName[IC_LOWERRIGHT]	= "D-right:";
 
