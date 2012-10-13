@@ -20,10 +20,9 @@ char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 
 // Initialization Routines
-CSaveGameController::CSaveGameController()
+CSaveGameController::CSaveGameController() :
+m_offset(0)
 {
-	m_offset = 0;
-
 	setGameDirectory(g_pBehaviorEngine->m_ExeFile.getDataDirectory());
 	setEpisode(g_pBehaviorEngine->getEpisode());
 }

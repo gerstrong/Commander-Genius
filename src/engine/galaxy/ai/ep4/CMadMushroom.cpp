@@ -22,10 +22,6 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 jumpcounter(0)
 {
 	setupGalaxyObjectOnMap(0x20E4, A_MUSHROOM_BOUNCE);
-
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	performCollisions();
-	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 	processActionRoutine();
 }
 

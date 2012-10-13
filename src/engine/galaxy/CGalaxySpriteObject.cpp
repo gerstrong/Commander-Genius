@@ -37,7 +37,7 @@ mEndOfAction(false)
 }
 
 void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
-									 const size_t ActionNumber )
+						 const size_t ActionNumber )
 {
 	m_ActionBaseOffset = ActionBaseOffset;
 	m_climbing = false;

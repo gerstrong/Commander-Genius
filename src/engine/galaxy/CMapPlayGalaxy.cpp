@@ -202,12 +202,25 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	const Uint16 level = mMap.getLevel();
 	savedGame.encodeData( level );
 
-	size_t size = mObjectPtr.size();
+	std::vector< SmartPointer<CGalaxySpriteObject> > filteredObjects;	
+
+	// let's filter the Foe out that won't do any good!
+	std::vector< SmartPointer<CGalaxySpriteObject> >::iterator it = mObjectPtr.begin();
+	for( ; it != mObjectPtr.end() ; it++ )
+	{
+	    if( (*it)->mFoeID != 0 )		
+	    {
+		filteredObjects.push_back( (*it) );
+	    }
+	}
+	
+	const size_t size = filteredObjects.size();
+		
 	// save the number of objects on screen
 	savedGame.encodeData(size);
 
-	std::vector< SmartPointer<CGalaxySpriteObject> >::iterator it = mObjectPtr.begin();
-	for( ; it != mObjectPtr.end() ; it++ )
+	it = filteredObjects.begin();
+	for( ; it != filteredObjects.end() ; it++ )
 	{
 		// save all the objects states
 		unsigned int newYpos = (*it)->getYPosition();
@@ -215,9 +228,8 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		CSprite &rSprite = g_pGfxEngine->getSprite((*it)->sprite);
 		// we need to push back the original position, because when loading a game the original unCSFed coordinates are transformed
 		newYpos -= (1<<CSF);
-		//newYpos += ((*it)->m_BBox.y2-(*it)->m_BBox.y1);
 		newYpos += ((rSprite.getHeight()+1)<<STC);
-				
+						
 		savedGame.encodeData( (*it)->mFoeID );
 		savedGame.encodeData( (*it)->getXPosition() );
 		savedGame.encodeData( (*it)->getYPosition() );
@@ -303,7 +315,9 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 		// TODO: Be careful here is a bad Null Pointer inside that structure
 		if(pNewfoe == NULL)
-			pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
+		{
+		    pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
+		}
 
 		savedGame.decodeData( pNewfoe->dead );
 		savedGame.decodeData( pNewfoe->onscreen );
@@ -322,7 +336,10 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData( actionNumber );
 
 		if(pNewfoe->exists)
-			mObjectPtr.push_back(pNewfoe);
+		{
+		    pNewfoe->setActionForce(actionNumber);
+		    mObjectPtr.push_back(pNewfoe);
+		}
 	}
 
 	// Save the map_data as it is left
