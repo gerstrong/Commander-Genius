@@ -11,13 +11,9 @@ namespace galaxy {
 
 const size_t PARTICLE_CHANGE_TIME = 5;
 
-CEngineParticleSprites::CEngineParticleSprites(	CMap *pmap,
-												const Uint16 foeID,
-												const Uint32 x,
-												const Uint32 y,
-												const bool vert,
-												const bool leftside ) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CEngineParticleSprites::CEngineParticleSprites(	CMap *pmap, const Uint32 x, const Uint32 y,
+						const bool vert, const bool leftside ) :
+CGalaxySpriteObject(pmap, 0, x, y),
 m_vert(vert),
 m_timer(0)
 {

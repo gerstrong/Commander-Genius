@@ -239,7 +239,8 @@ void CSprite::applyTranslucency(Uint8 value)
 
 	r = g = b = a = 0;
 	
-	if(mpSurface.empty()) return;
+	if(mpSurface.empty() || g_pVideoDriver->getZoomValue() > 1) 
+	    return;
 
 	if(m_alpha == value)
 		return;

@@ -35,8 +35,8 @@ mp_BoostEngObjRight(NULL)
 		calcBoundingBoxes();
 
 		// Setup boost effects
-		mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, 0, x, y+(4<<STC), false, true);
-		mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, 0, x+m_BBox.x2+(4<<STC), y+(4<<STC), false, false);
+		mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, x, y+(4<<STC), false, true);
+		mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, x+m_BBox.x2+(4<<STC), y+(4<<STC), false, false);
 
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjLeft ) );
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjRight ) );
@@ -57,7 +57,7 @@ void CPlatformHorizontal::process()
 	// If there is a blocker, change the direction
 	if( object == 31 )
 	{
-		xDirection = (xDirection == RIGHT) ? LEFT : RIGHT;
+	    xDirection = (xDirection == RIGHT) ? LEFT : RIGHT;
 	}
 	
 	if(blockedr)
@@ -95,7 +95,7 @@ void CPlatformHorizontal::process()
 		if(mp_BoostEngObjRight)
 		{
 			mp_BoostEngObjRight->dontdraw = true;
-			mp_BoostEngObjLeft->moveRight(MOVE_HORIZ_SPEED);
+			mp_BoostEngObjLeft->moveLeft(MOVE_HORIZ_SPEED);
 		}
 		
 		movePlatLeft(MOVE_HORIZ_SPEED);

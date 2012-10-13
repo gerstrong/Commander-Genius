@@ -42,8 +42,8 @@ mp_BoostEngObjRight(NULL)
 
 		// Setup boost effects
 		// Setup boost effects if used in the episode
-		mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, 0, x+(1<<STC), y+(8<<STC), true, true);
-		mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, 0, x+m_BBox.x2+(4<<STC), y+(8<<STC), true, false);
+		mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, x+(1<<STC), y+(8<<STC), true, true);
+		mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, x+m_BBox.x2+(4<<STC), y+(8<<STC), true, false);
 
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjLeft ) );
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjRight ) );

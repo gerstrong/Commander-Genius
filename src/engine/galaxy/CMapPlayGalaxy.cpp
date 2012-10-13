@@ -228,7 +228,8 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		CSprite &rSprite = g_pGfxEngine->getSprite((*it)->sprite);
 		// we need to push back the original position, because when loading a game the original unCSFed coordinates are transformed
 		newYpos -= (1<<CSF);
-		newYpos += ((rSprite.getHeight()+1)<<STC);
+		newYpos += ((rSprite.getHeight())<<STC);
+		newYpos++;
 				
 		savedGame.encodeData( (*it)->mFoeID );
 		savedGame.encodeData( (*it)->getXPosition() );

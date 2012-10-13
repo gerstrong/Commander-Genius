@@ -23,7 +23,8 @@
 #endif
 
 #define MSPERSEC        1000
-#define DEFAULT_LPS_GALAXY     70
+#define DEFAULT_LPS_GALAXY     70 // This makes it more vanilla like. I might stay here
+//#define DEFAULT_LPS_GALAXY     60
 #define DEFAULT_LPS_VORTICON   60
 #define DEFAULT_FPS     60
 
