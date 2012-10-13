@@ -51,10 +51,10 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 
 	performCollisions();
 
-	int moveup = (15<<STC);
+	int moveup = (1<<CSF)-1;
 	moveup -= ((rSprite.getHeight()+1)<<STC);
 	m_Pos.y += moveup;
-	processMove(0, (1<<STC));
+	processMove(0, 1);
 	
 	if(!processActionRoutine())
 			exists = false;

@@ -141,7 +141,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 13:
 		// This is an egg
-		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
 		if( g_pBehaviorEngine->mDifficulty > 1 )
 			p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y);
 		else
@@ -155,7 +154,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 19:
 		//This is a Mimrock.
-		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
 		p_newfoe = new galaxy::CMimrock(&Map, foe, x, y);
 		break;
 

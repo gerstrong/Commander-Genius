@@ -55,7 +55,7 @@ public:
 
 	bool Fileexists( int SaveSlot );
 	bool prepareSaveGame( int SaveSlot, const std::string &Name);
-	bool prepareLoadGame( int SaveSlot);
+	bool prepareLoadGame( int SaveSlot );
 
 	// Encoder/Decoder Classes
 	template <class T>
@@ -74,8 +74,11 @@ public:
 	bool load();
 	bool alreadyExits();
 	
+	bool busy()
+	{ return !m_statefilename.empty(); }
+	
 	std::string getUnnamedSlotName();
-
+	
 private:
 
 	bool loadSaveGameVersion5(const std::string &fname, OldSaveGameFormatV5& old);
@@ -90,7 +93,7 @@ private:
 	std::string m_statename;
 	char m_Episode;
 	int m_Level;
-	Uint32 m_offset;
+	Uint32 m_offset;	
 
 	std::vector<byte> m_datablock;
 };

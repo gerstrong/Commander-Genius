@@ -409,11 +409,6 @@ void CVideoDriver::pollDrawingTasks()
 		{
 			CSprite *Sprite = drawSpriteTask->mSpritePtr;
 
-			if(drawSpriteTask->mAlpha < 255)
-			{
-			    printf("Hit!\n");
-			}
-			
 			Sprite->_drawSprite(getBlitSurface(), drawSpriteTask->mx,
 					drawSpriteTask->my, drawSpriteTask->mAlpha);
 		}

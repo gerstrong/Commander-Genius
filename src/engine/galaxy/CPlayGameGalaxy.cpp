@@ -19,6 +19,8 @@
 #include "common/Menu/CMenuController.h"
 #include "graphics/effects/CColorMerge.h"
 
+#include <iostream>
+
 namespace galaxy
 {
 
@@ -30,7 +32,7 @@ m_WorldMap(ExeFile, m_Inventory, m_Cheatmode),
 m_LevelPlay(ExeFile, m_Inventory, m_Cheatmode),
 m_SavedGame(SavedGame)
 {
-	m_WorldMap.init();
+    m_WorldMap.init();
 }
 
 bool CPlayGameGalaxy::loadGameState()

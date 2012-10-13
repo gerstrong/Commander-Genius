@@ -7,6 +7,7 @@
 
 #include "CWorldMap.h"
 #include "dialog/CMessageBoxBitmapGalaxy.h"
+#include "fileio/CSaveGameController.h"
 
 namespace galaxy {
 
@@ -32,8 +33,12 @@ void CWorldMap::init()
 	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	g_pGfxEngine->setupEffect(new CColorMerge(2));
-	EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );
+	g_pGfxEngine->setupEffect(new CColorMerge(4));
+	
+	if(!gpSaveGameController->busy())
+	{
+	    EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );
+	}
 
 	mMap.drawAll();
 }

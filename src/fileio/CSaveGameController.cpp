@@ -41,7 +41,8 @@ void CSaveGameController::setLevel(int Level)
 // Retrieves the data size of the next block
 Uint32 CSaveGameController::getDataSize(std::ifstream &StateFile) {
 	Uint32 size=0;
-	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++) {
+	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++) 
+	{
 		size += StateFile.get() << (i*8);
 	}
 	return size;
@@ -531,8 +532,8 @@ bool CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name
 // PlayGame instance will call load() and get the right data.
 bool CSaveGameController::prepareLoadGame(int SaveSlot)
 {
-	const std::string savefile = "cksave" + itoa(SaveSlot) + ".ck"+itoa(m_Episode);
-	m_statefilename = JoinPaths(m_savedir, savefile);
+    const std::string savefile = "cksave" + itoa(SaveSlot) + ".ck"+itoa(m_Episode);
+    m_statefilename = JoinPaths(m_savedir, savefile);
     m_datablock.clear();
 
     g_pBehaviorEngine->EventList().add( new LoadGameEvent() );
