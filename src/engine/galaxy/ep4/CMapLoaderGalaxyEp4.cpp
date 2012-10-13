@@ -136,7 +136,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 12:
 		// This is a Bounder.
-		// TODO: Those relative coordinates are not a good sign. Try to remove them and make the Sprite substract them
 		p_newfoe = new galaxy::CBounder(&Map, foe, x, y);
 		break;
 

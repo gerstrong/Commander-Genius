@@ -208,7 +208,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	std::vector< SmartPointer<CGalaxySpriteObject> >::iterator it = mObjectPtr.begin();
 	for( ; it != mObjectPtr.end() ; it++ )
 	{
-	    if( (*it)->mFoeID != 0 )		
+	    if( (*it)->mFoeID != 0 )
 	    {
 		filteredObjects.push_back( (*it) );
 	    }
@@ -229,10 +229,10 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		// we need to push back the original position, because when loading a game the original unCSFed coordinates are transformed
 		newYpos -= (1<<CSF);
 		newYpos += ((rSprite.getHeight()+1)<<STC);
-						
+				
 		savedGame.encodeData( (*it)->mFoeID );
 		savedGame.encodeData( (*it)->getXPosition() );
-		savedGame.encodeData( (*it)->getYPosition() );
+		savedGame.encodeData( newYpos );
 		savedGame.encodeData( (*it)->dead );
 		savedGame.encodeData( (*it)->onscreen );
 		savedGame.encodeData( (*it)->hasbeenonscreen );
