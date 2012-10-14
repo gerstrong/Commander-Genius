@@ -24,6 +24,13 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	honorPriority = false;
 	solid = false;
 	m_ieffect = ieffect;
+			
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+	int moveup = (1<<CSF)-1;
+	moveup -= ((rSprite.getHeight()+1)<<STC);
+	m_Pos.y += moveup;
+	processMove(0, 1);
 }
 
 void CItemEffect::process()
