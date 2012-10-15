@@ -44,10 +44,8 @@ m_cantswim(false)
 	walkBaseFrame = sprite;
 	swimBaseFrame = walkBaseFrame + 24;
 	m_basesprite = walkBaseFrame;
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	performCollisions();
-	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 
+	performCollisions();
 	mProcessPtr = &CPlayerWM::processMoving;
 }
 
