@@ -139,15 +139,20 @@ file(GLOB_RECURSE ALL_SRCS src/*.c*)
 
 IF(UNIX)
 # Compilation under Linux
-
 	IF(BUILD_TARGET STREQUAL WIN32)
+	
+		set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+		set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+	
+		# the name of the target operating system
+		SET(CMAKE_SYSTEM_NAME Windows)
 		option(MINGW "Use MingW" yes)		
 		set(MINGW_PREFIX "mingw32")
 		set(PREFIX /opt/${MINGW_PREFIX})		
 		set(CMAKE_PREFIX_PATH ${PREFIX})
 		set(CMAKE_C_COMPILER /usr/bin/i686-w64-mingw32-gcc)
 		set(CMAKE_CXX_COMPILER /usr/bin/i686-w64-mingw32-g++)
-		set(CMAKE_INCLUDE_PATH /usr/include)
+		set(CMAKE_INCLUDE_PATH ${PREFIX}/include)
 		set(CMAKE_FIND_ROOT_PATH ${PREFIX})
 		set(CMAKE_INSTALL_PREFIX ${PREFIX})
 		set(CMAKE_LIBRARY_PATH ${PREFIX}/lib)	
@@ -161,8 +166,16 @@ IF(UNIX)
 	
 ENDIF(UNIX)
 
-find_package(PkgConfig)
-pkg_check_modules(SDL sdl)
+
+
+IF(BUILD_TARGET STREQUAL WIN32)
+    set(SDL_INCLUDE_DIRS ${PREFIX}/include/SDL)
+    include_directories(${SDL_INCLUDE_DIRS})
+ELSE(BUILD_TARGET STREQUAL WIN32)
+    find_package(PkgConfig)
+    pkg_check_modules(SDL sdl)
+ENDIF(BUILD_TARGET STREQUAL WIN32)
+
 
 
 #temporary fix for the mingw compilation process
@@ -172,25 +185,34 @@ pkg_check_modules(SDL sdl)
 	
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
 
-INCLUDE_DIRECTORIES(/usr/include)
-
 
 if(OPENGL)
-  find_package(OpenGL)
-   if (OPENGL_FOUND)
-    include_directories(${OPENGL_INCLUDE_DIR})
-  else (OPENGL_FOUND)
-    MESSAGE("OpenGL environment missing")
-  endif (OPENGL_FOUND)
+	IF(BUILD_TARGET STREQUAL WIN32)
+		set(OPENGL_INCLUDE_DIR ${CMAKE_INCLUDE_PATH}/GL)	
+		include_directories(${OPENGL_INCLUDE_DIR})
+	ELSE(BUILD_TARGET STREQUAL WIN32)
+	  find_package(OpenGL)
+	    if (OPENGL_FOUND)
+		include_directories(${OPENGL_INCLUDE_DIR})
+	    else (OPENGL_FOUND)
+		MESSAGE("OpenGL environment missing")
+	    endif()
+	ENDIF()
 endif()
 
 
 # Try to use Ogg if enabled
 IF (OGG)
-    FIND_PATH(VORBIS_INCLUDE_DIR vorbis/vorbisfile.h DOC "Include for Ogg Vorbis")
-    SET(VORBIS_INCLUDE_PATH "${VORBIS_INCLUDE_DIR}/vorbis")
-	INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_PATH})
-	ADD_DEFINITIONS(-DOGG)
+    IF(BUILD_TARGET STREQUAL WIN32)
+	set(VORBIS_INCLUDE_DIR ${CMAKE_INCLUDE_PATH})
+    ELSE(BUILD_TARGET STREQUAL WIN32)
+	FIND_PATH(VORBIS_INCLUDE_DIR vorbis/vorbisfile.h DOC "Include for Ogg Vorbis")	
+    ENDIF()
+    
+    SET(VORBIS_INCLUDE_PATH "${VORBIS_INCLUDE_DIR}/vorbis")	   
+    ADD_DEFINITIONS(-DOGG)
+    INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_PATH})
+    INCLUDE_DIRECTORIES(${VORBIS_INCLUDE_DIR})
 ENDIF (OGG)
 
 IF (TREMOR)
@@ -232,7 +254,11 @@ ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 
 IF(OPENGL)
+    IF(BUILD_TARGET STREQUAL WIN32)
+	TARGET_LINK_LIBRARIES(CommanderGenius opengl32)
+    ELSE()
 	TARGET_LINK_LIBRARIES(CommanderGenius GL)
+    ENDIF()
 ENDIF(OPENGL)
 
 IF(OGG)
@@ -248,11 +274,12 @@ ENDIF(TREMOR)
 
 
 IF(BUILD_TARGET STREQUAL WIN32)
-	SET_TARGET_PROPERTIES(CommanderGenius PROPERTIES OUTPUT_NAME "${BUILD_DIR}/CGenius.exe")
+	SET_TARGET_PROPERTIES(CommanderGenius PROPERTIES OUTPUT_NAME "CGenius.exe")
 	ADD_CUSTOM_COMMAND(TARGET CommanderGenius PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )
 	ADD_CUSTOM_COMMAND(TARGET CommanderGenius PRE_LINK COMMAND icotool -c -o ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.ico ${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cglogo512.png )
-	ADD_CUSTOM_COMMAND(TARGET CommanderGenius PRE_LINK COMMAND ${MINGW_PREFIX}-windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
-	SET_TARGET_PROPERTIES(CommanderGenius PROPERTIES LINK_FLAGS "${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")
+	ADD_CUSTOM_COMMAND(TARGET CommanderGenius PRE_LINK COMMAND /usr/bin/i686-w64-mingw32-windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
+	SET_TARGET_PROPERTIES(CommanderGenius PROPERTIES LINK_FLAGS "-L/opt/mingw32/lib ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")	
+	LINK_DIRECTORIES(/opt/mingw32/lib)
 	MESSAGE( "Will build with the CG-Icon for Windows." )
 #ELSE(BUILD_TARGET STREQUAL WIN32)
 #	SET_TARGET_PROPERTIES(CommanderGenius PROPERTIES OUTPUT_NAME "build/${BUILD_DIR}/CGenius")
