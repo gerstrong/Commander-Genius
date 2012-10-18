@@ -28,11 +28,7 @@ processState(&CFlag::processFlying)
 	honorPriority = false;
 	sprite = WAVING_BASEFRAME;
 	
-	setActionSprite();	
-	
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-
-	performCollisions();
 
 	int moveup = (1<<CSF)-1;
 	moveup -= ((rSprite.getHeight()+1)<<STC);

@@ -34,15 +34,19 @@ CStunnable(pmap, foeID, x, y)
 	setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
 	xDirection = 0;
 
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
-	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 	processActionRoutine();
+	honorPriority = false;
 }
 
 
 void CMimrock::getTouchedBy(CSpriteObject &theObject)
 {
+    if(dead || theObject.dead)
+	return;
+    
+    CStunnable::getTouchedBy(theObject);
+    
     if( getActionNumber(A_MIMROCK_WALK) || getActionNumber(A_MIMROCK_JUMP) || getActionNumber(A_MIMROCK_BOUNCE) )
     {
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
@@ -82,12 +86,18 @@ void CMimrock::processSit()
 void CMimrock::processWalk()
 {
 	if(xDirection == LEFT)
-		moveLeft(WALK_SPEED);
+	{
+	    moveLeft(WALK_SPEED);
+	}
 	else
-		moveRight(WALK_SPEED);
+	{
+	    moveRight(WALK_SPEED);
+	}
 
 	if(getActionStatus(A_MIMROCK_SIT))
-		setAction(A_MIMROCK_SIT);
+	{
+	    setAction(A_MIMROCK_SIT);
+	}
 
 }
 
