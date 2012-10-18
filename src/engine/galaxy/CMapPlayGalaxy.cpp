@@ -141,7 +141,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	}
 
 	// Draw masked tiles here!
-	mMap.drawForegroundTiles();
+	g_pVideoDriver->mDrawTasks.add( new DrawForegroundTilesTask(mMap) );
 
 	for( obj=mObjectPtr.rbegin() ;
 			obj!=mObjectPtr.rend() ; obj++ )

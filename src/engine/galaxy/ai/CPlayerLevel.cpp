@@ -12,6 +12,7 @@
 #include "sdl/input/CInput.h"
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
+#include "graphics/effects/CColorMerge.h"
 
 #include "sdl/CTimer.h"
 #include "CVec.h"
@@ -1207,7 +1208,7 @@ void CPlayerLevel::processExiting()
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
-		g_pGfxEngine->setupEffect(new CColorMerge(2));		
+		g_pGfxEngine->setupEffect(new CColorMerge(8));		
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
 		m_Inventory.Item.m_gem.empty();
 		mExitTouched = true;

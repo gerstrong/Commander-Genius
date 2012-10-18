@@ -15,6 +15,7 @@
 #include "graphics/CTilemap.h"
 #include "graphics/CBitmap.h"
 #include "gui/CGUIDialog.h"
+#include "common/CMap.h"
 #include "SmartPointer.h"
 
 
@@ -28,6 +29,13 @@ struct DrawGUIRenderTask : CEvent
 };
 
 // Tile based Draw Tasks
+
+struct DrawForegroundTilesTask : CEvent
+{
+    CMap &mMap;
+    DrawForegroundTilesTask(CMap &map) : mMap(map) {};
+};
+
 
 struct DrawAnimatedTileTask : CEvent
 {

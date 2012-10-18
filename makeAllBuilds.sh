@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Windows Version
-cmake . -DBUILD_TARGET=WIN32 -DCMAKE_BUILD_TYPE=Release -DOGG=yes -DTREMOR=NO
+cmake . -DBUILD_TARGET=WIN32 -DCMAKE_BUILD_TYPE=Release -DOGG=yes -DTREMOR=NO 
 make package -j 4
 rm CMakeFiles -R
 

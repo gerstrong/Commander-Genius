@@ -555,7 +555,7 @@ void CPlayGameVorticon::drawAllElements()
 	drawObjects();
 
 	// Draw masked tiles here!
-	mMap->drawForegroundTiles();
+	g_pVideoDriver->mDrawTasks.add( new DrawForegroundTilesTask(*(mMap.get())) );
 
 	if(mp_option[OPT_HUD].value && mpFinale.empty()  )
 	{	// Draw the HUD

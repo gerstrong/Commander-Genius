@@ -8,6 +8,7 @@
 #include "CWorldMap.h"
 #include "dialog/CMessageBoxBitmapGalaxy.h"
 #include "fileio/CSaveGameController.h"
+#include "graphics/effects/CColorMerge.h"
 
 namespace galaxy {
 
@@ -33,7 +34,7 @@ void CWorldMap::init()
 	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	g_pGfxEngine->setupEffect(new CColorMerge(4));
+	g_pGfxEngine->setupEffect(new CColorMerge(8));
 	
 	if(!gpSaveGameController->busy())
 	{

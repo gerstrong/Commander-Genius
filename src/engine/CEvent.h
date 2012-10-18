@@ -19,7 +19,6 @@
 #include "SmartPointer.h"
 #include "CVec.h"
 #include "graphics/CBitmap.h"
-#include "graphics/effects/CColorMerge.h"
 #include <vector>
 
 class CGalaxySpriteObject;

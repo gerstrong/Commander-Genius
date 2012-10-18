@@ -16,6 +16,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "fileio/CSaveGameController.h"
 #include "sdl/sound/CSound.h"
+#include "sdl/CTimer.h"
 #include "common/CBehaviorEngine.h"
 #include "SmartPointer.h"
 #include "CLogFile.h"

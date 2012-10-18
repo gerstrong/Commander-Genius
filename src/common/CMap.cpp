@@ -626,9 +626,10 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 /**
  * \brief This function draws all the masked and foreground tiles
  */
-void CMap::drawForegroundTiles()
-{
-	SDL_Surface* surface = g_pVideoDriver->getBlitSurface();
+void CMap::_drawForegroundTiles()
+{       
+    // TODO: This event pushing here is to much information that is pushed to the event list. Please reduce this!
+	SDL_Surface *surface = g_pVideoDriver->getBlitSurface();
 	const Uint16 num_h_tiles = surface->h;
 	const Uint16 num_v_tiles = surface->w;
 	const Uint16 x1 = m_scrollx>>TILE_S;
@@ -649,15 +650,15 @@ void CMap::drawForegroundTiles()
 
 			if(!m_Background)
 			{
-    			if(TileProperties[fg].behaviour == -2) // case when when has a masked graphic
-    				drawAnimatedTile(surface, loc_x, loc_y, fg+1);
-    			else if (TileProperties[fg].behaviour == -1) // case when tile is just foreground
-    				drawAnimatedTile(surface, loc_x, loc_y, fg);
+			    if(TileProperties[fg].behaviour == -2) // case when has a masked graphic
+				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
+			    else if (TileProperties[fg].behaviour == -1) // case when tile is just foreground
+				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
 			}
 			else if(fg != 0)
 			{
-				if(TileProperties[fg].behaviour < 0)
-					drawAnimatedTile(surface, loc_x, loc_y, fg);
+			   if(TileProperties[fg].behaviour < 0)
+				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
 			}
 		}
 	}
@@ -675,8 +676,7 @@ Uint8 CMap::getAnimtiletimer()
 
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
-	g_pVideoDriver->mDrawTasks.add(
-			new DrawAnimatedTileTask( &(m_Tilemaps.at(1)), mx, my, tile ) );
+	g_pVideoDriver->mDrawTasks.add( new DrawAnimatedTileTask( &(m_Tilemaps[1]), mx, my, tile ) );
 }
 
 void CMap::animateAllTiles()

@@ -65,7 +65,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	g_pGfxEngine->setupEffect(new CColorMerge(2));
+	g_pGfxEngine->setupEffect(new CColorMerge(8));
 	EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), 
 							  loading_text, LEFT) );
 

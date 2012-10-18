@@ -431,13 +431,20 @@ void CVideoDriver::pollDrawingTasks()
 
 		// Tiles Section which are in front or/and animated
 		else if ( DrawAnimatedTileTask *drawAnimatedTileTask =
-		mDrawTasks.occurredEvent<DrawAnimatedTileTask>())
+		    mDrawTasks.occurredEvent<DrawAnimatedTileTask>())
 		{
 			CTilemap *TilemapPtr = drawAnimatedTileTask->mTileMapPtr;
 
 			TilemapPtr->drawTile(getBlitSurface(), drawAnimatedTileTask->mx,
 					drawAnimatedTileTask->my, drawAnimatedTileTask->mtile);
 		}
+
+		else if ( DrawForegroundTilesTask *drawForegroundTiles =
+		    mDrawTasks.occurredEvent<DrawForegroundTilesTask>())
+		{
+			drawForegroundTiles->mMap._drawForegroundTiles();
+		}
+				
 
 		// GUI Rendering based Task
 		else if ( DrawGUIRenderTask *renderTask =

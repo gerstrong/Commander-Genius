@@ -155,6 +155,8 @@ void CGame::run()
 	    g_pVideoDriver->updateScreen();
 	}
 	
+	g_pVideoDriver->mDrawTasks.clear();
+	
 	// delay time remaining in current loop
 	g_pTimer->TimeToDelay();
 	

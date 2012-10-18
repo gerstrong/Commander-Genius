@@ -177,12 +177,14 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 
 #ifdef DEBUG_COLLISION
 
-	std::vector<CTileProperties> &TileProp = g_pBehaviorEngine->getTileProperties(1);
-	FillSlopeRect(dst, dst_rect, 0xFFFFFFFF, TileProp[t].bup);
+	//std::vector<CTileProperties> &TileProp = g_pBehaviorEngine->getTileProperties(1);
+	//FillSlopeRect(dst, dst_rect, 0xFFFFFFFF, TileProp[t].bup);
 #endif
 
 }
 
-CTilemap::~CTilemap() {
-	if(m_Tilesurface) SDL_FreeSurface(m_Tilesurface);
+CTilemap::~CTilemap() 
+{
+	if(m_Tilesurface) 
+	    SDL_FreeSurface(m_Tilesurface);
 }
