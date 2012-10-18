@@ -1,8 +1,31 @@
 Commander Genius Release :
 ==========================
 
-v0.4.0 Beta3: (Alpha as of Beta 1 and 2 changes are put here also)
-------------------------------------------------------------------
+v1.0 Beta4: 
+-----------
+- Change in version numbering. For the reason of that see the PCKF Forum
+- More Keen 5 support. Elevators (on map) and some Platforms are now working. Exit Door also trigger the exit level event now. Support got much better.
+- About 20 collision bug have been fixed providing a better experience
+- New transition effects
+- Better Timer, faster code.
+- New Scalers (Thanks to NY00123 for deep research)
+- Aspect Correction (Also thanks to NY00123)
+- Vertical Blockers now also work in any map.
+- The Readme has been updated and explains better the mission of CG. You can also read that on Github for those who are interested and might want to discuss it on IRC or whereever you find me.
+- Flying Foot is in!
+- Inchworms are in!
+- Keen 7 mod Support. I think fully, as far I can see (Great Mod Ceilick)
+- New Item effects
+- Better playability in the underwater Level.
+- More general effects
+- Better Enemy AIs although some still need more work.
+- Secret level fully working
+- GameState loading and saving improved a lot
+- Mimrocks improved
+
+
+v0.4.0 Beta3: 
+-------------
 - Menus con now be controlled by the mouse and behave like Window Frames
 - Galaxy engine has also much better menus
 - Engine got some changes which make it more stable
