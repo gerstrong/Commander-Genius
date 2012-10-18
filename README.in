@@ -8,13 +8,13 @@
     (c)2009-2012            NY00123
 
 Porting:
-    (c)2009-2012            Pizza2004 (MacOs X)
     (c)2010-2012            Pelya (Android)
+    (c)2009-2012            Pizza2004 (MacOs X)
 
            Released under GNU/GPL           
                                             
            Release v${CG_VERSION} 
-           Build: ${BUILD_TYPE}                                       
+           Build: ${BUILD_TARGET}                                       
 **********************************************
 
 Welcome to Commander Genius!
