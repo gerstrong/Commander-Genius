@@ -23,6 +23,7 @@ jumpcounter(0)
 {
 	setupGalaxyObjectOnMap(0x20E4, A_MUSHROOM_BOUNCE);
 	processActionRoutine();
+	honorPriority = false;
 }
 
 
