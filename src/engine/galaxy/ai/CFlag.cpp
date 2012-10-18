@@ -27,7 +27,17 @@ processState(&CFlag::processFlying)
 	solid = false;
 	honorPriority = false;
 	sprite = WAVING_BASEFRAME;
-	calcBoundingBoxes();
+	
+	setActionSprite();	
+	
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+	performCollisions();
+
+	int moveup = (1<<CSF)-1;
+	moveup -= ((rSprite.getHeight()+1)<<STC);
+	m_Pos.y += moveup;
+	processMove(0, 1);	
 }
 
 /**
