@@ -150,10 +150,15 @@ void CBlueBird::getTouchedBy(CSpriteObject &theObject)
 		inhibitfall = false;
 		setAction(A_EAGLE_STUNNED);
 	}
-
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	
+	// Only kill the player if the bird is flying or walking
+	
+	if( getActionNumber(A_EAGLE_WALKING) && getActionNumber(A_EAGLE_FLYING) )
 	{
+	    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	    {
 		player->kill();
+	    }
 	}
 }
 
