@@ -609,14 +609,20 @@ void CPlayerLevel::shootInAir()
 
 bool CPlayerLevel::checkandtriggerforCliffHanging()
 {
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+    const bool ceiling = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bdown;
+    
+    if(ceiling)
+	return false;
+    	
 	if( m_playcontrol[PA_X]<0 && blockedl )
 	{
+	    
 		bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)-1)].bright;
 		bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
 
-		if(!check_block && check_block_lower &&
-				mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
+		if(!check_block && check_block_lower && 
+		    mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
 		{
 			setAction(A_KEEN_HANG);
 			setActionSprite();
@@ -674,7 +680,7 @@ void CPlayerLevel::processCliffHanging()
 	if( ((xDirection == LEFT) && (m_playcontrol[PA_X] < 0)) ||
 		((xDirection == RIGHT) && (m_playcontrol[PA_X] > 0))  )
 	{
-		// This will set the target whenever the process object of climbing is launched
+		// This will reset the target whenever the process object of climbing is launched
 		mTarget.x = -1;
 		mTarget.y = -1;
 		setAction(A_KEEN_CLIMB);
@@ -748,6 +754,8 @@ void CPlayerLevel::processCliffClimbing()
 
 			mTarget.y -= height;
 		}
+		
+		return;
 	}
 
 	// This is where Keen climbs the cliff up.
@@ -756,21 +764,20 @@ void CPlayerLevel::processCliffClimbing()
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	if( getActionStatus(A_KEEN_STAND) || getActionStatus(A_KEEN_ON_PLAT) )
 	{
-		const int xDiff = mTarget.x - getXMidPos();
-		const int yDiff = mTarget.y - getYMidPos();
+	    yDirection = 0;
+	    const int xDiff = mTarget.x - getXMidPos();
+	    const int yDiff = mTarget.y - getYMidPos();
 
-		const int abs_x = abs(xDiff);
-		const int abs_y = abs(yDiff);
-		if( abs_x < mClimbSpeedX && abs_y < PLAYER_CLIMB_SPEED_Y )
-		{
-			moveDown(1<<CSF);
-			solid = true;
-			//m_camera.m_freeze = false;
-			setActionSprite();
-			calcBoundingBoxes();
-			makeHimStand();
-			yDirection = 0;
-		}
+	    const int abs_x = abs(xDiff);
+	    const int abs_y = abs(yDiff);
+	    if( abs_x < mClimbSpeedX && abs_y < PLAYER_CLIMB_SPEED_Y )
+	    {
+		moveDown(1<<CSF);
+		solid = true;
+		setActionSprite();
+		calcBoundingBoxes();
+		makeHimStand();
+	    }
 	}
 }
 
