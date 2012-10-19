@@ -44,14 +44,14 @@ bool CSkypest::isNearby(CSpriteObject &theObject)
 
 void CSkypest::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead || getActionStatus(A_SKYPEST_SQUISHED))
+	if(dead || theObject.dead || getActionNumber(A_SKYPEST_SQUISHED))
 		return;
 
 	// When Keen touches the Council Member exit the level and add one to the council list
 	if( CPlayerLevel *Player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		// Check if player is using pogo and Skypest is licking
-		if( getActionStatus(A_SKYPEST_LICKEYES) && Player->isPogoing() )
+		if( getActionNumber(A_SKYPEST_LICKEYES) && Player->isPogoing() )
 		{
 			dead = true;
 			playSound(SOUND_SQUISH_SKYPEST);
@@ -67,7 +67,7 @@ void CSkypest::getTouchedBy(CSpriteObject &theObject)
 
 void CSkypest::processOnFloor()
 {
-	if(getActionStatus(A_SKYPEST_FLY))
+	if(getActionStatus(A_SKYPEST_FLY)) // it is not set right, so we do it here!
 	{
 		mp_processState = &CSkypest::processFly;
 		blockedu = blockedd = false;
@@ -113,10 +113,12 @@ void CSkypest::processFly()
 
 void CSkypest::process()
 {
-	(this->*mp_processState)();
+    performCollisions();
+    
+    (this->*mp_processState)();
 
-	if(!processActionRoutine())
-			exists = false;
+    if(!processActionRoutine())
+	exists = false;
 }
 
 } /* namespace galaxy */
