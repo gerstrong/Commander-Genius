@@ -114,10 +114,10 @@ bool CGame::loadCKPDrivers()
 // Process Game Engine here! //
 /////////////////////////////
 /**
- * \brief  			This is the main run cycle of the game,
- * 					no matter what happens in the game logic or
- * 					which engine is chosen, it always get to this point
- * 					Mainly timer and logic processes are performed here.
+ * \brief  	This is the main run cycle of the game,
+ * 		no matter what happens in the game logic or
+ * 		which engine is chosen, it always get to this point
+ * 		Mainly timer and logic processes are performed here.
  */
 void CGame::run()
 {
@@ -125,7 +125,6 @@ void CGame::run()
     
     do
     {
-	
 	// Perform game logic
 	logicTicks = g_pTimer->TimeToLogic();
 	for (logicLoopVar = 0; logicLoopVar < logicTicks; logicLoopVar++)
@@ -136,7 +135,6 @@ void CGame::run()
 	    // Process Game Control
 	    m_Engine.process();			
 	}
-	
 	
 	// Render the Screen
 	if(g_pTimer->TimeToRender() && !g_pVideoDriver->mDrawTasks.empty())
@@ -154,8 +152,6 @@ void CGame::run()
 	    // When enabled, it also will apply Filters
 	    g_pVideoDriver->updateScreen();
 	}
-	
-	g_pVideoDriver->mDrawTasks.clear();
 	
 	// delay time remaining in current loop
 	g_pTimer->TimeToDelay();

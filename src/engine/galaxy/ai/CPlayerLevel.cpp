@@ -132,7 +132,9 @@ bool CPlayerLevel::verifyforPole()
 
 	mPoleGrabTime = 0;
 
-	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	Uint32 l_x_r = getXRightPos();
+	Uint32 l_x_l = getXLeftPos();
+	Uint32 l_x = ( l_x_l + l_x_r ) / 2;	
 	l_x = (l_x>>CSF)<<CSF;
 	const int l_y_up = ( getYUpPos() ) + (4<<STC);
 	const int l_y_down = ( ( getYDownPos() >> CSF ) + 1 ) << CSF;
@@ -141,7 +143,7 @@ bool CPlayerLevel::verifyforPole()
 
 	// Now check if Player has the chance to climb a pole or something similar
 	if( ( yDir < 0 && ( hitdetectWithTileProperty(1, l_x, l_y_up) & 0x7F) == 1 ) ||
-		( yDir > 0 && ( hitdetectWithTileProperty(1, l_x, l_y_down) & 0x7F) == 1 ) ) // 1 -> stands for pole Property
+	    ( yDir > 0 && ( hitdetectWithTileProperty(1, l_x, l_y_down) & 0x7F) == 1 ) ) // 1 -> stands for pole Property
 	{
 		// Move to the proper X Coordinates, so Keen really grabs it!
 		moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
@@ -1650,6 +1652,8 @@ void CPlayerLevel::performPoleHandleInput()
 	const int px = m_playcontrol[PA_X];
 	const int py = m_playcontrol[PA_Y];
 
+	xDirection = 0;
+	
 	if ( px )
 		xDirection = (px>0) ? 1 : -1;
 
@@ -1701,7 +1705,7 @@ void CPlayerLevel::performPoleHandleInput()
 	{
 		state.jumpWasPressed = false;
 		//TODO: Play A sound!
-		xinertia = ck_KeenPoleOffs[px+1];
+		xinertia = ck_KeenPoleOffs[xDirection+1];
 		yinertia = -80;
 		state.jumpTimer = 10;
 		setAction(A_KEEN_JUMP);
