@@ -42,8 +42,6 @@ const int MAX_SCROLL_VIEW = (8<<CSF);
 
 int ck_KeenRunXVels[8] = {0, 0, 4, 4, 8, -4, -4, -8};
 
-int ck_KeenPoleOffs[3] = {-8, 0, 8};
-
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
@@ -1661,8 +1659,6 @@ void CPlayerLevel::performPoleHandleInput()
 {
 	const int px = m_playcontrol[PA_X];
 	const int py = m_playcontrol[PA_Y];
-
-	xDirection = 0;
 	
 	if ( px )
 		xDirection = (px>0) ? 1 : -1;
@@ -1693,10 +1689,10 @@ void CPlayerLevel::performPoleHandleInput()
 			return;
 		}
 	}
-	else
+	else if(!m_fire_recharge_time)
 	{
 		// First check player pressed shoot button
-		if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
+		if( m_playcontrol[PA_FIRE] )
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOT);
@@ -1714,8 +1710,12 @@ void CPlayerLevel::performPoleHandleInput()
 	if (state.jumpIsPressed && !state.jumpWasPressed)
 	{
 		state.jumpWasPressed = false;
-		//TODO: Play A sound!
-		xinertia = ck_KeenPoleOffs[xDirection+1];
+
+		if ( px )
+		    xinertia = 8*xDirection;
+		else
+		    xinertia = 0;
+		
 		yinertia = -80;
 		state.jumpTimer = 10;
 		setAction(A_KEEN_JUMP);
@@ -1770,7 +1770,6 @@ void CPlayerLevel::processPoleClimbingSit()
 
 	if ( px )
 	{
-
 		// This will check three points and avoid that keen falls on sloped tiles
 		const int fall1 = mp_Map->getPlaneDataAt(1, l_x, l_y_down+(1<<CSF));
 		const CTileProperties &TileProp1 = g_pBehaviorEngine->getTileProperties(1)[fall1];
@@ -1778,19 +1777,16 @@ void CPlayerLevel::processPoleClimbingSit()
 
 		if ( leavePole )
 		{
-			//playSound( SOUND_KEEN_FALL );
-
 			state.jumpWasPressed = false;
 			state.jumpIsPressed = true;
-			//TODO: Play A sound!
 
-			int dir = 1;
+			int dir = 0;
 			if(px < 0)
-				dir = 0;
+				dir = -1;
 			else if(px > 0)
-				dir = 2;
+				dir = 1;
 
-			xinertia = ck_KeenPoleOffs[dir];
+			xinertia = 8*dir;
 			yinertia = -20;
 			state.jumpTimer = 10;
 			solid = true;
@@ -1874,7 +1870,7 @@ void CPlayerLevel::processPoleClimbingDown()
 		if(!(blockedd & 127) && !down)
 		{
 			state.jumpTimer = 0;
-			xinertia = ck_KeenPoleOffs[xDirection + 1];
+			xinertia = 8*xDirection;
 			yinertia = 0;
 
 			setAction(A_KEEN_FALL);
@@ -2046,10 +2042,11 @@ void CPlayerLevel::process()
 		{
 			blockedd = true;
 		}
-	}
+	
 
-	if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
-		 mPoleGrabTime++;
+		if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
+		    mPoleGrabTime++;
+	}
 
 	(this->*mp_processState)();
 

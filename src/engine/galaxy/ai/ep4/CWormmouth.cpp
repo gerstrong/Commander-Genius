@@ -157,10 +157,12 @@ int CWormmouth::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 
 void CWormmouth::process()
 {
-    	performCollisions();
-	
-	if(!blockedd && !onslope)
-		performGravityMid();
+	if( getActionNumber(A_WORMMOUTH_MOVE) || getActionNumber(A_WORMMOUTH_STUNNED) )
+	{
+	    performCollisions();
+	    performGravityLow();
+	}
+
 
 	(this->*mp_processState)();
 
@@ -174,6 +176,7 @@ void CWormmouth::process()
 
 	if(!processActionRoutine())
 		exists = false;
+	
 }
 
 } /* namespace galaxy */

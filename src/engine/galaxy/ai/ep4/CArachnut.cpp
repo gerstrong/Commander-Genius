@@ -62,6 +62,9 @@ void CArachnut::getTouchedBy(CSpriteObject &theObject)
 		bullet->playSound( SOUND_SHOT_HIT );
 		setAction(A_ARACHNUT_STUNNED);
 	}
+	
+	if(getActionNumber(A_ARACHNUT_STUNNED))
+	    return;
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
