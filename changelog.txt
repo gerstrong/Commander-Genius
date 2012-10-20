@@ -1,6 +1,13 @@
 Commander Genius Release :
 ==========================
 
+v1.0 Beta5: 
+-----------
+- Some AIs are better
+- keen 7 more compatible
+- Better Player AI and Controls
+- Framerate should be a bit too
+
 v1.0 Beta4: 
 -----------
 - Change in version numbering. For the reason of that see the PCKF Forum

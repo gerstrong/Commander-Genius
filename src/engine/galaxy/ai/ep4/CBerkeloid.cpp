@@ -16,6 +16,7 @@ const int A_BERKELOID_MOVING = 0;
 const int A_BERKELOID_THROW = 4;
 
 const int BERKELOID_TIME = 5;
+	
 
 CBerkeloid::CBerkeloid(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
@@ -65,7 +66,7 @@ void CBerkeloid::getTouchedBy(CSpriteObject &theObject)
 
 bool CBerkeloid::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(80) )
+	if( !getProbability(30) )
 		return false;
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
