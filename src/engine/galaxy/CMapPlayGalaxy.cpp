@@ -224,6 +224,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	{
 		// save all the objects states
 		unsigned int newYpos = (*it)->getYPosition();
+		unsigned int newXpos = (*it)->getXPosition();
 		
 		CSprite &rSprite = g_pGfxEngine->getSprite((*it)->sprite);
 		// we need to push back the original position, because when loading a game the original unCSFed coordinates are transformed
@@ -231,8 +232,11 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		newYpos += ((rSprite.getHeight())<<STC);
 		newYpos++;
 				
+		newXpos -= (1<<CSF)/2;
+		newXpos += ((rSprite.getWidth()/2)<<STC);		
+				
 		savedGame.encodeData( (*it)->mFoeID );
-		savedGame.encodeData( (*it)->getXPosition() );
+		savedGame.encodeData( newXpos );
 		savedGame.encodeData( newYpos );
 		savedGame.encodeData( (*it)->dead );
 		savedGame.encodeData( (*it)->onscreen );

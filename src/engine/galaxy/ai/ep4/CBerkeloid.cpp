@@ -94,7 +94,7 @@ void CBerkeloid::processMoving()
 	}
 
 	// Chance to throw a flame
-	if( getProbability(60) )
+	if( getProbability(50) )
 	{
 		setAction( A_BERKELOID_THROW );
 		playSound( SOUND_BERKELOID_WINDUP );

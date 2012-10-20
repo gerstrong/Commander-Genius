@@ -160,7 +160,7 @@ void CWormmouth::process()
 	if( getActionNumber(A_WORMMOUTH_MOVE) || getActionNumber(A_WORMMOUTH_STUNNED) )
 	{
 	    performCollisions();
-	    performGravityLow();
+	    //performGravityLow();
 	}
 
 

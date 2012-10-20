@@ -18,6 +18,10 @@ mp_BoostEngObjRight(NULL)
 {
 	xDirection = RIGHT;
 	yDirection = 0;
+	
+	// This should recalibrate the position in case the plats are stuck due some bad level design 
+	processMove((3<<CSF), 0 );	
+	processMove(-(3<<CSF), 0 );	
 
 	const int episode = g_pBehaviorEngine->getEpisode();
 
