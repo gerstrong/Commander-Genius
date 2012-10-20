@@ -20,29 +20,30 @@ CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
 
 	// Create the Menu Dialog and entries
+	// TODO: I think this can be a nice templatized method!
 	mpMenuDialog->addControl(new CGUIButton( "The Menu",
-												new StartInfoSceneEvent( new CHelp("Menu") ) ) );
+						new StartInfoSceneEvent( new CHelp("Menu") ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "The Game",
-												new StartInfoSceneEvent( new CHelp("Game") ) ) );
+						new StartInfoSceneEvent( new CHelp("Game") ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "The Story",
-												new StartInfoSceneEvent( new CStory ) ) );
+						new StartInfoSceneEvent( new CStory ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
-												new StartInfoSceneEvent( new COrderingInfo ) ) );
+						new StartInfoSceneEvent( new COrderingInfo ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "About ID",
-												new StartInfoSceneEvent( new CAbout("ID") ) ) );
+						new StartInfoSceneEvent( new CAbout("ID") ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "About CG",
-												new StartInfoSceneEvent( new CAbout("CG") ) ) );
+						new StartInfoSceneEvent( new CAbout("CG") ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Credits",
-												new StartInfoSceneEvent( new CCredits() ) ) );
+						new StartInfoSceneEvent( new CCredits() ) ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Previews!",
-												new StartInfoSceneEvent( new CPreviews() ) ) );
+						new StartInfoSceneEvent( new CPreviews() ) ) );
 
 }
 

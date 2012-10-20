@@ -20,6 +20,7 @@
 #include "CVec.h"
 #include "graphics/CBitmap.h"
 #include <vector>
+#include <memory>
 
 class CGalaxySpriteObject;
 

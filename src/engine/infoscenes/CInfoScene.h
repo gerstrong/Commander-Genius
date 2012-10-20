@@ -32,10 +32,18 @@ protected:
 
 struct StartInfoSceneEvent : CEvent
 {
-	StartInfoSceneEvent(SmartPointer<CInfoScene> scene) :
-		mpScene(scene) {}
+	StartInfoSceneEvent(std::unique_ptr<CInfoScene> scene) :
+		mpScene(move(scene)) {}
 
-	SmartPointer<CInfoScene> mpScene;
+	// TODO: Constructor template for compatibility. Will be removed in future
+	template <class _T>
+	StartInfoSceneEvent(_T* scene)	
+	{
+	    std::unique_ptr<_T> pScene(scene);
+	    mpScene = move(pScene);
+	}
+
+	std::unique_ptr<CInfoScene> mpScene;
 };
 
 

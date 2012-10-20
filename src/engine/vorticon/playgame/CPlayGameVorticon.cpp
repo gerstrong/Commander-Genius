@@ -238,9 +238,10 @@ void CPlayGameVorticon::process()
 
 			if( g_pInput->getPressedAnyCommand() )
 			{
-				SmartPointer<CHighScores> pHighScores = new CHighScores();
+				//SmartPointer<CHighScores> pHighScores = new CHighScores();
+				CHighScores *pHighScores = new CHighScores();
 				pHighScores->init();
-				collectHighScoreInfo(pHighScores);
+				collectHighScoreInfo(*pHighScores);
 				g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
 				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
 
@@ -486,9 +487,9 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
 	m_Object.push_back(teleporter);
 }
 
-void CPlayGameVorticon::collectHighScoreInfo(SmartPointer<CHighScores> &pHighScores)
+void CPlayGameVorticon::collectHighScoreInfo(CHighScores &highScores)
 {
-	pHighScores->fetchScoreTable();
+	highScores.fetchScoreTable();
 
 	if(m_Episode == 1)
 	{
@@ -499,7 +500,7 @@ void CPlayGameVorticon::collectHighScoreInfo(SmartPointer<CHighScores> &pHighSco
 		extra[2] = m_Player[0].inventory.HasVacuum;
 		extra[3] = m_Player[0].inventory.HasWiskey;
 
-		pHighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
+		highScores.writeEP1HighScore(m_Player[0].inventory.score, extra);
 	}
 	else if(m_Episode == 2)
 	{
@@ -514,10 +515,12 @@ void CPlayGameVorticon::collectHighScoreInfo(SmartPointer<CHighScores> &pHighSco
 		if (mp_level_completed[15]) saved_cities++;
 		if (mp_level_completed[16]) saved_cities++;
 
-		pHighScores->writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
+		highScores.writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
 	}
 	else
-		pHighScores->writeHighScoreCommon(m_Player[0].inventory.score);
+	{
+		highScores.writeHighScoreCommon(m_Player[0].inventory.score);
+	}
 }
 
 // This function draws the objects that need to be seen on the screen
@@ -579,9 +582,10 @@ void CPlayGameVorticon::drawAllElements()
 
 			if(!m_gameover)
 			{
-				SmartPointer<CHighScores> pHighScores = new CHighScores();
+				//SmartPointer<CHighScores> pHighScores = new CHighScores();
+				CHighScores *pHighScores = new CHighScores();
 				pHighScores->init();
-				collectHighScoreInfo(pHighScores);
+				collectHighScoreInfo(*pHighScores);
 				g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
 				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
 			}

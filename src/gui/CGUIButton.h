@@ -15,6 +15,7 @@
 #include "SmartPointer.h"
 #include "common/CBehaviorEngine.h"
 #include <string>
+#include <memory>
 #include <map>
 
 

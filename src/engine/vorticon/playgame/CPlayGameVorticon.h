@@ -68,7 +68,7 @@ public:
 	void cycleCamLead();
 	void handleFKeys();
 	void verifyFinales();
-	void collectHighScoreInfo(SmartPointer<CHighScores> &pHighScores);
+	void collectHighScoreInfo(CHighScores &highScores);
 	void createFinale();
 
 	// Collision stuff stored in CPlayGameVorticonCollision.cpp

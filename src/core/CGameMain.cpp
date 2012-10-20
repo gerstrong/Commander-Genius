@@ -65,13 +65,13 @@ void CGameMain::process()
 		}
 		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
 		{
-			gpMenuController->lock(true);
-			mpInfoScene = scene->mpScene;
-			mpInfoScene->init();
+		    gpMenuController->lock(true);
+		    mpInfoScene = move(scene->mpScene);
+		    mpInfoScene->init();
 
-			EventContainer.pop_Event();
-			EventContainer.add( new CloseAllMenusEvent() );
-			return;
+		    EventContainer.pop_Event();
+		    EventContainer.add( new CloseAllMenusEvent() );
+		    return;
 		}
 		else if( NewGamePlayersEvent* pNewGame = EventContainer.occurredEvent<NewGamePlayersEvent>() )
 		{
@@ -111,7 +111,7 @@ void CGameMain::process()
 
 	}
 
-	if( !mpInfoScene.empty() )
+	if( mpInfoScene )
 	{
 		mpInfoScene->process();
 		if( mpInfoScene->destroyed() )

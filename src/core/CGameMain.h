@@ -26,7 +26,7 @@ protected:
 
 private:
 
-	SmartPointer<CInfoScene> mpInfoScene;
+	std::unique_ptr<CInfoScene> mpInfoScene;
 	std::unique_ptr<CGameMode> mpGameMode;
 
 	//bool mShowFinale; // This should be an event
