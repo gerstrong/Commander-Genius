@@ -31,6 +31,8 @@ mTimer(0)
 	mActionMap[A_WORMMOUTH_STUNNED] = &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x26DE, A_WORMMOUTH_MOVE);
+	processMove(0, -(1<<CSF));	
+	processMove(0, (1<<CSF));	
 
 	xDirection = LEFT;
 }
