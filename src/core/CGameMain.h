@@ -7,6 +7,7 @@
 
 #include "CBaseEngine.h"
 #include "engine/CEvent.h"
+#include <memory>
 
 #ifndef CGAMEMAIN_H_
 #define CGAMEMAIN_H_
@@ -26,7 +27,7 @@ protected:
 private:
 
 	SmartPointer<CInfoScene> mpInfoScene;
-	SmartPointer<CGameMode>	mpGameMode;
+	std::unique_ptr<CGameMode> mpGameMode;
 
 	//bool mShowFinale; // This should be an event
 	bool &mOpenedGamePlay;

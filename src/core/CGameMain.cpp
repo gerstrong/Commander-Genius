@@ -46,19 +46,22 @@ void CGameMain::process()
 
 		if( EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
 		{
-			mpGameMode = new CGamePassiveMode();
-			mpGameMode->init();
-			mOpenedGamePlay = false;
-			EventContainer.pop_Event();
+		    std::unique_ptr<CGamePassiveMode> passive(new CGamePassiveMode());
+		    mpGameMode = move(passive);
+		    mpGameMode->init();
+		    mOpenedGamePlay = false;
+		    EventContainer.pop_Event();
 		}
 		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
 		{
-			mpGameMode = new CGamePlayMode( p_PlayGame->m_Episode, p_PlayGame->m_Numplayers,
-					p_PlayGame->m_DataDirectory, p_PlayGame->m_startlevel);
-			mpGameMode->init();
-			mOpenedGamePlay = true;
-			EventContainer.pop_Event();
-			EventContainer.add( new CloseAllMenusEvent() );
+		    // TODO: we need to pass less arguments here! Make this code more pleasant
+		    std::unique_ptr<CGamePlayMode> gameplay( new CGamePlayMode( p_PlayGame->m_Episode, p_PlayGame->m_Numplayers,
+									   p_PlayGame->m_DataDirectory, p_PlayGame->m_startlevel) );			
+		    mpGameMode = move(gameplay); 
+		    mpGameMode->init();
+		    mOpenedGamePlay = true;
+		    EventContainer.pop_Event();
+		    EventContainer.add( new CloseAllMenusEvent() );
 		}
 		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
 		{
@@ -89,10 +92,10 @@ void CGameMain::process()
 
 		else if( EventContainer.occurredEvent<LoadGameEvent>() ) // If GamePlayMode is not running but loading is requested...
 		{
-			mpGameMode = new CGamePlayMode( g_pBehaviorEngine->getEpisode(),
-											1,
-											g_pBehaviorEngine->m_ExeFile.getDataDirectory(),
-											0);
+		    // TODO: we need to pass less arguments here! Make this code more pleasant
+		    std::unique_ptr<CGamePlayMode> gameplay(new CGamePlayMode( g_pBehaviorEngine->getEpisode(), 1, 
+							g_pBehaviorEngine->m_ExeFile.getDataDirectory(),0));
+			mpGameMode = move(gameplay);
 
 			mpGameMode->init();
 

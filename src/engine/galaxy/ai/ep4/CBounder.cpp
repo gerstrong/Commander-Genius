@@ -183,7 +183,6 @@ void CBounder::movePlayerUp(const int amnt)
 	{
 		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
 		{
-			//mp_CarriedPlayer->yinertia = yinertia;
 			mpInteractPlayer->moveUp(amnt);
 		}
 	}
@@ -196,7 +195,6 @@ void CBounder::movePlayerDown(const int amnt)
 	{
 		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
 		{
-			//mp_CarriedPlayer->yinertia = yinertia;
 			mpInteractPlayer->moveDown(amnt);
 		}
 	}

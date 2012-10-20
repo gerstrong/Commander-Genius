@@ -46,10 +46,16 @@ void CPlatform::movePlatLeft(const int amnt)
 
 void CPlatform::movePlatRight(const int amnt)
 {
-	// First move the object on platform if any
+	// If the Player is standing on the plat move him with it!
 	if(mp_CarriedPlayer)
+	{	    
 		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			mp_CarriedPlayer->moveRight(amnt);
+		{
+		    //moveRightWith(amnt, mp_CarriedPlayer);
+		    //return;
+		    mp_CarriedPlayer->moveRight(amnt);
+		}			
+	}
 
 	// Now move the platform itself.
 	moveRight(amnt);
