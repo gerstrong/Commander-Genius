@@ -21,6 +21,10 @@ public:
 			const std::string& DataDirectory,
 			const int startLevel = -1);
 
+	CGamePlayMode( GMSwitchToPlayGameMode &gpmode );
+
+	
+
 	void init();
 
 	void loadGame();

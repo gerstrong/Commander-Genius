@@ -19,6 +19,13 @@ m_Numplayers(Numplayers),
 m_DataDirectory(DataDirectory)
 {}
 
+CGamePlayMode::CGamePlayMode( GMSwitchToPlayGameMode &gpmode ) :
+m_startLevel(gpmode.m_startlevel),
+m_Episode(gpmode.m_Episode),
+m_Numplayers(gpmode.m_Numplayers),
+m_DataDirectory(gpmode.m_DataDirectory)
+{}
+
 void CGamePlayMode::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;

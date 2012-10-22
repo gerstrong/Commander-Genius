@@ -54,9 +54,7 @@ void CGameMain::process()
 		}
 		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
 		{
-		    // TODO: we need to pass less arguments here! Make this code more pleasant
-		    std::unique_ptr<CGamePlayMode> gameplay( new CGamePlayMode( p_PlayGame->m_Episode, p_PlayGame->m_Numplayers,
-									   p_PlayGame->m_DataDirectory, p_PlayGame->m_startlevel) );			
+		    std::unique_ptr<CGamePlayMode> gameplay( new CGamePlayMode(*p_PlayGame) );			
 		    mpGameMode = move(gameplay); 
 		    mpGameMode->init();
 		    mOpenedGamePlay = true;
@@ -83,7 +81,6 @@ void CGameMain::process()
 
 		else if( StartNewGameEvent* pStart = EventContainer.occurredEvent<StartNewGameEvent>() )
 		{
-
 			EventContainer.pop_Event();
 			g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
 			switchToGamePlayMode();
@@ -93,19 +90,21 @@ void CGameMain::process()
 		else if( EventContainer.occurredEvent<LoadGameEvent>() ) // If GamePlayMode is not running but loading is requested...
 		{
 		    // TODO: we need to pass less arguments here! Make this code more pleasant
-		    std::unique_ptr<CGamePlayMode> gameplay(new CGamePlayMode( g_pBehaviorEngine->getEpisode(), 1, 
-							g_pBehaviorEngine->m_ExeFile.getDataDirectory(),0));
-			mpGameMode = move(gameplay);
+		    
+		    const unsigned int ep = g_pBehaviorEngine->getEpisode();
+		    const std::string &dir = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
+		    
+		    std::unique_ptr<CGamePlayMode> gameplay(new CGamePlayMode( ep, 1, dir, 0));
+		    
+		    gameplay->init();
+		    
+		    gameplay->loadGame();
+		    
+		    mpGameMode = move(gameplay);
 
-			mpGameMode->init();
-
-			CGamePlayMode *pCGM = dynamic_cast<CGamePlayMode*>(mpGameMode.get());
-
-			pCGM->loadGame();
-
-			mOpenedGamePlay = true;
-			EventContainer.pop_Event();
-			EventContainer.add( new CloseAllMenusEvent() );
+		    mOpenedGamePlay = true;
+		    EventContainer.pop_Event();
+		    EventContainer.add( new CloseAllMenusEvent() );
 		}
 
 
