@@ -6,7 +6,6 @@
  */
 
 #include "CBaseMenu.h"
-#include "SmartPointer.h"
 #include "engine/CEvent.h"
 
 #ifndef CMAINMENU_H_

@@ -63,9 +63,8 @@ m_pause_gameplay(false)
 
 CSound::~CSound()
 {
-	while(m_callback_running);
-
-	m_pAudioRessources = NULL;
+    // Wait until callback function finishes its calls
+    while(m_callback_running);
 }
 
 bool CSound::init()
@@ -183,7 +182,7 @@ bool CSound::isPlaying(const GameSound snd)
 	{
 		if (snd_chnl->isPlaying())
 		{
-			CSoundSlot *pSlotToStop = m_pAudioRessources->getSlotPtrAt(snd);
+			CSoundSlot *pSlotToStop = mpAudioRessources->getSlotPtrAt(snd);
 			if (snd_chnl->getCurrentSoundPtr() == pSlotToStop)
 				return true;
 		}
@@ -199,7 +198,7 @@ void CSound::stopSound(const GameSound snd)
 	{
 		if (snd_chnl->isPlaying())
 		{
-			CSoundSlot *pSlotToStop =  m_pAudioRessources->getSlotPtrAt(snd);
+			CSoundSlot *pSlotToStop =  mpAudioRessources->getSlotPtrAt(snd);
 			if( snd_chnl->getCurrentSoundPtr() == pSlotToStop )
 				snd_chnl->stopSound();
 		}
@@ -219,7 +218,7 @@ bool CSound::forcedisPlaying(void)
 
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
-	if(m_pAudioRessources.get() == NULL)
+	if(!mpAudioRessources)
 		return;
 
 	m_callback_running = true;
@@ -284,9 +283,9 @@ void CSound::playStereosound(const GameSound snd, const char mode, const short b
 {
 	if( m_mixing_channels == 0 ) return;
 
-	CSoundSlot *mp_Slots = m_pAudioRessources->getSlotPtr();
+	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
 	unsigned char slotplay = mp_SndSlotMap[snd];
-	const unsigned int speaker_snds_end_off = m_pAudioRessources->getNumberofSounds()/2;
+	const unsigned int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
 
 	if(slotplay >= speaker_snds_end_off)
 		return;
@@ -331,15 +330,17 @@ bool CSound::loadSoundData()
 	const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	if(ExeFile.getEpisode() >= 1 && ExeFile.getEpisode() <= 3) // Vorticon based Keengame
 	{
-		m_pAudioRessources = new CAudioVorticon(ExeFile, mAudioSpec);
-		mp_SndSlotMap = const_cast<unsigned char*>(SndSlotMapVort);
-		return(m_pAudioRessources->loadSoundData());
+	    std::unique_ptr<CAudioVorticon> vorticonAudio(new CAudioVorticon(ExeFile, mAudioSpec));
+	    mpAudioRessources = move(vorticonAudio);
+	    mp_SndSlotMap = const_cast<unsigned char*>(SndSlotMapVort);
+	    return(mpAudioRessources->loadSoundData());
 	}
 	else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
 	{
-		m_pAudioRessources = new CAudioGalaxy(ExeFile, mAudioSpec);
-		mp_SndSlotMap = const_cast<unsigned char*>(SndSlotMapGalaxy);
-		return(m_pAudioRessources->loadSoundData());
+	    std::unique_ptr<CAudioGalaxy> galaxyAudio(new CAudioGalaxy(ExeFile, mAudioSpec));
+	    mpAudioRessources = move(galaxyAudio);
+	    mp_SndSlotMap = const_cast<unsigned char*>(SndSlotMapGalaxy);
+	    return(mpAudioRessources->loadSoundData());
 	}
 
 	return false;
@@ -347,8 +348,8 @@ bool CSound::loadSoundData()
 
 void CSound::unloadSoundData()
 {
-	while(m_callback_running);
-	m_pAudioRessources = NULL;
+    // Wait for callback to finish running...
+    while(m_callback_running);
 }
 
 

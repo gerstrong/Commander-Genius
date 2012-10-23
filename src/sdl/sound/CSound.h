@@ -18,11 +18,11 @@
 #include <map>
 #include <vector>
 #include <list>
+#include <memory>
 
 #include "CSoundChannel.h"
 #include "fileio/CExeFile.h"
 #include "common/CAudioResources.h"
-#include "SmartPointer.h"
 
 class CSound : public CSingleton<CSound>
 {
@@ -78,7 +78,7 @@ public:
 
 protected:
 	std::vector<CSoundChannel>	m_soundchannel;
-	SmartPointer<CAudioResources> m_pAudioRessources;
+	std::unique_ptr<CAudioResources> mpAudioRessources;
 	bool m_callback_running;
 	SDL_AudioSpec mAudioSpec;
 

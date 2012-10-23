@@ -12,7 +12,6 @@
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIText.h"
 #include "gui/CGUITextSelectionList.h"
-#include "SmartPointer.h"
 #include <string>
 #include <vector>
 #include <ostream>
