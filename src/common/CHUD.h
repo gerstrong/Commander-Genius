@@ -11,13 +11,17 @@
 
 #include <SDL.h>
 #include <string>
+#include <functional>
+#include <memory>
 #include "Playerdefines.h"
 #include "engine/spritedefines.h"
 #include "SmartPointer.h"
 #include "graphics/CSprite.h"
+#include "sdl/extensions.h"
 
 #ifndef CHUD_H_
 #define CHUD_H_
+
 
 class CHUD {
 public:
@@ -42,8 +46,8 @@ private:
 	unsigned int &m_charges;
 	CSprite *mpHUDBox;
 
-	SmartPointer <SDL_Surface> mpBackground;
-	SmartPointer <SDL_Surface> mpHUDBlit;
+	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpBackground;
+	SmartPointer<SDL_Surface> mpHUDBlit;
 	int *mpCamlead;
 };
 

@@ -10,12 +10,14 @@
 #ifndef DRAWEVENTS_H_
 #define DRAWEVENTS_H_
 
+#include <memory>
 #include "engine/CEvent.h"
 #include "graphics/CSprite.h"
 #include "graphics/CTilemap.h"
 #include "graphics/CBitmap.h"
 #include "gui/CGUIDialog.h"
 #include "common/CMap.h"
+#include "sdl/extensions.h"
 #include "SmartPointer.h"
 
 

@@ -16,9 +16,11 @@
 #include "Playerdefines.h"
 #include "options.h"
 #include "engine/CCamera.h"
+#include "common/CBehaviorEngine.h"
 #include <vector>
 #include <string>
-#include "common/CBehaviorEngine.h"
+#include <memory>
+
 
 enum level_triggers
 {
@@ -209,7 +211,7 @@ private:
 	void openDoor(int doortile, int doorsprite, int mpx, int mpy);
 	void giveAnkh();
 
-	SmartPointer<CStatusScreen> mpStatusScr;
+	std::unique_ptr<CStatusScreen> mpStatusScr;
 
 	bool lastpogo;
  	bool bumped;

@@ -933,15 +933,15 @@ bool CPlayer::drawStatusScreen()
 {
 	if(m_showStatusScreen)
 	{
-		if(mpStatusScr.empty())
-			mpStatusScr = new CStatusScreen(m_episode, &inventory, mp_levels_completed, ankhtime, playerbaseframe);
+		if(!mpStatusScr)
+			mpStatusScr.reset(new CStatusScreen(m_episode, &inventory, mp_levels_completed, ankhtime, playerbaseframe));
 		
 		mpStatusScr->draw();
 		
 		if( mpStatusScr->isClosed() )
 		{
 			m_showStatusScreen = false;
-			mpStatusScr = NULL;
+			mpStatusScr.release();
 		}
 		else if( g_pInput->getPressedAnyButtonCommand(m_index) )
 		{

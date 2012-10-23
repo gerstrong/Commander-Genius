@@ -35,7 +35,7 @@ mpCamlead(camlead)
 		mpHUDBox = g_pGfxEngine->getSprite("HUDBACKGROUND");
 		m_Rect.h = mpHUDBox->getHeight()+2;
 		m_Rect.w = mpHUDBox->getWidth()+2;
-		mpHUDBlit = CG_CreateRGBSurface( m_Rect );
+		mpHUDBlit = CG_CreateRGBSurface( m_Rect );		
 		mpHUDBlit = SDL_DisplayFormatAlpha( mpHUDBlit.get() );
 	}
 }
@@ -49,7 +49,7 @@ void CHUD::CreateBackground()
 	// Create a surface for that
 	SDL_Surface *temp;
 	int flags = 0;
-	mpBackground = CG_CreateRGBSurface( m_Rect );
+	mpBackground.reset( CG_CreateRGBSurface( m_Rect ) );
 
 	SDL_Rect headsrcrect, headdstrect;
 	headsrcrect.x = 0;
@@ -83,7 +83,7 @@ void CHUD::CreateBackground()
 
 
 	temp = SDL_DisplayFormatAlpha(mpBackground.get());
-	mpBackground = temp;
+	mpBackground.reset(temp);
 
 	mpHUDBlit = SDL_DisplayFormatAlpha(mpBackground.get());
 
