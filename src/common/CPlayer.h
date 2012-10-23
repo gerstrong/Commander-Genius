@@ -45,6 +45,11 @@ public:
 	CPlayer(const char &Episode, short &Level,
 			 bool *mp_level_completed,
 			 std::vector<CVorticonSpriteObject*> &m_Object, CMap &map);
+	
+	// Copy player Data
+	CPlayer(const CPlayer &player);
+	CPlayer& operator=(const CPlayer &player);
+	
 	void setupCameraObject();
 	void setDatatoZero();
 	void setDefaultStartValues();
@@ -190,7 +195,9 @@ public:
 
 	stOption *mp_option;
 
-	SmartPointer<CCamera> mp_camera;
+	// Every Player has a camera. Not sure if that's okay...
+	// TODO: Think about a more efficient way to perform this.
+	std::unique_ptr<CCamera> mpCamera;
 
 private:
 	// defined under CPlayerItems.cpp

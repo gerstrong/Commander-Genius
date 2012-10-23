@@ -147,12 +147,12 @@ bool CPlayGameVorticon::loadGameState()
 
 		m_Player[0].setMapData(mMap.get());
 		m_Player[0].setupCameraObject();
-		m_Player[0].mp_camera->attachObject(&m_Player[0]);
+		m_Player[0].mpCamera->attachObject(&m_Player[0]);
 
-		while(m_Player[0].mp_camera->m_moving)
+		while(m_Player[0].mpCamera->m_moving)
 		{
-			m_Player[0].mp_camera->process();
-			m_Player[0].mp_camera->processEvents();
+			m_Player[0].mpCamera->process();
+			m_Player[0].mpCamera->processEvents();
 		}
 
 		mMap->drawAll();

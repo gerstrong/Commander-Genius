@@ -43,7 +43,7 @@ CPlayGame(ExeFile, level, numplayers)
 		thisPlayer.m_index = i;
 		thisPlayer.setDatatoZero();
 		thisPlayer.setupCameraObject();
-		thisPlayer.mp_camera->attachObject(&thisPlayer);
+		thisPlayer.mpCamera->attachObject(&thisPlayer);
 	}
 
 	// Set the whole completed level list to false

@@ -53,9 +53,59 @@ mp_option(g_pBehaviorEngine->m_option)
 }
 
 
+CPlayer::CPlayer(const CPlayer &player) :
+CVorticonSpriteObject(player.mp_Map, 0, 0, OBJ_PLAYER),
+m_episode(player.m_episode),
+m_level(player.m_level),
+pjumpupspeed_decrease(player.pjumpupspeed_decrease),
+mp_levels_completed(player.mp_levels_completed),
+mp_option(g_pBehaviorEngine->m_option)
+{
+    canbezapped = true;
+    m_index = 0;
+
+
+    pjumping = PNOJUMP;
+    pfalling = false;
+    psemisliding = false;
+    psliding = false;
+    ppogostick = false;
+    pslowingdown = false;
+    m_playingmode = WORLDMAP;
+
+
+    // Set every value in the class to zero.
+    memset(&inventory, 0, sizeof(stInventory));
+    setDefaultStartValues();
+    setDatatoZero();
+    
+}
+
+CPlayer& CPlayer::operator=(const CPlayer &player)
+{
+    canbezapped = true;
+    m_index = 0;
+
+
+    pjumping = PNOJUMP;
+    pfalling = false;
+    psemisliding = false;
+    psliding = false;
+    ppogostick = false;
+    pslowingdown = false;
+    m_playingmode = WORLDMAP;
+
+
+    // Set every value in the class to zero.
+    memset(&inventory, 0, sizeof(stInventory));
+    setDefaultStartValues();
+    setDatatoZero();    
+}
+
+
 void CPlayer::setupCameraObject()
 {
-	mp_camera = new CCamera(mp_Map, 0, 0);
+    mpCamera.reset(new CCamera(mp_Map, 0, 0));
 }
 
 
@@ -503,8 +553,8 @@ void CPlayer::WalkingAnimation()
  */
 void CPlayer::processCamera()
 {
-	mp_camera->process();
-	mp_camera->processEvents();
+	mpCamera->process();
+	mpCamera->processEvents();
 }
 
 
