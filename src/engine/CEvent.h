@@ -12,7 +12,7 @@
 #ifndef CEVENT_H_
 #define CEVENT_H_
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include <list>
 #include "common/direction.h"

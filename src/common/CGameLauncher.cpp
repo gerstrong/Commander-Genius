@@ -21,14 +21,14 @@
 #include <iostream>
 #include <fstream>
 
-CGameLauncher::CGameLauncher()
+CGameLauncher::CGameLauncher() :
+mLauncherDialog(CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f)))
 {
 	g_pBehaviorEngine->setEpisode(0);
-    m_mustquit      = false;
-    m_chosenGame    = -1;
-    m_ep1slot       = -1;
-	mpLauncherDialog = new CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f));
-	mpLauncherDialog->initBackground();
+	m_mustquit      = false;
+	m_chosenGame    = -1;
+	m_ep1slot       = -1;
+	mLauncherDialog.initBackground();
 	mSelection = -1;
 }
 
@@ -79,21 +79,21 @@ bool CGameLauncher::init()
     mpSelList->setBackButtonEvent(new GMQuit());
 
 
-    mpLauncherDialog->addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    mpLauncherDialog->addControl(new CGUIButton( "x", new GMQuit() ),
+    mLauncherDialog.addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+    mLauncherDialog.addControl(new CGUIButton( "x", new GMQuit() ),
 												CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
-    mpLauncherDialog->addControl(mpSelList, CRect<float>(0.01f, 0.07f, 0.49f, 0.92f));
+    mLauncherDialog.addControl(mpSelList, CRect<float>(0.01f, 0.07f, 0.49f, 0.92f));
 
-    mpLauncherDialog->addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ),
+    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ),
 												CRect<float>(0.65f, 0.915f, 0.3f, 0.07f) );
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
-    mpLauncherDialog->addControl(mpEpisodeText, CRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
-    mpLauncherDialog->addControl(mpVersionText, CRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
+    mLauncherDialog.addControl(mpEpisodeText, CRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
+    mLauncherDialog.addControl(mpVersionText, CRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
 
     // This way it goes right to the selection list.
-    mpLauncherDialog->setSelection(2);
+    mLauncherDialog.setSelection(2);
 
     g_pResourceLoader->setPermilage(1000);
 	
@@ -218,7 +218,7 @@ void CGameLauncher::process()
 	{
 		if( g_pInput->getPressedCommand(cmd) )
 		{
-			mpLauncherDialog->sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+			mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
 			break;
 		}
 	}
@@ -234,7 +234,7 @@ void CGameLauncher::process()
 		mpVersionText->setText("Version: " + ftoa(fVer));
 	}
 
-	mpLauncherDialog->processLogic();
+	mLauncherDialog.processLogic();
 
 	if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
 	{

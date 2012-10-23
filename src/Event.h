@@ -13,7 +13,6 @@
 #include <list>
 #include <SDL.h>
 #include "Ref.h"
-#include "SmartPointer.h"
 #include "EventQueue.h"
 #include "Utils.h" // for isSameType
 

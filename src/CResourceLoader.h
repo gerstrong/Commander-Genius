@@ -14,7 +14,6 @@
 
 #include "CSingleton.h"
 #include "ThreadPool.h"
-#include "SmartPointer.h"
 #define g_pResourceLoader CResourceLoader::Get()
 
 enum ProgressStyle
@@ -29,8 +28,8 @@ public:
 
 	void setStyle(ProgressStyle style);
 
-    int RunLoadAction(Action* act, const std::string &threadname, int min_permil=0, int max_permil=1000);
-    bool process(int* ret);
+	int RunLoadAction(Action* act, const std::string &threadname, int min_permil=0, int max_permil=1000);
+	bool process(int* ret);
 
 	void setPermilage(int permil);
 

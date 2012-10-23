@@ -78,7 +78,7 @@ private:
     std::vector<GameEntry> m_Entries;
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
-	SmartPointer<CGUIDialog> mpLauncherDialog;
+	CGUIDialog mLauncherDialog;
 
 	CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
