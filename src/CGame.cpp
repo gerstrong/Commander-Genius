@@ -121,8 +121,7 @@ bool CGame::loadCKPDrivers()
  */
 void CGame::run()
 {
-    int logicTicks, logicLoopVar;
-    
+
     while(1)
     {
 	// Perform the game cycle

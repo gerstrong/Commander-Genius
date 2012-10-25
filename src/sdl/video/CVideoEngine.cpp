@@ -47,6 +47,7 @@ bool CVideoEngine::init()
 		if(m_VidConfig.vsync)
 		{
 			SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	#if SDL_VERSION_ATLEAST(1, 3, 0)
 	#else
 		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);

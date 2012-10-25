@@ -129,7 +129,9 @@ public:
 	 * \description This will make Keen climb the cliff up and stand
 	 * 				on the ground. After that it returns to stand action
 	 */
-	void processCliffClimbing();
+	void processCliffClimbingUp();
+
+	void processCliffClimbingOntoFloor();
 
 
 

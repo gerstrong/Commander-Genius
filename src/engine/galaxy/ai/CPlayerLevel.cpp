@@ -79,7 +79,7 @@ mPoleGrabTime(0)
 	mActionMap[A_KEEN_JUMP_SHOOTUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
 	mActionMap[A_KEEN_JUMP_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
 	mActionMap[A_KEEN_HANG] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
-	mActionMap[A_KEEN_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbing;
+	mActionMap[A_KEEN_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbingUp;
 
 	m_fire_recharge_time = 0;
 	m_EnterDoorAttempt = false;
@@ -676,8 +676,8 @@ void CPlayerLevel::processCliffHanging()
 		return;
 
 	// If you want to climb up
-	if( ((xDirection == LEFT) && (m_playcontrol[PA_X] < 0)) ||
-		((xDirection == RIGHT) && (m_playcontrol[PA_X] > 0))  )
+	if( ((xDirection == LEFT)  && (m_playcontrol[PA_X] < 0)) ||
+            ((xDirection == RIGHT) && (m_playcontrol[PA_X] > 0))  )
 	{
 		// This will reset the target whenever the process object of climbing is launched
 		mTarget.x = -1;
@@ -706,7 +706,7 @@ void CPlayerLevel::processCliffHanging()
 
 const int PLAYER_CLIMB_SPEED_Y = 24;
 
-void CPlayerLevel::processCliffClimbing()
+void CPlayerLevel::processCliffClimbingUp()
 {
 	if(mTarget.x < 0 || mTarget.y < 0)
 	{
@@ -721,7 +721,7 @@ void CPlayerLevel::processCliffClimbing()
 
 			mClimbSpeedX = (5*PLAYER_CLIMB_SPEED_Y)/8;
 
-			const int xMove = (((xDirection)<<CSF)*4)/3;
+			const int xMove = (((xDirection)<<CSF)*6)/6;
 			int yPos = getYPosition();
 
 			mTarget.x = getXMidPos() + xMove;
@@ -758,29 +758,46 @@ void CPlayerLevel::processCliffClimbing()
 	}
 
 	// This is where Keen climbs the cliff up.
-	guideToTarget( VectorD2<int>(mClimbSpeedX, PLAYER_CLIMB_SPEED_Y) );
+	guideToTarget( VectorD2<int>(0, 4*PLAYER_CLIMB_SPEED_Y) );	
+
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	yDirection = 0;
+	const int xDiff = mTarget.x - getXMidPos();
+	const int yDiff = mTarget.y - getYMidPos();
+
+	const int abs_y = abs(yDiff);
+	if( abs_y < 24 )
+	{
+	    
+	    mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbingOntoFloor;
+	}
+}
+
+
+void CPlayerLevel::processCliffClimbingOntoFloor()
+{
+	// This is where Keen climbs the cliff towards the floor.
+	guideToTarget( VectorD2<int>(10*mClimbSpeedX, PLAYER_CLIMB_SPEED_Y) );
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	if( getActionStatus(A_KEEN_STAND) || getActionStatus(A_KEEN_ON_PLAT) )
 	{
 	    yDirection = 0;
 	    const int xDiff = mTarget.x - getXMidPos();
-	    const int yDiff = mTarget.y - getYMidPos();
 
 	    const int abs_x = abs(xDiff);
-	    const int abs_y = abs(yDiff);
-	    if( abs_x < mClimbSpeedX && abs_y < PLAYER_CLIMB_SPEED_Y )
-	    {
-		moveDown(1<<CSF);
+	    if(abs_x < mClimbSpeedX)
+	    {				
 		solid = true;
 		setActionSprite();
 		calcBoundingBoxes();
 		makeHimStand();
+		calcBoundingBoxes();
+		processMove(0,-(1<<CSF));
+		processMove(0,(1<<CSF));
 	    }
 	}
 }
-
-
 
 
 
