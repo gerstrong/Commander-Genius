@@ -17,7 +17,6 @@
 #include "engine/CEGAGraphics.h"
 #include "engine/CMessages.h"
 #include "engine/CPassive.h"
-//#include "engine/playgame/CPlayGame.h"
 #include "core/mode/CGameMode.h"
 #include "SmartPointer.h"
 
