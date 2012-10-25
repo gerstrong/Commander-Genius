@@ -23,9 +23,8 @@
 #endif
 
 #define MSPERSEC        1000
-#define DEFAULT_LPS_GALAXY     70 // This makes it more vanilla like. I might stay here
-//#define DEFAULT_LPS_GALAXY     60
-#define DEFAULT_LPS_VORTICON   60
+const float DEFAULT_LPS_GALAXY = 70;
+const float DEFAULT_LPS_VORTICON = 60;
 #define DEFAULT_FPS     60
 
 typedef unsigned long  ulong;
@@ -39,7 +38,6 @@ public:
     void CalculateIntervals( void );
 #endif
     void ResetCounters();
-    int TimeToLogic();
     bool TimeToRender();
     void TimeToDelay();
 
@@ -47,14 +45,10 @@ public:
     bool HasSecElapsed();
     bool HasTimeElapsed(int msecs);
 
-    int getLogicRate() { return m_LogicRate; }
-    int getFrameRate() { return m_FrameRate; }
-    void setRates( const unsigned int logicrate,
-    			     const unsigned int framerate);
+    float getFrameRate() { return m_FrameRate; }
     void setFPS( const int framerate );
-    void setLPS( const int logicrate );
 
-    int getFramesPerSec( void ) { return m_FPS; }
+    int getFramesPerSec() { return m_FPS; }
 
     int getTicksPerFrame();
 
@@ -62,11 +56,10 @@ public:
     Uint32 getTicks() { return timerTicks(); }
 
 private:
-    int m_LogicRate, m_LogicDuration;
-    int m_FrameRate, m_FrameDuration;
+    float m_FrameRate, m_FrameDuration;
     int m_FPS, m_FrameCount;
 
-    ulong m_LogicUpdateTime, m_FrameUpdateTime;
+    ulong m_FrameUpdateTime;
     ulong m_FPSCountTime;
     ulong m_LastSecTime;
 };

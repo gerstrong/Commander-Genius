@@ -123,22 +123,17 @@ void CGame::run()
 {
     int logicTicks, logicLoopVar;
     
-    do
+    while(1)
     {
-	// Perform game logic
-	logicTicks = g_pTimer->TimeToLogic();
-	for (logicLoopVar = 0; logicLoopVar < logicTicks; logicLoopVar++)
+	// Perform the game cycle
+	if( g_pTimer->TimeToRender() )
 	{
 	    // Poll Inputs
 	    g_pInput->pollEvents();
 	    
 	    // Process Game Control
-	    m_Engine.process();			
-	}
-	
-	// Render the Screen
-	if(g_pTimer->TimeToRender() && !g_pVideoDriver->mDrawTasks.empty())
-	{
+	    m_Engine.process();		    
+	    
 	    // Here we try to process all the drawing related Tasks not yet done
 	    g_pVideoDriver->pollDrawingTasks();
 	    
@@ -151,11 +146,14 @@ void CGame::run()
 	    // Now you really render the screen
 	    // When enabled, it also will apply Filters
 	    g_pVideoDriver->updateScreen();
+	    
+	    if( m_Engine.mustShutdown() || g_pInput->getExitEvent() )
+		break;
 	}
 	
 	// delay time remaining in current loop
 	g_pTimer->TimeToDelay();
 	
-    } while(!m_Engine.mustShutdown() && !g_pInput->getExitEvent());
+    }
 }
 

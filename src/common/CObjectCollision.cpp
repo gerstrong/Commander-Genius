@@ -564,35 +564,42 @@ void CSpriteObject::processMove(const VectorD2<int>& dir)
 	processMove(dir.x, dir.y);
 }
 
-void CSpriteObject::processMove(const int xoff, const int yoff)
+void CSpriteObject::processMove(const int move_x, const int move_y)
 {
-	// Let's check if we have to move left or right
-	if(xoff>0)
-	{
-		// move right
-		for(int c=0 ; c<xoff ; c+=MOVE_RES )
-			processMoveBitRight();
-	}
-	else if(xoff<0)
-	{
-		// move right
-		for(int c=0 ; c<-xoff ; c+=MOVE_RES )
-			processMoveBitLeft();
-	}
-
-	// Let's check if we have to move up or down
-	if(yoff>0)
-	{
-		// move down
-		for(int c=0 ; c<yoff ; c+=MOVE_RES )
-			processMoveBitDown();
-	}
-	else if(yoff<0)
-	{
-		// move right
-		for(int c=0 ; c<-yoff ; c+=MOVE_RES )
-			processMoveBitUp();
-	}
+    const float speed = g_pBehaviorEngine->Logic2FPSratio();
+    const float fxoff = static_cast<float>(move_x)*speed;
+    const float fyoff = static_cast<float>(move_y)*speed;
+    
+    int xoff = static_cast<int>(fxoff);
+    int yoff = static_cast<int>(fyoff);
+    
+    // Let's check if we have to move left or right
+    if(xoff > 0)
+    {
+	// move right
+	for(int c = 0 ; c<xoff ; c++ )
+	    processMoveBitRight();
+    }
+    else if(xoff < 0)
+    {
+	// move right
+	for(int c = 0 ; c<-xoff ; c++ )
+	    processMoveBitLeft();
+    }
+    
+    // Let's check if we have to move up or down
+    if(yoff > 0)
+    {
+	// move down
+	for(int c = 0 ; c<yoff ; c++ )
+	    processMoveBitDown();
+    }
+    else if(yoff < 0)
+    {
+	// move right
+	for(int c = 0 ; c<-yoff ; c++ )
+	    processMoveBitUp();
+    }
 }
 
 void CSpriteObject::processPushOutCollision()
@@ -688,9 +695,9 @@ void CSpriteObject::processEvents()
 		m_EventCont.pop_Event();
 	    }		
 	    
-	    if( ObjMove* p_ObjMove =  m_EventCont.occurredEvent<ObjMove>())
+	    if( ObjMove* pObjMove =  m_EventCont.occurredEvent<ObjMove>())
 	    {
-		processMove(p_ObjMove->m_Vec);
+		processMove(pObjMove->m_Vec);
 		m_EventCont.pop_Event();
 	    }
 	}

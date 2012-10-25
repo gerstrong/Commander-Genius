@@ -55,7 +55,7 @@ bool CResourceLoader::process(int* ret)
 	// Do rendering here and the cycle
 	while(!threadPool->finalizeIfReady(mp_Thread, ret))
 	{
-		g_pTimer->TimeToLogic();
+		//g_pTimer->TimeToLogic();
 
 		// Render the Screen
 		if (g_pTimer->TimeToRender())

@@ -123,7 +123,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 
 	if( Episode == 1 || Episode == 2 || Episode == 3 ) // Vorticon resources
 	{
-		g_pTimer->setLPS( DEFAULT_LPS_VORTICON );
+		g_pBehaviorEngine->setLogic2FPSratio( DEFAULT_LPS_VORTICON / g_pTimer->getFrameRate() );
 	    
 		g_pBehaviorEngine->readTeleporterTable(p_exedata);
 
@@ -158,7 +158,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 	}
 	else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
 	{
-		g_pTimer->setLPS( DEFAULT_LPS_GALAXY );
+		g_pBehaviorEngine->setLogic2FPSratio( DEFAULT_LPS_GALAXY / g_pTimer->getFrameRate() );
 		
 		if( (flags & LOADGFX) == LOADGFX )
 		{

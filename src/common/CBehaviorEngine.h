@@ -68,9 +68,10 @@ class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 {
 public:
 	CBehaviorEngine() : 	mPlayers(0),
-							mDifficulty(EASY),
-							mPausedGamePlay(false),
-							pEpisodeInfo(NULL) {}
+				mDifficulty(EASY),
+				mPausedGamePlay(false),
+				pEpisodeInfo(NULL),
+				mLogic2FPSratio(1.0f) {}
 
 	void addMessage(const std::string &name,
 					const std::string &message);
@@ -114,6 +115,15 @@ public:
 
 	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
 	{	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
+	
+	float Logic2FPSratio() const
+	{	return mLogic2FPSratio;	}
+
+	void setLogic2FPSratio( const float logic2FPSratio )
+	{	
+	    mLogic2FPSratio = logic2FPSratio;	
+	    
+	}
 
 
 private:
@@ -128,7 +138,7 @@ private:
 
 	bool mPausedGamePlay;
 
-
+	float mLogic2FPSratio;
 
 	EpisodeInfoStruct *pEpisodeInfo;
 };

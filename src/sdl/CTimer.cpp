@@ -42,12 +42,18 @@
 #include "StringUtils.h"
 #include "common/CBehaviorEngine.h"
 
-CTimer::CTimer()
+CTimer::CTimer() :
+m_FrameRate(0.0f), 
+m_FrameDuration(0.0f),
+m_FPS(0), m_FrameCount(0),
+m_FrameUpdateTime(0),
+m_FPSCountTime(0),
+m_LastSecTime(0)
 {
 #if defined(WIZ)
 	WIZ_ptimer_init();
 #endif
-	setRates(DEFAULT_LPS_VORTICON, DEFAULT_FPS);
+	setFPS(DEFAULT_LPS_VORTICON);
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
 }
 
@@ -61,43 +67,15 @@ void CTimer::ResetCounters()
 	ulong curtime = timerTicks();
 	// m_LogicUpdateTime is measured in time units defined as follows:
 	// MSPERSEC is the time for a single logic "tick".
-	m_LogicUpdateTime = curtime*m_LogicRate;
+	//m_LogicUpdateTime = curtime*m_LogicRate;
 	// Similarly, for m_FrameUpdateTime, MSPERSEC is the time for a frame.
 	m_FrameUpdateTime = curtime*m_FrameRate;
 }
 
 
-void CTimer::setRates( const unsigned int logicrate,
-			const unsigned int framerate)
-{
-	// Set all of the desired rates
-	m_LogicRate = logicrate;
-	m_FrameRate = framerate;
-
-	// Check limits
-	if (m_LogicRate <= 0)
-	{
-	    if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-		m_LogicRate = DEFAULT_LPS_GALAXY;
-	    else
-		m_LogicRate = DEFAULT_LPS_VORTICON;
-	}
-
-	if (m_FrameRate <= 0)
-		m_FrameRate = DEFAULT_FPS;
-
-	ResetCounters();
-}
-
-
 void CTimer::setFPS( const int framerate )
 {
-	setRates(m_LogicRate, framerate);
-}
-
-void CTimer::setLPS( const int logicrate )
-{
-	setRates(logicrate, m_FrameRate);
+    m_FrameRate = framerate;
 }
 
 #if 0
@@ -111,7 +89,7 @@ void CTimer::CalculateIntervals()
 #endif
 
 // Returns the amount of logic "ticks" that we should process
-int CTimer::TimeToLogic()
+/*int CTimer::TimeToLogic()
 {
 	int result = 0;
 	ulong curtime = timerTicks()*m_LogicRate;
@@ -124,7 +102,7 @@ int CTimer::TimeToLogic()
 	}
 
 	return result;
-}
+}*/
 
 bool CTimer::TimeToRender()
 {
@@ -152,20 +130,22 @@ void CTimer::TimeToDelay( void )
 {
 	// Free some CPU cycles
 	timerDelay(1);
+	
 	// Update the FPS counter
 	ulong curtime = timerTicks();
 	if (curtime - m_FPSCountTime >= MSPERSEC)
 	{
-		m_FPS = m_FrameCount;
-		m_FrameCount = 0;
-		m_FPSCountTime = curtime;
+	    m_FPS = m_FrameCount;
+	    m_FrameCount = 0;
+	    m_FPSCountTime = curtime;
 	}
 }
 
 
 int CTimer::getTicksPerFrame()
 {
-	int ratio = m_LogicRate/m_FrameRate;
+	//int ratio = m_LogicRate/m_FrameRate;
+	int ratio = g_pBehaviorEngine->Logic2FPSratio();	
 
 	if(ratio < 1)
 		ratio = 1;

@@ -138,7 +138,7 @@ private:
 
 	std::vector<CTilemap> &m_Tilemaps;
 
-	Uint8 m_animtiletimer;
+	float mAnimtileTimer;
 
 	CPlane m_Plane[3];
 	bool m_Background; // This variable holds, whether we have a background to draw or not.

@@ -21,7 +21,7 @@ m_animation_enabled(true),
 m_Dark(false),
 m_PlatExtending(false),
 m_Tilemaps(g_pGfxEngine->getTileMaps()),
-m_animtiletimer(0),
+mAnimtileTimer(0.0f),
 m_Background(false)
 {
 	resetScrolls();
@@ -35,18 +35,25 @@ m_Background(false)
 ////////////////////////////
 
 void CMap::setLevel( const Uint16 level )
-{	m_Level = level;	}
+{	
+    m_Level = level;	
+    
+}
 
 Uint16 CMap::getLevel()
-{	return m_Level;	}
+{
+    return m_Level;	    
+}
 
 void CMap::setLevelName( const std::string& name )
 {
-	m_LevelName = name;
+    m_LevelName = name;
 }
 
 std::string CMap::getLevelName()
-{	return m_LevelName;	}
+{
+    return m_LevelName;	    
+}
 
 
 /**
@@ -672,7 +679,7 @@ void CMap::_drawForegroundTiles()
 // Draw an animated tile. If it's not animated draw it anyway
 
 Uint8 CMap::getAnimtiletimer()
-{	return m_animtiletimer;	}
+{	return mAnimtileTimer;	}
 
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
@@ -696,7 +703,11 @@ void CMap::animateAllTiles()
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
 	// Let the animation timer tick!!
-	m_animtiletimer++;
+	mAnimtileTimer += g_pBehaviorEngine->Logic2FPSratio();	
+	const Uint8 animtileTimerInt = static_cast<Uint8>(mAnimtileTimer);
+	
+	if( mAnimtileTimer > 256.0f )
+	    mAnimtileTimer = 0.0f;
 
 	// Go throught the list and just draw all the tiles that need to be animated
 	Uint32 num_h_tiles = ScrollSurface->h/16;
@@ -724,7 +735,7 @@ void CMap::animateAllTiles()
 				bool draw = false;
 
 				CTileProperties &back_tile = backTileProperties[*p_back_tile];
-				if( back_tile.animationtime && (m_animtiletimer % back_tile.animationtime == 0) )
+				if( back_tile.animationtime && (animtileTimerInt % back_tile.animationtime == 0) )
 				{
 					*p_back_tile += back_tile.nextTile;
 					draw = true;
@@ -733,7 +744,7 @@ void CMap::animateAllTiles()
 
 
 				CTileProperties &front_tile = frontTileProperties[*p_front_tile];
-				if( front_tile.animationtime && (m_animtiletimer % front_tile.animationtime == 0) )
+				if( front_tile.animationtime && (animtileTimerInt % front_tile.animationtime == 0) )
 				{
 					*p_front_tile += front_tile.nextTile;
 					draw = true;
@@ -763,7 +774,7 @@ void CMap::animateAllTiles()
 				bool draw = false;
 
 				CTileProperties &front_tile = frontTileProperties[*p_front_tile];
-				if( front_tile.animationtime && (m_animtiletimer % front_tile.animationtime == 0) )
+				if( front_tile.animationtime && (animtileTimerInt % front_tile.animationtime == 0) )
 				{
 					*p_front_tile += front_tile.nextTile;
 					draw = true;
