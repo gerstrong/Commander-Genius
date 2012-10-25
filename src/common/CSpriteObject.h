@@ -28,7 +28,6 @@
 // Enumerations are here
 #include "objenums.h"
 
-
 const int COLISION_RES = (1<<STC);
 
 // The bouncing box used by the object which is used to determine the collisions
@@ -58,12 +57,28 @@ struct BoundingBox
 };
 
 
+class CSpriteObject;
+
 // Event that will be used to move the objects in the game
 struct ObjMove : public CEvent
 {
 	VectorD2<int> m_Vec;
 	ObjMove(const VectorD2<int>& Vector) : m_Vec(Vector) {}
 	ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
+};
+
+// Event that will be used to move the objects in the game together with another object.
+// This is applied for example whenever keen is being moved on the platform
+struct ObjMoveCouple : public ObjMove
+{
+	CSpriteObject &mSecond;
+	ObjMoveCouple(const VectorD2<int>& Vector, 
+                      CSpriteObject &second) : 
+			ObjMove(Vector), mSecond(second)  {}
+	
+	ObjMoveCouple(const int offx, const int offy, 
+                      CSpriteObject &second) : 
+			ObjMove(offx, offy), mSecond(second) {}
 };
 
 

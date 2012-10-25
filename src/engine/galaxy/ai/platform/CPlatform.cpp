@@ -35,11 +35,19 @@ void CPlatform::movePlatY(const int amnt)
 
 void CPlatform::movePlatLeft(const int amnt)
 {
-	// First move the object on platform if any
-	if(mp_CarriedPlayer)
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			mp_CarriedPlayer->moveLeft(amnt);
+    // If the Player is standing on the plat move him with it!
+	if(amnt <= 0)
+	    return;
 
+	if(mp_CarriedPlayer)
+	{
+		if(!mp_CarriedPlayer->m_jumpdownfromobject)
+		{
+		    m_EventCont.add(new ObjMoveCouple(-amnt,0, *mp_CarriedPlayer));
+		    return;
+		}
+	}	
+	
 	// Now move the platform itself.
 	moveLeft(amnt);
 }
@@ -47,13 +55,15 @@ void CPlatform::movePlatLeft(const int amnt)
 void CPlatform::movePlatRight(const int amnt)
 {
 	// If the Player is standing on the plat move him with it!
+	if(amnt <= 0)
+	    return;
+
 	if(mp_CarriedPlayer)
 	{	    
 		if(!mp_CarriedPlayer->m_jumpdownfromobject)
 		{
-		    //moveRightWith(amnt, mp_CarriedPlayer);
-		    //return;
-		    mp_CarriedPlayer->moveRight(amnt);
+		    m_EventCont.add(new ObjMoveCouple(amnt,0,*mp_CarriedPlayer));
+		    return;
 		}			
 	}
 
