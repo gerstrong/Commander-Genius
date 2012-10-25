@@ -51,7 +51,9 @@ void CStunnable::processGettingStunned()
 			// Calculate the Position of the Star-Ring. Make it centered and above its head
 			const Uint32 star_x = getXMidPos() - ( (StarRing.getWidth()<<STC)/2 );
 			const Uint32 star_y = getYUpPos()  - ( StarRing.getHeight()<<STC );
-
+			
+			moveUp(6<<STC);
+			
 			EventSpawnObject *Ev = new EventSpawnObject( new CStarRing(mp_Map, 0, star_x, star_y) );
 			g_pBehaviorEngine->m_EventList.add( Ev );
 			mp_processState = &CStunnable::processStunned;
