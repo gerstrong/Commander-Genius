@@ -20,7 +20,6 @@ public:
 
 private:
 	SDL_Surface *mp_OldSurface;
-	SDL_Surface *mp_NewSurface;
 
 	// m_line tells until which line, we have to draw the pixels
 	// m_lines_completed gets ++, if a line has no more pixel that need to be drawn
@@ -30,6 +29,7 @@ private:
 	unsigned short *m_pixels_per_line;
 	bool *m_drawmap;
 	unsigned short m_speed;
+	Uint32 mColorkey;
 };
 
 #endif /* CPIXELATE_H_ */
