@@ -111,9 +111,7 @@ mPoleGrabTime(0)
 
 	setupGalaxyObjectOnMap(offset, A_KEEN_STAND);
 
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
-	//processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 	if(!processActionRoutine())
 			exists = false;
 }
@@ -760,9 +758,7 @@ void CPlayerLevel::processCliffClimbingUp()
 	// This is where Keen climbs the cliff up.
 	guideToTarget( VectorD2<int>(0, 4*PLAYER_CLIMB_SPEED_Y) );	
 
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	yDirection = 0;
-	const int xDiff = mTarget.x - getXMidPos();
 	const int yDiff = mTarget.y - getYMidPos();
 
 	const int abs_y = abs(yDiff);
@@ -779,7 +775,6 @@ void CPlayerLevel::processCliffClimbingOntoFloor()
 	// This is where Keen climbs the cliff towards the floor.
 	guideToTarget( VectorD2<int>(10*mClimbSpeedX, PLAYER_CLIMB_SPEED_Y) );
 
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	if( getActionStatus(A_KEEN_STAND) || getActionStatus(A_KEEN_ON_PLAT) )
 	{
 	    yDirection = 0;
@@ -1337,6 +1332,8 @@ void CPlayerLevel::processPressUp() {
 					return 0;
 				}
 			} else {*/
+				mTarget = getPosition();
+				mTarget.y -= (1<<CSF);
 				setAction(A_KEEN_ENTER_DOOR);
 				
 				setActionSprite();
@@ -1422,16 +1419,26 @@ void CPlayerLevel::processEnterDoor()
 {
 	moveUp(16);
 
-	if(!getActionStatus(A_KEEN_STAND) && !getActionStatus(A_KEEN_ON_PLAT) )
-		return;
-
-	setAction(A_KEEN_STAND);
+	if( m_Pos.y-mTarget.y > 16 )
+	    return;
+	
 	yDirection = 0;
+	setAction(A_KEEN_STAND);
 
 	int xmid = getXMidPos();
-	int y1 = getYMidPos();
+	int y1 = getYDownPos();
 
 	Uint32 t = mp_Map->getPlaneDataAt(2, xmid, y1);
+	
+	if(t==0)
+	    t = mp_Map->getPlaneDataAt(2, xmid, y1-(1<<CSF));
+
+	if(t==0)
+	    t = mp_Map->getPlaneDataAt(2, xmid, y1-(2<<CSF));
+	
+	if(t==0)
+	    t = mp_Map->getPlaneDataAt(2, xmid, y1-(3<<CSF));
+	
 	if (t == 0) {
 		//level_state = 13;
 		//o->action = ACTION_KEENENTEREDDOOR;

@@ -69,9 +69,9 @@ class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 public:
 	CBehaviorEngine() : 	mPlayers(0),
 				mDifficulty(EASY),
-				mPausedGamePlay(false),
-				pEpisodeInfo(NULL),
-				mLogic2FPSratio(1.0f) {}
+				mPausedGamePlay(false),				
+				mLogic2FPSratio(1.0f),
+				pEpisodeInfo(NULL) {}
 
 	void addMessage(const std::string &name,
 					const std::string &message);
