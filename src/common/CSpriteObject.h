@@ -151,7 +151,7 @@ public:
 
 	// Moving parts
 	void moveToForce(const VectorD2<int> &dir);
-	void moveToForce(const int& new_x, const int& new_y);
+	void moveToForce(const int new_x, const int new_y);
 	void moveDir(const VectorD2<int> &dir);
 	void moveToHorizontal(const int& new_x);
 	void moveToVertical(const int& new_y);
@@ -250,9 +250,7 @@ public:
 	void playSound( const GameSound snd,
 				    const SoundPlayMode mode=PLAY_NOW );
 
-	void draw();
-
-
+	virtual void draw();
 
 	virtual ~CSpriteObject();
 

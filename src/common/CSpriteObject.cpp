@@ -139,7 +139,7 @@ void CSpriteObject::moveToForce(const VectorD2<int> &dir)
 	m_Pos = dir;
 }
 
-void CSpriteObject::moveToForce(const int& new_x, const int& new_y)
+void CSpriteObject::moveToForce(const int new_x, const int new_y)
 {
 	moveToForce(VectorD2<int>(new_x, new_y));
 }

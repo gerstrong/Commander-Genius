@@ -7,6 +7,7 @@
 
 #include "CPlatform.h"
 #include "CLogFile.h"
+#include "sdl/CVideoDriver.h"
 
 namespace galaxy {
 
@@ -73,8 +74,13 @@ void CPlatform::movePlatUp(const int amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
+	{
 		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			mp_CarriedPlayer->moveUp(amnt);
+		{
+		    m_EventCont.add(new ObjMoveCouple(0,-amnt,*mp_CarriedPlayer));
+		    return;
+		}
+	}
 
 	// Now move the platform itself.
 	moveUp(amnt);
@@ -84,8 +90,13 @@ void CPlatform::movePlatDown(const int amnt)
 {
 	// First move the object on platform if any
 	if(mp_CarriedPlayer)
+	{
 		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-			mp_CarriedPlayer->moveDown(amnt);
+		{
+		    m_EventCont.add(new ObjMoveCouple(0,amnt,*mp_CarriedPlayer));
+		    return;
+		}
+	}
 
 	// Now move the platform itself.
 	moveDown(amnt);
@@ -100,7 +111,21 @@ void CPlatform::process()
 		{
 			mp_CarriedPlayer->supportedbyobject = false;
 			mp_CarriedPlayer->m_jumpdownfromobject = false;
+			mp_CarriedPlayer->dontdraw = false;
 			mp_CarriedPlayer = NULL;
+		}
+		else
+		{
+		    if(mp_CarriedPlayer->getActionNumber(A_KEEN_STAND) || mp_CarriedPlayer->getActionNumber(A_KEEN_ON_PLAT))
+		    {
+			// Check that he correctly stands on the platform
+			const int standY = getYUpPos()+1;
+			
+			if( standY > mp_CarriedPlayer->getYDownPos() )
+			    mp_CarriedPlayer->moveDown((standY-mp_CarriedPlayer->getYDownPos())/2 + 1);
+			else if( standY < mp_CarriedPlayer->getYDownPos() )
+			    mp_CarriedPlayer->moveUp((mp_CarriedPlayer->getYDownPos()-standY)/2 + 1);
+		    }    
 		}
 	}
 
@@ -117,10 +142,54 @@ void CPlatform::getTouchedBy(CSpriteObject &theObject)
 		{
 			mp_CarriedPlayer = player;
 			player->supportedbyobject = true;
+			player->dontdraw = true;
 		}
 	}
 }
 
+
+void CPlatform::draw()
+{
+    // This draw routine also is able to draw a second object in case it is holding one.
+    if( sprite == BLANKSPRITE || dontdraw )
+	return;
+    
+    CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
+    
+    scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
+    scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
+    
+    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    
+    if( scrx < gameres.w && scry < gameres.h && exists )
+    {
+	Uint16 showX = scrx+Sprite.getXOffset();
+	Uint16 showY = scry+Sprite.getYOffset();
+	if(m_blinktime > 0)
+	{
+	    Sprite.drawBlinkingSprite( showX, showY );
+	    m_blinktime--;
+	}
+	else
+	{
+	    Sprite.drawSprite( showX, showY, (255-transluceny) );
+	    if(mp_CarriedPlayer)
+	    {
+		CSprite &playSprite = g_pGfxEngine->getSprite(mp_CarriedPlayer->sprite);
+		int distx = mp_CarriedPlayer->getXPosition()-getXPosition();
+		int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
+		
+		distx = (distx>>STC);
+		distx += playSprite.getXOffset();
+		disty = (disty>>STC);
+		disty += playSprite.getYOffset();
+		
+		playSprite.drawSprite( showX+distx, showY+disty );
+	    }
+	}
+	hasbeenonscreen = true;
+    }    
+}
 
 bool CPlatform::calcVisibility()
 {

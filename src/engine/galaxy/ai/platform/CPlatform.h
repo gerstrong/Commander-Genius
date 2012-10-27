@@ -30,6 +30,8 @@ public:
 	virtual void process();
 	void getTouchedBy(CSpriteObject &theObject);
 
+	void draw();
+	
 	virtual bool calcVisibility();
 
 protected:
