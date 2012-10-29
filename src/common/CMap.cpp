@@ -183,11 +183,14 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
     std::vector<int>::iterator up = scrollBlockY.begin();
     std::vector<int>::iterator down= up;
     down++;
+
+    blockYup = *up;
+    blockYdown = *down;
     
     for( ; down != scrollBlockY.end() ; )
     {
-	const int blockYup = *up;
-	const int blockYdown = *down;
+	blockYup = *up;
+	blockYdown = *down;
 	
 	if( y > blockYup && y < blockYdown )
 	{

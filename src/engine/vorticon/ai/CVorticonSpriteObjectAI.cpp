@@ -78,7 +78,17 @@ void CVorticonSpriteObjectAI::process()
 			object.InertiaAndFriction_X();
 		}
 	}
+	
+	
+	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
+	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
+	{
+		m_Objvect.push_back( static_cast<CVorticonSpriteObject*>
+				    (const_cast<CSpriteObject*>(ev->pObject)) );
+		EventContainer.pop_Event();
+	}
 
+	
 	// Try always to remove the last objects if they aren't used anymore!
 	CVorticonSpriteObject* p_object;
 	while(m_Objvect.size()>0)

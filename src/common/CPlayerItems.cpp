@@ -214,7 +214,7 @@ void CPlayer::riseBonus(int spr, int x, int y)
 	 {
 		 CRisingPoints *GotPointsObj = new CRisingPoints(mp_Map, x<<CSF, y<<CSF);
 		 GotPointsObj->sprite = spr;
-		 mp_object->push_back(GotPointsObj);
+		 g_pBehaviorEngine->EventList().add(new EventSpawnObject(GotPointsObj) );
 	 }
 }
 
@@ -389,8 +389,7 @@ void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 
 	// replace the door tiles with a door object, which will do the animation
 	CDoor *doorobj = new CDoor(mp_Map, mpx<<CSF,(mpy-tilefix)<<CSF, doorsprite);
-
-	mp_object->push_back(doorobj);
+	g_pBehaviorEngine->EventList().add(new EventSpawnObject(doorobj) );    
 }
 
 
@@ -399,7 +398,9 @@ void CPlayer::giveAnkh()
 {
 	playSound(SOUND_ANKH);
 	if(ankhtime == 0)
-		mp_object->push_back(new CAnkhShield(*this));
+	{
+	    g_pBehaviorEngine->EventList().add(new EventSpawnObject(new CAnkhShield(*this)) );
+	}
 	ankhtime = PLAY_ANKH_TIME;
 }
 

@@ -43,7 +43,6 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 
 private:
-	std::vector< SmartPointer<CGalaxySpriteObject> > &m_ObjectPtrs;
 	int m_timer;
 };
 

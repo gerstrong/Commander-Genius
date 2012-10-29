@@ -354,7 +354,7 @@ void CPlayer::TogglePogo_and_Switches()
 					// spawn a "sector effector" to extend/retract the platform
 					CBridges *platobject = new CBridges(mp_Map, mx<<CSF, my<<CSF,
 							platx, platy);
-					mp_object->push_back(platobject);
+					g_pBehaviorEngine->EventList().add(new EventSpawnObject(platobject) );
 					mp_Map->m_PlatExtending = true;
 				}
 
@@ -768,8 +768,7 @@ void CPlayer::raygun()
 
 				CRay *rayobject = new CRay(mp_Map, xdir, ydir, static_cast<direction_t>(pDir.x), OBJ_PLAYER, m_index);
 				rayobject->setSpeed(124);
-				
-				mp_object->push_back(rayobject);
+				g_pBehaviorEngine->EventList().add(new EventSpawnObject(rayobject) );
 			}
 			else
 			{ // uh oh, out of bullets

@@ -157,7 +157,8 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
 	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
 	{
-		mObjectPtr.push_back( const_cast<CGalaxySpriteObject*>(ev->pObject) );
+		mObjectPtr.push_back( static_cast<CGalaxySpriteObject*>(
+				      const_cast<CSpriteObject*>(ev->pObject) ) );
 		EventContainer.pop_Event();
 	}
 

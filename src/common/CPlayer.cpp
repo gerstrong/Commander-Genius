@@ -32,21 +32,21 @@ pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjump
 mp_levels_completed(mp_level_completed),
 mp_option(g_pBehaviorEngine->m_option)
 {
-	mp_object = &m_Object;
-	canbezapped = true;
-	m_index = 0;
+    mp_object = &m_Object;
+    canbezapped = true;
+    m_index = 0;
 
 
-	pjumping = PNOJUMP;
-	pfalling = false;
-	psemisliding = false;
-	psliding = false;
-	ppogostick = false;
-	pslowingdown = false;
-    m_playingmode=WORLDMAP;
+    pjumping = PNOJUMP;
+    pfalling = false;
+    psemisliding = false;
+    psliding = false;
+    ppogostick = false;
+    pslowingdown = false;
+    m_playingmode = WORLDMAP;
 
 
-	// Set every value in the class to zero.
+    // Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));
     setDefaultStartValues();
     setDatatoZero();
@@ -61,6 +61,7 @@ pjumpupspeed_decrease(player.pjumpupspeed_decrease),
 mp_levels_completed(player.mp_levels_completed),
 mp_option(g_pBehaviorEngine->m_option)
 {
+    mp_object = player.mp_object;
     canbezapped = true;
     m_index = 0;
 
@@ -83,9 +84,14 @@ mp_option(g_pBehaviorEngine->m_option)
 
 CPlayer& CPlayer::operator=(const CPlayer &player)
 {
+    mp_object = player.mp_object;
+    m_episode = player.m_episode;
+    m_level = player.m_level;
+    pjumpupspeed_decrease = player.pjumpupspeed_decrease;
+    mp_levels_completed = player.mp_levels_completed;
+    mp_option = g_pBehaviorEngine->m_option;
     canbezapped = true;
     m_index = 0;
-
 
     pjumping = PNOJUMP;
     pfalling = false;
@@ -99,7 +105,9 @@ CPlayer& CPlayer::operator=(const CPlayer &player)
     // Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));
     setDefaultStartValues();
-    setDatatoZero();    
+    setDatatoZero();
+    
+    return *this;
 }
 
 
@@ -900,8 +908,8 @@ bool CPlayer::checkObjSolid()
 			if(getXRightPos() >= (*it_obj)->getXLeftPos()  &&
 					getXLeftPos() <= (*it_obj)->getXRightPos() )
 			{
-				if(getYUpPos() <= (*it_obj)->getYDownPos()+(1<<STC)  &&
-					getYUpPos() >= (*it_obj)->getYMidPos() )
+				if( getYUpPos() <= (*it_obj)->getYDownPos()+(1<<STC)  &&
+				    getYUpPos() >= (*it_obj)->getYMidPos() )
 				{	// In this case the object pushs the player down!
 					pjumping = PNOJUMP;
 					int dy = (*it_obj)->getYDownPos() - getYUpPos();

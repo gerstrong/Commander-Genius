@@ -180,8 +180,6 @@ void CPlayGameVorticon::process()
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
 
-
-
 	if( mpFinale.empty() && !gpMenuController->active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if(mMessageBoxes.empty() && !StatusScreenOpen())
@@ -194,9 +192,13 @@ void CPlayGameVorticon::process()
 			{
 				/// The following functions must be worldmap dependent
 				if( m_Level == WORLD_MAP_LEVEL_VORTICON )
+				{
 					processOnWorldMap();
+				}
 				else
+				{
 					processInLevel();
+				}
 
 
 				if(m_Player[mCamLead].pdie)

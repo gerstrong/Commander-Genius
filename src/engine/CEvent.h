@@ -22,7 +22,7 @@
 #include <vector>
 #include <memory>
 
-class CGalaxySpriteObject;
+class CSpriteObject;
 
 
 // TODO: These Event Interfaces must go to another file. Those are Inlevel Galaxy Events
@@ -160,9 +160,9 @@ struct EventSendSelectionDialogMsg : CEvent {
  */
 struct EventSpawnObject : CEvent {
 
-	const CGalaxySpriteObject *pObject;
+	const CSpriteObject *pObject;
 
-	EventSpawnObject( const CGalaxySpriteObject* pObject ) :
+	EventSpawnObject( const CSpriteObject* pObject ) :
 					  pObject( pObject ) {}
 };
 

@@ -28,7 +28,6 @@ const int SLUG_MOVE_TIMER = 10;
 CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 		std::vector< SmartPointer<CGalaxySpriteObject> >&ObjectPtrs) :
 CStunnable(pmap, foeID, x, y),
-m_ObjectPtrs(ObjectPtrs),
 m_timer(0)
 {
 	mActionMap[A_SLUG_MOVE] = (void (CStunnable::*)()) &CPoisonSlug::processCrawling;
@@ -66,7 +65,8 @@ void CPoisonSlug::processCrawling()
 		m_timer = 0;
 		setAction( A_SLUG_POOING );
 		playSound( SOUND_SLUG_DEFECATE );
-		m_ObjectPtrs.push_back(new CSlugSlime(mp_Map, 0, getXLeftPos(), getYDownPos()-(1<<CSF)));
+		CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXLeftPos(), getYDownPos()-(1<<CSF));
+		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( slime ) );
 		return;
 	}
 
