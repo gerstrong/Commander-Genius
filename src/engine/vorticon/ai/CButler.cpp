@@ -9,33 +9,44 @@ CVorticonSpriteObject(pmap, x, y-(1<<STC), OBJ_BUTLER),
 m_Player(PlayerVect)
 {
 	 state = BUTLER_WALK;
-	 movedir = RIGHT;
+	 xDirection = LEFT;
 	 animtimer = 0;
 	 canbezapped = true;  // will stop bullets but are not harmed
 	 m_invincible = true;
-	 falling = false;
 	 blockedd = true;
+	 inhibitfall = false;
 }
 
 void CButler::process()
 {
+    
+    /*if (blockedl)
+    {
+	xDirection = RIGHT;
+    }
+
+    if (blockedr)
+    {
+	xDirection = LEFT;
+    }*/
+
+    
 	 switch(state)
 	 {
 	 case BUTLER_TURN:
 		 if (timer > BUTLER_TURN_TIME)
 		 {
-			 movedir = (movedir == LEFT) ? RIGHT : LEFT;
+			 xDirection = (xDirection == LEFT) ? RIGHT : LEFT;
 			 animtimer = 0;
 			 state = BUTLER_WALK;
 		 } else timer++;
 		 break;
-	 case BUTLER_WALK:
-
-		 if (movedir==LEFT)
+		 
+	 case BUTLER_WALK:	     
+		 if (xDirection==LEFT)
 		 {  // move left
-			 xDirection = LEFT;
 			 sprite = BUTLER_WALK_LEFT_FRAME + frame;
-			 if (!blockedl )
+			 if (!blockedl)
 			 {
 				 xinertia = -BUTLER_WALK_SPEED;
 			 }
@@ -45,14 +56,13 @@ void CButler::process()
 				 frame = 0;
 				 timer = 0;
 				 animtimer = 0;
-				 state = BUTLER_TURN;
+				 state = BUTLER_TURN;				 
 			 }
 		 }
 		 else
 		 {  // move right
-			 xDirection = RIGHT;
 			 sprite = BUTLER_WALK_RIGHT_FRAME + frame;
-			 if (!blockedr )
+			 if (!blockedr)
 			 {
 				 xinertia = BUTLER_WALK_SPEED;
 			 }
@@ -80,11 +90,10 @@ void CButler::process()
 
 void CButler::getTouchedBy(CSpriteObject &theObject)
 {   // push keen
-
-
 	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
 	{
-		player->bump( *this, movedir );
+	    direction_t dir = xDirection<0 ? LEFT : RIGHT;
+	    player->bump( *this, dir );
 	}
 }
 

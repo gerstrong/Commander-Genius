@@ -51,8 +51,6 @@ private:
 	unsigned char frame;
 	unsigned int dist_traveled;
 
-	direction_t movedir;
-
 	std::vector<CPlayer> &m_Player;
 };
 

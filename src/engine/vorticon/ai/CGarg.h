@@ -62,7 +62,7 @@ private:
 	unsigned char walkframe;
 	unsigned int dist_traveled;
 
-	unsigned char movedir;
+	char movedir;
 	unsigned char detectedPlayer, detectedPlayerIndex;
 
 	std::vector<CPlayer> &m_Player;

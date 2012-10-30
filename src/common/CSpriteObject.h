@@ -114,7 +114,6 @@ public:
 	
 	bool blockedl, blockedr, blockedu, blockedd;
 	bool onslope;
-	bool falling;
 	signed int xinertia, yinertia;
 	unsigned int psupportingobject;
 	bool supportedbyobject;

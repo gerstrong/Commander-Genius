@@ -33,7 +33,7 @@ private:
 	unsigned char frame;
 	unsigned int dist_to_travel;
 
-	unsigned char movedir;
+	char movedir;
 
 	unsigned char fireafterlook;
 

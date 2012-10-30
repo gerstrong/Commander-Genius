@@ -277,16 +277,16 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 	if( !floorleft && xDirection == LEFT && floorright==1 )
 	{
 		blockedl = TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
-		return 1;
+		return true;
 	}
 
 	if( !floorright && xDirection == RIGHT && floorleft==1 )
 	{
 		blockedr = TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
-		return 2;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
 

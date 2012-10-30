@@ -24,7 +24,6 @@ m_invincible(false),
 m_Pos(x,y),
 transluceny(0)
 {
-	falling = false;
 	m_number_of_objects++;
 	exists = true;
 	solid = true;
@@ -302,10 +301,6 @@ void CSpriteObject::processFallPhysics(const int boost)
 	// hit floor or ceiling? set inertia to zero
 	if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
 		yinertia = 0;
-
-	// If object is not falling (yinertia >= 0) and blocked he cannot be falling
-	if(blockedd && yinertia>=0)
-		falling = false;
 }
 
 void CSpriteObject::processFallPhysics()
