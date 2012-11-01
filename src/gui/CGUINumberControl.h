@@ -11,7 +11,6 @@
 #include <string>
 #include "CGUIControl.h"
 #include "engine/CEvent.h"
-#include "SmartPointer.h"
 
 
 class CGUINumberControl: public CGUIControl

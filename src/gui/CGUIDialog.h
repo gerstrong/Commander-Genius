@@ -17,6 +17,7 @@
 #include "SmartPointer.h"
 #include "engine/CEvent.h"
 #include "graphics/CBitmap.h"
+#include <sdl/extensions.h>
 #include <list>
 
 class CGUIDialog
@@ -48,13 +49,23 @@ public:
 	void processRendering();
 
 	// Adds a control instance to the list of controls to be processed.
-	void addControl( const SmartPointer<CGUIControl> newControl,
+	void addControl( SmartPointer<CGUIControl> &newControl,
 			 	 	 const CRect<float>& RelRect );
 
-	void addControl( const SmartPointer<CGUIControl> newControl );
+	void addControl( SmartPointer<CGUIControl> &newControl );
+
+	void addControl( CGUIControl *newControl,
+			 	 const CRect<float>& RelRect );
+
+	void addControl( CGUIControl *newControl );
 
 
 	bool sendEvent( const SmartPointer<CEvent> &command );
+
+	bool sendEvent( CEvent *pCommand )
+	{
+	    return sendEvent(SmartPointer<CEvent>(pCommand));
+	}
 
 	void fit();
 
@@ -87,6 +98,7 @@ private:
 	std::list< SmartPointer<CGUIControl> > mControlList;
 
 	// SDL_Surface of the Background
+	//std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>	mpBackgroundSfc;
 	SmartPointer<SDL_Surface>	mpBackgroundSfc;
 
 	int mSelection;

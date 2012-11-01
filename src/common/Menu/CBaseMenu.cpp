@@ -67,8 +67,9 @@ void CBaseMenu::process()
 	{
 		if( g_pInput->getPressedCommand(cmd) )
 		{
-			sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
-			break;
+		    SmartPointer<CEvent> command(new CommandEvent( static_cast<InputCommands>(cmd) ));
+		    sendEvent(command);
+		    break;
 		}
 	}
 

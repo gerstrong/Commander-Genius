@@ -63,7 +63,7 @@ void CGUIDialog::initBackground()
 
 
 
-void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
+void CGUIDialog::addControl( SmartPointer<CGUIControl> &newControl,
 							    const CRect<float>& RelRect )
 {
 	CRect<float> AbsRect = RelRect;
@@ -77,7 +77,7 @@ void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl,
 
 
 
-void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl )
+void CGUIDialog::addControl( SmartPointer<CGUIControl> &newControl )
 {
 	mControlList.push_back( newControl );
 	fit();
@@ -85,6 +85,19 @@ void CGUIDialog::addControl( const SmartPointer<CGUIControl> newControl )
 	if(mControlList.size() == 1)
 		mpCurrentCtrl = newControl.get();
 
+}
+
+void CGUIDialog::addControl( CGUIControl *newControl,
+		 	 const CRect<float>& RelRect )
+{
+    SmartPointer<CGUIControl> newGUIControl(newControl);
+    addControl(newGUIControl, RelRect);
+}
+
+void CGUIDialog::addControl( CGUIControl *newControl )
+{
+    SmartPointer<CGUIControl> newGUIControl(newControl);
+    addControl(newGUIControl);    
 }
 
 
@@ -203,8 +216,6 @@ bool CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 
 	return false;
 }
-
-
 
 void CGUIDialog::fit()
 {

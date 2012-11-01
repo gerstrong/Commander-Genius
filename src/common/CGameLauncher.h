@@ -74,7 +74,7 @@ private:
 	Uint8 m_episode;
 	DirList m_DirList;
 	Sint8 m_ep1slot;
-    std::vector<GameEntry> m_Entries;
+	std::vector<GameEntry> m_Entries;
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
 	CGUIDialog mLauncherDialog;
