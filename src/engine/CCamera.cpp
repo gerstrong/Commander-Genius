@@ -218,8 +218,8 @@ bool CCamera::outOfSight()
 {
 	bool outofsight = false;
 
-	const int cam_width = ((g_pVideoDriver->getGameResolution().w/2)<<(CSF-STC));
-	const int cam_height = ((g_pVideoDriver->getGameResolution().h/2)<<(CSF-STC));
+	const int cam_width = ((g_pVideoDriver->getGameResolution().w/2)<<STC);
+	const int cam_height = ((g_pVideoDriver->getGameResolution().h/2)<<STC);
 
 	const int camX = getXPosition();
 	const int camY = getYPosition();

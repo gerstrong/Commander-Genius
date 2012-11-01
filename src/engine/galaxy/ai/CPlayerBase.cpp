@@ -395,13 +395,16 @@ void CPlayerBase::processDead()
 {
 	// must be processed only once!
 	if(dead)
-		return;
+	    return;
 
 	m_Inventory.Item.m_lifes--;
 	setActionForce(A_KEEN_DIE);
+	g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
 
 	// Create the Event Selection screen
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	
+	// TODO: This commented out Message needs to return.
 	/*std::string loosemsg = "You didn't make it past\n";
 	loosemsg 			+= mp_Map->getLevelName();
 	EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
@@ -414,9 +417,6 @@ void CPlayerBase::processDead()
 	m_dying = false;
 	dead = true;
 }
-
-
-
 
 
 
