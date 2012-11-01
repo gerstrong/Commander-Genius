@@ -13,11 +13,11 @@
 
 #include "fileio/CExeFile.h"
 #include "sdl/music/CMusicPlayer.h"
-#include "SmartPointer.h"
 
 #include <SDL.h>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "CSingleton.h"
 #define g_pMusicPlayer CMusic::Get()
@@ -43,12 +43,12 @@ public:
 
 	bool playing()
 	{
-		if(!mpPlayer.empty())
+		if(mpPlayer)
 			return mpPlayer->playing();
 		return false;
 	}
 
-	SmartPointer<CMusicPlayer> mpPlayer;
+	std::unique_ptr<CMusicPlayer> mpPlayer;
 	bool m_busy;
 };
 

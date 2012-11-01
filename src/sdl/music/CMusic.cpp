@@ -21,11 +21,11 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 	//m_AudioSpec = g_pSound->getAudioSpec();
 	CIMFPlayer *imfPlayer = new CIMFPlayer(g_pSound->getAudioSpec());
 	imfPlayer->loadMusicTrack(ExeFile, track);
-	mpPlayer = imfPlayer;
+	mpPlayer.reset(imfPlayer);
 
 	if(!mpPlayer->open())
 	{
-		mpPlayer = NULL;
+		mpPlayer.release();
 		return false;
 	}
 	return true;
@@ -35,7 +35,7 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
 	//m_AudioSpec = g_pSound->getAudioSpec();
-	mpPlayer = new CIMFPlayer(g_pSound->getAudioSpec());
+	mpPlayer.reset(new CIMFPlayer(g_pSound->getAudioSpec()));
 	(static_cast<CIMFPlayer*>(mpPlayer.get()))->loadMusicForLevel(ExeFile, level);
 
 	if(!mpPlayer->open())
@@ -61,13 +61,13 @@ bool CMusic::load(const std::string &musicfile)
 		{
 			CIMFPlayer *imfPlayer = new CIMFPlayer(audioSpec);
 			imfPlayer->loadMusicFromFile(musicfile);
-			mpPlayer = imfPlayer;
+			mpPlayer.reset(imfPlayer);
 		}
 		else if(strcasecmp(extension.c_str(),"ogg") == 0)
 		{
 #if defined(OGG) || defined(TREMOR)
 
-			mpPlayer = new COGGPlayer(musicfile, audioSpec);
+			mpPlayer.reset(new COGGPlayer(musicfile, audioSpec));
 #else
 			g_pLogFile->ftextOut("Music Manager: Neither OGG or TREMOR-Support are disabled! Please use another build<br>");
 			return false;
@@ -91,7 +91,7 @@ bool CMusic::load(const std::string &musicfile)
 
 void CMusic::reload()
 {
-	if(mpPlayer.empty())
+	if(!mpPlayer)
 		return;
 
 	mpPlayer->reload();
@@ -99,7 +99,7 @@ void CMusic::reload()
 
 void CMusic::play()
 {
-	if(mpPlayer.empty())
+	if(!mpPlayer)
 		return;
 
 	mpPlayer->play(true);
@@ -107,7 +107,7 @@ void CMusic::play()
 
 void CMusic::pause()
 {
-	if(mpPlayer.empty())
+	if(!mpPlayer)
 		return;
 
 	mpPlayer->play(false);
@@ -115,7 +115,7 @@ void CMusic::pause()
 
 void CMusic::stop()
 {
-	if(mpPlayer.empty())
+	if(!mpPlayer)
 		return;
 
 	// wait until the last chunk has been played, and only shutdown then.
@@ -129,7 +129,7 @@ void CMusic::readWaveform(Uint8* buffer, size_t length)
 {
 	m_busy = false;
 
-	if( mpPlayer.empty() )
+	if( !mpPlayer )
 		return;
 
 	m_busy = true;
