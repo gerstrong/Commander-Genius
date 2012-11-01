@@ -84,7 +84,7 @@ void CCredits::init()
 		m_mid[j] = 160-(m_scrolltext[j].size()*4);
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-	mpDrawSfc = SDL_DisplayFormatAlpha(temp);
+	mpDrawSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
 }
 

@@ -20,13 +20,13 @@ m_timer(0)
 	const SDL_Rect resrect =  g_pVideoDriver->getGameResolution().SDLRect();
 	const Uint32 flags = g_pVideoDriver->getBlitSurface()->flags;
 
-	mpSceneSurface = SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0);
+	mpSceneSurface.reset(SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 	SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
 
 
 	if( finale_draw( mpSceneSurface.get(), scene_file, game_path) )
 	{
-		mpSceneSurface = SDL_DisplayFormatAlpha(mpSceneSurface.get());
+		mpSceneSurface.reset(SDL_DisplayFormatAlpha(mpSceneSurface.get()), &SDL_FreeSurface);
 	}
 	else
 	{
@@ -50,9 +50,9 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
 
 void CFinaleStaticScene::process()
 {
-	if(!mpSceneSurface.empty())
+	if(mpSceneSurface)
 	{
-		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSceneSurface, NULL,  NULL ) );
+		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSceneSurface, NULL, NULL) );
 	}
 
 	if(m_timer)

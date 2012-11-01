@@ -103,7 +103,7 @@ void CAbout::init()
 	else if(m_type == "CG")
 	{
 		std::string path = getResourceFilename("gfx/CGLogo.bmp", ExeFile.getDataDirectory(), true, true);
-		mpLogoBMP = SDL_LoadBMP(GetFullFileName(path).c_str());
+		mpLogoBMP.reset( SDL_LoadBMP(GetFullFileName(path).c_str()), &SDL_FreeSurface );
 		
 		m_lines.push_back("Commander Genius is an interpreter");
 		m_lines.push_back("made with the goal of recreating");
@@ -135,7 +135,7 @@ void CAbout::init()
 	m_logo_rect.x = m_logo_rect.y = 0;
 	m_logo_rect.h = m_logo_rect.w = 0;
 	
-	if(!mpLogoBMP.empty())
+	if(mpLogoBMP)
 	{
 		m_logo_rect.w = mpLogoBMP->w;
 		m_logo_rect.h = mpLogoBMP->h;
@@ -144,7 +144,7 @@ void CAbout::init()
 	}
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-	mpDrawSfc = SDL_DisplayFormatAlpha(temp);
+	mpDrawSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
 }
 
@@ -161,7 +161,7 @@ void CAbout::process()
 	}
 	else if(m_type == "CG")
 	{
-		if(!mpLogoBMP.empty())
+		if(mpLogoBMP)
 			g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpLogoBMP, NULL,  &m_logo_rect ) );
 	}
 

@@ -53,7 +53,7 @@ private:
 	std::string				m_DataDirectory;
 	std::vector<stBitmap>	m_Bitmaps;
 
-	SmartPointer<SDL_Surface> mpTextSfc;
+	std::shared_ptr<SDL_Surface> mpTextSfc;
 
 	// This cycle will wait for the input of name and hit of enter
 	bool m_blink;

@@ -13,6 +13,7 @@
 #include <SDL.h>
 #include <string>
 #include <list>
+#include <memory>
 
 struct bitmap_structure {
 	CBitmap *p_bitmap;
@@ -39,7 +40,7 @@ public:
 private:
 
 	std::vector<bitmap_structure> m_BitmapVector;
-	SmartPointer<SDL_Surface> mpSceneSurface;
+	std::shared_ptr<SDL_Surface> mpSceneSurface;
 	bool m_mustclose;
 	Uint8 m_count;
 	Uint16 m_timer; // Only used, if no Text to display is set. Example is the preview section

@@ -35,8 +35,8 @@ mpCamlead(camlead)
 		mpHUDBox = g_pGfxEngine->getSprite("HUDBACKGROUND");
 		m_Rect.h = mpHUDBox->getHeight()+2;
 		m_Rect.w = mpHUDBox->getWidth()+2;
-		mpHUDBlit = CG_CreateRGBSurface( m_Rect );		
-		mpHUDBlit = SDL_DisplayFormatAlpha( mpHUDBlit.get() );
+		mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
+		mpHUDBlit.reset( SDL_DisplayFormatAlpha(mpHUDBlit.get()), &SDL_FreeSurface );
 	}
 }
 
@@ -85,7 +85,7 @@ void CHUD::CreateBackground()
 	temp = SDL_DisplayFormatAlpha(mpBackground.get());
 	mpBackground.reset(temp);
 
-	mpHUDBlit = SDL_DisplayFormatAlpha(mpBackground.get());
+	mpHUDBlit.reset(SDL_DisplayFormatAlpha(mpBackground.get()), &SDL_FreeSurface);
 
 	// Draw the rounded borders
 	DrawCircle(0, 0, 80);
@@ -163,7 +163,7 @@ void CHUD::renderGalaxy()
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), m_Rect.x+8, m_Rect.y+4, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2), m_Rect.x+64, m_Rect.y+20, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), m_Rect.x+24, m_Rect.y+20, blitsfc );
-
+	
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
 }
 /**

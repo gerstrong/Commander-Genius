@@ -141,7 +141,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 				(EGASpriteModell[i].hitbox_u << STC),
 				(EGASpriteModell[i].hitbox_r << STC),
 				(EGASpriteModell[i].hitbox_b << STC) );
-		Sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags,
+		Sprite.createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags,
 				g_pGfxEngine->Palette.m_Palette );
 
 		percent = (i*50)/m_numsprites;
@@ -403,7 +403,7 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprit
 	tile_rect.w = tile_rect.h= 16;
 	
 	sprite.setSize(tile_rect.w, tile_rect.h);
-	sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags,
+	sprite.createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags,
 						  g_pGfxEngine->Palette.m_Palette );
 	sprite.optimizeSurface();
 	

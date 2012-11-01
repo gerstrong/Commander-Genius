@@ -11,6 +11,7 @@
 #include "CVec.h"
 #include <string>
 #include <SDL.h>
+#include <memory>
 #include "SmartPointer.h"
 
 class CMessageBoxGalaxy
@@ -47,7 +48,7 @@ protected:
 	bool mMustClose;
 	SDL_Rect mMBRect;
 	std::string mText;
-	SmartPointer<SDL_Surface> mpMBSurface;
+	std::shared_ptr<SDL_Surface> mpMBSurface;
 	unsigned int mTextHeight;
 };
 

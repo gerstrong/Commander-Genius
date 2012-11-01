@@ -40,7 +40,8 @@ int NumConsoleMessages = 0;
 int ConsoleExpireTimer = 0;
 
 CVideoDriver::CVideoDriver() :
-		mp_VideoEngine(NULL), m_mustrefresh(false) {
+m_mustrefresh(false)
+{
 	resetSettings();
 }
 
@@ -208,21 +209,20 @@ bool CVideoDriver::start() {
 #ifdef USE_OPENGL
 	if (m_VidConfig.m_opengl) // If OpenGL could be set, initialize the
 	{
-		mp_VideoEngine = new COpenGL(m_VidConfig);
-		retval = mp_VideoEngine->init();
+		mpVideoEngine.reset(new COpenGL(m_VidConfig));
+		retval = mpVideoEngine->init();
 
 		if (!retval) 
 		{
-			delete mp_VideoEngine;
 			m_VidConfig.m_opengl = false;
 			applyMode();
-			mp_VideoEngine = new CSDLVideo(m_VidConfig);
-			retval = mp_VideoEngine->init();
+			mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
+			retval = mpVideoEngine->init();
 		}
 	} else {
 #endif
-		mp_VideoEngine = new CSDLVideo(m_VidConfig);
-		retval = mp_VideoEngine->init();
+		mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
+		retval = mpVideoEngine->init();
 
 #ifdef USE_OPENGL
 	}
@@ -234,7 +234,7 @@ bool CVideoDriver::start() {
 
 	// Now SDL will tell if the bpp works or changes it, if not supported.
 	// this value is updated here!
-	retval &= mp_VideoEngine->createSurfaces();
+	retval &= mpVideoEngine->createSurfaces();
 	m_mustrefresh = true;
 
 	return retval;
@@ -256,27 +256,27 @@ void CVideoDriver::setScaleType(bool IsNormal)
 void CVideoDriver::updateScrollBuffer(CMap &map) 
 {
 	map.drawAll();
-	mp_VideoEngine->UpdateScrollBufX(map.m_scrollx);
-	mp_VideoEngine->UpdateScrollBufY(map.m_scrolly);
+	mpVideoEngine->UpdateScrollBufX(map.m_scrollx);
+	mpVideoEngine->UpdateScrollBufY(map.m_scrolly);
 }
 
 void CVideoDriver::blitScrollSurface() // This is only for tiles
 // Therefore the name should be changed
 {
-	mp_VideoEngine->blitScrollSurface();
+	mpVideoEngine->blitScrollSurface();
 	drawConsoleMessages();
 }
 
 void CVideoDriver::collectSurfaces() {
-	mp_VideoEngine->collectSurfaces();
+	mpVideoEngine->collectSurfaces();
 }
 
 void CVideoDriver::clearSurfaces() {
-	mp_VideoEngine->clearSurfaces();
+	mpVideoEngine->clearSurfaces();
 }
 
 void CVideoDriver::updateScreen() {
-	mp_VideoEngine->updateScreen();
+	mpVideoEngine->updateScreen();
 }
 
 // "Console" here refers to the capability to pop up in-game messages
@@ -295,7 +295,7 @@ void CVideoDriver::drawConsoleMessages() {
 
 	int y = CONSOLE_MESSAGE_Y;
 	for (int i = 0; i < NumConsoleMessages; i++) {
-		g_pGfxEngine->getFont(1).drawFont(mp_VideoEngine->getBlitSurface(),
+		g_pGfxEngine->getFont(1).drawFont(mpVideoEngine->getBlitSurface(),
 				cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
 		y += CONSOLE_MESSAGE_SPACING;
 	}
@@ -385,17 +385,16 @@ unsigned short CVideoDriver::getDepth() const {
 }
 
 SDL_Surface *CVideoDriver::getScrollSurface() {
-	return mp_VideoEngine->getScrollSurface();
+	return mpVideoEngine->getScrollSurface();
 }
 
 st_camera_bounds &CVideoDriver::getCameraBounds() {
 	return m_VidConfig.m_CameraBounds;
 }
 
-void CVideoDriver::stop() {
-	if (mp_VideoEngine)
-		delete mp_VideoEngine;
-	mp_VideoEngine = NULL;
+void CVideoDriver::stop() 
+{
+    mpVideoEngine.release();
 }
 
 ////

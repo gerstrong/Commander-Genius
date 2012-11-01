@@ -148,7 +148,7 @@ void CHighScores::init()
 	m_Bitmaps.push_back(bmp);
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-	mpTextSfc = SDL_DisplayFormatAlpha(temp);
+	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
 }
 
@@ -156,7 +156,6 @@ void CHighScores::init()
 
 void CHighScores::teardown()
 {
-	mpTextSfc.tryDeleteData();
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 	EventContainer.add(new ResetScrollSurface);
 }

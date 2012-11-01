@@ -29,6 +29,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <list>
+#include <memory>
 
 class CVideoDriver : public CSingleton<CVideoDriver>
 {
@@ -82,7 +83,7 @@ public:
 	unsigned short getDepth() const;
 	CRect<Uint16> getGameResolution() const { return m_VidConfig.m_GameRect; }
 
-	SDL_Surface *getBlitSurface() { return mp_VideoEngine->getBlitSurface(); }
+	SDL_Surface *getBlitSurface() { return mpVideoEngine->getBlitSurface(); }
 
 	bool isOpenGL(void) { return m_VidConfig.m_opengl; }
 #ifdef USE_OPENGL
@@ -132,7 +133,7 @@ public:
 
 	virtual ~CVideoDriver();
 
-	CVideoEngine *mp_VideoEngine;
+	std::unique_ptr<CVideoEngine> mpVideoEngine;
 
 	CEventContainer mDrawTasks;
 

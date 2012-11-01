@@ -12,6 +12,7 @@
 
 #include <SDL.h>
 #include <string>
+#include <memory>
 #include "ItemsGalaxy.h"
 #include "SmartPointer.h"
 
@@ -36,7 +37,7 @@ public:
 	void draw();
 
 	bool m_showstatus;
-	SmartPointer<SDL_Surface> mpStatusSurface;
+	std::shared_ptr<SDL_Surface> mpStatusSurface;
 	const stItemGalaxy& m_Item;
 	const std::string &m_LevelName;
 };

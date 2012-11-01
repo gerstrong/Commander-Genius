@@ -32,6 +32,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <memory>
 
 const int WORLD_MAP_LEVEL_VORTICON = 80;
 
@@ -113,9 +114,9 @@ private:
 	bool m_showKeensLeft;
 	std::vector<CVorticonSpriteObject*> m_Object;
 	SmartPointer<CHUD> mp_HUD;
-	SmartPointer<SDL_Surface> mpKeenLeftSfc;
+	std::shared_ptr<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;
 
-	SmartPointer<SDL_Surface> mpFPSSurface;
+	std::shared_ptr<SDL_Surface> mpFPSSurface;
 };
 #endif /* CPlayGameVorticon_H_ */

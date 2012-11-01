@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "CInfoScene.h"
 #include "common/CMap.h"
 
@@ -27,7 +28,7 @@ private:
 	int m_scrolly;
 	
 	SmartPointer<CMap> mpMap;
-	SmartPointer<SDL_Surface> mpDrawSfc;
+	std::shared_ptr<SDL_Surface> mpDrawSfc;
 };
 
 #endif /* CCREDITS_H_ */

@@ -10,7 +10,7 @@
 
 #include <SDL.h>
 #include "inventory.h"
-#include "SmartPointer.h"
+#include <memory>
 
 class CStatusScreen {
 public:
@@ -38,7 +38,7 @@ private:
 
 	bool m_closing, m_closed;
 
-	SmartPointer <SDL_Surface> mpStatusSfc;
+	std::shared_ptr<SDL_Surface> mpStatusSfc;
 	SDL_Rect m_StatusRect;
 };
 

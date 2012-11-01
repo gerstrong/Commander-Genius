@@ -139,7 +139,7 @@ void COrderingInfo::init()
 	}
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-	mpTextSfc = SDL_DisplayFormatAlpha(temp);
+	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
 }
 
@@ -172,7 +172,6 @@ void COrderingInfo::teardown()
 {
 	if(!m_Textline.empty())
 		m_Textline.clear();
-	mpTextSfc = NULL;
 	mpMap = NULL;
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 	EventContainer.add(new ResetScrollSurface);

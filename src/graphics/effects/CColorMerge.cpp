@@ -23,7 +23,7 @@ m_Alpha(0)
 void CColorMerge::getSnapshot()
 {
     g_pVideoDriver->collectSurfaces();
-    mpOldSurface = SDL_DisplayFormat( g_pVideoDriver->mp_VideoEngine->getBlitSurface() );
+    mpOldSurface = SDL_DisplayFormat( g_pVideoDriver->mpVideoEngine->getBlitSurface() );
 }
 
 // Effect cycle

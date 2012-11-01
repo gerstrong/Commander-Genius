@@ -514,22 +514,22 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_VIDEORESIZE:
-			g_pVideoDriver->mp_VideoEngine->resizeDisplayScreen(
+			g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
 					CRect<Uint16>(Event.resize.w, Event.resize.h) );
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mp_VideoEngine->getAspectCorrRect());
+			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mp_VideoEngine->getAspectCorrRect());
+			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
 			break;
 
 		case SDL_MOUSEMOTION:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mp_VideoEngine->getAspectCorrRect());
+			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
 			break;
 		}

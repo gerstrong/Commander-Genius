@@ -11,7 +11,8 @@
 #include <SDL.h>
 #include <vector>
 #include <string>
-#include "SmartPointer.h"
+#include <memory>
+//#include "SmartPointer.h"
 
 class CTextViewer
 {
@@ -54,7 +55,7 @@ private:
 	bool m_mustclose;
 	int m_timer;
 
-	SmartPointer<SDL_Surface> mpTextVSfc;
+	std::shared_ptr<SDL_Surface> mpTextVSfc;
 };
 
 #endif /* CTEXTVIEWER_H_ */

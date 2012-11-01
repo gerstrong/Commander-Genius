@@ -32,4 +32,5 @@ struct SDL_Surface_Deleter
     }
 };
 
+
 #endif /* SDL_EXTENSIONS_H_ */

@@ -28,7 +28,7 @@ m_timer(0)
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
 
-	mpTextVSfc = SDL_DisplayFormatAlpha(temp);
+	mpTextVSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
 }
 

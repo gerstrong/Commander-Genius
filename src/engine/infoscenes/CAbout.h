@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "CInfoScene.h"
 #include "graphics/CBitmap.h"
 #include "common/CMap.h"
@@ -30,11 +31,11 @@ private:
 	CBitmap* mp_bmp;
 	
 	SmartPointer <CMap> mpMap;
-	SmartPointer <SDL_Surface> mpLogoBMP;
+	std::shared_ptr<SDL_Surface> mpLogoBMP;
 	SDL_Rect m_logo_rect;
 	std::vector<std::string> m_lines;
 	std::string m_type;
-	SmartPointer<SDL_Surface> mpDrawSfc;
+	std::shared_ptr<SDL_Surface> mpDrawSfc;
 };
 
 #endif /* CABOUT_H_ */

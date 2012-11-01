@@ -48,7 +48,7 @@ void CPassiveGalaxy::processIntro()
 	g_pGfxEngine->setupEffect(new CPixelate(4));
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-	mpTextSfc = SDL_DisplayFormatAlpha(temp);
+	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface );
 	SDL_FreeSurface(temp);
 
 	createOutlinedText( 5, 170, "Press" );

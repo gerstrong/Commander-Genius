@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "CInfoScene.h"
 #include "common/CMap.h"
 #include "fileio/CExeFile.h"
@@ -28,7 +29,7 @@ private:
 	int m_numberoflines;	// number of lines to print
 	
 	SmartPointer<CMap> mpMap;
-	SmartPointer<SDL_Surface> mpTextSfc;
+	std::shared_ptr<SDL_Surface> mpTextSfc;
 };
 
 #endif /* CORDERINGINFO_H_ */

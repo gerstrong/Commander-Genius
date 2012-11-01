@@ -21,6 +21,7 @@
 #include "fileio/CSaveGameController.h"
 #include <string>
 #include <vector>
+#include <memory>
 
 
 class CPassive
@@ -60,6 +61,6 @@ protected:
 	bool m_modeg;
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
-	SmartPointer<SDL_Surface> mpTextSfc;
+	std::shared_ptr<SDL_Surface> mpTextSfc;
 };
 #endif /* CPASSIVE_H_ */

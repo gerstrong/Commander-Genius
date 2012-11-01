@@ -24,7 +24,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	SmartPointer<SDL_Surface> temp;
 
    	const SDL_Rect DestRect = g_pVideoDriver->getGameResolution().SDLRect();
-   	mpStatusSurface = CG_CreateRGBSurface(DestRect);
+   	mpStatusSurface.reset(CG_CreateRGBSurface(DestRect), &SDL_FreeSurface);
 
 
 	/// Draw the required bitmaps and backgrounds

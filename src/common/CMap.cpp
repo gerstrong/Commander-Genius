@@ -75,7 +75,7 @@ void CMap::resetScrolls()
 {
 	m_scrollx = m_scrolly = 0;
 
-	g_pVideoDriver->mp_VideoEngine->resetScrollbuffer();
+	g_pVideoDriver->mpVideoEngine->resetScrollbuffer();
 
 	m_scrollpix = m_scrollpixy = 0;
 	m_mapx = m_mapy = 0;           // map X location shown at scrollbuffer row 0
@@ -373,7 +373,7 @@ bool CMap::scrollRight(const bool force)
 	if(m_scrollx < ((m_width-2)<<4) - g_pVideoDriver->getGameResolution().w)
 	{
 		m_scrollx++;
-		g_pVideoDriver->mp_VideoEngine->UpdateScrollBufX(m_scrollx);
+		g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx);
 
 		m_scrollpix++;
 		if (m_scrollpix>=16)
@@ -398,7 +398,7 @@ bool CMap::scrollLeft(const bool force)
 	if( m_scrollx > 32 )
 	{
 		m_scrollx--;
-		g_pVideoDriver->mp_VideoEngine->UpdateScrollBufX(m_scrollx);
+		g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx);
 
 		if (m_scrollpix==0)
 		{  // need to draw a new stripe
@@ -430,7 +430,7 @@ bool CMap::scrollDown(const bool force)
 	if(m_scrolly < ((m_height-2)<<4) - res_height )
 	{
 		m_scrolly++;
-		g_pVideoDriver->mp_VideoEngine->UpdateScrollBufY(m_scrolly);
+		g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly);
 
 		m_scrollpixy++;
 		if (m_scrollpixy>=16)
@@ -457,7 +457,7 @@ bool CMap::scrollUp(const bool force)
 	if( m_scrolly > 32 )
 	{
 		m_scrolly--;
-		g_pVideoDriver->mp_VideoEngine->UpdateScrollBufY(m_scrolly);
+		g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly);
 
 		if (m_scrollpixy==0)
 		{  // need to draw a new stripe
@@ -530,8 +530,8 @@ void CMap::drawAll()
 	Uint32 num_h_tiles = ScrollSurface->h/16;
 	Uint32 num_v_tiles = ScrollSurface->w/16;
 
-	g_pVideoDriver->mp_VideoEngine->UpdateScrollBufX(m_scrollx);
-	g_pVideoDriver->mp_VideoEngine->UpdateScrollBufY(m_scrolly);
+	g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx);
+	g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly);
 
 	if(num_v_tiles+m_mapx >= m_width)
 		num_v_tiles = m_width-m_mapx;

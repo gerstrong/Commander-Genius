@@ -57,7 +57,7 @@ void CSprite::generateSprite( const int points )
 
 	setSize( pointStr.size()*8, 8);
 
-	createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette  );
+	createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette  );
 	optimizeSurface();
 
 	SDL_FillRect(mpSurface.get(), NULL, 0xFFFFFFFF);

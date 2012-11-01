@@ -15,7 +15,6 @@
 #include <memory>
 #include "Playerdefines.h"
 #include "engine/spritedefines.h"
-#include "SmartPointer.h"
 #include "graphics/CSprite.h"
 #include "sdl/extensions.h"
 
@@ -47,7 +46,7 @@ private:
 	CSprite *mpHUDBox;
 
 	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpBackground;
-	SmartPointer<SDL_Surface> mpHUDBlit;
+	std::shared_ptr<SDL_Surface> mpHUDBlit;
 	int *mpCamlead;
 };
 

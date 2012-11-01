@@ -190,7 +190,7 @@ void CPlayGameVorticon::showKeensLeft()
 	const unsigned int KEENSLEFT_X = 7;
 	const unsigned int KEENSLEFT_Y = 10;
 
-	if(mpKeenLeftSfc.empty())
+	if(!mpKeenLeftSfc)
 	{
 		int x,y,i,p;
 		int boxY, boxH;
@@ -233,8 +233,8 @@ void CPlayGameVorticon::showKeensLeft()
 			y += 16;
 		}
 
-		const SDL_Surface *blit = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
-		mpKeenLeftSfc = SDL_ConvertSurface( boxsurface, blit->format, blit->flags );
+		const SDL_Surface *blit = g_pVideoDriver->mpVideoEngine->getBlitSurface();
+		mpKeenLeftSfc.reset(SDL_ConvertSurface( boxsurface, blit->format, blit->flags ), &SDL_FreeSurface);
 		SDL_FreeSurface(boxsurface);
 	}
 	else
@@ -248,7 +248,6 @@ void CPlayGameVorticon::showKeensLeft()
 		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		{
 			m_showKeensLeft = false;
-			mpKeenLeftSfc.tryDeleteData();
 		}
 
 		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpKeenLeftSfc, NULL,  &keenleft_rect ) );

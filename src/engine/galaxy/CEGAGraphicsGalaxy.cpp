@@ -819,7 +819,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
 		Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 
-		Sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags,
+		Sprite.createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags,
 				g_pGfxEngine->Palette.m_Palette );
 
 		SDL_Surface *sfc = Sprite.getSDLSurface();

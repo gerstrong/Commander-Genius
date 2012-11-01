@@ -63,7 +63,6 @@ CPlayGame(ExeFile, level, numplayers)
 void CPlayGameVorticon::setupPlayers()
 {
 	m_showKeensLeft=false;
-	mpKeenLeftSfc.tryDeleteData();
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 
 	for( ; it_player != m_Player.end() ; it_player++ )
@@ -272,9 +271,9 @@ void CPlayGameVorticon::process()
 		rect.w = 300;
 		rect.h = 10;
 
-		if(mpFPSSurface.empty())
+		if(!mpFPSSurface)
 		{
-			mpFPSSurface = CG_CreateRGBSurface(rect);
+			mpFPSSurface.reset(CG_CreateRGBSurface(rect), &SDL_FreeSurface);
 		}
 
 		std::string tempbuf;
