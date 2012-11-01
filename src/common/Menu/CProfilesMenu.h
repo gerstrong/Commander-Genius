@@ -8,7 +8,6 @@
 #ifndef CPROFILESMENU_H_
 #define CPROFILESMENU_H_
 
-#include "SmartPointer.h"
 #include "CBaseMenu.h"
 
 class CProfilesMenu : public CBaseMenu

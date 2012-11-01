@@ -8,6 +8,7 @@
 #include "CBaseMenu.h"
 #include "engine/CEvent.h"
 #include "CSingleton.h"
+#include <memory>
 
 #ifndef CMENUCONTROLLER_H_
 #define CMENUCONTROLLER_H_
@@ -25,7 +26,7 @@ struct OpenMenuEvent : CEvent
 {
 	OpenMenuEvent(CBaseMenu* menuDlgPtr) : mMenuDialogPointer(menuDlgPtr) {};
 
-	SmartPointer<CBaseMenu> mMenuDialogPointer;
+	std::unique_ptr<CBaseMenu> mMenuDialogPointer;
 };
 
 struct CloseMenuEvent : CEvent
@@ -63,9 +64,8 @@ public:
 private:
 
 	void popBackMenu();
-
-	SmartPointer<CBaseMenu> mpMenu;
-	std::list< SmartPointer<CBaseMenu> > mMenuStack;
+	
+	std::list< std::unique_ptr<CBaseMenu> > mMenuStack;
 
 	bool mLocked;
 };

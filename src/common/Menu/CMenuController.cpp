@@ -58,17 +58,17 @@ void CMenuController::process()
 
 		if( OpenMenuEvent* openMenu = EventContainer.occurredEvent<OpenMenuEvent>() )
 		{
-			mpMenu = openMenu->mMenuDialogPointer;
-			mpMenu->init();
+		    CBaseMenu &menu = *openMenu->mMenuDialogPointer.get();
+		    menu.init();
 
-			// Select the second element. The first one (0) is the close button.
-			mpMenu->select(1);
+		    // Select the second element. The first one (0) is the close button.
+		    menu.select(1);
 
-			if( !mMenuStack.empty() )
-				mpMenu->setProperty( CBaseMenu::CANGOBACK );
+		    if( !mMenuStack.empty() )
+			menu.setProperty( CBaseMenu::CANGOBACK );
 
-			mMenuStack.push_back( mpMenu );
-			EventContainer.pop_Event();
+		    mMenuStack.push_back( move(openMenu->mMenuDialogPointer) );
+		    EventContainer.pop_Event();
 		}
 
 		if( EventContainer.occurredEvent<CloseMenuEvent>() )
@@ -120,30 +120,24 @@ void CMenuController::process()
 	// Process Menu if open
 	if( !mMenuStack.empty() )
 	{
-		mpMenu->process();
+	    mMenuStack.back()->process();
 	}
 
 
 	// If you click, then open the menu
 	if( g_pInput->mouseClicked() && mMenuStack.empty() )
 	{
-		openMainMenu();
+	    openMainMenu();
 	}
 }
 
 void CMenuController::popBackMenu()
 {
-	mpMenu->release();
 	mMenuStack.pop_back();
 
-	if(!mMenuStack.empty())
+	if(mMenuStack.empty())
 	{
-		mpMenu = mMenuStack.back();
-	}
-	else
-	{
-		g_pBehaviorEngine->setPause(false);
-		mpMenu = NULL;
+	    g_pBehaviorEngine->setPause(false);
 	}
 }
 

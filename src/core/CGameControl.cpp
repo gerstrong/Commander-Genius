@@ -93,19 +93,19 @@ void CGameControl::process()
 		{
 		    g_pSound->unloadSoundData();
 		    gpMenuController->emptyMenuStack();
-		    mpEngine = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );
+		    mpEngine.reset(new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel ));
 		    mpEngine->init();
 		    EventContainer.pop_Event();
 		}
 		else if( EventContainer.occurredEvent<StartMainGameEvent>() )
 		{
-			mpEngine = new CGameMain(gpMenuController->mOpenedGamePlay);
+			mpEngine.reset(new CGameMain(gpMenuController->mOpenedGamePlay));
 			mpEngine->init();
 			EventContainer.pop_Event();
 		}
 		else if( EventContainer.occurredEvent<GMQuit>() )
 		{
-			mpEngine.tryDeleteData();
+			mpEngine.release();
 			EventContainer.pop_Event();
 
 			return;

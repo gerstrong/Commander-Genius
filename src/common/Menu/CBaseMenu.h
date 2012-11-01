@@ -10,10 +10,10 @@
 
 const int NO_SELECTION = -1;
 
-#include "SmartPointer.h"
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIButton.h"
 #include <list>
+#include <memory>
 
 class CBaseMenu
 {
@@ -53,9 +53,9 @@ public:
 
 
 protected:
-	SmartPointer<CGUIDialog> mpMenuDialog;
+	std::unique_ptr<CGUIDialog> mpMenuDialog;
 	CGUIButton *mpReturnButton;
-	std::list< SmartPointer<CEvent> > mEventList;
+	std::list< std::unique_ptr<CEvent> > mEventList;
 };
 
 #endif /* CBASEMENU_H_ */

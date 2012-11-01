@@ -18,9 +18,9 @@
 #include "engine/CMessages.h"
 #include "engine/CPassive.h"
 #include "core/mode/CGameMode.h"
-#include "SmartPointer.h"
 
 #include <string>
+#include <memory>
 
 class CGameControl
 {
@@ -37,7 +37,7 @@ public:
 	
 protected:
 
-	SmartPointer<CBaseEngine> mpEngine;
+	std::unique_ptr<CBaseEngine> mpEngine;
 
 	bool &m_firsttime;
 	int m_startGame_no;
