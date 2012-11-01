@@ -100,9 +100,12 @@ void COPLEmulator::ShutAL()
 
 void COPLEmulator::shutdown()
 {
-    int     i;
-
     Chip__WriteReg( alEffects,0);
-    for (i = 1; i < 0xf5; i++)
+    for (int i = 1; i < 0xf5; i++)
     	Chip__WriteReg( i, 0);
+}
+
+void COPLEmulator::clear()
+{
+    Chip.clear();
 }

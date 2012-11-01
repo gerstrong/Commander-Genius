@@ -350,6 +350,9 @@ void CSound::unloadSoundData()
 {
     // Wait for callback to finish running...
     while(m_callback_running);
+    
+    mpAudioRessources.release();
+    m_MixedForm.clear();
 }
 
 

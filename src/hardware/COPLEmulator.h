@@ -76,7 +76,6 @@ public:
 	/**
 	 * Wrapper for the original C Emulator function Chip__WriteReg(Chip *self, Bit32u reg, Bit8u val )
 	 */
-
 	inline void Chip__WriteReg( const Bit32u reg, const Bit8u val )
 	{
 		::Chip__WriteReg( &m_opl_chip, reg, val );
@@ -86,7 +85,7 @@ public:
 	void setIMFClockrate(const unsigned int clock_rate);
 
 	/**
-	 * Stops the adlib sounds from playing
+	 * Stops the Adlib sounds from playing
 	 */
 	void ALStopSound();
 
@@ -100,6 +99,8 @@ public:
 	 * or restarted like when the user changes the audio settings in the configuration while playing
 	 */
 	void shutdown();
+	
+	void clear();
 
 private:
 

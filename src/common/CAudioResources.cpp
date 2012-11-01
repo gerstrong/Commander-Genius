@@ -30,7 +30,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	imfdata_ptr += sizeof(AdLibSound);
 	const unsigned int data_size = size;
 	const byte *AL_Sounddata_start = imfdata_ptr;
-	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;
+	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;		
 
 	OPLEmulator.ShutAL();
 	Bit8u alBlock = ((AL_Sound.block & 7) << 2) | 0x20;
@@ -47,7 +47,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	byte waveform[wavesize];
 	byte *waveform_ptr = waveform;
 	Bit32s mix_buffer[samplesPerMusicTick];
-
+	
 	OPLEmulator.ALStopSound();
 
 	// TODO: This does not work correctly yet...

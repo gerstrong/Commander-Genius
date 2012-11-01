@@ -183,6 +183,7 @@ struct _Chip {
 
 	// Constructor which sets some variables to zero.
 	_Chip();
+	void clear();
 
 };
 

@@ -65,8 +65,7 @@ void CGamePassiveMode::process()
 	// NOTE: Demo is not part of playgame anymore!!
 	if(mpPassive->getchooseGame())
 	{
-		// TODO: Some of game resources are still not cleaned up here!
-		g_pSound->unloadSoundData();
+		// TODO: Some of game resources are still not cleaned up here!		
 		EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
 		return;
 	}

@@ -42,10 +42,16 @@
 
 _Chip::_Chip()
 {
-	memset(freqMul, 0, 16*sizeof(Bit32u));
-	memset(linearRates, 0, 76*sizeof(Bit32u));
-	memset(attackRates, 0, 76*sizeof(Bit32u));
-	memset(chan, 0, 18*sizeof(Channel));
+    memset(chan, 0, 18*sizeof(Channel));    
+    clear();
+}
+
+void _Chip::clear()
+{
+    memset(freqMul, 0, 16*sizeof(Bit32u));
+    memset(linearRates, 0, 76*sizeof(Bit32u));
+    memset(attackRates, 0, 76*sizeof(Bit32u));
+    
 }
 
 
@@ -1252,21 +1258,19 @@ Bit32u Chip__WriteAddr(Chip *self, Bit32u port, Bit8u val ) {
 	return 0;
 }
 
-void Chip__GenerateBlock2(Chip *self, Bitu total, Bit32s* output ) {
+void Chip__GenerateBlock2(Chip *self, Bitu total, Bit32s* output ) 
+{
 	while ( total > 0 )
 	{
-        Channel *ch;
-		int count;
+	    Channel *ch;
 
-		Bit32u samples = Chip__ForwardLFO( self, total );
-		memset(output, 0, sizeof(Bit32s) * samples);
-		count = 0;
-		for ( ch = self->chan; ch < self->chan + 9; ) {
-			count++;
-			ch = (ch->synthHandler)( ch, self, samples, output );
-		}
-		total -= samples;
-		output += samples;
+	    Bit32u samples = Chip__ForwardLFO( self, total );
+	    memset(output, 0, sizeof(Bit32s) * samples);
+	    for ( ch = self->chan; ch < self->chan + 9; ) {
+		 ch = (ch->synthHandler)( ch, self, samples, output );
+	    }
+	    total -= samples;
+	    output += samples;
 	}
 }
 

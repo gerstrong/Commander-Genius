@@ -29,7 +29,7 @@ protected:
 	unsigned int animtimer;
 	unsigned int waittimer;
 
-	unsigned char movedir;
+	direction_t movedir;
 	unsigned char kickedplayer[MAX_PLAYERS];
 	std::vector<CPlayer>& m_Player;
 };

@@ -18,19 +18,7 @@ m_Player(PlayerVect)
 }
 
 void CButler::process()
-{
-    
-    /*if (blockedl)
-    {
-	xDirection = RIGHT;
-    }
-
-    if (blockedr)
-    {
-	xDirection = LEFT;
-    }*/
-
-    
+{   
 	 switch(state)
 	 {
 	 case BUTLER_TURN:

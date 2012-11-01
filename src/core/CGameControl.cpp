@@ -91,10 +91,11 @@ void CGameControl::process()
 
 		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 		{
-			gpMenuController->emptyMenuStack();
-			mpEngine = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );
-			mpEngine->init();
-			EventContainer.pop_Event();
+		    g_pSound->unloadSoundData();
+		    gpMenuController->emptyMenuStack();
+		    mpEngine = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );
+		    mpEngine->init();
+		    EventContainer.pop_Event();
 		}
 		else if( EventContainer.occurredEvent<StartMainGameEvent>() )
 		{

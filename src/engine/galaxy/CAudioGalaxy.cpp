@@ -148,7 +148,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 		CSoundSlot zeroslot;
 		m_soundslot.assign(number_of_total_sounds, zeroslot);
-
+		
 		for( unsigned int snd=0 ; snd<number_of_total_sounds ; snd++ )
 		{
 			/// Now we have all the data we need.
@@ -187,6 +187,11 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
  */
 bool CAudioGalaxy::loadSoundData()
 {
+    COPLEmulator &OPLEmulator = *g_pSound->getOPLEmulatorPtr();
+    
+    OPLEmulator.shutdown();
+    OPLEmulator.init();
+    
 	const bool ok = LoadFromAudioCK(m_ExeFile);
 
 	if(!ok)
