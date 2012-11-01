@@ -18,8 +18,8 @@
 #include "CPalette.h"
 #include "CCursor.h"
 #include "effects/CEffects.h"
-#include "SmartPointer.h"
 #include <vector>
+#include <memory>
 
 #include "CSingleton.h"
 #define g_pGfxEngine CGfxEngine::Get()
@@ -67,7 +67,12 @@ public:
 	CSprite *getSprite(const std::string &name) const;
 
 	CEffects *Effect() { return mpEffects.get(); }
-	bool applyingEffects() { return !mpEffects.empty(); }
+	bool applyingEffects() 
+	{ 
+	    if(mpEffects)
+		return true; 
+	    return false;	    
+	}
 	
 	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }
 	std::vector<CSprite> &getSpriteVec() { return Sprite; }
@@ -84,11 +89,11 @@ private:
 	std::vector<CTilemap> Tilemap;
 	std::vector<CFont> Font;
 	SDL_Surface *m_fxsurface;
-	SmartPointer<CEffects> mpEffects;
+	std::unique_ptr<CEffects> mpEffects;
 	std::vector<CBitmap> Bitmap;
 	std::vector<CBitmap> maskedBitmap;
 	std::vector<CSprite> Sprite;
-	SmartPointer<CCursor> mpCursor;
+	std::unique_ptr<CCursor> mpCursor;
 };
 
 #endif /* CGFXENGINE_H_ */

@@ -71,14 +71,14 @@ void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
 void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 {
 	freeCursor();
-	mpCursor = new CCursor(surface);
+	mpCursor.reset(new CCursor(surface));
 }
 
 // This will store the effect pointer the developer created in one function
 // You need this call to make you effect work!
 void CGfxEngine::setupEffect(CEffects *pEffect)
 {
-    mpEffects = pEffect;
+    mpEffects.reset(pEffect);
 }
 
 /**
@@ -110,7 +110,7 @@ void CGfxEngine::drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Sur
 ///
 void CGfxEngine::freeCursor()
 {
-	mpCursor = NULL;
+	mpCursor.release();
 }
 void CGfxEngine::freeTilemap()
 {
@@ -247,7 +247,7 @@ CSprite *CGfxEngine::getSprite(const std::string &name) const
 ///
 void CGfxEngine::process()
 {
-	if(!mpEffects.empty())
+	if(mpEffects)
 	{
 		mpEffects->process();
 
@@ -260,13 +260,13 @@ void CGfxEngine::process()
 
 bool CGfxEngine::runningEffect()
 {
-	return ( !mpEffects.empty() && !mpEffects->finished() );
+	return ( mpEffects && !mpEffects->finished() );
 }
 
 // Kills the effect when called
 void CGfxEngine::killEffect()
 {
-	mpEffects = NULL;
+	mpEffects.release();
 }
 
 CGfxEngine::~CGfxEngine()
