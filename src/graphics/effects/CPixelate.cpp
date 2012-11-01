@@ -12,12 +12,12 @@
 #include "CPixelate.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
-#include "common/CBehaviorEngine.h"
+#include "sdl/CTimer.h"
 
 
 CPixelate::CPixelate(unsigned short speed) :
 mp_OldSurface(NULL),
-m_speed(speed*g_pBehaviorEngine->Logic2FPSratio())
+m_speed(speed*g_pTimer->Logic2FPSratio())
 {
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 	getSnapshot();

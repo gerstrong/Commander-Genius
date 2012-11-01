@@ -37,7 +37,7 @@ private:
 	
 	Uint8 m_Speed;
 	Uint8 m_Alpha;
-	CTimer mTimer;
+	//CTimer mTimer;
 
 	SmartPointer<SDL_Surface> mpOldSurface;
 };

@@ -127,8 +127,13 @@ void CGUINumberControl::setupButtonSurface()
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
+	const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
+	const std::string showTextR = "  " + mText + ": " + itoa(mValue) + ">";
 	mpTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
 	mpTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
+	mpTextLightSfcR = Font.fetchColoredTextSfc( showTextR, SDL_MapRGB( format, 84, 234, 84));
+	mpTextLightSfcL = Font.fetchColoredTextSfc( showTextL, SDL_MapRGB( format, 84, 234, 84));
+
 	mpTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));
 }
 
@@ -217,11 +222,16 @@ void CGUINumberControl::drawGalaxyStyle(SDL_Rect& lRect)
 	{
 		if(mHovered)
 		{
+		    if(mDecSel)
+			SDL_BlitSurface(mpTextLightSfcL.get(), NULL, blitsfc, &lRect);
+		    else if(mIncSel)
+			SDL_BlitSurface(mpTextLightSfcR.get(), NULL, blitsfc, &lRect);
+		    else
 			SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
 		}
 		else // Button is not hovered
 		{
-			SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
+		    SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
 		}
 	}
 

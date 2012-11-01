@@ -211,7 +211,8 @@ bool CVideoDriver::start() {
 		mp_VideoEngine = new COpenGL(m_VidConfig);
 		retval = mp_VideoEngine->init();
 
-		if (!retval) {
+		if (!retval) 
+		{
 			delete mp_VideoEngine;
 			m_VidConfig.m_opengl = false;
 			applyMode();

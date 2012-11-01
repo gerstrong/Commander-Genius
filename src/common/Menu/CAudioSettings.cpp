@@ -18,30 +18,23 @@ CAudioSettings::CAudioSettings() :
 CBaseMenu(CRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 {
 
-	mpRate = new CGUIComboSelection( "Rate",
-									 g_pSound->getAvailableRateList());
+	mpRate = new CGUIComboSelection( "Rate", g_pSound->getAvailableRateList());
 	mpMenuDialog->addControl( mpRate );
 
 	mpStereo = new CGUISwitch( "Stereo" );
 	mpMenuDialog->addControl( mpStereo );
 
-	mpDepth = new CGUIComboSelection( "Depth",
-									  filledStrList( 2, "8-bit", "16-bit" ) );
+	mpDepth = new CGUIComboSelection( "Depth", filledStrList( 2, "8-bit", "16-bit" ) );
 	mpMenuDialog->addControl( mpDepth );
 
-	mpSBToggle = new CGUIComboSelection( "Card",
-										 filledStrList( 2, "PC Speaker", "Soundblaster" ) );
+	mpSBToggle = new CGUIComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ) );
 	mpMenuDialog->addControl( mpSBToggle );
 
-	mpSoundVolume = new CGUINumberControl( "Sound Vol",
-											0, SDL_MIX_MAXVOLUME, 8,
-											g_pSound->getSoundVolume() );
+	mpSoundVolume = new CGUINumberControl( "Sound Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getSoundVolume() );
 	mpMenuDialog->addControl( mpSoundVolume );
 
 
-	mpMusicVolume = new CGUINumberControl( "Music Vol",
-											0, SDL_MIX_MAXVOLUME, 8,
-				 	 	 	 	 	 	 	g_pSound->getMusicVolume() );
+	mpMusicVolume = new CGUINumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getMusicVolume() );
 	mpMenuDialog->addControl( mpMusicVolume );
 
 	setMenuLabel("SNDEFFMENULABEL");

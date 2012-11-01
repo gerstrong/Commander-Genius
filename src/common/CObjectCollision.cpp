@@ -10,6 +10,7 @@
 
 #include "CSpriteObject.h"
 #include "engine/spritedefines.h"
+#include "sdl/CTimer.h"
 
 /*
  * \brief Performs collision without bouncing box recalculation
@@ -566,7 +567,7 @@ void CSpriteObject::processMove(const VectorD2<int>& dir)
 
 void CSpriteObject::processMove(const int move_x, const int move_y)
 {
-    const float speed = g_pBehaviorEngine->Logic2FPSratio();
+    const float speed = g_pTimer->Logic2FPSratio();
     const float fxoff = static_cast<float>(move_x)*speed;
     const float fyoff = static_cast<float>(move_y)*speed;
     

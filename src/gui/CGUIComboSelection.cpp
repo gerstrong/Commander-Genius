@@ -86,7 +86,6 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
 
 	do
 	{
-
 		if( *mOLCurrent == selectionText )
 		{
 			if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)

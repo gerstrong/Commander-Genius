@@ -50,7 +50,7 @@ public:
 		CBaseMenu( CRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
 	{
 			std::string	playerStr;
-			for( int i = 1 ; i <= MAX_PLAYERS ; i++ )
+			for( unsigned int i = 1 ; i <= MAX_PLAYERS ; i++ )
 			{
 				if(numFirst)
 					playerStr = itoa(i) + " Player";

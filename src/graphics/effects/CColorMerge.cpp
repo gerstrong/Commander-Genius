@@ -16,7 +16,7 @@ m_Speed(speed),
 m_Alpha(0)
 {
     getSnapshot();
-    mTimer.ResetSecondsTimer();
+    //mTimer.ResetSecondsTimer();
 }
 
 // use this function. If you don't that, the effect won't work.

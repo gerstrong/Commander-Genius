@@ -10,6 +10,7 @@
 #include "FindFile.h"
 #include "CLogFile.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/CTimer.h"
 #include "graphics/CGfxEngine.h"
 #include <iostream>
 #include <fstream>
@@ -706,7 +707,7 @@ void CMap::animateAllTiles()
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
 	// Let the animation timer tick!!
-	mAnimtileTimer += g_pBehaviorEngine->Logic2FPSratio();	
+	mAnimtileTimer += g_pTimer->Logic2FPSratio();	
 	const Uint8 animtileTimerInt = static_cast<Uint8>(mAnimtileTimer);
 	
 	if( mAnimtileTimer > 256.0f )

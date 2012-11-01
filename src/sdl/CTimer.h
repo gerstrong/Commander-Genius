@@ -52,16 +52,27 @@ public:
 
     int getTicksPerFrame();
 
-
     Uint32 getTicks() { return timerTicks(); }
+    
+    float Logic2FPSratio() const
+    {	return mLogic2FPSratio;	}
+    
+    void setLPS(const int lps)
+    {
+	mLogicSpeed = lps;
+	mLogic2FPSratio = static_cast<float>(mLogicSpeed)/static_cast<float>(m_FrameRate);
+    }
 
 private:
     float m_FrameRate, m_FrameDuration;
+    int mLogicSpeed;
     int m_FPS, m_FrameCount;
 
     ulong m_FrameUpdateTime;
     ulong m_FPSCountTime;
     ulong m_LastSecTime;
+    
+    float mLogic2FPSratio;
 };
 
 #endif /* CTIMER_H_ */

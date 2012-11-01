@@ -18,8 +18,7 @@ class CGUIComboSelection : public CGUIControl
 {
 public:
 
-	CGUIComboSelection(	const std::string& text,
-			const std::list<std::string>& optionsList);
+	CGUIComboSelection( const std::string& text, const std::list<std::string>& optionsList );
 
 	void setupButtonSurface(const std::string &optionText);
 

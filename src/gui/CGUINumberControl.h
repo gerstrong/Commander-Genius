@@ -64,6 +64,8 @@ private:
 
 	SmartPointer<SDL_Surface> mpTextDarkSfc;
 	SmartPointer<SDL_Surface> mpTextLightSfc;
+	SmartPointer<SDL_Surface> mpTextLightSfcR;
+	SmartPointer<SDL_Surface> mpTextLightSfcL;
 	SmartPointer<SDL_Surface> mpTextDisabledSfc;
 
 

@@ -45,10 +45,12 @@
 CTimer::CTimer() :
 m_FrameRate(0.0f), 
 m_FrameDuration(0.0f),
+mLogicSpeed(DEFAULT_LPS_VORTICON),
 m_FPS(0), m_FrameCount(0),
 m_FrameUpdateTime(0),
 m_FPSCountTime(0),
-m_LastSecTime(0)
+m_LastSecTime(0),
+mLogic2FPSratio(1.0f)
 {
 #if defined(WIZ)
 	WIZ_ptimer_init();
@@ -75,7 +77,8 @@ void CTimer::ResetCounters()
 
 void CTimer::setFPS( const int framerate )
 {
-    m_FrameRate = framerate;
+    m_FrameRate = framerate;    
+    mLogic2FPSratio = static_cast<float>(mLogicSpeed)/static_cast<float>(m_FrameRate);
 }
 
 #if 0
@@ -88,21 +91,6 @@ void CTimer::CalculateIntervals()
 }
 #endif
 
-// Returns the amount of logic "ticks" that we should process
-/*int CTimer::TimeToLogic()
-{
-	int result = 0;
-	ulong curtime = timerTicks()*m_LogicRate;
-
-	if ((signed)(curtime - m_LogicUpdateTime) >= 0)
-	{
-		result = (curtime-m_LogicUpdateTime)/MSPERSEC+1;
-		m_LogicUpdateTime += result*MSPERSEC;
-		//m_LogicUpdateTime = curtime+MSPERSEC;
-	}
-
-	return result;
-}*/
 
 bool CTimer::TimeToRender()
 {
@@ -145,7 +133,7 @@ void CTimer::TimeToDelay( void )
 int CTimer::getTicksPerFrame()
 {
 	//int ratio = m_LogicRate/m_FrameRate;
-	int ratio = g_pBehaviorEngine->Logic2FPSratio();	
+	int ratio = g_pTimer->Logic2FPSratio();	
 
 	if(ratio < 1)
 		ratio = 1;

@@ -59,7 +59,7 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpOpenGLSwitch );
 
 	mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
-											filledStrList( 2, "nearest", "linear" ) );
+		filledStrList( 2, "nearest", "linear" ) );
 	mpMenuDialog->addControl( mpOGLFilterSelection );
 #endif
 
@@ -75,7 +75,7 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
 #if !defined(EMBEDDED)
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
-												filledStrList( 7, "none", "normal2x", "normal3x", "normal4x", "scale2x", "scale3x", "scale4x" ) );
+		filledStrList( 7, "none", "normal2x", "normal3x", "normal4x", "scale2x", "scale3x", "scale4x" ) );
 	mpMenuDialog->addControl( mpScalerSelection );
 
 
@@ -84,7 +84,7 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpVSyncSwitch );
 
 	mpResolutionSelection = new CGUIComboSelection( "Mode",
-													filledStrList(1, "?x?") );
+		filledStrList(1, "?x?") );
 	mpMenuDialog->addControl( mpResolutionSelection );
 
 
