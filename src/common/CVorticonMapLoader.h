@@ -14,14 +14,14 @@
 #include "options.h"
 #include "sdl/music/CMusic.h"
 #include "common/CBehaviorEngine.h"
-#include "SmartPointer.h"
 #include <string>
 #include <vector>
+#include <memory>
 
 class CVorticonMapLoader
 {
 public:
-	CVorticonMapLoader(SmartPointer<CMap> &map,
+	CVorticonMapLoader(std::shared_ptr<CMap> &map,
 				std::vector<CPlayer> *p_PlayerVect = NULL);
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true, bool stategame=false );
@@ -36,7 +36,7 @@ public:
 	std::vector<CVorticonSpriteObject*> *mp_objvect;
 
 private:
-	SmartPointer<CMap>& mpMap;
+	std::shared_ptr<CMap>& mpMap;
 	std::vector<CPlayer> *mp_vec_Player;
 };
 

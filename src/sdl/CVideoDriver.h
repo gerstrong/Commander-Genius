@@ -47,7 +47,7 @@ public:
 
 	void blitScrollSurface();
 	void updateScrollBuffer(CMap &map);
-	void updateScrollBuffer(SmartPointer<CMap> &map)
+	void updateScrollBuffer(std::shared_ptr<CMap> &map)
 	{ updateScrollBuffer(*map.get()); }	
 	
 

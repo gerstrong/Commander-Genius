@@ -56,7 +56,7 @@ typedef struct stShipQueue
 class CShipFlySys
 {
 public:
-	CShipFlySys(CPlayer &Player, SmartPointer<CMap> &pMap, int ship_rightsprite, int ship_leftsprite);
+	CShipFlySys(CPlayer &Player, std::shared_ptr<CMap> &pMap, int ship_rightsprite, int ship_leftsprite);
 	void addShipQueue(int cmd, int time, int flag1);
 	bool EndOfQueue() { return m_finished; }
 	void process();
@@ -70,7 +70,7 @@ private:
 	bool m_scrollingon;
 	CPlayer &m_player;
 	//CVorticonSpriteObject *mp_mark;
-	SmartPointer<CMap> mpMap;
+	std::shared_ptr<CMap> mpMap;
 	int m_playsprite_left;
 	int m_playsprite_right;
 };

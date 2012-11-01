@@ -20,7 +20,8 @@
 class CEndingEp3 : public CFinale {
 public:
 	CEndingEp3(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-			const SmartPointer<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object);
+			const std::shared_ptr<CMap> &pMap, 
+	    std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object);
 
 	void process();
 	void HonorScene();

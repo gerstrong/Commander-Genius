@@ -27,7 +27,7 @@ private:
 	int m_timer;
 	int m_scrolly;
 	
-	SmartPointer<CMap> mpMap;
+	std::shared_ptr<CMap> mpMap;
 	std::shared_ptr<SDL_Surface> mpDrawSfc;
 };
 

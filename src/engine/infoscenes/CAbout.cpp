@@ -23,7 +23,7 @@ m_type(type)
 void CAbout::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-	mpMap = new CMap;
+	mpMap.reset(new CMap);
 	CVorticonMapLoader Maploader(mpMap);
 	
 	Maploader.load(ExeFile.getEpisode(), 90, ExeFile.getDataDirectory());

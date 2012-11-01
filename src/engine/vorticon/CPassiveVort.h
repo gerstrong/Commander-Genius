@@ -26,7 +26,7 @@ public:
 private:
 	SmartPointer<CIntro> mpIntroScreen;
 	SmartPointer<CTitle> mpTitleScreen;
-	SmartPointer<CMap> mpMap;
+	std::shared_ptr<CMap> mpMap;
 };
 
 }

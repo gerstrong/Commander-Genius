@@ -30,7 +30,7 @@ private:
 	static const int m_numberoflines=11;	// number of lines to print
 	CBitmap* mp_bmp;
 	
-	SmartPointer <CMap> mpMap;
+	std::shared_ptr <CMap> mpMap;
 	std::shared_ptr<SDL_Surface> mpLogoBMP;
 	SDL_Rect m_logo_rect;
 	std::vector<std::string> m_lines;

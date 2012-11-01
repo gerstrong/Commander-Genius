@@ -20,7 +20,7 @@ void CPreviews::init()
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	m_episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
-	mpMap = new CMap();
+	mpMap.reset(new CMap());
 
 	CVorticonMapLoader Maploader(mpMap);
 	Maploader.load(m_episode, 90, DataDirectory);

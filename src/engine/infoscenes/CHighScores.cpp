@@ -75,7 +75,7 @@ void CHighScores::init()
 		fetchScoreTable();
 	
 	// Load the map for the background
-	mpMap = new CMap();
+	mpMap.reset(new CMap());
 	CVorticonMapLoader MapLoader(mpMap);
 	MapLoader.load(m_Episode, 90, m_DataDirectory, false);
 	

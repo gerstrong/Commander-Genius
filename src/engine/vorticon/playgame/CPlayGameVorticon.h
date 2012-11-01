@@ -105,7 +105,7 @@ private:
 
 	bool mp_level_completed[MAX_LEVELS_VORTICON];
 
-	SmartPointer<CMap> mMap;
+	std::shared_ptr<CMap> mMap;
 	std::vector<CPlayer> m_Player;
 	SmartPointer<CVorticonSpriteObjectAI> mpObjectAI;
 	SmartPointer<CFinale> mpFinale;

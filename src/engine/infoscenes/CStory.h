@@ -24,7 +24,7 @@ public:
 	void teardown();
 
 private:
-	SmartPointer<CMap> mpMap;
+	std::shared_ptr<CMap> mpMap;
 	SmartPointer<CTextViewer> mpTextViewer;
 };
 

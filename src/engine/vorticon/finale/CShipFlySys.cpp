@@ -13,7 +13,7 @@
 #include "CShipFlySys.h"
 #include "../ai/CYorp.h"
 
-CShipFlySys::CShipFlySys(CPlayer &Player, SmartPointer<CMap> &pMap, int ship_rightsprite, int ship_leftsprite) :
+CShipFlySys::CShipFlySys(CPlayer &Player, std::shared_ptr<CMap> &pMap, int ship_rightsprite, int ship_leftsprite) :
 m_player(Player), // in this case the player will be the ship flying home
 mpMap(pMap)
 {

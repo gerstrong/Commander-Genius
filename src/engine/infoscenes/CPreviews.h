@@ -34,7 +34,7 @@ private:
 	int m_scene_number;
 	SmartPointer<CFinaleStaticScene> mp_StaticScene;
 	SmartPointer<CTextViewer> mp_TextViewer; // Used for the preview text...
-	SmartPointer<CMap> mpMap;
+	std::shared_ptr<CMap> mpMap;
 
 	void (CPreviews::*process_ptr)();
 

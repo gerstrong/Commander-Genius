@@ -21,7 +21,7 @@ void COrderingInfo::init()
 	std::string datadirectory = ExeFile.getDataDirectory();
 	char episode = ExeFile.getEpisode();
 
-	mpMap = new CMap;
+	mpMap.reset(new CMap);
 
 	CVorticonMapLoader Maploader(mpMap);
 	

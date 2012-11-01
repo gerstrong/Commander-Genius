@@ -19,7 +19,7 @@ class CFinale
 {
 public:
 	CFinale(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-			const SmartPointer<CMap> &pMap,
+			const std::shared_ptr<CMap> &pMap,
 			std::vector<CVorticonSpriteObject*> &Object);
 
 	void addMsgBoxString(const std::string &text);
@@ -36,7 +36,7 @@ protected:
 	std::string m_epilogue_text;
 	int m_Episode;
 	std::list< SmartPointer<CMessageBoxVort> > &mMessageBoxes;
-	SmartPointer<CMap> mpMap;
+	std::shared_ptr<CMap> mpMap;
 	std::vector<CVorticonSpriteObject*> &m_Object;
 };
 

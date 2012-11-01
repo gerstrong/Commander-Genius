@@ -28,7 +28,7 @@ private:
 	int m_starty;			// start of y-coordinate in textheights
 	int m_numberoflines;	// number of lines to print
 	
-	SmartPointer<CMap> mpMap;
+	std::shared_ptr<CMap> mpMap;
 	std::shared_ptr<SDL_Surface> mpTextSfc;
 };
 

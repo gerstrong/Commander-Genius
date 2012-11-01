@@ -42,7 +42,7 @@
 #include "engine/vorticon/ai/CIceCannon.h"
 #include "engine/vorticon/ai/CSpark.h"
 
-CVorticonMapLoader::CVorticonMapLoader( SmartPointer<CMap> &map,
+CVorticonMapLoader::CVorticonMapLoader( std::shared_ptr<CMap> &map,
 					std::vector<CPlayer> *p_PlayerVect ) :
 mpMap(map),
 mp_vec_Player(p_PlayerVect)

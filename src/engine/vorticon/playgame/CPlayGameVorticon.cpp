@@ -26,7 +26,7 @@ CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  char numplayers, CSaveGameController &SavedGame) :
 CPlayGame(ExeFile, level, numplayers)
 {
-	mMap = new CMap();
+	mMap.reset(new CMap());
 	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
 
 	if(!m_Player.empty())

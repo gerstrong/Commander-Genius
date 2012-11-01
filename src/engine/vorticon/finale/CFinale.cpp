@@ -12,7 +12,7 @@
 #include <fstream>
 
 CFinale::CFinale(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
-					const SmartPointer<CMap> &pMap,
+					const std::shared_ptr<CMap> &pMap,
 					std::vector<CVorticonSpriteObject*> &Object) :
 m_mustfinishgame(false),
 mMessageBoxes(messageBoxes),

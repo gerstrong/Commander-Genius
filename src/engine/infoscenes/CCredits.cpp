@@ -15,7 +15,7 @@
 void CCredits::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-	mpMap = new CMap;
+	mpMap.reset( new CMap );
 
 	CVorticonMapLoader Maploader(mpMap);
 	

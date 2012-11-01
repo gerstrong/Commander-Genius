@@ -24,7 +24,7 @@ void CStory::init()
 	const char episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
 
-	mpMap = new CMap();
+	mpMap.reset(new CMap());
 	CVorticonMapLoader Maploader(mpMap);
 
 	std::string Text;
