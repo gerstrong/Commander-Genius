@@ -13,7 +13,7 @@
 #include "core/CBaseEngine.h"
 #include "common/Menu/CProfilesMenu.h"
 #include "engine/CEGAGraphics.h"
-#include "SmartPointer.h"
+#include <memory>
 
 enum load_states{
 LOADGFX=0x01,
@@ -33,13 +33,13 @@ public:
 	void process();
 
 private:
-	SmartPointer<CGameLauncher> mp_GameLauncher;
+	std::unique_ptr<CGameLauncher> mp_GameLauncher;
 	bool &m_firsttime;
-	SmartPointer<CProfilesMenu> mp_FirstTimeMenu;
+	std::unique_ptr<CProfilesMenu> mp_FirstTimeMenu;
 	int m_start_game_no;
 	int m_start_level;
 
-	SmartPointer<CEGAGraphics> mp_EGAGraphics;
+	std::unique_ptr<CEGAGraphics> mp_EGAGraphics;
 };
 
 // Events

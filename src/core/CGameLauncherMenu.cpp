@@ -18,7 +18,6 @@
 #include "sdl/sound/CSound.h"
 #include "sdl/CTimer.h"
 #include "common/CBehaviorEngine.h"
-#include "SmartPointer.h"
 #include "CLogFile.h"
 #include "Debug.h"
 
@@ -34,9 +33,8 @@ m_start_level(start_level)
 bool CGameLauncherMenu::loadMenuResources()
 {
 	// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
-	mp_EGAGraphics.tryDeleteData();
-	mp_EGAGraphics = new CEGAGraphics(0, "."); // It has to be the local data path where the interpreter is
-	if(!mp_EGAGraphics.get()) return false;
+	mp_EGAGraphics.reset( new CEGAGraphics(0, ".") ); // It has to be the local data path where the interpreter is
+	if(!mp_EGAGraphics) return false;
 	mp_EGAGraphics->loadData();
 	return true;
 }
@@ -63,12 +61,12 @@ void CGameLauncherMenu::init()
 
 	struct GamesScan: public Action
 	{
-		SmartPointer<CGameLauncher>& mp_GameLauncher;
+		std::unique_ptr<CGameLauncher>& mp_GameLauncher;
 
-		GamesScan(SmartPointer<CGameLauncher>& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
+		GamesScan(std::unique_ptr<CGameLauncher>& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
 		int handle()
 		{
-			mp_GameLauncher = new CGameLauncher();
+			mp_GameLauncher.reset( new CGameLauncher() );
 			if(!mp_GameLauncher->init())
 			{
 				g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
@@ -131,8 +129,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		{
 			// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
 			// This will also read the Tile-Properties
-			mp_EGAGraphics.tryDeleteData(); // except for the first start of a game this always happens
-			mp_EGAGraphics = new vorticon::CEGAGraphicsVort(Episode, DataDirectory);
+			mp_EGAGraphics.reset( new vorticon::CEGAGraphicsVort(Episode, DataDirectory) );
 			if(!mp_EGAGraphics.get())
 				return false;
 
@@ -163,10 +160,8 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		if( (flags & LOADGFX) == LOADGFX )
 		{
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-			mp_EGAGraphics.tryDeleteData();
-
-			mp_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(ExeFile); // Path is relative to the data directory
-			if(!mp_EGAGraphics.get())
+			mp_EGAGraphics.reset(new galaxy::CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
+			if(!mp_EGAGraphics)
 				return false;
 
 			mp_EGAGraphics->loadData();
@@ -196,7 +191,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 void CGameLauncherMenu::process()
 {
 	// If the firsttime menu is open, process it
-	if(!mp_FirstTimeMenu.empty())
+	if(mp_FirstTimeMenu)
 	{
 		//mp_FirstTimeMenu->processCommon();
 		//mp_FirstTimeMenu->processSpecific();
