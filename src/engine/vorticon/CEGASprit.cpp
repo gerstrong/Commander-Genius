@@ -39,11 +39,11 @@
 //////////////////////////
 
 CEGASprit::CEGASprit(int planesize,
-					 long spritestartloc,
-					 int numsprites,
-					 long spriteloc,
-					 const std::string &gamepath,
-					 size_t episode) :
+	long spritestartloc,
+	int numsprites,
+	long spriteloc,
+	const std::string &gamepath,
+	size_t episode) :
 m_gamepath(gamepath),
 m_Episode(episode),
 EGASpriteModell(NULL)

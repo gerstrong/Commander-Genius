@@ -237,13 +237,14 @@ void CSprite::applyTranslucency(Uint8 value)
 	Uint32 colour = 0;
 	Uint8 r,g,b,a;
 
-	r = g = b = a = 0;
+	r = g = b = a = 0;		
 	
 	if(mpSurface.empty() || g_pVideoDriver->getZoomValue() > 1) 
 	    return;
 
 	if(m_alpha == value)
-		return;
+		return;	
+	
 	
 	SDL_PixelFormat *format = mpSurface->format;	
 	
@@ -251,6 +252,7 @@ void CSprite::applyTranslucency(Uint8 value)
 	{
 	    SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, value);
 	    m_alpha = value;
+	    return;
 	}
 	
 
@@ -396,14 +398,20 @@ void CSprite::_drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, con
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
 
-	applyTranslucency(alpha);
-	SDL_BlitSurface( mpSurface.get(), &src_rect, dst, &dst_rect );
+	
+	SDL_Surface *src = mpSurface.get();
+	
+	
+	if(g_pVideoDriver->getVidConfig().m_ScaleXFilter > 1)
+	    applyTranslucency(alpha);
+		
+	SDL_BlitSurface( src, &src_rect, dst, &dst_rect );
 }
 
 /**
  * \brief The function that blits the sprite to dst
- * \param x				X-Coordinate, indicating the position on dst
- * \param y				Y-Coordinate, indicating the position on dst
+ * \param x	X-Coordinate, indicating the position on dst
+ * \param y	Y-Coordinate, indicating the position on dst
  */
 void CSprite::drawBlinkingSprite( Uint16 x, Uint16 y )
 {

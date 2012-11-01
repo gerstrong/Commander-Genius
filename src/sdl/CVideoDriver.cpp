@@ -355,7 +355,8 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 		cam = CameraBounds;
 }
 
-CVidConfig &CVideoDriver::getVidConfig() {
+CVidConfig &CVideoDriver::getVidConfig() 
+{
 	return m_VidConfig;
 }
 
