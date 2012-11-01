@@ -129,12 +129,12 @@ void CGUINumberControl::setupButtonSurface()
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
 	const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
 	const std::string showTextR = "  " + mText + ": " + itoa(mValue) + ">";
-	mpTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
-	mpTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
-	mpTextLightSfcR = Font.fetchColoredTextSfc( showTextR, SDL_MapRGB( format, 84, 234, 84));
-	mpTextLightSfcL = Font.fetchColoredTextSfc( showTextL, SDL_MapRGB( format, 84, 234, 84));
+	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38)));
+	mpTextLightSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84)));
+	mpTextLightSfcR.reset(Font.fetchColoredTextSfc( showTextR, SDL_MapRGB( format, 84, 234, 84)));
+	mpTextLightSfcL.reset(Font.fetchColoredTextSfc( showTextL, SDL_MapRGB( format, 84, 234, 84)));
 
-	mpTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));
+	mpTextDisabledSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123)));
 }
 
 

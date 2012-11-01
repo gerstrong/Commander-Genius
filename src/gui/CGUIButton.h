@@ -24,7 +24,7 @@ class CGUIButton : public CGUIControl
 public:
 
 	CGUIButton(const std::string& text,
-			const SmartPointer<CEvent> ev,
+			CEvent *ev,
 			const Style style=UNSET);
 
 	bool sendEvent(const InputCommands command);
@@ -59,7 +59,7 @@ private:
 	void setupButtonSurface();
 
 	std::string mText;
-	SmartPointer<CEvent> mEvent;
+	std::unique_ptr<CEvent> mEvent;
 	SmartPointer<SDL_Surface> mpTextDarkSfc;
 	SmartPointer<SDL_Surface> mpTextLightSfc;
 	SmartPointer<SDL_Surface> mpTextDisabledSfc;

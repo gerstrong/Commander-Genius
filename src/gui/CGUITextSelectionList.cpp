@@ -14,14 +14,14 @@
 
 const float TEXT_HEIGHT = 10.0f;
 
-void CGUITextSelectionList::setConfirmButtonEvent(const SmartPointer<CEvent> ev)
+void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
 {
-	mConfirmEvent = ev;
+	mConfirmEvent.reset(ev);
 }
 
-void CGUITextSelectionList::setBackButtonEvent(const SmartPointer<CEvent> ev)
+void CGUITextSelectionList::setBackButtonEvent(CEvent *ev)
 {
-	mBackEvent = ev;
+	mBackEvent.reset(ev);
 }
 
 bool CGUITextSelectionList::sendEvent(const InputCommands command)
@@ -45,13 +45,13 @@ bool CGUITextSelectionList::sendEvent(const InputCommands command)
 	else if(command == IC_STATUS || command == IC_JUMP ||
 			 command == IC_POGO || command == IC_FIRE)
 	{
-		if(!mConfirmEvent.empty())
+		if(mConfirmEvent)
 			g_pBehaviorEngine->m_EventList.add(mConfirmEvent);
 		return true;
 	}
 	else if(command == IC_BACK)
 	{
-		if(!mBackEvent.empty())
+		if(mBackEvent)
 			g_pBehaviorEngine->m_EventList.add(mBackEvent);
 		return true;
 	}

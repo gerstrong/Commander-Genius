@@ -62,11 +62,11 @@ private:
 	static int mTwirliconID;
 	const bool mSlider;
 
-	SmartPointer<SDL_Surface> mpTextDarkSfc;
-	SmartPointer<SDL_Surface> mpTextLightSfc;
-	SmartPointer<SDL_Surface> mpTextLightSfcR;
-	SmartPointer<SDL_Surface> mpTextLightSfcL;
-	SmartPointer<SDL_Surface> mpTextDisabledSfc;
+	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
+	std::unique_ptr<SDL_Surface> mpTextLightSfc;
+	std::unique_ptr<SDL_Surface> mpTextLightSfcR;
+	std::unique_ptr<SDL_Surface> mpTextLightSfcL;
+	std::unique_ptr<SDL_Surface> mpTextDisabledSfc;
 
 
 	void (CGUINumberControl::*drawButton)(SDL_Rect&);

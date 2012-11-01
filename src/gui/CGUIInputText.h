@@ -11,7 +11,6 @@
 #include "CGUIControl.h"
 #include <string>
 #include "engine/CEvent.h"
-#include "SmartPointer.h"
 
 class CGUIInputText : public CGUIControl
 {
@@ -55,7 +54,7 @@ private:
 	int mTypeTick;
 	bool mTick;
 
-	SmartPointer<SDL_Surface> mpTextSfc;
+	std::unique_ptr<SDL_Surface> mpTextSfc;
 
 	void (CGUIInputText::*drawButton)(SDL_Rect&);
 

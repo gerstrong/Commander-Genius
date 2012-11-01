@@ -45,9 +45,6 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 		{
 			xDirection = RIGHT;
 		}
-
-		int absdx = (dx<0) ? -dx : dx;
-		int absdy = (dy<0) ? -dy : dy;
 	}
 	else if( CInchWorm *inchworm = dynamic_cast<CInchWorm*>(&theObject) )
 	{

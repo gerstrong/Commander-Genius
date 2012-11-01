@@ -17,9 +17,9 @@
 
 
 
-CGUIButton::CGUIButton(	const std::string& text,
-			const SmartPointer<CEvent> ev,
-			const Style style ) :
+CGUIButton::CGUIButton(const std::string& text,
+			CEvent *ev,
+			const Style style) :
 mText(text),
 mEvent(ev),
 drawButton(&CGUIButton::drawNoStyle),

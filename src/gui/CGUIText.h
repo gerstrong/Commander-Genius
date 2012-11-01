@@ -32,9 +32,9 @@ public:
 private:
 	std::list<std::string> mTextList;
 
-	SmartPointer<SDL_Surface> mpTextDarkSfc;
-	SmartPointer<SDL_Surface> mpTextLightSfc;
-	SmartPointer<SDL_Surface> mpTextDisabledSfc;
+	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
+	std::unique_ptr<SDL_Surface> mpTextLightSfc;
+	std::unique_ptr<SDL_Surface> mpTextDisabledSfc;
 
 };
 

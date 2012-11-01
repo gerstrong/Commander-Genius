@@ -23,16 +23,25 @@ public:
 	size_t size() { return m_EventList.size(); }
 	bool empty() { return m_EventList.empty(); }
 	void clear() { m_EventList.clear(); }
-	void add(const SmartPointer<CEvent>& ev) { m_EventList.push_back(ev); }
-	std::deque< SmartPointer<CEvent> >::iterator erase(std::deque< SmartPointer<CEvent> >::iterator &it)
+	
+	void add(std::unique_ptr<CEvent>& ev) 
+	{ 
+	    m_EventList.push_back(move(ev)); 	    
+	}
+	
+	void add(CEvent *ev) 
+	{ 
+	    m_EventList.push_back(std::unique_ptr<CEvent>(ev)); 	    
+	}
+	std::deque< std::unique_ptr<CEvent> >::iterator erase(std::deque< std::unique_ptr<CEvent> >::iterator &it)
 	{	return m_EventList.erase(it);	}
-	std::deque< SmartPointer<CEvent> >::iterator begin() { return m_EventList.begin(); }
-	std::deque< SmartPointer<CEvent> >::iterator end() { return m_EventList.end(); }
+	std::deque< std::unique_ptr<CEvent> >::iterator begin() { return m_EventList.begin(); }
+	std::deque< std::unique_ptr<CEvent> >::iterator end() { return m_EventList.end(); }
 	template<typename T> T* occurredEvent();
 	void pop_Event() { m_EventList.pop_front(); }
 
 private:
-	std::deque< SmartPointer<CEvent> > m_EventList;
+	std::deque< std::unique_ptr<CEvent> > m_EventList;
 };
 
 template<typename T>

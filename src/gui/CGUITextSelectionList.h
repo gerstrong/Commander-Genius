@@ -21,22 +21,26 @@ public:
 	mHoverSelection(0),
 	mSelection(0) {}
 
-	void setConfirmButtonEvent(const SmartPointer<CEvent> ev);
-	void setBackButtonEvent(const SmartPointer<CEvent> ev);
+	void setConfirmButtonEvent(CEvent *ev);
+	void setBackButtonEvent(CEvent *ev);
 
 	bool sendEvent(const InputCommands command);
 	void addText(const std::string &text);
 	void processLogic();
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
+
 	std::list<std::string> mItemList;
 
 	int mHoverSelection;
 	int mSelection;
+	
+private:
+    
 	int mTextWidthLimit;
-
-	SmartPointer<CEvent> mConfirmEvent;
-	SmartPointer<CEvent> mBackEvent;
+	
+	std::unique_ptr<CEvent> mConfirmEvent;
+	std::unique_ptr<CEvent> mBackEvent;
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H_ */
