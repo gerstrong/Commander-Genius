@@ -148,6 +148,19 @@ void CPatcher::patchMemory()
 				PatchLevelhint(number,PatchItem.value);
 			}
 		}
+		else if(PatchItem.keyword == "level.entry" )
+		{
+			// Patch the entry level text
+			std::string textline = readPatchItemsNextValue(PatchItem.value);
+			long number = 0;
+
+			if(readIntValue(textline, number))
+			{
+				// Got the number, patch it!
+				PatchLevelentry(number,PatchItem.value);
+			}
+		}
+		
 		else if(PatchItem.keyword == "dump" )
 		{
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
@@ -292,6 +305,43 @@ void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)
 		memset( p_patch, 0, end-offset);
 
 	std::string buf;
+	do
+	{
+		buf = input.front();
+		memcpy(p_patch, buf.c_str(), buf.size());
+		input.pop_front();
+		p_patch += buf.size()-1;
+		if(*p_patch != '\r')
+			p_patch++;
+		p_patch[0] = 0x0A;
+		p_patch[1] = 0x00;
+		p_patch += 2;
+		if( p_patch == m_data+end ) break;
+	} while( !input.empty() );
+}
+
+
+void CPatcher::PatchLevelentry(const int level, std::list<std::string> &input)
+{
+	unsigned char *p_patch;
+	unsigned long offset=0;
+	unsigned long end=0;
+
+	// Check for which level is it for.
+	if(m_episode == 4)
+	{
+	    offset = 0x1F1F0 + 0x20*level; 
+	    end = offset + (0x20-1);
+	}
+
+	p_patch = m_data + offset;
+
+	// Fill everything with zeros, so the old text won't be shown
+	if(end > offset)
+		memset( p_patch, 0, end-offset);
+
+	std::string buf;
+	
 	do
 	{
 		buf = input.front();

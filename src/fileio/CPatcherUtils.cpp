@@ -33,12 +33,12 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
 	size_t pos=0;
 	if(strStartsWith(line,"\""))
 	{
-		// It is a string!!
+		// It surely is a string!!
 		pos = line.substr(1).find("\"")+2;
 	}
 	else
 	{
-		// Anything else than a string!!
+		// Might be a string also!!
 		pos = line.find(' ');
 	}
 
@@ -183,9 +183,16 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem)
 	stringlwr(PatchItem.keyword);
 	line.erase(0,pos);
 	TrimSpaces(line);
+	
+	pos = line.find("\\n ");    
+	while(pos != std::string::npos)
+	{
+	    line.replace(pos,2, "\n");
+	    pos = line.find("\\n");    
+	}
 
 	// Then read the value of that was given to that keyword.
-	PatchItem.value.push_back(line);
+	PatchItem.value.push_back(line);		
 
 	while(1)
 	{
@@ -193,9 +200,20 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem)
 			return true;
 
 		line = *m_TextList.begin();
+		
+		// Check if line has some newline characters in the text file
+		pos = line.find("\\n");
 
 		if(strStartsWith(line,"\%"))
 			break;
+		
+		pos = line.find("\\n");    
+		while(pos != std::string::npos)
+		{
+		    line.replace(pos,2, "\r");
+		    pos = line.find("\\n");    
+		}
+		
 
 		m_TextList.pop_front();
 
