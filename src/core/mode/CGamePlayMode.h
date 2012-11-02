@@ -11,7 +11,7 @@
 #include "CGameMode.h"
 #include "engine/playgame/CPlayGame.h"
 #include "fileio/CSaveGameController.h"
-#include "SmartPointer.h"
+#include <memory>
 #include <string>
 
 class CGamePlayMode : public CGameMode
@@ -37,7 +37,7 @@ private:
 	Uint8 m_Numplayers;
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
-	SmartPointer<CPlayGame> mp_PlayGame;
+	std::unique_ptr<CPlayGame> mp_PlayGame;
 };
 
 #endif /* CGAMEPLAYMODE_H_ */

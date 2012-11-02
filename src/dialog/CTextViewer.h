@@ -12,7 +12,6 @@
 #include <vector>
 #include <string>
 #include <memory>
-//#include "SmartPointer.h"
 
 class CTextViewer
 {

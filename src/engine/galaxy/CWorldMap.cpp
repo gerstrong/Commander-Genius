@@ -21,12 +21,12 @@ CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
 void CWorldMap::init()
 {
 	// Load the World map level.
-	SmartPointer<CMapLoaderGalaxy> MapLoader;
+	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
 	if(g_pBehaviorEngine->getEpisode() == 4)
-		MapLoader = new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode);
+		MapLoader.reset( new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 	else if(g_pBehaviorEngine->getEpisode() == 5)
-		MapLoader = new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode);
+		MapLoader.reset( new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 
 	MapLoader->loadMap( mMap, 0 );
 

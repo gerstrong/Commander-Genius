@@ -13,7 +13,6 @@
 
 #include "dialog/CDlgFrame.h"
 #include "common/CBehaviorEngine.h"
-#include "SmartPointer.h"
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIText.h"
 #include "gui/CGUIButton.h"

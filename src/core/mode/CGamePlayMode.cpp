@@ -41,13 +41,13 @@ void CGamePlayMode::init()
 	{
 		if(m_startLevel == WORLD_MAP_LEVEL_VORTICON)
 			m_startLevel = WORLD_MAP_LEVEL_GALAXY;
-		mp_PlayGame = new galaxy::CPlayGameGalaxy( ExeFile, m_startLevel, m_Numplayers, m_SavedGame);
+		mp_PlayGame.reset( new galaxy::CPlayGameGalaxy( ExeFile, m_startLevel, m_Numplayers, m_SavedGame) );
 	}
 	else
 	{
 		if(m_startLevel == WORLD_MAP_LEVEL_GALAXY)
 			m_startLevel = WORLD_MAP_LEVEL_VORTICON;
-		mp_PlayGame = new CPlayGameVorticon( ExeFile, m_startLevel, m_Numplayers, m_SavedGame);
+		mp_PlayGame.reset( new CPlayGameVorticon( ExeFile, m_startLevel, m_Numplayers, m_SavedGame) );
 	}
 
 	// Create the special merge effect (Fadeout)

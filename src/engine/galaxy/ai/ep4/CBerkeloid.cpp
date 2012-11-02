@@ -29,7 +29,6 @@ mpProcessState(NULL)
 	setupGalaxyObjectOnMap(0x2AF8, A_BERKELOID_MOVING);
 	inhibitfall = true;
 
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	performCollisions();
 	processActionRoutine();
 }

@@ -21,7 +21,7 @@ m_LevelName(LevelName)
 void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 {
 	// Create a surface for that
-	SmartPointer<SDL_Surface> temp;
+	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> temp;
 
    	const SDL_Rect DestRect = g_pVideoDriver->getGameResolution().SDLRect();
    	mpStatusSurface.reset(CG_CreateRGBSurface(DestRect), &SDL_FreeSurface);
@@ -39,7 +39,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	SupportRect.w = SupportBmp.getSDLSurface()->w;
 	SupportRect.h = SupportBmp.getSDLSurface()->h;
 	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0;
-	temp = SDL_DisplayFormat( SupportBmp.getSDLSurface() );
+	temp.reset(SDL_DisplayFormat( SupportBmp.getSDLSurface() ));
 	SDL_BlitSurface( temp.get(), NULL, mpStatusSurface.get(), &Dest );
 
 	// Draw the gray surface
@@ -56,7 +56,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	CableRect.w = Cables_Bitmap.getSDLSurface()->w;
 	CableRect.h = Cables_Bitmap.getSDLSurface()->h;
 	Dest.x = BackRect.x - CableRect.w;	Dest.y = 0;
-	temp = SDL_DisplayFormat( Cables_Bitmap.getSDLSurface() );
+	temp.reset(SDL_DisplayFormat( Cables_Bitmap.getSDLSurface() ));
 	SDL_BlitSurface( temp.get(), NULL, mpStatusSurface.get(), &Dest );
 
 	// Now draw the borders

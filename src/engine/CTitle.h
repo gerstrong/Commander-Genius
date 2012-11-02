@@ -18,6 +18,7 @@
 
 #include <SDL.h>
 #include <vector>
+#include <memory>
 #include "graphics/CGfxEngine.h"
 #include "common/CSpriteObject.h"
 #include "common/CMap.h"
@@ -36,7 +37,7 @@ public:
 	{ return mFinished; }
 
 private:
-	std::vector< SmartPointer<CSpriteObject> > mObjects;
+	std::vector< std::unique_ptr<CSpriteObject> > mObjects;
 	bool mFinished;
 	unsigned int mTime;
 	CMap &mMap;

@@ -11,8 +11,6 @@
 #define CEVENTCONTAINER_H_
 
 #include "CEvent.h"
-#include "SmartPointer.h"
-//#include <list>
 #include <deque>
 
 

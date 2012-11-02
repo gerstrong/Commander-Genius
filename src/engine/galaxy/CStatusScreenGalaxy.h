@@ -14,7 +14,6 @@
 #include <string>
 #include <memory>
 #include "ItemsGalaxy.h"
-#include "SmartPointer.h"
 
 class CStatusScreenGalaxy
 {

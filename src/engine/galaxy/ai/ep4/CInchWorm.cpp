@@ -35,7 +35,6 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 	{
 		mInchWormContacts = 0;
 		const int dx = player->getXMidPos() - getXMidPos();
-		const int dy = player->getYMidPos() - getYMidPos();
 
 		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
 		{

@@ -24,7 +24,6 @@ mMap(map)
 
 bool CTitle::init(int Episode)
 {
-	CSpriteObject *pObject;
 	SDL_Surface *pSurface;
 	CBitmap *pBitmap;
 	g_pTimer->ResetSecondsTimer();
@@ -38,21 +37,21 @@ bool CTitle::init(int Episode)
 	if( (pBitmap = g_pGfxEngine->getBitmap("TITLE")) != NULL )
 	{
 		const int width = 160-(pBitmap->getWidth()/2);
-		pObject = new CEGABitmap( &mMap, pSurface, pBitmap );
-		pObject->setScrPos( width, 0 );
-		mObjects.push_back(pObject);
+		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
+		obj->setScrPos( width, 0 );
+		mObjects.push_back(std::move(obj));
 		pBitmap->_draw( pSurface, width, 0);
-		pObject->draw();
+		obj->draw();
 	}
 
 	if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
 	{
 		const int width = (Episode == 3) ? 128 : 96;
 		pBitmap = g_pGfxEngine->getBitmap("F1HELP");
-		pObject = new CEGABitmap( &mMap, pSurface, pBitmap );
-		pObject->setScrPos( width, 182 );
+		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
+		obj->setScrPos( width, 182 );
 		pBitmap->_draw( pSurface, width, 182);
-		mObjects.push_back(pObject);
+		mObjects.push_back(move(obj));
 	}
 	
 	mMap.changeTileArrayY(2, 15, 2, g_pGfxEngine->getTileMap(1).EmptyBackgroundTile());
@@ -69,11 +68,10 @@ void CTitle::process()
 {
 	if( mTime == 0) mFinished = true;
 	else mTime -= g_pTimer->HasSecElapsed();
-
-	std::vector< SmartPointer<CSpriteObject> >::iterator obj = mObjects.begin();
-	for( ; obj != mObjects.end() ; obj++ )
+	
+	for( auto &obj : mObjects )
 	{
-		obj->get()->process();
+	    obj->process();
 	}
 
 }
