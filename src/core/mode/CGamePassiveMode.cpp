@@ -25,9 +25,9 @@ void CGamePassiveMode::init()
 	// Create mp_PassiveMode object used for the screens while Player is not playing
 	const int episode = g_pBehaviorEngine->getEpisode();
 	if(episode >= 4)
-		mpPassive = new galaxy::CPassiveGalaxy();
+		mpPassive.reset( new galaxy::CPassiveGalaxy() );
 	else
-		mpPassive = new vorticon::CPassiveVort();
+		mpPassive.reset( new vorticon::CPassiveVort() );
 
 	if( m_Endgame == true )
 	{

@@ -12,7 +12,7 @@
 #include "engine/CPassive.h"
 #include "engine/infoscenes/CInfoScene.h"
 #include "common/CMap.h"
-#include "SmartPointer.h"
+#include <memory>
 
 class CGamePassiveMode : public CGameMode
 {
@@ -23,7 +23,7 @@ public:
 	void process();
 
 private:
-	SmartPointer<CPassive> mpPassive;
+	std::unique_ptr<CPassive> mpPassive;
 
 	bool m_Endgame;
 	CSaveGameController m_SavedGame;
