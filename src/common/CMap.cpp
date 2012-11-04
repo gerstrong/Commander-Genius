@@ -707,7 +707,7 @@ void CMap::animateAllTiles()
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
 	// Let the animation timer tick!!
-	mAnimtileTimer += g_pTimer->Logic2FPSratio();	
+	mAnimtileTimer += 1.0f;	
 	const Uint8 animtileTimerInt = static_cast<Uint8>(mAnimtileTimer);
 	
 	if( mAnimtileTimer > 256.0f )

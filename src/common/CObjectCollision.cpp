@@ -567,9 +567,8 @@ void CSpriteObject::processMove(const VectorD2<int>& dir)
 
 void CSpriteObject::processMove(const int move_x, const int move_y)
 {
-    const float speed = g_pTimer->Logic2FPSratio();
-    const float fxoff = static_cast<float>(move_x)*speed;
-    const float fyoff = static_cast<float>(move_y)*speed;
+    const float fxoff = static_cast<float>(move_x);
+    const float fyoff = static_cast<float>(move_y);
     
     int xoff = static_cast<int>(fxoff);
     int yoff = static_cast<int>(fyoff);

@@ -58,7 +58,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
 	Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scale2x" );
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
-	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
+	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->FPS());
 	Configuration.SetKeyword("Video", "showfps", VidConf.showfps);
 	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
 	

@@ -58,7 +58,8 @@ bool CResourceLoader::process(int* ret)
 		//g_pTimer->TimeToLogic();
 
 		// Render the Screen
-		if (g_pTimer->TimeToRender())
+		// TODO: Adapt it to the new rendering algorithm
+		/*if (g_pTimer->TimeToRender())
 		{
 			SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
 			renderLoadingGraphic();
@@ -67,7 +68,7 @@ bool CResourceLoader::process(int* ret)
 		}
 
 		// delay time remaining in current loop
-		g_pTimer->TimeToDelay();
+		g_pTimer->TimeToDelay();*/
 	}
 
 	mp_Thread = NULL;

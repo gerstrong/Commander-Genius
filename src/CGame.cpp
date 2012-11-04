@@ -122,37 +122,59 @@ bool CGame::loadCKPDrivers()
 void CGame::run()
 {
 
+  
+  
+  float acc = 0.0f;
+  float start = 0.0f;
+  float elapsed = 0.0f;
+  float curr = 0.0f;
+  
     while(1)
     {
+      const float logicLatency = g_pTimer->LogicLatency();
+      const float renderLatency = g_pTimer->RenderLatency();
+      
+      curr = timerTicks();
+      
+      elapsed = curr - start;      
+      acc += elapsed;
+      
+      start = timerTicks();
+      
 	// Perform the game cycle
-	if( g_pTimer->TimeToRender() )
+	while( acc > logicLatency )
 	{
 	    // Poll Inputs
 	    g_pInput->pollEvents();
-	    
+
 	    // Process Game Control
 	    m_Engine.process();		    
-	    
+
 	    // Here we try to process all the drawing related Tasks not yet done
 	    g_pVideoDriver->pollDrawingTasks();
-	    
+
 	    // Pass all the surfaces to one
 	    g_pVideoDriver->collectSurfaces();
-	    
+
 	    // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
 	    g_pGfxEngine->process();	    	    
-	    
-	    // Now you really render the screen
-	    // When enabled, it also will apply Filters
-	    g_pVideoDriver->updateScreen();
-	    	    
-	    if( m_Engine.mustShutdown() || g_pInput->getExitEvent() )
+	    acc -= logicLatency;
+	}	
+	
+	// Now you really render the screen
+	// When enabled, it also will apply Filters
+	g_pVideoDriver->updateScreen();
+	
+	elapsed = timerTicks() - start;
+
+        if( m_Engine.mustShutdown() || g_pInput->getExitEvent() )
 		break;
-	}
 	
-	// delay time remaining in current loop
-	g_pTimer->TimeToDelay();
+	int waitTime = renderLatency - elapsed;
 	
+	// wait time remaining in current loop
+	if( waitTime > 0 )
+	  timerDelay(waitTime);	
     }
 }
 

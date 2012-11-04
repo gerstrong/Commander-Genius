@@ -17,7 +17,7 @@
 
 CPixelate::CPixelate(unsigned short speed) :
 mp_OldSurface(NULL),
-m_speed(speed*g_pTimer->Logic2FPSratio())
+m_speed(speed)
 {
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 	getSnapshot();

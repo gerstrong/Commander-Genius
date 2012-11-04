@@ -23,8 +23,8 @@
 #endif
 
 #define MSPERSEC        1000
-const float DEFAULT_LPS_GALAXY = 70;
-const float DEFAULT_LPS_VORTICON = 60;
+const float DEFAULT_LPS_GALAXY = 70.0f;
+const float DEFAULT_LPS_VORTICON = 60.0f;
 #define DEFAULT_FPS     60
 
 typedef unsigned long  ulong;
@@ -45,34 +45,39 @@ public:
     bool HasSecElapsed();
     bool HasTimeElapsed(int msecs);
 
-    float getFrameRate() { return m_FrameRate; }
-    void setFPS( const int framerate );
+    //float getFrameRate() { return m_FrameRate; }
+    //void setFPS( const int framerate );
+    void setFPS( const float fps );    
+    void setLPS( const float lps );   
 
-    int getFramesPerSec() { return m_FPS; }
+    float FPS() { return 1.0f/mRenderLatency; }
+    
+    float LogicLatency() { return mLogicLatency; }
+
+    float RenderLatency() { return mRenderLatency; }
 
     int getTicksPerFrame();
 
     Uint32 getTicks() { return timerTicks(); }
     
-    float Logic2FPSratio() const
-    {	return mLogic2FPSratio;	}
+    /*float Logic2FPSratio() const
+    {	return mLogic2FPSratio;	}*/
     
-    void setLPS(const int lps)
-    {
-	mLogicSpeed = lps;
-	mLogic2FPSratio = static_cast<float>(mLogicSpeed)/static_cast<float>(m_FrameRate);
-    }
 
 private:
-    float m_FrameRate, m_FrameDuration;
-    int mLogicSpeed;
-    int m_FPS, m_FrameCount;
+    
+    float mRenderLatency;
+    float mLogicLatency;
+  
+    //float m_FrameRate, m_FrameDuration;
+    //int mLogicSpeed;
+    //int m_FPS, m_FrameCount;
 
-    ulong m_FrameUpdateTime;
-    ulong m_FPSCountTime;
+    //ulong m_FrameUpdateTime;
+    //ulong m_FPSCountTime;
     ulong m_LastSecTime;
     
-    float mLogic2FPSratio;
+    //float mLogic2FPSratio;
 };
 
 #endif /* CTIMER_H_ */

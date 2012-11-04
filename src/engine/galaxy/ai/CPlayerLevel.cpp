@@ -319,7 +319,7 @@ void CPlayerLevel::handleInputOnGround()
 		setAction(A_KEEN_RUN);
 		processRunning();
 
-		nextX = (xDirection * m_Action.velX * g_pTimer->getTicksPerFrame())/4;
+		nextX = (xDirection * m_Action.velX)/4;
 		return;
 	}
 
@@ -399,7 +399,7 @@ void CPlayerLevel::processStanding()
 
 	if( getActionStatus(A_KEEN_STAND) && !supportedbyobject )
 	{
-		user1 += g_pTimer->getTicksPerFrame();
+		user1++;
 
 		if (user2 == 0 && user1 > 200)
 		{

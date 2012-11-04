@@ -102,7 +102,8 @@ void CVideoSettings::init()
 	mUserVidConf = g_pVideoDriver->getVidConfig();
 
 	// Load the config into the GUI
-	mpFPSSelection->setSelection( g_pTimer->getFrameRate() );
+	// TODO: Temporary. This must become a float later...
+	mpFPSSelection->setSelection( static_cast<int>( g_pTimer->FPS()) );
 
 #if defined(USE_OPENGL)
 	std::string OGLFilterStr;

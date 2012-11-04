@@ -278,7 +278,7 @@ void CPlayGameVorticon::process()
 
 		std::string tempbuf;
 #ifdef DEBUG
-		tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+		tempbuf = "FPS: " + itoa(static_cast<int>(g_pTimer->FPS())) +
 				"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
 #else
 		tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());

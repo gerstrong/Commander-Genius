@@ -24,8 +24,8 @@ CPhysicsSettings::CPhysicsSettings()
 
 	// when falling keen's Y inertia increases up to maximum
 	// NOTE: The commented value was the old one
-	max_fallspeed = 104*g_pTimer->Logic2FPSratio();
-	fallspeed_increase = 4*g_pTimer->Logic2FPSratio();
+	max_fallspeed = 104;
+	fallspeed_increase = 4;
 
 	// Pogo values
 	player.pogoforce_x = 30;
@@ -42,16 +42,16 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 	if(episode >= 4 && episode <= 6 )
 	{
 		// Galaxy Engine
-		fallspeed_increase = 7*g_pTimer->Logic2FPSratio();
-		max_fallspeed = 175*g_pTimer->Logic2FPSratio(); // Factor 2.5 to the original assembly it is
+		fallspeed_increase = 7;
+		max_fallspeed = 175; // Factor 2.5 to the original assembly it is
 		misc.visibility = 7;
 	}
 	else
 	{
 		// Vorticon Engine
 		misc.visibility = 3;
-		fallspeed_increase = 4*g_pTimer->Logic2FPSratio();
-		max_fallspeed = 104*g_pTimer->Logic2FPSratio();
+		fallspeed_increase = 4;
+		max_fallspeed = 104;
 
 		if(episode == 1)
 		{	// Code for Episode 1.
