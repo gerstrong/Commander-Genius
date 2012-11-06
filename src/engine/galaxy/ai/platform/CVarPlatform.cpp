@@ -157,24 +157,28 @@ void CVarPlatform::process()
 	else if(xDirection == LEFT && blockedl)
 		xDirection = RIGHT;
 
+	VectorD2<int> speed;
+	
 	if(yDirection == UP)
 	{
-		movePlatUp(MOVE_SPEED);
+	    speed.y = -MOVE_SPEED;
 	}
 	else if(yDirection == DOWN)
 	{
-		movePlatDown(MOVE_SPEED);
+	    speed.y = MOVE_SPEED;
 	}
 
 
 	if(xDirection == RIGHT)
 	{
-		movePlatRight(MOVE_SPEED);
+	    speed.x = MOVE_SPEED;
 	}
 	else if(xDirection == LEFT)
 	{
-		movePlatLeft(MOVE_SPEED);
+	    speed.x = -MOVE_SPEED;
 	}
+	
+	movePlat(speed);
 
 	CPlatform::process();
 }

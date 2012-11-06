@@ -102,6 +102,25 @@ void CPlatform::movePlatDown(const int amnt)
 	moveDown(amnt);
 }
 
+void CPlatform::movePlat(const VectorD2<int> &speed)
+{
+    if(speed.x == 0 && speed.y == 0)
+	return;
+    
+	// First move the object on platform if any
+	if(mp_CarriedPlayer)
+	{
+		if(!mp_CarriedPlayer->m_jumpdownfromobject)
+		{
+		    m_EventCont.add(new ObjMoveCouple(speed,*mp_CarriedPlayer));
+		    return;
+		}
+	}
+
+	// Now move the platform itself.
+	moveDir(speed);    
+}
+
 void CPlatform::process()
 {
 	// check if someone is still standing on the platform
@@ -180,9 +199,9 @@ void CPlatform::draw()
 		int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
 		
 		distx = (distx>>STC);
-		distx += playSprite.getXOffset();
+		distx += (playSprite.getXOffset()-Sprite.getXOffset());
 		disty = (disty>>STC);
-		disty += playSprite.getYOffset();
+		disty += (playSprite.getYOffset()-Sprite.getYOffset());
 		
 		playSprite.drawSprite( showX+distx, showY+disty );
 	    }

@@ -43,6 +43,8 @@ protected:
 	void movePlatRight(const int amnt);
 	void movePlatUp(const int amnt);
 	void movePlatDown(const int amnt);
+	
+	void movePlat(const VectorD2<int> &speed);
 
 	CPlayerLevel *mp_CarriedPlayer;
 };
