@@ -26,7 +26,7 @@ struct OpenMenuEvent : CEvent
 {
 	OpenMenuEvent(CBaseMenu* menuDlgPtr) : mMenuDialogPointer(menuDlgPtr) {};
 
-	std::unique_ptr<CBaseMenu> mMenuDialogPointer;
+	std::shared_ptr<CBaseMenu> mMenuDialogPointer;
 };
 
 struct CloseMenuEvent : CEvent
@@ -65,7 +65,7 @@ private:
 
 	void popBackMenu();
 	
-	std::list< std::unique_ptr<CBaseMenu> > mMenuStack;
+	std::list< std::shared_ptr<CBaseMenu> > mMenuStack;
 
 	bool mLocked;
 };

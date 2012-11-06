@@ -1439,7 +1439,8 @@ void CPlayerLevel::processEnterDoor()
 	if(t==0)
 	    t = mp_Map->getPlaneDataAt(2, xmid, y1-(3<<CSF));
 	
-	if (t == 0) {
+	if (t == 0) 
+	{
 		//level_state = 13;
 		//o->action = ACTION_KEENENTEREDDOOR;
 		// TODO: Figure out what this does
@@ -1456,7 +1457,12 @@ void CPlayerLevel::processEnterDoor()
 	{
 		//level_state = 2;
 		//o->action = ACTION_KEENENTEREDDOOR;
-		// TODO: Figure out what this does
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		dontdraw = true;
+		m_Inventory.Item.m_gem.empty();
 		return;
 	}
 

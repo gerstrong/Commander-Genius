@@ -67,7 +67,7 @@ void CMenuController::process()
 		    if( !mMenuStack.empty() )
 			menu.setProperty( CBaseMenu::CANGOBACK );
 
-		    mMenuStack.push_back( move(openMenu->mMenuDialogPointer) );
+		    mMenuStack.push_back( openMenu->mMenuDialogPointer );
 		    EventContainer.pop_Event();
 		}
 
@@ -133,12 +133,13 @@ void CMenuController::process()
 
 void CMenuController::popBackMenu()
 {
-	mMenuStack.pop_back();
-
-	if(mMenuStack.empty())
-	{
-	    g_pBehaviorEngine->setPause(false);
-	}
+    mMenuStack.back()->release();
+    mMenuStack.pop_back();
+    
+    if(mMenuStack.empty())
+    {
+	g_pBehaviorEngine->setPause(false);
+    }
 }
 
 

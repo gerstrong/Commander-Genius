@@ -103,7 +103,7 @@ void CVideoSettings::init()
 
 	// Load the config into the GUI
 	// TODO: Temporary. This must become a float later...
-	mpFPSSelection->setSelection( static_cast<int>( g_pTimer->FPS()) );
+	mpFPSSelection->setSelection( static_cast<int>( g_pTimer->FPS() ) );
 
 #if defined(USE_OPENGL)
 	std::string OGLFilterStr;

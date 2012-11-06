@@ -39,8 +39,8 @@ private:
     
 	int mTextWidthLimit;
 	
-	std::unique_ptr<CEvent> mConfirmEvent;
-	std::unique_ptr<CEvent> mBackEvent;
+	std::shared_ptr<CEvent> mConfirmEvent;
+	std::shared_ptr<CEvent> mBackEvent;
 };
 
 #endif /* CGUITEXTSELECTIONLIST_H_ */

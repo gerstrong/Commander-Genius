@@ -37,17 +37,18 @@ mDecSel(false),
 mSlider(slider),
 drawButton(&CGUINumberControl::drawNoStyle)
 {
+	mFontID = 1;
+    
 	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
 	{
-		mFontID = 1;
-		drawButton = &CGUINumberControl::drawVorticonStyle;
+	    drawButton = &CGUINumberControl::drawVorticonStyle;
 	}
 	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
-		mFontID = 1;
-		drawButton = &CGUINumberControl::drawGalaxyStyle;
-		setupButtonSurface();
+	    drawButton = &CGUINumberControl::drawGalaxyStyle;		
 	}
+	
+	setupButtonSurface();
 }
 
 
@@ -94,6 +95,7 @@ void CGUINumberControl::setSelection( const int value )
 	else
 		mValue = value;
 
+	setupButtonSurface();
 }
 
 
@@ -123,6 +125,9 @@ std::string CGUINumberControl::sliderStr()
 
 void CGUINumberControl::setupButtonSurface()
 {
+    if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
+	return;
+    
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
@@ -187,11 +192,7 @@ void CGUINumberControl::processLogic()
 						increment();
 				}
 
-				if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-				{
-					setupButtonSurface();
-				}
-
+				setupButtonSurface();
 				g_pInput->m_EventList.pop_Event();
 			}
 		}

@@ -59,7 +59,7 @@ private:
 	void setupButtonSurface();
 
 	std::string mText;
-	std::unique_ptr<CEvent> mEvent;
+	std::shared_ptr<CEvent> mEvent;
 	SmartPointer<SDL_Surface> mpTextDarkSfc;
 	SmartPointer<SDL_Surface> mpTextLightSfc;
 	SmartPointer<SDL_Surface> mpTextDisabledSfc;

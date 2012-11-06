@@ -50,7 +50,7 @@ public:
     void setFPS( const float fps );    
     void setLPS( const float lps );   
 
-    float FPS() { return 1.0f/mRenderLatency; }
+    float FPS() { return 1000.0f/mRenderLatency; }
     
     float LogicLatency() { return mLogicLatency; }
 
