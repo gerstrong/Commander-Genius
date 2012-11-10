@@ -13,6 +13,7 @@
 #include "StringUtils.h"
 #include "CLogFile.h"
 #include "fileio/ResourceMgmt.h"
+#include "common/CBehaviorEngine.h"
 
 
 CPatcher::CPatcher(CExeFile &ExeFile, bool &is_a_mod) :
@@ -27,7 +28,7 @@ m_is_a_mod(is_a_mod)
 }
 
 
-void CPatcher::patchMemory()
+void CPatcher::process()
 {
 	if(!loadPatchfile()) return;
 
@@ -38,14 +39,14 @@ void CPatcher::patchMemory()
 	g_pLogFile->textOut("Trying to load and apply the patch it found...<br>");
 	m_is_a_mod = true;
 	
-	filterPatches();
+	filterPatches(m_TextList);
 
 	patch_item PatchItem;
 
 	std::string dumpfilename = "";
 
 	// TODO: Extend this part further with more commands
-	while(readNextPatchItem(PatchItem) == true)
+	while(readNextPatchItem(PatchItem, m_TextList) == true)
 	{
 		// Now we really start to process the commands
 		if(PatchItem.keyword == "ext")
@@ -148,19 +149,6 @@ void CPatcher::patchMemory()
 				PatchLevelhint(number,PatchItem.value);
 			}
 		}
-		else if(PatchItem.keyword == "level.entry" )
-		{
-			// Patch the entry level text
-			std::string textline = readPatchItemsNextValue(PatchItem.value);
-			long number = 0;
-
-			if(readIntValue(textline, number))
-			{
-				// Got the number, patch it!
-				PatchLevelentry(number,PatchItem.value);
-			}
-		}
-		
 		else if(PatchItem.keyword == "dump" )
 		{
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
@@ -173,7 +161,11 @@ void CPatcher::patchMemory()
 			break;
 		}
 		else
-			g_pLogFile->textOut("The Keyword " + PatchItem.keyword + " is not supported by CG yet!<br>" );
+		{
+		    // If not recognized put the patch on the post-list. In the later Process it will 
+		    // judge valid status
+		    mPostPatchItems.push_back(PatchItem);
+		}
 
 		if(dumpfilename!="")
 		{
@@ -190,6 +182,41 @@ void CPatcher::patchMemory()
 	}
 }
 
+
+void CPatcher::postProcess()
+{
+  // Mods only!
+  if(!m_is_a_mod)
+    return;
+	
+	auto it = mPostPatchItems.begin();
+	
+	for( ; it != mPostPatchItems.end() ; it++ )
+	{
+		if(it->keyword == "level.entry" )
+		{
+			// Patch the entry level text
+			std::string textline = readPatchItemsNextValue(it->value);
+			long number = 0;
+
+			if(readIntValue(textline, number))
+			{
+				// Got the number, patch it!
+				PatchLevelentry(number, it->value);
+			}
+		}
+		else
+		{
+		    g_pLogFile->textOut("The Keyword \"" + it->keyword + "\" is unknown to Commander Genius.");
+		}
+
+		it->keyword.clear();
+		it->value.clear(); 
+	}
+}
+
+
+
 struct PatchListFiller
 {
 	std::set<std::string> list;
@@ -204,7 +231,7 @@ struct PatchListFiller
 };
 
 /**
- * \brief this reads the patch into the m_TextList
+ * \brief this reads the patch into the m_TextList and m_PostTextList
  * \return	true if something could be read. Otherwise false
  */
 bool CPatcher::loadPatchfile()
@@ -237,7 +264,7 @@ bool CPatcher::loadPatchfile()
 		Patchfile.close();
 		patchlist.list.clear();
 	}
-	
+
 	return true;
 }
 
@@ -323,38 +350,24 @@ void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)
 
 void CPatcher::PatchLevelentry(const int level, std::list<std::string> &input)
 {
-	unsigned char *p_patch;
-	unsigned long offset=0;
-	unsigned long end=0;
-
-	// Check for which level is it for.
-	if(m_episode == 4)
-	{
-	    offset = 0x1F1F0 + 0x20*level; 
-	    end = offset + (0x20-1);
-	}
-
-	p_patch = m_data + offset;
-
-	// Fill everything with zeros, so the old text won't be shown
-	if(end > offset)
-		memset( p_patch, 0, end-offset);
-
 	std::string buf;
+	std::string levelStr;
 	
-	do
+	if(level == 0)
+	  levelStr = "WORLDMAP_LOAD_TEXT";
+	else
+	  levelStr = "LEVEL"+ itoa(level) +"_LOAD_TEXT";	
+	
+	while( !input.empty() )
 	{
-		buf = input.front();
-		memcpy(p_patch, buf.c_str(), buf.size());
-		input.pop_front();
-		p_patch += buf.size()-1;
-		if(*p_patch != '\r')
-			p_patch++;
-		p_patch[0] = 0x0A;
-		p_patch[1] = 0x00;
-		p_patch += 2;
-		if( p_patch == m_data+end ) break;
-	} while( !input.empty() );
+	    buf += input.front();
+	    input.pop_front();
+	    
+	    if( input.size() > 1 ) 
+	      buf += "\n";  
+	} 
+	
+	g_pBehaviorEngine->setMessage(levelStr, buf);
 }
 
 CPatcher::~CPatcher() {}

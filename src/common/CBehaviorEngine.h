@@ -72,7 +72,7 @@ public:
 				mPausedGamePlay(false),
 				pEpisodeInfo(NULL) {}
 
-	void addMessage(const std::string &name,
+	void setMessage(const std::string &name,
 					const std::string &message);
 
 	bool readTeleporterTable(byte *p_exedata);
@@ -114,6 +114,7 @@ public:
 
 	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
 	{	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
+	
 	
 
 private:

@@ -121,11 +121,11 @@ bool CPatcher::readPatchString(const std::string &input, std::string &output)
 /**
  * \brief	this function filters out the blocks of text, that you are not supposed to be used.
  */
-void CPatcher::filterPatches()
+void CPatcher::filterPatches(std::list<std::string> &textlist)
 {
 	std::list<std::string> TextList;
-	TextList = m_TextList;
-	m_TextList.clear();
+	TextList = textlist;
+	textlist.clear();
 
 	bool ignorelines=false; // ignore the lines which are read. This happens, when patch files are created
 	// for multiple keen versions (1.1, 1.34)
@@ -149,7 +149,7 @@ void CPatcher::filterPatches()
 		else if( !ignorelines && !strStartsWith(line,"#") )
 		{
 			// Ignore lines which are meant for other versions and comments.
-			m_TextList.push_back(line);
+			textlist.push_back(line);
 		}
 		TextList.pop_front();
 	}
@@ -161,7 +161,7 @@ void CPatcher::filterPatches()
  * 					which is a vector of strings.
  * \return	true if something next could be read. Otherwise false.
  */
-bool CPatcher::readNextPatchItem(patch_item &PatchItem)
+bool CPatcher::readNextPatchItem(patch_item &PatchItem, std::list<std::string> &textList)
 {
 	// first, read the keyword
 	std::string	line;
@@ -169,11 +169,11 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem)
 	// Look for the patch flag %
 	do
 	{
-		if(m_TextList.empty())
+		if(textList.empty())
 			return false;
 
-		line = *m_TextList.begin();
-		m_TextList.pop_front();
+		line = *textList.begin();
+		textList.pop_front();
 	} while( !line.empty() && line.at(0) != '\%');
 
 	// found! get the keyword itself and make it lower case!

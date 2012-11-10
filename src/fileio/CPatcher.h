@@ -18,7 +18,8 @@ public:
 	CPatcher(CExeFile &ExeFile, bool &is_a_mod);
 	virtual ~CPatcher();
 	
-	void patchMemory();
+	void process();
+	void postProcess();
 	void patchMemfromFile(const std::string& patch_file_name, long offset);
 	void PatchLevelhint(const int level, std::list<std::string> &input);
 	void PatchLevelentry(const int level, std::list<std::string> &input);	
@@ -34,8 +35,8 @@ private:
 	std::string readPatchItemsNextValue(std::list<std::string> &input);
 	bool readIntValue(const std::string &input, long &output);
 	bool readPatchString(const std::string &input, std::string &output);
-	void filterPatches();
-	bool readNextPatchItem(patch_item &PatchItem);
+	void filterPatches(std::list<std::string> &textlist);
+	bool readNextPatchItem(patch_item &PatchItem, std::list<std::string> &textList);
 
 	bool loadPatchfile();
 	
@@ -47,6 +48,11 @@ private:
 	bool &m_is_a_mod;
 	
 	std::list<std::string> m_TextList;
+	
+	// This is a list of patch items which go through the post process of the engine
+	// Some items need to be patched after all resources have been loaded.
+	// It makes some modding much more flexible
+	std::list<patch_item> mPostPatchItems;
 };
 
 #endif /* CPATCHER_H_ */
