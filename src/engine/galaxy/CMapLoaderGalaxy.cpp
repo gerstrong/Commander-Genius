@@ -57,28 +57,53 @@ size_t CMapLoaderGalaxy::getMapheadOffset()
 	return offset;
 }
 
-bool CMapLoaderGalaxy::gotoSignature(std::ifstream &MapFile)
+
+size_t findInStream(std::ifstream &stream, const std::string &sig)
 {
-	char c;
-	while(!MapFile.eof())
+  const size_t start = stream.tellg();
+    
+  while(!stream.eof())
+  {	
+	auto it = sig.begin();
+	for( size_t s=0 ; it != sig.end() ; it++, s++ )
 	{
-		c = MapFile.get();
-		if(c == '!')
-		{
-			c = MapFile.get();
-			if(c == 'I')
-			{
-				c = MapFile.get();
-				if(c == 'D')
-				{
-					c = MapFile.get();
-					if(c == '!')
-						return true;
-				}
-			}
-		}
+	  char c = stream.get();
+	  
+	  if( sig[s] != c )
+	    break;
 	}
-	return false;
+	
+	if( it == sig.end() )
+	  break;
+  }
+  
+  size_t pos;
+  
+  if(stream.eof())
+    pos = std::string::npos;
+  else
+    pos = stream.tellg();
+  
+  stream.seekg(start);
+  
+  return pos;
+}
+
+
+bool CMapLoaderGalaxy::gotoNextSignature(std::ifstream &MapFile)
+{
+  // try the original "!ID!" Sig...
+	size_t start = MapFile.tellg();
+	size_t pos = findInStream(MapFile, "!ID!");
+	MapFile.seekg( pos, std::ios::beg );
+	
+	if(pos != std::string::npos)
+	  return true;
+
+	g_pLogFile->textOut("Warning! Your are opening a map which is not correctly signed. Some Mods, using different Editors, have that issue!!");
+	g_pLogFile->textOut("If you are playing a mod it might okay though. If it's an original game, it is tainted. Continuing...");
+	
+	return false;	
 }
 
 void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
@@ -136,143 +161,153 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 
 bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 {
-	// Get the MAPHEAD Location from within the Exe File or an external file
-	std::vector<char> mapHeadContainer;
-	std::string path = m_ExeFile.getDataDirectory();
-
-
-    Map.gotoPos(0,0);
-    Map.setLevel(level);
-    Map.isSecret = false;
-
-	// In case no external file was read, let's use data from the embedded data
-	byte *Maphead = m_ExeFile.getRawData() + getMapheadOffset();
-
-	// In case there is an external file read it into the container and replace the pointer
-	if(gpResource->mapheadFilename != "")
-	{
-		std::ifstream MapHeadFile;
-		if(OpenGameFileR(MapHeadFile, getResourceFilename(gpResource->mapheadFilename,path,true,false), std::ios::binary))
-		{
-			// get length of file:
-			MapHeadFile.seekg (0, std::ios::end);
-			unsigned int length = MapHeadFile.tellg();
-			MapHeadFile.seekg (0, std::ios::beg);
-			mapHeadContainer.resize(length);
-			MapHeadFile.read(&mapHeadContainer[0],length*sizeof(char));
-			Maphead = reinterpret_cast<byte*>(&mapHeadContainer[0]);
-		}
-		else
-		{
-			g_pLogFile->textOut("ERROR The MapHead File was not found. Please check that file or take a look into your patch file");
-		}
-	}
-
-	word magic_word;
-	longword level_offset;
-
-	// Get the magic number of the level data from MAPHEAD Located in the EXE-File.
-	// This is used for the decompression.
-	magic_word = READWORD(Maphead);
-
-	// Get location of the level data from MAPHEAD Located in the EXE-File.
-	Maphead += level*sizeof(longword);
-	level_offset = READLONGWORD(Maphead);
-
-	// Open the Gamemaps file
-	std::string gamemapfile = gpResource->gamemapsFilename;
-
-	std::ifstream MapFile;
-	if(OpenGameFileR(MapFile, getResourceFilename(gamemapfile,path,true,false), std::ios::binary))
-	{
-		if(level_offset != 0)
-		{
-			// Then jump to that location and read the level map data
-			MapFile.seekg (level_offset, std::ios::beg);
-
-			// Get the level plane header
-			if(gotoSignature(MapFile))
-			{
-				/*
-				  Plane Offsets:  Long[3]   Offset within GAMEMAPS to the start of the plane.  The first offset is for the background plane, the
-                            second for the foreground plane, and the third for the info plane (see below).
-				  Plane Lengths:  Word[3]   Length (in bytes) of the compressed plane data.  The first length is for the background plane, the
-                            second for the foreground plane, and the third for the info plane (see below).
-				  Width:          Word      Level width (in tiles).
-				  Height:         Word      Level height (in tiles).  Together with Width, this can be used to calculate the uncompressed
-											size of plane data, by multiplying Width by Height and multiplying the result by sizeof(Word).
-				  Name:           Byte[16]  Null-terminated string specifying the name of the level.  This name is used only by TED5, not by Keen.
-				  Signature:      Byte[4]   Marks the end of the Level Header.  Always "!ID!".
-				 */
-				int jumpback = 3*sizeof(longword) + 3*sizeof(word) +
-								  2*sizeof(word) + 16*sizeof(byte) + 4*sizeof(byte);
-
-				int headbegin = static_cast<int>(MapFile.tellg()) - jumpback;
-				MapFile.seekg( headbegin, std::ios_base::beg);
-
-				// Get the header of level data
-				longword Plane_Offset[3];
-				longword Plane_Length[3];
-				word Width, Height;
-				char name[17];
-
-				// Get the plane offsets
-				Plane_Offset[0] = fgetl(MapFile);
-				Plane_Offset[1] = fgetl(MapFile);
-				Plane_Offset[2] = fgetl(MapFile);
-
-				// Get the dimensions of the level
-				Plane_Length[0] = fgetw(MapFile);
-				Plane_Length[1] = fgetw(MapFile);
-				Plane_Length[2] = fgetw(MapFile);
-
-				Width = fgetw(MapFile);
-				Height = fgetw(MapFile);
-
-				for(int c=0 ; c<16 ; c++)
-					name[c] = MapFile.get();
-				name[16] = '\0';
-
-				// Get and check the signature
-				g_pLogFile->textOut("Loading the Level \"" + static_cast<std::string>(name) + "\" (Level No. "+ itoa(level) + ")<br>" );
-				Map.setLevelName(name);
-
-				// Then decompress the level data using rlew and carmack
-				g_pLogFile->textOut("Decompressing the Map...<br>" );
-
-				// Start with the Background
-				Map.createEmptyDataPlane(0, Width, Height);
-				Map.createEmptyDataPlane(1, Width, Height);
-				Map.createEmptyDataPlane(2, Width, Height);
-
-				unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
-				unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
-				unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
-			}
-			Map.collectBlockersCoordiantes();
-			MapFile.close();
-
-			// Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
-			// We only will show the first two of them in the screen, because the Foes one
-			// is the one which will be used for spawning the foes (Keen, platforms, enemies, etc.)
-			spawnFoes(Map);
-		}
-		else
-		{
-			MapFile.close();
-			g_pLogFile->textOut("This Level doesn't exist in GameMaps");
-			return false;
-		}
-	}
-	else
-	{
-		return false;
-	}
-
-    // Set Scrollbuffer
-    g_pVideoDriver->updateScrollBuffer(Map);
-
-    return true;
+  // Get the MAPHEAD Location from within the Exe File or an external file
+  std::vector<char> mapHeadContainer;
+  std::string path = m_ExeFile.getDataDirectory();
+  
+  
+  Map.gotoPos(0,0);
+  Map.setLevel(level);
+  Map.isSecret = false;
+  
+  // In case no external file was read, let's use data from the embedded data
+  byte *Maphead = m_ExeFile.getRawData() + getMapheadOffset();
+  
+  // In case there is an external file read it into the container and replace the pointer
+  if(gpResource->mapheadFilename != "")
+  {
+    std::ifstream MapHeadFile;
+    if(OpenGameFileR(MapHeadFile, getResourceFilename(gpResource->mapheadFilename,path,true,false), std::ios::binary))
+    {
+      // get length of file:
+      MapHeadFile.seekg (0, std::ios::end);
+      unsigned int length = MapHeadFile.tellg();
+      MapHeadFile.seekg (0, std::ios::beg);
+      mapHeadContainer.resize(length);
+      MapHeadFile.read(&mapHeadContainer[0],length*sizeof(char));
+      Maphead = reinterpret_cast<byte*>(&mapHeadContainer[0]);
+    }
+    else
+    {
+      g_pLogFile->textOut("ERROR The MapHead File was not found. Please check that file or take a look into your patch file");
+    }
+  }
+  
+  word magic_word;
+  longword level_offset;
+  
+  // Get the magic number of the level data from MAPHEAD Located in the EXE-File.
+  // This is used for the decompression.
+  magic_word = READWORD(Maphead);
+  
+  // Get location of the level data from MAPHEAD Located in the EXE-File.
+  Maphead += level*sizeof(longword);
+  level_offset = READLONGWORD(Maphead);
+  
+  // Open the Gamemaps file
+  std::string gamemapfile = gpResource->gamemapsFilename;
+  
+  std::ifstream MapFile;
+  if(OpenGameFileR(MapFile, getResourceFilename(gamemapfile,path,true,false), std::ios::binary))
+  {
+    if(level_offset != 0)
+    {
+      // Then jump to that location and read the level map data
+      MapFile.seekg (level_offset, std::ios::beg);
+      
+      int headbegin;
+      
+      // Get the level plane header
+      if(gotoNextSignature(MapFile))
+      {
+	/*
+	 *			  Plane Offsets:  Long[3]   Offset within GAMEMAPS to the start of the plane.  The first offset is for the background plane, the
+	 *                           second for the foreground plane, and the third for the info plane (see below).
+	 *			  Plane Lengths:  Word[3]   Length (in bytes) of the compressed plane data.  The first length is for the background plane, the
+	 *                           second for the foreground plane, and the third for the info plane (see below).
+	 *			  Width:          Word      Level width (in tiles).
+	 *			  Height:         Word      Level height (in tiles).  Together with Width, this can be used to calculate the uncompressed
+	 *										size of plane data, by multiplying Width by Height and multiplying the result by sizeof(Word).
+	 *			  Name:           Byte[16]  Null-terminated string specifying the name of the level.  This name is used only by TED5, not by Keen.
+	 *			  Signature:      Byte[4]   Marks the end of the Level Header.  Always "!ID!".
+	 */
+	int jumpback = 3*sizeof(longword) + 3*sizeof(word) +
+	2*sizeof(word) + 16*sizeof(byte) + 4*sizeof(byte);
+	
+	headbegin = static_cast<int>(MapFile.tellg()) - jumpback;
+      }
+      else
+      {
+	MapFile.clear();
+	headbegin =  level_offset;
+      }
+      
+      MapFile.seekg( headbegin, std::ios_base::beg);
+      
+      // Get the header of level data
+      longword Plane_Offset[3];
+      longword Plane_Length[3];
+      word Width, Height;
+      char name[17];
+      
+      // Get the plane offsets
+      Plane_Offset[0] = fgetl(MapFile);
+      Plane_Offset[1] = fgetl(MapFile);
+      Plane_Offset[2] = fgetl(MapFile);
+      
+      // Get the dimensions of the level
+      Plane_Length[0] = fgetw(MapFile);
+      Plane_Length[1] = fgetw(MapFile);
+      Plane_Length[2] = fgetw(MapFile);
+      
+      Width = fgetw(MapFile);
+      Height = fgetw(MapFile);
+      
+      for(int c=0 ; c<16 ; c++)
+	name[c] = MapFile.get();
+      name[16] = '\0';
+      
+      // Get and check the signature
+      g_pLogFile->textOut("Loading the Level \"" + static_cast<std::string>(name) + "\" (Level No. "+ itoa(level) + ")<br>" );
+      Map.setLevelName(name);
+      
+      // Then decompress the level data using rlew and carmack
+      g_pLogFile->textOut("Decompressing the Map...<br>" );
+      
+      // Start with the Background
+      Map.createEmptyDataPlane(0, Width, Height);
+      Map.createEmptyDataPlane(1, Width, Height);
+      Map.createEmptyDataPlane(2, Width, Height);
+      
+      unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
+      unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
+      unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+      
+      
+      Map.collectBlockersCoordiantes();
+      MapFile.close();
+      
+      // Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
+      // We only will show the first two of them in the screen, because the Foes one
+      // is the one which will be used for spawning the foes (Keen, platforms, enemies, etc.)
+      spawnFoes(Map);
+    }
+    else
+    {
+      MapFile.close();
+      g_pLogFile->textOut("This Level doesn't exist in GameMaps");
+      return false;
+    }
+  }
+  else
+  {
+    return false;
+  }
+  
+  // Set Scrollbuffer
+  g_pVideoDriver->updateScrollBuffer(Map);
+  
+  return true;
 }
 
 /**

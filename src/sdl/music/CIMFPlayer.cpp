@@ -216,6 +216,12 @@ bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 	Uint16 music_order = 0;
 	const int Idx = ExeFile.getEpisode()-4;
 	memcpy( &music_order, ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16), sizeof(Uint16));
+	
+	if(music_order > 20)
+	{
+	  g_pLogFile->textOut("Sorry, this track is invalid! Please report the developers.");
+	  return false;
+	}
 
 	return loadMusicTrack(ExeFile, music_order);
 }
