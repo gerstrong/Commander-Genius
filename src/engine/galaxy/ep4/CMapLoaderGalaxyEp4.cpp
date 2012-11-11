@@ -70,7 +70,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 {
 
 	CGalaxySpriteObject* commonfoe = CMapLoaderGalaxy::addFoe(Map, foe, x, y);
-
+	const Difficulty difficulty = g_pBehaviorEngine->mDifficulty;
 
 	// If a foe was found, that is common in all the galaxy games, just return.
 	if( commonfoe )
@@ -101,6 +101,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		//This is a council member.
 		p_newfoe = new galaxy::CCouncilMember(&Map, foe, x, y);
 		break;
+		
+	// case 5: TODO: Yet unknown.
 
 	case 6:
 		//This is pincess Lindsey.
@@ -141,7 +143,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 13:
 		// This is an egg
-		if( g_pBehaviorEngine->mDifficulty > 1 )
+		if( difficulty > EASY )
 			p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y);
 		else
 			p_newfoe = new galaxy::CEgg(&Map, foe, x, y);
@@ -184,6 +186,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
 		break;
 
+	/*case 25: TODO: Find out, what these do...
+	case 26:*/
 
 	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, UP, 0x316A); break;
@@ -210,24 +214,28 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 
 	case 46:
-		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= HARD )
-			p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
+		// This is Skypest
+		if( difficulty < HARD ) break;
+		
+		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
 		break;
 
 	case 47:
 		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= NORMAL )
-			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		if( difficulty < NORMAL ) break;
+			
+		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 
 	case 48:
 		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= HARD )
-			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		if( difficulty < HARD )
+			
+		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 
-
+	//case 49: TODO:
+		
 	case 50:
 		// This is the Berkeloid
 		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);

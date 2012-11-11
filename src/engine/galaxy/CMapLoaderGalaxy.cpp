@@ -93,7 +93,6 @@ size_t findInStream(std::ifstream &stream, const std::string &sig)
 bool CMapLoaderGalaxy::gotoNextSignature(std::ifstream &MapFile)
 {
   // try the original "!ID!" Sig...
-	size_t start = MapFile.tellg();
 	size_t pos = findInStream(MapFile, "!ID!");
 	MapFile.seekg( pos, std::ios::beg );
 	
