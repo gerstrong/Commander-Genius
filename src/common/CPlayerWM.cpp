@@ -166,15 +166,14 @@ void CPlayer::MountNessieIfAvailable()
 		if((*obj)->m_type == OBJ_MESSIE)
 		{
 			CMessie &Messie = dynamic_cast<CMessie&>(**obj);
-			Uint16 dist = 1<<CSF;
-			Uint16 nessie_x, nessie_y;
+			int dist = 1<<CSF;
 
-			nessie_x = (*obj)->getXPosition();
-			nessie_y = (*obj)->getYPosition();
+			const int nessie_x = (*obj)->getXPosition();
+			const int nessie_y = (*obj)->getYPosition();
 
 			// Look if Nessie is nearby
-			Uint32 x = getXPosition();
-			Uint32 y = getYPosition();
+			const int x = getXPosition();
+			const int y = getYPosition();
 			if( x >= nessie_x-dist+(*obj)->m_BBox.x1 and x <= nessie_x+dist+(*obj)->m_BBox.x2 )
 			{
 				if( y >= nessie_y-dist+(*obj)->m_BBox.y1 and y <= nessie_y+dist+(*obj)->m_BBox.y2 )

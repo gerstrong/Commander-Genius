@@ -219,28 +219,24 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		
 		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
 		break;
-
-	case 47:
-		// This is the Lick
-		if( difficulty < NORMAL ) break;
-			
-		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
-		break;
-
-	case 48:
-		// This is the Lick
-		if( difficulty < HARD )
-			
-		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
-		break;
-
-	//case 49: TODO:
 		
-	case 50:
+		
+	// This is the Lick
+	case 48:  if( difficulty < HARD ) break;
+	case 47:  if( difficulty < NORMAL ) break;
+		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		break;		
+			
+		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		break;
+
+	
+	case 50: if( difficulty < HARD ) break;
+	case 49: if( difficulty < NORMAL ) break;
 		// This is the Berkeloid
 		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
 		break;
-
+		
 	case 71:
 		// Watermine vertical
 		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, true);

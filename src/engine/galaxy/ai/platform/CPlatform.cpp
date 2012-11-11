@@ -138,7 +138,7 @@ void CPlatform::process()
 		    if(mp_CarriedPlayer->getActionNumber(A_KEEN_STAND) || mp_CarriedPlayer->getActionNumber(A_KEEN_ON_PLAT))
 		    {
 			// Check that he correctly stands on the platform
-			const int standY = getYUpPos()+1;
+			const unsigned int standY = getYUpPos()+1;
 			
 			if( standY > mp_CarriedPlayer->getYDownPos() )
 			    mp_CarriedPlayer->moveDown((standY-mp_CarriedPlayer->getYDownPos())/2 + 1);
