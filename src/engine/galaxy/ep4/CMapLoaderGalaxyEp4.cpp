@@ -35,9 +35,11 @@
 #include "engine/galaxy/ai/ep4/CInchWorm.h"
 #include "engine/galaxy/ai/ep4/CFoot.h"
 
-// TODO: I'm note sure yet, if those are really common platforms
 #include "engine/galaxy/ai/platforms.h"
 #include "engine/galaxy/ai/CFlag.h"
+#include "engine/galaxy/ai/Autogun.h"
+
+#include "engine/galaxy/ai/CSpriteItem.h"
 
 namespace galaxy
 {
@@ -202,6 +204,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CMiragia(&Map, foe, loc);
 		break;
 
+	case 34:
+		// Place a gun in case Keen is missing bullets
+		if(m_Inventory.Item.m_bullets < 5)
+		{
+		  p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, 127);
+		}
+		break;
+
 	case DIVE_SUIT:
 		// Place Miragia in Episode 4 on the Map
 		p_newfoe = new galaxy::CDiveSuit(&Map, foe, x, y);
@@ -236,6 +246,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		// This is the Berkeloid
 		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
 		break;
+
+	// Dart guns	
+	case 55 /*... 58*/: 
+	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
 		
 	case 71:
 		// Watermine vertical
@@ -245,6 +259,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		// Watermine horizontal
 		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, false);
 		break;
+	
+	// Dart guns			
+	case 81 /*... 84*/: if( difficulty < NORMAL ) break;
+	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
 
 	case 87:
 		// Dope Fish
