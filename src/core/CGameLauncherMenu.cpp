@@ -183,8 +183,6 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 			g_pSound->loadSoundData();
 		}
 		
-		Patcher.postProzess();
-
 		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
 		
 		// If there are patches left that must be apllied later, do it here!

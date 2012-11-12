@@ -18,7 +18,8 @@ public:
   
 private:
   
-  void waiting();
+  void waiting();  
+  void setWaitStatus();
   void flying();
   
   void (AutoGun::*processState)();
@@ -29,6 +30,7 @@ private:
   int time;
   
   VectorD2<int> origin;
+  int baseSprite;
 };
 
 };

@@ -248,7 +248,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 
 	// Dart guns	
-	case 55 /*... 58*/: 
+	case 55 ... 58: 
 	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
 		
 	case 71:
@@ -261,7 +261,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 	
 	// Dart guns			
-	case 81 /*... 84*/: if( difficulty < NORMAL ) break;
+	case 81 ... 84: if( difficulty < NORMAL ) break;
 	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
 
 	case 87:

@@ -9,11 +9,56 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 time(0)
 {
   // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5
-  processState = &AutoGun::waiting;
-  m_Pos.x += (7<<STC);
-  origin = getPosition();   
-  sprite = 258;
+  
+  // Set the proper direction
+  switch( foeID )
+  {      	  
+      case 56:
+      case 82:	  
+	  xDirection = LEFT;
+	  yDirection = CENTER;  
+	  baseSprite = 260;	  
+  	  m_Pos.x += (1<<CSF);
+	  m_Pos.y += (7<<STC);
+	  break;
+	  
+      case 57:
+      case 83:	  
+	  xDirection = CENTER;
+	  yDirection = UP;  
+	  baseSprite = 256;	  
+	  m_Pos.y -= (1<<CSF);
+	  m_Pos.x += (7<<STC);
+	  break;
+	  
+      case 58:
+      case 84:	  
+	  xDirection = RIGHT;
+	  yDirection = CENTER;  
+	  baseSprite = 262;	  
+	  m_Pos.x -= (1<<CSF);
+	  m_Pos.y += (7<<STC);
+	  break;
+	  
+      default:
+      case 55:
+      case 81:
+	  
+	  xDirection = CENTER;
+	  yDirection = DOWN;  
+	  baseSprite = 258;
+	  m_Pos.x += (7<<STC);
+	  break;
+  }
+
+  processState = &AutoGun::waiting;  
+  sprite = baseSprite;
   dontdraw = true;
+  
+  origin = getPosition();   
+  
+  performCollisions();
+  
 }
 
 void AutoGun::waiting()
@@ -40,18 +85,39 @@ void AutoGun::getTouchedBy(CSpriteObject &theObject)
 }
 
 
-// When autogun is waiting to shoot!
-void AutoGun::flying()
+
+void AutoGun::setWaitStatus()
 {
-  moveDown(FLY_SPEED);  
-  
-  if(blockedd)
-  {
     // return to origin and wait again!
     moveToForce(origin);    
     processState = &AutoGun::waiting;
     dontdraw = true;
-  }
+}
+
+
+
+// When autogun is waiting to shoot!
+void AutoGun::flying()
+{
+    
+  moveXDir(xDirection*FLY_SPEED);
+  moveYDir(yDirection*FLY_SPEED);
+    
+  sprite = baseSprite;
+  
+  if(rand() % 2 != 0)
+      sprite++;
+  
+  if(yDirection == DOWN && blockedd)
+    setWaitStatus();
+  else if(yDirection == UP && blockedu)
+    setWaitStatus();
+
+  if(xDirection == LEFT && blockedl)
+    setWaitStatus();
+  else if(xDirection == RIGHT && blockedr)
+    setWaitStatus();
+  
 }
 
 // When autoguns bullet is flying over the screen!
