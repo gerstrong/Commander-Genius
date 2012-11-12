@@ -115,7 +115,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 
 	// Patch the EXE-File-Data directly in the memory.
 	CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
-	Patcher.patchMemory();
+	Patcher.process();
 
 	g_pBehaviorEngine->setEpisode(Episode);
 
@@ -150,6 +150,9 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		}
 
 		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+		
+		// If there are patches left that must be apllied later, do it here!
+		Patcher.postProcess();		
 
 		return true;
 	}
@@ -183,6 +186,9 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		Patcher.postProzess();
 
 		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+		
+		// If there are patches left that must be apllied later, do it here!
+		Patcher.postProcess();
 
 		return true;
 	}

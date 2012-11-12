@@ -35,7 +35,7 @@ public:
 
 	unsigned int tiletrailX[NESSIETRAILLEN+1];
 	unsigned int tiletrailY[NESSIETRAILLEN+1];
-	int tiletrailhead;
+	unsigned int tiletrailhead;
 
 	char animframe, animtimer;
 	unsigned int destx, desty;

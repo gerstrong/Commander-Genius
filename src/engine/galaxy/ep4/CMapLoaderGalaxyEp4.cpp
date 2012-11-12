@@ -35,9 +35,11 @@
 #include "engine/galaxy/ai/ep4/CInchWorm.h"
 #include "engine/galaxy/ai/ep4/CFoot.h"
 
-// TODO: I'm note sure yet, if those are really common platforms
 #include "engine/galaxy/ai/platforms.h"
 #include "engine/galaxy/ai/CFlag.h"
+#include "engine/galaxy/ai/Autogun.h"
+
+#include "engine/galaxy/ai/CSpriteItem.h"
 
 namespace galaxy
 {
@@ -70,7 +72,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 {
 
 	CGalaxySpriteObject* commonfoe = CMapLoaderGalaxy::addFoe(Map, foe, x, y);
-
+	const Difficulty difficulty = g_pBehaviorEngine->mDifficulty;
 
 	// If a foe was found, that is common in all the galaxy games, just return.
 	if( commonfoe )
@@ -101,6 +103,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		//This is a council member.
 		p_newfoe = new galaxy::CCouncilMember(&Map, foe, x, y);
 		break;
+		
+	// case 5: TODO: Yet unknown.
 
 	case 6:
 		//This is pincess Lindsey.
@@ -141,7 +145,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 13:
 		// This is an egg
-		if( g_pBehaviorEngine->mDifficulty > 1 )
+		if( difficulty > EASY )
 			p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y);
 		else
 			p_newfoe = new galaxy::CEgg(&Map, foe, x, y);
@@ -184,6 +188,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
 		break;
 
+	/*case 25: TODO: Find out, what these do...
+	case 26:*/
 
 	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, UP, 0x316A); break;
@@ -198,6 +204,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CMiragia(&Map, foe, loc);
 		break;
 
+	case 34:
+		// Place a gun in case Keen is missing bullets
+		if(m_Inventory.Item.m_bullets < 5)
+		{
+		  p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, 127);
+		}
+		break;
+
 	case DIVE_SUIT:
 		// Place Miragia in Episode 4 on the Map
 		p_newfoe = new galaxy::CDiveSuit(&Map, foe, x, y);
@@ -210,29 +224,33 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 
 	case 46:
-		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= HARD )
-			p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
+		// This is Skypest
+		if( difficulty < HARD ) break;
+		
+		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
+		break;
+		
+		
+	// This is the Lick
+	case 48:  if( difficulty < HARD ) break;
+	case 47:  if( difficulty < NORMAL ) break;
+		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		break;		
+			
+		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;
 
-	case 47:
-		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= NORMAL )
-			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
-		break;
-
-	case 48:
-		// This is the Lick
-		if( g_pBehaviorEngine->mDifficulty >= HARD )
-			p_newfoe = new galaxy::CLick(&Map, foe, x, y);
-		break;
-
-
-	case 50:
+	
+	case 50: if( difficulty < HARD ) break;
+	case 49: if( difficulty < NORMAL ) break;
 		// This is the Berkeloid
 		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
 		break;
 
+	// Dart guns	
+	case 55 /*... 58*/: 
+	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
+		
 	case 71:
 		// Watermine vertical
 		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, true);
@@ -241,6 +259,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		// Watermine horizontal
 		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, false);
 		break;
+	
+	// Dart guns			
+	case 81 /*... 84*/: if( difficulty < NORMAL ) break;
+	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
 
 	case 87:
 		// Dope Fish

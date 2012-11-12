@@ -17,9 +17,10 @@
 #include "common/CBehaviorEngine.h"
 #include "CLogFile.h"
 
-void CBehaviorEngine::addMessage(const std::string &name,
-								const std::string &message)
-{	stringmap[name] = message;	}
+void CBehaviorEngine::setMessage(const std::string &name, const std::string &message)
+{	
+  stringmap[name] = message;	
+}
 
 /**
  * \brief This function reads the teleporter table in case there is any.

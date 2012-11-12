@@ -77,18 +77,31 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 27:
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C );
 			break;
+
+        // Var Plats			  
 	case 36:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, UP, 0x1B5E);
-			break;
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, UP, 0x1B5E); break;
+	case 37:
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, 0x1B5E);	break;
 	case 38:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, DOWN, 0x1B5E);
-			break;
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, DOWN, 0x1B5E);	break;
+	case 39:
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, 0x1B5E);	break;
+			
+			
 	case 40:
 			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
 			break;
-	case 80:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, UP, 0x1B7C);
-			break;
+	
+	// Var Plats
+	case 80: 
+	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, UP, 0x1B7C); break;
+	case 81: 
+	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, 0x1B7C); break;
+	case 82: 
+	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, DOWN, 0x1B7C); break;
+	case 83:
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, 0x1B7C); break;
 
 	case 85:
 			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, x, y );

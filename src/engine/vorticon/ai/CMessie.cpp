@@ -159,7 +159,7 @@ void CMessie::move_nessie()
 
 void CMessie::nessie_find_next_checkpoint()
 {
-	int x,y,i;
+	int x,y;
 	int xa,ya;
 	unsigned int destx, desty;
 
@@ -183,7 +183,7 @@ void CMessie::nessie_find_next_checkpoint()
 			{
 				// find out if this is one of the last tiles we've been to
 				bool oneoflasttiles = false;
-				for(i=0;i<NESSIETRAILLEN;i++)
+				for(size_t i=0;i<NESSIETRAILLEN;i++)
 				{
 					if (tiletrailX[i]==destx &&
 							tiletrailY[i]==desty)
