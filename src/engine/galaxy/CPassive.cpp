@@ -45,7 +45,7 @@ void CPassiveGalaxy::processIntro()
 	m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
 
 	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
-	g_pGfxEngine->setupEffect(new CPixelate(4));
+	g_pGfxEngine->setupEffect(new CPixelate(2));
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
 	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface );

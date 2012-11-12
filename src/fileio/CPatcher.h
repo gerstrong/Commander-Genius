@@ -16,7 +16,6 @@
 class CPatcher {
 public:
 	CPatcher(CExeFile &ExeFile, bool &is_a_mod);
-	virtual ~CPatcher();
 	
 	void patchMemory();
 	void patchMemfromFile(const std::string& patch_file_name, long offset);

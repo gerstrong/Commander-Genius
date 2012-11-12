@@ -15,16 +15,44 @@
 #include "common/CBehaviorEngine.h"
 
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
-	mp_exe(p_exebuf)
+	mp_exe(p_exebuf),
+	mOffset(0)
 {
 	m_episode = episode;
 	m_version = version;
 }
 
+void CMessages::setDecodeOffset(const unsigned int off)
+{
+    mOffset = off;
+}
+
+std::pair<std::string, std::string>
+CMessages::extractNextString( const std::string matchingstring )
+{
+	std::string Text;
+
+	for(unsigned long pos=mOffset ; ; pos++)
+	{
+		if(mp_exe[pos] == 0x0)
+		{
+		    while(mp_exe[pos] == 0x0)
+			pos++;
+			
+		    mOffset = pos;
+		    break;
+		}
+
+		Text += static_cast<char>(mp_exe[pos]);
+	}
+
+	return make_pair(matchingstring, Text);    
+}
+
 // This function reads the strings specified between the offsets,
 // and creates a pair for for the map
 std::pair<std::string, std::string>
-CMessages::extractString( std::string matchingstring, unsigned long start, unsigned long end, long offset )
+CMessages::extractString( const std::string matchingstring, unsigned long start, unsigned long end, long offset )
 {
 	std::string Text;
 
@@ -54,32 +82,33 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 		case 140:
 		{
 			// Level loading Texts (2E00)
-			StringMap.insert( extractString( "WORLDMAP_LOAD_TEXT", 0x1F1F0, 0x1F20F ) );
-			StringMap.insert( extractString( "LEVEL1_LOAD_TEXT"  , 0x1F210, 0x1F23F ) );
-			StringMap.insert( extractString( "LEVEL2_LOAD_TEXT"  , 0x1F240, 0x1F25F ) );
-			StringMap.insert( extractString( "LEVEL3_LOAD_TEXT"  , 0x1F260, 0x1F28F ) );
-			StringMap.insert( extractString( "LEVEL4_LOAD_TEXT"  , 0x1F290, 0x1F2CF ) );
-			StringMap.insert( extractString( "LEVEL5_LOAD_TEXT"  , 0x1F2D0, 0x1F2FF ) );
-			StringMap.insert( extractString( "LEVEL6_LOAD_TEXT"  , 0x1F300, 0x1F32F ) );
-			StringMap.insert( extractString( "LEVEL7_LOAD_TEXT"  , 0x1F330, 0x1F34F ) );
-			StringMap.insert( extractString( "LEVEL8_LOAD_TEXT"  , 0x1F350, 0x1F37F ) );
-			StringMap.insert( extractString( "LEVEL9_LOAD_TEXT"  , 0x1F380, 0x1F39F ) );
-			StringMap.insert( extractString( "LEVEL10_LOAD_TEXT" , 0x1F3A0, 0x1F3CF ) );
-			StringMap.insert( extractString( "LEVEL11_LOAD_TEXT" , 0x1F3D0, 0x1F3FF ) );
-			StringMap.insert( extractString( "LEVEL12_LOAD_TEXT" , 0x1F400, 0x1F42F ) );
-			StringMap.insert( extractString( "LEVEL13_LOAD_TEXT" , 0x1F430, 0x1F46F ) );
-			StringMap.insert( extractString( "LEVEL14_LOAD_TEXT" , 0x1F470, 0x1F4AF ) );
-			StringMap.insert( extractString( "LEVEL15_LOAD_TEXT" , 0x1F4B0, 0x1F4DF ) );
-			StringMap.insert( extractString( "LEVEL16_LOAD_TEXT" , 0x1F4E0, 0x1F50F ) );
-			StringMap.insert( extractString( "LEVEL17_LOAD_TEXT" , 0x1F510, 0x1F53F ) );
-			StringMap.insert( extractString( "LEVEL18_LOAD_TEXT" , 0x1F540, 0x1F57F ) );
+			setDecodeOffset(0x1F1F0);
+			StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL1_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL2_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL3_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL4_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL5_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL6_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL7_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL8_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL9_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL10_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL11_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL12_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL13_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL14_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL15_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL16_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
 
 			// Elder Janitor Text. Strangely it is the end of the level load text being to only
 			// in that data segment
-			StringMap.insert( extractString( "JANITOR_TEXT1", 0x1F580, 0x1F5DF ) );
-			StringMap.insert( extractString( "JANITOR_TEXT2", 0x1F5E0, 0x1F62F ) );
-			StringMap.insert( extractString( "JANITOR_TEXT3", 0x1F630, 0x1F64F ) );
-			StringMap.insert( extractString( "JANITOR_TEXT4", 0x1F650, 0x1F688 ) );
+			StringMap.insert( extractNextString( "JANITOR_TEXT1" ) );
+			StringMap.insert( extractNextString( "JANITOR_TEXT2" ) );
+			StringMap.insert( extractNextString( "JANITOR_TEXT3" ) );
+			StringMap.insert( extractNextString( "JANITOR_TEXT4" ) );
 
 
 			// Now the spoken Messages of some Characters like Lindsey and the elders

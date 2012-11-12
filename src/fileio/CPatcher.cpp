@@ -35,7 +35,7 @@ void CPatcher::patchMemory()
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
 	
-	g_pLogFile->textOut("Trying to load and apply the patch it found...<br>");
+	g_pLogFile->textOut("Trying to load and apply the patch we found...<br>");
 	m_is_a_mod = true;
 	
 	filterPatches();
@@ -325,37 +325,52 @@ void CPatcher::PatchLevelentry(const int level, std::list<std::string> &input)
 {
 	unsigned char *p_patch;
 	unsigned long offset=0;
-	unsigned long end=0;
 
 	// Check for which level is it for.
 	if(m_episode == 4)
 	{
-	    offset = 0x1F1F0 + 0x20*level; 
-	    end = offset + (0x20-1);
+	    offset = 0x1F1F0; 
 	}
-
+	
 	p_patch = m_data + offset;
+	
+	// Go to the offset where the level text has to be
+	for(int i=0 ; i<level ; i++)
+	{
+	    while(*p_patch != 0)
+		p_patch++;
 
-	// Fill everything with zeros, so the old text won't be shown
-	if(end > offset)
-		memset( p_patch, 0, end-offset);
+	    p_patch++;
+	}
+	
 
 	std::string buf;
 	
-	do
+	while( !input.empty() )
 	{
 		buf = input.front();
+		
+		if(buf.empty() || buf == "\r")
+		{
+		    input.pop_front();
+		    continue;
+		}
+		
 		memcpy(p_patch, buf.c_str(), buf.size());
 		input.pop_front();
-		p_patch += buf.size()-1;
-		if(*p_patch != '\r')
-			p_patch++;
+		p_patch += buf.size();
+				
 		p_patch[0] = 0x0A;
-		p_patch[1] = 0x00;
-		p_patch += 2;
-		if( p_patch == m_data+end ) break;
-	} while( !input.empty() );
+		p_patch++;		
+	}
+
+	p_patch[0] = 0x0;
 }
 
-CPatcher::~CPatcher() {}
+void CPatcher::postProzess()
+{
+    
+    
+}
+
 
