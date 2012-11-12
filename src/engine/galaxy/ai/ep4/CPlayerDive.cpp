@@ -38,10 +38,10 @@ m_breathtimer(0)
 
 const int DIE_FALL_MAX_INERTIA = 150;
 
-void CPlayerDive::kill()
+void CPlayerDive::kill(const bool force)
 {
 	// Here were prepare Keen to die, setting the action to die
-	if(!m_Cheatmode.god)
+	if(!m_Cheatmode.god || force)
 	{
 		if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
 			return;

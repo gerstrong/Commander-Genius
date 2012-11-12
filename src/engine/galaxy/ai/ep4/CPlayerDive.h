@@ -24,7 +24,7 @@ public:
 			CInventory &l_Inventory,
 			stCheat &Cheatmode);
 
-	void kill();
+	void kill(const bool force = false);
 	void process();
 
 private:

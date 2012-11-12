@@ -95,7 +95,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 					getProbability(90) )
 			{
 				setAction(A_CLOUD_STRIKING);
-				mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos()-(1<<STC) );
+				mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos()+(2<<CSF) );
 				g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mpBolt ) );
 			}
 

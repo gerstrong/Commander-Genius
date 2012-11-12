@@ -472,15 +472,15 @@ void CPlayerBase::kill(const bool force)
 	return;
     
     // Here were prepare Keen to die, setting the action to die
-	if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
-	    return;
+    if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
+	return;
 	
-	m_dying = true;
-	yinertia = -DIE_FALL_MAX_INERTIA;
-	setAction( A_KEEN_DIE + (rand()%2) );
-	solid = false;
-	honorPriority = false;
-	g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
+    m_dying = true;
+    yinertia = -DIE_FALL_MAX_INERTIA;
+    setAction( A_KEEN_DIE + (rand()%2) );
+    solid = false;
+    honorPriority = false;
+    g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
 }
 
 

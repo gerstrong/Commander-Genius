@@ -23,7 +23,7 @@ A_SLUG_STUNNED_ALT = 4
 };
 
 const int SLUG_MOVE_SPEED = 1;
-const int SLUG_MOVE_TIMER = 10;
+const int SLUG_MOVE_TIMER = 8;
 
 CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 		std::vector< SmartPointer<CGalaxySpriteObject> >&ObjectPtrs) :
@@ -42,13 +42,8 @@ m_timer(0)
 
 
 
-
-
 void CPoisonSlug::processCrawling()
 {
-	// Check if there is a cliff
-	//performCliffStop(m_Action.velX<<1);
-
 	if( m_timer < SLUG_MOVE_TIMER )
 	{
 		m_timer++;
@@ -65,8 +60,11 @@ void CPoisonSlug::processCrawling()
 		m_timer = 0;
 		setAction( A_SLUG_POOING );
 		playSound( SOUND_SLUG_DEFECATE );
-		CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXLeftPos(), getYDownPos()-(1<<CSF));
+		CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXMidPos(), getYDownPos()-(1<<CSF));
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( slime ) );
+		
+		// Turn around!
+		xDirection = -xDirection; 
 		return;
 	}
 

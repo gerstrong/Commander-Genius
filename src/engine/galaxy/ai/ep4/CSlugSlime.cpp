@@ -36,7 +36,6 @@ void CSlugSlime::process()
 	
 	if(!processActionRoutine())
 			exists = false;
-
 }
 
 };

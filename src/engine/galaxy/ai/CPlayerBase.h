@@ -138,7 +138,7 @@ public:
 
 	void processDead();
 	virtual void processDying();
-	void kill(const bool force = false);
+	virtual void kill(const bool force = false);
 
 	/**
 	 * Happens when usually the Dopefish eats Keen
