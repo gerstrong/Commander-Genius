@@ -77,7 +77,7 @@ void CPlayer::processInLevel()
 
     processEvents();
 
-    if(supportedbyobject)
+    if(pSupportedbyobject)
     	blockedd = true;
 }
 
@@ -90,7 +90,7 @@ void CPlayer::touchedExit(int mpx)
 	{
 		// don't allow player to walk through a door if he's standing
 		// on an object such as a platform or an enemy
-		if (supportedbyobject)	return;
+		if (pSupportedbyobject)	return;
 		
 		ankhtime = 0;
 		
@@ -650,7 +650,7 @@ void CPlayer::Playerfalling()
 	if( behaviour>=2 && behaviour<=5 )
 		blockedu = true; // This workaround prevents the player from falling through doors.
 
-	if(!blockedd && !pjumping && !supportedbyobject)
+	if(!blockedd && !pjumping && !pSupportedbyobject)
 	{ // lower-left isn't solid, check right side
 		pfalling = true;        // so fall.
 		pjustfell = true;

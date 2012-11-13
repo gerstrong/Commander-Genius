@@ -185,7 +185,7 @@ void CScrub::walkLeft(int mx, int my)
 		std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++ )
 		{
-			if ( it_player->supportedbyobject && it_player->psupportingobject==m_index &&
+			if ( it_player->pSupportedbyobject && it_player->psupportingobject==m_index &&
 					it_player->pjumping!=PJUMPUP && it_player->pjumping!=PPOGOING)
 			{
 				if (!it_player->blockedl)
@@ -235,7 +235,7 @@ void CScrub::walkDown()
 		std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++ )
 		{
-			if (it_player->supportedbyobject && it_player->psupportingobject==m_index &&
+			if (it_player->pSupportedbyobject && it_player->psupportingobject==m_index &&
 					it_player->pjumping!=PJUMPUP && it_player->pjumping!=PPOGOING)
 			{
 				// ensure that player is not blocked by a floor (can happen
@@ -330,7 +330,7 @@ void CScrub::walkUp()
 		std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++ )
 		{
-			if (it_player->supportedbyobject && it_player->psupportingobject==m_index &&
+			if (it_player->pSupportedbyobject && it_player->psupportingobject==m_index &&
 					it_player->pjumping!=PJUMPUP && it_player->pjumping!=PPOGOING)
 			{
 				// kick player off if we're running him into the ceiling
@@ -409,7 +409,7 @@ void CScrub::SetAllCanSupportPlayer(bool state)
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
 		cansupportplayer = state;
-		if(!state && it_player->supportedbyobject)
+		if(!state && it_player->pSupportedbyobject)
 		{
 			it_player->pfalling=true;
 			it_player->moveDown(1);

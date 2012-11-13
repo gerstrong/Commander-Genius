@@ -64,7 +64,7 @@ const int BREATH_TIME = 60;
 
 void CPlayerDive::processDiving()
 {
-	// In case noclipping was triggered, make it solid, or remove it...
+	// In case no-clipping was triggered, make it solid, or remove it...
 	if(m_Cheatmode.noclipping)
 	{
 		solid = !solid;

@@ -128,7 +128,7 @@ void CPlatform::process()
 	{
 		if(!hitdetect(*mp_CarriedPlayer) || mp_CarriedPlayer->blockedu)
 		{
-			mp_CarriedPlayer->supportedbyobject = false;
+			mp_CarriedPlayer->pSupportedbyobject = nullptr;
 			mp_CarriedPlayer->m_jumpdownfromobject = false;
 			mp_CarriedPlayer->dontdraw = false;
 			mp_CarriedPlayer = NULL;
@@ -157,10 +157,10 @@ void CPlatform::getTouchedBy(CSpriteObject &theObject)
 	{
 		const int m_py2 = player->getYDownPos();
 		const int m_y2 = getYUpPos()+(4<<STC);
-		if( m_py2 <= m_y2 && !player->supportedbyobject && !player->m_jumpdownfromobject )
+		if( m_py2 <= m_y2 && !player->pSupportedbyobject && !player->m_jumpdownfromobject )
 		{
 			mp_CarriedPlayer = player;
-			player->supportedbyobject = true;
+			player->pSupportedbyobject = this;
 			player->dontdraw = true;
 		}
 	}

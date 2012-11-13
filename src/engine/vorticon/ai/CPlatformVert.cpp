@@ -82,7 +82,7 @@ void CPlatformVert::process()
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if( it_player->supportedbyobject && it_player->psupportingobject==m_index &&
+					if( it_player->pSupportedbyobject && it_player->psupportingobject==m_index &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
 						if (!kickedplayer[it_player->m_index])
@@ -110,7 +110,7 @@ void CPlatformVert::process()
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if( it_player->supportedbyobject && it_player->psupportingobject==m_index &&
+					if( it_player->pSupportedbyobject && it_player->psupportingobject==m_index &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
 						if (!kickedplayer[it_player->m_index])
@@ -135,7 +135,7 @@ void CPlatformVert::getTouchedBy(CSpriteObject &theObject)
 	// push player horizontally
 	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
 	{
-		if(player->pfalling or !player->supportedbyobject)
+		if(player->pfalling or !player->pSupportedbyobject)
 			player->push(*this);
 		else if( state == PLATVERT_MOVE )
 			player->moveYDir( (movedir==UP) ? -PLATVERT_MOVE_SPD : PLATVERT_MOVE_SPD);

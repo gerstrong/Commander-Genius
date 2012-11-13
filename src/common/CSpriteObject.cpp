@@ -41,7 +41,7 @@ transluceny(0)
 	cansupportplayer = false;
 	dying = false;
 	yDirection = xDirection = 0;
-	supportedbyobject = false;
+	pSupportedbyobject = nullptr;
 
 	blockedd = false;
 	blockedu = false;

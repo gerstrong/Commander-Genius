@@ -165,7 +165,7 @@ const int POGO_START_INERTIA = 125; // 48 In K5 Disassemble
 
 void CPlayerLevel::makeHimStand()
 {
-	if(supportedbyobject && g_pBehaviorEngine->getEpisode() == 5)
+	if(pSupportedbyobject && g_pBehaviorEngine->getEpisode() == 5)
 		setAction(A_KEEN_ON_PLAT);
 	else
 		setAction(A_KEEN_STAND);
@@ -397,7 +397,7 @@ void CPlayerLevel::processStanding()
 		return;
 	}
 
-	if( getActionStatus(A_KEEN_STAND) && !supportedbyobject )
+	if( getActionStatus(A_KEEN_STAND) && !pSupportedbyobject )
 	{
 		user1++;
 
@@ -488,15 +488,23 @@ void CPlayerLevel::processLookingDown()
 		if ( m_playcontrol[PA_JUMP] > 0 && !onslope  )
 		{
 			const bool jumpdowntile = canFallThroughTile();
-			if( supportedbyobject || jumpdowntile )
+			if( pSupportedbyobject || jumpdowntile )
 			{
-				m_jumpdownfromobject = supportedbyobject;
-				m_jumpdown = jumpdowntile;
-				supportedbyobject = false;
+				m_jumpdownfromobject = (pSupportedbyobject != nullptr);
+				m_jumpdown = jumpdowntile;				
 				blockedd = false;
-				yinertia = 0;
+				if(pSupportedbyobject->yDirection == DOWN )
+				{
+				    yinertia = 60;
+				}
+				else
+				{
+				    yinertia = 0;
+				}
 				xinertia = 0;
-				setAction(A_KEEN_JUMP_DOWN);
+				
+				pSupportedbyobject = nullptr;
+				setAction( A_KEEN_JUMP_DOWN );
 				playSound( SOUND_KEEN_FALL );
 			}
 		}
@@ -1011,7 +1019,7 @@ void CPlayerLevel::verifyJumpAndFall()
 	// If keen is jumping down, not because he did from an object like a platform,
 	// but a tile where Keen can fall through, process this part of code and
 	// check if Keen is still jumpinto through any object
-	if(!supportedbyobject && m_jumpdown)
+	if(!pSupportedbyobject && m_jumpdown)
 	{
 		if(!canFallThroughTile())
 			m_jumpdown = false;
@@ -1977,7 +1985,7 @@ void CPlayerLevel::processFalling()
 	// If keen is jumping down, not because he did from an object like a platform,
 	// but a tile where Keen can fall through, process this part of code and
 	// check if Keen is still jumpinto through any object
-	if(!supportedbyobject && m_jumpdown)
+	if(!pSupportedbyobject && m_jumpdown)
 	{
 		if(!canFallThroughTile())
 			m_jumpdown = false;
@@ -2068,7 +2076,7 @@ void CPlayerLevel::process()
 			m_Cheatmode.noclipping = false;
 		}
 
-		if(supportedbyobject)
+		if(pSupportedbyobject)
 		{
 			blockedd = true;
 		}

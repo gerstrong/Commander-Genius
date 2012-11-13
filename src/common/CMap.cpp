@@ -636,6 +636,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 
 /**
  * \brief This function draws all the masked and foreground tiles
+ * \TODO: I think this function should be splat up into vorticon and galaxy engine function somehow.
  */
 void CMap::_drawForegroundTiles()
 {       
@@ -659,14 +660,15 @@ void CMap::_drawForegroundTiles()
 			const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
 			const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
 
-			if(!m_Background)
+			if(!m_Background) // Keen Vorticon in general do not have real background. It's just one plane
 			{
-			    if(TileProperties[fg].behaviour == -2) // case when has a masked graphic
-				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
+			    if(TileProperties[fg].behaviour == -2) // case when has a masked graphic. 
+				//NOTE: It is fg+1 because the masked tile comes directly on the tileplane in the Keen vorticon games.
+				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg+1 );
 			    else if (TileProperties[fg].behaviour == -1) // case when tile is just foreground
 				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
 			}
-			else if(fg != 0)
+			else if(fg != 0) 
 			{
 			   if(TileProperties[fg].behaviour < 0)
 				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );

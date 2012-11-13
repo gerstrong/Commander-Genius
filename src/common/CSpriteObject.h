@@ -116,7 +116,7 @@ public:
 	bool onslope;
 	signed int xinertia, yinertia;
 	unsigned int psupportingobject;
-	bool supportedbyobject;
+	CSpriteObject *pSupportedbyobject;
 
 	bool dead, dying;
 

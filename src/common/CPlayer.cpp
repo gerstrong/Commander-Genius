@@ -898,7 +898,7 @@ bool CPlayer::checkMapBoundaryU(const int y1)
 
 bool CPlayer::checkObjSolid()
 {
-	supportedbyobject = false;
+	pSupportedbyobject = nullptr;
 
 	std::vector<CVorticonSpriteObject*>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
@@ -922,7 +922,7 @@ bool CPlayer::checkObjSolid()
 					pfalling = false;
 					if(pjumping == PJUMPLAND)
 						pjumping = PNOJUMP;
-					supportedbyobject = true;
+					pSupportedbyobject = *it_obj;
 					psupportingobject = (*it_obj)->m_index;
 					int dy = (*it_obj)->getYUpPos() - getYDownPos()+1;
 					if(pjumping == PNOJUMP)

@@ -87,7 +87,7 @@ void CPlatform::SetAllCanSupportPlayer(bool state)
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
 		cansupportplayer = state;
-		if(!state && it_player->supportedbyobject)
+		if(!state && it_player->pSupportedbyobject)
 		{
 			it_player->pfalling=true;
 			it_player->moveDown(1);
@@ -101,7 +101,7 @@ void CPlatform::getTouchedBy(CSpriteObject &theObject)
 	// push player horizontally
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{
-		if(player->pfalling or !player->blockedd or !player->supportedbyobject)
+		if(player->pfalling or !player->blockedd or !player->pSupportedbyobject)
 			player->push(*this);
 		else if( state == PLATFORM_MOVE )
 			player->moveXDir( (movedir==LEFT) ? -PLATFORM_MOVE_SPD : PLATFORM_MOVE_SPD);

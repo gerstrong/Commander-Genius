@@ -50,8 +50,8 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 
 		const int m_py2 = player->getYDownPos();
 		const int m_y2 = getYUpPos()+(4<<STC);
-		if( m_py2 <= m_y2 && !player->supportedbyobject && !player->m_jumpdownfromobject )
-			player->supportedbyobject = true;
+		if( m_py2 <= m_y2 && !player->pSupportedbyobject && !player->m_jumpdownfromobject )
+			player->pSupportedbyobject = this;
 
 	}
 
@@ -77,7 +77,7 @@ void CBounder::processBounce()
 	// Will block the player when bounder touches him, but he is not riding him
 	if( mpInteractPlayer )
 	{
-		if(!mpInteractPlayer->supportedbyobject)
+		if(!mpInteractPlayer->pSupportedbyobject)
 		{
 			const int mMidPX = mpInteractPlayer->getXMidPos();
 			const int mMidX = getXMidPos();
@@ -121,7 +121,7 @@ void CBounder::processOnFloor()
 	// If player is standing on bounder, he can control him a bit also
 	if(mpInteractPlayer)
 	{
-		if(mpInteractPlayer->supportedbyobject)
+		if(mpInteractPlayer->pSupportedbyobject)
 		{
 			const int mMidPX = mpInteractPlayer->getXMidPos();
 			const int mMidX = getXMidPos();
@@ -155,7 +155,7 @@ void CBounder::movePlatLeft(const int amnt)
 	// First move the object on platform if any
 	if(mpInteractPlayer)
 	{
-		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
+		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->pSupportedbyobject)
 			mpInteractPlayer->moveLeft(amnt);
 	}
 
@@ -168,7 +168,7 @@ void CBounder::movePlatRight(const int amnt)
 	// First move the object on platform if any
 	if(mpInteractPlayer)
 	{
-		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
+		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->pSupportedbyobject)
 			mpInteractPlayer->moveRight(amnt);
 	}
 
@@ -181,7 +181,7 @@ void CBounder::movePlayerUp(const int amnt)
 	// First move the object on platform if any
 	if(mpInteractPlayer)
 	{
-		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
+		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->pSupportedbyobject)
 		{
 			mpInteractPlayer->moveUp(amnt);
 		}
@@ -193,7 +193,7 @@ void CBounder::movePlayerDown(const int amnt)
 	// First move the object on platform if any
 	if( mpInteractPlayer )
 	{
-		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->supportedbyobject)
+		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->pSupportedbyobject)
 		{
 			mpInteractPlayer->moveDown(amnt);
 		}
@@ -260,11 +260,11 @@ void CBounder::process()
 
 		if( !hitdetect(*mpInteractPlayer) )
 		{
-			mpInteractPlayer->supportedbyobject = false;
+			mpInteractPlayer->pSupportedbyobject = nullptr;
 			mpInteractPlayer->m_jumpdownfromobject = false;
 			mpInteractPlayer = NULL;
 		}
-		else if(mpInteractPlayer->supportedbyobject)
+		else if(mpInteractPlayer->pSupportedbyobject)
 		{
 
 			const int m_py2 = mpInteractPlayer->getYDownPos();

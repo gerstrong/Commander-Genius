@@ -294,18 +294,21 @@ void CEGALatch::applyMasks()
 					rect.x = 16*((t+1)%13) + x;
 					rect.y = y+16*((t+1)/13);
 
+					Uint8 alpha;
+					
 					if( r>=250 && g>=250 && b>=250 ) // In this case set it to zero
 					{
-						SDL_FillRect( sfc, &rect, SDL_MapRGBA(sfc->format, 0, 0, 0, 0) );
+					    alpha = r = g = b = 0;
 					}
 					else // Get the pixel of the previous tile. If the mask has colour, use alpha channel, black is opaque
 					{
-						Uint8 alpha = 255 - (r+g+b)/3;
-						u_offset = (Uint8*)sfc->pixels + bpp*((y+16*(t/13))*13*16 + 16*(t%13) + x);
-						memcpy( &u_colour, u_offset, bpp);
-						SDL_GetRGB( u_colour, sfc->format, &r, &g, &b);
-						SDL_FillRect( sfc, &rect, SDL_MapRGBA(sfc->format,r,g,b,alpha) );
+					    alpha = 255 - (r+g+b)/3;
+					    u_offset = (Uint8*)sfc->pixels + bpp*((y+16*(t/13))*13*16 + 16*(t%13) + x);
+					    memcpy( &u_colour, u_offset, bpp);
+					    SDL_GetRGB( u_colour, sfc->format, &r, &g, &b);					    
 					}
+					
+					SDL_FillRect( sfc, &rect, SDL_MapRGBA(sfc->format, r, g, b, alpha) );
 				}
 			}
 		}
