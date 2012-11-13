@@ -82,7 +82,7 @@ void CPlatformVert::process()
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if( it_player->pSupportedbyobject && it_player->psupportingobject==m_index &&
+					if( it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
 						if (!kickedplayer[it_player->m_index])
@@ -110,7 +110,7 @@ void CPlatformVert::process()
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if( it_player->pSupportedbyobject && it_player->psupportingobject==m_index &&
+					if( it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
 						if (!kickedplayer[it_player->m_index])

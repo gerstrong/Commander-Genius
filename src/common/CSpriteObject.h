@@ -115,7 +115,6 @@ public:
 	bool blockedl, blockedr, blockedu, blockedd;
 	bool onslope;
 	signed int xinertia, yinertia;
-	unsigned int psupportingobject;
 	CSpriteObject *pSupportedbyobject;
 
 	bool dead, dying;

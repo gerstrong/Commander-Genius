@@ -202,7 +202,6 @@ void CPlayer::setupforLevelPlay()
     keyprocstate = 0;         // KPROC_IDLE
     pjustjumped = pjustfell = true;
     pfireframetimer = 0;
-    psupportingobject = 0;
   	object_chosen = false;
     lastpogo = false;
   	hintused = false;
@@ -923,7 +922,6 @@ bool CPlayer::checkObjSolid()
 					if(pjumping == PJUMPLAND)
 						pjumping = PNOJUMP;
 					pSupportedbyobject = *it_obj;
-					psupportingobject = (*it_obj)->m_index;
 					int dy = (*it_obj)->getYUpPos() - getYDownPos()+1;
 					if(pjumping == PNOJUMP)
 						moveYDir(dy);
