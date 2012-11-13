@@ -66,7 +66,6 @@ void CMadMushroom::process()
 {
 
 	performGravityMid();
-
 	performCollisions();
 
 	if(!blockedd)

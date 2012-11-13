@@ -25,6 +25,9 @@ public:
 	void processWalk();
 	void processJump();
 	void processBounce();
+	
+private:
+    int mTimer;
 };
 
 } /* namespace galaxy */
