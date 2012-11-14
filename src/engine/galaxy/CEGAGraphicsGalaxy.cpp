@@ -516,7 +516,7 @@ bool CEGAGraphicsGalaxy::begin()
 	// Make a clean memory pattern
 	ChunkStruct ChunkTemplate;
 	ChunkTemplate.len=0;
-	m_egagraph.assign(EpisodeInfo[ep].NumChunks, ChunkTemplate);
+	m_egagraph.assign(m_egahead.size(), ChunkTemplate);
 
 	unsigned long inlen = 0, outlen = 0;
 
@@ -530,10 +530,11 @@ bool CEGAGraphicsGalaxy::begin()
 	else offset_limit = 0xFFFFFFFF;
 
 	// Now lets decompress the graphics
-	for(size_t i = 0; i < EpisodeInfo[ep].NumChunks; i++)
+	auto offPtr = m_egahead.begin();
+	for(size_t i = 0; offPtr != m_egahead.end() ; offPtr++, i++)
 	{
 		// Show that something is happening
-		offset = m_egahead[i];
+		offset = *offPtr;
 		
 		// Make sure the chunk is valid
 		if(offset < offset_limit && offset + 4 <= CompEgaGraphData.size())
@@ -564,16 +565,23 @@ bool CEGAGraphicsGalaxy::begin()
 			inlen = 0;
 			// Find out the input length
 			size_t j;
-			for(j = i + 1; j < EpisodeInfo[ep].NumChunks; j++)
+			
+			auto secondOffPtr = offPtr;
+			secondOffPtr++;			
+			for( j = i + 1; secondOffPtr != m_egahead.end() ; secondOffPtr++, j++ )
 			{
-				if(m_egahead[j] != offset_limit)
-				{
-					inlen = m_egahead[j] - offset;
-					break;
-				}
+			    const unsigned long second = *secondOffPtr;
+			    if(second != offset_limit)
+			    {
+				inlen = second - offset;
+				break;
+			    }
 			}
-			if(j == EpisodeInfo[ep].NumChunks)
+			
+			if( secondOffPtr == m_egahead.end() )
 				inlen = egagraphlen - offset;
+			
+			
 			Huffman.expand(&CompEgaGraphData[offset], &m_egagraph[i].data[0], inlen, outlen);
 		}
 		else
