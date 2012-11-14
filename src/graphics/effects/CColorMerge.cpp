@@ -16,14 +16,13 @@ m_Speed(speed),
 m_Alpha(0)
 {
     getSnapshot();
-    //mTimer.ResetSecondsTimer();
 }
 
 // use this function. If you don't that, the effect won't work.
 void CColorMerge::getSnapshot()
 {
     g_pVideoDriver->collectSurfaces();
-    mpOldSurface = SDL_DisplayFormat( g_pVideoDriver->mpVideoEngine->getBlitSurface() );
+    mpOldSurface.reset( SDL_DisplayFormat( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
 }
 
 // Effect cycle

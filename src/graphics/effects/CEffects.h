@@ -14,7 +14,6 @@
 #define CEFFECTS_H_
 
 #include <SDL.h>
-#include "SmartPointer.h"
 
 class CEffects
 {

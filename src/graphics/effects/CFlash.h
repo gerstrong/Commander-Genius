@@ -12,9 +12,9 @@
 #ifndef CFLASH_H_
 #define CFLASH_H_
 
+#include <memory>
 #include "CEffects.h"
 #include "sdl/CTimer.h"
-#include "SmartPointer.h"
 
 class CFlash : public CEffects
 {
@@ -40,7 +40,7 @@ private:
 	fade_dir m_FadeDir;
 	Uint8 m_Style;
 	Uint8 m_MaxAlpha;
-	SmartPointer<SDL_Surface> mpFadeSurface;
+	std::shared_ptr<SDL_Surface> mpFadeSurface;
 };
 
 #endif /* CFLASH_H_ */

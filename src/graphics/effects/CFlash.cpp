@@ -17,7 +17,7 @@ m_Alpha(0),
 m_FadeDir(FADE_IN),
 m_Style(FADE_PULSE),
 m_MaxAlpha(255),
-mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()))
+mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
 {
 	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
 }
@@ -33,7 +33,7 @@ m_Alpha(0),
 m_FadeDir(FADE_IN),
 m_Style(FADE_NORMAL),
 m_MaxAlpha(m_maxalpha),
-mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()))
+mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
 {
 	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
 }

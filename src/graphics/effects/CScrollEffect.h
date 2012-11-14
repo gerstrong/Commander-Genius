@@ -9,9 +9,10 @@
 #define CSCROLLEFFECT_H_
 
 #include <SDL.h>
+#include <memory>
 
 #include "CEffects.h"
-#include "SmartPointer.h"
+
 
 class CScrollEffect : public CEffects
 {
@@ -28,7 +29,7 @@ private:
 	Sint8 mSpeed;
 	Sint8 mInitialSpeed;
 	Sint16 mScrollPos;
-	SmartPointer<SDL_Surface> mpOldSurface;
+	std::shared_ptr<SDL_Surface> mpOldSurface;
 	SDL_Surface *mpScrollSurface;
 };
 

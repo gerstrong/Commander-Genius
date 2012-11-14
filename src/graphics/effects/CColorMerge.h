@@ -14,6 +14,7 @@
 #define CCOLORMERGE_H_
 
 #include <SDL.h>
+#include <memory>
 
 #include "CEffects.h"
 #include "SmartPointer.h"
@@ -28,7 +29,7 @@ public:
 
 	void process();
 	
-	SmartPointer<SDL_Surface> &getSfc()
+	std::shared_ptr<SDL_Surface> &getSfc()
 	{  return mpOldSurface;  }
 	
 	void getSnapshot();		
@@ -37,9 +38,8 @@ private:
 	
 	Uint8 m_Speed;
 	Uint8 m_Alpha;
-	//CTimer mTimer;
 
-	SmartPointer<SDL_Surface> mpOldSurface;
+	std::shared_ptr<SDL_Surface> mpOldSurface;
 };
 
 #endif /* CCOLORMERGE_H_ */
