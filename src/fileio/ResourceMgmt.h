@@ -18,6 +18,7 @@
 
 struct CResource : public CSingleton<CResource>
 {
+	std::string egadictFilename;
 	std::string egaheadFilename;
 	std::string egagraphFilename;
 	std::string audioFilename;
@@ -26,9 +27,19 @@ struct CResource : public CSingleton<CResource>
 
 	void setupFilenames(const unsigned int episode)
 	{
-		egagraphFilename = "egagraph.ck" + itoa(episode);
-		audioFilename = "audio.ck" + itoa(episode);
-		gamemapsFilename = "gamemaps.ck" + itoa(episode);
+	    const std::string epStr = itoa(episode);
+	    
+	    if(episode <= 6)
+	    {
+		egadictFilename = "egadict.ck" + epStr;
+		egagraphFilename = "egagraph.ck" + epStr;
+		audioFilename = "audio.ck" + epStr;
+		gamemapsFilename = "gamemaps.ck" + epStr;
+	    }
+	    else // Keen Dreams
+	    {
+		egadictFilename = "KDREAMSDICT.EGA";
+	    }
 	}
 };
 

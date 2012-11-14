@@ -490,10 +490,21 @@ void CPlayerLevel::processLookingDown()
 		{
 			const bool jumpdowntile = canFallThroughTile();
 			if( pSupportedbyobject || jumpdowntile )
-			{
-				m_jumpdownfromobject = (pSupportedbyobject != nullptr);
+			{				
 				m_jumpdown = jumpdowntile;				
 				blockedd = false;
+				
+				yinertia = 0;
+			
+				// This is for platform which might be going way down...
+				if( (m_jumpdownfromobject = (pSupportedbyobject != nullptr)) == true )
+				{
+					if(pSupportedbyobject->yDirection == DOWN )
+					{
+					    yinertia = 60;
+					}
+				}
+				
 				if(pSupportedbyobject->yDirection == DOWN )
 				{
 				    yinertia = 60;

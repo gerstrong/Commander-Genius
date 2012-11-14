@@ -149,6 +149,16 @@ void CPatcher::filterPatches(std::list<std::string> &textlist)
 		else if( !ignorelines && !strStartsWith(line,"#") )
 		{
 			// Ignore lines which are meant for other versions and comments.
+			
+			// Now remove everything that has a '#' but comes later in the lines			
+			const size_t commPos = line.find('#');
+			if(commPos != std::string::npos)			    
+			{
+			    line.erase(commPos);
+			}
+			
+			TrimSpaces(line);
+			
 			textlist.push_back(line);
 		}
 		TextList.pop_front();

@@ -85,6 +85,12 @@ void CPatcher::process()
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
+			gpResource->egadictFilename = newfileName;
+		}
+		else if(PatchItem.keyword == "egadict")
+		{
+			std::string newfileName = PatchItem.value.front();
+			TrimSpaces(newfileName);
 			gpResource->egaheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "gamemaps")

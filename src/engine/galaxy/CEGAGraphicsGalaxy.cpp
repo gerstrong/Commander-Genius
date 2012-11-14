@@ -8,7 +8,7 @@
  *  Commander Keen Galaxy Series.
  *  EGAHEAD and EGADICT are normally files that have been embedded
  *  into the executable.
- *  EGAGRAPH is a seperate file which contains the graphics itself
+ *  EGAGRAPH is a separate file which contains the graphics itself
  *  All three files are needed to extract the graphics
  */
 
@@ -448,7 +448,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 
 /**
  * \brief	prepares to load the data. Does a bit of extraction
- * \return 	returns true, if loading was successful
+ * \return 	true, if loading was successful, otherwise false
  */
 bool CEGAGraphicsGalaxy::begin()
 {
@@ -469,8 +469,7 @@ bool CEGAGraphicsGalaxy::begin()
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
 	// Try to read it either from a file
-	if (m_episode <= 6) filename =  m_path + "EGADICT.CK" + itoa(m_episode);
-	else filename =  m_path + "KDREAMSDICT.EGA"; // Not sure here!
+	filename =  gpResource->egadictFilename;
 
 	if( Huffman.readDictionaryFromFile(filename) )
 	{

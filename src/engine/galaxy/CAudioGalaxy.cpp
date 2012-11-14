@@ -63,8 +63,6 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
  */
 bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 {
-	const int episode = ExeFile.getEpisode();
-
 	if(m_AudioSpec.format != 0)
 	{
 		// Open the Huffman dictionary and get AUDIODICT
