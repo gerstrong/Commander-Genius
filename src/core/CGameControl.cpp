@@ -120,7 +120,8 @@ void CGameControl::process()
 	}
 
 	// Process the game control object if no effects are being processed
-	mpEngine->process();
+	if(mpEngine)
+	    mpEngine->process();
 
 	if(g_pGfxEngine->runningEffect())
 	{
