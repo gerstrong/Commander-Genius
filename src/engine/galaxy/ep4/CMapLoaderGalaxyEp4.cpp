@@ -175,7 +175,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 22:
 		// This is a Poison Slug.
-		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y, m_ObjectPtr);
+		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y);
 		break;
 
 	case 23:

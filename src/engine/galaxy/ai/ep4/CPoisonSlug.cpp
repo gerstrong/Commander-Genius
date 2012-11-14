@@ -25,8 +25,7 @@ A_SLUG_STUNNED_ALT = 4
 const int SLUG_MOVE_SPEED = 1;
 const int SLUG_MOVE_TIMER = 8;
 
-CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-		std::vector< SmartPointer<CGalaxySpriteObject> >&ObjectPtrs) :
+CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 m_timer(0)
 {
