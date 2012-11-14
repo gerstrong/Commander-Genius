@@ -5,6 +5,8 @@
  *      Author: gerstrong
  */
 
+#include <memory>
+
 #include "CLevelPlay.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
@@ -29,12 +31,12 @@ CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
 void CLevelPlay::loadMap(const int level)
 {
 	// Load the World map level.
-	SmartPointer<CMapLoaderGalaxy> MapLoader;
+	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
 	if(g_pBehaviorEngine->getEpisode() == 4)
-		MapLoader = new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode);
+		MapLoader.reset(new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode));
 	else if(g_pBehaviorEngine->getEpisode() == 5)
-		MapLoader = new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode);
+		MapLoader.reset(new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode));
 
 	MapLoader->loadMap( mMap, level );
 

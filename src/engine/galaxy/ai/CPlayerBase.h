@@ -82,7 +82,6 @@ public:
 				const Uint16 foeID,
 				Uint32 x,
 				Uint32 y,
-				std::vector< SmartPointer<CGalaxySpriteObject> >& ObjectPtrs,
 				direction_t facedir,
 				CInventory &l_Inventory,
 				stCheat &Cheatmode);
@@ -159,9 +158,7 @@ protected:
 	bool checkMapBoundaryR(const int x2);
 	bool checkMapBoundaryU(const int y1);
 
-	unsigned short mPlayerNum;
-
-	std::vector< SmartPointer<CGalaxySpriteObject> >& m_ObjectPtrs;
+	unsigned short mPlayerNum;	
 
 	Sint16 m_playcontrol[PA_MAX_ACTIONS];
 	int m_timer;

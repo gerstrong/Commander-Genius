@@ -38,6 +38,12 @@ public:
 	template<typename T> T* occurredEvent();
 	void pop_Event() { m_EventList.pop_front(); }
 
+	// Spawning Event for the Foes
+	void spawnObj(const CSpriteObject *obj)
+	{
+	    add(new EventSpawnObject( obj ));
+	}
+	
 private:
 	std::deque< std::shared_ptr<CEvent> > m_EventList;
 };

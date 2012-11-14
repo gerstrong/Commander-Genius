@@ -22,7 +22,6 @@
 #include "graphics/CGfxEngine.h"
 #include "common/CSpriteObject.h"
 #include "common/CMap.h"
-#include "SmartPointer.h"
 
 class CTitle
 {

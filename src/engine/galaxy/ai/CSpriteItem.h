@@ -21,15 +21,13 @@ namespace galaxy {
 class CSpriteItem : public CGalaxySpriteObject
 {
 public:
-	CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, Uint32 sprite);
+	CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite);
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);
 
 private:
 	int m_timer;
 	Uint32 m_basesprite;
-	std::vector< SmartPointer<CGalaxySpriteObject> > &m_ObjectPtrs;
 };
 
 }

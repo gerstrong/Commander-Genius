@@ -19,7 +19,6 @@ public:
 			const Uint16 foeID,
 			Uint32 x,
 			Uint32 y,
-			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 			direction_t facedir,
 			CInventory &l_Inventory,
 			stCheat &Cheatmode);

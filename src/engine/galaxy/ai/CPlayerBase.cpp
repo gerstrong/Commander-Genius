@@ -110,7 +110,6 @@ CPlayerBase::CPlayerBase(
 		const Uint16 foeID,
 		Uint32 x,
 		Uint32 y,
-		std::vector< SmartPointer<CGalaxySpriteObject> >& ObjectPtrs,
 		direction_t facedir,
 		CInventory &l_Inventory,
 		stCheat &Cheatmode) :
@@ -118,7 +117,6 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 m_Inventory(l_Inventory),
 m_camera(pmap,x,y,this),
 mPlayerNum(0),
-m_ObjectPtrs(ObjectPtrs),
 m_Cheatmode(Cheatmode),
 mp_processState(NULL)
 {
@@ -140,7 +138,10 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 	m_Inventory.Item.m_lifes++;
 	g_pSound->playSound( SOUND_EXTRA_LIFE );
 	if(display)
-	    m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10], FADEOUT));
+	{
+	    CItemEffect *lifeUp = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10], FADEOUT);
+	    g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( lifeUp ) );	    
+	}
 }
 
 
@@ -259,7 +260,8 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 		const int lc_x = l_x>>CSF;
 		const int lc_y = l_y>>CSF;
 		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE));
+		CItemEffect *iEffect = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE);
+		g_pBehaviorEngine->m_EventList.spawnObj( iEffect );
 		m_Item.m_drops++;
 
 		if(m_Item.m_drops >= 100)
@@ -280,8 +282,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;
 			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-			m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21], FADEOUT));
-
+			g_pBehaviorEngine->m_EventList.spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21], FADEOUT) );
 			switch(i)
 			{
 			case 21: m_Item.m_points += 100;	g_pSound->playSound( SOUND_GET_BONUS );	break;

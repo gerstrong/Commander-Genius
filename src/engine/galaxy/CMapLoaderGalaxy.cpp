@@ -403,14 +403,14 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		if( foe == i )
 		{
 			const Uint32 newsprite = 103+2*(i-61);
-			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, newsprite);
+			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
 		}
 	}
 
 	// Neuronal-stunner
 	if( foe == 68 )
 	{
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, 127);
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
 	}
 
 	// Gems
@@ -419,7 +419,7 @@ CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, siz
 		if( foe == i )
 		{
 			const Uint32 newsprite = 118+2*(i-57);
-			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, newsprite);
+			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
 		}
 	}
 

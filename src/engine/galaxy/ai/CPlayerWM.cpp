@@ -20,12 +20,10 @@ CPlayerWM::CPlayerWM(CMap *pmap,
 		const Uint16 foeID,
 		Uint32 x,
 		Uint32 y,
-		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 		CInventory &l_Inventory,
 		stCheat &Cheatmode,
 		const unsigned int actionoffset):
 CPlayerBase(pmap, foeID, x, y,
-		    ObjectPtrs,
 		    LEFT,
 		    l_Inventory,
 		    Cheatmode),
@@ -621,8 +619,8 @@ void CPlayerWM::finishLevel(Uint16 object)
 		VectorD2<Uint32> dst(csfX, csfY);
 
 
-		CFlag *pFlag = new CFlag(mp_Map, src, dst);
-		m_ObjectPtrs.push_back(pFlag);
+		CFlag *pFlag = new CFlag(mp_Map, src, dst);		
+		g_pBehaviorEngine->m_EventList.spawnObj(pFlag);
 		g_pSound->playSound( SOUND_FLAG_APPEAR );
 
 		// Mark the tileinfo on the map as marked!!
@@ -634,9 +632,9 @@ void CPlayerWM::finishLevel(Uint16 object)
  * This is the function will switch between swim and walk mode
  * Those are the tileproperties to check for
  * 11      Enter water from top	Keen 4
- * 12      Enter water from right	Keen 4
+ * 12      Enter water from right Keen 4
  * 13      Enter water from bottom Keen 4
- * 14      Enter water from left	Keen 4
+ * 14      Enter water from left Keen 4
  */
 void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown)
 {

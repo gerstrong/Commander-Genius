@@ -47,10 +47,11 @@ CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory, stCheat &Cheatmode,
 						const size_t offset) :
-CPlayerBase(pmap, foeID, x, y, ObjectPtrs, facedir, l_Inventory, Cheatmode),
+CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, Cheatmode),
 m_jumpdownfromobject(false),
 mPlacingGem(false),
-mPoleGrabTime(0)
+mPoleGrabTime(0),
+mObjectPtrs(ObjectPtrs)
 {
 	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_ON_PLAT] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
@@ -527,18 +528,19 @@ void CPlayerLevel::processLookingDown()
 // This special code is important, so platforms in all cases will catch Keen when he is falling on them
 void CPlayerLevel::processMoveBitDown()
 {
-	for( size_t i = 0 ; i<m_ObjectPtrs.size() ; i++ )
+    auto obj = mObjectPtrs.begin();
+    for(  ; obj != mObjectPtrs.end() ; obj++ )
+    {
+	if( CPlatform *platform = dynamic_cast<CPlatform*>(obj->get()) )
 	{
-		if(m_ObjectPtrs[i]->hitdetect(*this))
-		{
-			if( CPlatform *platform = dynamic_cast<CPlatform*>(m_ObjectPtrs[i].get()) )
-			{
-				platform->getTouchedBy(*this);
-			}
-		}
+	    if(platform->hitdetect(*this))
+	    {
+		platform->getTouchedBy(*this);
+	    }
 	}
+    }
 
-	CSpriteObject::processMoveBitDown();
+    CSpriteObject::processMoveBitDown();
 }
 
 
@@ -571,7 +573,7 @@ void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const int xDir, const i
 {
 	if(m_Inventory.Item.m_bullets > 0)
 	{
-		m_ObjectPtrs.push_back(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir));
+		g_pBehaviorEngine->m_EventList.spawnObj(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir));
 		m_Inventory.Item.m_bullets--;
 	}
 	else

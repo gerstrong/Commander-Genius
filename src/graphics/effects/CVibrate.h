@@ -8,9 +8,10 @@
 #ifndef CVIBRATE_H_
 #define CVIBRATE_H_
 
+#include <memory>
+
 #include "CEffects.h"
 #include "sdl/CTimer.h"
-#include "SmartPointer.h"
 
 class CVibrate : public CEffects
 {
@@ -25,7 +26,7 @@ private:
 
 	char m_dir_x, m_dir_y;
 
-	SmartPointer<SDL_Surface> mpVibSfc;
+	std::shared_ptr<SDL_Surface> mpVibSfc;
 };
 
 #endif /* CVIBRATE_H_ */

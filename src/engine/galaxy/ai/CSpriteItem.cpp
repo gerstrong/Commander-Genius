@@ -15,10 +15,8 @@ namespace galaxy {
 
 const int MAX_ANIMATION_TIMER = 20;
 
-CSpriteItem::CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, Uint32 sprite) :
-CGalaxySpriteObject(pmap, foeID, x, y),
-m_ObjectPtrs(ObjectPtrs)
+CSpriteItem::CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite) :
+CGalaxySpriteObject(pmap, foeID, x, y)
 {
 	m_basesprite = sprite;
 	m_timer = (y*256+x)%MAX_ANIMATION_TIMER;
@@ -75,7 +73,8 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			g_pSound->playSound( SOUND_GET_AMMO );
 		}
 
-		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
+		
+		g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
 
 
 		// Now add the stuff to the inventory

@@ -17,7 +17,6 @@
 #include <memory>
 
 #include "CEffects.h"
-#include "SmartPointer.h"
 #include "graphics/CBitmap.h"
 #include "sdl/CTimer.h"
 

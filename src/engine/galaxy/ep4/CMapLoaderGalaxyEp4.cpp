@@ -95,7 +95,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 3:
 		// This is the player on the world map
 		// Add the Camera into the game scene and attach it to this player
-		p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, m_ObjectPtr, m_Inventory, m_Cheatmode, 0x15C2);
+		p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, m_Inventory, m_Cheatmode, 0x15C2);
 
 		break;
 
@@ -208,7 +208,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		// Place a gun in case Keen is missing bullets
 		if(m_Inventory.Item.m_bullets < 5)
 		{
-		  p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, m_ObjectPtr, 127);
+		  p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
 		}
 		break;
 
@@ -219,7 +219,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 42:
 		// This is Keen in the swimming suit
-		p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y, m_ObjectPtr,
+		p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
 						RIGHT, m_Inventory, m_Cheatmode);
 		break;
 

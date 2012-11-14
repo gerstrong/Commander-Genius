@@ -272,7 +272,8 @@ private:
 	bool m_hanging;
 	int mPoleGrabTime;
 	int mClimbSpeedX;
-
+	
+	std::vector< SmartPointer<CGalaxySpriteObject> > &mObjectPtrs;
 };
 
 }

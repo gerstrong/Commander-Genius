@@ -19,7 +19,6 @@ public:
 			const Uint16 foeID,
 			Uint32 x,
 			Uint32 y,
-			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs,
 			CInventory &l_Inventory,
 			stCheat &Cheatmode,
 			const unsigned int actionoffset);

@@ -28,7 +28,7 @@ void CVibrate::process()
 	else { m_dir_x = 0; m_dir_y = 0; }
 
 	// then erase the entire old surface ...
-	mpVibSfc = SDL_DisplayFormat(sfc);
+	mpVibSfc.reset( SDL_DisplayFormat(sfc), &SDL_FreeSurface );
 	SDL_FillRect(sfc, &gamerect, SDL_MapRGB(sfc->format, 0,0,0));
 
 	// ... and create that moved to some direction;
