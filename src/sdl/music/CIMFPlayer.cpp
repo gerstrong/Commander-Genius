@@ -74,7 +74,7 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 
 bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 									 	 	   uint32_t *&audiohedptr,
-									 	 	   uint8_t *&AudioCompFileData)
+									 	 	   std::vector<uint8_t> &AudioCompFileData)
 
 
 {    
@@ -101,13 +101,13 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 	AudioFile.seekg( 0, std::ios::beg );
 
 	// create memory so we can store the Audio.ck there and use it later for extraction
-	AudioCompFileData = new uint8_t[audiofilecompsize];
-	AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
+	AudioCompFileData.resize(audiofilecompsize);
+	AudioFile.read((char*) &(AudioCompFileData.front()), audiofilecompsize);
 	AudioFile.close();
 
 	// Open the AUDIOHED so we know where to mp_IMF_Data decompress
 	uint32_t number_of_audiorecs = 0;
-
+	
 	const uint32_t *starthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
 	audiohedptr = const_cast<uint32_t*>(starthedptr);
 	bool found = false;
@@ -127,14 +127,13 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 					break;
 			}
 			break;
-		}
+		}		
 	}
 
 	if(!found)
 		return false;
 
 	// Find the start of the embedded IMF files
-	bool gap_detected = false;
 	uint32_t music_start = 0;
 
 	for( uint32_t slot = number_of_audiorecs-2 ; slot>=0 ; slot-- )
@@ -149,8 +148,7 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 			music_start = slot + 1;
 			break;
 		}
-	}
-
+	}	
 
 	audiohedptr += music_start;
 
@@ -158,7 +156,7 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 }
 
 bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
-								const uint8_t *AudioCompFileData,
+								const std::vector<uint8_t> &AudioCompFileData,
 								const uint32_t *audiohedptr,
 								const Uint32 slot )
 {
@@ -174,11 +172,11 @@ bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
 		const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
 
 		uint32_t emb_file_data_size;
-		memcpy( &emb_file_data_size, AudioCompFileData + audio_start, sizeof(uint32_t) );
+		memcpy( &emb_file_data_size, &AudioCompFileData[audio_start], sizeof(uint32_t) );
 
 		byte imf_data[emb_file_data_size];
 		byte *imf_data_ptr = imf_data;
-		Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imf_data, audio_end-audio_comp_data_start, emb_file_data_size);
+		Huffman.expand( (byte*)(&AudioCompFileData[audio_comp_data_start]), imf_data, audio_end-audio_comp_data_start, emb_file_data_size);
 
 		word data_size;
 
@@ -205,11 +203,6 @@ bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
 	}
 }
 
-void CIMFPlayer::freeCompressedAudio(const uint8_t *AudioCompFileData)
-{
-	delete [] AudioCompFileData;
-}
-
 bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 {
 	// Now get the proper music slot reading the assignment table.
@@ -229,15 +222,13 @@ bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 {
 	// Now get the proper music slot reading the assignment table.
-	uint8_t *AudioCompFileData = NULL;
+	std::vector<uint8_t> AudioCompFileData;
 	uint32_t *audiohedptr = NULL;
 
-	readCompressedAudiointoMemory(ExeFile, audiohedptr, AudioCompFileData);
-
-	unpackAudioAt(ExeFile, AudioCompFileData, audiohedptr, track);
-
-	// TODO: I think we need a better and more stable check here!
-	freeCompressedAudio(AudioCompFileData);
+	if( readCompressedAudiointoMemory(ExeFile, audiohedptr, AudioCompFileData) )
+	{
+	    unpackAudioAt(ExeFile, AudioCompFileData, audiohedptr, track);
+	}
 
 	return true;
 }

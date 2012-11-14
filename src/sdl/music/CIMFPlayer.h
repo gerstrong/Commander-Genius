@@ -49,14 +49,12 @@ public:
 private:
 	bool readCompressedAudiointoMemory(const CExeFile& ExeFile,
 							 	 	   uint32_t *&audiohedptr,
-							 	 	   uint8_t *&AudioCompFileData);
+							 	 	   std::vector<uint8_t> &AudioCompFileData);
 
 	bool unpackAudioAt( const CExeFile& ExeFile,
-						const uint8_t *AudioCompFileData,
+						const std::vector<uint8_t> &AudioCompFileData,
 						const uint32_t *audiohedptr,
 						const Uint32 slot );
-
-	void freeCompressedAudio(const uint8_t *AudioCompFileData);
 
 	RingBuffer<IMFChunkType> m_IMF_Data;
     const SDL_AudioSpec& m_AudioDevSpec;
