@@ -44,6 +44,13 @@ m_timer(0)
 
 void CPoisonSlug::processCrawling()
 {
+    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+    
+    int xMid = getXMidPos();
+    int y2 = getYDownPos();
+    
+    const bool slope = (TileProperty[mp_Map->at(xMid>>CSF, (y2+1)>>CSF)].bup>1);
+    
 	if( m_timer < SLUG_MOVE_TIMER )
 	{
 		m_timer++;
@@ -63,9 +70,12 @@ void CPoisonSlug::processCrawling()
 		CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXMidPos(), getYDownPos()-(1<<CSF));
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( slime ) );
 		
-		// Turn around!
-		xDirection = -xDirection; 
-		return;
+		if(!slope)
+		{
+		    // Turn around!
+		    xDirection = -xDirection;
+		}
+		return;		
 	}
 
 	// Move normally in the direction
