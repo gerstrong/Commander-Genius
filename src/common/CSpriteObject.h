@@ -266,7 +266,6 @@ protected:
 	ActionFormatType m_Action;
 
 	Uint8 transluceny;
-
 };
 
 #endif // __CSPRITEOBJECT_H_

@@ -114,6 +114,7 @@ bool CMimrock::isNearby(CSpriteObject &theObject)
     return true;
 }
 
+
 void CMimrock::processSit()
 {
     // When sitting the rock doesn't do any thing, so this stays empty.

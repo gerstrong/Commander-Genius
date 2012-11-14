@@ -20,6 +20,7 @@ public:
 
 	void getTouchedBy(CSpriteObject &theObject);
 	bool isNearby(CSpriteObject &theObject);
+	
 	void process();
 	void processSit();
 	void processWalk();

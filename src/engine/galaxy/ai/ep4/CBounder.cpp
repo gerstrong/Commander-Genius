@@ -34,14 +34,12 @@ mpInteractPlayer(NULL)
 
 	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);
 	xDirection = 0;
-
 }
+
 
 void CBounder::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
-		return;
-
+    
 	CStunnable::getTouchedBy(theObject);
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
@@ -54,6 +52,9 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 			player->pSupportedbyobject = this;
 
 	}
+	
+	if(dead || theObject.dead)
+		return;	
 
 	// Was it a bullet? Then make it stunned.
 	if( theObject.exists && dynamic_cast<CBullet*>(&theObject) )
@@ -66,13 +67,17 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 
 void CBounder::processBounce()
 {
+    	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	
+	int xMid = getXMidPos();
+	int y2 = getYDownPos();
+
 	// When bounder hits the floor start the inertia again.
-	if(blockedd || onslope)
+	if( blockedd || TileProperty[mp_Map->at(xMid>>CSF, (y2+1)>>CSF)].bup>1 )
 	{
 		setAction( A_BOUNDER_ONFLOOR );
 		return;
 	}
-
 
 	// Will block the player when bounder touches him, but he is not riding him
 	if( mpInteractPlayer )
@@ -88,6 +93,12 @@ void CBounder::processBounce()
 				mpInteractPlayer->blockedr = 1;
 		}
 	}
+	
+	if(onslope)
+	{
+	    return;
+	}
+	
 
 	if(xDirection == LEFT)
 	{

@@ -42,7 +42,7 @@ public:
 	void setActionForce(const size_t ActionNumber);
 
 protected:
-	bool m_stunned;
+	bool m_stunned;	
 	void (CStunnable::*mp_processState)();
 	std::map< size_t, void (CStunnable::*)() > mActionMap;
 };
