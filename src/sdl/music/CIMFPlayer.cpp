@@ -77,7 +77,7 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 									 	 	   uint8_t *&AudioCompFileData)
 
 
-{
+{    
 	const int episode = ExeFile.getEpisode();
 
 	if(m_AudioDevSpec.format == 0)
@@ -105,7 +105,7 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 	AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
 	AudioFile.close();
 
-	// Open the AUDIOHED so we know where tomp_IMF_Data decompress
+	// Open the AUDIOHED so we know where to mp_IMF_Data decompress
 	uint32_t number_of_audiorecs = 0;
 
 	const uint32_t *starthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());

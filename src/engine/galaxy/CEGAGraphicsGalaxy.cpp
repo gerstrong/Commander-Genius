@@ -469,7 +469,9 @@ bool CEGAGraphicsGalaxy::begin()
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
 	// Try to read it either from a file
-	filename =  gpResource->egadictFilename;
+	
+	if(!gpResource->egadictFilename.empty())
+	    filename =  m_path + gpResource->egadictFilename;
 
 	if( Huffman.readDictionaryFromFile(filename) )
 	{

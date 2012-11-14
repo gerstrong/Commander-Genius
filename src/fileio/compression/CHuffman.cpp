@@ -14,7 +14,7 @@ const uint8_t DICTSIG[DICT_SIG_BYTES] = { 0xFD, 0x01, 0x00, 0x00, 0x00, 0x00 };
 
 bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum )
 {
-	uint8_t dictnumleft = dictnum;
+    uint8_t dictnumleft = dictnum;
     uint8_t *data_ptr = ExeFile.getRawData();
 
     for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
@@ -25,7 +25,7 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
         	{
         		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
         		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
-        		memcpy(m_nodes, dictdata, size);
+        		memcpy(m_nodes, dictdata, size);						
         		return true;
         	}
         	dictnumleft--;
@@ -37,10 +37,12 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
 
 bool CHuffman::readDictionaryFromFile( const std::string &filename )
 {
-	std::ifstream file; OpenGameFileR(file, filename, std::ios::binary);
+	std::ifstream file; 
 
-	if(!file)
+	if(!OpenGameFileR(file, filename, std::ios::binary))
+	{
 		return false;
+	}
 
 	file.read(reinterpret_cast<char*>(m_nodes), DICT_SIZE*sizeof(nodestruct));
 

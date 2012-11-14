@@ -32,10 +32,10 @@ struct CResource : public CSingleton<CResource>
 	    
 	    if(episode <= 6)
 	    {
-		egadictFilename = "egadict.ck" + epStr;
+		// Only the files which are standard can be set.
+		// If other files are in the directory, the patch files have assign that!
 		egagraphFilename = "egagraph.ck" + epStr;
 		audioFilename = "audio.ck" + epStr;
-		audioHedFilename = "audiohed.ck" + epStr;
 		gamemapsFilename = "gamemaps.ck" + epStr;
 	    }
 	    else // Keen Dreams
