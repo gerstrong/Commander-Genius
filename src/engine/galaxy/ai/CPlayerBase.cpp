@@ -135,9 +135,6 @@ mp_processState(NULL)
 }
 
 
-
-
-
 void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool display)
 {
 	m_Inventory.Item.m_lifes++;

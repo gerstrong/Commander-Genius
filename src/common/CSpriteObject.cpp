@@ -56,6 +56,20 @@ void CSpriteObject::setScrPos( int px, int py )
 	scry = py;
 }
 
+
+bool CSpriteObject::PoleCollision()
+{
+    int l_x = getXLeftPos();
+    int r_x = getXRightPos();
+    int l_y = getYMidPos();
+    
+    if( ( hitdetectWithTileProperty(1, l_x, l_y) & 0x7F) == 1 ||
+	( hitdetectWithTileProperty(1, r_x, l_y) & 0x7F) == 1 )
+	return true;
+    else
+	return false;
+}
+
 // This functions checks, if the enemy is near to the player. In case, that it is
 // it will return true. Other case it will return false.
 // This used for objects that only can trigger, when it's really worth to do so.

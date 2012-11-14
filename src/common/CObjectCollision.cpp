@@ -300,7 +300,8 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
-	const signed char behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
+	const int tileID = mp_Map->getPlaneDataAt(1, x, y);
+	const signed char behavior = Tile[tileID].behaviour;
 	if(behavior == Property || behavior == Property-128 ) // +128 for foreground properties
 		return true;
 	else

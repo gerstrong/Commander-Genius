@@ -126,6 +126,7 @@ public:
 	void performCollisionsSameBox();
 	void performCollisions();
 	void setScrPos( int px, int py );
+	bool PoleCollision();
 	virtual bool calcVisibility();
 
 	/**

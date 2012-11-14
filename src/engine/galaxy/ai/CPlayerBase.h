@@ -103,7 +103,6 @@ public:
 	 */
 	void setActionForce(const size_t ActionNumber);
 
-
 	/**
 	 * \brief The Player will get 1 UP when that function is launched
 	 */
