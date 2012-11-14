@@ -123,7 +123,7 @@ mPoleGrabTime(0)
 
 bool CPlayerLevel::verifyforPole()
 {
-	// TODO: Something strange here? Ticks?
+	// Timeout before Keen can grab again after he jumped off.
 	if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
 		return false;
 
@@ -616,6 +616,14 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 {
     std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
     const bool ceiling = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bdown;
+    
+    int l_x = getXLeftPos();
+    int r_x = getXRightPos();
+    int l_y = getYMidPos();
+    
+    if( ( hitdetectWithTileProperty(1, l_x, l_y) & 0x7F) == 1 ||
+	( hitdetectWithTileProperty(1, r_x, l_y) & 0x7F) == 1 )
+	return false;
     
     if(ceiling)
 	return false;

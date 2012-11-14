@@ -93,12 +93,6 @@ void CBounder::processBounce()
 				mpInteractPlayer->blockedr = 1;
 		}
 	}
-	
-	if(onslope)
-	{
-	    return;
-	}
-	
 
 	if(xDirection == LEFT)
 	{
