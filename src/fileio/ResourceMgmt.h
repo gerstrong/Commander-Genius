@@ -22,6 +22,7 @@ struct CResource : public CSingleton<CResource>
 	std::string egaheadFilename;
 	std::string egagraphFilename;
 	std::string audioFilename;
+	std::string audioHedFilename;
 	std::string mapheadFilename;
 	std::string gamemapsFilename;
 
@@ -34,6 +35,7 @@ struct CResource : public CSingleton<CResource>
 		egadictFilename = "egadict.ck" + epStr;
 		egagraphFilename = "egagraph.ck" + epStr;
 		audioFilename = "audio.ck" + epStr;
+		audioHedFilename = "audiohed.ck" + epStr;
 		gamemapsFilename = "gamemaps.ck" + epStr;
 	    }
 	    else // Keen Dreams
