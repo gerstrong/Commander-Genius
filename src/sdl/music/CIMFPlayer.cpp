@@ -199,14 +199,21 @@ bool CIMFPlayer::readMusicHedInternal(const CExeFile& ExeFile,
 	if(empty)
 		return false;
 
-	uint32_t music_start = 0;
+	uint16_t music_start = 0;
 	
-	// Find the start of the embedded IMF files
-	for( int slot = number_of_audiorecs-2 ; slot>=0 ; slot-- )
+	
+	if(ExeFile.getEpisode() == 4)
 	{
+	    memcpy(&music_start, ExeFile.getRawData() + 0x8CEF, sizeof(uint16_t) );
+	}
+	else
+	{
+	    // Find the start of the embedded IMF files
+	    for( int slot = number_of_audiorecs-2 ; slot>=0 ; slot-- )
+	    {
 		const uint32_t audio_start = audiohedptr[slot];
 		const uint32_t audio_end = audiohedptr[slot+1];
-
+		
 		// Caution: There are cases where audio_start > audio_end. I don't understand why, but in the original games it happens.
 		// Those slots are invalid. In mods it doesn't seem to happen!
 		// If they are equal, then the music starts there.
@@ -216,7 +223,8 @@ bool CIMFPlayer::readMusicHedInternal(const CExeFile& ExeFile,
 		    break;
 		}
 		
-	}	
+	    }
+	}
 	
 	audiohedptr += music_start;
 	
