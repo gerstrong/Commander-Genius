@@ -48,13 +48,20 @@ public:
 
 private:
 	bool readCompressedAudiointoMemory(const CExeFile& ExeFile,
-							 	 	   uint32_t *&audiohedptr,
-							 	 	   std::vector<uint8_t> &AudioCompFileData);
+					       std::vector<uint32_t> &musiched,
+						std::vector<uint8_t> &AudioCompFileData);
 
-	bool unpackAudioAt( const CExeFile& ExeFile,
-						const std::vector<uint8_t> &AudioCompFileData,
-						const uint32_t *audiohedptr,
-						const Uint32 slot );
+	bool readMusicHedFromFile(const std::string fname, 
+				  std::vector<uint32_t> &musiched);
+	
+	bool readMusicHedInternal(const CExeFile& ExeFile,
+				std::vector<uint32_t> &musiched,
+				const size_t audiofilecompsize);		
+	
+	bool unpackAudioInterval(	const CExeFile& ExeFile,
+				const std::vector<uint8_t> &AudioCompFileData,
+				const int start,
+				const int end);
 
 	RingBuffer<IMFChunkType> m_IMF_Data;
     const SDL_AudioSpec& m_AudioDevSpec;

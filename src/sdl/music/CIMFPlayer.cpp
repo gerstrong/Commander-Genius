@@ -73,8 +73,8 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 
 
 bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
-									 	 	   uint32_t *&audiohedptr,
-									 	 	   std::vector<uint8_t> &AudioCompFileData)
+					       std::vector<uint32_t> &musiched,
+						std::vector<uint8_t> &AudioCompFileData)
 
 
 {    
@@ -105,12 +105,77 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 	AudioFile.read((char*) &(AudioCompFileData.front()), audiofilecompsize);
 	AudioFile.close();
 
+	std::string audiohedfile = gpResource->audioHedFilename;
+	
+	if(!audiohedfile.empty())
+	    audiohedfile = getResourceFilename( audiohedfile, ExeFile.getDataDirectory(), false, false);
+	
+	// The musiched is just one part of the AUDIOHED. It's not a separate file.
 	// Open the AUDIOHED so we know where to mp_IMF_Data decompress
-	uint32_t number_of_audiorecs = 0;
+	if(readMusicHedFromFile(audiohedfile, musiched) == false)
+	{	    
+	    return readMusicHedInternal(ExeFile, musiched, audiofilecompsize);
+	}
+		
+	return !musiched.empty();
+}
+
+bool CIMFPlayer::readMusicHedFromFile(const std::string fname, std::vector<uint32_t> &musiched)
+{
+    if(fname.empty())
+        return false;
+    
+    std::ifstream file; 
+    
+    if(!OpenGameFileR(file, fname, std::ios::binary))
+	return false;
+    
+    file.seekg(0, std::ios::end);
+    size_t length = file.tellg();
+    file.seekg(0, std::ios::beg);
+    
+    std::vector<uint32_t> audiohed(length/sizeof(uint32_t));
+    
+    file.read( reinterpret_cast<char*> (&audiohed.front()), length);
+    
+    file.close();
+    
+    size_t music_start = 0;
+    
+    // Find the start of the embedded IMF files
+    for( uint32_t slot = audiohed.size()-2 ; slot>=0 ; slot-- )
+    {
+	const uint32_t audio_start = audiohed[slot];
+	const uint32_t audio_end = audiohed[slot+1];
+
+	// Caution: There are cases where audio_start > audio_end. I don't understand why, but in the original games it happens.
+	// Those slots are invalid. In mods it doesn't seem to happen!
+	// If they are equal, then the music starts there.
+	if(audio_start >= audio_end)
+	{
+	    music_start = slot + 1;
+	    break;
+	}		
+    }
+    
+    for( size_t i=0 ; i<audiohed.size()-music_start ; i++ )
+    {
+	musiched.push_back(audiohed[i]);
+    }    
+    
+    return true;
+}
+
+bool CIMFPlayer::readMusicHedInternal(const CExeFile& ExeFile,
+				    std::vector<uint32_t> &musiched,
+				    const size_t audiofilecompsize)
+{
+    	uint32_t number_of_audiorecs = 0;
+	
+	bool empty = true;
 	
 	const uint32_t *starthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
-	audiohedptr = const_cast<uint32_t*>(starthedptr);
-	bool found = false;
+	uint32_t *audiohedptr = const_cast<uint32_t*>(starthedptr);
 	for( const uint32_t *endptr = (uint32_t*) (void*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
 			audiohedptr < endptr ;
 			audiohedptr++ )
@@ -120,49 +185,55 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 			for( const uint32_t *startptr = (uint32_t*) (void*) ExeFile.getHeaderData() ;
 					audiohedptr > startptr ; audiohedptr-- )
 			{
-				found = true;
 				// Get the number of Audio files we have
 				number_of_audiorecs++;
+				empty = false;
 				if(*audiohedptr == 0x0)
 					break;
 			}
 			break;
 		}		
 	}
-
-	if(!found)
+	
+	
+	if(empty)
 		return false;
 
-	// Find the start of the embedded IMF files
 	uint32_t music_start = 0;
-
-	for( uint32_t slot = number_of_audiorecs-2 ; slot>=0 ; slot-- )
+	
+	// Find the start of the embedded IMF files
+	for( int slot = number_of_audiorecs-2 ; slot>=0 ; slot-- )
 	{
 		const uint32_t audio_start = audiohedptr[slot];
 		const uint32_t audio_end = audiohedptr[slot+1];
 
 		// Caution: There are cases where audio_start > audio_end. I don't understand why, but in the original games it happens.
 		// Those slots are invalid. In mods it doesn't seem to happen!
+		// If they are equal, then the music starts there.
 		if(audio_start >= audio_end)
 		{
-			music_start = slot + 1;
-			break;
+		    music_start = slot + 1;
+		    break;
 		}
+		
 	}	
-
+	
 	audiohedptr += music_start;
-
+	
+	for( size_t i=0 ; i<number_of_audiorecs-music_start ; i++ )
+	{
+	    musiched.push_back(*audiohedptr);
+	    audiohedptr++;
+	}
+	
 	return true;
 }
 
-bool CIMFPlayer::unpackAudioAt(	const CExeFile& ExeFile,
-								const std::vector<uint8_t> &AudioCompFileData,
-								const uint32_t *audiohedptr,
-								const Uint32 slot )
+bool CIMFPlayer::unpackAudioInterval(	const CExeFile& ExeFile,
+				const std::vector<uint8_t> &AudioCompFileData,
+				const int audio_start,
+				const int audio_end)
 {
-	const uint32_t audio_start = audiohedptr[slot];
-	const uint32_t audio_end = audiohedptr[slot+1];
-
 	// Open the Huffman dictionary and get AUDIODICT
 	CHuffman Huffman;
 	Huffman.readDictionaryNumber( ExeFile, 0 );
@@ -223,11 +294,14 @@ bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 {
 	// Now get the proper music slot reading the assignment table.
 	std::vector<uint8_t> AudioCompFileData;
-	uint32_t *audiohedptr = NULL;
+	std::vector<uint32_t> musiched;
 
-	if( readCompressedAudiointoMemory(ExeFile, audiohedptr, AudioCompFileData) )
+	if( readCompressedAudiointoMemory(ExeFile, musiched, AudioCompFileData) )
 	{
-	    unpackAudioAt(ExeFile, AudioCompFileData, audiohedptr, track);
+	    unpackAudioInterval(ExeFile, 
+				AudioCompFileData, 
+				musiched[track], 
+				musiched[track+1]);
 	}
 
 	return true;

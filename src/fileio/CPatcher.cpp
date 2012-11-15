@@ -94,6 +94,13 @@ void CPatcher::process()
 			
 			gpResource->egadictFilename = newfileName;
 		}
+		else if(PatchItem.keyword == "audiohed")
+		{
+			std::string newfileName = PatchItem.value.front();
+			TrimSpaces(newfileName);
+			
+			gpResource->audioHedFilename = newfileName;
+		}				
 		else if(PatchItem.keyword == "gamemaps")
 		{
 			std::string newfileName = PatchItem.value.front();
