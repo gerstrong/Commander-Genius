@@ -178,7 +178,11 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 
 	g_pVideoDriver->setZoom(1);
 	g_pTimer->setFPS(60);
+#if defined(ANDROID)	
+	g_pVideoDriver->setAspectCorrection(false);
+#else
 	g_pVideoDriver->setAspectCorrection(true);
+#endif
 	g_pVideoDriver->setFilter(1);
 	g_pVideoDriver->setScaleType(true);
 

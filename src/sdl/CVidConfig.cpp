@@ -67,6 +67,11 @@ void CVidConfig::reset()
 	m_opengl = true;
 	m_aspect_correction = false;
 #endif
+
+#if defined(ANDROID)
+	m_aspect_correction = false;
+#endif
+	
 }
 
 void CVidConfig::setResolution(const int width, const int height, const int depth)

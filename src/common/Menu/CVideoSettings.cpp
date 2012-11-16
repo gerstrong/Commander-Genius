@@ -113,11 +113,11 @@ void CVideoSettings::init()
 #endif
 
 	mpShowFPSSwitch->enable( mUserVidConf.showfps );
-	mpSFXSwitch->enable( mUserVidConf.m_special_fx );
-
-	mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
+	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
 
 #if !defined(EMBEDDED)
+	mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
+	
 	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : (mUserVidConf.m_normal_scale ? "normal" : "scale") + itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpVSyncSwitch->enable( mUserVidConf.vsync );
 	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
@@ -144,8 +144,9 @@ void CVideoSettings::release()
 	mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
 #endif
 
-#if !defined(EMBEDDED)
-	mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();
+	
+#if !defined(EMBEDDED)	
+	mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();	
 	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
 	std::string scalerStr = mpScalerSelection->getSelection();
 
