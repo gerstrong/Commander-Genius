@@ -20,18 +20,19 @@ public:
 
 	void setupButtonSurface();
 
-	void setText(const std::string& text);
+	virtual void setText(const std::string& text);
 
-	void processLogic();
+	virtual void processLogic();
 	void drawGalaxyStyle(SDL_Rect& lRect);
-	void processRender(const CRect<float> &RectDispCoordFloat);
+	virtual void processRender(const CRect<float> &RectDispCoordFloat);
 
 	// Defines in character units how tall and wide the entire text is.
 	CRect<unsigned int> mTextDim;
 
-private:
+protected:
 	std::list<std::string> mTextList;
-
+	
+private:
 	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
 	std::unique_ptr<SDL_Surface> mpTextLightSfc;
 	std::unique_ptr<SDL_Surface> mpTextDisabledSfc;

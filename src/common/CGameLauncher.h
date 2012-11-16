@@ -31,7 +31,7 @@
 struct GameEntry
 {
     std::string path;
-	std::string exefilename;
+    std::string exefilename;
     std::string name;
     short version;
     bool supported;

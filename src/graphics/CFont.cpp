@@ -60,7 +60,7 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE, width, height,
 			  	  	  	  	  	  	  	  	 format->BitsPerPixel,
 			  	  	  	  	  	  	  	  	 format->Rmask, format->Gmask,
-			  	  	  	  	  	  	  	  	 format->Bmask, format->Amask );
+			  	  	  	  	  	  	  	  	 format->Bmask, 0 );
 
 	bool usesAlpha = (sfc->flags & SDL_SRCALPHA);
 	const Uint32 colorkey = SDL_MapRGB(sfc->format, 0xFF, 0x00, 0xFF);
@@ -335,9 +335,56 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 	}
 }
 
+void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, const Uint8 alpha)
+{
+	unsigned int i,x=xoff,y=yoff;
+	
+	SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, alpha);
+
+	if(text.size() != 0)
+	{
+		for(i=0;i<text.size();i++)
+		{
+			unsigned char c = text[i];
+
+			if ( !endofText( text.substr(i) ) )
+			{
+				drawCharacter(dst, c, x, y);
+
+				x+=mWidthtable[c];
+			}
+			else
+			{
+				x=xoff;
+				y+=8;
+			}
+		}
+	}
+	
+	SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+}
+
+
 void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, bool highlight)
 {
 	drawFontCentered(dst, text, 0, width, yoff, highlight);
+}
+
+void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, const Uint8 alpha)
+{
+	drawFontCenteredAlpha(dst, text, 0, width, yoff, alpha);
+}
+
+void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, const Uint8 alpha)
+{
+	Uint16 xmidpos = 0;
+
+	for( unsigned int i=0 ; i<text.size() ; i++)
+		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
+
+	xmidpos = (width-xmidpos)/2+x;
+
+	drawFontAlpha(dst, text, xmidpos, yoff, alpha);
 }
 
 void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, bool highlight)
@@ -350,6 +397,20 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 	xmidpos = (width-xmidpos)/2+x;
 
 	drawFont(dst, text, xmidpos, yoff, highlight);
+}
+
+void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, const Uint8 alpha)
+{
+	Uint16 xmidpos = 0;
+	Uint16 ymidpos = 0;
+
+	for( unsigned int i=0 ; i<text.size() ; i++)
+		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
+
+	xmidpos = (width-xmidpos)/2+x;
+	ymidpos = yoff + (height - 8)/2;
+
+	drawFontAlpha(dst, text, xmidpos, ymidpos, alpha);
 }
 
 void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, bool highlight)

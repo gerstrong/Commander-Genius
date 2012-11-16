@@ -24,8 +24,8 @@ private:
   
   void (AutoGun::*processState)();
   
-  const int FLY_SPEED = 160;
-  const int WAIT_TIME = 150;
+  static const int FLY_SPEED = 160;
+  static const int WAIT_TIME = 150;
   
   int time;
   

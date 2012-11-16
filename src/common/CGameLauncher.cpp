@@ -11,6 +11,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "gui/CGUITextSelectionList.h"
+#include "gui/CGUIBanner.h"
 #include "gui/CGUIButton.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CBehaviorEngine.h"
@@ -22,7 +23,7 @@
 #include <fstream>
 
 CGameLauncher::CGameLauncher() :
-mLauncherDialog(CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f)))
+mLauncherDialog(CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.85f)))
 {
 	g_pBehaviorEngine->setEpisode(0);
 	m_mustquit      = false;
@@ -80,12 +81,10 @@ bool CGameLauncher::init()
 
 
     mLauncherDialog.addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    mLauncherDialog.addControl(new CGUIButton( "x", new GMQuit() ),
-												CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
-    mLauncherDialog.addControl(mpSelList, CRect<float>(0.01f, 0.07f, 0.49f, 0.92f));
+    mLauncherDialog.addControl(new CGUIButton( "x", new GMQuit() ), CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
+    mLauncherDialog.addControl(mpSelList, CRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
-    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ),
-												CRect<float>(0.65f, 0.915f, 0.3f, 0.07f) );
+    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ), CRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
@@ -98,7 +97,17 @@ bool CGameLauncher::init()
     g_pResourceLoader->setPermilage(1000);
 	
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
-	
+    
+    // Banner. TODO: Create a class for that...
+    CGUIBanner *banner = new CGUIBanner("By Gerstrong\n"
+					"Albert Zeyer\n"
+				       "Tulip\n"
+				       "Pelya\n"
+				       "NY00123\n"
+				       "and the CG Contributors\n");
+    
+    mLauncherDialog.addControl( banner, CRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
+    
     return true;
 }
 
@@ -208,40 +217,40 @@ void CGameLauncher::process()
     // Did the user press (X)?
     if( g_pInput->getExitEvent() )
     {
-        m_mustquit = true;
-        return;
+	m_mustquit = true;
+	return;
     }
-
-
-	// Command (Keyboard/Joystick) are handled here
-	for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
+    
+    
+    // Command (Keyboard/Joystick) are handled here
+    for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
+    {
+	if( g_pInput->getPressedCommand(cmd) )
 	{
-		if( g_pInput->getPressedCommand(cmd) )
-		{
-			mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
-			break;
-		}
+	    mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+	    break;
 	}
-
-	// Check if the selection changed. Update the right data panel
-	if(mSelection != mpSelList->mSelection)
-	{
-		mSelection = mpSelList->mSelection;
-		const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
-		mpEpisodeText->setText(nameText);
-		float fVer = m_Entries[mSelection].version;
-		fVer /= 100.0f;
-		mpVersionText->setText("Version: " + ftoa(fVer));
-	}
-
-	mLauncherDialog.processLogic();
-
-	if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
-	{
-		setChosenGame(Starter->mSlot);
-		g_pBehaviorEngine->m_EventList.pop_Event();
-	}
-
+    }
+    
+    // Check if the selection changed. Update the right data panel
+    if(mSelection != mpSelList->mSelection)
+    {
+	mSelection = mpSelList->mSelection;
+	const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
+	mpEpisodeText->setText(nameText);
+	float fVer = m_Entries[mSelection].version;
+	fVer /= 100.0f;
+	mpVersionText->setText("Version: " + ftoa(fVer));
+    }
+    
+    mLauncherDialog.processLogic();
+    
+    if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
+    {
+	setChosenGame(Starter->mSlot);
+	g_pBehaviorEngine->m_EventList.pop_Event();
+    }
+    
 }
 
 void CGameLauncher::getLabels()

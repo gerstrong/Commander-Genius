@@ -41,8 +41,10 @@ void CGUIText::setText(const std::string& text)
 
 	size_t pos = 0;
 	if(!buf.empty())
+	{
 		while( (pos = buf.find('\n')) != std::string::npos )
 			buf.erase(pos,1);
+	}
 	mTextList.push_back(buf);
 
 	if( mTextDim.w<buf.size() )
@@ -72,6 +74,4 @@ void CGUIText::processRender(const CRect<float> &RectDispCoordFloat)
 	{
 		Font.drawFontCentered(g_pVideoDriver->getBlitSurface(), *text, lRect.x, lRect.w, lRect.y+i*8, false);
 	}
-
-
 }

@@ -281,7 +281,7 @@ void CPlayGameVorticon::process()
 		tempbuf = "FPS: " + itoa(static_cast<int>(g_pTimer->FPS())) +
 				"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
 #else
-		tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
+		tempbuf = "FPS: " + itoa(static_cast<int>(g_pTimer->FPS()));
 #endif
 		g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 0,0, true);
 
