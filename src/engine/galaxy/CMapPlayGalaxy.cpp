@@ -205,13 +205,12 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 
 	std::vector< SmartPointer<CGalaxySpriteObject> > filteredObjects;	
 
-	// let's filter the Foe out that won't do any good!
-	std::vector< SmartPointer<CGalaxySpriteObject> >::iterator it = mObjectPtr.begin();
-	for( ; it != mObjectPtr.end() ; it++ )
+	// let's filter the Foe out that won't do any good!	
+	for( auto &it : mObjectPtr )
 	{
-	    if( (*it)->mFoeID != 0 )
+	    if( it->mFoeID != 0 )
 	    {
-		filteredObjects.push_back( (*it) );
+		filteredObjects.push_back( it );
 	    }
 	}
 	
@@ -220,14 +219,13 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	// save the number of objects on screen
 	savedGame.encodeData(size);
 
-	it = filteredObjects.begin();
-	for( ; it != filteredObjects.end() ; it++ )
+	for( auto &it : filteredObjects )
 	{
 		// save all the objects states
-		unsigned int newYpos = (*it)->getYPosition();
-		unsigned int newXpos = (*it)->getXPosition();
+		unsigned int newYpos = it->getYPosition();
+		unsigned int newXpos = it->getXPosition();
 		
-		CSprite &rSprite = g_pGfxEngine->getSprite((*it)->sprite);
+		CSprite &rSprite = g_pGfxEngine->getSprite( it->sprite);
 		// we need to push back the original position, because when loading a game the original unCSFed coordinates are transformed
 		newYpos -= (1<<CSF);
 		newYpos += ((rSprite.getHeight())<<STC);
@@ -236,24 +234,24 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		newXpos -= (1<<CSF)/2;
 		newXpos += ((rSprite.getWidth()/2)<<STC);		
 				
-		savedGame.encodeData( (*it)->mFoeID );
+		savedGame.encodeData( it->mFoeID );
 		savedGame.encodeData( newXpos );
 		savedGame.encodeData( newYpos );
-		savedGame.encodeData( (*it)->dead );
-		savedGame.encodeData( (*it)->onscreen );
-		savedGame.encodeData( (*it)->hasbeenonscreen );
-		savedGame.encodeData( (*it)->exists );
-		savedGame.encodeData( (*it)->blockedd );
-		savedGame.encodeData( (*it)->blockedu );
-		savedGame.encodeData( (*it)->blockedl );
-		savedGame.encodeData( (*it)->blockedr );
-		savedGame.encodeData( (*it)->mHealthPoints );
-		savedGame.encodeData( (*it)->canbezapped );
-		savedGame.encodeData( (*it)->cansupportplayer );
-		savedGame.encodeData( (*it)->inhibitfall );
-		savedGame.encodeData( (*it)->honorPriority );
-		savedGame.encodeData( (*it)->sprite );
-		savedGame.encodeData( (*it)->m_ActionNumber );
+		savedGame.encodeData( it->dead );
+		savedGame.encodeData( it->onscreen );
+		savedGame.encodeData( it->hasbeenonscreen );
+		savedGame.encodeData( it->exists );
+		savedGame.encodeData( it->blockedd );
+		savedGame.encodeData( it->blockedu );
+		savedGame.encodeData( it->blockedl );
+		savedGame.encodeData( it->blockedr );
+		savedGame.encodeData( it->mHealthPoints );
+		savedGame.encodeData( it->canbezapped );
+		savedGame.encodeData( it->cansupportplayer );
+		savedGame.encodeData( it->inhibitfall );
+		savedGame.encodeData( it->honorPriority );
+		savedGame.encodeData( it->sprite );
+		savedGame.encodeData( it->m_ActionNumber );
 	}
 
 	// Save the map_data as it is left
