@@ -380,21 +380,19 @@ unsigned int CVideoDriver::getHeight() const {
 	return m_VidConfig.m_DisplayRect.h;
 }
 
-unsigned short CVideoDriver::getDepth() const {
+unsigned short CVideoDriver::getDepth() const 
+{
 	return 32;
 }
 
-SDL_Surface *CVideoDriver::getScrollSurface() {
+SDL_Surface *CVideoDriver::getScrollSurface() 
+{
 	return mpVideoEngine->getScrollSurface();
 }
 
-st_camera_bounds &CVideoDriver::getCameraBounds() {
-	return m_VidConfig.m_CameraBounds;
-}
-
-void CVideoDriver::stop() 
+st_camera_bounds &CVideoDriver::getCameraBounds() 
 {
-    mpVideoEngine.release();
+	return m_VidConfig.m_CameraBounds;
 }
 
 ////
@@ -497,8 +495,4 @@ void CVideoDriver::clearDrawingTasks() {
 	if (!mDrawTasks.empty()) {
 		mDrawTasks.clear();
 	}
-}
-
-CVideoDriver::~CVideoDriver() {
-	stop();
 }

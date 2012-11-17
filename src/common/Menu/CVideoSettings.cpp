@@ -186,12 +186,9 @@ void CVideoSettings::release()
 		return;
 	}
 
-	g_pVideoDriver->stop();
-
 	if( !g_pVideoDriver->start() )
 	{
 		g_pVideoDriver->setVidConfig(oldVidConf);
-		g_pVideoDriver->stop();
 		g_pVideoDriver->start();
 	}
 

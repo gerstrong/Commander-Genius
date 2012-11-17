@@ -39,8 +39,7 @@ public:
 	
 	bool applyMode();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
-
-	void stop();
+	
 	bool start();
 	void isFullscreen(bool value);
 	void drawConsoleMessages();
@@ -130,8 +129,6 @@ public:
 	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }
 
 	st_camera_bounds &getCameraBounds();
-
-	virtual ~CVideoDriver();
 
 	std::unique_ptr<CVideoEngine> mpVideoEngine;
 

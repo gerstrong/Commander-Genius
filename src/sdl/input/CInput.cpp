@@ -561,7 +561,6 @@ void CInput::pollEvents()
 		g_pVideoDriver->isFullscreen(value);
 
 		// initialize/activate all drivers
-		g_pVideoDriver->stop();
 		g_pLogFile->ftextOut("Restarting graphics driver...<br>");
 		if ( g_pVideoDriver->applyMode() && g_pVideoDriver->start() )
 		{
@@ -600,7 +599,6 @@ void CInput::pollEvents()
 	{
 		g_pSettings->loadDefaultGraphicsCfg();
 		g_pSettings->saveDrvCfg();
-		g_pVideoDriver->stop();
 		g_pVideoDriver->start();
 	}
 }

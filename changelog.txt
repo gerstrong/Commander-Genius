@@ -1,6 +1,18 @@
 Commander Genius Release :
 ==========================
 
+v1.0 RC: 
+--------
+
+
+v1.0 Beta6: 
+-----------
+- Some AIs are better
+- More Mods are now compatible
+- Better Player AI and Controls
+- Smoother animations
+
+
 v1.0 Beta5: 
 -----------
 - Some AIs are better
