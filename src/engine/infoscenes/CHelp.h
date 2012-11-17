@@ -12,8 +12,8 @@
 #include "common/CMap.h"
 #include "dialog/CTextViewer.h"
 #include "fileio/CExeFile.h"
-#include "SmartPointer.h"
 #include <string.h>
+#include <memory>
 
 class CHelp : public CInfoScene
 {
@@ -27,7 +27,7 @@ public:
 
 private:
 	std::string mTextType;
-	SmartPointer<CTextViewer> mpTextViewer;
+	std::unique_ptr<CTextViewer> mpTextViewer;
 };
 
 #endif /* CHELP_H_ */

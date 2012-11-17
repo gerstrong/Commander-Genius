@@ -15,7 +15,6 @@
 #include "graphics/CBitmap.h"
 #include "common/CMap.h"
 #include "fileio/CExeFile.h"
-#include "SmartPointer.h"
 
 class CAbout : public CInfoScene
 {

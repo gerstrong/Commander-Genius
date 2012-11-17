@@ -16,7 +16,6 @@
 #include "ItemsGalaxy.h"
 #include "CStatusScreenGalaxy.h"
 #include "fileio/CSaveGameController.h"
-#include "SmartPointer.h"
 #include <memory>
 #include <string>
 #include <SDL.h>

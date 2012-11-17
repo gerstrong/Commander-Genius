@@ -9,7 +9,6 @@
 #include "CItemEffect.h"
 #include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
-#include "SmartPointer.h"
 
 namespace galaxy {
 

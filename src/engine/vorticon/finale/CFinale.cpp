@@ -28,10 +28,10 @@ void CFinale::addMsgBoxString(const std::string &text)
 
 void CFinale::showEndingText()
 {
-	if(mpTextViewer.empty())
+	if(!mpTextViewer)
 	{
 		std::string text;
-		mpTextViewer = new CTextViewer(0, 0, 320, 120);
+		mpTextViewer.reset(new CTextViewer(0, 0, 320, 120));
 		mpTextViewer->loadTextfromFile(mpMap->m_gamepath + "endtext.ck" + itoa(m_Episode));
 	}
 
@@ -39,7 +39,7 @@ void CFinale::showEndingText()
 
 	if(mpTextViewer->hasClosed())
 	{
-		mpTextViewer = NULL;
+		mpTextViewer.release();
 		m_step++;
 	}
 }

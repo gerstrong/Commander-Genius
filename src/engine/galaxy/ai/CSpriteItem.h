@@ -13,7 +13,6 @@
 #define CSPRITEITEM_H_
 
 #include "engine/galaxy/CGalaxySpriteObject.h"
-#include "SmartPointer.h"
 
 namespace galaxy {
 

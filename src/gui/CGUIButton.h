@@ -12,7 +12,6 @@
 
 #include "CGUIControl.h"
 #include "engine/CEvent.h"
-#include "SmartPointer.h"
 #include "common/CBehaviorEngine.h"
 #include <string>
 #include <memory>
@@ -60,9 +59,9 @@ private:
 
 	std::string mText;
 	std::shared_ptr<CEvent> mEvent;
-	SmartPointer<SDL_Surface> mpTextDarkSfc;
-	SmartPointer<SDL_Surface> mpTextLightSfc;
-	SmartPointer<SDL_Surface> mpTextDisabledSfc;
+	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
+	std::unique_ptr<SDL_Surface> mpTextLightSfc;
+	std::unique_ptr<SDL_Surface> mpTextDisabledSfc;
 	std::map< Style, EngineType > mMapping;
 
 	void (CGUIButton::*drawButton)(SDL_Rect&);

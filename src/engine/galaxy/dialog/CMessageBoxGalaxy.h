@@ -12,7 +12,6 @@
 #include <string>
 #include <SDL.h>
 #include <memory>
-#include "SmartPointer.h"
 
 class CMessageBoxGalaxy
 {

@@ -71,9 +71,9 @@ void CGUIButton::setupButtonSurface()
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
-	mpTextDarkSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38));
-	mpTextLightSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84));
-	mpTextDisabledSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123));
+	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38)));
+	mpTextLightSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84)));
+	mpTextDisabledSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123)));
 
 }
 

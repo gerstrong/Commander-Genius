@@ -12,7 +12,7 @@
 #include "common/CMap.h"
 #include "dialog/CTextViewer.h"
 #include "fileio/CExeFile.h"
-#include "SmartPointer.h"
+#include <memory>
 #include <string.h>
 
 class CStory : public CInfoScene
@@ -25,7 +25,7 @@ public:
 
 private:
 	std::shared_ptr<CMap> mpMap;
-	SmartPointer<CTextViewer> mpTextViewer;
+	std::unique_ptr<CTextViewer> mpTextViewer;
 };
 
 #endif /* CSTORY_H_ */

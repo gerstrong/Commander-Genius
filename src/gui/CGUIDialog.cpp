@@ -377,11 +377,9 @@ void CGUIDialog::processRendering()
 		SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), &lRect );
 	}
 
-	for( std::list<
-		 SmartPointer<CGUIControl> >::iterator it = mControlList.begin() ;
-		 it != mControlList.end() ; it++ )
+	for( auto &it : mControlList )
 	{
-		(*it)->processRender(screenRect);
+	  it->processRender(screenRect);
 	}
 
 }

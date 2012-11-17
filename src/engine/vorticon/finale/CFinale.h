@@ -13,6 +13,7 @@
 #include "CShipFlySys.h"
 #include "CFinaleStaticScene.h"
 #include "SmartPointer.h"
+#include <memory>
 #include <string>
 
 class CFinale
@@ -32,7 +33,7 @@ public:
 protected:
 	char m_step;
 	bool m_mustfinishgame;
-	SmartPointer<CTextViewer> mpTextViewer; // Used for Epilogue
+	std::unique_ptr<CTextViewer> mpTextViewer; // Used for Epilogue
 	std::string m_epilogue_text;
 	int m_Episode;
 	std::list< SmartPointer<CMessageBoxVort> > &mMessageBoxes;

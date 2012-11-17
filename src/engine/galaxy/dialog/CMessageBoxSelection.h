@@ -9,7 +9,6 @@
 #define CMESSAGEBOXSELECTION_H_
 
 #include "CMessageBoxGalaxy.h"
-#include "SmartPointer.h"
 #include "engine/CEvent.h"
 
 

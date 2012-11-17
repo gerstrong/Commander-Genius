@@ -21,7 +21,6 @@
 #include "common/Cheat.h"
 #include "engine/CCamera.h"
 #include "engine/galaxy/CInventory.h"
-#include "SmartPointer.h"
 
 namespace galaxy
 {

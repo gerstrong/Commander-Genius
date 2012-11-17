@@ -94,7 +94,7 @@ void CHelp::init()
 	}
 
 	// Creates the Text ViewerBox and stores the text there!
-	mpTextViewer = new CTextViewer(0, 8, 320, 160);
+	mpTextViewer.reset(new CTextViewer(0, 8, 320, 160));
 	mpTextViewer->formatText(Text);
 }
 
@@ -110,13 +110,15 @@ void CHelp::process()
 	// NOTE: Animation is performed here too, because the story plane is drawn over the other
 	// map that is open. That is desired!
 
-	if(!mpTextViewer.empty())
+	if(mpTextViewer)
 	{
 		mpTextViewer->process();
 		if(mpTextViewer->hasClosed())
 			m_destroy_me=true;
 	}
 	else
+	{
 		m_destroy_me=true;
+	}
 }
 

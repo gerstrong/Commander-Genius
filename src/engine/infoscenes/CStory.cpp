@@ -76,7 +76,7 @@ void CStory::init()
 	Maploader.load(episode, 90, DataDirectory, false);
 	
 	// Create the Text ViewerBox and stores the text there!
-	mpTextViewer = new CTextViewer(0, 0, 320, 136);
+	mpTextViewer.reset(new CTextViewer(0, 0, 320, 136));
 
 	mpTextViewer->formatText(Text);
 	
@@ -90,14 +90,16 @@ void CStory::process()
 	mpMap->animateAllTiles();
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
-	if(!mpTextViewer.empty())
+	if(mpTextViewer)
 	{
 		mpTextViewer->process();
 		if(mpTextViewer->hasClosed())
 			m_destroy_me=true;
 	}
 	else
+	{
 		m_destroy_me=true;
+	}
 }
 
 void CStory::teardown()

@@ -15,6 +15,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"
 #include "StringUtils.h"
+#include <memory>
 
 const int FONT_ID = 0;
 
@@ -118,7 +119,7 @@ void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
-	SmartPointer<SDL_Surface> pTextSfc = Font.fetchColoredTextSfc( mText, SDL_MapRGB( format, 0, 0, 0 ) );
+	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> pTextSfc(Font.fetchColoredTextSfc( mText, SDL_MapRGB( format, 0, 0, 0 ) ));
 	SDL_BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
 }
 
