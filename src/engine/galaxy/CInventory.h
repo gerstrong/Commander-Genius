@@ -17,6 +17,7 @@
 #include "CStatusScreenGalaxy.h"
 #include "fileio/CSaveGameController.h"
 #include "SmartPointer.h"
+#include <memory>
 #include <string>
 #include <SDL.h>
 
@@ -48,7 +49,7 @@ public:
 	stItemGalaxy Item;
 
 	CHUD m_HUD;
-	SmartPointer<CStatusScreenGalaxy> mp_StatusScreen;
+	std::unique_ptr<CStatusScreenGalaxy> mp_StatusScreen;
 	SDL_Surface *mp_StatusBgrnd;
 	const std::string &m_LevelName;
 };
