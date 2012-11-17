@@ -119,7 +119,7 @@ ENDIF ()
 IF(BUILD_TARGET STREQUAL WIN32)
 	ADD_DEFINITIONS(-std=c++0x)
 else()
-	ADD_DEFINITIONS(-std=c++11)
+	ADD_DEFINITIONS(-std=c++0x)
 endif()
 
 
