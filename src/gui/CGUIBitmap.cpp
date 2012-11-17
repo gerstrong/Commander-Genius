@@ -8,17 +8,16 @@
 #include "CGUIBitmap.h"
 #include "graphics/CGfxEngine.h"
 
-CGUIBitmap::CGUIBitmap(const SmartPointer<CBitmap>& pBitmap)
-{
-	mpBitmap = pBitmap;
-}
+CGUIBitmap::CGUIBitmap(std::unique_ptr<CBitmap>&& pBitmap) :
+mpBitmap(move(pBitmap))
+{}
 
 
 
 CGUIBitmap::CGUIBitmap(const std::string &text)
 {
 
-	mpBitmap = new CBitmap( *g_pGfxEngine->getBitmap(text) );
+	mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmap(text) ));
 
 }
 

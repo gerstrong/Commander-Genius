@@ -11,6 +11,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"
 #include "gui/CGUIBitmap.h"
+#include <memory>
 
 CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
 CMessageBox(Text, lower, keymsg, leftbound)
@@ -41,7 +42,7 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	fRect.transformInverse(gameRect);
 	fRect.transform(mRect);
 
-	SmartPointer<CBitmap> pBitmap = new CBitmap(bmpSfc);
+	std::unique_ptr<CBitmap> pBitmap(new CBitmap(bmpSfc));
 
-	addControl( new CGUIBitmap(pBitmap), fRect );
+	addControl( new CGUIBitmap(move(pBitmap)), fRect );
 }

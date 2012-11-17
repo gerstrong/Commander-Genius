@@ -9,8 +9,8 @@
 #define CGUIBITMAP_H_
 
 #include "CGUIControl.h"
-#include "SmartPointer.h"
 #include "graphics/CBitmap.h"
+#include <memory>
 #include <string>
 
 class CGUIBitmap : public CGUIControl
@@ -18,7 +18,7 @@ class CGUIBitmap : public CGUIControl
 public:
 
 	// Loads an Bitmap that is given directly
-	CGUIBitmap(const SmartPointer<CBitmap>& pBitmap);
+	CGUIBitmap(std::unique_ptr<CBitmap>&& pBitmap);
 
 	// Load an Bitmap using an internal string ID of all the loaded Bitmaps
 	CGUIBitmap(const std::string &text);
@@ -30,7 +30,7 @@ public:
 
 private:
 
-	SmartPointer<CBitmap> mpBitmap;
+	std::unique_ptr<CBitmap> mpBitmap;
 
 };
 
