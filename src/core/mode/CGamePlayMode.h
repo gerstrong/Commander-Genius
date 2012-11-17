@@ -38,6 +38,8 @@ private:
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
 	std::unique_ptr<CPlayGame> mp_PlayGame;
+	
+	std::shared_ptr<SDL_Surface> mpFPSSurface;
 };
 
 #endif /* CGAMEPLAYMODE_H_ */

@@ -505,14 +505,6 @@ void CPlayerLevel::processLookingDown()
 					}
 				}
 				
-				if(pSupportedbyobject->yDirection == DOWN )
-				{
-				    yinertia = 60;
-				}
-				else
-				{
-				    yinertia = 0;
-				}
 				xinertia = 0;
 				
 				pSupportedbyobject = nullptr;

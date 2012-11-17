@@ -492,7 +492,8 @@ SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
 }
 
 void CVideoDriver::clearDrawingTasks() {
-	if (!mDrawTasks.empty()) {
+	if (!mDrawTasks.empty()) 
+	{
 		mDrawTasks.clear();
 	}
 }

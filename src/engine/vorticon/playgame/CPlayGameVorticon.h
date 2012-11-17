@@ -116,7 +116,5 @@ private:
 	SmartPointer<CHUD> mp_HUD;
 	std::shared_ptr<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;
-
-	std::shared_ptr<SDL_Surface> mpFPSSurface;
 };
 #endif /* CPlayGameVorticon_H_ */

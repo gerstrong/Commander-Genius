@@ -60,24 +60,24 @@ public:
 
     Uint32 getTicks() { return timerTicks(); }
     
-    /*float Logic2FPSratio() const
-    {	return mLogic2FPSratio;	}*/
+    void setTimeforLastLoop(const float total_elapsed)
+    { mtotalElapsed = total_elapsed; }
     
+    float TimeForLastLoop()
+    { return mtotalElapsed; }
 
+    float LastFPS()
+    { return 1000.0f/mtotalElapsed; }
+    
+    
 private:
     
     float mRenderLatency;
     float mLogicLatency;
-  
-    //float m_FrameRate, m_FrameDuration;
-    //int mLogicSpeed;
-    //int m_FPS, m_FrameCount;
-
-    //ulong m_FrameUpdateTime;
-    //ulong m_FPSCountTime;
-    ulong m_LastSecTime;
     
-    //float mLogic2FPSratio;
+    float mtotalElapsed;
+  
+    ulong m_LastSecTime;
 };
 
 #endif /* CTIMER_H_ */

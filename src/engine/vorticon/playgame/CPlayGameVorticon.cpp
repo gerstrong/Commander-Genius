@@ -261,34 +261,6 @@ void CPlayGameVorticon::process()
 		// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
 		handleFKeys();
 	}
-
-
-	if (g_pVideoDriver->getVidConfig().showfps)
-	{
-		SDL_Rect rect;
-		rect.x = 5;
-		rect.y = 5;
-		rect.w = 300;
-		rect.h = 10;
-
-		if(!mpFPSSurface)
-		{
-			mpFPSSurface.reset(CG_CreateRGBSurface(rect), &SDL_FreeSurface);
-		}
-
-		std::string tempbuf;
-#ifdef DEBUG
-		tempbuf = "FPS: " + itoa(static_cast<int>(g_pTimer->FPS())) +
-				"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
-#else
-		tempbuf = "FPS: " + itoa(static_cast<int>(g_pTimer->FPS()));
-#endif
-		g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 0,0, true);
-
-		g_pVideoDriver->mDrawTasks.add(new BlitSurfaceTask(mpFPSSurface, NULL, &rect ));
-
-	}
-
 }
 
 

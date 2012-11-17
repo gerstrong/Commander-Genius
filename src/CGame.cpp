@@ -121,13 +121,12 @@ bool CGame::loadCKPDrivers()
  */
 void CGame::run()
 {
-
-  
-  
   float acc = 0.0f;
   float start = 0.0f;
   float elapsed = 0.0f;
+  float total_elapsed = 0.0f;
   float curr = 0.0f;
+  int counter = 0;
   
     while(1)
     {
@@ -166,7 +165,8 @@ void CGame::run()
 	g_pVideoDriver->updateScreen();
 	
 	elapsed = timerTicks() - start;
-
+	total_elapsed += elapsed;
+	
         if( m_Engine.mustShutdown() || g_pInput->getExitEvent() )
 		break;
 	
@@ -175,6 +175,17 @@ void CGame::run()
 	// wait time remaining in current loop
 	if( waitTime > 0 )
 	  timerDelay(waitTime);	
+	
+	total_elapsed += static_cast<float>(waitTime);
+	
+	// This will refresh the fps display, so it stays readable and calculates an average value.
+	counter++;	
+	if(counter >= 100)
+	{
+	    counter = 0;
+	    g_pTimer->setTimeforLastLoop(total_elapsed/100.0f);
+	    total_elapsed = 0.0f;
+	}
     }
 }
 
