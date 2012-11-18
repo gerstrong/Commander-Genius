@@ -112,7 +112,7 @@ void CGUIDialog::selectPrevItem()
 		mSelection = mControlList.size()-1;
 
 
-	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
+	auto it = mControlList.begin();
 	int i=0;
 	for( ; it != mControlList.end() ; it++ )
 	{
