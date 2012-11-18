@@ -114,10 +114,12 @@ void CGUIDialog::selectPrevItem()
 
 
 	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
-	for( int i=0 ; it != mControlList.end() ; it++, i++ )
+	int i=0;
+	for( ; it != mControlList.end() ; it++ )
 	{
 		if( i ==  mSelection )
 			break;
+		i++;
 	}
 
 	// Ensures that disabled items are skipped
@@ -145,10 +147,10 @@ void CGUIDialog::selectNextItem()
 		mSelection = 0;
 
 	// Find the right control!
-	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
+	auto it = mControlList.begin();
 	for( int i=0 ; it != mControlList.end() ; it++, i++ )
 	{
-		if( i ==  mSelection )
+		if( i == mSelection )
 			break;
 	}
 
@@ -190,7 +192,6 @@ bool CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
 	{
 		// Send all the other events the active control element
-		std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
 		int i=0;
 		for( auto &it : mControlList )
 		{
