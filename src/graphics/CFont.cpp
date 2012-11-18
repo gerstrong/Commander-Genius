@@ -37,12 +37,15 @@ CFont::CFont()
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 							Uint16 width, Uint16 height)
 {
-	mFontSurface = SDL_CreateRGBSurface(Flags, width,
-			height, 8, 0, 0, 0, 0);
+	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
+			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
 	SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
 
-	return ( !mFontSurface.empty() );
+	if( mFontSurface )
+	  return true;
+	else
+	  return false;
 }
 
 
@@ -138,7 +141,7 @@ bool CFont::loadAlternateFont()
 	// Has the Surface to the entire font been loaded?
 
 	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
-	mFontSurface = loadfromXPMData( alternatefont_xpm, blit->format, blit->flags );
+	mFontSurface.reset( loadfromXPMData( alternatefont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
 	return true;
 }
 
@@ -147,7 +150,7 @@ bool CFont::loadAlternateFont()
 bool CFont::loadinternalFont()
 {
 	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
-	mFontSurface = loadfromXPMData( CGFont_xpm, blit->format, blit->flags );
+	mFontSurface.reset( loadfromXPMData( CGFont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
 	return true;
 }
 
@@ -432,17 +435,3 @@ void CFont::drawMap(SDL_Surface* dst)
 {
 	SDL_BlitSurface(mFontSurface.get(), NULL, dst, NULL);
 }
-
-///
-// Destruction Routines
-///
-void CFont::destroySurface()
-{
-	mFontSurface = NULL;
-}
-
-CFont::~CFont()
-{
-	destroySurface();
-}
-

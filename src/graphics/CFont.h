@@ -18,7 +18,7 @@
 #include <SDL.h>
 #include <string>
 #include <vector>
-#include "SmartPointer.h"
+#include <memory>
 
 class CFont
 {
@@ -83,11 +83,8 @@ public:
 	void drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, bool highlight = false);
 	void drawMap(SDL_Surface* dst);
 
-	void destroySurface();
-	~CFont();
-
 private:
-	SmartPointer<SDL_Surface> mFontSurface;
+	std::shared_ptr<SDL_Surface> mFontSurface;
 	Uint8 mWidthtable[256];
 };
 

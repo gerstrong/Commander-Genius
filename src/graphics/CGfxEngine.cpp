@@ -119,12 +119,8 @@ void CGfxEngine::freeTilemap()
 }
 void CGfxEngine::freeFonts()
 {
-	while ( !Font.empty() )
-	{
-		CFont &font = Font.back();
-		font.destroySurface();
-		Font.pop_back();
-	}
+  while ( !Font.empty() )
+    Font.pop_back();
 }
 
 void CGfxEngine::freeBitmaps(std::vector<CBitmap> &Bitmap)
