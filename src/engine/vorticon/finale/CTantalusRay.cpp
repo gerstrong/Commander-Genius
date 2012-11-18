@@ -54,10 +54,7 @@ void CTantalusRay::process()
 		mp_MessageBox->processLogic();
 
 		if(mp_MessageBox->isFinished())
-		{
-			delete mp_MessageBox;
-			mp_MessageBox = NULL;
-		}
+		  mp_MessageBox.release();
 	}
 	else
 	{

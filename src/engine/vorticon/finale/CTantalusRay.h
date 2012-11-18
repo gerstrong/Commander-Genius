@@ -32,7 +32,7 @@ public:
 private:
 	bool m_mustsetup;
 	int m_alternate_sprite;
-	CMessageBox *mp_MessageBox;
+	std::unique_ptr<CMessageBox> mp_MessageBox;
 	CVorticonSpriteObject *mp_ShootObject;
 	std::shared_ptr<CVorticonSpriteObjectAI> mObjectAI;
 	Uint32 m_timer;
