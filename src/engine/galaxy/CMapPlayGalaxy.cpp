@@ -271,13 +271,13 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	Uint16 level;
 	savedGame.decodeData( level );
 
-	SmartPointer<galaxy::CMapLoaderGalaxy> mapLoader;
+	std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
 	const unsigned int episode = g_pBehaviorEngine->getEpisode();
 
 	if(episode == 4)
-		mapLoader = new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode);
+		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 	else if(episode == 5)
-		mapLoader = new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode);
+		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 	else
 	{
 		g_pLogFile->textOut("Error loading the file. This episode is not supported!");
