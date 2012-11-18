@@ -9,7 +9,6 @@
 #define CMESSAGEBOXVORT_H_
 
 #include "dialog/CMessageBox.h"
-#include "SmartPointer.h"
 
 class CMessageBoxVort : public CMessageBox
 {

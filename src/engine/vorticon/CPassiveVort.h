@@ -11,6 +11,7 @@
 #include "engine/CPassive.h"
 #include "common/CBehaviorEngine.h"
 #include "engine/CIntro.h"
+#include <memory>
 
 namespace vorticon
 {
@@ -24,8 +25,8 @@ public:
 	void process();
 
 private:
-	SmartPointer<CIntro> mpIntroScreen;
-	SmartPointer<CTitle> mpTitleScreen;
+	std::unique_ptr<CIntro> mpIntroScreen;
+	std::unique_ptr<CTitle> mpTitleScreen;
 	std::shared_ptr<CMap> mpMap;
 };
 

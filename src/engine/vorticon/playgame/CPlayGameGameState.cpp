@@ -10,7 +10,6 @@
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/CVideoDriver.h"
 #include "common/CVorticonMapLoader.h"
-#include "SmartPointer.h"
 
 
 ///////////////////////////

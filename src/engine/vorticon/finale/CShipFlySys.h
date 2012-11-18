@@ -9,7 +9,6 @@
 #define CSHIPFLYSYS_H_
 
 #include "common/CPlayer.h"
-#include "SmartPointer.h"
 
 #define CMD_MOVE                0
 #define CMD_WAIT                1

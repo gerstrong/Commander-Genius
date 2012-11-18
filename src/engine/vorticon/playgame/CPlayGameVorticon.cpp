@@ -238,7 +238,6 @@ void CPlayGameVorticon::process()
 
 			if( g_pInput->getPressedAnyCommand() )
 			{
-				//SmartPointer<CHighScores> pHighScores = new CHighScores();
 				CHighScores *pHighScores = new CHighScores();
 				pHighScores->init();
 				collectHighScoreInfo(*pHighScores);
@@ -554,7 +553,6 @@ void CPlayGameVorticon::drawAllElements()
 
 			if(!m_gameover)
 			{
-				//SmartPointer<CHighScores> pHighScores = new CHighScores();
 				CHighScores *pHighScores = new CHighScores();
 				pHighScores->init();
 				collectHighScoreInfo(*pHighScores);

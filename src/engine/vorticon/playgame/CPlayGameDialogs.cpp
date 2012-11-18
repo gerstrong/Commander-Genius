@@ -20,7 +20,7 @@ void CPlayGameVorticon::processPauseDialogs()
 	
 	if(!mMessageBoxes.empty())
 	{
-		SmartPointer<CMessageBoxVort> pMB = mMessageBoxes.front();
+		auto pMB = mMessageBoxes.front();
 		pMB->processLogic();
 
 		if( pMB->isFinished() )

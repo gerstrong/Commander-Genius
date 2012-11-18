@@ -34,7 +34,7 @@ bool CPassiveVort::init(char mode)
 
 	if( m_mode == INTRO )
 	{
-		mpIntroScreen = new CIntro();
+		mpIntroScreen.reset(new CIntro());
 		mpMap.reset(new CMap);
 		CVorticonMapLoader MapLoader( mpMap );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
@@ -50,7 +50,7 @@ bool CPassiveVort::init(char mode)
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
 		mpMap->drawAll();
-		mpTitleScreen = new CTitle( *mpMap.get() );
+		mpTitleScreen.reset( new CTitle( *mpMap.get() ) );
 		mpTitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
