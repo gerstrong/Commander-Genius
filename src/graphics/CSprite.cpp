@@ -28,21 +28,21 @@ m_alpha(255)
 
 bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 {
-	mpSurface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
+	mpSurface.reset(SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 	SDL_SetColors( mpSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey( mpSurface.get(), SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
 
-	mpMasksurface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
+	mpMasksurface.reset(SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 	SDL_SetColors( mpMasksurface.get(), Palette, 0, 255);
 	SDL_SetColorKey( mpMasksurface.get(), SDL_SRCCOLORKEY, COLORKEY ); // color key.
 	
-	return ( mpSurface.empty() && mpMasksurface.empty() );
+	return ( !mpSurface && !mpMasksurface );
 }
 
 bool CSprite::optimizeSurface()
 {
-	if(!mpSurface.empty())
-		mpSurface = SDL_DisplayFormatAlpha(mpSurface.get());
+    if(mpSurface)
+	mpSurface.reset(SDL_DisplayFormatAlpha(mpSurface.get()), &SDL_FreeSurface);
 
     return true;
 }
@@ -112,14 +112,15 @@ bool CSprite::loadHQSprite( const std::string& filename )
 	if(!IsFileAvailable(filename))
 		return false;
 
-	if(!mpSurface.empty())
+	if(mpSurface)
 	{
 		const std::string fullpath = GetFullFileName(filename);
 
-		SmartPointer<SDL_Surface> temp_surface = SDL_LoadBMP( fullpath.c_str() );
-		if(!temp_surface.empty())
+		std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> temp_surface(SDL_LoadBMP( fullpath.c_str() ));
+		if(temp_surface)
 		{
-			SmartPointer<SDL_Surface> displaysurface = SDL_ConvertSurface(temp_surface.get(), mpSurface->format, mpSurface->flags);
+			std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> 
+			      displaysurface( SDL_ConvertSurface(temp_surface.get(), mpSurface->format, mpSurface->flags));
 			readMask(displaysurface.get());
 			readBBox(displaysurface.get());
 			SDL_BlitSurface(displaysurface.get(), NULL, mpSurface.get(), NULL);
@@ -192,7 +193,7 @@ void CSprite::applyTransparency()
 	Uint32 colour, mask;
 	Uint8 r,g,b,a;
 	
-	if(mpSurface.empty() || mpMasksurface.empty()) return;
+	if( !mpSurface || !mpMasksurface ) return;
 
 	if(mpSurface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat before ???
 	{
@@ -239,7 +240,7 @@ void CSprite::applyTranslucency(Uint8 value)
 
 	r = g = b = a = 0;		
 	
-	if(mpSurface.empty() || g_pVideoDriver->getZoomValue() > 1) 
+	if( !mpSurface || g_pVideoDriver->getZoomValue() > 1) 
 	    return;
 
 	if(m_alpha == value)

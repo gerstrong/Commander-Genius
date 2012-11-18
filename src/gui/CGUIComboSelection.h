@@ -9,10 +9,12 @@
 #define CGUICOMBOSELECTION_H_
 
 #include <string>
+#include <memory>
+#include "sdl/extensions.h"
 #include "CGUIControl.h"
 #include "engine/CEvent.h"
-#include "SmartPointer.h"
 
+struct SDL_Surface_Deleter;
 
 class CGUIComboSelection : public CGUIControl
 {
@@ -48,9 +50,9 @@ protected:
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
 
-	SmartPointer<SDL_Surface> mpTextDarkSfc;
-	SmartPointer<SDL_Surface> mpTextLightSfc;
-	SmartPointer<SDL_Surface> mpTextDisabledSfc;
+	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextDarkSfc;
+	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextLightSfc;
+	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextDisabledSfc;
 
 	void (CGUIComboSelection::*drawButton)(SDL_Rect&);
 

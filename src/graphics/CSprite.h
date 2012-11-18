@@ -11,7 +11,7 @@
 #include <SDL.h>
 #include <string>
 #include <vector>
-#include "SmartPointer.h"
+#include <memory>
 
 class CSprite {
 public:
@@ -55,8 +55,8 @@ public:
 	Sint32 m_bboxX2, m_bboxY2;
 
 private:
-	SmartPointer<SDL_Surface> mpSurface;
-	SmartPointer<SDL_Surface> mpMasksurface;
+	std::shared_ptr<SDL_Surface> mpSurface;
+	std::shared_ptr<SDL_Surface> mpMasksurface;
 
 	std::string mName;
 	Uint8 m_xsize, m_ysize;

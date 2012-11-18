@@ -42,9 +42,9 @@ void CGUIComboSelection::setupButtonSurface(const std::string &optionText)
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
 	const std::string showText = "  " + mText + ": " + optionText;
-	mpTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
-	mpTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
-	mpTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));
+	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38)));
+	mpTextLightSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84)));
+	mpTextDisabledSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123)));
 }
 
 const std::string& CGUIComboSelection::getSelection()

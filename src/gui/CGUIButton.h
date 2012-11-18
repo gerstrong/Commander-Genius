@@ -13,6 +13,7 @@
 #include "CGUIControl.h"
 #include "engine/CEvent.h"
 #include "common/CBehaviorEngine.h"
+#include "sdl/extensions.h"
 #include <string>
 #include <memory>
 #include <map>
@@ -59,9 +60,9 @@ private:
 
 	std::string mText;
 	std::shared_ptr<CEvent> mEvent;
-	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
-	std::unique_ptr<SDL_Surface> mpTextLightSfc;
-	std::unique_ptr<SDL_Surface> mpTextDisabledSfc;
+	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextDarkSfc;
+	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextLightSfc;
+	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextDisabledSfc;
 	std::map< Style, EngineType > mMapping;
 
 	void (CGUIButton::*drawButton)(SDL_Rect&);
