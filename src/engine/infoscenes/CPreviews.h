@@ -14,7 +14,7 @@
 #include "common/CMap.h"
 #include "dialog/CTextViewer.h"
 #include "fileio/CExeFile.h"
-#include "SmartPointer.h"
+#include <memory>
 
 
 class CPreviews : public CInfoScene
@@ -32,8 +32,8 @@ public:
 private:
 	int m_episode;
 	int m_scene_number;
-	SmartPointer<CFinaleStaticScene> mp_StaticScene;
-	SmartPointer<CTextViewer> mp_TextViewer; // Used for the preview text...
+	std::unique_ptr<CFinaleStaticScene> mp_StaticScene;
+	std::unique_ptr<CTextViewer> mp_TextViewer; // Used for the preview text...
 	std::shared_ptr<CMap> mpMap;
 
 	void (CPreviews::*process_ptr)();

@@ -11,7 +11,6 @@
 #include "common/CMap.h"
 #include "graphics/CBitmap.h"
 #include "CInfoScene.h"
-#include "SmartPointer.h"
 #include <string>
 #include <vector>
 

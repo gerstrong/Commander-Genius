@@ -116,13 +116,12 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 
-	std::vector< SmartPointer <CGalaxySpriteObject> >::reverse_iterator obj;
+	auto obj = mObjectPtr.rbegin();
 
 	// Draw all the sprites without player
 	// The player sprites are drawn as last
 	galaxy::CPlayerBase *player = NULL;
-	for( obj=mObjectPtr.rbegin() ;
-			obj!=mObjectPtr.rend() ; obj++ )
+	for( ; obj!=mObjectPtr.rend() ; obj++ )
 	{
 
 		if( galaxy::CPlayerBase* newplayer = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )

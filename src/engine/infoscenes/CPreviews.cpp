@@ -53,7 +53,7 @@ int CPreviews::openNextScene()
 		std::string filename = JoinPaths(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), "previews.ck");
 		filename += itoa(g_pBehaviorEngine->getEpisode());
 
-		mp_TextViewer = new CTextViewer(0, 8, 320, 160);
+		mp_TextViewer.reset( new CTextViewer(0, 8, 320, 160) );
 
 		if(!mp_TextViewer->loadTextfromFile(filename))
 			m_destroy_me = true;
@@ -67,9 +67,7 @@ int CPreviews::openNextScene()
 bool CPreviews::openScene(const std::string& filename)
 {
 	// This will open one the preview scenes
-	mp_StaticScene.tryDeleteData();
-
-	mp_StaticScene = new CFinaleStaticScene(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), filename);
+	mp_StaticScene.reset( new CFinaleStaticScene(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), filename) );
 
 	if( mp_StaticScene->mustclose() )
 		return false;
