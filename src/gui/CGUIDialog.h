@@ -98,8 +98,7 @@ private:
 	std::list< SmartPointer<CGUIControl> > mControlList;
 
 	// SDL_Surface of the Background
-	//std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>	mpBackgroundSfc;
-	SmartPointer<SDL_Surface>	mpBackgroundSfc;
+	std::shared_ptr<SDL_Surface>	mpBackgroundSfc;
 
 	int mSelection;
 

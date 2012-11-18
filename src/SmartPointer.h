@@ -213,7 +213,9 @@ public:
 			obj = pt.obj; refCount = pt.refCount;
 			incCounter();
 			unlock();
-		} else { obj = NULL; refCount = NULL; }
+		} else {
+		  obj = NULL; refCount = NULL; 	  
+		}
 		return *this;
 	}
 

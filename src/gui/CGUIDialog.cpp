@@ -40,22 +40,22 @@ void CGUIDialog::initBackground()
 	if( g_pBehaviorEngine->getEngine() == ENGINE_VORTICON )
 	{
 		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
-		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
-		mpBackgroundSfc = SDL_DisplayFormat( mpBackgroundSfc.get() );
+		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
+		mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 		initVorticonBackground( lRect );
 	}
 	else if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
 	{
 		const SDL_Rect lRect = g_pVideoDriver->getGameResolution().SDLRect();
-		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
-		mpBackgroundSfc = SDL_DisplayFormat( mpBackgroundSfc.get() );
+		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
+		mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 		initGalaxyBackround( lRect );
 	}
 	else
 	{
 		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
-		mpBackgroundSfc = CG_CreateRGBSurface( lRect );
-		mpBackgroundSfc = SDL_DisplayFormat( mpBackgroundSfc.get() );
+		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
+		mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 		initEmptyBackround();
 	}
 }
@@ -191,15 +191,17 @@ bool CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 	{
 		// Send all the other events the active control element
 		std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
-		for( int i=0 ; it != mControlList.end() ; it++, i++ )
+		int i=0;
+		for( auto &it : mControlList )
 		{
-			(*it)->setHovered( (i == mSelection) );
+			it->setHovered( (i == mSelection) );
 
 			if(i == mSelection)
 			{
-				if( (*it)->sendEvent(ev->mCommand) )
+				if( it->sendEvent(ev->mCommand) )
 					return true;
 			}
+			i++;
 		}
 
 		if(ev->mCommand == IC_DOWN)
@@ -225,16 +227,18 @@ void CGUIDialog::fit()
 	size_t numControls = mControlList.size();
 	const float charHeight = ( 1.0f/(float)(numControls+1) );
 
-	for( size_t c = 1; it != mControlList.end() ; it++, c++ )
+	size_t c = 1;
+	for( auto &it : mControlList )
 	{
-		CRect<float> rect(	0.05f,
-							charHeight*((float)c),
-							mRect.w,
-							charHeight-0.01f );
+		CRect<float> rect( 0.05f,
+				   charHeight*((float)c),
+				   mRect.w,
+				   charHeight-0.01f );
 
 		rect.transform(mRect);
 
-		(*it)->setRect( rect );
+		it->setRect( rect );
+		c++;
 	}
 
 }
@@ -262,9 +266,10 @@ void CGUIDialog::processLogic()
 
 	// Prepare the subcontrols for rendering
 	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
-	for( int sel=0 ; it != mControlList.end() ; it++, sel++ )
+	int sel = 0;
+	for( auto &it : mControlList )
 	{
-		CGUIControl *ctrl = (*it).get();
+		CGUIControl *ctrl = it.get();
 
 		ctrl->processLogic();
 
@@ -277,7 +282,7 @@ void CGUIDialog::processLogic()
 			}
 
 		}
-
+		sel++;
 	}
 
 	if(!g_pInput->m_EventList.empty())
