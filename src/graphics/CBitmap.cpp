@@ -14,7 +14,7 @@ CBitmap::CBitmap()
 {}
 
 
-CBitmap::CBitmap(const SmartPointer<SDL_Surface> &bmpSfc)
+CBitmap::CBitmap(const std::shared_ptr<SDL_Surface> &bmpSfc)
 {
 	mpBitmapSurface = bmpSfc;
 }
@@ -23,8 +23,8 @@ CBitmap::CBitmap(const CBitmap &bitmap) :
 mName(bitmap.getName())
 {
 	SDL_Surface *sfc = bitmap.getSDLSurface();
-	if( sfc != NULL )
-		mpBitmapSurface = SDL_DisplayFormat( sfc );
+	if( sfc != nullptr )
+		mpBitmapSurface.reset(SDL_DisplayFormat( sfc ), &SDL_FreeSurface );
 }
 
 ///
@@ -32,19 +32,23 @@ mName(bitmap.getName())
 ///
 bool CBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
 {
-	mpBitmapSurface = SDL_CreateRGBSurface(flags, rect.w, rect.h, 8, 0, 0, 0, 0);
+	mpBitmapSurface.reset( SDL_CreateRGBSurface(flags, rect.w, rect.h, 8, 0, 0, 0, 0), &SDL_FreeSurface );
 	SDL_SetColors(mpBitmapSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey(mpBitmapSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
-	return (!mpBitmapSurface.empty());
+	
+	if(mpBitmapSurface)
+	  return true;
+	else
+	  return false;
 }
 
 bool CBitmap::optimizeSurface()
 {
-	if(!mpBitmapSurface.empty())
+	if(mpBitmapSurface)
 	{
 		SDL_Surface *temp_surface;
 		temp_surface = SDL_DisplayFormat(mpBitmapSurface.get());
-		mpBitmapSurface = temp_surface;
+		mpBitmapSurface.reset( temp_surface, &SDL_FreeSurface );
 		return true;
 	}
 	else
@@ -56,7 +60,7 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 	if(!IsFileAvailable(filename))
 		return false;
 
-	if(!mpBitmapSurface.empty())
+	if( mpBitmapSurface )
 	{
 		SDL_Surface *tempSurface = SDL_LoadBMP(GetFullFileName(filename).c_str());
 		if(tempSurface)

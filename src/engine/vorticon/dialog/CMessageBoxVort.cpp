@@ -29,7 +29,7 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	SDL_Rect rect;
 	rect.x = rect.y = 0;
 	rect.w = rect.h = tileDim;
-	SmartPointer<SDL_Surface> bmpSfc = CG_CreateRGBSurface(rect);
+	std::shared_ptr<SDL_Surface> bmpSfc( CG_CreateRGBSurface(rect), &SDL_FreeSurface );
 
 	SDL_FillRect(bmpSfc.get(), NULL, 0xFFFFFFFF);
 	tilemap.drawTile(bmpSfc.get(), 0, 0, tile);

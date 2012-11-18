@@ -11,7 +11,7 @@
 #include <SDL.h>
 #include <vector>
 #include <string>
-#include "SmartPointer.h"
+#include <memory>
 
 class CBitmap
 {
@@ -19,7 +19,7 @@ public:
 
 	CBitmap();
 
-	CBitmap(const SmartPointer<SDL_Surface> &bmpSfc);
+	CBitmap(const std::shared_ptr<SDL_Surface> &bmpSfc);
 
 	explicit CBitmap(const CBitmap &bitmap);
 
@@ -43,7 +43,7 @@ public:
 
 private:
 	std::string mName;
-	SmartPointer<SDL_Surface> mpBitmapSurface;
+	std::shared_ptr<SDL_Surface> mpBitmapSurface;
 };
 
 #endif /* CBITMAP_H_ */
