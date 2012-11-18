@@ -34,7 +34,7 @@ const int EARTHCHUNK_SMALL_DN = 70;
 CTantalusRay::CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
 								const std::shared_ptr<CMap> &pMap,
 								std::vector<CVorticonSpriteObject*> &vect_obj,
-								SmartPointer<CVorticonSpriteObjectAI> &objectai) :
+								std::shared_ptr<CVorticonSpriteObjectAI> &objectai) :
 CFinale(messageBoxes, pMap, vect_obj),
 m_mustsetup(true),
 m_alternate_sprite(0),

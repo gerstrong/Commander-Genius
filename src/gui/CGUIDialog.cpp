@@ -90,14 +90,13 @@ void CGUIDialog::addControl( SmartPointer<CGUIControl> &newControl )
 void CGUIDialog::addControl( CGUIControl *newControl,
 		 	 const CRect<float>& RelRect )
 {
-    SmartPointer<CGUIControl> newGUIControl(newControl);
-    addControl(newGUIControl, RelRect);
+    addControl(newControl, RelRect);
+    
 }
 
 void CGUIDialog::addControl( CGUIControl *newControl )
 {
-    SmartPointer<CGUIControl> newGUIControl(newControl);
-    addControl(newGUIControl);    
+    addControl(newControl);    
 }
 
 

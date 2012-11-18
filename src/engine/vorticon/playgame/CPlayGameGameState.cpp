@@ -19,7 +19,6 @@
 bool CPlayGameVorticon::loadGameState()
 {
 	CSaveGameController &savedGame = *(gpSaveGameController);
-	mpObjectAI = NULL;
 
 	// This fills the datablock from CSavedGame object
 	if(savedGame.load())
@@ -161,9 +160,9 @@ bool CPlayGameVorticon::loadGameState()
 		g_pGfxEngine->setupEffect(pColorMergeFX);
 
 
-		mpObjectAI = new CVorticonSpriteObjectAI(mMap.get(), m_Object, m_Player,
+		mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), m_Object, m_Player,
 									m_NumPlayers, m_Episode, m_Level,
-									mMap->m_Dark);
+									mMap->m_Dark) );
 		setupPlayers();
 
 		mMap->m_Dark = dark;

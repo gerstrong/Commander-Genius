@@ -22,7 +22,7 @@ public:
 	CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
 				const std::shared_ptr<CMap> &pMap,
 				std::vector<CVorticonSpriteObject*> &vect_obj,
-				SmartPointer<CVorticonSpriteObjectAI> &objectai);
+				std::shared_ptr<CVorticonSpriteObjectAI> &objectai);
 
 	void process();
 
@@ -34,7 +34,7 @@ private:
 	int m_alternate_sprite;
 	CMessageBox *mp_MessageBox;
 	CVorticonSpriteObject *mp_ShootObject;
-	SmartPointer<CVorticonSpriteObjectAI> mObjectAI;
+	std::shared_ptr<CVorticonSpriteObjectAI> mObjectAI;
 	Uint32 m_timer;
 	CBitmap *mp_Bitmap;
 

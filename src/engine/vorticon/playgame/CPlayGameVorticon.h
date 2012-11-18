@@ -107,7 +107,7 @@ private:
 
 	std::shared_ptr<CMap> mMap;
 	std::vector<CPlayer> m_Player;
-	SmartPointer<CVorticonSpriteObjectAI> mpObjectAI;
+	std::shared_ptr<CVorticonSpriteObjectAI> mpObjectAI;
 	std::unique_ptr<CFinale> mpFinale;
 	std::unique_ptr<CEGABitmap> mpGameoverBmp;
 	std::list< SmartPointer<CMessageBoxVort> > mMessageBoxes;
