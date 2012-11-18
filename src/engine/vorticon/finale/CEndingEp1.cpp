@@ -95,7 +95,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(VectorD2<int>(6<<CSF, 5<<CSF));
 
-		mpShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
+		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT, SPR_SHIP_LEFT) );
 
 		mpMap->gotoPos(0,0);
 		mpShipFlySys->addShipQueue(CMD_MOVE, 60, DUP);
@@ -203,7 +203,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 
 		mpMap->gotoPos((x>>STC)-100, (y>>STC)-160);
 
-		mpShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
+		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT, SPR_SHIP_LEFT) );
 
 		mpShipFlySys->addShipQueue(CMD_MOVE, 58, DUP);
 		mpShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
@@ -227,7 +227,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 	else
 	{
 		// Shutdown code here!
-		mpShipFlySys = NULL;
+		mpShipFlySys.release();
 		m_step++;
 		m_mustsetup = true;
 	}

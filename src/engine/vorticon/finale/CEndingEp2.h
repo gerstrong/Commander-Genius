@@ -35,7 +35,7 @@ private:
 
 
 	std::vector<CPlayer> &m_Player;
-	SmartPointer<CShipFlySys> mpShipFlySys;
+	std::unique_ptr<CShipFlySys> mpShipFlySys;
 	std::unique_ptr<CFinaleStaticScene> mpFinaleStaticScene;
 
 	//CMessageBoxVort *mp_Textbox;

@@ -58,7 +58,7 @@ void CEndingEp2::HeadsForEarth()
 		m_Player[0].sprite = SPR_VORTICON_MOTHERSHIP;
 		m_Player[0].solid = false;
 
-		mpShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 );
+		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 ) );
 
 		mpMap->gotoPos(0, 0);
 		mpShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
@@ -86,7 +86,7 @@ void CEndingEp2::HeadsForEarth()
 	else
 	{
 		// Shutdown code here!
-		mpShipFlySys = NULL;
+		mpShipFlySys.release();
 		m_step++;
 		m_mustsetup = true;
 	}
@@ -105,7 +105,7 @@ void CEndingEp2::LimpsHome()
 		m_Player[0].moveTo(VectorD2<int>(8<<CSF, 26<<CSF));
 		m_Player[0].solid = false;
 
-		mpShipFlySys = new CShipFlySys( m_Player[0], mpMap, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP );
+		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP ) );
 
 		mpMap->gotoPos(LIMPSHOME_X, LIMPSHOME_Y);
 		mpShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
@@ -128,7 +128,7 @@ void CEndingEp2::LimpsHome()
 	else
 	{
 		// Shutdown code here!
-		mpShipFlySys = NULL;
+		mpShipFlySys.release();
 		m_step++;
 		m_mustsetup = true;
 	}
