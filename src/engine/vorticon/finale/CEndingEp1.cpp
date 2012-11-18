@@ -153,7 +153,7 @@ void CEndingEp1::BackAtHome()
 		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
 		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
-		mpFinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck1");
+		mpFinaleStaticScene.reset( new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck1") );
 
 		addMsgBoxString("EP1_ESEQ_PART2_PAGE1");
 		addMsgBoxString("EP1_ESEQ_PART2_PAGE2");
@@ -174,7 +174,7 @@ void CEndingEp1::BackAtHome()
 	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
-		mpFinaleStaticScene = NULL;
+		mpFinaleStaticScene.release();
 		mpMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;

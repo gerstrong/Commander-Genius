@@ -116,7 +116,7 @@ void CEndingEp3::AwardScene()
 		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
 		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		mpMap->drawAll();
-		mpFinaleStaticScene = new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck3");
+		mpFinaleStaticScene.reset(new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck3"));
 
 		addMsgBoxString("THE_END");
 
@@ -126,7 +126,7 @@ void CEndingEp3::AwardScene()
 	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
-		mpFinaleStaticScene = NULL;
+		mpFinaleStaticScene.release();
 		mpMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;

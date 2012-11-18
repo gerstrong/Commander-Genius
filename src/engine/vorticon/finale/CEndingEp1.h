@@ -40,7 +40,7 @@ private:
 
 	std::vector<CPlayer> &m_Player;
 	SmartPointer<CShipFlySys> mpShipFlySys;
-	SmartPointer<CFinaleStaticScene> mpFinaleStaticScene;
+	std::unique_ptr<CFinaleStaticScene> mpFinaleStaticScene;
 
 	bool &m_hideobjects;
 };

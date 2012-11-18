@@ -16,6 +16,7 @@
 #include <vector>
 #include <list>
 #include <SDL.h>
+#include <memory>
 
 class CEndingEp3 : public CFinale {
 public:
@@ -37,7 +38,7 @@ private:
 
 	std::vector<CPlayer> &m_Player;
 
-	SmartPointer<CFinaleStaticScene> mpFinaleStaticScene;
+	std::unique_ptr<CFinaleStaticScene> mpFinaleStaticScene;
 };
 
 #endif /* CENDINGEP3_H_ */

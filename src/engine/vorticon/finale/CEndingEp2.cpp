@@ -144,7 +144,7 @@ void CEndingEp2::SnowedOutside()
 		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
 		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
-		mpFinaleStaticScene = new CFinaleStaticScene( mpMap->m_gamepath, "finale.ck2" );
+		mpFinaleStaticScene.reset( new CFinaleStaticScene( mpMap->m_gamepath, "finale.ck2" ) );
 
 		addMsgBoxString("EP2_ESEQ_PART1");
 		addMsgBoxString("EP2_ESEQ_PART2");
@@ -158,7 +158,7 @@ void CEndingEp2::SnowedOutside()
 	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
-		mpFinaleStaticScene = NULL;
+		mpFinaleStaticScene.release();
 		mpMap->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
