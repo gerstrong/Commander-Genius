@@ -108,12 +108,12 @@ private:
 	std::shared_ptr<CMap> mMap;
 	std::vector<CPlayer> m_Player;
 	SmartPointer<CVorticonSpriteObjectAI> mpObjectAI;
-	SmartPointer<CFinale> mpFinale;
-	SmartPointer<CEGABitmap> mpGameoverBmp;
+	std::unique_ptr<CFinale> mpFinale;
+	std::unique_ptr<CEGABitmap> mpGameoverBmp;
 	std::list< SmartPointer<CMessageBoxVort> > mMessageBoxes;
 	bool m_showKeensLeft;
 	std::vector<CVorticonSpriteObject*> m_Object;
-	SmartPointer<CHUD> mp_HUD;
+	std::unique_ptr<CHUD> mp_HUD;
 	std::shared_ptr<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;
 };

@@ -99,7 +99,7 @@ void CPlayGameVorticon::setupPlayers()
 
 	stInventory &inventory = m_Player.at(0).inventory;
 
-	mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges, &mCamLead);
+	mp_HUD.reset( new CHUD(inventory.score, inventory.lives, inventory.charges, &mCamLead) );
 }
 
 bool CPlayGameVorticon::init()
@@ -179,7 +179,7 @@ void CPlayGameVorticon::process()
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
 
-	if( mpFinale.empty() && !gpMenuController->active() ) // Game is not paused, no messages have to be shown and no menu is open
+	if( !mpFinale && !gpMenuController->active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if(mMessageBoxes.empty() && !StatusScreenOpen())
 		{
@@ -231,9 +231,9 @@ void CPlayGameVorticon::process()
 
 	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 	// Only confirmation button is allowes
-	if(m_gameover && mpFinale.empty()) // game over mode
+	if(m_gameover && !mpFinale) // game over mode
 	{
-		if( !mpGameoverBmp.empty() )
+		if( mpGameoverBmp )
 		{
 			mpGameoverBmp->process();
 
@@ -252,7 +252,7 @@ void CPlayGameVorticon::process()
 		{
 			CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-			mpGameoverBmp = new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap);
+			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap) );
 			mpGameoverBmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 		}
 	}
@@ -431,15 +431,15 @@ void CPlayGameVorticon::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mpFinale = new CEndingEp1(mMessageBoxes, mMap, m_Player, m_hideobjects, m_Object);
+		mpFinale.reset(new CEndingEp1(mMessageBoxes, mMap, m_Player, m_hideobjects, m_Object));
 	}
 	else if(m_Episode == 2)
 	{
-		mpFinale = new CEndingEp2(mMessageBoxes, mMap, m_Player, m_Object);
+		mpFinale.reset(new CEndingEp2(mMessageBoxes, mMap, m_Player, m_Object));
 	}
 	else if(m_Episode == 3)
 	{
-		mpFinale = new CEndingEp3(mMessageBoxes, mMap, m_Player, m_Object);
+		mpFinale.reset(new CEndingEp3(mMessageBoxes, mMap, m_Player, m_Object));
 	}
 }
 
@@ -533,7 +533,7 @@ void CPlayGameVorticon::drawAllElements()
 	// Draw masked tiles here!
 	g_pVideoDriver->mDrawTasks.add( new DrawForegroundTilesTask(*(mMap.get())) );
 
-	if(mp_option[OPT_HUD].value && mpFinale.empty()  )
+	if(mp_option[OPT_HUD].value && mpFinale  )
 	{	// Draw the HUD
 		mp_HUD->render();
 	}
@@ -545,13 +545,13 @@ void CPlayGameVorticon::drawAllElements()
 
 
 
-	if(!mpFinale.empty()) // Finale processing if it is opened
+	if(mpFinale) // Finale processing if it is opened
 	{
 		mpFinale->process();
 
 		if(mpFinale->getHasFinished())
 		{
-			mpFinale = NULL;
+			mpFinale.release();
 
 			if(!m_gameover)
 			{
