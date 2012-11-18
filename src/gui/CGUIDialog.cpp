@@ -221,14 +221,14 @@ bool CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
 
 void CGUIDialog::fit()
 {
-	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
+	auto it = mControlList.begin();
 	it++;
 
 	size_t numControls = mControlList.size();
 	const float charHeight = ( 1.0f/(float)(numControls+1) );
 
 	size_t c = 1;
-	for( auto &it : mControlList )
+	for( ; it != mControlList.end() ; it++ )
 	{
 		CRect<float> rect( 0.05f,
 				   charHeight*((float)c),
@@ -237,7 +237,7 @@ void CGUIDialog::fit()
 
 		rect.transform(mRect);
 
-		it->setRect( rect );
+		(*it)->setRect( rect );
 		c++;
 	}
 
@@ -265,7 +265,6 @@ void CGUIDialog::processLogic()
 	g_pVideoDriver->mDrawTasks.add( new DrawGUIRenderTask(this) );
 
 	// Prepare the subcontrols for rendering
-	std::list< SmartPointer<CGUIControl> >::iterator it = mControlList.begin();
 	int sel = 0;
 	for( auto &it : mControlList )
 	{
@@ -375,16 +374,15 @@ void CGUIDialog::processRendering()
 
 	if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
 	{
-		SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL );
+	  SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL );
 	}
 	else
 	{
-		SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), &lRect );
+	  SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), &lRect );
 	}
 
 	for( auto &it : mControlList )
 	{
 	  it->processRender(screenRect);
 	}
-
 }
