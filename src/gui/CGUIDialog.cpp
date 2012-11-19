@@ -63,7 +63,7 @@ void CGUIDialog::initBackground()
 
 
 
-void CGUIDialog::addControl( SmartPointer<CGUIControl> &newControl,
+void CGUIDialog::addControl( std::shared_ptr<CGUIControl> &newControl,
 							    const CRect<float>& RelRect )
 {
 	CRect<float> AbsRect = RelRect;
@@ -77,7 +77,7 @@ void CGUIDialog::addControl( SmartPointer<CGUIControl> &newControl,
 
 
 
-void CGUIDialog::addControl( SmartPointer<CGUIControl> &newControl )
+void CGUIDialog::addControl( std::shared_ptr<CGUIControl> &newControl )
 {
 	mControlList.push_back( newControl );
 	fit();
@@ -186,7 +186,7 @@ void CGUIDialog::setSelection(const unsigned int sel)
 	}
 }
 
-bool CGUIDialog::sendEvent( const SmartPointer<CEvent> &command )
+bool CGUIDialog::sendEvent( const std::shared_ptr<CEvent> &command )
 {
 	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
 	{

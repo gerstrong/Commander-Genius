@@ -145,13 +145,19 @@ bool CPlayGameVorticon::init()
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
 	{
-		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER"),false, true));
-		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
-		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
-		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
-		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
-		mMessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
-		g_pSound->playSound(SOUND_MORTIMER);
+	    std::unique_ptr<CMessageBoxVort> msg1(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg2(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg3(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg4(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg5(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
+	    std::unique_ptr<CMessageBoxVort> msg6(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
+	    mMessageBoxes.push_back(move(msg1));
+	    mMessageBoxes.push_back(move(msg2));
+	    mMessageBoxes.push_back(move(msg3));
+	    mMessageBoxes.push_back(move(msg4));
+	    mMessageBoxes.push_back(move(msg5));
+	    mMessageBoxes.push_back(move(msg6));
+	    g_pSound->playSound(SOUND_MORTIMER);
 	}
 
 	return true;
@@ -309,7 +315,9 @@ void CPlayGameVorticon::handleFKeys()
 
 				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
 
-				mMessageBoxes.push_back(new CMessageBoxVort(Text));
+				std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(Text));
+				
+				mMessageBoxes.push_back( move(msg) );
 			}
 		}
 		g_pVideoDriver->AddConsoleMsg("All items cheat");
@@ -344,14 +352,16 @@ void CPlayGameVorticon::handleFKeys()
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
 		// Show a message like in the original game
-		mMessageBoxes.push_back(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
+		std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
+		mMessageBoxes.push_back(move(msg));
 		g_pInput->flushKeys();
 	}
 
 	if(g_pInput->getPressedKey(KP) && mMessageBoxes.empty())
 	{
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
-		mMessageBoxes.push_back(new CMessageBoxVort("Game Paused"));
+		std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort("Game Paused") );
+		mMessageBoxes.push_back(move(msg));
 	}
 
 	// Menus will only open if Keen is solid or in god mode. This means neither dying nor teleporting

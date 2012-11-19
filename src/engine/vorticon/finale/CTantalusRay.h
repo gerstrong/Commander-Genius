@@ -19,7 +19,7 @@
 class CTantalusRay : public CFinale
 {
 public:
-	CTantalusRay(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+	CTantalusRay(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 				const std::shared_ptr<CMap> &pMap,
 				std::vector<CVorticonSpriteObject*> &vect_obj,
 				std::shared_ptr<CVorticonSpriteObjectAI> &objectai);

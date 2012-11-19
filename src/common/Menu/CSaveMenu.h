@@ -15,7 +15,7 @@ class CSaveMenu : public CBaseMenu
 public:
 	CSaveMenu();
 	void processSpecific(){};
-	void sendEvent(SmartPointer<CEvent> command);
+	void sendEvent(std::shared_ptr<CEvent> command);
 
 private:
 	CConfirmMenu *mp_OverwriteMenu;

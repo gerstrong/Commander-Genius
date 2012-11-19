@@ -12,14 +12,13 @@
 #include "common/CMap.h"
 #include "CShipFlySys.h"
 #include "CFinaleStaticScene.h"
-#include "SmartPointer.h"
 #include <memory>
 #include <string>
 
 class CFinale
 {
 public:
-	CFinale(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+	CFinale(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 			const std::shared_ptr<CMap> &pMap,
 			std::vector<CVorticonSpriteObject*> &Object);
 
@@ -36,7 +35,7 @@ protected:
 	std::unique_ptr<CTextViewer> mpTextViewer; // Used for Epilogue
 	std::string m_epilogue_text;
 	int m_Episode;
-	std::list< SmartPointer<CMessageBoxVort> > &mMessageBoxes;
+	std::list< std::shared_ptr<CMessageBoxVort> > &mMessageBoxes;
 	std::shared_ptr<CMap> mpMap;
 	std::vector<CVorticonSpriteObject*> &m_Object;
 };

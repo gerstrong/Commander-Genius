@@ -20,7 +20,7 @@
 
 class CEndingEp3 : public CFinale {
 public:
-	CEndingEp3(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+	CEndingEp3(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 			const std::shared_ptr<CMap> &pMap, 
 	    std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object);
 

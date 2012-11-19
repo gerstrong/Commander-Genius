@@ -14,11 +14,11 @@
 #include "CResourceLoader.h"
 #include "utils/Geometry.h"
 #include "CGUIControl.h"
-#include "SmartPointer.h"
 #include "engine/CEvent.h"
 #include "graphics/CBitmap.h"
 #include <sdl/extensions.h>
 #include <list>
+#include <memory>
 
 class CGUIDialog
 {
@@ -49,10 +49,10 @@ public:
 	void processRendering();
 
 	// Adds a control instance to the list of controls to be processed.
-	void addControl( SmartPointer<CGUIControl> &newControl,
+	void addControl( std::shared_ptr<CGUIControl> &newControl,
 			 	 	 const CRect<float>& RelRect );
 
-	void addControl( SmartPointer<CGUIControl> &newControl );
+	void addControl( std::shared_ptr<CGUIControl> &newControl );
 
 	void addControl( CGUIControl *newControl,
 			 	 const CRect<float>& RelRect );
@@ -60,11 +60,11 @@ public:
 	void addControl( CGUIControl *newControl );
 
 
-	bool sendEvent( const SmartPointer<CEvent> &command );
+	bool sendEvent( const std::shared_ptr<CEvent> &command );
 
 	bool sendEvent( CEvent *pCommand )
 	{
-	    return sendEvent(SmartPointer<CEvent>(pCommand));
+	    return sendEvent(std::shared_ptr<CEvent>(pCommand));
 	}
 
 	void fit();
@@ -72,7 +72,7 @@ public:
 	void setRect(const CRect<float> &rect);
 	void setPosition(const float x, const float y);
 
-	std::list< SmartPointer<CGUIControl> >& getControlList()
+	std::list< std::shared_ptr<CGUIControl> >& getControlList()
 	{	return mControlList;	}
 
 	const int Selection() const
@@ -95,7 +95,7 @@ protected:
 private:
 
 	// List of Controls that the Dialog has.
-	std::list< SmartPointer<CGUIControl> > mControlList;
+	std::list< std::shared_ptr<CGUIControl> > mControlList;
 
 	// SDL_Surface of the Background
 	std::shared_ptr<SDL_Surface>	mpBackgroundSfc;

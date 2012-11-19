@@ -27,7 +27,6 @@
 #include "sdl/music/CMusic.h"
 #include "engine/infoscenes/CHighScores.h"
 #include "engine/playgame/CPlayGame.h"
-#include "SmartPointer.h"
 #include <SDL.h>
 #include <string>
 #include <vector>
@@ -110,7 +109,7 @@ private:
 	std::shared_ptr<CVorticonSpriteObjectAI> mpObjectAI;
 	std::unique_ptr<CFinale> mpFinale;
 	std::unique_ptr<CEGABitmap> mpGameoverBmp;
-	std::list< SmartPointer<CMessageBoxVort> > mMessageBoxes;
+	std::list< std::shared_ptr<CMessageBoxVort> > mMessageBoxes;
 	bool m_showKeensLeft;
 	std::vector<CVorticonSpriteObject*> m_Object;
 	std::unique_ptr<CHUD> mp_HUD;

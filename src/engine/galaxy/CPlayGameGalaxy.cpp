@@ -238,7 +238,7 @@ void CPlayGameGalaxy::process()
 
 	if( EventSendBitmapDialogMsg *ev = eventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
-		CMessageBoxBitmapGalaxy *pMsgBox = new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction );
+		std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction ) );
 		pMsgBox->init();		
 		
 		// Create the special merge effect (Fadeout) if requested
@@ -255,27 +255,26 @@ void CPlayGameGalaxy::process()
 		    }
 		}
 
-		mMessageBoxes.push_back( pMsgBox );
+		mMessageBoxes.push_back( move(pMsgBox) );
 		eventContainer.pop_Event();
 	}
 	else if( EventSendBitmapDialogMessages *ev = eventContainer.occurredEvent<EventSendBitmapDialogMessages>() )
 	{
 		for( auto &it : ev->msgs )
 		{
-			CMessageBoxBitmapGalaxy *pMsgBox = 
-			      new CMessageBoxBitmapGalaxy( it->Msg, it->BitmapRef, it->Direction );
+			std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( it->Msg, it->BitmapRef, it->Direction ) );
 			pMsgBox->init();
 
-			mMessageBoxes.push_back( pMsgBox );
+			mMessageBoxes.push_back( move(pMsgBox) );
 		}
 		eventContainer.pop_Event();
 	}
 	else if( EventSendDialog *ev = eventContainer.occurredEvent<EventSendDialog>() )
 	{
-		CMessageBoxGalaxy *pMsgBox = new CMessageBoxGalaxy( ev->Msg );
+		std::unique_ptr<CMessageBoxGalaxy> pMsgBox( new CMessageBoxGalaxy( ev->Msg ) );
 		pMsgBox->init();
 
-		mMessageBoxes.push_back( pMsgBox );
+		mMessageBoxes.push_back( move(pMsgBox) );
 		eventContainer.pop_Event();
 	}
 	/*else if( EventSendSelectionDialogMsg* ev = EventContainer.occurredEvent<EventSendSelectionDialogMsg>() )

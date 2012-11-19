@@ -14,7 +14,7 @@
 #include "common/CMap.h"
 #include "CWorldMap.h"
 #include "CLevelPlay.h"
-#include "SmartPointer.h"
+#include <memory>
 #include <vector>
 #include <list>
 #include <string>
@@ -49,7 +49,7 @@ private:
 	CLevelPlay m_LevelPlay;
 	CSaveGameController &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
-	std::list< SmartPointer<CMessageBoxGalaxy> > mMessageBoxes;
+	std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
 	stCheat m_Cheatmode;
 };
 

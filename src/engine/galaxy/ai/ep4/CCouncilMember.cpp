@@ -115,12 +115,17 @@ void CCouncilMember::performJanitorMode()
 	elder_text[2] = g_pBehaviorEngine->getString("JANITOR_TEXT3");
 	elder_text[3] = g_pBehaviorEngine->getString("JANITOR_TEXT4");
 
-	std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
+	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 
-	msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT) );
-	msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[1], LEFT) );
-	msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTALKING"), elder_text[2], RIGHT) );
-	msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[3], LEFT) );
+	std::unique_ptr<EventSendBitmapDialogMsg> msg1( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT) );
+	std::unique_ptr<EventSendBitmapDialogMsg> msg2( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[1], LEFT) );
+	std::unique_ptr<EventSendBitmapDialogMsg> msg3( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTALKING"), elder_text[2], RIGHT) );
+	std::unique_ptr<EventSendBitmapDialogMsg> msg4( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[3], LEFT) );
+
+	msgs.push_back( move(msg1) );
+	msgs.push_back( move(msg2) );
+	msgs.push_back( move(msg3) );
+	msgs.push_back( move(msg4) );
 
 	EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
 
@@ -167,14 +172,19 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 
 
-		std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
+		std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 
-		msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT) );
-		msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), elder_text[1], RIGHT) );
+		std::unique_ptr<EventSendBitmapDialogMsg> msg1(new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT));
+		std::unique_ptr<EventSendBitmapDialogMsg> msg2(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), elder_text[1], RIGHT));
+		msgs.push_back( move(msg1) );
+		msgs.push_back( move(msg2) );
 
 
 		if(rescuedelders == 7)
-			msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT) );
+		{
+		    std::unique_ptr<EventSendBitmapDialogMsg> msg(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT));
+		    msgs.push_back( move(msg) );
+		}
 
 
 		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );

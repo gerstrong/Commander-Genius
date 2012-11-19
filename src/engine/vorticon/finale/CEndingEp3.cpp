@@ -14,7 +14,7 @@
 #include "common/CVorticonMapLoader.h"
 #include "common/Playerdefines.h"
 
-CEndingEp3::CEndingEp3(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+CEndingEp3::CEndingEp3(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 						const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object) :
 CFinale(messageBoxes, pMap, Object),
 m_Player(Player)

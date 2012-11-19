@@ -82,11 +82,14 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
 	    }
 	    
 	    
-	    std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
-	    
-	    msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(108), lindsey_text[0], LEFT) );
-	    msgs.push_back( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(108), lindsey_text[1], LEFT) );
-	    msgs.push_back( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), lindsey_text[2], RIGHT) );
+	    std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
+	   
+	    std::unique_ptr<EventSendBitmapDialogMsg> msg1( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(108), lindsey_text[0], LEFT) );
+	    std::unique_ptr<EventSendBitmapDialogMsg> msg2( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(108), lindsey_text[1], LEFT) );
+	    std::unique_ptr<EventSendBitmapDialogMsg> msg3( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), lindsey_text[2], RIGHT) );
+	    msgs.push_back( move(msg1) );
+	    msgs.push_back( move(msg2) );
+	    msgs.push_back( move(msg3) );
 	    
 	    EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
 	    

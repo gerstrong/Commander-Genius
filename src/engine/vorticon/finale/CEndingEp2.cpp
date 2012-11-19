@@ -17,7 +17,7 @@
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
 
-CEndingEp2::CEndingEp2(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+CEndingEp2::CEndingEp2(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 		const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object) :
 CFinale(messageBoxes, pMap, Object),
 m_Player(Player)

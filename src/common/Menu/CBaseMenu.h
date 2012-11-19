@@ -41,7 +41,7 @@ public:
 	// Processes the stuff that the menus have in common
 	virtual void process();
 
-	virtual void sendEvent(SmartPointer<CEvent> &command)
+	virtual void sendEvent(std::shared_ptr<CEvent> &command)
 	{
 		mpMenuDialog->sendEvent(command);
 	}

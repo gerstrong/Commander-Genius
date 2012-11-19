@@ -16,7 +16,6 @@
 #include <string>
 #include <list>
 #include "common/direction.h"
-#include "SmartPointer.h"
 #include "CVec.h"
 #include "graphics/CBitmap.h"
 #include <vector>
@@ -110,10 +109,10 @@ struct EventSendBitmapDialogMsg : EventSendDialog
 
 struct EventSendBitmapDialogMessages : CEvent
 {
-	EventSendBitmapDialogMessages( std::vector< SmartPointer<EventSendBitmapDialogMsg> > lMsgs ) :
+	EventSendBitmapDialogMessages( std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > lMsgs ) :
 		msgs(lMsgs) {}
 
-	std::vector< SmartPointer<EventSendBitmapDialogMsg> > msgs;
+	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 };
 
 
@@ -126,7 +125,7 @@ struct EventSendBitmapDialogMessages : CEvent
 struct TextEventMatchOption
 {
 	std::string text;
-	SmartPointer<CEvent> event;
+	std::shared_ptr<CEvent> event;
 };
 
 /**
@@ -148,7 +147,7 @@ struct EventSendSelectionDialogMsg : CEvent {
 	{
 		TextEventMatchOption NewOption;
 		NewOption.text = ltext;
-		NewOption.event = levent;
+		NewOption.event.reset( levent );
 		Options.push_back(NewOption);
 	}
 };

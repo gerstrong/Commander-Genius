@@ -11,7 +11,7 @@
 #include "FindFile.h"
 #include <fstream>
 
-CFinale::CFinale(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+CFinale::CFinale(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 					const std::shared_ptr<CMap> &pMap,
 					std::vector<CVorticonSpriteObject*> &Object) :
 m_mustfinishgame(false),
@@ -22,7 +22,8 @@ m_Object(Object)
 
 void CFinale::addMsgBoxString(const std::string &text)
 {
-	mMessageBoxes.push_back( new CMessageBoxVort(g_pBehaviorEngine->getString(text), true) );
+    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(g_pBehaviorEngine->getString(text), true) );
+    mMessageBoxes.push_back( move(msg) );
 }
 
 

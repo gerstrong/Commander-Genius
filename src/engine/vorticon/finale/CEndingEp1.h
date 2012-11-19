@@ -12,14 +12,14 @@
 #include "common/CMap.h"
 #include "common/CPlayer.h"
 #include "engine/vorticon/dialog/CMessageBoxVort.h"
-#include "SmartPointer.h"
+#include <memory>
 #include <vector>
 #include <SDL.h>
 
 class CEndingEp1 : public CFinale
 {
 public:
-	CEndingEp1(std::list< SmartPointer<CMessageBoxVort> > &messageBoxes,
+	CEndingEp1(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 				const std::shared_ptr<CMap> &pMap,
 				std::vector<CPlayer> &Player,
 				bool &hideobjects,
