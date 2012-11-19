@@ -156,8 +156,9 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
 	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
 	{
-		mObjectPtr.push_back( static_cast<CGalaxySpriteObject*>(
-				      const_cast<CSpriteObject*>(ev->pObject) ) );
+	    std::shared_ptr<CGalaxySpriteObject> obj( static_cast<CGalaxySpriteObject*>(
+						    const_cast<CSpriteObject*>(ev->pObject) ) );
+		mObjectPtr.push_back( move(obj) );
 		EventContainer.pop_Event();
 	}
 
@@ -184,11 +185,13 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 		{
 		    for( int y=0 ; y<3 ; y++ )
 		    {
-			mObjectPtr.push_back( new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+((y+1)<<CSF)) );
+			std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+((y+1)<<CSF)));
+			mObjectPtr.push_back( smoke );
 		    }
 		}
-				
-		mObjectPtr.push_back( new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY) );
+			
+		std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
+		mObjectPtr.push_back( foot );
 
 		// Flush all the pending events. This help catch cases when more than one more of the worms try to create the foot
 		EventContainer.clear();
@@ -202,7 +205,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	const Uint16 level = mMap.getLevel();
 	savedGame.encodeData( level );
 
-	std::vector< SmartPointer<CGalaxySpriteObject> > filteredObjects;	
+	std::vector< std::shared_ptr<CGalaxySpriteObject> > filteredObjects;	
 
 	// let's filter the Foe out that won't do any good!	
 	for( auto &it : mObjectPtr )
@@ -341,7 +344,8 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		if(pNewfoe->exists)
 		{
 		    pNewfoe->setActionForce(actionNumber);
-		    mObjectPtr.push_back(pNewfoe);
+		    std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
+		    mObjectPtr.push_back(newFoe);
 		}
 	}
 

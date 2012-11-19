@@ -20,7 +20,7 @@ namespace galaxy
 
 
 CMapLoaderGalaxyEp5::CMapLoaderGalaxyEp5(CExeFile &ExeFile,
-		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtr,
+		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
 		CInventory &Inventory, stCheat &Cheatmode) :
 CMapLoaderGalaxy( ExeFile, ObjectPtr, Inventory, Cheatmode)
 {}

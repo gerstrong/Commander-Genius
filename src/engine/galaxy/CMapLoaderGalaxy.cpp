@@ -32,7 +32,7 @@ namespace galaxy
 {
 
 CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile,
-		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtr,
+		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
 		CInventory &Inventory, stCheat &Cheatmode):
 m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
@@ -331,7 +331,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
-			CGalaxySpriteObject *pNewfoe = addFoe(Map, *data_ptr++, x<<CSF, y<<CSF);
+			std::shared_ptr<CGalaxySpriteObject> pNewfoe(addFoe(Map, *data_ptr++, x<<CSF, y<<CSF));
 			if(pNewfoe)
 				m_ObjectPtr.push_back(pNewfoe);
 		}

@@ -46,7 +46,7 @@ namespace galaxy
 
 
 CMapLoaderGalaxyEp4::CMapLoaderGalaxyEp4(CExeFile &ExeFile,
-		std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtr,
+		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
 		CInventory &Inventory, stCheat &Cheatmode) :
 CMapLoaderGalaxy( ExeFile, ObjectPtr, Inventory, Cheatmode)
 {}

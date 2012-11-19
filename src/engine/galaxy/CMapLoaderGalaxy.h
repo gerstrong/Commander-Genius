@@ -14,7 +14,7 @@
 #include "common/Cheat.h"
 #include "engine/galaxy/CInventory.h"
 #include "engine/galaxy/CGalaxySpriteObject.h"
-#include "SmartPointer.h"
+#include <memory>
 #include <vector>
 
 #include <string>
@@ -27,7 +27,7 @@ class CMapLoaderGalaxy
 {
 public:
 	CMapLoaderGalaxy(CExeFile &ExeFile,
-			std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtr,
+			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
 			CInventory &Inventory, stCheat &Cheatmode);
 	size_t getMapheadOffset();
 	bool gotoNextSignature(std::ifstream &MapFile);
@@ -43,7 +43,7 @@ protected:
 			word magic_word);
 
 	CExeFile &m_ExeFile;
-	std::vector< SmartPointer<CGalaxySpriteObject> > &m_ObjectPtr;
+	std::vector< std::shared_ptr<CGalaxySpriteObject> > &m_ObjectPtr;
 	CInventory &m_Inventory;
 	stCheat &m_Cheatmode;
 };

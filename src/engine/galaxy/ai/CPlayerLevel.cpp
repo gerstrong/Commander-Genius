@@ -44,7 +44,7 @@ int ck_KeenRunXVels[8] = {0, 0, 4, 4, 8, -4, -4, -8};
 
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-						std::vector< SmartPointer<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
+						std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory, stCheat &Cheatmode,
 						const size_t offset) :
 CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, Cheatmode),

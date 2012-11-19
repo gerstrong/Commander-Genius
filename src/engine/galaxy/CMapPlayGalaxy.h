@@ -23,7 +23,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"
-#include "SmartPointer.h"
+#include <memory>
 #include <vector>
 #include <list>
 
@@ -53,7 +53,7 @@ public:
 
 
 protected:
-	std::vector< SmartPointer<CGalaxySpriteObject> > mObjectPtr;
+	std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
 	bool mActive;
 
 	CMap mMap;
