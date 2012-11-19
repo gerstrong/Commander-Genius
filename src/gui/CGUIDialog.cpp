@@ -63,40 +63,45 @@ void CGUIDialog::initBackground()
 
 
 
-void CGUIDialog::addControl( std::shared_ptr<CGUIControl> &newControl,
+void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl,
 							    const CRect<float>& RelRect )
 {
 	CRect<float> AbsRect = RelRect;
 	AbsRect.transform(mRect);
 	newControl->mRect = AbsRect;
-	mControlList.push_back( newControl );
+	mControlList.push_back( move(newControl) );
 
 	if(mControlList.size() == 1)
-		mpCurrentCtrl = newControl.get();
+	{
+	    mpCurrentCtrl = mControlList.front().get();
+	}
 }
 
 
 
-void CGUIDialog::addControl( std::shared_ptr<CGUIControl> &newControl )
+void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl )
 {
-	mControlList.push_back( newControl );
+	mControlList.push_back( move(newControl) );
 	fit();
 
 	if(mControlList.size() == 1)
-		mpCurrentCtrl = newControl.get();
+	{
+	    mpCurrentCtrl = mControlList.front().get();
+	}
 
 }
 
 void CGUIDialog::addControl( CGUIControl *newControl,
 		 	 const CRect<float>& RelRect )
 {
-    addControl(newControl, RelRect);
-    
+    std::unique_ptr<CGUIControl> ctrl(newControl);
+    addControl( ctrl, RelRect );    
 }
 
 void CGUIDialog::addControl( CGUIControl *newControl )
 {
-    addControl(newControl);    
+    std::unique_ptr<CGUIControl> ctrl(newControl);
+    addControl(ctrl);    
 }
 
 

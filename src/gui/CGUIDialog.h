@@ -49,10 +49,10 @@ public:
 	void processRendering();
 
 	// Adds a control instance to the list of controls to be processed.
-	void addControl( std::shared_ptr<CGUIControl> &newControl,
+	void addControl( std::unique_ptr<CGUIControl> &newControl,
 			 	 	 const CRect<float>& RelRect );
 
-	void addControl( std::shared_ptr<CGUIControl> &newControl );
+	void addControl( std::unique_ptr<CGUIControl> &newControl );
 
 	void addControl( CGUIControl *newControl,
 			 	 const CRect<float>& RelRect );
