@@ -71,47 +71,52 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	mMap.animateAllTiles();
 
 	if(!pause)
-	{
-		for(size_t i=0 ; i<mObjectPtr.size() ; i++)
+	{	    
+	    for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
+	    {
+		auto &objRef = *(obj->get());
+		// If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
+		// how the death-message or go gameover.
+		if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
 		{
-			CSpriteObject* p_Object = mObjectPtr[i].get();
+			// Is he really dead?
+			if( !player->exists )
+				player->processDead();
+		}
 
-			// If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
-			// how the death-message or go gameover.
-			if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(p_Object) )
+
+		if( objRef.exists && objRef.calcVisibility() )
+		{
+			// Process the AI of the object as it's given
+			objRef.process();
+			
+			// process all the objects' events
+			objRef.processEvents();
+
+			// Check collision between objects using NlogN order
+			auto theOther = obj; theOther++;			
+			for( ; theOther != mObjectPtr.end() ; theOther++)
 			{
-				// Is he really dead?
-				if( !player->exists )
-					player->processDead();
-			}
+			    auto &theOtherRef = *(theOther->get());
+			    if( !theOtherRef.exists )
+				continue;
 
+			    objRef.isNearby(theOtherRef);
+			    theOtherRef.isNearby(objRef);
 
-			if( p_Object->exists && p_Object->calcVisibility() )
-			{
-				// Process the AI of the object as it's given
-				p_Object->process();
-
-				// process all the objects' events
-				p_Object->processEvents();
-
-				// Check collision between objects
-				for(size_t j=0 ; j<mObjectPtr.size() ; j++)
-				{
-					CSpriteObject *theOtherObj = mObjectPtr[j].get();
-
-					if( !theOtherObj->exists )
-						continue;
-
-					if( theOtherObj != p_Object )
-					{
-						p_Object->isNearby(*theOtherObj);
-
-						if( p_Object->hitdetect(*theOtherObj) )
-							p_Object->getTouchedBy(*theOtherObj);
-					}
-				}
+			    if( objRef.hitdetect(theOtherRef) )
+			    {
+				objRef.getTouchedBy(theOtherRef);
+				theOtherRef.getTouchedBy(objRef);
+			    }
 			}
 		}
+	    }
+	    
+	    // if you see some object which at the end of the container is non-existent, remove it!
+	    if(!mObjectPtr.back()->exists)
+		mObjectPtr.pop_back();
+	    
 	}
 
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );

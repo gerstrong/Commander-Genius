@@ -31,7 +31,7 @@ void CVorticonSpriteObjectAI::process()
 {
 	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
 	{
-		CVorticonSpriteObject &object = *m_Objvect.at(i);
+		CVorticonSpriteObject &object = *m_Objvect[i];
 
 		if( object.checkforScenario() )
 		{
@@ -61,15 +61,13 @@ void CVorticonSpriteObjectAI::process()
 
 				object.process();
 
-				std::vector<CVorticonSpriteObject*>::iterator theOther = m_Objvect.begin();
+				auto theOther = m_Objvect.begin(); theOther++;
 				for( ; theOther != m_Objvect.end() ; theOther++ )
 				{
-					if( *theOther != &object )
+					if( object.hitdetect(**theOther) )
 					{
-						if( object.hitdetect(**theOther) )
-						{
-							object.getTouchedBy(**theOther);
-						}
+						object.getTouchedBy(**theOther);
+						(*theOther)->getTouchedBy(object);
 					}
 				}
 			}
