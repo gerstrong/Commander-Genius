@@ -19,6 +19,7 @@
 #include "StringUtils.h"
 #include "CResourceLoader.h"
 #include "FindFile.h"
+#include "../version.h"
 #include <iostream>
 #include <fstream>
 
@@ -99,12 +100,13 @@ bool CGameLauncher::init()
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
     
     // Banner. TODO: Create a class for that...
-    CGUIBanner *banner = new CGUIBanner("By Gerstrong\n"
+    CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
+					"By Gerstrong\n"
 					"Albert Zeyer\n"
-				       "Tulip\n"
-				       "Pelya\n"
-				       "NY00123\n"
-				       "and the CG Contributors\n");
+					"Tulip\n"
+					"Pelya\n"
+					"NY00123\n"
+					"and the CG Contributors\n");
     
     mLauncherDialog.addControl( banner, CRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
     

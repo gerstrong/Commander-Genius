@@ -36,7 +36,7 @@ m_overwrite(false)
 	setMenuLabel("SAVEMENULABEL");
 }
 
-void CSaveMenu::sendEvent(std::shared_ptr<CEvent> command)
+void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
 	// Before all events are sent to the dialog which handles selection catch some specific events
 	// required for the saving process.
