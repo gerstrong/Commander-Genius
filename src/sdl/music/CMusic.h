@@ -48,7 +48,7 @@ public:
 		return false;
 	}
 
-	std::unique_ptr<CMusicPlayer> mpPlayer;
+	std::shared_ptr<CMusicPlayer> mpPlayer;
 	bool m_busy;
 };
 

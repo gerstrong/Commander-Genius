@@ -17,6 +17,8 @@ namespace galaxy {
 const int ELDER_MOVE_SPEED = 1;
 const int ELDER_MOVE_TIMER = 10;
 
+int NumberToRescue;
+
 
 CCouncilMember::CCouncilMember(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
@@ -35,6 +37,12 @@ m_timer(0)
 	answermap[6] = "KEEN_ROAD_RISE_FEET_TEXT";
 	answermap[7] = "KEEN_WISE_PLAN_TEXT";
 	answermap[8] = "KEEN_LAST_ELDER_TEXT";
+	
+	NumberToRescue = 0;
+	g_pBehaviorEngine->getPhysicsSettings();
+	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+	ptr += 0x6AE6;
+	memcpy(&NumberToRescue, ptr, 1 );
 }
 
 
@@ -179,27 +187,30 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		msgs.push_back( move(msg1) );
 		msgs.push_back( move(msg2) );
 
-
-		if(rescuedelders == 7)
+		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+		
+		rescuedelders++;
+		
+		if(rescuedelders >= NumberToRescue) // In this case the game ends.
 		{
 		    std::unique_ptr<EventSendBitmapDialogMsg> msg1(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT));
 		    msgs.push_back( move(msg1) );
 		    
 		    const std::string end_text("End of Episode.\n"
 					       "The game will be restarted.\n"
-					       "You can replay it again or try another Episode for more fun!\n"
-					       "The original Epilog is under Construction.");
+					       "You can replay it again or\n" 
+					       "try another Episode for more fun!\n"
+					       "The original epilog is under construction.");
 		    
 		    EventContainer.add( new EventSendDialog(end_text) );
 		    EventContainer.add( new EventEndGamePlay() );
 		}
-
-
-		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
-
-		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		else
+		{
+		    EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );		    
+		}
+		
 		player->m_Inventory.Item.m_gem.empty();
-		rescuedelders++;
 
 		rescued = true;
 	}

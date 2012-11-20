@@ -17,9 +17,7 @@ namespace galaxy
 CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
 								const direction_t vertdir, const int actionOffset) :
 CGalaxySpriteObject(pmap, foeID, x, y),
-CPlatform(pmap, foeID, x, y),
-mp_BoostEngObjLeft(NULL),
-mp_BoostEngObjRight(NULL)
+CPlatform(pmap, foeID, x, y)
 {
 	xDirection = 0;
 	yDirection = vertdir;
@@ -42,11 +40,11 @@ mp_BoostEngObjRight(NULL)
 
 		// Setup boost effects
 		// Setup boost effects if used in the episode
-		mp_BoostEngObjLeft = new CEngineParticleSprites(mp_Map, x+(1<<STC), y+(8<<STC), true, true);
-		mp_BoostEngObjRight = new CEngineParticleSprites(mp_Map, x+m_BBox.x2+(4<<STC), y+(8<<STC), true, false);
+		mp_BoostEngObjLeft.reset( new CEngineParticleSprites(mp_Map, x+(1<<STC), y+(8<<STC), true, true) );
+		mp_BoostEngObjRight.reset( new CEngineParticleSprites(mp_Map, x+m_BBox.x2+(4<<STC), y+(8<<STC), true, false) );
 
-		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjLeft ) );
-		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjRight ) );
+		//g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjLeft ) );
+		//g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mp_BoostEngObjRight ) );
 
 		mp_BoostEngObjLeft->dontdraw = false;
 		mp_BoostEngObjRight->dontdraw = true;

@@ -335,7 +335,7 @@ void CPlayGameGalaxy::process()
 				g_pMusicPlayer->play();
 			eventContainer.pop_Event();
 		}
-		else if( EventEndGamePlay *ev = eventContainer.occurredEvent<EventEndGamePlay>() )
+		else if( eventContainer.occurredEvent<EventEndGamePlay>() )
 		{
 			m_endgame = true;
 			eventContainer.pop_Event();

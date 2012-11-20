@@ -42,7 +42,7 @@ private:
 	bool	rescued;
 	int 	m_timer;
 	void (CCouncilMember::*mp_processState)();
-	std::map<int, std::string>	answermap;
+	std::map<int, std::string>	answermap;	
 };
 
 }

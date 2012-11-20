@@ -12,6 +12,7 @@
 
 #include "CPlatform.h"
 #include "CEngineParticleSprites.h"
+#include <memory>
 
 namespace galaxy {
 
@@ -24,8 +25,8 @@ public:
 	void process();
 
 private:
-	CEngineParticleSprites *mp_BoostEngObjLeft;
-	CEngineParticleSprites *mp_BoostEngObjRight;
+	std::shared_ptr<CEngineParticleSprites> mp_BoostEngObjLeft;
+	std::shared_ptr<CEngineParticleSprites> mp_BoostEngObjRight;
 
 };
 

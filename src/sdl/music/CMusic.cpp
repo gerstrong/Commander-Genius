@@ -18,32 +18,27 @@
 
 bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 {
-	//m_AudioSpec = g_pSound->getAudioSpec();
-	CIMFPlayer *imfPlayer = new CIMFPlayer(g_pSound->getAudioSpec());
+	std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
 	imfPlayer->loadMusicTrack(ExeFile, track);
-	mpPlayer.reset(imfPlayer);
+	mpPlayer = imfPlayer;
 
 	if(!mpPlayer->open())
-	{
-		mpPlayer.release();
-		return false;
-	}
+	    return false;
+
 	return true;
 }
 
 
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
-	//m_AudioSpec = g_pSound->getAudioSpec();
-	mpPlayer.reset(new CIMFPlayer(g_pSound->getAudioSpec()));
-	(static_cast<CIMFPlayer*>(mpPlayer.get()))->loadMusicForLevel(ExeFile, level);
+    std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
+    mpPlayer = imfPlayer;
+    imfPlayer->loadMusicForLevel(ExeFile, level);
 
-	if(!mpPlayer->open())
-	{
-		mpPlayer = NULL;
-		return false;
-	}
-	return true;
+    if(!mpPlayer->open())
+	return false;
+
+    return true;
 }
 
 bool CMusic::load(const std::string &musicfile)
@@ -59,15 +54,15 @@ bool CMusic::load(const std::string &musicfile)
 
 		if(strcasecmp(extension.c_str(),"imf") == 0)
 		{
-			CIMFPlayer *imfPlayer = new CIMFPlayer(audioSpec);
-			imfPlayer->loadMusicFromFile(musicfile);
-			mpPlayer.reset(imfPlayer);
+		    std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(audioSpec) );
+		    imfPlayer->loadMusicFromFile(musicfile);
+		    mpPlayer = imfPlayer;
 		}
 		else if(strcasecmp(extension.c_str(),"ogg") == 0)
 		{
 #if defined(OGG) || defined(TREMOR)
-
-			mpPlayer.reset(new COGGPlayer(musicfile, audioSpec));
+			std::shared_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
+			mpPlayer = oggPlayer;
 #else
 			g_pLogFile->ftextOut("Music Manager: Neither OGG or TREMOR-Support are disabled! Please use another build<br>");
 			return false;
@@ -77,7 +72,6 @@ bool CMusic::load(const std::string &musicfile)
 		if(!mpPlayer->open())
 		{
 			g_pLogFile->textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
-			mpPlayer = NULL;
 			return false;
 		}
 		return true;
@@ -141,7 +135,7 @@ void CMusic::readWaveform(Uint8* buffer, size_t length)
 
 bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
 {
-	bool fileloaded = false;
+    bool fileloaded = false;
     std::ifstream Tablefile;
 
     std::string musicpath = getResourceFilename("songlist.lst", gamepath, false, false);
