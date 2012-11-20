@@ -58,6 +58,8 @@ public:
 protected:
 	char m_Episode;
 	char m_Difficulty;
+	
+	// TODO: Bad variable name. Think about something better
 	bool m_modeg;
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;

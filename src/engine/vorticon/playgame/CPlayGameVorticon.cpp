@@ -265,6 +265,13 @@ void CPlayGameVorticon::process()
 		// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
 		handleFKeys();
 	}
+	
+	auto &eventContainer = g_pBehaviorEngine->EventList();	
+	if( eventContainer.occurredEvent<EventEndGamePlay>() )
+	{
+		m_endgame = true;
+		eventContainer.pop_Event();
+	}
 }
 
 

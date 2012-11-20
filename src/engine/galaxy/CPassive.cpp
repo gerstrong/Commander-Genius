@@ -12,6 +12,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "sdl/extensions.h"
+#include "core/CGameLauncherMenu.h"
 
 
 namespace galaxy
@@ -34,6 +35,14 @@ bool CPassiveGalaxy::init(char mode)
 void CPassiveGalaxy::process()
 {
 	(this->*processMode)();
+	
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	
+	if( EventContainer.occurredEvent<EventEndGamePlay>() )
+	{
+		EventContainer.pop_Event();
+		m_modeg = true;
+	}
 }
 
 // This will show the animation of the intro you see in every galaxy game...

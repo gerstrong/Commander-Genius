@@ -25,7 +25,6 @@ public:
 private:
 	std::unique_ptr<CPassive> mpPassive;
 
-	bool m_Endgame;
 	CSaveGameController m_SavedGame;
 	int m_Difficulty;
 

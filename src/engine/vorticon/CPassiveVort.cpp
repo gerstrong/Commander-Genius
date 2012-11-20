@@ -77,10 +77,16 @@ void CPassiveVort::process()
 	{
 		if( EventContainer.occurredEvent<ResetScrollSurface>() )
 		{
-			g_pVideoDriver->updateScrollBuffer( mpMap );
-			EventContainer.pop_Event();
-			return;
+		    g_pVideoDriver->updateScrollBuffer( mpMap );
+		    EventContainer.pop_Event();
+		    return;
 		}
+		
+		else if( EventContainer.occurredEvent<EventEndGamePlay>() )
+		{
+		    EventContainer.pop_Event();
+		    m_modeg = true;
+		}		
 	}
 
 

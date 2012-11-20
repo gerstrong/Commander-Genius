@@ -9,6 +9,7 @@
 #include "engine/galaxy/CPlayGameGalaxy.h"
 #include "engine/vorticon/playgame/CPlayGameVorticon.h"
 #include "graphics/effects/CColorMerge.h"
+#include "sdl/music/CMusicPlayer.h"
 #include <memory>
 
 CGamePlayMode::CGamePlayMode(const int Episode, const int Numplayers,
@@ -109,6 +110,7 @@ void CGamePlayMode::process()
 	if( mp_PlayGame->getEndGame() )
 	{
 		m_startLevel = 0;
+		g_pMusicPlayer->stop();
 		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode) );
 	}
 	else if( mp_PlayGame->getStartGame() )

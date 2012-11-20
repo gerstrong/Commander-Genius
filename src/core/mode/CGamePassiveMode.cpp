@@ -16,7 +16,6 @@
 
 
 CGamePassiveMode::CGamePassiveMode() :
-m_Endgame(false),
 m_Difficulty(0)
 {}
 
@@ -29,16 +28,7 @@ void CGamePassiveMode::init()
 	else
 		mpPassive.reset( new vorticon::CPassiveVort() );
 
-	if( m_Endgame == true )
-	{
-		m_Endgame = false;
-		// TODO: Overload this function for galaxy
-		if( mpPassive->init(mpPassive->TITLE) ) return;
-	}
-	else
-	{
-		if( mpPassive->init() ) return;
-	}
+	if( mpPassive->init() ) return;
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
@@ -55,12 +45,6 @@ void CGamePassiveMode::process()
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	/*if(!EventContainer.empty())
-	{
-
-
-	}*/
-
 	// check here what the player chose from the menu over the passive mode.
 	// NOTE: Demo is not part of playgame anymore!!
 	if(mpPassive->getchooseGame())
@@ -75,6 +59,4 @@ void CGamePassiveMode::process()
 	{
 		EventContainer.add( new GMQuit() );
 	}
-
-
 }

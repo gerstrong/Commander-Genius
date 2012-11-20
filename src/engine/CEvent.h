@@ -39,6 +39,9 @@ struct InvokeFunctorEvent : CEvent
 	virtual void operator()() = 0;
 };
 
+struct EventEndGamePlay : CEvent
+{};
+
 
 struct EventExitLevel : CEvent {
 	const uint16_t levelObject;
@@ -84,8 +87,7 @@ struct EventPlayTrack : CEvent {
 struct EventSendDialog : CEvent
 {
 	const std::string Msg;
-	EventSendDialog(const std::string& lMsg) :
-					 Msg(lMsg) {}
+	EventSendDialog(const std::string& lMsg) : Msg(lMsg) {}
 };
 
 struct EventSendBitmapDialogMsg : EventSendDialog

@@ -88,7 +88,6 @@ void CGameControl::process()
 
 	if( !EventContainer.empty() )	    
 	{
-
 		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 		{
 		    g_pSound->unloadSoundData();

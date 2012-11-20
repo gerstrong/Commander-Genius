@@ -182,8 +182,16 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		if(rescuedelders == 7)
 		{
-		    std::unique_ptr<EventSendBitmapDialogMsg> msg(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT));
-		    msgs.push_back( move(msg) );
+		    std::unique_ptr<EventSendBitmapDialogMsg> msg1(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT));
+		    msgs.push_back( move(msg1) );
+		    
+		    const std::string end_text("End of Episode.\n"
+					       "The game will be restarted.\n"
+					       "You can replay it again or try another Episode for more fun!\n"
+					       "The original Epilog is under Construction.");
+		    
+		    EventContainer.add( new EventSendDialog(end_text) );
+		    EventContainer.add( new EventEndGamePlay() );
 		}
 
 

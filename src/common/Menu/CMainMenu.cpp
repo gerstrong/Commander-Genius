@@ -60,7 +60,7 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 	mpMenuDialog->addControl( infoButton );
 	infoButton->mEnabled = true;
 
-	mpMenuDialog->addControl(new CGUIButton( "End Game", new GMSwitchToGameLauncher() ) );
+	mpMenuDialog->addControl(new CGUIButton( "End Game", new EventEndGamePlay() ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ) );
 
@@ -103,7 +103,7 @@ void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 	mpMenuDialog->addControl( infoButton );
 	infoButton->mEnabled = false;
 
-	mpMenuDialog->addControl(new CGUIButton( "End Game", new GMSwitchToGameLauncher() ) );
+	mpMenuDialog->addControl(new CGUIButton( "End Game", new EventEndGamePlay() ) );
 
 	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ) );
 

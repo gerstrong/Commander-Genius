@@ -50,6 +50,7 @@ void CGameMain::process()
 		    mpGameMode = move(passive);
 		    mpGameMode->init();
 		    mOpenedGamePlay = false;
+		    gpMenuController->emptyMenuStack();
 		    EventContainer.pop_Event();
 		}
 		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )

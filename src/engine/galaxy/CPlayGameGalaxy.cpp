@@ -174,7 +174,7 @@ void CPlayGameGalaxy::process()
 			m_WorldMap.process(msgboxactive);
 		}
 
-		// process World Map if active. At the start it's enabled
+		// process World Map if active. At the start it's disabled, m_WorldMap turns it on.
 		if(m_LevelPlay.isActive())
 		{
 			m_LevelPlay.process(msgboxactive);
@@ -246,7 +246,6 @@ void CPlayGameGalaxy::process()
 		{
 		    CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(g_pGfxEngine->Effect());
 		    if( pColorMerge != NULL )
-			//if( g_pGfxEngine->runningEffect() && ev->mpColorMerge != NULL )
 		    {		    
 			SDL_Surface *fxSfc = pColorMerge->getSfc().get();
 			SDL_Rect cutRect = pMsgBox->getRect();
@@ -286,7 +285,7 @@ void CPlayGameGalaxy::process()
 
 
 	if(mMessageBoxes.empty())
-	{
+	{	    
 		if( EventEnterLevel *ev = eventContainer.occurredEvent<EventEnterLevel>() )
 		{
 			if(ev->data >= 0xC000)	// Start a new level!
@@ -334,6 +333,11 @@ void CPlayGameGalaxy::process()
 			g_pMusicPlayer->stop();
 			if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
 				g_pMusicPlayer->play();
+			eventContainer.pop_Event();
+		}
+		else if( EventEndGamePlay *ev = eventContainer.occurredEvent<EventEndGamePlay>() )
+		{
+			m_endgame = true;
 			eventContainer.pop_Event();
 		}
 	}
