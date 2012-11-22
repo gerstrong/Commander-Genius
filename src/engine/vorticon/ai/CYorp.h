@@ -59,7 +59,8 @@ class CYorp : public CVorticonSpriteObject
 {
 public:
 	CYorp( CMap *p_map, Uint32 x, Uint32 y );
-	void getTouchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
+	bool isNearby(CVorticonSpriteObject &theObject);
 	void process();
 	
 

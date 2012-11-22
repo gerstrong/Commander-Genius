@@ -12,6 +12,8 @@
 #include "sdl/sound/CSound.h"
 #include "misc.h"
 
+static char numlooks;
+
 CYorp::CYorp( CMap *p_map, Uint32 x, Uint32 y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_YORP),
 m_hardmode(g_pBehaviorEngine->mDifficulty > NORMAL),
@@ -30,6 +32,8 @@ movedir(LEFT)
 
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		mHealthPoints++;
+	
+	numlooks = m_hardmode ? YORP_NUM_LOOKS_FAST : YORP_NUM_LOOKS;	
 }
 
 void CYorp::process()
@@ -63,13 +67,17 @@ void CYorp::process()
 
 }
 
-void CYorp::processLooking()
-{
-	char numlooks = m_hardmode ? YORP_NUM_LOOKS_FAST : YORP_NUM_LOOKS;
+bool CYorp::isNearby(CVorticonSpriteObject &theObject)
+{       
+    if( state == YORP_LOOK )
+    {
 
-	/*if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
+	if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
 	{
-		movedir = (m_vec_Player[0].getXPosition() < getXPosition()) ? LEFT : RIGHT;
+	        if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+		{
+		    movedir = (player->getXPosition() < getXPosition()) ? LEFT : RIGHT;
+		}		
 
 		// unless we're can't go that way
 		if (blockedl) movedir = RIGHT;
@@ -79,8 +87,14 @@ void CYorp::processLooking()
 		walkframe = 0;
 		dist_traveled = 0;
 		state = YORP_MOVE;
-	}*/
+	}
+    }
+    return true;
+}
 
+
+void CYorp::processLooking()
+{	
 	if (!timer)
 	{
 		looktimes++;
@@ -201,7 +215,7 @@ void CYorp::processDying()
 	}
 }
 
-void CYorp::getTouchedBy(CSpriteObject &theObject)
+void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{

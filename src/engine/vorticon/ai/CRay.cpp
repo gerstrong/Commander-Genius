@@ -164,7 +164,7 @@ void CRay::moveinAir()
 	}
 }
 
-void CRay::getTouchedBy(CSpriteObject &theObject)
+void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if( !theObject.dead && !theObject.dying )
 	{
