@@ -14,7 +14,6 @@
 #include "common/Menu/CSelectionMenu.h"
 
 
-
 CGamePassiveMode::CGamePassiveMode() :
 m_Difficulty(0)
 {}

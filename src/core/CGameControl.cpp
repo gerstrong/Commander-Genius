@@ -126,7 +126,7 @@ void CGameControl::process()
 	{
 		if( g_pInput->getPressedAnyCommand() || g_pInput->mouseClicked() )
 		{
-			g_pGfxEngine->killEffect();
+		    g_pGfxEngine->killEffect();
 		}
 	}
 	

@@ -13,6 +13,8 @@
 #include "vorticon/ai/CEGABitmap.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CPixelate.h"
+#include "common/Menu/CMenuController.h"
+#include "sdl/input/CInput.h"
 
 ////
 // Creation Routine
@@ -38,10 +40,10 @@ bool CTitle::init(int Episode)
 	{
 		const int width = 160-(pBitmap->getWidth()/2);
 		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
-		obj->setScrPos( width, 0 );
-		mObjects.push_back(std::move(obj));
+		obj->setScrPos( width, 0 );		
 		pBitmap->_draw( pSurface, width, 0);
 		obj->draw();
+		mObjects.push_back(std::move(obj));
 	}
 
 	if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
@@ -72,6 +74,14 @@ void CTitle::process()
 	for( auto &obj : mObjects )
 	{
 	    obj->process();
+	}
+	
+	if( !g_pGfxEngine->runningEffect() && !gpMenuController->active() )
+	{
+		if( g_pInput->getPressedAnyCommand() )
+		{
+		    gpMenuController->openMainMenu();
+		}	    
 	}
 
 }

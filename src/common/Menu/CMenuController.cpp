@@ -124,7 +124,7 @@ void CMenuController::process()
 	}
 
 
-	// If you click, then open the menu
+	// If you click the mouse button or press the first button, then open the menu
 	if( g_pInput->mouseClicked() && mMenuStack.empty() )
 	{
 	    openMainMenu();

@@ -161,7 +161,7 @@ void CVorticonMapLoaderWithPlayer::loadSprites( std::vector<Uint16> &planeitems,
 	size_t curmapy = 0;
 	resetcnt = resetpt = 0;
     
-	if( mpSpriteObjectContainer.empty() )
+	if( !mpSpriteObjectContainer.empty() )
 	    mpSpriteObjectContainer.clear();
 	
 	mpSpriteObjectContainer.reserve(2000);

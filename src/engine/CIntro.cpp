@@ -67,6 +67,11 @@ void CIntro::process()
 		}
 	}
 	
+	if( g_pInput->getPressedAnyCommand() )
+	{
+	    m_finished = true;
+	}
+	
 	// Check if time for Intro is out
 	if(g_pTimer->HasSecElapsed())
 	{

@@ -62,7 +62,7 @@ public:
 	bool load( Uint8 episode, 
 		Uint8 level, 
 		const std::string& path, 
-		bool loadNewMusic = false, 
+		bool loadNewMusic = true, 
 		bool stategame = false );
 
 	void loadSprites( std::vector<Uint16> &planeitems, 

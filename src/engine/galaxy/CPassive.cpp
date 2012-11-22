@@ -13,6 +13,8 @@
 #include "sdl/input/CInput.h"
 #include "sdl/extensions.h"
 #include "core/CGameLauncherMenu.h"
+#include "common/Menu/CMenuController.h"
+#include "graphics/effects/CEffects.h"
 
 
 namespace galaxy
@@ -69,6 +71,15 @@ void CPassiveGalaxy::processIntro()
 // Just show the title screen with the pixelation effect
 void CPassiveGalaxy::processTitle()
 {
+    // If something is pressed popup the menu
+	if( !g_pGfxEngine->runningEffect() && !gpMenuController->active() )
+	{
+		if( g_pInput->getPressedAnyCommand() )
+		{
+		    gpMenuController->openMainMenu();
+		}	    
+	}
+    
 	// draw the title bitmap here!
 	m_BackgroundBitmap.draw(0, 0);
 
