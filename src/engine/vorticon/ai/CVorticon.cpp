@@ -1,4 +1,3 @@
-#include "CVorticonSpriteObjectAI.h"
 #include "misc.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"

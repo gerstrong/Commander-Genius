@@ -1,4 +1,3 @@
-#include "CVorticonSpriteObjectAI.h"
 #include "engine/spritedefines.h"
 #include "sdl/sound/CSound.h"
 #include "CTank.h"

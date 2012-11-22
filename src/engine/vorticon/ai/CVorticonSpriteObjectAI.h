@@ -28,12 +28,10 @@ public:
 	// main functions
 	void process();
 
-	virtual ~CVorticonSpriteObjectAI();
 private:
 
 	// main AI functions
 	bool checkforAIObject( CVorticonSpriteObject &object );
-	void deleteAllObjects();
 
 	void icechunk_ai(CVorticonSpriteObject &object);
 	void smash(CVorticonSpriteObject &object);

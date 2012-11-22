@@ -98,7 +98,7 @@ void CVorticonSpriteObjectAI::process()
 	if( !m_Objvect.empty() )
 	{	
 	    // Try always to remove the last objects if they aren't used anymore!
-	    if(m_Objvect.back()->exists)
+	    if(!m_Objvect.back()->exists)
 	    {
 		m_Objvect.pop_back();
 	    }
@@ -106,22 +106,4 @@ void CVorticonSpriteObjectAI::process()
 
 	if(m_gunfiretimer < ((m_Episode==3) ? 180 : 50 )) m_gunfiretimer++;
 	else m_gunfiretimer=0;
-}
-
-
-///
-// Cleanup Routine
-///
-void CVorticonSpriteObjectAI::deleteAllObjects()
-{
-	// The real delete happens, when all the AI is done
-	// If the last object was deleted, throw it out of the list
-	if(!m_Objvect.empty())
-	{
-	    m_Objvect.clear();
-	}
-}
-
-CVorticonSpriteObjectAI::~CVorticonSpriteObjectAI() {
-	deleteAllObjects();
 }

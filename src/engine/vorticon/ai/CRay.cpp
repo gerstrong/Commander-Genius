@@ -1,4 +1,3 @@
-#include "CVorticonSpriteObjectAI.h"
 #include "sdl/sound/CSound.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.

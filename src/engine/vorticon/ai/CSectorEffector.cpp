@@ -1,5 +1,4 @@
 
-#include "CVorticonSpriteObjectAI.h"
 #include "CRay.h"
 #include "CSectorEffector.h"
 
