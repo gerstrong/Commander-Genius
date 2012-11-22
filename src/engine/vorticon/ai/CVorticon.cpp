@@ -93,7 +93,11 @@ bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
 
 void CVorticon::getTouchedBy(CVorticonSpriteObject &theObject)
 {
-    
+    if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+    {
+	if (state != VORT_DYING and !dead and state != VORT2_DYING)
+	    player->kill();
+    }    
 }
 
 void CVorticon::process() 
@@ -292,13 +296,4 @@ void CVorticon::initiateJump() {
 		sprite = JumpLeftFrame;
 
 	state = VORT_JUMP;
-}
-
-void CVorticon::getTouchedBy(CSpriteObject &theObject)
-{
-	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
-	{
-		if (state != VORT_DYING and !dead and state != VORT2_DYING)
-			player->kill();
-	}
 }
