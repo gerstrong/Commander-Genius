@@ -48,14 +48,17 @@ void CVorticonSpriteObjectAI::process()
 				{
 					if (!it_player->pdie)
 					{
+					    if(object.isNearby(*it_player))
+					    {					    
 						if ( object.hitdetect(*it_player) )
-						{
+						{						    
 							object.getTouchedBy(*it_player);
 
 							object.touchPlayer = true;
 							object.touchedBy = it_player->m_index;
 							break;
 						}
+					    }
 					}
 
 				}

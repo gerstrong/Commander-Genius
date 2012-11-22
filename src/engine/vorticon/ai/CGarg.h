@@ -45,6 +45,8 @@ class CGarg : public CVorticonSpriteObject
 public:
 	CGarg(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
+	bool isNearby(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void charge();
 
 private:
@@ -62,8 +64,6 @@ private:
 	unsigned int dist_traveled;
 
 	char movedir;
-	unsigned char detectedPlayer, detectedPlayerIndex;
-
 	bool m_hardmode;
 };
 

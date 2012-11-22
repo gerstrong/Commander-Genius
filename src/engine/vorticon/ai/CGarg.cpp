@@ -14,8 +14,6 @@ about_to_charge(0),
 walkframe(0),
 dist_traveled(0),
 movedir(0),
-detectedPlayer(0),
-detectedPlayerIndex(0),
 m_hardmode(g_pBehaviorEngine->mDifficulty==HARD)
 {
 	canbezapped = true;
@@ -23,14 +21,62 @@ m_hardmode(g_pBehaviorEngine->mDifficulty==HARD)
 		mHealthPoints++;
 }
 
+bool CGarg::isNearby(CVorticonSpriteObject &theObject)
+{       
+    if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+    {
+	if( state == GARG_LOOK )
+	{
+		if (looktimes>GARG_NUM_LOOKS)
+		{
+			// try to head towards Keen...
+			if (player->getXPosition() < getXPosition())
+				movedir = LEFT;
+			else
+				movedir = RIGHT;
+		}		
+	}
+	
+	else if( state == GARG_MOVE )
+	{
+		// is keen on same level?
+		if ( player->getYDownPos() >= getYDownPos()-(16<<STC) )
+		{
+		    if ( player->getYDownPos() <= getYDownPos()+(16<<STC) )
+		    {
+			keenonsameleveltimer++;
+			if (keenonsameleveltimer > GARG_SAME_LEVEL_TIME)
+			{ // charge!!
+				keenonsameleveltimer = 0;
+				timer = 0;
+				looktimes = 1;
+				about_to_charge = 1;
+				state = GARG_LOOK;
+			}
+			
+			return true;
+		    }
+		}
+		keenonsameleveltimer = 0;
+	}	
+    }
+    return true;
+}
+
+
+void CGarg::getTouchedBy(CVorticonSpriteObject &theObject)
+{
+	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+	{    
+	    // kill player on touch
+	    if (state!=GARG_DYING)
+		player->kill();
+	}
+}
+
+
 void CGarg::process()
 {
-    /*
-	// kill player on touch
-	if (state!=GARG_DYING && touchPlayer)
-		m_Player[touchedBy].kill();
-	*/
-
 	// did the garg get shot?
 	if (mHealthPoints <= 0 && state != GARG_DYING )
 	{
@@ -75,13 +121,7 @@ void CGarg::process()
 		break;
 	case GARG_LOOK:
 		if (looktimes>GARG_NUM_LOOKS)
-		{
-			// try to head towards Keen...
-			/*if (m_Player[detectedPlayerIndex].getXPosition() < getXPosition())
-				movedir = LEFT;
-			else
-				movedir = RIGHT;*/
-
+		{			
 			if (!about_to_charge && rnd()%3==1)
 				// 25% prob, go the other way (but always charge towards player)
 				movedir ^= 1;
@@ -118,37 +158,6 @@ void CGarg::process()
 		break;
 	case GARG_MOVE:
 	{
-		// is keen on same level?
-		detectedPlayer = 0;
-
-		/*std::vector<CPlayer>::iterator it = m_Player.begin();
-		for( size_t i=0 ; it != m_Player.end() ; it++ )
-		{
-			if ( it->getYDownPos() >= getYDownPos()-(16<<STC) )
-			{
-				if ( it->getYDownPos() <= getYDownPos()+(16<<STC) )
-				{
-					detectedPlayer = 1;
-					detectedPlayerIndex = i;
-					break;
-				}
-			}
-			i++;
-		}
-
-		if (detectedPlayer)
-		{
-			keenonsameleveltimer++;
-			if (keenonsameleveltimer > GARG_SAME_LEVEL_TIME)
-			{ // charge!!
-				keenonsameleveltimer = 0;
-				timer = 0;
-				looktimes = 1;
-				about_to_charge = 1;
-				state = GARG_LOOK;
-			}
-		} else keenonsameleveltimer = 0;*/
-
 		// every now and then go back to look state
 		if (dist_traveled > GARG_MINTRAVELDIST)
 		{
