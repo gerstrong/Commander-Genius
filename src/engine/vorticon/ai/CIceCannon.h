@@ -23,13 +23,14 @@ public:
 
 private:
 	int vector_x, vector_y;
+	int mTimer;
 };
 
 class CIceChunk : public CVorticonSpriteObject
 {
 public:
 	CIceChunk(CMap *p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy);
-	void touchedBy(CSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void smash();
 private:

@@ -65,7 +65,6 @@ public:
 	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void initiateJump();
-	void getTouchedBy(CSpriteObject &theObject);
 
 protected:
 	int m_Level;

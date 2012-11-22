@@ -74,12 +74,12 @@ void CButler::process()
 	 }
 }
 
-void CButler::getTouchedBy(CSpriteObject &theObject)
+void CButler::getTouchedBy(CVorticonSpriteObject &theObject)
 {   // push keen
 	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
 	{
 	    direction_t dir = xDirection<0 ? LEFT : RIGHT;
-	    player->bump( *this, dir );
+	    player->bump( dir );
 	}
 }
 

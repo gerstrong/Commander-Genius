@@ -338,7 +338,7 @@ void CPlayerBase::guideToTarget(const VectorD2<int> &speed)
 
 const int MAX_WALKSOUNDTIMER = 20;
 
-void CPlayerBase::makeWalkSound()
+void CPlayerBase::playWalkSound()
 {
 	const int time = m_walktimer % MAX_WALKSOUNDTIMER;
 
@@ -352,7 +352,7 @@ void CPlayerBase::makeWalkSound()
 }
 
 
-void CPlayerBase::makeSwimSound()
+void CPlayerBase::playSwimSound()
 {
 	const int time = m_walktimer % MAX_WALKSOUNDTIMER;
 

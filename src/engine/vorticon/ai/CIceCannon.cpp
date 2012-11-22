@@ -13,26 +13,33 @@ const int GUNFIRE_TIMER_EP1 = 64;
 
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
 	int vector_x, int vector_y ) :
-CVorticonSpriteObject(p_map,x,y, OBJ_ICECANNON)
+CVorticonSpriteObject(p_map,x,y, OBJ_ICECANNON),
+mTimer(0)
 {
-	this->vector_x = vector_x;
-	this->vector_y = vector_y;
+    this->vector_x = vector_x;
+    this->vector_y = vector_y;
 
-	inhibitfall = true;
+    inhibitfall = true;
     sprite = BLANKSPRITE;
+    blockedd = true;
 }
 
 // the ice cannon itself
 void CIceCannon::process()
 {
 	// keep spawner object invisible and properly positioned
-	if(	(mp_Map->getAnimtiletimer()%GUNFIRE_TIMER_EP1) == 0 )
+	if( mTimer >= GUNFIRE_TIMER_EP1 )
 	{
 		int newpos_x = getXPosition();
 		int newpos_y = getYPosition();
 		if(vector_x > 0) newpos_x += 512;
 		CIceChunk *chunk = new CIceChunk(mp_Map, newpos_x, newpos_y,vector_x, vector_y);
 		g_pBehaviorEngine->EventList().spawnObj(chunk);
+		mTimer = 0;
+	}
+	else
+	{
+	    mTimer++;
 	}
 }
 
@@ -53,44 +60,46 @@ vector_y(vy)
 	veloc_x = speed * vector_x;
 	veloc_y = speed * vector_y;
 	if(onscreen)
-		playSound(SOUND_CANNONFIRE);
+	{
+	    playSound(SOUND_CANNONFIRE);
+	}
 }
 
 
 
-void CIceChunk::touchedBy(CSpriteObject &theObject)
+void CIceChunk::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-    	// freeze the player if it touches him
-		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
-		// make him start sliding in the direction of the impact
-		if (vector_x > 0)
-		{
-			player->pDir.x = player->pShowDir.x = RIGHT;
-			player->xinertia = Physics.player.max_x_speed;
-			player->bump( *this, RIGHT );
-		}
-		else if (vector_x < 0)
-		{
-			player->pDir.x = player->pShowDir.x = LEFT;
-			player->xinertia = -Physics.player.max_x_speed;
-			player->bump( *this, LEFT );
-		}
-		else	// perfectly vertical ice cannons
-		{
-			const int UPDNCANNON_PUSHAMT = 16;
-			if (player->xinertia < UPDNCANNON_PUSHAMT)
-			{
-				if (rnd()&1)
-					player->xinertia = UPDNCANNON_PUSHAMT;
-				else
-					player->xinertia = -UPDNCANNON_PUSHAMT;
-			}
-		}
-
-		player->freeze();
-		smash();    
+	// freeze the player if it touches him
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	// make him start sliding in the direction of the impact
+	if (vector_x > 0)
+	{
+	    player->pDir.x = player->pShowDir.x = RIGHT;
+	    player->xinertia = Physics.player.max_x_speed;
+	    player->bump( RIGHT );
+	}
+	else if (vector_x < 0)
+	{
+	    player->pDir.x = player->pShowDir.x = LEFT;
+	    player->xinertia = -Physics.player.max_x_speed;
+	    player->bump( LEFT );
+	}
+	else	// perfectly vertical ice cannons
+	{
+	    const int UPDNCANNON_PUSHAMT = 16;
+	    if (player->xinertia < UPDNCANNON_PUSHAMT)
+	    {
+		if (rnd()&1)
+		    player->xinertia = UPDNCANNON_PUSHAMT;
+		else
+		    player->xinertia = -UPDNCANNON_PUSHAMT;
+	    }
+	}
+	
+	player->freeze();
+	smash();    
     }
 }
 

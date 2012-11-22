@@ -107,7 +107,7 @@ void CRope::rope_movestone()
 	falldist++;
 }
 
-void CRope::getTouchedBy(CSpriteObject &theObject)
+void CRope::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if( state == ROPE_DROPSTONE && m_type==OBJ_ROPE )
 	{

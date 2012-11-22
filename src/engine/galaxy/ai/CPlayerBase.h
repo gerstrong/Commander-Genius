@@ -117,7 +117,7 @@ public:
 	 * Produces the walking sound. To produce that sound correctly, it uses a special timer.
 	 * That's the reason we need that aiding function
 	 */
-	void makeWalkSound();
+	void playWalkSound();
 
 
 	/**
@@ -130,7 +130,7 @@ public:
 	/**
 	 * Same here but with swimming
 	 */
-	void makeSwimSound();
+	void playSwimSound();
 
 
 	void processDead();

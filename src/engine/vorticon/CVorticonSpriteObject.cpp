@@ -105,7 +105,9 @@ bool CVorticonSpriteObject::checkforScenario()
 
 	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
 	if(!mp_Map->m_worldmap)
+	{
 		if(!calcVisibility()) return false;
+	}
 
    	onscreen = true;
 
@@ -118,7 +120,7 @@ bool CVorticonSpriteObject::checkforScenario()
 		m_type == OBJ_SECTOREFFECTOR)
 	{
 		return true;
-    }
+	}
 
    	return false;
 }

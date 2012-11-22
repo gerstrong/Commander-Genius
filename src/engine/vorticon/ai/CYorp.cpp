@@ -248,7 +248,7 @@ void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
 				// if yorp is moving, also push in direction he's moving
 				// in. this allows walking through a yorp if he is walking
 				// away from Keen
-				player->bump( *this, movedir );
+				player->bump( movedir );
 			}
 		}
 	}

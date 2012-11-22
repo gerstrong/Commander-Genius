@@ -92,7 +92,7 @@ public:
 	void boostInertia(const int amt);
 	void Playerfalling();
 	void raygun();
-	void bump( CSpriteObject &theObject, direction_t direction );
+	void bump( direction_t direction );
 	void push( CSpriteObject &theObject );
 	void checkSolidDoors();
 	void SelectFrame();

@@ -30,9 +30,10 @@ m_dark(dark)
 //////////////////
 void CVorticonSpriteObjectAI::process()
 {
-	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
+    auto objectPtr = m_Objvect.begin();
+	for( ; objectPtr != m_Objvect.end() ; objectPtr++ )
 	{
-		CVorticonSpriteObject &object = *m_Objvect[i];
+		CVorticonSpriteObject &object = *(objectPtr->get());
 
 		if( object.checkforScenario() )
 		{
@@ -64,7 +65,7 @@ void CVorticonSpriteObjectAI::process()
 
 				object.process();
 
-				auto theOther = m_Objvect.begin(); theOther++;
+				auto theOther = objectPtr; theOther++;
 				for( ; theOther != m_Objvect.end() ; theOther++ )
 				{
 				    bool near = false;

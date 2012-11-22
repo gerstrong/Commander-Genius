@@ -193,9 +193,9 @@ void CPlayerLevel::processRunning()
 		handleInputOnGround();
 		return;
 	}
-	else
+	else if( !blockedl && !blockedr )
 	{
-		makeWalkSound();
+		playWalkSound();
 	}
 
 

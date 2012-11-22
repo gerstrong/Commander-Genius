@@ -542,16 +542,11 @@ void CPlayGameVorticon::drawAllElements()
 	// Draw masked tiles here!
 	g_pVideoDriver->mDrawTasks.add( new DrawForegroundTilesTask(*(mMap.get())) );
 
-	if(mp_option[OPT_HUD].value && mpFinale  )
-	{	// Draw the HUD
-		mp_HUD->render();
-	}
 
 	for( short i=0 ; i<m_NumPlayers ; i++ )
 	{
 		m_Player[i].drawStatusScreen();
 	}
-
 
 
 	if(mpFinale) // Finale processing if it is opened
@@ -573,6 +568,13 @@ void CPlayGameVorticon::drawAllElements()
 		}
 
 		m_Player[0].processEvents();
+	}
+	else
+	{
+	    if(mp_option[OPT_HUD].value )
+	    {	// Draw the HUD
+		mp_HUD->render();
+	    }
 	}
 
 
@@ -604,10 +606,6 @@ void CPlayGameVorticon::drawAllElements()
 ////
 void CPlayGameVorticon::cleanup()
 {
-    mSpriteObjectContainer.clear();
-}
-
-CPlayGameVorticon::~CPlayGameVorticon()
-{
-    m_Player.clear();
+    if(!mSpriteObjectContainer.empty())
+	mSpriteObjectContainer.clear();
 }

@@ -828,7 +828,7 @@ const int bumpamount = 160;
 // yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
 // if solid = true, object acts like a solid "wall".
-void CPlayer::bump( CSpriteObject &theObject, direction_t direction )
+void CPlayer::bump( direction_t direction )
 {
 	if(	pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
 		return;

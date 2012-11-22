@@ -171,8 +171,7 @@ void CRay::getTouchedBy(CVorticonSpriteObject &theObject)
 		if(theObject.canbezapped && state ==  RAY_STATE_FLY )
 		{
 			// Check, if it's not form the same object
-			CVorticonSpriteObject *theObjPtr = dynamic_cast<CVorticonSpriteObject*>(&theObject);
-			if(theObjPtr->m_type != owner.obj_type)
+			if(theObject.m_type != owner.obj_type)
 			{
 				state = RAY_STATE_SETZAPZOT;
 				canbezapped = false;

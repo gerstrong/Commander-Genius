@@ -153,7 +153,7 @@ void CTank::process()
 			if (movedir==RIGHT)
 				newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, RIGHT);
 			else
-				newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, LEFT);
+				newobject = new CRay(mp_Map, getXMidPos()-(1<<CSF), getYUpPos()+height_top, LEFT);
 			newobject->setOwner(OBJ_TANK, m_index);
 			newobject->setSpeed(108);
 			newobject->sprite = ENEMYRAY;
@@ -199,7 +199,7 @@ void CTank::getTouchedBy(CSpriteObject &theObject)
 {   // push keen
 	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
 	{
-		player->bump( *this, movedir );
+		player->bump( movedir );
 	}
 }
 

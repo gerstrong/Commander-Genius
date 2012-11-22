@@ -95,7 +95,6 @@ public:
 	void readTeleportDestCoordinatesEP3(int objectID, int &destx, int &desty);
 
 	void cleanup();
-	virtual ~CPlayGameVorticon();
 
 private:
 

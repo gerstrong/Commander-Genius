@@ -714,7 +714,7 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 	{
 		m_animation_time = 5;
 		sprite +=  m_animation%3;
-		makeWalkSound();
+		playWalkSound();
 	}
 	else
 		sprite +=  2;
@@ -745,7 +745,7 @@ void CPlayerWM::performSwimmingAnimation()
 	m_animation_time = 5;
 	sprite +=  m_animation%2;
 
-	makeSwimSound();
+	playSwimSound();
 }
 
 }

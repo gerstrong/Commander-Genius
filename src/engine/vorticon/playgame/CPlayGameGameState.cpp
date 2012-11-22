@@ -99,37 +99,37 @@ bool CPlayGameVorticon::loadGameState()
 			    mSpriteObjectContainer.push_back(move(object));
 			}
 
-			std::unique_ptr<CVorticonSpriteObject> object = move(mSpriteObjectContainer.at(i));
+			CVorticonSpriteObject &object = *(mSpriteObjectContainer.at(i));
 
-			savedGame.decodeData(object->m_type);
+			savedGame.decodeData(object.m_type);
 			savedGame.decodeData(x);
 			savedGame.decodeData(y);
-			object->moveToForce(VectorD2<int>(x,y));
-			savedGame.decodeData(object->dead);
-			savedGame.decodeData(object->onscreen);
-			savedGame.decodeData(object->hasbeenonscreen);
-			savedGame.decodeData(object->exists);
-			savedGame.decodeData(object->blockedd);
-			savedGame.decodeData(object->blockedu);
-			savedGame.decodeData(object->blockedl);
-			savedGame.decodeData(object->blockedr);
-			savedGame.decodeData(object->mHealthPoints);
-			savedGame.decodeData(object->canbezapped);
-			savedGame.decodeData(object->cansupportplayer);
-			savedGame.decodeData(object->inhibitfall);
-			savedGame.decodeData(object->honorPriority);
-			savedGame.decodeData(object->sprite);
-			object->performCollisions();
+			object.moveToForce(VectorD2<int>(x,y));
+			savedGame.decodeData(object.dead);
+			savedGame.decodeData(object.onscreen);
+			savedGame.decodeData(object.hasbeenonscreen);
+			savedGame.decodeData(object.exists);
+			savedGame.decodeData(object.blockedd);
+			savedGame.decodeData(object.blockedu);
+			savedGame.decodeData(object.blockedl);
+			savedGame.decodeData(object.blockedr);
+			savedGame.decodeData(object.mHealthPoints);
+			savedGame.decodeData(object.canbezapped);
+			savedGame.decodeData(object.cansupportplayer);
+			savedGame.decodeData(object.inhibitfall);
+			savedGame.decodeData(object.honorPriority);
+			savedGame.decodeData(object.sprite);
+			object.performCollisions();
 
-			if(object->m_type == OBJ_DOOR or
-				object->m_type == OBJ_RAY or
-				object->m_type == OBJ_SNDWAVE or
-				object->m_type == OBJ_FIREBALL or
-				object->m_type == OBJ_ICECHUNK or
-				object->m_type == OBJ_ICEBIT or
-				object->m_type == OBJ_GOTPOINTS or
-				object->m_type == OBJ_ANKHSHIELD) // Some objects are really not needed. So don't load them
-				object->exists = false;
+			if(object.m_type == OBJ_DOOR or
+				object.m_type == OBJ_RAY or
+				object.m_type == OBJ_SNDWAVE or
+				object.m_type == OBJ_FIREBALL or
+				object.m_type == OBJ_ICECHUNK or
+				object.m_type == OBJ_ICEBIT or
+				object.m_type == OBJ_GOTPOINTS or
+				object.m_type == OBJ_ANKHSHIELD) // Some objects are really not needed. So don't load them
+				object.exists = false;
 		}
 
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
