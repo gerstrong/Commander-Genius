@@ -111,7 +111,7 @@ private:
 	std::unique_ptr<CEGABitmap> mpGameoverBmp;
 	std::list< std::shared_ptr<CMessageBoxVort> > mMessageBoxes;
 	bool m_showKeensLeft;
-	std::vector<CVorticonSpriteObject*> m_Object;
+	std::vector< std::unique_ptr<CVorticonSpriteObject> > mSpriteObjectContainer;
 	std::unique_ptr<CHUD> mp_HUD;
 	std::shared_ptr<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;

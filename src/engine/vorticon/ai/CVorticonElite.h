@@ -22,9 +22,7 @@ enum vortelite_actions{
 class CVorticonElite : public CVorticon
 {
 public:
-	CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-			std::vector<CVorticonSpriteObject*> &mp_vec_Obj,
-			Uint32 x, Uint32 y );
+	CVorticonElite( CMap *p_map, Uint32 x, Uint32 y );
 	void process();
 	void initiatejump();
 	void getShotByRay(object_t &obj_type);
@@ -40,7 +38,6 @@ private:
 	int m_speed;
 
 	int dist_traveled;
-	std::vector<CVorticonSpriteObject*>& m_Object;
 };
 
 #endif /* CVORTICONELITE_H_ */

@@ -18,7 +18,8 @@ const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
 
 CEndingEp2::CEndingEp2(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
-		const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object) :
+		const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player, 
+		std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object ) :
 CFinale(messageBoxes, pMap, Object),
 m_Player(Player)
 {
@@ -51,7 +52,8 @@ void CEndingEp2::HeadsForEarth()
 	{
 		//Initialization
 		std::string path = mpMap->m_gamepath;
-		CVorticonMapLoader MapLoader(mpMap, &m_Player);
+		std::vector< std::unique_ptr<CVorticonSpriteObject> > mpSpriteObjectContainer;
+		CVorticonMapLoaderWithPlayer MapLoader(mpMap, m_Player, mpSpriteObjectContainer);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
@@ -98,7 +100,8 @@ void CEndingEp2::LimpsHome()
 	if(m_mustsetup)
 	{	//Initialization
 		std::string path = mpMap->m_gamepath;
-		CVorticonMapLoader MapLoader(mpMap, &m_Player);
+		std::vector< std::unique_ptr<CVorticonSpriteObject> > mpSpriteObjectContainer;
+		CVorticonMapLoaderWithPlayer MapLoader(mpMap, m_Player, mpSpriteObjectContainer);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;

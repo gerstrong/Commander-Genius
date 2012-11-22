@@ -14,8 +14,8 @@
 class CScrub : public CVorticonSpriteObject
 {
 public:
-	CScrub(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player);
+	CScrub(CMap *p_map, Uint32 x, Uint32 y);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void SetAllCanSupportPlayer(bool state);
 
@@ -37,7 +37,6 @@ private:
 	int fallspeed;
 
 	unsigned char kickedplayer[MAX_PLAYERS];
-	std::vector<CPlayer>& m_Player;
 };
 
 #endif /* CSCRUB_H_ */

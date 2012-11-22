@@ -57,12 +57,11 @@ unsigned int rnd(void);
 class CTank : public CVorticonSpriteObject
 {
 public:
-	CTank(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player, std::vector<CVorticonSpriteObject*>& Object,
-			object_t objtype=OBJ_TANK);
+	CTank(CMap *p_map, Uint32 x, Uint32 y,object_t objtype=OBJ_TANK);
 	virtual void process();
 
 	void getTouchedBy(CSpriteObject &theObject);
+	bool isNearby(CVorticonSpriteObject &theObject);
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
 
@@ -91,8 +90,6 @@ protected:
 	unsigned int timetillcanfirecauseonsamelevel;
 	unsigned int turnaroundtimer;
 	int pausetime;
-	std::vector<CPlayer>& m_Player;
-	std::vector<CVorticonSpriteObject*>& m_Object;
 	bool hardmode;
 };
 

@@ -15,7 +15,9 @@
 #include "common/Playerdefines.h"
 
 CEndingEp3::CEndingEp3(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
-						const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object) :
+			const std::shared_ptr<CMap> &pMap, 
+			std::vector<CPlayer> &Player, 
+		       std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object) :
 CFinale(messageBoxes, pMap, Object),
 m_Player(Player)
 {
@@ -49,7 +51,8 @@ void CEndingEp3::HonorScene()
 	{
 		//Initialization
 		std::string path = mpMap->m_gamepath;
-		CVorticonMapLoader MapLoader(mpMap, &m_Player);
+		std::vector< std::unique_ptr<CVorticonSpriteObject> > spriteObjectContainer;
+		CVorticonMapLoaderWithPlayer MapLoader(mpMap, m_Player, spriteObjectContainer);
 		MapLoader.load(3, 81, path);
 
 		m_Player[0].hideplayer = false;

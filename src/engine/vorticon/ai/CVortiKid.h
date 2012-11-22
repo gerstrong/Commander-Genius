@@ -19,8 +19,8 @@ enum vort_baby_actions{
 class CVortikid : public CVorticonSpriteObject
 {
 public:
-	CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-			Uint32 x, Uint32 y );
+	CVortikid( CMap *p_map, Uint32 x, Uint32 y );
+	void touchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void baby_jump(int big);
 private:
@@ -31,8 +31,6 @@ private:
 
 	char walkframe;
 	int walktimer;
-
-	std::vector<CPlayer> &m_Player;
 };
 
 #endif /* CVORTIKID_H_ */

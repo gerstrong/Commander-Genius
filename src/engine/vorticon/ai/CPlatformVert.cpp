@@ -13,9 +13,8 @@ PLATVERT_MOVE, PLATVERT_WAIT
 
 #define PLATVERTPUSHAMOUNT      10
 
-CPlatformVert::CPlatformVert(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player) :
-CPlatform(p_map, x, y, Player)
+CPlatformVert::CPlatformVert(CMap *p_map, Uint32 x, Uint32 y) :
+CPlatform(p_map, x, y)
 {
 	animframe = 0;
 	animtimer = 0;
@@ -28,32 +27,15 @@ CPlatform(p_map, x, y, Player)
 	canbezapped = 1;
 	SetAllCanSupportPlayer(1);
 
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
 		kickedplayer[it_player->m_index] = 0;
-	}
+	}*/
 }
 
 void CPlatformVert::process()
 {
-	// after kicking a player, wait until he falls beneath the platform
-	// before turning cansupportplayer back on...just in case we also
-	// check for if he stopped falling
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for( ; it_player != m_Player.end() ; it_player++ )
-	{
-		if (kickedplayer[it_player->m_index])
-		{
-			if (it_player->getYPosition() > getYPosition() ||
-					(!it_player->pfalling && !it_player->pjumping))
-			{
-				cansupportplayer = 1;
-				kickedplayer[it_player->m_index] = 0;
-			}
-		}
-	}
-
 	sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + animframe;
 
 	if (animtimer > PLATVERT_ANIM_RATE)
@@ -79,7 +61,7 @@ void CPlatformVert::process()
 			{
 				moveUp(PLATVERT_MOVE_SPD);
 
-				std::vector<CPlayer>::iterator it_player = m_Player.begin();
+				/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
 					if( it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
@@ -96,7 +78,7 @@ void CPlatformVert::process()
 							kickedplayer[it_player->m_index] = 1;
 						}
 					}
-				}
+				}*/
 			}
 		}
 		else if (movedir==DOWN)
@@ -107,7 +89,7 @@ void CPlatformVert::process()
 			{
 				moveDown(PLATVERT_MOVE_SPD);
 
-				std::vector<CPlayer>::iterator it_player = m_Player.begin();
+				/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
 					if( it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
@@ -116,7 +98,7 @@ void CPlatformVert::process()
 						if (!kickedplayer[it_player->m_index])
 							it_player->moveDown(PLATVERT_MOVE_SPD);
 					}
-				}
+				}*/
 			}
 		}
 		break;

@@ -38,7 +38,7 @@
 class CFoob : public CVorticonSpriteObject
 {
 public:
-	CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player);
+	CFoob(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);
 
@@ -59,8 +59,6 @@ private:
 	int spooktimer;
 	int SpookedByWho;
 	int blockedtime;
-
-	std::vector<CPlayer>& m_Player;
 };
 
 #endif /* CFOOB_H_ */

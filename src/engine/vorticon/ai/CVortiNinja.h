@@ -19,7 +19,7 @@ enum ninja_actions{
 class CVortiNinja : public CVorticonSpriteObject
 {
 public:
-	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player);
+	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y);
 	void init();
 	void process();
 private:
@@ -31,7 +31,6 @@ private:
 
 	int dietimer;
 	bool longjump;
-	std::vector<CPlayer> &m_Player;
 };
 
 #endif /* CVORTININJA_H_ */

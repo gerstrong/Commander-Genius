@@ -8,17 +8,15 @@
 #include "CSpark.h"
 #include "CRay.h"
 
-#include "../../../sdl/sound/CSound.h"
+#include "sdl/sound/CSound.h"
 
 #define SPARK_BASEFRAME         OBJ_SPARK_DEFSPRITE_EP2
 #define SPARK_ANIMRATE          5
 
-CSpark::CSpark(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CVorticonSpriteObject*>& Object) :
+CSpark::CSpark(CMap *pmap, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(pmap, x, y, OBJ_SPARK),
 timer(0), frame(0),
-blowx(0), blowy(0),
-m_Object(Object)
+blowx(0), blowy(0)
 {
 	state = SPARK_ANIMATE;
 	canbezapped = 1;
@@ -91,7 +89,7 @@ void CSpark::process()
 			CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF, DOWN);
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->setOwner(m_type, m_index);
-			m_Object.push_back(newobject);
+			g_pBehaviorEngine->EventList().add( new EventSpawnObject(newobject) );
 			playSound(SOUND_SHOT_HIT);
 
 			blowy++;
@@ -136,7 +134,7 @@ void CSpark::process()
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
 				playSound(SOUND_SHOT_HIT);
-				m_Object.push_back(newobject);
+				g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
 			}
 
 			blowx++;

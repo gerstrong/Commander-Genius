@@ -15,8 +15,7 @@
 class CBallJack : public CVorticonSpriteObject
 {
 public:
-	CBallJack(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CPlayer> &PlayerVect, object_t type);
+	CBallJack(CMap *pmap, Uint32 x, Uint32 y, object_t type);
 	void process();
 
 	void getShotByRay(object_t &obj_type);
@@ -35,8 +34,6 @@ private:
 
 	int animframe, animtimer;
 	int speed;
-
-	std::vector<CPlayer> &m_Player;
 
 	direction_t zapd;	   			// x,y, and direction of last shot at time of impact
 };

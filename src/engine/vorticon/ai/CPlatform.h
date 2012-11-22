@@ -15,8 +15,7 @@
 class CPlatform : public CVorticonSpriteObject
 {
 public:
-	CPlatform(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player);
+	CPlatform(CMap *p_map, Uint32 x, Uint32 y);
 
 	void process();
 
@@ -31,14 +30,12 @@ protected:
 
 	direction_t movedir;
 	unsigned char kickedplayer[MAX_PLAYERS];
-	std::vector<CPlayer>& m_Player;
 };
 
 class CPlatformVert : public CPlatform
 {
 public:
-	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player);
+	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);
 };

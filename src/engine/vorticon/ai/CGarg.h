@@ -43,8 +43,7 @@ unsigned int rnd(void);
 class CGarg : public CVorticonSpriteObject
 {
 public:
-	CGarg(CMap *p_map, std::vector<CPlayer> &m_vec_Player,
-			Uint32 x, Uint32 y);
+	CGarg(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 	void charge();
 
@@ -65,7 +64,6 @@ private:
 	char movedir;
 	unsigned char detectedPlayer, detectedPlayerIndex;
 
-	std::vector<CPlayer> &m_Player;
 	bool m_hardmode;
 };
 

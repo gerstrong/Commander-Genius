@@ -12,11 +12,9 @@
 #include "sdl/sound/CSound.h"
 #include "misc.h"
 
-CYorp::CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-		Uint32 x, Uint32 y ) :
+CYorp::CYorp( CMap *p_map, Uint32 x, Uint32 y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_YORP),
 m_hardmode(g_pBehaviorEngine->mDifficulty > NORMAL),
-m_vec_Player(mp_vec_Player),
 state(YORP_LOOK),
 looktimes(YORP_NUM_LOOKS+1),
 lookposition(0),
@@ -69,7 +67,7 @@ void CYorp::processLooking()
 {
 	char numlooks = m_hardmode ? YORP_NUM_LOOKS_FAST : YORP_NUM_LOOKS;
 
-	if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
+	/*if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
 	{
 		movedir = (m_vec_Player[0].getXPosition() < getXPosition()) ? LEFT : RIGHT;
 
@@ -81,7 +79,7 @@ void CYorp::processLooking()
 		walkframe = 0;
 		dist_traveled = 0;
 		state = YORP_MOVE;
-	}
+	}*/
 
 	if (!timer)
 	{

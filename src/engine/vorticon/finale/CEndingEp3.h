@@ -22,7 +22,8 @@ class CEndingEp3 : public CFinale {
 public:
 	CEndingEp3(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 			const std::shared_ptr<CMap> &pMap, 
-	    std::vector<CPlayer> &Player, std::vector<CVorticonSpriteObject*> &Object);
+			std::vector<CPlayer> &Player, 
+			std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object);
 
 	void process();
 	void HonorScene();

@@ -13,8 +13,7 @@
 
 class CSpark : public CVorticonSpriteObject {
 public:
-	CSpark(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CVorticonSpriteObject*>& Object);
+	CSpark(CMap *pmap, Uint32 x, Uint32 y);
 	void process();
 
 private:
@@ -25,8 +24,6 @@ private:
 	unsigned int timer;
 	unsigned int frame;
 	int blowx,blowy;
-
-	std::vector<CVorticonSpriteObject*>& m_Object;
 };
 
 #endif /* CSPARK_H_ */

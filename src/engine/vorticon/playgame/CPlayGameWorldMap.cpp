@@ -50,7 +50,7 @@ void CPlayGameVorticon::processOnWorldMap()
 					case NESSIE_WEED:
 					case NESSIE_PATH: break;
 					case NESSIE_LAND:
-						player.MountNessieIfAvailable();
+						g_pBehaviorEngine->EventList().add(new CPlayer::Mount(player));
 						g_pInput->flushAll();
 						break;
 
@@ -91,16 +91,6 @@ void CPlayGameVorticon::processOnWorldMap()
 				}
 			}
 		}
-
-		if(player.mounted)
-		{
-			if(g_pInput->getPressedAnyCommand(0))
-			{
-				player.UnmountNessie();
-				g_pInput->flushAll();
-			}
-		}
-
 	}
 }
 
@@ -111,7 +101,7 @@ void CPlayGameVorticon::goBacktoMap()
 
 	// before he can go back to map, he must tie up the objects.
 	// This means, all objects except the puppy ones of the player....
-	m_Object.clear();
+	mSpriteObjectContainer.clear();
 
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
@@ -276,7 +266,7 @@ void CPlayGameVorticon::teleportPlayer(int objectID, CPlayer &player)
 	int destx, desty;
 	int origx, origy;
 	mMap->findObject(objectID, &origx, &origy);
-	CTeleporter *teleporter = new CTeleporter( mMap.get(), m_Player,origx<<CSF, origy<<CSF);
+	std::unique_ptr<CTeleporter> teleporter( new CTeleporter( mMap.get(), m_Player,origx<<CSF, origy<<CSF) );
 	teleporter->solid = false;
 	teleporter->direction = TELEPORTING_IN;
 	if(m_Episode == 1)
@@ -286,7 +276,7 @@ void CPlayGameVorticon::teleportPlayer(int objectID, CPlayer &player)
 	teleporter->destx = destx>>TILE_S;
 	teleporter->desty = desty>>TILE_S;
 	teleporter->whichplayer = player.m_index;
-	m_Object.push_back(teleporter);
+	mSpriteObjectContainer.push_back(move(teleporter));
 }
 
 void CPlayGameVorticon::readTeleportDestCoordinatesEP1(int objectID, int &destx, int &desty)

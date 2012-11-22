@@ -11,9 +11,10 @@
 #include "FindFile.h"
 #include <fstream>
 
+
 CFinale::CFinale(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 					const std::shared_ptr<CMap> &pMap,
-					std::vector<CVorticonSpriteObject*> &Object) :
+					std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object) :
 m_mustfinishgame(false),
 mMessageBoxes(messageBoxes),
 mpMap(pMap),

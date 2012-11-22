@@ -60,8 +60,9 @@
 class CVorticon : public CVorticonSpriteObject
 {
 public:
-	CVorticon( CMap *p_map, std::vector<CPlayer> &m_vec_Player,
-			Uint32 x, Uint32 y, char hp=1, object_t objtype=OBJ_VORT);
+	CVorticon( CMap *p_map, Uint32 x, Uint32 y, char hp=1, object_t objtype=OBJ_VORT);
+	bool isNearby(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void initiateJump();
 	void getTouchedBy(CSpriteObject &theObject);
@@ -93,8 +94,6 @@ protected:
 	int JumpLeftFrame;
 	int DyingFrame;
 	int DeadFrame;
-
-	std::vector<CPlayer> &m_Player;
 };
 
 #endif //__CVORTICON__

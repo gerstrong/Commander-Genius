@@ -12,10 +12,8 @@
 
 #define PLATFORMPUSHAMOUNT      40
 
-CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player) :
-CVorticonSpriteObject(p_map, x, y, OBJ_PLATFORM),
-m_Player(Player)
+CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y) :
+CVorticonSpriteObject(p_map, x, y, OBJ_PLATFORM)
 {
 	animframe = 0;
 	animtimer = 0;
@@ -83,7 +81,7 @@ void CPlatform::process()
 
 void CPlatform::SetAllCanSupportPlayer(bool state)
 {
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
 		cansupportplayer = state;
@@ -93,7 +91,7 @@ void CPlatform::SetAllCanSupportPlayer(bool state)
 			it_player->moveDown(1);
 			it_player->blockedd=false;
 		}
-	}
+	}*/
 }
 
 void CPlatform::getTouchedBy(CSpriteObject &theObject)

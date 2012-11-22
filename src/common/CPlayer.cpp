@@ -24,7 +24,7 @@
 ///
 CPlayer::CPlayer(const char &Episode, short &Level,
 				 bool *mp_level_completed,
-				 std::vector<CVorticonSpriteObject*> &m_Object, CMap &map) :
+				 CMap &map) :
 CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER),
 m_episode(Episode),
 m_level(Level),
@@ -32,7 +32,6 @@ pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjump
 mp_levels_completed(mp_level_completed),
 mp_option(g_pBehaviorEngine->m_option)
 {
-    mp_object = &m_Object;
     canbezapped = true;
     m_index = 0;
 
@@ -61,7 +60,7 @@ pjumpupspeed_decrease(player.pjumpupspeed_decrease),
 mp_levels_completed(player.mp_levels_completed),
 mp_option(g_pBehaviorEngine->m_option)
 {
-    mp_object = player.mp_object;
+    //mp_object = player.mp_object;
     canbezapped = true;
     m_index = 0;
 
@@ -79,12 +78,12 @@ mp_option(g_pBehaviorEngine->m_option)
     memset(&inventory, 0, sizeof(stInventory));
     setDefaultStartValues();
     setDatatoZero();
-    
+    pinertia_y = 0;
 }
 
 CPlayer& CPlayer::operator=(const CPlayer &player)
 {
-    mp_object = player.mp_object;
+    //mp_object = player.mp_object;
     m_episode = player.m_episode;
     m_level = player.m_level;
     pjumpupspeed_decrease = player.pjumpupspeed_decrease;
@@ -899,7 +898,7 @@ bool CPlayer::checkObjSolid()
 {
 	pSupportedbyobject = nullptr;
 
-	std::vector<CVorticonSpriteObject*>::iterator it_obj = mp_object->begin();
+	/*std::vector<CVorticonSpriteObject*>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
 	{
 		if((*it_obj)->cansupportplayer)
@@ -930,7 +929,7 @@ bool CPlayer::checkObjSolid()
 				}
 			}
 		}
-	}
+	}*/
 	return true;
 }
 

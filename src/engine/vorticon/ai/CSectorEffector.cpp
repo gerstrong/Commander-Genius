@@ -7,6 +7,7 @@
 #include "sdl/sound/CSound.h"
 #include "CLogFile.h"
 #include "graphics/effects/CVibrate.h"
+#include "common/CBehaviorEngine.h"
 
 // TODO: It should be renamed to Mangling Machine
 
@@ -67,13 +68,10 @@
 
 int mortimer_surprisedcount = 0;
 
-CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player, std::vector<CVorticonSpriteObject*>& Object, unsigned int se_type) :
+CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type) :
 CVorticonSpriteObject(p_map, x, y, OBJ_SECTOREFFECTOR),
 setype(se_type),
-timer(0),
-m_Player(Player),
-m_Object(Object)
+timer(0)
 {
 	inhibitfall = true;
 
@@ -160,6 +158,17 @@ void CSectorEffector::getTouchedBy(CSpriteObject &theObject)
 			mHealthPoints>0 && theVObjectPtr->m_type == OBJ_RAY )
 	{
 		mHealthPoints--;
+	}
+
+	
+	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+	{
+	    if( setype == SE_MORTIMER_ZAPSUP && state == ZAPSUP_ABOUTTOFADEOUT )
+	    {
+		player->level_done = LEVEL_DONE_FADEOUT;
+		exists = false;
+		return;
+	    }
 	}
 }
 
@@ -282,6 +291,7 @@ void CSectorEffector::se_mortimer_spark()
 			g_pGfxEngine->setupEffect(new CVibrate(200));
 			mp_Map->redrawAt(getXPosition()>>CSF, getYPosition()>>CSF);
 
+			/*
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms
 			for(std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin()
@@ -301,14 +311,14 @@ void CSectorEffector::se_mortimer_spark()
 						}
 					}
 				}
-			}
+			}*/
 			// keen just destroyed the last spark
 
 			// destroy mortimer's arms
 			sprite = BLANKSPRITE;
 
 			// destroy the sector effectors controlling his arms
-			for(std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin()
+			/*for(std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin()
 					; obj != m_Object.end() ; obj++)
 			{
 				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
@@ -317,7 +327,7 @@ void CSectorEffector::se_mortimer_spark()
 					if (SE.setype==SE_MORTIMER_ARM)
 						SE.exists = false;
 				}
-			}
+			}*/
 			// go into a state where we'll destroy mortimer's arms
 			state = MSPARK_DESTROYARMS;
 			my = MORTIMER_ARMS_YSTART;
@@ -338,7 +348,7 @@ void CSectorEffector::se_mortimer_spark()
 					CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, DOWN);
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
-					m_Object.push_back(newobject);
+					g_pBehaviorEngine->EventList().spawnObj(newobject);
 				}
 
 				mx = MORTIMER_RIGHT_ARM_X+x;
@@ -349,7 +359,7 @@ void CSectorEffector::se_mortimer_spark()
 					CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, DOWN);
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
-					m_Object.push_back(newobject);
+					g_pBehaviorEngine->EventList().spawnObj(newobject);
 				}
 
 			}
@@ -392,7 +402,7 @@ void CSectorEffector::se_mortimer_heart()
 			g_pGfxEngine->setupEffect(new CVibrate(10000));
 
 			// kill all enemies
-			for(std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin()
+			/*for(std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin()
 					; obj != m_Object.end() ; obj++)
 			{
 				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
@@ -406,7 +416,7 @@ void CSectorEffector::se_mortimer_heart()
 					(*obj)->kill();
 					(*obj)->exists = false;
 				}
-			}
+			}*/
 
 			set_mortimer_surprised(true);
 			// have waves of zaps run up mortimer's machine
@@ -422,8 +432,8 @@ void CSectorEffector::se_mortimer_heart()
 			int x = getXPosition();
 			int y = getYPosition();
 
-			CSectorEffector *newobject = new CSectorEffector(mp_Map, x, y,
-					m_Player, m_Object, SE_MORTIMER_ZAPSUP);
+			CSectorEffector *newobject = new CSectorEffector(mp_Map, 
+					x, y,SE_MORTIMER_ZAPSUP);
 			newobject->my = MORTIMER_MACHINE_YEND;
 			newobject->timer = 0;
 			newobject->destroytiles = 0;
@@ -438,7 +448,7 @@ void CSectorEffector::se_mortimer_heart()
 			}
 			else counter++;
 
-			m_Object.push_back(newobject);
+			g_pBehaviorEngine->EventList().spawnObj(newobject);
 		}
 		else timer--;
 		break;
@@ -453,7 +463,7 @@ void CSectorEffector::se_mortimer_heart()
 				CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, DOWN);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
 				newobject->inhibitfall = true;
-				m_Object.push_back(newobject);
+				g_pBehaviorEngine->EventList().spawnObj(newobject);				
 			}
 
 			timer = MACHINE_DESTROY_RATE;
@@ -475,12 +485,6 @@ void CSectorEffector::se_mortimer_zapsup()
 
 	if (!timer)
 	{
-		if (state==ZAPSUP_ABOUTTOFADEOUT)
-		{
-			m_Player[0].level_done = LEVEL_DONE_FADEOUT;
-			exists = false;
-			return;
-		}
 
 		playSound(SOUND_SHOT_HIT);
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
@@ -489,7 +493,7 @@ void CSectorEffector::se_mortimer_zapsup()
 			CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, DOWN);
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->inhibitfall = true;
-			m_Object.push_back(newobject);
+			g_pBehaviorEngine->EventList().spawnObj(newobject);
 
 			if (destroytiles)
 			{
@@ -508,11 +512,11 @@ void CSectorEffector::se_mortimer_zapsup()
 				state = ZAPSUP_ABOUTTOFADEOUT;
 
 				// if a keen is standing on that machine, make him fall!
-				std::vector<CPlayer>::iterator player = m_Player.begin();
+				/*std::vector<CPlayer>::iterator player = m_Player.begin();
 				for(; player != m_Player.end() ; player++)
 				{
 					player->pfalling = true;
-				}
+				}*/
 
 				return;
 			}
@@ -724,7 +728,7 @@ void CSectorEffector::se_mortimer_randomzaps()
 		CRay *newobject = new CRay(mp_Map,x<<CSF, y<<CSF, RIGHT );
 		newobject->state = CRay::RAY_STATE_SETZAPZOT;
 		newobject->inhibitfall = true;
-		m_Object.push_back(newobject);
+		g_pBehaviorEngine->EventList().spawnObj(newobject);
 
 		timer = TIME_BETWEEN_ZAPS;
 		if (counter > NUM_RANDOM_ZAPS)

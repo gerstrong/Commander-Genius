@@ -3,8 +3,7 @@
 
 #include <vector>
 
-CGarg::CGarg(CMap *p_map, std::vector<CPlayer> &m_vec_Player,
-		Uint32 x, Uint32 y) :
+CGarg::CGarg(CMap *p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x,y,OBJ_GARG),
 state(GARG_LOOK),
 looktimes(GARG_NUM_LOOKS+1),
@@ -17,7 +16,6 @@ dist_traveled(0),
 movedir(0),
 detectedPlayer(0),
 detectedPlayerIndex(0),
-m_Player(m_vec_Player),
 m_hardmode(g_pBehaviorEngine->mDifficulty==HARD)
 {
 	canbezapped = true;
@@ -27,9 +25,11 @@ m_hardmode(g_pBehaviorEngine->mDifficulty==HARD)
 
 void CGarg::process()
 {
+    /*
 	// kill player on touch
 	if (state!=GARG_DYING && touchPlayer)
 		m_Player[touchedBy].kill();
+	*/
 
 	// did the garg get shot?
 	if (mHealthPoints <= 0 && state != GARG_DYING )
@@ -77,10 +77,10 @@ void CGarg::process()
 		if (looktimes>GARG_NUM_LOOKS)
 		{
 			// try to head towards Keen...
-			if (m_Player[detectedPlayerIndex].getXPosition() < getXPosition())
+			/*if (m_Player[detectedPlayerIndex].getXPosition() < getXPosition())
 				movedir = LEFT;
 			else
-				movedir = RIGHT;
+				movedir = RIGHT;*/
 
 			if (!about_to_charge && rnd()%3==1)
 				// 25% prob, go the other way (but always charge towards player)
@@ -121,7 +121,7 @@ void CGarg::process()
 		// is keen on same level?
 		detectedPlayer = 0;
 
-		std::vector<CPlayer>::iterator it = m_Player.begin();
+		/*std::vector<CPlayer>::iterator it = m_Player.begin();
 		for( size_t i=0 ; it != m_Player.end() ; it++ )
 		{
 			if ( it->getYDownPos() >= getYDownPos()-(16<<STC) )
@@ -147,7 +147,7 @@ void CGarg::process()
 				about_to_charge = 1;
 				state = GARG_LOOK;
 			}
-		} else keenonsameleveltimer = 0;
+		} else keenonsameleveltimer = 0;*/
 
 		// every now and then go back to look state
 		if (dist_traveled > GARG_MINTRAVELDIST)

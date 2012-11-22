@@ -42,20 +42,33 @@
 #include "engine/vorticon/ai/CIceCannon.h"
 #include "engine/vorticon/ai/CSpark.h"
 
-CVorticonMapLoader::CVorticonMapLoader( std::shared_ptr<CMap> &map,
-					std::vector<CPlayer> *p_PlayerVect ) :
-mpMap(map),
-mp_vec_Player(p_PlayerVect)
-{
-	mp_objvect = NULL;
-	m_checkpointset = false;
-	m_NessieAlreadySpawned = false;
-}
 
-// Loads the map into the memory
-bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
+CVorticonMapLoaderBase::CVorticonMapLoaderBase( std::shared_ptr<CMap> &map ) :
+mpMap(map)
+{}
+
+CVorticonMapLoader::CVorticonMapLoader( std::shared_ptr<CMap> &map,
+					std::vector<std::unique_ptr<CVorticonSpriteObject> > &spriteObjectContainer) :
+CVorticonMapLoaderBase(map),
+m_NessieAlreadySpawned(false),
+mpSpriteObjectContainer(spriteObjectContainer)
+{}
+
+CVorticonMapLoaderWithPlayer::CVorticonMapLoaderWithPlayer(std::shared_ptr<CMap> &map,
+			    std::vector<CPlayer> &playerContainer,
+			    std::vector<std::unique_ptr<CVorticonSpriteObject> > &spriteObjectContainer) :
+CVorticonMapLoader(map, spriteObjectContainer),
+m_checkpointset(false),
+mPlayerContainer(playerContainer)
+{}
+
+bool CVorticonMapLoaderBase::loadBase(  Uint8 episode, 
+					Uint8 level, 
+					const std::string& path, 
+					bool loadNewMusic, 
+					std::vector<Uint16> &planeitems )
 {
-	std::string levelname = "level";
+    	std::string levelname = "level";
 	if(level < 10) levelname += "0";
 	levelname += itoa(level) + ".ck" + itoa(episode);
 
@@ -83,7 +96,7 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 		// only record this error message on build platforms that log errors
 		// to a file and not to the screen.
 		g_pLogFile->ftextOut("MapLoader: unable to open file %s<br>", levelname.c_str());
-		return 0;
+		return false;
 	}
 	g_pLogFile->ftextOut("MapLoader: file %s opened. Loading...<br>", levelname.c_str());
 
@@ -99,7 +112,6 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 	MapFile.close();
 
 	CRLE RLE;
-	std::vector<Uint16> planeitems;
 	RLE.expandSwapped(planeitems,compdata, 0xFEFE);
 
 	// Here goes the memory allocation function
@@ -109,13 +121,12 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 	unsigned int planesize = 0;
 	unsigned int curmapx=0, curmapy=0;
 	planesize = planeitems.at(8);
-	planesize /= 2; // Size of two planes, but we only need one
+	planesize /= 2; // We have two planes
 
 
 	const char &fixlevel_error = g_pBehaviorEngine->m_option[OPT_FIXLEVELERRORS].value;
 
-	Uint32 c;
-	for( c=17 ; c<planesize+17 ; c++ ) // Check against Tilesize
+	for( size_t c=17 ; c<planesize+17 ; c++ ) // Check against Tilesize
 	{
 		t = planeitems.at(c);
 
@@ -133,59 +144,103 @@ bool CVorticonMapLoader::load( Uint8 episode, Uint8 level, const std::string& pa
 		}
 
 		if(t > 255)
-			t=0; // If there are some invalid values in the file
+		{
+			t=0; // If there are some invalid values in the file, set them to zero.
+		}
 	}
 	mpMap->collectBlockersCoordiantes();
+	return true;
+}
 
-	// now do the sprites
-	// get sprite data
-	int resetcnt, resetpt;
-	curmapx = curmapy = 0;
+void CVorticonMapLoaderWithPlayer::loadSprites( std::vector<Uint16> &planeitems, 
+						Uint8 episode, 
+						Uint8 level )
+{
+    	int resetcnt, resetpt;
+	size_t curmapx = 0;
+	size_t curmapy = 0;
 	resetcnt = resetpt = 0;
+    
+	if( mpSpriteObjectContainer.empty() )
+	    mpSpriteObjectContainer.clear();
+	
+	mpSpriteObjectContainer.reserve(2000);
+	
+	size_t planesize = planeitems.at(8);
+	planesize /= 2; // We have two planes
 
-	if(mp_objvect && stategame == false)
+	for( size_t c=planesize+17 ; c<2*planesize+16 ; c++ )
 	{
-		std::vector<CVorticonSpriteObject*>::iterator obj = mp_objvect->begin();
-		for( ; obj != mp_objvect->end() ; obj++ )
-		{
-			delete *obj;
-			mp_objvect->pop_back();
-		}
-
-		mp_objvect->reserve(2000);
-
-		for( c=planesize+17 ; c<2*planesize+16 ; c++ )
-		{
-			// in case the planesizes are bigger than the actual file content itself
-			if(planeitems.size() <= c) break;
-
-			t = planeitems.at(c);
-
-			if (mpMap->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
-			else addEnemyObject(t, curmapx, curmapy, episode, level);
-
-			curmapx++;
-			if (curmapx >= mpMap->m_width)
-			{
-				curmapx = 0;
-				curmapy++;
-				if (curmapy >= mpMap->m_height) break;
-			}
-
-			if (++resetcnt==resetpt) curmapx = curmapy = 0;
-		}
-
+	    // in case the planesizes are bigger than the actual file content itself
+	    if(planeitems.size() <= c) break;
+	    
+	    const size_t t = planeitems.at(c);
+	    
+	    if (mpMap->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
+	    else addSpriteObject(t, curmapx, curmapy, episode, level);
+	    
+	    curmapx++;
+	    if (curmapx >= mpMap->m_width)
+	    {
+		curmapx = 0;
+		curmapy++;
+		if (curmapy >= mpMap->m_height) break;
+	    }
+	    
+	    if (++resetcnt==resetpt) curmapx = curmapy = 0;
 	}
+	
+}
 
-	planeitems.clear();
 
-	// Set Map Delegation Object. This only gets the Pointer to the map instances x-y-scroll-buffers
+// Loads the map into the memory
+bool CVorticonMapLoaderBase::load( Uint8 episode, 
+				    Uint8 level, 
+				    const std::string& path, 
+				    bool loadNewMusic )
+{	
+	std::vector<Uint16> planeitems;
+	
+	if( !loadBase( episode, level, 
+		  path, loadNewMusic, 
+		  planeitems ) )
+	{
+	    return false;
+	}
+	
+	// Set Map Delegation Object and refresh whole level
 	g_pVideoDriver->updateScrollBuffer( mpMap );
 
 	return true;
 }
 
-void CVorticonMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
+bool CVorticonMapLoaderWithPlayer::load( Uint8 episode, 
+				    Uint8 level, 
+				    const std::string& path, 
+				    bool loadNewMusic, 
+				    bool stategame )
+{	
+	std::vector<Uint16> planeitems;
+	
+	if( !loadBase( episode, level, 
+		  path, loadNewMusic, 
+		  planeitems ) )
+	{
+	    return false;
+	}
+	
+	if( !stategame )
+	{
+	    loadSprites(planeitems,episode, level );
+	}
+	
+	// Set Map Delegation Object and refresh whole level
+	g_pVideoDriver->updateScrollBuffer( mpMap );
+
+	return true;
+}
+
+void CVorticonMapLoaderBase::addTile( Uint16 t, Uint16 x, Uint16 y )
 {
 	// Special cases. Those happen normally, when levels are replayed.
 	// For example if one player has battery, the level won't show that item
@@ -194,31 +249,28 @@ void CVorticonMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 	mpMap->setTile(x, y, t);
 }
 
-void CVorticonMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
+void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
 	// This function add sprites on the map. Most of the objects are invisible.
 	// TODO : Please convert this into ifs. There are more conditions than just switch.agree
-	std::vector<CPlayer>::iterator it_player;
 	switch(t)
 	{
 		case 0: break;       // blank
 		case 255:            // player start
 			if(!m_checkpointset)
 			{
-				it_player = mp_vec_Player->begin();
-				for(; it_player != mp_vec_Player->end() ; it_player++ )
-				{
-					it_player->exists = false;
-					it_player->moveToForce(x<<CSF, y<<CSF);
-				}
+			    for( auto &player : mPlayerContainer )
+			    {
+				player.exists = false;
+				player.moveToForce(x<<CSF, y<<CSF);
+			    }
 			}
 			mpMap->m_objectlayer[x][y] = 0;
 
-			it_player = mp_vec_Player->begin();
-			for(; it_player != mp_vec_Player->end() ; it_player++ )
+			for( auto &player : mPlayerContainer )
 			{
-				it_player->setupforLevelPlay();
-				it_player->solid = it_player->godmode;
+			    player.setupforLevelPlay();
+			    player.solid = player.godmode;
 			}
 
 			break;
@@ -227,9 +279,9 @@ void CVorticonMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, i
 			{
 				if (!m_NessieAlreadySpawned)
 				{
-					CMessie *messie = new CMessie(mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player);
-					m_NessieAlreadySpawned = true;
-					mp_objvect->push_back(messie);
+				    std::unique_ptr<CMessie> messie(new CMessie(mpMap.get(), x<<CSF, y<<CSF));
+				    m_NessieAlreadySpawned = true;
+				    mpSpriteObjectContainer.push_back(move(messie));
 				}
 				mpMap->m_objectlayer[x][y] = NESSIE_PATH;
 			}
@@ -246,8 +298,8 @@ void CVorticonMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, i
 			}
 
 			mpMap->m_objectlayer[x][y] = t;
-
-			if ((t&0x7fff) <= 16 && mp_vec_Player->front().mp_levels_completed[t&0x00ff])
+			
+			if ((t&0x7fff) <= 16 && mPlayerContainer.front().mp_levels_completed[t&0x00ff])
 			{
 				// Change the level tile to a done sign
 				int newtile = g_pBehaviorEngine->getTileProperties()[mpMap->at(x,y)].chgtile;
@@ -289,7 +341,7 @@ void CVorticonMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, i
 	}
 }
 
-void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
+void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
 	mpMap->m_objectlayer[x][y] = t;
 
@@ -302,13 +354,12 @@ void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int 
 
 			if(y >= mpMap->m_height-2) // Edge bug. Keen would fall in some levels without this.
 				y = 4;
-
-			std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
-			for(; it_player != mp_vec_Player->end() ; it_player++ )
+			
+			for( auto &player : mPlayerContainer )
 			{
-				it_player->exists = false;
-				it_player->moveToForce(x<<CSF, (y<<CSF)+275);
-				it_player->setupforLevelPlay();
+				player.exists = false;
+				player.moveToForce(x<<CSF, (y<<CSF)+275);
+				player.setupforLevelPlay();
 			}
 		}
 		else
@@ -322,21 +373,21 @@ void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int 
 			case 1:  // yorp (ep1) vort (ep2&3)
 				if (episode == 1)
 				{
-					enemyobject = new CYorp( mpMap.get(), *mp_vec_Player, x<<CSF, y<<CSF );
+					enemyobject = new CYorp( mpMap.get(), x<<CSF, y<<CSF );
 				}
 				else if(episode == 2 || episode == 3)
 				{
-					enemyobject = new CVorticon( mpMap.get(), *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CVorticon( mpMap.get(), x<<CSF, y<<CSF);
 				}
 				break;
 			case 2:    // garg (ep1) baby vorticon (ep2&3)
 				if (episode == 1)
 				{
-					enemyobject = new CGarg( mpMap.get(), *mp_vec_Player, x<<CSF, y<<CSF );
+					enemyobject = new CGarg( mpMap.get(), x<<CSF, y<<CSF );
 				}
 				else
 				{
-					enemyobject = new CVortikid( mpMap.get(), *mp_vec_Player, x<<CSF, y<<CSF );
+					enemyobject = new CVortikid( mpMap.get(), x<<CSF, y<<CSF );
 				}
 
 				break;
@@ -346,83 +397,80 @@ void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int 
 					CPhysicsSettings &Phy = g_pBehaviorEngine->getPhysicsSettings();
 
 					size_t health = (level==16) ? Phy.vorticon.commander_hp : Phy.vorticon.default_hp;
-					enemyobject = new CVorticon( mpMap.get(), *mp_vec_Player, x<<CSF, y<<CSF, health );
+					enemyobject = new CVorticon( mpMap.get(), x<<CSF, y<<CSF, health );
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CVorticonElite( mpMap.get(), *mp_vec_Player,
-							*mp_objvect, x<<CSF, y<<CSF);
+					enemyobject = new CVorticonElite( mpMap.get(), x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CVortiMom( mpMap.get(), x<<CSF, y<<CSF,
-											*mp_vec_Player, *mp_objvect);
+					enemyobject = new CVortiMom( mpMap.get(), x<<CSF, y<<CSF);
 				}
 				break;
 			case 4:    // butler (ep1) or scrub (ep2) or meep (ep3)
 				if (episode==1)
-					enemyobject = new CButler( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player);
+					enemyobject = new CButler( mpMap.get(), x<<CSF, y<<CSF);
 				else if (episode==2)
-					enemyobject = new CScrub( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player);
+					enemyobject = new CScrub( mpMap.get(), x<<CSF, y<<CSF);
 				else if (episode==3)
-					enemyobject = new CMeep( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player, *mp_objvect);
+					enemyobject = new CMeep( mpMap.get(), x<<CSF, y<<CSF);
 				break;
 			case 5:    // tank robot (ep1&2) vorticon ninja (ep3)
 				if (episode==1)
-					enemyobject = new CTank( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player, *mp_objvect);
+					enemyobject = new CTank( mpMap.get(), x<<CSF, y<<CSF);
 				else if (episode==2)
-					enemyobject = new CGuardRobot( mpMap.get(), x<<CSF, y<<CSF, *mp_objvect);
+					enemyobject = new CGuardRobot( mpMap.get(), x<<CSF, y<<CSF);
 				else if (episode==3)
-					enemyobject = new CVortiNinja( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player);
+					enemyobject = new CVortiNinja( mpMap.get(), x<<CSF, y<<CSF);
 				break;
 			case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
 				// foob (ep3)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF,
-							*mp_vec_Player,	*mp_objvect, 1, -1 );
+					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF, 1, -1 );
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CPlatform( mpMap.get(),x<<CSF, (y<<CSF)-(4<<STC), *mp_vec_Player);
+					enemyobject = new CPlatform( mpMap.get(),x<<CSF, (y<<CSF)-(4<<STC));
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CFoob( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player);
+					enemyobject = new CFoob( mpMap.get(), x<<CSF, y<<CSF);
 				}
 				break;
 			case 7:   // spark (ep2) ball (ep3) ice cannon upwards (ep1)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mpMap.get(),x<<CSF, y<<CSF, *mp_vec_Player,*mp_objvect,0,-1);
+					enemyobject = new CIceCannon( mpMap.get(),x<<CSF, y<<CSF, 0, -1);
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CSpark( mpMap.get(), x<<CSF, y<<CSF, *mp_objvect);
+					enemyobject = new CSpark( mpMap.get(), x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CBallJack( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player, OBJ_BALL);
+					enemyobject = new CBallJack( mpMap.get(), x<<CSF, y<<CSF, OBJ_BALL);
 				}
 				break;
 			case 8:    // jack (ep3) and ice cannon down (ep1)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF,*mp_vec_Player,*mp_objvect,0,1);
+					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF,0,1);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CBallJack( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player, OBJ_JACK);
+					enemyobject = new CBallJack( mpMap.get(), x<<CSF, y<<CSF, OBJ_JACK);
 				}
 				break;
 			case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player,*mp_objvect,-1,-1);
+					enemyobject = new CIceCannon( mpMap.get(), x<<CSF, y<<CSF,-1,-1);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CPlatform( mpMap.get(), x<<CSF, (y<<CSF)-(4<<STC), *mp_vec_Player);
+					enemyobject = new CPlatform( mpMap.get(), x<<CSF, (y<<CSF)-(4<<STC));
 				}
 				break;
 			case 10:   // rope holding the stone above the final vorticon (ep1)
@@ -433,44 +481,39 @@ void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int 
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CPlatformVert( mpMap.get(), x<<CSF, y<<CSF, *mp_vec_Player);
+					enemyobject = new CPlatformVert( mpMap.get(), x<<CSF, y<<CSF);
 				}
 				break;
 			case 11:   // jumping vorticon (ep3)
 				if (episode==3)
 				{
-					enemyobject = new CVorticon( mpMap.get(), *mp_vec_Player, x<<CSF, y<<CSF );
+					enemyobject = new CVorticon( mpMap.get(), x<<CSF, y<<CSF );
 				}
 				break;
 			case 12:   // sparks in mortimer's machine
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,
-						*mp_vec_Player,*mp_objvect, SE_MORTIMER_SPARK);
+				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,SE_MORTIMER_SPARK);
 				enemyobject->solid = false;
 				break;
 			case 13:   // mortimer's heart
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,
-						*mp_vec_Player,*mp_objvect, SE_MORTIMER_HEART);
+				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,SE_MORTIMER_HEART);
 				enemyobject->solid = false;
 				break;
 			case 14:   // right-pointing raygun (ep3)
-				enemyobject = new CAutoRay(mpMap.get(), x<<CSF, y<<CSF, *mp_objvect, CAutoRay::HORIZONTAL);
+				enemyobject = new CAutoRay(mpMap.get(), x<<CSF, y<<CSF, CAutoRay::HORIZONTAL);
 				break;
 			case 15:   // vertical raygun (ep3)
-				enemyobject = new CAutoRay(mpMap.get(), x<<CSF, y<<CSF, *mp_objvect, CAutoRay::VERTICAL);
+				enemyobject = new CAutoRay(mpMap.get(), x<<CSF, y<<CSF, CAutoRay::VERTICAL);
 				break;
 			case 16:  // mortimer's arms
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,
-						*mp_vec_Player,*mp_objvect, SE_MORTIMER_ARM );
+				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_ARM );
 				enemyobject->solid = false;
 				break;
 			case 17:  // mortimer's left leg
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,
-						*mp_vec_Player,*mp_objvect, SE_MORTIMER_LEG_LEFT );
+				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_LEG_LEFT );
 				enemyobject->solid = false;
 				break;
 			case 18:  // mortimer's right leg
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,
-						*mp_vec_Player,*mp_objvect, SE_MORTIMER_LEG_RIGHT );
+				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_LEG_RIGHT );
 				enemyobject->solid = false;
 				break;
 			default:
@@ -480,7 +523,10 @@ void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int 
 
 
 			if(enemyobject != NULL)
-				mp_objvect->push_back(enemyobject);
+			{
+			    std::unique_ptr<CVorticonSpriteObject> obj(enemyobject);
+			    mpSpriteObjectContainer.push_back(move(obj));
+			}
 		}
 	}
 }
@@ -492,7 +538,7 @@ void CVorticonMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int 
  * \param curmapY		Y-Coordinate of the map not CSFed
  * \param episode		Episode of the game
  */
-void CVorticonMapLoader::fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level)
+void CVorticonMapLoaderBase::fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level)
 {
 	if( episode == 1 && level == 14 )
 	{

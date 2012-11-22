@@ -11,6 +11,7 @@
 #include <SDL.h>
 #include "inventory.h"
 #include "engine/vorticon/CVorticonSpriteObject.h"
+#include <engine/vorticon/ai/CMessie.h>
 #include "CMap.h"
 #include "CStatusScreen.h"
 #include "Playerdefines.h"
@@ -37,6 +38,13 @@ enum level_triggers
 class CPlayer : public CVorticonSpriteObject
 {
 public:
+    
+        // Some Events that might occur during the gameplay
+	struct Mount : public CEvent 
+	{	    
+	    Mount(const CPlayer &p) : player(p) {} 	
+	    const CPlayer &player;
+	};   
 
 	// direction defines used for various things
 	enum e_playingmodes
@@ -45,8 +53,7 @@ public:
 	};
 
 	CPlayer(const char &Episode, short &Level,
-			 bool *mp_level_completed,
-			 std::vector<CVorticonSpriteObject*> &m_Object, CMap &map);
+			 bool *mp_level_completed, CMap &map);
 	
 	// Copy player Data
 	CPlayer(const CPlayer &player);
@@ -67,8 +74,7 @@ public:
 	void verifySolidLevels();
 	bool isWMSolid(int xb, int yb);
 	void InertiaAndFriction_Y();
-	void MountNessieIfAvailable();
-	void UnmountNessie();
+		
 	int getNewObject();
 
 	// In Level specific
@@ -221,8 +227,6 @@ private:
 	int level_done_timer;
 
 	level_triggers m_Level_Trigger;
-
-	std::vector<CVorticonSpriteObject*> *mp_object;
 };
 
 #endif /* CPLAYER_H_ */

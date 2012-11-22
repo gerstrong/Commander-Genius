@@ -14,9 +14,11 @@
 class CMeep : public CVorticonSpriteObject
 {
 public:
-	CMeep(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player,
-			std::vector<CVorticonSpriteObject*>& Object);
+	CMeep(CMap *p_map, Uint32 x, Uint32 y);
+	
+	bool isNearby(CSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
+	
 	void process();
 private:
 	char state;
@@ -24,9 +26,6 @@ private:
 
 	int animframe, animtimer;
 	int timer;
-
-	std::vector<CPlayer>& m_Player;
-	std::vector<CVorticonSpriteObject*>& m_Object;
 };
 
 #endif /* CMEEP_H_ */

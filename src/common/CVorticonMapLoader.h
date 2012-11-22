@@ -18,26 +18,66 @@
 #include <vector>
 #include <memory>
 
-class CVorticonMapLoader
+class CVorticonMapLoaderBase
+{
+public:
+	CVorticonMapLoaderBase(std::shared_ptr<CMap> &map);
+	
+	bool loadBase(  Uint8 episode, 
+			Uint8 level, 
+			const std::string& path, 
+			bool loadNewMusic, 
+			std::vector<Uint16> &planeitems );
+	
+	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true );
+	
+	void addTile( Uint16 t, Uint16 x, Uint16 y );
+	void fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level);
+	
+protected:
+	std::shared_ptr<CMap> &mpMap;
+};
+
+
+class CVorticonMapLoader : public CVorticonMapLoaderBase
 {
 public:
 	CVorticonMapLoader(std::shared_ptr<CMap> &map,
-				std::vector<CPlayer> *p_PlayerVect = NULL);
+			    std::vector<std::unique_ptr<CVorticonSpriteObject> > &spriteObjectContainer);
+		
+	bool m_NessieAlreadySpawned;
 	
-	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true, bool stategame=false );
+	std::vector< std::unique_ptr<CVorticonSpriteObject> > &mpSpriteObjectContainer;
+};
+
+
+
+class CVorticonMapLoaderWithPlayer : public CVorticonMapLoader
+{
+public:
+	CVorticonMapLoaderWithPlayer(std::shared_ptr<CMap> &map,
+			    std::vector<CPlayer> &playerContainer,
+			    std::vector<std::unique_ptr<CVorticonSpriteObject> > &spriteObjectContainer);    
 	
-	void addTile( Uint16 t, Uint16 x, Uint16 y );
+	bool load( Uint8 episode, 
+		Uint8 level, 
+		const std::string& path, 
+		bool loadNewMusic = false, 
+		bool stategame = false );
+
+	void loadSprites( std::vector<Uint16> &planeitems, 
+			  Uint8 episode, 
+			  Uint8 level );
+
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);
-	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
-	void fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level);
+	void addSpriteObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
+	
 	
 	bool m_checkpointset;
-	bool m_NessieAlreadySpawned;
-	std::vector<CVorticonSpriteObject*> *mp_objvect;
-
+	
 private:
-	std::shared_ptr<CMap>& mpMap;
-	std::vector<CPlayer> *mp_vec_Player;
+	std::vector<CPlayer> &mPlayerContainer;
 };
+
 
 #endif /* CVorticonMapLoader_H_ */

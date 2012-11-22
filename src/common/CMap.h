@@ -118,7 +118,6 @@ public:
 
 	bool m_animation_enabled;
 	bool m_Dark;
-	bool m_PlatExtending;
 	bool isSecret;
 
 private:

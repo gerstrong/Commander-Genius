@@ -18,7 +18,6 @@ public:
 	void process();
 	void extend();
 	void retract();
-	virtual ~CBridges();
 
 private:
 	enum{

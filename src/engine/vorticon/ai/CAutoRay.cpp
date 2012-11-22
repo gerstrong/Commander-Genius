@@ -8,13 +8,12 @@
 
 #include "engine/spritedefines.h"
 #include "sdl/sound/CSound.h"
+#include "common/CBehaviorEngine.h"
 #include "CRay.h"
 #include "CAutoRay.h"
 
-CAutoRay::CAutoRay(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CVorticonSpriteObject*> &Objvect, stRayAlignment type) :
+CAutoRay::CAutoRay(CMap *pmap, Uint32 x, Uint32 y, stRayAlignment type) :
 CVorticonSpriteObject(pmap, x, y, (type==HORIZONTAL) ? OBJ_AUTORAY : OBJ_AUTORAY_V),
-m_Objvect(Objvect),
 m_type(type)
 {
 	sprite = BLANKSPRITE;
@@ -43,7 +42,7 @@ void CAutoRay::process()
 			NewRay->sprite = ENEMYRAYEP3;
 			NewRay->m_Direction = RIGHT;
 		}
-		m_Objvect.push_back(NewRay);
+		g_pBehaviorEngine->EventList().spawnObj(NewRay);
 
 		playSound(SOUND_TANK_FIRE);
 	}

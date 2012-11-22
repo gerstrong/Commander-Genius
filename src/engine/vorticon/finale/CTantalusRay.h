@@ -21,7 +21,7 @@ class CTantalusRay : public CFinale
 public:
 	CTantalusRay(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 				const std::shared_ptr<CMap> &pMap,
-				std::vector<CVorticonSpriteObject*> &vect_obj,
+				std::vector< std::unique_ptr<CVorticonSpriteObject> > &vect_obj,
 				std::shared_ptr<CVorticonSpriteObjectAI> &objectai);
 
 	void process();
@@ -33,7 +33,6 @@ private:
 	bool m_mustsetup;
 	int m_alternate_sprite;
 	std::unique_ptr<CMessageBox> mp_MessageBox;
-	CVorticonSpriteObject *mp_ShootObject;
 	std::shared_ptr<CVorticonSpriteObjectAI> mObjectAI;
 	Uint32 m_timer;
 	CBitmap *mp_Bitmap;

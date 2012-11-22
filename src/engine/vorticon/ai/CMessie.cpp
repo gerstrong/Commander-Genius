@@ -1,4 +1,5 @@
 #include "CMessie.h"
+#include "sdl/input/CInput.h"
 
 // Nessie (in ep3) (on the world map)
 enum nessie_actions{
@@ -18,10 +19,9 @@ enum nessie_actions{
 
 void nessie_find_next_checkpoint(int o);
 
-CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player) :
-		CVorticonSpriteObject(p_map, x, y, OBJ_MESSIE),
-m_Player(Player)
+CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y) :
+CVorticonSpriteObject(p_map, x, y, OBJ_MESSIE),
+mounted(nullptr)
 {
 	xDirection = LEFT, yDirection = DOWN;
 	onscreen = true;
@@ -54,80 +54,161 @@ m_Player(Player)
 	tiletrailX[1] = mx+1;
 	tiletrailY[1] = my;
 	tiletrailhead = 2;
+}
 
-	for(size_t i=0;i<MAX_PLAYERS;i++)
+
+void CMessie::getTouchedBy(CVorticonSpriteObject &theObject)
+{
+    // This is not valid. Only if nessie is mounted or unmounted
+    if(CPlayer *Player = dynamic_cast<CPlayer*>(&theObject))
+    {
+	if (mounted)
+	    Player->moveTo(m_Pos);
+    }
+}
+
+bool CMessie::tryMounting(CPlayer &player)
+{
+	const int dist = 1<<CSF;
+	const int nessie_x = getXPosition();
+	const int nessie_y = getYPosition();
+	
+	// Look if Messie is nearby
+	const int x = player.getXPosition();
+	const int y = player.getYPosition();
+	
+	if( x >= nessie_x-dist+m_BBox.x1 and x <= nessie_x+dist+m_BBox.x2 )
 	{
-		mounted[i] = false;
+	    if( y >= nessie_y-dist+m_BBox.y1 and y <= nessie_y+dist+m_BBox.y2 )
+	    {
+		player.solid = false;
+		player.beingteleported = true;
+		mounted = &player;
+		return true;
+	    }
 	}
+	return false;
+}
+
+bool CMessie::tryToUnmount()
+{
+    // Unmount part!
+    // Check if a NESSIE_LAND_OBJ is nearby the player. Only then he can unmount
+    const int x = mounted->getXPosition()>>CSF;
+    const int y = mounted->getYPosition()>>CSF;
+    for(int dy=-1 ; dy <= 1 ; dy++)
+    {
+	for(int dx=-1 ; dx <= 1 ; dx++)
+	{
+	    // If NESSIE_LAND_OBJ was found, than put the player there!
+	    if(mp_Map->getObjectat(x+dx, y+dy) == NESSIE_LAND)
+	    {
+		// Look for the Nessie object
+		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+		CTileProperties &Tile = TileProperty[mp_Map->at(x+dx, y+dy)];
+		if( !Tile.bdown and !Tile.bup and
+		    !Tile.bleft and !Tile.bright )
+		{
+		    // unmount Messie!		    
+		    mounted->solid = !mounted->godmode;
+		    mounted->beingteleported = false;
+		    mounted->moveXDir(dx<<CSF);
+		    mounted->moveYDir(dy<<CSF);
+		    mounted = nullptr;
+		    return true;
+		}
+	    }
+	}
+    }
+    return false;
 }
 
 void CMessie::process()
-{
-	// find out if nessie is mounted, and for all players that are
-	// mounted keep them stuck to nessie
-	bool isMounted = false;
-
-	if(destx == 0 && desty == 0)
-		nessie_find_next_checkpoint();
-
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for( ; it_player != m_Player.end() ; it_player++ )
+{    
+    auto &evList = g_pBehaviorEngine->EventList();
+    
+    if( CPlayer::Mount *ev = evList.occurredEvent<CPlayer::Mount>() )
+    {		
+	// Let's see if he can do that...
+	if(tryMounting( const_cast<CPlayer&>(ev->player) ))
 	{
-		if (mounted[it_player->m_index])
-		{
-			it_player->moveTo(m_Pos);
-			isMounted = true;
-		}
+	    evList.pop_Event();
+	    // TODO: Create an Event here that hides all the Players
 	}
-
-	// animation
+	else
+	{
+	    evList.pop_Event();
+	}
+    }
+    
+    // Search for the next where Messie has to swim
+    if(destx == 0 && desty == 0)
+    {
+	nessie_find_next_checkpoint();
+    }
+    
+    // animation
 	sprite = baseframe + animframe;
-	if (isMounted) sprite += 8;
-
+	
+	// Did player try to mount Messie?
+	if (mounted)
+	{
+	    // Move mounted object with Messie. It still should be hidden at this point.
+	    mounted->moveTo(m_Pos);
+	    sprite += 8;
+	    
+	    // If first Player pushes the first button, unmount!
+	    if(g_pInput->getPressedAnyCommand(0))
+	    {
+		tryToUnmount();
+		g_pInput->flushAll();
+	    }	    
+	}
+	
 	if (animtimer > NESSIE_ANIM_RATE)
 	{
-		animframe ^= 1;
-		animtimer = 0;
+	    animframe ^= 1;
+	    animtimer = 0;
 	}
 	else animtimer++;
-
+	
 	switch(state)
 	{
-	case NESSIE_SWIMNORMAL:
+	    case NESSIE_SWIMNORMAL:
 		// arrived at destination?
 		if ( getXPosition() > (destx-NESSIE_SPEED/2)  &&
-				getXPosition() < (destx+NESSIE_SPEED/2) )
+		    getXPosition() < (destx+NESSIE_SPEED/2) )
 		{
-			if ( getYPosition() > (desty-NESSIE_SPEED/2)  &&
-					getYPosition() < (desty+NESSIE_SPEED/2) )
-			{
-				nessie_find_next_checkpoint();
-
-				// set up/down and left/right direction flags for frame selection
-				bool goleft = (destx < getXPosition());
-				bool godown = (desty > getYPosition());
-
-				if(goleft && !godown)
-					xDirection = LEFT, yDirection = UP;
-				else if(goleft && godown)
-					xDirection = LEFT, yDirection = DOWN;
-				else if(!goleft && !godown)
-					xDirection = RIGHT, yDirection = UP;
-				else if(!goleft && godown)
-					xDirection = RIGHT, yDirection = DOWN;
-			}
+		    if ( getYPosition() > (desty-NESSIE_SPEED/2)  &&
+			getYPosition() < (desty+NESSIE_SPEED/2) )
+		    {
+			nessie_find_next_checkpoint();
+			
+			// set up/down and left/right direction flags for frame selection
+			bool goleft = (destx < getXPosition());
+			bool godown = (desty > getYPosition());
+			
+			if(goleft && !godown)
+			    xDirection = LEFT, yDirection = UP;
+			else if(goleft && godown)
+			    xDirection = LEFT, yDirection = DOWN;
+			else if(!goleft && !godown)
+			    xDirection = RIGHT, yDirection = UP;
+			else if(!goleft && godown)
+			    xDirection = RIGHT, yDirection = DOWN;
+		    }
 		}
 		move_nessie();
 		break;
-	case NESSIE_PAUSE:
+	    case NESSIE_PAUSE:
 		if(pausetimer)
 		{
-			pausetimer--;
+		    pausetimer--;
 		}
 		else
 		{
-			state = NESSIE_SWIMNORMAL;
-			move_nessie();
+		    state = NESSIE_SWIMNORMAL;
+		    move_nessie();
 		}
 		break;
 	}

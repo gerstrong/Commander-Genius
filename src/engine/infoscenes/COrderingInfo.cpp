@@ -23,7 +23,7 @@ void COrderingInfo::init()
 
 	mpMap.reset(new CMap);
 
-	CVorticonMapLoader Maploader(mpMap);
+	CVorticonMapLoaderBase Maploader(mpMap);
 	
 	Maploader.load(episode, 90, datadirectory);
 	mpMap->gotoPos( 22<<4, 32 );

@@ -23,7 +23,7 @@ public:
 				const std::shared_ptr<CMap> &pMap,
 				std::vector<CPlayer> &Player,
 				bool &hideobjects,
-				std::vector<CVorticonSpriteObject*> &Object);
+				std::vector< std::unique_ptr< CVorticonSpriteObject> > &Object);
 
 	void process();
 

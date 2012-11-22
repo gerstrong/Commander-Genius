@@ -2,9 +2,8 @@
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
 
-CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player):
-CVorticonSpriteObject(p_map,x,y, OBJ_FOOB),
-m_Player(Player)
+CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y):
+CVorticonSpriteObject(p_map,x,y, OBJ_FOOB)
 {
 	state = FOOB_WALK;
 	dir = RIGHT;
@@ -41,7 +40,7 @@ void CFoob::process()
 	// find out if a player is on the same level as the foob cat
 	onsamelevel = false;
 
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
 		if ( (it_player->getYDownPos() >= getYUpPos()-(2<<CSF)) &&
@@ -51,7 +50,7 @@ void CFoob::process()
 			SpookedByWho = it_player->m_index;
 			break;
 		}
-	}
+	}*/
 
 	switch(state)
 	{
@@ -112,10 +111,12 @@ void CFoob::process()
 			state = FOOB_FLEE;
 			OffOfSameLevelTime = 0;
 			// run away from the offending player
+			/*
 			if (m_Player[SpookedByWho].getXPosition() < getXPosition())
 				dir = RIGHT;
 			else
 				dir = LEFT;
+			*/
 			// in hard mode run TOWARDS the player (he's deadly in hard mode)
 			if (g_pBehaviorEngine->mDifficulty==HARD)
 				dir = LEFT ? RIGHT : LEFT;

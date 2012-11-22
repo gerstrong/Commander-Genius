@@ -32,9 +32,9 @@ const int EARTHCHUNK_SMALL_UP = 68;
 const int EARTHCHUNK_SMALL_DN = 70;
 
 CTantalusRay::CTantalusRay(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
-								const std::shared_ptr<CMap> &pMap,
-								std::vector<CVorticonSpriteObject*> &vect_obj,
-								std::shared_ptr<CVorticonSpriteObjectAI> &objectai) :
+			    const std::shared_ptr<CMap> &pMap,
+			    std::vector< std::unique_ptr<CVorticonSpriteObject> > &vect_obj,
+			    std::shared_ptr<CVorticonSpriteObjectAI> &objectai) :
 CFinale(messageBoxes, pMap, vect_obj),
 m_mustsetup(true),
 m_alternate_sprite(0),
@@ -68,38 +68,34 @@ void CTantalusRay::shootray()
 {
 	if(m_mustsetup)
 	{
-		CVorticonMapLoader Maploader(mpMap);
+		CVorticonMapLoaderBase Maploader(mpMap);
 		Maploader.load(2,81, mpMap->m_gamepath, false);
-
-		while(!m_Object.empty())
-		{
-			delete m_Object.back();
-			m_Object.pop_back();
-		}
+		
+		m_Object.clear();
 
 		mpMap->drawAll();
 
-		CVorticonSpriteObject* ShootObject = new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, OBJ_NONE, 0);
-		ShootObject->solid = false;
-		ShootObject->exists = ShootObject->onscreen = true;
-		m_Object.push_back(ShootObject);
-		mp_ShootObject = m_Object.back();
+		std::unique_ptr<CVorticonSpriteObject> shootObject( new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, OBJ_NONE, 0) );
+		shootObject->solid = false;
+		shootObject->exists = shootObject->onscreen = true;
+		m_Object.push_back( move(shootObject) );
 		g_pSound->playSound(SOUND_KEEN_FIRE, PLAY_NOW);
 
 		m_mustsetup = false;
 	}
 	else
 	{
-		mp_ShootObject->moveRight(SHOT_SPD_X);
-		mp_ShootObject->moveDown(SHOT_SPD_Y);
-		shot_x = mp_ShootObject->getXPosition();
-		shot_y = mp_ShootObject->getYPosition();
-		int x = (shot_x>>STC)-160;
-		int y = (shot_y>>STC)-100;
+	    CVorticonSpriteObject &shootObject = *m_Object.back();
+	    shootObject.moveRight(SHOT_SPD_X);
+	    shootObject.moveDown(SHOT_SPD_Y);
+	    shot_x = shootObject.getXPosition();
+	    shot_y = shootObject.getYPosition();
+	    int x = (shot_x>>STC)-160;
+	    int y = (shot_y>>STC)-100;
 		if( x>0 && y>0 )
 			mpMap->gotoPos(x, y);
 
-		mp_ShootObject->sprite = TANTALUS_SPRITE + m_alternate_sprite;
+		shootObject.sprite = TANTALUS_SPRITE + m_alternate_sprite;
 		m_alternate_sprite ^= 1;
 
 		if( (shot_x>>CSF) >= EARTH_COORD_X)
@@ -116,67 +112,65 @@ void CTantalusRay::explodeEarth()
 {
 	if (!m_timer)
 	{
+	    std::unique_ptr<CEarthChunk> chunk;
+	    
 		if (m_step<16)
 		{
-			CEarthExplosion *EarthExplosion;
-			EarthExplosion = new CEarthExplosion(mpMap.get(),shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC));
-			EarthExplosion->solid = false;
-			m_Object.push_back(EarthExplosion);
+		    std::unique_ptr<CEarthExplosion> expl( new CEarthExplosion(mpMap.get(),shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC)) );
+		    expl->solid = false;
+		    m_Object.push_back( move(expl) );
 		}
-
-		CEarthChunk *chunk;
 
 		switch(m_step)
 		{
 		case 5:
 			for(int i=0;i<=9;i++)
 			{
-				chunk = new CEarthChunk(mpMap.get(),shot_x+(14<<STC), shot_y);
+				chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(14<<STC), shot_y) );
 				chunk->m_Direction = EC_UPLEFTLEFT;
-
-				if (i > 4)
-					chunk->sprite = (i > 4) ? EARTHCHUNK_SMALL_DN : EARTHCHUNK_SMALL_UP;
-				m_Object.push_back(chunk);
+				chunk->sprite = (i > 4) ? EARTHCHUNK_SMALL_DN : EARTHCHUNK_SMALL_UP;
+				
+				m_Object.push_back( move(chunk) );
 			}
 
 			break;
 		case 6:
-			chunk = new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(16<<STC));
-			m_Object.push_back(chunk);
+			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(16<<STC)) );
+			m_Object.push_back( move(chunk) );
 			break;
 		case 7:
-			chunk = new CEarthChunk(mpMap.get(),shot_x+(24<<STC), shot_y-(8<<STC));
-			m_Object.push_back(chunk);
+			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(24<<STC), shot_y-(8<<STC)) );
+			m_Object.push_back( move(chunk) );
 			break;
 		case 8:
-			chunk = new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(4<<STC));
-			m_Object.push_back(chunk);
+			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(16<<STC), shot_y+(4<<STC)) );
+			m_Object.push_back( move(chunk) );
 			break;
 		case 10:
 			// spawn four big fragments of the earth to go flying off
-			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
+			chunk.reset(  new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_UPLEFT;
 			chunk->sprite = EARTHCHUNK_BIG_UP;
 			chunk->solid = false;
-			m_Object.push_back(chunk);
+			m_Object.push_back( move(chunk) );
 
-			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
+			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_UPRIGHT;
 			chunk->sprite = EARTHCHUNK_BIG_UP;
 			chunk->solid = false;
-			m_Object.push_back(chunk);
+			m_Object.push_back( move(chunk) );
 
-			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
+			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_DOWNRIGHT;
 			chunk->sprite = EARTHCHUNK_BIG_DN;
 			chunk->solid = false;
-			m_Object.push_back(chunk);
+			m_Object.push_back( move(chunk) );
 
-			chunk = new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y);
+			chunk.reset( new CEarthChunk(mpMap.get(),shot_x+(8<<STC), shot_y) );
 			chunk->m_Direction = EC_DOWNLEFT;
 			chunk->sprite = EARTHCHUNK_BIG_DN;
 			chunk->solid = false;
-			m_Object.push_back(chunk);
+			m_Object.push_back( move(chunk) );
 
 			// Hide the Earth!!! Now it's destroyed
 			for(int ex = 0; ex<4 ; ex++)
@@ -188,13 +182,12 @@ void CTantalusRay::explodeEarth()
 			}
 			break;
 		case 32:
-			while(!m_Object.empty())
-			{
-				delete m_Object.back();
-				m_Object.pop_back();
-			}
-			m_mustfinishgame = true;
-			break;
+		    if(!m_Object.empty())
+		    {
+			m_Object.clear();
+		    }
+		    m_mustfinishgame = true;
+		    break;
 		}
 
 		m_step++;

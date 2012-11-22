@@ -17,7 +17,7 @@ void CCredits::init()
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap.reset( new CMap );
 
-	CVorticonMapLoader Maploader(mpMap);
+	CVorticonMapLoaderBase Maploader(mpMap);
 	
 	Maploader.load( ExeFile.getEpisode(), 90, ExeFile.getDataDirectory() );
 	mpMap->gotoPos( 104<<4, 16 );

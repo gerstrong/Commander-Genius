@@ -17,15 +17,12 @@ unsigned int rnd(void);
 class CGuardRobot : public CVorticonSpriteObject
 {
 public:
-	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
-			 std::vector<CVorticonSpriteObject*>& Object);
+	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 	void guard_fire();
 	void getTouchedBy(CSpriteObject &theObject);
 
 private:
-
-	std::vector<CVorticonSpriteObject*>& m_ObjectVect;
 
 	enum{ WALK, TURN, WAIT, WAIT_LOOK, FIRE, LOOK } state;
 

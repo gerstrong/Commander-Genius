@@ -58,10 +58,10 @@
 class CYorp : public CVorticonSpriteObject
 {
 public:
-	CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-			Uint32 x, Uint32 y );
-	void process();
+	CYorp( CMap *p_map, Uint32 x, Uint32 y );
 	void getTouchedBy(CSpriteObject &theObject);
+	void process();
+	
 
 private:
 	void processLooking();
@@ -70,7 +70,6 @@ private:
 	void processDying();
 
 	bool m_hardmode;
-	std::vector<CPlayer> &m_vec_Player;
 
 	enum
 	{

@@ -12,20 +12,18 @@ char BJ_BlockedD(int o);
 
 unsigned int rnd(void);
 
-CBallJack::CBallJack(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CPlayer> &PlayerVect, object_t type):
-CVorticonSpriteObject(pmap, x, y, type),
-m_Player(PlayerVect)
+CBallJack::CBallJack(CMap *pmap, Uint32 x, Uint32 y, object_t type):
+CVorticonSpriteObject(pmap, x, y, type)
 {
-	unsigned int px = m_Player.at(0).getXMidPos();
+    char tempxdir, tempydir;
+	/*unsigned int px = m_Player.at(0).getXMidPos();
 	unsigned int py = m_Player.at(0).getYMidPos();
-
-	char tempxdir, tempydir;
+	
 	if(px<getXMidPos()) tempxdir=LEFT;
 	else tempxdir = RIGHT;
 
 	if(py<getYMidPos()) tempydir=UP;
-	else tempydir = DOWN;
+	else tempydir = DOWN;*/
 
 	if (tempxdir == LEFT && tempydir == UP) m_Direction = DUPLEFT;
 	else if (tempxdir == RIGHT && tempydir == UP) m_Direction = DUPRIGHT;
@@ -51,7 +49,7 @@ m_Player(PlayerVect)
 
 void CBallJack::process()
 {
-	if (touchPlayer)
+	/*if (touchPlayer)
 	{
 		if (m_type==OBJ_BALL)
 		{
@@ -73,8 +71,8 @@ void CBallJack::process()
 			default: break;
 			}
 		}
-		else m_Player[touchedBy].kill();
-	}
+		// else m_Player[touchedBy].kill();
+	}*/
 
 	switch(m_Direction)
 	{

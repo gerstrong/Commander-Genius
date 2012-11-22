@@ -42,9 +42,9 @@ MOTHER_HURT
 class CVortiMom : public CVorticonSpriteObject
 {
 public:
-	CVortiMom(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player,
-			std::vector<CVorticonSpriteObject*>& Object);
+	CVortiMom(CMap *p_map, Uint32 x, Uint32 y);	
+	bool isNearby(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void getShotByRay(object_t &obj_type);
 
@@ -54,10 +54,6 @@ private:
 
 	int animframe, animtimer;
 	int timer;
-
-
-	std::vector<CPlayer>& m_Player;
-	std::vector<CVorticonSpriteObject*>& m_Object;
 };
 
 #endif /* CVORTIMOM_H_ */

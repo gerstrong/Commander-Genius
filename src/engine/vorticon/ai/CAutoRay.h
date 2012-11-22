@@ -17,13 +17,11 @@ class CAutoRay : public CVorticonSpriteObject
 {
 public:
 	enum stRayAlignment{ VERTICAL, HORIZONTAL };
-	CAutoRay(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CVorticonSpriteObject*> &Objvect, stRayAlignment type);
+	CAutoRay(CMap *pmap, Uint32 x, Uint32 y, stRayAlignment type);
 	void process();
 
 
 private:
-	std::vector<CVorticonSpriteObject*> &m_Objvect;
 	stRayAlignment m_type;
 };
 

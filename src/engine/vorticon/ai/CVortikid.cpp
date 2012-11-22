@@ -25,10 +25,8 @@ enum baby_jump_style{
 BABY_JUMP_BIG, BABY_JUMP_SMALL
 };
 
-CVortikid::CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-		Uint32 x, Uint32 y ) :
-CVorticonSpriteObject(p_map, x, y, OBJ_BABY),
-m_Player(mp_vec_Player)
+CVortikid::CVortikid( CMap *p_map, Uint32 x, Uint32 y ) :
+CVorticonSpriteObject(p_map, x, y, OBJ_BABY)
 {
 	bool ep3;
 	state = BABY_RUN;
@@ -43,6 +41,19 @@ m_Player(mp_vec_Player)
 
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		mHealthPoints++;
+}
+
+void CVortikid::touchedBy(CVorticonSpriteObject &theObject)
+{
+    if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+    {
+    	// touched player
+	if (state!=BABY_DYING && !player->pfrozentime)
+	{
+		player->pDir.x = player->pShowDir.x = dir;
+		player->freeze();
+	}
+    }
 }
 
 void CVortikid::process()
@@ -75,12 +86,6 @@ void CVortikid::process()
 			xinertia = -BABY_DIE_INERTIA;
 	}
 
-	// touched player
-	if (touchPlayer && state!=BABY_DYING && !m_Player[touchedBy].pfrozentime)
-	{
-		m_Player[touchedBy].pDir.x = m_Player[touchedBy].pShowDir.x = dir;
-		m_Player[touchedBy].freeze();
-	}
 
 	switch(state)
 	{

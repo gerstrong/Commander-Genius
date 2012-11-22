@@ -121,7 +121,6 @@ void CBridges::extend()
 		else
 		{
 			exists = false;
-			mp_Map->m_PlatExtending = false;
 			return;
 		}
 	}
@@ -146,13 +145,7 @@ void CBridges::retract()
 		else
 		{
 			exists = false;
-			mp_Map->m_PlatExtending = false;
 		}
 	}
 	else timer--;
-}
-
-
-CBridges::~CBridges() {
-	// TODO Auto-generated destructor stub
 }

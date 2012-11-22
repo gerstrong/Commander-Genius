@@ -35,8 +35,7 @@
 class CButler : public CVorticonSpriteObject
 {
 public:
-	CButler(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CPlayer> &PlayerVect);
+	CButler(CMap *pmap, Uint32 x, Uint32 y);
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);
 
@@ -50,8 +49,6 @@ private:
 	unsigned char timer,animtimer;
 	unsigned char frame;
 	unsigned int dist_traveled;
-
-	std::vector<CPlayer> &m_Player;
 };
 
 #endif /* CBUTLER_H_ */

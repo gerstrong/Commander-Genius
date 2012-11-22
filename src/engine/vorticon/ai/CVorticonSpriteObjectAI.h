@@ -19,8 +19,11 @@
 class CVorticonSpriteObjectAI
 {
 public:
-	CVorticonSpriteObjectAI(CMap *p_map, std::vector<CVorticonSpriteObject*> &objvect, std::vector<CPlayer> &Player,
-			 int NumPlayers, int episode, int level, bool &dark);
+	CVorticonSpriteObjectAI(CMap *p_map, 
+				std::vector< std::unique_ptr<CVorticonSpriteObject> > &objvect,
+				std::vector<CPlayer> &Player,
+				int NumPlayers, int episode, 
+				int level, bool &dark);
 
 	// main functions
 	void process();
@@ -106,7 +109,7 @@ private:
 
 	// Variables
 	CMap *mp_Map;
-	std::vector<CVorticonSpriteObject*> &m_Objvect;
+	std::vector< std::unique_ptr<CVorticonSpriteObject> > &m_Objvect;
 	std::vector<CPlayer> &m_Player;
 	stOption *mp_Options;
 	int m_Level;

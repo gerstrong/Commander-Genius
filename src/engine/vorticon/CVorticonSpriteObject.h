@@ -19,6 +19,10 @@ public:
 	bool checkforScenario();
 
 	bool calcVisibility();
+	
+	virtual bool isNearby(CVorticonSpriteObject &theObject) { return true; }
+	
+	virtual void getTouchedBy(CVorticonSpriteObject &theObject) {};
 
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
 	object_t m_type;        		// yorp, vorticon, etc.

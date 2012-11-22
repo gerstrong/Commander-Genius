@@ -30,10 +30,8 @@ const unsigned int LOOK_TOTALTIME = 25;
 
 const int FIRE_PAUSE_TIME = 25;
 
-CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CVorticonSpriteObject*>& Object) :
-		CVorticonSpriteObject(p_map, x, y, OBJ_GUARDROBOT),
-m_ObjectVect(Object)
+CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y) :
+CVorticonSpriteObject(p_map, x, y, OBJ_GUARDROBOT)
 {
 	// First time initialization
 	state = WALK;
@@ -127,7 +125,7 @@ void CGuardRobot::process()
 				newobject->setOwner(OBJ_GUARDROBOT, m_index);
 				newobject->sprite = ENEMYRAYEP2;
 
-				m_ObjectVect.push_back(newobject);
+				g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
 
 				timetillnextshot = TIME_BETWEEN_SHOTS;
 				if (!--firetimes)

@@ -20,7 +20,7 @@ class CFinale
 public:
 	CFinale(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 			const std::shared_ptr<CMap> &pMap,
-			std::vector<CVorticonSpriteObject*> &Object);
+			std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object);
 
 	void addMsgBoxString(const std::string &text);
 
@@ -37,7 +37,7 @@ protected:
 	int m_Episode;
 	std::list< std::shared_ptr<CMessageBoxVort> > &mMessageBoxes;
 	std::shared_ptr<CMap> mpMap;
-	std::vector<CVorticonSpriteObject*> &m_Object;
+	std::vector< std::unique_ptr<CVorticonSpriteObject> > &m_Object;
 };
 
 #endif /* CFINALE_H_ */

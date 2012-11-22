@@ -22,7 +22,7 @@ void CPreviews::init()
 	std::string DataDirectory = ExeFile.getDataDirectory();
 	mpMap.reset(new CMap());
 
-	CVorticonMapLoader Maploader(mpMap);
+	CVorticonMapLoaderBase Maploader(mpMap);
 	Maploader.load(m_episode, 90, DataDirectory);
 
 	mpMap->gotoPos( 0, 0 );

@@ -3,10 +3,8 @@
 #include "graphics/CGfxEngine.h"
 #include "common/CBehaviorEngine.h"
 
-CButler::CButler(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CPlayer> &PlayerVect) :
-CVorticonSpriteObject(pmap, x, y-(1<<STC), OBJ_BUTLER),
-m_Player(PlayerVect)
+CButler::CButler(CMap *pmap, Uint32 x, Uint32 y) :
+CVorticonSpriteObject(pmap, x, y-(1<<STC), OBJ_BUTLER)
 {
 	 state = BUTLER_WALK;
 	 xDirection = LEFT;

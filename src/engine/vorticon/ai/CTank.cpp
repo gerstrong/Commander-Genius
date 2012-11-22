@@ -4,12 +4,8 @@
 #include "CTank.h"
 #include "CRay.h"
 
-CTank::CTank(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player, std::vector<CVorticonSpriteObject*>& Object,
-		object_t objtype) :
-CVorticonSpriteObject(p_map, x, y, objtype),
-m_Player(Player),
-m_Object(Object)
+CTank::CTank(CMap *p_map, Uint32 x, Uint32 y, object_t objtype) :
+CVorticonSpriteObject(p_map, x, y, objtype)
 {
 	m_type = OBJ_TANK;
 	hardmode = (g_pBehaviorEngine->mDifficulty>=NORMAL);
@@ -23,6 +19,38 @@ m_Object(Object)
 	dist_to_travel = TANK_MAXTRAVELDIST;
 	canbezapped = true;  // will stop bullets but are not harmed
 	m_invincible = true;
+}
+
+
+bool CTank::isNearby(CVorticonSpriteObject &theObject)
+{
+    if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+    {
+	if( state == TANK_LOOK )
+	{	    
+	    // when time is up go back to moving
+	    if (timer > TANK_LOOK_TOTALTIME)
+	    {
+		// decide what direction to go
+		
+		if(player->getXMidPos() < getXMidPos())
+		{
+		    movedir = LEFT;
+		    sprite = TANK_WALK_LEFT_FRAME;
+		}
+		else if(player->getXMidPos() > getXMidPos())
+		{
+		    movedir = RIGHT;
+		    sprite = TANK_WALK_RIGHT_FRAME;
+		}
+		state = TANK_WALK;
+		animtimer = 0;
+		timer = 0;
+	    } 
+	}
+    }
+    
+    return true;
 }
 
 void CTank::process()
@@ -131,7 +159,7 @@ void CTank::process()
 			newobject->setSpeed(108);
 			newobject->sprite = ENEMYRAY;
 			newobject->canbezapped = true;
-			m_Object.push_back(newobject);
+			g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
 		}
 
 		state = TANK_WAIT_LOOK;
@@ -163,25 +191,7 @@ void CTank::process()
 			animtimer = 0;
 		} else animtimer++;
 
-		// when time is up go back to moving
-		if (timer > TANK_LOOK_TOTALTIME)
-		{
-			// decide what direction to go
-
-			if(m_Player[0].getXMidPos() < getXMidPos())
-			{
-				movedir = LEFT;
-				sprite = TANK_WALK_LEFT_FRAME;
-			}
-			else if(m_Player[0].getXMidPos() > getXMidPos())
-			{
-				movedir = RIGHT;
-				sprite = TANK_WALK_RIGHT_FRAME;
-			}
-			state = TANK_WALK;
-			animtimer = 0;
-			timer = 0;
-		} else timer++;
+		timer++;
 		break;
 	}
 }

@@ -27,8 +27,8 @@ enum sector_effector_type{
 class CSectorEffector : public CVorticonSpriteObject
 {
 public:
-	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player, std::vector<CVorticonSpriteObject*>& Object, unsigned int se_type);
+	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type);
+	void getTouchedBy(CSpriteObject &theObject);	
 	void process();
 	void se_mortimer_arm();
 	void se_mortimer_spark();
@@ -39,7 +39,6 @@ public:
 	void se_mortimer_randomzaps();
 	void set_mortimer_surprised(bool yes);
 
-	void getTouchedBy(CSpriteObject &theObject);
 	void getShotByRay(object_t &obj_type){};
 
 //private:
@@ -53,9 +52,6 @@ public:
 	int counter,destroytiles;
 	unsigned int frame;
 	int mx,my;
-
-	std::vector<CPlayer>& m_Player;
-	std::vector<CVorticonSpriteObject*>& m_Object;
 };
 
 #endif /* SE_H_ */

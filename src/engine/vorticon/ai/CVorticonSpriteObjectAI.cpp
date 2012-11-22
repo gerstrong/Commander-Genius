@@ -9,7 +9,8 @@
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 
-CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(CMap *p_map, std::vector<CVorticonSpriteObject*> &objvect,
+CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(CMap *p_map, 
+					 std::vector< std::unique_ptr<CVorticonSpriteObject> > &objvect,
 					 std::vector<CPlayer> &Player,
 					 int NumPlayers, int episode,
 					 int level, bool &dark) :
@@ -64,11 +65,18 @@ void CVorticonSpriteObjectAI::process()
 				auto theOther = m_Objvect.begin(); theOther++;
 				for( ; theOther != m_Objvect.end() ; theOther++ )
 				{
+				    bool near = false;
+				    
+				    near |= object.isNearby(**theOther);
+				    near |= (*theOther)->isNearby(object);
+				    if(near)
+				    {									    
 					if( object.hitdetect(**theOther) )
 					{
 						object.getTouchedBy(**theOther);
 						(*theOther)->getTouchedBy(object);
 					}
+				    }
 				}
 			}
 
@@ -81,24 +89,19 @@ void CVorticonSpriteObjectAI::process()
 	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
 	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
 	{
-		m_Objvect.push_back( static_cast<CVorticonSpriteObject*>
-				    (const_cast<CSpriteObject*>(ev->pObject)) );
-		EventContainer.pop_Event();
+	    CVorticonSpriteObject *ptr = (CVorticonSpriteObject*)(ev->pObject);
+	    std::unique_ptr<CVorticonSpriteObject> obj( ptr );
+	    m_Objvect.push_back( move(obj) );
+	    EventContainer.pop_Event();
 	}
 
-	
-	// Try always to remove the last objects if they aren't used anymore!
-	CVorticonSpriteObject* p_object;
-	while(m_Objvect.size()>0)
-	{
-		p_object = m_Objvect.at( m_Objvect.size()-1 );
-		if(!p_object->exists)
-		{
-			delete p_object;
-			m_Objvect.pop_back();
-		}
-		else
-			break;
+	if( !m_Objvect.empty() )
+	{	
+	    // Try always to remove the last objects if they aren't used anymore!
+	    if(m_Objvect.back()->exists)
+	    {
+		m_Objvect.pop_back();
+	    }
 	}
 
 	if(m_gunfiretimer < ((m_Episode==3) ? 180 : 50 )) m_gunfiretimer++;
@@ -115,10 +118,7 @@ void CVorticonSpriteObjectAI::deleteAllObjects()
 	// If the last object was deleted, throw it out of the list
 	if(!m_Objvect.empty())
 	{
-		std::vector<CVorticonSpriteObject*>::iterator obj=m_Objvect.begin();
-		for( ; obj != m_Objvect.end() ; obj++ )
-			delete *obj;
-		m_Objvect.clear();
+	    m_Objvect.clear();
 	}
 }
 

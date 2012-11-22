@@ -26,11 +26,9 @@ enum scrub_actions{
 #define SCRUB_FRY_FRAME       110
 #define SCRUB_DEAD_FRAME      111
 
-CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player) :
+CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_SCRUB),
-scrubdie_inertia_y(0),
-m_Player(Player)
+scrubdie_inertia_y(0)
 {
 	xDirection = -1;
 	state = SCRUB_FALLING;
@@ -44,44 +42,22 @@ m_Player(Player)
 	fallspeed = 0;
 
 	SetAllCanSupportPlayer(1);
-	for( size_t i=0 ; i<m_Player.size() ; i++ )
-		kickedplayer[i] = 0;
+}
+
+void CScrub::getTouchedBy(CVorticonSpriteObject &theObject)
+{
+    if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+    {
+	if(player->getYDownPos() > getYMidPos())
+	{
+	    if( (player->getXMidPos() < getXMidPos() && yDirection >= 0) || yDirection <= 0 )
+		player->push(*this);	    
+	}	
+    }
 }
 
 void CScrub::process()
 {
-	// after kicking a player, wait until he falls beneath the scrub
-	// before turning cansupportplayer back on...just in case we check
-	// for some other things to (when he stops falling, or if he jumps)
-	for(size_t p=0;p<m_Player.size();p++)
-	{
-		if (kickedplayer[p])
-		{
-			if (m_Player[p].getYPosition() > getYPosition() || !m_Player[p].pfalling || m_Player[p].pjumping)
-			{
-				cansupportplayer = 1;
-				kickedplayer[p] = 0;
-			}
-		}
-	}
-
-	// Check if scrub can push one player
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for( ; it_player != m_Player.end() ; it_player++ )
-	{
-		if(touchPlayer)
-		{
-			if(it_player->getYDownPos() > getYMidPos())
-			{
-				if(it_player->getXMidPos() < getXMidPos() && yDirection >= 0 )
-					it_player->push(*this);
-				else if (yDirection <= 0)
-					it_player->push(*this);
-
-			}
-		}
-	}
-
 	if (canbezapped)
 	{
 		// die if shot
@@ -182,7 +158,7 @@ void CScrub::walkLeft(int mx, int my)
 			}
 		}
 
-		std::vector<CPlayer>::iterator it_player = m_Player.begin();
+		/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++ )
 		{
 			if ( it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
@@ -199,7 +175,7 @@ void CScrub::walkLeft(int mx, int my)
 					it_player->moveDown(1);
 				}
 			}
-		}
+		}*/
 	}
 }
 
@@ -232,7 +208,7 @@ void CScrub::walkDown()
 			SetAllCanSupportPlayer(0);
 		}
 
-		std::vector<CPlayer>::iterator it_player = m_Player.begin();
+		/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++ )
 		{
 			if (it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
@@ -251,7 +227,7 @@ void CScrub::walkDown()
 
 				if (!floor) it_player->moveDown(SCRUB_WALK_SPEED);
 			}
-		}
+		}*/
 	}
 }
 
@@ -327,7 +303,7 @@ void CScrub::walkUp()
 			processMove(0,2<<STC);
 		}
 
-		std::vector<CPlayer>::iterator it_player = m_Player.begin();
+		/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++ )
 		{
 			if (it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
@@ -341,7 +317,7 @@ void CScrub::walkUp()
 				}
 				else it_player->moveUp(SCRUB_WALK_SPEED);
 			}
-		}
+		}*/
 	}
 }
 
@@ -361,8 +337,8 @@ void CScrub::fall()
 		fallspeed = 0;
 
 		SetAllCanSupportPlayer(1);
-		for( size_t i=0 ; i<m_Player.size() ; i++ )
-			kickedplayer[i] = 0;
+		/*for( size_t i=0 ; i<m_Player.size() ; i++ )
+			kickedplayer[i] = 0;*/
 
 		yDirection = 0;
 		xDirection = -1;
@@ -396,16 +372,16 @@ void CScrub::preparetoFall()
 
 void CScrub::Scrub_TurnOnCansupportWhereNotKicked()
 {
-	for(size_t i=0;i<m_Player.size();i++)
+	/*for(size_t i=0;i<m_Player.size();i++)
 	{
 		if (!kickedplayer[i])
 			cansupportplayer = 1;
-	}
+	}*/
 }
 
 void CScrub::SetAllCanSupportPlayer(bool state)
 {
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
 		cansupportplayer = state;
@@ -415,7 +391,7 @@ void CScrub::SetAllCanSupportPlayer(bool state)
 			it_player->moveDown(1);
 			it_player->blockedd=false;
 		}
-	}
+	}*/
 }
 
 

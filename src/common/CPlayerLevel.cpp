@@ -336,26 +336,11 @@ void CPlayer::TogglePogo_and_Switches()
 					char pyoff = (bridge & 0xff00) >> 8;
 					int platx = mx + pxoff;
 					int platy = my + pyoff;
-
-					if(mp_Map->m_PlatExtending)
-					{
-						// Find the object responsible for extending
-						std::vector<CVorticonSpriteObject*>::iterator obj = mp_object->begin();
-						for( ; obj != mp_object->end() ; obj++ )
-						{
-							if((*obj)->m_type == OBJ_BRIDGE && (*obj)->exists &&
-									(*obj)->getXPosition() == (mx<<CSF) &&
-									(*obj)->getYPosition() == (my<<CSF) )
-							{
-								(*obj)->exists = false;
-							}
-						}
-					}
+					
 					// spawn a "sector effector" to extend/retract the platform
 					CBridges *platobject = new CBridges(mp_Map, mx<<CSF, my<<CSF,
 							platx, platy);
 					g_pBehaviorEngine->EventList().add(new EventSpawnObject(platobject) );
-					mp_Map->m_PlatExtending = true;
 				}
 
 				ppogostick = false;

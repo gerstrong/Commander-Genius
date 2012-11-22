@@ -33,9 +33,8 @@ CPlayGame(ExeFile, level, numplayers)
 		m_Player.clear();
 
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
-			mp_level_completed,
-			m_Object, *mMap.get() ) );
-
+			mp_level_completed, *mMap.get() ) );
+	
 	for(int i=0 ; i<m_NumPlayers ; i++)
 	{
 		// Put some important Player properties
@@ -104,9 +103,8 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
-	CVorticonMapLoader MapLoader( mMap, &m_Player );
+	CVorticonMapLoaderWithPlayer MapLoader( mMap, m_Player, mSpriteObjectContainer );
 	MapLoader.m_checkpointset = m_checkpointset;
-	MapLoader.mp_objvect = &m_Object;
 
 	// load level map
 	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
@@ -127,7 +125,7 @@ bool CPlayGameVorticon::init()
 	g_pInput->flushAll();
 
 	// Initialize the AI
-	mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), m_Object, m_Player,
+	mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
 			m_NumPlayers, m_Episode, m_Level,
 			mMap->m_Dark) );
 
@@ -446,15 +444,15 @@ void CPlayGameVorticon::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mpFinale.reset(new CEndingEp1(mMessageBoxes, mMap, m_Player, m_hideobjects, m_Object));
+		mpFinale.reset(new CEndingEp1(mMessageBoxes, mMap, m_Player, m_hideobjects, mSpriteObjectContainer));
 	}
 	else if(m_Episode == 2)
 	{
-		mpFinale.reset(new CEndingEp2(mMessageBoxes, mMap, m_Player, m_Object));
+		mpFinale.reset(new CEndingEp2(mMessageBoxes, mMap, m_Player, mSpriteObjectContainer));
 	}
 	else if(m_Episode == 3)
 	{
-		mpFinale.reset(new CEndingEp3(mMessageBoxes, mMap, m_Player, m_Object));
+		mpFinale.reset(new CEndingEp3(mMessageBoxes, mMap, m_Player, mSpriteObjectContainer));
 	}
 }
 
@@ -462,7 +460,7 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
 {
 	int destx, desty;
 
-	CTeleporter *teleporter = new CTeleporter(mMap.get(), m_Player, origx, origy);
+	std::unique_ptr<CTeleporter> teleporter( new CTeleporter(mMap.get(), m_Player, origx, origy) );
 	player.beingteleported = true;
 	player.solid = false;
 	destx = g_pBehaviorEngine->getTeleporterTableAt(5).x;
@@ -472,7 +470,7 @@ void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int 
 	teleporter->destx = destx>>TILE_S;
 	teleporter->desty = desty>>TILE_S;
 	teleporter->whichplayer = player.m_index;
-	m_Object.push_back(teleporter);
+	mSpriteObjectContainer.push_back(move(teleporter));
 }
 
 void CPlayGameVorticon::collectHighScoreInfo(CHighScores &highScores)
@@ -516,15 +514,11 @@ void CPlayGameVorticon::drawObjects()
 {
 	if(m_hideobjects) return;
 
-	std::vector<CVorticonSpriteObject*>::iterator it_obj = m_Object.begin();
-	for(; it_obj!=m_Object.end() ; it_obj++)
-	{
-		(*it_obj)->draw();
-	}
+	for( auto &obj : mSpriteObjectContainer )
+		obj->draw();
 
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	//std::vector<CPlayer>::iterator it_end = ( m_Level!=WORLD_MAP_LEVEL_VORTICON) ? m_Player.end() : m_Player.begin()+1;
 	std::vector<CPlayer>::iterator it_end = m_Player.end();
 	for (; it_player != it_end ; it_player++)
 	{
@@ -610,13 +604,10 @@ void CPlayGameVorticon::drawAllElements()
 ////
 void CPlayGameVorticon::cleanup()
 {
-	std::vector<CVorticonSpriteObject*>::iterator obj = m_Object.begin();
-	for( ; obj != m_Object.end() ; obj++ )
-		delete (*obj);
-	m_Object.clear();
+    mSpriteObjectContainer.clear();
 }
 
 CPlayGameVorticon::~CPlayGameVorticon()
 {
-	m_Player.clear();
+    m_Player.clear();
 }

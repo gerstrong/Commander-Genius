@@ -23,21 +23,12 @@ enum meep_actions{
 #define MEEP_DYING_FRAME        124
 #define MEEP_DEAD_FRAME         125
 
-CMeep::CMeep(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player,
-		std::vector<CVorticonSpriteObject*>& Object) :
-CVorticonSpriteObject(p_map,x,y, OBJ_MEEP),
-m_Player(Player),
-m_Object(Object)
+CMeep::CMeep(CMap *p_map, Uint32 x, Uint32 y) :
+CVorticonSpriteObject(p_map,x,y, OBJ_MEEP)
 {
 	canbezapped = true;
 
 	state = MEEP_WALK;
-
-	if (m_Player[0].getXPosition() > getXPosition())
-		dir = RIGHT;
-	else
-		dir = LEFT;
 
 	blockedr = blockedl = false;
 	animframe = 0;
@@ -47,21 +38,55 @@ m_Object(Object)
 		mHealthPoints++;
 }
 
+
+bool CMeep::isNearby(CSpriteObject &theObject)
+{
+    if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+    {
+	if( state== MEEP_WALK )
+	{
+	    if (getProbability(MEEP_SING_PROB))
+	    {
+		if (onscreen)
+		{
+		    state = MEEP_SING;
+		    timer = 0;
+		}
+		else
+		{
+		    // try to get onscreen by heading towards the player
+		    if (player->getXPosition() > getXPosition())
+			dir = RIGHT;
+		    else
+			dir = LEFT;
+		}
+	    }
+	}
+    } 
+    
+    return true;
+}
+
+
+void CMeep::getTouchedBy(CSpriteObject &theObject)
+{
+    if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+    {
+	if (!player->pdie)
+	{
+	    // don't push the player as he's walking through the exit door
+	    if (!player->level_done)
+	    {
+		player->push(*this);
+	    }
+	}	
+    }    
+}
+
+
 void CMeep::process()
 {
 	int not_about_to_fall;
-
-	if (touchPlayer && !m_Player[touchedBy].pdie)
-	{
-		// don't push the player as he's walking through the exit door
-		if (!m_Player[touchedBy].level_done)
-		{
-			if (m_Player[touchedBy].getXPosition() < getXPosition())
-				m_Player[touchedBy].push(*this);
-			else
-				m_Player[touchedBy].push(*this);
-		}
-	}
 
 	if (mHealthPoints <= 0 && state != MEEP_DYING )
 	{
@@ -76,22 +101,6 @@ void CMeep::process()
 	switch(state)
 	{
 	case MEEP_WALK:
-		if (getProbability(MEEP_SING_PROB))
-		{
-			if (onscreen)
-			{
-				state = MEEP_SING;
-				timer = 0;
-			}
-			else
-			{
-				// try to get onscreen by heading towards the player
-				if (m_Player[0].getXPosition() > getXPosition())
-					dir = RIGHT;
-				else
-					dir = LEFT;
-			}
-		}
 
 		if (dir==RIGHT)
 		{
@@ -143,7 +152,7 @@ void CMeep::process()
 				newobject = new CSoundWave(mp_Map, getXLeftPos(), getYPosition()+(5<<STC), LEFT);
 			newobject->setOwner(OBJ_MEEP, m_index);
 			newobject->solid = false;
-			m_Object.push_back(newobject);
+			g_pBehaviorEngine->EventList().spawnObj(newobject);
 			playSound(SOUND_MEEP);
 			state = MEEP_WALK;
 		}

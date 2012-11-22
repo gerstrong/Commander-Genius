@@ -45,11 +45,8 @@ const unsigned int VORTELITE_WALK_ANIM_TIME = 6;
 
 const int PLAYER_DISTANCE = (6<<CSF); // distance the player should stay away, so Vortelite won't run.
 
-CVorticonElite::CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
-		std::vector<CVorticonSpriteObject*> &mp_vec_Obj,
-		Uint32 x, Uint32 y ) :
-CVorticon(p_map,mp_vec_Player, x, y, 4, OBJ_VORTELITE),
-m_Object(mp_vec_Obj)
+CVorticonElite::CVorticonElite( CMap *p_map, Uint32 x, Uint32 y ) :
+CVorticon(p_map, x, y, 4, OBJ_VORTELITE)
 {
 	state = VORTELITE_WALK;
 	movedir = LEFT;
@@ -100,7 +97,7 @@ void CVorticonElite::process()
 		state = VORTELITE_WALK;
 
 		// If Player is nearby, make vorticon go faster
-		if(getYDownPos() > m_Player[0].getYDownPos()-(1<<CSF) and
+		/*if(getYDownPos() > m_Player[0].getYDownPos()-(1<<CSF) and
 		   getYDownPos() < m_Player[0].getYDownPos()+(1<<CSF) )
 		{
 			int dist;
@@ -111,7 +108,7 @@ void CVorticonElite::process()
 
 			if(dist < PLAYER_DISTANCE)
 				state = VORTELITE_CHARGE;
-		}
+		}*/
 
 
 		if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
@@ -126,17 +123,13 @@ void CVorticonElite::process()
 				if (getProbability(VORTELITE_FIRE_PROB))
 				{  	// let's fire
 					// usually shoot toward keen
-					if (rand()%5 != 0)
+					/*if (rand()%5 != 0)
 					{
 						if (getXPosition() < m_Player[0].getXPosition())
-						{
 							movedir = RIGHT;
-						}
 						else
-						{
 							movedir = LEFT;
-						}
-					}
+					}*/
 					timer = 0;
 					state = VORTELITE_ABOUTTOFIRE;
 				}
@@ -229,7 +222,7 @@ void CVorticonElite::process()
 			newobject->setOwner( m_type, m_index);
 			newobject->sprite = ENEMYRAYEP2;
 			// don't shoot other vorticon elite
-			m_Object.push_back(newobject);
+			g_pBehaviorEngine->EventList().spawnObj(newobject);
 
 			if (onscreen)
 				playSound(SOUND_KEEN_FIRE);
@@ -249,14 +242,14 @@ void CVorticonElite::process()
 			timesincefire = 0;
 			state = VORTELITE_WALK;
 			// head toward keen
-			if (getXPosition() < m_Player[0].getXPosition())
+			/*if (getXPosition() < m_Player[0].getXPosition())
 			{
 				movedir = RIGHT;
 			}
 			else
 			{
 				movedir = LEFT;
-			}
+			}*/
 		}
 		else timer++;
 		break;

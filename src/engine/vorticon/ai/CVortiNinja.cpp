@@ -18,10 +18,9 @@
 
 unsigned int rnd(void);
 
-CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player) :
+CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_NINJA),
-longjump(false),
-m_Player(Player)
+longjump(false)
 {
 	canbezapped = true;
 	mHealthPoints = 4;
@@ -38,10 +37,10 @@ void CVortiNinja::init()
 	timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
 	if(g_pBehaviorEngine->mDifficulty > NORMAL) timetillkick /= 3;
 
-	if (m_Player[0].getXPosition() < getXPosition())
+	/*if (m_Player[0].getXPosition() < getXPosition())
 		dir = LEFT;
 	else
-		dir = RIGHT;
+		dir = RIGHT;*/
 
 	animtimer = 0;
 	animframe = 0;
@@ -52,9 +51,9 @@ void CVortiNinja::process()
 {
 	bool onsamelevel;
 
-	if (touchPlayer && !m_Player[touchedBy].pdie && \
+	/*if (touchPlayer && !m_Player[touchedBy].pdie && \
 			state != NINJA_DYING)
-		m_Player[touchedBy].kill();
+		m_Player[touchedBy].kill();*/
 
 	if (mHealthPoints <= 0 && !dying)
 	{
@@ -81,10 +80,10 @@ void CVortiNinja::process()
 	{
 
 	case NINJA_STAND:
-		if (m_Player[0].getXPosition() < getXPosition()+(8<<STC))
+		/*if (m_Player[0].getXPosition() < getXPosition()+(8<<STC))
 			dir = LEFT;
 		else
-			dir = RIGHT;
+			dir = RIGHT;*/
 
 		if (!timetillkick)
 		{
@@ -109,7 +108,7 @@ void CVortiNinja::process()
 			// find out if a player is on the same level
 			onsamelevel = false;
 
-			std::vector<CPlayer>::iterator it_player = m_Player.begin();
+			/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 			for( ; it_player != m_Player.end() ; it_player++ )
 			{
 				if ((it_player->getYPosition() >= getYPosition()-(96<<STC)) &&
@@ -118,7 +117,7 @@ void CVortiNinja::process()
 					onsamelevel = true;
 					break;
 				}
-			}
+			}*/
 
 			if (onsamelevel)
 				timetillkick--;

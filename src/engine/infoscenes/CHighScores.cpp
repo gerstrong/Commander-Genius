@@ -76,7 +76,7 @@ void CHighScores::init()
 	
 	// Load the map for the background
 	mpMap.reset(new CMap());
-	CVorticonMapLoader MapLoader(mpMap);
+	CVorticonMapLoaderBase MapLoader(mpMap);
 	MapLoader.load(m_Episode, 90, m_DataDirectory, false);
 	
     mpMap->gotoPos(HIGHSCORETABLE_X, HIGHSCORETABLE_Y);

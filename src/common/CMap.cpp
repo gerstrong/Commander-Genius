@@ -20,7 +20,6 @@ m_width(0), m_height(0),
 m_worldmap(false),
 m_animation_enabled(true),
 m_Dark(false),
-m_PlatExtending(false),
 m_Tilemaps(g_pGfxEngine->getTileMaps()),
 mAnimtileTimer(0.0f),
 m_Background(false)

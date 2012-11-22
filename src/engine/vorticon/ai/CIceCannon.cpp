@@ -12,11 +12,8 @@ unsigned int rnd(void);
 const int GUNFIRE_TIMER_EP1 = 64;
 
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
-	std::vector<CPlayer>& Player, std::vector<CVorticonSpriteObject*>& Object,
 	int vector_x, int vector_y ) :
-CVorticonSpriteObject(p_map,x,y, OBJ_ICECANNON),
-m_Player(Player),
-m_Object(Object)
+CVorticonSpriteObject(p_map,x,y, OBJ_ICECANNON)
 {
 	this->vector_x = vector_x;
 	this->vector_y = vector_y;
@@ -34,19 +31,15 @@ void CIceCannon::process()
 		int newpos_x = getXPosition();
 		int newpos_y = getYPosition();
 		if(vector_x > 0) newpos_x += 512;
-		CIceChunk *chunk = new CIceChunk(mp_Map, newpos_x, newpos_y,
-								vector_x, vector_y, m_Player, m_Object);
-		m_Object.push_back(chunk);
+		CIceChunk *chunk = new CIceChunk(mp_Map, newpos_x, newpos_y,vector_x, vector_y);
+		g_pBehaviorEngine->EventList().spawnObj(chunk);
 	}
 }
 
-CIceChunk::CIceChunk(CMap *p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy,
-		std::vector<CPlayer>& Player, std::vector<CVorticonSpriteObject*>& Object) :
+CIceChunk::CIceChunk(CMap *p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy) :
 CVorticonSpriteObject(p_map, x, y, OBJ_ICECHUNK),
 vector_x(vx),
-vector_y(vy),
-m_Player(Player),
-m_Object(Object)
+vector_y(vy)
 {
 	int speed;
 
@@ -63,42 +56,47 @@ m_Object(Object)
 		playSound(SOUND_CANNONFIRE);
 }
 
-void CIceChunk::process()
+
+
+void CIceChunk::touchedBy(CSpriteObject &theObject)
 {
-	// freeze the player if it touches him
-	if (touchPlayer)
-	{
+    if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+    {
+    	// freeze the player if it touches him
 		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
 		// make him start sliding in the direction of the impact
 		if (vector_x > 0)
 		{
-			m_Player[touchedBy].pDir.x = m_Player[touchedBy].pShowDir.x = RIGHT;
-			m_Player[touchedBy].xinertia = Physics.player.max_x_speed;
-			m_Player[touchedBy].bump( *this, RIGHT );
+			player->pDir.x = player->pShowDir.x = RIGHT;
+			player->xinertia = Physics.player.max_x_speed;
+			player->bump( *this, RIGHT );
 		}
 		else if (vector_x < 0)
 		{
-			m_Player[touchedBy].pDir.x = m_Player[touchedBy].pShowDir.x = LEFT;
-			m_Player[touchedBy].xinertia = -Physics.player.max_x_speed;
-			m_Player[touchedBy].bump( *this, LEFT );
+			player->pDir.x = player->pShowDir.x = LEFT;
+			player->xinertia = -Physics.player.max_x_speed;
+			player->bump( *this, LEFT );
 		}
 		else	// perfectly vertical ice cannons
 		{
 			const int UPDNCANNON_PUSHAMT = 16;
-			if (m_Player[touchedBy].xinertia < UPDNCANNON_PUSHAMT)
+			if (player->xinertia < UPDNCANNON_PUSHAMT)
 			{
 				if (rnd()&1)
-					m_Player[touchedBy].xinertia = UPDNCANNON_PUSHAMT;
+					player->xinertia = UPDNCANNON_PUSHAMT;
 				else
-					m_Player[touchedBy].xinertia = -UPDNCANNON_PUSHAMT;
+					player->xinertia = -UPDNCANNON_PUSHAMT;
 			}
 		}
 
-		m_Player[touchedBy].freeze();
-		smash();
-		return;
-	}
+		player->freeze();
+		smash();    
+    }
+}
 
+
+void CIceChunk::process()
+{
 	// smash the chunk if it hits something
 	if (vector_x > 0)
 	{
@@ -132,19 +130,19 @@ void CIceChunk::smash()
 
 		// upleft
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, -1);
-		m_Object.push_back(chunk);
+		g_pBehaviorEngine->EventList().spawnObj(chunk);
 
 		// upright
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), 1, -1);
-		m_Object.push_back(chunk);
+		g_pBehaviorEngine->EventList().spawnObj(chunk);
 
 		// downleft
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, 1);
-		m_Object.push_back(chunk);
+		g_pBehaviorEngine->EventList().spawnObj(chunk);
 
 		// downright
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), 1, 1);
-		m_Object.push_back(chunk);
+		g_pBehaviorEngine->EventList().spawnObj(chunk);
 	}
 	exists = false;
 }

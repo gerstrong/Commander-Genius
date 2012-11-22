@@ -16,10 +16,11 @@
 
 CEndingEp1::CEndingEp1(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 						const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player,
-					    bool &hideobjects, std::vector<CVorticonSpriteObject*> &Object) :
-	CFinale(messageBoxes, pMap, Object),
-	m_Player(Player),
-	m_hideobjects(hideobjects)
+						bool &hideobjects, 
+						std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object) :
+CFinale(messageBoxes, pMap, Object),
+m_Player(Player),
+m_hideobjects(hideobjects)
 {
 	m_Episode = 1;
 	m_step = 0;
@@ -89,7 +90,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	{
 		//Initialization
 		std::string path = mpMap->m_gamepath;
-		CVorticonMapLoader MapLoader(mpMap, &m_Player);
+		CVorticonMapLoaderWithPlayer MapLoader(mpMap, m_Player, m_Object);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
@@ -193,7 +194,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		int x, y;
 		m_hideobjects = false;
 		std::string path = mpMap->m_gamepath;
-		CVorticonMapLoader MapLoader(mpMap, &m_Player);
+		CVorticonMapLoaderWithPlayer MapLoader(mpMap, m_Player, m_Object);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;

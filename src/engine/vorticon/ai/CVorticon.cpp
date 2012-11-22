@@ -7,11 +7,9 @@
 
 // Vorticon (all Episodes, albeit the behavior changes slightly
 // depending on levelcontrol.Episode).
-CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
-		Uint32 y, char hp, object_t objtype) :
+CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype) :
 	CVorticonSpriteObject(p_map, x, y, objtype),
-	m_Dark(mp_Map->m_Dark),
-	m_Player(m_vec_Player)
+	m_Dark(mp_Map->m_Dark)
 {
 	frame = 0;
 	animtimer = 0;
@@ -54,23 +52,75 @@ CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
 	}
 }
 
-void CVorticon::process() {
+
+bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
+{
+    if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+    {
+	if(state == VORT_LOOK) 
+	{
+	    sprite = LookFrame + frame;
+	    
+	    if (animtimer > VORT_LOOK_ANIM_TIME) 
+	    {
+		if (frame > 0) 
+		{
+		    
+		    if (player->getXPosition() < getXPosition()) 
+			movedir = LEFT;
+		    else 
+			movedir = RIGHT;
+		    
+		    timer = 0;
+		    frame = 0;
+		    state = VORT_WALK;
+		} 
+		else
+		{
+		    frame++;
+		}
+		animtimer = 0;
+	    } 
+	    else
+	    {
+		animtimer++;
+	    }
+	}    
+    }
+    
+    return true;
+}
+
+
+void CVorticon::getTouchedBy(CVorticonSpriteObject &theObject)
+{
+    
+}
+
+void CVorticon::process() 
+{
 	bool kill = false;
 	short Episode = g_pBehaviorEngine->getEpisode();
 
 	if (mHealthPoints <= 0 && state != VORT_DYING && state != VORT2_DYING)
 		kill = true;
 
-	if (kill) {
+	if (kill)
+	{
 		animtimer = 0;
 		frame = 0;
-		if (Episode == 1) {
-			// White Fade and back
-			if(m_Player[0].mp_option[OPT_FLASHEFFECT].value)
-				g_pGfxEngine->setupEffect(new CFlash(3000, 8, 0xFFFFFF, 200));
+		if (Episode == 1) 
+		{
+			// White Fade and back			
+			if(g_pBehaviorEngine->m_option[OPT_FLASHEFFECT].value)
+			{
+			    g_pGfxEngine->setupEffect(new CFlash(3000, 8, 0xFFFFFF, 200));
+			}
 			state = VORT_DYING;
 			dying = true;
-		} else {
+		} 
+		else 
+		{
 			state = VORT2_DYING;
 			dying = true;
 		}
@@ -79,6 +129,7 @@ void CVorticon::process() {
 	}
 
 	vort_reprocess: ;
+	
 	switch (state) {
 	case VORT_JUMP:
 		if (movedir == RIGHT && !blockedr)
@@ -97,17 +148,11 @@ void CVorticon::process() {
 
 		if (animtimer > VORT_LOOK_ANIM_TIME) {
 			if (frame > 0) {
-				if (blockedl) {
+				if (blockedl)
 					movedir = RIGHT;
-				} else if (blockedr) {
+				else if (blockedr) 
 					movedir = LEFT;
-				} else { // not blocked on either side, head towards player
-					if (m_Player[0].getXPosition() < getXPosition()) {
-						movedir = LEFT;
-					} else {
-						movedir = RIGHT;
-					}
-				}
+
 				timer = 0;
 				frame = 0;
 				state = VORT_WALK;
