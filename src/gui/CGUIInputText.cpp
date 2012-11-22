@@ -238,11 +238,11 @@ void CGUIInputText::setTypeMode( const bool value )
 	if(!mTyping && value)
 	{
 		// Invoke Android native text edit field with on-screen keyboard
-		char buf[256];
+		char buf[256]; // it must be 256 for SDL_ANDROID_ToggleScreenKeyboardTextInput
 		strncpy(buf, mText.c_str(), sizeof(buf));
 		buf[sizeof(buf) - 1] = 0;
-		SDL_ANDROID_GetScreenKeyboardTextInput(buf, sizeof(buf) - 1);
-		mText = buf;
+		SDL_ANDROID_ToggleScreenKeyboardTextInput(buf);
+		mText.clear();		
 	}
 #endif
 
