@@ -125,6 +125,7 @@ public:
 	void calcBoundingBoxes();
 	void performCollisionsSameBox();
 	void performCollisions();
+	void alignToTile();
 	void setScrPos( int px, int py );
 	bool PoleCollision();
 	virtual bool calcVisibility();

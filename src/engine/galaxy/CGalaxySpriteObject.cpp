@@ -47,19 +47,9 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 
 	setActionSprite();
 
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-
 	performCollisions();
-
-	// Center the sprites on the map
-	int moveup = (1<<CSF)-1;
-	moveup -= ((rSprite.getHeight()+1)<<STC);
-	m_Pos.y += moveup;
-	processMove(0, 1);
-
-	int moveX = (1<<CSF)/2;
-	moveX -= ((rSprite.getWidth()/2)<<STC);
-	m_Pos.x += moveX;
+	
+	alignToTile();
 	
 	if(!processActionRoutine())
 			exists = false;

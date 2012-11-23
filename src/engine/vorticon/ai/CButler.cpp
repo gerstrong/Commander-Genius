@@ -13,6 +13,7 @@ CVorticonSpriteObject(pmap, x, y-(1<<STC), OBJ_BUTLER)
 	 m_invincible = true;
 	 blockedd = true;
 	 inhibitfall = false;
+	 alignToTile();
 }
 
 void CButler::process()

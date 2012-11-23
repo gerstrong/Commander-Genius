@@ -280,7 +280,8 @@ void CVorticon::process()
 	}
 }
 
-void CVorticon::initiateJump() {
+void CVorticon::initiateJump() 
+{
 	// must be standing on floor to jump
 	if (!blockedd)
 		return;

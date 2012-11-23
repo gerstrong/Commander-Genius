@@ -100,6 +100,26 @@ void getSlopePointsUpperTile(char slope, int &yb1, int &yb2)
 		yb1 = 0,	yb2 = 0;
 }
 
+
+void CSpriteObject::alignToTile()
+{
+    if(sprite == 0)
+	return;
+    
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+	// Center the sprites on the map
+	int moveup = (1<<CSF)-1;
+	moveup -= ((rSprite.getHeight()+1)<<STC);
+	m_Pos.y += moveup;
+	processMove(0, 1);
+
+	int moveX = (1<<CSF)/2;
+	moveX -= ((rSprite.getWidth()/2)<<STC);
+	m_Pos.x += moveX;    
+}
+
+
 /*
  * \brief This checks the collision. Very simple pixel based algorithm
  * 		  The collision is per pixel-based

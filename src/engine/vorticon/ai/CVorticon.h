@@ -83,7 +83,7 @@ protected:
 	unsigned char frame;
 	unsigned int dist_traveled;
 
-	unsigned char movedir;
+	direction_t movedir;
 	// these hold the animation frames indexes since they're
 	// different for each episode
 	int WalkLeftFrame;
