@@ -40,8 +40,6 @@ const int MAX_POLE_GRAB_TIME = 19;
 
 const int MAX_SCROLL_VIEW = (8<<CSF);
 
-int ck_KeenRunXVels[8] = {0, 0, 4, 4, 8, -4, -4, -8};
-
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
@@ -57,6 +55,10 @@ mObjectPtrs(ObjectPtrs)
 	mActionMap[A_KEEN_ON_PLAT] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_QUESTION] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
 	mActionMap[A_KEEN_BORED] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
+	mActionMap[A_KEEN_BOOK_OPEN] = (void (CPlayerBase::*)()) &CPlayerLevel::processReadingBook;
+	mActionMap[A_KEEN_BOOK_READ] = (void (CPlayerBase::*)()) &CPlayerLevel::processReadingBook;
+	mActionMap[A_KEEN_BOOK_CLOSE] = (void (CPlayerBase::*)()) &CPlayerLevel::processReadingBook;	
+	mActionMap[A_KEEN_MOON] = (void (CPlayerBase::*)()) &CPlayerLevel::processPants;
 	mActionMap[A_KEEN_LOOKUP] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingUp;
 	mActionMap[A_KEEN_LOOKDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processLookingDown;
 	mActionMap[A_KEEN_SHOOT] = (void (CPlayerBase::*)()) &CPlayerLevel::processShootWhileStanding;
@@ -370,6 +372,25 @@ void CPlayerLevel::handleInputOnGround()
 }
 
 
+bool CPlayerLevel::moonTiledetected()
+{
+    int l_x = getXLeftPos();
+    int r_x = getXRightPos();
+    int l_y = getYMidPos();
+    
+    if( g_pBehaviorEngine->getEpisode() == 4 )
+    {
+	if( ( hitdetectWithTileProperty(1, l_x, l_y) & 0x7F) == 16 ||
+	    ( hitdetectWithTileProperty(1, r_x, l_y) & 0x7F) == 16 )
+	{
+		return true;
+	}
+    }
+    
+    return false;
+}
+
+
 
 /// Keen standing routine
 void CPlayerLevel::processStanding()
@@ -421,8 +442,17 @@ void CPlayerLevel::processStanding()
 		if (user2 == 2 && user1 > 700)
 		{
 			user2++;
-			setAction(A_KEEN_BOOK_OPEN);
+			
+			if(moonTiledetected())
+			{
+			    setAction(A_KEEN_BOOK_OPEN);
+			}
+			else 
+			{
+			    setAction(A_KEEN_MOON);
+			}
 			user1 = 0;
+			return;
 		}
 	}
 
@@ -432,6 +462,23 @@ void CPlayerLevel::processStanding()
 }
 
 
+
+void CPlayerLevel::processReadingBook()
+{
+    if( m_playcontrol[PA_X] )
+    {
+	user1 = user2 = 0;
+	setAction(A_KEEN_BOOK_CLOSE);
+	return;
+    }
+    
+    if( getActionStatus(A_KEEN_STAND) )
+	setAction(A_KEEN_STAND);
+}
+
+
+void CPlayerLevel::processPants()
+{}
 
 
 
@@ -972,18 +1019,7 @@ void CPlayerLevel::processPogo()
 }
 
 
-/*
 
-void CK_KeenReadThink(CK_object *obj)
-{
-	if (IN_GetKeyState(IN_SC_LeftArrow) || IN_GetKeyState(IN_SC_RightArrow))
-	{
-		obj->currentAction = &CK_ACT_keenStowBook1;
-		obj->user1 = obj->user2 = 0;
-	}
-}
-
-*/
 
 
 void CPlayerLevel::verifyJumpAndFall()

@@ -74,12 +74,25 @@ public:
 	void process();
 
 
+	/**
+	 * \description Simple process to test if Keen is a moon and can pull off his pants.
+	 */	
+	bool moonTiledetected();
 
 	/**
 	 * \description Simple process called while Keen is standing
 	 */
 	void processStanding();
 
+	/**
+	 * \description Simple process called while Keen is reading the book
+	 */
+	void processReadingBook();
+	
+	/**
+	 * \description Simple process called while Keen is pulling off the pants
+	 */	
+	void processPants();
 
 
 	/**
