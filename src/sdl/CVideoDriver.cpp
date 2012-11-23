@@ -22,23 +22,6 @@
 #include <iostream>
 #include <fstream>
 
-const std::string CKLOGFILENAME = "genius.log";
-
-#define MAX_CONSOLE_MESSAGES     	3
-#define CONSOLE_MESSAGE_X        	3
-#define CONSOLE_MESSAGE_Y        	3
-#define CONSOLE_MESSAGE_SPACING  	9
-#define CONSOLE_EXPIRE_RATE      	250
-
-typedef struct stConsoleMessage
-{
-	char msg[80];
-} stConsoleMessage;
-
-stConsoleMessage cmsg[MAX_CONSOLE_MESSAGES];
-int NumConsoleMessages = 0;
-int ConsoleExpireTimer = 0;
-
 CVideoDriver::CVideoDriver() :
 m_mustrefresh(false)
 {
@@ -266,8 +249,7 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 	mpVideoEngine->blitScrollSurface();
 }
 
-void CVideoDriver::collectSurfaces() 
-{
+void CVideoDriver::collectSurfaces() {
 	mpVideoEngine->collectSurfaces();
 }
 
@@ -278,7 +260,6 @@ void CVideoDriver::clearSurfaces() {
 void CVideoDriver::updateScreen() {
 	mpVideoEngine->updateScreen();
 }
-
 
 void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds) 
 {
