@@ -72,7 +72,9 @@ bool CGame::init(int argc, char *argv[])
 	}
 
 	if(!g_pSettings->loadGameOptions())
-		g_pSettings->loadDefaultGameCfg();
+	{
+	    g_pSettings->loadDefaultGameCfg();
+	}
 
 	// Setup the Hardware using the settings we have loaded
 	g_pLogFile->textOut(GREEN,"Loading hardware settings...<br>");
