@@ -601,9 +601,6 @@ void CInput::pollEvents()
 			g_pVideoDriver->start();
 		}
 
-		if(value) g_pVideoDriver->AddConsoleMsg("Fullscreen enabled");
-		else g_pVideoDriver->AddConsoleMsg("Fullscreen disabled");
-
 		g_pInput->flushAll();
 	}
 

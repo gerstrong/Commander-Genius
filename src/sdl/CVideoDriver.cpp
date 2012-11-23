@@ -264,10 +264,10 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 // Therefore the name should be changed
 {
 	mpVideoEngine->blitScrollSurface();
-	drawConsoleMessages();
 }
 
-void CVideoDriver::collectSurfaces() {
+void CVideoDriver::collectSurfaces() 
+{
 	mpVideoEngine->collectSurfaces();
 }
 
@@ -279,45 +279,6 @@ void CVideoDriver::updateScreen() {
 	mpVideoEngine->updateScreen();
 }
 
-// "Console" here refers to the capability to pop up in-game messages
-// in the upper-left corner during game play ala Doom.
-void CVideoDriver::drawConsoleMessages() {
-	if (!NumConsoleMessages)
-		return;
-
-	if (!ConsoleExpireTimer) {
-		NumConsoleMessages--;
-		if (!NumConsoleMessages)
-			return;
-		ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
-	} else
-		ConsoleExpireTimer--;
-
-	int y = CONSOLE_MESSAGE_Y;
-	for (int i = 0; i < NumConsoleMessages; i++) {
-		g_pGfxEngine->getFont(1).drawFont(mpVideoEngine->getBlitSurface(),
-				cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
-		y += CONSOLE_MESSAGE_SPACING;
-	}
-}
-
-// removes all console messages
-void CVideoDriver::DeleteConsoleMsgs(void) {
-	NumConsoleMessages = 0;
-}
-
-// adds a console msg to the top of the screen and scrolls any
-// other existing messages downwards
-void CVideoDriver::AddConsoleMsg(const char *the_msg) {
-	for (int i = MAX_CONSOLE_MESSAGES - 2; i >= 0; i--) {
-		strcpy(cmsg[i + 1].msg, cmsg[i].msg);
-	}
-	strcpy(cmsg[0].msg, the_msg);
-
-	if (NumConsoleMessages < MAX_CONSOLE_MESSAGES)
-		NumConsoleMessages++;
-	ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
-}
 
 void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds) 
 {

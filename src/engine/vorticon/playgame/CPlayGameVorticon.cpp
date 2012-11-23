@@ -325,7 +325,6 @@ void CPlayGameVorticon::handleFKeys()
 				mMessageBoxes.push_back( move(msg) );
 			}
 		}
-		g_pVideoDriver->AddConsoleMsg("All items cheat");
 	}
 
 	// Cycle Cam Code
@@ -347,12 +346,6 @@ void CPlayGameVorticon::handleFKeys()
 				it_player->solid = !it_player->godmode;
 			it_player->performCollisions();
 		}
-
-		g_pVideoDriver->DeleteConsoleMsgs();
-		if (m_Player[0].godmode)
-			g_pVideoDriver->AddConsoleMsg("God mode ON");
-		else
-			g_pVideoDriver->AddConsoleMsg("God mode OFF");
 
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 

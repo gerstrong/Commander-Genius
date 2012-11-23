@@ -42,7 +42,6 @@ public:
 	
 	bool start();
 	void isFullscreen(bool value);
-	void drawConsoleMessages();
 
 	void blitScrollSurface();
 	void updateScrollBuffer(CMap &map);
@@ -55,11 +54,7 @@ public:
 	void clearSurfaces();
 	void updateScreen();
 
-	void DeleteConsoleMsgs(void);
-	void AddConsoleMsg(const char *the_msg);
-
 	// Drawing related stuff
-
 	void pollDrawingTasks();
 	SDL_Rect toBlitRect(const CRect<float> &rect);
 	void clearDrawingTasks();
