@@ -203,7 +203,10 @@ public:
 
 
 	std::string getEventName(int position, unsigned char input);
-	bool readNewEvent(Uint8 device, int position);
+	std::string getNewMappedEvent(int &rPos, unsigned char &rInp);
+	void readNewEvent();
+	
+	void setupNewEvent(Uint8 device, int position);
 
 	void setupInputCommand( stInputCommand *pInput, int action, const std::string &string );
 
@@ -225,6 +228,8 @@ public:
 	// Input Events
 	CEventContainer m_EventList;
 
+	bool MappingInput()
+	{ return remapper.mappingInput; }
 
 private:
 	SDL_Event Event;
@@ -244,6 +249,16 @@ private:
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];
 	bool firsttime_immediate_keytable[KEYTABLE_SIZE];
+	
+	struct rm_type
+	{
+	    rm_type():
+	    mappingInput(false) {}
+	    // For mapping new Commands
+	    bool mappingInput;
+	    Uint8 mapDevice;
+	    int mapPosition;
+	} remapper;
 
 	void processKeys(int value);
 	void processJoystickAxis();

@@ -73,7 +73,6 @@ void CBaseMenu::process()
 		}
 	}
 
-
 	mpMenuDialog->processLogic();
 
 }

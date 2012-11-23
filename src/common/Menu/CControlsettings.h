@@ -47,6 +47,7 @@ public:
 	CControlSettingsMovement(const int selectedPlayer);
 
 	void init();
+	void process();
 	void release();
 
 private:
@@ -55,6 +56,8 @@ private:
 
 	std::vector<CGUIButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
+	
+	bool mapping;
 };
 
 
@@ -66,6 +69,7 @@ public:
 	CControlSettingsButtons(const int selectedPlayer);
 
 	void init();
+	void process();
 	void release();
 
 private:
@@ -74,6 +78,8 @@ private:
 
 	std::vector<CGUIButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
+	
+	bool mapping;
 };
 
 // Create the Control-Menu for the indicated Player

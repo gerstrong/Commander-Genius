@@ -22,8 +22,8 @@ class ReadInputEvent : public InvokeFunctorEvent
 public:
 
 	ReadInputEvent( const int selPlayer,
-					const InputCommands command,
-					const std::string &commandName ) :
+			const InputCommands command,
+			const std::string &commandName ) :
 		mSelPlayer(selPlayer),
 		mCommand(command),
 		mCommandName(commandName),
@@ -37,11 +37,10 @@ public:
 
 	void operator()()
 	{
-		while( !g_pInput->readNewEvent(mSelPlayer-1, mCommand) );
+		g_pInput->setupNewEvent(mSelPlayer-1, mCommand);
 
-		const std::string buf = mCommandName;
-		const std::string buf2 = g_pInput->getEventName(mCommand, mSelPlayer-1);
-		mpButton->setText(buf + buf2);
+		const std::string buf = mCommandName;		
+		mpButton->setText(buf + "=Reading=");
 	}
 
 	int mSelPlayer;
@@ -164,6 +163,33 @@ void CControlSettingsMovement::init()
 	setMenuLabel("MOVEMENULABEL");
 }
 
+void CControlSettingsMovement::process()
+{
+    if( !mapping )
+    {
+	if(g_pInput->MappingInput()) // mapping changed!
+	    mapping = true;
+    }
+    else
+    {
+	if( !g_pInput->MappingInput() )
+	{
+	    // mapping changed!
+	    mapping = false;
+	 
+	    CGUIButton *button = dynamic_cast<CGUIButton*>(mpMenuDialog->CurrentControl());
+	    if(button)
+	    {
+		int pos; unsigned char input;
+		std::string evName = g_pInput->getNewMappedEvent(pos, input);		
+		InputCommands com = static_cast<InputCommands>(pos);		
+		button->setText(mCommandName[com] + evName);
+	    }
+	}
+    }	
+    CBaseMenu::process();
+}
+
 void CControlSettingsMovement::release()
 {
 	if(!mCommandName.empty())
@@ -175,7 +201,8 @@ void CControlSettingsMovement::release()
 // Movements Parts of the Control Settings
 CControlSettingsButtons::CControlSettingsButtons(const int selectedPlayer) :
 CBaseMenu( CRect<float>(0.01f, (1.0f-(MAX_COMMANDS/2.0f+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
-mSelectedPlayer(selectedPlayer)
+mSelectedPlayer(selectedPlayer),
+mapping(false)
 {}
 
 
@@ -209,6 +236,34 @@ void CControlSettingsButtons::init()
 	}
 
 	setMenuLabel("BUTTONMENULABEL");
+}
+
+void CControlSettingsButtons::process()
+{
+    if( !mapping )
+    {
+	if(g_pInput->MappingInput()) // mapping changed!
+	    mapping = true;	
+    }
+    else
+    {
+	if( !g_pInput->MappingInput() )
+	{
+	    // mapping changed!
+	    mapping = false;
+	 
+	    CGUIButton *button = dynamic_cast<CGUIButton*>(mpMenuDialog->CurrentControl());
+	    if(button)
+	    {
+		int pos; unsigned char input;
+		std::string evName = g_pInput->getNewMappedEvent(pos, input);		
+		InputCommands com = static_cast<InputCommands>(pos);		
+		button->setText(mCommandName[com] + evName);
+	    }
+	}
+    }
+    
+    CBaseMenu::process();
 }
 
 void CControlSettingsButtons::release()

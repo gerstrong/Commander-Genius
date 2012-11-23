@@ -278,6 +278,16 @@ void CInput::saveControlconfig()
 }
 
 /**
+ * Gets the event name from the last mapped event
+ */
+std::string CInput::getNewMappedEvent(int &rPos, unsigned char &rInp)
+{    
+    rPos = remapper.mapPosition;
+    rInp = remapper.mapDevice;
+    return getEventName(remapper.mapPosition, remapper.mapDevice);
+}
+
+/**
  * \brief	This checks what event has been assigned to the chosen command and builds a string calling it
  * 			a standardized way.
  * \param	command		command where you are looking for the event
@@ -363,22 +373,34 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 }
 
 /**
+ * \brief	Prepares the Input Controller to map a new command
+ * \param	device		input of which we are trying to read the event
+ * \param	command		command for which we want to assign the event
+ * \return 	returns true, if an event was triggered, or false if not.
+ */
+void CInput::setupNewEvent(Uint8 device, int position)
+{
+    remapper.mapDevice = device;
+    remapper.mapPosition = position;
+    remapper.mappingInput = true;
+}
+
+/**
  * \brief	This checks if some event was triggered to get the new input command
  * \param	device		input of which we are trying to read the event
  * \param	command		command for which we want to assign the event
  * \return 	returns true, if an event was triggered, or false if not.
- * TODO: This function should be removed in future when everything is event based
  */
-bool CInput::readNewEvent(Uint8 device, int command)
+void CInput::readNewEvent()
 {
-	stInputCommand &lokalInput = InputCommand[device][command];
+	stInputCommand &lokalInput = InputCommand[remapper.mapDevice][remapper.mapPosition];
 
 	// This function is used to configure new input keys.
 	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
 	// We should fix the menu for iPhone so that this function doesn't get called.
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	printf("WARNING: called readNewEvent on iphone\n");
-	return true;
+	return;
 #endif
 
 	memset(&lokalInput, 0, sizeof(stInputCommand));
@@ -400,7 +422,7 @@ bool CInput::readNewEvent(Uint8 device, int command)
 			case SDL_KEYDOWN:
 				lokalInput.joyeventtype = ETYPE_KEYBOARD;
 				lokalInput.keysym = Event.key.keysym.sym;
-				return true;
+				remapper.mappingInput = false;
 				break;
 
 			case SDL_JOYBUTTONDOWN:
@@ -411,7 +433,7 @@ bool CInput::readNewEvent(Uint8 device, int command)
 				lokalInput.joyeventtype = ETYPE_JOYBUTTON;
 				lokalInput.joybutton = Event.jbutton.button;
 				lokalInput.which = Event.jbutton.which;
-				return true;
+				remapper.mappingInput = false;
 #endif
 				break;
 
@@ -426,7 +448,7 @@ bool CInput::readNewEvent(Uint8 device, int command)
 					lokalInput.joyaxis = Event.jaxis.axis;
 					lokalInput.which = Event.jaxis.which;
 					lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
-					return true;
+					remapper.mappingInput = false;
 				}
 
 				break;
@@ -435,12 +457,10 @@ bool CInput::readNewEvent(Uint8 device, int command)
 				lokalInput.joyeventtype = ETYPE_JOYHAT;
 				lokalInput.joyhatval = Event.jhat.value;
 				lokalInput.which = Event.jhat.which;
-
-				return true;
+				remapper.mappingInput = false;
 				break;
 		}
 	}
-	return false;
 }
 
 bool CInput::getExitEvent(void) {	return m_exit;	}
@@ -466,6 +486,13 @@ void CInput::transMouseRelCoord(CVec &Pos,
  */
 void CInput::pollEvents()
 {
+    
+    if(remapper.mappingInput)
+    {
+	readNewEvent();
+	return;
+    }
+    
 	CVec Pos;
 	CRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
 
