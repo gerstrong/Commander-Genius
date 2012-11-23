@@ -19,7 +19,6 @@ public:
 
 	void process();
 
-	void SetAllCanSupportPlayer(bool state);
 	void getTouchedBy(CSpriteObject &theObject);
 
 protected:
@@ -29,7 +28,6 @@ protected:
 	unsigned int waittimer;
 
 	direction_t movedir;
-	unsigned char kickedplayer[MAX_PLAYERS];
 };
 
 class CPlatformVert : public CPlatform

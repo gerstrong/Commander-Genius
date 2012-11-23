@@ -18,7 +18,6 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y),
 targetmode(false)
 {
-
 	m_ActionBaseOffset = actionOffset;
 
 	setActionForce(A_PLATFORM_MOVE);
@@ -38,7 +37,6 @@ targetmode(false)
 
 void CVarPlatform::process()
 {
-
 	const Uint32 xPos = getXMidPos()-(1<<(CSF-1));
 	const Uint32 yPos = getYMidPos();
 

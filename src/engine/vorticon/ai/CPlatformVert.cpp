@@ -25,7 +25,6 @@ CPlatform(p_map, x, y)
 	blockedd = true;
 	inhibitfall = 1;
 	canbezapped = 1;
-	SetAllCanSupportPlayer(1);
 
 	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )

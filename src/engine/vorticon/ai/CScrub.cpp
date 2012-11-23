@@ -1,5 +1,6 @@
 #include "../../../sdl/sound/CSound.h"
 #include "CScrub.h"
+#include "sdl/CVideoDriver.h"
 
 // The red creatures that follow the wall (ep2)
 
@@ -28,7 +29,8 @@ enum scrub_actions{
 
 CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(p_map, x, y, OBJ_SCRUB),
-scrubdie_inertia_y(0)
+scrubdie_inertia_y(0),
+mpCarriedPlayer(nullptr)
 {
 	xDirection = -1;
 	state = SCRUB_FALLING;
@@ -40,8 +42,6 @@ scrubdie_inertia_y(0)
 	performCollisions();
 	dead = false;
 	fallspeed = 0;
-
-	SetAllCanSupportPlayer(1);
 }
 
 void CScrub::getTouchedBy(CVorticonSpriteObject &theObject)
@@ -52,12 +52,29 @@ void CScrub::getTouchedBy(CVorticonSpriteObject &theObject)
 	{
 	    if( (player->getXMidPos() < getXMidPos() && yDirection >= 0) || yDirection <= 0 )
 		player->push(*this);	    
-	}	
+	}
+	else
+	{
+	    mpCarriedPlayer = player;
+	    player->pSupportedbyobject = this;
+	    player->dontdraw = true;
+	}
     }
 }
 
 void CScrub::process()
-{
+{    
+    	// check if someone is still standing on the platform
+	if(mpCarriedPlayer)
+	{
+		if(!hitdetect(*mpCarriedPlayer) || mpCarriedPlayer->blockedu)
+		{
+			mpCarriedPlayer->pSupportedbyobject = nullptr;
+			mpCarriedPlayer->dontdraw = false;
+			mpCarriedPlayer = nullptr;
+		}
+	}
+    
 	if (canbezapped)
 	{
 		// die if shot
@@ -77,7 +94,6 @@ void CScrub::process()
 	switch(state)
 	{
 	case SCRUB_DYING:
-		SetAllCanSupportPlayer(0);
 		sprite = SCRUB_FRY_FRAME;
 		moveYDir(scrubdie_inertia_y);
 		if ( scrubdie_inertia_y < Physics.max_fallspeed )
@@ -89,7 +105,6 @@ void CScrub::process()
 			sprite = SCRUB_DEAD_FRAME;
 			state = SCRUB_DEAD;
 			dead = true;
-			SetAllCanSupportPlayer(0);
 		}
 		return;
 		break;
@@ -119,6 +134,109 @@ void CScrub::process()
 	}
 }
 
+
+void CScrub::draw()
+{
+    // This draw routine also is able to draw a second object in case it is holding one.
+    if( dontdraw )
+	return;
+    
+    CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
+    
+    scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
+    scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
+    
+    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    
+    if( scrx < gameres.w && scry < gameres.h && exists )
+    {
+	Uint16 showX = scrx+Sprite.getXOffset();
+	Uint16 showY = scry+Sprite.getYOffset();
+	if(m_blinktime > 0)
+	{
+	    Sprite.drawBlinkingSprite( showX, showY );
+	    m_blinktime--;
+	}
+	else
+	{
+	    Sprite.drawSprite( showX, showY, (255-transluceny) );
+	    if(mpCarriedPlayer)
+	    {
+		CSprite &playSprite = g_pGfxEngine->getSprite(mpCarriedPlayer->sprite);
+		int distx = mpCarriedPlayer->getXPosition()-getXPosition();
+		int disty = mpCarriedPlayer->getYPosition()-getYPosition();
+		
+		distx = (distx>>STC);
+		distx += (playSprite.getXOffset()-Sprite.getXOffset());
+		disty = (disty>>STC);
+		disty += (playSprite.getYOffset()-Sprite.getYOffset());
+		
+		playSprite.drawSprite( showX+distx, showY+disty );
+	    }
+	}
+	hasbeenonscreen = true;
+    }    
+}
+
+
+void CScrub::moveCarrierLeft(const int amnt)
+{
+    // If the Player is standing on the plat move him with it!
+    if(amnt <= 0)
+	return;
+    
+    if(mpCarriedPlayer)
+    {
+	m_EventCont.add(new ObjMoveCouple(-amnt,0, *mpCarriedPlayer));
+	return;
+    }
+    moveLeft(amnt);
+}
+
+
+void CScrub::moveCarrierRight(const int amnt)
+{
+    // If the Player is standing on the plat move him with it!
+    if(amnt <= 0)
+	return;
+    
+    if(mpCarriedPlayer)
+    {	    
+	m_EventCont.add(new ObjMoveCouple(amnt,0,*mpCarriedPlayer));
+	return;
+    }
+    
+    // Now move the platform itself.
+    moveRight(amnt);
+}
+
+void CScrub::moveCarrierUp(const int amnt)
+{
+    // First move the object on platform if any
+    if(mpCarriedPlayer)
+    {
+	m_EventCont.add(new ObjMoveCouple(0,-amnt,*mpCarriedPlayer));
+	return;
+    }
+    
+    // Now move the platform itself.
+    moveUp(amnt);
+}
+
+void CScrub::moveCarrierDown(const int amnt)
+{
+    // First move the object on platform if any
+    if(mpCarriedPlayer)
+    {
+	m_EventCont.add(new ObjMoveCouple(0,amnt,*mpCarriedPlayer));
+	return;
+    }
+    
+    // Now move the platform itself.
+    moveDown(amnt);
+}
+
+
 /*
  * Makes scrub walk to the left
  */
@@ -131,11 +249,10 @@ void CScrub::walkLeft(int mx, int my)
 		sprite = SCRUB_WALK_UP + walkframe;
 		xDirection = 0;
 		yDirection = -1;
-		Scrub_TurnOnCansupportWhereNotKicked();
 	}
 	else
 	{
-		moveLeft(SCRUB_WALK_SPEED);
+		moveCarrierLeft(SCRUB_WALK_SPEED);
 
 		if(!blockedd)
 		{
@@ -192,7 +309,6 @@ void CScrub::walkDown()
 		yDirection = 0;
 		xDirection = -1;
 		sprite = SCRUB_WALK_LEFT + walkframe;
-		Scrub_TurnOnCansupportWhereNotKicked();
 	}
 	else
 	{
@@ -205,7 +321,6 @@ void CScrub::walkDown()
 			sprite = SCRUB_WALK_RIGHT + walkframe;
 			processMove(2<<STC,0);
 			processMove(0,-(2<<STC));
-			SetAllCanSupportPlayer(0);
 		}
 
 		/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
@@ -243,7 +358,6 @@ void CScrub::walkRight(int mx, int my)
 		xDirection = 0;
 		yDirection = 1;
 		sprite = SCRUB_WALK_DOWN + walkframe;
-		Scrub_TurnOnCansupportWhereNotKicked();
 	}
 	else
 	{
@@ -263,7 +377,6 @@ void CScrub::walkRight(int mx, int my)
 				processMove(-(6<<STC),0);
 				performCollisions();
 
-				Scrub_TurnOnCansupportWhereNotKicked();
 				if(blockedl)
 				{
 					xDirection = 0;
@@ -287,7 +400,6 @@ void CScrub::walkUp()
 		yDirection = 0;
 		xDirection = 1;
 		sprite = SCRUB_WALK_RIGHT + walkframe;
-		SetAllCanSupportPlayer(0);
 	}
 	else
 	{
@@ -298,7 +410,6 @@ void CScrub::walkUp()
 			yDirection = 0;
 			xDirection = -1;
 			sprite = SCRUB_WALK_LEFT + walkframe;
-			Scrub_TurnOnCansupportWhereNotKicked();
 			processMove(-(2<<STC),0);
 			processMove(0,2<<STC);
 		}
@@ -336,7 +447,6 @@ void CScrub::fall()
 		dead = false;
 		fallspeed = 0;
 
-		SetAllCanSupportPlayer(1);
 		/*for( size_t i=0 ; i<m_Player.size() ; i++ )
 			kickedplayer[i] = 0;*/
 
@@ -345,7 +455,6 @@ void CScrub::fall()
 		state = SCRUB_WALK;
 		walkframe = 0;
 		animtimer = 0;
-		Scrub_TurnOnCansupportWhereNotKicked();
 	}
 	else
 	{
@@ -366,32 +475,6 @@ void CScrub::preparetoFall()
 	state = SCRUB_FALLING;
 	yDirection = 0;
 	xDirection = -1;
-	SetAllCanSupportPlayer(0);
-}
-
-
-void CScrub::Scrub_TurnOnCansupportWhereNotKicked()
-{
-	/*for(size_t i=0;i<m_Player.size();i++)
-	{
-		if (!kickedplayer[i])
-			cansupportplayer = 1;
-	}*/
-}
-
-void CScrub::SetAllCanSupportPlayer(bool state)
-{
-	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for( ; it_player != m_Player.end() ; it_player++ )
-	{
-		cansupportplayer = state;
-		if(!state && it_player->pSupportedbyobject)
-		{
-			it_player->pfalling=true;
-			it_player->moveDown(1);
-			it_player->blockedd=false;
-		}
-	}*/
 }
 
 

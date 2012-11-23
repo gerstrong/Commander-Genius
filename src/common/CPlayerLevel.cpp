@@ -29,7 +29,7 @@ void CPlayer::processInLevel()
 	else
 	{
 		inhibitwalking = false;
-		inhibitfall = false;
+		inhibitfall = false;		
 		
 		// when walking through the exit door don't show keen's sprite past
 		// the door frame (so it looks like he walks "through" the door)

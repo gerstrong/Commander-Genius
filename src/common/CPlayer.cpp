@@ -896,40 +896,20 @@ bool CPlayer::checkMapBoundaryU(const int y1)
 
 bool CPlayer::checkObjSolid()
 {
-	pSupportedbyobject = nullptr;
-
-	/*std::vector<CVorticonSpriteObject*>::iterator it_obj = mp_object->begin();
-	for( ; it_obj != mp_object->end() ; it_obj++ )
+	if(pSupportedbyobject)
 	{
-		if((*it_obj)->cansupportplayer)
-		{	// can support player
-			if(getXRightPos() >= (*it_obj)->getXLeftPos()  &&
-					getXLeftPos() <= (*it_obj)->getXRightPos() )
-			{
-				if( getYUpPos() <= (*it_obj)->getYDownPos()+(1<<STC)  &&
-				    getYUpPos() >= (*it_obj)->getYMidPos() )
-				{	// In this case the object pushs the player down!
-					pjumping = PNOJUMP;
-					int dy = (*it_obj)->getYDownPos() - getYUpPos();
-					blockedu = true;
-					moveDown(dy);
-				}
-				else if(getYDownPos() >= (*it_obj)->getYUpPos()-(3<<STC)  &&
-						getYDownPos() <= (*it_obj)->getYMidPos() )
-				{	// In this case stand on the object
-					pfalling = false;
-					if(pjumping == PJUMPLAND)
-						pjumping = PNOJUMP;
-					pSupportedbyobject = *it_obj;
-					int dy = (*it_obj)->getYUpPos() - getYDownPos()+1;
-					if(pjumping == PNOJUMP)
-						moveYDir(dy);
-					blockedd = true;
-					break;
-				}
-			}
+		pfalling = false;
+		if(pjumping == PJUMPLAND)
+		    pjumping = PNOJUMP;
+		
+		int dy = pSupportedbyobject->getYUpPos() - getYDownPos()+1;
+		if(pjumping == PNOJUMP)
+		{
+		    moveYDir(dy);
 		}
-	}*/
+		blockedd = true;		
+	}
+	
 	return true;
 }
 

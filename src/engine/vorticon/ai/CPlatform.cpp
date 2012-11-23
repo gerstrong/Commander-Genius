@@ -23,7 +23,6 @@ CVorticonSpriteObject(p_map, x, y, OBJ_PLATFORM)
 	blockedl = blockedr = false;
 	inhibitfall = 1;
 	canbezapped = 1;
-	SetAllCanSupportPlayer(1);
 }
 
 void CPlatform::process()
@@ -77,21 +76,6 @@ void CPlatform::process()
 		else waittimer++;
 		break;
 	}
-}
-
-void CPlatform::SetAllCanSupportPlayer(bool state)
-{
-	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for( ; it_player != m_Player.end() ; it_player++ )
-	{
-		cansupportplayer = state;
-		if(!state && it_player->pSupportedbyobject)
-		{
-			it_player->pfalling=true;
-			it_player->moveDown(1);
-			it_player->blockedd=false;
-		}
-	}*/
 }
 
 void CPlatform::getTouchedBy(CSpriteObject &theObject)

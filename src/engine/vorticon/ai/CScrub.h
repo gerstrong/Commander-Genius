@@ -16,18 +16,22 @@ class CScrub : public CVorticonSpriteObject
 public:
 	CScrub(CMap *p_map, Uint32 x, Uint32 y);
 	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void draw();
 	void process();
-	void SetAllCanSupportPlayer(bool state);
 
 private:
 
+	void moveCarrierLeft(const int amnt);
+	void moveCarrierRight(const int amnt);
+	void moveCarrierUp(const int amnt);
+	void moveCarrierDown(const int amnt);
+    
 	void walkLeft(int mx, int my);
 	void walkDown();
 	void walkRight(int mx, int my);
 	void walkUp();
 	void fall();
 	void preparetoFall();
-	void Scrub_TurnOnCansupportWhereNotKicked();
 
 	unsigned char state;
 
@@ -36,7 +40,7 @@ private:
 	int scrubdie_inertia_y;
 	int fallspeed;
 
-	unsigned char kickedplayer[MAX_PLAYERS];
+	CPlayer *mpCarriedPlayer;
 };
 
 #endif /* CSCRUB_H_ */
