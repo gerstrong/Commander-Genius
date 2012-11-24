@@ -29,11 +29,12 @@ class CSectorEffector : public CVorticonSpriteObject
 public:
 	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type);
 	void getTouchedBy(CSpriteObject &theObject);	
+	bool isNearby(CSpriteObject &theObject);
 	void process();
 	void se_mortimer_arm();
 	void se_mortimer_spark();
-	void se_mortimer_heart();
-	void se_mortimer_zapsup();
+	void se_mortimer_heart(CVorticonSpriteObject *obj);
+	void se_mortimer_zapsup(CPlayer *player);
 	void se_mortimer_leg_left();
 	void se_mortimer_leg_right();
 	void se_mortimer_randomzaps();

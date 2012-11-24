@@ -71,7 +71,6 @@ bool CYorp::isNearby(CVorticonSpriteObject &theObject)
 {       
     if( state == YORP_LOOK )
     {
-
 	if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
 	{
 	        if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
