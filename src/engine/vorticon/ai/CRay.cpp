@@ -9,10 +9,12 @@
 #define Sprite g_pGfxEngine->Sprite
 
 CRay::CRay(CMap *p_map, Uint32 x, Uint32 y,
-		direction_t dir, object_t byType, size_t byID,
+		direction_t hdir, direction_t vdir, 
+		object_t byType, size_t byID,
 		size_t speed) :
 CVorticonSpriteObject(p_map, x, y, OBJ_RAY),
-m_Direction(dir),
+m_HorDir(hdir),
+m_VertDir(hdir),
 m_speed(speed)
 {
 	m_type = OBJ_RAY;
@@ -95,7 +97,7 @@ void CRay::setZapped()
 		{ sprite = RAY_FRAME_ZOT_EP3; }
 	}
 
-	if (m_Direction==LEFT || m_Direction==RIGHT)
+	if (m_HorDir==LEFT || m_HorDir==RIGHT)
 		moveUp(2);
 	else
 		moveLeft(4);
@@ -113,7 +115,7 @@ void CRay::moveinAir()
 	//CSprite &raysprite = g_pGfxEngine->getSprite(sprite);
 	//bool hitlethal; // TODO: Why is this here?
 
-	if (m_Direction == RIGHT)
+	if (m_HorDir == RIGHT)
 	{
 		// don't go through bonklethal tiles, even if they're not solid
 		// (for the arms on mortimer's machine)
@@ -133,7 +135,7 @@ void CRay::moveinAir()
 		}
 		moveRight(m_speed);
 	}
-	else if (m_Direction == LEFT)
+	else if (m_HorDir == LEFT)
 	{
 		/*if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, (getYPosition()+1)>>CSF)).behaviour == 1)
 			hitlethal = true;
@@ -151,7 +153,7 @@ void CRay::moveinAir()
 		}
 		moveLeft(m_speed);
 	}
-	else if (m_Direction == DOWN)
+	else if (m_VertDir == DOWN)
 	{
 		if (blockedd || blockedu)
 		{

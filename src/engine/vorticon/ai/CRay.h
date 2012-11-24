@@ -18,7 +18,7 @@ class CRay : public CVorticonSpriteObject
 {
 public:
 	CRay(CMap *p_map, Uint32 x, Uint32 y,
-		direction_t dir, object_t byType=OBJ_RAY, size_t byID=0, size_t speed=RAY_DEFAULTSPEED);
+		direction_t hdir, direction_t vdir, object_t byType=OBJ_RAY, size_t byID=0, size_t speed=RAY_DEFAULTSPEED);
 
 	virtual void process();
 	void moveinAir();
@@ -30,7 +30,8 @@ public:
 	void setZapped();
 	void gotZapped();
 
-	direction_t m_Direction;
+	direction_t m_HorDir;
+	direction_t m_VertDir;
 	int m_speed;
 
 	enum {

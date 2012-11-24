@@ -350,7 +350,7 @@ void CSectorEffector::se_mortimer_spark()
 				{
 					mp_Map->setTile(mx, my, 169, true);
 					// spawn a ZAP! or a ZOT!
-					CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, DOWN);
+					CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN);
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
 					g_pBehaviorEngine->EventList().spawnObj(newobject);
@@ -361,7 +361,7 @@ void CSectorEffector::se_mortimer_spark()
 				{
 					mp_Map->setTile(mx, my, 169, true);
 					// spawn a ZAP! or a ZOT!
-					CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, DOWN);
+					CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN);
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
 					g_pBehaviorEngine->EventList().spawnObj(newobject);
@@ -428,7 +428,7 @@ void CSectorEffector::se_mortimer_heart(CVorticonSpriteObject *obj)
 			// delete the tile
 			mp_Map->setTile(x,my,169);
 			// spawn a ZAP! or a ZOT!
-			CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, DOWN);
+			CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN);
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->inhibitfall = true;
 			g_pBehaviorEngine->EventList().spawnObj(newobject);				
@@ -509,7 +509,7 @@ void CSectorEffector::se_mortimer_zapsup(CPlayer *player)
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
-			CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, DOWN);
+			CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN);
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->inhibitfall = true;
 			g_pBehaviorEngine->EventList().spawnObj(newobject);
@@ -737,7 +737,7 @@ void CSectorEffector::se_mortimer_randomzaps()
 		y = rand()%((MORTIMER_MACHINE_YENDNOLEGS*16)-(MORTIMER_MACHINE_YSTART*16))+(MORTIMER_MACHINE_YSTART*16);
 
 		// spawn a ZAP! or a ZOT!
-		CRay *newobject = new CRay(mp_Map,x<<CSF, y<<CSF, RIGHT );
+		CRay *newobject = new CRay(mp_Map,x<<CSF, y<<CSF, RIGHT, CENTER );
 		newobject->state = CRay::RAY_STATE_SETZAPZOT;
 		newobject->inhibitfall = true;
 		g_pBehaviorEngine->EventList().spawnObj(newobject);

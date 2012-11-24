@@ -32,15 +32,15 @@ void CAutoRay::process()
 
 		if (m_type==VERTICAL)
 		{
-			NewRay = new CRay(mp_Map, x+(4<<STC), y+(1<<CSF), DOWN, OBJ_AUTORAY_V, m_index, 124);
+			NewRay = new CRay(mp_Map, x+(4<<STC), y+(1<<CSF), CENTER, DOWN, OBJ_AUTORAY_V, m_index, 124);
 			NewRay->sprite = RAY_VERT_EP3;
-			NewRay->m_Direction = DOWN;
+			NewRay->m_VertDir = DOWN;
 		}
 		else
 		{
-			NewRay = new CRay(mp_Map, x+(1<<CSF), y+(4<<STC), DOWN, OBJ_AUTORAY, m_index, 124);
+			NewRay = new CRay(mp_Map, x+(1<<CSF), y+(4<<STC), CENTER, DOWN, OBJ_AUTORAY, m_index, 124);
 			NewRay->sprite = ENEMYRAYEP3;
-			NewRay->m_Direction = RIGHT;
+			NewRay->m_HorDir = RIGHT;
 		}
 		g_pBehaviorEngine->EventList().spawnObj(NewRay);
 

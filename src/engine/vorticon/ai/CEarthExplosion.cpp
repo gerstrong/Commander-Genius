@@ -8,7 +8,7 @@
 #include "CEarthExplosion.h"
 
 CEarthExplosion::CEarthExplosion(CMap *p_map, Uint32 x, Uint32 y) :
-CRay(p_map, x, y, RIGHT),
+CRay(p_map, x, y, RIGHT, CENTER),
 animframe(0),
 animtimer(0)
 {
@@ -25,7 +25,7 @@ void CEarthExplosion::process()
 	sprite = EXPLODESPRITE + animframe;
 	if (animtimer > EXPLODE_ANIM_RATE)
 	{
-		if (m_Direction!=RIGHT && animframe==0)
+		if (m_HorDir!=RIGHT && animframe==0)
 		{
 			exists = false;
 		}
@@ -37,7 +37,7 @@ void CEarthExplosion::process()
 				int x, y;
 				x = getXPosition()>>CSF;
 				y = getYPosition()>>CSF;
-				m_Direction = LEFT;
+				m_HorDir = LEFT;
 				mp_Map->setTile((x+8)>>4,(y+8)>>4, SPACETILE, true);
 			}
 		}

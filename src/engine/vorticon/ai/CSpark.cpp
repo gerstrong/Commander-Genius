@@ -86,7 +86,7 @@ void CSpark::process()
 			my = my+3+blowy;
 			mp_Map->setTile(mx, my, 505, true);
 			// spawn a ZAP! or a ZOT!
-			CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF, DOWN);
+			CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF, CENTER, DOWN);
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->setOwner(m_type, m_index);
 			g_pBehaviorEngine->EventList().add( new EventSpawnObject(newobject) );
@@ -130,7 +130,7 @@ void CSpark::process()
 				//my = my+y;
 				mp_Map->setTile(mx, my+y, 549, true);
 				// spawn a ZAP! or a ZOT!
-				CRay *newobject = new CRay(mp_Map, mx<<CSF, (my+y)<<CSF, DOWN);
+				CRay *newobject = new CRay(mp_Map, mx<<CSF, (my+y)<<CSF, CENTER, DOWN);
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
 				playSound(SOUND_SHOT_HIT);

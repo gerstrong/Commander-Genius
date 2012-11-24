@@ -14,7 +14,7 @@
 
 CFireBall::CFireBall(CMap *p_map, Uint32 x, Uint32 y,
 		direction_t dir, object_t byType, size_t byID) :
-CRay(p_map, x, y, dir, byType, byID)
+CRay(p_map, x, y, dir, CENTER, byType, byID)
 {
 	animframe = 0;
 	animtimer = 0;
@@ -25,7 +25,7 @@ CRay(p_map, x, y, dir, byType, byID)
 		m_Pos -= VectorD2<Uint32>(14<<STC,0);
 
 	m_speed = (g_pBehaviorEngine->mDifficulty>=NORMAL) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
-	sprite = (m_Direction == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;
+	sprite = (m_HorDir == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;
 	performCollisions();
 }
 
@@ -44,7 +44,7 @@ void CFireBall::process()
 
 	if(state == RAY_STATE_FLY)
 	{
-		if (m_Direction == RIGHT)
+		if (m_HorDir == RIGHT)
 			sprite = FIREBALL_RIGHT_FRAME + animframe;
 		else
 			sprite = FIREBALL_LEFT_FRAME + animframe;

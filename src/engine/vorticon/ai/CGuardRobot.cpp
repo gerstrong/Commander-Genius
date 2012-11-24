@@ -119,9 +119,9 @@ void CGuardRobot::process()
 				if (onscreen)
 					playSound(SOUND_TANK_FIRE);
 				if (movedir==RIGHT)
-					newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT);
+					newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT, CENTER);
 				else
-					newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT);
+					newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT, CENTER);
 				newobject->setOwner(OBJ_GUARDROBOT, m_index);
 				newobject->sprite = ENEMYRAYEP2;
 

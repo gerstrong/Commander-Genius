@@ -75,7 +75,7 @@ void CTantalusRay::shootray()
 
 		mpMap->drawAll();
 
-		std::unique_ptr<CVorticonSpriteObject> shootObject( new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, OBJ_NONE, 0) );
+		std::unique_ptr<CVorticonSpriteObject> shootObject( new CRay(mpMap.get(), 4<<CSF, 9<<CSF, RIGHT, CENTER, OBJ_NONE, 0) );
 		shootObject->solid = false;
 		shootObject->exists = shootObject->onscreen = true;
 		m_Object.push_back( move(shootObject) );

@@ -14,7 +14,7 @@
 
 CSoundWave::CSoundWave(CMap *p_map, Uint32 x, Uint32 y,
 		direction_t dir, object_t byType, size_t byID) :
-CRay(p_map, x, y, dir, byType, byID),
+CRay(p_map, x, y, dir, CENTER, byType, byID),
 animframe(0),
 animtimer(0),
 offscreentime(0)
@@ -48,7 +48,7 @@ void CSoundWave::process()
 
 	// fly through the air
 	int x = getXPosition()>>CSF;
-	if (m_Direction == RIGHT)
+	if (m_HorDir == RIGHT)
 	{
 		sprite = SNDWAVE_RIGHT_FRAME + animframe;
 
