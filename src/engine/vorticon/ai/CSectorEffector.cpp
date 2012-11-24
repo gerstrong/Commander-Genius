@@ -137,9 +137,9 @@ void CSectorEffector::getTouchedBy(CSpriteObject &theObject)
 	bool it_is_mortimer_machine = false;
 
 	it_is_mortimer_machine = (setype == SE_MORTIMER_LEG_LEFT)
-										|| (setype == SE_MORTIMER_LEG_RIGHT)
-										|| (setype == SE_MORTIMER_ARM)
-										|| (setype == SE_MORTIMER_SPARK);
+				|| (setype == SE_MORTIMER_LEG_RIGHT)
+				|| (setype == SE_MORTIMER_ARM)
+				|| (setype == SE_MORTIMER_SPARK);
 
 	if(it_is_mortimer_machine)
 	{
@@ -173,23 +173,8 @@ bool CSectorEffector::isNearby(CSpriteObject &theObject)
 {     
 	if(setype == SE_MORTIMER_SPARK && state == MSPARK_IDLE)
 	{
-		sprite = MORTIMER_SPARK_BASEFRAME + frame;
-
-		if (timer > SPARK_ANIMRATE)
-		{
-			frame++;
-			if (frame > 3) frame = 0;
-			timer = 0;
-		}
-		else timer++;
-
 		if (mHealthPoints <= 0)
-		{
-			set_mortimer_surprised(true);
-			g_pGfxEngine->setupEffect(new CVibrate(200));
-			mp_Map->redrawAt(getXPosition()>>CSF, getYPosition()>>CSF);
-
-			
+		{	
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms			    
 			if(CSectorEffector* SE = dynamic_cast<CSectorEffector*>(&theObject))
@@ -339,6 +324,26 @@ void CSectorEffector::se_mortimer_spark()
 
 	switch(state)
 	{
+	case MSPARK_IDLE:
+		sprite = MORTIMER_SPARK_BASEFRAME + frame;
+
+		if (timer > SPARK_ANIMRATE)
+		{
+			frame++;
+			if (frame > 3) frame = 0;
+			timer = 0;
+		}
+		else timer++;
+		
+		if (mHealthPoints <= 0)
+		{
+			set_mortimer_surprised(true);
+			g_pGfxEngine->setupEffect(new CVibrate(200));
+			mp_Map->redrawAt(getXPosition()>>CSF, getYPosition()>>CSF);
+		}		
+		
+		break;
+	    
 	case MSPARK_DESTROYARMS:
 		if (!timer)
 		{

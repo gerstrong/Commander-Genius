@@ -38,9 +38,11 @@ mpInteractPlayer(NULL)
 
 
 void CBounder::getTouchedBy(CSpriteObject &theObject)
-{
-    
+{    
+    if( !getActionStatus(A_BOUNDER_STUNNED) )
+    {
 	CStunnable::getTouchedBy(theObject);
+    }
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
@@ -63,6 +65,7 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 		dead = true;
 		theObject.dead = true;
 	}
+	
 }
 
 void CBounder::processBounce()
