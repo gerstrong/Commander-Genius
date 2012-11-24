@@ -8,18 +8,16 @@
 #ifndef CPLATFORM_H_
 #define CPLATFORM_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "engine/vorticon/ai/CCarrier.h"
 #include "common/CPlayer.h"
 #include <vector>
 
-class CPlatform : public CVorticonSpriteObject
+class CPlatform : public CCarrier
 {
 public:
 	CPlatform(CMap *p_map, Uint32 x, Uint32 y);
 
 	void process();
-
-	void getTouchedBy(CSpriteObject &theObject);
 
 protected:
 	unsigned char state;
@@ -35,7 +33,6 @@ class CPlatformVert : public CPlatform
 public:
 	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
-	void getTouchedBy(CSpriteObject &theObject);
 };
 
 #endif /* CPLATFORM_H_ */

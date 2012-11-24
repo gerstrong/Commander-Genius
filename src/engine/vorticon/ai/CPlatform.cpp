@@ -13,7 +13,7 @@
 #define PLATFORMPUSHAMOUNT      40
 
 CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y) :
-CVorticonSpriteObject(p_map, x, y, OBJ_PLATFORM)
+CCarrier(p_map, x, y, OBJ_PLATFORM)
 {
 	animframe = 0;
 	animtimer = 0;
@@ -27,6 +27,8 @@ CVorticonSpriteObject(p_map, x, y, OBJ_PLATFORM)
 
 void CPlatform::process()
 {
+    CCarrier::process();
+    
 	sprite = (g_pBehaviorEngine->getEpisode()==2) ? OBJ_PLATFORM_DEFSPRITE_EP2 : OBJ_PLATFORM_DEFSPRITE_EP3;
 	sprite += animframe;
 
@@ -51,7 +53,7 @@ void CPlatform::process()
 			}
 			else
 			{
-				moveRight(PLATFORM_MOVE_SPD);
+				moveCarrierRight(PLATFORM_MOVE_SPD);
 			}
 		}
 		else if (movedir==LEFT)
@@ -64,7 +66,7 @@ void CPlatform::process()
 			}
 			else
 			{
-				moveLeft(PLATFORM_MOVE_SPD);
+				moveCarrierLeft(PLATFORM_MOVE_SPD);
 			}
 		}
 		break;
@@ -77,16 +79,3 @@ void CPlatform::process()
 		break;
 	}
 }
-
-void CPlatform::getTouchedBy(CSpriteObject &theObject)
-{
-	// push player horizontally
-	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
-	{
-		if(player->pfalling or !player->blockedd or !player->pSupportedbyobject)
-			player->push(*this);
-		else if( state == PLATFORM_MOVE )
-			player->moveXDir( (movedir==LEFT) ? -PLATFORM_MOVE_SPD : PLATFORM_MOVE_SPD);
-	}
-}
-

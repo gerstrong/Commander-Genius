@@ -13,7 +13,7 @@ keenonsameleveltimer(0),
 about_to_charge(0),
 walkframe(0),
 dist_traveled(0),
-movedir(0),
+movedir(CENTER),
 m_hardmode(g_pBehaviorEngine->mDifficulty==HARD)
 {
 	canbezapped = true;
@@ -123,8 +123,10 @@ void CGarg::process()
 		if (looktimes>GARG_NUM_LOOKS)
 		{			
 			if (!about_to_charge && rnd()%3==1)
-				// 25% prob, go the other way (but always charge towards player)
-				movedir ^= 1;
+			{
+				// 25% prob, go the other way (but always charge towards player)				
+				movedir = (movedir == LEFT) ? RIGHT : LEFT;
+			}
 
 			// however if we're blocked on one side we must go the other way
 			if (blockedl)

@@ -121,7 +121,9 @@ void CScrub::walkLeft(int mx, int my)
 	}
 	else
 	{
-		moveCarrierLeft(SCRUB_WALK_SPEED);
+		moveCarrierLeft(SCRUB_WALK_SPEED);		
+		processMove(0,(2<<STC));
+		performCollisions();
 
 		if(!blockedd)
 		{
@@ -238,10 +240,12 @@ void CScrub::walkUp()
 		if( !blockedl )
 		{	// Move Left!
 			yDirection = 0;
-			xDirection = -1;
+			xDirection = LEFT;
 			sprite = SCRUB_WALK_LEFT + walkframe;
-			processMove(-(2<<STC),0);
-			processMove(0,2<<STC);
+			performCollisions();
+			processMove(0,-(1<<STC));
+			processMove(-(4<<STC),0);
+			processMove(0,4<<STC);
 		}
 
 	}

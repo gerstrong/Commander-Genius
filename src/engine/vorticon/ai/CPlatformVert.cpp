@@ -25,16 +25,12 @@ CPlatform(p_map, x, y)
 	blockedd = true;
 	inhibitfall = 1;
 	canbezapped = 1;
-
-	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for( ; it_player != m_Player.end() ; it_player++ )
-	{
-		kickedplayer[it_player->m_index] = 0;
-	}*/
 }
 
 void CPlatformVert::process()
 {
+    CCarrier::process();
+    
 	sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + animframe;
 
 	if (animtimer > PLATVERT_ANIM_RATE)
@@ -58,26 +54,7 @@ void CPlatformVert::process()
 			}
 			else
 			{
-				moveUp(PLATVERT_MOVE_SPD);
-
-				/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
-				for( ; it_player != m_Player.end() ; it_player++ )
-				{
-					if( it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
-							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
-					{
-						if (!kickedplayer[it_player->m_index])
-						{
-							it_player->moveUp(PLATVERT_MOVE_SPD);
-						}
-						// kick player off if we're running him into the ceiling
-						if (it_player->blockedu)
-						{
-							cansupportplayer = 0;
-							kickedplayer[it_player->m_index] = 1;
-						}
-					}
-				}*/
+				moveCarrierUp(PLATVERT_MOVE_SPD);
 			}
 		}
 		else if (movedir==DOWN)
@@ -86,18 +63,7 @@ void CPlatformVert::process()
 				movedir = UP;
 			else
 			{
-				moveDown(PLATVERT_MOVE_SPD);
-
-				/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
-				for( ; it_player != m_Player.end() ; it_player++ )
-				{
-					if( it_player->pSupportedbyobject && it_player->pSupportedbyobject==this &&
-							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
-					{
-						if (!kickedplayer[it_player->m_index])
-							it_player->moveDown(PLATVERT_MOVE_SPD);
-					}
-				}*/
+			    moveCarrierDown(PLATVERT_MOVE_SPD);
 			}
 		}
 		break;
@@ -108,17 +74,5 @@ void CPlatformVert::process()
 		else
 			waittimer++;
 		break;
-	}
-}
-
-void CPlatformVert::getTouchedBy(CSpriteObject &theObject)
-{
-	// push player horizontally
-	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
-	{
-		if(player->pfalling or !player->pSupportedbyobject)
-			player->push(*this);
-		else if( state == PLATVERT_MOVE )
-			player->moveYDir( (movedir==UP) ? -PLATVERT_MOVE_SPD : PLATVERT_MOVE_SPD);
 	}
 }

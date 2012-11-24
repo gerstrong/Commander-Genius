@@ -63,7 +63,7 @@ private:
 	unsigned char walkframe;
 	unsigned int dist_traveled;
 
-	char movedir;
+	direction_t movedir;
 	bool m_hardmode;
 };
 
