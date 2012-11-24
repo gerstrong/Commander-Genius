@@ -8,23 +8,16 @@
 #ifndef CSCRUB_H_
 #define CSCRUB_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CPlayer.h"
+#include "engine/vorticon/ai/CCarrier.h"
 
-class CScrub : public CVorticonSpriteObject
+class CScrub : public CCarrier
 {
 public:
 	CScrub(CMap *p_map, Uint32 x, Uint32 y);
-	void getTouchedBy(CVorticonSpriteObject &theObject);
-	void draw();
+	
 	void process();
 
 private:
-
-	void moveCarrierLeft(const int amnt);
-	void moveCarrierRight(const int amnt);
-	void moveCarrierUp(const int amnt);
-	void moveCarrierDown(const int amnt);
     
 	void walkLeft(int mx, int my);
 	void walkDown();
@@ -39,8 +32,6 @@ private:
 	unsigned char walkframe;
 	int scrubdie_inertia_y;
 	int fallspeed;
-
-	CPlayer *mpCarriedPlayer;
 };
 
 #endif /* CSCRUB_H_ */
