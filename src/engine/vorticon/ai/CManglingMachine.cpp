@@ -132,28 +132,28 @@ void CManglingMachine::process()
 
 void CManglingMachine::getTouchedBy(CSpriteObject &theObject)
 {
-	bool it_is_mortimer_machine = false;
-
-	it_is_mortimer_machine = (setype == SE_MORTIMER_LEG_LEFT)
-				|| (setype == SE_MORTIMER_LEG_RIGHT)
-				|| (setype == SE_MORTIMER_ARM)
-				|| (setype == SE_MORTIMER_SPARK);
-
-	if(it_is_mortimer_machine)
+    bool it_is_mortimer_machine = false;
+    
+    it_is_mortimer_machine = (setype == SE_MORTIMER_LEG_LEFT)
+			|| (setype == SE_MORTIMER_LEG_RIGHT)
+			|| (setype == SE_MORTIMER_ARM)
+			|| (setype == SE_MORTIMER_SPARK);
+    
+    if(it_is_mortimer_machine)
+    {
+	if (CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{
-		if (CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
-		{
-			player->kill();
-		}
+	    player->kill();
 	}
-
-	CVorticonSpriteObject *theVObjectPtr = dynamic_cast<CVorticonSpriteObject*>(&theObject);
-
-	if( ( setype == SE_MORTIMER_SPARK || setype == SE_MORTIMER_HEART ) &&
-			mHealthPoints>0 && theVObjectPtr->m_type == OBJ_RAY )
-	{
-		mHealthPoints--;
-	}
+    }
+    
+    CVorticonSpriteObject *theVObjectPtr = dynamic_cast<CVorticonSpriteObject*>(&theObject);
+    
+    if( ( setype == SE_MORTIMER_SPARK || setype == SE_MORTIMER_HEART ) &&
+	mHealthPoints>0 && theVObjectPtr->m_type == OBJ_RAY )
+    {
+	mHealthPoints--;
+    }
 
 	
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))

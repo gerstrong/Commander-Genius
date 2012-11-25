@@ -16,14 +16,6 @@ CBallJack::CBallJack(CMap *pmap, Uint32 x, Uint32 y, object_t type):
 CVorticonSpriteObject(pmap, x, y, type)
 {
     char tempxdir, tempydir;
-	/*unsigned int px = m_Player.at(0).getXMidPos();
-	unsigned int py = m_Player.at(0).getYMidPos();
-	
-	if(px<getXMidPos()) tempxdir=LEFT;
-	else tempxdir = RIGHT;
-
-	if(py<getYMidPos()) tempydir=UP;
-	else tempydir = DOWN;*/
 
 	if (tempxdir == LEFT && tempydir == UP) m_Direction = DUPLEFT;
 	else if (tempxdir == RIGHT && tempydir == UP) m_Direction = DUPRIGHT;
@@ -47,33 +39,32 @@ CVorticonSpriteObject(pmap, x, y, type)
 	performCollisions();
 }
 
+void CBallJack::getTouchedBy(CSpriteObject &theObject)
+{
+    if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+    {
+	if (m_type==OBJ_BALL)
+	{
+	    player->push(*this);
+	    
+	    switch(m_Direction)
+	    {
+		case DUPRIGHT: m_Direction = DUPLEFT; break;
+		case DUPLEFT: m_Direction = DUPRIGHT; break;
+		case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
+		case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
+		default: break;
+	    }
+	}
+	else
+	{
+	    player->kill();	
+	}
+    }
+}
+
 void CBallJack::process()
 {
-	/*if (touchPlayer)
-	{
-		if (m_type==OBJ_BALL)
-		{
-			if (m_Player[touchedBy].getXPosition() < getXLeftPos())
-			{
-				m_Player[touchedBy].push(*this);
-			}
-			else
-			{
-				m_Player[touchedBy].push(*this);
-			}
-
-			switch(m_Direction)
-			{
-			case DUPRIGHT: m_Direction = DUPLEFT; break;
-			case DUPLEFT: m_Direction = DUPRIGHT; break;
-			case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
-			case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
-			default: break;
-			}
-		}
-		// else m_Player[touchedBy].kill();
-	}*/
-
 	switch(m_Direction)
 	{
 	case DUPLEFT:
