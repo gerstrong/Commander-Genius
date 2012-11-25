@@ -167,6 +167,12 @@ struct EventSpawnObject : CEvent {
 					  pObject( pObject ) {}
 };
 
+/**
+ *	\description This event will erase all the enemies shots, etc, except the player
+ */
+struct EventEraseAllEnemies : CEvent {};
+
+
 
 struct EventSpawnFoot : CEvent {
 

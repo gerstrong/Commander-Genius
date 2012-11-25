@@ -98,6 +98,20 @@ void CVorticonSpriteObjectAI::process()
 	    EventContainer.pop_Event();
 	}
 
+	if( EventContainer.occurredEvent<EventEraseAllEnemies>() )
+	{
+	    for( auto &obj : m_Objvect )
+	    {
+		// Only remove non-player objects!
+		if( dynamic_cast<CPlayer*>(obj.get()) == nullptr )
+		{
+		    obj->exists = false;
+		}
+	    }
+	    EventContainer.pop_Event();
+	}
+		
+
 	if( !m_Objvect.empty() )
 	{	
 	    // Try always to remove the last objects if they aren't used anymore!

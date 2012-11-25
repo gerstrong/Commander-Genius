@@ -62,6 +62,7 @@
 #define RIGHTLEG_MOVE_SPEED   20
 #define RIGHTLEG_WAIT_TIME    40
 
+static int sparksleft = 0;
 
 int mortimer_surprisedcount = 0;
 
@@ -88,10 +89,11 @@ timer(0)
 		inhibitfall = 1;
 		break;
 	case SE_MORTIMER_SPARK:
-		state = MSPARK_IDLE;
-		frame = 0;
-		canbezapped = true;
-		break;
+	    sparksleft++;
+	    state = MSPARK_IDLE;
+	    frame = 0;
+	    canbezapped = true;
+	    break;
 	case SE_MORTIMER_HEART:
 		frame = 0;
 		state = HEART_IDLE;
@@ -112,6 +114,15 @@ timer(0)
 
 }
 
+CManglingMachine::~CManglingMachine()
+{
+    if(setype == SE_MORTIMER_SPARK)
+    {
+	if(sparksleft>=0)
+	    sparksleft--;
+    }
+}
+
 
 void CManglingMachine::process()
 {
@@ -122,15 +133,12 @@ void CManglingMachine::process()
 	case SE_MORTIMER_LEG_RIGHT: se_mortimer_leg_right(); break;
 	case SE_MORTIMER_SPARK: se_mortimer_spark(); break;
 	case SE_MORTIMER_RANDOMZAPS: se_mortimer_randomzaps(); break;
-
-	default:
-		g_pLogFile->ftextOut("Invalid sector effector type %d", setype);
-		break;
+	default:break;
 	}
 
 }
 
-void CManglingMachine::getTouchedBy(CSpriteObject &theObject)
+void CManglingMachine::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     bool it_is_mortimer_machine = false;
     
@@ -153,21 +161,11 @@ void CManglingMachine::getTouchedBy(CSpriteObject &theObject)
 	mHealthPoints>0 && theVObjectPtr->m_type == OBJ_RAY )
     {
 	mHealthPoints--;
-    }
-
-	
-	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
-	{
-	    if( setype == SE_MORTIMER_ZAPSUP && state == ZAPSUP_ABOUTTOFADEOUT )
-	    {
-		player->level_done = LEVEL_DONE_FADEOUT;
-		exists = false;
-		return;
-	    }
-	}
+	sparksleft--;
+    }	
 }
 
-bool CManglingMachine::isNearby(CSpriteObject &theObject) 
+bool CManglingMachine::isNearby(CVorticonSpriteObject &theObject) 
 {     
 	if(setype == SE_MORTIMER_SPARK && state == MSPARK_IDLE)
 	{
@@ -186,19 +184,20 @@ bool CManglingMachine::isNearby(CSpriteObject &theObject)
 				}
 			    }
 			}
-			
+		}
+		
+		if(sparksleft == 0)
+		{
 			// keen just destroyed the last spark
 
 			// destroy mortimer's arms
 			sprite = BLANKSPRITE;
 
 			// destroy the sector effectors controlling his arms
+			if(CManglingMachine* SE = dynamic_cast<CManglingMachine*>(&theObject))
 			{
-			    if(CManglingMachine* SE = dynamic_cast<CManglingMachine*>(&theObject))
-			    {
-				if (SE->setype==SE_MORTIMER_ARM)
-					SE->exists = false;
-			    }
+			    if (SE->setype==SE_MORTIMER_ARM)
+				SE->exists = false;
 			}
 			
 			// go into a state where we'll destroy mortimer's arms
@@ -216,6 +215,7 @@ bool CManglingMachine::isNearby(CSpriteObject &theObject)
 	default: break;
 	}
 
+	
     
     return true;
 }
@@ -387,14 +387,11 @@ void CManglingMachine::se_mortimer_spark()
 
 void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 {
-    int x;
-    
     CManglingMachine* SE = dynamic_cast<CManglingMachine*>(SE);
-    CPlayer* player = dynamic_cast<CPlayer*>(SE);
+    CPlayer* player = dynamic_cast<CPlayer*>(obj);
     
     if(player)
-    {
-	
+    {	
 	switch(state)
 	{
 	    case HEART_ZAPSRUNUP:
@@ -426,7 +423,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 	    case HEART_ZAPSRUNDOWN:
 		if (!timer)
 		{
-		    for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
+		    for(int x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		    {
 			// delete the tile
 			mp_Map->setTile(x,my,169);
@@ -446,8 +443,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 		}
 		else timer--;
 		break;
-	}
-	
+	}	
     }
     else
     {
@@ -474,7 +470,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 		    
 		    // kill all enemies
 		    CManglingMachine* SE = dynamic_cast<CManglingMachine*>(SE);
-		    CPlayer* player = dynamic_cast<CPlayer*>(SE);
+		    CPlayer* player = dynamic_cast<CPlayer*>(obj);
 		    
 		    if(SE)
 		    {
@@ -530,6 +526,7 @@ void CManglingMachine::se_mortimer_zapsup(CPlayer *player)
 			if (destroytiles)
 			{
 				// last wave, prepare to initiate level fadeout
+				g_pBehaviorEngine->EventList().add(new EventEraseAllEnemies());
 				timer = TIME_AFTER_DESTROY_BEFORE_FADEOUT;
 				state = ZAPSUP_ABOUTTOFADEOUT;
 				player->pfalling = true;
@@ -544,6 +541,15 @@ void CManglingMachine::se_mortimer_zapsup(CPlayer *player)
 		else my--;
 	}
 	else timer--;
+	
+
+	if( state == ZAPSUP_ABOUTTOFADEOUT )
+	{
+	    player->level_done = LEVEL_DONE_FADEOUT;
+	    exists = false;
+	    return;
+	}
+	
 }
 
 void CManglingMachine::se_mortimer_leg_left()

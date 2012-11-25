@@ -15,12 +15,7 @@ unsigned int rnd(void);
 CBallJack::CBallJack(CMap *pmap, Uint32 x, Uint32 y, object_t type):
 CVorticonSpriteObject(pmap, x, y, type)
 {
-    char tempxdir, tempydir;
-
-	if (tempxdir == LEFT && tempydir == UP) m_Direction = DUPLEFT;
-	else if (tempxdir == RIGHT && tempydir == UP) m_Direction = DUPRIGHT;
-	else if (tempxdir == LEFT && tempydir == DOWN) m_Direction = DDOWNLEFT;
-	else if (tempxdir == RIGHT && tempydir == DOWN) m_Direction = DDOWNRIGHT;
+	m_Direction = DUPLEFT;
 
 	animframe = 0;
 	animtimer = 0;
