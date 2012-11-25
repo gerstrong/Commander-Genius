@@ -1,14 +1,12 @@
 
 #include "CRay.h"
-#include "CSectorEffector.h"
+#include "CManglingMachine.h"
 
 #include "engine/spritedefines.h"
 #include "sdl/sound/CSound.h"
 #include "CLogFile.h"
 #include "graphics/effects/CVibrate.h"
 #include "common/CBehaviorEngine.h"
-
-// TODO: It should be renamed to Mangling Machine
 
 // Arm parts
 #define ARM_GO          0
@@ -67,7 +65,7 @@
 
 int mortimer_surprisedcount = 0;
 
-CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type) :
+CManglingMachine::CManglingMachine(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type) :
 CVorticonSpriteObject(p_map, x, y, OBJ_SECTOREFFECTOR),
 setype(se_type),
 timer(0)
@@ -115,7 +113,7 @@ timer(0)
 }
 
 
-void CSectorEffector::process()
+void CManglingMachine::process()
 {
 	switch(setype)
 	{
@@ -132,7 +130,7 @@ void CSectorEffector::process()
 
 }
 
-void CSectorEffector::getTouchedBy(CSpriteObject &theObject)
+void CManglingMachine::getTouchedBy(CSpriteObject &theObject)
 {
 	bool it_is_mortimer_machine = false;
 
@@ -169,7 +167,7 @@ void CSectorEffector::getTouchedBy(CSpriteObject &theObject)
 	}
 }
 
-bool CSectorEffector::isNearby(CSpriteObject &theObject) 
+bool CManglingMachine::isNearby(CSpriteObject &theObject) 
 {     
 	if(setype == SE_MORTIMER_SPARK && state == MSPARK_IDLE)
 	{
@@ -177,7 +175,7 @@ bool CSectorEffector::isNearby(CSpriteObject &theObject)
 		{	
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms			    
-			if(CSectorEffector* SE = dynamic_cast<CSectorEffector*>(&theObject))
+			if(CManglingMachine* SE = dynamic_cast<CManglingMachine*>(&theObject))
 			{
 			    if (SE->setype==SE_MORTIMER_SPARK && SE->exists)
 			    {
@@ -196,7 +194,7 @@ bool CSectorEffector::isNearby(CSpriteObject &theObject)
 
 			// destroy the sector effectors controlling his arms
 			{
-			    if(CSectorEffector* SE = dynamic_cast<CSectorEffector*>(&theObject))
+			    if(CManglingMachine* SE = dynamic_cast<CManglingMachine*>(&theObject))
 			    {
 				if (SE->setype==SE_MORTIMER_ARM)
 					SE->exists = false;
@@ -222,7 +220,7 @@ bool CSectorEffector::isNearby(CSpriteObject &theObject)
     return true;
 }
 
-void CSectorEffector::se_mortimer_arm()
+void CManglingMachine::se_mortimer_arm()
 {
 	int mx,my;
 
@@ -318,7 +316,7 @@ void CSectorEffector::se_mortimer_arm()
 }
 
 
-void CSectorEffector::se_mortimer_spark()
+void CManglingMachine::se_mortimer_spark()
 {
 	int x,mx;
 
@@ -387,11 +385,11 @@ void CSectorEffector::se_mortimer_spark()
 }
 
 
-void CSectorEffector::se_mortimer_heart(CVorticonSpriteObject *obj)
+void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 {
     int x;
     
-    CSectorEffector* SE = dynamic_cast<CSectorEffector*>(SE);
+    CManglingMachine* SE = dynamic_cast<CManglingMachine*>(SE);
     CPlayer* player = dynamic_cast<CPlayer*>(SE);
     
     if(player)
@@ -405,7 +403,7 @@ void CSectorEffector::se_mortimer_heart(CVorticonSpriteObject *obj)
 		int x = getXPosition();
 		int y = getYPosition();
 		
-		CSectorEffector *newobject = new CSectorEffector(mp_Map, 
+		CManglingMachine *newobject = new CManglingMachine(mp_Map, 
 								 x, y,SE_MORTIMER_ZAPSUP);
 		newobject->my = MORTIMER_MACHINE_YEND;
 		newobject->timer = 0;
@@ -475,7 +473,7 @@ void CSectorEffector::se_mortimer_heart(CVorticonSpriteObject *obj)
 		    g_pGfxEngine->setupEffect(new CVibrate(10000));
 		    
 		    // kill all enemies
-		    CSectorEffector* SE = dynamic_cast<CSectorEffector*>(SE);
+		    CManglingMachine* SE = dynamic_cast<CManglingMachine*>(SE);
 		    CPlayer* player = dynamic_cast<CPlayer*>(SE);
 		    
 		    if(SE)
@@ -501,7 +499,7 @@ void CSectorEffector::se_mortimer_heart(CVorticonSpriteObject *obj)
 }
 
 #define TIME_AFTER_DESTROY_BEFORE_FADEOUT       500
-void CSectorEffector::se_mortimer_zapsup(CPlayer *player)
+void CManglingMachine::se_mortimer_zapsup(CPlayer *player)
 {
     if(player == nullptr)
 	return;
@@ -548,7 +546,7 @@ void CSectorEffector::se_mortimer_zapsup(CPlayer *player)
 	else timer--;
 }
 
-void CSectorEffector::se_mortimer_leg_left()
+void CManglingMachine::se_mortimer_leg_left()
 {
 	int mx,my;
 
@@ -639,7 +637,7 @@ void CSectorEffector::se_mortimer_leg_left()
 	}
 }
 
-void CSectorEffector::se_mortimer_leg_right()
+void CManglingMachine::se_mortimer_leg_right()
 {
 	int mx,my;
 
@@ -732,7 +730,7 @@ void CSectorEffector::se_mortimer_leg_right()
 
 #define NUM_RANDOM_ZAPS         30
 #define TIME_BETWEEN_ZAPS       2
-void CSectorEffector::se_mortimer_randomzaps()
+void CManglingMachine::se_mortimer_randomzaps()
 {
 	int x,y;
 
@@ -758,7 +756,7 @@ void CSectorEffector::se_mortimer_randomzaps()
 	else timer--;
 }
 
-void CSectorEffector::set_mortimer_surprised(bool yes)
+void CManglingMachine::set_mortimer_surprised(bool yes)
 {
 	if (yes)
 	{

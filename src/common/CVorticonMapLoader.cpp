@@ -22,7 +22,7 @@
 #include "engine/vorticon/ai/CGarg.h"
 #include "engine/vorticon/ai/CAutoRay.h"
 #include "engine/vorticon/ai/CVorticon.h"
-#include "engine/vorticon/ai/CSectorEffector.h"
+#include "engine/vorticon/ai/CManglingMachine.h"
 #include "engine/vorticon/ai/CVortiKid.h"
 #include "engine/vorticon/ai/CVorticonElite.h"
 #include "engine/vorticon/ai/CVortiMom.h"
@@ -491,11 +491,11 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 				}
 				break;
 			case 12:   // sparks in mortimer's machine
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,SE_MORTIMER_SPARK);
+				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF,SE_MORTIMER_SPARK);
 				enemyobject->solid = false;
 				break;
 			case 13:   // mortimer's heart
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF,SE_MORTIMER_HEART);
+				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF,SE_MORTIMER_HEART);
 				enemyobject->solid = false;
 				break;
 			case 14:   // right-pointing raygun (ep3)
@@ -505,15 +505,15 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 				enemyobject = new CAutoRay(mpMap.get(), x<<CSF, y<<CSF, CAutoRay::VERTICAL);
 				break;
 			case 16:  // mortimer's arms
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_ARM );
+				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_ARM );
 				enemyobject->solid = false;
 				break;
 			case 17:  // mortimer's left leg
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_LEG_LEFT );
+				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_LEG_LEFT );
 				enemyobject->solid = false;
 				break;
 			case 18:  // mortimer's right leg
-				enemyobject = new CSectorEffector( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_LEG_RIGHT );
+				enemyobject = new CManglingMachine( mpMap.get(), x<<CSF, y<<CSF, SE_MORTIMER_LEG_RIGHT );
 				enemyobject->solid = false;
 				break;
 			default:

@@ -7,7 +7,7 @@
 
 #include "CPlayer.h"
 
-#include "engine/vorticon/ai/CSectorEffector.h"
+#include "engine/vorticon/ai/CManglingMachine.h"
 #include "engine/vorticon/ai/CRay.h"
 #include "engine/vorticon/ai/CBridges.h"
 #include "engine/spritedefines.h"

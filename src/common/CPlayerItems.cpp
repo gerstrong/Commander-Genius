@@ -14,7 +14,7 @@
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
 #include "engine/spritedefines.h"
-#include "engine/vorticon/ai/CSectorEffector.h"
+#include "engine/vorticon/ai/CManglingMachine.h"
 #include "engine/vorticon/ai/CDoor.h"
 #include "engine/vorticon/ai/CRisingPoints.h"
 #include "engine/vorticon/ai/CAnkhShield.h"
