@@ -66,24 +66,30 @@ static int sparksleft = 0;
 
 int mortimer_surprisedcount = 0;
 
+bool armsDestroy = false;
+bool legsDestroy = false;
+
 CManglingMachine::CManglingMachine(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type) :
 CVorticonSpriteObject(p_map, x, y, OBJ_SECTOREFFECTOR),
 setype(se_type),
 timer(0)
-{
+{	
 	inhibitfall = true;
 
 	switch(setype)
 	{
 	case SE_MORTIMER_ARM:
+		armsDestroy = false;
 		dir = DOWN;
 		state = ARM_GO;
 		break;
 	case SE_MORTIMER_LEG_LEFT:
+		legsDestroy = false;
 		dir = UP;
 		state = LEG_GO;
 		break;
 	case SE_MORTIMER_LEG_RIGHT:
+		legsDestroy = false;
 		dir = UP;
 		state = LEG_GO;
 		inhibitfall = 1;
@@ -189,17 +195,8 @@ bool CManglingMachine::isNearby(CVorticonSpriteObject &theObject)
 		if(sparksleft == 0)
 		{
 			// keen just destroyed the last spark
-
-			// destroy mortimer's arms
 			sprite = BLANKSPRITE;
-
-			// destroy the sector effectors controlling his arms
-			if(CManglingMachine* SE = dynamic_cast<CManglingMachine*>(&theObject))
-			{
-			    if (SE->setype==SE_MORTIMER_ARM)
-				SE->exists = false;
-			}
-			
+			armsDestroy = true;
 			// go into a state where we'll destroy mortimer's arms
 			state = MSPARK_DESTROYARMS;
 			my = MORTIMER_ARMS_YSTART;
@@ -223,6 +220,12 @@ bool CManglingMachine::isNearby(CVorticonSpriteObject &theObject)
 void CManglingMachine::se_mortimer_arm()
 {
 	int mx,my;
+	
+	if(armsDestroy)
+	{
+	  return;
+	}
+	
 
 	switch(state)
 	{
@@ -318,8 +321,6 @@ void CManglingMachine::se_mortimer_arm()
 
 void CManglingMachine::se_mortimer_spark()
 {
-	int x,mx;
-
 	switch(state)
 	{
 	case MSPARK_IDLE:
@@ -346,9 +347,9 @@ void CManglingMachine::se_mortimer_spark()
 		if (!timer)
 		{
 			playSound(SOUND_SHOT_HIT);
-			for(x=0;x<3;x++)
+			for(int x=0;x<3;x++)
 			{
-				mx = MORTIMER_LEFT_ARM_X+x;
+				int mx = MORTIMER_LEFT_ARM_X+x;
 				if (mp_Map->at(mx, my) != 169)
 				{
 					mp_Map->setTile(mx, my, 169, true);
@@ -375,6 +376,7 @@ void CManglingMachine::se_mortimer_spark()
 			my++;
 			if (my > MORTIMER_ARMS_YEND)
 			{
+	  			// destroy mortimer's arms
 				exists = false;
 				set_mortimer_surprised(false);
 			}
@@ -462,13 +464,13 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 		
 		if (mHealthPoints <= 0)
 		{
+		    legsDestroy = true;
 		    sprite = BLANKSPRITE;
 		    set_mortimer_surprised(true);
 		    
 		    // destroy Mortimer's machine
 		    g_pGfxEngine->setupEffect(new CVibrate(10000));
 		    
-		    // kill all enemies
 		    CManglingMachine* SE = dynamic_cast<CManglingMachine*>(SE);
 		    CPlayer* player = dynamic_cast<CPlayer*>(obj);
 		    
@@ -555,6 +557,10 @@ void CManglingMachine::se_mortimer_zapsup(CPlayer *player)
 void CManglingMachine::se_mortimer_leg_left()
 {
 	int mx,my;
+	
+	if(legsDestroy)
+	  exists = false;
+
 
 	switch(state)
 	{
@@ -646,6 +652,10 @@ void CManglingMachine::se_mortimer_leg_left()
 void CManglingMachine::se_mortimer_leg_right()
 {
 	int mx,my;
+	
+	if(legsDestroy)
+	  exists = false;
+
 
 	switch(state)
 	{
