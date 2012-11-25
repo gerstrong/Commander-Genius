@@ -118,7 +118,7 @@ CManglingMachine::~CManglingMachine()
 {
     if(setype == SE_MORTIMER_SPARK)
     {
-	if(sparksleft>=0)
+	if(sparksleft>0)
 	    sparksleft--;
     }
 }

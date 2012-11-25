@@ -44,7 +44,9 @@ public:
 	bool playing()
 	{
 		if(mpPlayer)
-			return mpPlayer->playing();
+		{
+		  return mpPlayer->playing();
+		}
 		return false;
 	}
 

@@ -20,10 +20,13 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 {
 	std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
 	imfPlayer->loadMusicTrack(ExeFile, track);
-	mpPlayer = imfPlayer;
-
-	if(!mpPlayer->open())
+	
+	if(!imfPlayer->open())
+	{
 	    return false;
+	}
+	
+	mpPlayer = imfPlayer;
 
 	return true;
 }
@@ -32,11 +35,14 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
     std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
-    mpPlayer = imfPlayer;
     imfPlayer->loadMusicForLevel(ExeFile, level);
 
-    if(!mpPlayer->open())
+    if(!imfPlayer->open())
+    {
 	return false;
+    }
+    
+    mpPlayer = imfPlayer;
 
     return true;
 }
@@ -55,22 +61,24 @@ bool CMusic::load(const std::string &musicfile)
 		if(strcasecmp(extension.c_str(),"imf") == 0)
 		{
 		    std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(audioSpec) );
-		    imfPlayer->loadMusicFromFile(musicfile);
+		    if(!imfPlayer->loadMusicFromFile(musicfile))
+		      return false;
 		    mpPlayer = imfPlayer;
 		}
 		else if(strcasecmp(extension.c_str(),"ogg") == 0)
 		{
 #if defined(OGG) || defined(TREMOR)
-			std::shared_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
-			mpPlayer = oggPlayer;
+		    std::shared_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
+		    mpPlayer = oggPlayer;
 #else
-			g_pLogFile->ftextOut("Music Manager: Neither OGG or TREMOR-Support are disabled! Please use another build<br>");
-			return false;
+		    g_pLogFile->ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");		    
+		    return false;
 #endif
 		}
 
 		if(!mpPlayer->open())
 		{
+		  mpPlayer.reset();
 			g_pLogFile->textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
 			return false;
 		}
@@ -78,7 +86,9 @@ bool CMusic::load(const std::string &musicfile)
 
 	}
 	else
+	{
 		g_pLogFile->textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
+	}
 	
 	return false;
 }
@@ -86,7 +96,9 @@ bool CMusic::load(const std::string &musicfile)
 void CMusic::reload()
 {
 	if(!mpPlayer)
+	{
 		return;
+	}
 
 	mpPlayer->reload();
 }
@@ -94,7 +106,9 @@ void CMusic::reload()
 void CMusic::play()
 {
 	if(!mpPlayer)
+	{
 		return;
+	}
 
 	mpPlayer->play(true);
 }
