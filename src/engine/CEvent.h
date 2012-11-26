@@ -55,9 +55,7 @@ struct EventExitLevelWithFoot : CEvent {
 };
 
 
-struct EventRestartLevel : CEvent {
-
-};
+struct EventRestartLevel : CEvent {};
 
 
 struct EventPlayerEndLevel : CEvent {

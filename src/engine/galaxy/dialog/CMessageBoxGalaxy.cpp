@@ -32,13 +32,13 @@ mText(Text)
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
 	mMBRect.x = (320-mMBRect.w)/2;
 	mMBRect.y = (200-mMBRect.h)/2;
-
-	mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-	mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
 }
 
 void CMessageBoxGalaxy::init()
-{
+{    
+    	mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
+	mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
+    
 	initGalaxyFrame();
 
 	SDL_Rect rect = mMBRect;
@@ -99,23 +99,11 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 
 	// Lower Right corner
 	Tilemap.drawTile(dst, rect.w, rect.h, 8);
-
 }
 
 void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 {
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
-
-	// Set the proper Font colors
-	//g_pGfxEngine->getFont(FONT_ID).setBGColour(sfc->format, 0xFFFFFFFF);
-	//g_pGfxEngine->getFont(FONT_ID).setFGColour(sfc->format, 0xFF000000);
-
-	// Draw the Text on our surface
-	/*for( size_t i=0 ; i<m_Lines.size() ; i++)
-		g_pGfxEngine->getFont(FONT_ID).drawFont(sfc, m_Lines[i], m_boxrect.x+m_TextPos.x, m_boxrect.y+(i*m_text_height+m_TextPos.y) );*/
-
-	//Font.drawFont(mpMBSurface.get(), mText, rect.x, rect.y);
-	//Font.drawFont(mpMBSurface.get(), "Loading!", 16, 16);
 
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 

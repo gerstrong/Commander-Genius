@@ -402,14 +402,16 @@ void CPlayerBase::processDead()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	
 	// TODO: This commented out Message needs to return.
-	/*std::string loosemsg = "You didn't make it past\n";
-	loosemsg 			+= mp_Map->getLevelName();
+	std::string loosemsg  = "You didn't make it past\n";
+		    loosemsg += mp_Map->getLevelName();
 	EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
 	pdialogevent->addOption("Try Again", new EventRestartLevel() );
-	pdialogevent->addOption("Exit to World Map", new EventExitLevel(mp_Map->getLevel(), false) );
-	EventContainer.add( pdialogevent );*/
+	
+	std::string exitMsg = "Exit to " + g_pBehaviorEngine->mapLevelName;
+	pdialogevent->addOption(exitMsg, new EventExitLevel(mp_Map->getLevel(), false) );
+	EventContainer.add( pdialogevent );
 
-	EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
+	//EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
 
 	m_dying = false;
 	dead = true;

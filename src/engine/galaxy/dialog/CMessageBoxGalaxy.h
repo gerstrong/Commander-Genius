@@ -22,7 +22,6 @@ public:
 	 * \param Text 				Message to be shown
 	 */
 	CMessageBoxGalaxy(const std::string& Text);
-	virtual ~CMessageBoxGalaxy() {};
 
 	virtual void init();
 
@@ -41,7 +40,7 @@ public:
 protected:
 
 	void initGalaxyFrame();
-	void initText(const SDL_Rect &rect);
+	virtual void initText(const SDL_Rect &rect);
 
 
 	bool mMustClose;

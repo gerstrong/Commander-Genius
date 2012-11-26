@@ -276,12 +276,15 @@ void CPlayGameGalaxy::process()
 		mMessageBoxes.push_back( move(pMsgBox) );
 		eventContainer.pop_Event();
 	}
-	/*else if( EventSendSelectionDialogMsg* ev = EventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
+	else if( EventSendSelectionDialogMsg* ev = eventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
 	{
 		g_pMusicPlayer->stop();
-		mMessageBoxes.push_back( new CMessageBoxSelection( ev->Message, ev->Options ) );
-		EventContainer.pop_Event();
-	}*/
+		std::unique_ptr<CMessageBoxSelection> pMsgBox( new CMessageBoxSelection( ev->Message, ev->Options ) );
+		pMsgBox->init();
+		
+		mMessageBoxes.push_back( move(pMsgBox) );
+		eventContainer.pop_Event();
+	}
 
 
 	if(mMessageBoxes.empty())

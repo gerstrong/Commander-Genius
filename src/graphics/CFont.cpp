@@ -222,7 +222,6 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 
 
 
-
 unsigned int CFont::getPixelTextWidth( const std::string& text )
 {
 	unsigned int c = 0, width = 0, len = 0;
@@ -314,7 +313,7 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
 {
 	unsigned int i,x=xoff,y=yoff;
-
+	
 	if(text.size() != 0)
 	{
 		for(i=0;i<text.size();i++)
@@ -420,12 +419,25 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 {
 	Uint16 xmidpos = 0;
 	Uint16 ymidpos = 0;
+	
+	Uint16 ylineoff = yoff;
 
 	for( unsigned int i=0 ; i<text.size() ; i++)
+	{
 		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
+		
+		if ( endofText( text.substr(i) ) )
+		{
+		    xmidpos = (width-xmidpos)/2+x;
+		    ymidpos = ylineoff + (height - 8)/2;
+		    ylineoff += height;
 
+		    drawFont(dst, text, xmidpos, ymidpos, highlight);			
+		}
+	}
+	
 	xmidpos = (width-xmidpos)/2+x;
-	ymidpos = yoff + (height - 8)/2;
+	ymidpos = ylineoff + (height - 8)/2;
 
 	drawFont(dst, text, xmidpos, ymidpos, highlight);
 }

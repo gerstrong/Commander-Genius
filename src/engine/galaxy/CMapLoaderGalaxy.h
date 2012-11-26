@@ -33,6 +33,11 @@ public:
 	bool gotoNextSignature(std::ifstream &MapFile);
 	bool loadMap(CMap &Map, Uint8 level);
 	void spawnFoes(CMap &Map);
+	
+	std::string getLevelName()
+	{ return mLevelName; }
+	
+	
 	virtual CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
 	virtual ~CMapLoaderGalaxy() {}
 
@@ -46,6 +51,7 @@ protected:
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &m_ObjectPtr;
 	CInventory &m_Inventory;
 	stCheat &m_Cheatmode;
+	std::string mLevelName;
 };
 
 }

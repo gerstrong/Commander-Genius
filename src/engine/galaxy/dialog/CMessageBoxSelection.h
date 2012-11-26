@@ -12,38 +12,27 @@
 #include "engine/CEvent.h"
 
 
-
-/*class CMessageBoxSelection : public CBaseMenu
+class CMessageBoxSelection : public CMessageBoxGalaxy
 {
-
 public:
-	CMessageBoxSelection() :
-		CBaseMenu( CRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
-	{
-
-		mpMenuDialog->addControl( new CGUIButton( "Easy", new StartNewGameEvent(EASY) ) );
-		mpMenuDialog->addControl( new CGUIButton( "Normal", new StartNewGameEvent(NORMAL) ) );
-		mpMenuDialog->addControl( new CGUIButton( "Hard", new StartNewGameEvent(HARD) ) );
-
-	}
-};*/
-
-
-/*class CMessageBoxSelection : public CMessageBoxGalaxy
-{
-public:*/
 	/**
 	 * \brief This constructor creates a typical Keen 4 Message Box with some
 	 * 		  Options that can be selected
 	 * \param Text 				Message to be shown
 	 */
-	/*CMessageBoxSelection( const std::string& Text, const std::list<TextEventMatchOption> &Options );
+	CMessageBoxSelection( const std::string& Text, const std::list<TextEventMatchOption> &Options );
+	
+	void init();
 
 	std::list<TextEventMatchOption> m_Options;
 
 	int m_selection;
-
+	
 	void process();
-};*/
+	
+private:
+    	std::shared_ptr<SDL_Surface> mpSelSurface;	
+	
+};
 
 #endif /* CMESSAGEBOXSELECTION_H_ */

@@ -29,7 +29,7 @@ void CWorldMap::init()
 		MapLoader.reset( new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 
 	MapLoader->loadMap( mMap, 0 );
-
+	g_pBehaviorEngine->mapLevelName = MapLoader->getLevelName();
 
 	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;

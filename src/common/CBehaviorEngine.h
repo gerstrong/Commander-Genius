@@ -116,6 +116,7 @@ public:
 	{	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
 	
 	
+	std::string mapLevelName;
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];
@@ -130,6 +131,7 @@ private:
 	bool mPausedGamePlay;
 
 	EpisodeInfoStruct *pEpisodeInfo;
+		
 };
 
 #endif /* CBEHAVIORENGINE_H_ */
