@@ -61,7 +61,7 @@ class CVorticon : public CVorticonSpriteObject
 {
 public:
 	CVorticon( CMap *p_map, Uint32 x, Uint32 y, char hp=1, object_t objtype=OBJ_VORT);
-	bool isNearby(CVorticonSpriteObject &theObject);
+	virtual bool isNearby(CVorticonSpriteObject &theObject);
 	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void initiateJump();

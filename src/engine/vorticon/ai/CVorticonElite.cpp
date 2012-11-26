@@ -65,6 +65,62 @@ CVorticon(p_map, x, y, 4, OBJ_VORTELITE)
 		mHealthPoints--;
 }
 
+
+bool CVorticonElite::isNearby(CVorticonSpriteObject &theObject)
+{
+    if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+    {
+	if(state == VORTELITE_WALK)
+	{
+	    	// If Player is nearby, make vorticon go faster
+		if(getYDownPos() > player->getYDownPos()-(1<<CSF) and
+		   getYDownPos() < player->getYDownPos()+(1<<CSF) )
+		{
+			int dist;
+			if(getXMidPos() > player->getXMidPos())
+				dist = getXMidPos()-player->getXMidPos();
+			else
+				dist = player->getXMidPos()-getXMidPos();
+
+			if(dist < PLAYER_DISTANCE)
+				state = VORTELITE_CHARGE;
+		}
+		
+				dist_traveled++;
+
+		state = VORTELITE_WALK;
+
+		if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
+		{  // let's jump.
+			initiatejump();
+			return true;
+		}
+		else
+		{
+			if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
+			{
+				if (getProbability(VORTELITE_FIRE_PROB))
+				{  	// let's fire
+					// usually shoot toward keen
+					if (rand()%5 != 0)
+					{
+						if (getXPosition() < player->getXPosition())
+							movedir = RIGHT;
+						else
+							movedir = LEFT;
+					}
+					timer = 0;
+					state = VORTELITE_ABOUTTOFIRE;
+				}
+			}
+			else timesincefire++;
+		}
+	}
+    }
+    
+    return true;
+}
+
 void CVorticonElite::process()
 {
 	if (mHealthPoints <= 0 && state != VORTELITE_DYING)
@@ -92,50 +148,6 @@ void CVorticonElite::process()
 	{
 	case VORTELITE_CHARGE:
 	case VORTELITE_WALK:
-		dist_traveled++;
-
-		state = VORTELITE_WALK;
-
-		// If Player is nearby, make vorticon go faster
-		/*if(getYDownPos() > m_Player[0].getYDownPos()-(1<<CSF) and
-		   getYDownPos() < m_Player[0].getYDownPos()+(1<<CSF) )
-		{
-			int dist;
-			if(getXMidPos() > m_Player[0].getXMidPos())
-				dist = getXMidPos()-m_Player[0].getXMidPos();
-			else
-				dist = m_Player[0].getXMidPos()-getXMidPos();
-
-			if(dist < PLAYER_DISTANCE)
-				state = VORTELITE_CHARGE;
-		}*/
-
-
-		if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
-		{  // let's jump.
-			initiatejump();
-			goto reprocess;
-		}
-		else
-		{
-			if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
-			{
-				if (getProbability(VORTELITE_FIRE_PROB))
-				{  	// let's fire
-					// usually shoot toward keen
-					/*if (rand()%5 != 0)
-					{
-						if (getXPosition() < m_Player[0].getXPosition())
-							movedir = RIGHT;
-						else
-							movedir = LEFT;
-					}*/
-					timer = 0;
-					state = VORTELITE_ABOUTTOFIRE;
-				}
-			}
-			else timesincefire++;
-		}
 
 		if (movedir==LEFT)
 		{  // move left
@@ -241,15 +253,6 @@ void CVorticonElite::process()
 			frame = 0;
 			timesincefire = 0;
 			state = VORTELITE_WALK;
-			// head toward keen
-			/*if (getXPosition() < m_Player[0].getXPosition())
-			{
-				movedir = RIGHT;
-			}
-			else
-			{
-				movedir = LEFT;
-			}*/
 		}
 		else timer++;
 		break;

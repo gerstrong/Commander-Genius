@@ -23,6 +23,7 @@ class CVorticonElite : public CVorticon
 {
 public:
 	CVorticonElite( CMap *p_map, Uint32 x, Uint32 y );
+	bool isNearby(CVorticonSpriteObject &theObject);
 	void process();
 	void initiatejump();
 	void getShotByRay(object_t &obj_type);

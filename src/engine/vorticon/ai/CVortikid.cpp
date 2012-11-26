@@ -90,7 +90,7 @@ void CVortikid::process()
 	switch(state)
 	{
 	case BABY_DYING:
-		if ((xinertia < 0 && blockedl) ||\
+		if ((xinertia < 0 && blockedl) ||
 				(xinertia > 0 && blockedr))
 		{
 			xinertia = 0;
