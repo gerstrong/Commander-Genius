@@ -14,10 +14,14 @@
 
 const int FONT_ID = 0;
 
+const int BLEND_SPEED = 15;
+
 CMessageBoxSelection::CMessageBoxSelection( const std::string& Text, const std::list<TextEventMatchOption> &Options ) :
 CMessageBoxGalaxy(Text),
 m_Options(Options),
-m_selection(0)
+m_selection(0),
+blend(0),
+blendup(true)
 {
 	mText += "\n";
 	// Center that dialog box	
@@ -91,16 +95,28 @@ void CMessageBoxSelection::init()
 	SDL_BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
 	
 	
+	// Create the Border and with two Surfaces of different colors create the rectangle
 	SDL_Rect selRect;
+	SDL_Rect cutRect;
 	
 	selRect.x = selRect.y = 0;
-	selRect.w = selRect.h = 10;
-	
-    	mpSelSurface.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
-	mpSelSurface.reset(SDL_DisplayFormatAlpha( mpSelSurface.get() ), &SDL_FreeSurface);
-	
-	// TODO: Create the Border and with two Surfaces of different colors create the rectangle
-	SDL_FillRect( mpSelSurface.get(), &selRect, SDL_MapRGB( format, 0, 0, 0 ) );	
+	selRect.w = rect.w-rect.x;
+	selRect.h = 14;
+	cutRect = selRect;
+	cutRect.x += 2;
+	cutRect.y += 2;
+	cutRect.w -= 4;
+	cutRect.h -= 4;
+		
+    	mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
+	mpSelSurface1.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);
+	mpSelSurface2.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);	
+	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
+	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
+	SDL_SetColorKey( mpSelSurface1.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
+	SDL_SetColorKey( mpSelSurface2.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
+	SDL_FillRect( mpSelSurface1.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
+	SDL_FillRect( mpSelSurface2.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
 }
 
 
@@ -137,6 +153,29 @@ void CMessageBoxSelection::process()
 
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpMBSurface, NULL, &mMBRect ) );
 
+	
+	// now draw the glowing rectangle. It fades here!
+	
+	if(blendup)
+	    blend+= BLEND_SPEED;
+	else
+	    blend-= BLEND_SPEED;
+	
+	if(blend <= SDL_ALPHA_TRANSPARENT)
+	{
+	    blendup = true;
+	    blend = SDL_ALPHA_TRANSPARENT;
+	}
+
+	if(blend >= SDL_ALPHA_OPAQUE)
+	{
+	    blendup = false;
+	    blend = SDL_ALPHA_OPAQUE;
+	}
+	
+	SDL_SetAlpha( mpSelSurface1.get(), SDL_SRCALPHA, blend );
+	SDL_SetAlpha( mpSelSurface2.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE-blend );
+	
 	SDL_Rect cursorSel;
 	
 	cursorSel.w = cursorSel.h = 10;
@@ -147,8 +186,9 @@ void CMessageBoxSelection::process()
 	{
 		if(i == m_selection)
 		{
-		    cursorSel.y = mMBRect.y + 11*i + 46;
-		    g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSelSurface, NULL, &cursorSel ) );
+		    cursorSel.y = mMBRect.y + 12*i + 44;
+		    g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSelSurface1, NULL, &cursorSel ) );
+		    g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSelSurface2, NULL, &cursorSel ) );
 		}
 	}	
 }

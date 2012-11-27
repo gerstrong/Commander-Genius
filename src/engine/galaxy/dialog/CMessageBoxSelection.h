@@ -31,8 +31,10 @@ public:
 	void process();
 	
 private:
-    	std::shared_ptr<SDL_Surface> mpSelSurface;	
-	
+    	std::shared_ptr<SDL_Surface> mpSelSurface1;
+	std::shared_ptr<SDL_Surface> mpSelSurface2;
+	int blend;
+	bool blendup;
 };
 
 #endif /* CMESSAGEBOXSELECTION_H_ */
