@@ -411,8 +411,6 @@ void CPlayerBase::processDead()
 	pdialogevent->addOption(exitMsg, new EventExitLevel(mp_Map->getLevel(), false) );
 	EventContainer.add( pdialogevent );
 
-	//EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
-
 	m_dying = false;
 	dead = true;
 }

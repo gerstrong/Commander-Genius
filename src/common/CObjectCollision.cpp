@@ -272,7 +272,7 @@ bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx
 		for( int j=0 ; j<lh ; j+=res )
 		{
 			const signed char behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
-			if(behavior == Property || behavior == Property-128 ) // -128 for foreground properties
+			if( (behavior&0x7f) == Property )
 			{
 				lx = lx+i;
 				ly = ly+j;
@@ -322,7 +322,7 @@ bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, c
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	const int tileID = mp_Map->getPlaneDataAt(1, x, y);
 	const signed char behavior = Tile[tileID].behaviour;
-	if(behavior == Property || behavior == Property-128 ) // +128 for foreground properties
+	if( (behavior&0x7F) == Property ) // 0x7F is the mask which covers for foreground properties
 		return true;
 	else
 		return false;

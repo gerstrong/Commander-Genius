@@ -142,8 +142,8 @@ bool CPlayerLevel::verifyforPole()
 	const int yDir = (m_playcontrol[PA_Y] < 0) ? -1 : 1;
 
 	// Now check if Player has the chance to climb a pole or something similar
-	if( ( yDir < 0 && ( hitdetectWithTileProperty(1, l_x, l_y_up) & 0x7F) == 1 ) ||
-	    ( yDir > 0 && ( hitdetectWithTileProperty(1, l_x, l_y_down) & 0x7F) == 1 ) ) // 1 -> stands for pole Property
+	if( ( yDir < 0 && hitdetectWithTileProperty(1, l_x, l_y_up)  ) ||
+	    ( yDir > 0 && hitdetectWithTileProperty(1, l_x, l_y_down)  ) ) // 1 -> stands for pole Property
 	{
 		// Move to the proper X Coordinates, so Keen really grabs it!
 		moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
@@ -374,18 +374,16 @@ void CPlayerLevel::handleInputOnGround()
 
 bool CPlayerLevel::moonTiledetected()
 {
-    int l_x = getXLeftPos();
-    int r_x = getXRightPos();
-    int l_y = getYMidPos();
+    if( g_pBehaviorEngine->getEpisode() != 4 )
+	return false;
     
-    if( g_pBehaviorEngine->getEpisode() == 4 )
-    {
-	if( ( hitdetectWithTileProperty(1, l_x, l_y) & 0x7F) == 16 ||
-	    ( hitdetectWithTileProperty(1, r_x, l_y) & 0x7F) == 16 )
-	{
-		return true;
-	}
-    }
+    int lx = getXLeftPos()-(1<<STC);
+    int ly = getYUpPos()-(1<<STC);
+    int lw = getXRightPos()-getXLeftPos()+(2<<STC);
+    int lh = getYDownPos()+getYUpPos()+(2<<STC);
+    
+    if( hitdetectWithTilePropertyRect(16, lx, ly, lw, lh, 1<<STC) )
+	return true;
     
     return false;
 }
@@ -445,11 +443,11 @@ void CPlayerLevel::processStanding()
 			
 			if(moonTiledetected())
 			{
-			    setAction(A_KEEN_BOOK_OPEN);
+			    setAction(A_KEEN_MOON);			    
 			}
 			else 
 			{
-			    setAction(A_KEEN_MOON);
+			    setAction(A_KEEN_BOOK_OPEN);
 			}
 			user1 = 0;
 			return;
@@ -478,7 +476,10 @@ void CPlayerLevel::processReadingBook()
 
 
 void CPlayerLevel::processPants()
-{}
+{
+    if( getActionStatus(A_KEEN_STAND) )
+	setAction(A_KEEN_STAND);
+}
 
 
 
@@ -1822,7 +1823,7 @@ void CPlayerLevel::processPoleClimbingSit()
 	const int px = m_playcontrol[PA_X];
 	const int py = m_playcontrol[PA_Y];
 
-	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	Uint32 l_x = getXMidPos();
 	Uint32 l_y_up = getYUpPos();
 	Uint32 l_y_down = getYDownPos();
 
@@ -1923,7 +1924,7 @@ void CPlayerLevel::processPoleClimbingUp()
 
 void CPlayerLevel::processPoleClimbingDown()
 {
-	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+	Uint32 l_x = getXMidPos();
 	Uint32 l_y_up = getYUpPos()+(16<<STC);
 	Uint32 l_y_down = getYDownPos();
 

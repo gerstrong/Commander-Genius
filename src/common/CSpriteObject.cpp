@@ -60,11 +60,13 @@ void CSpriteObject::setScrPos( int px, int py )
 bool CSpriteObject::PoleCollision()
 {
     int l_x = getXLeftPos();
-    int r_x = getXRightPos();
+    int m_x = getXMidPos();
+    int r_x = getXRightPos();    
     int l_y = getYMidPos();
     
-    if( ( hitdetectWithTileProperty(1, l_x, l_y) & 0x7F) == 1 ||
-	( hitdetectWithTileProperty(1, r_x, l_y) & 0x7F) == 1 )
+    if( ( hitdetectWithTileProperty(1, l_x, l_y) )  ||
+	( hitdetectWithTileProperty(1, m_x, l_y) )  ||
+	( hitdetectWithTileProperty(1, r_x, l_y) ) )
 	return true;
     else
 	return false;
