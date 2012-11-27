@@ -186,11 +186,11 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 		// Create the foot with Smoke Puff
 		int posX = ev->x;
 		int posY = ev->y-(4<<CSF);
-		for( int x=0 ; x<3 ; x++ )
+		for( int x=-1 ; x<2 ; x++ )
 		{
-		    for( int y=0 ; y<3 ; y++ )
+		    for( int y=-1 ; y<2 ; y++ )
 		    {
-			std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+((y+1)<<CSF)));
+			std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+(y<<CSF) ));
 			mObjectPtr.push_back( smoke );
 		    }
 		}

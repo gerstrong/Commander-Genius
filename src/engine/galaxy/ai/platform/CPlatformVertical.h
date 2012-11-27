@@ -22,12 +22,17 @@ public:
 	CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
 			const direction_t vertdir, const int actionOffset);
 
+	void draw();
+	
 	void process();
 
 private:
 	std::shared_ptr<CEngineParticleSprites> mp_BoostEngObjLeft;
 	std::shared_ptr<CEngineParticleSprites> mp_BoostEngObjRight;
-
+	
+	bool drawFire;
+	int m_FireSprite;
+	int m_fireTimer;
 };
 
 

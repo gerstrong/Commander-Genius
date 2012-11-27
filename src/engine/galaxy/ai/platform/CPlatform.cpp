@@ -184,28 +184,22 @@ void CPlatform::draw()
     {
 	Uint16 showX = scrx+Sprite.getXOffset();
 	Uint16 showY = scry+Sprite.getYOffset();
-	if(m_blinktime > 0)
-	{
-	    Sprite.drawBlinkingSprite( showX, showY );
-	    m_blinktime--;
-	}
-	else
-	{
-	    Sprite.drawSprite( showX, showY, (255-transluceny) );
-	    if(mp_CarriedPlayer)
-	    {
-		CSprite &playSprite = g_pGfxEngine->getSprite(mp_CarriedPlayer->sprite);
-		int distx = mp_CarriedPlayer->getXPosition()-getXPosition();
-		int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
 		
-		distx = (distx>>STC);
-		distx += (playSprite.getXOffset()-Sprite.getXOffset());
-		disty = (disty>>STC);
-		disty += (playSprite.getYOffset()-Sprite.getYOffset());
-		
-		playSprite.drawSprite( showX+distx, showY+disty );
-	    }
+	Sprite.drawSprite( showX, showY, (255-transluceny) );
+	if(mp_CarriedPlayer)
+	{
+	    CSprite &playSprite = g_pGfxEngine->getSprite(mp_CarriedPlayer->sprite);
+	    int distx = mp_CarriedPlayer->getXPosition()-getXPosition();
+	    int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
+	    
+	    distx = (distx>>STC);
+	    distx += (playSprite.getXOffset()-Sprite.getXOffset());
+	    disty = (disty>>STC);
+	    disty += (playSprite.getYOffset()-Sprite.getYOffset());
+	    
+	    playSprite.drawSprite( showX+distx, showY+disty );
 	}
+	
 	hasbeenonscreen = true;
     }    
 }
