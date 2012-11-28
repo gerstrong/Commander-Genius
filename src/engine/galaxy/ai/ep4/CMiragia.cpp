@@ -21,7 +21,9 @@ m_fade(FADE_IN),
 m_waittime(WAIT_BETWEEN_FADE_TIME),
 m_empty(true)
 {
-	m_BBox(0,0, 6<<CSF, 4<<CSF);
+    solid = false;
+    sprite = BLANKSPRITE;
+    dontdraw = true;
 }
 
 /**
@@ -69,7 +71,9 @@ void CMiragia::process()
 				m_step--;
 		}
 		else
+		{
 			m_waittime--;
+		}
 	}
 }
 

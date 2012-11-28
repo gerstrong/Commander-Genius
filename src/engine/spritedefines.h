@@ -73,7 +73,7 @@
 
 // special sprites (they either weren't in the game originally,
 // or are used for internal engine stuff).
-#define BLANKSPRITE			(MAX_SPRITES-1)
+#define BLANKSPRITE		-1
 #define DOOR_YELLOW_SPRITE	(MAX_SPRITES-2)			// opening door (yellow)
 #define DOOR_BLUE_SPRITE	(MAX_SPRITES-3)
 #define DOOR_GREEN_SPRITE	(MAX_SPRITES-4)

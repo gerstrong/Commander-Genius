@@ -103,7 +103,7 @@ void getSlopePointsUpperTile(char slope, int &yb1, int &yb2)
 
 void CSpriteObject::alignToTile()
 {
-    if(sprite == 0)
+    if(sprite == BLANKSPRITE)
 	return;
     
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);

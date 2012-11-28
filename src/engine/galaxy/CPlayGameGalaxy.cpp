@@ -157,17 +157,6 @@ void CPlayGameGalaxy::process()
 			}
 		}
 
-
-
-		/*if( !msgboxactive && g_pInput->getPressedCommand(IC_STATUS)  )
-		{
-			m_Inventory.toggleStatusScreen();
-		}*/
-
-		// process Page if one is open. Could be one of the finale scenes
-		//if(m_Page.isActive())
-		//m_Page.process();
-
 		// process World Map if active. At the start it's enabled
 		if(m_WorldMap.isActive())
 		{

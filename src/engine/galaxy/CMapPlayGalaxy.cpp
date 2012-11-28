@@ -38,8 +38,7 @@ void CMapPlayGalaxy::setActive(bool value)
 
 	if(mActive)
 	{
-		mMap.drawAll();
-	    // Set Scrollbuffer
+	    mMap.drawAll();
 	    g_pVideoDriver->updateScrollBuffer(mMap);
 	}
 }
@@ -232,15 +231,18 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		unsigned int newYpos = it->getYPosition();
 		unsigned int newXpos = it->getXPosition();
 		
-		CSprite &rSprite = g_pGfxEngine->getSprite( it->sprite);
-		// we need to push back the original position, because when loading a game the original unCSFed coordinates are transformed
-		newYpos -= (1<<CSF);
-		newYpos += ((rSprite.getHeight())<<STC);
-		newYpos++;
-				
-		newXpos -= (1<<CSF)/2;
-		newXpos += ((rSprite.getWidth()/2)<<STC);		
-				
+		if( it->sprite != BLANKSPRITE )
+		{
+		    CSprite &rSprite = g_pGfxEngine->getSprite( it->sprite );
+		    // we need to push back the original position, because when loading a game the original unCSFed coordinates are transformed
+		    newYpos -= (1<<CSF);
+		    newYpos += ((rSprite.getHeight())<<STC);
+		    newYpos ++;
+		    
+		    newXpos -= (1<<CSF)/2;
+		    newXpos += ((rSprite.getWidth()/2)<<STC);		
+		}
+		
 		savedGame.encodeData( it->mFoeID );
 		savedGame.encodeData( newXpos );
 		savedGame.encodeData( newYpos );

@@ -91,7 +91,7 @@ public:
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
-	unsigned int sprite;      		// which sprite should this object be drawn with
+	int sprite;      		// which sprite should this object be drawn with
 	int xDirection;					// the direction to where the object is looking/heading to
 	int yDirection;					// same for vertical
 

@@ -1474,12 +1474,17 @@ void CPlayerLevel::processSliding()
 void CPlayerLevel::processEnterDoor()
 {
 	moveUp(16);
+		
+	if( getActionStatus(A_KEEN_STAND) )
+	    dontdraw = true;
 
 	if( m_Pos.y-mTarget.y > 16 )
 	    return;
 	
 	yDirection = 0;
 	setAction(A_KEEN_STAND);
+	
+	dontdraw = false;
 
 	int xmid = getXMidPos();
 	int y1 = getYDownPos();
