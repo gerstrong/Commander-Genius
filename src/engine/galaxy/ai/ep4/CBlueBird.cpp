@@ -153,7 +153,7 @@ void CBlueBird::getTouchedBy(CSpriteObject &theObject)
 	
 	// Only kill the player if the bird is flying or walking
 	
-	if( getActionNumber(A_EAGLE_WALKING) && getActionNumber(A_EAGLE_FLYING) )
+	if( getActionNumber(A_EAGLE_WALKING) || getActionNumber(A_EAGLE_FLYING) )
 	{
 	    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	    {
