@@ -153,7 +153,6 @@ void CScrub::walkLeft(int mx, int my)
  */
 void CScrub::walkDown()
 {
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	sprite = SCRUB_WALK_DOWN + walkframe;
 
 	if (blockedd)

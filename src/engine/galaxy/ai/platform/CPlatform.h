@@ -17,10 +17,10 @@ namespace galaxy {
 
 enum platform_actions
 {
-A_PLATFORM_MOVE	 = 0,	/* Ordinary moving platform */
+A_PLATFORM_MOVE = 0,	/* Ordinary moving platform */
 A_PLATFORM_SIT = 1,  	/* Dropping platform waiting for passenger */
-A_PLATFORM_DROP	 = 2,	/* Dropping platform dropping */
-A_PLATFORM_RISE = 	3	/* Dropping platform rising */
+A_PLATFORM_DROP = 2,	/* Dropping platform dropping */
+A_PLATFORM_RISE = 3	/* Dropping platform rising */
 };
 
 class CPlatform : public virtual CGalaxySpriteObject
