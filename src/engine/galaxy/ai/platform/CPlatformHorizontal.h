@@ -23,10 +23,14 @@ public:
 	 * \brief Processes the platforms AI. It's just simple moving around of course
 	 */
 	void process();
+	
+	void draw();
 
 private:
-	std::shared_ptr<CEngineParticleSprites> mp_BoostEngObjLeft;
-	std::shared_ptr<CEngineParticleSprites> mp_BoostEngObjRight;
+    
+	bool drawFire;
+	int m_FireSprite;
+	int m_fireTimer;
 };
 
 }

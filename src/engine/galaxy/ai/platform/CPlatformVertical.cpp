@@ -13,7 +13,6 @@
 const int MOVE_VERT_SPEED = 20;
 
 const int FIRE_CHANGE_TIME = 5;
-
 const int FIRE_SPRITE = 363;
 
 namespace galaxy
@@ -86,7 +85,7 @@ void CPlatformVertical::process()
 void CPlatformVertical::draw()
 {
     // This draw routine also is able to draw a second object in case it is holding one.
-    if( sprite == BLANKSPRITE || dontdraw )
+    if( dontdraw )
 	return;
     
     CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
