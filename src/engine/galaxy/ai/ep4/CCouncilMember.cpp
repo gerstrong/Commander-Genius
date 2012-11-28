@@ -39,7 +39,6 @@ m_timer(0)
 	answermap[8] = "KEEN_LAST_ELDER_TEXT";
 	
 	NumberToRescue = 0;
-	g_pBehaviorEngine->getPhysicsSettings();
 	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
 	ptr += 0x6AE6;
 	memcpy(&NumberToRescue, ptr, 1 );

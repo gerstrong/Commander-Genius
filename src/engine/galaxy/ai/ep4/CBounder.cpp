@@ -33,7 +33,7 @@ mpInteractPlayer(NULL)
 	mActionMap[A_BOUNDER_STUNNED] = &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);
-	xDirection = 0;
+	xDirection = 0;	
 }
 
 

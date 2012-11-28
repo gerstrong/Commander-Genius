@@ -9,6 +9,8 @@
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CBullet.h"
 
+int bounceAmount;
+
 namespace galaxy
 {
 
@@ -24,6 +26,12 @@ jumpcounter(0)
 	setupGalaxyObjectOnMap(0x20E4, A_MUSHROOM_BOUNCE);
 	processActionRoutine();
 	honorPriority = false;
+	
+	bounceAmount = 0;
+	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+	ptr += 0xFF90;
+	memcpy(&bounceAmount, ptr, 1 );
+
 }
 
 
@@ -78,7 +86,7 @@ void CMadMushroom::process()
 		yinertia = -MUSHROOM_LOW_INERTIA;
 		jumpcounter++;
 
-		if( jumpcounter>=3 )
+		if( jumpcounter>=bounceAmount )
 		{
 			yinertia = -MUSHROOM_HIGH_INERTIA;
 			jumpcounter = 0;
