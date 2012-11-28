@@ -43,11 +43,17 @@ private:
 	unsigned long &m_score;
 	signed char &m_lives;
 	unsigned int &m_charges;
+	
+	unsigned long m_oldScore;
+	unsigned int m_oldCharges;	
+	
 	CSprite *mpHUDBox;
 
 	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpBackground;
 	std::shared_ptr<SDL_Surface> mpHUDBlit;
 	int *mpCamlead;
+	
+	int timer;
 };
 
 #endif /* CHUD_H_ */

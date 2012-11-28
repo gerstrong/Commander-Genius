@@ -26,12 +26,25 @@ m_LevelName(levelname)
 
 	int Episode = g_pBehaviorEngine->getEpisode();
 
-	if(Episode == 4)
-		mp_StatusScreen.reset(new CStatusScreenGalaxyEp4(Item, m_LevelName));
-	else if(Episode == 5)
+	if(Episode >= 4)
+	{
+	    const Difficulty difficulty = g_pBehaviorEngine->mDifficulty;
+	    
+	    Item.m_bullets = 8;
+	    if( difficulty > EASY )
+		Item.m_bullets = 5;
+	
+	    if(Episode == 4)
+	    {
+		mp_StatusScreen.reset(new CStatusScreenGalaxyEp4(Item, m_LevelName));	    
+	    }
+	    else if(Episode == 5)
+	    {
 		mp_StatusScreen.reset(new CStatusScreenGalaxyEp5(Item, m_LevelName));
-//	else if(Episode == 6)
-//		mp_StatusScreen = new CStatusScreenGalaxyEp6(Item, m_LevelName);
+	    }
+	    //	else if(Episode == 6)
+	    //		mp_StatusScreen = new CStatusScreenGalaxyEp6(Item, m_LevelName);
+	}
 }
 
 void CInventory::reset()

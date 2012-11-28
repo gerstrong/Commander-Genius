@@ -13,18 +13,22 @@
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
 
+const int EFFECT_TIME = 10;
+const int EFFECT_SPEED = 10;
+
 CHUD::CHUD(unsigned long &score, signed char &lives,
 		   unsigned int &charges, int *camlead) :
 m_score(score),
 m_lives(lives),
 m_charges(charges),
+m_oldScore(score),
+m_oldCharges(charges),
 mpHUDBox(NULL),
-mpCamlead(camlead)
+mpCamlead(camlead),
+timer(0)
 {
-	m_Rect.x = 4;
-	m_Rect.y = 2;
-	m_Rect.w = 80;
-	m_Rect.h = 32;
+	m_Rect.x = 4;	m_Rect.y = 2;
+	m_Rect.w = 80;	m_Rect.h = 32;
 
 	size_t Episode = g_pBehaviorEngine->getEpisode();
 
@@ -146,16 +150,14 @@ void CHUD::DrawCircle(int x, int y, int width)
  */
 void CHUD::renderGalaxy()
 {
-	m_Rect.x = 4;
-	m_Rect.y = 2;
-	m_Rect.w = 80;
-	m_Rect.h = 29;
-
+	m_Rect.x = 4;	m_Rect.y = 2;
+	m_Rect.w = 80;	m_Rect.h = 29;
+	
 	// Compute the score that really will be seen
 	int score, lives, charges;
-	score = (m_score<999999999) ? m_score : 999999999;
+	score = (m_oldScore<999999999) ? m_oldScore : 999999999;
 	lives = (m_lives<99) ? m_lives : 99;
-	charges = (m_charges<99) ? m_charges : 99;
+	charges = (m_oldCharges<99) ? m_oldCharges : 99;
 
 	// Draw the HUD with all the digits
 	SDL_Surface* blitsfc = mpHUDBlit.get();
@@ -173,9 +175,9 @@ void CHUD::renderVorticon()
 {
 	// Compute the score that really will be seen
 	int score, lives, charges;
-	score = (m_score<999999999) ? m_score : 999999999;
+	score = (m_oldScore<999999999) ? m_oldScore : 999999999;
 	lives = (m_lives<99) ? m_lives : 99;
-	charges = (m_charges<99) ? m_charges : 99;
+	charges = (m_oldCharges<99) ? m_oldCharges : 99;
 
 	// Draw the background
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
@@ -210,6 +212,38 @@ void CHUD::renderVorticon()
 void CHUD::render()
 {
 	size_t Episode = g_pBehaviorEngine->getEpisode();
+	
+	timer++;
+	
+	if(timer >= EFFECT_TIME)
+	{
+	    timer = 0;
+	    
+	    if(m_oldCharges < m_charges)
+		m_oldCharges++;
+	    else if(m_oldCharges > m_charges)
+		m_oldCharges--;
+	}
+	
+	int delta = (m_score-m_oldScore)/EFFECT_SPEED;
+	
+	if(m_oldScore < m_score)
+	{
+	    if(delta == 0)
+		delta = 1;
+	    m_oldScore += delta;
+	    if(m_oldScore > m_score)
+		m_oldScore = m_score;
+	}
+	else if(m_oldScore > m_score)
+	{
+    	    if(delta == 0)
+		delta = -1;
+
+	    m_oldScore += delta;
+    	    if(m_oldScore < m_score)
+		m_oldScore = m_score;
+	}
 
 	if( Episode>=1 && Episode<=3 )
 		renderVorticon();
