@@ -69,7 +69,7 @@ void CPoisonSlug::processCrawling()
 		CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXMidPos(), getYDownPos()-(1<<CSF));
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( slime ) );
 		
-		if(!slope)
+		//if(!slope)
 		{
 		    // Turn around!
 		    xDirection = -xDirection;
@@ -86,7 +86,6 @@ void CPoisonSlug::processCrawling()
 	{
 		moveLeft( m_Action.velX<<1 );
 	}
-
 }
 
 
@@ -134,10 +133,8 @@ void CPoisonSlug::process()
 {
 	performCollisions();
 	
-	if(!blockedd)
-		performGravityMid();
-
-	(this->*mp_processState)();
+	//if(!blockedd)
+		performGravityLow();			
 
 	if( blockedl )
 		xDirection = RIGHT;
@@ -145,7 +142,9 @@ void CPoisonSlug::process()
 		xDirection = LEFT;
 
 	if(!processActionRoutine())
-		exists = false;
+	    exists = false;
+	
+	(this->*mp_processState)();	
 }
 
 }

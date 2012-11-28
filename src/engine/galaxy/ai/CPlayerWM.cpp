@@ -615,7 +615,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 
 		csfX += (6<<STC);
 		csfY -= FlagSprite.m_bboxY2;
-		csfY += (1<<STC);
+		csfY += (2<<STC);
 		VectorD2<Uint32> dst(csfX, csfY);
 
 

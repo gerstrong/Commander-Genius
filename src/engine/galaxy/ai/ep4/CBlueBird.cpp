@@ -54,7 +54,7 @@ void CBlueBird::setActionForce(const size_t ActionNumber)
 
 bool CBlueBird::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(80) )
+	if( !getProbability(60) )
 		return false;
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
@@ -84,7 +84,7 @@ void CBlueBird::processWalking()
 	if( mTimer % CHANCETOFLY == 0 )
 	{
 		// Chance to poo
-		if( getProbability(30) )
+		if( getProbability(50) )
 		{
 			setAction(A_EAGLE_FLYING);
 			inhibitfall = true;
@@ -165,7 +165,9 @@ void CBlueBird::getTouchedBy(CSpriteObject &theObject)
 void CBlueBird::process()
 {
 	performCollisions();
-	performGravityLow();
+	
+	if(!inhibitfall)
+	    performGravityMid();
 
 	if( blockedl )
 		xDirection = RIGHT;

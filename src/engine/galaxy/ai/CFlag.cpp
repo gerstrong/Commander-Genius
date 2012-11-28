@@ -28,12 +28,15 @@ processState(&CFlag::processFlying)
 	honorPriority = false;
 	sprite = WAVING_BASEFRAME;
 	
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	/*CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
 	int moveup = (1<<CSF)-1;
 	moveup -= ((rSprite.getHeight()+1)<<STC);
-	m_Pos.y += moveup;
-	processMove(0, 1);	
+	m_Pos.y += moveup;*/
+	
+	alignToTile();
+	
+	//processMove(0, 1);
 }
 
 /**

@@ -183,20 +183,20 @@ void CMimrock::processBounce()
 }
 
 void CMimrock::process()
-{        
-    performGravityMid();    
-    performCollisions();
-    
+{   
     if(dead)
 	return;
     
-    (this->*mp_processState)();
-    
+    performCollisions();
+    performGravityMid();    
     
     processActionRoutine();	
     
     if(getActionStatus(A_MIMROCK_STUNNED))
 	dead = true;
+    
+    (this->*mp_processState)();
+    
 }
     
     

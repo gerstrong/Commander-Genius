@@ -21,7 +21,7 @@ const unsigned int DIST_TO_STRIKE = 1<<CSF;
 const unsigned int DIST_TO_AWAKE = 7<<CSF;
 
 const int MOVE_SPEED = 34;
-const int STRIKE_TIME = 80;
+const int STRIKE_TIME = 120;
 
 CThunderCloud::CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
@@ -61,7 +61,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 		if( playXLeft < cloudX &&
 				playXRight > cloudX )
 		{
-			if( getActionStatus(A_CLOUD_ASLEEP) && getProbability(200) )
+			if( getActionStatus(A_CLOUD_ASLEEP) && getProbability(180) )
 				setAction(A_CLOUD_WAKING);
 		}
 		else
@@ -76,7 +76,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 		}
 
 
-		if( getProbability(80) && getActionStatus(A_CLOUD_MOVING) )
+		if( getProbability(70) && getActionStatus(A_CLOUD_MOVING) )
 		{
 			if( player->getXMidPos() < getXMidPos() )
 				xDirection = LEFT;
@@ -92,11 +92,11 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 
 			if( playXStrikeLeft < cloudX &&
 					playXStrikeRight > cloudX &&
-					getProbability(90) )
+					getProbability(80) )
 			{
 				setAction(A_CLOUD_STRIKING);
-				mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos()+(2<<CSF) );
-				g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( mpBolt ) );
+				mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos() + (32<<STC) );
+				g_pBehaviorEngine->m_EventList.spawnObj( mpBolt );
 			}
 
 
@@ -108,8 +108,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 }
 
 void CThunderCloud::processAsleep()
-{
-}
+{}
 
 void CThunderCloud::processWaking()
 {
@@ -160,10 +159,7 @@ void CThunderCloud::process()
 
 	mTimer++;
 
-	/*if( getActionStatus(A_CLOUD_WAKING) || getActionStatus(A_CLOUD_STRIKING) )*/
-	{
-		processActionRoutine();
-	}
+	processActionRoutine();
 }
 
 
@@ -196,7 +192,7 @@ void CThunderBolt::process()
 {
 	performCollisions();
 	if(!processActionRoutine())
-			exists = false;
+	    exists = false;
 
 }
 
