@@ -8,7 +8,6 @@
 #include "CStatusScreenGalaxy.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/video/colourconvert.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/extensions.h"
 

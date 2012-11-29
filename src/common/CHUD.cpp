@@ -8,7 +8,6 @@
 #include "CHUD.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/video/colourconvert.h"
 #include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"

@@ -21,7 +21,7 @@ typedef int (*ThreadFunc) (void*);
 struct CmdLineIntf;
 
 struct Action {
-	~Action() {}
+	virtual ~Action() {}
 	virtual int handle() = 0;
 };
 
