@@ -52,7 +52,6 @@ void CHUD::CreateBackground()
 {
 	// Create a surface for that
 	SDL_Surface *temp;
-	int flags = 0;
 	mpBackground.reset( CG_CreateRGBSurface( m_Rect ) );
 
 	SDL_Rect headsrcrect, headdstrect;

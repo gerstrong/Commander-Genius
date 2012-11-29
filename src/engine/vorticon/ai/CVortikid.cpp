@@ -108,7 +108,7 @@ void CVortikid::process()
 			}
 
 			if (xinertia == 0 && yinertia == 0 &&
-				sprite==(unsigned int)(BABY_DEAD_FRAME-ep3))
+				sprite == (BABY_DEAD_FRAME-ep3))
 			{
 				dead = true;
 				xinertia = 0;

@@ -9,7 +9,6 @@
 #define CAUDIOSETTINGS_H_
 
 #include "CBaseMenu.h"
-#include "CVolumeSettings.h"
 #include "fileio/CExeFile.h"
 #include <SDL.h>
 #include <string>
