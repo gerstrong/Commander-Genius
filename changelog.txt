@@ -3,7 +3,7 @@ Commander Genius Release :
 
 v1.0 RC: 
 --------
-- HUD Effects implemented. might become optional.
+- HUD Effects implemented. might become optional if demanded
 - The try-again message is back and much better to the original
 - As usual a lot of bug fixes.
 - Routine for better speed and AI
