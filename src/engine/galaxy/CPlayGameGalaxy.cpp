@@ -18,6 +18,7 @@
 #include "StringUtils.h"
 #include "common/Menu/CMenuController.h"
 #include "graphics/effects/CColorMerge.h"
+#include "graphics/effects/CDimDark.h"
 
 #include <iostream>
 
@@ -240,6 +241,17 @@ void CPlayGameGalaxy::process()
 			SDL_Rect cutRect = pMsgBox->getRect();
 			SDL_Surface *msgSfc = pMsgBox->getSfc();		    
 			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);		    
+		    }
+		    
+		    CDimDark *pDimDark = dynamic_cast<CDimDark*>(g_pGfxEngine->Effect());
+		    if( pDimDark != NULL )
+		    {		    
+			SDL_Surface *fxSfc = pDimDark->getSfc().get();
+			SDL_Surface *darkSfc = pDimDark->getDarkSfc().get();
+			SDL_Rect cutRect = pMsgBox->getRect();
+			SDL_Surface *msgSfc = pMsgBox->getSfc();    
+			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);    
+			SDL_BlitSurface(msgSfc, NULL, darkSfc, &cutRect);    
 		    }
 		}
 

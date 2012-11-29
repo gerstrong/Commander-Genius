@@ -6,8 +6,6 @@
  *
  * This class gets two surface and blends them the way
  * the player will see a smooth scene transition.
- * NOTE: Rember to always use the Source and TargetSurfaces
- * If you don't the effect won't work!
  */
 
 #ifndef CCOLORMERGE_H_
@@ -17,8 +15,6 @@
 #include <memory>
 
 #include "CEffects.h"
-#include "graphics/CBitmap.h"
-#include "sdl/CTimer.h"
 
 
 class CColorMerge : public CEffects

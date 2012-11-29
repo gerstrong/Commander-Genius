@@ -14,6 +14,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
 #include "graphics/effects/CColorMerge.h"
+#include "graphics/effects/CDimDark.h"
 #include "dialog/CMessageBoxBitmapGalaxy.h"
 #include "CLogFile.h"
 
@@ -54,7 +55,7 @@ void CLevelPlay::reloadLevel()
 {
 	loadMap( mMap.getLevel() );
 	// Create the special merge effect (Fadeout)
-	g_pGfxEngine->setupEffect(new CColorMerge(8));	
+	g_pGfxEngine->setupEffect(new CDimDark(8));	
 }
 
 bool CLevelPlay::loadLevel(const Uint16 level)
@@ -67,7 +68,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	g_pGfxEngine->setupEffect(new CColorMerge(8));
+	g_pGfxEngine->setupEffect(new CDimDark(8));
 	EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), 
 							  loading_text, LEFT) );
 

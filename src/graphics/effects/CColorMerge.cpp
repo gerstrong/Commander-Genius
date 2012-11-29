@@ -3,8 +3,6 @@
  *
  *  Created on: 14.12.2009
  *      Author: gerstrong
- *
- *
  */
 
 #include "CColorMerge.h"
@@ -32,7 +30,7 @@ void CColorMerge::process()
 	SDL_SetAlpha( mpOldSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
 
 	SDL_BlitSurface( mpOldSurface.get(), NULL,
-					 g_pVideoDriver->getBlitSurface(), NULL );
+				g_pVideoDriver->getBlitSurface(), NULL );
 	
 	const int sum = m_Alpha + m_Speed;
 
