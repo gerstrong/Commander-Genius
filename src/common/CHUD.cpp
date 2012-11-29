@@ -62,14 +62,19 @@ void CHUD::CreateBackground()
 	headdstrect.h = headsrcrect.h = 16;
 	headdstrect.x = m_Rect.x;
 	headdstrect.y = m_Rect.y+11;
+	
+	temp = SDL_DisplayFormat(mpBackground.get());
+	mpBackground.reset(temp);
+	
+	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);	
+	SDL_FillRect(temp, NULL, colorkey );
+	SDL_SetColorKey( temp, SDL_SRCCOLORKEY, colorkey );
 
 	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
-	temp = SDL_ConvertSurface( KeenHeadSprite.getSDLSurface(), mpBackground->format, flags );
-	BlitSurfaceMerge( temp, &headsrcrect, mpBackground.get(), &headdstrect );
-	SDL_FreeSurface(temp);
+	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );	
 
 	int sprite=0;
-	size_t Episode = g_pBehaviorEngine->getEpisode();
+	const int Episode = g_pBehaviorEngine->getEpisode();
 	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
@@ -80,15 +85,9 @@ void CHUD::CreateBackground()
 	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
 	headdstrect.x = m_Rect.x+45-(headsrcrect.w/2);
 	headdstrect.y = m_Rect.y+19-(headsrcrect.h/2);
-
-	temp = SDL_ConvertSurface( KeenGunSprite.getSDLSurface(), mpBackground->format, flags );
-	BlitSurfaceMerge( temp, &headsrcrect, mpBackground.get(), &headdstrect );
-	SDL_FreeSurface(temp);
-
-
-	temp = SDL_DisplayFormatAlpha(mpBackground.get());
-	mpBackground.reset(temp);
-
+		
+	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
+	
 	mpHUDBlit.reset(SDL_DisplayFormatAlpha(mpBackground.get()), &SDL_FreeSurface);
 
 	// Draw the rounded borders
