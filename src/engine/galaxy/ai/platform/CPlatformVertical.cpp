@@ -28,6 +28,10 @@ m_fireTimer(0)
 {
 	xDirection = 0;
 	yDirection = vertdir;
+	
+	// This should recalibrate the position in case the plats are stuck due some bad level design 
+	processMove( (3<<CSF), 0 );
+	processMove(-(3<<CSF), 0 );
 
 	const int episode = g_pBehaviorEngine->getEpisode();	
 	if(episode == 4)

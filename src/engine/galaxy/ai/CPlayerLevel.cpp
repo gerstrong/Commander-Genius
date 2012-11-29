@@ -1828,7 +1828,9 @@ void CPlayerLevel::processPoleClimbingSit()
 	const int px = m_playcontrol[PA_X];
 	const int py = m_playcontrol[PA_Y];
 
+	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
+	Uint32 l_x_r = getXRightPos();
 	Uint32 l_y_up = getYUpPos();
 	Uint32 l_y_down = getYDownPos();
 
@@ -1844,7 +1846,9 @@ void CPlayerLevel::processPoleClimbingSit()
 	{
 
 		// Check for the upper side and don't let him move if the pole ends
-		if( hitdetectWithTileProperty(1, l_x, l_y_up) )
+		if( hitdetectWithTileProperty(1, l_x_l, l_y_up) ||
+		    hitdetectWithTileProperty(1, l_x, l_y_up) ||
+		    hitdetectWithTileProperty(1, l_x_r, l_y_up) )
 		{
 			setAction(A_KEEN_POLE_CLIMB);
 			yDirection = UP;

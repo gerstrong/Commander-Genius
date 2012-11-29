@@ -180,7 +180,8 @@ bool CVideoDriver::applyMode() {
 	return true;
 }
 
-bool CVideoDriver::start() {
+bool CVideoDriver::start() 
+{
 	bool retval;
 	std::string caption = "Commander Genius";
 	SDL_WM_SetCaption(caption.c_str(), caption.c_str());

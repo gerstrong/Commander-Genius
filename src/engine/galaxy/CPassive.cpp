@@ -61,11 +61,6 @@ void CPassiveGalaxy::processIntro()
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
 	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface );
 	SDL_FreeSurface(temp);
-
-	createOutlinedText( 5, 170, "Press" );
-	createOutlinedText( 5, 180, "Back(Esc)" );
-	createOutlinedText( 5, 190, "for Menu" );
-
 }
 
 // Just show the title screen with the pixelation effect

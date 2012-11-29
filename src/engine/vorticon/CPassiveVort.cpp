@@ -27,11 +27,6 @@ bool CPassiveVort::init(char mode)
 	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
 
-	createOutlinedText( 5, 170, "Press" );
-	createOutlinedText( 5, 180, "Back(Esc)" );
-	createOutlinedText( 5, 190, "for Menu" );
-
-
 	if( m_mode == INTRO )
 	{
 		mpIntroScreen.reset(new CIntro());

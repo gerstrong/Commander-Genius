@@ -10,14 +10,10 @@
  *  Logic Per Second and Frames Per second processing
  */
 
-#include <stdlib.h>
-
 #include "CGame.h"
-#include "CLogFile.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "sdl/CTimer.h"
-#include "sdl/sound/CSound.h"
 #include "common/CSettings.h"
 
 CGame::CGame() :

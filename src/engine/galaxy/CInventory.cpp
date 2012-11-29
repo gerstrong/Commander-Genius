@@ -45,6 +45,8 @@ m_LevelName(levelname)
 	    //	else if(Episode == 6)
 	    //		mp_StatusScreen = new CStatusScreenGalaxyEp6(Item, m_LevelName);
 	}
+	
+	m_HUD.sync();
 }
 
 void CInventory::reset()

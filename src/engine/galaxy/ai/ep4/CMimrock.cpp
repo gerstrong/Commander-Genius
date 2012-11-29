@@ -43,9 +43,13 @@ mTimer(0)
     mActionMap[A_MIMROCK_STUNNED] = &CStunnable::processGettingStunned;
     
     setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
-    xDirection = RIGHT;
+    xDirection = LEFT;
     yDirection = CENTER;
-    honorPriority = false;	
+    honorPriority = false;
+    
+    // This should recalibrate the position in case the plats are stuck due some bad level design     
+    processMove( 0,-(8<<CSF) );    
+    processMove( 0, (8<<CSF) );
 }
 
 
@@ -62,6 +66,7 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 	    setAction( A_MIMROCK_STUNNED );
+	    honorPriority = true;
 	    theObject.dead = true;
 	}
     }

@@ -29,7 +29,15 @@ public:
 		 unsigned int &charges,
 		 int *camlead = NULL); // TODO: Must be removed later and replaced by a reference
 
+	/**
+	 * \brief This part of the code will render the entire HUD
+	 */
 	void render();
+	
+	/**
+	 * \brief This will sync some data in the HUD, especially the oldScore variable
+	 */	
+	void sync();
 
 private:
 

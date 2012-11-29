@@ -206,9 +206,7 @@ void CHUD::renderVorticon()
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
 }
 
-/**
- * \brief This part of the code will render the entire HUD
- */
+
 void CHUD::render()
 {
 	size_t Episode = g_pBehaviorEngine->getEpisode();
@@ -251,3 +249,9 @@ void CHUD::render()
 		renderGalaxy();
 }
 
+
+void CHUD::sync()
+{
+    m_oldCharges = m_charges;
+    m_oldScore = m_score;
+}

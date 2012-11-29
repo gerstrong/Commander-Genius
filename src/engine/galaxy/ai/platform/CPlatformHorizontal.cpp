@@ -26,11 +26,10 @@ m_fireTimer(0)
 	yDirection = 0;
 	
 	// This should recalibrate the position in case the plats are stuck due some bad level design 
-	processMove( (3<<CSF), 0 );	
-	processMove(-(3<<CSF), 0 );	
+	processMove( (3<<CSF), 0 );
+	processMove(-(3<<CSF), 0 );
 
-	const int episode = g_pBehaviorEngine->getEpisode();
-	
+	const int episode = g_pBehaviorEngine->getEpisode();	
 	if(episode == 4)
 	{
 	    drawFire = true;

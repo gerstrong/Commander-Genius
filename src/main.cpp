@@ -31,7 +31,6 @@
 	#include <SDL_main.h>
 #endif
 
-#include "CLogFile.h"
 #include "CGame.h"
 #include "FindFile.h"
 #include "ThreadPool.h"
@@ -93,13 +92,6 @@ int main(int argc, char *argv[])
 		///////////////////////
 		Game.run();
 	}
-
-	/////////////////////////
-	// Cleanup Game Engine //
-	/////////////////////////
-	//Game.cleanup();
-
-
 
 	std::cout << "Thank you very much for playing this game!" << std::endl;
 

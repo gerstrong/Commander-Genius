@@ -43,22 +43,16 @@ m_timer(0)
 
 void CPoisonSlug::processCrawling()
 {
-    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-    
-    int xMid = getXMidPos();
-    int y2 = getYDownPos();
-    
-    const bool slope = (TileProperty[mp_Map->at(xMid>>CSF, (y2+1)>>CSF)].bup>1);
-    
-	if( m_timer < SLUG_MOVE_TIMER )
-	{
-		m_timer++;
-		return;
-	}
-	else
-	{
-		m_timer = 0;
-	}
+
+    if( m_timer < SLUG_MOVE_TIMER )
+    {
+	m_timer++;
+	return;
+    }
+    else
+    {
+	m_timer = 0;
+    }
 
 	// Chance to poo
 	if( getProbability(30) )
@@ -133,8 +127,7 @@ void CPoisonSlug::process()
 {
 	performCollisions();
 	
-	//if(!blockedd)
-		performGravityLow();			
+	performGravityLow();			
 
 	if( blockedl )
 		xDirection = RIGHT;
