@@ -68,11 +68,12 @@ void CVorticonSpriteObjectAI::process()
 				auto theOther = objectPtr; theOther++;
 				for( ; theOther != m_Objvect.end() ; theOther++ )
 				{
-				    bool near = false;
+				    bool nearBy = false;
 				    
-				    near |= object.isNearby(**theOther);
-				    near |= (*theOther)->isNearby(object);
-				    if(near)
+				    nearBy |= object.isNearby(**theOther);
+				    nearBy |= (*theOther)->isNearby(object);
+
+				    if(nearBy)
 				    {									    
 					if( object.hitdetect(**theOther) )
 					{
