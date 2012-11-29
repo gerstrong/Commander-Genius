@@ -58,11 +58,29 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
 
+	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+			
+	std::string rescLine = "RESCUED           LEVEL";
+	std::string dropsLine;
+	std::string swLine;
+	
+	char rescBuf[9];
+	char dropsBuf[9];
+	char swBuf[9];
+	
+	memcpy(rescBuf, ptr+0x2F49C, 9 );
+	memcpy(dropsBuf, ptr+0x2F4CB, 9 );
+	memcpy(swBuf, ptr+0x2F4D1, 9 );
+	
+	rescLine.replace ( 0, 7, (const char*)rescBuf );
+	dropsLine = dropsBuf;
+	swLine = swBuf;
+	
 	/// RESCUED and LEVEL Rects
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+56;
 	TempRect.w = EditRect.w/2; TempRect.h = 10;
-	Font.drawFont(mpStatusSurface.get(), "RESCUED           LEVEL", TempRect.x+8, TempRect.y);
+	Font.drawFont(mpStatusSurface.get(), rescLine, TempRect.x+8, TempRect.y);
 	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
 	TempRect.y = EditRect.y+66;
 
@@ -125,7 +143,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	// Drops Box
 	TempRect.x = EditRect.x+96;
 	TempRect.y = EditRect.y+96;
-	Font.drawFont(mpStatusSurface.get(), "DROPS", TempRect.x, TempRect.y);
+	Font.drawFont(mpStatusSurface.get(), dropsLine, TempRect.x, TempRect.y);
 	TempRect.w = 8*2; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5+8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
@@ -137,7 +155,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
 	Font.setupColor(0x0);
-	Font.drawFontCentered(mpStatusSurface.get(), m_Item.m_special.ep4.swimsuit ? "Swim Suit" : "???", TempRect.x, TempRect.w, TempRect.y+1, false);
+	Font.drawFontCentered(mpStatusSurface.get(), m_Item.m_special.ep4.swimsuit ? swLine : "???", TempRect.x, TempRect.w, TempRect.y+1, false);
 
 	// Press a Key Sign
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);

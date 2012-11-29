@@ -58,7 +58,7 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
     if(dead || theObject.dead)
 	return;
     
-    if( !getActionNumber(A_MIMROCK_SIT) )
+    if( !getActionStatus(A_MIMROCK_SIT) )
     {    
 	CStunnable::getTouchedBy(theObject);
 	
