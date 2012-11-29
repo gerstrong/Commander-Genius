@@ -150,13 +150,13 @@ void CGame::run()
 	    // Here we try to process all the drawing related Tasks not yet done
 	    g_pVideoDriver->pollDrawingTasks();
 
-	    // Pass all the surfaces to one
-	    g_pVideoDriver->collectSurfaces();
-
 	    // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
-	    g_pGfxEngine->process();	    	    
+	    g_pGfxEngine->process();	    
 	    acc -= logicLatency;
 	}	
+	
+	// Pass all the surfaces to one
+	g_pVideoDriver->collectSurfaces();
 	
 	// Now you really render the screen
 	// When enabled, it also will apply Filters

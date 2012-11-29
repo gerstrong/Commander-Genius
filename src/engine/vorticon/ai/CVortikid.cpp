@@ -43,7 +43,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_BABY)
 		mHealthPoints++;
 }
 
-void CVortikid::touchedBy(CVorticonSpriteObject &theObject)
+void CVortikid::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {

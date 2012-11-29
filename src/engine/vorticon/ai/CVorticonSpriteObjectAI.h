@@ -31,7 +31,7 @@ public:
 private:
 
 	// main AI functions
-	bool checkforAIObject( CVorticonSpriteObject &object );
+	/*bool checkforAIObject( CVorticonSpriteObject &object );
 
 	void icechunk_ai(CVorticonSpriteObject &object);
 	void smash(CVorticonSpriteObject &object);
@@ -60,22 +60,23 @@ private:
 	void platform_ai(CVorticonSpriteObject &object);
 
 	void vortelite_ai(CVorticonSpriteObject &object, bool darkness);
-	void vortelite_initiatejump(CVorticonSpriteObject &object);
+	void vortelite_initiatejump(CVorticonSpriteObject &object);*/
 
 	// Sector Effector Members
-	void se_ai(CVorticonSpriteObject &object);
+	/*void se_ai(CVorticonSpriteObject &object);
 	void se_extend_plat(CVorticonSpriteObject &object, bool &PlatExtending);
 	void se_retract_plat(CVorticonSpriteObject &object, bool &PlatExtending);
 	void se_mortimer_arm(CVorticonSpriteObject &object);
 	void se_mortimer_spark(CVorticonSpriteObject &object);
 	void se_mortimer_heart(CVorticonSpriteObject &object);
+	void se_mortimer_zapsup_nearby(CVorticonSpriteObject &object);
 	void se_mortimer_zapsup(CVorticonSpriteObject &object);
 	void se_mortimer_leg_left(CVorticonSpriteObject &object);
 	void se_mortimer_leg_right(CVorticonSpriteObject &object);
 	void se_mortimer_randomzaps(CVorticonSpriteObject &object);
-	void set_mortimer_surprised(bool yes);
+	void set_mortimer_surprised(bool yes);*/
 
-	void explosion_ai(CVorticonSpriteObject &object);
+	/*void explosion_ai(CVorticonSpriteObject &object);
 	void earthchunk_ai(CVorticonSpriteObject &object);
 
 	 // ep3
@@ -93,17 +94,17 @@ private:
 
 	 void nessie_ai(CVorticonSpriteObject& object);
 	 void move_nessie(CVorticonSpriteObject& object);
-	 void nessie_find_next_checkpoint(CVorticonSpriteObject& object);
+	 void nessie_find_next_checkpoint(CVorticonSpriteObject& object);*/
 
 	 // Common Objects
-	void autoray_ai(CVorticonSpriteObject &object);
+	/*void autoray_ai(CVorticonSpriteObject &object);
 	void gotpoints_ai(CVorticonSpriteObject &Object);
 	void ray_ai( CVorticonSpriteObject &object, bool automatic_raygun, char pShotSpeed=0 );
 	void door_ai( CVorticonSpriteObject &object, char DoorOpenDir );
 	void teleporter_ai(CVorticonSpriteObject &object);
 
 	void killplayer(int theplayer);
-	void kill_all_intersecting_tile(int mpx, int mpy, CVorticonSpriteObject &theObject);
+	void kill_all_intersecting_tile(int mpx, int mpy, CVorticonSpriteObject &theObject);*/
 
 	// Variables
 	CMap *mp_Map;

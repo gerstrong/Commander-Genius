@@ -250,11 +250,13 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 	mpVideoEngine->blitScrollSurface();
 }
 
-void CVideoDriver::collectSurfaces() {
+void CVideoDriver::collectSurfaces() 
+{
 	mpVideoEngine->collectSurfaces();
 }
 
-void CVideoDriver::clearSurfaces() {
+void CVideoDriver::clearSurfaces() 
+{
 	mpVideoEngine->clearSurfaces();
 }
 

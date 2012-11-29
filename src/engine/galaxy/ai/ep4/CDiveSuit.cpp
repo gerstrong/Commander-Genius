@@ -13,9 +13,10 @@ namespace galaxy {
 CDiveSuit::CDiveSuit(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 taken(false)
-{
-	sprite = 306;
-	calcBoundingBoxes();
+{    
+    sprite = 306;
+    calcBoundingBoxes();
+    alignToTile();
 }
 
 void CDiveSuit::process()

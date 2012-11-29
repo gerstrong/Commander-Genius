@@ -29,19 +29,10 @@ bool CVortiMom::isNearby(CVorticonSpriteObject &theObject)
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
 	if( state == MOTHER_HURT )
-	{	 
-	    
+	{	 	    
 	    if (timer > MOTHER_HURT_SHOW_TIME)
 	    {
-		if (mHealthPoints <= 0)
-		{
-		    sprite = MOTHER_DEAD_FRAME;
-		    dead = true;
-		    timer = 0;
-		    if (onscreen)
-			playSound(SOUND_VORT_DIE);
-		}
-		else
+		if(mHealthPoints > 0)
 		{
 		    state = MOTHER_WALK;
 		    if (player->getXPosition() > getXPosition())
@@ -62,7 +53,7 @@ void CVortiMom::getTouchedBy(CVorticonSpriteObject &theObject)
 {
      if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
      {
-	if(player->pdie)
+	if(!player->pdie)
 	{
 		// don't push the player as he's walking through the exit door
 		if (!player->level_done)
@@ -150,9 +141,22 @@ void CVortiMom::process()
 		else timer++;
 		break;
 	case MOTHER_HURT:
-		sprite = MOTHER_HURT_FRAME;
-		timer++;
-		break;
+	    if (timer > MOTHER_HURT_SHOW_TIME)
+	    {
+		if (mHealthPoints <= 0)
+		{
+		    sprite = MOTHER_DEAD_FRAME;
+		    dead = true;
+		    timer = 0;
+
+		    playSound(SOUND_VORT_DIE);
+		    
+		    return;
+		}
+	    }	    	    	    
+	    sprite = MOTHER_HURT_FRAME;
+	    timer++;
+	    break;
 	default: break;
 	}
 }

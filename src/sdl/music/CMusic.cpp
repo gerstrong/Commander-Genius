@@ -18,7 +18,7 @@
 
 bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 {
-	std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
+	std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
 	imfPlayer->loadMusicTrack(ExeFile, track);
 	
 	if(!imfPlayer->open())
@@ -26,7 +26,7 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 	    return false;
 	}
 	
-	mpPlayer = imfPlayer;
+	mpPlayer = move(imfPlayer);
 
 	return true;
 }
@@ -34,7 +34,7 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
-    std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
+    std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
     imfPlayer->loadMusicForLevel(ExeFile, level);
 
     if(!imfPlayer->open())
@@ -42,13 +42,15 @@ bool CMusic::load(const CExeFile& ExeFile, const int level)
 	return false;
     }
     
-    mpPlayer = imfPlayer;
+    mpPlayer = move(imfPlayer);
 
     return true;
 }
 
 bool CMusic::load(const std::string &musicfile)
 {
+	mpPlayer.reset();
+    
 	if(musicfile == "")
 		return false;
 
@@ -60,16 +62,16 @@ bool CMusic::load(const std::string &musicfile)
 
 		if(strcasecmp(extension.c_str(),"imf") == 0)
 		{
-		    std::shared_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(audioSpec) );
+		    std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(audioSpec) );
 		    if(!imfPlayer->loadMusicFromFile(musicfile))
 		      return false;
-		    mpPlayer = imfPlayer;
+		    mpPlayer = move(imfPlayer);
 		}
 		else if(strcasecmp(extension.c_str(),"ogg") == 0)
 		{
 #if defined(OGG) || defined(TREMOR)
-		    std::shared_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
-		    mpPlayer = oggPlayer;
+		    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
+		    mpPlayer = move( oggPlayer );
 #else
 		    g_pLogFile->ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");		    
 		    return false;
@@ -78,9 +80,9 @@ bool CMusic::load(const std::string &musicfile)
 
 		if(!mpPlayer->open())
 		{
-		  mpPlayer.reset();
-			g_pLogFile->textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
-			return false;
+		    mpPlayer.reset();
+		    g_pLogFile->textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
+		    return false;
 		}
 		return true;
 

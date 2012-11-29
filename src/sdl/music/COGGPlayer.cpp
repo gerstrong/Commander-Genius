@@ -69,7 +69,7 @@ bool COGGPlayer::open()
 	if(ret == -1)
 		return false;
 
-	const size_t &length = m_AudioSpec.size;
+	const size_t length = m_AudioSpec.size;
 	m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
 	m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
 
@@ -82,7 +82,6 @@ bool COGGPlayer::readOGGStream( OggVorbis_File  &oggStream, char *buffer, const 
 	unsigned long pos = 0;
 
 	m_reading_stream = true;
-
 
 	while( pos<size )
 	{
@@ -168,11 +167,11 @@ void COGGPlayer::close()
  	if(m_Audio_cvt.buf)
 		delete [] m_Audio_cvt.buf;
 	m_Audio_cvt.buf = NULL;
-
+	
+	m_playing = false;
 	while(m_reading_stream);
 	m_music_pos = 0;
-	m_pcm_size = 0;
-	m_playing = false;
+	m_pcm_size = 0;		
 	ov_clear(&m_oggStream);
 }
 

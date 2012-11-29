@@ -27,12 +27,8 @@ m_FireSprite(FIRE_SPRITE),
 m_fireTimer(0)
 {
 	xDirection = 0;
-	yDirection = vertdir;
+	yDirection = vertdir;	
 	
-	// This should recalibrate the position in case the plats are stuck due some bad level design 
-	processMove( (3<<CSF), 0 );
-	processMove(-(3<<CSF), 0 );
-
 	const int episode = g_pBehaviorEngine->getEpisode();	
 	if(episode == 4)
 	{
@@ -47,11 +43,22 @@ m_fireTimer(0)
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
 	calcBoundingBoxes();
+	
+	// This should recalibrate the position in case the plats are stuck due some bad level design 
+	processMove( (3<<CSF), 0 );
+	processMove(-(3<<CSF), 0 );
 }
 
 void CPlatformVertical::process()
 {
-	const Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+    	Uint16 object = 0; 
+	int lx = getXLeftPos();
+	int rx = getXRightPos();
+	
+	for(int x=lx ; x<=rx ; x+=(1<<CSF) )
+	{
+	    object |= mp_Map->getPlaneDataAt(2, x, getYMidPos());
+	}
 
 	performCollisions();
 	

@@ -50,7 +50,7 @@ public:
 		return false;
 	}
 
-	std::shared_ptr<CMusicPlayer> mpPlayer;
+	std::unique_ptr<CMusicPlayer> mpPlayer;
 	bool m_busy;
 };
 

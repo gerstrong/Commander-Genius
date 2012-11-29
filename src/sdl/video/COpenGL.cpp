@@ -136,7 +136,7 @@ bool COpenGL::createSurfaces()
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
 	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
-							 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
+				 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 
 
 	return true;
@@ -334,7 +334,9 @@ void COpenGL::updateScreen()
 	if(m_VidConfig.m_ScaleXFilter > 1)
 	{
 		if(getPerSurfaceAlpha(FXSurface))
-			SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+		{
+		    SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+		}
 	}
 
 	loadSurface(m_texture, BlitSurface);

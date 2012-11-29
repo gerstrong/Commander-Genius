@@ -38,7 +38,7 @@
 #define HEART_ZAPSRUNUP         1
 #define HEART_ZAPSRUNDOWN       2
 
-#define MORTIMER_MACHINE_YSTART         3
+#define MORTIMER_MACHINE_YSTART         2
 #define MORTIMER_MACHINE_YEND           18
 #define MORTIMER_MACHINE_YENDNOLEGS     14
 
@@ -139,6 +139,7 @@ void CManglingMachine::process()
 	case SE_MORTIMER_LEG_RIGHT: se_mortimer_leg_right(); break;
 	case SE_MORTIMER_SPARK: se_mortimer_spark(); break;
 	case SE_MORTIMER_RANDOMZAPS: se_mortimer_randomzaps(); break;
+	case SE_MORTIMER_ZAPSUP: se_mortimer_zapsup(); break;
 	default:break;
 	}
 
@@ -207,7 +208,7 @@ bool CManglingMachine::isNearby(CVorticonSpriteObject &theObject)
 	
 	switch(setype)
 	{
-	case SE_MORTIMER_ZAPSUP: se_mortimer_zapsup(dynamic_cast<CPlayer*>(&theObject)); break;
+	case SE_MORTIMER_ZAPSUP: se_mortimer_zapsup_nearby(dynamic_cast<CPlayer*>(&theObject)); break;
 	case SE_MORTIMER_HEART: se_mortimer_heart(dynamic_cast<CVorticonSpriteObject*>(&theObject)); break;
 	default: break;
 	}
@@ -497,11 +498,42 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 }
 
 #define TIME_AFTER_DESTROY_BEFORE_FADEOUT       500
-void CManglingMachine::se_mortimer_zapsup(CPlayer *player)
+void CManglingMachine::se_mortimer_zapsup_nearby(CPlayer *player)
 {
     if(player == nullptr)
 	return;
-    
+
+	if (!timer)
+	{
+		if (my <= MORTIMER_MACHINE_YSTART)
+		{
+			if (destroytiles)
+			{
+				// last wave, prepare to initiate level fadeout
+				timer = TIME_AFTER_DESTROY_BEFORE_FADEOUT;
+				state = ZAPSUP_ABOUTTOFADEOUT;
+				player->pfalling = true;
+				destroytiles = false;
+				return;
+			}
+		}
+		
+		if( state == ZAPSUP_ABOUTTOFADEOUT )
+		{
+		    g_pBehaviorEngine->EventList().add(new EventEraseAllEnemies());
+		    player->level_done = LEVEL_DONE_FADEOUT;
+		    exists = false;
+		    return;
+		}
+	}
+	
+
+
+	
+}
+
+void CManglingMachine::se_mortimer_zapsup()
+{
 	int x;
 
 	if (!timer)
@@ -510,7 +542,7 @@ void CManglingMachine::se_mortimer_zapsup(CPlayer *player)
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
-			CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN);
+			CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, (my+1)<<CSF, CENTER, DOWN);
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->inhibitfall = true;
 			g_pBehaviorEngine->EventList().spawnObj(newobject);
@@ -518,23 +550,14 @@ void CManglingMachine::se_mortimer_zapsup(CPlayer *player)
 			if (destroytiles)
 			{
 				// delete the tile
-				mp_Map->changeTile(x,my,169);
+				mp_Map->changeTile(x, my,169);
 			}
 		}
 
 		timer = MACHINE_DESTROY_RATE;
 		if (my <= MORTIMER_MACHINE_YSTART)
 		{
-			if (destroytiles)
-			{
-				// last wave, prepare to initiate level fadeout
-				g_pBehaviorEngine->EventList().add(new EventEraseAllEnemies());
-				timer = TIME_AFTER_DESTROY_BEFORE_FADEOUT;
-				state = ZAPSUP_ABOUTTOFADEOUT;
-				player->pfalling = true;
-				return;
-			}
-			else
+			if (!destroytiles)
 			{
 				exists = false;
 				timer = 0;
@@ -543,14 +566,6 @@ void CManglingMachine::se_mortimer_zapsup(CPlayer *player)
 		else my--;
 	}
 	else timer--;
-	
-
-	if( state == ZAPSUP_ABOUTTOFADEOUT )
-	{
-	    player->level_done = LEVEL_DONE_FADEOUT;
-	    exists = false;
-	    return;
-	}
 	
 }
 

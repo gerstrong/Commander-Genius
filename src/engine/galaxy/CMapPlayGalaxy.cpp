@@ -6,6 +6,7 @@
  */
 
 #include "CMapPlayGalaxy.h"
+#include "ai/platform/CPlatform.h"
 #include "engine/galaxy/ai/CPlayerBase.h"
 #include "common/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
@@ -22,8 +23,6 @@ mInventory(Inventory),
 mpOption(g_pBehaviorEngine->m_option),
 mCheatmode(Cheatmode)
 {}
-
-
 
 
 bool CMapPlayGalaxy::isActive()
@@ -203,7 +202,6 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 
 }
 
-// Saves the inventory using the Savegamecontroller.
 void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 {
 	const Uint16 level = mMap.getLevel();
@@ -231,7 +229,8 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		unsigned int newYpos = it->getYPosition();
 		unsigned int newXpos = it->getXPosition();
 		
-		if( it->sprite != BLANKSPRITE )
+		if( it->sprite != BLANKSPRITE && 
+		    dynamic_cast<galaxy::CPlatform*>(it.get()) == nullptr )
 		{
 		    CSprite &rSprite = g_pGfxEngine->getSprite( it->sprite );
 		    // we need to push back the original position, because when loading a game the original unCSFed coordinates are transformed

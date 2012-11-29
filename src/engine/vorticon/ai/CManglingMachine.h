@@ -35,7 +35,8 @@ public:
 	void se_mortimer_arm();
 	void se_mortimer_spark();
 	void se_mortimer_heart(CVorticonSpriteObject *obj);
-	void se_mortimer_zapsup(CPlayer *player);
+	void se_mortimer_zapsup_nearby(CPlayer *player);
+	void se_mortimer_zapsup();
 	void se_mortimer_leg_left();
 	void se_mortimer_leg_right();
 	void se_mortimer_randomzaps();

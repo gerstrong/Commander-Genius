@@ -76,7 +76,6 @@ enum jumpstate{
 #define BG_GRAY            143
 #define BG_GRAY_PRIORITY   304
 #define BG_BLACK           155
-#define BG_DARK_EP2        147
 #define TILE_FELLOFFMAP_EP1    582
 #define TILE_FELLOFFMAP_EP3    0
 #define TILE_ICE_LEFTCORNER   403
