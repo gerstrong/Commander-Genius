@@ -63,11 +63,7 @@ void CPoisonSlug::processCrawling()
 		CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXMidPos(), getYDownPos()-(1<<CSF));
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( slime ) );
 		
-		//if(!slope)
-		{
-		    // Turn around!
-		    xDirection = -xDirection;
-		}
+		xDirection = -xDirection;
 		return;		
 	}
 
