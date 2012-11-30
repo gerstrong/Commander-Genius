@@ -94,7 +94,7 @@ mObjectPtrs(ObjectPtrs)
 	m_climbing = false;
 	m_pogotoggle = false;
 	m_jumped = false;
-	m_hanging = false;
+	m_hangtime = 0;
 	mExitTouched = false;
 
 	/*for(size_t add = 0x098C ; add <= 0x3ABB ; add += 0x2 )
@@ -667,7 +667,7 @@ void CPlayerLevel::shootInAir()
 
 
 
-
+const int MAX_CLIFFHANG_TIME = 10;
 
 bool CPlayerLevel::checkandtriggerforCliffHanging()
 {
@@ -698,7 +698,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			solid = false;
 			xinertia = 0;
 			yinertia = 0;
-			m_hanging = false;
+			m_hangtime = MAX_CLIFFHANG_TIME;
 			return true;
 		}
 	}
@@ -719,7 +719,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 			solid = false;
 			xinertia = 0;
 			yinertia = 0;
-			m_hanging = false;
+			m_hangtime = MAX_CLIFFHANG_TIME;
 			return true;
 		}
 	}
@@ -736,10 +736,15 @@ void CPlayerLevel::processCliffHanging()
 {
 	// In case you released the direction
 	if( m_playcontrol[PA_Y] == 0 && m_playcontrol[PA_X] == 0)
-		m_hanging = true;
+	{
+		m_hangtime = 0;
+	}
 
-	if(!m_hanging)
-		return;
+	if(m_hangtime > 0)
+	{
+	    m_hangtime--;
+	    return;
+	}
 
 	// If you want to climb up
 	if( ((xDirection == LEFT)  && (m_playcontrol[PA_X] < 0)) ||

@@ -282,7 +282,7 @@ private:
 
 	int m_fire_recharge_time;
 	bool m_EnterDoorAttempt;
-	bool m_hanging;
+	int m_hangtime;
 	int mPoleGrabTime;
 	int mClimbSpeedX;
 	
