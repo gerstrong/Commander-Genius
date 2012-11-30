@@ -16,7 +16,7 @@ namespace galaxy
 
 const int A_MUSHROOM_BOUNCE = 0;
 
-const int MUSHROOM_LOW_INERTIA = 60;
+const int MUSHROOM_LOW_INERTIA = 90;
 const int MUSHROOM_HIGH_INERTIA = 148;
 
 CMadMushroom::CMadMushroom(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :

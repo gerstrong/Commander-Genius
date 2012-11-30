@@ -393,24 +393,35 @@ void CPlayerBase::processDead()
 	// must be processed only once!
 	if(dead)
 	    return;
-
-	m_Inventory.Item.m_lifes--;
+	
 	setActionForce(A_KEEN_DIE);
-	g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
-
-	// Create the Event Selection screen
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );	
 	
-	// TODO: This commented out Message needs to return.
-	std::string loosemsg  = "You didn't make it past\n";
-		    loosemsg += mp_Map->getLevelName();
-	EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
-	pdialogevent->addOption("Try Again", new EventRestartLevel() );
+	if(m_Inventory.Item.m_lifes <= 0) // Game over?
+	{	    
+	    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	    
+	    const std::string end_text("GAME OVER!\n");	    
+	    EventContainer.add( new EventSendDialog(end_text) );
+	    EventContainer.add( new EventEndGamePlay() );
+	}
+	else // not yet!
+	{		
+	    m_Inventory.Item.m_lifes--;
+	    
+	    // Create the Event Selection screen
+	    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	    
+	    std::string loosemsg  = "You didn't make it past\n";
+	    loosemsg += mp_Map->getLevelName();
+	    EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
+	    pdialogevent->addOption("Try Again", new EventRestartLevel() );
+	    
+	    std::string exitMsg = "Exit to " + g_pBehaviorEngine->mapLevelName;
+	    pdialogevent->addOption(exitMsg, new EventExitLevel(mp_Map->getLevel(), false) );
+	    EventContainer.add( pdialogevent );
+	}
 	
-	std::string exitMsg = "Exit to " + g_pBehaviorEngine->mapLevelName;
-	pdialogevent->addOption(exitMsg, new EventExitLevel(mp_Map->getLevel(), false) );
-	EventContainer.add( pdialogevent );
-
 	m_dying = false;
 	dead = true;
 }

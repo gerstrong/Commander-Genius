@@ -28,6 +28,8 @@ public:
 
 	/** What happens when something touches that slime */
 	void getTouchedBy(CSpriteObject &theObject);
+private:
+    int m_timer;
 };
 
 };

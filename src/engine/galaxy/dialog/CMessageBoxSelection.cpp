@@ -123,7 +123,7 @@ void CMessageBoxSelection::init()
 void CMessageBoxSelection::process()
 {
 	// Look, if somebody pressed a button, and close this dialog!
-	if(g_pInput->getPressedCommand(IC_JUMP))
+	if(g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
 	{
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
