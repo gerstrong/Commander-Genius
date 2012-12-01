@@ -902,7 +902,7 @@ bool CPlayer::checkObjSolid()
 		if(pjumping == PJUMPLAND)
 		    pjumping = PNOJUMP;
 		
-		int dy = pSupportedbyobject->getYUpPos() - getYDownPos()+1;
+		int dy = pSupportedbyobject->getYPosition() - getYDownPos()+3;
 		if(pjumping == PNOJUMP)
 		{
 		    moveYDir(dy);

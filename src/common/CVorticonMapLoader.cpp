@@ -358,7 +358,8 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 			for( auto &player : mPlayerContainer )
 			{
 				player.exists = false;
-				player.moveToForce(x<<CSF, (y<<CSF)+275);
+				player.moveToForce(x<<CSF, y<<CSF);
+				player.alignToTile();
 				player.setupforLevelPlay();
 			}
 		}
