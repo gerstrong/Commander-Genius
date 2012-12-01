@@ -395,7 +395,6 @@ void CPlayerBase::processDead()
 	    return;
 	
 	setActionForce(A_KEEN_DIE);
-	g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );	
 	
 	if(m_Inventory.Item.m_lifes <= 0) // Game over?
 	{	    

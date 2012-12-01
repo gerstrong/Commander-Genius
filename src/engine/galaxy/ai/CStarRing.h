@@ -16,7 +16,7 @@
 namespace galaxy
 {
 
-const unsigned int STARRING_SPRITE = 40;
+const int STARRING_SPRITE = 40;
 
 class CStarRing : public CGalaxySpriteObject
 {
