@@ -201,8 +201,17 @@ public:
 	void setAutoGun(const int player, const bool value) { mFullyAutomatic[player] = value; }
 
 
-
-	std::string getEventName(int position, unsigned char input);
+	/**
+	 * \brief	This checks what event has been assigned to the chosen command and builds a string calling it
+	 * 			a standardized way.
+	 * \param	command		command where you are looking for the event
+	 * \param	input		number of input chosen. it's normal the number of the player
+	 * \return 	returns the assigned event as a std::string
+	 * \note 	getEventShortName is the short name version for menu prints
+	 */ 
+	std::string getEventName(int command, unsigned char input);
+	std::string getEventShortName(int command, unsigned char input);
+	
 	std::string getNewMappedEvent(int &rPos, unsigned char &rInp);
 	void readNewEvent();
 	

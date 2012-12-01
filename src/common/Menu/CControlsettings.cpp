@@ -103,8 +103,7 @@ mSelectedPlayer(selectedPlayer)
 	mpMenuDialog->addControl( mpSuperPogoSwitch );
 	mpMenuDialog->addControl( mpImpPogoSwitch );
 	mpMenuDialog->addControl( mpAutoGunSwitch );
-	mpMenuDialog->addControl( new CGUIButton( "Reset Controls",
-	 	 	 	 	 	 	 	 	 	 	  new ResetInputEvent(mSelectedPlayer-1) ) );
+	mpMenuDialog->addControl( new CGUIButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1) ) );
 
 }
 
@@ -150,7 +149,7 @@ void CControlSettingsMovement::init()
 	for ( ; it != mCommandName.end(); it++ )
 	{
 		const std::string buf = it->second;
-		const std::string buf2 = g_pInput->getEventName( it->first, mSelectedPlayer-1 );
+		const std::string buf2 = g_pInput->getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
 		CGUIButton	*guiButton = new CGUIButton( buf+buf2, rie );
@@ -194,6 +193,8 @@ void CControlSettingsMovement::release()
 {
 	if(!mCommandName.empty())
 		mCommandName.clear();
+	
+	g_pInput->saveControlconfig();
 }
 
 
@@ -223,7 +224,7 @@ void CControlSettingsButtons::init()
 	for ( ; it != mCommandName.end(); it++ )
 	{
 		const std::string buf = it->second;
-		const std::string buf2 = g_pInput->getEventName( it->first, mSelectedPlayer-1 );
+		const std::string buf2 = g_pInput->getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
 		CGUIButton	*guiButton = new CGUIButton( buf+buf2, rie );
@@ -270,5 +271,7 @@ void CControlSettingsButtons::release()
 {
 	if(!mCommandName.empty())
 		mCommandName.clear();
+	
+	g_pInput->saveControlconfig();
 }
 

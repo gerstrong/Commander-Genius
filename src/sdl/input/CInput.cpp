@@ -284,39 +284,63 @@ std::string CInput::getNewMappedEvent(int &rPos, unsigned char &rInp)
 {    
     rPos = remapper.mapPosition;
     rInp = remapper.mapDevice;
-    return getEventName(remapper.mapPosition, remapper.mapDevice);
+    return getEventShortName(remapper.mapPosition, remapper.mapDevice);
 }
 
-/**
- * \brief	This checks what event has been assigned to the chosen command and builds a string calling it
- * 			a standardized way.
- * \param	command		command where you are looking for the event
- * \param	input		number of input chosen. it's normal the number of the player
- * \return 	returns the assigned event as a std::string
- */
+
+std::string CInput::getEventShortName(int command, unsigned char input)
+{
+	std::string buf;
+	if(InputCommand[input][command].joyeventtype == ETYPE_JOYAXIS)
+	{
+	  buf = "J" + itoa(InputCommand[input][command].which) + "A" + itoa(InputCommand[input][command].joyaxis);
+	  if(InputCommand[input][command].joyvalue < 0)
+	    buf += "-";
+	  else
+	    buf += "+";
+	}
+	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYBUTTON)
+	{
+	  buf = "J" + itoa(InputCommand[input][command].which) + "B" + itoa(InputCommand[input][command].joybutton);
+	}
+	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYHAT)
+	{
+	  buf = "J" + itoa(InputCommand[input][command].which) + "H" + itoa(InputCommand[input][command].joyhatval);
+	}
+	else // In case only keyboard was triggered
+	{
+	  buf = SDL_GetKeyName(InputCommand[input][command].keysym);
+	}  
+	
+	return buf;
+}
 
 std::string CInput::getEventName(int command, unsigned char input)
 {
 	std::string buf;
 	if(InputCommand[input][command].joyeventtype == ETYPE_JOYAXIS)
 	{
-		buf = "Joy" + itoa(InputCommand[input][command].which) + "-A" + itoa(InputCommand[input][command].joyaxis);
-		if(InputCommand[input][command].joyvalue < 0)
-			buf += "-";
-		else
-			buf += "+";
+	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-A" + itoa(InputCommand[input][command].joyaxis);
+	  if(InputCommand[input][command].joyvalue < 0)
+	    buf += "-";
+	  else
+	    buf += "+";
 	}
 	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYBUTTON)
 	{
-		buf = "Joy" + itoa(InputCommand[input][command].which) + "-B" + itoa(InputCommand[input][command].joybutton);
+	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-B" + itoa(InputCommand[input][command].joybutton);
 	}
 	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYHAT)
 	{
-		buf = "Joy" + itoa(InputCommand[input][command].which) + "-H" + itoa(InputCommand[input][command].joyhatval);
+	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-H" + itoa(InputCommand[input][command].joyhatval);
 	}
 	else // In case only keyboard was triggered
 	{
-		buf = SDL_GetKeyName(InputCommand[input][command].keysym);
+	  buf = "Key ";
+	  buf += itoa(InputCommand[input][command].keysym);
+	  buf += " (";
+	  buf += SDL_GetKeyName(InputCommand[input][command].keysym);
+	  buf += ")";
 	}
 
 	return buf;
