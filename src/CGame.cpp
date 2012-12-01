@@ -15,6 +15,7 @@
 #include "sdl/input/CInput.h"
 #include "sdl/CTimer.h"
 #include "common/CSettings.h"
+#include "common/Menu/CMenuController.h"
 
 CGame::CGame() :
 m_firsttime(false),
@@ -33,6 +34,7 @@ m_Engine(m_firsttime)
  */
 CGame::~CGame()
 {
+	gpMenuController->emptyMenuStack();
 	g_pInput->Del();
 	g_pSound->destroy();
 	g_pVideoDriver->Del();
