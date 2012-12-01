@@ -44,7 +44,7 @@ bool CSkypest::isNearby(CSpriteObject &theObject)
 
 void CSkypest::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead || !getActionStatus(A_SKYPEST_FLY) )
+	if(dead || theObject.dead )
 		return;
 
 	// When Keen touches the Council Member exit the level and add one to the council list
@@ -57,7 +57,7 @@ void CSkypest::getTouchedBy(CSpriteObject &theObject)
 			playSound(SOUND_SQUISH_SKYPEST);
 			setAction(A_SKYPEST_SQUISHED);
 		}
-		else
+		else if( getActionNumber(A_SKYPEST_FLY) )
 		{
 			// else Keen will die
 			Player->kill();
