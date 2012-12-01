@@ -27,6 +27,10 @@ or directly to me (tulip) at haubaer1981@yahoo.de
 Update Log
 ----------
 
+Release 1.9 (2012-12-01)
+- Fixed EP3 Tiles
+- Martha is now second Player in Keen 3
+
 Release 1.8 (2011-05-01)
 - Added more tunes, more music
 - Updated the HQP tileset of episode 3
