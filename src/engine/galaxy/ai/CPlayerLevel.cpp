@@ -1910,18 +1910,15 @@ void CPlayerLevel::processPoleClimbingSit()
 
 void CPlayerLevel::processPoleClimbingUp()
 {
-	Uint32 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-	Uint32 l_y_up = getYUpPos();
-
-	/*if ((blockedu & 127) != 1)
-	{
-		setAction(A_KEEN_POLE);
-		//processPoleClimbingSit();
-		//return;
-	}*/
+	Uint32 l_x_l = getXLeftPos();
+	Uint32 l_x = getXMidPos();
+	Uint32 l_x_r = getXRightPos();
+	Uint32 l_y_up = getYUpPos();	
 
 	// Check for the upper side and don't let him move if the pole ends
-	if( hitdetectWithTileProperty(1, l_x, l_y_up) )
+	if( hitdetectWithTileProperty(1, l_x_l, l_y_up) ||
+	    hitdetectWithTileProperty(1, l_x, l_y_up) ||
+	    hitdetectWithTileProperty(1, l_x_r, l_y_up) )
 	{
 		setAction(A_KEEN_POLE_CLIMB);
 		yDirection = UP;
@@ -1939,9 +1936,11 @@ void CPlayerLevel::processPoleClimbingUp()
 
 void CPlayerLevel::processPoleClimbingDown()
 {
+	Uint32 l_x_l = getXRightPos();
 	Uint32 l_x = getXMidPos();
+	Uint32 l_x_r = getXRightPos();
 	Uint32 l_y_up = getYUpPos()+(16<<STC);
-	Uint32 l_y_down = getYDownPos();
+	Uint32 l_y_down = getYDownPos()+(16<<STC);
 
 	if(!hitdetectWithTileProperty(1, l_x, l_y_down))
 		solid = true;
@@ -1949,7 +1948,10 @@ void CPlayerLevel::processPoleClimbingDown()
 		solid = false;
 
 	// Check for the and upper and lower side, upper because the hand can touch the edge in that case
-	const bool up = hitdetectWithTileProperty(1, l_x, l_y_up);
+	bool up = false;
+	up |= hitdetectWithTileProperty(1, l_x_l, l_y_up);
+	up |= hitdetectWithTileProperty(1, l_x, l_y_up);
+	up |= hitdetectWithTileProperty(1, l_x_r, l_y_up);
 	if( up && !blockedd )
 	{
 		// Slide down if there is more of the pole
@@ -1964,11 +1966,15 @@ void CPlayerLevel::processPoleClimbingDown()
 		yinertia = 0;
 		solid = true;
 
-		const bool down = mp_Map->at(l_x>>CSF, l_y_down>>CSF);
+		bool down = false;
+		down |= mp_Map->at(l_x_l>>CSF, l_y_down>>CSF);
+		down |= mp_Map->at(l_x>>CSF, l_y_down>>CSF);
+		down |= mp_Map->at(l_x_r>>CSF, l_y_down>>CSF);
+
 
 		// Check if keen is trying to climb through the floor.
 		// It's quite a strange clipping error if he succeeds.
-		if(!(blockedd & 127) && !down)
+		if( !blockedd && !down )
 		{
 			state.jumpTimer = 0;
 			xinertia = 8*xDirection;
@@ -1995,6 +2001,8 @@ void CPlayerLevel::processPoleClimbingDown()
 			//CK_SetAction2(obj, &CK_ACT_keenLookDown1);
 
 		}
+		
+		return;
 	}
 
 	if (m_playcontrol[PA_Y] == 0)
