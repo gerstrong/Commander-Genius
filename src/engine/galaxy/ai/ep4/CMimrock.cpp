@@ -188,13 +188,16 @@ void CMimrock::process()
     performCollisions();
     performGravityMid();    
 	
-    if(dead)
-		return;	
+    if(dead)      
+      return;	
     
     processActionRoutine();	
     
     if(getActionStatus(A_MIMROCK_STUNNED))
-	dead = true;
+    {
+      honorPriority = false;
+      dead = true;
+    }
     
     (this->*mp_processState)();
     
