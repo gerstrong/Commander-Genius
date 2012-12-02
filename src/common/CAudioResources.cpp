@@ -24,7 +24,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	soundslot.priority = READWORD(imfdata_ptr);
 	soundslot.setupAudioSpec(&m_AudioSpec);
 	COPLEmulator &OPLEmulator = *g_pSound->getOPLEmulatorPtr();
-
+	
 	// It's time make it Adlib Sound structure and read it into the waveform
 	AdLibSound AL_Sound = *((AdLibSound*) imfdata_ptr);
 	imfdata_ptr += sizeof(AdLibSound);
