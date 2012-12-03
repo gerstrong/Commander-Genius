@@ -263,27 +263,130 @@ bool CSpriteObject::hitdetect(CSpriteObject &hitobject)
  * \param from x
  * \return true if detection worked with that tile having the property, else false
  */
-bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res)
+bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, const int lw, const int lh, const int res)
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	
+	int i,j;
+	signed char behavior;
 
-	for( int i=0 ; i<lw ; i+=res )
+	for( i=0 ; i<lw ; i+=res )
 	{
-		for( int j=0 ; j<lh ; j+=res )
+		for( j=0 ; j<lh ; j+=res )
 		{
-			const signed char behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
+			behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
 			if( (behavior&0x7f) == Property )
 			{
-				lx = lx+i;
-				ly = ly+j;
+				lx = lx+i;	ly = ly+j;
 				return true;
-			}
+			}						
 		}
+		
+		behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+lh)].behaviour;
+		if( (behavior&0x7f) == Property )
+		{
+			lx = lx+i;	ly = ly+lh;
+			return true;
+		}								
 	}
+	
+	behavior = Tile[mp_Map->getPlaneDataAt(1, lx+lw, ly+lh)].behaviour;
+	if( (behavior&0x7f) == Property )
+	{
+		lx = lx+lw;	ly = ly+lh;
+		return true;
+	}							
+	
 	return false;
 }
 
+// Read only version. The detected position is not read. Just returns true and false. That's it!
+bool CSpriteObject::hitdetectWithTilePropertyRectRO(const Uint16 Property, const int lx, const int ly, const int lw, const int lh, const int res)
+{
+	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	
+	int i,j;
+	signed char behavior;
 
+	for( i=0 ; i<lw ; i+=res )
+	{
+		for( j=0 ; j<lh ; j+=res )
+		{
+			behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
+			if( (behavior&0x7f) == Property )
+			    return true;
+		}
+		
+		behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+lh)].behaviour;
+		if( (behavior&0x7f) == Property )
+			return true;
+	}
+	
+	behavior = Tile[mp_Map->getPlaneDataAt(1, lx+lw, ly+lh)].behaviour;
+	if( (behavior&0x7f) == Property )
+		return true;
+	
+	return false;    
+}
+
+bool CSpriteObject::hitdetectWithTilePropertyHor(const Uint16 Property, const int lxl, const int lxr, const int ly, const int res)
+{
+	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	
+	int i;
+	signed char behavior;
+
+	for( i=lxl ; i<lxr ; i+=res )
+	{		
+		behavior = Tile[mp_Map->getPlaneDataAt(1, i, ly)].behaviour;
+		if( (behavior&0x7f) == Property )
+			return true;
+	}
+	
+	behavior = Tile[mp_Map->getPlaneDataAt(1, lxr, ly)].behaviour;
+	if( (behavior&0x7f) == Property )
+		return true;
+	
+	return false;       
+}
+
+bool CSpriteObject::hitdetectWithTilePropertyVert(const Uint16 Property, const int lx, const int lyu, const int lyd, const int res)
+{
+    	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	
+	int i;
+	signed char behavior;
+
+	for( i=lyu ; i<lyd ; i+=res )
+	{		
+		behavior = Tile[mp_Map->getPlaneDataAt(1, lx, i)].behaviour;
+		if( (behavior&0x7f) == Property )
+			return true;
+	}
+	
+	behavior = Tile[mp_Map->getPlaneDataAt(1, lx, lyd)].behaviour;
+	if( (behavior&0x7f) == Property )
+		return true;
+	
+	return false;       
+}
+
+
+/**
+ * \brief this new type of hit detection only checks if the foe touches something that has that property
+ * \param Property The Tile Property we are looking
+ * \return true if detection worked with that tile having the property, else false
+ */
+bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
+{
+	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	const int tileID = mp_Map->getPlaneDataAt(1, x, y);
+	const signed char behavior = Tile[tileID].behaviour;
+	if( (behavior&0x7F) == Property ) // 0x7F is the mask which covers for foreground properties
+		return true;
+	else
+		return false;
+}
 
 bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 {
@@ -308,24 +411,6 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 	}
 
 	return false;
-}
-
-
-
-/**
- * \brief this new type of hit detection only checks if the foe touches something that has that property
- * \param Property The Tile Property we are looking
- * \return true if detection worked with that tile having the property, else false
- */
-bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, const int y)
-{
-	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
-	const int tileID = mp_Map->getPlaneDataAt(1, x, y);
-	const signed char behavior = Tile[tileID].behaviour;
-	if( (behavior&0x7F) == Property ) // 0x7F is the mask which covers for foreground properties
-		return true;
-	else
-		return false;
 }
 
 

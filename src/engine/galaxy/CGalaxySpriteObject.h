@@ -41,7 +41,7 @@ public:
 	uint16_t mFoeID;
 	uint16_t m_ActionTicker;
 	uint16_t m_ActionNumber;
-	VectorD2<int> next;
+	//VectorD2<int> next;
 	size_t m_ActionBaseOffset;
 
 	int nextX;

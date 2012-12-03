@@ -194,7 +194,10 @@ public:
 	bool turnAroundOnCliff( int x1, int x2, int y2 );
 
 	bool hitdetect(CSpriteObject &hitobject);
-	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res);
+	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, const int lw, const int lh, const int res);
+	bool hitdetectWithTilePropertyRectRO(const Uint16 Property, const int lx, const int ly, const int lw, const int lh, const int res);
+	bool hitdetectWithTilePropertyHor(const Uint16 Property, const int lxl, const int lxr, const int ly, const int res);
+	bool hitdetectWithTilePropertyVert(const Uint16 Property, const int lx, const int lyu, const int lyd, const int res);
 	bool hitdetectWithTileProperty(const int Property, const int x, const int y);
 	virtual void kill();
 	void blink(Uint16 frametime);

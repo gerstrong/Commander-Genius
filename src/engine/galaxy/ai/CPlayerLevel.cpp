@@ -151,8 +151,8 @@ bool CPlayerLevel::verifyforPole()
 
 		xinertia = 0;
 
-		next.x = 0;
-		next.y = 64*yDir;
+		//next.x = 0;
+		//next.y = 64*yDir;
 
 		// Set Keen in climb mode
 		setAction(A_KEEN_POLE);
@@ -1936,7 +1936,7 @@ void CPlayerLevel::processPoleClimbingUp()
 
 void CPlayerLevel::processPoleClimbingDown()
 {
-	Uint32 l_x_l = getXRightPos();
+	Uint32 l_x_l = getXLeftPos();
 	Uint32 l_x = getXMidPos();
 	Uint32 l_x_r = getXRightPos();
 	Uint32 l_y_up = getYUpPos()+(16<<STC);

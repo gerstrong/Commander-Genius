@@ -151,14 +151,14 @@ void CTreasureEater::checkForItem()
 {
 	int l_x = getXLeftPos();
 	int l_y = getYUpPos();
-	int l_w = getXRightPos() - getXLeftPos();
-	int l_h = getYDownPos() - getYUpPos();
+	int l_w = getXRightPos() - l_x;
+	int l_h = getYDownPos() - l_y;
 
 	// So far we have tile item support only!
 	// TODO: Need Sprite Item support and also this one should should be able to steal gems
 	for( Uint32 i=21 ; i<=27 ; i++ )
 	{
-		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 1<<STC))
+		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 2<<STC))
 		{
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;

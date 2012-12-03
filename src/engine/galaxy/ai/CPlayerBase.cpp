@@ -238,7 +238,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 
 
 	// Deadly hazards! Here Keen dying routine will be triggered
-	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 1<<STC))
+	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 2<<STC))
 	{
 		kill();
 	}
@@ -254,7 +254,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	}
 
 
-	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 1<<STC))
+	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 2<<STC))
 	{
 		const int lc_x = l_x>>CSF;
 		const int lc_y = l_y>>CSF;
@@ -276,7 +276,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	// All the collectable items go from 21 to 28
 	for( Uint32 i=21 ; i<=28 ; i++ )
 	{
-		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 1<<STC))
+		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 2<<STC))
 		{
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;

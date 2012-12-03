@@ -60,16 +60,11 @@ void CSpriteObject::setScrPos( int px, int py )
 bool CSpriteObject::PoleCollision()
 {
     int l_x = getXLeftPos();
-    int m_x = getXMidPos();
-    int r_x = getXRightPos();    
+    int l_w = getXRightPos() - getXLeftPos();
+    int l_h = getYDownPos() - getYUpPos();
     int l_y = getYMidPos();
     
-    if( ( hitdetectWithTileProperty(1, l_x, l_y) )  ||
-	( hitdetectWithTileProperty(1, m_x, l_y) )  ||
-	( hitdetectWithTileProperty(1, r_x, l_y) ) )
-	return true;
-    else
-	return false;
+    return hitdetectWithTilePropertyRectRO(1, l_x, l_y, l_w, l_h, 1<<CSF);
 }
 
 // This functions checks, if the enemy is near to the player. In case, that it is
