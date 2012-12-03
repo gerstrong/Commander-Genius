@@ -116,7 +116,11 @@ void CSpriteObject::alignToTile()
 
 	int moveX = (1<<CSF)/2;
 	moveX -= ((rSprite.getWidth()/2)<<STC);
-	m_Pos.x += moveX;    
+	m_Pos.x += moveX;
+	
+	// This should ensure no enemies get stuck in walls!
+	processMove( -(1<<CSF), 0 );
+	processMove(  (1<<CSF)+moveX, 0 );
 }
 
 

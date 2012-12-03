@@ -7,11 +7,13 @@
 
 #include "CFlag.h"
 #include "sdl/sound/CSound.h"
+#include "common/CBehaviorEngine.h"
 
 
 namespace galaxy {
 
-const Uint16 FLYING_BASEFRAME = 174;
+const Uint16 FLYING_BASEFRAME_EP4 = 174;
+const Uint16 FLYING_BASEFRAME_EP5 = 173;
 
 const Uint16 ANIMATION_TIME = 8;
 const Uint16 SPEED = 64;
@@ -21,22 +23,25 @@ CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y),
 m_location(Location),
 m_destination(Destination),
-m_baseframe(FLYING_BASEFRAME),
+m_baseframe(FLYING_BASEFRAME_EP4),
 processState(&CFlag::processFlying)
 {
 	solid = false;
 	honorPriority = false;
 	sprite = WAVING_BASEFRAME;
 	
-	/*CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-
-	int moveup = (1<<CSF)-1;
-	moveup -= ((rSprite.getHeight()+1)<<STC);
-	m_Pos.y += moveup;*/
-	
 	alignToTile();
 	
-	//processMove(0, 1);
+	if(g_pBehaviorEngine->getEpisode() == 5)
+	{
+	    // In Episode 5 the sign is not thrown! It just appears in the holder
+	    //m_location = m_destination;
+	    moveTo(m_destination);
+	    processState = &CFlag::processRotation;
+	    m_baseframe = FLYING_BASEFRAME_EP5;
+	    sprite = m_baseframe;
+	}
+	
 }
 
 /**
@@ -85,7 +90,7 @@ void CFlag::processFlying()
 }
 
 /*
- * Called when flag is in the pole
+ * Called when flag is in the pole. Keen 4 or 6
  */
 void CFlag::processWaving()
 {
@@ -96,6 +101,20 @@ void CFlag::processWaving()
 		else
 			sprite++;
 	}
+}
+
+/*
+ * Called when sign is in the holder. Keen 5 normally
+ */
+void CFlag::processRotation()
+{ 
+	if(mp_Map->getAnimtiletimer()%ANIMATION_TIME == 0)
+	{
+		if(sprite-m_baseframe >= 3)
+			sprite = m_baseframe;
+		else
+			sprite++;
+	}    
 }
 
 }

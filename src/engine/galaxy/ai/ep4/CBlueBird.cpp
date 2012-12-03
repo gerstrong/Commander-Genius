@@ -54,7 +54,7 @@ void CBlueBird::setActionForce(const size_t ActionNumber)
 
 bool CBlueBird::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(60) )
+	if( !getProbability(20) )
 		return false;
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )

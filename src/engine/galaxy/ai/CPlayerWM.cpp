@@ -616,12 +616,23 @@ void CPlayerWM::finishLevel(Uint16 object)
 		csfX += (6<<STC);
 		csfY -= FlagSprite.m_bboxY2;
 		csfY += (2<<STC);
+		
+		if(g_pBehaviorEngine->getEpisode() == 5)
+		{
+		    csfX -= (14<<STC);
+		    csfY -= (1<<CSF);
+		}
+		else
+		{
+		    g_pSound->playSound( SOUND_FLAG_APPEAR );   
+		}
+		
 		VectorD2<Uint32> dst(csfX, csfY);
 
 
 		CFlag *pFlag = new CFlag(mp_Map, src, dst);		
 		g_pBehaviorEngine->m_EventList.spawnObj(pFlag);
-		g_pSound->playSound( SOUND_FLAG_APPEAR );
+		
 
 		// Mark the tileinfo on the map as marked!!
 		mp_Map->setTile( x, y, 0, true, 2);

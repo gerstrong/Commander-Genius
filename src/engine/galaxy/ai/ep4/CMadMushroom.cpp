@@ -31,7 +31,6 @@ jumpcounter(0)
 	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
 	ptr += 0xFF90;
 	memcpy(&bounceAmount, ptr, 1 );
-
 }
 
 

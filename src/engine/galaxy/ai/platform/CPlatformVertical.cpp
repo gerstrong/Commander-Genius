@@ -42,11 +42,7 @@ m_fireTimer(0)
 	m_ActionBaseOffset = actionOffset;
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
-	calcBoundingBoxes();
-	
-	// This should recalibrate the position in case the plats are stuck due some bad level design 
-	processMove( (3<<CSF), 0 );
-	processMove(-(3<<CSF), 0 );
+	calcBoundingBoxes();	
 }
 
 void CPlatformVertical::process()

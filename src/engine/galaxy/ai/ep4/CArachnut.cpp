@@ -32,7 +32,7 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 
 bool CArachnut::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(80) )
+	if( !getProbability(10) )
 		return false;
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )

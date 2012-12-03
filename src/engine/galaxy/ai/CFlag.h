@@ -5,7 +5,7 @@
  *      Author: gerstrong
  *
  *  This class represents the flag sign object
- *  which is shown and performed when Keen finished a Level
+ *  which is shown and performed when Keen finished a Level. It might also be a sign like in Keen 5
  */
 
 #ifndef CFLAG_H_
@@ -31,6 +31,7 @@ public:
 	void process();
 	void processFlying();
 	void processWaving();
+	void processRotation();
 
 private:
 	// Where the flag/sign will pop in
