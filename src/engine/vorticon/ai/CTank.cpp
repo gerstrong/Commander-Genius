@@ -18,6 +18,13 @@ CVorticonSpriteObject(p_map, x, y, objtype)
 	dist_to_travel = TANK_MAXTRAVELDIST;
 	canbezapped = true;  // will stop bullets but are not harmed
 	m_invincible = true;
+	
+	// Read this from the Exe-File. Patchwork Mod 1 uses different one!
+	shotHeight = 0; 
+	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+	ptr += 0x4900;
+	memcpy(&shotHeight, ptr, 1 );	
+	shotHeight <<= STC;
 }
 
 
@@ -144,7 +151,7 @@ void CTank::process()
 		break;
 	case TANK_FIRE:
 	{
-		int height_top = g_pBehaviorEngine->getPhysicsSettings().tankbot.shot_height_from_top<<STC;
+		int height_top = shotHeight;
 		if(height_top!=0)
 		{
 			CRay *newobject;

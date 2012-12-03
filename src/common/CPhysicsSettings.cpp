@@ -65,8 +65,6 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 			vorticon.default_hp = *(data+0x180D)+1;
 			vorticon.commander_hp = *(data+0x1819)+1;
 
-			// tank bot
-			tankbot.shot_height_from_top = *(data+0x4900);
 			misc.ctspace_ammo = GETWORD(data+0xE03);
 			misc.ctspace_keys = GETWORD(data+0xE11);
 			misc.one_eyed_tile = GETWORD(data+0x4547);

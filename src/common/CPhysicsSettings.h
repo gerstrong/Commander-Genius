@@ -45,10 +45,6 @@ public:
 		char default_hp;
 	}vorticon;
 
-	struct tanksettings{
-		char shot_height_from_top;
-	}tankbot;
-
 	struct{
 		int visibility;
 		int ctspace_ammo;

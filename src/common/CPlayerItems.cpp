@@ -80,6 +80,9 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 	else if (behaviour > 10 && behaviour < 16)
 		playSound(SOUND_GET_ITEM);
 	
+	char shotInc = 5; 
+	byte *exeptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+	
 	switch(behaviour)
 	{
 			// keycards
@@ -136,9 +139,16 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 		case 15:           // raygun
 			riseBonus(GUNUP_SPRITE, mpx, mpy);
 			if (g_pBehaviorEngine->mDifficulty <= EASY)
+			{
 				inventory.charges += 8;
+			}
 			else 
-			inventory.charges += 5;
+			{			
+			    if( g_pBehaviorEngine->getEpisode() == 2) // Keen Null
+				memcpy(&shotInc, exeptr+0x728C, 1 );
+			    
+			    inventory.charges += shotInc;
+			}
 			break;
 		case 16:           // the Holy Pogo Stick
 			inventory.HasPogo = 1;

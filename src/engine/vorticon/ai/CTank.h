@@ -1,12 +1,10 @@
 /*
- * tankep2.h
- *
  *  Created on: 25.06.2010
  *      Author: gerstrong
  */
 
-#ifndef TANKEP2_H_
-#define TANKEP2_H_
+#ifndef TANKEP1_H_
+#define TANKEP1_H_
 
 #include "engine/vorticon/CVorticonSpriteObject.h"
 #include "../../../common/CPlayer.h"
@@ -91,6 +89,8 @@ protected:
 	unsigned int turnaroundtimer;
 	int pausetime;
 	bool hardmode;
+	
+	int shotHeight;
 };
 
-#endif /* TANKEP2_H_ */
+#endif /* TANKEP1_H_ */
