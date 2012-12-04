@@ -27,6 +27,7 @@ public:
 
 	void process();
 	void processMoving();
+	void processWaving();
 
 	// Episode 4 only. When Keen is riding on the foot
 	void processRiding();
@@ -53,6 +54,7 @@ public:
 private:
 	Uint16 m_basesprite;
 	Uint16 walkBaseFrame;
+	Uint16 wavingBaseFrame;
 	Uint16 swimBaseFrame;
 	direction_t m_looking_dir;
 
@@ -63,6 +65,7 @@ private:
 	VectorD2<int> target;
 	int elevator_close_timer;
 	int elevator_frames;
+	int waveTimer;
 
 	void (CPlayerWM::*mProcessPtr)();
 };

@@ -14,6 +14,8 @@
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 
+const int TIME_TO_WAVE = 400;
+
 namespace galaxy {
 
 CPlayerWM::CPlayerWM(CMap *pmap,
@@ -33,14 +35,17 @@ m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
-m_cantswim(false)
+m_cantswim(false),
+waveTimer(0)
 {
 	m_ActionBaseOffset = actionoffset;
+	
 	CGalaxySpriteObject::setActionForce(0);
 	setActionSprite();
 
 	walkBaseFrame = sprite;
-	swimBaseFrame = walkBaseFrame + 24;
+	wavingBaseFrame = walkBaseFrame + 22;
+	swimBaseFrame = walkBaseFrame + 24;	
 	m_basesprite = walkBaseFrame;
 
 	performCollisions();
@@ -137,19 +142,41 @@ void CPlayerWM::process()
 		// Here we need to set the coordinates calculated to where Keen has to go.
 		target = fetchFootDestCoord();
 
-		//setAction(A_KEEN_RIDING_ON_FOOT);
-		// 0x1492 seems to be the foot
+		// Make Keen ride on the foot
 		m_Action.setActionFormat(0x1492);
 		setActionSprite();
 		mProcessPtr = &CPlayerWM::processRiding;
 		EventContainer.pop_Event();
 	}
 
-
-
 	m_camera.process();
 	m_camera.processEvents();
 }
+
+
+/*
+ * Processes the waving of the player on map here
+ */
+void CPlayerWM::processWaving()
+{
+    waveTimer++;
+    if( g_pInput->getHoldedCommand(IC_UP) || g_pInput->getHoldedCommand(IC_DOWN) ||
+	g_pInput->getHoldedCommand(IC_LEFT) || g_pInput->getHoldedCommand(IC_RIGHT) ||
+        g_pInput->getHoldedCommand(IC_JUMP) || waveTimer >= (TIME_TO_WAVE/4) )
+    {
+	mProcessPtr = &CPlayerWM::processMoving;
+	m_basesprite = walkBaseFrame;
+	waveTimer = 0;
+	return;
+    }
+    
+    m_animation_time = 10;
+    sprite = m_basesprite;
+    sprite +=  m_animation%2;  
+}
+
+
+
 
 /*
  * Processes the walking of the player on map here
@@ -172,7 +199,7 @@ void CPlayerWM::processMoving()
 	// This will trigger between swim and walkmode
 	checkforSwimming(bleft, bright, bup, bdown);
 
-	// In Episode 5 and 5 there are teleporters. Verify those teleporters and elevators
+	// In Episode 5 and 6 there are teleporters. Verify those teleporters and elevators
 	if(g_pBehaviorEngine->getEpisode() >= 5)
 		verifyTeleportation();
 
@@ -185,6 +212,7 @@ void CPlayerWM::processMoving()
 		moveLeft(movespeed);
 		walking = true;
 		xDirection = LEFT;
+		waveTimer = 0;
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT) && !bright)
 	{
@@ -194,6 +222,7 @@ void CPlayerWM::processMoving()
 		moveRight(movespeed);
 		walking = true;
 		xDirection = RIGHT;
+		waveTimer = 0;
 	}
 
 	if(g_pInput->getHoldedCommand(IC_UP) && !bup)
@@ -204,6 +233,7 @@ void CPlayerWM::processMoving()
 		moveUp(movespeed);
 		walking = true;
 		yDirection = UP;
+		waveTimer = 0;
 	}
 	else if(g_pInput->getHoldedCommand(IC_DOWN) && !bdown)
 	{
@@ -213,6 +243,7 @@ void CPlayerWM::processMoving()
 		moveDown(movespeed);
 		walking = true;
 		yDirection = DOWN;
+		waveTimer = 0;
 	}
 
 	// In case noclipping was triggered, make it solid, or remove it...
@@ -240,6 +271,15 @@ void CPlayerWM::processMoving()
 	{
 		performWalkingAnimation(walking);
 		m_cantswim = false;
+		
+		waveTimer++;
+		if( waveTimer >= TIME_TO_WAVE)
+		{
+		    mProcessPtr = &CPlayerWM::processWaving;
+		    m_basesprite = wavingBaseFrame;
+		    waveTimer = 0;
+		    return;
+		}
 	}
 	else if(m_basesprite == swimBaseFrame)
 	{
