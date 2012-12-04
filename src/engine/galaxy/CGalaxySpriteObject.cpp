@@ -134,7 +134,7 @@ void CGalaxySpriteObject::processFalling()
 
 int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 {
-	if(hitdetectWithTilePropertyHor(1, x1, x2, y1, 1<<CSF))
+	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
 	    return 0;
     
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
