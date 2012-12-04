@@ -225,7 +225,7 @@ void CTextViewer::process()
 	 
 	 if(m_timer>=8) m_timer=0;
 	 
-	 if(g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedKey(KQ) )
+	 if(g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedKey(KQ) || g_pInput->getPressedCommand(IC_BACK) )
 		 m_mustclose = true;
 	 
 	 renderBox(); // This comes after, because it does use semi-transparent overlay
@@ -286,6 +286,6 @@ void CTextViewer::renderBox()
 	Font.drawCharacter(sfc, 8, m_x + m_w - m_8x8tilewidth, m_y + m_h + m_8x8tileheight ); 	// Lower-Right corner
 	
 	// Now print the helping text
-	Font.drawFont(sfc, "ESC to Exit / \17 \23 to Read",
+	Font.drawFont(sfc, "BACK to Exit / \17 \23 to Read",
 								 m_x+m_8x8tilewidth+(m_w/2)-12*m_8x8tilewidth, m_y+m_h, true);
 }

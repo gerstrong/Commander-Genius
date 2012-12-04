@@ -87,12 +87,13 @@ std::string getResourceFilename(const std::string& filename, const std::string& 
 			text += "The file " + filename + " was not found. Please provide that file!\n";
 		}
 		else
-			text += "missing, but not needed!\n";
+			text.clear();
 	}
 	else
 		text += "found!\n";
 
-	g_pLogFile->textOut(GREEN, text);
+	if(!text.empty())
+	    g_pLogFile->textOut(GREEN, text);
 
 	return vfs_path;
 }
