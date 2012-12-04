@@ -132,6 +132,7 @@ void CMusic::stop()
 	while(m_busy);
 
 	mpPlayer->close();
+	mpPlayer.reset();
 }
 
 // length only refers to the part(buffer) that has to be played

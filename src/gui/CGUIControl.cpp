@@ -14,7 +14,7 @@
 #include "sdl/CTimer.h"
 
 
-int CGUIControl::mTwirliconID = 10;
+int CGUIControl::mTwirliconID;
 
 CGUIControl::CGUIControl() :
 mEnabled(true),
@@ -25,6 +25,7 @@ mButtonUp(false)
 {
 	CRect<float> NewRect(0.0f, 0.0f, 0.0f, 0.0f);
 	mRect = NewRect;
+	mTwirliconID = 10;
 }
 
 
