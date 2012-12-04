@@ -63,10 +63,12 @@ public:
 
 
 	CRect<float> mRect;
-	bool mEnabled;
+	
+    	bool mEnabled;
 
 protected:
-	int	mFontID;
+    
+	int mFontID;
 	bool mHovered;
 	bool mButtonDown;
 	bool mButtonUp;

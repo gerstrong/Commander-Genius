@@ -199,14 +199,24 @@ bool CGUIDialog::sendEvent( const std::shared_ptr<CEvent> &command )
 		int i=0;
 		for( auto &it : mControlList )
 		{
-			it->setHovered( (i == mSelection) );
-
-			if(i == mSelection)
+		    //if( (i == mSelection) && it->getHovered() )
+		    if( i == mSelection )
+		    {
+			if( !it->getHovered() )
 			{
-				if( it->sendEvent(ev->mCommand) )
-					return true;
+			    it->setHovered( (i == mSelection) );
 			}
-			i++;
+			else
+			{
+			    if( it->sendEvent(ev->mCommand) )
+				return true;
+			}
+		    }
+		    else
+		    {
+			it->setHovered( false );
+		    }
+		    i++;
 		}
 
 		if(ev->mCommand == IC_DOWN)

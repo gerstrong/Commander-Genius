@@ -24,6 +24,16 @@
 
 // This central list tells which frequencies can be used for your soundcard.
 // In case you want to add some more, just modify this list
+#if defined(ANDROID)
+static const unsigned int numAvailableRates = 3;
+static const int availableRates[numAvailableRates]=
+{
+		11025,
+		22050,
+		44100
+};
+
+#else
 static const unsigned int numAvailableRates = 5;
 static const int availableRates[numAvailableRates]=
 {
@@ -33,6 +43,7 @@ static const int availableRates[numAvailableRates]=
 		48000,
 		49716
 };
+#endif
 
 
 // define a callback function we can work with
