@@ -60,7 +60,9 @@ void CPlatformVertical::process()
 	
 	// If there is a blocker, change the direction
 	if( object == 31 )
-		yDirection = (yDirection == UP) ? DOWN : UP;
+	{
+	    yDirection = (yDirection == UP) ? DOWN : UP;
+	}
 
 	if(yDirection == UP && blockedu)
 		yDirection = DOWN;
@@ -75,6 +77,17 @@ void CPlatformVertical::process()
 	{
 	    movePlatDown(MOVE_VERT_SPEED);
 	}
+	
+	// If any Plat is stuck, because it is in some wall and can't move properly, try to pull it!
+	if(blockedl)
+	{
+	    movePlatRight(MOVE_VERT_SPEED);
+	}	
+	if(blockedr)
+	{
+	    movePlatLeft(MOVE_VERT_SPEED);
+	}
+
 	
 	// If Timer passed swap Sprite
 	m_fireTimer++;

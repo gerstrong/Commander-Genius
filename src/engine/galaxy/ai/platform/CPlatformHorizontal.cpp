@@ -42,7 +42,7 @@ m_fireTimer(0)
 	
 	// This should recalibrate the position in case the plats are stuck due some bad level design. (Keen 7 - Fun House)
 	processMove( -(3<<CSF), 0 );
-	processMove(  (3<<CSF), 0 );	
+	processMove(  (3<<CSF), 0 );
 }
 
 const int MOVE_HORIZ_SPEED = 20;
