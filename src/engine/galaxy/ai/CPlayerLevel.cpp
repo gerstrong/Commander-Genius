@@ -1219,11 +1219,11 @@ void CPlayerLevel::processJumping()
 
 	if( m_Cheatmode.jump && (state.jumpIsPressed && !state.jumpWasPressed) )
 	{
-			state.jumpWasPressed = true;
-			yinertia = -90;
-			state.jumpTimer = 18;
-			setAction(A_KEEN_JUMP);
-			return;
+		state.jumpWasPressed = true;
+		yinertia = -90;
+		state.jumpTimer = 18;
+		setAction(A_KEEN_JUMP);
+		return;
 	}
 
 	if(checkandtriggerforCliffHanging())
