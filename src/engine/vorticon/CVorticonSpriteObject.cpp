@@ -31,7 +31,7 @@ void CVorticonSpriteObject::setupObjectType(const int Episode)
 	// Mainly Episode 1
 	case OBJ_GARG: sprite = OBJ_GARG_DEFSPRITE; break;
 	case OBJ_BUTLER: sprite = OBJ_BUTLER_DEFSPRITE; break;
-	case OBJ_TANK: sprite = OBJ_BUTLER_DEFSPRITE; break;
+	case OBJ_TANK: sprite = OBJ_TANK_DEFSPRITE; break;
 	case OBJ_ICECHUNK: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
 	case OBJ_ICEBIT: sprite = OBJ_ICEBIT_DEFSPRITE; break;
 	case OBJ_ICECANNON: sprite = OBJ_ICECHUNK_DEFSPRITE; break;

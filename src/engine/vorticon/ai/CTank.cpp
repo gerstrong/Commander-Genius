@@ -202,11 +202,11 @@ void CTank::process()
 	}
 }
 
-void CTank::getTouchedBy(CSpriteObject &theObject)
+void CTank::getTouchedBy(CVorticonSpriteObject &theObject)
 {   // push keen
 	if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
 	{
-		player->bump( movedir );
+	    player->bump( movedir );
 	}
 }
 

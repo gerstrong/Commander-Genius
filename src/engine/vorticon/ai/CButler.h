@@ -44,11 +44,10 @@ public:
 private:
 	// AI for "butler" robot (ep1)
 	enum {
-		BUTLER_TURN, BUTLER_WALK
+		BUTLER_TURN, BUTLER_WALK, BUTLER_FALL
 	} state;
-	unsigned char timer,animtimer;
-	unsigned char frame;
-	unsigned int dist_traveled;
+	char timer,animtimer;
+	char frame;
 };
 
 #endif /* CBUTLER_H_ */

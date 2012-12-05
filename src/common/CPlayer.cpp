@@ -72,6 +72,7 @@ mp_option(g_pBehaviorEngine->m_option)
     ppogostick = false;
     pslowingdown = false;
     m_playingmode = WORLDMAP;
+    playpushed_decreasetimer = 0;
 
 
     // Set every value in the class to zero.
@@ -716,48 +717,55 @@ void CPlayer::ProcessInput()
 	// Entry for every player
 	playcontrol[PA_X] = 0;
 	playcontrol[PA_Y] = 0;
-	
-	if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
+
+	if(playpushed_decreasetimer)
+	{	
+	    playpushed_decreasetimer--;
+	}
+	else
 	{
+	    if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
+	    {
 		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_LEFT) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_LEFT) : 100;
 		playcontrol[PA_X] -= newval;
-	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
-	{
+	    }
+	    else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
+	    {
 		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_RIGHT) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_RIGHT) : 100;
 		playcontrol[PA_X] += newval;
-	}
-	
-	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
-	{
+	    }
+	    
+	    if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
+	    {
 		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_DOWN) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_DOWN) : 100;
 		playcontrol[PA_Y] += newval;
-	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
-	{
+	    }
+	    else if(g_pInput->getHoldedCommand(m_index, IC_UP))
+	    {
 		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_UP) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_UP) : 100;
 		playcontrol[PA_Y] -= newval;
-	}
-
-	if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
-	{
+	    }
+	    
+	    if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
+	    {
 		playcontrol[PA_X] -= 100;
 		playcontrol[PA_Y] -= 100;
-	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_UPPERRIGHT))
-	{
+	    }
+	    else if(g_pInput->getHoldedCommand(m_index, IC_UPPERRIGHT))
+	    {
 		playcontrol[PA_X] += 100;
 		playcontrol[PA_Y] -= 100;
-	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERLEFT))
-	{
+	    }
+	    else if(g_pInput->getHoldedCommand(m_index, IC_LOWERLEFT))
+	    {
 		playcontrol[PA_X] -= 100;
 		playcontrol[PA_Y] += 100;
-	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERRIGHT))
-	{
+	    }
+	    else if(g_pInput->getHoldedCommand(m_index, IC_LOWERRIGHT))
+	    {
 		playcontrol[PA_X] += 100;
 		playcontrol[PA_Y] += 100;
+	    }
 	}
 
 	if(!pfiring)

@@ -823,14 +823,14 @@ void CPlayer::SelectFrame()
     }
 }
 
-const int bumpamount = 160;
+const int bumpamount = 320;
 
 // yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
 // if solid = true, object acts like a solid "wall".
 void CPlayer::bump( direction_t direction )
 {
-	if(	pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
+	if( pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
 		return;
 
 	playSound( SOUND_YORP_BUMP, PLAY_NORESTART );
@@ -839,6 +839,7 @@ void CPlayer::bump( direction_t direction )
 		pShowDir.x = pDir.x = direction;
 
 	xinertia = (direction==RIGHT) ? bumpamount : -bumpamount;
+	playpushed_decreasetimer = 30;
 
 	pwalking = true;
 }

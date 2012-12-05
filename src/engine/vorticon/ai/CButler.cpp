@@ -4,15 +4,18 @@
 #include "common/CBehaviorEngine.h"
 
 CButler::CButler(CMap *pmap, Uint32 x, Uint32 y) :
-CVorticonSpriteObject(pmap, x, y-(1<<STC), OBJ_BUTLER)
+CVorticonSpriteObject(pmap, x, y, OBJ_BUTLER),
+timer(0),
+animtimer(0),
+frame(0)
 {
-	 state = BUTLER_WALK;
-	 xDirection = LEFT;
+	 state = BUTLER_FALL;
+	 xDirection = CENTER;
 	 animtimer = 0;
 	 canbezapped = true;  // will stop bullets but are not harmed
 	 m_invincible = true;
-	 blockedd = true;
 	 inhibitfall = false;
+	 sprite = BUTLER_WALK_LEFT_FRAME;
 	 alignToTile();
 }
 
@@ -71,6 +74,13 @@ void CButler::process()
 		 }
 		 else animtimer++;
 		 break;
+	 case BUTLER_FALL: 
+	     if(blockedd)
+	     {
+		 state = BUTLER_WALK;
+		 xDirection = RIGHT;
+	     }
+	     break;
 	 default: break;
 	 }
 }
