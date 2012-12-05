@@ -270,8 +270,8 @@ void CSound::playSound(	const GameSound snd,
 }
 
 void CSound::playStereofromCoord( const GameSound snd,
-								  const SoundPlayMode mode,
-								  const unsigned int xcoordinate)
+				const SoundPlayMode mode,
+				 const int xcoordinate)
 {
     if(mAudioSpec.channels == 2)
     {
@@ -279,15 +279,21 @@ void CSound::playStereofromCoord( const GameSound snd,
 
     	bal = ((short)(xcoordinate) - (320>>1));	// Faster calculation of balance transformation
 
-    	if(bal < -127)
-    		bal = -127;
-    	else if(bal > 127)
-    		bal = 127;
+    	if(bal < -255)
+	{
+	    bal = -255;
+	}
+    	else if(bal > 255)
+	{
+	    bal = 255;
+	}
 
     	playStereosound(snd, mode, bal);
-	}
+    }
     else
+    {
     	playSound(snd, mode);
+    }
 }
 
 void CSound::playStereosound(const GameSound snd, const char mode, const short balance)

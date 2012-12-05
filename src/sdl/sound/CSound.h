@@ -42,7 +42,7 @@ public:
 					const SoundPlayMode mode = PLAY_NOW );
 	void playStereofromCoord(const GameSound snd,
 							 const SoundPlayMode mode,
-							 const unsigned int xcoordinate);
+							 const int xcoordinate);
 	void playStereosound(const GameSound snd, const char mode, const short balance);
 	bool isPlaying(const GameSound snd);
 	void stopSound(const GameSound snd);

@@ -622,7 +622,8 @@ void CPlayer::InertiaAndFriction_X()
 	{
 		int dx = xinertia;
 		// check first if the player is not blocked
-		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
+		if( (!blockedr and dx>0 ) or 
+		    (!blockedl and dx<0 ) )
 			moveXDir(dx);
 		else
 			xinertia = 0;
@@ -718,55 +719,55 @@ void CPlayer::ProcessInput()
 	playcontrol[PA_X] = 0;
 	playcontrol[PA_Y] = 0;
 
-	if(playpushed_decreasetimer)
-	{	
+	if(playpushed_decreasetimer>0)
 	    playpushed_decreasetimer--;
-	}
-	else
+	else if(playpushed_decreasetimer<0)
+	    playpushed_decreasetimer++;
+
+	
+	if(g_pInput->getHoldedCommand(m_index, IC_LEFT) && playpushed_decreasetimer<=0 )
 	{
-	    if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
-	    {
-		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_LEFT) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_LEFT) : 100;
-		playcontrol[PA_X] -= newval;
-	    }
-	    else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
-	    {
-		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_RIGHT) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_RIGHT) : 100;
-		playcontrol[PA_X] += newval;
-	    }
-	    
-	    if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
-	    {
-		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_DOWN) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_DOWN) : 100;
-		playcontrol[PA_Y] += newval;
-	    }
-	    else if(g_pInput->getHoldedCommand(m_index, IC_UP))
-	    {
-		const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_UP) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_UP) : 100;
-		playcontrol[PA_Y] -= newval;
-	    }
-	    
-	    if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
-	    {
-		playcontrol[PA_X] -= 100;
-		playcontrol[PA_Y] -= 100;
-	    }
-	    else if(g_pInput->getHoldedCommand(m_index, IC_UPPERRIGHT))
-	    {
-		playcontrol[PA_X] += 100;
-		playcontrol[PA_Y] -= 100;
-	    }
-	    else if(g_pInput->getHoldedCommand(m_index, IC_LOWERLEFT))
-	    {
-		playcontrol[PA_X] -= 100;
-		playcontrol[PA_Y] += 100;
-	    }
-	    else if(g_pInput->getHoldedCommand(m_index, IC_LOWERRIGHT))
-	    {
-		playcontrol[PA_X] += 100;
-		playcontrol[PA_Y] += 100;
-	    }
+	    const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_LEFT) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_LEFT) : 100;
+	    playcontrol[PA_X] -= newval;
 	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT) && playpushed_decreasetimer>=0 )
+	{
+	    const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_RIGHT) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_RIGHT) : 100;
+	    playcontrol[PA_X] += newval;
+	}
+	
+	if(g_pInput->getHoldedCommand(m_index, IC_DOWN) )
+	{
+	    const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_DOWN) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_DOWN) : 100;
+	    playcontrol[PA_Y] += newval;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
+	{
+	    const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_UP) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_UP) : 100;
+	    playcontrol[PA_Y] -= newval;
+	}	    
+	
+	if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
+	{
+	    playcontrol[PA_X] -= 100;
+	    playcontrol[PA_Y] -= 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_UPPERRIGHT))
+	{
+	    playcontrol[PA_X] += 100;
+	    playcontrol[PA_Y] -= 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERLEFT))
+	{
+	    playcontrol[PA_X] -= 100;
+	    playcontrol[PA_Y] += 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERRIGHT))
+	{
+	    playcontrol[PA_X] += 100;
+	    playcontrol[PA_Y] += 100;
+	}
+	
 
 	if(!pfiring)
 	{

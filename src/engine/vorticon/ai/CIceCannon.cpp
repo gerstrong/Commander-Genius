@@ -11,10 +11,14 @@ unsigned int rnd(void);
 
 const int GUNFIRE_TIMER_EP1 = 64;
 
+const int SILENT_DIST = 16<<CSF;
+
+
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
 	int vector_x, int vector_y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_ICECANNON),
-mTimer(0)
+mTimer(0),
+silent(false)
 {
     this->vector_x = vector_x;
     this->vector_y = vector_y;
@@ -22,6 +26,27 @@ mTimer(0)
     inhibitfall = true;
     sprite = BLANKSPRITE;
     blockedd = true;
+}
+
+bool CIceCannon::isNearby(CVorticonSpriteObject &theObject)
+{       
+    if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+    {
+	int distx = player->getXPosition() - getXPosition();
+	if(distx<0)
+	    distx = -distx;
+	
+	int disty = player->getYPosition() - getYPosition();
+	if(disty<0)
+	    disty = -disty;
+	
+	if( disty < SILENT_DIST && distx < SILENT_DIST )
+	{
+	    silent = false;	
+	}
+    }
+
+    return true;
 }
 
 // the ice cannon itself
@@ -34,6 +59,12 @@ void CIceCannon::process()
 		int newpos_y = getYPosition();
 		if(vector_x > 0) newpos_x += 512;
 		CIceChunk *chunk = new CIceChunk(mp_Map, newpos_x, newpos_y,vector_x, vector_y);
+		if(!silent)
+		{
+		    playSound(SOUND_CANNONFIRE);
+		    silent = true;
+		}
+
 		g_pBehaviorEngine->EventList().spawnObj(chunk);
 		mTimer = 0;
 	}
@@ -46,7 +77,8 @@ void CIceCannon::process()
 CIceChunk::CIceChunk(CMap *p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy) :
 CVorticonSpriteObject(p_map, x, y, OBJ_ICECHUNK),
 vector_x(vx),
-vector_y(vy)
+vector_y(vy),
+silent(true)
 {
 	int speed;
 
@@ -59,10 +91,6 @@ vector_y(vy)
 
 	veloc_x = speed * vector_x;
 	veloc_y = speed * vector_y;
-	if(onscreen)
-	{
-	    playSound(SOUND_CANNONFIRE);
-	}
 }
 
 
@@ -104,6 +132,7 @@ void CIceChunk::getTouchedBy(CVorticonSpriteObject &theObject)
 }
 
 
+
 void CIceChunk::process()
 {
 	// smash the chunk if it hits something
@@ -130,12 +159,36 @@ void CIceChunk::process()
 	moveYDir(veloc_y);
 }
 
+bool CIceChunk::isNearby(CVorticonSpriteObject &theObject)
+{       
+    if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+    {
+	int distx = player->getXPosition() - getXPosition();
+	if(distx<0)
+	    distx = -distx;
+	
+	int disty = player->getYPosition() - getYPosition();
+	if(disty<0)
+	    disty = -disty;
+	
+	if( disty < SILENT_DIST && distx < SILENT_DIST )
+	{
+	    silent = false;	
+	}
+    }
+
+    return true;
+}
+
 void CIceChunk::smash()
 {
 	if (onscreen)
 	{
+	    if(!silent)
 		playSound(SOUND_CHUNKSMASH);
-		CIceBit *chunk;
+	    
+	    silent = true;
+	    CIceBit *chunk;
 
 		// upleft
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, -1);

@@ -153,7 +153,7 @@ public:
 	unsigned char pwalkframe,pwalkframea;
 	int pwalkanimtimer;
 	unsigned char pwalkincreasetimer, pfriction_timer_y;
-	unsigned char playpushed_decreasetimer;
+	int playpushed_decreasetimer;
 
 	jumpstate pjumping;
 	unsigned char pjumptime, pjumpupspeed_decrease, pjumpdir;

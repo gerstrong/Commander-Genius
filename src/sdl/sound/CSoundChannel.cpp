@@ -43,25 +43,39 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 {
 	if(m_balance != 0) // Because, if it is not zero, there is no balance, and waves must be adapted
 	{
-		// -127 is only for the left speaker, while 127 is for the right speaker. 0 Is center
+		// m_balance -127 is only for the left speaker, while 127 is for the right speaker. 0 Is center. Everything beyond is played but partially muted.
 		Sint32 Pulse32;
 		const Sint32 Silence = m_AudioSpec.silence;
-		const Sint32 balance = m_balance;
 		const Uint32 length = len/sizeof(T);
+		
+		Sint32 leftamt = -m_balance;
+		Sint32 rightamt = m_balance;
+		
+		if(leftamt > 127)
+		{
+		    leftamt = 254 - leftamt;
+		    rightamt = 0;
+		}
+
+		if(rightamt > 127)
+		{
+		    rightamt = 254 - rightamt;
+		    leftamt = 0;
+		}
 		
 		// balance the left channel.
 		for( Uint32 index = 0 ; index < length ; )
 		{
 			/// balance here!
 			// first the left channel
-			Pulse32 = waveform[index] - Silence;
-			Pulse32 *= (129 - balance);
+			Pulse32 = waveform[index] - Silence;			
+			Pulse32 *= (129 + leftamt);
 			Pulse32 >>= 8;
 			waveform[index++] = Pulse32 + Silence;
 
 			// then the right channel
 			Pulse32 = waveform[index] - Silence;
-			Pulse32 *= (129 + balance);
+			Pulse32 *= (129 + rightamt);
 			Pulse32 >>= 8;
 			waveform[index++] = Pulse32 + Silence;
 		}
