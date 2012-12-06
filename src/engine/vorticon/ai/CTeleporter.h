@@ -9,7 +9,7 @@
 #define _CTELEPORTER_H_
 
 #include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CPlayer.h"
+#include "common/CPlayer.h"
 
 enum teleportation_state{
 TELEPORTING_OUT,
@@ -23,6 +23,8 @@ public:
 	CTeleporter(CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 			Uint32 x, Uint32 y );
 
+	void reset();
+	
 	void process();
 
 	char animtimer;

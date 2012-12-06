@@ -43,15 +43,29 @@ m_Player(mp_vec_Player)
 	numframechanges = 0;
 
 	idleframe = mp_Map->at(mx,my);
-	if(idleframe == TELEPORT_GRAY_IDLEFRAME_EP1)
-		baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
-	else if(idleframe == TELEPORT_RED_IDLEFRAME_EP1)
-		baseframe = TELEPORT_RED_BASEFRAME_EP1;
-	else if(idleframe == TELEPORT_IDLEFRAME_EP3)
-		baseframe = TELEPORT_BASEFRAME_EP3;
-
+	
+	reset();
+	
 	playSound(SOUND_TELEPORT);
 }
+
+
+void CTeleporter::reset()
+{
+	if(g_pBehaviorEngine->getEpisode() == 1)
+	{
+	    if(idleframe == TELEPORT_GRAY_IDLEFRAME_EP1)
+		baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
+	    else// if(idleframe == TELEPORT_RED_IDLEFRAME_EP1)
+		baseframe = TELEPORT_RED_BASEFRAME_EP1;
+	}	
+	else //if(idleframe == TELEPORT_IDLEFRAME_EP3)
+	{
+		baseframe = TELEPORT_BASEFRAME_EP3;
+	}
+    
+}
+
 
 void CTeleporter::process()
 {
@@ -137,12 +151,9 @@ void CTeleporter::process()
 				direction = TELEPORTING_OUT;
 
 				idleframe = mp_Map->at(x>>CSF, y>>CSF);
-				if(idleframe == TELEPORT_GRAY_IDLEFRAME_EP1)
-					baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
-				else if(idleframe == TELEPORT_RED_IDLEFRAME_EP1)
-					baseframe = TELEPORT_RED_BASEFRAME_EP1;
-				else if(idleframe == TELEPORT_IDLEFRAME_EP3)
-					baseframe = TELEPORT_BASEFRAME_EP3;
+				
+				reset();
+
 				playSound(SOUND_TELEPORT);
 			}
 		} break;
