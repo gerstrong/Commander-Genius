@@ -36,7 +36,8 @@ m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
 m_cantswim(false),
-waveTimer(0)
+waveTimer(0),
+swimming(false)
 {
 	m_ActionBaseOffset = actionoffset;
 	
@@ -706,7 +707,9 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		m_basesprite = swimBaseFrame;
 	}
 	else if(down == 11)
+	{
 		m_basesprite = walkBaseFrame;
+	}
 
 	// from right
 	if(right == 12)
@@ -715,7 +718,9 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		m_basesprite = swimBaseFrame;
 	}
 	else if(left == 12)
+	{
 		m_basesprite = walkBaseFrame;
+	}
 
 	// from bottom
 	if(down == 13)
@@ -724,7 +729,9 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		m_basesprite = swimBaseFrame;
 	}
 	else if(up == 13)
+	{
 		m_basesprite = walkBaseFrame;
+	}
 
 	// from left
 	if(left == 14)
@@ -733,10 +740,14 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		m_basesprite = swimBaseFrame;
 	}
 	else if(right == 14)
+	{
 		m_basesprite = walkBaseFrame;
+	}
 
 	if(m_Inventory.Item.m_special.ep4.swimsuit)
+	{
 		bleft = bright = bup = bdown = false;
+	}
 }
 
 /**
@@ -769,6 +780,13 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 	}
 	else
 		sprite +=  2;
+	
+	if(swimming)
+	{
+	    playSound(SOUND_KEEN_SWIM_TO_LAND);
+	    swimming = false;
+	}
+
 }
 
 /**
@@ -792,6 +810,12 @@ void CPlayerWM::performSwimmingAnimation()
 		sprite = m_basesprite + 14;
 	else
 		sprite = m_basesprite;
+	
+	if(!swimming)
+	{
+	    playSound(SOUND_KEEN_SWIM_TO_LAND);
+	    swimming = true;
+	}
 
 	m_animation_time = 5;
 	sprite +=  m_animation%2;

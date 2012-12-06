@@ -12,57 +12,18 @@
 #include "fileio/CExeFile.h"
 
 
-// Map for the vorticon sound slots
-const unsigned char SndSlotMapVort[]=
-{
-0, 1,
-2, 3,
-4, 5,
-6,
-7,
-8,
-9,
-10,
-11,
-12,
-13,
-14,
-15,
-16,
-17,
-18,
-19,
-20,
-21,
-22,
-23,
-24,
-25,
-26,
-27,
-28,
-29,
-
-30,
-31,
-32,
-33,
-34,
-
-35,
-36,
-37,
-38
-};
-
 class CAudioVorticon : public CAudioResources {
 public:
 	CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec);
 
 	bool loadSoundData();
 	void unloadSound();
+	
+	std::map<GameSound, int> sndSlotMap;
 
 private:
+	void setupAudioMap();
+    
 	Uint8* loadSoundStream(Uint32 &buffer_size, Uint8* exedata);
 
 	template <typename T>

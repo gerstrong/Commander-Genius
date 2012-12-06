@@ -107,5 +107,5 @@ void COPLEmulator::shutdown()
 
 void COPLEmulator::clear()
 {
-    Chip.clear();
+    //Chip.clear();
 }

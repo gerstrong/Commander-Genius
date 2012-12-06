@@ -109,7 +109,7 @@ void CDevilSprite::processShoot()
 
 	if( m_timer == SPRITE_SHOOT_DELAY/2 )
 	{
-		g_pSound->playSound(SOUND_KEEN_FIRE);
+		g_pSound->playSound(SOUND_SPRITE_SHOT);
 		int x_coord = getXMidPos();
 		x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
 		CEnemyShot *Spark = new CEnemyShot(mp_Map, 0, x_coord, getYMidPos()-(8<<STC),

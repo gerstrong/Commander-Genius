@@ -66,6 +66,7 @@ private:
 	int elevator_close_timer;
 	int elevator_frames;
 	int waveTimer;
+	bool swimming;
 
 	void (CPlayerWM::*mProcessPtr)();
 };

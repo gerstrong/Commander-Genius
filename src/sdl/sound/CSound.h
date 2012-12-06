@@ -44,6 +44,7 @@ public:
 							 const SoundPlayMode mode,
 							 const int xcoordinate);
 	void playStereosound(const GameSound snd, const char mode, const short balance);
+	void playStereosoundSlot(unsigned char slotplay, const char mode, const short balance);
 	bool isPlaying(const GameSound snd);
 	void stopSound(const GameSound snd);
 	void destroy();
@@ -91,7 +92,7 @@ private:
 	std::vector<Uint8> m_MixedForm;	// Mainly used by the callback function. Declared once and allocated
     									// for the whole program
 
-    unsigned char *mp_SndSlotMap;
+    std::map<GameSound, int> sndSlotMap;
 
     COPLEmulator m_OPL_Player;
     bool m_pause_gameplay;

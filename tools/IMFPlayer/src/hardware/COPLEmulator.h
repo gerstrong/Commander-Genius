@@ -105,6 +105,8 @@ public:
 	 */
 	void shutdown();
 
+	void clear();
+
 private:
 
 	const SDL_AudioSpec &m_AudioDevSpec;

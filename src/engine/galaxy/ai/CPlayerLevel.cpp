@@ -169,6 +169,7 @@ const int POGO_START_INERTIA = 125; // 48 In K5 Disassemble
 
 void CPlayerLevel::makeHimStand()
 {
+	playSound( SOUND_KEEN_LAND );
 	if(pSupportedbyobject && g_pBehaviorEngine->getEpisode() == 5)
 		setAction(A_KEEN_ON_PLAT);
 	else

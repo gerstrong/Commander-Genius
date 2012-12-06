@@ -17,6 +17,9 @@ namespace galaxy
 const Uint32 speed = 10;
 const Uint32 hittime = 100;
 
+// Test
+//int slot = 52;
+
 CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xDir, const int yDir) :
 CGalaxySpriteObject(pmap, foeID, x, y)
 {
@@ -30,6 +33,11 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	setActionSprite();
 	calcBoundingBoxes();
 	playSound( SOUND_KEEN_FIRE );
+	
+	// For testing sounds.
+	/*g_pSound->playStereosoundSlot(slot, PLAY_NOW, 0);
+	printf("Sound %d played!\n", slot-52);
+	slot++;	*/
 }
 
 void CBullet::process()

@@ -55,6 +55,75 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	return true;
 }
 
+
+/**
+ *  \brief Sets up the Map assignments for the Sounds used in Keen Galaxy
+ */
+void CAudioGalaxy::setupAudioMap()
+{     
+    // Episode 4    
+    sndSlotMapGalaxy[4][SOUND_KEEN_WALK] = 0;
+    sndSlotMapGalaxy[4][SOUND_KEEN_WALK2] = 1;
+    sndSlotMapGalaxy[4][SOUND_KEEN_JUMP] = 2;
+    sndSlotMapGalaxy[4][SOUND_KEEN_LAND] = 3;
+    sndSlotMapGalaxy[4][SOUND_KEEN_FIRE] = 4; 
+    sndSlotMapGalaxy[4][SOUND_WORMOUTH_STRIKE] = 5;
+    //sndSlotMapGalaxy[4][?] = 6;
+    sndSlotMapGalaxy[4][SOUND_KEEN_POGO] = 7;
+    sndSlotMapGalaxy[4][SOUND_GET_BONUS] = 8;
+    sndSlotMapGalaxy[4][SOUND_GET_AMMO] = 9;
+    sndSlotMapGalaxy[4][SOUND_GET_DROP] = 10;
+    sndSlotMapGalaxy[4][SOUND_GET_ITEM] = 11;
+    sndSlotMapGalaxy[4][SOUND_ENTER_LEVEL] = 12;
+    sndSlotMapGalaxy[4][SOUND_LEVEL_DONE] = 13;
+    sndSlotMapGalaxy[4][SOUND_CANT_SWIM] = 14;
+    sndSlotMapGalaxy[4][SOUND_KEEN_BUMPHEAD] = 15;
+    sndSlotMapGalaxy[4][SOUND_BOUNCE_HIGH] = 16;
+    sndSlotMapGalaxy[4][SOUND_EXTRA_LIFE] = 17;
+    sndSlotMapGalaxy[4][SOUND_DOOR_OPEN] = 18;    
+    sndSlotMapGalaxy[4][SOUND_GET_GEM] = 19;
+    sndSlotMapGalaxy[4][SOUND_KEEN_FALL] = 20;
+    sndSlotMapGalaxy[4][SOUND_GUN_CLICK] = 21;    
+    sndSlotMapGalaxy[4][SOUND_SQUISH_SKYPEST] = 22;
+    sndSlotMapGalaxy[4][SOUND_KEEN_DIE] = 23;
+    //sndSlotMapGalaxy[4][?] = 24;
+    sndSlotMapGalaxy[4][SOUND_SHOT_HIT] = 25;
+    sndSlotMapGalaxy[4][SOUND_KEEN_SWIM] = 26;    
+    sndSlotMapGalaxy[4][SOUND_KEEN_SWIM_TO_LAND] = 27;
+    sndSlotMapGalaxy[4][SOUND_BOUNCE_LOW] = 28;
+    //sndSlotMapGalaxy[4][?] = 29;
+    sndSlotMapGalaxy[4][SOUND_TRESURE_STEALER_TELEPORT] = 30;
+    sndSlotMapGalaxy[4][SOUND_RESCUE_COUNCIL_MEMBER] = 31;
+    sndSlotMapGalaxy[4][SOUND_LICK_FIREBREATH] = 32;
+    sndSlotMapGalaxy[4][SOUND_BERKELOID_WINDUP] = 33;
+    sndSlotMapGalaxy[4][SOUND_STATUS_SLIDE_IN] = 34;
+    sndSlotMapGalaxy[4][SOUND_STATUS_SLIDE_OUT] = 35;
+    sndSlotMapGalaxy[4][SOUND_BUBBLE] = 36;
+    sndSlotMapGalaxy[4][SOUND_MINE_EXPLOSION] = 37;
+    sndSlotMapGalaxy[4][SOUND_SPRITE_SHOT] = 38;
+    sndSlotMapGalaxy[4][SOUND_THUNDERCLOUD_STRIKE] = 39;
+    sndSlotMapGalaxy[4][SOUND_BERKELOID_FIREBALL_LANDING] = 40;    
+    sndSlotMapGalaxy[4][SOUND_DARTGUN_SHOOT] = 41;
+    sndSlotMapGalaxy[4][SOUND_DOPEFISH_BURP] = 42;    
+    sndSlotMapGalaxy[4][SOUND_FLAG_APPEAR] = 43;
+    sndSlotMapGalaxy[4][SOUND_FLAG_LAND] = 44;    
+    sndSlotMapGalaxy[4][SOUND_GET_WETSUIT] = 45;    
+    sndSlotMapGalaxy[4][SOUND_SLUG_DEFECATE] = 46;
+    sndSlotMapGalaxy[4][SOUND_PLAYER_PADDLE] = 47;
+    sndSlotMapGalaxy[4][SOUND_COMPUTER_PADDLE] = 48;
+    sndSlotMapGalaxy[4][SOUND_HIT_SIDEWALL] = 49;
+    sndSlotMapGalaxy[4][SOUND_COMPUTER_POINT] = 50;
+    sndSlotMapGalaxy[4][SOUND_PLAYER_POINT] = 51;
+    
+/* Keen 5 Sounds
+    // 60 Stands for Door which slides open!
+	
+	// 56 is when elevator transports
+	// 57 when opens?
+*/
+}
+
+
 /**
  * \brief 	This function will load the sounds using other dictionaries which are embedded in the Exe File.
  * 			Only galaxy supports that feature, and the original games will read two files from the EXE-file
@@ -63,6 +132,8 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
  */
 bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 {
+    setupAudioMap();
+    
 	if(m_AudioSpec.format != 0)
 	{
 		// Open the Huffman dictionary and get AUDIODICT
