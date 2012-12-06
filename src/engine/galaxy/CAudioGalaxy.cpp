@@ -115,6 +115,74 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[4][SOUND_COMPUTER_POINT] = 50;
     sndSlotMapGalaxy[4][SOUND_PLAYER_POINT] = 51;
     
+    
+    
+    // Episode 5   
+    sndSlotMapGalaxy[5][SOUND_KEEN_WALK] = 0;
+    sndSlotMapGalaxy[5][SOUND_KEEN_WALK2] = 1;
+    sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
+    sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = 3;
+    sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4; 
+    //sndSlotMapGalaxy[5][?] = 5;
+    //sndSlotMapGalaxy[5][?] = 6;
+    sndSlotMapGalaxy[5][SOUND_KEEN_POGO] = 7;
+    sndSlotMapGalaxy[5][SOUND_GET_BONUS] = 8;
+    sndSlotMapGalaxy[5][SOUND_GET_AMMO] = 9;
+    sndSlotMapGalaxy[5][SOUND_GET_DROP] = 10;
+    sndSlotMapGalaxy[5][SOUND_GET_ITEM] = 11;
+    sndSlotMapGalaxy[5][SOUND_ENTER_LEVEL] = 12;
+    sndSlotMapGalaxy[5][SOUND_LEVEL_DONE] = 13;
+    sndSlotMapGalaxy[5][SOUND_CANT_SWIM] = 14;
+    sndSlotMapGalaxy[5][SOUND_KEEN_BUMPHEAD] = 15;
+    sndSlotMapGalaxy[5][SOUND_BOUNCE_HIGH] = 16;
+    sndSlotMapGalaxy[5][SOUND_EXTRA_LIFE] = 17;
+    sndSlotMapGalaxy[5][SOUND_DOOR_OPEN] = 18;    
+    sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
+    sndSlotMapGalaxy[5][SOUND_KEEN_FALL] = 20;
+    sndSlotMapGalaxy[5][SOUND_GUN_CLICK] = 21;    
+    //sndSlotMapGalaxy[5][?] = 22;
+    sndSlotMapGalaxy[5][SOUND_KEEN_DIE] = 23;
+    //sndSlotMapGalaxy[5][?] = 24;
+    sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
+    //sndSlotMapGalaxy[5][?] = 26;    
+    //sndSlotMapGalaxy[5][?] = 27;
+    sndSlotMapGalaxy[5][SOUND_BOUNCE_LOW] = 28;
+    //sndSlotMapGalaxy[5][?] = 29;
+    //sndSlotMapGalaxy[5][?] = 30;
+    //sndSlotMapGalaxy[5][?] = 31;
+    //sndSlotMapGalaxy[5][?] = 32;
+    //sndSlotMapGalaxy[5][?] = 33;
+    sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
+    sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
+    //sndSlotMapGalaxy[5][?] = 36;
+    //sndSlotMapGalaxy[5][?] = 37;
+    //sndSlotMapGalaxy[5][?] = 38;
+    //sndSlotMapGalaxy[5][?] = 39;
+    //sndSlotMapGalaxy[5][?] = 40;    
+    //sndSlotMapGalaxy[5][?] = 41;
+    //sndSlotMapGalaxy[5][?] = 42;    
+    sndSlotMapGalaxy[5][SOUND_FLAG_APPEAR] = 43;
+    sndSlotMapGalaxy[5][SOUND_FLAG_LAND] = 44;    
+    //sndSlotMapGalaxy[5][?] = 45;    
+    //sndSlotMapGalaxy[5][?] = 46;
+    sndSlotMapGalaxy[5][SOUND_PLAYER_PADDLE] = 47;
+    sndSlotMapGalaxy[5][SOUND_COMPUTER_PADDLE] = 48;
+    sndSlotMapGalaxy[5][SOUND_HIT_SIDEWALL] = 49;
+    sndSlotMapGalaxy[5][SOUND_COMPUTER_POINT] = 50;
+    sndSlotMapGalaxy[5][SOUND_PLAYER_POINT] = 51;
+    //sndSlotMapGalaxy[5][?] = 52;
+    //sndSlotMapGalaxy[5][?] = 53;
+    //sndSlotMapGalaxy[5][?] = 54;
+    //sndSlotMapGalaxy[5][?] = 55;
+    //sndSlotMapGalaxy[5][?] = 56;
+    //sndSlotMapGalaxy[5][?] = 57;
+    //sndSlotMapGalaxy[5][?] = 58;
+    //sndSlotMapGalaxy[5][?] = 59;
+    //sndSlotMapGalaxy[5][?] = 60;
+    //sndSlotMapGalaxy[5][?] = 61;
+    //sndSlotMapGalaxy[5][?] = 62;
+    //sndSlotMapGalaxy[5][?] = 63;
+    
 /* Keen 5 Sounds
     // 60 Stands for Door which slides open!
 	
