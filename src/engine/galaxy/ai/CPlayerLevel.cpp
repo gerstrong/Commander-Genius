@@ -168,8 +168,7 @@ bool CPlayerLevel::verifyforPole()
 const int POGO_START_INERTIA = 125; // 48 In K5 Disassemble
 
 void CPlayerLevel::makeHimStand()
-{
-	playSound( SOUND_KEEN_LAND );
+{	
 	if(pSupportedbyobject && g_pBehaviorEngine->getEpisode() == 5)
 		setAction(A_KEEN_ON_PLAT);
 	else
@@ -1092,6 +1091,7 @@ void CPlayerLevel::verifyJumpAndFall()
 		{
 			user1 = user2 = 0;	// Being on the ground is boring.
 			yDirection = 0;
+			playSound( SOUND_KEEN_LAND );
 
 			//TODO: Finish these
 			if( m_playcontrol[PA_X] != 0 )
@@ -2065,6 +2065,7 @@ void CPlayerLevel::processFalling()
 
 	if(blockedd)
 	{
+		playSound( SOUND_KEEN_LAND );
 		makeHimStand();
 		yDirection = 0;
 	}

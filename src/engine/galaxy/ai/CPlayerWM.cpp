@@ -294,7 +294,7 @@ void CPlayerWM::processMoving()
 			{
 				CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-				g_pSound->playSound( SOUND_CANT_SWIM, PLAY_PAUSEALL );
+				g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
 				EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(105),
 						g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
 
