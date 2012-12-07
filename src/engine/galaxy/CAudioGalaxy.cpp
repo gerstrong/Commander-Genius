@@ -123,7 +123,7 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
     sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = 3;
     sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4; 
-    //sndSlotMapGalaxy[5][?] = 5;
+    //sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
     //sndSlotMapGalaxy[5][SOUND_KEEN_POGO_LAND] = 6;
     sndSlotMapGalaxy[5][SOUND_KEEN_POGO] = 7;
     sndSlotMapGalaxy[5][SOUND_GET_BONUS] = 8;
@@ -134,7 +134,7 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_LEVEL_DONE] = 13;
     sndSlotMapGalaxy[5][SOUND_CANT_DO] = 14;
     sndSlotMapGalaxy[5][SOUND_KEEN_BUMPHEAD] = 15;
-    sndSlotMapGalaxy[5][SOUND_BOUNCE_HIGH] = 16;
+    //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
     sndSlotMapGalaxy[5][SOUND_EXTRA_LIFE] = 17;
     sndSlotMapGalaxy[5][SOUND_OPEN_EXIT_DOOR] = 18;    
     sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
@@ -145,25 +145,25 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[5][?] = 24;
     sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
     //sndSlotMapGalaxy[5][?] = 26;    
-    //sndSlotMapGalaxy[5][?] = 27;
-    sndSlotMapGalaxy[5][SOUND_BOUNCE_LOW] = 28;
-    //sndSlotMapGalaxy[5][?] = 29;
-    //sndSlotMapGalaxy[5][?] = 30;
+    //sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
+    //sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
+    //sndSlotMapGalaxy[5][SOUND_ROBOSHOOT] = 29;
+    //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
     //sndSlotMapGalaxy[5][?] = 31;
     //sndSlotMapGalaxy[5][?] = 32;
     //sndSlotMapGalaxy[5][ROBO_STUN] = 33;
     sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
     sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
     //sndSlotMapGalaxy[5][?] = 36;
-    //sndSlotMapGalaxy[5][?] = 37;
-    //sndSlotMapGalaxy[5][?] = 38;
-    //sndSlotMapGalaxy[5][?] = 39;
-    //sndSlotMapGalaxy[5][?] = 40;    
-    //sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
-    //sndSlotMapGalaxy[5][?] = 42;    
+    //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = 37;
+    //sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
+    //sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
+    //sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
+    sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
+    //sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;    
     sndSlotMapGalaxy[5][SOUND_FLAG_APPEAR] = 43;
     sndSlotMapGalaxy[5][SOUND_FLAG_LAND] = 44;    
-    //sndSlotMapGalaxy[5][?] = 45;    
+    //sndSlotMapGalaxy[5][ACTION_BARKSHOTDIE0] = 45;    
     //sndSlotMapGalaxy[5][SOUND_PLAYER_PADDLE] = 46;
     sndSlotMapGalaxy[5][SOUND_COMPUTER_PADDLE] = 47;
     sndSlotMapGalaxy[5][SOUND_HIT_SIDEWALL] = 48;
@@ -173,19 +173,18 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[5][?] = 52;
     //sndSlotMapGalaxy[5][?] = 53;
     //sndSlotMapGalaxy[5][?] = 54;
-    //sndSlotMapGalaxy[5][SOUND_KEYCARD] = 55;
-    //sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
+    sndSlotMapGalaxy[5][SOUND_KEYCARD] = 55;
+    sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
     //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
     //sndSlotMapGalaxy[5][?] = 58;
-    //sndSlotMapGalaxy[5][?] = 59;
+    //sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
     sndSlotMapGalaxy[5][SOUND_DOOR_OPEN] = 60;
-    //sndSlotMapGalaxy[5][?] = 61;
+    //sndSlotMapGalaxy[5][SOUND_SPIROFLY] = 61;
     //sndSlotMapGalaxy[5][?] = 62;
-    //sndSlotMapGalaxy[5][SOUND_ELEVATOR_CLOSE] = 63;
+    sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 63;
+    
     
 /* Keen 5 Sounds
-    // 60 Stands for Door which slides open!
-	
 	// 56 is when elevator transports
 	// 57 when opens?
 */

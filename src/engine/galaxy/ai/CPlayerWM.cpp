@@ -449,6 +449,8 @@ void CPlayerWM::processClosingElevator()
 		mp_Map->setTile(x-1, y, tile2-2, true);
 		mp_Map->setTile(x-1, y-1, tile3-2, true);
 		mp_Map->setTile(x, y-1, tile4-2, true);
+		
+		playSound(SOUND_ELEVATOR_OPEN);
 
 		elevator_frames--;
 
@@ -512,6 +514,7 @@ void CPlayerWM::processElevating()
 	else
 	{
 		moveDir(vec_norm*ELEVATOR_SPEED);
+		playSound(SOUND_ELEVATING);
 	}
 }
 
@@ -535,6 +538,8 @@ void CPlayerWM::processOpeningElevator()
 		mp_Map->setTile(x-1, y, tile2+2, true);
 		mp_Map->setTile(x-1, y-1, tile3+2, true);
 		mp_Map->setTile(x, y-1, tile4+2, true);
+		
+		playSound(SOUND_ELEVATOR_OPEN);
 
 		elevator_frames--;
 

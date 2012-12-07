@@ -27,7 +27,6 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	yDirection = yDir;
 
 	const size_t ep = g_pBehaviorEngine->getEpisode();
-	//transluceny = 90;
 
 	setupGalaxyObjectOnMap(bulletActionMap[ep-4], A_KEENSHOT_MOVING);
 	setActionSprite();
