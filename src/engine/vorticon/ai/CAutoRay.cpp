@@ -16,7 +16,8 @@ const int SILENT_DIST = 20<<CSF;
 
 CAutoRay::CAutoRay(CMap *pmap, Uint32 x, Uint32 y, stRayAlignment type) :
 CVorticonSpriteObject(pmap, x, y, (type==HORIZONTAL) ? OBJ_AUTORAY : OBJ_AUTORAY_V),
-m_type(type)
+m_type(type),
+silent(false)
 {
 	sprite = BLANKSPRITE;
 	inhibitfall = true;
