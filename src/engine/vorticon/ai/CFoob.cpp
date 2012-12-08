@@ -3,7 +3,8 @@
 #include "graphics/CGfxEngine.h"
 
 CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y):
-CVorticonSpriteObject(p_map,x,y, OBJ_FOOB)
+CVorticonSpriteObject(p_map,x,y, OBJ_FOOB),
+onsamelevel(false)
 {
 	state = FOOB_WALK;
 	dir = RIGHT;
@@ -20,8 +21,6 @@ CVorticonSpriteObject(p_map,x,y, OBJ_FOOB)
 
 void CFoob::process()
 {
-	bool onsamelevel;
-
 	if (state==FOOB_DEAD) return;
 
 	if (!hasbeenonscreen) return;
@@ -36,21 +35,6 @@ void CFoob::process()
 			playSound(SOUND_YORP_DIE);
 		}
 	}
-
-	// find out if a player is on the same level as the foob cat
-	onsamelevel = false;
-
-	/*std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for( ; it_player != m_Player.end() ; it_player++ )
-	{
-		if ( (it_player->getYDownPos() >= getYUpPos()-(2<<CSF)) &&
-			(it_player->getYDownPos() <= getYDownPos()+(1<<CSF)) )
-		{
-			onsamelevel = true;
-			SpookedByWho = it_player->m_index;
-			break;
-		}
-	}*/
 
 	switch(state)
 	{
@@ -104,25 +88,6 @@ void CFoob::process()
 		break;
 
 	case FOOB_SPOOK:
-		sprite = FOOB_SPOOK_FRAME;
-
-		if (spooktimer > FOOB_SPOOK_SHOW_TIME)
-		{
-			state = FOOB_FLEE;
-			OffOfSameLevelTime = 0;
-			// run away from the offending player
-			/*
-			if (m_Player[SpookedByWho].getXPosition() < getXPosition())
-				dir = RIGHT;
-			else
-				dir = LEFT;
-			*/
-			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if (g_pBehaviorEngine->mDifficulty==HARD)
-				dir = LEFT ? RIGHT : LEFT;
-
-		}
-		else spooktimer++;
 		break;
 
 	case FOOB_FLEE:
@@ -207,7 +172,45 @@ void CFoob::process()
 	}
 }
 
-void CFoob::getTouchedBy(CSpriteObject &theObject)
+bool CFoob::isNearby(CVorticonSpriteObject &theObject)
+{
+    if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
+    {		
+	if ( (player->getYDownPos() >= getYUpPos()-(2<<CSF)) &&
+		(player->getYDownPos() <= getYDownPos()+(1<<CSF)) )
+	{
+		onsamelevel = true;
+		SpookedByWho = player->m_index;
+	}
+	
+	if(state == FOOB_SPOOK)
+	{
+		sprite = FOOB_SPOOK_FRAME;
+
+		if (spooktimer > FOOB_SPOOK_SHOW_TIME)
+		{
+			state = FOOB_FLEE;
+			OffOfSameLevelTime = 0;
+			// run away from the offending player
+			
+			if (player->getXPosition() < getXPosition())
+				dir = RIGHT;
+			else
+				dir = LEFT;
+			
+			// in hard mode run TOWARDS the player (he's deadly in hard mode)
+			if (g_pBehaviorEngine->mDifficulty==HARD)
+				dir = LEFT ? RIGHT : LEFT;
+
+		}
+		else spooktimer++;		
+	}
+    }
+    
+    return true;
+}
+
+void CFoob::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
 	{
