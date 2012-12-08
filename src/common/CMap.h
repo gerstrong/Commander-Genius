@@ -91,6 +91,11 @@ public:
 		return m_Plane[plane].getMapDataAt(x>>CSF, y>>CSF);
 	}
 
+	Uint16 getPlaneDataAt(int plane, VectorD2<Uint32> pos)
+	{
+		return m_Plane[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
+	}
+
 	word *getData(Uint8 PlaneNum);
 	word *getForegroundData();
 	word *getBackgroundData();

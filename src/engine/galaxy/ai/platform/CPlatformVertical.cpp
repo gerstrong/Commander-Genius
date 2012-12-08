@@ -51,10 +51,7 @@ void CPlatformVertical::process()
 	int lx = getXLeftPos();
 	int rx = getXRightPos();
 	
-	for(int x=lx ; x<=rx ; x+=(1<<CSF) )
-	{
-	    object |= mp_Map->getPlaneDataAt(2, x, getYMidPos());
-	}
+	object = mp_Map->getPlaneDataAt(2, getPosition());
 
 	performCollisions();
 	
