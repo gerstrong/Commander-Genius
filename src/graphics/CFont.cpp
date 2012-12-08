@@ -163,6 +163,38 @@ void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 }
 
 
+
+void CFont::tintColor( const Uint32 fgColor )
+{
+    SDL_Surface *sfc = mFontSurface.get();
+    Uint32 color = 0;
+    Uint8 r, g, b, a;
+    
+    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
+    // This makes the white pixel transparent
+    Uint8 *pixel = (Uint8*)sfc->pixels;
+
+	for( Uint16 y=0 ; y<sfc->h ; y++ )
+	{
+		for( Uint16 x=0 ; x<sfc->w ; x++ )
+		{
+			memcpy( &color, pixel, sfc->format->BytesPerPixel );
+
+			SDL_GetRGBA( color, sfc->format, &r, &g, &b, &a );
+
+			if( a>0 )
+			{				
+			    memcpy( pixel, &fgColor, sfc->format->BytesPerPixel );
+			}
+
+			pixel += sfc->format->BytesPerPixel;
+		}
+	}
+	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+}
+
+
 void CFont::setupColor( const Uint32 fgColor )
 {
 	// Here comes the main part. We have to manipulate the Surface the way it gets
