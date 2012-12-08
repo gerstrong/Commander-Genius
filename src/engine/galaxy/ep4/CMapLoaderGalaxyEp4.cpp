@@ -222,6 +222,12 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 						RIGHT, m_Inventory, m_Cheatmode);
 		break;
 
+	case 0x2B: if( difficulty < NORMAL ) break;
+	case 0x2C: if( difficulty < HARD ) break;
+		// This is a Poison Slug.
+		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y);
+		break;		
+		
 	case 46:
 		// This is Skypest
 		if( difficulty < HARD ) break;
@@ -231,14 +237,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		
 		
 	// This is the Lick
-	case 48:  if( difficulty < HARD ) break;
-	case 47:  if( difficulty < NORMAL ) break;
+	case 0x2F:  if( difficulty < NORMAL ) break;
+	case 0x30:  if( difficulty < HARD ) break;	
 		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;		
-			
-		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
-		break;
-
 	
 	case 50: if( difficulty < HARD ) break;
 	case 49: if( difficulty < NORMAL ) break;
