@@ -52,6 +52,8 @@ CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype)
 }
 
 
+const int VORTICON_PLAYER_MIN_DIST = 8<<CSF;
+
 bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
@@ -63,12 +65,16 @@ bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
 	    if (animtimer > VORT_LOOK_ANIM_TIME) 
 	    {
 		if (frame > 0) 
-		{
-		    
-		    if (player->getXPosition() < getXPosition()) 
-			movedir = LEFT;
-		    else 
-			movedir = RIGHT;
+		{		    
+		    int absdist = abs(player->getXPosition() < getXPosition());
+		 
+		    if(absdist <= VORTICON_PLAYER_MIN_DIST)
+		    {
+			if (player->getXPosition() < getXPosition() && !blockedl) 
+			    movedir = LEFT;
+			else if( !blockedr ) 
+			    movedir = RIGHT;
+		    }
 		    
 		    timer = 0;
 		    frame = 0;
@@ -133,7 +139,8 @@ void CVorticon::process()
 
 	vort_reprocess: ;
 	
-	switch (state) {
+	switch (state) 
+	{
 	case VORT_JUMP:
 		if (movedir == RIGHT && !blockedr)
 			xinertia = VORT_WALK_SPEED;
@@ -149,8 +156,10 @@ void CVorticon::process()
 	case VORT_LOOK:
 		sprite = LookFrame + frame;
 
-		if (animtimer > VORT_LOOK_ANIM_TIME) {
-			if (frame > 0) {
+		if (animtimer > VORT_LOOK_ANIM_TIME) 
+		{
+			if (frame > 0) 
+			{
 				if (blockedl)
 					movedir = RIGHT;
 				else if (blockedr) 
@@ -159,7 +168,8 @@ void CVorticon::process()
 				timer = 0;
 				frame = 0;
 				state = VORT_WALK;
-			} else
+			} 
+			else
 				frame++;
 			animtimer = 0;
 		} else
