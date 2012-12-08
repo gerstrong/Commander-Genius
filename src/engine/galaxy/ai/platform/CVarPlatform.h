@@ -18,11 +18,15 @@ class CVarPlatform : public CPlatform
 {
 public:
 	CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-			const direction_t vertdir, const int actionOffset);
+			const direction_t horidir, 
+			const direction_t vertdir, 
+			const int actionOffset);
 
 	void process();
 
 private:
+	void detectNextTarget(const VectorD2<int> oldTarget);
+    
 	bool targetmode;
 	VectorD2<int> target;
 

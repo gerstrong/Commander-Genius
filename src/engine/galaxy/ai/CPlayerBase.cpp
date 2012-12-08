@@ -336,17 +336,17 @@ void CPlayerBase::guideToTarget(const VectorD2<int> &speed)
 
 
 
-const int MAX_WALKSOUNDTIMER = 20;
+const int MAX_WALKSOUNDTIMER = 30;
 
 void CPlayerBase::playWalkSound()
 {
 	const int time = m_walktimer % MAX_WALKSOUNDTIMER;
 
 	// Process walk timer. This is only for the walking sound
-	if( time == MAX_WALKSOUNDTIMER/2 )
-		playSound( SOUND_KEEN_WALK2 );
-	else if( time == 0 )
+	if( time == MAX_WALKSOUNDTIMER/3 || time == (2*MAX_WALKSOUNDTIMER)/3 )
 		playSound( SOUND_KEEN_WALK );
+	else if( time == 0 )
+		playSound( SOUND_KEEN_WALK2 );
 
 	m_walktimer++;
 }

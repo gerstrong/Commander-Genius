@@ -401,15 +401,6 @@ void CPlayerLevel::processStanding()
 	int px = m_playcontrol[PA_X];
 	int py = m_playcontrol[PA_Y];
 
-	if (verifyForFalling())
-	{
-	    xinertia = xDirection * 8;
-	    yinertia = 0;
-	    setAction(A_KEEN_FALL);
-	    playSound( SOUND_KEEN_FALL );
-	    state.jumpTimer = 0;
-	}
-
 	if( px || py || state.jumpIsPressed || state.pogoIsPressed )
 	{
 		user1 = user2 = 0;
@@ -457,7 +448,6 @@ void CPlayerLevel::processStanding()
 
 	// Center the view after Keen looked up or down
 	centerView();
-
 }
 
 

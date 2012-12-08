@@ -87,6 +87,12 @@ struct VectorD2 {
 	VectorD2 operator-(const VectorD2& vec) const {
 		return VectorD2(x-vec.x,y-vec.y);
 	}
+	VectorD2 operator<<(const unsigned int bits) const {
+		return VectorD2(x<<bits,y<<bits);
+	}
+	VectorD2 operator>>(const unsigned int bits) const {
+		return VectorD2(x>>bits,y>>bits);
+	}
 	VectorD2 operator-() const {
 		return VectorD2(-x,-y);
 	}
