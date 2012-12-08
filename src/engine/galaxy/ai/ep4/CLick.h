@@ -33,6 +33,7 @@ private:
 	void processStunned();
 
 	int m_timer;
+	bool keenNear;
 };
 
 } /* namespace galaxy */
