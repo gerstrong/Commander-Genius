@@ -39,7 +39,7 @@ CVorticonSpriteObject(p_map,x,y, OBJ_MEEP)
 }
 
 
-bool CMeep::isNearby(CSpriteObject &theObject)
+bool CMeep::isNearby(CVorticonSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {
@@ -68,17 +68,14 @@ bool CMeep::isNearby(CSpriteObject &theObject)
 }
 
 
-void CMeep::getTouchedBy(CSpriteObject &theObject)
+void CMeep::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {
-	if (!player->pdie)
+	if (!player->pdie && !player->level_done)
 	{
 	    // don't push the player as he's walking through the exit door
-	    if (!player->level_done)
-	    {
-		player->push(*this);
-	    }
+	    player->push(*this);
 	}	
     }    
 }
