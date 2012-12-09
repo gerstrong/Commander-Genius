@@ -21,7 +21,7 @@ const int BERKELOID_TIME = 5;
 CBerkeloid::CBerkeloid(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 mTimer(0),
-mpProcessState(NULL)
+mpProcessState(nullptr)
 {
 	mActionMap[A_BERKELOID_MOVING] = &CBerkeloid::processMoving;
 	mActionMap[A_BERKELOID_THROW] = &CBerkeloid::processThrowing;
@@ -31,6 +31,11 @@ mpProcessState(NULL)
 
 	performCollisions();
 	processActionRoutine();
+	
+	if(blockedl || blockedr || blockedd)
+	{
+	  moveUp(8<<STC);
+	}
 }
 
 void CBerkeloid::setActionForce(const size_t ActionNumber)
@@ -81,6 +86,9 @@ bool CBerkeloid::isNearby(CSpriteObject &theObject)
 
 void CBerkeloid::processMoving()
 {
+  if(blockedd)
+    moveUp(10);
+  
 	if( mTimer < BERKELOID_TIME )
 	{
 		mTimer++;
@@ -92,7 +100,7 @@ void CBerkeloid::processMoving()
 	}
 
 	// Chance to throw a flame
-	if( getProbability(50) )
+	if( getProbability(20) )
 	{
 		setAction( A_BERKELOID_THROW );
 		playSound( SOUND_BERKELOID_WINDUP );
@@ -113,7 +121,7 @@ void CBerkeloid::processThrowing()
 void CBerkeloid::process()
 {
 
-	processFalling();
+	//processFalling();
 
 	performCollisions();
 

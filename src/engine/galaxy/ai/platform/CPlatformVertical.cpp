@@ -48,8 +48,6 @@ m_fireTimer(0)
 void CPlatformVertical::process()
 {
     	Uint16 object = 0; 
-	int lx = getXLeftPos();
-	int rx = getXRightPos();
 	
 	object = mp_Map->getPlaneDataAt(2, getPosition());
 
