@@ -16,7 +16,8 @@ namespace galaxy {
 class CPlatformHorizontal : public CPlatform
 {
 public:
-	CPlatformHorizontal(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+	CPlatformHorizontal(CMap *pmap, const Uint16 foeID, 
+			    const direction_t xDir, Uint32 x, Uint32 y);
 
 	/**
 	 * \brief Processes the platforms AI. It's just simple moving around of course

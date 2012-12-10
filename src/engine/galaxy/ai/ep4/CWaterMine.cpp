@@ -15,15 +15,14 @@ namespace galaxy {
 
 const int MINE_SPEED = 20;
 
-CWaterMine::CWaterMine(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const bool vertical) :
+CWaterMine::CWaterMine(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const direction_t xDir, const bool vertical) :
 CGalaxySpriteObject(pmap, foeID, x, y)
 {
-	yDirection = xDirection = 0;
-
+	yDirection = 0;
+	xDirection = xDir;
+	
 	if(vertical)
 		yDirection = DOWN;
-	else
-		xDirection = RIGHT;
 
 	setupGalaxyObjectOnMap(0x3890, A_MINE_MOVE);
 	mp_processState = &CWaterMine::processMove;

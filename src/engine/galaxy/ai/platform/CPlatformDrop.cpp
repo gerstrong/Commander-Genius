@@ -23,7 +23,8 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y),
 m_delay_for_drop(0),
 m_drop_speed(0),
-m_Origin(m_Pos)
+m_Origin(m_Pos),
+blockerDetected(false)
 {
 	xDirection = 0;
 	yDirection = 0;
@@ -34,9 +35,22 @@ m_Origin(m_Pos)
 }
 
 void CPlatformDrop::process()
-{
+{    
+	Uint16 object = mp_Map->getPlaneDataAt(2, getPosition());
+	
+	// If there is a blocker, change the direction
+	if( object == 0x1F )
+	{
+	    blockerDetected = true;
+	}
+	else 
+	{
+	    blockerDetected = false;
+	}
+	
+	
 	// Player is standing on the platform or the platform is already falling too fast
-	if(mp_CarriedPlayer || m_drop_speed>=DROP_MAX_SPEED_LIMIT )
+	if(mp_CarriedPlayer /*|| m_drop_speed>=DROP_MAX_SPEED_LIMIT*/ || blockerDetected )
 	{
 		// move down
 		movePlatDown(m_drop_speed);

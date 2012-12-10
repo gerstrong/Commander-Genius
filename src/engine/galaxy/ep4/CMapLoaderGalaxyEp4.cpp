@@ -84,126 +84,148 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	switch(foe)
 	{
-	case 1:
-	case 2:
+	case 0x01:
+	case 0x02:
 		// This is the player on the map in one level
 		p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-				(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x98C);
+				(foe==0x01) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x98C);
 		break;
 
-	case 3:
+	case 0x03:
 		// This is the player on the world map
 		// Add the Camera into the game scene and attach it to this player
 		p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, m_Inventory, m_Cheatmode, 0x15C2);
 
 		break;
 
-	case 4:
+	case 0x04:
 		//This is a council member.
 		p_newfoe = new galaxy::CCouncilMember(&Map, foe, x, y);
 		break;
 		
-	// case 5: TODO: Yet unknown.
+	case 0x05:
+		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
+		break;
 
-	case 6:
+	case 0x06:
 		//This is pincess Lindsey.
 		p_newfoe = new galaxy::CLindsey(&Map, foe, x, y);
 		break;
 
-	case 7:
+	case 0x07:
 		// This is a wormmouth.
 		p_newfoe = new galaxy::CWormmouth(&Map, foe, x, y);
 		break;
 
-	case 8:
+	case 0x08:
 		// This is Skypest.
 		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
 		break;
 
 
-	case 9:
+	case 0x09:
 		//This is the Thunder Cloud
 		p_newfoe = new galaxy::CThunderCloud(&Map, foe, x, y);
 		break;
 		
-	case 10:
+	case 0x0A:
 		// This is the Foot
 		Map.isSecret = true;
 		p_newfoe = new galaxy::CFoot(&Map, foe, 0x2EF4, x, y);
 		break;
 		
-	case 11:
+	case 0x0B:
 		// This is an inchworm.
 		p_newfoe = new galaxy::CInchWorm(&Map, foe, x, y);
 		break;
 
-	case 12:
+	case 0x0C:
 		// This is a Bounder.
 		p_newfoe = new galaxy::CBounder(&Map, foe, x, y);
 		break;
 
-	case 13:
+	case 0x0D:
 		// This is an egg
 		if( difficulty > EASY )
 			p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y);
 		else
 			p_newfoe = new galaxy::CEgg(&Map, foe, x, y);
 		break;
+		
+	case 0x0E:
+		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
+		break;	    
+	
+	case 0x0F:
+		// Dope Fish
+		p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y);
+		break;	    
 
-	case 18:
+	case 0x10: 
+		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
+		break;
+		
+	case 0x11:
+		p_newfoe = new galaxy::CDevilSprite(&Map, foe, x, y);	    
+		break;
+	    
+	case 0x12:
 		// This might be the treasure eater.
 		p_newfoe = new galaxy::CTreasureEater(&Map, foe, x, y);
 		break;
 
-	case 19:
+	case 0x13:
 		//This is a Mimrock.
 		p_newfoe = new galaxy::CMimrock(&Map, foe, x, y);
 		break;
 
-	case 20:
+	case 0x14:
 		// This is an Arachnut.
 		p_newfoe = new galaxy::CArachnut(&Map, foe, x, y);
 		break;
 
-
-	case 21:
+	case 0x15:
 		// This is a Mad Mushroom.
 		p_newfoe = new galaxy::CMadMushroom(&Map, foe, x, y);
 		break;
 
 
-	case 22:
+	case 0x16:
 		// This is a Poison Slug.
 		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y);
 		break;
 
-	case 23:
+	case 0x18: if( difficulty < HARD ) break;
+	case 0x17: if( difficulty < NORMAL ) break;	// not sure here    
 		// This is a Sprite from the well of wishes.
 		p_newfoe = new galaxy::CDevilSprite(&Map, foe, x, y);
 		break;
 
-	case 24:
-		// This is a Sprite from the well of wishes.
-		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
-		break;
+	// case 0x19: This is horizontal blocker, not a sprite to load!!
+	// case 0x1A: This is vertical blocker, not a sprite to load!!
 
-	/*case 25: TODO: Find out, what these do...
-	case 26:*/
-
-	case PLATFORM_VERT: case PLATFORM_VERT_ALT:
+	case 0x1B: // Plat starts moving up
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, UP, 0x316A); break;
-	case PLATFORM_HORIZ_ALT:
-	case PLATFORM_HORIZ:
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, x, y); break;
-	case PLATFORM_DROP:
+		
+	case 0x1D: // Plat starts moving down
+		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, DOWN, 0x316A); break;
+		
+	case 0x1C: // plat moves to the RIGHT
+		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, RIGHT, x, y); break;
+		
+	case 0x1E: // plat moves to the LEFT
+		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, LEFT, x, y); break;
+		
+	//case 0x1F: break; // Platform-Blocker
+	case 0x20:
 		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y); break;
 
-	case 33:
+	case 0x21:
 		// Place Miragia in Episode 4 on the Map
 		p_newfoe = new galaxy::CMiragia(&Map, foe, loc);
 		break;
 
-	case 34:
+	case 0x22:
 		// Place a gun in case Keen is missing bullets
 		if(m_Inventory.Item.m_bullets < 5)
 		{
@@ -211,65 +233,105 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		}
 		break;
 
-	case DIVE_SUIT:
+	case 0x23:
 		// Place Miragia in Episode 4 on the Map
 		p_newfoe = new galaxy::CDiveSuit(&Map, foe, x, y);
 		break;
+		
+	//case 0x24: break; // Seem to be an unused keen Sprite. Not sure though
+	//case 0x25: break; // Molly?
+	//case 0x26: break; // The Father?
+	//case 0x27: break; // Unused
+	//case 0x28: break; // Unused
+	//case 0x29: break; // Unused
 
-	case 42:
+	case 0x2A:
 		// This is Keen in the swimming suit
 		p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
 						RIGHT, m_Inventory, m_Cheatmode);
 		break;
-
-	case 0x2B: if( difficulty < NORMAL ) break;
+	
 	case 0x2C: if( difficulty < HARD ) break;
+	case 0x2B: if( difficulty < NORMAL ) break;
 		// This is a Poison Slug.
 		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y);
-		break;		
-		
-	case 46:
-		// This is Skypest
-		if( difficulty < HARD ) break;
-		
+		break;
+	
+
+	case 0x2E:  if( difficulty < HARD ) break;	
+	case 0x2D:  if( difficulty < NORMAL ) break;
+		// This is Skypest		
 		p_newfoe = new galaxy::CSkypest(&Map, foe, x, y);
 		break;
 		
 		
 	// This is the Lick
-	case 0x2F:  if( difficulty < NORMAL ) break;
 	case 0x30:  if( difficulty < HARD ) break;	
+	case 0x2F:  if( difficulty < NORMAL ) break;
 		p_newfoe = new galaxy::CLick(&Map, foe, x, y);
 		break;		
 	
-	case 50: if( difficulty < HARD ) break;
-	case 49: if( difficulty < NORMAL ) break;
+	case 0x32: if( difficulty < HARD ) break;
+	case 0x31: if( difficulty < NORMAL ) break;
 		// This is the Berkeloid
 		p_newfoe = new galaxy::CBerkeloid(&Map, foe, x, y);
 		break;
+	
+	case 0x34: if( difficulty < HARD ) break;
+	case 0x33: if( difficulty < NORMAL ) break;	
+		// This is a wormmouth difficult mode
+		p_newfoe = new galaxy::CWormmouth(&Map, foe, x, y);		
+	//case 0x35 ... 0x36: break;
 
 	// Dart guns	
-	case 55 ... 58: 
+	case 0x35 ... 0x38: 
 	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
 		
-	case 71:
-		// Watermine vertical
-		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, true);
-		break;
-	case 72:
+	//case 0x39 ... 0x45: // Sprite item like the gems 0x45 is unused
+	
+	
+	case 0x46:
 		// Watermine horizontal
-		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, false);
+		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, RIGHT, false);
+		break;
+		
+	case 0x47:
+		// Watermine vertical
+		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, CENTER, true);
 		break;
 	
-	// Dart guns			
-	case 81 ... 84: if( difficulty < NORMAL ) break;
-	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
-
-	case 87:
+	case 0x48:
+		// Watermine horizontal
+		p_newfoe = new galaxy::CWaterMine(&Map, foe, x, y, LEFT, false);
+		break;
+	
+	//case 0x49: break; // Empty
+		
+	case 0x4A: if( difficulty < HARD ) break;
+		// This is an Arachnut.
+		p_newfoe = new galaxy::CArachnut(&Map, foe, x, y);
+		break;
+		
+	//case 0x4B // Shows an ass in the editor, Dunno
+	//case 0x4C // Empty		
+	
+	case 0x4E: if( difficulty < HARD ) break;
+	case 0x4D: if( difficulty < NORMAL ) break;	
+		p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y);
+		break;
+	
+	case 0x53 ... 0x56: if( difficulty < HARD ) break; // 0x53 is empty, but could be used maybe...
+	case 0x4F ... 0x52: if( difficulty < NORMAL ) break;
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
+	
+	case 0x58: if( difficulty < HARD ) break;
+	case 0x57: if( difficulty < NORMAL ) break;	    
 		// Dope Fish
 		p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y);
 		break;
-
+		
+	// Not sure if after that there are more sprites to load
+		
 	case CFlag::FOE_ID:
 		p_newfoe = new galaxy::CFlag(&Map, loc, loc);
 		break;

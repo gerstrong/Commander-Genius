@@ -15,14 +15,15 @@ const int FIRE_SPRITE = 361;
 
 namespace galaxy {
 
-CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint16 foeID, 
+					 const direction_t xDir, Uint32 x, const Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y),
 drawFire(false),
 m_FireSprite(FIRE_SPRITE),
 m_fireTimer(0)
 {
-	xDirection = RIGHT;
+	xDirection = xDir;
 	yDirection = 0;
 	
 	const int episode = g_pBehaviorEngine->getEpisode();	

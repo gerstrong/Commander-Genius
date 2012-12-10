@@ -13,8 +13,9 @@ time(0)
   // Set the proper direction
   switch( foeID )
   {      	  
-      case 56:
-      case 82:	  
+      case 0x38:
+      case 0x52:
+      case 0x56:
 	  xDirection = LEFT;
 	  yDirection = CENTER;  
 	  baseSprite = 260;	  
@@ -22,8 +23,9 @@ time(0)
 	  m_Pos.y += (7<<STC);
 	  break;
 	  
-      case 57:
-      case 83:	  
+      case 0x35:
+      case 0x53:
+      case 0x4F:	        
 	  xDirection = CENTER;
 	  yDirection = UP;  
 	  baseSprite = 256;	  
@@ -31,8 +33,9 @@ time(0)
 	  m_Pos.x += (7<<STC);
 	  break;
 	  
-      case 58:
-      case 84:	  
+      case 0x36:
+      case 0x54:	  
+      case 0x50:
 	  xDirection = RIGHT;
 	  yDirection = CENTER;  
 	  baseSprite = 262;	  
@@ -41,9 +44,9 @@ time(0)
 	  break;
 	  
       default:
-      case 55:
-      case 81:
-	  
+      case 0x37:
+      case 0x51:
+      case 0x55:
 	  xDirection = CENTER;
 	  yDirection = DOWN;  
 	  baseSprite = 258;
