@@ -58,7 +58,7 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
 		if(dead || theObject.dead)
 			return;
 			
-		if( !getActionStatus(A_MIMROCK_SIT) ) 
+		if( !getActionNumber(A_MIMROCK_SIT) ) 
 		{
 			CStunnable::getTouchedBy(theObject);
 			
@@ -193,7 +193,7 @@ void CMimrock::process()
     
     processActionRoutine();	
     
-    if(getActionStatus(A_MIMROCK_STUNNED))
+    if(getActionNumber(A_MIMROCK_STUNNED))
     {
       honorPriority = false;
       dead = true;
