@@ -754,7 +754,6 @@ void CPlayerLevel::processCliffHanging()
 		mTarget.x = -1;
 		mTarget.y = -1;
 		setAction(A_KEEN_CLIMB);
-		//m_camera.m_freeze = true;
 	}
 
 	// If you want to fall down.
@@ -769,6 +768,40 @@ void CPlayerLevel::processCliffHanging()
 		moveXDir( (xDirection == LEFT) ? dx : -dx, true);
 		setActionSprite();
 		calcBoundingBoxes();
+	}
+	
+	
+	const int yUp = (getYUpPos()+(5<<STC))>>CSF;
+	const int xLeft = getXLeftPos()>>CSF;
+	const int xRight = getXRightPos()>>CSF;
+
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	if( xDirection == LEFT )
+	{	    
+		bool check_block = TileProperty[mp_Map->at(xLeft-1, yUp)].bup;
+		check_block |= TileProperty[mp_Map->at(xLeft, yUp)].bup;
+
+		if( !check_block )
+		{
+			setAction(A_KEEN_FALL);
+			playSound( SOUND_KEEN_FALL );
+			solid = true;
+			return;
+		}
+	}
+	else if( xDirection == RIGHT )
+	{
+		bool check_block = TileProperty[mp_Map->at(xRight+1, yUp)].bup;
+		check_block |= TileProperty[mp_Map->at(xRight, yUp)].bup;
+
+		if( !check_block )
+		{
+			setAction(A_KEEN_FALL);
+			playSound( SOUND_KEEN_FALL );
+			solid = true;
+			return;
+		}
 	}
 }
 
