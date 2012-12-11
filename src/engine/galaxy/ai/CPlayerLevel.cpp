@@ -1084,9 +1084,10 @@ void CPlayerLevel::verifyJumpAndFall()
 			xinertia = 0;
 			//obj->posX = (obj->clipRects.tileXmid << 8) - 32;
 		}
-		else
+		else if(!m_Cheatmode.god)
 		{
-			playSound( SOUND_KEEN_BUMPHEAD );
+			playSound( SOUND_KEEN_BUMPHEAD );						
+			
 			if (blockedu > 1)
 			{
 				yinertia += 16;

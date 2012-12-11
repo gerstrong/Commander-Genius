@@ -58,7 +58,7 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
 		if(dead || theObject.dead)
 			return;
 			
-		if( !getActionNumber(A_MIMROCK_SIT) ) 
+		//if( !getActionNumber(A_MIMROCK_SIT) ) 
 		{
 			CStunnable::getTouchedBy(theObject);
 			
@@ -68,13 +68,14 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
 				setAction( A_MIMROCK_STUNNED );
 				honorPriority = true;
 				theObject.dead = true;
+				dead = true;
 			}
 		}
 		if( getActionNumber(A_MIMROCK_WALK) || getActionNumber(A_MIMROCK_JUMP) || getActionNumber(A_MIMROCK_BOUNCE) ) 
 		{
 			if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) ) 
 				player->kill();
-		}
+		}		
 }
 
 bool CMimrock::isNearby(CSpriteObject &theObject)
