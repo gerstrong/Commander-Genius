@@ -55,22 +55,24 @@ mTimer(0)
 
 void CMimrock::getTouchedBy(CSpriteObject &theObject)
 {
-		if(dead || theObject.dead)
-			return;
+    /*if( getActionNumber(A_MIMROCK_SIT) ) 
+	return;*/
+		
+    if(dead || theObject.dead)
+	return;
 			
-		//if( !getActionNumber(A_MIMROCK_SIT) ) 
-		{
-			CStunnable::getTouchedBy(theObject);
+    CStunnable::getTouchedBy(theObject);
 			
-			// Was it a bullet? Than make it stunned.
-			if( dynamic_cast<CBullet*>(&theObject) ) 
-			{
-				setAction( A_MIMROCK_STUNNED );
-				honorPriority = true;
-				theObject.dead = true;
-				dead = true;
-			}
-		}
+    // Was it a bullet? Than make it stunned.
+    if( dynamic_cast<CBullet*>(&theObject) ) 
+    {
+	setAction( A_MIMROCK_STUNNED );
+	honorPriority = true;
+	theObject.dead = true;
+	dead = true;
+    }
+
+			
 		if( getActionNumber(A_MIMROCK_WALK) || getActionNumber(A_MIMROCK_JUMP) || getActionNumber(A_MIMROCK_BOUNCE) ) 
 		{
 			if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) ) 
@@ -189,17 +191,8 @@ void CMimrock::process()
     performCollisions();
     performGravityMid();    
 	
-    if(dead)      
-      return;	
-    
-    processActionRoutine();	
-    
-    if(getActionNumber(A_MIMROCK_STUNNED))
-    {
-      honorPriority = false;
-      dead = true;
-    }
-    
+    processActionRoutine();
+        
     (this->*mp_processState)();
     
 }
