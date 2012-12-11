@@ -304,14 +304,14 @@ void CSound::playStereosound(const GameSound snd, const char mode, const short b
 
 	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
 	int slotplay = sndSlotMap[snd];
-	const unsigned int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
+	const int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
 
 	if(slotplay >= speaker_snds_end_off)
 		return;
 
 	if(m_sound_blaster_mode && mp_Slots[slotplay+speaker_snds_end_off].getSoundData())
 		slotplay += speaker_snds_end_off;
-	
+
 	if (mode==PLAY_NORESTART && isPlaying(snd))
 		return;
 
@@ -352,7 +352,7 @@ void CSound::playStereosoundSlot(unsigned char slotplay, const char mode, const 
 }
 
 bool CSound::loadSoundData()
-{    
+{
 	const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	const unsigned int ep = ExeFile.getEpisode();
 	if(ep >= 1 && ep <= 3) // Vorticon based Keengame
@@ -368,7 +368,7 @@ bool CSound::loadSoundData()
 	    std::unique_ptr<CAudioGalaxy> galaxyAudio(new CAudioGalaxy(ExeFile, mAudioSpec));
 	    const bool ok = galaxyAudio->loadSoundData();
 	    sndSlotMap = galaxyAudio->sndSlotMapGalaxy[ep];
-	    mpAudioRessources = move(galaxyAudio);	   	    
+	    mpAudioRessources = move(galaxyAudio);
 	    return ok;
 	}
 
@@ -379,7 +379,7 @@ void CSound::unloadSoundData()
 {
     // Wait for callback to finish running...
     while(m_callback_running);
-    
+
     mpAudioRessources.release();
     m_MixedForm.clear();
 }
