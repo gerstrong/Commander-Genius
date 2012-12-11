@@ -7,6 +7,7 @@
 
 #include "sdl/sound/CSound.h"
 #include "sdl/sound/Sampling.h"
+#include "StringUtils.h"
 #include "CMusic.h"
 #include "CLogFile.h"
 #include "FindFile.h"
@@ -15,17 +16,19 @@
 #include "sdl/music/COGGPlayer.h"
 #include "sdl/music/CIMFPlayer.h"
 #include <fstream>
+#include <string.h>
+
 
 bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 {
 	std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
 	imfPlayer->loadMusicTrack(ExeFile, track);
-	
+
 	if(!imfPlayer->open())
 	{
 	    return false;
 	}
-	
+
 	mpPlayer = move(imfPlayer);
 
 	return true;
@@ -41,7 +44,7 @@ bool CMusic::load(const CExeFile& ExeFile, const int level)
     {
 	return false;
     }
-    
+
     mpPlayer = move(imfPlayer);
 
     return true;
@@ -50,7 +53,7 @@ bool CMusic::load(const CExeFile& ExeFile, const int level)
 bool CMusic::load(const std::string &musicfile)
 {
 	mpPlayer.reset();
-    
+
 	if(musicfile == "")
 		return false;
 
@@ -73,7 +76,7 @@ bool CMusic::load(const std::string &musicfile)
 		    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
 		    mpPlayer = move( oggPlayer );
 #else
-		    g_pLogFile->ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");		    
+		    g_pLogFile->ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");
 		    return false;
 #endif
 		}
@@ -91,7 +94,7 @@ bool CMusic::load(const std::string &musicfile)
 	{
 		g_pLogFile->textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
 	}
-	
+
 	return false;
 }
 
@@ -212,12 +215,12 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
 
     if(musicpath != "")
     	fileloaded = OpenGameFileR(Tablefile, musicpath);
-	
+
     if(fileloaded)
     {
     	std::string str_buf;
     	char c_buf[256];
-		
+
     	while(!Tablefile.eof())
     	{
         	Tablefile.get(c_buf, 256, ' ');
