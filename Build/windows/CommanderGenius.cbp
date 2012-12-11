@@ -35,13 +35,22 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-std=c++11" />
 			<Add option="-Wall" />
+			<Add option="-std=gnu++0x" />
 			<Add option="-DWIN32" />
 			<Add option="-DTARGET_WIN32" />
 			<Add option="-DOGG" />
 			<Add option="-DOPENGL" />
+			<Add directory="../../src" />
+			<Add directory="C:/mingw95/MinGW/include" />
+			<Add directory="C:/mingw95/MinGW/include/SDL" />
+			<Add directory="C:/mingw95/MinGW/include/OGG" />
+			<Add directory="C:/mingw95/MinGW/include/vorbis" />
+			<Add directory="C:/mingw95/MinGW/include/gl" />
 		</Compiler>
+		<ResourceCompiler>
+			<Add directory="../../../Commander-Genius" />
+		</ResourceCompiler>
 		<Linker>
 			<Add option="-mwindows" />
 			<Add library="mingw32" />
