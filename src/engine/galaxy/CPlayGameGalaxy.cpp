@@ -208,7 +208,6 @@ void CPlayGameGalaxy::process()
 			}
 			else if(g_pInput->getHoldedKey(KI))
 			{
-				m_Cheatmode.items = true;
 				eventContainer.add( new EventSendDialog("Get all Items!") );
 				m_Inventory.Item.triggerAllItemsCheat();
 				m_Cheatmode.items = true;
@@ -217,6 +216,14 @@ void CPlayGameGalaxy::process()
 			{
 				m_Cheatmode.noclipping = true;
 				eventContainer.add( new EventSendDialog("No clipping toggle!") );
+			}
+			else if(g_pInput->getHoldedKey(KS))
+			{
+				m_Inventory.Item.triggerAllItemsCheat();
+				m_Cheatmode.items = true;
+				m_Cheatmode.god = true;
+				m_Cheatmode.jump = true;			
+				eventContainer.add( new EventSendDialog("Super Cheat!") );
 			}
 		}
 
