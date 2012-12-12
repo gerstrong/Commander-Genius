@@ -8,8 +8,8 @@
 #include "CPlatformDrop.h"
 
 // If the max Speed is reached, the platform won't return.
-//const int DROP_MAX_SPEED_LIMIT = 200;
-const int DROP_MAX_SPEED_LIMIT = 20;
+const int DROP_MAX_SPEED_LIMIT = 200;
+//const int DROP_MAX_SPEED_LIMIT = 150;
 
 // Times the cycle has to run through until Speed is raised
 const int DROP_SPEED_ACC = 5;
@@ -24,8 +24,7 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y),
 m_delay_for_drop(0),
 m_drop_speed(0),
-m_Origin(m_Pos),
-blockerDetected(false)
+m_Origin(m_Pos)
 {
 	xDirection = 0;
 	yDirection = 0;
@@ -39,20 +38,26 @@ void CPlatformDrop::process()
 {    
 	Uint16 object = mp_Map->getPlaneDataAt(2, getPosition());
 	
+	bool blockerDetected = false;
+	
 	// If there is a blocker, change the direction
 	if( object == 0x1F )
-	{
 	    blockerDetected = true;
-	}
-	else 
+
+	bool drop = false;	
+	if(mp_CarriedPlayer)
 	{
-	    blockerDetected = false;
+	    if(! mp_CarriedPlayer->m_jumpdownfromobject)
+	    {
+		drop = true;
+	    }
 	}
-	
 	
 	// Player is standing on the platform or the platform is already falling too fast
-	if(mp_CarriedPlayer /*|| m_drop_speed>=DROP_MAX_SPEED_LIMIT*/ || blockerDetected )
+	if(drop)
 	{
+	    if(!blockerDetected)
+	    {	    
 		// move down
 		movePlatDown(m_drop_speed);
 
@@ -61,6 +66,7 @@ void CPlatformDrop::process()
 			m_drop_speed += DROP_SPEED_ACC;
 		else // else set the max speed
 			m_drop_speed = DROP_MAX_SPEED_LIMIT;
+	    }
 	}
 	else // Player is not on the platform
 	{

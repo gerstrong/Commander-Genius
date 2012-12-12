@@ -269,6 +269,7 @@ bool CSpriteObject::hitdetect(CSpriteObject &hitobject)
 }
 
 
+
 /**
  * \brief this new type of hit detection only checks if the foe touches something that has that property tile
  * \param Property The Tile Property we are looking

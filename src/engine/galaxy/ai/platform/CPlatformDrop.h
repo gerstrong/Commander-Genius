@@ -30,7 +30,6 @@ private:
 	int m_delay_for_drop;
 	int m_drop_speed;
 	const VectorD2<Uint32> m_Origin;
-	bool blockerDetected;
 };
 
 }
