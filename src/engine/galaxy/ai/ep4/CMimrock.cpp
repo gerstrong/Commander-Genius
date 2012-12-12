@@ -89,30 +89,41 @@ bool CMimrock::isNearby(CSpriteObject &theObject)
 	return true;    
         
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-    {
-	const int dx = player->getXMidPos() - getXMidPos();
+    {	
+	    const int dx = player->getXMidPos() - getXMidPos();
+	    
+	    if( dx>-CSF_DISTANCE_TO_FOLLOW_TOLERANCE &&
+		dx<+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+	    {
+		if( dx<0 )
+		    xDirection = LEFT;
+		else
+		    xDirection = RIGHT;
+		
+		if( dx>-CSF_DISTANCE_TO_JUMP_TOLERANCE &&
+		    dx<+CSF_DISTANCE_TO_JUMP_TOLERANCE )
+		{
+		    if( xDirection == -player->xDirection )
+		    {
+			setAction(A_MIMROCK_SIT);
+		    }
+		    else
+		    {		    
+			yinertia = -JUMP_HEIGHT;
+			mTimer = JUMP_TIME;
+			setAction(A_MIMROCK_JUMP);
+		    }
+		}
+		else
+		{
+		    if( xDirection == player->xDirection && !blockedr && !blockedl )
+			setAction(A_MIMROCK_WALK);
+		    else
+			setAction(A_MIMROCK_SIT);
+		}
+		
+	    }
 	
-	if( dx>-CSF_DISTANCE_TO_FOLLOW_TOLERANCE &&
-	    dx<+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-	{
-	    if( dx<0 )
-		xDirection = LEFT;
-	    else
-		xDirection = RIGHT;
-	    
-	    if( dx>-CSF_DISTANCE_TO_JUMP_TOLERANCE &&
-		dx<+CSF_DISTANCE_TO_JUMP_TOLERANCE )
-	    {
-		yinertia = -JUMP_HEIGHT;
-		mTimer = JUMP_TIME;
-		setAction(A_MIMROCK_JUMP);
-	    }
-	    else
-	    {
-		setAction(A_MIMROCK_WALK);
-	    }
-	    
-	}
     }
     
     return true;
@@ -183,6 +194,7 @@ void CMimrock::processBounce()
     {
 	mTimer = TIME_UNTIL_LOOK;
 	setAction(A_MIMROCK_SIT);
+	playSound( SOUND_KEEN_BUMPHEAD );
     }
 }
 

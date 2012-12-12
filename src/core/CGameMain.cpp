@@ -13,6 +13,10 @@
 #include "common/Menu/CMenuController.h"
 #include "common/Menu/CSelectionMenu.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/input/CInput.h"
+
+#include "common/Menu/CMainMenu.h"
+#include "common/Menu/CHelpMenu.h"
 
 
 void CGameMain::switchToGamePlayMode()
@@ -115,9 +119,10 @@ void CGameMain::process()
 	{
 		mpInfoScene->process();
 		if( mpInfoScene->destroyed() )
-		{
+		{		    
 			mpInfoScene->teardown();
 			mpInfoScene = NULL;
+			g_pInput->flushAll();
 			gpMenuController->lock(false);
 		}
 	}
