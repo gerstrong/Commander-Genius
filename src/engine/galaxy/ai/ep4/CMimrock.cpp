@@ -29,7 +29,7 @@ const int JUMP_SPEED = 30;
 const int JUMP_HEIGHT = 148;
 const int BOUNCE_HEIGHT = 74;
 const int JUMP_TIME = 500;
-const int BOUNCE_TIME = 250;
+const int BOUNCE_TIME = 50;
 const int TIME_UNTIL_LOOK = 100;
 
 CMimrock::CMimrock(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
@@ -55,8 +55,8 @@ mTimer(0)
 
 void CMimrock::getTouchedBy(CSpriteObject &theObject)
 {
-    /*if( getActionNumber(A_MIMROCK_SIT) ) 
-	return;*/
+    if( getActionStatus(A_MIMROCK_SIT) ) 
+	return;
 		
     if(dead || theObject.dead)
 	return;
@@ -67,7 +67,7 @@ void CMimrock::getTouchedBy(CSpriteObject &theObject)
     if( dynamic_cast<CBullet*>(&theObject) ) 
     {
 	setAction( A_MIMROCK_STUNNED );
-	honorPriority = true;
+	honorPriority = false;
 	theObject.dead = true;
 	dead = true;
     }
@@ -173,6 +173,7 @@ void CMimrock::processJump()
 	mTimer = BOUNCE_TIME;
 	yinertia = -BOUNCE_HEIGHT;
 	setAction(A_MIMROCK_BOUNCE);
+	playSound( SOUND_KEEN_BUMPHEAD );
     }
     
 }
@@ -188,13 +189,13 @@ void CMimrock::processBounce()
 	moveRight(JUMP_SPEED);
     }
     
-    mTimer--;
+    if(mTimer>0)
+	mTimer--;
     
-    if(mTimer == 0 || blockedd)
+    if(mTimer == 0 && blockedd)
     {
 	mTimer = TIME_UNTIL_LOOK;
-	setAction(A_MIMROCK_SIT);
-	playSound( SOUND_KEEN_BUMPHEAD );
+	setAction(A_MIMROCK_SIT);	
     }
 }
 
