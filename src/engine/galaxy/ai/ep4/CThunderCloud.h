@@ -48,6 +48,7 @@ private:
 	std::map< size_t, void (CThunderCloud::*)() > mActionMap;
 	int mTimer;
 	CThunderBolt *mpBolt;
+	bool mSecondTry;
 };
 
 
