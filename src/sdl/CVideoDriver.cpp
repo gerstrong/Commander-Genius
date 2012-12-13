@@ -224,14 +224,6 @@ bool CVideoDriver::start()
 	// this value is updated here!
 	retval &= mpVideoEngine->createSurfaces();
 	m_mustrefresh = true;
-	
-	if(retval)
-	{
-		//CRect<Uint16> newDim(640, 480);
-		
-		//mpVideoEngine->m_VidConfig.m_DisplayRect;
-		//mpVideoEngine->resizeDisplayScreen(newDim);	    
-	}
 
 	return retval;
 }
