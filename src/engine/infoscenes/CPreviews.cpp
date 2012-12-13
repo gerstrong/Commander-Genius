@@ -17,6 +17,7 @@
 
 void CPreviews::init()
 {
+    CInfoScene::init();
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	m_episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();

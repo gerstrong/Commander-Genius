@@ -65,6 +65,7 @@ void CHighScores::fetchScoreTable()
 
 void CHighScores::init()
 {
+    CInfoScene::init();
 	m_CursorPosition = 0;
 	m_CurrentLetter = 32;
 

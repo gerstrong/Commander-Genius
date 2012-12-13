@@ -7,6 +7,7 @@
 
 #include "CBaseEngine.h"
 #include "engine/CEvent.h"
+#include "engine/infoscenes/CInfoScene.h"
 #include <memory>
 
 #ifndef CGAMEMAIN_H_
@@ -26,7 +27,7 @@ protected:
 
 private:
 
-	std::unique_ptr<CInfoScene> mpInfoScene;
+	std::shared_ptr<CInfoScene> mpInfoScene;
 	std::unique_ptr<CGameMode> mpGameMode;
 
 	//bool mShowFinale; // This should be an event

@@ -14,6 +14,7 @@
 
 void CCredits::init()
 {
+    CInfoScene::init();
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap.reset( new CMap );
 	

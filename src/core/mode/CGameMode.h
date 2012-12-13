@@ -11,7 +11,6 @@
 #define CGAMEMODE_H_
 
 #include "engine/CEvent.h"
-#include "engine/infoscenes/CInfoScene.h"
 #include <string>
 
 ///////////////////////

@@ -25,6 +25,7 @@ mTextType(type)
 
 void CHelp::init()
 {
+    CInfoScene::init();
 	std::string Text;
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	const std::string DataDirectory = ExeFile.getDataDirectory();

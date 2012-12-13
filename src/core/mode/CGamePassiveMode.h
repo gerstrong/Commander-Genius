@@ -10,7 +10,7 @@
 
 #include "CGameMode.h"
 #include "engine/CPassive.h"
-#include "engine/infoscenes/CInfoScene.h"
+//#include "engine/infoscenes/CInfoScene.h"
 #include "common/CMap.h"
 #include <memory>
 

@@ -22,6 +22,7 @@ m_type(type)
 
 void CAbout::init()
 {
+    CInfoScene::init();
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap.reset(new CMap);
 	CVorticonMapLoaderBase Maploader(mpMap);

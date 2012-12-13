@@ -22,18 +22,20 @@ void CMenuController::emptyMenuStack()
 
 void CMenuController::openMainMenu()
 {
-	if(!mLocked)
-	{
-		g_pBehaviorEngine->EventList().add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
-		g_pBehaviorEngine->setPause(true);
-		g_pMusicPlayer->pause();
-	}
+	if(mLocked)
+	    return;
+
+	g_pBehaviorEngine->EventList().add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
+	g_pBehaviorEngine->setPause(true);
+	g_pMusicPlayer->pause();	
 }
 
 
 void CMenuController::process()
 {
-
+	if(mLocked)
+	    return;
+    
 	// process any triggered Game Control related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 

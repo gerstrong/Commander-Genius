@@ -20,6 +20,7 @@
 
 void CStory::init()
 {
+    CInfoScene::init();
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	const char episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
