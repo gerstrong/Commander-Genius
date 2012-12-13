@@ -8,6 +8,7 @@
 #include "sdl/CTimer.h"
 #include "CVideoEngine.h"
 #include "CLogFile.h"
+#include <SDL_syswm.h>
 
 CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
 BlitSurface(NULL),
@@ -75,7 +76,25 @@ bool CVideoEngine::init()
 	// And set the proper Display Dimensions
 	// The screen is also setup in this function
 	if( !resizeDisplayScreen(m_VidConfig.m_DisplayRect) )
+	{
 		return false;
+	}
+	
+	#ifdef _WIN32 // So far this only works under windows
+	else
+	{
+	    SDL_SysWMinfo info;
+	    SDL_VERSION(&info.version);
+	    if( int ok = SDL_GetWMInfo(&info) )
+	    {
+		if(ok > 0)
+		{
+		    ShowWindow(info.window, SW_SHOWNORMAL);		    
+		}
+	    }
+	    
+	}
+	#endif
 
 	// If Fullscreen hide the mouse cursor.
 	// Anyway, it just can point but does not interact yet

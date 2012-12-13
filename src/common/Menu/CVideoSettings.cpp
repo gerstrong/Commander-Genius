@@ -177,21 +177,20 @@ void CVideoSettings::release()
 	mUserVidConf.m_CameraBounds = g_pVideoDriver->getCameraBounds();
 
 	CVidConfig oldVidConf = g_pVideoDriver->getVidConfig();
-	g_pVideoDriver->setVidConfig(mUserVidConf);
+	g_pVideoDriver->setVidConfig(mUserVidConf);		
 
 	// At this point we also must apply and save the settings
 	if( !g_pVideoDriver->applyMode() )
 	{
 		g_pSettings->loadDrvCfg();
 		return;
-	}
+	}		
 
 	if( !g_pVideoDriver->start() )
 	{
 		g_pVideoDriver->setVidConfig(oldVidConf);
 		g_pVideoDriver->start();
 	}
-
+	
 	g_pSettings->saveDrvCfg();
-
 }
