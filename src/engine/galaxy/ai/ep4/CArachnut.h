@@ -21,6 +21,8 @@ public:
 	bool isNearby(CSpriteObject &theObject);
 
 	void getTouchedBy(CSpriteObject &theObject);
+	
+	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
 	void process();
 

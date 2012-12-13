@@ -16,7 +16,7 @@ namespace galaxy
 const int A_ARACHNUT_WALK = 0;
 const int A_ARACHNUT_STUNNED = 4;
 
-const int WALK_SPEED = 30;
+const int WALK_SPEED = 45;
 
 CArachnut::CArachnut(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y)
@@ -71,6 +71,16 @@ void CArachnut::getTouchedBy(CSpriteObject &theObject)
 		player->kill();
 	}
 }
+
+
+int CArachnut::checkSolidD( int x1, int x2, int y2, const bool push_mode )
+{
+	turnAroundOnCliff( x1, x2, y2 );
+
+	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+}
+
+
 
 void CArachnut::process()
 {
