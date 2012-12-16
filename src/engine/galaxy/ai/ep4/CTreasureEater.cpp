@@ -8,7 +8,8 @@
 #include "CTreasureEater.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CBullet.h"
-#include <engine/galaxy/ai/CSpriteItem.h>
+#include "engine/galaxy/ai/CSpriteItem.h"
+#include "engine/galaxy/ai/CItemEffect.h"
 #include "misc.h"
 
 namespace galaxy {
@@ -20,7 +21,8 @@ const int A_SMIRKY_HOP = 10;
 const int A_SMIRKY_STUNNED = 14;
 
 const int HOP_INERTIA = 120;
-const int SMIRLY_HOP_TIMER = 10;
+const int SMIRKY_HOP_TIMER = 10;
+const int SMIRKY_XSPEED = 40;
 
 
 CTreasureEater::CTreasureEater(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
@@ -52,8 +54,16 @@ mStolen(false)
 
 bool CTreasureEater::isNearby(CSpriteObject &theObject)
 {
-	/*if( !getProbability(80) )
-		return false;*/
+  	if( !getProbability(80) )
+		return false;
+
+	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+	{
+		if( player->getXMidPos() < getXMidPos() )
+			xDirection = LEFT;
+		else
+			xDirection = RIGHT;
+	}
 
 	return true;
 }
@@ -81,13 +91,13 @@ void CTreasureEater::getTouchedBy(CSpriteObject &theObject)
 	{
 		mStolen = true;
 		theObject.exists = false;
-	}		
+	}
 }
 
 
 void CTreasureEater::processLooking()
 {
-	if( mTimer < SMIRLY_HOP_TIMER )
+	if( mTimer < SMIRKY_HOP_TIMER )
 	{
 		mTimer++;
 		return;
@@ -123,11 +133,10 @@ void CTreasureEater::processTeleporting()
 	  mTeleported = false;
 	  yinertia = -HOP_INERTIA;
 	  inhibitfall = false;	  
-	  //performCollisions();
 	}
 }
 
-void CTreasureEater::lookForNextDestination()
+bool CTreasureEater::lookForNextDestination()
 {  
   const unsigned int height = mp_Map->m_height-2;
   const unsigned int width = mp_Map->m_width-2;
@@ -147,36 +156,40 @@ void CTreasureEater::lookForNextDestination()
 	      {
 		mDestination.x = x<<CSF;
 		mDestination.y = getYPosition();
-		return;
+		return true;
 	      }
 	   }
 	}
     }    
   }
+  
+  return false;
 }
 
 
 void CTreasureEater::processHopping()
 {
+	moveXDir(SMIRKY_XSPEED*xDirection);
 	if(yinertia >= 0)
 	{
 		if(blockedd || onslope)
 		{
 			if(mStolen)
 			{
-				setAction( A_SMIRKY_TELEPORT );
+			      setAction( A_SMIRKY_TELEPORT );
 				lookForNextDestination();
 				mTeleported = true;
 			}
 			else
 			{
-				setAction( A_SMIRKY_LOOK );
+			      setAction( A_SMIRKY_LOOK );
 			}
 
 			inhibitfall = true;
 			return;
 		}
 	}
+	
 }
 
 
@@ -195,8 +208,10 @@ void CTreasureEater::checkForItem()
 		{
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;
-			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
+			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );						
+			g_pBehaviorEngine->m_EventList.spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21], FADEOUT) );
 			mStolen = true;
+			
 		}
 	}
 }
@@ -211,10 +226,10 @@ void CTreasureEater::process()
 
 	checkForItem();
 
-	if( blockedl )
+	/*if( blockedl )
 		xDirection = RIGHT;
 	else if( blockedr )
-		xDirection = LEFT;
+		xDirection = LEFT;*/	
 
 	(this->*mp_processState)();
 

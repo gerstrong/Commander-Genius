@@ -22,7 +22,7 @@ public:
 
 	void processLooking();
 	void processTeleporting();
-	void lookForNextDestination();
+	bool lookForNextDestination();
 	void processHopping();
 
 	void checkForItem();
