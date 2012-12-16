@@ -22,6 +22,7 @@ public:
 
 	void processLooking();
 	void processTeleporting();
+	void lookForNextDestination();
 	void processHopping();
 
 	void checkForItem();
@@ -32,6 +33,7 @@ private:
 	int mTimer;
 	bool mTeleported;
 	bool mStolen;
+	VectorD2<int> mDestination;
 };
 
 } /* namespace galaxy */
