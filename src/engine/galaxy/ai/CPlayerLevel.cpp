@@ -1202,8 +1202,6 @@ void CPlayerLevel::processJumping()
 		if (!state.jumpIsPressed)
 			state.jumpTimer = 0;
 
-		//yinertia = -90;
-
 		moveYDir(yinertia);
 
 	}
@@ -1229,7 +1227,9 @@ void CPlayerLevel::processJumping()
 	if ( m_playcontrol[PA_X] != 0 )
 	{
 		xDirection = (m_playcontrol[PA_X] < 0) ? -1 : 1;
-		performPhysAccelHor(xDirection*4, 48);
+		//performPhysAccelHor(xDirection*4, 48); 
+		// This was taken from the omnispeak and recalculated. Check if the new 56 is more appropriate. It seems to be.
+		performPhysAccelHor(xDirection*4, 56);
 	}
 	else performPhysDampHorz();
 
