@@ -93,19 +93,6 @@ void CBlueBird::processHatched()
 
 void CBlueBird::processWalking()
 {
-	/*if( mTimer % CHANCETOFLY == 0 )
-	{
-		// Chance to poo
-		if( getProbability(50) )
-		{
-			setAction(A_EAGLE_FLYING);
-			inhibitfall = true;
-		}
-		mTimer = 0;
-		    //(11:48:52 PM) lemm: so the bottom of keen's box has to be >= 3 tiles above the bottom of the bird's box
-		    //(11:48:57 PM) lemm: and keen needs to be on the grond		 
-	}*/
-
 	mTimer++;
 
 	// Move normally in the direction
