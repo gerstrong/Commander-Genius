@@ -54,9 +54,10 @@ void CBlueBird::setActionForce(const size_t ActionNumber)
 
 bool CBlueBird::isNearby(CSpriteObject &theObject)
 {
+            
 	if( !getProbability(20) )
 		return false;
-
+	
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		if( player->getXMidPos() < getXMidPos() )
@@ -68,6 +69,17 @@ bool CBlueBird::isNearby(CSpriteObject &theObject)
 			yDirection = UP;
 		else
 			yDirection = DOWN;
+		
+		
+		// so the bottom of keen's box has to be >= 3 tiles above the bottom of the bird's box
+		// and keen needs to be on the ground -> Quote by Lemm
+		const int pYDown = player->getYDownPos();
+		const int bYDown = getYDownPos();
+		if( player->blockedd && pYDown <= bYDown-(3<<CSF)  )
+		{
+    			setAction(A_EAGLE_FLYING);
+			inhibitfall = true;
+		}
 	}
 
 	return true;
@@ -81,7 +93,7 @@ void CBlueBird::processHatched()
 
 void CBlueBird::processWalking()
 {
-	if( mTimer % CHANCETOFLY == 0 )
+	/*if( mTimer % CHANCETOFLY == 0 )
 	{
 		// Chance to poo
 		if( getProbability(50) )
@@ -89,7 +101,10 @@ void CBlueBird::processWalking()
 			setAction(A_EAGLE_FLYING);
 			inhibitfall = true;
 		}
-	}
+		mTimer = 0;
+		    //(11:48:52 PM) lemm: so the bottom of keen's box has to be >= 3 tiles above the bottom of the bird's box
+		    //(11:48:57 PM) lemm: and keen needs to be on the grond		 
+	}*/
 
 	mTimer++;
 
@@ -160,6 +175,13 @@ void CBlueBird::getTouchedBy(CSpriteObject &theObject)
 		player->kill();
 	    }
 	}
+}
+
+int CBlueBird::checkSolidD( int x1, int x2, int y2, const bool push_mode )
+{
+	turnAroundOnCliff( x1, x2, y2 );
+
+	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
 
 void CBlueBird::process()
