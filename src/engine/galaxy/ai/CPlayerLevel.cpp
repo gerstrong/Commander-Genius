@@ -671,61 +671,56 @@ const int MAX_CLIFFHANG_TIME = 10;
 
 bool CPlayerLevel::checkandtriggerforCliffHanging()
 {
-    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-    const bool ceiling = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bdown;
-        
+    
     if(PoleCollision())
 	return false;
     
-    if(ceiling)
-	return false;
-    	
-	if( m_playcontrol[PA_X]<0 && blockedl )
+    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+    
+    if( m_playcontrol[PA_X]<0 && blockedl )
+    {
+	const int xLeft = (getXLeftPos()>>CSF)-1;
+	bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
+	bool check_block_lower = TileProperty[mp_Map->at(xLeft, getYUpPos()>>CSF)].bright;
+	
+	if(!check_block && check_block_lower && 
+	    mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
 	{
-		const int xLeft = (getXLeftPos()>>CSF)-1;
-		//bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
-		//bool check_block = false;
-		bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bup;
-		bool check_block_lower = TileProperty[mp_Map->at(xLeft, getYUpPos()>>CSF)].bright;
-
-		if(!check_block && check_block_lower && 
-		    mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
-		{
-			setAction(A_KEEN_HANG);
-			setActionSprite();
-			calcBoundingBoxes();
-			Uint32 x = (((getXPosition()>>CSF))<<CSF)+(12<<STC);
-			Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);
-			moveTo(x,y);
-			solid = false;
-			xinertia = 0;
-			yinertia = 0;
-			m_hangtime = MAX_CLIFFHANG_TIME;
-			return true;
-		}
+	    setAction(A_KEEN_HANG);
+	    setActionSprite();
+	    calcBoundingBoxes();
+	    Uint32 x = (((getXPosition()>>CSF))<<CSF)+(12<<STC);
+	    Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);
+	    moveTo(x,y);
+	    solid = false;
+	    xinertia = 0;
+	    yinertia = 0;
+	    m_hangtime = MAX_CLIFFHANG_TIME;
+	    return true;
 	}
-	else if( m_playcontrol[PA_X]>0 && blockedr )
+    }
+    else if( m_playcontrol[PA_X]>0 && blockedr )
+    {
+	bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)-1)].bleft;
+	bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
+	
+	if(!check_block && check_block_lower &&
+	    mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
 	{
-		bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)-1)].bleft;
-		bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
-
-		if(!check_block && check_block_lower &&
-				mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
-		{
-			setAction(A_KEEN_HANG);
-			setActionSprite();
-			calcBoundingBoxes();
-			Uint32 x = (((getXPosition()>>CSF)+1)<<CSF)+(2<<STC);
-			Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);			
-			moveTo(x,y);
-			solid = false;
-			xinertia = 0;
-			yinertia = 0;
-			m_hangtime = MAX_CLIFFHANG_TIME;
-			return true;
-		}
+	    setAction(A_KEEN_HANG);
+	    setActionSprite();
+	    calcBoundingBoxes();
+	    Uint32 x = (((getXPosition()>>CSF)+1)<<CSF)+(2<<STC);
+	    Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);			
+	    moveTo(x,y);
+	    solid = false;
+	    xinertia = 0;
+	    yinertia = 0;
+	    m_hangtime = MAX_CLIFFHANG_TIME;
+	    return true;
 	}
-	return false;
+    }
+    return false;
 }
 
 
