@@ -39,7 +39,7 @@ mStolen(false)
 	setupGalaxyObjectOnMap( 0x31E2, A_SMIRKY_LOOK );
 	xDirection = LEFT;
 	
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);	
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 	performCollisions();
 	
@@ -113,12 +113,10 @@ void CTreasureEater::processLooking()
 		{
 			setAction(A_SMIRKY_HOP);
 			yinertia = -HOP_INERTIA;
-			inhibitfall = false;
 		}
 		else
 		{
 			setActionForce(A_SMIRKY_LOOK);
-			inhibitfall = true;
 		}
 	}
 }
@@ -132,7 +130,6 @@ void CTreasureEater::processTeleporting()
 	  mStolen = false;
 	  mTeleported = false;
 	  yinertia = -HOP_INERTIA;
-	  inhibitfall = false;	  
 	}
 }
 
@@ -185,7 +182,6 @@ void CTreasureEater::processHopping()
 			      setAction( A_SMIRKY_LOOK );
 			}
 
-			inhibitfall = true;
 			return;
 		}
 	}
