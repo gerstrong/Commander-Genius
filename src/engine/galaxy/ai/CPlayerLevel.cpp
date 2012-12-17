@@ -682,9 +682,11 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     	
 	if( m_playcontrol[PA_X]<0 && blockedl )
 	{
-	    
-		bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)-1)].bright;
-		bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
+		const int xLeft = (getXLeftPos()>>CSF)-1;
+		//bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
+		//bool check_block = false;
+		bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bup;
+		bool check_block_lower = TileProperty[mp_Map->at(xLeft, getYUpPos()>>CSF)].bright;
 
 		if(!check_block && check_block_lower && 
 		    mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
@@ -1084,7 +1086,7 @@ void CPlayerLevel::verifyJumpAndFall()
 			xinertia = 0;
 			//obj->posX = (obj->clipRects.tileXmid << 8) - 32;
 		}
-		else if(!m_Cheatmode.god)
+		else if(!m_Cheatmode.jump)
 		{
 			playSound( SOUND_KEEN_BUMPHEAD );						
 			
