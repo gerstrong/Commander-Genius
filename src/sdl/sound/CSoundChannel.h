@@ -83,7 +83,7 @@ private:
     bool m_sound_playing;           	// true = a sound is currently playing
     CSoundSlot *mp_current_SndSlot;		// Pointer to the slot of the currently playing sound
     Uint32 m_sound_ptr;               	// position within sound that we're at
-	bool m_sound_paused;             	// true = pause playback
+    bool m_sound_paused;             	// true = pause playback
     bool m_sound_forced;
 
     short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!

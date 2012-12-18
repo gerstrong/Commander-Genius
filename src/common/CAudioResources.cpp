@@ -75,8 +75,10 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
    				// Mix into the destination buffer, doubling up into stereo.
    				for (unsigned int i=0; i<samplesPerMusicTick; ++i)
    				{
-   					buffer[i * 2] = (int16_t) mix_buffer[i];
-   					buffer[i * 2 + 1] = (int16_t) mix_buffer[i];
+				    for( unsigned int ch=0 ; ch<m_AudioSpec.channels ; ch++ )
+				    {
+   					buffer[i * m_AudioSpec.channels + ch] = (int16_t) (mix_buffer[i]+m_AudioSpec.silence);
+				    }
    				}
 
    				waveform_ptr += samplesPerMusicTick*m_AudioSpec.channels*formatsize;
@@ -93,8 +95,10 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
    				// Mix into the destination buffer, doubling up into stereo.
    				for (unsigned int i=0; i<samplesPerMusicTick; ++i)
    				{
-   					buffer[i * 2] = (Uint8) mix_buffer[i];
-   					buffer[i * 2 + 1] = (Uint8) mix_buffer[i];
+				    for( unsigned int ch=0 ; ch<m_AudioSpec.channels ; ch++ )
+				    {
+   					buffer[i * m_AudioSpec.channels + ch] = (Uint8) ((mix_buffer[i]>>8)+m_AudioSpec.silence);
+				    }
    				}
 
    				waveform_ptr += samplesPerMusicTick*m_AudioSpec.channels*formatsize;

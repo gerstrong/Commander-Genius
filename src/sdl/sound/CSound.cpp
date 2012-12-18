@@ -263,20 +263,20 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 // if priorities allow, plays the sound "snd".
 // nonzero return value indicates a higher priority sound is playing.
 void CSound::playSound(	const GameSound snd,
-						const SoundPlayMode mode )
+			const SoundPlayMode mode )
 {
 	playStereosound(snd, mode, 0);
 }
 
 void CSound::playStereofromCoord( const GameSound snd,
-				const SoundPlayMode mode,
-				 const int xcoordinate)
+				  const SoundPlayMode mode,
+				  const int xcoordinate )
 {
     if(mAudioSpec.channels == 2)
     {
     	int bal;
 
-    	bal = ((short)(xcoordinate) - (320>>1));	// Faster calculation of balance transformation
+    	bal = (xcoordinate - (320>>1));	// Faster calculation of balance transformation
 
     	if(bal < -255)
 	{
