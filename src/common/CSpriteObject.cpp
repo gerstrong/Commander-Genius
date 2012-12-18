@@ -267,26 +267,6 @@ void CSpriteObject::InertiaAndFriction_X(const int friction_rate)
 	decreaseXInertia(friction_rate);
 }
 
-VectorD2<Uint32> CSpriteObject::getPosition() const
-{ return m_Pos; }
-Uint32 CSpriteObject::getXPosition() const
-{ return m_Pos.x; }
-Uint32 CSpriteObject::getYPosition() const
-{ return m_Pos.y; }
-Uint32 CSpriteObject::getXLeftPos()
-{ return m_Pos.x+m_BBox.x1; }
-Uint32 CSpriteObject::getXRightPos()
-{ return m_Pos.x+m_BBox.x2; }
-Uint32 CSpriteObject::getXMidPos()
-{ return m_Pos.x+(m_BBox.x2-m_BBox.x1)/2; }
-Uint32 CSpriteObject::getYUpPos()
-{ return m_Pos.y+m_BBox.y1; }
-Uint32 CSpriteObject::getYDownPos()
-{ return m_Pos.y+m_BBox.y2; }
-Uint32 CSpriteObject::getYMidPos()
-{ return m_Pos.y+(m_BBox.y2-m_BBox.y1)/2; }
-
-
 void CSpriteObject::processFallPhysics(const int boost)
 {
 	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();

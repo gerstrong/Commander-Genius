@@ -693,10 +693,11 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     {
 	const int xLeft = (getXLeftPos()>>CSF)-1;
 	//const bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
-	const bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bup;
+	bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bup;
+	check_block |= TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
 	const bool check_block_lower = TileProperty[mp_Map->at(xLeft, getYUpPos()>>CSF)].bright;
 	
-	if(!check_block && check_block_lower )
+	if( !check_block && check_block_lower )
 	{
 	    setAction(A_KEEN_HANG);
 	    setActionSprite();
@@ -714,9 +715,9 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     }
     else if( m_playcontrol[PA_X]>0 && blockedr )
     {
-	const int xRight = (getXRightPos()>>CSF)+1;
-	//bool check_block = TileProperty[mp_Map->at(xRight, (getYUpPos()>>CSF)-1)].bleft;
+	const int xRight = (getXRightPos()>>CSF)+1;	
 	bool check_block = TileProperty[mp_Map->at(xRight, (getYUpPos()>>CSF)-1)].bup;
+	check_block |= TileProperty[mp_Map->at(xRight, (getYUpPos()>>CSF)-1)].bleft;
 	bool check_block_lower = TileProperty[mp_Map->at(xRight, getYUpPos()>>CSF)].bleft;
 	
 	if(!check_block && check_block_lower )
