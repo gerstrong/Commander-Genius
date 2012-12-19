@@ -26,6 +26,8 @@ public:
 	CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 			const VectorD2<Uint32> &Destination);
 
+	void getTouchedBy(CSpriteObject &theObject);
+	
 	// The flag is flying when player throws it.
 	// It's waving all the time being stuck on the pole.
 	void process();

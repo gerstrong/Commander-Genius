@@ -67,6 +67,8 @@ private:
 	int elevator_frames;
 	int waveTimer;
 	bool swimming;
+	
+	std::vector<bool> mLevelDone;
 
 	void (CPlayerWM::*mProcessPtr)();
 };

@@ -216,7 +216,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 	    g_pTimer->setLPS(DEFAULT_LPS_GALAXY);
 	    
 	    g_pResourceLoader->setStyle(PROGRESS_STYLE_BAR);
-	    const std::string threadname = "Loading Keen Episode " + itoa(Episode);
+	    const std::string threadname = "Loading Keen " + itoa(Episode);
 	    
 	    struct GalaxyDataLoad : public Action
 	    {
