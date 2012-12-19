@@ -684,10 +684,6 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     if(floorNearBy)
 	return false;
     
-
-    //bool ceiling = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bdown;
-    //if(ceiling)        
-//	return false;
             
     if( m_playcontrol[PA_X]<0 && blockedl )
     {
