@@ -196,7 +196,7 @@ void CResourceLoader::renderLoadingGraphic()
 		int percent = m_permil/10;
 		int rest = m_permil%10;
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
-
+		
 		Font.drawFont(sfc, text , 80, 100, true);
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
@@ -207,8 +207,6 @@ void CResourceLoader::renderLoadingGraphic()
 		int height = Bitmap.getHeight();
 		Bitmap._draw(sfc, (320-width)/2, (200-height)/2);
 		
-		rect.x = 0;
-		rect.y = 0;
 		rect.x = (320-width)/2;
 		rect.y = (200+height)/2;
 		
@@ -220,6 +218,33 @@ void CResourceLoader::renderLoadingGraphic()
 		Uint32 color = 0xFF0000-(((0xFF*m_permil)/1000)<<16);
 		color += ((0x0000FF*m_permil)/1000);
 		
+		SDL_FillRect(sfc, &rect, color);
+	}
+	else if(m_style == PROGRESS_STYLE_BAR)
+	{		
+		const int width = 160;
+		const int height = 0;
+	
+		SDL_Rect rect;
+		SDL_Rect bgRect;
+		rect.x = (320-width)/2;
+		rect.y = (200+height)/2;
+		
+		rect.w = (width*m_permil)/1000;		
+		rect.h = 4;
+		
+		bgRect = rect;
+		bgRect.x--;
+		bgRect.y--;
+		bgRect.w = width+2;
+		bgRect.h = 6;
+
+		// RGB - Fade from red to blue
+		// but also use some gradients for the colouring...
+		Uint32 color = 0xFF0000-(((0xFF*m_permil)/1000)<<16);
+		color += ((0x0000FF*m_permil)/1000);
+		
+		SDL_FillRect(sfc, &bgRect, SDL_MapRGB(sfc->format, 128, 128, 128));
 		SDL_FillRect(sfc, &rect, color);
 	}
 	

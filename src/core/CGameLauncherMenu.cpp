@@ -88,11 +88,66 @@ void CGameLauncherMenu::init()
 	return;
 }
 
+
+bool CGameLauncherMenu::loadGalaxyResources(const Uint8 flags)
+{
+    CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    int version = ExeFile.getEXEVersion();
+    unsigned char *p_exedata = ExeFile.getRawData();
+    const int Episode = ExeFile.getEpisode();
+    
+    g_pResourceLoader->setPermilage(10);
+
+    // Patch the EXE-File-Data directly in the memory.
+    CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
+    Patcher.process();    
+    
+    mp_GameLauncher->setChosenGame(m_start_game_no);
+    
+    g_pResourceLoader->setPermilage(50);    
+    
+    if( (flags & LOADGFX) == LOADGFX )
+    {
+	// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
+	mp_EGAGraphics.reset(new galaxy::CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
+	if(!mp_EGAGraphics)
+	    return false;
+	
+	mp_EGAGraphics->loadData();
+	g_pResourceLoader->setPermilage(400);
+    }    
+    
+    if( (flags & LOADSTR) == LOADSTR )
+    {
+	// load the strings.
+	CMessages Messages(p_exedata, Episode, version);
+	Messages.extractGlobalStrings();
+	g_pResourceLoader->setPermilage(450);
+    }
+        
+    if( (flags & LOADSND) == LOADSND )
+    {
+	// Load the sound data
+	g_pSound->loadSoundData();
+	g_pResourceLoader->setPermilage(900);
+    }
+    
+    g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+    
+    // If there are patches left that must be applied later, do it here!
+    Patcher.postProcess();
+    
+    g_pResourceLoader->setPermilage(1000);
+    
+    return true;
+}
+
+
 ///
 // This is used for loading all the resources of the game the use has chosen.
 // It loads graphics, sound and text into the memory
 ///
-bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const int& Episode, const Uint8 flags )
+bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags )
 {
 	int version;
 	unsigned char *p_exedata;
@@ -113,14 +168,14 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 
 	gpResource->setupFilenames(Episode);
 
-	// Patch the EXE-File-Data directly in the memory.
-	CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
-	Patcher.process();
-
 	g_pBehaviorEngine->setEpisode(Episode);
 
 	if( Episode == 1 || Episode == 2 || Episode == 3 ) // Vorticon resources
 	{
+	    	// Patch the EXE-File-Data directly in the memory.
+		CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
+		Patcher.process();
+
 		g_pTimer->setLPS(DEFAULT_LPS_VORTICON);
 	    
 		g_pBehaviorEngine->readTeleporterTable(p_exedata);
@@ -158,37 +213,33 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 	}
 	else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
 	{
-		g_pTimer->setLPS(DEFAULT_LPS_GALAXY);
+	    g_pTimer->setLPS(DEFAULT_LPS_GALAXY);
+	    
+	    g_pResourceLoader->setStyle(PROGRESS_STYLE_BAR);
+	    const std::string threadname = "Loading Keen Episode " + itoa(Episode);
+	    
+	    struct GalaxyDataLoad : public Action
+	    {
+		CGameLauncherMenu &mGlm;
+		const Uint8 mFlags;
 		
-		if( (flags & LOADGFX) == LOADGFX )
-		{
-			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-			mp_EGAGraphics.reset(new galaxy::CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
-			if(!mp_EGAGraphics)
-				return false;
-
-			mp_EGAGraphics->loadData();
-		}
-
-		if( (flags & LOADSTR) == LOADSTR )
-		{
-			// load the strings.
-			CMessages Messages(p_exedata, Episode, version);
-			Messages.extractGlobalStrings();
-		}
-
-		if( (flags & LOADSND) == LOADSND )
-		{
-			// Load the sound data
-			g_pSound->loadSoundData();
-		}
+		GalaxyDataLoad(CGameLauncherMenu &glm, const Uint8 flags) :
+		    mGlm(glm), mFlags(flags) {};
 		
-		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
-		
-		// If there are patches left that must be apllied later, do it here!
-		Patcher.postProcess();
-
-		return true;
+		int handle()
+		{		    
+		    mGlm.loadGalaxyResources(mFlags);		    
+		    return 1;
+		}
+	    };
+	    
+	    if(g_pResourceLoader->RunLoadAction(new GalaxyDataLoad(*this, flags), threadname) == 0)
+	    {
+		g_pBehaviorEngine->EventList().add( new GMQuit() );
+		return false;
+	    }  
+	    
+	    return true;	    
 	}
 	return false;
 }

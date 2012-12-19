@@ -22,7 +22,8 @@
 enum ProgressStyle
 {
 	PROGRESS_STYLE_TEXT,
-	PROGRESS_STYLE_BITMAP
+	PROGRESS_STYLE_BITMAP,
+	PROGRESS_STYLE_BAR
 };
 
 class CResourceLoader : public CSingleton<CResourceLoader> {

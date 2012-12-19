@@ -143,6 +143,8 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 			return 1;
 		}
 	};
+	
+	
         g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
 	g_pResourceLoader->RunLoadAction(
 					new SpriteLoad(m_Sprit,

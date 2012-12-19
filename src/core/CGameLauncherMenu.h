@@ -28,7 +28,8 @@ public:
 	CGameLauncherMenu(bool& first_time, const int start_game_no = -1, const int start_level = -1);
 
 	bool loadMenuResources();
-	bool loadResources( const std::string& DataDirectory, const int& Episode, const Uint8 flags = LOADALL);
+	bool loadGalaxyResources(const Uint8 flags);
+	bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
 	void init();
 	void process();
 

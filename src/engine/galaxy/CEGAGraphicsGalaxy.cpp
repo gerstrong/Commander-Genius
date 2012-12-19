@@ -148,11 +148,11 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!TileLoader.load(EpisodeInfo[m_episode-4].Num16Tiles,
 						EpisodeInfo[m_episode-4].Num16MaskedTiles))
 		return false;
-
+	
 	if(!readfonts()) return false;
-	if(!readBitmaps()) return false;
+	if(!readBitmaps()) return false;	
 	if(!readMaskedBitmaps()) return false;
-
+	
 	g_pGfxEngine->createEmptyTilemap(4);
 
 	if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
@@ -622,8 +622,9 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 	int ep = m_episode - 4;
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
-
+	
 	g_pGfxEngine->createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
+
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
 		CFont &Font = g_pGfxEngine->getFont(i);
