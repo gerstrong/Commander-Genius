@@ -213,10 +213,8 @@ void CResourceLoader::renderLoadingGraphic()
 		rect.w = (width*m_permil)/1000;		
 		rect.h = 4;
 
-		// RGB - Fade from red to blue
-		// but also use some gradients for the colouring...
-		Uint32 color = 0xFF0000-(((0xFF*m_permil)/1000)<<16);
-		color += ((0x0000FF*m_permil)/1000);
+		// Fade from yellow to green with this formula
+		Uint32 color = SDL_MapRGB(sfc->format, 200-(200*m_permil)/1000, 200, 0 );
 		
 		SDL_FillRect(sfc, &rect, color);
 	}
@@ -239,10 +237,8 @@ void CResourceLoader::renderLoadingGraphic()
 		bgRect.w = width+2;
 		bgRect.h = 6;
 
-		// RGB - Fade from red to blue
-		// but also use some gradients for the colouring...
-		Uint32 color = 0xFF0000-(((0xFF*m_permil)/1000)<<16);
-		color += ((0x0000FF*m_permil)/1000);
+		// Fade from yellow to green with this formula
+		Uint32 color = SDL_MapRGB(sfc->format, 200-(200*m_permil)/1000, 200, 0 );
 		
 		SDL_FillRect(sfc, &bgRect, SDL_MapRGB(sfc->format, 128, 128, 128));
 		SDL_FillRect(sfc, &rect, color);
