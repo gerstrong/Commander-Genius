@@ -70,10 +70,12 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpSFXSwitch = new CGUISwitch( "Special FX" );
 	mpMenuDialog->addControl( mpSFXSwitch );
 
+	
+#if !defined(EMBEDDED)	
 	mpAspectSwitch = new CGUISwitch( "Aspect Correct" );
 	mpMenuDialog->addControl( mpAspectSwitch );
 
-#if !defined(EMBEDDED)
+
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
 		filledStrList( 7, "none", "normal2x", "normal3x", "normal4x", "scale2x", "scale3x", "scale4x" ) );
 	mpMenuDialog->addControl( mpScalerSelection );
