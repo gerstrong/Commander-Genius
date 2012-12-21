@@ -153,6 +153,8 @@ bool CResourceLoader::process(int* ret)
 	// Put everything to zero!
 	mp_Thread.release();
 	
+	g_pTimer->setLogicReset(true);
+	
 	return true;
 }
 

@@ -135,6 +135,9 @@ void CGame::run()
       
       curr = timerTicks();
       
+      if(g_pTimer->resetLogicSingal())
+	start = curr;
+      
       elapsed = curr - start;      
       acc += elapsed;
       

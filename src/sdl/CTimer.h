@@ -55,10 +55,23 @@ public:
     float LogicLatency() { return mLogicLatency; }
 
     float RenderLatency() { return mRenderLatency; }
+    
+    inline bool resetLogicSingal()
+    { 
+	if(resetLogic) 
+	{
+	    resetLogic = false;
+	    return true;
+	}
+	return false;
+    }
+    
+    void setLogicReset(const bool value)
+    { resetLogic = value; }
 
     int getTicksPerFrame();
 
-    Uint32 getTicks() { return timerTicks(); }
+    Uint32 getTicks() { return timerTicks(); }        
     
     void setTimeforLastLoop(const float total_elapsed)
     { mtotalElapsed = total_elapsed; }
@@ -78,6 +91,8 @@ private:
     float mtotalElapsed;
   
     ulong m_LastSecTime;
+    
+    bool resetLogic;
 };
 
 #endif /* CTIMER_H_ */
