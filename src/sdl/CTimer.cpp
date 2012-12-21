@@ -15,7 +15,8 @@
 CTimer::CTimer() :
 mRenderLatency(1000.0f/60.0f),
 mLogicLatency(1000.0f/DEFAULT_LPS_VORTICON),
-m_LastSecTime(0)
+m_LastSecTime(0),
+resetLogic(false)
 {
 #if defined(WIZ)
 	WIZ_ptimer_init();
