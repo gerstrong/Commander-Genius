@@ -24,15 +24,23 @@ class CFont
 {
 public:
 	CFont();
+	
+	/*CFont operator=(const CFont &font) // TODO: Copying Font does not yet work
+	{
+	    mFontSurface.reset(font.getSDLSurface());
+	    return *this;
+	}*/
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint16 width = 128, Uint16 height = 128);
-	SDL_Surface *getSDLSurface() { return mFontSurface.get(); }
+	SDL_Surface *getSDLSurface() const { return mFontSurface.get(); }
 
 	bool loadAlternateFont();
 
 	bool loadinternalFont();
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
+	
+	void tintColor( const Uint32 fgColor );
 
 	void setupColor( const Uint32 fgColor );
 

@@ -660,60 +660,68 @@ void CPlayerLevel::shootInAir()
 const int MAX_CLIFFHANG_TIME = 10;
 
 bool CPlayerLevel::checkandtriggerforCliffHanging()
-{
-    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-    const bool ceiling = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bdown;
-        
+{    
     if(PoleCollision())
 	return false;
     
-    if(ceiling)
+    if(mp_processState == (void (CPlayerBase::*)()) &CPlayerLevel::processPogo)
 	return false;
-    	
-	if( m_playcontrol[PA_X]<0 && blockedl )
+    
+    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+            
+    const bool floorNearBy = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYDownPos()>>CSF)+1)].bup;
+    
+    if(floorNearBy)
+	return false;
+    
+            
+    if( m_playcontrol[PA_X]<0 && blockedl )
+    {
+	const int xLeft = (getXLeftPos()>>CSF)-1;
+	//const bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
+	bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bup;
+	check_block |= TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
+	const bool check_block_lower = TileProperty[mp_Map->at(xLeft, getYUpPos()>>CSF)].bright;
+	
+	if( !check_block && check_block_lower )
 	{
+	    setAction(A_KEEN_HANG);
+	    setActionSprite();
+	    calcBoundingBoxes();
+	    Uint32 x = (((getXPosition()>>CSF))<<CSF)+(12<<STC);
+	    Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);
 	    
-		bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)-1)].bright;
-		bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
-
-		if(!check_block && check_block_lower && 
-		    mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
-		{
-			setAction(A_KEEN_HANG);
-			setActionSprite();
-			calcBoundingBoxes();
-			Uint32 x = (((getXPosition()>>CSF))<<CSF)+(12<<STC);
-			Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);
-			moveTo(x,y);
-			solid = false;
-			xinertia = 0;
-			yinertia = 0;
-			m_hangtime = MAX_CLIFFHANG_TIME;
-			return true;
-		}
+	    moveTo(x,y);
+	    solid = false;
+	    xinertia = 0;
+	    yinertia = 0;
+	    m_hangtime = MAX_CLIFFHANG_TIME;
+	    return true;
 	}
-	else if( m_playcontrol[PA_X]>0 && blockedr )
+    }
+    else if( m_playcontrol[PA_X]>0 && blockedr )
+    {
+	const int xRight = (getXRightPos()>>CSF)+1;	
+	bool check_block = TileProperty[mp_Map->at(xRight, (getYUpPos()>>CSF)-1)].bup;
+	check_block |= TileProperty[mp_Map->at(xRight, (getYUpPos()>>CSF)-1)].bleft;
+	bool check_block_lower = TileProperty[mp_Map->at(xRight, getYUpPos()>>CSF)].bleft;
+	
+	if(!check_block && check_block_lower )
 	{
-		bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)-1)].bleft;
-		bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
-
-		if(!check_block && check_block_lower &&
-				mp_processState != (void (CPlayerBase::*)()) &CPlayerLevel::processPogo )
-		{
-			setAction(A_KEEN_HANG);
-			setActionSprite();
-			calcBoundingBoxes();
-			Uint32 x = (((getXPosition()>>CSF)+1)<<CSF)+(2<<STC);
-			Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);			
-			moveTo(x,y);
-			solid = false;
-			xinertia = 0;
-			yinertia = 0;
-			m_hangtime = MAX_CLIFFHANG_TIME;
-			return true;
-		}
+	    setAction(A_KEEN_HANG);
+	    setActionSprite();
+	    calcBoundingBoxes();
+	    Uint32 x = (((getXPosition()>>CSF)+1)<<CSF)+(2<<STC);
+	    Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);	    
+	    moveTo(x,y);
+	    solid = false;
+	    xinertia = 0;
+	    yinertia = 0;
+	    m_hangtime = MAX_CLIFFHANG_TIME;
+	    return true;
 	}
-	return false;
+    }
+    return false;
 }
 
 
@@ -724,6 +732,48 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 
 void CPlayerLevel::processCliffHanging()
 {
+    
+    
+    	const int yUp = (getYUpPos()+(5<<STC))>>CSF;
+	const int xLeft = getXLeftPos()>>CSF;
+	const int xRight = getXRightPos()>>CSF;
+
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	if( xDirection == LEFT )
+	{	    
+		bool check_block = TileProperty[mp_Map->at(xLeft-1, yUp)].bup;
+		check_block |= TileProperty[mp_Map->at(xLeft, yUp)].bup;
+
+		if( !check_block )
+		{
+			setAction(A_KEEN_FALL);
+			playSound( SOUND_KEEN_FALL );
+			solid = true;
+			return;
+		}
+	}
+	else if( xDirection == RIGHT )
+	{
+		bool check_block = TileProperty[mp_Map->at(xRight+1, yUp)].bup;
+		check_block |= TileProperty[mp_Map->at(xRight, yUp)].bup;
+
+		if( !check_block )
+		{
+			setAction(A_KEEN_FALL);
+			playSound( SOUND_KEEN_FALL );
+			solid = true;
+			return;
+		}
+	}
+    
+    
+    
+    
+    
+    
+    
+    
 	// In case you released the direction
 	if( m_playcontrol[PA_Y] == 0 && m_playcontrol[PA_X] == 0)
 	{
@@ -744,7 +794,6 @@ void CPlayerLevel::processCliffHanging()
 		mTarget.x = -1;
 		mTarget.y = -1;
 		setAction(A_KEEN_CLIMB);
-		//m_camera.m_freeze = true;
 	}
 
 	// If you want to fall down.
@@ -984,7 +1033,8 @@ void CPlayerLevel::processPogo()
 			else if(m_playcontrol[PA_X]>0)
 				xDirection = 1;
 		}
-		performPhysAccelHor(xDirection, 48);
+		//performPhysAccelHor(xDirection, 48); // This value was in omnispeak. 56 might fit better. Please report in case of problems!
+		performPhysAccelHor(xDirection, 56);
 	}
 	else
 	{
@@ -992,25 +1042,43 @@ void CPlayerLevel::processPogo()
 		if (xinertia < 0) xDirection = -1;
 		else if (xinertia > 0) xDirection = 1;
 	}
+	
+	
+	
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+            
+	const bool ceilNearBy = TileProperty[mp_Map->at((getXMidPos()>>CSF), (getYUpPos()>>CSF)-1)].bup;
+    
 
 	if (state.pogoIsPressed && !state.pogoWasPressed)
 	{
 		state.pogoWasPressed = true;
 		setAction(A_KEEN_FALL);
+		
+		
+		
+		if(blockedu || ceilNearBy) // This might fix some collision issues
+		{
+		    yinertia = 0;
+		    //moveDown(1<<CSF);
+		    blockedu = true;
+		}
 	}
 
 	moveXDir(xinertia);
-
-
-	// TODO: This is old stuff, needs to be removed
-	/*if(!m_playcontrol[PA_POGO])
-		m_pogotoggle = false;*/
 
 	// process Shooting in air
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
 		xinertia = 0;
 		shootInAir();
+		if(blockedu || ceilNearBy) // This might fix some collision issues
+		{
+		    yinertia = 0;
+		    //moveDown(1<<CSF);
+		    blockedu = true;
+		}
+		
 		return;
 	}
 }
@@ -1041,9 +1109,10 @@ void CPlayerLevel::verifyJumpAndFall()
 			xinertia = 0;
 			//obj->posX = (obj->clipRects.tileXmid << 8) - 32;
 		}
-		else
+		else if(!m_Cheatmode.jump)
 		{
-			playSound( SOUND_KEEN_BUMPHEAD );
+			playSound( SOUND_KEEN_BUMPHEAD );						
+			
 			if (blockedu > 1)
 			{
 				yinertia += 16;
@@ -1161,8 +1230,6 @@ void CPlayerLevel::processJumping()
 		if (!state.jumpIsPressed)
 			state.jumpTimer = 0;
 
-		//yinertia = -90;
-
 		moveYDir(yinertia);
 
 	}
@@ -1188,7 +1255,9 @@ void CPlayerLevel::processJumping()
 	if ( m_playcontrol[PA_X] != 0 )
 	{
 		xDirection = (m_playcontrol[PA_X] < 0) ? -1 : 1;
-		performPhysAccelHor(xDirection*4, 48);
+		//performPhysAccelHor(xDirection*4, 48); 
+		// This was taken from the omnispeak and recalculated. Check if the new 56 is more appropriate. It seems to be.
+		performPhysAccelHor(xDirection*4, 56);
 	}
 	else performPhysDampHorz();
 

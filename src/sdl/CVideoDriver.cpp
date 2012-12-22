@@ -21,6 +21,7 @@
 #include "graphics/PerSurfaceAlpha.h"
 #include <iostream>
 #include <fstream>
+#include <SDL_syswm.h>
 
 CVideoDriver::CVideoDriver() :
 m_mustrefresh(false)
@@ -29,7 +30,8 @@ m_mustrefresh(false)
 }
 
 // TODO: This should return something!
-void CVideoDriver::resetSettings() {
+void CVideoDriver::resetSettings() 
+{
 
 	m_VidConfig.reset();
 
@@ -49,7 +51,8 @@ void CVideoDriver::resetSettings() {
 // initResolutionList() reads the local list of available resolution.
 // This function can only be called internally
 // TODO: This should return something!
-void CVideoDriver::initResolutionList() {
+void CVideoDriver::initResolutionList() 
+{
 	// This call will get the resolution we have right now and set it up for the system
 	// On Handheld devices this means, they will only take that resolution and that would it be.
 	// On the PC, this is the current resolution but will add others.
@@ -158,7 +161,8 @@ void CVideoDriver::setMode(const CRect<Uint16>& res) {
 extern "C" void iPhoneRotateScreen();
 #endif
 
-bool CVideoDriver::applyMode() {
+bool CVideoDriver::applyMode() 
+{
 	const CRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
 	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
 

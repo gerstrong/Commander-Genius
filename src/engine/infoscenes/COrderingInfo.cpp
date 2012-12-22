@@ -17,6 +17,7 @@
 
 void COrderingInfo::init()
 {
+    CInfoScene::init();
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	std::string datadirectory = ExeFile.getDataDirectory();
 	char episode = ExeFile.getEpisode();

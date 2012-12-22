@@ -21,9 +21,10 @@ A_LICK_STUNNED = 12
 };
 
 const int CSF_MIN_DISTANCE_TO_BREATHE = 2<<CSF;
-const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 2<<CSF;
+const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 6<<CSF;
 
-const int LICK_HOP_X_SPEED = 50;
+const int LICK_HOP_X_SPEED_LOW = 50;
+const int LICK_HOP_X_SPEED_HIGH = 120;
 const int LICK_HOP_Y_SPEED = 50;
 
 const int LICK_BREATHE_TIMER = 100;
@@ -32,7 +33,8 @@ const int LICK_LAND_TIME = 20;
 
 CLick::CLick(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-m_timer(0)
+m_timer(0),
+keenNear(false)
 {
 	mActionMap[A_LICK_HOP] = (void (CStunnable::*)()) (&CLick::processHop);
 	mActionMap[A_LICK_LAND] = (void (CStunnable::*)()) (&CLick::processLand);
@@ -86,54 +88,64 @@ void CLick::getTouchedBy(CSpriteObject &theObject)
 
 
 bool CLick::isNearby(CSpriteObject &theObject)
-{
-
-	if( !getProbability(80) )
-		return false;
-
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+{    
+    const bool odd = getProbability(80);
+    
+    
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    {
+	const int dy = abs(player->getYMidPos() - getYMidPos());
+	const int dx = player->getXMidPos() - getXMidPos();
+	
+	if( dy > CSF_MIN_DISTANCE_TO_BREATHE )
+	    return false;
+	
+	if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE && odd )
+	    xDirection = LEFT;
+	else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE && odd )
+	    xDirection = RIGHT;
+	
+	if(getActionNumber(A_LICK_LAND))
 	{
-		const int dy = abs(player->getYMidPos() - getYMidPos());
-		const int dx = player->getXMidPos() - getXMidPos();
-
-		if( dy > CSF_MIN_DISTANCE_TO_BREATHE )
-			return false;
-
-		if( dx<-CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-			xDirection = LEFT;
-		else if( dx>+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-			xDirection = RIGHT;
-
-		if(getActionNumber(A_LICK_LAND))
-		{
-			int absdx = (dx<0) ? -dx : dx;
-
-			if( absdx < CSF_MIN_DISTANCE_TO_BREATHE )
-			{
-				setAction(A_LICK_BREATHE);
-				playSound(SOUND_LICK_FIREBREATH);
-				m_timer = LICK_BREATHE_TIMER;
-			}
-		}
-
+	    int absdx = (dx<0) ? -dx : dx;
+	    
+	    if( absdx < CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+		keenNear = true;
+	    else
+		keenNear = false;
+	    
+	    
+	    if( absdx < CSF_MIN_DISTANCE_TO_BREATHE && odd )
+	    {
+		setAction(A_LICK_BREATHE);
+		playSound(SOUND_LICK_FIREBREATH);
+		m_timer = LICK_BREATHE_TIMER;
+	    }
 	}
-
-	return true;
+	
+    }
+    
+    return true;
 }
 
 void CLick::processHop()
 {
-	// Move left or right according to set direction
+    int realHopXSpeed = LICK_HOP_X_SPEED_LOW;
+    
+    if(keenNear)
+	realHopXSpeed = LICK_HOP_X_SPEED_HIGH;
+    
+    // Move left or right according to set direction
 	if(xDirection == RIGHT)
-		moveRight(LICK_HOP_X_SPEED);
+	    moveRight(realHopXSpeed);
 	else if(xDirection == LEFT)
-		moveLeft(LICK_HOP_X_SPEED);
-
+	    moveLeft(realHopXSpeed);
+	
 	m_timer--;
 	if( m_timer <= 0 )
 	{
-		setAction( A_LICK_LAND );
-		m_timer = LICK_LAND_TIME;
+	    setAction( A_LICK_LAND );
+	    m_timer = LICK_LAND_TIME;
 	}
 }
 

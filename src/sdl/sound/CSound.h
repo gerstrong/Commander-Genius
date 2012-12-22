@@ -78,12 +78,12 @@ public:
 	std::list<std::string> getAvailableRateList() const;
 
 protected:
-	std::vector<CSoundChannel>	m_soundchannel;
-	std::unique_ptr<CAudioResources> mpAudioRessources;
 	bool m_callback_running;
 	SDL_AudioSpec mAudioSpec;
 
 private:
+    	std::vector<CSoundChannel>	m_soundchannel;	
+	std::unique_ptr<CAudioResources> mpAudioRessources;
 	unsigned short m_mixing_channels;
 	Uint8 m_MusicVolume;
 	Uint8 m_SoundVolume;

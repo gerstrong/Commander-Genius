@@ -26,7 +26,7 @@ public:
 
 private:
 	int m_timer;
-	Uint32 m_basesprite;
+	int m_basesprite;
 };
 
 }

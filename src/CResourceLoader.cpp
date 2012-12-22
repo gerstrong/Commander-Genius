@@ -7,6 +7,7 @@
 
 #include "CResourceLoader.h"
 #include "graphics/CGfxEngine.h"
+#include "sdl/extensions.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CTimer.h"
 #include "StringUtils.h"
@@ -15,11 +16,17 @@
 
 CResourceLoader::CResourceLoader() :
 m_permil(0),
+m_permiltarget(0),
 m_min_permil(0),
 m_max_permil(1000),
-m_style(PROGRESS_STYLE_TEXT),
-mp_Thread(NULL)
-{}
+m_style(PROGRESS_STYLE_TEXT)
+{
+    SDL_Rect rect;
+    rect.x = 0;		rect.y = 0;
+    rect.w = 320;	rect.h = 200;
+    mpProgressSfc.reset( CG_CreateRGBSurface( rect ), &SDL_FreeSurface );
+    mpProgressSfc.reset( SDL_DisplayFormat(mpProgressSfc.get()), &SDL_FreeSurface );
+}
 
 /**
  * Set the style how the loading screen will be shown
@@ -35,13 +42,14 @@ void CResourceLoader::setStyle(ProgressStyle style)
  */
 int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, int min_permil, int max_permil)
 {
-	assert(mp_Thread == 0);
+	assert(!mp_Thread);
 	m_max_permil = max_permil;
 	m_min_permil = min_permil;
 	m_permil = m_min_permil;
-	mp_Thread = threadPool->start(act, threadname);
+	m_permiltarget = m_min_permil;
+	mp_Thread.reset(threadPool->start(act, threadname));
 	g_pVideoDriver->clearSurfaces();
-
+	
 	int ret = 0;
 	process(&ret);
 	return ret;
@@ -49,32 +57,104 @@ int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, i
 
 bool CResourceLoader::process(int* ret)
 {
-	if(!mp_Thread)
-		return false;
-	
-	// Do rendering here and the cycle
-	while(!threadPool->finalizeIfReady(mp_Thread, ret))
+  float acc = 0.0f;
+  float start = 0.0f;
+  float elapsed = 0.0f;
+  float total_elapsed = 0.0f;
+  float curr = 0.0f;
+  int counter = 0;    
+        
+    if(!mp_Thread)
+	return false;
+    
+    // Draw the first Frame, so transition looks complete!
+    g_pVideoDriver->clearDrawingTasks();
+    renderLoadingGraphic();
+    g_pVideoDriver->pollDrawingTasks();
+    g_pVideoDriver->updateScreen();
+    
+    start = timerTicks();
+    
+	// Now, do rendering here and the cycle
+	while(!threadPool->finalizeIfReady(mp_Thread.get(), ret))
 	{
-		//g_pTimer->TimeToLogic();
-
-		// Render the Screen
-		// TODO: Adapt it to the new rendering algorithm
-		/*if (g_pTimer->TimeToRender())
+		const float logicLatency = g_pTimer->LogicLatency();
+		const float renderLatency = g_pTimer->RenderLatency();
+		
+		curr = timerTicks();
+		
+		elapsed = curr - start;      
+		acc += elapsed;
+		
+		start = timerTicks();
+		
+		// Perform the game cycle
+		while( acc > logicLatency )
 		{
-			SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
-			renderLoadingGraphic();
+		    renderLoadingGraphic();
+		    
+		    if(m_permil >= m_permiltarget)
+		    {
 			setPermilage(m_permil+1);
-			g_pVideoDriver->updateScreen();
+		    }
+		    else
+		    {
+			int delta_permil = (m_permiltarget-m_permil)/2;
+			
+			if(delta_permil == 0)			
+			    setPermilageForce(m_permil+1);
+			else
+			    setPermilageForce(m_permil+delta_permil);
+		    }
+		    
+		    // Here we try to process all the drawing related Tasks not yet done
+		    g_pVideoDriver->pollDrawingTasks();
+		    
+		    acc -= logicLatency;
+		}	
+		
+		// Pass all the surfaces to one
+		g_pVideoDriver->collectSurfaces();
+		
+		// Now you really render the screen
+		// When enabled, it also will apply Filters
+		g_pVideoDriver->updateScreen();
+		
+		elapsed = timerTicks() - start;
+		total_elapsed += elapsed;
+		
+		int waitTime = renderLatency - elapsed;
+		
+		// wait time remaining in current loop
+		if( waitTime > 0 )
+		    timerDelay(waitTime);	
+		
+		total_elapsed += static_cast<float>(waitTime);
+		
+		// This will refresh the fps display, so it stays readable and calculates an average value.
+		counter++;	
+		if(counter >= 100)
+		{
+		    counter = 0;
+		    g_pTimer->setTimeforLastLoop(total_elapsed/100.0f);
+		    total_elapsed = 0.0f;
 		}
-
-		// delay time remaining in current loop
-		g_pTimer->TimeToDelay();*/
 	}
-
-	mp_Thread = NULL;
 	
-	m_permil = m_max_permil;
-
+	// Draw the last Frame, so transition looks complete!
+	setPermilageForce(m_max_permil);
+	setPermilage(m_max_permil);
+	renderLoadingGraphic();
+	g_pVideoDriver->pollDrawingTasks();
+	g_pVideoDriver->updateScreen();	
+	
+	m_permiltarget = m_permil = m_min_permil;
+	
+	// Put everything to zero!
+	mp_Thread.release();
+	
+	g_pTimer->setLogicReset(true);
+	
 	return true;
 }
 
@@ -82,12 +162,24 @@ bool CResourceLoader::process(int* ret)
 /**
  * Set the percentage of progress
  */
-void CResourceLoader::setPermilage(int permil)
+void CResourceLoader::setPermilageForce(int permil)
 {
 	if(permil<m_max_permil && permil>m_min_permil)
 		m_permil = permil;
 	else
 		m_permil = m_max_permil;
+}
+
+void CResourceLoader::setPermilage(int permil)
+{
+	if(permil<m_max_permil && permil>=m_min_permil)
+	{
+		m_permiltarget = permil;
+	}
+	else
+	{
+		m_permil = m_permiltarget = m_max_permil;
+	}
 }
 
 
@@ -96,6 +188,9 @@ void CResourceLoader::setPermilage(int permil)
  */
 void CResourceLoader::renderLoadingGraphic()
 {
+    SDL_Surface *sfc = mpProgressSfc.get();
+    SDL_FillRect(sfc, nullptr, 0x0);
+    
 	if(m_style == PROGRESS_STYLE_TEXT)
 	{
 		// Draw Loading Font... here!
@@ -103,25 +198,53 @@ void CResourceLoader::renderLoadingGraphic()
 		int percent = m_permil/10;
 		int rest = m_permil%10;
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
-		Font.drawFont(g_pVideoDriver->getBlitSurface(), text , 80, 100);
+		
+		Font.drawFont(sfc, text , 80, 100, true);
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
 	{
 		CBitmap &Bitmap = *g_pGfxEngine->getBitmap("ONEMOMEN");
-		SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
 		SDL_Rect rect;
 		int width = Bitmap.getWidth();
 		int height = Bitmap.getHeight();
-		Bitmap.draw((320-width)/2, (200-height)/2);
+		Bitmap._draw(sfc, (320-width)/2, (200-height)/2);
+		
 		rect.x = (320-width)/2;
-		rect.w = (width*m_permil)/1000;
 		rect.y = (200+height)/2;
+		
+		rect.w = (width*m_permil)/1000;		
 		rect.h = 4;
 
-		// RGB - Fade from red to blue
-		// but also use some gradients for the colouring...
-		Uint32 color = 0xFF0000-(((0xFF*m_permil)/1000)<<16);
-		color += ((0x0000FF*m_permil)/1000);
+		// Fade from yellow to green with this formula
+		Uint32 color = SDL_MapRGB(sfc->format, 200-(200*m_permil)/1000, 200, 0 );
+		
 		SDL_FillRect(sfc, &rect, color);
 	}
+	else if(m_style == PROGRESS_STYLE_BAR)
+	{		
+		const int width = 160;
+		const int height = 0;
+	
+		SDL_Rect rect;
+		SDL_Rect bgRect;
+		rect.x = (320-width)/2;
+		rect.y = (200+height)/2;
+		
+		rect.w = (width*m_permil)/1000;		
+		rect.h = 4;
+		
+		bgRect = rect;
+		bgRect.x--;
+		bgRect.y--;
+		bgRect.w = width+2;
+		bgRect.h = 6;
+
+		// Fade from yellow to green with this formula
+		Uint32 color = SDL_MapRGB(sfc->format, 200-(200*m_permil)/1000, 200, 0 );
+		
+		SDL_FillRect(sfc, &bgRect, SDL_MapRGB(sfc->format, 128, 128, 128));
+		SDL_FillRect(sfc, &rect, color);
+	}
+	
+	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpProgressSfc, NULL, NULL ) );
 }

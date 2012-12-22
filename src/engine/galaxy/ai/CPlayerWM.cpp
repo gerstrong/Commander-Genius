@@ -628,7 +628,14 @@ void CPlayerWM::processLeavingTeleporter()
  */
 void CPlayerWM::startLevel(Uint16 object)
 {
+    int x, y;
+    int level = object - 0xC000;
+    Uint16 flag_dest = level + 0xF000;
+	
+    if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= 18)
+    {
 	g_pBehaviorEngine->m_EventList.add(new EventEnterLevel(object));
+    }
 }
 
 /*

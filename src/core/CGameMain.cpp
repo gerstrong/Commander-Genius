@@ -13,6 +13,10 @@
 #include "common/Menu/CMenuController.h"
 #include "common/Menu/CSelectionMenu.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/input/CInput.h"
+
+#include "common/Menu/CMainMenu.h"
+#include "common/Menu/CHelpMenu.h"
 
 
 void CGameMain::switchToGamePlayMode()
@@ -65,11 +69,12 @@ void CGameMain::process()
 		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
 		{
 		    gpMenuController->lock(true);
-		    mpInfoScene = move(scene->mpScene);
+		    mpInfoScene = scene->mpScene;
 		    mpInfoScene->init();
 
 		    EventContainer.pop_Event();
-		    EventContainer.add( new CloseAllMenusEvent() );
+		    //gpMenuController->lock(true);
+		    //EventContainer.add( new CloseAllMenusEvent() );
 		    return;
 		}
 		else if( NewGamePlayersEvent* pNewGame = EventContainer.occurredEvent<NewGamePlayersEvent>() )
@@ -115,9 +120,10 @@ void CGameMain::process()
 	{
 		mpInfoScene->process();
 		if( mpInfoScene->destroyed() )
-		{
+		{		    
 			mpInfoScene->teardown();
-			mpInfoScene = NULL;
+			mpInfoScene = nullptr;
+			g_pInput->flushAll();
 			gpMenuController->lock(false);
 		}
 	}

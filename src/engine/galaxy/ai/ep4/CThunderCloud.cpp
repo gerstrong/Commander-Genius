@@ -20,13 +20,17 @@ const int A_CLOUD_STRIKING = 5;
 const unsigned int DIST_TO_STRIKE = 1<<CSF;
 const unsigned int DIST_TO_AWAKE = 7<<CSF;
 
-const int MOVE_SPEED = 34;
+const int MOVE_SPEED = 26;
 const int STRIKE_TIME = 120;
+
+const int TIME_TO_STRIKE_1 = 30;
+const int TIME_TO_STRIKE_2 = 90;
 
 CThunderCloud::CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 mTimer(0),
-mpBolt(NULL)
+mpBolt(NULL),
+mSecondTry(false)
 {
 	mActionMap[A_CLOUD_ASLEEP] = &CThunderCloud::processAsleep;
 	mActionMap[A_CLOUD_WAKING] = &CThunderCloud::processWaking;
@@ -76,32 +80,34 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 		}
 
 
-		if( getProbability(70) && getActionStatus(A_CLOUD_MOVING) )
+		if( getActionStatus(A_CLOUD_WAKING) )
 		{
 			if( player->getXMidPos() < getXMidPos() )
 				xDirection = LEFT;
 			else
 				xDirection = RIGHT;
 		}
-
-		if( mpBolt == NULL && player->getYMidPos() > getYMidPos() )
+		
+		if( getActionStatus(A_CLOUD_MOVING) )
 		{
-			const unsigned int playXStrikeLeft = player->getXMidPos() - DIST_TO_STRIKE;
-			const unsigned int playXStrikeRight = player->getXMidPos() + DIST_TO_STRIKE;
 
+		if( mpBolt == nullptr && player->getYMidPos() > getYMidPos() )
+		{		    
+			const unsigned int playXStrikeLeft = player->getXMidPos() - DIST_TO_STRIKE;
+			const unsigned int playXStrikeRight = player->getXMidPos() + DIST_TO_STRIKE;			
 
 			if( playXStrikeLeft < cloudX &&
-					playXStrikeRight > cloudX &&
-					getProbability(80) )
+					playXStrikeRight > cloudX && (mTimer>TIME_TO_STRIKE_2 || (mSecondTry && mTimer>TIME_TO_STRIKE_1) ) )
 			{
+				mTimer = 0;
+				mSecondTry = !mSecondTry;
 				setAction(A_CLOUD_STRIKING);
+				playSound(SOUND_THUNDERCLOUD_STRIKE);
 				mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos() + (32<<STC) );
 				g_pBehaviorEngine->m_EventList.spawnObj( mpBolt );
 			}
-
-
 		}
-
+		}
 	}
 
 	return true;
@@ -113,7 +119,10 @@ void CThunderCloud::processAsleep()
 void CThunderCloud::processWaking()
 {
 	if( getActionStatus(A_CLOUD_MOVING) )
-		setAction(A_CLOUD_MOVING);
+	{
+	    mTimer = 0;
+	    setAction(A_CLOUD_MOVING);
+	}
 }
 
 void CThunderCloud::processMoving()
@@ -128,12 +137,15 @@ void CThunderCloud::processMoving()
 void CThunderCloud::processStriking()
 {
 	if( getActionStatus(A_CLOUD_STRIKING+1) )
-		setAction(A_CLOUD_STRIKING);
-
-	if( mpBolt == NULL && mTimer % STRIKE_TIME == 0)
 	{
-		setAction(A_CLOUD_MOVING);
-		setActionSprite();
+		setAction(A_CLOUD_STRIKING);
+	}
+
+	if( mpBolt == NULL && mTimer > STRIKE_TIME)
+	{
+	    mTimer = 0;
+	    setAction(A_CLOUD_MOVING);
+	    setActionSprite();
 	}
 
 }

@@ -14,8 +14,12 @@
 
 void CCredits::init()
 {
+    CInfoScene::init();
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap.reset( new CMap );
+	
+	//creditFont = g_pGfxEngine->getFont(0);
+	//creditFont.tintColor(SDL_MapRGB( creditFont.getSDLSurface()->format, 255, 0, 0) );
 
 	CVorticonMapLoaderBase Maploader(mpMap);
 	
@@ -41,7 +45,7 @@ void CCredits::init()
 	m_scrolltext[16] = "Scott Smith (Pickle)";
 	m_scrolltext[17] = "";
 	m_scrolltext[18] = "Handheld Devices:";
-	m_scrolltext[19] = "Scott Smith (Pickle)";
+	m_scrolltext[19] = "Pelya";
 	m_scrolltext[20] = "Albert Zeyer";
 	m_scrolltext[21] = "";
 	m_scrolltext[22] = "Resources:";
@@ -90,8 +94,11 @@ void CCredits::init()
 
 void CCredits::process()
 {
-	mpMap->animateAllTiles();
+    CFont &creditFont = g_pGfxEngine->getFont(0);
+	mpMap->animateAllTiles();	
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
+	
+	SDL_FillRect(mpDrawSfc.get(), NULL, 0x0);
 	
 	if(m_timer<2) m_timer++;
 	else
@@ -106,9 +113,9 @@ void CCredits::process()
 	{
 		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
 		{
-			g_pGfxEngine->getFont(1).drawFont( mpDrawSfc.get(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
+			creditFont.drawFont( mpDrawSfc.get(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
 		}
-	}
+	}	
 	
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpDrawSfc, NULL, NULL) );
 

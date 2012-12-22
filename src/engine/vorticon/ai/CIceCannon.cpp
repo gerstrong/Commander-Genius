@@ -11,7 +11,7 @@ unsigned int rnd(void);
 
 const int GUNFIRE_TIMER_EP1 = 64;
 
-const int SILENT_DIST = 16<<CSF;
+const int SILENT_DIST = 20<<CSF;
 
 
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,

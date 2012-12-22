@@ -201,7 +201,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	}
 
 	g_pResourceLoader->setPermilage(300);
-
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	
@@ -218,7 +217,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	}
 
 	g_pResourceLoader->setPermilage(350);
-
 
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;

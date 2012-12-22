@@ -29,7 +29,7 @@ const int JUMP_SPEED = 30;
 const int JUMP_HEIGHT = 148;
 const int BOUNCE_HEIGHT = 74;
 const int JUMP_TIME = 500;
-const int BOUNCE_TIME = 250;
+const int BOUNCE_TIME = 50;
 const int TIME_UNTIL_LOOK = 100;
 
 CMimrock::CMimrock(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
@@ -55,26 +55,29 @@ mTimer(0)
 
 void CMimrock::getTouchedBy(CSpriteObject &theObject)
 {
-		if(dead || theObject.dead)
-			return;
+    if( getActionStatus(A_MIMROCK_SIT) ) 
+	return;
+		
+    if(dead || theObject.dead)
+	return;
 			
-		if( !getActionStatus(A_MIMROCK_SIT) ) 
-		{
-			CStunnable::getTouchedBy(theObject);
+    CStunnable::getTouchedBy(theObject);
 			
-			// Was it a bullet? Than make it stunned.
-			if( dynamic_cast<CBullet*>(&theObject) ) 
-			{
-				setAction( A_MIMROCK_STUNNED );
-				honorPriority = true;
-				theObject.dead = true;
-			}
-		}
+    // Was it a bullet? Than make it stunned.
+    if( dynamic_cast<CBullet*>(&theObject) ) 
+    {
+	setAction( A_MIMROCK_STUNNED );
+	honorPriority = false;
+	theObject.dead = true;
+	dead = true;
+    }
+
+			
 		if( getActionNumber(A_MIMROCK_WALK) || getActionNumber(A_MIMROCK_JUMP) || getActionNumber(A_MIMROCK_BOUNCE) ) 
 		{
 			if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) ) 
 				player->kill();
-		}
+		}		
 }
 
 bool CMimrock::isNearby(CSpriteObject &theObject)
@@ -86,30 +89,41 @@ bool CMimrock::isNearby(CSpriteObject &theObject)
 	return true;    
         
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-    {
-	const int dx = player->getXMidPos() - getXMidPos();
+    {	
+	    const int dx = player->getXMidPos() - getXMidPos();
+	    
+	    if( dx>-CSF_DISTANCE_TO_FOLLOW_TOLERANCE &&
+		dx<+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
+	    {
+		if( dx<0 )
+		    xDirection = LEFT;
+		else
+		    xDirection = RIGHT;
+		
+		if( dx>-CSF_DISTANCE_TO_JUMP_TOLERANCE &&
+		    dx<+CSF_DISTANCE_TO_JUMP_TOLERANCE )
+		{
+		    if( xDirection == -player->xDirection )
+		    {
+			setAction(A_MIMROCK_SIT);
+		    }
+		    else
+		    {		    
+			yinertia = -JUMP_HEIGHT;
+			mTimer = JUMP_TIME;
+			setAction(A_MIMROCK_JUMP);
+		    }
+		}
+		else
+		{
+		    if( xDirection == player->xDirection && !blockedr && !blockedl )
+			setAction(A_MIMROCK_WALK);
+		    else
+			setAction(A_MIMROCK_SIT);
+		}
+		
+	    }
 	
-	if( dx>-CSF_DISTANCE_TO_FOLLOW_TOLERANCE &&
-	    dx<+CSF_DISTANCE_TO_FOLLOW_TOLERANCE )
-	{
-	    if( dx<0 )
-		xDirection = LEFT;
-	    else
-		xDirection = RIGHT;
-	    
-	    if( dx>-CSF_DISTANCE_TO_JUMP_TOLERANCE &&
-		dx<+CSF_DISTANCE_TO_JUMP_TOLERANCE )
-	    {
-		yinertia = -JUMP_HEIGHT;
-		mTimer = JUMP_TIME;
-		setAction(A_MIMROCK_JUMP);
-	    }
-	    else
-	    {
-		setAction(A_MIMROCK_WALK);
-	    }
-	    
-	}
     }
     
     return true;
@@ -159,6 +173,7 @@ void CMimrock::processJump()
 	mTimer = BOUNCE_TIME;
 	yinertia = -BOUNCE_HEIGHT;
 	setAction(A_MIMROCK_BOUNCE);
+	playSound( SOUND_KEEN_BUMPHEAD );
     }
     
 }
@@ -174,12 +189,13 @@ void CMimrock::processBounce()
 	moveRight(JUMP_SPEED);
     }
     
-    mTimer--;
+    if(mTimer>0)
+	mTimer--;
     
-    if(mTimer == 0 || blockedd)
+    if(mTimer == 0 && blockedd)
     {
 	mTimer = TIME_UNTIL_LOOK;
-	setAction(A_MIMROCK_SIT);
+	setAction(A_MIMROCK_SIT);	
     }
 }
 
@@ -188,17 +204,8 @@ void CMimrock::process()
     performCollisions();
     performGravityMid();    
 	
-    if(dead)      
-      return;	
-    
-    processActionRoutine();	
-    
-    if(getActionStatus(A_MIMROCK_STUNNED))
-    {
-      honorPriority = false;
-      dead = true;
-    }
-    
+    processActionRoutine();
+        
     (this->*mp_processState)();
     
 }

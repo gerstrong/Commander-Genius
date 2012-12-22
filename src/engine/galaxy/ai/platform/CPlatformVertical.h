@@ -28,6 +28,7 @@ public:
 private:
     
 	bool drawFire;
+	bool dimFire;
 	int m_FireSprite;
 	int m_fireTimer;
 };

@@ -181,7 +181,7 @@ bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::
  *  \brief Sets up the Map assignments for the Sounds used in Keen Vorticon
  */
 void CAudioVorticon::setupAudioMap()
-{
+{   
     sndSlotMap[SOUND_KEEN_WALK] = 0;
     sndSlotMap[SOUND_KEEN_WALK2] = 1;
     sndSlotMap[SOUND_KEEN_JUMP] = 2;
@@ -191,36 +191,37 @@ void CAudioVorticon::setupAudioMap()
     sndSlotMap[SOUND_KEEN_BUMPHEAD] = 6;    
     sndSlotMap[SOUND_KEENSLEFT] = 7;
     sndSlotMap[SOUND_KEEN_FIRE] = 8;
-    sndSlotMap[SOUND_GUN_CLICK] = 9;    
+    sndSlotMap[SOUND_GUN_CLICK] = 9;
     sndSlotMap[SOUND_SHOT_HIT] = 10;
     sndSlotMap[SOUND_GET_ITEM] = 11;
     sndSlotMap[SOUND_GET_PART] = 12;
     sndSlotMap[SOUND_LEVEL_DONE] = 13;
-    sndSlotMap[SOUND_GAME_OVER] = 14;
+    sndSlotMap[SOUND_GAME_OVER] = 14;    
     sndSlotMap[SOUND_TELEPORT] = 15;
-    sndSlotMap[SOUND_EXTRA_LIFE] = 16;
-    sndSlotMap[SOUND_CANNONFIRE] = 17;
-    sndSlotMap[SOUND_CHUNKSMASH] = 18;
-    sndSlotMap[SOUND_GOINDOOR] = 19;
-    sndSlotMap[SOUND_GET_CARD] = 20;
-    sndSlotMap[SOUND_USE_KEY] = 21;
-    sndSlotMap[SOUND_DOOR_OPEN] = 22;
-    sndSlotMap[SOUND_YORP_BUMP] = 23;
-    sndSlotMap[SOUND_YORP_STUN] = 24;
-    sndSlotMap[SOUND_YORP_DIE] = 25;
-    sndSlotMap[SOUND_GARG_DIE] = 26;
-    sndSlotMap[SOUND_VORT_DIE] = 27;
-    sndSlotMap[SOUND_KEEN_LAND] = 28;
-    sndSlotMap[SOUND_GET_BONUS] = 29;    
-    sndSlotMap[SOUND_ENTER_LEVEL] = 30;
-    sndSlotMap[SOUND_SWITCH_TOGGLE] = 31;
-    sndSlotMap[SOUND_EARTHPOW] = 32;
-    sndSlotMap[SOUND_TANK_FIRE] = 33;
-    sndSlotMap[SOUND_KEEN_BLOK] = 34;
-    sndSlotMap[SOUND_MEEP] = 35;
-    sndSlotMap[SOUND_ANKH] = 36;
-    sndSlotMap[SOUND_MORTIMER] = 37;
-    sndSlotMap[SOUND_FOOTSLAM] = 38;        
+    sndSlotMap[SOUND_EXTRA_LIFE] = 16;  
+    //sndSlotMap[?] = 17; 
+    sndSlotMap[SOUND_CANNONFIRE] = 18; 
+    sndSlotMap[SOUND_CHUNKSMASH] = 19;
+    //sndSlotMap[?] = 20; // unused!
+    sndSlotMap[SOUND_GET_CARD] = 21;     
+    //sndSlotMap[?] = 22;        
+    sndSlotMap[SOUND_DOOR_OPEN] = 23;
+    sndSlotMap[SOUND_YORP_BUMP] = 24;
+    sndSlotMap[SOUND_YORP_STUN] = 25;
+    sndSlotMap[SOUND_YORP_DIE] = 26;
+    sndSlotMap[SOUND_GARG_DIE] = 27;
+    sndSlotMap[SOUND_VORT_DIE] = 28; 
+    sndSlotMap[SOUND_KEEN_LAND] = 29;
+    sndSlotMap[SOUND_GET_BONUS] = 30;    
+    sndSlotMap[SOUND_ENTER_LEVEL] = 31;
+    sndSlotMap[SOUND_SWITCH_TOGGLE] = 32;
+    sndSlotMap[SOUND_EARTHPOW] = 33;
+    sndSlotMap[SOUND_TANK_FIRE] = 34;
+    sndSlotMap[SOUND_KEEN_BLOK] = 35;
+    sndSlotMap[SOUND_MEEP] = 36;
+    sndSlotMap[SOUND_ANKH] = 37;
+    sndSlotMap[SOUND_MORTIMER] = 38;
+    sndSlotMap[SOUND_FOOTSLAM] = 39;        
 }
 
 

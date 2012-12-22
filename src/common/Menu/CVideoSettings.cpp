@@ -70,10 +70,12 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpSFXSwitch = new CGUISwitch( "Special FX" );
 	mpMenuDialog->addControl( mpSFXSwitch );
 
+	
+#if !defined(EMBEDDED)	
 	mpAspectSwitch = new CGUISwitch( "Aspect Correct" );
 	mpMenuDialog->addControl( mpAspectSwitch );
 
-#if !defined(EMBEDDED)
+
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
 		filledStrList( 7, "none", "normal2x", "normal3x", "normal4x", "scale2x", "scale3x", "scale4x" ) );
 	mpMenuDialog->addControl( mpScalerSelection );
@@ -177,21 +179,20 @@ void CVideoSettings::release()
 	mUserVidConf.m_CameraBounds = g_pVideoDriver->getCameraBounds();
 
 	CVidConfig oldVidConf = g_pVideoDriver->getVidConfig();
-	g_pVideoDriver->setVidConfig(mUserVidConf);
+	g_pVideoDriver->setVidConfig(mUserVidConf);		
 
 	// At this point we also must apply and save the settings
 	if( !g_pVideoDriver->applyMode() )
 	{
 		g_pSettings->loadDrvCfg();
 		return;
-	}
+	}		
 
 	if( !g_pVideoDriver->start() )
 	{
 		g_pVideoDriver->setVidConfig(oldVidConf);
 		g_pVideoDriver->start();
 	}
-
+	
 	g_pSettings->saveDrvCfg();
-
 }

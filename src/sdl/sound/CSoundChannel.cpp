@@ -8,7 +8,7 @@
 #include "CSoundChannel.h"
 
 CSoundChannel::CSoundChannel(SDL_AudioSpec AudioSpec) :
-mp_current_SndSlot(NULL),
+mp_current_SndSlot(nullptr),
 m_AudioSpec(AudioSpec)
 {
 	m_sound_ptr = 0;

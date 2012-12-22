@@ -14,12 +14,16 @@
 
 #include "CSingleton.h"
 #include "ThreadPool.h"
+#include <memory>
+#include <SDL.h>
+
 #define g_pResourceLoader CResourceLoader::Get()
 
 enum ProgressStyle
 {
 	PROGRESS_STYLE_TEXT,
-	PROGRESS_STYLE_BITMAP
+	PROGRESS_STYLE_BITMAP,
+	PROGRESS_STYLE_BAR
 };
 
 class CResourceLoader : public CSingleton<CResourceLoader> {
@@ -32,16 +36,19 @@ public:
 	bool process(int* ret);
 
 	void setPermilage(int permil);
-
+	
 private:
+	void setPermilageForce(int permil);
 	void renderLoadingGraphic();
 
 	int m_permil;
+	int m_permiltarget;
 	int m_min_permil;
 	int m_max_permil;
 
 	ProgressStyle m_style;
-	ThreadPoolItem* mp_Thread;
+	std::unique_ptr<ThreadPoolItem> mp_Thread;
+	std::shared_ptr<SDL_Surface> mpProgressSfc;
 };
 
 #endif /* CRESOURCELOADER_H_ */

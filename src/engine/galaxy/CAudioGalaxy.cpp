@@ -68,7 +68,7 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[4][SOUND_KEEN_LAND] = 3;
     sndSlotMapGalaxy[4][SOUND_KEEN_FIRE] = 4; 
     sndSlotMapGalaxy[4][SOUND_WORMOUTH_STRIKE] = 5;
-    //sndSlotMapGalaxy[4][SOUND_KEEN_POGO_LAND] = 6;
+    // sndSlotMapGalaxy[4][?] = 6; // This sounds like alternative breathe under water. not sure
     sndSlotMapGalaxy[4][SOUND_KEEN_POGO] = 7;
     sndSlotMapGalaxy[4][SOUND_GET_BONUS] = 8;
     sndSlotMapGalaxy[4][SOUND_GET_AMMO] = 9;
@@ -114,8 +114,7 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[4][SOUND_HIT_SIDEWALL] = 49;
     sndSlotMapGalaxy[4][SOUND_COMPUTER_POINT] = 50;
     sndSlotMapGalaxy[4][SOUND_PLAYER_POINT] = 51;
-    
-    
+        
     
     // Episode 5   
     sndSlotMapGalaxy[5][SOUND_KEEN_WALK] = 0;

@@ -12,13 +12,37 @@
 #include "CRay.h"
 #include "CAutoRay.h"
 
+const int SILENT_DIST = 20<<CSF;
+
 CAutoRay::CAutoRay(CMap *pmap, Uint32 x, Uint32 y, stRayAlignment type) :
 CVorticonSpriteObject(pmap, x, y, (type==HORIZONTAL) ? OBJ_AUTORAY : OBJ_AUTORAY_V),
-m_type(type)
+m_type(type),
+silent(false)
 {
 	sprite = BLANKSPRITE;
 	inhibitfall = true;
 	hasbeenonscreen = true;
+}
+
+bool CAutoRay::isNearby(CVorticonSpriteObject &theObject)
+{       
+    if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+    {
+	int distx = player->getXPosition() - getXPosition();
+	if(distx<0)
+	    distx = -distx;
+	
+	int disty = player->getYPosition() - getYPosition();
+	if(disty<0)
+	    disty = -disty;
+	
+	if( disty < SILENT_DIST && distx < SILENT_DIST )
+	{
+	    silent = false;	
+	}
+    }
+
+    return true;
 }
 
 void CAutoRay::process()
@@ -44,7 +68,11 @@ void CAutoRay::process()
 		}
 		g_pBehaviorEngine->EventList().spawnObj(NewRay);
 
-		playSound(SOUND_TANK_FIRE);
+		if(!silent)
+		{
+		    playSound(SOUND_TANK_FIRE);
+		    silent = true;
+		}		
 	}
 }
 

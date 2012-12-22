@@ -44,6 +44,17 @@ processState(&CFlag::processFlying)
 	
 }
 
+void CFlag::getTouchedBy(CSpriteObject &theObject)
+{    
+    if(m_baseframe != WAVING_BASEFRAME)
+	return;
+    
+    if( CFlag *flag = dynamic_cast<CFlag*>(&theObject) )
+    {
+	flag->exists = false;
+    }
+}
+
 /**
  * Main process cycle
  */

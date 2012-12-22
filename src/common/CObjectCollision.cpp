@@ -114,13 +114,21 @@ void CSpriteObject::alignToTile()
 	m_Pos.y += moveup;
 	processMove(0, 1);
 
-	int moveX = (1<<CSF)/2;
-	moveX -= ((rSprite.getWidth()/2)<<STC);
-	m_Pos.x += moveX;
+	performCollisionsSameBox();
 	
 	// This should ensure no enemies get stuck in walls!
-	processMove( -(1<<CSF), 0 );
-	processMove(  (1<<CSF)+moveX, 0 );
+	if(blockedr)
+	{
+	    processMove( -(1<<CSF), 0 );
+	    processMove( +(1<<CSF), 0 );
+	}
+	if(blockedl)
+	{
+	    processMove( +(1<<CSF), 0 );
+	    processMove( -(1<<CSF), 0 );
+	}
+	
+	
 }
 
 
@@ -259,6 +267,7 @@ bool CSpriteObject::hitdetect(CSpriteObject &hitobject)
 
 	return true;
 }
+
 
 
 /**

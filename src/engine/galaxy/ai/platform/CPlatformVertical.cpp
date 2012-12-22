@@ -23,6 +23,7 @@ CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint3
 CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y),
 drawFire(false),
+dimFire(false),
 m_FireSprite(FIRE_SPRITE),
 m_fireTimer(0)
 {
@@ -48,13 +49,8 @@ m_fireTimer(0)
 void CPlatformVertical::process()
 {
     	Uint16 object = 0; 
-	int lx = getXLeftPos();
-	int rx = getXRightPos();
 	
-	for(int x=lx ; x<=rx ; x+=(1<<CSF) )
-	{
-	    object |= mp_Map->getPlaneDataAt(2, x, getYMidPos());
-	}
+	object = mp_Map->getPlaneDataAt(2, getPosition());
 
 	performCollisions();
 	
@@ -63,6 +59,13 @@ void CPlatformVertical::process()
 	{
 	    yDirection = (yDirection == UP) ? DOWN : UP;
 	}
+	
+	
+	// If fire needs to be drawn, well check for dimming
+	if( yDirection == DOWN )
+	    dimFire = !dimFire;
+	else
+	    dimFire = true; 
 
 	if(yDirection == UP && blockedu)
 		yDirection = DOWN;
@@ -121,7 +124,7 @@ void CPlatformVertical::draw()
 	Uint16 showY = scry+Sprite.getYOffset();
 		
 	
-	if(drawFire)
+	if(drawFire && dimFire)
 	{
 	    CSprite &fireSpriteR = g_pGfxEngine->getSprite(m_FireSprite);
 	    CSprite &fireSpriteL = g_pGfxEngine->getSprite(m_FireSprite+2);

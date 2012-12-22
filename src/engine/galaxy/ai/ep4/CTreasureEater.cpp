@@ -8,6 +8,8 @@
 #include "CTreasureEater.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CBullet.h"
+#include "engine/galaxy/ai/CSpriteItem.h"
+#include "engine/galaxy/ai/CItemEffect.h"
 #include "misc.h"
 
 namespace galaxy {
@@ -19,7 +21,8 @@ const int A_SMIRKY_HOP = 10;
 const int A_SMIRKY_STUNNED = 14;
 
 const int HOP_INERTIA = 120;
-const int SMIRLY_HOP_TIMER = 10;
+const int SMIRKY_HOP_TIMER = 10;
+const int SMIRKY_XSPEED = 40;
 
 
 CTreasureEater::CTreasureEater(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
@@ -28,35 +31,39 @@ mTimer(0),
 mTeleported(false),
 mStolen(false)
 {
-	mActionMap[A_SMIRKY_LOOK]    = (void (CStunnable::*)()) &CTreasureEater::processLooking;
-	mActionMap[A_SMIRKY_TELEPORT]    = (void (CStunnable::*)()) &CTreasureEater::processTeleporting;
-	mActionMap[A_SMIRKY_HOP]     = (void (CStunnable::*)()) &CTreasureEater::processHopping;
-	mActionMap[A_SMIRKY_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_SMIRKY_LOOK]     = (void (CStunnable::*)()) &CTreasureEater::processLooking;
+	mActionMap[A_SMIRKY_TELEPORT] = (void (CStunnable::*)()) &CTreasureEater::processTeleporting;
+	mActionMap[A_SMIRKY_HOP]      = (void (CStunnable::*)()) &CTreasureEater::processHopping;
+	mActionMap[A_SMIRKY_STUNNED]  = &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap( 0x31E2, A_SMIRKY_LOOK );
 	xDirection = LEFT;
-
+	
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	performCollisions();
 	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
+	performCollisions();
+	
 	if(!processActionRoutine())
-			exists = false;
-
+	{
+	  exists = false;
+	}
+	
+	honorPriority = false;
 }
 
 
 bool CTreasureEater::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(80) )
+  	if( !getProbability(80) )
 		return false;
 
-	// TODO: identify one item and try to get it!
-	/*if( getActionNumber(A_SMIRKY_LOOK) )
+	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-
-	}*/
-
-
+		if( player->getXMidPos() < getXMidPos() )
+			xDirection = LEFT;
+		else
+			xDirection = RIGHT;
+	}
 
 	return true;
 }
@@ -80,13 +87,17 @@ void CTreasureEater::getTouchedBy(CSpriteObject &theObject)
 	}
 
 	// Here go the items
-
+	if( dynamic_cast<CSpriteItem*>(&theObject) )
+	{
+		mStolen = true;
+		theObject.exists = false;
+	}
 }
 
 
 void CTreasureEater::processLooking()
 {
-	if( mTimer < SMIRLY_HOP_TIMER )
+	if( mTimer < SMIRKY_HOP_TIMER )
 	{
 		mTimer++;
 		return;
@@ -98,51 +109,83 @@ void CTreasureEater::processLooking()
 
 	if(mEndOfAction)
 	{
-
 		if( getProbability(800) )
 		{
 			setAction(A_SMIRKY_HOP);
 			yinertia = -HOP_INERTIA;
-			inhibitfall = false;
 		}
 		else
 		{
 			setActionForce(A_SMIRKY_LOOK);
-			inhibitfall = true;
 		}
 	}
 }
 
 void CTreasureEater::processTeleporting()
-{
+{      
 	if( getActionStatus(A_SMIRKY_HOP) )
 	{
-		setAction(A_SMIRKY_HOP);
-		mStolen = false;
+	  moveToForce(mDestination);
+	  setAction(A_SMIRKY_HOP);
+	  mStolen = false;
+	  mTeleported = false;
+	  yinertia = -HOP_INERTIA;
 	}
+}
+
+bool CTreasureEater::lookForNextDestination()
+{  
+  const unsigned int height = mp_Map->m_height-2;
+  const unsigned int width = mp_Map->m_width-2;
+  
+  for( unsigned int y = 2 ; y<height  ; y++ )
+  {
+    for( unsigned int x = 2 ; x<width  ; x++ )
+    {
+	const unsigned int low = 61;
+	const unsigned int high = 76;
+	for( unsigned int item = low ; item <= high ; item++ )
+	{
+	   if(mp_Map->at(x,y,2) == item)
+	   {
+	     unsigned int newY = getYPosition()>>CSF;
+	      if(mp_Map->at(x,newY,1) == 0)
+	      {
+		mDestination.x = x<<CSF;
+		mDestination.y = getYPosition();
+		return true;
+	      }
+	   }
+	}
+    }    
+  }
+  
+  return false;
 }
 
 
 void CTreasureEater::processHopping()
 {
+	moveXDir(SMIRKY_XSPEED*xDirection);
 	if(yinertia >= 0)
 	{
 		if(blockedd || onslope)
 		{
 			if(mStolen)
 			{
-				setAction( A_SMIRKY_TELEPORT );
+			      setAction( A_SMIRKY_TELEPORT );
+				lookForNextDestination();
 				mTeleported = true;
 			}
 			else
 			{
-				setAction( A_SMIRKY_LOOK );
+			      setAction( A_SMIRKY_LOOK );
 			}
 
-			inhibitfall = true;
 			return;
 		}
 	}
+	
 }
 
 
@@ -155,15 +198,16 @@ void CTreasureEater::checkForItem()
 	int l_h = getYDownPos() - l_y;
 
 	// So far we have tile item support only!
-	// TODO: Need Sprite Item support and also this one should should be able to steal gems
 	for( Uint32 i=21 ; i<=27 ; i++ )
 	{
 		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 2<<STC))
 		{
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;
-			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
+			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );						
+			g_pBehaviorEngine->m_EventList.spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21], FADEOUT) );
 			mStolen = true;
+			
 		}
 	}
 }
@@ -178,10 +222,10 @@ void CTreasureEater::process()
 
 	checkForItem();
 
-	if( blockedl )
+	/*if( blockedl )
 		xDirection = RIGHT;
 	else if( blockedr )
-		xDirection = LEFT;
+		xDirection = LEFT;*/	
 
 	(this->*mp_processState)();
 

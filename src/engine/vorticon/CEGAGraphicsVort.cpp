@@ -143,12 +143,14 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 			return 1;
 		}
 	};
-    g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
+	
+	
+        g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
 	g_pResourceLoader->RunLoadAction(
-									 new SpriteLoad(m_Sprit,
-													((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(m_episode),
-													(compressed>>1)),
-									 "Loading Sprites", 0, 1000);
+					new SpriteLoad(m_Sprit,
+							((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(m_episode),
+							(compressed>>1)),
+							 "Loading Sprites", 0, 1000);
 
     return true;
 }

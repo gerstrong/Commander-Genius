@@ -16,8 +16,8 @@ class CMeep : public CVorticonSpriteObject
 public:
 	CMeep(CMap *p_map, Uint32 x, Uint32 y);
 	
-	bool isNearby(CSpriteObject &theObject);
-	void getTouchedBy(CSpriteObject &theObject);
+	bool isNearby(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 	
 	void process();
 private:

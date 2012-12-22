@@ -40,7 +40,8 @@ class CFoob : public CVorticonSpriteObject
 public:
 	CFoob(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
-	void getTouchedBy(CSpriteObject &theObject);
+	bool isNearby(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 
 private:
 	enum FOOB_ACTIONS
@@ -59,6 +60,7 @@ private:
 	int spooktimer;
 	int SpookedByWho;
 	int blockedtime;
+	bool onsamelevel;
 };
 
 #endif /* CFOOB_H_ */

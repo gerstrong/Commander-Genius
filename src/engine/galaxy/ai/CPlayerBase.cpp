@@ -250,7 +250,10 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	const int tileIDr = mp_Map->getPlaneDataAt(1, l_x+l_w, (l_y+l_h)+(1<<STC));
 	if(Tile[tileIDl].bup == 9 && Tile[tileIDr].bup == 9 )
 	{
+	    if(!m_Cheatmode.god)
+	    {
 		kill(true);
+	    }
 	}
 
 
