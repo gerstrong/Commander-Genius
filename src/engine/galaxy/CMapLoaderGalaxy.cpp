@@ -387,46 +387,4 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	FileTile0.close();*/
 }
 
-//------------------------------------------------//
-// The following part covers the load of the foes
-// Some defines are hardcoded so it is easier to
-// identify what type of foe/stuff is loaded
-
-/**
- * @brief	Loads a foe given by the coordiantes
- */
-CGalaxySpriteObject* CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
-{
-	CGalaxySpriteObject *p_newfoe = NULL;
-
-	// Point Item Sprites (Candies, etc...)
-	for( Uint32 i=61 ; i<=67 ; i++ )
-	{
-		if( foe == i )
-		{
-			const Uint32 newsprite = 103+2*(i-61);
-			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
-		}
-	}
-
-	// Neuronal-stunner
-	if( foe == 68 )
-	{
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
-	}
-
-	// Gems
-	for( Uint32 i=57 ; i<=60 ; i++ )
-	{
-		if( foe == i )
-		{
-			const Uint32 newsprite = 118+2*(i-57);
-			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
-		}
-	}
-
-
-	return p_newfoe;
-}
-
 }

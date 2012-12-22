@@ -44,14 +44,15 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 {
 	if( CPlayerBase* pPlayer = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
+		const int ep = g_pBehaviorEngine->getEpisode();
 		stItemGalaxy &Item = pPlayer->m_Inventory.Item;
 
 		/// Calculate the right animation.
 		// Point items
-		Uint32 newanimsprite = got_sprite_item_pics[0];
+		Uint32 newanimsprite = got_sprite_item_pics[ep-4][0];
 		if( m_basesprite >= 103 && m_basesprite <= 116 )
 		{
-			newanimsprite = got_sprite_item_pics[4+(m_basesprite-103)/2];
+			newanimsprite = got_sprite_item_pics[ep-4][4+(m_basesprite-103)/2];
 			switch(m_basesprite)
 			{
 			case 103: Item.m_points += 100;	break;
@@ -69,7 +70,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		if( m_basesprite >= 127 && m_basesprite <= 128 )
 		{
 			Item.m_bullets += 5;
-			newanimsprite = got_sprite_item_pics[11];
+			newanimsprite = got_sprite_item_pics[ep-4][11];
 			g_pSound->playSound( SOUND_GET_AMMO );
 		}
 
@@ -78,10 +79,17 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 
 
 		// Now add the stuff to the inventory
-
-		if( m_basesprite >= 118 && m_basesprite <= 124 )
+		int epOff = 0;
+		if(ep == 5)
 		{
-			switch(m_basesprite)
+		  epOff -= 4;
+		}
+		  
+		int relBase = m_basesprite+epOff;
+
+		if( relBase >= 118 && relBase <= 125 )
+		{
+			switch(relBase)
 			{
 			case 118: case 119:
 				Item.m_gem.red++;

@@ -38,7 +38,7 @@ public:
 	{ return mLevelName; }
 	
 	
-	virtual CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
+	virtual CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y) = 0;
 	virtual ~CMapLoaderGalaxy() {}
 
 protected:

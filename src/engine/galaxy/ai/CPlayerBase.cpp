@@ -138,7 +138,8 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 	g_pSound->playSound( SOUND_EXTRA_LIFE );
 	if(display)
 	{
-	    CItemEffect *lifeUp = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10], FADEOUT);
+	    const int ep = g_pBehaviorEngine->getEpisode();
+	    CItemEffect *lifeUp = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][10], FADEOUT);
 	    g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( lifeUp ) );	    
 	}
 }
@@ -283,8 +284,10 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 		{
 			const int lc_x = l_x>>CSF;
 			const int lc_y = l_y>>CSF;
+			const int ep = g_pBehaviorEngine->getEpisode();
+			
 			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-			g_pBehaviorEngine->m_EventList.spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21], FADEOUT) );
+			g_pBehaviorEngine->m_EventList.spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
 			switch(i)
 			{
 			case 21: m_Item.m_points += 100;	g_pSound->playSound( SOUND_GET_BONUS );	break;

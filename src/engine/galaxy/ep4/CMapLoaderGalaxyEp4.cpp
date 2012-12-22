@@ -70,17 +70,43 @@ const unsigned int DIVE_SUIT = 35;
 CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
 
-	CGalaxySpriteObject* commonfoe = CMapLoaderGalaxy::addFoe(Map, foe, x, y);
+	CGalaxySpriteObject* p_newfoe = nullptr;
+			
+	// Point Item Sprites (Candies, etc...)
+	for( Uint32 i=61 ; i<=67 ; i++ )
+	{
+		if( foe == i )
+		{
+			const Uint32 newsprite = 103+2*(i-61);
+			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
+		}
+	}
+
+	// Neuronal-stunner
+	if( foe == 68 )
+	{
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
+	}
+
+	// Gems
+	for( Uint32 i=57 ; i<=60 ; i++ )
+	{
+		if( foe == i )
+		{
+			const Uint32 newsprite = 118+2*(i-57);
+			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
+		}
+	}	
+	
+	
 	const Difficulty difficulty = g_pBehaviorEngine->mDifficulty;
 
-	// If a foe was found, that is common in all the galaxy games, just return.
-	if( commonfoe )
-		return commonfoe;
+	// If a foe was found just return.
+	if( p_newfoe )
+		return p_newfoe;
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);
-
-	CGalaxySpriteObject* p_newfoe = NULL;
 
 	switch(foe)
 	{

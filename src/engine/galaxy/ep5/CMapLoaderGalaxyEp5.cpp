@@ -14,6 +14,7 @@
 // TODO: I'm note sure yet, if those are really common platforms
 #include "engine/galaxy/ai/platforms.h"
 #include "engine/galaxy/ai/CFlag.h"
+#include "engine/galaxy/ai/CSpriteItem.h"
 
 namespace galaxy
 {
@@ -43,18 +44,41 @@ const unsigned int DIVE_SUIT = 35;
  */
 CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
+	CGalaxySpriteObject* p_newfoe = nullptr;
+	
+	// Gems
+	for( Uint32 i=0x39 ; i<=0x3C ; i++ )
+	{
+		if( foe == i )
+		{
+			const Uint32 newsprite = 122+2*(i-0x39);
+			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
+		}
+	}
+	
+	// Point Item Sprites (Candies, etc...)
+	for( Uint32 i=0x3D ; i<=0x43 ; i++ )
+	{
+		if( foe == i )
+		{
+			const Uint32 newsprite = 103+2*(i-0x3D);
+			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
+		}
+	}
 
-	CGalaxySpriteObject* commonfoe = CMapLoaderGalaxy::addFoe(Map, foe, x, y);
-
-	// If a foe was found, that is common in all the galaxy games, just return.
-	if( commonfoe )
-		return commonfoe;
+	// Neuronal-stunner
+	if( foe == 0x44 )
+	{
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
+	}	
+	
+	// If a foe was found, just return.
+	if( p_newfoe )
+		return p_newfoe;
 
 
 	// otherwise look for special foe.
-	VectorD2<Uint32> loc(x,y);
-
-	CGalaxySpriteObject* p_newfoe = NULL;
+	VectorD2<Uint32> loc(x,y);	
 
 	switch(foe)
 	{
