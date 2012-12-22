@@ -34,7 +34,7 @@ struct stItemGalaxy
 			bool swimsuit;
 			int elders;
 		}ep4;
-
+		
 		struct
 		{
 			bool sandwich;

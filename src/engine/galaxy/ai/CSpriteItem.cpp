@@ -46,14 +46,22 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 	{
 		const int ep = g_pBehaviorEngine->getEpisode();
 		stItemGalaxy &Item = pPlayer->m_Inventory.Item;
+		
+		int epOff = 0;
+		if(ep == 5)
+		{
+		  epOff = -5;
+		}
+		  
+		int relBase = m_basesprite+epOff;		
 
 		/// Calculate the right animation.
 		// Point items
 		Uint32 newanimsprite = got_sprite_item_pics[ep-4][0];
-		if( m_basesprite >= 103 && m_basesprite <= 116 )
+		if( relBase >= 103 && relBase <= 116 )
 		{
-			newanimsprite = got_sprite_item_pics[ep-4][4+(m_basesprite-103)/2];
-			switch(m_basesprite)
+			newanimsprite = got_sprite_item_pics[ep-4][4+(relBase-103)/2];
+			switch(relBase)
 			{
 			case 103: Item.m_points += 100;	break;
 			case 105: Item.m_points += 200;	break;
@@ -74,18 +82,29 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			g_pSound->playSound( SOUND_GET_AMMO );
 		}
 
+		// keycard (Keen 5 only)
+		if( ep == 5 && m_basesprite >= 105 && m_basesprite <= 106 )
+		{
+			Item.m_keycards++;
+			newanimsprite = 231;
+			g_pSound->playSound( SOUND_GET_CARD );
+		}
+
 		
 		g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
 
 
 		// Now add the stuff to the inventory
-		int epOff = 0;
 		if(ep == 5)
 		{
-		  epOff -= 4;
+		  epOff = -4;
+		}
+		else
+		{
+		  epOff = 0;
 		}
 		  
-		int relBase = m_basesprite+epOff;
+		relBase = m_basesprite+epOff;
 
 		if( relBase >= 118 && relBase <= 125 )
 		{

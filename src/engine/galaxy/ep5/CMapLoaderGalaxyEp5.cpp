@@ -72,6 +72,12 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
 	}	
 	
+	// This is the keycard. Keen 5 only!
+	if( foe == 0x46 )
+	{
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 105);
+	}	
+	
 	// If a foe was found, just return.
 	if( p_newfoe )
 		return p_newfoe;
