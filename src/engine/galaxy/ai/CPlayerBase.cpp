@@ -260,10 +260,17 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 
 	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 2<<STC))
 	{
+	  int dropanimation_sprite = 215;
+	  
+	  if(g_pBehaviorEngine->getEpisode() == 5)
+	  {
+	    dropanimation_sprite = 225;
+	  }
+	    
 		const int lc_x = l_x>>CSF;
 		const int lc_y = l_y>>CSF;
 		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-		CItemEffect *iEffect = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE);
+		CItemEffect *iEffect = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, dropanimation_sprite, ANIMATE);
 		g_pBehaviorEngine->m_EventList.spawnObj( iEffect );
 		m_Item.m_drops++;
 
