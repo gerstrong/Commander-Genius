@@ -1382,56 +1382,59 @@ void CPlayerLevel::processPressUp() {
 	int flag = Tile[tile_no].behaviour;
 
 	// pressing a switch
-	if (flag==MISCFLAG_SWITCHPLATON || flag == MISCFLAG_SWITCHPLATOFF ||
-		flag == MISCFLAG_SWITCHBRIDGE)
+	if (flag == MISCFLAG_SWITCHPLATON || 
+	  flag == MISCFLAG_SWITCHPLATOFF ||
+	  flag == MISCFLAG_SWITCHBRIDGE)
 	{
-		playSound( SOUND_GUN_CLICK );
-		//setAction(A_KEEN_SLIDE);
-		if(flag == MISCFLAG_SWITCHBRIDGE)
-		{
-			Uint32 newtile;
-			if(Tile[tile_no+1].behaviour == MISCFLAG_SWITCHBRIDGE)
-				newtile = tile_no+1;
-			else
-				newtile = tile_no-1;
-
-			mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
-			PressBridgeSwitch(x_mid, up_y);
-		}
-		else
-		{
-			const Uint32 newtile = (flag == MISCFLAG_SWITCHPLATON) ? tile_no+1 : tile_no-1 ;
-			mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
-			PressPlatformSwitch(x_mid, up_y);
-		}
-		setAction(A_KEEN_SLIDE);
-		m_timer = 0;
-		return;
+	  playSound( SOUND_GUN_CLICK );
+	  
+	  if(flag == MISCFLAG_SWITCHBRIDGE  || flag == 18 )
+	  {	    
+	      Uint32 newtile;
+	      if(Tile[tile_no+1].behaviour == MISCFLAG_SWITCHBRIDGE || 
+		 Tile[tile_no+1].behaviour == 18 )
+		newtile = tile_no+1;
+	      else
+		newtile = tile_no-1;
+	      
+	      mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+	      PressBridgeSwitch(x_mid, up_y);	      
+	  }
+	  else
+	  {
+	    const Uint32 newtile = (flag == MISCFLAG_SWITCHPLATON) ? tile_no+1 : tile_no-1 ;
+	    mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+	    PressPlatformSwitch(x_mid, up_y);
+	  }
+	  
+	  setAction(A_KEEN_SLIDE);
+	  m_timer = 0;
+	  return;
+	}
+	/*		var2 = o->boxTXmid*256-64;
+	 *		if (o->xpos == var2) {
+	 *			setAction(ACTION_KEENENTERSLIDE);
+	 *			setAction(A_KEEN_SLIDE);
+	 } else {
+	   o->time = var2;
+	   //setAction(ACTION_KEENPRESSSWITCH);
+	   setAction(ACTION_KEENENTERSLIDE);
 	 }
-/*		var2 = o->boxTXmid*256-64;
-		if (o->xpos == var2) {
-			setAction(ACTION_KEENENTERSLIDE);
-			setAction(A_KEEN_SLIDE);
-		} else {
-			o->time = var2;
-			//setAction(ACTION_KEENPRESSSWITCH);
-			setAction(ACTION_KEENENTERSLIDE);
-		}
-		EnterDoorAttempt = 1;
-		return 1;
-	} */
-
-	int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
-
+	 EnterDoorAttempt = 1;
+	 return 1;
+	 } */
+	
+	
 	// entering a door
-
+	int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
+	
 	if ( !m_EnterDoorAttempt && (flag_left == MISCFLAG_DOOR || flag_left == MISCFLAG_KEYCARDDOOR) )
 	{
-		//int var2 = mid_x * 256+96;
-		int flag_right = Tile[mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y)].behaviour;
-		//if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
-		//if (getXPosition() == var2) {
-		if(flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR) {
+	  //int var2 = mid_x * 256+96;
+	  int flag_right = Tile[mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y)].behaviour;
+	  //if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
+	  //if (getXPosition() == var2) {
+	    if(flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR) {
 			/*if (flag == MISCFLAG_KEYCARDDOOR) {
 				if (security_card) {
 					security_card = 0;
@@ -1628,7 +1631,6 @@ void CPlayerLevel::processEnterDoor()
  * other episodes, but it's well though and should...
  */
 
-
 void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 {
 	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
@@ -1644,7 +1646,7 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 	// Apply to the borders
 
 	// bridge opened or closed?
-	const bool b_opened = (start_tile%8 < 4) ?true : false;
+	const bool b_opened = ((start_tile%18)%8 < 4) ?true : false;
 
 	int x = newX;
 	for(int t = start_tile ;  ; x++ )
@@ -1698,8 +1700,6 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 
 	return;
 }
-
-
 
 
 
