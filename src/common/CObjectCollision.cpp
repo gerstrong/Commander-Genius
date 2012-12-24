@@ -812,7 +812,7 @@ void CSpriteObject::processEvents()
 		processMove(move);
 		pObjMove->mSecond.processMove(move);		    
 		m_EventCont.pop_Event();
-	    }		
+	    }
 	    
 	    if( ObjMove* pObjMove =  m_EventCont.occurredEvent<ObjMove>())
 	    {

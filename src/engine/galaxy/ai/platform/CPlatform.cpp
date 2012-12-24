@@ -104,21 +104,8 @@ void CPlatform::movePlatDown(const int amnt)
 
 void CPlatform::movePlat(const VectorD2<int> &speed)
 {
-    if(speed.x == 0 && speed.y == 0)
-	return;
-    
-	// First move the object on platform if any
-	if(mp_CarriedPlayer)
-	{
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-		{
-		    m_EventCont.add(new ObjMoveCouple(speed,*mp_CarriedPlayer));
-		    return;
-		}
-	}
-
-	// Now move the platform itself.
-	moveDir(speed);    
+    movePlatX(speed.x);
+    movePlatY(speed.y);    
 }
 
 void CPlatform::process()

@@ -69,16 +69,17 @@ struct ObjMove : public CEvent
 
 // Event that will be used to move the objects in the game together with another object.
 // This is applied for example whenever keen is being moved on the platform
-struct ObjMoveCouple : public ObjMove
+struct ObjMoveCouple : public CEvent
 {
+	VectorD2<int> m_Vec;
 	CSpriteObject &mSecond;
 	ObjMoveCouple(const VectorD2<int>& Vector, 
                       CSpriteObject &second) : 
-			ObjMove(Vector), mSecond(second)  {}
+			m_Vec(Vector), mSecond(second)  {}
 	
 	ObjMoveCouple(const int offx, const int offy, 
                       CSpriteObject &second) : 
-			ObjMove(offx, offy), mSecond(second) {}
+			m_Vec(offx, offy), mSecond(second) {}
 };
 
 
