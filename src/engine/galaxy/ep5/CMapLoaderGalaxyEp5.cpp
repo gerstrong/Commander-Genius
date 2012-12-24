@@ -61,7 +61,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	{
 		if( foe == i )
 		{
-			const Uint32 newsprite = 103+2*(i-0x3D);
+			const Uint32 newsprite = 108+2*(i-0x3D);
 			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
 		}
 	}

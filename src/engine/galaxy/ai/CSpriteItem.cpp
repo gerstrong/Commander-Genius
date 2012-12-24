@@ -58,7 +58,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		/// Calculate the right animation.
 		// Point items
 		Uint32 newanimsprite = got_sprite_item_pics[ep-4][0];
-		if( relBase >= 103 && relBase <= 116 )
+		if( relBase >= 103 && relBase <= 113 )
 		{
 			newanimsprite = got_sprite_item_pics[ep-4][4+(relBase-103)/2];
 			switch(relBase)
@@ -73,6 +73,15 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			}
 			g_pSound->playSound( SOUND_GET_BONUS );
 		}
+		
+		// Check for the extra life
+		if ( relBase == 115 )
+		{
+			newanimsprite = got_sprite_item_pics[ep-4][10];
+			Item.m_lifes++;
+			g_pSound->playSound( SOUND_EXTRA_LIFE );
+		}		
+		
 
 		// raygun
 		if( m_basesprite >= 127 && m_basesprite <= 128 )
@@ -92,7 +101,6 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 
 		
 		g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
-
 
 		// Now add the stuff to the inventory
 		if(ep == 5)
@@ -126,12 +134,6 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 				break;
 			}
 			g_pSound->playSound( SOUND_GET_GEM );
-		}
-
-		if ( m_basesprite == 115 )
-		{
-			Item.m_lifes++;
-			g_pSound->playSound( SOUND_EXTRA_LIFE );
 		}
 
 		exists = false;
