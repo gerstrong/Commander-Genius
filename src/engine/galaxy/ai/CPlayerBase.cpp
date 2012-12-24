@@ -106,37 +106,36 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				8,  // A_KEEN_MOON
 				11, // A_KEEN_BOOK_OPEN
 				15, // A_KEEN_BOOK_READ
-				18, // A_KEEN_BOOK_CLOSE
-				21, // A_KEEN_LOOKUP
-				23, // A_KEEN_LOOKDOWN
-				26, // A_KEEN_ACTION_1
-				27, // A_KEEN_ACTION_2
-				28, // A_KEEN_ACTION_3
-				29, // A_KEEN_DIE
-				33, // A_KEEN_SHOOT
-				35, // A_KEEN_SHOOT_UP
-				37, // A_KEEN_ACTION_4
-				40, // A_KEEN_SLIDE
-				41, // A_KEEN_ENTER_DOOR
-				46, // A_KEEN_POLE
-				47, // A_KEEN_POLE_CLIMB
-				50, // A_KEEN_POLE_SLIDE
-				54, // A_KEEN_POLE_SHOOT
-				56, // A_KEEN_POLE_SHOOTUP
-				58, // A_KEEN_POLE_SHOOTDOWN
-				60, // A_KEEN_RUN
-				64, // A_KEEN_POGO_START
-				65, // A_KEEN_POGO_UP
-				66, // A_KEEN_POGO_HIGH
-				67, // A_KEEN_JUMP
-				68, // A_KEEN_JUMP_DOWN
-				69, // A_KEEN_FALL
-				71, // A_KEEN_JUMP_SHOOT
-				74, // A_KEEN_JUMP_SHOOTUP
-				77, // A_KEEN_JUMP_SHOOTDOWN
-				80, // A_KEEN_HANG
-				82, // A_KEEN_CLIMB
-				94  // A_KEEN_RIDING_ON_FOOT
+				16, // A_KEEN_BOOK_CLOSE
+				18, // A_KEEN_LOOKUP
+				20, // A_KEEN_LOOKDOWN
+				23, // A_KEEN_ACTION_1
+				24, // A_KEEN_ACTION_2
+				25, // A_KEEN_ACTION_3
+				26, // A_KEEN_DIE
+				28, // A_KEEN_SHOOT
+				30, // A_KEEN_SHOOT_UP
+				32, // A_KEEN_ACTION_4
+				34, // A_KEEN_SLIDE
+				35, // A_KEEN_ENTER_DOOR
+				43, // A_KEEN_POLE
+				44, // A_KEEN_POLE_CLIMB
+				47, // A_KEEN_POLE_SLIDE
+				51, // A_KEEN_POLE_SHOOT
+				53, // A_KEEN_POLE_SHOOTUP
+				55, // A_KEEN_POLE_SHOOTDOWN
+				57, // A_KEEN_RUN				
+				59, // A_KEEN_POGO_START
+				60, // A_KEEN_POGO_UP
+				61, // A_KEEN_POGO_HIGH
+				62, // A_KEEN_JUMP
+				63, // A_KEEN_JUMP_DOWN
+				64, // A_KEEN_FALL
+				68, // A_KEEN_JUMP_SHOOT
+				71, // A_KEEN_JUMP_SHOOTUP
+				74, // A_KEEN_JUMP_SHOOTDOWN
+				77, // A_KEEN_HANG
+				79 // A_KEEN_CLIMB
 		}
 
 		// Keen Dreams

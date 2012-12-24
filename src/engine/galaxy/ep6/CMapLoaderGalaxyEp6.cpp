@@ -47,7 +47,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	CGalaxySpriteObject* p_newfoe = nullptr;
 	
 	// Gems
-/*	for( Uint32 i=0x39 ; i<=0x3C ; i++ )
+	for( Uint32 i=0x39 ; i<=0x3C ; i++ )
 	{
 		if( foe == i )
 		{
@@ -81,7 +81,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	// If a foe was found, just return.
 	if( p_newfoe )
 		return p_newfoe;
-*/
+
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);	
