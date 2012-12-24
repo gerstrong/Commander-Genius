@@ -172,7 +172,7 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[5][?] = 52;
     //sndSlotMapGalaxy[5][?] = 53;
     //sndSlotMapGalaxy[5][?] = 54;
-    sndSlotMapGalaxy[5][SOUND_KEYCARD] = 55;
+    sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
     sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
     //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
     //sndSlotMapGalaxy[5][?] = 58;

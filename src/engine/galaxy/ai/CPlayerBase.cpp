@@ -266,21 +266,21 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	  {
 	    dropanimation_sprite = 225;
 	  }
-	    
-		const int lc_x = l_x>>CSF;
-		const int lc_y = l_y>>CSF;
-		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-		CItemEffect *iEffect = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, dropanimation_sprite, ANIMATE);
-		g_pBehaviorEngine->m_EventList.spawnObj( iEffect );
-		m_Item.m_drops++;
-
-		if(m_Item.m_drops >= 100)
-		{
-			m_Item.m_drops = 0;
-			getAnotherLife(lc_x, lc_y, true);
-		}
-
-		g_pSound->playSound( SOUND_GET_DROP );
+	  
+	  const int lc_x = l_x>>CSF;
+	  const int lc_y = l_y>>CSF;
+	  mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
+	  CItemEffect *iEffect = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, dropanimation_sprite, ANIMATE);
+	  g_pBehaviorEngine->m_EventList.spawnObj( iEffect );
+	  m_Item.m_drops++;
+	  
+	  if(m_Item.m_drops >= 100)
+	  {
+	    m_Item.m_drops = 0;
+	    getAnotherLife(lc_x, lc_y, true);
+	  }
+	  
+	  g_pSound->playSound( SOUND_GET_DROP );
 	}
 
 	/// Tile Items (Sprite-Items are handled in the CSpriteItem Class)

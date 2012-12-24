@@ -82,15 +82,6 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			g_pSound->playSound( SOUND_EXTRA_LIFE );
 		}		
 		
-
-		// raygun
-		if( m_basesprite >= 127 && m_basesprite <= 128 )
-		{
-			Item.m_bullets += 5;
-			newanimsprite = got_sprite_item_pics[ep-4][11];
-			g_pSound->playSound( SOUND_GET_AMMO );
-		}
-
 		// keycard (Keen 5 only)
 		if( ep == 5 && m_basesprite >= 105 && m_basesprite <= 106 )
 		{
@@ -98,9 +89,7 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			newanimsprite = 231;
 			g_pSound->playSound( SOUND_GET_CARD );
 		}
-
-		
-		g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
+				
 
 		// Now add the stuff to the inventory
 		if(ep == 5)
@@ -113,6 +102,15 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		}
 		  
 		relBase = m_basesprite+epOff;
+		
+		// raygun
+		if( relBase >= 127 && relBase <= 128 )
+		{
+			Item.m_bullets += 5;
+			newanimsprite = got_sprite_item_pics[ep-4][11];
+			g_pSound->playSound( SOUND_GET_AMMO );
+		}
+		
 
 		if( relBase >= 118 && relBase <= 125 )
 		{
@@ -135,6 +133,8 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			}
 			g_pSound->playSound( SOUND_GET_GEM );
 		}
+		
+		g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), newanimsprite, FADEOUT));
 
 		exists = false;
 	}
