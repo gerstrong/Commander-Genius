@@ -38,6 +38,8 @@ void CLevelPlay::loadMap(const int level)
 		MapLoader.reset(new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode));
 	else if(g_pBehaviorEngine->getEpisode() == 5)
 		MapLoader.reset(new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode));
+	else if(g_pBehaviorEngine->getEpisode() == 6)
+		MapLoader.reset(new CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventory, mCheatmode));
 
 	MapLoader->loadMap( mMap, level );
 

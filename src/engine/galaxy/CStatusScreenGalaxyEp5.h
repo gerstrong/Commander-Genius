@@ -1,10 +1,10 @@
 /*
  * CStatusScreenGalaxyEp5.h
  *
- *  Created on: 28.07.2011
+ *  Created on: 28.09.2011
  *      Author: gerstrong
  *
- *  The specific Statusscreen for Keen 4 only!
+ *  The specific Statusscreen for Keen 5 only!
  */
 
 #ifndef CSTATUSSCREENGALAXYEP5_H_
@@ -20,4 +20,4 @@ public:
 	void GenerateStatus();
 };
 
-#endif /* CSTATUSSCREENGALAXYEP4_H_ */
+#endif /* CSTATUSSCREENGALAXYEP5_H_ */

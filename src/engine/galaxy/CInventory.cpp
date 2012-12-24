@@ -11,10 +11,11 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "graphics/effects/CScrollEffect.h"
-#include "CStatusScreenGalaxyEp4.h"
 
+// TODO: We should sort these classes
+#include "CStatusScreenGalaxyEp4.h"
 #include "CStatusScreenGalaxyEp5.h"
-//#include "CStatusScreenGalaxyEp6.h"
+#include "CStatusScreenGalaxyEp6.h"
 
 
 CInventory::CInventory(const std::string& levelname) :
@@ -42,8 +43,10 @@ m_LevelName(levelname)
 	    {
 		mp_StatusScreen.reset(new CStatusScreenGalaxyEp5(Item, m_LevelName));
 	    }
-	    //	else if(Episode == 6)
-	    //		mp_StatusScreen = new CStatusScreenGalaxyEp6(Item, m_LevelName);
+	    else if(Episode == 6)
+	    {
+	    	mp_StatusScreen.reset(new CStatusScreenGalaxyEp6(Item, m_LevelName));
+	    }
 	}
 	
 	m_HUD.sync();

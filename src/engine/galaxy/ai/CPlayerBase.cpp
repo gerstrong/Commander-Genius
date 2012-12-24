@@ -12,7 +12,7 @@
 
 namespace galaxy {
 
-const int CPlayerBase::mEpisodeActionNumMap[2][NUM_KEEN_ACTIONS] =
+const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 {
 		// Episode 4
 		{
@@ -95,10 +95,49 @@ const int CPlayerBase::mEpisodeActionNumMap[2][NUM_KEEN_ACTIONS] =
 				76, // A_KEEN_JUMP_SHOOTDOWN
 				79, // A_KEEN_HANG
 				81  // A_KEEN_CLIMB
-		}//,
+		},
 
 		// Episode 6
-		//{},
+		{
+				0,  // A_KEEN_STAND
+				1,  // A_KEEN_ON_PLAT
+				1,  // A_KEEN_BORED
+				2,  // A_KEEN_QUESTION
+				8,  // A_KEEN_MOON
+				11, // A_KEEN_BOOK_OPEN
+				15, // A_KEEN_BOOK_READ
+				18, // A_KEEN_BOOK_CLOSE
+				21, // A_KEEN_LOOKUP
+				23, // A_KEEN_LOOKDOWN
+				26, // A_KEEN_ACTION_1
+				27, // A_KEEN_ACTION_2
+				28, // A_KEEN_ACTION_3
+				29, // A_KEEN_DIE
+				33, // A_KEEN_SHOOT
+				35, // A_KEEN_SHOOT_UP
+				37, // A_KEEN_ACTION_4
+				40, // A_KEEN_SLIDE
+				41, // A_KEEN_ENTER_DOOR
+				46, // A_KEEN_POLE
+				47, // A_KEEN_POLE_CLIMB
+				50, // A_KEEN_POLE_SLIDE
+				54, // A_KEEN_POLE_SHOOT
+				56, // A_KEEN_POLE_SHOOTUP
+				58, // A_KEEN_POLE_SHOOTDOWN
+				60, // A_KEEN_RUN
+				64, // A_KEEN_POGO_START
+				65, // A_KEEN_POGO_UP
+				66, // A_KEEN_POGO_HIGH
+				67, // A_KEEN_JUMP
+				68, // A_KEEN_JUMP_DOWN
+				69, // A_KEEN_FALL
+				71, // A_KEEN_JUMP_SHOOT
+				74, // A_KEEN_JUMP_SHOOTUP
+				77, // A_KEEN_JUMP_SHOOTDOWN
+				80, // A_KEEN_HANG
+				82, // A_KEEN_CLIMB
+				94  // A_KEEN_RIDING_ON_FOOT
+		}
 
 		// Keen Dreams
 		//{}

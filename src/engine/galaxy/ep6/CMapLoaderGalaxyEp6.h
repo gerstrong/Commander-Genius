@@ -1,22 +1,22 @@
 /*
- * CMapLoaderGalaxyEp5.h
+ * CMapLoaderGalaxyEp6.h
  *
- *  Created on: 29.09.2012
+ *  Created on: 24.12.2012
  *      Author: gerstrong
  */
 
-#ifndef CMAPLOADERGALAXYEP5_H_
-#define CMAPLOADERGALAXYEP5_H_
+#ifndef CMAPLOADERGALAXYEP6_H_
+#define CMAPLOADERGALAXYEP6_H_
 
 #include "../CMapLoaderGalaxy.h"
 
 namespace galaxy
 {
 
-class CMapLoaderGalaxyEp5 : public CMapLoaderGalaxy
+class CMapLoaderGalaxyEp6 : public CMapLoaderGalaxy
 {
 public:
-	CMapLoaderGalaxyEp5(CExeFile &ExeFile,
+	CMapLoaderGalaxyEp6(CExeFile &ExeFile,
 			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
 			CInventory &Inventory, stCheat &Cheatmode);
 
@@ -25,4 +25,4 @@ public:
 
 };
 
-#endif /* CMAPLOADERGALAXYEP5_H_ */
+#endif /* CMAPLOADERGALAXYEP6_H_ */

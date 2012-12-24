@@ -11,6 +11,7 @@
 #include "common/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
+#include "ep6/CMapLoaderGalaxyEp6.h"
 #include "ai/ep4/CInchWorm.h"
 #include "ai/ep4/CFoot.h"
 #include "ai/ep4/CSmokePuff.h"
@@ -111,9 +112,12 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 		}
 	    }
 	    
-	    // if you see some object which at the end of the container is non-existent, remove it!
-	    if(!mObjectPtr.back()->exists)
+	    if(!mObjectPtr.empty())
+	    {
+	      // if you see some object which at the end of the container is non-existent, remove it!
+	      if(!mObjectPtr.back()->exists)
 		mObjectPtr.pop_back();
+	    }
 	    
 	}
 
@@ -284,9 +288,11 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 	else if(episode == 5)
 		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+	else if(episode == 6)
+		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 	else
 	{
-		g_pLogFile->textOut("Error loading the file. This episode is not supported!");
+		g_pLogFile->textOut("Error loading the file. This game is not supported!");
 		return false;
 	}
 

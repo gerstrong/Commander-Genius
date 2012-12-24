@@ -39,11 +39,23 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	m_BitmapNameMap[0][94] = "PADDLELABEL";
 	m_BitmapNameMap[0][95] = "QUITLABEL";
 
-	// Keen 5 Bitmap IDs
+	/// Keen 5 Image IDs
+	// Bitmaps
 	m_BitmapNameMap[1][82] = "TITLE";
 	m_BitmapNameMap[1][76] = "KEENSWATCH";
 	m_BitmapNameMap[1][85] = "KEENTHUMBSUP";
+	
+	// Sprites
 	m_SpriteNameMap[1][133] = "HUDBACKGROUND";
+
+	/// Keen 6 Image IDs
+	// Bitmaps
+	m_BitmapNameMap[2][28] = "TITLE";
+	m_BitmapNameMap[2][20] = "KEENSWATCH";
+	m_BitmapNameMap[2][30] = "KEENTHUMBSUP";
+	
+	// Sprites
+	m_SpriteNameMap[2][129] = "HUDBACKGROUND";
 
 	// Menu Labels
 	m_BitmapNameMap[1][61] = "MAINMENULABEL";
@@ -60,10 +72,6 @@ void CEGAGraphicsGalaxy::createBitmapsIDs()
 	m_BitmapNameMap[1][72] = "OPTIONSMENULABEL";
 	m_BitmapNameMap[1][73] = "PADDLELABEL";
 	m_BitmapNameMap[1][74] = "QUITLABEL";
-
-	// Keen 6 Bitmap IDs
-	m_BitmapNameMap[2][28] = "TITLE";
-	m_BitmapNameMap[2][20] = "KEENSWATCH";
 
 	// Menu Labels
 	m_BitmapNameMap[2][5]  = "MAINMENULABEL";

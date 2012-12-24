@@ -1,17 +1,17 @@
 /*
- * CMapLoaderGalaxyEp5.cpp
+ * CMapLoaderGalaxyEp6.cpp
  *
- *  Created on: 29.07.2012
+ *  Created on: 24.12.2012
  *      Author: gerstrong
  */
 
-#include "CMapLoaderGalaxyEp5.h"
+#include "CMapLoaderGalaxyEp6.h"
 
-// Episode 5
+// Episode 6
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 
-// TODO: I'm not sure yet if those are really common platforms
+// TODO: I'm note sure yet, if those are really common platforms
 #include "engine/galaxy/ai/platforms.h"
 #include "engine/galaxy/ai/CFlag.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
@@ -20,7 +20,7 @@ namespace galaxy
 {
 
 
-CMapLoaderGalaxyEp5::CMapLoaderGalaxyEp5(CExeFile &ExeFile,
+CMapLoaderGalaxyEp6::CMapLoaderGalaxyEp6(CExeFile &ExeFile,
 		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
 		CInventory &Inventory, stCheat &Cheatmode) :
 CMapLoaderGalaxy( ExeFile, ObjectPtr, Inventory, Cheatmode)
@@ -42,12 +42,12 @@ const unsigned int DIVE_SUIT = 35;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
-CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, size_t y)
+CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
 	CGalaxySpriteObject* p_newfoe = nullptr;
 	
 	// Gems
-	for( Uint32 i=0x39 ; i<=0x3C ; i++ )
+/*	for( Uint32 i=0x39 ; i<=0x3C ; i++ )
 	{
 		if( foe == i )
 		{
@@ -81,7 +81,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	// If a foe was found, just return.
 	if( p_newfoe )
 		return p_newfoe;
-
+*/
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);	
@@ -92,18 +92,20 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x02:
 			// This is the player on the map in one level
 			p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-					(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x0888);
+					(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x89A);
 			break;
 
 	case 0x03:
 			// This is the player on the world map
 			// Add the Camera into the game scene and attach it to this player
-			p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x146E );
-			// 0x137A
+			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x130A );
+			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x13DE );
+			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x1218 );
+			p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x13E0 );
 			break;
 
 
-	case 0x1B:
+	/*case 0x1B:
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C );
 			break;
 			
@@ -141,7 +143,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y ); break;
 
 			break;
-
+*/
 
 
 	/*case PLATFORM_VERT: case PLATFORM_VERT_ALT:

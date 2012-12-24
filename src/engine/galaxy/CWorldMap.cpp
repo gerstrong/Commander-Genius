@@ -27,6 +27,8 @@ void CWorldMap::init()
 		MapLoader.reset( new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 	else if(g_pBehaviorEngine->getEpisode() == 5)
 		MapLoader.reset( new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+	else if(g_pBehaviorEngine->getEpisode() == 6)
+		MapLoader.reset( new CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventory, mCheatmode) );
 
 	MapLoader->loadMap( mMap, 0 );
 	g_pBehaviorEngine->mapLevelName = MapLoader->getLevelName();
