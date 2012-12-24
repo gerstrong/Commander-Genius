@@ -1574,6 +1574,7 @@ void CPlayerLevel::processEnterDoor()
 		//level_state = 13;
 		//o->action = ACTION_KEENENTEREDDOOR;
 		// TODO: Figure out what this does
+		g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
@@ -1588,7 +1589,8 @@ void CPlayerLevel::processEnterDoor()
 	{
 		//level_state = 2;
 		//o->action = ACTION_KEENENTEREDDOOR;
-		g_pSound->playSound( SOUND_LEVEL_DONE );
+		g_pMusicPlayer->stop();
+		g_pSound->playSound( SOUND_LEVEL_DONE );		
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
