@@ -298,12 +298,17 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 
 	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 2<<STC))
 	{
-	  int dropanimation_sprite = 215;
+	  int dropanimation_sprite = 215;	  
+	  const int ep = g_pBehaviorEngine->getEpisode();
 	  
-	  if(g_pBehaviorEngine->getEpisode() == 5)
+	  if(ep == 5)
 	  {
 	    dropanimation_sprite = 225;
 	  }
+	  else if(ep == 6)
+	  {
+	    dropanimation_sprite = 224;
+	  }	    
 	  
 	  const int lc_x = l_x>>CSF;
 	  const int lc_y = l_y>>CSF;
