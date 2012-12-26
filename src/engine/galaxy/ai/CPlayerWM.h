@@ -53,6 +53,7 @@ public:
 
 private:
 	Uint16 m_basesprite;
+	Uint16 m_teleportanibasetile;
 	Uint16 walkBaseFrame;
 	Uint16 wavingBaseFrame;
 	Uint16 swimBaseFrame;

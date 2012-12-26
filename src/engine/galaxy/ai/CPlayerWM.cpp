@@ -30,6 +30,7 @@ CPlayerBase(pmap, foeID, x, y,
 		    l_Inventory,
 		    Cheatmode),
 m_basesprite(0),
+m_teleportanibasetile(0),
 walkBaseFrame(0),
 m_looking_dir(LEFT),
 m_animation(0),
@@ -379,8 +380,21 @@ void CPlayerWM::verifyTeleportation()
 		}
 		else // ... make him move until teleporter hides him.
 		{
-			mProcessPtr = &CPlayerWM::processEnteringTeleporter;
-			// TODO: Activate teleporter animation
+		  //const int ep = g_pBehaviorEngine->getEpisode();
+		
+		  mProcessPtr = &CPlayerWM::processEnteringTeleporter;
+					
+		  Uint16 newTile = mp_Map->getPlaneDataAt( 1, x, y );
+
+		   // TODO: Check if the animated tile also must be the same formula for Episode 5		  
+		   newTile -= 18; // One row up
+		   newTile += 2; // Two columns to the right!
+		   
+		   m_teleportanibasetile = newTile;
+
+		   mp_Map->setTile(x>>CSF, y>>CSF, newTile, true);
+			
+		   solid = false;
 		}
 	}
 
@@ -416,7 +430,6 @@ void CPlayerWM::processEnteringElevator()
 		dist_y < SLOW_TELEPORT_WALK_SPEED)
 	{
 		moveDir(vec);
-		// TODO: Play Elevator open sound
 		mProcessPtr = &CPlayerWM::processClosingElevator;
 		performWalkingAnimation(false);
 		elevator_frames = 5;
@@ -458,7 +471,6 @@ void CPlayerWM::processClosingElevator()
 		{
 			// If done make him invisible and transport him through the level. !solid
 
-			// TODO: get new target where to move
 			//target -> change it when the touched tile is known
 			const int x = getXMidPos();
 			const int y = getYMidPos();
@@ -503,9 +515,7 @@ void CPlayerWM::processElevating()
 	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
 		dist_y < SLOW_TELEPORT_WALK_SPEED)
 	{
-		// TODO: When he reaches the target. make him visible and start opening the elevator
 		moveDir(vec);
-		// TODO: Play Elevator open sound
 		mProcessPtr = &CPlayerWM::processOpeningElevator;
 		performWalkingAnimation(false);
 		elevator_frames = 5;
@@ -562,7 +572,6 @@ void CPlayerWM::processLeavingElevator()
 	VectorD2<int> pos(getXPosition(), getYPosition());
 	VectorD2<int> vec = target-pos;
 
-
 	VectorD2<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
@@ -589,35 +598,139 @@ void CPlayerWM::processLeavingElevator()
 	}
 
 	performWalkingAnimation(true);
-
-	// TODO: When done set him solid
 }
 
 
 // Teleporter
 
 void CPlayerWM::processEnteringTeleporter()
-{
-	// TODO: he moves to target into the teleporter
+{		
+	// Move him to the target
+	VectorD2<int> pos(getXPosition(), getYPosition());
+	VectorD2<int> vec = target-pos;
 
-	// TODO: When finished make him !solid and invisible
 
-	// TODO: Deactivate animation
+	VectorD2<int> vec_norm = vec;
+
+	const int dist_x = abs(vec.x);
+	const int dist_y = abs(vec.y);
+
+	if(dist_x != 0)
+		vec_norm.x = vec.x/dist_x;
+	if(dist_y != 0)
+		vec_norm.y = vec.y/dist_y;
+
+	yDirection = vec_norm.y;
+	
+	
+
+	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+		dist_y < SLOW_TELEPORT_WALK_SPEED)
+	{
+		moveDir(vec);
+								
+		// If done make him invisible and transport him through the level. !solid
+
+		//target -> change it when the touched tile is known
+		const int x = getXMidPos();
+		const int y = getYMidPos();
+
+		// Get the destination
+		const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
+		const Uint32 filter = object & 0xFFFF;
+		const Uint32 newPosX = (filter & 0xFF00) >> 8;
+		const Uint32 newPosY = (filter & 0x00FF);
+		
+		Uint16 newTile = mp_Map->getPlaneDataAt( 1, x, y );
+
+		// TODO: Check if the animated tile also must be the same formula for Episode 5		  
+		newTile = m_teleportanibasetile;
+		newTile += 18; // One row up
+		newTile -= 2; // set right tile for the teleporter coord
+		
+		mp_Map->setTile(x>>CSF, y>>CSF, newTile, true);		
+
+		// Set new target
+		target.x = (newPosX<<CSF);
+		target.y = (newPosY<<CSF);						
+		
+		// make him invisible
+		solid = false;
+		dontdraw = true;
+		mProcessPtr = &CPlayerWM::processWarpInTeleporter;
+		performWalkingAnimation(false);
+	}
+	else
+	{
+	  const int x = target.x;
+	  const int y = target.y;
+
+	  Uint16 aniTile = mp_Map->getPlaneDataAt( 1, x, y ) + 1;
+	  
+	  if(m_teleportanibasetile+3 < aniTile)
+	  {
+	    aniTile = m_teleportanibasetile;
+	  }
+	  
+	  mp_Map->setTile(x>>CSF, y>>CSF, aniTile, true);		
+	  
+	  moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+		
+	}
+
+	performWalkingAnimation(true);
+	
 }
 
 
 void CPlayerWM::processWarpInTeleporter()
 {
-	// TODO: This should just change the location
-
-	// TODO: When done make visible again and activate teleport animation
+	// Move the player to the target directly
+	VectorD2<int> new_pos(target);
+	moveToForce(target);
+	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
+	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
+	m_camera.setPosition(new_pos);	
+	
+	mProcessPtr = &CPlayerWM::processLeavingTeleporter;
+				
+	target.y += (1<<CSF);
+	dontdraw = false;
 }
 
 void CPlayerWM::processLeavingTeleporter()
 {
-	// TODO: he moves to target out the teleporter
+	// Move him to the target
+	VectorD2<int> pos(getXPosition(), getYPosition());
+	VectorD2<int> vec = target-pos;
 
-	// TODO: When finished make him solid
+	VectorD2<int> vec_norm = vec;
+
+	const int dist_x = abs(vec.x);
+	const int dist_y = abs(vec.y);
+
+	if(dist_x != 0)
+		vec_norm.x = vec.x/dist_x;
+	if(dist_y != 0)
+		vec_norm.y = vec.y/dist_y;
+
+	yDirection = vec_norm.y;
+
+	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
+		dist_y < SLOW_TELEPORT_WALK_SPEED)
+	{
+		// When done set him solid
+		solid = true;
+		moveDir(vec);
+		
+		mProcessPtr = &CPlayerWM::processMoving;
+	}
+	else
+	{
+		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
+	}
+
+	performWalkingAnimation(true);	
 }
 
 
