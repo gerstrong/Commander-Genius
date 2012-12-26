@@ -8,7 +8,7 @@
 #ifndef CMAPLOADERGALAXYEP4_H_
 #define CMAPLOADERGALAXYEP4_H_
 
-#include "../CMapLoaderGalaxy.h"
+#include "engine/galaxy/common/CMapLoaderGalaxy.h"
 
 namespace galaxy
 {

@@ -19,7 +19,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "engine/galaxy/EGAStructs.h"
+#include "engine/galaxy/res/EGAStructs.h"
 #include "hardware/Configurator.h"
 #include "fileio/CExeFile.h"
 #include "CTileProperties.h"

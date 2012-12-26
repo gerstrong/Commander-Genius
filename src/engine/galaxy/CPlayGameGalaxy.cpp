@@ -6,11 +6,11 @@
  */
 
 #include "CPlayGameGalaxy.h"
-#include "CMapLoaderGalaxy.h"
+#include "common/CMapLoaderGalaxy.h"
 
 #include "graphics/CGfxEngine.h"
-#include "dialog/CMessageBoxBitmapGalaxy.h"
-#include "dialog/CMessageBoxSelection.h"
+#include "common/dialog/CMessageBoxBitmapGalaxy.h"
+#include "common/dialog/CMessageBoxSelection.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"

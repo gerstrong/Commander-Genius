@@ -14,8 +14,8 @@
 
 #include "common/Cheat.h"
 #include "fileio/CExeFile.h"
-#include "engine/galaxy/CInventory.h"
-#include "engine/galaxy/CGalaxySpriteObject.h"
+#include "engine/galaxy/common/CInventory.h"
+#include "engine/galaxy/common/CGalaxySpriteObject.h"
 #include "common/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"

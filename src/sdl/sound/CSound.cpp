@@ -16,7 +16,7 @@
 #include "common/CBehaviorEngine.h"
 
 #include "engine/vorticon/CAudioVorticon.h"
-#include "engine/galaxy/CAudioGalaxy.h"
+#include "engine/galaxy/res/CAudioGalaxy.h"
 
 #include <fstream>
 

@@ -8,13 +8,13 @@
 #include "CMapLoaderGalaxyEp6.h"
 
 // Episode 6
-#include "engine/galaxy/ai/CPlayerWM.h"
-#include "engine/galaxy/ai/CPlayerLevel.h"
+#include "engine/galaxy/common/ai/CPlayerWM.h"
+#include "engine/galaxy/common/ai/CPlayerLevel.h"
 
 // TODO: I'm note sure yet, if those are really common platforms
-#include "engine/galaxy/ai/platforms.h"
-#include "engine/galaxy/ai/CFlag.h"
-#include "engine/galaxy/ai/CSpriteItem.h"
+#include "engine/galaxy/common/ai/platforms.h"
+#include "engine/galaxy/common/ai/CFlag.h"
+#include "engine/galaxy/common/ai/CSpriteItem.h"
 
 namespace galaxy
 {

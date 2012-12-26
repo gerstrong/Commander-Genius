@@ -15,7 +15,7 @@
 #include "sdl/music/CMusic.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
-#include "dialog/CMessageBoxBitmapGalaxy.h"
+#include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "CLogFile.h"
 
 #include "CMapPlayGalaxy.h"

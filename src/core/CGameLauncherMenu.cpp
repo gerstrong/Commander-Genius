@@ -11,7 +11,7 @@
 
 #include "CGameMain.h"
 #include "engine/vorticon/CEGAGraphicsVort.h"
-#include "engine/galaxy/CEGAGraphicsGalaxy.h"
+#include "engine/galaxy/res/CEGAGraphicsGalaxy.h"
 #include "engine/CMessages.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/CSaveGameController.h"

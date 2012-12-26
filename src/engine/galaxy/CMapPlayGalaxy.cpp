@@ -6,15 +6,15 @@
  */
 
 #include "CMapPlayGalaxy.h"
-#include "ai/platform/CPlatform.h"
-#include "engine/galaxy/ai/CPlayerBase.h"
+#include "common/ai/platform/CPlatform.h"
+#include "common/ai/CPlayerBase.h"
 #include "common/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"
-#include "ai/ep4/CInchWorm.h"
-#include "ai/ep4/CFoot.h"
-#include "ai/ep4/CSmokePuff.h"
+#include "ep4/ai/CInchWorm.h"
+#include "ep4/ai/CFoot.h"
+#include "ep4/ai/CSmokePuff.h"
 #include "CLogFile.h"
 
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode) :
