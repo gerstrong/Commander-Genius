@@ -72,7 +72,7 @@ void CStunnable::setActionForce(const size_t ActionNumber)
 	if( mActionMap.find(ActionNumber) != mActionMap.end() )
 		mp_processState = mActionMap[ActionNumber];
 	else
-		setActionForce(0); // This might happen, when the action-map is incomplete
+		CGalaxySpriteObject::setActionForce(0); // This might happen, when the action-map is incomplete
 }
 
 };

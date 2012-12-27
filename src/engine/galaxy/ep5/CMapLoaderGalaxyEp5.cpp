@@ -6,6 +6,7 @@
  */
 
 #include "CMapLoaderGalaxyEp5.h"
+#include "ai/CSparky.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -81,7 +82,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	// If a foe was found, just return.
 	if( p_newfoe )
 		return p_newfoe;
-
+	
+	const Difficulty difficulty = g_pBehaviorEngine->mDifficulty;
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);	
@@ -102,6 +104,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			// 0x137A
 			break;
 
+			
+	case 0x06: if( difficulty < HARD ) break;
+	case 0x05: if( difficulty < NORMAL ) break;	// not sure here    
+	case 0x04: 
+		// This is a Sprite from the well of wishes.
+		p_newfoe = new galaxy::CSparky(&Map, foe, x, y);
+		break;
+			
 
 	case 0x1B:
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C );

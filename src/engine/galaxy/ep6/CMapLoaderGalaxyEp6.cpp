@@ -6,6 +6,7 @@
  */
 
 #include "CMapLoaderGalaxyEp6.h"
+#include "ai/CBloog.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -82,6 +83,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	if( p_newfoe )
 		return p_newfoe;
 
+	const Difficulty difficulty = g_pBehaviorEngine->mDifficulty;
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);	
@@ -104,6 +106,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 			p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x13E0 );
 			break;
 
+	case 0x06: if( difficulty < HARD ) break;
+	case 0x05: if( difficulty < NORMAL ) break;	// not sure here    
+	case 0x04: 
+		// This is a Sprite from the well of wishes.
+		p_newfoe = new galaxy::CBloog(&Map, foe, x, y);
+		break;
+			
 
 	/*case 0x1B:
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C );

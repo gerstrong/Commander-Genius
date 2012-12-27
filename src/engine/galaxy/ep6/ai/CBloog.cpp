@@ -10,27 +10,45 @@
 #include "engine/galaxy/common/ai/CPlayerBase.h"
 #include "misc.h"
 
+
 namespace galaxy {
+  
+enum BLOOGACTIONS
+{
+A_BLOOG_WALK = 0,	/* Ordinary slug_move action */
+A_BLOOG_STUNNED = 4
+};
+
+const int WALK_SPEED = 30;
+
 
 CBloog::CBloog(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CStunnable(pmap, foeID, x, y),
+mTimer(0)
 {
-	// Adapt this AI
-	setupGalaxyObjectOnMap(0x2012, 0);
+	mActionMap[A_BLOOG_WALK] = (void (CStunnable::*)()) &CBloog::processWalking;
+	mActionMap[A_BLOOG_STUNNED] = &CStunnable::processGettingStunned;
+	
+	setupGalaxyObjectOnMap(0x1EE6, A_BLOOG_WALK);
+	
+	xDirection = LEFT;	
 }
 
 
 
-void CBloog::processMoving()
+void CBloog::processWalking()
 {
 	// Move normally in the direction
 	if( xDirection == RIGHT )
 	{
-		moveRight( m_Action.velX<<1 );
+		//moveRight( m_Action.velX );
+		moveRight( WALK_SPEED );
 	}
 	else
 	{
-		moveLeft( m_Action.velX<<1 );
+		
+		//moveLeft( m_Action.velX );
+		moveLeft( WALK_SPEED );
 	}
 }
 
@@ -45,7 +63,7 @@ void CBloog::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		//setAction(A_SPARKY_STUNNED);
+		setAction(A_BLOOG_STUNNED);
 		dead = true;
 		theObject.dead = true;
 	}
@@ -69,7 +87,7 @@ void CBloog::process()
 {
 	performCollisions();
 	
-	performGravityLow();			
+	performGravityHigh();
 
 	if( blockedl )
 		xDirection = RIGHT;
@@ -79,8 +97,7 @@ void CBloog::process()
 	if(!processActionRoutine())
 	    exists = false;
 	
-//	(this->*mp_processState)();
-	processMoving();
+	(this->*mp_processState)();
 
 }
 

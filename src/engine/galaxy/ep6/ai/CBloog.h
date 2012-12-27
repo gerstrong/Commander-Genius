@@ -24,7 +24,7 @@ public:
 	/**
 	 * When it is moving normally
 	 */
-	void processMoving();
+	void processWalking();
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
@@ -34,6 +34,10 @@ public:
 	 * What happens if the slug gets touched by another object
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
+
+private:
+	int mTimer;
+  
 };
 
 }

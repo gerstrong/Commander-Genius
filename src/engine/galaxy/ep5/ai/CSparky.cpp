@@ -10,28 +10,40 @@
 #include "engine/galaxy/common/ai/CPlayerBase.h"
 #include "misc.h"
 
-namespace galaxy {
+const int TIME_UNTIL_MOVE = 5;
+
+namespace galaxy {  
 
 CSparky::CSparky(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y)
+CStunnable(pmap, foeID, x, y),
+mTimer(0)
 {
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x2012, 0);
+	setupGalaxyObjectOnMap(0x1F0C, 0);
 }
 
 
 
 void CSparky::processMoving()
 {
-	// Move normally in the direction
-	if( xDirection == RIGHT )
-	{
-		moveRight( m_Action.velX<<1 );
-	}
-	else
-	{
-		moveLeft( m_Action.velX<<1 );
-	}
+  mTimer++;
+  
+  if(mTimer < TIME_UNTIL_MOVE)
+    return;
+  
+  // Move normally in the direction
+  if( xDirection == RIGHT )
+  {
+    //moveRight( m_Action.velX<<1 );
+    moveRight( m_Action.velX );
+  }
+  else
+  {
+    //moveLeft( m_Action.velX<<1 );
+    moveLeft( m_Action.velX );
+  }
+   
+  mTimer = 0;
 }
 
 
@@ -59,7 +71,7 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 
 int CSparky::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	turnAroundOnCliff( x1, x2, y2 );
+	//turnAroundOnCliff( x1, x2, y2 );
 
 	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
@@ -69,7 +81,7 @@ void CSparky::process()
 {
 	performCollisions();
 	
-	performGravityLow();			
+	performGravityMid();			
 
 	if( blockedl )
 		xDirection = RIGHT;
@@ -80,6 +92,7 @@ void CSparky::process()
 	    exists = false;
 	
 //	(this->*mp_processState)();
+	
 	processMoving();
 
 }

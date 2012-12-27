@@ -34,6 +34,9 @@ public:
 	 * What happens if the slug gets touched by another object
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
+	
+private:
+	int mTimer;
 };
 
 }
