@@ -183,10 +183,60 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 63;
     
     
-/* Keen 5 Sounds
-	// 56 is when elevator transports
-	// 57 when opens?
-*/
+    // Episode 6    
+    sndSlotMapGalaxy[6][SOUND_KEEN_WALK] = 0;
+    sndSlotMapGalaxy[6][SOUND_KEEN_WALK2] = 1;
+    sndSlotMapGalaxy[6][SOUND_KEEN_JUMP] = 2;
+    sndSlotMapGalaxy[6][SOUND_KEEN_LAND] = 3;
+    sndSlotMapGalaxy[6][SOUND_KEEN_FIRE] = 4; 
+    //sndSlotMapGalaxy[6][?] = 5;
+    // sndSlotMapGalaxy[4][?] = 6; // This sounds like alternative breathe under water. not sure
+    sndSlotMapGalaxy[6][SOUND_KEEN_POGO] = 7;
+    sndSlotMapGalaxy[6][SOUND_GET_BONUS] = 8;
+    sndSlotMapGalaxy[6][SOUND_GET_AMMO] = 9;
+    sndSlotMapGalaxy[6][SOUND_GET_DROP] = 10;
+    sndSlotMapGalaxy[6][SOUND_GET_ITEM] = 11;
+    sndSlotMapGalaxy[6][SOUND_ENTER_LEVEL] = 12;
+    sndSlotMapGalaxy[6][SOUND_LEVEL_DONE] = 13;
+    sndSlotMapGalaxy[6][SOUND_CANT_DO] = 14;
+    sndSlotMapGalaxy[6][SOUND_KEEN_BUMPHEAD] = 15;
+    sndSlotMapGalaxy[6][SOUND_BOUNCE_HIGH] = 16;
+    sndSlotMapGalaxy[6][SOUND_EXTRA_LIFE] = 17;
+    sndSlotMapGalaxy[6][SOUND_DOOR_OPEN] = 18;    
+    sndSlotMapGalaxy[6][SOUND_GET_GEM] = 19;
+    sndSlotMapGalaxy[6][SOUND_KEEN_FALL] = 20;
+    sndSlotMapGalaxy[6][SOUND_GUN_CLICK] = 21;    
+    //sndSlotMapGalaxy[6][?] = 22;
+    sndSlotMapGalaxy[6][SOUND_KEEN_DIE] = 23;
+    //sndSlotMapGalaxy[6][?] = 24;
+    sndSlotMapGalaxy[6][SOUND_SHOT_HIT] = 25;
+    //sndSlotMapGalaxy[6][?] = 26;    
+    //sndSlotMapGalaxy[6][?] = 27;
+    //sndSlotMapGalaxy[6][?] = 28;
+    //sndSlotMapGalaxy[6][?] = 29;
+    //sndSlotMapGalaxy[6][?] = 30;
+    //sndSlotMapGalaxy[6][?] = 31;
+    //sndSlotMapGalaxy[6][?] = 32;
+    //sndSlotMapGalaxy[6][?] = 33;
+    sndSlotMapGalaxy[6][SOUND_STATUS_SLIDE_IN] = 34;
+    sndSlotMapGalaxy[6][SOUND_STATUS_SLIDE_OUT] = 35;
+    //sndSlotMapGalaxy[6][?] = 36;
+    //sndSlotMapGalaxy[6][?] = 37;
+    //sndSlotMapGalaxy[6][?] = 38;
+    //sndSlotMapGalaxy[6][?] = 39;
+    //sndSlotMapGalaxy[6][?] = 40;    
+    //sndSlotMapGalaxy[6][?] = 41;
+    //sndSlotMapGalaxy[6][?] = 42;    
+    sndSlotMapGalaxy[6][SOUND_FLAG_APPEAR] = 43;
+    sndSlotMapGalaxy[6][SOUND_FLAG_LAND] = 44;    
+    //sndSlotMapGalaxy[6][?] = 45;    
+    //sndSlotMapGalaxy[6][?] = 46;
+    sndSlotMapGalaxy[6][SOUND_PLAYER_PADDLE] = 47;
+    sndSlotMapGalaxy[6][SOUND_COMPUTER_PADDLE] = 48;
+    sndSlotMapGalaxy[6][SOUND_HIT_SIDEWALL] = 49;
+    sndSlotMapGalaxy[6][SOUND_COMPUTER_POINT] = 50;
+    sndSlotMapGalaxy[6][SOUND_PLAYER_POINT] = 51;
+    
 }
 
 
