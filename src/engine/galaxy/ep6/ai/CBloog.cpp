@@ -31,7 +31,7 @@ mTimer(0)
 	
 	setupGalaxyObjectOnMap(0x1EE6, A_BLOOG_WALK);
 	
-	xDirection = LEFT;	
+	xDirection = LEFT;
 }
 
 

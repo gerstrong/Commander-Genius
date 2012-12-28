@@ -236,11 +236,9 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		if( it->sprite != BLANKSPRITE && 
 		    dynamic_cast<galaxy::CPlatform*>(it.get()) == nullptr )
 		{
-		    CSprite &rSprite = g_pGfxEngine->getSprite( it->sprite );
 		    // we need to get back to the original position, because when loading a game the original unCSFed coordinates are transformed
 		    newYpos -= (1<<CSF);
-		    newYpos += ((rSprite.getHeight())<<STC);
-		    newYpos ++;
+		    newYpos += it->m_BBox.y2;		    
 		}
 		
 		savedGame.encodeData( it->mFoeID );

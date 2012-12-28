@@ -106,11 +106,9 @@ void CSpriteObject::alignToTile()
     if(sprite == BLANKSPRITE)
 	return;
     
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-
 	// Center the sprites on the map
 	int moveup = (1<<CSF)-1;
-	moveup -= ((rSprite.getHeight()+1)<<STC);
+	moveup -= m_BBox.y2;
 	m_Pos.y += moveup;
 	processMove(0, 1);
 
@@ -126,9 +124,7 @@ void CSpriteObject::alignToTile()
 	{
 	    processMove( +(1<<CSF), 0 );
 	    processMove( -(1<<CSF), 0 );
-	}
-	
-	
+	}	
 }
 
 
@@ -560,7 +556,6 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
 
 			if( blocked && (blocked < 2 || blocked > 7) )
-				//return TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown;
 				return blocked;
 		}
 

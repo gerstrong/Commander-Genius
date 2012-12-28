@@ -825,7 +825,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		int boxX1 = ((Head.Rx1) << (STC-TILE_S));
 		int boxY1 = ((Head.Ry1) << (STC-TILE_S));
 		int boxX2 = ((Head.Rx2) << (STC-TILE_S));
-		int boxY2 = ((Head.Ry2) << (STC-TILE_S));
+		int boxY2 = ((Head.Ry2) << (STC-TILE_S));		
 
 		Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 

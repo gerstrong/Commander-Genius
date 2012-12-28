@@ -16,7 +16,7 @@ public:
 	CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
 	void setupGalaxyObjectOnMap(const size_t ActionBaseOffset = 0x0,
-								const size_t ActionNumber = 0x0 );
+				    const size_t ActionNumber = 0x0 );
 
 	void performPhysAccelHor( const int accX, const int velLimit );
 	void performPhysDampHorz();

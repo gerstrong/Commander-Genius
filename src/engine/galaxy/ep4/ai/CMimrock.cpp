@@ -46,10 +46,6 @@ mTimer(0)
     xDirection = LEFT;
     yDirection = CENTER;
     honorPriority = false;
-    
-    // This should recalibrate the position in case the plats are stuck due some bad level design     
-    processMove( 0,-(8<<CSF) );    
-    processMove( 0, (8<<CSF) );
 }
 
 

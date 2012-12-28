@@ -45,10 +45,12 @@ void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,
 	setActionForce(ActionNumber);
 
 	setActionSprite();
-
-	performCollisions();
 	
+	calcBoundingBoxes();
+		
 	alignToTile();
+	
+	performCollisions();
 	
 	if(!processActionRoutine())
 			exists = false;
