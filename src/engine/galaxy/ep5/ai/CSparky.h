@@ -22,9 +22,14 @@ public:
 	CSparky(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
 	/**
-	 * When it is moving normally
+	 * Action functions
 	 */
-	void processWalking();
+	void processWalking();	
+	void processLook();
+	void processCharge();
+	void processTurn();
+	
+	bool isNearby(CSpriteObject &theObject);
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
@@ -37,6 +42,10 @@ public:
 	
 private:
 	int mTimer;
+	int mLookTimer;
+	
+	direction_t mKeenAlignment;
+	bool mGoodChargeChance;
 };
 
 }
