@@ -13,18 +13,33 @@
 const int TIME_UNTIL_MOVE = 5;
 
 namespace galaxy {  
-
+  
+enum SPARKYACTIONS
+{
+A_SPARKY_WALK = 0,	/* Ordinary slug_move action */
+A_SPARKY_LOOK = 4,
+A_SPARKY_PREPARE_CHARGE = 12,
+A_SPARKY_CHARGE = 16,
+A_SPARKY_TURN = 20,
+A_SPARKY_STUNNED = 23
+};
+  
 CSparky::CSparky(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
+  	mActionMap[A_SPARKY_WALK] = (void (CStunnable::*)()) &CSparky::processWalking;
+	mActionMap[A_SPARKY_STUNNED] = &CStunnable::processGettingStunned;
+  
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x1F0C, 0);
+	setupGalaxyObjectOnMap(0x1F0C, A_SPARKY_WALK);
+	
+	xDirection = LEFT;
 }
 
 
 
-void CSparky::processMoving()
+void CSparky::processWalking()
 {
   mTimer++;
   
@@ -57,7 +72,8 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		//setAction(A_SPARKY_STUNNED);
+	  // TODO: Sparky stunned sound missing
+		setAction(A_SPARKY_STUNNED);
 		dead = true;
 		theObject.dead = true;
 	}
@@ -71,7 +87,7 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 
 int CSparky::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	//turnAroundOnCliff( x1, x2, y2 );
+	turnAroundOnCliff( x1, x2, y2 );
 
 	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
@@ -81,7 +97,7 @@ void CSparky::process()
 {
 	performCollisions();
 	
-	performGravityMid();			
+	performGravityMid();
 
 	if( blockedl )
 		xDirection = RIGHT;
@@ -91,10 +107,7 @@ void CSparky::process()
 	if(!processActionRoutine())
 	    exists = false;
 	
-//	(this->*mp_processState)();
-	
-	processMoving();
-
+	(this->*mp_processState)();
 }
 
 }

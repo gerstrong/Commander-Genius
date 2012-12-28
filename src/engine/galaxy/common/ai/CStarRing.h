@@ -17,6 +17,7 @@ namespace galaxy
 {
 
 const int STARRING_SPRITE = 40;
+const int STARRING_SPRITE_EP5 = 41;
 
 class CStarRing : public CGalaxySpriteObject
 {
@@ -27,6 +28,7 @@ private:
 	void process();
 
 	unsigned char m_animation_timer;
+	int starSpriteBase;
 };
 
 };

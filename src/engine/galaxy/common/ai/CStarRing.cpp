@@ -16,7 +16,12 @@ CStarRing::CStarRing(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 m_animation_timer(0)
 {
-	sprite = STARRING_SPRITE;
+        starSpriteBase = STARRING_SPRITE;
+      
+	if(g_pBehaviorEngine->getEpisode() == 5)
+	  starSpriteBase = STARRING_SPRITE_EP5;
+  
+	sprite = starSpriteBase;
 	honorPriority = false;
 }
 
@@ -28,10 +33,9 @@ void CStarRing::process()
 	{
 		sprite++;
 
-		if(sprite > STARRING_SPRITE+2)
+		if(sprite > starSpriteBase+2)
 		{
-			sprite = STARRING_SPRITE;
-
+			sprite = starSpriteBase;
 			m_animation_timer = 0;
 		}
 	}

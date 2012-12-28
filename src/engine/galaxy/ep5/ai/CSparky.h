@@ -24,7 +24,7 @@ public:
 	/**
 	 * When it is moving normally
 	 */
-	void processMoving();
+	void processWalking();
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 

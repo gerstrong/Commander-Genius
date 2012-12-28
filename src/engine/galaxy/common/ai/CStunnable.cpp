@@ -42,23 +42,27 @@ void CStunnable::getTouchedBy(CSpriteObject &theObject)
 
 void CStunnable::processGettingStunned()
 {
-	if(blockedd)
-	{
-		if( !m_invincible )
-		{
-			CSprite &StarRing = g_pGfxEngine->getSprite( STARRING_SPRITE );
-
-			// Calculate the Position of the Star-Ring. Make it centered and above its head
-			const Uint32 star_x = getXMidPos() - ( (StarRing.getWidth()<<STC)/2 );
-			const Uint32 star_y = getYUpPos()  - ( StarRing.getHeight()<<STC );
-			
-			moveUp(6<<STC);
-			
-			EventSpawnObject *Ev = new EventSpawnObject( new CStarRing(mp_Map, 0, star_x, star_y) );
-			g_pBehaviorEngine->m_EventList.add( Ev );
-			mp_processState = &CStunnable::processStunned;
-		}
-	}
+  if(blockedd)
+  {
+    if( !m_invincible )
+    {
+      int starsprite = STARRING_SPRITE;
+      
+      if(g_pBehaviorEngine->getEpisode() == 5)
+	starsprite = STARRING_SPRITE_EP5;
+      
+      CSprite &StarRing = g_pGfxEngine->getSprite( starsprite );
+      // Calculate the Position of the Star-Ring. Make it centered and above its head
+      const Uint32 star_x = getXMidPos() - ( (StarRing.getWidth()<<STC)/2 );
+      const Uint32 star_y = getYUpPos()  - ( StarRing.getHeight()<<STC );
+      
+      moveUp(6<<STC);
+      
+      EventSpawnObject *Ev = new EventSpawnObject( new CStarRing(mp_Map, 0, star_x, star_y) );
+      g_pBehaviorEngine->m_EventList.add( Ev );
+      mp_processState = &CStunnable::processStunned;
+    }
+  }
 }
 
 void CStunnable::processStunned()
