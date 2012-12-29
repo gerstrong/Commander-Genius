@@ -70,8 +70,17 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	// Neuronal-stunner
 	if( foe == 0x44 )
 	{
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
-	}	
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131);
+	}
+	
+	if( foe == 0x45 )
+	{
+	  if(m_Inventory.Item.m_bullets < 5)
+	  {
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131);
+	  }
+	}
+	
 	
 	// This is the keycard. Keen 5 only!
 	if( foe == 0x46 )
@@ -111,14 +120,110 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		// This is a Sprite from the well of wishes.
 		p_newfoe = new galaxy::CSparky(&Map, foe, x, y);
 		break;
+
+	/*case 0x09: if (difficulty_level < 3) break;
+	case 0x08: if (difficulty_level < 2) break;
+	case 0x07: MineSpawn(tx, ty); MineInLevel = 1; break;
+
+	
+	case 0x0C: if (difficulty_level < 3) break;
+	case 0x0B: if (difficulty_level < 2) break;
+	case 0x0A: SliceSpawn(tx, ty, 0); SliceInLevel = 1; break;
+			
+	case 0x0F: if (difficulty_level < 3) break;
+	case 0X0E: if (difficulty_level < 2) break;
+	case 0x0D: RoboSpawn(tx, ty); RoboInLevel = 1; break;
+
+	case 0x12: if (difficulty_level < 3) break;
+	case 0x11: if (difficulty_level < 2) break;
+	case 0x10: SpiroSpawn(tx, ty); SpiroInLevel = 1; break;
+
+	case 0x15: if (difficulty_level < 3) break;
+	case 0x14: if (difficulty_level < 2) break;
+	case 0x13: SliceDiagSpawn(tx, ty); SliceDiagInLevel = 1; break;
+
+	case 0x18: if (difficulty_level < 3) break;
+	case 0x17: if (difficulty_level < 2) break;
+	case 0x16: SliceSpawn(tx, ty, 1); SliceInLevel = 1; break;
+
+	case 0x21: if (difficulty_level > 1) break;
+	case 0x22: if (difficulty_level > 2) break;
+	case 0x23: SitPlatSpawn(tx, ty, 1); RedPlatInLevel = 1; break;
+
+	case 0x28: SneakPlatSpawn(tx, ty); RedPlatInLevel = 1; break;
+
+	case 0x29:
+	  if (current_level == 12) {
+		Fuse1 = 4;
+		QEDSpawn(tx, ty);
+	  } else {
+		Fuse1++;
+	  }
+	
+	  FuseInLevel = 1;
+	break;
+
+	case 0x2C: if (difficulty_level < 3) break;
+	case 0x2B: if (difficulty_level < 2) break;
+	case 0x2A: AmptonSpawn(tx, ty); AmptonInLevel = 1; break;
+
+
+	case 53: if (difficulty_level < 3) break;
+	case 49: if (difficulty_level < 2) break;
+	case 45: AutoGunSpawn(tx, ty, 0); AutoGunInLevel = 1; break;
+
+	case 54: if (difficulty_level < 3) break;
+	case 50: if (difficulty_level < 2) break;
+	case 46: AutoGunSpawn(tx, ty, 1); AutoGunInLevel = 1; break;
+
+	case 55: if (difficulty_level < 3) break;
+	case 51: if (difficulty_level < 2) break;
+	case 47: AutoGunSpawn(tx, ty, 2); AutoGunInLevel = 1; break;
+
+	case 56: if (difficulty_level < 3) break;
+	case 52: if (difficulty_level < 2) break;
+	case 48: AutoGunSpawn(tx, ty, 3); AutoGunInLevel = 1; break;
+
+	case 73: if (difficulty_level < 3) break;
+	case 72: if (difficulty_level < 2) break;
+	case 71: VolteSpawn(tx, ty); VolteInLevel = 1; break;
+
+	case 76: if (difficulty_level < 3) break;
+	case 75: if (difficulty_level < 2) break;
+	case 74: ShellySpawn(tx, ty); ShellyInLevel = 1; break;
+
+	case 79: if (difficulty_level < 3) break;
+	case 78: if (difficulty_level < 2) break;
+	case 77: SpindredSpawn(tx, ty); SpindredInLevel = 1; break;
+
+	case 88: if (difficulty_level < 3) break;
+	case 89: if (difficulty_level < 2) break;
+	case 90: MasterSpawn(tx, ty); MasterInLevel = 1; break;
+
+	case 101: if (difficulty_level < 3) break;
+	case 100: if (difficulty_level < 2) break;
+	case 99: ShikadiSpawn(tx, ty); ShikadiInLevel = 1; break;
+
+	case 104: if (difficulty_level < 3) break;
+	case 103: if (difficulty_level < 2) break;
+	case 102: ShocksundSpawn(tx, ty); ShocksundInLevel = 1; break;
+
+	case 107: if (difficulty_level < 3) break;
+	case 106: if (difficulty_level < 2) break;
+	case 105: SpherefulSpawn(tx, ty); SpherefulInLevel = 1; break;
+
+	case 124: KorathSpawn(tx, ty); KorathInLevel = 1 ; break;
+
+	case 125: TeleInLevel = 1; break; 
+ */		
 			
 
-	case 0x1B:
+	case 0x1B: case 0x1C: case 0x1D: case 0x1E:
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C );
 			break;
 			
 	//case 0x20:	
-			//p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1B5E); break;
+	//		p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1BD6); break;
 
         // Var Plats other color
 	case 0x24:
@@ -135,6 +240,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
 			break;
 	
+			
 	// Var Plats
 	case 0x50: 
 	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B7C); break;
