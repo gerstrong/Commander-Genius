@@ -124,6 +124,8 @@ void CMap::collectBlockersCoordiantes()
 
     scrollBlockY.push_back(1<<CSF);
     scrollBlockX.push_back(1<<CSF);
+    
+    int ep = g_pBehaviorEngine->getEpisode();
  
     if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
     {
@@ -136,8 +138,10 @@ void CMap::collectBlockersCoordiantes()
 		// Check the row for a blocker which has the proper value
 		if(*map_ptr == 0x19)
 		    scrollBlockY.push_back(y<<(CSF));
-		if(*map_ptr == 0x1A)
+		// In Keen 5 it is only used on the map and stands for the teleporter from some in level
+		if(*map_ptr == 0x1A && ep != 5)
 		    scrollBlockX.push_back(x<<(CSF));
+
 		map_ptr++;
 	    }
 	}
