@@ -149,7 +149,7 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[5][SOUND_ROBOSHOOT] = 29;
     //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
     //sndSlotMapGalaxy[5][?] = 31;
-    //sndSlotMapGalaxy[5][?] = 32;
+    //vesndSlotMapGalaxy[5][?] = 32;
     sndSlotMapGalaxy[5][SOUND_ROBO_STUN] = 33;
     sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
     sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
