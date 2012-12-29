@@ -265,7 +265,6 @@ void CBounder::process()
 	// check if someone is still standing on the platform
 	if( mpInteractPlayer )
 	{
-
 		if( !hitdetect(*mpInteractPlayer) )
 		{
 			mpInteractPlayer->pSupportedbyobject = nullptr;

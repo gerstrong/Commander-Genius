@@ -85,6 +85,10 @@ public:
 				CInventory &l_Inventory,
 				stCheat &Cheatmode);
 
+	/**
+	 * Pushes the players by the given object Reference
+	 */
+	void push( CGalaxySpriteObject &theObject );
 
 	/**
 	 * Overloaded getActionStatus which uses the episodes' map

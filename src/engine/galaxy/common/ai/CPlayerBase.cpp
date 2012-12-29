@@ -571,6 +571,32 @@ bool CPlayerBase::checkMapBoundaryU(const int y1)
 	return false;
 }
 
+void CPlayerBase::push(CGalaxySpriteObject& theObject)
+{
+	if( dead )
+		return;
+
+	int obj_lx = theObject.getXLeftPos();
+	int obj_midx = theObject.getXMidPos();
+	int obj_rx = theObject.getXRightPos();
+	int lx = getXLeftPos();
+	int midx = getXMidPos();
+	int rx = getXRightPos();
+
+	if( midx < obj_midx )
+	{
+		moveLeft(rx - obj_lx);
+		//xDirection = LEFT;
+	}
+
+	if( midx > obj_midx )
+	{
+		moveRight(obj_rx - lx);
+		//xDirection = RIGHT;
+	}
+}
+
+
 
 bool CPlayerBase::getActionStatus(int16_t ActionNumber)
 {

@@ -31,6 +31,9 @@ void CSpriteObject::performCollisionsSameBox()
 	blockedd = checkSolidD(abs_x1, abs_x2, abs_y2);
 }
 
+
+
+
 /*
  * \brief Calculate Bouncing Boxes
  */

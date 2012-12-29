@@ -25,7 +25,11 @@ public:
 	 * Action functions
 	 */
 	void processWalking();	
-	//void processTurn();
+	void processTurn();
+	void processStartPole();
+	void processPoleSlide();
+	void processStopPole();
+	void processFlipSwitch();	
 	
 	bool isNearby(CSpriteObject &theObject);
 

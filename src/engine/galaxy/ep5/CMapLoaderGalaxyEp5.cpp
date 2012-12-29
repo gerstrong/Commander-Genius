@@ -7,6 +7,7 @@
 
 #include "CMapLoaderGalaxyEp5.h"
 #include "ai/CSparky.h"
+#include "ai/CAmpton.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -163,10 +164,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	  FuseInLevel = 1;
 	break;
 
-	case 0x2C: if (difficulty_level < 3) break;
-	case 0x2B: if (difficulty_level < 2) break;
-	case 0x2A: AmptonSpawn(tx, ty); AmptonInLevel = 1; break;
-
 
 	case 53: if (difficulty_level < 3) break;
 	case 49: if (difficulty_level < 2) break;
@@ -221,6 +218,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x1B: case 0x1C: case 0x1D: case 0x1E:
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C );
 			break;
+						
 			
 	//case 0x20:	
 	//		p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1BD6); break;
@@ -240,6 +238,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
 			break;
 	
+			
+	case 0x2C: if ( difficulty < HARD ) break;
+	case 0x2B: if ( difficulty < NORMAL ) break;
+	case 0x2A: 
+			p_newfoe = new galaxy::CAmpton( &Map, foe, x, y );
+			break;
+			
 			
 	// Var Plats
 	case 0x50: 

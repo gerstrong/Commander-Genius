@@ -128,8 +128,7 @@ void CSparky::processCharge()
 
 
 void CSparky::processTurn()
-{
-  
+{  
   mTimer++;
   
   if(mTimer < TURN_TIME)

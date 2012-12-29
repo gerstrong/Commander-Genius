@@ -847,7 +847,7 @@ void CPlayer::bump( direction_t direction )
 // Scrub, etc "push".
 void CPlayer::push( CSpriteObject &theObject )
 {
-	if(	dead || level_done!=LEVEL_NOT_DONE )
+	if( dead || level_done!=LEVEL_NOT_DONE )
 		return;
 
 	int obj_lx = theObject.getXLeftPos();
