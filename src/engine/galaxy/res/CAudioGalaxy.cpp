@@ -146,7 +146,7 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[5][?] = 26;    
     //sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
     //sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
-    //sndSlotMapGalaxy[5][SOUND_ROBOSHOOT] = 29;
+    sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
     //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
     sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
     sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = 32;

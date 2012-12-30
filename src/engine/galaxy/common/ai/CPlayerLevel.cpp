@@ -2194,6 +2194,21 @@ void CPlayerLevel::centerView()
 	}
 }
 
+void CPlayerLevel::push(CGalaxySpriteObject& theObject)
+{
+  CPlayerBase::push(theObject);
+  
+  if(onPole())
+  {
+    m_climbing = false;
+    yDirection = 0;
+    yinertia = 0;
+    solid = true;
+    setAction(A_KEEN_FALL);
+  }
+}
+
+
 
 
 void CPlayerLevel::process()

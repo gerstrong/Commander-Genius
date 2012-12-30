@@ -63,6 +63,17 @@ public:
 	 */
 	void centerView();
 
+	bool onPole()
+	{
+	  return getActionNumber(A_KEEN_POLE) ||
+		getActionNumber(A_KEEN_POLE_CLIMB) ||
+		getActionNumber(A_KEEN_POLE_SLIDE) ||
+		getActionNumber(A_KEEN_POLE_SHOOT) ||
+		getActionNumber(A_KEEN_POLE_SHOOTUP) ||
+		getActionNumber(A_KEEN_POLE_SHOOTDOWN);	
+	}
+	
+	void push( CGalaxySpriteObject &theObject );
 
 	/**
 	 * Input handles

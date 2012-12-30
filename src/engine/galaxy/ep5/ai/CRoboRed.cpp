@@ -7,95 +7,143 @@
 
 
 #include "CRoboRed.h"
+#include "CRedShot.h"
 #include "engine/galaxy/common/ai/CPlayerBase.h"
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include "engine/galaxy/common/ai/CPlayerLevel.h"
 #include "misc.h"
 
 /*
-$21DCW #Lil Ampton walk
-$21FAW #Lil Ampton walk
-$2218W #Lil Ampton walk
-$2236W #Lil Ampton walk
-$2254W #Lil Ampton turn 4
-$2272W #Lil Ampton start pole slide 5
-$2290W #Lil Ampton start pole slide
-$22AEW #Lil Ampton pole slide 6
-$22CCW #Lil Ampton stop pole slide 7
-$22EAW #Lil Ampton stop pole slide
-$2308W #Lil Ampton flip switch 8
-$2326W #Lil Ampton flip switch 
-$2344W #Lil Ampton flip switch
-$2362W #Lil Ampton flip switch
-$2380W #Lil Ampton flip switch
-$239EW #Stunned Ampton 13
- */
-
+$2734W #Robo Red move
+$2752W #Robo Red pause before shooting
+$2770W #Robo Red shoot
+$278EW #Robo Red shoot (Make shot)
+*/
 
 namespace galaxy {  
   
-enum SPARKYACTIONS
+enum ROBOREDACTIONS
 {
-A_AMPTON_WALK = 0,
-A_AMPTON_TURN = 4,
-A_AMPTON_START_POLE = 5,
-A_AMPTON_POLE_SLIDE = 6,
-A_AMPTON_STOP_POLE = 7,
-A_AMPTON_FLIP_SWITCH = 8,
-A_AMPTON_STUNNED = 12
+A_RED_MOVE = 0,
+A_RED_PAUSE = 1,
+A_RED_SHOOT = 3
 };
 
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
+const int TIME_UNTIL_SHOOT = 80;
 
-const int WALK_SPEED = 25;
+const int TIME_SHOOTING = 200;
 
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
+const int MOVE_SPEED = 15;
 
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
+const int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
 
   
 CRoboRed::CRoboRed(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mTimer(0)
+mTimer(0),
+swapYDir(false),
+mKeenNearby(false)
 {
-	mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_RED_MOVE] = (void (CStunnable::*)()) &CRoboRed::processMoving;
+	mActionMap[A_RED_PAUSE] = (void (CStunnable::*)()) &CRoboRed::processPauseBeforeShoot;
+	mActionMap[A_RED_SHOOT] = (void (CStunnable::*)()) &CRoboRed::processShoot;
   
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+	setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);
 	
 	xDirection = LEFT;
 }
 
 
 
-void CRoboRed::processWalking()
+void CRoboRed::processMoving()
 {
   // Move normally in the direction
   if( xDirection == RIGHT )
   {
-    moveRight( WALK_SPEED );
+    moveRight( MOVE_SPEED );
   }
   else
   {
-    moveLeft( WALK_SPEED );
-  }   
+    moveLeft( MOVE_SPEED );
+  }
+  
+  if(getProbability(60) && mKeenNearby)
+  {
+    setAction(A_RED_PAUSE);
+  }
 }
+
+
+void CRoboRed::processPauseBeforeShoot()
+{
+  // just wait 
+  mTimer++;
+  if(mTimer < TIME_UNTIL_SHOOT)
+    return;
+  
+  mTimer = 0;
+  
+  if(mKeenNearby)
+    setAction(A_RED_SHOOT);  
+  else
+    setAction(A_RED_MOVE);
+}
+
+
+void CRoboRed::processShoot()
+{
+  // Shoot many times.  
+  if(mTimer%16 == 0)
+  {
+    playSound(SOUND_ROBORED_SHOOT);
+    
+    direction_t newXDir = xDirection<0 ? LEFT : RIGHT;
+    direction_t newYDir = swapYDir ? UP : DOWN;    
+    swapYDir = !swapYDir;
+    int newX = 	xDirection == RIGHT ? getXRightPos() : getXLeftPos();
+    int newY = 	getYPosition() + 0x300;
+    g_pBehaviorEngine->m_EventList.spawnObj( new CRedShot( getMapPtr(), 
+							     0, 
+							     newX, newY,
+							     newXDir, newYDir ) );
+  }
+				
+  mTimer++;
+  if(mTimer < TIME_SHOOTING)
+    return;
+  
+  mTimer = 0;
+  
+  setAction(A_RED_PAUSE);
+}
+
 
 
 bool CRoboRed::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(10) )
-		return false;
-
-	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+	if( dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
+	  mKeenNearby = false;
+		  
+	  const int objX = theObject.getXMidPos();
+	  const int roboX = getXMidPos();
+	  const int dx = objX - roboX;
+
+  	  if( theObject.getYDownPos() > getYUpPos() && theObject.getYUpPos() < getYDownPos() )
+	  {
+	    if(!getActionNumber(A_RED_SHOOT))
+	    {
+    		if( theObject.getXMidPos() < getXMidPos() )
+			xDirection = LEFT;
 		else
-			mKeenAlignment = RIGHT;*/
+			xDirection = RIGHT;
+	    }
+	  
+	    if( std::abs(dx) < CSF_DISTANCE_TO_SHOOT )
+	    {
+	      mKeenNearby = true;
+	    }
+	  }
 	}
 
 	return true;
@@ -108,18 +156,16 @@ void CRoboRed::getTouchedBy(CSpriteObject &theObject)
 
 	CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet? Than make it stunned.
+	// Was it a bullet?
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		playSound(SOUND_ROBO_STUN);
-		dead = true;
-		theObject.dead = true;
+	  theObject.dead = true;
 	}
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		player->kill();
-	}*/
+	  player->kill();
+	}
 }
 
 

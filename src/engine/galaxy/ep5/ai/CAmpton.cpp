@@ -241,9 +241,8 @@ void CAmpton::getTouchedBy(CSpriteObject &theObject)
 		theObject.dead = true;
 	}
 
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		//player->kill();
 		player->push(*this);
 	}
 }

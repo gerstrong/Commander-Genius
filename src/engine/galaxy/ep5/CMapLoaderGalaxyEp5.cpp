@@ -8,6 +8,7 @@
 #include "CMapLoaderGalaxyEp5.h"
 #include "ai/CSparky.h"
 #include "ai/CAmpton.h"
+#include "ai/CRoboRed.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -118,7 +119,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x06: if( difficulty < HARD ) break;
 	case 0x05: if( difficulty < NORMAL ) break;	// not sure here    
 	case 0x04: 
-		// This is a Sprite from the well of wishes.
+		// This is Sparky
 		p_newfoe = new galaxy::CSparky(&Map, foe, x, y);
 		break;
 
@@ -129,13 +130,16 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	
 	case 0x0C: if (difficulty_level < 3) break;
 	case 0x0B: if (difficulty_level < 2) break;
-	case 0x0A: SliceSpawn(tx, ty, 0); SliceInLevel = 1; break;
+	case 0x0A: SliceSpawn(tx, ty, 0); SliceInLevel = 1; break;*/
 			
-	case 0x0F: if (difficulty_level < 3) break;
-	case 0X0E: if (difficulty_level < 2) break;
-	case 0x0D: RoboSpawn(tx, ty); RoboInLevel = 1; break;
+	case 0x0F: if ( difficulty < HARD ) break;
+	case 0X0E: if ( difficulty < NORMAL ) break;
+	case 0x0D: 
+  		// This is Robored
+		p_newfoe = new galaxy::CRoboRed(&Map, foe, x, y);
+		break;
 
-	case 0x12: if (difficulty_level < 3) break;
+	/*case 0x12: if (difficulty_level < 3) break;
 	case 0x11: if (difficulty_level < 2) break;
 	case 0x10: SpiroSpawn(tx, ty); SpiroInLevel = 1; break;
 

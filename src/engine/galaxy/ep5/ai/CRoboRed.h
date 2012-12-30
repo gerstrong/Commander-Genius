@@ -4,7 +4,7 @@
  *  Created on: 29 Dez 2012
  *      Author: Gerstrong
  *
- *  This handles the Amptons in Galaxy
+ *  This handles the Red Robot in Galaxy
  */
  
 #ifndef CROBORED_H_
@@ -24,8 +24,9 @@ public:
 	/**
 	 * Action functions
 	 */
-	void processWalking();	
-	//void processTurn();
+	void processMoving();	
+	void processPauseBeforeShoot();	
+	void processShoot();	
 	
 	bool isNearby(CSpriteObject &theObject);
 
@@ -40,6 +41,8 @@ public:
 	
 private:
 	int mTimer;
+	bool swapYDir;
+	bool mKeenNearby;
 };
 
 }
