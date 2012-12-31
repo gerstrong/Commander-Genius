@@ -12,22 +12,11 @@
 #include "misc.h"
 
 /*
-$21DCW #Lil Ampton walk
-$21FAW #Lil Ampton walk
-$2218W #Lil Ampton walk
-$2236W #Lil Ampton walk
-$2254W #Lil Ampton turn 4
-$2272W #Lil Ampton start pole slide 5
-$2290W #Lil Ampton start pole slide
-$22AEW #Lil Ampton pole slide 6
-$22CCW #Lil Ampton stop pole slide 7
-$22EAW #Lil Ampton stop pole slide
-$2308W #Lil Ampton flip switch 8
-$2326W #Lil Ampton flip switch 
-$2344W #Lil Ampton flip switch
-$2362W #Lil Ampton flip switch
-$2380W #Lil Ampton flip switch
-$239EW #Stunned Ampton 13
+$1CCCW #Volte Face
+$1CEAW #Volte Face
+$1D08W #Volte Face
+$1D26W #Volte Face
+$1D44W #Volte Face stunned
  */
 
 
@@ -35,117 +24,223 @@ namespace galaxy {
   
 enum SPARKYACTIONS
 {
-A_AMPTON_WALK = 0,
-A_AMPTON_TURN = 4,
-A_AMPTON_START_POLE = 5,
-A_AMPTON_POLE_SLIDE = 6,
-A_AMPTON_STOP_POLE = 7,
-A_AMPTON_FLIP_SWITCH = 8,
-A_AMPTON_STUNNED = 12
+A_VOLTFACE_MOVE = 0,
+A_VOLTFACE_STUNNED = 4
 };
 
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
-
-const int WALK_SPEED = 25;
-
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
-
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
+const int MOVE_SPEED = 50;
 
   
 CVolteface::CVolteface(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mTimer(0)
+mTimer(0),
+targetmode(false)
 {
-	mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
-  
-	// Adapt this AI
-	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+	mActionMap[A_VOLTFACE_MOVE] = (void (CStunnable::*)()) &CVolteface::processMoving;
+	mActionMap[A_VOLTFACE_STUNNED] = (void (CStunnable::*)()) &CVolteface::processStunned;
 	
-	xDirection = LEFT;
+	m_ActionBaseOffset = 0x1CCC;
+
+	setActionForce(A_VOLTFACE_MOVE);
+	setActionSprite();
+
+	calcBoundingBoxes();
+		
+	fetchInitialDir();
+	detectNextTarget(getPosition());	
 }
 
 
-
-void CVolteface::processWalking()
+void CVolteface::fetchInitialDir()
 {
-  // Move normally in the direction
-  if( xDirection == RIGHT )
+  for (int y = -1 ; y<=1 ; y++ )
   {
-    moveRight( WALK_SPEED );
+    for (int x = -1 ; x<=1 ; x++ )
+    {
+      if(x == 0 && y == 0)
+	continue;
+      
+      const Uint16 object = mp_Map->getPlaneDataAt(2, getXPosition()+(x<<CSF), getYPosition()+(y<<CSF));
+      
+      readDirection(object, xDirection, yDirection);
+      
+      // Now check all eight cases and test if it matches
+      if( x == xDirection && y == yDirection )
+	return;
+    }
   }
-  else
-  {
-    moveLeft( WALK_SPEED );
-  }   
 }
 
 
-bool CVolteface::isNearby(CSpriteObject &theObject)
+void CVolteface::readDirection(const Uint16 object, 	
+				int &xDirection,		
+				int &yDirection )
 {
-	if( !getProbability(10) )
-		return false;
-
-	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+	switch( object )
 	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
-		else
-			mKeenAlignment = RIGHT;*/
+	    case 0x50:
+	    case 0x5B:
+	    case 0x24:
+		xDirection = 0;
+		yDirection = UP;
+		break;
+	    case 0x51:
+	    case 0x5C:
+	    case 0x25:
+		xDirection = RIGHT;
+		yDirection = 0;
+		break;
+	    case 0x52:
+	    case 0x5d:
+	    case 0x26:
+		xDirection = 0;
+		yDirection = DOWN;
+		break;
+	    case 0x53:
+	    case 0x5E:
+	    case 0x27:
+		xDirection = LEFT;
+		yDirection = 0;
+		break;
+	    case 0x5F:
+		xDirection = RIGHT;
+		yDirection = UP;
+		break;
+	    case 0x60:
+		xDirection = RIGHT;
+		yDirection = DOWN;
+		break;
+	    case 0x61:
+		xDirection = LEFT;
+		yDirection = DOWN;
+		break;
+	    case 0x62:
+		xDirection = LEFT;
+		yDirection = UP;
+		break;
+	    default:
+		break;
 	}
-
-	return true;
+  
 }
+
+
+void CVolteface::processMoving()
+{
+    int xBlockPos = target.x - getXPosition();
+    int yBlockPos = target.y - getYPosition();
+    
+    const int xBlockPosAbs = (xBlockPos<0) ? -xBlockPos : xBlockPos;
+    const int yBlockPosAbs = (yBlockPos<0) ? -yBlockPos : yBlockPos;
+    
+    if( xBlockPosAbs < MOVE_SPEED && yBlockPosAbs < MOVE_SPEED )
+    {
+	const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
+	
+	VectorD2<int> speed(xBlockPos, yBlockPos);	    
+	moveDir(speed);
+	
+	targetmode = false;
+	
+	// If there is an object that changes the direction of the plat, apply it!
+	// TODO: Create a class for VarPlatforms and this foe which are common elements that are handled
+	readDirection(object, xDirection, yDirection );
+	detectNextTarget(target);
+    }
+    
+    if(yDirection == UP && blockedu)
+	yDirection = DOWN;
+    else if(yDirection == DOWN && blockedd)
+	yDirection = UP;
+    
+    if(xDirection == RIGHT && blockedr)
+	xDirection = LEFT;
+    else if(xDirection == LEFT && blockedl)
+	xDirection = RIGHT;
+    
+    VectorD2<int> speed;
+    
+    if(yDirection == UP)
+    {
+	speed.y = -MOVE_SPEED;
+    }
+    else if(yDirection == DOWN)
+    {
+	speed.y = MOVE_SPEED;
+    }    
+    
+    if(xDirection == RIGHT)
+    {
+	speed.x = MOVE_SPEED;
+    }
+    else if(xDirection == LEFT)
+    {
+	speed.x = -MOVE_SPEED;
+    }
+    
+    moveDir(speed);
+}
+
+void CVolteface::processStunned()
+{
+  if(getActionStatus(A_VOLTFACE_MOVE))
+  {  
+    setAction(A_VOLTFACE_MOVE);
+  }
+}
+
+
 
 void CVolteface::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
-		return;
+	if( getActionNumber(A_VOLTFACE_STUNNED) )
+	  return;
+  
+	if(theObject.dead)
+	  return;		
 
 	CStunnable::getTouchedBy(theObject);
 
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		playSound(SOUND_ROBO_STUN);
-		dead = true;
-		theObject.dead = true;
+	  setAction(A_VOLTFACE_STUNNED);
+	  theObject.dead = true;
 	}
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		player->kill();
-	}*/
+	  player->kill();
+	}
 }
 
 
-int CVolteface::checkSolidD( int x1, int x2, int y2, const bool push_mode )
-{
-	turnAroundOnCliff( x1, x2, y2 );
 
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+void CVolteface::detectNextTarget(const VectorD2<int> &oldTarget)
+{   
+    VectorD2<int> potTarget(oldTarget);
+    
+    potTarget = (potTarget>>CSF);
+        
+    if(yDirection == UP)
+	potTarget.y--;
+    else if(yDirection == DOWN)
+	potTarget.y++;
+    
+    if(xDirection == LEFT)
+	potTarget.x--;
+    else if(xDirection == RIGHT)
+	potTarget.x++;
+    
+    target = (potTarget<<CSF);    
 }
+
 
 
 void CVolteface::process()
 {
 	performCollisions();
 	
-	performGravityMid();
-
-	if( blockedl )
-	{
-	  xDirection = RIGHT;
-	}
-	else if(blockedr)
-	{
-	  xDirection = LEFT;
-	}
-
 	if(!processActionRoutine())
 	    exists = false;
 	

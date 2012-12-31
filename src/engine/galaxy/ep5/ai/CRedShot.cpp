@@ -20,8 +20,8 @@ A_REDSHOT_MOVE = 0,
 A_REDSHOT_SMASH = 2
 };
 
-const int MOVE_X_SPEED = 100;
-const int MOVE_Y_SPEED = 15;
+const int MOVE_X_SPEED = 200;
+const int MOVE_Y_SPEED = 30;
 
 const int TIME_UNTIL_SMASH = 20;
 

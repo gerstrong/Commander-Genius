@@ -34,7 +34,7 @@ targetmode(false)
 }
 
 
-void CVarPlatform::detectNextTarget(const VectorD2<int> oldTarget)
+void CVarPlatform::detectNextTarget(const VectorD2<int> &oldTarget)
 {   
     VectorD2<int> potTarget(oldTarget);
     

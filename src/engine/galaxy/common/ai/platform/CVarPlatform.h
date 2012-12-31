@@ -25,7 +25,7 @@ public:
 	void process();
 
 private:
-	void detectNextTarget(const VectorD2<int> oldTarget);
+	void detectNextTarget(const VectorD2<int> &oldTarget);
     
 	bool targetmode;
 	VectorD2<int> target;

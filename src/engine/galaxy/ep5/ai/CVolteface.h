@@ -24,22 +24,29 @@ public:
 	/**
 	 * Action functions
 	 */
-	void processWalking();	
-	//void processTurn();
+	void processMoving();	
+	void processStunned();
+		
+	void detectNextTarget(const VectorD2<int> &oldTarget);
 	
-	bool isNearby(CSpriteObject &theObject);
-
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
-
 	void process();
 
 	/**
-	 * What happens if the slug gets touched by another object
+	 * What happens if the foe gets touched by another object
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
+  
+	void fetchInitialDir();
+	void readDirection(const Uint16 object, 	
+				int &xDirection,		
+				int &yDirection );
+  
 	int mTimer;
+	
+	bool targetmode;
+	VectorD2<int> target;	
 };
 
 }

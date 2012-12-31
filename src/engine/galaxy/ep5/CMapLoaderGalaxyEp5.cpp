@@ -9,6 +9,7 @@
 #include "ai/CSparky.h"
 #include "ai/CAmpton.h"
 #include "ai/CRoboRed.h"
+#include "ai/CVolteface.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -183,13 +184,17 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 56: if (difficulty_level < 3) break;
 	case 52: if (difficulty_level < 2) break;
-	case 48: AutoGunSpawn(tx, ty, 3); AutoGunInLevel = 1; break;
+	case 48: AutoGunSpawn(tx, ty, 3); AutoGunInLevel = 1; break;*/
 
-	case 73: if (difficulty_level < 3) break;
-	case 72: if (difficulty_level < 2) break;
-	case 71: VolteSpawn(tx, ty); VolteInLevel = 1; break;
+	case 0x49: if ( difficulty < HARD ) break;
+	case 0x48: if ( difficulty < NORMAL ) break;
+	case 0x47: 
+  		// This is Voltface
+		p_newfoe = new galaxy::CVolteface(&Map, foe, x, y);
+		break;
+	
 
-	case 76: if (difficulty_level < 3) break;
+	/*case 76: if (difficulty_level < 3) break;
 	case 75: if (difficulty_level < 2) break;
 	case 74: ShellySpawn(tx, ty); ShellyInLevel = 1; break;
 
