@@ -33,8 +33,9 @@ const int MOVE_SPEED = 50;
   
 CVolteface::CVolteface(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mTimer(0),
-targetmode(false)
+CMoveTarget(m_Pos, xDirection, yDirection, *mp_Map),
+mTimer(0)/*,
+targetmode(false)*/
 {
 	mActionMap[A_VOLTFACE_MOVE] = (void (CStunnable::*)()) &CVolteface::processMoving;
 	mActionMap[A_VOLTFACE_STUNNED] = (void (CStunnable::*)()) &CVolteface::processStunned;
@@ -44,84 +45,7 @@ targetmode(false)
 	setActionForce(A_VOLTFACE_MOVE);
 	setActionSprite();
 
-	calcBoundingBoxes();
-		
-	fetchInitialDir();
-	detectNextTarget(getPosition());	
-}
-
-
-void CVolteface::fetchInitialDir()
-{
-  for (int y = -1 ; y<=1 ; y++ )
-  {
-    for (int x = -1 ; x<=1 ; x++ )
-    {
-      if(x == 0 && y == 0)
-	continue;
-      
-      const Uint16 object = mp_Map->getPlaneDataAt(2, getXPosition()+(x<<CSF), getYPosition()+(y<<CSF));
-      
-      readDirection(object, xDirection, yDirection);
-      
-      // Now check all eight cases and test if it matches
-      if( x == xDirection && y == yDirection )
-	return;
-    }
-  }
-}
-
-
-void CVolteface::readDirection(const Uint16 object, 	
-				int &xDirection,		
-				int &yDirection )
-{
-	switch( object )
-	{
-	    case 0x50:
-	    case 0x5B:
-	    case 0x24:
-		xDirection = 0;
-		yDirection = UP;
-		break;
-	    case 0x51:
-	    case 0x5C:
-	    case 0x25:
-		xDirection = RIGHT;
-		yDirection = 0;
-		break;
-	    case 0x52:
-	    case 0x5d:
-	    case 0x26:
-		xDirection = 0;
-		yDirection = DOWN;
-		break;
-	    case 0x53:
-	    case 0x5E:
-	    case 0x27:
-		xDirection = LEFT;
-		yDirection = 0;
-		break;
-	    case 0x5F:
-		xDirection = RIGHT;
-		yDirection = UP;
-		break;
-	    case 0x60:
-		xDirection = RIGHT;
-		yDirection = DOWN;
-		break;
-	    case 0x61:
-		xDirection = LEFT;
-		yDirection = DOWN;
-		break;
-	    case 0x62:
-		xDirection = LEFT;
-		yDirection = UP;
-		break;
-	    default:
-		break;
-	}
-  
+	calcBoundingBoxes();		
 }
 
 
@@ -143,9 +67,8 @@ void CVolteface::processMoving()
 	targetmode = false;
 	
 	// If there is an object that changes the direction of the plat, apply it!
-	// TODO: Create a class for VarPlatforms and this foe which are common elements that are handled
 	readDirection(object, xDirection, yDirection );
-	detectNextTarget(target);
+	detectNextTarget(target, xDirection, yDirection);
     }
     
     if(yDirection == UP && blockedu)
@@ -214,26 +137,6 @@ void CVolteface::getTouchedBy(CSpriteObject &theObject)
 	}
 }
 
-
-
-void CVolteface::detectNextTarget(const VectorD2<int> &oldTarget)
-{   
-    VectorD2<int> potTarget(oldTarget);
-    
-    potTarget = (potTarget>>CSF);
-        
-    if(yDirection == UP)
-	potTarget.y--;
-    else if(yDirection == DOWN)
-	potTarget.y++;
-    
-    if(xDirection == LEFT)
-	potTarget.x--;
-    else if(xDirection == RIGHT)
-	potTarget.x++;
-    
-    target = (potTarget<<CSF);    
-}
 
 
 
