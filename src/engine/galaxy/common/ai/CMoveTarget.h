@@ -6,20 +6,19 @@
 
 #ifndef CMOVETARGET_H
 #define CMOVETARGET_H
-#include <CVec.h>
+#include "CVec.h"
 #include "common/direction.h"
-#include <common/CMap.h>
+#include "common/CMap.h"
 
 
 class CMoveTarget
 {  
 public:
 	CMoveTarget(const VectorD2<unsigned int> &pos,
-	  int &xDirection, int &yDirection, CMap &mapRef) :
+	  int &xDirection, int &yDirection) :
 	  targetmode(false),
 	  origin(pos) 
-	  {
-	    fetchInitialDir(xDirection, yDirection, mapRef);
+	  {	    
 	    detectNextTarget(origin, xDirection, yDirection);	
 	  }
   

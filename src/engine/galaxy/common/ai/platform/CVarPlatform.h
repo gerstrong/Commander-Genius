@@ -9,12 +9,13 @@
 #define CVARPLATFORM_H_
 
 #include "CPlatform.h"
+#include <engine/galaxy/common/ai/CMoveTarget.h>
 #include "CVec.h"
 
 namespace galaxy {
 
 
-class CVarPlatform : public CPlatform
+class CVarPlatform : public CPlatform, public CMoveTarget
 {
 public:
 	CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
@@ -23,13 +24,6 @@ public:
 			const int actionOffset);
 
 	void process();
-
-private:
-	void detectNextTarget(const VectorD2<int> &oldTarget);
-    
-	bool targetmode;
-	VectorD2<int> target;
-
 };
 
 };

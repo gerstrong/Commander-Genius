@@ -18,7 +18,7 @@ CVarPlatform::CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 		const int actionOffset) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y),
-targetmode(false)
+CMoveTarget(m_Pos, xDirection, yDirection)
 {
 	m_ActionBaseOffset = actionOffset;
 
@@ -29,28 +29,6 @@ targetmode(false)
 	yDirection = vertdir;
 
 	calcBoundingBoxes();
-	
-	detectNextTarget(getPosition());	
-}
-
-
-void CVarPlatform::detectNextTarget(const VectorD2<int> &oldTarget)
-{   
-    VectorD2<int> potTarget(oldTarget);
-    
-    potTarget = (potTarget>>CSF);
-        
-    if(yDirection == UP)
-	potTarget.y--;
-    else if(yDirection == DOWN)
-	potTarget.y++;
-    
-    if(xDirection == LEFT)
-	potTarget.x--;
-    else if(xDirection == RIGHT)
-	potTarget.x++;
-    
-    target = (potTarget<<CSF);    
 }
 
 void CVarPlatform::process()
@@ -70,56 +48,9 @@ void CVarPlatform::process()
 	
 	targetmode = false;
 	
-	// If there is an object that changes the direction of the plat, apply it!
-	switch( object )
-	{
-	    case 0x50:
-	    case 0x5B:
-	    case 0x24:
-		xDirection = 0;
-		yDirection = UP;
-		break;
-	    case 0x51:
-	    case 0x5C:
-	    case 0x25:
-		xDirection = RIGHT;
-		yDirection = 0;
-		break;
-	    case 0x52:
-	    case 0x5d:
-	    case 0x26:
-		xDirection = 0;
-		yDirection = DOWN;
-		break;
-	    case 0x53:
-	    case 0x5E:
-	    case 0x27:
-		xDirection = LEFT;
-		yDirection = 0;
-		break;
-	    case 0x5F:
-		xDirection = RIGHT;
-		yDirection = UP;
-		break;
-	    case 0x60:
-		xDirection = RIGHT;
-		yDirection = DOWN;
-		break;
-	    case 0x61:
-		xDirection = LEFT;
-		yDirection = DOWN;
-		break;
-	    case 0x62:
-		xDirection = LEFT;
-		yDirection = UP;
-		break;
-	    default:
-		xDirection = 0;
-		yDirection = 0;
-		
-		break;
-	}
-	detectNextTarget(target);
+	readDirection(object, xDirection, yDirection );
+	detectNextTarget(target, xDirection, yDirection);
+	
     }
     
     if(yDirection == UP && blockedu)

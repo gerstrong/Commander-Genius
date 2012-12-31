@@ -33,9 +33,8 @@ const int MOVE_SPEED = 50;
   
 CVolteface::CVolteface(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-CMoveTarget(m_Pos, xDirection, yDirection, *mp_Map),
-mTimer(0)/*,
-targetmode(false)*/
+CMoveTarget(m_Pos, xDirection, yDirection),
+mTimer(0)
 {
 	mActionMap[A_VOLTFACE_MOVE] = (void (CStunnable::*)()) &CVolteface::processMoving;
 	mActionMap[A_VOLTFACE_STUNNED] = (void (CStunnable::*)()) &CVolteface::processStunned;
@@ -46,6 +45,8 @@ targetmode(false)*/
 	setActionSprite();
 
 	calcBoundingBoxes();		
+	
+	fetchInitialDir(xDirection, yDirection, *mp_Map);
 }
 
 
