@@ -38,7 +38,7 @@ void CMoveTarget::readDirection(const int object, int &xDirection, int &yDirecti
 		yDirection = 0;
 		break;
 	    case 0x52:
-	    case 0x5d:
+	    case 0x5D:
 	    case 0x26:
 		xDirection = 0;
 		yDirection = DOWN;

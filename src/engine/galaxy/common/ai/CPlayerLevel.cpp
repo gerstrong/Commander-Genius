@@ -1713,17 +1713,50 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
  */
 void CPlayerLevel::PressPlatformSwitch(const Uint32 lx, const Uint32 ly)
 {
-	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
-
-	Uint32 newX = targetXY >> 8;
-	Uint32 newY = targetXY & 0xFF;
-
-	if(mp_Map->getPlaneDataAt(2, newX<<CSF, newY<<CSF) == 31)
-		mp_Map->setTile(newX, newY, 0, true, 2);
-	else
-		mp_Map->setTile(newX, newY, 31, true, 2);
-
-	return;
+  Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+  
+  Uint32 newX = targetXY >> 8;
+  Uint32 newY = targetXY & 0xFF;
+  
+  const int oldInfoTile = mp_Map->getPlaneDataAt(2, newX<<CSF, newY<<CSF);
+  int newTile = 0x0;
+  
+  if(oldInfoTile == 31) // 31 stands for the plat blocker
+  {
+    newTile = 0;    
+  }
+  else if(oldInfoTile >= 0x5B && oldInfoTile <= 0x62 )
+  {
+    switch( oldInfoTile )
+    {
+      case 0x5B:
+	newTile = 0x5D; break;
+      case 0x5C:
+	newTile = 0x5E; break;
+      case 0x5D:
+	newTile = 0x5B; break;	      
+      case 0x5E:
+	newTile = 0x5C; break;	      
+      case 0x5F:
+	newTile = 0x61; break;
+      case 0x60:
+	newTile = 0x62; break;
+      case 0x61:
+	newTile = 0x5F; break;
+      case 0x62:
+	newTile = 0x60; break;
+      default:
+	break;
+    }        
+  }
+  else if(oldInfoTile == 0)
+  {
+    newTile = 31;
+  }
+  
+  mp_Map->setTile(newX, newY, newTile, true, 2);
+  
+  return;
 }
 
 
