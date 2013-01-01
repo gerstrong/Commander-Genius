@@ -20,7 +20,7 @@ enum SLICESTARACTIONS
 A_SLICESTAR_MOVE = 0,
 };
 
-const int MOVE_SPEED = 15;
+const int MOVE_SPEED = 25;
   
 CSlicestar::CSlicestar(CMap *pmap, const Uint16 foeID, 
 		       const Uint32 x, const Uint32 y, 
@@ -86,14 +86,26 @@ void CSlicestar::process()
 	moveYDir( yDirection*MOVE_SPEED );	
 	
 	if( blockedl && xDirection == LEFT )
+	{
+	  playSound(SOUND_SLICEBUMP);
 	  xDirection = RIGHT;
+	}
 	else if(blockedr && xDirection == RIGHT)
+	{
+	  playSound(SOUND_SLICEBUMP);
 	  xDirection = LEFT;
+	}
 
 	if( blockedu && yDirection == UP )
+	{
+	  playSound(SOUND_SLICEBUMP);
 	  yDirection = DOWN;
+	}
 	else if(blockedd && yDirection == DOWN)
+	{
+	  playSound(SOUND_SLICEBUMP);
 	  yDirection = UP;
+	}
 }
 
 }

@@ -123,7 +123,7 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = 3;
     sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4; 
     //sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
-    //sndSlotMapGalaxy[5][SOUND_KEEN_POGO_LAND] = 6;
+    sndSlotMapGalaxy[5][SOUND_SLICEBUMP] = 6;
     sndSlotMapGalaxy[5][SOUND_KEEN_POGO] = 7;
     sndSlotMapGalaxy[5][SOUND_GET_BONUS] = 8;
     sndSlotMapGalaxy[5][SOUND_GET_AMMO] = 9;
