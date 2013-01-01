@@ -37,6 +37,16 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
+    
+#if defined(OGG) || defined(TREMOR)
+    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
+    if(oggPlayer->loadMusicForLevel(ExeFile, level))
+    {
+	mpPlayer = move(oggPlayer);
+	return true;
+    }
+#endif    
+    
     std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
     imfPlayer->loadMusicForLevel(ExeFile, level);
 
