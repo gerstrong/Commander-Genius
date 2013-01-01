@@ -21,6 +21,7 @@
 #include "engine/galaxy/common/ai/platforms.h"
 #include "engine/galaxy/common/ai/CFlag.h"
 #include "engine/galaxy/common/ai/CSpriteItem.h"
+#include <engine/galaxy/common/ai/platform/CPlatformSit.h>
 
 namespace galaxy
 {
@@ -175,14 +176,15 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			break;
 									
 	case 0x20:	
-			p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1BD6); break;		
+			p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1BD6); break;
 		
 
-/*	case 0x21: if (difficulty_level > 1) break;
-	case 0x22: if (difficulty_level > 2) break;
-	case 0x23: SitPlatSpawn(tx, ty, 1); RedPlatInLevel = 1; break;
+	case 0x21: if (difficulty >= NORMAL) break;
+	case 0x22: if (difficulty >= HARD) break;
+	case 0x23: 
+			p_newfoe = new galaxy::CPlatformSit( &Map, foe, x, y, 0x1BD6); break;		
 
-	case 0x28: SneakPlatSpawn(tx, ty); RedPlatInLevel = 1; break;
+	/*case 0x28: SneakPlatSpawn(tx, ty); RedPlatInLevel = 1; break;
 
 	case 0x29:
 	  if (current_level == 12) {

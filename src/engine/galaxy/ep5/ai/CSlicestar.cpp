@@ -73,10 +73,10 @@ void CSlicestar::process()
 	  if( object == 0x1F )
 	  {
 	    if(xDirection != CENTER)
-	      xDirection = !xDirection;
+	      xDirection = -xDirection;
 	      
 	    if(yDirection != CENTER)
-	      yDirection = !yDirection;
+	      yDirection = -yDirection;
 	  }
 
 	}
@@ -92,7 +92,7 @@ void CSlicestar::process()
 
 	if( blockedu && yDirection == UP )
 	  yDirection = DOWN;
-	else if(blockedd && yDirection == RIGHT)
+	else if(blockedd && yDirection == DOWN)
 	  yDirection = UP;
 }
 
