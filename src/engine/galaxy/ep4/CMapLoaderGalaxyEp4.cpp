@@ -236,10 +236,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, DOWN, 0x316A); break;
 		
 	case 0x1C: // plat moves to the RIGHT
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, RIGHT, x, y); break;
+		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, RIGHT, x, y, 0x316A); break;
 		
 	case 0x1E: // plat moves to the LEFT
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, LEFT, x, y); break;
+		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, LEFT, x, y, 0x316A); break;
 		
 	//case 0x1F: break; // Platform-Blocker
 	case 0x20:

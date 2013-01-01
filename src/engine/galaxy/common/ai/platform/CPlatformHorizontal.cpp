@@ -16,13 +16,15 @@ const int FIRE_SPRITE = 361;
 namespace galaxy {
 
 CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint16 foeID, 
-					 const direction_t xDir, Uint32 x, const Uint32 y) :
+					 const direction_t xDir, Uint32 x, const Uint32 y,
+					 const int actionOffset ) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 CPlatform(pmap, foeID, x, y),
 drawFire(false),
 m_FireSprite(FIRE_SPRITE),
 m_fireTimer(0)
 {
+	m_ActionBaseOffset = actionOffset;
 	xDirection = xDir;
 	yDirection = 0;
 	
