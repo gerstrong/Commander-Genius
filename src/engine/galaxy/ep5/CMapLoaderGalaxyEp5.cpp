@@ -11,6 +11,7 @@
 #include "ai/CRoboRed.h"
 #include "ai/CVolteface.h"
 #include "ai/CKorath.h"
+#include "ai/CSlicestar.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -127,12 +128,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 
 	/*case 0x09: if (difficulty_level < 3) break;
 	case 0x08: if (difficulty_level < 2) break;
-	case 0x07: MineSpawn(tx, ty); MineInLevel = 1; break;
+	case 0x07: MineSpawn(tx, ty); MineInLevel = 1; break;*/
 
 	
-	case 0x0C: if (difficulty_level < 3) break;
-	case 0x0B: if (difficulty_level < 2) break;
-	case 0x0A: SliceSpawn(tx, ty, 0); SliceInLevel = 1; break;*/
+	case 0x0C: if ( difficulty < HARD ) break;
+	case 0x0B: if ( difficulty < NORMAL ) break;
+	case 0x0A: 
+	      p_newfoe = new galaxy::CSlicestar(&Map, foe, x, y, true, CENTER, UP);
+	      break;
 			
 	case 0x0F: if ( difficulty < HARD ) break;
 	case 0X0E: if ( difficulty < NORMAL ) break;
@@ -144,16 +147,20 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	/*case 0x12: if (difficulty_level < 3) break;
 	case 0x11: if (difficulty_level < 2) break;
 	case 0x10: SpiroSpawn(tx, ty); SpiroInLevel = 1; break;
+*/
+	case 0x15: if ( difficulty < HARD ) break;
+	case 0x14: if ( difficulty < NORMAL ) break;
+	case 0x13: 
+		p_newfoe = new galaxy::CSlicestar(&Map, foe, x, y, false, RIGHT, UP);
+		break;
 
-	case 0x15: if (difficulty_level < 3) break;
-	case 0x14: if (difficulty_level < 2) break;
-	case 0x13: SliceDiagSpawn(tx, ty); SliceDiagInLevel = 1; break;
+	case 0x18: if ( difficulty < HARD ) break;
+	case 0x17: if ( difficulty < NORMAL ) break;
+	case 0x16: 
+		p_newfoe = new galaxy::CSlicestar(&Map, foe, x, y, true, RIGHT, CENTER);
+		break;
 
-	case 0x18: if (difficulty_level < 3) break;
-	case 0x17: if (difficulty_level < 2) break;
-	case 0x16: SliceSpawn(tx, ty, 1); SliceInLevel = 1; break;
-
-	case 0x21: if (difficulty_level > 1) break;
+/*	case 0x21: if (difficulty_level > 1) break;
 	case 0x22: if (difficulty_level > 2) break;
 	case 0x23: SitPlatSpawn(tx, ty, 1); RedPlatInLevel = 1; break;
 
@@ -236,10 +243,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			break;
 						
 			
-	//case 0x20:	
-	//		p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1BD6); break;
+	case 0x20:	
+			p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1BD6); break;
 
-        // Var Plats other color
+        // Var Plats red color
 	case 0x24:
 			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B5E); break;
 	case 0x25:
@@ -287,7 +294,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case PLATFORM_HORIZ:
 		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, x, y); break;
 	case PLATFORM_DROP:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y); break;*/
+		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y, 1BD6); break;*/
 
 
 	default:

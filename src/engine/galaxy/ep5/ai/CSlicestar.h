@@ -19,17 +19,10 @@ namespace galaxy {
 class CSlicestar : public CStunnable
 {
 public:
-	CSlicestar(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
-
-	/**
-	 * Action functions
-	 */
-	void processWalking();	
-	//void processTurn();
-	
-	bool isNearby(CSpriteObject &theObject);
-
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
+	CSlicestar(CMap *pmap, const Uint16 foeID, 
+		       const Uint32 x, const Uint32 y, 
+		       const bool useBlocker, direction_t horDir, 
+		       direction_t verDir);
 
 	void process();
 
@@ -39,7 +32,7 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-	int mTimer;
+	bool mUseBlocker;
 };
 
 }

@@ -243,7 +243,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		
 	//case 0x1F: break; // Platform-Blocker
 	case 0x20:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y); break;
+		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y, 0x316A); break;
 
 	case 0x21:
 		// Place Miragia in Episode 4 on the Map
