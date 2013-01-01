@@ -184,9 +184,23 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x23: 
 			p_newfoe = new galaxy::CPlatformSit( &Map, foe, x, y, 0x1BD6); break;		
 
-	/*case 0x28: SneakPlatSpawn(tx, ty); RedPlatInLevel = 1; break;
-
-	case 0x29:
+			
+        // Var Plats red color
+	case 0x24:
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B5E); break;
+	case 0x25:
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1B5E);	break;
+	case 0x26:
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1B5E);	break;
+	case 0x27:
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER,0x1B5E);	break;
+			
+			
+	case 0x28:
+			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
+			break;
+						
+	/*case 0x29:
 	  if (current_level == 12) {
 		Fuse1 = 4;
 		QEDSpawn(tx, ty);
@@ -257,25 +271,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 125: TeleInLevel = 1; break; 
  */		
 			
-
-
-
-        // Var Plats red color
-	case 0x24:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B5E); break;
-	case 0x25:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1B5E);	break;
-	case 0x26:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1B5E);	break;
-	case 0x27:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER,0x1B5E);	break;
-			
-			
-	case 0x28:
-			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
-			break;
-	
-			
 	case 0x2C: if ( difficulty < HARD ) break;
 	case 0x2B: if ( difficulty < NORMAL ) break;
 	case 0x2A: 
@@ -305,16 +300,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1B7C ); break;
 
 			break;
-
-
-
-	/*case PLATFORM_VERT: case PLATFORM_VERT_ALT:
-		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y); break;
-	case PLATFORM_HORIZ_ALT:
-	case PLATFORM_HORIZ:
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, x, y); break;
-	case PLATFORM_DROP:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y, 1BD6); break;*/
 
 
 	default:
