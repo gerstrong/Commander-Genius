@@ -35,7 +35,6 @@ m_fireTimer(0)
 	}
 	else
 	{
-	    m_ActionBaseOffset = 0x1B7C;
 	    drawFire = false;
 	}
 	
