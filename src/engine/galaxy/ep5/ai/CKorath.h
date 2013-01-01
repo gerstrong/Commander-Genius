@@ -25,9 +25,8 @@ public:
 	 * Action functions
 	 */
 	void processWalking();	
-	//void processTurn();
+	void processSitting();	
 	
-	bool isNearby(CSpriteObject &theObject);
 
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 

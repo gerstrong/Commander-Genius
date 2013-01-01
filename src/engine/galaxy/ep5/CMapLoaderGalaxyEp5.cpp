@@ -10,6 +10,7 @@
 #include "ai/CAmpton.h"
 #include "ai/CRoboRed.h"
 #include "ai/CVolteface.h"
+#include "ai/CKorath.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -217,8 +218,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 107: if (difficulty_level < 3) break;
 	case 106: if (difficulty_level < 2) break;
 	case 105: SpherefulSpawn(tx, ty); SpherefulInLevel = 1; break;
+	
+	*/
 
-	case 124: KorathSpawn(tx, ty); KorathInLevel = 1 ; break;
+	case 124: 
+			p_newfoe = new galaxy::CKorath( &Map, foe, x, y );
+			break;
+	
+	/*
 
 	case 125: TeleInLevel = 1; break; 
  */		

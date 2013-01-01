@@ -47,6 +47,7 @@ mTimer(0)
 	calcBoundingBoxes();		
 	
 	fetchInitialDir(xDirection, yDirection, *mp_Map);
+	solid = false;
 }
 
 
@@ -72,7 +73,7 @@ void CVolteface::processMoving()
 	detectNextTarget(target, xDirection, yDirection);
     }
     
-    if(yDirection == UP && blockedu)
+    /*if(yDirection == UP && blockedu)
 	yDirection = DOWN;
     else if(yDirection == DOWN && blockedd)
 	yDirection = UP;
@@ -80,7 +81,7 @@ void CVolteface::processMoving()
     if(xDirection == RIGHT && blockedr)
 	xDirection = LEFT;
     else if(xDirection == LEFT && blockedl)
-	xDirection = RIGHT;
+	xDirection = RIGHT;*/
     
     VectorD2<int> speed;
     
