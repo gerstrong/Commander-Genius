@@ -12,22 +12,11 @@
 #include "misc.h"
 
 /*
-$21DCW #Lil Ampton walk
-$21FAW #Lil Ampton walk
-$2218W #Lil Ampton walk
-$2236W #Lil Ampton walk
-$2254W #Lil Ampton turn 4
-$2272W #Lil Ampton start pole slide 5
-$2290W #Lil Ampton start pole slide
-$22AEW #Lil Ampton pole slide 6
-$22CCW #Lil Ampton stop pole slide 7
-$22EAW #Lil Ampton stop pole slide
-$2308W #Lil Ampton flip switch 8
-$2326W #Lil Ampton flip switch 
-$2344W #Lil Ampton flip switch
-$2362W #Lil Ampton flip switch
-$2380W #Lil Ampton flip switch
-$239EW #Stunned Ampton 13
+$303AW #Sphereful
+$3058W #Sphereful
+$3076W #Sphereful
+$3094W #Sphereful
+$30B2W #Sphereful
  */
 
 
@@ -44,60 +33,90 @@ A_AMPTON_FLIP_SWITCH = 8,
 A_AMPTON_STUNNED = 12
 };
 
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
+const int MOVE_SPEED = 10;
 
-const int WALK_SPEED = 25;
+const int FLY_TIME = 150;
 
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
-
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
-
+// TODO: Floating diamonds around are still missing!
   
 CSphereful::CSphereful(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-  
-	// Adapt this AI
-	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+	m_ActionBaseOffset = 0x303A;
 	
+	setActionForce(0);
+	setActionSprite();
+	calcBoundingBoxes();
+	
+	yDirection = UP;
 	xDirection = LEFT;
 }
 
 
 
-void CSphereful::processWalking()
+void CSphereful::processMoving()
 {
   // Move normally in the direction
-  if( xDirection == RIGHT )
+  moveXDir( xDirection*MOVE_SPEED );
+  moveYDir( yDirection*MOVE_SPEED );
+  
+  if( blockedl && xDirection == LEFT )
   {
-    moveRight( WALK_SPEED );
+      playSound(SOUND_SPHEREFULCEILING);
+      xDirection = RIGHT;      
   }
-  else
+  else if(blockedr && xDirection == RIGHT)
   {
-    moveLeft( WALK_SPEED );
-  }   
+      playSound(SOUND_SPHEREFULCEILING);
+      xDirection = LEFT;
+  }
+  
+  if( blockedu && yDirection == UP )
+  {
+      playSound(SOUND_SPHEREFULCEILING);
+      yDirection = DOWN;
+  }
+  else if(blockedd && yDirection == DOWN)
+  {
+      playSound(SOUND_SPINDREDFLYUP);
+      yDirection = UP;
+  }
+  
 }
+
 
 
 bool CSphereful::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(10) )
-		return false;
-
-	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+    
+    if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+    {
+	
+	mTimer++;
+	if(mTimer < FLY_TIME)
+	    return true;
+	
+	mTimer = 0;
+	
+	if( getProbability(600) )
 	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
-		else
-			mKeenAlignment = RIGHT;*/
-	}
-
-	return true;
+	    
+	    if( player->getXMidPos() < getXMidPos() )
+		xDirection = LEFT;
+	    else
+		xDirection = RIGHT;
+	    
+	    if(getProbability(700))
+	    {
+		yDirection = DOWN;
+	    }
+	    
+	}		
+    }
+	
+	
+    return true;
 }
 
 void CSphereful::getTouchedBy(CSpriteObject &theObject)
@@ -110,45 +129,25 @@ void CSphereful::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		playSound(SOUND_ROBO_STUN);
-		dead = true;
 		theObject.dead = true;
 	}
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
-	}*/
+	}
 }
 
-
-int CSphereful::checkSolidD( int x1, int x2, int y2, const bool push_mode )
-{
-	turnAroundOnCliff( x1, x2, y2 );
-
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
-}
 
 
 void CSphereful::process()
 {
 	performCollisions();
 	
-	performGravityMid();
-
-	if( blockedl )
-	{
-	  xDirection = RIGHT;
-	}
-	else if(blockedr)
-	{
-	  xDirection = LEFT;
-	}
-
 	if(!processActionRoutine())
 	    exists = false;
 	
-	(this->*mp_processState)();
+	processMoving();
 }
 
 }

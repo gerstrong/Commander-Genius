@@ -114,6 +114,8 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[4][SOUND_HIT_SIDEWALL] = 49;
     sndSlotMapGalaxy[4][SOUND_COMPUTER_POINT] = 50;
     sndSlotMapGalaxy[4][SOUND_PLAYER_POINT] = 51;
+    
+    
         
     
     // Episode 5   
@@ -133,7 +135,7 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_LEVEL_DONE] = 13;
     sndSlotMapGalaxy[5][SOUND_CANT_DO] = 14;
     sndSlotMapGalaxy[5][SOUND_KEEN_BUMPHEAD] = 15;
-    //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
+    sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
     sndSlotMapGalaxy[5][SOUND_EXTRA_LIFE] = 17;
     sndSlotMapGalaxy[5][SOUND_OPEN_EXIT_DOOR] = 18;    
     sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
@@ -176,7 +178,8 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
     //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
     //sndSlotMapGalaxy[5][?] = 58;
-    //sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
+    sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
+
     sndSlotMapGalaxy[5][SOUND_DOOR_OPEN] = 60;
     //sndSlotMapGalaxy[5][SOUND_SPIROFLY] = 61;
     //sndSlotMapGalaxy[5][?] = 62;

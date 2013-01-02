@@ -12,6 +12,7 @@
 #include "ai/CVolteface.h"
 #include "ai/CKorath.h"
 #include "ai/CSlicestar.h"
+#include "ai/CSphereful.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -255,14 +256,15 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 104: if (difficulty_level < 3) break;
 	case 103: if (difficulty_level < 2) break;
 	case 102: ShocksundSpawn(tx, ty); ShocksundInLevel = 1; break;
-
-	case 107: if (difficulty_level < 3) break;
-	case 106: if (difficulty_level < 2) break;
-	case 105: SpherefulSpawn(tx, ty); SpherefulInLevel = 1; break;
+*/
 	
-	*/
+	case 0x6B: if ( difficulty < HARD ) break;
+	case 0x6A: if ( difficulty < NORMAL ) break;
+	case 0x69: 
+			p_newfoe = new galaxy::CSphereful( &Map, foe, x, y );
+			break;		
 
-	case 124: 
+	case 0x7C: 
 			p_newfoe = new galaxy::CKorath( &Map, foe, x, y );
 			break;
 	
