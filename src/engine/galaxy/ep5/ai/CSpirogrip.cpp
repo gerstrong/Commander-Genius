@@ -12,59 +12,61 @@
 #include "misc.h"
 
 /*
-$21DCW #Lil Ampton walk
-$21FAW #Lil Ampton walk
-$2218W #Lil Ampton walk
-$2236W #Lil Ampton walk
-$2254W #Lil Ampton turn 4
-$2272W #Lil Ampton start pole slide 5
-$2290W #Lil Ampton start pole slide
-$22AEW #Lil Ampton pole slide 6
-$22CCW #Lil Ampton stop pole slide 7
-$22EAW #Lil Ampton stop pole slide
-$2308W #Lil Ampton flip switch 8
-$2326W #Lil Ampton flip switch 
-$2344W #Lil Ampton flip switch
-$2362W #Lil Ampton flip switch
-$2380W #Lil Ampton flip switch
-$239EW #Stunned Ampton 13
+$2824W #Spirogrip back up down 0
+$2842W #Spriogrip pause down 1
+$2860W #Spirogrip back up left 2
+$287EW #Spirogrip pause left 3
+$289CW #Spirogrip back up up 4
+$28BAW #Spirogrip pause up 5
+$28D8W #Spirogrip back up right 6
+$28F6W #Spirogrip puase right 7
+$2914W #Spirogrip spin 8
+$2932W #Spirogrip spin
+$2950W #Spirogrip spin
+$296EW #Spirogrip spin
+$298CW #Spirogrip spin
+$29AAW #Spirogrip spin
+$29C8W #Spirogrip spin
+$29E6W #Spirogrip spin
+$2A04W #Spirogrip move down 16
+$2A22W #Spirogrip move left 17
+$2A40W #Spirogrip move up 18
+$2A5EW #Spirogrip move right 19
  */
 
 
 namespace galaxy {  
   
-enum SPARKYACTIONS
+enum GRIPACTIONS
 {
-A_AMPTON_WALK = 0,
-A_AMPTON_TURN = 4,
-A_AMPTON_START_POLE = 5,
-A_AMPTON_POLE_SLIDE = 6,
-A_AMPTON_STOP_POLE = 7,
-A_AMPTON_FLIP_SWITCH = 8,
-A_AMPTON_STUNNED = 12
+    A_GRIP_BACK_UP_DOWN = 0,
+    A_GRIP_PAUSE_DOWN = 1,
+    A_GRIP_BACK_UP_LEFT = 2,
+    A_GRIP_PAUSE_LEFT = 3,
+    A_GRIP_BACK_UP_UP = 4,
+    A_GRIP_PAUSE_UP = 5,
+    A_GRIP_BACK_UP_RIGHT = 6,
+    A_GRIP_PAUSE_RIGHT = 7,
+    A_GRIP_SPIN = 8,
+    A_GRIP_MOVE_DOWN = 16,
+    A_GRIP_MOVE_LEFT = 17,
+    A_GRIP_MOVE_UP = 18,
+    A_GRIP_MOVE_RIGHT = 19
 };
 
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
-
-const int WALK_SPEED = 25;
-
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
-
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
+const int MOVE_SPEED = 25;
 
   
 CSpirogrip::CSpirogrip(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-	mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
+    // TODO: -> Actionmap
+	mActionMap[A_GRIP_BACK_UP_DOWN] = &CStunnable::processGettingStunned;
+	
   
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+	setupGalaxyObjectOnMap(0x2824, A_GRIP_BACK_UP_DOWN);
 	
 	xDirection = LEFT;
 }
@@ -76,11 +78,11 @@ void CSpirogrip::processWalking()
   // Move normally in the direction
   if( xDirection == RIGHT )
   {
-    moveRight( WALK_SPEED );
+    moveRight( MOVE_SPEED );
   }
   else
   {
-    moveLeft( WALK_SPEED );
+    moveLeft( MOVE_SPEED );
   }   
 }
 
@@ -135,8 +137,6 @@ void CSpirogrip::process()
 {
 	performCollisions();
 	
-	performGravityMid();
-
 	if( blockedl )
 	{
 	  xDirection = RIGHT;

@@ -19,7 +19,7 @@ m_ExeFile(ExeFile)
 {}
 
 /**
- * Caution: This is Galaxy only and will be replaced
+ * Caution: This is Galaxy only and will be replaced some time
  * This function loads the PC Speaker sounds to CG (Galaxy Version, similar to Vorticon Version but not equal.)
  */
 bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize, const Uint8 formatsize)

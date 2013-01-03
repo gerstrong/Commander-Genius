@@ -12,36 +12,32 @@
 #include "misc.h"
 
 /*
-$21DCW #Lil Ampton walk
-$21FAW #Lil Ampton walk
-$2218W #Lil Ampton walk
-$2236W #Lil Ampton walk
-$2254W #Lil Ampton turn 4
-$2272W #Lil Ampton start pole slide 5
-$2290W #Lil Ampton start pole slide
-$22AEW #Lil Ampton pole slide 6
-$22CCW #Lil Ampton stop pole slide 7
-$22EAW #Lil Ampton stop pole slide
-$2308W #Lil Ampton flip switch 8
-$2326W #Lil Ampton flip switch 
-$2344W #Lil Ampton flip switch
-$2362W #Lil Ampton flip switch
-$2380W #Lil Ampton flip switch
-$239EW #Stunned Ampton 13
+$2E96W #Shocksund sit
+$2EB4W #Shocksund sit
+$2ED2W #Shocksund bark 2
+$2EF0W #Shocksund bark
+$2F0EW #Shocksund walk 4
+$2F2CW #Shocksund walk
+$2F4AW #Shocksund walk
+$2F68W #Shocksund walk
+$2F86W #Shocksund jump 8
+$2FA4W #Shocksund shot 9 -> TODO: Another Object?
+$2FC2W #Shocksund shot
+$2FE0W #Shocksund shot smash 11
+$2FFEW #Shocksund shot smash
+$301CW #Shocksund stunned 13
  */
 
 
 namespace galaxy {  
   
-enum SPARKYACTIONS
+enum HOUNDACTIONS
 {
-A_AMPTON_WALK = 0,
-A_AMPTON_TURN = 4,
-A_AMPTON_START_POLE = 5,
-A_AMPTON_POLE_SLIDE = 6,
-A_AMPTON_STOP_POLE = 7,
-A_AMPTON_FLIP_SWITCH = 8,
-A_AMPTON_STUNNED = 12
+A_HOUND_SIT = 0,
+A_HOUND_BARK = 2,
+A_HOUND_WALK = 4,
+A_HOUND_JUMP = 8,
+A_HOUND_STUNNED = 13
 };
 
 const int TIME_UNTIL_MOVE = 5;
@@ -61,10 +57,10 @@ CShockshound::CShockshound(CMap *pmap, const Uint16 foeID, const Uint32 x, const
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-	mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
+	//mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
   
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+	setupGalaxyObjectOnMap(0x2E96, A_HOUND_SIT);
 	
 	xDirection = LEFT;
 }

@@ -12,36 +12,26 @@
 #include "misc.h"
 
 /*
-$21DCW #Lil Ampton walk
-$21FAW #Lil Ampton walk
-$2218W #Lil Ampton walk
-$2236W #Lil Ampton walk
-$2254W #Lil Ampton turn 4
-$2272W #Lil Ampton start pole slide 5
-$2290W #Lil Ampton start pole slide
-$22AEW #Lil Ampton pole slide 6
-$22CCW #Lil Ampton stop pole slide 7
-$22EAW #Lil Ampton stop pole slide
-$2308W #Lil Ampton flip switch 8
-$2326W #Lil Ampton flip switch 
-$2344W #Lil Ampton flip switch
-$2362W #Lil Ampton flip switch
-$2380W #Lil Ampton flip switch
-$239EW #Stunned Ampton 13
+$2AF4W #Shikadi master stand
+$2B12W #Shikadi master stand
+$2B30W #Shikadi master stand
+$2B4EW #Shikadi master stand
+$2B6CW #Shikadi master shoot 4
+$2B8AW #Shikadi master shoot (Make shot)
+$2BA8W #Shikadi master teleport 6
+$2BC6W #Shikadi master teleport
+$2BE4W #Shikadi master teleport
+$2C02W #Shikadi master teleport
  */
 
 
 namespace galaxy {  
   
-enum SPARKYACTIONS
+enum MASTERACTIONS
 {
-A_AMPTON_WALK = 0,
-A_AMPTON_TURN = 4,
-A_AMPTON_START_POLE = 5,
-A_AMPTON_POLE_SLIDE = 6,
-A_AMPTON_STOP_POLE = 7,
-A_AMPTON_FLIP_SWITCH = 8,
-A_AMPTON_STUNNED = 12
+A_MASTER_STAND = 0,
+A_MASTER_SHOOT = 4,
+A_MASTER_TELEPORT = 6
 };
 
 const int TIME_UNTIL_MOVE = 5;
@@ -63,7 +53,7 @@ mTimer(0)
 {
   
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+	setupGalaxyObjectOnMap(0x2AF4, A_MASTER_STAND);
 	
 	xDirection = LEFT;
 }

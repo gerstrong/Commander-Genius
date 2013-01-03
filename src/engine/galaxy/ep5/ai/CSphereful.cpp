@@ -1,7 +1,7 @@
 /*
  * CSphereful.cpp
  *
- *  Created on: 29 Dez 2012
+ *  Created on: 02 Jan 2013
  *      Author: Gerstrong
  */
 

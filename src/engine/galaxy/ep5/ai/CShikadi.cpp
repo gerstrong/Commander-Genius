@@ -12,59 +12,44 @@
 #include "misc.h"
 
 /*
-$21DCW #Lil Ampton walk
-$21FAW #Lil Ampton walk
-$2218W #Lil Ampton walk
-$2236W #Lil Ampton walk
-$2254W #Lil Ampton turn 4
-$2272W #Lil Ampton start pole slide 5
-$2290W #Lil Ampton start pole slide
-$22AEW #Lil Ampton pole slide 6
-$22CCW #Lil Ampton stop pole slide 7
-$22EAW #Lil Ampton stop pole slide
-$2308W #Lil Ampton flip switch 8
-$2326W #Lil Ampton flip switch 
-$2344W #Lil Ampton flip switch
-$2362W #Lil Ampton flip switch
-$2380W #Lil Ampton flip switch
-$239EW #Stunned Ampton 13
+$2D10W #Shikadi stand
+$2D2EW #Shikadi stand
+$2D4CW #Shikadi stand
+$2D6AW #Shikadi stand
+$2D88W #Shikadi walk 4
+$2DA6W #Shikadi walk
+$2DC4W #Shikadi walk
+$2DE2W #Shikadi walk
+$2E00W #Shikadi polezaps 8
+$2E1EW #Shikadi polezaps
+$2E3CW #Shikadi stunned 10
+$2E5AW #Shikadi polezap 11 -> TODO: I think this must be another type of object
+$2E78W #Shikadi polezap
  */
 
 
 namespace galaxy {  
   
-enum SPARKYACTIONS
+enum SHIKADIACTIONS
 {
-A_AMPTON_WALK = 0,
-A_AMPTON_TURN = 4,
-A_AMPTON_START_POLE = 5,
-A_AMPTON_POLE_SLIDE = 6,
-A_AMPTON_STOP_POLE = 7,
-A_AMPTON_FLIP_SWITCH = 8,
-A_AMPTON_STUNNED = 12
+A_SHIKADI_STAND = 0,
+A_SHIKADI_WALK = 4,
+A_SHIKADI_TURN = 4,
+A_SHIKADI_POLE_ZAPS = 8,
+A_SHIKADI_STUNNED = 10
 };
 
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
-
 const int WALK_SPEED = 25;
-
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
-
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
 
   
 CShikadi::CShikadi(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-	mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
+	//mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
   
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+	setupGalaxyObjectOnMap(0x2D10, A_SHIKADI_STAND);
 	
 	xDirection = LEFT;
 }
