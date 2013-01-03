@@ -13,6 +13,7 @@
 #include "ai/CKorath.h"
 #include "ai/CSlicestar.h"
 #include "ai/CSphereful.h"
+#include "ai/CShikadi.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -248,11 +249,15 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 88: if (difficulty_level < 3) break;
 	case 89: if (difficulty_level < 2) break;
 	case 90: MasterSpawn(tx, ty); MasterInLevel = 1; break;
+*/
+	case 0x65: if ( difficulty < HARD ) break;
+	case 0x64: if ( difficulty < NORMAL ) break;
+	case 0x63: 	
+	  	// This is Shikadi
+		p_newfoe = new galaxy::CShikadi(&Map, foe, x, y);
+		break;
 
-	case 101: if (difficulty_level < 3) break;
-	case 100: if (difficulty_level < 2) break;
-	case 99: ShikadiSpawn(tx, ty); ShikadiInLevel = 1; break;
-
+/*
 	case 104: if (difficulty_level < 3) break;
 	case 103: if (difficulty_level < 2) break;
 	case 102: ShocksundSpawn(tx, ty); ShocksundInLevel = 1; break;

@@ -159,7 +159,7 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = 37;
     //sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
     //sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
-    //sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
+    sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
     sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
     //sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;    
     sndSlotMapGalaxy[5][SOUND_FLAG_APPEAR] = 43;
