@@ -7,8 +7,7 @@
 
 
 #include "CFuse.h"
-#include "engine/galaxy/common/ai/CPlayerBase.h"
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include "engine/galaxy/common/ai/CPlayerLevel.h"
 #include "misc.h"
 
 /*
@@ -27,6 +26,9 @@ mTimer(0)
 	setupGalaxyObjectOnMap(0x3186, 0);
 	
 	xDirection = LEFT;
+	
+	mp_Map->mNumFuses++;
+	mp_Map->mFuseInLevel = true;
 }
 
 
@@ -35,7 +37,7 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 	if(dead || theObject.dead)
 		return;
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	/*if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
 		player->kill();
 	}*/

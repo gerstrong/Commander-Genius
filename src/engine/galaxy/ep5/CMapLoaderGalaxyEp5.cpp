@@ -15,6 +15,7 @@
 #include "ai/CSphereful.h"
 #include "ai/CShikadi.h"
 #include "ai/CSpirogrip.h"
+#include "ai/CFuse.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -206,19 +207,18 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
 			break;
 						
-	/*case 0x29:
-	  if (current_level == 12) {
+	case 0x29:
+	  /*if (current_level == 12) {
 		Fuse1 = 4;
 		QEDSpawn(tx, ty);
 	  } else {
 		Fuse1++;
-	  }
-	
-	  FuseInLevel = 1;
-	break;
+	  }*/
+			p_newfoe = new galaxy::CFuse( &Map, foe, x, y );
+			break;
 
 
-	case 53: if (difficulty_level < 3) break;
+	/*case 53: if (difficulty_level < 3) break;
 	case 49: if (difficulty_level < 2) break;
 	case 45: AutoGunSpawn(tx, ty, 0); AutoGunInLevel = 1; break;
 

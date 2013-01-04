@@ -966,7 +966,6 @@ void CPlayerLevel::processPogoCommon()
 	if(blockedd)
 	{
 		//yinertia = 0; // Not sure if that's correct
-		//TODO: Deadly surfaces and fuse breakage.
 		if (state.jumpTimer == 0)
 		{
 			yinertia = -POGO_START_INERTIA;
@@ -974,6 +973,26 @@ void CPlayerLevel::processPogoCommon()
 			state.jumpTimer = 24;
 			setAction(A_KEEN_POGO_UP);
 		}
+	}
+	
+	// Let's see if Keen breaks the fuse
+	if(mp_Map->mFuseInLevel)
+	{
+	    int x = getXMidPos();
+	    int y = getYDownPos();
+	    const int tileID = mp_Map->getPlaneDataAt(1, x, y);
+	    
+	    if(tileID == 0x078A)
+	    {		
+		const int t1 = mp_Map->getPlaneDataAt(1, 0, 0);
+		const int t2 = mp_Map->getPlaneDataAt(1, 0, (1<<CSF));
+		
+		x >>= CSF; y >>= CSF;
+			
+		mp_Map->setTile(x, y, t1, true);
+		mp_Map->setTile(x, y+1, t2, true);
+		mp_Map->mNumFuses--;
+	    }
 	}
 }
 
@@ -2311,6 +2330,20 @@ void CPlayerLevel::process()
 	}
 
 	(this->*mp_processState)();
+	
+	
+	if(mp_Map->mFuseInLevel && mp_Map->mNumFuses == 0)
+	{
+	    // TODO: Need to spawn other messages here!
+		g_pMusicPlayer->stop();
+		g_pSound->playSound( SOUND_LEVEL_DONE );
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		m_Inventory.Item.m_gem.empty();
+	}
+	    
 
 	// make the fire recharge time decreased if player is not pressing firing button
 	if(m_fire_recharge_time && !m_playcontrol[PA_FIRE])

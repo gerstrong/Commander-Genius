@@ -124,6 +124,8 @@ public:
 	bool m_animation_enabled;
 	bool m_Dark;
 	bool isSecret;
+	int mNumFuses;
+	bool mFuseInLevel;
 
 private:
     
@@ -142,7 +144,7 @@ private:
 
 	std::vector<CTilemap> &m_Tilemaps;
 
-	float mAnimtileTimer;
+	float mAnimtileTimer;	
 
 	CPlane m_Plane[3];
 	bool m_Background; // This variable holds, whether we have a background to draw or not.
