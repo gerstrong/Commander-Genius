@@ -14,6 +14,7 @@
 #include "ai/CSlicestar.h"
 #include "ai/CSphereful.h"
 #include "ai/CShikadi.h"
+#include "ai/CSpirogrip.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -147,10 +148,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CRoboRed(&Map, foe, x, y);
 		break;
 
-	/*case 0x12: if (difficulty_level < 3) break;
-	case 0x11: if (difficulty_level < 2) break;
-	case 0x10: SpiroSpawn(tx, ty); SpiroInLevel = 1; break;
-*/
+	case 0x12: if ( difficulty < HARD ) break;
+	case 0x11: if ( difficulty < NORMAL ) break;
+	case 0x10: 
+		p_newfoe = new galaxy::CSpirogrip(&Map, foe, x, y);
+		break;
+	
+
 	case 0x15: if ( difficulty < HARD ) break;
 	case 0x14: if ( difficulty < NORMAL ) break;
 	case 0x13: 

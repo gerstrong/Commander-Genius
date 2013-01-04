@@ -21,7 +21,7 @@ $28BAW #Spirogrip pause up 5
 $28D8W #Spirogrip back up right 6
 $28F6W #Spirogrip puase right 7
 $2914W #Spirogrip spin 8
-$2932W #Spirogrip spin
+$2932W #Spirogrip spin 9
 $2950W #Spirogrip spin
 $296EW #Spirogrip spin
 $298CW #Spirogrip spin
@@ -50,54 +50,174 @@ enum GRIPACTIONS
     A_GRIP_SPIN = 8,
     A_GRIP_MOVE_DOWN = 16,
     A_GRIP_MOVE_LEFT = 17,
-    A_GRIP_MOVE_UP = 18,
-    A_GRIP_MOVE_RIGHT = 19
+    A_GRIP_MOVE_RIGHT = 18,
+    A_GRIP_MOVE_UP = 19
 };
 
-const int MOVE_SPEED = 25;
+const int MOVE_SPEED = 50;
+
+const int TIME_UNTIL_SPIN = 50;
+const int TIME_UNTIL_FLY = 150;
+const int TIME_UNTIL_PAUSE = 50;
+const int TIME_UNTIL_BACKUP = 100;
 
   
 CSpirogrip::CSpirogrip(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-    // TODO: -> Actionmap
-	mActionMap[A_GRIP_BACK_UP_DOWN] = &CStunnable::processGettingStunned;
-	
+    mActionMap[A_GRIP_BACK_UP_DOWN] = (void (CStunnable::*)()) &CSpirogrip::processBackup;
+    mActionMap[A_GRIP_PAUSE_DOWN] = (void (CStunnable::*)()) &CSpirogrip::processPause;
+    mActionMap[A_GRIP_BACK_UP_LEFT] = (void (CStunnable::*)()) &CSpirogrip::processBackup;
+    mActionMap[A_GRIP_PAUSE_LEFT] = (void (CStunnable::*)()) &CSpirogrip::processPause;
+    mActionMap[A_GRIP_BACK_UP_UP] = (void (CStunnable::*)()) &CSpirogrip::processBackup;
+    mActionMap[A_GRIP_PAUSE_UP] = (void (CStunnable::*)()) &CSpirogrip::processPause;
+    mActionMap[A_GRIP_BACK_UP_RIGHT] = (void (CStunnable::*)()) &CSpirogrip::processBackup;
+    mActionMap[A_GRIP_PAUSE_RIGHT] = (void (CStunnable::*)()) &CSpirogrip::processPause;
+    mActionMap[A_GRIP_SPIN] = (void (CStunnable::*)()) &CSpirogrip::processSpin;
+    mActionMap[A_GRIP_MOVE_DOWN] = (void (CStunnable::*)()) &CSpirogrip::processMove;
+    mActionMap[A_GRIP_MOVE_LEFT] = (void (CStunnable::*)()) &CSpirogrip::processMove;
+    mActionMap[A_GRIP_MOVE_UP] = (void (CStunnable::*)()) &CSpirogrip::processMove;
+    mActionMap[A_GRIP_MOVE_RIGHT] = (void (CStunnable::*)()) &CSpirogrip::processMove;    
   
-	// Adapt this AI
-	setupGalaxyObjectOnMap(0x2824, A_GRIP_BACK_UP_DOWN);
-	
-	xDirection = LEFT;
+    // Adapt this AI
+    setupGalaxyObjectOnMap(0x2824, A_GRIP_BACK_UP_DOWN);
+
+    xDirection = CENTER;
+    yDirection = DOWN;
+}
+
+void CSpirogrip::processBackup()
+{    
+  mTimer++;
+  if( mTimer < TIME_UNTIL_PAUSE )
+      return;
+  
+  mTimer = 0;
+    
+  if(xDirection == LEFT)
+      setAction(A_GRIP_PAUSE_LEFT);
+  else if(xDirection == RIGHT)
+      setAction(A_GRIP_PAUSE_RIGHT);
+
+  if(yDirection == UP)
+      setAction(A_GRIP_PAUSE_UP);
+  else if(yDirection == DOWN)
+      setAction(A_GRIP_PAUSE_DOWN);
+
+}
+
+
+void CSpirogrip::processPause()
+{
+  mTimer++;
+  if( mTimer < TIME_UNTIL_SPIN )
+      return;
+  
+  mTimer = 0;
+    
+  setAction(A_GRIP_SPIN);
+
+}
+
+void CSpirogrip::processSpin()
+{
+  mTimer++;
+  if( mTimer < TIME_UNTIL_FLY )
+      return;
+  
+  mTimer = 0;
+
+  playSound(SOUND_SPIROFLY);
+  
+  // Look at the Player coords and define a direction
+  xDirection = yDirection = CENTER;
+  if(getProbability(500))
+      xDirection = mKeenAlignmentX;
+  else
+      yDirection = mKeenAlignmentY;
+  
+  if(xDirection == LEFT)
+      setAction(A_GRIP_MOVE_LEFT);
+  else if(xDirection == RIGHT)
+      setAction(A_GRIP_MOVE_RIGHT);
+
+  if(yDirection == UP)
+      setAction(A_GRIP_MOVE_UP);
+  else if(yDirection == DOWN)
+      setAction(A_GRIP_MOVE_DOWN);
+  
 }
 
 
 
-void CSpirogrip::processWalking()
+void CSpirogrip::processMove()
 {
   // Move normally in the direction
-  if( xDirection == RIGHT )
+  moveXDir( xDirection*MOVE_SPEED );
+  moveYDir( yDirection*MOVE_SPEED );
+  
+  if( blockedl )
   {
-    moveRight( MOVE_SPEED );
+    xDirection = RIGHT;
+    yDirection = CENTER;
+    setAction(A_GRIP_BACK_UP_RIGHT);    
   }
-  else
+  else if( blockedr )
   {
-    moveLeft( MOVE_SPEED );
-  }   
+    xDirection = LEFT;
+    yDirection = CENTER;
+    setAction(A_GRIP_BACK_UP_LEFT);
+  }
+	
+  if( blockedu )
+  {
+    xDirection = CENTER;
+    yDirection = UP;
+    setAction(A_GRIP_BACK_UP_UP);
+  }
+  else if( blockedd )
+  {
+    xDirection = CENTER;
+    yDirection = DOWN;
+    setAction(A_GRIP_BACK_UP_DOWN);
+  }
+  
+  mTimer++;
+  if( mTimer < TIME_UNTIL_BACKUP )
+      return;
+  
+  mTimer = 0;
+  
+  if(getProbability(500))
+  {            
+      if(xDirection == LEFT)
+	  setAction(A_GRIP_BACK_UP_LEFT);
+      else if(xDirection == RIGHT)
+	  setAction(A_GRIP_BACK_UP_RIGHT);
+      
+      if(yDirection == UP)
+	  setAction(A_GRIP_BACK_UP_UP);
+      else if(yDirection == DOWN)
+	  setAction(A_GRIP_BACK_UP_DOWN);
+  }
+      
 }
 
 
 bool CSpirogrip::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(10) )
-		return false;
-
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
+	{	    	    
+		if( player->getXMidPos() < getXMidPos() )
+			mKeenAlignmentX = LEFT;
 		else
-			mKeenAlignment = RIGHT;*/
+			mKeenAlignmentX = RIGHT;
+
+		if( player->getYMidPos() < getYMidPos() )
+			mKeenAlignmentY = UP;
+		else
+			mKeenAlignmentY = DOWN;
 	}
 
 	return true;
@@ -112,39 +232,20 @@ void CSpirogrip::getTouchedBy(CSpriteObject &theObject)
 
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
-	{
-		playSound(SOUND_ROBO_STUN);
-		dead = true;
+	{				
 		theObject.dead = true;
 	}
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
-	}*/
-}
-
-
-int CSpirogrip::checkSolidD( int x1, int x2, int y2, const bool push_mode )
-{
-	turnAroundOnCliff( x1, x2, y2 );
-
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+	}
 }
 
 
 void CSpirogrip::process()
 {
-	performCollisions();
-	
-	if( blockedl )
-	{
-	  xDirection = RIGHT;
-	}
-	else if(blockedr)
-	{
-	  xDirection = LEFT;
-	}
+	performCollisions();		
 
 	if(!processActionRoutine())
 	    exists = false;
