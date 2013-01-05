@@ -35,26 +35,20 @@ void CEnemyShot::getTouchedBy(CSpriteObject &theObject)
 
 void CEnemyShot::process()
 {
-	if(xDirection == LEFT)
-		moveLeft(m_speed);
-	else if(xDirection == RIGHT)
-		moveRight(m_speed);
-
-	if(yDirection == UP)
-		moveUp(m_speed);
-	else if(yDirection == DOWN)
-		moveDown(m_speed);
-
-	// If it collides against something, make it non-existent
-	if( blockedd || blockedl ||
-		blockedu || blockedr )
-	{
-		exists = false;
-	}
-
-	if(!processActionRoutine())
-			exists = false;
-
+    moveXDir(m_speed*xDirection);    
+    moveYDir(m_speed*yDirection);
+    
+    // If it collides against something, make it non-existent
+    if( (blockedd && yDirection == DOWN) || 
+	(blockedl && xDirection == LEFT) ||
+	(blockedu && yDirection == UP) || 
+	(blockedr && xDirection == RIGHT) )
+    {
+	exists = false;
+    }
+    
+    if(!processActionRoutine())
+	exists = false;    
 }
 
 } /* namespace galaxy */

@@ -16,6 +16,7 @@
 #include "ai/CShikadi.h"
 #include "ai/CSpirogrip.h"
 #include "ai/CFuse.h"
+#include "ai/CShockshound.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -233,6 +234,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 56: if (difficulty_level < 3) break;
 	case 52: if (difficulty_level < 2) break;
 	case 48: AutoGunSpawn(tx, ty, 3); AutoGunInLevel = 1; break;*/
+	
+	//p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;	
 
 	case 0x49: if ( difficulty < HARD ) break;
 	case 0x48: if ( difficulty < NORMAL ) break;
@@ -261,11 +264,12 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CShikadi(&Map, foe, x, y);
 		break;
 
-/*
-	case 104: if (difficulty_level < 3) break;
-	case 103: if (difficulty_level < 2) break;
-	case 102: ShocksundSpawn(tx, ty); ShocksundInLevel = 1; break;
-*/
+	case 0x68: if ( difficulty < HARD ) break;
+	case 0x67: if ( difficulty < NORMAL ) break;
+	case 0x66: 
+		// This is Shockshound
+		p_newfoe = new galaxy::CShockshound(&Map, foe, x, y);
+		break;
 	
 	case 0x6B: if ( difficulty < HARD ) break;
 	case 0x6A: if ( difficulty < NORMAL ) break;
