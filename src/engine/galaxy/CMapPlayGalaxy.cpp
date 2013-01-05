@@ -79,7 +79,7 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 		if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
 		{
 			// Is he really dead?
-			if( !player->exists )
+			if( player->dead )
 				player->processDead();
 		}
 

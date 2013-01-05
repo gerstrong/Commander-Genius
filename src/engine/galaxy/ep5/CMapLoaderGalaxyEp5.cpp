@@ -27,6 +27,7 @@
 #include "engine/galaxy/common/ai/CFlag.h"
 #include "engine/galaxy/common/ai/CSpriteItem.h"
 #include <engine/galaxy/common/ai/platform/CPlatformSit.h>
+#include <engine/galaxy/common/ai/Autogun.h>
 
 namespace galaxy
 {
@@ -219,21 +220,33 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			break;
 
 
-	/*case 53: if (difficulty_level < 3) break;
-	case 49: if (difficulty_level < 2) break;
-	case 45: AutoGunSpawn(tx, ty, 0); AutoGunInLevel = 1; break;
+	case 0x35: if ( difficulty < HARD ) break;
+	case 0x31: if ( difficulty < NORMAL ) break;
+	case 0x2D: 
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 134);
+		break;
 
-	case 54: if (difficulty_level < 3) break;
-	case 50: if (difficulty_level < 2) break;
-	case 46: AutoGunSpawn(tx, ty, 1); AutoGunInLevel = 1; break;
 
-	case 55: if (difficulty_level < 3) break;
-	case 51: if (difficulty_level < 2) break;
-	case 47: AutoGunSpawn(tx, ty, 2); AutoGunInLevel = 1; break;
+	case 0x36: if ( difficulty < HARD ) break;
+	case 0x32: if ( difficulty < NORMAL ) break;
+	case 0x2E: 
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 134);
+		break;
 
-	case 56: if (difficulty_level < 3) break;
-	case 52: if (difficulty_level < 2) break;
-	case 48: AutoGunSpawn(tx, ty, 3); AutoGunInLevel = 1; break;*/
+
+	case 0x37: if ( difficulty < HARD ) break;
+	case 0x33: if ( difficulty < NORMAL ) break;
+	case 0x2F: 
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 134);
+		break;
+
+
+	case 0x38: if ( difficulty < HARD ) break;
+	case 0x34: if ( difficulty < NORMAL ) break;
+	case 0x30: 
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 134);
+		break;
+
 	
 	//p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;	
 

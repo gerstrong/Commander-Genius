@@ -29,6 +29,7 @@ public:
 	CMapLoaderGalaxy(CExeFile &ExeFile,
 			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
 			CInventory &Inventory, stCheat &Cheatmode);
+	
 	size_t getMapheadOffset();
 	bool gotoNextSignature(std::ifstream &MapFile);
 	bool loadMap(CMap &Map, Uint8 level);

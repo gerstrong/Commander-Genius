@@ -4,58 +4,61 @@
 namespace galaxy
 {  
 
-AutoGun::AutoGun(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+AutoGun::AutoGun(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, 
+		 direction_t horDir, direction_t vertDir, int basesprite) :
 CGalaxySpriteObject(pmap, foeID, x, y),
-time(0)
+mTimer(0)
 {
   // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5
   
-  // Set the proper direction
-  switch( foeID )
-  {      	  
-      case 0x38:
-      case 0x52:
-      case 0x56:
-	  xDirection = LEFT;
-	  yDirection = CENTER;  
-	  baseSprite = 260;	  
-  	  m_Pos.x += (1<<CSF);
-	  m_Pos.y += (7<<STC);
-	  break;
-	  
-      case 0x35:
-      case 0x53:
-      case 0x4F:	        
-	  xDirection = CENTER;
-	  yDirection = UP;  
-	  baseSprite = 256;	  
-	  m_Pos.y -= (1<<CSF);
-	  m_Pos.x += (7<<STC);
-	  break;
-	  
-      case 0x36:
-      case 0x54:	  
-      case 0x50:
-	  xDirection = RIGHT;
-	  yDirection = CENTER;  
-	  baseSprite = 262;	  
-	  m_Pos.x -= (1<<CSF);
-	  m_Pos.y += (7<<STC);
-	  break;
-	  
-      default:
-      case 0x37:
-      case 0x51:
-      case 0x55:
-	  xDirection = CENTER;
-	  yDirection = DOWN;  
-	  baseSprite = 258;
-	  m_Pos.x += (7<<STC);
-	  break;
+  const int ep = g_pBehaviorEngine->getEpisode();
+  
+  xDirection = horDir;
+  yDirection = vertDir;
+  
+  mBaseSprite = basesprite;
+  
+  if(xDirection == LEFT && yDirection == CENTER)
+  {
+      if(ep == 4)
+      {
+	m_Pos.x += (1<<CSF);    
+	m_Pos.y += (7<<STC);
+      }
+  }
+  else if(xDirection == CENTER && yDirection == UP)
+  {
+      if(ep == 4)
+      {
+	m_Pos.y -= (1<<CSF);    
+	m_Pos.x += (7<<STC);
+      }
+  }
+  else if(xDirection == RIGHT && yDirection == CENTER)
+  {
+      if(ep == 4)
+      {
+	m_Pos.x -= (1<<CSF);
+	m_Pos.y += (7<<STC);
+      }
+  }
+  else if(xDirection == CENTER && yDirection == UP)
+  {
+      if(ep == 4)
+	m_Pos.x += (7<<STC);
+  }
+  
+  if(ep == 5)
+  {
+    mNumAnimSprites = 4;
+  }
+  else
+  {
+    mNumAnimSprites = 2;
   }
 
   processState = &AutoGun::waiting;  
-  sprite = baseSprite;
+  sprite = mBaseSprite;
   dontdraw = true;
   
   origin = getPosition();   
@@ -66,21 +69,42 @@ time(0)
 
 void AutoGun::waiting()
 {
-  if( time < WAIT_TIME )
+    if(g_pBehaviorEngine->getEpisode() == 5)
+    {
+	if(sprite < mBaseSprite + mNumAnimSprites + 1)
+	    sprite++;
+	else
+	{
+	    sprite = mBaseSprite;
+	    dontdraw = true;
+	}
+    }
+    
+  if( mTimer < WAIT_TIME )
   {
-    time++;
+    mTimer++;
     return;
   }
+  
+  if(m_Pos != origin)
+  {
+    moveToForce(origin);  
+    onslope = blockedd = blockedl = blockedr = blockedu = false;
+  }
 
-  time = 0;
+  sprite = mBaseSprite;
+  mTimer = 0;
   processState = &AutoGun::flying;
-  playSound(SOUND_DARTGUN_SHOOT);
+  playSound(SOUND_DARTGUN_SHOOT); // TODO: EP5 Sound of autoguns is missing
   dontdraw = false;
 }
 
 
 void AutoGun::getTouchedBy(CSpriteObject &theObject)
 {
+    if(processState != &AutoGun::flying)
+	return;
+    
   if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
   {
     Player->kill();
@@ -90,26 +114,24 @@ void AutoGun::getTouchedBy(CSpriteObject &theObject)
 
 
 void AutoGun::setWaitStatus()
-{
-    // return to origin and wait again!
-    moveToForce(origin);    
+{        
+    // wait! in keen 4 it has to return        
     processState = &AutoGun::waiting;
-    dontdraw = true;
+    if(g_pBehaviorEngine->getEpisode() == 5)
+    {
+	sprite = mBaseSprite + mNumAnimSprites;
+    }
 }
 
 
 
 // When autogun is waiting to shoot!
 void AutoGun::flying()
-{
-    
+{    
   moveXDir(xDirection*FLY_SPEED);
   moveYDir(yDirection*FLY_SPEED);
     
-  sprite = baseSprite;
-  
-  if(rand() % 2 != 0)
-      sprite++;
+  sprite = mBaseSprite + (mTimer % mNumAnimSprites);
   
   if(yDirection == DOWN && blockedd)
     setWaitStatus();
@@ -119,13 +141,17 @@ void AutoGun::flying()
   if(xDirection == LEFT && blockedl)
     setWaitStatus();
   else if(xDirection == RIGHT && blockedr)
-    setWaitStatus();
+    setWaitStatus();  
   
+  if(onslope)
+      setWaitStatus();
 }
 
 // When autoguns bullet is flying over the screen!
 void AutoGun::process()
 {
+    mTimer++;
+    
   (this->*processState)();
 }
 

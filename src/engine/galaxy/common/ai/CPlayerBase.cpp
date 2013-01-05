@@ -446,10 +446,6 @@ void CPlayerBase::getEaten()
 
 void CPlayerBase::processDead()
 {
-	// must be processed only once!
-	if(dead)
-	    return;
-	
 	setActionForce(A_KEEN_DIE);
 	
 	if(m_Inventory.Item.m_lifes <= 0) // Game over?
@@ -477,8 +473,9 @@ void CPlayerBase::processDead()
 	    EventContainer.add( pdialogevent );
 	}
 	
+	dead = false;
 	m_dying = false;
-	dead = true;
+	exists = false;
 }
 
 
@@ -495,10 +492,9 @@ void CPlayerBase::processDying()
 
 	if( m_camera.outOfSight() )
 	{
-		exists = false;
-		solid = true;
-		honorPriority = true;
-		m_Inventory.Item.m_gem.empty();
+	    dead = true;
+	    honorPriority = true;
+	    m_Inventory.Item.m_gem.empty();
 	}
 }
 
