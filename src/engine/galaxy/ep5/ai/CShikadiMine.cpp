@@ -24,6 +24,7 @@ $26F8W #Shikadi mine detonate
 $2716W #Shikadi mine fragments -> TODO: This is another object! We should implement a fragments class somehow.
  */
 
+// TODO: Overload the draw function, because the mine has an eye which moves around in the sprite
 
 namespace galaxy {  
   
