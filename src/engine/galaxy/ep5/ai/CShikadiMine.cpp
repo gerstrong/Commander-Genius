@@ -198,6 +198,10 @@ void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 	if(dead || theObject.dead)
 		return;
 
+	if(getActionNumber(A_MINE_DETONATE))
+		return;
+
+	
 	CStunnable::getTouchedBy(theObject);
 
 	// Was it a bullet? Than make it stunned.
