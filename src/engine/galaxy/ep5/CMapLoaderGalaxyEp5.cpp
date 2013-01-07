@@ -17,6 +17,7 @@
 #include "ai/CSpirogrip.h"
 #include "ai/CFuse.h"
 #include "ai/CShockshound.h"
+#include "ai/CShikadiMine.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -133,9 +134,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CSparky(&Map, foe, x, y);
 		break;
 
-	/*case 0x09: if (difficulty_level < 3) break;
-	case 0x08: if (difficulty_level < 2) break;
-	case 0x07: MineSpawn(tx, ty); MineInLevel = 1; break;*/
+	case 0x09: if( difficulty < HARD ) break;
+	case 0x08: if( difficulty < NORMAL ) break;
+	case 0x07: 	
+		// This is the Mine
+		p_newfoe = new galaxy::CShikadiMine(&Map, foe, x, y);
+		break;
+
 
 	
 	case 0x0C: if ( difficulty < HARD ) break;

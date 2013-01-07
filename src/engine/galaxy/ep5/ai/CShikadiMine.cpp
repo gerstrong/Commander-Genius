@@ -21,7 +21,7 @@ $269EW #Shikadi mine detonate
 $26BCW #Shikadi mine detonate
 $26DAW #Shikadi mine detonate
 $26F8W #Shikadi mine detonate
-$2716W #Shikadi mine fragments -> TODO: This is another object!
+$2716W #Shikadi mine fragments -> TODO: This is another object! We should implement a fragments class somehow.
  */
 
 
@@ -35,58 +35,158 @@ A_MINE_CHANGE_DIR = 2,
 A_MINE_DETONATE = 3
 };
 
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
 
-const int WALK_SPEED = 25;
+const int TIME_SIT = 150;
+const int TIME_MOVE = 150;
+const int TIME_CHANGE_DIR = 150;
 
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
-
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
-
+const int MOVE_SPEED = 10;
   
 CShikadiMine::CShikadiMine(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-	//mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
+    mActionMap[A_MINE_SIT] = (void (CStunnable::*)()) &CShikadiMine::processSit;
+    mActionMap[A_MINE_MOVE] = (void (CStunnable::*)()) &CShikadiMine::processMoving;
+    mActionMap[A_MINE_CHANGE_DIR] = (void (CStunnable::*)()) &CShikadiMine::processChangeDir;
+    mActionMap[A_MINE_DETONATE] = (void (CStunnable::*)()) &CShikadiMine::processDetonate;
   
-	// Adapt this AI
-	setupGalaxyObjectOnMap(0x2608, A_MINE_SIT);
+    // Adapt this AI
+    setupGalaxyObjectOnMap(0x2608, A_MINE_SIT);
 	
-	xDirection = LEFT;
+    xDirection = LEFT;
+    yDirection = UP;
 }
 
 
-
-void CShikadiMine::processWalking()
+void CShikadiMine::processSit()
 {
-  // Move normally in the direction
-  if( xDirection == RIGHT )
-  {
-    moveRight( WALK_SPEED );
-  }
-  else
-  {
-    moveLeft( WALK_SPEED );
-  }   
+  mTimer++;
+  if( mTimer < TIME_SIT )
+      return;
+  
+  mTimer = 0;
+  
+  setAction(A_MINE_MOVE);
 }
 
+
+void CShikadiMine::processMoving()
+{          
+    
+  // Move normally in the direction
+  moveXDir( xDirection*MOVE_SPEED );
+  moveYDir( yDirection*MOVE_SPEED );
+  
+  mTimer++;
+  if( mTimer < TIME_MOVE )
+      return;
+  
+  mTimer = 0;
+  
+  //setAction(A_MINE_CHANGE_DIR);
+}
+
+void CShikadiMine::processChangeDir()
+{
+  // Look at the Player coords and define a direction
+  xDirection = yDirection = CENTER;
+  if(getProbability(500))
+      xDirection = mKeenAlignmentX;
+  else
+      yDirection = mKeenAlignmentY;
+  
+  mTimer++;
+  if( mTimer < TIME_CHANGE_DIR )
+      return;  
+  
+  mTimer = 0;
+  
+    if( blockedl && xDirection == LEFT )
+    {
+	xDirection = CENTER;
+	yDirection = mKeenAlignmentY;
+	
+	if(yDirection == UP && blockedu)
+	    yDirection = DOWN;
+	    
+	if(yDirection == DOWN && blockedd)
+	{
+	    yDirection = CENTER;
+	    xDirection = RIGHT;
+	}
+    }
+    else if( blockedr && xDirection == RIGHT )
+    {
+	xDirection = CENTER;
+	yDirection = mKeenAlignmentY;
+	
+	if(yDirection == DOWN  && blockedd)
+	    yDirection = UP;
+	    
+	if(yDirection == UP && blockedu)
+	{
+	    yDirection = CENTER;
+	    xDirection = LEFT;
+	}	
+    }    
+    
+    if( blockedu && yDirection == UP )
+    {
+	yDirection = CENTER;
+	xDirection = mKeenAlignmentX;
+	
+	if(xDirection == LEFT && blockedl)
+	    xDirection = RIGHT;
+	    
+	if(xDirection == RIGHT && blockedr)
+	{
+	    xDirection = CENTER;
+	    yDirection = DOWN;
+	}
+    }
+    else if( blockedd && yDirection == DOWN )
+    {
+	yDirection = CENTER;
+	xDirection = mKeenAlignmentX;
+	
+	if(xDirection == RIGHT && blockedr)
+	    xDirection = LEFT;
+	    
+	if(xDirection == LEFT && blockedl)
+	{
+	    xDirection = CENTER;
+	    yDirection = UP;
+	}	
+    }    
+  
+  setAction(A_MINE_MOVE);  
+}
+
+void CShikadiMine::processDetonate()
+{  
+  if(!processActionRoutine())
+  {
+      dead = true;
+      exists = false;
+      
+      // TODO: Spawn little explosion shards here!
+  }  
+}
 
 bool CShikadiMine::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(10) )
-		return false;
-
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
+	{	    	    
+		if( player->getXMidPos() < getXMidPos() )
+			mKeenAlignmentX = LEFT;
 		else
-			mKeenAlignment = RIGHT;*/
+			mKeenAlignmentX = RIGHT;
+
+		if( player->getYMidPos() < getYMidPos() )
+			mKeenAlignmentY = UP;
+		else
+			mKeenAlignmentY = DOWN;
 	}
 
 	return true;
@@ -102,23 +202,17 @@ void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		playSound(SOUND_ROBO_STUN);
-		dead = true;
-		theObject.dead = true;
+	    theObject.dead = true;
+	    playSound(SOUND_MINEEXPLODE);
+	    setAction(A_MINE_DETONATE);
 	}
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		player->kill();
-	}*/
-}
-
-
-int CShikadiMine::checkSolidD( int x1, int x2, int y2, const bool push_mode )
-{
-	turnAroundOnCliff( x1, x2, y2 );
-
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+	    playSound(SOUND_MINEEXPLODE);
+	    setAction(A_MINE_DETONATE);
+	    player->kill();
+	}
 }
 
 
@@ -126,19 +220,8 @@ void CShikadiMine::process()
 {
 	performCollisions();
 	
-	performGravityMid();
-
-	if( blockedl )
-	{
-	  xDirection = RIGHT;
-	}
-	else if(blockedr)
-	{
-	  xDirection = LEFT;
-	}
-
-	if(!processActionRoutine())
-	    exists = false;
+	//if(!processActionRoutine())
+	//    exists = false;
 	
 	(this->*mp_processState)();
 }
