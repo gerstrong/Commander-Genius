@@ -101,6 +101,13 @@ void CPatcher::process()
 			
 			gpResource->audioHedFilename = newfileName;
 		}				
+		else if(PatchItem.keyword == "audiodict")
+		{
+			std::string newfileName = PatchItem.value.front();
+			TrimSpaces(newfileName);
+			
+			gpResource->audioDictFilename = newfileName;
+		}				
 		else if(PatchItem.keyword == "gamemaps")
 		{
 			std::string newfileName = PatchItem.value.front();

@@ -257,7 +257,13 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 	{
 		// Open the Huffman dictionary and get AUDIODICT
 		CHuffman Huffman;
-		Huffman.readDictionaryNumber( ExeFile, 0 );
+		
+		std::string audioDictfilename = getResourceFilename( gpResource->audioDictFilename, ExeFile.getDataDirectory(), false, false);
+		
+		if(audioDictfilename.empty())
+		    Huffman.readDictionaryNumber( ExeFile, 0 );
+		else
+		    Huffman.readDictionaryFromFile( audioDictfilename );
 
 		/// First get the size of the AUDIO.CK? File.
 		uint32_t audiofilecompsize;
@@ -287,7 +293,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		// Open the AUDIOHED so we know where to decompress the audio
 		
 		std::string audiohedfilename = gpResource->audioHedFilename;
-		audiohedfilename = getResourceFilename( audiohedfilename, ExeFile.getDataDirectory(), false, false);				
+		audiohedfilename = getResourceFilename( audiohedfilename, ExeFile.getDataDirectory(), false, false);
 		
 		uint32_t *audiostarthedptr;
 		uint32_t *audioendhedptr;

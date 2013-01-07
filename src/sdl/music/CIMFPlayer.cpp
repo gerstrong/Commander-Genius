@@ -239,7 +239,13 @@ bool CIMFPlayer::unpackAudioInterval(	const CExeFile& ExeFile,
 {
 	// Open the Huffman dictionary and get AUDIODICT
 	CHuffman Huffman;
-	Huffman.readDictionaryNumber( ExeFile, 0 );
+	
+	std::string audioDictfilename = getResourceFilename( gpResource->audioDictFilename, ExeFile.getDataDirectory(), false, false);
+	
+	if(audioDictfilename.empty())
+	    Huffman.readDictionaryNumber( ExeFile, 0 );
+	else
+	    Huffman.readDictionaryFromFile( audioDictfilename );
 
 	if( audio_start < audio_end )
 	{
