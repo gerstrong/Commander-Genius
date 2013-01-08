@@ -149,11 +149,6 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	for( int c=0 ; c<10 ; c++ )
 	{
 		Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y, 72+c);
-		//TempRect.y += 8;
 		Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y+8, 82+c);
 	}
-	
-	//for( int c=0 ; c<10 ; c++ )
-		
-
 }
