@@ -23,6 +23,7 @@ public:
 	void performGravityLow();
 	void performGravityMid();
 	void performGravityHigh();
+	void performInverseGravityHigh();
 
 	void processFalling();
 

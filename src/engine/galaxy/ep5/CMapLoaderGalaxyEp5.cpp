@@ -18,6 +18,7 @@
 #include "ai/CFuse.h"
 #include "ai/CShockshound.h"
 #include "ai/CShikadiMine.h"
+#include "ai/CSpindred.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -267,10 +268,16 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 75: if (difficulty_level < 2) break;
 	case 74: ShellySpawn(tx, ty); ShellyInLevel = 1; break;
 
-	case 79: if (difficulty_level < 3) break;
-	case 78: if (difficulty_level < 2) break;
-	case 77: SpindredSpawn(tx, ty); SpindredInLevel = 1; break;
-
+	*/
+	
+	case 0x4F: if ( difficulty < HARD ) break;
+	case 0x4E: if ( difficulty < NORMAL ) break;
+	case 0x4D: 
+	  	// This is Spindred
+		p_newfoe = new galaxy::CSpindred(&Map, foe, x, y);
+		break;	
+	
+/*
 	case 88: if (difficulty_level < 3) break;
 	case 89: if (difficulty_level < 2) break;
 	case 90: MasterSpawn(tx, ty); MasterInLevel = 1; break;

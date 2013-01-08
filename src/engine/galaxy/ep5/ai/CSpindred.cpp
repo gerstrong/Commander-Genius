@@ -7,7 +7,6 @@
 
 
 #include "CSpindred.h"
-#include "engine/galaxy/common/ai/CPlayerBase.h"
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
 #include "misc.h"
 
@@ -23,9 +22,15 @@ namespace galaxy {
 
 const int WALK_SPEED = 25;
 
+const int MAX_BOUNCES = 2;
+
+const int MAX_BOUNCE_INERTIA = 120;
+
 CSpindred::CSpindred(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mTimer(0)
+mTimer(0),
+mInverseGravity(false),
+mBounces(0)
 {
   
 	// Adapt this AI
@@ -35,37 +40,6 @@ mTimer(0)
 }
 
 
-
-void CSpindred::processWalking()
-{
-  // Move normally in the direction
-  if( xDirection == RIGHT )
-  {
-    moveRight( WALK_SPEED );
-  }
-  else
-  {
-    moveLeft( WALK_SPEED );
-  }   
-}
-
-
-bool CSpindred::isNearby(CSpriteObject &theObject)
-{
-	if( !getProbability(10) )
-		return false;
-
-	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
-		else
-			mKeenAlignment = RIGHT;*/
-	}
-
-	return true;
-}
-
 void CSpindred::getTouchedBy(CSpriteObject &theObject)
 {
 	if(dead || theObject.dead)
@@ -74,47 +48,52 @@ void CSpindred::getTouchedBy(CSpriteObject &theObject)
 	CStunnable::getTouchedBy(theObject);
 
 	// Was it a bullet? Than make it stunned.
-	if( dynamic_cast<CBullet*>(&theObject) )
+	/*if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		playSound(SOUND_ROBO_STUN);
 		dead = true;
 		theObject.dead = true;
-	}
+	}*/
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
-	}*/
-}
-
-
-int CSpindred::checkSolidD( int x1, int x2, int y2, const bool push_mode )
-{
-	turnAroundOnCliff( x1, x2, y2 );
-
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+	}
 }
 
 
 void CSpindred::process()
 {
 	performCollisions();
-	
-	performGravityMid();
 
-	if( blockedl )
+	if(mInverseGravity)
 	{
-	  xDirection = RIGHT;
+	    performInverseGravityHigh();
 	}
-	else if(blockedr)
+	else
 	{
-	  xDirection = LEFT;
+	    performGravityHigh();
 	}
-
-	if(!processActionRoutine())
-	    exists = false;
 	
-	(this->*mp_processState)();
+	if(yinertia == 0)
+	{	    
+	    if( blockedu && mInverseGravity || 
+		blockedd && !mInverseGravity )
+	    {
+		mBounces++;
+		yinertia = (mInverseGravity) ? MAX_BOUNCE_INERTIA : -MAX_BOUNCE_INERTIA;
+	    }
+	    
+	    
+	    if(mBounces >= MAX_BOUNCES)
+	    {
+		mBounces = 0;
+		mInverseGravity = !mInverseGravity;
+	    }	    
+	}
+	
+	processActionRoutine();	
+	
 }
 
 }

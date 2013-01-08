@@ -69,7 +69,8 @@ mTimer(0)
 
 void AutoGun::waiting()
 {
-    if(g_pBehaviorEngine->getEpisode() == 5)
+    const int ep = g_pBehaviorEngine->getEpisode();
+    if(ep == 5)
     {
 	if(sprite < mBaseSprite + mNumAnimSprites + 1)
 	    sprite++;
@@ -95,7 +96,16 @@ void AutoGun::waiting()
   sprite = mBaseSprite;
   mTimer = 0;
   processState = &AutoGun::flying;
-  playSound(SOUND_DARTGUN_SHOOT); // TODO: EP5 Sound of autoguns is missing
+  
+  if(ep == 4)
+  {
+    playSound(SOUND_DARTGUN_SHOOT);
+  }
+  else
+  {
+      playSound(SOUND_ROBORED_SHOOT); // Yeah, it is the same sound!
+  }  
+  
   dontdraw = false;
 }
 
