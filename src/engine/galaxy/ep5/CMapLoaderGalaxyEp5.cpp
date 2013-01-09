@@ -19,6 +19,7 @@
 #include "ai/CShockshound.h"
 #include "ai/CShikadiMine.h"
 #include "ai/CSpindred.h"
+#include "ai/CShelly.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -254,8 +255,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 
 	
-	//p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;	
-
 	case 0x49: if ( difficulty < HARD ) break;
 	case 0x48: if ( difficulty < NORMAL ) break;
 	case 0x47: 
@@ -264,11 +263,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 	
 
-	/*case 76: if (difficulty_level < 3) break;
-	case 75: if (difficulty_level < 2) break;
-	case 74: ShellySpawn(tx, ty); ShellyInLevel = 1; break;
-
-	*/
+	case 0x4C: if ( difficulty < HARD ) break;
+	case 0x4B: if ( difficulty < NORMAL ) break;
+	case 0x4A: 
+  		// This is Shelly
+		p_newfoe = new galaxy::CShelly(&Map, foe, x, y);
+		break;
+	
 	
 	case 0x4F: if ( difficulty < HARD ) break;
 	case 0x4E: if ( difficulty < NORMAL ) break;

@@ -24,8 +24,12 @@ public:
 	/**
 	 * Action functions
 	 */
-	void processWalking();	
-	//void processTurn();
+	void processWalking();
+	void processPrepareJump();
+	void processJump();	
+	void processFall();
+	void processSmash();
+	void processSmoke();
 	
 	bool isNearby(CSpriteObject &theObject);
 
@@ -40,6 +44,10 @@ public:
 	
 private:
 	int mTimer;
+	
+	direction_t mKeenAlignment;
+	bool mGoodJumpChance;
+	
 };
 
 }
