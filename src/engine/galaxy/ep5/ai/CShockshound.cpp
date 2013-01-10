@@ -108,11 +108,11 @@ void CShockshound::processBark()
     
     if(getProbability(500))
     {	    
-	// Spawn a Enemyshot in form electrostatic  charge which goes upwards
+	// Spawn a Enemyshot in form electrostatic
 	const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
 	g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0, 
 							newX, getYUpPos()-(8<<STC),
-							0x2FC2, xDirection, CENTER,  150) );		
+							0x2FC2, xDirection, CENTER,  150) );
 	
 	// SD_PlaySound(SOUND_BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
     }

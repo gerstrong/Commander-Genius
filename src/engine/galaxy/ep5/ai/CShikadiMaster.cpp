@@ -7,8 +7,7 @@
 
 
 #include "CShikadiMaster.h"
-#include "engine/galaxy/common/ai/CPlayerBase.h"
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include <engine/galaxy/common/ai/CEnemyShot.h>
 #include "misc.h"
 
 /*
@@ -34,24 +33,22 @@ A_MASTER_SHOOT = 4,
 A_MASTER_TELEPORT = 6
 };
 
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
+const int TIME_UNTIL_REACT = 100;
 
-const int WALK_SPEED = 25;
-
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
-
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
+const int TIME_UNTIL_SHOOT = 100;
+const int TIME_UNTIL_TELEPORTED = 50;
 
   
 CShikadiMaster::CShikadiMaster(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
-mTimer(0)
-{
-  
+mTimer(0),
+mTeleport(false),
+mpPlayer(nullptr)
+{  
+      	mActionMap[A_MASTER_STAND] = (void (CStunnable::*)()) &CShikadiMaster::processStanding;
+      	mActionMap[A_MASTER_SHOOT] = (void (CStunnable::*)()) &CShikadiMaster::processShooting;
+      	mActionMap[A_MASTER_TELEPORT] = (void (CStunnable::*)()) &CShikadiMaster::processTeleporting;    
+    
 	// Adapt this AI
 	setupGalaxyObjectOnMap(0x2AF4, A_MASTER_STAND);
 	
@@ -60,33 +57,153 @@ mTimer(0)
 
 
 
-void CShikadiMaster::processWalking()
+void CShikadiMaster::processStanding()
 {
-  // Move normally in the direction
-  if( xDirection == RIGHT )
-  {
-    moveRight( WALK_SPEED );
-  }
-  else
-  {
-    moveLeft( WALK_SPEED );
-  }   
+    /*mTimer++;
+    if(mTimer < TIME_UNTIL_REACT)
+	mTimer = 0;*/
+    
+    if(getProbability(250))
+	return;
+    
+    
+    if(mTeleport)
+    {
+	setActionForce(A_MASTER_TELEPORT);
+	mTeleport = false;
+    }
+    else
+    {
+	mTeleport = true;
+	xDirection = mKeenAlignment;
+	setAction(A_MASTER_SHOOT);
+    }
 }
+
+
+void CShikadiMaster::processShooting()
+{
+    mTimer++;
+    if(mTimer < TIME_UNTIL_SHOOT)
+	return;
+    
+    mTimer = 0;
+    
+    const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
+    g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0, 
+							    newX, getYUpPos()+(8<<STC),
+							    0x2C3E, xDirection, CENTER,  150) );
+    
+    playSound(SOUND_MASTERSHOT);
+    setAction(A_MASTER_STAND);    
+    
+}
+
+
+void CShikadiMaster::processTeleporting()
+{
+    if(!mpPlayer)
+	return;
+    
+    mTimer++;
+    if(mTimer < TIME_UNTIL_TELEPORTED)
+	return;
+    
+    mTimer = 0;
+    
+    
+/*
+ 
+	int xpos_0, ypos_0, tx, ty, tx2, ty2, tries;
+	int _far *t;
+
+	xpos_0 = o->xpos;
+	ypos_0 = o->ypos;
+
+	GetNewObj(1);
+	new_object->xpos = o->xpos;
+	new_object->ypos = o->ypos;
+	o->xmove = 0x30;
+	CheckGround(new_object,ACTION_MASTERSPARKS0);
+
+	GetNewObj(1);
+	new_object->xpos = o->xpos;
+	new_object->ypos = o->ypos;
+	o->xmove = -0x30;
+	CheckGround(new_object,ACTION_MASTERSPARKS0);
+	*/
+
+	playSound(SOUND_MASTERTELE);
+
+	int tries = 0;
+
+	while (++tries < 10) 
+	{
+	    const unsigned int tx = ((rand()%(mp_Map->m_width<<CSF))/8 + mpPlayer->getXMidPos() - (0x10<<STC))>>CSF;
+	    const unsigned int ty = ((rand()%(mp_Map->m_height<<CSF))/8 + mpPlayer->getYUpPos() - (0x10<<STC))>>CSF;
+	    
+	    if (ty < 2 || tx < 2 || mp_Map->m_width-5 < tx || mp_Map->m_height-5 < ty) 
+		continue;
+
+	    const int testBoxX1 = (tx - 1)<<CSF;
+	    const int testBoxX2 = (tx + 4)<<CSF;
+	    const int testBoxY1 = (ty - 1)<<CSF;
+	    const int testBoxY2 = (ty + 4)<<CSF;
+	    
+	    std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	    
+	    //const int mapXT = (mp_Map->m_width<<CSF) - (testBoxX2 - testBoxX1 + (1<<CSF));
+	    for (int ty2 = testBoxY1; ty2 <= testBoxY2; ty2 += 1<<STC) 
+	    {
+			for (int tx2 = testBoxX1; tx2 <= testBoxX2; tx2 += 1<<STC)
+			{
+				const int tile = mp_Map->getPlaneDataAt(1, VectorD2<Uint32>(tx2, ty2));
+
+				if (Tile[tile].behaviour & 0x80 || 
+				    Tile[tile].bup || Tile[tile].bright || 
+				    Tile[tile].bleft || Tile[tile].bdown )
+				{
+					// don't spawn inside a tile, or behind a hidden tile
+					tries--;
+					continue;
+				}
+			}
+		}
+		
+		// make it through previous nested loop == succesful tele
+		//KeenXVel = KeenYVel = 0;
+		moveToForce(tx<<CSF, ty<<CSF);
+		setAction(A_MASTER_STAND);
+		return;
+	}
+
+	// couldn't find a suitable spawn point, so reset to default master behaviour
+	rand();
+	
+	setAction(A_MASTER_STAND);
+	/*Rand();
+	o->action = ACTION_MASTER0;
+	o->xpos = xpos_0 - 1; o->ypos = ypos_0;
+	KeenXVel = 1; KeenYVel = 0;
+	return; 
+ 
+	*/
+}
+
 
 
 bool CShikadiMaster::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(10) )
-		return false;
-
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-		/*if( player->getXMidPos() < getXMidPos() )
+		if( player->getXMidPos() < getXMidPos() )
 			mKeenAlignment = LEFT;
 		else
-			mKeenAlignment = RIGHT;*/
+			mKeenAlignment = RIGHT;
+		
+		mpPlayer = player;
 	}
-
+	
 	return true;
 }
 
@@ -100,23 +217,13 @@ void CShikadiMaster::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		playSound(SOUND_ROBO_STUN);
-		dead = true;
 		theObject.dead = true;
 	}
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
-	}*/
-}
-
-
-int CShikadiMaster::checkSolidD( int x1, int x2, int y2, const bool push_mode )
-{
-	turnAroundOnCliff( x1, x2, y2 );
-
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+	}
 }
 
 
@@ -125,15 +232,6 @@ void CShikadiMaster::process()
 	performCollisions();
 	
 	performGravityMid();
-
-	if( blockedl )
-	{
-	  xDirection = RIGHT;
-	}
-	else if(blockedr)
-	{
-	  xDirection = LEFT;
-	}
 
 	if(!processActionRoutine())
 	    exists = false;

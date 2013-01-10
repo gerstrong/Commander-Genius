@@ -20,6 +20,7 @@
 #include "ai/CShikadiMine.h"
 #include "ai/CSpindred.h"
 #include "ai/CShelly.h"
+#include "ai/CShikadiMaster.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -278,11 +279,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CSpindred(&Map, foe, x, y);
 		break;	
 	
-/*
-	case 88: if (difficulty_level < 3) break;
-	case 89: if (difficulty_level < 2) break;
-	case 90: MasterSpawn(tx, ty); MasterInLevel = 1; break;
-*/
+
+	case 0x5A: if ( difficulty < HARD ) break;
+	case 0x59: if ( difficulty < NORMAL ) break;
+	case 0x58: 
+		// This is the Shikadi Master
+		p_newfoe = new galaxy::CShikadiMaster( &Map, foe, x, y );
+		break;	
+
 	case 0x65: if ( difficulty < HARD ) break;
 	case 0x64: if ( difficulty < NORMAL ) break;
 	case 0x63: 	

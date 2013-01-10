@@ -12,6 +12,7 @@
 
 #include <vector>
 #include "engine/galaxy/common/ai/CStunnable.h"
+#include "engine/galaxy/common/ai/CPlayerLevel.h"
 
 namespace galaxy {
 
@@ -24,12 +25,11 @@ public:
 	/**
 	 * Action functions
 	 */
-	void processWalking();	
-	//void processTurn();
+	void processStanding();	
+	void processShooting();	
+	void processTeleporting();	
 	
 	bool isNearby(CSpriteObject &theObject);
-
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
 	void process();
 
@@ -40,6 +40,10 @@ public:
 	
 private:
 	int mTimer;
+	direction_t mKeenAlignment;
+	bool mTeleport;
+	
+	CPlayerLevel *mpPlayer;
 };
 
 }

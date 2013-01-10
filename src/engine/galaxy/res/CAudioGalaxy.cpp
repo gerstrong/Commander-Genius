@@ -157,8 +157,8 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
     sndSlotMapGalaxy[5][SOUND_SPARKY_CHARGE] = 36;
     //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = 37;
-    //sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
-    //sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
+    sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
+    sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
     sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
     sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
     sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;    
