@@ -27,8 +27,10 @@ struct stItemGalaxy
 	} m_gem;
 
 	int m_keycards;
+	int fuses_levels_completed;
 
 	union {
+	    
 		struct
 		{
 			bool swimsuit;
@@ -41,6 +43,7 @@ struct stItemGalaxy
 			bool hook;
 			bool rocketKeycard;
 		}ep6;
+				
 	}m_special;
 
 	void reset()
@@ -56,6 +59,7 @@ struct stItemGalaxy
 
 		m_special.ep4.elders = 0;
 		m_special.ep4.swimsuit = 0;
+		fuses_levels_completed = 0;
 	}
 
 	void triggerAllItemsCheat()

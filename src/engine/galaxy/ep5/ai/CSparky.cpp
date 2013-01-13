@@ -184,7 +184,6 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		playSound(SOUND_ROBO_STUN);
 		setAction(A_SPARKY_STUNNED);
 		dead = true;
 		theObject.dead = true;

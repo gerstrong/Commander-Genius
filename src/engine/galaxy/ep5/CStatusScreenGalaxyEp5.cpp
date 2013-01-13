@@ -57,23 +57,34 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	TempRect.x = EditRect.x+96;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
-
-	/// RESCUED and LEVEL Rects
+	
 	TempRect.x = EditRect.x;
+	TempRect.y = EditRect.y+56;	
+	Font.drawFont(mpStatusSurface.get(), "KEYCARD", TempRect.x, TempRect.y+4);
+	
+	// Small Keycard Box
+	TempRect.y = EditRect.y+59;
+	TempRect.x = EditRect.x+54;
+	TempRect.w = 10;
+	TempRect.h = 10;
+	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
+	if(m_Item.m_keycards)
+	{
+		g_pGfxEngine->drawDigit(40, TempRect.x+1, TempRect.y+1, mpStatusSurface.get());
+	}
+
+	// LEVEL Rects
+	TempRect.w = EditRect.w/2;
+	TempRect.x = EditRect.x+24;
 	TempRect.y = EditRect.y+56;
-	TempRect.w = EditRect.w/2; TempRect.h = 10;
-	Font.drawFont(mpStatusSurface.get(), "RESCUED           LEVEL", TempRect.x+8, TempRect.y);
-	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
+	Font.drawFont(mpStatusSurface.get(), "                  LEVEL", TempRect.x, TempRect.y);	
+	TempRect.h = 11;
 	TempRect.y = EditRect.y+66;
 
-	// Rescued Box
-	TempRect.w = 8*8;
-	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-	for( int count=0 ; count<m_Item.m_special.ep4.elders ; count++ )
-		g_pGfxEngine->drawDigit(40, TempRect.x+8*count, TempRect.y+1, mpStatusSurface.get());
 
 	// Level Box
 	TempRect.x = EditRect.x+96;
+	TempRect.w = 64;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
 	Font.setupColor(0x0);
 	std::string difftext;
@@ -125,28 +136,19 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	// Drops Box
 	TempRect.x = EditRect.x+96;
 	TempRect.y = EditRect.y+96;
-	Font.drawFont(mpStatusSurface.get(), "DROPS", TempRect.x, TempRect.y);
+	Font.drawFont(mpStatusSurface.get(), "VITALIN", TempRect.x, TempRect.y);
 	TempRect.w = 8*2; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5+8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
 
-	// Swim Suit Box
-	TempRect.x = EditRect.x;
-	TempRect.y = EditRect.y+114;
-	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
-	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
-	Font.setupColor(0x0);
-	Font.drawFontCentered(mpStatusSurface.get(), m_Item.m_special.ep4.swimsuit ? "Swim Suit" : "???", TempRect.x, TempRect.w, TempRect.y+1, false);
-
 	// Press a Key Sign
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
-	TempRect.x = EditRect.x+(EditRect.w/2);
+	TempRect.x = EditRect.x+(EditRect.w-80)/2;
 	TempRect.y = EditRect.y+110;
 	for( int c=0 ; c<10 ; c++ )
+	{
 		Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y, 72+c);
-	TempRect.y += 8;
-	for( int c=0 ; c<10 ; c++ )
-		Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y, 82+c);
-
+		Tilemap.drawTile(mpStatusSurface.get(), TempRect.x+c*8, TempRect.y+8, 82+c);
+	}
 }

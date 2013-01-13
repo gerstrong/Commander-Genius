@@ -7,6 +7,7 @@
  *  Player which reproduces the IMF Data
  */
 
+#include "engine/galaxy/res/CAudioGalaxy.h"
 #include "CIMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
@@ -16,12 +17,6 @@
 #include <string>
 #include <cassert>
 
-const Uint32 GalaxySongAssignments[] =
-{
-	0x02F206,
-	0x03067A,
-	0x03103E,
-};
 
 CIMFPlayer::CIMFPlayer( const SDL_AudioSpec& AudioSpec, COPLEmulator& opl_emulator ) :
 m_AudioDevSpec(AudioSpec),
@@ -244,7 +239,13 @@ bool CIMFPlayer::unpackAudioInterval(	const CExeFile& ExeFile,
 {
 	// Open the Huffman dictionary and get AUDIODICT
 	CHuffman Huffman;
-	Huffman.readDictionaryNumber( ExeFile, 0 );
+	
+	std::string audioDictfilename = getResourceFilename( gpResource->audioDictFilename, ExeFile.getDataDirectory(), false, false);
+	
+	if(audioDictfilename.empty())
+	    Huffman.readDictionaryNumber( ExeFile, 0 );
+	else
+	    Huffman.readDictionaryFromFile( audioDictfilename );
 
 	if( audio_start < audio_end )
 	{

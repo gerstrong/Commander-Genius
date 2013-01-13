@@ -21,16 +21,6 @@ class CSpindred : public CStunnable
 public:
 	CSpindred(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
-	/**
-	 * Action functions
-	 */
-	void processWalking();	
-	//void processTurn();
-	
-	bool isNearby(CSpriteObject &theObject);
-
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
-
 	void process();
 
 	/**
@@ -40,6 +30,8 @@ public:
 	
 private:
 	int mTimer;
+	bool mInverseGravity;
+	int mBounces;
 };
 
 }

@@ -10,7 +10,8 @@ class AutoGun : public CGalaxySpriteObject
 {
   
 public:
-  AutoGun(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+  AutoGun(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+	direction_t horDir, direction_t vertDir, int basesprite);
   
   void process();
   
@@ -27,10 +28,10 @@ private:
   static const int FLY_SPEED = 160;
   static const int WAIT_TIME = 150;
   
-  int time;
-  
-  VectorD2<int> origin;
-  int baseSprite;
+  VectorD2<Uint32> origin;
+  int mBaseSprite;
+  int mNumAnimSprites;
+  int mTimer;
 };
 
 };

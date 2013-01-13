@@ -9,93 +9,162 @@
 #include "CShockshound.h"
 #include "engine/galaxy/common/ai/CPlayerBase.h"
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include <engine/galaxy/common/ai/CEnemyShot.h>
 #include "misc.h"
 
 /*
-$21DCW #Lil Ampton walk
-$21FAW #Lil Ampton walk
-$2218W #Lil Ampton walk
-$2236W #Lil Ampton walk
-$2254W #Lil Ampton turn 4
-$2272W #Lil Ampton start pole slide 5
-$2290W #Lil Ampton start pole slide
-$22AEW #Lil Ampton pole slide 6
-$22CCW #Lil Ampton stop pole slide 7
-$22EAW #Lil Ampton stop pole slide
-$2308W #Lil Ampton flip switch 8
-$2326W #Lil Ampton flip switch 
-$2344W #Lil Ampton flip switch
-$2362W #Lil Ampton flip switch
-$2380W #Lil Ampton flip switch
-$239EW #Stunned Ampton 13
+$2E96W #Shocksund sit
+$2EB4W #Shocksund sit
+$2ED2W #Shocksund bark 2
+$2EF0W #Shocksund bark
+$2F0EW #Shocksund walk 4
+$2F2CW #Shocksund walk
+$2F4AW #Shocksund walk
+$2F68W #Shocksund walk
+$2F86W #Shocksund jump 8
+$2FA4W #Shocksund shot 9 -> TODO: Another Object?
+$2FC2W #Shocksund shot
+$2FE0W #Shocksund shot smash 11
+$2FFEW #Shocksund shot smash
+$301CW #Shocksund stunned 13
  */
 
 
 namespace galaxy {  
   
-enum SPARKYACTIONS
+enum HOUNDACTIONS
 {
-A_AMPTON_WALK = 0,
-A_AMPTON_TURN = 4,
-A_AMPTON_START_POLE = 5,
-A_AMPTON_POLE_SLIDE = 6,
-A_AMPTON_STOP_POLE = 7,
-A_AMPTON_FLIP_SWITCH = 8,
-A_AMPTON_STUNNED = 12
+A_HOUND_SIT = 0,
+A_HOUND_BARK = 2,
+A_HOUND_WALK = 4,
+A_HOUND_JUMP = 8,
+A_HOUND_SHOOT = 9,
+A_HOUND_STUNNED = 13
 };
-
-const int TIME_UNTIL_MOVE = 5;
-const int TIME_FOR_LOOK = 150;
 
 const int WALK_SPEED = 25;
 
-const int CSF_DISTANCE_TO_FOLLOW = 6<<CSF;
-
-const int CHARGE_TIME = 250;
-const int CHARGE_SPEED = 75;
-
-const int TURN_TIME = 10;
+const int TIME_TO_BARK = 64;
+const int TIME_TO_SIT = 32;
+const int TIME_WALKING = 50;
 
   
 CShockshound::CShockshound(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
+mHealth(2),
 mTimer(0)
 {
-	mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
+	
+	mActionMap[A_HOUND_SIT] = (void (CStunnable::*)()) &CShockshound::processSit;
+	mActionMap[A_HOUND_BARK] = (void (CStunnable::*)()) &CShockshound::processBark;
+	mActionMap[A_HOUND_WALK] = (void (CStunnable::*)()) &CShockshound::processWalking;
+	mActionMap[A_HOUND_JUMP] = (void (CStunnable::*)()) &CShockshound::processJump;
+	mActionMap[A_HOUND_SHOOT] = (void (CStunnable::*)()) &CShockshound::processBark;
+	mActionMap[A_HOUND_STUNNED] = &CStunnable::processGettingStunned;
+	
   
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+	setupGalaxyObjectOnMap(0x2E96, A_HOUND_SIT);
 	
 	xDirection = LEFT;
+	yDirection = CENTER;
 }
 
+
+
+void CShockshound::processSit()
+{
+    mTimer++;
+    if( mTimer < TIME_TO_SIT )
+      return;
+  
+    mTimer = 0;
+    
+    setAction(A_HOUND_BARK);  
+    playSound(SOUND_SHOCKSUNDBARK);
+}
+
+
+void CShockshound::processBark()
+{
+    mTimer++;
+    if( mTimer < TIME_TO_BARK )
+      return;
+  
+    mTimer = 0;
+    
+    xDirection = mKeenAlignmentX;
+    
+    if(getProbability(200))
+    {
+	setAction(A_HOUND_SIT);    
+    }
+
+    if(mKeenAlignmentY != CENTER)
+    {
+	yinertia = -120;
+	setAction(A_HOUND_JUMP);
+    }    
+    
+    if(getProbability(500))
+    {	    
+	// Spawn a Enemyshot in form electrostatic
+	const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
+	g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0, 
+							newX, getYUpPos()-(8<<STC),
+							0x2FC2, xDirection, CENTER,  150) );
+	
+	// SD_PlaySound(SOUND_BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
+    }
+
+}
 
 
 void CShockshound::processWalking()
 {
   // Move normally in the direction
-  if( xDirection == RIGHT )
+  moveXDir(xDirection*WALK_SPEED);  
+  
+  mTimer++;
+  if( mTimer < TIME_WALKING )
+    return;
+  
+  mTimer = 0;
+    
+  if(getProbability(200))
   {
-    moveRight( WALK_SPEED );
-  }
-  else
-  {
-    moveLeft( WALK_SPEED );
-  }   
+    setAction(A_HOUND_SIT);    
+  }    
 }
+
+void CShockshound::processJump()
+{
+  // Move normally in the direction
+  moveXDir(xDirection*WALK_SPEED);  
+
+  if( yinertia >= 0 && blockedd)
+  {
+      setAction(A_HOUND_WALK);
+      yinertia = 0;
+  }
+}
+
 
 
 bool CShockshound::isNearby(CSpriteObject &theObject)
 {
-	if( !getProbability(10) )
-		return false;
-
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
+	{	    	    
+		if( player->getXMidPos() < getXMidPos() )
+			mKeenAlignmentX = LEFT;
 		else
-			mKeenAlignment = RIGHT;*/
+			mKeenAlignmentX = RIGHT;
+		
+		mKeenAlignmentY = CENTER;
+		if( player->getYDownPos()-(1<<STC) < getYUpPos() )
+		    mKeenAlignmentY = UP;
+		else if( player->getYDownPos()+(1<<STC) > getYDownPos() )
+		    mKeenAlignmentY = DOWN;
 	}
 
 	return true;
@@ -111,15 +180,21 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		playSound(SOUND_ROBO_STUN);
+	    mHealth--;
+	    theObject.dead = true;
+	    
+	    // TODO: Flash effect must be added here!
+	    if(mHealth == 0)
+	    {
+		setAction(A_HOUND_STUNNED);
 		dead = true;
-		theObject.dead = true;
+	    }		
 	}
 
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
-	}*/
+	}
 }
 
 

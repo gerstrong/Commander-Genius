@@ -143,7 +143,7 @@ bool CEGAGraphicsGalaxy::loadData()
 
 	// First, retrieve the Tile properties so the tilemap gets properly formatted
 	// Important especially for masks, and later in the game for the behaviours
-    // of those objects
+	// of those objects
 	CTileLoader TileLoader( m_Exefile );
 	if(!TileLoader.load(EpisodeInfo[m_episode-4].Num16Tiles,
 						EpisodeInfo[m_episode-4].Num16MaskedTiles))
@@ -371,18 +371,21 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 	std::string filename;
 	if (m_episode <= 6) filename =  m_path + "EGAHEAD.CK" + itoa(m_episode);
 	else filename =  m_path + "KDREAMSHEAD.EGA"; // Not sure about that one
-	const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc
+	const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc.
 
 	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
 	byte *p_head;
 
 	std::vector<char> EgaGraphData;
+	
+	size_t numChunks = EpisodeInfo[ep].NumChunks;
 
 	if(File) // File exists!
 	{
 		size_t egagraphlen = 0;
 		File.seekg(1,std::ios::end);
 		egagraphlen = File.tellg();
+		numChunks = egagraphlen/3; // 24-bit chunks
 		if(egagraphlen != 0) // File not empty!
 		{
 			egagraphlen--;
@@ -423,7 +426,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 	if (ep < 3) offset_limit = 0x00FFFFFF;
 	else offset_limit = 0xFFFFFFFF;
 
-	for(size_t i = 0 ; i < EpisodeInfo[ep].NumChunks ; i++)
+	for(size_t i = 0 ; i < numChunks ; i++)
 	{
 		if (ep != 3)
 		{
@@ -583,8 +586,16 @@ bool CEGAGraphicsGalaxy::begin()
 			if( secondOffPtr == m_egahead.end() )
 				inlen = egagraphlen - offset;
 			
+			byte *in = &CompEgaGraphData[offset];
+			byte *out = &m_egagraph[i].data[0];
+
+			Huffman.expand(in, out, inlen, outlen);
 			
-			Huffman.expand(&CompEgaGraphData[offset], &m_egagraph[i].data[0], inlen, outlen);
+			//printf("%d %d\n", *out, *in);
+			
+			//m_egagraph[i].len = inlen;
+			//m_egagraph[i].data.assign(inlen, 0);
+			//memcpy(&m_egagraph[i].data[0], &CompEgaGraphData[offset], inlen);
 		}
 		else
 		{
@@ -756,6 +767,7 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
 				BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
+		
 	}
 	return true;
 }
@@ -825,7 +837,19 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		int boxX1 = ((Head.Rx1) << (STC-TILE_S));
 		int boxY1 = ((Head.Ry1) << (STC-TILE_S));
 		int boxX2 = ((Head.Rx2) << (STC-TILE_S));
-		int boxY2 = ((Head.Ry2) << (STC-TILE_S));		
+		int boxY2 = ((Head.Ry2) << (STC-TILE_S));
+		
+		if(boxX2-boxX1 >= 2<<STC)
+		{
+		   boxX2 -= (1<<STC) ;
+		   boxX1 += (1<<STC) ;
+		}
+
+		if(boxY2-boxY1 >= 2<<STC)
+		{
+		   boxY2 -= (1<<STC) ;
+		   boxY1 += (1<<STC) ;
+		}
 
 		Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 

@@ -24,12 +24,12 @@ public:
 	/**
 	 * Action functions
 	 */
-	void processWalking();	
-	//void processTurn();
+	void processBackup();	
+	void processPause();	
+	void processSpin();
+	void processMove();
 	
 	bool isNearby(CSpriteObject &theObject);
-
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
 	void process();
 
@@ -40,6 +40,8 @@ public:
 	
 private:
 	int mTimer;
+	direction_t mKeenAlignmentX;
+	direction_t mKeenAlignmentY;
 };
 
 }

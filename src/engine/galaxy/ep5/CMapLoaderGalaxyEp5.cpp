@@ -12,6 +12,15 @@
 #include "ai/CVolteface.h"
 #include "ai/CKorath.h"
 #include "ai/CSlicestar.h"
+#include "ai/CSphereful.h"
+#include "ai/CShikadi.h"
+#include "ai/CSpirogrip.h"
+#include "ai/CFuse.h"
+#include "ai/CShockshound.h"
+#include "ai/CShikadiMine.h"
+#include "ai/CSpindred.h"
+#include "ai/CShelly.h"
+#include "ai/CShikadiMaster.h"
 
 // Episode 5
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -22,6 +31,7 @@
 #include "engine/galaxy/common/ai/CFlag.h"
 #include "engine/galaxy/common/ai/CSpriteItem.h"
 #include <engine/galaxy/common/ai/platform/CPlatformSit.h>
+#include <engine/galaxy/common/ai/Autogun.h>
 
 namespace galaxy
 {
@@ -127,9 +137,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CSparky(&Map, foe, x, y);
 		break;
 
-	/*case 0x09: if (difficulty_level < 3) break;
-	case 0x08: if (difficulty_level < 2) break;
-	case 0x07: MineSpawn(tx, ty); MineInLevel = 1; break;*/
+	case 0x09: if( difficulty < HARD ) break;
+	case 0x08: if( difficulty < NORMAL ) break;
+	case 0x07: 	
+		// This is the Mine
+		p_newfoe = new galaxy::CShikadiMine(&Map, foe, x, y);
+		break;
+
 
 	
 	case 0x0C: if ( difficulty < HARD ) break;
@@ -145,10 +159,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CRoboRed(&Map, foe, x, y);
 		break;
 
-	/*case 0x12: if (difficulty_level < 3) break;
-	case 0x11: if (difficulty_level < 2) break;
-	case 0x10: SpiroSpawn(tx, ty); SpiroInLevel = 1; break;
-*/
+	case 0x12: if ( difficulty < HARD ) break;
+	case 0x11: if ( difficulty < NORMAL ) break;
+	case 0x10: 
+		p_newfoe = new galaxy::CSpirogrip(&Map, foe, x, y);
+		break;
+	
+
 	case 0x15: if ( difficulty < HARD ) break;
 	case 0x14: if ( difficulty < NORMAL ) break;
 	case 0x13: 
@@ -200,34 +217,45 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
 			break;
 						
-	/*case 0x29:
-	  if (current_level == 12) {
+	case 0x29:
+	  /*if (current_level == 12) {
 		Fuse1 = 4;
 		QEDSpawn(tx, ty);
 	  } else {
 		Fuse1++;
-	  }
+	  }*/
+			p_newfoe = new galaxy::CFuse( &Map, foe, x, y );
+			break;
+
+
+	case 0x35: if ( difficulty < HARD ) break;
+	case 0x31: if ( difficulty < NORMAL ) break;
+	case 0x2D: 
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 134);
+		break;
+
+
+	case 0x36: if ( difficulty < HARD ) break;
+	case 0x32: if ( difficulty < NORMAL ) break;
+	case 0x2E: 
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 134);
+		break;
+
+
+	case 0x37: if ( difficulty < HARD ) break;
+	case 0x33: if ( difficulty < NORMAL ) break;
+	case 0x2F: 
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 134);
+		break;
+
+
+	case 0x38: if ( difficulty < HARD ) break;
+	case 0x34: if ( difficulty < NORMAL ) break;
+	case 0x30: 
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 134);
+		break;
+
 	
-	  FuseInLevel = 1;
-	break;
-
-
-	case 53: if (difficulty_level < 3) break;
-	case 49: if (difficulty_level < 2) break;
-	case 45: AutoGunSpawn(tx, ty, 0); AutoGunInLevel = 1; break;
-
-	case 54: if (difficulty_level < 3) break;
-	case 50: if (difficulty_level < 2) break;
-	case 46: AutoGunSpawn(tx, ty, 1); AutoGunInLevel = 1; break;
-
-	case 55: if (difficulty_level < 3) break;
-	case 51: if (difficulty_level < 2) break;
-	case 47: AutoGunSpawn(tx, ty, 2); AutoGunInLevel = 1; break;
-
-	case 56: if (difficulty_level < 3) break;
-	case 52: if (difficulty_level < 2) break;
-	case 48: AutoGunSpawn(tx, ty, 3); AutoGunInLevel = 1; break;*/
-
 	case 0x49: if ( difficulty < HARD ) break;
 	case 0x48: if ( difficulty < NORMAL ) break;
 	case 0x47: 
@@ -236,33 +264,50 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 	
 
-	/*case 76: if (difficulty_level < 3) break;
-	case 75: if (difficulty_level < 2) break;
-	case 74: ShellySpawn(tx, ty); ShellyInLevel = 1; break;
-
-	case 79: if (difficulty_level < 3) break;
-	case 78: if (difficulty_level < 2) break;
-	case 77: SpindredSpawn(tx, ty); SpindredInLevel = 1; break;
-
-	case 88: if (difficulty_level < 3) break;
-	case 89: if (difficulty_level < 2) break;
-	case 90: MasterSpawn(tx, ty); MasterInLevel = 1; break;
-
-	case 101: if (difficulty_level < 3) break;
-	case 100: if (difficulty_level < 2) break;
-	case 99: ShikadiSpawn(tx, ty); ShikadiInLevel = 1; break;
-
-	case 104: if (difficulty_level < 3) break;
-	case 103: if (difficulty_level < 2) break;
-	case 102: ShocksundSpawn(tx, ty); ShocksundInLevel = 1; break;
-
-	case 107: if (difficulty_level < 3) break;
-	case 106: if (difficulty_level < 2) break;
-	case 105: SpherefulSpawn(tx, ty); SpherefulInLevel = 1; break;
+	case 0x4C: if ( difficulty < HARD ) break;
+	case 0x4B: if ( difficulty < NORMAL ) break;
+	case 0x4A: 
+  		// This is Shelly
+		p_newfoe = new galaxy::CShelly(&Map, foe, x, y);
+		break;
 	
-	*/
+	
+	case 0x4F: if ( difficulty < HARD ) break;
+	case 0x4E: if ( difficulty < NORMAL ) break;
+	case 0x4D: 
+	  	// This is Spindred
+		p_newfoe = new galaxy::CSpindred(&Map, foe, x, y);
+		break;	
+	
 
-	case 124: 
+	case 0x5A: if ( difficulty < HARD ) break;
+	case 0x59: if ( difficulty < NORMAL ) break;
+	case 0x58: 
+		// This is the Shikadi Master
+		p_newfoe = new galaxy::CShikadiMaster( &Map, foe, x, y );
+		break;	
+
+	case 0x65: if ( difficulty < HARD ) break;
+	case 0x64: if ( difficulty < NORMAL ) break;
+	case 0x63: 	
+	  	// This is Shikadi
+		p_newfoe = new galaxy::CShikadi(&Map, foe, x, y);
+		break;
+
+	case 0x68: if ( difficulty < HARD ) break;
+	case 0x67: if ( difficulty < NORMAL ) break;
+	case 0x66: 
+		// This is Shockshound
+		p_newfoe = new galaxy::CShockshound(&Map, foe, x, y);
+		break;
+	
+	case 0x6B: if ( difficulty < HARD ) break;
+	case 0x6A: if ( difficulty < NORMAL ) break;
+	case 0x69: 
+			p_newfoe = new galaxy::CSphereful( &Map, foe, x, y );
+			break;		
+
+	case 0x7C: 
 			p_newfoe = new galaxy::CKorath( &Map, foe, x, y );
 			break;
 	

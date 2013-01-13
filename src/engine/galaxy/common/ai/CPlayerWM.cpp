@@ -132,6 +132,40 @@ void CPlayerWM::process()
 		if(ev->sucess)
 		{
 			finishLevel(ev->levelObject);
+			
+			if(g_pBehaviorEngine->getEpisode() == 5)
+			{
+			    // enough fuses broken, in fact of all the fuses levels, except the secret one.
+			    // then open the elevator door for the last level!			    
+			    // NOTE: I'm not sure, if there is a better way to do it. if you know one, go ahead and improve this!
+			    if(m_Inventory.Item.fuses_levels_completed >= 4)
+			    {
+				// Must happen only once!
+				m_Inventory.Item.fuses_levels_completed = 0;
+				
+				int x = (0x1A)<<CSF; // upper left corner of that elevator
+				int y = (0x37)<<CSF; // on the map
+				
+				// I only will change the closed elevator tiles!
+				const int tileID = mp_Map->getPlaneDataAt(1, x, y);
+				
+				// I only will change the closed elevator tiles!
+				if(tileID == 0x072C)
+				{
+				    const int t_ul = tileID+10;
+				    const int t_ur = mp_Map->getPlaneDataAt(1, x+(1<<CSF), y) + 10;
+				    const int t_ll = mp_Map->getPlaneDataAt(1, x, y+(1<<CSF)) + 10;
+				    const int t_lr = mp_Map->getPlaneDataAt(1, x+(1<<CSF), y+(1<<CSF)) + 10;
+				    
+				    x >>= CSF; y >>= CSF;
+				    
+				    mp_Map->setTile(x, y, t_ul, true);
+				    mp_Map->setTile(x+1, y, t_ur, true);
+				    mp_Map->setTile(x, y+1, t_ll, true);
+				    mp_Map->setTile(x+1, y+1, t_lr, true);
+				}
+			    }
+			}
 		}
 		EventContainer.pop_Event();
 	}

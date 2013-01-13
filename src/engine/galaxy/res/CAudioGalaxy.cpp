@@ -19,7 +19,7 @@ m_ExeFile(ExeFile)
 {}
 
 /**
- * Caution: This is Galaxy only and will be replaced
+ * Caution: This is Galaxy only and will be replaced some time
  * This function loads the PC Speaker sounds to CG (Galaxy Version, similar to Vorticon Version but not equal.)
  */
 bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize, const Uint8 formatsize)
@@ -114,6 +114,8 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[4][SOUND_HIT_SIDEWALL] = 49;
     sndSlotMapGalaxy[4][SOUND_COMPUTER_POINT] = 50;
     sndSlotMapGalaxy[4][SOUND_PLAYER_POINT] = 51;
+    
+    
         
     
     // Episode 5   
@@ -122,7 +124,7 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
     sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = 3;
     sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4; 
-    //sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
+    sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
     sndSlotMapGalaxy[5][SOUND_SLICEBUMP] = 6;
     sndSlotMapGalaxy[5][SOUND_KEEN_POGO] = 7;
     sndSlotMapGalaxy[5][SOUND_GET_BONUS] = 8;
@@ -133,7 +135,7 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_LEVEL_DONE] = 13;
     sndSlotMapGalaxy[5][SOUND_CANT_DO] = 14;
     sndSlotMapGalaxy[5][SOUND_KEEN_BUMPHEAD] = 15;
-    //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
+    sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
     sndSlotMapGalaxy[5][SOUND_EXTRA_LIFE] = 17;
     sndSlotMapGalaxy[5][SOUND_OPEN_EXIT_DOOR] = 18;    
     sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
@@ -144,7 +146,7 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[5][?] = 24;
     sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
     //sndSlotMapGalaxy[5][?] = 26;    
-    //sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
+    sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
     //sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
     sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
     //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
@@ -155,11 +157,11 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
     sndSlotMapGalaxy[5][SOUND_SPARKY_CHARGE] = 36;
     //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = 37;
-    //sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
-    //sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
-    //sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
+    sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
+    sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
+    sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
     sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
-    //sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;    
+    sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;    
     sndSlotMapGalaxy[5][SOUND_FLAG_APPEAR] = 43;
     sndSlotMapGalaxy[5][SOUND_FLAG_LAND] = 44;    
     //sndSlotMapGalaxy[5][ACTION_BARKSHOTDIE0] = 45;    
@@ -176,9 +178,10 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
     //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
     //sndSlotMapGalaxy[5][?] = 58;
-    //sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
+    sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
+
     sndSlotMapGalaxy[5][SOUND_DOOR_OPEN] = 60;
-    //sndSlotMapGalaxy[5][SOUND_SPIROFLY] = 61;
+    sndSlotMapGalaxy[5][SOUND_SPIROFLY] = 61;
     //sndSlotMapGalaxy[5][?] = 62;
     sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 63;
     
@@ -254,7 +257,13 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 	{
 		// Open the Huffman dictionary and get AUDIODICT
 		CHuffman Huffman;
-		Huffman.readDictionaryNumber( ExeFile, 0 );
+		
+		std::string audioDictfilename = getResourceFilename( gpResource->audioDictFilename, ExeFile.getDataDirectory(), false, false);
+		
+		if(audioDictfilename.empty())
+		    Huffman.readDictionaryNumber( ExeFile, 0 );
+		else
+		    Huffman.readDictionaryFromFile( audioDictfilename );
 
 		/// First get the size of the AUDIO.CK? File.
 		uint32_t audiofilecompsize;
@@ -284,7 +293,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		// Open the AUDIOHED so we know where to decompress the audio
 		
 		std::string audiohedfilename = gpResource->audioHedFilename;
-		audiohedfilename = getResourceFilename( audiohedfilename, ExeFile.getDataDirectory(), false, false);				
+		audiohedfilename = getResourceFilename( audiohedfilename, ExeFile.getDataDirectory(), false, false);
 		
 		uint32_t *audiostarthedptr;
 		uint32_t *audioendhedptr;

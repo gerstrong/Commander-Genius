@@ -18,11 +18,12 @@
 
 struct CResource : public CSingleton<CResource>
 {
-	std::string egadictFilename;
-	std::string egaheadFilename;
 	std::string egagraphFilename;
+	std::string egaheadFilename;
+	std::string egadictFilename;
 	std::string audioFilename;
 	std::string audioHedFilename;
+	std::string audioDictFilename;
 	std::string mapheadFilename;
 	std::string gamemapsFilename;
 
@@ -35,7 +36,11 @@ struct CResource : public CSingleton<CResource>
 		// Only the files which are standard can be set.
 		// If other files are in the directory, the patch files have assign that!
 		egagraphFilename = "egagraph.ck" + epStr;
+		egaheadFilename = "egahead.ck" + epStr;
+		egadictFilename = "egadct.ck" + epStr;
 		audioFilename = "audio.ck" + epStr;
+		audioHedFilename = "audiohed.ck" + epStr;
+		audioDictFilename = "audiodct.ck" + epStr;
 		gamemapsFilename = "gamemaps.ck" + epStr;
 	    }
 	    else // Keen Dreams

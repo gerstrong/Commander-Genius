@@ -85,7 +85,7 @@ void CHuffman::expand(byte *pin, byte *pout, unsigned long inlen, unsigned long 
 			if(nextnode < 256)
 			{
 				/* output a char and move back to the head node */
-				*(pout++) = nextnode;
+				*(pout++) = nextnode;				
 				outcnt++;
 				curnode = 254;
 			}

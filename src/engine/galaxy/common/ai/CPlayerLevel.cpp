@@ -9,6 +9,7 @@
 #include "CBullet.h"
 #include "common/CBehaviorEngine.h"
 #include "platform/CPlatform.h"
+#include <engine/galaxy/ep5/ai/CSecurityDoor.h>
 #include "sdl/input/CInput.h"
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
@@ -50,6 +51,7 @@ CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, Cheatmode),
 m_jumpdownfromobject(false),
 mPlacingGem(false),
 mPoleGrabTime(0),
+mExitDoorTimer(0),
 mObjectPtrs(ObjectPtrs)
 {
 	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
@@ -964,7 +966,6 @@ void CPlayerLevel::processPogoCommon()
 	if(blockedd)
 	{
 		//yinertia = 0; // Not sure if that's correct
-		//TODO: Deadly surfaces and fuse breakage.
 		if (state.jumpTimer == 0)
 		{
 			yinertia = -POGO_START_INERTIA;
@@ -972,6 +973,26 @@ void CPlayerLevel::processPogoCommon()
 			state.jumpTimer = 24;
 			setAction(A_KEEN_POGO_UP);
 		}
+	}
+	
+	// Let's see if Keen breaks the fuse
+	if(mp_Map->mFuseInLevel)
+	{
+	    int x = getXMidPos();
+	    int y = getYDownPos();
+	    const int tileID = mp_Map->getPlaneDataAt(1, x, y);
+	    
+	    if(tileID == 0x078A)
+	    {		
+		const int t1 = mp_Map->getPlaneDataAt(1, 0, 0);
+		const int t2 = mp_Map->getPlaneDataAt(1, 0, (1<<CSF));
+		
+		x >>= CSF; y >>= CSF;
+			
+		mp_Map->setTile(x, y, t1, true);
+		mp_Map->setTile(x, y+1, t2, true);
+		mp_Map->mNumFuses--;
+	    }
 	}
 }
 
@@ -1434,29 +1455,59 @@ void CPlayerLevel::processPressUp() {
 	  int flag_right = Tile[mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y)].behaviour;
 	  //if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
 	  //if (getXPosition() == var2) {
-	    if(flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR) {
-			/*if (flag == MISCFLAG_KEYCARDDOOR) {
-				if (security_card) {
-					security_card = 0;
-					SD_PlaySound(SOUND_OPENSECURITYDOOR);
-					GetNewObj(0);
-					new_object->xpos = o->boxTXmid-2;
-					new_object->ypos = o->boxTY2-4;
-					new_object->active = 2;
-					new_object->clipping = 0;
-					new_object->type = 1;
-					new_object->action = ACTION_SECURITYDOOROPEN;
-					check_ground(new_object, ACTION_SECURITYDOOROPEN);
-					o->action = ACTION_KEENENTERDOOR0;
-					o->int16 = 0;
-					return 1;
-				} else {
-					SD_PlaySound(SOUND_NOOPENSECURITYDOOR);
-					o->action = ACTION_KEENSTAND;
-					EnterDoorAttempt = 1;
-					return 0;
+	      
+	      
+	    if(flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR) 
+	    {
+			if (flag == MISCFLAG_KEYCARDDOOR) 
+			{
+				if (m_Inventory.Item.m_keycards) 
+				{
+				    m_Inventory.Item.m_keycards = 0;
+				    playSound(SOUND_OPEN_EXIT_DOOR);
+				    //GetNewObj(0);
+				    //new_object->xpos = o->boxTXmid-2;
+				    //new_object->ypos = o->boxTY2-4;
+				    //new_object->active = 2;
+				    //new_object->clipping = 0;
+				    //new_object->type = 1;
+				    //new_object->action = ACTION_SECURITYDOOROPEN;
+				    //check_ground(new_object, ACTION_SECURITYDOOROPEN);
+				    //o->action = ACTION_KEENENTERDOOR0;
+				    //o->int16 = 0;
+				    g_pBehaviorEngine->EventList().spawnObj( new CSecurityDoor(getMapPtr(), 0, x_left-(1<<CSF), up_y-(3<<CSF) ) );
+				    
+				    mTarget = getPosition();
+				    mTarget.y -= (1<<CSF);
+
+				    setAction(A_KEEN_ENTER_DOOR);
+				    
+				    setActionSprite();
+				    CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+				    // Here the Player will be snapped to the center
+
+				    const int x_l = (x_left>>CSF);
+				    const int x_r = x_l+1;
+				    const int x_mid = ( ((x_l+x_r)<<CSF) - (rSprite.getWidth()<<STC)/2 )/2;
+
+				    moveToHorizontal(x_mid);
+				    mExitDoorTimer = 110;
+
+				    m_EnterDoorAttempt = true;
+				    return;
+				} 
+				else 
+				{	
+				    playSound(SOUND_CANT_DO);
+				    //SD_PlaySound(SOUND_NOOPENSECURITYDOOR);
+				    setAction(A_KEEN_STAND);
+				    m_EnterDoorAttempt = true;
+				    return;
 				}
-			} else {*/
+			} 
+			else 
+			{
 				mTarget = getPosition();
 				mTarget.y -= (1<<CSF);
 				setAction(A_KEEN_ENTER_DOOR);
@@ -1472,13 +1523,14 @@ void CPlayerLevel::processPressUp() {
 
 				moveToHorizontal(x_mid);
 
-				m_EnterDoorAttempt = true;
-				return;
+				m_EnterDoorAttempt = true;				
+				
+				return;				
 				//PlayLoopTimer = 110;
 				//o->action = ACTION_KEENENTERDOOR1
 				//o->int16 = 0;
 				//if (*MAPSPOT(o->boxTXmid, o->boxTY1, INFOPLANE) == 0) sub_1FE94();
-			//}
+			}
 		}// else {
 			//o->time = var2;
 			//o->action = ACTION_KEENENTERSLIDE;
@@ -1527,7 +1579,7 @@ void CPlayerLevel::processSliding()
 		int lx = getXMidPos();
 		int ly = getYDownPos()-(3<<STC);
 
-		Uint32 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
+		const Uint32 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
 		mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
 		mPlacingGem = false;
 		playSound( SOUND_DOOR_OPEN );
@@ -1542,6 +1594,13 @@ void CPlayerLevel::processSliding()
 
 void CPlayerLevel::processEnterDoor()
 {
+    // This happens in Keen 5 when Keen enters the exit door and it still has to open.        
+    if(mExitDoorTimer > 0)
+    {
+	mExitDoorTimer--;
+	return;    
+    }
+    
 	moveUp(16);
 		
 	if( getActionStatus(A_KEEN_STAND) )
@@ -2271,6 +2330,23 @@ void CPlayerLevel::process()
 	}
 
 	(this->*mp_processState)();
+	
+	
+	if(mp_Map->mFuseInLevel && mp_Map->mNumFuses == 0)
+	{
+	    // TODO: Need to spawn other messages here!
+		g_pMusicPlayer->stop();
+		g_pSound->playSound( SOUND_LEVEL_DONE );
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		m_Inventory.Item.m_gem.empty();
+		m_Inventory.Item.fuses_levels_completed++;
+		mp_Map->mFuseInLevel = false;
+		return;
+	}
+	    
 
 	// make the fire recharge time decreased if player is not pressing firing button
 	if(m_fire_recharge_time && !m_playcontrol[PA_FIRE])
@@ -2280,8 +2356,11 @@ void CPlayerLevel::process()
 
 	processLevelMiscFlagsCheck();
 
-	if(!processActionRoutine())
-			exists = false;
+	if(!mExitDoorTimer)
+	{
+	    if(!processActionRoutine())
+		exists = false;
+	}
 
 
 	if(!m_dying && !mExitTouched)

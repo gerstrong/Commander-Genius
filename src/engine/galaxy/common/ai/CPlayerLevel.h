@@ -296,6 +296,7 @@ private:
 	int m_hangtime;
 	int mPoleGrabTime;
 	int mClimbSpeedX;
+	int mExitDoorTimer;
 	
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &mObjectPtrs;
 };

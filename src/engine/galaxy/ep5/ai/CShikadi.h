@@ -24,8 +24,10 @@ public:
 	/**
 	 * Action functions
 	 */
+	void processStanding();	
 	void processWalking();	
-	//void processTurn();
+	void processPoleZaps();	
+
 	
 	bool isNearby(CSpriteObject &theObject);
 
@@ -39,7 +41,8 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-	int mTimer;
+    int mHealth;
+    int mTimer;
 };
 
 }

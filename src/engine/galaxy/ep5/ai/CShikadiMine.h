@@ -4,7 +4,7 @@
  *  Created on: 29 Dez 2012
  *      Author: Gerstrong
  *
- *  This handles the Amptons in Galaxy
+ *  This handles the Shikadi Mine in Galaxy
  */
  
 #ifndef CSHIKADIMINE_H_
@@ -24,12 +24,12 @@ public:
 	/**
 	 * Action functions
 	 */
-	void processWalking();	
-	//void processTurn();
+	void processSit();		
+	void processMoving();	
+	void processChangeDir();	
+	void processDetonate();
 	
 	bool isNearby(CSpriteObject &theObject);
-
-	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
 
 	void process();
 
@@ -40,6 +40,8 @@ public:
 	
 private:
 	int mTimer;
+	direction_t mKeenAlignmentX;
+	direction_t mKeenAlignmentY;	
 };
 
 

@@ -14,7 +14,6 @@
 #include "fileio/ResourceMgmt.h"
 #include "fileio/TypeDefinitions.h"
 #include "sdl/sound/Sampling.h"
-#include "sdl/music/COGGPlayer.h"
 #include "FindFile.h"
 
 #ifdef OGG

@@ -23,13 +23,17 @@
 
 #include <SDL.h>
 #include <string>
+#include <fileio/CExeFile.h>
+
 
 class COGGPlayer : public CMusicPlayer
 {
 public:
 	COGGPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec);
+	COGGPlayer(const SDL_AudioSpec& AudioSpec);
 	virtual ~COGGPlayer();
 
+	bool loadMusicForLevel(const CExeFile& ExeFile, const int level);
 	bool open();
 	void readBuffer(Uint8* buffer, Uint32 length);
 	void close();
@@ -39,7 +43,7 @@ private:
 	bool readOGGStreamAndResample( OggVorbis_File  &oggStream, Uint8 *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
 
 	OggVorbis_File  m_oggStream;
-	const std::string m_filename;
+	std::string m_filename;
 	const SDL_AudioSpec &m_AudioSpec;
 	SDL_AudioSpec m_AudioFileSpec;
 	SDL_AudioCVT m_Audio_cvt;

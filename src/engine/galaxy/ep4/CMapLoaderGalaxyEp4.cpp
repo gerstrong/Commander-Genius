@@ -308,9 +308,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CWormmouth(&Map, foe, x, y);		
 	//case 0x35 ... 0x36: break;
 
-	// Dart guns	
-	case 0x35 ... 0x38: 
-	        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
 		
 	//case 0x39 ... 0x45: // Sprite item like the gems 0x45 is unused
 	
@@ -345,9 +342,20 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CBlueBird(&Map, foe, x, y);
 		break;
 	
-	case 0x53 ... 0x56: if( difficulty < HARD ) break; // 0x53 is empty, but could be used maybe...
-	case 0x4F ... 0x52: if( difficulty < NORMAL ) break;
-		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y);  break;
+	case 0x53 ... 0x56: if( difficulty < HARD ) break; foe -= 0x04; // 0x53 is empty, but could be used maybe...
+	case 0x4F ... 0x52: if( difficulty < NORMAL ) break; foe -= 0x1A;
+	case 0x35 ... 0x38: 
+		// Dart guns
+		if(foe == 0x35)
+		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 260);
+		else if(foe == 0x36)
+		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 256);
+		else if(foe == 0x37)
+		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 262);
+		else
+		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 258);
+		break;
+
 	
 	case 0x58: if( difficulty < HARD ) break;
 	case 0x57: if( difficulty < NORMAL ) break;	    

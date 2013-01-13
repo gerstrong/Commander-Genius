@@ -117,6 +117,12 @@ void CGalaxySpriteObject::performGravityHigh()
 	processFallPhysics(Physics.fallspeed_increase);
 }
 
+void CGalaxySpriteObject::performInverseGravityHigh()
+{
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	processFallPhysics(-Physics.fallspeed_increase);
+}
+
 
 
 
