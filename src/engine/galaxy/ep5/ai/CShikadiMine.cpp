@@ -152,4 +152,53 @@ void CShikadiMine::process()
 	(this->*mp_processState)();
 }
 
+
+
+///////////////////
+/// Mine shards ///
+///////////////////
+
+CMineShards::CMineShards(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed) :
+CStunnable(pmap, foeID, x, y),
+mXSpeed(xSpeed)
+{
+  xDirection = (xSpeed < 0) ? LEFT : RIGHT;
+}
+
+
+void CMineShards::getTouchedBy(CSpriteObject& theObject)
+{
+	if(dead || theObject.dead)
+		return;
+
+	CStunnable::getTouchedBy(theObject);
+
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	{
+		player->kill();
+	}		
+}
+
+
+
+
+void CMineShards::process()
+{
+	performCollisions();
+	
+	performGravityMid();
+
+	if( blockedd )
+	{
+	  dead = true;
+	  return;
+	}
+	
+	// TODO: Special case when a shard touches the Omegamatic Core
+	
+	moveXDir(mXSpeed);
+	
+}
+
+
 }

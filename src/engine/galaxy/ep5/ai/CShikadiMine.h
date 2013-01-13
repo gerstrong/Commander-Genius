@@ -34,13 +34,37 @@ public:
 	void process();
 
 	/**
-	 * What happens if the slug gets touched by another object
+	 * What happens if the foe gets touched by another object
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
 	int mTimer;
 };
+
+
+///////////////////
+/// Mine shards ///
+///////////////////
+
+class CMineShards : public CStunnable
+{
+  
+public:  
+    CMineShards(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed);
+    
+    void process();
+    
+    /**
+     * What happens if the foe gets touched by another object
+     */
+    void getTouchedBy(CSpriteObject &theObject);    
+    
+private:
+  int mXSpeed;
+
+};
+
 
 }
 
