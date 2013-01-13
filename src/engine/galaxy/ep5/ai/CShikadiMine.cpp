@@ -325,13 +325,25 @@ void CMineShards::process()
 	if( coreExplode )
 	{
 	    	// TODO: Need to spawn other messages here!
-	    	// TODO: The game has to end here!
-		g_pMusicPlayer->stop();
+		/*g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
-		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );*/
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		    
+		const std::string end_text("End of Episode.\n"
+					       "The game will be restarted.\n"
+					       "You can replay it again or\n" 
+					       "try another Episode for more fun!\n"
+					       "The original epilog is under construction.");
+		    
+		EventContainer.add( new EventSendDialog(end_text) );
+		EventContainer.add( new EventEndGamePlay() );
+		dead = true;
+		exists = false;		
+		
 		return;
 	}
 	
