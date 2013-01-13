@@ -29,9 +29,13 @@ public:
 	void processChangeDir();	
 	void processDetonate();
 	
+	void setEyeCenterOffset(int &x, int &y);
+	
 	bool isNearby(CSpriteObject &theObject);
 
 	void process();
+	
+	void draw();
 
 	/**
 	 * What happens if the foe gets touched by another object
@@ -40,6 +44,11 @@ public:
 	
 private:
 	int mTimer;
+	int mEyeSprite;
+	int mEyeXOffset;
+	int mEyeYOffset;
+	int mTargetEyeXOffset;
+	int mTargetEyeYOffset;
 	direction_t mKeenAlignmentX;
 	direction_t mKeenAlignmentY;	
 };
@@ -63,7 +72,7 @@ public:
     void getTouchedBy(CSpriteObject &theObject);    
     
 private:
-  int mXSpeed;
+  int mXSpeed;    
 
 };
 

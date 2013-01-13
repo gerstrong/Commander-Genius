@@ -7,9 +7,10 @@
 
 
 #include "sdl/music/CMusic.h"
+#include "sdl/CVideoDriver.h"
 #include "CShikadiMine.h"
 #include "engine/galaxy/common/ai/CPlayerBase.h"
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include "engine/galaxy/common/ai/CPlayerLevel.h"
 #include "misc.h"
 
 /*
@@ -56,18 +57,61 @@ mTimer(0)
     // Adapt this AI
     setupGalaxyObjectOnMap(0x2608, A_MINE_SIT);
 	
-    xDirection = LEFT;
-    yDirection = UP;
+    xDirection = CENTER;
+    yDirection = CENTER;
+    
+    mEyeSprite = sprite + 1;
+    
+    setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
+    
+    mEyeXOffset = mTargetEyeXOffset;
+    mEyeYOffset = mTargetEyeYOffset;
 }
+
+
+void CShikadiMine::setEyeCenterOffset(int &x, int &y)
+{
+    CSprite &eyeSprite = g_pGfxEngine->getSprite(mEyeSprite);
+    CSprite &spriteRef = g_pGfxEngine->getSprite(sprite);
+    x = (spriteRef.getWidth()-eyeSprite.getWidth())/2;
+    y = (spriteRef.getHeight()-eyeSprite.getHeight())/2;
+}
+
 
 
 void CShikadiMine::processSit()
 {
-  mTimer++;
+  const int xDir = mTargetEyeXOffset-mEyeXOffset;  
+  const int yDir = mTargetEyeYOffset-mEyeYOffset;  
+  
+  if(xDir < 0)
+  {
+    mEyeXOffset--;
+    return;
+  }
+  else if(xDir>0)
+  {
+    mEyeXOffset++;
+    return;
+  }
+
+  if(yDir < 0)
+  {
+    mEyeYOffset--;
+    return;
+  }
+  else if(yDir>0)
+  {
+    mEyeYOffset++;
+    return;
+  }  
+  
+  
+  /*mTimer++;
   if( mTimer < TIME_SIT )
       return;
   
-  mTimer = 0;
+  mTimer = 0;*/
   
   
   /*
@@ -89,7 +133,7 @@ void CShikadiMine::processSit()
 
 void CShikadiMine::processMoving()
 {          
-    
+  
   // Move normally in the direction
   moveXDir( xDirection*MOVE_SPEED );
   moveYDir( yDirection*MOVE_SPEED );
@@ -100,23 +144,60 @@ void CShikadiMine::processMoving()
   
   mTimer = 0;
   
-  //setAction(A_MINE_CHANGE_DIR);
+  setAction(A_MINE_CHANGE_DIR);
+  setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
 }
 
 void CShikadiMine::processChangeDir()
-{
+{  
+  const int xDir = mTargetEyeXOffset-mEyeXOffset;  
+  const int yDir = mTargetEyeYOffset-mEyeYOffset;  
+  
+  if(xDir < 0)
+  {
+    mEyeXOffset--;
+    return;
+  }
+  else if(xDir>0)
+  {
+    mEyeXOffset++;
+    return;
+  }
+
+  if(yDir < 0)
+  {
+    mEyeYOffset--;
+    return;
+  }
+  else if(yDir>0)
+  {
+    mEyeYOffset++;
+    return;
+  }
+  
+  bool updateDir = false;
+  
   // Look at the Player coords and define a direction
-  xDirection = yDirection = CENTER;
   if(getProbability(500))
+  {
+    if(xDirection != mKeenAlignmentX)
+    {
       xDirection = mKeenAlignmentX;
+      yDirection = CENTER;
+      updateDir |= true;
+    }
+  }
   else
-      yDirection = mKeenAlignmentY;
-  
-  mTimer++;
-  if( mTimer < TIME_CHANGE_DIR )
-      return;  
-  
-  mTimer = 0;
+  {
+    if(yDirection != mKeenAlignmentY)
+    {
+      xDirection = CENTER;
+      yDirection = mKeenAlignmentY;      
+      updateDir |= true;
+    }
+      
+  }
+
   
     if( blockedl && xDirection == LEFT )
     {
@@ -175,8 +256,30 @@ void CShikadiMine::processChangeDir()
 	    yDirection = UP;
 	}	
     }    
-  
-  setAction(A_MINE_MOVE);  
+    
+    if(updateDir)
+    {
+      setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
+                    
+      CSprite &eyeSprite = g_pGfxEngine->getSprite(mEyeSprite);
+      CSprite &spriteRef = g_pGfxEngine->getSprite(sprite);    
+        
+      if(xDirection == LEFT)
+	mTargetEyeXOffset = 0;
+      if(xDirection == RIGHT)
+	mTargetEyeXOffset = spriteRef.getWidth()-eyeSprite.getWidth();
+
+      if(yDirection == UP)
+	mTargetEyeYOffset = 0;
+      if(yDirection == DOWN)
+	mTargetEyeYOffset = spriteRef.getHeight()-eyeSprite.getHeight();
+      
+      setAction(A_MINE_SIT);  
+    }
+    else
+    {
+      setAction(A_MINE_MOVE);
+    }
 }
 
 void CShikadiMine::processDetonate()
@@ -261,6 +364,43 @@ void CShikadiMine::process()
 
 
 
+void CShikadiMine::draw()
+{
+	if( sprite == BLANKSPRITE || dontdraw )
+		return;
+
+	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);	
+
+	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
+	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
+
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+
+	if( scrx < gameres.w && scry < gameres.h && exists )
+	{
+		Uint16 showX = scrx+Sprite.getXOffset();
+		Uint16 showY = scry+Sprite.getYOffset();
+		if(m_blinktime > 0)
+		{
+			Sprite.drawBlinkingSprite( showX, showY );
+			m_blinktime--;
+		}
+		else
+		{
+		    Sprite.drawSprite( showX, showY, (255-transluceny) );
+		    
+		    if(!getActionNumber(A_MINE_DETONATE))
+		    {
+		      CSprite &eyeSprite = g_pGfxEngine->getSprite(mEyeSprite);
+		      eyeSprite.drawSprite( showX+mEyeXOffset, showY+mEyeYOffset );
+		    }
+		}
+		hasbeenonscreen = true;
+	}
+}
+
+
+
 ///////////////////
 /// Mine shards ///
 ///////////////////
@@ -271,7 +411,7 @@ mXSpeed(xSpeed)
 {
   xDirection = (xSpeed < 0) ? LEFT : RIGHT;
     
-  setupGalaxyObjectOnMap(0x2716, A_MINE_SIT);
+  setupGalaxyObjectOnMap(0x2716, 0);
   
   yinertia = -100;
 }
