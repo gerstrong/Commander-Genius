@@ -6,6 +6,7 @@
  */
 
 
+#include "sdl/music/CMusic.h"
 #include "CShikadiMine.h"
 #include "engine/galaxy/common/ai/CPlayerBase.h"
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
@@ -21,7 +22,7 @@ $269EW #Shikadi mine detonate
 $26BCW #Shikadi mine detonate
 $26DAW #Shikadi mine detonate
 $26F8W #Shikadi mine detonate
-$2716W #Shikadi mine fragments -> TODO: This is another object! We should implement a fragments class somehow.
+$2716W #Shikadi mine fragments
  */
 
 // TODO: Overload the draw function, because the mine has an eye which moves around in the sprite
@@ -67,6 +68,20 @@ void CShikadiMine::processSit()
       return;
   
   mTimer = 0;
+  
+  
+  /*
+	delx = o->xpos - player->xpos;
+	dely = o->ypos - player->ypos;
+
+	if (delX < 0x200 && delX > -0x500 && delY < 0x300 && delY > -0x50) {
+		SD_PlaySound(SOUND_MINEEXPLODE);
+		o->action = ACTION_MINEEXPLODE0;
+		RF_18(&o->int34);
+		return;
+	}
+   */
+  
   
   setAction(A_MINE_MOVE);
 }
@@ -171,7 +186,19 @@ void CShikadiMine::processDetonate()
       dead = true;
       exists = false;
       
-      // TODO: Spawn little explosion shards here!
+      // Spawn little explosion shards here!
+      const int newX = getXMidPos();      
+      const int newY = getYUpPos();
+      
+      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(), 
+							     0, newX, newY, -100 ) );
+      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(), 
+							     0, newX, newY, -50 ) );
+      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(), 
+							     0, newX, newY, 50 ) );
+      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(), 
+							     0, newX, newY, 100 ) );
+      
   }  
 }
 
@@ -218,6 +245,7 @@ void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 	    setAction(A_MINE_DETONATE);
 	    player->kill();
 	}
+
 }
 
 
@@ -242,6 +270,10 @@ CStunnable(pmap, foeID, x, y),
 mXSpeed(xSpeed)
 {
   xDirection = (xSpeed < 0) ? LEFT : RIGHT;
+    
+  setupGalaxyObjectOnMap(0x2716, A_MINE_SIT);
+  
+  yinertia = -100;
 }
 
 
@@ -267,16 +299,53 @@ void CMineShards::process()
 	
 	performGravityMid();
 
+	// Reflections at wall. Not sure, if it makes sense, let's observe the behaviour
+	if( (blockedl && mXSpeed < 0) ||
+	    (blockedr && mXSpeed > 0) )
+	{
+	  mXSpeed = -mXSpeed;
+	}
+		
+	// Special case when a shard touches the Omegamatic Core
+	const int lx = getXMidPos();
+	const int ly = getYDownPos();
+	
+	bool coreExplode = false;
+	
+	if( mp_Map->getPlaneDataAt(2, lx, ly) == 0x29 )
+	  coreExplode |= true;
+	if( mp_Map->getPlaneDataAt(2, lx+(1<<CSF), ly) == 0x29 )
+	  coreExplode |= true;
+	if( mp_Map->getPlaneDataAt(2, lx+(1<<CSF), ly+(1<<CSF)) == 0x29 )
+	  coreExplode |= true;
+	if( mp_Map->getPlaneDataAt(2, lx, ly+(1<<CSF)) == 0x29 )
+	  coreExplode |= true;
+	
+    
+	if( coreExplode )
+	{
+	    	// TODO: Need to spawn other messages here!
+	    	// TODO: The game has to end here!
+		g_pMusicPlayer->stop();
+		g_pSound->playSound( SOUND_LEVEL_DONE );
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		return;
+	}
+	
 	if( blockedd )
 	{
 	  dead = true;
+	  exists = false;
 	  return;
 	}
 	
-	// TODO: Special case when a shard touches the Omegamatic Core
 	
 	moveXDir(mXSpeed);
 	
+	processActionRoutine();	
 }
 
 
