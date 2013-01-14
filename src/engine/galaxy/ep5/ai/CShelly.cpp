@@ -158,8 +158,20 @@ void CShelly::processSmoke()
     
     mTimer = 0;
     
-    // TODO: Here we need to spawn deadly shards, we should base this on the Shards Class used in Keen 4
-    
+    dead = true;
+      
+    // Spawn little explosion shards here!
+    const int newX = getXMidPos();      
+    const int newY = getYUpPos();
+      
+    g_pBehaviorEngine->m_EventList.spawnObj( new CShellyFrags( getMapPtr(), 
+							     0, newX, newY, -100 ) );
+    g_pBehaviorEngine->m_EventList.spawnObj( new CShellyFrags( getMapPtr(), 
+							     0, newX, newY, -50 ) );
+    g_pBehaviorEngine->m_EventList.spawnObj( new CShellyFrags( getMapPtr(), 
+							     0, newX, newY, 50 ) );
+    g_pBehaviorEngine->m_EventList.spawnObj( new CShellyFrags( getMapPtr(), 
+							     0, newX, newY, 100 ) );
     exists = false;
 }
 
@@ -202,7 +214,7 @@ void CShelly::getTouchedBy(CSpriteObject &theObject)
 
 	CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet? Than make it stunned.
+	// Was it a bullet? 
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		theObject.dead = true;
@@ -233,5 +245,65 @@ void CShelly::process()
 	
 	(this->*mp_processState)();
 }
+
+
+////////////////////////
+/// Shelly fragments ///
+////////////////////////
+
+CShellyFrags::CShellyFrags(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed) :
+CStunnable(pmap, foeID, x, y),
+mXSpeed(xSpeed)
+{
+  xDirection = (xSpeed < 0) ? LEFT : RIGHT;
+    
+  setupGalaxyObjectOnMap(0x25BA, 0);
+  
+  yinertia = -100;
+}
+
+
+void CShellyFrags::getTouchedBy(CSpriteObject& theObject)
+{
+	if(dead || theObject.dead)
+		return;
+
+	CStunnable::getTouchedBy(theObject);
+
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	{
+		player->kill();
+	}		
+}
+
+
+
+
+void CShellyFrags::process()
+{
+	performCollisions();
+	
+	performGravityMid();
+
+	// Reflections at wall. Not sure, if it makes sense, let's observe the behaviour
+	if( (blockedl && mXSpeed < 0) ||
+	    (blockedr && mXSpeed > 0) )
+	{
+	  mXSpeed = -mXSpeed;
+	}		
+	
+	if( blockedd )
+	{
+	  dead = true;
+	  exists = false;
+	  return;
+	}
+	
+	
+	moveXDir(mXSpeed);
+	
+	processActionRoutine();	
+}
+
 
 }

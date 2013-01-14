@@ -841,14 +841,16 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		
 		if(boxX2-boxX1 >= 2<<STC)
 		{
-		   boxX2 -= (1<<STC) ;
-		   boxX1 += (1<<STC) ;
+		   //boxX2 -= (1<<STC);
+		   boxX2 --;
+		   boxX1 += (1<<STC);
 		}
 
 		if(boxY2-boxY1 >= 2<<STC)
 		{
-		   boxY2 -= (1<<STC) ;
-		   boxY1 += (1<<STC) ;
+		   //boxY2 -= (1<<STC);
+		   boxY2 --;
+		   boxY1 += (1<<STC);
 		}
 
 		Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );

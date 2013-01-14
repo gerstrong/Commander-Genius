@@ -50,6 +50,33 @@ private:
 	
 };
 
+
+
+
+
+////////////////////////
+/// Shelly Fragments ///
+////////////////////////
+
+class CShellyFrags : public CStunnable
+{
+  
+public:  
+    CShellyFrags(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xSpeed);
+    
+    void process();
+    
+    /**
+     * What happens if the foe gets touched by another object
+     */
+    void getTouchedBy(CSpriteObject &theObject);    
+    
+private:
+  int mXSpeed;    
+
+};
+
+
 }
 
 #endif /* CSHELLY_H_ */
