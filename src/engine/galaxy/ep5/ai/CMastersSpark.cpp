@@ -51,14 +51,6 @@ void CMastersSpark::processWalking()
 }
 
 
-bool CMastersSpark::isNearby(CSpriteObject &theObject)
-{
-	if( !getProbability(10) )
-		return false;
-
-	return true;
-}
-
 void CMastersSpark::getTouchedBy(CSpriteObject &theObject)
 {
 	if(dead || theObject.dead)
@@ -72,15 +64,6 @@ void CMastersSpark::getTouchedBy(CSpriteObject &theObject)
 	}
 }
 
-
-int CMastersSpark::checkSolidD( int x1, int x2, int y2, const bool push_mode )
-{
-	turnAroundOnCliff( x1, x2, y2 );
-
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
-}
-
-
 void CMastersSpark::process()
 {
 	performCollisions();
@@ -90,10 +73,12 @@ void CMastersSpark::process()
 	if( blockedl )
 	{
 	  xDirection = RIGHT;
+	  dead = true;
 	}
 	else if(blockedr)
 	{
 	  xDirection = LEFT;
+	  dead = true;
 	}
 
 	if(!processActionRoutine())

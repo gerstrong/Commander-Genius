@@ -53,6 +53,7 @@ mpPlayer(nullptr)
 	setupGalaxyObjectOnMap(0x2AF4, A_MASTER_STAND);
 	
 	xDirection = LEFT;
+	mKeenAlignment = LEFT;
 }
 
 
@@ -69,7 +70,7 @@ void CShikadiMaster::processStanding()
     
     if(mTeleport)
     {
-	setActionForce(A_MASTER_TELEPORT);
+	setAction(A_MASTER_TELEPORT);
 	mTeleport = false;
     }
     else
@@ -95,8 +96,7 @@ void CShikadiMaster::processShooting()
 							    0x2C3E, xDirection, CENTER,  150) );
     
     playSound(SOUND_MASTERSHOT);
-    setAction(A_MASTER_STAND);    
-    
+    setAction(A_MASTER_STAND);        
 }
 
 
@@ -135,15 +135,19 @@ void CShikadiMaster::processTeleporting()
 
 	playSound(SOUND_MASTERTELE);
 
-	int tries = 0;
+	int triesLeft = 10;
 
-	while (++tries < 10) 
+	while (triesLeft > 0) 
 	{
 	    const unsigned int tx = ((rand()%(mp_Map->m_width<<CSF))/8 + mpPlayer->getXMidPos() - (0x10<<STC))>>CSF;
 	    const unsigned int ty = ((rand()%(mp_Map->m_height<<CSF))/8 + mpPlayer->getYUpPos() - (0x10<<STC))>>CSF;
 	    
 	    if (ty < 2 || tx < 2 || mp_Map->m_width-5 < tx || mp_Map->m_height-5 < ty) 
+	    {
+		rand();
+	        triesLeft--;
 		continue;
+	    }
 
 	    const int testBoxX1 = (tx - 1)<<CSF;
 	    const int testBoxX2 = (tx + 4)<<CSF;
@@ -152,29 +156,36 @@ void CShikadiMaster::processTeleporting()
 	    
 	    std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	    
-	    //const int mapXT = (mp_Map->m_width<<CSF) - (testBoxX2 - testBoxX1 + (1<<CSF));
-	    for (int ty2 = testBoxY1; ty2 <= testBoxY2; ty2 += 1<<STC) 
+	    bool allow_teleport = true;
+	    
+	    for (int newy = testBoxY1; newy <= testBoxY2; newy += (1<<CSF) ) 
 	    {
-			for (int tx2 = testBoxX1; tx2 <= testBoxX2; tx2 += 1<<STC)
+			for (int newx = testBoxX1; newx <= testBoxX2; newx += (1<<CSF) )
 			{
-				const int tile = mp_Map->getPlaneDataAt(1, VectorD2<Uint32>(tx2, ty2));
-
-				if (Tile[tile].behaviour & 0x80 || 
-				    Tile[tile].bup || Tile[tile].bright || 
-				    Tile[tile].bleft || Tile[tile].bdown )
+				const int tile = mp_Map->getPlaneDataAt(1, newx, newy);				
+				auto &prop = Tile[tile];
+				
+				if ( (prop.behaviour & 0x80) || 
+				    prop.bup || prop.bright || 
+				    prop.bleft || prop.bdown )
 				{
-					// don't spawn inside a tile, or behind a hidden tile
-					tries--;
-					continue;
+				  // don't spawn inside a tile, or behind a hidden tile
+				  triesLeft--;
+				  allow_teleport = false;
+				  break;			  
 				}
 			}
-		}
-		
-		// make it through previous nested loop == succesful tele
-		//KeenXVel = KeenYVel = 0;
-		moveToForce(tx<<CSF, ty<<CSF);
-		setAction(A_MASTER_STAND);
-		return;
+			
+			if(!allow_teleport)  break;			
+	    }
+	    
+	    if(!allow_teleport)  continue;
+	    
+	    // make it through previous nested loop == succesful tele
+	    //KeenXVel = KeenYVel = 0;
+	    moveToForce(tx<<CSF, ty<<CSF);
+	    setAction(A_MASTER_STAND);
+	    return;
 	}
 
 	// couldn't find a suitable spawn point, so reset to default master behaviour

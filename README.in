@@ -7,7 +7,7 @@
     (c)2009-2013            Tulip           
     (c)2009-2013            NY00123
 
-Porting:
+Ports:
     (c)2010-2013            Pelya (Android)
     (c)2009-2012            Pizza2004 (MacOs X)
 
@@ -204,6 +204,9 @@ Optionally you can pass launch arguments to Commander Genius. These are:
 
 -level		If you just want to check a specific level in the given game use that parameter.
 
+-diff		This will make you choose the difficulty in the game. This only works in conjunction with the level parameter
+                (1=Easy 2=NORMAL 3=HARD)
+
 Example: If you want to start the second level of the first game detected by CG, type:
 
 CGenius -game1 -level2
@@ -311,10 +314,10 @@ Commander Spleen
 Dreams
 Napalm (More Keen Data Structure Information)
 Malvineous
-Hans de Goede
+Hans de Goede (The Fedora Guy)
 Levellass (Keen EXE-Information)
 ZidaneA (For his music tracks!)
-Iv4n
+Iv4n (wiivn)
 
 
 
