@@ -839,16 +839,14 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		int boxX2 = ((Head.Rx2) << (STC-TILE_S));
 		int boxY2 = ((Head.Ry2) << (STC-TILE_S));
 		
-		if(boxX2-boxX1 >= 2<<STC)
+		if(boxX2-boxX1 >= 1<<STC)
 		{
-		   //boxX2 -= (1<<STC);
 		   boxX2 --;
 		   boxX1 += (1<<STC);
 		}
 
-		if(boxY2-boxY1 >= 2<<STC)
+		if(boxY2-boxY1 >= 1<<STC)
 		{
-		   //boxY2 -= (1<<STC);
 		   boxY2 --;
 		   boxY1 += (1<<STC);
 		}
