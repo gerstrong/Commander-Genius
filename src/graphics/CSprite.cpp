@@ -333,25 +333,35 @@ void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 
 void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
 {
-	Uint16 x,y;
-	Uint32 *srcpixel, *dstpixel;
-
 	if(SDL_MUSTLOCK(dst)) SDL_LockSurface(dst);
 	if(SDL_MUSTLOCK(src)) SDL_LockSurface(src);
-	dstpixel = (Uint32*) dst->pixels;
-	srcpixel = (Uint32*) src->pixels;
-	for(y=0;y<dst->h;y++)
+	
+	const int bytePPdst = dst->format->BytesPerPixel;
+	const int pitchdst = dst->pitch;
+	const int bytePPsrc = src->format->BytesPerPixel;
+	const int pitchsrc = src->pitch;
+	
+	for(int y=0;y<dst->h;y++)
 	{
-		for(x=0;x<dst->w;x++)
+		for(int x=0;x<dst->w;x++)
 		{
 			Uint8 r,g,b,a;
-
-			SDL_GetRGBA(*srcpixel,src->format, &r, &g, &b, &a);
-			SDL_GetRGB(color, src->format, &r, &g, &b);
-			*dstpixel = SDL_MapRGBA(dst->format, r, g, b, a);
-
-			dstpixel++;
-			srcpixel++;
+			
+			r = g = b = a = 255;
+			
+			byte *srcPtr = (byte*)src->pixels;
+			srcPtr += (pitchsrc*y+x*bytePPsrc);
+			
+			if(dst->format->colorkey == *srcPtr)
+			{			
+			  Uint32 newValue = SDL_MapRGBA(dst->format, r, g, b, a);
+			
+			  byte *dstPtr = (byte*)dst->pixels;
+			  dstPtr += (pitchdst*y+x*bytePPdst);
+			
+			  memcpy( dstPtr, &newValue, bytePPdst );			  
+			}
+			
 		}
 	}
 	if(SDL_MUSTLOCK(src)) SDL_UnlockSurface(src);
@@ -436,7 +446,7 @@ void CSprite::_drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
 
-	SDL_Surface *blanksfc =	SDL_DisplayFormatAlpha(mpSurface.get());
+	SDL_Surface *blanksfc = SDL_DisplayFormatAlpha(mpSurface.get());
 	blitMaskedSprite(blanksfc, mpSurface.get(), 0xFFFFFF);
 	SDL_BlitSurface( blanksfc, &src_rect, dst, &dst_rect );
 	SDL_FreeSurface(blanksfc);

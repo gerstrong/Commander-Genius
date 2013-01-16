@@ -374,7 +374,7 @@ void CSpriteObject::kill()
  * 					Every draw cycle performs one
  */
 void CSpriteObject::blink(Uint16 frametime)
-{	m_blinktime = frametime; }
+{ m_blinktime = frametime; }
 
 void CSpriteObject::playSound( const GameSound snd,
 			    const SoundPlayMode mode )

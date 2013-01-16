@@ -186,9 +186,13 @@ void CShockshound::getTouchedBy(CSpriteObject &theObject)
 	    // TODO: Flash effect must be added here!
 	    if(mHealth == 0)
 	    {
-		setAction(A_HOUND_STUNNED);
-		dead = true;
+	      setAction(A_HOUND_STUNNED);
+	      dead = true;
 	    }		
+	    else
+	    {
+	      blink(10);
+	    }
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

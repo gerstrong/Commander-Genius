@@ -156,6 +156,10 @@ void CShikadi::getTouchedBy(CSpriteObject &theObject)
 		setAction(A_SHIKADI_STUNNED);
 		dead = true;
 	    }
+	    else
+	    {
+	      blink(10);
+	    }
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
