@@ -124,14 +124,17 @@ void CKorath::process()
 	
 	performGravityMid();
 
-	if( blockedl )
-	{	    
-	  xDirection = RIGHT;
-	}
-	else if(blockedr)
+	if(!dead) // If we is dead, there is no way to continue moving or turning
 	{
-
-	  xDirection = LEFT;
+	  if( blockedl )
+	  {	    
+	    xDirection = RIGHT;
+	  }
+	  else if(blockedr)
+	  {
+	    
+	    xDirection = LEFT;
+	  }
 	}
 
 	if(!processActionRoutine())

@@ -13,21 +13,35 @@
 #include "CStunnable.h"
 #include "CBullet.h"
 #include "common/CBehaviorEngine.h"
-#include "engine/galaxy/common/ai/CStarRing.h"
+#include "sdl/CVideoDriver.h"
 
+const int STARRING_SPRITE = 40;
+const int STARRING_SPRITE_EP5 = 41;
+
+const int TIME_STAR_SHOWN = 20;
 
 namespace galaxy
 {
+  
+const unsigned int STARRING_ANIMATION_TIME = 5;
 
 CStunnable::CStunnable(	CMap *pmap,
-						const Uint16 foeID,
-						Uint32 x,
-						Uint32 y ) :
+			const Uint16 foeID,
+			Uint32 x, Uint32 y ) :
 CGalaxySpriteObject( pmap, foeID, x, y ),
 m_stunned(false),
-mp_processState(NULL)
+mp_processState(NULL),
+m_animation_timer(0),
+starTimer(TIME_STAR_SHOWN)
 {
 	m_invincible = false;
+	
+	starSprite = STARRING_SPRITE;
+	
+	if(g_pBehaviorEngine->getEpisode() == 5)
+	  starSprite = STARRING_SPRITE_EP5;
+	
+	starSpriteBase = starSprite;
 }
 
 void CStunnable::getTouchedBy(CSpriteObject &theObject)
@@ -45,28 +59,71 @@ void CStunnable::processGettingStunned()
   if(blockedd)
   {
     if( !m_invincible )
-    {
-      int starsprite = STARRING_SPRITE;
+    {      
+      yinertia = -30; // It gets a small impulse
       
-      if(g_pBehaviorEngine->getEpisode() == 5)
-	starsprite = STARRING_SPRITE_EP5;
-      
-      CSprite &StarRing = g_pGfxEngine->getSprite( starsprite );
-      // Calculate the Position of the Star-Ring. Make it centered and above its head
-      const Uint32 star_x = getXMidPos() - ( (StarRing.getWidth()<<STC)/2 );
-      const Uint32 star_y = getYUpPos()  - ( StarRing.getHeight()<<STC );
-      
-      moveUp(6<<STC);
-      
-      EventSpawnObject *Ev = new EventSpawnObject( new CStarRing(mp_Map, 0, star_x, star_y) );
-      g_pBehaviorEngine->m_EventList.add( Ev );
       mp_processState = &CStunnable::processStunned;
+      blockedd = false;
+      
+      moveUp(8<<STC);
     }
   }
 }
 
 void CStunnable::processStunned()
 { }
+
+void CStunnable::draw()
+{
+  if( dontdraw )
+	return;    
+  
+  if(dead && blockedd && yinertia == 0)
+  {                
+    if(starTimer > 0)
+    {
+      starTimer--;
+    }
+    else
+    {            
+      const unsigned char anim = m_animation_timer % STARRING_ANIMATION_TIME;
+      
+      if(anim == 0)
+      {
+	starSprite++;
+	
+	if(starSprite > starSpriteBase+2)
+	{
+	  starSprite = starSpriteBase;
+	  m_animation_timer = 0;
+	}
+      }
+      
+      // Animation timer increasing all the time
+      m_animation_timer++;
+      
+      
+      CSprite &StarSprite = g_pGfxEngine->getSprite(starSprite);
+      
+      int yoffset = (StarSprite.getHeight()<<STC);
+      
+      scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
+      scry = ((m_Pos.y-yoffset)>>STC)-mp_Map->m_scrolly;
+      
+      SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+      
+      if( scrx < gameres.w && scry < gameres.h && exists )
+      {
+	Uint16 showX = scrx+StarSprite.getXOffset();
+	Uint16 showY = scry+StarSprite.getYOffset();
+	StarSprite.drawSprite( showX, showY, (255-transluceny) );
+      }
+    }
+  }  
+  
+  CGalaxySpriteObject::draw();
+  	
+}
 
 
 void CStunnable::setActionForce(const size_t ActionNumber)

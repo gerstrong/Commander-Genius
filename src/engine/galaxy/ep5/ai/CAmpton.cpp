@@ -267,21 +267,24 @@ void CAmpton::process()
 	if(!getActionNumber(A_AMPTON_POLE_SLIDE))
 	  performGravityMid();
 
-	if( blockedl )
-	{
-  	  if(xDirection == LEFT)
-	    setAction(A_AMPTON_TURN);
-
-	  xDirection = RIGHT;
+	if(!dead) // If we is dead, there is no way to continue moving or turning
+	{	
+	  if( blockedl )
+	  {
+	    if(xDirection == LEFT)
+	      setAction(A_AMPTON_TURN);
+	    
+	    xDirection = RIGHT;
+	  }
+	  else if(blockedr)
+	  {
+	    if(xDirection == RIGHT)
+	      setAction(A_AMPTON_TURN);
+	    
+	    xDirection = LEFT;
+	  }
 	}
-	else if(blockedr)
-	{
-  	  if(xDirection == RIGHT)
-	    setAction(A_AMPTON_TURN);
-	  
-	  xDirection = LEFT;
-	}
-
+	
 	if(!processActionRoutine())
 	    exists = false;
 	

@@ -214,19 +214,22 @@ void CSparky::process()
 	
 	performGravityMid();
 
-	if( blockedl )
+	if(!dead) // If we is dead, there is no way to continue moving or turning
 	{
-	  if(xDirection == LEFT)
-	    setAction(A_SPARKY_TURN);
+	  if( blockedl )
+	  {
+	    if(xDirection == LEFT)
+	      setAction(A_SPARKY_TURN);
 	    
-	  xDirection = RIGHT;
-	}
-	else if(blockedr)
-	{
-  	  if(xDirection == RIGHT)
-	    setAction(A_SPARKY_TURN);
-
-	  xDirection = LEFT;
+	    xDirection = RIGHT;
+	  }
+	  else if(blockedr)
+	  {
+	    if(xDirection == RIGHT)
+	      setAction(A_SPARKY_TURN);
+	    
+	    xDirection = LEFT;
+	  }
 	}
 
 	if(!processActionRoutine())
