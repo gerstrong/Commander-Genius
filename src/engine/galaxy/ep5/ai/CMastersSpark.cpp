@@ -56,14 +56,6 @@ bool CMastersSpark::isNearby(CSpriteObject &theObject)
 	if( !getProbability(10) )
 		return false;
 
-	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
-		else
-			mKeenAlignment = RIGHT;*/
-	}
-
 	return true;
 }
 
@@ -74,18 +66,10 @@ void CMastersSpark::getTouchedBy(CSpriteObject &theObject)
 
 	CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet? Than make it stunned.
-	if( dynamic_cast<CBullet*>(&theObject) )
-	{
-		playSound(SOUND_ROBO_STUN);
-		dead = true;
-		theObject.dead = true;
-	}
-
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
-	}*/
+	}
 }
 
 

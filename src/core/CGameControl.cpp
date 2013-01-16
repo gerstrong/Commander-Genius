@@ -61,6 +61,23 @@ bool CGameControl::init(int argc, char *argv[])
 				buf = argument.substr(strlen("-level"));
 				m_startLevel = atoi(buf);
 			}
+
+			// Now check, if a difficulty was chosen, otherwise choose easy
+			argument = getArgument( argc, argv, "-diff" );
+			if(argument != "")
+			{
+				buf = argument.substr(strlen("-diff"));
+				Difficulty startDifficulty = static_cast<Difficulty>(atoi(buf));
+				
+				// catch invalid entries
+				if(startDifficulty < 0 || startDifficulty > 3)
+				{
+				  // TODO: Tell here that difficulty is invalid and that CG continues on easy
+				  startDifficulty = UNKNOWN;
+				}
+				
+				g_pBehaviorEngine->mDifficulty = startDifficulty;
+			}
 		}
 	}
 
@@ -92,7 +109,9 @@ void CGameControl::process()
 		{
 		    g_pSound->unloadSoundData();
 		    gpMenuController->emptyMenuStack();
-		    mpEngine.reset(new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel ));
+		    mpEngine.reset(new CGameLauncherMenu( m_firsttime, 
+							  p_Launcher->m_ChosenGame,
+							  p_Launcher->m_StartLevel) );
 		    mpEngine->init();
 		    EventContainer.pop_Event();
 		}

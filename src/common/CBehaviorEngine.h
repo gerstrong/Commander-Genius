@@ -52,9 +52,10 @@ enum EngineType
 
 enum Difficulty
 {
+	UNKNOWN = 0,
 	EASY = 1,
-	NORMAL,
-	HARD
+	NORMAL = 2,
+	HARD = 3
 };
 
 

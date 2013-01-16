@@ -21,7 +21,9 @@
 #include "CLogFile.h"
 #include "Debug.h"
 
-CGameLauncherMenu::CGameLauncherMenu(bool& first_time, const int start_game_no, const int start_level) :
+CGameLauncherMenu::CGameLauncherMenu(bool& first_time, 
+				      const int start_game_no, 
+				      const int start_level ) :
 m_firsttime(first_time),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
@@ -296,7 +298,9 @@ void CGameLauncherMenu::process()
 						if(m_start_level == -1) // Starts normally
 							EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, Episode) );
 						else // This happens, when a level was passed as argument when launching CG
-							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1,  DataDirectory, m_start_level) );
+							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1,  
+													DataDirectory, 
+													m_start_level) );
 					}
 				}
 			}

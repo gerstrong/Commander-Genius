@@ -42,6 +42,7 @@ protected:
 	bool &m_firsttime;
 	int m_startGame_no;
 	int m_startLevel;
+	Difficulty m_startDifficulty;
 };
 
 #endif /* CGAMECONTROL_H_ */

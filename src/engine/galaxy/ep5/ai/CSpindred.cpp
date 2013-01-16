@@ -77,8 +77,8 @@ void CSpindred::process()
 	
 	if(yinertia == 0)
 	{	    
-	    if( blockedu && mInverseGravity || 
-		blockedd && !mInverseGravity )
+	    if( (blockedu && mInverseGravity) || 
+		(blockedd && !mInverseGravity) )
 	    {
 		mBounces++;
 		yinertia = (mInverseGravity) ? MAX_BOUNCE_INERTIA : -MAX_BOUNCE_INERTIA;

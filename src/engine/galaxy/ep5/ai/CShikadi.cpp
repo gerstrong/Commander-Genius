@@ -134,14 +134,6 @@ bool CShikadi::isNearby(CSpriteObject &theObject)
 	if( !getProbability(10) )
 		return false;
 
-	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-		/*if( player->getXMidPos() < getXMidPos() )
-			mKeenAlignment = LEFT;
-		else
-			mKeenAlignment = RIGHT;*/
-	}
-
 	return true;
 }
 

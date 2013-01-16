@@ -35,7 +35,7 @@ struct GMSwitchToPlayGameMode : CEvent
 	const int m_startlevel;
 
 	GMSwitchToPlayGameMode( const int Episode, const int Numplayers,
-								const std::string& DataDirectory, const int startlevel = -1 ) :
+				const std::string& DataDirectory, const int startlevel = -1 ) :
 				m_Episode(Episode),
 				m_Numplayers(Numplayers),
 				m_DataDirectory(DataDirectory),

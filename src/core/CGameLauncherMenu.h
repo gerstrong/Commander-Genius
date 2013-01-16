@@ -25,7 +25,9 @@ LOADALL=0xFF
 class CGameLauncherMenu : public CBaseEngine
 {
 public:
-	CGameLauncherMenu(bool& first_time, const int start_game_no = -1, const int start_level = -1);
+	CGameLauncherMenu(bool& first_time, 
+			  const int start_game_no = -1, 
+			  const int start_level = -1 );
 
 	bool loadMenuResources();
 	bool loadGalaxyResources(const Uint8 flags);
@@ -51,7 +53,8 @@ struct GMSwitchToGameLauncher : CEvent
 	const int m_StartLevel;
 	GMSwitchToGameLauncher(	const int ChosenGame=-1, const int StartLevel=-1 ) :
 		m_ChosenGame(ChosenGame),
-		m_StartLevel(StartLevel){}
+		m_StartLevel(StartLevel)
+		{ }
 };
 
 
