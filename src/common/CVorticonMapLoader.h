@@ -31,7 +31,6 @@ public:
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true );
 	
-	void addTile( Uint16 t, Uint16 x, Uint16 y );
 	void fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level);
 	
 protected:

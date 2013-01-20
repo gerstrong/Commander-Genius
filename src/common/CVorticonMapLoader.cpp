@@ -116,6 +116,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 
 	// Here goes the memory allocation function
 	mpMap->createEmptyDataPlane(1, planeitems.at(1), planeitems.at(2));
+	mpMap->createEmptyDataPlane(2, planeitems.at(1), planeitems.at(2));
 
 	int t;
 	unsigned int planesize = 0;
@@ -133,7 +134,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 		if( fixlevel_error )
 			fixLevelTiles(t, curmapx, curmapy, episode, level);
 
-		addTile(t, curmapx, curmapy);
+		mpMap->setTile(curmapx, curmapy, t);
 
 		curmapx++;
 		if (curmapx >= mpMap->m_width)
@@ -238,15 +239,6 @@ bool CVorticonMapLoaderWithPlayer::load( Uint8 episode,
 	g_pVideoDriver->updateScrollBuffer( mpMap );
 
 	return true;
-}
-
-void CVorticonMapLoaderBase::addTile( Uint16 t, Uint16 x, Uint16 y )
-{
-	// Special cases. Those happen normally, when levels are replayed.
-	// For example if one player has battery, the level won't show that item
-
-	// Now set this this tile at pos(curmapx, curmapy)
-	mpMap->setTile(x, y, t);
 }
 
 void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
