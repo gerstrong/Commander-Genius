@@ -326,7 +326,14 @@ void CPlayGameGalaxy::process()
 			m_WorldMap.setActive(true);
 			m_LevelName = m_WorldMap.getLevelName();
 			m_WorldMap.loadAndPlayMusic();
+			
 			eventContainer.add( new EventPlayerEndLevel(*ev) );
+			
+			// Should only happen in Keen 5. This should trigger onmap teleportation
+			if(ev->teleport)
+			{			  									
+			  eventContainer.add( new EventPlayerTeleportFromLevel() );
+			}
 			eventContainer.pop_Event();
 		}
 		else if( EventExitLevelWithFoot *ev = eventContainer.occurredEvent<EventExitLevelWithFoot>() )

@@ -242,6 +242,7 @@ bool CMap::findHorizontalScrollBlocker(const int y)
 // if it is found returns non-zero and places the
 // coordinates of the first occurrence of the object
 // in (xout,yout)
+// TODO: Does not work in Galaxy. Adapt this function and for god sake remove m_objectlayer finally!
 bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 {
 	unsigned int x,y;
@@ -260,6 +261,7 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 	}
 	return false;
 }
+
 
 // searches the map's tile layer for tile TILE.
 // if it is found returns nonzero and places the

@@ -185,6 +185,19 @@ void CPlayerWM::process()
 		EventContainer.pop_Event();
 	}
 
+	if( EventContainer.occurredEvent<EventPlayerTeleportFromLevel>() )
+	{
+	  // Find the spot of the teleportation destination
+	  // TODO: This part is only meant for Episode 5. We should catch exception
+	  // Whenever another episode tries to trigger this call.	  
+	  int x,y;
+	  mp_Map->findTile( 0x1A, &x, &y, 2);
+	  
+	  moveToForce(x<<CSF, y<<CSF);
+	  
+	  EventContainer.pop_Event();
+	}
+
 	m_camera.process();
 	m_camera.processEvents();
 }

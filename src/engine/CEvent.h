@@ -42,11 +42,15 @@ struct InvokeFunctorEvent : CEvent
 struct EventEndGamePlay : CEvent
 {};
 
+struct EventPlayerTeleportFromLevel : CEvent
+{};
 
 struct EventExitLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;
-	EventExitLevel(const uint16_t l, const bool s) : levelObject(l), sucess(s){}
+	const bool teleport;
+	EventExitLevel(const uint16_t l, const bool s, const bool t=false) : 
+	levelObject(l), sucess(s), teleport(t){}
 };
 
 struct EventExitLevelWithFoot : CEvent {

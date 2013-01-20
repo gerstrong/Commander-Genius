@@ -1399,7 +1399,7 @@ void CPlayerLevel::processPressUp() {
 	const int x_mid = (x_left+x_right)/2;
 	const int up_y = getYUpPos()+(3<<STC);
 
-	const Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_mid, up_y);
+	Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_mid, up_y);
 	int flag = Tile[tile_no].behaviour;
 
 	// pressing a switch
@@ -1449,15 +1449,20 @@ void CPlayerLevel::processPressUp() {
 	// entering a door
 	int flag_left = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
 	
-	if ( !m_EnterDoorAttempt && (flag_left == MISCFLAG_DOOR || flag_left == MISCFLAG_KEYCARDDOOR) )
+	if ( !m_EnterDoorAttempt && 
+	  (flag_left == MISCFLAG_DOOR || 
+	   flag_left == MISCFLAG_KEYCARDDOOR) )
 	{
 	  //int var2 = mid_x * 256+96;
-	  int flag_right = Tile[mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y)].behaviour;
+	  
+	  tile_no = mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y);
+	  int flag_right = Tile[tile_no].behaviour;
 	  //if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
 	  //if (getXPosition() == var2) {
 	      
 	      
-	    if(flag_right == MISCFLAG_DOOR || flag_right == MISCFLAG_KEYCARDDOOR) 
+	    if(flag_right == MISCFLAG_DOOR || 
+	       flag_right == MISCFLAG_KEYCARDDOOR) 
 	    {
 			if (flag == MISCFLAG_KEYCARDDOOR) 
 			{
@@ -1509,7 +1514,14 @@ void CPlayerLevel::processPressUp() {
 			else 
 			{
 				mTarget = getPosition();
-				mTarget.y -= (1<<CSF);
+								
+				// Illusion for going into the backgroung does not apply on teleporters
+				if(tile_no != 0x401)
+				{
+				  mTarget.y -= (1<<CSF);
+				}
+				
+				
 				setAction(A_KEEN_ENTER_DOOR);
 				
 				setActionSprite();
@@ -1629,7 +1641,33 @@ void CPlayerLevel::processEnterDoor()
 	    t = mp_Map->getPlaneDataAt(2, xmid, y1-(3<<CSF));
 	
 	if (t == 0) 
-	{
+	{	  
+	  
+	  bool mustTeleportOnMap = false;
+	  
+	  // Check if there is a teleporter. In Keen 5 there might be one!
+	  if(g_pBehaviorEngine->getEpisode() == 5)
+	  {
+	    Uint32 teletile = mp_Map->getPlaneDataAt(1, xmid, y1);
+	
+	    if(teletile==0)
+	      teletile = mp_Map->getPlaneDataAt(1, xmid, y1-(1<<CSF));
+
+	    if(teletile==0)
+	      teletile = mp_Map->getPlaneDataAt(1, xmid, y1-(2<<CSF));
+	
+	    if(teletile==0)
+	      teletile = mp_Map->getPlaneDataAt(1, xmid, y1-(3<<CSF));
+	    
+	    // Code for the teleport tile
+	    if(teletile == 0x0401)
+	    {
+	      // There is one!
+	      mustTeleportOnMap = true;
+	    }
+	    
+	  }
+	  
 		//level_state = 13;
 		//o->action = ACTION_KEENENTEREDDOOR;
 		// TODO: Figure out what this does
@@ -1638,7 +1676,9 @@ void CPlayerLevel::processEnterDoor()
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
-		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+		
+		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap) );		
+				
 		dontdraw = true;
 		m_Inventory.Item.m_gem.empty();
 		return;
@@ -1838,6 +1878,8 @@ void CPlayerLevel::openDoorsTile()
 		next_tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
 	}while(next_tileno == tileno || next_tileno == tileno+18 || next_tileno == tileno+2*18);
 }
+
+
 
 
 /*
