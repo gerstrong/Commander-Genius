@@ -65,9 +65,11 @@ mPlayerContainer(playerContainer)
 bool CVorticonMapLoaderBase::loadBase(  Uint8 episode, 
 					Uint8 level, 
 					const std::string& path, 
-					bool loadNewMusic, 
-					std::vector<Uint16> &planeitems )
+					bool loadNewMusic )
 {
+    
+	std::vector<Uint16> planeitems;
+    
     	std::string levelname = "level";
 	if(level < 10) levelname += "0";
 	levelname += itoa(level) + ".ck" + itoa(episode);
@@ -118,79 +120,66 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	mpMap->createEmptyDataPlane(1, planeitems.at(1), planeitems.at(2));
 	mpMap->createEmptyDataPlane(2, planeitems.at(1), planeitems.at(2));
 
-	int t;
-	unsigned int planesize = 0;
-	unsigned int curmapx=0, curmapy=0;
+	unsigned int planesize = 0;	
 	planesize = planeitems.at(8);
 	planesize /= 2; // We have two planes
 
 
 	const char &fixlevel_error = g_pBehaviorEngine->m_option[OPT_FIXLEVELERRORS].value;
 
-	for( size_t c=17 ; c<planesize+17 ; c++ ) // Check against Tilesize
+	for( size_t tilemap=0 ; tilemap<2 ; tilemap++ ) // Check against Tilemaps
 	{
-		t = planeitems.at(c);
-
-		if( fixlevel_error )
-			fixLevelTiles(t, curmapx, curmapy, episode, level);
-
-		mpMap->setTile(curmapx, curmapy, t);
-
+	    unsigned int curmapx = 0, curmapy = 0;
+	    
+	    for( size_t c=0 ; c<planesize ; c++ ) // Check against Tilesize
+	    {
+		int t = planeitems.at(planesize*tilemap+c+17);
+		
+		// TODO: I think we should remove those stupid fixes!
+		if( fixlevel_error && tilemap==0 )
+		    fixLevelTiles(t, curmapx, curmapy, episode, level);
+		
+		mpMap->setTile(curmapx, curmapy, t, false, tilemap+1);
+		
 		curmapx++;
 		if (curmapx >= mpMap->m_width)
 		{
-			curmapx = 0;
-			curmapy++;
-			if (curmapy >= mpMap->m_height) break;
+		    curmapx = 0;
+		    curmapy++;
+		    if (curmapy >= mpMap->m_height) break;
 		}
-
-		if(t > 255)
+		
+		/*if(t > 255)
 		{
-			t=0; // If there are some invalid values in the file, set them to zero.
-		}
+		    t=0; // If there are some invalid values in the file, set them to zero.
+		}*/
+	    }
 	}
+	
 	mpMap->collectBlockersCoordiantes();
 	return true;
 }
 
-void CVorticonMapLoaderWithPlayer::loadSprites( std::vector<Uint16> &planeitems, 
-						Uint8 episode, 
+void CVorticonMapLoaderWithPlayer::loadSprites( Uint8 episode, 
 						Uint8 level )
 {
-    	int resetcnt, resetpt;
-	size_t curmapx = 0;
-	size_t curmapy = 0;
-	resetcnt = resetpt = 0;
-    
 	if( !mpSpriteObjectContainer.empty() )
 	    mpSpriteObjectContainer.clear();
 	
 	mpSpriteObjectContainer.reserve(2000);
 	
-	size_t planesize = planeitems.at(8);
-	planesize /= 2; // We have two planes
-
-	for( size_t c=planesize+17 ; c<2*planesize+16 ; c++ )
+	for( size_t curmapx = 0; curmapx<mpMap->m_width ; curmapx++ )
 	{
-	    // in case the planesizes are bigger than the actual file content itself
-	    if(planeitems.size() <= c) break;
-	    
-	    const size_t t = planeitems.at(c);
-	    
-	    if (mpMap->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
-	    else addSpriteObject(t, curmapx, curmapy, episode, level);
-	    
-	    curmapx++;
-	    if (curmapx >= mpMap->m_width)
+	    for( size_t curmapy = 0; curmapy<mpMap->m_height ; curmapy++ )
 	    {
-		curmapx = 0;
-		curmapy++;
-		if (curmapy >= mpMap->m_height) break;
-	    }
+		const size_t t = mpMap->getPlaneDataAt(2, curmapx<<CSF, curmapy<<CSF);
 	    
-	    if (++resetcnt==resetpt) curmapx = curmapy = 0;
-	}
-	
+		if (mpMap->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
+		else addSpriteObject(t, curmapx, curmapy, episode, level);
+
+	    }
+
+	}	
 }
 
 
@@ -202,9 +191,7 @@ bool CVorticonMapLoaderBase::load( Uint8 episode,
 {	
 	std::vector<Uint16> planeitems;
 	
-	if( !loadBase( episode, level, 
-		  path, loadNewMusic, 
-		  planeitems ) )
+	if( !loadBase( episode, level, path, loadNewMusic) )
 	{
 	    return false;
 	}
@@ -221,18 +208,14 @@ bool CVorticonMapLoaderWithPlayer::load( Uint8 episode,
 				    bool loadNewMusic, 
 				    bool stategame )
 {	
-	std::vector<Uint16> planeitems;
-	
-	if( !loadBase( episode, level, 
-		  path, loadNewMusic, 
-		  planeitems ) )
+	if( !loadBase( episode, level, path, loadNewMusic ) )
 	{
 	    return false;
 	}
 	
 	if( !stategame )
 	{
-	    loadSprites(planeitems,episode, level );
+	    loadSprites(episode, level );
 	}
 	
 	// Set Map Delegation Object and refresh whole level
@@ -257,7 +240,6 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
 				player.moveToForce(x<<CSF, y<<CSF);
 			    }
 			}
-			mpMap->m_objectlayer[x][y] = 0;
 
 			for( auto &player : mPlayerContainer )
 			{
@@ -275,7 +257,6 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
 				    m_NessieAlreadySpawned = true;
 				    mpSpriteObjectContainer.push_back(move(messie));
 				}
-				mpMap->m_objectlayer[x][y] = NESSIE_PATH;
 			}
 			break;
 		default:             // level marker
@@ -289,8 +270,6 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
 					t = 5;
 			}
 
-			mpMap->m_objectlayer[x][y] = t;
-			
 			if ((t&0x7fff) <= 16 && mPlayerContainer.front().mp_levels_completed[t&0x00ff])
 			{
 				// Change the level tile to a done sign
@@ -335,9 +314,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
 
 void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
-	mpMap->m_objectlayer[x][y] = t;
-
-	if (t)
+	if(t)
 	{
 		if (t==255) // The player in the level!
 		{

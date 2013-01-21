@@ -29,7 +29,6 @@ m_Background(false)
 	resetScrolls();
 	m_Level = 0;
 	isSecret = false;
-	memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }
 
 ////////////////////////////
@@ -98,7 +97,9 @@ Uint16 CMap::at(Uint16 x, Uint16 y, Uint16 t)
 //////////////////////////
 // returns the object/sprite/level which is set at the given coordinates
 Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
-{	return m_objectlayer[x][y];	}
+{    
+    return at(x,y,2);    
+}
 
 /**
  * \brief	Gets the pointer to the plane data of the map
@@ -242,7 +243,6 @@ bool CMap::findHorizontalScrollBlocker(const int y)
 // if it is found returns non-zero and places the
 // coordinates of the first occurrence of the object
 // in (xout,yout)
-// TODO: Does not work in Galaxy. Adapt this function and for god sake remove m_objectlayer finally!
 bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 {
 	unsigned int x,y;
@@ -250,8 +250,8 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 	for(y=2;y<m_height-2;y++)
 	{
 		for(x=2;x<m_width-2;x++)
-		{
-			if (m_objectlayer[x][y]==obj)
+		{		    
+			if (m_Plane[2].getMapDataAt(x,y)==obj)
 			{
 				*xout = x;
 				*yout = y;

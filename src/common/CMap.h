@@ -83,7 +83,7 @@ public:
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)
 	{
-		return m_objectlayer[x>>4][y>>4];
+		return m_Plane[2].getMapDataAt(x>>TILE_S,y>>TILE_S);
 	}
 
 	Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y)
@@ -112,10 +112,6 @@ public:
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
 	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
 
-	// in-game, contains monsters and special object tags like for switches
-	// on world map contains level numbers and flags for things like teleporters
-	Uint16 m_objectlayer[256][256];
-	// TODO: Still need changes, because it shouldn't limit up to 256x256
 	Uint32 m_width, m_height;            // size of the map
 	bool m_worldmap;             // if 1, this is the world map
 

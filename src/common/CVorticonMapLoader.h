@@ -26,8 +26,7 @@ public:
 	bool loadBase(  Uint8 episode, 
 			Uint8 level, 
 			const std::string& path, 
-			bool loadNewMusic, 
-			std::vector<Uint16> &planeitems );
+			bool loadNewMusic );
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true );
 	
@@ -64,8 +63,7 @@ public:
 		bool loadNewMusic = true, 
 		bool stategame = false );
 
-	void loadSprites( std::vector<Uint16> &planeitems, 
-			  Uint8 episode, 
+	void loadSprites( Uint8 episode, 
 			  Uint8 level );
 
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);

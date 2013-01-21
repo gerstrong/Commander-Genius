@@ -68,6 +68,9 @@ void CPlayGameVorticon::processOnWorldMap()
 
 					default: // a regular level
 						// Check if Level has been completed or the Level-Replayability is enabled
+						if( useobject>32 )
+						    break;
+						
 						if( !mp_level_completed[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
 						{
 							// Create the special merge effect
