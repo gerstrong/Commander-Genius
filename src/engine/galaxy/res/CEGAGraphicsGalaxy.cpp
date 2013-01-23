@@ -482,7 +482,7 @@ bool CEGAGraphicsGalaxy::begin()
 	}
 	else
 	{
-		Huffman.readDictionaryNumber( m_Exefile, 1 ); // or from the embedded Exe file
+		Huffman.readDictionaryNumberfromEnd( m_Exefile ); // or from the embedded Exe file							
 	}
 
 	// Now we go for EGAHEAD

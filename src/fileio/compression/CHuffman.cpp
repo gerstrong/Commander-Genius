@@ -16,7 +16,7 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
 {
     uint8_t dictnumleft = dictnum;
     uint8_t *data_ptr = ExeFile.getRawData();
-
+    
     for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
     {
         if( memcmp(data_ptr, DICTSIG, DICT_SIG_BYTES) == 0 )
@@ -31,6 +31,24 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
         	dictnumleft--;
         }
         data_ptr++;
+    }
+    return false;
+}
+
+bool CHuffman::readDictionaryNumberfromEnd(const CExeFile& ExeFile)
+{
+    uint8_t *data_ptr = ExeFile.getRawData()+ExeFile.getExeDataSize();
+    
+    for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
+    {
+	data_ptr--;
+        if( memcmp(data_ptr, DICTSIG, DICT_SIG_BYTES) == 0 )
+        {
+       		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
+       		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
+       		memcpy(m_nodes, dictdata, size);						
+       		return true;
+        }
     }
     return false;
 }

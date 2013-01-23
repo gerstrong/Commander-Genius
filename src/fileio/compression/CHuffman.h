@@ -31,6 +31,7 @@ class CHuffman
 {
 public:
 	bool readDictionaryNumber( const CExeFile& ExeFile, const int dictnum );
+	bool readDictionaryNumberfromEnd( const CExeFile& ExeFile );
 	bool readDictionaryFromFile( const std::string &filename );
 	void readDictionaryAt( byte *p_exedata, unsigned long offset);
 	void expand(byte *pin, byte *pout, unsigned long inlen, unsigned long outlen);
@@ -38,7 +39,6 @@ public:
 private:
 
 	nodestruct m_nodes[DICT_SIZE];
-	//compstruct m_comptable[256];
 };
 
 #endif /* CHUFFMAN_H_ */

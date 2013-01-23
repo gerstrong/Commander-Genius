@@ -30,13 +30,12 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	soundslot.setupAudioSpec(&m_AudioSpec);
 
 	std::vector<Sint16> waveform;
-	// There should be a better way of determining if sound is signed or not...
+	// TODO:  There should be a better way of determining if sound is signed or not...
 	int AMP;
 	if ((m_AudioSpec.format == AUDIO_S8) || (m_AudioSpec.format == AUDIO_S16))
 		AMP = ((((1<<(formatsize*8))>>2)-1)*PC_Speaker_Volume)/100;
 	else
 		AMP = ((((1<<(formatsize*8))>>1)-1)*PC_Speaker_Volume)/100;
-	//int AMP = ((IsSigned ? ((1<<(formatsize*8))>>2)-1 : (1<<(formatsize*8)>>1)-1)*PC_Speaker_Volume)/100;
 
 	generateWave(waveform, pcsdata_ptr, size, false, AMP);
 
@@ -275,7 +274,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		{
 			g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): Audio File not found!");
 			return false;
-		}
+		}				
 
 		std::ifstream AudioFile;
 		OpenGameFileR(AudioFile, audiofilename);
@@ -378,7 +377,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 			const uint32_t audio_start = audiohed[snd];
 			const uint32_t audio_end = audiohed[snd+1];
 
-			const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
+			const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
 			if( audio_comp_data_start < audio_end )
 			{				
 				const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(

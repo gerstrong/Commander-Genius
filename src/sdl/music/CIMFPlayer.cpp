@@ -153,10 +153,11 @@ bool CIMFPlayer::readMusicHedFromFile(const std::string fname, std::vector<uint3
 	}		
     }
     
-    for( size_t i=0 ; i<audiohed.size()-music_start ; i++ )
+    for( size_t i=music_start ; i<audiohed.size() ; i++ )
     {
 	musiched.push_back(audiohed[i]);
     }    
+
     
     return true;
 }
