@@ -72,7 +72,7 @@ void CPatcher::process()
 			// Seperate the offset and the filename
 			size_t p = newbuf.find(' ');
 
-			long offset;
+			ulong offset;
 			if( readIntValue(newbuf.substr(0,p), offset) )
 			{
 				std::string patch_file_name = newbuf.substr(p);
@@ -123,22 +123,23 @@ void CPatcher::process()
 		else if(PatchItem.keyword == "patch" )
 		{
 			// first we need to get the offset
-			long offset = 0;
+			ulong offset = 0;
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
+			uint width;
 			if(readIntValue(textline, offset))
 			{
 				while(!PatchItem.value.empty())
 				{
 					// after we have it, distinguish between text case and number case
-					long number = 0;
+					ulong number = 0;
 					std::string patchtext = "";
 					textline = readPatchItemsNextValue(PatchItem.value);
 
-					if(readIntValue(textline, number))
+					if(readIntValueAndWidth(textline, number, width))
 					{
 						// In this case we have a number
-						m_data[offset] = number;
-						offset++;
+						memcpy(m_data+offset, &number, width);						
+						offset+=width;
 					}
 					else if(readPatchString(textline, patchtext))
 					{
@@ -162,7 +163,7 @@ void CPatcher::process()
 		{
 			// Patch the level hints
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
-			long number = 0;
+			ulong number = 0;
 
 			if(readIntValue(textline, number))
 			{
@@ -218,7 +219,7 @@ void CPatcher::postProcess()
 		{
 			// Patch the entry level text
 			std::string textline = readPatchItemsNextValue(it->value);
-			long number = 0;
+			ulong number = 0;
 
 			if(readIntValue(textline, number))
 			{

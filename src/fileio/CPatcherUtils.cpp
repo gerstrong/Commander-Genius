@@ -68,9 +68,10 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
  * 			there is any type of number that comes.
  *  \param	input	a string of which we want to get the numerical value
  *  \param	output	the integer that might be detected.
+ *  \param	width	optionally it can read width
  *  \return	if the number could be read true, otherwise false
  */
-bool CPatcher::readIntValue(const std::string &input, long &output)
+bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long &output, uint &width)
 {
 	if(strStartsWith(input, "$") or strCaseStartsWith(input, "0x"))
 	{
@@ -82,9 +83,25 @@ bool CPatcher::readIntValue(const std::string &input, long &output)
 			line.erase(0,1);
 			buf = "0x"+line;
 			line = buf;
-		}
+		}	
 
 		stringlwr(line);
+		
+		if(line.size() <=4 )
+		{
+		    width = 1;
+		}
+		else
+		{
+		    if(line.find("w"))
+		    {
+			width = 2;
+		    }
+		    else
+		    {
+			width = 4;
+		    }
+		}
 
 		// now everything is hexadecimal with the proper format
 		sscanf( line.c_str(), "%lx", &output );
@@ -100,6 +117,12 @@ bool CPatcher::readIntValue(const std::string &input, long &output)
 		return true;
 
 	return false;
+}
+
+bool CPatcher::readIntValue(const std::string &input, unsigned long &output)
+{
+    uint width;
+    return readIntValueAndWidth(input, output, width);
 }
 
 bool CPatcher::readPatchString(const std::string &input, std::string &output)
