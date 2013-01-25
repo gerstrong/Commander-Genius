@@ -802,7 +802,7 @@ void CPlayerWM::startLevel(Uint16 object)
  *	makes the player finish the level
  */
 void CPlayerWM::finishLevel(Uint16 object)
-{
+{    
 	// if a door or other blocker was found remove it
 	int x, y;
 	Uint16 door = object + 0xD000;
@@ -818,6 +818,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 	if(mp_Map->findTile(flag_dest, &x, &y, 2))
 	{
 		// spawn the flag
+		const auto episode = g_pBehaviorEngine->getEpisode();
 		VectorD2<Uint32> src(getXPosition(), getYPosition());
 
 		// Here we move the coordinates in order get it positioned correctly in the pole
@@ -827,13 +828,17 @@ void CPlayerWM::finishLevel(Uint16 object)
 		unsigned int csfY = (y<<CSF);
 
 		csfX += (6<<STC);
-		csfY -= FlagSprite.m_bboxY2;
+		if(episode != 5)		    
+		    csfY -= FlagSprite.m_bboxY2;
+		
 		csfY += (2<<STC);
 		
 		if(g_pBehaviorEngine->getEpisode() == 5)
 		{
 		    csfX -= (14<<STC);
-		    csfY -= (1<<CSF);
+		    
+		    if(episode != 5)
+			csfY -= (1<<CSF);
 		}
 		else
 		{

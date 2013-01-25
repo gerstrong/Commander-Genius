@@ -31,16 +31,19 @@ public:
 	// The flag is flying when player throws it.
 	// It's waving all the time being stuck on the pole.
 	void process();
-	void processFlying();
+	void processFlipping();
 	void processWaving();
 	void processRotation();
+	
+	void setActionForce(const size_t ActionNumber);
 
 private:
 	// Where the flag/sign will pop in
 	VectorD2<Uint32> m_location;
 	VectorD2<Uint32> m_destination;
 	Uint16 m_baseframe;
-	void (CFlag::*processState)();
+	void (CFlag::*processState)();	
+	std::map< size_t, void (CFlag::*)() > mActionMap;
 
 };
 

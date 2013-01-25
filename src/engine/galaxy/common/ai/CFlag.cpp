@@ -10,7 +10,32 @@
 #include "common/CBehaviorEngine.h"
 
 
-namespace galaxy {
+
+/*
+
+$15EEW #Keen K flag waving 1
+$160CW #Keen K flag waving 2
+$162AW #Keen K flag waving 3
+$1648W #Keen K flag waving 4
+$1666W #Keen flag flips into holder 1
+$1684W #Keen flag flips into holder 2
+$16A2W #Keen flag flips into holder 3
+$16C0W #Keen flag flips into holder 4
+$16DEW #Keen flag flips into holder 5
+$16FCW #Keen flag flips into holder 6
+$171AW #Keen flag flips into holder 7
+
+ */
+
+
+namespace galaxy {    
+
+enum FLAGACTIONS
+{
+A_FLAG_WAVE = 0,
+A_FLAG_FLIP = 4
+};
+    
 
 const Uint16 FLYING_BASEFRAME_EP4 = 174;
 const Uint16 FLYING_BASEFRAME_EP5 = 173;
@@ -23,36 +48,54 @@ CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y),
 m_location(Location),
 m_destination(Destination),
-m_baseframe(FLYING_BASEFRAME_EP4),
-processState(&CFlag::processFlying)
+m_baseframe(0)
 {
 	solid = false;
 	honorPriority = false;
-	sprite = WAVING_BASEFRAME;
+		
+	mActionMap[A_FLAG_WAVE] = &CFlag::processWaving;
+	mActionMap[A_FLAG_FLIP] = &CFlag::processFlipping;
+	
+	const auto episode = g_pBehaviorEngine->getEpisode();
+
+	if(episode == 6)
+	{
+	    setupGalaxyObjectOnMap(0x13F4, A_FLAG_FLIP);
+	}
+	else if(episode == 5)
+	{
+	    // In Episode 5 the sign is not thrown! It just appears in the holder. Move it there!
+	    moveTo(m_destination);
+	    setupGalaxyObjectOnMap(0x148A, A_FLAG_WAVE);
+	}
+	else
+	{
+	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);
+	}		
 	
 	alignToTile();
-	
-	if(g_pBehaviorEngine->getEpisode() == 5)
-	{
-	    // In Episode 5 the sign is not thrown! It just appears in the holder
-	    //m_location = m_destination;
-	    moveTo(m_destination);
-	    processState = &CFlag::processRotation;
-	    m_baseframe = FLYING_BASEFRAME_EP5;
-	    sprite = m_baseframe;
-	}
-	
 }
 
 void CFlag::getTouchedBy(CSpriteObject &theObject)
 {    
-    if(m_baseframe != WAVING_BASEFRAME)
+    if( getActionNumber(A_FLAG_FLIP) )
 	return;
     
+    // In case another flag is sitting in the pole, make that one non existent
     if( CFlag *flag = dynamic_cast<CFlag*>(&theObject) )
     {
 	flag->exists = false;
     }
+}
+
+void CFlag::setActionForce(const size_t ActionNumber)
+{
+	CGalaxySpriteObject::setActionForce(ActionNumber);
+
+	if( mActionMap.find(ActionNumber) != mActionMap.end() )
+		processState = mActionMap[ActionNumber];
+	else
+		CGalaxySpriteObject::setActionForce(0); // This might happen, when the action-map is incomplete
 }
 
 /**
@@ -60,22 +103,16 @@ void CFlag::getTouchedBy(CSpriteObject &theObject)
  */
 void CFlag::process()
 {
-	(this->*processState)();
+    processActionRoutine();
+
+    (this->*processState)();
 }
 
 /**
  * Called when Flag is flying to the pole
  */
-void CFlag::processFlying()
+void CFlag::processFlipping()
 {
-	if(mp_Map->getAnimtiletimer()%ANIMATION_TIME == 0)
-	{
-		if(sprite-m_baseframe >= 4)
-			sprite = m_baseframe;
-		else
-			sprite++;
-	}
-
 	if(m_destination != m_location)
 	{
 		VectorD2<int> dir = m_destination - m_location;
@@ -94,9 +131,8 @@ void CFlag::processFlying()
 	}
 	else
 	{
-		processState = &CFlag::processWaving;
-		m_baseframe = WAVING_BASEFRAME;
-		g_pSound->playSound( SOUND_FLAG_LAND );
+	    setAction(A_FLAG_WAVE);
+	    g_pSound->playSound( SOUND_FLAG_LAND );
 	}
 }
 
@@ -104,15 +140,7 @@ void CFlag::processFlying()
  * Called when flag is in the pole. Keen 4 or 6
  */
 void CFlag::processWaving()
-{
-	if(mp_Map->getAnimtiletimer()%ANIMATION_TIME == 0)
-	{
-		if(sprite-m_baseframe >= 3)
-			sprite = m_baseframe;
-		else
-			sprite++;
-	}
-}
+{}
 
 /*
  * Called when sign is in the holder. Keen 5 normally
