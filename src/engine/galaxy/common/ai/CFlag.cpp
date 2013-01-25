@@ -142,18 +142,4 @@ void CFlag::processFlipping()
 void CFlag::processWaving()
 {}
 
-/*
- * Called when sign is in the holder. Keen 5 normally
- */
-void CFlag::processRotation()
-{ 
-	if(mp_Map->getAnimtiletimer()%ANIMATION_TIME == 0)
-	{
-		if(sprite-m_baseframe >= 3)
-			sprite = m_baseframe;
-		else
-			sprite++;
-	}    
-}
-
 }

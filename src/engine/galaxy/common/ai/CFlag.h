@@ -33,7 +33,6 @@ public:
 	void process();
 	void processFlipping();
 	void processWaving();
-	void processRotation();
 	
 	void setActionForce(const size_t ActionNumber);
 
