@@ -10,24 +10,6 @@
 #include "common/CBehaviorEngine.h"
 
 
-
-/*
-
-$15EEW #Keen K flag waving 1
-$160CW #Keen K flag waving 2
-$162AW #Keen K flag waving 3
-$1648W #Keen K flag waving 4
-$1666W #Keen flag flips into holder 1
-$1684W #Keen flag flips into holder 2
-$16A2W #Keen flag flips into holder 3
-$16C0W #Keen flag flips into holder 4
-$16DEW #Keen flag flips into holder 5
-$16FCW #Keen flag flips into holder 6
-$171AW #Keen flag flips into holder 7
-
- */
-
-
 namespace galaxy {    
 
 enum FLAGACTIONS
