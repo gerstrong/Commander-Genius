@@ -1756,6 +1756,9 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 	{
 		// Now decide whether the tile is a piece or borders of the bridge
 		const Uint32 type = t%18;
+		
+		if(t == 0)
+		  break;
 
 		if(type < 16)
 		{
@@ -1766,7 +1769,7 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 		}
 		else
 		{
-			// It is just a normal piece remove
+			// It is just a normal piece to remove
 			t = (t/18)*18;
 			if(b_opened)
 				t+=16;
