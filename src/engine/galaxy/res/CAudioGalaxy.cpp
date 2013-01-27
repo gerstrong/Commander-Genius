@@ -155,7 +155,10 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
       //sndSlotMapGalaxy[5][?] = 26;    
       sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
-      //sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
+
+      memcpy(&holder, ptr + 0x129FC, 1 );
+      sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
+      
       sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
       //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
       sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
@@ -164,7 +167,10 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
       sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
       sndSlotMapGalaxy[5][SOUND_SPARKY_CHARGE] = 36;
-      //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = 37;
+      
+      memcpy(&holder, ptr + 0x10F93, 1 );
+      sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = holder;
+      
       sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
       sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
       sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
@@ -183,7 +189,9 @@ void CAudioGalaxy::setupAudioMap()
       //sndSlotMapGalaxy[5][?] = 53;
       //sndSlotMapGalaxy[5][?] = 54;
       sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
-      sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
+      
+      memcpy(&holder, ptr + 0x13784, 1 );
+      sndSlotMapGalaxy[5][SOUND_ELEVATING] = holder;
       //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
       //sndSlotMapGalaxy[5][?] = 58;
       sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
