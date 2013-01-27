@@ -20,8 +20,6 @@
 		2332379A120EBC0700915252 /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323796120EBC0700915252 /* CPlayerLevel.cpp */; };
 		2332379B120EBC0700915252 /* CFlag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323792120EBC0700915252 /* CFlag.cpp */; };
 		2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323796120EBC0700915252 /* CPlayerLevel.cpp */; };
-		23325AA212117FCB00915252 /* SmartPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23325AA112117FCB00915252 /* SmartPointer.cpp */; };
-		23325AA312117FCB00915252 /* SmartPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23325AA112117FCB00915252 /* SmartPointer.cpp */; };
 		2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
 		2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
 		2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */; };
@@ -56,13 +54,11 @@
 		237422F511FC849A000EEA5B /* CSaveMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */; };
 		237422F611FC849A000EEA5B /* CSettingsMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */; };
 		237422F711FC849A000EEA5B /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */; };
-		237422F811FC849A000EEA5B /* CVolumeSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E811CFF5FB00F60BC8 /* CVolumeSettings.cpp */; };
 		237422F911FC849A000EEA5B /* tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10ED11CFF5FB00F60BC8 /* tga.cpp */; };
 		237422FA11FC849A000EEA5B /* ConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10EF11CFF5FB00F60BC8 /* ConfigHandler.cpp */; };
 		237422FB11FC849A000EEA5B /* CrashHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F111CFF5FB00F60BC8 /* CrashHandler.cpp */; };
 		237422FC11FC849A000EEA5B /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F511CFF5FB00F60BC8 /* Debug.cpp */; };
 		237422FE11FC849A000EEA5B /* CDlgFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FA11CFF5FB00F60BC8 /* CDlgFrame.cpp */; };
-		237422FF11FC849A000EEA5B /* CDlgObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FC11CFF5FB00F60BC8 /* CDlgObject.cpp */; };
 		2374230011FC849A000EEA5B /* CDlgOptionText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FE11CFF5FB00F60BC8 /* CDlgOptionText.cpp */; };
 		2374230111FC849A000EEA5B /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110011CFF5FB00F60BC8 /* CMessageBox.cpp */; };
 		2374230311FC849A000EEA5B /* CTextViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110411CFF5FB00F60BC8 /* CTextViewer.cpp */; };
@@ -137,7 +133,6 @@
 		2374235911FC849A000EEA5B /* CSoundChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11EB11CFF5FB00F60BC8 /* CSoundChannel.cpp */; };
 		2374235A11FC849A000EEA5B /* CSoundSlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11ED11CFF5FB00F60BC8 /* CSoundSlot.cpp */; };
 		2374235B11FC849A000EEA5B /* wizgp2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11F111CFF5FB00F60BC8 /* wizgp2x.cpp */; };
-		2374235C11FC849A000EEA5B /* colourconvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11F411CFF5FB00F60BC8 /* colourconvert.cpp */; };
 		2374235D11FC849A000EEA5B /* StringBuf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11F711CFF5FB00F60BC8 /* StringBuf.cpp */; };
 		2374235E11FC849A000EEA5B /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11F911CFF5FB00F60BC8 /* StringUtils.cpp */; };
 		2374235F11FC849A000EEA5B /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11FC11CFF5FC00F60BC8 /* Unicode.cpp */; };
@@ -161,7 +156,6 @@
 		2374237311FC849A000EEA5B /* CRisingPoints.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9211E7C3F900747BFA /* CRisingPoints.cpp */; };
 		2374237411FC849A000EEA5B /* CRope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9411E7C3F900747BFA /* CRope.cpp */; };
 		2374237511FC849A000EEA5B /* CScrub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9611E7C3F900747BFA /* CScrub.cpp */; };
-		2374237611FC849A000EEA5B /* CSectorEffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9811E7C3F900747BFA /* CSectorEffector.cpp */; };
 		2374237711FC849A000EEA5B /* CSoundWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9A11E7C3F900747BFA /* CSoundWave.cpp */; };
 		2374237811FC849A000EEA5B /* CSpark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9C11E7C3F900747BFA /* CSpark.cpp */; };
 		2374237911FC849A000EEA5B /* CTank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9E11E7C3F900747BFA /* CTank.cpp */; };
@@ -177,7 +171,6 @@
 		2374238311FC849A000EEA5B /* CWorldMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */; };
 		2374238411FC849A000EEA5B /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */; };
 		2374238511FC849A000EEA5B /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
-		2374238611FC849A000EEA5B /* CPlayGameVorticonWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */; };
 		2374238711FC849A000EEA5B /* GraphicsIDs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 237421E911FB8554000EEA5B /* GraphicsIDs.cpp */; };
 		2374238911FC849A000EEA5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		2374238A11FC849A000EEA5B /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
@@ -211,7 +204,6 @@
 		23A11BBE11E7C3F900747BFA /* CRisingPoints.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9211E7C3F900747BFA /* CRisingPoints.cpp */; };
 		23A11BBF11E7C3F900747BFA /* CRope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9411E7C3F900747BFA /* CRope.cpp */; };
 		23A11BC011E7C3F900747BFA /* CScrub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9611E7C3F900747BFA /* CScrub.cpp */; };
-		23A11BC111E7C3F900747BFA /* CSectorEffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9811E7C3F900747BFA /* CSectorEffector.cpp */; };
 		23A11BC211E7C3F900747BFA /* CSoundWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9A11E7C3F900747BFA /* CSoundWave.cpp */; };
 		23A11BC311E7C3F900747BFA /* CSpark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9C11E7C3F900747BFA /* CSpark.cpp */; };
 		23A11BC411E7C3F900747BFA /* CTank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9E11E7C3F900747BFA /* CTank.cpp */; };
@@ -231,7 +223,6 @@
 		23C64A7D11F31D6F0053CA36 /* CWorldMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */; };
 		23C64A8111F31D8A0053CA36 /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */; };
 		23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
-		23C64A8711F31DAA0053CA36 /* CPlayGameVorticonWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */; };
 		23CE96BB11FCCC510033FDFF /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */; };
 		23CE96EC11FCCE980033FDFF /* libSDLiPhoneOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */; };
 		23CE972011FCD8860033FDFF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE971F11FCD8860033FDFF /* Foundation.framework */; };
@@ -268,7 +259,6 @@
 		63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */; };
 		63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
 		63010C1013400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
-		6321B67E13CA3DA900D0ACCC /* CEngineParticleSprites.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6321B67C13CA3DA900D0ACCC /* CEngineParticleSprites.cpp */; };
 		63243C7C12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */; };
 		63243C7D12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */; };
 		63243C8012ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */; };
@@ -277,6 +267,20 @@
 		6329039F12EB8DF500963705 /* dbopl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6329039C12EB8DF500963705 /* dbopl.cpp */; };
 		632903C412EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
 		632903C512EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
+		632B0B5C1688DFC5004A387F /* CGUIBanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B5A1688DFC5004A387F /* CGUIBanner.cpp */; };
+		632B0B5F1688DFF1004A387F /* CDimDark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B5D1688DFF1004A387F /* CDimDark.cpp */; };
+		632B0B641688E05B004A387F /* CCarrier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B601688E05B004A387F /* CCarrier.cpp */; };
+		632B0B651688E05B004A387F /* CManglingMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B621688E05B004A387F /* CManglingMachine.cpp */; };
+		632B0B751688E08D004A387F /* Autogun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B661688E08D004A387F /* Autogun.cpp */; };
+		632B0B761688E08D004A387F /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B691688E08D004A387F /* CPlatform.cpp */; };
+		632B0B771688E08D004A387F /* CPlatformDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B6B1688E08D004A387F /* CPlatformDrop.cpp */; };
+		632B0B781688E08D004A387F /* CPlatformHorizontal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B6D1688E08D004A387F /* CPlatformHorizontal.cpp */; };
+		632B0B791688E08D004A387F /* CPlatformMoveAway.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B6F1688E08D004A387F /* CPlatformMoveAway.cpp */; };
+		632B0B7A1688E08D004A387F /* CPlatformVertical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B711688E08D004A387F /* CPlatformVertical.cpp */; };
+		632B0B7B1688E08D004A387F /* CVarPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B731688E08D004A387F /* CVarPlatform.cpp */; };
+		632B0B821688E0D4004A387F /* CFoot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B7C1688E0D4004A387F /* CFoot.cpp */; };
+		632B0B831688E0D4004A387F /* CInchWorm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B7E1688E0D4004A387F /* CInchWorm.cpp */; };
+		632B0B841688E0D4004A387F /* CSmokePuff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632B0B801688E0D4004A387F /* CSmokePuff.cpp */; };
 		63385F1713C008D100BC2558 /* ActionFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F1613C008D100BC2558 /* ActionFormat.cpp */; };
 		63385F3913C0091200BC2558 /* CBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F1913C0091200BC2558 /* CBullet.cpp */; };
 		63385F3A13C0091400BC2558 /* CPlayerBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F1B13C0091200BC2558 /* CPlayerBase.cpp */; };
@@ -289,10 +293,6 @@
 		63385F4113C0091F00BC2558 /* CPlayerDive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2A13C0091200BC2558 /* CPlayerDive.cpp */; };
 		63385F4213C0092000BC2558 /* CPoisonSlug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2C13C0091200BC2558 /* CPoisonSlug.cpp */; };
 		63385F4313C0092100BC2558 /* CSlugSlime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F2E13C0091200BC2558 /* CSlugSlime.cpp */; };
-		63385F4413C0092300BC2558 /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3113C0091200BC2558 /* CPlatform.cpp */; };
-		63385F4513C0092500BC2558 /* CPlatformDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3313C0091200BC2558 /* CPlatformDrop.cpp */; };
-		63385F4613C0092700BC2558 /* CPlatformHorizontal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3513C0091200BC2558 /* CPlatformHorizontal.cpp */; };
-		63385F4713C0092800BC2558 /* CPlatformVertical.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F3713C0091200BC2558 /* CPlatformVertical.cpp */; };
 		63385F4A13C0095D00BC2558 /* CMessageBoxSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63385F4813C0095D00BC2558 /* CMessageBoxSelection.cpp */; };
 		63479F8215D5BE2500613499 /* CVorticonMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63479F8015D5BE2500613499 /* CVorticonMapLoader.cpp */; };
 		63479F8815D5BE6F00613499 /* CGalaxySpriteObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63479F8415D5BE6F00613499 /* CGalaxySpriteObject.cpp */; };
@@ -354,13 +354,11 @@
 		63CD122211CFF5FC00F60BC8 /* CSaveMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */; };
 		63CD122311CFF5FC00F60BC8 /* CSettingsMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */; };
 		63CD122411CFF5FC00F60BC8 /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */; };
-		63CD122511CFF5FC00F60BC8 /* CVolumeSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E811CFF5FB00F60BC8 /* CVolumeSettings.cpp */; };
 		63CD122611CFF5FC00F60BC8 /* tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10ED11CFF5FB00F60BC8 /* tga.cpp */; };
 		63CD122711CFF5FC00F60BC8 /* ConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10EF11CFF5FB00F60BC8 /* ConfigHandler.cpp */; };
 		63CD122811CFF5FC00F60BC8 /* CrashHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F111CFF5FB00F60BC8 /* CrashHandler.cpp */; };
 		63CD122911CFF5FC00F60BC8 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F511CFF5FB00F60BC8 /* Debug.cpp */; };
 		63CD122B11CFF5FC00F60BC8 /* CDlgFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FA11CFF5FB00F60BC8 /* CDlgFrame.cpp */; };
-		63CD122C11CFF5FC00F60BC8 /* CDlgObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FC11CFF5FB00F60BC8 /* CDlgObject.cpp */; };
 		63CD122D11CFF5FC00F60BC8 /* CDlgOptionText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FE11CFF5FB00F60BC8 /* CDlgOptionText.cpp */; };
 		63CD122E11CFF5FC00F60BC8 /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110011CFF5FB00F60BC8 /* CMessageBox.cpp */; };
 		63CD123011CFF5FC00F60BC8 /* CTextViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110411CFF5FB00F60BC8 /* CTextViewer.cpp */; };
