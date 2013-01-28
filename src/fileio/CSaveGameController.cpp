@@ -296,7 +296,7 @@ bool CSaveGameController::convertOldFormat(size_t slot)
 	fname += itoa(slot);
 	fname += ".dat";
 
-	if ( ((version = getOldSGVersion(fname)) == 0) )
+	if ( (version = getOldSGVersion(fname)) == 0 )
 		return false;
 
 	size_t newslot = slot;
