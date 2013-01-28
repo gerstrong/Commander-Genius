@@ -19,6 +19,11 @@
 #define uint unsigned int
 #endif
 
+#ifdef __APPLE__
+#define ulong unsigned long
+#define uint unsigned int
+#endif
+
 #define uchar	unsigned char
 
 #define TGA_NONE		0
