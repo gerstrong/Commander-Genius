@@ -69,11 +69,11 @@ static BOOL   gFinderLaunch;
 void setupAppleMenu(void)
 {
     /* warning: this code is very odd */
-    NSAppleMenuController *appleMenuController;
+    //NSAppleMenuController *appleMenuController;
     NSMenu *appleMenu;
     NSMenuItem *appleMenuItem;
 	
-    appleMenuController = [[NSAppleMenuController alloc] init];
+    //appleMenuController = [[NSAppleMenuController alloc] init];
     appleMenu = [[NSMenu alloc] initWithTitle:@""];
     appleMenuItem = [[NSMenuItem alloc] initWithTitle:@"" action:nil keyEquivalent:@""];
     
@@ -85,7 +85,7 @@ void setupAppleMenu(void)
 	 when you remove it, it appears to stick around
 	 very, very odd */
     [[NSApp mainMenu] addItem:appleMenuItem];
-    [appleMenuController controlMenu:appleMenu];
+    //[appleMenuController controlMenu:appleMenu];
     [[NSApp mainMenu] removeItem:appleMenuItem];
     [appleMenu release];
     [appleMenuItem release];
