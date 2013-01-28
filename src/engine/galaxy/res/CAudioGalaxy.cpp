@@ -5,13 +5,14 @@
  *      Author: gerstrong
  */
 
+#include <fstream>
 #include "CAudioGalaxy.h"
 #include "CLogFile.h"
 #include "FindFile.h"
 #include "fileio/ResourceMgmt.h"
-#include <fstream>
 #include "sdl/sound/CSound.h"
 #include "fileio/compression/CHuffman.h"
+#include "common/CBehaviorEngine.h"
 
 CAudioGalaxy::CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),
@@ -60,6 +61,11 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
  */
 void CAudioGalaxy::setupAudioMap()
 {     
+    // Preparation which might help wehn some patches are applied
+    byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    auto episode = g_pBehaviorEngine->getEpisode();
+    uint holder = 0;
+  
     // Episode 4    
     sndSlotMapGalaxy[4][SOUND_KEEN_WALK] = 0;
     sndSlotMapGalaxy[4][SOUND_KEEN_WALK2] = 1;
@@ -116,74 +122,85 @@ void CAudioGalaxy::setupAudioMap()
     
     
         
-    
-    // Episode 5   
-    sndSlotMapGalaxy[5][SOUND_KEEN_WALK] = 0;
-    sndSlotMapGalaxy[5][SOUND_KEEN_WALK2] = 1;
-    sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
-    sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = 3;
-    sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4; 
-    sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
-    sndSlotMapGalaxy[5][SOUND_SLICEBUMP] = 6;
-    sndSlotMapGalaxy[5][SOUND_KEEN_POGO] = 7;
-    sndSlotMapGalaxy[5][SOUND_GET_BONUS] = 8;
-    sndSlotMapGalaxy[5][SOUND_GET_AMMO] = 9;
-    sndSlotMapGalaxy[5][SOUND_GET_DROP] = 10;
-    sndSlotMapGalaxy[5][SOUND_GET_ITEM] = 11;
-    sndSlotMapGalaxy[5][SOUND_ENTER_LEVEL] = 12;
-    sndSlotMapGalaxy[5][SOUND_LEVEL_DONE] = 13;
-    sndSlotMapGalaxy[5][SOUND_CANT_DO] = 14;
-    sndSlotMapGalaxy[5][SOUND_KEEN_BUMPHEAD] = 15;
-    sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
-    sndSlotMapGalaxy[5][SOUND_EXTRA_LIFE] = 17;
-    sndSlotMapGalaxy[5][SOUND_OPEN_EXIT_DOOR] = 18;    
-    sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
-    sndSlotMapGalaxy[5][SOUND_KEEN_FALL] = 20;
-    sndSlotMapGalaxy[5][SOUND_GUN_CLICK] = 21;    
-    //sndSlotMapGalaxy[5][?] = 22;
-    sndSlotMapGalaxy[5][SOUND_KEEN_DIE] = 23;
-    //sndSlotMapGalaxy[5][?] = 24;
-    sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
-    //sndSlotMapGalaxy[5][?] = 26;    
-    sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
-    //sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
-    sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
-    //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
-    sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
-    sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = 32;
-    sndSlotMapGalaxy[5][SOUND_ROBO_STUN] = 33;
-    sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
-    sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
-    sndSlotMapGalaxy[5][SOUND_SPARKY_CHARGE] = 36;
-    //sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = 37;
-    sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
-    sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
-    sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
-    sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
-    sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;    
-    sndSlotMapGalaxy[5][SOUND_FLAG_APPEAR] = 43;
-    sndSlotMapGalaxy[5][SOUND_FLAG_LAND] = 44;    
-    //sndSlotMapGalaxy[5][ACTION_BARKSHOTDIE0] = 45;    
-    //sndSlotMapGalaxy[5][SOUND_PLAYER_PADDLE] = 46;
-    sndSlotMapGalaxy[5][SOUND_COMPUTER_PADDLE] = 47;
-    sndSlotMapGalaxy[5][SOUND_HIT_SIDEWALL] = 48;
-    sndSlotMapGalaxy[5][SOUND_COMPUTER_POINT] = 49;
-    sndSlotMapGalaxy[5][SOUND_PLAYER_POINT] = 50;
-    //sndSlotMapGalaxy[5][?] = 51;
-    //sndSlotMapGalaxy[5][?] = 52;
-    //sndSlotMapGalaxy[5][?] = 53;
-    //sndSlotMapGalaxy[5][?] = 54;
-    sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
-    sndSlotMapGalaxy[5][SOUND_ELEVATING] = 56;
-    //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
-    //sndSlotMapGalaxy[5][?] = 58;
-    sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
+    if(episode == 5) // Episode 5   
+    {      
+      sndSlotMapGalaxy[5][SOUND_KEEN_WALK] = 0;
+      sndSlotMapGalaxy[5][SOUND_KEEN_WALK2] = 1;
+      sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
+      
+      memcpy(&holder, ptr + 0xC87D, 1 );
+      sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = holder;
+      
+      sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4; 
+      sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
+      sndSlotMapGalaxy[5][SOUND_SLICEBUMP] = 6;
+      sndSlotMapGalaxy[5][SOUND_KEEN_POGO] = 7;
+      sndSlotMapGalaxy[5][SOUND_GET_BONUS] = 8;
+      sndSlotMapGalaxy[5][SOUND_GET_AMMO] = 9;
+      sndSlotMapGalaxy[5][SOUND_GET_DROP] = 10;
+      sndSlotMapGalaxy[5][SOUND_GET_ITEM] = 11;
+      sndSlotMapGalaxy[5][SOUND_ENTER_LEVEL] = 12;
+      sndSlotMapGalaxy[5][SOUND_LEVEL_DONE] = 13;
+      sndSlotMapGalaxy[5][SOUND_CANT_DO] = 14;
+      sndSlotMapGalaxy[5][SOUND_KEEN_BUMPHEAD] = 15;
+      sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
+      sndSlotMapGalaxy[5][SOUND_EXTRA_LIFE] = 17;
+      sndSlotMapGalaxy[5][SOUND_OPEN_EXIT_DOOR] = 18;    
+      sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
+      sndSlotMapGalaxy[5][SOUND_KEEN_FALL] = 20;
+      sndSlotMapGalaxy[5][SOUND_GUN_CLICK] = 21;    
+      //sndSlotMapGalaxy[5][?] = 22;
+      sndSlotMapGalaxy[5][SOUND_KEEN_DIE] = 23;
+      //sndSlotMapGalaxy[5][?] = 24;
+      sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
+      //sndSlotMapGalaxy[5][?] = 26;    
+      sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
 
-    sndSlotMapGalaxy[5][SOUND_DOOR_OPEN] = 60;
-    sndSlotMapGalaxy[5][SOUND_SPIROFLY] = 61;
-    //sndSlotMapGalaxy[5][?] = 62;
-    sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 63;
-    
+      memcpy(&holder, ptr + 0x129FC, 1 );
+      sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
+      
+      sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
+      //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
+      sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
+      sndSlotMapGalaxy[5][SOUND_AMPTONWALK1] = 32;
+      sndSlotMapGalaxy[5][SOUND_ROBO_STUN] = 33;
+      sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
+      sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
+      sndSlotMapGalaxy[5][SOUND_SPARKY_CHARGE] = 36;
+      
+      memcpy(&holder, ptr + 0x10F93, 1 );
+      sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = holder;
+      
+      sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
+      sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
+      sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
+      sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
+      sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;    
+      sndSlotMapGalaxy[5][SOUND_FLAG_APPEAR] = 43;
+      sndSlotMapGalaxy[5][SOUND_FLAG_LAND] = 44;    
+      //sndSlotMapGalaxy[5][ACTION_BARKSHOTDIE0] = 45;    
+      //sndSlotMapGalaxy[5][SOUND_PLAYER_PADDLE] = 46;
+      sndSlotMapGalaxy[5][SOUND_COMPUTER_PADDLE] = 47;
+      sndSlotMapGalaxy[5][SOUND_HIT_SIDEWALL] = 48;
+      sndSlotMapGalaxy[5][SOUND_COMPUTER_POINT] = 49;
+      sndSlotMapGalaxy[5][SOUND_PLAYER_POINT] = 50;
+      //sndSlotMapGalaxy[5][?] = 51;
+      //sndSlotMapGalaxy[5][?] = 52;
+      //sndSlotMapGalaxy[5][?] = 53;
+      //sndSlotMapGalaxy[5][?] = 54;
+      sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
+      
+      memcpy(&holder, ptr + 0x13784, 1 );
+      sndSlotMapGalaxy[5][SOUND_ELEVATING] = holder;
+      //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
+      //sndSlotMapGalaxy[5][?] = 58;
+      sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
+      
+      sndSlotMapGalaxy[5][SOUND_DOOR_OPEN] = 60;
+      sndSlotMapGalaxy[5][SOUND_SPIROFLY] = 61;
+      //sndSlotMapGalaxy[5][?] = 62;
+      sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 63;
+    }
     
     // Episode 6    
     sndSlotMapGalaxy[6][SOUND_KEEN_WALK] = 0;

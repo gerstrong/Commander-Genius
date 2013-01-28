@@ -20,6 +20,11 @@
 #define ulong unsigned long
 #endif
 
+#ifdef __APPLE__
+#define uint unsigned int
+#define ulong unsigned long
+#endif
+
 unsigned int fgeti(FILE *fp) {
 	unsigned int lsb, msb;
 	lsb = fgetc(fp);

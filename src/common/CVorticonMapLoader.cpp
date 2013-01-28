@@ -339,7 +339,7 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 			switch(t)
 			{
 			case 0: break;
-			case -1: break;
+			//case -1: break;
 			case 1:  // yorp (ep1) vort (ep2&3)
 				if (episode == 1)
 				{

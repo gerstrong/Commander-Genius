@@ -13,6 +13,11 @@
 
 #include "CExeFile.h"
 
+#ifdef __APPLE__
+#define ulong unsigned long
+#define uint unsigned int
+#endif
+
 class CPatcher {
 public:
 	CPatcher(CExeFile &ExeFile, bool &is_a_mod);

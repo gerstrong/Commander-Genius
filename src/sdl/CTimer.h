@@ -27,7 +27,7 @@ const float DEFAULT_LPS_GALAXY = 70.0f;
 const float DEFAULT_LPS_VORTICON = 60.0f;
 #define DEFAULT_FPS     60
 
-typedef unsigned long  ulong;
+#define ulong unsigned long
 
 class CTimer : public CSingleton<CTimer>
 {

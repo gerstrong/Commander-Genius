@@ -3,6 +3,7 @@
 *.pbxuser
 xcuserdata
 build/Xcode/build
+build/Xcode/DerivedData
 *.log
 Makefile
 .settings
@@ -13,9 +14,12 @@ CPackConfig.cmake
 CPackSourceConfig.cmake
 Debug/*
 *~
-build/*
+build/tmpHideUserDataDir.sh
+build/windows
 cmake_install.cmake
 install_manifest.txt
 *.dll
 *.dll
+*.DS_Store
+.DS_Store
 readme.txt
