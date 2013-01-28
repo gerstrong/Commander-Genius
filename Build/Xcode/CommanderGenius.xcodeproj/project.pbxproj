@@ -251,10 +251,6 @@
 		63479F9115D5BE8B00613499 /* CMapLoaderGalaxyEp5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63479F8E15D5BE8B00613499 /* CMapLoaderGalaxyEp5.cpp */; };
 		63479FA915D5BF1D00613499 /* CVorticonSpriteObjectAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63479FA715D5BF1D00613499 /* CVorticonSpriteObjectAI.cpp */; };
 		63479FAC15D5BF2B00613499 /* CVorticonSpriteObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63479FAA15D5BF2B00613499 /* CVorticonSpriteObject.cpp */; };
-		634DF5A2136E10F000826A8B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A1136E10F000826A8B /* Cocoa.framework */; };
-		634DF5A5136E10FC00826A8B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A4136E10FC00826A8B /* OpenGL.framework */; };
-		634DF5A7136E110400826A8B /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
-		634DF5B6136E141500826A8B /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 634DF5A6136E110400826A8B /* SDL.framework */; };
 		6358032116B4EA240084FC19 /* CBloog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6358031B16B4EA240084FC19 /* CBloog.cpp */; };
 		6358032216B4EA240084FC19 /* CMapLoaderGalaxyEp6.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6358031D16B4EA240084FC19 /* CMapLoaderGalaxyEp6.cpp */; };
 		6358032316B4EA240084FC19 /* CStatusScreenGalaxyEp6.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6358031F16B4EA240084FC19 /* CStatusScreenGalaxyEp6.cpp */; };
@@ -336,11 +332,14 @@
 		6358041216B4EA7E0084FC19 /* CVolteface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 635803FC16B4EA7E0084FC19 /* CVolteface.cpp */; };
 		6358041316B4EA7E0084FC19 /* CStatusScreenGalaxyEp5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 635803FE16B4EA7E0084FC19 /* CStatusScreenGalaxyEp5.cpp */; };
 		638814F6159273E100308DAC /* CSpriteObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638814F4159273E100308DAC /* CSpriteObject.cpp */; };
+		63A5B83616B66CBD009DB943 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A5B83516B66CBD009DB943 /* SDL.framework */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63AEA5C0132D4B6A000344F1 /* CScrollEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */; };
 		63AEA5C1132D4B6A000344F1 /* CScrollEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */; };
 		63B29E7012EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */; };
 		63B29E7112EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */; };
+		63C3375216B6503000A3ECC4 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C3374E16B64FFB00A3ECC4 /* OpenGL.framework */; };
+		63C3375316B6503700A3ECC4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C3375016B6500200A3ECC4 /* Cocoa.framework */; };
 		63C72AC71274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63C72AC81274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
@@ -488,7 +487,6 @@
 			files = (
 				63F4C9E41273668500CA4C79 /* Ogg.framework in Copy Frameworks */,
 				63F4C9E61273668500CA4C79 /* Vorbis.framework in Copy Frameworks */,
-				634DF5B6136E141500826A8B /* SDL.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -663,9 +661,6 @@
 		63479FA815D5BF1D00613499 /* CVorticonSpriteObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVorticonSpriteObjectAI.h; sourceTree = "<group>"; };
 		63479FAA15D5BF2B00613499 /* CVorticonSpriteObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVorticonSpriteObject.cpp; sourceTree = "<group>"; };
 		63479FAB15D5BF2B00613499 /* CVorticonSpriteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVorticonSpriteObject.h; sourceTree = "<group>"; };
-		634DF5A1136E10F000826A8B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		634DF5A4136E10FC00826A8B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
-		634DF5A6136E110400826A8B /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = SDKs/MacOSX10.6.sdk/Library/Frameworks/SDL.framework; sourceTree = DEVELOPER_DIR; };
 		6350F7A51044797300A992D5 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
 		6350F7A61044797300A992D5 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
 		6350F7A71044797300A992D5 /* EGASPRIT.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGASPRIT.CK1; sourceTree = "<group>"; };
@@ -868,11 +863,14 @@
 		638814FA1592740C00308DAC /* Configurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurator.h; sourceTree = "<group>"; };
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
+		63A5B83516B66CBD009DB943 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = ../../../../../../Library/Frameworks/SDL.framework; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
 		63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CScrollEffect.cpp; sourceTree = "<group>"; };
 		63AEA5BF132D4B6A000344F1 /* CScrollEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CScrollEffect.h; sourceTree = "<group>"; };
 		63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioVorticon.cpp; sourceTree = "<group>"; };
 		63B29E6F12EB9A09004A8B7C /* CAudioVorticon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioVorticon.h; sourceTree = "<group>"; };
+		63C3374E16B64FFB00A3ECC4 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
+		63C3375016B6500200A3ECC4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		63C72AC51274284A00E9A293 /* ReadWriteLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadWriteLock.h; sourceTree = "<group>"; };
 		63C72AC61274284A00E9A293 /* ThreadPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadPool.cpp; sourceTree = "<group>"; };
 		63CB71F511D339BC0069EAC6 /* CK1PATCH.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = CK1PATCH.EXE; sourceTree = "<group>"; };
@@ -1268,9 +1266,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				634DF5A7136E110400826A8B /* SDL.framework in Frameworks */,
-				634DF5A5136E10FC00826A8B /* OpenGL.framework in Frameworks */,
-				634DF5A2136E10F000826A8B /* Cocoa.framework in Frameworks */,
+				63A5B83616B66CBD009DB943 /* SDL.framework in Frameworks */,
+				63C3375216B6503000A3ECC4 /* OpenGL.framework in Frameworks */,
+				63C3375316B6503700A3ECC4 /* Cocoa.framework in Frameworks */,
 				23575631101A5E5900275638 /* Carbon.framework in Frameworks */,
 				2357564E101A5F8F00275638 /* Ogg.framework in Frameworks */,
 				2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */,
@@ -1308,6 +1306,7 @@
 		20286C29FDCF999611CA2CEA /* CommanderGenius */ = {
 			isa = PBXGroup;
 			children = (
+				63A5B83516B66CBD009DB943 /* SDL.framework */,
 				23CE973C11FCDC030033FDFF /* iPhone libs */,
 				5048396909E3304600765E4B /* Configuration Files */,
 				20286C32FDCF999611CA2CEA /* External Frameworks and Libraries */,
@@ -1338,9 +1337,8 @@
 		20286C32FDCF999611CA2CEA /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				634DF5A6136E110400826A8B /* SDL.framework */,
-				634DF5A4136E10FC00826A8B /* OpenGL.framework */,
-				634DF5A1136E10F000826A8B /* Cocoa.framework */,
+				63C3374E16B64FFB00A3ECC4 /* OpenGL.framework */,
+				63C3375016B6500200A3ECC4 /* Cocoa.framework */,
 				20286C33FDCF999611CA2CEA /* Carbon.framework */,
 				2357564C101A5F8F00275638 /* Ogg.framework */,
 				2357564D101A5F8F00275638 /* Vorbis.framework */,
@@ -2570,7 +2568,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = NO;
-				LastUpgradeCheck = 0410;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = C0E91AC908A95435008D54AB /* Build configuration list for PBXProject "CommanderGenius" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -3150,15 +3148,19 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/Headers,
 					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
@@ -3166,14 +3168,14 @@
 					"\"$(SRCROOT)\"/../../src",
 				);
 				INFOPLIST_FILE = Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
 					"-DOGG",
 				);
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -3181,6 +3183,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -3188,9 +3193,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/Headers,
 					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
@@ -3199,7 +3205,7 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
@@ -3207,7 +3213,7 @@
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 			};
 			name = Release;
 		};
@@ -3221,7 +3227,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/../../src",
 					"$(SDLDIR)/src/events",
@@ -3260,7 +3266,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/../../src",
 					"$(SDLDIR)/src/events",
@@ -3298,7 +3304,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -3308,7 +3314,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				SEPARATE_STRIP = YES;
 			};
 			name = Release;
