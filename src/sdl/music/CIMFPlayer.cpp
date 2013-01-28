@@ -138,7 +138,7 @@ bool CIMFPlayer::readMusicHedFromFile(const std::string fname, std::vector<uint3
     size_t music_start = 0;
     
     // Find the start of the embedded IMF files
-    for( uint32_t slot = audiohed.size()-2 ; slot>=0 ; slot-- )
+    for( int slot = audiohed.size()-2 ; slot>=0 ; slot-- )
     {
 	const uint32_t audio_start = audiohed[slot];
 	const uint32_t audio_end = audiohed[slot+1];
