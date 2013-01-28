@@ -193,7 +193,13 @@ void CPlayerWM::process()
 	  int x,y;
 	  mp_Map->findTile( 0x1A, &x, &y, 2);
 	  
-	  moveToForce(x<<CSF, y<<CSF);
+	  const int newX = x<<CSF; 
+	  const int newY = y<<CSF;
+	  
+	  m_Pos.x = newX;
+	  m_Pos.y = newY;
+	  	  
+	  m_camera.setPosition(m_Pos);
 	  
 	  EventContainer.pop_Event();
 	}

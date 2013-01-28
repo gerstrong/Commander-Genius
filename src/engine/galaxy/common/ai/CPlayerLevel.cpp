@@ -1456,6 +1456,7 @@ void CPlayerLevel::processPressUp() {
 	  //int var2 = mid_x * 256+96;
 	  
 	  tile_no = mp_Map->getPlaneDataAt(1, x_left+(1<<CSF), up_y);
+	  const int info = mp_Map->getPlaneDataAt(2, x_left+(1<<CSF), up_y);
 	  int flag_right = Tile[tile_no].behaviour;
 	  //if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
 	  //if (getXPosition() == var2) {
@@ -1516,10 +1517,12 @@ void CPlayerLevel::processPressUp() {
 				mTarget = getPosition();
 								
 				// Illusion for going into the backgroung does not apply on teleporters
-				if(tile_no != 0x401)
+				if(info || tile_no != 0x401)
 				{
 				  mTarget.y -= (1<<CSF);
 				}
+				
+				solid=false;
 				
 				
 				setAction(A_KEEN_ENTER_DOOR);
@@ -1623,6 +1626,7 @@ void CPlayerLevel::processEnterDoor()
 	
 	yDirection = 0;
 	setAction(A_KEEN_STAND);
+	solid = true;
 	
 	dontdraw = false;
 
