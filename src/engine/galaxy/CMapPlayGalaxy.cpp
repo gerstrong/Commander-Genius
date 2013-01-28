@@ -318,6 +318,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	if(!mObjectPtr.empty())
 		mObjectPtr.clear();
 	
+	mMap.mNumFuses = 0;
 	mMap.mFuseInLevel = false;
 
 	for( Uint32 i=0 ; i<size ; i++ )

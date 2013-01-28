@@ -329,6 +329,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		m_ObjectPtr.clear();
 
 	// he we go to the adding objects
+	Map.mNumFuses = 0;
 	Map.mFuseInLevel = false;		
 	data_ptr = start_data;
 	for(size_t y=0 ; y<height ; y++)
