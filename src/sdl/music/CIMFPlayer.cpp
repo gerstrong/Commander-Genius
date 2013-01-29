@@ -31,17 +31,17 @@ m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
 bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 {
     // Open the IMF File
-	FILE *fp;
-	word data_size;
-	bool ok = false;
-
-	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
-    	return false;
-
-	int read_first = fread( &data_size, sizeof(word), 1, fp);
-
-	if( read_first == 0)
-		return false;
+    FILE *fp;
+    word data_size;
+    bool ok = false;
+    
+    if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
+	return false;
+    
+    int read_first = fread( &data_size, sizeof(word), 1, fp);
+    
+    if( read_first == 0)
+	return false;
 
     if (data_size == 0) // Is the IMF file of Type-0?
     {
@@ -49,20 +49,20 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
         data_size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
     }
-
-
-	if(!m_IMF_Data.empty())
-		m_IMF_Data.clear();
+    
+    
+    if(!m_IMF_Data.empty())
+	m_IMF_Data.clear();
     const word imf_chunks = (data_size/sizeof(IMFChunkType));
     m_IMF_Data.reserve(imf_chunks);
-
+    
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
-    	g_pLogFile->textOut("The IMF-File seems to be corrupt.");
+	g_pLogFile->textOut("The IMF-File seems to be corrupt.");
     else
-    	ok = true;
-
+	ok = true;
+    
     fclose(fp);
-
+    
     return ok;
 }
 
@@ -345,7 +345,7 @@ void CIMFPlayer::close()
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {
-	m_opl_emulator.Chip__GenerateBlock2( length, m_mix_buffer );
+    m_opl_emulator.Chip__GenerateBlock2( length, m_mix_buffer );
 
     // Mix into the destination buffer, doubling up into stereo.
 

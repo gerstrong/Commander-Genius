@@ -66,7 +66,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 
    		if(formatsize == 2) // 16-Bit Sound
    		{
-   			for( unsigned int count=0 ; count<waittimes ; count++ )
+   			for( uint count=0 ; count<waittimes ; count++ )
    			{
    				Sint16 *buffer = (Sint16*) (void*) waveform_ptr;
 

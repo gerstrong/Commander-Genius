@@ -283,11 +283,17 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	const unsigned int episode = g_pBehaviorEngine->getEpisode();
 
 	if(episode == 4)
+	{
 		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+	}
 	else if(episode == 5)
+	{
 		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+	}
 	else if(episode == 6)
+	{
 		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+	}
 	else
 	{
 		g_pLogFile->textOut("Error loading the file. This game is not supported!");
