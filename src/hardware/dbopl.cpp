@@ -903,6 +903,9 @@ static inline void Channel__GeneratePercussion(Channel *self, Chip* chip,
 	}
 }
 
+// Value to scale in order to get normalized volume on this device matching to other players in CG
+const int SCALE_VOL = 4;
+
 Channel* Channel__BlockTemplate(Channel *self, Chip* chip,
                                 Bit32u samples, Bit32s* output,
                                 SynthMode mode ) {
@@ -1006,6 +1009,9 @@ Channel* Channel__BlockTemplate(Channel *self, Chip* chip,
 			sample += Operator__GetSample( Channel__Op(self, 2), next );
 			sample += Operator__GetSample( Channel__Op(self, 3), 0 );
 		}
+		
+		sample *= SCALE_VOL;
+		
 		switch( mode ) {
 		case sm2AM:
 		case sm2FM:
