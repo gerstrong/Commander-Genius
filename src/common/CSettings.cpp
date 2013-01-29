@@ -215,10 +215,10 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_KEYSTACK,			"Keystacking      ", "keystack", 0 );
 	setOption( OPT_LVLREPLAYABILITY,	"Replay Levels    ", "level_replayability", 0 );
 	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
-	setOption( OPT_SWITCHSCORES,		"Score Fix (EP3)  ", "switch_scores", 0 );
+	//setOption( OPT_SWITCHSCORES,		"Score Fix (EP3)  ", "switch_scores", 0 );
 	setOption( OPT_HUD,				"HUD Display      ", "hud", 1 );
 	setOption( OPT_FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
-	setOption( OPT_FIXLEVELERRORS,	"Fix Level Errors ", "fix_level", 1 );
+	//setOption( OPT_FIXLEVELERRORS,	"Fix Level Errors ", "fix_level", 1 );
 }
 
 /**

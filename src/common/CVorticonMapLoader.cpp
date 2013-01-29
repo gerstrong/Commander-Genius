@@ -125,7 +125,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	planesize /= 2; // We have two planes
 
 
-	const char &fixlevel_error = g_pBehaviorEngine->m_option[OPT_FIXLEVELERRORS].value;
+	//const char &fixlevel_error = g_pBehaviorEngine->m_option[OPT_FIXLEVELERRORS].value;
 
 	for( size_t tilemap=0 ; tilemap<2 ; tilemap++ ) // Check against Tilemaps
 	{
@@ -136,8 +136,8 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 		int t = planeitems.at(planesize*tilemap+c+17);
 		
 		// TODO: I think we should remove those stupid fixes!
-		if( fixlevel_error && tilemap==0 )
-		    fixLevelTiles(t, curmapx, curmapy, episode, level);
+		/*if( fixlevel_error && tilemap==0 )
+		    fixLevelTiles(t, curmapx, curmapy, episode, level);*/
 		
 		mpMap->setTile(curmapx, curmapy, t, false, tilemap+1);
 		
@@ -508,7 +508,7 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
  * \param curmapY		Y-Coordinate of the map not CSFed
  * \param episode		Episode of the game
  */
-void CVorticonMapLoaderBase::fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level)
+/*void CVorticonMapLoaderBase::fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level)
 {
 	if( episode == 1 && level == 14 )
 	{
@@ -533,4 +533,4 @@ void CVorticonMapLoaderBase::fixLevelTiles(int &currentTile, const Uint16 curmap
 		if( ( curmapX == 32 || curmapX == 33 ) && curmapY == 113 )
 			currentTile = 482;
 	}
-}
+}*/
