@@ -1,8 +1,8 @@
 /*
  OpenLieroX
-
+ 
  UTF8/Unicode conversions
-
+ 
  code under LGPL
  created 01-05-2007
  by Albert Zeyer and Dark Charlie
@@ -40,7 +40,7 @@ inline size_t IncUtf8StringIterator(_Iterator1& it, const _Iterator2& last) {
 		c = *it;
 		if(!(c&0x80) || ((c&0xC0) == 0xC0)) break;
 	}
-
+    
 	return res;
 }
 
@@ -51,7 +51,7 @@ inline size_t MultIncUtf8StringIterator(_Iterator& it, const _Iterator& last, si
 		if(it == last) break;
 		res += IncUtf8StringIterator(it, last);
 	}
-
+    
 	return res;
 }
 
@@ -67,7 +67,7 @@ inline size_t DecUtf8StringIterator(_Iterator1& it, const _Iterator2& first) {
 		c = *it;
 		if(!(c&0x80) || ((c&0xC0) == 0xC0)) break;
 	}
-
+    
 	return res;
 }
 
@@ -114,7 +114,7 @@ inline size_t Utf8StringSize(const std::string& str)  {
 	std::string::const_iterator it = str.begin();
 	for(; it != str.end(); IncUtf8StringIterator(it, str.end()))
 		res++;
-
+    
 	return res;
 }
 

@@ -13,12 +13,12 @@ int joy_but_pressed[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 void WIZ_EmuKeyboard( int button, int value )
 {
 	SDL_Event fakeevent1;
-
+    
 	//printf( "Button %d Value %d\n", button, value );
 #if defined(WIZ) || defined(GP2X)
 	volume_direction = VOLUME_NOCHG;
 #endif
-
+    
 	joy_but_pressed[button] = value;
 	if( value == 1 ) {
 		fakeevent1.type	             = SDL_KEYDOWN;
@@ -32,10 +32,10 @@ void WIZ_EmuKeyboard( int button, int value )
 		fakeevent1.key.type          = SDL_KEYUP;
 		fakeevent1.key.keysym.mod    = KMOD_NONE;
 	}
-
+    
 	//printf( "Button %d %d\n", button, value );
 	fakeevent1.key.keysym.sym = SDLK_UNKNOWN;
-
+    
 #if defined(WIZ) || defined(GP2X)
 	if( button == GP2X_BUTTON_RIGHT )
 	{
@@ -54,7 +54,7 @@ void WIZ_EmuKeyboard( int button, int value )
 		fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_DOWN;
 	}
 #endif
-
+    
 	switch(button)
 	{
 		case GP2X_BUTTON_SELECT:
@@ -86,7 +86,7 @@ void WIZ_EmuKeyboard( int button, int value )
 			break;
 #endif
 	}
-
+    
 	if( fakeevent1.key.keysym.sym != SDLK_UNKNOWN )
 	{
 		SDL_PushEvent (&fakeevent1);
@@ -108,12 +108,12 @@ void WIZ_AdjustVolume( int direction )
 			if( direction == VOLUME_UP )   volume += VOLUME_CHANGE_RATE;
 			if( direction == VOLUME_DOWN ) volume -= VOLUME_CHANGE_RATE;
 		}
-
+        
 		if( volume < VOLUME_MIN ) volume = VOLUME_MIN;
 		if( volume > VOLUME_MAX ) volume = VOLUME_MAX;
-
+        
 		printf( "Volume Change: %i\n", volume );
-
+        
 		unsigned long soundDev = open("/dev/mixer", O_RDWR);
 		if(soundDev)
 		{
@@ -139,25 +139,25 @@ void WIZ_ptimer_init(void)
 		printf( "Could not open /dev/mem!\n" );
 		return;
 	}
-
+    
 	/* get access to the registers */
 	memregs32 = (volatile uint32_t*)mmap(0, 0x20000, PROT_READ|PROT_WRITE, MAP_SHARED, memfd, 0xC0000000);
 	if(memregs32 == (volatile uint32_t*)0xFFFFFFFF) {
 	    printf( "Could not mmap hardware registers!\n" );
 	    return;
 	}
-
+    
     TIMER_REG(0x44) = 0x922;
     TIMER_REG(0x40) = 0x0c;
     TIMER_REG(0x08) = 0x6b;
-
+    
     printf( "Wiz hardware timer started\n" );
 }
 
 unsigned int WIZ_ptimer_get_ticks_ms(void)
 {
     unsigned int microsec;
-
+    
     TIMER_REG(0x08) = 0x4b;  /* run timer, latch value */
     microsec = TIMER_REG(0);
     return (microsec/1000);
@@ -166,7 +166,7 @@ unsigned int WIZ_ptimer_get_ticks_ms(void)
 void WIZ_ptimer_delay_ms( unsigned int delay )
 {
     unsigned int start;
-
+    
     start = WIZ_ptimer_get_ticks_ms();
     while(WIZ_ptimer_get_ticks_ms()-start < delay) {}
 }
@@ -178,10 +178,10 @@ void WIZ_ptimer_cleanup(void)
     TIMER_REG(0x00) = 0;
     TIMER_REG(0x40) = 0;
     TIMER_REG(0x44) = 0;
-
+    
 	memregs32 = NULL;
 	close(memfd);
-
+    
 	printf( "Wiz hardware timer stoped\n" );
 }
 #endif

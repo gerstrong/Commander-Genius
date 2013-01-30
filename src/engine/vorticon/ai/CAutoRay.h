@@ -20,8 +20,8 @@ public:
 	CAutoRay(CMap *pmap, Uint32 x, Uint32 y, stRayAlignment type);
 	bool isNearby(CVorticonSpriteObject &theObject);
 	void process();
-
-
+    
+    
 private:
 	stRayAlignment m_type;
 	bool silent;

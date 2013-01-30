@@ -35,14 +35,14 @@ const int SPR_SHIP_LEFT_EP2 = 133;
 #define SHIPFLY_Y       0
 
 enum {
-DUPRIGHT,
-DUPLEFT,
-DUP,
-DDOWN,
-DDOWNRIGHT,
-DDOWNLEFT,
-DLEFT,
-DRIGHT
+    DUPRIGHT,
+    DUPLEFT,
+    DUP,
+    DDOWN,
+    DDOWNRIGHT,
+    DDOWNLEFT,
+    DLEFT,
+    DRIGHT
 };
 
 typedef struct stShipQueue
@@ -60,9 +60,9 @@ public:
 	bool EndOfQueue() { return m_finished; }
 	void process();
 	virtual ~CShipFlySys();
-
+    
 	int m_ShipQueuePtr;
-
+    
 private:
 	stShipQueue m_shipqueue[32];
 	bool m_finished;

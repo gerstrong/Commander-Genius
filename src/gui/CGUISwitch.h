@@ -15,15 +15,15 @@ class CGUISwitch : public CGUIComboSelection
 {
 public:
 	CGUISwitch( const std::string& text );
-
+    
 	void enable( const bool sel )
 	{	CGUIComboSelection::setSelection( sel ? "on" : "off" );	}
-
+    
 	bool isEnabled()
 	{	return CGUIComboSelection::getSelection() == "on";	}
-
+    
 	void drawVorticonStyle(SDL_Rect& lRect);
-
+    
 	void processRender(const CRect<float> &RectDispCoordFloat);
 };
 

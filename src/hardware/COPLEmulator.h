@@ -31,15 +31,15 @@
 typedef struct
 {
     byte    mChar,cChar,
-            mScale,cScale,
-            mAttack,cAttack,
-            mSus,cSus,
-            mWave,cWave,
-            nConn,
-
-            // These are only for Muse - these bytes are really unused
-            voice,
-            mode;
+    mScale,cScale,
+    mAttack,cAttack,
+    mSus,cSus,
+    mWave,cWave,
+    nConn,
+    
+    // These are only for Muse - these bytes are really unused
+    voice,
+    mode;
     byte    unused[3];
 } Instrument;
 
@@ -47,24 +47,24 @@ class COPLEmulator
 {
 public:
 	COPLEmulator(const SDL_AudioSpec &AudioSpec);
-
+    
 	~COPLEmulator();
-
+    
 	/**
 	 * This function takes care of initializing the OPL Emulator.
 	 * It should be called whenever the Sound Device starts or restarts after changing audio settings
 	 */
 	void init();
-
+    
 	void AlSetFXInst(Instrument &inst);
-
+    
 	/**
 	 *
 	 *  StartOPLforAdlibSound() - Sets up the emulator for Adlib Sounds. Important in Keen Galaxy and later games.
 	 *
-	*/
+     */
 	void StartOPLforAdlibSound();
-
+    
 	/**
 	 * Wrapper for the original C Emulator function Chip__GenerateBlock2(&m_opl_chip, length, mix_buffer )
 	 */
@@ -81,20 +81,20 @@ public:
 	{
 		::Chip__WriteReg( &m_opl_chip, reg, val );
 	}
-
+    
 	unsigned int getIMFClockRate();
 	void setIMFClockrate(const unsigned int clock_rate);
-
+    
 	/**
 	 * Stops the Adlib sounds from playing
 	 */
 	void ALStopSound();
-
+    
 	/**
 	 * Shuts down the AdLib card for sound effects
 	 */
 	void ShutAL();
-
+    
 	/**
 	 * Shutdown the emulator. This should only the called whenever the audio settings need to be shutdown
 	 * or restarted like when the user changes the audio settings in the configuration while playing
@@ -102,9 +102,9 @@ public:
 	void shutdown();
 	
 	void clear();
-
+    
 private:
-
+    
 	const SDL_AudioSpec &m_AudioDevSpec;
 	Chip m_opl_chip;
 	Instrument	m_alZeroInst;

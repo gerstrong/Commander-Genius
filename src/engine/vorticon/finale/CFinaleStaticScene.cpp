@@ -19,11 +19,11 @@ m_timer(0)
 {
 	const SDL_Rect resrect =  g_pVideoDriver->getGameResolution().SDLRect();
 	const Uint32 flags = g_pVideoDriver->getBlitSurface()->flags;
-
+    
 	mpSceneSurface.reset(SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 	SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
-
-
+    
+    
 	if( finale_draw( mpSceneSurface.get(), scene_file, game_path) )
 	{
 		mpSceneSurface.reset(SDL_DisplayFormatAlpha(mpSceneSurface.get()), &SDL_FreeSurface);
@@ -54,7 +54,7 @@ void CFinaleStaticScene::process()
 	{
 		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSceneSurface, NULL, NULL) );
 	}
-
+    
 	if(m_timer)
 	{
 		m_timer--;
@@ -62,37 +62,37 @@ void CFinaleStaticScene::process()
 	else
 	{
 		/*if( mp_textbox_list.empty() ) { m_mustclose = true; return; }
-
-		mp_current_tb = mp_textbox_list.front();
-
-		// If time up, or user pressed any key goto next text
-		if( mp_current_tb->isFinished() )
-		{
-			delete mp_current_tb;
-			m_count++;
-
-			for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
-					i!=m_BitmapVector.end() ; i++ )
-			{
-				if( m_count == i->from_count) g_pSound->playSound(SOUND_SWITCH_TOGGLE, PLAY_NOW);
-			}
-
-			mp_textbox_list.pop_front();
-			if(!mp_textbox_list.empty())
-				mp_current_tb = mp_textbox_list.front();
-		}
-		else*/
+         
+         mp_current_tb = mp_textbox_list.front();
+         
+         // If time up, or user pressed any key goto next text
+         if( mp_current_tb->isFinished() )
+         {
+         delete mp_current_tb;
+         m_count++;
+         
+         for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
+         i!=m_BitmapVector.end() ; i++ )
+         {
+         if( m_count == i->from_count) g_pSound->playSound(SOUND_SWITCH_TOGGLE, PLAY_NOW);
+         }
+         
+         mp_textbox_list.pop_front();
+         if(!mp_textbox_list.empty())
+         mp_current_tb = mp_textbox_list.front();
+         }
+         else*/
 		{
 			// Draw any requested Bitmap
 			for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
-					i!=m_BitmapVector.end() ; i++ )
+                i!=m_BitmapVector.end() ; i++ )
 			{
 				if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
 				{ // show it!
 					i->p_bitmap->draw(i->dest_rect.x, i->dest_rect.y);
 				}
 			}
-
+            
 			// Draw Frame and the text like type writing
 			//mp_current_tb->processLogic();
 		}

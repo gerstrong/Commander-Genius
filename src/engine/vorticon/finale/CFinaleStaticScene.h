@@ -29,16 +29,16 @@ class CFinaleStaticScene
 {
 public:
 	CFinaleStaticScene(const std::string &game_path, const std::string &scene_file);
-
+    
 	void showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y);
 	void setTimer(Uint16 timer) {	m_timer = timer;	}
 	void process();
 	bool mustclose() { return m_mustclose; }
-
+    
 	virtual ~CFinaleStaticScene();
-
+    
 private:
-
+    
 	std::vector<bitmap_structure> m_BitmapVector;
 	std::shared_ptr<SDL_Surface> mpSceneSurface;
 	bool m_mustclose;

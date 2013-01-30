@@ -44,15 +44,15 @@ unsigned char CPlanes::getbit(unsigned char plane)
  * \param	p1, p2, p3, p4, p5 The offsets of the planes where the bits are going to be read
  */
 void CPlanes::setOffsets(unsigned long p1, unsigned long p2, unsigned long p3,
-				 unsigned long p4, unsigned long p5)
+                         unsigned long p4, unsigned long p5)
 {
-
+    
 	getbit_bytepos[0] = p1;
 	getbit_bytepos[1] = p2;
 	getbit_bytepos[2] = p3;
 	getbit_bytepos[3] = p4;
 	getbit_bytepos[4] = p5;
-
+    
 	for(int i=0;i<5;i++)
 	    getbit_bitmask[i] = 128;
 }
@@ -77,7 +77,7 @@ void CPlanes::readPlane(size_t p, Uint8 *pixels, Uint16 width, Uint16 height)
  * differently from the gamedata of Keen
  */
 void CPlanes::readPlaneofTiles(size_t p, Uint8 *pixels, Uint16 columns,
-								Uint16 tilesize, Uint16 numtiles)
+                               Uint16 tilesize, Uint16 numtiles)
 {
 	Uint8 *u_offset;
 	for(size_t t=0;t<numtiles;t++)
@@ -87,9 +87,9 @@ void CPlanes::readPlaneofTiles(size_t p, Uint8 *pixels, Uint16 columns,
 			for(size_t x=0;x<tilesize;x++)
 			{
 				u_offset = pixels +
-						   tilesize*tilesize*columns*(t/columns) +
-						   tilesize*(t%columns) +
-						   tilesize*columns*y + x;
+                tilesize*tilesize*columns*(t/columns) +
+                tilesize*(t%columns) +
+                tilesize*columns*y + x;
 				*u_offset |= (getbit(p) << p);
 			}
 		}

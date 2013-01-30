@@ -35,9 +35,9 @@ public:
 	bool readDictionaryFromFile( const std::string &filename );
 	void readDictionaryAt( byte *p_exedata, unsigned long offset);
 	void expand(byte *pin, byte *pout, unsigned long inlen, unsigned long outlen);
-
+    
 private:
-
+    
 	nodestruct m_nodes[DICT_SIZE];
 };
 

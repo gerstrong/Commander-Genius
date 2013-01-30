@@ -23,7 +23,7 @@ public:
 private:
 	char state;
 	char dir;
-
+    
 	int animframe, animtimer;
 	int timer;
 };

@@ -25,20 +25,20 @@
 class CGameControl
 {
 public:
-
+    
 	CGameControl(bool &firsttime);
 	
 	bool init(int argc, char *argv[]);
-
+    
 	void process();
 	
 	// getters and setters
 	bool mustShutdown(){ return (mpEngine.get()==NULL); }
 	
 protected:
-
+    
 	std::unique_ptr<CBaseEngine> mpEngine;
-
+    
 	bool &m_firsttime;
 	int m_startGame_no;
 	int m_startLevel;

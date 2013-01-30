@@ -17,7 +17,7 @@ class CConfirmMenu : public CBaseMenu
 public:
 	CConfirmMenu(const std::string &question, bool &to_be_confirmed, Uint8 dlg_theme);
 	void processSpecific();
-
+    
 private:
 	std::string m_question;
 	bool &m_to_be_confirmed;

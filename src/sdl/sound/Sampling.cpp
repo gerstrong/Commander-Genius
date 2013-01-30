@@ -23,7 +23,7 @@
  * \param width		width of the amplitude. In case of U8 it is 1, for 16 bit 2
  */
 void splitChannel(Uint8* output, Uint8* input, size_t length,
-					size_t channels, size_t chnl, size_t width)
+                  size_t channels, size_t chnl, size_t width)
 {
 	input += (width*chnl);
 	for( size_t i=0 ; i<(length/(channels*width)) ; i++ )
@@ -44,7 +44,7 @@ void splitChannel(Uint8* output, Uint8* input, size_t length,
  * \param width		width of the amplitude. In case of U8 it is 1, for 16 bit 2
  */
 void mergeChannel(Uint8* output, Uint8* input, size_t length,
-					size_t channels, size_t chnl, size_t width)
+                  size_t channels, size_t chnl, size_t width)
 {
 	output += (width*chnl);
 	for( size_t i=0 ; i<(length/(channels*width)) ; i++ )
@@ -60,7 +60,7 @@ void mergeChannel(Uint8* output, Uint8* input, size_t length,
  * \param strechedbuf The output buffer which will be stretched
  * \param
  *  Sint16 *buf,
-					size_t input_len, size_t input_len
+ size_t input_len, size_t input_len
  */
 template <typename T>
 void stretchSound( T *output, T *input,	size_t output_len, size_t input_len )
@@ -70,12 +70,12 @@ void stretchSound( T *output, T *input,	size_t output_len, size_t input_len )
 	const float factor = ((float) input_len)/((float) output_len);
 	Sint32 v_a, v_b, value;
 	size_t inter;
-
+    
 	for(size_t i=0, j=0 ; i<len_a && j<len_b ; i++)
 	{
 		output[j] = input[i];
 		j++;
-
+        
 		inter = ((float)j)*factor;
 		// linear interpolation for the gaps we get ;-)
 		while( i >= inter && i<len_a && j<len_b )
@@ -101,16 +101,16 @@ void stretchSound( T *output, T *input,	size_t output_len, size_t input_len )
 
 template <typename T>
 void resampleAnyBits(const T* out, const T *in,
-		unsigned long output_len, unsigned long input_len, size_t channels)
+                     unsigned long output_len, unsigned long input_len, size_t channels)
 {
 	Uint8* output_buffer = (Uint8*) out;
 	Uint8 *input_buffer = (Uint8*) in;
 	// Temporary buffer for the stretched stream. Of course it's per channel...
 	T *stretchedbuf = (T*) malloc( output_len/channels );
-
+    
 	// Split the channels so they won't be overlapped during the stretching
 	Uint8 *onechannelbuffer = (Uint8*) malloc( input_len/channels );
-
+    
 	// Now, for all channels do the operation
 	for(size_t ch=0 ; ch<channels ; ch++)
 	{
@@ -126,19 +126,19 @@ void resampleAnyBits(const T* out, const T *in,
 
 // this fixes the speed of the played songs, when using any frequency
 void resample(const Uint8* output_buffer, const Uint8 *input_buffer,
-		const unsigned long output_len, const unsigned long input_len,
-		const Uint16 format, const size_t channels )
+              const unsigned long output_len, const unsigned long input_len,
+              const Uint16 format, const size_t channels )
 {
 	if(format == AUDIO_S16)
 	{
 		memset((Uint8*)output_buffer, WAVE_SILENCE_S16, output_len);
 		resampleAnyBits( (Sint16*) (void *)output_buffer, (Sint16*) (void *)input_buffer,
-				output_len, input_len, channels);
+                        output_len, input_len, channels);
 	}
 	else if(format == AUDIO_U8)
 	{
 		memset((Uint8*)output_buffer, WAVE_SILENCE_U8, output_len);
 		resampleAnyBits( (Uint8*) output_buffer, (Uint8*) input_buffer,
-				output_len, input_len, channels);
+                        output_len, input_len, channels);
 	}
 }

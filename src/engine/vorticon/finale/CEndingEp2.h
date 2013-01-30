@@ -19,22 +19,22 @@ class CEndingEp2 : public CFinale
 {
 public:
 	CEndingEp2(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
-			const std::shared_ptr<CMap> &pMap, 
-			std::vector<CPlayer> &Player, 
-			std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object );
-
+               const std::shared_ptr<CMap> &pMap,
+               std::vector<CPlayer> &Player,
+               std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object );
+    
 	void process();
 	void HeadsForEarth();
 	void LimpsHome();
 	void SnowedOutside();
-
-
+    
+    
 private:
 	bool m_mustsetup;
 	Uint32 m_starttime;
 	Uint32 m_timepassed;
-
-
+    
+    
 	std::vector<CPlayer> &m_Player;
 	std::unique_ptr<CShipFlySys> mpShipFlySys;
 	std::unique_ptr<CFinaleStaticScene> mpFinaleStaticScene;

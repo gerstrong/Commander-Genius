@@ -64,39 +64,39 @@ void CAbout::init()
 			for(int i=0 ; i<m_numberoflines ; i++)
 			{
 				char *data = startdata;
-
+                
 				for(short offset = 0 ; offset<0x28 ; offset++)
 				{
 					if(data[offset] == 0x0A && data[offset+1] == 0x00)
 						break;
-
+                    
 					buf.push_back(data[offset]);
 				}
 				startdata += 0x28;
-
+                
 				// now check how many new lines we have in buf
 				size_t num_newlines = 0;
 				bool endoftext = false;
-
+                
 				size_t  pos;
 				if((pos = buf.find(0xFE)) != std::string::npos)
 				{
 					buf.erase(pos), endoftext = true;
 				}
-
+                
 				while((pos = buf.find(0x0A)) != std::string::npos)
 					buf.erase(pos,1), num_newlines++;
-
+                
 				while((pos = buf.find('\0')) != std::string::npos)
 					buf.erase(pos,1);
-
+                
 				m_lines.push_back(buf);
 				
 				if(endoftext) break;
-
+                
 				while(num_newlines > 0)
 					m_lines.push_back(""), num_newlines--;
-
+                
 				buf.clear();
 			}
 		}
@@ -143,7 +143,7 @@ void CAbout::init()
 		m_logo_rect.x = 160-m_logo_rect.w/2;
 		m_logo_rect.y = 22;
 	}
-
+    
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
 	mpDrawSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
@@ -151,11 +151,11 @@ void CAbout::init()
 
 
 void CAbout::process()
-{	 
+{
 	mpMap->animateAllTiles();
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 	
-
+    
 	if(m_type == "ID")
 	{
 		mp_bmp->draw( 160-mp_bmp->getWidth()/2, 22);
@@ -165,12 +165,12 @@ void CAbout::process()
 		if(mpLogoBMP)
 			g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpLogoBMP, NULL,  &m_logo_rect ) );
 	}
-
+    
 	for(std::size_t i=0 ; i<m_lines.size() ; i++)
 	{
 		g_pGfxEngine->getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
 	}
-
+    
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpDrawSfc, NULL, NULL) );
 	
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())

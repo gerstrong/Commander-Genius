@@ -24,10 +24,10 @@ public:
 			  const std::string &gamepath,
 			  size_t episode);
 	virtual ~CEGASprit();
-
+    
 	bool loadHead(char *data);
 	bool loadData(const std::string& filename, bool compresseddata);
-
+    
 private:
 	int m_numsprites;
 	int m_planesize;
@@ -35,7 +35,7 @@ private:
 	long m_spriteloc;
 	const std::string &m_gamepath;
 	size_t m_Episode;
-
+    
 	struct st_sprite{
 		short width;
 		short height;
@@ -50,7 +50,7 @@ private:
 		// There are 3 copies of the same Elements in the file. There were used for performance
 		// in DOS but are ignored here.
 	}*EGASpriteModell;
-
+    
 	void generateSprite( const int points, CSprite &sprite );
 	void LoadSpecialSprites( std::vector<CSprite> &sprite );
 	void DerivePlayerSprites( std::vector<CSprite> &sprites );

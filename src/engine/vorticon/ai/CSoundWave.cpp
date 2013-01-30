@@ -13,7 +13,7 @@
 #define SNDWAVE_OFFSCREEN_KILL_TIME     100
 
 CSoundWave::CSoundWave(CMap *p_map, Uint32 x, Uint32 y,
-		direction_t dir, object_t byType, size_t byID) :
+                       direction_t dir, object_t byType, size_t byID) :
 CRay(p_map, x, y, dir, CENTER, byType, byID),
 animframe(0),
 animtimer(0),
@@ -25,7 +25,7 @@ offscreentime(0)
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	m_BBox.x1 = rSprite.m_bboxX1;		m_BBox.x2 = rSprite.m_bboxX2;
 	m_BBox.y1 = rSprite.m_bboxY1;		m_BBox.y2 = rSprite.m_bboxY2;
-
+    
 	performCollisions();
 }
 
@@ -45,13 +45,13 @@ void CSoundWave::process()
 		else offscreentime++;
 	}
 	else offscreentime = 0;
-
+    
 	// fly through the air
 	int x = getXPosition()>>CSF;
 	if (m_HorDir == RIGHT)
 	{
 		sprite = SNDWAVE_RIGHT_FRAME + animframe;
-
+        
 		if (x > static_cast<int>(mp_Map->m_width) )
 			exists=false;
 		else
@@ -65,7 +65,7 @@ void CSoundWave::process()
 	else
 	{
 		sprite = SNDWAVE_LEFT_FRAME + animframe;
-
+        
 		if (x < 2)
 			exists = false;
 		else
@@ -76,7 +76,7 @@ void CSoundWave::process()
 				moveLeft(SNDWAVE_SPEED);
 		}
 	}
-
+    
 	// animation
 	if (animtimer > SNDWAVE_ANIM_RATE)
 	{

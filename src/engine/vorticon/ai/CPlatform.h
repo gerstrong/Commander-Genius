@@ -16,15 +16,15 @@ class CPlatform : public CCarrier
 {
 public:
 	CPlatform(CMap *p_map, Uint32 x, Uint32 y);
-
+    
 	void process();
-
+    
 protected:
 	unsigned char state;
 	unsigned char animframe;
 	unsigned int animtimer;
 	unsigned int waittimer;
-
+    
 	direction_t movedir;
 };
 

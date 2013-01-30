@@ -31,18 +31,18 @@ template <typename T>
 class RingBuffer {
 public:
 	RingBuffer():
-		mp_start(NULL),
-		mp_cur(NULL),
-		mp_end(NULL),
-		m_size(0)
+    mp_start(NULL),
+    mp_cur(NULL),
+    mp_end(NULL),
+    m_size(0)
 	{}
-
+    
 	~RingBuffer()
 	{
 		if(!empty())
 			clear();
 	}
-
+    
 	/**
 	 * Allocates memory for the Ring buffer
 	 */
@@ -53,18 +53,18 @@ public:
 			// TODO: throw exception here! This must never happen!
 			return false;
 		}
-
+        
 		m_size = size;
 		if(m_size == 0)
 			return false;
 		mp_cur = new T[m_size];
 		mp_start = mp_cur;
 		mp_end = mp_start + m_size;
-
+        
 		return true;
 	}
-
-
+    
+    
 	/**
 	 * Clears the buffer without checking if ever was reserved. Be careful!
 	 */
@@ -74,8 +74,8 @@ public:
 		mp_start = NULL;
 		m_size = 0;
 	}
-
-
+    
+    
 	/**
 	 * Just checks and tells if the ring buffer is actually empty or not reserved
 	 */
@@ -83,34 +83,34 @@ public:
 	{
 		return (m_size == 0 || mp_start == NULL);
 	}
-
+    
 	/**
 	 * Just tell whether the buffer of the as at the initial pointer which must be the same as at the end, because
 	 * until this call, the pointer was rewound.
 	 */
 	bool atStart()
 	{	return (mp_cur == mp_start);	}
-
+    
 	/**
 	 * Although a ring doesn't have a start, this function will set the pointer to first data chunk that on what it
 	 * was initialized
 	 */
 	void gotoStart()
 	{	mp_cur=mp_start;	}
-
+    
 	/**
 	 * Just return the absolute start of the pointer.
 	 */
 	T *getStartPtr()
 	{	return mp_start;	}
-
+    
 	/**
 	 * Just return the absolute end of the pointer.
 	 */
 	T *getLastElem()
 	{	return mp_end-1;	}
-
-
+    
+    
 	/**
 	 * This will get the next Element in the ring. Similar to the front function of std::list, but it's a ring.
 	 * This will copy the data to the data type variable you are using, so please don't use too big datastructures for this
@@ -122,8 +122,8 @@ public:
 		this->operator ++();
 		return data;
 	}
-
-
+    
+    
 	/**
 	 * This function will give you a pointer the current data position within the ring
 	 * It will also tell you how many Elements of that data type (n_elem) you can use to read.
@@ -139,19 +139,19 @@ public:
 	unsigned int getSlicePtr(T *&data, const unsigned int n_elem)
 	{
 		data = mp_cur;
-
+        
 		if(mp_cur + n_elem <= mp_end) // All elements can be read
 			return n_elem;
 		else // you cannot read all the elements, return a lower number of readable elements
 			return mp_end-mp_cur;
 	}
-
-
+    
+    
 	/**
 	 * Just makes the current pointer in the ring buffer go further...
 	 */
 	void operator+=(const unsigned int n_elem)
-				{
+    {
 		if(mp_cur + n_elem < mp_end)
 			mp_cur += n_elem;
 		else
@@ -160,20 +160,20 @@ public:
 			const unsigned int newpos = n_elem-(mp_end-mp_cur);
 			mp_cur = mp_start + newpos;
 		}
-				}
-
+    }
+    
 	/**
 	 * increment pointer by one element or go the start if cur == end ptr
 	 */
 	void operator++()
 	{
 		mp_cur++;
-
+        
 		if( mp_cur == mp_end )
 			mp_cur = mp_start;
 	}
-
-
+    
+    
 private:
 	T *mp_start, *mp_cur, *mp_end;
 	unsigned int m_size;

@@ -57,15 +57,15 @@ int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, i
 
 bool CResourceLoader::process(int* ret)
 {
-  float acc = 0.0f;
-  float start = 0.0f;
-  float elapsed = 0.0f;
-  float total_elapsed = 0.0f;
-  float curr = 0.0f;
-  int counter = 0;    
-        
+    float acc = 0.0f;
+    float start = 0.0f;
+    float elapsed = 0.0f;
+    float total_elapsed = 0.0f;
+    float curr = 0.0f;
+    int counter = 0;
+    
     if(!mp_Thread)
-	return false;
+        return false;
     
     // Draw the first Frame, so transition looks complete!
     g_pVideoDriver->clearDrawingTasks();
@@ -83,7 +83,7 @@ bool CResourceLoader::process(int* ret)
 		
 		curr = timerTicks();
 		
-		elapsed = curr - start;      
+		elapsed = curr - start;
 		acc += elapsed;
 		
 		start = timerTicks();
@@ -95,23 +95,23 @@ bool CResourceLoader::process(int* ret)
 		    
 		    if(m_permil >= m_permiltarget)
 		    {
-			setPermilage(m_permil+1);
+                setPermilage(m_permil+1);
 		    }
 		    else
 		    {
-			int delta_permil = (m_permiltarget-m_permil)/2;
-			
-			if(delta_permil == 0)			
-			    setPermilageForce(m_permil+1);
-			else
-			    setPermilageForce(m_permil+delta_permil);
+                int delta_permil = (m_permiltarget-m_permil)/2;
+                
+                if(delta_permil == 0)
+                    setPermilageForce(m_permil+1);
+                else
+                    setPermilageForce(m_permil+delta_permil);
 		    }
 		    
 		    // Here we try to process all the drawing related Tasks not yet done
 		    g_pVideoDriver->pollDrawingTasks();
 		    
 		    acc -= logicLatency;
-		}	
+		}
 		
 		// Pass all the surfaces to one
 		g_pVideoDriver->collectSurfaces();
@@ -127,12 +127,12 @@ bool CResourceLoader::process(int* ret)
 		
 		// wait time remaining in current loop
 		if( waitTime > 0 )
-		    timerDelay(waitTime);	
+		    timerDelay(waitTime);
 		
 		total_elapsed += static_cast<float>(waitTime);
 		
 		// This will refresh the fps display, so it stays readable and calculates an average value.
-		counter++;	
+		counter++;
 		if(counter >= 100)
 		{
 		    counter = 0;
@@ -146,7 +146,7 @@ bool CResourceLoader::process(int* ret)
 	setPermilage(m_max_permil);
 	renderLoadingGraphic();
 	g_pVideoDriver->pollDrawingTasks();
-	g_pVideoDriver->updateScreen();	
+	g_pVideoDriver->updateScreen();
 	
 	m_permiltarget = m_permil = m_min_permil;
 	
@@ -212,25 +212,25 @@ void CResourceLoader::renderLoadingGraphic()
 		rect.x = (320-width)/2;
 		rect.y = (200+height)/2;
 		
-		rect.w = (width*m_permil)/1000;		
+		rect.w = (width*m_permil)/1000;
 		rect.h = 4;
-
+        
 		// Fade from yellow to green with this formula
 		Uint32 color = SDL_MapRGB(sfc->format, 200-(200*m_permil)/1000, 200, 0 );
 		
 		SDL_FillRect(sfc, &rect, color);
 	}
 	else if(m_style == PROGRESS_STYLE_BAR)
-	{		
+	{
 		const int width = 160;
 		const int height = 0;
-	
+        
 		SDL_Rect rect;
 		SDL_Rect bgRect;
 		rect.x = (320-width)/2;
 		rect.y = (200+height)/2;
 		
-		rect.w = (width*m_permil)/1000;		
+		rect.w = (width*m_permil)/1000;
 		rect.h = 4;
 		
 		bgRect = rect;
@@ -238,7 +238,7 @@ void CResourceLoader::renderLoadingGraphic()
 		bgRect.y--;
 		bgRect.w = width+2;
 		bgRect.h = 6;
-
+        
 		// Fade from yellow to green with this formula
 		Uint32 color = SDL_MapRGB(sfc->format, 200-(200*m_permil)/1000, 200, 0 );
 		

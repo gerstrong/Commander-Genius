@@ -69,19 +69,19 @@ class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 {
 public:
 	CBehaviorEngine() : 	mPlayers(0),
-				mDifficulty(EASY),
-				mPausedGamePlay(false),
-				pEpisodeInfo(NULL) {}
-
+    mDifficulty(EASY),
+    mPausedGamePlay(false),
+    pEpisodeInfo(NULL) {}
+    
 	void setMessage(const std::string &name,
 					const std::string &message);
-
+    
 	bool readTeleporterTable(byte *p_exedata);
-
+    
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
 	CPhysicsSettings &getPhysicsSettings();
 	std::string getString(const std::string& name);
-
+    
 	// This function evaluates if the used engine is galaxy or vorticon
 	EngineType getEngine();
 	size_t getEpisode();
@@ -89,50 +89,50 @@ public:
 	{ return m_TeleporterTable[num]; }
 	std::vector<stTeleporterTable>& getTeleporterTable()
 	{ return m_TeleporterTable; }
-
+    
 	CEventContainer &EventList()
 	{	return m_EventList;	}
-
+    
 	void setEpisode(size_t Episode);
-
+    
 	void setPause(const bool value)
 	{	mPausedGamePlay = value;	}
-
+    
 	bool paused()
 	{	return mPausedGamePlay;	}
-
+    
 	// TODO: EventList must an own singleton Container, as it very often used.
 	CEventContainer m_EventList;
 	CExeFile m_ExeFile;
 	bool m_is_a_mod;
 	stOption m_option[NUM_OPTIONS];
-
+    
 	unsigned int mPlayers;
 	Difficulty mDifficulty;
-
+    
 	EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
 	{	return &pEpisodeInfo[episode-4];	}
-
+    
 	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
 	{	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
 	
 	
 	std::string mapLevelName;
-
+    
 private:
 	std::vector<CTileProperties> m_TileProperties[2];
 	CPhysicsSettings m_PhysicsSettings;
-
+    
 	std::map<std::string,std::string> stringmap;
 	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
-													  // used by Episode 1 especially
+    // used by Episode 1 especially
 	int numStrings;
 	size_t m_Episode;
-
+    
 	bool mPausedGamePlay;
-
+    
 	EpisodeInfoStruct *pEpisodeInfo;
-		
+    
 };
 
 #endif /* CBEHAVIORENGINE_H_ */

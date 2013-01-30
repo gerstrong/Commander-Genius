@@ -7,7 +7,7 @@
  *  This class is used for the surface which hold some icons
  *  for the cursor. By now it only draws the complete twirl,
  *  but more elements are planned.
-*/
+ */
 
 #ifndef CCURSOR_H_
 #define CCURSOR_H_
@@ -22,10 +22,10 @@ public:
 	void generateTwirls(CFont &Font);
 	void draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y);
 	virtual ~CCursor();
-
+    
 private:
 	SDL_Surface *mp_Surface;
-
+    
 };
 
 #endif /* CCURSOR_H_ */

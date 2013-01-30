@@ -20,7 +20,7 @@ void CCredits::init()
 	
 	//creditFont = g_pGfxEngine->getFont(0);
 	//creditFont.tintColor(SDL_MapRGB( creditFont.getSDLSurface()->format, 255, 0, 0) );
-
+    
 	CVorticonMapLoaderBase Maploader(mpMap);
 	
 	Maploader.load( ExeFile.getEpisode(), 90, ExeFile.getDataDirectory() );
@@ -83,10 +83,10 @@ void CCredits::init()
 	
 	m_timer = 0;
 	m_scrolly = -54*8;
-
+    
 	for(int j=0 ; j<54 ; j++)
 		m_mid[j] = 160-(m_scrolltext[j].size()*4);
-
+    
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
 	mpDrawSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
@@ -95,7 +95,7 @@ void CCredits::init()
 void CCredits::process()
 {
     CFont &creditFont = g_pGfxEngine->getFont(0);
-	mpMap->animateAllTiles();	
+	mpMap->animateAllTiles();
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 	
 	SDL_FillRect(mpDrawSfc.get(), NULL, 0x0);
@@ -115,10 +115,10 @@ void CCredits::process()
 		{
 			creditFont.drawFont( mpDrawSfc.get(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
 		}
-	}	
+	}
 	
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpDrawSfc, NULL, NULL) );
-
+    
 	if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 		m_destroy_me = true;
 }

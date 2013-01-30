@@ -76,40 +76,40 @@ void InitSearchPaths()
 {
 	// have to set to find the config at some of the default places
 	InitBaseSearchPaths();
-
-
-
+    
+    
+    
 	int i = 1;
 	while(true)
 	{
-
+        
 		std::string value;
 		if(!ReadString(g_pSettings->getConfigFileName(), "FileHandling", "SearchPath" + itoa(i), value, ""))
 			break;
-
+        
 		AddToFileList(&tSearchPaths, value);
 		i++;
-
+        
 	}
-
+    
 	// add the basesearchpaths to the searchpathlist as they should be saved in the end
 	for(searchpathlist::const_iterator p1 = basesearchpaths.begin();
-			p1 != basesearchpaths.end(); i++,p1++)
+        p1 != basesearchpaths.end(); i++,p1++)
 	{
 		AddToFileList(&tSearchPaths, *p1);
 	}
-
+    
 	// print the searchpaths, this may be very usefull for the user
 	notes << "I have now the following searchpaths (in this order):\n";
 	for(searchpathlist::const_iterator p2 = tSearchPaths.begin();
-			p2 != tSearchPaths.end(); p2++)
+        p2 != tSearchPaths.end(); p2++)
 	{
 		std::string path = *p2;
 		ReplaceFileVariables(path);
 		notes << "  " << path << "\n";
 	}
 	notes << " And that's all." << endl;
-
+    
 }
 
 
@@ -121,7 +121,7 @@ searchpathlist tSearchPaths;
 bool IsFileAvailable(const std::string& f, bool absolute)
 {
 	std::string abs_f;
-
+    
 	if(absolute)
 		abs_f = f;
 	else
@@ -129,7 +129,7 @@ bool IsFileAvailable(const std::string& f, bool absolute)
 		if((abs_f = GetFullFileName(f)) == "")
 			return false;
 	}
-
+    
 	// remove trailing slashes
 	// don't remove them on WIN, if it is a drive-letter
 	while(abs_f.size() > 0 && (abs_f[abs_f.size()-1] == '\\' || abs_f[abs_f.size()-1] == '/'))
@@ -139,16 +139,16 @@ bool IsFileAvailable(const std::string& f, bool absolute)
 #endif
 		abs_f.erase(abs_f.size()-1);
 	}
-
+    
 	abs_f = Utf8ToSystemNative(abs_f);
-
+    
 	// HINT: this should also work on WIN32, as we have _stat here
 	struct stat s;
 	if(stat(abs_f.c_str(), &s) != 0 || !S_ISREG(s.st_mode)) {
 		// it's not stat-able or not a reg file
 		return false;
 	}
-
+    
 	// it's stat-able and a file
 	return true;
 }
@@ -170,22 +170,22 @@ bool EqualPaths(const std::string& path1, const std::string& path2)
 {
 	std::string p1 = path1;
 	std::string p2 = path2;
-
+    
 	ReplaceSlashes(p1);
 	ReplaceSlashes(p2);
-
+    
 	if (*p1.rbegin() != '/')
 		p1 += '/';
 	if (*p2.rbegin() != '/')
 		p2 += '/';
-
+    
 	return stringcaseequal(p1, p2);
 }
 
 /*
-
+ 
  Drives
-
+ 
  */
 
 ////////////////////
@@ -208,12 +208,12 @@ drive_list GetDrives()
 			list.push_back(tmp);
 		}
 	}
-
-
+    
+    
 #else
 	// there are not any drives on Linux/Unix/MacOSX/...
 	// it's only windows which uses this crazy drive-letters
-
+    
 	// perhaps not the best way
 	// home-dir of user is in other applications the default
 	// but it's always possible to read most other stuff
@@ -222,11 +222,11 @@ drive_list GetDrives()
 	tmp.name = "/";
 	tmp.type = 0;
 	list.push_back(tmp);
-
+    
 	// we could communicate with dbus and ask it for all connected
 	// and mounted hardware-stuff
 #endif
-
+    
 	return list;
 }
 
@@ -238,7 +238,7 @@ drive_list GetDrives()
 // (used by GetExactFileName)
 bool IsPathStatable(const std::string& f) {
 	std::string abs_f = f;
-
+    
 	// remove trailing slashes
 	// don't remove them on WIN, if it is a drive-letter
 	while(abs_f.size() > 0 && (abs_f[abs_f.size()-1] == '\\' || abs_f[abs_f.size()-1] == '/')) {
@@ -247,7 +247,7 @@ bool IsPathStatable(const std::string& f) {
 #endif
 		abs_f.erase(abs_f.size()-1);
 	}
-
+    
 	// HINT: this should also work on WIN32, as we have _stat here
 	struct stat s;
 #ifdef WIN32  // uses UTF16
@@ -267,7 +267,7 @@ size_t GetNextName(const std::string& fullname, const char** seperators, std::st
 	std::string::const_iterator pos;
 	size_t p = 0;
 	unsigned short i;
-
+    
 	for(pos = fullname.begin(); pos != fullname.end(); pos++, p++) {
 		for(i = 0; seperators[i] != NULL; i++)
 			if(*pos == seperators[i][0]) {
@@ -275,7 +275,7 @@ size_t GetNextName(const std::string& fullname, const char** seperators, std::st
 				return p + 1;
 			}
 	}
-
+    
 	nextname = fullname;
 	return 0;
 }
@@ -286,14 +286,14 @@ size_t GetLastName(const std::string& fullname, const char** seperators)
 	std::string::const_reverse_iterator pos;
 	size_t p = fullname.size()-1;
 	unsigned short i;
-
+    
 	for(pos = fullname.rbegin(); pos != fullname.rend(); pos++, p--) {
 		for(i = 0; seperators[i] != NULL; i++)
 			if(*pos == seperators[i][0]) {
 				return p;
 			}
 	}
-
+    
 	// indicates that there is no more sep
 	return (size_t)(-1);
 }
@@ -341,17 +341,17 @@ bool CaseInsFindFile(const std::string& dir, const std::string& searchname, std:
 		filename = "";
 		return true;
 	}
-
+    
 	// Check first if searchname perhaps exists with exactly this name.
 	// This check is also needed in the case if we cannot read dir (-r) but we can access files (+x) in it.
 	if(IsPathStatable((dir == "") ? searchname : (dir + "/" + searchname))) {
 		filename = searchname;
 		return true;
 	}
-
+    
 	DIR* dirhandle = opendir((dir == "") ? "." : dir.c_str());
 	if(dirhandle == NULL) return false;
-
+    
 	dirent* direntry;
 	while((direntry = readdir(dirhandle))) {
 		if(strcasecmp(direntry->d_name, searchname.c_str()) == 0) {
@@ -366,7 +366,7 @@ bool CaseInsFindFile(const std::string& dir, const std::string& searchname, std:
 		}
 		add_searchname_to_exactfilenamecache((dir == "") ? direntry->d_name : (dir + "/" + direntry->d_name));
 	}
-
+    
 	closedir(dirhandle);
 	return false;
 }
@@ -380,18 +380,18 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename) 
 		filename = "";
 		return false;
 	}
-
+    
 	std::string sname = abs_searchname;
 	ReplaceFileVariables(sname);
-
+    
 	std::string nextname = "";
 	std::string nextexactname = "";
 	size_t pos;
-
+    
 	bool first_iter = true; // this is used in the bottom loop
-
+    
 	// search in cache
-
+    
 	// sname[0..pos-1] is left rest, excluding the /
 	pos = sname.size();
 	std::string rest;
@@ -401,7 +401,7 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename) 
 			if(IsPathStatable(filename)) {
 				if(pos == sname.size()) // do we got the whole filename?
 					return true;
-
+                
 				// filename is the correct one here
 				sname.erase(0,pos+1);
 				first_iter = false; // prevents the following loop from not adding a "/" to filename
@@ -425,11 +425,11 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename) 
 			break;
 		}
 	}
-
-
-
+    
+    
+    
 	// search the filesystem for the name
-
+    
 	// sname contains the rest of the path
 	// filename contains the start (including a "/" if necces.)
 	// if first_iter is set to true, don't add leading "/"
@@ -438,7 +438,7 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename) 
 		// pos>0  => found a sep (pos is right behind the sep)
 		// pos==0  => none found
 		if(pos > 0) sname.erase(0,pos);
-
+        
 		if(nextname == "") {
 			// simply ignore this case
 			// (we accept sth like /usr///share/)
@@ -456,16 +456,16 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename) 
 			if(pos > 0) filename += "/" + sname;
 			return false; // error (not found)
 		}
-
+        
 		if(!first_iter) filename += "/";
 		filename += nextexactname;
 		if(nextexactname != "")
 			add_searchname_to_exactfilenamecache(filename);
-
+        
 		if(pos == 0) break;
 		first_iter = false;
 	}
-
+    
 	// we got here after the full path was resolved successfully
 	return true;
 }
@@ -544,13 +544,13 @@ bool IsAbsolutePath(const std::string& path)
 	// The path must start with a drive letter
 	if (path.size() < 2)
 		return false;
-
+    
 	return (isalpha((uchar)path[0]) && path[1] == ':');
 #else
 	// Must start with a slash
 	if (!path.size())
 		return false;
-
+    
 	return path[0] == '/';
 #endif
 }
@@ -575,67 +575,67 @@ const std::string* getSpecialSearchPathForTheme() {
 
 class CheckSearchpathForFile
 {
-	public:
-		const std::string& filename;
-		std::string* result;
-		std::string* searchpath;
-		CheckSearchpathForFile(const std::string& f, std::string* r, std::string* s) :
-			filename(f), result(r), searchpath(s) {}
-
-		bool operator() (const std::string& spath)
-		{
-			std::string tmp = spath + filename;
-			if(GetExactFileName(tmp, *result))
-			{
-				// we got here, if the file exists
-				if(searchpath) *searchpath = spath;
-				return false; // stop checking next searchpaths
-			}
-
-			// go to the next searchpath
-			return true;
-		}
+public:
+    const std::string& filename;
+    std::string* result;
+    std::string* searchpath;
+    CheckSearchpathForFile(const std::string& f, std::string* r, std::string* s) :
+    filename(f), result(r), searchpath(s) {}
+    
+    bool operator() (const std::string& spath)
+    {
+        std::string tmp = spath + filename;
+        if(GetExactFileName(tmp, *result))
+        {
+            // we got here, if the file exists
+            if(searchpath) *searchpath = spath;
+            return false; // stop checking next searchpaths
+        }
+        
+        // go to the next searchpath
+        return true;
+    }
 };
 
 std::string GetFullFileName(const std::string& path, std::string* searchpath) {
 	if(searchpath) *searchpath = "";
 	if(path == "") return GetFirstSearchPath();
-
+    
 	// Check if we have an absolute path
 	if(IsAbsolutePath(path)) {
 		std::string tmp;
 		GetExactFileName(path, tmp);
 		return tmp;
 	}
-
+    
 	std::string fname;
 	CheckSearchpathForFile checker(path, &fname, searchpath);
 	ForEachSearchpath(checker);
-
+    
 	return fname;
 }
 
 std::string GetWriteFullFileName(const std::string& path, bool create_nes_dirs) {
 	std::string tmp;
 	std::string fname;
-
+    
 	// get the dir, where we should write into
 	if(tSearchPaths.size() == 0 && basesearchpaths.size() == 0) {
 		errors << "we want to write somewhere, but don't know where => we are writing to your temp-dir now..." << endl;
 		tmp = GetTempDir() + "/" + path;
 	} else {
 		GetExactFileName(GetFirstSearchPath(), tmp);
-
+        
 		CreateRecDir(tmp);
 		if(!CanWriteToDir(tmp)) {
 			errors << "we cannot write to " << tmp << " => we are writing to your temp-dir now..." << endl;
 			tmp = GetTempDir();
 		}
-
+        
 		tmp += "/";
 		tmp += path;
 	}
-
+    
 	GetExactFileName(tmp, fname);
 	if(create_nes_dirs) CreateRecDir(fname, false);
 	return tmp;
@@ -651,9 +651,9 @@ FILE* OpenAbsFile(const std::string& path, const char *mode) {
 FILE *OpenGameFile(const std::string& path, const char *mode) {
 	if(path.size() == 0)
 		return NULL;
-
+    
 	std::string fullfn = GetFullFileName(path);
-
+    
 	bool write_mode = strchr(mode, 'w') != 0;
 	bool append_mode = strchr(mode, 'a') != 0;
 	if(write_mode || append_mode) {
@@ -674,11 +674,11 @@ FILE *OpenGameFile(const std::string& path, const char *mode) {
 		//errors << "opening file for writing (mode %s): %s\n", mode, writefullname);
 		return fopen(Utf8ToSystemNative(writefullname).c_str(), mode);
 	}
-
+    
 	if(fullfn.size() != 0) {
 		return fopen(Utf8ToSystemNative(fullfn).c_str(), mode);
 	}
-
+    
 	return NULL;
 }
 
@@ -686,7 +686,7 @@ FILE *OpenGameFile(const std::string& path, const char *mode) {
 bool OpenGameFileR(std::ifstream& f, const std::string& path, std::ios_base::openmode mode) {
 	if(path.size() == 0)
 		return false;
-
+    
 	std::string fullfn = GetFullFileName(path);
 	if(fullfn.size() != 0) {
 		try {
@@ -695,14 +695,14 @@ bool OpenGameFileR(std::ifstream& f, const std::string& path, std::ios_base::ope
 		} catch(...) {}
 		return false;
 	}
-
+    
 	return false;
 }
 
 bool OpenGameFileW(std::ofstream& f, const std::string& path, std::ios_base::openmode mode) {
 	if(path.size() == 0)
 		return false;
-
+    
 	std::string fullfn = GetWriteFullFileName(path, true);
 	if(fullfn.size() != 0) {
 		try {
@@ -711,7 +711,7 @@ bool OpenGameFileW(std::ofstream& f, const std::string& path, std::ios_base::ope
 		} catch(...) {}
 		return false;
 	}
-
+    
 	return false;
 }
 
@@ -733,7 +733,7 @@ bool FileListIncludesExact(const searchpathlist* l, const std::string& f) {
 	removeEndingSlashes(tmp1);
 	ReplaceFileVariables(tmp1);
 	replace(tmp1,"\\","/");
-
+    
 	// Go through the list, checking each item
 	for(searchpathlist::const_iterator i = l->begin(); i != l->end(); i++) {
 		std::string tmp2 = *i;
@@ -743,7 +743,7 @@ bool FileListIncludesExact(const searchpathlist* l, const std::string& f) {
 		if(stringcaseequal(tmp1, tmp2))
 			return true;
 	}
-
+    
 	return false;
 }
 
@@ -771,7 +771,7 @@ std::string GetHomeDir() {
 			return "C:\\OpenLieroX";
 		}
 		fix_markend(tmp);
-
+        
 		result = SystemNativeToUtf8(tmp);
 	}
 	return result;
@@ -826,24 +826,24 @@ void ReplaceFileVariables(std::string& filename) {
 // returns true, if successfull
 bool FileCopy(const std::string& src, const std::string& dest) {
 	static char tmp[2048];
-
+    
 	notes << "FileCopy: " << src << " -> " << dest << endl;
-
+    
 	FILE* src_f = fopen(Utf8ToSystemNative(src).c_str(), "rb");
-
+    
 	if(!src_f) {
 		errors << "FileCopy: cannot open source" << endl;
 		return false;
 	}
-
+    
 	FILE* dest_f = fopen(Utf8ToSystemNative(dest).c_str(), "wb");
-
+    
 	if(!dest_f) {
 		fclose(src_f);
 		errors << "FileCopy: cannot open destination" << endl;
 		return false;
 	}
-
+    
 	bool success = true;
 	unsigned short count = 0;
 	notes << "FileCopy: |" << flush;
@@ -862,7 +862,7 @@ bool FileCopy(const std::string& src, const std::string& dest) {
 		success = feof(src_f) != 0;
 		if(!success) errors << "FileCopy: problem while reading" << endl;
 	}
-
+    
 	fclose(src_f);
 	fclose(dest_f);
 	if(success)	notes << "FileCopy: success :)" << endl;
@@ -872,13 +872,13 @@ bool FileCopy(const std::string& src, const std::string& dest) {
 bool CanWriteToDir(const std::string& dir) {
 	// TODO: we have to make this a lot better!
 	std::string fname = dir + "/.some_stupid_temp_file";
-
+    
 	FILE* fp = fopen(Utf8ToSystemNative(fname).c_str(), "w");
-
+    
 	if(fp) {
 		fclose(fp);
 		remove(Utf8ToSystemNative(fname).c_str());
-
+        
 		return true;
 	}
 	return false;
@@ -890,7 +890,7 @@ std::string GetAbsolutePath(const std::string& path) {
 	std::string exactpath;
 	if (!GetExactFileName(path, exactpath))
 		exactpath = path;
-
+    
 	char buf[2048];
 	int len = GetFullPathName(Utf8ToSystemNative(exactpath).c_str(), sizeof(buf), buf, NULL);
 	fix_markend(buf);
@@ -915,14 +915,14 @@ std::string GetAbsolutePath(const std::string& path) {
 bool PathListIncludes(const std::list<std::string>& pathlist, const std::string& path) {
 	std::string abs_path;
 	abs_path = GetAbsolutePath(path);
-
+    
 	// Go through the list, checking each item
 	for(std::list<std::string>::const_iterator i = pathlist.begin(); i != pathlist.end(); i++) {
 		if(EqualPaths(abs_path, GetAbsolutePath(*i))) {
 			return true;
 		}
 	}
-
+    
 	return false;
 }
 
@@ -935,19 +935,19 @@ std::string GetFileContents(const std::string& path, bool absolute)
 		fp = fopen(/*Utf8ToSystemNative(path)*/path.c_str(), "rb");
 	else
 		fp = OpenGameFile(path, "rb");
-
+    
 	if (!fp)
 		return "";
-
+    
 	fseek(fp, 0, SEEK_END);
 	size_t size = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
-
+    
 	if (!size)  {
 		fclose(fp);
 		return "";
 	}
-
+    
 	char *buf = new char[size];
 	size = fread(buf, 1, size, fp);
 	if (!size)  {
@@ -955,12 +955,12 @@ std::string GetFileContents(const std::string& path, bool absolute)
 		fclose(fp);
 		return "";
 	}
-
+    
 	std::string result;
 	result.append(buf, size);
 	delete[] buf;
 	fclose(fp);
-
+    
 	return result;
 }
 
@@ -970,7 +970,7 @@ std::string ExtractDirectory(const std::string& path)
 {
 	if (path.size() == 0)
 		return "";
-
+    
 	size_t pos = findLastPathSep(path);
 	if (pos == std::string::npos)
 		return path;
@@ -1004,7 +1004,7 @@ std::string JoinPaths(const std::string& path1, const std::string& path2)
 		return path2;
 	if (path2.size() == 0)
 		return path1;
-
+    
 	std::string result = path1;
 	if (*path1.rbegin() == '/' || *path1.rbegin() == '\\')  {
 		if (*path2.begin() == '/' || *path2.begin() == '\\')  {
@@ -1048,7 +1048,7 @@ static int stdio_seek(SDL_RWops *context, int offset, int whence)
 static int stdio_read(SDL_RWops *context, void *ptr, int size, int maxnum)
 {
 	size_t nread;
-
+    
 	nread = fread(ptr, size, maxnum, context->hidden.stdio.fp);
 	if ( nread == 0 && ferror(context->hidden.stdio.fp) ) {
 		SDL_Error(SDL_EFREAD);
@@ -1058,7 +1058,7 @@ static int stdio_read(SDL_RWops *context, void *ptr, int size, int maxnum)
 static int stdio_write(SDL_RWops *context, const void *ptr, int size, int num)
 {
 	size_t nwrote;
-
+    
 	nwrote = fwrite(ptr, size, num, context->hidden.stdio.fp);
 	if ( nwrote == 0 && ferror(context->hidden.stdio.fp) ) {
 		SDL_Error(SDL_EFWRITE);
@@ -1093,7 +1093,7 @@ SDL_RWops *RWopsFromFP(FILE *fp, bool autoclose)  {
 		rwops->hidden.stdio.autoclose = (int)autoclose;
 	}
 	return(rwops);
-
+    
 #else
 	return SDL_RWFromFP(fp, (SDL_bool)autoclose);
 #endif

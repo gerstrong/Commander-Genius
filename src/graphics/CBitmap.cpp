@@ -37,9 +37,9 @@ bool CBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
 	SDL_SetColorKey(mpBitmapSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
 	
 	if(mpBitmapSurface)
-	  return true;
+        return true;
 	else
-	  return false;
+        return false;
 }
 
 bool CBitmap::optimizeSurface()
@@ -59,7 +59,7 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 {
 	if(!IsFileAvailable(filename))
 		return false;
-
+    
 	if( mpBitmapSurface )
 	{
 		SDL_Surface *tempSurface = SDL_LoadBMP(GetFullFileName(filename).c_str());

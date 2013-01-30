@@ -16,22 +16,22 @@ class CSDLVideo : public CVideoEngine
 {
 public:
 	CSDLVideo(const CVidConfig& VidConfig);
-
+    
 	bool resizeDisplayScreen(const CRect<Uint16>& newDim);
 	bool createSurfaces();
 	void collectSurfaces();
 	void clearSurfaces();
-
+    
 	void scaleNoFilter( 	SDL_Surface *srcSfc,
-									const SDL_Rect *scrrect,
-									SDL_Surface *dstSfc,
-									const SDL_Rect *dstrect );
-
-
+                       const SDL_Rect *scrrect,
+                       SDL_Surface *dstSfc,
+                       const SDL_Rect *dstrect );
+    
+    
 	void updateScreen();
-
+    
 private:
-
+    
 };
 
 #endif /* CSDLVIDEO_H_ */

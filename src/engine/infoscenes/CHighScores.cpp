@@ -58,7 +58,7 @@ void CHighScores::fetchScoreTable()
 	m_DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
 	
 	loadHighScoreTable();
-
+    
 	mTableLoaded = true;
 }
 
@@ -68,10 +68,10 @@ void CHighScores::init()
     CInfoScene::init();
 	m_CursorPosition = 0;
 	m_CurrentLetter = 32;
-
+    
 	bool saving_mode = false;
-
-
+    
+    
 	if(!mTableLoaded)
 		fetchScoreTable();
 	
@@ -147,7 +147,7 @@ void CHighScores::init()
 	bmp.rect.w = bmp.p_Bitmap->getWidth();
 	bmp.rect.h = bmp.p_Bitmap->getHeight();
 	m_Bitmaps.push_back(bmp);
-
+    
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
 	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
@@ -166,13 +166,13 @@ void CHighScores::teardown()
 void CHighScores::process()
 {
 	// TODO: here we have to process input events
-
+    
 	// Process Drawing related stuff
 	SDL_Surface *sfc = mpTextSfc.get();
 	CFont &Font = g_pGfxEngine->getFont(1);
-
+    
 	mpMap->animateAllTiles();
-
+    
 	// Blit the background
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
 	
@@ -189,16 +189,16 @@ void CHighScores::process()
 		int x = (m_Episode == 3) ? 69 : 40;
 		int x2 = (m_Episode == 3) ? 255 : 202;
 		int y = (m_Episode == 2) ? 56 : 52;
-
+        
 		std::string actualName = m_Name[i];
-
+        
 		// This cleans up the text. We need that because otherwise when user deletes his name while writing
 		// it might leave tracks
 		Font.drawFont(sfc, std::string(13,' '), x, y+(i<<4), true);
-
+        
 		if(i == m_Place)
 			actualName += (m_blink == true) ? "|" : " ";
-
+        
 		Font.drawFont(sfc, actualName, x, y+(i<<4), true);
 		Font.drawFont(sfc, m_Score[i], x2-((m_Score[i].size())<<3), y+(i<<4), true);
 	}
@@ -211,9 +211,9 @@ void CHighScores::process()
 	}
 	
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
-
+    
 	(this->*mp_process)();
-
+    
 }
 
 void CHighScores::processShowing()
@@ -224,7 +224,7 @@ void CHighScores::processShowing()
 
 void CHighScores::processWriting()
 {
-
+    
 #ifndef NOKEYBOARD
 	// Get the input
 	if(g_pInput->getPressedIsTypingKey() && (m_Name[m_Place].length() < 13))

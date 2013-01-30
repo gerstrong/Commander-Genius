@@ -25,25 +25,25 @@ void CRope::process()
 {
 	switch(state)
 	{
-	case ROPE_DROPSTONE:
-		if (!droptimer)
-		{
-			droptimer = STONE_DROP_RATE;
-			rope_movestone();
-			g_pGfxEngine->setupEffect(new CVibrate(400));
-
-			// check if we've hit the ground yet
-			for(int x=2;x<STONE_WIDTH-2;x++)
-			{
-				if (falldist >= 4)
-				{
-					exists = false;
-					return;
-				}
-			}
-		}
-		else droptimer--;
-	default: break;
+        case ROPE_DROPSTONE:
+            if (!droptimer)
+            {
+                droptimer = STONE_DROP_RATE;
+                rope_movestone();
+                g_pGfxEngine->setupEffect(new CVibrate(400));
+                
+                // check if we've hit the ground yet
+                for(int x=2;x<STONE_WIDTH-2;x++)
+                {
+                    if (falldist >= 4)
+                    {
+                        exists = false;
+                        return;
+                    }
+                }
+            }
+            else droptimer--;
+        default: break;
 	}
 }
 
@@ -63,18 +63,18 @@ void CRope::getShotByRay(object_t &obj_type)
 			const int y = (getYPosition()>>CSF);
 			stoneX = x - 4;
 			stoneY = y + 1;
-
+            
 			// Create a Colision Rect the way, everthing below gets smashed and on the Stone stays unharmed
 			moveTo( (stoneX<<CSF), (stoneY<<CSF)+((1<<CSF)/2) );
-
+            
 			// get color of background
 			bgtile = g_pBehaviorEngine->getPhysicsSettings().misc.changestoneblock;
-
+            
 			// Set BBox so the getTouched Function works on the enemies.
 			m_BBox(0, 0,
-				(STONE_WIDTH<<CSF),
-				(STONE_HEIGHT<<CSF)-((1<<CSF)/2) );
-
+                   (STONE_WIDTH<<CSF),
+                   (STONE_HEIGHT<<CSF)-((1<<CSF)/2) );
+            
 			falldist = 0;
 		}
 	}
@@ -84,10 +84,10 @@ void CRope::getShotByRay(object_t &obj_type)
 void CRope::rope_movestone()
 {
 	int xa,ya;
-
+    
 	xa = stoneX;
 	ya = stoneY;
-
+    
 	// move the stone down one space and kill anything in it's path!
 	for( int y=STONE_HEIGHT ; y>0 ; y-- )
 	{
@@ -96,14 +96,14 @@ void CRope::rope_movestone()
 			mp_Map->setTile(x+xa,y+ya, mp_Map->at(x+xa, y+ya-1), true);
 		}
 	}
-
+    
 	// clear the space at the top
 	for(int x=0; x<STONE_WIDTH ; x++)
 		mp_Map->setTile(x+xa,ya,bgtile, true);
-
+    
 	stoneY++;
 	moveDown(1<<CSF);
-
+    
 	falldist++;
 }
 
@@ -113,7 +113,7 @@ void CRope::getTouchedBy(CVorticonSpriteObject &theObject)
 	{
 		const int xa = stoneX;
 		const int ya = stoneY;
-
+        
 		// move the stone down one space and kill anything in it's path!
 		for(int y=STONE_HEIGHT;y>0;y--)
 		{

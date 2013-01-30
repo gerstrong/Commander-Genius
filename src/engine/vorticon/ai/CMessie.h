@@ -26,7 +26,7 @@ class CPlayer;
 
 class CMessie : public CVorticonSpriteObject
 {
-public:     
+public:
     
     // Constructor
 	CMessie(CMap *p_map, Uint32 x, Uint32 y);
@@ -40,19 +40,19 @@ public:
 	
 private:
 	char state;
-
+    
 	unsigned int baseframe;
-
+    
 	unsigned int tiletrailX[NESSIETRAILLEN+1];
 	unsigned int tiletrailY[NESSIETRAILLEN+1];
 	unsigned int tiletrailhead;
-
+    
 	char animframe, animtimer;
 	unsigned int destx, desty;
-
+    
 	unsigned int pausetimer;
 	unsigned int pausex, pausey;
-
+    
 	unsigned int mortimer_swim_amt;
 	
 	CPlayer *mounted;

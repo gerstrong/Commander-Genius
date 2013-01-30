@@ -14,26 +14,26 @@
 #include <memory>
 
 namespace galaxy {
-
-class CPlatformVertical : public CPlatform
-{
-public:
-	CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
-			const direction_t vertdir, const int actionOffset);
-
-	void draw();
-	
-	void process();
-
-private:
     
-	bool drawFire;
-	bool dimFire;
-	int m_FireSprite;
-	int m_fireTimer;
-};
-
-
+    class CPlatformVertical : public CPlatform
+    {
+    public:
+        CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+                          const direction_t vertdir, const int actionOffset);
+        
+        void draw();
+        
+        void process();
+        
+    private:
+        
+        bool drawFire;
+        bool dimFire;
+        int m_FireSprite;
+        int m_fireTimer;
+    };
+    
+    
 }
 
 #endif /* CPLATFORMVERTICAL_H_ */

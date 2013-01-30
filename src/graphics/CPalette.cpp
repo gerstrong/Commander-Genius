@@ -34,14 +34,14 @@ bool CPalette::patchedPalette(byte *p_exedata, int m_episode)
 		p_exedata += 0x157D;
 	else if(m_episode == 3)
 		p_exedata += 0x153B;
-
+    
 	const byte palette_patch_array[] =
 	{ 0xB8, 0x0D, 0x00, 0xCD,
-      0x10, 0xB8, 0x12, 0x10, 0xB9, 0x08, 0x00, 0xBB,
-      0x00, 0x00, 0x8C, 0xDA, 0x8E, 0xC2, 0xBA, 0x04,
-      0x00, 0xCD, 0x10, 0xBB, 0x18, 0x00, 0xBA, 0x1C,
-      0x00, 0xCD, 0x10, 0xC3 };
-
+        0x10, 0xB8, 0x12, 0x10, 0xB9, 0x08, 0x00, 0xBB,
+        0x00, 0x00, 0x8C, 0xDA, 0x8E, 0xC2, 0xBA, 0x04,
+        0x00, 0xCD, 0x10, 0xBB, 0x18, 0x00, 0xBA, 0x1C,
+        0x00, 0xCD, 0x10, 0xC3 };
+    
 	return (memcmp( palette_patch_array, p_exedata, 32 ) == 0);
 }
 
@@ -56,7 +56,7 @@ void CPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
 		p_exedata += 0x17784;
 	else if(m_episode == 3)
 		p_exedata += 0x19824;
-
+    
 	for( size_t i=0 ; i<16 ; i++ )
 	{
 		Uint8 r, g, b;
@@ -74,7 +74,7 @@ void CPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
 void CPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 {
 	// TODO: Try to add patching code for palette patches of mods here!
-
+    
 	// TODO: Here it will check, if the exe was patched with that code.
 	if(patchedPalette(p_exedata, m_episode))
 	{

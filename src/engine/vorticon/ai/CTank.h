@@ -57,30 +57,30 @@ class CTank : public CVorticonSpriteObject
 public:
 	CTank(CMap *p_map, Uint32 x, Uint32 y,object_t objtype=OBJ_TANK);
 	virtual void process();
-
+    
 	void getTouchedBy(CVorticonSpriteObject &theObject);
 	bool isNearby(CVorticonSpriteObject &theObject);
-
+    
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
-
+    
 protected:
 	// Tank Robot
 	enum{ TANK_WALK,TANK_TURN,TANK_WAIT,TANK_WAIT_LOOK,TANK_FIRE,TANK_LOOK
 	} state;
-
+    
 	unsigned int timer,animtimer;
 	unsigned char frame;
 	unsigned int dist_to_travel;
-
+    
 	direction_t movedir;
-
+    
 	unsigned int ponsameleveltime;
 	unsigned char alreadyfiredcauseonsamelevel;
 	unsigned char fireafterlook;
-
+    
 	bool detectedPlayer;         		  // true if player on same level
 	unsigned char detectedPlayerIndex;    // index of player that was detected
-
+    
 	// for tank2
 	unsigned int timetillnextshot;
 	unsigned int firetimes;

@@ -20,10 +20,10 @@ CVorticonSpriteObject(p_map, x, y, objtype)
 	m_invincible = true;
 	
 	// Read this from the Exe-File. Patchwork Mod 1 uses different one!
-	shotHeight = 0; 
+	shotHeight = 0;
 	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
 	ptr += 0x4900;
-	memcpy(&shotHeight, ptr, 1 );	
+	memcpy(&shotHeight, ptr, 1 );
 	shotHeight <<= STC;
 }
 
@@ -32,28 +32,28 @@ bool CTank::isNearby(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-	if( state == TANK_LOOK )
-	{	    
-	    // when time is up go back to moving
-	    if (timer > TANK_LOOK_TOTALTIME)
-	    {
-		// decide what direction to go
-		
-		if(player->getXMidPos() < getXMidPos())
-		{
-		    movedir = LEFT;
-		    sprite = TANK_WALK_LEFT_FRAME;
-		}
-		else if(player->getXMidPos() > getXMidPos())
-		{
-		    movedir = RIGHT;
-		    sprite = TANK_WALK_RIGHT_FRAME;
-		}
-		state = TANK_WALK;
-		animtimer = 0;
-		timer = 0;
-	    } 
-	}
+        if( state == TANK_LOOK )
+        {
+            // when time is up go back to moving
+            if (timer > TANK_LOOK_TOTALTIME)
+            {
+                // decide what direction to go
+                
+                if(player->getXMidPos() < getXMidPos())
+                {
+                    movedir = LEFT;
+                    sprite = TANK_WALK_LEFT_FRAME;
+                }
+                else if(player->getXMidPos() > getXMidPos())
+                {
+                    movedir = RIGHT;
+                    sprite = TANK_WALK_RIGHT_FRAME;
+                }
+                state = TANK_WALK;
+                animtimer = 0;
+                timer = 0;
+            }
+        }
     }
     
     return true;
@@ -63,142 +63,142 @@ void CTank::process()
 {
 	switch(state)
 	{
-	case TANK_WALK: // Walk in a direction
-	{
-		// is keen on same level?
-		if (movedir==LEFT)
-		{  // move left
-			xDirection = LEFT;
-			sprite = TANK_WALK_LEFT_FRAME + frame;
-			xinertia = -TANK_WALK_SPEED;
-			if( blockedl )
-			{
-				movedir = RIGHT;
-				frame = 0;
-				timer = 0;
-				animtimer = 0;
-				state = TANK_TURN;
-			}
-
-			dist_to_travel--;
-		}
-		else
-		{  // move right
-			xDirection = RIGHT;
-			sprite = TANK_WALK_RIGHT_FRAME + frame;
-			xinertia = TANK_WALK_SPEED;
-			if ( blockedr )
-			{
-				movedir = LEFT;
-				frame = 0;
-				timer = 0;
-				animtimer = 0;
-				state = TANK_TURN;
-			}
-
-			dist_to_travel--;
-		}
-
-		// walk animation
-		if (animtimer > TANK_WALK_ANIM_TIME)
-		{
-			if (frame>=3) frame=0;
-			else frame++;
-			animtimer = 0;
-		} else animtimer++;
-
-		if(dist_to_travel==0)
-		{
-			frame = 0;
-			timer = 0;
-			animtimer = 0;
-			state = TANK_WAIT;
-		}
-	default: break;
-	}
-	break;
-
-	case TANK_WAIT:
-		if ( (timer > TANK_PREPAREFIRE_TIME) ||
+        case TANK_WALK: // Walk in a direction
+        {
+            // is keen on same level?
+            if (movedir==LEFT)
+            {  // move left
+                xDirection = LEFT;
+                sprite = TANK_WALK_LEFT_FRAME + frame;
+                xinertia = -TANK_WALK_SPEED;
+                if( blockedl )
+                {
+                    movedir = RIGHT;
+                    frame = 0;
+                    timer = 0;
+                    animtimer = 0;
+                    state = TANK_TURN;
+                }
+                
+                dist_to_travel--;
+            }
+            else
+            {  // move right
+                xDirection = RIGHT;
+                sprite = TANK_WALK_RIGHT_FRAME + frame;
+                xinertia = TANK_WALK_SPEED;
+                if ( blockedr )
+                {
+                    movedir = LEFT;
+                    frame = 0;
+                    timer = 0;
+                    animtimer = 0;
+                    state = TANK_TURN;
+                }
+                
+                dist_to_travel--;
+            }
+            
+            // walk animation
+            if (animtimer > TANK_WALK_ANIM_TIME)
+            {
+                if (frame>=3) frame=0;
+                else frame++;
+                animtimer = 0;
+            } else animtimer++;
+            
+            if(dist_to_travel==0)
+            {
+                frame = 0;
+                timer = 0;
+                animtimer = 0;
+                state = TANK_WAIT;
+            }
+        default: break;
+        }
+            break;
+            
+        case TANK_WAIT:
+            if ( (timer > TANK_PREPAREFIRE_TIME) ||
 				(timer > TANK_PREPAREFIRE_TIME_FAST && hardmode) )
-		{
-			timer = 0;
-			state = TANK_FIRE;
-		}
-		else
-			timer++;
-
-		break;
-
-	case TANK_TURN:
-		// If it gets stuck somewhere turn around
-		sprite = TANK_LOOK_FRAME + frame;
-		// animation
-		if (animtimer > TANK_LOOK_ANIM_TIME)
-		{
-			frame ^= 1;
-			animtimer = 0;
-		} else animtimer++;
-
-		// when time is up go back to moving
-		if (timer > TANK_LOOK_TOTALTIME)
-		{
-			// decide what direction to go
-			state = TANK_WALK;
-			animtimer = 0;
-			timer = 0;
-		} else timer++;
-		break;
-	case TANK_FIRE:
-	{
-		int height_top = shotHeight;
-		if(height_top!=0)
-		{
-			CRay *newobject;
-			if (onscreen)
-				playSound(SOUND_TANK_FIRE);
-			if (movedir==RIGHT)
-				newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, RIGHT, CENTER);
-			else
-				newobject = new CRay(mp_Map, getXMidPos()-(1<<CSF), getYUpPos()+height_top, LEFT, CENTER);
-			newobject->setOwner(OBJ_TANK, m_index);
-			newobject->setSpeed(108);
-			newobject->sprite = ENEMYRAY;
-			newobject->canbezapped = true;
-			g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
-		}
-
-		state = TANK_WAIT_LOOK;
-		frame = 0;
-		timer = 0;
-		animtimer = 0;
-		dist_to_travel = TANK_MINTRAVELDIST + (rnd()%10)*(TANK_MAXTRAVELDIST-TANK_MINTRAVELDIST)/10;
-	}
-	break;
-
-	case TANK_WAIT_LOOK:
-		// Happens after Robot has fired
-		if ( timer > TANK_WAITAFTER_FIRE )
-		{
-			timer = 0;
-			state = TANK_LOOK;
-		}
-		else
-			timer++;
-
-		break;
-
-	case TANK_LOOK:
-		sprite = TANK_LOOK_FRAME + frame;
-		// animation
-		if (animtimer > TANK_LOOK_ANIM_TIME)
-		{
-			frame ^= 1;
-			animtimer = 0;
-		} else animtimer++;
-
-		timer++;
-		break;
+            {
+                timer = 0;
+                state = TANK_FIRE;
+            }
+            else
+                timer++;
+            
+            break;
+            
+        case TANK_TURN:
+            // If it gets stuck somewhere turn around
+            sprite = TANK_LOOK_FRAME + frame;
+            // animation
+            if (animtimer > TANK_LOOK_ANIM_TIME)
+            {
+                frame ^= 1;
+                animtimer = 0;
+            } else animtimer++;
+            
+            // when time is up go back to moving
+            if (timer > TANK_LOOK_TOTALTIME)
+            {
+                // decide what direction to go
+                state = TANK_WALK;
+                animtimer = 0;
+                timer = 0;
+            } else timer++;
+            break;
+        case TANK_FIRE:
+        {
+            int height_top = shotHeight;
+            if(height_top!=0)
+            {
+                CRay *newobject;
+                if (onscreen)
+                    playSound(SOUND_TANK_FIRE);
+                if (movedir==RIGHT)
+                    newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, RIGHT, CENTER);
+                else
+                    newobject = new CRay(mp_Map, getXMidPos()-(1<<CSF), getYUpPos()+height_top, LEFT, CENTER);
+                newobject->setOwner(OBJ_TANK, m_index);
+                newobject->setSpeed(108);
+                newobject->sprite = ENEMYRAY;
+                newobject->canbezapped = true;
+                g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
+            }
+            
+            state = TANK_WAIT_LOOK;
+            frame = 0;
+            timer = 0;
+            animtimer = 0;
+            dist_to_travel = TANK_MINTRAVELDIST + (rnd()%10)*(TANK_MAXTRAVELDIST-TANK_MINTRAVELDIST)/10;
+        }
+            break;
+            
+        case TANK_WAIT_LOOK:
+            // Happens after Robot has fired
+            if ( timer > TANK_WAITAFTER_FIRE )
+            {
+                timer = 0;
+                state = TANK_LOOK;
+            }
+            else
+                timer++;
+            
+            break;
+            
+        case TANK_LOOK:
+            sprite = TANK_LOOK_FRAME + frame;
+            // animation
+            if (animtimer > TANK_LOOK_ANIM_TIME)
+            {
+                frame ^= 1;
+                animtimer = 0;
+            } else animtimer++;
+            
+            timer++;
+            break;
 	}
 }
 
@@ -213,7 +213,7 @@ void CTank::getTouchedBy(CVorticonSpriteObject &theObject)
 int CTank::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	turnAroundOnCliff( x1, x2, y2 );
-
+    
 	return CSpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
 

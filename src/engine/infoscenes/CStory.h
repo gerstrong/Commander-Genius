@@ -18,11 +18,11 @@
 class CStory : public CInfoScene
 {
 public:
-
+    
 	void init();
 	void process();
 	void teardown();
-
+    
 private:
 	std::shared_ptr<CMap> mpMap;
 	std::unique_ptr<CTextViewer> mpTextViewer;

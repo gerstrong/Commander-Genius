@@ -23,16 +23,16 @@ m_overwrite(false)
 {
 	// Load the state-file list
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
-
+    
 	for(Uint32 i=1;i<=8;i++)
 	{
 		std::string text = EMPTY_TEXT;
 		if(i <= StateFileList.size())
 			text = StateFileList.at(i-1);
-
+        
 		mpMenuDialog->addControl(new CGUIInputText( text, CGUIInputText::VORTICON ) );
 	}
-
+    
 	setMenuLabel("SAVEMENULABEL");
 }
 
@@ -48,7 +48,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
 			{
 				CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
-
+                
 				if(pInput->Typing())
 				{
 					gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
@@ -64,7 +64,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 			}
 		}
 	}
-
+    
 	mpMenuDialog->sendEvent(command);
 }
 

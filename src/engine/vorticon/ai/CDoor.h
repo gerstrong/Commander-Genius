@@ -22,7 +22,7 @@ class CDoor : public CVorticonSpriteObject
 public:
 	CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID);
 	void process();
-
+    
 private:
 	char timer;
 };

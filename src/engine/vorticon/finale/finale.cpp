@@ -34,7 +34,7 @@ void finale_plot( SDL_Surface *sfc, int pix )
 	do
 	{
 		pixeloffset = finale_y*(sfc->w) + finale_x;
-
+        
 		if(pixeloffset < numPixels)
 		{
 			posPointer = pixel+finale_y*sfc->w + finale_x;
@@ -43,7 +43,7 @@ void finale_plot( SDL_Surface *sfc, int pix )
 				if (finale_planecol==1)
 					*posPointer = finale_planecol;
 				else
-				  // merge with previous planes
+                    // merge with previous planes
 					*posPointer |= finale_planecol;
 			}
 			else if (finale_planecol==1)
@@ -94,7 +94,7 @@ bool finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	if (!OpenGameFileR(file, getResourceFilename(filename, path, false, false), std::ios::binary))
 		return false;
 	
-
+    
 	// TODO: Here is big bad bug which makes the game crash...
 	finale_plane_length = fgetl(file)*2;   //length of a plane when decompressed
 	finale_planecol = 1;
@@ -104,7 +104,7 @@ bool finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	
 	// In case the surface is bigger than the compressed image, fill it with black first
 	SDL_FillRect(sfc,NULL,0);
-
+    
 	// decompress/draw the image
 	do
 	{
@@ -136,7 +136,7 @@ bool finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	} while( !finale_done );
 	
 	file.close();
-
+    
 	return true;
 }
 

@@ -20,7 +20,7 @@
 class CSettings : public CSingleton<CSettings>
 {
 public:
-
+    
 	CSettings();
 	bool saveDrvCfg();
 	bool loadDrvCfg();

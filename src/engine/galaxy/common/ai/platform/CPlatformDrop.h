@@ -15,24 +15,24 @@
 
 namespace galaxy
 {
-
-class CPlatformDrop : public CPlatform
-{
-public:
-	CPlatformDrop(CMap *pmap, const Uint16 foeID, 
-		      const Uint32 x, const Uint32 y, const int actionOff);
-
-	/**
-	 * \brief Processes the platforms AI. It's just simple moving around of course
-	 */
-	void process();
-
-private:
-	int m_delay_for_drop;
-	int m_drop_speed;
-	const VectorD2<Uint32> m_Origin;
-};
-
+    
+    class CPlatformDrop : public CPlatform
+    {
+    public:
+        CPlatformDrop(CMap *pmap, const Uint16 foeID,
+                      const Uint32 x, const Uint32 y, const int actionOff);
+        
+        /**
+         * \brief Processes the platforms AI. It's just simple moving around of course
+         */
+        void process();
+        
+    private:
+        int m_delay_for_drop;
+        int m_drop_speed;
+        const VectorD2<Uint32> m_Origin;
+    };
+    
 }
 
 #endif /* CPLATFORMDROP_H_ */

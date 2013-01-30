@@ -26,26 +26,26 @@ struct CResource : public CSingleton<CResource>
 	std::string audioDictFilename;
 	std::string mapheadFilename;
 	std::string gamemapsFilename;
-
+    
 	void setupFilenames(const unsigned int episode)
 	{
 	    const std::string epStr = itoa(episode);
 	    
 	    if(episode <= 6)
 	    {
-		// Only the files which are standard can be set.
-		// If other files are in the directory, the patch files have assign that!
-		egagraphFilename = "egagraph.ck" + epStr;
-		egaheadFilename = "egahead.ck" + epStr;
-		egadictFilename = "egadct.ck" + epStr;
-		audioFilename = "audio.ck" + epStr;
-		audioHedFilename = "audiohed.ck" + epStr;
-		audioDictFilename = "audiodct.ck" + epStr;
-		gamemapsFilename = "gamemaps.ck" + epStr;
+            // Only the files which are standard can be set.
+            // If other files are in the directory, the patch files have assign that!
+            egagraphFilename = "egagraph.ck" + epStr;
+            egaheadFilename = "egahead.ck" + epStr;
+            egadictFilename = "egadct.ck" + epStr;
+            audioFilename = "audio.ck" + epStr;
+            audioHedFilename = "audiohed.ck" + epStr;
+            audioDictFilename = "audiodct.ck" + epStr;
+            gamemapsFilename = "gamemaps.ck" + epStr;
 	    }
 	    else // Keen Dreams
 	    {
-		egadictFilename = "KDREAMSDICT.EGA";
+            egadictFilename = "KDREAMSDICT.EGA";
 	    }
 	}
 };
@@ -66,6 +66,6 @@ int getRessourceID(const std::string& filename, const std::string& namefilter);
 void FilterFilelist(std::set<std::string>& filelist, const std::string& namefilter);
 
 std::string getResourceFilename(const std::string& filename, const std::string& gamepath = "",
-											bool essential = true, bool can_be_global = false);
+                                bool essential = true, bool can_be_global = false);
 
 #endif /* RESOURCEMGMT_H_ */

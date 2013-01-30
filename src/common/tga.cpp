@@ -12,7 +12,7 @@
 #include "CLogFile.h"
 
 
-/** 
+/**
  *  \brief loads a 32-bit uncompressed RGBA targa file, and return a pointer to
  *         the raw image data. The width and height of the image are returned as well.
  *  \param filename Name to the file that will used to read the picture
@@ -26,7 +26,7 @@ bool LoadTGA(const std::string& filename, Uint8 **image, Uint16 &width, Uint16 &
 	FILE *fp;
 	uint bytes_per_pixel;
 	unsigned long img_data_size;
-
+    
 	// First check if the files exists
 	if ((fp=OpenGameFile(filename, "rb")) == NULL)
 		return false;
@@ -51,7 +51,7 @@ bool LoadTGA(const std::string& filename, Uint8 **image, Uint16 &width, Uint16 &
 		fclose(fp);
 		return false;
 	}
-
+    
 	if (header.bpp != 32)
 	{
 		g_pLogFile->textOut(PURPLE,"<br>LoadTGA: " + filename + ": image bpp must be 32 (RGB w/ alpha channel)<br>");
@@ -65,7 +65,7 @@ bool LoadTGA(const std::string& filename, Uint8 **image, Uint16 &width, Uint16 &
 	
 	bytes_per_pixel = (header.bpp / 8);
 	img_data_size = header.width * header.height * bytes_per_pixel;
-
+    
 	// allocate memory for the image buffer
 	*image = new byte [img_data_size];
 	if (*image == NULL)
@@ -77,7 +77,7 @@ bool LoadTGA(const std::string& filename, Uint8 **image, Uint16 &width, Uint16 &
 	// Read the picture data
 	const uint elem_read = fread(*image, img_data_size, 1, fp);
 	fclose(fp);
-
+    
 	// Check if the picture was read correctly
 	if(elem_read != 1)
 	{

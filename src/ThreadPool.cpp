@@ -19,7 +19,7 @@
 
 ThreadPool::ThreadPool(unsigned int size) {
 	nextAction = NULL; nextIsHeadless = false; nextData = NULL;
-	quitting = false;	
+	quitting = false;
 	mutex = SDL_CreateMutex();
 	awakeThread = SDL_CreateCond();
 	threadStartedWork = SDL_CreateCond();
@@ -33,7 +33,7 @@ ThreadPool::ThreadPool(unsigned int size) {
 
 ThreadPool::~ThreadPool() {
 	waitAll();
-
+    
 	// this is the hint for all available threads to break
 	SDL_mutexP(mutex); // lock to be sure that every thread is outside that region, we could get crashes otherwise
 	nextAction = NULL;
@@ -106,9 +106,9 @@ int ThreadPool::threadWrapper(void* param) {
 		SDL_CondSignal(data->pool->threadStatusChanged);
 		//setCurThreadName("");
 	}
-
+    
 	SDL_mutexV(data->pool->mutex);
-		
+    
 	return 0;
 }
 
@@ -129,7 +129,7 @@ ThreadPoolItem* ThreadPool::start(Action* act, const std::string& name, bool hea
 	while(nextData == NULL) SDL_CondWait(threadStartedWork, mutex);
 	ThreadPoolItem* data = nextData; nextData = NULL;
 	SDL_mutexV(mutex);
-		
+    
 	SDL_mutexV(startMutex);
 	return data;
 }
@@ -175,7 +175,7 @@ bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
 		SDL_mutexV(mutex);
 		return false;
 	}
-
+    
 	if(thread->finished) {
 		if(status) *status = thread->ret;
 		thread->working = false;
@@ -192,7 +192,7 @@ bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
 
 bool ThreadPool::waitAll() {
 	SDL_mutexP(mutex);
-	while(usedThreads.size() > 0) {		
+	while(usedThreads.size() > 0) {
 		warnings << "ThreadPool: waiting for " << usedThreads.size() << " threads to finish:" << endl;
 		for(std::set<ThreadPoolItem*>::iterator i = usedThreads.begin(); i != usedThreads.end(); ++i) {
 			if((*i)->working && (*i)->finished) {
@@ -218,18 +218,18 @@ bool ThreadPool::waitAll() {
 }
 
 /*void ThreadPool::dumpState(CmdLineIntf& cli) const {
-	ScopedLock lock(mutex);
-	for(std::set<ThreadPoolItem*>::const_iterator i = usedThreads.begin(); i != usedThreads.end(); ++i) {
-		if((*i)->working && (*i)->finished)
-			cli.writeMsg("thread '" + (*i)->name + "': ready but was not cleaned up");
-		else if((*i)->working && !(*i)->finished)
-			cli.writeMsg("thread '" + (*i)->name + "': working");
-		else if(!(*i)->working && !(*i)->headless && (*i)->finished)
-			cli.writeMsg("thread '" + (*i)->name + "': cleanup");
-		else
-			cli.writeMsg("thread '" + (*i)->name + "': invalid");
-	}
-}*/
+ ScopedLock lock(mutex);
+ for(std::set<ThreadPoolItem*>::const_iterator i = usedThreads.begin(); i != usedThreads.end(); ++i) {
+ if((*i)->working && (*i)->finished)
+ cli.writeMsg("thread '" + (*i)->name + "': ready but was not cleaned up");
+ else if((*i)->working && !(*i)->finished)
+ cli.writeMsg("thread '" + (*i)->name + "': working");
+ else if(!(*i)->working && !(*i)->headless && (*i)->finished)
+ cli.writeMsg("thread '" + (*i)->name + "': cleanup");
+ else
+ cli.writeMsg("thread '" + (*i)->name + "': invalid");
+ }
+ }*/
 
 
 ThreadPool* threadPool = NULL;

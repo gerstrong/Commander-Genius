@@ -15,7 +15,7 @@
 class CMessageBoxBitmapGalaxy : public CMessageBoxGalaxy
 {
 public:
-
+    
 	/**
 	 * \brief This constructor creates a typical Keen 4 Message Box
 	 * \param Text 				Message to be shown
@@ -24,9 +24,9 @@ public:
 	CMessageBoxBitmapGalaxy( const std::string& Text, const CBitmap &BitmapRef,
 							const direction_t alignment = LEFT );
 	virtual ~CMessageBoxBitmapGalaxy() {};
-
+    
 	virtual void init();
-
+    
 private:
 	const CBitmap &mBitmap;
 	const direction_t mAlignment;

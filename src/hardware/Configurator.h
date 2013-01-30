@@ -13,12 +13,12 @@
 #define CONFIGURATOR_H_
 
 #if defined(ANDROID)
-	#define EMBEDDED
-	#undef USE_OPENGL
+#define EMBEDDED
+#undef USE_OPENGL
 #endif
 
 #if defined(EMBEDDED)
-	#define SINGLEPLAYER
+#define SINGLEPLAYER
 #endif
 
 

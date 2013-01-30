@@ -40,7 +40,7 @@ mLauncherDialog(CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.85f)))
 bool CGameLauncher::init()
 {
     bool gamedetected = false;
-
+    
     // Scan for games...
     m_DirList.clear();
     m_Entries.clear();
@@ -62,51 +62,51 @@ bool CGameLauncher::init()
     if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES))
         gamedetected = true;
     g_pResourceLoader->setPermilage(900);
-
+    
     if(!gamedetected)
     	return false;
-
+    
     // Save any custom labels
     putLabels();
-
+    
     mpSelList = new CGUITextSelectionList();
-
+    
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
     for( ; it != m_Entries.end() ; it++	)
     {
     	mpSelList->addText(it->name);
     }
-
+    
     mpSelList->setConfirmButtonEvent(new GMStart(mpSelList->mSelection));
     mpSelList->setBackButtonEvent(new GMQuit());
-
-
+    
+    
     mLauncherDialog.addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
     mLauncherDialog.addControl(new CGUIButton( "x", new GMQuit() ), CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mLauncherDialog.addControl(mpSelList, CRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
-
+    
     mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ), CRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
-
+    
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
     mLauncherDialog.addControl(mpEpisodeText, CRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
     mLauncherDialog.addControl(mpVersionText, CRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
-
+    
     // This way it goes right to the selection list.
     mLauncherDialog.setSelection(2);
-
+    
     g_pResourceLoader->setPermilage(1000);
 	
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
     
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
-					"By Gerstrong\n"
-					"Albert Zeyer\n"
-					"Tulip\n"
-					"Pelya\n"
-					"NY00123\n"
-					"and the CG Contributors\n");
+                                        "By Gerstrong\n"
+                                        "Albert Zeyer\n"
+                                        "Tulip\n"
+                                        "Pelya\n"
+                                        "NY00123\n"
+                                        "and the CG Contributors\n");
     
     mLauncherDialog.addControl( banner, CRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
     
@@ -156,7 +156,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		// Load the exe into memory
 		if(!executable.readData(i, path))
 			continue;
-	   
+        
 		// Process the exe for type
 		GameEntry newentry;
 		newentry.crcpass = executable.getEXECrc();
@@ -182,7 +182,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 			gamespecstring += verstr;
 			gamespecstring += "<br>";
 		}
-
+        
 		
 		
 		if( newentry.name.length() <= 0 )
@@ -191,12 +191,12 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 			//newentry.name += " " + verstr + " " + newentry.path;
 			newentry.name = newentry.path;
 		}
-
+        
 		newentry.name += " ";
 		
 		// Save the type information about the exe
 		m_Entries.push_back(newentry);
-
+        
 		g_pLogFile->textOut(gamespecstring);
 		
 		// The original episode 1 exe is needed to load gfx's for game launcher menu
@@ -219,38 +219,38 @@ void CGameLauncher::process()
     // Did the user press (X)?
     if( g_pInput->getExitEvent() )
     {
-	m_mustquit = true;
-	return;
+        m_mustquit = true;
+        return;
     }
     
     
     // Command (Keyboard/Joystick) are handled here
     for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
     {
-	if( g_pInput->getPressedCommand(cmd) )
-	{
-	    mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
-	    break;
-	}
+        if( g_pInput->getPressedCommand(cmd) )
+        {
+            mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+            break;
+        }
     }
     
     // Check if the selection changed. Update the right data panel
     if(mSelection != mpSelList->mSelection)
     {
-	mSelection = mpSelList->mSelection;
-	const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
-	mpEpisodeText->setText(nameText);
-	float fVer = m_Entries[mSelection].version;
-	fVer /= 100.0f;
-	mpVersionText->setText("Version: " + ftoa(fVer));
+        mSelection = mpSelList->mSelection;
+        const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
+        mpEpisodeText->setText(nameText);
+        float fVer = m_Entries[mSelection].version;
+        fVer /= 100.0f;
+        mpVersionText->setText("Version: " + ftoa(fVer));
     }
     
     mLauncherDialog.processLogic();
     
     if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
     {
-	setChosenGame(Starter->mSlot);
-	g_pBehaviorEngine->m_EventList.pop_Event();
+        setChosenGame(Starter->mSlot);
+        g_pBehaviorEngine->m_EventList.pop_Event();
     }
     
 }
@@ -322,7 +322,7 @@ void CGameLauncher::putLabels()
     Uint16 i;
     std::string line;
     std::ofstream gamescfg;
-
+    
     OpenGameFileW(gamescfg, GAMESCFG);
     if (gamescfg.is_open())
     {
@@ -344,6 +344,6 @@ void CGameLauncher::putLabels()
 void CGameLauncher::cleanup()
 {	
     // destroy the menu
-
+    
 }
 

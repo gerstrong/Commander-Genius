@@ -25,9 +25,9 @@ m_timer(0)
 	m_scrollpos = m_linepos = 0;
 	m_8x8tilewidth = m_8x8tileheight = 8;
 	m_mustclose = false;
-
+    
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-
+    
 	mpTextVSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
 }
@@ -97,7 +97,7 @@ void CTextViewer::formatText(const std::string &text)
 			buf.clear();
 			continue;
 		}
-
+        
 		if(i+3 < mp_text.size())
 		{
 			if(mp_text[i+1] == 26)
@@ -112,7 +112,7 @@ void CTextViewer::formatText(const std::string &text)
 			totlen=buf.size() + getnextwordlength(mp_text.c_str()+i+1);
 		else
 			totlen=buf.size() + getnextwordlength(mp_text.c_str()+i);
-
+        
 		if( totlen > (m_w/m_8x8tilewidth-2) && mp_text[i] != '_' ) // Or does the next fit into the line?
 		{
 			m_textline.push_back(buf);
@@ -161,7 +161,7 @@ bool CTextViewer::loadTextfromFile(const std::string &filename)
 {
 	std::string text;
     std::ifstream endfile;
-
+    
     OpenGameFileR(endfile, filename);
     if (endfile.is_open())
     {
@@ -177,9 +177,9 @@ bool CTextViewer::loadTextfromFile(const std::string &filename)
     	g_pLogFile->textOut("Error reading \"" + filename + "\". Check if this file is in your directory!");
     	return false;
     }
-
+    
     formatText(text);
-
+    
     return true;
 }
 
@@ -194,50 +194,50 @@ void CTextViewer::drawTextlines()
 {
 	for(int i=1 ; i<(m_h/m_8x8tileheight) && i<(int)m_textline.size()-m_linepos ; i++)
 		g_pGfxEngine->getFont(1).drawFont(mpTextVSfc.get(),
-									 m_textline[i+m_linepos-1],
-									 m_x+m_8x8tilewidth,
-									 m_y + (i)*m_8x8tileheight-m_scrollpos,
-									 false);
+                                          m_textline[i+m_linepos-1],
+                                          m_x+m_8x8tilewidth,
+                                          m_y + (i)*m_8x8tileheight-m_scrollpos,
+                                          false);
 }
 
 // Most common render function for this TextViewer
 void CTextViewer::process()
 {
-	 // Normal Keys/Axes
-	 if( g_pInput->getHoldedCommand(IC_DOWN) )
-	 {
-		 m_timer++;
-		 if(m_timer >= 2)
-			 scrollDown();
-	 }
-	 if( g_pInput->getHoldedCommand(IC_UP) )
-	 {
-		 m_timer++;
-		 if(m_timer >= 2)
-			 scrollUp();
-	 }
-	 
-	 // Page Keys
-	 if( g_pInput->getPressedKey(KPGDN) )
-		 setPosition(m_linepos+16);
-	 if( g_pInput->getPressedKey(KPGUP) )
-		 setPosition(m_linepos-16);
-	 
-	 if(m_timer>=8) m_timer=0;
-	 
-	 if(g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedKey(KQ) || g_pInput->getPressedCommand(IC_BACK) )
-		 m_mustclose = true;
-	 
-	 renderBox(); // This comes after, because it does use semi-transparent overlay
-
-	 g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextVSfc, NULL, NULL) );
+    // Normal Keys/Axes
+    if( g_pInput->getHoldedCommand(IC_DOWN) )
+    {
+        m_timer++;
+        if(m_timer >= 2)
+            scrollDown();
+    }
+    if( g_pInput->getHoldedCommand(IC_UP) )
+    {
+        m_timer++;
+        if(m_timer >= 2)
+            scrollUp();
+    }
+    
+    // Page Keys
+    if( g_pInput->getPressedKey(KPGDN) )
+        setPosition(m_linepos+16);
+    if( g_pInput->getPressedKey(KPGUP) )
+        setPosition(m_linepos-16);
+    
+    if(m_timer>=8) m_timer=0;
+    
+    if(g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedKey(KQ) || g_pInput->getPressedCommand(IC_BACK) )
+        m_mustclose = true;
+    
+    renderBox(); // This comes after, because it does use semi-transparent overlay
+    
+    g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextVSfc, NULL, NULL) );
 }
 
 // This function shows the Story of Commander Keen!
 void CTextViewer::renderBox()
 {
 	SDL_Surface *sfc = mpTextVSfc.get();
-
+    
 	// first draw the blank rect
 	CFont &Font = g_pGfxEngine->getFont(1);
 	int i, j;
@@ -287,5 +287,5 @@ void CTextViewer::renderBox()
 	
 	// Now print the helping text
 	Font.drawFont(sfc, "BACK to Exit / \17 \23 to Read",
-								 m_x+m_8x8tilewidth+(m_w/2)-12*m_8x8tilewidth, m_y+m_h, true);
+                  m_x+m_8x8tilewidth+(m_w/2)-12*m_8x8tilewidth, m_y+m_h, true);
 }

@@ -24,24 +24,24 @@ mp_StatusBgrnd(NULL),
 m_LevelName(levelname)
 {
 	reset();
-
+    
 	int Episode = g_pBehaviorEngine->getEpisode();
-
+    
 	if(Episode >= 4)
 	{
 	    const Difficulty difficulty = g_pBehaviorEngine->mDifficulty;
 	    
 	    Item.m_bullets = 8;
 	    if( difficulty > EASY )
-		Item.m_bullets = 5;
-	
+            Item.m_bullets = 5;
+        
 	    if(Episode == 4)
 	    {
-		mp_StatusScreen.reset(new CStatusScreenGalaxyEp4(Item, m_LevelName));	    
+            mp_StatusScreen.reset(new CStatusScreenGalaxyEp4(Item, m_LevelName));
 	    }
 	    else if(Episode == 5)
 	    {
-		mp_StatusScreen.reset(new CStatusScreenGalaxyEp5(Item, m_LevelName));
+            mp_StatusScreen.reset(new CStatusScreenGalaxyEp5(Item, m_LevelName));
 	    }
 	    else if(Episode == 6)
 	    {
@@ -60,38 +60,38 @@ void CInventory::reset()
 void CInventory::toggleStatusScreen()
 {
 	mp_StatusScreen->m_showstatus = !mp_StatusScreen->m_showstatus;
-
+    
 	if(mp_StatusScreen->m_showstatus)
 	{
 		int scroll_pos = 0;
-
+        
 		mp_StatusScreen->GenerateStatus();
 		g_pVideoDriver->collectSurfaces();
 		mp_StatusBgrnd = SDL_DisplayFormat(g_pVideoDriver->mpVideoEngine->getBlitSurface());
-
+        
 		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
-
+        
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
-
+        
 		g_pGfxEngine->setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, 16));
 	}
 	else
 	{
 		// Check if it's already scrolling and get the position
 		int scroll_pos = 160;
-
+        
 		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
-
+        
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
-
+        
 		g_pGfxEngine->setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, -16));
 		if(mp_StatusBgrnd)
 			SDL_FreeSurface(mp_StatusBgrnd);
 		mp_StatusBgrnd = NULL;
 	}
-
+    
 	g_pInput->flushAll();
 }
 
@@ -105,7 +105,7 @@ void CInventory::drawStatus()
 {
 	if(g_pGfxEngine->applyingEffects())
 		return;
-
+    
 	mp_StatusScreen->draw();
 }
 

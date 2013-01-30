@@ -135,9 +135,9 @@ struct stInputCommand
 	bool active;
 	bool lastactive;
 	bool firsttimeactive;
-
+    
 	SDLKey 	keysym;
-
+    
 	unsigned int joyeventtype;
 	int which;
 	int joyaxis;
@@ -151,16 +151,16 @@ class CInput : public CSingleton<CInput>
 {
 public:
 	CInput();
-
+    
 	/**
 	 * \brief transforms a mouse click from the screen coordinates to the relative coordinates
 	 */
 	void transMouseRelCoord(CVec &Pos,
 							const SDL_MouseMotionEvent motion,
 							const CRect<Uint16> &transformRect);
-
+    
 	void pollEvents();
-
+    
 	bool getHoldedKey(int key);
 	bool getPressedKey(int key);
 	bool getPulsedKey(int key, int msec);
@@ -170,7 +170,7 @@ public:
 	std::string getPressedNumKey(void);
 	bool getPressedAnyKey(void);
 	void sendKey(int key);
-
+    
 	bool mouseClicked();
 	bool getPressedAnyCommand();
 	bool getPulsedCommand(int command, int msec);
@@ -184,23 +184,23 @@ public:
 	bool getPressedAnyCommand(const int player);
 	bool getPressedAnyButtonCommand(const int player);
 	bool getExitEvent(void);
-
+    
 	bool getTwoButtonFiring(int player);
 	void setTwoButtonFiring(int player, bool value);
-
+    
 	bool isAnalog(const int player);
 	void enableAnalog(const int player, const bool value);
-
+    
 	bool SuperPogo(const int player) { return mSuperPogo[player]; }
 	void setSuperPogo(const int player, const bool value) { mSuperPogo[player] = value; }
-
+    
 	bool ImpossiblePogo(const int player) { return mImpPogo[player]; }
 	void setImpossiblePogo(const int player, const bool value) { mImpPogo[player] = value; }
-
+    
 	bool AutoGun(const int player) { return mFullyAutomatic[player]; }
 	void setAutoGun(const int player, const bool value) { mFullyAutomatic[player] = value; }
-
-
+    
+    
 	/**
 	 * \brief	This checks what event has been assigned to the chosen command and builds a string calling it
 	 * 			a standardized way.
@@ -208,7 +208,7 @@ public:
 	 * \param	input		number of input chosen. it's normal the number of the player
 	 * \return 	returns the assigned event as a std::string
 	 * \note 	getEventShortName is the short name version for menu prints
-	 */ 
+	 */
 	std::string getEventName(int command, unsigned char input);
 	std::string getEventShortName(int command, unsigned char input);
 	
@@ -216,45 +216,45 @@ public:
 	void readNewEvent();
 	
 	void setupNewEvent(Uint8 device, int position);
-
+    
 	void setupInputCommand( stInputCommand *pInput, int action, const std::string &string );
-
+    
 	void loadControlconfig();
 	void resetControls(int player);
 	bool startJoyDriver();
 	void saveControlconfig();
-
+    
 	void flushKeys(void);
 	void flushCommands(void);
 	void flushCommand(int command);
 	void flushCommand(int player, int command);
 	void flushAll(void);
-
+    
 	void renderOverlay(); // for mouse wrapper gfx or other stuff
-
+    
 	virtual ~CInput();
-
+    
 	// Input Events
 	CEventContainer m_EventList;
-
+    
 	bool MappingInput()
 	{ return remapper.mappingInput; }
-
+    
 private:
 	SDL_Event Event;
 	std::list<SDL_Joystick*> mp_Joysticks;
-
+    
 	stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS];
 	bool TwoButtonFiring[NUM_INPUTS];
 	bool mAnalogAxesMovement[NUM_INPUTS];
 	bool mSuperPogo[NUM_INPUTS];
 	bool mImpPogo[NUM_INPUTS];
 	bool mFullyAutomatic[NUM_INPUTS];
-
+    
 	bool m_exit;
 	int m_cmdpulse;
 	short m_joydeadzone;
-
+    
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];
 	bool firsttime_immediate_keytable[KEYTABLE_SIZE];
@@ -268,12 +268,12 @@ private:
 	    Uint8 mapDevice;
 	    int mapPosition;
 	} remapper;
-
+    
 	void processKeys(int value);
 	void processJoystickAxis();
 	void processJoystickHat();
 	void processJoystickButton(int value);
-
+    
 	void processMouse();
 	void processMouse(SDL_Event& ev);
 	void processMouse(int x, int y, bool down, int index);

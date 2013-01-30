@@ -15,26 +15,26 @@
 #include "engine/galaxy/common/ai/CStunnable.h"
 
 namespace galaxy {
-
-class CLick : public CStunnable
-{
-public:
-	CLick(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
-
-	void process();
-
-	void getTouchedBy(CSpriteObject &theObject);
-	bool isNearby(CSpriteObject &theObject);
-
-private:
-	void processHop();
-	void processLand();
-	void processBreathe();
-	void processStunned();
-
-	int m_timer;
-	bool keenNear;
-};
-
+    
+    class CLick : public CStunnable
+    {
+    public:
+        CLick(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+        
+        void process();
+        
+        void getTouchedBy(CSpriteObject &theObject);
+        bool isNearby(CSpriteObject &theObject);
+        
+    private:
+        void processHop();
+        void processLand();
+        void processBreathe();
+        void processStunned();
+        
+        int m_timer;
+        bool keenNear;
+    };
+    
 } /* namespace galaxy */
 #endif /* CLICK_H_ */

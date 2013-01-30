@@ -9,7 +9,7 @@
 #include "graphics/CGfxEngine.h"
 
 CPlayGame::CPlayGame(CExeFile &ExeFile, char level,
-		 char numplayers) :
+                     char numplayers) :
 m_NumPlayers(numplayers),
 m_endgame(false),
 m_ExeFile(ExeFile),

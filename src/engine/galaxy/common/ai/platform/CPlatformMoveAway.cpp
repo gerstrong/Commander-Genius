@@ -27,115 +27,115 @@ const int CSF_DISTANCE_TO_GETBACK = 7<<CSF;
 
 
 namespace galaxy {
-
-CPlatformMoveAway::CPlatformMoveAway(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
-		const direction_t vertdir, const direction_t hordir, const int actionOffset) :
-CGalaxySpriteObject(pmap, foeID, x, y),
-CPlatform(pmap, foeID, x, y),
-m_Origin(m_Pos)
-{
-	xDirection = hordir;
-	yDirection = vertdir;
-	solid = false;
-	m_ActionBaseOffset = actionOffset;
-	setActionForce(A_PLATFORM_DROP);
-	mpActionProc = &CPlatformMoveAway::processStay;
-	setActionSprite();
-	calcBoundingBoxes();
-}
-
-
-bool CPlatformMoveAway::isNearby(CSpriteObject &theObject)
-{
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-	{
-		const int dx = player->getXMidPos() - getXMidPos();
-		const int dy = player->getYMidPos() - getYMidPos();
-
-		const int absdx = (dx<0) ? -dx : dx;
-		const int absdy = (dy<0) ? -dy : dy;
-
-		if( !mp_CarriedPlayer && mpActionProc == &CPlatformMoveAway::processStay )
-		{
-			if( absdx < CSF_DISTANCE_TO_FOLLOW_GETAWAY && absdy < CSF_DISTANCE_TO_FOLLOW_GETAWAY )
-			{
-				mpActionProc = &CPlatformMoveAway::processMoveAway;
-				mSpeed = MOVE_MAX_SPEED;
-			}
-		}
-
-	}
-
-	return true;
-}
-
-
-void CPlatformMoveAway::processMoveAway()
-{
-	const int x2 = m_Pos.x;
-	const int y2 = m_Pos.y;
-	const int x1 = m_Origin.x;
-	const int y1 = m_Origin.y;
-
-	VectorD2<int> dist(x2-x1, y2-y1);
-
-
-	movePlatY(yDirection*mSpeed);
-	movePlatX(xDirection*mSpeed);
-
-	if( mSpeed > MOVE_NORMAL_SPEED )
-		mSpeed -= MOVE_SPEED_ACC;
-
-	const int absdx = (dist.x<0) ? -dist.x : dist.x;
-	const int absdy = (dist.y<0) ? -dist.y : dist.y;
-
-
-	if( absdx > CSF_DISTANCE_TO_GETBACK ||
-		absdy > CSF_DISTANCE_TO_GETBACK)
-	{
-		mpActionProc = &CPlatformMoveAway::processMoveBack;
-		mSpeed = MOVE_NORMAL_SPEED;
-	}
-}
-
-
-void CPlatformMoveAway::processMoveBack()
-{
-	const int x2 = m_Pos.x;
-	const int y2 = m_Pos.y;
-	const int x1 = m_Origin.x;
-	const int y1 = m_Origin.y;
-
-	VectorD2<int> dist(x2-x1, y2-y1);
-
-	movePlatY(-yDirection*mSpeed);
-	movePlatX(-xDirection*mSpeed);
-
-	const int absdx = (dist.x<0) ? -dist.x : dist.x;
-	const int absdy = (dist.y<0) ? -dist.y : dist.y;
-
-	if( absdx < MOVE_MAX_SPEED &&
-	    absdy < MOVE_MAX_SPEED )
-	{
-		mpActionProc = &CPlatformMoveAway::processStay;
-	}
-
-}
-
-
-void CPlatformMoveAway::processStay()
-{
-
-}
-
-
-void CPlatformMoveAway::process()
-{
-
-	// Player is standing on the platform or the platform is already falling too fast
-	(this->*mpActionProc)();
-
-	CPlatform::process();
-}
-
+    
+    CPlatformMoveAway::CPlatformMoveAway(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+                                         const direction_t vertdir, const direction_t hordir, const int actionOffset) :
+    CGalaxySpriteObject(pmap, foeID, x, y),
+    CPlatform(pmap, foeID, x, y),
+    m_Origin(m_Pos)
+    {
+        xDirection = hordir;
+        yDirection = vertdir;
+        solid = false;
+        m_ActionBaseOffset = actionOffset;
+        setActionForce(A_PLATFORM_DROP);
+        mpActionProc = &CPlatformMoveAway::processStay;
+        setActionSprite();
+        calcBoundingBoxes();
+    }
+    
+    
+    bool CPlatformMoveAway::isNearby(CSpriteObject &theObject)
+    {
+        if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+        {
+            const int dx = player->getXMidPos() - getXMidPos();
+            const int dy = player->getYMidPos() - getYMidPos();
+            
+            const int absdx = (dx<0) ? -dx : dx;
+            const int absdy = (dy<0) ? -dy : dy;
+            
+            if( !mp_CarriedPlayer && mpActionProc == &CPlatformMoveAway::processStay )
+            {
+                if( absdx < CSF_DISTANCE_TO_FOLLOW_GETAWAY && absdy < CSF_DISTANCE_TO_FOLLOW_GETAWAY )
+                {
+                    mpActionProc = &CPlatformMoveAway::processMoveAway;
+                    mSpeed = MOVE_MAX_SPEED;
+                }
+            }
+            
+        }
+        
+        return true;
+    }
+    
+    
+    void CPlatformMoveAway::processMoveAway()
+    {
+        const int x2 = m_Pos.x;
+        const int y2 = m_Pos.y;
+        const int x1 = m_Origin.x;
+        const int y1 = m_Origin.y;
+        
+        VectorD2<int> dist(x2-x1, y2-y1);
+        
+        
+        movePlatY(yDirection*mSpeed);
+        movePlatX(xDirection*mSpeed);
+        
+        if( mSpeed > MOVE_NORMAL_SPEED )
+            mSpeed -= MOVE_SPEED_ACC;
+        
+        const int absdx = (dist.x<0) ? -dist.x : dist.x;
+        const int absdy = (dist.y<0) ? -dist.y : dist.y;
+        
+        
+        if( absdx > CSF_DISTANCE_TO_GETBACK ||
+           absdy > CSF_DISTANCE_TO_GETBACK)
+        {
+            mpActionProc = &CPlatformMoveAway::processMoveBack;
+            mSpeed = MOVE_NORMAL_SPEED;
+        }
+    }
+    
+    
+    void CPlatformMoveAway::processMoveBack()
+    {
+        const int x2 = m_Pos.x;
+        const int y2 = m_Pos.y;
+        const int x1 = m_Origin.x;
+        const int y1 = m_Origin.y;
+        
+        VectorD2<int> dist(x2-x1, y2-y1);
+        
+        movePlatY(-yDirection*mSpeed);
+        movePlatX(-xDirection*mSpeed);
+        
+        const int absdx = (dist.x<0) ? -dist.x : dist.x;
+        const int absdy = (dist.y<0) ? -dist.y : dist.y;
+        
+        if( absdx < MOVE_MAX_SPEED &&
+           absdy < MOVE_MAX_SPEED )
+        {
+            mpActionProc = &CPlatformMoveAway::processStay;
+        }
+        
+    }
+    
+    
+    void CPlatformMoveAway::processStay()
+    {
+        
+    }
+    
+    
+    void CPlatformMoveAway::process()
+    {
+        
+        // Player is standing on the platform or the platform is already falling too fast
+        (this->*mpActionProc)();
+        
+        CPlatform::process();
+    }
+    
 }

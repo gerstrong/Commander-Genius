@@ -15,12 +15,12 @@ class CSpark : public CVorticonSpriteObject {
 public:
 	CSpark(CMap *pmap, Uint32 x, Uint32 y);
 	void process();
-
+    
 private:
 	enum spark_actions{
-	SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
+        SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 	}state;
-
+    
 	unsigned int timer;
 	unsigned int frame;
 	int blowx,blowy;

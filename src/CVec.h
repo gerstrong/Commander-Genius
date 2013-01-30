@@ -60,12 +60,12 @@ struct VectorD2 {
 		const int diry = (y!=0) ? y/abs(y) : 0;
 		return VectorD2(dirx, diry);
 	}
-
+    
 	// Overloads
-	VectorD2 operator*(const float scalar) const {		
+	VectorD2 operator*(const float scalar) const {
 		return VectorD2(x*scalar,y*scalar);
 	}
-	VectorD2 operator*(const int scalar) const {		
+	VectorD2 operator*(const int scalar) const {
 		return VectorD2(x*scalar,y*scalar);
 	}
 	/*
@@ -75,10 +75,10 @@ struct VectorD2 {
 	 return VectorD2(x*vec.x,y*vec.y);
 	 }
 	 */
-	VectorD2 operator/(const float scalar) const {		
+	VectorD2 operator/(const float scalar) const {
 		return VectorD2(x/scalar,y/scalar);
 	}
-	VectorD2 operator/(const int scalar) const {		
+	VectorD2 operator/(const int scalar) const {
 		return VectorD2(x/scalar,y/scalar);
 	}
 	VectorD2 operator+(const VectorD2& vec) const {
@@ -113,7 +113,7 @@ struct VectorD2 {
 		return *this;
 	}
 	
-
+    
 	template<typename _T2>
 	bool operator<(const VectorD2<_T2> & op) const {
 		return ((y == op.y && (x < op.x))
@@ -135,49 +135,49 @@ struct VectorD2 {
 		return ((*this < op) || (*this == op));
 	}
 	
-};
-
-template<typename _T>
-struct VectorD2__absolute_less {
-	VectorD2<_T> zero;
-	VectorD2__absolute_less(VectorD2<_T> z = VectorD2<_T>(0,0)) : zero(z) {}
-	
-	bool operator()(const VectorD2<_T> v1, const VectorD2<_T> v2) const {
-		return (v1-zero).GetLength2() < (v2-zero).GetLength2();
-	}
-};
-
-
-
-typedef VectorD2<float> CVec;
-
-template<typename _T>
-struct MatrixD2 {
-	VectorD2<_T> v1;
-	VectorD2<_T> v2;
-	
-	MatrixD2() {}
-	MatrixD2(_T f) { v1.x = f; v2.y = f; }
-	MatrixD2(_T x1, _T y1, _T x2, _T y2) : v1(x1,y1), v2(x2,y2) {}
-	MatrixD2(const VectorD2<_T>& _v1, const VectorD2<_T>& _v2) : v1(_v1), v2(_v2) {}
-	static MatrixD2 Rotation(_T x, _T y) { return MatrixD2(x,y,-y,x); }
-	
-	template<typename _T2> bool operator==(const MatrixD2<_T2>& m) const { return v1 == m.v1 && v2 == m.v2; }
-	template<typename _T2> bool operator!=(const MatrixD2<_T2>& m) const { return !(*this == m); }
-	
-	VectorD2<_T> operator*(const VectorD2<_T>& v) const {
-		return VectorD2<_T>( v1.x * v.x + v2.x * v.y, v1.y * v.x + v2.y * v.y );
-	}
-	
-	MatrixD2<_T> operator*(const MatrixD2<_T>& m) const {
-		return MatrixD2<_T>( *this * m.v1, *this * m.v2 );
-	}
-	
-	MatrixD2<_T>& operator*=(const MatrixD2<_T>& m) {
-		return *this = *this * m;
-	}
-};
-
-
-
+    };
+    
+    template<typename _T>
+    struct VectorD2__absolute_less {
+        VectorD2<_T> zero;
+        VectorD2__absolute_less(VectorD2<_T> z = VectorD2<_T>(0,0)) : zero(z) {}
+        
+        bool operator()(const VectorD2<_T> v1, const VectorD2<_T> v2) const {
+            return (v1-zero).GetLength2() < (v2-zero).GetLength2();
+        }
+    };
+    
+    
+    
+    typedef VectorD2<float> CVec;
+    
+    template<typename _T>
+    struct MatrixD2 {
+        VectorD2<_T> v1;
+        VectorD2<_T> v2;
+        
+        MatrixD2() {}
+        MatrixD2(_T f) { v1.x = f; v2.y = f; }
+        MatrixD2(_T x1, _T y1, _T x2, _T y2) : v1(x1,y1), v2(x2,y2) {}
+        MatrixD2(const VectorD2<_T>& _v1, const VectorD2<_T>& _v2) : v1(_v1), v2(_v2) {}
+        static MatrixD2 Rotation(_T x, _T y) { return MatrixD2(x,y,-y,x); }
+        
+        template<typename _T2> bool operator==(const MatrixD2<_T2>& m) const { return v1 == m.v1 && v2 == m.v2; }
+        template<typename _T2> bool operator!=(const MatrixD2<_T2>& m) const { return !(*this == m); }
+        
+        VectorD2<_T> operator*(const VectorD2<_T>& v) const {
+            return VectorD2<_T>( v1.x * v.x + v2.x * v.y, v1.y * v.x + v2.y * v.y );
+        }
+        
+        MatrixD2<_T> operator*(const MatrixD2<_T>& m) const {
+            return MatrixD2<_T>( *this * m.v1, *this * m.v2 );
+        }
+        
+        MatrixD2<_T>& operator*=(const MatrixD2<_T>& m) {
+            return *this = *this * m;
+        }
+        };
+        
+        
+        
 #endif  //  __CVEC_H__

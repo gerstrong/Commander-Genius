@@ -38,64 +38,64 @@ CCarmack::CCarmack()
 void CCarmack::expand( std::vector<byte>& dst, std::vector<byte>& src )
 {
 	uint32_t i, j, offset, length, inc;
-
+    
 	dst.clear();
 	for( i=WORDSIZE; i<src.size(); i+=inc )
 	{
 		switch( src.at(TAG) )
 		{
-		case NEARTAG:
-			if( src.at(COUNT)==0x00 ) //&& src.at(OFFSET_MSB)==0x00 )
-			{
-				dst.push_back(NEARTAG);
-				inc = WORDSIZE+1;
-			}
-			else
-			{
-				offset = dst.size()-(WORDSIZE*src.at(OFFSET));
-				length = WORDSIZE*src.at(COUNT);
-				for( j=offset; j<offset+length; j+=WORDSIZE )
-				{
-					// Word is already swapped in the destination vector
-					dst.push_back(dst.at(COPY_BYTE1));
-					dst.push_back(dst.at(COPY_BYTE2));
-				}
-			}
-			inc = WORDSIZE+1;
-			break;
-		case FARTAG:
-			if( src.at(COUNT)==0x00 )  //&& src.at(OFFSET_MSB)==0x00 )
-			{
-				dst.push_back(FARTAG);
-				inc = WORDSIZE+1;
-			}
-			else
-			{
-				offset = WORDSIZE*((src.at(OFFSET_MSB)<<8)+src.at(OFFSET_LSB));
-				length = WORDSIZE*src.at(COUNT);
-				for( j=offset; j<offset+length; j+=WORDSIZE )
-				{
-					if( j+src.at(COUNT)<dst.size() )
-					{
-						// Word is already swapped in the destination vector
-						dst.push_back(dst.at(COPY_BYTE1));
-						dst.push_back(dst.at(COPY_BYTE2));
-					}
-					else
-					{
-						g_pLogFile->textOut("ERROR Offset overflow offset="+ itoa(j) +", actual size="+itoa(dst.size())+"\n");
-						return;
-					}
-				}
-			}
-			inc = WORDSIZE+2;
-			break;
-		default:
-			// Swap the bytes for the word
-			dst.push_back(src.at(TAG));
-			dst.push_back(src.at(COUNT));
-			inc = WORDSIZE;
-			break;
+            case NEARTAG:
+                if( src.at(COUNT)==0x00 ) //&& src.at(OFFSET_MSB)==0x00 )
+                {
+                    dst.push_back(NEARTAG);
+                    inc = WORDSIZE+1;
+                }
+                else
+                {
+                    offset = dst.size()-(WORDSIZE*src.at(OFFSET));
+                    length = WORDSIZE*src.at(COUNT);
+                    for( j=offset; j<offset+length; j+=WORDSIZE )
+                    {
+                        // Word is already swapped in the destination vector
+                        dst.push_back(dst.at(COPY_BYTE1));
+                        dst.push_back(dst.at(COPY_BYTE2));
+                    }
+                }
+                inc = WORDSIZE+1;
+                break;
+            case FARTAG:
+                if( src.at(COUNT)==0x00 )  //&& src.at(OFFSET_MSB)==0x00 )
+                {
+                    dst.push_back(FARTAG);
+                    inc = WORDSIZE+1;
+                }
+                else
+                {
+                    offset = WORDSIZE*((src.at(OFFSET_MSB)<<8)+src.at(OFFSET_LSB));
+                    length = WORDSIZE*src.at(COUNT);
+                    for( j=offset; j<offset+length; j+=WORDSIZE )
+                    {
+                        if( j+src.at(COUNT)<dst.size() )
+                        {
+                            // Word is already swapped in the destination vector
+                            dst.push_back(dst.at(COPY_BYTE1));
+                            dst.push_back(dst.at(COPY_BYTE2));
+                        }
+                        else
+                        {
+                            g_pLogFile->textOut("ERROR Offset overflow offset="+ itoa(j) +", actual size="+itoa(dst.size())+"\n");
+                            return;
+                        }
+                    }
+                }
+                inc = WORDSIZE+2;
+                break;
+            default:
+                // Swap the bytes for the word
+                dst.push_back(src.at(TAG));
+                dst.push_back(src.at(COUNT));
+                inc = WORDSIZE;
+                break;
 		}
 	}
 }

@@ -13,19 +13,19 @@
 #include "CVec.h"
 
 namespace galaxy {
-
-
-class CVarPlatform : public CPlatform, public CMoveTarget
-{
-public:
-	CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-			const direction_t horidir, 
-			const direction_t vertdir, 
-			const int actionOffset);
-
-	void process();
-};
-
+    
+    
+    class CVarPlatform : public CPlatform, public CMoveTarget
+    {
+    public:
+        CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
+                     const direction_t horidir,
+                     const direction_t vertdir,
+                     const int actionOffset);
+        
+        void process();
+    };
+    
 };
 
 #endif /* CVARPLATFORM_H_ */

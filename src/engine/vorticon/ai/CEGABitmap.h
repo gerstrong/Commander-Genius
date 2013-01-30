@@ -20,7 +20,7 @@ public:
 	CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap);
 	void setPos(int px, int py);
 	void process();
-
+    
 private:
 	SDL_Surface *mp_Surface;
 	CBitmap *mp_Bitmap;

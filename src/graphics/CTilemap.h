@@ -17,21 +17,21 @@ class CTilemap
 {
 public:
 	CTilemap();
-
+    
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags,
-			Uint16 numtiles, Uint16 pbasesize, Uint16 column);
+                       Uint16 numtiles, Uint16 pbasesize, Uint16 column);
 	bool loadHiresTile( const std::string& filename );
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
-
+    
 	int getDimension();
-
+    
 	int EmptyBackgroundTile() { return m_EmptyBackgroundTile; }
-
+    
 	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);
-
+    
 	virtual ~CTilemap();
-
+    
 private:
 	SDL_Surface *m_Tilesurface;
 	int m_EmptyBackgroundTile;

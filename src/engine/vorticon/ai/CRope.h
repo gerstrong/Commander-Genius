@@ -9,7 +9,7 @@
 #define CROPE_H_
 
 enum ropestates{
-ROPE_IDLE, ROPE_DROPSTONE
+    ROPE_IDLE, ROPE_DROPSTONE
 };
 
 #include "engine/vorticon/CVorticonSpriteObject.h"
@@ -22,7 +22,7 @@ public:
 	void getShotByRay(object_t &obj_type);
 	void rope_movestone();
 	void getTouchedBy(CVorticonSpriteObject &theObject);
-
+    
 private:
 	ropestates state;
 	int droptimer;

@@ -12,7 +12,7 @@
 
 struct stItemGalaxy
 {
-
+    
 	signed char m_lifes;
 	unsigned long  m_points;
 	unsigned long m_lifeAt;
@@ -25,10 +25,10 @@ struct stItemGalaxy
 		{	red = 0, blue = 0, green = 0, yellow = 0;	};
 		int red, blue, green, yellow;
 	} m_gem;
-
+    
 	int m_keycards;
 	int fuses_levels_completed;
-
+    
 	union {
 	    
 		struct
@@ -43,9 +43,9 @@ struct stItemGalaxy
 			bool hook;
 			bool rocketKeycard;
 		}ep6;
-				
+        
 	}m_special;
-
+    
 	void reset()
 	{
 		m_lifes = 3;
@@ -54,14 +54,14 @@ struct stItemGalaxy
 		m_drops = 0;
 		m_bullets = 0;
 		m_gem.empty();
-
+        
 		m_keycards = 0;
-
+        
 		m_special.ep4.elders = 0;
 		m_special.ep4.swimsuit = 0;
 		fuses_levels_completed = 0;
 	}
-
+    
 	void triggerAllItemsCheat()
 	{
 		m_lifes = 10;

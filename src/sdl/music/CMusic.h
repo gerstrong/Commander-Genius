@@ -26,7 +26,7 @@ class CMusic : public CSingleton<CMusic>
 {
 public:
 	virtual ~CMusic();
-
+    
 	/**
 	 * Loads certain track of the Keen Music
 	 */
@@ -40,16 +40,16 @@ public:
 	void readWaveform(Uint8* buffer, size_t length); // Reads the next chunk of the ogg stream
 	bool LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename);
 	bool LoadfromSonglist(const std::string &gamepath, const int &level);
-
+    
 	bool playing()
 	{
 		if(mpPlayer)
 		{
-		  return mpPlayer->playing();
+            return mpPlayer->playing();
 		}
 		return false;
 	}
-
+    
 	std::unique_ptr<CMusicPlayer> mpPlayer;
 	bool m_busy;
 };

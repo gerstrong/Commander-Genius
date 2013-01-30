@@ -35,17 +35,17 @@ CFont::CFont()
 
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
-							Uint16 width, Uint16 height)
+                          Uint16 width, Uint16 height)
 {
 	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
-			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
+                                            height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
 	SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
-
+    
 	if( mFontSurface )
-	  return true;
+        return true;
 	else
-	  return false;
+        return false;
 }
 
 
@@ -55,25 +55,25 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, const Uint32 flags)
 {
 	int width, height, colors;
-
+    
 	// Read the dimensions and amount of colors
 	sscanf(data[0], "%d %d %d", &width, &height, &colors);
-
+    
 	// Create the surface
 	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE, width, height,
-			  	  	  	  	  	  	  	  	 format->BitsPerPixel,
-			  	  	  	  	  	  	  	  	 format->Rmask, format->Gmask,
-			  	  	  	  	  	  	  	  	 format->Bmask, 0 );
-
+                                            format->BitsPerPixel,
+                                            format->Rmask, format->Gmask,
+                                            format->Bmask, 0 );
+    
 	bool usesAlpha = (sfc->flags & SDL_SRCALPHA);
 	const Uint32 colorkey = SDL_MapRGB(sfc->format, 0xFF, 0x00, 0xFF);
-
+    
 	if(!usesAlpha)
 		SDL_SetColorKey( sfc, SDL_SRCCOLORKEY|SDL_RLEACCEL, colorkey );
-
+    
 	// Read the data and pass it to the surface
 	SDL_LockSurface(sfc);
-
+    
 	// Now get the colors which has that XPM File
 	std::map<char,Uint32> colorMap;
 	char charCode, dummy;
@@ -87,19 +87,19 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 		color = strtol( colorCode, NULL, 16 );
 		colorMap[charCode] = color;
 	}
-
-
+    
+    
 	std::string textbuf;
-
+    
 	Uint32 *pixel = static_cast<Uint32*>(sfc->pixels);
 	for( int y = 0 ; y < height ; y++)
 	{
 		char *pixel_data = const_cast<char*>(data[colors+1+y]);
-
+        
 		for( int x = 0 ; x < width ; x++)
 		{
 			const char newPix = pixel_data[x];
-
+            
 			if( newPix == ' ' )
 			{
 				if(usesAlpha)
@@ -118,19 +118,19 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 										0xFF);
 				else
 					color = SDL_MapRGB(sfc->format,
-										(color>>16) & 0xFF,
-										(color>>8)  & 0xFF,
-										(color>>0)  & 0xFF);
-
+                                       (color>>16) & 0xFF,
+                                       (color>>8)  & 0xFF,
+                                       (color>>0)  & 0xFF);
+                
 			}
-
+            
 			*pixel = color;
 			pixel++;
 		}
 	}
-
+    
 	SDL_UnlockSurface(sfc);
-
+    
 	return sfc;
 }
 
@@ -139,7 +139,7 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 bool CFont::loadAlternateFont()
 {
 	// Has the Surface to the entire font been loaded?
-
+    
 	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
 	mFontSurface.reset( loadfromXPMData( alternatefont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
 	return true;
@@ -171,23 +171,23 @@ void CFont::tintColor( const Uint32 fgColor )
     Uint8 r, g, b, a;
     
     if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-
+    
     // This makes the white pixel transparent
     Uint8 *pixel = (Uint8*)sfc->pixels;
-
+    
 	for( Uint16 y=0 ; y<sfc->h ; y++ )
 	{
 		for( Uint16 x=0 ; x<sfc->w ; x++ )
 		{
 			memcpy( &color, pixel, sfc->format->BytesPerPixel );
-
+            
 			SDL_GetRGBA( color, sfc->format, &r, &g, &b, &a );
-
+            
 			if( a>0 )
-			{				
+			{
 			    memcpy( pixel, &fgColor, sfc->format->BytesPerPixel );
 			}
-
+            
 			pixel += sfc->format->BytesPerPixel;
 		}
 	}
@@ -202,7 +202,7 @@ void CFont::setupColor( const Uint32 fgColor )
 	SDL_Color color[16];
 	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
 	SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
-
+    
 	// Change palette colors to the desired one
 	SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 	SDL_SetColors( mFontSurface.get(), color, 0, 16);
@@ -215,7 +215,7 @@ Uint32 CFont::getFGColor()
 	SDL_Color color[16];
 	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
 	SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
-
+    
 	// Change palette colors to the desired one
 	return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
 }
@@ -227,28 +227,28 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	rect.x = rect.y = 0;
 	rect.w = getPixelTextWidth(text);
 	rect.h = getPixelTextHeight()*calcNumLines(text);
-
+    
 	SDL_Surface *pColoredTextSurface = CG_CreateRGBSurface(rect);
-
+    
 	const Uint32 oldColor = getFGColor();
-
+    
 	setupColor( fgColor );
-
+    
 	drawFont( pColoredTextSurface, text, 0, 0);
-
+    
 	// Adapt the newly created surface to the running screen.
 	SDL_Surface *temp;
-
+    
 	if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
 		temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
 	else // or
 		temp = SDL_DisplayFormat(pColoredTextSurface);
-
+    
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
-
+    
 	setupColor( oldColor );
-
+    
 	return pColoredTextSurface;
 }
 
@@ -271,10 +271,10 @@ unsigned int CFont::getPixelTextWidth( const std::string& text )
 			len += (mWidthtable[e]+1);
 		}
 	}
-
+    
 	if(len > width)
 		width = len;
-
+    
 	return width;
 }
 
@@ -291,7 +291,7 @@ unsigned int CFont::getPixelTextHeight()
 Uint32 CFont::getBGColour(const bool highlight)
 {
 	SDL_PixelFormat *format = SDL_GetVideoSurface()->format;
-
+    
 	return getBGColour(format, highlight);
 }
 
@@ -301,9 +301,9 @@ Uint32 CFont::getBGColour(const bool highlight)
 Uint32 CFont::getBGColour(SDL_PixelFormat *format, const bool highlight)
 {
 	Uint8 r, g, b;
-
+    
 	getBGColour( &r, &g, &b, highlight );
-
+    
 	return SDL_MapRGB(format, r, g, b);
 }
 
@@ -314,11 +314,11 @@ Uint32 CFont::getBGColour(SDL_PixelFormat *format, const bool highlight)
 void  CFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
 {
 	SDL_LockSurface(mFontSurface.get());
-
+    
 	const Uint32 color = getPixel(mFontSurface.get(), 0, highlight ? 80 : 16 );
-
+    
 	SDL_UnlockSurface(mFontSurface.get());
-
+    
 	SDL_GetRGB( color, mFontSurface->format, r, g, b);
 }
 
@@ -332,13 +332,13 @@ void  CFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
 void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
 {
 	SDL_Rect scrrect, dstrect;
-
+    
 	scrrect.x = (mFontSurface->w/16)*(character%16);
 	scrrect.y = (mFontSurface->h/16)*(character/16);
 	scrrect.w = dstrect.w = (mWidthtable[character]);
 	scrrect.h = dstrect.h = (mFontSurface->h/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
-
+    
 	SDL_BlitSurface(mFontSurface.get(), &scrrect, dst, &dstrect);
 }
 
@@ -351,13 +351,13 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 		for(i=0;i<text.size();i++)
 		{
 			unsigned char c = text[i];
-
+            
 			if ( !endofText( text.substr(i) ) )
 			{
 				if(highlight) c |= 128;
-
+                
 				drawCharacter(dst, c, x, y);
-
+                
 				x+=mWidthtable[c];
 			}
 			else
@@ -374,17 +374,17 @@ void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff
 	unsigned int i,x=xoff,y=yoff;
 	
 	SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, alpha);
-
+    
 	if(text.size() != 0)
 	{
 		for(i=0;i<text.size();i++)
 		{
 			unsigned char c = text[i];
-
+            
 			if ( !endofText( text.substr(i) ) )
 			{
 				drawCharacter(dst, c, x, y);
-
+                
 				x+=mWidthtable[c];
 			}
 			else
@@ -412,24 +412,24 @@ void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uin
 void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, const Uint8 alpha)
 {
 	Uint16 xmidpos = 0;
-
+    
 	for( unsigned int i=0 ; i<text.size() ; i++)
 		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
-
+    
 	xmidpos = (width-xmidpos)/2+x;
-
+    
 	drawFontAlpha(dst, text, xmidpos, yoff, alpha);
 }
 
 void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, bool highlight)
 {
 	Uint16 xmidpos = 0;
-
+    
 	for( unsigned int i=0 ; i<text.size() ; i++)
 		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
-
+    
 	xmidpos = (width-xmidpos)/2+x;
-
+    
 	drawFont(dst, text, xmidpos, yoff, highlight);
 }
 
@@ -437,13 +437,13 @@ void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uin
 {
 	Uint16 xmidpos = 0;
 	Uint16 ymidpos = 0;
-
+    
 	for( unsigned int i=0 ; i<text.size() ; i++)
 		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
-
+    
 	xmidpos = (width-xmidpos)/2+x;
 	ymidpos = yoff + (height - 8)/2;
-
+    
 	drawFontAlpha(dst, text, xmidpos, ymidpos, alpha);
 }
 
@@ -453,7 +453,7 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 	Uint16 ymidpos = 0;
 	
 	Uint16 ylineoff = yoff;
-
+    
 	for( unsigned int i=0 ; i<text.size() ; i++)
 	{
 		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
@@ -463,14 +463,14 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 		    xmidpos = (width-xmidpos)/2+x;
 		    ymidpos = ylineoff + (height - 8)/2;
 		    ylineoff += height;
-
+            
 		    drawFont(dst, text, xmidpos, ymidpos, highlight);			
 		}
 	}
 	
 	xmidpos = (width-xmidpos)/2+x;
 	ymidpos = ylineoff + (height - 8)/2;
-
+    
 	drawFont(dst, text, xmidpos, ymidpos, highlight);
 }
 

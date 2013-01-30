@@ -16,16 +16,16 @@ class CConfiguration : public IniReader
 {
 public:
 	CConfiguration(const std::string& filename);
-
+    
 	bool saveCfgFile();
-
+    
 	bool OnNewSection (const std::string& section);
 	bool OnEntry (const std::string& section, const std::string& propname, const std::string& value);
-
+    
 	void WriteString(const std::string& section, const std::string& key, const std::string& string);
 	void SetKeyword(const std::string& section, const std::string& keyword, const bool value);
 	void WriteInt(const std::string &section, const std::string &keyword, const int value);
-
+    
 	virtual ~CConfiguration();
 };
 

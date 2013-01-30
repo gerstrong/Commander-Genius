@@ -28,19 +28,19 @@ void CColorMerge::process()
 {
 	// Process the effect
 	SDL_SetAlpha( mpOldSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
-
+    
 	SDL_BlitSurface( mpOldSurface.get(), NULL,
-				g_pVideoDriver->getBlitSurface(), NULL );
+                    g_pVideoDriver->getBlitSurface(), NULL );
 	
 	const int sum = m_Alpha + m_Speed;
-
+    
 	if(sum > 255)
 	{
-	  m_Alpha = 255;
-	  mFinished = true;
+        m_Alpha = 255;
+        mFinished = true;
 	}
-	else 
+	else
 	{
-	  m_Alpha += m_Speed;
+        m_Alpha += m_Speed;
 	}
 }

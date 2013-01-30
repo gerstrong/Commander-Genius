@@ -19,67 +19,67 @@
 
 namespace galaxy
 {
-
-CPassiveGalaxy::CPassiveGalaxy() :
-processMode(&CPassiveGalaxy::processIntro),
-m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE"))
-{ }
-
-bool CPassiveGalaxy::init(char mode)
-{
-	// TODO: Coding has still to be done!!
-
-	return true;
-};
-
-// This function is always called from the base class.
-// Here it will execute the mode we are currently running
-void CPassiveGalaxy::process()
-{
-	(this->*processMode)();
-	
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	
-	if( EventContainer.occurredEvent<EventEndGamePlay>() )
-	{
-		EventContainer.pop_Event();
-		m_modeg = true;
-	}
-}
-
-// This will show the animation of the intro you see in every galaxy game...
-// Letters are big and scrolling around the screen...
-void CPassiveGalaxy::processIntro()
-{
-	processMode = &CPassiveGalaxy::processTitle;
-
-	m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
-
-	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
-	g_pGfxEngine->setupEffect(new CPixelate(2));
-
-	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface );
-	SDL_FreeSurface(temp);
-}
-
-// Just show the title screen with the pixelation effect
-void CPassiveGalaxy::processTitle()
-{
-    // If something is pressed popup the menu
-	if( !g_pGfxEngine->runningEffect() && !gpMenuController->active() )
-	{
-		if( g_pInput->getPressedAnyCommand() )
-		{
-		    gpMenuController->openMainMenu();
-		}	    
-	}
     
-	// draw the title bitmap here!
-	m_BackgroundBitmap.draw(0, 0);
-
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
-}
-
-
+    CPassiveGalaxy::CPassiveGalaxy() :
+    processMode(&CPassiveGalaxy::processIntro),
+    m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE"))
+    { }
+    
+    bool CPassiveGalaxy::init(char mode)
+    {
+        // TODO: Coding has still to be done!!
+        
+        return true;
+    };
+    
+    // This function is always called from the base class.
+    // Here it will execute the mode we are currently running
+    void CPassiveGalaxy::process()
+    {
+        (this->*processMode)();
+        
+        CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+        
+        if( EventContainer.occurredEvent<EventEndGamePlay>() )
+        {
+            EventContainer.pop_Event();
+            m_modeg = true;
+        }
+    }
+    
+    // This will show the animation of the intro you see in every galaxy game...
+    // Letters are big and scrolling around the screen...
+    void CPassiveGalaxy::processIntro()
+    {
+        processMode = &CPassiveGalaxy::processTitle;
+        
+        m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
+        
+        SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
+        g_pGfxEngine->setupEffect(new CPixelate(2));
+        
+        SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+        mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface );
+        SDL_FreeSurface(temp);
+    }
+    
+    // Just show the title screen with the pixelation effect
+    void CPassiveGalaxy::processTitle()
+    {
+        // If something is pressed popup the menu
+        if( !g_pGfxEngine->runningEffect() && !gpMenuController->active() )
+        {
+            if( g_pInput->getPressedAnyCommand() )
+            {
+                gpMenuController->openMainMenu();
+            }	    
+        }
+        
+        // draw the title bitmap here!
+        m_BackgroundBitmap.draw(0, 0);
+        
+        g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
+    }
+    
+    
 }

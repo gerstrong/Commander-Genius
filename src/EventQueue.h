@@ -73,23 +73,23 @@ private:
 public:
 	EventQueue();
 	~EventQueue();
-
+    
 	// Polls for currently pending events.
 	bool poll(EventItem& e);
-
+    
 	// Waits indefinitely for the next available event.
 	bool wait(EventItem& e);
-
+    
 	/* Add an event to the event queue.
 	 * This function returns true on success
 	 * or false if there was some error.
 	 */
 	bool push(const EventItem& e);
 	bool push(Action* eh);
-
+    
 	// goes through all CustomEventHandler and copies them if oldOwner is matching
 	void copyCustomEvents(const _Event* oldOwner, _Event* newOwner);
-
+    
 	// removes all CustomEventHandler with owner
 	void removeCustomEvents(const _Event* owner);
 };

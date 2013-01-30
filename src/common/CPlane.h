@@ -15,15 +15,15 @@ class CPlane
 {
 public:
 	CPlane();
-
+    
 	void createDataMap(Uint16 width, Uint16 height);
 	word *getMapDataPtr();
 	word getMapDataAt(Uint16 x, Uint16 y);
 	void setMapDataAt(Uint16 t, Uint16 x, Uint16 y);
 	bool empty();
-
+    
 	virtual ~CPlane();
-
+    
 private:
 	word *mp_data;       		// the map foreground data
 	Uint16 m_width;

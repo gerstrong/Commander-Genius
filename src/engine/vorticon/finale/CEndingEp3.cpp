@@ -15,9 +15,9 @@
 #include "common/Playerdefines.h"
 
 CEndingEp3::CEndingEp3(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
-			const std::shared_ptr<CMap> &pMap, 
-			std::vector<CPlayer> &Player, 
-		       std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object) :
+                       const std::shared_ptr<CMap> &pMap,
+                       std::vector<CPlayer> &Player,
+                       std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object) :
 CFinale(messageBoxes, pMap, Object),
 m_Player(Player)
 {
@@ -33,15 +33,15 @@ m_Player(Player)
 void CEndingEp3::process()
 {
 	m_timepassed = g_pTimer->getTicks() - m_starttime;
-
+    
 	switch(m_step)
 	{
-	case 0: HonorScene(); break;
-	case 1: PaparazziScene(); break;
-	case 2: AwardScene(); break;
-	default:
-		m_mustfinishgame = true;
-		break;
+        case 0: HonorScene(); break;
+        case 1: PaparazziScene(); break;
+        case 2: AwardScene(); break;
+        default:
+            m_mustfinishgame = true;
+            break;
 	}
 }
 
@@ -54,29 +54,29 @@ void CEndingEp3::HonorScene()
 		std::vector< std::unique_ptr<CVorticonSpriteObject> > spriteObjectContainer;
 		CVorticonMapLoaderWithPlayer MapLoader(mpMap, m_Player, spriteObjectContainer);
 		MapLoader.load(3, 81, path);
-
+        
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(VectorD2<int>(244<<STC, 104<<STC));
 		m_Player[0].sprite = 0;
-
+        
 		mpMap->gotoPos(32, 32);
 		mpMap->drawAll();
-
+        
 		addMsgBoxString("EP3_ESEQ_PAGE1");
 		addMsgBoxString("EP3_ESEQ_PAGE2");
 		addMsgBoxString("EP3_ESEQ_PAGE3");
 		addMsgBoxString("EP3_ESEQ_PAGE4");
-
+        
 		int newtile = mpMap->at(2,12);
 		for(int x=0 ; x<22 ; x++) // This changes to the Oh No! Tiles to normal Stone-Tiles
 		{
 			mpMap->changeTile( x, 15, newtile);
 			mpMap->changeTile( x, 16, newtile);
 		}
-
+        
 		m_mustsetup = false;
 	}
-
+    
 	if( mMessageBoxes.empty() )
 	{
 		m_step++;
@@ -93,12 +93,12 @@ void CEndingEp3::PaparazziScene()
 		g_pGfxEngine->setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
 		m_mustsetup = false;
 	}
-
+    
 	if(m_counter==30 || m_counter==60 || m_counter==90)
 		g_pGfxEngine->setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
-
+    
 	m_counter++;
-
+    
 	if(mTimer.HasTimeElapsed(3000))
 	{
 		m_step++;
@@ -120,12 +120,12 @@ void CEndingEp3::AwardScene()
 		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		mpMap->drawAll();
 		mpFinaleStaticScene.reset(new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck3"));
-
+        
 		addMsgBoxString("THE_END");
-
+        
 		m_mustsetup = false;
 	}
-
+    
 	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
@@ -138,6 +138,6 @@ void CEndingEp3::AwardScene()
 	{
 		mpFinaleStaticScene->process();
 	}
-
+    
 }
 

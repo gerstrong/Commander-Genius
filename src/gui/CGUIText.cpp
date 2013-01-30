@@ -20,7 +20,7 @@ void CGUIText::setText(const std::string& text)
 {
 	if(!mTextList.empty())
 		mTextList.clear();
-
+    
 	// Split up the text in lines
 	mTextDim.w = 0;
 	// TODO: I think there is a more elegant way to achieve this!
@@ -31,14 +31,14 @@ void CGUIText::setText(const std::string& text)
 		{
 			if( mTextDim.w<buf.size() )
 				mTextDim.w=buf.size();
-
+            
 			mTextList.push_back(buf);
 			buf.clear();
 		}
 		else
 			buf += text[i];
 	}
-
+    
 	size_t pos = 0;
 	if(!buf.empty())
 	{
@@ -46,17 +46,17 @@ void CGUIText::setText(const std::string& text)
 			buf.erase(pos,1);
 	}
 	mTextList.push_back(buf);
-
+    
 	if( mTextDim.w<buf.size() )
 		mTextDim.w=buf.size();
-
+    
 	mTextDim.h = mTextList.size();
 }
 
 
 void CGUIText::processLogic()
 {
-
+    
 }
 
 void CGUIText::processRender(const CRect<float> &RectDispCoordFloat)
@@ -65,10 +65,10 @@ void CGUIText::processRender(const CRect<float> &RectDispCoordFloat)
 	CRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
-
+    
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-
+    
 	std::list<std::string>::iterator text = mTextList.begin();
 	for( size_t i=0 ; text != mTextList.end() ; text++, i++ )
 	{

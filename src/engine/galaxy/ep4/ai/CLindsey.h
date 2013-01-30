@@ -13,20 +13,20 @@
 #include "engine/galaxy/common/CGalaxySpriteObject.h"
 
 namespace galaxy {
-
-class CLindsey : public CGalaxySpriteObject {
-public:
-	CLindsey(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
-
-	void process();
-
-	void getTouchedBy(CSpriteObject &theObject);
-
-private:
-	int m_timer;
-	std::map<int, std::string>	answermap;
-	bool prepareToVanish;
-};
-
+    
+    class CLindsey : public CGalaxySpriteObject {
+    public:
+        CLindsey(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+        
+        void process();
+        
+        void getTouchedBy(CSpriteObject &theObject);
+        
+    private:
+        int m_timer;
+        std::map<int, std::string>	answermap;
+        bool prepareToVanish;
+    };
+    
 } /* namespace galaxy */
 #endif /* CLINDSEY_H_ */

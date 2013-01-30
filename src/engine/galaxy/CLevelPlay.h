@@ -13,18 +13,18 @@
 #include "CMapPlayGalaxy.h"
 
 namespace galaxy {
-
-class CLevelPlay : public CMapPlayGalaxy
-{
-public:
-	CLevelPlay(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
-
-	void loadMap(const int level);
-	void reloadLevel();
-
-	bool loadLevel(const Uint16 level);
-};
-
+    
+    class CLevelPlay : public CMapPlayGalaxy
+    {
+    public:
+        CLevelPlay(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
+        
+        void loadMap(const int level);
+        void reloadLevel();
+        
+        bool loadLevel(const Uint16 level);
+    };
+    
 }
 
 #endif /* CLEVELPLAY_H_ */

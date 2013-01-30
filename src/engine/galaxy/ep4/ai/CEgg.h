@@ -14,23 +14,23 @@
 
 namespace galaxy
 {
-
-class CEgg : public CGalaxySpriteObject
-{
-public:
-	CEgg(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
-
-	void hatch();
-
-
-	// When something touches the bouncing mushroom
-	void getTouchedBy(CSpriteObject &theObject);
-
-	// Happens every LPS. Here the Bouncing AI is handled
-	void process();
-
-
-};
-
+    
+    class CEgg : public CGalaxySpriteObject
+    {
+    public:
+        CEgg(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+        
+        void hatch();
+        
+        
+        // When something touches the bouncing mushroom
+        void getTouchedBy(CSpriteObject &theObject);
+        
+        // Happens every LPS. Here the Bouncing AI is handled
+        void process();
+        
+        
+    };
+    
 } /* namespace galaxy */
 #endif /* CEGG_H_ */

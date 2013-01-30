@@ -30,7 +30,7 @@ void SetCrashHandlerReturnPoint(const char* name) {
 			notes << "back in window mode" << endl;
 		}
 	}
-#endif	
+#endif
 }
 
 
@@ -113,13 +113,13 @@ LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo)
 	// Try to free the cache, it eats a lot of memory
 	__try {
 		cCache.Clear();
-	} 
+	}
 	__except(EXCEPTION_EXECUTE_HANDLER) {}
 	
 	// Quit SDL
 	__try  {
 		SDL_Quit();
-	} 
+	}
 	__except(EXCEPTION_EXECUTE_HANDLER) {}
 	
 	// End conversation logging (to make the XML valid)
@@ -280,7 +280,7 @@ public:
 		else
 			printf("Got signal 0x%02X\n", signr);
 		
-		/* 
+		/*
 		 see this article for further details: (thanks also for some code snippets)
 		 http://www.linuxjournal.com/article/6391 */
 		

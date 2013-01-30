@@ -32,7 +32,7 @@ protected:
 		if(m_refCount) {
 			(*m_refCount)--;
 			size_t* ref = m_refCount;
-			m_refCount = NULL;			
+			m_refCount = NULL;
 			if(*ref == 0) {
 				delete ref;
 				onLastRefRemoved();
@@ -40,7 +40,7 @@ protected:
 		}
 	}
 	
-public:	
+public:
 	RefCounter() : m_refCount(NULL) { m_refCount = new size_t(1); }
 	RefCounter(const RefCounter& r) : m_refCount(NULL) { copy(r); }
 	RefCounter& operator=(const RefCounter& r) { uninit(); copy(r); return *this; }

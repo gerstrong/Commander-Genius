@@ -26,9 +26,9 @@ bool CEGAGraphics::loadData()
 	// This is only for the menu. We only need one fontmap
 	g_pGfxEngine->createEmptyFontmaps(1);
 	CFont &Font = g_pGfxEngine->getFont(0);
-
+    
 	Font.loadinternalFont();
-
+    
 	return true;
 }
 

@@ -24,41 +24,41 @@ CSettingsMenu::CSettingsMenu() :
 CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 {
  	mpMenuDialog->addControl(new CGUIButton( "Video",
-									new OpenMenuEvent( new CVideoSettings() ) ) );
-
+                                            new OpenMenuEvent( new CVideoSettings() ) ) );
+    
 	mpMenuDialog->addControl(new CGUIButton( "Audio",
-									new OpenMenuEvent( new CAudioSettings() ) ) );
-
+                                            new OpenMenuEvent( new CAudioSettings() ) ) );
+    
 	mpMenuDialog->addControl(new CGUIButton( "Options",
-									new OpenMenuEvent( new COptions() ) ) );
-
-
+                                            new OpenMenuEvent( new COptions() ) ) );
+    
+    
 	/*
-
-			const int players = ctrlMenu->mSelection;
-			EventContainer.pop_Event();
-			EventContainer.add( new OpenMenuEvent(
-									new CControlsettings(players) ) );
+     
+     const int players = ctrlMenu->mSelection;
+     EventContainer.pop_Event();
+     EventContainer.add( new OpenMenuEvent(
+     new CControlsettings(players) ) );
 	 *
 	 * */
-
+    
 #if defined (SINGLEPLAYER)
 	mpMenuDialog->addControl( new CGUIButton( "Controls",
-									new OpenMenuEvent(	new CControlsettings(1) ) ) );
+                                             new OpenMenuEvent(	new CControlsettings(1) ) ) );
 #else
 	mpMenuDialog->addControl(new CGUIButton( "Controls",
-									new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
+                                            new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
 #endif
-
-
+    
+    
 #if !defined(EMBEDDED)
 	mpMenuDialog->addControl( new CGUIButton( "Camera",
-									new OpenMenuEvent( new CCameraSettings() ) ) );
+                                             new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
-
+    
 	mpMenuDialog->addControl(new CGUIButton( "Profile",
-									new OpenMenuEvent( new CProfilesMenu() ) ) );
-
+                                            new OpenMenuEvent( new CProfilesMenu() ) ) );
+    
 	setMenuLabel("CONFIGMENULABEL");
 }
 

@@ -16,15 +16,15 @@
 class CMessageBoxGalaxy
 {
 public:
-
+    
 	/**
 	 * \brief This constructor creates a typical Keen 4 Message Box
 	 * \param Text 				Message to be shown
 	 */
 	CMessageBoxGalaxy(const std::string& Text);
-
+    
 	virtual void init();
-
+    
 	virtual void process();
 	
 	SDL_Surface *getSfc()
@@ -32,17 +32,17 @@ public:
 	
 	SDL_Rect getRect() const
 	{ return mMBRect; }
-
+    
 	const bool isFinished() const
 	{	return mMustClose;	}
-
-
+    
+    
 protected:
-
+    
 	void initGalaxyFrame();
 	virtual void initText(const SDL_Rect &rect);
-
-
+    
+    
 	bool mMustClose;
 	SDL_Rect mMBRect;
 	std::string mText;

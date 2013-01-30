@@ -13,8 +13,8 @@
 #include <memory>
 
 CGamePlayMode::CGamePlayMode(const int Episode, const int Numplayers,
-		const std::string& DataDirectory,
-		const int startLevel) :
+                             const std::string& DataDirectory,
+                             const int startLevel) :
 m_startLevel(startLevel),
 m_Episode(Episode),
 m_Numplayers(Numplayers),
@@ -32,13 +32,13 @@ void CGamePlayMode::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
+    
 	// If no level has been set or is out of bound, set it to map.
 	if(m_startLevel > 100 || m_startLevel < 0 )
 		m_startLevel = WORLD_MAP_LEVEL_VORTICON;
-
+    
 	bool ok = true;
-
+    
 	if(m_Episode >= 4)
 	{
 		if(m_startLevel == WORLD_MAP_LEVEL_VORTICON)
@@ -51,15 +51,15 @@ void CGamePlayMode::init()
 			m_startLevel = WORLD_MAP_LEVEL_VORTICON;
 		mp_PlayGame.reset( new CPlayGameVorticon( ExeFile, m_startLevel, m_Numplayers, m_SavedGame) );
 	}
-
+    
 	// Create the special merge effect (Fadeout)
 	CColorMerge *pColorMergeFX = new CColorMerge(8);
-
+    
 	ok &= mp_PlayGame->init();
-
+    
 	g_pGfxEngine->setupEffect(pColorMergeFX);
-
-
+    
+    
 	if(!ok)
 	{
 		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode));
@@ -77,7 +77,7 @@ void CGamePlayMode::process()
 {
 	// The player is playing the game. It also includes scenes like ending
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
+    
 	mp_PlayGame->process();
 	
 	if (g_pVideoDriver->getVidConfig().showfps)
@@ -87,26 +87,26 @@ void CGamePlayMode::process()
 		rect.y = 5;
 		rect.w = 150;
 		rect.h = 10;
-
+        
 		if(!mpFPSSurface)
 		{
 			mpFPSSurface.reset(CG_CreateRGBSurface(rect), &SDL_FreeSurface);
 		}
-
+        
 		std::string tempbuf = "FPS: " + ftoa(g_pTimer->LastFPS());
 		SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
 		g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
-
+        
 		g_pVideoDriver->mDrawTasks.add(new BlitSurfaceTask(mpFPSSurface, NULL, &rect ));
 	}
-
+    
 	if( EventContainer.occurredEvent<SaveGameEvent>() )
 	{
 		mp_PlayGame->saveGameState();
 		EventContainer.pop_Event();
 	}
-
-
+    
+    
 	if( mp_PlayGame->getEndGame() )
 	{
 		m_startLevel = 0;
@@ -122,5 +122,5 @@ void CGamePlayMode::process()
 	{
 		EventContainer.add( new GMQuit() );
 	}
-
+    
 }

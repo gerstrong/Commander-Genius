@@ -37,7 +37,7 @@ void CGfxEngine::dumpSprites()
 	for(size_t i = 0; i < Sprite.size(); i++)
 	{
 		CSprite &thisSprite = Sprite[i];
-
+        
 		// Temporary for testing!!
 		std::string fname = "sprite";
 		fname += itoa(i);
@@ -87,7 +87,7 @@ void CGfxEngine::setupEffect(CEffects *pEffect)
 void CGfxEngine::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface)
 {
 	CTilemap &Tilemap = getTileMap(2);
-
+    
 	for(Uint16 i=0 ; i<text.size() ; i++)
 	{
 		const char c = text[i];
@@ -119,8 +119,8 @@ void CGfxEngine::freeTilemap()
 }
 void CGfxEngine::freeFonts()
 {
-  while ( !Font.empty() )
-    Font.pop_back();
+    while ( !Font.empty() )
+        Font.pop_back();
 }
 
 void CGfxEngine::freeBitmaps(std::vector<CBitmap> &Bitmap)
@@ -145,7 +145,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 	
 	src_rect.w = src_rect.h = 16;
 	dst_rect.w = dst_rect.h = 16;
-
+    
 	Sprite[s].setSize( 16, 16*ntilestocopy );
 	Sprite[s].createSurface( Tilemap.at(1).getSDLSurface()->flags, Palette.m_Palette );
 	
@@ -156,7 +156,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 		
 		dst_rect.x = 0;
 		dst_rect.y = 16*i;
-
+        
 		SDL_BlitSurface( Tilemap.at(1).getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
 	}
 }
@@ -171,7 +171,7 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 	rect.y = y1*8; rect.h = (h+1)*8;
 	
 	SDL_FillRect(DialogSurface, &rect, colour);
-
+    
 	Font[0].drawCharacter(DialogSurface, 1, x1*8, y1*8);
 	Font[0].drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
 	for(x=(x1*8)+8,i=0;i<w-1;i++)
@@ -209,16 +209,16 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name) const
 	for(unsigned int i=0 ; i<Bitmap.size() ; i++)
 	{
 		s_name = Bitmap[i].getName();
-
+        
 		if(s_name == name)
 			return const_cast<CBitmap*>(&Bitmap[i]);
 	}
-
+    
 	std::string error = "Ooops! Wrong TextID ";
 	error += "name";
 	error += "used!";
 	g_pLogFile->textOut(error);
-
+    
 	return NULL;
 }
 
@@ -228,13 +228,13 @@ CSprite *CGfxEngine::getSprite(const std::string &name) const
 	for(unsigned int i=0 ; i<Sprite.size() ; i++)
 	{
 		s_name = Sprite[i].getName();
-
+        
 		if(s_name == name)
 			return const_cast<CSprite*>(&Sprite[i]);
 	}
-
-
-
+    
+    
+    
 	return NULL;
 }
 
@@ -246,7 +246,7 @@ void CGfxEngine::process()
 	if(mpEffects)
 	{
 		mpEffects->process();
-
+        
 		if( !runningEffect() )
 		{
 			killEffect();

@@ -12,17 +12,17 @@
 
 namespace galaxy
 {
-
-class CMapLoaderGalaxyEp6 : public CMapLoaderGalaxy
-{
-public:
-	CMapLoaderGalaxyEp6(CExeFile &ExeFile,
-			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-			CInventory &Inventory, stCheat &Cheatmode);
-
-	CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
-};
-
+    
+    class CMapLoaderGalaxyEp6 : public CMapLoaderGalaxy
+    {
+    public:
+        CMapLoaderGalaxyEp6(CExeFile &ExeFile,
+                            std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
+                            CInventory &Inventory, stCheat &Cheatmode);
+        
+        CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
+    };
+    
 };
 
 #endif /* CMAPLOADERGALAXYEP6_H_ */

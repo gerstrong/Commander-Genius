@@ -19,12 +19,12 @@ class CHelp : public CInfoScene
 {
 public:
 	CHelp(const std::string &type);
-
+    
 	void init();
 	void teardown();
-
+    
 	void process();
-
+    
 private:
 	std::string mTextType;
 	std::unique_ptr<CTextViewer> mpTextViewer;

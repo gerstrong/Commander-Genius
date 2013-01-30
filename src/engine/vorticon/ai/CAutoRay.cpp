@@ -25,23 +25,23 @@ silent(false)
 }
 
 bool CAutoRay::isNearby(CVorticonSpriteObject &theObject)
-{       
+{
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-	int distx = player->getXPosition() - getXPosition();
-	if(distx<0)
-	    distx = -distx;
-	
-	int disty = player->getYPosition() - getYPosition();
-	if(disty<0)
-	    disty = -disty;
-	
-	if( disty < SILENT_DIST && distx < SILENT_DIST )
-	{
-	    silent = false;	
-	}
+        int distx = player->getXPosition() - getXPosition();
+        if(distx<0)
+            distx = -distx;
+        
+        int disty = player->getYPosition() - getYPosition();
+        if(disty<0)
+            disty = -disty;
+        
+        if( disty < SILENT_DIST && distx < SILENT_DIST )
+        {
+            silent = false;
+        }
     }
-
+    
     return true;
 }
 
@@ -53,7 +53,7 @@ void CAutoRay::process()
 		CRay *NewRay;
 		x = getXPosition();
 		y = getYPosition();
-
+        
 		if (m_type==VERTICAL)
 		{
 			NewRay = new CRay(mp_Map, x+(4<<STC), y+(1<<CSF), CENTER, DOWN, OBJ_AUTORAY_V, m_index, 124);
@@ -67,7 +67,7 @@ void CAutoRay::process()
 			NewRay->m_HorDir = RIGHT;
 		}
 		g_pBehaviorEngine->EventList().spawnObj(NewRay);
-
+        
 		if(!silent)
 		{
 		    playSound(SOUND_TANK_FIRE);

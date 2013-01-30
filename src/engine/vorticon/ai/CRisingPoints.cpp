@@ -26,12 +26,12 @@ CVorticonSpriteObject(p_map, x, y, OBJ_GOTPOINTS)
 void CRisingPoints::process()
 {
 	moveUp(GOTPOINTS_SPEED);
-
+    
 	// delete it after it's existed for a certain amount of time
 	if (!offscreentime)
 	{
 		transluceny+=10;
-
+        
 		if(transluceny >= 250)
 		{
 			exists = false;

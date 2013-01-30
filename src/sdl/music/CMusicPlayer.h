@@ -19,15 +19,15 @@ class CMusicPlayer
 public:
 	CMusicPlayer();
 	virtual ~CMusicPlayer();
-
+    
 	virtual bool open() = 0;
 	void reload();
 	virtual void readBuffer(Uint8* buffer, Uint32 length) = 0;
 	void play(const bool value);
 	virtual void close() = 0;
-
+    
 	bool playing() const { return m_playing; }
-
+    
 protected:
 	bool m_playing;
 };

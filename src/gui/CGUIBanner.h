@@ -12,7 +12,7 @@ public:
     void processRender(const CRect<float> &RectDispCoordFloat);
     void setText(const std::string& text);
     
-private:    
+private:
     std::list<std::string>::iterator curTextIt;
     std::list<std::string>::iterator prevTextIt;
     bool transition;

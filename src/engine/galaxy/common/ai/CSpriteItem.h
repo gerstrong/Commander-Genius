@@ -15,20 +15,20 @@
 #include "engine/galaxy/common/CGalaxySpriteObject.h"
 
 namespace galaxy {
-
-
-class CSpriteItem : public CGalaxySpriteObject
-{
-public:
-	CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite);
-	void process();
-	void getTouchedBy(CSpriteObject &theObject);
-
-private:
-	int m_timer;
-	int m_basesprite;
-};
-
+    
+    
+    class CSpriteItem : public CGalaxySpriteObject
+    {
+    public:
+        CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite);
+        void process();
+        void getTouchedBy(CSpriteObject &theObject);
+        
+    private:
+        int m_timer;
+        int m_basesprite;
+    };
+    
 }
 
 #endif /* CSPRITEITEM_H_ */

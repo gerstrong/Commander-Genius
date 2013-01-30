@@ -21,14 +21,14 @@ class CCamera : public CSpriteObject
 {
 public:
 	CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher=NULL);
-
+    
 	/**
 	 * \brief Whenever the object where the camera has to follow up is created it needs to be attached
 	 *        in order to follow it.
 	 * \return p_attacher Object Pointer like the player to which the camera will follow.
 	 */
 	void attachObject(CSpriteObject *p_attacher);
-
+    
 	/**
 	 * \brief This will put the camera to the given coordinate
 	 * Normally the camera moves the player and it's not necessary to move it here normally
@@ -38,7 +38,7 @@ public:
 	 * \param newpos New Position for the camera as math vector
 	 */
 	void setPosition(const VectorD2<int>& newpos);
-
+    
 	/**
 	 * \brief
 	 * This is main cycle which will be called every Logic loop
@@ -48,7 +48,7 @@ public:
 	 * \param force If on the map are scrollblockers, they will be ignored when this is enabled
 	 */
 	void process(const bool force = false);
-
+    
 	/**
 	 * \brief
 	 * This function tells if the attached object is out of the camera view
@@ -57,17 +57,17 @@ public:
 	 */
 	
 	/**
-	 * in case the map is loaded or the player warped to another point, 
+	 * in case the map is loaded or the player warped to another point,
 	 * this function will adjust the camera to the proper edges in the level
 	 */
 	void reAdjust();
-
+    
 	bool outOfSight();
 	
 	bool m_attached;
 	bool m_freeze;
 	bool m_moving;
-
+    
 	/**
 	 *	Just relative structure to the camera position. This is used when the player tries to look up or down
 	 */
@@ -75,7 +75,7 @@ public:
 	{
 		int x, y;
 	}m_relcam;
-
+    
 private:
 	CSpriteObject *mp_AttachedObject;
 };

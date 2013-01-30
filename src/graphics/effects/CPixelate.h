@@ -17,14 +17,14 @@ public:
 	void getSnapshot();
 	void process();
 	virtual ~CPixelate();
-
+    
 private:
 	SDL_Surface *mp_OldSurface;
-
+    
 	// m_line tells until which line, we have to draw the pixels
 	// m_lines_completed gets ++, if a line has no more pixel that need to be drawn
 	unsigned short m_line, m_lines_completed;
-
+    
 	// m_pixel_per_line tells at the given line how many pixels have already been drawn.
 	unsigned short *m_pixels_per_line;
 	bool *m_drawmap;

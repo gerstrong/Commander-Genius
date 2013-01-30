@@ -26,15 +26,15 @@
 class CTitle
 {
 public:
-
+    
 	CTitle(CMap &map);
-
+    
 	bool init(int Episode);
 	void process();
-
+    
 	bool isFinished()
 	{ return mFinished; }
-
+    
 private:
 	std::vector< std::unique_ptr<CSpriteObject> > mObjects;
 	bool mFinished;

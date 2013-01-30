@@ -25,14 +25,14 @@ class CPlayGame
 {
 public:
 	CPlayGame(CExeFile &ExeFile, char level,
-			 char numplayers);
-
+              char numplayers);
+    
 	virtual bool loadGameState() = 0;
 	virtual bool saveGameState() = 0;
 	virtual void process() = 0;
 	virtual bool init() = 0;
 	virtual void cleanup() = 0;
-
+    
 	bool isFinished();
 	bool getEndGame();
 	bool getStartGame();
@@ -40,7 +40,7 @@ public:
 	char getEpisode();
 	char getNumPlayers();
 	CSaveGameController getSavedGameBlock();
-
+    
 protected:
 	unsigned char m_NumPlayers;
 	bool m_endgame;
@@ -50,15 +50,15 @@ protected:
 	int mCamLead;
 	bool m_startgame;
 	bool m_exitgame;
-
+    
 	Uint32  m_NumSprites;
-
+    
 	enum
 	{
 		NONE, GOTO_WORLD_MAP,
 		START_LEVEL, GOTO_FINALE
 	} m_level_command;
-
+    
 	bool m_gameover;
 	bool m_alldead;
 	bool m_showPauseDialog;
@@ -67,7 +67,7 @@ protected:
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
 	bool m_restartVideo;
-
+    
 	stOption *mp_option;
 };
 

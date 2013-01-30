@@ -22,12 +22,12 @@ protected:
 	
 public:
 	//CSingleton();
-
+    
 	inline static T* GetNoPtrChk()
 	{
 		return (m_pSingleton);
 	}
-
+    
 	inline static T* Get()
 	{
 		if(!m_pSingleton)
@@ -38,14 +38,14 @@ public:
 	
 	static void Del()
 	{
-
+        
 		if(m_pSingleton)
 		{
 			delete (m_pSingleton);
 			m_pSingleton = NULL;
 		}
 	}
-
+    
 	virtual ~CSingleton() // Unused, because this class is never constructed!!
 	{}
 };

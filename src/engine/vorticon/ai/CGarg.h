@@ -48,21 +48,21 @@ public:
 	bool isNearby(CVorticonSpriteObject &theObject);
 	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void charge();
-
+    
 private:
 	enum garg_states{
 		GARG_LOOK, GARG_MOVE, GARG_CHARGE,
 		GARG_JUMP, GARG_DYING
 	}state;
-
+    
 	int jumptime;
-
+    
 	unsigned char looktimes,lookframe;
 	unsigned char timer, keenonsameleveltimer;
 	unsigned char about_to_charge;
 	unsigned char walkframe;
 	unsigned int dist_traveled;
-
+    
 	direction_t movedir;
 	bool m_hardmode;
 };

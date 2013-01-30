@@ -29,7 +29,7 @@ class CManglingMachine : public CVorticonSpriteObject
 public:
 	CManglingMachine(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type);
 	~CManglingMachine();
-	void getTouchedBy(CVorticonSpriteObject &theObject);	
+	void getTouchedBy(CVorticonSpriteObject &theObject);
 	bool isNearby(CVorticonSpriteObject &theObject);
 	void process();
 	void se_mortimer_arm();
@@ -41,17 +41,17 @@ public:
 	void se_mortimer_leg_right();
 	void se_mortimer_randomzaps();
 	void set_mortimer_surprised(bool yes);
-
+    
 	void getShotByRay(object_t &obj_type){};
 	
 private:
 	unsigned int setype;
-
+    
 	unsigned char state;
 	unsigned int timer;
 	unsigned int platx, platy;
 	unsigned int dir;
-
+    
 	int counter,destroytiles;
 	unsigned int frame;
 	int mx,my;

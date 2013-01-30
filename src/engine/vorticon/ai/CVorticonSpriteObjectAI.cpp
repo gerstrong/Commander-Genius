@@ -9,11 +9,11 @@
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 
-CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(CMap *p_map, 
-					 std::vector< std::unique_ptr<CVorticonSpriteObject> > &objvect,
-					 std::vector<CPlayer> &Player,
-					 int NumPlayers, int episode,
-					 int level, bool &dark) :
+CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(CMap *p_map,
+                                                 std::vector< std::unique_ptr<CVorticonSpriteObject> > &objvect,
+                                                 std::vector<CPlayer> &Player,
+                                                 int NumPlayers, int episode,
+                                                 int level, bool &dark) :
 m_Objvect(objvect),
 m_Player(Player),
 m_dark(dark)
@@ -34,12 +34,12 @@ void CVorticonSpriteObjectAI::process()
 	for( ; objectPtr != m_Objvect.end() ; objectPtr++ )
 	{
 		CVorticonSpriteObject &object = *(objectPtr->get());
-
+        
 		if( object.checkforScenario() )
 		{
 			object.performCollisions();
 			object.processFalling();
-
+            
 			if(!object.dead) // Only do that if not dead
 			{
 				// hit detection with players
@@ -50,21 +50,21 @@ void CVorticonSpriteObjectAI::process()
 					if (!it_player->pdie)
 					{
 					    if(object.isNearby(*it_player))
-					    {					    
-						if ( object.hitdetect(*it_player) )
-						{						    
-							object.getTouchedBy(*it_player);
-							object.touchPlayer = true;
-							object.touchedBy = it_player->m_index;
-							break;
-						}
+					    {
+                            if ( object.hitdetect(*it_player) )
+                            {
+                                object.getTouchedBy(*it_player);
+                                object.touchPlayer = true;
+                                object.touchedBy = it_player->m_index;
+                                break;
+                            }
 					    }
 					}
-
+                    
 				}
-
+                
 				object.process();
-
+                
 				auto theOther = objectPtr; theOther++;
 				for( ; theOther != m_Objvect.end() ; theOther++ )
 				{
@@ -72,18 +72,18 @@ void CVorticonSpriteObjectAI::process()
 				    
 				    nearBy |= object.isNearby(**theOther);
 				    nearBy |= (*theOther)->isNearby(object);
-
+                    
 				    if(nearBy)
-				    {									    
-					if( object.hitdetect(**theOther) )
-					{
-						object.getTouchedBy(**theOther);
-						(*theOther)->getTouchedBy(object);
-					}
+				    {
+                        if( object.hitdetect(**theOther) )
+                        {
+                            object.getTouchedBy(**theOther);
+                            (*theOther)->getTouchedBy(object);
+                        }
 				    }
 				}
 			}
-
+            
 			object.processEvents();
 			object.InertiaAndFriction_X();
 		}
@@ -98,30 +98,30 @@ void CVorticonSpriteObjectAI::process()
 	    m_Objvect.push_back( move(obj) );
 	    EventContainer.pop_Event();
 	}
-
+    
 	if( EventContainer.occurredEvent<EventEraseAllEnemies>() )
 	{
 	    for( auto &obj : m_Objvect )
 	    {
-		// Only remove non-player objects!
-		if( dynamic_cast<CPlayer*>(obj.get()) == nullptr )
-		{
-		    obj->exists = false;
-		}
+            // Only remove non-player objects!
+            if( dynamic_cast<CPlayer*>(obj.get()) == nullptr )
+            {
+                obj->exists = false;
+            }
 	    }
 	    EventContainer.pop_Event();
 	}
-		
-
+    
+    
 	if( !m_Objvect.empty() )
 	{	
 	    // Try always to remove the last objects if they aren't used anymore!
 	    if(!m_Objvect.back()->exists)
 	    {
-		m_Objvect.pop_back();
+            m_Objvect.pop_back();
 	    }
 	}
-
+    
 	if(m_gunfiretimer < ((m_Episode==3) ? 180 : 50 )) m_gunfiretimer++;
 	else m_gunfiretimer=0;
 }

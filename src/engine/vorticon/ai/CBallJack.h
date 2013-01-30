@@ -18,24 +18,24 @@ public:
 	CBallJack(CMap *pmap, Uint32 x, Uint32 y, object_t type);
 	void getTouchedBy(CSpriteObject &theObject);
 	void process();
-
+    
 	void getShotByRay(object_t &obj_type);
-
+    
 private:
 	enum {
-	DUPRIGHT,
-	DUPLEFT,
-	DUP,
-	DDOWN,
-	DDOWNRIGHT,
-	DDOWNLEFT,
-	DLEFT,
-	DRIGHT
+        DUPRIGHT,
+        DUPLEFT,
+        DUP,
+        DDOWN,
+        DDOWNRIGHT,
+        DDOWNLEFT,
+        DLEFT,
+        DRIGHT
 	}m_Direction;
-
+    
 	int animframe, animtimer;
 	int speed;
-
+    
 	direction_t zapd;	   			// x,y, and direction of last shot at time of impact
 };
 

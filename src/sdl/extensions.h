@@ -13,7 +13,7 @@
 
 struct Colormask
 {
-	 Uint32 r,g,b,a;
+    Uint32 r,g,b,a;
 };
 
 Uint32 getPixel(SDL_Surface *surface, int x, int y);
@@ -28,7 +28,7 @@ struct SDL_Surface_Deleter
 {
     void operator()(SDL_Surface* sfc)
     {
-	SDL_FreeSurface(sfc);
+        SDL_FreeSurface(sfc);
     }
 };
 

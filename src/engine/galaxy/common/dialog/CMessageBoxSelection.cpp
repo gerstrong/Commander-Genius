@@ -24,34 +24,34 @@ blend(0),
 blendup(true)
 {
 	mText += "\n";
-	// Center that dialog box	
+	// Center that dialog box
 	for( auto &op : m_Options )
 	{
 	    mText += "\n";
-	    mText += op.text;	    
+	    mText += op.text;
 	}
 	
 	mText += "\n\n";
 	
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
-
+    
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
-
+    
 	// Create a surface for that
 	mMBRect.w = Font.getPixelTextWidth(mText)+16;
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
 	mMBRect.x = (320-mMBRect.w)/2;
-	mMBRect.y = (200-mMBRect.h)/2;	
+	mMBRect.y = (200-mMBRect.h)/2;
 }
 
 
 void CMessageBoxSelection::init()
 {
-       	mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
+    mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
 	mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
     
 	initGalaxyFrame();
-
+    
 	SDL_Rect rect = mMBRect;
 	rect.x = 8;
 	rect.y = 10;
@@ -59,39 +59,39 @@ void CMessageBoxSelection::init()
 	rect.h -= 16;
     
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
-
+    
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 	
 	SDL_Surface *pColoredTextSurface = CG_CreateRGBSurface(rect);
-
+    
 	const Uint32 oldColor = Font.getFGColor();
-
+    
 	Font.setupColor( SDL_MapRGB( format, 0, 0, 0 ) );
-
+    
 	auto textList = explode(mText, "\n");
 	
 	int yoff = 0;
 	for( auto &it : textList  )
-	{	    
+	{
 	    int xmid = (rect.w-Font.getPixelTextWidth(it))/2+rect.x;
 	    Font.drawFont( pColoredTextSurface, it, xmid, yoff);
 	    yoff += 12;
-	}	
-
+	}
+    
 	// Adapt the newly created surface to the running screen.
 	SDL_Surface *temp;
-
+    
 	if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
 		temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
 	else // or
 		temp = SDL_DisplayFormat(pColoredTextSurface);
-
+    
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
-
+    
 	Font.setupColor( oldColor );
-
-	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> pTextSfc(pColoredTextSurface);			
+    
+	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> pTextSfc(pColoredTextSurface);
 	SDL_BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
 	
 	
@@ -107,10 +107,10 @@ void CMessageBoxSelection::init()
 	cutRect.y += 2;
 	cutRect.w -= 4;
 	cutRect.h -= 4;
-		
-    	mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
+    
+    mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
 	mpSelSurface1.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);
-	mpSelSurface2.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);	
+	mpSelSurface2.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);
 	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
 	SDL_SetColorKey( mpSelSurface1.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
@@ -126,12 +126,12 @@ void CMessageBoxSelection::process()
 	if(g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
 	{
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
+        
 		for( int c=0 ; c<m_selection ; c++ )
 			m_Options.pop_front();
-
+        
 		EventContainer.add( m_Options.front().event );
-
+        
 		mMustClose = true;
 		g_pInput->flushCommands();
 		return;
@@ -150,9 +150,9 @@ void CMessageBoxSelection::process()
 		else
 			m_selection--;
 	}
-
+    
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpMBSurface, NULL, &mMBRect ) );
-
+    
 	
 	// now draw the glowing rectangle. It fades here!
 	
@@ -166,7 +166,7 @@ void CMessageBoxSelection::process()
 	    blendup = true;
 	    blend = SDL_ALPHA_TRANSPARENT;
 	}
-
+    
 	if(blend >= SDL_ALPHA_OPAQUE)
 	{
 	    blendup = false;

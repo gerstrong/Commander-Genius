@@ -42,7 +42,7 @@ transluceny(0)
 	dying = false;
 	yDirection = xDirection = 0;
 	pSupportedbyobject = nullptr;
-
+    
 	blockedd = false;
 	blockedu = false;
 	blockedl = false;
@@ -73,16 +73,16 @@ bool CSpriteObject::PoleCollision()
 bool CSpriteObject::calcVisibility()
 {
 	int visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
-
+    
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
-
+    
 	const Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
-							(mp_Map->m_scrollx<<STC)-(visibility<<CSF);
+    (mp_Map->m_scrollx<<STC)-(visibility<<CSF);
 	const Uint32 right = ((mp_Map->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
 	const Uint32 up = (((mp_Map->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
-							(mp_Map->m_scrolly<<STC)-(visibility<<CSF);
+    (mp_Map->m_scrolly<<STC)-(visibility<<CSF);
 	const Uint32 down = ((mp_Map->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
-
+    
 	return ( right > m_Pos.x && left < m_Pos.x && down > m_Pos.y && up < m_Pos.y );
 }
 
@@ -103,7 +103,7 @@ bool CSpriteObject::verifyForFalling()
 		const bool nothing_on_feet = (TileProp1.bup == 0);
 		const bool nothing_below_feet = (TileProp2.bup == 0) && (TileProp3.bup == 0);
 		const bool can_fall = (nothing_on_feet && nothing_below_feet);
-
+        
 		if(can_fall)
 		{
 			return true;
@@ -114,7 +114,7 @@ bool CSpriteObject::verifyForFalling()
 			moveDown(100);
 		}
 	}
-
+    
 	return false;
 }
 
@@ -176,7 +176,7 @@ void CSpriteObject::moveToVertical(const int& new_y)
 void CSpriteObject::moveTo(const VectorD2<Uint32> &new_loc)
 {
 	VectorD2<int> amount = new_loc - m_Pos;
-
+    
 	moveXDir(amount.x);
 	moveYDir(amount.y);
 }
@@ -205,7 +205,7 @@ void CSpriteObject::moveLeft(const int amnt, const bool force)
 {
 	if(amnt <= 0)
 		return;
-
+    
 	m_EventCont.add(new ObjMove(-amnt,0));
 }
 
@@ -213,7 +213,7 @@ void CSpriteObject::moveRight(const int amnt, const bool force)
 {
 	if(amnt <= 0)
 		return;
-
+    
 	m_EventCont.add(new ObjMove(amnt,0));
 }
 
@@ -221,7 +221,7 @@ void CSpriteObject::moveUp(const int amnt)
 {
 	if(amnt <= 0)
 		return;
-
+    
 	m_EventCont.add(new ObjMove(0,-amnt));
 }
 
@@ -230,7 +230,7 @@ void CSpriteObject::moveDown(const int amnt)
 	// If zero was given as argument return.
 	if(amnt <= 0)
 		return;
-
+    
 	m_EventCont.add(new ObjMove(0, amnt));
 }
 
@@ -260,7 +260,7 @@ void CSpriteObject::InertiaAndFriction_X(const int friction_rate)
 		moveXDir(dx);
 	else
 		xinertia = 0;
-
+    
 	// and apply friction to xinertia
 	// when pogoing apply friction till we get down to PFASTINCMAXSPEED
 	// then stop the friction
@@ -270,7 +270,7 @@ void CSpriteObject::InertiaAndFriction_X(const int friction_rate)
 void CSpriteObject::processFallPhysics(const int boost)
 {
 	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
-
+    
 	// In this case foe is jumping?
 	// Not sure here. We should use another variable...
 	if(yinertia<0 && !blockedu)
@@ -281,14 +281,14 @@ void CSpriteObject::processFallPhysics(const int boost)
 	else if( yinertia>=0 && !blockedd )
 	{
 		moveDown(yinertia);
-
+        
 		// gradually increase the fall speed up to maximum rate
 		if (yinertia>Physics.max_fallspeed)
 			yinertia = Physics.max_fallspeed;
 		else if (yinertia<Physics.max_fallspeed)
 			yinertia += boost;
 	}
-
+    
 	// hit floor or ceiling? set inertia to zero
 	if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
 		yinertia = 0;
@@ -306,7 +306,7 @@ void CSpriteObject::processFallPhysics()
 void CSpriteObject::processFalling()
 {
 	// CAUTION: There is a difference between falling and going down with the gravity...
-
+    
 	// So it reaches the maximum of fallspeed
 	if(!inhibitfall)
 	{
@@ -316,7 +316,7 @@ void CSpriteObject::processFalling()
 	{
 		moveYDir(yinertia);
 	}
-
+    
 	// sometimes, due to mistakes on the map, some foe are embedded into blocks!
 	// In order to avoid, that they can't get out, pull them out of there!
 }
@@ -334,24 +334,24 @@ void CSpriteObject::getShotByRay(object_t &obj_type)
 // anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
 void CSpriteObject::kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject)
 {
-	 unsigned int xpix,ypix;
-	 unsigned int x, y;
-	 xpix = mpx<<CSF;
-	 ypix = mpy<<CSF;
-
-	 x = theObject.getXMidPos();
-	 y = theObject.getYUpPos();
-	 if (theObject.exists)
-	 {
-		 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
-		 {
-			 if (ypix <= y && ypix+(1<<CSF) >= y)
-			 {
-				 theObject.kill();
-				 theObject.dontdraw = true;
-			 }
-		 }
-	 }
+    unsigned int xpix,ypix;
+    unsigned int x, y;
+    xpix = mpx<<CSF;
+    ypix = mpy<<CSF;
+    
+    x = theObject.getXMidPos();
+    y = theObject.getYUpPos();
+    if (theObject.exists)
+    {
+        if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
+        {
+            if (ypix <= y && ypix+(1<<CSF) >= y)
+            {
+                theObject.kill();
+                theObject.dontdraw = true;
+            }
+        }
+    }
 }
 
 
@@ -377,7 +377,7 @@ void CSpriteObject::blink(Uint16 frametime)
 { m_blinktime = frametime; }
 
 void CSpriteObject::playSound( const GameSound snd,
-			    const SoundPlayMode mode )
+                              const SoundPlayMode mode )
 {
 	g_pSound->playStereofromCoord(snd, mode, scrx);
 }
@@ -393,14 +393,14 @@ void CSpriteObject::draw()
 {
 	if( sprite == BLANKSPRITE || dontdraw )
 		return;
-
+    
 	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
-
+    
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
-
+    
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
-
+    
 	if( scrx < gameres.w && scry < gameres.h && exists )
 	{
 		Uint16 showX = scrx+Sprite.getXOffset();

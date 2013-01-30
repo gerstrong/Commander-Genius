@@ -997,7 +997,7 @@ Utf16String Utf8ToUtf16(const std::string& str)
 		} else if (d < 0xF0)  {
 			c = d & 0x0F;
 			trailing= 2;
-		} else if (d < 0xF8)  { 
+		} else if (d < 0xF8)  {
 			c = d & 0x07;
 			trailing= 3;
 		} else  {
@@ -1084,7 +1084,7 @@ std::string Utf8ToSystemNative(const std::string& utf8str)
 // Convert a system-native string to UTF-8
 std::string SystemNativeToUtf8(const std::string& natstr)
 {
-	if (natstr.size() == 0)	
+	if (natstr.size() == 0)
 		return "";
 	
 	wchar_t *buf = new wchar_t[natstr.size() + 128]; // 128 for safety

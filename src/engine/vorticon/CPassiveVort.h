@@ -15,21 +15,21 @@
 
 namespace vorticon
 {
-
-class CPassiveVort : public CPassive
-{
-public:
-
-	bool init(char mode = INTRO);
-
-	void process();
-
-private:
-	std::unique_ptr<CIntro> mpIntroScreen;
-	std::unique_ptr<CTitle> mpTitleScreen;
-	std::shared_ptr<CMap> mpMap;
-};
-
+    
+    class CPassiveVort : public CPassive
+    {
+    public:
+        
+        bool init(char mode = INTRO);
+        
+        void process();
+        
+    private:
+        std::unique_ptr<CIntro> mpIntroScreen;
+        std::unique_ptr<CTitle> mpTitleScreen;
+        std::shared_ptr<CMap> mpMap;
+    };
+    
 }
 
 #endif /* CPASSIVEVORT_H_ */

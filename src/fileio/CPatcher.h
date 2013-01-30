@@ -26,7 +26,7 @@ public:
 	void postProcess();
 	void patchMemfromFile(const std::string& patch_file_name, long offset);
 	void PatchLevelhint(const int level, std::list<std::string> &input);
-	void PatchLevelentry(const int level, std::list<std::string> &input);	
+	void PatchLevelentry(const int level, std::list<std::string> &input);
 	
 private:
 	
@@ -35,14 +35,14 @@ private:
 		std::string keyword;
 		std::list<std::string> value;
 	};
-
+    
 	std::string readPatchItemsNextValue(std::list<std::string> &input);
 	bool readIntValueAndWidth(const std::string &input, ulong &output, uint &width);
 	bool readIntValue(const std::string &input, ulong &output);
 	bool readPatchString(const std::string &input, std::string &output);
 	void filterPatches(std::list<std::string> &textlist);
 	bool readNextPatchItem(patch_item &PatchItem, std::list<std::string> &textList);
-
+    
 	bool loadPatchfile();
 	
 	int m_episode;

@@ -50,7 +50,7 @@ void CTimer::ResetSecondsTimer(void)
 bool CTimer::HasSecElapsed(void)
 {
 	unsigned int CurTime = timerTicks();
-
+    
 	if ((signed int)(CurTime - m_LastSecTime) >= MSPERSEC)
 	{
 		m_LastSecTime = CurTime;
@@ -62,7 +62,7 @@ bool CTimer::HasSecElapsed(void)
 bool CTimer::HasTimeElapsed(int msecs)
 {
 	unsigned int CurTime = timerTicks();
-
+    
 	if ((signed int)(CurTime - m_LastSecTime) >= msecs)
 	{
 		m_LastSecTime = CurTime;

@@ -37,7 +37,7 @@ unsigned int getcrc32(unsigned char *data, int len)
     unsigned int        result;
     unsigned int        p;
     unsigned char       *e = (data + len);
-
+    
     memcpy( &p, data, sizeof(p) );
     result = ~p;
     data += sizeof(p);
@@ -58,6 +58,6 @@ unsigned int getcrc32(unsigned char *data, int len)
         result ^= p;
         data += sizeof(p);
     }
-
+    
     return ~result;
 }

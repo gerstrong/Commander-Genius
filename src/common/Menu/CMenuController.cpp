@@ -24,10 +24,10 @@ void CMenuController::openMainMenu()
 {
 	if(mLocked)
 	    return;
-
+    
 	g_pBehaviorEngine->EventList().add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
 	g_pBehaviorEngine->setPause(true);
-	g_pMusicPlayer->pause();	
+	g_pMusicPlayer->pause();
 }
 
 
@@ -38,8 +38,8 @@ void CMenuController::process()
     
 	// process any triggered Game Control related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
-
-
+    
+    
 	// Did the player press the quit/back button
 	if( g_pInput->getPressedCommand(IC_BACK) )
 	{
@@ -52,80 +52,80 @@ void CMenuController::process()
 			EventContainer.add( new CloseMenuEvent() );
 		}
 	}
-
-
-
+    
+    
+    
 	if(!EventContainer.empty())
 	{
-
+        
 		if( OpenMenuEvent* openMenu = EventContainer.occurredEvent<OpenMenuEvent>() )
 		{
 		    CBaseMenu &menu = *openMenu->mMenuDialogPointer.get();
 		    menu.init();
-
+            
 		    // Select the second element. The first one (0) is the close button.
 		    menu.select(1);
-
+            
 		    if( !mMenuStack.empty() )
-			menu.setProperty( CBaseMenu::CANGOBACK );
-
+                menu.setProperty( CBaseMenu::CANGOBACK );
+            
 		    mMenuStack.push_back( openMenu->mMenuDialogPointer );
 		    EventContainer.pop_Event();
 		}
-
+        
 		if( EventContainer.occurredEvent<CloseMenuEvent>() )
 		{
 			popBackMenu();
 			EventContainer.pop_Event();
-
+            
 			if(mMenuStack.empty())
 				g_pMusicPlayer->play();
 		}
-
+        
 		if( EventContainer.occurredEvent<CloseAllMenusEvent>() )
 		{
 			emptyMenuStack();
-
+            
 			EventContainer.pop_Event();
 			g_pMusicPlayer->play();
 		}
-
+        
 		// Control Menu Events
 		if( OpenMovementControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenMovementControlMenuEvent>() )
 		{
 			const int players = ctrlMenu->mSelection;
 			EventContainer.pop_Event();
 			EventContainer.add( new OpenMenuEvent(
-									new CControlSettingsMovement(players) ) );
+                                                  new CControlSettingsMovement(players) ) );
 		}
-
+        
 		if( OpenButtonsControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenButtonsControlMenuEvent>() )
 		{
 			const int players = ctrlMenu->mSelection;
 			EventContainer.pop_Event();
 			EventContainer.add( new OpenMenuEvent(
-									new CControlSettingsButtons(players) ) );
+                                                  new CControlSettingsButtons(players) ) );
 		}
-
+        
 		if( OpenControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenControlMenuEvent>() )
 		{
 			const int players = ctrlMenu->mSelection;
 			EventContainer.pop_Event();
 			EventContainer.add( new OpenMenuEvent(
-									new CControlsettings(players) ) );
+                                                  new CControlsettings(players) ) );
 		}
-
+        
 	}
-
-
-
+    
+    
+    
 	// Process Menu if open
 	if( !mMenuStack.empty() )
 	{
 	    mMenuStack.back()->process();
 	}
-
-
+    
+    
 	// If you click the mouse button or press the first button, then open the menu
 	if( g_pInput->mouseClicked() && mMenuStack.empty() )
 	{
@@ -140,7 +140,7 @@ void CMenuController::popBackMenu()
     
     if(mMenuStack.empty())
     {
-	g_pBehaviorEngine->setPause(false);
+        g_pBehaviorEngine->setPause(false);
     }
 }
 

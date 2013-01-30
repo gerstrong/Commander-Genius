@@ -37,7 +37,7 @@ CInput::CInput()
 #endif
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
 	memset(InputCommand, 0, NUM_INPUTS*MAX_COMMANDS*sizeof(stInputCommand));
-
+    
 	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
 		resetControls(c);
 	memset(&Event,0,sizeof(Event));
@@ -56,7 +56,7 @@ CInput::CInput()
 void CInput::resetControls(int player)
 {
 	int i;
-
+    
 	if(player == 0)
 	{
 		player = 1;
@@ -64,38 +64,38 @@ void CInput::resetControls(int player)
 	}
 	// not a good idea, beause it would write twice in one array, and forget about the last one. (for example 4)
 	// At least this warning will tell the people, that something is not right here!
-
+    
 	m_exit = false;
 	m_cmdpulse = 0;
 	m_joydeadzone = 1024;
-
+    
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
-
+    
 	for(i=0 ; i<MAX_COMMANDS ; i++)
 		InputCommand[player][i].active = false;
-
+    
 	// These are the default keyboard commands
 	i=player-1;
 	InputCommand[i][IC_LEFT].keysym = SDLK_LEFT;
 	InputCommand[i][IC_UP].keysym = SDLK_UP;
 	InputCommand[i][IC_RIGHT].keysym = SDLK_RIGHT;
 	InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
-
+    
 	InputCommand[i][IC_UPPERLEFT].keysym = SDLK_HOME;
 	InputCommand[i][IC_UPPERRIGHT].keysym = SDLK_PAGEUP;
 	InputCommand[i][IC_LOWERLEFT].keysym = SDLK_END;
 	InputCommand[i][IC_LOWERRIGHT].keysym = SDLK_PAGEDOWN;
-
+    
 	InputCommand[i][IC_JUMP].keysym = SDLK_LCTRL;
 	InputCommand[i][IC_POGO].keysym = SDLK_LALT;
 	InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
 	InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
-
+    
 	InputCommand[i][IC_CAMLEAD].keysym = SDLK_c;
 	InputCommand[i][IC_HELP].keysym = SDLK_F1;
 	InputCommand[i][IC_BACK].keysym = SDLK_ESCAPE;
-
+    
 	// And those are the default joystick handlings, but they are disabled by default
 	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_LEFT].joyaxis = 0;
@@ -113,7 +113,7 @@ void CInput::resetControls(int player)
 	InputCommand[i][IC_DOWN].joyaxis = 1;
 	InputCommand[i][IC_DOWN].joyvalue = 32767;
 	InputCommand[i][IC_DOWN].which = 0;
-
+    
 	InputCommand[i][IC_JUMP].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_JUMP].joybutton = 0;
 	InputCommand[i][IC_JUMP].which = 0;
@@ -135,7 +135,7 @@ void CInput::resetControls(int player)
 	InputCommand[i][IC_BACK].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_BACK].joybutton = 6;
 	InputCommand[i][IC_BACK].which = 0;
-
+    
 	setTwoButtonFiring(i, false);
 }
 
@@ -147,7 +147,7 @@ void CInput::resetControls(int player)
 bool CInput::startJoyDriver()
 {
 	g_pLogFile->textOut("JoyDrv_Start() : ");
-
+    
 	if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
 	{
 		g_pLogFile->ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
@@ -161,14 +161,14 @@ bool CInput::startJoyDriver()
 			SDL_JoystickEventState(SDL_ENABLE);
 			g_pLogFile->ftextOut("Detected %i joystick(s).<br>\n", joyNum );
 			g_pLogFile->textOut("The names of the joysticks are:<br>");
-
+            
 			for( size_t i=0; i < joyNum; i++ )
 			{
 				g_pLogFile->ftextOut("    %s<br>", SDL_JoystickName(i));
-
+                
 				SDL_Joystick *pJoystick = SDL_JoystickOpen(i);
 				mp_Joysticks.push_back(pJoystick);
-
+                
 				g_pLogFile->ftextOut("     Axes: %i<br>", SDL_JoystickNumAxes(pJoystick));
 				g_pLogFile->ftextOut("     Buttons: %i <br>", SDL_JoystickNumButtons(pJoystick));
 				g_pLogFile->ftextOut("     Balls: %i <br>", SDL_JoystickNumBalls(pJoystick));
@@ -180,7 +180,7 @@ bool CInput::startJoyDriver()
 			g_pLogFile->ftextOut("No joysticks were found.<br>\n");
 		}
 	}
-
+    
 	return 0;
 }
 
@@ -197,7 +197,7 @@ void CInput::loadControlconfig(void)
 		{
 			// setup input from proper string
 			section = "input" + itoa(i);
-
+            
 			std::string value;
 			Configuration.ReadString( section, "Left", value, "Key 276 (left)");
 			setupInputCommand( InputCommand[i], IC_LEFT, value );
@@ -207,7 +207,7 @@ void CInput::loadControlconfig(void)
 			setupInputCommand( InputCommand[i], IC_RIGHT, value );
 			Configuration.ReadString( section, "Down", value, "Key 274 (down)");
 			setupInputCommand( InputCommand[i], IC_DOWN, value );
-
+            
 			Configuration.ReadString( section, "Lower-Left", value, "Key 279 (end)");
 			setupInputCommand( InputCommand[i], IC_LOWERLEFT, value );
 			Configuration.ReadString( section, "Lower-Right", value, "Key 281 (page down)");
@@ -216,7 +216,7 @@ void CInput::loadControlconfig(void)
 			setupInputCommand( InputCommand[i], IC_UPPERLEFT, value );
 			Configuration.ReadString( section, "Upper-Right", value, "Key 280 (page up)");
 			setupInputCommand( InputCommand[i], IC_UPPERRIGHT, value );
-
+            
 			Configuration.ReadString( section, "Jump", value, "Key 306 (left ctrl)");
 			setupInputCommand( InputCommand[i], IC_JUMP, value );
 			Configuration.ReadString( section, "Pogo", value, "Key 308 (left alt)");
@@ -231,7 +231,7 @@ void CInput::loadControlconfig(void)
 			setupInputCommand( InputCommand[i], IC_HELP, value );
 			Configuration.ReadString( section, "Back", value, "Key 27 (escape)");
 			setupInputCommand( InputCommand[i], IC_BACK, value );
-
+            
 			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
 			Configuration.ReadKeyword( section, "Analog", &mAnalogAxesMovement[i], false);
 		}
@@ -251,7 +251,7 @@ void CInput::saveControlconfig()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
 	Configuration.Parse();
-
+    
 	std::string section;
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
 	{
@@ -281,7 +281,7 @@ void CInput::saveControlconfig()
  * Gets the event name from the last mapped event
  */
 std::string CInput::getNewMappedEvent(int &rPos, unsigned char &rInp)
-{    
+{
     rPos = remapper.mapPosition;
     rInp = remapper.mapDevice;
     return getEventShortName(remapper.mapPosition, remapper.mapDevice);
@@ -293,24 +293,24 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 	std::string buf;
 	if(InputCommand[input][command].joyeventtype == ETYPE_JOYAXIS)
 	{
-	  buf = "J" + itoa(InputCommand[input][command].which) + "A" + itoa(InputCommand[input][command].joyaxis);
-	  if(InputCommand[input][command].joyvalue < 0)
-	    buf += "-";
-	  else
-	    buf += "+";
+        buf = "J" + itoa(InputCommand[input][command].which) + "A" + itoa(InputCommand[input][command].joyaxis);
+        if(InputCommand[input][command].joyvalue < 0)
+            buf += "-";
+        else
+            buf += "+";
 	}
 	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYBUTTON)
 	{
-	  buf = "J" + itoa(InputCommand[input][command].which) + "B" + itoa(InputCommand[input][command].joybutton);
+        buf = "J" + itoa(InputCommand[input][command].which) + "B" + itoa(InputCommand[input][command].joybutton);
 	}
 	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYHAT)
 	{
-	  buf = "J" + itoa(InputCommand[input][command].which) + "H" + itoa(InputCommand[input][command].joyhatval);
+        buf = "J" + itoa(InputCommand[input][command].which) + "H" + itoa(InputCommand[input][command].joyhatval);
 	}
 	else // In case only keyboard was triggered
 	{
-	  buf = SDL_GetKeyName(InputCommand[input][command].keysym);
-	}  
+        buf = SDL_GetKeyName(InputCommand[input][command].keysym);
+	}
 	
 	return buf;
 }
@@ -320,39 +320,39 @@ std::string CInput::getEventName(int command, unsigned char input)
 	std::string buf;
 	if(InputCommand[input][command].joyeventtype == ETYPE_JOYAXIS)
 	{
-	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-A" + itoa(InputCommand[input][command].joyaxis);
-	  if(InputCommand[input][command].joyvalue < 0)
-	    buf += "-";
-	  else
-	    buf += "+";
+        buf = "Joy" + itoa(InputCommand[input][command].which) + "-A" + itoa(InputCommand[input][command].joyaxis);
+        if(InputCommand[input][command].joyvalue < 0)
+            buf += "-";
+        else
+            buf += "+";
 	}
 	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYBUTTON)
 	{
-	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-B" + itoa(InputCommand[input][command].joybutton);
+        buf = "Joy" + itoa(InputCommand[input][command].which) + "-B" + itoa(InputCommand[input][command].joybutton);
 	}
 	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYHAT)
 	{
-	  buf = "Joy" + itoa(InputCommand[input][command].which) + "-H" + itoa(InputCommand[input][command].joyhatval);
+        buf = "Joy" + itoa(InputCommand[input][command].which) + "-H" + itoa(InputCommand[input][command].joyhatval);
 	}
 	else // In case only keyboard was triggered
 	{
-	  buf = "Key ";
-	  buf += itoa(InputCommand[input][command].keysym);
-	  buf += " (";
-	  buf += SDL_GetKeyName(InputCommand[input][command].keysym);
-	  buf += ")";
+        buf = "Key ";
+        buf += itoa(InputCommand[input][command].keysym);
+        buf += " (";
+        buf += SDL_GetKeyName(InputCommand[input][command].keysym);
+        buf += ")";
 	}
-
+    
 	return buf;
 }
 
 void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::string &string )
 {
 	std::string buf = string;
-
+    
 	TrimSpaces(buf);
 	if(buf == "") return;
-
+    
 	if(strCaseStartsWith(string, "Joy"))
 	{
 		std::string buf2;
@@ -363,7 +363,7 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 		buf = buf.substr(pos+1);
 		buf2 = buf.substr(0,1);
 		buf = buf.substr(1);
-
+        
 		if(buf2 == "A")
 		{
 			pInput[action].joyeventtype = ETYPE_JOYAXIS;
@@ -385,7 +385,7 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 		}
 		return;
 	}
-
+    
 	if(strCaseStartsWith(string, "Key"))
 	{
 		pInput[action].joyeventtype = ETYPE_KEYBOARD;
@@ -418,7 +418,7 @@ void CInput::setupNewEvent(Uint8 device, int position)
 void CInput::readNewEvent()
 {
 	stInputCommand &lokalInput = InputCommand[remapper.mapDevice][remapper.mapPosition];
-
+    
 	// This function is used to configure new input keys.
 	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
 	// We should fix the menu for iPhone so that this function doesn't get called.
@@ -426,11 +426,11 @@ void CInput::readNewEvent()
 	printf("WARNING: called readNewEvent on iphone\n");
 	return;
 #endif
-
+    
 	memset(&lokalInput, 0, sizeof(stInputCommand));
 	if(!m_EventList.empty())
 		m_EventList.clear();
-
+    
 	while( SDL_PollEvent( &Event ) )
 	{
 		switch ( Event.type )
@@ -442,13 +442,13 @@ void CInput::readNewEvent()
 				exit(0);
 #endif
 				break;
-
+                
 			case SDL_KEYDOWN:
 				lokalInput.joyeventtype = ETYPE_KEYBOARD;
 				lokalInput.keysym = Event.key.keysym.sym;
 				remapper.mappingInput = false;
 				break;
-
+                
 			case SDL_JOYBUTTONDOWN:
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
@@ -460,13 +460,13 @@ void CInput::readNewEvent()
 				remapper.mappingInput = false;
 #endif
 				break;
-
+                
 			case SDL_JOYAXISMOTION:
-
+                
 				// Deadzone check. Double, because being a
 				// new event to be read it should make better to configure
 				if( (Event.jaxis.value > 2*m_joydeadzone ) ||
-				    (Event.jaxis.value < -2*m_joydeadzone ) )
+                   (Event.jaxis.value < -2*m_joydeadzone ) )
 				{
 					lokalInput.joyeventtype = ETYPE_JOYAXIS;
 					lokalInput.joyaxis = Event.jaxis.axis;
@@ -474,9 +474,9 @@ void CInput::readNewEvent()
 					lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
 					remapper.mappingInput = false;
 				}
-
+                
 				break;
-
+                
 			case SDL_JOYHATMOTION:
 				lokalInput.joyeventtype = ETYPE_JOYHAT;
 				lokalInput.joyhatval = Event.jhat.value;
@@ -513,94 +513,94 @@ void CInput::pollEvents()
     
     if(remapper.mappingInput)
     {
-	readNewEvent();
-	return;
+        readNewEvent();
+        return;
     }
     
 	CVec Pos;
 	CRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
-
+    
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
-
+    
 	for(int i=0 ; i<MAX_COMMANDS ; i++)
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
-
+    
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
 	{
 		switch( Event.type )
 		{
-		case SDL_QUIT:
-			g_pLogFile->textOut("SDL: Got quit event!");
-			m_exit = true;
-			break;
-		case SDL_KEYDOWN:
-			processKeys(1);
-			break;
-		case SDL_KEYUP:
-			processKeys(0);
-			break;
-		case SDL_JOYAXISMOTION:
-			processJoystickAxis();
-			break;
-		case SDL_JOYBUTTONDOWN:
-			processJoystickButton(1);
-			break;
-		case SDL_JOYBUTTONUP:
-			processJoystickButton(0);
-			break;
-
-		case SDL_JOYHATMOTION:
-			processJoystickHat();
-			break;
-
+            case SDL_QUIT:
+                g_pLogFile->textOut("SDL: Got quit event!");
+                m_exit = true;
+                break;
+            case SDL_KEYDOWN:
+                processKeys(1);
+                break;
+            case SDL_KEYUP:
+                processKeys(0);
+                break;
+            case SDL_JOYAXISMOTION:
+                processJoystickAxis();
+                break;
+            case SDL_JOYBUTTONDOWN:
+                processJoystickButton(1);
+                break;
+            case SDL_JOYBUTTONUP:
+                processJoystickButton(0);
+                break;
+                
+            case SDL_JOYHATMOTION:
+                processJoystickHat();
+                break;
+                
 #ifdef MOUSEWRAPPER
-		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP:
-		case SDL_MOUSEMOTION:
-			processMouse(Event);
-			break;
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+            case SDL_MOUSEMOTION:
+                processMouse(Event);
+                break;
 #endif
-
-		case SDL_VIDEORESIZE:
-			g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
-					CRect<Uint16>(Event.resize.w, Event.resize.h) );
-			break;
-
-		case SDL_MOUSEBUTTONDOWN:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
-			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
-			break;
-
-		case SDL_MOUSEBUTTONUP:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
-			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
-			break;
-
-		case SDL_MOUSEMOTION:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
-			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
-			break;
+                
+            case SDL_VIDEORESIZE:
+                g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
+                                                                   CRect<Uint16>(Event.resize.w, Event.resize.h) );
+                break;
+                
+            case SDL_MOUSEBUTTONDOWN:
+                transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
+                m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
+                break;
+                
+            case SDL_MOUSEBUTTONUP:
+                transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
+                m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
+                break;
+                
+            case SDL_MOUSEMOTION:
+                transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
+                m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
+                break;
 		}
 	}
 #ifdef MOUSEWRAPPER
 	// Handle mouse emulation layer
 	processMouse();
 #endif
-
+    
 	for(unsigned int i = 0; i < KEYTABLE_SIZE; ++i)
 		firsttime_immediate_keytable[i]
 		= !last_immediate_keytable[i] && immediate_keytable[i];
-
+    
 	for(int i=0 ; i<MAX_COMMANDS ; i++)
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 			InputCommand[j][i].firsttimeactive
 			= !InputCommand[j][i].lastactive && InputCommand[j][i].active;
-
+    
 #ifndef MOUSEWRAPPER
-
+    
 	// TODO: I'm not sure, if that should go here...
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
@@ -610,7 +610,7 @@ void CInput::pollEvents()
 		value = !value;
 		g_pLogFile->textOut(GREEN,"Fullscreen mode triggered by user!<br>");
 		g_pVideoDriver->isFullscreen(value);
-
+        
 		// initialize/activate all drivers
 		g_pLogFile->ftextOut("Restarting graphics driver...<br>");
 		if ( g_pVideoDriver->applyMode() && g_pVideoDriver->start() )
@@ -624,10 +624,10 @@ void CInput::pollEvents()
 			g_pVideoDriver->applyMode();
 			g_pVideoDriver->start();
 		}
-
+        
 		g_pInput->flushAll();
 	}
-
+    
 	// Check, if LALT+Q or LALT+F4 was pressed
 	if(getHoldedKey(KALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
 	{
@@ -635,11 +635,11 @@ void CInput::pollEvents()
 		m_exit = true;
 	}
 #endif
-
+    
 #if defined(WIZ) || defined(GP2X)
 	WIZ_AdjustVolume( volume_direction );
 #endif
-
+    
     // Fix up settings if everything gets messed up
 	if (g_pInput->getHoldedKey(KF) &&
 		g_pInput->getHoldedKey(KI) &&
@@ -687,14 +687,14 @@ void CInput::processJoystickHat()
 		for(int i=0 ; i<MAX_COMMANDS ; i++)
 		{
 			stInputCommand &command = InputCommand[j][i];
-
+            
 			if( command.joyeventtype == ETYPE_JOYHAT &&
-				command.which == Event.jhat.which )
+               command.which == Event.jhat.which )
 			{
 				command.active = false;
 				// Check if Joystick hats are configured for this event
 				if(
-					(Event.jhat.value & command.joyhatval) )
+                   (Event.jhat.value & command.joyhatval) )
 				{
 					command.active = true;
 				}
@@ -745,11 +745,11 @@ void CInput::processKeys(int keydown)
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 		{
 			if(InputCommand[j][i].keysym == Event.key.keysym.sym &&
-					InputCommand[j][i].joyeventtype == ETYPE_KEYBOARD)
+               InputCommand[j][i].joyeventtype == ETYPE_KEYBOARD)
 				InputCommand[j][i].active = (keydown) ? true : false;
 		}
 	}
-
+    
 	// ... and for general keys
     switch(Event.key.keysym.sym)
 	{
@@ -758,11 +758,11 @@ void CInput::processKeys(int keydown)
 		case SDLK_UP:	immediate_keytable[KUP]		= keydown;  break;
 		case SDLK_RIGHT:	immediate_keytable[KRIGHT]	= keydown;  break;
 		case SDLK_DOWN:	immediate_keytable[KDOWN]	= keydown;  break;
-
+            
 			// Page Keys
 		case SDLK_PAGEUP:	immediate_keytable[KPGUP]	= keydown;  break;
 		case SDLK_PAGEDOWN:	immediate_keytable[KPGDN]		= keydown;  break;
-
+            
 		case SDLK_RETURN:immediate_keytable[KENTER]	= keydown;  break;
 		case SDLK_RCTRL:immediate_keytable[KCTRL]	= keydown;  break;
 		case SDLK_LCTRL:immediate_keytable[KCTRL]	= keydown;  break;
@@ -773,9 +773,9 @@ void CInput::processKeys(int keydown)
 		case SDLK_LSHIFT:immediate_keytable[KSHIFT]	= keydown;  break;
 		case SDLK_RSHIFT:immediate_keytable[KSHIFT]	= keydown;  break;
 		case SDLK_ESCAPE:immediate_keytable[KQUIT]	= keydown;  break;
-
+            
 		case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = keydown; break;
-
+            
 		case SDLK_QUOTE:immediate_keytable[KQUOTE]	= keydown;  break;
 		case SDLK_COMMA:immediate_keytable[KCOMMA]	= keydown;  break;
 		case SDLK_PERIOD:immediate_keytable[KPERIOD]	= keydown;  break;
@@ -786,7 +786,7 @@ void CInput::processKeys(int keydown)
 		case SDLK_BACKSLASH:immediate_keytable[KBACKSLASH]	= keydown;  break;
 		case SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACKET]	= keydown;  break;
 		case SDLK_BACKQUOTE:immediate_keytable[KBACKQUOTE]	= keydown;  break;
-
+            
 		case SDLK_a:immediate_keytable[KA]	= keydown;  break;
 		case SDLK_b:immediate_keytable[KB]	= keydown;  break;
 		case SDLK_c:immediate_keytable[KC]	= keydown;  break;
@@ -813,7 +813,7 @@ void CInput::processKeys(int keydown)
 		case SDLK_x:immediate_keytable[KX]	= keydown;  break;
 		case SDLK_y:immediate_keytable[KY]	= keydown;  break;
 		case SDLK_z:immediate_keytable[KZ]	= keydown;  break;
-
+            
 		case SDLK_F1:immediate_keytable[KF1]	= keydown;  break;
 		case SDLK_F2:immediate_keytable[KF2]	= keydown;  break;
 		case SDLK_F3:immediate_keytable[KF3]	= keydown;  break;
@@ -824,7 +824,7 @@ void CInput::processKeys(int keydown)
 		case SDLK_F8:immediate_keytable[KF8]	= keydown;  break;
 		case SDLK_F9:immediate_keytable[KF9]	= keydown;  break;
 		case SDLK_F10:immediate_keytable[KF10]	= keydown;  break;
-
+            
 		case SDLK_0:immediate_keytable[KNUM0] = keydown;  break;
 		case SDLK_1:immediate_keytable[KNUM1] = keydown;  break;
 		case SDLK_2:immediate_keytable[KNUM2] = keydown;  break;
@@ -835,7 +835,7 @@ void CInput::processKeys(int keydown)
 		case SDLK_7:immediate_keytable[KNUM7] = keydown;  break;
 		case SDLK_8:immediate_keytable[KNUM8] = keydown;  break;
 		case SDLK_9:immediate_keytable[KNUM9] = keydown;  break;
-
+            
 		case SDLK_EXCLAIM:immediate_keytable[KEXCLAIM]	= keydown;  break;
 		case SDLK_QUOTEDBL:immediate_keytable[KDBLQUOTE]	= keydown;  break;
 		case SDLK_HASH:immediate_keytable[KHASH]	= keydown;  break;
@@ -853,10 +853,10 @@ void CInput::processKeys(int keydown)
 		case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= keydown;  break;
 		case SDLK_MINUS:immediate_keytable[KMINUS]	= keydown;  break;
 		case SDLK_PLUS:immediate_keytable[KPLUS]	= keydown;  break;
-
+            
 		default: break;
 	}
-
+    
 	if(getHoldedKey(KSHIFT))
 	{
 		if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = keydown;
@@ -897,7 +897,7 @@ bool CInput::getHoldedKey(int key)
 #endif
 	if(immediate_keytable[key])
 		return true;
-
+    
 	return false;
 }
 
@@ -915,7 +915,7 @@ bool CInput::getPressedKey(int key)
 		firsttime_immediate_keytable[key] = false;
 		return true;
 	}
-
+    
 	return false;
 }
 
@@ -930,7 +930,7 @@ bool CInput::getPulsedKey(int key, int msec)
 	if(immediate_keytable[key])
 	{
 		bool value = true;
-
+        
 		if(m_cmdpulse % msec != 0)
 		{
 			value = false;
@@ -940,7 +940,7 @@ bool CInput::getPulsedKey(int key, int msec)
 	}
 	if(!immediate_keytable[key] && last_immediate_keytable[key])
 		m_cmdpulse = 0;
-
+    
 	return false;
 }
 
@@ -952,7 +952,7 @@ std::string CInput::getPressedTypingKey(void)
 {
 	int i;
 	std::string buf;
-
+    
 	for(i=KA ; i<=KZ ; i++)
 	{
 		if (getHoldedKey(KSHIFT) && getPressedKey(i))
@@ -974,7 +974,7 @@ std::string CInput::getPressedTypingKey(void)
 			return buf;
 		}
 	}
-		for(i=KLEFTBRACKET ; i<=KBACKQUOTE ; i++)
+    for(i=KLEFTBRACKET ; i<=KBACKQUOTE ; i++)
 	{
 		if(getPressedKey(i))
 		{
@@ -982,7 +982,7 @@ std::string CInput::getPressedTypingKey(void)
 			return buf;
 		}
 	}
-		for(i=KLEFTBRACE ; i<=KTILDE ; i++)
+    for(i=KLEFTBRACE ; i<=KTILDE ; i++)
 	{
 		if(getPressedKey(i))
 		{
@@ -1001,7 +1001,7 @@ std::string CInput::getPressedNumKey(void)
 {
 	int i;
 	std::string buf;
-
+    
 	for(i=KNUM0 ; i<=KNUM9 ; i++)
 	{
 		if(getPressedKey(i))
@@ -1020,7 +1020,7 @@ std::string CInput::getPressedNumKey(void)
 bool CInput::getPressedIsTypingKey(void)
 {
 	int i;
-
+    
 	if(getHoldedKey(KSHIFT))
 		return true;
 	else
@@ -1042,13 +1042,13 @@ bool CInput::getPressedIsTypingKey(void)
 bool CInput::getPressedIsNumKey(void)
 {
 	int i;
-
-		for(i=KNUM0 ; i<=KNUM9 ; i++)
-		{
-			if(getHoldedKey(i))
-				return true;
-		}
-		return false;
+    
+    for(i=KNUM0 ; i<=KNUM9 ; i++)
+    {
+        if(getHoldedKey(i))
+            return true;
+    }
+    return false;
 }
 
 bool CInput::getPressedAnyKey(void)
@@ -1109,7 +1109,7 @@ bool CInput::getPressedCommand(int player, int command)
 		InputCommand[player][command].firsttimeactive = false;
 		return true;
 	}
-
+    
 	return false;
 }
 
@@ -1126,7 +1126,7 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
 	if(InputCommand[player][command].active)
 	{
 		bool value = true;
-
+        
 		if(m_cmdpulse % msec != 0)
 		{
 			value = false;
@@ -1136,7 +1136,7 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
 	}
 	if(!InputCommand[player][command].active && InputCommand[player][command].lastactive )
 		m_cmdpulse = 0;
-
+    
 	return false;
 }
 
@@ -1145,7 +1145,7 @@ bool CInput::mouseClicked()
 {
 	// If you click, then open the menu
 	std::deque< std::shared_ptr<CEvent> >::iterator it = m_EventList.begin();
-
+    
 	for( ; it != m_EventList.end() ; it++ )
 	{
 		if( MouseMoveEvent *mouseevent = dynamic_cast<MouseMoveEvent*> (it->get()) )
@@ -1156,7 +1156,7 @@ bool CInput::mouseClicked()
 				m_EventList.erase(it);
 				return true;
 			}
-
+            
 		}
 	}
 	return false;
@@ -1176,7 +1176,7 @@ bool CInput::getPressedAnyCommand(int player)
 	for(int i=0 ; i<MAX_COMMANDS ; i++)
 		if(getPressedCommand(player,i))
 			return true;
-
+    
 	return false;
 }
 
@@ -1185,7 +1185,7 @@ bool CInput::getPressedAnyButtonCommand(const int player)
 	for(int i=IC_JUMP ; i<MAX_COMMANDS ; i++)
 		if(getPressedCommand(player,i))
 			return true;
-
+    
 	return false;
 }
 
@@ -1227,7 +1227,7 @@ struct TouchButton
 	stInputCommand* cmd;
 	int immediateIndex;
 	int x, y, w, h;
-
+    
 	bool isInside(int _x, int _y) const {
 		return
 		x <= _x && _x < x + w &&
@@ -1243,23 +1243,23 @@ static const int w = 320, h = 200;
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 	static const int middlex = w / 2;
 	static const int middley = h / 2;
-
+    
 	static TouchButton phoneButtons[] = {
 		{ &InputCommand[0][IC_LEFT],	KLEFT,	0, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_UP],		KUP,	w / 6, middley, w / 6, h / 4},
 		{ &InputCommand[0][IC_RIGHT],	KRIGHT,	w / 3, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_DOWN],	KDOWN,	w / 6, middley + h / 4, w / 6, h / 4},
-
+        
 		{ &InputCommand[0][IC_JUMP],	-1,		middlex, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_POGO],	-1,		middlex + w / 6, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
-
+        
 		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
 		{ &InputCommand[0][IC_BACK],	KQUIT,	5*w/6, 0, w/6, h/6},
 		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
-	//	{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
+        //	{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
 	};
-
+    
 	return phoneButtons;
 }
 
@@ -1287,10 +1287,10 @@ static bool checkMousewrapperKey(int& key) {
 		case KENTER: case KSPACE: case KQUIT: case KF3:
 			return true;
 	}
-
+    
 	if(key == KY) { key = KENTER; return true; }
 	if(key == KN) { key = KQUIT; return true; }
-
+    
 	//errors << "checkMousewrapperKey: key " << key << " not useable for iPhone" << endl;
 	//return false;
 	// just too many keys ...
@@ -1299,15 +1299,15 @@ static bool checkMousewrapperKey(int& key) {
 
 void CInput::processMouse() {
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
-
+    
 	for(int i = 0; i < phoneButtonN; ++i) {
 		bool down = phoneButton_MouseIndex[i].size() > 0;
-
+        
 		TouchButton& b = phoneButtons[i];
-
+        
 		if(b.cmd)
 			b.cmd->active = down;
-
+        
 		// handle immediate keys
 		if(b.immediateIndex >= 0)
 			immediate_keytable[b.immediateIndex] = down;
@@ -1315,31 +1315,31 @@ void CInput::processMouse() {
 }
 
 void CInput::processMouse(SDL_Event& ev) {
-
+    
 #if SDL_VERSION_ATLEAST(1, 3, 0)
 	SDL_Rect screenRect;
-
+    
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
 		// transform mouse coordinates
 		// WARNING: I don't really understand that. It's probably somehow iPhoneRotateScreen + SDL stuff.
 		ev.button.y -= screenRect.h - 200;
 	}
 #endif
-
+    
 	// NOTE: The ev.button.which / the multitouch support was removed in SDL 1.3 trunk
 	// with changeset 4465:3e69e077cb95 on May09. It is planned to add a real multitouch API
 	// at some later time (maybe Aug2010).
 	// As long as we don't have that, we must use the old SDL 1.3 revision 4464.
-
+    
 	switch(ev.type) {
 		case SDL_MOUSEBUTTONDOWN:
 			processMouse(ev.button.x, ev.button.y, true, ev.button.which);
 			break;
-
+            
 		case SDL_MOUSEBUTTONUP:
 			processMouse(ev.button.x, ev.button.y, false, ev.button.which);
 			break;
-
+            
 		case SDL_MOUSEMOTION:
 			processMouse(ev.motion.x - ev.motion.xrel, ev.motion.y - ev.motion.yrel, false, ev.motion.which);
 			processMouse(ev.motion.x, ev.motion.y, true, ev.motion.which);
@@ -1349,33 +1349,33 @@ void CInput::processMouse(SDL_Event& ev) {
 
 void CInput::processMouse(int x, int y, bool down, int mouseindex) {
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
-
+    
 	for(int i = 0; i < phoneButtonN; ++i) {
 		TouchButton& b = phoneButtons[i];
 		if(b.isInside(x, y)) {
 			phoneButtonLasttime[i] = down ? SDL_GetTicks() : 0;
 			if(down)	phoneButton_MouseIndex[i].insert(mouseindex);
 			else		phoneButton_MouseIndex[i].erase(mouseindex);
-
+            
 			break;
 		}
 	}
-
+    
 }
 
 #ifdef USE_OPENGL
 static void drawButton(TouchButton& button, bool down) {
 	// similar mysterious constant as in renderTexture/initGL
 	//glViewport(0,255,w,h);
-
+    
 	float w = 512.0f, h = 256.0f;
-
+    
 	int crop = 2;
 	float x1 = float(button.x + crop) / w;
 	float x2 = float(button.x+button.w - crop) / w;
 	float y1 = float(button.y + crop) / h;
 	float y2 = float(button.y+button.h - crop) / h;
-
+    
 	GLfloat vertices[] =
 	{
 		x1, y1,
@@ -1383,26 +1383,26 @@ static void drawButton(TouchButton& button, bool down) {
 		x2, y2,
 		x1, y2,
 	};
-
+    
 	//Render the vertices by pointing to the arrays.
     glEnableClientState(GL_VERTEX_ARRAY);
-
+    
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
-
+    
 	glEnable(GL_BLEND);
 	if(down)
 		glColor4f(0,0,0, 0.5);
 	else
 		glColor4f(0,0,0, 0.2);
-
+    
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	//glBlendFunc(GL_ONE, GL_ZERO);
-
+    
 	//Finally draw the arrays.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisable(GL_BLEND);
-
+    
 }
 #endif
 
@@ -1414,14 +1414,14 @@ void CInput::renderOverlay()
 #if defined(MOUSEWRAPPER)
 	static bool showControls = true;
 	static bool buttonShowHideCtrlWasDown = false;
-
+    
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
-
+    
 	for(int i = phoneButtonN - 1; i >= 0; --i) {
 		TouchButton& b = phoneButtons[i];
 		bool down = phoneButton_MouseIndex[i].size() > 0;
 		if(showControls) drawButton(b, down);
-
+        
 		if(b.immediateIndex == KSHOWHIDECTRLS) {
 			if(buttonShowHideCtrlWasDown && !down)
 				showControls = !showControls;

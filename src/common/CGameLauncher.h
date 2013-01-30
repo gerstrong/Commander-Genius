@@ -37,38 +37,38 @@ struct GameEntry
     bool supported;
     Uint16 episode;
     bool crcpass;
-
+    
     GameEntry() :  version(0),
-    			   supported(false),
-    			   episode(0),
-    			   crcpass(false) {}
-
+    supported(false),
+    episode(0),
+    crcpass(false) {}
+    
 };
 
 class CGameLauncher
 {
 public:
 	CGameLauncher();
-
+    
 	typedef std::vector<std::string> DirList;
-
+    
 	bool init();
     void cleanup();
-
+    
 	void process();
-
+    
 	int getChosengame(){ return m_chosenGame; }
 	bool setChosenGame(int chosengame) { m_chosenGame = chosengame; return waschosen();  }
 	bool waschosen(){ return (m_chosenGame>=0); }
 	void letchooseagain() { m_chosenGame=-1; }
-
+    
 	bool getQuit(){ return m_mustquit; }
 	std::string getDirectory(Uint8 slot) { return m_Entries.at(slot).path; }
 	Uint8 getEpisode(Uint8 slot) { return m_Entries.at(slot).episode; }
 	std::string getEP1Directory() { return m_Entries.at(m_ep1slot).path; }
-
+    
 private:
-
+    
 	bool m_mustquit;
 	int m_chosenGame;
 	Uint8 m_episode;
@@ -78,15 +78,15 @@ private:
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
 	CGUIDialog mLauncherDialog;
-
+    
 	CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
 	CGUITextSelectionList *mpSelList;
 	int mSelection;
-
+    
 	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);
 	bool scanExecutables(const std::string& path);
-
+    
     void getLabels();
     std::string scanLabels(const std::string& path);
     void putLabels();

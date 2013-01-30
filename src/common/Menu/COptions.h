@@ -17,13 +17,13 @@ class COptions : public CBaseMenu
 {
 public:
 	COptions();
-
+    
 	void init();
-
+    
 	void process();
-
+    
 	void release();
-
+    
 private:
 	std::list<CGUISwitch*> mpOptionList;
 	stOption *mpOption;

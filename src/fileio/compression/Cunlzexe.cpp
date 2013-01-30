@@ -10,38 +10,38 @@
 
 #include "Cunlzexe.h"
 /* unlzexe ver 0.5 (PC-VAN UTJ44266 Kou )
-*   UNLZEXE converts the compressed file by lzexe(ver.0.90,0.91) to the
-*   UNcompressed executable one.
-*
-*   usage:  UNLZEXE packedfile[.EXE] [unpackedfile.EXE]
-
-v0.6  David Kirschbaum, Toad Hall, kirsch@usasoc.soc.mil, Jul 91
-	Problem reported by T.Salmi (ts@uwasa.fi) with UNLZEXE when run
-	with TLB-V119 on 386's.
-	Stripping out the iskanji and isjapan() stuff (which uses a somewhat
-	unusual DOS interrupt) to see if that's what's biting us.
-
---  Found it, thanks to Dan Lewis (DLEWIS@SCUACC.SCU.EDU).
-	Silly us:  didn't notice the "r.h.al=0x3800;" in isjapan().
-	Oh, you don't see it either?  INT functions are called with AH
-	having the service.  Changing to "r.x.ax=0x3800;".
-
-v0.7  Alan Modra, amodra@sirius.ucs.adelaide.edu.au, Nov 91
-    Fixed problem with large files by casting ihead components to long
-    in various expressions.
-    Fixed MinBSS & MaxBSS calculation (ohead[5], ohead[6]).  Now UNLZEXE
-    followed by LZEXE should give the original file.
-
-v0.8  Vesselin Bontchev, bontchev@fbihh.informatik.uni-hamburg.de, Aug 92
-    Fixed recognition of EXE files - both 'MZ' and 'ZM' in the header
-    are recognized.
-    Recognition of compressed files made more robust - now just
-    patching the 'LZ90' and 'LZ91' strings will not fool the program.
-
-v0.81 Embedded Version for CG by gerstrong. This version only does
-	operations in the memory as the file is already read, and can be used
-	straight forward. Stripped down a lot of obsolete old DOS Code
-*/
+ *   UNLZEXE converts the compressed file by lzexe(ver.0.90,0.91) to the
+ *   UNcompressed executable one.
+ *
+ *   usage:  UNLZEXE packedfile[.EXE] [unpackedfile.EXE]
+ 
+ v0.6  David Kirschbaum, Toad Hall, kirsch@usasoc.soc.mil, Jul 91
+ Problem reported by T.Salmi (ts@uwasa.fi) with UNLZEXE when run
+ with TLB-V119 on 386's.
+ Stripping out the iskanji and isjapan() stuff (which uses a somewhat
+ unusual DOS interrupt) to see if that's what's biting us.
+ 
+ --  Found it, thanks to Dan Lewis (DLEWIS@SCUACC.SCU.EDU).
+ Silly us:  didn't notice the "r.h.al=0x3800;" in isjapan().
+ Oh, you don't see it either?  INT functions are called with AH
+ having the service.  Changing to "r.x.ax=0x3800;".
+ 
+ v0.7  Alan Modra, amodra@sirius.ucs.adelaide.edu.au, Nov 91
+ Fixed problem with large files by casting ihead components to long
+ in various expressions.
+ Fixed MinBSS & MaxBSS calculation (ohead[5], ohead[6]).  Now UNLZEXE
+ followed by LZEXE should give the original file.
+ 
+ v0.8  Vesselin Bontchev, bontchev@fbihh.informatik.uni-hamburg.de, Aug 92
+ Fixed recognition of EXE files - both 'MZ' and 'ZM' in the header
+ are recognized.
+ Recognition of compressed files made more robust - now just
+ patching the 'LZ90' and 'LZ91' strings will not fool the program.
+ 
+ v0.81 Embedded Version for CG by gerstrong. This version only does
+ operations in the memory as the file is already read, and can be used
+ straight forward. Stripped down a lot of obsolete old DOS Code
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -70,28 +70,28 @@ void Cunlzexe::put16bitWord(WORD_16BIT value, std::vector<BYTE> &outdata)
 
 bool Cunlzexe::decompress(BYTE *data, std::vector<BYTE> &outdata)
 {
-
+    
     int ver=0;
-
-
+    
+    
     if(rdhead(data,&ver)!=SUCCESS)
     {
     	return false;
     }
-
+    
     if(mkreltbl(data, outdata, ver)!=SUCCESS)
     {
         return false;
     }
-
+    
     m_headersize = outdata.size();
-
+    
     if(unpack(data, outdata)!=SUCCESS)
     {
         return false;
     }
     wrhead(outdata);
-
+    
     return true;
 }
 
@@ -164,14 +164,14 @@ static BYTE sig90 [] = {			/* v0.8 */
 int Cunlzexe::rdhead(BYTE *data_ptr ,int *ver)
 {
     long entry;
-
+    
     memcpy(ihead, data_ptr, sizeof ihead);
     memcpy (ohead, ihead, sizeof ohead);
     if((ihead [0] != 0x5a4d && ihead [0] != 0x4d5a) ||
-    		ihead [0x0d] != 0 || ihead [0x0c] != 0x1c)
+       ihead [0x0d] != 0 || ihead [0x0c] != 0x1c)
     	return FAILURE;
     entry = ((long) (ihead [4] + ihead[0x0b]) << 4) + ihead[0x0a];
-
+    
     memcpy(sigbuf, &data_ptr[entry], sizeof sigbuf);
     if (memcmp (sigbuf, sig90, sizeof sigbuf) == 0) {
     	*ver = 90;
@@ -189,7 +189,7 @@ int Cunlzexe::mkreltbl(BYTE *p_data, std::vector<BYTE> &outdata,int ver)
 {
     long fpos;
     int i;
-
+    
     fpos=(long)(ihead[0x0b]+ihead[4])<<4;		/* goto CS:0000 */
     memcpy(inf, &p_data[fpos],  (sizeof inf[0]) *  0x08);
     ohead[0x0a]=inf[0];		/* IP */
@@ -202,29 +202,29 @@ int Cunlzexe::mkreltbl(BYTE *p_data, std::vector<BYTE> &outdata,int ver)
     /* inf[7]:check sum of decompresser with compressd relocation table(Ver.0.90) */
     ohead[0x0c]=0x1c;		/* start position of relocation table */
     outdata.assign(0x1cL,0);
-
+    
     switch(ver)
     {
-    case 90: i=reloc90(p_data, outdata, fpos);
-             break;
-    case 91: i=reloc91(p_data, outdata, fpos);
-             break;
-    default: i=FAILURE; break;
+        case 90: i=reloc90(p_data, outdata, fpos);
+            break;
+        case 91: i=reloc91(p_data, outdata, fpos);
+            break;
+        default: i=FAILURE; break;
     }
-
+    
     if(i!=SUCCESS)
     {
         printf("error at relocation table.\n");
         return (FAILURE);
     }
-
+    
     fpos = outdata.size();
     i = (0x200 - (int) fpos) & 0x1ff;
     ohead[4] = (int) ((fpos+i)>>4);
-
+    
     for( ; i>0; i--)
     	outdata.push_back(0);
-
+    
     return(SUCCESS);
 }
 
@@ -234,9 +234,9 @@ int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos)
     unsigned int c;
     WORD_16BIT rel_count=0;
     WORD_16BIT rel_seg,rel_off;
-
-     p_data += fpos+0x19d;
-
+    
+    p_data += fpos+0x19d;
+    
     rel_seg=0;
     do
     {
@@ -245,7 +245,7 @@ int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos)
         for(;c>0;c--) {
             rel_off=get16bitWord(p_data);
             p_data += 2;
-
+            
             put16bitWord(rel_off, outdata);
             put16bitWord(rel_seg, outdata);
             rel_count++;
@@ -261,9 +261,9 @@ int Cunlzexe::reloc91(BYTE *p_data, std::vector<BYTE> &outdata, long fpos)
     WORD_16BIT span;
     WORD_16BIT rel_count=0;
     WORD_16BIT rel_seg, rel_off;
-
+    
     p_data += fpos+0x158;
-    				/* 0x158=compressed relocation table address */
+    /* 0x158=compressed relocation table address */
     WORD_16BIT temp;
     rel_off=0; rel_seg=0;
     for(;;) {
@@ -308,7 +308,7 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata)
     unsigned long inpos;
     unsigned long outpos;
     unsigned long initial_outpos;
-
+    
     inpos = ((long)ihead[0x0b]-(long)inf[4]+(long)ihead[4])<<4;
     initial_outpos = outpos = (long)ohead[4]<<4;
     initbits(&bits, p_input, inpos);
@@ -351,10 +351,10 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata)
             {
                 len = p_input[inpos];
                 inpos++;
-
+                
                 if(len==0)
                     break;    /* end mark of compressed load module */
-
+                
                 if(len==1)
                     continue; /* segment change */
                 else
@@ -383,13 +383,13 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata)
 /* write EXE header*/
 void Cunlzexe::wrhead(std::vector<BYTE> &outdata) {
     if(ihead[6]!=0) {
-	ohead[5]-= inf[5] + ((inf[6]+16-1)>>4) + 9;	/* v0.7 */
+        ohead[5]-= inf[5] + ((inf[6]+16-1)>>4) + 9;	/* v0.7 */
         if(ihead[6]!=0xffff)
             ohead[6]-=(ihead[5]-ohead[5]);
     }
     ohead[1]=((WORD_16BIT)loadsize+(ohead[4]<<4)) & 0x1ff;	/* v0.7 */
     ohead[2]=(WORD_16BIT)((loadsize+((long)ohead[4]<<4)+0x1ff) >> 9); /* v0.7 */
-
+    
     memcpy(&outdata[0], ohead, (sizeof ohead[0])*0x0e );
 }
 
@@ -412,7 +412,7 @@ int Cunlzexe::getbit(bitstream *p, unsigned long &inpos) {
         p->count= 0x10;
     }else
         p->buf >>= 1;
-
+    
     return b;
 }
 

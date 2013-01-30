@@ -28,9 +28,9 @@ timer(0)
 {
 	m_Rect.x = 4;	m_Rect.y = 2;
 	m_Rect.w = 80;	m_Rect.h = 32;
-
+    
 	size_t Episode = g_pBehaviorEngine->getEpisode();
-
+    
 	if( Episode>=1 && Episode<=3 )
 		CreateBackground();
 	else
@@ -52,7 +52,7 @@ void CHUD::CreateBackground()
 	// Create a surface for that
 	SDL_Surface *temp;
 	mpBackground.reset( CG_CreateRGBSurface( m_Rect ) );
-
+    
 	SDL_Rect headsrcrect, headdstrect;
 	headsrcrect.x = 0;
 	headsrcrect.y = 0;
@@ -64,30 +64,30 @@ void CHUD::CreateBackground()
 	temp = SDL_DisplayFormat(mpBackground.get());
 	mpBackground.reset(temp);
 	
-	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);	
+	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);
 	SDL_FillRect(temp, NULL, colorkey );
 	SDL_SetColorKey( temp, SDL_SRCCOLORKEY, colorkey );
-
+    
 	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
-	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );	
-
+	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
+    
 	int sprite=0;
 	const int Episode = g_pBehaviorEngine->getEpisode();
 	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
-
+    
 	// Draw the shot
 	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(sprite);
 	headdstrect.w = headsrcrect.w = KeenGunSprite.getWidth();
 	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
 	headdstrect.x = m_Rect.x+45-(headsrcrect.w/2);
 	headdstrect.y = m_Rect.y+19-(headsrcrect.h/2);
-		
+    
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
 	
 	mpHUDBlit.reset(SDL_DisplayFormatAlpha(mpBackground.get()), &SDL_FreeSurface);
-
+    
 	// Draw the rounded borders
 	DrawCircle(0, 0, 80);
 	DrawCircle(17, 15, 22);
@@ -100,11 +100,11 @@ void CHUD::CreateBackground()
 void CHUD::DrawCircle(int x, int y, int width)
 {
 	SDL_Rect text, outline;
-
+    
 	Uint8 r,g,b;
 	CFont &Font = g_pGfxEngine->getFont(1);
 	Font.getBGColour(&r, &g, &b);
-
+    
 	outline.x = x+4;
 	outline.y = y;
 	outline.w = width-8;
@@ -155,7 +155,7 @@ void CHUD::renderGalaxy()
 	score = (m_oldScore<999999999) ? m_oldScore : 999999999;
 	lives = (m_lives<99) ? m_lives : 99;
 	charges = (m_oldCharges<99) ? m_oldCharges : 99;
-
+    
 	// Draw the HUD with all the digits
 	SDL_Surface* blitsfc = mpHUDBlit.get();
 	mpHUDBox->_drawSprite( blitsfc, m_Rect.x, m_Rect.y );
@@ -175,23 +175,23 @@ void CHUD::renderVorticon()
 	score = (m_oldScore<999999999) ? m_oldScore : 999999999;
 	lives = (m_lives<99) ? m_lives : 99;
 	charges = (m_oldCharges<99) ? m_oldCharges : 99;
-
+    
 	// Draw the background
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 	
 	CFont &Font = g_pGfxEngine->getFont(1);
 	// Draw the lives
 	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15+m_Rect.x, 15+m_Rect.y);
-
+    
 	// Draw the charges
 	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(charges),2), 56+m_Rect.x, 15+m_Rect.y);
-
+    
 	// In multiplayer mode we show a number indicating the cam owner
 	if( mpCamlead && g_pBehaviorEngine->mPlayers > 1 )
 	{
 		// Draw the Player which controls the camera
 		Font.drawFont(mpHUDBlit.get(), itoa((*mpCamlead)+1), m_Rect.x, m_Rect.y);
-
+        
 		// Draw the score
 		Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),7), 16+m_Rect.x, m_Rect.y);
 	}
@@ -199,7 +199,7 @@ void CHUD::renderVorticon()
 	{
 		Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);
 	}
-
+    
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
 }
 
@@ -215,9 +215,9 @@ void CHUD::render()
 	    timer = 0;
 	    
 	    if(m_oldCharges < m_charges)
-		m_oldCharges++;
+            m_oldCharges++;
 	    else if(m_oldCharges > m_charges)
-		m_oldCharges--;
+            m_oldCharges--;
 	}
 	
 	int delta = (m_score-m_oldScore)/EFFECT_SPEED;
@@ -225,21 +225,21 @@ void CHUD::render()
 	if(m_oldScore < m_score)
 	{
 	    if(delta == 0)
-		delta = 1;
+            delta = 1;
 	    m_oldScore += delta;
 	    if(m_oldScore > m_score)
-		m_oldScore = m_score;
+            m_oldScore = m_score;
 	}
 	else if(m_oldScore > m_score)
 	{
-    	    if(delta == 0)
-		delta = -1;
-
+        if(delta == 0)
+            delta = -1;
+        
 	    m_oldScore += delta;
-    	    if(m_oldScore < m_score)
-		m_oldScore = m_score;
+        if(m_oldScore < m_score)
+            m_oldScore = m_score;
 	}
-
+    
 	if( Episode>=1 && Episode<=3 )
 		renderVorticon();
 	else if( Episode>=4 && Episode<=6 )

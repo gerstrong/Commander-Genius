@@ -30,9 +30,9 @@
 #define PI		3.14159265358979323846
 
 // Routines
-float	GetRandomNum(); // get a random float from [-1,1] 
+float	GetRandomNum(); // get a random float from [-1,1]
 float	GetRandomPosNum(); // get a random float from [0,1]
-int		GetRandomInt(int max); // get a random int from [0,max] 
+int		GetRandomInt(int max); // get a random int from [0,max]
 int		Round(float x);
 
 /*#ifdef _MSC_VER

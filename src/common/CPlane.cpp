@@ -16,7 +16,7 @@ m_height(0)
 void CPlane::createDataMap(Uint16 width, Uint16 height)
 {
 	if(mp_data) delete [] mp_data;
-
+    
 	m_width = width;
 	m_height = height;
 	mp_data = new word[m_width*m_height];

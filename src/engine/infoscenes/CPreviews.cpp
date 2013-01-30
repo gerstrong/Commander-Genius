@@ -22,15 +22,15 @@ void CPreviews::init()
 	m_episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
 	mpMap.reset(new CMap());
-
+    
 	CVorticonMapLoaderBase Maploader(mpMap);
 	Maploader.load(m_episode, 90, DataDirectory);
-
+    
 	mpMap->gotoPos( 0, 0 );
-
+    
 	// draw level map
 	mpMap->drawAll();
-
+    
 	m_scene_number = 1;
 	openNextScene();
 }
@@ -43,7 +43,7 @@ int CPreviews::openNextScene()
 	filename += itoa(m_scene_number);
 	filename += ".ck";
 	filename += itoa(m_episode);
-
+    
 	// If the we have scene to load, load it, else open the text which ends the preview
 	if(openScene(filename))
 	{
@@ -53,15 +53,15 @@ int CPreviews::openNextScene()
 	{
 		std::string filename = JoinPaths(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), "previews.ck");
 		filename += itoa(g_pBehaviorEngine->getEpisode());
-
+        
 		mp_TextViewer.reset( new CTextViewer(0, 8, 320, 160) );
-
+        
 		if(!mp_TextViewer->loadTextfromFile(filename))
 			m_destroy_me = true;
-
+        
 		this->process_ptr = &CPreviews::showText;
 	}
-
+    
 	return 0;
 }
 
@@ -69,12 +69,12 @@ bool CPreviews::openScene(const std::string& filename)
 {
 	// This will open one the preview scenes
 	mp_StaticScene.reset( new CFinaleStaticScene(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), filename) );
-
+    
 	if( mp_StaticScene->mustclose() )
 		return false;
 	else
 		mp_StaticScene->setTimer(1000);
-
+    
 	return true;
 }
 
@@ -82,7 +82,7 @@ void CPreviews::drawPreviewScene()
 {
 	// This will show a scene of the preview scenes
 	mp_StaticScene->process();
-
+    
 	if( mp_StaticScene->mustclose() || g_pInput->getPressedAnyCommand() )
 		openNextScene();
 }
@@ -91,7 +91,7 @@ void CPreviews::showText()
 {
 	// This is called after the preview screens were shown
 	mp_TextViewer->process();
-
+    
 	if( mp_TextViewer->hasClosed() )
 	{
 		m_destroy_me = true;

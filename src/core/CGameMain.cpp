@@ -22,11 +22,11 @@
 void CGameMain::switchToGamePlayMode()
 {
 	const int episode = g_pBehaviorEngine->getEpisode();
-
+    
 	// If you get here, you always have at least one player
 	if(g_pBehaviorEngine->mPlayers <= 0)
 		g_pBehaviorEngine->mPlayers = 1;
-
+    
 	const int Numplayers = g_pBehaviorEngine->mPlayers;
 	std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
 	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
@@ -44,10 +44,10 @@ void CGameMain::process()
 {
 	// process any triggered Game Main related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
-
+    
 	if( !EventContainer.empty() )
 	{
-
+        
 		if( EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
 		{
 		    std::unique_ptr<CGamePassiveMode> passive(new CGamePassiveMode());
@@ -59,8 +59,8 @@ void CGameMain::process()
 		}
 		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
 		{
-		    std::unique_ptr<CGamePlayMode> gameplay( new CGamePlayMode(*p_PlayGame) );			
-		    mpGameMode = move(gameplay); 
+		    std::unique_ptr<CGamePlayMode> gameplay( new CGamePlayMode(*p_PlayGame) );
+		    mpGameMode = move(gameplay);
 		    mpGameMode->init();
 		    mOpenedGamePlay = true;
 		    EventContainer.pop_Event();
@@ -71,7 +71,7 @@ void CGameMain::process()
 		    gpMenuController->lock(true);
 		    mpInfoScene = scene->mpScene;
 		    mpInfoScene->init();
-
+            
 		    EventContainer.pop_Event();
 		    //gpMenuController->lock(true);
 		    //EventContainer.add( new CloseAllMenusEvent() );
@@ -84,7 +84,7 @@ void CGameMain::process()
 			EventContainer.add( new OpenMenuEvent(new CDifficultySelection) );
 			return;
 		}
-
+        
 		else if( StartNewGameEvent* pStart = EventContainer.occurredEvent<StartNewGameEvent>() )
 		{
 			EventContainer.pop_Event();
@@ -92,7 +92,7 @@ void CGameMain::process()
 			switchToGamePlayMode();
 			return;
 		}
-
+        
 		else if( EventContainer.occurredEvent<LoadGameEvent>() ) // If GamePlayMode is not running but loading is requested...
 		{
 		    // TODO: we need to pass less arguments here! Make this code more pleasant
@@ -107,20 +107,20 @@ void CGameMain::process()
 		    gameplay->loadGame();
 		    
 		    mpGameMode = move(gameplay);
-
+            
 		    mOpenedGamePlay = true;
 		    EventContainer.pop_Event();
 		    EventContainer.add( new CloseAllMenusEvent() );
 		}
-
-
+        
+        
 	}
-
+    
 	if( mpInfoScene )
 	{
 		mpInfoScene->process();
 		if( mpInfoScene->destroyed() )
-		{		    
+		{
 			mpInfoScene->teardown();
 			mpInfoScene = nullptr;
 			g_pInput->flushAll();

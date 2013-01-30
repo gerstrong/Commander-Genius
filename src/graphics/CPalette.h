@@ -27,10 +27,10 @@
 class CPalette {
 public:
 	CPalette();
-
+    
 	void fadeto(Uint8 alpha, Uint8 fadespeed);
 	void applyFade();
-
+    
 	bool patchedPalette(byte *p_exedata, int m_episode);
 	void setupPatchedPalette(byte *p_exedata, int m_episode);
 	void setupColorPalettes(byte *p_exedata, int m_episode);
@@ -39,12 +39,12 @@ public:
 	void setFadeColour(Uint32 colour);
 	void setdark(bool dark);
 	void setdarkness(Uint8 darkness);
-
+    
 	int getcolor(unsigned char r, unsigned char g, unsigned char b);
-
+    
 	bool in_progress(void);
-
-
+    
+    
 	SDL_Color m_Palette[256];
 	Uint8 m_alpha;
 	Uint8 m_numcolors;

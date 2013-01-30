@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -45,11 +45,11 @@
 - (id)initWithKeyboard:(SoftKeyboard*)keyboard; {
 	self = [super initWithFrame:CGRectMake(0.0f, 0.0f, 0.0f, 0.0f)];
 	softKeyboard = keyboard;
-
+    
 	[[self textInputTraits] setAutocorrectionType:1];
 	[[self textInputTraits] setAutocapitalizationType:0];
 	[[self textInputTraits] setEnablesReturnKeyAutomatically:NO];
-
+    
 	return self;
 }
 
@@ -58,16 +58,16 @@
 }
 
 - (BOOL)webView:(id)fp8 shouldInsertText:(id)character
-                       replacingDOMRange:(id)fp16
-                             givenAction:(int)fp20 {
-
+replacingDOMRange:(id)fp16
+    givenAction:(int)fp20 {
+    
 	if ([character length] != 1) {
 		[NSException raise:@"Unsupported" format:@"Unhandled multi-char insert!"];
 		return NO;
 	}
-
+    
 	[softKeyboard handleKeyPress:[character characterAtIndex:0]];
-
+    
 	return NO;
 }
 

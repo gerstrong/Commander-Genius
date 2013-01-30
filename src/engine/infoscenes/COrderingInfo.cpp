@@ -21,9 +21,9 @@ void COrderingInfo::init()
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	std::string datadirectory = ExeFile.getDataDirectory();
 	char episode = ExeFile.getEpisode();
-
+    
 	mpMap.reset(new CMap);
-
+    
 	CVorticonMapLoaderBase Maploader(mpMap);
 	
 	Maploader.load(episode, 90, datadirectory);
@@ -38,14 +38,14 @@ void COrderingInfo::init()
 			m_numberoflines = 21; // numberof lines to print
 			if(ExeFile.getEXEVersion() == 131)
 				offset = 0x1632B;
-
+            
 			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
 			for(int i=0; i<20 ; i++)
 			{
 				mpMap->changeTile(22+i, 15, 14*13);
 				mpMap->changeTile(22+i, 16, 14*13+3);
 			}
-
+            
 			break;
 		case 2:
 			m_starty = 3; // start of y-coordinate in textheights
@@ -62,7 +62,7 @@ void COrderingInfo::init()
 			break;
 	}
 	mpMap->drawAll();
-
+    
 	// Read the strings and save them the string array of the class
 	if(offset)
 	{
@@ -138,33 +138,33 @@ void COrderingInfo::init()
 			m_Textline[16] = m_Textline[16] + "  ";
 			break;
 	}
-
+    
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
 	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);
 }
 
 void COrderingInfo::process()
-{	 
-
+{
+    
 	mpMap->animateAllTiles();
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-
+    
 	if(m_Textline.empty())
 	{
 		g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
 		m_destroy_me=true;
 		return;
 	}
-
+    
 	for(int i=0 ; i<m_numberoflines ; i++)
 	{
 		g_pGfxEngine->getFont(1).drawFont(mpTextSfc.get(), m_Textline[i],
-											160-m_Textline[i].size()*4, 8*(i+m_starty), true);
+                                          160-m_Textline[i].size()*4, 8*(i+m_starty), true);
 	}
-
+    
 	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
-
+    
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;
 }

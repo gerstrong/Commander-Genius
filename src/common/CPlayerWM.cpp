@@ -27,19 +27,19 @@ void CPlayer::processWorldMap()
    	setWorldMapdir();
 	
     if(!hideplayer && !beingteleported)	Walking();
-
+    
     if(!beingteleported)
     {
     	WalkingAnimation();
-
+        
     	InertiaAndFriction_X();
     	InertiaAndFriction_Y();
-
+        
     	performCollisions();
-
+        
     	selectFrameOnWorldMap();
     }
-
+    
     processEvents();
 }
 
@@ -60,10 +60,10 @@ void CPlayer::setWorldMapdir()
 	
 	if (playcontrol[PA_Y] < 0) pShowDir.y = UP;
 	if (playcontrol[PA_Y] > 0) pShowDir.y = DOWN;
-
+    
 	if (dpadcount==1 || dpadlastcount==0 || exception)
 		pShowDir = pDir;
-
+    
 	dpadlastcount = dpadcount;
 }
 
@@ -88,29 +88,29 @@ int CPlayer::getNewObject()
         }
         return lvl;
     }
-
+    
     if (!playcontrol[PA_JUMP] && !playcontrol[PA_POGO])
     	object_chosen = false;
-
+    
     return 0;
 }
 
 bool CPlayer::isWMSolid(int xb, int yb)
 {
 	int level_coordinates;
-
+    
 	// Now check if the levels must block the player
 	level_coordinates = mp_Map->getObjectat(xb>>CSF, yb>>CSF);
-
+    
 	if (level_coordinates & 0x8000)
 	{
 		if( mp_levels_completed[level_coordinates & 0x7fff] ) // check if level is done
-			  return false;
-
+            return false;
+        
 		if( (g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT)) || godmode )
-			  return false;
+            return false;
 		else
-			  return true;
+            return true;
 	}
 	return false;
 }
@@ -118,14 +118,14 @@ bool CPlayer::isWMSolid(int xb, int yb)
 void CPlayer::verifySolidLevels()
 {
 	if(godmode) return;
-
+    
 	int x1 = getXLeftPos();
 	int x2 = getXRightPos();
 	int y1 = getYUpPos();
 	int y2 = getYDownPos();
 	int ymid = getYMidPos();
 	int xmid = getXMidPos();
-
+    
 	if(isWMSolid(xmid,y1)) {
 		moveDown(1);
 		blockedu = true;
@@ -151,7 +151,7 @@ void CPlayer::selectFrameOnWorldMap()
     else if (pShowDir.x==LEFT) sprite = playerbaseframe + PMAPLEFTFRAME;
     else if (pShowDir.y==UP) sprite = playerbaseframe + PMAPUPFRAME;
     else if (pShowDir.y==DOWN) sprite = playerbaseframe + PMAPDOWNFRAME;
-
+    
     // add in walk frame if walking
     if (pwalking) sprite += pwalkframe;
 }

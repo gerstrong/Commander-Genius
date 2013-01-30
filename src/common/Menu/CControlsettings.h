@@ -23,15 +23,15 @@ class CControlsettings : public CBaseMenu
 {
 public:
 	CControlsettings(const int selectedPlayer);
-
+    
 	void init();
-
+    
 	void release();
-
+    
 private:
-
+    
 	int mSelectedPlayer;
-
+    
 	CGUISwitch *mpTwoButtonSwitch;
 	CGUISwitch *mpAnalogSwitch;
 	CGUISwitch *mpSuperPogoSwitch;
@@ -45,15 +45,15 @@ class CControlSettingsMovement : public CBaseMenu
 {
 public:
 	CControlSettingsMovement(const int selectedPlayer);
-
+    
 	void init();
 	void process();
 	void release();
-
+    
 private:
-
+    
 	int mSelectedPlayer;
-
+    
 	std::vector<CGUIButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 	
@@ -67,15 +67,15 @@ class CControlSettingsButtons : public CBaseMenu
 {
 public:
 	CControlSettingsButtons(const int selectedPlayer);
-
+    
 	void init();
 	void process();
 	void release();
-
+    
 private:
-
+    
 	int mSelectedPlayer;
-
+    
 	std::vector<CGUIButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 	
@@ -89,21 +89,21 @@ private:
 struct OpenControlMenuEvent : SelectionEvent
 {
 	OpenControlMenuEvent(const int players) :
-		SelectionEvent(players) {};
+    SelectionEvent(players) {};
 };
 
 
 struct OpenButtonsControlMenuEvent : OpenControlMenuEvent
 {
 	OpenButtonsControlMenuEvent(const int option) :
-		OpenControlMenuEvent(option) {};
+    OpenControlMenuEvent(option) {};
 };
 
 struct OpenMovementControlMenuEvent : OpenControlMenuEvent
 {
 	OpenMovementControlMenuEvent(const int option) :
-		OpenControlMenuEvent(option) {};
-
+    OpenControlMenuEvent(option) {};
+    
 };
 
 

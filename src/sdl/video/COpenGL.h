@@ -29,7 +29,7 @@
 struct stDims{
 	Uint16 w,h;
 	stDims(Uint16 width, Uint16 height) :
-		w(width),h(height){};
+    w(width),h(height){};
 };
 
 Uint16 getPowerOfTwo(Uint16 value);
@@ -38,26 +38,26 @@ class COpenGL : public CVideoEngine
 {
 public:
 	COpenGL(const CVidConfig &VidConfig);
-
+    
 	void setUpViewPort(const CRect<Uint16> &newDim);
 	bool resizeDisplayScreen(const CRect<Uint16>& newDim);
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 	bool createSurfaces();
 	void collectSurfaces();
 	void clearSurfaces();
-
+    
 	void updateScreen();
 	bool init();
-
+    
 	void reloadFX(SDL_Surface* surf);
-
+    
 private:
 	unsigned int	m_texparam;
-
+    
 	float	m_aspectratio;
-
+    
 	stDims m_GameScaleDim, m_GamePOTScaleDim;
-
+    
 	GLuint	m_texture;
 	GLuint	m_texFX;
 };

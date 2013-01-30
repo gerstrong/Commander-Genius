@@ -65,24 +65,24 @@ public:
 	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void initiateJump();
-
+    
 protected:
 	int m_Level;
 	bool &m_Dark;
-
+    
 	enum {
-	VORT_WALK,
-	VORT_JUMP,
-	VORT_LOOK,
-	VORT_DYING,
-	VORT2_DYING
+        VORT_WALK,
+        VORT_JUMP,
+        VORT_LOOK,
+        VORT_DYING,
+        VORT2_DYING
 	}state;
-
+    
 	unsigned char timer,timer2;
 	unsigned int animtimer;
 	unsigned char frame;
 	unsigned int dist_traveled;
-
+    
 	direction_t movedir;
 	// these hold the animation frames indexes since they're
 	// different for each episode

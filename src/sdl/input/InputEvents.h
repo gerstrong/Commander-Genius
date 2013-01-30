@@ -47,15 +47,15 @@ struct MouseMoveEvent : CEvent
 	CVec Pos;
 	MouseEventTypes Type;
 	MouseMoveEvent(const CVec &New_Pos, MouseEventTypes New_Type ) :
-		Pos(New_Pos), Type(New_Type) {}
+    Pos(New_Pos), Type(New_Type) {}
 };
 
 
 struct CommandEvent : public CEvent
 {
 	CommandEvent(const InputCommands command) :
-		mCommand(command) {}
-
+    mCommand(command) {}
+    
 	InputCommands mCommand;
 };
 

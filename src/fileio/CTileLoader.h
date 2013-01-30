@@ -21,7 +21,7 @@ public:
 	bool load(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
 	void readVorticonTileinfo(size_t NumTiles);
 	void readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
-
+    
 private:
 	int m_episode;
 	int m_version;
