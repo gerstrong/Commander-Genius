@@ -17,15 +17,15 @@ class CCameraSettings : public CBaseMenu
 {
 public:
 	CCameraSettings();
-    
+
 	void init();
-    
+
 	void release();
-    
+
 private:
 	st_camera_bounds m_CameraBounds;
 	int m_changeint;
-    
+
 	CGUINumberControl	*mpLeftAdjust;
 	CGUINumberControl	*mpRightAdjust;
 	CGUINumberControl	*mpTopAdjust;

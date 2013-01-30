@@ -19,40 +19,40 @@ timer(0)
 void CGUIBanner::setText(const std::string& text)
 {
     CGUIText::setText(text);
-    curTextIt = mTextList.begin();
+    curTextIt = mTextList.begin();    
 }
 
 void CGUIBanner::processLogic()
-{
+{        
     if(transition)
-    {
-        if(timer >= TIME_TRANSITION)
-        {
-            timer = 0;
-            alpha = 0;
-            transition = !transition;
-            
-            return;
-        }
+    {	
+	if(timer >= TIME_TRANSITION)
+	{
+	    timer = 0;
+	    alpha = 0;
+	    transition = !transition;	
+	    
+	    return;
+	}	
     }
     else
     {
-        if(timer >= TIME_UNTIL_CHANGE)
-        {
-            timer = 0;
-            
-            prevTextIt = curTextIt;
-            
-            curTextIt++;
-            
-            if( curTextIt == mTextList.end() )
-                curTextIt = mTextList.begin();
-            
-            alpha = 0;
-            transition = !transition;
-            
-            return;
-        }
+	if(timer >= TIME_UNTIL_CHANGE)
+	{
+	    timer = 0;
+	    
+	    prevTextIt = curTextIt;
+	    
+	    curTextIt++;
+	    
+	    if( curTextIt == mTextList.end() )
+		curTextIt = mTextList.begin();
+	    
+	    alpha = 0;
+	    transition = !transition;	
+	    
+	    return;
+	}	
     }
     
     alpha = ((255*timer)/TIME_TRANSITION);
@@ -67,10 +67,10 @@ void CGUIBanner::processRender(const CRect<float> &RectDispCoordFloat)
 	CRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
-    
+
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-    
+
 	if(transition)
 	{
 	    Font.drawFontCenteredAlpha(g_pVideoDriver->getBlitSurface(), *prevTextIt, lRect.x, lRect.w, lRect.y, 255-alpha);

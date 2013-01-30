@@ -30,8 +30,8 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	imfdata_ptr += sizeof(AdLibSound);
 	const unsigned int data_size = size;
 	const byte *AL_Sounddata_start = imfdata_ptr;
-	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;
-    
+	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;		
+
 	OPLEmulator.ShutAL();
 	Bit8u alBlock = ((AL_Sound.block & 7) << 2) | 0x20;
 	if (!(AL_Sound.inst.mSus | AL_Sound.inst.cSus))
@@ -40,7 +40,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 		return false;
 	}
 	OPLEmulator.AlSetFXInst(AL_Sound.inst);
-    
+
 	const unsigned int samplesPerMusicTick = m_AudioSpec.freq/OPLEmulator.getIMFClockRate();
 	const unsigned waittimes = 4;
 	const unsigned int wavesize = (data_size*waittimes*samplesPerMusicTick*m_AudioSpec.channels*formatsize );
@@ -49,12 +49,12 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	Bit32s mix_buffer[samplesPerMusicTick];
 	
 	OPLEmulator.ALStopSound();
-    
+
 	// TODO: This does not work correctly yet...
-    
+
 	for(byte *AL_Sounddata_ptr = (byte*) AL_Sounddata_start ;
-        AL_Sounddata_ptr < AL_Sounddata_end ;
-        AL_Sounddata_ptr++ )
+			  AL_Sounddata_ptr < AL_Sounddata_end ;
+			  AL_Sounddata_ptr++ )
 	{
 		if(*AL_Sounddata_ptr)
 		{
@@ -63,24 +63,24 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 		}
 		else
 			OPLEmulator.Chip__WriteReg( alFreqH, 0 );
-        
+
    		if(formatsize == 2) // 16-Bit Sound
    		{
    			for( uint count=0 ; count<waittimes ; count++ )
    			{
    				Sint16 *buffer = (Sint16*) (void*) waveform_ptr;
-                
+
    				OPLEmulator.Chip__GenerateBlock2( samplesPerMusicTick, mix_buffer );
-                
+
    				// Mix into the destination buffer, doubling up into stereo.
    				for (unsigned int i=0; i<samplesPerMusicTick; ++i)
    				{
 				    for( unsigned int ch=0 ; ch<m_AudioSpec.channels ; ch++ )
 				    {
-                        buffer[i * m_AudioSpec.channels + ch] = (int16_t) (mix_buffer[i]+m_AudioSpec.silence);
+   					buffer[i * m_AudioSpec.channels + ch] = (int16_t) (mix_buffer[i]+m_AudioSpec.silence);
 				    }
    				}
-                
+
    				waveform_ptr += samplesPerMusicTick*m_AudioSpec.channels*formatsize;
    			}
    		}
@@ -89,25 +89,25 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
    			for( unsigned int count=0 ; count<waittimes ; count++ )
    			{
    				Uint8 *buffer = (Uint8*) waveform_ptr;
-                
+
    				OPLEmulator.Chip__GenerateBlock2( samplesPerMusicTick, mix_buffer );
-                
+
    				// Mix into the destination buffer, doubling up into stereo.
    				for (unsigned int i=0; i<samplesPerMusicTick; ++i)
    				{
 				    for( unsigned int ch=0 ; ch<m_AudioSpec.channels ; ch++ )
 				    {
-                        buffer[i * m_AudioSpec.channels + ch] = (Uint8) ((mix_buffer[i]>>8)+m_AudioSpec.silence);
+   					buffer[i * m_AudioSpec.channels + ch] = (Uint8) ((mix_buffer[i]>>8)+m_AudioSpec.silence);
 				    }
    				}
-                
+
    				waveform_ptr += samplesPerMusicTick*m_AudioSpec.channels*formatsize;
    			}
    		}
 	}
-    
+
 	soundslot.setupWaveForm(waveform, wavesize);
-    
-    
+
+
 	return true;
 }

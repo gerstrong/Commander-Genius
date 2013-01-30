@@ -25,15 +25,15 @@ public:
 	bool decompress(BYTE *data, std::vector<BYTE> &outdata);
 	unsigned long HeaderSize();
 	virtual ~Cunlzexe();
-    
+
 private:
-    
+
 	struct bitstream{
-        BYTE  *pdata;
-        WORD_16BIT  buf;
-        BYTE  count;
+			BYTE  *pdata;
+			WORD_16BIT  buf;
+	        BYTE  count;
 	};
-    
+
 	void initbits(bitstream *p, BYTE *p_data, unsigned long &inpos);
 	int getbit(bitstream *, unsigned long &);
 	int rdhead(BYTE *data_ptr ,int *ver);
@@ -42,10 +42,10 @@ private:
 	int reloc91(BYTE *p_data, std::vector<BYTE> &outdata, long fpos);
 	int mkreltbl(BYTE *p_data, std::vector<BYTE> &outdata,int ver);
 	int unpack(BYTE *p_input, std::vector<BYTE> &outdata);
-    
+
 	WORD_16BIT get16bitWord(BYTE *p_data);
 	void put16bitWord(WORD_16BIT value, std::vector<BYTE> &outdata);
-    
+
 	unsigned long m_headersize;
 };
 

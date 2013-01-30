@@ -21,9 +21,9 @@
 #include "CLogFile.h"
 #include "Debug.h"
 
-CGameLauncherMenu::CGameLauncherMenu(bool& first_time,
-                                     const int start_game_no,
-                                     const int start_level ) :
+CGameLauncherMenu::CGameLauncherMenu(bool& first_time, 
+				      const int start_game_no, 
+				      const int start_level ) :
 m_firsttime(first_time),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
@@ -44,14 +44,14 @@ bool CGameLauncherMenu::loadMenuResources()
 void CGameLauncherMenu::init()
 {
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-    
+
 	// If game was started for the first time, also open the firsttime dialog with configs.
 	if(m_firsttime)
 	{
 		m_firsttime = false;
 		//mp_FirstTimeMenu = new CProfilesMenu(DLG_THEME_RED);
 	}
-    
+
 	// Load the graphics for menu and background.
     // Resources for the main menu
 	if(!loadMenuResources())
@@ -60,11 +60,11 @@ void CGameLauncherMenu::init()
 		EventContainer.add( new GMQuit() );
 		return;
 	}
-    
+
 	struct GamesScan: public Action
 	{
 		std::unique_ptr<CGameLauncher>& mp_GameLauncher;
-        
+
 		GamesScan(std::unique_ptr<CGameLauncher>& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
 		int handle()
 		{
@@ -74,11 +74,11 @@ void CGameLauncherMenu::init()
 				g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
 				return 0;
 			}
-            
+
 			return 1;
 		}
 	};
-    
+
 	const std::string threadname = "Scanning Game-Directory";
 	// He we start the thread for cycling the loading screen
 	g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
@@ -86,7 +86,7 @@ void CGameLauncherMenu::init()
 		EventContainer.add( new GMQuit() );
 	else
 		mp_GameLauncher->setChosenGame(m_start_game_no);
-    
+
 	return;
 }
 
@@ -99,39 +99,39 @@ bool CGameLauncherMenu::loadGalaxyResources(const Uint8 flags)
     const int Episode = ExeFile.getEpisode();
     
     g_pResourceLoader->setPermilage(10);
-    
+
     // Patch the EXE-File-Data directly in the memory.
     CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
-    Patcher.process();
+    Patcher.process();    
     
     mp_GameLauncher->setChosenGame(m_start_game_no);
     
-    g_pResourceLoader->setPermilage(50);
+    g_pResourceLoader->setPermilage(50);    
     
     if( (flags & LOADGFX) == LOADGFX )
     {
-        // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-        mp_EGAGraphics.reset(new galaxy::CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
-        if(!mp_EGAGraphics)
-            return false;
-        
-        mp_EGAGraphics->loadData();
-        g_pResourceLoader->setPermilage(400);
-    }
+	// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
+	mp_EGAGraphics.reset(new galaxy::CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
+	if(!mp_EGAGraphics)
+	    return false;
+	
+	mp_EGAGraphics->loadData();
+	g_pResourceLoader->setPermilage(400);
+    }    
     
     if( (flags & LOADSTR) == LOADSTR )
     {
-        // load the strings.
-        CMessages Messages(p_exedata, Episode, version);
-        Messages.extractGlobalStrings();
-        g_pResourceLoader->setPermilage(450);
+	// load the strings.
+	CMessages Messages(p_exedata, Episode, version);
+	Messages.extractGlobalStrings();
+	g_pResourceLoader->setPermilage(450);
     }
-    
+        
     if( (flags & LOADSND) == LOADSND )
     {
-        // Load the sound data
-        g_pSound->loadSoundData();
-        g_pResourceLoader->setPermilage(900);
+	// Load the sound data
+	g_pSound->loadSoundData();
+	g_pResourceLoader->setPermilage(900);
     }
     
     g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
@@ -153,35 +153,35 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 {
 	int version;
 	unsigned char *p_exedata;
-    
+
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-    
+
 	version = ExeFile.getEXEVersion();
 	p_exedata = ExeFile.getRawData();
-    
+
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
 	if( Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
-    
+
 	if( ExeFile.getHeaderData() == NULL)
 	{
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
 		return false;
 	}
-    
+
 	gpResource->setupFilenames(Episode);
-    
+
 	g_pBehaviorEngine->setEpisode(Episode);
-    
+
 	if( Episode == 1 || Episode == 2 || Episode == 3 ) // Vorticon resources
 	{
-        // Patch the EXE-File-Data directly in the memory.
+	    	// Patch the EXE-File-Data directly in the memory.
 		CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
 		Patcher.process();
-        
+
 		g_pTimer->setLPS(DEFAULT_LPS_VORTICON);
 	    
 		g_pBehaviorEngine->readTeleporterTable(p_exedata);
-        
+
 		if( (flags & LOADGFX) == LOADGFX )
 		{
 			// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
@@ -189,28 +189,28 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 			mp_EGAGraphics.reset( new vorticon::CEGAGraphicsVort(Episode, DataDirectory) );
 			if(!mp_EGAGraphics.get())
 				return false;
-            
+
 			mp_EGAGraphics->loadData( version, p_exedata );
 		}
-        
+
 		if( (flags & LOADSTR) == LOADSTR )
 		{
 			// load the strings.
 			CMessages Messages(p_exedata, Episode, version);
 			Messages.extractGlobalStrings();
 		}
-        
+
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
 			g_pSound->loadSoundData();
 		}
-        
+
 		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
 		
 		// If there are patches left that must be apllied later, do it here!
-		Patcher.postProcess();
-        
+		Patcher.postProcess();		
+
 		return true;
 	}
 	else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
@@ -222,26 +222,26 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 	    
 	    struct GalaxyDataLoad : public Action
 	    {
-            CGameLauncherMenu &mGlm;
-            const Uint8 mFlags;
-            
-            GalaxyDataLoad(CGameLauncherMenu &glm, const Uint8 flags) :
+		CGameLauncherMenu &mGlm;
+		const Uint8 mFlags;
+		
+		GalaxyDataLoad(CGameLauncherMenu &glm, const Uint8 flags) :
 		    mGlm(glm), mFlags(flags) {};
-            
-            int handle()
-            {
-                mGlm.loadGalaxyResources(mFlags);
-                return 1;
-            }
+		
+		int handle()
+		{		    
+		    mGlm.loadGalaxyResources(mFlags);		    
+		    return 1;
+		}
 	    };
 	    
 	    if(g_pResourceLoader->RunLoadAction(new GalaxyDataLoad(*this, flags), threadname) == 0)
 	    {
-            g_pBehaviorEngine->EventList().add( new GMQuit() );
-            return false;
-	    }
+		g_pBehaviorEngine->EventList().add( new GMQuit() );
+		return false;
+	    }  
 	    
-	    return true;
+	    return true;	    
 	}
 	return false;
 }
@@ -255,25 +255,25 @@ void CGameLauncherMenu::process()
 		//mp_FirstTimeMenu->processCommon();
 		//mp_FirstTimeMenu->processSpecific();
 		//mp_FirstTimeMenu->postProcess();
-        
+
 		/*if(mp_FirstTimeMenu->mustClose())
-         mp_FirstTimeMenu.tryDeleteData();*/
+			mp_FirstTimeMenu.tryDeleteData();*/
 	}
 	else
 	{
 		// Launch the code of the Startmenu here! The one for choosing the games
 		mp_GameLauncher->process();
 		m_start_game_no = mp_GameLauncher->getChosengame();
-        
+
 		if( m_start_game_no >= 0 ) // Means a game has been selected
 		{
 			//// Game has been chosen. Launch it!
 			// Get the path were to Launch the game
 			const std::string DataDirectory = mp_GameLauncher->getDirectory( m_start_game_no );
-            
+
 			// We have to check which Episode will be used
 			const int Episode = mp_GameLauncher->getEpisode( m_start_game_no );
-            
+
 			if( Episode > 0 ) // The game has to have a valid episode!
 			{
 				// Get the EXE-Data of the game and load it into the memory.
@@ -292,15 +292,15 @@ void CGameLauncherMenu::process()
 						savedgames.setGameDirectory(DataDirectory);
 						savedgames.setEpisode(Episode);
 						savedgames.convertAllOldFormats();
-                        
+
 						EventContainer.add( new StartMainGameEvent );
-                        
+
 						if(m_start_level == -1) // Starts normally
 							EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, Episode) );
 						else // This happens, when a level was passed as argument when launching CG
-							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1,
-                                                                           DataDirectory, 
-                                                                           m_start_level) );
+							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1,  
+													DataDirectory, 
+													m_start_level) );
 					}
 				}
 			}

@@ -32,20 +32,20 @@ mButtonUp(false)
 
 void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 {
-    
+
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-    
+
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-    
+
 	if( g_pTimer->HasTimeElapsed(100) )
 	{
 		mTwirliconID++;
-        
+
 		if(mTwirliconID == 15)
 			mTwirliconID = 9;
 	}
-    
+
 	if( mButtonDown )
 	{
 		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+12, lRect.y );
@@ -54,7 +54,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 	{
 		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+8, lRect.y );
 	}
-    
+
 }
 
 
@@ -62,13 +62,13 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 {
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-    
+
 	if( g_pTimer->HasTimeElapsed(500) )
 		mTwirliconID = !mTwirliconID;
-    
-    
+
+
 	int tile;
-    
+
 	if(!mEnabled)
 	{
 		tile = (mHovered && mTwirliconID) ? 97 : 96;
@@ -77,7 +77,7 @@ void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 	{
 		tile = (mTwirliconID && mHovered) ? 93 : 92;
 	}
-    
+
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
 	Tilemap.drawTile(blitsfc, lRect.x, lRect.y, tile);
 }

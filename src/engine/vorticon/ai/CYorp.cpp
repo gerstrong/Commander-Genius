@@ -29,17 +29,17 @@ movedir(LEFT)
 	m_type = OBJ_YORP;
 	sprite = OBJ_YORP_DEFSPRITE;
 	canbezapped = true;
-    
+
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		mHealthPoints++;
 	
-	numlooks = m_hardmode ? YORP_NUM_LOOKS_FAST : YORP_NUM_LOOKS;
+	numlooks = m_hardmode ? YORP_NUM_LOOKS_FAST : YORP_NUM_LOOKS;	
 }
 
 void CYorp::process()
 {
 	if (!hasbeenonscreen) return;
-    
+
 	// did the poor guy get shot?
 	if( mHealthPoints <= 0 && state != YORP_DYING )
 	{
@@ -51,7 +51,7 @@ void CYorp::process()
 		yinertia = YORPDIE_START_INERTIA;
 		playSound(SOUND_YORP_DIE);
 	}
-    
+
 	switch(state)
 	{
 		case YORP_LOOK:
@@ -64,40 +64,40 @@ void CYorp::process()
 			processDying();		break;
 		default: break;
 	}
-    
+
 }
 
 bool CYorp::isNearby(CVorticonSpriteObject &theObject)
-{
+{       
     if( state == YORP_LOOK )
     {
-        if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
-        {
+	if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
+	{
 	        if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
-            {
-                movedir = (player->getXPosition() < getXPosition()) ? LEFT : RIGHT;
-            }
-            
-            // unless we're can't go that way
-            if (blockedl) movedir = RIGHT;
-            if (blockedr) movedir = LEFT;
-            
-            timer = 0;
-            walkframe = 0;
-            dist_traveled = 0;
-            state = YORP_MOVE;
-        }
+		{
+		    movedir = (player->getXPosition() < getXPosition()) ? LEFT : RIGHT;
+		}		
+
+		// unless we're can't go that way
+		if (blockedl) movedir = RIGHT;
+		if (blockedr) movedir = LEFT;
+
+		timer = 0;
+		walkframe = 0;
+		dist_traveled = 0;
+		state = YORP_MOVE;
+	}
     }
     return true;
 }
 
 
 void CYorp::processLooking()
-{
+{	
 	if (!timer)
 	{
 		looktimes++;
-        
+
 		switch(lookposition)
 		{
 			case 0: sprite = YORP_LOOK_LEFT; break;
@@ -106,7 +106,7 @@ void CYorp::processLooking()
 			case 3: sprite = YORP_STAND; break;
 		}
 		looktimes++;
-        
+
 		if (++lookposition>3)
 			lookposition=0;
 		timer=YORP_LOOK_TIME;
@@ -132,7 +132,7 @@ void CYorp::processMoving()
 			return;
 		}
 	}
-    
+
 	if (blockedd)
 	{
 		if (getProbability(YORP_JUMP_PROB))
@@ -141,7 +141,7 @@ void CYorp::processMoving()
 			blockedd = false;
 		}
 	}
-    
+
 	if (movedir==LEFT)
 	{  // yorp is walking left
 		sprite = YORP_WALK_LEFT + walkframe;
@@ -176,7 +176,7 @@ void CYorp::processMoving()
 	}
 	// walk animation
 	if (timer > YORP_WALK_ANIM_TIME || \
-        (timer > YORP_WALK_ANIM_TIME_FAST && m_hardmode))
+			(timer > YORP_WALK_ANIM_TIME_FAST && m_hardmode))
 	{
 		walkframe ^= 1;
 		timer = 0;
@@ -232,7 +232,7 @@ void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
 					lookposition = 0;
 					player->ppogostick = false;
 				}
-                
+
 				// make the yorp look a little less "soft" by
 				// offering a bit of resistance
 				// (actually, having keen do a small jump)

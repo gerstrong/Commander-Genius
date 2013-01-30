@@ -21,14 +21,14 @@ const int LVLS_SHIP = 20;
 void CPlayGameVorticon::processOnWorldMap()
 {
 	int useobject;
-    
+
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
 		CPlayer &player = m_Player[i];
-        
+
 		// Perform player Objects...
 		player.processWorldMap();
-        
+
 		// entered a level, used ship, teleporter, etc.
 		if( !player.hideplayer && !player.beingteleported )
 		{
@@ -47,49 +47,49 @@ void CPlayGameVorticon::processOnWorldMap()
 					// a special case in Episode 3
 					switch(useobject)
 					{
-                        case NESSIE_WEED:
-                        case NESSIE_PATH: break;
-                        case NESSIE_LAND:
-                            g_pBehaviorEngine->EventList().add(new CPlayer::Mount(player));
-                            g_pInput->flushAll();
-                            break;
-                            
-                        case LVLS_SHIP:
-                        {
-                            if (m_Episode==1)
-                                YourShipNeedsTheseParts();
-                            else if (m_Episode==3)
-                                ShipEp3();
-                            
-                            g_pInput->flushCommands();
-                            
-                        }
-                            break;
-                            
-                        default: // a regular level
-                            // Check if Level has been completed or the Level-Replayability is enabled
-                            if( useobject>32 )
-                                break;
-                            
-                            if( !mp_level_completed[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
-                            {
-                                // Create the special merge effect
-                                CColorMerge *pColorMergeFX = new CColorMerge(8);
-                                
-                                m_level_command = START_LEVEL;
-                                m_Level = useobject & 0x7fff;
-                                g_pMusicPlayer->stop();
-                                player.playSound(SOUND_ENTER_LEVEL);
-                                // save where on the map, the player entered. This is a checkpoint!
-                                m_checkpoint_x = player.getXPosition();
-                                m_checkpoint_y = player.getYPosition();
-                                m_checkpointset = true;
-                                cleanup();
-                                init();
-                                
-                                g_pGfxEngine->setupEffect(pColorMergeFX);
-                            }
-                            break;
+					case NESSIE_WEED:
+					case NESSIE_PATH: break;
+					case NESSIE_LAND:
+						g_pBehaviorEngine->EventList().add(new CPlayer::Mount(player));
+						g_pInput->flushAll();
+						break;
+
+					case LVLS_SHIP:
+					{
+						if (m_Episode==1)
+							YourShipNeedsTheseParts();
+						else if (m_Episode==3)
+							ShipEp3();
+
+						g_pInput->flushCommands();
+
+					}
+					break;
+
+					default: // a regular level
+						// Check if Level has been completed or the Level-Replayability is enabled
+						if( useobject>32 )
+						    break;
+						
+						if( !mp_level_completed[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
+						{
+							// Create the special merge effect
+							CColorMerge *pColorMergeFX = new CColorMerge(8);
+
+							m_level_command = START_LEVEL;
+							m_Level = useobject & 0x7fff;
+							g_pMusicPlayer->stop();
+							player.playSound(SOUND_ENTER_LEVEL);
+							// save where on the map, the player entered. This is a checkpoint!
+							m_checkpoint_x = player.getXPosition();
+							m_checkpoint_y = player.getYPosition();
+							m_checkpointset = true;
+							cleanup();
+							init();
+
+							g_pGfxEngine->setupEffect(pColorMergeFX);
+						}
+						break;
 					}
 				}
 			}
@@ -101,11 +101,11 @@ void CPlayGameVorticon::goBacktoMap()
 {
 	// Create the special merge effect (Fadeout)
 	CColorMerge *pColorMergeFX = new CColorMerge(8);
-    
+
 	// before he can go back to map, he must tie up the objects.
 	// This means, all objects except the puppy ones of the player....
 	mSpriteObjectContainer.clear();
-    
+
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
 	g_pMusicPlayer->stop();
@@ -115,34 +115,34 @@ void CPlayGameVorticon::goBacktoMap()
 	{
 		player->level_done = LEVEL_NOT_DONE;
 		player->mHealthPoints = 1;
-        
+
 		// Restore checkpoint
 		player->moveToForce(m_checkpoint_x,m_checkpoint_y);
 		player->inventory.HasCardYellow = 0;
 		player->inventory.HasCardBlue = 0;
 		player->inventory.HasCardGreen = 0;
 		player->inventory.HasCardRed = 0;
-        
-        
+
+
 		// Now, that the level is complete, sprite can be shown again, and now goto map!
 		int width = player->w>>(CSF-4);
-        
+
 		if(width > 0)
 		{
 			int frame = player->playerbaseframe;
 			if(g_pBehaviorEngine->getEpisode() == 3) frame++;
-            
+
 			g_pGfxEngine->getSprite(frame+0).setWidth(width);
 			g_pGfxEngine->getSprite(frame+1).setWidth(width);
 			g_pGfxEngine->getSprite(frame+2).setWidth(width);
 			g_pGfxEngine->getSprite(frame+3).setWidth(width);
 		}
-        
-        
+
+
 	}
 	cleanup();
 	init();
-    
+
 	// Second Snapshot for merge
 	g_pGfxEngine->setupEffect(pColorMergeFX);
 }
@@ -150,10 +150,10 @@ void CPlayGameVorticon::goBacktoMap()
 void CPlayGameVorticon::YourShipNeedsTheseParts()
 {
 	std::unique_ptr<CMessageBoxVort> MessageBox( new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_SHIP")) );
-    
+
 	bool joy, bat, vac, wis;
 	joy = bat = vac = wis = false;
-    
+
 	// The Multiplayer support for this dialog. You collect those parts together if more than one player.
 	for(int i=0 ; i<m_NumPlayers ; i++)
 	{
@@ -162,7 +162,7 @@ void CPlayGameVorticon::YourShipNeedsTheseParts()
 		vac |= m_Player[i].inventory.HasVacuum;
 		wis |= m_Player[i].inventory.HasWiskey;
 	}
-    
+
 	// draw needed parts
 	if (!joy) MessageBox->addTileAt(321,5<<3, 4<<3);
 	if (!bat) MessageBox->addTileAt(322,14<<3, 4<<3);
@@ -183,38 +183,38 @@ void CPlayGameVorticon::showKeensLeft()
 {
 	const unsigned int KEENSLEFT_X = 7;
 	const unsigned int KEENSLEFT_Y = 10;
-    
+
 	if(!mpKeenLeftSfc)
 	{
 		int x,y,i,p;
 		int boxY, boxH;
 		CFont &Font = g_pGfxEngine->getFont(1);
-        
+
 		const unsigned int KEENSLEFT_W = 24;
 		const unsigned int KEENSLEFT_H = 4;
-        
+
 		boxY = KEENSLEFT_Y - m_NumPlayers;
 		boxH = KEENSLEFT_H + m_NumPlayers*2;
-        
+
 		SDL_Rect rect;
 		rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
 		rect.w = (KEENSLEFT_W+1)*8;	rect.h = (boxH)*8;
 		SDL_Surface *boxsurface = SDL_CreateRGBSurface( SDL_SWSURFACE, rect.w, rect.h, RES_BPP, 0, 0, 0, 0 );
-        
+
 		rect.x = 8;	rect.y = 16;
 		rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
-        
+
 		Uint8 r, g, b;
 		Font.getBGColour(&r, &g, &b, true);
 		Uint32 color = SDL_MapRGB( boxsurface->format, r, g, b);
-        
+
 		g_pGfxEngine->drawDialogBox( boxsurface, 0, 0, KEENSLEFT_W, boxH, color );
 		SDL_FillRect(boxsurface, &rect, color );
 		Font.getBGColour(&r, &g, &b, false);
 		SDL_FillRect(boxsurface, &rect, SDL_MapRGB( boxsurface->format, r, g, b) );
 		Font.drawFont( boxsurface, g_pBehaviorEngine->getString("LIVES_LEFT"), 36, 8, true);
-        
-        
+
+
 		y = 20;
 		for(p=0; p<m_NumPlayers ; p++)
 		{
@@ -226,7 +226,7 @@ void CPlayGameVorticon::showKeensLeft()
 			}
 			y += 16;
 		}
-        
+
 		const SDL_Surface *blit = g_pVideoDriver->mpVideoEngine->getBlitSurface();
 		mpKeenLeftSfc.reset(SDL_ConvertSurface( boxsurface, blit->format, blit->flags ), &SDL_FreeSurface);
 		SDL_FreeSurface(boxsurface);
@@ -237,15 +237,15 @@ void CPlayGameVorticon::showKeensLeft()
 		keenleft_rect.y = (KEENSLEFT_Y - m_NumPlayers + 2)*8;
 		keenleft_rect.w = mpKeenLeftSfc->w;
 		keenleft_rect.h = mpKeenLeftSfc->h;
-        
-        
+
+
 		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		{
 			m_showKeensLeft = false;
 		}
-        
+
 		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpKeenLeftSfc, NULL,  &keenleft_rect ) );
-        
+
 	}
 }
 
@@ -285,9 +285,9 @@ void CPlayGameVorticon::teleportPlayer(int objectID, CPlayer &player)
 void CPlayGameVorticon::readTeleportDestCoordinatesEP1(int objectID, int &destx, int &desty)
 {
 	destx = desty = 0;
-    
+
 	std::vector<stTeleporterTable>::iterator TTable =
-    g_pBehaviorEngine->getTeleporterTable().begin();
+			g_pBehaviorEngine->getTeleporterTable().begin();
 	size_t i = 0;
 	for( ; TTable != g_pBehaviorEngine->getTeleporterTable().end() ; TTable++, i++ )
 	{
@@ -303,11 +303,11 @@ void CPlayGameVorticon::readTeleportDestCoordinatesEP1(int objectID, int &destx,
 void CPlayGameVorticon::readTeleportDestCoordinatesEP3(int objectID, int &destx, int &desty)
 {
 	destx = desty = 0;
-    
+
 	int newObject = objectID & 0x00F;
 	newObject <<= 4;
 	newObject += 0xF00; // Now its a teleporter, we only need to find the right one on the map
-    
+
 	for(int i=newObject; i<newObject+0x10 ; i++)
 	{
 		if(mMap->findObject(i, &destx, &desty))

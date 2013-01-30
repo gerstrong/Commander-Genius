@@ -58,7 +58,7 @@ CVorticon(p_map, x, y, 4, OBJ_VORTELITE)
 	dist_traveled = VORTELITE_TRAPPED_DIST+1;
 	canbezapped = true;
 	m_speed = 0;
-    
+
 	if(g_pBehaviorEngine->mDifficulty > NORMAL)
 		mHealthPoints++;
 	else if(g_pBehaviorEngine->mDifficulty < NORMAL)
@@ -70,52 +70,52 @@ bool CVorticonElite::isNearby(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-        if(state == VORTELITE_WALK)
-        {
+	if(state == VORTELITE_WALK)
+	{
 	    	// If Player is nearby, make vorticon go faster
-            if(getYDownPos() > player->getYDownPos()-(1<<CSF) and
-               getYDownPos() < player->getYDownPos()+(1<<CSF) )
-            {
-                int dist;
-                if(getXMidPos() > player->getXMidPos())
-                    dist = getXMidPos()-player->getXMidPos();
-                else
-                    dist = player->getXMidPos()-getXMidPos();
-                
-                if(dist < PLAYER_DISTANCE)
-                    state = VORTELITE_CHARGE;
-            }
-            
-            dist_traveled++;
-            
-            state = VORTELITE_WALK;
-            
-            if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
-            {  // let's jump.
-                initiatejump();
-                return true;
-            }
-            else
-            {
-                if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
-                {
-                    if (getProbability(VORTELITE_FIRE_PROB))
-                    {  	// let's fire
-                        // usually shoot toward keen
-                        if (rand()%5 != 0)
-                        {
-                            if (getXPosition() < player->getXPosition())
-                                movedir = RIGHT;
-                            else
-                                movedir = LEFT;
-                        }
-                        timer = 0;
-                        state = VORTELITE_ABOUTTOFIRE;
-                    }
-                }
-                else timesincefire++;
-            }
-        }
+		if(getYDownPos() > player->getYDownPos()-(1<<CSF) and
+		   getYDownPos() < player->getYDownPos()+(1<<CSF) )
+		{
+			int dist;
+			if(getXMidPos() > player->getXMidPos())
+				dist = getXMidPos()-player->getXMidPos();
+			else
+				dist = player->getXMidPos()-getXMidPos();
+
+			if(dist < PLAYER_DISTANCE)
+				state = VORTELITE_CHARGE;
+		}
+		
+				dist_traveled++;
+
+		state = VORTELITE_WALK;
+
+		if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
+		{  // let's jump.
+			initiatejump();
+			return true;
+		}
+		else
+		{
+			if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
+			{
+				if (getProbability(VORTELITE_FIRE_PROB))
+				{  	// let's fire
+					// usually shoot toward keen
+					if (rand()%5 != 0)
+					{
+						if (getXPosition() < player->getXPosition())
+							movedir = RIGHT;
+						else
+							movedir = LEFT;
+					}
+					timer = 0;
+					state = VORTELITE_ABOUTTOFIRE;
+				}
+			}
+			else timesincefire++;
+		}
+	}
     }
     
     return true;
@@ -129,11 +129,11 @@ void CVorticonElite::process()
 		frame = 0;
 		state = VORTELITE_DYING;
 		dying = true;
-        
+
 		if (onscreen)
 			playSound(SOUND_VORT_DIE);
 	}
-    
+
 	if(state == VORTELITE_CHARGE)
 	{
 		m_speed = CHARGE_SPEED;
@@ -142,149 +142,149 @@ void CVorticonElite::process()
 	{
 		m_speed = WALK_SPEED;
 	}
-    
-reprocess: ;
+
+	reprocess: ;
 	switch(state)
 	{
-        case VORTELITE_CHARGE:
-        case VORTELITE_WALK:
-            
-            if (movedir==LEFT)
-            {  // move left
-                sprite = VORTELITE_WALK_LEFT_FRAME + frame;
-                if (!blockedl)
-                {
-                    xinertia = -m_speed;
-                }
-                else
-                {
-                    movedir = RIGHT;
-                    
-                    // if we only traveled a tiny amount before hitting a wall, we've
-                    // probably fallen into a small narrow area, and we need to try
-                    // to jump out of it
-                    if (dist_traveled < VORTELITE_TRAPPED_DIST && !mp_Map->m_Dark && blockedd)
-                    {
-                        initiatejump();
-                        goto reprocess;
-                    }
-                    else dist_traveled = 0;
-                }
-            }
-            else
-            {  // move right
-                sprite = VORTELITE_WALK_RIGHT_FRAME + frame;
-                if (!blockedr)
-                {
-                    xinertia = m_speed;
-                }
-                else
-                {
-                    movedir = LEFT;
-                    
-                    // if we only traveled a tiny amount before hitting a wall, we've
-                    // probably fallen into a small narrow area, and we need to try
-                    // to jump out of it
-                    if (dist_traveled < VORTELITE_TRAPPED_DIST && !mp_Map->m_Dark && blockedd)
-                    {
-                        initiatejump();
-                        goto reprocess;
-                    }
-                    else dist_traveled = 0;
-                }
-            }
-            
-            // walk animation
-            if (animtimer > VORTELITE_WALK_ANIM_TIME)
-            {
-                if (frame>=3) frame=0;
-                else frame++;
-                animtimer = 0;
-            } else animtimer++;
-            break;
-            
-        case VORTELITE_JUMP:
-            if (movedir == RIGHT)
-            { if (!blockedr) moveRight(m_speed); }
-            else
-            { if (!blockedl) moveLeft(m_speed); }
-            
-            if (blockedd && yinertia >= 0)
-            {  // The Vorticon Has landed after the jump!
-                state = VORTELITE_WALK;
-                goto reprocess;
-            }
-            
-            break;
-        case VORTELITE_ABOUTTOFIRE:
-            if (movedir==RIGHT)
-            { sprite = VORTELITE_FIRE_RIGHT_FRAME; }
-            else
-            { sprite = VORTELITE_FIRE_LEFT_FRAME; }
-            if (timer > VORTELITE_HOLD_GUN_OUT_TIME)
-            {
-                timer = 0;
-                state = VORTELITE_FIRED;
-                
-                CRay *newobject;
-                if (movedir==RIGHT)
-                    newobject = new CRay(mp_Map, getXRightPos()+1, getYPosition()+(9<<STC), RIGHT, CENTER);
-                else
-                    newobject = new CRay(mp_Map, getXLeftPos()-1, getYPosition()+(9<<STC), LEFT, CENTER);
-                newobject->setOwner( m_type, m_index);
-                newobject->sprite = ENEMYRAYEP2;
-                // don't shoot other vorticon elite
-                g_pBehaviorEngine->EventList().spawnObj(newobject);
-                
-                if (onscreen)
-                    playSound(SOUND_KEEN_FIRE);
-            }
-            else timer++;
-            break;
-        case VORTELITE_FIRED:
-            if (movedir==RIGHT)
-            { sprite = VORTELITE_FIRE_RIGHT_FRAME; }
-            else
-            { sprite = VORTELITE_FIRE_LEFT_FRAME; }
-            
-            if (timer > VORTELITE_HOLD_GUN_AFTER_FIRE_TIME)
-            {
-                timer = 0;
-                frame = 0;
-                timesincefire = 0;
-                state = VORTELITE_WALK;
-            }
-            else timer++;
-            break;
-        case VORTELITE_DYING:
-            sprite = VORTELITE_DYING_FRAME;
-            if (animtimer > VORTELITE_DIE_ANIM_TIME)
-            {
-                sprite = VORTELITE_DEAD_FRAME;
-                dead = true;
-            }
-            else
-            {
-                animtimer++;
-            }
-            break;
-        default: break;
+	case VORTELITE_CHARGE:
+	case VORTELITE_WALK:
+
+		if (movedir==LEFT)
+		{  // move left
+			sprite = VORTELITE_WALK_LEFT_FRAME + frame;
+			if (!blockedl)
+			{
+				xinertia = -m_speed;
+			}
+			else
+			{
+				movedir = RIGHT;
+
+				// if we only traveled a tiny amount before hitting a wall, we've
+				// probably fallen into a small narrow area, and we need to try
+				// to jump out of it
+				if (dist_traveled < VORTELITE_TRAPPED_DIST && !mp_Map->m_Dark && blockedd)
+				{
+					initiatejump();
+					goto reprocess;
+				}
+				else dist_traveled = 0;
+			}
+		}
+		else
+		{  // move right
+			sprite = VORTELITE_WALK_RIGHT_FRAME + frame;
+			if (!blockedr)
+			{
+				xinertia = m_speed;
+			}
+			else
+			{
+				movedir = LEFT;
+
+				// if we only traveled a tiny amount before hitting a wall, we've
+				// probably fallen into a small narrow area, and we need to try
+				// to jump out of it
+				if (dist_traveled < VORTELITE_TRAPPED_DIST && !mp_Map->m_Dark && blockedd)
+				{
+					initiatejump();
+					goto reprocess;
+				}
+				else dist_traveled = 0;
+			}
+		}
+
+		// walk animation
+		if (animtimer > VORTELITE_WALK_ANIM_TIME)
+		{
+			if (frame>=3) frame=0;
+			else frame++;
+			animtimer = 0;
+		} else animtimer++;
+		break;
+
+	case VORTELITE_JUMP:
+		if (movedir == RIGHT)
+		{ if (!blockedr) moveRight(m_speed); }
+		else
+		{ if (!blockedl) moveLeft(m_speed); }
+
+		if (blockedd && yinertia >= 0)
+		{  // The Vorticon Has landed after the jump!
+			state = VORTELITE_WALK;
+			goto reprocess;
+		}
+
+		break;
+	case VORTELITE_ABOUTTOFIRE:
+		if (movedir==RIGHT)
+		{ sprite = VORTELITE_FIRE_RIGHT_FRAME; }
+		else
+		{ sprite = VORTELITE_FIRE_LEFT_FRAME; }
+		if (timer > VORTELITE_HOLD_GUN_OUT_TIME)
+		{
+			timer = 0;
+			state = VORTELITE_FIRED;
+
+			CRay *newobject;
+			if (movedir==RIGHT)
+				newobject = new CRay(mp_Map, getXRightPos()+1, getYPosition()+(9<<STC), RIGHT, CENTER);
+			else
+				newobject = new CRay(mp_Map, getXLeftPos()-1, getYPosition()+(9<<STC), LEFT, CENTER);
+			newobject->setOwner( m_type, m_index);
+			newobject->sprite = ENEMYRAYEP2;
+			// don't shoot other vorticon elite
+			g_pBehaviorEngine->EventList().spawnObj(newobject);
+
+			if (onscreen)
+				playSound(SOUND_KEEN_FIRE);
+		}
+		else timer++;
+		break;
+	case VORTELITE_FIRED:
+		if (movedir==RIGHT)
+		{ sprite = VORTELITE_FIRE_RIGHT_FRAME; }
+		else
+		{ sprite = VORTELITE_FIRE_LEFT_FRAME; }
+
+		if (timer > VORTELITE_HOLD_GUN_AFTER_FIRE_TIME)
+		{
+			timer = 0;
+			frame = 0;
+			timesincefire = 0;
+			state = VORTELITE_WALK;
+		}
+		else timer++;
+		break;
+	case VORTELITE_DYING:
+		sprite = VORTELITE_DYING_FRAME;
+		if (animtimer > VORTELITE_DIE_ANIM_TIME)
+		{
+			sprite = VORTELITE_DEAD_FRAME;
+			dead = true;
+		}
+		else
+		{
+			animtimer++;
+		}
+		break;
+	default: break;
 	}
 }
 
 void CVorticonElite::initiatejump()
 {
 	if (state==VORTELITE_JUMP) return;
-    
+
 	frame = 0;
 	animtimer = 0;
 	yinertia = -((rand()%(VORTELITE_MAX_JUMP_HEIGHT-VORTELITE_MIN_JUMP_HEIGHT))+VORTELITE_MIN_JUMP_HEIGHT);
-    
+
 	if (movedir==RIGHT)
 		sprite = VORTELITE_JUMP_RIGHT_FRAME;
 	else
 		sprite = VORTELITE_JUMP_LEFT_FRAME;
-    
+
 	state = VORTELITE_JUMP;
 }
 

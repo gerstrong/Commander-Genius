@@ -21,16 +21,16 @@
 #define FADE_SPEED	10
 
 CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe ) :
-mp_level_completed(p_level_completed),
-m_ankhtime(ankhtime),
-m_closing(false),
-m_closed(false)
+ mp_level_completed(p_level_completed),
+ m_ankhtime(ankhtime),
+ m_closing(false),
+ m_closed(false)
 {
 	m_episode = episode;
 	mp_inventory = p_inventory;
 	m_baseframe = baseframe;
 	if(m_baseframe<0) m_baseframe=0;
-    
+
 	// draw the episode-specific stuff
 	if (m_episode==1)
 		createInventorySfcEp1();
@@ -50,7 +50,7 @@ void CStatusScreen::draw()
 		else if(!g_pVideoDriver->getSpecialFXConfig())
 			m_closed = true;
 	}
-    
+
 	if(!m_closed)
 	{
 		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpStatusSfc, NULL, &m_StatusRect ) );
@@ -72,7 +72,7 @@ std::string CStatusScreen::fetchDifficultyText()
 	else if(g_pBehaviorEngine->mDifficulty == HARD)
 		out = "Hard-";
 	out += "Mode";
-    
+
 	return out;
 }
 
@@ -82,7 +82,7 @@ void CStatusScreen::createInventorySfcEp1()
 	std::string tempbuf;
 	int dlgW,dlgH;
 	CFont &Font = g_pGfxEngine->getFont(1);
-    
+
 	m_StatusRect.x = 5*8;
 	m_StatusRect.y = 5*8;
 	dlgW = 29;
@@ -92,7 +92,7 @@ void CStatusScreen::createInventorySfcEp1()
 	
 	SDL_Surface *p_surface = CreateStatusSfc();
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
-    
+
 	g_pGfxEngine->drawDialogBox( p_surface, 0, 0, dlgW,dlgH, Font.getBGColour(p_surface->format, true));
 	Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP1_StatusBox"), 1<<3, 1<<3, true);
 	
@@ -101,32 +101,32 @@ void CStatusScreen::createInventorySfcEp1()
 	rect.x = 8;	rect.w = 12*8; // Score
 	rect.y = 2*8;	rect.h = 1*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
-    
+
 	rect.x = 14*8;	rect.w = 15*8; // Extra keen at
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
-    
+
 	rect.x = 8;	rect.w = 14*8; // Keens
 	rect.y = 4*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
-    
+
 	rect.x = 16*8;	rect.w = 13*8; // Ship Parts
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
-    
+
 	rect.x = 8;	rect.w = 8*8; // Raygun
 	rect.y = 8*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
-    
+
 	rect.x = 10*8;	rect.w = 6*8; // Pogo
 	rect.h = 5*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
-    
+
 	rect.x = 17*8;	rect.w = 12*8; // Keycards
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
-    
+
 	rect.x = 8;	rect.w = 8*8; // Charge
 	rect.y = 12*8;	rect.h = 1*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(p_surface->format, false));
-    
+
 	// fill in what we have
 	// 321: joystick/battery/vacuum/fuel not gotten
 	// 424: yellow/red/green/blue cards
@@ -197,10 +197,10 @@ void CStatusScreen::createInventorySfcEp1()
 		Sprite._drawSprite( p_surface, x, (0+4)<<3);
 		x += Sprite.getWidth();
 	}
-    
+
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
-    
+
 	mpStatusSfc.reset(SDL_DisplayFormat(p_surface), &SDL_FreeSurface);
 	SDL_FreeSurface(p_surface);
 }
@@ -211,84 +211,84 @@ void CStatusScreen::createInventorySfcEp2()
 	std::string tempbuf;
 	int dlgW,dlgH;
 	CFont &Font = g_pGfxEngine->getFont(1);
-    
+
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
-    
+
 	m_StatusRect.x = 5*8;
 	m_StatusRect.y = 5*8;
 	dlgW = 29;
 	dlgH = 14;
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
-    
+
 	SDL_Surface *p_surface = CreateStatusSfc();
 	tempbuf = g_pBehaviorEngine->getString("EP2_StatusBox");
 	g_pGfxEngine->drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (0+1)<<3, (0+1)<<3, true);
-    
+
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
 	rect.x = (0+1)*8;	rect.w = 12*8; // Score
 	rect.y = (0+2)*8;	rect.h = 1*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = 0*8+14*8;	rect.w = 15*8; // Extra keen at
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = (0+1)*8;	rect.w = 18*8; // Keens
 	rect.y = (0+4)*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = (0+20)*8;	rect.w = 9*8; // Pistol
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = (0+1)*8;	rect.w = 18*8; // Targets Saved
 	rect.y = (0+8)*8;	rect.h = 4*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = (0+20)*8;	rect.w = 9*8; // Keys
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	// raygun icon
 	Tilemap.drawTile(p_surface, (0+21)<<3, ((0+5)<<3), 414);
-    
+
 	// cards
 	if (mp_inventory->HasCardYellow)
 	{
 		Tilemap.drawTile(p_surface, (0+21)<<3, ((0+8)<<3), 424);
-        
+
 		if(mp_inventory->HasCardYellow > 1)
-            Font.drawFont( p_surface, itoa(mp_inventory->HasCardYellow),(0+21)<<3,(0+8)<<3);
+			  Font.drawFont( p_surface, itoa(mp_inventory->HasCardYellow),(0+21)<<3,(0+8)<<3);
 	}
 	if (mp_inventory->HasCardRed)
 	{
 		Tilemap.drawTile(p_surface, (0+25)<<3, ((0+8)<<3), 425);
-        
+
 		if(mp_inventory->HasCardRed > 1)
-            Font.drawFont( p_surface, itoa(mp_inventory->HasCardRed),(0+25)<<3,(0+8)<<3);
-        
+			  Font.drawFont( p_surface, itoa(mp_inventory->HasCardRed),(0+25)<<3,(0+8)<<3);
+
 	}
 	if (mp_inventory->HasCardGreen)
 	{
 		Tilemap.drawTile(p_surface, (0+21)<<3, (0+10)<<3, 426);
-        
+
 		if(mp_inventory->HasCardGreen > 1)
-            Font.drawFont( p_surface, itoa(mp_inventory->HasCardGreen),(0+21)<<3,(0+10)<<3);
+			  Font.drawFont( p_surface, itoa(mp_inventory->HasCardGreen),(0+21)<<3,(0+10)<<3);
 	}
 	if (mp_inventory->HasCardBlue)
 	{
 		Tilemap.drawTile(p_surface, (0+25)<<3, (0+10)<<3, 427);
-        
+
 		if(mp_inventory->HasCardBlue > 1)
-            Font.drawFont( p_surface, itoa(mp_inventory->HasCardBlue),(0+25)<<3,(0+10)<<3);
+			  Font.drawFont( p_surface, itoa(mp_inventory->HasCardBlue),(0+25)<<3,(0+10)<<3);
 	}
-    
+
 	// pistol charges
 	i = mp_inventory->charges;
 	if (i>999) i=999;
 	tempbuf = itoa(i);
 	Font.drawFont( p_surface, tempbuf, (0+27-tempbuf.size())<<3, ((0+5)<<3)-1);
-    
+
 	// score
 	i = mp_inventory->score;
 	tempbuf = itoa(i);
@@ -307,7 +307,7 @@ void CStatusScreen::createInventorySfcEp2()
 		Sprite._drawSprite( p_surface, x, (0+4)<<3 );
 		x += Sprite.getWidth();
 	}
-    
+
 	// cities saved
 	if (mp_level_completed[4]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL4_TargetName"), (0+1)<<3, (0+8)<<3);
 	if (mp_level_completed[6]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL6_TargetName"), (0+8)<<3, (0+8)<<3);
@@ -317,10 +317,10 @@ void CStatusScreen::createInventorySfcEp2()
 	if (mp_level_completed[9]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL9_TargetName"), (0+8)<<3, (0+10)<<3);
 	if (mp_level_completed[15]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL15_TargetName"), (0+1)<<3, (0+11)<<3);
 	if (mp_level_completed[16]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL16_TargetName"), (0+8)<<3, (0+11)<<3);
-    
+
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
-    
+
 	mpStatusSfc.reset(SDL_DisplayFormat(p_surface), &SDL_FreeSurface);
 	SDL_FreeSurface(p_surface);
 }
@@ -331,91 +331,91 @@ void CStatusScreen::createInventorySfcEp3()
 	std::string tempbuf;
 	int dlgW,dlgH;
 	CFont &Font = g_pGfxEngine->getFont(1);
-    
+
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
-    
+
 	m_StatusRect.x = 5*8;
 	m_StatusRect.y = 5*8;
 	dlgW = 29;
 	dlgH = 13;
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
-    
+
 	SDL_Surface *p_surface = CreateStatusSfc();
 	tempbuf = g_pBehaviorEngine->getString("EP3_StatusBox");
 	g_pGfxEngine->drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (0+1)<<3, (0+1)<<3, true);
-    
+
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
 	rect.x = (0+1)*8;	rect.w = 12*8; // Score
 	rect.y = (0+2)*8;	rect.h = 1*8;
 	SDL_FillRect(p_surface, &rect, Font.getBGColour(false));
-    
+
 	rect.x = 0*8+14*8;	rect.w = 15*8; // Extra keen at
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = (0+1)*8;	rect.w = 18*8; // Keens
 	rect.y = (0+4)*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = (0+20)*8;	rect.w = 9*8; // Pistol
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = (0+1)*8;	rect.w = 10*8; // Ankh
 	rect.y = (0+8)*8;	rect.h = 3*8;
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	rect.x = (0+12)*8;	rect.w = 17*8; // Keys
 	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
-    
+
 	// raygun icon
 	Tilemap.drawTile(p_surface, (0+21)<<3, ((0+5)<<3)-5, 216);
-    
+
 	// calculate % ankh time left
 	int ankhtimepercent = (int)((float)m_ankhtime / (PLAY_ANKH_TIME/100));
 	// ankh time
 	Tilemap.drawTile(p_surface, (0+3)<<3, ((0+8)<<3)+3, 214);
-    
+	 
 	Font.drawFont( p_surface, itoa(ankhtimepercent), (0+7)<<3, ((0+8)<<3)+7);
 	
-    
+
 	// cards
 	if (mp_inventory->HasCardYellow)
 	{
 		Tilemap.drawTile(p_surface, ((0+13)<<3)+4, ((0+8)<<3)+4, 217);
-        
+
 		if(mp_inventory->HasCardYellow > 1)
 			Font.drawFont( p_surface, itoa(mp_inventory->HasCardYellow),(0+12)<<3,((0+8)<<3)+3);
 	}
 	if (mp_inventory->HasCardRed)
 	{
 		Tilemap.drawTile(p_surface, ((0+17)<<3)+4, ((0+8)<<3)+4, 218);
-        
+
 		if(mp_inventory->HasCardRed > 1)
 			Font.drawFont(p_surface, itoa(mp_inventory->HasCardRed),(0+16)<<3,((0+8)<<3)+3);
 	}
 	if (mp_inventory->HasCardGreen)
 	{
 		Tilemap.drawTile(p_surface, ((0+21)<<3)+4, ((0+8)<<3)+4, 219);
-        
+
 		if(mp_inventory->HasCardGreen > 1)
 			Font.drawFont(p_surface, itoa(mp_inventory->HasCardGreen),(0+20)<<3,((0+8)<<3)+3);
 	}
 	if (mp_inventory->HasCardBlue)
 	{
 		Tilemap.drawTile(p_surface, ((0+25)<<3)+4, ((0+8)<<3)+4, 220);
-        
+
 		if(mp_inventory->HasCardBlue > 1)
 			Font.drawFont(p_surface, itoa(mp_inventory->HasCardBlue),(0+24)<<3,((0+8)<<3)+3);
 	}
-    
+
 	// pistol charges
 	i = mp_inventory->charges;
 	if (i>999) i=999;
 	tempbuf = itoa(i);
 	Font.drawFont( p_surface, tempbuf, (0+27-tempbuf.size())<<3, ((0+5)<<3)-1);
-    
+
 	// score
 	i = mp_inventory->score;
 	tempbuf = itoa(i);
@@ -434,10 +434,10 @@ void CStatusScreen::createInventorySfcEp3()
 		Sprite._drawSprite(  p_surface, x, (0+4)<<3);
 		x += Sprite.getWidth();
 	}
-    
+
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
-    
+
 	mpStatusSfc.reset(SDL_DisplayFormat(p_surface), &SDL_FreeSurface);
 	SDL_FreeSurface(p_surface);
 }

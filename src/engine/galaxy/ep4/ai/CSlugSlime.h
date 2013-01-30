@@ -15,23 +15,23 @@
 
 namespace galaxy
 {
-    
-    class CSlugSlime : public CGalaxySpriteObject
-    {
-    public:
-        
-        /** Standard Constructor for the slug poo */
-        CSlugSlime(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
-        
-        /** Main Process cycle */
-        void process();
-        
-        /** What happens when something touches that slime */
-        void getTouchedBy(CSpriteObject &theObject);
-    private:
-        int m_timer;
-    };
-    
+
+class CSlugSlime : public CGalaxySpriteObject
+{
+public:
+
+	/** Standard Constructor for the slug poo */
+	CSlugSlime(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+
+	/** Main Process cycle */
+	void process();
+
+	/** What happens when something touches that slime */
+	void getTouchedBy(CSpriteObject &theObject);
+private:
+    int m_timer;
+};
+
 };
 
 #endif /* CSLUGSLIME_H_ */

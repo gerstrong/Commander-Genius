@@ -41,9 +41,9 @@
 #include "scale3x.h"
 
 #ifdef __MINGW32__
-#include <malloc.h>
+	#include <malloc.h>
 #else
-#include <alloca.h>
+	#include <alloca.h>
 #endif
 
 #include <assert.h>
@@ -419,7 +419,7 @@ static void scale4x(void* void_dst, unsigned dst_slice, const void* void_src, un
 	mid_slice = (mid_slice + 0x7) & ~0x7; /* align to 8 bytes */
 	
 	mid = alloca(6 * mid_slice); /* allocate space for 6 row buffers */
-    
+
 	scale4x_buf(void_dst, dst_slice, mid, mid_slice, void_src, src_slice, pixel, width, height);
 }
 

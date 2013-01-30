@@ -19,13 +19,13 @@ bool CConfiguration::saveCfgFile()
 	std::ofstream file;
 	if(!OpenGameFileW(file, m_filename))
 		return false;
-    
+
 	SectionMap::iterator sect = m_sections.begin();
 	for(; sect != m_sections.end() ; sect++)
 	{
 		file << "[" + sect->first + "]";
 		file << std::endl;
-        
+
 		Section &current = sect->second;
 		Section::iterator keyword = current.begin();
 		for(; keyword != current.end() ; keyword++)
@@ -55,7 +55,7 @@ void CConfiguration::WriteString(const std::string& section, const std::string& 
 		m_sections[section] = newSection;
 		return;
 	}
-    
+
 	// Set the key=value pair
 	Section::iterator item = sect->second.find(key);
 	if (item == sect->second.end())
@@ -63,7 +63,7 @@ void CConfiguration::WriteString(const std::string& section, const std::string& 
 		sect->second.insert(std::pair<std::string, std::string>(key,string));
 		return;
 	}
-    
+
 	item->second = string;
 }
 

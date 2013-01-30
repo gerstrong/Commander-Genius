@@ -18,19 +18,19 @@ class CGamePlayMode : public CGameMode
 {
 public:
 	CGamePlayMode( const int Episode, const int Numplayers,
-                  const std::string& DataDirectory,
-                  const int startLevel = -1);
-    
+			const std::string& DataDirectory,
+			const int startLevel = -1);
+
 	CGamePlayMode( GMSwitchToPlayGameMode &gpmode );
-    
+
 	
-    
+
 	void init();
-    
+
 	void loadGame();
-    
+
 	void process();
-    
+
 private:
 	int m_startLevel;
 	int m_Episode;

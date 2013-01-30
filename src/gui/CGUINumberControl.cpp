@@ -22,11 +22,11 @@ const int SLIDER_WIDTH = 16;
 
 
 CGUINumberControl::CGUINumberControl(	const std::string& text,
-                                     const int startValue,
-                                     const int endValue,
-                                     const int deltaValue,
-                                     const int value,
-                                     const bool slider ) :
+					const int startValue,
+					const int endValue,
+					const int deltaValue,
+					const int value,
+					const bool slider ) :
 mText(text),
 mStartValue(startValue),
 mEndValue(endValue),
@@ -45,7 +45,7 @@ drawButton(&CGUINumberControl::drawNoStyle)
 	}
 	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
-	    drawButton = &CGUINumberControl::drawGalaxyStyle;
+	    drawButton = &CGUINumberControl::drawGalaxyStyle;		
 	}
 	
 	setupButtonSurface();
@@ -87,14 +87,14 @@ const int CGUINumberControl::getSelection()
 
 void CGUINumberControl::setSelection( const int value )
 {
-    
+
 	if( mStartValue>value )
 		mValue = mStartValue;
 	else if( mEndValue<value )
 		mValue = mEndValue;
 	else
 		mValue = value;
-    
+
 	setupButtonSurface();
 }
 
@@ -105,20 +105,20 @@ std::string CGUINumberControl::sliderStr()
 	ch = (mDecSel) ? 8 : 1;
 	std::string slider;
 	slider = static_cast<char>(ch);
-    
+
 	const int sVal = (SLIDER_WIDTH-3)*(mValue - mStartValue) / (mEndValue - mStartValue);
-    
+
 	for( int l=0 ; l<sVal ; l++)
 		slider += '\04';
-    
+
 	slider += '\05';
-    
+
 	for( int l=0 ; l<(SLIDER_WIDTH-3)-sVal ; l++)
 		slider += '\06';
-    
+
 	ch = (mIncSel) ? 9 : 7;
 	slider += static_cast<char>(ch);
-    
+
 	return slider;
 }
 
@@ -126,11 +126,11 @@ std::string CGUINumberControl::sliderStr()
 void CGUINumberControl::setupButtonSurface()
 {
     if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
-        return;
+	return;
     
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
-    
+
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
 	const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
 	const std::string showTextR = "  " + mText + ": " + itoa(mValue) + ">";
@@ -138,7 +138,7 @@ void CGUINumberControl::setupButtonSurface()
 	mpTextLightSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84)));
 	mpTextLightSfcR.reset(Font.fetchColoredTextSfc( showTextR, SDL_MapRGB( format, 84, 234, 84)));
 	mpTextLightSfcL.reset(Font.fetchColoredTextSfc( showTextL, SDL_MapRGB( format, 84, 234, 84)));
-    
+
 	mpTextDisabledSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123)));
 }
 
@@ -151,19 +151,19 @@ void CGUINumberControl::processLogic()
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
-        
+
 		if( mRect.HasPoint(MousePos) )
 		{
 			if(mouseevent->Type == MOUSEEVENT_MOVED)
 			{
 				mDecSel = false;
 				mIncSel = false;
-                
+
 				if( MousePos.x < mRect.x+(mRect.w)/2.0f )
 					mDecSel = true;
 				else if( MousePos.x > mRect.x+(mRect.w)/2.0f )
 					mIncSel = true;
-                
+
 				mHovered = true;
 				g_pInput->m_EventList.pop_Event();
 			}
@@ -177,8 +177,8 @@ void CGUINumberControl::processLogic()
 				mButtonUp = true;
 				mHovered = true;
 				mButtonDown = false;
-                
-                
+
+
 				if( MousePos.x < mRect.x+(mRect.w)/2.0f )
 				{
 					// Cycle through the values
@@ -191,7 +191,7 @@ void CGUINumberControl::processLogic()
 					if( mValue < mEndValue )
 						increment();
 				}
-                
+
 				setupButtonSurface();
 				g_pInput->m_EventList.pop_Event();
 			}
@@ -214,7 +214,7 @@ void CGUINumberControl::processLogic()
 void CGUINumberControl::drawGalaxyStyle(SDL_Rect& lRect)
 {
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-    
+
 	if(!mEnabled)
 	{
 		SDL_BlitSurface(mpTextDisabledSfc.get(), NULL, blitsfc, &lRect);
@@ -224,18 +224,18 @@ void CGUINumberControl::drawGalaxyStyle(SDL_Rect& lRect)
 		if(mHovered)
 		{
 		    if(mDecSel)
-                SDL_BlitSurface(mpTextLightSfcL.get(), NULL, blitsfc, &lRect);
+			SDL_BlitSurface(mpTextLightSfcL.get(), NULL, blitsfc, &lRect);
 		    else if(mIncSel)
-                SDL_BlitSurface(mpTextLightSfcR.get(), NULL, blitsfc, &lRect);
+			SDL_BlitSurface(mpTextLightSfcR.get(), NULL, blitsfc, &lRect);
 		    else
-                SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
+			SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
 		}
 		else // Button is not hovered
 		{
 		    SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
 		}
 	}
-    
+
 	drawBlinker(lRect);
 }
 
@@ -244,15 +244,15 @@ void CGUINumberControl::drawGalaxyStyle(SDL_Rect& lRect)
 
 void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 {
-    
+
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-    
+
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-    
+
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
-    
+
 	if(mSlider)
 	{
 		g_pGfxEngine->getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
@@ -265,20 +265,20 @@ void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 			text += static_cast<char>(17);
 		else
 			text += " ";
-        
+
 		Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
 	}
-    
+
 	drawTwirl(lRect);
-    
+
 }
 
 
 void CGUINumberControl::drawNoStyle(SDL_Rect& lRect)
 {
-    
+
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-    
+
 	if( mButtonUp )
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
@@ -295,23 +295,23 @@ void CGUINumberControl::drawNoStyle(SDL_Rect& lRect)
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
 	}
-    
+
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-    
+
 	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
-    
+
 }
 
 
 void CGUINumberControl::processRender(const CRect<float> &RectDispCoordFloat)
 {
-    
+
 	// Transform to the display coordinates
 	CRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
-    
+
 	(this->*drawButton)(lRect);
-    
+
 }

@@ -17,7 +17,7 @@ class CSettingsMenu : public CBaseMenu
 {
 public:
 	CSettingsMenu();
-    
+
 private:
 };
 

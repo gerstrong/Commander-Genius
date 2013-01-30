@@ -31,7 +31,7 @@ m_is_a_mod(is_a_mod)
 void CPatcher::process()
 {
 	if(!loadPatchfile()) return;
-    
+
 	// If the file was found and read into the m_TextList,
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
@@ -40,11 +40,11 @@ void CPatcher::process()
 	m_is_a_mod = true;
 	
 	filterPatches(m_TextList);
-    
+
 	patch_item PatchItem;
-    
+
 	std::string dumpfilename = "";
-    
+
 	// TODO: Extend this part further with more commands
 	while(readNextPatchItem(PatchItem, m_TextList) == true)
 	{
@@ -53,7 +53,7 @@ void CPatcher::process()
 		{
 			// Check's if patch matches with the episode
 			std::string extText = readPatchItemsNextValue(PatchItem.value);
-            
+
 			if(strCaseStartsWith(extText,"ck"))
 			{
 				if(atoi(extText.substr(2)) != m_episode)
@@ -66,18 +66,18 @@ void CPatcher::process()
 		else if(PatchItem.keyword == "patchfile")
 		{
 			std::string newbuf = PatchItem.value.front();
-            
+
 			replace(newbuf, "\"", ""); // In case some patches use the \" remove it!
-            
+
 			// Seperate the offset and the filename
 			size_t p = newbuf.find(' ');
-            
+
 			ulong offset;
 			if( readIntValue(newbuf.substr(0,p), offset) )
 			{
 				std::string patch_file_name = newbuf.substr(p);
 				TrimSpaces(patch_file_name);
-                
+
 				patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
 			}
 		}
@@ -100,14 +100,14 @@ void CPatcher::process()
 			TrimSpaces(newfileName);
 			
 			gpResource->audioHedFilename = newfileName;
-		}
+		}				
 		else if(PatchItem.keyword == "audiodict")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 			
 			gpResource->audioDictFilename = newfileName;
-		}
+		}				
 		else if(PatchItem.keyword == "gamemaps")
 		{
 			std::string newfileName = PatchItem.value.front();
@@ -134,23 +134,23 @@ void CPatcher::process()
 					ulong number = 0;
 					std::string patchtext = "";
 					textline = readPatchItemsNextValue(PatchItem.value);
-                    
+
 					if(readIntValueAndWidth(textline, number, width))
 					{
 						// In this case we have a number
-						memcpy(m_data+offset, &number, width);
+						memcpy(m_data+offset, &number, width);						
 						offset+=width;
 					}
 					else if(readPatchString(textline, patchtext))
 					{
 						size_t textsize = patchtext.size();
-                        
+
 						if(offset + textsize > m_datasize)
 						{
 							g_pLogFile->textOut("Patch addresses exceed the file size<br>");
 							break;
 						}
-                        
+
 						memcpy( m_data+offset, patchtext.c_str(), textsize);
 						offset += textsize;
 					}
@@ -164,7 +164,7 @@ void CPatcher::process()
 			// Patch the level hints
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
 			ulong number = 0;
-            
+
 			if(readIntValue(textline, number))
 			{
 				// You have a level hint. Very good, lets read it and patch!
@@ -184,11 +184,11 @@ void CPatcher::process()
 		}
 		else
 		{
-		    // If not recognized put the patch on the post-list. In the later Process it will
+		    // If not recognized put the patch on the post-list. In the later Process it will 
 		    // judge valid status
 		    mPostPatchItems.push_back(PatchItem);
 		}
-        
+
 		if(dumpfilename!="")
 		{
 			std::ofstream DumpFile;
@@ -198,7 +198,7 @@ void CPatcher::process()
 				DumpFile.close();
 			}
 		}
-        
+
 		PatchItem.keyword.clear();
 		PatchItem.value.clear();
 	}
@@ -207,9 +207,9 @@ void CPatcher::process()
 
 void CPatcher::postProcess()
 {
-    // Mods only!
-    if(!m_is_a_mod)
-        return;
+  // Mods only!
+  if(!m_is_a_mod)
+    return;
 	
 	auto it = mPostPatchItems.begin();
 	
@@ -220,7 +220,7 @@ void CPatcher::postProcess()
 			// Patch the entry level text
 			std::string textline = readPatchItemsNextValue(it->value);
 			ulong number = 0;
-            
+
 			if(readIntValue(textline, number))
 			{
 				// Got the number, patch it!
@@ -231,9 +231,9 @@ void CPatcher::postProcess()
 		{
 		    g_pLogFile->textOut("The Keyword \"" + it->keyword + "\" is unknown to Commander Genius.");
 		}
-        
+
 		it->keyword.clear();
-		it->value.clear();
+		it->value.clear(); 
 	}
 }
 
@@ -286,7 +286,7 @@ bool CPatcher::loadPatchfile()
 		Patchfile.close();
 		patchlist.list.clear();
 	}
-    
+
 	return true;
 }
 
@@ -323,36 +323,36 @@ void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)
 	unsigned char *p_patch;
 	unsigned long offset=0;
 	unsigned long end=0;
-    
+
 	// Check for which level is it for.
 	if(m_episode == 1)
 	{
 		switch(level)
 		{
-            case 2:  offset = 0x15080; end = 0x15113; break;
-            case 6:  offset = 0x1511A; end = 0x151B3; break;
-            case 9:  offset = 0x151B4, end = 0x1524D; break;
-            case 10: offset = 0x1524E; end = 0x152E7; break;
-            case 11: offset = 0x152E8; end = 0x1533F; break;
-            case 12: offset = 0x15340; end = 0x153DA; break;
-            case 15: offset = 0x153DB; end = 0x1545E; break;
+		case 2:  offset = 0x15080; end = 0x15113; break;
+		case 6:  offset = 0x1511A; end = 0x151B3; break;
+		case 9:  offset = 0x151B4, end = 0x1524D; break;
+		case 10: offset = 0x1524E; end = 0x152E7; break;
+		case 11: offset = 0x152E8; end = 0x1533F; break;
+		case 12: offset = 0x15340; end = 0x153DA; break;
+		case 15: offset = 0x153DB; end = 0x1545E; break;
 		}
 	}
 	else if(m_episode == 2)
 	{
 		switch(level)
 		{
-            case 8:  offset = 0x19FCC; end = 0x1A08B; break;
-            case 12:  offset = 0x1A08B; end = 0x1A1A0; break;
+		case 8:  offset = 0x19FCC; end = 0x1A08B; break;
+		case 12:  offset = 0x1A08B; end = 0x1A1A0; break;
 		}
 	}
-    
+
 	p_patch = m_data + offset;
-    
+
 	// Fill everything with zeros, so the old text won't be shown
 	if(end > offset)
 		memset( p_patch, 0, end-offset);
-    
+
 	std::string buf;
 	do
 	{
@@ -376,9 +376,9 @@ void CPatcher::PatchLevelentry(const int level, std::list<std::string> &input)
 	std::string levelStr;
 	
 	if(level == 0)
-        levelStr = "WORLDMAP_LOAD_TEXT";
+	  levelStr = "WORLDMAP_LOAD_TEXT";
 	else
-        levelStr = "LEVEL"+ itoa(level) +"_LOAD_TEXT";	
+	  levelStr = "LEVEL"+ itoa(level) +"_LOAD_TEXT";	
 	
 	while( !input.empty() )
 	{
@@ -386,7 +386,7 @@ void CPatcher::PatchLevelentry(const int level, std::list<std::string> &input)
 	    input.pop_front();
 	    
 	    if( input.size() > 1 ) 
-            buf += "\n";  
+	      buf += "\n";  
 	} 
 	
 	g_pBehaviorEngine->setMessage(levelStr, buf);

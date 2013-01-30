@@ -42,7 +42,7 @@ public:
 	void process();
 	bool isNearby(CVorticonSpriteObject &theObject);
 	void getTouchedBy(CVorticonSpriteObject &theObject);
-    
+
 private:
 	enum FOOB_ACTIONS
 	{
@@ -53,7 +53,7 @@ private:
 		FOOB_DEAD
 	} state;
 	direction_t dir;
-    
+
 	int animframe, animtimer;
 	int OnSameLevelTime;
 	int OffOfSameLevelTime;

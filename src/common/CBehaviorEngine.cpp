@@ -18,8 +18,8 @@
 #include "CLogFile.h"
 
 void CBehaviorEngine::setMessage(const std::string &name, const std::string &message)
-{
-    stringmap[name] = message;
+{	
+  stringmap[name] = message;	
 }
 
 /**
@@ -38,7 +38,7 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 		// clear the teleporter table
 		if(!m_TeleporterTable.empty())
 			m_TeleporterTable.clear();
-        
+
 		// We have three destinations.
 		// When player uses a teleporter, readTeleporterInfo will retrieve that information
 		// We can have 6 teleporters cases: dest 1, 2, 3 and snow and dirt in that combination
@@ -48,14 +48,14 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 			teleport.objectnumber1 = 0x21 + i;
 			m_TeleporterTable.push_back(teleport);
 		}
-        
+
 		m_TeleporterTable[0].objectnumber2 = 41;
 		m_TeleporterTable[1].objectnumber2 = 38;
 		m_TeleporterTable[2].objectnumber2 = 0;
 		m_TeleporterTable[3].objectnumber2 = 46;
 		m_TeleporterTable[4].objectnumber2 = 46;
 		m_TeleporterTable[5].objectnumber2 = 46; // Here we still don't know about the others...
-        
+
 		// Now get the coordinates...
 		m_TeleporterTable[0].x = GETWORD(p_exedata+0x158DF);
 		m_TeleporterTable[0].y = GETWORD(p_exedata+0x158E3);
@@ -83,12 +83,12 @@ std::string CBehaviorEngine::getString(const std::string& name)
 {
 	std::string text;
 	std::map<std::string, std::string>::iterator it = stringmap.find(name);
-    
+
 	if( it != stringmap.end() )
 		text = it->second;
 	else
 		text = "";
-    
+
 	return text;
 }
 

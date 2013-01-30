@@ -32,16 +32,16 @@ public:
 	COGGPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec);
 	COGGPlayer(const SDL_AudioSpec& AudioSpec);
 	virtual ~COGGPlayer();
-    
+
 	bool loadMusicForLevel(const CExeFile& ExeFile, const int level);
 	bool open();
 	void readBuffer(Uint8* buffer, Uint32 length);
 	void close();
-    
+
 private:
 	bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec );
 	bool readOGGStreamAndResample( OggVorbis_File  &oggStream, Uint8 *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
-    
+
 	OggVorbis_File  m_oggStream;
 	std::string m_filename;
 	const SDL_AudioSpec &m_AudioSpec;

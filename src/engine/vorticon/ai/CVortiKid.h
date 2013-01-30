@@ -28,7 +28,7 @@ private:
 	direction_t dir;
 	int jumpdectimer, xdectimer;
 	int dietimer;
-    
+
 	char walkframe;
 	int walktimer;
 };

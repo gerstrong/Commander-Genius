@@ -25,7 +25,7 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
         	{
         		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
         		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
-        		memcpy(m_nodes, dictdata, size);
+        		memcpy(m_nodes, dictdata, size);						
         		return true;
         	}
         	dictnumleft--;
@@ -41,12 +41,12 @@ bool CHuffman::readDictionaryNumberfromEnd(const CExeFile& ExeFile)
     
     for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
     {
-        data_ptr--;
+	data_ptr--;
         if( memcmp(data_ptr, DICTSIG, DICT_SIG_BYTES) == 0 )
         {
        		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
        		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
-       		memcpy(m_nodes, dictdata, size);
+       		memcpy(m_nodes, dictdata, size);						
        		return true;
         }
     }
@@ -55,15 +55,15 @@ bool CHuffman::readDictionaryNumberfromEnd(const CExeFile& ExeFile)
 
 bool CHuffman::readDictionaryFromFile( const std::string &filename )
 {
-	std::ifstream file;
-    
+	std::ifstream file; 
+
 	if(!OpenGameFileR(file, filename, std::ios::binary))
 	{
 		return false;
 	}
-    
+
 	file.read(reinterpret_cast<char*>(m_nodes), DICT_SIZE*sizeof(nodestruct));
-    
+
 	return true;
 }
 
@@ -83,27 +83,27 @@ void CHuffman::expand(byte *pin, byte *pout, unsigned long inlen, unsigned long 
 	unsigned long incnt = 0, outcnt = 0;
 	unsigned char c, mask;
 	unsigned short nextnode;
-    
+
 	curnode = 254; /* Head node */
-    
+
 	do
 	{
 		mask = 1;
 		c = *(pin++);
 		incnt++;
-        
+
 		do
 		{
 			if(c & mask)
 				nextnode = m_nodes[curnode].bit1;
 			else
 				nextnode = m_nodes[curnode].bit0;
-            
-            
+
+
 			if(nextnode < 256)
 			{
 				/* output a char and move back to the head node */
-				*(pout++) = nextnode;
+				*(pout++) = nextnode;				
 				outcnt++;
 				curnode = 254;
 			}
@@ -116,7 +116,7 @@ void CHuffman::expand(byte *pin, byte *pout, unsigned long inlen, unsigned long 
 			mask <<= 1;
 		}
 		while(outcnt < outlen && mask != 0);
-        
+
 	}
 	while(incnt < inlen && outcnt < outlen);
 }

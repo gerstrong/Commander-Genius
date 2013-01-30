@@ -22,8 +22,8 @@ struct GMSwitchToPassiveMode : CEvent
 	const std::string m_DataDirectory;
 	const int m_Episode;
 	GMSwitchToPassiveMode( const std::string& DataDirectory, const int& Episode ) :
-    m_DataDirectory(DataDirectory),
-    m_Episode(Episode){}
+		m_DataDirectory(DataDirectory),
+		m_Episode(Episode){}
 };
 
 // This event switches to the PlayGameMode
@@ -33,14 +33,14 @@ struct GMSwitchToPlayGameMode : CEvent
 	const int m_Numplayers;
 	const std::string m_DataDirectory;
 	const int m_startlevel;
-    
+
 	GMSwitchToPlayGameMode( const int Episode, const int Numplayers,
-                           const std::string& DataDirectory, const int startlevel = -1 ) :
-    m_Episode(Episode),
-    m_Numplayers(Numplayers),
-    m_DataDirectory(DataDirectory),
-    m_startlevel(startlevel)
-    {}
+				const std::string& DataDirectory, const int startlevel = -1 ) :
+				m_Episode(Episode),
+				m_Numplayers(Numplayers),
+				m_DataDirectory(DataDirectory),
+				m_startlevel(startlevel)
+				{}
 };
 
 // It's a simple quit event which will force CG to close the App
@@ -52,7 +52,7 @@ struct GMStart : CEvent
 	GMStart(int &Slot) :
 	mSlot(Slot)
 	{}
-    
+
 	int &mSlot;
 };
 
@@ -64,7 +64,7 @@ class CGameMode
 public:
 	CGameMode() {}
 	virtual ~CGameMode() {}
-    
+
 	virtual void process() = 0;
 	virtual void init() = 0;
 };

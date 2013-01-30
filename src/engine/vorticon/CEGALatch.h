@@ -25,16 +25,16 @@ public:
 			  long tiles16location,
 			  short bitmaps,
 			  long bitmaplocation);
-    
+
 	bool loadHead(char *data, short m_episode );
 	bool loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata );
-    
+
 	void applyMasks();
-    
+
 	virtual ~CEGALatch();
-    
+
 	char *RawData;
-    
+
 private:
 	int m_num_Latches;
 	int m_latchplanesize;

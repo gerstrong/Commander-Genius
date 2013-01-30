@@ -26,24 +26,24 @@ const std::list<std::string> filledStrList( const size_t amount, const char *fir
 {
 	char *item;
 	va_list vl;
-    
+
 	std::list<std::string> list;
-    
+
 	item = const_cast<char*>( first );
 	list.push_back(item);
-    
+
 	va_start(vl, first);
-    
+
 	for ( size_t i=1 ; i<amount ; i++ )
 	{
 		item = const_cast<char*>( va_arg(vl, const char*) );
 		list.push_back(item);
 	}
-    
+
 	va_end(vl);
-    
+
 	return list;
-    
+
 }
 
 /**
@@ -52,16 +52,16 @@ const std::list<std::string> filledStrList( const size_t amount, const char *fir
 unsigned int calcNumLines(const std::string& text)
 {
 	unsigned int numLines = 1;
-    
+
 	if(text.size() == 0)
 		return 0;
-    
+
 	for( unsigned int i=0 ; i<text.size() ; i++ )
 	{
 		if ( endofText( text.substr(i) ) )
 			numLines++;
 	}
-    
+
 	return numLines;
 }
 
@@ -72,7 +72,7 @@ std::string getRightAlignedString(std::string text, size_t size)
 {
 	if(text.size() > size)
 		return text;
-    
+
 	std::string output;
 	for(size_t i=0 ; i<(size-text.size()) ; i++)
 		output += ' ';
@@ -262,7 +262,7 @@ Iterator<char>::Ref HexDump(Iterator<char>::Ref start, PrintOutFct printOutFct, 
 	}
 	
 	tmpLeft += std::string((charsInLine - tmpChars) * 3, ' ');
-	tmpRight += std::string((charsInLine - tmpChars), ' ');
+	tmpRight += std::string((charsInLine - tmpChars), ' ');	
 	if(tmpChars < charsInLine / 2) { tmpLeft += "  "; tmpRight += " "; }
 	(*printOutFct) ( tmpLeft + "| " + tmpRight + "\n" );
 	
@@ -531,14 +531,14 @@ bool stringcaseequal(const std::string& s1, const std::string& s2) {
 }
 
 bool subStrEqual(const std::string& s1, const std::string s2, size_t p) {
-	if((s1.size() < p || s2.size() < p) && s1.size() != s2.size()) return false;
+	if((s1.size() < p || s2.size() < p) && s1.size() != s2.size()) return false; 
 	for(size_t i = 0; i < p && i < s1.size(); i++)
 		if(s1[i] != s2[i]) return false;
 	return true;
 }
 
 bool subStrCaseEqual(const std::string& s1, const std::string s2, size_t p) {
-	if((s1.size() < p || s2.size() < p) && s1.size() != s2.size()) return false;
+	if((s1.size() < p || s2.size() < p) && s1.size() != s2.size()) return false; 
 	for(size_t i = 0; i < p && i < s1.size(); i++)
 		if(tolower(s1[i]) != tolower(s2[i])) return false;
 	return true;
@@ -674,7 +674,7 @@ std::string GetBaseFilenameWithoutExt(const std::string& filename) {
 	std::string f = GetBaseFilename(filename);
 	size_t p = f.rfind('.');
 	if(p == std::string::npos) return f;
-	return f.substr(0,p);
+	return f.substr(0,p);	
 }
 
 std::list<std::string> SplitFilename(const std::string& filename, size_t numPartsFromRight) {
@@ -1086,12 +1086,12 @@ std::string UrlEncode(const std::string &data)
 		{
 			std::ostringstream os;
 			// unsigned(c) will produce numbers like 0xFFFFFF80 for value -128, so I'm using unsigned((unsigned char)c)
-			os << "%" << std::hex << std::setw(2) << std::setfill('0') << unsigned((unsigned char)c);
+			os << "%" << std::hex << std::setw(2) << std::setfill('0') << unsigned((unsigned char)c); 
 			ret += os.str();
 		};
 	};
 	return ret;
-};
+}; 
 
 
 

@@ -36,14 +36,14 @@ scrubdie_inertia_y(0)
 	animtimer = 0;
 	inhibitfall = true;
 	canbezapped = true;
-    
+
 	performCollisions();
 	dead = false;
 	fallspeed = 0;
 }
 
 void CScrub::process()
-{
+{    
 	CCarrier::process();
     
 	if (canbezapped)
@@ -59,49 +59,49 @@ void CScrub::process()
 			playSound(SOUND_SHOT_HIT);
 		}
 	}
-    
+
 	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
-    
+
 	switch(state)
 	{
-        case SCRUB_DYING:
-            sprite = SCRUB_FRY_FRAME;
-            moveYDir(scrubdie_inertia_y);
-            if ( scrubdie_inertia_y < Physics.max_fallspeed )
-                scrubdie_inertia_y += Physics.fallspeed_increase;
-            
-            dietimer = 0;
-            if (scrubdie_inertia_y >= 0 && blockedd)
-            {
-                sprite = SCRUB_DEAD_FRAME;
-                state = SCRUB_DEAD;
-                dead = true;
-            }
-            return;
-            break;
-        case SCRUB_WALK:
-            
-            
-            if(xDirection < 0)
-                walkLeft( (getXLeftPos())>>CSF, (getYMidPos())>>CSF);
-            else if(xDirection > 0)
-                walkRight( (getXRightPos())>>CSF, (getYMidPos())>>CSF);
-            else if(yDirection < 0)
-                walkUp();
-            else if(yDirection > 0)
-                walkDown();
-            
-            // walk animation
-            if (animtimer > SCRUB_WALK_ANIM_TIME)
-            {
-                walkframe ^= 1;
-                animtimer = 0;
-            } else animtimer++;
-            break;
-            
-        case SCRUB_FALLING:
-            fall();
-            break;
+	case SCRUB_DYING:
+		sprite = SCRUB_FRY_FRAME;
+		moveYDir(scrubdie_inertia_y);
+		if ( scrubdie_inertia_y < Physics.max_fallspeed )
+			scrubdie_inertia_y += Physics.fallspeed_increase;
+
+		dietimer = 0;
+		if (scrubdie_inertia_y >= 0 && blockedd)
+		{
+			sprite = SCRUB_DEAD_FRAME;
+			state = SCRUB_DEAD;
+			dead = true;
+		}
+		return;
+		break;
+	case SCRUB_WALK:
+
+
+		if(xDirection < 0)
+			walkLeft( (getXLeftPos())>>CSF, (getYMidPos())>>CSF);
+		else if(xDirection > 0)
+			walkRight( (getXRightPos())>>CSF, (getYMidPos())>>CSF);
+		else if(yDirection < 0)
+			walkUp();
+		else if(yDirection > 0)
+			walkDown();
+
+		// walk animation
+		if (animtimer > SCRUB_WALK_ANIM_TIME)
+		{
+			walkframe ^= 1;
+			animtimer = 0;
+		} else animtimer++;
+		break;
+
+	case SCRUB_FALLING:
+		fall();
+		break;
 	}
 }
 
@@ -112,7 +112,7 @@ void CScrub::process()
 void CScrub::walkLeft(int mx, int my)
 {
 	sprite = SCRUB_WALK_LEFT + walkframe;
-    
+
 	if (blockedl)
 	{
 		sprite = SCRUB_WALK_UP + walkframe;
@@ -121,16 +121,16 @@ void CScrub::walkLeft(int mx, int my)
 	}
 	else
 	{
-		moveCarrierLeft(SCRUB_WALK_SPEED);
+		moveCarrierLeft(SCRUB_WALK_SPEED);		
 		processMove(0,(2<<STC));
 		performCollisions();
-        
+
 		if(!blockedd)
 		{
 			// First check, if he can walk over the tile
 			std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 			if(!TileProperties[mp_Map->at(mx-1, my+1)].bup &&
-               !TileProperties[mp_Map->at(mx-1, my)].bleft)
+				!TileProperties[mp_Map->at(mx-1, my)].bleft)
 			{
 				// There is no gap
 				processMove(0,4<<STC);
@@ -154,7 +154,7 @@ void CScrub::walkLeft(int mx, int my)
 void CScrub::walkDown()
 {
 	sprite = SCRUB_WALK_DOWN + walkframe;
-    
+
 	if (blockedd)
 	{
 		yDirection = 0;
@@ -164,7 +164,7 @@ void CScrub::walkDown()
 	else
 	{
 		moveCarrierDown(SCRUB_WALK_SPEED);
-        
+
 		if(!blockedr) // upper-right, if yes, go right! (ceiling)
 		{	// Move right
 			yDirection = 0;
@@ -173,7 +173,7 @@ void CScrub::walkDown()
 			processMove(2<<STC,0);
 			processMove(0,-(2<<STC));
 		}
-        
+
 	}
 }
 
@@ -183,7 +183,7 @@ void CScrub::walkDown()
 void CScrub::walkRight(int mx, int my)
 {
 	sprite = SCRUB_WALK_RIGHT + walkframe;
-    
+
 	if (blockedr)
 	{
 		xDirection = 0;
@@ -194,20 +194,20 @@ void CScrub::walkRight(int mx, int my)
 	{
 		moveRight(SCRUB_WALK_SPEED);
 		processMove(0,-(2<<STC));
-        
+
 		if(!blockedu)
 		{
 			// First check, if he can walk over the tile
 			std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 			if(!TileProperties[mp_Map->at(mx+1, my-1)].bdown &&
-               !TileProperties[mp_Map->at(mx+1, my)].bright)
+				!TileProperties[mp_Map->at(mx+1, my)].bright)
 			{
 				// There is no gap the upper-side
 				processMove(4<<STC,0);
 				processMove(0,-(4<<STC));
 				processMove(-(6<<STC),0);
 				performCollisions();
-                
+
 				if(blockedl)
 				{
 					xDirection = 0;
@@ -235,7 +235,7 @@ void CScrub::walkUp()
 	else
 	{
 		moveCarrierUp(SCRUB_WALK_SPEED);
-        
+
 		if( !blockedl )
 		{	// Move Left!
 			yDirection = 0;
@@ -246,7 +246,7 @@ void CScrub::walkUp()
 			processMove(-(4<<STC),0);
 			processMove(0,4<<STC);
 		}
-        
+
 	}
 }
 
@@ -260,11 +260,11 @@ void CScrub::fall()
 	{
 		inhibitfall = true;
 		canbezapped = true;
-        
+
 		performCollisions();
 		dead = false;
 		fallspeed = 0;
-        
+
 		yDirection = 0;
 		xDirection = -1;
 		state = SCRUB_WALK;
@@ -274,10 +274,10 @@ void CScrub::fall()
 	else
 	{
 		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
-        
+
 		if (fallspeed < Physics.max_fallspeed)
 			fallspeed += Physics.fallspeed_increase;
-        
+
 		moveDown(fallspeed);
 	}
 }

@@ -23,36 +23,36 @@ const int WORLD_MAP_LEVEL_GALAXY=0;
 
 namespace galaxy
 {
-    
-    class CPlayGameGalaxy : public CPlayGame
-    {
-    public:
-        CPlayGameGalaxy(CExeFile &ExeFile, char level,
-                        char numplayers,
-                        CSaveGameController &SavedGame);
-        
-        bool loadGameState();
-        bool saveGameState();
-        bool init();
-        
-        void process();
-        
-        void processInput();
-        void processRendering();
-        
-        void cleanup() {};
-        
-    private:
-        std::string m_LevelName;
-        CInventory m_Inventory;
-        CWorldMap m_WorldMap;
-        CLevelPlay m_LevelPlay;
-        CSaveGameController &m_SavedGame;
-        CBitmap m_BackgroundBitmap;
-        std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
-        stCheat m_Cheatmode;
-    };
-    
+
+class CPlayGameGalaxy : public CPlayGame
+{
+public:
+	CPlayGameGalaxy(CExeFile &ExeFile, char level,
+			 char numplayers,
+			 CSaveGameController &SavedGame);
+
+	bool loadGameState();
+	bool saveGameState();
+	bool init();
+
+	void process();
+
+	void processInput();
+	void processRendering();
+
+	void cleanup() {};
+
+private:
+	std::string m_LevelName;
+	CInventory m_Inventory;
+	CWorldMap m_WorldMap;
+	CLevelPlay m_LevelPlay;
+	CSaveGameController &m_SavedGame;
+	CBitmap m_BackgroundBitmap;
+	std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
+	stCheat m_Cheatmode;
+};
+
 }
 
 #endif /* CPLAYGAMEGALAXY_H_ */

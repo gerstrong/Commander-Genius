@@ -15,8 +15,8 @@
 #include "common/CBehaviorEngine.h"
 
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
-mp_exe(p_exebuf),
-mOffset(0)
+	mp_exe(p_exebuf),
+	mOffset(0)
 {
 	m_episode = episode;
 	m_version = version;
@@ -31,22 +31,22 @@ std::pair<std::string, std::string>
 CMessages::extractNextString( const std::string matchingstring )
 {
 	std::string Text;
-    
+
 	for(unsigned long pos=mOffset ; ; pos++)
 	{
 		if(mp_exe[pos] == 0x0)
 		{
 		    while(mp_exe[pos] == 0x0)
-                pos++;
+			pos++;
 			
 		    mOffset = pos;
 		    break;
 		}
-        
+
 		Text += static_cast<char>(mp_exe[pos]);
 	}
-    
-	return make_pair(matchingstring, Text);
+
+	return make_pair(matchingstring, Text);    
 }
 
 // This function reads the strings specified between the offsets,
@@ -55,7 +55,7 @@ std::pair<std::string, std::string>
 CMessages::extractString( const std::string matchingstring, unsigned long start, unsigned long end, long offset )
 {
 	std::string Text;
-    
+
 	for(unsigned long pos=start+offset ; pos<end+offset ; pos++)
 	{
 		while(mp_exe[pos] == 0xA)
@@ -65,13 +65,13 @@ CMessages::extractString( const std::string matchingstring, unsigned long start,
 			if(mp_exe[pos] == 0x0)
 				pos++;
 		}
-        
+
 		if(mp_exe[pos] == 0x0)
 			break;
-        
+
 		Text += static_cast<char>(mp_exe[pos]);
 	}
-    
+
 	return make_pair(matchingstring, Text);
 }
 
@@ -102,27 +102,27 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractNextString( "LEVEL16_LOAD_TEXT") );
 			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
 			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
-            
+
 			// Elder Janitor Text. Strangely it is the end of the level load text being to only
 			// in that data segment
 			StringMap.insert( extractNextString( "JANITOR_TEXT1" ) );
 			StringMap.insert( extractNextString( "JANITOR_TEXT2" ) );
 			StringMap.insert( extractNextString( "JANITOR_TEXT3" ) );
 			StringMap.insert( extractNextString( "JANITOR_TEXT4" ) );
-            
-            
+
+
 			// Now the spoken Messages of some Characters like Lindsey and the elders
 			StringMap.insert( extractString( "LINDSEY_TEXT1", 0x3094B, 0x30997 ) );
 			StringMap.insert( extractString( "LINDSEY_TEXT2", 0x30999, 0x309E1 ) );
-            
+
 			StringMap.insert( extractString( "LINDSEY_END_TEXT1", 0x309E3, 0x309F9 ) );
 			StringMap.insert( extractString( "LINDSEY_END_TEXT2", 0x309FA, 0x30A22 ) );
 			StringMap.insert( extractString( "LINDSEY_START_TEXT", 0x30A23, 0x30A3B ) );
-            
+
 			StringMap.insert( extractString( "CANT_SWIM_TEXT", 0x30A3D, 0x30A4A ) );
 			StringMap.insert( extractString( "SWIM_SUIT_TEXT", 0x30A4B, 0x30A72 ) );
-            
-            
+
+
 			StringMap.insert( extractString( "KEEN_NOSWEAT_TEXT", 0x30A71, 0x30A91 ) );
 			StringMap.insert( extractString( "KEEN_BEARDED_ONE_TEXT", 0x30A92, 0x30AB2 ) );
 			StringMap.insert( extractString( "KEEN_NO_PROBLEMO_TEXT", 0x30AB3, 0x30ABF ) );
@@ -167,7 +167,7 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractNextString( "LEVEL16_LOAD_TEXT") );
 			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
 			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
-            
+
 			// Elder Janitor Text. Strangely it is the end of the level load text being to only
 			// in that data segment
 			StringMap.insert( extractNextString( "FUSE_TEXT1" ) );
@@ -176,7 +176,7 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractNextString( "FUSE_TEXT4" ) );
 			
 			StringMap.insert( extractNextString( "FUSE_TEXT5" ) );
-            
+
 			return true;
 		} break;
 	}
@@ -186,7 +186,7 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 bool CMessages::extractGlobalStrings()
 {
 	std::map<std::string, std::string> StringMap; // Structure which stores all the extracted string
-    
+
 	// Here we begin to extract all the proper Strings
 	switch(m_episode)
 	{
@@ -288,19 +288,19 @@ bool CMessages::extractGlobalStrings()
 				} break;
 			}
 		} break;
-            
+
 		case 4:
 		{
 			if(!extractEp4Strings(StringMap))
 				g_pLogFile->textOut(RED,"This version of the game is not supported!");
 		} break;
-            
+
 		case 5:
 		{
 			if(!extractEp5Strings(StringMap))
 				g_pLogFile->textOut(RED,"This version of the game is not supported!");
 		} break;
-            
+
 		default:
 		{
 			g_pLogFile->textOut(RED,"This version of the game is not supported!");
@@ -308,7 +308,7 @@ bool CMessages::extractGlobalStrings()
 		}
 	}
 	
-    
+
 	// Now pass all the Map to the global text structure
 	// Still a bad idea, because it's global string.
 	if(!StringMap.empty())

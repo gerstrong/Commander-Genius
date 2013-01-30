@@ -17,7 +17,7 @@
 const unsigned int RES_BPP = 32;
 
 #ifdef USE_OPENGL
-#include <SDL_opengl.h>
+	#include <SDL_opengl.h>
 #endif
 
 #include "utils/Geometry.h"
@@ -25,7 +25,7 @@ const unsigned int RES_BPP = 32;
 struct st_camera_bounds
 {
 	int left, right, down, up, speed;
-    
+
 	void reset()
 	{
 		// Default camera settings
@@ -38,18 +38,18 @@ struct st_camera_bounds
 class CVidConfig
 {
 public:
-    
+
 	CVidConfig();
 	bool operator==(const CVidConfig& target);
 	bool operator!=(const CVidConfig& target);
 	void reset();
-    
+
 	void setResolution(const int width, const int height, const int depth);
 	void setResolution(const CRect<Uint16>& res);
-    
+
 	CRect<Uint16> m_GameRect;	// Also called Screenspace.
 	CRect<Uint16> m_DisplayRect; // The Fullscreen-Resolution or the Window Size
-    
+
 	bool Fullscreen;
 	short m_ScaleXFilter;
 	bool m_normal_scale;
@@ -59,13 +59,13 @@ public:
 	bool m_special_fx;
 	bool showfps;
 	bool vsync;
-    
+
 	st_camera_bounds m_CameraBounds;
-    
+
 #if defined(USE_OPENGL)
 	GLint m_opengl_filter;
 #endif
-    
+
 };
 
 #endif /* CVIDCONFIG_H_ */

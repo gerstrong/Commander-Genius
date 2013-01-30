@@ -36,14 +36,14 @@ m_Background(false)
 ////////////////////////////
 
 void CMap::setLevel( const Uint16 level )
-{
-    m_Level = level;
+{	
+    m_Level = level;	
     
 }
 
 Uint16 CMap::getLevel()
 {
-    return m_Level;
+    return m_Level;	    
 }
 
 void CMap::setLevelName( const std::string& name )
@@ -53,7 +53,7 @@ void CMap::setLevelName( const std::string& name )
 
 std::string CMap::getLevelName()
 {
-    return m_LevelName;
+    return m_LevelName;	    
 }
 
 
@@ -67,16 +67,16 @@ bool CMap::createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height)
 	m_height = height;
 	m_Plane[plane].createDataMap(m_width, m_height);
 	m_Background = (m_Plane[0].getMapDataPtr() != NULL);
-    
+
 	return true;
 }
 
 void CMap::resetScrolls()
 {
 	m_scrollx = m_scrolly = 0;
-    
+
 	g_pVideoDriver->mpVideoEngine->resetScrollbuffer();
-    
+
 	m_scrollpix = m_scrollpixy = 0;
 	m_mapx = m_mapy = 0;           // map X location shown at scrollbuffer row 0
 	m_mapxstripepos = m_mapystripepos = 0;  // X pixel position of next stripe row
@@ -97,8 +97,8 @@ Uint16 CMap::at(Uint16 x, Uint16 y, Uint16 t)
 //////////////////////////
 // returns the object/sprite/level which is set at the given coordinates
 Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
-{
-    return at(x,y,2);
+{    
+    return at(x,y,2);    
 }
 
 /**
@@ -124,31 +124,31 @@ void CMap::collectBlockersCoordiantes()
 {
     scrollBlockX.clear();
     scrollBlockY.clear();
-    
+
     scrollBlockY.push_back(1<<CSF);
     scrollBlockX.push_back(1<<CSF);
     
     int ep = g_pBehaviorEngine->getEpisode();
-    
+ 
     if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
     {
-        const word* map_ptr = m_Plane[2].getMapDataPtr();
-        
-        for(int y=0 ; y<(int)m_height ; y++)
-        {
-            for(int x=0 ; x<(int)m_width ; x++)
-            {
-                // Check the row for a blocker which has the proper value
-                if(*map_ptr == 0x19)
-                    scrollBlockY.push_back(y<<(CSF));
-                // In Keen 5 it is only used on the map and stands for the teleporter from some in level
-                if(*map_ptr == 0x1A && ep != 5)
-                    scrollBlockX.push_back(x<<(CSF));
-                
-                map_ptr++;
-            }
-        }
-        
+	const word* map_ptr = m_Plane[2].getMapDataPtr();
+	
+	for(int y=0 ; y<(int)m_height ; y++)
+	{
+	    for(int x=0 ; x<(int)m_width ; x++)
+	    {
+		// Check the row for a blocker which has the proper value
+		if(*map_ptr == 0x19)
+		    scrollBlockY.push_back(y<<(CSF));
+		// In Keen 5 it is only used on the map and stands for the teleporter from some in level
+		if(*map_ptr == 0x1A && ep != 5)
+		    scrollBlockX.push_back(x<<(CSF));
+
+		map_ptr++;
+	    }
+	}
+	
     }
     
     scrollBlockY.push_back((m_height-1)<<(CSF));
@@ -162,26 +162,26 @@ void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord
     std::vector<int>::iterator left  = scrollBlockX.begin();
     std::vector<int>::iterator right = left;
     right++;
-    
+
     // Find the vertical edges coordinates
     for( ; right != scrollBlockX.end() ; )
     {
-        blockXleft = *left;
-        blockXright = *right;
-        
-        if( x > blockXleft && x < blockXright )
-        {
-            leftCoord = blockXleft;
-            rightCoord = blockXright;
-            return;
-        }
-        
-        left++;
-        right++;
+	blockXleft = *left;
+	blockXright = *right;
+	
+	if( x > blockXleft && x < blockXright )
+	{
+	    leftCoord = blockXleft;
+	    rightCoord = blockXright;
+	    return;
+	}
+	
+	left++;
+	right++;
     }
     
     leftCoord = blockXleft;
-    rightCoord = blockXright;
+    rightCoord = blockXright;    
 }
 
 void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
@@ -190,24 +190,24 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
     std::vector<int>::iterator up = scrollBlockY.begin();
     std::vector<int>::iterator down= up;
     down++;
-    
+
     blockYup = *up;
     blockYdown = *down;
     
     for( ; down != scrollBlockY.end() ; )
     {
-        blockYup = *up;
-        blockYdown = *down;
-        
-        if( y > blockYup && y < blockYdown )
-        {
-            upCoord = blockYup;
-            downCoord = blockYdown;
-            return;
-        }
-        
-        up++;
-        down++;
+	blockYup = *up;
+	blockYdown = *down;
+	
+	if( y > blockYup && y < blockYdown )
+	{
+	    upCoord = blockYup;
+	    downCoord = blockYdown;
+	    return;
+	}
+	
+	up++;
+	down++;
     }
     upCoord = blockYup;
     downCoord = blockYdown;
@@ -217,24 +217,24 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
 
 
 bool CMap::findVerticalScrollBlocker(const int x)
-{
+{    	
     int blockXleft, blockXright;
-    
+
     fetchNearestVertBlockers(x, blockXleft, blockXright);
     
     if(x-(1<<CSF) < blockXleft)
-        return true;
+	return true;
     return false;
 }
 
 
 bool CMap::findHorizontalScrollBlocker(const int y)
-{
+{	
     int blockYup, blockYdown;
     fetchNearestHorBlockers(y, blockYup, blockYdown);
     
     if(y-(1<<CSF) < blockYup)
-        return true;
+	return true;
     return false;
 }
 
@@ -250,7 +250,7 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 	for(y=2;y<m_height-2;y++)
 	{
 		for(x=2;x<m_width-2;x++)
-		{
+		{		    
 			if (m_Plane[2].getMapDataAt(x,y)==obj)
 			{
 				*xout = x;
@@ -270,7 +270,7 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 bool CMap::findTile(unsigned int tile, int *xout, int *yout, int plane)
 {
 	unsigned int x,y;
-    
+
 	for(y=2;y<m_height-2;y++)
 	{
 		for(x=2;x<m_width-2;x++)
@@ -333,7 +333,7 @@ void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 	const Uint16 x2 = x+gameres.w/16;
 	const Uint16 y2 = y+h;
-    
+
 	for(Uint16 c_y=y ; c_y<y2 ; c_y++)
 		for(Uint16 c_x=x ; c_x<x2 ; c_x++)
 			changeTile(c_x, c_y, tile);
@@ -364,24 +364,24 @@ bool CMap::gotoPos(int x, int y)
 	if( dy < 0 )
 		for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp(true);
 	else retval = true;
-    
+
 	return retval;
 }
 
 // scrolls the map one pixel right
 bool CMap::scrollRight(const bool force)
 {
-    const int res_width = g_pVideoDriver->getGameResolution().w;
+        const int res_width = g_pVideoDriver->getGameResolution().w;
     
-    if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
+    	if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
 		return false;
-    
+
     
 	if(m_scrollx < ((m_width-2)<<4) - g_pVideoDriver->getGameResolution().w)
 	{
 		m_scrollx++;
 		g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx);
-        
+
 		m_scrollpix++;
 		if (m_scrollpix>=16)
 		{  // need to draw a new stripe
@@ -399,14 +399,14 @@ bool CMap::scrollRight(const bool force)
 // scrolls the map one pixel left
 bool CMap::scrollLeft(const bool force)
 {
-    if( !force && findVerticalScrollBlocker((m_scrollx-2)<<STC) )
+    	if( !force && findVerticalScrollBlocker((m_scrollx-2)<<STC) )
 		return false;
     
 	if( m_scrollx > 32 )
 	{
 		m_scrollx--;
 		g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx);
-        
+
 		if (m_scrollpix==0)
 		{  // need to draw a new stripe
 			if(m_mapx>0) m_mapx--;
@@ -419,7 +419,7 @@ bool CMap::scrollLeft(const bool force)
 				m_mapxstripepos -= 16;
 			}
 			drawVstripe(m_mapxstripepos, m_mapx);
-            
+
 			m_scrollpix = 15;
 		} else m_scrollpix--;
 		return true;
@@ -430,15 +430,15 @@ bool CMap::scrollLeft(const bool force)
 bool CMap::scrollDown(const bool force)
 {
 	const int res_height = g_pVideoDriver->getGameResolution().h;
-    
+
 	if( !force && findHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
 		return false;
-    
+
 	if(m_scrolly < ((m_height-2)<<4) - res_height )
 	{
 		m_scrolly++;
 		g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly);
-        
+
 		m_scrollpixy++;
 		if (m_scrollpixy>=16)
 		{  // need to draw a new stripe
@@ -460,12 +460,12 @@ bool CMap::scrollUp(const bool force)
 {
 	if( !force && findHorizontalScrollBlocker((m_scrolly-1)<<STC) )
 		return false;
-    
+
 	if( m_scrolly > 32 )
 	{
 		m_scrolly--;
 		g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly);
-        
+
 		if (m_scrollpixy==0)
 		{  // need to draw a new stripe
 			if(m_mapy>0) m_mapy--;
@@ -478,7 +478,7 @@ bool CMap::scrollUp(const bool force)
 				m_mapystripepos -= 16;
 			}
 			drawHstripe(m_mapystripepos, m_mapy);
-            
+
 			m_scrollpixy = 15;
 		} else m_scrollpixy--;
 		return true;
@@ -502,19 +502,19 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 	// Go throught the list and just draw all the tiles that need to be animated
 	const Uint32 num_h_tiles = ScrollSurface->h/16;
 	const Uint32 num_v_tiles = ScrollSurface->w/16;
-    
+
 	if(  mx >= m_mapx && my >= m_mapy &&
-       mx < m_mapx + num_v_tiles && my < m_mapy + num_h_tiles 	)
+			mx < m_mapx + num_v_tiles && my < m_mapy + num_h_tiles 	)
 	{
 		const Uint16 loc_x = (((mx-m_mapx)<<4)+m_mapxstripepos)&511;
 		const Uint16 loc_y = (((my-m_mapy)<<4)+m_mapystripepos)&511;
-        
+
 		if( m_Background )
 		{
 			size_t bg = m_Plane[0].getMapDataAt(mx, my);
 			size_t fg = m_Plane[1].getMapDataAt(mx, my);
-            
-            
+
+
 			m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
 			if(fg)
 				m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
@@ -533,19 +533,19 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 void CMap::drawAll()
 {
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
-    
+
 	Uint32 num_h_tiles = ScrollSurface->h/16;
 	Uint32 num_v_tiles = ScrollSurface->w/16;
-    
+
 	g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx);
 	g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly);
-    
+
 	if(num_v_tiles+m_mapx >= m_width)
 		num_v_tiles = m_width-m_mapx;
-    
+
 	if(num_h_tiles+m_mapy >= m_height)
 		num_h_tiles = m_height-m_mapy;
-    
+
 	if( m_Background )
 	{
 		for(Uint32 y=0;y<num_h_tiles;y++)
@@ -554,7 +554,7 @@ void CMap::drawAll()
 			{
 				Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, y+m_mapy);
 				Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
-                
+
 				m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, bg);
 				if(fg)
 					m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
@@ -572,7 +572,7 @@ void CMap::drawAll()
 			}
 		}
 	}
-    
+
 }
 
 // draw a horizontal stripe, for vertical scrolling
@@ -584,14 +584,14 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 	
 	if( num_v_tiles+m_mapx >= m_width )
 		num_v_tiles = m_width-m_mapx;
-    
+
 	if( m_Background )
 	{
 		for(Uint32 x=0;x<num_v_tiles;x++)
 		{
 			Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, mpy);
 			Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
-            
+
 			m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, bg);
 			if(fg)
 				m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
@@ -611,21 +611,21 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 {
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
-    
+
 	if(mpx >= m_width) return;
-    
+
 	Uint32 num_h_tiles= ScrollSurface->h/16;
-    
+
 	if( num_h_tiles+m_mapy >= m_height )
 		num_h_tiles = m_height-m_mapy;
-    
+
 	if( m_Background )
 	{
 		for(Uint32 y=0;y<num_h_tiles;y++)
 		{
 			Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
 			Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
-            
+
 			m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, bg);
 			if(fg)
 				m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, fg);
@@ -646,7 +646,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
  * \TODO: I think this function should be splat up into vorticon and galaxy engine function somehow.
  */
 void CMap::_drawForegroundTiles()
-{
+{       
     // TODO: This event pushing here is to much information that is pushed to the event list. Please reduce this!
 	SDL_Surface *surface = g_pVideoDriver->getBlitSurface();
 	const Uint16 num_h_tiles = surface->h;
@@ -655,30 +655,30 @@ void CMap::_drawForegroundTiles()
 	const Uint16 y1 = m_scrolly>>TILE_S;
 	const Uint16 x2 = (m_scrollx+num_v_tiles)>>TILE_S;
 	const Uint16 y2 = (m_scrolly+num_h_tiles)>>TILE_S;
-    
+
 	std::vector<CTileProperties> &TileProperties =
-    g_pBehaviorEngine->getTileProperties(1);
+			g_pBehaviorEngine->getTileProperties(1);
 	for( size_t y=y1 ; y<=y2 ; y++)
 	{
 		for( size_t x=x1 ; x<=x2 ; x++)
 		{
 			Uint16 fg = m_Plane[1].getMapDataAt(x,y);
-            
+
 			const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
 			const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
-            
+
 			if(!m_Background) // Keen Vorticon in general do not have real background. It's just one plane
 			{
-			    if(TileProperties[fg].behaviour == -2) // case when has a masked graphic.
-                    //NOTE: It is fg+1 because the masked tile comes directly on the tileplane in the Keen vorticon games.
-                    m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg+1 );
+			    if(TileProperties[fg].behaviour == -2) // case when has a masked graphic. 
+				//NOTE: It is fg+1 because the masked tile comes directly on the tileplane in the Keen vorticon games.
+				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg+1 );
 			    else if (TileProperties[fg].behaviour == -1) // case when tile is just foreground
-                    m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
+				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
 			}
-			else if(fg != 0)
+			else if(fg != 0) 
 			{
-                if(TileProperties[fg].behaviour < 0)
-                    m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
+			   if(TileProperties[fg].behaviour < 0)
+				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
 			}
 		}
 	}
@@ -703,50 +703,50 @@ void CMap::animateAllTiles()
 {
 	if(!m_animation_enabled)
 		return;
-    
+
 	if(g_pVideoDriver->getRefreshSignal())
 	{
 		drawAll();
-        
+
 		g_pVideoDriver->blitScrollSurface();
 		g_pVideoDriver->setRefreshSignal(false);
 	}
-    
-    
+
+
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
-    
+
 	// Let the animation timer tick!!
-	mAnimtileTimer += 1.0f;
+	mAnimtileTimer += 1.0f;	
 	const Uint8 animtileTimerInt = static_cast<Uint8>(mAnimtileTimer);
 	
 	if( mAnimtileTimer > 256.0f )
 	    mAnimtileTimer = 0.0f;
-    
+
 	// Go throught the list and just draw all the tiles that need to be animated
 	Uint32 num_h_tiles = ScrollSurface->h/16;
 	Uint32 num_v_tiles = ScrollSurface->w/16;
-    
+
 	if(num_v_tiles+m_mapx >= m_width)
 		num_v_tiles = m_width-m_mapx;
-    
+
 	if(num_h_tiles+m_mapy >= m_height)
 		num_h_tiles = m_height-m_mapy;
-    
+
 	std::vector<CTileProperties> &frontTileProperties =
-    g_pBehaviorEngine->getTileProperties(1);
+			g_pBehaviorEngine->getTileProperties(1);
 	word *p_front_tile = m_Plane[1].getMapDataPtr();
-    
+
 	if(m_Background)
 	{
 		std::vector<CTileProperties> &backTileProperties =
-        g_pBehaviorEngine->getTileProperties(0);
+				g_pBehaviorEngine->getTileProperties(0);
 		word *p_back_tile = m_Plane[0].getMapDataPtr();
 		for( size_t y=0 ; y<m_height ; y++)
 		{
 			for( size_t x=0 ; x<m_width ; x++)
 			{
 				bool draw = false;
-                
+
 				CTileProperties &back_tile = backTileProperties[*p_back_tile];
 				if( back_tile.animationtime && (animtileTimerInt % back_tile.animationtime == 0) )
 				{
@@ -754,8 +754,8 @@ void CMap::animateAllTiles()
 					draw = true;
 				}
 				p_back_tile++;
-                
-                
+
+
 				CTileProperties &front_tile = frontTileProperties[*p_front_tile];
 				if( front_tile.animationtime && (animtileTimerInt % front_tile.animationtime == 0) )
 				{
@@ -763,9 +763,9 @@ void CMap::animateAllTiles()
 					draw = true;
 				}
 				p_front_tile++;
-                
+
 				if( draw && x >= m_mapx && y >= m_mapy &&
-                   x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
+						x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
 				{
 					Uint16 bg = m_Plane[0].getMapDataAt(x,y);
 					Uint16 fg = m_Plane[1].getMapDataAt(x,y);
@@ -785,7 +785,7 @@ void CMap::animateAllTiles()
 			for( size_t x=0 ; x<m_width ; x++)
 			{
 				bool draw = false;
-                
+
 				CTileProperties &front_tile = frontTileProperties[*p_front_tile];
 				if( front_tile.animationtime && (animtileTimerInt % front_tile.animationtime == 0) )
 				{
@@ -793,9 +793,9 @@ void CMap::animateAllTiles()
 					draw = true;
 				}
 				p_front_tile++;
-                
+
 				if( draw && x >= m_mapx && y >= m_mapy &&
-                   x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
+						x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
 				{
 					Uint16 fg = m_Plane[1].getMapDataAt(x,y);
 					const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos)&511;

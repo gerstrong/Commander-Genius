@@ -16,7 +16,7 @@
 class CSprite {
 public:
 	CSprite();
-    
+
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
 	void readMask(SDL_Surface *displaysurface);
@@ -25,7 +25,7 @@ public:
 	void applyTranslucency(Uint8 value);
 	void copy( CSprite &Destination, SDL_Color *Palette );
 	void replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny );
-    
+
 	void generateSprite( const int points );
 	bool loadHQSprite( const std::string& filename );
 	
@@ -34,30 +34,30 @@ public:
 	void setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 );
 	SDL_Surface *getSDLSurface() { return mpSurface.get(); }
 	SDL_Surface *getSDLMaskSurface() { return mpMasksurface.get(); }
-    
+
 	void drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
 	void _drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
 	void drawBlinkingSprite( Uint16 x, Uint16 y );
 	void _drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
-    
+
 	Uint16 getXOffset() { return m_xoffset; }
 	Uint16 getYOffset() { return m_yoffset; }
 	Uint8 getWidth() { return m_xsize; };
 	Uint8 getHeight() { return m_ysize; };
 	void setWidth(Uint8 w) { m_xsize=w; };
 	void setHeight(Uint8 h) { m_ysize=h; };
-    
+
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }
-    
+
 	// bounding box for hit detection
 	Sint32 m_bboxX1, m_bboxY1;
 	Sint32 m_bboxX2, m_bboxY2;
-    
+
 private:
 	std::shared_ptr<SDL_Surface> mpSurface;
 	std::shared_ptr<SDL_Surface> mpMasksurface;
-    
+
 	std::string mName;
 	Uint8 m_xsize, m_ysize;
 	Sint16 m_xoffset, m_yoffset;

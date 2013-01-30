@@ -36,19 +36,19 @@ void CTileLoader::setupOffsetMap()
 	m_offsetMap[1][110] = 0x131F8;
 	m_offsetMap[1][131] = 0x130F8;
 	m_offsetMap[1][134] = 0x130F8;
-    
+
 	m_offsetMap[2][100] = 0x17938;
 	m_offsetMap[2][131] = 0x17828;
-    
+
 	m_offsetMap[3][100] = 0x199F8;
 	m_offsetMap[3][131] = 0x198C8;
-    
+
 	m_offsetMap[4][140] = 0x249C2;
-    
+
 	m_offsetMap[5][140] = 0x25B22;
-    
+
 	m_offsetMap[6][140] = 0x25212;
-    
+
 	m_offsetMap[7][100] = 0x11322;
 }
 
@@ -72,7 +72,7 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 			readGalaxyTileinfo(NumUnMaskedTiles, NumMaskedTiles);
 		}
 	}
-    
+
 	return true;
 }
 
@@ -83,13 +83,13 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 {
 	size_t planesize = 2*NumTiles;
-    
+
 	byte *data = m_data + m_offsetMap[m_episode][m_version];
-    
+
 	// Special workaround. I don't know why this happens, but Episode 3 doesn not seems to read
 	// the plane size. TODO: Check where that value is hidden in the EXE file.
 	if(m_episode == 3) planesize = 2*715;
-    
+
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumTiles ; j++)
 	{
@@ -98,14 +98,14 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 		TileProperties[j].bright 		= GETWORD( data+3*(planesize)+2*j);
 		TileProperties[j].bdown 		= GETWORD( data+4*(planesize)+2*j);
 		TileProperties[j].bleft 		= GETWORD( data+5*(planesize)+2*j);
-        
+
 		if( TileProperties[j].bleft && TileProperties[j].bright &&
-           TileProperties[j].bup && TileProperties[j].bdown	)
+				TileProperties[j].bup && TileProperties[j].bdown	)
 		{ // This should solve some tile bugs in Episode 2
 			if(TileProperties[j].behaviour == -2 or  TileProperties[j].behaviour == -1)
 				TileProperties[j].behaviour = 0;
 		}
-        
+
 		// Now set the ice and slippery tiles in case we have them
 		if( TileProperties[j].bup > 1)
 		{
@@ -113,7 +113,7 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 			TileProperties[j].bup = 1;
 		}
 	}
-    
+
 	// This is a special case, because vorticon engine handles animation different
 	// to our new structure. For individual patches it can be adapted
 	for(size_t j=0 ; j < NumTiles ;  )
@@ -122,7 +122,7 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 		if(value == 0 || value == 1) {
 			j++; continue;
 		}
-        
+
 		// stuff for animated tiles
 		for( size_t i=0 ; i<value ; i++ )
 		{
@@ -131,11 +131,11 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 			else
 				TileProperties[j+i].nextTile = 1;
 			TileProperties[j+i].animationtime = 6; // Time that has to pass in game cycles until
-            // animation is performed.
+												   // animation is performed.
 		}
 		j += value;
 	}
-    
+
 	// This function assigns the correct tiles that have to be changed
 	assignChangeTileAttribute(NumTiles);
 }
@@ -149,7 +149,7 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 		TileUnmaskedProperties[j].animationtime = data[j];
 		TileUnmaskedProperties[j].nextTile = static_cast<Sint8>(data[NumUnMaskedTiles+j]);
 	}
-    
+
 	std::vector<CTileProperties> &TileMaskedProperties = g_pBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumMaskedTiles ; j++)
 	{
@@ -157,7 +157,7 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 		TileMaskedProperties[j].bright 			= data[j+2*NumUnMaskedTiles+NumMaskedTiles];
 		TileMaskedProperties[j].bdown 			= data[j+2*NumUnMaskedTiles+2*NumMaskedTiles];
 		TileMaskedProperties[j].bleft 			= data[j+2*NumUnMaskedTiles+3*NumMaskedTiles];
-        
+
 		TileMaskedProperties[j].nextTile 		= static_cast<Sint8>(data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
 		TileMaskedProperties[j].behaviour 		= data[j+2*NumUnMaskedTiles+5*NumMaskedTiles];
 		TileMaskedProperties[j].animationtime 	= data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];
@@ -167,10 +167,10 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
 {
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
-    
+
 	// smart tile change is the change style that uses Keen 3. This is vorticon only stuff!
 	bool smart_tilechanger = false;
-    
+
 	if(m_episode == 3 || smartTileChangerEnabled())
 		smart_tilechanger = true;
 	
@@ -223,12 +223,12 @@ bool CTileLoader::isaDoor(int tile)
 bool CTileLoader::smartTileChangerEnabled()
 {
 	byte *pointertocode = m_data+0x4409;
-    
+
 	byte comparecode[] =
 	{
-        0x26, 0x8B, 0x07, 0xB6, 0x0D, 0xF6, 0xFE,
-        0xF6, 0xEE, 0x26, 0x89, 0x07, 0xE9, 0x60, 0x01
+			0x26, 0x8B, 0x07, 0xB6, 0x0D, 0xF6, 0xFE,
+			0xF6, 0xEE, 0x26, 0x89, 0x07, 0xE9, 0x60, 0x01
 	};
-    
+
 	return (memcmp(comparecode, pointertocode, sizeof(comparecode))==0);
 }

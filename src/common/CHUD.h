@@ -28,7 +28,7 @@ public:
 		 signed char &lives,
 		 unsigned int &charges,
 		 int *camlead = NULL); // TODO: Must be removed later and replaced by a reference
-    
+
 	/**
 	 * \brief This part of the code will render the entire HUD
 	 */
@@ -36,27 +36,27 @@ public:
 	
 	/**
 	 * \brief This will sync some data in the HUD, especially the oldScore variable
-	 */
+	 */	
 	void sync();
-    
+
 private:
-    
+
 	void CreateBackground();
 	void renderGalaxy();
 	void renderVorticon();
 	void DrawCircle(int x, int y, int width);
-    
+
 	SDL_Rect m_Rect;
-    
+
 	unsigned long &m_score;
 	signed char &m_lives;
 	unsigned int &m_charges;
 	
 	unsigned long m_oldScore;
-	unsigned int m_oldCharges;
+	unsigned int m_oldCharges;	
 	
 	CSprite *mpHUDBox;
-    
+
 	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpBackground;
 	std::shared_ptr<SDL_Surface> mpHUDBlit;
 	int *mpCamlead;

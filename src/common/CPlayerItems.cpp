@@ -80,7 +80,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 	else if (behaviour > 10 && behaviour < 16)
 		playSound(SOUND_GET_ITEM);
 	
-	char shotInc = 5;
+	char shotInc = 5; 
 	byte *exeptr = g_pBehaviorEngine->m_ExeFile.getRawData();
 	
 	switch(behaviour)
@@ -117,8 +117,8 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 		case 7:    // What gives you 100 Points
 			/*if(m_episode == 3 && mp_option[OPT_SWITCHSCORES].value)
-             getBonuspoints(500, mpx, mpy);
-             else*/
+			getBonuspoints(500, mpx, mpy);
+			else*/
 			getBonuspoints(100, mpx, mpy);
 			break;
 		case 8:    // What gives you 200 Points
@@ -126,8 +126,8 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 		case 6:    // What gives you 500 Points
 			/*if(m_episode == 3 && mp_option[OPT_SWITCHSCORES].value)
-             getBonuspoints(100, mpx, mpy);
-             else*/
+			getBonuspoints(100, mpx, mpy);
+			else*/
 			getBonuspoints(500, mpx, mpy);
 			break;
 		case 9:    // What gives you 1000 Points
@@ -142,10 +142,10 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			{
 				inventory.charges += 8;
 			}
-			else
-			{
+			else 
+			{			
 			    if( g_pBehaviorEngine->getEpisode() == 2) // Keen Null
-                    memcpy(&shotInc, exeptr+0x728C, 1 );
+				memcpy(&shotInc, exeptr+0x728C, 1 );
 			    
 			    inventory.charges += shotInc;
 			}
@@ -194,7 +194,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			giveAnkh();
 			riseBonus(ANKHUP_SPRITE, mpx, mpy );
 			break;
-            
+
 		case 28:
 			inventory.charges++;
 			playSound(SOUND_GET_ITEM);
@@ -220,12 +220,12 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 // make some sprite fly (Points, and items) :-)
 void CPlayer::riseBonus(int spr, int x, int y)
 {
-    if (mp_option[OPT_RISEBONUS].value)
-    {
-        CRisingPoints *GotPointsObj = new CRisingPoints(mp_Map, x<<CSF, y<<CSF);
-        GotPointsObj->sprite = spr;
-        g_pBehaviorEngine->EventList().add(new EventSpawnObject(GotPointsObj) );
-    }
+	 if (mp_option[OPT_RISEBONUS].value)
+	 {
+		 CRisingPoints *GotPointsObj = new CRisingPoints(mp_Map, x<<CSF, y<<CSF);
+		 GotPointsObj->sprite = spr;
+		 g_pBehaviorEngine->EventList().add(new EventSpawnObject(GotPointsObj) );
+	 }
 }
 
 
@@ -236,7 +236,7 @@ void CPlayer::give_keycard(int doortile)
 {
 	size_t maxkeycards = (mp_option[OPT_KEYSTACK].value) ? 9 : 1;
 	playSound(SOUND_GET_CARD);
-    
+
 	if (doortile==DOOR_YELLOW && inventory.HasCardYellow < maxkeycards)
 		inventory.HasCardYellow++;
 	else if (doortile==DOOR_RED && inventory.HasCardRed < maxkeycards)
@@ -269,7 +269,7 @@ void CPlayer::take_keycard(int doortile)
 bool CPlayer::showGameHint(int mpx, int mpy)
 {
 	if(hintused) return false;
-    
+
 	if(m_episode == 1)
 	{
 		if(mp_Map->at(mpx, mpy) >= 435 && mp_Map->at(mpx, mpy) <= 438)
@@ -282,7 +282,7 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 		{
 			mp_Map->setTile(mpx, mpy, 315, true);
 		}
-        
+
 		hintstring =  "EP1_YSIYM_LVL" + itoa(m_level);
 	}
 	else if(m_episode == 2)
@@ -292,18 +292,18 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 		// This small condition should fix that bug
 		int t = mp_Map->at(mpx, mpy+1);
 		if(t != 429) return false;
-        
+
 		// make the switch stop glowing
 		switch(m_level)
 		{
-            case 8:
-                hintstring = "EP2_VE_NOJUMPINDARK";
-                break;
-            case 10:
-                hintstring = "EP2_VE_EVILBELTS";
-                break;
-            default:
-                return false;
+		case 8:
+			hintstring = "EP2_VE_NOJUMPINDARK";
+			break;
+		case 10:
+			hintstring = "EP2_VE_EVILBELTS";
+			break;
+		default:
+			return false;
 		}
 		mp_Map->setTile(mpx, mpy+1, 13*14, true);
 	}
@@ -332,7 +332,7 @@ void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 {
 	playSound(SOUND_GET_BONUS);
 	incScore(numpts);
-    
+
 	int spr;
 	switch(numpts)
 	{
@@ -343,7 +343,7 @@ void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 		case 5000: spr = PT5000_SPRITE; break;
 		default: spr = 0; break;
 	}
-    
+
 	if (spr) riseBonus(spr, mpx, mpy);
 }
 
@@ -372,34 +372,34 @@ void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 	int chgtotile;
 	short tilefix=0;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-    
+
 	playSound(SOUND_DOOR_OPEN);
 	take_keycard(doortile);
-    
+
 	// erase door from map
 	if (m_episode==3)	chgtotile = mp_Map->at(mpx-1, mpy);
 	else	chgtotile = TileProperty[mp_Map->at(mpx ,mpy)].chgtile;
-    
+
 	if(TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour>1 &&
-       TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
+			TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
 	{	// from a lower part.
 		mp_Map->setTile(mpx, mpy-1, chgtotile);
 		tilefix=1;
 	}
 	if(TileProperty[mp_Map->at(mpx ,mpy)].behaviour>1 &&
-       TileProperty[mp_Map->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
+			TileProperty[mp_Map->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
 	{ // from a lower part.
 		mp_Map->setTile(mpx, mpy, chgtotile); // upper?
 	}
 	if(TileProperty[mp_Map->at(mpx, mpy+1)].behaviour>1 &&
-       TileProperty[mp_Map->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
+			TileProperty[mp_Map->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
 	{ // from a lower part.
 		mp_Map->setTile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
 	}
-    
+
 	// replace the door tiles with a door object, which will do the animation
 	CDoor *doorobj = new CDoor(mp_Map, mpx<<CSF,(mpy-tilefix)<<CSF, doorsprite);
-	g_pBehaviorEngine->EventList().add(new EventSpawnObject(doorobj) );
+	g_pBehaviorEngine->EventList().add(new EventSpawnObject(doorobj) );    
 }
 
 

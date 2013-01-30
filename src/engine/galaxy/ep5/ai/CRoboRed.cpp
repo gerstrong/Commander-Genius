@@ -13,189 +13,189 @@
 #include "misc.h"
 
 /*
- $2734W #Robo Red move
- $2752W #Robo Red pause before shooting
- $2770W #Robo Red shoot
- $278EW #Robo Red shoot (Make shot)
- */
+$2734W #Robo Red move
+$2752W #Robo Red pause before shooting
+$2770W #Robo Red shoot
+$278EW #Robo Red shoot (Make shot)
+*/
 
-namespace galaxy {
+namespace galaxy {  
+  
+enum ROBOREDACTIONS
+{
+A_RED_MOVE = 0,
+A_RED_PAUSE = 1,
+A_RED_SHOOT = 3
+};
+
+const int TIME_UNTIL_SHOOT = 80;
+
+const int TIME_SHOOTING = 200;
+
+const int MOVE_SPEED = 15;
+
+const int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
+
+  
+CRoboRed::CRoboRed(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
+CStunnable(pmap, foeID, x, y),
+mTimer(0),
+swapYDir(false),
+mKeenNearby(false)
+{
+	mActionMap[A_RED_MOVE] = (void (CStunnable::*)()) &CRoboRed::processMoving;
+	mActionMap[A_RED_PAUSE] = (void (CStunnable::*)()) &CRoboRed::processPauseBeforeShoot;
+	mActionMap[A_RED_SHOOT] = (void (CStunnable::*)()) &CRoboRed::processShoot;
+  
+	// Adapt this AI
+	setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);
+	
+	xDirection = LEFT;
+}
+
+
+
+void CRoboRed::processMoving()
+{
+  // Move normally in the direction
+  if( xDirection == RIGHT )
+  {
+    moveRight( MOVE_SPEED );
+  }
+  else
+  {
+    moveLeft( MOVE_SPEED );
+  }
+  
+  if(getProbability(60) && mKeenNearby)
+  {
+    setAction(A_RED_PAUSE);
+  }
+}
+
+
+void CRoboRed::processPauseBeforeShoot()
+{
+  // just wait 
+  mTimer++;
+  if(mTimer < TIME_UNTIL_SHOOT)
+    return;
+  
+  mTimer = 0;
+  
+  if(mKeenNearby)
+    setAction(A_RED_SHOOT);  
+  else
+    setAction(A_RED_MOVE);
+}
+
+
+void CRoboRed::processShoot()
+{
+  // Shoot many times.  
+  if(mTimer%16 == 0)
+  {
+    playSound(SOUND_ROBORED_SHOOT);
     
-    enum ROBOREDACTIONS
-    {
-        A_RED_MOVE = 0,
-        A_RED_PAUSE = 1,
-        A_RED_SHOOT = 3
-    };
-    
-    const int TIME_UNTIL_SHOOT = 80;
-    
-    const int TIME_SHOOTING = 200;
-    
-    const int MOVE_SPEED = 15;
-    
-    const int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
-    
-    
-    CRoboRed::CRoboRed(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-    CStunnable(pmap, foeID, x, y),
-    mTimer(0),
-    swapYDir(false),
-    mKeenNearby(false)
-    {
-        mActionMap[A_RED_MOVE] = (void (CStunnable::*)()) &CRoboRed::processMoving;
-        mActionMap[A_RED_PAUSE] = (void (CStunnable::*)()) &CRoboRed::processPauseBeforeShoot;
-        mActionMap[A_RED_SHOOT] = (void (CStunnable::*)()) &CRoboRed::processShoot;
-        
-        // Adapt this AI
-        setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);
-        
-        xDirection = LEFT;
-    }
-    
-    
-    
-    void CRoboRed::processMoving()
-    {
-        // Move normally in the direction
-        if( xDirection == RIGHT )
-        {
-            moveRight( MOVE_SPEED );
-        }
-        else
-        {
-            moveLeft( MOVE_SPEED );
-        }
-        
-        if(getProbability(60) && mKeenNearby)
-        {
-            setAction(A_RED_PAUSE);
-        }
-    }
-    
-    
-    void CRoboRed::processPauseBeforeShoot()
-    {
-        // just wait
-        mTimer++;
-        if(mTimer < TIME_UNTIL_SHOOT)
-            return;
-        
-        mTimer = 0;
-        
-        if(mKeenNearby)
-            setAction(A_RED_SHOOT);
-        else
-            setAction(A_RED_MOVE);
-    }
-    
-    
-    void CRoboRed::processShoot()
-    {
-        // Shoot many times.
-        if(mTimer%16 == 0)
-        {
-            playSound(SOUND_ROBORED_SHOOT);
-            
-            direction_t newXDir = xDirection<0 ? LEFT : RIGHT;
-            direction_t newYDir = swapYDir ? UP : DOWN;
-            swapYDir = !swapYDir;
-            int newX = 	xDirection == RIGHT ? getXRightPos() : getXLeftPos();
-            int newY = 	getYPosition() + 0x300;
-            g_pBehaviorEngine->m_EventList.spawnObj( new CRedShot( getMapPtr(),
-                                                                  0,
-                                                                  newX, newY,
-                                                                  newXDir, newYDir ) );
-        }
-        
-        mTimer++;
-        if(mTimer < TIME_SHOOTING)
-            return;
-        
-        mTimer = 0;
-        
-        setAction(A_RED_PAUSE);
-    }
-    
-    
-    
-    bool CRoboRed::isNearby(CSpriteObject &theObject)
-    {
-        if( dynamic_cast<CPlayerLevel*>(&theObject) )
-        {
-            mKeenNearby = false;
-            
-            const int objX = theObject.getXMidPos();
-            const int roboX = getXMidPos();
-            const int dx = objX - roboX;
-            
-            if( theObject.getYDownPos() > getYUpPos() && theObject.getYUpPos() < getYDownPos() )
-            {
-                if(!getActionNumber(A_RED_SHOOT))
-                {
-                    if( theObject.getXMidPos() < getXMidPos() )
-                        xDirection = LEFT;
-                    else
-                        xDirection = RIGHT;
-                }
-                
-                if( std::abs(dx) < CSF_DISTANCE_TO_SHOOT )
-                {
-                    mKeenNearby = true;
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    void CRoboRed::getTouchedBy(CSpriteObject &theObject)
-    {
-        if(dead || theObject.dead)
-            return;
-        
-        CStunnable::getTouchedBy(theObject);
-        
-        // Was it a bullet?
-        if( dynamic_cast<CBullet*>(&theObject) )
-        {
-            theObject.dead = true;
-        }
-        
-        if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-        {
-            player->kill();
-        }
-    }
-    
-    
-    int CRoboRed::checkSolidD( int x1, int x2, int y2, const bool push_mode )
-    {
-        turnAroundOnCliff( x1, x2, y2 );
-        
-        return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
-    }
-    
-    
-    void CRoboRed::process()
-    {
-        performCollisions();
-        
-        performGravityMid();
-        
-        if( blockedl )
-        {
-            xDirection = RIGHT;
-        }
-        else if(blockedr)
-        {
-            xDirection = LEFT;
-        }
-        
-        if(!processActionRoutine())
-            exists = false;
-        
-        (this->*mp_processState)();
-    }
-    
+    direction_t newXDir = xDirection<0 ? LEFT : RIGHT;
+    direction_t newYDir = swapYDir ? UP : DOWN;    
+    swapYDir = !swapYDir;
+    int newX = 	xDirection == RIGHT ? getXRightPos() : getXLeftPos();
+    int newY = 	getYPosition() + 0x300;
+    g_pBehaviorEngine->m_EventList.spawnObj( new CRedShot( getMapPtr(), 
+							     0, 
+							     newX, newY,
+							     newXDir, newYDir ) );
+  }
+				
+  mTimer++;
+  if(mTimer < TIME_SHOOTING)
+    return;
+  
+  mTimer = 0;
+  
+  setAction(A_RED_PAUSE);
+}
+
+
+
+bool CRoboRed::isNearby(CSpriteObject &theObject)
+{
+	if( dynamic_cast<CPlayerLevel*>(&theObject) )
+	{
+	  mKeenNearby = false;
+		  
+	  const int objX = theObject.getXMidPos();
+	  const int roboX = getXMidPos();
+	  const int dx = objX - roboX;
+
+  	  if( theObject.getYDownPos() > getYUpPos() && theObject.getYUpPos() < getYDownPos() )
+	  {
+	    if(!getActionNumber(A_RED_SHOOT))
+	    {
+    		if( theObject.getXMidPos() < getXMidPos() )
+			xDirection = LEFT;
+		else
+			xDirection = RIGHT;
+	    }
+	  
+	    if( std::abs(dx) < CSF_DISTANCE_TO_SHOOT )
+	    {
+	      mKeenNearby = true;
+	    }
+	  }
+	}
+
+	return true;
+}
+
+void CRoboRed::getTouchedBy(CSpriteObject &theObject)
+{
+	if(dead || theObject.dead)
+		return;
+
+	CStunnable::getTouchedBy(theObject);
+
+	// Was it a bullet?
+	if( dynamic_cast<CBullet*>(&theObject) )
+	{
+	  theObject.dead = true;
+	}
+
+	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	{
+	  player->kill();
+	}
+}
+
+
+int CRoboRed::checkSolidD( int x1, int x2, int y2, const bool push_mode )
+{
+	turnAroundOnCliff( x1, x2, y2 );
+
+	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+}
+
+
+void CRoboRed::process()
+{
+	performCollisions();
+	
+	performGravityMid();
+
+	if( blockedl )
+	{
+	  xDirection = RIGHT;
+	}
+	else if(blockedr)
+	{
+	  xDirection = LEFT;
+	}
+
+	if(!processActionRoutine())
+	    exists = false;
+	
+	(this->*mp_processState)();
+}
+
 }

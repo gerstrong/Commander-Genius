@@ -18,16 +18,16 @@ class CGamePassiveMode : public CGameMode
 {
 public:
 	CGamePassiveMode();
-    
+
 	void init();
 	void process();
-    
+
 private:
 	std::unique_ptr<CPassive> mpPassive;
-    
+
 	CSaveGameController m_SavedGame;
 	int m_Difficulty;
-    
+
 };
 
 #endif /* CGAMEPASSIVEMODE_H_ */

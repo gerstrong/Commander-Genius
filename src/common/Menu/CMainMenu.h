@@ -15,7 +15,7 @@ class CMainMenu : public CBaseMenu
 {
 public:
 	CMainMenu(const bool openedGamePlay);
-    
+
 	void createVorticonMenu( const bool openedGamePlay );
 	void createGalaxyMenu( const bool openedGamePlay );
 };

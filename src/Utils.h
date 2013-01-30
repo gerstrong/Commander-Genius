@@ -70,22 +70,22 @@ const std::list<_T> filledList( const size_t amount, _T first, ... )
 {
 	_T item;
 	va_list vl;
-    
+
 	std::list<_T> list;
-    
+
 	item = first;
 	list.push_back(item);
-    
+
 	va_start(vl, first);
-    
+
 	for ( size_t i=0 ; i<amount ; i++ )
 	{
 		item = va_arg(vl, _T);
 		list.push_back(item);
 	}
-    
+
 	va_end(vl);
-    
+
 	return list;
 }
 

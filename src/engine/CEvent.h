@@ -49,7 +49,7 @@ struct EventExitLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;
 	const bool teleport;
-	EventExitLevel(const uint16_t l, const bool s, const bool t=false) :
+	EventExitLevel(const uint16_t l, const bool s, const bool t=false) : 
 	levelObject(l), sucess(s), teleport(t){}
 };
 
@@ -66,13 +66,13 @@ struct EventPlayerEndLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;
 	EventPlayerEndLevel(const EventExitLevel ev) :
-    levelObject(ev.levelObject), sucess(ev.sucess) {}
+					levelObject(ev.levelObject), sucess(ev.sucess) {}
 };
 
 struct EventPlayerRideFoot : CEvent {
 	const uint16_t levelObject;
 	EventPlayerRideFoot(const EventExitLevelWithFoot ev) :
-    levelObject(ev.levelObject) {}
+					levelObject(ev.levelObject) {}
 };
 
 
@@ -97,12 +97,12 @@ struct EventSendBitmapDialogMsg : EventSendDialog
 	const CBitmap &BitmapRef;
 	const direction_t Direction;
 	EventSendBitmapDialogMsg(const CBitmap &lBitmapRef,
-                             const std::string& lMsg,
-                             const direction_t& lDirection = LEFT) :
-    EventSendDialog(lMsg),
-    BitmapRef(lBitmapRef),
-    Direction(lDirection)
-    {}
+				 const std::string& lMsg,
+				 const direction_t& lDirection = LEFT) :
+				  EventSendDialog(lMsg),
+				  BitmapRef(lBitmapRef),
+				  Direction(lDirection)
+				  {}
 };
 
 
@@ -114,8 +114,8 @@ struct EventSendBitmapDialogMsg : EventSendDialog
 struct EventSendBitmapDialogMessages : CEvent
 {
 	EventSendBitmapDialogMessages( std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > lMsgs ) :
-    msgs(lMsgs) {}
-    
+		msgs(lMsgs) {}
+
 	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 };
 
@@ -140,13 +140,13 @@ struct TextEventMatchOption
  *							  Depending on the size of the
  */
 struct EventSendSelectionDialogMsg : CEvent {
-    
+
 	const std::string Message;
 	std::list<TextEventMatchOption> Options;
-    
+
 	EventSendSelectionDialogMsg(const std::string& lMsg) :
-    Message(lMsg){}
-    
+								Message(lMsg){}
+
 	void addOption(const std::string& ltext, CEvent *levent)
 	{
 		TextEventMatchOption NewOption;
@@ -162,11 +162,11 @@ struct EventSendSelectionDialogMsg : CEvent {
  *	\param		pObject Pointer to the allocated memory of the Object. Caution: This allocation
  */
 struct EventSpawnObject : CEvent {
-    
+
 	const CSpriteObject *pObject;
-    
+
 	EventSpawnObject( const CSpriteObject* pObject ) :
-    pObject( pObject ) {}
+					  pObject( pObject ) {}
 };
 
 /**
@@ -177,12 +177,12 @@ struct EventEraseAllEnemies : CEvent {};
 
 
 struct EventSpawnFoot : CEvent {
-    
+
 	const int x,y;
 	const int foeID;
-    
+
 	EventSpawnFoot( const int lx, const int ly, const int lfoe ) :
-    x(lx), y(ly), foeID(lfoe) {}
+					  x(lx), y(ly), foeID(lfoe) {}
 };
 
 

@@ -14,9 +14,9 @@ class CSoundWave : public CRay
 {
 public:
 	CSoundWave(CMap *p_map, Uint32 x, Uint32 y,
-               direction_t dir, object_t byType=OBJ_NONE, size_t byID=0);
+			direction_t dir, object_t byType=OBJ_NONE, size_t byID=0);
 	void process();
-    
+
 private:
 	int animframe, animtimer;
 	int offscreentime;

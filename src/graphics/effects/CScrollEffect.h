@@ -18,14 +18,14 @@ class CScrollEffect : public CEffects
 {
 public:
 	CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
-                  const Sint16 initialPos, Sint8 speed);
-    
+			const Sint16 initialPos, Sint8 speed);
+
 	void process();
-    
+
 	Sint16 getScrollPosition();
-    
+
 private:
-    
+
 	Sint8 mSpeed;
 	Sint8 mInitialSpeed;
 	Sint16 mScrollPos;

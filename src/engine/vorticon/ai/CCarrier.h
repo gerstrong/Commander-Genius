@@ -7,7 +7,7 @@
 
 class CCarrier : public CVorticonSpriteObject
 {
-    
+
 public:
     CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type);
     

@@ -43,10 +43,10 @@ public:
 	void createEmptyCursorMap(SDL_Surface *surface);
 	
 	void setupEffect(CEffects *pEffect);
-    
+
 	void drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface);
 	void drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface);
-    
+
 	void freeBitmaps(std::vector<CBitmap> &Bitmap);
 	void freeSprites();
 	void freeTilemap();
@@ -57,21 +57,21 @@ public:
 	
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour = 0xFFFFFF);
 	int getNumSprites() { return Sprite.size(); }
-    
+
 	CTilemap &getTileMap(size_t tilemap) { return Tilemap.at(tilemap); }
 	std::vector<CTilemap> &getTileMaps() { return Tilemap; }
 	CBitmap &getBitmap(Uint16 slot) { return Bitmap.at(slot); }
 	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
 	CBitmap *getBitmap(const std::string &name) const;
-    
+
 	CSprite *getSprite(const std::string &name) const;
-    
+
 	CEffects *Effect() { return mpEffects.get(); }
-	bool applyingEffects()
-	{
+	bool applyingEffects() 
+	{ 
 	    if(mpEffects)
-            return true;
-	    return false;
+		return true; 
+	    return false;	    
 	}
 	
 	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }

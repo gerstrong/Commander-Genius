@@ -18,17 +18,17 @@ public:
 	void process();
 	void extend();
 	void retract();
-    
+
 private:
 	enum{
 		EXTEND,
 		RETRACT
 	}m_state;
 	int timer;
-    
+
 	Uint32 m_platx;
 	Uint32 m_platy;
-    
+
 	direction_t m_dir;
 	static unsigned int m_bgtile;
 };

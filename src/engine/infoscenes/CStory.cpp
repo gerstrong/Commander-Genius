@@ -24,12 +24,12 @@ void CStory::init()
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	const char episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
-    
+
 	mpMap.reset(new CMap());
 	CVorticonMapLoaderBase Maploader(mpMap);
-    
+
 	std::string Text;
-    
+
 	// Read the Storytext
 	if(episode==1)
 	{
@@ -55,7 +55,7 @@ void CStory::init()
 		// Here the Text file is within the EXE-File
 		unsigned long startflag=0, endflag=0;
 		unsigned char *text_data = NULL;
-        
+
 		if(episode == 2)
 		{
 			startflag = 0x16CC0-512;
@@ -69,7 +69,7 @@ void CStory::init()
 		
 		text_data = ExeFile.getRawData();
 		if(!text_data) return;
-        
+
 		for(unsigned long i=startflag ; i<endflag ; i++ )
 			Text.push_back(text_data[i]);
 	}
@@ -78,7 +78,7 @@ void CStory::init()
 	
 	// Create the Text ViewerBox and stores the text there!
 	mpTextViewer.reset(new CTextViewer(0, 0, 320, 136));
-    
+
 	mpTextViewer->formatText(Text);
 	
 	// Scroll to the map where you see Keen with his rocket.
@@ -90,7 +90,7 @@ void CStory::process()
 {
 	mpMap->animateAllTiles();
 	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-    
+
 	if(mpTextViewer)
 	{
 		mpTextViewer->process();

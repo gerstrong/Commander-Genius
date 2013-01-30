@@ -20,7 +20,7 @@ public:
 	
 	void run();
 	void cleanup();
-    
+
 private:
 	bool m_firsttime;
 	CGameControl m_Engine;

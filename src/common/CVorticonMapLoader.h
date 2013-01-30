@@ -23,10 +23,10 @@ class CVorticonMapLoaderBase
 public:
 	CVorticonMapLoaderBase(std::shared_ptr<CMap> &map);
 	
-	bool loadBase(  Uint8 episode,
-                  Uint8 level,
-                  const std::string& path,
-                  bool loadNewMusic );
+	bool loadBase(  Uint8 episode, 
+			Uint8 level, 
+			const std::string& path, 
+			bool loadNewMusic );
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true );
 	
@@ -41,8 +41,8 @@ class CVorticonMapLoader : public CVorticonMapLoaderBase
 {
 public:
 	CVorticonMapLoader(std::shared_ptr<CMap> &map,
-                       std::vector<std::unique_ptr<CVorticonSpriteObject> > &spriteObjectContainer);
-    
+			    std::vector<std::unique_ptr<CVorticonSpriteObject> > &spriteObjectContainer);
+		
 	bool m_NessieAlreadySpawned;
 	
 	std::vector< std::unique_ptr<CVorticonSpriteObject> > &mpSpriteObjectContainer;
@@ -54,18 +54,18 @@ class CVorticonMapLoaderWithPlayer : public CVorticonMapLoader
 {
 public:
 	CVorticonMapLoaderWithPlayer(std::shared_ptr<CMap> &map,
-                                 std::vector<CPlayer> &playerContainer,
-                                 std::vector<std::unique_ptr<CVorticonSpriteObject> > &spriteObjectContainer);
+			    std::vector<CPlayer> &playerContainer,
+			    std::vector<std::unique_ptr<CVorticonSpriteObject> > &spriteObjectContainer);    
 	
-	bool load( Uint8 episode,
-              Uint8 level,
-              const std::string& path,
-              bool loadNewMusic = true,
-              bool stategame = false );
-    
-	void loadSprites( Uint8 episode,
-                     Uint8 level );
-    
+	bool load( Uint8 episode, 
+		Uint8 level, 
+		const std::string& path, 
+		bool loadNewMusic = true, 
+		bool stategame = false );
+
+	void loadSprites( Uint8 episode, 
+			  Uint8 level );
+
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);
 	void addSpriteObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
 	

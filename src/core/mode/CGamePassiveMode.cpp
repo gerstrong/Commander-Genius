@@ -26,33 +26,33 @@ void CGamePassiveMode::init()
 		mpPassive.reset( new galaxy::CPassiveGalaxy() );
 	else
 		mpPassive.reset( new vorticon::CPassiveVort() );
-    
+
 	if( mpPassive->init() ) return;
-    
+
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
-    
+
 }
 
 
 void CGamePassiveMode::process()
 {
-    
+
 	mpPassive->process();
-    
+
 	// Process Events
-    
+
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-    
+
 	// check here what the player chose from the menu over the passive mode.
 	// NOTE: Demo is not part of playgame anymore!!
 	if(mpPassive->getchooseGame())
 	{
-		// TODO: Some of game resources are still not cleaned up here!
+		// TODO: Some of game resources are still not cleaned up here!		
 		EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
 		return;
 	}
-    
+
 	// User wants to exit. Called from the PassiveMode
 	if(mpPassive->getExitEvent())
 	{

@@ -44,30 +44,30 @@ void CVidConfig::reset()
 	m_DisplayRect.h=200;
 	Fullscreen=false;
 #endif
-    
+
 	m_ScaleXFilter=1;
 	m_normal_scale=true;
 	Zoom=1;
-    
+
 #ifdef USE_OPENGL
 	m_opengl_filter = GL_LINEAR;
 #endif
-    
+
 	m_opengl = false; // Must stay optional for better compatibility
 	m_aspect_correction = true;
 	m_CameraBounds.reset();
 	m_special_fx = true;
-    
+
 	m_GameRect.x = 0;
 	m_GameRect.y = 0;
 	m_GameRect.w = 320;
 	m_GameRect.h = 200;
-    
+
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_opengl = true;
 	m_aspect_correction = false;
 #endif
-    
+
 #if defined(ANDROID)
 	m_aspect_correction = false;
 #endif

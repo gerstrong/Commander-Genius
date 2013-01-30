@@ -6,21 +6,21 @@
  *
  *  Class for RLE(W) decompression
  *
- The algorithm works as follows:
- 1.) If implemented, get the first dword in the file, [Final Length]
- 2.) If [Length of data so far] < [Final Length] then:
- 3.) Get a word
- 4.) Is this word $FEFE?
- -> If yes;
- Get the next two words (Word1 and Word2)
- Copy Word1 [Word2] times
- Move forward three words and got to 2.)
- -> If no;
- Copy the word
- Move forward a word and go to 2.)
- 
- This also means that if the file is already decompressed, the algorithm
- will just read the bytes and dump a vector<word> which should be 16-bit
+ 	 The algorithm works as follows:
+	 1.) If implemented, get the first dword in the file, [Final Length]
+	 2.) If [Length of data so far] < [Final Length] then:
+	 3.) Get a word
+	 4.) Is this word $FEFE?
+	 -> If yes;
+	 Get the next two words (Word1 and Word2)
+	 Copy Word1 [Word2] times
+	 Move forward three words and got to 2.)
+	 -> If no;
+	 Copy the word
+	 Move forward a word and go to 2.)
+
+	 This also means that if the file is already decompressed, the algorithm
+	 will just read the bytes and dump a vector<word> which should be 16-bit
  *
  */
 
@@ -48,11 +48,11 @@ void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word k
 	size_t finsize, howmany;
 	word value;
 	size_t inc;
-    
+
 	finsize = (src.at(1)<<8) | src.at(0);
 	finsize /= 2;
-    
-    
+
+
 	for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {
 		// Read datum (word)
@@ -63,11 +63,11 @@ void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word k
 			// Read count (word)
 			howmany = (src.at(i+3)<<8)+src.at(i+2);
 			value = (src.at(i+5)<<8)+src.at(i+4);
-            
+
 			// Do count times
 			for(Uint32 j=0;j<howmany;j++)
 				dst.push_back(value);
-            
+
 			inc = 3*WORDSIZE;
 		}
 		else
@@ -81,15 +81,15 @@ void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word k
 void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
 {
     uint16_t word, count, inc;
-    
+
 	size_t finsize;
 	byte high_byte, low_byte;
-    
+
 	low_byte = src.at(1);
 	high_byte = src.at(0);
 	finsize = (high_byte<<8) | low_byte;
 	finsize /= 2;
-    
+
     for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {
         // Read datum (word)
@@ -100,11 +100,11 @@ void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
             // Read count (word)
             count = (src.at(i+2)<<8)+src.at(i+3);
 			word = (src.at(i+4)<<8)+src.at(i+5);
-            
+
             // Do count times
 			for(Uint32 j=0;j<count;j++)
 				dst.push_back(word);
-            
+
             inc = 3*WORDSIZE;
         }
         else

@@ -46,23 +46,23 @@ struct ActionFormatType
 	int16_t Check_tiles;         // [Start of check tile code only]
 	int16_t Check_segment2;      // [Segment values only]
 	int16_t Next_action;         // [Valid actions only]
-    
+
 	/*void (*think)(struct CK_object *obj);
-     void (*collide)(struct CK_object *obj, struct CK_object *other);
-     void (*draw)(struct CK_object *obj);*/
-    
+	void (*collide)(struct CK_object *obj, struct CK_object *other);
+	void (*draw)(struct CK_object *obj);*/
+
 	/**
 	 * \brief	set Action Format of the sprite
 	 * \param	sprite_offset	Offset of the sprite. This is per sprite(object) just one and the same
 	 * 							direction
 	 */
 	void setActionFormat( const size_t sprite_offset );
-    
+
 	/**
 	 * \brief just sets the next action format struct
 	 */
 	void setNextActionFormat();
-    
+
 	/**
 	 * \brief	get Action Format of the sprite
 	 * \param	sprite_offset	Offset of the sprite. This is per sprite(object) just one and the same

@@ -20,13 +20,13 @@ class CEffects
 public:
 	CEffects() :
 	mFinished(false) {}
-    
+
 	bool finished() { return mFinished; }
-    
+
 	virtual void process() = 0;
-    
+
 	virtual ~CEffects() {}
-    
+
 protected:
 	bool mFinished;
 };

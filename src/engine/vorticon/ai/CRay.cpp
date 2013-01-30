@@ -9,9 +9,9 @@
 #define Sprite g_pGfxEngine->Sprite
 
 CRay::CRay(CMap *p_map, Uint32 x, Uint32 y,
-           direction_t hdir, direction_t vdir,
-           object_t byType, size_t byID,
-           size_t speed) :
+		direction_t hdir, direction_t vdir, 
+		object_t byType, size_t byID,
+		size_t speed) :
 CVorticonSpriteObject(p_map, x, y, OBJ_RAY),
 m_HorDir(hdir),
 m_VertDir(hdir),
@@ -20,24 +20,24 @@ m_speed(speed)
 	m_type = OBJ_RAY;
 	owner.obj_type = byType;
 	owner.ID = byID;
-    
+
 	size_t Episode = g_pBehaviorEngine->getEpisode();
 	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
-    
+
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	m_BBox.x1 = rSprite.m_bboxX1;		m_BBox.x2 = rSprite.m_bboxX2;
 	m_BBox.y1 = rSprite.m_bboxY1;		m_BBox.y2 = rSprite.m_bboxY2;
-    
+
 	state = RAY_STATE_FLY;
 	inhibitfall = true;
-    
+
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-    
+
 	blockedl = TileProperty[mp_Map->at((m_Pos.x + m_BBox.x1)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bright;
 	blockedr = TileProperty[mp_Map->at((m_Pos.x + m_BBox.x2)>>CSF, (m_Pos.y + (m_BBox.y1+m_BBox.y2)/2)>>CSF)].bleft;
-    
+
 	if( blockedd || blockedr )
 		getShotByRay(owner.obj_type);
 }
@@ -73,7 +73,7 @@ void CRay::setZapped()
 {
 	state = RAY_STATE_ZAPZOT;
 	zapzottimer = RAY_ZAPZOT_TIME;
-    
+
 	size_t Episode = g_pBehaviorEngine->getEpisode();
 	if (Episode==1)
 	{
@@ -96,7 +96,7 @@ void CRay::setZapped()
 		else
 		{ sprite = RAY_FRAME_ZOT_EP3; }
 	}
-    
+
 	if (m_HorDir==LEFT || m_HorDir==RIGHT)
 		moveUp(2);
 	else
@@ -114,18 +114,18 @@ void CRay::moveinAir()
 	//std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	//CSprite &raysprite = g_pGfxEngine->getSprite(sprite);
 	//bool hitlethal; // TODO: Why is this here?
-    
+
 	if (m_HorDir == RIGHT)
 	{
 		// don't go through bonklethal tiles, even if they're not solid
 		// (for the arms on mortimer's machine)
 		/*if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, (getYPosition()>>CSF)+1)).behaviour == 1)
-         hitlethal = true;
-         else if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
-         hitlethal = true;
-         else
-         hitlethal = false;*/
-        
+			hitlethal = true;
+		else if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
+			hitlethal = true;
+		else
+			hitlethal = false;*/
+
 		if (blockedr)
 		{
 			state = RAY_STATE_SETZAPZOT;
@@ -138,12 +138,12 @@ void CRay::moveinAir()
 	else if (m_HorDir == LEFT)
 	{
 		/*if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, (getYPosition()+1)>>CSF)).behaviour == 1)
-         hitlethal = true;
-         else if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
-         hitlethal = true;
-         else
-         hitlethal = false;*/
-        
+			hitlethal = true;
+		else if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
+			hitlethal = true;
+		else
+			hitlethal = false;*/
+
 		if (blockedl)
 		{
 			state = RAY_STATE_SETZAPZOT;

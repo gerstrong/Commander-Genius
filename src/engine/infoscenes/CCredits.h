@@ -29,7 +29,7 @@ private:
 	int m_scrolly;
 	
 	std::shared_ptr<CMap> mpMap;
-	std::shared_ptr<SDL_Surface> mpDrawSfc;
+	std::shared_ptr<SDL_Surface> mpDrawSfc;	
 };
 
 #endif /* CCREDITS_H_ */

@@ -13,15 +13,15 @@
 #include "engine/galaxy/common/CGalaxySpriteObject.h"
 
 namespace galaxy {
-    
-    class CBubbles: public CGalaxySpriteObject
-    {
-    public:
-        CBubbles(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const bool bigbubble);
-        
-        // Main process cycle of the Bubble
-        void process();
-    };
-    
+
+class CBubbles: public CGalaxySpriteObject
+{
+public:
+	CBubbles(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const bool bigbubble);
+
+	// Main process cycle of the Bubble
+	void process();
+};
+
 } /* namespace galaxy */
 #endif /* CBUBBLES_H_ */

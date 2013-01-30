@@ -16,12 +16,12 @@ class CTileProperties
 {
 public:
 	CTileProperties();
-    
+
 	int chgtile;         // tile to change to when level completed (for wm)
 	// or tile to change to when picked up (in-level)
 	//unsigned int animOffset;   // starting offset from the base frame
 	int nextTile;
-    
+
 	// Tile Properties start here!
 	unsigned char animationtime;
 	signed char behaviour;

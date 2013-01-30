@@ -23,15 +23,15 @@ public:
 	CMessageBoxSelection( const std::string& Text, const std::list<TextEventMatchOption> &Options );
 	
 	void init();
-    
+
 	std::list<TextEventMatchOption> m_Options;
-    
+
 	int m_selection;
 	
 	void process();
 	
 private:
-    std::shared_ptr<SDL_Surface> mpSelSurface1;
+    	std::shared_ptr<SDL_Surface> mpSelSurface1;
 	std::shared_ptr<SDL_Surface> mpSelSurface2;
 	int blend;
 	bool blendup;

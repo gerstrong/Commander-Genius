@@ -74,10 +74,10 @@ enum {
 
 //Masks for operator 20 values
 enum {
-    MASK_KSR = 0x10,
-    MASK_SUSTAIN = 0x20,
-    MASK_VIBRATO = 0x40,
-    MASK_TREMOLO = 0x80,
+        MASK_KSR = 0x10,
+        MASK_SUSTAIN = 0x20,
+        MASK_VIBRATO = 0x40,
+        MASK_TREMOLO = 0x80,
 };
 
 enum OperatorState{
@@ -90,9 +90,9 @@ enum OperatorState{
 
 struct _Operator {
 	VolumeHandler volHandler;
-    
+
 #if (DBOPL_WAVE == WAVE_HANDLER)
-	WaveHandler waveHandler;	//Routine that generate a wave
+	WaveHandler waveHandler;	//Routine that generate a wave 
 #else
 	Bit16s* waveBase;
 	Bit32u waveMask;
@@ -101,7 +101,7 @@ struct _Operator {
 	Bit32u waveIndex;			//WAVE_BITS shifted counter of the frequency index
 	Bit32u waveAdd;				//The base frequency without vibrato
 	Bit32u waveCurrent;			//waveAdd + vibratao
-    
+
 	Bit32u chanData;			//Frequency/octave and derived data coming from whatever channel controls this
 	Bit32u freqMul;				//Scale channel frequency with this, TODO maybe remove?
 	Bit32u vibrato;				//Scaled up vibrato strength
@@ -114,7 +114,7 @@ struct _Operator {
 	Bit32u decayAdd;
 	Bit32u releaseAdd;
 	Bit32u rateIndex;			//Current position of the evenlope
-    
+
 	Bit8u rateZero;				//Bits for the different states of the envelope having no changes
 	Bit8u keyOn;				//Bitmask of different values that can generate keyon
 	//Registers, also used to check for changes
@@ -134,7 +134,7 @@ struct _Channel {
 	SynthHandler synthHandler;
 	Bit32u chanData;		//Frequency/octave and derived values
 	Bit32s old[2];			//Old data for feedback
-    
+
 	Bit8u feedback;			//Feedback shift
 	Bit8u regB0;			//Register values to check for changes
 	Bit8u regC0;
@@ -142,7 +142,7 @@ struct _Channel {
 	Bit8u fourMask;
 	Bit8s maskLeft;		//Sign extended values for both channel's panning
 	Bit8s maskRight;
-    
+
 };
 
 struct _Chip {
@@ -150,21 +150,21 @@ struct _Chip {
 	Bit32u lfoCounter;
 	Bit32u lfoAdd;
 	
-    
+
 	Bit32u noiseCounter;
 	Bit32u noiseAdd;
 	Bit32u noiseValue;
-    
+
 	//Frequency scales for the different multiplications
 	Bit32u freqMul[16];
 	//Rates for decay and release for rate of this chip
 	Bit32u linearRates[76];
 	//Best match attack rates for the rate of this chip
 	Bit32u attackRates[76];
-    
+
 	//18 channels with 2 operators each
 	Channel chan[18];
-    
+
 	Bit8u reg104;
 	Bit8u reg08;
 	Bit8u reg04;
@@ -180,11 +180,11 @@ struct _Chip {
 	Bit8u waveFormMask;
 	//0 or -1 when enabled
 	Bit8s opl3Active;
-    
+
 	// Constructor which sets some variables to zero.
 	_Chip();
 	void clear();
-    
+
 };
 
 void Chip__Setup(Chip *self, Bit32u rate );

@@ -40,45 +40,45 @@ public:
     void ResetCounters();
     bool TimeToRender();
     void TimeToDelay();
-    
+
     void ResetSecondsTimer();
     bool HasSecElapsed();
     bool HasTimeElapsed(int msecs);
-    
+
     //float getFrameRate() { return m_FrameRate; }
     //void setFPS( const int framerate );
-    void setFPS( const float fps );
-    void setLPS( const float lps );
-    
+    void setFPS( const float fps );    
+    void setLPS( const float lps );   
+
     float FPS() { return 1000.0f/mRenderLatency; }
     
     float LogicLatency() { return mLogicLatency; }
-    
+
     float RenderLatency() { return mRenderLatency; }
     
     inline bool resetLogicSingal()
-    {
-        if(resetLogic)
-        {
-            resetLogic = false;
-            return true;
-        }
-        return false;
+    { 
+	if(resetLogic) 
+	{
+	    resetLogic = false;
+	    return true;
+	}
+	return false;
     }
     
     void setLogicReset(const bool value)
     { resetLogic = value; }
-    
+
     int getTicksPerFrame();
-    
-    Uint32 getTicks() { return timerTicks(); }
+
+    Uint32 getTicks() { return timerTicks(); }        
     
     void setTimeforLastLoop(const float total_elapsed)
     { mtotalElapsed = total_elapsed; }
     
     float TimeForLastLoop()
     { return mtotalElapsed; }
-    
+
     float LastFPS()
     { return 1000.0f/mtotalElapsed; }
     
@@ -89,7 +89,7 @@ private:
     float mLogicLatency;
     
     float mtotalElapsed;
-    
+  
     ulong m_LastSecTime;
     
     bool resetLogic;

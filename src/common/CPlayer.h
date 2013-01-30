@@ -39,21 +39,21 @@ class CPlayer : public CVorticonSpriteObject
 {
 public:
     
-    // Some Events that might occur during the gameplay
-	struct Mount : public CEvent
-	{
-	    Mount(const CPlayer &p) : player(p) {}
+        // Some Events that might occur during the gameplay
+	struct Mount : public CEvent 
+	{	    
+	    Mount(const CPlayer &p) : player(p) {} 	
 	    const CPlayer &player;
-	};
-    
+	};   
+
 	// direction defines used for various things
 	enum e_playingmodes
 	{
 		NONE, WORLDMAP, LEVELPLAY
 	};
-    
+
 	CPlayer(const char &Episode, short &Level,
-            bool *mp_level_completed, CMap &map);
+			 bool *mp_level_completed, CMap &map);
 	
 	// Copy player Data
 	CPlayer(const CPlayer &player);
@@ -65,7 +65,7 @@ public:
 	void setMapData(CMap *p_map){ mp_Map=p_map; }
 	void setupforLevelPlay();
 	bool getLevelTrigger();
-    
+
 	// World Map specific
 	void processWorldMap();
 	void setWorldMapdir();
@@ -74,9 +74,9 @@ public:
 	void verifySolidLevels();
 	bool isWMSolid(int xb, int yb);
 	void InertiaAndFriction_Y();
-    
+		
 	int getNewObject();
-    
+
 	// In Level specific
 	void processInLevel();
 	void touchedExit(int mpx);
@@ -98,11 +98,11 @@ public:
 	void SelectFrame();
 	int pollLevelTrigger();
 	void getShotByRay(object_t &obj_type);
-    
+
 	bool checkMapBoundaryL(const int x1);
 	bool checkMapBoundaryR(const int x2);
 	bool checkMapBoundaryU(const int y1);
-    
+
 	// Used for both situations
 	void processCamera();
 	void InertiaAndFriction_X();
@@ -111,50 +111,50 @@ public:
 	void StatusBox();
 	void ProcessInput();
 	void ProcessExitLevel();
-    
+
 	bool checkObjSolid();
-    
+
 	bool drawStatusScreen();
 	void give_keycard(int doortile);
 	void take_keycard(int doortile);
 	void freeze();
 	bool showGameHint(int mpx, int mpy);
 	std::string pollHintMessage();
-    
+
 	///
 	// variables
 	// these coordinates are CSFed
 	int playerbaseframe;	// Standframe of the player normally. May be different for other players.
-    
+
 	unsigned int w;
 	unsigned int h;
-    
+
 	e_playingmodes m_playingmode;
 	char m_episode;
 	char m_level;
-    
+
 	bool godmode;
-    
+
 	// used on world map only
 	bool hideplayer;
 	bool mounted;
-    
+
 	short treshold;		// This is used for analog devices like joysticks
 	signed int pinertia_y;
-    
+
 	unsigned long mapplayx;
 	signed int mapplayy;
-    
+
 	bool pfalling;
 	unsigned char plastfalling,pfallspeed;
-    
+
 	unsigned char pwalking,playspeed;
 	unsigned char pslowingdown;
 	unsigned char pwalkframe,pwalkframea;
 	int pwalkanimtimer;
 	unsigned char pwalkincreasetimer, pfriction_timer_y;
 	int playpushed_decreasetimer;
-    
+
 	jumpstate pjumping;
 	unsigned char pjumptime, pjumpupspeed_decrease, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer;
@@ -164,17 +164,17 @@ public:
 	bool pjustfell;
 	unsigned char pjumpfloattimer;
 	size_t ankhtime;
-    
-    
+
+
 	VectorD2<int> pDir,pShowDir,lastPDir;
-    
+
 	char pfireframetimer;
 	bool inhibitwalking;
-    
+
 	int ctrltimer, alttimer;
 	char keyprocstate;
 	char wm_lastenterstate;
-    
+
 	unsigned char pdie, pdieframe, pdietimer;
 	int pdietillfly;
 	signed int pdie_xvect;
@@ -184,29 +184,29 @@ public:
 	bool pogofirsttime;
 	int pfrozentime,pfrozenframe,pfrozenanimtimer;
 	bool pfiring, plastfire;
-    
+
 	Sint16 playcontrol[PA_MAX_ACTIONS]; // "char" overflows here, because different compilers treat it as signed/unsigned at random
-    
+
 	bool object_chosen;
 	unsigned char dpadcount, dpadlastcount;
-    
+
 	stInventory inventory;
-    
+
 	bool m_cheats_enabled;
 	bool *mp_levels_completed;
 	bool m_showStatusScreen;
 	char level_done;
 	bool beingteleported;
-    
+
 	std::string hintstring;
 	bool hintused;
-    
+
 	stOption *mp_option;
-    
+
 	// Every Player has a camera. Not sure if that's okay...
 	// TODO: Think about a more efficient way to perform this.
 	std::unique_ptr<CCamera> mpCamera;
-    
+
 private:
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);
@@ -216,16 +216,16 @@ private:
 	void incScore(int numpts);
 	void openDoor(int doortile, int doorsprite, int mpx, int mpy);
 	void giveAnkh();
-    
+
 	std::unique_ptr<CStatusScreen> mpStatusScr;
-    
+
 	bool lastpogo;
  	bool bumped;
-    
+
 	// Level control specific functions, especially for exit
 	int exitXpos;
 	int level_done_timer;
-    
+
 	level_triggers m_Level_Trigger;
 };
 

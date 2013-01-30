@@ -27,7 +27,7 @@
 class CPassive
 {
 public:
-    
+
 	enum Modes
 	{
 		INTRO, TITLE, DEMO, STARTGAME, SHUTDOWN
@@ -52,7 +52,7 @@ public:
 	virtual void cleanup() {};
 	
 	void createOutlinedText(const int splash_x, const int splash_y, const std::string &text);
-    
+
 	char m_mode;
 	
 protected:

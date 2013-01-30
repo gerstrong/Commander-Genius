@@ -20,11 +20,11 @@ enum scaleOptionType
 
 class CScaler
 {
-    
+
 public:
-    
+
 	CScaler() : wFac(1.0f), hFac(1.0f) {}
-    
+
 	/**
 	 * \description This functions takes care of the scaling one surface to another
 	 * \param		dstSfc	Pointer the destination surface
@@ -35,32 +35,32 @@ public:
 	 * 				DYNAMIC = Use the Software Scaler for window resizal recommended
 	 */
 	void scaleUp(	SDL_Surface				*dstSfc,
-                 SDL_Surface				*srcSfc,
-                 const scaleOptionType	scaleOption,
-                 const CRect<Uint16>& dstRect );
-    
-    
+					SDL_Surface				*srcSfc,
+					const scaleOptionType	scaleOption,
+					const CRect<Uint16>& dstRect );
+
+
 	void setDynamicFactor( const float wFac, const float hFac);
-    
+
 	void setFilterFactor( const Uint32 FilterFactor );
-    
+
 	Uint32 filterFactor() { return FilterFactor; }
-    
+
 	void setFilterType( bool IsNormal );
-    
+
 	//bool filterType() { return IsFilterNormal; }
-    
+
 private:
-    
+
 	void scaleDynamicLinear( SDL_Surface *srcSfc,
-                            SDL_Surface *dstSfc );
-    
+								SDL_Surface *dstSfc );
+
 	void scaleDynamic( 	SDL_Surface *srcSfc,
-                      SDL_Surface *dstSfc,
-                      const CRect<Uint16>& dstRect );
+	                   	SDL_Surface *dstSfc,
+						const CRect<Uint16>& dstRect );
 	void scaleNormal( 	SDL_Surface *srcSfc,
-                     SDL_Surface *dstSfc );
-    
+						SDL_Surface *dstSfc );
+
 	float 	wFac;
 	float 	hFac;
 	Uint32 	FilterFactor;

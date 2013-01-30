@@ -27,17 +27,17 @@ public:
 	void process();
 	void initiatejump();
 	void getShotByRay(object_t &obj_type);
-    
+
 private:
 	vortelite_actions state;
-    
+
 	unsigned char timer,timer2;
 	unsigned int animtimer;
 	unsigned char frame;
 	unsigned char movedir;
 	unsigned int timesincefire;
 	int m_speed;
-    
+
 	int dist_traveled;
 };
 

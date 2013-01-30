@@ -405,7 +405,7 @@ class Command;
 struct AutocompleteRequest;
 
 class FileListCacheIntf {
-public:
+public:	
 	typedef std::string Filename;
 	typedef std::string ObjectName;
 	typedef std::map<Filename,ObjectName,stringcaseless> FileList;

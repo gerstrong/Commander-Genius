@@ -13,7 +13,7 @@
 #define FIREBALL_OFFSCREEN_KILL_TIME     25
 
 CFireBall::CFireBall(CMap *p_map, Uint32 x, Uint32 y,
-                     direction_t dir, object_t byType, size_t byID) :
+		direction_t dir, object_t byType, size_t byID) :
 CRay(p_map, x, y, dir, CENTER, byType, byID)
 {
 	animframe = 0;
@@ -23,7 +23,7 @@ CRay(p_map, x, y, dir, CENTER, byType, byID)
 	canbezapped = 1;
 	if(dir == LEFT)
 		m_Pos -= VectorD2<Uint32>(14<<STC,0);
-    
+
 	m_speed = (g_pBehaviorEngine->mDifficulty>=NORMAL) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
 	sprite = (m_HorDir == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;
 	performCollisions();
@@ -41,16 +41,16 @@ void CFireBall::process()
 		inhibitfall = 1;
 		return;
 	}
-    
+
 	if(state == RAY_STATE_FLY)
 	{
 		if (m_HorDir == RIGHT)
 			sprite = FIREBALL_RIGHT_FRAME + animframe;
 		else
 			sprite = FIREBALL_LEFT_FRAME + animframe;
-        
+
 		moveinAir();
-        
+
 		// animation
 		if (animtimer > FIREBALL_ANIM_RATE)
 		{

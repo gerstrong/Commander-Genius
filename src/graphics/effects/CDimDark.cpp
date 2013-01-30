@@ -23,46 +23,46 @@ void CDimDark::process()
 {
     if(dimDark) // dim dark here
     {
-        // Process the effect
-        SDL_BlitSurface( mpOldSurface.get(), NULL,
-                        g_pVideoDriver->getBlitSurface(), NULL );
-        
-        SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, m_Alpha );
-        
-        SDL_BlitSurface( mpDarkSurface.get(), NULL,
-                        g_pVideoDriver->getBlitSurface(), NULL );
-        
-        const int sum = m_Alpha + m_Speed;
-        
-        if(sum > 255)
-        {
-            m_Alpha = 0;
-            dimDark = false;
-        }
-        else
-        {
-            m_Alpha += m_Speed;
-        }
+	// Process the effect
+	SDL_BlitSurface( mpOldSurface.get(), NULL,
+				g_pVideoDriver->getBlitSurface(), NULL );
+	
+	SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, m_Alpha );
+
+	SDL_BlitSurface( mpDarkSurface.get(), NULL,
+				g_pVideoDriver->getBlitSurface(), NULL );
+	
+	const int sum = m_Alpha + m_Speed;
+
+	if(sum > 255)
+	{
+	  m_Alpha = 0;
+	  dimDark = false;
+	}
+	else 
+	{
+	  m_Alpha += m_Speed;
+	}
     }
     else // Undim the upcoming surface.
     {
-        // Process the effect
-        SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
-        
-        SDL_BlitSurface( mpDarkSurface.get(), NULL,
-                        g_pVideoDriver->getBlitSurface(), NULL );
-        
-        const int sum = m_Alpha + m_Speed;
-        
-        if(sum > 255)
-        {
-            m_Alpha = 255;
-            mFinished = true;
-        }
-        else 
-        {
-            m_Alpha += m_Speed;
-        }
+	// Process the effect
+	SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
+
+	SDL_BlitSurface( mpDarkSurface.get(), NULL,
+				g_pVideoDriver->getBlitSurface(), NULL );
+	
+	const int sum = m_Alpha + m_Speed;
+
+	if(sum > 255)
+	{
+	  m_Alpha = 255;
+	  mFinished = true;
+	}
+	else 
+	{
+	  m_Alpha += m_Speed;
+	}
     }
 }
 

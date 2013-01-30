@@ -19,39 +19,39 @@
 CHelpMenu::CHelpMenu() :
 CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
-    
+
 	// Create the Menu Dialog and entries
-    
+
 	mpMenuDialog->addControl(new CGUIButton( "The Game",
-                                            new StartInfoSceneEvent( new CHelp("Game") ) ) );
-    
+						new StartInfoSceneEvent( new CHelp("Game") ) ) );
+
 	mpMenuDialog->addControl(new CGUIButton( "The Story",
-                                            new StartInfoSceneEvent( new CStory ) ) );
-    
+						new StartInfoSceneEvent( new CStory ) ) );
+
 	mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
-                                            new StartInfoSceneEvent( new COrderingInfo ) ) );
-    
+						new StartInfoSceneEvent( new COrderingInfo ) ) );
+
 	mpMenuDialog->addControl(new CGUIButton( "About ID",
-                                            new StartInfoSceneEvent( new CAbout("ID") ) ) );
-    
+						new StartInfoSceneEvent( new CAbout("ID") ) ) );
+
 	mpMenuDialog->addControl(new CGUIButton( "About CG",
-                                            new StartInfoSceneEvent( new CAbout("CG") ) ) );
-    
+						new StartInfoSceneEvent( new CAbout("CG") ) ) );
+
 	mpMenuDialog->addControl(new CGUIButton( "Credits",
-                                            new StartInfoSceneEvent( new CCredits() ) ) );
+						new StartInfoSceneEvent( new CCredits() ) ) );
 	
 	std::string filename = "previews.ck";
-	filename += itoa(g_pBehaviorEngine->getEpisode());
+	filename += itoa(g_pBehaviorEngine->getEpisode());	
 	filename = getResourceFilename( filename, g_pBehaviorEngine->m_ExeFile.getDataDirectory(), false, false);
-    
+
 	if( filename != "" )
 	{
 	    mpMenuDialog->addControl(new CGUIButton( "Previews!",
-                                                new StartInfoSceneEvent( new CPreviews() ) ) );
-        
+					new StartInfoSceneEvent( new CPreviews() ) ) );
+		    
 	}	
-    
-    
+
+
 }
 
 

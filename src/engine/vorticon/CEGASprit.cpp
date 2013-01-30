@@ -18,7 +18,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
 #include "CVorticonSpriteObject.h"
-#include "common/tga.h"
+#include "common/tga.h" 
 #include "CResourceLoader.h"
 #include "graphics/CGfxEngine.h"
 #include <SDL.h>
@@ -39,11 +39,11 @@
 //////////////////////////
 
 CEGASprit::CEGASprit(int planesize,
-                     long spritestartloc,
-                     int numsprites,
-                     long spriteloc,
-                     const std::string &gamepath,
-                     size_t episode) :
+	long spritestartloc,
+	int numsprites,
+	long spriteloc,
+	const std::string &gamepath,
+	size_t episode) :
 m_gamepath(gamepath),
 m_Episode(episode),
 EGASpriteModell(NULL)
@@ -87,9 +87,9 @@ bool CEGASprit::loadHead(char *data)
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
 	byte *RawData;
-    SDL_Surface *sfc;
-    Uint8* pixel;
-    Uint32 percent = 0;
+    	SDL_Surface *sfc;
+    	Uint8* pixel;
+    	Uint32 percent = 0;
 	
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 	
@@ -97,7 +97,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		return false;
 	
 	g_pResourceLoader->setPermilage(10);
-    
+
 	RawData = new byte[m_planesize * 5];
     // get the data out of the file into the memory, decompressing it if necessary.
     if (compresseddata)
@@ -112,7 +112,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     }
 	
     fclose(latchfile);
-    
+
 	g_pResourceLoader->setPermilage(50);
 	
     // TODO: Try to blit the Font map here!
@@ -138,18 +138,18 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		CSprite &Sprite = g_pGfxEngine->getSprite(i);
 		Sprite.setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
 		Sprite.setBoundingBoxCoordinates( (EGASpriteModell[i].hitbox_l << STC),
-                                         (EGASpriteModell[i].hitbox_u << STC),
-                                         (EGASpriteModell[i].hitbox_r << STC),
-                                         (EGASpriteModell[i].hitbox_b << STC) );
+				(EGASpriteModell[i].hitbox_u << STC),
+				(EGASpriteModell[i].hitbox_r << STC),
+				(EGASpriteModell[i].hitbox_b << STC) );
 		Sprite.createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags,
-                             g_pGfxEngine->Palette.m_Palette );
-        
+				g_pGfxEngine->Palette.m_Palette );
+
 		percent = (i*50)/m_numsprites;
 		g_pResourceLoader->setPermilage(50+percent);
 	}
-    
+
 	g_pResourceLoader->setPermilage(100);
-    
+
 	for(int p=0 ; p<4 ; p++)
 	{
 		for(int s=0 ; s<m_numsprites ; s++)
@@ -157,18 +157,18 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			sfc = g_pGfxEngine->getSprite(s).getSDLSurface();
 			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 			pixel = (Uint8*) sfc->pixels;
-            
+
 			Planes.readPlane(p, pixel, sfc->w, sfc->h);
-            
+
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-            
+
 			percent = (s*100)/m_numsprites;
 			g_pResourceLoader->setPermilage(100+percent);
 		}
 	}
-    
+
 	g_pResourceLoader->setPermilage(200);
-    
+
 	// now load the 5th plane, which contains the sprite masks.
 	// note that we invert the mask because our graphics functions
 	// use white on black masks whereas keen uses black on white.
@@ -177,12 +177,12 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		SDL_Surface *pixsfc = Sprite.getSDLSurface();
 		SDL_Surface *masksfc = Sprite.getSDLMaskSurface();
-        
+
 		if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
 		if(SDL_MUSTLOCK(masksfc)) SDL_LockSurface(masksfc);
-        
+
 		pixel = (Uint8*) masksfc->pixels;
-        
+
 		for(int y=0 ; y<masksfc->h ; y++)
 		{
 			for(int x=0 ; x<masksfc->w ; x++)
@@ -195,35 +195,35 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		}
 		if(SDL_MUSTLOCK(masksfc)) SDL_UnlockSurface(masksfc);
 		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
-        
+
 		percent = (s*100)/m_numsprites;
 		g_pResourceLoader->setPermilage(200+percent);
 	}
-    
+
 	g_pResourceLoader->setPermilage(300);
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	
 	// Now load the special TGA Sprites if some are available
 	//LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
-    
+
 	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		Sprite.optimizeSurface();
-        
+
 		percent = (s*50)/m_numsprites;
 		g_pResourceLoader->setPermilage(300+percent);
 	}
-    
+
 	g_pResourceLoader->setPermilage(350);
-    
+
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;
 	std::string gfxpath = JoinPaths(m_gamepath, "gfx");
 	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
 	FilterFilelist(filelist, "sprite");
-    
+
 	std::set<std::string>::iterator it = filelist.begin();
 	int listsize = filelist.size();
 	for( int c=0 ; it != filelist.end() ; it++, c++ )
@@ -236,40 +236,40 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
 			Sprite.loadHQSprite(filename);
 		}
-        
+
 		percent = (c*150)/listsize;
 		g_pResourceLoader->setPermilage(350+percent);
 	}
-    
+
 	g_pResourceLoader->setPermilage(500);
-    
+
 	const int NoSprites = g_pGfxEngine->getSpriteVec().size();
 	for(Uint16 s=0 ; s<NoSprites ; s++)
 	{
 		g_pGfxEngine->getSprite(s).applyTransparency();
-        
+
 		percent = (s*250)/NoSprites;
 		g_pResourceLoader->setPermilage(500+percent);
 	}
 	
 	LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
-    
+
 	g_pResourceLoader->setPermilage(750);
 	// Apply the sprites for player 2,3 and 4
 	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
 	g_pResourceLoader->setPermilage(900);
-    
-    
+
+
 	// Now create special sprites, like those for effects and the doors!
 	DeriveSpecialSprites( g_pGfxEngine->getTileMap(1), g_pGfxEngine->getSpriteVec() );
 	g_pResourceLoader->setPermilage(950);
-    
+
 	// Here special Effects are applied, only when the option is enabled for it
 	if(g_pVideoDriver->getSpecialFXConfig())
 		ApplySpecialFX();
-    
+
 	g_pResourceLoader->setPermilage(1000);
-    
+
 	return true;
 }
 
@@ -300,14 +300,14 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 	for(size_t i=0;i<48;i++)
 	{
 		size_t s = THIRD_PLAYER_BASEFRAME+i;
-        
+
 		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
 		sprites.at(s).replaceSpriteColor( 13, 10, 0 ); // Shirt light
 		sprites.at(s).replaceSpriteColor( 5, 2, 0 ); // Shirt dark
 		sprites.at(s).replaceSpriteColor( 12, 2, 16 ); // Shoes light
 		sprites.at(s).replaceSpriteColor( 4, 0, 16 ); // Shoes dark
 		sprites.at(s).optimizeSurface();
-        
+
 	}
 	for(size_t i=0;i<48;i++)
 	{
@@ -319,13 +319,13 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 		sprites.at(s).replaceSpriteColor( 4, 0, 16 ); // Shoes dark
 		sprites.at(s).optimizeSurface();
 	}
-    
+
 	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		Sprite.optimizeSurface();
 	}
-    
+
 	// Try to load player sprites here!
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;
@@ -373,22 +373,22 @@ void CEGASprit::DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &s
 		if( TileProperties.at(t).behaviour==27 )
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(ANKHUP_SPRITE) );
 	}
-    
+
 	for(size_t i=1 ; i < TileProperties.size() ; i++ )
 	{
 		if(TileProperties.at(i).behaviour == DOOR_YELLOW)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
-        
+
 		if(TileProperties.at(i).behaviour == DOOR_RED)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_RED_SPRITE, 2);
-        
+
 		if(TileProperties.at(i).behaviour == DOOR_GREEN)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2);
-        
+
 		if(TileProperties.at(i).behaviour == DOOR_BLUE)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
-    }
-    
+	 }
+
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 }
 
@@ -402,7 +402,7 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprit
 	
 	sprite.setSize(tile_rect.w, tile_rect.h);
 	sprite.createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags,
-                         g_pGfxEngine->Palette.m_Palette );
+						  g_pGfxEngine->Palette.m_Palette );
 	sprite.optimizeSurface();
 	
 	SDL_Surface *src_sfc = sprite.getSDLSurface();
@@ -412,7 +412,7 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprit
 	if(SDL_MUSTLOCK(src_sfc)) SDL_LockSurface(src_sfc);
 	
 	if(src_sfc->format->BitsPerPixel == 8) return;
-    
+
 	// The first pixel is usually the transparent one on items. Use it!
 	Uint8* pixel = (Uint8*)src_sfc->pixels;
 	Uint32 transparent_colour;
@@ -447,39 +447,39 @@ void CEGASprit::ApplySpecialFX()
 {
 	switch(m_Episode)
 	{
-        case 1:
-            g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP1).applyTranslucency(200);
-            g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP1).applyTranslucency(200);
-            g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP1).applyTranslucency(200);
-            break;
-        case 2:
-            g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP2).applyTranslucency(200);
-            g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP2).applyTranslucency(200);
-            g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP2).applyTranslucency(200);
-            break;
-        case 3:
-            g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP3).applyTranslucency(200);
-            g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP3).applyTranslucency(200);
-            g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP3).applyTranslucency(200);
-            break;
-        default: break;
+	case 1:
+		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP1).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP1).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP1).applyTranslucency(200);
+		break;
+	case 2:
+		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP2).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP2).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP2).applyTranslucency(200);
+		break;
+	case 3:
+		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP3).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP3).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP3).applyTranslucency(200);
+		break;
+	default: break;
 	}
-    
+
 	g_pGfxEngine->getSprite(PT100_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(PT200_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(PT500_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(PT1000_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(PT5000_SPRITE).applyTranslucency(196);
-    
+
 	g_pGfxEngine->getSprite(PTCARDY_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(PTCARDG_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(PTCARDR_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(PTCARDB_SPRITE).applyTranslucency(196);
-    
+
 	g_pGfxEngine->getSprite(GUNUP_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(SHOTUP_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(ANKHUP_SPRITE).applyTranslucency(196);
-    
+
 }
 
 CEGASprit::~CEGASprit() {

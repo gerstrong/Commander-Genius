@@ -40,12 +40,12 @@ bool CTitle::init(int Episode)
 	{
 		const int width = 160-(pBitmap->getWidth()/2);
 		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
-		obj->setScrPos( width, 0 );
+		obj->setScrPos( width, 0 );		
 		pBitmap->_draw( pSurface, width, 0);
 		obj->draw();
 		mObjects.push_back(std::move(obj));
 	}
-    
+
 	if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
 	{
 		const int width = (Episode == 3) ? 128 : 96;
@@ -57,9 +57,9 @@ bool CTitle::init(int Episode)
 	}
 	
 	mMap.changeTileArrayY(2, 15, 2, g_pGfxEngine->getTileMap(1).EmptyBackgroundTile());
-    
+
 	mFinished = false;
-    
+
 	return true;
 }
 
@@ -81,7 +81,7 @@ void CTitle::process()
 		if( g_pInput->getPressedAnyCommand() )
 		{
 		    gpMenuController->openMainMenu();
-		}
+		}	    
 	}
-    
+
 }

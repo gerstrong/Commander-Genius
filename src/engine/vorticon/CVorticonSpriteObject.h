@@ -14,22 +14,22 @@ class CVorticonSpriteObject : public CSpriteObject
 {
 public:
 	CVorticonSpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
-    
+
 	void setupObjectType(const int Episode);
 	bool checkforScenario();
-    
+
 	bool calcVisibility();
 	
 	virtual bool isNearby(CVorticonSpriteObject &theObject) { return true; }
 	
-	virtual void getTouchedBy(CVorticonSpriteObject &theObject) {};
-    
+	virtual void getTouchedBy(CVorticonSpriteObject &theObject) {};	
+
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
 	object_t m_type;        		// yorp, vorticon, etc.
-    
+
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
-    
+
 };
 
 #endif /* CVORTICONSPRITEOBJECT_H_ */

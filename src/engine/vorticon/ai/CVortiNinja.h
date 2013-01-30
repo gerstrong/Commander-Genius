@@ -22,15 +22,15 @@ public:
 	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y);
 	void init();
 	bool isNearby(CVorticonSpriteObject &theObject);
-	void getTouchedBy(CVorticonSpriteObject &theObject);
+	void getTouchedBy(CVorticonSpriteObject &theObject);	
 	void process();
 private:
 	ninja_actions state;
 	char dir;
-    
+
 	int animframe, animtimer;
 	unsigned int timetillkick;
-    
+
 	int dietimer;
 	bool longjump;
 };

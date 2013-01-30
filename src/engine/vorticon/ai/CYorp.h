@@ -63,15 +63,15 @@ public:
 	bool isNearby(CVorticonSpriteObject &theObject);
 	void process();
 	
-    
+
 private:
 	void processLooking();
 	void processMoving();
 	void processStunned();
 	void processDying();
-    
+
 	bool m_hardmode;
-    
+
 	enum
 	{
 		YORP_LOOK,     // yorp is "looking around" (waving his eye)
@@ -79,12 +79,12 @@ private:
 		YORP_STUNNED,  // the yorp is stunned
 		YORP_DYING    // the yorp is getting fried!
 	} state;
-    
+
 	unsigned char looktimes,lookposition;
 	unsigned char timer, dietimer;
 	unsigned char walkframe;
 	unsigned int dist_traveled;
-    
+
 	direction_t movedir;
 };
 

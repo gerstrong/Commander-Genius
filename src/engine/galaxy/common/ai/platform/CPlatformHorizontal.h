@@ -12,28 +12,28 @@
 #include <memory>
 
 namespace galaxy {
+
+class CPlatformHorizontal : public CPlatform
+{
+public:
+	CPlatformHorizontal(CMap *pmap, const Uint16 foeID, 
+			    const direction_t xDir, Uint32 x, Uint32 y,
+			    const int actionOffset );
+
+	/**
+	 * \brief Processes the platforms AI. It's just simple moving around of course
+	 */
+	void process();
+	
+	void draw();
+
+private:
     
-    class CPlatformHorizontal : public CPlatform
-    {
-    public:
-        CPlatformHorizontal(CMap *pmap, const Uint16 foeID,
-                            const direction_t xDir, Uint32 x, Uint32 y,
-                            const int actionOffset );
-        
-        /**
-         * \brief Processes the platforms AI. It's just simple moving around of course
-         */
-        void process();
-        
-        void draw();
-        
-    private:
-        
-        bool drawFire;
-        int m_FireSprite;
-        int m_fireTimer;
-    };
-    
+	bool drawFire;
+	int m_FireSprite;
+	int m_fireTimer;
+};
+
 }
 
 #endif /* CPLATFORMHORIZONTAL_H_ */

@@ -16,20 +16,20 @@
 
 namespace galaxy
 {
-    
-    class CPlatformSit : public CPlatform
-    {
-    public:
-        CPlatformSit(CMap *pmap, const Uint16 foeID,
-                     const Uint32 x, const Uint32 y, const int actionOff);
-        
-        /**
-         * \brief Processes the platforms AI. It's just simple moving around of course
-         */
-        void process();
-        
-    };
-    
+
+class CPlatformSit : public CPlatform
+{
+public:
+	CPlatformSit(CMap *pmap, const Uint16 foeID, 
+		      const Uint32 x, const Uint32 y, const int actionOff);
+
+	/**
+	 * \brief Processes the platforms AI. It's just simple moving around of course
+	 */
+	void process();
+	
+};
+
 }
 
 

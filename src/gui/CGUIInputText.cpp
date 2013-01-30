@@ -23,14 +23,14 @@ const int MAX_TICK = 8; // Units in a logical loop
 
 
 CGUIInputText::CGUIInputText( const std::string& text,
-                             const Style	style ) :
+							  const Style	style ) :
 mText(text),
 mTyping(false),
 mTypeTick(0),
 mTick(false),
 drawButton(&CGUIInputText::drawNoStyle)
 {
-    
+
 	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
 	{
 		mFontID = 1;
@@ -41,16 +41,16 @@ drawButton(&CGUIInputText::drawNoStyle)
 		mFontID = 1;
 		drawButton = &CGUIInputText::drawGalaxyStyle;
 	}
-    
+
 }
 
 
 bool CGUIInputText::sendEvent(const InputCommands command)
 {
 	/*if(command == IC_STATUS)
-     {
-     mTyping = !mTyping;
-     }*/
+	{
+		mTyping = !mTyping;
+	}*/
 	return false;
 }
 
@@ -59,38 +59,38 @@ void CGUIInputText::processLogic()
 {
 	if(!mEnabled)
 		return;
-    
+
 	// process the typing here!
 	if(mTyping)
 	{
-        
+
 		if(g_pInput->getPressedIsTypingKey())
 		{
 			std::string c = g_pInput->getPressedTypingKey();
-            
+
 			mText.append(c);
 		}
-        
+
 		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (mText.length() > 0))
 		{
 			mText.erase(mText.length()-1);
 		}
-        
+
 	}
 	else
 	{
 		mButtonDown = false;
 		mButtonUp = false;
 	}
-    
+
 	/*if(!mButtonDown)
-     mTyping = false;*/
-    
+		mTyping = false;*/
+
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
-        
+
 		if( mRect.HasPoint(MousePos) )
 		{
 			if(mouseevent->Type == MOUSEEVENT_MOVED)
@@ -112,7 +112,7 @@ void CGUIInputText::processLogic()
 		}
 		else
 		{
-            
+
 			mHovered = false;
 			mButtonDown = false;
 			mButtonUp = false;
@@ -125,48 +125,48 @@ void CGUIInputText::drawGalaxyStyle(SDL_Rect& lRect)
 {
 	if(!mEnabled)
 		return;
-    
+
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-    
+
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-    
+
 	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
-    
-    
+
+
 	const Uint32 oldcolor = Font.getFGColor();
-    
-    
+
+
 	Uint32 newcolor;
-    
+
 	if(mHovered || mButtonDown)
 		newcolor = SDL_MapRGB( format, 84, 234, 84);
 	else
 		newcolor = SDL_MapRGB( format, 38, 134, 38);
-    
+
 	Font.setupColor( newcolor );
-    
+
 	drawEmptyRect( blitsfc, &lRect, newcolor);
-    
+
 	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y+2, false );
-    
+
 	Font.setupColor( oldcolor );
 }
 
 void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 {
-    
+
 	if(!mEnabled)
 		return;
-    
-    
+
+
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-    
+
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-    
+
 	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
-    
+
 	drawTwirl(lRect);
 }
 
@@ -174,9 +174,9 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 {
 	if(!mEnabled)
 		return;
-    
+
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
-    
+
 	if( mButtonUp )
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
@@ -193,10 +193,10 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
 	}
-    
+
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-    
+
 	Font.drawFontCentered( blitsfc, getInputString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
 }
 
@@ -207,7 +207,7 @@ void CGUIInputText::processRender(const CRect<float> &RectDispCoordFloat)
 	CRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
-    
+
 	(this->*drawButton)(lRect);
 }
 
@@ -216,20 +216,20 @@ std::string CGUIInputText::getInputString()
 {
 	std::string text;
 	text = mText;
-    
+
 	if(!mTyping)
 		return text;
-    
+
 	if(mTick)
 		text += "|";
-    
+
 	if(mTypeTick%MAX_TICK == 0)
 		mTick = !mTick;
-    
+
 	mTypeTick++;
-    
+
 	return text;
-    
+
 }
 
 void CGUIInputText::setTypeMode( const bool value )
@@ -245,6 +245,6 @@ void CGUIInputText::setTypeMode( const bool value )
 		mText.clear();		
 	}
 #endif
-    
+
 	mTyping = value;
 }

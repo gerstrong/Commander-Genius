@@ -15,37 +15,37 @@ const int SILENT_DIST = 20<<CSF;
 
 
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
-                       int vector_x, int vector_y ) :
+	int vector_x, int vector_y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_ICECANNON),
 mTimer(0),
 silent(false)
 {
     this->vector_x = vector_x;
     this->vector_y = vector_y;
-    
+
     inhibitfall = true;
     sprite = BLANKSPRITE;
     blockedd = true;
 }
 
 bool CIceCannon::isNearby(CVorticonSpriteObject &theObject)
-{
+{       
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-        int distx = player->getXPosition() - getXPosition();
-        if(distx<0)
-            distx = -distx;
-        
-        int disty = player->getYPosition() - getYPosition();
-        if(disty<0)
-            disty = -disty;
-        
-        if( disty < SILENT_DIST && distx < SILENT_DIST )
-        {
-            silent = false;
-        }
+	int distx = player->getXPosition() - getXPosition();
+	if(distx<0)
+	    distx = -distx;
+	
+	int disty = player->getYPosition() - getYPosition();
+	if(disty<0)
+	    disty = -disty;
+	
+	if( disty < SILENT_DIST && distx < SILENT_DIST )
+	{
+	    silent = false;	
+	}
     }
-    
+
     return true;
 }
 
@@ -64,7 +64,7 @@ void CIceCannon::process()
 		    playSound(SOUND_CANNONFIRE);
 		    silent = true;
 		}
-        
+
 		g_pBehaviorEngine->EventList().spawnObj(chunk);
 		mTimer = 0;
 	}
@@ -81,14 +81,14 @@ vector_y(vy),
 silent(true)
 {
 	int speed;
-    
+
 	inhibitfall = true;
-    
+
 	if (vector_x && vector_y)
 		speed = ICECHUNK_SPEED;
 	else
 		speed = ICECHUNK_STRAIGHT_SPEED;
-    
+
 	veloc_x = speed * vector_x;
 	veloc_y = speed * vector_y;
 }
@@ -99,35 +99,35 @@ void CIceChunk::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-        // freeze the player if it touches him
-        CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
-        // make him start sliding in the direction of the impact
-        if (vector_x > 0)
-        {
-            player->pDir.x = player->pShowDir.x = RIGHT;
-            player->xinertia = Physics.player.max_x_speed;
-            player->bump( RIGHT );
-        }
-        else if (vector_x < 0)
-        {
-            player->pDir.x = player->pShowDir.x = LEFT;
-            player->xinertia = -Physics.player.max_x_speed;
-            player->bump( LEFT );
-        }
-        else	// perfectly vertical ice cannons
-        {
-            const int UPDNCANNON_PUSHAMT = 16;
-            if (player->xinertia < UPDNCANNON_PUSHAMT)
-            {
-                if (rnd()&1)
-                    player->xinertia = UPDNCANNON_PUSHAMT;
-                else
-                    player->xinertia = -UPDNCANNON_PUSHAMT;
-            }
-        }
-        
-        player->freeze();
-        smash();
+	// freeze the player if it touches him
+	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+	// make him start sliding in the direction of the impact
+	if (vector_x > 0)
+	{
+	    player->pDir.x = player->pShowDir.x = RIGHT;
+	    player->xinertia = Physics.player.max_x_speed;
+	    player->bump( RIGHT );
+	}
+	else if (vector_x < 0)
+	{
+	    player->pDir.x = player->pShowDir.x = LEFT;
+	    player->xinertia = -Physics.player.max_x_speed;
+	    player->bump( LEFT );
+	}
+	else	// perfectly vertical ice cannons
+	{
+	    const int UPDNCANNON_PUSHAMT = 16;
+	    if (player->xinertia < UPDNCANNON_PUSHAMT)
+	    {
+		if (rnd()&1)
+		    player->xinertia = UPDNCANNON_PUSHAMT;
+		else
+		    player->xinertia = -UPDNCANNON_PUSHAMT;
+	    }
+	}
+	
+	player->freeze();
+	smash();    
     }
 }
 
@@ -144,7 +144,7 @@ void CIceChunk::process()
 	{
 		if (blockedl) { smash(); return; }
 	}
-    
+
 	if (vector_y > 0)
 	{
 		if (blockedd) { smash(); return; }
@@ -153,30 +153,30 @@ void CIceChunk::process()
 	{
 		if (blockedu) { smash(); return; }
 	}
-    
+
 	// fly through the air
 	moveXDir(veloc_x);
 	moveYDir(veloc_y);
 }
 
 bool CIceChunk::isNearby(CVorticonSpriteObject &theObject)
-{
+{       
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-        int distx = player->getXPosition() - getXPosition();
-        if(distx<0)
-            distx = -distx;
-        
-        int disty = player->getYPosition() - getYPosition();
-        if(disty<0)
-            disty = -disty;
-        
-        if( disty < SILENT_DIST && distx < SILENT_DIST )
-        {
-            silent = false;
-        }
+	int distx = player->getXPosition() - getXPosition();
+	if(distx<0)
+	    distx = -distx;
+	
+	int disty = player->getYPosition() - getYPosition();
+	if(disty<0)
+	    disty = -disty;
+	
+	if( disty < SILENT_DIST && distx < SILENT_DIST )
+	{
+	    silent = false;	
+	}
     }
-    
+
     return true;
 }
 
@@ -185,23 +185,23 @@ void CIceChunk::smash()
 	if (onscreen)
 	{
 	    if(!silent)
-            playSound(SOUND_CHUNKSMASH);
+		playSound(SOUND_CHUNKSMASH);
 	    
 	    silent = true;
 	    CIceBit *chunk;
-        
+
 		// upleft
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, -1);
 		g_pBehaviorEngine->EventList().spawnObj(chunk);
-        
+
 		// upright
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), 1, -1);
 		g_pBehaviorEngine->EventList().spawnObj(chunk);
-        
+
 		// downleft
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, 1);
 		g_pBehaviorEngine->EventList().spawnObj(chunk);
-        
+
 		// downright
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), 1, 1);
 		g_pBehaviorEngine->EventList().spawnObj(chunk);
@@ -231,7 +231,7 @@ void CIceBit::process()
 {
 	moveXDir(veloc_x);
 	moveYDir(veloc_y);
-    
+
 	if (timer <= 0)
 		exists = false;
 	else

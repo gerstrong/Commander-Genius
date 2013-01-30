@@ -13,8 +13,8 @@
 
 
 CFinale::CFinale(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
-                 const std::shared_ptr<CMap> &pMap,
-                 std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object) :
+					const std::shared_ptr<CMap> &pMap,
+					std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object) :
 m_mustfinishgame(false),
 mMessageBoxes(messageBoxes),
 mpMap(pMap),
@@ -36,9 +36,9 @@ void CFinale::showEndingText()
 		mpTextViewer.reset(new CTextViewer(0, 0, 320, 120));
 		mpTextViewer->loadTextfromFile(mpMap->m_gamepath + "endtext.ck" + itoa(m_Episode));
 	}
-    
+
 	mpTextViewer->process();
-    
+
 	if(mpTextViewer->hasClosed())
 	{
 		mpTextViewer.release();

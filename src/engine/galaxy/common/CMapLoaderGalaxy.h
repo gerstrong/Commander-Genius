@@ -22,39 +22,39 @@
 
 namespace galaxy
 {
-    
-    class CMapLoaderGalaxy
-    {
-    public:
-        CMapLoaderGalaxy(CExeFile &ExeFile,
-                         std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-                         CInventory &Inventory, stCheat &Cheatmode);
-        
-        size_t getMapheadOffset();
-        bool gotoNextSignature(std::ifstream &MapFile);
-        bool loadMap(CMap &Map, Uint8 level);
-        void spawnFoes(CMap &Map);
-        
-        std::string getLevelName()
-        { return mLevelName; }
-        
-        
-        virtual CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y) = 0;
-        virtual ~CMapLoaderGalaxy() {}
-        
-    protected:
-        void unpackPlaneData(std::ifstream &MapFile,
-                             CMap &Map, size_t PlaneNumber,
-                             longword offset, longword length,
-                             word magic_word);
-        
-        CExeFile &m_ExeFile;
-        std::vector< std::shared_ptr<CGalaxySpriteObject> > &m_ObjectPtr;
-        CInventory &m_Inventory;
-        stCheat &m_Cheatmode;
-        std::string mLevelName;
-    };
-    
+
+class CMapLoaderGalaxy
+{
+public:
+	CMapLoaderGalaxy(CExeFile &ExeFile,
+			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
+			CInventory &Inventory, stCheat &Cheatmode);
+	
+	size_t getMapheadOffset();
+	bool gotoNextSignature(std::ifstream &MapFile);
+	bool loadMap(CMap &Map, Uint8 level);
+	void spawnFoes(CMap &Map);
+	
+	std::string getLevelName()
+	{ return mLevelName; }
+	
+	
+	virtual CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y) = 0;
+	virtual ~CMapLoaderGalaxy() {}
+
+protected:
+	void unpackPlaneData(std::ifstream &MapFile,
+			CMap &Map, size_t PlaneNumber,
+			longword offset, longword length,
+			word magic_word);
+
+	CExeFile &m_ExeFile;
+	std::vector< std::shared_ptr<CGalaxySpriteObject> > &m_ObjectPtr;
+	CInventory &m_Inventory;
+	stCheat &m_Cheatmode;
+	std::string mLevelName;
+};
+
 }
 
 #endif /* CVorticonMapLoaderGALAXY_H_ */

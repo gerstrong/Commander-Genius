@@ -21,23 +21,23 @@ class CVideoSettings : public CBaseMenu
 {
 public:
 	CVideoSettings();
-    
+
 	void init();
-    
+
 	void release();
-    
+
 	CVidConfig 			mUserVidConf;
-    
+
 private:
-    
-    
+
+
 	CGUINumberControl	*mpFPSSelection;
-    
+
 #if defined(USE_OPENGL)
 	CGUISwitch			*mpOpenGLSwitch;
 	CGUIComboSelection	*mpOGLFilterSelection;
 #endif
-    
+
 	CGUIComboSelection	*mpScalerSelection;
 	CGUISwitch			*mpAspectSwitch;
 	CGUISwitch			*mpVSyncSwitch;
@@ -45,7 +45,7 @@ private:
 	CGUISwitch			*mpSFXSwitch;
 	CGUIButton			*mpFullScreenSwitch;
 	CGUIComboSelection	*mpResolutionSelection;
-    
+
 };
 
 #endif /* CVIDEOSETTINGS_H_ */

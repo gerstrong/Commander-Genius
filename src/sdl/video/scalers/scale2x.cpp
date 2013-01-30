@@ -720,7 +720,7 @@ static inline void scale2x_8_mmx_border(scale2x_uint8* dst, const scale2x_uint8*
 	count -= 2*8;
 	
 	__asm__ __volatile__(
-                         /* first run */
+	/* first run */
 						 /* set the current, current_pre, current_next registers */
 						 "movq 0(%1), %%mm0\n"
 						 "movq 0(%1), %%mm7\n"
@@ -778,7 +778,7 @@ static inline void scale2x_8_mmx_border(scale2x_uint8* dst, const scale2x_uint8*
 						 "addl $8, %2\n"
 						 "addl $16, %3\n"
 						 
-                         /* central runs */
+	/* central runs */
 						 "shrl $3, %4\n"
 						 "jz 1f\n"
 						 
@@ -844,7 +844,7 @@ static inline void scale2x_8_mmx_border(scale2x_uint8* dst, const scale2x_uint8*
 						 "jnz 0b\n"
 						 "1:\n"
 						 
-                         /* final run */
+	/* final run */
 						 /* set the current, current_pre, current_next registers */
 						 "movq (%1), %%mm1\n"
 						 "movq (%1), %%mm7\n"
@@ -911,7 +911,7 @@ static inline void scale2x_16_mmx_border(scale2x_uint16* dst, const scale2x_uint
 	count -= 2*4;
 	
 	__asm__ __volatile__(
-                         /* first run */
+	/* first run */
 						 /* set the current, current_pre, current_next registers */
 						 "movq 0(%1), %%mm0\n"
 						 "movq 0(%1), %%mm7\n"
@@ -969,7 +969,7 @@ static inline void scale2x_16_mmx_border(scale2x_uint16* dst, const scale2x_uint
 						 "addl $8, %2\n"
 						 "addl $16, %3\n"
 						 
-                         /* central runs */
+	/* central runs */
 						 "shrl $2, %4\n"
 						 "jz 1f\n"
 						 
@@ -1035,7 +1035,7 @@ static inline void scale2x_16_mmx_border(scale2x_uint16* dst, const scale2x_uint
 						 "jnz 0b\n"
 						 "1:\n"
 						 
-                         /* final run */
+	/* final run */
 						 /* set the current, current_pre, current_next registers */
 						 "movq (%1), %%mm1\n"
 						 "movq (%1), %%mm7\n"
@@ -1102,7 +1102,7 @@ static inline void scale2x_32_mmx_border(scale2x_uint32* dst, const scale2x_uint
 	count -= 2*2;
 	
 	__asm__ __volatile__(
-                         /* first run */
+	/* first run */
 						 /* set the current, current_pre, current_next registers */
 						 "movq 0(%1), %%mm0\n"
 						 "movq 0(%1), %%mm7\n"
@@ -1160,7 +1160,7 @@ static inline void scale2x_32_mmx_border(scale2x_uint32* dst, const scale2x_uint
 						 "addl $8, %2\n"
 						 "addl $16, %3\n"
 						 
-                         /* central runs */
+	/* central runs */
 						 "shrl $1, %4\n"
 						 "jz 1f\n"
 						 
@@ -1226,7 +1226,7 @@ static inline void scale2x_32_mmx_border(scale2x_uint32* dst, const scale2x_uint
 						 "jnz 0b\n"
 						 "1:\n"
 						 
-                         /* final run */
+	/* final run */
 						 /* set the current, current_pre, current_next registers */
 						 "movq (%1), %%mm1\n"
 						 "movq (%1), %%mm7\n"

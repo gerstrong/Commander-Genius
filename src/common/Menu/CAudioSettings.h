@@ -22,26 +22,26 @@ class CAudioSettings : public CBaseMenu
 {
 public:
 	CAudioSettings();
-    
+
 	void init();
-    
+
 	void process();
-    
+
 	void release();
-    
-    
+
+
 private:
-    
+
 	CGUIComboSelection	*mpRate;
 	CGUISwitch			*mpStereo;
 	CGUIComboSelection	*mpDepth;
 	CGUIComboSelection	*mpSBToggle;
 	CGUINumberControl	*mpSoundVolume;
 	CGUINumberControl	*mpMusicVolume;
-    
+
 	SDL_AudioSpec	mAudioSpec;
 	bool mSoundblaster;
-    
+
 	// This one does not really set the volume at all, it only verifies, if it changed...
 	int mSoundVolume;
 };

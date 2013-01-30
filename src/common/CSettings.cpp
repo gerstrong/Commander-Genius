@@ -47,7 +47,7 @@ bool CSettings::saveDrvCfg()
 	CVidConfig &VidConf = g_pVideoDriver->getVidConfig();
 	Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
 	Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
-    
+
 	Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
 	Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
 	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
@@ -107,7 +107,7 @@ bool CSettings::loadDrvCfg()
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file!<br>");
 			return false;
 		}
-        
+
 		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
 		Configuration.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
@@ -116,19 +116,19 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadKeyword("Video", "vsync", &VidConf.vsync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
 		VidConf.m_ScaleXFilter = value;
-        
+
 		std::string scaleType;
 		Configuration.ReadString("Video", "scaletype", scaleType, "normal");
 		VidConf.m_normal_scale = (scaleType == "normal");
-        
+
 		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
-        
+
 #if defined(USE_OPENGL)
 		if(VidConf.m_opengl)
 		{
 			std::string oglFilter;
 			Configuration.ReadString("Video", "OGLfilter",  oglFilter, "nearest");
-            
+
 			VidConf.m_opengl_filter = (oglFilter == "nearest") ? GL_NEAREST : GL_LINEAR;
 		}
 #endif
@@ -141,12 +141,12 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Bound", "down", &CameraBounds.down, 108);
 		Configuration.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
 		g_pVideoDriver->setVidConfig(VidConf);
-        
+
 		int framerate;
 		Configuration.ReadInteger("Video", "fps", &framerate, 60);
 		g_pTimer->setFPS( framerate );
-        
-        
+
+
 		int audio_rate, audio_channels, audio_format;
 		bool audio_sndblaster;
 		Configuration.ReadInteger("Audio", "rate", &audio_rate, 44000);
@@ -154,12 +154,12 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
 		Configuration.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
 		g_pSound->setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
-        
-        
+
+
 		int sound_vol, music_vol;
 		Configuration.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
 		Configuration.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
-        
+
 		g_pSound->setMusicVolume(music_vol*8);
 		g_pSound->setSoundVolume(sound_vol*8);
 	}
@@ -170,22 +170,22 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
 	g_pVideoDriver->setMode(320,200,32);
 	g_pVideoDriver->isFullscreen(false);
-    
+
 #if defined(USE_OPENGL)
 	g_pVideoDriver->enableOpenGL(false);
 	g_pVideoDriver->setOGLFilter(GL_LINEAR);
 #endif
-    
+
 	g_pVideoDriver->setZoom(1);
 	g_pTimer->setFPS(60);
-#if defined(ANDROID)
+#if defined(ANDROID)	
 	g_pVideoDriver->setAspectCorrection(false);
 #else
 	g_pVideoDriver->setAspectCorrection(true);
 #endif
 	g_pVideoDriver->setFilter(1);
 	g_pVideoDriver->setScaleType(true);
-    
+
 }
 
 /**
@@ -230,11 +230,11 @@ bool CSettings::loadGameOptions()
 {
 	int i;
 	CConfiguration Configuration(CONFIGFILENAME);
-    
+
 	if(!Configuration.Parse()) return false;
-    
+
 	loadDefaultGameCfg();
-    
+
 	stOption *p_option = g_pBehaviorEngine->m_option;
 	for (i = 0; i < NUM_OPTIONS; i++)
 	{
@@ -253,7 +253,7 @@ bool CSettings::loadGameOptions()
 bool CSettings::saveGameOptions()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
-    
+
 	if(!Configuration.Parse()) return false;
 	
 	stOption *p_option = g_pBehaviorEngine->m_option;

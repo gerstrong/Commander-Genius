@@ -1,8 +1,8 @@
 /*
  OpenLieroX
- 
+
  color type and related functions
- 
+
  code under LGPL
  created 10-01-2007
  */
@@ -95,12 +95,12 @@ struct Color {
 	Color(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
 	explicit Color(Uint32 cl)	{ set(getMainPixelFormat(), cl); }
 	Color(const SDL_Color& cl) : r(cl.r), g(cl.g), b(cl.b), a(SDL_ALPHA_OPAQUE) {}
-    
+
 	Uint8 r;
 	Uint8 g;
 	Uint8 b;
 	Uint8 a;
-    
+
 	Uint32 get() const { return get(getMainPixelFormat()); }
 	Uint32 get(SDL_PixelFormat *f) const { return SDL_MapRGBA(f, r, g, b, a); }
 	Uint32 getDefault() const { return (Uint32(r) << 24) | (Uint32(g) << 16) | (Uint32(b) << 8) | Uint32(a); }
@@ -112,20 +112,20 @@ struct Color {
 					 Uint8(CLAMP(_a + a, 0, 255)));
 	}
 	void set(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
-    
+
 	bool operator == ( const Color & c ) const { return r == c.r && g == c.g && b == c.b && a == c.a; };
 	bool operator != ( const Color & c ) const { return ! ( *this == c ); };
-    
+
 	Color operator * ( float f ) const { return Color( Uint8(CLAMP(r*f,0.0f,255.0f)), Uint8(CLAMP(g*f,0.0f,255.0f)), Uint8(CLAMP(b*f,0.0f,255.0f)), a ); };
 	Color operator + ( const Color & c ) const { return Color( (Uint8)CLAMP(Uint16(r)+c.r,0,255), (Uint8)CLAMP(Uint16(g)+c.g,0,255), (Uint8)CLAMP(Uint16(b)+c.b,0,255), (Uint8)(Uint16(a)+c.a)/2 ); };
 	bool operator<(const Color& c) const {
 		if(r != c.r) return r < c.r;
-            if(g != c.g) return g < c.g;
-            if(b != c.b) return b < c.b;
-            return a < c.a;
-            }
-            Uint8& operator[](int i) { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return *((Uint8*)NULL); }
-            Uint8 operator[](int i) const { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return 0; }
-            };
-            
+		if(g != c.g) return g < c.g;
+		if(b != c.b) return b < c.b;
+		return a < c.a;
+	}
+	Uint8& operator[](int i) { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return *((Uint8*)NULL); }
+	Uint8 operator[](int i) const { switch(i) { case 0: return r; case 1: return g; case 2: return b; case 3: return a; default: assert(false); } return 0; }
+};
+
 #endif

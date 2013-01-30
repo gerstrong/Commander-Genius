@@ -23,14 +23,14 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 {
 	std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
 	imfPlayer->loadMusicTrack(ExeFile, track);
-    
+
 	if(!imfPlayer->open())
 	{
 	    return false;
 	}
-    
+
 	mpPlayer = move(imfPlayer);
-    
+
 	return true;
 }
 
@@ -42,42 +42,42 @@ bool CMusic::load(const CExeFile& ExeFile, const int level)
     std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
     if(oggPlayer->loadMusicForLevel(ExeFile, level))
     {
-        mpPlayer = move(oggPlayer);
-        return true;
+	mpPlayer = move(oggPlayer);
+	return true;
     }
-#endif
+#endif    
     
     std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
     imfPlayer->loadMusicForLevel(ExeFile, level);
-    
+
     if(!imfPlayer->open())
     {
-        return false;
+	return false;
     }
-    
+
     mpPlayer = move(imfPlayer);
-    
+
     return true;
 }
 
 bool CMusic::load(const std::string &musicfile)
 {
 	mpPlayer.reset();
-    
+
 	if(musicfile == "")
 		return false;
-    
+
 	const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
-    
+
 	if(audioSpec.format != 0)
 	{
 		std::string extension = GetFileExtension(musicfile);
-        
+
 		if(strcasecmp(extension.c_str(),"imf") == 0)
 		{
 		    std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(audioSpec) );
 		    if(!imfPlayer->loadMusicFromFile(musicfile))
-                return false;
+		      return false;
 		    mpPlayer = move(imfPlayer);
 		}
 		else if(strcasecmp(extension.c_str(),"ogg") == 0)
@@ -90,7 +90,7 @@ bool CMusic::load(const std::string &musicfile)
 		    return false;
 #endif
 		}
-        
+
 		if(!mpPlayer->open())
 		{
 		    mpPlayer.reset();
@@ -98,13 +98,13 @@ bool CMusic::load(const std::string &musicfile)
 		    return false;
 		}
 		return true;
-        
+
 	}
 	else
 	{
 		g_pLogFile->textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
 	}
-    
+
 	return false;
 }
 
@@ -114,7 +114,7 @@ void CMusic::reload()
 	{
 		return;
 	}
-    
+
 	mpPlayer->reload();
 }
 
@@ -124,7 +124,7 @@ void CMusic::play()
 	{
 		return;
 	}
-    
+
 	mpPlayer->play(true);
 }
 
@@ -132,7 +132,7 @@ void CMusic::pause()
 {
 	if(!mpPlayer)
 		return;
-    
+
 	mpPlayer->play(false);
 }
 
@@ -140,10 +140,10 @@ void CMusic::stop()
 {
 	if(!mpPlayer)
 		return;
-    
+
 	// wait until the last chunk has been played, and only shutdown then.
 	while(m_busy);
-    
+
 	mpPlayer->close();
 	mpPlayer.reset();
 }
@@ -152,14 +152,14 @@ void CMusic::stop()
 void CMusic::readWaveform(Uint8* buffer, size_t length)
 {
 	m_busy = false;
-    
+
 	if( !mpPlayer )
 		return;
-    
+
 	m_busy = true;
-    
+
 	mpPlayer->readBuffer(buffer, length);
-    
+
 	m_busy = false;
 }
 
@@ -167,12 +167,12 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
 {
     bool fileloaded = false;
     std::ifstream Tablefile;
-    
+
     std::string musicpath = getResourceFilename("songlist.lst", gamepath, false, false);
-    
+
     if(musicpath != "")
     	fileloaded = OpenGameFileR(Tablefile, musicpath);
-    
+
     if(fileloaded)
     {
     	std::string str_buf;
@@ -180,27 +180,27 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
     	char c_buf[256];
     	int detected_level=-1;
     	size_t next_pos = 0;
-        
+
     	while(!Tablefile.eof())
     	{
         	Tablefile.getline(c_buf, 256);
-            
+
         	str_buf = c_buf;
         	next_pos = str_buf.find(' ')+1;
         	str_buf = str_buf.substr(next_pos);
         	next_pos = str_buf.find(' ');
-            
+
         	// Get level number
         	detected_level = atoi(str_buf.substr(0, next_pos).c_str());
-            
+
         	str_buf = str_buf.substr(next_pos);
         	next_pos = str_buf.find('"')+1;
         	str_buf = str_buf.substr(next_pos);
         	next_pos = str_buf.find('"');
-            
+
         	// Get the music filename to be read
         	music_filename = str_buf.substr(0, next_pos);
-            
+
     		if( detected_level == level )	// found the level! Load the song!
     		{
     			// Get the song filename and load it!
@@ -220,17 +220,17 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
 {
 	bool fileloaded = false;
     std::ifstream Tablefile;
-    
+
     std::string musicpath = getResourceFilename(JoinPaths("music", "table.cfg"), gamepath, false, true);
-    
+
     if(musicpath != "")
     	fileloaded = OpenGameFileR(Tablefile, musicpath);
-    
+
     if(fileloaded)
     {
     	std::string str_buf;
     	char c_buf[256];
-        
+
     	while(!Tablefile.eof())
     	{
         	Tablefile.get(c_buf, 256, ' ');

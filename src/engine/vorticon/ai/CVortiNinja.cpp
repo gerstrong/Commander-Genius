@@ -36,7 +36,7 @@ void CVortiNinja::init()
 	state = NINJA_STAND;
 	timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
 	if(g_pBehaviorEngine->mDifficulty > NORMAL) timetillkick /= 3;
-    
+
 	animtimer = 0;
 	animframe = 0;
 	dying = false;
@@ -47,28 +47,28 @@ bool CVortiNinja::isNearby(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-        if(state == NINJA_STAND)
-        {
-            if (player->getXPosition() < getXPosition()+(8<<STC))
-                dir = LEFT;
-            else
-                dir = RIGHT;
-            
-            if(timetillkick)
-            {
-                // find out if a player is on the same level
-                bool onsamelevel = true;
-                
-                if ((player->getYPosition() >= getYPosition()-(96<<STC)) &&
-                    (player->getYDownPos() <= (getYDownPos()+(96<<STC))))
-                {
-                    onsamelevel = true;
-                }
-                
-                if (onsamelevel)
-                    timetillkick--;
-            }
-        }
+	if(state == NINJA_STAND)
+	{
+		if (player->getXPosition() < getXPosition()+(8<<STC))
+			dir = LEFT;
+		else
+			dir = RIGHT;
+	    
+		if(timetillkick)
+		{
+			// find out if a player is on the same level
+			bool onsamelevel = true;
+
+			if ((player->getYPosition() >= getYPosition()-(96<<STC)) &&
+				(player->getYDownPos() <= (getYDownPos()+(96<<STC))))
+			{
+				onsamelevel = true;
+			}
+
+			if (onsamelevel)
+				timetillkick--;
+		}
+	}
     }
     
     return true;
@@ -79,11 +79,11 @@ void CVortiNinja::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-        if(state != NINJA_DYING)
-        {
-            player->kill();
-        }
-    }
+	if(state != NINJA_DYING)
+	{
+	    player->kill();
+	}	
+    }    
 }
 
 
@@ -95,13 +95,13 @@ void CVortiNinja::process()
 		dietimer = 0;
 		playSound(SOUND_VORT_DIE);
 	}
-    
-    
+
+
 	if (dying)
 	{
 		if (state == NINJA_STAND)
 			state = NINJA_DYING;
-        
+
 		dietimer++;
 		if (dietimer > NINJA_DYING_SHOW_TIME)
 		{
@@ -109,78 +109,78 @@ void CVortiNinja::process()
 			dead = true;
 		}
 	}
-    
+
 	switch(state)
 	{
-            
-        case NINJA_STAND:
-            
-            if (!timetillkick)
-            {
-                state = NINJA_KICK;
-                
-                if (rnd()&1)
-                {
-                    // high, short jump
-                    longjump = false;
-                    yinertia = -120;
-                }
-                else
-                {
-                    // low, long jump
-                    longjump = true;
-                    yinertia = -30;
-                }
-                
-            }
-            
-            sprite = (dir==LEFT) ? NINJA_STAND_LEFT_FRAME : NINJA_STAND_RIGHT_FRAME;
-            sprite += animframe;
-            
-            if (animtimer > NINJA_STAND_ANIM_RATE)
-            {
-                animframe ^= 1;
-                animtimer = 0;
-            }
-            else
-                animtimer++;
-            break;
-            
-        case NINJA_KICK:
-            if (!dying)
-                sprite = (dir==LEFT) ? NINJA_KICK_LEFT_FRAME : NINJA_KICK_RIGHT_FRAME;
-            else
-                state = NINJA_DYING;
-            
-            if (blockedd && yinertia == 0)
-            {
-                if (!dying)
-                    init();
-                else
-                    state = NINJA_DYING;
-                
-                break;
-            }
-            
-            if(longjump)
-                xinertia = (g_pBehaviorEngine->mDifficulty > NORMAL) ? 150 : 120;
-            else
-                xinertia = (g_pBehaviorEngine->mDifficulty > NORMAL) ? 95 : 75;
-            
-            if (dir==LEFT)
-                xinertia = -xinertia;
-            
-            break;
-            
-        case NINJA_DYING:
-            sprite = NINJA_DYING_FRAME;
-            
-            if (dietimer > NINJA_DYING_SHOW_TIME)
-            {
-                sprite = NINJA_DEAD_FRAME;
-                dead = true;
-            }
-            break;
-        default: break;
+
+	case NINJA_STAND:
+
+		if (!timetillkick)
+		{
+			state = NINJA_KICK;
+
+			if (rnd()&1)
+			{
+				// high, short jump
+				longjump = false;
+				yinertia = -120;
+			}
+			else
+			{
+				// low, long jump
+				longjump = true;
+				yinertia = -30;
+			}
+
+		}
+
+		sprite = (dir==LEFT) ? NINJA_STAND_LEFT_FRAME : NINJA_STAND_RIGHT_FRAME;
+		sprite += animframe;
+
+		if (animtimer > NINJA_STAND_ANIM_RATE)
+		{
+			animframe ^= 1;
+			animtimer = 0;
+		}
+		else
+			animtimer++;
+		break;
+
+	case NINJA_KICK:
+		if (!dying)
+			sprite = (dir==LEFT) ? NINJA_KICK_LEFT_FRAME : NINJA_KICK_RIGHT_FRAME;
+		else
+			state = NINJA_DYING;
+
+		if (blockedd && yinertia == 0)
+		{
+			if (!dying)
+				init();
+			else
+				state = NINJA_DYING;
+
+			break;
+		}
+
+		if(longjump)
+			xinertia = (g_pBehaviorEngine->mDifficulty > NORMAL) ? 150 : 120;
+		else
+			xinertia = (g_pBehaviorEngine->mDifficulty > NORMAL) ? 95 : 75;
+
+		if (dir==LEFT)
+			xinertia = -xinertia;
+
+		break;
+
+	case NINJA_DYING:
+		sprite = NINJA_DYING_FRAME;
+
+		if (dietimer > NINJA_DYING_SHOW_TIME)
+		{
+			sprite = NINJA_DEAD_FRAME;
+			dead = true;
+		}
+		break;
+	default: break;
 	}
 }

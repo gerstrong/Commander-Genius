@@ -16,29 +16,29 @@
 #include "CVec.h"
 
 namespace galaxy {
-    
-    class CMiragia : public CGalaxySpriteObject
-    {
-    public:
-        CMiragia(CMap *pmap, const Uint16 foeID, const VectorD2<Uint32> &Location);
-        
-        /**
-         * Main process cycle
-         */
-        void process();
-        
-        /**
-         * What happens when an object touches me...
-         */
-        void getTouchedBy(CSpriteObject &theObject);
-        
-    private:
-        Uint8 m_step;
-        enum {FADE_IN, FADE_OUT} m_fade;
-        Uint8 m_waittime;
-        bool m_empty;
-    };
-    
+
+class CMiragia : public CGalaxySpriteObject
+{
+public:
+	CMiragia(CMap *pmap, const Uint16 foeID, const VectorD2<Uint32> &Location);
+
+	/**
+	 * Main process cycle
+	 */
+	void process();
+
+	/**
+	 * What happens when an object touches me...
+	 */
+	void getTouchedBy(CSpriteObject &theObject);
+
+private:
+	Uint8 m_step;
+	enum {FADE_IN, FADE_OUT} m_fade;
+	Uint8 m_waittime;
+	bool m_empty;
+};
+
 }
 
 #endif /* CMIRAGIA_H_ */

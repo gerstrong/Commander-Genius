@@ -16,18 +16,18 @@ class CInfoScene
 {
 public:
 	CInfoScene();
-    
+
 	//virtual void init() = 0;
 	virtual void init()
 	{ m_destroy_me = false; }
 	
 	virtual void process() = 0;
 	virtual void teardown() = 0;
-    
+
 	virtual ~CInfoScene() { }
-    
+
 	bool destroyed() { return m_destroy_me; }
-    
+
 protected:
 	bool m_destroy_me;
 };
@@ -36,16 +36,16 @@ protected:
 struct StartInfoSceneEvent : CEvent
 {
 	StartInfoSceneEvent(std::shared_ptr<CInfoScene> &scene) :
-    mpScene(scene) {}
-    
+		mpScene(scene) {}
+
 	// TODO: Constructor template for compatibility. Will be removed in future
 	template <class _T>
-	StartInfoSceneEvent(_T* scene)
+	StartInfoSceneEvent(_T* scene)	
 	{
 	    std::shared_ptr<_T> pScene(scene);
 	    mpScene = pScene;
 	}
-    
+
 	std::shared_ptr<CInfoScene> mpScene;
 };
 

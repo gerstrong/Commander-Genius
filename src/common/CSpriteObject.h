@@ -35,10 +35,10 @@ struct BoundingBox
 {
 	int x1, x2, y1, y2;
 	BoundingBox(int l_x1 = 0, int l_x2 = 0,
-                int l_y1 = 0, int l_y2 = 0 ) :
-    x1(l_x1), x2(l_x2),
-    y1(l_y1), y2(l_y2) {}
-    
+			int l_y1 = 0, int l_y2 = 0 ) :
+				x1(l_x1), x2(l_x2),
+				y1(l_y1), y2(l_y2) {}
+
 	void operator()(const int l_x1,
 					const int l_y1,
 					const int l_x2,
@@ -47,11 +47,11 @@ struct BoundingBox
 		x1 = l_x1; x2 = l_x2;
 		y1 = l_y1; y2 = l_y2;
 	}
-    
-    
+
+
 	unsigned int Width()
 	{	return (x2-x1);		}
-    
+
 	unsigned int Height()
 	{	return (y2-y1);		}
 };
@@ -73,13 +73,13 @@ struct ObjMoveCouple : public CEvent
 {
 	VectorD2<int> m_Vec;
 	CSpriteObject &mSecond;
-	ObjMoveCouple(const VectorD2<int>& Vector,
-                  CSpriteObject &second) :
-    m_Vec(Vector), mSecond(second)  {}
+	ObjMoveCouple(const VectorD2<int>& Vector, 
+                      CSpriteObject &second) : 
+			m_Vec(Vector), mSecond(second)  {}
 	
-	ObjMoveCouple(const int offx, const int offy,
-                  CSpriteObject &second) :
-    m_Vec(offx, offy), mSecond(second) {}
+	ObjMoveCouple(const int offx, const int offy, 
+                      CSpriteObject &second) : 
+			m_Vec(offx, offy), mSecond(second) {}
 };
 
 
@@ -95,12 +95,12 @@ public:
 	int sprite;      		// which sprite should this object be drawn with
 	int xDirection;					// the direction to where the object is looking/heading to
 	int yDirection;					// same for vertical
-    
+
 	int scrx, scry;           		// x,y pixel position on screen
 	
 	// Bounding Boxes
 	BoundingBox m_BBox;
-    
+
 	// if zero, priority tiles will not be honored and object will always
 	// appear in front of the background
 	bool honorPriority;
@@ -108,21 +108,21 @@ public:
 	bool solid;
 	
 	bool canbezapped;         // if 0 ray will not stop on hitdetect
-    
+
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
-    
+
 	bool cansupportplayer;
 	
 	bool blockedl, blockedr, blockedu, blockedd;
 	bool onslope;
 	signed int xinertia, yinertia;
 	CSpriteObject *pSupportedbyobject;
-    
+
 	bool dead, dying;
-    
+
 	// This container will held the triggered events of the object
 	CEventContainer m_EventCont;
-    
+
 	void calcBoundingBoxes();
 	void performCollisionsSameBox();
 	void performCollisions();
@@ -130,7 +130,7 @@ public:
 	void setScrPos( int px, int py );
 	bool PoleCollision();
 	virtual bool calcVisibility();
-    
+
 	/**
 	 * \description This will verify whether object has to fall or not.
 	 * 				This function must be called when it might be moving
@@ -139,7 +139,7 @@ public:
 	 * \todo 		This function should also be called by foes in some cases
 	 */
 	bool verifyForFalling();
-    
+
 	/**
 	 * \description	This function will change the direction of an object when
 	 * 				it detects a coming gap while moving
@@ -147,9 +147,9 @@ public:
 	 * 				when it over that gap
 	 */
 	void performCliffStop(const int &speed);
-    
-    
-    
+
+
+
 	// Moving parts
 	void moveToForce(const VectorD2<int> &dir);
 	void moveToForce(const int new_x, const int new_y);
@@ -164,7 +164,7 @@ public:
 	virtual void moveRight(const int amnt, const bool force = false);
 	virtual void moveUp(const int amnt);
 	virtual void moveDown(const int amnt);
-    
+
 	// new moving parts
 	/**
 	 * \brief	This function checks if there is any collision and moves the object safely
@@ -176,24 +176,24 @@ public:
 	virtual void processMoveBitDown();
 	void processMoveBitUp();
 	void processMove(const int move_x, const int move_y);
-    
+
 	/*
 	 * \brief As especially in Galaxy some tiles still can get into blocks where they shouldn't
 	 *  	  So this function will pull them out. Same method is used in the original games
 	 *  	  and will give a more Commander Keen like feeling
 	 */
 	void processPushOutCollision();
-    
+
 	void decreaseXInertia(const int value);
 	void InertiaAndFriction_X(const int friction_rate = 10);
-    
+
 	virtual void process() { }
 	
 	// The object can hold events process them here!
 	void processEvents();
-    
+
 	bool turnAroundOnCliff( int x1, int x2, int y2 );
-    
+
 	bool hitdetect(CSpriteObject &hitobject);
 	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, const int lw, const int lh, const int res);
 	bool hitdetectWithTilePropertyRectRO(const Uint16 Property, const int lx, const int ly, const int lw, const int lh, const int res);
@@ -202,7 +202,7 @@ public:
 	bool hitdetectWithTileProperty(const int Property, const int x, const int y);
 	virtual void kill();
 	void blink(Uint16 frametime);
-    
+
 	// Collision parts
 	/**
 	 * \brief 	Those functions check the the collision states and return also a number of what type of block
@@ -215,19 +215,19 @@ public:
 	int checkSolidL( int x1, int x2, int y1, int y2);
 	virtual int checkSolidU( int x1, int x2, int y1, const bool push_mode=false );
 	virtual int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );
-    
+
 	virtual bool checkMapBoundaryL(const int x1);
 	virtual bool checkMapBoundaryR(const int x2);
 	virtual bool checkMapBoundaryU(const int y1);
-    
-    
+
+
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
 	bool checkslopedD( int c, int y2, char blocked);
 	void adjustSlopedTiles( int x, int y1, int y2, const int xspeed );
 	bool moveSlopedTileDown( int x, int y, const int xspeed );
 	void moveSlopedTileUp( int x, int y, const int xspeed );
-    
+
 	// getters for positions
 	VectorD2<Uint32> &getPosition()
 	{ return m_Pos; }
@@ -246,7 +246,7 @@ public:
 	Uint32 getYDownPos()
 	{ return m_Pos.y+m_BBox.y2; }
 	Uint32 getYMidPos()
-	{ return m_Pos.y+(m_BBox.y2-m_BBox.y1)/2; }
+	{ return m_Pos.y+(m_BBox.y2-m_BBox.y1)/2; }	
 	
 	
 	void processFallPhysics(const int boost);
@@ -257,30 +257,30 @@ public:
 	virtual void getShotByRay(object_t &obj_type);
 	void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
 	CMap *getMapPtr() { return mp_Map; }
-    
+
 	/**
 	 *  \description plays certain sound of an object. Stereo will automatically applied when used
 	 */
 	void playSound( const GameSound snd,
-                   const SoundPlayMode mode=PLAY_NOW );
-    
+				    const SoundPlayMode mode=PLAY_NOW );
+
 	virtual void draw();
-    
+
 	virtual ~CSpriteObject();
-    
-    
+
+
 protected:
 	CMap *mp_Map;
-    
+
 	Uint16 m_blinktime;
 	bool m_invincible;
 	VectorD2<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
-    
+
 	static int m_number_of_objects;
-    
+
 	// Action Format related stuff
 	ActionFormatType m_Action;
-    
+
 	Uint8 transluceny;
 };
 

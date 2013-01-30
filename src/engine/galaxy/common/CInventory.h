@@ -25,28 +25,28 @@ class CInventory
 public:
 	CInventory(const std::string& levelname);
 	void reset();
-    
+
 	// This function draws the HUD on the Screen
 	void drawHUD();
-    
+
 	// This one draw the Status screen whenever it's called
 	void drawStatus();
-    
+
 	// return if the status screen has to be drawn
 	bool showStatus()
 	{	return mp_StatusScreen->m_showstatus;	}
-    
+
 	// make the status get opened or closed
 	void toggleStatusScreen();
-    
+
 	// Saves the inventory using the Savegamecontroller.
 	void operator>>(CSaveGameController &savedGame);
-    
+
 	// This is for loading the game
 	void operator<<(CSaveGameController &savedGame);
-    
+
 	stItemGalaxy Item;
-    
+
 	CHUD m_HUD;
 	std::unique_ptr<CStatusScreenGalaxy> mp_StatusScreen;
 	SDL_Surface *mp_StatusBgrnd;

@@ -24,14 +24,14 @@ m_dir(LEFT)
 	inhibitfall = true;
 	canbezapped = false;
 	sprite = BLANKSPRITE;
-    
+
 	// if the platform is already extended, turn ourselves
 	// into an se_retract_plat()
 	if ( mp_Map->at(m_platx, m_platy) == TILE_EXTENDING_PLATFORM )
 	{
 		// figure out which direction the bridge is supposed to go
 		//if(platx-1 > m_Objvect.size())
-        //return;
+			//return;
 		m_state = RETRACT;
 		if (mp_Map->at(m_platx-1, m_platy) != TILE_EXTENDING_PLATFORM)
 			m_dir = LEFT;
@@ -39,7 +39,7 @@ m_dir(LEFT)
 			m_dir = RIGHT;
 		else
 			m_dir = LEFT;
-        
+
 		// scan across until we find the end of the platform--that will
 		// be where we will start (remove platform in oppisote direction
 		// it was extended)
@@ -68,20 +68,20 @@ m_dir(LEFT)
 				m_platx--;
 			}
 		} while(1);
-        
+
 		// when we were scanning we went one tile too far, go back one
 		if (m_dir==LEFT) m_platx--;
 		else m_platx++;
 		return;
 	}
-    
+
 	// figure out which direction the bridge is supposed to go
 	CTileProperties &TileProperties = g_pBehaviorEngine->getTileProperties(1).at(mp_Map->at(m_platx+1, m_platy));
 	if (!TileProperties.bleft)
 		m_dir = RIGHT;
 	else
 		m_dir = LEFT;
-    
+
 	// get the background tile from the tile above the starting point
 	if(m_dir == RIGHT)
 		m_bgtile = mp_Map->at(m_platx+1, m_platy);
@@ -100,12 +100,12 @@ void CBridges::process()
 void CBridges::extend()
 {
 #define PLAT_EXTEND_RATE        3
-    
+
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	if (!timer)
 	{
 		if (m_dir==RIGHT &&
-            !TileProperties[mp_Map->at(m_platx, m_platy)].bleft)
+				!TileProperties[mp_Map->at(m_platx, m_platy)].bleft)
 		{
 			mp_Map->changeTile(m_platx, m_platy, TILE_EXTENDING_PLATFORM);
 			m_platx++;
@@ -134,12 +134,12 @@ void CBridges::retract()
 		if (mp_Map->at(m_platx, m_platy) == TILE_EXTENDING_PLATFORM)
 		{
 			mp_Map->setTile(m_platx, m_platy, m_bgtile, true);
-            
+
 			if (m_dir==RIGHT)
 				m_platx++;
 			else
 				m_platx--;
-            
+
 			timer = PLAT_EXTEND_RATE;
 		}
 		else

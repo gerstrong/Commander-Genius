@@ -13,16 +13,16 @@
 #include "engine/galaxy/CMapPlayGalaxy.h"
 
 namespace galaxy {
-    
-    class CWorldMap : public CMapPlayGalaxy
-    {
-    public:
-        CWorldMap(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
-        
-        void init();
-        void loadAndPlayMusic();
-    };
-    
+
+class CWorldMap : public CMapPlayGalaxy
+{
+public:
+	CWorldMap(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
+
+	void init();
+	void loadAndPlayMusic();
+};
+
 }
 
 #endif /* CWORLDMAP_H_ */

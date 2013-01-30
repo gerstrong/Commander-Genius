@@ -16,7 +16,7 @@ public:
 	CSaveMenu();
 	void processSpecific(){};
 	void sendEvent(std::shared_ptr<CEvent> &command);
-    
+
 private:
 	CConfirmMenu *mp_OverwriteMenu;
 	bool m_overwrite;

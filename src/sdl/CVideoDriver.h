@@ -20,7 +20,7 @@
 #include "common/CMap.h"
 
 #ifdef USE_OPENGL
-#include "sdl/video/COpenGL.h"
+	#include "sdl/video/COpenGL.h"
 #endif
 
 
@@ -42,23 +42,23 @@ public:
 	
 	bool start();
 	void isFullscreen(bool value);
-    
+
 	void blitScrollSurface();
 	void updateScrollBuffer(CMap &map);
 	void updateScrollBuffer(std::shared_ptr<CMap> &map)
-	{ updateScrollBuffer(*map.get()); }
+	{ updateScrollBuffer(*map.get()); }	
 	
-    
-    
+
+
 	void collectSurfaces();
 	void clearSurfaces();
 	void updateScreen();
-    
+
 	// Drawing related stuff
 	void pollDrawingTasks();
 	SDL_Rect toBlitRect(const CRect<float> &rect);
 	void clearDrawingTasks();
-    
+
 	/**
 	 * \description This function saves the given camera bounds. It is usually called
 	 * 				by a menu item.
@@ -67,7 +67,7 @@ public:
 	 * 								chose them.
 	 */
 	void saveCameraBounds(st_camera_bounds &CameraBounds);
-    
+
 	CVidConfig &getVidConfig();
 	short getZoomValue();
 	bool getShowFPS();
@@ -76,9 +76,9 @@ public:
 	unsigned int getHeight() const;
 	unsigned short getDepth() const;
 	CRect<Uint16> getGameResolution() const { return m_VidConfig.m_GameRect; }
-    
+
 	SDL_Surface *getBlitSurface() { return mpVideoEngine->getBlitSurface(); }
-    
+
 	bool isOpenGL(void) { return m_VidConfig.m_opengl; }
 #ifdef USE_OPENGL
 	unsigned char getOGLFilter(void) { return m_VidConfig.m_opengl_filter; }
@@ -86,7 +86,7 @@ public:
 	unsigned char getOGLFilter(void) { return 0; }
 #endif
 	SDL_Surface *getScrollSurface(void);
-    
+
 	void setVidConfig(const CVidConfig& VidConf);
 	void setMode(int width, int height,int depth);
 	void setMode(const CRect<Uint16>& res);
@@ -101,7 +101,7 @@ public:
 	void enableOpenGL(bool value) { m_VidConfig.m_opengl = false; }
 	void setOGLFilter(unsigned char value) { }
 #endif
-    
+
 	/*
 	 * \brief Check whether this resolution is okay to be used or needs some adjustments if possible.
 	 * 		  It could be that, the screen dim can be used but instead of 32bpp 16bpp. This function
@@ -114,26 +114,26 @@ public:
 	 */
 	void verifyResolution( CRect<Uint16>& resolution, const int flags );
 	CRect<Uint16>& getResolution() const { return *m_Resolution_pos; }
-    
+
 	void initResolutionList();
-    
+
 	void setAspectCorrection(bool value) { m_VidConfig.m_aspect_correction = value; }
 	bool getAspectCorrection(void) { return m_VidConfig.m_aspect_correction; }
 	bool getSpecialFXConfig(void) { return m_VidConfig.m_special_fx; }
 	bool getRefreshSignal() { return m_mustrefresh; }
 	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }
-    
+
 	st_camera_bounds &getCameraBounds();
-    
+
 	std::unique_ptr<CVideoEngine> mpVideoEngine;
-    
+
 	CEventContainer mDrawTasks;
-    
+
 	std::list< CRect<Uint16> > m_Resolutionlist;
 	std::list< CRect<Uint16> > :: iterator m_Resolution_pos;
-    
+
 private:
-    
+
 	CVidConfig m_VidConfig;
 	bool m_mustrefresh;
 };

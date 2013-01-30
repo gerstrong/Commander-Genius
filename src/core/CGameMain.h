@@ -17,19 +17,19 @@ class CGameMain : public CBaseEngine
 {
 public:
 	CGameMain(bool &openedGamePlay) : mOpenedGamePlay(openedGamePlay) {};
-    
+
 protected:
-    
+
 	void switchToGamePlayMode();
-    
+
 	void init();
 	void process();
-    
+
 private:
-    
+
 	std::shared_ptr<CInfoScene> mpInfoScene;
 	std::unique_ptr<CGameMode> mpGameMode;
-    
+
 	//bool mShowFinale; // This should be an event
 	bool &mOpenedGamePlay;
 };

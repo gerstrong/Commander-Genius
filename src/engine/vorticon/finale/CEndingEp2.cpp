@@ -18,8 +18,8 @@ const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
 
 CEndingEp2::CEndingEp2(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
-                       const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player,
-                       std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object ) :
+		const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player, 
+		std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object ) :
 CFinale(messageBoxes, pMap, Object),
 m_Player(Player)
 {
@@ -34,15 +34,15 @@ m_Player(Player)
 void CEndingEp2::process()
 {
 	m_timepassed = g_pTimer->getTicks() - m_starttime;
-    
+
 	switch(m_step)
 	{
-        case 0: HeadsForEarth(); break;
-        case 1: LimpsHome(); break;
-        case 2: SnowedOutside(); break;
-        default:
-            m_mustfinishgame = true;
-            break;
+	case 0: HeadsForEarth(); break;
+	case 1: LimpsHome(); break;
+	case 2: SnowedOutside(); break;
+	default:
+		m_mustfinishgame = true;
+		break;
 	}
 }
 
@@ -55,13 +55,13 @@ void CEndingEp2::HeadsForEarth()
 		std::vector< std::unique_ptr<CVorticonSpriteObject> > mpSpriteObjectContainer;
 		CVorticonMapLoaderWithPlayer MapLoader(mpMap, m_Player, mpSpriteObjectContainer);
 		MapLoader.load(2, 81, path);
-        
+
 		m_Player[0].hideplayer = false;
 		m_Player[0].sprite = SPR_VORTICON_MOTHERSHIP;
 		m_Player[0].solid = false;
-        
+
 		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 ) );
-        
+
 		mpMap->gotoPos(0, 0);
 		mpShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
 		mpShipFlySys->addShipQueue(CMD_MOVE, 672, DDOWNRIGHT);
@@ -69,17 +69,17 @@ void CEndingEp2::HeadsForEarth()
 		mpShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
 		mpMap->drawAll();
 		mpShipFlySys->m_ShipQueuePtr = 0;
-        
+
 		int x, y;
 		mpMap->findTile(593, &x, &y);
 		m_Player[0].moveTo(VectorD2<int>(x<<CSF, y<<CSF));
-        
+
 		addMsgBoxString("EP2_ESEQ_PART1");
-        
+
 		m_mustsetup = false;
 	}
-    
-    
+
+
 	// process the normal ship flying level and do all the inited commands
 	if( !mpShipFlySys->EndOfQueue() || !mMessageBoxes.empty() )
 	{
@@ -92,7 +92,7 @@ void CEndingEp2::HeadsForEarth()
 		m_step++;
 		m_mustsetup = true;
 	}
-    
+
 }
 
 void CEndingEp2::LimpsHome()
@@ -103,26 +103,26 @@ void CEndingEp2::LimpsHome()
 		std::vector< std::unique_ptr<CVorticonSpriteObject> > mpSpriteObjectContainer;
 		CVorticonMapLoaderWithPlayer MapLoader(mpMap, m_Player, mpSpriteObjectContainer);
 		MapLoader.load(2, 81, path);
-        
+
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(VectorD2<int>(8<<CSF, 26<<CSF));
 		m_Player[0].solid = false;
-        
+
 		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP ) );
-        
+
 		mpMap->gotoPos(LIMPSHOME_X, LIMPSHOME_Y);
 		mpShipFlySys->addShipQueue(CMD_WAIT, 10, 0);
 		mpShipFlySys->addShipQueue(CMD_MOVE, 80, DUPLEFT);
 		mpShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
 		mpMap->drawAll();
 		mpShipFlySys->m_ShipQueuePtr = 0;
-        
+
 		addMsgBoxString("EP2_ESEQ_PART2");
-        
+
 		m_mustsetup = false;
 	}
-    
-    
+
+
 	// process the normal ship flying level and do all the inited commands
 	if( !mpShipFlySys->EndOfQueue() || !mMessageBoxes.empty() )
 	{
@@ -135,7 +135,7 @@ void CEndingEp2::LimpsHome()
 		m_step++;
 		m_mustsetup = true;
 	}
-    
+
 }
 
 void CEndingEp2::SnowedOutside()
@@ -148,16 +148,16 @@ void CEndingEp2::SnowedOutside()
 		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
 		mpFinaleStaticScene.reset( new CFinaleStaticScene( mpMap->m_gamepath, "finale.ck2" ) );
-        
+
 		addMsgBoxString("EP2_ESEQ_PART1");
 		addMsgBoxString("EP2_ESEQ_PART2");
 		addMsgBoxString("EP2_ESEQ_PART3");
 		addMsgBoxString("EP2_ESEQ_PART4");
-        
-        
+
+
 		m_mustsetup = false;
 	}
-    
+
 	if( mMessageBoxes.empty() )
 	{
 		// Shutdown code here!
@@ -170,7 +170,7 @@ void CEndingEp2::SnowedOutside()
 	{
 		mpFinaleStaticScene->process();
 	}
-    
+
 }
 
 

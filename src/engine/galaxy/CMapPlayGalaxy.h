@@ -32,31 +32,31 @@ class CMapPlayGalaxy
 {
 public:
 	CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
-    
+
 	bool isActive();
 	void setActive(const bool value);
-    
+
 	/*
 	 * \brief Just tells the name of the level. Every Galaxy Level with a name
 	 */
 	std::string getLevelName();
-    
+
 	void process(const bool msgboxactive);
-    
+
 	// Push data to Savegame-Controller
 	void operator>>(CSaveGameController &savedGame);
-    
+
 	// This is for loading the game
 	bool operator<<(CSaveGameController &savedGame);
-    
+
 	CMap &getMapObj()
 	{	return mMap	;}
-    
-    
+
+
 protected:
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
 	bool mActive;
-    
+
 	CMap mMap;
 	CExeFile &mExeFile;
 	CInventory &mInventory;

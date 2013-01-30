@@ -15,17 +15,17 @@ void CPlayGameVorticon::processInLevel()
 {
 	if(m_gameover)
 		return;
-    
+
 	// Perform player Objects...
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
 		// check if someone has lives
 		if(m_Player[i].inventory.lives==0 && m_Player[i].pdie==PDIE_DEAD)
 			continue;
-        
+
 		// Process the other stuff like, items, jump, etc.
 		m_Player[i].processInLevel();
-        
+
 		// If the player touched a hint trigger in which we have to show a Message, do it so
 		std::string hinttext;
 		if( (hinttext=m_Player[i].pollHintMessage()) != "")
@@ -33,26 +33,26 @@ void CPlayGameVorticon::processInLevel()
 		    std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort(g_pBehaviorEngine->getString(hinttext), false, true) );
 		    mMessageBoxes.push_back( move(msg) );
 		}
-        
+
 		// Check if the first player is dead, and if the others also are...
 		if(i==0) m_alldead = (m_Player[i].pdie == PDIE_DEAD);
 		else m_alldead &= (m_Player[i].pdie == PDIE_DEAD);
-        
+
 		// Now draw the player to the screen
 		m_Player[i].SelectFrame();
-        
+
 		// If Player has toggled a switch for platform extend it!
 		int trigger = m_Player[i].pollLevelTrigger();
 		if( trigger != LVLTRIG_NONE )
 		{
 			processLevelTrigger(trigger);
 		}
-        
+
 		// finished the level
 		if(m_Player[i].level_done == LEVEL_COMPLETE)
-		{
+		{	
 		    if(!mSpriteObjectContainer.empty())
-                mSpriteObjectContainer.clear();
+			mSpriteObjectContainer.clear();
 			mp_level_completed[m_Level] = true;
 			goBacktoMap();
 			break;
@@ -64,7 +64,7 @@ void CPlayGameVorticon::processInLevel()
 			break;
 		}
 	}
-    
+
 	// Check if all players are dead. In that case, go back to map
 	if(m_alldead)
 	{
@@ -72,7 +72,7 @@ void CPlayGameVorticon::processInLevel()
 		m_gameover = true; // proof contrary case
 		for( int i=0 ; i<m_NumPlayers ; i++ )
 			m_gameover &= ( m_Player[i].inventory.lives < 0 );
-        
+
 		if(!m_gameover) // Check if no player has lives left and must go in game over mode.
 			goBacktoMap();
 	}
@@ -88,7 +88,7 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 		mMap->m_Dark = false;
 		g_pMusicPlayer->stop();
 		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
-		mpFinale.reset( new CTantalusRay( mMessageBoxes, mMap, mSpriteObjectContainer, mpObjectAI ) );
+		mpFinale.reset( new CTantalusRay( mMessageBoxes, mMap, mSpriteObjectContainer, mpObjectAI ) );	
 		
 		m_Player[0].dontdraw = true;
 		m_gameover = true;
@@ -96,7 +96,7 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 	else if (trigger == LVLTRIG_BRIDGE)
 	{	// it's a moving platform switch--don't allow player to hit it again while
 		// the plat is still moving as this will glitch
-        
+
 		// The spawning of the plat extension is defined in the CPlayer class
 	}
 	else if (trigger == LVLTRIG_LIGHT)

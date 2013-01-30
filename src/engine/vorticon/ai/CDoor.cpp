@@ -19,7 +19,7 @@ CVorticonSpriteObject(pmap, x, y, OBJ_DOOR)
 void CDoor::process()
 {
 	CSprite &Doorsprite = g_pGfxEngine->getSprite(sprite);
-    
+
 	if (timer > DOOR_OPEN_SPEED)
 	{
 		// TODO: Create a flag for mods in which the door can be opened in another direction

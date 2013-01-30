@@ -16,7 +16,7 @@ public:
 	CScrub(CMap *p_map, Uint32 x, Uint32 y);
 	
 	void process();
-    
+
 private:
     
 	void walkLeft(int mx, int my);
@@ -25,9 +25,9 @@ private:
 	void walkUp();
 	void fall();
 	void preparetoFall();
-    
+
 	unsigned char state;
-    
+
 	unsigned char animtimer, dietimer;
 	unsigned char walkframe;
 	int scrubdie_inertia_y;

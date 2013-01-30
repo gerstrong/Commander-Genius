@@ -14,7 +14,7 @@
 
 class CSoundSlot {
 public:
-    
+
 	CSoundSlot();
 	
 	void openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen);
@@ -30,9 +30,9 @@ public:
 	unsigned int getSoundlength() const { return m_soundlength; }
 	
 	~CSoundSlot();
-    
+
 	word priority;
-    
+
 private:
 	byte *m_sounddata;
 	unsigned int m_soundlength;

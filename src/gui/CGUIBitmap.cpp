@@ -16,9 +16,9 @@ mpBitmap(move(pBitmap))
 
 CGUIBitmap::CGUIBitmap(const std::string &text)
 {
-    
+
 	mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmap(text) ));
-    
+
 }
 
 
@@ -34,6 +34,6 @@ void CGUIBitmap::processRender(const CRect<float> &RectDispCoordFloat)
 	CRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
-    
+
 	mpBitmap->draw( lRect.x, lRect.y );
 }

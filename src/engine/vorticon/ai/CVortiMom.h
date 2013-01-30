@@ -13,8 +13,8 @@
 #include <vector>
 
 enum vortimom_actions{
-    MOTHER_WALK, MOTHER_SPIT,
-    MOTHER_HURT
+MOTHER_WALK, MOTHER_SPIT,
+MOTHER_HURT
 };
 
 // Vorticon Mother AI (ep3)
@@ -42,16 +42,16 @@ enum vortimom_actions{
 class CVortiMom : public CVorticonSpriteObject
 {
 public:
-	CVortiMom(CMap *p_map, Uint32 x, Uint32 y);
+	CVortiMom(CMap *p_map, Uint32 x, Uint32 y);	
 	bool isNearby(CVorticonSpriteObject &theObject);
 	void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 	void getShotByRay(object_t &obj_type);
-    
+
 private:
 	vortimom_actions state;
 	direction_t dir;
-    
+
 	int animframe, animtimer;
 	int timer;
 };

@@ -41,19 +41,19 @@ bool CGameControl::init(int argc, char *argv[])
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	std::string argument;
 	argument = getArgument( argc, argv, "-game" );
-    
+
 	// Check if some arguments were given.
 	if(argument != "")
 	{
 		// Get the game number according to the created menu list.
 		std::string buf = argument.substr(strlen("-game"));
 		int chosengame = atoi(buf)-1;
-        
+
 		if(chosengame >= 0)
 		{
 			// Tell CG to pass the chosen number of game
 			m_startGame_no = chosengame;
-            
+
 			// Now check, if a level was also passed as parameter
 			argument = getArgument( argc, argv, "-level" );
 			if(argument != "")
@@ -61,7 +61,7 @@ bool CGameControl::init(int argc, char *argv[])
 				buf = argument.substr(strlen("-level"));
 				m_startLevel = atoi(buf);
 			}
-            
+
 			// Now check, if a difficulty was chosen, otherwise choose easy
 			argument = getArgument( argc, argv, "-diff" );
 			if(argument != "")
@@ -72,15 +72,15 @@ bool CGameControl::init(int argc, char *argv[])
 				// catch invalid entries
 				if(startDifficulty < 0 || startDifficulty > 3)
 				{
-                    // TODO: Tell here that difficulty is invalid and that CG continues on easy
-                    startDifficulty = UNKNOWN;
+				  // TODO: Tell here that difficulty is invalid and that CG continues on easy
+				  startDifficulty = UNKNOWN;
 				}
 				
 				g_pBehaviorEngine->mDifficulty = startDifficulty;
 			}
 		}
 	}
-    
+
 	// Check if finale cutscenes must be shown
 	if(getBooleanArgument( argc, argv, "-finale" ))
 	{
@@ -88,9 +88,9 @@ bool CGameControl::init(int argc, char *argv[])
 		m_startGame_no = atoi(argument.c_str()+strlen("-finale"))-1;
 		m_startLevel = WM_MAP_NUM;
 	}
-    
+
 	EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );
-    
+
 	return ok;
 }
 
@@ -102,16 +102,16 @@ void CGameControl::process()
 {
 	// process any triggered Game Control related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
-    
-	if( !EventContainer.empty() )
+
+	if( !EventContainer.empty() )	    
 	{
 		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 		{
 		    g_pSound->unloadSoundData();
 		    gpMenuController->emptyMenuStack();
-		    mpEngine.reset(new CGameLauncherMenu( m_firsttime,
-                                                 p_Launcher->m_ChosenGame,
-                                                 p_Launcher->m_StartLevel) );
+		    mpEngine.reset(new CGameLauncherMenu( m_firsttime, 
+							  p_Launcher->m_ChosenGame,
+							  p_Launcher->m_StartLevel) );
 		    mpEngine->init();
 		    EventContainer.pop_Event();
 		}
@@ -125,22 +125,22 @@ void CGameControl::process()
 		{
 			mpEngine.release();
 			EventContainer.pop_Event();
-            
+
 			return;
 		}
 		else if( InvokeFunctorEvent *iEv = EventContainer.occurredEvent<InvokeFunctorEvent>() )
 		{
 			(*iEv)();
 			EventContainer.pop_Event();
-            
+
 			return;
 		}
 	}
-    
+
 	// Process the game control object if no effects are being processed
 	if(mpEngine)
 	    mpEngine->process();
-    
+
 	if(g_pGfxEngine->runningEffect())
 	{
 		if( g_pInput->getPressedAnyCommand() || g_pInput->mouseClicked() )

@@ -21,19 +21,19 @@ public:
 	void process();
 	void guard_fire();
 	void getTouchedBy(CSpriteObject &theObject);
-    
+
 private:
-    
+
 	enum{ WALK, TURN, WAIT, WAIT_LOOK, FIRE, LOOK } state;
-    
+
 	unsigned int timer,animtimer;
 	unsigned char frame;
 	unsigned int dist_to_travel;
-    
+
 	char movedir;
-    
+
 	unsigned char fireafterlook;
-    
+
 	unsigned int timetillnextshot;
 	unsigned int firetimes;
 	unsigned int timetillcanfire;

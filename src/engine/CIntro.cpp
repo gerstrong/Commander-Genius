@@ -56,7 +56,7 @@ void CIntro::process()
 	if(mp_bm[0] != NULL)
 	{
 		mp_bm[1]->draw( m_mid[1], m_scrolly+11);
-        
+
 		if(m_scrolly<=42) // Show this, when scrolling is finished
 		{
 			mp_bm[0]->draw( m_mid[0], m_scrolly);

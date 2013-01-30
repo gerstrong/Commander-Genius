@@ -19,13 +19,13 @@
 class CPhysicsSettings {
 public:
 	CPhysicsSettings();
-    
+
 	/**
 	 * \brief This function loads some constants, this normally happens when the game is loaded
 	 * 		  and the values change depending on what is read for the mods
-	 */
+	 */	
 	void loadGameConstants(int episode, byte* data);
-    
+
 	struct playersettings{
 		int maxjumpspeed;
 		int defaultjumpupdecreasespeed;
@@ -35,35 +35,35 @@ public:
 		int impossiblepogospeed;
 		bool pogostickonstart;
 		Uint16 start_with_shots;
-        
+
 		// pogo settings
 		int pogoforce_x;
 	}player;
-    
+
 	struct vorticonsettings{
 		char commander_hp;
 		char default_hp;
 	}vorticon;
-    
+
 	struct{
 		int visibility;
 		int ctspace_ammo;
 		int ctspace_keys;
 		int one_eyed_tile;
-        
+
 		// Episode 1 only
 		int joy_tile;
 		int bat_tile;
 		int vac_tile;
 		int wsk_tile;
-        
+
 		int pogo_tile;
 		int raygun_tile;
-        
+
 		// For the stoneblock normally in level 16
 		int changestoneblock;
 	}misc;
-    
+
 	int max_fallspeed;
 	int fallspeed_increase;
 };

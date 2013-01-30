@@ -29,7 +29,7 @@ void CLogFile::CreateLogfile(const char *LogName)
 	
 	std::string versionstring = CGVERSION;
 	textOut(BLUE, APP_NAME + " v" + versionstring);
-    
+
 	// Mark the Build and Platform
 #ifdef DEBUG
 	textOut("BUILD: DEBUG<br>");
@@ -46,7 +46,7 @@ void CLogFile::CreateLogfile(const char *LogName)
 #else
 	textOut("PLATFORM: UNKNOWN<br>");
 #endif
-    
+
 	// Ads
 	textOut("<br>");
 	std::string datestring = __DATE__;

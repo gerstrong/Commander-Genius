@@ -15,10 +15,10 @@
 struct CloseDialog : public InvokeFunctorEvent
 {
 	CloseDialog(bool &mustClose) : mMustClose(mustClose) {}
-    
+
 	void operator()()
 	{		mMustClose = true;	}
-    
+
 	bool &mMustClose;
 };
 
@@ -30,13 +30,13 @@ m_mustclose(false)
 	std::string closeString;
 	closeString = closeChar;
 	CGUIButton*	pButton	= new CGUIButton( closeString, new CloseDialog(m_mustclose), CGUIButton::NONE );
-    
+
 	addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/0.8f, 0.06f/0.8f) );
-    
+
 	mpReturnButton = pButton;
-    
+
 	mpTextCtrl = new CGUIText( Text );
-    
+
 	// Those formulas work well with our constellation but I don't think they are perfect.
 	// They transform the Message Box the way the text fits perfectly in.
 	const float screenW = g_pVideoDriver->getGameResolution().w;
@@ -45,21 +45,21 @@ m_mustclose(false)
 	mRect.h = static_cast<float>( (mpTextCtrl->mTextDim.h+2)*8 )/screenH;
 	mRect.x = (1.0f - mRect.w)/2.0f;
 	mRect.y = (1.0f - mRect.h)/2.0f;
-    
+
 	// now let's center that long text...
 	CRect<float> TextRect;
 	TextRect.w = ((mpTextCtrl->mTextDim.w*8)/screenW) / mRect.w;
 	TextRect.h = ((mpTextCtrl->mTextDim.h*8)/screenH) / mRect.h;
 	TextRect.x = (2.5f*TextRect.w)/(static_cast<float>(mpTextCtrl->mTextDim.w));
 	TextRect.y = (1.0f*TextRect.h)/(static_cast<float>(mpTextCtrl->mTextDim.h));
-    
+
 	if(lower) // if lower is enabled, try to snap the Dlg to the bottom off the screen.
 	{
 		mRect.y = 1.0f - mRect.h;
 	}
-    
+
 	addControl( mpTextCtrl, TextRect );
-    
+
 	CRect<float> closeRect = pButton->mRect;
 	closeRect.x = mRect.x;
 	closeRect.y = mRect.y;
@@ -71,7 +71,7 @@ void CMessageBox::processLogic()
 {
 	if(g_pInput->getPressedCommand(IC_STATUS))
 		m_mustclose = true;
-    
+
 	CGUIDialog::processLogic();
 }
 

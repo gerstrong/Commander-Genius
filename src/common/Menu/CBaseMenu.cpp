@@ -15,9 +15,9 @@ mpMenuDialog( new CGUIDialog(rect) )
 {
 	std::string closeString;
 	CGUIButton*	pButton;
-    
+
 	mpMenuDialog->initBackground();
-    
+
 	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
 		CRect<float> rect(0.30f, 0.28f, 0.5f, 0.5f);
@@ -33,10 +33,10 @@ mpMenuDialog( new CGUIDialog(rect) )
 		pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::NONE );
 		mpMenuDialog->addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
 	}
-    
+
 	pButton->setDown(true);
 	mpReturnButton = pButton;
-    
+
 }
 
 
@@ -44,7 +44,7 @@ void CBaseMenu::select(const size_t value)
 {
 	if(value >= mpMenuDialog->getControlList().size())
 		return;
-    
+
 	for(size_t c=0 ; c<value ; c++)
 		mpMenuDialog->sendEvent( new CommandEvent(IC_DOWN) );
 }
@@ -72,7 +72,7 @@ void CBaseMenu::process()
 		    break;
 		}
 	}
-    
+
 	mpMenuDialog->processLogic();
-    
+
 }

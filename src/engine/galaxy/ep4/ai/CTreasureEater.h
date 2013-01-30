@@ -11,30 +11,30 @@
 #include "engine/galaxy/common/ai/CStunnable.h"
 
 namespace galaxy {
-    
-    class CTreasureEater: public CStunnable
-    {
-    public:
-        CTreasureEater(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
-        
-        bool isNearby(CSpriteObject &theObject);
-        void getTouchedBy(CSpriteObject &theObject);
-        
-        void processLooking();
-        void processTeleporting();
-        bool lookForNextDestination();
-        void processHopping();
-        
-        void checkForItem();
-        void process();
-        
-    private:
-        
-        int mTimer;
-        bool mTeleported;
-        bool mStolen;
-        VectorD2<int> mDestination;
-    };
-    
+
+class CTreasureEater: public CStunnable
+{
+public:
+	CTreasureEater(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+
+	bool isNearby(CSpriteObject &theObject);
+	void getTouchedBy(CSpriteObject &theObject);
+
+	void processLooking();
+	void processTeleporting();
+	bool lookForNextDestination();
+	void processHopping();
+
+	void checkForItem();
+	void process();
+
+private:
+
+	int mTimer;
+	bool mTeleported;
+	bool mStolen;
+	VectorD2<int> mDestination;
+};
+
 } /* namespace galaxy */
 #endif /* CTREASUREEATER_H_ */

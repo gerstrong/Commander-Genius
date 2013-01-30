@@ -14,7 +14,7 @@
 
 class CDimDark : public CEffects
 {
-    
+
 public:
     CDimDark(const Uint8 speed);
     void process();
@@ -24,15 +24,15 @@ public:
     
     std::shared_ptr<SDL_Surface> &getSfc()
     {  return mpOldSurface;  }
-    
+
     
 private:
 	
 	Uint8 m_Speed;
 	Uint8 m_Alpha;
 	bool dimDark;
-    
-	std::shared_ptr<SDL_Surface> mpOldSurface;
+
+	std::shared_ptr<SDL_Surface> mpOldSurface;    
 	std::shared_ptr<SDL_Surface> mpDarkSurface;
 };
 

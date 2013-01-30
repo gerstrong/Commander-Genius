@@ -44,7 +44,7 @@ CVorticonSpriteObject(p_map, x, y, OBJ_GUARDROBOT)
 	timetillcanfire = MAX_TIME_TILL_CAN_FIRE;
 	firetimes = 0;
 	turnaroundtimer = 0;
-    
+
 	canbezapped = true;   // will stop bullets but is not harmed
 	m_invincible = true;
 	inhibitfall = true;
@@ -54,145 +54,145 @@ void CGuardRobot::process()
 {
 	switch(state)
 	{
-        case LOOK:
-            // animation
-            if (animtimer > LOOK_ANIM_TIME)
-            {
-                frame ^= 1;
-                animtimer = 0;
-            }
-            else
-                animtimer++;
-            
-            sprite = LOOK_FRAME + frame;
-            
-            // when time is up go back to moving
-            if (timer > LOOK_TOTALTIME)
-            {
-                timetillcanfire = (rnd()%(MAX_TIME_TILL_CAN_FIRE-MIN_TIME_TILL_CAN_FIRE))+MIN_TIME_TILL_CAN_FIRE;
-                timetillcanfirecauseonsamelevel = TIME_BEFORE_FIRE_WHEN_SEE;
-                firetimes = 0;
-                state = WALK;
-                frame = 0;
-                animtimer = 0;
-                timer = 0;
-                dist_to_travel = TRAVELDIST;
-            }
-            else
-                timer++;
-            
-            break;
-            
-        case WALK:
-            // hover animation
-            if (animtimer > WALK_ANIM_TIME)
-            {
-                if (frame>=3) frame=0;
-                else frame++;
-                animtimer = 0;
-            } else animtimer++;
-            
-            if (movedir==LEFT)
-                sprite = WALK_LEFT_FRAME + frame;
-            else
-                sprite = WALK_RIGHT_FRAME + frame;
-            
-            // if we're about to, or just did, fire a volley, don't move
-            if (!hardmode)
-            {
-                if (pausetime)
-                {
-                    pausetime--;
-                    return;
-                }
-            }
-            else
-                pausetime = 0;
-            
-            // are we firing a volley?
-            if (firetimes)
-            {
-                // is it time to fire the next shot in the volley?
-                if (!timetillnextshot)
-                {
-                    CRay *newobject;
-                    if (onscreen)
-                        playSound(SOUND_TANK_FIRE);
-                    if (movedir==RIGHT)
-                        newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT, CENTER);
-                    else
-                        newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT, CENTER);
-                    newobject->setOwner(OBJ_GUARDROBOT, m_index);
-                    newobject->sprite = ENEMYRAYEP2;
-                    
-                    g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
-                    
-                    timetillnextshot = TIME_BETWEEN_SHOTS;
-                    if (!--firetimes)
-                    {
-                        pausetime = FIRE_PAUSE_TIME;
-                    }
-                }
-                else
-                {
-                    timetillnextshot--;
-                }
-                
-                // don't move when firing except on hard mode
-                if (hardmode)
-                    return;
-                
-            }
-            else
-            {  // not firing a volley
-                if (!timetillcanfire)
-                {
-                    guard_fire();
-                }
-                else
-                {
-                    timetillcanfire--;
-                }
-                
-            }
-            
-            turnaroundtimer = 0;
-            
-            if (movedir==LEFT)
-            {  // move left
-                if (!blockedl)
-                {
-                    xinertia = -WALK_SPEED;
-                    dist_to_travel--;
-                }
-                else
-                {
-                    frame = 0;
-                    timer = 0;
-                    animtimer = 0;
-                    state = LOOK;
-                    movedir = RIGHT;
-                }
-            }
-            else
-            {  // move right
-                sprite = WALK_RIGHT_FRAME + frame;
-                if (!blockedr)
-                {
-                    xinertia = WALK_SPEED;
-                    dist_to_travel--;
-                }
-                else
-                {
-                    frame = 0;
-                    timer = 0;
-                    animtimer = 0;
-                    state = LOOK;
-                    movedir = LEFT;
-                }
-            }
-            break;
-        default : break;
+	case LOOK:
+		// animation
+		if (animtimer > LOOK_ANIM_TIME)
+		{
+			frame ^= 1;
+			animtimer = 0;
+		}
+		else
+			animtimer++;
+
+		sprite = LOOK_FRAME + frame;
+
+		// when time is up go back to moving
+		if (timer > LOOK_TOTALTIME)
+		{
+			timetillcanfire = (rnd()%(MAX_TIME_TILL_CAN_FIRE-MIN_TIME_TILL_CAN_FIRE))+MIN_TIME_TILL_CAN_FIRE;
+			timetillcanfirecauseonsamelevel = TIME_BEFORE_FIRE_WHEN_SEE;
+			firetimes = 0;
+			state = WALK;
+			frame = 0;
+			animtimer = 0;
+			timer = 0;
+			dist_to_travel = TRAVELDIST;
+		}
+		else
+			timer++;
+
+		break;
+
+	case WALK:
+		// hover animation
+		if (animtimer > WALK_ANIM_TIME)
+		{
+			if (frame>=3) frame=0;
+			else frame++;
+			animtimer = 0;
+		} else animtimer++;
+
+		if (movedir==LEFT)
+			sprite = WALK_LEFT_FRAME + frame;
+		else
+			sprite = WALK_RIGHT_FRAME + frame;
+
+		// if we're about to, or just did, fire a volley, don't move
+		if (!hardmode)
+		{
+			if (pausetime)
+			{
+				pausetime--;
+				return;
+			}
+		}
+		else
+			pausetime = 0;
+
+		// are we firing a volley?
+		if (firetimes)
+		{
+			// is it time to fire the next shot in the volley?
+			if (!timetillnextshot)
+			{
+				CRay *newobject;
+				if (onscreen)
+					playSound(SOUND_TANK_FIRE);
+				if (movedir==RIGHT)
+					newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT, CENTER);
+				else
+					newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT, CENTER);
+				newobject->setOwner(OBJ_GUARDROBOT, m_index);
+				newobject->sprite = ENEMYRAYEP2;
+
+				g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
+
+				timetillnextshot = TIME_BETWEEN_SHOTS;
+				if (!--firetimes)
+				{
+					pausetime = FIRE_PAUSE_TIME;
+				}
+			}
+			else
+			{
+				timetillnextshot--;
+			}
+
+			// don't move when firing except on hard mode
+			if (hardmode)
+				return;
+
+		}
+		else
+		{  // not firing a volley
+			if (!timetillcanfire)
+			{
+				guard_fire();
+			}
+			else
+			{
+				timetillcanfire--;
+			}
+
+		}
+
+		turnaroundtimer = 0;
+
+		if (movedir==LEFT)
+		{  // move left
+			if (!blockedl)
+			{
+				xinertia = -WALK_SPEED;
+				dist_to_travel--;
+			}
+			else
+			{
+				frame = 0;
+				timer = 0;
+				animtimer = 0;
+				state = LOOK;
+				movedir = RIGHT;
+			}
+		}
+		else
+		{  // move right
+			sprite = WALK_RIGHT_FRAME + frame;
+			if (!blockedr)
+			{
+				xinertia = WALK_SPEED;
+				dist_to_travel--;
+			}
+			else
+			{
+				frame = 0;
+				timer = 0;
+				animtimer = 0;
+				state = LOOK;
+				movedir = LEFT;
+			}
+		}
+		break;
+	default : break;
 	}
 }
 

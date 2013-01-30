@@ -23,23 +23,23 @@ struct stBitmap
 class CHighScores : public CInfoScene
 {
 public:
-    
+
 	CHighScores();
-    
+
 	void fetchScoreTable();
-    
+
 	void init();
 	void teardown();
-    
+
 	void writeEP1HighScore(int score, bool extra[4]);
 	void writeEP2HighScore(int score, int cities_saved);
 	void writeHighScoreCommon(int score);
 	
 	void process();
-    
+
 private:
 	std::shared_ptr<CMap> mpMap;
-    
+
 	std::string		m_Name[16];
 	std::string		m_Score[8];
 	bool			m_Extra[8][4];
@@ -51,19 +51,19 @@ private:
 	char					m_CurrentLetter;
 	std::string				m_DataDirectory;
 	std::vector<stBitmap>	m_Bitmaps;
-    
+
 	std::shared_ptr<SDL_Surface> mpTextSfc;
-    
+
 	// This cycle will wait for the input of name and hit of enter
 	bool m_blink;
 	int m_blinkctr;
 	bool mTableLoaded;
-    
+
 	void (CHighScores::*mp_process)();
 	
 	void processShowing();
 	void processWriting();
-    
+
 	bool saveHighScoreTable();
 	bool loadHighScoreTable();
 };

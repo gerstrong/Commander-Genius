@@ -29,23 +29,23 @@ enum ProgressStyle
 class CResourceLoader : public CSingleton<CResourceLoader> {
 public:
 	CResourceLoader();
-    
+
 	void setStyle(ProgressStyle style);
-    
+
 	int RunLoadAction(Action* act, const std::string &threadname, int min_permil=0, int max_permil=1000);
 	bool process(int* ret);
-    
+
 	void setPermilage(int permil);
 	
 private:
 	void setPermilageForce(int permil);
 	void renderLoadingGraphic();
-    
+
 	int m_permil;
 	int m_permiltarget;
 	int m_min_permil;
 	int m_max_permil;
-    
+
 	ProgressStyle m_style;
 	std::unique_ptr<ThreadPoolItem> mp_Thread;
 	std::shared_ptr<SDL_Surface> mpProgressSfc;

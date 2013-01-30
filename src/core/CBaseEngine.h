@@ -15,10 +15,10 @@
 
 class CBaseEngine
 {
-    
+
 public:
 	virtual ~CBaseEngine() {}
-    
+
 	virtual void init() = 0;
 	virtual void process() = 0;
 };

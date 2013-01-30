@@ -21,14 +21,14 @@ public:
 	CFinale(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 			const std::shared_ptr<CMap> &pMap,
 			std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object);
-    
+
 	void addMsgBoxString(const std::string &text);
-    
+
 	void showEndingText();
-    
+
 	virtual void process() {}
 	bool getHasFinished() { return m_mustfinishgame; }
-    
+
 protected:
 	char m_step;
 	bool m_mustfinishgame;

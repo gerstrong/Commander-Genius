@@ -50,8 +50,8 @@ void sgrle_initdecompression(void)
 }
 
 /* decompresses nbytes bytes of SGRLE-compressed data from
- file pointer *fp to the memory area pointed to by *ptr.
- Newer Version */
+   file pointer *fp to the memory area pointed to by *ptr.
+   Newer Version */
 char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 {
 	unsigned long i;
@@ -66,7 +66,7 @@ char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 	}
 	
 	if(bytes < nbytes) nbytes = bytes;
-    
+
 	sgrle_runlen = 0;
 	
 	for(i=0;i<nbytes;i++)

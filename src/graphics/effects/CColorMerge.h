@@ -21,19 +21,19 @@ class CColorMerge : public CEffects
 {
 public:
 	CColorMerge(const Uint8 speed);
-    
+
 	void process();
 	
 	std::shared_ptr<SDL_Surface> &getSfc()
 	{  return mpOldSurface;  }
 	
-	void getSnapshot();
-    
+	void getSnapshot();		
+
 private:
 	
 	Uint8 m_Speed;
 	Uint8 m_Alpha;
-    
+
 	std::shared_ptr<SDL_Surface> mpOldSurface;
 };
 

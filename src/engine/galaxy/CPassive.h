@@ -13,24 +13,24 @@
 
 namespace galaxy
 {
-    
-    class CPassiveGalaxy : public CPassive
-    {
-    public:
-        CPassiveGalaxy();
-        
-        bool init(char mode);
-        void process();
-        void processIntro();
-        void processTitle();
-        
-        void (CPassiveGalaxy::*processMode)();
-        
-        CBitmap m_BackgroundBitmap;
-        bool m_restartVideo;
-        
-    };
-    
+
+class CPassiveGalaxy : public CPassive
+{
+public:
+	CPassiveGalaxy();
+
+	bool init(char mode);
+	void process();
+	void processIntro();
+	void processTitle();
+
+	void (CPassiveGalaxy::*processMode)();
+
+	CBitmap m_BackgroundBitmap;
+	bool m_restartVideo;
+
+};
+
 }
 
 #endif /* CPASSIVE_GALAXY_H_ */

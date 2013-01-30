@@ -25,7 +25,7 @@
 struct DrawGUIRenderTask : CEvent
 {
 	CGUIDialog *mpDialog;
-    
+
 	DrawGUIRenderTask( CGUIDialog *pDialog ) : mpDialog(pDialog) {}
 };
 
@@ -43,9 +43,9 @@ struct DrawAnimatedTileTask : CEvent
 	CTilemap 	*mTileMapPtr;
 	const Uint16 mx, my;
 	const Uint16 mtile;
-    
+
 	DrawAnimatedTileTask(CTilemap *TileMapPtr, const Uint16 x, const Uint16 y, const Uint16 tile) :
-    mTileMapPtr(TileMapPtr), mx(x), my(y), mtile(tile) {}
+		mTileMapPtr(TileMapPtr), mx(x), my(y), mtile(tile) {}
 };
 
 // Sprite based Draw Tasks
@@ -55,7 +55,7 @@ struct DrawBlinkingSpriteTask : CEvent
 	CSprite *mSpritePtr;
 	const Uint16 mx, my;
 	DrawBlinkingSpriteTask(CSprite *SpritePtr, const Uint16 x, const Uint16 y) :
-    mSpritePtr(SpritePtr), mx(x), my(y) {}
+		mSpritePtr(SpritePtr), mx(x), my(y) {}
 };
 
 
@@ -66,7 +66,7 @@ struct DrawSpriteTask : CEvent
 	const Uint16 mx, my;
 	const Uint8	mAlpha;
 	DrawSpriteTask(CSprite *SpritePtr, const Uint16 x, const Uint16 y, const Uint8 alpha) :
-    mSpritePtr(SpritePtr), mx(x), my(y), mAlpha(alpha)  {}
+		mSpritePtr(SpritePtr), mx(x), my(y), mAlpha(alpha)  {}
 };
 
 struct BlitSurfaceTask : CEvent
@@ -76,8 +76,8 @@ struct BlitSurfaceTask : CEvent
 	std::shared_ptr<SDL_Rect> mDstRect;
 	
 	BlitSurfaceTask( std::shared_ptr<SDL_Surface> &sfcToBlit,
-                    SDL_Rect *srcRect,
-                    SDL_Rect *dstRect ) :
+					 SDL_Rect *srcRect,
+					 SDL_Rect *dstRect ) :
 	mSfcToBlit(sfcToBlit)
 	{
 		if(srcRect) // because SDL can have NULL-Pointers in the Rect sources
@@ -94,8 +94,8 @@ struct BlitSurfaceTask : CEvent
 	}
 	
 	BlitSurfaceTask( std::shared_ptr<SDL_Surface> &sfcToBlit,
-                    std::shared_ptr<SDL_Rect> &srcRect,
-                    std::shared_ptr<SDL_Rect> &dstRect ) :
+			 std::shared_ptr<SDL_Rect> &srcRect,
+			 std::shared_ptr<SDL_Rect> &dstRect ) :
 	mSfcToBlit(sfcToBlit),
 	mSrcRect(srcRect),
 	mDstRect(dstRect)
@@ -108,7 +108,7 @@ struct DrawBitmapTask : CEvent
 	CBitmap *mBmpPtr;
 	const Uint16 mx, my;
 	DrawBitmapTask(CBitmap *BmpPtr, const Uint16 x, const Uint16 y):
-    mBmpPtr(BmpPtr), mx(x), my(y) {}
+		mBmpPtr(BmpPtr), mx(x), my(y) {}
 };
 
 

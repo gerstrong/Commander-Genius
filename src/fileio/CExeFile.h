@@ -29,14 +29,14 @@ public:
 	std::string getDataDirectory() const;
 	std::string getFileName() { return m_filename; }
 	size_t getExeDataSize() const;
-    
+
 	unsigned long fetchUncompressedHeaderSize(void *m_headerdata);
-    
+
 	// in case you just want to see the Exe-File which CG sustains in the memory
 	void dumpFile(const std::string& filename);
-    
+
 	bool readData(const char episode, const std::string& datadirectory);
-    
+
 	/**
 	 * \brief Tells whether The Exe-File is supported by CG or not.
 	 * 		  This Information is hard-coded in the CExefile constructor
@@ -49,9 +49,9 @@ public:
 	byte* getRawData() const;
 	void* getHeaderData() const;
 	byte* getDSegPtr() const;
-    
+
 private:
-    
+
 	struct EXE_HEADER
 	{
 		unsigned short mzid;
@@ -69,7 +69,7 @@ private:
 		unsigned short reloc_offset;
 		unsigned short overlay_num;
 	};
-    
+
 	size_t m_datasize;
 	size_t m_headersize;
 	int m_episode;
@@ -80,7 +80,7 @@ private:
 	byte *m_data_segment;
 	std::string m_datadirectory;
 	std::string m_filename;
-    
+
 	std::map< size_t, std::map<int , bool> > m_supportmap;
 };
 

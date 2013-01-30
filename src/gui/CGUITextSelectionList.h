@@ -16,22 +16,22 @@
 
 class CGUITextSelectionList : public CGUIControl {
 public:
-    
+
 	CGUITextSelectionList() :
 	mHoverSelection(0),
 	mSelection(0) {}
-    
+
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
-    
+
 	bool sendEvent(const InputCommands command);
 	void addText(const std::string &text);
 	void processLogic();
 	void processRender(const CRect<float> &RectDispCoordFloat);
-    
-    
+
+
 	std::list<std::string> mItemList;
-    
+
 	int mHoverSelection;
 	int mSelection;
 	

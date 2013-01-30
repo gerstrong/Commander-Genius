@@ -82,18 +82,18 @@ void CHelp::init()
 	else
 	{
 		std::string filename = "HELPTEXT.CKP";
-        
+
 		std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
-        
+
 		if(!File) return;
-        
+
 		while(!File.eof())
 			Text.push_back(File.get());
-        
+
 		File.close();
 		Text.erase(Text.size()-1);
 	}
-    
+
 	// Creates the Text ViewerBox and stores the text there!
 	mpTextViewer.reset(new CTextViewer(0, 8, 320, 160));
 	mpTextViewer->formatText(Text);
@@ -110,7 +110,7 @@ void CHelp::process()
 {
 	// NOTE: Animation is performed here too, because the story plane is drawn over the other
 	// map that is open. That is desired!
-    
+
 	if(mpTextViewer)
 	{
 		mpTextViewer->process();

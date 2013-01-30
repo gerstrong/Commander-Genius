@@ -26,24 +26,24 @@ public:
 	// Init functions
 	CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound);
 	virtual ~CMessageBox() {}
-    
+
 	/** Processing
 	 * There are dialog boxes in both engines. They have are different and must be overloaded with this function.
 	 */
 	void processLogic();
-    
-    
+
+
 	/// Getters
 	/*
 	 * \brief Indicates whether Dialog is ready to be closed
 	 * \return true means yes, it is ready
 	 */
 	bool isFinished();
-    
+
 protected:
 	bool m_mustclose;
 	CGUIButton *mpReturnButton;
-    
+
 	CGUIText *mpTextCtrl;
 };
 
