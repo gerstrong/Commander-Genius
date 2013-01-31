@@ -1417,13 +1417,13 @@
 			isa = PBXGroup;
 			children = (
 				63FEB30C1572AE1F00E17333 /* CBaseEngine.h */,
-				63FEB30D1572AE1F00E17333 /* CGameMain.cpp */,
-				63FEB30E1572AE1F00E17333 /* CGameMain.h */,
-				63FEB30F1572AE1F00E17333 /* mode */,
 				63010BFE13400D4A00F212CA /* CGameControl.cpp */,
 				63010BFF13400D4A00F212CA /* CGameControl.h */,
 				63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */,
 				63010C0113400D4A00F212CA /* CGameLauncherMenu.h */,
+				63FEB30D1572AE1F00E17333 /* CGameMain.cpp */,
+				63FEB30E1572AE1F00E17333 /* CGameMain.h */,
+				63FEB30F1572AE1F00E17333 /* mode */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1444,10 +1444,10 @@
 			isa = PBXGroup;
 			children = (
 				6358038216B4EA740084FC19 /* ai */,
-				635803B916B4EA740084FC19 /* CStatusScreenGalaxyEp4.cpp */,
-				635803BA16B4EA740084FC19 /* CStatusScreenGalaxyEp4.h */,
 				63479F8B15D5BE8B00613499 /* CMapLoaderGalaxyEp4.cpp */,
 				63479F8C15D5BE8B00613499 /* CMapLoaderGalaxyEp4.h */,
+				635803B916B4EA740084FC19 /* CStatusScreenGalaxyEp4.cpp */,
+				635803BA16B4EA740084FC19 /* CStatusScreenGalaxyEp4.h */,
 			);
 			path = ep4;
 			sourceTree = "<group>";
@@ -1845,10 +1845,6 @@
 		63CD10A211CFF5FB00F60BC8 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				63FEB3671572AFA300E17333 /* utils */,
-				63FEB3321572AF3400E17333 /* gui */,
-				63010BFD13400D4A00F212CA /* core */,
-				23D4C48E132C244700B06391 /* CRingBuffer.h */,
 				63CD10A511CFF5FB00F60BC8 /* arguments.cpp */,
 				63CD10A611CFF5FB00F60BC8 /* arguments.h */,
 				63CD10A711CFF5FB00F60BC8 /* CGame.cpp */,
@@ -1859,10 +1855,12 @@
 				63CD10B011CFF5FB00F60BC8 /* common */,
 				63CD10EF11CFF5FB00F60BC8 /* ConfigHandler.cpp */,
 				63CD10F011CFF5FB00F60BC8 /* ConfigHandler.h */,
+				63010BFD13400D4A00F212CA /* core */,
 				63CD10F111CFF5FB00F60BC8 /* CrashHandler.cpp */,
 				63CD10F211CFF5FB00F60BC8 /* CrashHandler.h */,
 				63F4C9861273600000CA4C79 /* CResourceLoader.cpp */,
 				63F4C9871273600000CA4C79 /* CResourceLoader.h */,
+				23D4C48E132C244700B06391 /* CRingBuffer.h */,
 				63CD10F311CFF5FB00F60BC8 /* CSingleton.h */,
 				63CD10F411CFF5FB00F60BC8 /* CVec.h */,
 				63CD10F511CFF5FB00F60BC8 /* Debug.cpp */,
@@ -1878,6 +1876,7 @@
 				63CD11A811CFF5FB00F60BC8 /* FindFile.h */,
 				63CD11A911CFF5FB00F60BC8 /* Functors.h */,
 				63CD11AA11CFF5FB00F60BC8 /* graphics */,
+				63FEB3321572AF3400E17333 /* gui */,
 				6329039B12EB8DF500963705 /* hardware */,
 				63CD11C911CFF5FB00F60BC8 /* Iterator.h */,
 				63CD12AB11CFF64A00F60BC8 /* MacMain.m */,
@@ -1898,6 +1897,7 @@
 				63CD11FB11CFF5FB00F60BC8 /* ThreadPool.h */,
 				63CD11FC11CFF5FC00F60BC8 /* Unicode.cpp */,
 				63CD11FD11CFF5FC00F60BC8 /* Unicode.h */,
+				63FEB3671572AFA300E17333 /* utils */,
 				63CD11FE11CFF5FC00F60BC8 /* Utils.h */,
 			);
 			name = src;
@@ -1907,27 +1907,20 @@
 		63CD10B011CFF5FB00F60BC8 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				63479F8015D5BE2500613499 /* CVorticonMapLoader.cpp */,
-				63479F8115D5BE2500613499 /* CVorticonMapLoader.h */,
-				638814F4159273E100308DAC /* CSpriteObject.cpp */,
-				638814F5159273E100308DAC /* CSpriteObject.h */,
-				63FEB3191572AE3900E17333 /* CSettings.cpp */,
-				63FEB31A1572AE3900E17333 /* CSettings.h */,
 				63385F1613C008D100BC2558 /* ActionFormat.cpp */,
-				239B347D1392FA2300E61F21 /* Cheat.h */,
-				239B347E1392FA2300E61F21 /* direction.h */,
+				23E2A70C1217524300F0CD34 /* ActionFormat.h */,
 				63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */,
 				63243C7B12ECDB5E00FE8192 /* CAudioResources.h */,
-				23F2165312871F9500A8842A /* CObjectCollision.cpp */,
-				23E2A70C1217524300F0CD34 /* ActionFormat.h */,
 				63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */,
 				63CD10B211CFF5FB00F60BC8 /* CBehaviorEngine.h */,
 				63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */,
 				63CD10B411CFF5FB00F60BC8 /* CGameLauncher.h */,
+				239B347D1392FA2300E61F21 /* Cheat.h */,
 				23A11A8F11DE888400747BFA /* CHUD.cpp */,
 				23A11A9011DE888400747BFA /* CHUD.h */,
 				63CD10B511CFF5FB00F60BC8 /* CMap.cpp */,
 				63CD10B611CFF5FB00F60BC8 /* CMap.h */,
+				23F2165312871F9500A8842A /* CObjectCollision.cpp */,
 				63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */,
 				63CD10BE11CFF5FB00F60BC8 /* CPhysicsSettings.h */,
 				63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */,
@@ -1937,10 +1930,17 @@
 				63CD10C311CFF5FB00F60BC8 /* CPlayerItems.cpp */,
 				63CD10C411CFF5FB00F60BC8 /* CPlayerLevel.cpp */,
 				63CD10C511CFF5FB00F60BC8 /* CPlayerWM.cpp */,
+				63FEB3191572AE3900E17333 /* CSettings.cpp */,
+				63FEB31A1572AE3900E17333 /* CSettings.h */,
+				638814F4159273E100308DAC /* CSpriteObject.cpp */,
+				638814F5159273E100308DAC /* CSpriteObject.h */,
 				63CD10C611CFF5FB00F60BC8 /* CStatusScreen.cpp */,
 				63CD10C711CFF5FB00F60BC8 /* CStatusScreen.h */,
 				63CD10CA11CFF5FB00F60BC8 /* CTileProperties.cpp */,
 				63CD10CB11CFF5FB00F60BC8 /* CTileProperties.h */,
+				63479F8015D5BE2500613499 /* CVorticonMapLoader.cpp */,
+				63479F8115D5BE2500613499 /* CVorticonMapLoader.h */,
+				239B347E1392FA2300E61F21 /* direction.h */,
 				63CD10CC11CFF5FB00F60BC8 /* inventory.h */,
 				63CD10CD11CFF5FB00F60BC8 /* Menu */,
 				63CD10EA11CFF5FB00F60BC8 /* objenums.h */,
@@ -1955,11 +1955,6 @@
 		63CD10CD11CFF5FB00F60BC8 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				63FEB31C1572AE5400E17333 /* CMainMenu.cpp */,
-				63FEB31D1572AE5400E17333 /* CMainMenu.h */,
-				63FEB31E1572AE5400E17333 /* CMenuController.cpp */,
-				63FEB31F1572AE5400E17333 /* CMenuController.h */,
-				63FEB3201572AE5400E17333 /* MenuEvents.h */,
 				63CD10CE11CFF5FB00F60BC8 /* CAudioSettings.cpp */,
 				63CD10CF11CFF5FB00F60BC8 /* CAudioSettings.h */,
 				63CD10D011CFF5FB00F60BC8 /* CBaseMenu.cpp */,
@@ -1974,6 +1969,10 @@
 				63CD10DB11CFF5FB00F60BC8 /* CHelpMenu.h */,
 				63CD10DC11CFF5FB00F60BC8 /* CLoadMenu.cpp */,
 				63CD10DD11CFF5FB00F60BC8 /* CLoadMenu.h */,
+				63FEB31C1572AE5400E17333 /* CMainMenu.cpp */,
+				63FEB31D1572AE5400E17333 /* CMainMenu.h */,
+				63FEB31E1572AE5400E17333 /* CMenuController.cpp */,
+				63FEB31F1572AE5400E17333 /* CMenuController.h */,
 				63CD10DE11CFF5FB00F60BC8 /* COptions.cpp */,
 				63CD10DF11CFF5FB00F60BC8 /* COptions.h */,
 				23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */,
@@ -1985,6 +1984,7 @@
 				63CD10E511CFF5FB00F60BC8 /* CSettingsMenu.h */,
 				63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */,
 				63CD10E711CFF5FB00F60BC8 /* CVideoSettings.h */,
+				63FEB3201572AE5400E17333 /* MenuEvents.h */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -2036,19 +2036,19 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
-				6358032416B4EA4B0084FC19 /* common */,
-				6358035D16B4EA4C0084FC19 /* res */,
-				6358031916B4EA240084FC19 /* ep6 */,
-				63479F8A15D5BE8B00613499 /* ep4 */,
-				63479F8D15D5BE8B00613499 /* ep5 */,
-				63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */,
-				63010C0E13400D9300F212CA /* CMapPlayGalaxy.h */,
 				2332378E120EBBF600915252 /* CLevelPlay.cpp */,
 				2332378F120EBBF600915252 /* CLevelPlay.h */,
+				63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */,
+				63010C0E13400D9300F212CA /* CMapPlayGalaxy.h */,
+				6358032416B4EA4B0084FC19 /* common */,
 				63CD111A11CFF5FB00F60BC8 /* CPassive.cpp */,
 				63CD111B11CFF5FB00F60BC8 /* CPassive.h */,
 				63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */,
 				63CD111D11CFF5FB00F60BC8 /* CPlayGameGalaxy.h */,
+				63479F8A15D5BE8B00613499 /* ep4 */,
+				63479F8D15D5BE8B00613499 /* ep5 */,
+				6358031916B4EA240084FC19 /* ep6 */,
+				6358035D16B4EA4C0084FC19 /* res */,
 			);
 			path = galaxy;
 			sourceTree = "<group>";
@@ -2056,8 +2056,6 @@
 		63CD112111CFF5FB00F60BC8 /* infoscenes */ = {
 			isa = PBXGroup;
 			children = (
-				632903C212EB8F3600963705 /* CPreviews.cpp */,
-				632903C312EB8F3600963705 /* CPreviews.h */,
 				63CD112211CFF5FB00F60BC8 /* CAbout.cpp */,
 				63CD112311CFF5FB00F60BC8 /* CAbout.h */,
 				63CD112411CFF5FB00F60BC8 /* CCredits.cpp */,
@@ -2070,6 +2068,8 @@
 				63CD112B11CFF5FB00F60BC8 /* CInfoScene.h */,
 				63CD112C11CFF5FB00F60BC8 /* COrderingInfo.cpp */,
 				63CD112D11CFF5FB00F60BC8 /* COrderingInfo.h */,
+				632903C212EB8F3600963705 /* CPreviews.cpp */,
+				632903C312EB8F3600963705 /* CPreviews.h */,
 				63CD112E11CFF5FB00F60BC8 /* CStory.cpp */,
 				63CD112F11CFF5FB00F60BC8 /* CStory.h */,
 			);
@@ -2088,12 +2088,9 @@
 		63CD113411CFF5FB00F60BC8 /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
-				63479FAA15D5BF2B00613499 /* CVorticonSpriteObject.cpp */,
-				63479FAB15D5BF2B00613499 /* CVorticonSpriteObject.h */,
-				35F1E23F134F6DA700C6230F /* dialog */,
+				63CD113511CFF5FB00F60BC8 /* ai */,
 				63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */,
 				63B29E6F12EB9A09004A8B7C /* CAudioVorticon.h */,
-				63CD113511CFF5FB00F60BC8 /* ai */,
 				63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */,
 				63CD115E11CFF5FB00F60BC8 /* CEGAGraphicsVort.h */,
 				63CD115F11CFF5FB00F60BC8 /* CEGALatch.cpp */,
@@ -2102,6 +2099,9 @@
 				63CD116211CFF5FB00F60BC8 /* CEGASprit.h */,
 				63CD116711CFF5FB00F60BC8 /* CPassiveVort.cpp */,
 				63CD116811CFF5FB00F60BC8 /* CPassiveVort.h */,
+				63479FAA15D5BF2B00613499 /* CVorticonSpriteObject.cpp */,
+				63479FAB15D5BF2B00613499 /* CVorticonSpriteObject.h */,
+				35F1E23F134F6DA700C6230F /* dialog */,
 				63CD116911CFF5FB00F60BC8 /* finale */,
 				63CD117911CFF5FB00F60BC8 /* playgame */,
 			);
@@ -2111,12 +2111,6 @@
 		63CD113511CFF5FB00F60BC8 /* ai */ = {
 			isa = PBXGroup;
 			children = (
-				632B0B601688E05B004A387F /* CCarrier.cpp */,
-				632B0B611688E05B004A387F /* CCarrier.h */,
-				632B0B621688E05B004A387F /* CManglingMachine.cpp */,
-				632B0B631688E05B004A387F /* CManglingMachine.h */,
-				63479FA715D5BF1D00613499 /* CVorticonSpriteObjectAI.cpp */,
-				63479FA815D5BF1D00613499 /* CVorticonSpriteObjectAI.h */,
 				23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */,
 				23C64A8311F31D9C0053CA36 /* CAnkhShield.h */,
 				23A11B7411E7C3F900747BFA /* CAutoRay.cpp */,
@@ -2127,6 +2121,8 @@
 				2332C60E11EA3B42000D8F71 /* CBridges.h */,
 				23A11B7811E7C3F900747BFA /* CButler.cpp */,
 				23A11B7911E7C3F900747BFA /* CButler.h */,
+				632B0B601688E05B004A387F /* CCarrier.cpp */,
+				632B0B611688E05B004A387F /* CCarrier.h */,
 				23A11B7A11E7C3F900747BFA /* CDoor.cpp */,
 				23A11B7B11E7C3F900747BFA /* CDoor.h */,
 				23A11B7C11E7C3F900747BFA /* CEarthChunk.cpp */,
@@ -2145,6 +2141,8 @@
 				237422C011FC7F67000EEA5B /* CGuardRobot.h */,
 				23A11B8711E7C3F900747BFA /* CIceCannon.cpp */,
 				23A11B8811E7C3F900747BFA /* CIceCannon.h */,
+				632B0B621688E05B004A387F /* CManglingMachine.cpp */,
+				632B0B631688E05B004A387F /* CManglingMachine.h */,
 				23A11B8911E7C3F900747BFA /* CMeep.cpp */,
 				23A11B8A11E7C3F900747BFA /* CMeep.h */,
 				23A11B8B11E7C3F900747BFA /* CMessie.cpp */,
@@ -2172,6 +2170,8 @@
 				23A11BA311E7C3F900747BFA /* CVorticon.h */,
 				23A11BA411E7C3F900747BFA /* CVorticonElite.cpp */,
 				23A11BA511E7C3F900747BFA /* CVorticonElite.h */,
+				63479FA715D5BF1D00613499 /* CVorticonSpriteObjectAI.cpp */,
+				63479FA815D5BF1D00613499 /* CVorticonSpriteObjectAI.h */,
 				23A11BA611E7C3F900747BFA /* CVortikid.cpp */,
 				23A11BA711E7C3F900747BFA /* CVortiKid.h */,
 				23A11BA811E7C3F900747BFA /* CVortiMom.cpp */,
@@ -2222,8 +2222,6 @@
 		63CD118211CFF5FB00F60BC8 /* fileio */ = {
 			isa = PBXGroup;
 			children = (
-				63FEB32F1572AEF500E17333 /* CSaveGameController.cpp */,
-				63FEB3301572AEF500E17333 /* CSaveGameController.h */,
 				63CD118311CFF5FB00F60BC8 /* CConfiguration.cpp */,
 				63CD118411CFF5FB00F60BC8 /* CConfiguration.h */,
 				63CD118511CFF5FB00F60BC8 /* CExeFile.cpp */,
@@ -2235,6 +2233,8 @@
 				63CD119611CFF5FB00F60BC8 /* crc.cpp */,
 				63CD119711CFF5FB00F60BC8 /* crc.h */,
 				63CD119A11CFF5FB00F60BC8 /* CSavedGameCoder.h */,
+				63FEB32F1572AEF500E17333 /* CSaveGameController.cpp */,
+				63FEB3301572AEF500E17333 /* CSaveGameController.h */,
 				63CD119B11CFF5FB00F60BC8 /* CTileLoader.cpp */,
 				63CD119C11CFF5FB00F60BC8 /* CTileLoader.h */,
 				63CD119D11CFF5FB00F60BC8 /* IniReader.cpp */,
@@ -2291,17 +2291,17 @@
 		63CD11B911CFF5FB00F60BC8 /* effects */ = {
 			isa = PBXGroup;
 			children = (
-				632B0B5D1688DFF1004A387F /* CDimDark.cpp */,
-				632B0B5E1688DFF1004A387F /* CDimDark.h */,
-				63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */,
-				63AEA5BF132D4B6A000344F1 /* CScrollEffect.h */,
 				63CD11BA11CFF5FB00F60BC8 /* CColorMerge.cpp */,
 				63CD11BB11CFF5FB00F60BC8 /* CColorMerge.h */,
+				632B0B5D1688DFF1004A387F /* CDimDark.cpp */,
+				632B0B5E1688DFF1004A387F /* CDimDark.h */,
 				63CD11BD11CFF5FB00F60BC8 /* CEffects.h */,
 				63CD11BE11CFF5FB00F60BC8 /* CFlash.cpp */,
 				63CD11BF11CFF5FB00F60BC8 /* CFlash.h */,
 				63CD11C011CFF5FB00F60BC8 /* CPixelate.cpp */,
 				63CD11C111CFF5FB00F60BC8 /* CPixelate.h */,
+				63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */,
+				63AEA5BF132D4B6A000344F1 /* CScrollEffect.h */,
 				63CD11C211CFF5FB00F60BC8 /* CVibrate.cpp */,
 				63CD11C311CFF5FB00F60BC8 /* CVibrate.h */,
 			);
@@ -2311,18 +2311,18 @@
 		63CD11DD11CFF5FB00F60BC8 /* sdl */ = {
 			isa = PBXGroup;
 			children = (
-				63FEB3541572AF7B00E17333 /* input */,
-				63FEB3511572AF5500E17333 /* extensions.cpp */,
-				63FEB3521572AF5500E17333 /* extensions.h */,
-				63385F4B13C009BE00BC2558 /* resolutionlist.h */,
-				23D4C4AB132C281D00B06391 /* music */,
-				23D4C4A7132C27FC00B06391 /* CVidConfig.cpp */,
-				23D4C4A8132C27FC00B06391 /* CVidConfig.h */,
 				63CD11E411CFF5FB00F60BC8 /* CTimer.cpp */,
 				63CD11E511CFF5FB00F60BC8 /* CTimer.h */,
+				23D4C4A7132C27FC00B06391 /* CVidConfig.cpp */,
+				23D4C4A8132C27FC00B06391 /* CVidConfig.h */,
 				63CD11E611CFF5FB00F60BC8 /* CVideoDriver.cpp */,
 				63CD11E711CFF5FB00F60BC8 /* CVideoDriver.h */,
+				63FEB3511572AF5500E17333 /* extensions.cpp */,
+				63FEB3521572AF5500E17333 /* extensions.h */,
+				63FEB3541572AF7B00E17333 /* input */,
 				2374246911FCA6CB000EEA5B /* iphone */,
+				23D4C4AB132C281D00B06391 /* music */,
+				63385F4B13C009BE00BC2558 /* resolutionlist.h */,
 				63CD11E811CFF5FB00F60BC8 /* sound */,
 				63CD11F011CFF5FB00F60BC8 /* sys */,
 				63CD11F311CFF5FB00F60BC8 /* video */,
@@ -2359,14 +2359,14 @@
 		63CD11F311CFF5FB00F60BC8 /* video */ = {
 			isa = PBXGroup;
 			children = (
-				63FEB3591572AF8600E17333 /* DrawEvents.h */,
-				63FEB35A1572AF8600E17333 /* scalers */,
 				23D4C4BC132C283A00B06391 /* COpenGL.cpp */,
 				23D4C4BD132C283A00B06391 /* COpenGL.h */,
 				23D4C4BE132C283A00B06391 /* CSDLVideo.cpp */,
 				23D4C4BF132C283A00B06391 /* CSDLVideo.h */,
 				23D4C4C0132C283A00B06391 /* CVideoEngine.cpp */,
 				23D4C4C1132C283A00B06391 /* CVideoEngine.h */,
+				63FEB3591572AF8600E17333 /* DrawEvents.h */,
+				63FEB35A1572AF8600E17333 /* scalers */,
 			);
 			path = video;
 			sourceTree = "<group>";
