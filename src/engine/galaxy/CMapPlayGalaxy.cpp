@@ -73,25 +73,21 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	{	    
 	    for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
 	    {
-		auto &objRef = *(obj->get());
-		// If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
-		// how the death-message or go gameover.
-		if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
-		{
-			// Is he really dead?
-			if( player->dead )
-				player->processDead();
-		}
+		auto &objRef = *(obj->get());	
+		bool visibility = false;
 
-
-		if( objRef.exists && objRef.calcVisibility() )
+		if( objRef.exists )
 		{
+		    visibility = objRef.calcVisibility();
+		    
+		    if( visibility )
+		    {
 			// Process the AI of the object as it's given
 			objRef.process();
 			
 			// process all the objects' events
 			objRef.processEvents();
-
+			
 			// Check collision between objects using NlogN order
 			auto theOther = obj; theOther++;			
 			for( ; theOther != mObjectPtr.end() ; theOther++)
@@ -99,25 +95,40 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 			    auto &theOtherRef = *(theOther->get());
 			    if( !theOtherRef.exists )
 				continue;
-
+			    
 			    objRef.isNearby(theOtherRef);
 			    theOtherRef.isNearby(objRef);
-
+			    
 			    if( objRef.hitdetect(theOtherRef) )
 			    {
 				objRef.getTouchedBy(theOtherRef);
 				theOtherRef.getTouchedBy(objRef);
 			    }
 			}
+		    }
 		}
+		
+		// If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
+		// how the death-message or go gameover.
+		if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
+		{
+		    // Is he really dead?
+		    if( player->dead || (!visibility && player->m_dying) )
+			player->processDead();
+		}
+		
 	    }
 	    
-	    if(!mObjectPtr.empty())
+	    /*if(!mObjectPtr.empty())
 	    {
-	      // if you see some object which at the end of the container is non-existent, remove it!
-	      if(!mObjectPtr.back()->exists)
-		mObjectPtr.pop_back();
-	    }
+		auto obj = mObjectPtr.back();
+		
+		// if you see some object which at the end of the container is non-existent, remove it!
+		if(!obj->exists)
+		{
+		    mObjectPtr.pop_back();
+		}
+	    }*/
 	    
 	}
 

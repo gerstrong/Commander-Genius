@@ -154,6 +154,8 @@ public:
 	CInventory &m_Inventory;
 
 	CCamera m_camera;
+	
+	bool m_dying;
 
 protected:
 
@@ -165,8 +167,7 @@ protected:
 
 	Sint16 m_playcontrol[PA_MAX_ACTIONS];
 	int m_timer;
-
-	bool m_dying;
+	
 
 	stCheat& m_Cheatmode;
 
