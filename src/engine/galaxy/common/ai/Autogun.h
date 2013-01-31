@@ -13,6 +13,15 @@ public:
   AutoGun(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
 	direction_t horDir, direction_t vertDir, int basesprite);
   
+};
+
+class AutoShot : public CGalaxySpriteObject
+{
+  
+public:
+  AutoShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+	direction_t horDir, direction_t vertDir, int basesprite);
+  
   void process();
   
   void getTouchedBy(CSpriteObject &theObject);
@@ -23,7 +32,7 @@ private:
   void setWaitStatus();
   void flying();
   
-  void (AutoGun::*processState)();
+  void (AutoShot::*processState)();
   
   static const int FLY_SPEED = 160;
   static const int WAIT_TIME = 150;

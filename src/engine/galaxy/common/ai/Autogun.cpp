@@ -6,6 +6,17 @@ namespace galaxy
 
 AutoGun::AutoGun(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, 
 		 direction_t horDir, direction_t vertDir, int basesprite) :
+CGalaxySpriteObject(pmap, foeID, x, y)
+{
+  // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5 and 6
+  
+  AutoShot *shot = new AutoShot(mp_Map, 0, x, y, horDir, vertDir, basesprite);
+  g_pBehaviorEngine->m_EventList.spawnObj( shot );
+}
+
+    
+AutoShot::AutoShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, 
+		 direction_t horDir, direction_t vertDir, int basesprite) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 mTimer(0)
 {
@@ -57,7 +68,7 @@ mTimer(0)
     mNumAnimSprites = 2;
   }
 
-  processState = &AutoGun::waiting;  
+  processState = &AutoShot::waiting;  
   sprite = mBaseSprite;
   dontdraw = true;
   
@@ -67,7 +78,7 @@ mTimer(0)
   
 }
 
-void AutoGun::waiting()
+void AutoShot::waiting()
 {
     const int ep = g_pBehaviorEngine->getEpisode();
     if(ep == 5)
@@ -95,7 +106,7 @@ void AutoGun::waiting()
 
   sprite = mBaseSprite;
   mTimer = 0;
-  processState = &AutoGun::flying;
+  processState = &AutoShot::flying;
   
   if(ep == 4)
   {
@@ -110,9 +121,9 @@ void AutoGun::waiting()
 }
 
 
-void AutoGun::getTouchedBy(CSpriteObject &theObject)
+void AutoShot::getTouchedBy(CSpriteObject &theObject)
 {
-    if(processState != &AutoGun::flying)
+    if(processState != &AutoShot::flying)
 	return;
     
   if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
@@ -123,10 +134,10 @@ void AutoGun::getTouchedBy(CSpriteObject &theObject)
 
 
 
-void AutoGun::setWaitStatus()
+void AutoShot::setWaitStatus()
 {        
     // wait! in keen 4 it has to return        
-    processState = &AutoGun::waiting;
+    processState = &AutoShot::waiting;
     if(g_pBehaviorEngine->getEpisode() == 5)
     {
 	sprite = mBaseSprite + mNumAnimSprites;
@@ -136,7 +147,7 @@ void AutoGun::setWaitStatus()
 
 
 // When autogun is waiting to shoot!
-void AutoGun::flying()
+void AutoShot::flying()
 {    
   moveXDir(xDirection*FLY_SPEED);
   moveYDir(yDirection*FLY_SPEED);
@@ -158,7 +169,7 @@ void AutoGun::flying()
 }
 
 // When autoguns bullet is flying over the screen!
-void AutoGun::process()
+void AutoShot::process()
 {
     mTimer++;
     
