@@ -123,7 +123,7 @@ void CPoisonSlug::process()
 {
 	performCollisions();
 	
-	performGravityLow();			
+	performGravityMid();			
 
 	if( blockedl )
 		xDirection = RIGHT;
