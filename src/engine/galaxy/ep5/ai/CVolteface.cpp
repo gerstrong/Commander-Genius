@@ -66,8 +66,6 @@ void CVolteface::processMoving()
 	VectorD2<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);
 	
-	targetmode = false;
-	
 	// If there is an object that changes the direction of the plat, apply it!
 	readDirection(object, xDirection, yDirection );
 	detectNextTarget(target, xDirection, yDirection);

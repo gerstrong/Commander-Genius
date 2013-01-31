@@ -9,6 +9,7 @@
 #define CGALAXYSPRITEOBJECT_H_
 
 #include "common/CSpriteObject.h"
+#include <fileio/CSaveGameController.h>
 
 class CGalaxySpriteObject: public CSpriteObject
 {
@@ -37,6 +38,11 @@ public:
 	void setAction(size_t ActionNumber);
 	void setActionSprite();
 	bool processActionRoutine();
+	
+	
+	// For saving and loading...
+	virtual void deserialize(CSaveGameController &savedGame) {}
+	virtual void serialize(CSaveGameController &savedGame) {}
 
 	// This is used for action format only
 	uint16_t mFoeID;

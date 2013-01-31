@@ -46,8 +46,6 @@ void CVarPlatform::process()
 	VectorD2<int> speed(xBlockPos, yBlockPos);	    
 	movePlat(speed);
 	
-	targetmode = false;
-	
 	readDirection(object, xDirection, yDirection );
 	detectNextTarget(target, xDirection, yDirection);
 	

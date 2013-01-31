@@ -24,6 +24,19 @@ public:
 			const int actionOffset);
 
 	void process();
+		
+	void deserialize(CSaveGameController &savedGame) 
+	{
+	    savedGame.decodeData(target.x);
+	    savedGame.decodeData(target.y);
+	}
+
+	void serialize(CSaveGameController &savedGame) 
+	{
+    	    savedGame.encodeData(target.x);
+	    savedGame.encodeData(target.y);
+	}
+	
 };
 
 };

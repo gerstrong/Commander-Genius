@@ -231,15 +231,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	{
 		// save all the objects states
 		unsigned int newYpos = it->getYPosition();
-		unsigned int newXpos = it->getXPosition();
-		
-		if( it->sprite != BLANKSPRITE && 
-		    dynamic_cast<galaxy::CPlatform*>(it.get()) == nullptr )
-		{
-		    // we need to get back to the original position, because when loading a game the original unCSFed coordinates are transformed
-		    newYpos -= (1<<CSF);
-		    newYpos += it->m_BBox.y2;		    
-		}
+		unsigned int newXpos = it->getXPosition();	
 		
 		savedGame.encodeData( it->mFoeID );
 		savedGame.encodeData( newXpos );
@@ -251,7 +243,9 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( it->blockedd );
 		savedGame.encodeData( it->blockedu );
 		savedGame.encodeData( it->blockedl );
-		savedGame.encodeData( it->blockedr );
+		savedGame.encodeData( it->blockedr );	
+		savedGame.encodeData( it->xDirection );
+		savedGame.encodeData( it->yDirection );		
 		savedGame.encodeData( it->mHealthPoints );
 		savedGame.encodeData( it->canbezapped );
 		savedGame.encodeData( it->cansupportplayer );
@@ -259,6 +253,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( it->honorPriority );
 		savedGame.encodeData( it->sprite );
 		savedGame.encodeData( it->m_ActionNumber );
+		it->serialize(savedGame);
 	}
 
 	// Save the map_data as it is left
@@ -349,6 +344,8 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData( pNewfoe->blockedu );
 		savedGame.decodeData( pNewfoe->blockedl );
 		savedGame.decodeData( pNewfoe->blockedr );
+		savedGame.decodeData( pNewfoe->xDirection );
+		savedGame.decodeData( pNewfoe->yDirection );		
 		savedGame.decodeData( pNewfoe->mHealthPoints );
 		savedGame.decodeData( pNewfoe->canbezapped );
 		savedGame.decodeData( pNewfoe->cansupportplayer );
@@ -356,11 +353,12 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData( pNewfoe->honorPriority );
 		savedGame.decodeData( pNewfoe->sprite );
 		savedGame.decodeData( actionNumber );
+		pNewfoe->deserialize(savedGame);
 
 		if(pNewfoe->exists)
 		{
 		    pNewfoe->setActionForce(actionNumber);
-		    std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
+		    std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);		    
 		    mObjectPtr.push_back(newFoe);
 		}
 	}

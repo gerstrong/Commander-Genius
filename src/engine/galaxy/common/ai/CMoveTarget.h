@@ -16,12 +16,11 @@ class CMoveTarget
 public:
 	CMoveTarget(const VectorD2<unsigned int> &pos,
 	  int &xDirection, int &yDirection) :
-	  targetmode(false),
 	  origin(pos) 
-	  {	    
+	  {	    	    
 	    detectNextTarget(origin, xDirection, yDirection);	
 	  }
-  
+	    
 protected:
 	void fetchInitialDir(int &xDirection, int &yDirection, CMap &mapRef);
 	
@@ -32,7 +31,7 @@ protected:
 	void detectNextTarget(const VectorD2<int> &oldTarget, 
 	  		    const int xDirection, const int yDirection	);	
 
-	bool targetmode;
+	// Data for the MoveTarget class
 	VectorD2<int> target;
 	const VectorD2<unsigned int> &origin;
 };

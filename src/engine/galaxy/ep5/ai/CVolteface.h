@@ -36,18 +36,8 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-  
-	/*void fetchInitialDir();
-	void readDirection(const Uint16 object, 	
-				int &xDirection,		
-				int &yDirection );
 
-	void detectNextTarget(const VectorD2<int> &oldTarget);	*/
-
-	int mTimer;
-	
-	//bool targetmode;
-	//VectorD2<int> target;	
+	int mTimer;	
 };
 
 }
