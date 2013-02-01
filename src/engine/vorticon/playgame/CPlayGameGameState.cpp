@@ -18,6 +18,8 @@
 bool CPlayGameVorticon::loadGameState()
 {
 	CSaveGameController &savedGame = *(gpSaveGameController);
+	
+	bool ok = true;
 
 	// This fills the datablock from CSavedGame object
 	if(savedGame.load())
@@ -30,23 +32,23 @@ bool CPlayGameVorticon::loadGameState()
 
 		// get the episode, level and difficulty
 		char newLevel;
-		savedGame.decodeData(m_Episode);
-		savedGame.decodeData(newLevel);
+		ok &= savedGame.decodeData(m_Episode);
+		ok &= savedGame.decodeData(newLevel);
 
 		bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
 		m_Level = newLevel;
 
-		savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
+		ok &= savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
 
 		bool dark, checkpointset;
 		int checkx, checky;
-		savedGame.decodeData(checkpointset);
-		savedGame.decodeData(checkx);
-		savedGame.decodeData(checky);
-		savedGame.decodeData(dark);
+		ok &= savedGame.decodeData(checkpointset);
+		ok &= savedGame.decodeData(checkx);
+		ok &= savedGame.decodeData(checky);
+		ok &= savedGame.decodeData(dark);
 
 		// Load number of Players
-		savedGame.decodeData(m_NumPlayers);
+		ok &= savedGame.decodeData(m_NumPlayers);
 
 		if(!m_Player.empty())
 			m_Player.clear();
@@ -71,23 +73,24 @@ bool CPlayGameVorticon::loadGameState()
 		m_level_command = START_LEVEL;
 
 		std::vector<CPlayer> :: iterator player;
-		for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) {
+		for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) 
+		{
 			int x, y;
 			player->setupforLevelPlay();
-			savedGame.decodeData(x);
-			savedGame.decodeData(y);
+			ok &= savedGame.decodeData(x);
+			ok &= savedGame.decodeData(y);
 			player->moveToForce(VectorD2<int>(x,y));
-			savedGame.decodeData(player->blockedd);
-			savedGame.decodeData(player->blockedu);
-			savedGame.decodeData(player->blockedl);
-			savedGame.decodeData(player->blockedr);
-			savedGame.decodeData(player->inventory);
+			ok &= savedGame.decodeData(player->blockedd);
+			ok &= savedGame.decodeData(player->blockedu);
+			ok &= savedGame.decodeData(player->blockedl);
+			ok &= savedGame.decodeData(player->blockedr);
+			ok &= savedGame.decodeData(player->inventory);
 			player->pdie = 0;
 		}
 
 		// load the number of objects on screen
 		Uint32 size;
-		savedGame.decodeData(size);
+		ok &= savedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size  ; i++ )
 		{
 			unsigned int x,y;
@@ -101,24 +104,24 @@ bool CPlayGameVorticon::loadGameState()
 
 			CVorticonSpriteObject &object = *(mSpriteObjectContainer.at(i));
 
-			savedGame.decodeData(object.m_type);
-			savedGame.decodeData(x);
-			savedGame.decodeData(y);
+			ok &= savedGame.decodeData(object.m_type);
+			ok &= savedGame.decodeData(x);
+			ok &= savedGame.decodeData(y);
 			object.moveToForce(VectorD2<int>(x,y));
-			savedGame.decodeData(object.dead);
-			savedGame.decodeData(object.onscreen);
-			savedGame.decodeData(object.hasbeenonscreen);
-			savedGame.decodeData(object.exists);
-			savedGame.decodeData(object.blockedd);
-			savedGame.decodeData(object.blockedu);
-			savedGame.decodeData(object.blockedl);
-			savedGame.decodeData(object.blockedr);
-			savedGame.decodeData(object.mHealthPoints);
-			savedGame.decodeData(object.canbezapped);
-			savedGame.decodeData(object.cansupportplayer);
-			savedGame.decodeData(object.inhibitfall);
-			savedGame.decodeData(object.honorPriority);
-			savedGame.decodeData(object.sprite);
+			ok &= savedGame.decodeData(object.dead);
+			ok &= savedGame.decodeData(object.onscreen);
+			ok &= savedGame.decodeData(object.hasbeenonscreen);
+			ok &= savedGame.decodeData(object.exists);
+			ok &= savedGame.decodeData(object.blockedd);
+			ok &= savedGame.decodeData(object.blockedu);
+			ok &= savedGame.decodeData(object.blockedl);
+			ok &= savedGame.decodeData(object.blockedr);
+			ok &= savedGame.decodeData(object.mHealthPoints);
+			ok &= savedGame.decodeData(object.canbezapped);
+			ok &= savedGame.decodeData(object.cansupportplayer);
+			ok &= savedGame.decodeData(object.inhibitfall);
+			ok &= savedGame.decodeData(object.honorPriority);
+			ok &= savedGame.decodeData(object.sprite);
 			object.performCollisions();
 
 			if(object.m_type == OBJ_DOOR or
@@ -135,12 +138,12 @@ bool CPlayGameVorticon::loadGameState()
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
 
 		// Load the map_data as it was left last
-		savedGame.decodeData(mMap->m_width);
-		savedGame.decodeData(mMap->m_height);
-		savedGame.readDataBlock( reinterpret_cast<byte*>(mMap->getForegroundData()) );
+		ok &= savedGame.decodeData(mMap->m_width);
+		ok &= savedGame.decodeData(mMap->m_height);
+		ok &= savedGame.readDataBlock( reinterpret_cast<byte*>(mMap->getForegroundData()) );
 
 		// Load completed levels
-		savedGame.readDataBlock( (byte*)(mp_level_completed) );
+		ok &= savedGame.readDataBlock( (byte*)(mp_level_completed) );
 
 		m_Player[0].setMapData(mMap.get());
 		m_Player[0].setupCameraObject();
@@ -166,7 +169,7 @@ bool CPlayGameVorticon::loadGameState()
 		mMap->m_Dark = dark;
 		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
 
-		return true;
+		return ok;
 	}
 
 	return false;

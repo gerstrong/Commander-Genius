@@ -65,10 +65,10 @@ public:
 	template <class T>
 	void decodeVariable(T &variable);
 	template <class S>
-	void decodeData(S &structure);
+	bool decodeData(S &structure);
 
 	void addData(byte *data, Uint32 size);
-	void readDataBlock(byte *data);
+	bool readDataBlock(byte *data);
 
 	bool save();
 	bool load();

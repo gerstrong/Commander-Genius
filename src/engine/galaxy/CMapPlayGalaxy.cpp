@@ -356,7 +356,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		savedGame.decodeData( pNewfoe->blockedl );
 		savedGame.decodeData( pNewfoe->blockedr );
 		savedGame.decodeData( pNewfoe->xDirection );
-		savedGame.decodeData( pNewfoe->yDirection );		
+		savedGame.decodeData( pNewfoe->yDirection );
 		savedGame.decodeData( pNewfoe->mHealthPoints );
 		savedGame.decodeData( pNewfoe->canbezapped );
 		savedGame.decodeData( pNewfoe->cansupportplayer );

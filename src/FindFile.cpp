@@ -326,7 +326,8 @@ bool is_searchname_in_exactfilenamecache(
 		return false;
 }
 
-void add_searchname_to_exactfilenamecache(const std::string& exactname) {
+void add_searchname_to_exactfilenamecache(const std::string& exactname)
+{
 	Mutex::ScopedLock lock(exactfilenamecache.mutex);
 	exactfilenamecache.cache.insert(exactname);
 }

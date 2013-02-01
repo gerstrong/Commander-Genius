@@ -667,8 +667,11 @@ void CSaveGameController::addData(byte *data, Uint32 size)
 }
 
 // Read data of size from the main data block
-void CSaveGameController::readDataBlock(byte *data)
+bool CSaveGameController::readDataBlock(byte *data)
 {
+    	if(m_offset+sizeof(Uint32) > m_datablock.size())
+	    return false;
+    
 	Uint32 datasize=0;
 	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32) );
 	m_offset += sizeof(Uint32);
