@@ -410,17 +410,31 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 	const int floorleft = TileProperty[mp_Map->at(x_left, y_bottom)].bup;
 	const int floorright = TileProperty[mp_Map->at(x_right, y_bottom)].bup;
 
-	if( !floorleft && xDirection == LEFT && floorright==1 )
+	if( floorleft == 0 && xDirection == LEFT && floorright==1 )
 	{
-		blockedl = floorright;
-		return true;
+	    for(int x=x_left ; x<=x_right ; x++ )
+	    {
+		const int tile = TileProperty[mp_Map->at(x, y_bottom)].bup;
+		if( tile>=2 && tile<=7  )
+		    return false;
+	    }
+	
+	    blockedl = floorright;
+	    return true;
 	}
 
-	if( !floorright && xDirection == RIGHT && floorleft==1 )
+	if( floorright == 0 && xDirection == RIGHT && floorleft==1 )
 	{
-		blockedr = floorleft;
-		return true;
-	}
+	    for(int x=x_left ; x<=x_right ; x++ )
+	    {
+		const int tile = TileProperty[mp_Map->at(x, y_bottom)].bup;
+		if( tile>=2 && tile<=7  )
+		    return false;
+	    }
+	
+	    blockedr = floorleft;
+	    return true;
+	}	
 
 	return false;
 }

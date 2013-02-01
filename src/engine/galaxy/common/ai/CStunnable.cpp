@@ -78,6 +78,8 @@ void CStunnable::draw()
   if( dontdraw )
 	return;    
   
+  CGalaxySpriteObject::draw();
+  
   if(dead && blockedd && yinertia == 0)
   {                
     if(starTimer > 0)
@@ -119,9 +121,7 @@ void CStunnable::draw()
 	StarSprite.drawSprite( showX, showY, (255-transluceny) );
       }
     }
-  }  
-  
-  CGalaxySpriteObject::draw();
+  }    
   	
 }
 
