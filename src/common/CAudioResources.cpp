@@ -24,13 +24,13 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	soundslot.priority = READWORD(imfdata_ptr);
 	soundslot.setupAudioSpec(&m_AudioSpec);
 	COPLEmulator &OPLEmulator = *g_pSound->getOPLEmulatorPtr();
-	
+
 	// It's time make it Adlib Sound structure and read it into the waveform
 	AdLibSound AL_Sound = *((AdLibSound*) imfdata_ptr);
 	imfdata_ptr += sizeof(AdLibSound);
 	const unsigned int data_size = size;
 	const byte *AL_Sounddata_start = imfdata_ptr;
-	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;		
+	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;
 
 	OPLEmulator.ShutAL();
 	Bit8u alBlock = ((AL_Sound.block & 7) << 2) | 0x20;
@@ -47,7 +47,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	byte waveform[wavesize];
 	byte *waveform_ptr = waveform;
 	Bit32s mix_buffer[samplesPerMusicTick];
-	
+
 	OPLEmulator.ALStopSound();
 
 	// TODO: This does not work correctly yet...
@@ -66,7 +66,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 
    		if(formatsize == 2) // 16-Bit Sound
    		{
-   			for( uint count=0 ; count<waittimes ; count++ )
+   			for( size_t count=0 ; count<waittimes ; count++ )
    			{
    				Sint16 *buffer = (Sint16*) (void*) waveform_ptr;
 

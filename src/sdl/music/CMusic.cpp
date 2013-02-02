@@ -37,7 +37,7 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 
 bool CMusic::load(const CExeFile& ExeFile, const int level)
 {
-    
+
 #if defined(OGG) || defined(TREMOR)
     std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
     if(oggPlayer->loadMusicForLevel(ExeFile, level))
@@ -45,8 +45,8 @@ bool CMusic::load(const CExeFile& ExeFile, const int level)
 	mpPlayer = move(oggPlayer);
 	return true;
     }
-#endif    
-    
+#endif
+
     std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
     imfPlayer->loadMusicForLevel(ExeFile, level);
 
@@ -73,14 +73,16 @@ bool CMusic::load(const std::string &musicfile)
 	{
 		std::string extension = GetFileExtension(musicfile);
 
-		if(strcasecmp(extension.c_str(),"imf") == 0)
+		stringlwr(extension);
+
+		if( extension == "imf" )
 		{
 		    std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(audioSpec) );
 		    if(!imfPlayer->loadMusicFromFile(musicfile))
 		      return false;
 		    mpPlayer = move(imfPlayer);
 		}
-		else if(strcasecmp(extension.c_str(),"ogg") == 0)
+		else if( extension == "ogg" )
 		{
 #if defined(OGG) || defined(TREMOR)
 		    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );

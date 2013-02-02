@@ -71,7 +71,7 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
  *  \param	width	optionally it can read width
  *  \return	if the number could be read true, otherwise false
  */
-bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long &output, uint &width)
+bool CPatcher::readIntValueAndWidth(const std::string &input, size_t &output, size_t &width)
 {
 	if(strStartsWith(input, "$") or strCaseStartsWith(input, "0x"))
 	{
@@ -83,10 +83,10 @@ bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long &out
 			line.erase(0,1);
 			buf = "0x"+line;
 			line = buf;
-		}	
+		}
 
 		stringlwr(line);
-		
+
 		if(line.size() <=4 )
 		{
 		    width = 1;
@@ -119,9 +119,9 @@ bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long &out
 	return false;
 }
 
-bool CPatcher::readIntValue(const std::string &input, unsigned long &output)
+bool CPatcher::readIntValue(const std::string &input, size_t &output)
 {
-    uint width;
+    size_t width;
     return readIntValueAndWidth(input, output, width);
 }
 
@@ -172,16 +172,16 @@ void CPatcher::filterPatches(std::list<std::string> &textlist)
 		else if( !ignorelines && !strStartsWith(line,"#") )
 		{
 			// Ignore lines which are meant for other versions and comments.
-			
-			// Now remove everything that has a '#' but comes later in the lines			
+
+			// Now remove everything that has a '#' but comes later in the lines
 			const size_t commPos = line.find('#');
-			if(commPos != std::string::npos)			    
+			if(commPos != std::string::npos)
 			{
 			    line.erase(commPos);
 			}
-			
+
 			TrimSpaces(line);
-			
+
 			textlist.push_back(line);
 		}
 		TextList.pop_front();
@@ -216,16 +216,16 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem, std::list<std::string> &
 	stringlwr(PatchItem.keyword);
 	line.erase(0,pos);
 	TrimSpaces(line);
-	
-	pos = line.find("\\n ");    
+
+	pos = line.find("\\n ");
 	while(pos != std::string::npos)
 	{
 	    line.replace(pos,2, "\n");
-	    pos = line.find("\\n");    
+	    pos = line.find("\\n");
 	}
 
 	// Then read the value of that was given to that keyword.
-	PatchItem.value.push_back(line);		
+	PatchItem.value.push_back(line);
 
 	while(1)
 	{
@@ -233,20 +233,20 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem, std::list<std::string> &
 			return true;
 
 		line = *m_TextList.begin();
-		
+
 		// Check if line has some newline characters in the text file
 		pos = line.find("\\n");
 
 		if(strStartsWith(line,"\%"))
 			break;
-		
-		pos = line.find("\\n");    
+
+		pos = line.find("\\n");
 		while(pos != std::string::npos)
 		{
 		    line.replace(pos,2, "\r");
-		    pos = line.find("\\n");    
+		    pos = line.find("\\n");
 		}
-		
+
 
 		m_TextList.pop_front();
 

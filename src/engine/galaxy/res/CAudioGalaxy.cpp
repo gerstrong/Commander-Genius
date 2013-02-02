@@ -60,18 +60,18 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
  *  \brief Sets up the Map assignments for the Sounds used in Keen Galaxy
  */
 void CAudioGalaxy::setupAudioMap()
-{     
+{
     // Preparation which might help wehn some patches are applied
     byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
     auto episode = g_pBehaviorEngine->getEpisode();
-    uint holder = 0;
-  
-    // Episode 4    
+    size_t holder = 0;
+
+    // Episode 4
     sndSlotMapGalaxy[4][SOUND_KEEN_WALK] = 0;
     sndSlotMapGalaxy[4][SOUND_KEEN_WALK2] = 1;
     sndSlotMapGalaxy[4][SOUND_KEEN_JUMP] = 2;
     sndSlotMapGalaxy[4][SOUND_KEEN_LAND] = 3;
-    sndSlotMapGalaxy[4][SOUND_KEEN_FIRE] = 4; 
+    sndSlotMapGalaxy[4][SOUND_KEEN_FIRE] = 4;
     sndSlotMapGalaxy[4][SOUND_WORMOUTH_STRIKE] = 5;
     // sndSlotMapGalaxy[4][?] = 6; // This sounds like alternative breathe under water. not sure
     sndSlotMapGalaxy[4][SOUND_KEEN_POGO] = 7;
@@ -85,15 +85,15 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[4][SOUND_KEEN_BUMPHEAD] = 15;
     sndSlotMapGalaxy[4][SOUND_BOUNCE_HIGH] = 16;
     sndSlotMapGalaxy[4][SOUND_EXTRA_LIFE] = 17;
-    sndSlotMapGalaxy[4][SOUND_DOOR_OPEN] = 18;    
+    sndSlotMapGalaxy[4][SOUND_DOOR_OPEN] = 18;
     sndSlotMapGalaxy[4][SOUND_GET_GEM] = 19;
     sndSlotMapGalaxy[4][SOUND_KEEN_FALL] = 20;
-    sndSlotMapGalaxy[4][SOUND_GUN_CLICK] = 21;    
+    sndSlotMapGalaxy[4][SOUND_GUN_CLICK] = 21;
     sndSlotMapGalaxy[4][SOUND_SQUISH_SKYPEST] = 22;
     sndSlotMapGalaxy[4][SOUND_KEEN_DIE] = 23;
     //sndSlotMapGalaxy[4][?] = 24;
     sndSlotMapGalaxy[4][SOUND_SHOT_HIT] = 25;
-    sndSlotMapGalaxy[4][SOUND_KEEN_SWIM] = 26;    
+    sndSlotMapGalaxy[4][SOUND_KEEN_SWIM] = 26;
     sndSlotMapGalaxy[4][SOUND_KEEN_SWIM_TO_LAND] = 27;
     sndSlotMapGalaxy[4][SOUND_BOUNCE_LOW] = 28;
     //sndSlotMapGalaxy[4][?] = 29;
@@ -107,31 +107,31 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[4][SOUND_MINE_EXPLOSION] = 37;
     sndSlotMapGalaxy[4][SOUND_SPRITE_SHOT] = 38;
     sndSlotMapGalaxy[4][SOUND_THUNDERCLOUD_STRIKE] = 39;
-    sndSlotMapGalaxy[4][SOUND_BERKELOID_FIREBALL_LANDING] = 40;    
+    sndSlotMapGalaxy[4][SOUND_BERKELOID_FIREBALL_LANDING] = 40;
     sndSlotMapGalaxy[4][SOUND_DARTGUN_SHOOT] = 41;
-    sndSlotMapGalaxy[4][SOUND_DOPEFISH_BURP] = 42;    
+    sndSlotMapGalaxy[4][SOUND_DOPEFISH_BURP] = 42;
     sndSlotMapGalaxy[4][SOUND_FLAG_APPEAR] = 43;
-    sndSlotMapGalaxy[4][SOUND_FLAG_LAND] = 44;    
-    sndSlotMapGalaxy[4][SOUND_GET_WETSUIT] = 45;    
+    sndSlotMapGalaxy[4][SOUND_FLAG_LAND] = 44;
+    sndSlotMapGalaxy[4][SOUND_GET_WETSUIT] = 45;
     sndSlotMapGalaxy[4][SOUND_SLUG_DEFECATE] = 46;
     sndSlotMapGalaxy[4][SOUND_PLAYER_PADDLE] = 47;
     sndSlotMapGalaxy[4][SOUND_COMPUTER_PADDLE] = 48;
     sndSlotMapGalaxy[4][SOUND_HIT_SIDEWALL] = 49;
     sndSlotMapGalaxy[4][SOUND_COMPUTER_POINT] = 50;
     sndSlotMapGalaxy[4][SOUND_PLAYER_POINT] = 51;
-    
-    
-        
-    if(episode == 5) // Episode 5   
-    {      
+
+
+
+    if(episode == 5) // Episode 5
+    {
       sndSlotMapGalaxy[5][SOUND_KEEN_WALK] = 0;
       sndSlotMapGalaxy[5][SOUND_KEEN_WALK2] = 1;
       sndSlotMapGalaxy[5][SOUND_KEEN_JUMP] = 2;
-      
+
       memcpy(&holder, ptr + 0xC87D, 1 );
       sndSlotMapGalaxy[5][SOUND_KEEN_LAND] = holder;
-      
-      sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4; 
+
+      sndSlotMapGalaxy[5][SOUND_KEEN_FIRE] = 4;
       sndSlotMapGalaxy[5][SOUND_MINEEXPLODE] = 5;
       sndSlotMapGalaxy[5][SOUND_SLICEBUMP] = 6;
       sndSlotMapGalaxy[5][SOUND_KEEN_POGO] = 7;
@@ -145,20 +145,20 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_KEEN_BUMPHEAD] = 15;
       sndSlotMapGalaxy[5][SOUND_SPINDREDFLYUP] = 16;
       sndSlotMapGalaxy[5][SOUND_EXTRA_LIFE] = 17;
-      sndSlotMapGalaxy[5][SOUND_OPEN_EXIT_DOOR] = 18;    
+      sndSlotMapGalaxy[5][SOUND_OPEN_EXIT_DOOR] = 18;
       sndSlotMapGalaxy[5][SOUND_GET_GEM] = 19;
       sndSlotMapGalaxy[5][SOUND_KEEN_FALL] = 20;
-      sndSlotMapGalaxy[5][SOUND_GUN_CLICK] = 21;    
+      sndSlotMapGalaxy[5][SOUND_GUN_CLICK] = 21;
       //sndSlotMapGalaxy[5][?] = 22;
       sndSlotMapGalaxy[5][SOUND_KEEN_DIE] = 23;
       //sndSlotMapGalaxy[5][?] = 24;
       sndSlotMapGalaxy[5][SOUND_SHOT_HIT] = 25;
-      //sndSlotMapGalaxy[5][?] = 26;    
+      //sndSlotMapGalaxy[5][?] = 26;
       sndSlotMapGalaxy[5][SOUND_SPIROGRIP] = 27;
 
       memcpy(&holder, ptr + 0x129FC, 1 );
       sndSlotMapGalaxy[5][SOUND_SPINDREDSLAM] = 28;
-      
+
       sndSlotMapGalaxy[5][SOUND_ROBORED_SHOOT] = 29;
       //sndSlotMapGalaxy[5][SOUND_ROBOSHOTHIT] = 30;
       sndSlotMapGalaxy[5][SOUND_AMPTONWALK0] = 31;
@@ -167,18 +167,18 @@ void CAudioGalaxy::setupAudioMap()
       sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_IN] = 34;
       sndSlotMapGalaxy[5][SOUND_STATUS_SLIDE_OUT] = 35;
       sndSlotMapGalaxy[5][SOUND_SPARKY_CHARGE] = 36;
-      
+
       memcpy(&holder, ptr + 0x10F93, 1 );
       sndSlotMapGalaxy[5][SOUND_SPINDREDFLYDOWN] = holder;
-      
+
       sndSlotMapGalaxy[5][SOUND_MASTERSHOT] = 38;
       sndSlotMapGalaxy[5][SOUND_MASTERTELE] = 39;
-      sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;    
+      sndSlotMapGalaxy[5][SOUND_POLEZAP] = 40;
       sndSlotMapGalaxy[5][SOUND_TELEPORT] = 41;
-      sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;    
+      sndSlotMapGalaxy[5][SOUND_SHOCKSUNDBARK] = 42;
       sndSlotMapGalaxy[5][SOUND_FLAG_APPEAR] = 43;
-      sndSlotMapGalaxy[5][SOUND_FLAG_LAND] = 44;    
-      //sndSlotMapGalaxy[5][ACTION_BARKSHOTDIE0] = 45;    
+      sndSlotMapGalaxy[5][SOUND_FLAG_LAND] = 44;
+      //sndSlotMapGalaxy[5][ACTION_BARKSHOTDIE0] = 45;
       //sndSlotMapGalaxy[5][SOUND_PLAYER_PADDLE] = 46;
       sndSlotMapGalaxy[5][SOUND_COMPUTER_PADDLE] = 47;
       sndSlotMapGalaxy[5][SOUND_HIT_SIDEWALL] = 48;
@@ -189,25 +189,25 @@ void CAudioGalaxy::setupAudioMap()
       //sndSlotMapGalaxy[5][?] = 53;
       //sndSlotMapGalaxy[5][?] = 54;
       sndSlotMapGalaxy[5][SOUND_GET_CARD] = 55;
-      
+
       memcpy(&holder, ptr + 0x13784, 1 );
       sndSlotMapGalaxy[5][SOUND_ELEVATING] = holder;
       //sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 57;
       //sndSlotMapGalaxy[5][?] = 58;
       sndSlotMapGalaxy[5][SOUND_SPHEREFULCEILING] = 59;
-      
+
       sndSlotMapGalaxy[5][SOUND_DOOR_OPEN] = 60;
       sndSlotMapGalaxy[5][SOUND_SPIROFLY] = 61;
       //sndSlotMapGalaxy[5][?] = 62;
       sndSlotMapGalaxy[5][SOUND_ELEVATOR_OPEN] = 63;
     }
-    
-    // Episode 6    
+
+    // Episode 6
     sndSlotMapGalaxy[6][SOUND_KEEN_WALK] = 0;
     sndSlotMapGalaxy[6][SOUND_KEEN_WALK2] = 1;
     sndSlotMapGalaxy[6][SOUND_KEEN_JUMP] = 2;
     sndSlotMapGalaxy[6][SOUND_KEEN_LAND] = 3;
-    sndSlotMapGalaxy[6][SOUND_KEEN_FIRE] = 4; 
+    sndSlotMapGalaxy[6][SOUND_KEEN_FIRE] = 4;
     //sndSlotMapGalaxy[6][?] = 5;
     // sndSlotMapGalaxy[4][?] = 6; // This sounds like alternative breathe under water. not sure
     sndSlotMapGalaxy[6][SOUND_KEEN_POGO] = 7;
@@ -221,15 +221,15 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[6][SOUND_KEEN_BUMPHEAD] = 15;
     sndSlotMapGalaxy[6][SOUND_BOUNCE_HIGH] = 16;
     sndSlotMapGalaxy[6][SOUND_EXTRA_LIFE] = 17;
-    sndSlotMapGalaxy[6][SOUND_DOOR_OPEN] = 18;    
+    sndSlotMapGalaxy[6][SOUND_DOOR_OPEN] = 18;
     sndSlotMapGalaxy[6][SOUND_GET_GEM] = 19;
     sndSlotMapGalaxy[6][SOUND_KEEN_FALL] = 20;
-    sndSlotMapGalaxy[6][SOUND_GUN_CLICK] = 21;    
+    sndSlotMapGalaxy[6][SOUND_GUN_CLICK] = 21;
     //sndSlotMapGalaxy[6][?] = 22;
     sndSlotMapGalaxy[6][SOUND_KEEN_DIE] = 23;
     //sndSlotMapGalaxy[6][?] = 24;
     sndSlotMapGalaxy[6][SOUND_SHOT_HIT] = 25;
-    //sndSlotMapGalaxy[6][?] = 26;    
+    //sndSlotMapGalaxy[6][?] = 26;
     //sndSlotMapGalaxy[6][?] = 27;
     //sndSlotMapGalaxy[6][?] = 28;
     //sndSlotMapGalaxy[6][?] = 29;
@@ -243,19 +243,19 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[6][?] = 37;
     //sndSlotMapGalaxy[6][?] = 38;
     //sndSlotMapGalaxy[6][?] = 39;
-    //sndSlotMapGalaxy[6][?] = 40;    
+    //sndSlotMapGalaxy[6][?] = 40;
     //sndSlotMapGalaxy[6][?] = 41;
-    //sndSlotMapGalaxy[6][?] = 42;    
+    //sndSlotMapGalaxy[6][?] = 42;
     sndSlotMapGalaxy[6][SOUND_FLAG_APPEAR] = 43;
-    sndSlotMapGalaxy[6][SOUND_FLAG_LAND] = 44;    
-    //sndSlotMapGalaxy[6][?] = 45;    
+    sndSlotMapGalaxy[6][SOUND_FLAG_LAND] = 44;
+    //sndSlotMapGalaxy[6][?] = 45;
     //sndSlotMapGalaxy[6][?] = 46;
     sndSlotMapGalaxy[6][SOUND_PLAYER_PADDLE] = 47;
     sndSlotMapGalaxy[6][SOUND_COMPUTER_PADDLE] = 48;
     sndSlotMapGalaxy[6][SOUND_HIT_SIDEWALL] = 49;
     sndSlotMapGalaxy[6][SOUND_COMPUTER_POINT] = 50;
     sndSlotMapGalaxy[6][SOUND_PLAYER_POINT] = 51;
-    
+
 }
 
 
@@ -268,14 +268,14 @@ void CAudioGalaxy::setupAudioMap()
 bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 {
     setupAudioMap();
-    
+
 	if(m_AudioSpec.format != 0)
 	{
 		// Open the Huffman dictionary and get AUDIODICT
 		CHuffman Huffman;
-		
+
 		std::string audioDictfilename = getResourceFilename( gpResource->audioDictFilename, ExeFile.getDataDirectory(), false, false);
-		
+
 		if(audioDictfilename.empty())
 		    Huffman.readDictionaryNumber( ExeFile, 0 );
 		else
@@ -291,7 +291,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		{
 			g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): Audio File not found!");
 			return false;
-		}				
+		}
 
 		std::ifstream AudioFile;
 		OpenGameFileR(AudioFile, audiofilename);
@@ -307,33 +307,33 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		AudioFile.close();
 
 		// Open the AUDIOHED so we know where to decompress the audio
-		
+
 		std::string audiohedfilename = gpResource->audioHedFilename;
 		audiohedfilename = getResourceFilename( audiohedfilename, ExeFile.getDataDirectory(), false, false);
-		
+
 		uint32_t *audiostarthedptr;
 		uint32_t *audioendhedptr;
-				
+
 		std::vector<uint32_t> audiohed;
-		
-		if(audiohedfilename != "") 
+
+		if(audiohedfilename != "")
 		{
-		    std::ifstream File; 
+		    std::ifstream File;
 		    OpenGameFileR(File, audiohedfilename, std::ios::binary);
-		    
+
 		    File.seekg (0, std::ios::end);
 		    size_t length = File.tellg();
 		    File.seekg (0, std::ios::beg);
-		    
+
 		    audiohed.resize(length/sizeof(u_int));
-		    
-		    File.read( (char*) &(audiohed.front()), length);		    
+
+		    File.read( (char*) &(audiohed.front()), length);
 		}
 		else // no file found? Use the embedded one!
 		{
 		    audiostarthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
 		    audioendhedptr = audiostarthedptr + ExeFile.getExeDataSize()/sizeof(uint32_t);
-		    
+
 		    uint32_t *audiohedptr = audiostarthedptr;
 		    uint32_t number_of_audiorecs = 0;
 		    for( ; audiohedptr < audioendhedptr ; audiohedptr++ )
@@ -351,13 +351,13 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 				break;
 			}
 		    }
-		    
+
 		    for(size_t i=0 ; i<number_of_audiorecs ; i++)
 		    {
 			audiohed.push_back(*audiohedptr);
 			audiohedptr++;
 		    }
-		}	
+		}
 
 
 		if(audiohed.empty())
@@ -386,7 +386,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		}
 
 		m_soundslot.assign(number_of_total_sounds, CSoundSlot());
-		
+
 		for( unsigned int snd=0 ; snd<number_of_total_sounds ; snd++ )
 		{
 			/// Now we have all the data we need.
@@ -396,7 +396,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 			const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t); // Why this strange offset by 4 bytes?
 			if( audio_comp_data_start < audio_end )
-			{				
+			{
 				const uint32_t *AudioCompFileData32 = reinterpret_cast<uint32_t*>(
 								reinterpret_cast<void*>(AudioCompFileData + audio_start));
 
@@ -426,10 +426,10 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 bool CAudioGalaxy::loadSoundData()
 {
     COPLEmulator &OPLEmulator = *g_pSound->getOPLEmulatorPtr();
-    
+
     OPLEmulator.shutdown();
     OPLEmulator.init();
-    
+
 	const bool ok = LoadFromAudioCK(m_ExeFile);
 
 	if(!ok)

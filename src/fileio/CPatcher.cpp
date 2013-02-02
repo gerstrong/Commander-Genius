@@ -35,10 +35,10 @@ void CPatcher::process()
 	// If the file was found and read into the m_TextList,
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
-	
+
 	g_pLogFile->textOut("Trying to load and apply the patch we found...<br>");
 	m_is_a_mod = true;
-	
+
 	filterPatches(m_TextList);
 
 	patch_item PatchItem;
@@ -72,7 +72,7 @@ void CPatcher::process()
 			// Seperate the offset and the filename
 			size_t p = newbuf.find(' ');
 
-			ulong offset;
+			size_t offset;
 			if( readIntValue(newbuf.substr(0,p), offset) )
 			{
 				std::string patch_file_name = newbuf.substr(p);
@@ -91,23 +91,23 @@ void CPatcher::process()
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-			
+
 			gpResource->egadictFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "audiohed")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-			
+
 			gpResource->audioHedFilename = newfileName;
-		}				
+		}
 		else if(PatchItem.keyword == "audiodict")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-			
+
 			gpResource->audioDictFilename = newfileName;
-		}				
+		}
 		else if(PatchItem.keyword == "gamemaps")
 		{
 			std::string newfileName = PatchItem.value.front();
@@ -123,22 +123,22 @@ void CPatcher::process()
 		else if(PatchItem.keyword == "patch" )
 		{
 			// first we need to get the offset
-			ulong offset = 0;
+			size_t offset = 0;
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
-			uint width;
+			size_t width;
 			if(readIntValue(textline, offset))
 			{
 				while(!PatchItem.value.empty())
 				{
 					// after we have it, distinguish between text case and number case
-					ulong number = 0;
+					size_t number = 0;
 					std::string patchtext = "";
 					textline = readPatchItemsNextValue(PatchItem.value);
 
 					if(readIntValueAndWidth(textline, number, width))
 					{
 						// In this case we have a number
-						memcpy(m_data+offset, &number, width);						
+						memcpy(m_data+offset, &number, width);
 						offset+=width;
 					}
 					else if(readPatchString(textline, patchtext))
@@ -163,7 +163,7 @@ void CPatcher::process()
 		{
 			// Patch the level hints
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
-			ulong number = 0;
+			size_t number = 0;
 
 			if(readIntValue(textline, number))
 			{
@@ -184,7 +184,7 @@ void CPatcher::process()
 		}
 		else
 		{
-		    // If not recognized put the patch on the post-list. In the later Process it will 
+		    // If not recognized put the patch on the post-list. In the later Process it will
 		    // judge valid status
 		    mPostPatchItems.push_back(PatchItem);
 		}
@@ -210,16 +210,16 @@ void CPatcher::postProcess()
   // Mods only!
   if(!m_is_a_mod)
     return;
-	
+
 	auto it = mPostPatchItems.begin();
-	
+
 	for( ; it != mPostPatchItems.end() ; it++ )
 	{
 		if(it->keyword == "level.entry" )
 		{
 			// Patch the entry level text
 			std::string textline = readPatchItemsNextValue(it->value);
-			ulong number = 0;
+			size_t number = 0;
 
 			if(readIntValue(textline, number))
 			{
@@ -233,7 +233,7 @@ void CPatcher::postProcess()
 		}
 
 		it->keyword.clear();
-		it->value.clear(); 
+		it->value.clear();
 	}
 }
 
@@ -242,12 +242,12 @@ void CPatcher::postProcess()
 struct PatchListFiller
 {
 	std::set<std::string> list;
-	
+
 	bool operator() (const std::string& filename) {
 		std::string ext = GetFileExtension(filename);
 		if (stringcaseequal(ext, "pat"))
 			list.insert(filename);
-		
+
 		return true;
 	}
 };
@@ -259,23 +259,23 @@ struct PatchListFiller
 bool CPatcher::loadPatchfile()
 {
 	std::string path = m_datadirectory;
-	
+
 	//Get the list of ".pat" files
 	PatchListFiller patchlist;
 	FindFiles(patchlist, path, false, FM_REG);
-	
+
 	// Nothing to patch, just quit
 	if (!patchlist.list.size())
 		return false;
-	
+
 	if (patchlist.list.size() > 1)
 		g_pLogFile->textOut(PURPLE,"Multiple Patches are not yet supported! Please remove a file. Taking one File.<br>");
-	
+
 	while(!patchlist.list.empty())
 	{
 		std::string buf = *patchlist.list.begin();
 		std::ifstream Patchfile; OpenGameFileR(Patchfile, buf);
-		
+
 		while(!Patchfile.eof())
 		{
 			char buf[256];
@@ -294,19 +294,19 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 {
 	unsigned char *buf_to_patch;
 	unsigned char byte;
-	
+
 	std::ifstream Patchfile; OpenGameFileR(Patchfile, patch_file_name, std::ios::binary);
-	
+
 	if(!Patchfile) return;
-	
+
 	if(!m_data)
 	{
 		g_pLogFile->textOut(PURPLE,"Warning: The patchfile was wrongly read!<br>");
 		return;
 	}
-	
+
 	buf_to_patch = m_data + offset;
-	
+
 	long counter = 0;
 	while(!Patchfile.eof())
 	{
@@ -314,7 +314,7 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 		memcpy(buf_to_patch+counter,&byte,1); // one byte every time ;-)
 		counter++;
 	}
-	
+
 	Patchfile.close();
 }
 
@@ -374,21 +374,21 @@ void CPatcher::PatchLevelentry(const int level, std::list<std::string> &input)
 {
 	std::string buf;
 	std::string levelStr;
-	
+
 	if(level == 0)
 	  levelStr = "WORLDMAP_LOAD_TEXT";
 	else
-	  levelStr = "LEVEL"+ itoa(level) +"_LOAD_TEXT";	
-	
+	  levelStr = "LEVEL"+ itoa(level) +"_LOAD_TEXT";
+
 	while( !input.empty() )
 	{
 	    buf += input.front();
 	    input.pop_front();
-	    
-	    if( input.size() > 1 ) 
-	      buf += "\n";  
-	} 
-	
+
+	    if( input.size() > 1 )
+	      buf += "\n";
+	}
+
 	g_pBehaviorEngine->setMessage(levelStr, buf);
 }
 

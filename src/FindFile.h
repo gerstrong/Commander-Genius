@@ -133,13 +133,13 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename);
 
 inline bool GetExactFileName(const std::string& abs_searchname, std::string& filename) {
 	filename = abs_searchname;
-	
+
 	if(abs_searchname.size() == 0) {
 		return true;
 	}
-	
+
 	ReplaceFileVariables(filename);
-	
+
 	// Remove the ending slash, else stat will fail
 	if (filename[filename.length()-1]== '/' || filename[filename.length()-1]== '\\')
 		// Don't remove, if this is a root directory, else stat will fail (really crazy)
@@ -147,14 +147,14 @@ inline bool GetExactFileName(const std::string& abs_searchname, std::string& fil
 		if (filename[filename.length()-2] != ':')
 #endif
 			filename.erase(filename.length()-1);
-	
+
 	struct stat finfo;
-	
+
 	if(stat(Utf8ToSystemNative(filename).c_str(), &finfo) != 0) {
 		// problems stating file
 		return false;
 	}
-	
+
 	// we got some info, so there is something ...
 	return true;
 }
@@ -250,7 +250,7 @@ void ForEachSearchpath(_handler& handler) {
 	std::list<std::string> handled_dirs;
 	std::string path;
 	searchpathlist::const_iterator i;
-	
+
 	{
 		const std::string* themeDir = getSpecialSearchPathForTheme();
 		if(themeDir) {
@@ -258,7 +258,7 @@ void ForEachSearchpath(_handler& handler) {
 			handled_dirs.push_back(*themeDir);
 		}
 	}
-	
+
 	for(
 		i = tSearchPaths.begin();
 		i != tSearchPaths.end(); i++) {
@@ -268,7 +268,7 @@ void ForEachSearchpath(_handler& handler) {
 			handled_dirs.push_back(path);
 		}
 	}
-	
+
 	for(
 		i = basesearchpaths.begin();
 		i != basesearchpaths.end(); i++) {
@@ -292,7 +292,7 @@ public:
 	const std::string& namefilter;
 	const filemodes_t modefilter;
 	_filehandler& filehandler;
-	
+
 	FindFilesHandler(
 					 const std::string& dir_,
 					 const std::string& namefilter_,
@@ -302,12 +302,12 @@ public:
 	namefilter(namefilter_),
 	modefilter(modefilter_),
 	filehandler(filehandler_) {}
-	
+
 	bool operator() (const std::string& path) {
 		std::string abs_path = path;
 		if(!GetExactFileName(path + dir, abs_path)) return true;
 		bool ret = true;
-		
+
 #ifdef WIN32  // uses UTF16
 		struct _finddata_t fileinfo;
 		abs_path.append("/");
@@ -315,21 +315,21 @@ public:
 		while(handle > 0) {
 			//If file is not self-directory or parent-directory
 			if(fileinfo.name[0] != '.' || (fileinfo.name[1] != '\0' && (fileinfo.name[1] != '.' || fileinfo.name[2] != '\0'))) {
-				if((!(fileinfo.attrib&_A_SUBDIR) && modefilter&FM_REG)
-				   || fileinfo.attrib&_A_SUBDIR && modefilter&FM_DIR)
+				if((!(fileinfo.attrib&_A_SUBDIR) && (modefilter&FM_REG))
+				   || ((fileinfo.attrib&_A_SUBDIR) && (modefilter&FM_DIR)))
 					if(!filehandler(abs_path + SystemNativeToUtf8(fileinfo.name))) {
 						ret = false;
 						break;
 					}
 			}
-			
+
 			if(_findnext(handle,&fileinfo))
 				break;
 		}
-		
+
 		_findclose(handle);
 #else /* not WIN32 */
-		
+
 		std::string filename;
 		dirent* entry;
 		struct stat s;
@@ -405,7 +405,7 @@ class Command;
 struct AutocompleteRequest;
 
 class FileListCacheIntf {
-public:	
+public:
 	typedef std::string Filename;
 	typedef std::string ObjectName;
 	typedef std::map<Filename,ObjectName,stringcaseless> FileList;
@@ -416,10 +416,10 @@ protected:
 public:
 	const std::string name;
 	Event<> OnUpdateFinished;
-	
+
 	FileListCacheIntf(const std::string& n) : isReady(false), name(n) {}
 	virtual ~FileListCacheIntf() {}
-	
+
 	// this iterator locks the filelist as long as it exists
 	class Iterator : public ::Iterator<FileList::value_type>, public RefCounter {
 	private:
@@ -442,10 +442,10 @@ public:
 			return o && it == o->it;
 		}
 		virtual FileList::value_type get() { return *it; }
-		
+
 		typedef ::Iterator<FileList::value_type>::Ref Ref;
 	};
-	
+
 	Iterator::Ref begin() { return new Iterator(filelist.begin(), *this); }
 	void add(const FileList::value_type& o) { Mutex::ScopedLock lock(mutex); filelist.insert(o); }
 	bool includes(const Filename& fn) { Mutex::ScopedLock lock(mutex); return filelist.find(fn) != filelist.end(); }
@@ -469,7 +469,7 @@ public:
 				  const filemodes_t _modefilter = FM_REG,
 				  const std::string& _namefilter = "")
 	: FileListCacheIntf(_name), dir(_dir), absolutePath(_absPath), modefilter(_modefilter), namefilter(_namefilter) {}
-	
+
 	virtual void update() {
 		static _CheckFct fct;
 		FileList newList;
@@ -497,7 +497,7 @@ inline bool StatFile( const std::string & file, struct stat * st )
 		return false;
 	if( stat( Utf8ToSystemNative(fname).c_str(), st ) != 0 )
 		return false;
-	
+
 	return true;
 }
 

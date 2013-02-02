@@ -41,7 +41,7 @@ void CSaveGameController::setLevel(int Level)
 // Retrieves the data size of the next block
 Uint32 CSaveGameController::getDataSize(std::ifstream &StateFile) {
 	Uint32 size=0;
-	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++) 
+	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++)
 	{
 		size += StateFile.get() << (i*8);
 	}
@@ -669,9 +669,9 @@ void CSaveGameController::addData(byte *data, Uint32 size)
 // Read data of size from the main data block
 bool CSaveGameController::readDataBlock(byte *data)
 {
-    	if(m_offset+sizeof(Uint32) > m_datablock.size())
+    if(m_offset+sizeof(Uint32) > m_datablock.size())
 	    return false;
-    
+
 	Uint32 datasize=0;
 	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32) );
 	m_offset += sizeof(Uint32);
@@ -680,4 +680,5 @@ bool CSaveGameController::readDataBlock(byte *data)
 		memcpy(data, &m_datablock[m_offset], datasize);
 
 	m_offset += datasize;
+	return true;
 }
