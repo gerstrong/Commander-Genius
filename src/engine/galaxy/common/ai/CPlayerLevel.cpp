@@ -676,22 +676,26 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     if(floorNearBy)
 	return false;
     
+    const int yUp = getYUpPos()>>CSF;
             
     if( m_playcontrol[PA_X]<0 && blockedl )
     {
 	const int xLeft = (getXLeftPos()>>CSF)-1;
-	//const bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
-	bool check_block = TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bup;
-	check_block |= TileProperty[mp_Map->at(xLeft, (getYUpPos()>>CSF)-1)].bright;
-	const bool check_block_lower = TileProperty[mp_Map->at(xLeft, getYUpPos()>>CSF)].bright;
+	bool check_block = TileProperty[mp_Map->at(xLeft, yUp-1)].bup;
+	check_block |= TileProperty[mp_Map->at(xLeft, yUp-1)].bright;
+	const bool check_block_lower = TileProperty[mp_Map->at(xLeft, yUp)].bright;
 	
 	if( !check_block && check_block_lower )
 	{
 	    setAction(A_KEEN_HANG);
 	    setActionSprite();
 	    calcBoundingBoxes();
-	    Uint32 x = (((getXPosition()>>CSF))<<CSF)+(12<<STC);
-	    Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);
+	    
+	    Uint32 x = (xLeft+1)<<CSF;
+	    Uint32 y = yUp<<CSF;
+	    
+	    x -= m_BBox.x1;
+	    y -= m_BBox.y1;
 	    
 	    moveTo(x,y);
 	    solid = false;
@@ -704,17 +708,23 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
     else if( m_playcontrol[PA_X]>0 && blockedr )
     {
 	const int xRight = (getXRightPos()>>CSF)+1;	
-	bool check_block = TileProperty[mp_Map->at(xRight, (getYUpPos()>>CSF)-1)].bup;
-	check_block |= TileProperty[mp_Map->at(xRight, (getYUpPos()>>CSF)-1)].bleft;
-	bool check_block_lower = TileProperty[mp_Map->at(xRight, getYUpPos()>>CSF)].bleft;
+	bool check_block = TileProperty[mp_Map->at(xRight, yUp-1)].bup;
+	check_block |= TileProperty[mp_Map->at(xRight, yUp-1)].bleft;
+	bool check_block_lower = TileProperty[mp_Map->at(xRight, yUp)].bleft;
 	
-	if(!check_block && check_block_lower )
+	if( !check_block && check_block_lower )
 	{
 	    setAction(A_KEEN_HANG);
 	    setActionSprite();
 	    calcBoundingBoxes();
-	    Uint32 x = (((getXPosition()>>CSF)+1)<<CSF)+(2<<STC);
-	    Uint32 y = (((getYPosition()>>CSF))<<CSF)-(4<<STC);	    
+	    
+    	    Uint32 x = (xRight)<<CSF;
+	    Uint32 y = yUp<<CSF;
+	    
+	    x -= m_BBox.x2;
+	    y -= m_BBox.y1;
+
+	    
 	    moveTo(x,y);
 	    solid = false;
 	    xinertia = 0;
@@ -1240,7 +1250,7 @@ void CPlayerLevel::verifyJumpAndFall()
 
 // Processes the jumping of the player
 void CPlayerLevel::processJumping()
-{
+{    
 	verifyJumpAndFall();
 	if (state.jumpTimer)
 	{
@@ -1270,8 +1280,7 @@ void CPlayerLevel::processJumping()
 			m_Action.setNextActionFormat();
 		}
 	}
-
-
+	
 	//Move horizontally
 	if ( m_playcontrol[PA_X] != 0 )
 	{
@@ -1308,8 +1317,8 @@ void CPlayerLevel::processJumping()
 	}
 
 	if(checkandtriggerforCliffHanging())
-		return;
-
+		return;	
+		
 	// process Shooting in air
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		shootInAir();
@@ -2307,13 +2316,13 @@ void CPlayerLevel::processFalling()
 	{
 		verifyforPole();
 	}
-
-	// Check Keen could hang on a cliff and do so if possible
+	
+    	// Check Keen could hang on a cliff and do so if possible
 	if(checkandtriggerforCliffHanging())
 		return;
+
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		shootInAir();
-
 }
 
 
