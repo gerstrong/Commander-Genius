@@ -695,6 +695,7 @@ bool CPlayerLevel::checkandtriggerforCliffHanging()
 	    Uint32 y = yUp<<CSF;
 	    
 	    x -= m_BBox.x1;
+	    x -= (4<<STC);
 	    y -= m_BBox.y1;
 	    
 	    moveTo(x,y);
@@ -1251,6 +1252,9 @@ void CPlayerLevel::verifyJumpAndFall()
 // Processes the jumping of the player
 void CPlayerLevel::processJumping()
 {    
+	if(checkandtriggerforCliffHanging())
+	    return;	
+		
 	verifyJumpAndFall();
 	if (state.jumpTimer)
 	{
@@ -1316,9 +1320,6 @@ void CPlayerLevel::processJumping()
 		return;
 	}
 
-	if(checkandtriggerforCliffHanging())
-		return;	
-		
 	// process Shooting in air
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		shootInAir();
@@ -2267,6 +2268,11 @@ void CPlayerLevel::verifyFalling()
 // Falling code
 void CPlayerLevel::processFalling()
 {
+       	// Check Keen could hang on a cliff and do so if possible
+	if(checkandtriggerforCliffHanging())
+		return;
+
+    
 	// If keen is jumping down, not because he did from an object like a platform,
 	// but a tile where Keen can fall through, process this part of code and
 	// check if Keen is still jumpinto through any object
@@ -2317,10 +2323,6 @@ void CPlayerLevel::processFalling()
 		verifyforPole();
 	}
 	
-    	// Check Keen could hang on a cliff and do so if possible
-	if(checkandtriggerforCliffHanging())
-		return;
-
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 		shootInAir();
 }
