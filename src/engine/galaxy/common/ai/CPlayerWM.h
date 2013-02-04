@@ -45,7 +45,7 @@ public:
 	void processLeavingTeleporter();
 
 	void startLevel(Uint16 object);
-	void finishLevel(Uint16 object);
+	void finishLevel(const int object);
 	void checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown);
 
 	void performWalkingAnimation(bool walking);
@@ -68,7 +68,7 @@ private:
 	int elevator_frames;
 	int waveTimer;
 	bool swimming;
-	
+
 	std::vector<bool> mLevelDone;
 
 	void (CPlayerWM::*mProcessPtr)();

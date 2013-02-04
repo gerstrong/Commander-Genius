@@ -71,7 +71,7 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
  *  \param	width	optionally it can read width
  *  \return	if the number could be read true, otherwise false
  */
-bool CPatcher::readIntValueAndWidth(const std::string &input, size_t &output, size_t &width)
+bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long int &output, size_t &width)
 {
 	if(strStartsWith(input, "$") or strCaseStartsWith(input, "0x"))
 	{
@@ -119,7 +119,7 @@ bool CPatcher::readIntValueAndWidth(const std::string &input, size_t &output, si
 	return false;
 }
 
-bool CPatcher::readIntValue(const std::string &input, size_t &output)
+bool CPatcher::readIntValue(const std::string &input, long unsigned int  &output)
 {
     size_t width;
     return readIntValueAndWidth(input, output, width);

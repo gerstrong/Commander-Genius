@@ -72,7 +72,7 @@ void CPatcher::process()
 			// Seperate the offset and the filename
 			size_t p = newbuf.find(' ');
 
-			size_t offset;
+			long unsigned int offset;
 			if( readIntValue(newbuf.substr(0,p), offset) )
 			{
 				std::string patch_file_name = newbuf.substr(p);
@@ -123,7 +123,7 @@ void CPatcher::process()
 		else if(PatchItem.keyword == "patch" )
 		{
 			// first we need to get the offset
-			size_t offset = 0;
+			long unsigned int offset = 0;
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
 			size_t width;
 			if(readIntValue(textline, offset))
@@ -131,7 +131,7 @@ void CPatcher::process()
 				while(!PatchItem.value.empty())
 				{
 					// after we have it, distinguish between text case and number case
-					size_t number = 0;
+					long unsigned int number = 0;
 					std::string patchtext = "";
 					textline = readPatchItemsNextValue(PatchItem.value);
 
@@ -163,7 +163,7 @@ void CPatcher::process()
 		{
 			// Patch the level hints
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
-			size_t number = 0;
+			long unsigned int number = 0;
 
 			if(readIntValue(textline, number))
 			{
@@ -219,7 +219,7 @@ void CPatcher::postProcess()
 		{
 			// Patch the entry level text
 			std::string textline = readPatchItemsNextValue(it->value);
-			size_t number = 0;
+			long unsigned int number = 0;
 
 			if(readIntValue(textline, number))
 			{

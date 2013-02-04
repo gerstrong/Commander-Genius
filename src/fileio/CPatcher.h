@@ -37,8 +37,8 @@ private:
 	};
 
 	std::string readPatchItemsNextValue(std::list<std::string> &input);
-	bool readIntValueAndWidth(const std::string &input, size_t &output, size_t &width);
-	bool readIntValue(const std::string &input, size_t &output);
+	bool readIntValueAndWidth(const std::string &input, unsigned long int &output, size_t &width);
+	bool readIntValue(const std::string &input, long unsigned int &output);
 	bool readPatchString(const std::string &input, std::string &output);
 	void filterPatches(std::list<std::string> &textlist);
 	bool readNextPatchItem(patch_item &PatchItem, std::list<std::string> &textList);

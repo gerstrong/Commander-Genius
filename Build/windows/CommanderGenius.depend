@@ -268,7 +268,7 @@
 	"engine/CEvent.h"
 	"CVec.h"
 
-1359807654 c:\users\admin\desktop\commander-genius\src\engine\cevent.h
+1360001318 c:\users\admin\desktop\commander-genius\src\engine\cevent.h
 	<cstdint>
 	<string>
 	<list>
@@ -780,7 +780,7 @@
 
 1355227553 c:\users\admin\desktop\commander-genius\src\engine\spritedefines.h
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\common\cmap.cpp
+1360002723 source:c:\users\admin\desktop\commander-genius\src\common\cmap.cpp
 	"CMap.h"
 	"common/CBehaviorEngine.h"
 	"FindFile.h"
@@ -1452,7 +1452,7 @@
 	"sdl/input/CInput.h"
 	"arguments.h"
 
-1359808460 c:\users\admin\desktop\commander-genius\src\fileio\cpatcher.h
+1360002975 c:\users\admin\desktop\commander-genius\src\fileio\cpatcher.h
 	<list>
 	<string>
 	"CExeFile.h"
@@ -2380,7 +2380,7 @@
 	"common/Menu/CMenuController.h"
 	"graphics/effects/CEffects.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\cplaygamegalaxy.cpp
+1360001492 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\cplaygamegalaxy.cpp
 	"CPlayGameGalaxy.h"
 	"common/CMapLoaderGalaxy.h"
 	"graphics/CGfxEngine.h"
@@ -3051,7 +3051,7 @@
 	"../../fileio.h"
 	"../../CLogFile.h"
 
-1359808721 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcher.cpp
+1360002865 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcher.cpp
 	"CPatcher.h"
 	<string.h>
 	<fstream>
@@ -4260,7 +4260,7 @@
 1359807654 c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep5\ai\csecuritydoor.h
 	"engine/galaxy/common/CGalaxySpriteObject.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cplayerwm.cpp
+1360000635 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cplayerwm.cpp
 	"CPlayerWM.h"
 	"engine/galaxy/common/ai/CFlag.h"
 	"common/CBehaviorEngine.h"
@@ -4268,7 +4268,7 @@
 	"sdl/sound/CSound.h"
 	"CVec.h"
 
-1359807654 c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cplayerwm.h
+1360000635 c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cplayerwm.h
 	"CPlayerBase.h"
 
 1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cspriteitem.cpp
@@ -4869,7 +4869,7 @@
 	"common/CAudioResources.h"
 	"fileio/CExeFile.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\res\cegagraphicsgalaxy.cpp
+1360002723 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\res\cegagraphicsgalaxy.cpp
 	"CEGAGraphicsGalaxy.h"
 	"graphics/CGfxEngine.h"
 	"fileio/ResourceMgmt.h"

@@ -41,13 +41,13 @@ waveTimer(0),
 swimming(false)
 {
 	m_ActionBaseOffset = actionoffset;
-	
+
 	CGalaxySpriteObject::setActionForce(0);
 	setActionSprite();
 
 	walkBaseFrame = sprite;
 	wavingBaseFrame = walkBaseFrame + 22;
-	swimBaseFrame = walkBaseFrame + 24;	
+	swimBaseFrame = walkBaseFrame + 24;
 	m_basesprite = walkBaseFrame;
 
 	performCollisions();
@@ -132,23 +132,23 @@ void CPlayerWM::process()
 		if(ev->sucess)
 		{
 			finishLevel(ev->levelObject);
-			
+
 			if(g_pBehaviorEngine->getEpisode() == 5)
 			{
 			    // enough fuses broken, in fact of all the fuses levels, except the secret one.
-			    // then open the elevator door for the last level!			    
+			    // then open the elevator door for the last level!
 			    // NOTE: I'm not sure, if there is a better way to do it. if you know one, go ahead and improve this!
 			    if(m_Inventory.Item.fuses_levels_completed >= 4)
 			    {
 				// Must happen only once!
 				m_Inventory.Item.fuses_levels_completed = 0;
-				
+
 				int x = (0x1A)<<CSF; // upper left corner of that elevator
 				int y = (0x37)<<CSF; // on the map
-				
+
 				// I only will change the closed elevator tiles!
 				const int tileID = mp_Map->getPlaneDataAt(1, x, y);
-				
+
 				// I only will change the closed elevator tiles!
 				if(tileID == 0x072C)
 				{
@@ -156,9 +156,9 @@ void CPlayerWM::process()
 				    const int t_ur = mp_Map->getPlaneDataAt(1, x+(1<<CSF), y) + 10;
 				    const int t_ll = mp_Map->getPlaneDataAt(1, x, y+(1<<CSF)) + 10;
 				    const int t_lr = mp_Map->getPlaneDataAt(1, x+(1<<CSF), y+(1<<CSF)) + 10;
-				    
+
 				    x >>= CSF; y >>= CSF;
-				    
+
 				    mp_Map->setTile(x, y, t_ul, true);
 				    mp_Map->setTile(x+1, y, t_ur, true);
 				    mp_Map->setTile(x, y+1, t_ll, true);
@@ -189,18 +189,18 @@ void CPlayerWM::process()
 	{
 	  // Find the spot of the teleportation destination
 	  // TODO: This part is only meant for Episode 5. We should catch exception
-	  // Whenever another episode tries to trigger this call.	  
+	  // Whenever another episode tries to trigger this call.
 	  int x,y;
 	  mp_Map->findTile( 0x1A, &x, &y, 2);
-	  
-	  const int newX = x<<CSF; 
+
+	  const int newX = x<<CSF;
 	  const int newY = y<<CSF;
-	  
+
 	  m_Pos.x = newX;
 	  m_Pos.y = newY;
-	  	  
+
 	  m_camera.setPosition(m_Pos);
-	  
+
 	  EventContainer.pop_Event();
 	}
 
@@ -224,10 +224,10 @@ void CPlayerWM::processWaving()
 	waveTimer = 0;
 	return;
     }
-    
+
     m_animation_time = 10;
     sprite = m_basesprite;
-    sprite +=  m_animation%2;  
+    sprite +=  m_animation%2;
 }
 
 
@@ -326,7 +326,7 @@ void CPlayerWM::processMoving()
 	{
 		performWalkingAnimation(walking);
 		m_cantswim = false;
-		
+
 		waveTimer++;
 		if( waveTimer >= TIME_TO_WAVE)
 		{
@@ -434,19 +434,19 @@ void CPlayerWM::verifyTeleportation()
 		else // ... make him move until teleporter hides him.
 		{
 		  //const int ep = g_pBehaviorEngine->getEpisode();
-		
+
 		  mProcessPtr = &CPlayerWM::processEnteringTeleporter;
-					
+
 		  Uint16 newTile = mp_Map->getPlaneDataAt( 1, x, y );
 
-		   // TODO: Check if the animated tile also must be the same formula for Episode 5		  
+		   // TODO: Check if the animated tile also must be the same formula for Episode 5
 		   newTile -= 18; // One row up
 		   newTile += 2; // Two columns to the right!
-		   
+
 		   m_teleportanibasetile = newTile;
 
 		   mp_Map->setTile(x>>CSF, y>>CSF, newTile, true);
-			
+
 		   solid = false;
 		}
 	}
@@ -515,7 +515,7 @@ void CPlayerWM::processClosingElevator()
 		mp_Map->setTile(x-1, y, tile2-2, true);
 		mp_Map->setTile(x-1, y-1, tile3-2, true);
 		mp_Map->setTile(x, y-1, tile4-2, true);
-		
+
 		playSound(SOUND_ELEVATOR_OPEN);
 
 		elevator_frames--;
@@ -601,7 +601,7 @@ void CPlayerWM::processOpeningElevator()
 		mp_Map->setTile(x-1, y, tile2+2, true);
 		mp_Map->setTile(x-1, y-1, tile3+2, true);
 		mp_Map->setTile(x, y-1, tile4+2, true);
-		
+
 		playSound(SOUND_ELEVATOR_OPEN);
 
 		elevator_frames--;
@@ -657,7 +657,7 @@ void CPlayerWM::processLeavingElevator()
 // Teleporter
 
 void CPlayerWM::processEnteringTeleporter()
-{		
+{
 	// Move him to the target
 	VectorD2<int> pos(getXPosition(), getYPosition());
 	VectorD2<int> vec = target-pos;
@@ -674,14 +674,14 @@ void CPlayerWM::processEnteringTeleporter()
 		vec_norm.y = vec.y/dist_y;
 
 	yDirection = vec_norm.y;
-	
-	
+
+
 
 	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
 		dist_y < SLOW_TELEPORT_WALK_SPEED)
 	{
 		moveDir(vec);
-								
+
 		// If done make him invisible and transport him through the level. !solid
 
 		//target -> change it when the touched tile is known
@@ -693,20 +693,20 @@ void CPlayerWM::processEnteringTeleporter()
 		const Uint32 filter = object & 0xFFFF;
 		const Uint32 newPosX = (filter & 0xFF00) >> 8;
 		const Uint32 newPosY = (filter & 0x00FF);
-		
+
 		Uint16 newTile = mp_Map->getPlaneDataAt( 1, x, y );
 
-		// TODO: Check if the animated tile also must be the same formula for Episode 5		  
+		// TODO: Check if the animated tile also must be the same formula for Episode 5
 		newTile = m_teleportanibasetile;
 		newTile += 18; // One row up
 		newTile -= 2; // set right tile for the teleporter coord
-		
-		mp_Map->setTile(x>>CSF, y>>CSF, newTile, true);		
+
+		mp_Map->setTile(x>>CSF, y>>CSF, newTile, true);
 
 		// Set new target
 		target.x = (newPosX<<CSF);
-		target.y = (newPosY<<CSF);						
-		
+		target.y = (newPosY<<CSF);
+
 		// make him invisible
 		solid = false;
 		dontdraw = true;
@@ -719,20 +719,20 @@ void CPlayerWM::processEnteringTeleporter()
 	  const int y = target.y;
 
 	  Uint16 aniTile = mp_Map->getPlaneDataAt( 1, x, y ) + 1;
-	  
+
 	  if(m_teleportanibasetile+3 < aniTile)
 	  {
 	    aniTile = m_teleportanibasetile;
 	  }
-	  
-	  mp_Map->setTile(x>>CSF, y>>CSF, aniTile, true);		
-	  
+
+	  mp_Map->setTile(x>>CSF, y>>CSF, aniTile, true);
+
 	  moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
-		
+
 	}
 
 	performWalkingAnimation(true);
-	
+
 }
 
 
@@ -743,10 +743,10 @@ void CPlayerWM::processWarpInTeleporter()
 	moveToForce(target);
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
 	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
-	m_camera.setPosition(new_pos);	
-	
+	m_camera.setPosition(new_pos);
+
 	mProcessPtr = &CPlayerWM::processLeavingTeleporter;
-				
+
 	target.y += (1<<CSF);
 	dontdraw = false;
 }
@@ -775,7 +775,7 @@ void CPlayerWM::processLeavingTeleporter()
 		// When done set him solid
 		solid = true;
 		moveDir(vec);
-		
+
 		mProcessPtr = &CPlayerWM::processMoving;
 	}
 	else
@@ -783,7 +783,7 @@ void CPlayerWM::processLeavingTeleporter()
 		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
 	}
 
-	performWalkingAnimation(true);	
+	performWalkingAnimation(true);
 }
 
 
@@ -797,7 +797,7 @@ void CPlayerWM::startLevel(Uint16 object)
     int x, y;
     int level = object - 0xC000;
     Uint16 flag_dest = level + 0xF000;
-	
+
     if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= 18)
     {
 	g_pBehaviorEngine->m_EventList.add(new EventEnterLevel(object));
@@ -807,8 +807,8 @@ void CPlayerWM::startLevel(Uint16 object)
 /*
  *	makes the player finish the level
  */
-void CPlayerWM::finishLevel(Uint16 object)
-{    
+void CPlayerWM::finishLevel(const int object)
+{
 	// if a door or other blocker was found remove it
 	int x, y;
 	Uint16 door = object + 0xD000;
@@ -834,33 +834,33 @@ void CPlayerWM::finishLevel(Uint16 object)
 		unsigned int csfY = (y<<CSF);
 
 		csfX += (6<<STC);
-		if(episode != 5)		    
+		if(episode != 5)
 		    csfY -= FlagSprite.m_bboxY2;
-		
+
 		csfY += (2<<STC);
-		
+
 		if(g_pBehaviorEngine->getEpisode() == 5)
 		{
 		    csfX -= (14<<STC);
-		    
+
 		    if(episode != 5)
 			csfY -= (1<<CSF);
 		}
 		else
 		{
-		    g_pSound->playSound( SOUND_FLAG_APPEAR );   
+		    g_pSound->playSound( SOUND_FLAG_APPEAR );
 		}
-		
+
 		VectorD2<Uint32> dst(csfX, csfY);
 
 
-		CFlag *pFlag = new CFlag(mp_Map, src, dst);		
+		CFlag *pFlag = new CFlag(mp_Map, src, dst);
 		g_pBehaviorEngine->m_EventList.spawnObj(pFlag);
-		
+
 
 		// Mark the tileinfo on the map as marked!!
 		mp_Map->setTile( x, y, 0, true, 2);
-	}	
+	}
 }
 
 /**
@@ -963,7 +963,7 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 	}
 	else
 		sprite +=  2;
-	
+
 	if(swimming)
 	{
 	    playSound(SOUND_KEEN_SWIM_TO_LAND);
@@ -993,7 +993,7 @@ void CPlayerWM::performSwimmingAnimation()
 		sprite = m_basesprite + 14;
 	else
 		sprite = m_basesprite;
-	
+
 	if(!swimming)
 	{
 	    playSound(SOUND_KEEN_SWIM_TO_LAND);

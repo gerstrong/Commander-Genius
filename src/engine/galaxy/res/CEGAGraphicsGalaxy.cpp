@@ -148,11 +148,11 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!TileLoader.load(EpisodeInfo[m_episode-4].Num16Tiles,
 						EpisodeInfo[m_episode-4].Num16MaskedTiles))
 		return false;
-	
+
 	if(!readfonts()) return false;
-	if(!readBitmaps()) return false;	
+	if(!readBitmaps()) return false;
 	if(!readMaskedBitmaps()) return false;
-	
+
 	g_pGfxEngine->createEmptyTilemap(4);
 
 	if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
@@ -374,10 +374,10 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 	const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc.
 
 	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
-	byte *p_head;
+	byte *p_head = nullptr;
 
 	std::vector<char> EgaGraphData;
-	
+
 	size_t numChunks = EpisodeInfo[ep].NumChunks;
 
 	if(File) // File exists!
@@ -472,7 +472,7 @@ bool CEGAGraphicsGalaxy::begin()
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
 	// Try to read it either from a file
-	
+
 	if(!gpResource->egadictFilename.empty())
 	    filename =  m_path + gpResource->egadictFilename;
 
@@ -482,7 +482,7 @@ bool CEGAGraphicsGalaxy::begin()
 	}
 	else
 	{
-		Huffman.readDictionaryNumberfromEnd( m_Exefile ); // or from the embedded Exe file							
+		Huffman.readDictionaryNumberfromEnd( m_Exefile ); // or from the embedded Exe file
 	}
 
 	// Now we go for EGAHEAD
@@ -540,7 +540,7 @@ bool CEGAGraphicsGalaxy::begin()
 	{
 		// Show that something is happening
 		offset = *offPtr;
-		
+
 		// Make sure the chunk is valid
 		if(offset < offset_limit && offset + 4 <= CompEgaGraphData.size())
 		{
@@ -570,9 +570,9 @@ bool CEGAGraphicsGalaxy::begin()
 			inlen = 0;
 			// Find out the input length
 			size_t j;
-			
+
 			auto secondOffPtr = offPtr;
-			secondOffPtr++;			
+			secondOffPtr++;
 			for( j = i + 1; secondOffPtr != m_egahead.end() ; secondOffPtr++, j++ )
 			{
 			    const unsigned long second = *secondOffPtr;
@@ -582,17 +582,17 @@ bool CEGAGraphicsGalaxy::begin()
 				break;
 			    }
 			}
-			
+
 			if( secondOffPtr == m_egahead.end() )
 				inlen = egagraphlen - offset;
-			
+
 			byte *in = &CompEgaGraphData[offset];
 			byte *out = &m_egagraph[i].data[0];
 
 			Huffman.expand(in, out, inlen, outlen);
-			
+
 			//printf("%d %d\n", *out, *in);
-			
+
 			//m_egagraph[i].len = inlen;
 			//m_egagraph[i].data.assign(inlen, 0);
 			//memcpy(&m_egagraph[i].data[0], &CompEgaGraphData[offset], inlen);
@@ -633,7 +633,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 	int ep = m_episode - 4;
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
-	
+
 	g_pGfxEngine->createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
 
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
@@ -767,7 +767,7 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
 				BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
-		
+
 	}
 	return true;
 }
@@ -838,7 +838,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		int boxY1 = ((Head.Ry1) << (STC-TILE_S));
 		int boxX2 = ((Head.Rx2) << (STC-TILE_S));
 		int boxY2 = ((Head.Ry2) << (STC-TILE_S));
-		
+
 		if(boxX2-boxX1 >= 1<<STC)
 		{
 		   boxX2 --;

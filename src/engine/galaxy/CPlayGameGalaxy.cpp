@@ -222,7 +222,7 @@ void CPlayGameGalaxy::process()
 				m_Inventory.Item.triggerAllItemsCheat();
 				m_Cheatmode.items = true;
 				m_Cheatmode.god = true;
-				m_Cheatmode.jump = true;			
+				m_Cheatmode.jump = true;
 				eventContainer.add( new EventSendDialog("Super Cheat!") );
 			}
 		}
@@ -236,29 +236,29 @@ void CPlayGameGalaxy::process()
 	if( EventSendBitmapDialogMsg *ev = eventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
 	{
 		std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction ) );
-		pMsgBox->init();		
-		
+		pMsgBox->init();
+
 		// Create the special merge effect (Fadeout) if requested
 		if( g_pGfxEngine->runningEffect() )
 		{
 		    CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(g_pGfxEngine->Effect());
 		    if( pColorMerge != NULL )
-		    {		    
+		    {
 			SDL_Surface *fxSfc = pColorMerge->getSfc().get();
 			SDL_Rect cutRect = pMsgBox->getRect();
-			SDL_Surface *msgSfc = pMsgBox->getSfc();		    
-			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);		    
+			SDL_Surface *msgSfc = pMsgBox->getSfc();
+			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
 		    }
-		    
+
 		    CDimDark *pDimDark = dynamic_cast<CDimDark*>(g_pGfxEngine->Effect());
 		    if( pDimDark != NULL )
-		    {		    
+		    {
 			SDL_Surface *fxSfc = pDimDark->getSfc().get();
 			SDL_Surface *darkSfc = pDimDark->getDarkSfc().get();
 			SDL_Rect cutRect = pMsgBox->getRect();
-			SDL_Surface *msgSfc = pMsgBox->getSfc();    
-			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);    
-			SDL_BlitSurface(msgSfc, NULL, darkSfc, &cutRect);    
+			SDL_Surface *msgSfc = pMsgBox->getSfc();
+			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
+			SDL_BlitSurface(msgSfc, NULL, darkSfc, &cutRect);
 		    }
 		}
 
@@ -289,14 +289,14 @@ void CPlayGameGalaxy::process()
 		g_pMusicPlayer->stop();
 		std::unique_ptr<CMessageBoxSelection> pMsgBox( new CMessageBoxSelection( ev->Message, ev->Options ) );
 		pMsgBox->init();
-		
+
 		mMessageBoxes.push_back( move(pMsgBox) );
 		eventContainer.pop_Event();
 	}
 
 
 	if(mMessageBoxes.empty())
-	{	    
+	{
 		if( EventEnterLevel *ev = eventContainer.occurredEvent<EventEnterLevel>() )
 		{
 			if(ev->data >= 0xC000)	// Start a new level!
@@ -326,18 +326,18 @@ void CPlayGameGalaxy::process()
 			m_WorldMap.setActive(true);
 			m_LevelName = m_WorldMap.getLevelName();
 			m_WorldMap.loadAndPlayMusic();
-			
-			const bool tel = ev->teleport;
-			
-			// Should only happen in Keen 5. This should trigger on map teleportation
-			eventContainer.pop_Event();			
-			
-			eventContainer.add( new EventPlayerEndLevel(*ev) );						
-						
-			if(tel)
-			{			  									
+
+			const EventExitLevel &evCopy = *ev;
+
+			eventContainer.add( new EventPlayerEndLevel(evCopy) );
+
+            // Should only happen in Keen 5. This should trigger on map teleportation
+			if(evCopy.teleport)
+			{
 			  eventContainer.add( new EventPlayerTeleportFromLevel() );
-			}			
+			}
+
+			eventContainer.pop_Event();
 		}
 		else if( EventExitLevelWithFoot *ev = eventContainer.occurredEvent<EventExitLevelWithFoot>() )
 		{

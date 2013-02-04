@@ -49,7 +49,7 @@ struct EventExitLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;
 	const bool teleport;
-	EventExitLevel(const uint16_t l, const bool s, const bool t=false) : 
+	EventExitLevel(const uint16_t l, const bool s, const bool t=false) :
 	levelObject(l), sucess(s), teleport(t){}
 };
 
@@ -65,7 +65,7 @@ struct EventRestartLevel : CEvent {};
 struct EventPlayerEndLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;
-	EventPlayerEndLevel(const EventExitLevel ev) :
+	EventPlayerEndLevel(const EventExitLevel &ev) :
 					levelObject(ev.levelObject), sucess(ev.sucess) {}
 };
 
