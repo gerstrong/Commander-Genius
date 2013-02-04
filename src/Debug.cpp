@@ -50,16 +50,16 @@ static bool AmIBeingDebugged()
 		KERN_PROC_PID,
 		getpid()
 	};
-	
+
 	// Caution: struct kinfo_proc is marked __APPLE_API_UNSTABLE.  The source and
 	// binary interfaces may change.
 	struct kinfo_proc info;
 	size_t info_size = sizeof ( info );
-	
+
 	int sysctl_result = sysctl ( mib, sizeof(mib) / sizeof(*mib), &info, &info_size, NULL, 0 );
 	if ( sysctl_result != 0 )
 		return false;
-	
+
 	// This process is being debugged if the P_TRACED flag is set.
 	return ( info.kp_proc.p_flag & P_TRACED ) != 0;
 }
@@ -79,21 +79,21 @@ static bool AmIBeingDebugged() {
 	int status_fd = open("/proc/self/status", O_RDONLY);
 	if (status_fd == -1)
 		return false;
-	
+
 	// We assume our line will be in the first 1024 characters and that we can
 	// read this much all at once.  In practice this will generally be true.
 	// This simplifies and speeds up things considerably.
 	char buf[1024];
-	
+
 	ssize_t num_read = read(status_fd, buf, sizeof(buf));
 	fix_markend(buf);
 	close(status_fd);
 	if (num_read <= 0) return false;
-	
+
 	const char* searchStr = "TracerPid:\t";
 	const char* f = strstr(buf, searchStr);
 	if(f == NULL) return false;
-	
+
 	// Our pid is 0 without a debugger, assume this for any pid starting with 0.
 	f += strlen(searchStr);
 	return f < &buf[num_read] && *f != '0';
@@ -149,7 +149,7 @@ void *ReadGameStateForReport(char *buffer, size_t bufsize)
 	 buffer[bufsize - 1] = '\0';
 	 } __except (EXCEPTION_EXECUTE_HANDLER)
 	 { return buffer; }*/
-	
+
 	return buffer;
 }
 
@@ -158,9 +158,9 @@ void *ReadGameInfoForReport(char *buffer, size_t bufsize)
 	memset(buffer, 0, bufsize);
 	/*if (!tLXOptions || !tLX)
 	 return buffer;*/
-	char tmp[32];
+	//char tmp[32];
 	/*__try  {
-	 
+
 	 // Game type
 	 strncat(buffer, "iGameType = ", bufsize);
 	 switch (tLX->iGameType)  {
@@ -179,7 +179,7 @@ void *ReadGameInfoForReport(char *buffer, size_t bufsize)
 	 strncat(buffer, "UNKNOWN ", bufsize); strncat(buffer, tmp, bufsize);
 	 }
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Game mode
 	 strncat(buffer, "GameMode = ", bufsize);
 	 char tmp[16];
@@ -187,81 +187,81 @@ void *ReadGameInfoForReport(char *buffer, size_t bufsize)
 	 fix_markend(tmp);
 	 strncat(buffer, tmp, bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Mod name
 	 strncat(buffer, "sModName = ", bufsize);
 	 if (tLXOptions->tGameInfo.sModName.size())
 	 strncat(buffer, tLXOptions->tGameInfo.sModName.c_str(), bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Map file
 	 strncat(buffer, "sMapFile = ", bufsize);
 	 if (tLXOptions->tGameInfo.sMapFile.size())
 	 strncat(buffer, tLXOptions->tGameInfo.sMapFile.c_str(), bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Map name
 	 strncat(buffer, "sMapName = ", bufsize);
 	 if (tLXOptions->tGameInfo.sMapName.size())
 	 strncat(buffer, tLXOptions->tGameInfo.sMapName.c_str(), bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Mod dir
 	 strncat(buffer, "sModDir = ", bufsize);
 	 if (tLXOptions->tGameInfo.sModDir.size())
 	 strncat(buffer, tLXOptions->tGameInfo.sModDir.c_str(), bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Loading time
 	 itoa(tLXOptions->tGameInfo.iLoadingTime, tmp, 10);
 	 fix_markend(tmp);
 	 strncat(buffer, "iLoadingTimes = ", bufsize);
 	 strncat(buffer, tmp, bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Server name
 	 strncat(buffer, "sServerName = ", bufsize);
 	 if (tLXOptions->sServerName.size())
 	 strncat(buffer, tLXOptions->sServerName.c_str(), bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Welcome message
 	 strncat(buffer, "sWelcomeMessage = ", bufsize);
 	 if (tLXOptions->sWelcomeMessage.size())
 	 strncat(buffer, tLXOptions->sWelcomeMessage.c_str(), bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Lives
 	 itoa(tLXOptions->tGameInfo.iLives, tmp, 10);
 	 fix_markend(tmp);
 	 strncat(buffer, "iLives = ", bufsize);
 	 strncat(buffer, tmp, bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Max kills
 	 itoa(tLXOptions->tGameInfo.iKillLimit, tmp, 10);
 	 fix_markend(tmp);
 	 strncat(buffer, "iKillLimit = ", bufsize);
 	 strncat(buffer, tmp, bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Time limit
 	 itoa((int)(tLXOptions->tGameInfo.fTimeLimit * 10), tmp, 10);
 	 fix_markend(tmp);
 	 strncat(buffer, "fTimeLimit = ", bufsize);
 	 strncat(buffer, tmp, bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Bonuses on
 	 strncat(buffer, "bBonusesOn = ", bufsize);
 	 strncat(buffer, tLXOptions->tGameInfo.bBonusesOn ? "true" : "false", bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Bonus names
 	 strncat(buffer, "bShowBonusName = ", bufsize);
 	 strncat(buffer, tLXOptions->tGameInfo.bShowBonusName ? "true" : "false", bufsize);
 	 strncat(buffer, "\n", bufsize);
-	 
+
 	 // Number of players
 	 if (cServer)  {
 	 itoa(cServer->getNumPlayers(), tmp, 10);
@@ -270,7 +270,7 @@ void *ReadGameInfoForReport(char *buffer, size_t bufsize)
 	 strncat(buffer, tmp, bufsize);
 	 strncat(buffer, "\n", bufsize);
 	 }
-	 
+
 	 buffer[bufsize - 1] = '\0';
 	 } __except (EXCEPTION_EXECUTE_HANDLER) {
 	 return buffer;
@@ -288,47 +288,47 @@ void *ReadGameInfoForReport(char *buffer, size_t bufsize)
  eInfo.ThreadId = GetCurrentThreadId();
  eInfo.ExceptionPointers = pExInfo;
  eInfo.ClientPointers = FALSE;
- 
+
  // Set the minidump info
  MINIDUMP_CALLBACK_INFORMATION cbMiniDump;
  cbMiniDump.CallbackRoutine = NULL;
  cbMiniDump.CallbackParam = 0;
- 
+
  // Additional data
  MINIDUMP_USER_STREAM pExtraInfo[3];
- 
+
  // Version info
  char version[64];
  strcpy(version, GetFullGameName());
  pExtraInfo[0].Type = LastReservedStream + 1;
  pExtraInfo[0].BufferSize = sizeof(version);
  pExtraInfo[0].Buffer = (void *)&version[0];
- 
+
  // Current game info
  char game_info[1024];
  pExtraInfo[1].Type = LastReservedStream + 2;
  pExtraInfo[1].BufferSize = sizeof(game_info);
  pExtraInfo[1].Buffer = ReadGameInfoForReport(game_info, sizeof(game_info));
- 
+
  // Current game state
  char game_state[1024];
  pExtraInfo[2].Type = LastReservedStream + 3;
  pExtraInfo[2].BufferSize = sizeof(game_state);
  pExtraInfo[2].Buffer = ReadGameStateForReport(game_state, sizeof(game_state));
- 
+
  MINIDUMP_USER_STREAM_INFORMATION iStreams;
  iStreams.UserStreamCount = sizeof(pExtraInfo)/sizeof(MINIDUMP_USER_STREAM);
  iStreams.UserStreamArray = pExtraInfo;
- 
+
  // Open the file
  HANDLE hFile = CreateFile((LPCSTR)fileName,GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
- 
+
  // Write the minidump
  if (hFile)  {
  MINIDUMP_TYPE type = (MINIDUMP_TYPE)(MiniDumpScanMemory | MiniDumpWithIndirectlyReferencedMemory);
  MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, type, &eInfo,&iStreams,&cbMiniDump);
  }
- 
+
  // Close the file
  CloseHandle(hFile);
  }
@@ -376,7 +376,7 @@ void OlxWriteCoreDump(const char* file_postfix) {
 	strcat(corefile, "/core.OpenLieroX");
 	if(file_postfix) { strcat(corefile, "."); strcat(corefile, file_postfix); }
 	printf("writing coredump to %s\n", corefile);
-	
+
 	printf("dumping core ... "); fflush(0);
 #ifdef GCOREDUMPER
 	WriteCoreDump(corefile);
@@ -452,14 +452,14 @@ typedef void (*PrintOutFct) (const std::string&);
  class PrintStackWalker : public StackWalker  {
  private:
  PrintOutFct m_print;
- 
+
  public:
  PrintStackWalker(PrintOutFct fct = NULL) : StackWalker(RetrieveVerbose) { m_print = fct; }
  void OnLoadModule(LPCSTR img, LPCSTR mod, DWORD64 baseAddr, DWORD size, DWORD result, LPCSTR symType, LPCSTR pdbName, ULONGLONG fileVersion)
  {
- 
+
  }
- 
+
  void OnOutput(LPCSTR szText)
  {
  if (m_print == NULL)
@@ -474,7 +474,7 @@ void DumpCallstackPrintf(void* callpnt)
 {
 	/*PrintStackWalker sw;
 	 sw.ShowCallstack();*/
-	
+
 }
 /*void DumpCallstack(void (*LineOutFct) (const std::string&))
  {
@@ -504,7 +504,7 @@ std::string GetLogTimeStamp()
 	struct tm *t = localtime(&unif_time);
 	if (t == NULL)
 		return "";
-	
+
 	strftime(buf, sizeof(buf), "[%H:%M:%S] ", t);
 	fix_markend(buf);
 	return std::string(buf);
@@ -561,9 +561,9 @@ int Logger_Verbosity = 0;
 // true if last was newline
 static bool logger_output(Logger& log, const std::string& buf) {
 	bool ret = true;
-	
+
 	std::string prefix = log.prefix;
-	
+
 	if(Logger_Verbosity >= log.minCoutVerb) {
 		SDL_mutexP(globalCoutMutex);
 		ret = PrettyPrint(prefix, buf, CoutPrint, log.lastWasNewline);

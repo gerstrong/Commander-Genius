@@ -16,7 +16,7 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
 {
     uint8_t dictnumleft = dictnum;
     uint8_t *data_ptr = ExeFile.getRawData();
-    
+
     for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
     {
         if( memcmp(data_ptr, DICTSIG, DICT_SIG_BYTES) == 0 )
@@ -25,7 +25,7 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
         	{
         		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
         		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
-        		memcpy(m_nodes, dictdata, size);						
+        		memcpy(m_nodes, dictdata, size);
         		return true;
         	}
         	dictnumleft--;
@@ -37,16 +37,18 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
 
 bool CHuffman::readDictionaryNumberfromEnd(const CExeFile& ExeFile)
 {
-    uint8_t *data_ptr = ExeFile.getRawData()+ExeFile.getExeDataSize();
-    
-    for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
+    const uint32_t bytesToCheck = ExeFile.getExeDataSize()-DICT_SIG_BYTES;
+
+    uint8_t *data_ptr = static_cast<uint8_t*>(ExeFile.getHeaderData())+bytesToCheck;
+
+    for( Uint32 i=0; i<bytesToCheck ; i++ )
     {
-	data_ptr--;
+        data_ptr--;
         if( memcmp(data_ptr, DICTSIG, DICT_SIG_BYTES) == 0 )
         {
        		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
        		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
-       		memcpy(m_nodes, dictdata, size);						
+       		memcpy(m_nodes, dictdata, size);
        		return true;
         }
     }
@@ -55,7 +57,7 @@ bool CHuffman::readDictionaryNumberfromEnd(const CExeFile& ExeFile)
 
 bool CHuffman::readDictionaryFromFile( const std::string &filename )
 {
-	std::ifstream file; 
+	std::ifstream file;
 
 	if(!OpenGameFileR(file, filename, std::ios::binary))
 	{
@@ -103,7 +105,7 @@ void CHuffman::expand(byte *pin, byte *pout, unsigned long inlen, unsigned long 
 			if(nextnode < 256)
 			{
 				/* output a char and move back to the head node */
-				*(pout++) = nextnode;				
+				*(pout++) = nextnode;
 				outcnt++;
 				curnode = 254;
 			}
