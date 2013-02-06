@@ -1,6 +1,17 @@
 Commander Genius Release :
 ==========================
 
+v1.2 Release: 
+-------------
+- More game state fixes
+- Keen 5 support is fully implemented
+- Partial Keen 6 support. Only one AI works so far.
+- HQP Support for new music tunes. The next HQP will feature new Keen 4 tunes with better quality, which can be played with that version
+
+v1.0 Release: 
+-------------
+- Everything but with more bug fixes
+
 v1.0 RC: 
 --------
 - HUD Effects implemented. might become optional if demanded
