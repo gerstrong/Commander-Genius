@@ -97,6 +97,7 @@ public:
 	}
 
 	word *getData(Uint8 PlaneNum);
+	word *getInfoData();
 	word *getForegroundData();
 	word *getBackgroundData();
 	

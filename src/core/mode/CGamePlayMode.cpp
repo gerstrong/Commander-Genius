@@ -42,7 +42,9 @@ void CGamePlayMode::init()
 	if(m_Episode >= 4)
 	{
 		if(m_startLevel == WORLD_MAP_LEVEL_VORTICON)
-			m_startLevel = WORLD_MAP_LEVEL_GALAXY;
+		{
+		    m_startLevel = WORLD_MAP_LEVEL_GALAXY;
+		}
 		mp_PlayGame.reset( new galaxy::CPlayGameGalaxy( ExeFile, m_startLevel, m_Numplayers, m_SavedGame) );
 	}
 	else
@@ -65,6 +67,7 @@ void CGamePlayMode::init()
 		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode));
 	}
 }
+
 
 void CGamePlayMode::loadGame()
 {

@@ -110,6 +110,11 @@ word *CMap::getData(Uint8 PlaneNum)
 	return m_Plane[PlaneNum].getMapDataPtr();
 }
 
+word *CMap::getInfoData()
+{
+	return m_Plane[2].getMapDataPtr();
+}
+
 word *CMap::getForegroundData()
 {
 	return m_Plane[1].getMapDataPtr();

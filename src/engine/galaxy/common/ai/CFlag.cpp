@@ -26,9 +26,9 @@ const Uint16 ANIMATION_TIME = 8;
 const Uint16 SPEED = 64;
 
 CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
-			const VectorD2<Uint32> &Destination) :
+			const VectorD2<Uint32> &Destination,
+			bool newAction) :
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y),
-m_location(Location),
 m_destination(Destination),
 m_baseframe(0)
 {
@@ -53,9 +53,10 @@ m_baseframe(0)
 	else
 	{
 	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);
-	}		
-	
-	alignToTile();
+	}
+	    
+	if(!newAction)
+	    moveTo(m_destination);
 }
 
 void CFlag::getTouchedBy(CSpriteObject &theObject)
@@ -95,9 +96,9 @@ void CFlag::process()
  */
 void CFlag::processFlipping()
 {
-	if(m_destination != m_location)
+	if(m_Pos != m_destination)
 	{
-		VectorD2<int> dir = m_destination - m_location;
+		VectorD2<int> dir = m_destination - m_Pos;
 		float length = dir.GetLength();
 		VectorD2<float> base_dir( dir.x/length, dir.y/length );
 
@@ -106,10 +107,9 @@ void CFlag::processFlipping()
 			moveTo(m_destination);
 		}
 		else
+		{
 			moveDir(base_dir*SPEED);
-
-		m_location.x = getXPosition();
-		m_location.y = getYPosition();
+		}
 	}
 	else
 	{

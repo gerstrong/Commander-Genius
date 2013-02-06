@@ -66,11 +66,11 @@ mTimer(0)
   else
   {
     mNumAnimSprites = 2;
+    dontdraw = true;
   }
 
   processState = &AutoShot::waiting;  
-  sprite = mBaseSprite;
-  dontdraw = true;
+  sprite = mBaseSprite;  
   
   origin = getPosition();   
   

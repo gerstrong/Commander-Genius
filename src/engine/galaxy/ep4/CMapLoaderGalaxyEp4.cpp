@@ -363,10 +363,11 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y);
 		break;
 		
-	// Not sure if after that there are more sprites to load
 		
+	// Not sure if after that there are more sprites to load		
+	// This special sprite is only loaded by saved game. Normal gamemaps do not have that flag
 	case CFlag::FOE_ID:
-		p_newfoe = new galaxy::CFlag(&Map, loc, loc);
+		p_newfoe = new galaxy::CFlag(&Map, loc, loc, false);
 		break;
 
 

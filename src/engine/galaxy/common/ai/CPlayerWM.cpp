@@ -839,12 +839,10 @@ void CPlayerWM::finishLevel(const int object)
 
 		csfY += (2<<STC);
 
-		if(g_pBehaviorEngine->getEpisode() == 5)
+		if(episode == 5)
 		{
 		    csfX -= (14<<STC);
-
-		    if(episode != 5)
-			csfY -= (1<<CSF);
+		    csfY -= (1<<CSF);
 		}
 		else
 		{
@@ -858,7 +856,7 @@ void CPlayerWM::finishLevel(const int object)
 		g_pBehaviorEngine->m_EventList.spawnObj(pFlag);
 
 
-		// Mark the tileinfo on the map as marked!!
+		// Mark the tileinfo on the map as level finished!! So player cannot just re-enter. Exception is if replayability is on.
 		mp_Map->setTile( x, y, 0, true, 2);
 	}
 }

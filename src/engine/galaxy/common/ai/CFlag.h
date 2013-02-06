@@ -21,10 +21,11 @@ namespace galaxy  {
 class CFlag : public CGalaxySpriteObject
 {
 public:
-	static const unsigned int FOE_ID = 100;
+	static const unsigned int FOE_ID = 200;
 
 	CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
-			const VectorD2<Uint32> &Destination);
+			const VectorD2<Uint32> &Destination, 
+			const bool newAction = true);
 
 	void getTouchedBy(CSpriteObject &theObject);
 	
@@ -38,7 +39,6 @@ public:
 
 private:
 	// Where the flag/sign will pop in
-	VectorD2<Uint32> m_location;
 	VectorD2<Uint32> m_destination;
 	Uint16 m_baseframe;
 	void (CFlag::*processState)();	

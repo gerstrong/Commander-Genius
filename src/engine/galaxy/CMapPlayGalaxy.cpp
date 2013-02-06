@@ -275,6 +275,7 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 
 	savedGame.addData( reinterpret_cast<byte*>(mMap.getBackgroundData()), mapSize );
 	savedGame.addData( reinterpret_cast<byte*>(mMap.getForegroundData()), mapSize );
+	savedGame.addData( reinterpret_cast<byte*>(mMap.getInfoData()), mapSize );
 }
 
 
@@ -380,6 +381,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getBackgroundData()) );
 	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getForegroundData()) );
+	savedGame.readDataBlock( reinterpret_cast<byte*>(mMap.getInfoData()) );
 
 	if( mMap.m_width * mMap.m_height > 0 )
 	{
