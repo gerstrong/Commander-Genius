@@ -347,13 +347,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x35 ... 0x38: 
 		// Dart guns
 		if(foe == 0x35)
-		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 260);
+		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 256);
 		else if(foe == 0x36)
-		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 256);
+		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 260);
 		else if(foe == 0x37)
-		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 262);
+		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 258);
 		else
-		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 258);
+		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 262);
 		break;
 
 	

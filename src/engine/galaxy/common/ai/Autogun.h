@@ -19,7 +19,7 @@ class AutoShot : public CGalaxySpriteObject
 {
   
 public:
-  AutoShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+  AutoShot(CMap *pmap, const Uint32 x, const Uint32 y,
 	direction_t horDir, direction_t vertDir, int basesprite);
   
   void process();

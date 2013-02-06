@@ -10,14 +10,14 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 {
   // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5 and 6
   
-  AutoShot *shot = new AutoShot(mp_Map, 0, x, y, horDir, vertDir, basesprite);
+  AutoShot *shot = new AutoShot(mp_Map, x, y, horDir, vertDir, basesprite);
   g_pBehaviorEngine->m_EventList.spawnObj( shot );
 }
 
     
-AutoShot::AutoShot(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, 
+AutoShot::AutoShot(CMap *pmap, const Uint32 x, const Uint32 y, 
 		 direction_t horDir, direction_t vertDir, int basesprite) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxySpriteObject(pmap, 0, x, y),
 mTimer(0)
 {
   // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5
@@ -53,7 +53,7 @@ mTimer(0)
 	m_Pos.y += (7<<STC);
       }
   }
-  else if(xDirection == CENTER && yDirection == UP)
+  else if(xDirection == CENTER && yDirection == DOWN)
   {
       if(ep == 4)
 	m_Pos.x += (7<<STC);
@@ -103,7 +103,8 @@ void AutoShot::waiting()
     moveToForce(origin);  
     onslope = blockedd = blockedl = blockedr = blockedu = false;
   }
-
+  
+  dontdraw = false;
   sprite = mBaseSprite;
   mTimer = 0;
   processState = &AutoShot::flying;
@@ -123,8 +124,8 @@ void AutoShot::waiting()
 
 void AutoShot::getTouchedBy(CSpriteObject &theObject)
 {
-    if(processState != &AutoShot::flying)
-	return;
+  if(processState != &AutoShot::flying)
+    return;
     
   if(CPlayerBase *Player = dynamic_cast<CPlayerBase*>(&theObject))
   {
@@ -142,6 +143,8 @@ void AutoShot::setWaitStatus()
     {
 	sprite = mBaseSprite + mNumAnimSprites;
     }
+    
+    dontdraw = true;
 }
 
 
