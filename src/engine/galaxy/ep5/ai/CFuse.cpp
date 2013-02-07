@@ -23,7 +23,8 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 mTimer(0)
 {  
 	// Adapt this AI
-	setupGalaxyObjectOnMap(0x3186, 0);
+	setActionForce(0x3186);
+	//setupGalaxyObjectOnMap(0x3186, 0);
 	
 	xDirection = LEFT;
 	
@@ -46,8 +47,8 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 
 void CFuse::process()
 {
-	if(!processActionRoutine())
-	    exists = false;
+	//if(!processActionRoutine())
+	  //  exists = false;
 }
 
 }

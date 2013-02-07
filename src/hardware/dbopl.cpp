@@ -904,7 +904,7 @@ static inline void Channel__GeneratePercussion(Channel *self, Chip* chip,
 }
 
 // Value to scale in order to get normalized volume on this device matching to other players in CG
-const int SCALE_VOL = 4;
+const int SCALE_VOL = 1;
 
 Channel* Channel__BlockTemplate(Channel *self, Chip* chip,
                                 Bit32u samples, Bit32s* output,
