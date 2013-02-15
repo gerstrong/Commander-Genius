@@ -2399,6 +2399,7 @@ void CPlayerLevel::process()
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+		EventContainer.wait(1.0f);
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
 		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
 		m_Inventory.Item.m_gem.empty();

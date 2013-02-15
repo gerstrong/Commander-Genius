@@ -133,6 +133,8 @@ void CPlayGameGalaxy::process()
 		return;
 
 	CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
+	
+	eventContainer.update();
 
 	if( !gpMenuController->active() )
 	{
@@ -262,6 +264,7 @@ void CPlayGameGalaxy::process()
 		    }
 		}
 
+		g_pInput->flushAll();
 		mMessageBoxes.push_back( move(pMsgBox) );
 		eventContainer.pop_Event();
 	}
@@ -274,6 +277,7 @@ void CPlayGameGalaxy::process()
 
 			mMessageBoxes.push_back( move(pMsgBox) );
 		}
+		g_pInput->flushAll();
 		eventContainer.pop_Event();
 	}
 	else if( EventSendDialog *ev = eventContainer.occurredEvent<EventSendDialog>() )
@@ -282,6 +286,7 @@ void CPlayGameGalaxy::process()
 		pMsgBox->init();
 
 		mMessageBoxes.push_back( move(pMsgBox) );
+		g_pInput->flushAll();
 		eventContainer.pop_Event();
 	}
 	else if( EventSendSelectionDialogMsg* ev = eventContainer.occurredEvent<EventSendSelectionDialogMsg>() )

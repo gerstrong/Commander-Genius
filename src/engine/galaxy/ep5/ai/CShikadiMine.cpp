@@ -452,18 +452,49 @@ void CMineShards::process()
 	
 	bool coreExplode = false;
 	
+	int dx, dy;
+	
 	if( mp_Map->getPlaneDataAt(2, lx, ly) == 0x29 )
+	{
+	  dx = lx; dy = ly;
 	  coreExplode |= true;
+	}
 	if( mp_Map->getPlaneDataAt(2, lx+(1<<CSF), ly) == 0x29 )
+	{
+	  dx = lx+(1<<CSF); dy = ly;
 	  coreExplode |= true;
-	if( mp_Map->getPlaneDataAt(2, lx+(1<<CSF), ly+(1<<CSF)) == 0x29 )
-	  coreExplode |= true;
+	}
 	if( mp_Map->getPlaneDataAt(2, lx, ly+(1<<CSF)) == 0x29 )
+	{
+	  dx = lx; dy = ly+(1<<CSF);
 	  coreExplode |= true;
+	}
+	if( mp_Map->getPlaneDataAt(2, lx+(1<<CSF), ly+(1<<CSF)) == 0x29 )
+	{
+	  dx = lx+(1<<CSF); dy = ly+(1<<CSF);
+	  coreExplode |= true;	
+	}
 	
     
 	if( coreExplode )
 	{
+	    // Quikly decorate the rotten QED!
+	    dx >>= CSF; dy >>= CSF;
+	    dx--;	dy--;
+	    
+	    for(int i=0 ; i<4 ; i++)
+	    {
+		const int t1 = mp_Map->at(i,0);
+		const int t2 = mp_Map->at(i,1);
+		const int t3 = mp_Map->at(i+4,0);
+		const int t4 = mp_Map->at(i+4,1);
+		mp_Map->setTile(dx+i, dy,   t1, true, 1);
+		mp_Map->setTile(dx+i, dy+1, t2, true, 1);
+		mp_Map->setTile(dx+i, dy+2, t3, true, 1);
+		mp_Map->setTile(dx+i, dy+3, t4, true, 1);
+	    }
+	    
+	    
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		    
 		const std::string end_text("End of Episode.\n"
@@ -472,6 +503,7 @@ void CMineShards::process()
 					       "try another Episode for more fun!\n"
 					       "The original epilog is under construction.");
 		    
+		EventContainer.wait(1.0f);
 		EventContainer.add( new EventSendDialog(end_text) );
 		EventContainer.add( new EventEndGamePlay() );
 		dead = true;
