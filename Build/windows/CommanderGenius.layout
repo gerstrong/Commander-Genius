@@ -1,74 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\src\fileio\CExeFile.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\galaxy\common\ai\CPlayerWM.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7582" topLine="344" />
+			<Cursor1 position="3055" topLine="121" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\fileio\CPatcherUtils.cpp" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\galaxy\ep5\ai\CShikadiMine.cpp" open="1" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2705" topLine="109" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\galaxy\ep4\ai\CDiveSuit.cpp" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1066" topLine="20" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\CEventContainer.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="961" topLine="20" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\galaxy\ep4\ai\CCouncilMember.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5774" topLine="189" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\galaxy\common\ai\CPlayerWM.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1033" topLine="35" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\galaxy\ep4\ai\CFoot.cpp" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="740" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\Debug.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4300" topLine="152" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\galaxy\common\ai\CFlag.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1903" topLine="79" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\fileio\CPatcher.cpp" open="1" top="1" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5921" topLine="211" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\vorticon\CAudioVorticon.cpp" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2833" topLine="87" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\galaxy\res\CEGAGraphicsGalaxy.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="10960" topLine="367" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\fileio\compression\CHuffman.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1413" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\CEvent.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="928" topLine="35" />
+			<Cursor1 position="10028" topLine="469" />
 		</Cursor>
 	</File>
 	<File name="..\..\src\common\CMap.cpp" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -76,14 +16,49 @@
 			<Cursor1 position="4703" topLine="212" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\galaxy\common\ai\CPlayerBase.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\vorticon\CAudioVorticon.cpp" open="1" top="1" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="12423" topLine="461" />
+			<Cursor1 position="3103" topLine="106" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\galaxy\CPlayGameGalaxy.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\CEvent.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9045" topLine="320" />
+			<Cursor1 position="928" topLine="35" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\fileio\CPatcher.cpp" open="1" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5921" topLine="199" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\galaxy\ep4\ai\CCouncilMember.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5774" topLine="189" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\galaxy\res\CEGAGraphicsGalaxy.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10960" topLine="367" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\galaxy\common\ai\CPlayerWM.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1033" topLine="35" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\galaxy\ep4\ai\CDiveSuit.cpp" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1066" topLine="20" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\fileio\compression\CHuffman.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1413" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\galaxy\common\ai\CFlag.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1903" topLine="79" />
 		</Cursor>
 	</File>
 	<File name="..\..\src\engine\galaxy\common\ai\CPlayerLevel.cpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -96,9 +71,39 @@
 			<Cursor1 position="878" topLine="27" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\galaxy\common\ai\CPlayerWM.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\CEventContainer.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3055" topLine="121" />
+			<Cursor1 position="961" topLine="20" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\fileio\CExeFile.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7582" topLine="344" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\fileio\CPatcherUtils.cpp" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2705" topLine="109" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\galaxy\ep4\ai\CFoot.cpp" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="740" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\galaxy\CPlayGameGalaxy.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9045" topLine="320" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\Debug.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4300" topLine="152" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\galaxy\common\ai\CPlayerBase.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="12423" topLine="461" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

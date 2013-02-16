@@ -347,9 +347,10 @@
 	<SDL.h>
 	"fileio/TypeDefinitions.h"
 
-1355227553 c:\users\admin\desktop\commander-genius\src\engine\ceventcontainer.h
+1361006024 c:\users\admin\desktop\commander-genius\src\engine\ceventcontainer.h
 	"CEvent.h"
 	<deque>
+	<ctime>
 
 1355227553 c:\users\admin\desktop\commander-genius\src\core\cbaseengine.h
 	"mode/CGameMode.h"
@@ -443,7 +444,7 @@
 	<stdio.h>
 	<string.h>
 
-1359807654 c:\users\admin\desktop\commander-genius\src\common\cmap.h
+1361006024 c:\users\admin\desktop\commander-genius\src\common\cmap.h
 	<SDL.h>
 	<string>
 	<vector>
@@ -660,7 +661,7 @@
 	"FindFile.h"
 	"Debug.h"
 
-1359807654 c:\users\admin\desktop\commander-genius\version.h
+1361006024 c:\users\admin\desktop\commander-genius\version.h
 
 1359808423 c:\users\admin\desktop\commander-genius\src\findfile.h
 	<iomanip>
@@ -780,7 +781,7 @@
 
 1355227553 c:\users\admin\desktop\commander-genius\src\engine\spritedefines.h
 
-1360002723 source:c:\users\admin\desktop\commander-genius\src\common\cmap.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\common\cmap.cpp
 	"CMap.h"
 	"common/CBehaviorEngine.h"
 	"FindFile.h"
@@ -1563,7 +1564,7 @@
 	"../CPassive.h"
 	<string>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.cpp
 	"CGamePlayMode.h"
 	"engine/galaxy/CPlayGameGalaxy.h"
 	"engine/vorticon/playgame/CPlayGameVorticon.h"
@@ -2356,7 +2357,7 @@
 	<vector>
 	"../TypeDefinitions.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\cmapplaygalaxy.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\cmapplaygalaxy.cpp
 	"CMapPlayGalaxy.h"
 	"common/ai/platform/CPlatform.h"
 	"common/ai/CPlayerBase.h"
@@ -2380,7 +2381,7 @@
 	"common/Menu/CMenuController.h"
 	"graphics/effects/CEffects.h"
 
-1360001492 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\cplaygamegalaxy.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\cplaygamegalaxy.cpp
 	"CPlayGameGalaxy.h"
 	"common/CMapLoaderGalaxy.h"
 	"graphics/CGfxEngine.h"
@@ -2447,7 +2448,7 @@
 	"common/CBehaviorEngine.h"
 	"StringUtils.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep4\cmaploadergalaxyep4.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep4\cmaploadergalaxyep4.cpp
 	"CMapLoaderGalaxyEp4.h"
 	"engine/galaxy/common/ai/CPlayerWM.h"
 	"engine/galaxy/common/ai/CPlayerLevel.h"
@@ -2487,7 +2488,7 @@
 	"engine/galaxy/ai/platform/CPlatformMoveAway.h"
 	"engine/galaxy/ai/platform/CPlatformDrop.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep5\cmaploadergalaxyep5.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep5\cmaploadergalaxyep5.cpp
 	"CMapLoaderGalaxyEp5.h"
 	"ai/CSparky.h"
 	"ai/CAmpton.h"
@@ -3051,7 +3052,7 @@
 	"../../fileio.h"
 	"../../CLogFile.h"
 
-1360002865 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcher.cpp
+1360003017 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcher.cpp
 	"CPatcher.h"
 	<string.h>
 	<fstream>
@@ -3062,7 +3063,7 @@
 	"fileio/ResourceMgmt.h"
 	"common/CBehaviorEngine.h"
 
-1359808763 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcherutils.cpp
+1360002943 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcherutils.cpp
 	"CPatcher.h"
 	<string.h>
 	<fstream>
@@ -3298,7 +3299,7 @@
 1355227553 source:c:\users\admin\desktop\commander-genius\src\hardware\coplemulator.cpp
 	"COPLEmulator.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\hardware\dbopl.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\hardware\dbopl.cpp
 	<math.h>
 	<stdlib.h>
 	<string.h>
@@ -4192,11 +4193,11 @@
 1359807654 c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep4\ai\csmokepuff.h
 	"engine/galaxy/common/CGalaxySpriteObject.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\autogun.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\autogun.cpp
 	"Autogun.h"
 	"engine/galaxy/common/ai/CPlayerBase.h"
 
-1359807654 c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\autogun.h
+1361006024 c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\autogun.h
 	"engine/galaxy/common/CGalaxySpriteObject.h"
 
 1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cbullet.cpp
@@ -4213,12 +4214,12 @@
 1359807654 c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cenemyshot.h
 	"engine/galaxy/common/CGalaxySpriteObject.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cflag.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cflag.cpp
 	"CFlag.h"
 	"sdl/sound/CSound.h"
 	"common/CBehaviorEngine.h"
 
-1359807654 c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cflag.h
+1361006024 c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cflag.h
 	"engine/galaxy/common/CGalaxySpriteObject.h"
 	"CVec.h"
 
@@ -4242,7 +4243,7 @@
 	"sdl/input/CInput.h"
 	"sdl/sound/CSound.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cplayerlevel.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cplayerlevel.cpp
 	"CPlayerLevel.h"
 	"CBullet.h"
 	"common/CBehaviorEngine.h"
@@ -4260,7 +4261,7 @@
 1359807654 c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep5\ai\csecuritydoor.h
 	"engine/galaxy/common/CGalaxySpriteObject.h"
 
-1360000635 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cplayerwm.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\common\ai\cplayerwm.cpp
 	"CPlayerWM.h"
 	"engine/galaxy/common/ai/CFlag.h"
 	"common/CBehaviorEngine.h"
@@ -4652,7 +4653,7 @@
 	<vector>
 	"engine/galaxy/common/ai/CStunnable.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep5\ai\cfuse.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep5\ai\cfuse.cpp
 	"CFuse.h"
 	"engine/galaxy/common/ai/CPlayerLevel.h"
 	"misc.h"
@@ -4742,7 +4743,7 @@
 	"engine/galaxy/common/ai/CStunnable.h"
 	"engine/galaxy/common/ai/CPlayerLevel.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep5\ai\cshikadimine.cpp
+1361006617 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep5\ai\cshikadimine.cpp
 	"sdl/music/CMusic.h"
 	"sdl/CVideoDriver.h"
 	"CShikadiMine.h"
@@ -4840,7 +4841,7 @@
 	<vector>
 	"engine/galaxy/common/ai/CStunnable.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep6\cmaploadergalaxyep6.cpp
+1361006024 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ep6\cmaploadergalaxyep6.cpp
 	"CMapLoaderGalaxyEp6.h"
 	"ai/CBloog.h"
 	"engine/galaxy/common/ai/CPlayerWM.h"
