@@ -1,8 +1,8 @@
-Commander Genius Release :
-==========================
+Commander Genius:
+=================
 
-v1.2 Release: 
--------------
+v1.2 Beta: 
+----------
 - More game state fixes
 - Keen 5 support is fully implemented
 - Partial Keen 6 support. Only one AI works so far.

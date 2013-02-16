@@ -28,8 +28,8 @@ $2716W #Shikadi mine fragments
 
 // TODO: Overload the draw function, because the mine has an eye which moves around in the sprite
 
-namespace galaxy {  
-  
+namespace galaxy {
+
 enum MINEACTIONS
 {
 A_MINE_SIT = 0,
@@ -44,7 +44,7 @@ const int TIME_MOVE = 150;
 const int TIME_CHANGE_DIR = 150;
 
 const int MOVE_SPEED = 10;
-  
+
 CShikadiMine::CShikadiMine(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
@@ -53,17 +53,17 @@ mTimer(0)
     mActionMap[A_MINE_MOVE] = (void (CStunnable::*)()) &CShikadiMine::processMoving;
     mActionMap[A_MINE_CHANGE_DIR] = (void (CStunnable::*)()) &CShikadiMine::processChangeDir;
     mActionMap[A_MINE_DETONATE] = (void (CStunnable::*)()) &CShikadiMine::processDetonate;
-  
+
     // Adapt this AI
     setupGalaxyObjectOnMap(0x2608, A_MINE_SIT);
-	
+
     xDirection = CENTER;
     yDirection = CENTER;
-    
+
     mEyeSprite = sprite + 1;
-    
+
     setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
-    
+
     mEyeXOffset = mTargetEyeXOffset;
     mEyeYOffset = mTargetEyeYOffset;
 }
@@ -81,9 +81,9 @@ void CShikadiMine::setEyeCenterOffset(int &x, int &y)
 
 void CShikadiMine::processSit()
 {
-  const int xDir = mTargetEyeXOffset-mEyeXOffset;  
-  const int yDir = mTargetEyeYOffset-mEyeYOffset;  
-  
+  const int xDir = mTargetEyeXOffset-mEyeXOffset;
+  const int yDir = mTargetEyeYOffset-mEyeYOffset;
+
   if(xDir < 0)
   {
     mEyeXOffset--;
@@ -104,16 +104,16 @@ void CShikadiMine::processSit()
   {
     mEyeYOffset++;
     return;
-  }  
-  
-  
+  }
+
+
   /*mTimer++;
   if( mTimer < TIME_SIT )
       return;
-  
+
   mTimer = 0;*/
-  
-  
+
+
   /*
 	delx = o->xpos - player->xpos;
 	dely = o->ypos - player->ypos;
@@ -125,34 +125,34 @@ void CShikadiMine::processSit()
 		return;
 	}
    */
-  
-  
+
+
   setAction(A_MINE_MOVE);
 }
 
 
 void CShikadiMine::processMoving()
-{          
-  
+{
+
   // Move normally in the direction
   moveXDir( xDirection*MOVE_SPEED );
   moveYDir( yDirection*MOVE_SPEED );
-  
+
   mTimer++;
   if( mTimer < TIME_MOVE )
       return;
-  
+
   mTimer = 0;
-  
+
   setAction(A_MINE_CHANGE_DIR);
   setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
 }
 
 void CShikadiMine::processChangeDir()
-{  
-  const int xDir = mTargetEyeXOffset-mEyeXOffset;  
-  const int yDir = mTargetEyeYOffset-mEyeYOffset;  
-  
+{
+  const int xDir = mTargetEyeXOffset-mEyeXOffset;
+  const int yDir = mTargetEyeYOffset-mEyeYOffset;
+
   if(xDir < 0)
   {
     mEyeXOffset--;
@@ -174,9 +174,9 @@ void CShikadiMine::processChangeDir()
     mEyeYOffset++;
     return;
   }
-  
+
   bool updateDir = false;
-  
+
   // Look at the Player coords and define a direction
   if(getProbability(500))
   {
@@ -192,21 +192,21 @@ void CShikadiMine::processChangeDir()
     if(yDirection != mKeenAlignmentY)
     {
       xDirection = CENTER;
-      yDirection = mKeenAlignmentY;      
+      yDirection = mKeenAlignmentY;
       updateDir |= true;
     }
-      
+
   }
 
-  
+
     if( blockedl && xDirection == LEFT )
     {
 	xDirection = CENTER;
 	yDirection = mKeenAlignmentY;
-	
+
 	if(yDirection == UP && blockedu)
 	    yDirection = DOWN;
-	    
+
 	if(yDirection == DOWN && blockedd)
 	{
 	    yDirection = CENTER;
@@ -217,25 +217,25 @@ void CShikadiMine::processChangeDir()
     {
 	xDirection = CENTER;
 	yDirection = mKeenAlignmentY;
-	
+
 	if(yDirection == DOWN  && blockedd)
 	    yDirection = UP;
-	    
+
 	if(yDirection == UP && blockedu)
 	{
 	    yDirection = CENTER;
 	    xDirection = LEFT;
-	}	
-    }    
-    
+	}
+    }
+
     if( blockedu && yDirection == UP )
     {
 	yDirection = CENTER;
 	xDirection = mKeenAlignmentX;
-	
+
 	if(xDirection == LEFT && blockedl)
 	    xDirection = RIGHT;
-	    
+
 	if(xDirection == RIGHT && blockedr)
 	{
 	    xDirection = CENTER;
@@ -246,24 +246,24 @@ void CShikadiMine::processChangeDir()
     {
 	yDirection = CENTER;
 	xDirection = mKeenAlignmentX;
-	
+
 	if(xDirection == RIGHT && blockedr)
 	    xDirection = LEFT;
-	    
+
 	if(xDirection == LEFT && blockedl)
 	{
 	    xDirection = CENTER;
 	    yDirection = UP;
-	}	
-    }    
-    
+	}
+    }
+
     if(updateDir)
     {
       setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
-                    
+
       CSprite &eyeSprite = g_pGfxEngine->getSprite(mEyeSprite);
-      CSprite &spriteRef = g_pGfxEngine->getSprite(sprite);    
-        
+      CSprite &spriteRef = g_pGfxEngine->getSprite(sprite);
+
       if(xDirection == LEFT)
 	mTargetEyeXOffset = 0;
       if(xDirection == RIGHT)
@@ -273,8 +273,8 @@ void CShikadiMine::processChangeDir()
 	mTargetEyeYOffset = 0;
       if(yDirection == DOWN)
 	mTargetEyeYOffset = spriteRef.getHeight()-eyeSprite.getHeight();
-      
-      setAction(A_MINE_SIT);  
+
+      setAction(A_MINE_SIT);
     }
     else
     {
@@ -283,32 +283,32 @@ void CShikadiMine::processChangeDir()
 }
 
 void CShikadiMine::processDetonate()
-{  
+{
   if(!processActionRoutine())
   {
       dead = true;
       exists = false;
-      
+
       // Spawn little explosion shards here!
-      const int newX = getXMidPos();      
+      const int newX = getXMidPos();
       const int newY = getYUpPos();
-      
-      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(), 
+
+      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(),
 							     0, newX, newY, -100 ) );
-      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(), 
+      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(),
 							     0, newX, newY, -50 ) );
-      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(), 
+      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(),
 							     0, newX, newY, 50 ) );
-      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(), 
+      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(),
 							     0, newX, newY, 100 ) );
-      
-  }  
+
+  }
 }
 
 bool CShikadiMine::isNearby(CSpriteObject &theObject)
 {
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{	    	    
+	{
 		if( player->getXMidPos() < getXMidPos() )
 			mKeenAlignmentX = LEFT;
 		else
@@ -331,7 +331,7 @@ void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 	if(getActionNumber(A_MINE_DETONATE))
 		return;
 
-	
+
 	CStunnable::getTouchedBy(theObject);
 
 	// Was it a bullet? Than make it stunned.
@@ -355,10 +355,10 @@ void CShikadiMine::getTouchedBy(CSpriteObject &theObject)
 void CShikadiMine::process()
 {
 	performCollisions();
-	
+
 	//if(!processActionRoutine())
 	//    exists = false;
-	
+
 	(this->*mp_processState)();
 }
 
@@ -369,7 +369,7 @@ void CShikadiMine::draw()
 	if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
-	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);	
+	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
 
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -388,7 +388,7 @@ void CShikadiMine::draw()
 		else
 		{
 		    Sprite.drawSprite( showX, showY, (255-transluceny) );
-		    
+
 		    if(!getActionNumber(A_MINE_DETONATE))
 		    {
 		      CSprite &eyeSprite = g_pGfxEngine->getSprite(mEyeSprite);
@@ -410,9 +410,9 @@ CStunnable(pmap, foeID, x, y),
 mXSpeed(xSpeed)
 {
   xDirection = (xSpeed < 0) ? LEFT : RIGHT;
-    
+
   setupGalaxyObjectOnMap(0x2716, 0);
-  
+
   yinertia = -100;
 }
 
@@ -427,7 +427,7 @@ void CMineShards::getTouchedBy(CSpriteObject& theObject)
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
-	}		
+	}
 }
 
 
@@ -436,7 +436,7 @@ void CMineShards::getTouchedBy(CSpriteObject& theObject)
 void CMineShards::process()
 {
 	performCollisions();
-	
+
 	performGravityMid();
 
 	// Reflections at wall. Not sure, if it makes sense, let's observe the behaviour
@@ -445,15 +445,15 @@ void CMineShards::process()
 	{
 	  mXSpeed = -mXSpeed;
 	}
-		
+
 	// Special case when a shard touches the Omegamatic Core
 	const int lx = getXMidPos();
 	const int ly = getYDownPos();
-	
+
 	bool coreExplode = false;
-	
-	int dx, dy;
-	
+
+	int dx=0, dy=0;
+
 	if( mp_Map->getPlaneDataAt(2, lx, ly) == 0x29 )
 	{
 	  dx = lx; dy = ly;
@@ -472,16 +472,16 @@ void CMineShards::process()
 	if( mp_Map->getPlaneDataAt(2, lx+(1<<CSF), ly+(1<<CSF)) == 0x29 )
 	{
 	  dx = lx+(1<<CSF); dy = ly+(1<<CSF);
-	  coreExplode |= true;	
+	  coreExplode |= true;
 	}
-	
-    
+
+
 	if( coreExplode )
 	{
 	    // Quikly decorate the rotten QED!
 	    dx >>= CSF; dy >>= CSF;
 	    dx--;	dy--;
-	    
+
 	    for(int i=0 ; i<4 ; i++)
 	    {
 		const int t1 = mp_Map->at(i,0);
@@ -493,36 +493,36 @@ void CMineShards::process()
 		mp_Map->setTile(dx+i, dy+2, t3, true, 1);
 		mp_Map->setTile(dx+i, dy+3, t4, true, 1);
 	    }
-	    
-	    
+
+
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-		    
+
 		const std::string end_text("End of Episode.\n"
 					       "The game will be restarted.\n"
-					       "You can replay it again or\n" 
+					       "You can replay it again or\n"
 					       "try another Episode for more fun!\n"
 					       "The original epilog is under construction.");
-		    
+
 		EventContainer.wait(1.0f);
 		EventContainer.add( new EventSendDialog(end_text) );
 		EventContainer.add( new EventEndGamePlay() );
 		dead = true;
-		exists = false;		
-		
+		exists = false;
+
 		return;
 	}
-	
+
 	if( blockedd )
 	{
 	  dead = true;
 	  exists = false;
 	  return;
 	}
-	
-	
+
+
 	moveXDir(mXSpeed);
-	
-	processActionRoutine();	
+
+	processActionRoutine();
 }
 
 
