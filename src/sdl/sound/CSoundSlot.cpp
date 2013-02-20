@@ -16,10 +16,11 @@
 #include "sdl/sound/Sampling.h"
 #include "FindFile.h"
 
-#ifdef OGG
+#if defined(OGG)
 #include <vorbisfile.h>
-#elif defined  TREMOR
+#elif defined(TREMOR)
 #include <ivorbisfile.h>
+int ov_fopen(char *path,OggVorbis_File *vf);
 #endif
 
 
