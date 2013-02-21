@@ -25,7 +25,12 @@
 #define MSPERSEC        1000
 const float DEFAULT_LPS_GALAXY = 70.0f;
 const float DEFAULT_LPS_VORTICON = 60.0f;
+
+#if defined(ANDROID)
+#define DEFAULT_FPS     40
+#else
 #define DEFAULT_FPS     60
+#endif
 
 #define ulong unsigned long
 
