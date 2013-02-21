@@ -73,6 +73,12 @@ bool CVideoEngine::init()
 	else
 		m_Mode |= SDL_RESIZABLE;
 
+	#if defined(ANDROID)
+		m_VidConfig.m_DisplayRect.w = 320;
+		m_VidConfig.m_DisplayRect.h = 200;		
+	#endif
+		
+	
 	// And set the proper Display Dimensions
 	// The screen is also setup in this function
 	if( !resizeDisplayScreen(m_VidConfig.m_DisplayRect) )
