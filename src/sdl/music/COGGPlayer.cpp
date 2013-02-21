@@ -109,7 +109,10 @@ bool COGGPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 	m_filename = "slot" + itoa(music_order) + ".ogg";
 	m_filename = getResourceFilename(JoinPaths("music", m_filename), ExeFile.getDataDirectory(), false, false);
 
-	return open();
+	if(m_filename.empty())	
+	   return false;
+	    
+        return open();
 }
 
 

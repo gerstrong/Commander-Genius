@@ -220,7 +220,7 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
 {
-	bool fileloaded = false;
+    bool fileloaded = false;
     std::ifstream Tablefile;
 
     std::string musicpath = getResourceFilename(JoinPaths("music", "table.cfg"), gamepath, false, true);
