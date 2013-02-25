@@ -57,6 +57,12 @@ void CVideoDriver::initResolutionList()
 	// On Handheld devices this means, they will only take that resolution and that would it be.
 	// On the PC, this is the current resolution but will add others.
 	CRect<Uint16> resolution(SDL_GetVideoInfo());
+	
+#if defined(ANDROID)
+	resolution.w = 320;
+	resolution.h = 200;
+#endif
+	
 	CRect<Uint16> desktopResolution(resolution);
 
 	// We have a resolution list, clear it and create a new one.
@@ -101,6 +107,8 @@ void CVideoDriver::initResolutionList()
 		}
 	}
 #endif
+
+
 
 	// The last resolution in the list is the desktop normally, therefore the highest
 	m_Resolutionlist.push_back(desktopResolution);

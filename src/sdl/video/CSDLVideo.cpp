@@ -19,8 +19,8 @@ CVideoEngine(VidConfig)
 bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
-	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 	
+	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 
 	if (!screen)
 	{
