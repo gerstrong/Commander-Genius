@@ -13,7 +13,7 @@
 #include "common/CBehaviorEngine.h"
 
 CTimer::CTimer() :
-mRenderLatency(1000.0f/60.0f),
+mRenderLatency(1000.0f/DEFAULT_FPS),
 mLogicLatency(1000.0f/DEFAULT_LPS_VORTICON),
 m_LastSecTime(0),
 resetLogic(false)

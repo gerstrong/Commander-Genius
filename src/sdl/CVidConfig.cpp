@@ -26,8 +26,9 @@ bool CVidConfig::operator!=(const CVidConfig& target)
 void CVidConfig::reset()
 {
 	// Default values
-	showfps = true;
+	showfps = false;
 	vsync = true;
+	
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
 	//m_Resolution.width=320;
 	//m_Resolution.height=240;

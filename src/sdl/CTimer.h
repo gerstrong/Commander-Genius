@@ -27,9 +27,9 @@ const float DEFAULT_LPS_GALAXY = 70.0f;
 const float DEFAULT_LPS_VORTICON = 60.0f;
 
 #if defined(ANDROID)
-#define DEFAULT_FPS     40
+const float DEFAULT_FPS = 40.0f;
 #else
-#define DEFAULT_FPS     60
+const float DEFAULT_FPS = 60.0f;
 #endif
 
 #define ulong unsigned long
