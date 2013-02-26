@@ -12,7 +12,7 @@ rm CMakeFiles -R
 
 # Linux 32-bit Version
 #cmake . -DBUILD_TARGET=LINUX -DBUILD_ARCH=i386 -DCMAKE_BUILD_TYPE=Release -DOGG=yes -DTREMOR=NO -DCREATE_DEBS=1 -DCREATE_RPMS=1
-#make package
+#make package -j 4
 #rm CMakeFiles -R
 
 #clean up the packaged files
