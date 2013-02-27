@@ -20,6 +20,6 @@ cmake_install.cmake
 install_manifest.txt
 *.dll
 *.dll
-*.DS_Store
+*/.DS_Store
 .DS_Store
 readme.txt
