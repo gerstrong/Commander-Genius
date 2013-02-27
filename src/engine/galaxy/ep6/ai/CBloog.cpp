@@ -8,7 +8,6 @@
 
 #include "CBloog.h"
 #include "engine/galaxy/common/ai/CPlayerBase.h"
-#include "misc.h"
 
 
 namespace galaxy {

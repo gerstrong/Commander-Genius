@@ -7,6 +7,7 @@
 
 #include "CMapLoaderGalaxyEp6.h"
 #include "ai/CBloog.h"
+#include "ai/CBlooguard.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -148,11 +149,16 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x54:			
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C ); break;
-	case 0x55:			
-			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y ); break;
 
 			break;
 */
+	
+	case 0x57: if( difficulty < HARD ) break;
+	case 0x56: if( difficulty < NORMAL ) break;   
+	case 0x55: 
+		// This is a Sprite from the well of wishes.
+		p_newfoe = new galaxy::CBlooguard(&Map, foe, x, y);
+		break;
 
 
 	/*case PLATFORM_VERT: case PLATFORM_VERT_ALT:

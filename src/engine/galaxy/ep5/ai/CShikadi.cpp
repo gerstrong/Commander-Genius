@@ -144,13 +144,12 @@ void CShikadi::getTouchedBy(CSpriteObject &theObject)
 
 	CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet? Than make it stunned.
+	// Was it a bullet? Than make loose health.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 	    mHealth--;
 	    theObject.dead = true;
 	    
-	    // TODO: Flash effect must be added here!
 	    if(mHealth == 0)
 	    {
 		setAction(A_SHIKADI_STUNNED);
