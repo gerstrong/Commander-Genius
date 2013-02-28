@@ -8,6 +8,7 @@
 #include "CMapLoaderGalaxyEp6.h"
 #include "ai/CBloog.h"
 #include "ai/CBlooguard.h"
+#include "ai/CBlooglet.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -110,9 +111,23 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x06: if( difficulty < HARD ) break;
 	case 0x05: if( difficulty < NORMAL ) break;	// not sure here    
 	case 0x04: 
-		// This is a Sprite from the well of wishes.
+		// Bloog
 		p_newfoe = new galaxy::CBloog(&Map, foe, x, y);
 		break;
+		
+
+	// Blooglets
+	case 0x07:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, false, x, y);	break;
+	case 0x08:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x2120, false, x, y);	break;
+	case 0x09:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, false, x, y);	break;
+	case 0x0A:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, false, x, y);	break;
+	
+	// Blooglets carrying gems
+	case 0x0B:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;
+	case 0x0C:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x2120, true, x, y);	break;
+	case 0x0D:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, true, x, y);	break;
+	case 0x0E:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;
+
 			
 
 	/*case 0x1B:

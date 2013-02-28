@@ -8,7 +8,7 @@ execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIAB
 string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 
-INCLUDE(build.cmake)
+INCLUDE(build.cmake	)
 
 INCLUDE(install.cmake)
 

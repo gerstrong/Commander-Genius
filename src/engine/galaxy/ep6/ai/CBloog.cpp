@@ -14,7 +14,7 @@ namespace galaxy {
   
 enum BLOOGACTIONS
 {
-A_BLOOG_WALK = 0,	/* Ordinary slug_move action */
+A_BLOOG_WALK = 0,	/* Ordinary walk action */
 A_BLOOG_STUNNED = 4
 };
 
