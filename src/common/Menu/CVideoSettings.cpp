@@ -85,7 +85,7 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpVSyncSwitch = new CGUISwitch( "VSync" );
 	mpMenuDialog->addControl( mpVSyncSwitch );
 
-	mpResolutionSelection = new CGUIComboSelection( "Mode",
+	mpResolutionSelection = new CGUIComboSelection( "Size",
 		filledStrList(1, "?x?") );
 	mpMenuDialog->addControl( mpResolutionSelection );
 
