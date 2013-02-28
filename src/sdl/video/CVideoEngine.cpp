@@ -114,15 +114,15 @@ void CVideoEngine::aspectCorrectResizing(const CRect<Uint16>& newDim)
 		aspectCorrectionRect.h = newDim.h;
 		return;
 	}
-	if (10*newDim.w >= 16*newDim.h) // Wider than 16:10, so shrink newDim.w
+	if (5*newDim.w >= 8*newDim.h) // Wider than 8:5, so shrink newDim.w
 	{
-		aspectCorrectionRect.h = newDim.h-newDim.h%10;
-		aspectCorrectionRect.w = newDim.h/10*16;
+		aspectCorrectionRect.h = newDim.h-newDim.h%5;
+		aspectCorrectionRect.w = newDim.h/5*8;
 	}
-	else // Taller than 16:10 so shrink newDim.h
+	else // Taller than 8:5 so shrink newDim.h
 	{
-		aspectCorrectionRect.w = newDim.w-newDim.w%16;
-		aspectCorrectionRect.h = newDim.w/16*10;
+		aspectCorrectionRect.w = newDim.w-newDim.w%8;
+		aspectCorrectionRect.h = newDim.w/8*5;
 	}
 	aspectCorrectionRect.x = (newDim.w-aspectCorrectionRect.w)/2;
 	aspectCorrectionRect.y = (newDim.h-aspectCorrectionRect.h)/2;
