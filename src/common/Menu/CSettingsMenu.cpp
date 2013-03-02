@@ -32,27 +32,18 @@ CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 	mpMenuDialog->addControl(new CGUIButton( "Options",
 									new OpenMenuEvent( new COptions() ) ) );
 
-
-	/*
-
-			const int players = ctrlMenu->mSelection;
-			EventContainer.pop_Event();
-			EventContainer.add( new OpenMenuEvent(
-									new CControlsettings(players) ) );
-	 *
-	 * */
-
-#if defined (SINGLEPLAYER)
-	mpMenuDialog->addControl( new CGUIButton( "Controls",
-									new OpenMenuEvent(	new CControlsettings(1) ) ) );
-#else
-	mpMenuDialog->addControl(new CGUIButton( "Controls",
-									new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
-#endif
+    if (g_pBehaviorEngine->mPlayers == 1)
+    {
+        mpMenuDialog->addControl(new CGUIButton( "Controls",
+									    new OpenMenuEvent( new CControlsettings(1) ) ) );
+    } else {
+        mpMenuDialog->addControl(new CGUIButton( "Controls",
+									    new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
+    }
 
 
 #if !defined(EMBEDDED)
-	mpMenuDialog->addControl( new CGUIButton( "Camera",
+	mpMenuDialog->addControl(new CGUIButton( "Camera",
 									new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
 
