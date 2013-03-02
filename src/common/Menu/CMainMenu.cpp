@@ -47,7 +47,7 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
-	mpMenuDialog->addControl(new CGUIButton( "Settings",
+	mpMenuDialog->addControl(new CGUIButton( "Configure",
 												new OpenMenuEvent( new CSettingsMenu() ) ) );
 
 	CGUIButton *highscoreButton = new CGUIButton( "High Scores",
@@ -90,7 +90,7 @@ void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
-	mpMenuDialog->addControl(new CGUIButton( "Settings",
+	mpMenuDialog->addControl(new CGUIButton( "Configure",
 												new OpenMenuEvent( new CSettingsMenu() ) ) );
 
 	CGUIButton *highscoreButton = new CGUIButton( "High Scores",
