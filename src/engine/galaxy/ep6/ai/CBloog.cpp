@@ -45,7 +45,6 @@ void CBloog::processWalking()
 	}
 	else
 	{
-		
 		//moveLeft( m_Action.velX );
 		moveLeft( WALK_SPEED );
 	}
@@ -97,7 +96,6 @@ void CBloog::process()
 	    exists = false;
 	
 	(this->*mp_processState)();
-
 }
 
 }

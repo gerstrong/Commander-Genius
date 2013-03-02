@@ -9,6 +9,7 @@
 #include "ai/CBloog.h"
 #include "ai/CBlooguard.h"
 #include "ai/CBlooglet.h"
+#include "ai/CFlect.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -151,6 +152,20 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x28:
 			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
 			break;
+			
+*/
+	
+	
+	case 0x4D: if( difficulty < NORMAL ) break;	// not sure here    
+	case 0x4C: 
+		// Flect
+		p_newfoe = new galaxy::CFlect(&Map, foe, x, y);
+		break;
+		
+	
+	/*
+			
+			
 	
 	// Var Plats
 	case 0x50: 
