@@ -104,6 +104,8 @@ mSelectedPlayer(selectedPlayer)
 	mpMenuDialog->addControl( mpImpPogoSwitch );
 	mpMenuDialog->addControl( mpAutoGunSwitch );
 	mpMenuDialog->addControl( new CGUIButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1) ) );
+    
+    setMenuLabel("KEYBMENULABEL");
 
 }
 

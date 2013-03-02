@@ -79,6 +79,7 @@ public:
 		mpMenuDialog->addControl( new CGUIButton( "Easy", new StartNewGameEvent(EASY) ) );
 		mpMenuDialog->addControl( new CGUIButton( "Normal", new StartNewGameEvent(NORMAL) ) );
 		mpMenuDialog->addControl( new CGUIButton( "Hard", new StartNewGameEvent(HARD) ) );
+        setMenuLabel("NEWGAMELABEL");
 
 	}
 };
