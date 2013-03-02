@@ -106,6 +106,7 @@ bool CGameLauncher::init()
 					"Tulip\n"
 					"Pelya\n"
 					"NY00123\n"
+                    "pizza2004\n"
 					"and the CG Contributors\n");
     
     mLauncherDialog.addControl( banner, CRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
