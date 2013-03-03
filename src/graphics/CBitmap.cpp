@@ -23,8 +23,12 @@ CBitmap::CBitmap(const CBitmap &bitmap) :
 mName(bitmap.getName())
 {
 	SDL_Surface *sfc = bitmap.getSDLSurface();
-	if( sfc != nullptr )
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    if( sfc != nullptr )
 		mpBitmapSurface.reset(SDL_DisplayFormat( sfc ), &SDL_FreeSurface );
+#endif
 }
 
 ///
@@ -33,8 +37,12 @@ mName(bitmap.getName())
 bool CBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
 {
 	mpBitmapSurface.reset( SDL_CreateRGBSurface(flags, rect.w, rect.h, 8, 0, 0, 0, 0), &SDL_FreeSurface );
-	SDL_SetColors(mpBitmapSurface.get(), Palette, 0, 255);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetColors(mpBitmapSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey(mpBitmapSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
+#endif
 	
 	if(mpBitmapSurface)
 	  return true;
@@ -47,8 +55,12 @@ bool CBitmap::optimizeSurface()
 	if(mpBitmapSurface)
 	{
 		SDL_Surface *temp_surface;
-		temp_surface = SDL_DisplayFormat(mpBitmapSurface.get());
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        temp_surface = SDL_DisplayFormat(mpBitmapSurface.get());
 		mpBitmapSurface.reset( temp_surface, &SDL_FreeSurface );
+#endif
 		return true;
 	}
 	else

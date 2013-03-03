@@ -14,8 +14,12 @@ m_Alpha(0),
 dimDark(true)
 {
     g_pVideoDriver->collectSurfaces();
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
     mpOldSurface.reset( SDL_DisplayFormat( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
     mpDarkSurface.reset( SDL_DisplayFormat( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
+#endif
     SDL_FillRect( mpDarkSurface.get(), NULL, 0x0 );
 }
 
@@ -27,7 +31,11 @@ void CDimDark::process()
 	SDL_BlitSurface( mpOldSurface.get(), NULL,
 				g_pVideoDriver->getBlitSurface(), NULL );
 	
-	SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, m_Alpha );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+    SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, m_Alpha );
+#endif
 
 	SDL_BlitSurface( mpDarkSurface.get(), NULL,
 				g_pVideoDriver->getBlitSurface(), NULL );
@@ -47,7 +55,11 @@ void CDimDark::process()
     else // Undim the upcoming surface.
     {
 	// Process the effect
-	SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+    SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
+#endif
 
 	SDL_BlitSurface( mpDarkSurface.get(), NULL,
 				g_pVideoDriver->getBlitSurface(), NULL );

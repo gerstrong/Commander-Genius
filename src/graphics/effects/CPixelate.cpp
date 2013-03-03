@@ -39,12 +39,20 @@ m_speed(speed)
 void CPixelate::getSnapshot()
 {
 	g_pVideoDriver->collectSurfaces();
-	if(!mp_OldSurface) mp_OldSurface = SDL_DisplayFormat(g_pVideoDriver->getBlitSurface());
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    if(!mp_OldSurface) mp_OldSurface = SDL_DisplayFormat(g_pVideoDriver->getBlitSurface());
+#endif
 	
-	//Map the color key 
+	//Map the color key
 	mColorkey = SDL_MapRGB( mp_OldSurface->format, 0, 0xFF, 0xFF );
 	//Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent 
-	SDL_SetColorKey( mp_OldSurface, SDL_SRCCOLORKEY, mColorkey );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetColorKey( mp_OldSurface, SDL_SRCCOLORKEY, mColorkey );
+#endif
 	
 }
 

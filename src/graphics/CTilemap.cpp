@@ -28,8 +28,12 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 	m_column = column;
 	m_Tilesurface = SDL_CreateRGBSurface(Flags, m_column<<m_pbasesize,
 										(m_numtiles/m_column)<<m_pbasesize, 8, 0, 0, 0, 0);
-	SDL_SetColors(m_Tilesurface, Palette, 0, 255);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetColors(m_Tilesurface, Palette, 0, 255);
 	SDL_SetColorKey(m_Tilesurface, SDL_SRCCOLORKEY, COLORKEY);
+#endif
 	
 	return ( m_Tilesurface != NULL );
 }
@@ -58,7 +62,11 @@ bool CTilemap::optimizeSurface()
 	if(m_Tilesurface)
 	{
 		SDL_Surface *temp_surface;
-		temp_surface = SDL_DisplayFormatAlpha(m_Tilesurface);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        temp_surface = SDL_DisplayFormatAlpha(m_Tilesurface);
+#endif
 		SDL_FreeSurface(m_Tilesurface);
 		m_Tilesurface = temp_surface;
 		return true;

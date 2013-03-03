@@ -20,7 +20,11 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
 	
-	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+#endif
 
 	if (!screen)
 	{
@@ -129,5 +133,9 @@ void CSDLVideo::updateScreen()
 	}
 
 	// Flip the screen (We use double-buffering on some systems.)
-	SDL_Flip(screen);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_Flip(screen);
+#endif
 }

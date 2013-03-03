@@ -24,7 +24,11 @@ bool CPassiveVort::init(char mode)
 
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-	mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    mpTextSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
+#endif
 	SDL_FreeSurface(temp);
 
 	if( m_mode == INTRO )

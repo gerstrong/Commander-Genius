@@ -29,20 +29,32 @@ m_alpha(255)
 bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 {
 	mpSurface.reset(SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
-	SDL_SetColors( mpSurface.get(), Palette, 0, 255);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetColors( mpSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey( mpSurface.get(), SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
+#endif
 
 	mpMasksurface.reset(SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
-	SDL_SetColors( mpMasksurface.get(), Palette, 0, 255);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetColors( mpMasksurface.get(), Palette, 0, 255);
 	SDL_SetColorKey( mpMasksurface.get(), SDL_SRCCOLORKEY, COLORKEY ); // color key.
+#endif
 	
 	return ( !mpSurface && !mpMasksurface );
 }
 
 bool CSprite::optimizeSurface()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
     if(mpSurface)
 	mpSurface.reset(SDL_DisplayFormatAlpha(mpSurface.get()), &SDL_FreeSurface);
+#endif
 
     return true;
 }
@@ -251,7 +263,11 @@ void CSprite::applyTranslucency(Uint8 value)
 	
 	if(format->BitsPerPixel < 24)
 	{
-	    SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, value);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, value);
+#endif
 	    m_alpha = value;
 	    return;
 	}
@@ -352,7 +368,10 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
 			byte *srcPtr = (byte*)src->pixels;
 			srcPtr += (pitchsrc*y+x*bytePPsrc);
 			
-			if(dst->format->colorkey == *srcPtr)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+            
+#else
+            if(dst->format->colorkey == *srcPtr)
 			{			
 			  Uint32 newValue = SDL_MapRGBA(dst->format, r, g, b, a);
 			
@@ -361,6 +380,7 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
 			
 			  memcpy( dstPtr, &newValue, bytePPdst );			  
 			}
+#endif
 			
 		}
 	}
@@ -446,8 +466,12 @@ void CSprite::_drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
 	SDL_Surface *blanksfc = SDL_DisplayFormatAlpha(mpSurface.get());
 	blitMaskedSprite(blanksfc, mpSurface.get(), 0xFFFFFF);
 	SDL_BlitSurface( blanksfc, &src_rect, dst, &dst_rect );
 	SDL_FreeSurface(blanksfc);
+#endif
 }

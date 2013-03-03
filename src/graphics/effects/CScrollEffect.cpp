@@ -15,7 +15,11 @@ mInitialSpeed(speed),
 mScrollPos(initialPos),
 mpScrollSurface(pScrollSurface)
 {
-	mpOldSurface.reset( SDL_DisplayFormat(pBackground), &SDL_FreeSurface );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    mpOldSurface.reset( SDL_DisplayFormat(pBackground), &SDL_FreeSurface );
+#endif
 }
 
 void CScrollEffect::process()

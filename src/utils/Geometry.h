@@ -36,8 +36,12 @@ struct CRect
 		   const T lh )
 		{ x=lx; y=ly; w=lw; h=lh; }
 
-	CRect( const SDL_VideoInfo* InfoPtr )
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    CRect( const SDL_VideoInfo* InfoPtr )
 		{ w=InfoPtr->current_w; h=InfoPtr->current_h; };
+#endif
 
 	bool operator==( const CRect &target )
 	{

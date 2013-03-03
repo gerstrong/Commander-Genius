@@ -25,7 +25,11 @@ m_style(PROGRESS_STYLE_TEXT)
     rect.x = 0;		rect.y = 0;
     rect.w = 320;	rect.h = 200;
     mpProgressSfc.reset( CG_CreateRGBSurface( rect ), &SDL_FreeSurface );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
     mpProgressSfc.reset( SDL_DisplayFormat(mpProgressSfc.get()), &SDL_FreeSurface );
+#endif
 }
 
 /**

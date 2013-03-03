@@ -67,7 +67,11 @@ void CInventory::toggleStatusScreen()
 
 		mp_StatusScreen->GenerateStatus();
 		g_pVideoDriver->collectSurfaces();
-		mp_StatusBgrnd = SDL_DisplayFormat(g_pVideoDriver->mpVideoEngine->getBlitSurface());
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        mp_StatusBgrnd = SDL_DisplayFormat(g_pVideoDriver->mpVideoEngine->getBlitSurface());
+#endif
 
 		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
 

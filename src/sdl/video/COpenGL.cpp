@@ -64,7 +64,11 @@ void COpenGL::setUpViewPort(const CRect<Uint16> &newDim)
 bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		
-	screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+#endif
 	
 
 	if (!screen)
@@ -360,7 +364,11 @@ void COpenGL::updateScreen()
 
 	g_pInput->renderOverlay();
 
-	SDL_GL_SwapBuffers();
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_GL_SwapBuffers();
+#endif
 }
 
 #endif // USE_OPENGL

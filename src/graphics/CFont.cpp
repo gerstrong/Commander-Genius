@@ -39,8 +39,12 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 {
 	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
 			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
-	SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
+#endif
 
 	if( mFontSurface )
 	  return true;
@@ -65,11 +69,19 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 			  	  	  	  	  	  	  	  	 format->Rmask, format->Gmask,
 			  	  	  	  	  	  	  	  	 format->Bmask, 0 );
 
-	bool usesAlpha = (sfc->flags & SDL_SRCALPHA);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    bool usesAlpha = false;
+#else
+    bool usesAlpha = (sfc->flags & SDL_SRCALPHA);
+#endif
 	const Uint32 colorkey = SDL_MapRGB(sfc->format, 0xFF, 0x00, 0xFF);
 
 	if(!usesAlpha)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
 		SDL_SetColorKey( sfc, SDL_SRCCOLORKEY|SDL_RLEACCEL, colorkey );
+#endif
 
 	// Read the data and pass it to the surface
 	SDL_LockSurface(sfc);
@@ -201,11 +213,19 @@ void CFont::setupColor( const Uint32 fgColor )
 	// the given color
 	SDL_Color color[16];
 	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
-	SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
+#endif
 
 	// Change palette colors to the desired one
-	SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 	SDL_SetColors( mFontSurface.get(), color, 0, 16);
+#endif
 }
 
 Uint32 CFont::getFGColor()
@@ -214,10 +234,18 @@ Uint32 CFont::getFGColor()
 	// the given color
 	SDL_Color color[16];
 	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
-	SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
+#endif
 
 	// Change palette colors to the desired one
-	return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
+#endif
 }
 
 
@@ -239,10 +267,14 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	// Adapt the newly created surface to the running screen.
 	SDL_Surface *temp;
 
-	if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
 		temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
 	else // or
 		temp = SDL_DisplayFormat(pColoredTextSurface);
+#endif
 
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
@@ -290,9 +322,13 @@ unsigned int CFont::getPixelTextHeight()
 
 Uint32 CFont::getBGColour(const bool highlight)
 {
-	SDL_PixelFormat *format = SDL_GetVideoSurface()->format;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_PixelFormat *format = SDL_GetVideoSurface()->format;
 
 	return getBGColour(format, highlight);
+#endif
 }
 
 
@@ -373,7 +409,11 @@ void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff
 {
 	unsigned int i,x=xoff,y=yoff;
 	
-	SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, alpha);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, alpha);
+#endif
 
 	if(text.size() != 0)
 	{
@@ -395,7 +435,11 @@ void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff
 		}
 	}
 	
-	SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+#endif
 }
 
 

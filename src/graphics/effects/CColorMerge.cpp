@@ -20,14 +20,22 @@ m_Alpha(0)
 void CColorMerge::getSnapshot()
 {
     g_pVideoDriver->collectSurfaces();
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
     mpOldSurface.reset( SDL_DisplayFormat( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
+#endif
 }
 
 // Effect cycle
 void CColorMerge::process()
 {
 	// Process the effect
-	SDL_SetAlpha( mpOldSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetAlpha( mpOldSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
+#endif
 
 	SDL_BlitSurface( mpOldSurface.get(), NULL,
 				g_pVideoDriver->getBlitSurface(), NULL );

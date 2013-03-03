@@ -129,7 +129,11 @@ void CPalette::setdarkness(Uint8 darkness)
 void CPalette::setFXSurface(SDL_Surface *fxsurface)
 {
 	m_fxsurface = fxsurface;
-	SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, m_alpha);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, m_alpha);
+#endif
 }
 
 void CPalette::setFadeColour(Uint32 colour)
@@ -189,7 +193,11 @@ void CPalette::applyFade()
 				current_alpha -= m_fadespeed;
 		}
 		
-		SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, current_alpha);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, current_alpha);
+#endif
 	}
 	else
 	{

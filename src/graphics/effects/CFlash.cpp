@@ -8,6 +8,21 @@
 #include "CFlash.h"
 #include "../../sdl/CVideoDriver.h"
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
+m_StartTime(g_pTimer->getTicks()),
+m_RunTime(msecs),
+m_Speed(speed),
+m_Color(color),
+m_Alpha(0),
+m_FadeDir(FADE_IN),
+m_Style(FADE_PULSE),
+m_MaxAlpha(255)//,
+//mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
+{
+	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
+}
+#else
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
 m_StartTime(g_pTimer->getTicks()),
 m_RunTime(msecs),
@@ -21,9 +36,25 @@ mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurf
 {
 	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
 }
+#endif
 
 
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
+m_StartTime(g_pTimer->getTicks()),
+m_RunTime(msecs),
+m_Speed(speed),
+m_Color(color),
+m_Alpha(0),
+m_FadeDir(FADE_IN),
+m_Style(FADE_NORMAL),
+m_MaxAlpha(m_maxalpha)//,
+//mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
+{
+	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
+}
+#else
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
 m_StartTime(g_pTimer->getTicks()),
 m_RunTime(msecs),
@@ -37,13 +68,18 @@ mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurf
 {
 	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
 }
+#endif
 
 // Process the flashing effect here
 void CFlash::process()
 {
 	Uint32 ElapsedTime = g_pTimer->getTicks() - m_StartTime;
 
-	SDL_SetAlpha(mpFadeSurface.get(), SDL_SRCALPHA, m_Alpha);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetAlpha(mpFadeSurface.get(), SDL_SRCALPHA, m_Alpha);
+#endif
 
 	// Blit it and free temp surface
 	SDL_BlitSurface( mpFadeSurface.get(), NULL,

@@ -47,8 +47,12 @@ blendup(true)
 
 void CMessageBoxSelection::init()
 {
-       	mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-	mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
+    mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
+#endif
     
 	initGalaxyFrame();
 
@@ -81,10 +85,14 @@ void CMessageBoxSelection::init()
 	// Adapt the newly created surface to the running screen.
 	SDL_Surface *temp;
 
-	if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
 		temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
 	else // or
 		temp = SDL_DisplayFormat(pColoredTextSurface);
+#endif
 
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
@@ -109,12 +117,20 @@ void CMessageBoxSelection::init()
 	cutRect.h -= 4;
 		
     	mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
-	mpSelSurface1.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);
-	mpSelSurface2.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);	
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    mpSelSurface1.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);
+	mpSelSurface2.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);
+#endif
 	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
-	SDL_SetColorKey( mpSelSurface1.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetColorKey( mpSelSurface1.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
 	SDL_SetColorKey( mpSelSurface2.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
+#endif
 	SDL_FillRect( mpSelSurface1.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
 }
@@ -173,8 +189,12 @@ void CMessageBoxSelection::process()
 	    blend = SDL_ALPHA_OPAQUE;
 	}
 	
-	SDL_SetAlpha( mpSelSurface1.get(), SDL_SRCALPHA, blend );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetAlpha( mpSelSurface1.get(), SDL_SRCALPHA, blend );
 	SDL_SetAlpha( mpSelSurface2.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE-blend );
+#endif
 	
 	SDL_Rect cursorSel;
 	

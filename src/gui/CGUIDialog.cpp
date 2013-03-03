@@ -41,21 +41,33 @@ void CGUIDialog::initBackground()
 	{
 		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
 		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-		mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#endif
 		initVorticonBackground( lRect );
 	}
 	else if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
 	{
 		const SDL_Rect lRect = g_pVideoDriver->getGameResolution().SDLRect();
 		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-		mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#endif
 		initGalaxyBackround( lRect );
 	}
 	else
 	{
 		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
 		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-		mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#endif
 		initEmptyBackround();
 	}
 }

@@ -56,7 +56,10 @@ void CVideoDriver::initResolutionList()
 	// This call will get the resolution we have right now and set it up for the system
 	// On Handheld devices this means, they will only take that resolution and that would it be.
 	// On the PC, this is the current resolution but will add others.
-	CRect<Uint16> resolution(SDL_GetVideoInfo());
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    CRect<Uint16> resolution(SDL_GetVideoInfo());
 	
 #if defined(ANDROID)
 	resolution.w = 320;
@@ -114,11 +117,15 @@ void CVideoDriver::initResolutionList()
 	m_Resolutionlist.push_back(desktopResolution);
 
 	m_Resolution_pos = m_Resolutionlist.begin();
+#endif
 }
 
 void CVideoDriver::verifyResolution(CRect<Uint16>& resolution,
 		const int flags) {
-	if (SDL_VideoModeOK(resolution.w, resolution.h, 32, flags)) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    if (SDL_VideoModeOK(resolution.w, resolution.h, 32, flags)) {
 		std::list<CRect<Uint16> >::iterator i;
 		for (i = m_Resolutionlist.begin(); i != m_Resolutionlist.end(); i++) {
 			if (*i == resolution)
@@ -133,6 +140,7 @@ void CVideoDriver::verifyResolution(CRect<Uint16>& resolution,
 			m_Resolutionlist.push_back(resolution);
 		}
 	}
+#endif
 }
 
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf) {
@@ -196,7 +204,11 @@ bool CVideoDriver::start()
 {
 	bool retval;
 	std::string caption = "Commander Genius";
-	SDL_WM_SetCaption(caption.c_str(), caption.c_str());
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_WM_SetCaption(caption.c_str(), caption.c_str());
+#endif
 	// When the program is through executing, call SDL_Quit
 	atexit(SDL_Quit);
 

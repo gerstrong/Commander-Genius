@@ -36,8 +36,12 @@ mText(Text)
 
 void CMessageBoxGalaxy::init()
 {    
-    	mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-	mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
+    mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
+#endif
     
 	initGalaxyFrame();
 

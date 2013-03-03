@@ -21,12 +21,20 @@ m_timer(0)
 	const Uint32 flags = g_pVideoDriver->getBlitSurface()->flags;
 
 	mpSceneSurface.reset(SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0), &SDL_FreeSurface);
-	SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
+#endif
 
 
 	if( finale_draw( mpSceneSurface.get(), scene_file, game_path) )
 	{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
 		mpSceneSurface.reset(SDL_DisplayFormatAlpha(mpSceneSurface.get()), &SDL_FreeSurface);
+#endif
 	}
 	else
 	{
