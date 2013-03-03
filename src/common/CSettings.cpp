@@ -52,8 +52,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
 	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #if defined(USE_OPENGL)
-	if(VidConf.m_opengl)
-		Configuration.WriteString("Video", "OGLfilter", VidConf.m_opengl_filter == GL_NEAREST ? "nearest" : "linear" );
+    Configuration.WriteString("Video", "OGLfilter", VidConf.m_opengl_filter == GL_NEAREST ? "nearest" : "linear" );
 #endif
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
 	Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scale2x" );
@@ -61,6 +60,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "fps", g_pTimer->FPS());
 	Configuration.SetKeyword("Video", "showfps", VidConf.showfps);
 	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
+    Configuration.SetKeyword("Video", "aspect", VidConf.m_aspect_correction);
 	
 	st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 	Configuration.WriteInt("Bound", "left", CameraBounds.left);
@@ -113,6 +113,7 @@ bool CSettings::loadDrvCfg()
 		VidConf.Zoom = value;
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
 		Configuration.ReadKeyword("Video", "showfps", &VidConf.showfps, false);
+        Configuration.ReadKeyword("Video", "aspect", &VidConf.m_aspect_correction, true);
 		Configuration.ReadKeyword("Video", "vsync", &VidConf.vsync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
 		VidConf.m_ScaleXFilter = value;
@@ -124,13 +125,10 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
 
 #if defined(USE_OPENGL)
-		if(VidConf.m_opengl)
-		{
-			std::string oglFilter;
-			Configuration.ReadString("Video", "OGLfilter",  oglFilter, "nearest");
+        std::string oglFilter;
+        Configuration.ReadString("Video", "OGLfilter",  oglFilter, "nearest");
 
-			VidConf.m_opengl_filter = (oglFilter == "nearest") ? GL_NEAREST : GL_LINEAR;
-		}
+        VidConf.m_opengl_filter = (oglFilter == "nearest") ? GL_NEAREST : GL_LINEAR;
 #endif
 		
 		
