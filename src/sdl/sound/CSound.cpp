@@ -126,7 +126,11 @@ bool CSound::init()
 			g_pLogFile->ftextOut("  format: UNKNOWN %d<br>", mAudioSpec.format );
 			break;
 	}
-	g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_GetCurrentAudioDriver());
+#else
+    g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
+#endif
 
 	m_mixing_channels = 15;
 

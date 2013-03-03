@@ -164,7 +164,11 @@ bool CInput::startJoyDriver()
 
 			for( size_t i=0; i < joyNum; i++ )
 			{
-				g_pLogFile->ftextOut("    %s<br>", SDL_JoystickName(i));
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+                g_pLogFile->ftextOut("    %s<br>", SDL_JoystickNameForIndex(i));
+#else
+                g_pLogFile->ftextOut("    %s<br>", SDL_JoystickName(i));
+#endif
 
 				SDL_Joystick *pJoystick = SDL_JoystickOpen(i);
 				mp_Joysticks.push_back(pJoystick);
@@ -394,7 +398,7 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 		pInput[action].keysym = (SDL_Keycode) atoi(buf);
 #else
-        pInput[action].keysym = (SDLKEY) atoi(buf);
+        pInput[action].keysym = (SDLKey) atoi(buf);
 #endif
 		return;
 	}
@@ -522,7 +526,11 @@ void CInput::pollEvents()
     }
     
 	CVec Pos;
-	CRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    CRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
+#endif
 
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));

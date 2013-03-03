@@ -65,7 +65,12 @@ void ThreadPool::prepareNewThread() {
 	t->finished = false;
 	t->working = false;
 	availableThreads.insert(t);
-	t->thread = SDL_CreateThread(threadWrapper, t);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    const char name = 't';
+    t->thread = SDL_CreateThread(threadWrapper, &name, t);
+#else
+    t->thread = SDL_CreateThread(threadWrapper, t);
+#endif
 }
 
 int ThreadPool::threadWrapper(void* param) {

@@ -17,7 +17,7 @@
 	#undef USE_OPENGL
 #endif
 
-#if defined(EMBEDDED)
+#if defined(EMBEDDED) || defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	#define SINGLEPLAYER
 #endif
 

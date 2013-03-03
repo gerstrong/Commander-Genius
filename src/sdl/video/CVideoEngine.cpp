@@ -49,28 +49,40 @@ bool CVideoEngine::init()
 		{
 			SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	#if SDL_VERSION_ATLEAST(1, 3, 0)
+	#if SDL_VERSION_ATLEAST(2, 0, 0)
 	#else
 		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
 	#endif
 		}
 
-		m_Mode |= SDL_OPENGL;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        
+#else
+        m_Mode |= SDL_OPENGL;
+#endif
 	}
 	else
 #endif
 	{
 		if(m_VidConfig.vsync)
 		{
-			m_Mode |= (SDL_DOUBLEBUF | SDL_HWSURFACE);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+            
+#else
+            m_Mode |= (SDL_DOUBLEBUF | SDL_HWSURFACE);
+#endif
 		}
 	}
 
 	// Now we decide if it will be fullscreen or windowed mode.
-	if(m_VidConfig.Fullscreen)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
+    if(m_VidConfig.Fullscreen)
 		m_Mode |= SDL_FULLSCREEN;
 	else
 		m_Mode |= SDL_RESIZABLE;
+#endif
 
 	
 	// And set the proper Display Dimensions
@@ -133,10 +145,15 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 	SDL_Surface *temporary, *optimized;
 
 	temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
-	if (alpha && bpp==32)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    //Temporary fix until we figure out how to create our own version of DisplayFormatAlpha and DisplayFormat
+    optimized = temporary;
+#else
+    if (alpha && bpp==32)
 		optimized = SDL_DisplayFormatAlpha( temporary );
 	else
 		optimized = SDL_DisplayFormat( temporary );
+#endif
 
 	SDL_FreeSurface(temporary);
 
