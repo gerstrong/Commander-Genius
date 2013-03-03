@@ -75,7 +75,7 @@ void CHUD::CreateBackground()
 	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);	
 	SDL_FillRect(temp, NULL, colorkey );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetColorKey( temp, SDL_TRUE, colorkey );
 #else
 	SDL_SetColorKey( temp, SDL_SRCCOLORKEY, colorkey );
 #endif

@@ -32,7 +32,7 @@ void CDimDark::process()
 				g_pVideoDriver->getBlitSurface(), NULL );
 	
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        
+    SDL_SetSurfaceAlphaMod( mpDarkSurface.get(), m_Alpha );
 #else
     SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, m_Alpha );
 #endif
@@ -56,7 +56,7 @@ void CDimDark::process()
     {
 	// Process the effect
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        
+    SDL_SetSurfaceAlphaMod( mpDarkSurface.get(), 255-m_Alpha );
 #else
     SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
 #endif

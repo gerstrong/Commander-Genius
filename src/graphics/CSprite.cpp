@@ -264,7 +264,7 @@ void CSprite::applyTranslucency(Uint8 value)
 	if(format->BitsPerPixel < 24)
 	{
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        
+        SDL_SetSurfaceAlphaMod(mpSurface.get(), value);
 #else
         SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, value);
 #endif

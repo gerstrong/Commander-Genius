@@ -130,7 +130,7 @@ void CPalette::setFXSurface(SDL_Surface *fxsurface)
 {
 	m_fxsurface = fxsurface;
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetSurfaceAlphaMod( m_fxsurface, m_alpha);
 #else
     SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, m_alpha);
 #endif
@@ -194,7 +194,7 @@ void CPalette::applyFade()
 		}
 		
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        
+        SDL_SetSurfaceAlphaMod( m_fxsurface, current_alpha);
 #else
         SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, current_alpha);
 #endif

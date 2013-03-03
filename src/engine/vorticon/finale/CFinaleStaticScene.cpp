@@ -22,7 +22,7 @@ m_timer(0)
 
 	mpSceneSurface.reset(SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetSurfaceColorMod( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette->r, g_pGfxEngine->Palette.m_Palette->g, g_pGfxEngine->Palette.m_Palette->b);
 #else
     SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
 #endif

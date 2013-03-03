@@ -190,7 +190,8 @@ void CMessageBoxSelection::process()
 	}
 	
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetSurfaceAlphaMod( mpSelSurface1.get(), blend );
+	SDL_SetSurfaceAlphaMod( mpSelSurface2.get(), SDL_ALPHA_OPAQUE-blend );
 #else
     SDL_SetAlpha( mpSelSurface1.get(), SDL_SRCALPHA, blend );
 	SDL_SetAlpha( mpSelSurface2.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE-blend );

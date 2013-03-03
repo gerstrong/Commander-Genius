@@ -32,7 +32,7 @@ void CColorMerge::process()
 {
 	// Process the effect
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetSurfaceAlphaMod( mpOldSurface.get(), 255-m_Alpha );
 #else
     SDL_SetAlpha( mpOldSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
 #endif

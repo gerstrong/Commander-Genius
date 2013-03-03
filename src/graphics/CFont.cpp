@@ -40,7 +40,8 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
 			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetSurfaceColorMod(mFontSurface.get(), Palette->r, Palette->g, Palette->b);
+	SDL_SetColorKey(mFontSurface.get(), SDL_TRUE, COLORKEY);
 #else
     SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
@@ -78,7 +79,7 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 
 	if(!usesAlpha)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        
+        SDL_SetColorKey( sfc, SDL_TRUE|SDL_RLEACCEL, colorkey );
 #else
 		SDL_SetColorKey( sfc, SDL_SRCCOLORKEY|SDL_RLEACCEL, colorkey );
 #endif
@@ -221,7 +222,8 @@ void CFont::setupColor( const Uint32 fgColor )
 
 	// Change palette colors to the desired one
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    //SDL_GetSurfaceColorMod(fgColor, &color[15].r, &color[15].g, &color[15].b);
+	SDL_SetSurfaceColorMod( mFontSurface.get(), color->r, color->g, color->b);
 #else
     SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 	SDL_SetColors( mFontSurface.get(), color, 0, 16);
@@ -410,7 +412,7 @@ void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff
 	unsigned int i,x=xoff,y=yoff;
 	
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetSurfaceAlphaMod(mFontSurface.get(), alpha);
 #else
     SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, alpha);
 #endif
@@ -436,7 +438,7 @@ void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff
 	}
 	
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetSurfaceAlphaMod(mFontSurface.get(), SDL_ALPHA_OPAQUE);
 #else
     SDL_SetAlpha(mFontSurface.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
 #endif

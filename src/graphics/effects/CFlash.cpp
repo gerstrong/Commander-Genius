@@ -76,7 +76,7 @@ void CFlash::process()
 	Uint32 ElapsedTime = g_pTimer->getTicks() - m_StartTime;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetSurfaceAlphaMod(mpFadeSurface.get(), m_Alpha);
 #else
     SDL_SetAlpha(mpFadeSurface.get(), SDL_SRCALPHA, m_Alpha);
 #endif
