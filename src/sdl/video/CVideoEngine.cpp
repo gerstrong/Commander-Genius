@@ -32,7 +32,7 @@ bool CVideoEngine::init()
 	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
 
 	// Setup mode depends on some systems.
-#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
+#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID) || defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_Mode = SDL_SWSURFACE;
 #elif defined(GP2X)
 	m_Mode = SDL_HWSURFACE;

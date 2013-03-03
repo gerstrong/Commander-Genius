@@ -136,7 +136,11 @@ struct stInputCommand
 	bool lastactive;
 	bool firsttimeactive;
 
-	SDLKey 	keysym;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	SDL_Keycode 	keysym;
+#else
+    SDLKey 	keysym;
+#endif
 
 	unsigned int joyeventtype;
 	int which;

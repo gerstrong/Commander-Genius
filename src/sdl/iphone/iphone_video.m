@@ -552,41 +552,41 @@ uint getSizeNextPOT(uint size) {
 @end
 
 // directly from SDL
-#import "video/uikit/SDL_uikitappdelegate.h"
-#import "video/uikit/SDL_uikitwindow.h"
+//#import "video/uikit/SDL_uikitappdelegate.h"
+//#import "video/uikit/SDL_uikitwindow.h"
 
 void iPhoneRotateScreen() {	
-	[UIApplication sharedApplication].statusBarHidden = YES;
+	//[UIApplication sharedApplication].statusBarHidden = YES;
 		
-	SDL_VideoDevice *_this = SDL_GetVideoDevice();
-	const SDL_VideoDisplay *display = &_this->displays[0];
-	SDL_Window *sdlwindow = display->windows;
-	SDL_WindowData *data = (SDL_WindowData *)sdlwindow->driverdata;
-	UIWindow* window = data->uiwindow;
+	//SDL_VideoDevice *_this = SDL_GetVideoDevice();
+	//const SDL_VideoDisplay *display = &_this->displays[0];
+	//SDL_Window *sdlwindow = display->fullscreen_window;
+	//SDL_WindowData *data = (SDL_WindowData *)sdlwindow->driverdata;
+	//UIWindow* window = data->uiwindow;
 	
 	//UIWindow* window = [UIApplication sharedApplication].keyWindow;
 	//UIWindow* window = [SDLUIKitDelegate sharedAppDelegate].keyWindow;
-	UIView* view = window;
+	//UIView* view = window;
 
 	//CGRect myFrame = CGRectMake(0, 0, 480, 320);
 	//CGRect myFrame = CGRectMake(0, 0, 320, 480);
-	CGRect myFrame = myFrame = [view frame];
-	[view setFrame: myFrame];
+	//CGRect myFrame = myFrame = [view frame];
+	//[view setFrame: myFrame];
 
-	CGPoint center = CGPointMake(myFrame.size.width/2.0, myFrame.size.height/2.0);
-	[view setCenter: center];	
+	//CGPoint center = CGPointMake(myFrame.size.width/2.0, myFrame.size.height/2.0);
+	//[view setCenter: center];
 
-	CGAffineTransform transform = [view transform];
+	//CGAffineTransform transform = [view transform];
 	
 	// We will have 200x320 here (rotated) and we want 320x480
-	transform = CGAffineTransformScale(transform, myFrame.size.width / 200.0, myFrame.size.height / 320.0);
+	//transform = CGAffineTransformScale(transform, myFrame.size.width / 200.0, myFrame.size.height / 320.0);
 
 	// Rotate clockwise
-	transform = CGAffineTransformRotate(transform, -0.5 * 3.14159265358979323846);
+	//transform = CGAffineTransformRotate(transform, -0.5 * 3.14159265358979323846);
 
 	// Move to center
-	transform = CGAffineTransformTranslate(transform, (myFrame.size.width-320.0f)*0.5f, (myFrame.size.height-200.0f)*-0.5f);
+	//transform = CGAffineTransformTranslate(transform, (myFrame.size.width-320.0f)*0.5f, (myFrame.size.height-200.0f)*-0.5f);
 	
-    [view setTransform: transform];
+    //[view setTransform: transform];
 }
 

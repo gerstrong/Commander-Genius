@@ -391,7 +391,11 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 		pInput[action].joyeventtype = ETYPE_KEYBOARD;
 		buf = buf.substr(3);
 		TrimSpaces(buf);
-		pInput[action].keysym = (SDLKey) atoi(buf);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		pInput[action].keysym = (SDL_Keycode) atoi(buf);
+#else
+        pInput[action].keysym = (SDLKEY) atoi(buf);
+#endif
 		return;
 	}
 }
@@ -557,12 +561,12 @@ void CInput::pollEvents()
 			break;
 
 #ifdef MOUSEWRAPPER
-		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP:
-		case SDL_MOUSEMOTION:
+		case SDL_FINGERDOWN:
+		case SDL_FINGERUP:
+		case SDL_FINGERMOTION:
 			processMouse(Event);
 			break;
-#endif
+#else
 
 		case SDL_VIDEORESIZE:
 			g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
@@ -583,6 +587,7 @@ void CInput::pollEvents()
 			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
 			break;
+#endif
 		}
 	}
 #ifdef MOUSEWRAPPER
@@ -1316,13 +1321,13 @@ void CInput::processMouse() {
 
 void CInput::processMouse(SDL_Event& ev) {
 
-#if SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	SDL_Rect screenRect;
 
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
 		// transform mouse coordinates
 		// WARNING: I don't really understand that. It's probably somehow iPhoneRotateScreen + SDL stuff.
-		ev.button.y -= screenRect.h - 200;
+		ev.tfinger.y -= screenRect.h - 200;
 	}
 #endif
 
@@ -1332,17 +1337,17 @@ void CInput::processMouse(SDL_Event& ev) {
 	// As long as we don't have that, we must use the old SDL 1.3 revision 4464.
 
 	switch(ev.type) {
-		case SDL_MOUSEBUTTONDOWN:
-			processMouse(ev.button.x, ev.button.y, true, ev.button.which);
+		case SDL_FINGERDOWN:
+			processMouse(ev.tfinger.x, ev.tfinger.y, true, ev.tfinger.fingerId);
 			break;
 
-		case SDL_MOUSEBUTTONUP:
-			processMouse(ev.button.x, ev.button.y, false, ev.button.which);
+		case SDL_FINGERUP:
+			processMouse(ev.tfinger.x, ev.tfinger.y, false, ev.tfinger.fingerId);
 			break;
 
-		case SDL_MOUSEMOTION:
-			processMouse(ev.motion.x - ev.motion.xrel, ev.motion.y - ev.motion.yrel, false, ev.motion.which);
-			processMouse(ev.motion.x, ev.motion.y, true, ev.motion.which);
+		case SDL_FINGERMOTION:
+			processMouse(ev.tfinger.x - ev.tfinger.dx, ev.tfinger.y - ev.tfinger.dy, false, ev.tfinger.fingerId);
+			processMouse(ev.tfinger.x, ev.tfinger.y, true, ev.tfinger.fingerId);
 			break;
 	}
 }

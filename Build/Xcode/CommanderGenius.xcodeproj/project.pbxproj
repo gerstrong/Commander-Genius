@@ -165,10 +165,6 @@
 		2374238911FC849A000EEA5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		2374238A11FC849A000EEA5B /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
 		2374238B11FC849A000EEA5B /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
-		2374245711FCA649000EEA5B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245611FCA649000EEA5B /* AudioToolbox.framework */; };
-		2374245911FCA649000EEA5B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245811FCA649000EEA5B /* CoreAudio.framework */; };
-		2374245B11FCA649000EEA5B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245A11FCA649000EEA5B /* CoreGraphics.framework */; };
-		2374246611FCA679000EEA5B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374246511FCA679000EEA5B /* QuartzCore.framework */; };
 		2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374247C11FCA6CB000EEA5B /* iphone_video.m */; };
 		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
 		23A11BAE11E7C3F900747BFA /* CAutoRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7411E7C3F900747BFA /* CAutoRay.cpp */; };
@@ -201,8 +197,6 @@
 		23A11BCA11E7C3F900747BFA /* CVortiNinja.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BAA11E7C3F900747BFA /* CVortiNinja.cpp */; };
 		23A11BCB11E7C3F900747BFA /* CYorp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BAC11E7C3F900747BFA /* CYorp.cpp */; };
 		23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
-		23CE96BB11FCCC510033FDFF /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */; };
-		23CE972011FCD8860033FDFF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE971F11FCD8860033FDFF /* Foundation.framework */; };
 		23D4C4A5132C27BC00B06391 /* COPLEmulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */; };
 		23D4C4A6132C27BC00B06391 /* COPLEmulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */; };
 		23D4C4A9132C27FC00B06391 /* CVidConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D4C4A7132C27FC00B06391 /* CVidConfig.cpp */; };
@@ -232,10 +226,20 @@
 		63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */; };
 		63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
 		63010C1013400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
+		6319820B16E282E600F1EFC0 /* CBlooglet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6319820716E282E600F1EFC0 /* CBlooglet.cpp */; };
+		6319820C16E282E600F1EFC0 /* CBlooglet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6319820716E282E600F1EFC0 /* CBlooglet.cpp */; };
+		6319820D16E282E600F1EFC0 /* CFlect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6319820916E282E600F1EFC0 /* CFlect.cpp */; };
+		6319820E16E282E600F1EFC0 /* CFlect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6319820916E282E600F1EFC0 /* CFlect.cpp */; };
+		6319821216E2A36000F1EFC0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6319821016E2A34B00F1EFC0 /* CoreGraphics.framework */; };
+		6319821716E2A43B00F1EFC0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6319821516E2A41F00F1EFC0 /* AudioToolbox.framework */; };
+		6319821816E2A44200F1EFC0 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6319821316E2A3EC00F1EFC0 /* CoreAudio.framework */; };
+		6319821B16E2A47000F1EFC0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6319821916E2A45900F1EFC0 /* QuartzCore.framework */; };
+		6319822016E2A4A700F1EFC0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6319821E16E2A48D00F1EFC0 /* CoreFoundation.framework */; };
+		6319822116E2A4AC00F1EFC0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6319821C16E2A48700F1EFC0 /* Foundation.framework */; };
+		6319842316E2EFB700F1EFC0 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6319842016E2EDF300F1EFC0 /* libSDL2.a */; };
 		631FE54416DEDFA10082C588 /* CBlooguard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 631FE54216DEDFA10082C588 /* CBlooguard.cpp */; };
 		631FE54716DEE52A0082C588 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 631FE54616DEE52A0082C588 /* Default-568h@2x.png */; };
 		631FE54916DEE5730082C588 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631FE54816DEE5730082C588 /* OpenGLES.framework */; };
-		631FE55116DEE9180082C588 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 631FE55016DEE9180082C588 /* libSDL2.a */; };
 		631FE55216DEE95D0082C588 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631FE54A16DEE5AD0082C588 /* UIKit.framework */; };
 		631FE55416DEED1C0082C588 /* cglogo-iphone-retina.png in Resources */ = {isa = PBXBuildFile; fileRef = 631FE55316DEED1C0082C588 /* cglogo-iphone-retina.png */; };
 		631FE55516DEED220082C588 /* cglogo-iphone-retina.png in Resources */ = {isa = PBXBuildFile; fileRef = 631FE55316DEED1C0082C588 /* cglogo-iphone-retina.png */; };
@@ -645,12 +649,6 @@
 		2374239711FC849A000EEA5B /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2374239911FC849B000EEA5B /* Info iPhone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info iPhone.plist"; sourceTree = "<group>"; };
 		2374241F11FC9E58000EEA5B /* PerSurfaceAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerSurfaceAlpha.h; sourceTree = "<group>"; };
-		2374244011FCA545000EEA5B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		2374245611FCA649000EEA5B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		2374245811FCA649000EEA5B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
-		2374245A11FCA649000EEA5B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		2374246311FCA679000EEA5B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		2374246511FCA679000EEA5B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2374247B11FCA6CB000EEA5B /* iphone_video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_video.h; sourceTree = "<group>"; };
 		2374247C11FCA6CB000EEA5B /* iphone_video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iphone_video.m; sourceTree = "<group>"; };
 		239B347D1392FA2300E61F21 /* Cheat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cheat.h; sourceTree = "<group>"; };
@@ -715,9 +713,6 @@
 		23A11BAD11E7C3F900747BFA /* CYorp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYorp.h; sourceTree = "<group>"; };
 		23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAnkhShield.cpp; sourceTree = "<group>"; };
 		23C64A8311F31D9C0053CA36 /* CAnkhShield.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAnkhShield.h; sourceTree = "<group>"; };
-		23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		23CE96C211FCCC6D0033FDFF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		23CE971F11FCD8860033FDFF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23D4C48E132C244700B06391 /* CRingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRingBuffer.h; sourceTree = "<group>"; };
 		23D4C4A3132C27BC00B06391 /* COPLEmulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COPLEmulator.cpp; sourceTree = "<group>"; };
 		23D4C4A4132C27BC00B06391 /* COPLEmulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COPLEmulator.h; sourceTree = "<group>"; };
@@ -755,12 +750,23 @@
 		63010C0E13400D9300F212CA /* CMapPlayGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMapPlayGalaxy.h; sourceTree = "<group>"; };
 		6304FC3F10E3EAD800307EAC /* CGLogo.bmp */ = {isa = PBXFileReference; explicitFileType = image.bmp; path = CGLogo.bmp; sourceTree = "<group>"; };
 		6304FE8810E429D000307EAC /* HELPTEXT.CKP */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CKP; sourceTree = "<group>"; };
+		6319820716E282E600F1EFC0 /* CBlooglet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBlooglet.cpp; sourceTree = "<group>"; };
+		6319820816E282E600F1EFC0 /* CBlooglet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBlooglet.h; sourceTree = "<group>"; };
+		6319820916E282E600F1EFC0 /* CFlect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFlect.cpp; sourceTree = "<group>"; };
+		6319820A16E282E600F1EFC0 /* CFlect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFlect.h; sourceTree = "<group>"; };
+		6319821016E2A34B00F1EFC0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		6319821316E2A3EC00F1EFC0 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
+		6319821516E2A41F00F1EFC0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		6319821916E2A45900F1EFC0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		6319821C16E2A48700F1EFC0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		6319821E16E2A48D00F1EFC0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		6319841D16E2EC2000F1EFC0 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = "iOS/Release-iphonesimulator/SDL.framework"; sourceTree = "<group>"; };
+		6319842016E2EDF300F1EFC0 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = "iOS/Release-iphonesimulator/libSDL2.a"; sourceTree = "<group>"; };
 		631FE54216DEDFA10082C588 /* CBlooguard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBlooguard.cpp; sourceTree = "<group>"; };
 		631FE54316DEDFA10082C588 /* CBlooguard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBlooguard.h; sourceTree = "<group>"; };
 		631FE54616DEE52A0082C588 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		631FE54816DEE5730082C588 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
 		631FE54A16DEE5AD0082C588 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		631FE55016DEE9180082C588 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSDL2.a; sourceTree = "<group>"; };
 		631FE55316DEED1C0082C588 /* cglogo-iphone-retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cglogo-iphone-retina.png"; sourceTree = "<group>"; };
 		63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioResources.cpp; sourceTree = "<group>"; };
 		63243C7B12ECDB5E00FE8192 /* CAudioResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioResources.h; sourceTree = "<group>"; };
@@ -1406,15 +1412,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6319842316E2EFB700F1EFC0 /* libSDL2.a in Frameworks */,
+				6319822116E2A4AC00F1EFC0 /* Foundation.framework in Frameworks */,
+				6319822016E2A4A700F1EFC0 /* CoreFoundation.framework in Frameworks */,
+				6319821B16E2A47000F1EFC0 /* QuartzCore.framework in Frameworks */,
+				6319821816E2A44200F1EFC0 /* CoreAudio.framework in Frameworks */,
+				6319821716E2A43B00F1EFC0 /* AudioToolbox.framework in Frameworks */,
+				6319821216E2A36000F1EFC0 /* CoreGraphics.framework in Frameworks */,
 				631FE55216DEE95D0082C588 /* UIKit.framework in Frameworks */,
 				631FE54916DEE5730082C588 /* OpenGLES.framework in Frameworks */,
-				2374245711FCA649000EEA5B /* AudioToolbox.framework in Frameworks */,
-				2374245911FCA649000EEA5B /* CoreAudio.framework in Frameworks */,
-				2374245B11FCA649000EEA5B /* CoreGraphics.framework in Frameworks */,
-				2374246611FCA679000EEA5B /* QuartzCore.framework in Frameworks */,
-				23CE96BB11FCCC510033FDFF /* CoreFoundation.framework in Frameworks */,
-				23CE972011FCD8860033FDFF /* Foundation.framework in Frameworks */,
-				631FE55116DEE9180082C588 /* libSDL2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1490,18 +1496,16 @@
 		23CE973C11FCDC030033FDFF /* iPhone libs */ = {
 			isa = PBXGroup;
 			children = (
-				631FE55016DEE9180082C588 /* libSDL2.a */,
+				6319842016E2EDF300F1EFC0 /* libSDL2.a */,
+				6319841D16E2EC2000F1EFC0 /* SDL.framework */,
+				6319821E16E2A48D00F1EFC0 /* CoreFoundation.framework */,
+				6319821C16E2A48700F1EFC0 /* Foundation.framework */,
+				6319821916E2A45900F1EFC0 /* QuartzCore.framework */,
+				6319821516E2A41F00F1EFC0 /* AudioToolbox.framework */,
+				6319821316E2A3EC00F1EFC0 /* CoreAudio.framework */,
 				631FE54A16DEE5AD0082C588 /* UIKit.framework */,
 				631FE54816DEE5730082C588 /* OpenGLES.framework */,
-				2374244011FCA545000EEA5B /* Carbon.framework */,
-				2374245611FCA649000EEA5B /* AudioToolbox.framework */,
-				2374245811FCA649000EEA5B /* CoreAudio.framework */,
-				2374245A11FCA649000EEA5B /* CoreGraphics.framework */,
-				2374246311FCA679000EEA5B /* Foundation.framework */,
-				2374246511FCA679000EEA5B /* QuartzCore.framework */,
-				23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */,
-				23CE96C211FCCC6D0033FDFF /* Foundation.framework */,
-				23CE971F11FCD8860033FDFF /* Foundation.framework */,
+				6319821016E2A34B00F1EFC0 /* CoreGraphics.framework */,
 			);
 			name = "iPhone libs";
 			sourceTree = "<group>";
@@ -1632,8 +1636,12 @@
 			children = (
 				6358031B16B4EA240084FC19 /* CBloog.cpp */,
 				6358031C16B4EA240084FC19 /* CBloog.h */,
+				6319820716E282E600F1EFC0 /* CBlooglet.cpp */,
+				6319820816E282E600F1EFC0 /* CBlooglet.h */,
 				631FE54216DEDFA10082C588 /* CBlooguard.cpp */,
 				631FE54316DEDFA10082C588 /* CBlooguard.h */,
+				6319820916E282E600F1EFC0 /* CFlect.cpp */,
+				6319820A16E282E600F1EFC0 /* CFlect.h */,
 			);
 			path = ai;
 			sourceTree = "<group>";
@@ -3081,6 +3089,8 @@
 				6358041216B4EA7E0084FC19 /* CVolteface.cpp in Sources */,
 				6358041316B4EA7E0084FC19 /* CStatusScreenGalaxyEp5.cpp in Sources */,
 				631FE54416DEDFA10082C588 /* CBlooguard.cpp in Sources */,
+				6319820B16E282E600F1EFC0 /* CBlooglet.cpp in Sources */,
+				6319820D16E282E600F1EFC0 /* CFlect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3370,6 +3380,8 @@
 				631FE5CD16DEF51C0082C588 /* scale2x.cpp in Sources */,
 				631FE5CE16DEF51F0082C588 /* scale3x.cpp in Sources */,
 				631FE5CF16DEF5230082C588 /* scalebit.cpp in Sources */,
+				6319820C16E282E600F1EFC0 /* CBlooglet.cpp in Sources */,
+				6319820E16E282E600F1EFC0 /* CFlect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3414,7 +3426,7 @@
 				GCC_PREFIX_HEADER = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
-					/Library/Frameworks/SDL.framework/Headers,
+					"\"$(SRCROOT)\"/SDL.framework/Headers",
 					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
 					"\"$(SRCROOT)\"/Ogg.framework/Headers",
 					"\"$(SRCROOT)\"/../../src",
@@ -3428,7 +3440,7 @@
 				);
 				PRODUCT_NAME = "Commander Genius";
 				SDKROOT = macosx10.7;
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
@@ -3452,7 +3464,7 @@
 				GCC_PREFIX_HEADER = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
-					/Library/Frameworks/SDL.framework/Headers,
+					"\"$(SRCROOT)\"/SDL.framework/Headers",
 					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
 					"\"$(SRCROOT)\"/Ogg.framework/Headers",
 					"\"$(SRCROOT)\"/../../src",
@@ -3468,7 +3480,7 @@
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
 				SDKROOT = macosx10.7;
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
@@ -3476,29 +3488,34 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "Albert Zeyer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"/iOS/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"\"$(SRCROOT)/iOS/Release-iphonesimulator\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/../../src",
-					"$(SDLDIR)/src/events",
-					"$(SDLDIR)/src",
-					"$(SDLDIR)/include",
+					"\"$(SRCROOT)\"/iOS/Release$(EFFECTIVE_PLATFORM_NAME)/SDL.framework/Headers",
 				);
 				INFOPLIST_FILE = "Info iPhone.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SDLDIR)/Xcode-iPhoneOS/SDL/build/Release$(EFFECTIVE_PLATFORM_NAME)\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)\"/iOS/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"\"$(SRCROOT)/iOS/Release-iphonesimulator\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
@@ -3507,6 +3524,7 @@
 					"-DNOKEYBOARD",
 				);
 				PRODUCT_NAME = "Commander Genius";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SDLDIR = "/Users/chad/Downloads/SDL-2.0";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -3517,30 +3535,34 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "Albert Zeyer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"/iOS/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"\"$(SRCROOT)/iOS/Release-iphonesimulator\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/../../src",
-					"$(SDLDIR)/src/events",
-					"$(SDLDIR)/src",
-					"$(SDLDIR)/include",
+					"\"$(SRCROOT)\"/iOS/Release$(EFFECTIVE_PLATFORM_NAME)/SDL.framework/Headers",
 				);
 				INFOPLIST_FILE = "Info iPhone.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SDLDIR)/Xcode-iPhoneOS/SDL/build/Release$(EFFECTIVE_PLATFORM_NAME)\"",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)\"/iOS/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"\"$(SRCROOT)/iOS/Release-iphonesimulator\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
@@ -3550,6 +3572,7 @@
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SDLDIR = "/Users/chad/Downloads/SDL-2.0";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -3565,7 +3588,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -3575,7 +3598,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				SEPARATE_STRIP = YES;
 			};
 			name = Release;

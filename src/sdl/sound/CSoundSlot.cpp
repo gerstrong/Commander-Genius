@@ -30,6 +30,7 @@ m_soundlength(0),
 m_pAudioSpec(NULL)
 {}
 
+#if !defined(TARGET_OS_IPHONE) || !defined(TARGET_IPHONE_SIMULATOR)
 void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen)
 {
     OggVorbis_File  oggStream;     				// stream handle
@@ -69,6 +70,7 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
         memcpy(SoundBuffer, &(buffer[0]), SoundLen);
     }
 }
+#endif
 
 
 void CSoundSlot::setupWaveForm( Uint8 *buf, Uint32 len )
