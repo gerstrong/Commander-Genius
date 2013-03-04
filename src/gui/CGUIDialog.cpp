@@ -130,22 +130,25 @@ void CGUIDialog::selectPrevItem()
 
 
 	auto it = mControlList.begin();
-	int i=0;
-	for( ; it != mControlList.end() ; it++ )
+	for( int i=0 ; it != mControlList.end() ; it++, i++ )
 	{
 		if( i ==  mSelection )
 			break;
-		i++;
 	}
 
 	// Ensures that disabled items are skipped
-	for( ; it != mControlList.end() ; it-- )
+	for( ; it != mControlList.begin() ; it-- )
 	{
 		if( (*it)->mEnabled )
 			break;
 
 		mSelection--;
 	}
+    
+    if( mSelection < 0 ) {
+		mSelection = mControlList.size()-1;
+        it = mControlList.end();
+    }
 
 	(*it)->setHovered(true);
 	mpCurrentCtrl = it->get();
@@ -178,6 +181,11 @@ void CGUIDialog::selectNextItem()
 
 		mSelection++;
 	}
+    
+    if( mSelection >= static_cast<int>(mControlList.size()) ) {
+		mSelection = 0;
+        it = mControlList.begin();
+    }
 
 	(*it)->setHovered(true);
 	mpCurrentCtrl = it->get();
