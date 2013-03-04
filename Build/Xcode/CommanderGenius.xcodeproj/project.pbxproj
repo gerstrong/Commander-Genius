@@ -457,6 +457,8 @@
 		6358041116B4EA7E0084FC19 /* CSpirogrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 635803FA16B4EA7E0084FC19 /* CSpirogrip.cpp */; };
 		6358041216B4EA7E0084FC19 /* CVolteface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 635803FC16B4EA7E0084FC19 /* CVolteface.cpp */; };
 		6358041316B4EA7E0084FC19 /* CStatusScreenGalaxyEp5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 635803FE16B4EA7E0084FC19 /* CStatusScreenGalaxyEp5.cpp */; };
+		635CC6D816E447D0004402FF /* CBipShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 635CC6D616E447D0004402FF /* CBipShip.cpp */; };
+		635CC6DA16E447F7004402FF /* CBipShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 635CC6D616E447D0004402FF /* CBipShip.cpp */; };
 		638814F6159273E100308DAC /* CSpriteObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638814F4159273E100308DAC /* CSpriteObject.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63AEA5C0132D4B6A000344F1 /* CScrollEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */; };
@@ -990,6 +992,8 @@
 		635803FD16B4EA7E0084FC19 /* CVolteface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVolteface.h; sourceTree = "<group>"; };
 		635803FE16B4EA7E0084FC19 /* CStatusScreenGalaxyEp5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CStatusScreenGalaxyEp5.cpp; sourceTree = "<group>"; };
 		635803FF16B4EA7E0084FC19 /* CStatusScreenGalaxyEp5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStatusScreenGalaxyEp5.h; sourceTree = "<group>"; };
+		635CC6D616E447D0004402FF /* CBipShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBipShip.cpp; sourceTree = "<group>"; };
+		635CC6D716E447D0004402FF /* CBipShip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBipShip.h; sourceTree = "<group>"; };
 		6382949E11562C7100D608A2 /* menufonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = menufonts.bmp; sourceTree = "<group>"; };
 		638814F4159273E100308DAC /* CSpriteObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteObject.cpp; sourceTree = "<group>"; };
 		638814F5159273E100308DAC /* CSpriteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteObject.h; sourceTree = "<group>"; };
@@ -1634,6 +1638,8 @@
 		6358031A16B4EA240084FC19 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				635CC6D616E447D0004402FF /* CBipShip.cpp */,
+				635CC6D716E447D0004402FF /* CBipShip.h */,
 				6358031B16B4EA240084FC19 /* CBloog.cpp */,
 				6358031C16B4EA240084FC19 /* CBloog.h */,
 				6319820716E282E600F1EFC0 /* CBlooglet.cpp */,
@@ -3091,6 +3097,7 @@
 				631FE54416DEDFA10082C588 /* CBlooguard.cpp in Sources */,
 				6319820B16E282E600F1EFC0 /* CBlooglet.cpp in Sources */,
 				6319820D16E282E600F1EFC0 /* CFlect.cpp in Sources */,
+				635CC6D816E447D0004402FF /* CBipShip.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3382,6 +3389,7 @@
 				631FE5CF16DEF5230082C588 /* scalebit.cpp in Sources */,
 				6319820C16E282E600F1EFC0 /* CBlooglet.cpp in Sources */,
 				6319820E16E282E600F1EFC0 /* CFlect.cpp in Sources */,
+				635CC6DA16E447F7004402FF /* CBipShip.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
