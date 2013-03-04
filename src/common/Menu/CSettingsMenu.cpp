@@ -46,8 +46,16 @@ CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 	mpMenuDialog->addControl( new CGUIButton( "Controls",
 									new OpenMenuEvent(	new CControlsettings(1) ) ) );
 #else
-	mpMenuDialog->addControl(new CGUIButton( "Controls",
-									new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
+    if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+	{
+		mpMenuDialog->addControl( new CGUIButton( "Controls",
+                                                 new OpenMenuEvent(	new CControlsettings(1) ) ) );
+	}
+	else if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
+	{
+		mpMenuDialog->addControl(new CGUIButton( "Controls",
+                                                new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
+	}
 #endif
 
 
