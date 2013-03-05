@@ -265,6 +265,9 @@ public:
 
 	void PressPlatformSwitch(const Uint32 lx, const Uint32 ly);
 	void openDoorsTile();
+	
+	void TurnGiantSwitchOff(const int x, const int y);
+	void TurnGiantSwitchOn(const int x, const int y);
 
 	// Checks if Keen is using the pogo. Skypest needs to know that,
 	// because it might get squashed.
@@ -273,6 +276,9 @@ public:
 		return (mp_processState == (void (CPlayerBase::*)()) &CPlayerLevel::processPogo );
 	}
 
+	
+	int checkSolidU(int x1, int x2, int y1, const bool push_mode=false );
+	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );	
 
 
 	bool m_jumpdownfromobject;

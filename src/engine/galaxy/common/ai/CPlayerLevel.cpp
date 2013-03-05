@@ -2446,4 +2446,248 @@ void CPlayerLevel::process()
 }
 
 
+void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
+{
+    const int tile = mp_Map->at(x, y);
+    
+    if(tile != 0x43C || yinertia > 0)
+	return;
+    
+    for(int i=-1 ; i<=0 ; i++)
+    {
+	for(int j=-1 ; j<=1 ; j++)
+	{
+	    const int tile = mp_Map->at(x+i, y+j);
+	    mp_Map->setTile( x+i, y+j, tile-3, true );
+	}
+    }    
+    
+    std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+    const int x_csf = x<<CSF;
+    const int y_csf = y<<CSF;
+    
+    Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_csf, y_csf);
+    int flag = Tile[tile_no].behaviour;
+    
+    // pressing a switch
+    playSound( SOUND_GUN_CLICK );
+	
+    if(flag == 18 )
+    {	    
+	PressBridgeSwitch(x_csf, y_csf);	      
+    }
+    else
+    {
+	PressPlatformSwitch(x_csf, y_csf);
+    }    
+}
+
+void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
+{
+    const int tile = mp_Map->at(x, y);
+    
+    if(tile != 0x439 || yinertia < 0)
+	return;    
+    
+    playSound( SOUND_GUN_CLICK );
+    
+    for(int i=-1 ; i<=0 ; i++)
+    {
+	for(int j=-1 ; j<=1 ; j++)
+	{
+	    const int tile = mp_Map->at(x+i, y+j);
+	    mp_Map->setTile( x+i, y+j, tile+3, true );
+	}
+    }
+    
+    std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+    const int x_csf = x<<CSF;
+    const int y_csf = y<<CSF;
+    
+    Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_csf, y_csf);
+    int flag = Tile[tile_no].behaviour;
+    
+    // pressing a switch
+    playSound( SOUND_GUN_CLICK );
+	
+    if(flag == 18 )
+    {	    
+	PressBridgeSwitch(x_csf, y_csf);	      
+    }
+    else
+    {
+	PressPlatformSwitch(x_csf, y_csf);
+    }    
+}
+
+
+
+int CPlayerLevel::checkSolidU(int x1, int x2, int y1, const bool push_mode )
+{
+	if(hitdetectWithTilePropertyHor(1, x1, x2, y1-COLISION_RES, 1<<CSF))
+	    return 0;
+    
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	y1 -= COLISION_RES;
+
+	// Check for sloped tiles here. They must be handled differently
+	if(solid)
+	{
+		char blocked;
+
+		if(m_climbing)
+		{
+			x1 += 4*COLISION_RES;
+			x2 -= 4*COLISION_RES;
+		}
+
+		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		{
+			blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
+
+			if(blocked == 33)
+			{
+			    TurnGiantSwitchOff(c>>CSF, y1>>CSF);
+			    
+			    if(!m_Cheatmode.jump)
+			    {
+				playSound( SOUND_KEEN_BUMPHEAD );
+				
+				if (blockedu > 1)
+				{
+				    yinertia += 16;
+				    if (yinertia < 0)
+					yinertia = 0;
+				}
+				else
+				{
+				    if( yinertia<0 )
+					yinertia = 0;
+				}
+				state.jumpTimer = 0;
+			    }		    
+			    
+			    return 1;
+			}			
+			
+			if(blocked == 17 && m_climbing)
+				return 0;
+
+			if( blocked >= 2 && blocked <= 7 && checkslopedU(c, y1, blocked))
+				return blocked;
+		}
+
+		blocked = TileProperty[mp_Map->at(x2>>CSF, y1>>CSF)].bdown;
+		
+		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2, y1, blocked ))
+			return 1;
+
+		if(blocked == 17 && m_climbing)
+			return 0;
+	}
+
+	return CSpriteObject::checkSolidU(x1, x2, y1+COLISION_RES, push_mode);
+}
+
+
+int CPlayerLevel::checkSolidD( int x1, int x2, int y2, const bool push_mode )
+{
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	y2 += COLISION_RES;
+
+	// Check for sloped tiles here. They must be handled differently
+	if(solid)
+	{
+		char blockedu;
+
+		if(m_climbing)
+		{
+			x1 += 4*COLISION_RES;
+			x2 -= 4*COLISION_RES;
+		}
+
+		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		{
+			blockedu = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+
+			if(blockedu == 33)
+			{
+			    TurnGiantSwitchOn(c>>CSF, y2>>CSF);
+			    
+			    const int action = getActionNumber();
+			    
+			    if ( action >= A_KEEN_POGO_START && action <= A_KEEN_POGO_HIGH && state.jumpTimer == 0)
+			    {
+				yinertia = -POGO_START_INERTIA;
+				playSound( SOUND_KEEN_POGO );
+				state.jumpTimer = 24;
+				setAction(A_KEEN_POGO_UP);
+				return 1;
+			    }		    
+			}						
+			
+			if( blockedu == 17 && m_climbing)
+				return 0;
+
+			if( blockedu >= 2 && blockedu <= 7 && checkslopedD(c, y2, blockedu) )
+				return blockedu;
+		}
+
+		blockedu = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bup;		
+
+		if(blockedu == 17 && m_climbing)
+			return 0;
+
+		if( blockedu >= 2 && blockedu <= 7 && checkslopedD(x2, y2, blockedu)  )
+			return blockedu;
+	}
+
+
+	if( ( (y2>>STC) != ((y2>>CSF)<<TILE_S) ) && !push_mode )
+		return 0;
+
+
+	// Check for down from the object
+	if(solid)
+	{
+		char blocked;
+		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		{
+			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+
+			if(blocked)
+			{
+				if( blocked < 2 || blocked > 7 )
+				{
+					char blockedd = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown;
+
+					if(blockedd == 0 && m_jumpdown)
+						return 0;
+					
+					if(blockedd == 33) // keen 6 Giant switch
+					    return 0;
+
+					return blocked;
+				}
+			}
+		}
+
+		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
+		if(blocked)
+		{
+			if( blocked < 2 || blocked > 7 )
+				return blocked;
+		}
+	}
+
+	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
+		exists=false; // Out of map?
+
+	return 0;
+}
+
+
+
 }
