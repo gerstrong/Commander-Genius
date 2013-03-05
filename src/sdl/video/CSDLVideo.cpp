@@ -45,6 +45,9 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 
 bool CSDLVideo::createSurfaces()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
 	// Configure the Scaler
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
@@ -89,6 +92,7 @@ bool CSDLVideo::createSurfaces()
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
 	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
 							 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
+#endif
 
 	return true;
 }

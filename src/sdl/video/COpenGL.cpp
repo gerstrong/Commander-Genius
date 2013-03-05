@@ -94,6 +94,9 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 
 bool COpenGL::createSurfaces()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
 	// This function creates the surfaces which are needed for the game.
 	const CRect<Uint16> gamerect = m_VidConfig.m_GameRect;
     ScrollSurface = createSurface( "ScrollSurface", true,
@@ -142,6 +145,7 @@ bool COpenGL::createSurfaces()
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
 	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
 				 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
+#endif
 
 
 	return true;
@@ -282,6 +286,9 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 		externalFormat = GL_BGRA;
 	}
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
 	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
 	if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
 	{
@@ -304,6 +311,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 				GL_UNSIGNED_BYTE, FilteredSurface->pixels);
 
 	SDL_UnlockSurface(FilteredSurface);
+#endif
 }
 
 void COpenGL::updateScreen()
