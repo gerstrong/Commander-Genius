@@ -12,6 +12,7 @@
 #include "ai/CFlect.h"
 #include "ai/CBipShip.h"
 #include "ai/CBlorb.h"
+#include "ai/CGrabbiter.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -202,11 +203,18 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x57: if( difficulty < HARD ) break;
 	case 0x56: if( difficulty < NORMAL ) break;   
 	case 0x55: 
-		// This is a Sprite from the well of wishes.
+		// This is a Blooguard
 		p_newfoe = new galaxy::CBlooguard(&Map, foe, x, y);
 		break;
 
 
+	case 0x58: 
+		// This is a Grabbiter on the World map
+		p_newfoe = new galaxy::CGrabbiter(&Map, foe, x, y);
+		break;
+
+		
+		
 	/*case PLATFORM_VERT: case PLATFORM_VERT_ALT:
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y); break;
 	case PLATFORM_HORIZ_ALT:

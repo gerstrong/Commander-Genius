@@ -18,7 +18,7 @@ public:
 	void process();
 
 	/**
-	 * What happens if the slug gets touched by another object
+	 * What happens it gets touched by another object
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
 
