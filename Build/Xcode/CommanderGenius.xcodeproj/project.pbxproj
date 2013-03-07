@@ -461,6 +461,10 @@
 		63B29E7112EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */; };
 		63C3375216B6503000A3ECC4 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C3374E16B64FFB00A3ECC4 /* OpenGL.framework */; };
 		63C3375316B6503700A3ECC4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63C3375016B6500200A3ECC4 /* Cocoa.framework */; };
+		63C343A316E8635B0077F11F /* CBlorb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C3439F16E8635B0077F11F /* CBlorb.cpp */; };
+		63C343A416E8635B0077F11F /* CGrabbiter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C343A116E8635B0077F11F /* CGrabbiter.cpp */; };
+		63C343A616E863620077F11F /* CBlorb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C3439F16E8635B0077F11F /* CBlorb.cpp */; };
+		63C343A716E863690077F11F /* CGrabbiter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C343A116E8635B0077F11F /* CGrabbiter.cpp */; };
 		63C72AC71274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63C72AC81274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
@@ -996,6 +1000,10 @@
 		63B29E6F12EB9A09004A8B7C /* CAudioVorticon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioVorticon.h; sourceTree = "<group>"; };
 		63C3374E16B64FFB00A3ECC4 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		63C3375016B6500200A3ECC4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		63C3439F16E8635B0077F11F /* CBlorb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBlorb.cpp; sourceTree = "<group>"; };
+		63C343A016E8635B0077F11F /* CBlorb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBlorb.h; sourceTree = "<group>"; };
+		63C343A116E8635B0077F11F /* CGrabbiter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGrabbiter.cpp; sourceTree = "<group>"; };
+		63C343A216E8635B0077F11F /* CGrabbiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGrabbiter.h; sourceTree = "<group>"; };
 		63C72AC51274284A00E9A293 /* ReadWriteLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadWriteLock.h; sourceTree = "<group>"; };
 		63C72AC61274284A00E9A293 /* ThreadPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadPool.cpp; sourceTree = "<group>"; };
 		63CB71F511D339BC0069EAC6 /* CK1PATCH.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = CK1PATCH.EXE; sourceTree = "<group>"; };
@@ -1623,8 +1631,12 @@
 				6319820816E282E600F1EFC0 /* CBlooglet.h */,
 				631FE54216DEDFA10082C588 /* CBlooguard.cpp */,
 				631FE54316DEDFA10082C588 /* CBlooguard.h */,
+				63C3439F16E8635B0077F11F /* CBlorb.cpp */,
+				63C343A016E8635B0077F11F /* CBlorb.h */,
 				6319820916E282E600F1EFC0 /* CFlect.cpp */,
 				6319820A16E282E600F1EFC0 /* CFlect.h */,
+				63C343A116E8635B0077F11F /* CGrabbiter.cpp */,
+				63C343A216E8635B0077F11F /* CGrabbiter.h */,
 			);
 			path = ai;
 			sourceTree = "<group>";
@@ -3070,6 +3082,8 @@
 				6319820B16E282E600F1EFC0 /* CBlooglet.cpp in Sources */,
 				6319820D16E282E600F1EFC0 /* CFlect.cpp in Sources */,
 				635CC6D816E447D0004402FF /* CBipShip.cpp in Sources */,
+				63C343A316E8635B0077F11F /* CBlorb.cpp in Sources */,
+				63C343A416E8635B0077F11F /* CGrabbiter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3360,6 +3374,8 @@
 				6319820C16E282E600F1EFC0 /* CBlooglet.cpp in Sources */,
 				6319820E16E282E600F1EFC0 /* CFlect.cpp in Sources */,
 				635CC6DA16E447F7004402FF /* CBipShip.cpp in Sources */,
+				63C343A616E863620077F11F /* CBlorb.cpp in Sources */,
+				63C343A716E863690077F11F /* CGrabbiter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
