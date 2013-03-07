@@ -61,6 +61,12 @@ public:
 
 	void readScrollBuffer(Sint16 &x, Sint16 &y)
 	{	x = mSbufferx; y = mSbuffery;}
+    
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    SDL_GLContext glcontext;
+#endif
 
 protected:
 

@@ -1248,7 +1248,7 @@ struct TouchButton
 	}
 };
 
-static const int w = 320, h = 200;
+static const int w = 480, h = 320;
 
 #define KSHOWHIDECTRLS	(-10)
 
@@ -1263,14 +1263,13 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 		{ &InputCommand[0][IC_RIGHT],	KRIGHT,	w / 3, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_DOWN],	KDOWN,	w / 6, middley + h / 4, w / 6, h / 4},
 
-		{ &InputCommand[0][IC_JUMP],	-1,		middlex, middley, w / 6, h / 2},
-		{ &InputCommand[0][IC_POGO],	-1,		middlex + w / 6, middley, w / 6, h / 2},
+		{ &InputCommand[0][IC_JUMP],	KCTRL,		middlex, middley, w / 6, h / 2},
+		{ &InputCommand[0][IC_POGO],	KALT,		middlex + w / 6, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
 
 		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
 		{ &InputCommand[0][IC_BACK],	KQUIT,	5*w/6, 0, w/6, h/6},
 		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
-	//	{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
 	};
 
 	return phoneButtons;
@@ -1331,33 +1330,40 @@ void CInput::processMouse(SDL_Event& ev) {
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 	SDL_Rect screenRect;
+    SDL_Touch* touch = SDL_GetTouch(ev.tfinger.touchId);
+    int x, y, dx, dy, w, h;
 
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
-		// transform mouse coordinates
-		// WARNING: I don't really understand that. It's probably somehow iPhoneRotateScreen + SDL stuff.
-		//ev.tfinger.y -= screenRect.h - 200;
+		w = screenRect.w;
+        h = screenRect.h;
 	}
-#endif
-
-	// NOTE: The ev.button.which / the multitouch support was removed in SDL 1.3 trunk
-	// with changeset 4465:3e69e077cb95 on May09. It is planned to add a real multitouch API
-	// at some later time (maybe Aug2010).
-	// As long as we don't have that, we must use the old SDL 1.3 revision 4464.
+    
+    if(touch == NULL) return; //The touch has been removed
+    
+    float fx = ((float)ev.tfinger.x)/touch->xres;
+    float fy = ((float)ev.tfinger.y)/touch->yres;
+    x = (int)(fx*w); y = (int)(fy*h);
+    
+    
 
 	switch(ev.type) {
 		case SDL_FINGERDOWN:
-			processMouse(ev.tfinger.x/68, ev.tfinger.y/102, true, ev.tfinger.fingerId);
+			processMouse(x, y, true, ev.tfinger.fingerId);
 			break;
 
 		case SDL_FINGERUP:
-			processMouse(ev.tfinger.x/68, ev.tfinger.y/102, false, ev.tfinger.fingerId);
+			processMouse(x, y, false, ev.tfinger.fingerId);
 			break;
 
 		case SDL_FINGERMOTION:
-			processMouse(ev.tfinger.x/68 - ev.tfinger.dx/68, ev.tfinger.y/102 - ev.tfinger.dy/102, false, ev.tfinger.fingerId);
-			processMouse(ev.tfinger.x/68, ev.tfinger.y/102, true, ev.tfinger.fingerId);
+            float fdx = ((float)ev.tfinger.dx)/touch->xres;
+            float fdy = ((float)ev.tfinger.dy)/touch->yres;
+            dx = (int)(fdx*w); dy = (int)(fdy*h);
+			processMouse(x - dx, y - dy, false, ev.tfinger.fingerId);
+			processMouse(x, y, true, ev.tfinger.fingerId);
 			break;
 	}
+#endif
 }
 
 void CInput::processMouse(int x, int y, bool down, int mouseindex) {

@@ -200,9 +200,7 @@ bool CVideoDriver::start()
 {
 	bool retval;
 	std::string caption = "Commander Genius";
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-#else
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 #endif
 	// When the program is through executing, call SDL_Quit

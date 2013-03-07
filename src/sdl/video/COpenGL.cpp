@@ -65,15 +65,7 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    
-    window =SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, newDim.w, newDim.h, SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
-    renderer = SDL_CreateRenderer(window, 0, 0);
-    
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
+    aspectCorrectResizing(newDim);
 #else
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 
@@ -196,6 +188,52 @@ bool COpenGL::init()
 	CVideoEngine::init();
 	const GLint oglfilter = m_VidConfig.m_opengl_filter;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_DisplayMode mode;
+    
+    window = SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
+    glcontext = SDL_GL_CreateContext(window);
+    
+    // Setup the view port for the first time
+	glViewport(0, 0, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
+    
+	// Set clear colour
+	glClearColor(0,0,0,0);
+	
+	// Set projection
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+    
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	// TODO: dont check for iphone but for opengles
+#define glOrtho glOrthof
+#endif
+	glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f );
+    
+	// Now Initialize modelview matrix
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+    /*Using the standard OpenGL API for specifying a 2D texture
+     image: glTexImage2D, glSubTexImage2D, glCopyTexImage2D,
+     and glCopySubTexImage2D.  The target for these commands is
+     GL_TEXTURE_RECTANGLE_ARB though.
+     
+     This is similar to how the texture cube map functionality uses the 2D
+     texture image specification API though with its own texture target.
+     
+     The texture target GL_TEXTURE_RECTANGLE_ARB should also
+     be used for glGetTexImage, glGetTexLevelParameteriv, and
+     glGetTexLevelParameterfv.*/
+    
+	// Enable Texture loading for the blit screen
+	glEnable(m_texparam);
+    
+	createTexture(m_texture, oglfilter, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
+	
+	if(m_VidConfig.m_ScaleXFilter <= 1)
+	{	// In that case we can do a texture based rendering
+		createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
+	}
+#else
 	// Setup the view port for the first time
 	setUpViewPort(aspectCorrectionRect);
 
@@ -235,6 +273,7 @@ bool COpenGL::init()
 	{	// In that case we can do a texture based rendering
 		createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
 	}
+#endif
 	
 	// If there were any errors
 	int error;
@@ -380,7 +419,7 @@ void COpenGL::updateScreen()
 	g_pInput->renderOverlay();
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_GL_SwapWindow(window);
 #else
     SDL_GL_SwapBuffers();
 #endif
