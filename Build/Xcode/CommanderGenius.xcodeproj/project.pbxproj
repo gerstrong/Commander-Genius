@@ -18,7 +18,6 @@
 		23323791120EBBF600915252 /* CLevelPlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332378E120EBBF600915252 /* CLevelPlay.cpp */; };
 		2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
 		2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
-		2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */; };
 		235755D2101A5E5900275638 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		235755D3101A5E5900275638 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
 		23575631101A5E5900275638 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
@@ -162,10 +161,6 @@
 		2374238111FC849A000EEA5B /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
 		2374238211FC849A000EEA5B /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
 		2374238511FC849A000EEA5B /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
-		2374238911FC849A000EEA5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
-		2374238A11FC849A000EEA5B /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
-		2374238B11FC849A000EEA5B /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
-		2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374247C11FCA6CB000EEA5B /* iphone_video.m */; };
 		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
 		23A11BAE11E7C3F900747BFA /* CAutoRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7411E7C3F900747BFA /* CAutoRay.cpp */; };
 		23A11BAF11E7C3F900747BFA /* CBallJack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7611E7C3F900747BFA /* CBallJack.cpp */; };
@@ -221,7 +216,6 @@
 		23F2165512871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
 		35F1E242134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */; };
 		35F1E243134F6DA700C6230F /* CMessageBoxVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35F1E240134F6DA700C6230F /* CMessageBoxVort.cpp */; };
-		35F1E24B134F73F800C6230F /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35F1E249134F73F800C6230F /* Readme.txt */; };
 		63010C0813400D4A00F212CA /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010BFE13400D4A00F212CA /* CGameControl.cpp */; };
 		63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */; };
 		63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
@@ -641,9 +635,6 @@
 		2332C60E11EA3B42000D8F71 /* CBridges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBridges.h; sourceTree = "<group>"; };
 		2332C63211EAFAD7000D8F71 /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
 		2332C63311EAFAD7000D8F71 /* CCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCamera.h; sourceTree = "<group>"; };
-		2335371311FD5CC400E8C8B6 /* iphone_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_common.h; sourceTree = "<group>"; };
-		2335371411FD5CC400E8C8B6 /* iphone_keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_keyboard.h; sourceTree = "<group>"; };
-		2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iphone_keyboard.m; sourceTree = "<group>"; };
 		2357564C101A5F8F00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -651,8 +642,6 @@
 		2374239711FC849A000EEA5B /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2374239911FC849B000EEA5B /* Info iPhone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info iPhone.plist"; sourceTree = "<group>"; };
 		2374241F11FC9E58000EEA5B /* PerSurfaceAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerSurfaceAlpha.h; sourceTree = "<group>"; };
-		2374247B11FCA6CB000EEA5B /* iphone_video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_video.h; sourceTree = "<group>"; };
-		2374247C11FCA6CB000EEA5B /* iphone_video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iphone_video.m; sourceTree = "<group>"; };
 		239B347D1392FA2300E61F21 /* Cheat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cheat.h; sourceTree = "<group>"; };
 		239B347E1392FA2300E61F21 /* direction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = direction.h; sourceTree = "<group>"; };
 		23A11A8F11DE888400747BFA /* CHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHUD.cpp; sourceTree = "<group>"; };
@@ -1483,18 +1472,6 @@
 				2357564D101A5F8F00275638 /* Vorbis.framework */,
 			);
 			name = "External Frameworks and Libraries";
-			sourceTree = "<group>";
-		};
-		2374246911FCA6CB000EEA5B /* iphone */ = {
-			isa = PBXGroup;
-			children = (
-				2335371311FD5CC400E8C8B6 /* iphone_common.h */,
-				2335371411FD5CC400E8C8B6 /* iphone_keyboard.h */,
-				2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */,
-				2374247B11FCA6CB000EEA5B /* iphone_video.h */,
-				2374247C11FCA6CB000EEA5B /* iphone_video.m */,
-			);
-			path = iphone;
 			sourceTree = "<group>";
 		};
 		23CE973C11FCDC030033FDFF /* iPhone libs */ = {
@@ -2462,7 +2439,6 @@
 				63FEB3511572AF5500E17333 /* extensions.cpp */,
 				63FEB3521572AF5500E17333 /* extensions.h */,
 				63FEB3541572AF7B00E17333 /* input */,
-				2374246911FCA6CB000EEA5B /* iphone */,
 				23D4C4AB132C281D00B06391 /* music */,
 				63385F4B13C009BE00BC2558 /* resolutionlist.h */,
 				63CD11E811CFF5FB00F60BC8 /* sound */,
@@ -2748,11 +2724,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2374238911FC849A000EEA5B /* InfoPlist.strings in Resources */,
-				2374238A11FC849A000EEA5B /* main.xib in Resources */,
-				2374238B11FC849A000EEA5B /* cglogo.icns in Resources */,
 				2331E88611FD4AF400E73953 /* cglogo-iphone.png in Resources */,
-				35F1E24B134F73F800C6230F /* Readme.txt in Resources */,
 				631FE54716DEE52A0082C588 /* Default-568h@2x.png in Resources */,
 				631FE55516DEED220082C588 /* cglogo-iphone-retina.png in Resources */,
 			);
@@ -3243,8 +3215,6 @@
 				2374238111FC849A000EEA5B /* CBridges.cpp in Sources */,
 				2374238211FC849A000EEA5B /* CCamera.cpp in Sources */,
 				2374238511FC849A000EEA5B /* CAnkhShield.cpp in Sources */,
-				2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */,
-				2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */,
 				23323784120EBBCF00915252 /* Mixer.cpp in Sources */,
 				23323785120EBBCF00915252 /* Sampling.cpp in Sources */,
 				2332378D120EBBE500915252 /* CEventContainer.cpp in Sources */,

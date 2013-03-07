@@ -21,10 +21,17 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
 	
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_Window *window;
+    SDL_Renderer *renderer;
     
+    window =SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, newDim.w, newDim.h, SDL_WINDOW_SHOWN);
+    renderer = SDL_CreateRenderer(window, 0, 0);
+    
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
 #else
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
-#endif
 
 	if (!screen)
 	{
@@ -39,6 +46,7 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
 								 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 	}
+#endif
 
 	return true;
 }
@@ -113,6 +121,9 @@ void CSDLVideo::clearSurfaces()
 
 void CSDLVideo::updateScreen()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
 	if( Scaler.filterFactor() <= 1 &&
 			BlitSurface->h == aspectCorrectionRect.h &&
 			BlitSurface->w == aspectCorrectionRect.w )
@@ -137,9 +148,6 @@ void CSDLVideo::updateScreen()
 	}
 
 	// Flip the screen (We use double-buffering on some systems.)
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-#else
     SDL_Flip(screen);
 #endif
 }

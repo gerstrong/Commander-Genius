@@ -112,7 +112,11 @@ bool CVideoEngine::init()
 	// Anyway, it just can point but does not interact yet
  	SDL_ShowCursor(true);
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    
+#else
  	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
+#endif
 
 	return true;
 }

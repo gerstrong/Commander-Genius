@@ -173,10 +173,6 @@ void CVideoDriver::setMode(const CRect<Uint16>& res) {
 	}
 }
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-extern "C" void iPhoneRotateScreen();
-#endif
-
 bool CVideoDriver::applyMode() 
 {
 	const CRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
@@ -234,10 +230,6 @@ bool CVideoDriver::start()
 
 #ifdef USE_OPENGL
 	}
-#endif
-
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	iPhoneRotateScreen();
 #endif
 
 	// Now SDL will tell if the bpp works or changes it, if not supported.

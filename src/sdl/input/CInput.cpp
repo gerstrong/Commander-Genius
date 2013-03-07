@@ -1335,7 +1335,7 @@ void CInput::processMouse(SDL_Event& ev) {
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
 		// transform mouse coordinates
 		// WARNING: I don't really understand that. It's probably somehow iPhoneRotateScreen + SDL stuff.
-		ev.tfinger.y -= screenRect.h - 200;
+		//ev.tfinger.y -= screenRect.h - 200;
 	}
 #endif
 
@@ -1346,16 +1346,16 @@ void CInput::processMouse(SDL_Event& ev) {
 
 	switch(ev.type) {
 		case SDL_FINGERDOWN:
-			processMouse(ev.tfinger.x, ev.tfinger.y, true, ev.tfinger.fingerId);
+			processMouse(ev.tfinger.x/68, ev.tfinger.y/102, true, ev.tfinger.fingerId);
 			break;
 
 		case SDL_FINGERUP:
-			processMouse(ev.tfinger.x, ev.tfinger.y, false, ev.tfinger.fingerId);
+			processMouse(ev.tfinger.x/68, ev.tfinger.y/102, false, ev.tfinger.fingerId);
 			break;
 
 		case SDL_FINGERMOTION:
-			processMouse(ev.tfinger.x - ev.tfinger.dx, ev.tfinger.y - ev.tfinger.dy, false, ev.tfinger.fingerId);
-			processMouse(ev.tfinger.x, ev.tfinger.y, true, ev.tfinger.fingerId);
+			processMouse(ev.tfinger.x/68 - ev.tfinger.dx/68, ev.tfinger.y/102 - ev.tfinger.dy/102, false, ev.tfinger.fingerId);
+			processMouse(ev.tfinger.x/68, ev.tfinger.y/102, true, ev.tfinger.fingerId);
 			break;
 	}
 }

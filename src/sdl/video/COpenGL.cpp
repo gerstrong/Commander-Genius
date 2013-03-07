@@ -65,11 +65,17 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_Window *window;
+    SDL_Renderer *renderer;
     
+    window =SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, newDim.w, newDim.h, SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
+    renderer = SDL_CreateRenderer(window, 0, 0);
+    
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
 #else
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
-#endif
-	
 
 	if (!screen)
 	{
@@ -86,6 +92,7 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 
 		setUpViewPort(aspectCorrectionRect);
 	}
+#endif
 
 
 	return true;
