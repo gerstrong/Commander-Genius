@@ -1240,6 +1240,7 @@ struct TouchButton
 	stInputCommand* cmd;
 	int immediateIndex;
 	int x, y, w, h;
+    bool invisible;
 
 	bool isInside(int _x, int _y) const {
 		return
@@ -1254,22 +1255,25 @@ static const int w = 480, h = 320;
 
 #if defined(MOUSEWRAPPER)
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
-	static const int middlex = w / 2;
-	static const int middley = h / 2;
 
 	static TouchButton phoneButtons[] = {
-		{ &InputCommand[0][IC_LEFT],	KLEFT,	0, middley, w / 6, h / 2},
-		{ &InputCommand[0][IC_UP],		KUP,	w / 6, middley, w / 6, h / 4},
-		{ &InputCommand[0][IC_RIGHT],	KRIGHT,	w / 3, middley, w / 6, h / 2},
-		{ &InputCommand[0][IC_DOWN],	KDOWN,	w / 6, middley + h / 4, w / 6, h / 4},
+		{ &InputCommand[0][IC_LEFT],        KLEFT,	0,      h*5/8,  w / 6,  h / 4},
+        { &InputCommand[0][IC_UPPERLEFT],	-1,     0,      h / 2,  w / 6,  h / 8,  true},
+		{ &InputCommand[0][IC_UP],          KUP,	w / 6,  h*2/4,  w / 6,  h / 4},
+        { &InputCommand[0][IC_UPPERRIGHT],	-1,     w / 3,  h / 2,  w / 6,  h / 8,  true},
+		{ &InputCommand[0][IC_RIGHT],       KRIGHT,	w / 3,  h*5/8,  w / 6,  h / 4},
+        { &InputCommand[0][IC_LOWERRIGHT],	-1,     w / 3,  h*7/8,  w / 6,  h / 8,  true},
+		{ &InputCommand[0][IC_DOWN],        KDOWN,	w / 6,  h*3/4,  w / 6,  h / 4},
+        { &InputCommand[0][IC_LOWERLEFT],	-1,     0,      h*7/8,  w / 6,  h / 8,  true},
 
-		{ &InputCommand[0][IC_JUMP],	KCTRL,		middlex, middley, w / 6, h / 2},
-		{ &InputCommand[0][IC_POGO],	KALT,		middlex + w / 6, middley, w / 6, h / 2},
-		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
+		{ &InputCommand[0][IC_JUMP],        KCTRL,	w / 2,  h*2/3,  w / 6,  h / 3},
+		{ &InputCommand[0][IC_POGO],        KALT,	w*2/3,  h*2/3,  w / 6,  h / 3},
+		{ &InputCommand[0][IC_FIRE],        KSPACE,	w*5/6,  h*2/3,  w / 6,  h / 3},
 
-		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
-		{ &InputCommand[0][IC_BACK],	KQUIT,	5*w/6, 0, w/6, h/6},
-		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
+		{ &InputCommand[0][IC_BACK],        KQUIT,	0,      0,      w / 6,  h / 6},
+		{ &InputCommand[0][IC_STATUS],      KENTER, 5*w/6,  h / 6,  w / 6,  h / 6},
+        { &InputCommand[0][IC_HELP],        KF1,	0,      h / 6,  w / 6,  h / 6},
+		{ NULL,                     KSHOWHIDECTRLS,	5*w/6,  0,      w / 6,  h / 6},
 	};
 
 	return phoneButtons;
@@ -1277,10 +1281,10 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 
 
 
-static const int phoneButtonN = 10;
+static const int phoneButtonN = 15;
 typedef std::set<int> MouseIndexSet;
 
-static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0};
+static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
 
 
@@ -1387,9 +1391,9 @@ static void drawButton(TouchButton& button, bool down) {
 	// similar mysterious constant as in renderTexture/initGL
 	//glViewport(0,255,w,h);
 
-	float w = 512.0f, h = 256.0f;
+	float w = 480.0f, h = 320.0f;
 
-	int crop = 2;
+	int crop = 0;
 	float x1 = float(button.x + crop) / w;
 	float x2 = float(button.x+button.w - crop) / w;
 	float y1 = float(button.y + crop) / h;
@@ -1439,7 +1443,7 @@ void CInput::renderOverlay()
 	for(int i = phoneButtonN - 1; i >= 0; --i) {
 		TouchButton& b = phoneButtons[i];
 		bool down = phoneButton_MouseIndex[i].size() > 0;
-		if(showControls) drawButton(b, down);
+		if((showControls || b.immediateIndex == KSHOWHIDECTRLS) && !b.invisible) drawButton(b, down);
 
 		if(b.immediateIndex == KSHOWHIDECTRLS) {
 			if(buttonShowHideCtrlWasDown && !down)

@@ -189,13 +189,8 @@ bool COpenGL::init()
 	const GLint oglfilter = m_VidConfig.m_opengl_filter;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_DisplayMode mode;
-    
     window = SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     glcontext = SDL_GL_CreateContext(window);
-    
-    // Setup the view port for the first time
-	glViewport(0, 0, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
     
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -212,6 +207,13 @@ bool COpenGL::init()
 	// Now Initialize modelview matrix
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
+    
+    // Setup the view port for the first time
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	glViewport(0, 0, 480, 320);
+#else
+    setUpViewPort(aspectCorrectionRect);
+#endif
     /*Using the standard OpenGL API for specifying a 2D texture
      image: glTexImage2D, glSubTexImage2D, glCopyTexImage2D,
      and glCopySubTexImage2D.  The target for these commands is
@@ -227,7 +229,7 @@ bool COpenGL::init()
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
     
-	createTexture(m_texture, oglfilter, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
+    createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
 	
 	if(m_VidConfig.m_ScaleXFilter <= 1)
 	{	// In that case we can do a texture based rendering
@@ -266,13 +268,12 @@ bool COpenGL::init()
 
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
-
-	createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
 	
 	if(m_VidConfig.m_ScaleXFilter <= 1)
 	{	// In that case we can do a texture based rendering
 		createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
-	}
+	} else
+        createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
 #endif
 	
 	// If there were any errors
@@ -281,11 +282,15 @@ bool COpenGL::init()
 	if( error != GL_NO_ERROR)
 	{
 		g_pLogFile->ftextOut("OpenGL Init(): %d<br>",error);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        SDL_DestroyWindow(window);
+        SDL_GL_DeleteContext(glcontext);
+#endif
 		return false;
 	}
 	else
 	{
-		g_pLogFile->ftextOut("OpenGL Init(): Interface succesfully opened!<br>");
+		g_pLogFile->ftextOut("OpenGL Init(): Interface successfully opened!<br>");
 	}
 	
 	return true;
