@@ -1393,7 +1393,7 @@ static void drawButton(TouchButton& button, bool down) {
 
 	float w = 480.0f, h = 320.0f;
 
-	int crop = 0;
+	int crop = 2;
 	float x1 = float(button.x + crop) / w;
 	float x2 = float(button.x+button.w - crop) / w;
 	float y1 = float(button.y + crop) / h;
@@ -1443,7 +1443,17 @@ void CInput::renderOverlay()
 	for(int i = phoneButtonN - 1; i >= 0; --i) {
 		TouchButton& b = phoneButtons[i];
 		bool down = phoneButton_MouseIndex[i].size() > 0;
-		if((showControls || b.immediateIndex == KSHOWHIDECTRLS) && !b.invisible) drawButton(b, down);
+        if(i==0)
+        {
+            if (phoneButton_MouseIndex[1].size() > 0 || phoneButton_MouseIndex[7].size() > 0)
+                down = true;
+        }
+        if(i==2 || i==4 || i == 6)
+        {
+            if (phoneButton_MouseIndex[i-1].size() > 0 || phoneButton_MouseIndex[i+1].size() > 0)
+                down = true;
+        }
+		if((showControls && !b.invisible) || b.immediateIndex == KSHOWHIDECTRLS) drawButton(b, down);
 
 		if(b.immediateIndex == KSHOWHIDECTRLS) {
 			if(buttonShowHideCtrlWasDown && !down)
