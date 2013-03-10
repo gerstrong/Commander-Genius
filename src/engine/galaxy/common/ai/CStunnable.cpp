@@ -108,8 +108,9 @@ void CStunnable::draw()
       CSprite &StarSprite = g_pGfxEngine->getSprite(starSprite);
       
       int yoffset = (StarSprite.getHeight()<<STC);
+      int xoffset = (StarSprite.getWidth()<<STC);
       
-      scrx = (getXMidPos()>>STC)-mp_Map->m_scrollx;
+      scrx = ((getXMidPos()-xoffset/2)>>STC)-mp_Map->m_scrollx;
       scry = ((m_Pos.y-yoffset)>>STC)-mp_Map->m_scrolly;
       
       SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
