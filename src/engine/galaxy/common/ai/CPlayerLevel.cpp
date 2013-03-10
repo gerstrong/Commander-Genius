@@ -1896,11 +1896,8 @@ void CPlayerLevel::exchangeZapper(const int mapx, const int mapy, const int offs
 
 void CPlayerLevel::disableZapper(const Uint32 lx, const Uint32 ly)
 {
-    const int mapx = lx;
-    const int mapy = ly;
-    
     // Find the inactive zapper tile, if you don't find it, cancel the operation!
-    int startZapTile = mp_Map->at(mapx, mapy);
+    int startZapTile = mp_Map->at(lx, ly);
     int iZapperTile = startZapTile;
     for( ; iZapperTile < startZapTile+4 ; iZapperTile++ )
     {
@@ -1916,17 +1913,14 @@ void CPlayerLevel::disableZapper(const Uint32 lx, const Uint32 ly)
     
     // Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
     const int offset = iZapperTile-startZapTile;
-    exchangeZapper(mapx, mapy, offset, stopZapperTile);  
+    exchangeZapper(lx, ly, offset, stopZapperTile);  
 }
 
 
 void CPlayerLevel::enableZapper(const Uint32 lx, const Uint32 ly)
 {
-    const int mapx = lx;
-    const int mapy = ly;
-    
     // Find the active zapper tile, if you don't find it, cancel the operation!
-    int startZapTile = mp_Map->at(mapx, mapy);
+    int startZapTile = mp_Map->at(lx, ly);
     int iZapperTile = startZapTile;
     for( ; iZapperTile > startZapTile-4 ; iZapperTile-- )
     {
@@ -1942,7 +1936,7 @@ void CPlayerLevel::enableZapper(const Uint32 lx, const Uint32 ly)
     
     // Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
     const int offset = iZapperTile-startZapTile;
-    exchangeZapper(mapx, mapy, offset, stopZapperTile);          
+    exchangeZapper(lx, ly, offset, stopZapperTile);          
 }
 
 
