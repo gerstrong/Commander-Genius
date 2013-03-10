@@ -1876,28 +1876,35 @@ void CPlayerLevel::PressPlatformSwitch(const Uint32 lx, const Uint32 ly)
 }
 
 
-/*
-void CPlayerLevel::exchangeZapper(from, to, stopTile)
+
+void CPlayerLevel::exchangeZapper(const int mapx, const int mapy, const int offset, const int stopZapperTile)
 {
-    // TODO: Exchange the tiles until stopTile makes the operation cancelling
+    // Exchange the tiles until stopTile makes the operation cancelling
+    int nextTile = 0;
+    int x = mapx; 
+    int y = mapy; 
+    while( nextTile != stopZapperTile )
+    {
+      const int curTile = mp_Map->at(x,y);
+      nextTile = curTile + offset;
+      mp_Map->setTile(x, y, nextTile, true);
+      y++;       
+    }
 } 
-*/
 
 
-/*void CPlayerLevel::disableZapper(const Uint32 lx, const Uint32 ly)
+
+void CPlayerLevel::disableZapper(const Uint32 lx, const Uint32 ly)
 {
-    const int mapx = lx>>CSF;
-    const int mapy = ly>>CSF;
-    
-    auto &TileProperty = g_pBehaviorEngine->getTileProperties();
+    const int mapx = lx;
+    const int mapy = ly;
     
     // Find the inactive zapper tile, if you don't find it, cancel the operation!
     int startZapTile = mp_Map->at(mapx, mapy);
     int iZapperTile = startZapTile;
     for( ; iZapperTile < startZapTile+4 ; iZapperTile++ )
     {
-      const int btile = TileProperty[iZapperTile].behaviour;
-      if(btile == 30) // The inactive Zapper
+      if(iZapperTile == 0xA6B) // The inactive Zapper
 	break;
     }
     
@@ -1905,31 +1912,38 @@ void CPlayerLevel::exchangeZapper(from, to, stopTile)
       return;
           
     // Get the tile where exchanging stops. It's just 3 rows down the tilemap. The width of the tilemap is 18!
-    const int stopZapperTile = iZapperTile+3*18;
+    const int stopZapperTile = iZapperTile+2*18;
     
     // Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
     const int offset = iZapperTile-startZapTile;
     exchangeZapper(mapx, mapy, offset, stopZapperTile);  
-}*/
-
-
-/*void CPlayerLevel::ensableZapper(const Uint32 lx, const Uint32 ly)
-{
-    const int mapx = lx>>CSF;
-    const int mapy = ly>>CSF;
-    
-    const int mapx = lx>>CSF;
-    const int mapy = ly>>CSF;
-    
-    // TODO: Find the active zapper tile, if you don't find it, cancel the operation!
-    
-    // TODO: Get the tile where exchanging stops. It's just 3 rows down the tilemap
-    
-    // TODO: Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
-    exchangeZapper(from, to, stopTile);
-        
 }
-*/
+
+
+void CPlayerLevel::enableZapper(const Uint32 lx, const Uint32 ly)
+{
+    const int mapx = lx;
+    const int mapy = ly;
+    
+    // Find the active zapper tile, if you don't find it, cancel the operation!
+    int startZapTile = mp_Map->at(mapx, mapy);
+    int iZapperTile = startZapTile;
+    for( ; iZapperTile > startZapTile-4 ; iZapperTile-- )
+    {
+      if(iZapperTile == 0xA68) // The inactive Zapper
+	break;
+    }
+    
+    if(iZapperTile <= startZapTile-4) // Did not find that zapper. I have to quit sorry!
+      return;
+          
+    // Get the tile where exchanging stops. It's just 3 rows down the tilemap. The width of the tilemap is 18!
+    const int stopZapperTile = iZapperTile+2*18;
+    
+    // Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
+    const int offset = iZapperTile-startZapTile;
+    exchangeZapper(mapx, mapy, offset, stopZapperTile);          
+}
 
 
 void CPlayerLevel::openDoorsTile()
@@ -2500,6 +2514,31 @@ void CPlayerLevel::process()
 	}
 }
 
+bool CPlayerLevel::verifyAndToggleZapper(const int lx, const int ly)
+{
+    Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+  
+    Uint32 newX = targetXY >> 8;
+    Uint32 newY = targetXY & 0xFF;
+  
+    const int zapperTile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
+  
+    if(zapperTile >= 0xA68 && zapperTile <= 0xA6A )
+    {
+	disableZapper(newX, newY);
+    }    
+    else if(zapperTile == 0xA6B ) // On Keen 6 this seems to be the zapper
+    {
+	enableZapper(newX, newY);
+    }
+    else
+    {
+      return false;
+    }
+    
+    return true;
+}
+
 
 void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
 {
@@ -2527,21 +2566,19 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
     // pressing a switch
     playSound( SOUND_GUN_CLICK );
 	
-    if(flag == 18 )
+    if(flag == 18)
     {	    
 	PressBridgeSwitch(x_csf, y_csf);	      
     }
-    /*else if(flag == 19)
-    {
-	disableZapper(x_csf, y_csf);
-    }    
-    else if(flag == 30)
-    {
-	enableZapper(x_csf, y_csf);
-    } */   
     else
     {
-	PressPlatformSwitch(x_csf, y_csf);
+      if( g_pBehaviorEngine->getEpisode() == 6 && 
+	  verifyAndToggleZapper(x_csf, y_csf) )
+      {
+	return;
+      }
+
+      PressPlatformSwitch(x_csf, y_csf);
     }    
 }
 
@@ -2577,17 +2614,15 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
     {	    
 	PressBridgeSwitch(x_csf, y_csf);	      
     }
-    /*else if(flag == 19)
-    {
-	disableZapper(x_csf, y_csf);
-    }    
-    else if(flag == 30)
-    {
-	enableZapper(x_csf, y_csf);
-    }*/    
     else
     {
-	PressPlatformSwitch(x_csf, y_csf);
+      if( g_pBehaviorEngine->getEpisode() == 6 && 
+	  verifyAndToggleZapper(x_csf, y_csf) )
+      {
+	return;
+      }
+
+      PressPlatformSwitch(x_csf, y_csf);
     }    
 }
 
