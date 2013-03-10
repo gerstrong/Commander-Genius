@@ -145,19 +145,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 			break;
 	case 0x1E: 
 			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1DD8 );
-			break;
-			
-/*
-$1DD8W  #u/d/l/r airboard
-$1DF6W  #Sit airboard
-$1E14W  #Drop/rise airboard sit
-$1E32W  #Drop/rise airboard fall
-$1E50W  #Drop/rise airboard rise
-$1E6EW  #Info path airboard
-$1E8CW  #Sneaky Airboard sit
-$1EAAW  #Sneaky Airboard flee
-$1EC8W  #Sneaky Airboard return 
- */			
+			break;		
 			
 	case 0x20:	
 			p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1E14); break;

@@ -1889,15 +1889,29 @@ void CPlayerLevel::exchangeZapper(from, to, stopTile)
     const int mapx = lx>>CSF;
     const int mapy = ly>>CSF;
     
-    // TODO: Find the inactive zapper tile, if you don't find it, cancel the operation!
+    auto &TileProperty = g_pBehaviorEngine->getTileProperties();
     
-    // TODO: Get the tile where exchanging stops. It's just 3 rows down the tilemap
+    // Find the inactive zapper tile, if you don't find it, cancel the operation!
+    int startZapTile = mp_Map->at(mapx, mapy);
+    int iZapperTile = startZapTile;
+    for( ; iZapperTile < startZapTile+4 ; iZapperTile++ )
+    {
+      const int btile = TileProperty[iZapperTile].behaviour;
+      if(btile == 30) // The inactive Zapper
+	break;
+    }
     
-    // TODO: Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
-    exchangeZapper(from, to, stopTile);
-  
-}
-*/
+    if(iZapperTile >= startZapTile+4) // Did not find that zapper. I have to quit sorry!
+      return;
+          
+    // Get the tile where exchanging stops. It's just 3 rows down the tilemap. The width of the tilemap is 18!
+    const int stopZapperTile = iZapperTile+3*18;
+    
+    // Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
+    const int offset = iZapperTile-startZapTile;
+    exchangeZapper(mapx, mapy, offset, stopZapperTile);  
+}*/
+
 
 /*void CPlayerLevel::ensableZapper(const Uint32 lx, const Uint32 ly)
 {
@@ -1913,6 +1927,7 @@ void CPlayerLevel::exchangeZapper(from, to, stopTile)
     
     // TODO: Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
     exchangeZapper(from, to, stopTile);
+        
 }
 */
 
