@@ -22,6 +22,7 @@
 #include "engine/galaxy/common/ai/platforms.h"
 #include "engine/galaxy/common/ai/CFlag.h"
 #include "engine/galaxy/common/ai/CSpriteItem.h"
+#include <engine/galaxy/common/ai/platform/CPlatformSit.h>
 
 namespace galaxy
 {
@@ -132,31 +133,56 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x0D:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, true, x, y);	break;
 	case 0x0E:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;
 
-			
-
-	/*case 0x1B:
-			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C );
+	 
+	case 0x1B: 
+			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1DD8 );
+			break;
+	case 0x1C: 
+			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y, 0x1DD8 );
+			break;
+	case 0x1D: 
+			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, DOWN, 0x1DD8 );
+			break;
+	case 0x1E: 
+			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1DD8 );
 			break;
 			
-	//case 0x20:	
-			//p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1B5E); break;
+/*
+$1DD8W  #u/d/l/r airboard
+$1DF6W  #Sit airboard
+$1E14W  #Drop/rise airboard sit
+$1E32W  #Drop/rise airboard fall
+$1E50W  #Drop/rise airboard rise
+$1E6EW  #Info path airboard
+$1E8CW  #Sneaky Airboard sit
+$1EAAW  #Sneaky Airboard flee
+$1EC8W  #Sneaky Airboard return 
+ */			
+			
+	case 0x20:	
+			p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1E14); break;
+		
 
-        // Var Plats other color
+	case 0x21: if (difficulty >= NORMAL) break;
+	case 0x22: if (difficulty >= HARD) break;
+	case 0x23: 
+			p_newfoe = new galaxy::CPlatformSit( &Map, foe, x, y, 0x1E14); break;		
+
+			
+        // Var Plats red color
 	case 0x24:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B5E); break;
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1E6E); break;
 	case 0x25:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1B5E);	break;
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1E6E);	break;
 	case 0x26:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1B5E);	break;
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1E6E);	break;
 	case 0x27:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER,0x1B5E);	break;
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER,0x1E6E);	break;
 			
 			
 	case 0x28:
-			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
+			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1EC8);
 			break;
-			
-*/
 
 	
 	case 0x4B: if( difficulty < HARD ) break;

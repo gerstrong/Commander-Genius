@@ -109,7 +109,7 @@ void CStunnable::draw()
       
       int yoffset = (StarSprite.getHeight()<<STC);
       
-      scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
+      scrx = (getXMidPos()>>STC)-mp_Map->m_scrollx;
       scry = ((m_Pos.y-yoffset)>>STC)-mp_Map->m_scrolly;
       
       SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();

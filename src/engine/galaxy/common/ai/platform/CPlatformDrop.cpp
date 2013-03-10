@@ -17,6 +17,8 @@ const int DROP_SPEED_ACC = 5;
 // Speed at what the Platform might return to the original position
 const int HOVER_SPEED = 25;
 
+const int BLOCKSPRITEID = 0x1F;
+
 namespace galaxy {
 
 CPlatformDrop::CPlatformDrop(CMap *pmap, const Uint16 foeID, 
@@ -43,7 +45,7 @@ void CPlatformDrop::process()
 	bool blockerDetected = false;
 	
 	// If there is a blocker, change the direction
-	if( object == 0x1F )
+	if( object == BLOCKSPRITEID )
 	    blockerDetected = true;
 
 	bool drop = false;	

@@ -1876,6 +1876,46 @@ void CPlayerLevel::PressPlatformSwitch(const Uint32 lx, const Uint32 ly)
 }
 
 
+/*
+void CPlayerLevel::exchangeZapper(from, to, stopTile)
+{
+    // TODO: Exchange the tiles until stopTile makes the operation cancelling
+} 
+*/
+
+
+/*void CPlayerLevel::disableZapper(const Uint32 lx, const Uint32 ly)
+{
+    const int mapx = lx>>CSF;
+    const int mapy = ly>>CSF;
+    
+    // TODO: Find the inactive zapper tile, if you don't find it, cancel the operation!
+    
+    // TODO: Get the tile where exchanging stops. It's just 3 rows down the tilemap
+    
+    // TODO: Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
+    exchangeZapper(from, to, stopTile);
+  
+}
+*/
+
+/*void CPlayerLevel::ensableZapper(const Uint32 lx, const Uint32 ly)
+{
+    const int mapx = lx>>CSF;
+    const int mapy = ly>>CSF;
+    
+    const int mapx = lx>>CSF;
+    const int mapy = ly>>CSF;
+    
+    // TODO: Find the active zapper tile, if you don't find it, cancel the operation!
+    
+    // TODO: Get the tile where exchanging stops. It's just 3 rows down the tilemap
+    
+    // TODO: Disable all the zapping vertically until the stopping zap tile is exchanged being the last one
+    exchangeZapper(from, to, stopTile);
+}
+*/
+
 
 void CPlayerLevel::openDoorsTile()
 {
@@ -2476,6 +2516,14 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
     {	    
 	PressBridgeSwitch(x_csf, y_csf);	      
     }
+    /*else if(flag == 19)
+    {
+	disableZapper(x_csf, y_csf);
+    }    
+    else if(flag == 30)
+    {
+	enableZapper(x_csf, y_csf);
+    } */   
     else
     {
 	PressPlatformSwitch(x_csf, y_csf);
@@ -2514,6 +2562,14 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
     {	    
 	PressBridgeSwitch(x_csf, y_csf);	      
     }
+    /*else if(flag == 19)
+    {
+	disableZapper(x_csf, y_csf);
+    }    
+    else if(flag == 30)
+    {
+	enableZapper(x_csf, y_csf);
+    }*/    
     else
     {
 	PressPlatformSwitch(x_csf, y_csf);
