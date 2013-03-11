@@ -13,6 +13,7 @@
 #include "ai/CBipShip.h"
 #include "ai/CBlorb.h"
 #include "ai/CGrabbiter.h"
+#include "ai/CSpecialItem.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -227,7 +228,12 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CGrabbiter(&Map, foe, x, y);
 		break;
 
-		
+
+	// Special Items which end the level
+	case 0x63: p_newfoe = new galaxy::CSpecialItem(&Map, foe, x, y, 0x1D24); break;
+	case 0x64: p_newfoe = new galaxy::CSpecialItem(&Map, foe, x, y, 0x1D06); break;
+	case 0x65: p_newfoe = new galaxy::CSpecialItem(&Map, foe, x, y, 0x1D42); break;
+
 		
 	/*case PLATFORM_VERT: case PLATFORM_VERT_ALT:
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y); break;

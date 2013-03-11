@@ -10,6 +10,8 @@
 #ifndef ITEMSGALAXY_H_
 #define ITEMSGALAXY_H_
 
+#include "common/CBehaviorEngine.h"
+
 struct stItemGalaxy
 {
 
@@ -39,9 +41,9 @@ struct stItemGalaxy
 		
 		struct
 		{
-			bool sandwich;
-			bool hook;
-			bool rocketKeycard;
+			unsigned char sandwich;
+			unsigned char hook;
+			unsigned char rocketKeycard;
 		}ep6;
 				
 	}m_special;
@@ -56,9 +58,21 @@ struct stItemGalaxy
 		m_gem.empty();
 
 		m_keycards = 0;
+		
+		const int ep = g_pBehaviorEngine->getEpisode();
 
-		m_special.ep4.elders = 0;
-		m_special.ep4.swimsuit = 0;
+		if(ep == 4)
+		{
+		    m_special.ep4.elders = 0;
+		    m_special.ep4.swimsuit = 0;
+		}
+		else if(ep == 6)
+		{
+		    m_special.ep6.hook = 0;
+		    m_special.ep6.sandwich = 0;
+		    m_special.ep6.rocketKeycard = 0;
+		}				
+		
 		fuses_levels_completed = 0;
 	}
 
@@ -67,7 +81,20 @@ struct stItemGalaxy
 		m_lifes = 10;
 		m_bullets = 99;
 		m_gem.fillup();
-		m_special.ep4.swimsuit = 1;
+		
+		const int ep = g_pBehaviorEngine->getEpisode();
+		
+		if(ep == 4)
+		{
+		    m_special.ep4.swimsuit = 1;
+		}
+		else if(ep == 6)
+		{
+		    m_special.ep6.hook = 1;
+		    m_special.ep6.sandwich = 1;
+		    m_special.ep6.rocketKeycard = 1;
+		}				
+		
 		m_keycards = 1;
 	}
 };
