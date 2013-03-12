@@ -34,7 +34,7 @@ const int got_sprite_item_pics[3][13] = {
 	223,	224,	216					// 1Up and got raygun sprites
 },
 {
-	254,	254,	254,	254,				// Got gem sprite
+	250,	250,	250,	250,				// Got gem sprite
 	216,	217,	218,	219,	220,	221,		// 100,200,500,1000,2000,5000 pt sprites
 	222,	223,	215					// 1Up and got raygun sprites
 }

@@ -61,7 +61,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	{
 		if( foe == i )
 		{
-			const Uint32 newsprite = 122+2*(i-0x39);
+			const Uint32 newsprite = 118+2*(i-0x39);
 			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
 		}
 	}
@@ -71,7 +71,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	{
 		if( foe == i )
 		{
-			const Uint32 newsprite = 108+2*(i-0x3D);
+			const Uint32 newsprite = 104+2*(i-0x3D);
 			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
 		}
 	}
@@ -80,12 +80,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	if( foe == 0x44 )
 	{
 		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
-	}	
-	
-	// This is the keycard. Keen 5 only!
-	if( foe == 0x46 )
-	{
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 105);
 	}	
 	
 	// If a foe was found, just return.

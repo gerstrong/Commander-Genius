@@ -1,6 +1,7 @@
 #include "CBlooglet.h"
 
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include <engine/galaxy/common/ai/CSpriteItem.h>
 
 
 namespace galaxy {
@@ -58,6 +59,12 @@ void CBlooglet::getTouchedBy(CSpriteObject &theObject)
 	    if(mCarriesGem)
 	    {
 		// TODO: If blooglet carried a gem it should fall that case it must jump out! That is a sprite item which can fall on the floor.
+		const int newX = getXMidPos();
+		const int newY = getYUpPos();
+		const Uint32 newSprite = 118+2*( mFoeID-0xB );
+		auto *gem = new CSpriteItem(mp_Map, mFoeID+0x2E, newX, newY, newSprite, true);
+		gem->honorPriority = false;
+		g_pBehaviorEngine->m_EventList.spawnObj( gem );
 	    }
 	    
 	    setAction(A_BLOOGLET_STUNNED);

@@ -15,29 +15,37 @@ namespace galaxy {
 
 const int MAX_ANIMATION_TIMER = 20;
 
-CSpriteItem::CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite) :
-CGalaxySpriteObject(pmap, foeID, x, y)
+CSpriteItem::CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite, const bool gravity) :
+CGalaxySpriteObject(pmap, foeID, x, y),
+mGravity(gravity)
 {
 	m_basesprite = sprite;
 	m_timer = (y*256+x)%MAX_ANIMATION_TIMER;
 	this->sprite = (m_timer%2 == 0) ? m_basesprite : m_basesprite+1;
 	calcBoundingBoxes();
 	inhibitfall = true;
+	yinertia = -70;
 }
 
 void CSpriteItem::process()
 {
-	// Do the animation stuff here!
-	if(m_timer == 0)
-	{
-		this->sprite = (m_basesprite == this->sprite) ? m_basesprite + 1 : m_basesprite;
-	}
-
-	if(m_timer < MAX_ANIMATION_TIMER)
-		m_timer++;
-	else
-		m_timer = 0;
-
+    if(mGravity)
+    {
+	performCollisions();
+	
+	performGravityHigh();
+    }
+    
+    // Do the animation stuff here!
+    if(m_timer == 0)
+    {
+	this->sprite = (m_basesprite == this->sprite) ? m_basesprite + 1 : m_basesprite;
+    }
+    
+    if(m_timer < MAX_ANIMATION_TIMER)
+	m_timer++;
+    else
+	m_timer = 0;
 }
 
 void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
