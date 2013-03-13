@@ -114,7 +114,25 @@ void CFlag::processFlipping()
 	else
 	{
 	    setAction(A_FLAG_WAVE);
+	    setActionSprite();
 	    g_pSound->playSound( SOUND_FLAG_LAND );
+	    
+	    const auto episode = g_pBehaviorEngine->getEpisode();
+
+	    if(episode == 6)	    
+	    {
+		VectorD2<int> tilePos = m_Pos;
+		
+		CSprite &rSprite = g_pGfxEngine->getSprite(sprite);				
+		
+		//tilePos.y += ((rSprite.getHeight())<<STC);
+		tilePos.y = getYDownPos();
+		
+		std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);    
+		Uint32 new_tile_no = mp_Map->getPlaneDataAt(1, tilePos)+1;
+		tilePos = tilePos>>CSF;
+		mp_Map->setTile(tilePos.x, tilePos.y, new_tile_no, true);
+	    }
 	}
 }
 

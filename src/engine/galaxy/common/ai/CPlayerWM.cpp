@@ -848,6 +848,13 @@ void CPlayerWM::finishLevel(const int object)
 		{
 		    g_pSound->playSound( SOUND_FLAG_APPEAR );
 		}
+		
+		if(episode == 6)
+		{
+		    csfX += (1<<STC);
+		    csfY += (2<<STC);
+		}
+		
 
 		VectorD2<Uint32> dst(csfX, csfY);
 
