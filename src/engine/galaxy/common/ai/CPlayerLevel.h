@@ -261,6 +261,7 @@ public:
 	 * This function will open/close bridges in Keen Galaxy
 	 * \param lx CSFed Coordinate where the switch has been triggered
 	 */
+	void toggleBridge(const Uint32 newX, const Uint32 newY);
 	void PressBridgeSwitch(const Uint32 lx, const Uint32 ly);
 
 	void PressPlatformSwitch(const Uint32 lx, const Uint32 ly);
@@ -271,6 +272,7 @@ public:
 	void enableZapper(const Uint32 lx, const Uint32 ly);
 	
 	bool verifyAndToggleZapper(const int lx, const int ly);
+	bool verifyAndToggleBridge(const int lx, const int ly);
 	void TurnGiantSwitchOff(const int x, const int y);
 	void TurnGiantSwitchOn(const int x, const int y);
 

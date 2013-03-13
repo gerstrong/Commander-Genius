@@ -1739,22 +1739,8 @@ void CPlayerLevel::processEnterDoor()
 
 
 
-
-
-
-/**
- * This function checks whether a bridge must be opened or closed and does this kind of work
- * I'm not really happy with that part of the code and I know that it works for Keen 4. Not sure about the
- * other episodes, but it's well though and should...
- */
-
-void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
+void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 {
-	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
-
-	Uint32 newX = targetXY >> 8;
-	Uint32 newY = targetXY & 0xFF;
-
 	const int start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
 	const int end_tile = start_tile+3;
 
@@ -1817,8 +1803,25 @@ void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 			break;
 		}
 	}
+}
 
-	return;
+
+
+
+/**
+ * This function checks whether a bridge must be opened or closed and does this kind of work
+ * I'm not really happy with that part of the code and I know that it works for Keen 4. Not sure about the
+ * other episodes, but it's well though and should...
+ */
+
+void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
+{
+	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+
+	Uint32 newX = targetXY >> 8;
+	Uint32 newY = targetXY & 0xFF;
+	
+	toggleBridge(newX, newY);
 }
 
 
@@ -2533,6 +2536,30 @@ bool CPlayerLevel::verifyAndToggleZapper(const int lx, const int ly)
     return true;
 }
 
+bool CPlayerLevel::verifyAndToggleBridge(const int lx, const int ly)
+{
+    Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+  
+    Uint32 newX = targetXY >> 8;
+    Uint32 newY = targetXY & 0xFF;
+  
+    auto &Tile = g_pBehaviorEngine->getTileProperties(1);
+    const int zapperTile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);        
+    const int flag = Tile[zapperTile].behaviour;
+  
+    if(flag == 18 )
+    {
+      toggleBridge(newX, newY);
+    }    
+    else
+    {
+      return false;
+    }
+    
+    return true;
+}
+
+
 
 void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
 {
@@ -2566,11 +2593,11 @@ void CPlayerLevel::TurnGiantSwitchOff(const int x, const int y)
     }
     else
     {
-      if( g_pBehaviorEngine->getEpisode() == 6 && 
-	  verifyAndToggleZapper(x_csf, y_csf) )
-      {
+      if( verifyAndToggleZapper(x_csf, y_csf) )
 	return;
-      }
+      
+      if( verifyAndToggleBridge(x_csf, y_csf) )
+	  return;
 
       PressPlatformSwitch(x_csf, y_csf);
     }    
@@ -2610,12 +2637,12 @@ void CPlayerLevel::TurnGiantSwitchOn(const int x, const int y)
     }
     else
     {
-      if( g_pBehaviorEngine->getEpisode() == 6 && 
-	  verifyAndToggleZapper(x_csf, y_csf) )
-      {
+      if( verifyAndToggleZapper(x_csf, y_csf) )
 	return;
-      }
 
+      if( verifyAndToggleBridge(x_csf, y_csf) )
+	  return;      
+      
       PressPlatformSwitch(x_csf, y_csf);
     }    
 }
