@@ -15,6 +15,7 @@
 #include "ai/CGrabbiter.h"
 #include "ai/CSpecialItem.h"
 #include "ai/CBabobba.h"
+#include "ai/CBip.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -237,6 +238,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CBabobba(&Map, foe, x, y);
 		break;
 
+	case 0x6C: 
+		// This is a Bip (In normal level it is never loaded but from saved games it could be restored)
+		p_newfoe = new galaxy::CBip(&Map, foe, x, y);
+		break;
 		
 	/*case PLATFORM_VERT: case PLATFORM_VERT_ALT:
 		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y); break;

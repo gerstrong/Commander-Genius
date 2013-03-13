@@ -1,12 +1,12 @@
 #ifndef CBIPSHIP_H
 #define CBIPSHIP_H
 
-#include "engine/galaxy/common/ai/CStunnable.h"
+#include <engine/galaxy/common/ai/CGalaxyActionSpriteObject.h>
 
 namespace galaxy
 {
 
-class CBipShip : public CStunnable
+class CBipShip : public CGalaxyActionSpriteObject
 {
   
 public:
@@ -21,7 +21,7 @@ public:
   
   void processTurning();
   
-  void processHitting();
+  void processHit();
   
   void processCrashing();
   

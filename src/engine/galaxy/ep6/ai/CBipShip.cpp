@@ -1,6 +1,8 @@
 #include "CBipShip.h"
+#include "CBip.h"
 
 #include "engine/galaxy/common/ai/CPlayerLevel.h"
+#include <engine/galaxy/common/ai/CBullet.h>
 
 
 namespace galaxy
@@ -22,16 +24,16 @@ const int FLY_SPEED = 30;
 
 
 CBipShip::CBipShip(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CStunnable(pmap, foeID, x, y),
+CGalaxyActionSpriteObject(pmap, foeID, x, y),
 mTimer(0)
 {
-	mActionMap[A_BIPSHIP_MOVING] = (void (CStunnable::*)()) &CBipShip::processMoving;
-	mActionMap[A_BIPSHIP_SHOT] = (void (CStunnable::*)()) &CBipShip::processTheShot;
-	mActionMap[A_BIPSHIP_TURN] = (void (CStunnable::*)()) &CBipShip::processTurning;
-	mActionMap[A_BIPSHIP_HIT] = (void (CStunnable::*)()) &CBipShip::processHitting;
-	mActionMap[A_BIPSHIP_CRASH] = (void (CStunnable::*)()) &CBipShip::processCrashing;
-	mActionMap[A_BIPSHIP_WRECKAGE] = (void (CStunnable::*)()) &CBipShip::processWreckage;
-	mActionMap[A_BIPSHIP_SMOKE] = (void (CStunnable::*)()) &CBipShip::processSmoke;
+	mActionMap[A_BIPSHIP_MOVING] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processMoving;
+	mActionMap[A_BIPSHIP_SHOT] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processTheShot;
+	mActionMap[A_BIPSHIP_TURN] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processTurning;
+	mActionMap[A_BIPSHIP_HIT] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processHit;
+	mActionMap[A_BIPSHIP_CRASH] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processCrashing;
+	mActionMap[A_BIPSHIP_WRECKAGE] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processWreckage;
+	mActionMap[A_BIPSHIP_SMOKE] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processSmoke;
 	
 	setupGalaxyObjectOnMap(0x2A5C, A_BIPSHIP_MOVING);
 	
@@ -44,16 +46,13 @@ void CBipShip::processMoving()
 	// Move normally in the direction
 	if( xDirection == RIGHT )
 	{
-		//moveRight( m_Action.velX );
 		moveRight( FLY_SPEED );
 	}
 	else
 	{
-		//moveLeft( m_Action.velX );
 		moveLeft( FLY_SPEED );
 	}
-	
-	
+		
 	
 	if( blockedl && xDirection == LEFT )
 	{
@@ -86,14 +85,22 @@ void CBipShip::processTurning()
 }
 
 
-void CBipShip::processHitting()
-{
-
+void CBipShip::processHit()
+{    
+    if(blockedd)
+    {
+	// TODO: If blooglet carried a gem it should fall that case it must jump out! That is a sprite item which can fall on the floor.
+	const int newX = getXMidPos();
+	const int newY = getYUpPos();
+	auto *bip = new CBip(mp_Map, 0x6C, newX, newY);
+	g_pBehaviorEngine->m_EventList.spawnObj( bip );
+	setAction(A_BIPSHIP_CRASH);
+    }
 }
 
 void CBipShip::processCrashing()
 {
-
+    
 }
 
 
@@ -118,12 +125,10 @@ void CBipShip::getTouchedBy(CSpriteObject& theObject)
 	if(dead || theObject.dead)
 		return;
 
-	CStunnable::getTouchedBy(theObject);
-
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		setAction(A_BIPSHIP_CRASH);
+		setAction(A_BIPSHIP_HIT);
 		dead = true;
 		theObject.dead = true;
 	}
@@ -138,6 +143,11 @@ void CBipShip::getTouchedBy(CSpriteObject& theObject)
 
 void CBipShip::process()
 {
+    if(dead)
+    {
+	
+    }
+    
 	performCollisions();
 		
 	if(getActionNumber() >= A_BIPSHIP_HIT)
