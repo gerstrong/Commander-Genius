@@ -798,7 +798,10 @@ void CPlayerWM::startLevel(Uint16 object)
     int level = object - 0xC000;
     Uint16 flag_dest = level + 0xF000;
 
-    if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= 18)
+    const int ep = g_pBehaviorEngine->getEpisode();
+    const int shipLevel = (ep < 6) ? 18 : 17;
+
+    if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
     {
 	g_pBehaviorEngine->m_EventList.add(new EventEnterLevel(object));
     }

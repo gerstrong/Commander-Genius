@@ -932,10 +932,8 @@ void CPlayerLevel::stun()
     setAction(A_KEEN_STUNNED);
 
     mEndOfAction = false;
-    //m_ActionNumber = ActionNumber;
     m_Action.setActionFormat(0x1868);
 
-    //sprite = 39;
     mStunTimer = 0;
 }
 
