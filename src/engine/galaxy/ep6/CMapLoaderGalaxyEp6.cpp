@@ -89,7 +89,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	{
 	  if(m_Inventory.Item.m_bullets < 5)
 	  {
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131);
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
 	  }
 	}	
 	
