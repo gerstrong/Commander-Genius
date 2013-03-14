@@ -53,7 +53,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				77, // A_KEEN_JUMP_SHOOTDOWN
 				80, // A_KEEN_HANG
 				82, // A_KEEN_CLIMB
-				94	// A_KEEN_RIDING_ON_FOOT
+				94  // A_KEEN_RIDING_ON_FOOT
 		},
 
 		// Episode 5
@@ -105,7 +105,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				1,  // A_KEEN_BORED
 				2,  // A_KEEN_QUESTION
 				8,  // A_KEEN_MOON
-				11, // A_KEEN_BOOK_OPEN
+				8,  // A_KEEN_BOOK_OPEN
 				15, // A_KEEN_BOOK_READ
 				16, // A_KEEN_BOOK_CLOSE
 				18, // A_KEEN_LOOKUP
@@ -116,7 +116,7 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				26, // A_KEEN_DIE
 				28, // A_KEEN_SHOOT
 				30, // A_KEEN_SHOOT_UP
-				32, // A_KEEN_ACTION_4
+				32, // A_KEEN_SLIDE_INTO_DOOR
 				34, // A_KEEN_SLIDE
 				35, // A_KEEN_ENTER_DOOR
 				43, // A_KEEN_POLE
@@ -135,8 +135,10 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				68, // A_KEEN_JUMP_SHOOT
 				71, // A_KEEN_JUMP_SHOOTUP
 				74, // A_KEEN_JUMP_SHOOTDOWN
-				77, // A_KEEN_HANG
-				79 // A_KEEN_CLIMB
+				75, // A_KEEN_HANG
+				77, // A_KEEN_CLIMB
+				0,  // A_KEEN_RIDING_ON_FOOT (Unused)
+				0   // A_KEEN_STUNNED (Unused)
 		}
 
 		// Keen Dreams

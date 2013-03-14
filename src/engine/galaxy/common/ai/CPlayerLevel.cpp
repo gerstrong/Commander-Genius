@@ -42,6 +42,8 @@ const int MAX_POLE_GRAB_TIME = 19;
 
 const int MAX_SCROLL_VIEW = (8<<CSF);
 
+const int STUN_TIME = 30;
+
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 						std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
@@ -52,6 +54,7 @@ m_jumpdownfromobject(false),
 mPlacingGem(false),
 mPoleGrabTime(0),
 mExitDoorTimer(0),
+mStunTimer(0),
 mObjectPtrs(ObjectPtrs)
 {
 	mActionMap[A_KEEN_STAND] = (void (CPlayerBase::*)()) &CPlayerLevel::processStanding;
@@ -86,6 +89,8 @@ mObjectPtrs(ObjectPtrs)
 	mActionMap[A_KEEN_JUMP_SHOOTDOWN] = (void (CPlayerBase::*)()) &CPlayerLevel::processJumping;
 	mActionMap[A_KEEN_HANG] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffHanging;
 	mActionMap[A_KEEN_CLIMB] = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbingUp;
+	mActionMap[A_KEEN_STUNNED] = (void (CPlayerBase::*)()) &CPlayerLevel::processStunned;
+
 
 	m_fire_recharge_time = 0;
 	m_EnterDoorAttempt = false;
@@ -99,16 +104,16 @@ mObjectPtrs(ObjectPtrs)
 	m_hangtime = 0;
 	mExitTouched = false;
 
-	/*for(size_t add = 0x098C ; add <= 0x3ABB ; add += 0x2 )
+	/*for(size_t add = offset ; add <= offset+200*0x1E ; add += 0x02 )
 	{
 		m_Action.spriteLeft = 0;
 		m_Action.spriteRight = 0;
 		m_Action.setActionFormat(add);
 		setActionSprite();
 
-		for(int sp = 130+124 ; sp <= 155+124 ; sp++)
+		for(int sp = 46+39 ; sp <= 46+39 ; sp++)
 		{
-			if( m_Action.spriteLeft == sp || m_Action.spriteRight == sp)
+			if( m_Action.spriteLeft == sp && m_Action.spriteRight == sp)
 			{
 				printf("sprite %i and %i found at %x\n", m_Action.spriteLeft, m_Action.spriteRight, add);
 			}
@@ -919,6 +924,33 @@ void CPlayerLevel::processCliffClimbingOntoFloor()
 	}
 }
 
+void CPlayerLevel::stun()
+{
+    if(!blockedd || getActionStatus(A_KEEN_SLIDE))
+	return;
+
+    setAction(A_KEEN_STUNNED);
+
+    mEndOfAction = false;
+    //m_ActionNumber = ActionNumber;
+    m_Action.setActionFormat(0x1868);
+
+    //sprite = 39;
+    mStunTimer = 0;
+}
+
+
+void CPlayerLevel::processStunned()
+{
+    mStunTimer++;
+
+    if(mStunTimer < STUN_TIME)
+	return;
+
+    mStunTimer = 0;
+
+    setAction(A_KEEN_STAND);
+}
 
 
 void CPlayerLevel::processMovingHorizontal()

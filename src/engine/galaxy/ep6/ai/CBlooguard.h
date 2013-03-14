@@ -32,6 +32,7 @@ private:
 	int mHealth;
 	int mTimer;    
 	bool mGoodClubChance;
+	bool mStubPlayer;
 };
 
 };

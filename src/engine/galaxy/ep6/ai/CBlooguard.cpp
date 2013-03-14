@@ -22,7 +22,8 @@ CBlooguard::CBlooguard(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uin
 CStunnable(pmap, foeID, x, y),
 mHealth(3),
 mTimer(0),
-mGoodClubChance(false)
+mGoodClubChance(false),
+mStubPlayer(false)
 {
     mActionMap[A_BLOOGUARD_WALK] = (void (CStunnable::*)()) &CBlooguard::processWalking;
     mActionMap[A_BLOOGUARD_CLUBBING] = (void (CStunnable::*)()) &CBlooguard::processClubbing;
@@ -63,7 +64,8 @@ void CBlooguard::processClubbing()
 {
     if( getActionStatus(A_BLOOGUARD_WALK) )
     {
-	// TODO: At this point Keen must get stunned!
+	// At this point Keen must get stunned!
+	mStubPlayer = true;
 	setAction(A_BLOOGUARD_WALK);
     }
 }
@@ -84,7 +86,13 @@ bool CBlooguard::isNearby(CSpriteObject& theObject)
 		const int blooguardX = getXMidPos();
 		const int blooguardY = getYMidPos();
 		
-		// TODO: Code for setting player stunned here!
+		// Code for setting player stunned here!
+		if(mStubPlayer)
+		{
+		    mStubPlayer = false;
+		    player->stun();
+		    return true;
+		}
 		
 		mGoodClubChance = false;
 		
