@@ -25,8 +25,10 @@ public:
 
 	void process();
 
+	bool isNearby(CSpriteObject &theObject);
+	
 	/**
-	 * What happens if the slug gets touched by another object
+	 * What happens if it gets touched by another object
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
 

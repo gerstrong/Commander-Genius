@@ -16,6 +16,7 @@
 #include "ai/CSpecialItem.h"
 #include "ai/CBabobba.h"
 #include "ai/CBip.h"
+#include "ai/CBobba.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -81,6 +82,15 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	if( foe == 0x44 )
 	{
 		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
+	}
+	
+	// Neuronal-stunner which appears if you are low on bullets
+	if( foe == 0x45 )
+	{
+	  if(m_Inventory.Item.m_bullets < 5)
+	  {
+		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131);
+	  }
 	}	
 	
 	// If a foe was found, just return.
@@ -168,6 +178,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x28:
 			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1EC8);
 			break;
+			
+	case 0x2B: if( difficulty < HARD ) break;
+	case 0x2A: if( difficulty < NORMAL ) break;   
+		// This is a Bobba
+		p_newfoe = new galaxy::CBobba(&Map, foe, x, y);
+		break;
+			
 
 	
 	case 0x4B: if( difficulty < HARD ) break;
