@@ -1,4 +1,4 @@
-#include "CBabobba.h"
+﻿#include "CBabobba.h"
 #include <engine/galaxy/common/ai/CPlayerBase.h>
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
 #include <misc.h>
@@ -78,12 +78,12 @@ void CBabobba::processSitting()
     mTimer++;
 
     if(mTimer < SIT_TIME)
-	return;
+        return;
     
     mTimer = 0;
     
     yinertia = MAX_JUMP_INERTIA;
-    
+
     setAction(A_BABOBBA_JUMP);
 }
 

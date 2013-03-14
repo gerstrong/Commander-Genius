@@ -42,7 +42,7 @@ public:
 		if(m_pSingleton)
 		{
 			delete (m_pSingleton);
-			m_pSingleton = NULL;
+            m_pSingleton = nullptr;
 		}
 	}
 
@@ -51,6 +51,6 @@ public:
 };
 
 template <class T>
-T* CSingleton<T>::m_pSingleton = NULL;
+T* CSingleton<T>::m_pSingleton = nullptr;
 
 #endif /* CSINGLETON_H_ */
