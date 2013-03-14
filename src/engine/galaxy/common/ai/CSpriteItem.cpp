@@ -60,6 +60,10 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 		{
 		  epOff = -5;
 		}
+		else if(ep == 6)
+		{
+		  epOff = -1;
+		}
 		  
 		int relBase = m_basesprite+epOff;		
 
