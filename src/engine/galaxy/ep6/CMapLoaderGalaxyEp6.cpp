@@ -17,6 +17,7 @@
 #include "ai/CBabobba.h"
 #include "ai/CBip.h"
 #include "ai/CBobba.h"
+#include "ai/CCeilick.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -205,6 +206,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x4F: 
 		// Blorb
 		p_newfoe = new galaxy::CBlorb(&Map, foe, x, y);
+		break;
+
+	case 0x54: if( difficulty < HARD ) break;
+	case 0x53: if( difficulty < NORMAL ) break;	// not sure here    
+	case 0x52: 
+		// Ceilick
+		p_newfoe = new galaxy::CCeilick(&Map, foe, x, y);
 		break;
 		
 	
