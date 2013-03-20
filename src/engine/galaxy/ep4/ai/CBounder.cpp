@@ -166,9 +166,6 @@ void CBounder::movePlatLeft(const int amnt)
 		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->pSupportedbyobject)
 			mpInteractPlayer->moveLeft(amnt);
 	}
-
-	// Now move the platform itself.
-	//moveLeft(amnt);
 }
 
 void CBounder::movePlatRight(const int amnt)
@@ -179,9 +176,6 @@ void CBounder::movePlatRight(const int amnt)
 		if(!mpInteractPlayer->m_jumpdownfromobject && mpInteractPlayer->pSupportedbyobject)
 			mpInteractPlayer->moveRight(amnt);
 	}
-
-	// Now move the platform itself.
-	//moveRight(amnt);
 }
 
 void CBounder::movePlayerUp(const int amnt)
@@ -206,8 +200,6 @@ void CBounder::movePlayerDown(const int amnt)
 			mpInteractPlayer->moveDown(amnt);
 		}
 	}
-
-
 }
 
 
@@ -224,7 +216,6 @@ void CBounder::moveRight(const int amnt, const bool force)
 {
 	CSpriteObject::moveRight(amnt, force);
 	movePlatRight(amnt);
-
 }
 
 void CBounder::moveUp(const int amnt)
@@ -238,8 +229,6 @@ void CBounder::moveDown(const int amnt)
 	CSpriteObject::moveDown(amnt);
 	movePlayerDown(amnt);
 }
-
-
 
 
 
