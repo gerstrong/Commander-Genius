@@ -19,6 +19,7 @@
 #include "ai/CBobba.h"
 #include "ai/CCeilick.h"
 #include "ai/CGik.h"
+#include "ai/CNospike.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -185,6 +186,12 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x2A: if( difficulty < NORMAL ) break;   
 		// This is a Bobba
 		p_newfoe = new galaxy::CBobba(&Map, foe, x, y);
+		break;
+
+	case 0x31: if( difficulty < HARD ) break;
+	case 0x30: if( difficulty < NORMAL ) break;
+		// This is a Nospike
+		p_newfoe = new galaxy::CNospike(&Map, foe, x, y);
 		break;
 			
 

@@ -7,7 +7,6 @@
 
 
 #include "CSparky.h"
-#include "engine/galaxy/common/ai/CPlayerBase.h"
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
 #include "misc.h"
 
