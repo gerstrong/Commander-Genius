@@ -27,7 +27,7 @@ public:
 	void process();
 
 	/**
-	 * What happens if the slug gets touched by another object
+	 * What happens if the nospike gets touched by another object
 	 */
 	bool isNearby(CSpriteObject &theObject);
 	

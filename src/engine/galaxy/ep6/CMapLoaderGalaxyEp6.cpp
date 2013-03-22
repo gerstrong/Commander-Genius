@@ -20,6 +20,7 @@
 #include "ai/CCeilick.h"
 #include "ai/CGik.h"
 #include "ai/CNospike.h"
+#include "ai/COrbatrix.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -199,6 +200,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x33: if (difficulty < NORMAL) break;
 	case 0x32:
 		p_newfoe = new galaxy::CGik( &Map, foe, x, y); 
+		break;
+
+
+	case 0x48: if (difficulty < HARD) break;
+	case 0x47: if (difficulty < NORMAL) break;
+	case 0x46:
+		p_newfoe = new galaxy::COrbatrix( &Map, foe, x, y); 
 		break;
 
 
