@@ -29,6 +29,7 @@ A_RED_SHOOT = 3
 };
 
 const int TIME_UNTIL_SHOOT = 80;
+const int TIME_UNTIL_LOOK = 200;
 
 const int TIME_SHOOTING = 200;
 
@@ -40,6 +41,7 @@ const int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
 CRoboRed::CRoboRed(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0),
+mLookTimer(0),
 swapYDir(false),
 mKeenNearby(false)
 {
@@ -123,6 +125,12 @@ bool CRoboRed::isNearby(CSpriteObject &theObject)
 {
 	if( dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
+	    mLookTimer++;
+	    if(mLookTimer < TIME_UNTIL_LOOK)
+		return true;
+	
+	    mLookTimer = 0;	    
+	    
 	  mKeenNearby = false;
 		  
 	  const int objX = theObject.getXMidPos();

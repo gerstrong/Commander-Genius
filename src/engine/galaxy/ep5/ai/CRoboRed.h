@@ -41,6 +41,7 @@ public:
 	
 private:
 	int mTimer;
+	int mLookTimer;
 	bool swapYDir;
 	bool mKeenNearby;
 };
