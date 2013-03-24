@@ -3,33 +3,6 @@
 #include <sdl/CVideoDriver.h>
 #include <misc.h>
 
-/*
- 
-$31BEW  #Ceilick 'asleep' 0
-$31DCW  #Ceilicking 1
-$31FAW  #Ceilicking 2
-$3218W  #Ceilicking 3
-$3236W  #Ceilicking 4
-$3254W  #Ceilicking 5
-$3272W  #Ceilicking 6
-$3290W  #Ceilicking 7 
-$32AEW  #Ceilicking 8
-$32CCW  #Ceilicking 9
-$32EAW  #Ceilicking 10
-$3308W  #Ceilicking 11
-$3326W  #Ceilicking 12 
-$3344W  #Ceilicking 13 
-$3362W  #Ceilicking 14
-$3380W  #Ceilicking 15
-$339EW  #Ceilicking 16
-$33BCW  #Ceilicking 17
-$33DAW  #Ceilicking 18
-$33F8W  #Ceilicking 19
-$3416W  #Ceilicking 20
-$3434W  #Ceilick stunned 21
- 
- */
-
 namespace galaxy
 {
   

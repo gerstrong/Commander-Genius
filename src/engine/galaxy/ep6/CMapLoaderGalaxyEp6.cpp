@@ -21,6 +21,7 @@
 #include "ai/CGik.h"
 #include "ai/CNospike.h"
 #include "ai/COrbatrix.h"
+#include "ai/CFleex.h"
 
 // Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
@@ -144,7 +145,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x0D:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, true, x, y);	break;
 	case 0x0E:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;
 
-	 
+	
+	case 0x13: if( difficulty < NORMAL ) break;	// not sure here    
+	case 0x12: 
+		// Fleex
+		p_newfoe = new galaxy::CFleex(&Map, foe, x, y);
+		break;	
+	
+	
 	case 0x1B: 
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1DD8 );
 			break;
