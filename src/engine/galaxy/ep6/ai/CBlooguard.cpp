@@ -67,6 +67,7 @@ void CBlooguard::processClubbing()
 	// At this point Keen must get stunned!
 	mStubPlayer = true;
 	setAction(A_BLOOGUARD_WALK);
+	playSound(SOUND_BLOOGGUARD_STUB);	
     }
 }
 
@@ -90,7 +91,11 @@ bool CBlooguard::isNearby(CSpriteObject& theObject)
 		if(mStubPlayer)
 		{
 		    mStubPlayer = false;
-		    player->stun();
+		    if(player->stun())
+		    {
+		      player->m_camera.m_relcam.y = (8<<CSF);
+		    }
+		    
 		    return true;
 		}
 		

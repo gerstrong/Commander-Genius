@@ -89,12 +89,13 @@ void CBipShip::processHit()
 {    
     if(blockedd)
     {
-	// TODO: If blooglet carried a gem it should fall that case it must jump out! That is a sprite item which can fall on the floor.
+	// If blooglet carried a gem it should fall that case it must jump out! That is a sprite item which can fall on the floor.
 	const int newX = getXMidPos();
 	const int newY = getYUpPos();
 	auto *bip = new CBip(mp_Map, 0x6C, newX, newY);
 	g_pBehaviorEngine->m_EventList.spawnObj( bip );
 	setAction(A_BIPSHIP_CRASH);
+	playSound(SOUND_BIP_SHIP_CRASH);	
     }
 }
 
@@ -131,6 +132,7 @@ void CBipShip::getTouchedBy(CSpriteObject& theObject)
 		setAction(A_BIPSHIP_HIT);
 		dead = true;
 		theObject.dead = true;
+		playSound(SOUND_BIP_SHIP_LAND);		
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

@@ -33,10 +33,15 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	calcBoundingBoxes();
 	playSound( SOUND_KEEN_FIRE );
 	
+	/*static int slot = 60;	
+	
 	// For testing sounds.
-	/*g_pSound->playStereosoundSlot(slot, PLAY_NOW, 0);
-	printf("Sound %d played!\n", slot-64);
-	slot++;*/
+	g_pSound->playStereosoundSlot(slot, PLAY_NOW, 0);
+	printf("Sound %d played!\n", slot-60);
+	slot++;
+	
+	if(slot == 120)
+	  slot = 60;*/
 }
 
 void CBullet::process()

@@ -23,11 +23,11 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-		// TODO: Sound play
-		//g_pSound->playSound(SOUND_GOT_SPECIAL_ITEM, PLAY_PAUSEALL);
+		// Sound play
+		g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);
 
 
-		// TODO: Show message(s)
+		// Show message(s)
 		/*std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 
 		std::unique_ptr<EventSendBitmapDialogMsg> msg1(new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT));

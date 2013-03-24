@@ -208,8 +208,8 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[6][SOUND_KEEN_JUMP] = 2;
     sndSlotMapGalaxy[6][SOUND_KEEN_LAND] = 3;
     sndSlotMapGalaxy[6][SOUND_KEEN_FIRE] = 4;
-    //sndSlotMapGalaxy[6][?] = 5;
-    // sndSlotMapGalaxy[4][?] = 6; // This sounds like alternative breathe under water. not sure
+    sndSlotMapGalaxy[6][SOUND_JUMPED_GEM] = 5;
+    //sndSlotMapGalaxy[6][?] = 6;     
     sndSlotMapGalaxy[6][SOUND_KEEN_POGO] = 7;
     sndSlotMapGalaxy[6][SOUND_GET_BONUS] = 8;
     sndSlotMapGalaxy[6][SOUND_GET_AMMO] = 9;
@@ -225,18 +225,18 @@ void CAudioGalaxy::setupAudioMap()
     sndSlotMapGalaxy[6][SOUND_GET_GEM] = 19;
     sndSlotMapGalaxy[6][SOUND_KEEN_FALL] = 20;
     sndSlotMapGalaxy[6][SOUND_GUN_CLICK] = 21;
-    //sndSlotMapGalaxy[6][?] = 22;
+    sndSlotMapGalaxy[6][SOUND_SQUISH] = 22;
     sndSlotMapGalaxy[6][SOUND_KEEN_DIE] = 23;
-    //sndSlotMapGalaxy[6][?] = 24;
+    // sndSlotMapGalaxy[6][?] = 24;
     sndSlotMapGalaxy[6][SOUND_SHOT_HIT] = 25;
     //sndSlotMapGalaxy[6][?] = 26;
     //sndSlotMapGalaxy[6][?] = 27;
     //sndSlotMapGalaxy[6][?] = 28;
-    //sndSlotMapGalaxy[6][?] = 29;
+    sndSlotMapGalaxy[6][SOUND_AUTOGUN] = 29;
     //sndSlotMapGalaxy[6][?] = 30;
-    //sndSlotMapGalaxy[6][?] = 31;
+    //sndSlotMapGalaxy[6][BIPSHIP_SHOOT] = 31;
     //sndSlotMapGalaxy[6][?] = 32;
-    //sndSlotMapGalaxy[6][?] = 33;
+    sndSlotMapGalaxy[6][SOUND_SATELITE_MOUNT] = 33;
     sndSlotMapGalaxy[6][SOUND_STATUS_SLIDE_IN] = 34;
     sndSlotMapGalaxy[6][SOUND_STATUS_SLIDE_OUT] = 35;
     //sndSlotMapGalaxy[6][?] = 36;
@@ -244,17 +244,18 @@ void CAudioGalaxy::setupAudioMap()
     //sndSlotMapGalaxy[6][?] = 38;
     //sndSlotMapGalaxy[6][?] = 39;
     //sndSlotMapGalaxy[6][?] = 40;
-    //sndSlotMapGalaxy[6][?] = 41;
+    sndSlotMapGalaxy[6][SOUND_TELEPORT] = 41;
     //sndSlotMapGalaxy[6][?] = 42;
     sndSlotMapGalaxy[6][SOUND_FLAG_APPEAR] = 43;
     sndSlotMapGalaxy[6][SOUND_FLAG_LAND] = 44;
-    //sndSlotMapGalaxy[6][?] = 45;
+    sndSlotMapGalaxy[6][SOUND_GET_SPECIAL_ITEM] = 45;
     //sndSlotMapGalaxy[6][?] = 46;
     sndSlotMapGalaxy[6][SOUND_PLAYER_PADDLE] = 47;
     sndSlotMapGalaxy[6][SOUND_COMPUTER_PADDLE] = 48;
     sndSlotMapGalaxy[6][SOUND_HIT_SIDEWALL] = 49;
     sndSlotMapGalaxy[6][SOUND_COMPUTER_POINT] = 50;
     sndSlotMapGalaxy[6][SOUND_PLAYER_POINT] = 51;
+    sndSlotMapGalaxy[6][SOUND_BLOOGGUARD_STUB] = 58;
 
 }
 

@@ -924,10 +924,10 @@ void CPlayerLevel::processCliffClimbingOntoFloor()
 	}
 }
 
-void CPlayerLevel::stun()
+bool CPlayerLevel::stun()
 {
     if(!blockedd || getActionStatus(A_KEEN_SLIDE))
-	return;
+	return false;
 
     setAction(A_KEEN_STUNNED);
 
@@ -935,6 +935,7 @@ void CPlayerLevel::stun()
     m_Action.setActionFormat(0x1868);
 
     mStunTimer = 0;
+    return true;
 }
 
 

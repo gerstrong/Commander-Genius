@@ -157,8 +157,9 @@ public:
 
 	void processCliffClimbingOntoFloor();
 
-	// Make Keen get stunned. This one is very special, as it doesn't belong to the current actions of Keen and only happen in Keen 6
-	void stun();
+	// Make Keen get stunned. This one is very special, 
+	// as it doesn't belong to the current actions of Keen and only happen in Keen 6
+	bool stun();
 
 	void processStunned();
 

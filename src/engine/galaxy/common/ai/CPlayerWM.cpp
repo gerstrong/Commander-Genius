@@ -446,6 +446,7 @@ void CPlayerWM::verifyTeleportation()
 		   m_teleportanibasetile = newTile;
 
 		   mp_Map->setTile(x>>CSF, y>>CSF, newTile, true);
+		   playSound(SOUND_TELEPORT);
 
 		   solid = false;
 		}
@@ -710,7 +711,7 @@ void CPlayerWM::processEnteringTeleporter()
 		// make him invisible
 		solid = false;
 		dontdraw = true;
-		mProcessPtr = &CPlayerWM::processWarpInTeleporter;
+		mProcessPtr = &CPlayerWM::processWarpInTeleporter;		
 		performWalkingAnimation(false);
 	}
 	else
@@ -746,6 +747,7 @@ void CPlayerWM::processWarpInTeleporter()
 	m_camera.setPosition(new_pos);
 
 	mProcessPtr = &CPlayerWM::processLeavingTeleporter;
+	playSound(SOUND_TELEPORT);
 
 	target.y += (1<<CSF);
 	dontdraw = false;

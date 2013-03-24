@@ -39,13 +39,8 @@ void CBip::processStanding()
   
   if(getActionStatus(A_BIP_WALK))
       setAction(A_BIP_WALK);
-  
-  
-  /*if(mTimer < STAND_TIME)
-    return;  */
     
   mTimer = 0;
-  //setAction(A_BIP_WALK);
 }
 
 
@@ -86,6 +81,7 @@ void CBip::getTouchedBy(CSpriteObject& theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
+		playSound(SOUND_SQUISH);
 		setAction(A_BIP_SQUISHED);
 		dead = true;
 	}
