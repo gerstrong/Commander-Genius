@@ -32,6 +32,7 @@
 #include "engine/galaxy/common/ai/CFlag.h"
 #include "engine/galaxy/common/ai/CSpriteItem.h"
 #include <engine/galaxy/common/ai/platform/CPlatformSit.h>
+#include <engine/galaxy/common/ai/Autogun.h>
 
 namespace galaxy
 {
@@ -184,7 +185,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x26:
 			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1E6E);	break;
 	case 0x27:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER,0x1E6E);	break;
+			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER, 0x1E6E);	break;
 			
 			
 	case 0x28:
@@ -210,6 +211,22 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CGik( &Map, foe, x, y); 
 		break;
 
+	case 0x35: if ( difficulty < NORMAL ) break;
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 130);
+		break;
+
+	case 0x36: if ( difficulty < NORMAL ) break;
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 130);
+		break;
+
+
+	case 0x37: if ( difficulty < NORMAL ) break;
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 130);
+		break;
+
+	case 0x38: if ( difficulty < NORMAL ) break;
+		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 130);
+		break;
 
 	case 0x48: if (difficulty < HARD) break;
 	case 0x47: if (difficulty < NORMAL) break;

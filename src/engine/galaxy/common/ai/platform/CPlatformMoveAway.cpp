@@ -38,7 +38,7 @@ m_Origin(m_Pos)
 	yDirection = vertdir;
 	solid = false;
 	m_ActionBaseOffset = actionOffset;
-	setActionForce(A_PLATFORM_DROP);
+	setActionForce(A_PLATFORM_MOVE);
 	mpActionProc = &CPlatformMoveAway::processStay;
 	setActionSprite();
 	calcBoundingBoxes();
@@ -136,6 +136,11 @@ void CPlatformMoveAway::process()
 	(this->*mpActionProc)();
 
 	CPlatform::process();
+	
+	if(getActionStatus(A_PLATFORM_DROP))
+	{
+	    setAction(A_PLATFORM_MOVE);
+	}
 }
 
 }

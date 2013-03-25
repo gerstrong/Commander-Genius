@@ -29,37 +29,30 @@ mTimer(0)
   
   mBaseSprite = basesprite;
   
-  if(xDirection == LEFT && yDirection == CENTER)
-  {
-      if(ep == 4)
+  if(ep == 4)
+  {      
+      if(xDirection == LEFT && yDirection == CENTER)
       {
-	m_Pos.x += (1<<CSF);    
-	m_Pos.y += (7<<STC);
+	  m_Pos.x += (1<<CSF);    
+	  m_Pos.y += (7<<STC);
       }
-  }
-  else if(xDirection == CENTER && yDirection == UP)
-  {
-      if(ep == 4)
+      else if(xDirection == CENTER && yDirection == UP)
       {
-	m_Pos.y -= (1<<CSF);    
-	m_Pos.x += (7<<STC);
+	  m_Pos.y -= (1<<CSF);    
+	  m_Pos.x += (7<<STC);
       }
-  }
-  else if(xDirection == RIGHT && yDirection == CENTER)
-  {
-      if(ep == 4)
+      else if(xDirection == RIGHT && yDirection == CENTER)
       {
-	m_Pos.x -= (1<<CSF);
-	m_Pos.y += (7<<STC);
+	  m_Pos.x -= (1<<CSF);
+	  m_Pos.y += (7<<STC);
       }
-  }
-  else if(xDirection == CENTER && yDirection == DOWN)
-  {
-      if(ep == 4)
-	m_Pos.x += (7<<STC);
+      else if(xDirection == CENTER && yDirection == DOWN)
+      {
+	  m_Pos.x += (7<<STC);
+      }
   }
   
-  if(ep == 5)
+  if(ep > 4)
   {
     mNumAnimSprites = 4;
   }
@@ -81,7 +74,7 @@ mTimer(0)
 void AutoShot::waiting()
 {
     const int ep = g_pBehaviorEngine->getEpisode();
-    if(ep == 5)
+    if(ep > 4)
     {
 	if(sprite < mBaseSprite + mNumAnimSprites + 1)
 	    sprite++;
@@ -111,11 +104,15 @@ void AutoShot::waiting()
   
   if(ep == 4)
   {
-    playSound(SOUND_DARTGUN_SHOOT);
+      playSound(SOUND_DARTGUN_SHOOT);
   }
-  else
+  else if(ep == 5)
   {
       playSound(SOUND_ROBORED_SHOOT); // Yeah, it is the same sound!
+  }
+  else // keen 6
+  {
+      playSound(SOUND_AUTOGUN);
   }  
   
   dontdraw = false;
@@ -139,7 +136,7 @@ void AutoShot::setWaitStatus()
 {        
     // wait! in keen 4 it has to return        
     processState = &AutoShot::waiting;
-    if(g_pBehaviorEngine->getEpisode() == 5)
+    if(g_pBehaviorEngine->getEpisode() > 4)
     {
 	sprite = mBaseSprite + mNumAnimSprites;
     }
