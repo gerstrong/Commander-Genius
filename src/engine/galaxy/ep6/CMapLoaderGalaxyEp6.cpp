@@ -262,27 +262,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		// Ceilick
 		p_newfoe = new galaxy::CCeilick(&Map, foe, x, y);
 		break;
-		
-	
-	/*
 			
-			
-	
-	// Var Plats
-	case 0x50: 
-	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B7C); break;
-	case 0x51: 
-	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1B7C); break;
-	case 0x52: 
-	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1B7C); break;
-	case 0x53:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER, 0x1B7C); break;
-
-	case 0x54:			
-			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C ); break;
-
-			break;
-*/
 	
 	case 0x57: if( difficulty < HARD ) break;
 	case 0x56: if( difficulty < NORMAL ) break;   
@@ -314,15 +294,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x6C: 
 		// This is a Bip (In normal level it is never loaded but from saved games it could be restored)
 		p_newfoe = new galaxy::CBip(&Map, foe, x, y);
-		break;
-		
-	/*case PLATFORM_VERT: case PLATFORM_VERT_ALT:
-		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y); break;
-	case PLATFORM_HORIZ_ALT:
-	case PLATFORM_HORIZ:
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, x, y); break;
-	case PLATFORM_DROP:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y); break;*/
+		break;		
 
 	// Not sure if after that there are more sprites to load		
 	// This special sprite is only loaded by saved game. Normal gamemaps do not have that flag
