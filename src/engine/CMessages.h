@@ -28,6 +28,7 @@ private:
 
 	bool extractEp4Strings(std::map<std::string, std::string>& StringMap);
 	bool extractEp5Strings(std::map<std::string, std::string>& StringMap);
+	bool extractEp6Strings(std::map<std::string, std::string>& StringMap);
 
 	unsigned char *mp_exe;
 	char m_episode;

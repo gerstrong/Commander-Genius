@@ -183,6 +183,47 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 	return false;
 }
 
+bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
+{
+	switch(m_version)
+	{
+		case 140:
+		{
+			// Level loading Texts
+			setDecodeOffset(0x1F110);
+			
+			StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL1_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL2_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL3_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL4_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL5_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL6_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL7_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL8_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL9_LOAD_TEXT" ) );
+			StringMap.insert( extractNextString( "LEVEL10_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL11_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL12_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL13_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL14_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL15_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL16_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
+			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
+
+			// Elder Janitor Text. Strangely it is the end of the level load text being to only
+			// in that data segment
+			StringMap.insert( extractNextString( "GOT_SANDWICH" ) );
+			StringMap.insert( extractNextString( "GOT_ROPE" ) );
+			StringMap.insert( extractNextString( "GOT_KEYCARD" ) );
+
+			return true;
+		} break;
+	}
+	return false;
+}
+
 bool CMessages::extractGlobalStrings()
 {
 	std::map<std::string, std::string> StringMap; // Structure which stores all the extracted string
@@ -298,6 +339,12 @@ bool CMessages::extractGlobalStrings()
 		case 5:
 		{
 			if(!extractEp5Strings(StringMap))
+				g_pLogFile->textOut(RED,"This version of the game is not supported!");
+		} break;
+
+		case 6:
+		{
+			if(!extractEp6Strings(StringMap))
 				g_pLogFile->textOut(RED,"This version of the game is not supported!");
 		} break;
 
