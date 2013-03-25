@@ -19,7 +19,6 @@ class CStatusScreenGalaxy
 {
 public:
 	CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName);
-	virtual ~CStatusScreenGalaxy() {}
 
 	// This will generate the status screen. It must be derived by other classes, depending on the Episode
 	virtual void GenerateStatus() = 0;
