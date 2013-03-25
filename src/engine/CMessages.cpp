@@ -212,11 +212,11 @@ bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
 			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
 
-			// Elder Janitor Text. Strangely it is the end of the level load text being to only
-			// in that data segment
-			StringMap.insert( extractNextString( "GOT_SANDWICH" ) );
-			StringMap.insert( extractNextString( "GOT_ROPE" ) );
-			StringMap.insert( extractNextString( "GOT_KEYCARD" ) );
+			// Got Item Text.
+			setDecodeOffset(0x325B6);			
+			StringMap.insert( extractNextString( "KEEN_GOT_SANDWICH" ) );
+			StringMap.insert( extractNextString( "KEEN_GOT_GRAPPLING_HOOK" ) );
+			StringMap.insert( extractNextString( "KEEN_GOT_SHIPCARD" ) );
 
 			return true;
 		} break;
