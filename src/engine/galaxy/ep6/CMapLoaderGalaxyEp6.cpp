@@ -22,6 +22,7 @@
 #include "ai/CNospike.h"
 #include "ai/COrbatrix.h"
 #include "ai/CFleex.h"
+#include "ai/CRope.h"
 
 #include "engine/galaxy/common/ai/CPlayerWM.h"
 #include "engine/galaxy/common/ai/CPlayerLevel.h"
@@ -142,8 +143,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x0B:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;
 	case 0x0C:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x2120, true, x, y);	break;
 	case 0x0D:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, true, x, y);	break;
-	case 0x0E:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;
-
+	case 0x0E:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;		
 	
 	case 0x13: if( difficulty < NORMAL ) break;	// not sure here    
 	case 0x12: 
@@ -299,7 +299,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case CFlag::FOE_ID:
 		p_newfoe = new galaxy::CFlag(&Map, loc, loc, false);
 		break;
-	
+
+	case CRope::FOE_ID:
+		p_newfoe = new galaxy::CRope(&Map, foe, x, y); break;
 
 	default:
 		break;

@@ -9,6 +9,7 @@
 
 #include "CPlayerWM.h"
 #include "engine/galaxy/common/ai/CFlag.h"
+#include <engine/galaxy/ep6/ai/CRope.h>
 #include "common/CBehaviorEngine.h"
 #include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
@@ -38,7 +39,8 @@ m_animation_time(1),
 m_animation_ticker(0),
 m_cantswim(false),
 waveTimer(0),
-swimming(false)
+swimming(false),
+mUsedGrapplingHook(false)
 {
 	m_ActionBaseOffset = actionoffset;
 
@@ -48,6 +50,7 @@ swimming(false)
 	walkBaseFrame = sprite;
 	wavingBaseFrame = walkBaseFrame + 22;
 	swimBaseFrame = walkBaseFrame + 24;
+	climbBaseFrame = walkBaseFrame + 37;
 	m_basesprite = walkBaseFrame;
 
 	performCollisions();
@@ -245,14 +248,56 @@ void CPlayerWM::processMoving()
 	else if(m_basesprite == walkBaseFrame)
 		movespeed = 50;
 	else
-		movespeed = 0;
-
+		movespeed = 0;	
+	
 	bool walking=false;
 
 	bool bleft, bright, bup, bdown;
 
 	// This will trigger between swim and walkmode
 	checkforSwimming(bleft, bright, bup, bdown);
+	
+	// This will make Keen climb in 
+	direction_t climbDir;
+	if( checkforClimbing(climbDir) )
+	{	    	    
+	    // Check if Keen has a hook, but 
+	    if(!mUsedGrapplingHook)
+	    {
+		if(m_Inventory.Item.m_special.ep6.hook > 0)
+		{
+		    m_Inventory.Item.m_special.ep6.hook--;
+		    mUsedGrapplingHook = true;
+		
+		    int y = getYMidPos();
+		    int x = getXMidPos();
+		    
+		    x = x>>CSF; y = y>>CSF;
+		    x = x<<CSF; y = (y-1)<<CSF;
+		
+		    g_pBehaviorEngine->m_EventList.spawnObj(new CRope(mp_Map, 0, x, y));
+		}
+		else
+		{
+		    // Tell the player he cannot climb yet
+		    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		    EventContainer.add( new EventSendBitmapDialogMsg(
+			g_pGfxEngine->getBitmap(29), "Too tall cliff!", RIGHT) );
+		    
+		    moveYDir(-(climbDir<<CSF)/2);
+		}
+	    }
+	    
+	    if(mUsedGrapplingHook)
+	    {
+		xDirection = CENTER;
+		yDirection = climbDir;	    
+		mProcessPtr = &CPlayerWM::processClimbing;
+		m_basesprite = climbBaseFrame;
+		waveTimer = 0;
+		return;
+	    }	    
+	}
 
 	// In Episode 5 and 6 there are teleporters. Verify those teleporters and elevators
 	if(g_pBehaviorEngine->getEpisode() >= 5)
@@ -358,6 +403,32 @@ void CPlayerWM::processMoving()
 		}
 	}
 }
+
+
+
+void CPlayerWM::processClimbing()
+{
+    moveYDir(yDirection*30);
+    
+    sprite = m_basesprite + m_animation%2;
+
+    direction_t climbDir;
+    
+    if( checkforClimbing(climbDir) )
+    {	    	    
+	if(yDirection != climbDir)
+	{	    
+	    mProcessPtr = &CPlayerWM::processMoving;
+	    m_basesprite = walkBaseFrame;
+	    waveTimer = 0;
+	    moveYDir(-climbDir<<CSF);
+	    return;
+	}
+    }
+    
+}
+
+
 
 const int RIDE_SPEED = 32;
 
@@ -942,6 +1013,29 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 		bleft = bright = bup = bdown = false;
 	}
 }
+
+bool CPlayerWM::checkforClimbing(direction_t &climbDir)
+{
+	const int y = getYMidPos();
+	const int x = getXMidPos();
+	
+	const int info = mp_Map->getPlaneDataAt(2, x, y);
+
+	// from top
+	if(info == 0x0F)
+	{
+		climbDir = UP;
+		return true;
+	}
+	else if(info == 0x10)
+	{
+		climbDir = DOWN;
+		return true;
+	}
+	
+	return false;
+}
+
 
 /**
  * This performs the animation when player is walking on the map

@@ -1,4 +1,5 @@
 #include "CRope.h"
+#include <engine/galaxy/common/ai/CPlayerBase.h>
 
 /*
 $1B9EW  #Keen throw rope
@@ -15,20 +16,21 @@ namespace galaxy
     
 enum ROPE_ACTION
 {
-A_GIK_ACTIVE = 0,
-A_GIK_THROWN = 1,
-A_GIK_INVISIBLE = 2
+A_ROPE_ACTIVE = 0,
+A_ROPE_THROWN = 1
 };
+
+const int THROW_TIME = 10;
 
 
 CRope::CRope(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y)
+CGalaxyActionSpriteObject(pmap, foeID, x, y),
+mTimer(0)
 {
-    mActionMap[A_GIK_ACTIVE] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processActive;
-    mActionMap[A_GIK_THROWN] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processThrown;
-    mActionMap[A_GIK_INVISIBLE] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processHidden;
+    mActionMap[A_ROPE_ACTIVE] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processActive;
+    mActionMap[A_ROPE_THROWN] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processThrown;
 
-    setupGalaxyObjectOnMap(0x1C16, A_GIK_ACTIVE);    
+    setupGalaxyObjectOnMap(0x1C16, A_ROPE_THROWN);    
 }
 
 
@@ -39,19 +41,20 @@ void CRope::processActive()
 
 void CRope::processThrown()
 {
-    
+  mTimer++;
+  
+  if(mTimer < THROW_TIME)
+    return;  
+  
+  mTimer = 0;
+  
+  setAction(A_ROPE_ACTIVE);
 }
-
-void CRope::processHidden()
-{
-    
-}
-
-
 
 void CRope::getTouchedBy(CSpriteObject& theObject)
 {
-
+    if(dead || theObject.dead)
+        return;
 }
 
 

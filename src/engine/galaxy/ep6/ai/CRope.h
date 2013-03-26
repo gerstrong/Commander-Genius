@@ -9,15 +9,19 @@ namespace galaxy
 class CRope : public CGalaxyActionSpriteObject
 {
 public:
+    static const unsigned int FOE_ID = 201;
+    
     CRope(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
 
     void processActive();
     void processThrown();
-    void processHidden();
 
     void getTouchedBy(CSpriteObject &theObject);
 
     void process();
+    
+private:
+    int mTimer;
 };
 
 };

@@ -27,6 +27,7 @@ public:
 
 	void process();
 	void processMoving();
+	void processClimbing();
 	void processWaving();
 
 	// Episode 4 only. When Keen is riding on the foot
@@ -46,6 +47,9 @@ public:
 
 	void startLevel(Uint16 object);
 	void finishLevel(const int object);
+	
+	// Checks if Keen in CK6 can climb
+	bool checkforClimbing(direction_t &climbDir);
 	void checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdown);
 
 	void performWalkingAnimation(bool walking);
@@ -55,6 +59,7 @@ private:
 	Uint16 m_basesprite;
 	Uint16 m_teleportanibasetile;
 	Uint16 walkBaseFrame;
+	Uint16 climbBaseFrame;
 	Uint16 wavingBaseFrame;
 	Uint16 swimBaseFrame;
 	direction_t m_looking_dir;
@@ -68,6 +73,7 @@ private:
 	int elevator_frames;
 	int waveTimer;
 	bool swimming;
+	bool mUsedGrapplingHook;
 
 	std::vector<bool> mLevelDone;
 
