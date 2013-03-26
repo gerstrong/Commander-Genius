@@ -173,8 +173,6 @@ protected:
 	stCheat& m_Cheatmode;
 
 
-protected:
-
 	void (CPlayerBase::*mp_processState)();
 	unsigned char m_walktimer;
 	std::map< size_t, void (CPlayerBase::*)() > mActionMap;

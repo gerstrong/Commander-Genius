@@ -1,4 +1,5 @@
 #include "CGrabbiter.h"
+#include <engine/galaxy/common/ai/CPlayerBase.h>
 
 namespace galaxy
 {
@@ -18,6 +19,7 @@ CStunnable(pmap, foeID, x, y)
 	mActionMap[A_GRABBITER_NAPPING] = (void (CStunnable::*)()) &CGrabbiter::processNapping;
 	
 	setupGalaxyObjectOnMap(0x1A90, A_GRABBITER_HUNGRY);
+	honorPriority = false;
 }
 
 
@@ -35,7 +37,37 @@ void CGrabbiter::processNapping()
 
 void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 {
+    if(getActionNumber(A_GRABBITER_NAPPING))
+    {
+	return;
+    }
     
+    
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    {
+	const int diffX = getXMidPos()-player->getXMidPos();
+        player->moveXDir(-diffX/4);
+
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	
+	if(player->m_Inventory.Item.m_special.ep6.sandwich > 0)
+	{
+	   player->m_Inventory.Item.m_special.ep6.sandwich--; 
+	   
+	    // Show grabbiter message
+	    EventContainer.add( new EventSendDialog("Yummy!") );
+	    setAction(A_GRABBITER_NAPPING);
+	}
+	else
+	{	    
+	    // Sound play
+	    g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);	
+	    
+	    // Show grabbiter message
+	    EventContainer.add( new EventSendDialog("I'm hungry. You can't pass")  );
+	    
+	}
+    }    
 }
 
 

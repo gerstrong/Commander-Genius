@@ -23,11 +23,9 @@
 #include "ai/COrbatrix.h"
 #include "ai/CFleex.h"
 
-// Episode 6
 #include "engine/galaxy/common/ai/CPlayerWM.h"
 #include "engine/galaxy/common/ai/CPlayerLevel.h"
 
-// TODO: I'm note sure yet, if those are really common platforms
 #include "engine/galaxy/common/ai/platforms.h"
 #include "engine/galaxy/common/ai/CFlag.h"
 #include "engine/galaxy/common/ai/CSpriteItem.h"
