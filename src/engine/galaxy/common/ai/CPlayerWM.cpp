@@ -258,167 +258,168 @@ void CPlayerWM::processMoving()
     }
     
     
-	// Check if the player is swimming or walking and setup the proper speed
-	int movespeed;
-	if(m_basesprite == swimBaseFrame)
-		movespeed = 25;
-	else if(m_basesprite == walkBaseFrame)
-		movespeed = 50;
-	else
-		movespeed = 0;	
+    // Check if the player is swimming or walking and setup the proper speed
+    int movespeed;
+    if(m_basesprite == swimBaseFrame)
+	movespeed = 25;
+    else if(m_basesprite == walkBaseFrame)
+	movespeed = 50;
+    else
+	movespeed = 0;	
+    
+    bool walking=false;
+    
+    bool bleft, bright, bup, bdown;
+    
+    // This will trigger between swim and walkmode
+    checkforSwimming(bleft, bright, bup, bdown);
 	
-	bool walking=false;
-
-	bool bleft, bright, bup, bdown;
-
-	// This will trigger between swim and walkmode
-	checkforSwimming(bleft, bright, bup, bdown);
-	
-	// This will make Keen climb in 
-	direction_t climbDir;
-	if( checkforClimbing(climbDir) )
-	{	    	    
-	    // Check if Keen has a hook, but 
-	    if(!mUsedGrapplingHook)
+    // This will make Keen climb in 
+    direction_t climbDir;
+    if( checkforClimbing(climbDir) )
+    {	    	    
+	// Check if Keen has a hook, but 
+	if(!mUsedGrapplingHook)
+	{
+	    if(m_Inventory.Item.m_special.ep6.hook > 0)
 	    {
-		if(m_Inventory.Item.m_special.ep6.hook > 0)
-		{
-		    m_Inventory.Item.m_special.ep6.hook--;
-		    mUsedGrapplingHook = true;
+		m_Inventory.Item.m_special.ep6.hook--;
+		mUsedGrapplingHook = true;
 		
-		    int y = getYMidPos();
-		    int x = getXMidPos();
-		    
-		    x = x>>CSF; y = y>>CSF;
-		    x = x<<CSF; y = (y-1)<<CSF;
+		int x = getXMidPos();
+		int y = getYMidPos();		    
 		
-		    g_pBehaviorEngine->m_EventList.spawnObj(new CRope(mp_Map, 0, x, y));
-		}
-		else
-		{
-		    // Tell the player he cannot climb yet
-		    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-		    EventContainer.add( new EventSendBitmapDialogMsg(
-			g_pGfxEngine->getBitmap(29), "Too tall cliff!", RIGHT) );
-		    
-		    moveYDir(-(climbDir<<CSF)/2);
-		}
+		x = x>>CSF; y = y>>CSF;
+		x = x<<CSF; y = (y+climbDir)<<CSF;
+		
+		g_pBehaviorEngine->m_EventList.spawnObj(new CRope(mp_Map, 0, x, y));
+	    }
+	    else
+	    {
+		// Tell the player he cannot climb yet
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		EventContainer.add( new EventSendBitmapDialogMsg(
+		    g_pGfxEngine->getBitmap(29), "Too tall cliff!", RIGHT) );
+		
+		moveYDir(-(climbDir<<CSF)/2);
+	    }
+	}
+	    
+	if(mUsedGrapplingHook)
+	{
+	    xDirection = CENTER;
+	    yDirection = climbDir;
+	    solid = false;
+	    mProcessPtr = &CPlayerWM::processClimbing;
+	    m_basesprite = climbBaseFrame;
+	    waveTimer = 0;
+	    return;
+	}	    
+    }
+    
+    // In Episode 5 and 6 there are teleporters. Verify those teleporters and elevators
+    if(g_pBehaviorEngine->getEpisode() >= 5)
+	verifyTeleportation();
+    
+    // Normal walking
+    if(g_pInput->getHoldedCommand(IC_LEFT) && !bleft)
+    {
+	if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+	    yDirection = 0;
+	
+	moveLeft(movespeed);
+	walking = true;
+	xDirection = LEFT;
+	waveTimer = 0;
+    }
+    else if(g_pInput->getHoldedCommand(IC_RIGHT) && !bright)
+    {
+	if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+	    yDirection = 0;
+	
+	moveRight(movespeed);
+	walking = true;
+	xDirection = RIGHT;
+	waveTimer = 0;
+    }
+    
+    if(g_pInput->getHoldedCommand(IC_UP) && !bup)
+    {
+	if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
+	    xDirection = 0;
+	
+	moveUp(movespeed);
+	walking = true;
+	yDirection = UP;
+	waveTimer = 0;
+    }
+    else if(g_pInput->getHoldedCommand(IC_DOWN) && !bdown)
+    {
+	if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
+	    xDirection = 0;
+	
+	moveDown(movespeed);
+	walking = true;
+	yDirection = DOWN;
+	waveTimer = 0;
+    }
+    
+    // In case noclipping was triggered, make it solid, or remove it...
+    if(m_Cheatmode.noclipping)
+    {
+	solid = !solid;
+	m_Cheatmode.noclipping = false;
+    }
+    
+    // perform actions depending on if the jump button was pressed
+    if(g_pInput->getPressedCommand(IC_JUMP))
+    {
+	// Get the object
+	Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+	if(object) // if we found an object
+	{
+	    // start the level
+	    startLevel(object);
+	    g_pInput->flushCommands();
+	}
+    }
+    
+    // If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
+    if(m_basesprite == walkBaseFrame)
+    {
+	performWalkingAnimation(walking);
+	m_cantswim = false;
+	
+	waveTimer++;
+	if( waveTimer >= TIME_TO_WAVE)
+	{
+	    mProcessPtr = &CPlayerWM::processWaving;
+	    m_basesprite = wavingBaseFrame;
+	    waveTimer = 0;
+	    return;
+	}
+    }
+    else if(m_basesprite == swimBaseFrame)
+    {
+	if(m_Inventory.Item.m_special.ep4.swimsuit)
+	{
+	    performSwimmingAnimation();
+	}
+	else
+	{
+	    if( !m_cantswim )
+	    {
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		
+		g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
+		EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(105),
+								 g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
+								 
+								 m_cantswim = true;
 	    }
 	    
-	    if(mUsedGrapplingHook)
-	    {
-		xDirection = CENTER;
-		yDirection = climbDir;	    
-		mProcessPtr = &CPlayerWM::processClimbing;
-		m_basesprite = climbBaseFrame;
-		waveTimer = 0;
-		return;
-	    }	    
 	}
-
-	// In Episode 5 and 6 there are teleporters. Verify those teleporters and elevators
-	if(g_pBehaviorEngine->getEpisode() >= 5)
-		verifyTeleportation();
-
-	// Normal walking
-	if(g_pInput->getHoldedCommand(IC_LEFT) && !bleft)
-	{
-		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			yDirection = 0;
-
-		moveLeft(movespeed);
-		walking = true;
-		xDirection = LEFT;
-		waveTimer = 0;
-	}
-	else if(g_pInput->getHoldedCommand(IC_RIGHT) && !bright)
-	{
-		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-			yDirection = 0;
-
-		moveRight(movespeed);
-		walking = true;
-		xDirection = RIGHT;
-		waveTimer = 0;
-	}
-
-	if(g_pInput->getHoldedCommand(IC_UP) && !bup)
-	{
-		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-			xDirection = 0;
-
-		moveUp(movespeed);
-		walking = true;
-		yDirection = UP;
-		waveTimer = 0;
-	}
-	else if(g_pInput->getHoldedCommand(IC_DOWN) && !bdown)
-	{
-		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-			xDirection = 0;
-
-		moveDown(movespeed);
-		walking = true;
-		yDirection = DOWN;
-		waveTimer = 0;
-	}
-
-	// In case noclipping was triggered, make it solid, or remove it...
-	if(m_Cheatmode.noclipping)
-	{
-		solid = !solid;
-		m_Cheatmode.noclipping = false;
-	}
-
-	// perform actions depending on if the jump button was pressed
-	if(g_pInput->getPressedCommand(IC_JUMP))
-	{
-		// Get the object
-		Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
-		if(object) // if we found an object
-		{
-			// start the level
-			startLevel(object);
-			g_pInput->flushCommands();
-		}
-	}
-
-	// If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
-	if(m_basesprite == walkBaseFrame)
-	{
-		performWalkingAnimation(walking);
-		m_cantswim = false;
-
-		waveTimer++;
-		if( waveTimer >= TIME_TO_WAVE)
-		{
-		    mProcessPtr = &CPlayerWM::processWaving;
-		    m_basesprite = wavingBaseFrame;
-		    waveTimer = 0;
-		    return;
-		}
-	}
-	else if(m_basesprite == swimBaseFrame)
-	{
-		if(m_Inventory.Item.m_special.ep4.swimsuit)
-		{
-			performSwimmingAnimation();
-		}
-		else
-		{
-			if( !m_cantswim )
-			{
-				CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
-				g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
-				EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(105),
-						g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
-
-				m_cantswim = true;
-			}
-
-		}
-	}
+    }
 }
 
 
@@ -438,6 +439,7 @@ void CPlayerWM::processClimbing()
 	    mProcessPtr = &CPlayerWM::processMoving;
 	    m_basesprite = walkBaseFrame;
 	    waveTimer = 0;
+	    solid = true;
 	    moveYDir(-climbDir<<CSF);
 	    return;
 	}

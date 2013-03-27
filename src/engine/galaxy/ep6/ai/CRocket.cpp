@@ -73,7 +73,8 @@ void CRocket::processFlying()
 	    
 	    VectorD2<int> newPlayerPos = m_Pos;
 	    
-	    newPlayerPos.y = getYDownPos()+(1<<CSF);
+	    newPlayerPos.y = getYDownPos();
+	    newPlayerPos.x = getXRightPos();
 	    
 	    mpCarriedPlayer->moveToForce(newPlayerPos);
 	    mpCarriedPlayer->solid = true;
