@@ -54,6 +54,8 @@ public:
 
 	void performWalkingAnimation(bool walking);
 	void performSwimmingAnimation();
+	
+	void setMounted(const bool value);
 
 private:
 	Uint16 m_basesprite;
@@ -74,8 +76,9 @@ private:
 	int waveTimer;
 	bool swimming;
 	bool mUsedGrapplingHook;
+	bool mounted;
 
-	std::vector<bool> mLevelDone;
+	std::vector<bool> mLevelDone;	
 
 	void (CPlayerWM::*mProcessPtr)();
 };

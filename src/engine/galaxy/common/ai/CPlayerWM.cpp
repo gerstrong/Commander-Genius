@@ -40,7 +40,8 @@ m_animation_ticker(0),
 m_cantswim(false),
 waveTimer(0),
 swimming(false),
-mUsedGrapplingHook(false)
+mUsedGrapplingHook(false),
+mounted(false)
 {
 	m_ActionBaseOffset = actionoffset;
 
@@ -217,6 +218,14 @@ void CPlayerWM::process()
  */
 void CPlayerWM::processWaving()
 {
+    if(mounted)
+    {
+	mProcessPtr = &CPlayerWM::processMoving;
+	m_basesprite = walkBaseFrame;
+	waveTimer = 0;
+	return;	
+    }
+    
     waveTimer++;
     if( g_pInput->getHoldedCommand(IC_UP) || g_pInput->getHoldedCommand(IC_DOWN) ||
 	g_pInput->getHoldedCommand(IC_LEFT) || g_pInput->getHoldedCommand(IC_RIGHT) ||
@@ -241,6 +250,14 @@ void CPlayerWM::processWaving()
  */
 void CPlayerWM::processMoving()
 {
+    // Only happens in Keen6 when keening is hanging on the satelite
+    if(mounted)
+    {
+	sprite = 181;
+	return;
+    }
+    
+    
 	// Check if the player is swimming or walking and setup the proper speed
 	int movespeed;
 	if(m_basesprite == swimBaseFrame)
@@ -1109,5 +1126,11 @@ void CPlayerWM::performSwimmingAnimation()
 
 	playSwimSound();
 }
+
+void CPlayerWM::setMounted(const bool value)
+{
+    mounted = value;
+}
+
 
 }

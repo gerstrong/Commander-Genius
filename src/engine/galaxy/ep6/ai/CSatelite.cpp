@@ -1,7 +1,9 @@
 #include "CSatelite.h"
 #include <engine/galaxy/common/ai/CPlayerBase.h>
+#include <engine/galaxy/common/ai/CPlayerWM.h>
 
 /*
+$1C70W  #Keen hang from satelite
 $1C8EW  #Sateleite
 $1CACW  #Sateleite
 $1CCAW  #Sateleite
@@ -14,14 +16,20 @@ namespace galaxy
 
 const int MOVE_SPEED = 40;
 
+const int TILES_UNTIL_UNMOUNT = 8;
+
 
 CSatelite::CSatelite(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
 CGalaxySpriteObject(pmap, foeID, x, y),
-CMoveTarget(m_Pos, xDirection, yDirection)
+CMoveTarget(m_Pos, xDirection, yDirection),
+mpCarriedPlayer(nullptr),
+mTilesUntilumount(0)
 {
 	solid = false;
 		
 	setupGalaxyObjectOnMap(0x1C8E, 0);
+	
+	m_Pos = target;
 	
 	fetchInitialDir(xDirection, yDirection, *mp_Map);
 	detectNextTarget(target, xDirection, yDirection);
@@ -29,7 +37,7 @@ CMoveTarget(m_Pos, xDirection, yDirection)
 
 
 void CSatelite::processFlying()
-{
+{        
     int xBlockPos = target.x - getXPosition();
     int yBlockPos = target.y - getYPosition();
     
@@ -41,20 +49,35 @@ void CSatelite::processFlying()
 	const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
 	
 	VectorD2<int> speed(xBlockPos, yBlockPos);	    
-	moveDir(speed);
+	moveDir(speed);	
 	
-	// Happens when the rocket find a place where to stop
-	/*if(object == 0x6A || object == 0x69)
-	{	    
-	    VectorD2<int> newPlayerPos = m_Pos;
-	    
-	    newPlayerPos.y = getYDownPos()+(1<<CSF);
-	    
-	    mpCarriedPlayer->moveToForce(newPlayerPos);
-	    mpCarriedPlayer->solid = true;
-	    mpCarriedPlayer->dontdraw = false;
-	    mpCarriedPlayer = nullptr;
-	}*/
+	mTilesUntilumount++;
+
+	if(mpCarriedPlayer != nullptr && mTilesUntilumount >= TILES_UNTIL_UNMOUNT)
+	{    	    
+	    const Uint16 spot1 = mp_Map->getPlaneDataAt(2, target.x, target.y+(1<<CSF) );
+	    const Uint16 spot2 = mp_Map->getPlaneDataAt(2, target.x+(1<<CSF), target.y);
+	    // Positions where keen migh mount or land
+	    if(spot1 == 0x2D || spot2 == 0x2C)
+	    {	    
+		VectorD2<int> newPlayerPos = target;
+		
+		if(spot1 == 0x2D)
+		{
+		    newPlayerPos.y = target.y+(1<<CSF);
+		}
+		if(spot2 == 0x2C)
+		{		    
+		    newPlayerPos.x = target.x+(1<<CSF);
+		}
+		
+		mTilesUntilumount = 0;
+		mpCarriedPlayer->solid = true;
+		mpCarriedPlayer->moveToForce(newPlayerPos);		
+		mpCarriedPlayer->setMounted(false);
+		mpCarriedPlayer = nullptr;
+	    }
+	}
 	
 	if(object == 0x59)
 	{
@@ -91,21 +114,48 @@ void CSatelite::processFlying()
     }
     
     moveDir(speed);
-
+        
+    if(mpCarriedPlayer != nullptr)
+    {
+	mPlayerPos = m_Pos;
+	mPlayerPos.x += (16<<STC);
+	mPlayerPos.y = getYDownPos()-(4<<STC);
+	mpCarriedPlayer->moveTo(mPlayerPos);
+    }
 }
 
 void CSatelite::getTouchedBy(CSpriteObject& theObject)
 {
-	/*if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+	if( CPlayerWM *player = dynamic_cast<CPlayerWM*>(&theObject) )
 	{
-		setAction(A_ROCKET_FLY);
-	}*/
+	    if(mpCarriedPlayer == nullptr)
+	    {	    
+		if(mTilesUntilumount >= TILES_UNTIL_UNMOUNT)
+		{
+		    mpCarriedPlayer = player;
+		    mpCarriedPlayer->setMounted(true);
+		    mpCarriedPlayer->solid = false;
+		    mTilesUntilumount = 0;
+		}
+	    }
+	}
 }
+
+bool CSatelite::calcVisibility()
+{
+	return true;
+}
+
 
 void CSatelite::process()
 {
 	if(!processActionRoutine())
 	    exists = false;
+	
+	if(mTilesUntilumount >= TILES_UNTIL_UNMOUNT)
+	{
+	    mTilesUntilumount = TILES_UNTIL_UNMOUNT;
+	}
 	
 	processFlying();
 }    

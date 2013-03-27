@@ -2,7 +2,7 @@
 #define CSATELITE_H
 #include <engine/galaxy/common/CGalaxySpriteObject.h>
 #include <engine/galaxy/common/ai/CMoveTarget.h>
-#include <engine/galaxy/common/ai/CPlayerBase.h>
+#include <engine/galaxy/common/ai/CPlayerWM.h>
 
 namespace galaxy
 {
@@ -16,9 +16,9 @@ public:
 	/**
 	 * When it is moving normally
 	 */
-	void processSitting();
-	
 	void processFlying();
+	
+	bool calcVisibility();
 	
 	void process();
 
@@ -27,7 +27,9 @@ public:
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
 private:
-	CPlayerBase *mpCarriedPlayer;
+	CPlayerWM *mpCarriedPlayer;
+	int mTilesUntilumount;
+	VectorD2<int> mPlayerPos;
 };
 
 };

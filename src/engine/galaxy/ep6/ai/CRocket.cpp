@@ -108,7 +108,10 @@ void CRocket::processFlying()
 	speed.x = -MOVE_SPEED;
     }
     
-    mpCarriedPlayer->moveDir(speed);    
+    if(mpCarriedPlayer != nullptr)
+    {
+	mpCarriedPlayer->moveDir(speed);
+    }
     moveDir(speed);
 }
 
@@ -119,10 +122,22 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-	    setAction(A_ROCKET_FLY);
-	    mpCarriedPlayer = player;
-    	    mpCarriedPlayer->solid = false;
-	    mpCarriedPlayer->dontdraw = true;	    
+	    if(player->m_Inventory.Item.m_special.ep6.rocketKeycard > 0)
+	    {
+		setAction(A_ROCKET_FLY);
+		mpCarriedPlayer = player;
+		mpCarriedPlayer->solid = false;
+		mpCarriedPlayer->dontdraw = true;
+	    }
+	    else
+	    {
+		    // Tell the player he cannot climb yet
+		    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		    EventContainer.add( new EventSendBitmapDialogMsg(
+			g_pGfxEngine->getBitmap(29), "I need a keycard \nfor that Rocket", RIGHT) );
+		    
+		    player->moveYDir((1<<CSF)/2);		
+	    }
 	}
 }
 
