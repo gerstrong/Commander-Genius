@@ -160,7 +160,7 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 
 		TileMaskedProperties[j].nextTile 		= static_cast<Sint8>(data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
 		TileMaskedProperties[j].behaviour 		= data[j+2*NumUnMaskedTiles+5*NumMaskedTiles];
-		TileMaskedProperties[j].animationtime 	= data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];
+		TileMaskedProperties[j].animationtime 	= data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];		
 	}
 }
 

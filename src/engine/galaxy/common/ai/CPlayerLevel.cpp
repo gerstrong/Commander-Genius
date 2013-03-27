@@ -42,6 +42,8 @@ const int MAX_POLE_GRAB_TIME = 19;
 
 const int MAX_SCROLL_VIEW = (8<<CSF);
 
+const int BELT_SPEED = 16;
+
 const int STUN_TIME = 30;
 
 
@@ -2482,6 +2484,34 @@ void CPlayerLevel::push(CGalaxySpriteObject& theObject)
 }
 
 
+bool CPlayerLevel::checkConveyorBelt()
+{
+    if(g_pBehaviorEngine->getEpisode() == 6)
+    {
+	Uint32 l_x_l = getXLeftPos();
+	Uint32 l_x = getXMidPos();
+	Uint32 l_x_r = getXRightPos();
+	Uint32 l_y_down = getYDownPos()+(1<<STC);
+	
+	int tileID1 = mp_Map->getPlaneDataAt(1, l_x_l, l_y_down);
+	int tileID2 = mp_Map->getPlaneDataAt(1, l_x, l_y_down);
+	int tileID3 = mp_Map->getPlaneDataAt(1, l_x_r, l_y_down);
+	
+	for(int j=0 ; j<4 ; j++) // This will take all the conveyor belts
+	{
+	    if( (tileID1>=0x83A && tileID1<=0x843) ||
+		(tileID2>=0x83A && tileID2<=0x843) ||
+		(tileID3>=0x83A && tileID3<=0x843) )
+	    {
+		return true;
+	    }
+	    
+	    tileID1 -= 36;	tileID2 -= 36;	tileID3 -= 36;
+	}
+    }	
+    return false;
+}
+
 
 
 void CPlayerLevel::process()
@@ -2563,6 +2593,13 @@ void CPlayerLevel::process()
 		{
 			processPushOutCollision();
 		}
+	}
+	
+	
+	// Conveyor Belt in Keen 6
+	if(checkConveyorBelt())
+	{
+	    moveRight(BELT_SPEED);
 	}
 }
 
