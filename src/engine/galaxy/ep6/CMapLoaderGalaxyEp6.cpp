@@ -23,6 +23,8 @@
 #include "ai/COrbatrix.h"
 #include "ai/CFleex.h"
 #include "ai/CRope.h"
+#include "ai/CRocket.h"
+#include "ai/CSatelite.h"
 
 #include "engine/galaxy/common/ai/CPlayerWM.h"
 #include "engine/galaxy/common/ai/CPlayerLevel.h"
@@ -275,6 +277,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CGrabbiter(&Map, foe, x, y);
 		break;
 
+	// Satelite
+	case 0x59: p_newfoe = new galaxy::CSatelite(&Map, foe, x, y); break;		
+		
 
 	// Special Items which end the level
 	case 0x63: p_newfoe = new galaxy::CSpecialItem(&Map, foe, x, y, 0x1D24); break;
@@ -288,6 +293,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		// This is a Babobba
 		p_newfoe = new galaxy::CBabobba(&Map, foe, x, y);
 		break;
+	
+	// Rocket
+	case 0x69: p_newfoe = new galaxy::CRocket(&Map, foe, x, y); break;		
+
 
 	case 0x6C: 
 		// This is a Bip (In normal level it is never loaded but from saved games it could be restored)

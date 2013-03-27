@@ -71,16 +71,6 @@ void CVolteface::processMoving()
 	detectNextTarget(target, xDirection, yDirection);
     }
     
-    /*if(yDirection == UP && blockedu)
-	yDirection = DOWN;
-    else if(yDirection == DOWN && blockedd)
-	yDirection = UP;
-    
-    if(xDirection == RIGHT && blockedr)
-	xDirection = LEFT;
-    else if(xDirection == LEFT && blockedl)
-	xDirection = RIGHT;*/
-    
     VectorD2<int> speed;
     
     if(yDirection == UP)
