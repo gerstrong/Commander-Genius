@@ -76,7 +76,6 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				31, // A_KEEN_SHOOT_UP
 				37, // A_KEEN_ACTION_4
 				36, // A_KEEN_SLIDE
-				//37, // A_KEEN_ENTER_DOOR
 				39, // A_KEEN_ENTER_DOOR
 				45, // A_KEEN_POLE
 				46, // A_KEEN_POLE_CLIMB
@@ -119,13 +118,13 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 				32, // A_KEEN_SLIDE_INTO_DOOR
 				34, // A_KEEN_SLIDE
 				35, // A_KEEN_ENTER_DOOR
-				43, // A_KEEN_POLE
-				44, // A_KEEN_POLE_CLIMB
-				47, // A_KEEN_POLE_SLIDE
-				51, // A_KEEN_POLE_SHOOT
-				53, // A_KEEN_POLE_SHOOTUP
-				55, // A_KEEN_POLE_SHOOTDOWN
-				57, // A_KEEN_RUN				
+				41, // A_KEEN_POLE
+				42, // A_KEEN_POLE_CLIMB
+				45, // A_KEEN_POLE_SLIDE
+				49, // A_KEEN_POLE_SHOOT
+				51, // A_KEEN_POLE_SHOOTUP
+				53, // A_KEEN_POLE_SHOOTDOWN
+				55, // A_KEEN_RUN
 				59, // A_KEEN_POGO_START
 				60, // A_KEEN_POGO_UP
 				61, // A_KEEN_POGO_HIGH

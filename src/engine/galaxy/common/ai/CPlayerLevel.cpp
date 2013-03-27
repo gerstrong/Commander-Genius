@@ -1773,16 +1773,38 @@ void CPlayerLevel::processEnterDoor()
 void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 {
 	const int start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
-	const int end_tile = start_tile+3;
+	int end_tile = start_tile+3;
+	
+	const int ep = g_pBehaviorEngine->getEpisode();
+	std::vector<CTileProperties> &tileProp = g_pBehaviorEngine->getTileProperties(1); 
+	
+	int x = newX;
+
+	if(ep > 4) // In keen 5 and 6 if there is no bridge property break
+	{    		    	
+	    for(int t = start_tile+1 ;  ; x++ )
+	    {
+    		t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
+
+		if(tileProp[t].behaviour != 18)
+		{
+		    end_tile = mp_Map->getPlaneDataAt(1, (x-1)<<CSF, newY<<CSF);;
+		    break;
+		}
+	    }
+	}
 
 	/// We found the start of the row, that need to be changed.
 	/// Let apply it to the rest of the bridge
 	// Apply to the borders
 
 	// bridge opened or closed?
-	const bool b_opened = ((start_tile%18)%8 < 4) ?true : false;
-
-	int x = newX;
+	const bool b_opened = ((start_tile%18)%8 < 4) ? true : false;
+	
+	x = newX;
+	
+	bool endReached = false;
+	
 	for(int t = start_tile ;  ; x++ )
 	{
 		// Now decide whether the tile is a piece or borders of the bridge
@@ -1791,12 +1813,14 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 		if(t == 0)
 		  break;
 
-		if(type < 16)
+		// These the tiles
+		if(type < 16) // not sure here, because I totally don't get how bridges in Keen 5 and 6 works. 
+			      // Nevertheless it gets the job done!
 		{
 			if(b_opened)
 				t += 4;
 			else
-				t -= 4;
+				t -= 4;			
 		}
 		else
 		{
@@ -1813,7 +1837,7 @@ void CPlayerLevel::toggleBridge(const Uint32 newX, const Uint32 newY)
 		mp_Map->setTile(x-1, newY, NewTile, true, 1);
 		mp_Map->setTile(x-1, newY+1, NewTile+18, true, 1);
 
-		if(t == end_tile)
+		if(t == end_tile || endReached)
 		{
 			if(t%8 < 4)
 				// This bridge is opened, close it!

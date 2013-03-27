@@ -55,7 +55,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 	   player->m_Inventory.Item.m_special.ep6.sandwich--; 
 	   
 	    // Show grabbiter message
-	    EventContainer.add( new EventSendDialog("Yummy!") );
+	    EventContainer.add( new EventSendDialog( g_pBehaviorEngine->getString("KEEN_GRABBITER_SLEEPY") ) );
 	    setAction(A_GRABBITER_NAPPING);
 	}
 	else
@@ -64,8 +64,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 	    g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);	
 	    
 	    // Show grabbiter message
-	    EventContainer.add( new EventSendDialog("I'm hungry. You can't pass")  );
-	    
+	    EventContainer.add( new EventSendDialog( g_pBehaviorEngine->getString("KEEN_GRABBITER_HUNGRY") ) );
 	}
     }    
 }

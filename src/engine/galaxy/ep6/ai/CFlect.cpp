@@ -45,12 +45,10 @@ void CFlect::processWalking()
 	// Move normally in the direction
 	if( xDirection == RIGHT )
 	{
-		//moveRight( m_Action.velX );
 		moveRight( WALK_SPEED );
 	}
 	else
 	{
-		//moveLeft( m_Action.velX );
 		moveLeft( WALK_SPEED );
 	}
 }
@@ -85,7 +83,10 @@ void CFlect::getTouchedBy(CSpriteObject& theObject)
 	
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
+	    if(player->dying)
+	    {		
 		player->push(*this);
+	    }
 	}
 }
 

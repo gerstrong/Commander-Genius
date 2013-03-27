@@ -299,7 +299,7 @@ void CPlayerWM::processMoving()
 		// Tell the player he cannot climb yet
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		EventContainer.add( new EventSendBitmapDialogMsg(
-		    g_pGfxEngine->getBitmap(29), "Too tall cliff!", RIGHT) );
+		    g_pGfxEngine->getBitmap(29), g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), RIGHT) );
 		
 		moveYDir(-(climbDir<<CSF)/2);
 	    }

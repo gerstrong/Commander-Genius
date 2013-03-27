@@ -213,10 +213,18 @@ bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
 
 			// Got Item Text.
-			setDecodeOffset(0x325B6);			
+			setDecodeOffset(0x325B6);
 			StringMap.insert( extractNextString( "KEEN_GOT_SANDWICH" ) );
 			StringMap.insert( extractNextString( "KEEN_GOT_GRAPPLING_HOOK" ) );
 			StringMap.insert( extractNextString( "KEEN_GOT_SHIPCARD" ) );
+			
+			// Grabbiter Text
+			setDecodeOffset(0x33019);
+			StringMap.insert( extractNextString( "KEEN_GRABBITER_HUNGRY" ) );
+			StringMap.insert( extractNextString( "KEEN_GRABBITER_SLEEPY" ) );
+			StringMap.insert( extractNextString( "KEEN_KEYCARD_REQUIRED" ) );
+			StringMap.insert( extractNextString( "KEEN_ROPE_REQUIRED" ) );
+			
 
 			return true;
 		} break;
