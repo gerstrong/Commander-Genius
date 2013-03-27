@@ -25,6 +25,7 @@
 #include "ai/CRope.h"
 #include "ai/CRocket.h"
 #include "ai/CSatelite.h"
+#include "ai/CMolly.h"
 
 #include "engine/galaxy/common/ai/CPlayerWM.h"
 #include "engine/galaxy/common/ai/CPlayerLevel.h"
@@ -139,13 +140,13 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x07:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, false, x, y);	break;
 	case 0x08:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x2120, false, x, y);	break;
 	case 0x09:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, false, x, y);	break;
-	case 0x0A:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, false, x, y);	break;
+	case 0x0A:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x224C, false, x, y);	break;
 	
 	// Blooglets carrying gems
 	case 0x0B:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;
 	case 0x0C:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x2120, true, x, y);	break;
 	case 0x0D:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x21B6, true, x, y);	break;
-	case 0x0E:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x208A, true, x, y);	break;		
+	case 0x0E:	p_newfoe = new galaxy::CBlooglet(&Map, foe, 0x224C, true, x, y);	break;		
 	
 	case 0x13: if( difficulty < NORMAL ) break;	// not sure here    
 	case 0x12: 
@@ -153,7 +154,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		p_newfoe = new galaxy::CFleex(&Map, foe, x, y);
 		break;	
 	
-	
+	// Molly the Babysitter
+	case 0x18:	p_newfoe = new galaxy::CMolly(&Map, foe, x, y);	break;		
+
+		
 	case 0x1B: 
 			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1DD8 );
 			break;
