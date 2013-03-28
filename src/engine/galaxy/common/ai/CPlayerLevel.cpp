@@ -2546,24 +2546,24 @@ void CPlayerLevel::process()
 	if(mp_Map->mFuseInLevel && mp_Map->mNumFuses == 0)
 	{
 	    // TODO: Need to spawn other messages here!
-		g_pMusicPlayer->stop();
-		g_pSound->playSound( SOUND_LEVEL_DONE );
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-		EventContainer.wait(1.0f);
-		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
-		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
-		m_Inventory.Item.m_gem.empty();
-		m_Inventory.Item.fuses_levels_completed++;
-		mp_Map->mFuseInLevel = false;
-		return;
+	    g_pMusicPlayer->stop();
+	    g_pSound->playSound( SOUND_LEVEL_DONE );
+	    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+	    EventContainer.wait(1.0f);
+	    EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+	    g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+	    m_Inventory.Item.m_gem.empty();
+	    m_Inventory.Item.fuses_levels_completed++;
+	    mp_Map->mFuseInLevel = false;
+	    return;
 	}
 	    
 
 	// make the fire recharge time decreased if player is not pressing firing button
 	if(m_fire_recharge_time && !m_playcontrol[PA_FIRE])
 	{
-		m_fire_recharge_time--;
+	    m_fire_recharge_time--;
 	}
 
 	processLevelMiscFlagsCheck();

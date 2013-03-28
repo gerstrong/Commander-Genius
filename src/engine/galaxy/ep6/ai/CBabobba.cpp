@@ -24,7 +24,9 @@ $30B0W  #Babobba napping
 
 const int MOVE_X_SPEED = 30;
 
-const int SIT_TIME = 60;
+const int SIT_TIME = 80;
+const int NAP_TIME = 300;
+const int SHOOT_TIME = 10;
 
 const int MAX_JUMP_INERTIA = -120;
 
@@ -39,9 +41,13 @@ A_BABOBBA_STUNNED = 5,
 A_BABOBBA_NAPPING = 6
 };
 
+
+const int CSF_DISTANCE_TO_FIRE = 7<<CSF;
+
 CBabobba::CBabobba(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
 CStunnable(pmap, foeID, x, y),
-mTimer(0)
+mTimer(0),
+mGoodFireChance(false)
 {
 	mActionMap[A_BABOBBA_JUMP] = (void (CStunnable::*)()) &CBabobba::processJumping;
 	mActionMap[A_BABOBBA_SIT] = (void (CStunnable::*)()) &CBabobba::processSitting;
@@ -76,20 +82,36 @@ void CBabobba::processJumping()
 void CBabobba::processSitting()
 {
     mTimer++;
-
+    
     if(mTimer < SIT_TIME)
         return;
     
-    mTimer = 0;
+    mTimer = 0;        
     
-    yinertia = MAX_JUMP_INERTIA;
+    if(mGoodFireChance)
+    {
+	setAction(A_BABOBBA_SHOOT);
+	
+	// Create cinder
+	CCinder *cinder = new CCinder(mp_Map, 0, 
+	    getXMidPos(), getYUpPos(), xDirection);
+	
+	g_pBehaviorEngine->m_EventList.spawnObj( cinder );
+    }    
 
-    setAction(A_BABOBBA_JUMP);
+    setAction(A_BABOBBA_NAPPING);
 }
 
 void CBabobba::processShooting()
 {
+    mTimer++;
 
+    if(mTimer < SHOOT_TIME)
+        return;
+    
+    mTimer = 0;        
+
+    setAction(A_BABOBBA_SIT);
 }
 
 void CBabobba::processJumpingAlt()
@@ -99,7 +121,16 @@ void CBabobba::processJumpingAlt()
 
 void CBabobba::processNapping()
 {
+    mTimer++;
 
+    if(mTimer < NAP_TIME)
+        return;
+    
+    mTimer = 0;
+    
+    yinertia = MAX_JUMP_INERTIA;
+
+    setAction(A_BABOBBA_JUMP);
 }
 
 bool CBabobba::isNearby(CSpriteObject &theObject)
@@ -113,6 +144,23 @@ bool CBabobba::isNearby(CSpriteObject &theObject)
 			xDirection = LEFT;
 		else
 			xDirection = RIGHT;
+		
+		const int objX = theObject.getXMidPos();
+		const int objY = theObject.getYMidPos();
+		const int babobbaX = getXMidPos();
+		const int babobbaY = getYMidPos();
+		
+		mGoodFireChance = false;
+		
+		if( objX < babobbaX - CSF_DISTANCE_TO_FIRE ||
+			objX > babobbaX + CSF_DISTANCE_TO_FIRE )
+			return false;
+
+		if( objY < babobbaY - CSF_DISTANCE_TO_FIRE ||
+			objY > babobbaY + CSF_DISTANCE_TO_FIRE )
+			return false;
+		
+		mGoodFireChance = true;
 	}
 
 	return true;
@@ -132,6 +180,9 @@ void CBabobba::getTouchedBy(CSpriteObject& theObject)
 		dead = true;
 		theObject.dead = true;
 	}
+	
+	if(getActionNumber(A_BABOBBA_NAPPING))
+	    return;
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
@@ -159,15 +210,106 @@ void CBabobba::process()
 
 
 
-/// TODO: Classes for cinder
+/// Classes for cinder, which is some fire that land on the floor and vanishes
 
 /*
 $30CEW  #Babobba cinder tossed
 $30ECW  #Babobba cinder landed
 $310AW  #Babobba cinder dying
-$3128W  #Babobba cinder dying
-$3146W  #Babobba cinder vannish 
  */
+
+enum CINDERACTIONS
+{
+A_CINDER_TOSSED = 0,
+A_CINDER_LANDED = 1,
+A_CINDER_DYING = 2
+};
+
+
+const int CINDER_X_SPEED = 50;
+const int CINDER_DYING_TIME = 50;
+
+
+CCinder::CCinder(CMap* pmap, const Uint16 foeID, 
+		 const Uint32 x, const Uint32 y, const int horDir) :
+CGalaxyActionSpriteObject(pmap, foeID, x, y),
+mTimer(0)
+{
+	mActionMap[A_CINDER_TOSSED] = (void (CGalaxyActionSpriteObject::*)()) &CCinder::processTossed;
+	mActionMap[A_CINDER_LANDED] = (void (CGalaxyActionSpriteObject::*)()) &CCinder::processLanded;
+	mActionMap[A_CINDER_DYING] = (void (CGalaxyActionSpriteObject::*)()) &CCinder::processDying;
+	
+	setupGalaxyObjectOnMap(0x30CE, A_CINDER_TOSSED);
+	
+	yinertia = -60;
+	xDirection = horDir;
+}
+
+
+
+void CCinder::processTossed()
+{
+    // Move normally in the direction
+    moveXDir(xDirection*CINDER_X_SPEED);
+    
+    if(blockedd)
+    {
+	setAction(A_CINDER_LANDED);
+    }
+}
+
+
+void CCinder::processLanded()
+{
+    mTimer++;
+
+    if(mTimer < CINDER_DYING_TIME)
+        return;
+    
+    mTimer = 0;
+   
+    setAction(A_CINDER_DYING);
+}
+
+
+void CCinder::processDying()
+{
+    mTimer++;
+
+    if(mTimer < CINDER_DYING_TIME)
+        return;
+    
+    mTimer = 0;
+    
+    dead = true;
+    exists = false;
+}
+
+
+
+void CCinder::getTouchedBy(CSpriteObject& theObject)
+{
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    {
+	player->kill();
+    }
+}
+
+
+
+void CCinder::process()
+{
+	performCollisions();
+	
+	performGravityHigh();
+
+	if(!processActionRoutine())
+	    exists = false;
+	
+	(this->*mp_processState)();
+}
+
+
 
     
 };

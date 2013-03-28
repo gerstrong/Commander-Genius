@@ -39,12 +39,10 @@ void CBlooguard::processWalking()
     // Move normally in the direction
     if( xDirection == RIGHT )
     {
-	//moveRight( m_Action.velX );
 	moveRight( WALK_SPEED );
     }
     else
     {
-	//moveLeft( m_Action.velX );
 	moveLeft( WALK_SPEED );
     }
     
