@@ -23,7 +23,8 @@ CGalaxySpriteObject(pmap, foeID, x, y),
 mTimer(0)
 {  
 	// Adapt this AI
-	setActionForce(0x3186);
+	m_ActionBaseOffset = 0x3186;
+	setActionForce(0);
 	//setupGalaxyObjectOnMap(0x3186, 0);
 	
 	xDirection = LEFT;
