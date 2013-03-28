@@ -42,16 +42,45 @@
 
 _Chip::_Chip()
 {
-    memset(chan, 0, 18*sizeof(Channel));    
+    //memset(chan, 0, 18*sizeof(Channel));    
     clear();
 }
 
 void _Chip::clear()
 {
+    /*lfoCounter;
+    lfoAdd;
+	
+
+    noiseCounter;
+    noiseAdd;
+    noiseValue;
+
+    reg104;
+    reg08;
+    reg04;
+    regBD;
+    vibratoIndex;
+    tremoloIndex;
+    vibratoSign;
+    vibratoShift;
+    tremoloValue;
+    vibratoStrength;
+    tremoloStrength;
+	//Mask for allowed wave forms
+    waveFormMask;
+	//0 or -1 when enabled
+    opl3Active;    
+    */
+    
+    const int size = sizeof(_Chip);
+    
+    memset(this, 0, size);
+    
+    /*memset(chan, 0, 18*sizeof(Channel));
     memset(freqMul, 0, 16*sizeof(Bit32u));
     memset(linearRates, 0, 76*sizeof(Bit32u));
-    memset(attackRates, 0, 76*sizeof(Bit32u));
-    
+    memset(attackRates, 0, 76*sizeof(Bit32u));*/
 }
 
 
@@ -956,8 +985,11 @@ Channel* Channel__BlockTemplate(Channel *self, Chip* chip,
 		}
 		break;
 
-        default:
-                abort();
+// This will cause crashes if OPL is in rhythm mode!
+// The original DOSBox code has no default case. --K1n9_Duk3
+		default: break;
+//                abort();
+
 	}
 	//Init the operators with the the current vibrato and tremolo values
         Operator__Prepare( Channel__Op( self, 0 ), chip );
@@ -1026,8 +1058,11 @@ Channel* Channel__BlockTemplate(Channel *self, Chip* chip,
 			output[ i * 2 + 0 ] += sample & self->maskLeft;
 			output[ i * 2 + 1 ] += sample & self->maskRight;
 			break;
-                default:
-                        abort();
+// This will cause crashes if OPL is in rhythm mode!
+// The original DOSBox code has no default case. --K1n9_Duk3
+		default: break;
+//                abort();
+
 		}
 	}
 	switch( mode ) {
@@ -1044,8 +1079,11 @@ Channel* Channel__BlockTemplate(Channel *self, Chip* chip,
 	case sm2Percussion:
 	case sm3Percussion:
 		return( self + 3 );
-        default:
-                abort();
+// This will cause crashes if OPL is in rhythm mode!
+// The original DOSBox code has no default case. --K1n9_Duk3
+	default: break;
+//                abort();
+
 	}
 	return 0;
 }
@@ -1054,11 +1092,11 @@ Channel* Channel__BlockTemplate(Channel *self, Chip* chip,
 	Chip
 */
 
-void Chip__Chip(Chip *self) {
-        int i;
-
-        for (i=0; i<18; ++i) {
-                Channel__Channel(&self->chan[i]);
+void Chip__Chip(Chip *self) 
+{
+        for (int i=0; i<18; ++i) 
+	{
+	    Channel__Channel(&self->chan[i]);
         }
 
 	self->reg08 = 0;
@@ -1186,30 +1224,37 @@ static void Chip__WriteBD(Chip *self, Bit8u val ) {
                 Channel__ ## _FUNC_ (regChan, self, val); \
 	}
 
-void Chip__WriteReg(Chip *self, Bit32u reg, Bit8u val ) {
+void Chip__WriteReg(Chip *self, Bit32u reg, Bit8u val ) 
+{
 	Bitu index;
 	switch ( (reg & 0xf0) >> 4 ) {
 	case 0x00 >> 4:
-		if ( reg == 0x01 ) {
+		if ( reg == 0x01 ) 
+		{
 			self->waveFormMask = ( val & 0x20 ) ? 0x7 : 0x0; 
-		} else if ( reg == 0x104 ) {
+		} 
+		else if ( reg == 0x104 ) 
+		{
 			//Only detect changes in lowest 6 bits
 			if ( !((self->reg104 ^ val) & 0x3f) )
 				return;
 			//Always keep the highest bit enabled, for checking > 0x80
 			self->reg104 = 0x80 | ( val & 0x3f );
-		} else if ( reg == 0x105 ) {
-                        int i;
-
+		} 
+		else if ( reg == 0x105 ) 
+		{
 			//MAME says the real opl3 doesn't reset anything on opl3 disable/enable till the next write in another register
 			if ( !((self->opl3Active ^ val) & 1 ) )
 				return;
 			self->opl3Active = ( val & 1 ) ? 0xff : 0;
 			//Update the 0xc0 register for all channels to signal the switch to mono/stereo handlers
-			for ( i = 0; i < 18;i++ ) {
+			for ( int i = 0; i < 18;i++ ) 
+			{
                                 Channel__ResetC0( &self->chan[i], self );
 			}
-		} else if ( reg == 0x08 ) {
+		} 
+		else if ( reg == 0x08 ) 
+		{
 			self->reg08 = val;
 		}
 	case 0x10 >> 4:
@@ -1426,13 +1471,13 @@ void Chip__Setup(Chip *self, Bit32u rate ) {
 	}
 }
 
-static int doneTables = FALSE;
+static bool doneTables = false;
 void DBOPL_InitTables( void ) {
         int i, oct;
 
 	if ( doneTables )
 		return;
-	doneTables = TRUE;
+	doneTables = true;
 #if ( DBOPL_WAVE == WAVE_HANDLER ) || ( DBOPL_WAVE == WAVE_TABLELOG )
 	//Exponential volume table, same as the real adlib
 	for ( i = 0; i < 256; i++ ) {
@@ -1524,9 +1569,11 @@ void DBOPL_InitTables( void ) {
 	}
 	//Create a table with offsets of the channels from the start of the chip
         Chip *chip = NULL;
-	for ( i = 0; i < 32; i++ ) {
+	for ( i = 0; i < 32; i++ ) 
+	{
 		Bitu index = i & 0xf;
-		if ( index >= 9 ) {
+		if ( index >= 9 ) 
+		{
 			ChanOffsetTable[i] = 0;
 			continue;
 		}
@@ -1551,7 +1598,7 @@ void DBOPL_InitTables( void ) {
 		if ( chNum >= 12 )
 			chNum += 16 - 12;
 		Bitu opNum = ( i % 8 ) / 3;
-		Channel* chan = NULL;
+		Channel* chan = nullptr;
 		Bitu blah = (Bitu) ( &(chan->op[opNum]) );
 		OpOffsetTable[i] = ChanOffsetTable[ chNum ] + blah;
 	}

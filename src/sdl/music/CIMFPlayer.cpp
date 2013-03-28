@@ -344,20 +344,34 @@ void CIMFPlayer::close()
 	return;
 }
 
+
+#include <fstream>
+
+
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {
     m_opl_emulator.Chip__GenerateBlock2( length, m_mix_buffer );
 
     // Mix into the destination buffer, doubling up into stereo.
+    
+    //std::ofstream audioout("out.txt", std::ios_base::app);
 
 	if(m_AudioDevSpec.format == AUDIO_S16)
 	{
 		Sint16 *buf16 = (Sint16*) (void*) buffer;
 		for (unsigned int i=0; i<length; ++i)
 		{
+		    Sint32 mix = m_mix_buffer[i];
+		    
+		    if(mix > 32767)
+			    mix = 32767;
+		    else if(mix < -32768)
+			    mix = -32768;		    
+		    
 			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
 			{
-				*buf16 = m_mix_buffer[i] + m_AudioDevSpec.silence;
+				*buf16 = mix + m_AudioDevSpec.silence;
+				//audioout << (*buf16) << "\n";
 				buf16++;
 			}
 		}
@@ -366,9 +380,16 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 	{
 		for (unsigned int i=0; i<length; ++i)
 		{
+		    Sint32 mix = m_mix_buffer[i]>>8;
+		    
+		    if(mix > 255)
+			    mix = 255;
+		    else if(mix < 0)
+			    mix = 0;
+		    
 			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
 			{
-				*buffer = (m_mix_buffer[i]>>8) + m_AudioDevSpec.silence;
+				*buffer = mix + m_AudioDevSpec.silence;
 				buffer++;
 			}
 		}

@@ -60,12 +60,14 @@ void COPLEmulator::StartOPLforAdlibSound()
     Chip__WriteReg( 1, 0x20);             // Set WSE=1
 //    alOut(8, 0);                // Set CSM=0 & SEL=0
 
-	Chip__WriteReg( alEffects, 0);
+    Chip__WriteReg( alEffects, 0);
     AlSetFXInst(m_alZeroInst);
 }
 
 void COPLEmulator::init()
 {
+    m_opl_chip.clear();
+    
     DBOPL_InitTables();
     Chip__Chip(&m_opl_chip);
     Chip__Setup(&m_opl_chip, m_AudioDevSpec.freq);
@@ -104,7 +106,7 @@ void COPLEmulator::ShutAL()
 
 void COPLEmulator::shutdown()
 {
-    Chip__WriteReg( alEffects,0);
+    Chip__WriteReg( alEffects,0 );
     for (int i = 1; i < 0xf5; i++)
     	Chip__WriteReg( i, 0);
 }
