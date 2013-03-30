@@ -11,6 +11,7 @@
  */
 
 #include "COPLEmulator.h"
+#include <fstream>
 
 const int KEEN_IMF_CLOCK_RATE = 560;
 
@@ -114,4 +115,24 @@ void COPLEmulator::shutdown()
 void COPLEmulator::clear()
 {
     m_opl_chip.clear();
+}
+
+
+void dumpData(const std::string filename, const void *data, const int size)
+{
+    std::ofstream file(filename.c_str());
+
+    unsigned char byte;    
+    unsigned char *ptr = (unsigned char *)(data);
+    for( int i=0 ; i<size ; i++ )
+    {	
+	memcpy(&byte, ptr, 1);
+	file << byte << "\n";
+	ptr++;
+    }    
+}
+
+void COPLEmulator::dump()
+{
+    dumpData("chipDump.dat", &m_opl_chip, sizeof(Chip));
 }

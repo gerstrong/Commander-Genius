@@ -102,6 +102,8 @@ public:
 	void shutdown();
 	
 	void clear();
+	
+	void dump();
 
 private:
 

@@ -307,6 +307,8 @@ bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 	std::vector<uint8_t> AudioCompFileData;
 	std::vector<uint32_t> musiched;
 
+	//m_opl_emulator.dump();
+	
 	if( readCompressedAudiointoMemory(ExeFile, musiched, AudioCompFileData) )
 	{
 	    unpackAudioInterval(ExeFile, 
