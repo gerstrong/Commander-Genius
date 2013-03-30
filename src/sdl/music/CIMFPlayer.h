@@ -28,8 +28,6 @@ class CIMFPlayer : public CMusicPlayer
 public:
 	CIMFPlayer( const SDL_AudioSpec &AudioSpec, COPLEmulator& opl_emulator = *g_pSound->getOPLEmulatorPtr());
 
-	~CIMFPlayer();
-
 
 	/**
 	 * \brief 	This function will load music using other dictionaries which are embedded in the Exe File.
@@ -70,7 +68,7 @@ private:
 	Uint32 m_numreadysamples;
 	Uint32 m_samplesPerMusicTick;
 	unsigned int m_IMFDelay;
-	Sint32* m_mix_buffer;
+	std::unique_ptr<Sint32[]> mMixBuffer;
 };
 
 #endif /* CIMFPLAYER_H_ */

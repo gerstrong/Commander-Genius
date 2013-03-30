@@ -71,10 +71,17 @@ void COPLEmulator::init()
     
     DBOPL_InitTables();
     Chip__Chip(&m_opl_chip);
+    setup();
     Chip__Setup(&m_opl_chip, m_AudioDevSpec.freq);
 
     StartOPLforAdlibSound();
 }
+
+void COPLEmulator::setup()
+{
+    Chip__Setup(&m_opl_chip, m_AudioDevSpec.freq);
+}
+
 
 unsigned int COPLEmulator::getIMFClockRate()
 {	return m_imf_clock_rate;	}
@@ -134,5 +141,5 @@ void dumpData(const std::string filename, const void *data, const int size)
 
 void COPLEmulator::dump()
 {
-    dumpData("chipDump.dat", &m_opl_chip, sizeof(Chip));
+  dumpData("chipDump.dat", &m_opl_chip, sizeof(Chip));
 }

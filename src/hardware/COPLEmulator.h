@@ -55,6 +55,9 @@ public:
 	 * It should be called whenever the Sound Device starts or restarts after changing audio settings
 	 */
 	void init();
+	
+	// Call this if a new song is loaded or audio ettings are changed. When it inits it is also called
+	void setup();
 
 	void AlSetFXInst(Instrument &inst);
 

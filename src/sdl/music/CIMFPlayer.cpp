@@ -24,7 +24,7 @@ m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
 m_IMFDelay(0),
-m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
+mMixBuffer(new Sint32[m_AudioDevSpec.samples])
 {}
 
 
@@ -305,9 +305,7 @@ bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 {
 	// Now get the proper music slot reading the assignment table.
 	std::vector<uint8_t> AudioCompFileData;
-	std::vector<uint32_t> musiched;
-
-	//m_opl_emulator.dump();
+	std::vector<uint32_t> musiched;	
 	
 	if( readCompressedAudiointoMemory(ExeFile, musiched, AudioCompFileData) )
 	{
@@ -321,17 +319,13 @@ bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 }
 
 
-CIMFPlayer::~CIMFPlayer()
-{
-	if(m_mix_buffer)
-		delete [] m_mix_buffer;
-}
-
 bool CIMFPlayer::open()
 {
 	m_numreadysamples = m_IMFDelay = 0;
 	m_samplesPerMusicTick = m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate();
-
+	
+	m_opl_emulator.setup();
+	
 	return !m_IMF_Data.empty();
 }
 
@@ -352,28 +346,24 @@ void CIMFPlayer::close()
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {
-    m_opl_emulator.Chip__GenerateBlock2( length, m_mix_buffer );
+    m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.get() );
 
     // Mix into the destination buffer, doubling up into stereo.
-    
-    //std::ofstream audioout("out.txt", std::ios_base::app);
-
 	if(m_AudioDevSpec.format == AUDIO_S16)
 	{
 		Sint16 *buf16 = (Sint16*) (void*) buffer;
 		for (unsigned int i=0; i<length; ++i)
 		{
-		    Sint32 mix = m_mix_buffer[i];
+		    Sint32 mix = mMixBuffer[i];
 		    
 		    if(mix > 32767)
 			    mix = 32767;
 		    else if(mix < -32768)
-			    mix = -32768;		    
+			    mix = -32768;
 		    
 			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
 			{
 				*buf16 = mix + m_AudioDevSpec.silence;
-				//audioout << (*buf16) << "\n";
 				buf16++;
 			}
 		}
@@ -382,7 +372,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 	{
 		for (unsigned int i=0; i<length; ++i)
 		{
-		    Sint32 mix = m_mix_buffer[i]>>8;
+		    Sint32 mix = mMixBuffer[i]>>8;
 		    
 		    if(mix > 255)
 			    mix = 255;
