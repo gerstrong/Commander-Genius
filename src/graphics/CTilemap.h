@@ -20,7 +20,7 @@ public:
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags,
 			Uint16 numtiles, Uint16 pbasesize, Uint16 column);
-	bool loadHiresTile( const std::string& filename );
+	bool loadHiresTile( const std::string& filename, const std::string& path );
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 

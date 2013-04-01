@@ -176,8 +176,9 @@ IF(BUILD_TARGET STREQUAL WIN32)
     include_directories(${SDL_INCLUDE_DIRS})
 ELSE(BUILD_TARGET STREQUAL WIN32)
     find_package(PkgConfig)
-    pkg_check_modules(SDL sdl)
 ENDIF(BUILD_TARGET STREQUAL WIN32)
+
+Find_Package ( SDL_image REQUIRED )
 
 
 

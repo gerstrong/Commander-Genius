@@ -6,7 +6,9 @@
  */
 
 #include "fileio/CTileLoader.h"
+#include "fileio/ResourceMgmt.h"
 #include "sdl/CVideoDriver.h"
+//#include <SDL_image.h>
 #include "FindFile.h"
 #include "CTilemap.h"
 #include "CPalette.h"
@@ -38,14 +40,25 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 	return ( m_Tilesurface != NULL );
 }
 
-bool CTilemap::loadHiresTile( const std::string& filename )
-{
-	if(!IsFileAvailable(filename))
+//std::string exts[] = { "png", "bmp", "tif", "jpg" };
+std::string exts[] = { "bmp" };
+
+bool CTilemap::loadHiresTile( const std::string& filename, const std::string& path )
+{  
+	std::string fullfilename;  
+	// Cycle through possible filename extensions, when more formats are supported
+	for( auto &ext : exts )
+	{
+	    fullfilename = filename + "." + ext;
+	    fullfilename = getResourceFilename(fullfilename, path, false);  
+	}	
+	  
+	if(!IsFileAvailable(fullfilename))
 		return false;
 
 	if(m_Tilesurface)
-	{
-		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
+	{	  
+		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(fullfilename).c_str());
 		if(temp_surface)
 		{
 			SDL_FreeSurface(m_Tilesurface);

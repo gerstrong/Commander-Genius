@@ -189,10 +189,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
-	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
-	filename = getResourceFilename("gfx/ck" + itoa(episode) + "tiles.bmp", path, false);
-	if(Tilemap.loadHiresTile(filename))
-		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
+	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap	
+	if(Tilemap.loadHiresTile("gfx/ck" + itoa(episode) + "tiles", path))
+	{
+	  g_pLogFile->textOut(GREEN, "Additional VGA Bitmap for the Tileset has been loaded successfully!");
+	}
 
 	// Adapt the tilemap to the display, so they are faster blit
 	Tilemap.optimizeSurface();
