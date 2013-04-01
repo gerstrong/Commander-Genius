@@ -35,6 +35,7 @@ class CVideoDriver : public CSingleton<CVideoDriver>
 {
 public:
 	CVideoDriver();
+	~CVideoDriver();
 	void resetSettings();
 	
 	bool applyMode();
@@ -136,5 +137,6 @@ private:
 
 	CVidConfig m_VidConfig;
 	bool m_mustrefresh;
+	bool mSDLImageInUse;
 };
 #endif /* CVIDEODRIVER_H_ */

@@ -176,6 +176,7 @@ IF(BUILD_TARGET STREQUAL WIN32)
     include_directories(${SDL_INCLUDE_DIRS})
 ELSE(BUILD_TARGET STREQUAL WIN32)
     find_package(PkgConfig)
+    pkg_check_modules(SDL sdl)
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 Find_Package ( SDL_image REQUIRED )
@@ -289,6 +290,7 @@ IF(BUILD_TARGET STREQUAL WIN32)
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 target_link_libraries(CommanderGenius ${SDL_LIBRARIES})
+target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
 
 
 #MESSAGE( "BUILD_TARGET = ${BUILD_TARGET}" )
@@ -303,6 +305,7 @@ target_link_libraries(CommanderGenius ${SDL_LIBRARIES})
 #MESSAGE( "CMAKE_LIBRARY_PATH = ${CMAKE_LIBRARY_PATH}" )
 #MESSAGE( "SDL_INCLUDE_DIRS = ${SDL_INCLUDE_DIRS}" )
 #MESSAGE( "SDL_LIBRARIES = ${SDL_LIBRARIES}" )
+#MESSAGE( "SDL_IMAGE_LIBRARIES = ${SDL_IMAGE_LIBRARIES}" )
 
 #MESSAGE( "Compile it with OpenGL : OPENGL = ${OPENGL}" )
 #MESSAGE( "We use OGG Vorbis : OGG = ${OGG}" )

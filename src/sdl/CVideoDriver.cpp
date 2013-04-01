@@ -22,12 +22,24 @@
 #include <iostream>
 #include <fstream>
 #include <SDL_syswm.h>
+#include <SDL_image.h>
 
 CVideoDriver::CVideoDriver() :
-m_mustrefresh(false)
+m_mustrefresh(false),
+mSDLImageInUse(false)
 {
 	resetSettings();
 }
+
+CVideoDriver::~CVideoDriver()
+{
+  if(mSDLImageInUse)
+  {
+    // unload the dynamically loaded image libraries
+    IMG_Quit();
+  }
+}
+
 
 // TODO: This should return something!
 void CVideoDriver::resetSettings() 
@@ -42,6 +54,24 @@ void CVideoDriver::resetSettings()
 		g_pLogFile->textOut(GREEN, "SDL was successfully initialized!<br>");
 
 	initResolutionList();
+	
+	
+	if(!mSDLImageInUse)
+	{
+	  // load support for the JPG and PNG image formats
+	  int flags=IMG_INIT_JPG|IMG_INIT_PNG;
+	  const int initted=IMG_Init(flags);
+	  if( (initted & flags) != flags) 
+	  {
+	      g_pLogFile->textOut(RED, "IMG_Init: Failed to init required jpg and png support!\n");
+	      g_pLogFile->textOut(RED, "IMG_Init: %s\n", IMG_GetError());
+	      g_pLogFile->textOut(RED, "IMG_Init: CG will try to continue without that support.\n", IMG_GetError());
+	  }
+	  else
+	  {
+	    mSDLImageInUse = true;
+	  }
+	}
 
 	// take the first default resolution. It might be changed if there is a config file already created
 	// If there are at least two possible resolutions choose the second one, as this is normally one basic small resolution
@@ -450,7 +480,8 @@ SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
 	return RectDispCoord.SDLRect();
 }
 
-void CVideoDriver::clearDrawingTasks() {
+void CVideoDriver::clearDrawingTasks() 
+{
 	if (!mDrawTasks.empty()) 
 	{
 		mDrawTasks.clear();

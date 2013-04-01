@@ -8,10 +8,11 @@
 #include "fileio/CTileLoader.h"
 #include "fileio/ResourceMgmt.h"
 #include "sdl/CVideoDriver.h"
-//#include <SDL_image.h>
+#include <SDL_image.h>
 #include "FindFile.h"
 #include "CTilemap.h"
 #include "CPalette.h"
+#include "CLogFile.h"
 #include <stdlib.h>
 
 CTilemap::CTilemap() :
@@ -40,8 +41,7 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 	return ( m_Tilesurface != NULL );
 }
 
-//std::string exts[] = { "png", "bmp", "tif", "jpg" };
-std::string exts[] = { "bmp" };
+std::string exts[] = { "png", "bmp", "tif", "jpg" };
 
 bool CTilemap::loadHiresTile( const std::string& filename, const std::string& path )
 {  
@@ -51,19 +51,26 @@ bool CTilemap::loadHiresTile( const std::string& filename, const std::string& pa
 	{
 	    fullfilename = filename + "." + ext;
 	    fullfilename = getResourceFilename(fullfilename, path, false);  
+	    if(!fullfilename.empty())
+	      break;
 	}	
 	  
 	if(!IsFileAvailable(fullfilename))
 		return false;
 
 	if(m_Tilesurface)
-	{	  
-		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(fullfilename).c_str());
+	{	  	  
+		SDL_Surface *temp_surface = IMG_Load(GetFullFileName(fullfilename).c_str());
 		if(temp_surface)
 		{
 			SDL_FreeSurface(m_Tilesurface);
 			m_Tilesurface = temp_surface;
 			return true;
+		}
+		else
+		{
+		  g_pLogFile->textOut(RED, "IMG_Load: %s\n", IMG_GetError());
+		  g_pLogFile->textOut(RED, "IMG_Load: CG will ignore those images\n");
 		}
 	}
 	
