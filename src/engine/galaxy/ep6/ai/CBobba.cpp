@@ -59,7 +59,10 @@ void CBobba::processJumping()
 	}
 	
 	if(blockedd && yinertia >= 0)
+	{
 	    setAction(A_BOBBA_SIT);
+	    playSound(SOUND_BOBBA_LAND);
+	}
 }
 
 

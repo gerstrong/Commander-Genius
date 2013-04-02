@@ -32,7 +32,8 @@ public:
 private:
 	int mTimer;
 	bool mChanceToLick;
-    int mCrawlPos;
+	int mCrawlPos;
+	bool mLaughed;
 };
 
 };

@@ -62,6 +62,7 @@ void CRocket::processFlying()
 	
 	VectorD2<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);
+	playSound(SOUND_ROCKET_DRIVE);
 	
 	// Happens when the rocket find a place where to stop
 	if(object == 0x6A || object == 0x69)
@@ -126,6 +127,7 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
 	    if(player->m_Inventory.Item.m_special.ep6.rocketKeycard > 0)
 	    {
 		setAction(A_ROCKET_FLY);
+		playSound(SOUND_ROCKET_LAUNCH);
 		mpCarriedPlayer = player;
 		mpCarriedPlayer->solid = false;
 		mpCarriedPlayer->dontdraw = true;

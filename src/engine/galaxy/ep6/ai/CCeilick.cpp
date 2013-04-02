@@ -22,7 +22,8 @@ CCeilick::CCeilick(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 
 CStunnable(pmap, foeID, x, y),
 mTimer(0),
 mChanceToLick(false),
-mCrawlPos(0)
+mCrawlPos(0),
+mLaughed(false)
 {
 	mActionMap[A_CEILICK_SLEEP] = (void (CStunnable::*)()) &CCeilick::processSleeping;
 	mActionMap[A_CEILICK_LICK] = (void (CStunnable::*)()) &CCeilick::processLicking;
@@ -40,6 +41,7 @@ void CCeilick::processSleeping()
   if(mChanceToLick)
   {
     setAction(A_CEILICK_LICK);
+    playSound(SOUND_CEILICK_LICK);
     mChanceToLick = false;
     return;
   }
@@ -54,9 +56,21 @@ void CCeilick::processLicking()
       mCrawlPos = -16;
   }
 
+  if( getActionStatus(A_CEILICK_LICK+15) )
+  {
+      // This will make him laugh!
+      if(!mLaughed)
+      {
+	playSound(SOUND_CEILICK_LAUGH);
+	mLaughed = true;
+      }
+  }  
+  
+
   if( getActionStatus(A_CEILICK_LICK+19) )
   {
     setAction(A_CEILICK_SLEEP);
+    mLaughed = false;
   }
 
 }

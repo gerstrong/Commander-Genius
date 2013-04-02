@@ -293,6 +293,7 @@ void CPlayerWM::processMoving()
 		x = x<<CSF; y = (y+climbDir)<<CSF;
 		
 		g_pBehaviorEngine->m_EventList.spawnObj(new CRope(mp_Map, 0, x, y));
+		playSound(SOUND_ROPE_THROW);
 	    }
 	    else
 	    {

@@ -14,7 +14,7 @@ Ports:
            Released under GNU/GPL           
                                             
            Release v1.4-Alpha 
-           Build: LINUX                                       
+           Build: Linux                                       
 **********************************************
 
 Welcome to Commander Genius!
@@ -164,7 +164,8 @@ How to compile it under Ubuntu:
  	- build-essential
  	- libvorbis-dev
  	- libsdl1.2-dev
- 	- libgl1-mesa-dev
+ 	- libsdl-image1.2-dev
+ 	- libgl1-mesa-dev 	
  * extract my source code into "CGenius".
  * cd into the source directory "CGenius"
  * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64" depending on what 

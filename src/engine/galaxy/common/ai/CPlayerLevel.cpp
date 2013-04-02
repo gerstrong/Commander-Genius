@@ -932,6 +932,7 @@ bool CPlayerLevel::stun()
 	return false;
 
     setAction(A_KEEN_STUNNED);
+    playSound(SOUND_KEEN_STUNNED);
 
     mEndOfAction = false;
     m_Action.setActionFormat(0x1868);

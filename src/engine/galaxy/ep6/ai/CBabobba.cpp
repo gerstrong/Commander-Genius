@@ -68,15 +68,18 @@ void CBabobba::processJumping()
 	// Move normally in the direction
 	if( xDirection == RIGHT )
 	{
-		moveRight( MOVE_X_SPEED );
+	  moveRight( MOVE_X_SPEED );
 	}
 	else
 	{
-		moveLeft( MOVE_X_SPEED );
+	  moveLeft( MOVE_X_SPEED );
 	}
 	
 	if(blockedd && yinertia >= 0)
+	{
 	    setAction(A_BABOBBA_SIT);
+	    playSound(SOUND_BABOBBA_LAND);
+	}
 }
 
 void CBabobba::processSitting()
@@ -91,6 +94,7 @@ void CBabobba::processSitting()
     if(mGoodFireChance)
     {
 	setAction(A_BABOBBA_SHOOT);
+	playSound(SOUND_BABOBBA_CINDER);
 	
 	// Create cinder
 	CCinder *cinder = new CCinder(mp_Map, 0, 
@@ -131,6 +135,7 @@ void CBabobba::processNapping()
     yinertia = MAX_JUMP_INERTIA;
 
     setAction(A_BABOBBA_JUMP);
+    playSound(SOUND_BABOBBA_JUMP);
 }
 
 bool CBabobba::isNearby(CSpriteObject &theObject)

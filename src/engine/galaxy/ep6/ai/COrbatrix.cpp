@@ -124,6 +124,7 @@ void COrbatrix::processBounce()
     {
 	yinertia = MAX_BOUNCE_BOOST;
 	xDirection = -xDirection;
+	playSound(SOUND_ORBATRIX_BUMP);
 	// TODO: BOUNCE Sound here!
     }
     

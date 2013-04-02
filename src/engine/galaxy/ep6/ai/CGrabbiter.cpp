@@ -57,11 +57,12 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 	    // Show grabbiter message
 	    EventContainer.add( new EventSendDialog( g_pBehaviorEngine->getString("KEEN_GRABBITER_SLEEPY") ) );
 	    setAction(A_GRABBITER_NAPPING);
+	    playSound(SOUND_GRABBITER_SLEEP);
 	}
 	else
 	{	    
 	    // Sound play
-	    g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);	
+	    g_pSound->playSound(SOUND_GRABBITER_HUNGRY, PLAY_PAUSEALL);	
 	    
 	    // Show grabbiter message
 	    EventContainer.add( new EventSendDialog( g_pBehaviorEngine->getString("KEEN_GRABBITER_HUNGRY") ) );

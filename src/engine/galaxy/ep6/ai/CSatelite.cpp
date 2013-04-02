@@ -134,6 +134,7 @@ void CSatelite::getTouchedBy(CSpriteObject& theObject)
 		{
 		    mpCarriedPlayer = player;
 		    mpCarriedPlayer->setMounted(true);
+		    playSound(SOUND_SATELITE_MOUNT);
 		    mpCarriedPlayer->solid = false;
 		    mTilesUntilumount = 0;
 		}
