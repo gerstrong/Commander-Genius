@@ -94,7 +94,7 @@ void _Chip::clear()
 #define PI 3.14159265358979323846
 #endif
 
-#define OPLRATE		((double)(14318180.0 / 288.0))
+const double OPLRATE = (14318180.0 / 288.0);
 #define TREMOLO_TABLE 52
 
 //Try to use most precision for frequencies
@@ -1327,15 +1327,15 @@ void Chip__GenerateBlock2(Chip *self, Bitu total, Bit32s* output )
     }
 }
 
-void Chip__GenerateBlock3(Chip *self, Bitu total, Bit32s* output  ) {
-	while ( total > 0 ) {
-                int count;
-                Channel *ch;
-
+void Chip__GenerateBlock3(Chip *self, Bitu total, Bit32s* output  ) 
+{
+	while ( total > 0 ) 
+	{
 		Bit32u samples = Chip__ForwardLFO( self, total );
 		memset(output, 0, sizeof(Bit32s) * samples *2);
-		count = 0;
-		for ( ch = self->chan; ch < self->chan + 18; ) {
+		int count = 0;
+		for ( Channel *ch = self->chan; ch < self->chan + 18; )
+		{
 			count++;
 			ch = (ch->synthHandler)( ch, self, samples, output );
 		}
@@ -1344,11 +1344,11 @@ void Chip__GenerateBlock3(Chip *self, Bitu total, Bit32s* output  ) {
 	}
 }
 
-void Chip__Setup(Chip *self, Bit32u rate ) {
-	double original = OPLRATE;
+void Chip__Setup(Chip *self, Bit32u rate ) 
+{
+	const double original = OPLRATE;
         Bit32u i;
-//	double original = rate;
-	double scale = original / (double)rate;
+	const double scale = original / static_cast<double>(rate);
 
 	//Noise counter is run at the same precision as general waves
 	self->noiseAdd = (Bit32u)( 0.5 + scale * ( 1 << LFO_SH ) );
@@ -1365,12 +1365,14 @@ void Chip__Setup(Chip *self, Bit32u rate ) {
 	//-1 since the freqCreateTable = *2
 #ifdef WAVE_PRECISION
 	double freqScale = ( 1 << 7 ) * scale * ( 1 << ( WAVE_SH - 1 - 10));
-	for ( i = 0; i < 16; i++ ) {
+	for ( i = 0; i < 16; i++ ) 
+	{
 		self->freqMul[i] = (Bit32u)( 0.5 + freqScale * FreqCreateTable[ i ] );
 	}
 #else
 	Bit32u freqScale = (Bit32u)( 0.5 + scale * ( 1 << ( WAVE_SH - 1 - 10)));
-	for ( i = 0; i < 16; i++ ) {
+	for ( i = 0; i < 16; i++ ) 
+	{
 		self->freqMul[i] = freqScale * FreqCreateTable[ i ];
 	}
 #endif
@@ -1382,7 +1384,8 @@ void Chip__Setup(Chip *self, Bit32u rate ) {
 		self->linearRates[i] = (Bit32u)( scale * (EnvelopeIncreaseTable[ index ] << ( RATE_SH + ENV_EXTRA - shift - 3 )));
 	}
 	//Generate the best matching attack rate
-	for ( i = 0; i < 62; i++ ) {
+	for ( i = 0; i < 62; i++ ) 
+	{
 		Bit8u index, shift;
 		EnvelopeSelect( i, &index, &shift );
 		//Original amount of samples the attack would take
@@ -1472,12 +1475,15 @@ void Chip__Setup(Chip *self, Bit32u rate ) {
 }
 
 static bool doneTables = false;
-void DBOPL_InitTables( void ) {
+void DBOPL_InitTables( void ) 
+{
         int i, oct;
 
 	if ( doneTables )
 		return;
+	
 	doneTables = true;
+	
 #if ( DBOPL_WAVE == WAVE_HANDLER ) || ( DBOPL_WAVE == WAVE_TABLELOG )
 	//Exponential volume table, same as the real adlib
 	for ( i = 0; i < 256; i++ ) {

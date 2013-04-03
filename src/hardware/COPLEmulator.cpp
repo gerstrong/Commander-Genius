@@ -47,12 +47,7 @@ void COPLEmulator::AlSetFXInst(Instrument &inst)
     Chip__WriteReg( alFeedCon, 0);
 }
 
-///////////////////////////////////////////////////////////////////////////
-//
-//      DetectAdLib() - Determines if there's an AdLib (or SoundBlaster
-//              emulating an AdLib) present
-//
-///////////////////////////////////////////////////////////////////////////
+// This will setup the sound for Adlib Sound or Music
 void COPLEmulator::StartOPLforAdlibSound()
 {
     for (int i = 1; i <= 0xf5; i++)       // Zero all the registers
@@ -81,10 +76,14 @@ void COPLEmulator::setup()
 
 
 unsigned int COPLEmulator::getIMFClockRate()
-{	return m_imf_clock_rate;	}
+{	
+  return m_imf_clock_rate;	  
+}
 
 void COPLEmulator::setIMFClockrate(const unsigned int clock_rate)
-{	m_imf_clock_rate = clock_rate;	}
+{	
+  m_imf_clock_rate = clock_rate;  
+}
 
 ///////////////////////////////////////////////////////////////////////////
 //
