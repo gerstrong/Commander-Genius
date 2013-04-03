@@ -40,6 +40,7 @@ public:
 
 private:
   int mTimer;
+  bool mKeenIsNear;
     
 };
 

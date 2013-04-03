@@ -3,6 +3,7 @@
 
 #include "engine/galaxy/common/ai/CPlayerLevel.h"
 #include <engine/galaxy/common/ai/CBullet.h>
+#include <engine/galaxy/common/ai/CEnemyShot.h>
 
 
 namespace galaxy
@@ -11,7 +12,6 @@ namespace galaxy
 enum BIPSHIPACTIONS
 {
 A_BIPSHIP_MOVING = 0,	// Ordinary move action 
-A_BIPSHIP_SHOT = 1,
 A_BIPSHIP_TURN = 2,
 A_BIPSHIP_HIT = 6,
 A_BIPSHIP_CRASH = 7,
@@ -22,13 +22,17 @@ A_BIPSHIP_SMOKE = 9
 
 const int FLY_SPEED = 30;
 
+const int TIME_UNTIL_LOOK = 160;
+const int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
+
+
 
 CBipShip::CBipShip(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CGalaxyActionSpriteObject(pmap, foeID, x, y),
-mTimer(0)
+mTimer(0),
+mKeenIsNear(false)
 {
 	mActionMap[A_BIPSHIP_MOVING] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processMoving;
-	mActionMap[A_BIPSHIP_SHOT] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processTheShot;
 	mActionMap[A_BIPSHIP_TURN] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processTurning;
 	mActionMap[A_BIPSHIP_HIT] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processHit;
 	mActionMap[A_BIPSHIP_CRASH] = (void (CGalaxyActionSpriteObject::*)()) &CBipShip::processCrashing;
@@ -64,14 +68,20 @@ void CBipShip::processMoving()
 	  xDirection = LEFT;
 	  setAction(A_BIPSHIP_TURN);
 	}
+	
+	if(mKeenIsNear)
+	{
+  		playSound(SOUND_BIPSHIP_SHOOT);
+		int x_coord = getXMidPos();
+		x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
+
+	  	CEnemyShot *laser = new CEnemyShot(mp_Map, 0, x_coord, getYMidPos()-(8<<STC),
+									0x2A7A, xDirection, 0,  100);
+		g_pBehaviorEngine->m_EventList.spawnObj( laser );
+		mKeenIsNear = false; 
+	}
 }
 
-
-
-void CBipShip::processTheShot()
-{
-
-}
 
 
 void CBipShip::processTurning()
@@ -118,6 +128,29 @@ void CBipShip::processSmoke()
 
 bool CBipShip::isNearby(CSpriteObject& theObject)
 {
+  if( dynamic_cast<CPlayerLevel*>(&theObject) )
+  {
+    mTimer++;
+    if(mTimer < TIME_UNTIL_LOOK)
+      return true;
+    
+    mTimer = 0;	    
+    
+    mKeenIsNear = false;
+    
+    const int objX = theObject.getXMidPos();
+    const int shipX = getXMidPos();
+    const int dx = objX - shipX;
+    
+    if( theObject.getYDownPos() > getYUpPos() && theObject.getYUpPos() < getYDownPos() )
+    {
+      if( std::abs(dx) < CSF_DISTANCE_TO_SHOOT )
+      {
+	mKeenIsNear = true;
+      }
+    }
+  }  
+  
   return true;
 }
 
