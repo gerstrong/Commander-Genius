@@ -104,8 +104,7 @@ void CBipShip::processHit()
 	const int newY = getYUpPos();
 	auto *bip = new CBip(mp_Map, 0x6C, newX, newY);
 	g_pBehaviorEngine->m_EventList.spawnObj( bip );
-	setAction(A_BIPSHIP_CRASH);
-	playSound(SOUND_BIP_SHIP_CRASH);	
+	setAction(A_BIPSHIP_WRECKAGE);	
     }
 }
 
@@ -117,7 +116,11 @@ void CBipShip::processCrashing()
 
 void CBipShip::processWreckage()
 {
-
+  if(blockedd)
+  {
+    setAction(A_BIPSHIP_CRASH);
+    playSound(SOUND_BIP_SHIP_CRASH);
+  }
 }
 
 void CBipShip::processSmoke()
