@@ -56,7 +56,7 @@ public:
 	 */
 	void init();
 	
-	// Call this if a new song is loaded or audio ettings are changed. When it inits it is also called
+	// Call this if a new song is loaded or audio ettings are changed. When it inits it is also called afterwards
 	void setup();
 
 	void AlSetFXInst(Instrument &inst);
