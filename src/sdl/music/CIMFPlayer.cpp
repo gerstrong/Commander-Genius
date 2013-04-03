@@ -324,7 +324,8 @@ bool CIMFPlayer::open()
 	m_numreadysamples = m_IMFDelay = 0;
 	m_samplesPerMusicTick = m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate();
 	
-	m_opl_emulator.setup();
+	//m_opl_emulator.setup();
+	m_opl_emulator.init();
 	
 	return !m_IMF_Data.empty();
 }
