@@ -72,7 +72,7 @@ void COPLEmulator::init()
     DBOPL_InitTables();
     Chip__Chip(&m_opl_chip);
     setup();
-    Chip__Setup(&m_opl_chip, m_AudioDevSpec.freq);
+    //Chip__Setup(&m_opl_chip, m_AudioDevSpec.freq);
 
     StartOPLforAdlibSound();
 }

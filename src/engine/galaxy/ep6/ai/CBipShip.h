@@ -17,8 +17,6 @@ public:
     */
   void processMoving();
 
-  void processTheShot();
-  
   void processTurning();
   
   void processHit();
