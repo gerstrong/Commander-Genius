@@ -1,5 +1,6 @@
 #include "CBobba.h"
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include <engine/galaxy/common/ai/CEnemyShot.h>
 #include <misc.h>
 
 /*
@@ -20,14 +21,14 @@ enum BOBBAACTIONS
 {
 A_BOBBA_JUMP = 0,
 A_BOBBA_SIT = 2,
-A_BOBBA_SHOOT = 3,
-A_BOBBA_EYE_TWINKLE = 4
+A_BOBBA_SHOOT = 3
 };    
     
 
 const int MOVE_X_SPEED = 30;
 
 const int SIT_TIME = 60;
+const int SHOOT_TIME = 120;
 
 const int MAX_JUMP_INERTIA = -170;
 
@@ -37,7 +38,6 @@ CGalaxyActionSpriteObject(pmap, foeID, x, y)
 	mActionMap[A_BOBBA_JUMP] = (void (CGalaxyActionSpriteObject::*)()) &CBobba::processJumping;
 	mActionMap[A_BOBBA_SIT] = (void (CGalaxyActionSpriteObject::*)()) &CBobba::processSitting;
 	mActionMap[A_BOBBA_SHOOT] = (void (CGalaxyActionSpriteObject::*)()) &CBobba::processShooting;
-	mActionMap[A_BOBBA_EYE_TWINKLE] = (void (CGalaxyActionSpriteObject::*)()) &CBobba::processEyeTwinkle;
 	
 	setupGalaxyObjectOnMap(0x2D86, A_BOBBA_JUMP);
 	
@@ -75,21 +75,30 @@ void CBobba::processSitting()
     
     mTimer = 0;
     
-    yinertia = MAX_JUMP_INERTIA;
+    setAction(A_BOBBA_SHOOT);
+    playSound(SOUND_BOBBA_SHOOT);    
+    int x_coord = getXMidPos();
+    x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
     
-    setAction(A_BOBBA_JUMP);
+    CEnemyShot *fireball = new CEnemyShot(mp_Map, 0, x_coord, getYUpPos(),
+				       0x2E76, xDirection, 0,  100);
+    g_pBehaviorEngine->m_EventList.spawnObj( fireball );
+    
 }
 
 
 void CBobba::processShooting()
 {
+    mTimer++;
 
-}
+    if(mTimer < SHOOT_TIME)
+	return;
+    
+    mTimer = 0;
 
-
-void CBobba::processEyeTwinkle()
-{
-
+    yinertia = MAX_JUMP_INERTIA;
+    
+    setAction(A_BOBBA_JUMP);
 }
 
 

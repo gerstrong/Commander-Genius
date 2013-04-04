@@ -19,8 +19,6 @@ public:
 	
 	void processShooting();
 	
-	void processEyeTwinkle();
-	
 	void process();
 
 	bool isNearby(CSpriteObject &theObject);
