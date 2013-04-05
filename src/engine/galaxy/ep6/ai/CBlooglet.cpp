@@ -22,8 +22,8 @@ CStunnable(pmap, foeID, x, y),
 mTimer(0),
 mCarriesGem(carriesGem)
 {
-	mActionMap[A_BLOOGLET_RUN] = (void (CStunnable::*)()) &CBlooglet::processRunning;
-	mActionMap[A_BLOOGLET_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_BLOOGLET_RUN] = (GASOFctr) &CBlooglet::processRunning;
+	mActionMap[A_BLOOGLET_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 	
 	setupGalaxyObjectOnMap(actionOff, A_BLOOGLET_RUN);
 	

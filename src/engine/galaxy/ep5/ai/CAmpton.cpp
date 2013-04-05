@@ -39,13 +39,13 @@ CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-  	mActionMap[A_AMPTON_WALK] = (void (CStunnable::*)()) &CAmpton::processWalking;
-  	mActionMap[A_AMPTON_TURN] = (void (CStunnable::*)()) &CAmpton::processTurn;
-  	mActionMap[A_AMPTON_START_POLE] = (void (CStunnable::*)()) &CAmpton::processStartPole;
-  	mActionMap[A_AMPTON_POLE_SLIDE] = (void (CStunnable::*)()) &CAmpton::processPoleSlide;
-  	mActionMap[A_AMPTON_STOP_POLE] = (void (CStunnable::*)()) &CAmpton::processStopPole;
-  	mActionMap[A_AMPTON_FLIP_SWITCH] = (void (CStunnable::*)()) &CAmpton::processFlipSwitch;
-	mActionMap[A_AMPTON_STUNNED] = &CStunnable::processGettingStunned;
+  	mActionMap[A_AMPTON_WALK] = (GASOFctr) &CAmpton::processWalking;
+  	mActionMap[A_AMPTON_TURN] = (GASOFctr) &CAmpton::processTurn;
+  	mActionMap[A_AMPTON_START_POLE] = (GASOFctr) &CAmpton::processStartPole;
+  	mActionMap[A_AMPTON_POLE_SLIDE] = (GASOFctr) &CAmpton::processPoleSlide;
+  	mActionMap[A_AMPTON_STOP_POLE] = (GASOFctr) &CAmpton::processStopPole;
+  	mActionMap[A_AMPTON_FLIP_SWITCH] = (GASOFctr) &CAmpton::processFlipSwitch;
+	mActionMap[A_AMPTON_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
   
 	// Adapt this AI
 	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);

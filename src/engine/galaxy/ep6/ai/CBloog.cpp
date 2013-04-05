@@ -25,8 +25,8 @@ CBloog::CBloog(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-	mActionMap[A_BLOOG_WALK] = (void (CStunnable::*)()) &CBloog::processWalking;
-	mActionMap[A_BLOOG_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_BLOOG_WALK] = (GASOFctr) &CBloog::processWalking;
+	mActionMap[A_BLOOG_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 	
 	setupGalaxyObjectOnMap(0x1EE6, A_BLOOG_WALK);
 	

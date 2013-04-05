@@ -31,10 +31,10 @@ mTimer(0),
 mTeleported(false),
 mStolen(false)
 {
-	mActionMap[A_SMIRKY_LOOK]     = (void (CStunnable::*)()) &CTreasureEater::processLooking;
-	mActionMap[A_SMIRKY_TELEPORT] = (void (CStunnable::*)()) &CTreasureEater::processTeleporting;
-	mActionMap[A_SMIRKY_HOP]      = (void (CStunnable::*)()) &CTreasureEater::processHopping;
-	mActionMap[A_SMIRKY_STUNNED]  = &CStunnable::processGettingStunned;
+	mActionMap[A_SMIRKY_LOOK]     = (GASOFctr) &CTreasureEater::processLooking;
+	mActionMap[A_SMIRKY_TELEPORT] = (GASOFctr) &CTreasureEater::processTeleporting;
+	mActionMap[A_SMIRKY_HOP]      = (GASOFctr) &CTreasureEater::processHopping;
+	mActionMap[A_SMIRKY_STUNNED]  = (GASOFctr) &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap( 0x31E2, A_SMIRKY_LOOK );
 	xDirection = LEFT;

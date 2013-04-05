@@ -41,10 +41,10 @@ mTimer(0),
 mKeenAlignment(LEFT),
 mGoodTrackChance(false)
 {
-    mActionMap[A_FLEEX_WALK] = (void (CStunnable::*)()) &CFleex::processWalk;
-    mActionMap[A_FLEEX_TRACK] = (void (CStunnable::*)()) &CFleex::processTrack;
-    mActionMap[A_FLEEX_LOOK] = (void (CStunnable::*)()) &CFleex::processLook;
-    mActionMap[A_FLEEX_STUNNED] = &CStunnable::processGettingStunned;
+    mActionMap[A_FLEEX_WALK] = (GASOFctr) &CFleex::processWalk;
+    mActionMap[A_FLEEX_TRACK] = (GASOFctr) &CFleex::processTrack;
+    mActionMap[A_FLEEX_LOOK] = (GASOFctr) &CFleex::processLook;
+    mActionMap[A_FLEEX_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
     
     setupGalaxyObjectOnMap(0x2C78, A_FLEEX_WALK);
     

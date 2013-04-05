@@ -26,11 +26,11 @@ CStunnable(pmap, foeID, x, y),
 bounceboost(0),
 mpInteractPlayer(NULL)
 {
-	mActionMap[A_BOUNDER_BOUNCE] = (void (CStunnable::*)()) &CBounder::processBounce;
-	mActionMap[A_BOUNDER_MOVE] = (void (CStunnable::*)()) &CBounder::processBounce;
-	mActionMap[A_BOUNDER_MOVE+1] = (void (CStunnable::*)()) &CBounder::processBounce;
-	mActionMap[A_BOUNDER_ONFLOOR] = (void (CStunnable::*)()) &CBounder::processOnFloor;
-	mActionMap[A_BOUNDER_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_BOUNDER_BOUNCE] = (GASOFctr) &CBounder::processBounce;
+	mActionMap[A_BOUNDER_MOVE] = (GASOFctr) &CBounder::processBounce;
+	mActionMap[A_BOUNDER_MOVE+1] = (GASOFctr) &CBounder::processBounce;
+	mActionMap[A_BOUNDER_ONFLOOR] = (GASOFctr) &CBounder::processOnFloor;
+	mActionMap[A_BOUNDER_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);
 	xDirection = 0;	

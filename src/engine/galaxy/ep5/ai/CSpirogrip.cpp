@@ -66,19 +66,19 @@ CSpirogrip::CSpirogrip(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uin
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-    mActionMap[A_GRIP_BACK_UP_DOWN] = (void (CStunnable::*)()) &CSpirogrip::processBackup;
-    mActionMap[A_GRIP_PAUSE_DOWN] = (void (CStunnable::*)()) &CSpirogrip::processPause;
-    mActionMap[A_GRIP_BACK_UP_LEFT] = (void (CStunnable::*)()) &CSpirogrip::processBackup;
-    mActionMap[A_GRIP_PAUSE_LEFT] = (void (CStunnable::*)()) &CSpirogrip::processPause;
-    mActionMap[A_GRIP_BACK_UP_UP] = (void (CStunnable::*)()) &CSpirogrip::processBackup;
-    mActionMap[A_GRIP_PAUSE_UP] = (void (CStunnable::*)()) &CSpirogrip::processPause;
-    mActionMap[A_GRIP_BACK_UP_RIGHT] = (void (CStunnable::*)()) &CSpirogrip::processBackup;
-    mActionMap[A_GRIP_PAUSE_RIGHT] = (void (CStunnable::*)()) &CSpirogrip::processPause;
-    mActionMap[A_GRIP_SPIN] = (void (CStunnable::*)()) &CSpirogrip::processSpin;
-    mActionMap[A_GRIP_MOVE_DOWN] = (void (CStunnable::*)()) &CSpirogrip::processMove;
-    mActionMap[A_GRIP_MOVE_LEFT] = (void (CStunnable::*)()) &CSpirogrip::processMove;
-    mActionMap[A_GRIP_MOVE_UP] = (void (CStunnable::*)()) &CSpirogrip::processMove;
-    mActionMap[A_GRIP_MOVE_RIGHT] = (void (CStunnable::*)()) &CSpirogrip::processMove;    
+    mActionMap[A_GRIP_BACK_UP_DOWN] = (GASOFctr) &CSpirogrip::processBackup;
+    mActionMap[A_GRIP_PAUSE_DOWN] = (GASOFctr) &CSpirogrip::processPause;
+    mActionMap[A_GRIP_BACK_UP_LEFT] = (GASOFctr) &CSpirogrip::processBackup;
+    mActionMap[A_GRIP_PAUSE_LEFT] = (GASOFctr) &CSpirogrip::processPause;
+    mActionMap[A_GRIP_BACK_UP_UP] = (GASOFctr) &CSpirogrip::processBackup;
+    mActionMap[A_GRIP_PAUSE_UP] = (GASOFctr) &CSpirogrip::processPause;
+    mActionMap[A_GRIP_BACK_UP_RIGHT] = (GASOFctr) &CSpirogrip::processBackup;
+    mActionMap[A_GRIP_PAUSE_RIGHT] = (GASOFctr) &CSpirogrip::processPause;
+    mActionMap[A_GRIP_SPIN] = (GASOFctr) &CSpirogrip::processSpin;
+    mActionMap[A_GRIP_MOVE_DOWN] = (GASOFctr) &CSpirogrip::processMove;
+    mActionMap[A_GRIP_MOVE_LEFT] = (GASOFctr) &CSpirogrip::processMove;
+    mActionMap[A_GRIP_MOVE_UP] = (GASOFctr) &CSpirogrip::processMove;
+    mActionMap[A_GRIP_MOVE_RIGHT] = (GASOFctr) &CSpirogrip::processMove;    
   
     // Adapt this AI
     setupGalaxyObjectOnMap(0x2824, A_GRIP_BACK_UP_DOWN);

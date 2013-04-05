@@ -40,17 +40,23 @@ CStunnable(pmap, foeID, x, y),
 mTimer(0),
 mLookTimer(0),
 mGoodChargeChance(false)
+
 {
-  	mActionMap[A_SPARKY_WALK] = (void (CStunnable::*)()) &CSparky::processWalking;
-  	mActionMap[A_SPARKY_LOOK] = (void (CStunnable::*)()) &CSparky::processLook;
-  	mActionMap[A_SPARKY_CHARGE] = (void (CStunnable::*)()) &CSparky::processCharge;
-  	mActionMap[A_SPARKY_TURN] = (void (CStunnable::*)()) &CSparky::processTurn;
-	mActionMap[A_SPARKY_STUNNED] = &CStunnable::processGettingStunned;
   
-	// Adapt this AI
-	setupGalaxyObjectOnMap(0x1F0C, A_SPARKY_WALK);
-	
-	xDirection = LEFT;
+  //std::function<void()> do_walk = processWalking;
+  //do_walk = processWalking;
+  //do_walk.assign(CSparky::processWalking);
+  
+    mActionMap[A_SPARKY_WALK] = (void (CGalaxyActionSpriteObject::*)()) &CSparky::processWalking;
+    mActionMap[A_SPARKY_LOOK] = (void (CGalaxyActionSpriteObject::*)()) &CSparky::processLook;
+    mActionMap[A_SPARKY_CHARGE] = (void (CGalaxyActionSpriteObject::*)()) &CSparky::processCharge;
+    mActionMap[A_SPARKY_TURN] = (void (CGalaxyActionSpriteObject::*)()) &CSparky::processTurn;
+    mActionMap[A_SPARKY_STUNNED] = (void (CGalaxyActionSpriteObject::*)()) &CStunnable::processGettingStunned;
+  
+    // Adapt this AI
+    setupGalaxyObjectOnMap(0x1F0C, A_SPARKY_WALK);
+
+    xDirection = LEFT;
 }
 
 

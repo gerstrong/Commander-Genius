@@ -56,12 +56,12 @@ CShelly::CShelly(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-      	mActionMap[A_SHELLY_WALK] = (void (CStunnable::*)()) &CShelly::processWalking;
-      	mActionMap[A_SHELLY_PREPARE_JUMP] = (void (CStunnable::*)()) &CShelly::processPrepareJump;
-      	mActionMap[A_SHELLY_JUMP] = (void (CStunnable::*)()) &CShelly::processJump;
-      	mActionMap[A_SHELLY_FALL] = (void (CStunnable::*)()) &CShelly::processFall;
-      	mActionMap[A_SHELLY_SMASH] = (void (CStunnable::*)()) &CShelly::processSmash;
-      	mActionMap[A_SHELLY_SMOKE] = (void (CStunnable::*)()) &CShelly::processSmoke;
+      	mActionMap[A_SHELLY_WALK] = (GASOFctr) &CShelly::processWalking;
+      	mActionMap[A_SHELLY_PREPARE_JUMP] = (GASOFctr) &CShelly::processPrepareJump;
+      	mActionMap[A_SHELLY_JUMP] = (GASOFctr) &CShelly::processJump;
+      	mActionMap[A_SHELLY_FALL] = (GASOFctr) &CShelly::processFall;
+      	mActionMap[A_SHELLY_SMASH] = (GASOFctr) &CShelly::processSmash;
+      	mActionMap[A_SHELLY_SMOKE] = (GASOFctr) &CShelly::processSmoke;
   
 	// Adapt this AI
 	setupGalaxyObjectOnMap(0x2416, A_SHELLY_WALK);

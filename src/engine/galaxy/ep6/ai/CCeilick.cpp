@@ -25,9 +25,9 @@ mChanceToLick(false),
 mCrawlPos(0),
 mLaughed(false)
 {
-	mActionMap[A_CEILICK_SLEEP] = (void (CStunnable::*)()) &CCeilick::processSleeping;
-	mActionMap[A_CEILICK_LICK] = (void (CStunnable::*)()) &CCeilick::processLicking;
-	mActionMap[A_CEILICK_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_CEILICK_SLEEP] = (GASOFctr) &CCeilick::processSleeping;
+	mActionMap[A_CEILICK_LICK] = (GASOFctr) &CCeilick::processLicking;
+	mActionMap[A_CEILICK_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 	
 	setupGalaxyObjectOnMap(0x31BE, A_CEILICK_SLEEP);
 	

@@ -35,8 +35,8 @@ mTimer(0)
 	xDirection = xDir;
 	yDirection = yDir;
 	
-	mActionMap[A_REDSHOT_MOVE] = (void (CStunnable::*)()) &CRedShot::processMove;
-	mActionMap[A_REDSHOT_SMASH] = (void (CStunnable::*)()) &CRedShot::smash;
+	mActionMap[A_REDSHOT_MOVE] = (GASOFctr) &CRedShot::processMove;
+	mActionMap[A_REDSHOT_SMASH] = (GASOFctr) &CRedShot::smash;
 
 	setupGalaxyObjectOnMap(0x27AC, A_REDSHOT_MOVE);
 	setActionSprite();

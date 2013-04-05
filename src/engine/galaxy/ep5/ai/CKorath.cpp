@@ -37,9 +37,9 @@ CKorath::CKorath(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y)
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {  
-  	mActionMap[A_KORATH_WALK] = (void (CStunnable::*)()) &CKorath::processWalking;
-  	mActionMap[A_KORATH_SIT] = (void (CStunnable::*)()) &CKorath::processSitting;
-	mActionMap[A_KORATH_STUNNED] = &CStunnable::processGettingStunned;
+  	mActionMap[A_KORATH_WALK] = (GASOFctr) &CKorath::processWalking;
+  	mActionMap[A_KORATH_SIT] = (GASOFctr) &CKorath::processSitting;
+	mActionMap[A_KORATH_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x30D2, A_KORATH_WALK);
 	

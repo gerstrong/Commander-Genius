@@ -25,9 +25,9 @@ mTimer(0),
 mGoodClubChance(false),
 mStubPlayer(false)
 {
-    mActionMap[A_BLOOGUARD_WALK] = (void (CStunnable::*)()) &CBlooguard::processWalking;
-    mActionMap[A_BLOOGUARD_CLUBBING] = (void (CStunnable::*)()) &CBlooguard::processClubbing;
-    mActionMap[A_BLOOGUARD_STUNNED] = &CStunnable::processGettingStunned;
+    mActionMap[A_BLOOGUARD_WALK] = (GASOFctr) &CBlooguard::processWalking;
+    mActionMap[A_BLOOGUARD_CLUBBING] = (GASOFctr) &CBlooguard::processClubbing;
+    mActionMap[A_BLOOGUARD_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
     
     setupGalaxyObjectOnMap(0x1F7C, A_BLOOGUARD_WALK);
     

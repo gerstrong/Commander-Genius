@@ -55,12 +55,12 @@ mHealth(2),
 mTimer(0)
 {
 	
-	mActionMap[A_HOUND_SIT] = (void (CStunnable::*)()) &CShockshound::processSit;
-	mActionMap[A_HOUND_BARK] = (void (CStunnable::*)()) &CShockshound::processBark;
-	mActionMap[A_HOUND_WALK] = (void (CStunnable::*)()) &CShockshound::processWalking;
-	mActionMap[A_HOUND_JUMP] = (void (CStunnable::*)()) &CShockshound::processJump;
-	mActionMap[A_HOUND_SHOOT] = (void (CStunnable::*)()) &CShockshound::processBark;
-	mActionMap[A_HOUND_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_HOUND_SIT] = (GASOFctr) &CShockshound::processSit;
+	mActionMap[A_HOUND_BARK] = (GASOFctr) &CShockshound::processBark;
+	mActionMap[A_HOUND_WALK] = (GASOFctr) &CShockshound::processWalking;
+	mActionMap[A_HOUND_JUMP] = (GASOFctr) &CShockshound::processJump;
+	mActionMap[A_HOUND_SHOOT] = (GASOFctr) &CShockshound::processBark;
+	mActionMap[A_HOUND_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 	
   
 	// Adapt this AI

@@ -1,4 +1,4 @@
-﻿#include "CBabobba.h"
+#include "CBabobba.h"
 #include <engine/galaxy/common/ai/CPlayerBase.h>
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
 #include <misc.h>
@@ -49,12 +49,12 @@ CStunnable(pmap, foeID, x, y),
 mTimer(0),
 mGoodFireChance(false)
 {
-	mActionMap[A_BABOBBA_JUMP] = (void (CStunnable::*)()) &CBabobba::processJumping;
-	mActionMap[A_BABOBBA_SIT] = (void (CStunnable::*)()) &CBabobba::processSitting;
-	mActionMap[A_BABOBBA_SHOOT] = (void (CStunnable::*)()) &CBabobba::processShooting;
-	mActionMap[A_BABOBBA_JUMP_ALT] = (void (CStunnable::*)()) &CBabobba::processJumpingAlt;
-	mActionMap[A_BABOBBA_STUNNED] = &CStunnable::processGettingStunned;
-	mActionMap[A_BABOBBA_NAPPING] = (void (CStunnable::*)()) &CBabobba::processNapping;
+	mActionMap[A_BABOBBA_JUMP] = (GASOFctr) &CBabobba::processJumping;
+	mActionMap[A_BABOBBA_SIT] = (GASOFctr) &CBabobba::processSitting;
+	mActionMap[A_BABOBBA_SHOOT] = (GASOFctr) &CBabobba::processShooting;
+	mActionMap[A_BABOBBA_JUMP_ALT] = (GASOFctr) &CBabobba::processJumpingAlt;
+	mActionMap[A_BABOBBA_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
+	mActionMap[A_BABOBBA_NAPPING] = (GASOFctr) &CBabobba::processNapping;
 	
 	setupGalaxyObjectOnMap(0x2F48, A_BABOBBA_JUMP);
 	

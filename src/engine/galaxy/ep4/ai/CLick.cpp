@@ -36,10 +36,10 @@ CStunnable(pmap, foeID, x, y),
 m_timer(0),
 keenNear(false)
 {
-	mActionMap[A_LICK_HOP] = (void (CStunnable::*)()) (&CLick::processHop);
-	mActionMap[A_LICK_LAND] = (void (CStunnable::*)()) (&CLick::processLand);
-	mActionMap[A_LICK_BREATHE] = (void (CStunnable::*)()) (&CLick::processBreathe);
-	mActionMap[A_LICK_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_LICK_HOP] = (GASOFctr) (&CLick::processHop);
+	mActionMap[A_LICK_LAND] = (GASOFctr) (&CLick::processLand);
+	mActionMap[A_LICK_BREATHE] = (GASOFctr) (&CLick::processBreathe);
+	mActionMap[A_LICK_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x2FC6, A_LICK_HOP);
 

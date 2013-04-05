@@ -8,14 +8,14 @@
 #ifndef CSTUNNABLE_H_
 #define CSTUNNABLE_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
 #include "engine/galaxy/common/ai/CBullet.h"
+#include "CGalaxyActionSpriteObject.h"
 #include <map>
 
 namespace galaxy
 {
 
-class CStunnable: public CGalaxySpriteObject
+class CStunnable: public CGalaxyActionSpriteObject
 {
 public:
 	CStunnable(CMap *pmap,
@@ -44,12 +44,9 @@ public:
 	 */
 	void draw();
 
-	void setActionForce(const size_t ActionNumber);
 
 protected:
 	bool m_stunned;	
-	void (CStunnable::*mp_processState)();
-	std::map< size_t, void (CStunnable::*)() > mActionMap;
 	
 	int starSprite;
 	int starSpriteBase;

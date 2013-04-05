@@ -21,9 +21,9 @@ CFlect::CFlect(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-	mActionMap[A_FLECT_TURN] = (void (CStunnable::*)()) &CFlect::processWalking;
-	mActionMap[A_FLECT_WALK] = (void (CStunnable::*)()) &CFlect::processTurning;
-	mActionMap[A_FLECT_STUN] = &CStunnable::processGettingStunned;
+	mActionMap[A_FLECT_TURN] = (GASOFctr) &CFlect::processWalking;
+	mActionMap[A_FLECT_WALK] = (GASOFctr) &CFlect::processTurning;
+	mActionMap[A_FLECT_STUN] = (GASOFctr) &CStunnable::processGettingStunned;
 	
 	setupGalaxyObjectOnMap(0x2BA6, A_FLECT_TURN);
 	

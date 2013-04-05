@@ -6,6 +6,9 @@
 namespace galaxy
 {
 
+  
+#define GASOFctr void(CGalaxyActionSpriteObject::*)()  
+  
 
 class CGalaxyActionSpriteObject : public CGalaxySpriteObject
 {
@@ -19,7 +22,7 @@ public:
 
 protected:
 	void (CGalaxyActionSpriteObject::*mp_processState)();
-	std::map< size_t, void (CGalaxyActionSpriteObject::*)() > mActionMap;	
+	std::map< size_t, GASOFctr > mActionMap;	
 };
 
 };

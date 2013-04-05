@@ -29,10 +29,10 @@ CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 m_timer(0)
 {
-	mActionMap[A_SLUG_MOVE] = (void (CStunnable::*)()) &CPoisonSlug::processCrawling;
-	mActionMap[A_SLUG_POOING] = (void (CStunnable::*)()) &CPoisonSlug::processPooing;
-	mActionMap[A_SLUG_STUNNED] = &CStunnable::processGettingStunned;
-	mActionMap[A_SLUG_STUNNED_ALT] = &CStunnable::processGettingStunned;
+	mActionMap[A_SLUG_MOVE] = (GASOFctr) &CPoisonSlug::processCrawling;
+	mActionMap[A_SLUG_POOING] = (GASOFctr) &CPoisonSlug::processPooing;
+	mActionMap[A_SLUG_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
+	mActionMap[A_SLUG_STUNNED_ALT] = (GASOFctr) &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x2012, A_SLUG_MOVE);
 

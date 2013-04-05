@@ -49,10 +49,10 @@ CShikadiMine::CShikadiMine(CMap *pmap, const Uint16 foeID, const Uint32 x, const
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-    mActionMap[A_MINE_SIT] = (void (CStunnable::*)()) &CShikadiMine::processSit;
-    mActionMap[A_MINE_MOVE] = (void (CStunnable::*)()) &CShikadiMine::processMoving;
-    mActionMap[A_MINE_CHANGE_DIR] = (void (CStunnable::*)()) &CShikadiMine::processChangeDir;
-    mActionMap[A_MINE_DETONATE] = (void (CStunnable::*)()) &CShikadiMine::processDetonate;
+    mActionMap[A_MINE_SIT] = (GASOFctr) &CShikadiMine::processSit;
+    mActionMap[A_MINE_MOVE] = (GASOFctr) &CShikadiMine::processMoving;
+    mActionMap[A_MINE_CHANGE_DIR] = (GASOFctr) &CShikadiMine::processChangeDir;
+    mActionMap[A_MINE_DETONATE] = (GASOFctr) &CShikadiMine::processDetonate;
 
     // Adapt this AI
     setupGalaxyObjectOnMap(0x2608, A_MINE_SIT);

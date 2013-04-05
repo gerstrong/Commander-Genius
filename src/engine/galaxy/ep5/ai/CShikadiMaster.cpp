@@ -45,9 +45,9 @@ mTimer(0),
 mTeleport(false),
 mpPlayer(nullptr)
 {  
-      	mActionMap[A_MASTER_STAND] = (void (CStunnable::*)()) &CShikadiMaster::processStanding;
-      	mActionMap[A_MASTER_SHOOT] = (void (CStunnable::*)()) &CShikadiMaster::processShooting;
-      	mActionMap[A_MASTER_TELEPORT] = (void (CStunnable::*)()) &CShikadiMaster::processTeleporting;    
+      	mActionMap[A_MASTER_STAND] = (GASOFctr) &CShikadiMaster::processStanding;
+      	mActionMap[A_MASTER_SHOOT] = (GASOFctr) &CShikadiMaster::processShooting;
+      	mActionMap[A_MASTER_TELEPORT] = (GASOFctr) &CShikadiMaster::processTeleporting;    
     
 	// Adapt this AI
 	setupGalaxyObjectOnMap(0x2AF4, A_MASTER_STAND);

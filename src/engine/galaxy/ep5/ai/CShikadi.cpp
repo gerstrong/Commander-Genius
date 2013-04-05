@@ -50,10 +50,10 @@ CStunnable(pmap, foeID, x, y),
 mHealth(4),
 mTimer(0)
 {
-    mActionMap[A_SHIKADI_STAND] = (void (CStunnable::*)()) &CShikadi::processStanding;
-    mActionMap[A_SHIKADI_WALK] = (void (CStunnable::*)()) &CShikadi::processWalking;
-    mActionMap[A_SHIKADI_POLE_ZAPS] = (void (CStunnable::*)()) &CShikadi::processPoleZaps;
-    mActionMap[A_SHIKADI_STUNNED] = &CStunnable::processGettingStunned;
+    mActionMap[A_SHIKADI_STAND] = (GASOFctr) &CShikadi::processStanding;
+    mActionMap[A_SHIKADI_WALK] = (GASOFctr) &CShikadi::processWalking;
+    mActionMap[A_SHIKADI_POLE_ZAPS] = (GASOFctr) &CShikadi::processPoleZaps;
+    mActionMap[A_SHIKADI_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
   
     // Adapt this AI
     setupGalaxyObjectOnMap(0x2D10, A_SHIKADI_STAND);

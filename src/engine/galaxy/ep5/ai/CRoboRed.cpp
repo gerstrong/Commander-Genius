@@ -45,9 +45,9 @@ mLookTimer(0),
 swapYDir(false),
 mKeenNearby(false)
 {
-	mActionMap[A_RED_MOVE] = (void (CStunnable::*)()) &CRoboRed::processMoving;
-	mActionMap[A_RED_PAUSE] = (void (CStunnable::*)()) &CRoboRed::processPauseBeforeShoot;
-	mActionMap[A_RED_SHOOT] = (void (CStunnable::*)()) &CRoboRed::processShoot;
+	mActionMap[A_RED_MOVE] = (GASOFctr) &CRoboRed::processMoving;
+	mActionMap[A_RED_PAUSE] = (GASOFctr) &CRoboRed::processPauseBeforeShoot;
+	mActionMap[A_RED_SHOOT] = (GASOFctr) &CRoboRed::processShoot;
   
 	// Adapt this AI
 	setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);

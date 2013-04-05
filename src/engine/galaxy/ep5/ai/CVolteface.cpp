@@ -36,8 +36,8 @@ CStunnable(pmap, foeID, x, y),
 CMoveTarget(m_Pos, xDirection, yDirection),
 mTimer(0)
 {
-	mActionMap[A_VOLTFACE_MOVE] = (void (CStunnable::*)()) &CVolteface::processMoving;
-	mActionMap[A_VOLTFACE_STUNNED] = (void (CStunnable::*)()) &CVolteface::processStunned;
+	mActionMap[A_VOLTFACE_MOVE] = (GASOFctr) &CVolteface::processMoving;
+	mActionMap[A_VOLTFACE_STUNNED] = (GASOFctr) &CVolteface::processStunned;
 	
 	m_ActionBaseOffset = 0x1CCC;
 

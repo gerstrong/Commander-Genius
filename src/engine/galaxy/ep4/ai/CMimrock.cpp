@@ -36,11 +36,11 @@ CMimrock::CMimrock(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
-    mActionMap[A_MIMROCK_SIT] = (void (CStunnable::*)()) &CMimrock::processSit;
-    mActionMap[A_MIMROCK_WALK] = (void (CStunnable::*)()) &CMimrock::processWalk;
-    mActionMap[A_MIMROCK_JUMP] = (void (CStunnable::*)()) &CMimrock::processJump;
-    mActionMap[A_MIMROCK_BOUNCE] = (void (CStunnable::*)()) &CMimrock::processBounce;
-    mActionMap[A_MIMROCK_STUNNED] = &CStunnable::processGettingStunned;
+    mActionMap[A_MIMROCK_SIT] = (GASOFctr) &CMimrock::processSit;
+    mActionMap[A_MIMROCK_WALK] = (GASOFctr) &CMimrock::processWalk;
+    mActionMap[A_MIMROCK_JUMP] = (GASOFctr) &CMimrock::processJump;
+    mActionMap[A_MIMROCK_BOUNCE] = (GASOFctr) &CMimrock::processBounce;
+    mActionMap[A_MIMROCK_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
     
     setupGalaxyObjectOnMap(0x343A, A_MIMROCK_SIT);
     xDirection = LEFT;

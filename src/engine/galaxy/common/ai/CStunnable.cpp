@@ -28,9 +28,8 @@ const unsigned int STARRING_ANIMATION_TIME = 5;
 CStunnable::CStunnable(	CMap *pmap,
 			const Uint16 foeID,
 			Uint32 x, Uint32 y ) :
-CGalaxySpriteObject( pmap, foeID, x, y ),
+CGalaxyActionSpriteObject( pmap, foeID, x, y ),
 m_stunned(false),
-mp_processState(NULL),
 m_animation_timer(0),
 starTimer(TIME_STAR_SHOWN)
 {
@@ -62,7 +61,7 @@ void CStunnable::processGettingStunned()
     {      
       yinertia = -30; // It gets a small impulse
       
-      mp_processState = &CStunnable::processStunned;
+      mp_processState = (GASOFctr) &CStunnable::processStunned;
       blockedd = false;
       
       moveUp(8<<STC);
@@ -126,15 +125,5 @@ void CStunnable::draw()
   	
 }
 
-
-void CStunnable::setActionForce(const size_t ActionNumber)
-{
-	CGalaxySpriteObject::setActionForce(ActionNumber);
-
-	if( mActionMap.find(ActionNumber) != mActionMap.end() )
-		mp_processState = mActionMap[ActionNumber];
-	else
-		CGalaxySpriteObject::setActionForce(0); // This might happen, when the action-map is incomplete
-}
 
 };

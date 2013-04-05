@@ -51,12 +51,12 @@ mKeenAlignment(LEFT),
 mGoodChargeChance(false),
 mCanFinishGame(false)
 {
-    mActionMap[A_NOSPIKE_SIT] = (void (CStunnable::*)()) &CNospike::processSitting;
-    mActionMap[A_NOSPIKE_WALK] = (void (CStunnable::*)()) &CNospike::processWalking;
-    mActionMap[A_NOSPIKE_CHARGE] = (void (CStunnable::*)()) &CNospike::processCharging;
-    mActionMap[A_NOSPIKE_STAND] = (void (CStunnable::*)()) &CNospike::processStanding;
-    //mActionMap[A_NOSPIKE_FALL] = (void (CStunnable::*)()) &CNospike::processWalking;
-    mActionMap[A_NOSPIKE_STUNNED] = &CStunnable::processGettingStunned;
+    mActionMap[A_NOSPIKE_SIT] = (GASOFctr) &CNospike::processSitting;
+    mActionMap[A_NOSPIKE_WALK] = (GASOFctr) &CNospike::processWalking;
+    mActionMap[A_NOSPIKE_CHARGE] = (GASOFctr) &CNospike::processCharging;
+    mActionMap[A_NOSPIKE_STAND] = (GASOFctr) &CNospike::processStanding;
+    //mActionMap[A_NOSPIKE_FALL] = (GASOFctr) &CNospike::processWalking;
+    mActionMap[A_NOSPIKE_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
     
     setupGalaxyObjectOnMap(0x2460, A_NOSPIKE_SIT);
     

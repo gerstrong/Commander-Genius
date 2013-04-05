@@ -25,10 +25,10 @@ CStunnable(pmap, foeID, x, y),
 mTurnAround(false),
 mTimer(0)
 {
-	mActionMap[A_WORMMOUTH_MOVE]    = (void (CStunnable::*)()) &CWormmouth::processMoving;
-	mActionMap[A_WORMMOUTH_LOOK]    = (void (CStunnable::*)()) &CWormmouth::processLooking;
-	mActionMap[A_WORMMOUTH_EAT]     = (void (CStunnable::*)()) &CWormmouth::processEating;
-	mActionMap[A_WORMMOUTH_STUNNED] = &CStunnable::processGettingStunned;
+	mActionMap[A_WORMMOUTH_MOVE]    = (GASOFctr) &CWormmouth::processMoving;
+	mActionMap[A_WORMMOUTH_LOOK]    = (GASOFctr) &CWormmouth::processLooking;
+	mActionMap[A_WORMMOUTH_EAT]     = (GASOFctr) &CWormmouth::processEating;
+	mActionMap[A_WORMMOUTH_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
 	setupGalaxyObjectOnMap(0x26DE, A_WORMMOUTH_MOVE);
 	processMove(0, -(1<<CSF));	
