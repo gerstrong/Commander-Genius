@@ -25,7 +25,8 @@ public:
     void process();    
     
 private:
-    int mTimer; 
+    int mTimer;
+    bool mGivesKey;
     
 };
 

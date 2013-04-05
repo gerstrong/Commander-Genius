@@ -2,6 +2,7 @@
 #include <engine/galaxy/common/ai/CBullet.h>
 #include <engine/galaxy/common/ai/CPlayerBase.h>
 #include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include <engine/galaxy/common/ai/CItemEffect.h>
 #include <misc.h>
 
 namespace galaxy
@@ -51,7 +52,8 @@ const int TIME_UNTIL_FLOAT = 20;
 
 COrbatrix::COrbatrix(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxyActionSpriteObject(pmap, foeID, x, y),
-mTimer(0)
+mTimer(0),
+mGivesKey(false)
 {
     mActionMap[A_ORBATRIX_FLOAT] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processFloat;
     mActionMap[A_ORBATRIX_MOVE] = (void (CGalaxyActionSpriteObject::*)()) &COrbatrix::processMove;
@@ -64,7 +66,18 @@ mTimer(0)
 
     setupGalaxyObjectOnMap(0x27E6, A_ORBATRIX_FLOAT);
 
-    xDirection = LEFT;
+    xDirection = LEFT;        
+    
+    byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    ptr += 0x114F2;
+    
+    const byte endpattern[] =
+    { 0x05, 0x00 };
+              
+    if(memcmp(endpattern, ptr, 2) == 0)
+    {
+      mGivesKey = true;
+    }    
 }
 
 void COrbatrix::processFloat()
@@ -86,7 +99,10 @@ void COrbatrix::processMove()
     
     mTimer = 0;
     
-    setAction(A_ORBATRIX_CURL);    
+    if(!mGivesKey)
+    {
+      setAction(A_ORBATRIX_CURL);    
+    }
 }
 
 void COrbatrix::processCurl()
@@ -125,7 +141,6 @@ void COrbatrix::processBounce()
 	yinertia = MAX_BOUNCE_BOOST;
 	xDirection = -xDirection;
 	playSound(SOUND_ORBATRIX_BUMP);
-	// TODO: BOUNCE Sound here!
     }
     
     mTimer++;
@@ -193,7 +208,18 @@ void COrbatrix::getTouchedBy(CSpriteObject& theObject)
     
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
+      if(!mGivesKey)
+      {
 	player->kill();
+      }
+      else
+      {
+	stItemGalaxy &Item = player->m_Inventory.Item;
+	Item.m_gem.red++;
+	g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), got_sprite_item_pics[2][2], FADEOUT));
+	dead = true;
+	exists = false;
+      }
     } 
 }
 

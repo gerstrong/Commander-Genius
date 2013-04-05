@@ -23,7 +23,7 @@ public:
 	void processStanding();
 	
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode );
-
+	
 	void process();
 
 	/**
@@ -34,10 +34,11 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 	
 private:
-	int mHealth;
+	char mHealth;
 	int mTimer;      
 	direction_t mKeenAlignment;
-	bool mGoodChargeChance;    
+	bool mGoodChargeChance;
+	bool mCanFinishGame;
 };
 
 };

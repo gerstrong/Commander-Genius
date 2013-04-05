@@ -37,7 +37,7 @@ public:
 	virtual void setActionForce(const size_t ActionNumber);
 	void setAction(size_t ActionNumber);
 	void setActionSprite();
-	bool processActionRoutine();
+	virtual bool processActionRoutine();
 	
 	
 	// For saving and loading...

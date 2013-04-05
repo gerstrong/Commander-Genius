@@ -45,10 +45,11 @@ const int CSF_DISTANCE_TO_CHARGE = 6<<CSF;
 
 CNospike::CNospike(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
 CStunnable(pmap, foeID, x, y),
-mHealth(4),
+mHealth(0),
 mTimer(0),
 mKeenAlignment(LEFT),
-mGoodChargeChance(false)
+mGoodChargeChance(false),
+mCanFinishGame(false)
 {
     mActionMap[A_NOSPIKE_SIT] = (void (CStunnable::*)()) &CNospike::processSitting;
     mActionMap[A_NOSPIKE_WALK] = (void (CStunnable::*)()) &CNospike::processWalking;
@@ -60,6 +61,23 @@ mGoodChargeChance(false)
     setupGalaxyObjectOnMap(0x2460, A_NOSPIKE_SIT);
     
     xDirection = LEFT;
+    
+    byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    ptr += 0x10D35;
+    memcpy(&mHealth, ptr, 1 );
+    
+    ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    ptr += 0x1256C;
+    
+    const byte endpattern[] =
+    { 0x02, 0x75, 0x30, 0xC7, 0x06, 0xAC, 0x75, 
+      0x0C, 0x00, 0x5F, 0x5E, 0x5D, 0xCB };
+              
+    if(memcmp(endpattern, ptr, 13) == 0)
+    {
+      mCanFinishGame = true;
+    }
+    
 }
 
 
@@ -123,7 +141,7 @@ void CNospike::processCharging()
     if(!mGoodChargeChance)      
     {
       xDirection = mKeenAlignment;
-      setAction(A_NOSPIKE_WALK);
+      setAction(A_NOSPIKE_STAND);
     }
     
     mTimer++;
@@ -132,12 +150,18 @@ void CNospike::processCharging()
     
     mTimer = 0;
     
-    setAction(A_NOSPIKE_WALK); 
+    setAction(A_NOSPIKE_CHARGE); 
 }
 
 void CNospike::processStanding()
 {
-
+    mTimer++;
+    if( mTimer < TIME_UNTIL_SIT )  
+	return;
+    
+    mTimer = 0;
+    
+    setAction(A_NOSPIKE_WALK);     
 }
 
 
@@ -194,7 +218,11 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
 	if(mHealth == 0)
 	{
 	    setAction(A_NOSPIKE_STUNNED);
-	    dead = true;
+	    
+	    if(!mCanFinishGame)
+	    {
+	      dead = true;
+	    }
 	}
 	else
 	{
@@ -202,9 +230,36 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
 	}
     }
     
+    
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
+      if( mCanFinishGame && getActionNumber(A_NOSPIKE_STUNNED) ) // This will only happen in the Keen 8 Mod!
+      {
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+      
+	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
+      
+	std::unique_ptr<EventSendBitmapDialogMsg> msg1(new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(3), "Thanks for the rescue", LEFT));
+	std::unique_ptr<EventSendBitmapDialogMsg> msg2(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), "Null Problemo", RIGHT));
+	msgs.push_back( move(msg1) );
+	msgs.push_back( move(msg2) );
+      
+	EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+      
+	const std::string end_text("End of Episode.\n"
+			"The game will be restarted.\n"
+			"You can replay it again or\n" 
+			"try another Episode for more fun!\n"
+			"The original epilog is under construction.");
+      
+	EventContainer.add( new EventSendDialog(end_text) );
+	EventContainer.add( new EventEndGamePlay() );
+	dead = true;
+      }
+      else
+      {      
 	player->kill();
+      }
     }      
 }
 
@@ -216,7 +271,6 @@ int CNospike::checkSolidD(int x1, int x2, int y2, const bool push_mode)
     
     return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
-
 
 
 void CNospike::process()

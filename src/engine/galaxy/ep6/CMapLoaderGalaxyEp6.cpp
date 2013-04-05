@@ -204,6 +204,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x31: if( difficulty < HARD ) break;
 	case 0x30: if( difficulty < NORMAL ) break;
+	case 0x2F: // This happens normally only in Mods like Keen 8
 		// This is a Nospike
 		p_newfoe = new galaxy::CNospike(&Map, foe, x, y);
 		break;
