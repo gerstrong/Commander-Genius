@@ -75,6 +75,30 @@ CMessages::extractString( const std::string matchingstring, unsigned long start,
 	return make_pair(matchingstring, Text);
 }
 
+std::pair<std::string, std::string>
+CMessages::extractStringOff( const std::string matchingstring, unsigned long start )
+{
+	std::string Text;
+
+	for(unsigned long pos=start ; ; pos++)
+	{
+		while(mp_exe[pos] == 0xA)
+		{
+			Text += mp_exe[pos];
+			pos++;
+			if(mp_exe[pos] == 0x0)
+				pos++;
+		}
+
+		if(mp_exe[pos] == 0x0)
+			break;
+
+		Text += static_cast<char>(mp_exe[pos]);
+	}
+
+	return make_pair(matchingstring, Text);
+}
+
 bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 {
 	switch(m_version)
@@ -185,51 +209,48 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 
 bool CMessages::extractEp6Strings(std::map<std::string, std::string>& StringMap)
 {
-	switch(m_version)
-	{
-		case 140:
-		{
-			// Level loading Texts
-			setDecodeOffset(0x1F110);
-			
-			StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL1_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL2_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL3_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL4_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL5_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL6_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL7_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL8_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL9_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL10_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL11_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL12_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL13_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL14_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL15_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL16_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
-
-			// Got Item Text.
-			setDecodeOffset(0x325B6);
-			StringMap.insert( extractNextString( "KEEN_GOT_SANDWICH" ) );
-			StringMap.insert( extractNextString( "KEEN_GOT_GRAPPLING_HOOK" ) );
-			StringMap.insert( extractNextString( "KEEN_GOT_SHIPCARD" ) );
-			
-			// Grabbiter Text
-			setDecodeOffset(0x33019);
-			StringMap.insert( extractNextString( "KEEN_GRABBITER_HUNGRY" ) );
-			StringMap.insert( extractNextString( "KEEN_GRABBITER_SLEEPY" ) );
-			StringMap.insert( extractNextString( "KEEN_KEYCARD_REQUIRED" ) );
-			StringMap.insert( extractNextString( "KEEN_ROPE_REQUIRED" ) );
-			
-
-			return true;
-		} break;
-	}
-	return false;
+  switch(m_version)
+  {
+    case 140:
+    {
+      // Level loading Texts
+      StringMap.insert( extractStringOff( "WORLDMAP_LOAD_TEXT", 0x1F110 ) );			
+      StringMap.insert( extractStringOff( "LEVEL1_LOAD_TEXT",  0x1F130 ) );
+      StringMap.insert( extractStringOff( "LEVEL2_LOAD_TEXT",  0x1F160 ) );
+      StringMap.insert( extractStringOff( "LEVEL3_LOAD_TEXT",  0x1F190 ) );
+      StringMap.insert( extractStringOff( "LEVEL4_LOAD_TEXT",  0x1F1C0 ) );
+      StringMap.insert( extractStringOff( "LEVEL5_LOAD_TEXT",  0x1F1F0 ) );
+      StringMap.insert( extractStringOff( "LEVEL6_LOAD_TEXT",  0x1F220 ) );
+      StringMap.insert( extractStringOff( "LEVEL7_LOAD_TEXT",  0x1F250 ) );
+      StringMap.insert( extractStringOff( "LEVEL8_LOAD_TEXT",  0x1F270 ) );
+      StringMap.insert( extractStringOff( "LEVEL9_LOAD_TEXT",  0x1F2A0 ) );
+      StringMap.insert( extractStringOff( "LEVEL10_LOAD_TEXT", 0x1F2D0) );
+      StringMap.insert( extractStringOff( "LEVEL11_LOAD_TEXT", 0x1F300) );
+      StringMap.insert( extractStringOff( "LEVEL12_LOAD_TEXT", 0x1F350) );
+      StringMap.insert( extractStringOff( "LEVEL13_LOAD_TEXT", 0x1F380) );
+      StringMap.insert( extractStringOff( "LEVEL14_LOAD_TEXT", 0x1F3C0) );
+      StringMap.insert( extractStringOff( "LEVEL15_LOAD_TEXT", 0x1F400) );
+      StringMap.insert( extractStringOff( "LEVEL16_LOAD_TEXT", 0x1F440) );
+      StringMap.insert( extractStringOff( "LEVEL17_LOAD_TEXT", 0x1F470) );
+      StringMap.insert( extractStringOff( "LEVEL18_LOAD_TEXT", 0x1F4A0) );
+      
+      // Got Item Text.
+      setDecodeOffset(0x325B6);
+      StringMap.insert( extractNextString( "KEEN_GOT_SANDWICH" ) );
+      StringMap.insert( extractNextString( "KEEN_GOT_GRAPPLING_HOOK" ) );
+      StringMap.insert( extractNextString( "KEEN_GOT_SHIPCARD" ) );
+      
+      // Grabbiter Text
+      setDecodeOffset(0x33019);
+      StringMap.insert( extractNextString( "KEEN_GRABBITER_HUNGRY" ) );
+      StringMap.insert( extractNextString( "KEEN_GRABBITER_SLEEPY" ) );
+      StringMap.insert( extractNextString( "KEEN_KEYCARD_REQUIRED" ) );
+      StringMap.insert( extractNextString( "KEEN_ROPE_REQUIRED" ) );
+      
+      return true;
+    } break;
+  }
+  return false;
 }
 
 bool CMessages::extractGlobalStrings()

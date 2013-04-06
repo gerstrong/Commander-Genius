@@ -26,6 +26,9 @@ private:
 	std::pair<std::string, std::string>
 	extractString( const std::string matchingstring, unsigned long start, unsigned long end, long offset=0 );
 
+	std::pair<std::string, std::string>
+	extractStringOff( const std::string matchingstring, unsigned long start );
+	
 	bool extractEp4Strings(std::map<std::string, std::string>& StringMap);
 	bool extractEp5Strings(std::map<std::string, std::string>& StringMap);
 	bool extractEp6Strings(std::map<std::string, std::string>& StringMap);
