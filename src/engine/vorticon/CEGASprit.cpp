@@ -18,7 +18,6 @@
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
 #include "CVorticonSpriteObject.h"
-#include "common/tga.h" 
 #include "CResourceLoader.h"
 #include "graphics/CGfxEngine.h"
 #include <SDL.h>

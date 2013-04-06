@@ -93,7 +93,7 @@ std::string CBehaviorEngine::getString(const std::string& name)
 }
 
 size_t CBehaviorEngine::getEpisode()
-{	return m_Episode;}
+{	return m_Episode;	}
 
 EngineType CBehaviorEngine::getEngine()
 {
@@ -106,5 +106,5 @@ EngineType CBehaviorEngine::getEngine()
 }
 
 void CBehaviorEngine::setEpisode(size_t Episode)
-{	m_Episode = Episode;}
+{	m_Episode = Episode;	}
 
