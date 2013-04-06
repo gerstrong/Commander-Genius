@@ -2472,6 +2472,9 @@ void CPlayerLevel::centerView()
 
 void CPlayerLevel::push(CGalaxySpriteObject& theObject)
 {
+  if(dying)
+    return;
+  
   CPlayerBase::push(theObject);
   
   if(onPole())

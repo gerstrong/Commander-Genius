@@ -124,7 +124,7 @@ void CPatcher::process()
 		{
 			// first we need to get the offset
 			long unsigned int offset = 0;
-			std::string textline = readPatchItemsNextValue(PatchItem.value);
+			std::string textline = readPatchItemsNextValue(PatchItem.value);						
 			size_t width;
 			if(readIntValue(textline, offset))
 			{

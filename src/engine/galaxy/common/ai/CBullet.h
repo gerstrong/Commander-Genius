@@ -64,10 +64,17 @@ namespace galaxy
 class CBullet : public CGalaxySpriteObject {
 public:
 	CBullet(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int xDir, const int yDir);
+	
+	void reverse()
+	{ mReversed=true; }
+	
+	void getTouchedBy(CSpriteObject& theObject);
+	
 	void process();
 
 private:
 	Uint32 m_timer;
+	bool mReversed;
 };
 
 }

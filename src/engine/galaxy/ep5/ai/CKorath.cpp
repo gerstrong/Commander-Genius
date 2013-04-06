@@ -104,10 +104,7 @@ void CKorath::getTouchedBy(CSpriteObject &theObject)
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{
-	    if(player->dying)
-	    {		
-		player->push(*this);
-	    }	    
+	  player->push(*this);
 	}
 }
 

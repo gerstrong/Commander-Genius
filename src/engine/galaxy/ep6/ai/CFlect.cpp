@@ -42,52 +42,50 @@ void CFlect::processTurning()
 
 void CFlect::processWalking()
 {
-	// Move normally in the direction
-	if( xDirection == RIGHT )
-	{
-		moveRight( WALK_SPEED );
-	}
-	else
-	{
-		moveLeft( WALK_SPEED );
-	}
+  // Move normally in the direction
+  if( xDirection == RIGHT )
+  {
+    moveRight( WALK_SPEED );
+  }
+  else
+  {
+    moveLeft( WALK_SPEED );
+  }
 }
 
 void CFlect::getTouchedBy(CSpriteObject& theObject)
 {
-	if(dead || theObject.dead)
-		return;	
-
-	// Was it a bullet? Than make it stunned.
-	if( auto *bullet = dynamic_cast<CBullet*>(&theObject) )
-	{
-	  // TODO: Here it depends on the direction. If teeth are in the way, the shot must be reflected.
-	  // Flect can only be stun from above normally
-	  
-	  // If bullet comes from above
-	  if(bullet->yDirection > 0)
-	  {
-	    CStunnable::getTouchedBy(theObject);	    
-	    setAction(A_FLECT_STUN);
-	    dead = true;
-	    bullet->dead = true;
-	  }
-	  else
-	  {
-	    bullet->playSound( SOUND_SHOT_HIT );
-	    bullet->xDirection = !bullet->xDirection;	    
-	    xDirection = bullet->xDirection;
-	    bullet->moveXDir(xDirection<<CSF);
-	  }
-	}
-	
-	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-	    if(player->dying)
-	    {		
-		player->push(*this);
-	    }
-	}
+  if(dead || theObject.dead)
+    return;	
+  
+  // Was it a bullet? Than make it stunned.
+  if( auto *bullet = dynamic_cast<CBullet*>(&theObject) )
+  {
+    // TODO: Here it depends on the direction. If teeth are in the way, the shot must be reflected.
+    // Flect can only be stun from above normally
+    
+    // If bullet comes from above
+    if(bullet->yDirection > 0)
+    {
+      CStunnable::getTouchedBy(theObject);	    
+      setAction(A_FLECT_STUN);
+      dead = true;
+      bullet->dead = true;
+    }
+    else
+    {
+      bullet->playSound( SOUND_SHOT_HIT );
+      bullet->xDirection = -bullet->xDirection;	    
+      xDirection = bullet->xDirection;
+      bullet->moveXDir(xDirection<<CSF);
+      bullet->reverse();
+    }
+  }
+  
+  if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+  {
+     player->push(*this);
+  }
 }
 
 bool CFlect::isNearby(CSpriteObject& theObject)

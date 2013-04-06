@@ -29,12 +29,12 @@ CGik::CGik(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxyActionSpriteObject(pmap, foeID, x, y),
 mpInteractPlayer(nullptr)
 {
-    mActionMap[A_GIK_WALK] = (void (CGalaxyActionSpriteObject::*)()) &CGik::processWalk;
-    mActionMap[A_GIK_JUMP] = (void (CGalaxyActionSpriteObject::*)()) &CGik::processJump;
-    mActionMap[A_GIK_LAND] = (void (CGalaxyActionSpriteObject::*)()) &CGik::processLand;
-    mActionMap[A_GIK_SLIDE] = (void (CGalaxyActionSpriteObject::*)()) &CGik::processSlide;
+    mActionMap[A_GIK_WALK] = (GASOFctr) &CGik::processWalk;
+    mActionMap[A_GIK_JUMP] = (GASOFctr) &CGik::processJump;
+    mActionMap[A_GIK_LAND] = (GASOFctr) &CGik::processLand;
+    mActionMap[A_GIK_SLIDE] = (GASOFctr) &CGik::processSlide;
 
-    setupGalaxyObjectOnMap(0x2604, 0);
+    setupGalaxyObjectOnMap(0x2604, A_GIK_WALK);
 
     xDirection = LEFT;
 }

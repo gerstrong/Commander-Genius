@@ -6,6 +6,7 @@
  */
 
 #include "CBullet.h"
+#include "CPlayerLevel.h"
 #include "sdl/sound/CSound.h"
 
 size_t bulletActionMap[] =
@@ -21,7 +22,8 @@ const Uint32 hittime = 100;
 //int slot = 64;
 
 CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xDir, const int yDir) :
-CGalaxySpriteObject(pmap, foeID, x, y)
+CGalaxySpriteObject(pmap, foeID, x, y),
+mReversed(false)
 {
 	xDirection = xDir;
 	yDirection = yDir;
@@ -44,6 +46,24 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	  slot = 60;*/
 }
 
+
+void CBullet::getTouchedBy(CSpriteObject& theObject)
+{
+  if( getActionNumber(A_KEENSHOT_IMPACT) )
+    return;
+  
+  if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
+  {
+    if(mReversed)
+    {
+      player->stun();
+      dead = true;
+      setAction(A_KEENSHOT_IMPACT);
+    }
+  }
+}
+
+
 void CBullet::process()
 {
     /*int trans = transluceny;
@@ -65,7 +85,6 @@ void CBullet::process()
 
 	if(!processActionRoutine())
 			exists = false;
-
 }
 
 }

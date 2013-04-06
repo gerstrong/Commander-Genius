@@ -585,13 +585,11 @@ void CPlayerBase::push(CGalaxySpriteObject& theObject)
 	if( midx < obj_midx )
 	{
 		moveLeft(rx - obj_lx);
-		//xDirection = LEFT;
 	}
 
 	if( midx > obj_midx )
 	{
 		moveRight(obj_rx - lx);
-		//xDirection = RIGHT;
 	}
 }
 
