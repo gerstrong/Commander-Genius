@@ -433,8 +433,8 @@ void CSprite::_drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, con
 	SDL_Surface *src = mpSurface.get();
 	
 	
-	if(g_pVideoDriver->getVidConfig().m_ScaleXFilter > 1)
-	    applyTranslucency(alpha);
+	/*if(g_pVideoDriver->getVidConfig().m_ScaleXFilter > 1)
+	    applyTranslucency(alpha);*/
 		
 	SDL_BlitSurface( src, &src_rect, dst, &dst_rect );
 }

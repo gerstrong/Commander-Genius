@@ -269,11 +269,16 @@ bool COpenGL::init()
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
 	
+	createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
+	
 	if(m_VidConfig.m_ScaleXFilter <= 1)
-	{	// In that case we can do a texture based rendering
-		createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
-	} else
-        createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
+	{ // In that case we can do a texture based rendering
+	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
+	} 
+	else
+	{
+	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
+	}
 #endif
 	
 	// If there were any errors
