@@ -136,9 +136,9 @@ bool CPlayGameVorticon::init()
 	g_pGfxEngine->Palette.setdark(false);
 
 	if(m_level_command == GOTO_FINALE)
-		createFinale();
-	else
-		if(m_showKeensLeft)	g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
+	  createFinale();
+	else if(m_showKeensLeft)	
+	  g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
 
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
@@ -189,37 +189,33 @@ void CPlayGameVorticon::process()
 			// Perform AIs
 			mpObjectAI->process();
 
-
 			if( !g_pBehaviorEngine->paused() )
 			{
-				/// The following functions must be worldmap dependent
-				if( m_Level == WORLD_MAP_LEVEL_VORTICON )
-				{
-					processOnWorldMap();
-				}
-				else
-				{
-					processInLevel();
-				}
-
-
-				if(m_Player[mCamLead].pdie)
-				{
-					for( int i=0 ; i<m_NumPlayers ; i++ )
-					{
-						if(m_Player[i].pdie)
-							cycleCamLead();
-					}
-				}
-				else
-				{
-					// Process Players' Cameras
-					m_Player[mCamLead].processCamera();
-				}
-
-
+			  // The following functions must be worldmap dependent
+			  if( m_Level == WORLD_MAP_LEVEL_VORTICON )
+			  {
+			    processOnWorldMap();
+			  }
+			  else
+			  {
+			    processInLevel();
+			  }
+			  
+			  if(m_Player[mCamLead].pdie)
+			  {
+			    for( int i=0 ; i<m_NumPlayers ; i++ )
+			    {
+			      if(m_Player[i].pdie)
+				cycleCamLead();
+			    }
+			  }
+			  else
+			  {
+			    // Process Players' Cameras
+			    m_Player[mCamLead].processCamera();
+			  }  
 			}
-
+			
 		}
 	}
 

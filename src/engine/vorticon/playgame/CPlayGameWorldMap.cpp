@@ -28,6 +28,9 @@ void CPlayGameVorticon::processOnWorldMap()
 
 		// Perform player Objects...
 		player.processWorldMap();
+		
+		if(m_showKeensLeft)
+		  break;
 
 		// entered a level, used ship, teleporter, etc.
 		if( !player.hideplayer && !player.beingteleported )
@@ -219,7 +222,7 @@ void CPlayGameVorticon::showKeensLeft()
 		for(p=0; p<m_NumPlayers ; p++)
 		{
 			x = 12;
-			for(i=0;i<m_Player[p].inventory.lives&&i<=10;i++)
+			for( i=0 ; i<m_Player[p].inventory.lives && i<=10 ; i++ )
 			{
 				g_pGfxEngine->getSprite(m_Player[p].playerbaseframe+PMAPDOWNFRAME)._drawSprite(boxsurface, x, y );
 				x+=16;
@@ -242,10 +245,13 @@ void CPlayGameVorticon::showKeensLeft()
 		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		{
 			m_showKeensLeft = false;
+			mpKeenLeftSfc.reset();
+			g_pInput->flushAll();
 		}
-
-		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpKeenLeftSfc, NULL,  &keenleft_rect ) );
-
+		else
+		{
+		  g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpKeenLeftSfc, NULL,  &keenleft_rect ) );
+		}
 	}
 }
 
