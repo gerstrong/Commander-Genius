@@ -20,8 +20,6 @@ const int LVLS_SHIP = 20;
 
 void CPlayGameVorticon::processOnWorldMap()
 {
-	int useobject;
-
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
 		CPlayer &player = m_Player[i];
@@ -35,7 +33,7 @@ void CPlayGameVorticon::processOnWorldMap()
 		// entered a level, used ship, teleporter, etc.
 		if( !player.hideplayer && !player.beingteleported )
 		{
-			useobject = player.getNewObject();
+			int useobject = player.getNewObject();
 			if( useobject != 0 )
 			{
 				// If it is teleporter, make the Player teleport

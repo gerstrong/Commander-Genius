@@ -55,7 +55,7 @@ bool CSettings::saveDrvCfg()
     Configuration.WriteString("Video", "OGLfilter", VidConf.m_opengl_filter == GL_NEAREST ? "nearest" : "linear" );
 #endif
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
-	Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scale2x" );
+	Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
 	Configuration.WriteInt("Video", "fps", g_pTimer->FPS());
 	Configuration.SetKeyword("Video", "showfps", VidConf.showfps);
@@ -111,9 +111,10 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
 		Configuration.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
+		
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
 		Configuration.ReadKeyword("Video", "showfps", &VidConf.showfps, false);
-        Configuration.ReadKeyword("Video", "aspect", &VidConf.m_aspect_correction, true);
+		Configuration.ReadKeyword("Video", "aspect", &VidConf.m_aspect_correction, true);
 		Configuration.ReadKeyword("Video", "vsync", &VidConf.vsync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
 		VidConf.m_ScaleXFilter = value;
@@ -121,6 +122,14 @@ bool CSettings::loadDrvCfg()
 		std::string scaleType;
 		Configuration.ReadString("Video", "scaletype", scaleType, "normal");
 		VidConf.m_normal_scale = (scaleType == "normal");
+		
+		// if ScaleX is one and scaletype is not at normal, this is wrong.
+		// we will change that and force it to normal
+		if(scaleType == "normal")
+		{
+		  VidConf.m_normal_scale = true;
+		}
+		
 
 		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
 

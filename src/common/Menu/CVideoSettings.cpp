@@ -164,7 +164,9 @@ void CVideoSettings::release()
 			mUserVidConf.m_ScaleXFilter = scalerStr.at(5)-'0';
 	}
 	else
+	{
 		mUserVidConf.m_ScaleXFilter = 1;
+	}
 #endif
 
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)

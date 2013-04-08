@@ -151,7 +151,8 @@ void CVideoDriver::initResolutionList()
 }
 
 void CVideoDriver::verifyResolution(CRect<Uint16>& resolution,
-		const int flags) {
+		const int flags) 
+{
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
@@ -268,7 +269,8 @@ bool CVideoDriver::start()
 	return retval;
 }
 
-void CVideoDriver::setFilter(short value) {
+void CVideoDriver::setFilter(short value) 
+{
 	m_VidConfig.m_ScaleXFilter = value;
 } // 1 means no filter
 
