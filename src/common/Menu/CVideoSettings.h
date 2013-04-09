@@ -39,11 +39,12 @@ private:
 #endif
 
 	CGUIComboSelection	*mpScalerSelection;
-	CGUISwitch			*mpAspectSwitch;
-	CGUISwitch			*mpVSyncSwitch;
-	CGUISwitch			*mpShowFPSSwitch;
-	CGUISwitch			*mpSFXSwitch;
-	CGUIButton			*mpFullScreenSwitch;
+	//CGUISwitch		*mpAspectSwitch;
+	CGUIComboSelection	*mpAspectSelection;
+	CGUISwitch		*mpVSyncSwitch;
+	CGUISwitch		*mpShowFPSSwitch;
+	CGUISwitch		*mpSFXSwitch;
+	CGUIButton		*mpFullScreenSwitch;
 	CGUIComboSelection	*mpResolutionSelection;
 
 };

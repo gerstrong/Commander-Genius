@@ -121,24 +121,25 @@ bool CVideoEngine::init()
 	return true;
 }
 
-void CVideoEngine::aspectCorrectResizing(const CRect<Uint16>& newDim)
+void CVideoEngine::aspectCorrectResizing(const CRect<Uint16>& newDim, const int width, const int height)
 {
-	if (!m_VidConfig.m_aspect_correction)
+	if (width == 0 || height == 0)
 	{
 		aspectCorrectionRect.x = aspectCorrectionRect.y = 0;
 		aspectCorrectionRect.w = newDim.w;
 		aspectCorrectionRect.h = newDim.h;
 		return;
 	}
-	if (3*newDim.w >= 4*newDim.h) // Wider than 4:3, so shrink newDim.w
+	
+	if (height*newDim.w >= width*newDim.h) // Wider than width:3, so shrink newDim.w
 	{
-		aspectCorrectionRect.h = newDim.h-newDim.h%3;
-		aspectCorrectionRect.w = newDim.h/3*4;
+		aspectCorrectionRect.h = newDim.h-newDim.h%height;
+		aspectCorrectionRect.w = newDim.h/height*width;
 	}
-	else // Taller than 4:3 so shrink newDim.h
+	else // Taller than width:height so shrink newDim.h
 	{
-		aspectCorrectionRect.w = newDim.w-newDim.w%4;
-		aspectCorrectionRect.h = newDim.w/4*3;
+		aspectCorrectionRect.w = newDim.w-newDim.w%width;
+		aspectCorrectionRect.h = newDim.w/width*height;
 	}
 	aspectCorrectionRect.x = (newDim.w-aspectCorrectionRect.w)/2;
 	aspectCorrectionRect.y = (newDim.h-aspectCorrectionRect.h)/2;

@@ -55,7 +55,8 @@ void CVidConfig::reset()
 #endif
 
 	m_opengl = false; // Must stay optional for better compatibility
-	m_aspect_correction = true;
+	mAspectCorrection.w=4;
+	mAspectCorrection.h=3;
 	m_CameraBounds.reset();
 	m_special_fx = true;
 
@@ -66,14 +67,17 @@ void CVidConfig::reset()
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_opengl = true;
-	m_aspect_correction = false;
+	mAspectCorrection.w=0;
+	mAspectCorrection.h=0;	
 #endif
 
 #if defined(ANDROID)
-	m_aspect_correction = false;
+	mAspectCorrection.w=0;
+	mAspectCorrection.h=0;	
 #endif
 	
 }
+
 
 void CVidConfig::setResolution(const int width, const int height, const int depth)
 {

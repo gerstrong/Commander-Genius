@@ -60,7 +60,9 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "fps", g_pTimer->FPS());
 	Configuration.SetKeyword("Video", "showfps", VidConf.showfps);
 	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
-    Configuration.SetKeyword("Video", "aspect", VidConf.m_aspect_correction);
+		
+	const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
+	Configuration.WriteString("Video", "aspect", arc_str);
 	
 	st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 	Configuration.WriteInt("Bound", "left", CameraBounds.left);
@@ -114,7 +116,12 @@ bool CSettings::loadDrvCfg()
 		
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
 		Configuration.ReadKeyword("Video", "showfps", &VidConf.showfps, false);
-		Configuration.ReadKeyword("Video", "aspect", &VidConf.m_aspect_correction, true);
+		
+		std::string arcStr;
+		Configuration.ReadString("Video", "aspect", arcStr, "none");
+		VidConf.mAspectCorrection.w = VidConf.mAspectCorrection.h = 0;
+		sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.w, &VidConf.mAspectCorrection.h );
+		
 		Configuration.ReadKeyword("Video", "vsync", &VidConf.vsync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
 		VidConf.m_ScaleXFilter = value;
@@ -186,9 +193,9 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 	g_pVideoDriver->setZoom(1);
 	g_pTimer->setFPS(60);
 #if defined(ANDROID)	
-	g_pVideoDriver->setAspectCorrection(false);
+	g_pVideoDriver->setAspectCorrection(0,0);
 #else
-	g_pVideoDriver->setAspectCorrection(true);
+	g_pVideoDriver->setAspectCorrection(4,3);
 #endif
 	g_pVideoDriver->setFilter(1);
 	g_pVideoDriver->setScaleType(true);

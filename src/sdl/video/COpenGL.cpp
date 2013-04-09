@@ -64,8 +64,13 @@ void COpenGL::setUpViewPort(const CRect<Uint16> &newDim)
 bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    aspectCorrectResizing(newDim);
+  
+    const int w = m_VidConfig.mAspectCorrection.w;
+    const int h = m_VidConfig.mAspectCorrection.h;
+  
+#if SDL_VERSION_ATLEAST(2, 0, 0)        
+  
+    aspectCorrectResizing(newDim, w, h);
 #else
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 
@@ -75,7 +80,7 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 		return false;
 	}
 
-	aspectCorrectResizing(newDim);
+	aspectCorrectResizing(newDim, w, h);
 
 	if(FilteredSurface)
 	{

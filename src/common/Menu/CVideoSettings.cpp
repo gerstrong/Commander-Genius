@@ -18,6 +18,18 @@
 #include "CMenuController.h"
 
 
+static const char* aspectList[] =
+{
+"disabled",
+"4:3",
+"16:9",
+"16:10",
+"5:4",
+};
+
+const unsigned int NUM_ASPECTS = sizeof(aspectList)/sizeof(char*);
+
+
 
 class toggleFullscreenFunctor : public InvokeFunctorEvent
 {
@@ -72,8 +84,13 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
 	
 #if !defined(EMBEDDED)	
-	mpAspectSwitch = new CGUISwitch( "Aspect Correct" );
-	mpMenuDialog->addControl( mpAspectSwitch );
+	//mpAspectSwitch = new CGUISwitch( "Aspect Correct" );
+	
+	mpAspectSelection = new CGUIComboSelection( "Aspect Corr",
+		filledStrList(1, "disabled") );
+	
+	//mpMenuDialog->addControl( mpAspectSwitch );
+	mpMenuDialog->addControl( mpAspectSelection );
 
 
 	mpScalerSelection = new CGUIComboSelection( "Scaler",
@@ -118,7 +135,18 @@ void CVideoSettings::init()
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
 
 #if !defined(EMBEDDED)
-	mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
+	//mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
+	mpAspectSelection->setList( aspectList, NUM_ASPECTS );		
+	std::string arcStr;
+	arcStr = itoa(mUserVidConf.mAspectCorrection.w);
+	arcStr += ":";
+	arcStr += itoa(mUserVidConf.mAspectCorrection.h);
+	
+	if( arcStr == "0:0")
+	  arcStr = "disabled";
+	
+	mpAspectSelection->setSelection(arcStr);
+
 	
 	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : (mUserVidConf.m_normal_scale ? "normal" : "scale") + itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpVSyncSwitch->enable( mUserVidConf.vsync );
@@ -148,12 +176,25 @@ void CVideoSettings::release()
 
 	
 #if !defined(EMBEDDED)	
-	mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();	
+	//mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();	
 	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
 	std::string scalerStr = mpScalerSelection->getSelection();
 
 	const std::string res = mpResolutionSelection->getSelection();
 	sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
+	
+	int w, h;
+	const std::string aspect = mpAspectSelection->getSelection();
+	if( sscanf( aspect.c_str(), "%i:%i", &w, &h ) == 2 )
+	{
+	    mUserVidConf.mAspectCorrection.w = w;
+	    mUserVidConf.mAspectCorrection.h = h;
+	}
+	else
+	{
+	    mUserVidConf.mAspectCorrection.w = 0;
+	    mUserVidConf.mAspectCorrection.h = 0;
+	}
 
 	if( scalerStr != "none" )
 	{

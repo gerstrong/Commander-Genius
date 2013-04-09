@@ -58,7 +58,7 @@ public:
 	bool m_normal_scale;
 	unsigned short Zoom;
 	bool m_opengl;
-	bool m_aspect_correction;
+	CRect<int> mAspectCorrection;
 	bool m_special_fx;
 	bool showfps;
 	bool vsync;
@@ -68,7 +68,7 @@ public:
 #if defined(USE_OPENGL)
 	GLint m_opengl_filter;
 #endif
-
+	
 };
 
 #endif /* CVIDCONFIG_H_ */

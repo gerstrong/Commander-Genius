@@ -28,7 +28,7 @@ public:
 	virtual bool init();
 
 	virtual bool resizeDisplayScreen(const CRect<Uint16>& newDim) = 0;
-	void aspectCorrectResizing(const CRect<Uint16>& newDim);
+	void aspectCorrectResizing(const CRect<Uint16>& newDim, const int width, const int height);
 
 	virtual void updateScreen() = 0;
 	virtual void shutdown();

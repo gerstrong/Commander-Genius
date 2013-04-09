@@ -118,8 +118,12 @@ public:
 
 	void initResolutionList();
 
-	void setAspectCorrection(bool value) { m_VidConfig.m_aspect_correction = value; }
-	bool getAspectCorrection(void) { return m_VidConfig.m_aspect_correction; }
+	void setAspectCorrection(const int w, const int h) 
+	{ 
+	  m_VidConfig.mAspectCorrection.w = w; 
+	  m_VidConfig.mAspectCorrection.h = h; 
+	}
+	//bool getAspectCorrection(void) { return m_VidConfig.m_aspect_correction; }
 	bool getSpecialFXConfig(void) { return m_VidConfig.m_special_fx; }
 	bool getRefreshSignal() { return m_mustrefresh; }
 	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }

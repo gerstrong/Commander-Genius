@@ -157,7 +157,7 @@ void CVideoDriver::verifyResolution(CRect<Uint16>& resolution,
     
 #else
     if (SDL_VideoModeOK(resolution.w, resolution.h, 32, flags)) {
-		std::list<CRect<Uint16> >::iterator i;
+		std::list< CRect<Uint16> >::iterator i;
 		for (i = m_Resolutionlist.begin(); i != m_Resolutionlist.end(); i++) {
 			if (*i == resolution)
 				break;

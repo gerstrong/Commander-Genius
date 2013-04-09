@@ -20,6 +20,10 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
 	
+    const int w = m_VidConfig.mAspectCorrection.w;
+    const int h = m_VidConfig.mAspectCorrection.h;
+  
+  
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     window = SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, 0, 0);
@@ -28,7 +32,7 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
     
-    aspectCorrectResizing(newDim);
+    aspectCorrectResizing(newDim, w, h);
 #else
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 
@@ -38,7 +42,7 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 		return false;
 	}
 
-	aspectCorrectResizing(newDim);
+	aspectCorrectResizing(newDim, w, h);
 
 	if(FilteredSurface)
 	{
