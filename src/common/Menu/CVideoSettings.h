@@ -26,7 +26,7 @@ public:
 
 	void release();
 
-	CVidConfig 			mUserVidConf;
+	CVidConfig mUserVidConf;
 
 private:
 
