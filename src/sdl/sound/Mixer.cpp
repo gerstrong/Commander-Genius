@@ -29,7 +29,8 @@ void mixAudioSinged16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
 	Sint32 chnl_dst=0;
 	Sint32 outputValue=0;
 
-    for ( Uint32 i=0 ; i<len ; i++ ) {
+    for ( Uint32 i=0 ; i<len ; i++ ) 
+    {
     	chnl_src = *s_src;
     	chnl_dst = *s_dst;
 
@@ -38,9 +39,9 @@ void mixAudioSinged16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
 
         outputValue = chnl_src + chnl_dst;  // just add the channels
         if (outputValue > 32767)
-        	outputValue = 32767;        	// and clip the result
+        	outputValue = 32767;        // and clip the result
         if (outputValue < -32768)
-        	outputValue = -32768;			// and clip the result
+        	outputValue = -32768;	// and clip the result
 
         *s_dst = outputValue;
 
@@ -57,7 +58,9 @@ void mixAudioUnsinged8(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
     Sint32 chnl_src=0;
     Sint32 chnl_dst=0;
     Sint32 outputValue=0;           // just add the channels
-    for (Uint32 i=0;i<len;i++) {
+    
+    for (Uint32 i=0;i<len;i++) 
+    {
         chnl_src = *src;
         chnl_dst = *dst;
 

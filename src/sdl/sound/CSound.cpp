@@ -12,7 +12,6 @@
 #include "StringUtils.h"
 #include "FindFile.h"
 #include "sdl/music/CMusic.h"
-#include "sdl/sound/Mixer.h"
 #include "common/CBehaviorEngine.h"
 
 #include "engine/vorticon/CAudioVorticon.h"
@@ -20,6 +19,9 @@
 
 #include <fstream>
 
+
+// Forward declaration which makes Mixer.h obsolete.
+void mixAudio(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume, Uint16 format);
 
 
 // This central list tells which frequencies can be used for your soundcard.
@@ -132,7 +134,8 @@ bool CSound::init()
     g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
 #endif
 
-	m_mixing_channels = 15;
+	//m_mixing_channels = 15;
+	m_mixing_channels = 32;
 
 	if(!m_soundchannel.empty())
 		m_soundchannel.clear();
@@ -171,9 +174,8 @@ void CSound::destroy()
 // stops all currently playing sounds
 void CSound::stopAllSounds()
 {
-	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
-	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
-		snd_chnl->stopSound();
+	for( auto &snd_chnl : m_soundchannel )
+		snd_chnl.stopSound();
 }
 
 // pauses any currently playing sounds
@@ -192,7 +194,7 @@ void CSound::resumeSounds()
 bool CSound::isPlaying(const GameSound snd)
 {
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
-	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++ )
 	{
 		if (snd_chnl->isPlaying())
 		{
@@ -258,8 +260,10 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
     }
 
 	if(!any_sound_playing)
+	{
 		// means no sound is playing
 		m_pause_gameplay = false;
+	}
 
 	m_callback_running = false;
 }
@@ -278,9 +282,7 @@ void CSound::playStereofromCoord( const GameSound snd,
 {
     if(mAudioSpec.channels == 2)
     {
-    	int bal;
-
-    	bal = (xcoordinate - (320>>1));	// Faster calculation of balance transformation
+    	int bal = (xcoordinate - (320>>1));	// Faster calculation of balance transformation
 
     	if(bal < -255)
 	{
