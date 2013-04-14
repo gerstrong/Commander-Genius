@@ -214,7 +214,7 @@ void CPlayer::setupforLevelPlay()
     plastfire = pfiring = false;
     pwalkanimtimer = 0;
     inhibitfall = false;
-  	m_Level_Trigger = LVLTRIG_NONE;
+  	mLevelTrigger = LVLTRIG_NONE;
   	checkObjSolid();
 }
 

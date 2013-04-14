@@ -42,7 +42,7 @@ void CPlayGameVorticon::processInLevel()
 		m_Player[i].SelectFrame();
 
 		// If Player has toggled a switch for platform extend it!
-		int trigger = m_Player[i].pollLevelTrigger();
+		LEVEL_TRIGGER trigger = m_Player[i].pollLevelTrigger();
 		if( trigger != LVLTRIG_NONE )
 		{
 			processLevelTrigger(trigger);

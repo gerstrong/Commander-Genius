@@ -23,7 +23,7 @@
 #include <memory>
 
 
-enum level_triggers
+enum LEVEL_TRIGGER
 {
 	LVLTRIG_NONE,
 	LVLTRIG_TANTALUS_RAY,
@@ -96,7 +96,7 @@ public:
 	void push( CSpriteObject &theObject );
 	void checkSolidDoors();
 	void SelectFrame();
-	int pollLevelTrigger();
+	LEVEL_TRIGGER pollLevelTrigger();
 	void getShotByRay(object_t &obj_type);
 
 	bool checkMapBoundaryL(const int x1);
@@ -226,7 +226,7 @@ private:
 	int exitXpos;
 	int level_done_timer;
 
-	level_triggers m_Level_Trigger;
+	LEVEL_TRIGGER mLevelTrigger;
 };
 
 #endif /* CPLAYER_H_ */

@@ -324,13 +324,13 @@ void CPlayer::TogglePogo_and_Switches()
 				if (bridge == 0) // Uh Oh! This means you have enabled a tantalus ray of the ship
 				{ // lightswitch
 					if(TileProperty[t].behaviour == 23)
-						m_Level_Trigger = LVLTRIG_LIGHT;
+						mLevelTrigger = LVLTRIG_LIGHT;
 					else
-						m_Level_Trigger = LVLTRIG_TANTALUS_RAY;
+						mLevelTrigger = LVLTRIG_TANTALUS_RAY;
 				}
 				else
 				{
-					m_Level_Trigger = LVLTRIG_BRIDGE;
+					mLevelTrigger = LVLTRIG_BRIDGE;
 
 					char pxoff = (bridge & 0x00ff);
 					char pyoff = (bridge & 0xff00) >> 8;
@@ -349,7 +349,7 @@ void CPlayer::TogglePogo_and_Switches()
 		}
 		
 		// toggle pogo stick
-		if (inventory.HasPogo && m_Level_Trigger == LVLTRIG_NONE)
+		if (inventory.HasPogo && mLevelTrigger == LVLTRIG_NONE)
 		{
 			ppogostick ^= 1;
 			pogofirsttime = true;
@@ -916,10 +916,10 @@ void CPlayer::checkSolidDoors()
 	}
 }
 
-int CPlayer::pollLevelTrigger()
+LEVEL_TRIGGER CPlayer::pollLevelTrigger()
 {
-	int trigger = m_Level_Trigger;
-	m_Level_Trigger = LVLTRIG_NONE;
+	LEVEL_TRIGGER trigger = mLevelTrigger;
+	mLevelTrigger = LVLTRIG_NONE;
 	return trigger;
 }
 
