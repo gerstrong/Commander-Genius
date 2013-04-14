@@ -18,7 +18,7 @@
 
 CGame::CGame() :
 m_firsttime(false),
-m_Engine(m_firsttime)
+mGameControl(m_firsttime)
 {}
 
 
@@ -82,7 +82,7 @@ bool CGame::init(int argc, char *argv[])
 	}
 	
 	// Initialize the way the launcher is started
-	if(!m_Engine.init(argc, argv))	return false;
+	if(!mGameControl.init(argc, argv))	return false;
 	
 	return true;
 }
@@ -149,7 +149,7 @@ void CGame::run()
 	    g_pInput->pollEvents();
 
 	    // Process Game Control
-	    m_Engine.process();		    
+	    mGameControl.process();		    
 
 	    // Here we try to process all the drawing related Tasks not yet done
 	    g_pVideoDriver->pollDrawingTasks();
@@ -169,7 +169,7 @@ void CGame::run()
 	elapsed = timerTicks() - start;
 	total_elapsed += elapsed;
 	
-        if( m_Engine.mustShutdown() || g_pInput->getExitEvent() )
+        if( mGameControl.mustShutdown() || g_pInput->getExitEvent() )
 		break;
 	
 	int waitTime = renderLatency - elapsed;

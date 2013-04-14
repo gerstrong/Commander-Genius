@@ -117,8 +117,7 @@ void CMenuController::process()
 
 	}
 
-
-
+	
 	// Process Menu if open
 	if( !mMenuStack.empty() )
 	{

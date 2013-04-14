@@ -23,7 +23,7 @@ public:
 
 private:
 	bool m_firsttime;
-	CGameControl m_Engine;
+	CGameControl mGameControl;
 };
 
 #endif /* CGAME_H_ */

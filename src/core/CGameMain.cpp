@@ -34,8 +34,8 @@ void CGameMain::switchToGamePlayMode()
 
 
 
-void CGameMain::init()
-{}
+/*void CGameMain::init()
+{}*/
 
 
 

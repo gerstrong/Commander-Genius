@@ -33,7 +33,7 @@ public:
 	void process();
 	
 	// getters and setters
-	bool mustShutdown(){ return (mpEngine.get()==NULL); }
+	bool mustShutdown(){ return (mpEngine.get()==nullptr); }
 	
 protected:
 
