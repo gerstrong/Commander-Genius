@@ -19,7 +19,7 @@ class CBaseEngine
 public:
 	virtual ~CBaseEngine() {}
 
-	virtual void init() = 0;
+	virtual void init() {};
 	virtual void process() = 0;
 };
 

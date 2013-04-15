@@ -22,7 +22,7 @@ protected:
 
 	void switchToGamePlayMode();
 
-	//void init();
+	void init();
 	void process();
 
 private:
