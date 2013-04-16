@@ -13,6 +13,8 @@ unsigned int CBridges::m_bgtile = 0;
 
 const int TILE_EXTENDING_PLATFORM = 270;
 
+const int PLAT_EXTEND_RATE = 3;
+
 CBridges::CBridges(CMap *pmap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy):
 CVorticonSpriteObject(pmap, x, y, OBJ_BRIDGE),
 m_state(EXTEND),
@@ -30,8 +32,6 @@ m_dir(LEFT)
 	if ( mp_Map->at(m_platx, m_platy) == TILE_EXTENDING_PLATFORM )
 	{
 		// figure out which direction the bridge is supposed to go
-		//if(platx-1 > m_Objvect.size())
-			//return;
 		m_state = RETRACT;
 		if (mp_Map->at(m_platx-1, m_platy) != TILE_EXTENDING_PLATFORM)
 			m_dir = LEFT;
@@ -99,9 +99,8 @@ void CBridges::process()
 
 void CBridges::extend()
 {
-#define PLAT_EXTEND_RATE        3
-
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
+	
 	if (!timer)
 	{
 		if (m_dir==RIGHT &&

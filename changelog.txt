@@ -1,6 +1,15 @@
 Commander Genius:
 =================
 
+v1.4 Beta:
+----------
+- SDL_Image now used for HQp
+- Sound improvements and music fixes (Thanks to NY00123)
+- XCode Updates (Thanks to Pizza2004)
+- Full Keen 6 Support
+- Full Keen 8 Support (Mod by Ceilick)
+- AI Fixes for Keen 5 Enemies
+
 v1.2 Beta: 
 ----------
 - More game state fixes

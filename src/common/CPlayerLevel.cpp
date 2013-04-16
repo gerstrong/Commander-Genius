@@ -332,15 +332,15 @@ void CPlayer::TogglePogo_and_Switches()
 				{
 					mLevelTrigger = LVLTRIG_BRIDGE;
 
-					char pxoff = (bridge & 0x00ff);
-					char pyoff = (bridge & 0xff00) >> 8;
-					int platx = mx + pxoff;
-					int platy = my + pyoff;
+					const int pxoff = (bridge & 0x00ff);
+					const int pyoff = (bridge & 0xff00) >> 8;
+					const int platx = mx + pxoff;
+					const int platy = my + pyoff;
 					
 					// spawn a "sector effector" to extend/retract the platform
 					CBridges *platobject = new CBridges(mp_Map, mx<<CSF, my<<CSF,
 							platx, platy);
-					g_pBehaviorEngine->EventList().add(new EventSpawnObject(platobject) );
+					g_pBehaviorEngine->EventList().spawnObj(platobject);
 				}
 
 				ppogostick = false;
