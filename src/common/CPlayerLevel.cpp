@@ -332,8 +332,8 @@ void CPlayer::TogglePogo_and_Switches()
 				{
 					mLevelTrigger = LVLTRIG_BRIDGE;
 
-					const int pxoff = (bridge & 0x00ff);
-					const int pyoff = (bridge & 0xff00) >> 8;
+					const Sint8 pxoff = (bridge & 0x00ff);
+					const Sint8 pyoff = (bridge & 0xff00) >> 8;
 					const int platx = mx + pxoff;
 					const int platy = my + pyoff;
 					

@@ -86,7 +86,7 @@ m_dir(LEFT)
 	if(m_dir == RIGHT)
 		m_bgtile = mp_Map->at(m_platx+1, m_platy);
 	else
-		m_bgtile = mp_Map->at(m_platx-1, m_platy);
+		m_bgtile = mp_Map->at(m_platx-1, m_platy);		
 }
 
 void CBridges::process()
@@ -103,15 +103,15 @@ void CBridges::extend()
 	
 	if (!timer)
 	{
-		if (m_dir==RIGHT &&
-				!TileProperties[mp_Map->at(m_platx, m_platy)].bleft)
+		auto &tileProp = TileProperties[mp_Map->at(m_platx, m_platy)];
+		
+		if (m_dir==RIGHT && !tileProp.bleft)
 		{
 			mp_Map->changeTile(m_platx, m_platy, TILE_EXTENDING_PLATFORM);
 			m_platx++;
 			timer = PLAT_EXTEND_RATE;
 		}
-		else if(m_dir==LEFT &&
-				!TileProperties[mp_Map->at(m_platx, m_platy)].bright)
+		else if(m_dir==LEFT && !tileProp.bright)
 		{
 			mp_Map->changeTile(m_platx, m_platy, TILE_EXTENDING_PLATFORM);
 			m_platx--;
