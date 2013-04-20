@@ -62,6 +62,35 @@ m_checkpointset(false),
 mPlayerContainer(playerContainer)
 {}
 
+
+
+void CVorticonMapLoaderBase::blitPlaneToMap(std::vector<Uint16> &planeitems, const Uint16 planesize, const Uint16 planeID, const Uint16 tilemapID)
+{
+	    unsigned int curmapx = 0, curmapy = 0;
+	    
+	    for( size_t c=0 ; c<planesize ; c++ ) // Check against Tilesize
+	    {
+		int t = planeitems.at(planesize*planeID+c+17);
+						
+		mpMap->setTile(curmapx, curmapy, t, false, tilemapID);
+		
+		curmapx++;
+		if (curmapx >= mpMap->m_width)
+		{
+		    curmapx = 0;
+		    curmapy++;
+		    if (curmapy >= mpMap->m_height) break;
+		}
+		
+		/*if(t > 255)
+		{
+		    t=0; // If there are some invalid values in the file, set them to zero.
+		}*/
+	    }  
+}
+
+
+
 bool CVorticonMapLoaderBase::loadBase(  Uint8 episode, 
 					Uint8 level, 
 					const std::string& path, 
@@ -117,43 +146,17 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	RLE.expandSwapped(planeitems,compdata, 0xFEFE);
 
 	// Here goes the memory allocation function
+	//mpMap->createEmptyDataPlane(0, planeitems.at(1), planeitems.at(2));
 	mpMap->createEmptyDataPlane(1, planeitems.at(1), planeitems.at(2));
 	mpMap->createEmptyDataPlane(2, planeitems.at(1), planeitems.at(2));
 
-	unsigned int planesize = 0;	
+	unsigned int planesize = 0;
 	planesize = planeitems.at(8);
 	planesize /= 2; // We have two planes
 
-
-	//const char &fixlevel_error = g_pBehaviorEngine->m_option[OPT_FIXLEVELERRORS].value;
-
 	for( size_t tilemap=0 ; tilemap<2 ; tilemap++ ) // Check against Tilemaps
 	{
-	    unsigned int curmapx = 0, curmapy = 0;
-	    
-	    for( size_t c=0 ; c<planesize ; c++ ) // Check against Tilesize
-	    {
-		int t = planeitems.at(planesize*tilemap+c+17);
-		
-		// TODO: I think we should remove those stupid fixes!
-		/*if( fixlevel_error && tilemap==0 )
-		    fixLevelTiles(t, curmapx, curmapy, episode, level);*/
-		
-		mpMap->setTile(curmapx, curmapy, t, false, tilemap+1);
-		
-		curmapx++;
-		if (curmapx >= mpMap->m_width)
-		{
-		    curmapx = 0;
-		    curmapy++;
-		    if (curmapy >= mpMap->m_height) break;
-		}
-		
-		/*if(t > 255)
-		{
-		    t=0; // If there are some invalid values in the file, set them to zero.
-		}*/
-	    }
+	  blitPlaneToMap( planeitems, planesize, tilemap, tilemap+1);
 	}
 	
 	mpMap->collectBlockersCoordiantes();

@@ -169,7 +169,7 @@ void CGame::run()
 	elapsed = timerTicks() - start;
 	total_elapsed += elapsed;
 	
-        if( mGameControl.mustShutdown() || g_pInput->getExitEvent() )
+        if( mGameControl.mustShutdown() )
 		break;
 	
 	int waitTime = renderLatency - elapsed;

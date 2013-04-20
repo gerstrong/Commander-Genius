@@ -29,10 +29,14 @@ public:
 			bool loadNewMusic );
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true );
+		
 	
 	//void fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level);
 	
 protected:
+  
+	void blitPlaneToMap(std::vector<Uint16> &planeitems, const Uint16 planesize, const Uint16 planeID, const Uint16 tilemapID);
+  
 	std::shared_ptr<CMap> &mpMap;
 };
 
@@ -64,7 +68,7 @@ public:
 		bool stategame = false );
 
 	void loadSprites( Uint8 episode, 
-			  Uint8 level );
+			  Uint8 level );		
 
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);
 	void addSpriteObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);

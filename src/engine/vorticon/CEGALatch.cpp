@@ -311,6 +311,19 @@ void CEGALatch::applyMasks()
 					SDL_FillRect( sfc, &rect, SDL_MapRGBA(sfc->format, r, g, b, alpha) );
 				}
 			}
+
+			// try copy applied mask to the original tile so it can be applied directly
+			/*SDL_Rect src, dst;
+			dst.w = dst.h = 16;
+			src.w = src.h = 16;
+			
+			src.x = 16*((t+1)%13);
+			src.y = 16*((t+1)/13);
+
+			dst.x = 16*((t)%13);
+			dst.y = 16*((t)/13);
+		
+			SDL_BlitSurface(sfc, &src, sfc, &dst);*/
 		}
 	}
 

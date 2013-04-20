@@ -66,7 +66,10 @@ bool CMap::createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height)
 	m_width = width;
 	m_height = height;
 	m_Plane[plane].createDataMap(m_width, m_height);
-	m_Background = (m_Plane[0].getMapDataPtr() != NULL);
+	
+	const bool uniqueDrawPlane = (m_Plane[0].getMapDataPtr() == nullptr);
+	
+	m_Background = !uniqueDrawPlane;
 
 	return true;
 }

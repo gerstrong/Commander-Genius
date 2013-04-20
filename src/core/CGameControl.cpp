@@ -136,6 +136,14 @@ void CGameControl::process()
 			return;
 		}
 	}
+	
+	
+	if( g_pInput->getExitEvent() )
+	{
+	  mpEngine.release();
+	  return;
+	}
+	
 
 	// Process the game control object if no effects are being processed
 	if(mpEngine)

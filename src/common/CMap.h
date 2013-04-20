@@ -58,6 +58,7 @@ public:
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );
+
 	void _drawForegroundTiles();
 
 	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);
