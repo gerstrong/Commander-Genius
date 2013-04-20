@@ -60,9 +60,14 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 	{
 		if(m_episode == 1 || m_episode == 2 || m_episode == 3 )
 		{
-			CTileProperties TileProperties;
-			g_pBehaviorEngine->getTileProperties(1).assign(NumMaskedTiles, TileProperties);
-			readVorticonTileinfo(NumMaskedTiles);
+			CTileProperties emptyTileProperties;
+			
+			for(int i=0 ; i<2 ; i++)
+			{
+			  std::vector<CTileProperties> &tileProperties = g_pBehaviorEngine->getTileProperties(i);			
+			  tileProperties.assign(NumMaskedTiles, emptyTileProperties);						  
+			  readVorticonTileinfo(tileProperties);
+			}
 		}
 		if(m_episode == 4 || m_episode == 5 || m_episode == 6 || m_episode == 7 )
 		{
@@ -80,8 +85,9 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
  * \brief This function assings the tileinfo data block previously read to the internal TileProperties
  * 		  structure in CG.
  */
-void CTileLoader::readVorticonTileinfo(size_t NumTiles)
+void CTileLoader::readVorticonTileinfo(std::vector<CTileProperties> &TileProperties)
 {
+	const size_t NumTiles = TileProperties.size();
 	size_t planesize = 2*NumTiles;
 
 	byte *data = m_data + m_offsetMap[m_episode][m_version];
@@ -90,7 +96,6 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 	// the plane size. TODO: Check where that value is hidden in the EXE file.
 	if(m_episode == 3) planesize = 2*715;
 
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumTiles ; j++)
 	{
 		TileProperties[j].behaviour 	= GETWORD( data+planesize+2*j);
@@ -137,7 +142,7 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 	}
 
 	// This function assigns the correct tiles that have to be changed
-	assignChangeTileAttribute(NumTiles);
+	assignChangeTileAttribute(TileProperties);
 }
 
 void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
@@ -164,10 +169,8 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 	}
 }
 
-void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
+void CTileLoader::assignChangeTileAttribute(std::vector<CTileProperties> &TilePropertiesVec)
 {
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
-
 	// smart tile change is the change style that uses Keen 3. This is vorticon only stuff!
 	bool smart_tilechanger = false;
 
@@ -176,41 +179,42 @@ void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
 	
 	// At any other case, except some special ones.
 	// This is the case
-	for(size_t i=0 ; i<NumTiles ; i++)
+	size_t i = 0;
+	for( auto &TileProperties : TilePropertiesVec )
 	{
-		if( canbePickedup(i) )
+		if( canbePickedup(TileProperties.behaviour) )
 		{
 			if(smart_tilechanger)
-				TileProperties[i].chgtile = (i/13)*13;
+				TileProperties.chgtile = (i/13)*13;
 			else
-				TileProperties[i].chgtile = (i>=0x131) ? 0x114 : 0x8F;
+				TileProperties.chgtile = (i>=0x131) ? 0x114 : 0x8F;
 		}
-		if( isaDoor(i) )
+		if( isaDoor(TileProperties.behaviour) )
 		{
 			if(m_episode == 3)
-				TileProperties[i].chgtile = 0xB6;
+				TileProperties.chgtile = 0xB6;
 			else if(smart_tilechanger)
-				TileProperties[i].chgtile = (i/13)*13;
+				TileProperties.chgtile = (i/13)*13;
 			else
-				TileProperties[i].chgtile = 0x8F;
+				TileProperties.chgtile = 0x8F;
 		}
+		
+		i++;
 	}
 }
 
-bool CTileLoader::canbePickedup(int tile)
+bool CTileLoader::canbePickedup(const signed char behaviour)
 {
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
-	return ((TileProperties[tile].behaviour >= 6 &&
-			 TileProperties[tile].behaviour <= 21 &&
-			 TileProperties[tile].behaviour != 17) ||
-			TileProperties[tile].behaviour == 27 ||
-			TileProperties[tile].behaviour == 28);
+	return ((behaviour >= 6 && 
+		 behaviour <= 21 &&
+		 behaviour != 17) ||
+		 behaviour == 27 ||
+		 behaviour == 28);
 }
 
-bool CTileLoader::isaDoor(int tile)
+bool CTileLoader::isaDoor(const signed char behaviour)
 {
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
-	return (TileProperties[tile].behaviour >= 2 && TileProperties[tile].behaviour <= 5);
+	return (behaviour >= 2 && behaviour <= 5);
 }
 
 /**

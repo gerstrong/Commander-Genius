@@ -19,7 +19,7 @@ public:
 	CTileLoader(CExeFile &Exefile);
 	
 	bool load(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
-	void readVorticonTileinfo(size_t NumTiles);
+	void readVorticonTileinfo(std::vector<CTileProperties> &TileProperties);
 	void readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
 
 private:
@@ -32,10 +32,10 @@ private:
 	typedef std::map<int,long> VersionMap;
 	std::map<int, VersionMap> m_offsetMap;
 	
-	void assignChangeTileAttribute(size_t NumTiles);
+	void assignChangeTileAttribute(std::vector<CTileProperties> &TilePropertiesVec);
 	void setupOffsetMap();
-	bool canbePickedup(int tile);
-	bool isaDoor(int tile);
+	bool canbePickedup(const signed char behaviour);
+	bool isaDoor(const signed char behaviour);
 	bool smartTileChangerEnabled();
 };
 

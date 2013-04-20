@@ -39,7 +39,7 @@ public:
 	void createEmptyBitmaps(Uint16 num_bmps);
 	void createEmptyMaskedBitmaps(Uint16 num_bmps);
 	void createEmptyFontmaps(Uint8 num_fonts);
-	void createEmptyTilemap(size_t num);
+	void createEmptyTilemaps(size_t num);
 	void createEmptyCursorMap(SDL_Surface *surface);
 	
 	void setupEffect(CEffects *pEffect);

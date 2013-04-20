@@ -146,18 +146,19 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	RLE.expandSwapped(planeitems,compdata, 0xFEFE);
 
 	// Here goes the memory allocation function
-	//mpMap->createEmptyDataPlane(0, planeitems.at(1), planeitems.at(2));
-	mpMap->createEmptyDataPlane(1, planeitems.at(1), planeitems.at(2));
-	mpMap->createEmptyDataPlane(2, planeitems.at(1), planeitems.at(2));
+	const Uint16 w =  planeitems.at(1);
+	const Uint16 h =  planeitems.at(2);
+	mpMap->createEmptyDataPlane(0, w, h);
+	mpMap->createEmptyDataPlane(1, w, h);
+	mpMap->createEmptyDataPlane(2, w, h);
 
 	unsigned int planesize = 0;
 	planesize = planeitems.at(8);
 	planesize /= 2; // We have two planes
 
-	for( size_t tilemap=0 ; tilemap<2 ; tilemap++ ) // Check against Tilemaps
-	{
-	  blitPlaneToMap( planeitems, planesize, tilemap, tilemap+1);
-	}
+	blitPlaneToMap( planeitems, planesize, 0, 0);
+	blitPlaneToMap( planeitems, planesize, 0, 1);
+	blitPlaneToMap( planeitems, planesize, 1, 2);
 	
 	mpMap->collectBlockersCoordiantes();
 	return true;

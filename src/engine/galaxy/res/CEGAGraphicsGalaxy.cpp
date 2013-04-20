@@ -153,7 +153,7 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!readBitmaps()) return false;
 	if(!readMaskedBitmaps()) return false;
 
-	g_pGfxEngine->createEmptyTilemap(4);
+	g_pGfxEngine->createEmptyTilemaps(4);
 
 	if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
 			EpisodeInfo[m_episode-4].Index16Tiles,

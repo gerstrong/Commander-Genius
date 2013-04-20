@@ -23,8 +23,7 @@ m_Dark(false),
 mNumFuses(0),
 mFuseInLevel(false),
 m_Tilemaps(g_pGfxEngine->getTileMaps()),
-mAnimtileTimer(0.0f),
-m_Background(false)
+mAnimtileTimer(0.0f)
 {
 	resetScrolls();
 	m_Level = 0;
@@ -67,10 +66,6 @@ bool CMap::createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height)
 	m_height = height;
 	m_Plane[plane].createDataMap(m_width, m_height);
 	
-	const bool uniqueDrawPlane = (m_Plane[0].getMapDataPtr() == nullptr);
-	
-	m_Background = !uniqueDrawPlane;
-
 	return true;
 }
 
@@ -519,21 +514,8 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 		const Uint16 loc_x = (((mx-m_mapx)<<4)+m_mapxstripepos)&511;
 		const Uint16 loc_y = (((my-m_mapy)<<4)+m_mapystripepos)&511;
 
-		if( m_Background )
-		{
-			size_t bg = m_Plane[0].getMapDataAt(mx, my);
-			size_t fg = m_Plane[1].getMapDataAt(mx, my);
-
-
-			m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
-			if(fg)
-				m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
-		}
-		else
-		{
-			size_t fg = m_Plane[1].getMapDataAt(mx, my);
-			m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
-		}
+		size_t fg = m_Plane[1].getMapDataAt(mx, my);
+		m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
 	}
 }
 
@@ -542,47 +524,32 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 // For an faster update of tiles use redrawAt instead.
 void CMap::drawAll()
 {
-	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
-
-	Uint32 num_h_tiles = ScrollSurface->h/16;
-	Uint32 num_v_tiles = ScrollSurface->w/16;
-
-	g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx);
-	g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly);
-
-	if(num_v_tiles+m_mapx >= m_width)
-		num_v_tiles = m_width-m_mapx;
-
-	if(num_h_tiles+m_mapy >= m_height)
-		num_h_tiles = m_height-m_mapy;
-
-	if( m_Background )
-	{
-		for(Uint32 y=0;y<num_h_tiles;y++)
-		{
-			for(Uint32 x=0;x<num_v_tiles;x++)
-			{
-				Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, y+m_mapy);
-				Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
-
-				m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, bg);
-				if(fg)
-					m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
-			}
-		}
-	}
-	else
-	{
-		for(Uint32 y=0;y<num_h_tiles;y++)
-		{
-			for(Uint32 x=0;x<num_v_tiles;x++)
-			{
-				Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
-				m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
-			}
-		}
-	}
-
+  SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+  
+  Uint32 num_h_tiles = ScrollSurface->h/16;
+  Uint32 num_v_tiles = ScrollSurface->w/16;
+  
+  g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx);
+  g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly);
+  
+  if(num_v_tiles+m_mapx >= m_width)
+    num_v_tiles = m_width-m_mapx;
+  
+  if(num_h_tiles+m_mapy >= m_height)
+    num_h_tiles = m_height-m_mapy;
+  
+  for(Uint32 y=0;y<num_h_tiles;y++)
+  {
+    for(Uint32 x=0;x<num_v_tiles;x++)
+    {
+      Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, y+m_mapy);
+      Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
+      
+      m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, bg);
+      if(fg)
+	m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
+    }
+  }
 }
 
 // draw a horizontal stripe, for vertical scrolling
@@ -595,26 +562,15 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 	if( num_v_tiles+m_mapx >= m_width )
 		num_v_tiles = m_width-m_mapx;
 
-	if( m_Background )
+	for(Uint32 x=0;x<num_v_tiles;x++)
 	{
-		for(Uint32 x=0;x<num_v_tiles;x++)
-		{
-			Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, mpy);
-			Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
-
-			m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, bg);
-			if(fg)
-				m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
-		}
-	}
-	else
-	{
-		for(Uint32 x=0;x<num_v_tiles;x++)
-		{
-			Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
-			m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
-		}
-	}
+	  Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, mpy);
+	  Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
+	  
+	  m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, bg);
+	  if(fg)
+	    m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
+	}	
 }
 
 // draws a vertical stripe from map position mapx to scrollbuffer position x
@@ -629,25 +585,14 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 	if( num_h_tiles+m_mapy >= m_height )
 		num_h_tiles = m_height-m_mapy;
 
-	if( m_Background )
+	for(Uint32 y=0;y<num_h_tiles;y++)
 	{
-		for(Uint32 y=0;y<num_h_tiles;y++)
-		{
-			Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
-			Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
-
-			m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, bg);
-			if(fg)
-				m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, fg);
-		}
-	}
-	else
-	{
-		for(Uint32 y=0;y<num_h_tiles;y++)
-		{
-			Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
-			m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, fg);
-		}
+	  Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
+	  Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
+	  
+	  m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, bg);
+	  if(fg)
+	    m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, fg);
 	}
 }
 
@@ -677,15 +622,7 @@ void CMap::_drawForegroundTiles()
 			const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
 			const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
 
-			if(!m_Background) // Keen Vorticon in general do not have real background. It's just one plane
-			{
-			    if(TileProperties[fg].behaviour == -2) // case when has a masked graphic.
-				//NOTE: It is fg+1 because the masked tile comes directly on the tileplane in the Keen vorticon games.
-				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg+1 );
-			    else if (TileProperties[fg].behaviour == -1) // case when tile is just foreground
-				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
-			}
-			else if(fg != 0)
+			if(fg != 0)
 			{
 			   if(TileProperties[fg].behaviour < 0)
 				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
@@ -746,74 +683,44 @@ void CMap::animateAllTiles()
 			g_pBehaviorEngine->getTileProperties(1);
 	word *p_front_tile = m_Plane[1].getMapDataPtr();
 
-	if(m_Background)
+	std::vector<CTileProperties> &backTileProperties =
+	g_pBehaviorEngine->getTileProperties(0);
+	word *p_back_tile = m_Plane[0].getMapDataPtr();
+	for( size_t y=0 ; y<m_height ; y++)
 	{
-		std::vector<CTileProperties> &backTileProperties =
-				g_pBehaviorEngine->getTileProperties(0);
-		word *p_back_tile = m_Plane[0].getMapDataPtr();
-		for( size_t y=0 ; y<m_height ; y++)
-		{
-			for( size_t x=0 ; x<m_width ; x++)
-			{
-				bool draw = false;
-
-				CTileProperties &back_tile = backTileProperties[*p_back_tile];
-				if( back_tile.animationtime && (animtileTimerInt % back_tile.animationtime == 0) )
-				{
-					*p_back_tile += back_tile.nextTile;
-					draw = true;
-				}
-				p_back_tile++;
-
-
-				CTileProperties &front_tile = frontTileProperties[*p_front_tile];
-				if( front_tile.animationtime && (animtileTimerInt % front_tile.animationtime == 0) )
-				{
-					*p_front_tile += front_tile.nextTile;
-					draw = true;
-				}
-				p_front_tile++;
-
-				if( draw && x >= m_mapx && y >= m_mapy &&
-						x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
-				{
-					Uint16 bg = m_Plane[0].getMapDataAt(x,y);
-					Uint16 fg = m_Plane[1].getMapDataAt(x,y);
-					const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos)&511;
-					const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos)&511;
-					m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
-					if(fg)
-						m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
-				}
-			}
-		}
-	}
-	else
-	{
-		for( size_t y=0 ; y<m_height ; y++)
-		{
-			for( size_t x=0 ; x<m_width ; x++)
-			{
-				bool draw = false;
-
-				CTileProperties &front_tile = frontTileProperties[*p_front_tile];
-				if( front_tile.animationtime && (animtileTimerInt % front_tile.animationtime == 0) )
-				{
-					*p_front_tile += front_tile.nextTile;
-					draw = true;
-				}
-				p_front_tile++;
-
-				if( draw && x >= m_mapx && y >= m_mapy &&
-						x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
-				{
-					Uint16 fg = m_Plane[1].getMapDataAt(x,y);
-					const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos)&511;
-					const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos)&511;
-					m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
-				}
-			}
-		}
+	  for( size_t x=0 ; x<m_width ; x++)
+	  {
+	    bool draw = false;
+	    
+	    CTileProperties &back_tile = backTileProperties[*p_back_tile];
+	    if( back_tile.animationtime && (animtileTimerInt % back_tile.animationtime == 0) )
+	    {
+	      *p_back_tile += back_tile.nextTile;
+	      draw = true;
+	    }
+	    p_back_tile++;
+	    
+	    
+	    CTileProperties &front_tile = frontTileProperties[*p_front_tile];
+	    if( front_tile.animationtime && (animtileTimerInt % front_tile.animationtime == 0) )
+	    {
+	      *p_front_tile += front_tile.nextTile;
+	      draw = true;
+	    }
+	    p_front_tile++;
+	    
+	    if( draw && x >= m_mapx && y >= m_mapy &&
+	      x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
+	    {
+	      Uint16 bg = m_Plane[0].getMapDataAt(x,y);
+	      Uint16 fg = m_Plane[1].getMapDataAt(x,y);
+	      const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos)&511;
+	      const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos)&511;
+	      m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
+	      if(fg)
+		m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
+	    }
+	  }
 	}
 }
 

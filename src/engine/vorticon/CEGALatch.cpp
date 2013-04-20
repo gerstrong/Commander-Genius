@@ -94,6 +94,34 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 	return true;
 }
 
+
+
+
+void CEGALatch::loadTilemap(CTilemap &Tilemap, CPlanes &Planes, const int episode, const std::string &path)
+{
+	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
+	SDL_Surface *sfc = Tilemap.getSDLSurface();
+	SDL_FillRect(sfc,NULL, 0);
+	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+	Uint8 *u_pixel = (Uint8*) sfc->pixels;
+
+	for(int p=0;p<4;p++)
+		Planes.readPlaneofTiles(p, u_pixel, 13, 16, m_num16tiles);
+
+	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
+
+	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap	
+	if(Tilemap.loadHiresTile("gfx/ck" + itoa(episode) + "tiles", path))
+	{
+	  g_pLogFile->textOut(GREEN, "Additional VGA Bitmap for the Tileset has been loaded successfully!");
+	}
+
+	// Adapt the tilemap to the display, so they are faster blit
+	Tilemap.optimizeSurface();  
+}
+
+
+
 bool CEGALatch::loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata )
 {
 	std::string filename;
@@ -176,27 +204,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					 0);
 
 	g_pGfxEngine->freeTilemap();
-	g_pGfxEngine->createEmptyTilemap(2);
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
-	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
-	sfc = Tilemap.getSDLSurface();
-	SDL_FillRect(sfc,NULL, 0);
-	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
-	Uint8 *u_pixel = (Uint8*) sfc->pixels;
-
-	for(int p=0;p<4;p++)
-		Planes.readPlaneofTiles(p, u_pixel, 13, 16, m_num16tiles);
-
-	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
-
-	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap	
-	if(Tilemap.loadHiresTile("gfx/ck" + itoa(episode) + "tiles", path))
-	{
-	  g_pLogFile->textOut(GREEN, "Additional VGA Bitmap for the Tileset has been loaded successfully!");
-	}
-
-	// Adapt the tilemap to the display, so they are faster blit
-	Tilemap.optimizeSurface();
+	g_pGfxEngine->createEmptyTilemaps(2);
+	
+	// TODO: Now we have two tilemaps. Simply the upcoming so it is applied to both.
+	loadTilemap(g_pGfxEngine->getTileMap(0), Planes, episode, path);
+	loadTilemap(g_pGfxEngine->getTileMap(1), Planes, episode, path);
 
 	// make masked tiles according to it's surfaces
 	applyMasks();
@@ -269,65 +281,70 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 // Convert the normal tiles to masked tiles
 void CEGALatch::applyMasks()
 {
-	SDL_Surface *sfc = g_pGfxEngine->getTileMap(1).getSDLSurface();
+	SDL_Surface *frontSfc = g_pGfxEngine->getTileMap(1).getSDLSurface();
+	SDL_Surface *backSfc = g_pGfxEngine->getTileMap(0).getSDLSurface();
 
-	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+	if(SDL_MUSTLOCK(frontSfc)) SDL_LockSurface(frontSfc);
+	if(SDL_MUSTLOCK(backSfc)) SDL_LockSurface(backSfc);
 
-	Uint8 bpp = sfc->format->BytesPerPixel;
+	const Uint8 bpp = frontSfc->format->BytesPerPixel;
 
 	for( Uint16 t=0 ; t<m_num16tiles ; t++ )
 	{
 		if( g_pBehaviorEngine->getTileProperties().at(t).behaviour == -2 )  // This is for masked tiles.
 		{
-			for( Uint16 x=0 ; x<16 ; x++ )
-			{
-				for( Uint16 y=0 ; y<16 ; y++ )
-				{
-					Uint32 u_colour = 0;
-					Uint8 r,g,b;
-					Uint8 *u_offset = (Uint8*)sfc->pixels + bpp*((y+16*((t+1)/13))*13*16 + 16*((t+1)%13) + x);
-					memcpy( &u_colour, u_offset, bpp );
-					SDL_GetRGB( u_colour, sfc->format, &r, &g, &b );
-
-					SDL_Rect rect;
-					rect.w = rect.h = 1;
-					rect.x = 16*((t+1)%13) + x;
-					rect.y = y+16*((t+1)/13);
-
-					Uint8 alpha;
-					
-					if( r>=250 && g>=250 && b>=250 ) // In this case set it to zero
-					{
-					    alpha = r = g = b = 0;
-					}
-					else // Get the pixel of the previous tile. If the mask has colour, use alpha channel, black is opaque
-					{
-					    alpha = 255 - (r+g+b)/3;
-					    u_offset = (Uint8*)sfc->pixels + bpp*((y+16*(t/13))*13*16 + 16*(t%13) + x);
-					    memcpy( &u_colour, u_offset, bpp);
-					    SDL_GetRGB( u_colour, sfc->format, &r, &g, &b);					    
-					}
-					
-					SDL_FillRect( sfc, &rect, SDL_MapRGBA(sfc->format, r, g, b, alpha) );
-				}
-			}
-
-			// try copy applied mask to the original tile so it can be applied directly
-			/*SDL_Rect src, dst;
-			dst.w = dst.h = 16;
-			src.w = src.h = 16;
+			SDL_Rect srcRect, dstRect;
+			srcRect.w = srcRect.h = 16;
+			dstRect.w = dstRect.h = 16;
 			
-			src.x = 16*((t+1)%13);
-			src.y = 16*((t+1)/13);
+			srcRect.x = 16*(t%13);
+			srcRect.y = 16*(t/13);		  
+		  
+			SDL_FillRect( frontSfc, &srcRect, SDL_MapRGBA(frontSfc->format, 0, 0, 0, 0) );
+		  
+			for( Uint16 x=0 ; x<16 ; x++ ) for( Uint16 y=0 ; y<16 ; y++ )
+			{	
+				Uint32 u_colour = 0;
+				Uint8 r,g,b;
+				Uint8 *u_offset = (Uint8*)backSfc->pixels + bpp*((y+16*((t+1)/13))*13*16 + 16*((t+1)%13) + x);
+				memcpy( &u_colour, u_offset, bpp );
+				SDL_GetRGB( u_colour, backSfc->format, &r, &g, &b );
 
-			dst.x = 16*((t)%13);
-			dst.y = 16*((t)/13);
-		
-			SDL_BlitSurface(sfc, &src, sfc, &dst);*/
+				/*SDL_Rect dstRect;
+				srcRect.w = srcRect.h = 1;
+				srcRect.x = 16*((t+1)%13) + x;
+				srcRect.y = y+16*((t+1)/13);*/
+
+				Uint8 alpha;
+					
+				if( r>=250 && g>=250 && b>=250 ) // In this case set it to zero
+				{
+				    alpha = r = g = b = 0;
+				}
+				else // Get the pixel of the previous tile. If the mask has colour, use alpha channel, black is opaque
+				{
+				    alpha = 255 - (r+g+b)/3;
+				    u_offset = (Uint8*)backSfc->pixels + bpp*((y+16*(t/13))*13*16 + 16*(t%13) + x);
+				    memcpy( &u_colour, u_offset, bpp);
+				    SDL_GetRGB( u_colour, backSfc->format, &r, &g, &b);					    
+				}
+				
+				SDL_Rect srcRect;
+				srcRect.w = srcRect.h = 1;
+				//srcRect.x = 16*((t+1)%13) + x;
+				//srcRect.y = y+16*((t+1)/13);
+				srcRect.x = 16*((t)%13) + x;
+				srcRect.y = y+16*((t)/13);
+				
+				SDL_FillRect( frontSfc, &srcRect, SDL_MapRGBA(frontSfc->format, r, g, b, alpha) );
+			}
 		}
 	}
 
-	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+	if(SDL_MUSTLOCK(backSfc)) 
+	  SDL_UnlockSurface(backSfc);
+	if(SDL_MUSTLOCK(frontSfc)) 
+	  SDL_UnlockSurface(frontSfc);
 }
 
 CEGALatch::~CEGALatch() {

@@ -18,7 +18,7 @@ m_fxsurface(NULL)
 ///
 // Creation Routines
 ///
-void CGfxEngine::createEmptyTilemap(size_t num)
+void CGfxEngine::createEmptyTilemaps(size_t num)
 {
 	freeTilemap();
 	CTilemap oneTilemap;

@@ -145,7 +145,6 @@ private:
 	float mAnimtileTimer;	
 
 	CPlane m_Plane[3];
-	bool m_Background; // This variable holds, whether we have a background to draw or not.
 	Uint16 m_Level;
 	std::string m_LevelName;
 	std::vector<int> scrollBlockX;
