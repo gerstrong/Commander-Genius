@@ -514,8 +514,12 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 		const Uint16 loc_x = (((mx-m_mapx)<<4)+m_mapxstripepos)&511;
 		const Uint16 loc_y = (((my-m_mapy)<<4)+m_mapystripepos)&511;
 
-		size_t fg = m_Plane[1].getMapDataAt(mx, my);
-		m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
+		const size_t bg = m_Plane[0].getMapDataAt(mx, my);
+		const size_t fg = m_Plane[1].getMapDataAt(mx, my);
+		
+		m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);		
+		if(fg)
+		  m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
 	}
 }
 
