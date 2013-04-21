@@ -16,9 +16,6 @@
 
 namespace galaxy {
 
-#define A_COUNCIL_MEMBER_MOVE		0	/* Ordinary walking council member. */
-#define A_COUNCIL_MEMBER_THINK		2	/* Council member stopping to ponder. */
-
 class CCouncilMember : public CGalaxySpriteObject
 {
 public:

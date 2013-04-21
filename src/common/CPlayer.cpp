@@ -22,7 +22,7 @@
 ///
 // Initialization Part
 ///
-CPlayer::CPlayer(const char &Episode, short &Level,
+CPlayer::CPlayer(const Sint8 &Episode, short &Level,
 				 bool *mp_level_completed,
 				 CMap &map) :
 CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER),

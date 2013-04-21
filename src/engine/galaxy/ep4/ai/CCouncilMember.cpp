@@ -20,6 +20,11 @@ const int ELDER_MOVE_TIMER = 10;
 int NumberToRescue;
 
 
+#define A_COUNCIL_MEMBER_MOVE		0	/* Ordinary walking council member. */
+#define A_COUNCIL_MEMBER_THINK		2	/* Council member stopping to ponder. */
+
+
+
 CCouncilMember::CCouncilMember(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 rescued(false),

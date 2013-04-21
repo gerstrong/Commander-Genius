@@ -222,8 +222,8 @@ public:
 
 
 	// special functions for sloped tiles
-	bool checkslopedU( int c, int y1, char blocked);
-	bool checkslopedD( int c, int y2, char blocked);
+	bool checkslopedU( int c, int y1, Sint8 blocked);
+	bool checkslopedD( int c, int y2, Sint8 blocked);
 	void adjustSlopedTiles( int x, int y1, int y2, const int xspeed );
 	bool moveSlopedTileDown( int x, int y, const int xspeed );
 	void moveSlopedTileUp( int x, int y, const int xspeed );

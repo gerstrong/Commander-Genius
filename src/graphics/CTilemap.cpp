@@ -125,7 +125,7 @@ int CTilemap::getDimension()
 #define TILE_S			4
 #define STC (CSF-TILE_S)
 
-void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, char blocked)
+void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, Sint8 blocked)
 {
 	/**
 	 * So far only used in Galaxy. This is the code for sloped tiles downside

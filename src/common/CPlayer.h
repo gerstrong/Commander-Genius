@@ -52,7 +52,7 @@ public:
 		NONE, WORLDMAP, LEVELPLAY
 	};
 
-	CPlayer(const char &Episode, short &Level,
+	CPlayer(const Sint8 &Episode, short &Level,
 			 bool *mp_level_completed, CMap &map);
 	
 	// Copy player Data
@@ -130,8 +130,8 @@ public:
 	unsigned int h;
 
 	e_playingmodes m_playingmode;
-	char m_episode;
-	char m_level;
+	Sint8 m_episode;
+	Sint8 m_level;
 
 	bool godmode;
 

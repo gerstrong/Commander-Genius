@@ -168,7 +168,7 @@ bool CSpriteObject::moveSlopedTileDown( int x, int y, const int xspeed )
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	const char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
+	const Sint8 slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
 
 	// Check first, if there is a tile on objects level
 	if( slope >=2 && slope<=7 )
@@ -208,7 +208,7 @@ void CSpriteObject::moveSlopedTileUp( int x, int y, const int xspeed )
 		return;
 
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bdown;
+	const Sint8 slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bdown;
 
 	// Check first, if there is a tile on players level
 	if( slope >=2 && slope<=7 )
@@ -280,7 +280,7 @@ bool CSpriteObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	
 	int i,j;
-	signed char behavior;
+	Sint8 behavior;
 
 	for( i=0 ; i<lw ; i+=res )
 	{
@@ -318,7 +318,7 @@ bool CSpriteObject::hitdetectWithTilePropertyRectRO(const Uint16 Property, const
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	
 	int i,j;
-	signed char behavior;
+	Sint8 behavior;
 
 	for( i=0 ; i<lw ; i+=res )
 	{
@@ -346,7 +346,7 @@ bool CSpriteObject::hitdetectWithTilePropertyHor(const Uint16 Property, const in
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	
 	int i;
-	signed char behavior;
+	Sint8 behavior;
 
 	for( i=lxl ; i<lxr ; i+=res )
 	{		
@@ -367,7 +367,7 @@ bool CSpriteObject::hitdetectWithTilePropertyVert(const Uint16 Property, const i
     	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	
 	int i;
-	signed char behavior;
+	Sint8 behavior;
 
 	for( i=lyu ; i<lyd ; i+=res )
 	{		
@@ -393,7 +393,7 @@ bool CSpriteObject::hitdetectWithTileProperty(const int Property, const int x, c
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	const int tileID = mp_Map->getPlaneDataAt(1, x, y);
-	const signed char behavior = Tile[tileID].behaviour;
+	const Sint8 behavior = Tile[tileID].behaviour;
 	if( (behavior&0x7F) == Property ) // 0x7F is the mask which covers for foreground properties
 		return true;
 	else
@@ -545,7 +545,7 @@ int CSpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mode )
 	{
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			char blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
+			Sint8 blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
 
 			if(blocked)
 				return blocked;
@@ -567,7 +567,7 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	// Check for down from the object
 	if(solid)
 	{
-		char blocked;
+		Sint8 blocked;
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
@@ -593,7 +593,7 @@ int CSpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 	4	Bottom -> top		5	Middle -> bottom
 	6	Top -> middle		7	Top -> bottom
  */
-bool CSpriteObject::checkslopedU( int c, int y1, char blocked)
+bool CSpriteObject::checkslopedU( int c, int y1, Sint8 blocked)
 {
 	int yb1, yb2;
 
@@ -612,7 +612,7 @@ bool CSpriteObject::checkslopedU( int c, int y1, char blocked)
 6	Bottom -> middle	7	Bottom -> top
 8	Unused				9	Deadly, can't land on in God mode
  */
-bool CSpriteObject::checkslopedD( int c, int y2, char blocked )
+bool CSpriteObject::checkslopedD( int c, int y2, Sint8 blocked )
 {
 	int yb1, yb2;
 

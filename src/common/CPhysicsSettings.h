@@ -41,8 +41,8 @@ public:
 	}player;
 
 	struct vorticonsettings{
-		char commander_hp;
-		char default_hp;
+		Sint8 commander_hp;
+		Sint8 default_hp;
 	}vorticon;
 
 	struct{

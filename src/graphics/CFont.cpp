@@ -62,7 +62,7 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 	int width, height, colors;
 
 	// Read the dimensions and amount of colors
-	sscanf(data[0], "%d %d %d", &width, &height, &colors);
+	sscanf((const char*)data[0], "%d %d %d", &width, &height, &colors);
 
 	// Create the surface
 	SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE, width, height,
@@ -107,11 +107,11 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 	Uint32 *pixel = static_cast<Uint32*>(sfc->pixels);
 	for( int y = 0 ; y < height ; y++)
 	{
-		char *pixel_data = const_cast<char*>(data[colors+1+y]);
+		Sint8 *pixel_data = const_cast<Sint8*>((Sint8*)data[colors+1+y]);
 
 		for( int x = 0 ; x < width ; x++)
 		{
-			const char newPix = pixel_data[x];
+			const Sint8 newPix = pixel_data[x];
 
 			if( newPix == ' ' )
 			{
