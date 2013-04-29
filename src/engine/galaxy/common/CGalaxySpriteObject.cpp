@@ -191,7 +191,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 	// Check for sloped tiles here. They must be handled differently
 	if(solid)
 	{
-		int8_tblockedu;
+		int8_t blockedu;
 
 		if(m_climbing)
 		{
