@@ -27,6 +27,9 @@ CMoveTarget(m_Pos, xDirection, yDirection)
 
 	xDirection = horidir;
 	yDirection = vertdir;
+	
+	solid = false; // I think they must be false, because some plats like those in Keen6
+		       // should only obey to the set markers
 
 	calcBoundingBoxes();
 }

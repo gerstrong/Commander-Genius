@@ -47,18 +47,7 @@ CMapLoaderGalaxy( ExeFile, ObjectPtr, Inventory, Cheatmode)
 {}
 
 
-// Platforms:
-// 27-30 & 32 seem to be the actual platforms.  There may be more of numbers lower than 27.
-// 31 seem to be the stoppers, those are not created because the platform
-// get this from the object map directly
 
-const unsigned int PLATFORM_HORIZ_ALT = 28;
-const unsigned int PLATFORM_VERT = 29;
-const unsigned int PLATFORM_HORIZ = 30;
-// 31 does not count, because it's a blocker.
-const unsigned int PLATFORM_DROP = 32;
-
-const unsigned int DIVE_SUIT = 35;
 /**
  * @brief	Loads a foe given by the coordiantes
  */
