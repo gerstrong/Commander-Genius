@@ -57,7 +57,7 @@ void CSpriteObject::calcBoundingBoxes()
  * 6	Bottom -> middle	7	Bottom -> top
  * 8	Unused			9	Deadly, can't land on in God mode
  */
-void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
+void getSlopePointsLowerTile(signed char slope, int &yb1, int &yb2)
 {
 	// Calculate the corner y coordinates
 	if( slope == 2 )
@@ -85,7 +85,7 @@ void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
  * 6	Top -> middle		7	Top -> bottom
  *
  */
-void getSlopePointsUpperTile(char slope, int &yb1, int &yb2)
+void getSlopePointsUpperTile(signed  char slope, int &yb1, int &yb2)
 {
 	if( slope == 2 )
 		yb1 = 512,	yb2 = 256;

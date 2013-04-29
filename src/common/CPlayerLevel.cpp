@@ -601,7 +601,6 @@ void CPlayer::boostInertia(const int amt)
 
 void CPlayer::Playerfalling()
 {
-	char behaviour;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 
@@ -631,7 +630,7 @@ void CPlayer::Playerfalling()
 	int xleft  = getXLeftPos();
 	int ydown  = getYDownPos();
 
-	behaviour = TileProperty[mp_Map->at(xleft>>CSF, ydown>>CSF)].behaviour;
+	auto behaviour = TileProperty[mp_Map->at(xleft>>CSF, ydown>>CSF)].behaviour;
 	if( behaviour>=2 && behaviour<=5 )
 		blockedu = true; // This workaround prevents the player from falling through doors.
 

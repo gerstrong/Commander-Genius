@@ -151,7 +151,7 @@ int CGalaxySpriteObject::checkSolidU(int x1, int x2, int y1, const bool push_mod
 	// Check for sloped tiles here. They must be handled differently
 	if(solid)
 	{
-		char blocked;
+		int8_t blocked;
 
 		if(m_climbing)
 		{
@@ -191,7 +191,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 	// Check for sloped tiles here. They must be handled differently
 	if(solid)
 	{
-		char blockedu;
+		int8_tblockedu;
 
 		if(m_climbing)
 		{
@@ -227,7 +227,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 	// Check for down from the object
 	if(solid)
 	{
-		char blocked;
+		int8_t blocked;
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
@@ -236,7 +236,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 			{
 				if( blocked < 2 || blocked > 7 )
 				{
-					char blockedd = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown;
+					int8_t blockedd = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bdown;
 
 					if(blockedd == 0 && m_jumpdown)
 						return 0;

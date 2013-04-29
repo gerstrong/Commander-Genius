@@ -12,7 +12,7 @@
 #include "sdl/sound/CSound.h"
 #include "misc.h"
 
-static char numlooks;
+static signed char numlooks;
 
 CYorp::CYorp( CMap *p_map, Uint32 x, Uint32 y ) :
 CVorticonSpriteObject(p_map,x,y, OBJ_YORP),

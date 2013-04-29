@@ -44,7 +44,7 @@ bool CPlayer::getGoodie(int px, int py)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	Uint16 tile = mp_Map->at(px, py);
-	char behaviour = TileProperty[tile].behaviour;
+	auto behaviour = TileProperty[tile].behaviour;
 	
 	if (behaviour>0 && behaviour<31)
 	{
