@@ -24,6 +24,16 @@ public:
 			const unsigned int actionoffset);
 
 	VectorD2<int> fetchFootDestCoord();
+	
+	void deserialize(CSaveGameController &savedGame) 
+	{
+	  savedGame.decodeData(mUsedGrapplingHook);
+	}
+
+	void serialize(CSaveGameController &savedGame) 
+	{
+	  savedGame.encodeData(mUsedGrapplingHook);
+	}
 
 	void process();
 	void processMoving();

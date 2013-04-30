@@ -304,7 +304,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 		break;
 
 	case CRope::FOE_ID:
-		p_newfoe = new galaxy::CRope(&Map, foe, x, y); break;
+		p_newfoe = new galaxy::CRope(&Map, x, y); break;
 
 	default:
 		break;

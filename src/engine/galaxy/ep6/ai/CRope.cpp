@@ -23,14 +23,15 @@ A_ROPE_THROWN = 1
 const int THROW_TIME = 10;
 
 
-CRope::CRope(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y),
+CRope::CRope(CMap* pmap, Uint32 x, Uint32 y) :
+CGalaxyActionSpriteObject(pmap, FOE_ID, x, y),
 mTimer(0)
 {
     mActionMap[A_ROPE_ACTIVE] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processActive;
     mActionMap[A_ROPE_THROWN] = (void (CGalaxyActionSpriteObject::*)()) &CRope::processThrown;
 
     setupGalaxyObjectOnMap(0x1C16, A_ROPE_THROWN);    
+    solid=false;
 }
 
 
