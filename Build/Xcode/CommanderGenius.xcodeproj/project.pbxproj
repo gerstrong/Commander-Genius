@@ -48,7 +48,6 @@
 		237422F511FC849A000EEA5B /* CSaveMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */; };
 		237422F611FC849A000EEA5B /* CSettingsMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */; };
 		237422F711FC849A000EEA5B /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */; };
-		237422F911FC849A000EEA5B /* tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10ED11CFF5FB00F60BC8 /* tga.cpp */; };
 		237422FA11FC849A000EEA5B /* ConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10EF11CFF5FB00F60BC8 /* ConfigHandler.cpp */; };
 		237422FB11FC849A000EEA5B /* CrashHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F111CFF5FB00F60BC8 /* CrashHandler.cpp */; };
 		237422FC11FC849A000EEA5B /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F511CFF5FB00F60BC8 /* Debug.cpp */; };
@@ -454,6 +453,16 @@
 		6362220316E9008D00F2B0E7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 631FE54616DEE52A0082C588 /* Default.png */; };
 		636222C916E92E0D00F2B0E7 /* CGLogo.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 6362224716E92E0D00F2B0E7 /* CGLogo.bmp */; };
 		638814F6159273E100308DAC /* CSpriteObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638814F4159273E100308DAC /* CSpriteObject.cpp */; };
+		6393ECF5173032510020BEF2 /* CMolly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6393ECED173032510020BEF2 /* CMolly.cpp */; };
+		6393ECF6173032510020BEF2 /* CRocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6393ECEF173032510020BEF2 /* CRocket.cpp */; };
+		6393ECF7173032510020BEF2 /* CRope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6393ECF1173032510020BEF2 /* CRope.cpp */; };
+		6393ECF8173032510020BEF2 /* CSatelite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6393ECF3173032510020BEF2 /* CSatelite.cpp */; };
+		6393ECF9173032640020BEF2 /* CMolly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6393ECED173032510020BEF2 /* CMolly.cpp */; };
+		6393ECFA173032640020BEF2 /* CRocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6393ECEF173032510020BEF2 /* CRocket.cpp */; };
+		6393ECFB173032640020BEF2 /* CRope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6393ECF1173032510020BEF2 /* CRope.cpp */; };
+		6393ECFC173032640020BEF2 /* CSatelite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6393ECF3173032510020BEF2 /* CSatelite.cpp */; };
+		6393ED051730361D0020BEF2 /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6393ED03173036010020BEF2 /* SDL_image.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		6393ED06173038D10020BEF2 /* SDL_image.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 6393ED03173036010020BEF2 /* SDL_image.framework */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63AEA5C0132D4B6A000344F1 /* CScrollEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */; };
 		63AEA5C1132D4B6A000344F1 /* CScrollEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */; };
@@ -492,7 +501,6 @@
 		63CD122211CFF5FC00F60BC8 /* CSaveMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */; };
 		63CD122311CFF5FC00F60BC8 /* CSettingsMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */; };
 		63CD122411CFF5FC00F60BC8 /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */; };
-		63CD122611CFF5FC00F60BC8 /* tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10ED11CFF5FB00F60BC8 /* tga.cpp */; };
 		63CD122711CFF5FC00F60BC8 /* ConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10EF11CFF5FB00F60BC8 /* ConfigHandler.cpp */; };
 		63CD122811CFF5FC00F60BC8 /* CrashHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F111CFF5FB00F60BC8 /* CrashHandler.cpp */; };
 		63CD122911CFF5FC00F60BC8 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F511CFF5FB00F60BC8 /* Debug.cpp */; };
@@ -633,6 +641,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				63EADC6D16B688A900B3C887 /* SDL.framework in Copy Frameworks */,
+				6393ED06173038D10020BEF2 /* SDL_image.framework in Copy Frameworks */,
 				63F4C9E41273668500CA4C79 /* Ogg.framework in Copy Frameworks */,
 				63F4C9E61273668500CA4C79 /* Vorbis.framework in Copy Frameworks */,
 			);
@@ -1042,6 +1051,15 @@
 		638814F4159273E100308DAC /* CSpriteObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteObject.cpp; sourceTree = "<group>"; };
 		638814F5159273E100308DAC /* CSpriteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteObject.h; sourceTree = "<group>"; };
 		638814FA1592740C00308DAC /* Configurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurator.h; sourceTree = "<group>"; };
+		6393ECED173032510020BEF2 /* CMolly.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMolly.cpp; sourceTree = "<group>"; };
+		6393ECEE173032510020BEF2 /* CMolly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMolly.h; sourceTree = "<group>"; };
+		6393ECEF173032510020BEF2 /* CRocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CRocket.cpp; sourceTree = "<group>"; };
+		6393ECF0173032510020BEF2 /* CRocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRocket.h; sourceTree = "<group>"; };
+		6393ECF1173032510020BEF2 /* CRope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CRope.cpp; sourceTree = "<group>"; };
+		6393ECF2173032510020BEF2 /* CRope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRope.h; sourceTree = "<group>"; };
+		6393ECF3173032510020BEF2 /* CSatelite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSatelite.cpp; sourceTree = "<group>"; };
+		6393ECF4173032510020BEF2 /* CSatelite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSatelite.h; sourceTree = "<group>"; };
+		6393ED03173036010020BEF2 /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL_image.framework; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
 		63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CScrollEffect.cpp; sourceTree = "<group>"; };
 		63AEA5BF132D4B6A000344F1 /* CScrollEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CScrollEffect.h; sourceTree = "<group>"; };
@@ -1107,8 +1125,6 @@
 		63CD10EA11CFF5FB00F60BC8 /* objenums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objenums.h; sourceTree = "<group>"; };
 		63CD10EB11CFF5FB00F60BC8 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
 		63CD10EC11CFF5FB00F60BC8 /* Playerdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Playerdefines.h; sourceTree = "<group>"; };
-		63CD10ED11CFF5FB00F60BC8 /* tga.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tga.cpp; sourceTree = "<group>"; };
-		63CD10EE11CFF5FB00F60BC8 /* tga.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tga.h; sourceTree = "<group>"; };
 		63CD10EF11CFF5FB00F60BC8 /* ConfigHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigHandler.cpp; sourceTree = "<group>"; };
 		63CD10F011CFF5FB00F60BC8 /* ConfigHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigHandler.h; sourceTree = "<group>"; };
 		63CD10F111CFF5FB00F60BC8 /* CrashHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CrashHandler.cpp; sourceTree = "<group>"; };
@@ -1362,11 +1378,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63EADC6C16B688A200B3C887 /* SDL.framework in Frameworks */,
-				63C3375216B6503000A3ECC4 /* OpenGL.framework in Frameworks */,
-				63C3375316B6503700A3ECC4 /* Cocoa.framework in Frameworks */,
 				23575631101A5E5900275638 /* Carbon.framework in Frameworks */,
+				63C3375316B6503700A3ECC4 /* Cocoa.framework in Frameworks */,
+				63C3375216B6503000A3ECC4 /* OpenGL.framework in Frameworks */,
 				2357564E101A5F8F00275638 /* Ogg.framework in Frameworks */,
+				63EADC6C16B688A200B3C887 /* SDL.framework in Frameworks */,
+				6393ED051730361D0020BEF2 /* SDL_image.framework in Frameworks */,
 				2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1592,10 +1609,18 @@
 				63FB089816F3C4EC00C5AE54 /* CGik.h */,
 				63C343A116E8635B0077F11F /* CGrabbiter.cpp */,
 				63C343A216E8635B0077F11F /* CGrabbiter.h */,
+				6393ECED173032510020BEF2 /* CMolly.cpp */,
+				6393ECEE173032510020BEF2 /* CMolly.h */,
 				63FB089916F3C4EC00C5AE54 /* CNospike.cpp */,
 				63FB089A16F3C4EC00C5AE54 /* CNospike.h */,
 				63FB089B16F3C4EC00C5AE54 /* COrbatrix.cpp */,
 				63FB089C16F3C4EC00C5AE54 /* COrbatrix.h */,
+				6393ECEF173032510020BEF2 /* CRocket.cpp */,
+				6393ECF0173032510020BEF2 /* CRocket.h */,
+				6393ECF1173032510020BEF2 /* CRope.cpp */,
+				6393ECF2173032510020BEF2 /* CRope.h */,
+				6393ECF3173032510020BEF2 /* CSatelite.cpp */,
+				6393ECF4173032510020BEF2 /* CSatelite.h */,
 				63FB089D16F3C4EC00C5AE54 /* CSpecialItem.cpp */,
 				63FB089E16F3C4EC00C5AE54 /* CSpecialItem.h */,
 			);
@@ -2025,8 +2050,6 @@
 				63CD10EA11CFF5FB00F60BC8 /* objenums.h */,
 				63CD10EB11CFF5FB00F60BC8 /* options.h */,
 				63CD10EC11CFF5FB00F60BC8 /* Playerdefines.h */,
-				63CD10ED11CFF5FB00F60BC8 /* tga.cpp */,
-				63CD10EE11CFF5FB00F60BC8 /* tga.h */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -2457,6 +2480,7 @@
 				2357564C101A5F8F00275638 /* Ogg.framework */,
 				63C3374E16B64FFB00A3ECC4 /* OpenGL.framework */,
 				63EADC6B16B688A200B3C887 /* SDL.framework */,
+				6393ED03173036010020BEF2 /* SDL_image.framework */,
 				2357564D101A5F8F00275638 /* Vorbis.framework */,
 			);
 			name = "Mac OS X";
@@ -2710,7 +2734,6 @@
 				63CD122211CFF5FC00F60BC8 /* CSaveMenu.cpp in Sources */,
 				63CD122311CFF5FC00F60BC8 /* CSettingsMenu.cpp in Sources */,
 				63CD122411CFF5FC00F60BC8 /* CVideoSettings.cpp in Sources */,
-				63CD122611CFF5FC00F60BC8 /* tga.cpp in Sources */,
 				63CD122711CFF5FC00F60BC8 /* ConfigHandler.cpp in Sources */,
 				63CD122811CFF5FC00F60BC8 /* CrashHandler.cpp in Sources */,
 				63CD122911CFF5FC00F60BC8 /* Debug.cpp in Sources */,
@@ -2981,6 +3004,10 @@
 				63FB08AB16F3C4EC00C5AE54 /* CNospike.cpp in Sources */,
 				63FB08AD16F3C4EC00C5AE54 /* COrbatrix.cpp in Sources */,
 				63FB08AF16F3C4EC00C5AE54 /* CSpecialItem.cpp in Sources */,
+				6393ECF5173032510020BEF2 /* CMolly.cpp in Sources */,
+				6393ECF6173032510020BEF2 /* CRocket.cpp in Sources */,
+				6393ECF7173032510020BEF2 /* CRope.cpp in Sources */,
+				6393ECF8173032510020BEF2 /* CSatelite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3013,7 +3040,6 @@
 				237422F511FC849A000EEA5B /* CSaveMenu.cpp in Sources */,
 				237422F611FC849A000EEA5B /* CSettingsMenu.cpp in Sources */,
 				237422F711FC849A000EEA5B /* CVideoSettings.cpp in Sources */,
-				237422F911FC849A000EEA5B /* tga.cpp in Sources */,
 				237422FA11FC849A000EEA5B /* ConfigHandler.cpp in Sources */,
 				237422FB11FC849A000EEA5B /* CrashHandler.cpp in Sources */,
 				237422FC11FC849A000EEA5B /* Debug.cpp in Sources */,
@@ -3283,6 +3309,10 @@
 				63FB08AC16F3C4EC00C5AE54 /* CNospike.cpp in Sources */,
 				63FB08AE16F3C4EC00C5AE54 /* COrbatrix.cpp in Sources */,
 				63FB08B016F3C4EC00C5AE54 /* CSpecialItem.cpp in Sources */,
+				6393ECF9173032640020BEF2 /* CMolly.cpp in Sources */,
+				6393ECFA173032640020BEF2 /* CRocket.cpp in Sources */,
+				6393ECFB173032640020BEF2 /* CRope.cpp in Sources */,
+				6393ECFC173032640020BEF2 /* CSatelite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3328,8 +3358,9 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/SDL.framework/Headers",
-					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
+					"\"$(SRCROOT)\"/SDL_image.framework/Headers",
 					"\"$(SRCROOT)\"/Ogg.framework/Headers",
+					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
 					"\"$(SRCROOT)\"/../../src",
 				);
 				INFOPLIST_FILE = Info.plist;
@@ -3366,8 +3397,9 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/SDL.framework/Headers",
-					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
+					"\"$(SRCROOT)\"/SDL_image.framework/Headers",
 					"\"$(SRCROOT)\"/Ogg.framework/Headers",
+					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
 					"\"$(SRCROOT)\"/../../src",
 				);
 				INFOPLIST_FILE = Info.plist;
