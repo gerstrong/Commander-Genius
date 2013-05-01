@@ -102,6 +102,7 @@ void CEGALatch::loadTilemap(CTilemap &Tilemap, CPlanes &Planes, const int episod
 	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();
 	SDL_FillRect(sfc,NULL, 0);
+	
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
 	Uint8 *u_pixel = (Uint8*) sfc->pixels;
 
@@ -196,7 +197,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
-	// ** read the 16x16 tiles **
+	// prepare to ** read the 16x16 tiles **
 	Planes.setOffsets(plane1 + m_tiles16location,
 					 plane2 + m_tiles16location,
 					 plane3 + m_tiles16location,
@@ -206,8 +207,15 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	g_pGfxEngine->freeTilemap();
 	g_pGfxEngine->createEmptyTilemaps(2);
 	
-	// TODO: Now we have two tilemaps. Simply the upcoming so it is applied to both.
 	loadTilemap(g_pGfxEngine->getTileMap(0), Planes, episode, path);
+	
+	// prepare to ** read the 16x16 tiles **, this is for the second plane. 
+	Planes.setOffsets(plane1 + m_tiles16location,
+					 plane2 + m_tiles16location,
+					 plane3 + m_tiles16location,
+					 plane4 + m_tiles16location,
+					 0);	
+	
 	loadTilemap(g_pGfxEngine->getTileMap(1), Planes, episode, path);
 
 	// make masked tiles according to it's surfaces

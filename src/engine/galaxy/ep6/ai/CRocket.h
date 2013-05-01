@@ -6,6 +6,7 @@
 
 namespace galaxy
 {
+ 
 
 class CRocket : public CGalaxyActionSpriteObject, public CMoveTarget
 {
