@@ -18,8 +18,6 @@ class CCarmack
 public:
 	CCarmack();
 	void expand( std::vector<byte>& dst, std::vector<byte>& src );
-
-	virtual ~CCarmack();
 };
 
 #endif /* CCARMACK_H_ */

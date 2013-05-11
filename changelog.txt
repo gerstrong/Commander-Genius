@@ -1,9 +1,24 @@
-Commander Genius:
-=================
+
+v1.4.3 Release:
+---------------
+- Teleportation Fixes in Keen 8. No effect in Keen 6 but the mod was unplayable (thanks to arjwz)
+
+v1.4.2 Release:
+---------------
+- More bug fixes (thanks to arjwz)
+
+v1.4.1 Release:
+---------------
+- Graphical glitch fixes, which were seen in Vorticons Keen without HQP
+
+v1.4 Release:
+-------------
+- Keen 6 improvements
+- Rendering time improvements
 
 v1.4 Beta:
 ----------
-- SDL_Image now used for HQp
+- SDL_Image now used for HQP
 - Sound improvements and music fixes (Thanks to NY00123)
 - XCode Updates (Thanks to Pizza2004)
 - Full Keen 6 Support

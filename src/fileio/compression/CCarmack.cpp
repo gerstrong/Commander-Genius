@@ -45,7 +45,7 @@ void CCarmack::expand( std::vector<byte>& dst, std::vector<byte>& src )
 		switch( src.at(TAG) )
 		{
 		case NEARTAG:
-			if( src.at(COUNT)==0x00 ) //&& src.at(OFFSET_MSB)==0x00 )
+			if( src.at(COUNT)==0x00 && src.at(OFFSET_MSB)==0x00 )
 			{
 				dst.push_back(NEARTAG);
 				inc = WORDSIZE+1;
@@ -64,7 +64,7 @@ void CCarmack::expand( std::vector<byte>& dst, std::vector<byte>& src )
 			inc = WORDSIZE+1;
 			break;
 		case FARTAG:
-			if( src.at(COUNT)==0x00 )  //&& src.at(OFFSET_MSB)==0x00 )
+			if( src.at(COUNT)==0x00 && src.at(OFFSET_MSB)==0x00 )
 			{
 				dst.push_back(FARTAG);
 				inc = WORDSIZE+1;
@@ -98,11 +98,4 @@ void CCarmack::expand( std::vector<byte>& dst, std::vector<byte>& src )
 			break;
 		}
 	}
-}
-
-
-
-CCarmack::~CCarmack()
-{
-	// TODO Auto-generated destructor stub
 }

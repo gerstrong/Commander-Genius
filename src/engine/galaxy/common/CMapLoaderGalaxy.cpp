@@ -106,9 +106,9 @@ bool CMapLoaderGalaxy::gotoNextSignature(std::ifstream &MapFile)
 }
 
 void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
-										CMap &Map, size_t PlaneNumber,
-										longword offset, longword length,
-										word magic_word)
+					CMap &Map, size_t PlaneNumber,
+					longword offset, longword length,
+					word magic_word)
 {
 	size_t initial_pos = MapFile.tellg();
 
@@ -122,12 +122,28 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 
 	size_t decarmacksize = (Carmack_Plane.at(1)<<8)+Carmack_Plane.at(0);
 
+	
+
+
+      
 	// Now use the Carmack Decompression
 	CCarmack Carmack;
 	Carmack.expand(RLE_Plane, Carmack_Plane);
-	Carmack_Plane.clear();
-    if( decarmacksize == RLE_Plane.size() )
+	Carmack_Plane.clear();      
+	
+      if( decarmacksize > RLE_Plane.size() )
+      {
+	  g_pLogFile->textOut( "\nWARNING Plane Uncompress Carmack Size differs to the one of the headers: Actual " + itoa(RLE_Plane.size()) + 
+			      " bytes Expected " + itoa(decarmacksize) + " bytes. Trying to reconstruct level anyway!<br>");	  
+	  
+	  while( decarmacksize > RLE_Plane.size() )
+	    RLE_Plane.push_back(0);
+      }	
+		
+	
+    if( decarmacksize >= RLE_Plane.size() )
     {
+                  
     	// Now use the RLE Decompression
     	CRLE RLE;
         size_t derlesize = (RLE_Plane[0]<<8)+RLE_Plane[1];           // Bytes already swapped
