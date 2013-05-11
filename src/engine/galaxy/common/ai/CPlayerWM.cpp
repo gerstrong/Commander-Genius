@@ -499,16 +499,22 @@ void CPlayerWM::verifyTeleportation()
 		y = (y >> CSF);
 
 		bool isElevator = false;
-
-		// Elevator are double the size. Check that! Else it must be an teleporter
-		if(object == mp_Map->getPlaneDataAt( 2, (x-1) << CSF, y << CSF ))
-		{
-			isElevator |= true;
-		}
-		if(object == mp_Map->getPlaneDataAt( 2, (x+1) << CSF, y << CSF ))
-		{
-			x = x + 1;
-			isElevator |= true;
+		
+		std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+		Uint16 behav = Tile[mp_Map->at( x, y, 1)].behaviour;
+			
+		// Elevator are double the size. Check that! Else it must be an teleporter		
+		if( behav==33 || behav==34 )
+		{		
+		  if(object == mp_Map->getPlaneDataAt( 2, (x-1) << CSF, y << CSF ))
+		  {
+		    isElevator |= true;
+		  }
+		  if(object == mp_Map->getPlaneDataAt( 2, (x+1) << CSF, y << CSF ))
+		  {
+		    x = x + 1;
+		    isElevator |= true;
+		  }
 		}
 
 		x = (x << CSF);
