@@ -2,6 +2,7 @@
 v1.4.3 Release:
 ---------------
 - Teleportation Fixes in Keen 8. No effect in Keen 6 but the mod was unplayable (thanks to arjwz)
+- Carmack Unpack Fixes
 
 v1.4.2 Release:
 ---------------
