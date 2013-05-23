@@ -209,7 +209,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	
 	loadTilemap(g_pGfxEngine->getTileMap(0), Planes, episode, path);
 	
-	// prepare to ** read the 16x16 tiles **, this is for the second plane. 
+	// prepare to ** read the 16x16 tiles **, this is for the second plane.
 	Planes.setOffsets(plane1 + m_tiles16location,
 					 plane2 + m_tiles16location,
 					 plane3 + m_tiles16location,
