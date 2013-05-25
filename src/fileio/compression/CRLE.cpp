@@ -92,8 +92,16 @@ void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
 
     for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {
+      if(i+1 >= src.size())
+      {
+	word = 0;
+      }
+      else
+      {	
         // Read datum (word)
         word = (src.at(i)<<8)+src.at(i+1);
+      }
+      
         // If datum is 0xFEFE/0xABCD Then
         if( word == key )
         {
