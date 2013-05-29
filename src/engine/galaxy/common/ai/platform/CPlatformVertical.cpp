@@ -41,6 +41,7 @@ m_fireTimer(0)
 	}
 	
 	m_ActionBaseOffset = actionOffset;
+    solid = false;
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
 	calcBoundingBoxes();	
@@ -66,11 +67,6 @@ void CPlatformVertical::process()
 	    dimFire = !dimFire;
 	else
 	    dimFire = true; 
-
-	if(yDirection == UP && blockedu)
-		yDirection = DOWN;
-	else if(yDirection == DOWN && blockedd)
-		yDirection = UP;
 
 	if(yDirection == UP)
 	{

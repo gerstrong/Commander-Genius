@@ -41,6 +41,7 @@ m_fireTimer(0)
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
 	calcBoundingBoxes();
+    solid = false;
 	
 	// This should recalibrate the position in case the plats are stuck due some bad level design. (Keen 7 - Fun House)
 	processMove( -(3<<CSF), 0 );
@@ -59,15 +60,6 @@ void CPlatformHorizontal::process()
 	if( object == 31 )
 	{
 	    xDirection = (xDirection == RIGHT) ? LEFT : RIGHT;
-	}
-	
-	if(blockedr)
-	{
-	    xDirection = LEFT;
-	}
-	else if(blockedl)
-	{
-	    xDirection = RIGHT;
 	}
 
 	// direction change is processed here!
