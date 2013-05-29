@@ -28,6 +28,9 @@ void CMenuController::openMainMenu()
 	g_pBehaviorEngine->EventList().add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
 	g_pBehaviorEngine->setPause(true);
 	g_pMusicPlayer->pause();	
+	
+	// When menu is opened show the cursor
+	SDL_ShowCursor(SDL_ENABLE);
 }
 
 
@@ -57,7 +60,6 @@ void CMenuController::process()
 
 	if(!EventContainer.empty())
 	{
-
 		if( OpenMenuEvent* openMenu = EventContainer.occurredEvent<OpenMenuEvent>() )
 		{
 		    CBaseMenu &menu = *openMenu->mMenuDialogPointer.get();
@@ -139,7 +141,11 @@ void CMenuController::popBackMenu()
     
     if(mMenuStack.empty())
     {
+        // The last menu has been removed. Restore back the game status
 	g_pBehaviorEngine->setPause(false);
+		
+	// When menu is opened show the cursor
+	SDL_ShowCursor(SDL_DISABLE);
     }
 }
 

@@ -108,10 +108,6 @@ bool CVideoEngine::init()
 	}
 	#endif
 
-	// If Fullscreen hide the mouse cursor.
-	// Anyway, it just can point but does not interact yet
- 	SDL_ShowCursor(true);
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
