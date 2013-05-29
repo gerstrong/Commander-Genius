@@ -51,6 +51,7 @@ public:
 	void processOpeningElevator();
 	void processLeavingElevator();
 
+    void setupTeleportAnimation(const bool unset, const VectorD2<int> &pos);
 	void processEnteringTeleporter();
 	void processWarpInTeleporter();
 	void processLeavingTeleporter();
@@ -70,6 +71,7 @@ public:
 private:
 	Uint16 m_basesprite;
 	Uint16 m_teleportanibasetile;
+    Uint16 m_teleportoldtile;
 	Uint16 walkBaseFrame;
 	Uint16 climbBaseFrame;
 	Uint16 wavingBaseFrame;

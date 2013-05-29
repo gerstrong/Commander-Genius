@@ -32,6 +32,7 @@ CPlayerBase(pmap, foeID, x, y,
 		    Cheatmode),
 m_basesprite(0),
 m_teleportanibasetile(0),
+  m_teleportoldtile(0),
 walkBaseFrame(0),
 m_looking_dir(LEFT),
 m_animation(0),
@@ -220,21 +221,21 @@ void CPlayerWM::processWaving()
 {
     if(mounted)
     {
-	mProcessPtr = &CPlayerWM::processMoving;
-	m_basesprite = walkBaseFrame;
-	waveTimer = 0;
-	return;	
+        mProcessPtr = &CPlayerWM::processMoving;
+        m_basesprite = walkBaseFrame;
+        waveTimer = 0;
+        return;
     }
     
     waveTimer++;
     if( g_pInput->getHoldedCommand(IC_UP) || g_pInput->getHoldedCommand(IC_DOWN) ||
-	g_pInput->getHoldedCommand(IC_LEFT) || g_pInput->getHoldedCommand(IC_RIGHT) ||
-        g_pInput->getHoldedCommand(IC_JUMP) || waveTimer >= (TIME_TO_WAVE/4) )
+            g_pInput->getHoldedCommand(IC_LEFT) || g_pInput->getHoldedCommand(IC_RIGHT) ||
+            g_pInput->getHoldedCommand(IC_JUMP) || waveTimer >= (TIME_TO_WAVE/4) )
     {
-	mProcessPtr = &CPlayerWM::processMoving;
-	m_basesprite = walkBaseFrame;
-	waveTimer = 0;
-	return;
+        mProcessPtr = &CPlayerWM::processMoving;
+        m_basesprite = walkBaseFrame;
+        waveTimer = 0;
+        return;
     }
 
     m_animation_time = 10;
@@ -253,19 +254,19 @@ void CPlayerWM::processMoving()
     // Only happens in Keen6 when keening is hanging on the satelite
     if(mounted)
     {
-	sprite = 181;
-	return;
+        sprite = 181;
+        return;
     }
     
     
     // Check if the player is swimming or walking and setup the proper speed
     int movespeed;
     if(m_basesprite == swimBaseFrame)
-	movespeed = 25;
+        movespeed = 25;
     else if(m_basesprite == walkBaseFrame)
-	movespeed = 50;
+        movespeed = 50;
     else
-	movespeed = 0;	
+        movespeed = 0;
     
     bool walking=false;
     
@@ -273,75 +274,75 @@ void CPlayerWM::processMoving()
     
     // This will trigger between swim and walkmode
     checkforSwimming(bleft, bright, bup, bdown);
-	
-    // This will make Keen climb in 
+
+    // This will make Keen climb in
     direction_t climbDir;
     if( checkforClimbing(climbDir) )
-    {	    	    
-	// Check if Keen has a hook, but 
-	if(!mUsedGrapplingHook)
-	{
-	    if(m_Inventory.Item.m_special.ep6.hook > 0)
-	    {
-		m_Inventory.Item.m_special.ep6.hook--;
-		mUsedGrapplingHook = true;
-		
-		int x = getXMidPos();
-		int y = getYMidPos();		    
-		
-		x = x>>CSF; y = y>>CSF;
-		x = x<<CSF; y = (y+climbDir)<<CSF;
-		
-		g_pBehaviorEngine->m_EventList.spawnObj(new CRope(mp_Map, x, y));
-		playSound(SOUND_ROPE_THROW);
-	    }
-	    else
-	    {
-		// Tell the player he cannot climb yet
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-		EventContainer.add( new EventSendBitmapDialogMsg(
-		    g_pGfxEngine->getBitmap(29), g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), RIGHT) );
-		
-		moveYDir(-(climbDir<<CSF)/2);
-	    }
-	}
-	    
-	if(mUsedGrapplingHook)
-	{
-	    xDirection = CENTER;
-	    yDirection = climbDir;
-	    solid = false;
-	    mProcessPtr = &CPlayerWM::processClimbing;
-	    m_basesprite = climbBaseFrame;
-	    waveTimer = 0;
-	    return;
-	}	    
+    {
+        // Check if Keen has a hook, but
+        if(!mUsedGrapplingHook)
+        {
+            if(m_Inventory.Item.m_special.ep6.hook > 0)
+            {
+                m_Inventory.Item.m_special.ep6.hook--;
+                mUsedGrapplingHook = true;
+
+                int x = getXMidPos();
+                int y = getYMidPos();
+
+                x = x>>CSF; y = y>>CSF;
+                x = x<<CSF; y = (y+climbDir)<<CSF;
+
+                g_pBehaviorEngine->m_EventList.spawnObj(new CRope(mp_Map, x, y));
+                playSound(SOUND_ROPE_THROW);
+            }
+            else
+            {
+                // Tell the player he cannot climb yet
+                CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+                EventContainer.add( new EventSendBitmapDialogMsg(
+                                        g_pGfxEngine->getBitmap(29), g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), RIGHT) );
+
+                moveYDir(-(climbDir<<CSF)/2);
+            }
+        }
+
+        if(mUsedGrapplingHook)
+        {
+            xDirection = CENTER;
+            yDirection = climbDir;
+            solid = false;
+            mProcessPtr = &CPlayerWM::processClimbing;
+            m_basesprite = climbBaseFrame;
+            waveTimer = 0;
+            return;
+        }
     }
     
     // In Episode 5 and 6 there are teleporters. Verify those teleporters and elevators
     if(g_pBehaviorEngine->getEpisode() >= 5)
-	verifyTeleportation();
+        verifyTeleportation();
     
     // Normal walking
     if(g_pInput->getHoldedCommand(IC_LEFT) && !bleft)
     {
-	if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-	    yDirection = 0;
+        if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+            yDirection = 0;
 	
-	moveLeft(movespeed);
-	walking = true;
-	xDirection = LEFT;
-	waveTimer = 0;
+        moveLeft(movespeed);
+        walking = true;
+        xDirection = LEFT;
+        waveTimer = 0;
     }
     else if(g_pInput->getHoldedCommand(IC_RIGHT) && !bright)
-    {
-	if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
-	    yDirection = 0;
+        {
+        if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+            yDirection = 0;
 	
-	moveRight(movespeed);
-	walking = true;
-	xDirection = RIGHT;
-	waveTimer = 0;
+        moveRight(movespeed);
+        walking = true;
+        xDirection = RIGHT;
+        waveTimer = 0;
     }
     
     if(g_pInput->getHoldedCommand(IC_UP) && !bup)
@@ -528,26 +529,17 @@ void CPlayerWM::verifyTeleportation()
 		{
 			mProcessPtr = &CPlayerWM::processEnteringElevator;
 		}
-		else // ... make him move until teleporter hides him.
-		{
-		  //const int ep = g_pBehaviorEngine->getEpisode();
+        else // ... make him move until teleporter hides him.
+        {
+            mProcessPtr = &CPlayerWM::processEnteringTeleporter;
 
-		  mProcessPtr = &CPlayerWM::processEnteringTeleporter;
+            setupTeleportAnimation(false, target);
 
-		  Uint16 newTile = mp_Map->getPlaneDataAt( 1, x, y );
+            playSound(SOUND_TELEPORT);
 
-		   // TODO: Check if the animated tile also must be the same formula for Episode 5
-		   newTile -= 18; // One row up
-		   newTile += 2; // Two columns to the right!
-
-		   m_teleportanibasetile = newTile;
-
-		   mp_Map->setTile(x>>CSF, y>>CSF, newTile, true);
-		   playSound(SOUND_TELEPORT);
-
-		   solid = false;
-		}
-	}
+            solid = false;
+        }
+    }
 
 }
 
@@ -754,6 +746,29 @@ void CPlayerWM::processLeavingElevator()
 
 // Teleporter
 
+void CPlayerWM::setupTeleportAnimation(const bool unset, const VectorD2<int> &pos)
+{
+    const int x = pos.x;
+    const int y = pos.y;
+    const int ep = g_pBehaviorEngine->getEpisode();
+
+    if(!unset)
+        m_teleportoldtile = mp_Map->getPlaneDataAt( 1, x, y );
+
+    // Depending on having Keen 6 or 5 the animation tiles are a bit different
+    if( ep==5 )
+    {
+        m_teleportanibasetile = unset ? m_teleportoldtile : 0xA7F;
+    }
+    if( ep==6 )
+    {
+        m_teleportanibasetile = unset ? m_teleportoldtile : 0xA35;
+    }
+
+    mp_Map->setTile(x>>CSF, y>>CSF, m_teleportanibasetile, true);
+}
+
+
 void CPlayerWM::processEnteringTeleporter()
 {
 	// Move him to the target
@@ -773,37 +788,29 @@ void CPlayerWM::processEnteringTeleporter()
 
 	yDirection = vec_norm.y;
 
-
-
+    // if Keen reached target
 	if( dist_x < SLOW_TELEPORT_WALK_SPEED &&
 		dist_y < SLOW_TELEPORT_WALK_SPEED)
 	{
 		moveDir(vec);
 
-		// If done make him invisible and transport him through the level. !solid
+        // If done make him invisible and transport him through the map. !solid
 
 		//target -> change it when the touched tile is known
 		const int x = getXMidPos();
 		const int y = getYMidPos();
 
+        setupTeleportAnimation(true, target);
+
 		// Get the destination
 		const Uint16 object = mp_Map->getPlaneDataAt( 2, x, y );
 		const Uint32 filter = object & 0xFFFF;
 		const Uint32 newPosX = (filter & 0xFF00) >> 8;
-		const Uint32 newPosY = (filter & 0x00FF);
-
-		Uint16 newTile = mp_Map->getPlaneDataAt( 1, x, y );
-
-		// TODO: Check if the animated tile also must be the same formula for Episode 5
-		newTile = m_teleportanibasetile;
-		newTile += 18; // One row up
-		newTile -= 2; // set right tile for the teleporter coord
-
-		mp_Map->setTile(x>>CSF, y>>CSF, newTile, true);
+		const Uint32 newPosY = (filter & 0x00FF);                
 
 		// Set new target
 		target.x = (newPosX<<CSF);
-		target.y = (newPosY<<CSF);
+		target.y = (newPosY<<CSF);       
 
 		// make him invisible
 		solid = false;
@@ -816,9 +823,14 @@ void CPlayerWM::processEnteringTeleporter()
 	  const int x = target.x;
 	  const int y = target.y;
 
+      const int ep = g_pBehaviorEngine->getEpisode();
+
+      // Amount of animation tiles.
+      const int teleportAnimTiles = (ep==5) ? 1 : 3;
+
 	  Uint16 aniTile = mp_Map->getPlaneDataAt( 1, x, y ) + 1;
 
-	  if(m_teleportanibasetile+3 < aniTile)
+      if(m_teleportanibasetile + teleportAnimTiles < aniTile)
 	  {
 	    aniTile = m_teleportanibasetile;
 	  }
@@ -826,7 +838,6 @@ void CPlayerWM::processEnteringTeleporter()
 	  mp_Map->setTile(x>>CSF, y>>CSF, aniTile, true);
 
 	  moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
-
 	}
 
 	performWalkingAnimation(true);
@@ -845,6 +856,8 @@ void CPlayerWM::processWarpInTeleporter()
 
 	mProcessPtr = &CPlayerWM::processLeavingTeleporter;
 	playSound(SOUND_TELEPORT);
+
+    setupTeleportAnimation(false, new_pos);
 
 	target.y += (1<<CSF);
 	dontdraw = false;
@@ -875,10 +888,30 @@ void CPlayerWM::processLeavingTeleporter()
 		solid = true;
 		moveDir(vec);
 
+        VectorD2<int> animTilePos = target;
+        animTilePos.y -= (1<<CSF);
+        setupTeleportAnimation(true, animTilePos);
 		mProcessPtr = &CPlayerWM::processMoving;
 	}
 	else
-	{
+	{        
+        const int x = pos.x;
+        const int y = pos.y;
+
+        const int ep = g_pBehaviorEngine->getEpisode();
+
+        // Amount of animation tiles.
+        const int teleportAnimTiles = (ep==5) ? 1 : 3;
+
+        Uint16 aniTile = mp_Map->getPlaneDataAt( 1, x, y ) + 1;
+
+        if(m_teleportanibasetile + teleportAnimTiles < aniTile)
+        {
+          aniTile = m_teleportanibasetile;
+        }
+
+        mp_Map->setTile(x>>CSF, y>>CSF, aniTile, true);
+
 		moveDir(vec_norm*SLOW_TELEPORT_WALK_SPEED);
 	}
 
