@@ -31,7 +31,6 @@ enum backgroundcolours{
 class CGfxEngine : public CSingleton<CGfxEngine>
 {
 public:
-	CGfxEngine();
 	virtual ~CGfxEngine();
 	
 	void createEmptySprites(Uint16 num_sprites);
@@ -88,7 +87,6 @@ public:
 private:
 	std::vector<CTilemap> Tilemap;
 	std::vector<CFont> Font;
-	SDL_Surface *m_fxsurface;
 	std::unique_ptr<CEffects> mpEffects;
 	std::vector<CBitmap> Bitmap;
 	std::vector<CBitmap> maskedBitmap;

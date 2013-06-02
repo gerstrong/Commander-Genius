@@ -11,10 +11,6 @@
 
 #include "sdl/input/CInput.h"
 
-CGfxEngine::CGfxEngine() :
-m_fxsurface(NULL)
-{}
-
 ///
 // Creation Routines
 ///
