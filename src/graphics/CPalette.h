@@ -35,7 +35,6 @@ public:
 	void setupPatchedPalette(byte *p_exedata, int m_episode);
 	void setupColorPalettes(byte *p_exedata, int m_episode);
 	void setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b);
-	void setFXSurface(SDL_Surface *fxsurface);
 	void setFadeColour(Uint32 colour);
 	void setdark(bool dark);
 	void setdarkness(Uint8 darkness);
@@ -50,7 +49,6 @@ public:
 	Uint8 m_numcolors;
 	Uint8 m_fadespeed;
 	Uint8 m_darkness;
-	SDL_Surface *m_fxsurface;
 	bool m_fade_in_progess;
 	bool m_dark;
 };

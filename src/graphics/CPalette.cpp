@@ -7,13 +7,14 @@
 
 #include "CPalette.h"
 #include "../graphics/PerSurfaceAlpha.h"
+#include "sdl/CVideoDriver.h"
 
 ///
 // Initialization
 ///
-CPalette::CPalette() {
+CPalette::CPalette()
+{
 	m_numcolors = 17;
-	m_fxsurface = NULL;
 	m_alpha = 0;
 	m_fadespeed = 1;
 	m_dark = false;
@@ -126,19 +127,10 @@ void CPalette::setdarkness(Uint8 darkness)
 	m_darkness = darkness;
 }
 
-void CPalette::setFXSurface(SDL_Surface *fxsurface)
-{
-	m_fxsurface = fxsurface;
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod( m_fxsurface, m_alpha);
-#else
-    SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, m_alpha);
-#endif
-}
 
 void CPalette::setFadeColour(Uint32 colour)
-{
-	SDL_FillRect(m_fxsurface, NULL, colour);
+{    
+    SDL_FillRect( g_pVideoDriver->getOverlaySurface(), NULL, colour);
 }
 
 // returns the index of a color in the current palette with an RGB value
@@ -173,7 +165,9 @@ void CPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
 
 void CPalette::applyFade()
 {
-	Uint8 current_alpha = getPerSurfaceAlpha(m_fxsurface);
+    SDL_Surface *overlay = g_pVideoDriver->getOverlaySurface();
+
+    Uint8 current_alpha = getPerSurfaceAlpha(overlay);
 	
 	if( m_alpha!=current_alpha )
 	{
@@ -194,9 +188,9 @@ void CPalette::applyFade()
 		}
 		
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        SDL_SetSurfaceAlphaMod( m_fxsurface, current_alpha);
+        SDL_SetSurfaceAlphaMod( overlay, current_alpha);
 #else
-        SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, current_alpha);
+        SDL_SetAlpha( overlay, SDL_SRCALPHA, current_alpha);
 #endif
 	}
 	else

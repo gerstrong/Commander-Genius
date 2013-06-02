@@ -89,15 +89,7 @@ bool CSDLVideo::createSurfaces()
 
 	 m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
 
-
-	FXSurface = createSurface( "FXSurface", false,
-			BlitSurface->w,
-			BlitSurface->h,
-			RES_BPP,
-			m_Mode, screen->format );
-
-	//Set surface alpha
-	g_pGfxEngine->Palette.setFXSurface( FXSurface );
+    initOverlaySurface(false, BlitSurface->w, BlitSurface->h);
 
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
@@ -110,13 +102,15 @@ bool CSDLVideo::createSurfaces()
 
 void CSDLVideo::collectSurfaces()
 {
-	if( getPerSurfaceAlpha(FXSurface) )
-		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+    SDL_Surface *overlay = mpOverlaySurface.get();
+
+    if( getPerSurfaceAlpha(overlay) )
+        SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);
 }
 
 void CSDLVideo::clearSurfaces()
 {
-	SDL_FillRect(FXSurface, NULL, 0x0);
+    SDL_FillRect(mpOverlaySurface.get(), NULL, 0x0);
 	SDL_FillRect(BlitSurface, NULL, 0x0);
 }
 

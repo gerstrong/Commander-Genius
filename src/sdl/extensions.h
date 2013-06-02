@@ -28,7 +28,7 @@ struct SDL_Surface_Deleter
 {
     void operator()(SDL_Surface* sfc)
     {
-	SDL_FreeSurface(sfc);
+        SDL_FreeSurface(sfc);
     }
 };
 

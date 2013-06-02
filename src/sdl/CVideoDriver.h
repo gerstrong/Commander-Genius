@@ -49,7 +49,8 @@ public:
 	void updateScrollBuffer(std::shared_ptr<CMap> &map)
 	{ updateScrollBuffer(*map.get()); }	
 	
-
+    SDL_Surface *getOverlaySurface()
+    { return mpVideoEngine->getOverlaySurface(); }
 
 	void collectSurfaces();
 	void clearSurfaces();

@@ -14,7 +14,6 @@ CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
 BlitSurface(NULL),
 FilteredSurface(NULL),
 ScrollSurface(NULL),       // 512x512 scroll buffer
-FXSurface(NULL),
 m_VidConfig(VidConfig),
 mSbufferx(0),
 mSbuffery(0),
@@ -247,13 +246,33 @@ void CVideoEngine::stop()
         SDL_FreeSurface(ScrollSurface);
         g_pLogFile->textOut("freed ScrollSurface<br>");
         ScrollSurface=NULL;
-    }
-    if(FXSurface)
-    {
-        SDL_FreeSurface(FXSurface);
-        g_pLogFile->textOut("freed FXSurface<br>");
-        FXSurface=NULL;
-    }
+    }    
+}
+
+bool CVideoEngine::initOverlaySurface( const bool useAlpha,
+                                       const Uint16 width,
+                                       const Uint16 height )
+{
+
+    SDL_Surface *overlay = createSurface( "OverlaySurface",
+                                         useAlpha,
+                                         width,
+                                         height,
+                                         RES_BPP,
+                                         m_Mode, screen->format );
+
+    mpOverlaySurface.reset( overlay );
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceAlphaMod( overlay, useAlpha);
+#else
+    SDL_SetAlpha( overlay, SDL_SRCALPHA, useAlpha);
+#endif
+
+    if(!mpOverlaySurface)
+        return false;
+
+    return true;
 }
 
 void CVideoEngine::shutdown()

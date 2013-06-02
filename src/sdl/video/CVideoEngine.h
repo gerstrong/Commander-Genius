@@ -16,6 +16,8 @@
 
 #include "scalers/CScaler.h"
 #include "sdl/CVidConfig.h"
+#include "sdl/extensions.h"
+#include <memory>
 
 
 class CVideoEngine
@@ -41,10 +43,17 @@ public:
 	void blitScrollSurface();
 	void stop();
 
+    bool initOverlaySurface(const bool useAlpha,
+                            const Uint16 width,
+                            const Uint16 height );
+
 	SDL_Surface *getBlitSurface() { return BlitSurface; }
 	SDL_Surface *getScreenSurface() { return screen; }
+
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
-	SDL_Surface *getFXSurface() { return FXSurface; }
+    SDL_Surface *getOverlaySurface()
+    { return mpOverlaySurface.get(); }
+
 	CRect<Uint16> &getAspectCorrRect() { return aspectCorrectionRect; }
 
 	void resetScrollbuffer()
@@ -73,9 +82,10 @@ protected:
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FilteredSurface;
 	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
-	SDL_Surface *FXSurface;
 
-	CScaler Scaler;
+    std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpOverlaySurface; // For some situations like darkrooms we need to use that surface!
+
+    CScaler Scaler;
 
 	const CVidConfig &m_VidConfig;
 
@@ -94,3 +104,4 @@ protected:
 };
 
 #endif /* CVIDEOENGINE_H_ */
+

@@ -122,28 +122,11 @@ bool COpenGL::createSurfaces()
 				RES_BPP,
 				m_Mode, screen->format );
 
-	m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
+    m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
 
-	if(m_VidConfig.m_ScaleXFilter == 1)
-	{
-		FXSurface = createSurface( "FXSurface", true,
-						gamerect.w,
-						gamerect.h,
-						RES_BPP,
-						m_Mode, screen->format );
-	}
-	else
-	{
-		FXSurface = createSurface( "FXSurface", false,
-				gamerect.w,
-				gamerect.h,
-				RES_BPP,
-				m_Mode, screen->format );
-
-		//Set surface alpha
-	}
-
-	g_pGfxEngine->Palette.setFXSurface( FXSurface );
+    initOverlaySurface( (m_VidConfig.m_ScaleXFilter == 1),
+                        gamerect.w,
+                        gamerect.h );
 
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
@@ -162,9 +145,9 @@ void COpenGL::collectSurfaces()
 
 void COpenGL::clearSurfaces()
 {
-	SDL_FillRect(FXSurface,NULL, 0x0);
+    SDL_FillRect(mpOverlaySurface.get(), NULL, 0x0);
 
-	SDL_FillRect(BlitSurface,NULL, 0x0);
+    SDL_FillRect(BlitSurface, NULL, 0x0);
 }
 
 
@@ -405,11 +388,13 @@ void COpenGL::updateScreen()
 
 	glEnable(GL_BLEND);
 
+    SDL_Surface *overlay = mpOverlaySurface.get();
+
 	if(m_VidConfig.m_ScaleXFilter > 1)
 	{
-		if(getPerSurfaceAlpha(FXSurface))
+        if(getPerSurfaceAlpha(overlay))
 		{
-		    SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+            SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);
 		}
 	}
 
@@ -419,9 +404,9 @@ void COpenGL::updateScreen()
 
 	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
-		if(FXSurface && getPerSurfaceAlpha(FXSurface))
+        if(overlay && getPerSurfaceAlpha(overlay))
 		{
-			reloadFX(FXSurface);
+            reloadFX(overlay);
 			renderTexture(m_texFX, true);
 		}
 	}
