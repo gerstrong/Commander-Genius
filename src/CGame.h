@@ -10,7 +10,8 @@
 
 #include "core/CGameControl.h"
 
-class CGame {
+class CGame
+{
 public:
 	CGame();
 	~CGame();

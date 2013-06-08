@@ -138,7 +138,7 @@ configure_file(README.in README)
 # main includes
 INCLUDE_DIRECTORIES(src)
 
-file(GLOB_RECURSE ALL_SRCS src/*.c*)
+file(GLOB_RECURSE ALL_SRCS src/*.c* src/*.h*)
 
 IF(UNIX)
 # Compilation under Linux

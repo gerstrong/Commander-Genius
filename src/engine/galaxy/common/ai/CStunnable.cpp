@@ -116,9 +116,9 @@ void CStunnable::draw()
       
       if( scrx < gameres.w && scry < gameres.h && exists )
       {
-	Uint16 showX = scrx+StarSprite.getXOffset();
-	Uint16 showY = scry+StarSprite.getYOffset();
-	StarSprite.drawSprite( showX, showY, (255-transluceny) );
+        Uint16 showX = scrx+StarSprite.getXOffset();
+        Uint16 showY = scry+StarSprite.getYOffset();
+        StarSprite.drawSprite( showX, showY, (255-transluceny) );
       }
     }
   }    

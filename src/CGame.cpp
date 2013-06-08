@@ -137,10 +137,18 @@ void CGame::run()
         if(g_pTimer->resetLogicSingal())
             start = curr;
 
-        elapsed = curr - start;
-        acc += elapsed;
+        elapsed = curr - start;        
 
         start = timerTicks();
+
+        // State previous;
+        // State current;
+
+        /*if ( elapsed > 0.25 )
+             elapsed = 0.25;	  // note: max frame time to avoid spiral of death
+        */
+
+        acc += elapsed;
 
         // Perform the game cycle
         while( acc > logicLatency )
@@ -148,15 +156,28 @@ void CGame::run()
             // Poll Inputs
             g_pInput->pollEvents();
 
-            // Process Game Control
-            mGameControl.process();
+            // Ponder Game Control
+            mGameControl.ponder();
 
             // Here we try to process all the drawing related Tasks not yet done
-            g_pVideoDriver->pollDrawingTasks();
+            //g_pVideoDriver->pollDrawingTasks();
 
             // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
             g_pGfxEngine->process();
+
+            /*
+              previousState = currentState;
+              integrate( currentState, logicLatency );
+            */
+
             acc -= logicLatency;
+
+            // Workaround which remove unneeded draw tasks.
+            if( acc > logicLatency )
+            {
+                g_pVideoDriver->clearDrawingTasks();
+            }
+
         }
 
         // Pass all the surfaces to one
@@ -165,6 +186,19 @@ void CGame::run()
         // Now you really render the screen
         // When enabled, it also will apply Filters
         g_pVideoDriver->updateScreen();
+
+
+        //
+        mGameControl.render();
+
+
+        /*
+         const double alpha = acc / logicLatency;
+
+         State state = currentState*alpha + previousState * ( 1.0 - alpha );
+
+         render( state );
+        */
 
         elapsed = timerTicks() - start;
         total_elapsed += elapsed;

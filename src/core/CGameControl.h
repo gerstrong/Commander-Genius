@@ -18,11 +18,12 @@
 #include "engine/CMessages.h"
 #include "engine/CPassive.h"
 #include "core/mode/CGameMode.h"
+#include "core/LogicDrawSplitter.h"
 
 #include <string>
 #include <memory>
 
-class CGameControl
+class CGameControl : public GameObject
 {
 public:
 
@@ -30,9 +31,11 @@ public:
 	
 	bool init(int argc, char *argv[]);
 
-	void process();
+    void ponder();
+
+    void render();
 	
-	// getters and setters
+
 	bool mustShutdown(){ return (mpEngine.get()==nullptr); }
 	
 protected:

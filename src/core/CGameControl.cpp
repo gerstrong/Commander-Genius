@@ -98,7 +98,7 @@ bool CGameControl::init(int argc, char *argv[])
 // Process Routine
 ////
 // This function is run every time, the Timer says so, through.
-void CGameControl::process()
+void CGameControl::ponder()
 {
 	// process any triggered Game Control related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
@@ -158,4 +158,9 @@ void CGameControl::process()
 	}
 	
 	gpMenuController->process();
+}
+
+void CGameControl::render()
+{
+    g_pVideoDriver->pollDrawingTasks();
 }

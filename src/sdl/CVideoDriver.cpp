@@ -306,7 +306,8 @@ void CVideoDriver::clearSurfaces()
 	mpVideoEngine->clearSurfaces();
 }
 
-void CVideoDriver::updateScreen() {
+void CVideoDriver::updateScreen()
+{
 	mpVideoEngine->updateScreen();
 }
 
