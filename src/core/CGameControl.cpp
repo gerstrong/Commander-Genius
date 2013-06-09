@@ -147,7 +147,7 @@ void CGameControl::ponder()
 
 	// Process the game control object if no effects are being processed
 	if(mpEngine)
-	    mpEngine->process();
+        mpEngine->ponder();
 
 	if(g_pGfxEngine->runningEffect())
 	{
@@ -163,4 +163,7 @@ void CGameControl::ponder()
 void CGameControl::render()
 {
     g_pVideoDriver->pollDrawingTasks();
+
+    if(mpEngine)
+        mpEngine->render();
 }

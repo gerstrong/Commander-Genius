@@ -11,16 +11,15 @@
 #define CBASEENGINE_H_
 
 #include "mode/CGameMode.h"
+#include "core/LogicDrawSplitter.h"
 
-
-class CBaseEngine
+class CBaseEngine : public GameState
 {
 
 public:
 	virtual ~CBaseEngine() {}
 
 	virtual void init() = 0;
-	virtual void process() = 0;
 };
 
 #endif /* CBASEENGINE_H_ */

@@ -82,28 +82,7 @@ void CGamePlayMode::ponder()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
     mp_PlayGame->ponder();
-    mp_PlayGame->render();
 	
-	if (g_pVideoDriver->getVidConfig().showfps)
-	{
-		SDL_Rect rect;
-		rect.x = 5;
-		rect.y = 5;
-		rect.w = 150;
-		rect.h = 10;
-
-		if(!mpFPSSurface)
-		{
-			mpFPSSurface.reset(CG_CreateRGBSurface(rect), &SDL_FreeSurface);
-		}
-
-		std::string tempbuf = "FPS: " + ftoa(g_pTimer->LastFPS());
-		SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
-		g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
-
-		g_pVideoDriver->mDrawTasks.add(new BlitSurfaceTask(mpFPSSurface, NULL, &rect ));
-	}
-
 	if( EventContainer.occurredEvent<SaveGameEvent>() )
 	{
 		mp_PlayGame->saveGameState();
@@ -131,6 +110,26 @@ void CGamePlayMode::ponder()
 
 void CGamePlayMode::render()
 {
-    // TODO: ...
+    if (g_pVideoDriver->getVidConfig().showfps)
+    {
+        SDL_Rect rect;
+        rect.x = 5;
+        rect.y = 5;
+        rect.w = 150;
+        rect.h = 10;
+
+        if(!mpFPSSurface)
+        {
+            mpFPSSurface.reset(CG_CreateRGBSurface(rect), &SDL_FreeSurface);
+        }
+
+        std::string tempbuf = "FPS: " + ftoa(g_pTimer->LastFPS());
+        SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
+        g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
+
+        g_pVideoDriver->mDrawTasks.add(new BlitSurfaceTask(mpFPSSurface, NULL, &rect ));
+    }
+
+    mp_PlayGame->render();
 }
 

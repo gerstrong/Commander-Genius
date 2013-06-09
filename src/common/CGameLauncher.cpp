@@ -215,7 +215,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 ////
 // Process Routine
 ////
-void CGameLauncher::process()
+void CGameLauncher::ponder()
 {
     // Did the user press (X)?
     if( g_pInput->getExitEvent() )
@@ -255,6 +255,13 @@ void CGameLauncher::process()
     }
     
 }
+
+
+void CGameLauncher::render()
+{
+    // TODO: Get the draw routines here!
+}
+
 
 void CGameLauncher::getLabels()
 {

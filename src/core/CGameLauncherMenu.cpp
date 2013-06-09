@@ -247,7 +247,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 }
 
 
-void CGameLauncherMenu::process()
+void CGameLauncherMenu::ponder()
 {
 	// If the firsttime menu is open, process it
 	if(mp_FirstTimeMenu)
@@ -262,7 +262,7 @@ void CGameLauncherMenu::process()
 	else
 	{
 		// Launch the code of the Startmenu here! The one for choosing the games
-		mp_GameLauncher->process();
+        mp_GameLauncher->ponder();
 		m_start_game_no = mp_GameLauncher->getChosengame();
 
 		if( m_start_game_no >= 0 ) // Means a game has been selected
@@ -317,4 +317,13 @@ void CGameLauncherMenu::process()
 			EventContainer.add( new GMQuit() );
 		}
 	}
+}
+
+
+void CGameLauncherMenu::render()
+{
+    if(!mp_FirstTimeMenu)
+    {
+        mp_GameLauncher->render();
+    }
 }

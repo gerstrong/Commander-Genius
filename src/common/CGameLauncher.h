@@ -8,6 +8,7 @@
 #ifndef CGAMELAUNCHER_H_
 #define CGAMELAUNCHER_H_
 
+#include "core/LogicDrawSplitter.h"
 #include "fileio/CExeFile.h"
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIText.h"
@@ -45,7 +46,7 @@ struct GameEntry
 
 };
 
-class CGameLauncher
+class CGameLauncher : public GameState
 {
 public:
 	CGameLauncher();
@@ -55,7 +56,8 @@ public:
 	bool init();
     void cleanup();
 
-	void process();
+    void ponder();
+    void render();
 
 	int getChosengame(){ return m_chosenGame; }
 	bool setChosenGame(int chosengame) { m_chosenGame = chosengame; return waschosen();  }

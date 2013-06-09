@@ -33,7 +33,8 @@ public:
 	bool loadGalaxyResources(const Uint8 flags);
 	bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
 	void init();
-	void process();
+    void ponder();
+    void render();
 
 private:
 	std::unique_ptr<CGameLauncher> mp_GameLauncher;

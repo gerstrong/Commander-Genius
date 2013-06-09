@@ -40,14 +40,13 @@ void CGameMain::switchToGamePlayMode()
 
 
 
-void CGameMain::process()
+void CGameMain::ponder()
 {
 	// process any triggered Game Main related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 
 	if( !EventContainer.empty() )
 	{
-
 		if( EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
 		{
 		    std::unique_ptr<CGamePassiveMode> passive(new CGamePassiveMode());
@@ -132,4 +131,14 @@ void CGameMain::process()
 		// Process the game mode object
         mpGameMode->ponder();
 	}
+}
+
+void CGameMain::render()
+{
+    if( !mpInfoScene )
+    {
+        // Render the game mode object
+        mpGameMode->render();
+    }
+
 }

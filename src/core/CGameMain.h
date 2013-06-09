@@ -23,7 +23,8 @@ protected:
 	void switchToGamePlayMode();
 
 	void init() {}
-	void process();
+    void ponder();
+    void render();
 
 private:
 
