@@ -135,43 +135,6 @@ void CMapPlayGalaxy::ponder()
 	    
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-
-	auto obj = mObjectPtr.rbegin();
-
-	// Draw all the sprites without player
-	// The player sprites are drawn as last
-	galaxy::CPlayerBase *player = NULL;
-	for( ; obj!=mObjectPtr.rend() ; obj++ )
-	{
-
-		if( galaxy::CPlayerBase* newplayer = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
-		{
-			player = newplayer;
-			continue;
-		}
-
-		if((*obj)->honorPriority )
-			(*obj)->draw();
-	}
-
-	if(player)
-	{
-		player->draw();
-	}
-
-	// Draw masked tiles here!
-	g_pVideoDriver->mDrawTasks.add( new DrawForegroundTilesTask(mMap) );
-
-	for( obj=mObjectPtr.rbegin() ;
-			obj!=mObjectPtr.rend() ; obj++ )
-	{
-		if(!(*obj)->honorPriority)
-			(*obj)->draw();
-	}
-
-	if(mpOption[OPT_HUD].value )
-		mInventory.drawHUD();
 
 
 	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
@@ -187,9 +150,9 @@ void CMapPlayGalaxy::ponder()
 	if( EventSpawnFoot *ev =  EventContainer.occurredEvent<EventSpawnFoot>() )
 	{
 		// kill all the InchWorms in that case, so they can't do any spawning
-		for( obj=mObjectPtr.rbegin() ;
-			 obj!=mObjectPtr.rend() ;
-			 obj++ )
+        for( auto obj=mObjectPtr.rbegin() ;
+                  obj!=mObjectPtr.rend() ;
+                  obj++ )
 		{
 			galaxy::CInchWorm *inchworm = dynamic_cast<galaxy::CInchWorm*>(obj->get());
 			if( inchworm != NULL )
@@ -222,6 +185,43 @@ void CMapPlayGalaxy::ponder()
 
 void CMapPlayGalaxy::render()
 {
+    g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
+
+    auto obj = mObjectPtr.rbegin();
+
+    // Draw all the sprites without player
+    // The player sprites are drawn as last
+    galaxy::CPlayerBase *player = NULL;
+    for( ; obj!=mObjectPtr.rend() ; obj++ )
+    {
+
+        if( galaxy::CPlayerBase* curplayer = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
+        {
+            player = curplayer;
+            continue;
+        }
+
+        if((*obj)->honorPriority )
+            (*obj)->draw();
+    }
+
+    if(player)
+    {
+        player->draw();
+    }
+
+    // Draw masked tiles here!
+    g_pVideoDriver->mDrawTasks.add( new DrawForegroundTilesTask(mMap) );
+
+    for( obj=mObjectPtr.rbegin() ;
+            obj!=mObjectPtr.rend() ; obj++ )
+    {
+        if(!(*obj)->honorPriority)
+            (*obj)->draw();
+    }
+
+    if(mpOption[OPT_HUD].value )
+        mInventory.drawHUD();
 
 }
 
