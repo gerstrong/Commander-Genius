@@ -23,12 +23,13 @@
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
+#include "core/LogicDrawSplitter.h"
 #include "StringUtils.h"
 #include <memory>
 #include <vector>
 #include <list>
 
-class CMapPlayGalaxy
+class CMapPlayGalaxy : public GameState
 {
 public:
 	CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
@@ -41,7 +42,9 @@ public:
 	 */
 	std::string getLevelName();
 
-	void process(const bool msgboxactive);
+    void ponder();
+
+    void render();
 
 	// Push data to Savegame-Controller
 	void operator>>(CSaveGameController &savedGame);
@@ -53,15 +56,20 @@ public:
 	{	return mMap	;}
 
 
+    void setMsgBoxOpen(const bool msgboxactive)
+    { mMsgBoxOpen = msgboxactive; }
+
 protected:
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > mObjectPtr;
-	bool mActive;
+	bool mActive;        
 
 	CMap mMap;
 	CExeFile &mExeFile;
 	CInventory &mInventory;
 	stOption *mpOption;
 	stCheat &mCheatmode;
+
+    bool mMsgBoxOpen;
 };
 
 #endif /* CMAPPLAYGALAXY_H_ */

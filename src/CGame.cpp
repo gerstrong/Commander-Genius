@@ -141,8 +141,8 @@ void CGame::run()
 
         start = timerTicks();
 
-        // State previous;
-        // State current;
+        // GameState previous;
+        // GameState current;
 
         /*if ( elapsed > 0.25 )
              elapsed = 0.25;	  // note: max frame time to avoid spiral of death

@@ -23,7 +23,7 @@
 #include <string>
 #include <memory>
 
-class CGameControl : public GameObject
+class CGameControl /*: public GameState*/
 {
 public:
 
@@ -34,7 +34,10 @@ public:
     void ponder();
 
     void render();
-	
+
+    /*void operator=(const GameState &rhs);
+
+    void operator=(const GameState &&rhs);*/
 
 	bool mustShutdown(){ return (mpEngine.get()==nullptr); }
 	

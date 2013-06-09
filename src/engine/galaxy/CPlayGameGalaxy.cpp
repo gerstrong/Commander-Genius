@@ -163,13 +163,17 @@ void CPlayGameGalaxy::process()
 		// process World Map if active. At the start it's enabled
 		if(m_WorldMap.isActive())
 		{
-			m_WorldMap.process(msgboxactive);
+            m_WorldMap.setMsgBoxOpen(msgboxactive);
+            m_WorldMap.ponder();
+            m_WorldMap.render();
 		}
 
 		// process World Map if active. At the start it's disabled, m_WorldMap turns it on.
 		if(m_LevelPlay.isActive())
 		{
-			m_LevelPlay.process(msgboxactive);
+            m_LevelPlay.setMsgBoxOpen(msgboxactive);
+            m_LevelPlay.ponder();
+            m_LevelPlay.render();
 		}
 
 		// We have to show the status screen, do so...

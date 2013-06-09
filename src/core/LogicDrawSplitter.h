@@ -8,14 +8,20 @@
                  render just is for draw routines. Everything that needs to be put on the screen is done here
 */
 
-#ifndef GAMEOBJECT_H_
-#define GAMEOBJECT_H_
+#ifndef GAMESTATE_H_
+#define GAMESTATE_H_
 
-class GameObject
+class GameState
 {
   public:
     virtual void ponder() = 0;
     virtual void render() = 0;
+
+    // copy operator
+    /*virtual void operator=(const GameState &rhs) = 0;
+
+    // move operator
+    virtual void operator=(const GameState &&rhs) = 0;*/
 };
 
-#endif /* GAMEOBJECT_H_ */
+#endif /* GAMESTATE_H_ */

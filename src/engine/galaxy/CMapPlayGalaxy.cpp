@@ -22,7 +22,8 @@ mActive(false),
 mExeFile(ExeFile),
 mInventory(Inventory),
 mpOption(g_pBehaviorEngine->m_option),
-mCheatmode(Cheatmode)
+mCheatmode(Cheatmode),
+mMsgBoxOpen(false)
 {}
 
 
@@ -60,8 +61,10 @@ std::string CMapPlayGalaxy::getLevelName()
 
 
 
-void CMapPlayGalaxy::process(const bool msgboxactive)
+void CMapPlayGalaxy::ponder()
 {
+    const bool msgboxactive = mMsgBoxOpen;
+
 	// Check if the engine need to be paused
 	const bool pause = mInventory.showStatus() || msgboxactive;
 
@@ -94,15 +97,15 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 			{
 			    auto &theOtherRef = *(theOther->get());
 			    if( !theOtherRef.exists )
-				continue;
+                    continue;
 			    
 			    objRef.isNearby(theOtherRef);
-			    theOtherRef.isNearby(objRef);
+                theOtherRef.isNearby(objRef);
 			    
 			    if( objRef.hitdetect(theOtherRef) )
 			    {
-				objRef.getTouchedBy(theOtherRef);
-				theOtherRef.getTouchedBy(objRef);
+                    objRef.getTouchedBy(theOtherRef);
+                    theOtherRef.getTouchedBy(objRef);
 			    }
 			}
 		    }
@@ -216,6 +219,14 @@ void CMapPlayGalaxy::process(const bool msgboxactive)
 	}
 
 }
+
+void CMapPlayGalaxy::render()
+{
+
+}
+
+
+// Saved GameState stuff for that individual map
 
 void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 {
