@@ -176,7 +176,7 @@ bool CPlayGameVorticon::StatusScreenOpen()
 ////
 // Process Routine
 ////
-void CPlayGameVorticon::process()
+void CPlayGameVorticon::ponder()
 {
 	// Check for fading processes if necessary
 	if(g_pGfxEngine->Palette.in_progress())
@@ -268,6 +268,10 @@ void CPlayGameVorticon::process()
 	}
 }
 
+void CPlayGameVorticon::render()
+{
+
+}
 
 void CPlayGameVorticon::cycleCamLead()
 {

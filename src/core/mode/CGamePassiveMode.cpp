@@ -35,7 +35,7 @@ void CGamePassiveMode::init()
 }
 
 
-void CGamePassiveMode::process()
+void CGamePassiveMode::ponder()
 {
 
 	mpPassive->process();
@@ -58,4 +58,9 @@ void CGamePassiveMode::process()
 	{
 		EventContainer.add( new GMQuit() );
 	}
+}
+
+void CGamePassiveMode::render()
+{
+    // TODO: ...
 }

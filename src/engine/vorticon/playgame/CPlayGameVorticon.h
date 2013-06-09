@@ -55,9 +55,12 @@ public:
 	// Game states
 	bool loadGameState();
 	bool saveGameState();
-	void process();
+    void ponder();
 	void processOnWorldMap();
 	void processInLevel();
+
+    void render();
+
 	void showKeensLeft();
 	void goBacktoMap();
 	void YourShipNeedsTheseParts();

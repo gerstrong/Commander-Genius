@@ -130,6 +130,6 @@ void CGameMain::process()
 	else
 	{
 		// Process the game mode object
-		mpGameMode->process();
+        mpGameMode->ponder();
 	}
 }

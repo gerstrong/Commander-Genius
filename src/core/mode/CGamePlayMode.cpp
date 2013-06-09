@@ -71,17 +71,18 @@ void CGamePlayMode::init()
 
 void CGamePlayMode::loadGame()
 {
-	mp_PlayGame->process();
+    mp_PlayGame->ponder();
 	mp_PlayGame->loadGameState();
 }
 
 
-void CGamePlayMode::process()
+void CGamePlayMode::ponder()
 {
 	// The player is playing the game. It also includes scenes like ending
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	mp_PlayGame->process();
+    mp_PlayGame->ponder();
+    mp_PlayGame->render();
 	
 	if (g_pVideoDriver->getVidConfig().showfps)
 	{
@@ -127,3 +128,9 @@ void CGamePlayMode::process()
 	}
 
 }
+
+void CGamePlayMode::render()
+{
+    // TODO: ...
+}
+

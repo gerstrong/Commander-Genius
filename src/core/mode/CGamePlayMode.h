@@ -29,7 +29,8 @@ public:
 
 	void loadGame();
 
-	void process();
+    void ponder();
+    void render();
 
 private:
 	int m_startLevel;

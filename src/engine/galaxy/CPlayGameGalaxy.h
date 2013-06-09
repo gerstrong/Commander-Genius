@@ -35,7 +35,8 @@ public:
 	bool saveGameState();
 	bool init();
 
-	void process();
+    void ponder();
+    void render();
 
 	void processInput();
 	void processRendering();

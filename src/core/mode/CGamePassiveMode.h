@@ -20,7 +20,8 @@ public:
 	CGamePassiveMode();
 
 	void init();
-	void process();
+    void ponder();
+    void render();
 
 private:
 	std::unique_ptr<CPassive> mpPassive;

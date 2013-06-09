@@ -127,7 +127,7 @@ bool CPlayGameGalaxy::init()
 /**
  *  The main ingame process cycle when keen galaxy is up and running
  */
-void CPlayGameGalaxy::process()
+void CPlayGameGalaxy::ponder()
 {
 	if(g_pSound->pauseGamePlay() )
 		return;
@@ -373,9 +373,13 @@ void CPlayGameGalaxy::process()
 	}
 }
 
+void CPlayGameGalaxy::render()
+{
+
+}
+
 void CPlayGameGalaxy::processInput()
 {}
-
 
 
 }

@@ -11,6 +11,7 @@
 #define CGAMEMODE_H_
 
 #include "engine/CEvent.h"
+#include "core/LogicDrawSplitter.h"
 #include <string>
 
 ///////////////////////
@@ -59,13 +60,12 @@ struct GMStart : CEvent
 ///////
 // Base Class for the modes
 //////
-class CGameMode
+class CGameMode : public GameState
 {
 public:
 	CGameMode() {}
 	virtual ~CGameMode() {}
 
-	virtual void process() = 0;
 	virtual void init() = 0;
 };
 

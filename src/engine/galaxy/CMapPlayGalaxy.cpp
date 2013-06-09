@@ -120,19 +120,7 @@ void CMapPlayGalaxy::ponder()
 			player->processDead();
 		}
 		
-	    }
-	    
-	    /*if(!mObjectPtr.empty())
-	    {
-		auto obj = mObjectPtr.back();
-		
-		// if you see some object which at the end of the container is non-existent, remove it!
-		if(!obj->exists)
-		{
-		    mObjectPtr.pop_back();
-		}
-	    }*/
-	    
+	    }	    
 	}
 
 

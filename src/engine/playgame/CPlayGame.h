@@ -12,6 +12,7 @@
 #define CPLAYGAME_H_
 
 #include "fileio/CExeFile.h"
+#include "core/LogicDrawSplitter.h"
 #include "common/options.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/CSaveGameController.h"
@@ -21,7 +22,7 @@
 const int WM_MAP_NUM = 80;
 
 
-class CPlayGame
+class CPlayGame : public GameState
 {
 public:
 	CPlayGame(CExeFile &ExeFile, char level,
@@ -29,7 +30,6 @@ public:
 
 	virtual bool loadGameState() = 0;
 	virtual bool saveGameState() = 0;
-	virtual void process() = 0;
 	virtual bool init() = 0;
 	virtual void cleanup() = 0;
 
