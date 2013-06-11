@@ -127,7 +127,7 @@ void CGamePlayMode::render()
         SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
         g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
 
-        g_pVideoDriver->mDrawTasks.add(new BlitSurfaceTask(mpFPSSurface, NULL, &rect ));
+        SDL_BlitSurface(mpFPSSurface.get(), NULL, g_pVideoDriver->getBlitSurface(), &rect);
     }
 
     mp_PlayGame->render();

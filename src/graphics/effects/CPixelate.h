@@ -15,7 +15,8 @@ class CPixelate  : public CEffects
 public:
 	CPixelate(unsigned short speed);
 	void getSnapshot();
-	void process();
+    void ponder();
+    void render();
 	virtual ~CPixelate();
 
 private:

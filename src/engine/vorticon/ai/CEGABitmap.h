@@ -19,7 +19,7 @@ class CEGABitmap : public CVorticonSpriteObject
 public:
 	CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap);
 	void setPos(int px, int py);
-	void process();
+    void render();
 
 private:
 	SDL_Surface *mp_Surface;

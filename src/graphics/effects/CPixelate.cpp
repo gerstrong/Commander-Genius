@@ -57,50 +57,9 @@ void CPixelate::getSnapshot()
 }
 
 // Effect cycle
-void CPixelate::process()
+void CPixelate::ponder()
 {	
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
-
-	/*if(mp_NewSurface == NULL)
-	{
-		// Get the a snapshot of the second surface which will be the destination.
-		mp_NewSurface = SDL_DisplayFormat(g_pVideoDriver->getBlitSurface());
-		//SDL_FillRect(mp_NewSurface, 0, SDL_MapRGB(mp_NewSurface->format, 0x80, 0x80, 0x80));
-	}*/
-
-	SDL_LockSurface(mp_OldSurface);
-
-	// This is the algorithm for drawing the effect. It was invented by myself, so no guarantee,
-	// it will look the same as in Keen Galaxy. We will see, when it's finished
-	for(unsigned short y=m_lines_completed ; y<m_line ; y++)
-	{
-		for(unsigned short drawamt=0 ; drawamt < m_speed ; drawamt++ )
-		{
-		    Uint16 x;
-		    do
-		    {	// get a random pixel between 0 and 320 which has not yet been occupied
-			x = rand()%gameres.w;
-		    } while( m_drawmap[(Uint32)(y*gameres.w + x)] );
-
-		    // The y line gets one pixel painted at random x, between 0 and 320.
-		    //pixel = pixelstart + x*mp_OldSurface->format->BytesPerPixel;
-		    m_pixels_per_line[y]++;
-		    m_drawmap[y*gameres.w + x] = true;			
-		    
-		    memcpy(static_cast<Uint8*> (mp_OldSurface->pixels) + y*mp_OldSurface->pitch + x*mp_OldSurface->format->BytesPerPixel,
-			   &mColorkey, mp_OldSurface->format->BytesPerPixel);
-		    
-		    // If there are no more pixels to draw in this line, m_lines_completed++, it won't be scanned again.
-		    // This will be checked against m_pixels_per_line
-		    if(m_pixels_per_line[y] >= gameres.w )
-		    {
-			m_lines_completed++;
-			break;
-		    }
-		}
-	}
-
-	SDL_UnlockSurface(mp_OldSurface);
 
 	if(m_line < gameres.h)
 	{
@@ -112,9 +71,48 @@ void CPixelate::process()
 	{
 		// In this case the algorithm has finished
 		mFinished = true;
-	}
+	}	
+}
 
-	SDL_BlitSurface( mp_OldSurface, NULL, g_pVideoDriver->getBlitSurface(), NULL );
+void CPixelate::render()
+{
+    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+
+    SDL_LockSurface(mp_OldSurface);
+
+    // This is the algorithm for drawing the effect. It was invented by myself, so no guarantee,
+    // it will look the same as in Keen Galaxy. We will see, when it's finished
+    for(unsigned short y=m_lines_completed ; y<m_line ; y++)
+    {
+        for(unsigned short drawamt=0 ; drawamt < m_speed ; drawamt++ )
+        {
+            Uint16 x;
+            do
+            {	// get a random pixel between 0 and 320 which has not yet been occupied
+            x = rand()%gameres.w;
+            } while( m_drawmap[(Uint32)(y*gameres.w + x)] );
+
+            // The y line gets one pixel painted at random x, between 0 and 320.
+            //pixel = pixelstart + x*mp_OldSurface->format->BytesPerPixel;
+            m_pixels_per_line[y]++;
+            m_drawmap[y*gameres.w + x] = true;
+
+            memcpy(static_cast<Uint8*> (mp_OldSurface->pixels) + y*mp_OldSurface->pitch + x*mp_OldSurface->format->BytesPerPixel,
+               &mColorkey, mp_OldSurface->format->BytesPerPixel);
+
+            // If there are no more pixels to draw in this line, m_lines_completed++, it won't be scanned again.
+            // This will be checked against m_pixels_per_line
+            if(m_pixels_per_line[y] >= gameres.w )
+            {
+            m_lines_completed++;
+            break;
+            }
+        }
+    }
+
+    SDL_UnlockSurface(mp_OldSurface);
+
+    SDL_BlitSurface( mp_OldSurface, NULL, g_pVideoDriver->getBlitSurface(), NULL );
 }
 
 CPixelate::~CPixelate()

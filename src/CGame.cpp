@@ -159,16 +159,13 @@ void CGame::run()
             // Ponder Game Control
             mGameControl.ponder();
 
-            // Here we try to process all the drawing related Tasks not yet done
-            //g_pVideoDriver->pollDrawingTasks();
-
-            // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
-            g_pGfxEngine->process();
-
             /*
               previousState = currentState;
               integrate( currentState, logicLatency );
             */
+
+            // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
+            g_pGfxEngine->ponder();
 
             acc -= logicLatency;
 
@@ -180,6 +177,9 @@ void CGame::run()
 
         }
 
+        // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
+        g_pGfxEngine->render();
+
         // Pass all the surfaces to one
         g_pVideoDriver->collectSurfaces();
 
@@ -188,7 +188,7 @@ void CGame::run()
         g_pVideoDriver->updateScreen();
 
 
-        //
+        // Now we render it
         mGameControl.render();
 
 

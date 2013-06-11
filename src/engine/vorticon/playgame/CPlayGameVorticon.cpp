@@ -220,22 +220,13 @@ void CPlayGameVorticon::ponder()
 	}
 
 
-	// Draw all the Stuff here!
-	drawAllElements();
-
-	if( m_Level == WORLD_MAP_LEVEL_VORTICON && m_showKeensLeft )
-		showKeensLeft();
-
-
 
 	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
-	// Only confirmation button is allowes
+    // Only confirmation button is allowed
 	if(m_gameover && !mpFinale) // game over mode
 	{
 		if( mpGameoverBmp )
 		{
-			mpGameoverBmp->process();
-
 			if( g_pInput->getPressedAnyCommand() )
 			{
 				CHighScores *pHighScores = new CHighScores();
@@ -243,7 +234,6 @@ void CPlayGameVorticon::ponder()
 				collectHighScoreInfo(*pHighScores);
 				g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
 				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
-
 			}
 		}
 		else // Bitmap must first be created
@@ -270,6 +260,19 @@ void CPlayGameVorticon::ponder()
 
 void CPlayGameVorticon::render()
 {
+    // Draw all the Stuff here!
+    drawAllElements();
+
+    if( m_Level == WORLD_MAP_LEVEL_VORTICON && m_showKeensLeft )
+        showKeensLeft();
+
+    if(m_gameover && !mpFinale) // game over mode
+    {
+        if( mpGameoverBmp )
+        {
+            mpGameoverBmp->render();
+        }
+    }
 
 }
 

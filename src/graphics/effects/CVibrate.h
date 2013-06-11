@@ -18,7 +18,8 @@ class CVibrate : public CEffects
 public:
 	CVibrate(Uint32 msecs);
 
-	void process();
+    void ponder();
+    void render();
 
 private:
 	Uint32 m_StartTime;
@@ -27,6 +28,8 @@ private:
 	Sint8 m_dir_x, m_dir_y;
 
 	std::shared_ptr<SDL_Surface> mpVibSfc;
+
+    SDL_Rect mVibRect;
 };
 
 #endif /* CVIBRATE_H_ */

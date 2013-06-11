@@ -99,7 +99,7 @@ bool CResourceLoader::process(int* ret)
 		    
 		    if(m_permil >= m_permiltarget)
 		    {
-			setPermilage(m_permil+1);
+                setPermilage(m_permil+1);
 		    }
 		    else
 		    {

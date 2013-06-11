@@ -10,31 +10,31 @@
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
-m_StartTime(g_pTimer->getTicks()),
-m_RunTime(msecs),
-m_Speed(speed),
-m_Color(color),
-m_Alpha(0),
-m_FadeDir(FADE_IN),
-m_Style(FADE_PULSE),
-m_MaxAlpha(255)//,
-//mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
+    m_StartTime(g_pTimer->getTicks()),
+    m_RunTime(msecs),
+    m_Speed(speed),
+    m_Color(color),
+    m_Alpha(0),
+    m_FadeDir(FADE_IN),
+    m_Style(FADE_PULSE),
+    m_MaxAlpha(255)//,
+  //mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
 {
-	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
+    SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
 }
 #else
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
-m_StartTime(g_pTimer->getTicks()),
-m_RunTime(msecs),
-m_Speed(speed),
-m_Color(color),
-m_Alpha(0),
-m_FadeDir(FADE_IN),
-m_Style(FADE_PULSE),
-m_MaxAlpha(255),
-mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
+    m_StartTime(g_pTimer->getTicks()),
+    m_RunTime(msecs),
+    m_Speed(speed),
+    m_Color(color),
+    m_Alpha(0),
+    m_FadeDir(FADE_IN),
+    m_Style(FADE_PULSE),
+    m_MaxAlpha(255),
+    mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
 {
-	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
+    SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
 }
 #endif
 
@@ -42,38 +42,38 @@ mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurf
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
-m_StartTime(g_pTimer->getTicks()),
-m_RunTime(msecs),
-m_Speed(speed),
-m_Color(color),
-m_Alpha(0),
-m_FadeDir(FADE_IN),
-m_Style(FADE_NORMAL),
-m_MaxAlpha(m_maxalpha)//,
-//mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
+    m_StartTime(g_pTimer->getTicks()),
+    m_RunTime(msecs),
+    m_Speed(speed),
+    m_Color(color),
+    m_Alpha(0),
+    m_FadeDir(FADE_IN),
+    m_Style(FADE_NORMAL),
+    m_MaxAlpha(m_maxalpha)//,
+  //mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
 {
-	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
+    SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
 }
 #else
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
-m_StartTime(g_pTimer->getTicks()),
-m_RunTime(msecs),
-m_Speed(speed),
-m_Color(color),
-m_Alpha(0),
-m_FadeDir(FADE_IN),
-m_Style(FADE_NORMAL),
-m_MaxAlpha(m_maxalpha),
-mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
+    m_StartTime(g_pTimer->getTicks()),
+    m_RunTime(msecs),
+    m_Speed(speed),
+    m_Color(color),
+    m_Alpha(0),
+    m_FadeDir(FADE_IN),
+    m_Style(FADE_NORMAL),
+    m_MaxAlpha(m_maxalpha),
+    mpFadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()), &SDL_FreeSurface)
 {
-	SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
+    SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
 }
 #endif
 
 // Process the flashing effect here
-void CFlash::process()
+void CFlash::ponder()
 {
-	Uint32 ElapsedTime = g_pTimer->getTicks() - m_StartTime;
+    Uint32 ElapsedTime = g_pTimer->getTicks() - m_StartTime;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod(mpFadeSurface.get(), m_Alpha);
@@ -81,34 +81,36 @@ void CFlash::process()
     SDL_SetAlpha(mpFadeSurface.get(), SDL_SRCALPHA, m_Alpha);
 #endif
 
-	// Blit it and free temp surface
-	SDL_BlitSurface( mpFadeSurface.get(), NULL,
-					 g_pVideoDriver->getBlitSurface(), NULL );
+    if(m_FadeDir == FADE_IN)
+    {
+        if(m_Alpha+m_Speed > m_MaxAlpha) m_Alpha = m_MaxAlpha;
+        else m_Alpha+=m_Speed;
+    }
+    if(m_FadeDir == FADE_OUT)
+    {
+        if(m_Alpha+m_Speed < 0) m_Alpha = 0;
+        else m_Alpha-=m_Speed;
+    }
 
+    if(m_Style == FADE_PULSE)
+    {
+        if(m_Alpha == 255) m_FadeDir = FADE_OUT;
+        else if(m_Alpha == 0) m_FadeDir = FADE_IN;
+    }
+    else if(m_Style == FADE_NORMAL)
+    {
+        if(ElapsedTime >= m_RunTime/2 ) m_FadeDir = FADE_OUT;
+        if(m_FadeDir == FADE_OUT && m_Alpha == 0) mFinished = true;
+    }
 
-	if(m_FadeDir == FADE_IN)
-	{
-		if(m_Alpha+m_Speed > m_MaxAlpha) m_Alpha = m_MaxAlpha;
-		else m_Alpha+=m_Speed;
-	}
-	if(m_FadeDir == FADE_OUT)
-	{
-		if(m_Alpha+m_Speed < 0) m_Alpha = 0;
-		else m_Alpha-=m_Speed;
-	}
+    // The developer set a time in the constructor. This effect will last for the given time.
+    if(ElapsedTime >= m_RunTime)
+        mFinished = true;
+}
 
-	if(m_Style == FADE_PULSE)
-	{
-		if(m_Alpha == 255) m_FadeDir = FADE_OUT;
-		else if(m_Alpha == 0) m_FadeDir = FADE_IN;
-	}
-	else if(m_Style == FADE_NORMAL)
-	{
-		if(ElapsedTime >= m_RunTime/2 ) m_FadeDir = FADE_OUT;
-		if(m_FadeDir == FADE_OUT && m_Alpha == 0) mFinished = true;
-	}
-
-	// The developer set a time in the constructor. This effect will last for the given time.
-	if(ElapsedTime >= m_RunTime)
-		mFinished = true;
+void CFlash::render()
+{
+    // Blit it and free temp surface
+    SDL_BlitSurface( mpFadeSurface.get(), NULL,
+                     g_pVideoDriver->getBlitSurface(), NULL );
 }

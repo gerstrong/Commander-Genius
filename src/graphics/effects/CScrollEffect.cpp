@@ -22,7 +22,7 @@ mpScrollSurface(pScrollSurface)
 #endif
 }
 
-void CScrollEffect::process()
+void CScrollEffect::ponder()
 {
 	if(mSpeed < 0)
 	{
@@ -39,17 +39,19 @@ void CScrollEffect::process()
 
 		if(mScrollPos+mSpeed >= mpScrollSurface->h) mFinished = true;
 	}
+}
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
-	SDL_Rect dest = gameres;
-	SDL_Rect src = gameres;
+void CScrollEffect::render()
+{
+    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect dest = gameres;
+    SDL_Rect src = gameres;
 
-	src.y = mpScrollSurface->h-mScrollPos;
-	dest.h = mScrollPos;
+    src.y = mpScrollSurface->h-mScrollPos;
+    dest.h = mScrollPos;
 
-	SDL_BlitSurface( mpScrollSurface, &src,
-					 g_pVideoDriver->getBlitSurface(), &dest );
-
+    SDL_BlitSurface( mpScrollSurface, &src,
+                     g_pVideoDriver->getBlitSurface(), &dest );
 }
 
 Sint16 CScrollEffect::getScrollPosition()

@@ -79,7 +79,8 @@ public:
 	CCursor *getCursor() { return mpCursor.get(); }
 	bool runningEffect();
 	
-	void process();
+    void ponder();
+    void render();
 	void killEffect();
 	
 	CPalette Palette;

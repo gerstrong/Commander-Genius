@@ -28,7 +28,7 @@ void CColorMerge::getSnapshot()
 }
 
 // Effect cycle
-void CColorMerge::process()
+void CColorMerge::ponder()
 {
 	// Process the effect
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -36,9 +36,6 @@ void CColorMerge::process()
 #else
     SDL_SetAlpha( mpOldSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
 #endif
-
-	SDL_BlitSurface( mpOldSurface.get(), NULL,
-				g_pVideoDriver->getBlitSurface(), NULL );
 	
 	const int sum = m_Alpha + m_Speed;
 
@@ -52,3 +49,12 @@ void CColorMerge::process()
 	  m_Alpha += m_Speed;
 	}
 }
+
+void CColorMerge::render()
+{
+    SDL_BlitSurface( mpOldSurface.get(), NULL,
+                g_pVideoDriver->getBlitSurface(), NULL );
+
+}
+
+

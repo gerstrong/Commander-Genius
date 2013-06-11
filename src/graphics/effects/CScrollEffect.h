@@ -20,7 +20,8 @@ public:
 	CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
 			const Sint16 initialPos, Sint8 speed);
 
-	void process();
+    void ponder();
+    void render();
 
 	Sint16 getScrollPosition();
 

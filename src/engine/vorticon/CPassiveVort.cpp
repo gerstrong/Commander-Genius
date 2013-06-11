@@ -112,8 +112,10 @@ void CPassiveVort::process()
 		init(TITLE);
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
-
+    SDL_BlitSurface( mpTextSfc.get(),
+                     nullptr,
+                     g_pVideoDriver->getBlitSurface(),
+                     nullptr );
 }
 
 }

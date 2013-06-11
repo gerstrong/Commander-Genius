@@ -229,25 +229,36 @@ CSprite *CGfxEngine::getSprite(const std::string &name) const
 			return const_cast<CSprite*>(&Sprite[i]);
 	}
 
-
-
 	return NULL;
 }
 
 ///
 // Process Routines
 ///
-void CGfxEngine::process()
+void CGfxEngine::ponder()
 {
-	if(mpEffects)
-	{
-		mpEffects->process();
+    if(mpEffects)
+    {
+        mpEffects->ponder();
 
-		if( !runningEffect() )
-		{
-			killEffect();
-		}
-	}
+        if( !runningEffect() )
+        {
+            killEffect();
+        }
+    }
+}
+
+void CGfxEngine::render()
+{
+    if(mpEffects)
+    {
+        mpEffects->render();
+
+        if( !runningEffect() )
+        {
+            killEffect();
+        }
+    }
 }
 
 bool CGfxEngine::runningEffect()

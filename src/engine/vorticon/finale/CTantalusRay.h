@@ -24,7 +24,8 @@ public:
 				std::vector< std::unique_ptr<CVorticonSpriteObject> > &vect_obj,
 				std::shared_ptr<CVorticonSpriteObjectAI> &objectai);
 
-	void process();
+    void ponder();
+    void render();
 
 	void shootray();
 	void explodeEarth();

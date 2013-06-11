@@ -14,16 +14,15 @@
 #define CEFFECTS_H_
 
 #include <SDL.h>
+#include "core/LogicDrawSplitter.h"
 
-class CEffects
+class CEffects : public GameState
 {
 public:
 	CEffects() :
 	mFinished(false) {}
 
 	bool finished() { return mFinished; }
-
-	virtual void process() = 0;
 
 	virtual ~CEffects() {}
 

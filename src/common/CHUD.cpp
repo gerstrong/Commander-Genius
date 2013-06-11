@@ -179,7 +179,7 @@ void CHUD::renderGalaxy()
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2), m_Rect.x+64, m_Rect.y+20, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), m_Rect.x+24, m_Rect.y+20, blitsfc );
 	
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
+    SDL_BlitSurface( mpHUDBlit.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -216,7 +216,7 @@ void CHUD::renderVorticon()
 		Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpHUDBlit, NULL, &m_Rect ) );
+    SDL_BlitSurface( mpHUDBlit.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
 }
 
 

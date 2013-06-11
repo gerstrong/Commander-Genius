@@ -53,7 +53,7 @@ void CStatusScreen::draw()
 
 	if(!m_closed)
 	{
-		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpStatusSfc, NULL, &m_StatusRect ) );
+        SDL_BlitSurface( mpStatusSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_StatusRect);
 	}
 }
 

@@ -47,7 +47,7 @@ mp_process(&CTantalusRay::shootray)
 	g_pGfxEngine->setupEffect( new CVibrate(2000) );
 }
 
-void CTantalusRay::process()
+void CTantalusRay::ponder()
 {
 	if(mp_MessageBox)
 	{
@@ -62,6 +62,11 @@ void CTantalusRay::process()
 
 		mObjectAI->process();
 	}
+}
+
+void CTantalusRay::render()
+{
+    // TODO: What we need here now...
 }
 
 void CTantalusRay::shootray()
@@ -184,7 +189,7 @@ void CTantalusRay::explodeEarth()
 		case 32:
 		    if(!m_Object.empty())
 		    {
-			m_Object.clear();
+                m_Object.clear();
 		    }
 		    m_mustfinishgame = true;
 		    break;

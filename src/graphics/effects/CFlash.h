@@ -25,7 +25,8 @@ public:
 	CFlash(Uint32 msecs, Uint8 speed=1,Uint32 color=0xFFFFFF );
 	CFlash(Uint32 msecs, Uint8 speed=1,Uint32 color=0xFFFFFF, Uint8 m_maxalpha=128 );
 
-	void process();
+    void ponder();
+    void render();
 
 private:
 
