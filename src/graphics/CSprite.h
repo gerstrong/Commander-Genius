@@ -35,16 +35,17 @@ public:
 	SDL_Surface *getSDLSurface() { return mpSurface.get(); }
 	SDL_Surface *getSDLMaskSurface() { return mpMasksurface.get(); }
 
-	void drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
+    void drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
+    void drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
 	void drawBlinkingSprite( Uint16 x, Uint16 y );
 	void _drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 
 	Uint16 getXOffset() { return m_xoffset; }
 	Uint16 getYOffset() { return m_yoffset; }
-	Uint8 getWidth() { return m_xsize; };
-	Uint8 getHeight() { return m_ysize; };
-	void setWidth(Uint8 w) { m_xsize=w; };
-	void setHeight(Uint8 h) { m_ysize=h; };
+    Uint8 getWidth() { return m_xsize; }
+    Uint8 getHeight() { return m_ysize; }
+    void setWidth(Uint8 w) { m_xsize=w; }
+    void setHeight(Uint8 h) { m_ysize=h; }
 
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }

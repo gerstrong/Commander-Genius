@@ -174,7 +174,7 @@ void CHUD::renderGalaxy()
 
 	// Draw the HUD with all the digits
 	SDL_Surface* blitsfc = mpHUDBlit.get();
-	mpHUDBox->_drawSprite( blitsfc, m_Rect.x, m_Rect.y );
+    mpHUDBox->drawSprite( blitsfc, m_Rect.x, m_Rect.y );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), m_Rect.x+8, m_Rect.y+4, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2), m_Rect.x+64, m_Rect.y+20, blitsfc );
 	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), m_Rect.x+24, m_Rect.y+20, blitsfc );

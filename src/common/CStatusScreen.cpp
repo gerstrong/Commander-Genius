@@ -194,7 +194,7 @@ void CStatusScreen::createInventorySfcEp1()
 	for(j=0;j<i;j++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
-		Sprite._drawSprite( p_surface, x, (0+4)<<3);
+        Sprite.drawSprite( p_surface, x, (0+4)<<3);
 		x += Sprite.getWidth();
 	}
 
@@ -308,7 +308,7 @@ void CStatusScreen::createInventorySfcEp2()
 	for(j=0;j<i;j++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
-		Sprite._drawSprite( p_surface, x, (0+4)<<3 );
+        Sprite.drawSprite( p_surface, x, (0+4)<<3 );
 		x += Sprite.getWidth();
 	}
 
@@ -439,7 +439,7 @@ void CStatusScreen::createInventorySfcEp3()
 	for(j=0;j<i;j++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
-		Sprite._drawSprite(  p_surface, x, (0+4)<<3);
+        Sprite.drawSprite(  p_surface, x, (0+4)<<3);
 		x += Sprite.getWidth();
 	}
 
