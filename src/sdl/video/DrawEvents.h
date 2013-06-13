@@ -60,16 +60,6 @@ struct DrawBlinkingSpriteTask : CEvent
 
 
 
-struct DrawSpriteTask : CEvent
-{
-	CSprite *mSpritePtr;
-	const Uint16 mx, my;
-	const Uint8	mAlpha;
-	DrawSpriteTask(CSprite *SpritePtr, const Uint16 x, const Uint16 y, const Uint8 alpha) :
-		mSpritePtr(SpritePtr), mx(x), my(y), mAlpha(alpha)  {}
-};
-
-
 struct DrawBitmapTask : CEvent
 {
 	CBitmap *mBmpPtr;
