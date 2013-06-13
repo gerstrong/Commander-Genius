@@ -121,7 +121,7 @@ void CCredits::process()
 		}
 	}	
 	
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpDrawSfc, NULL, NULL) );
+    SDL_BlitSurface(mpDrawSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 
 	if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 		m_destroy_me = true;

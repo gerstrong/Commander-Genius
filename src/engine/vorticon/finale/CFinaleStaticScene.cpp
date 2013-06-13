@@ -60,7 +60,7 @@ void CFinaleStaticScene::process()
 {
 	if(mpSceneSurface)
 	{
-		g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSceneSurface, NULL, NULL) );
+        SDL_BlitSurface(mpSceneSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 	}
 
 	if(m_timer)

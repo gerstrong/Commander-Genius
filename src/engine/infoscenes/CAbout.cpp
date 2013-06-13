@@ -167,7 +167,7 @@ void CAbout::process()
 	else if(m_type == "CG")
 	{
 		if(mpLogoBMP)
-			g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpLogoBMP, NULL,  &m_logo_rect ) );
+            SDL_BlitSurface(mpLogoBMP.get(), nullptr, g_pVideoDriver->getBlitSurface(), &m_logo_rect);
 	}
 
 	for(std::size_t i=0 ; i<m_lines.size() ; i++)
@@ -175,7 +175,7 @@ void CAbout::process()
 		g_pGfxEngine->getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpDrawSfc, NULL, NULL) );
+    SDL_BlitSurface(mpDrawSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 	
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;

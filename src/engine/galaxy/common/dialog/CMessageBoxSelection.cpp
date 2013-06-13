@@ -167,7 +167,7 @@ void CMessageBoxSelection::process()
 			m_selection--;
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpMBSurface, NULL, &mMBRect ) );
+    SDL_BlitSurface(mpMBSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), &mMBRect);
 
 	
 	// now draw the glowing rectangle. It fades here!
@@ -208,8 +208,8 @@ void CMessageBoxSelection::process()
 		if(i == m_selection)
 		{
 		    cursorSel.y = mMBRect.y + 12*i + 44;
-		    g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSelSurface1, NULL, &cursorSel ) );
-		    g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpSelSurface2, NULL, &cursorSel ) );
+            SDL_BlitSurface(mpSelSurface1.get(), nullptr, g_pVideoDriver->getBlitSurface(), &cursorSel);
+            SDL_BlitSurface(mpSelSurface2.get(), nullptr, g_pVideoDriver->getBlitSurface(), &cursorSel);
 		}
 	}	
 }

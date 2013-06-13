@@ -125,5 +125,5 @@ void CMessageBoxGalaxy::process()
 		return;
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpMBSurface, NULL, &mMBRect ) );
+    SDL_BlitSurface(mpMBSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), &mMBRect);
 }

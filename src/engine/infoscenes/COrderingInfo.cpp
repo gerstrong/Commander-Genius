@@ -167,7 +167,7 @@ void COrderingInfo::process()
 											160-m_Textline[i].size()*4, 8*(i+m_starty), true);
 	}
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
+    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;

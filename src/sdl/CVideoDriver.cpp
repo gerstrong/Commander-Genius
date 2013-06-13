@@ -449,15 +449,6 @@ void CVideoDriver::pollDrawingTasks()
 			blitScrollSurface();
 		}
 
-		// Other Surface Blits
-		else if ( BlitSurfaceTask *blitSurfaceTask =
-					mDrawTasks.occurredEvent<BlitSurfaceTask>())
-		{
-			SDL_BlitSurface(blitSurfaceTask->mSfcToBlit.get(),
-					blitSurfaceTask->mSrcRect.get(), getBlitSurface(),
-					blitSurfaceTask->mDstRect.get());
-		}
-
 		// If none of the Events fit here, please warn this incident
 		else
 		{

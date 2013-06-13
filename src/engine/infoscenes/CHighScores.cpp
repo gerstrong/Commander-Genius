@@ -214,7 +214,7 @@ void CHighScores::process()
 			Font.drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
 	}
 	
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
+    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 
 	(this->*mp_process)();
 

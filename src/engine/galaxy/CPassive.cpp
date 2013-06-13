@@ -82,7 +82,7 @@ void CPassiveGalaxy::processTitle()
 	// draw the title bitmap here!
 	m_BackgroundBitmap.draw(0, 0);
 
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextSfc, NULL, NULL) );
+    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 }
 
 

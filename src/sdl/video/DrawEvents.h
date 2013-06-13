@@ -69,39 +69,6 @@ struct DrawSpriteTask : CEvent
 		mSpritePtr(SpritePtr), mx(x), my(y), mAlpha(alpha)  {}
 };
 
-struct BlitSurfaceTask : CEvent
-{
-	std::shared_ptr<SDL_Surface> mSfcToBlit;
-	std::shared_ptr<SDL_Rect> mSrcRect;
-	std::shared_ptr<SDL_Rect> mDstRect;
-	
-	BlitSurfaceTask( std::shared_ptr<SDL_Surface> &sfcToBlit,
-					 SDL_Rect *srcRect,
-					 SDL_Rect *dstRect ) :
-	mSfcToBlit(sfcToBlit)
-	{
-		if(srcRect) // because SDL can have NULL-Pointers in the Rect sources
-		{			// Copy these objects, because they might vanish!
-		    mSrcRect.reset(new SDL_Rect);
-		    *mSrcRect = *srcRect;
-			
-		}
-		if(dstRect)
-		{
-		    mDstRect.reset(new SDL_Rect);
-		    *mDstRect = *dstRect;
-		}
-	}
-	
-	BlitSurfaceTask( std::shared_ptr<SDL_Surface> &sfcToBlit,
-			 std::shared_ptr<SDL_Rect> &srcRect,
-			 std::shared_ptr<SDL_Rect> &dstRect ) :
-	mSfcToBlit(sfcToBlit),
-	mSrcRect(srcRect),
-	mDstRect(dstRect)
-	{ }
-};
-
 
 struct DrawBitmapTask : CEvent
 {

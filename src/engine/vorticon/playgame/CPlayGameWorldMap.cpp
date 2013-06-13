@@ -248,7 +248,7 @@ void CPlayGameVorticon::showKeensLeft()
 		}
 		else
 		{
-		  g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpKeenLeftSfc, NULL,  &keenleft_rect ) );
+            SDL_BlitSurface(mpKeenLeftSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 		}
 	}
 }
