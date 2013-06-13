@@ -396,14 +396,7 @@ void CVideoDriver::pollDrawingTasks()
 	while (!mDrawTasks.empty())
 	{
 		// Sprite Section
-		if ( DrawSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawSpriteTask>())
-		{
-			CSprite *Sprite = drawSpriteTask->mSpritePtr;
-
-			Sprite->_drawSprite(getBlitSurface(), drawSpriteTask->mx,
-					drawSpriteTask->my, drawSpriteTask->mAlpha);
-		}
-		else if ( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>())
+        if ( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>())
 		{
 			CSprite *Sprite = drawSpriteTask->mSpritePtr;
 
