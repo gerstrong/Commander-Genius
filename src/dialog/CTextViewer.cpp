@@ -205,7 +205,7 @@ void CTextViewer::drawTextlines()
 }
 
 // Most common render function for this TextViewer
-void CTextViewer::process()
+void CTextViewer::ponder()
 {
 	 // Normal Keys/Axes
 	 if( g_pInput->getHoldedCommand(IC_DOWN) )
@@ -230,12 +230,20 @@ void CTextViewer::process()
 	 if(m_timer>=8) m_timer=0;
 	 
 	 if(g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedKey(KQ) || g_pInput->getPressedCommand(IC_BACK) )
-		 m_mustclose = true;
-	 
-	 renderBox(); // This comes after, because it does use semi-transparent overlay
-
-	 g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask(mpTextVSfc, NULL, NULL) );
+		 m_mustclose = true;	 
 }
+
+
+
+void CTextViewer::render()
+{
+    renderBox();
+    // This comes after, because it does use semi-transparent overlay
+
+    SDL_BlitSurface(mpTextVSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL);
+}
+
+
 
 // This function shows the Story of Commander Keen!
 void CTextViewer::renderBox()

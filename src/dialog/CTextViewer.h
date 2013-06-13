@@ -12,15 +12,17 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "core/LogicDrawSplitter.h"
 
-class CTextViewer
+class CTextViewer : public GameState
 {
 public:
 	CTextViewer(int x, int y, int w, int h);
 
 	void initialize();
 	void renderBox();
-	void process();
+    void ponder();
+    void render();
 
 	void formatText(const std::string &text);
 	bool loadTextfromFile(const std::string &filename);

@@ -250,5 +250,5 @@ void CResourceLoader::renderLoadingGraphic()
 		SDL_FillRect(sfc, &rect, color);
 	}
 	
-	g_pVideoDriver->mDrawTasks.add( new BlitSurfaceTask( mpProgressSfc, NULL, NULL ) );
+    SDL_BlitSurface( mpProgressSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr );
 }

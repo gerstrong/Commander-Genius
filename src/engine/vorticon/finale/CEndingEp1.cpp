@@ -30,7 +30,7 @@ m_hideobjects(hideobjects)
 	m_mustfinishgame = false;
 }
 
-void CEndingEp1::process()
+void CEndingEp1::ponder()
 {
 	m_timepassed = g_pTimer->getTicks() - m_starttime;
 
@@ -47,6 +47,20 @@ void CEndingEp1::process()
 	}
 }
 
+void CEndingEp1::render()
+{
+    m_timepassed = g_pTimer->getTicks() - m_starttime;
+
+    switch(m_step)
+    {
+    /*case 0: ReturnsToShip(); break;
+    case 1: ShipFlyMarsToEarth(); break;
+    case 2: BackAtHome(); break;
+    case 3: ShipFlyEarthToMShip(); break;*/
+    case 4: renderEndingText(); break;
+    default: break;
+    }
+}
 
 
 void CEndingEp1::ReturnsToShip()

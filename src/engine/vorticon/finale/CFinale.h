@@ -24,7 +24,8 @@ public:
 
 	void addMsgBoxString(const std::string &text);
 
-	void showEndingText();
+	void showEndingText();    
+    void renderEndingText();
 
 	virtual void process() {}
 	bool getHasFinished() { return m_mustfinishgame; }

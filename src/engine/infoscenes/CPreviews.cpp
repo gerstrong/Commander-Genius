@@ -90,7 +90,7 @@ void CPreviews::drawPreviewScene()
 void CPreviews::showText()
 {
 	// This is called after the preview screens were shown
-	mp_TextViewer->process();
+    mp_TextViewer->ponder();
 
 	if( mp_TextViewer->hasClosed() )
 	{

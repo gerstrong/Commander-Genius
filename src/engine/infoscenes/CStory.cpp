@@ -93,7 +93,7 @@ void CStory::process()
 
 	if(mpTextViewer)
 	{
-		mpTextViewer->process();
+        mpTextViewer->ponder();
 		if(mpTextViewer->hasClosed())
 			m_destroy_me=true;
 	}
