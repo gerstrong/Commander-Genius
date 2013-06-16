@@ -22,7 +22,8 @@ public:
 	CAbout(const std::string &type);
 	
 	void init();
-	void process();
+    void ponder();
+    void render();
 	void teardown();
 	
 private:

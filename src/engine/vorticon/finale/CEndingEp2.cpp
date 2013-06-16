@@ -37,7 +37,7 @@ void CEndingEp2::process()
 
 	switch(m_step)
 	{
-	case 0: HeadsForEarth(); break;
+    case 0: HeadsForEarth(); break;
 	case 1: LimpsHome(); break;
 	case 2: SnowedOutside(); break;
 	default:
@@ -168,7 +168,8 @@ void CEndingEp2::SnowedOutside()
 	}
 	else
 	{
-		mpFinaleStaticScene->process();
+        mpFinaleStaticScene->ponder();
+        mpFinaleStaticScene->render();
 	}
 
 }

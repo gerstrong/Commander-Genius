@@ -20,7 +20,8 @@ class CStory : public CInfoScene
 public:
 
 	void init();
-	void process();
+    void ponder();
+    void render();
 	void teardown();
 
 private:

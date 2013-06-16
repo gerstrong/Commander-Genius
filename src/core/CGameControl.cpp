@@ -162,8 +162,6 @@ void CGameControl::ponder()
 
 void CGameControl::render()
 {
-    g_pVideoDriver->pollDrawingTasks();
-
     if(mpEngine)
         mpEngine->render();
 }

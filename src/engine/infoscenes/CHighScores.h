@@ -35,7 +35,8 @@ public:
 	void writeEP2HighScore(int score, int cities_saved);
 	void writeHighScoreCommon(int score);
 	
-	void process();
+    void ponder();
+    void render();
 
 private:
 	std::shared_ptr<CMap> mpMap;

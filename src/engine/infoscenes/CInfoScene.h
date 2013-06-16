@@ -21,8 +21,9 @@ public:
 	virtual void init()
 	{ m_destroy_me = false; }
 	
-	virtual void process() = 0;
-	virtual void teardown() = 0;
+    virtual void ponder() = 0;
+    virtual void render() = 0;
+    virtual void teardown() = 0;
 
 	virtual ~CInfoScene() { }
 

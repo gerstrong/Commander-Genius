@@ -24,10 +24,11 @@ public:
 			std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object );
 
 	void process();
+
+    // ponder part
 	void HeadsForEarth();
 	void LimpsHome();
 	void SnowedOutside();
-
 
 private:
 	bool m_mustsetup;

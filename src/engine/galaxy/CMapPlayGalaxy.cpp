@@ -173,7 +173,7 @@ void CMapPlayGalaxy::ponder()
 
 void CMapPlayGalaxy::render()
 {
-    g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
+    g_pVideoDriver->blitScrollSurface();
 
     auto obj = mObjectPtr.rbegin();
 

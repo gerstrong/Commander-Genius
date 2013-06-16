@@ -28,8 +28,6 @@ public:
 	// Constructor which needs the Rect for the placement of the Dialog
 	CGUIDialog(const CRect<float> &NewRect);
 
-	~CGUIDialog();
-
 	// Automatic Background draw function. It creates the background depending on what engine is currently running
 	void initBackground();
 

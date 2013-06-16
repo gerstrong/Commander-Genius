@@ -15,7 +15,8 @@
 #include <list>
 #include <memory>
 
-struct bitmap_structure {
+struct bitmap_structure
+{
 	CBitmap *p_bitmap;
 	SDL_Rect dest_rect;
 	Uint16 from_count;
@@ -32,18 +33,17 @@ public:
 
 	void showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y);
 	void setTimer(Uint16 timer) {	m_timer = timer;	}
-	void process();
-	bool mustclose() { return m_mustclose; }
-
-	virtual ~CFinaleStaticScene();
+    void ponder();
+    void render();
+    bool mustclose() { return m_mustclose; }
 
 private:
 
 	std::vector<bitmap_structure> m_BitmapVector;
 	std::shared_ptr<SDL_Surface> mpSceneSurface;
 	bool m_mustclose;
-	Uint8 m_count;
-	Uint16 m_timer; // Only used, if no Text to display is set. Example is the preview section
+    int m_count;
+    int m_timer; // Only used, if no Text to display is set. Example is the preview section
 };
 
 #endif /* CFINALESTATICSCENE_H_ */

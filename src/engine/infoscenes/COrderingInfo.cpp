@@ -148,12 +148,8 @@ void COrderingInfo::init()
 	SDL_FreeSurface(temp);
 }
 
-void COrderingInfo::process()
+void COrderingInfo::ponder()
 {	 
-
-	mpMap->animateAllTiles();
-	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-
 	if(m_Textline.empty())
 	{
 		g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
@@ -161,16 +157,22 @@ void COrderingInfo::process()
 		return;
 	}
 
-	for(int i=0 ; i<m_numberoflines ; i++)
-	{
-		g_pGfxEngine->getFont(1).drawFont(mpTextSfc.get(), m_Textline[i],
-											160-m_Textline[i].size()*4, 8*(i+m_starty), true);
-	}
-
-    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
-
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;
+}
+
+void COrderingInfo::render()
+{
+    mpMap->animateAllTiles();
+    g_pVideoDriver->blitScrollSurface();
+
+    for(int i=0 ; i<m_numberoflines ; i++)
+    {
+        g_pGfxEngine->getFont(1).drawFont(mpTextSfc.get(), m_Textline[i],
+                                            160-m_Textline[i].size()*4, 8*(i+m_starty), true);
+    }
+
+    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 }
 
 void COrderingInfo::teardown()

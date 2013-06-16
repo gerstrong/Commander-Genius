@@ -86,11 +86,8 @@ void CStory::init()
 	mpMap->drawAll();
 }
 
-void CStory::process()
+void CStory::ponder()
 {
-	mpMap->animateAllTiles();
-	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-
 	if(mpTextViewer)
 	{
         mpTextViewer->ponder();
@@ -101,6 +98,16 @@ void CStory::process()
 	{
 		m_destroy_me=true;
 	}
+}
+void CStory::render()
+{
+    mpMap->animateAllTiles();
+    g_pVideoDriver->blitScrollSurface();
+
+    if(mpTextViewer)
+    {
+        mpTextViewer->render();
+    }
 }
 
 void CStory::teardown()

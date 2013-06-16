@@ -23,7 +23,8 @@ public:
 	void init();
 	void teardown();
 
-	void process();
+    void ponder();
+    void render();
 
 private:
 	std::string mTextType;

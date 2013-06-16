@@ -72,9 +72,7 @@ bool CResourceLoader::process(int* ret)
 	return false;
     
     // Draw the first Frame, so transition looks complete!
-    g_pVideoDriver->clearDrawingTasks();
     renderLoadingGraphic();
-    g_pVideoDriver->pollDrawingTasks();
     g_pVideoDriver->updateScreen();
     
     start = timerTicks();
@@ -112,8 +110,6 @@ bool CResourceLoader::process(int* ret)
 		    }
 		    
 		    // Here we try to process all the drawing related Tasks not yet done
-		    g_pVideoDriver->pollDrawingTasks();
-		    
 		    acc -= logicLatency;
 		}	
 		
@@ -149,7 +145,6 @@ bool CResourceLoader::process(int* ret)
 	setPermilageForce(m_max_permil);
 	setPermilage(m_max_permil);
 	renderLoadingGraphic();
-	g_pVideoDriver->pollDrawingTasks();
 	g_pVideoDriver->updateScreen();	
 	
 	m_permiltarget = m_permil = m_min_permil;

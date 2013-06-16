@@ -23,11 +23,14 @@ public:
 	int openNextScene();
 
 	void init();
-	void process();
+    void ponder();
+    void render();
 	void teardown();
 
-	void drawPreviewScene();
-	void showText();
+    void drawPreviewScene();
+    void showText();
+    void processPreviewScene();
+    void processShowText();
 
 private:
 	int m_episode;
@@ -37,6 +40,8 @@ private:
 	std::shared_ptr<CMap> mpMap;
 
 	void (CPreviews::*process_ptr)();
+
+    void (CPreviews::*render_ptr)();
 
 	bool openScene(const std::string& filename);
 };

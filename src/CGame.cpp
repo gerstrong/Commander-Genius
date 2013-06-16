@@ -168,13 +168,6 @@ void CGame::run()
             g_pGfxEngine->ponder();
 
             acc -= logicLatency;
-
-            // Workaround which remove unneeded draw tasks.
-            if( acc > logicLatency )
-            {
-                g_pVideoDriver->clearDrawingTasks();
-            }
-
         }
 
         // Apply graphical effects if any. It does not render, it only prepares for the rendering task.

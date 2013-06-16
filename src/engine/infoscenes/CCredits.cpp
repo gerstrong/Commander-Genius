@@ -96,14 +96,8 @@ void CCredits::init()
 	SDL_FreeSurface(temp);
 }
 
-void CCredits::process()
+void CCredits::ponder()
 {
-    CFont &creditFont = g_pGfxEngine->getFont(0);
-	mpMap->animateAllTiles();	
-	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-	
-	SDL_FillRect(mpDrawSfc.get(), NULL, 0x0);
-	
 	if(m_timer<2) m_timer++;
 	else
 	{
@@ -113,19 +107,30 @@ void CCredits::process()
 			m_scrolly = g_pVideoDriver->getGameResolution().h;
 	}
 	
-	for(int j=0 ; j<54 ; j++)
-	{
-		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
-		{
-			creditFont.drawFont( mpDrawSfc.get(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
-		}
-	}	
-	
-    SDL_BlitSurface(mpDrawSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
 
 	if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 		m_destroy_me = true;
 }
+
+void CCredits::render()
+{
+    CFont &creditFont = g_pGfxEngine->getFont(0);
+    mpMap->animateAllTiles();
+    g_pVideoDriver->blitScrollSurface();
+
+    SDL_FillRect(mpDrawSfc.get(), NULL, 0x0);
+
+    for(int j=0 ; j<54 ; j++)
+    {
+        if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
+        {
+            creditFont.drawFont( mpDrawSfc.get(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
+        }
+    }
+
+    SDL_BlitSurface(mpDrawSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+}
+
 
 void CCredits::teardown()
 {

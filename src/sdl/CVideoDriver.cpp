@@ -390,27 +390,6 @@ st_camera_bounds &CVideoDriver::getCameraBounds()
 ////
 //// Drawing stuff related Stuff
 ////
-
-void CVideoDriver::pollDrawingTasks()
-{
-	while (!mDrawTasks.empty())
-	{						
-        if (mDrawTasks.occurredEvent<BlitScrollSurfaceTask>())
-		{
-			blitScrollSurface();
-		}
-
-		// If none of the Events fit here, please warn this incident
-		else
-		{
-			g_pLogFile->textOut(
-					"Warning: Unknown Drawing task. Please let the developers debug this!");
-		}
-
-		mDrawTasks.pop_Event();
-	}
-}
-
 SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
 {
 	CRect<Uint16> GameRes = getGameResolution();
@@ -425,10 +404,3 @@ SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
 	return RectDispCoord.SDLRect();
 }
 
-void CVideoDriver::clearDrawingTasks() 
-{
-	if (!mDrawTasks.empty()) 
-	{
-		mDrawTasks.clear();
-	}
-}

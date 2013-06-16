@@ -117,7 +117,8 @@ void CGameMain::ponder()
 
 	if( mpInfoScene )
 	{
-		mpInfoScene->process();
+        mpInfoScene->ponder();
+        mpInfoScene->render();
 		if( mpInfoScene->destroyed() )
 		{		    
 			mpInfoScene->teardown();

@@ -15,7 +15,6 @@
 #include "CSingleton.h"
 #include "CVidConfig.h"
 #include "video/CVideoEngine.h"
-#include "video/DrawEvents.h"
 #include "engine/CEventContainer.h"
 #include "common/CMap.h"
 
@@ -57,7 +56,6 @@ public:
 	void updateScreen();
 
 	// Drawing related stuff
-	void pollDrawingTasks();
 	SDL_Rect toBlitRect(const CRect<float> &rect);
 	void clearDrawingTasks();
 

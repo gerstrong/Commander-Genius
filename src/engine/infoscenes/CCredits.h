@@ -15,11 +15,13 @@
 #include "common/CMap.h"
 #include <graphics/CFont.h>
 
-class CCredits : public CInfoScene {
+class CCredits : public CInfoScene
+{
 public:
 	
 	void init();
-	void process();
+    void ponder();
+    void render();
 	void teardown();
 	
 private:

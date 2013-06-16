@@ -106,7 +106,7 @@ void CHelp::teardown()
 }
 
 
-void CHelp::process()
+void CHelp::ponder()
 {
 	// NOTE: Animation is performed here too, because the story plane is drawn over the other
 	// map that is open. That is desired!
@@ -123,3 +123,10 @@ void CHelp::process()
 	}
 }
 
+void CHelp::render()
+{
+    if(mpTextViewer)
+    {
+        mpTextViewer->render();
+    }
+}

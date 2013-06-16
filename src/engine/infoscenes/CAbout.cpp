@@ -154,31 +154,33 @@ void CAbout::init()
 }
 
 
-void CAbout::process()
-{	 
-	mpMap->animateAllTiles();
-	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-	
+void CAbout::ponder()
+{
+    if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
+        m_destroy_me=true;
+}
 
-	if(m_type == "ID")
-	{
-		mp_bmp->draw( 160-mp_bmp->getWidth()/2, 22);
-	}
-	else if(m_type == "CG")
-	{
-		if(mpLogoBMP)
+void CAbout::render()
+{
+    mpMap->animateAllTiles();
+    g_pVideoDriver->blitScrollSurface();
+
+    if(m_type == "ID")
+    {
+        mp_bmp->draw( 160-mp_bmp->getWidth()/2, 22);
+    }
+    else if(m_type == "CG")
+    {
+        if(mpLogoBMP)
             SDL_BlitSurface(mpLogoBMP.get(), nullptr, g_pVideoDriver->getBlitSurface(), &m_logo_rect);
-	}
+    }
 
-	for(std::size_t i=0 ; i<m_lines.size() ; i++)
-	{
-		g_pGfxEngine->getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
-	}
+    for(std::size_t i=0 ; i<m_lines.size() ; i++)
+    {
+        g_pGfxEngine->getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
+    }
 
     SDL_BlitSurface(mpDrawSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
-	
-	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
-		m_destroy_me=true;
 }
 
 void CAbout::teardown()

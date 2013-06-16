@@ -56,56 +56,29 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
 	m_BitmapVector.push_back(bmp_struct);
 }
 
-void CFinaleStaticScene::process()
-{
-	if(mpSceneSurface)
-	{
-        SDL_BlitSurface(mpSceneSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
-	}
-
-	if(m_timer)
-	{
-		m_timer--;
-	}
-	else
-	{
-		/*if( mp_textbox_list.empty() ) { m_mustclose = true; return; }
-
-		mp_current_tb = mp_textbox_list.front();
-
-		// If time up, or user pressed any key goto next text
-		if( mp_current_tb->isFinished() )
-		{
-			delete mp_current_tb;
-			m_count++;
-
-			for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
-					i!=m_BitmapVector.end() ; i++ )
-			{
-				if( m_count == i->from_count) g_pSound->playSound(SOUND_SWITCH_TOGGLE, PLAY_NOW);
-			}
-
-			mp_textbox_list.pop_front();
-			if(!mp_textbox_list.empty())
-				mp_current_tb = mp_textbox_list.front();
-		}
-		else*/
-		{
-			// Draw any requested Bitmap
-			for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
-					i!=m_BitmapVector.end() ; i++ )
-			{
-				if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
-				{ // show it!
-					i->p_bitmap->draw(i->dest_rect.x, i->dest_rect.y);
-				}
-			}
-
-			// Draw Frame and the text like type writing
-			//mp_current_tb->processLogic();
-		}
-	}
+void CFinaleStaticScene::ponder()
+{    
+    if(m_timer >= 0)
+        m_timer--;
 }
 
-CFinaleStaticScene::~CFinaleStaticScene()
-{}
+void CFinaleStaticScene::render()
+{
+    if(mpSceneSurface)
+    {
+        SDL_BlitSurface(mpSceneSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+    }
+
+    if(m_timer <= 0)
+    {
+            // Draw any requested Bitmap
+            for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
+                    i!=m_BitmapVector.end() ; i++ )
+            {
+                if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
+                { // show it!
+                    i->p_bitmap->draw(i->dest_rect.x, i->dest_rect.y);
+                }
+            }
+    }
+}

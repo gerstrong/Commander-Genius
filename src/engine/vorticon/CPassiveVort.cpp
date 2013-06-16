@@ -68,7 +68,7 @@ void CPassiveVort::process()
 	mpMap->animateAllTiles();
 
 	// Blit the background
-	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
+    g_pVideoDriver->blitScrollSurface();
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 

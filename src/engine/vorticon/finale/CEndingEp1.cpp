@@ -196,7 +196,8 @@ void CEndingEp1::BackAtHome()
 	}
 	else
 	{
-		mpFinaleStaticScene->process();
+        mpFinaleStaticScene->ponder();
+        mpFinaleStaticScene->render();
 	}
 
 }

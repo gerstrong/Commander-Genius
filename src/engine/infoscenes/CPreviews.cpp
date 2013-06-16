@@ -81,27 +81,48 @@ bool CPreviews::openScene(const std::string& filename)
 void CPreviews::drawPreviewScene()
 {
 	// This will show a scene of the preview scenes
-	mp_StaticScene->process();
-
-	if( mp_StaticScene->mustclose() || g_pInput->getPressedAnyCommand() )
-		openNextScene();
+    mp_StaticScene->render();
 }
 
 void CPreviews::showText()
 {
 	// This is called after the preview screens were shown
-    mp_TextViewer->ponder();
-
-	if( mp_TextViewer->hasClosed() )
-	{
-		m_destroy_me = true;
-	}
+    mp_TextViewer->render();
 }
 
-void CPreviews::process()
+
+void CPreviews::processPreviewScene()
+{
+    // This will show a scene of the preview scenes
+    mp_StaticScene->ponder();
+    mp_StaticScene->render();
+
+    if( mp_StaticScene->mustclose() || g_pInput->getPressedAnyCommand() )
+        openNextScene();
+}
+
+
+void CPreviews::processShowText()
+{
+    // This is called after the preview screens were shown
+    mp_TextViewer->ponder();
+
+    if( mp_TextViewer->hasClosed() )
+    {
+        m_destroy_me = true;
+    }
+}
+
+
+void CPreviews::ponder()
 {
 	// Here only the variable for the scene function should be called. Use a pointer to function for that...
 	(*this.*process_ptr)();
+}
+
+void CPreviews::render()
+{
+    (*this.*render_ptr)();
 }
 
 void CPreviews::teardown()

@@ -167,58 +167,60 @@ void CHighScores::teardown()
 
 
 
-void CHighScores::process()
+void CHighScores::ponder()
 {
-	// TODO: here we have to process input events
-
-	// Process Drawing related stuff
-	SDL_Surface *sfc = mpTextSfc.get();
-	CFont &Font = g_pGfxEngine->getFont(1);
-
-	mpMap->animateAllTiles();
-
-	// Blit the background
-	g_pVideoDriver->mDrawTasks.add( new BlitScrollSurfaceTask() );
-	
-	// draw the Bitmaps
-	std::vector<stBitmap>::iterator it_bmp = m_Bitmaps.begin();
-	for(; it_bmp != m_Bitmaps.end() ; it_bmp++)
-	{
-		it_bmp->p_Bitmap->draw(it_bmp->rect.x, it_bmp->rect.y);
-	}
-	
-	// Print the text of the highscores
-	for( Uint8 i=0 ; i<8 ; i++ )
-	{
-		int x = (m_Episode == 3) ? 69 : 40;
-		int x2 = (m_Episode == 3) ? 255 : 202;
-		int y = (m_Episode == 2) ? 56 : 52;
-
-		std::string actualName = m_Name[i];
-
-		// This cleans up the text. We need that because otherwise when user deletes his name while writing
-		// it might leave tracks
-		Font.drawFont(sfc, std::string(13,' '), x, y+(i<<4), true);
-
-		if(i == m_Place)
-			actualName += (m_blink == true) ? "|" : " ";
-
-		Font.drawFont(sfc, actualName, x, y+(i<<4), true);
-		Font.drawFont(sfc, m_Score[i], x2-((m_Score[i].size())<<3), y+(i<<4), true);
-	}
-	
-	// Here it must be split up into Episodes 1, 2 and 3.
-	if(m_Episode == 2)
-	{
-		for( Uint8 i=0 ; i<8 ; i++ )
-			Font.drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
-	}
-	
-    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
-
 	(this->*mp_process)();
-
 }
+
+
+void CHighScores::render()
+{
+    // Process Drawing related stuff
+    SDL_Surface *sfc = mpTextSfc.get();
+    CFont &Font = g_pGfxEngine->getFont(1);
+
+    mpMap->animateAllTiles();
+
+    // Blit the background
+    g_pVideoDriver->blitScrollSurface();
+
+    // draw the Bitmaps
+    std::vector<stBitmap>::iterator it_bmp = m_Bitmaps.begin();
+    for(; it_bmp != m_Bitmaps.end() ; it_bmp++)
+    {
+        it_bmp->p_Bitmap->draw(it_bmp->rect.x, it_bmp->rect.y);
+    }
+
+    // Print the text of the highscores
+    for( Uint8 i=0 ; i<8 ; i++ )
+    {
+        int x = (m_Episode == 3) ? 69 : 40;
+        int x2 = (m_Episode == 3) ? 255 : 202;
+        int y = (m_Episode == 2) ? 56 : 52;
+
+        std::string actualName = m_Name[i];
+
+        // This cleans up the text. We need that because otherwise when user deletes his name while writing
+        // it might leave tracks
+        Font.drawFont(sfc, std::string(13,' '), x, y+(i<<4), true);
+
+        if(i == m_Place)
+            actualName += (m_blink == true) ? "|" : " ";
+
+        Font.drawFont(sfc, actualName, x, y+(i<<4), true);
+        Font.drawFont(sfc, m_Score[i], x2-((m_Score[i].size())<<3), y+(i<<4), true);
+    }
+
+    // Here it must be split up into Episodes 1, 2 and 3.
+    if(m_Episode == 2)
+    {
+        for( Uint8 i=0 ; i<8 ; i++ )
+            Font.drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
+    }
+
+    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+}
+
 
 void CHighScores::processShowing()
 {

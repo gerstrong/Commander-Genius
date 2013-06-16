@@ -24,17 +24,6 @@ mSelection(0)
 {}
 
 
-
-CGUIDialog::~CGUIDialog()
-{
-	CVideoDriver *pVideoDriver = CVideoDriver::GetNoPtrChk();
-	if( pVideoDriver ) // This checks if the video object still exists, because if
-	{				   // deleting drawing routine, it is not needed anymore
-		pVideoDriver->clearDrawingTasks();
-	}
-}
-
-
 void CGUIDialog::initBackground()
 {
 	if( g_pBehaviorEngine->getEngine() == ENGINE_VORTICON )

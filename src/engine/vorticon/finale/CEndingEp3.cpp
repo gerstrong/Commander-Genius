@@ -136,8 +136,9 @@ void CEndingEp3::AwardScene()
 	}
 	else
 	{
-		mpFinaleStaticScene->process();
-	}
+        mpFinaleStaticScene->ponder();
+        mpFinaleStaticScene->render();
+    }
 
 }
 
