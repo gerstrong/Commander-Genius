@@ -259,7 +259,8 @@ void CGameLauncher::ponder()
 
 void CGameLauncher::render()
 {
-    // TODO: Get the draw routines here!
+    // Get the draw routines here!
+    mLauncherDialog.processRendering();
 }
 
 

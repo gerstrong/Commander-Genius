@@ -33,6 +33,7 @@ public:
 	void processLogic();
 
 
+
 	/// Getters
 	/*
 	 * \brief Indicates whether Dialog is ready to be closed

@@ -394,15 +394,8 @@ st_camera_bounds &CVideoDriver::getCameraBounds()
 void CVideoDriver::pollDrawingTasks()
 {
 	while (!mDrawTasks.empty())
-	{				
-		// GUI Rendering based Task
-        if ( DrawGUIRenderTask *renderTask =
-		mDrawTasks.occurredEvent<DrawGUIRenderTask>())
-		{
-			renderTask->mpDialog->processRendering();
-		}
-
-		else if (mDrawTasks.occurredEvent<BlitScrollSurfaceTask>())
+	{						
+        if (mDrawTasks.occurredEvent<BlitScrollSurfaceTask>())
 		{
 			blitScrollSurface();
 		}

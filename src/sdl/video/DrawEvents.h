@@ -20,15 +20,6 @@
 #include "sdl/extensions.h"
 
 
-// GUI Based Draw Task
-
-struct DrawGUIRenderTask : CEvent
-{
-	CGUIDialog *mpDialog;
-
-	DrawGUIRenderTask( CGUIDialog *pDialog ) : mpDialog(pDialog) {}
-};
-
 
 // Sprite based Draw Tasks
 

@@ -296,9 +296,6 @@ void CGUIDialog::setPosition(const float x, const float y)
 
 void CGUIDialog::processLogic()
 {
-	// Render the stuff
-	g_pVideoDriver->mDrawTasks.add( new DrawGUIRenderTask(this) );
-
 	// Prepare the subcontrols for rendering
 	int sel = 0;
 	for( auto &it : mControlList )
@@ -402,7 +399,7 @@ void CGUIDialog::initGalaxyBackround(SDL_Rect Rect)
 
 
 void CGUIDialog::processRendering()
-{
+{        
 	SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
 	CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
 	CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
@@ -419,5 +416,5 @@ void CGUIDialog::processRendering()
 	for( auto &it : mControlList )
 	{
 	  it->processRender(screenRect);
-	}
+	}       
 }
