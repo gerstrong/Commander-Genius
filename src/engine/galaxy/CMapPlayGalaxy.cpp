@@ -199,7 +199,7 @@ void CMapPlayGalaxy::render()
     }
 
     // Draw masked tiles here!
-    g_pVideoDriver->mDrawTasks.add( new DrawForegroundTilesTask(mMap) );
+    mMap._drawForegroundTiles();
 
     for( obj=mObjectPtr.rbegin() ;
             obj!=mObjectPtr.rend() ; obj++ )

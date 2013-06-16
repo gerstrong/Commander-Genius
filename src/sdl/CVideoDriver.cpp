@@ -394,26 +394,9 @@ st_camera_bounds &CVideoDriver::getCameraBounds()
 void CVideoDriver::pollDrawingTasks()
 {
 	while (!mDrawTasks.empty())
-	{
-		// Tiles Section which are in front or/and animated
-        if ( DrawAnimatedTileTask *drawAnimatedTileTask =
-		    mDrawTasks.occurredEvent<DrawAnimatedTileTask>())
-		{
-			CTilemap *TilemapPtr = drawAnimatedTileTask->mTileMapPtr;
-
-			TilemapPtr->drawTile(getBlitSurface(), drawAnimatedTileTask->mx,
-					drawAnimatedTileTask->my, drawAnimatedTileTask->mtile);
-		}
-
-		else if ( DrawForegroundTilesTask *drawForegroundTiles =
-		    mDrawTasks.occurredEvent<DrawForegroundTilesTask>())
-		{
-			drawForegroundTiles->mMap._drawForegroundTiles();
-		}
-				
-
+	{				
 		// GUI Rendering based Task
-		else if ( DrawGUIRenderTask *renderTask =
+        if ( DrawGUIRenderTask *renderTask =
 		mDrawTasks.occurredEvent<DrawGUIRenderTask>())
 		{
 			renderTask->mpDialog->processRendering();

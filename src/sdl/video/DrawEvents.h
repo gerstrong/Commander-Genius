@@ -29,24 +29,6 @@ struct DrawGUIRenderTask : CEvent
 	DrawGUIRenderTask( CGUIDialog *pDialog ) : mpDialog(pDialog) {}
 };
 
-// Tile based Draw Tasks
-
-struct DrawForegroundTilesTask : CEvent
-{
-    CMap &mMap;
-    DrawForegroundTilesTask(CMap &map) : mMap(map) {};
-};
-
-
-struct DrawAnimatedTileTask : CEvent
-{
-	CTilemap 	*mTileMapPtr;
-	const Uint16 mx, my;
-	const Uint16 mtile;
-
-	DrawAnimatedTileTask(CTilemap *TileMapPtr, const Uint16 x, const Uint16 y, const Uint16 tile) :
-		mTileMapPtr(TileMapPtr), mx(x), my(y), mtile(tile) {}
-};
 
 // Sprite based Draw Tasks
 

@@ -536,7 +536,7 @@ void CPlayGameVorticon::drawAllElements()
 	drawObjects();
 
 	// Draw masked tiles here!
-	g_pVideoDriver->mDrawTasks.add( new DrawForegroundTilesTask(*(mMap.get())) );
+    mMap->_drawForegroundTiles();
 
 
 	for( short i=0 ; i<m_NumPlayers ; i++ )
