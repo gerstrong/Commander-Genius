@@ -436,7 +436,7 @@ void CSprite::drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, cons
  */
 void CSprite::drawBlinkingSprite( Uint16 x, Uint16 y )
 {
-	g_pVideoDriver->mDrawTasks.add( new DrawBlinkingSpriteTask( this, x, y ) );
+    _drawBlinkingSprite(g_pVideoDriver->getBlitSurface(), x, y);
 }
 
 

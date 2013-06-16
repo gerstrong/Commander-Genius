@@ -395,26 +395,8 @@ void CVideoDriver::pollDrawingTasks()
 {
 	while (!mDrawTasks.empty())
 	{
-		// Sprite Section
-        if ( DrawBlinkingSpriteTask *drawSpriteTask = mDrawTasks.occurredEvent<DrawBlinkingSpriteTask>())
-		{
-			CSprite *Sprite = drawSpriteTask->mSpritePtr;
-
-			Sprite->_drawBlinkingSprite(getBlitSurface(), drawSpriteTask->mx,
-					drawSpriteTask->my);
-		}
-
-		// Bitmap Section
-		else if ( DrawBitmapTask *drawBitmapTask = mDrawTasks.occurredEvent<DrawBitmapTask>())
-		{
-			CBitmap *Bitmap = drawBitmapTask->mBmpPtr;
-
-			Bitmap->_draw(getBlitSurface(), drawBitmapTask->mx,
-					drawBitmapTask->my);
-		}
-
 		// Tiles Section which are in front or/and animated
-		else if ( DrawAnimatedTileTask *drawAnimatedTileTask =
+        if ( DrawAnimatedTileTask *drawAnimatedTileTask =
 		    mDrawTasks.occurredEvent<DrawAnimatedTileTask>())
 		{
 			CTilemap *TilemapPtr = drawAnimatedTileTask->mTileMapPtr;

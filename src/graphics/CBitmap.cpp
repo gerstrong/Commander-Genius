@@ -96,7 +96,7 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
  */
 void CBitmap::draw(Uint16 x, Uint16 y)
 {
-	g_pVideoDriver->mDrawTasks.add( new DrawBitmapTask( this, x, y ) );
+    _draw( g_pVideoDriver->getBlitSurface(), x, y);
 }
 
 ///

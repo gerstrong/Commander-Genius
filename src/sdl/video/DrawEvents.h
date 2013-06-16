@@ -50,25 +50,6 @@ struct DrawAnimatedTileTask : CEvent
 
 // Sprite based Draw Tasks
 
-struct DrawBlinkingSpriteTask : CEvent
-{
-	CSprite *mSpritePtr;
-	const Uint16 mx, my;
-	DrawBlinkingSpriteTask(CSprite *SpritePtr, const Uint16 x, const Uint16 y) :
-		mSpritePtr(SpritePtr), mx(x), my(y) {}
-};
-
-
-
-struct DrawBitmapTask : CEvent
-{
-	CBitmap *mBmpPtr;
-	const Uint16 mx, my;
-	DrawBitmapTask(CBitmap *BmpPtr, const Uint16 x, const Uint16 y):
-		mBmpPtr(BmpPtr), mx(x), my(y) {}
-};
-
-
 struct BlitScrollSurfaceTask : CEvent
 {};
 
