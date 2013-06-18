@@ -165,7 +165,6 @@ void CPlayGameGalaxy::ponder()
 		{
             m_WorldMap.setMsgBoxOpen(msgboxactive);
             m_WorldMap.ponder();
-            m_WorldMap.render();
 		}
 
 		// process World Map if active. At the start it's disabled, m_WorldMap turns it on.
@@ -173,13 +172,6 @@ void CPlayGameGalaxy::ponder()
 		{
             m_LevelPlay.setMsgBoxOpen(msgboxactive);
             m_LevelPlay.ponder();
-            m_LevelPlay.render();
-		}
-
-		// We have to show the status screen, do so...
-		if( m_Inventory.showStatus() )
-		{
-			m_Inventory.drawStatus();
 		}
 
 		// Draw some Textboxes with Messages only if one of those is open and needs to be drawn
@@ -250,21 +242,21 @@ void CPlayGameGalaxy::ponder()
 		    CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(g_pGfxEngine->Effect());
 		    if( pColorMerge != NULL )
 		    {
-			SDL_Surface *fxSfc = pColorMerge->getSfc().get();
-			SDL_Rect cutRect = pMsgBox->getRect();
-			SDL_Surface *msgSfc = pMsgBox->getSfc();
-			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
+                SDL_Surface *fxSfc = pColorMerge->getSfc().get();
+                SDL_Rect cutRect = pMsgBox->getRect();
+                SDL_Surface *msgSfc = pMsgBox->getSfc();
+                SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
 		    }
 
 		    CDimDark *pDimDark = dynamic_cast<CDimDark*>(g_pGfxEngine->Effect());
 		    if( pDimDark != NULL )
 		    {
-			SDL_Surface *fxSfc = pDimDark->getSfc().get();
-			SDL_Surface *darkSfc = pDimDark->getDarkSfc().get();
-			SDL_Rect cutRect = pMsgBox->getRect();
-			SDL_Surface *msgSfc = pMsgBox->getSfc();
-			SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
-			SDL_BlitSurface(msgSfc, NULL, darkSfc, &cutRect);
+                SDL_Surface *fxSfc = pDimDark->getSfc().get();
+                SDL_Surface *darkSfc = pDimDark->getDarkSfc().get();
+                SDL_Rect cutRect = pMsgBox->getRect();
+                SDL_Surface *msgSfc = pMsgBox->getSfc();
+                SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
+                SDL_BlitSurface(msgSfc, NULL, darkSfc, &cutRect);
 		    }
 		}
 
@@ -375,7 +367,27 @@ void CPlayGameGalaxy::ponder()
 
 void CPlayGameGalaxy::render()
 {
+    if( !gpMenuController->active() )
+    {
 
+        // process World Map if active. At the start it's enabled
+        if(m_WorldMap.isActive())
+        {
+            m_WorldMap.render();
+        }
+
+        // process World Map if active. At the start it's disabled, m_WorldMap turns it on.
+        if(m_LevelPlay.isActive())
+        {
+            m_LevelPlay.render();
+        }
+
+        // We have to show the status screen, do so...
+        if( m_Inventory.showStatus() )
+        {
+            m_Inventory.drawStatus();
+        }
+    }
 }
 
 void CPlayGameGalaxy::processInput()
