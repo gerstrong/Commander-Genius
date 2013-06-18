@@ -30,7 +30,9 @@ public:
 	/** Processing
 	 * There are dialog boxes in both engines. They have are different and must be overloaded with this function.
 	 */
-	void processLogic();
+    void processLogic();
+
+    void render();
 
 
 

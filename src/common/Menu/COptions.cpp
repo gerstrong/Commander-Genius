@@ -37,7 +37,7 @@ void COptions::init()
 
 void COptions::process()
 {
-	CBaseMenu::process();
+    CBaseMenu::ponder();
 
 	std::list<CGUISwitch*>::iterator it = mpOptionList.begin();
 

@@ -34,7 +34,7 @@ void CMenuController::openMainMenu()
 }
 
 
-void CMenuController::process()
+void CMenuController::ponder()
 {
 	if(mLocked)
 	    return;
@@ -123,7 +123,7 @@ void CMenuController::process()
 	// Process Menu if open
 	if( !mMenuStack.empty() )
 	{
-	    mMenuStack.back()->process();
+        mMenuStack.back()->ponder();
 	}
 
 
@@ -142,11 +142,19 @@ void CMenuController::popBackMenu()
     if(mMenuStack.empty())
     {
         // The last menu has been removed. Restore back the game status
-	g_pBehaviorEngine->setPause(false);
+        g_pBehaviorEngine->setPause(false);
 		
-	// When menu is opened show the cursor
-	SDL_ShowCursor(SDL_DISABLE);
+        // When menu is opened show the cursor
+        SDL_ShowCursor(SDL_DISABLE);
     }
 }
 
 
+void CMenuController::render()
+{
+    // Render the Menu if open
+    if( !mMenuStack.empty() )
+    {
+        mMenuStack.back()->render();
+    }
+}

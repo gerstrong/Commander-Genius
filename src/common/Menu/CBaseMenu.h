@@ -12,10 +12,11 @@ const int NO_SELECTION = -1;
 
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIButton.h"
+#include "core/LogicDrawSplitter.h"
 #include <list>
 #include <memory>
 
-class CBaseMenu
+class CBaseMenu : public GameState
 {
 public:
 
@@ -28,18 +29,20 @@ public:
 
 	CBaseMenu( const CRect<float>& rect );
 
-	virtual ~CBaseMenu() { };
+    virtual ~CBaseMenu() { }
 
-	virtual void init() {};
+    virtual void init() {}
 
-	void select(const size_t value);
+    void select(const size_t value);
 
-	virtual void release() {};
+    virtual void release() {}
 
 	void setMenuLabel(const std::string &label);
 
 	// Processes the stuff that the menus have in common
-	virtual void process();
+    virtual void ponder();
+
+    virtual void render();
 
 	virtual void sendEvent(std::shared_ptr<CEvent> &command)
 	{

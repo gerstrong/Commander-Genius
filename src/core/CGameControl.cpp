@@ -157,11 +157,13 @@ void CGameControl::ponder()
 		}
 	}
 	
-	gpMenuController->process();
+    gpMenuController->ponder();
 }
 
 void CGameControl::render()
 {
     if(mpEngine)
         mpEngine->render();
+
+    gpMenuController->render();
 }

@@ -170,20 +170,18 @@ void CGame::run()
             acc -= logicLatency;
         }
 
-        // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
+        // Now we render the whole GameControl Object to the blit surface
+        mGameControl.render();
+
+        // Apply graphical effects if any.
         g_pGfxEngine->render();
 
-        // Pass all the surfaces to one
+        // Pass all the surfaces to one. Some special surfaces are used and are collected here
         g_pVideoDriver->collectSurfaces();
 
         // Now you really render the screen
         // When enabled, it also will apply Filters
         g_pVideoDriver->updateScreen();
-
-
-        // Now we render it
-        mGameControl.render();
-
 
         /*
          const double alpha = acc / logicLatency;

@@ -51,7 +51,9 @@ public:
 
 	void openMainMenu();
 
-	void process();
+    void ponder();
+
+    void render();
 
 	bool active()
 	{	return	!mMenuStack.empty();	}

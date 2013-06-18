@@ -75,6 +75,12 @@ void CMessageBox::processLogic()
 	CGUIDialog::processLogic();
 }
 
+void CMessageBox::render()
+{
+    CGUIDialog::processRendering();
+}
+
+
 
 bool CMessageBox::isFinished()
 { return m_mustclose; }
