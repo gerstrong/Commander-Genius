@@ -23,6 +23,7 @@ public:
 	mFinished(false) {}
 
 	bool finished() { return mFinished; }
+    void setFinished(const bool value) { mFinished = true; }
 
 	virtual ~CEffects() {}
 

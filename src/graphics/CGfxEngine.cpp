@@ -240,11 +240,6 @@ void CGfxEngine::ponder()
     if(mpEffects)
     {
         mpEffects->ponder();
-
-        if( !runningEffect() )
-        {
-            killEffect();
-        }
     }
 }
 
@@ -256,7 +251,7 @@ void CGfxEngine::render()
 
         if( !runningEffect() )
         {
-            killEffect();
+           mpEffects.release();
         }
     }
 }
@@ -264,12 +259,6 @@ void CGfxEngine::render()
 bool CGfxEngine::runningEffect()
 {
 	return ( mpEffects && !mpEffects->finished() );
-}
-
-// Kills the effect when called
-void CGfxEngine::killEffect()
-{
-	mpEffects.release();
 }
 
 CGfxEngine::~CGfxEngine()

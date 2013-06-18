@@ -10,7 +10,8 @@
 
 CScrollEffect::CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
 							const Sint16 initialPos, Sint8 speed) :
-mSpeed(speed),
+mInitSpeed(speed),
+mSpeed(2*speed),
 mInitialSpeed(speed),
 mScrollPos(initialPos),
 mpScrollSurface(pScrollSurface)
@@ -23,21 +24,29 @@ mpScrollSurface(pScrollSurface)
 }
 
 void CScrollEffect::ponder()
-{
-	if(mSpeed < 0)
+{        
+    if(mSpeed < 0)
 	{
+        if(mSpeed < -1)
+            mSpeed++;
+
 		mScrollPos += mSpeed;
 		if(mScrollPos + mSpeed < 0) mScrollPos = 0;
 
-		if(mScrollPos == 0) mFinished = true;
+        if(mScrollPos == 0)
+            mFinished = true;
 	}
 	else
 	{
+        if(mSpeed > 1)
+            mSpeed--;
+
 		mScrollPos += mSpeed;
 		if(mScrollPos  > mpOldSurface->h)
 			mScrollPos = mpScrollSurface->h;
 
-		if(mScrollPos+mSpeed >= mpScrollSurface->h) mFinished = true;
+        if(mScrollPos+mSpeed >= mpScrollSurface->h)
+            mFinished = true;
 	}
 }
 

@@ -153,7 +153,7 @@ void CGameControl::ponder()
 	{
 		if( g_pInput->getPressedAnyCommand() || g_pInput->mouseClicked() )
 		{
-		    g_pGfxEngine->killEffect();
+            g_pGfxEngine->setFXfinished(true);
 		}
 	}
 	

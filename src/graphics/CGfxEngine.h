@@ -24,10 +24,6 @@
 #include "CSingleton.h"
 #define g_pGfxEngine CGfxEngine::Get()
 
-enum backgroundcolours{
-	WHITE, GRAY
-};
-
 class CGfxEngine : public CSingleton<CGfxEngine>
 {
 public:
@@ -42,6 +38,11 @@ public:
 	void createEmptyCursorMap(SDL_Surface *surface);
 	
 	void setupEffect(CEffects *pEffect);
+
+    void setFXfinished(const bool value)
+    {
+        mpEffects->setFinished(value);
+    }
 
 	void drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface);
 	void drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface);
@@ -66,10 +67,11 @@ public:
 	CSprite *getSprite(const std::string &name) const;
 
 	CEffects *Effect() { return mpEffects.get(); }
+
 	bool applyingEffects() 
 	{ 
 	    if(mpEffects)
-		return true; 
+            return true;
 	    return false;	    
 	}
 	
@@ -81,7 +83,6 @@ public:
 	
     void ponder();
     void render();
-	void killEffect();
 	
 	CPalette Palette;
 	

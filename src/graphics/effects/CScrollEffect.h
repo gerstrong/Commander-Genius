@@ -27,6 +27,7 @@ public:
 
 private:
 
+    Sint8 mInitSpeed;
 	Sint8 mSpeed;
 	Sint8 mInitialSpeed;
 	Sint16 mScrollPos;
