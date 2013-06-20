@@ -64,9 +64,9 @@ bool CTitle::init(int Episode)
 }
 
 ////
-// Process Routine
+// Process Routines
 ////
-void CTitle::process()
+void CTitle::ponder()
 {
 	if( mTime == 0) mFinished = true;
 	else mTime -= g_pTimer->HasSecElapsed();
@@ -83,5 +83,14 @@ void CTitle::process()
 		    gpMenuController->openMainMenu();
 		}	    
 	}
+
+}
+
+void CTitle::render()
+{
+    for( auto &obj : mObjects )
+    {
+        obj->draw();
+    }
 
 }

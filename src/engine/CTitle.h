@@ -30,7 +30,8 @@ public:
 	CTitle(CMap &map);
 
 	bool init(int Episode);
-	void process();
+    void ponder();
+    void render();
 
 	bool isFinished()
 	{ return mFinished; }

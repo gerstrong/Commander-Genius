@@ -20,7 +20,7 @@ CVorticonSpriteObject(p_Map,0,0, OBJ_NONE)
 ///
 // Process Routine
 ///
-void CEGABitmap::render()
+void CEGABitmap::draw()
 {
 	mp_Bitmap->draw( scrx, scry );
 }

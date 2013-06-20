@@ -10,13 +10,15 @@
 
 #include "graphics/CGfxEngine.h"
 
-class CIntro {
+class CIntro
+{
 public:
 	CIntro();
 	
 	void init();
 	
-	void process();
+    void ponder();
+    void render();
 	
 	bool isFinished() { return m_finished; }
 	

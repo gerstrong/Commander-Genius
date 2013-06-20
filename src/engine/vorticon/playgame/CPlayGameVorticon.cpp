@@ -270,7 +270,7 @@ void CPlayGameVorticon::render()
     {
         if( mpGameoverBmp )
         {
-            mpGameoverBmp->render();
+            mpGameoverBmp->draw();
         }
     }
 

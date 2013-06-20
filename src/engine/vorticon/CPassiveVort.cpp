@@ -87,7 +87,7 @@ void CPassiveVort::ponder()
 	if( m_mode == INTRO )
 	{
 		// Intro code goes here!
-		mpIntroScreen->process();
+        mpIntroScreen->ponder();
 
 		if( mpIntroScreen->isFinished() )
 		{
@@ -97,7 +97,7 @@ void CPassiveVort::ponder()
 	}
 	else if( m_mode == TITLE )
 	{
-		mpTitleScreen->process();
+        mpTitleScreen->ponder();
 	}
 	else if( m_mode == DEMO )
 	{
@@ -121,6 +121,18 @@ void CPassiveVort::render()
                      nullptr,
                      g_pVideoDriver->getBlitSurface(),
                      nullptr );
+
+
+    // Modes. We have three: Intro, Main-tile and Demos. We could add more.
+    if( m_mode == INTRO )
+    {
+        // Intro code goes here!
+        mpIntroScreen->render();
+    }
+    else if( m_mode == TITLE )
+    {
+        mpTitleScreen->render();
+    }
 
 }
 
