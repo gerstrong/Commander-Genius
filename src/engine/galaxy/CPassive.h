@@ -20,7 +20,8 @@ public:
 	CPassiveGalaxy();
 
 	bool init(char mode);
-	void process();
+    void ponder();
+    void render();
 	void processIntro();
 	void processTitle();
 

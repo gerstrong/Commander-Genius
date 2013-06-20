@@ -61,14 +61,8 @@ bool CPassiveVort::init(char mode)
 	return true;
 }
 
-void CPassiveVort::process()
+void CPassiveVort::ponder()
 {
-	// Process Drawing related stuff
-	// Animate the tiles
-	mpMap->animateAllTiles();
-
-	// Blit the background
-    g_pVideoDriver->blitScrollSurface();
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
@@ -112,10 +106,22 @@ void CPassiveVort::process()
 		init(TITLE);
 	}
 
+}
+
+void CPassiveVort::render()
+{
+    // Process Drawing related stuff
+    // Animate the tiles
+    mpMap->animateAllTiles();
+
+    // Blit the background
+    g_pVideoDriver->blitScrollSurface();
+
     SDL_BlitSurface( mpTextSfc.get(),
                      nullptr,
                      g_pVideoDriver->getBlitSurface(),
                      nullptr );
+
 }
 
 }

@@ -37,8 +37,7 @@ void CGamePassiveMode::init()
 
 void CGamePassiveMode::ponder()
 {
-
-	mpPassive->process();
+    mpPassive->ponder();
 
 	// Process Events
 
@@ -62,5 +61,5 @@ void CGamePassiveMode::ponder()
 
 void CGamePassiveMode::render()
 {
-    // TODO: ...
+    mpPassive->render();
 }

@@ -34,10 +34,8 @@ bool CPassiveGalaxy::init(char mode)
 
 // This function is always called from the base class.
 // Here it will execute the mode we are currently running
-void CPassiveGalaxy::process()
-{
-	(this->*processMode)();
-	
+void CPassiveGalaxy::ponder()
+{		
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	
 	if( EventContainer.occurredEvent<EventEndGamePlay>() )
@@ -45,6 +43,11 @@ void CPassiveGalaxy::process()
 		EventContainer.pop_Event();
 		m_modeg = true;
 	}
+}
+
+void CPassiveGalaxy::render()
+{
+    (this->*processMode)();
 }
 
 // This will show the animation of the intro you see in every galaxy game...

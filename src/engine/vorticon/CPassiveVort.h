@@ -22,7 +22,8 @@ public:
 
 	bool init(char mode = INTRO);
 
-	void process();
+    void ponder();
+    void render();
 
 private:
 	std::unique_ptr<CIntro> mpIntroScreen;

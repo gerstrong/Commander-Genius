@@ -37,7 +37,9 @@ public:
 	
 	virtual bool init(char mode = INTRO) {return false;};
 	
-	virtual void process() {};
+    virtual void ponder() = 0;
+
+    virtual void render() = 0;
 	
 	// Getters
 	char getEpisode() { return m_Episode; }
