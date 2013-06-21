@@ -28,39 +28,17 @@ void CGUIDialog::initBackground()
 {
 	if( g_pBehaviorEngine->getEngine() == ENGINE_VORTICON )
 	{
-		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
-		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-        
-#else
-        mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-#endif
-		initVorticonBackground( lRect );
+        initVorticonBackground();
 	}
 	else if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
 	{
-		const SDL_Rect lRect = g_pVideoDriver->getGameResolution().SDLRect();
-		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-        
-#else
-        mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-#endif
-		initGalaxyBackround( lRect );
+        initGalaxyBackround();
 	}
 	else
 	{
-		const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
-		mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-        
-#else
-        mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-#endif
 		initEmptyBackround();
 	}
 }
-
 
 
 
@@ -313,12 +291,28 @@ void CGUIDialog::processLogic()
 
 void CGUIDialog::initEmptyBackround()
 {
+    const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
+    mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+#else
+    mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#endif
+
 	SDL_Surface *sfc = mpBackgroundSfc.get();
 	SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );
 }
 
-void CGUIDialog::initVorticonBackground( SDL_Rect Rect )
+void CGUIDialog::initVorticonBackground()
 {
+    const SDL_Rect Rect = g_pVideoDriver->toBlitRect(mRect);
+    mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+#else
+    mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#endif
+
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(1);
 
@@ -368,8 +362,16 @@ void CGUIDialog::initVorticonBackground( SDL_Rect Rect )
 }
 
 
-void CGUIDialog::initGalaxyBackround(SDL_Rect Rect)
+void CGUIDialog::initGalaxyBackround()
 {
+    const SDL_Rect Rect = g_pVideoDriver->getGameResolution().SDLRect();
+    mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+#else
+    mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+#endif
+
 	// Besides the Background Bitmap we need to draw two scores. One is underline the other upper line
 	SDL_Surface *backSfc = mpBackgroundSfc.get();
 
@@ -383,7 +385,6 @@ void CGUIDialog::initGalaxyBackround(SDL_Rect Rect)
 	scoreRect.y = 55;
 
 	SDL_FillRect(backSfc, &scoreRect, color);
-
 }
 
 

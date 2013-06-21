@@ -35,10 +35,10 @@ public:
 	void initEmptyBackround();
 
 	// Vorticon Menu draw function
-	void initVorticonBackground(SDL_Rect Rect);
+    void initVorticonBackground();
 
 	// Galaxy Menu draw function
-	void initGalaxyBackround(SDL_Rect Rect);
+    void initGalaxyBackround();
 
 	// processes the whole logic of the Dialog
 	void processLogic();
