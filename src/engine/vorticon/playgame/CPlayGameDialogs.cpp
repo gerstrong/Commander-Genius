@@ -10,7 +10,7 @@
 
 #include "CPlayGameVorticon.h"
 
-void CPlayGameVorticon::processPauseDialogs()
+void CPlayGameVorticon::renderPauseDialogs()
 {
 	if(m_showPauseDialog)
 	{
@@ -21,17 +21,23 @@ void CPlayGameVorticon::processPauseDialogs()
 	if(!mMessageBoxes.empty())
 	{
 		auto pMB = mMessageBoxes.front();
-		pMB->processLogic();
-
-		if( pMB->isFinished() )
-		{
-			mMessageBoxes.pop_front();
-		}
-
-		return;
+        pMB->render();
 	}
+}
+void CPlayGameVorticon::processPauseDialogs()
+{
+    if(!mMessageBoxes.empty())
+    {
+        auto pMB = mMessageBoxes.front();
+        pMB->processLogic();
 
+        if( pMB->isFinished() )
+        {
+            mMessageBoxes.pop_front();
+        }
 
+        return;
+    }
 }
 
 void CPlayGameVorticon::showPausedGameDlg()

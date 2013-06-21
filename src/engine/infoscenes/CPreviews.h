@@ -39,9 +39,8 @@ private:
 	std::unique_ptr<CTextViewer> mp_TextViewer; // Used for the preview text...
 	std::shared_ptr<CMap> mpMap;
 
-	void (CPreviews::*process_ptr)();
-
     void (CPreviews::*render_ptr)();
+    void (CPreviews::*ponder_ptr)();
 
 	bool openScene(const std::string& filename);
 };

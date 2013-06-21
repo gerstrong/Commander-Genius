@@ -47,7 +47,8 @@ int CPreviews::openNextScene()
 	// If the we have scene to load, load it, else open the text which ends the preview
 	if(openScene(filename))
 	{
-		this->process_ptr = &CPreviews::drawPreviewScene;
+        this->ponder_ptr = &CPreviews::processPreviewScene;
+        this->render_ptr = &CPreviews::drawPreviewScene;
 	}
 	else
 	{
@@ -59,7 +60,8 @@ int CPreviews::openNextScene()
 		if(!mp_TextViewer->loadTextfromFile(filename))
 			m_destroy_me = true;
 
-		this->process_ptr = &CPreviews::showText;
+        this->render_ptr = &CPreviews::showText;
+        this->ponder_ptr = &CPreviews::processShowText;
 	}
 
 	return 0;
@@ -95,7 +97,6 @@ void CPreviews::processPreviewScene()
 {
     // This will show a scene of the preview scenes
     mp_StaticScene->ponder();
-    mp_StaticScene->render();
 
     if( mp_StaticScene->mustclose() || g_pInput->getPressedAnyCommand() )
         openNextScene();
@@ -117,7 +118,7 @@ void CPreviews::processShowText()
 void CPreviews::ponder()
 {
 	// Here only the variable for the scene function should be called. Use a pointer to function for that...
-	(*this.*process_ptr)();
+    (*this.*ponder_ptr)();
 }
 
 void CPreviews::render()

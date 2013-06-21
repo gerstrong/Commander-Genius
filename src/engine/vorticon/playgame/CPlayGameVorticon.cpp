@@ -219,6 +219,12 @@ void CPlayGameVorticon::ponder()
 		}
 	}
 
+    // Render the dialogs which are seen when the game is paused
+    if( !mMessageBoxes.empty() )
+    {
+        // Finally draw Dialogs like status screen, game paused, etc.
+        processPauseDialogs();
+    }
 
 
 	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
@@ -575,11 +581,11 @@ void CPlayGameVorticon::drawAllElements()
 
 
 
-	// Render the dialogs which are seen when the game is paused
+    // Process the dialogs which are seen when the game is paused
 	if( !mMessageBoxes.empty() )
 	{
 		// Finally draw Dialogs like status screen, game paused, etc.
-		processPauseDialogs();
+        renderPauseDialogs();
 	}
 
 

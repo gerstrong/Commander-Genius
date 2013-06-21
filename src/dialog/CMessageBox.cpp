@@ -73,6 +73,7 @@ void CMessageBox::processLogic()
 		m_mustclose = true;
 
 	CGUIDialog::processLogic();
+    render();
 }
 
 void CMessageBox::render()

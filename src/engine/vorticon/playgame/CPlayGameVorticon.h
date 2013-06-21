@@ -88,6 +88,7 @@ public:
 
 	// Dialog processes stored in CPlayGameVorticonDialogs.cpp
 	void processPauseDialogs();
+    void renderPauseDialogs();
 	void showPausedGameDlg();
 
 	// Teleportation Stuff

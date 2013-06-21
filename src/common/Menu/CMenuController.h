@@ -58,8 +58,11 @@ public:
 	bool active()
 	{	return	!mMenuStack.empty();	}
 
-	void lock(const bool value)
-	{	mLocked = value;	}
+    void lock(const bool value)
+    {	mLocked = value;	}
+
+    void hide(const bool value)
+    {	mHidden = value;	}
 
 	bool mOpenedGamePlay;
 
@@ -70,6 +73,7 @@ private:
 	std::list< std::shared_ptr<CBaseMenu> > mMenuStack;
 
 	bool mLocked;
+    bool mHidden;
 };
 
 #endif /* CMENUCONTROLLER_H_ */

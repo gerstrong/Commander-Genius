@@ -68,12 +68,11 @@ void CGameMain::ponder()
 		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
 		{
 		    gpMenuController->lock(true);
+            gpMenuController->hide(true);
 		    mpInfoScene = scene->mpScene;
 		    mpInfoScene->init();
 
 		    EventContainer.pop_Event();
-		    //gpMenuController->lock(true);
-		    //EventContainer.add( new CloseAllMenusEvent() );
 		    return;
 		}
 		else if( NewGamePlayersEvent* pNewGame = EventContainer.occurredEvent<NewGamePlayersEvent>() )
@@ -118,13 +117,13 @@ void CGameMain::ponder()
 	if( mpInfoScene )
 	{
         mpInfoScene->ponder();
-        mpInfoScene->render();
 		if( mpInfoScene->destroyed() )
 		{		    
 			mpInfoScene->teardown();
 			mpInfoScene = nullptr;
 			g_pInput->flushAll();
 			gpMenuController->lock(false);
+            gpMenuController->hide(false);
 		}
 	}
 	else
@@ -140,6 +139,10 @@ void CGameMain::render()
     {
         // Render the game mode object
         mpGameMode->render();
+    }
+    else
+    {
+        mpInfoScene->render();
     }
 
 }
