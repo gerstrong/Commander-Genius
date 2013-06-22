@@ -24,7 +24,7 @@ class CMessageBox : public CGUIDialog
 {
 public:
 	// Init functions
-	CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound);
+    CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound, const FXState fx = NONE);
 	virtual ~CMessageBox() {}
 
 	/** Processing

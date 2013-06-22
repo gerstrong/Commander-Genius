@@ -17,11 +17,22 @@
 #include "common/CBehaviorEngine.h"
 
 const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
+const unsigned int MAX_STEPS = 20;
 
-CGUIDialog::CGUIDialog(const CRect<float> &SrcRect) :
+
+CGUIDialog::CGUIDialog(const CRect<float> &SrcRect, const FXState fx) :
 mRect(SrcRect),
-mSelection(0)
-{}
+mSelection(0),
+mFXSetup(fx),
+mFXhStep(0),
+mFXvStep(0)
+{
+    if( mFXSetup == EXPAND )
+    {
+        mFXhStep = MAX_STEPS;
+        mFXvStep = MAX_STEPS-3;
+    }
+}
 
 
 void CGUIDialog::initBackground()
@@ -261,33 +272,6 @@ void CGUIDialog::setPosition(const float x, const float y)
 }
 
 
-void CGUIDialog::processLogic()
-{
-	// Prepare the subcontrols for rendering
-	int sel = 0;
-	for( auto &it : mControlList )
-	{
-		CGUIControl *ctrl = it.get();
-
-		ctrl->processLogic();
-
-		if( dynamic_cast<CGUIButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
-		{
-			if( ctrl->getHovered() )
-			{
-				mpCurrentCtrl = ctrl;
-				mSelection = sel;
-			}
-
-		}
-		sel++;
-	}
-
-	if(!g_pInput->m_EventList.empty())
-		g_pInput->m_EventList.clear();
-
-}
-
 
 void CGUIDialog::initEmptyBackround()
 {
@@ -300,7 +284,7 @@ void CGUIDialog::initEmptyBackround()
 #endif
 
 	SDL_Surface *sfc = mpBackgroundSfc.get();
-	SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );
+    SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );
 }
 
 void CGUIDialog::initVorticonBackground()
@@ -388,23 +372,85 @@ void CGUIDialog::initGalaxyBackround()
 }
 
 
+void CGUIDialog::processLogic()
+{
+    // For the special effect not used in the galaxy engine
+    if( g_pBehaviorEngine->getEngine() != ENGINE_GALAXY )
+    {
+        if( mFXhStep > 0 )
+        {
+            mFXhStep--;
+            return;
+        }
+        else if( mFXvStep > 0 )
+        {
+            mFXvStep--;
+            return;
+        }
+    }
+
+    // Prepare the subcontrols for rendering
+    int sel = 0;
+    for( auto &it : mControlList )
+    {
+        CGUIControl *ctrl = it.get();
+
+        ctrl->processLogic();
+
+        if( dynamic_cast<CGUIButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
+        {
+            if( ctrl->getHovered() )
+            {
+                mpCurrentCtrl = ctrl;
+                mSelection = sel;
+            }
+
+        }
+        sel++;
+    }
+
+    if(!g_pInput->m_EventList.empty())
+        g_pInput->m_EventList.clear();
+}
+
 void CGUIDialog::processRendering()
 {        
-	SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
-	CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
-	CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
+    CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
+    CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
 	if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
 	{
-	  SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL );
+        SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL );
 	}
 	else
-	{
-	  SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), &lRect );
+	{        
+        SDL_Rect lRect;
+        CRect<float> fxRect = mRect;
+        if( mFXhStep > 0 )
+        {
+            fxRect.w = (MAX_STEPS-mFXhStep)*(mRect.w/float(MAX_STEPS));
+            fxRect.x = fxRect.x + (mRect.w-fxRect.w)/2;
+        }
+
+        if( mFXvStep > 0 )
+        {
+            fxRect.h = (MAX_STEPS-mFXvStep)*(mRect.h/float(MAX_STEPS));;
+            fxRect.y = fxRect.y + (mRect.h-fxRect.h)/2;
+        }
+
+        lRect = g_pVideoDriver->toBlitRect(fxRect);
+
+        auto srcRect = lRect;
+        srcRect.y = srcRect.x = 0;
+
+        SDL_BlitSurface( mpBackgroundSfc.get(), &srcRect, g_pVideoDriver->getBlitSurface(), &lRect );
 	}
+
+    if( mFXhStep > 0 || mFXvStep > 0 )
+        return;
 
 	for( auto &it : mControlList )
 	{
-	  it->processRender(screenRect);
+        it->processRender(screenRect);
 	}       
 }

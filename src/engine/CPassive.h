@@ -17,7 +17,6 @@
 #include "CTitle.h"
 #include "common/CMap.h"
 #include "common/CSpriteObject.h"
-#include "gui/CGUIDialog.h"
 #include "fileio/CSaveGameController.h"
 #include <string>
 #include <vector>

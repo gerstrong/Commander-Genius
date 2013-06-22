@@ -21,12 +21,19 @@
 #include <memory>
 
 class CGUIDialog
-{
+{    
 
 public:
 
+    enum FXState
+    {
+        NONE,
+        EXPAND
+    };
+
+
 	// Constructor which needs the Rect for the placement of the Dialog
-	CGUIDialog(const CRect<float> &NewRect);
+    CGUIDialog(const CRect<float> &NewRect, const FXState fx = NONE);
 
 	// Automatic Background draw function. It creates the background depending on what engine is currently running
 	void initBackground();
@@ -99,8 +106,13 @@ private:
 	std::shared_ptr<SDL_Surface>	mpBackgroundSfc;
 
 	int mSelection;
-
 	CGUIControl *mpCurrentCtrl;
+
+    // Unused in Galaxy, this is for some dialog effects which are also used in Vorticons Doskeen
+    FXState mFXSetup;
+    int mFXhStep;
+    int mFXvStep;
+
 };
 
 

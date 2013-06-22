@@ -14,7 +14,7 @@
 #include <memory>
 
 CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
-CMessageBox(Text, lower, keymsg, leftbound)
+CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::EXPAND)
 {}
 
 // This function is used in your Ship need those parts.

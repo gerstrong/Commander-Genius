@@ -24,7 +24,7 @@
 #include <fstream>
 
 CGameLauncher::CGameLauncher() :
-mLauncherDialog(CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.85f)))
+mLauncherDialog(CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND))
 {
 	g_pBehaviorEngine->setEpisode(0);
 	m_mustquit      = false;
