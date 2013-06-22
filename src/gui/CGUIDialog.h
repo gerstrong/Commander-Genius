@@ -47,6 +47,9 @@ public:
 	// Galaxy Menu draw function
     void initGalaxyBackround();
 
+    // This draws the borders around the dialog
+    void drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect);
+
 	// processes the whole logic of the Dialog
 	void processLogic();
 
@@ -103,7 +106,8 @@ private:
 	std::list< std::shared_ptr<CGUIControl> > mControlList;
 
 	// SDL_Surface of the Background
-	std::shared_ptr<SDL_Surface>	mpBackgroundSfc;
+    std::shared_ptr<SDL_Surface>    mpBackgroundSfc;
+    std::shared_ptr<SDL_Surface>    mpTempSfc;
 
 	int mSelection;
 	CGUIControl *mpCurrentCtrl;

@@ -283,9 +283,42 @@ void CGUIDialog::initEmptyBackround()
     mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 #endif
 
-	SDL_Surface *sfc = mpBackgroundSfc.get();
-    SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );
+	SDL_Surface *sfc = mpBackgroundSfc.get();    
+    SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );        
 }
+
+
+void CGUIDialog::drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect)
+{
+    CFont &Font = g_pGfxEngine->getFont(1);
+    Font.drawCharacter( backSfc, 1, 0, 0 );
+
+    for( int x=8 ; x<Rect.w-8 ; x+=8 )
+    {
+        Font.drawCharacter( backSfc, 2, x, 0 );
+    }
+
+    Font.drawCharacter( backSfc, 3, Rect.w-8, 0 );
+
+    for( int x=8 ; x<Rect.w-8 ; x+=8 )
+    {
+        Font.drawCharacter( backSfc, 7, x, Rect.h-8 );
+    }
+
+    for( int y=8 ; y<Rect.h-8 ; y+=8 )
+    {
+        Font.drawCharacter( backSfc, 4, 0, y );
+    }
+
+    for( int y=8 ; y<Rect.h-8 ; y+=8 )
+    {
+        Font.drawCharacter( backSfc, 5, Rect.w-8, y );
+    }
+
+    Font.drawCharacter( backSfc, 6, 0, Rect.h-8 );
+    Font.drawCharacter( backSfc, 8, Rect.w-8, Rect.h-8 );
+}
+
 
 void CGUIDialog::initVorticonBackground()
 {
@@ -312,37 +345,12 @@ void CGUIDialog::initVorticonBackground()
 		{
 			Font.drawCharacter( backSfc, 32, x, y );
 		}
-	}
-
+	}            
 
 	// Now draw the borders
-	Font.drawCharacter( backSfc, 1, 0, 0 );
+    drawBorderRect(backSfc, Rect);
 
-	for( int x=8 ; x<Rect.w-8 ; x+=8 )
-	{
-		Font.drawCharacter( backSfc, 2, x, 0 );
-	}
-
-	Font.drawCharacter( backSfc, 3, Rect.w-8, 0 );
-
-	for( int x=8 ; x<Rect.w-8 ; x+=8 )
-	{
-		Font.drawCharacter( backSfc, 7, x, Rect.h-8 );
-	}
-
-	for( int y=8 ; y<Rect.h-8 ; y+=8 )
-	{
-		Font.drawCharacter( backSfc, 4, 0, y );
-	}
-
-	for( int y=8 ; y<Rect.h-8 ; y+=8 )
-	{
-		Font.drawCharacter( backSfc, 5, Rect.w-8, y );
-	}
-
-	Font.drawCharacter( backSfc, 6, 0, Rect.h-8 );
-	Font.drawCharacter( backSfc, 8, Rect.w-8, Rect.h-8 );
-
+    mpTempSfc.reset( SDL_DisplayFormat( backSfc ), &SDL_FreeSurface );
 }
 
 
@@ -418,33 +426,61 @@ void CGUIDialog::processRendering()
     CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
     CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
-	if( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY )
+    auto engine = g_pBehaviorEngine->getEngine();
+    auto *blit = g_pVideoDriver->getBlitSurface();
+    auto *bgSfc = mpBackgroundSfc.get();
+
+    if( engine == ENGINE_GALAXY )
 	{
-        SDL_BlitSurface( mpBackgroundSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL );
+        SDL_BlitSurface( bgSfc, nullptr, blit, nullptr );
 	}
 	else
-	{        
+    {
         SDL_Rect lRect;
-        CRect<float> fxRect = mRect;
-        if( mFXhStep > 0 )
+
+        if( mFXhStep == 0 && mFXvStep == 0 )
         {
-            fxRect.w = (MAX_STEPS-mFXhStep)*(mRect.w/float(MAX_STEPS));
-            fxRect.x = fxRect.x + (mRect.w-fxRect.w)/2;
+            lRect = g_pVideoDriver->toBlitRect(mRect);
+            SDL_BlitSurface( bgSfc, nullptr, blit, &lRect );
         }
-
-        if( mFXvStep > 0 )
+        else
         {
-            fxRect.h = (MAX_STEPS-mFXvStep)*(mRect.h/float(MAX_STEPS));;
-            fxRect.y = fxRect.y + (mRect.h-fxRect.h)/2;
+            CRect<float> fxRect = mRect;
+
+            if( mFXhStep > 0 )
+            {
+                fxRect.w = (MAX_STEPS-mFXhStep)*(mRect.w/float(MAX_STEPS));
+                fxRect.x = fxRect.x + (mRect.w-fxRect.w)/2;
+            }
+
+            if( mFXvStep > 0 )
+            {
+                fxRect.h = (MAX_STEPS-mFXvStep)*(mRect.h/float(MAX_STEPS));;
+                fxRect.y = fxRect.y + (mRect.h-fxRect.h)/2;
+            }
+
+            lRect = g_pVideoDriver->toBlitRect(fxRect);
+
+            // Makes the Border look more like in DOS-Keen
+            if( engine == ENGINE_VORTICON && lRect.h < 16 )
+                lRect.h = 16;
+
+            auto srcRect = lRect;
+            srcRect.y = srcRect.x = 0;
+
+            if( engine == ENGINE_VORTICON )
+            {
+                auto *tmpSfc = mpTempSfc.get();
+                SDL_FillRect( tmpSfc, &srcRect, 0xFFFFFFFF );
+                drawBorderRect( tmpSfc, srcRect );
+                SDL_BlitSurface( tmpSfc, &srcRect, blit, &lRect );
+            }
+            else
+            {
+                SDL_BlitSurface( bgSfc, &srcRect, blit, &lRect );
+            }
         }
-
-        lRect = g_pVideoDriver->toBlitRect(fxRect);
-
-        auto srcRect = lRect;
-        srcRect.y = srcRect.x = 0;
-
-        SDL_BlitSurface( mpBackgroundSfc.get(), &srcRect, g_pVideoDriver->getBlitSurface(), &lRect );
-	}
+    }
 
     if( mFXhStep > 0 || mFXvStep > 0 )
         return;
