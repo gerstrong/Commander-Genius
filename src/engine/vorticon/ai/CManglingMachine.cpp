@@ -471,8 +471,6 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 		    // destroy Mortimer's machine
 		    g_pGfxEngine->setupEffect(new CVibrate(10000));
 		    
-            //CPlayer* player = dynamic_cast<CPlayer*>(obj);
-		    
             if(this->setype == SE_MORTIMER_HEART )
                 return;
             else
@@ -489,7 +487,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
     }
 }
 
-#define TIME_AFTER_DESTROY_BEFORE_FADEOUT       500
+#define TIME_AFTER_DESTROY_BEFORE_FADEOUT       490
 void CManglingMachine::se_mortimer_zapsup_nearby(CPlayer *player)
 {
     if(player == nullptr)
