@@ -390,7 +390,6 @@ void CManglingMachine::se_mortimer_spark()
 
 void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 {
-    CManglingMachine* SE = dynamic_cast<CManglingMachine*>(SE);
     CPlayer* player = dynamic_cast<CPlayer*>(obj);
     
     if(player)
@@ -472,23 +471,16 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 		    // destroy Mortimer's machine
 		    g_pGfxEngine->setupEffect(new CVibrate(10000));
 		    
-		    CManglingMachine* SE = dynamic_cast<CManglingMachine*>(SE);
-		    CPlayer* player = dynamic_cast<CPlayer*>(obj);
+            //CPlayer* player = dynamic_cast<CPlayer*>(obj);
 		    
-		    if(SE)
-		    {
-			if(SE->setype == SE_MORTIMER_HEART ) return;
-			else SE->exists = false;
-		    }
-		    else if( player == NULL )
-		    {
-			obj->kill();
-			obj->exists = false;
-		    }
-		    
-		    set_mortimer_surprised(true);
-		    // have waves of zaps run up mortimer's machine
-		    timer = 0;
+            if(this->setype == SE_MORTIMER_HEART )
+                return;
+            else
+                this->exists = false;
+
+            set_mortimer_surprised(true);
+            // have waves of zaps run up mortimer's machine
+            timer = 0;
 		    state = HEART_ZAPSRUNUP;
 		    counter = 0;
 		}
