@@ -178,7 +178,7 @@ void CPlayGameGalaxy::ponder()
 		if(msgboxactive)
 		{
 			CMessageBoxGalaxy *pMB = mMessageBoxes.front().get();
-			pMB->process();
+            pMB->ponder();
 
 			if(pMB->isFinished())
 				mMessageBoxes.pop_front();
@@ -387,7 +387,16 @@ void CPlayGameGalaxy::render()
         {
             m_Inventory.drawStatus();
         }
-    }
+
+        const bool msgboxactive = !mMessageBoxes.empty();
+
+        // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
+        if(msgboxactive)
+        {
+            mMessageBoxes.front()->render();
+            return;
+        }
+    }      
 }
 
 void CPlayGameGalaxy::processInput()

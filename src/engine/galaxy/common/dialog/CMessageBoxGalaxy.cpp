@@ -115,15 +115,19 @@ void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 	SDL_BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
 }
 
-void CMessageBoxGalaxy::process()
+void CMessageBoxGalaxy::ponder()
 {
-	// Look, if somebody pressed a button, and close this dialog!
-	if( g_pInput->getPressedAnyButtonCommand(0) )
-	{
-		mMustClose = true;
-		g_pInput->flushCommands();
-		return;
-	}
+    // Look, if somebody pressed a button, and close this dialog!
+    if( g_pInput->getPressedAnyButtonCommand(0) )
+    {
+        mMustClose = true;
+        g_pInput->flushCommands();
+        return;
+    }
+}
 
+void CMessageBoxGalaxy::render()
+{
+    // Just render the MessageBox
     SDL_BlitSurface(mpMBSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), &mMBRect);
 }

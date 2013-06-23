@@ -25,8 +25,9 @@ public:
 
 	virtual void init();
 
-	virtual void process();
-	
+    virtual void ponder();
+    virtual void render();
+
 	SDL_Surface *getSfc()
 	{ return mpMBSurface.get(); }
 	

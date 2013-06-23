@@ -13,7 +13,6 @@
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
-#include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
 #include "CLogFile.h"
 
