@@ -12,10 +12,10 @@
 #include "inventory.h"
 #include <memory>
 
-class CStatusScreen {
+class CStatusScreen
+{
 public:
-	CStatusScreen
-	(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe);
+    CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe);
 
 	void draw();
 	std::string fetchDifficultyText();

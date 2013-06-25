@@ -6,7 +6,6 @@
  */
 
 #include "CWorldMap.h"
-#include "dialog/CMessageBoxBitmapGalaxy.h"
 #include "fileio/CSaveGameController.h"
 #include "graphics/effects/CColorMerge.h"
 

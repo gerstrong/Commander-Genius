@@ -116,7 +116,6 @@ private:
     FXState mFXSetup;
     int mFXhStep;
     int mFXvStep;
-
 };
 
 
