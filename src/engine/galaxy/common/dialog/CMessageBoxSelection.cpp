@@ -136,7 +136,7 @@ void CMessageBoxSelection::init()
 }
 
 
-void CMessageBoxSelection::process()
+void CMessageBoxSelection::ponder()
 {
 	// Look, if somebody pressed a button, and close this dialog!
 	if(g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
@@ -166,51 +166,54 @@ void CMessageBoxSelection::process()
 		else
 			m_selection--;
 	}
+}
 
+void CMessageBoxSelection::render()
+{
     SDL_BlitSurface(mpMBSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), &mMBRect);
 
-	
-	// now draw the glowing rectangle. It fades here!
-	
-	if(blendup)
-	    blend+= BLEND_SPEED;
-	else
-	    blend-= BLEND_SPEED;
-	
-	if(blend <= SDL_ALPHA_TRANSPARENT)
-	{
-	    blendup = true;
-	    blend = SDL_ALPHA_TRANSPARENT;
-	}
 
-	if(blend >= SDL_ALPHA_OPAQUE)
-	{
-	    blendup = false;
-	    blend = SDL_ALPHA_OPAQUE;
-	}
-	
+    // now draw the glowing rectangle. It fades here!
+
+    if(blendup)
+        blend+= BLEND_SPEED;
+    else
+        blend-= BLEND_SPEED;
+
+    if(blend <= SDL_ALPHA_TRANSPARENT)
+    {
+        blendup = true;
+        blend = SDL_ALPHA_TRANSPARENT;
+    }
+
+    if(blend >= SDL_ALPHA_OPAQUE)
+    {
+        blendup = false;
+        blend = SDL_ALPHA_OPAQUE;
+    }
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( mpSelSurface1.get(), blend );
-	SDL_SetSurfaceAlphaMod( mpSelSurface2.get(), SDL_ALPHA_OPAQUE-blend );
+    SDL_SetSurfaceAlphaMod( mpSelSurface2.get(), SDL_ALPHA_OPAQUE-blend );
 #else
     SDL_SetAlpha( mpSelSurface1.get(), SDL_SRCALPHA, blend );
-	SDL_SetAlpha( mpSelSurface2.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE-blend );
+    SDL_SetAlpha( mpSelSurface2.get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE-blend );
 #endif
-	
-	SDL_Rect cursorSel;
-	
-	cursorSel.w = cursorSel.h = 10;
-	cursorSel.x = mMBRect.x + 8;
-	
-	auto it = m_Options.begin();
-	for( int i=0 ; it != m_Options.end() ; it++, i++)
-	{
-		if(i == m_selection)
-		{
-		    cursorSel.y = mMBRect.y + 12*i + 44;
+
+    SDL_Rect cursorSel;
+
+    cursorSel.w = cursorSel.h = 10;
+    cursorSel.x = mMBRect.x + 8;
+
+    auto it = m_Options.begin();
+    for( int i=0 ; it != m_Options.end() ; it++, i++)
+    {
+        if(i == m_selection)
+        {
+            cursorSel.y = mMBRect.y + 12*i + 44;
             SDL_BlitSurface(mpSelSurface1.get(), nullptr, g_pVideoDriver->getBlitSurface(), &cursorSel);
             SDL_BlitSurface(mpSelSurface2.get(), nullptr, g_pVideoDriver->getBlitSurface(), &cursorSel);
-		}
-	}	
+        }
+    }
 }
 

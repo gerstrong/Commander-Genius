@@ -28,7 +28,8 @@ public:
 
 	int m_selection;
 	
-	void process();
+    void ponder();
+    void render();
 	
 private:
     	std::shared_ptr<SDL_Surface> mpSelSurface1;
