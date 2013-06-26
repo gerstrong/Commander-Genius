@@ -18,6 +18,9 @@
 #include "engine/vorticon/ai/CTeleporter.h"
 #include "common/Menu/CMenuController.h"
 #include "sdl/extensions.h"
+#include "engine/vorticon/finale/CEndingEp1.h"
+#include "engine/vorticon/finale/CEndingEp2.h"
+#include "engine/vorticon/finale/CEndingEp3.h"
 
 ////
 // Creation Routine
@@ -553,7 +556,8 @@ void CPlayGameVorticon::drawAllElements()
 
 	if(mpFinale) // Finale processing if it is opened
 	{
-		mpFinale->process();
+        mpFinale->ponder();
+        mpFinale->render();
 
 		if(mpFinale->getHasFinished())
 		{

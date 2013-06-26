@@ -23,12 +23,16 @@ public:
 			std::vector<CPlayer> &Player, 
 			std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object );
 
-	void process();
+    void ponder();
+    void render();
 
     // ponder part
 	void HeadsForEarth();
 	void LimpsHome();
 	void SnowedOutside();
+
+    // render part
+    void SnowedOutsideRender();
 
 private:
 	bool m_mustsetup;

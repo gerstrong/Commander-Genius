@@ -27,7 +27,8 @@ public:
 	void showEndingText();    
     void renderEndingText();
 
-	virtual void process() {}
+    virtual void ponder() = 0;
+    virtual void render() = 0;
 	bool getHasFinished() { return m_mustfinishgame; }
 
 protected:

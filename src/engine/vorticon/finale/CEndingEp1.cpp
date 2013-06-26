@@ -48,9 +48,7 @@ void CEndingEp1::ponder()
 }
 
 void CEndingEp1::render()
-{
-    m_timepassed = g_pTimer->getTicks() - m_starttime;
-
+{    
     switch(m_step)
     {
     /*case 0: ReturnsToShip(); break;

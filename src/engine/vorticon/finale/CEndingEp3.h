@@ -25,10 +25,16 @@ public:
 			std::vector<CPlayer> &Player, 
 			std::vector< std::unique_ptr<CVorticonSpriteObject> > &Object);
 
-	void process();
+    void ponder();
+    void render();
+
+    // Ponder part
 	void HonorScene();
 	void PaparazziScene();
 	void AwardScene();
+
+    // Render part
+    void AwardSceneRender();
 
 private:
 	bool m_mustsetup;

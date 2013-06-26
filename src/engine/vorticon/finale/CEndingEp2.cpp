@@ -31,7 +31,7 @@ m_Player(Player)
 	m_mustfinishgame = false;
 }
 
-void CEndingEp2::process()
+void CEndingEp2::ponder()
 {
 	m_timepassed = g_pTimer->getTicks() - m_starttime;
 
@@ -44,6 +44,19 @@ void CEndingEp2::process()
 		m_mustfinishgame = true;
 		break;
 	}
+}
+
+void CEndingEp2::render()
+{
+    m_timepassed = g_pTimer->getTicks() - m_starttime;
+
+    switch(m_step)
+    {
+    //case 0: HeadsForEarth(); break;
+    //case 1: LimpsHome(); break;
+    case 2: SnowedOutsideRender(); break;
+    default: break;
+    }
 }
 
 void CEndingEp2::HeadsForEarth()
@@ -169,9 +182,16 @@ void CEndingEp2::SnowedOutside()
 	else
 	{
         mpFinaleStaticScene->ponder();
-        mpFinaleStaticScene->render();
 	}
 
+}
+
+void CEndingEp2::SnowedOutsideRender()
+{
+    if( !mMessageBoxes.empty() )
+    {
+        mpFinaleStaticScene->render();
+    }
 }
 
 

@@ -20,13 +20,11 @@
 #include "common/CHUD.h"
 #include "engine/vorticon/ai/CVorticonSpriteObjectAI.h"
 #include "engine/vorticon/ai/CEGABitmap.h"
-#include "engine/vorticon/finale/CEndingEp1.h"
-#include "engine/vorticon/finale/CEndingEp2.h"
-#include "engine/vorticon/finale/CEndingEp3.h"
 #include "engine/vorticon/dialog/CMessageBoxVort.h"
 #include "sdl/music/CMusic.h"
 #include "engine/infoscenes/CHighScores.h"
 #include "engine/playgame/CPlayGame.h"
+#include "engine/vorticon/finale/CFinale.h"
 #include <SDL.h>
 #include <string>
 #include <vector>

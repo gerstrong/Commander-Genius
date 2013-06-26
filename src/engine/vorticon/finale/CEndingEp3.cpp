@@ -30,19 +30,30 @@ m_Player(Player)
 	m_counter = 0;
 }
 
-void CEndingEp3::process()
+void CEndingEp3::ponder()
 {
-	m_timepassed = g_pTimer->getTicks() - m_starttime;
+    m_timepassed = g_pTimer->getTicks() - m_starttime;
 
-	switch(m_step)
-	{
-	case 0: HonorScene(); break;
-	case 1: PaparazziScene(); break;
-	case 2: AwardScene(); break;
-	default:
-		m_mustfinishgame = true;
-		break;
-	}
+    switch(m_step)
+    {
+    case 0: HonorScene(); break;
+    case 1: PaparazziScene(); break;
+    case 2: AwardScene(); break;
+    default:
+        m_mustfinishgame = true;
+        break;
+    }
+}
+
+void CEndingEp3::render()
+{
+    switch(m_step)
+    {
+    /*case 0: HonorScene(); break;
+    case 1: PaparazziScene(); break;*/
+    case 2: AwardSceneRender(); break;
+    default: break;
+    }
 }
 
 void CEndingEp3::HonorScene()
@@ -137,6 +148,15 @@ void CEndingEp3::AwardScene()
 	else
 	{
         mpFinaleStaticScene->ponder();
+    }
+
+}
+
+
+void CEndingEp3::AwardSceneRender()
+{
+    if( !mMessageBoxes.empty() )
+    {
         mpFinaleStaticScene->render();
     }
 
