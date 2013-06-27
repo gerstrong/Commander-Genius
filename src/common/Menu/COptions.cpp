@@ -35,11 +35,11 @@ void COptions::init()
 }
 
 
-void COptions::process()
+void COptions::ponder()
 {
     CBaseMenu::ponder();
 
-	std::list<CGUISwitch*>::iterator it = mpOptionList.begin();
+    auto it = mpOptionList.begin();
 
 	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
 		mpOption[i].value = (*it)->isEnabled();
@@ -47,6 +47,5 @@ void COptions::process()
 
 void COptions::release()
 {
-
 	g_pSettings->saveGameOptions();
 }

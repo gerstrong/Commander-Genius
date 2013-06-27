@@ -111,6 +111,8 @@ void CGamePlayMode::ponder()
 
 void CGamePlayMode::render()
 {
+    mp_PlayGame->render();
+
     if (g_pVideoDriver->getVidConfig().showfps)
     {
         SDL_Rect rect;
@@ -130,7 +132,5 @@ void CGamePlayMode::render()
 
         SDL_BlitSurface(mpFPSSurface.get(), NULL, g_pVideoDriver->getBlitSurface(), &rect);
     }
-
-    mp_PlayGame->render();
 }
 

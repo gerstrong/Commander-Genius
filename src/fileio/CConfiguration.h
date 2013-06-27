@@ -9,8 +9,9 @@
 #define CCONFIGURATION_H_
 
 #include "IniReader.h"
+#include <string>
 
-#define CONFIGFILENAME "cgenius.cfg"
+const std::string CONFIGFILENAME = "cgenius.cfg";
 
 class CConfiguration : public IniReader
 {
