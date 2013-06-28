@@ -47,7 +47,7 @@ public:
 	CControlSettingsMovement(const int selectedPlayer);
 
 	void init();
-	void process();
+    void ponder();
 	void release();
 
 private:
@@ -69,7 +69,7 @@ public:
 	CControlSettingsButtons(const int selectedPlayer);
 
 	void init();
-	void process();
+    void ponder();
 	void release();
 
 private:

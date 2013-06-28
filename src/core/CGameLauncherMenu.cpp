@@ -252,12 +252,10 @@ void CGameLauncherMenu::ponder()
 	// If the firsttime menu is open, process it
 	if(mp_FirstTimeMenu)
 	{
-		//mp_FirstTimeMenu->processCommon();
-		//mp_FirstTimeMenu->processSpecific();
-		//mp_FirstTimeMenu->postProcess();
+        /*mp_FirstTimeMenu->ponder();
 
-		/*if(mp_FirstTimeMenu->mustClose())
-			mp_FirstTimeMenu.tryDeleteData();*/
+        if(mp_FirstTimeMenu->mustClose())
+            mp_FirstTimeMenu = nullptr;*/
 	}
 	else
 	{
@@ -325,5 +323,9 @@ void CGameLauncherMenu::render()
     if(!mp_FirstTimeMenu)
     {
         mp_GameLauncher->render();
+    }
+    else
+    {
+        mp_FirstTimeMenu->render();
     }
 }

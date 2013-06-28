@@ -470,11 +470,6 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
 		    
 		    // destroy Mortimer's machine
 		    g_pGfxEngine->setupEffect(new CVibrate(10000));
-		    
-            if(this->setype == SE_MORTIMER_HEART )
-                return;
-            else
-                this->exists = false;
 
             set_mortimer_surprised(true);
             // have waves of zaps run up mortimer's machine

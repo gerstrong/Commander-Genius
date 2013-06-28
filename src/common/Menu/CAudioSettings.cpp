@@ -56,7 +56,7 @@ void CAudioSettings::init()
 }
 
 
-void CAudioSettings::process()
+void CAudioSettings::ponder()
 {
     CBaseMenu::ponder();
 

@@ -25,7 +25,7 @@ public:
 
 	void init();
 
-	void process();
+    void ponder();
 
 	void release();
 
