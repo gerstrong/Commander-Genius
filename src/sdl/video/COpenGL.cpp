@@ -141,8 +141,6 @@ void COpenGL::collectSurfaces()
 
 void COpenGL::clearSurfaces()
 {
-    //SDL_FillRect(mpOverlaySurface.get(), NULL, 0x0);
-
     SDL_FillRect(BlitSurface, NULL, 0x0);
 }
 
@@ -406,6 +404,8 @@ void COpenGL::updateScreen()
 #else
     SDL_GL_SwapBuffers();
 #endif
+
+    clearSurfaces();
 }
 
 void COpenGL::setLightIntensity(const float intensity)

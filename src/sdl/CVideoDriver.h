@@ -59,7 +59,6 @@ public:
 
 	// Drawing related stuff
 	SDL_Rect toBlitRect(const CRect<float> &rect);
-	void clearDrawingTasks();
 
 	/**
 	 * \description This function saves the given camera bounds. It is usually called
