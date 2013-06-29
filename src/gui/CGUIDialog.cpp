@@ -480,10 +480,11 @@ void CGUIDialog::processRendering()
                 SDL_BlitSurface( bgSfc, &srcRect, blit, &lRect );
             }
         }
+
+        if( mFXhStep > 0 || mFXvStep > 0 )
+            return;
     }
 
-    if( mFXhStep > 0 || mFXvStep > 0 )
-        return;
 
 	for( auto &it : mControlList )
 	{
