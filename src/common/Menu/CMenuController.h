@@ -24,7 +24,7 @@
 
 struct OpenMenuEvent : CEvent
 {
-	OpenMenuEvent(CBaseMenu* menuDlgPtr) : mMenuDialogPointer(menuDlgPtr) {};
+    OpenMenuEvent(CBaseMenu* menuDlgPtr) : mMenuDialogPointer(menuDlgPtr) {}
 
 	std::shared_ptr<CBaseMenu> mMenuDialogPointer;
 };
@@ -45,7 +45,8 @@ class CMenuController : public CSingleton<CMenuController>
 
 public:
 	CMenuController() : mOpenedGamePlay(false),
-                          mLocked(false) {}
+                          mLocked(false),
+                          mHidden(false) {}
 
 	void emptyMenuStack();
 
