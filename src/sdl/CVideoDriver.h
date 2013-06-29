@@ -48,12 +48,14 @@ public:
 	void updateScrollBuffer(std::shared_ptr<CMap> &map)
 	{ updateScrollBuffer(*map.get()); }	
 	
-    SDL_Surface *getOverlaySurface()
-    { return mpVideoEngine->getOverlaySurface(); }
-
 	void collectSurfaces();
 	void clearSurfaces();
 	void updateScreen();
+
+    void setLightIntensity(const float intensity)
+    {
+        mpVideoEngine->setLightIntensity(intensity);
+    }
 
 	// Drawing related stuff
 	SDL_Rect toBlitRect(const CRect<float> &rect);

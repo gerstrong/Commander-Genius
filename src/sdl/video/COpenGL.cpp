@@ -124,10 +124,6 @@ bool COpenGL::createSurfaces()
 
     m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
 
-    initOverlaySurface( (m_VidConfig.m_ScaleXFilter == 1),
-                        gamerect.w,
-                        gamerect.h );
-
 	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
 	Scaler.setFilterType(m_VidConfig.m_normal_scale);
 	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
@@ -145,7 +141,7 @@ void COpenGL::collectSurfaces()
 
 void COpenGL::clearSurfaces()
 {
-    SDL_FillRect(mpOverlaySurface.get(), NULL, 0x0);
+    //SDL_FillRect(mpOverlaySurface.get(), NULL, 0x0);
 
     SDL_FillRect(BlitSurface, NULL, 0x0);
 }
@@ -259,14 +255,14 @@ bool COpenGL::init()
 	
 	createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
 	
-	if(m_VidConfig.m_ScaleXFilter <= 1)
+    //if(m_VidConfig.m_ScaleXFilter <= 1)
 	{ // In that case we can do a texture based rendering
 	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
 	} 
-	else
+    /*else
 	{
 	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
-	}
+    }*/
 #endif
 	
 	// If there were any errors
@@ -281,26 +277,33 @@ bool COpenGL::init()
 #endif
 		return false;
 	}
-	else
-	{
-		g_pLogFile->ftextOut("OpenGL Init(): Interface successfully opened!<br>");
-	}
+
+    g_pLogFile->ftextOut("OpenGL Init(): Interface successfully opened!<br>");
+
+
+    GLfloat light_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_position[] = { 0.0, 0.0, 1.0, 0.0 };
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 	
 	return true;
 }
 
-void COpenGL::reloadFX(SDL_Surface* surf)
+static void renderTexture(GLuint texture, bool withAlpha = false)
 {
-	loadSurface(m_texFX, surf);
-}
-
-static void renderTexture(GLuint texture, bool withAlpha = false) {
-	
 	if(withAlpha)
 	{
 		glColor4f(1.0f, 1.0f, 1.0f, 0.8f);
-		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		//glBlendFunc(GL_ONE, GL_ONE);
+        //glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+        glBlendFunc(GL_ONE, GL_ONE);
 	}
 	else
 	{
@@ -388,28 +391,8 @@ void COpenGL::updateScreen()
 
 	glEnable(GL_BLEND);
 
-    SDL_Surface *overlay = mpOverlaySurface.get();
-
-	if(m_VidConfig.m_ScaleXFilter > 1)
-	{
-        if(getPerSurfaceAlpha(overlay))
-		{
-            SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);
-		}
-	}
-
 	loadSurface(m_texture, BlitSurface);
 	renderTexture(m_texture);
-
-
-	if(m_VidConfig.m_ScaleXFilter == 1)
-	{
-        if(overlay && getPerSurfaceAlpha(overlay))
-		{
-            reloadFX(overlay);
-			renderTexture(m_texFX, true);
-		}
-	}
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -423,6 +406,31 @@ void COpenGL::updateScreen()
 #else
     SDL_GL_SwapBuffers();
 #endif
+}
+
+void COpenGL::setLightIntensity(const float intensity)
+{
+    float r,g,b;
+
+    glDisable(GL_LIGHT0);
+
+    // TODO: This a temporary solution for just now.
+    // We should pass the different color channels as parameters in future
+    r = intensity;
+    g = intensity;
+    b = intensity;
+
+    GLfloat light_ambient[] = { r, g, b, 1.0 };
+    GLfloat light_diffuse[] = { r, g, b, 1.0 };
+    GLfloat light_specular[] = { r, g, b, 1.0 };
+    GLfloat light_position[] = { 0.0, 0.0, 1.0, 0.0 };
+
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+    glEnable(GL_LIGHT0);
 }
 
 #endif // USE_OPENGL

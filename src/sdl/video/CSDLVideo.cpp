@@ -54,6 +54,46 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 	return true;
 }
 
+
+bool CSDLVideo::initOverlaySurface( const bool useAlpha,
+                                       const Uint16 width,
+                                       const Uint16 height )
+{
+
+    SDL_Surface *overlay = createSurface( "OverlaySurface",
+                                         useAlpha,
+                                         width,
+                                         height,
+                                         RES_BPP,
+                                         m_Mode, screen->format );
+
+    mpOverlaySurface.reset( overlay );
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceAlphaMod( overlay, 0);
+#else
+    SDL_SetAlpha( overlay, SDL_SRCALPHA, 0);
+#endif
+
+    if(!mpOverlaySurface)
+        return false;
+
+    return true;
+}
+
+
+void CSDLVideo::setLightIntensity(const float intensity)
+{
+    Uint8 intense = Uint8(intensity*255.0f);
+
+    auto *sfc = mpOverlaySurface.get();
+    Uint32 color = SDL_MapRGB(sfc->format, 0, 0, 0);
+
+    SDL_SetAlpha( sfc, SDL_SRCALPHA, 255-intense);
+
+    SDL_FillRect( sfc, nullptr, color);
+}
+
 bool CSDLVideo::createSurfaces()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)

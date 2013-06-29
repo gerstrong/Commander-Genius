@@ -46,10 +46,10 @@ public:
 	void collectSurfaces();
 	void clearSurfaces();
 
+    void setLightIntensity(const float intensity);
+
 	void updateScreen();
 	bool init();
-
-	void reloadFX(SDL_Surface* surf);
 
 private:
 	unsigned int	m_texparam;

@@ -181,10 +181,6 @@ bool CPlayGameVorticon::StatusScreenOpen()
 ////
 void CPlayGameVorticon::ponder()
 {
-	// Check for fading processes if necessary
-	if(g_pGfxEngine->Palette.in_progress())
-		g_pGfxEngine->Palette.applyFade();
-
 	if( !mpFinale && !gpMenuController->active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if(mMessageBoxes.empty() && !StatusScreenOpen())
@@ -269,6 +265,10 @@ void CPlayGameVorticon::ponder()
 
 void CPlayGameVorticon::render()
 {
+    // Check for fading processes if necessary
+    if(g_pGfxEngine->Palette.in_progress())
+        g_pGfxEngine->Palette.applyFade();
+
     // Draw all the Stuff here!
     drawAllElements();
 

@@ -43,6 +43,8 @@ public:
 	void blitScrollSurface();
 	void stop();
 
+    virtual void setLightIntensity(const float intensity) = 0;
+
     bool initOverlaySurface(const bool useAlpha,
                             const Uint16 width,
                             const Uint16 height );
@@ -51,8 +53,6 @@ public:
 	SDL_Surface *getScreenSurface() { return screen; }
 
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
-    SDL_Surface *getOverlaySurface()
-    { return mpOverlaySurface.get(); }
 
 	CRect<Uint16> &getAspectCorrRect() { return aspectCorrectionRect; }
 
@@ -81,9 +81,7 @@ protected:
 
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FilteredSurface;
-	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
-
-    std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpOverlaySurface; // For some situations like darkrooms we need to use that surface!
+	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer    
 
     CScaler Scaler;
 

@@ -249,31 +249,7 @@ void CVideoEngine::stop()
     }    
 }
 
-bool CVideoEngine::initOverlaySurface( const bool useAlpha,
-                                       const Uint16 width,
-                                       const Uint16 height )
-{
 
-    SDL_Surface *overlay = createSurface( "OverlaySurface",
-                                         useAlpha,
-                                         width,
-                                         height,
-                                         RES_BPP,
-                                         m_Mode, screen->format );
-
-    mpOverlaySurface.reset( overlay );
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod( overlay, useAlpha);
-#else
-    SDL_SetAlpha( overlay, SDL_SRCALPHA, useAlpha);
-#endif
-
-    if(!mpOverlaySurface)
-        return false;
-
-    return true;
-}
 
 void CVideoEngine::shutdown()
 {

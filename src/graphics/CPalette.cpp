@@ -118,7 +118,12 @@ void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
 void CPalette::setdark(bool dark)
 {
 	m_dark = dark;
-	setFadeColour(0);
+
+    if(dark)
+        g_pVideoDriver->setLightIntensity(0.1f);
+    else
+        g_pVideoDriver->setLightIntensity(1.0f);
+
 	fadeto( m_dark ? m_darkness : 0, FADE_SPEED_SLOW);
 }
 
@@ -127,11 +132,6 @@ void CPalette::setdarkness(Uint8 darkness)
 	m_darkness = darkness;
 }
 
-
-void CPalette::setFadeColour(Uint32 colour)
-{    
-    SDL_FillRect( g_pVideoDriver->getOverlaySurface(), NULL, colour);
-}
 
 // returns the index of a color in the current palette with an RGB value
 // identical to the one given, or -1.
@@ -165,9 +165,10 @@ void CPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
 
 void CPalette::applyFade()
 {
-    SDL_Surface *overlay = g_pVideoDriver->getOverlaySurface();
+    /*SDL_Surface *overlay = g_pVideoDriver->getOverlaySurface();
 
     Uint8 current_alpha = getPerSurfaceAlpha(overlay);
+
 	
 	if( m_alpha!=current_alpha )
 	{
@@ -193,7 +194,7 @@ void CPalette::applyFade()
         SDL_SetAlpha( overlay, SDL_SRCALPHA, current_alpha);
 #endif
 	}
-	else
+    else*/
 	{
 		m_fade_in_progess = false;
 	}
