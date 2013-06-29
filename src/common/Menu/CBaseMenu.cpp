@@ -11,7 +11,7 @@
 #include "gui/CGUIBitmap.h"
 
 CBaseMenu::CBaseMenu(const CRect<float>& rect) :
-mpMenuDialog( new CGUIDialog(rect) )
+mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) )
 {
 	std::string closeString;
 	CGUIButton*	pButton;
