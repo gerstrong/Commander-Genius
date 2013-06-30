@@ -53,6 +53,9 @@ public:
 	// Game states
 	bool loadGameState();
 	bool saveGameState();
+
+    bool saveXMLGameState();
+
     void ponder();
 	void processOnWorldMap();
 	void processInLevel();

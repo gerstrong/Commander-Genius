@@ -11,6 +11,8 @@
 #include "sdl/CVideoDriver.h"
 #include "common/CVorticonMapLoader.h"
 
+//#include <boost/property_tree/xml_parser.hpp>
+//#include <boost/property_tree/ptree.hpp>
 
 ///////////////////////////
 // Game State Management //
@@ -191,6 +193,34 @@ bool CPlayGameVorticon::loadGameState()
 	
 	
 	return ok;
+}
+
+bool CPlayGameVorticon::saveXMLGameState()
+{
+    /*/// Create tree
+    using boost::property_tree::ptree;
+    ptree pt;
+
+    /// Create the nodes and store the data as needed
+    ptree &node = pt.add("CGGameState", "");
+
+    /// Save the Game in the CSavedGame object
+    // store the episode, level and difficulty
+    savedGame.encodeData(m_Episode);
+    savedGame.encodeData(m_Level);
+    savedGame.encodeData(g_pBehaviorEngine->mDifficulty);
+
+    // Also the last checkpoint is stored. This is the level entered from map
+    // in Commander Keen games
+    savedGame.encodeData(m_checkpointset);
+    savedGame.encodeData(m_checkpoint_x);
+    savedGame.encodeData(m_checkpoint_y);
+    savedGame.encodeData(mMap->m_Dark);
+
+    // TODO: More coding here!
+
+    // TODO: Write the ofstream*/
+    return false;
 }
 
 bool CPlayGameVorticon::saveGameState()
