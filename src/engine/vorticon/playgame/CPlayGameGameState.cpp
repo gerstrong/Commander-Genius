@@ -11,8 +11,8 @@
 #include "sdl/CVideoDriver.h"
 #include "common/CVorticonMapLoader.h"
 
-//#include <boost/property_tree/xml_parser.hpp>
-//#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 ///////////////////////////
 // Game State Management //
@@ -197,35 +197,103 @@ bool CPlayGameVorticon::loadGameState()
 
 bool CPlayGameVorticon::saveXMLGameState()
 {
-    /*/// Create tree
+    /// Create tree
     using boost::property_tree::ptree;
     ptree pt;
 
     /// Create the nodes and store the data as needed
-    ptree &node = pt.add("CGGameState", "");
+    ptree &stateNode = pt.add("GameState", "");
 
     /// Save the Game in the CSavedGame object
     // store the episode, level and difficulty
-    savedGame.encodeData(m_Episode);
-    savedGame.encodeData(m_Level);
-    savedGame.encodeData(g_pBehaviorEngine->mDifficulty);
+    stateNode.put("episode", int(m_Episode));
+    stateNode.put("level", m_Level);
+    stateNode.put("difficulty", g_pBehaviorEngine->mDifficulty);
 
     // Also the last checkpoint is stored. This is the level entered from map
     // in Commander Keen games
-    savedGame.encodeData(m_checkpointset);
-    savedGame.encodeData(m_checkpoint_x);
-    savedGame.encodeData(m_checkpoint_y);
-    savedGame.encodeData(mMap->m_Dark);
+    {
+        ptree &chkpnt = stateNode.add("checkpoint", "");
+        chkpnt.put("<xmlattr>.x", m_checkpoint_x);
+        chkpnt.put("<xmlattr>.y", m_checkpoint_y);
+    }
 
-    // TODO: More coding here!
+    stateNode.put("dark", mMap->m_Dark);
 
-    // TODO: Write the ofstream*/
-    return false;
+    // Now save the inventory of every player
+    for( size_t i=0 ; i<m_NumPlayers ; i++ )
+    {
+        auto &player = m_Player[i];
+        ptree &playerNode = stateNode.add("Player", "");
+        playerNode.put("<xmlattr>.id", i);
+
+        playerNode.put("x", player.getXPosition());
+        playerNode.put("y", player.getYPosition());
+        playerNode.put("blockedd", player.blockedd);
+        playerNode.put("blockedu", player.blockedu);
+        playerNode.put("blockedl", player.blockedl);
+        playerNode.put("blockedr", player.blockedr);
+        playerNode.put("blockedr", player.blockedr);
+
+        player.inventory.serialize( playerNode.add("Player", "") );
+    }
+
+    const size_t size = mSpriteObjectContainer.size();
+
+    // save the number of objects on screen
+    for( size_t i=0 ; i<size ; i++ )
+    {
+        // save all the objects states
+        auto &spriteObj = mSpriteObjectContainer[i];
+        ptree &spriteNode = stateNode.add("SpriteObj", "");
+        spriteNode.put("type", spriteObj->m_type);
+        spriteNode.put("x", spriteObj->getXPosition());
+        spriteNode.put("y", spriteObj->getYPosition());
+        spriteNode.put("dead", spriteObj->dead);
+        spriteNode.put("onscreen", spriteObj->onscreen);
+        spriteNode.put("hasbeenonscreen", spriteObj->hasbeenonscreen);
+        spriteNode.put("exists", spriteObj->exists);
+        spriteNode.put("blockedd", spriteObj->blockedd);
+        spriteNode.put("blockedu", spriteObj->blockedu);
+        spriteNode.put("blockedl", spriteObj->blockedl);
+        spriteNode.put("blockedr", spriteObj->blockedr);
+        spriteNode.put("HealthPoints", spriteObj->mHealthPoints);
+        spriteNode.put("canbezapped", spriteObj->canbezapped);
+        spriteNode.put("cansupportplayer", spriteObj->cansupportplayer);
+        spriteNode.put("inhibitfall", spriteObj->inhibitfall);
+        spriteNode.put("honorPriority", spriteObj->honorPriority);
+        spriteNode.put("sprite", spriteObj->sprite);
+    }
+
+    // Save the map_data as it is left       
+    {
+        ptree &mapNode = stateNode.add("Map", "");
+        mapNode.put("width", mMap->m_width);
+        mapNode.put("height", mMap->m_height);
+    }
+    /*savedGame.addData( reinterpret_cast<byte*>(mMap->getForegroundData()),
+                                                    2*mMap->m_width*mMap->m_height );
+
+    // store completed levels
+    savedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );
+    */
+
+    // Write the xml-file
+    std::ofstream os("/home/gerstrong/keensavetest.xml");
+    boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+    //write_xml( "/home/gerstrong/keensavetest.xml", pt, std::locale(), settings);
+
+    write_xml( os, pt, settings );
+
+    return true;
 }
 
 bool CPlayGameVorticon::saveGameState()
 {	
-	size_t size;
+    // For testing purposes only... for now...
+    saveXMLGameState();
+
+    size_t size;
 
 	CSaveGameController &savedGame = *(gpSaveGameController);
 
