@@ -10,6 +10,7 @@
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/CVideoDriver.h"
 #include "common/CVorticonMapLoader.h"
+#include "Base64.h"
 
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -270,7 +271,15 @@ bool CPlayGameVorticon::saveXMLGameState()
         ptree &mapNode = stateNode.add("Map", "");
         mapNode.put("width", mMap->m_width);
         mapNode.put("height", mMap->m_height);
+
+        const std::string b64text = base64Encode( reinterpret_cast<byte*>(mMap->getForegroundData()),
+                                                    2*mMap->m_width*mMap->m_height);
+
+        mapNode.put("fgdata", b64text);
     }
+
+
+
     /*savedGame.addData( reinterpret_cast<byte*>(mMap->getForegroundData()),
                                                     2*mMap->m_width*mMap->m_height );
 
