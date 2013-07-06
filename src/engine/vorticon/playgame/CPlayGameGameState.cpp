@@ -279,7 +279,7 @@ bool CPlayGameVorticon::saveXMLGameState()
     stateNode.put("complete", base64Encode( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON) );    
 
     CSaveGameController &savedGame = *(gpSaveGameController);
-    savedGame.saveXMLNode(pt);
+    savedGame.saveXMLTree(pt);
 
     return true;
 }

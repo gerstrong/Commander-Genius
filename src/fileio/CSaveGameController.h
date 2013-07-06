@@ -60,7 +60,8 @@ public:
 	bool prepareSaveGame( int SaveSlot, const std::string &Name);
 	bool prepareLoadGame( int SaveSlot );
 
-    bool saveXMLNode(boost::property_tree::ptree &pt);
+    bool saveXMLTree(boost::property_tree::ptree &pt);
+    bool loadXMLTree(boost::property_tree::ptree &pt);
 
 	// Encoder/Decoder Classes
 	template <class T>

@@ -666,7 +666,7 @@ bool CSaveGameController::save()
 
 
 
-bool CSaveGameController::saveXMLNode(boost::property_tree::ptree &pt)
+bool CSaveGameController::saveXMLTree(boost::property_tree::ptree &pt)
 {
     // Write the xml-file
     using boost::property_tree::ptree;
@@ -683,6 +683,27 @@ bool CSaveGameController::saveXMLNode(boost::property_tree::ptree &pt)
     }
 
     write_xml( StateFile, pt, settings );
+
+    return true;
+}
+
+
+bool CSaveGameController::loadXMLTree(boost::property_tree::ptree &pt)
+{
+    // load the xml-file
+    using boost::property_tree::ptree;
+
+    std::ifstream StateFile;
+    bool open = OpenGameFileR( StateFile, m_stateXMLfilename, std::ofstream::binary );
+
+    if (!open)
+    {
+        std::string fullpath = GetFullFileName(m_stateXMLfilename);
+        g_pLogFile->textOut("Error loading \"" + fullpath + "\". Please check the status of that path.\n" );
+        return false;
+    }
+
+    read_xml( StateFile, pt );
 
     return true;
 }
