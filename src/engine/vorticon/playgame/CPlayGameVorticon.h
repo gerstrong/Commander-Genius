@@ -54,6 +54,7 @@ public:
 	bool loadGameState();
 	bool saveGameState();
 
+    bool loadXMLGameState();
     bool saveXMLGameState();
 
     void ponder();

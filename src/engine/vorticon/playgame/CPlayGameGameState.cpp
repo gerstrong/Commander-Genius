@@ -18,6 +18,9 @@
 ///////////////////////////
 bool CPlayGameVorticon::loadGameState()
 {
+    if(loadXMLGameState())
+        return true;
+
 	CSaveGameController &savedGame = *(gpSaveGameController);
 	
 	bool ok = true;
@@ -194,6 +197,105 @@ bool CPlayGameVorticon::loadGameState()
 	return ok;
 }
 
+
+
+bool CPlayGameVorticon::loadXMLGameState()
+{
+
+    /// Create tree
+    using boost::property_tree::ptree;
+    ptree pt;
+
+    CSaveGameController &savedGame = *(gpSaveGameController);
+    if(!savedGame.loadXMLTree(pt))
+        return false;
+
+    /// Load the nodes and retrieve the data as needed
+    ptree &stateTree = pt.get_child("GameState");
+
+    /// Load the Game in the CSavedGame object
+    // get the episode, level and difficulty
+    m_Episode = stateTree.get<int>("episode", 1); // Default value = 1. Bit strange not?
+    m_Level = stateTree.get<int>("level", 1);
+    g_pBehaviorEngine->mDifficulty =
+            static_cast<Difficulty>(stateTree.get<int>("difficulty", int(NORMAL) ));
+
+
+/*
+    // Also the last checkpoint is stored. This is the level entered from map
+    // in Commander Keen games
+    {
+        ptree &chkpnt = stateNode.add("checkpoint", "");
+        chkpnt.put("<xmlattr>.x", m_checkpoint_x);
+        chkpnt.put("<xmlattr>.y", m_checkpoint_y);
+    }
+
+    stateNode.put("dark", mMap->m_Dark);
+
+    // Now save the inventory of every player
+    for( size_t i=0 ; i<m_NumPlayers ; i++ )
+    {
+        auto &player = m_Player[i];
+        ptree &playerNode = stateNode.add("Player", "");
+        playerNode.put("<xmlattr>.id", i);
+
+        playerNode.put("x", player.getXPosition());
+        playerNode.put("y", player.getYPosition());
+        playerNode.put("blockedd", player.blockedd);
+        playerNode.put("blockedu", player.blockedu);
+        playerNode.put("blockedl", player.blockedl);
+        playerNode.put("blockedr", player.blockedr);
+        playerNode.put("blockedr", player.blockedr);
+
+        player.inventory.serialize( playerNode.add("Player", "") );
+    }
+
+    const size_t size = mSpriteObjectContainer.size();
+
+    // save the number of objects on screen
+    for( size_t i=0 ; i<size ; i++ )
+    {
+        // save all the objects states
+        auto &spriteObj = mSpriteObjectContainer[i];
+        ptree &spriteNode = stateNode.add("SpriteObj", "");
+        spriteNode.put("type", spriteObj->m_type);
+        spriteNode.put("x", spriteObj->getXPosition());
+        spriteNode.put("y", spriteObj->getYPosition());
+        spriteNode.put("dead", spriteObj->dead);
+        spriteNode.put("onscreen", spriteObj->onscreen);
+        spriteNode.put("hasbeenonscreen", spriteObj->hasbeenonscreen);
+        spriteNode.put("exists", spriteObj->exists);
+        spriteNode.put("blockedd", spriteObj->blockedd);
+        spriteNode.put("blockedu", spriteObj->blockedu);
+        spriteNode.put("blockedl", spriteObj->blockedl);
+        spriteNode.put("blockedr", spriteObj->blockedr);
+        spriteNode.put("HealthPoints", spriteObj->mHealthPoints);
+        spriteNode.put("canbezapped", spriteObj->canbezapped);
+        spriteNode.put("cansupportplayer", spriteObj->cansupportplayer);
+        spriteNode.put("inhibitfall", spriteObj->inhibitfall);
+        spriteNode.put("honorPriority", spriteObj->honorPriority);
+        spriteNode.put("sprite", spriteObj->sprite);
+    }
+
+    // Save the map_data as it is left
+    {
+        ptree &mapNode = stateNode.add("Map", "");
+        mapNode.put("width", mMap->m_width);
+        mapNode.put("height", mMap->m_height);
+
+        const std::string b64text = base64Encode( reinterpret_cast<byte*>(mMap->getForegroundData()),
+                                                    2*mMap->m_width*mMap->m_height);
+
+        mapNode.put("fgdata", b64text);
+    }
+
+    stateNode.put("complete", base64Encode( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON) );
+
+*/
+
+    return true;
+}
+
 bool CPlayGameVorticon::saveXMLGameState()
 {
     /// Create tree
@@ -283,6 +385,7 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     return true;
 }
+
 
 bool CPlayGameVorticon::saveGameState()
 {	
