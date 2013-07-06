@@ -12,6 +12,8 @@
 #include "common/CBehaviorEngine.h"
 #include <ctime>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 
 void sgrle_initdecompression(void);
@@ -39,7 +41,8 @@ void CSaveGameController::setLevel(int Level)
 {	m_Level = Level;	}
 
 // Retrieves the data size of the next block
-Uint32 CSaveGameController::getDataSize(std::ifstream &StateFile) {
+Uint32 CSaveGameController::getDataSize(std::ifstream &StateFile)
+{
 	Uint32 size=0;
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++)
 	{
@@ -80,14 +83,19 @@ struct StateFileListFiller
 {
 	std::set<std::string> list;
 
-	bool operator() (const std::string& filename) {
+    bool operator() (const std::string& filename)
+    {
 		std::string ext = GetFileExtension(filename);
-		if (stringcaseequal(ext, "ck1") ||
-			stringcaseequal(ext, "ck2") ||
-			stringcaseequal(ext, "ck3") ||
-			stringcaseequal(ext, "ck4") ||
-			stringcaseequal(ext, "ck5") ||
-			stringcaseequal(ext, "ck6") )
+
+        bool canBeadded = false;
+
+        for(int ep = 1 ; ep<=6 ; ep++)
+        {
+            canBeadded |= stringcaseequal(ext, "ck" + itoa(ep));
+            canBeadded |= stringcaseequal(ext, "cx" + itoa(ep));
+        }
+
+        if ( canBeadded )
 			list.insert(filename);
 
 		return true;
@@ -101,7 +109,7 @@ std::vector<std::string> CSaveGameController::getSlotList()
 	std::vector<std::string> filelist;
 	std::string buf;
 
-	//Get the list of ".ck?" files
+    //Get the list of ".ck?" and ".cx?" files
 	StateFileListFiller sfilelist;
 	FindFiles(sfilelist, m_savedir, false, FM_REG);
 
@@ -518,6 +526,9 @@ bool CSaveGameController::Fileexists( int SaveSlot )
 bool CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name )
 {
 	m_statefilename =  m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+
+    m_stateXMLfilename = m_savedir + "/cksave"+itoa(SaveSlot)+".cx"+itoa(m_Episode);
+
 	m_statename = Name;
 	m_datablock.clear();
 
@@ -540,6 +551,7 @@ bool CSaveGameController::prepareLoadGame(int SaveSlot)
 
 	return true;
 }
+
 
 bool CSaveGameController::load()
 {
@@ -651,6 +663,33 @@ bool CSaveGameController::save()
 
 	return true;
 }
+
+
+
+bool CSaveGameController::saveXMLNode(boost::property_tree::ptree &pt)
+{
+    // Write the xml-file
+    using boost::property_tree::ptree;
+    boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+
+    std::ofstream StateFile;
+    bool open = OpenGameFileW( StateFile, m_stateXMLfilename, std::ofstream::binary );
+
+    if (!open)
+    {
+        std::string fullpath = GetFullFileName(m_stateXMLfilename);
+        g_pLogFile->textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
+        return false;
+    }
+
+    write_xml( StateFile, pt, settings );
+
+    return true;
+}
+
+
+
+
 
 // Adds data of size to the main data block
 void CSaveGameController::addData(byte *data, Uint32 size)

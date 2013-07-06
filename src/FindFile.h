@@ -169,7 +169,7 @@ void	InitSearchPaths();
 // this does a search on all searchpaths for the file and returns the first one found
 // if none was found, NULL will be returned
 // if searchpath!=NULL, it will place there the searchpath
-std::string GetFullFileName(const std::string& path, std::string* searchpath = NULL);
+std::string GetFullFileName(const std::string& path, std::string* searchpath = nullptr);
 
 // this give always a dir like searchpath[0]/path, but it ensures:
 // - the filename is correct, if the file exists

@@ -12,8 +12,6 @@
 #include "common/CVorticonMapLoader.h"
 #include "Base64.h"
 
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
 
 ///////////////////////////
 // Game State Management //
@@ -278,21 +276,10 @@ bool CPlayGameVorticon::saveXMLGameState()
         mapNode.put("fgdata", b64text);
     }
 
+    stateNode.put("complete", base64Encode( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON) );    
 
-
-    /*savedGame.addData( reinterpret_cast<byte*>(mMap->getForegroundData()),
-                                                    2*mMap->m_width*mMap->m_height );
-
-    // store completed levels
-    savedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );
-    */
-
-    // Write the xml-file
-    std::ofstream os("/home/gerstrong/keensavetest.xml");
-    boost::property_tree::xml_writer_settings<char> settings('\t', 1);
-    //write_xml( "/home/gerstrong/keensavetest.xml", pt, std::locale(), settings);
-
-    write_xml( os, pt, settings );
+    CSaveGameController &savedGame = *(gpSaveGameController);
+    savedGame.saveXMLNode(pt);
 
     return true;
 }
@@ -368,5 +355,5 @@ bool CPlayGameVorticon::saveGameState()
 	// store completed levels
 	savedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );
 
-	return savedGame.save();
+    return savedGame.save();
 }

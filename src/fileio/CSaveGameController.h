@@ -21,6 +21,9 @@
 #include "engine/CEvent.h"
 #include "Oldsavegamestructs.h"
 
+#include <boost/property_tree/ptree.hpp>
+
+
 #define SG_HEADERSIZE			7
 #define SAVEGAMEVERSION 		'6'
 #define OLDSAVEGAMEVERSION5		'5'
@@ -57,6 +60,8 @@ public:
 	bool prepareSaveGame( int SaveSlot, const std::string &Name);
 	bool prepareLoadGame( int SaveSlot );
 
+    bool saveXMLNode(boost::property_tree::ptree &pt);
+
 	// Encoder/Decoder Classes
 	template <class T>
 	void encodeVariable(T value);
@@ -89,8 +94,9 @@ private:
 	int getOldSGVersion(const std::string& fname);
 
 	std::string m_savedir;
-	std::string m_statefilename;
-	std::string m_statename;
+    std::string m_statefilename;
+    std::string m_stateXMLfilename;
+    std::string m_statename;
 	char m_Episode;
 	int m_Level;
 	Uint32 m_offset;	
