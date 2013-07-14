@@ -399,34 +399,34 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	sample_mult = (m_AudioDevSpec.format == AUDIO_S16) ? sample_mult*sizeof(Sint16) : sample_mult*sizeof(Uint8) ;
 	
 	// while the waveform is not filled
-	while(1)
-	{
-	    while( m_IMFDelay == 0 )
-	    {
-		//read next IMF event
-		const IMFChunkType Chunk = m_IMF_Data.getNextElement();
-		m_IMFDelay = Chunk.Delay;
-		
-		//write reg+val to opl chip
-		m_opl_emulator.Chip__WriteReg( Chunk.al_reg, Chunk.al_dat );
-		m_numreadysamples = m_samplesPerMusicTick*m_IMFDelay;
-	    }
-	    
-	    //generate <delay> ticks of audio
-	    if(m_numreadysamples < sampleslen)
-	    {
-		// Every time a tune has been played call this.
-		OPLUpdate( buffer, m_numreadysamples );
-		buffer += m_numreadysamples*sample_mult;
-		sampleslen -= m_numreadysamples;
-		m_IMFDelay = 0;
-	    }
-	    else
-	    {
-		// Read the last stuff left in the emulators buffer. At this point the stream buffer is nearly full
-		OPLUpdate( buffer, sampleslen );
-		m_numreadysamples -= sampleslen;
-		break;
-	    }
-	}
+    while(1)
+    {
+        while( m_IMFDelay == 0 )
+        {
+            //read next IMF event
+            const IMFChunkType Chunk = m_IMF_Data.getNextElement();
+            m_IMFDelay = Chunk.Delay;
+
+            //write reg+val to opl chip
+            m_opl_emulator.Chip__WriteReg( Chunk.al_reg, Chunk.al_dat );
+            m_numreadysamples = m_samplesPerMusicTick*m_IMFDelay;
+        }
+
+        //generate <delay> ticks of audio
+        if(m_numreadysamples < sampleslen)
+        {
+            // Every time a tune has been played call this.
+            OPLUpdate( buffer, m_numreadysamples );
+            buffer += m_numreadysamples*sample_mult;
+            sampleslen -= m_numreadysamples;
+            m_IMFDelay = 0;
+        }
+        else
+        {
+            // Read the last stuff left in the emulators buffer. At this point the stream buffer is nearly full
+            OPLUpdate( buffer, sampleslen );
+            m_numreadysamples -= sampleslen;
+            break;
+        }
+    }
 }

@@ -221,15 +221,35 @@ bool CPlayGameVorticon::loadXMLGameState()
     /// Load the Game in the CSavedGame object
     // get the episode, level and difficulty
     m_Episode = stateNode.get<int>("episode", 1); // Default value = 1. Bit strange not?
-    m_Level = stateNode.get<int>("level", 1);
+    int newLevel = stateNode.get<int>("level", 1);
     g_pBehaviorEngine->mDifficulty =
             static_cast<Difficulty>(stateNode.get<int>("difficulty", int(NORMAL) ));
 
+
+    // Create the special merge effect (Fadeout)
+    CColorMerge *pColorMergeFX = new CColorMerge(8);
+
+
+    CVorticonMapLoaderWithPlayer Maploader(mMap, m_Player, mSpriteObjectContainer);
+
+    const bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
+    m_Level = newLevel;
+
+    if(!Maploader.load(m_Episode, m_Level, m_Gamepath, loadmusic, false))
+      return false;
+
+    m_level_command = START_LEVEL;
+
+
     mMap->m_Dark = stateNode.get<bool>("dark", false);
 
-    // Now Read the player information
+    // Empty container of the levels so we loaded the ones from our states
     if(!m_Player.empty())
         m_Player.clear();
+
+    if(!mSpriteObjectContainer.empty())
+        mSpriteObjectContainer.clear();
+
 
     for( auto &stateTree : pt.get_child("GameState") )
     {        
@@ -245,25 +265,26 @@ bool CPlayGameVorticon::loadXMLGameState()
         else if(tag == "Player")
         {
             CPlayer loadedPlayer(mp_level_completed, *(mMap.get()) );
+            m_Player.push_back(loadedPlayer);
+
+            auto &player = m_Player.back();
             auto &playerTree = stateTree.second;
 
             Uint32 x, y;
             x = playerTree.get<int>("x");
             y = playerTree.get<int>("y");
 
-            loadedPlayer.moveToForce( x, y );
+            player.moveToForce( x, y );
 
-            loadedPlayer.blockedd = playerTree.get<bool>("blockedd", true);
-            loadedPlayer.blockedu = playerTree.get<bool>("blockedu", true);
-            loadedPlayer.blockedl = playerTree.get<bool>("blockedl", true);
-            loadedPlayer.blockedr = playerTree.get<bool>("blockedr", true);
+            player.blockedd = playerTree.get<bool>("blockedd", true);
+            player.blockedu = playerTree.get<bool>("blockedu", true);
+            player.blockedl = playerTree.get<bool>("blockedl", true);
+            player.blockedr = playerTree.get<bool>("blockedr", true);
 
-            loadedPlayer.inventory.deserialize( playerTree.get_child("Inventory") );
+            player.inventory.deserialize( playerTree.get_child("Inventory") );
 
-            loadedPlayer.m_index = m_Player.size();
-            loadedPlayer.setDatatoZero();
-
-            m_Player.push_back(loadedPlayer);
+            player.m_index = m_Player.size()-1;
+            player.setDatatoZero();
         }
         else if(tag == "SpriteObj")
         {
@@ -271,7 +292,6 @@ bool CPlayGameVorticon::loadXMLGameState()
             auto &spriteTree = stateTree.second;
             object_t type;
             Uint32 x, y;
-
 
             type = (object_t)(spriteTree.get<int>("type", 0));
             x = spriteTree.get<int>("x", 0);
@@ -313,18 +333,6 @@ bool CPlayGameVorticon::loadXMLGameState()
 
 
     // now setup the loaded data correctly!
-
-
-    // Create the special merge effect (Fadeout)
-    CColorMerge *pColorMergeFX = new CColorMerge(8);
-
-
-    CVorticonMapLoaderWithPlayer Maploader(mMap, m_Player, mSpriteObjectContainer);
-
-    if(!Maploader.load(m_Episode, m_Level, m_Gamepath, true, false))
-      return false;
-
-    m_level_command = START_LEVEL;
 
 
     m_Player[0].setupCameraObject();
@@ -417,7 +425,7 @@ bool CPlayGameVorticon::saveXMLGameState()
         spriteNode.put("blockedu", spriteObj->blockedu);
         spriteNode.put("blockedl", spriteObj->blockedl);
         spriteNode.put("blockedr", spriteObj->blockedr);
-        spriteNode.put("HealthPoints", spriteObj->mHealthPoints);
+        spriteNode.put("HealthPoints", int(spriteObj->mHealthPoints));
         spriteNode.put("canbezapped", spriteObj->canbezapped);
         spriteNode.put("cansupportplayer", spriteObj->cansupportplayer);
         spriteNode.put("inhibitfall", spriteObj->inhibitfall);
