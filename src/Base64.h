@@ -19,6 +19,7 @@
 std::basic_string<TCHAR> base64Encode(const std::vector<BYTE> &inputBuffer);
 std::basic_string<TCHAR> base64Encode(BYTE *inputBuffer, const size_t size);
 std::vector<BYTE> base64Decode(const std::basic_string<TCHAR>& input);
+void base64Decode(BYTE *outBuffer, const std::basic_string<TCHAR> &inBuffer);
 
 /* Define these if they aren't already in your environment
  * #define TEXT(x) Lx    //Unicode

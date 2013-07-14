@@ -60,8 +60,7 @@ bool CPlayGameVorticon::loadGameState()
 	if(!m_Player.empty())
 	  m_Player.clear();
 	
-	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
-					      mp_level_completed, *mMap.get() ) );
+    m_Player.assign(m_NumPlayers, CPlayer(mp_level_completed, *mMap.get() ) );
 	for( size_t i=0 ; i < m_Player.size() ; i++ )
 	{
 	  m_Player.at(i).m_index = i;
@@ -211,87 +210,101 @@ bool CPlayGameVorticon::loadXMLGameState()
         return false;
 
     /// Load the nodes and retrieve the data as needed
-    ptree &stateTree = pt.get_child("GameState");
+    ptree &stateNode = pt.get_child("GameState");
+
 
     /// Load the Game in the CSavedGame object
     // get the episode, level and difficulty
-    m_Episode = stateTree.get<int>("episode", 1); // Default value = 1. Bit strange not?
-    m_Level = stateTree.get<int>("level", 1);
+    m_Episode = stateNode.get<int>("episode", 1); // Default value = 1. Bit strange not?
+    m_Level = stateNode.get<int>("level", 1);
     g_pBehaviorEngine->mDifficulty =
-            static_cast<Difficulty>(stateTree.get<int>("difficulty", int(NORMAL) ));
+            static_cast<Difficulty>(stateNode.get<int>("difficulty", int(NORMAL) ));
+
+    mMap->m_Dark = stateNode.get<bool>("dark", false);
+
+    // Now Read the player information
+    if(!m_Player.empty())
+        m_Player.clear();
+
+    for( auto &stateTree : pt.get_child("GameState") )
+    {        
+        const std::string tag = stateTree.first;
+        if(tag == "checkpoint")
+        {
+            // Also the last checkpoint is stored. This is the level entered from map
+            // in Commander Keen games
+            auto &chkpnt = stateTree.second;
+            chkpnt.get<int>("<xmlattr>.x", m_checkpoint_x);
+            chkpnt.get<int>("<xmlattr>.y", m_checkpoint_y);
+            break;
+        }
+        else if(tag == "Player")
+        {
+            CPlayer loadedPlayer(mp_level_completed, *(mMap.get()) );
+            auto &playerTree = stateTree.second;
+
+            Uint32 x, y;
+            x = playerTree.get<int>("x");
+            y = playerTree.get<int>("y");
+
+            loadedPlayer.moveToForce( x, y );
+
+            loadedPlayer.blockedd = playerTree.get<bool>("blockedd", true);
+            loadedPlayer.blockedu = playerTree.get<bool>("blockedu", true);
+            loadedPlayer.blockedl = playerTree.get<bool>("blockedl", true);
+            loadedPlayer.blockedr = playerTree.get<bool>("blockedr", true);
+
+            loadedPlayer.inventory.deserialize( playerTree.get_child("Inventory") );
+
+            m_Player.push_back(loadedPlayer);
+            break;
+        }
+        else if(tag == "SpriteObj")
+        {
+            // save all the objects states
+            auto &spriteTree = stateTree.second;
+            object_t type;
+            Uint32 x, y;
 
 
-/*
-    // Also the last checkpoint is stored. This is the level entered from map
-    // in Commander Keen games
-    {
-        ptree &chkpnt = stateNode.add("checkpoint", "");
-        chkpnt.put("<xmlattr>.x", m_checkpoint_x);
-        chkpnt.put("<xmlattr>.y", m_checkpoint_y);
+            type = (object_t)(spriteTree.get<int>("type", 0));
+            x = spriteTree.get<int>("x", 0);
+            y = spriteTree.get<int>("y", 0);
+
+            std::unique_ptr<CVorticonSpriteObject> spriteObj(new CVorticonSpriteObject( (mMap.get()), x, y, type ) );
+
+            spriteObj->dead = spriteTree.get<bool>("dead", false);
+            spriteObj->onscreen = spriteTree.get<bool>("onscreen", false);
+            spriteObj->hasbeenonscreen = spriteTree.get<bool>("hasbeenonscreen", false);
+            spriteObj->exists = spriteTree.get<bool>("exists", false);
+            spriteObj->blockedd = spriteTree.get<bool>("blockedd", false);
+            spriteObj->blockedu = spriteTree.get<bool>("blockedu",false);
+            spriteObj->blockedl = spriteTree.get<bool>("blockedl", false);
+            spriteObj->blockedr = spriteTree.get<bool>("blockedr", false);
+            spriteObj->mHealthPoints = spriteTree.get<int>("HealthPoints", 0);
+            spriteObj->canbezapped = spriteTree.get<bool>("canbezapped", true);
+            spriteObj->cansupportplayer = spriteTree.get<bool>("cansupportplayer", true);
+            spriteObj->inhibitfall = spriteTree.get<bool>("inhibitfall", true);
+            spriteObj->honorPriority = spriteTree.get<bool>("honorPriority", true);
+            spriteObj->sprite = spriteTree.get<int>("sprite", 0);
+
+            mSpriteObjectContainer.push_back( move(spriteObj) );
+            break;
+        }
+        else if(tag == "Map")
+        {
+            // Save the map_data as it is left
+            auto &mapNode = stateTree.second;
+            mMap->m_width = mapNode.get<int>("width");
+            mMap->m_height = mapNode.get<int>("height");
+
+            const std::string b64text = mapNode.get<std::string>("fgdata");
+            base64Decode( reinterpret_cast<byte*>(mMap->getForegroundData()), b64text);
+        }
     }
 
-    stateNode.put("dark", mMap->m_Dark);
-
-    // Now save the inventory of every player
-    for( size_t i=0 ; i<m_NumPlayers ; i++ )
-    {
-        auto &player = m_Player[i];
-        ptree &playerNode = stateNode.add("Player", "");
-        playerNode.put("<xmlattr>.id", i);
-
-        playerNode.put("x", player.getXPosition());
-        playerNode.put("y", player.getYPosition());
-        playerNode.put("blockedd", player.blockedd);
-        playerNode.put("blockedu", player.blockedu);
-        playerNode.put("blockedl", player.blockedl);
-        playerNode.put("blockedr", player.blockedr);
-        playerNode.put("blockedr", player.blockedr);
-
-        player.inventory.serialize( playerNode.add("Player", "") );
-    }
-
-    const size_t size = mSpriteObjectContainer.size();
-
-    // save the number of objects on screen
-    for( size_t i=0 ; i<size ; i++ )
-    {
-        // save all the objects states
-        auto &spriteObj = mSpriteObjectContainer[i];
-        ptree &spriteNode = stateNode.add("SpriteObj", "");
-        spriteNode.put("type", spriteObj->m_type);
-        spriteNode.put("x", spriteObj->getXPosition());
-        spriteNode.put("y", spriteObj->getYPosition());
-        spriteNode.put("dead", spriteObj->dead);
-        spriteNode.put("onscreen", spriteObj->onscreen);
-        spriteNode.put("hasbeenonscreen", spriteObj->hasbeenonscreen);
-        spriteNode.put("exists", spriteObj->exists);
-        spriteNode.put("blockedd", spriteObj->blockedd);
-        spriteNode.put("blockedu", spriteObj->blockedu);
-        spriteNode.put("blockedl", spriteObj->blockedl);
-        spriteNode.put("blockedr", spriteObj->blockedr);
-        spriteNode.put("HealthPoints", spriteObj->mHealthPoints);
-        spriteNode.put("canbezapped", spriteObj->canbezapped);
-        spriteNode.put("cansupportplayer", spriteObj->cansupportplayer);
-        spriteNode.put("inhibitfall", spriteObj->inhibitfall);
-        spriteNode.put("honorPriority", spriteObj->honorPriority);
-        spriteNode.put("sprite", spriteObj->sprite);
-    }
-
-    // Save the map_data as it is left
-    {
-        ptree &mapNode = stateNode.add("Map", "");
-        mapNode.put("width", mMap->m_width);
-        mapNode.put("height", mMap->m_height);
-
-        const std::string b64text = base64Encode( reinterpret_cast<byte*>(mMap->getForegroundData()),
-                                                    2*mMap->m_width*mMap->m_height);
-
-        mapNode.put("fgdata", b64text);
-    }
-
-    stateNode.put("complete", base64Encode( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON) );
-
-*/
+    const std::string b64text = stateNode.get<std::string>("complete");
+    base64Decode( reinterpret_cast<byte*>(mp_level_completed), b64text);
 
     return true;
 }
@@ -334,9 +347,8 @@ bool CPlayGameVorticon::saveXMLGameState()
         playerNode.put("blockedu", player.blockedu);
         playerNode.put("blockedl", player.blockedl);
         playerNode.put("blockedr", player.blockedr);
-        playerNode.put("blockedr", player.blockedr);
 
-        player.inventory.serialize( playerNode.add("Player", "") );
+        player.inventory.serialize( playerNode.add("Inventory", "") );
     }
 
     const size_t size = mSpriteObjectContainer.size();

@@ -70,6 +70,8 @@ std::basic_string<TCHAR> base64Encode(BYTE *inputBuffer, const size_t size)
 
 
 
+
+
 std::vector<BYTE> base64Decode(const std::basic_string<TCHAR>& input)
 {
         if (input.length() % 4) //Sanity check
@@ -126,4 +128,16 @@ std::vector<BYTE> base64Decode(const std::basic_string<TCHAR>& input)
         }
         return decodedBytes;
 }
+
+void base64Decode(BYTE *outBuffer, const std::basic_string<char> &inBuffer)
+{
+   std::vector<BYTE> outputBufferVec = base64Decode(inBuffer);
+
+   int i=0;
+   for( auto &item : outputBufferVec )
+   {
+       outBuffer[i++] = item;
+   }
+}
+
 

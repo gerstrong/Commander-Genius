@@ -22,12 +22,9 @@
 ///
 // Initialization Part
 ///
-CPlayer::CPlayer(const Sint8 &Episode, short &Level,
-				 bool *mp_level_completed,
+CPlayer::CPlayer(bool *mp_level_completed,
 				 CMap &map) :
 CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER),
-m_episode(Episode),
-m_level(Level),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
 mp_levels_completed(mp_level_completed),
 mp_option(g_pBehaviorEngine->m_option)
@@ -53,9 +50,7 @@ mp_option(g_pBehaviorEngine->m_option)
 
 
 CPlayer::CPlayer(const CPlayer &player) :
-CVorticonSpriteObject(player.mp_Map, 0, 0, OBJ_PLAYER),
-m_episode(player.m_episode),
-m_level(player.m_level),
+CVorticonSpriteObject(player.mp_Map, player.getXPosition(), player.getYPosition(), OBJ_PLAYER),
 pjumpupspeed_decrease(player.pjumpupspeed_decrease),
 mp_levels_completed(player.mp_levels_completed),
 mp_option(g_pBehaviorEngine->m_option)
@@ -84,9 +79,6 @@ mp_option(g_pBehaviorEngine->m_option)
 
 CPlayer& CPlayer::operator=(const CPlayer &player)
 {
-    //mp_object = player.mp_object;
-    m_episode = player.m_episode;
-    m_level = player.m_level;
     pjumpupspeed_decrease = player.pjumpupspeed_decrease;
     mp_levels_completed = player.mp_levels_completed;
     mp_option = g_pBehaviorEngine->m_option;
@@ -133,7 +125,10 @@ void CPlayer::setDatatoZero()
 	onscreen = true;
 	pfallspeed = 0;
 
-	if(m_level==80)
+    const int ep = g_pBehaviorEngine->getEpisode();
+    const int level = mp_Map->getLevel();
+
+    if(level==80)
 		pShowDir = VectorD2<direction_t>(CENTER,DOWN);
 	else
 		pShowDir = VectorD2<direction_t>(RIGHT,CENTER);
@@ -165,9 +160,10 @@ void CPlayer::setDatatoZero()
   	dpadcount = dpadlastcount = 0;
   	beingteleported = false;
 
+
   	// This will setup the proper frames, so second, third and fourth player get the correct sprites
    	playerbaseframe = (m_index==0) ? 0 : SECOND_PLAYER_BASEFRAME+(m_index-1)*48;
-	if(m_episode == 3) playerbaseframe--;
+    if(ep == 3) playerbaseframe--;
 
     // Set all the inventory to zero.
     memset(playcontrol, 0, sizeof(playcontrol));
@@ -613,7 +609,10 @@ void CPlayer::InertiaAndFriction_X()
 			xinertia = -pmaxspeed;
 	}
 
-	if(m_level == 80) // We are on World map
+    const int ep = g_pBehaviorEngine->getEpisode();
+    const int level = mp_Map->getLevel();
+
+    if(level == 80) // We are on World map
 		verifySolidLevels();
 	
 	// apply xinertia
@@ -650,7 +649,7 @@ void CPlayer::InertiaAndFriction_X()
 		if (!ppogostick || (xinertia >  PhysicsSettings.player.max_x_speed) ||
 						   (xinertia < -PhysicsSettings.player.max_x_speed) )
 		{
-			if (!pfrozentime || m_episode!=1)
+            if (!pfrozentime || ep != 1)
 			{   // disable friction while frozen
 				// here the wall animation must be applied!
 				if(!psliding)
@@ -928,7 +927,11 @@ bool CPlayer::drawStatusScreen()
 	if(m_showStatusScreen)
 	{
 		if(!mpStatusScr)
-			mpStatusScr.reset(new CStatusScreen(m_episode, &inventory, mp_levels_completed, ankhtime, playerbaseframe));
+        {
+            const int ep = g_pBehaviorEngine->getEpisode();
+
+            mpStatusScr.reset(new CStatusScreen(ep, &inventory, mp_levels_completed, ankhtime, playerbaseframe));
+        }
 		
 		mpStatusScr->draw();
 		

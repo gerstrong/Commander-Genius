@@ -35,8 +35,7 @@ CPlayGame(ExeFile, level, numplayers)
 	if(!m_Player.empty())
 		m_Player.clear();
 
-	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
-			mp_level_completed, *mMap.get() ) );
+    m_Player.assign(m_NumPlayers, CPlayer(mp_level_completed, *mMap.get() ) );
 	
 	for(int i=0 ; i<m_NumPlayers ; i++)
 	{
@@ -88,8 +87,7 @@ void CPlayGameVorticon::setupPlayers()
 		// Calibrate Player to the right position, so it won't fall when level starts
 		CSprite &sprite = g_pGfxEngine->getSprite(PSTANDFRAME);
 		it_player->w = sprite.getWidth()<<STC;
-		it_player->h = sprite.getHeight();//<<STC;
-		it_player->m_level = m_Level;
+        it_player->h = sprite.getHeight();
 		mMap->m_Dark = false;
 		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
 

@@ -107,6 +107,9 @@ void CPlayer::touchedExit(int mpx)
 void CPlayer::walkbehindexitdoor()
 {
 	int xb, diff, width;
+
+    const int ep = g_pBehaviorEngine->getEpisode();
+
 	
     // don't draw keen as he walks through the door (past exitXpos)
     // X pixel position of right side of player
@@ -118,7 +121,7 @@ void CPlayer::walkbehindexitdoor()
         if (width < 0) width = 0;               // don't set to negative
 
         int frame = playerbaseframe;
-		if(m_episode == 3) frame++;
+        if(ep == 3) frame++;
 
         // set new width of all player walk frames
         g_pGfxEngine->getSprite(frame+0).setWidth(width);
@@ -212,7 +215,7 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 }
 
 void CPlayer::keencicle()
-{
+{        
 	// keencicle code (when keen gets hit by an ice chunk)
 	if(pfrozentime)
 	{
@@ -227,7 +230,10 @@ void CPlayer::keencicle()
 		}
 		else
 		{ // thawing out, show the thaw frame
-			if (m_episode==3)
+
+            const int ep = g_pBehaviorEngine->getEpisode();
+
+            if (ep==3)
 				pfrozenframe = 2;
 			else
 				pfrozenframe = 3;
@@ -784,7 +790,9 @@ void CPlayer::SelectFrame()
 {
     sprite = playerbaseframe;      // basic standing
 	
-	if (m_episode==3) sprite++;
+    const int ep = g_pBehaviorEngine->getEpisode();
+
+    if (ep==3) sprite++;
 
     // select the frame assuming he's pointing right. ep1 does not select
     // a walk frame while fading--this is for the bonus teleporter in L13.

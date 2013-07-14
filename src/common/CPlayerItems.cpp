@@ -270,7 +270,10 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 {
 	if(hintused) return false;
 
-	if(m_episode == 1)
+    const int ep = g_pBehaviorEngine->getEpisode();
+    const int level = mp_Map->getLevel();
+
+    if(ep == 1)
 	{
 		if(mp_Map->at(mpx, mpy) >= 435 && mp_Map->at(mpx, mpy) <= 438)
 		{
@@ -283,9 +286,9 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 			mp_Map->setTile(mpx, mpy, 315, true);
 		}
 
-		hintstring =  "EP1_YSIYM_LVL" + itoa(m_level);
+        hintstring =  "EP1_YSIYM_LVL" + itoa(level);
 	}
-	else if(m_episode == 2)
+    else if(ep == 2)
 	{
 		// Keen 2 seems to have a bug with those tiles.
 		// On other parts on the map they can be triggered
@@ -294,7 +297,7 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 		if(t != 429) return false;
 
 		// make the switch stop glowing
-		switch(m_level)
+        switch(level)
 		{
 		case 8:
 			hintstring = "EP2_VE_NOJUMPINDARK";
@@ -376,8 +379,10 @@ void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 	playSound(SOUND_DOOR_OPEN);
 	take_keycard(doortile);
 
+    const int ep = g_pBehaviorEngine->getEpisode();
+
 	// erase door from map
-	if (m_episode==3)	chgtotile = mp_Map->at(mpx-1, mpy);
+    if (ep==3)	chgtotile = mp_Map->at(mpx-1, mpy);
 	else	chgtotile = TileProperty[mp_Map->at(mpx ,mpy)].chgtile;
 
 	if(TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour>1 &&
