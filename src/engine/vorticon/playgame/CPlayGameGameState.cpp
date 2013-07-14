@@ -201,6 +201,11 @@ bool CPlayGameVorticon::loadGameState()
 bool CPlayGameVorticon::loadXMLGameState()
 {
 
+    // Cleanups
+    // Prepare for loading the new level map and the players.
+    cleanup();
+
+
     /// Create tree
     using boost::property_tree::ptree;
     ptree pt;
@@ -236,7 +241,6 @@ bool CPlayGameVorticon::loadXMLGameState()
             auto &chkpnt = stateTree.second;
             chkpnt.get<int>("<xmlattr>.x", m_checkpoint_x);
             chkpnt.get<int>("<xmlattr>.y", m_checkpoint_y);
-            break;
         }
         else if(tag == "Player")
         {
@@ -256,8 +260,10 @@ bool CPlayGameVorticon::loadXMLGameState()
 
             loadedPlayer.inventory.deserialize( playerTree.get_child("Inventory") );
 
+            loadedPlayer.m_index = m_Player.size();
+            loadedPlayer.setDatatoZero();
+
             m_Player.push_back(loadedPlayer);
-            break;
         }
         else if(tag == "SpriteObj")
         {
@@ -289,7 +295,6 @@ bool CPlayGameVorticon::loadXMLGameState()
             spriteObj->sprite = spriteTree.get<int>("sprite", 0);
 
             mSpriteObjectContainer.push_back( move(spriteObj) );
-            break;
         }
         else if(tag == "Map")
         {
@@ -305,6 +310,48 @@ bool CPlayGameVorticon::loadXMLGameState()
 
     const std::string b64text = stateNode.get<std::string>("complete");
     base64Decode( reinterpret_cast<byte*>(mp_level_completed), b64text);
+
+
+    // now setup the loaded data correctly!
+
+
+    // Create the special merge effect (Fadeout)
+    CColorMerge *pColorMergeFX = new CColorMerge(8);
+
+
+    CVorticonMapLoaderWithPlayer Maploader(mMap, m_Player, mSpriteObjectContainer);
+
+    if(!Maploader.load(m_Episode, m_Level, m_Gamepath, true, false))
+      return false;
+
+    m_level_command = START_LEVEL;
+
+
+    m_Player[0].setupCameraObject();
+    m_Player[0].mpCamera->attachObject(&m_Player[0]);
+
+    while(m_Player[0].mpCamera->m_moving)
+    {
+      m_Player[0].mpCamera->process();
+      m_Player[0].mpCamera->processEvents();
+    }
+
+    mMap->drawAll();
+
+    // Create the special merge effect (Fadeout)
+    g_pGfxEngine->setupEffect(pColorMergeFX);
+
+
+    mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
+                              m_NumPlayers, m_Episode, m_Level,
+                           mMap->m_Dark) );
+    setupPlayers();
+
+    g_pGfxEngine->Palette.setdark(mMap->m_Dark);
+
+
+    m_Player[0].mpCamera->reAdjust();
+
 
     return true;
 }
