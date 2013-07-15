@@ -52,7 +52,9 @@ public:
 	void convertAllOldFormats();
 	void readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players);
 	Uint32 getSlotNumber(const std::string &filename);
+    std::string getExtension(const std::string &filename);
 	std::string getSlotName(const std::string &filename);
+    std::string getSlotNameXML(const std::string &filename);
 	Uint32 getDataSize(std::ifstream &StateFile);
 	void readData(char *buffer, Uint32 size, std::ifstream &StateFile);
 

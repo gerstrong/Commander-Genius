@@ -259,8 +259,8 @@ bool CPlayGameVorticon::loadXMLGameState()
             // Also the last checkpoint is stored. This is the level entered from map
             // in Commander Keen games
             auto &chkpnt = stateTree.second;
-            chkpnt.get<int>("<xmlattr>.x", m_checkpoint_x);
-            chkpnt.get<int>("<xmlattr>.y", m_checkpoint_y);
+            m_checkpoint_x = chkpnt.get<int>("<xmlattr>.x", 0);
+            m_checkpoint_y = chkpnt.get<int>("<xmlattr>.y", 0);
         }
         else if(tag == "Player")
         {
@@ -375,9 +375,10 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     /// Save the Game in the CSavedGame object
     // store the episode, level and difficulty
+    stateNode.put("<xmlattr>.name", "justkeen");
     stateNode.put("episode", int(m_Episode));
     stateNode.put("level", m_Level);
-    stateNode.put("difficulty", g_pBehaviorEngine->mDifficulty);
+    stateNode.put("difficulty", g_pBehaviorEngine->mDifficulty);    
 
     // Also the last checkpoint is stored. This is the level entered from map
     // in Commander Keen games
@@ -448,6 +449,7 @@ bool CPlayGameVorticon::saveXMLGameState()
     stateNode.put("complete", base64Encode( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON) );    
 
     CSaveGameController &savedGame = *(gpSaveGameController);
+
     savedGame.saveXMLTree(pt);
 
     return true;

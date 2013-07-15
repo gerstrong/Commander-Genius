@@ -122,7 +122,13 @@ std::vector<std::string> CSaveGameController::getSlotList()
 		if(atoi(buf) == m_Episode)
 		{
 			Uint32 pos = getSlotNumber(*i)-1;
-			buf = getSlotName(*i);
+
+            const std::string ext = getExtension(*i);
+
+            if(ext == "ck")
+                buf = getSlotName(*i);
+            else if(ext == "cx")
+                buf = getSlotNameXML(*i);
 
 			if(pos+1 > filelist.size())
 				filelist.resize(pos+1, "");
@@ -480,34 +486,63 @@ Uint32 CSaveGameController::getSlotNumber(const std::string &filename)
 	return atoi(buf);
 }
 
+std::string CSaveGameController::getExtension(const std::string &filename)
+{
+    int pos = filename.find("cksave") + strlen("cksave");
+    std::string buf = filename.substr(pos);
+    buf = buf.substr(buf.find(".")+1);
+    buf = buf.substr(0, buf.size()-1);
+
+    return buf;
+}
+
 // This method returns the name of the slot
 std::string CSaveGameController::getSlotName(const std::string &filename)
 {
-	char version;
-	std::ifstream StateFile;
-	std::string SlotName;
-	OpenGameFileR( StateFile, filename, std::ofstream::binary );
+    char version;
+    std::ifstream StateFile;
+    std::string SlotName;
+    OpenGameFileR( StateFile, filename, std::ofstream::binary );
 
-	// Check Savegame version
-	version = StateFile.get();
+    // Check Savegame version
+    version = StateFile.get();
 
-	if(version != SAVEGAMEVERSION)
-	{
-		SlotName = "- File Incompatible -";
-	}
-	else
-	{
-		// read the slot name
-		Uint32 size = StateFile.get();
-		std::vector<char> buf(size + 1);
-		readData( &buf[0], size, StateFile);
-		buf[size] = '\0';
-		SlotName = &buf[0];
-	}
+    if(version != SAVEGAMEVERSION)
+    {
+        SlotName = "- File Incompatible -";
+    }
+    else
+    {
+        // read the slot name
+        Uint32 size = StateFile.get();
+        std::vector<char> buf(size + 1);
+        readData( &buf[0], size, StateFile);
+        buf[size] = '\0';
+        SlotName = &buf[0];
+    }
 
-	StateFile.close();
+    StateFile.close();
 
-	return SlotName;
+    return SlotName;
+}
+
+
+// Same but as XML Version
+std::string CSaveGameController::getSlotNameXML(const std::string &filename)
+{
+    /// Create tree
+    using boost::property_tree::ptree;
+    ptree pt;
+
+    CSaveGameController &savedGame = *(gpSaveGameController);
+
+    m_stateXMLfilename = filename;
+
+    if(!savedGame.loadXMLTree(pt))
+        return "";
+
+    /// Load the nodes and retrieve the data as needed
+    return pt.get<std::string>("GameState.<xmlattr>.name", "unknown");
 }
 
 /**
@@ -676,6 +711,9 @@ bool CSaveGameController::saveXMLTree(boost::property_tree::ptree &pt)
     using boost::property_tree::ptree;
     boost::property_tree::xml_writer_settings<char> settings('\t', 1);
 
+    // The savegame internal name
+    pt.put("GameState.<xmlattr>.name", m_statename);
+
     std::ofstream StateFile;
     bool open = OpenGameFileW( StateFile, m_stateXMLfilename, std::ofstream::binary );
 
@@ -685,6 +723,8 @@ bool CSaveGameController::saveXMLTree(boost::property_tree::ptree &pt)
         g_pLogFile->textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
         return false;
     }
+
+
 
     write_xml( StateFile, pt, settings );
 
