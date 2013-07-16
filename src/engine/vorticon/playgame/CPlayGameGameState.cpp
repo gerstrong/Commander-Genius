@@ -226,6 +226,22 @@ bool CPlayGameVorticon::loadXMLGameState()
             static_cast<Difficulty>(stateNode.get<int>("difficulty", int(NORMAL) ));
 
 
+
+    for( auto &stateTree : pt.get_child("GameState") )
+    {
+        const std::string tag = stateTree.first;
+        if(tag == "checkpoint")
+        {
+            // Also the last checkpoint is stored. This is the level entered from map
+            // in Commander Keen games
+            auto &chkpnt = stateTree.second;
+            m_checkpointset = chkpnt.get<bool>("<xmlattr>.set", false);
+            m_checkpoint_x = chkpnt.get<int>("<xmlattr>.x", 0);
+            m_checkpoint_y = chkpnt.get<int>("<xmlattr>.y", 0);
+        }
+    }
+
+
     // Create the special merge effect (Fadeout)
     CColorMerge *pColorMergeFX = new CColorMerge(8);
 
@@ -251,18 +267,11 @@ bool CPlayGameVorticon::loadXMLGameState()
         mSpriteObjectContainer.clear();
 
 
+
     for( auto &stateTree : pt.get_child("GameState") )
     {        
         const std::string tag = stateTree.first;
-        if(tag == "checkpoint")
-        {
-            // Also the last checkpoint is stored. This is the level entered from map
-            // in Commander Keen games
-            auto &chkpnt = stateTree.second;
-            m_checkpoint_x = chkpnt.get<int>("<xmlattr>.x", 0);
-            m_checkpoint_y = chkpnt.get<int>("<xmlattr>.y", 0);
-        }
-        else if(tag == "Player")
+        if(tag == "Player")
         {
             CPlayer loadedPlayer(mp_level_completed, *(mMap.get()) );
             m_Player.push_back(loadedPlayer);
@@ -383,7 +392,8 @@ bool CPlayGameVorticon::saveXMLGameState()
     // Also the last checkpoint is stored. This is the level entered from map
     // in Commander Keen games
     {
-        ptree &chkpnt = stateNode.add("checkpoint", "");
+        ptree &chkpnt = stateNode.add("checkpoint", "");        
+        chkpnt.put("<xmlattr>.set", m_checkpointset);
         chkpnt.put("<xmlattr>.x", m_checkpoint_x);
         chkpnt.put("<xmlattr>.y", m_checkpoint_y);
     }
