@@ -263,10 +263,8 @@ bool CPlayGameVorticon::loadXMLGameState()
     if(!m_Player.empty())
         m_Player.clear();
 
-    if(!mSpriteObjectContainer.empty())
-        mSpriteObjectContainer.clear();
 
-
+    Uint32 spriteId = 0;
 
     for( auto &stateTree : pt.get_child("GameState") )
     {        
@@ -302,28 +300,50 @@ bool CPlayGameVorticon::loadXMLGameState()
             object_t type;
             Uint32 x, y;
 
+            if(spriteId >= mSpriteObjectContainer.size())
+            {
+              std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap.get(), 0, 0, OBJ_NONE) );
+              object->exists = false;
+              mSpriteObjectContainer.push_back(move(object));
+            }
+
+            CVorticonSpriteObject &spriteObj = *(mSpriteObjectContainer.at(spriteId));
+
             type = (object_t)(spriteTree.get<int>("type", 0));
             x = spriteTree.get<int>("x", 0);
             y = spriteTree.get<int>("y", 0);
 
-            std::unique_ptr<CVorticonSpriteObject> spriteObj(new CVorticonSpriteObject( (mMap.get()), x, y, type ) );
+            spriteObj.m_type = type;
+            spriteObj.moveToForce(VectorD2<int>(x,y));
+            spriteObj.dead = spriteTree.get<bool>("dead", false);
+            spriteObj.onscreen = spriteTree.get<bool>("onscreen", false);
+            spriteObj.hasbeenonscreen = spriteTree.get<bool>("hasbeenonscreen", false);
+            spriteObj.exists = spriteTree.get<bool>("exists", false);
+            spriteObj.blockedd = spriteTree.get<bool>("blockedd", false);
+            spriteObj.blockedu = spriteTree.get<bool>("blockedu",false);
+            spriteObj.blockedl = spriteTree.get<bool>("blockedl", false);
+            spriteObj.blockedr = spriteTree.get<bool>("blockedr", false);
+            spriteObj.mHealthPoints = spriteTree.get<int>("HealthPoints", 0);
+            spriteObj.canbezapped = spriteTree.get<bool>("canbezapped", true);
+            spriteObj.cansupportplayer = spriteTree.get<bool>("cansupportplayer", true);
+            spriteObj.inhibitfall = spriteTree.get<bool>("inhibitfall", true);
+            spriteObj.honorPriority = spriteTree.get<bool>("honorPriority", true);
+            spriteObj.sprite = spriteTree.get<int>("sprite", 0);
 
-            spriteObj->dead = spriteTree.get<bool>("dead", false);
-            spriteObj->onscreen = spriteTree.get<bool>("onscreen", false);
-            spriteObj->hasbeenonscreen = spriteTree.get<bool>("hasbeenonscreen", false);
-            spriteObj->exists = spriteTree.get<bool>("exists", false);
-            spriteObj->blockedd = spriteTree.get<bool>("blockedd", false);
-            spriteObj->blockedu = spriteTree.get<bool>("blockedu",false);
-            spriteObj->blockedl = spriteTree.get<bool>("blockedl", false);
-            spriteObj->blockedr = spriteTree.get<bool>("blockedr", false);
-            spriteObj->mHealthPoints = spriteTree.get<int>("HealthPoints", 0);
-            spriteObj->canbezapped = spriteTree.get<bool>("canbezapped", true);
-            spriteObj->cansupportplayer = spriteTree.get<bool>("cansupportplayer", true);
-            spriteObj->inhibitfall = spriteTree.get<bool>("inhibitfall", true);
-            spriteObj->honorPriority = spriteTree.get<bool>("honorPriority", true);
-            spriteObj->sprite = spriteTree.get<int>("sprite", 0);
 
-            mSpriteObjectContainer.push_back( move(spriteObj) );
+            spriteObj.performCollisions();
+
+            if(spriteObj.m_type == OBJ_DOOR or
+              spriteObj.m_type == OBJ_RAY or
+              spriteObj.m_type == OBJ_SNDWAVE or
+              spriteObj.m_type == OBJ_FIREBALL or
+              spriteObj.m_type == OBJ_ICECHUNK or
+              spriteObj.m_type == OBJ_ICEBIT or
+              spriteObj.m_type == OBJ_GOTPOINTS or
+              spriteObj.m_type == OBJ_ANKHSHIELD) // Some objects are really not needed. So don't load them
+            spriteObj.exists = false;
+
+            spriteId++;
         }
         else if(tag == "Map")
         {
