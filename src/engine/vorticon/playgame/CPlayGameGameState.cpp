@@ -200,11 +200,9 @@ bool CPlayGameVorticon::loadGameState()
 
 bool CPlayGameVorticon::loadXMLGameState()
 {
-
     // Cleanups
     // Prepare for loading the new level map and the players.
     cleanup();
-
 
     /// Create tree
     using boost::property_tree::ptree;
@@ -217,15 +215,12 @@ bool CPlayGameVorticon::loadXMLGameState()
     /// Load the nodes and retrieve the data as needed
     ptree &stateNode = pt.get_child("GameState");
 
-
     /// Load the Game in the CSavedGame object
     // get the episode, level and difficulty
     m_Episode = stateNode.get<int>("episode", 1); // Default value = 1. Bit strange not?
     int newLevel = stateNode.get<int>("level", 1);
     g_pBehaviorEngine->mDifficulty =
             static_cast<Difficulty>(stateNode.get<int>("difficulty", int(NORMAL) ));
-
-
 
     for( auto &stateTree : pt.get_child("GameState") )
     {
@@ -404,7 +399,6 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     /// Save the Game in the CSavedGame object
     // store the episode, level and difficulty
-    stateNode.put("<xmlattr>.name", "justkeen");
     stateNode.put("episode", int(m_Episode));
     stateNode.put("level", m_Level);
     stateNode.put("difficulty", g_pBehaviorEngine->mDifficulty);    

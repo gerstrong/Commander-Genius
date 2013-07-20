@@ -724,8 +724,6 @@ bool CSaveGameController::saveXMLTree(boost::property_tree::ptree &pt)
         return false;
     }
 
-
-
     write_xml( StateFile, pt, settings );
 
     return true;

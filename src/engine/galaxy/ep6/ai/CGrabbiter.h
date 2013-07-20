@@ -43,6 +43,6 @@ public:
     void getTouchedBy(CSpriteObject &theObject);    
 };
 
-};
+}
 
 #endif // CGRABBITER_H

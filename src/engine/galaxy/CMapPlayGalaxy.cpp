@@ -17,6 +17,9 @@
 #include "ep4/ai/CSmokePuff.h"
 #include "CLogFile.h"
 
+#include <boost/property_tree/ptree.hpp>
+#include "Base64.h"
+
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode) :
 mActive(false),
 mExeFile(ExeFile),
@@ -394,8 +397,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 // Saves the level using the Savegamecontroller in XML.
 void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
 {
-
-    // TODO: Coding here
+    // Coding here
     const Uint16 level = mMap.getLevel();
     levelNode.put("level", level);
 
@@ -447,22 +449,142 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
         it->serialize(spriteNode);
     }
 
-    /*// Save the map_data as it is left
-    savedGame.encodeData(mMap.m_width);
-    savedGame.encodeData(mMap.m_height);
+    // Save the map_data as it is left
+    {
+        auto &mapNode = levelNode.add("Map", "");
+        mapNode.put("width", mMap.m_width);
+        mapNode.put("height", mMap.m_height);
 
-    const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
+        const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
 
-    savedGame.addData( reinterpret_cast<byte*>(mMap.getBackgroundData()), mapSize );
-    savedGame.addData( reinterpret_cast<byte*>(mMap.getForegroundData()), mapSize );
-    savedGame.addData( reinterpret_cast<byte*>(mMap.getInfoData()), mapSize );
-    */
+        const std::string b64textBG   = base64Encode( reinterpret_cast<byte*>(mMap.getBackgroundData()), mapSize);
+        const std::string b64textFG   = base64Encode( reinterpret_cast<byte*>(mMap.getForegroundData()), mapSize);
+        const std::string b64textInfo = base64Encode( reinterpret_cast<byte*>(mMap.getInfoData()), mapSize);
+
+        mapNode.put("bgdata", b64textBG);
+        mapNode.put("fgdata", b64textFG);
+        mapNode.put("infodata", b64textInfo);
+    }
 }
 
 // This is for loading the game
 void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
 {
-    // TODO: Coding here
+    int level = levelNode.get<int>("level", level);
+
+    std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
+    const unsigned int episode = g_pBehaviorEngine->getEpisode();
+
+    if(episode == 4)
+    {
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+    }
+    else if(episode == 5)
+    {
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+    }
+    else if(episode == 6)
+    {
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+    }
+    else
+    {
+        g_pLogFile->textOut("Error loading the file. This game is not supported!");
+        return;
+    }   
+
+    // Load the World map level.
+    mapLoader->loadMap( mMap, level );
+
+    // Load the Background Music
+    g_pMusicPlayer->stop();
+
+    if( !g_pMusicPlayer->load(mExeFile, level) )
+        g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    else
+        g_pMusicPlayer->play();
+
+
+    // load the number of objects on screen
+    Uint32 x, y;
+    Uint16 foeID;
+
+    // Now load the previously created objects
+
+    const size_t size = levelNode.get<int>("NumSprites", 0);
+
+    // Now load the previously created objects
+    if(!mObjectPtr.empty())
+        mObjectPtr.clear();
+
+    mMap.mNumFuses = 0;
+    mMap.mFuseInLevel = false;
+
+
+    for( Uint32 i=0 ; i<size ; i++ )
+    {
+        Uint16 actionNumber;
+        auto &spriteNode = levelNode.get_child("Sprite");
+
+        foeID = spriteNode.get<int>("<xmlattr>.id");
+        x = spriteNode.get<int>("<xmlattr>.x");;
+        y = spriteNode.get<int>("<xmlattr>.y");;
+
+        CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
+
+        // TODO: Be careful here is a bad Null Pointer inside that structure
+        if(pNewfoe == nullptr)
+        {
+            pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
+        }
+
+        pNewfoe->dead = spriteNode.get<bool>("dead", false);
+        pNewfoe->onscreen = spriteNode.get<bool>("onscreen", false);
+        pNewfoe->hasbeenonscreen = spriteNode.get<bool>("hasbeenonscreen", false);
+        pNewfoe->exists = spriteNode.get<bool>("exists", false);
+        pNewfoe->blockedd = spriteNode.get<bool>("blockedd", false);
+        pNewfoe->blockedu = spriteNode.get<bool>("blockedu", false);
+        pNewfoe->blockedl = spriteNode.get<bool>("blockedl", false);
+        pNewfoe->blockedr = spriteNode.get<bool>("blockedr", false);
+        pNewfoe->xDirection = spriteNode.get<int>("xDirection", false);
+        pNewfoe->yDirection = spriteNode.get<int>("yDirection", false);
+        pNewfoe->mHealthPoints = spriteNode.get<int>("health", false);
+        pNewfoe->canbezapped = spriteNode.get<bool>("canbezapped", false);
+        pNewfoe->cansupportplayer = spriteNode.get<bool>("cansupportplayer", false);
+        pNewfoe->inhibitfall = spriteNode.get<bool>("inhibitfall", false);
+        pNewfoe->honorPriority = spriteNode.get<bool>("honorPriority", false);
+        pNewfoe->sprite = spriteNode.get<int>("spritePic", false);
+        actionNumber = spriteNode.get<int>("Actionumber", false);
+        pNewfoe->deserialize(spriteNode);
+
+        if(pNewfoe->exists)
+        {
+            pNewfoe->setActionForce(actionNumber);
+            std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
+            mObjectPtr.push_back(newFoe);
+        }
+    }
+
+
+    // Save the map_data as it is left
+    {
+        auto &mapNode = levelNode.get_child("Map");
+        mMap.m_width = mapNode.get<int>("width");
+        mMap.m_height = mapNode.get<int>("height");
+
+        const std::string b64textBG   = mapNode.get<std::string>("bgdata");
+        const std::string b64textFG   = mapNode.get<std::string>("fgdata");
+        const std::string b64textInfo = mapNode.get<std::string>("infodata");
+
+        base64Decode(reinterpret_cast<byte*>(mMap.getBackgroundData()), b64textBG);
+        base64Decode(reinterpret_cast<byte*>(mMap.getForegroundData()), b64textFG);
+        base64Decode(reinterpret_cast<byte*>(mMap.getInfoData()), b64textInfo);
+    }
+
+    if( mMap.m_width * mMap.m_height > 0 )
+    {
+        mMap.drawAll();
+    }
 }
 
 

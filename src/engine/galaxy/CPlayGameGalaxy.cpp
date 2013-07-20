@@ -106,7 +106,7 @@ bool CPlayGameGalaxy::saveGameState()
 }
 
 bool CPlayGameGalaxy::loadXMLGameState()
-{    
+{            
     /// Create tree for reading
     using boost::property_tree::ptree;
     ptree pt;
@@ -120,7 +120,6 @@ bool CPlayGameGalaxy::loadXMLGameState()
 
     /// Load the Game in the CSavedGame object
     // Get the episode, and difficulty
-    //savedGame.m_statename = stateNode.get<std::string>("<xmlattr>.name", "justkeen");
     m_Episode = stateNode.get<int>("episode");
     g_pBehaviorEngine->mDifficulty = static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
 
@@ -167,8 +166,7 @@ bool CPlayGameGalaxy::saveXMLGameState()
     ptree &stateNode = pt.add("GameState", "");
 
     /// Save the Game in the CSavedGame object
-    // store the episode, level and difficulty
-    //stateNode.put("<xmlattr>.name", savedGame.m_statename);
+    // store the episode, level and difficulty    
     stateNode.put("episode", int(m_Episode));
 
 
@@ -189,7 +187,7 @@ bool CPlayGameGalaxy::saveXMLGameState()
     bool active = m_WorldMap.isActive();
     ptree &wmNode = stateNode.add("WorldMap", "");
     wmNode.put("<xmlattr>.active", active);
-    //m_WorldMap >> wmNode;
+    m_WorldMap >> wmNode;
 
     active = m_LevelPlay.isActive();
     ptree &levelPlayNode = stateNode.add("LevelPlay", "");

@@ -90,8 +90,8 @@ void CGamePlayMode::ponder()
 	
 	if( EventContainer.occurredEvent<SaveGameEvent>() )
 	{
-        mp_PlayGame->saveGameState();
         mp_PlayGame->saveXMLGameState();
+        //mp_PlayGame->saveGameState();
         EventContainer.pop_Event();
 	}
 
