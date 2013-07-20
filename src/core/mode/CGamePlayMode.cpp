@@ -73,7 +73,11 @@ void CGamePlayMode::init()
 void CGamePlayMode::loadGame()
 {
     mp_PlayGame->ponder();
-	mp_PlayGame->loadGameState();
+
+    if(mp_PlayGame->loadXMLGameState())
+        return;
+
+    mp_PlayGame->loadGameState();
 }
 
 
@@ -86,8 +90,9 @@ void CGamePlayMode::ponder()
 	
 	if( EventContainer.occurredEvent<SaveGameEvent>() )
 	{
-		mp_PlayGame->saveGameState();
-		EventContainer.pop_Event();
+        mp_PlayGame->saveGameState();
+        mp_PlayGame->saveXMLGameState();
+        EventContainer.pop_Event();
 	}
 
 

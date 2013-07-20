@@ -22,6 +22,8 @@
 
 #include <iostream>
 
+#include <boost/property_tree/ptree.hpp>
+
 namespace galaxy
 {
 
@@ -67,7 +69,7 @@ bool CPlayGameGalaxy::loadGameState()
 	savedGame.decodeData( active );
 	m_LevelPlay.setActive(active);
 	if(active)
-		m_LevelPlay << savedGame;
+        m_LevelPlay<<savedGame;
 
 	// Create the special merge effect (Fadeout)
 	g_pGfxEngine->setupEffect(pColorMergeFX);
@@ -102,6 +104,97 @@ bool CPlayGameGalaxy::saveGameState()
 
 	return savedGame.save();
 }
+
+bool CPlayGameGalaxy::loadXMLGameState()
+{
+    CSaveGameController &savedGame = *(gpSaveGameController);
+
+    /// Create tree for reading
+    using boost::property_tree::ptree;
+    ptree pt;
+
+    /// Read the nodes and store the data as needed
+    ptree &stateNode = pt.get_child("GameState");
+
+    /// Load the Game in the CSavedGame object
+    // Get the episode, and difficulty
+    //savedGame.m_statename = stateNode.get<std::string>("<xmlattr>.name", "justkeen");
+    m_Episode = stateNode.get<int>("episode");
+    g_pBehaviorEngine->mDifficulty = static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
+
+    // Get number of Players
+    m_NumPlayers = stateNode.get<int>("NumPlayer");
+
+    for( unsigned int id=0 ; id<m_NumPlayers ; id++ )
+    {
+        ptree &playerNode = pt.get_child("Player");
+        //id = playerNode.get<int>("<xmlattr>.id", );
+        //m_Inventory << pt.get("inventory", "");
+    }
+
+
+    bool active;
+    ptree &wmNode = stateNode.get_child("WorldMap");
+    active = wmNode.get<bool>("<xmlattr>.active", false);
+    m_WorldMap.setActive(active);
+    //m_WorldMap << wmNode;
+
+    ptree &levelPlayNode = stateNode.get_child("LevelPlay");
+    active = wmNode.get<bool>("<xmlattr>.active");
+
+    /*if( active )
+        m_LevelPlay << levelPlayNode;*/
+
+    return true;
+}
+
+bool CPlayGameGalaxy::saveXMLGameState()
+{
+    CSaveGameController &savedGame = *(gpSaveGameController);
+
+    /// Create tree
+    using boost::property_tree::ptree;
+    ptree pt;
+
+    /// Create the nodes and store the data as needed
+    ptree &stateNode = pt.add("GameState", "");
+
+    /// Save the Game in the CSavedGame object
+    // store the episode, level and difficulty
+    //stateNode.put("<xmlattr>.name", savedGame.m_statename);
+    stateNode.put("episode", int(m_Episode));
+
+
+    /// Save the Game in the CSavedGame object
+    // store the episode, level and difficulty
+    stateNode.put("difficulty", g_pBehaviorEngine->mDifficulty);
+
+    // Save number of Players
+    stateNode.put("NumPlayer", m_NumPlayers);
+
+    for( unsigned int id=0 ; id<m_NumPlayers ; id++ )
+    {
+        ptree &playerNode = pt.add("Player", "");
+        playerNode.put("<xmlattr>.id", id);
+        m_Inventory >> pt.add("inventory", "");
+    }
+
+    bool active = m_WorldMap.isActive();
+    ptree &wmNode = stateNode.add("WorldMap", "");
+    wmNode.put("<xmlattr>.active", active);
+    //m_WorldMap >> wmNode;
+
+    active = m_LevelPlay.isActive();
+    ptree &levelPlayNode = stateNode.add("LevelPlay", "");
+    levelPlayNode.put("<xmlattr>.active", active);
+
+    /*if( active )
+        m_LevelPlay >> levelPlayNode;*/
+
+    return true;
+}
+
+
 
 
 // Setup for the ingame

@@ -11,6 +11,7 @@
 #define ITEMSGALAXY_H_
 
 #include "common/CBehaviorEngine.h"
+#include <boost/property_tree/ptree.hpp>
 
 struct stItemGalaxy
 {
@@ -20,16 +21,22 @@ struct stItemGalaxy
 	unsigned long m_lifeAt;
 	int m_drops;
 	unsigned int m_bullets;
-	struct {
+
+    struct
+    {
 		void fillup()
-		{	red = 1, blue = 1, green = 1, yellow = 1;	};
+        {
+            red = 1, blue = 1, green = 1, yellow = 1;
+        }
 		void empty()
-		{	red = 0, blue = 0, green = 0, yellow = 0;	};
+        {
+            red = 0, blue = 0, green = 0, yellow = 0;
+        }
 		int red, blue, green, yellow;
 	} m_gem;
 
 	int m_keycards;
-	int fuses_levels_completed;
+    int fuse_levels_completed;
 
 	union {
 	    
@@ -46,57 +53,20 @@ struct stItemGalaxy
 			unsigned char rocketKeycard;
 		}ep6;
 				
-	}m_special;
+    } m_special;
 
-	void reset()
-	{
-		m_lifes = 3;
-		m_points = 0;
-		m_lifeAt = 20000;
-		m_drops = 0;
-		m_bullets = 0;
-		m_gem.empty();
 
-		m_keycards = 0;
-		
-		const int ep = g_pBehaviorEngine->getEpisode();
+    // Member prototypes
+    void reset();
+    void triggerAllItemsCheat();
 
-		if(ep == 4)
-		{
-		    m_special.ep4.elders = 0;
-		    m_special.ep4.swimsuit = 0;
-		}
-		else if(ep == 6)
-		{
-		    m_special.ep6.hook = 0;
-		    m_special.ep6.sandwich = 0;
-		    m_special.ep6.rocketKeycard = 0;
-		}				
-		
-		fuses_levels_completed = 0;
-	}
 
-	void triggerAllItemsCheat()
-	{
-		m_lifes = 10;
-		m_bullets = 99;
-		m_gem.fillup();
-		
-		const int ep = g_pBehaviorEngine->getEpisode();
-		
-		if(ep == 4)
-		{
-		    m_special.ep4.swimsuit = 1;
-		}
-		else if(ep == 6)
-		{
-		    m_special.ep6.hook = 1;
-		    m_special.ep6.sandwich = 1;
-		    m_special.ep6.rocketKeycard = 1;
-		}				
-		
-		m_keycards = 1;
-	}
+    // Saves the inventory using the Savegamecontroller.
+    void operator>>(boost::property_tree::ptree &invNode);
+
+    // This is for loading the game
+    void operator<<(boost::property_tree::ptree &invNode);
+
 };
 
 #endif /* ITEMSGALAXY_H_ */

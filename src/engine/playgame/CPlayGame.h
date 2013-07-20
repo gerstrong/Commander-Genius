@@ -28,9 +28,11 @@ public:
 	CPlayGame(CExeFile &ExeFile, char level,
 			 char numplayers);
 
-	virtual bool loadGameState() = 0;
-	virtual bool saveGameState() = 0;
-	virtual bool init() = 0;
+    virtual bool loadGameState() = 0;
+    virtual bool saveGameState() = 0;
+    virtual bool loadXMLGameState() = 0;
+    virtual bool saveXMLGameState() = 0;
+    virtual bool init() = 0;
 	virtual void cleanup() = 0;
 
 	bool isFinished();

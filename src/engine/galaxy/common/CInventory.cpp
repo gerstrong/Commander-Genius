@@ -52,6 +52,7 @@ m_LevelName(levelname)
 	m_HUD.sync();
 }
 
+
 void CInventory::reset()
 {
 	Item.reset();
@@ -118,9 +119,19 @@ void CInventory::operator>>(CSaveGameController &savedGame)
 	savedGame.encodeData(Item);
 }
 
+void CInventory::operator>>(boost::property_tree::ptree &invNode)
+{
+    Item >> invNode;
+}
+
 void CInventory::operator<<(CSaveGameController &savedGame)
 {
 	savedGame.decodeData(Item);
+}
+
+void CInventory::operator<<(boost::property_tree::ptree &invNode)
+{
+    Item << invNode;
 }
 
 

@@ -2558,7 +2558,7 @@ void CPlayerLevel::process()
 	    EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
 	    g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
 	    m_Inventory.Item.m_gem.empty();
-	    m_Inventory.Item.fuses_levels_completed++;
+        m_Inventory.Item.fuse_levels_completed++;
 	    mp_Map->mFuseInLevel = false;
 	    return;
 	}

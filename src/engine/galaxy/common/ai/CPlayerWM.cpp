@@ -143,10 +143,10 @@ void CPlayerWM::process()
 			    // enough fuses broken, in fact of all the fuses levels, except the secret one.
 			    // then open the elevator door for the last level!
 			    // NOTE: I'm not sure, if there is a better way to do it. if you know one, go ahead and improve this!
-			    if(m_Inventory.Item.fuses_levels_completed >= 4)
+                if(m_Inventory.Item.fuse_levels_completed >= 4)
 			    {
 				// Must happen only once!
-				m_Inventory.Item.fuses_levels_completed = 0;
+                m_Inventory.Item.fuse_levels_completed = 0;
 
 				int x = (0x1A)<<CSF; // upper left corner of that elevator
 				int y = (0x37)<<CSF; // on the map

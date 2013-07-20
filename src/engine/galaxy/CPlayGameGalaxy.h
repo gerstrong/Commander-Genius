@@ -33,6 +33,8 @@ public:
 
 	bool loadGameState();
 	bool saveGameState();
+    bool loadXMLGameState();
+    bool saveXMLGameState();
 	bool init();
 
     void ponder();

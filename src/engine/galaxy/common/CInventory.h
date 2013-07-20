@@ -40,10 +40,12 @@ public:
 	void toggleStatusScreen();
 
 	// Saves the inventory using the Savegamecontroller.
-	void operator>>(CSaveGameController &savedGame);
+	void operator>>(CSaveGameController &savedGame);    
+    void operator>>(boost::property_tree::ptree &invNode);
 
 	// This is for loading the game
 	void operator<<(CSaveGameController &savedGame);
+    void operator<<(boost::property_tree::ptree &invNode);
 
 	stItemGalaxy Item;
 

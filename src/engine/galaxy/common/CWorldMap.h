@@ -11,6 +11,7 @@
 #define CWORLDMAP_H_
 
 #include "engine/galaxy/CMapPlayGalaxy.h"
+#include <boost/property_tree/ptree.hpp>
 
 namespace galaxy {
 
@@ -21,6 +22,13 @@ public:
 
 	void init();
 	void loadAndPlayMusic();
+
+    // Saves the inventory using the Savegamecontroller.
+    //void operator>>(boost::property_tree::ptree &invNode);
+
+    // This is for loading the game
+    //void operator<<(boost::property_tree::ptree &invNode);
+
 };
 
 }
