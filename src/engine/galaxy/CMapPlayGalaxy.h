@@ -52,6 +52,13 @@ public:
 	// This is for loading the game
 	bool operator<<(CSaveGameController &savedGame);
 
+    // Saves the inventory using the Savegamecontroller.
+    void operator>>(boost::property_tree::ptree &levelNode);
+
+    // This is for loading the game
+    void operator<<(boost::property_tree::ptree &levelNode);
+
+
 	CMap &getMapObj()
 	{	return mMap	;}
 

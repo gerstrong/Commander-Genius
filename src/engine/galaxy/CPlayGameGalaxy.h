@@ -43,6 +43,8 @@ public:
 	void processInput();
 	void processRendering();
 
+    void operator<<(boost::property_tree::ptree &invNode);
+
 	void cleanup() {};
 
 private:

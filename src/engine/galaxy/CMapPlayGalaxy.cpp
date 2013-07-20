@@ -389,3 +389,81 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 	return true;
 }
+
+
+// Saves the level using the Savegamecontroller in XML.
+void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
+{
+
+    // TODO: Coding here
+    const Uint16 level = mMap.getLevel();
+    levelNode.put("level", level);
+
+    std::vector< std::shared_ptr<CGalaxySpriteObject> > filteredObjects;
+
+    // let's filter the Foe out that won't do any good, by having an invalid foe id
+    for( auto &it : mObjectPtr )
+    {
+        if( it->mFoeID != 0 )
+        {
+            filteredObjects.push_back( it );
+        }
+    }
+
+    const size_t size = filteredObjects.size();
+
+    // save the number of objects on screen
+    levelNode.put("NumSprites", size);
+
+    for( auto &it : filteredObjects )
+    {
+        auto &spriteNode = levelNode.add("Sprite", "");
+
+        // save all the objects states
+        unsigned int newYpos = it->getYPosition();
+        unsigned int newXpos = it->getXPosition();
+
+        spriteNode.put("<xmlattr>.id", it->mFoeID);
+        spriteNode.put("<xmlattr>.x", newXpos);
+        spriteNode.put("<xmlattr>.y", newYpos);
+
+        spriteNode.put("dead", it->dead);
+        spriteNode.put("onscreen", it->onscreen);
+        spriteNode.put("hasbeenonscreen", it->hasbeenonscreen);
+        spriteNode.put("exists", it->exists);
+        spriteNode.put("blockedd", it->blockedd);
+        spriteNode.put("blockedu", it->blockedu);
+        spriteNode.put("blockedl", it->blockedl);
+        spriteNode.put("blockedr", it->blockedr);
+        spriteNode.put("xDirection", it->xDirection);
+        spriteNode.put("yDirection", it->yDirection);
+        spriteNode.put("health", it->mHealthPoints);
+        spriteNode.put("canbezapped", it->canbezapped);
+        spriteNode.put("cansupportplayer", it->cansupportplayer);
+        spriteNode.put("inhibitfall", it->inhibitfall);
+        spriteNode.put("honorPriority", it->honorPriority);
+        spriteNode.put("spritePic", it->sprite);
+        spriteNode.put("Actionumber", it->m_ActionNumber);
+        it->serialize(spriteNode); // TODO: Be careful! Some sprites need implemenation for that.
+                                   // Otherwise you might break some saved games
+    }
+
+    /*// Save the map_data as it is left
+    savedGame.encodeData(mMap.m_width);
+    savedGame.encodeData(mMap.m_height);
+
+    const Uint32 mapSize = mMap.m_width*mMap.m_height*sizeof(word);
+
+    savedGame.addData( reinterpret_cast<byte*>(mMap.getBackgroundData()), mapSize );
+    savedGame.addData( reinterpret_cast<byte*>(mMap.getForegroundData()), mapSize );
+    savedGame.addData( reinterpret_cast<byte*>(mMap.getInfoData()), mapSize );
+    */
+}
+
+// This is for loading the game
+void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
+{
+    // TODO: Coding here
+}
+
+

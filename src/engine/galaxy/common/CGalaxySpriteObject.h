@@ -11,6 +11,8 @@
 #include "common/CSpriteObject.h"
 #include <fileio/CSaveGameController.h>
 
+#include <boost/property_tree/ptree.hpp>
+
 class CGalaxySpriteObject: public CSpriteObject
 {
 public:
@@ -43,6 +45,9 @@ public:
 	// For saving and loading...
 	virtual void deserialize(CSaveGameController &savedGame) {}
 	virtual void serialize(CSaveGameController &savedGame) {}
+
+    virtual void serialize(boost::property_tree::ptree &node) {}
+    virtual void deserialize(boost::property_tree::ptree &node) {}
 
 	// This is used for action format only
 	uint16_t mFoeID;

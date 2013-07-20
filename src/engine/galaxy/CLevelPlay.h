@@ -24,12 +24,6 @@ public:
 
 	bool loadLevel(const Uint16 level);
 
-    // Saves the inventory using the Savegamecontroller.
-    //void operator>>(boost::property_tree::ptree &invNode);
-
-    // This is for loading the game
-    //void operator<<(boost::property_tree::ptree &invNode);
-
 };
 
 }

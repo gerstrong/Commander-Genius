@@ -57,17 +57,4 @@ void CWorldMap::loadAndPlayMusic()
 }
 
 
-// Saves the inventory using the Savegamecontroller.
-/*void CWorldMap::operator>>(boost::property_tree::ptree &invNode)
-{
-    // TODO: Coding here
-}
-
-// This is for loading the game
-void CWorldMap::operator<<(boost::property_tree::ptree &invNode)
-{
-    // TODO: Coding here
-}*/
-
-
 }

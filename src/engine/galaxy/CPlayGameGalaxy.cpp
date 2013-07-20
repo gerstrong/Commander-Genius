@@ -106,12 +106,14 @@ bool CPlayGameGalaxy::saveGameState()
 }
 
 bool CPlayGameGalaxy::loadXMLGameState()
-{
-    CSaveGameController &savedGame = *(gpSaveGameController);
-
+{    
     /// Create tree for reading
     using boost::property_tree::ptree;
     ptree pt;
+
+    CSaveGameController &savedGame = *(gpSaveGameController);
+    if(!savedGame.loadXMLTree(pt))
+        return false;
 
     /// Read the nodes and store the data as needed
     ptree &stateNode = pt.get_child("GameState");
@@ -129,7 +131,7 @@ bool CPlayGameGalaxy::loadXMLGameState()
     {
         ptree &playerNode = pt.get_child("Player");
         //id = playerNode.get<int>("<xmlattr>.id", );
-        //m_Inventory << pt.get("inventory", "");
+        m_Inventory << playerNode.get_child("inventory");
     }
 
 
@@ -137,21 +139,26 @@ bool CPlayGameGalaxy::loadXMLGameState()
     ptree &wmNode = stateNode.get_child("WorldMap");
     active = wmNode.get<bool>("<xmlattr>.active", false);
     m_WorldMap.setActive(active);
-    //m_WorldMap << wmNode;
+    m_WorldMap << wmNode;
 
     ptree &levelPlayNode = stateNode.get_child("LevelPlay");
     active = wmNode.get<bool>("<xmlattr>.active");
 
-    /*if( active )
-        m_LevelPlay << levelPlayNode;*/
+    if( active )
+        m_LevelPlay << levelPlayNode;
 
     return true;
 }
 
+
+void CPlayGameGalaxy::operator<<(boost::property_tree::ptree &invNode)
+{
+    m_Inventory<<invNode;
+}
+
+
 bool CPlayGameGalaxy::saveXMLGameState()
 {
-    CSaveGameController &savedGame = *(gpSaveGameController);
-
     /// Create tree
     using boost::property_tree::ptree;
     ptree pt;
@@ -188,10 +195,14 @@ bool CPlayGameGalaxy::saveXMLGameState()
     ptree &levelPlayNode = stateNode.add("LevelPlay", "");
     levelPlayNode.put("<xmlattr>.active", active);
 
-    /*if( active )
-        m_LevelPlay >> levelPlayNode;*/
+    if( active )
+        m_LevelPlay >> levelPlayNode;
 
-    return true;
+    CSaveGameController &savedGame = *(gpSaveGameController);
+    if(savedGame.saveXMLTree(pt))
+        return true;
+
+    return false;
 }
 
 

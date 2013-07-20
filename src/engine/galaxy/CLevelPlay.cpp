@@ -77,21 +77,4 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 }
 
 
-
-
-// Saves the inventory using the Savegamecontroller.
-/*void CLevelPlay::operator>>(boost::property_tree::ptree &invNode)
-{
-    // TODO: Coding here
-}
-
-// This is for loading the game
-void CLevelPlay::operator<<(boost::property_tree::ptree &invNode)
-{
-    // TODO: Coding here
-}*/
-
-
-
-
 }
