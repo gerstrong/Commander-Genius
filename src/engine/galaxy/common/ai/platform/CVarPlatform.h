@@ -12,30 +12,41 @@
 #include <engine/galaxy/common/ai/CMoveTarget.h>
 #include "CVec.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 namespace galaxy {
 
 
 class CVarPlatform : public CPlatform, public CMoveTarget
 {
 public:
-	CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-			const direction_t horidir, 
-			const direction_t vertdir, 
-			const int actionOffset);
+    CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
+                 const direction_t horidir,
+                 const direction_t vertdir,
+                 const int actionOffset);
 
-	void process();
-		
-	void deserialize(CSaveGameController &savedGame) 
-	{
-	    savedGame.decodeData(target.x);
-	    savedGame.decodeData(target.y);
-	}
+    void process();
 
-	void serialize(CSaveGameController &savedGame) 
-	{
-    	    savedGame.encodeData(target.x);
-	    savedGame.encodeData(target.y);
-	}
+    void deserialize(CSaveGameController &savedGame)
+    {
+        savedGame.decodeData(target.x);
+        savedGame.decodeData(target.y);
+    }
+
+    void serialize(CSaveGameController &savedGame)
+    {
+        savedGame.encodeData(target.x);
+        savedGame.encodeData(target.y);
+    }
+
+    void serialize(boost::property_tree::ptree &node)
+    {
+        auto &posNode = node.put("target", "");
+        posNode.put("<xmlattr>.x", target.x);
+        posNode.put("<xmlattr>.y", target.y);
+    }
+
+
 	
 };
 

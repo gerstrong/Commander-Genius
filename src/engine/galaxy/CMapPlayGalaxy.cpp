@@ -444,8 +444,7 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
         spriteNode.put("honorPriority", it->honorPriority);
         spriteNode.put("spritePic", it->sprite);
         spriteNode.put("Actionumber", it->m_ActionNumber);
-        it->serialize(spriteNode); // TODO: Be careful! Some sprites need implemenation for that.
-                                   // Otherwise you might break some saved games
+        it->serialize(spriteNode);
     }
 
     /*// Save the map_data as it is left

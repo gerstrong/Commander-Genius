@@ -28,6 +28,13 @@ public:
       savedGame.encodeData(m_Pos.y);
     }
 
+    void serialize(boost::property_tree::ptree &node)
+    {
+        auto &posNode = node.put("pos", "");
+        posNode.put("<xmlattr>.x", m_Pos.x);
+        posNode.put("<xmlattr>.y", m_Pos.y);
+    }
+
     void getTouchedBy(CSpriteObject &theObject);
 
     void process();

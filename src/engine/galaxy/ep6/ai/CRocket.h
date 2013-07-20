@@ -14,22 +14,34 @@ class CRocket : public CGalaxyActionSpriteObject, public CMoveTarget
 public:
 	CRocket(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
 
-    void deserialize(CSaveGameController &savedGame) 
+    void deserialize(CSaveGameController &savedGame)
     {
-      savedGame.decodeData(m_Pos.x);
-      savedGame.decodeData(m_Pos.y);
-      savedGame.decodeData(target.x);
-      savedGame.decodeData(target.y);      
+        savedGame.decodeData(m_Pos.x);
+        savedGame.decodeData(m_Pos.y);
+        savedGame.decodeData(target.x);
+        savedGame.decodeData(target.y);
     }
     
-    void serialize(CSaveGameController &savedGame) 
+    void serialize(CSaveGameController &savedGame)
     {
-      savedGame.encodeData(m_Pos.x);
-      savedGame.encodeData(m_Pos.y);
-      savedGame.encodeData(target.x);
-      savedGame.encodeData(target.y);      
-    }	
-	
+        savedGame.encodeData(m_Pos.x);
+        savedGame.encodeData(m_Pos.y);
+        savedGame.encodeData(target.x);
+        savedGame.encodeData(target.y);
+    }
+
+    void serialize(boost::property_tree::ptree &node)
+    {
+        auto &posNode = node.put("pos","");
+        posNode.put("<xmlattr>.x", m_Pos.x);
+        posNode.put("<xmlattr>.y", m_Pos.y);
+
+        auto &targetNode = node.put("target","");
+        targetNode.put("<xmlattr>.x", target.x);
+        targetNode.put("<xmlattr>.y", target.y);
+    }
+
+
 	/**
 	 * When it is moving normally
 	 */

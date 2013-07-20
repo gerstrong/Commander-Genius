@@ -35,6 +35,11 @@ public:
 	  savedGame.encodeData(mUsedGrapplingHook);
 	}
 
+    void serialize(boost::property_tree::ptree &node)
+    {
+        node.put("usedGrapplingHook",mUsedGrapplingHook);
+    }
+
 	void process();
 	void processMoving();
 	void processClimbing();
