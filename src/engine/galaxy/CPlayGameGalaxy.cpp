@@ -39,7 +39,7 @@ m_SavedGame(SavedGame)
 }
 
 
-// NOTE: Only for compatibility mode. Since CG 3.5 it is only used for
+// NOTE: Only for compatibility mode. Since CG 1.5 it is only used for
 // supporting older versions of Savegame states of CG
 bool CPlayGameGalaxy::loadGameState()
 {

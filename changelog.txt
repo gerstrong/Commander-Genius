@@ -1,4 +1,16 @@
 
+v1.5 Release:
+---------------
+- XML based Savegame states in both galaxy and vorticon engine which in future 
+  will make those savegames more robust, when coming from older or newer versions. 
+  This means hopefully, no more crashes in savegames.
+
+v1.4.4 Release:
+---------------
+- More general bug fixes
+- Some neat menu and dialog effects
+- Now rending engine which drawing the game scene faster
+
 v1.4.3 Release:
 ---------------
 - Teleportation Fixes in Keen 8. No effect in Keen 6 but the mod was unplayable (thanks to arjwz)

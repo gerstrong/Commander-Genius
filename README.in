@@ -26,10 +26,10 @@ made for it.  All of the original data files
 are required to do so, however, we convienently
 include Episode 1 and 4 for your enjoyment.
 
-So far Commander Keen 1-5 are supported. Keen 1-3
-have full support. Keen 4 some support, it's entire
-gameplay is there, but some things are missing, 
-but are being added as the version number advances
+So far Commander Keen 1-6 are fully supported.
+Keen Dreams is the only game where we don't
+have support. Being considered not as popular,
+we might support it later.
 
 Commander Genius runs on Linux/X11, Windows,
 MacOS X, Wiz, and GP2X, with plans
@@ -58,14 +58,21 @@ although there're also a number of improvements like:
 - Mission -
 ===========
 
-The mission of Commmander Genius held by opensource developers is to revive
-the gameplay experience games we had in the 90s when those games were popular.
+The mission of Commmander Genius held by
+opensource developers is to revive
+the gameplay experience of the games we had
+in the 90s when those games were popular.
+
+With experience we mean, we try to leave the graphics retro but take
+advantage of newer hardware meaning there are some enhancements over
+the original games. There is also Chocolate Keen by NY00123 which tries
+to be as original as possible including even the frame rates as they were.
 
 Now modern hardware offers much more, than what we had since. Commander Genius
 tries to take advantage of that modern hardware and yet bring an awesome 
 bit of old school experience to the Commander Keen games.
 
-It is bit hard to define what that experience is obviously because many people
+It is bit hard to define what that experience is obviously, because many people
 experienced that gameplay differently. Some people had soundblaster, others didn't.
 Some had a joystick, others prefered keyboard.
 
@@ -74,11 +81,12 @@ So getting an experience like old school is difficult for everyone.
 So what does Commander Genius do? Interpreting those games on modern systems. 
 It can draw more colors on your screen and fix issues the original 
 games had back then. For example Vorticon Keen has two-button firing as option. 
-All buttons can be mapped to any input device. Well, the mouse is still for menus.
+All buttons can be mapped to any input device.
+Well, the mouse is still there for menus.
 
 The original Keen games also have some bugs and given that the hardware 
 was very limited back then, it has some weird frameskips. There are many details
-that are different in when using Commander Genius. So the conclusion is as follows.
+that are different when using Commander Genius. So the conclusion is as follows.
 
 If you really want a vanilla feeling, even feel the lack of hardware support and 
 eventual slowdowns, we encourage you playing Commander Keen on Dosbox. 
@@ -95,18 +103,18 @@ to experience Commander Keen some new ways, then this is the software for you!
 - History -
 ===========
 
-The first engine was CloneKeen by developer named Caitlin Shaw.
+The first engine was CloneKeen by a developer named Caitlin Shaw.
 Since the engine was left abandonned for most of the part, Gerstrong
 took it and created the fork called CloneKeenPlus and fixed some problems
 CloneKeen had. This fork comes from the 0.83 Version. A 0.84 version
-has been released since.
-
+has been released since. That code was never taken into here, because
+it was never needed.
 
 After CloneKeenPlus, Commander Genius was born. 
 It is a complete rewrite of the engine in C++. The transition to
 Commander Genius means a transition from C to C++ code mostly using OOP.
 After all this coding, we have retained only a small portion of the
-original CloneKeen code.
+original CloneKeen code (about 0.02%).
 
 
 - License -
@@ -115,7 +123,8 @@ original CloneKeen code.
 The Commander Genius source code may be freely 
 distributed and modified as per the GPL, just
 remember to give credit to the original
-authors. We work very hard on on this project!
+authors. We work very hard on on this project
+and we deserve at least those credits!
 
 - Setup  -
 ==========
@@ -136,7 +145,7 @@ Setting up the data of the game:
    If you own the registered versions, you can play all episodes, 
    otherwise download the shareware version and copy them there. 
    You also can use mods. If you have a bundled version, 
-   you already should be able to play episode 1, as it is in that directory.
+   you already should be able to play episodes  1 and 4, as they are in that directory.
  * If you want to use some patched mods just copy them as separate games. 
  * Go into the root directory and start the interpreter. If you have downloaded 
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
@@ -154,7 +163,8 @@ How to launch Commander Genius (If you didn't compile it):
 
 Getting the most recent Source Code:
  * Well, as many projects it is hosted on GitHub.
- * From the Linux Console type: "git clone git://github.com/gerstrong/Commander-Genius.git" (without the double quotation marks)   
+ * From the Linux Console type:
+   "git clone git://github.com/gerstrong/Commander-Genius.git" (without the double quotation marks)
 
 
 How to compile it under Ubuntu:
@@ -246,8 +256,6 @@ Vorticon Keen (1-3):
 KEY        	ACTION             DESCRIPTION
 G+O+D	   	godmode		   In god mode you are invincible!
 C+T+SPACE  	All Items      Gives all items, similar to the original.
-F+I+X		Restore		   Restores the settings as they were in the first time. Use this if
-						   CG doesn't display anything
 
 Galaxy Keen (4):						   
 KEY        	ACTION             DESCRIPTION
@@ -256,16 +264,13 @@ F10+I	  	All Items      Gives all items, similar to the original.
 F10+J	  	Fly	      	   This will make Keen fly at any time
 F10+N	  	No Clip	       With this cheat you will go through walls. Be careful, you might also fall
                            through the floor sometimes
-F+I+X		Restore		   Restores the settings as they were in the first time. Use this if
-						   CG doesn't display anything
 						   
 
 - SAVE/LOAD GAME -
 ==================
-The game can be saved from the menu at any time. Keen will be saved at the exact position it was left. 
-(unlike in the original game which only allowed save on the map).
-
-In Keen 4 this feature is not avaalable
+The game can be saved from the menu at any time.
+Keen will be saved at the exact position it was left.
+In the vorticons engine it will save the game within the level also
 
 
 - FAQ -
@@ -276,10 +281,10 @@ A: You can decrease the fps under settings->video. OpenGL may also help on some 
    Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
    the program. Also HQP requires more resources.
    
-Q: When can I play Keen 4, 5 and 6 on CG?
-A: Well, Keen 4 is mostly playable, but some enemies are missing as also other features, like cutscenes and help screen.
-   We are working very hard on that. When Keen 4 is fully playable with everything cramed, Keen 5 and 6 are next
-   We also want to support Mods here, like Keen 7, 8 and 9. As the Duke authors said: "when it's done".
+Q: When can I play Keen Dreams?
+A: Dreams isn't supported by CG at all, although there is the galaxy code base
+   which can be used to make it playable. Shouldn't be hard though.
+   Nevertheless the fans around that project decided to focus more on multiplayer awesomness for now
  
   
   
@@ -300,13 +305,10 @@ http://github.com/gerstrong/Commander-Genius/issues
 Many thanks to people who has helped me so far in this project with their
 suggestions:
 
-Retired Team Members:
----------------------
-Pickle          
-
 
 Contributors:
 -------------
+Pickle
 Sciz CT
 Lemm
 DSL (Nice icon contribution)
@@ -322,18 +324,18 @@ ZidaneA (For his music tracks!)
 Iv4n (wiivn)
 
 
-
 Also many special thanks to Martin Hauber (Tulip) who has been supporting me all the time in testing
 the Windows version of CKP and giving me access to a lot of information about the games. 
 Without you it wouldn't be that great!
 
-And also special thanks to Chad Ian Anderson (Pizza2004) in helping us so much in many points of the game. 
-Even in difficult times he always supported us.
+And also special thanks to Chad Ian Anderson (Pizza2004) in helping us so much in many points of the game.
+Every time I had chance to test his port in Mac it was awesome. I like his work!
+Even in difficult times he always supports us.
 
 Furthermore special thanks to Scott (Pickle) and Albert Zeyer
 for his changes. They helped out a lot on the quality of the code and performance incrate.
 
-Also special thanks to ny00123 for helping to test the most recent 0.4 version.
+Also special thanks to NY00123 for helping to test the most recent 0.4 version.
 
 I'm sure, there were more people who helped us and we forgot to mention, but
 many thanks to them also.
