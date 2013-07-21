@@ -34,12 +34,6 @@ void CGameMain::switchToGamePlayMode()
 
 
 
-/*void CGameMain::init()
-{}*/
-
-
-
-
 void CGameMain::ponder()
 {
 	// process any triggered Game Main related event

@@ -110,7 +110,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	switch(foe)
 	{
 	case 0x01:
-	case 0x02:
+	case 0x02:                        
 		// This is the player on the map in one level
 		p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
 				(foe==0x01) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x98C);

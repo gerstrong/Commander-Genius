@@ -344,6 +344,8 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	if(!m_ObjectPtr.empty())
 		m_ObjectPtr.clear();
 
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+
 	// he we go to the adding objects
 	Map.mNumFuses = 0;
 	Map.mFuseInLevel = false;		
@@ -352,9 +354,28 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
-			std::shared_ptr<CGalaxySpriteObject> pNewfoe(addFoe(Map, *data_ptr++, x<<CSF, y<<CSF));
-			if(pNewfoe)
-				m_ObjectPtr.push_back(pNewfoe);
+            const int foeID = *data_ptr;
+
+            // Check if it is the player, because in multiplayer we spawn multiple keens
+            if(foeID > 2 && foeID <= 3) // World Map only
+            {
+                for(int i = 0 ; i < numPlayers ; i++)
+                {
+                    std::shared_ptr<CGalaxySpriteObject> pNewfoe( addFoe(Map, foeID, x<<CSF, y<<CSF) );
+
+                    if(pNewfoe)
+                        m_ObjectPtr.push_back(pNewfoe);
+                }
+            }
+            else
+            {
+                std::shared_ptr<CGalaxySpriteObject> pNewfoe( addFoe(Map, foeID, x<<CSF, y<<CSF) );
+
+                if(pNewfoe)
+                    m_ObjectPtr.push_back(pNewfoe);
+            }
+
+            data_ptr++;
 		}
 	}
 

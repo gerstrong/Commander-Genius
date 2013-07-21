@@ -86,6 +86,8 @@ public:
 				CInventory &l_Inventory,
 				stCheat &Cheatmode);
 
+    virtual ~CPlayerBase();
+
 	/**
 	 * Pushes the players by the given object Reference
 	 */
@@ -181,6 +183,7 @@ protected:
 	static const int mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS];
 
 	VectorD2<int> mTarget;
+    static int numPlayers;
 };
 
 };

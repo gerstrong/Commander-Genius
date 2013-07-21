@@ -120,6 +120,8 @@ VectorD2<int> CPlayerWM::fetchFootDestCoord()
  */
 void CPlayerWM::process()
 {
+    processInput();
+
 	// Perform animation cycle
 	if(m_animation_ticker >= m_animation_time)
 	{
@@ -228,9 +230,10 @@ void CPlayerWM::processWaving()
     }
     
     waveTimer++;
-    if( g_pInput->getHoldedCommand(IC_UP) || g_pInput->getHoldedCommand(IC_DOWN) ||
-            g_pInput->getHoldedCommand(IC_LEFT) || g_pInput->getHoldedCommand(IC_RIGHT) ||
-            g_pInput->getHoldedCommand(IC_JUMP) || waveTimer >= (TIME_TO_WAVE/4) )
+
+
+    if( m_playcontrol[PA_Y] != 0 || m_playcontrol[PA_X] != 0 ||
+            m_playcontrol[PA_JUMP] || waveTimer >= (TIME_TO_WAVE/4) )
     {
         mProcessPtr = &CPlayerWM::processMoving;
         m_basesprite = walkBaseFrame;
@@ -324,9 +327,10 @@ void CPlayerWM::processMoving()
         verifyTeleportation();
     
     // Normal walking
-    if(g_pInput->getHoldedCommand(IC_LEFT) && !bleft)
+
+    if( m_playcontrol[PA_X]<0 && !bleft)
     {
-        if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+        if( m_playcontrol[PA_Y] == 0 )
             yDirection = 0;
 	
         moveLeft(movespeed);
@@ -334,9 +338,9 @@ void CPlayerWM::processMoving()
         xDirection = LEFT;
         waveTimer = 0;
     }
-    else if(g_pInput->getHoldedCommand(IC_RIGHT) && !bright)
-        {
-        if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+    else if( m_playcontrol[PA_X]>0 && !bright)
+    {
+        if(m_playcontrol[PA_Y]==0)
             yDirection = 0;
 	
         moveRight(movespeed);
@@ -344,83 +348,83 @@ void CPlayerWM::processMoving()
         xDirection = RIGHT;
         waveTimer = 0;
     }
-    
-    if(g_pInput->getHoldedCommand(IC_UP) && !bup)
+        
+    if(m_playcontrol[PA_Y]<0 && !bup)
     {
-	if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-	    xDirection = 0;
-	
-	moveUp(movespeed);
-	walking = true;
-	yDirection = UP;
-	waveTimer = 0;
+        if(m_playcontrol[PA_X]==0)
+            xDirection = 0;
+
+        moveUp(movespeed);
+        walking = true;
+        yDirection = UP;
+        waveTimer = 0;
     }
-    else if(g_pInput->getHoldedCommand(IC_DOWN) && !bdown)
+    else if(m_playcontrol[PA_Y]>0 && !bdown)
     {
-	if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
-	    xDirection = 0;
-	
-	moveDown(movespeed);
-	walking = true;
-	yDirection = DOWN;
-	waveTimer = 0;
+        if(m_playcontrol[PA_X]==0)
+            xDirection = 0;
+
+        moveDown(movespeed);
+        walking = true;
+        yDirection = DOWN;
+        waveTimer = 0;
     }
     
     // In case noclipping was triggered, make it solid, or remove it...
     if(m_Cheatmode.noclipping)
     {
-	solid = !solid;
-	m_Cheatmode.noclipping = false;
+        solid = !solid;
+        m_Cheatmode.noclipping = false;
     }
     
     // perform actions depending on if the jump button was pressed
-    if(g_pInput->getPressedCommand(IC_JUMP))
+    if( m_playcontrol[PA_JUMP] )
     {
-	// Get the object
-	Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
-	if(object) // if we found an object
-	{
-	    // start the level
-	    startLevel(object);
-	    g_pInput->flushCommands();
-	}
+        // Get the object
+        Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+        if(object) // if we found an object
+        {
+            // start the level
+            startLevel(object);
+            g_pInput->flushCommands();
+        }
     }
     
     // If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
     if(m_basesprite == walkBaseFrame)
     {
-	performWalkingAnimation(walking);
-	m_cantswim = false;
-	
-	waveTimer++;
-	if( waveTimer >= TIME_TO_WAVE)
-	{
-	    mProcessPtr = &CPlayerWM::processWaving;
-	    m_basesprite = wavingBaseFrame;
-	    waveTimer = 0;
-	    return;
-	}
+        performWalkingAnimation(walking);
+        m_cantswim = false;
+
+        waveTimer++;
+        if( waveTimer >= TIME_TO_WAVE)
+        {
+            mProcessPtr = &CPlayerWM::processWaving;
+            m_basesprite = wavingBaseFrame;
+            waveTimer = 0;
+            return;
+        }
     }
     else if(m_basesprite == swimBaseFrame)
     {
-	if(m_Inventory.Item.m_special.ep4.swimsuit)
-	{
-	    performSwimmingAnimation();
-	}
-	else
-	{
-	    if( !m_cantswim )
-	    {
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-		
-		g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
-		EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(105),
-								 g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
-								 
-								 m_cantswim = true;
-	    }
-	    
-	}
+        if(m_Inventory.Item.m_special.ep4.swimsuit)
+        {
+            performSwimmingAnimation();
+        }
+        else
+        {
+            if( !m_cantswim )
+            {
+                CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+
+                g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
+                EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(105),
+                                                                 g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
+
+                m_cantswim = true;
+            }
+
+        }
     }
 }
 

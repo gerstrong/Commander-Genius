@@ -144,18 +144,22 @@ const int CPlayerBase::mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS] =
 		//{}
 };
 
-CPlayerBase::CPlayerBase(
+int CPlayerBase::numPlayers = 0;
+
+CPlayerBase::CPlayerBase
+(
 		CMap *pmap,
 		const Uint16 foeID,
 		Uint32 x,
 		Uint32 y,
 		direction_t facedir,
 		CInventory &l_Inventory,
-		stCheat &Cheatmode) :
+        stCheat &Cheatmode
+) :
 CGalaxySpriteObject(pmap, foeID, x, y),
 m_Inventory(l_Inventory),
 m_camera(pmap,x,y,this),
-mPlayerNum(0),
+mPlayerNum(numPlayers++),
 m_Cheatmode(Cheatmode),
 mp_processState(NULL)
 {
@@ -169,6 +173,11 @@ mp_processState(NULL)
 
 	memset(m_playcontrol, 0, PA_MAX_ACTIONS);
 	m_camera.setPosition(m_Pos);
+}
+
+CPlayerBase::~CPlayerBase()
+{
+    numPlayers--;
 }
 
 

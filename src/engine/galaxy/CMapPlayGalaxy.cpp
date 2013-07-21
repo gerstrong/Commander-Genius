@@ -181,14 +181,16 @@ void CMapPlayGalaxy::render()
     auto obj = mObjectPtr.rbegin();
 
     // Draw all the sprites without player
-    // The player sprites are drawn as last
-    galaxy::CPlayerBase *player = NULL;
+    // The player sprites are drawn at the end
+    galaxy::CPlayerBase* player[MAX_PLAYERS] = {nullptr, nullptr, nullptr, nullptr};
+    
+    int pIt = 0;
     for( ; obj!=mObjectPtr.rend() ; obj++ )
     {
-
         if( galaxy::CPlayerBase* curplayer = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
         {
-            player = curplayer;
+            player[pIt] = curplayer;
+            pIt++;
             continue;
         }
 
@@ -196,9 +198,9 @@ void CMapPlayGalaxy::render()
             (*obj)->draw();
     }
 
-    if(player)
+    for(int i=0 ; i<pIt ; i++)
     {
-        player->draw();
+        player[i]->draw();
     }
 
     // Draw masked tiles here!
