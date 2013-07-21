@@ -73,8 +73,16 @@ void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 {
 	g_pBehaviorEngine->mPlayers = 1;
 
-	CGUIButton *button = new CGUIButton( "New Game",
-										new OpenMenuEvent(new CDifficultySelection) );
+
+#if defined (SINGLEPLAYER)
+    g_pBehaviorEngine->mPlayers = 1;
+    CGUIButton *button = new CGUIButton( "New Game",
+                                        new OpenMenuEvent(new CDifficultySelection) );
+#else
+    CGUIButton *button = new CGUIButton( "New Game",
+                                    new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
+#endif
+
 	mpMenuDialog->addControl( button );
 
 
