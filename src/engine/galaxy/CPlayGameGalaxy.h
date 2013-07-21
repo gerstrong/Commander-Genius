@@ -32,7 +32,7 @@ public:
 			 CSaveGameController &SavedGame);
 
 	bool loadGameState();
-	bool saveGameState();
+    //bool saveGameState();
     bool loadXMLGameState();
     bool saveXMLGameState();
 	bool init();

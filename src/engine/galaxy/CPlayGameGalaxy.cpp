@@ -38,6 +38,9 @@ m_SavedGame(SavedGame)
     m_WorldMap.init();
 }
 
+
+// NOTE: Only for compatibility mode. Since CG 3.5 it is only used for
+// supporting older versions of Savegame states of CG
 bool CPlayGameGalaxy::loadGameState()
 {
 	CSaveGameController &savedGame = *(gpSaveGameController);
@@ -77,7 +80,8 @@ bool CPlayGameGalaxy::loadGameState()
 	return true;
 }
 
-bool CPlayGameGalaxy::saveGameState()
+
+/*bool CPlayGameGalaxy::saveGameState()
 {
 	CSaveGameController &savedGame = *(gpSaveGameController);
 
@@ -103,7 +107,7 @@ bool CPlayGameGalaxy::saveGameState()
 
 
 	return savedGame.save();
-}
+}*/
 
 bool CPlayGameGalaxy::loadXMLGameState()
 {            
@@ -130,7 +134,8 @@ bool CPlayGameGalaxy::loadXMLGameState()
     {
         ptree &playerNode = pt.get_child("Player");
         //id = playerNode.get<int>("<xmlattr>.id", );
-        m_Inventory << playerNode.get_child("inventory");
+        auto &invNode = playerNode.get_child("inventory");
+        m_Inventory << invNode;
     }
 
 
@@ -141,8 +146,8 @@ bool CPlayGameGalaxy::loadXMLGameState()
     m_WorldMap << wmNode;
 
     ptree &levelPlayNode = stateNode.get_child("LevelPlay");
-    active = wmNode.get<bool>("<xmlattr>.active");
-
+    active = levelPlayNode.get<bool>("<xmlattr>.active");
+    m_LevelPlay.setActive(active);
     if( active )
         m_LevelPlay << levelPlayNode;
 
@@ -181,7 +186,8 @@ bool CPlayGameGalaxy::saveXMLGameState()
     {
         ptree &playerNode = pt.add("Player", "");
         playerNode.put("<xmlattr>.id", id);
-        m_Inventory >> pt.add("inventory", "");
+        auto &invNode = playerNode.put("inventory", "");
+        m_Inventory >> invNode;
     }
 
     bool active = m_WorldMap.isActive();

@@ -439,7 +439,7 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
         spriteNode.put("blockedr", it->blockedr);
         spriteNode.put("xDirection", it->xDirection);
         spriteNode.put("yDirection", it->yDirection);
-        spriteNode.put("health", it->mHealthPoints);
+        spriteNode.put("health", (int)it->mHealthPoints);
         spriteNode.put("canbezapped", it->canbezapped);
         spriteNode.put("cansupportplayer", it->cansupportplayer);
         spriteNode.put("inhibitfall", it->inhibitfall);
@@ -451,7 +451,7 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
 
     // Save the map_data as it is left
     {
-        auto &mapNode = levelNode.add("Map", "");
+        auto &mapNode = levelNode.put("Map", "");
         mapNode.put("width", mMap.m_width);
         mapNode.put("height", mMap.m_height);
 
@@ -511,7 +511,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
 
     // Now load the previously created objects
 
-    const size_t size = levelNode.get<int>("NumSprites", 0);
+    //const size_t size = levelNode.get<int>("NumSprites", 0);
 
     // Now load the previously created objects
     if(!mObjectPtr.empty())
@@ -520,48 +520,49 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     mMap.mNumFuses = 0;
     mMap.mFuseInLevel = false;
 
-
-    for( Uint32 i=0 ; i<size ; i++ )
-    {
-        Uint16 actionNumber;
-        auto &spriteNode = levelNode.get_child("Sprite");
-
-        foeID = spriteNode.get<int>("<xmlattr>.id");
-        x = spriteNode.get<int>("<xmlattr>.x");;
-        y = spriteNode.get<int>("<xmlattr>.y");;
-
-        CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
-
-        // TODO: Be careful here is a bad Null Pointer inside that structure
-        if(pNewfoe == nullptr)
+    for( auto &levelItem : levelNode )
+    {                        
+        if(levelItem.first == "Sprite")
         {
-            pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
-        }
+            auto &spriteNode = levelItem.second;
 
-        pNewfoe->dead = spriteNode.get<bool>("dead", false);
-        pNewfoe->onscreen = spriteNode.get<bool>("onscreen", false);
-        pNewfoe->hasbeenonscreen = spriteNode.get<bool>("hasbeenonscreen", false);
-        pNewfoe->exists = spriteNode.get<bool>("exists", false);
-        pNewfoe->blockedd = spriteNode.get<bool>("blockedd", false);
-        pNewfoe->blockedu = spriteNode.get<bool>("blockedu", false);
-        pNewfoe->blockedl = spriteNode.get<bool>("blockedl", false);
-        pNewfoe->blockedr = spriteNode.get<bool>("blockedr", false);
-        pNewfoe->xDirection = spriteNode.get<int>("xDirection", false);
-        pNewfoe->yDirection = spriteNode.get<int>("yDirection", false);
-        pNewfoe->mHealthPoints = spriteNode.get<int>("health", false);
-        pNewfoe->canbezapped = spriteNode.get<bool>("canbezapped", false);
-        pNewfoe->cansupportplayer = spriteNode.get<bool>("cansupportplayer", false);
-        pNewfoe->inhibitfall = spriteNode.get<bool>("inhibitfall", false);
-        pNewfoe->honorPriority = spriteNode.get<bool>("honorPriority", false);
-        pNewfoe->sprite = spriteNode.get<int>("spritePic", false);
-        actionNumber = spriteNode.get<int>("Actionumber", false);
-        pNewfoe->deserialize(spriteNode);
+            foeID = spriteNode.get<int>("<xmlattr>.id");
+            x = spriteNode.get<int>("<xmlattr>.x");;
+            y = spriteNode.get<int>("<xmlattr>.y");;
 
-        if(pNewfoe->exists)
-        {
-            pNewfoe->setActionForce(actionNumber);
-            std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
-            mObjectPtr.push_back(newFoe);
+            CGalaxySpriteObject *pNewfoe = mapLoader->addFoe(mMap, foeID, x, y);
+
+            // TODO: Be careful here is a bad Null Pointer inside that structure
+            if(pNewfoe == nullptr)
+            {
+                pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
+            }
+
+            pNewfoe->dead = spriteNode.get<bool>("dead", false);
+            pNewfoe->onscreen = spriteNode.get<bool>("onscreen", false);
+            pNewfoe->hasbeenonscreen = spriteNode.get<bool>("hasbeenonscreen", false);
+            pNewfoe->exists = spriteNode.get<bool>("exists", false);
+            pNewfoe->blockedd = spriteNode.get<bool>("blockedd", false);
+            pNewfoe->blockedu = spriteNode.get<bool>("blockedu", false);
+            pNewfoe->blockedl = spriteNode.get<bool>("blockedl", false);
+            pNewfoe->blockedr = spriteNode.get<bool>("blockedr", false);
+            pNewfoe->xDirection = spriteNode.get<int>("xDirection", false);
+            pNewfoe->yDirection = spriteNode.get<int>("yDirection", false);
+            pNewfoe->mHealthPoints = spriteNode.get<int>("health", false);
+            pNewfoe->canbezapped = spriteNode.get<bool>("canbezapped", false);
+            pNewfoe->cansupportplayer = spriteNode.get<bool>("cansupportplayer", false);
+            pNewfoe->inhibitfall = spriteNode.get<bool>("inhibitfall", false);
+            pNewfoe->honorPriority = spriteNode.get<bool>("honorPriority", false);
+            pNewfoe->sprite = spriteNode.get<int>("spritePic", false);
+            const Uint16 actionNumber = spriteNode.get<int>("Actionumber", false);
+            pNewfoe->deserialize(spriteNode);
+
+            if(pNewfoe->exists)
+            {
+                pNewfoe->setActionForce(actionNumber);
+                std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
+                mObjectPtr.push_back(newFoe);
+            }
         }
     }
 

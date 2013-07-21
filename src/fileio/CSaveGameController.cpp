@@ -774,7 +774,10 @@ bool CSaveGameController::readDataBlock(byte *data)
 	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32) );
 	m_offset += sizeof(Uint32);
 
-	if(datasize > 0)
+    if(datasize > m_datablock.size()-m_offset)
+        return false;
+
+    if(datasize > 0)
 		memcpy(data, &m_datablock[m_offset], datasize);
 
 	m_offset += datasize;
