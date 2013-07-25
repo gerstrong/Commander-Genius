@@ -78,15 +78,15 @@ public:
 	 * \description Basic Constructor. An Object always need the pointer to the Map of the level,
 	 * 				Coordinates as also the type of the Object
 	 */
-	CPlayerBase(CMap *pmap,
-				const Uint16 foeID,
-				Uint32 x,
-				Uint32 y,
-				direction_t facedir,
-				CInventory &l_Inventory,
-				stCheat &Cheatmode);
+    CPlayerBase(CMap *pmap,
+                const Uint16 foeID,
+                Uint32 x,
+                Uint32 y,
+                direction_t facedir,
+                CInventory &l_Inventory,
+                stCheat &Cheatmode,
+                int playerID);
 
-    virtual ~CPlayerBase();
 
 	/**
 	 * Pushes the players by the given object Reference
@@ -183,7 +183,7 @@ protected:
 	static const int mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS];
 
 	VectorD2<int> mTarget;
-    static int numPlayers;
+    //static int numPlayers;
 };
 
 };

@@ -37,7 +37,7 @@ public:
 	CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtrs, direction_t facedir,
 			CInventory &l_Inventory, stCheat &Cheatmode,
-			const size_t offset);
+            const size_t offset, const int playerID);
 
 
 	void prepareToShoot();

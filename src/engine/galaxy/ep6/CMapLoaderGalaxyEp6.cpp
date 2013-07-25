@@ -105,7 +105,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x02:
 			// This is the player on the map in one level
 			p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-					(foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x89A);
+                    (foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x89A, mPlayerID);
 			break;
 
 	case 0x03:
@@ -114,7 +114,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x130A );
 			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x13DE );
 			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x1218 );
-			p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x13E0 );
+            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x13E0, mPlayerID );
 			break;
 
 	case 0x06: if( difficulty < HARD ) break;

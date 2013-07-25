@@ -31,13 +31,16 @@
 namespace galaxy
 {
 
+
+
 CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile,
 		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
 		CInventory &Inventory, stCheat &Cheatmode):
 m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
 m_Inventory(Inventory),
-m_Cheatmode(Cheatmode)
+m_Cheatmode(Cheatmode),
+mPlayerID(0)
 {}
 
 // Gets returns the address of the datablock of the exe file, in where the

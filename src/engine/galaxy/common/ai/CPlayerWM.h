@@ -21,7 +21,8 @@ public:
 			Uint32 y,
 			CInventory &l_Inventory,
 			stCheat &Cheatmode,
-			const unsigned int actionoffset);
+            const unsigned int actionoffset,
+            const int playerID);
 
 	VectorD2<int> fetchFootDestCoord();
 	

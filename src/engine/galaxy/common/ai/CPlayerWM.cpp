@@ -20,16 +20,18 @@ const int TIME_TO_WAVE = 400;
 namespace galaxy {
 
 CPlayerWM::CPlayerWM(CMap *pmap,
-		const Uint16 foeID,
-		Uint32 x,
-		Uint32 y,
-		CInventory &l_Inventory,
-		stCheat &Cheatmode,
-		const unsigned int actionoffset):
+        const Uint16 foeID,
+        Uint32 x,
+        Uint32 y,
+        CInventory &l_Inventory,
+        stCheat &Cheatmode,
+        const unsigned int actionoffset,
+        const int playerID):
 CPlayerBase(pmap, foeID, x, y,
 		    LEFT,
 		    l_Inventory,
-		    Cheatmode),
+            Cheatmode,
+            playerID),
 m_basesprite(0),
 m_teleportanibasetile(0),
   m_teleportoldtile(0),

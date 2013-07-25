@@ -53,6 +53,7 @@ protected:
 	CInventory &m_Inventory;
 	stCheat &m_Cheatmode;
 	std::string mLevelName;
+    int mPlayerID;
 };
 
 }

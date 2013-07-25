@@ -21,11 +21,13 @@ CPlayerDive::CPlayerDive(CMap *pmap,
 		Uint32 y,
 		direction_t facedir,
 		CInventory &l_Inventory,
-		stCheat &Cheatmode) :
+        stCheat &Cheatmode,
+        const int playerID) :
 CPlayerBase(pmap, foeID, x, y,
 		facedir,
 		l_Inventory,
-		Cheatmode),
+        Cheatmode,
+        playerID),
 m_swimupspeed(0),
 m_breathtimer(0)
 {
