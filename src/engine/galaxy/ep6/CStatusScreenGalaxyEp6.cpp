@@ -10,8 +10,8 @@
 #include "common/CBehaviorEngine.h"
 #include "StringUtils.h"
 
-CStatusScreenGalaxyEp6::CStatusScreenGalaxyEp6(const stItemGalaxy& Item, const std::string &LevelName) :
-CStatusScreenGalaxy(Item, LevelName)
+CStatusScreenGalaxyEp6::CStatusScreenGalaxyEp6(const stItemGalaxy& Item) :
+CStatusScreenGalaxy(Item)
 {}
 
 
@@ -36,7 +36,7 @@ void CStatusScreenGalaxyEp6::GenerateStatus()
 
 	Font.setupColor(0x0);
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
-	Font.drawFontCentered(mpStatusSurface.get(), m_LevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
+    Font.drawFontCentered(mpStatusSurface.get(), m_Item.mLevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
 	Font.setupColor(0x444444);
 
 

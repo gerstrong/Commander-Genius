@@ -27,11 +27,11 @@ namespace galaxy
 class CPlayGameGalaxy : public CPlayGame
 {
 public:
-	CPlayGameGalaxy(CExeFile &ExeFile, char level,
+    CPlayGameGalaxy(CExeFile &ExeFile, char level,
 			 char numplayers,
 			 CSaveGameController &SavedGame);
 
-	bool loadGameState();
+    bool loadGameState();
     //bool saveGameState();
     bool loadXMLGameState();
     bool saveXMLGameState();
@@ -40,22 +40,21 @@ public:
     void ponder();
     void render();
 
-	void processInput();
-	void processRendering();
+    void processInput();
+    void processRendering();
 
     void operator<<(boost::property_tree::ptree &invNode);
 
 	void cleanup() {};
 
 private:
-	std::string m_LevelName;
-	CInventory m_Inventory;
-	CWorldMap m_WorldMap;
-	CLevelPlay m_LevelPlay;
-	CSaveGameController &m_SavedGame;
-	CBitmap m_BackgroundBitmap;
-	std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
-	stCheat m_Cheatmode;
+    std::vector<CInventory> mInventoryVec;
+    CWorldMap m_WorldMap;
+    CLevelPlay m_LevelPlay;
+    CSaveGameController &m_SavedGame;
+    CBitmap m_BackgroundBitmap;
+    std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
+    stCheat m_Cheatmode;
 };
 
 }

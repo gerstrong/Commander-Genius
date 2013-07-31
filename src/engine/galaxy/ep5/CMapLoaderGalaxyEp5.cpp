@@ -39,8 +39,8 @@ namespace galaxy
 
 CMapLoaderGalaxyEp5::CMapLoaderGalaxyEp5(CExeFile &ExeFile,
 		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-		CInventory &Inventory, stCheat &Cheatmode) :
-CMapLoaderGalaxy( ExeFile, ObjectPtr, Inventory, Cheatmode)
+        std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
+CMapLoaderGalaxy( ExeFile, ObjectPtr, inventoryVec, Cheatmode)
 {}
 
 
@@ -91,10 +91,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	
 	if( foe == 0x45 )
 	{
-	  if(m_Inventory.Item.m_bullets < 5)
-	  {
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131);
-	  }
+        for( auto &inventory : mInventoryVec)
+        {
+            if(inventory.Item.m_bullets < 5)
+            {
+                p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131);
+                break;
+            }
+        }
 	}
 	
 	
@@ -112,21 +116,27 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);	
+    auto &inventory = mInventoryVec[mPlayerID];
 
 	switch(foe)
 	{
 	case 0x01:
 	case 0x02:
 			// This is the player on the map in one level
-			p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-                    (foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x0888, mPlayerID);
+            inventory.Item.mLevelName = Map.getLevelName();
+
+            p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
+               (foe==1) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x0888, mPlayerID);
+            mPlayerID++;
 			break;
 
 	case 0x03:
 			// This is the player on the world map
 			// Add the Camera into the game scene and attach it to this player
-            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x146E, mPlayerID );
+            inventory.Item.mLevelName = Map.getLevelName();
+            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, m_Cheatmode, 0x146E, mPlayerID );
 			// 0x137A
+            mPlayerID++;
 			break;
 
 			

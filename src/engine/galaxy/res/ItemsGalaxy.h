@@ -12,6 +12,7 @@
 
 #include "common/CBehaviorEngine.h"
 #include <boost/property_tree/ptree.hpp>
+#include <string>
 
 struct stItemGalaxy
 {
@@ -54,6 +55,8 @@ struct stItemGalaxy
 		}ep6;
 				
     } m_special;
+
+    std::string mLevelName;
 
 
     // Member prototypes

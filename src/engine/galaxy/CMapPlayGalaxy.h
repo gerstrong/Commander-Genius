@@ -32,7 +32,7 @@
 class CMapPlayGalaxy : public GameState
 {
 public:
-	CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
+    CMapPlayGalaxy(CExeFile &ExeFile, std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 
 	bool isActive();
 	void setActive(const bool value);
@@ -72,7 +72,7 @@ protected:
 
 	CMap mMap;
 	CExeFile &mExeFile;
-	CInventory &mInventory;
+	std::vector<CInventory> &mInventoryVec;
 	stOption *mpOption;
 	stCheat &mCheatmode;
 

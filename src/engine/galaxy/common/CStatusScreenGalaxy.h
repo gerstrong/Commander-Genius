@@ -18,7 +18,7 @@
 class CStatusScreenGalaxy
 {
 public:
-	CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName);
+    CStatusScreenGalaxy(const stItemGalaxy& Item);
 
 	// This will generate the status screen. It must be derived by other classes, depending on the Episode
 	virtual void GenerateStatus() = 0;
@@ -37,7 +37,6 @@ public:
 	bool m_showstatus;
 	std::shared_ptr<SDL_Surface> mpStatusSurface;
 	const stItemGalaxy& m_Item;
-	const std::string &m_LevelName;
 };
 
 

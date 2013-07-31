@@ -11,10 +11,9 @@
 #include "common/CBehaviorEngine.h"
 #include "sdl/extensions.h"
 
-CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName) :
+CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item) :
 m_showstatus(false),
-m_Item(Item),
-m_LevelName(LevelName)
+m_Item(Item)
 {}
 
 void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)

@@ -23,11 +23,11 @@
 class CInventory
 {
 public:
-	CInventory(const std::string& levelname);
+    CInventory();
 	void reset();
 
 	// This function draws the HUD on the Screen
-	void drawHUD();
+    void drawHUD(const int place, const int players);
 
 	// This one draw the Status screen whenever it's called
 	void drawStatus();
@@ -52,7 +52,6 @@ public:
 	CHUD m_HUD;
 	std::unique_ptr<CStatusScreenGalaxy> mp_StatusScreen;
 	SDL_Surface *mp_StatusBgrnd;
-	const std::string &m_LevelName;
 };
 
 

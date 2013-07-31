@@ -18,7 +18,7 @@ namespace galaxy {
 class CWorldMap : public CMapPlayGalaxy
 {
 public:
-	CWorldMap(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode);
+    CWorldMap(CExeFile &ExeFile, std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 
 	void init();
 	void loadAndPlayMusic();

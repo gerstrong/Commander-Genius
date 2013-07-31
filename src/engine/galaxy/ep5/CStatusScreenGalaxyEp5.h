@@ -12,10 +12,10 @@
 
 #include "engine/galaxy/common/CStatusScreenGalaxy.h"
 
-class CStatusScreenGalaxyEp5: public CStatusScreenGalaxy
+class CStatusScreenGalaxyEp5 : public CStatusScreenGalaxy
 {
 public:
-	CStatusScreenGalaxyEp5(const stItemGalaxy& Item, const std::string &LevelName);
+    CStatusScreenGalaxyEp5(const stItemGalaxy& Item);
 
 	void GenerateStatus();
 };

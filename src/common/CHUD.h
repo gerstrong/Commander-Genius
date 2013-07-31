@@ -22,7 +22,8 @@
 #define CHUD_H_
 
 
-class CHUD {
+class CHUD
+{
 public:
 	CHUD(unsigned long &score,
 		 signed char &lives,
@@ -32,7 +33,7 @@ public:
 	/**
 	 * \brief This part of the code will render the entire HUD
 	 */
-	void render();
+	void render(const int place, const int players);
 	
 	/**
 	 * \brief This will sync some data in the HUD, especially the oldScore variable
@@ -42,7 +43,7 @@ public:
 private:
 
 	void CreateBackground();
-	void renderGalaxy();
+	void renderGalaxy(const int place, const int players);
 	void renderVorticon();
 	void DrawCircle(int x, int y, int width);
 

@@ -42,8 +42,8 @@ namespace galaxy
 
 CMapLoaderGalaxyEp6::CMapLoaderGalaxyEp6(CExeFile &ExeFile,
 		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-		CInventory &Inventory, stCheat &Cheatmode) :
-CMapLoaderGalaxy( ExeFile, ObjectPtr, Inventory, Cheatmode)
+        std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
+CMapLoaderGalaxy( ExeFile, ObjectPtr, inventoryVec, Cheatmode)
 {}
 
 
@@ -84,10 +84,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 	// Neuronal-stunner which appears if you are low on bullets
 	if( foe == 0x45 )
 	{
-	  if(m_Inventory.Item.m_bullets < 5)
-	  {
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
-	  }
+        for( auto &inventory : mInventoryVec)
+        {
+            if(inventory.Item.m_bullets < 5)
+            {
+                p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
+                break;
+            }
+        }
 	}	
 	
 	// If a foe was found, just return.
@@ -98,23 +102,24 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);	
+    auto &inventory = mInventoryVec[mPlayerID];
+
 
 	switch(foe)
 	{
 	case 0x01:
 	case 0x02:
 			// This is the player on the map in one level
+            inventory.Item.mLevelName = Map.getLevelName();
 			p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-                    (foe==1) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x89A, mPlayerID);
+                    (foe==1) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x89A, mPlayerID);
 			break;
 
 	case 0x03:
 			// This is the player on the world map
 			// Add the Camera into the game scene and attach it to this player
-			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x130A );
-			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x13DE );
-			//p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x1218 );
-            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, m_Inventory, m_Cheatmode, 0x13E0, mPlayerID );
+            inventory.Item.mLevelName = Map.getLevelName();
+            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, m_Cheatmode, 0x13E0, mPlayerID );
 			break;
 
 	case 0x06: if( difficulty < HARD ) break;

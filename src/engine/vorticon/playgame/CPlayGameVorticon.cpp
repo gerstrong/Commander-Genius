@@ -533,77 +533,79 @@ void CPlayGameVorticon::drawObjects()
 
 void CPlayGameVorticon::drawAllElements()
 {
-	// Animate the tiles of the map
-	mMap->animateAllTiles();
+    // Animate the tiles of the map
+    mMap->animateAllTiles();
 
-	// Blit the background
+    // Blit the background
     g_pVideoDriver->blitScrollSurface();
 
-	// Draw all objects to the screen
-	drawObjects();
+    // Draw all objects to the screen
+    drawObjects();
 
-	// Draw masked tiles here!
+    // Draw masked tiles here!
     mMap->_drawForegroundTiles();
 
 
-	for( short i=0 ; i<m_NumPlayers ; i++ )
-	{
-		m_Player[i].drawStatusScreen();
-	}
+    for( short i=0 ; i<m_NumPlayers ; i++ )
+    {
+        m_Player[i].drawStatusScreen();
+    }
 
 
-	if(mpFinale) // Finale processing if it is opened
-	{
+    if(mpFinale) // Finale processing if it is opened
+    {
         mpFinale->ponder();
         mpFinale->render();
 
-		if(mpFinale->getHasFinished())
-		{
-			mpFinale.release();
+        if(mpFinale->getHasFinished())
+        {
+            mpFinale.release();
 
-			if(!m_gameover)
-			{
-				CHighScores *pHighScores = new CHighScores();
-				pHighScores->init();
-				collectHighScoreInfo(*pHighScores);
-				g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
-				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
-			}
-		}
+            if(!m_gameover)
+            {
+                CHighScores *pHighScores = new CHighScores();
+                pHighScores->init();
+                collectHighScoreInfo(*pHighScores);
+                g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
+                g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
+            }
+        }
 
-		m_Player[0].processEvents();
-	}
-	else
-	{
-	    if(mp_option[OPT_HUD].value )
-	    {	// Draw the HUD
-		mp_HUD->render();
-	    }
-	}
+        m_Player[0].processEvents();
+    }
+    else
+    {
+        if(mp_option[OPT_HUD].value )
+        {	// Draw the HUD
+            for( short i=0 ; i<m_NumPlayers ; i++ )
+            {
+                mp_HUD->render(i,m_NumPlayers);
+            }
+        }
+    }
 
 
 
     // Process the dialogs which are seen when the game is paused
-	if( !mMessageBoxes.empty() )
-	{
-		// Finally draw Dialogs like status screen, game paused, etc.
+    if( !mMessageBoxes.empty() )
+    {
+        // Finally draw Dialogs like status screen, game paused, etc.
         renderPauseDialogs();
-	}
+    }
 
 
-	// Process Related Events.
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+    // Process Related Events.
+    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
-	if(!EventContainer.empty())
-	{
-		if( EventContainer.occurredEvent<ResetScrollSurface>() )
-		{
-			g_pVideoDriver->updateScrollBuffer(mMap);
-			EventContainer.pop_Event();
-			return;
-		}
-	}
-
+    if(!EventContainer.empty())
+    {
+        if( EventContainer.occurredEvent<ResetScrollSurface>() )
+        {
+            g_pVideoDriver->updateScrollBuffer(mMap);
+            EventContainer.pop_Event();
+            return;
+        }
+    }
 }
 ////
 // Cleanup Routine
@@ -611,5 +613,5 @@ void CPlayGameVorticon::drawAllElements()
 void CPlayGameVorticon::cleanup()
 {
     if(!mSpriteObjectContainer.empty())
-	mSpriteObjectContainer.clear();
+        mSpriteObjectContainer.clear();
 }

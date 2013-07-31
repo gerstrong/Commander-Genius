@@ -20,10 +20,10 @@
 #include <boost/property_tree/ptree.hpp>
 #include "Base64.h"
 
-CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, CInventory &Inventory, stCheat &Cheatmode) :
+CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
 mActive(false),
 mExeFile(ExeFile),
-mInventory(Inventory),
+mInventoryVec(inventoryVec),
 mpOption(g_pBehaviorEngine->m_option),
 mCheatmode(Cheatmode),
 mMsgBoxOpen(false)
@@ -68,8 +68,11 @@ void CMapPlayGalaxy::ponder()
 {
     const bool msgboxactive = mMsgBoxOpen;
 
+    bool pause = msgboxactive;
+
 	// Check if the engine need to be paused
-	const bool pause = mInventory.showStatus() || msgboxactive;
+    for( auto &inv : mInventoryVec)
+        pause |= inv.showStatus();
 
 	// Animate the tiles of the map
 	mMap.m_animation_enabled = !pause;
@@ -214,7 +217,12 @@ void CMapPlayGalaxy::render()
     }
 
     if(mpOption[OPT_HUD].value )
-        mInventory.drawHUD();
+    {
+        for( int pId = mInventoryVec.size()-1 ; pId>=0 ; pId-- )
+        {
+            mInventoryVec[pId].drawHUD(pId, mInventoryVec.size());
+        }
+    }
 
 }
 
@@ -295,15 +303,15 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 	if(episode == 4)
 	{
-		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
 	}
 	else if(episode == 5)
 	{
-		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
 	}
 	else if(episode == 6)
 	{
-		mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
 	}
 	else
 	{
@@ -479,15 +487,15 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
 
     if(episode == 4)
     {
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
     }
     else if(episode == 5)
     {
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
     }
     else if(episode == 6)
     {
-        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        mapLoader.reset( new galaxy::CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
     }
     else
     {

@@ -18,10 +18,9 @@
 #include "engine/galaxy/ep6/CStatusScreenGalaxyEp6.h"
 
 
-CInventory::CInventory(const std::string& levelname) :
+CInventory::CInventory() :
 m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets),
-mp_StatusBgrnd(NULL),
-m_LevelName(levelname)
+mp_StatusBgrnd(NULL)
 {
 	reset();
 
@@ -37,15 +36,15 @@ m_LevelName(levelname)
 	
 	    if(Episode == 4)
 	    {
-		mp_StatusScreen.reset(new CStatusScreenGalaxyEp4(Item, m_LevelName));	    
+            mp_StatusScreen.reset(new CStatusScreenGalaxyEp4(Item));
 	    }
 	    else if(Episode == 5)
 	    {
-		mp_StatusScreen.reset(new CStatusScreenGalaxyEp5(Item, m_LevelName));
+            mp_StatusScreen.reset(new CStatusScreenGalaxyEp5(Item));
 	    }
 	    else if(Episode == 6)
 	    {
-	    	mp_StatusScreen.reset(new CStatusScreenGalaxyEp6(Item, m_LevelName));
+            mp_StatusScreen.reset(new CStatusScreenGalaxyEp6(Item));
 	    }
 	}
 	
@@ -101,9 +100,9 @@ void CInventory::toggleStatusScreen()
 }
 
 
-void CInventory::drawHUD()
+void CInventory::drawHUD(const int place, const int players)
 {
-	m_HUD.render();
+    m_HUD.render(place, players);
 }
 
 void CInventory::drawStatus()

@@ -12,9 +12,9 @@
 namespace galaxy {
 
 CWorldMap::CWorldMap(CExeFile &ExeFile,
-					CInventory &Inventory,
+                    std::vector<CInventory> &inventoryVec,
 					stCheat &Cheatmode):
-CMapPlayGalaxy(ExeFile, Inventory, Cheatmode)
+CMapPlayGalaxy(ExeFile, inventoryVec, Cheatmode)
 {}
 
 void CWorldMap::init()
@@ -23,11 +23,11 @@ void CWorldMap::init()
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
 	if(g_pBehaviorEngine->getEpisode() == 4)
-		MapLoader.reset( new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        MapLoader.reset( new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
 	else if(g_pBehaviorEngine->getEpisode() == 5)
-		MapLoader.reset( new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        MapLoader.reset( new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
 	else if(g_pBehaviorEngine->getEpisode() == 6)
-		MapLoader.reset( new CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventory, mCheatmode) );
+        MapLoader.reset( new CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
 
 	MapLoader->loadMap( mMap, 0 );
 	g_pBehaviorEngine->mapLevelName = MapLoader->getLevelName();

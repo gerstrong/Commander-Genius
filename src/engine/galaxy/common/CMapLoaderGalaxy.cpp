@@ -35,10 +35,10 @@ namespace galaxy
 
 CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile,
 		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-		CInventory &Inventory, stCheat &Cheatmode):
+        std::vector<CInventory> &inventoryVec, stCheat &Cheatmode):
 m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
-m_Inventory(Inventory),
+mInventoryVec(inventoryVec),
 m_Cheatmode(Cheatmode),
 mPlayerID(0)
 {}
@@ -360,7 +360,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
             const int foeID = *data_ptr;
 
             // Check if it is the player, because in multiplayer we spawn multiple keens
-            if(foeID > 2 && foeID <= 3) // World Map only
+            if(foeID > 0 && foeID <= 3) // World Map only
             {
                 for(int i = 0 ; i < numPlayers ; i++)
                 {

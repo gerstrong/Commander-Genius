@@ -18,7 +18,7 @@ class CMapLoaderGalaxyEp6 : public CMapLoaderGalaxy
 public:
 	CMapLoaderGalaxyEp6(CExeFile &ExeFile,
 			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-			CInventory &Inventory, stCheat &Cheatmode);
+            std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 
 	CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
 };

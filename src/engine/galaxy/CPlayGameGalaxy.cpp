@@ -30,11 +30,11 @@ namespace galaxy
 CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		 char numplayers, CSaveGameController &SavedGame) :
 CPlayGame(ExeFile, level, numplayers ),
-m_Inventory(m_LevelName),
-m_WorldMap(ExeFile, m_Inventory, m_Cheatmode),
-m_LevelPlay(ExeFile, m_Inventory, m_Cheatmode),
+m_WorldMap(ExeFile, mInventoryVec, m_Cheatmode),
+m_LevelPlay(ExeFile, mInventoryVec, m_Cheatmode),
 m_SavedGame(SavedGame)
 {
+    mInventoryVec.resize(numplayers);
     m_WorldMap.init();
 }
 
@@ -61,8 +61,7 @@ bool CPlayGameGalaxy::loadGameState()
 	savedGame.decodeData(m_NumPlayers);
 
 	// We need to load both Levels first, before we do the writing from the saved state.
-
-	m_Inventory << savedGame;
+    mInventoryVec[0] << savedGame;
 
 	bool active;
 	savedGame.decodeData( active );
@@ -135,7 +134,7 @@ bool CPlayGameGalaxy::loadXMLGameState()
         ptree &playerNode = pt.get_child("Player");
         //id = playerNode.get<int>("<xmlattr>.id", );
         auto &invNode = playerNode.get_child("inventory");
-        m_Inventory << invNode;
+        mInventoryVec[id] << invNode;
     }
 
 
@@ -155,10 +154,10 @@ bool CPlayGameGalaxy::loadXMLGameState()
 }
 
 
-void CPlayGameGalaxy::operator<<(boost::property_tree::ptree &invNode)
+/*void CPlayGameGalaxy::operator<<(boost::property_tree::ptree &invNode)
 {
     m_Inventory<<invNode;
-}
+}*/
 
 
 bool CPlayGameGalaxy::saveXMLGameState()
@@ -187,7 +186,7 @@ bool CPlayGameGalaxy::saveXMLGameState()
         ptree &playerNode = pt.add("Player", "");
         playerNode.put("<xmlattr>.id", id);
         auto &invNode = playerNode.put("inventory", "");
-        m_Inventory >> invNode;
+        mInventoryVec[id] >> invNode;
     }
 
     bool active = m_WorldMap.isActive();
@@ -219,14 +218,12 @@ bool CPlayGameGalaxy::init()
 	{
 		m_WorldMap.setActive(true);
 		m_WorldMap.loadAndPlayMusic();
-		m_LevelName = m_WorldMap.getLevelName();
 	}
 	else
 	{
 		// manually a level has been loaded
 		m_LevelPlay.loadLevel(m_Level);
 		m_LevelPlay.setActive(true);
-		m_LevelName = m_LevelPlay.getLevelName();
 	}
 
 	return true;
@@ -246,27 +243,34 @@ void CPlayGameGalaxy::ponder()
 
 	if( !gpMenuController->active() )
 	{
-		processInput();
+	processInput();
 
-		const bool msgboxactive = !mMessageBoxes.empty();
+	const bool msgboxactive = !mMessageBoxes.empty();
 
-		// Trigger the Status screen here
-		if(m_Inventory.showStatus())
-		{
-			if( g_pInput->getPressedAnyButtonCommand(0) )
-			{
-				g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
-				m_Inventory.toggleStatusScreen();
-			}
-		}
-		else
-		{
-			if(!msgboxactive && g_pInput->getPressedCommand(IC_STATUS))
-			{
-				g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
-				m_Inventory.toggleStatusScreen();
-			}
-		}
+        int playerCount = 0;
+        for( auto &inv : mInventoryVec )
+        {
+            // Trigger the Status screen here
+            if(inv.showStatus())
+            {
+                if( g_pInput->getPressedAnyButtonCommand(playerCount) )
+                {
+                    g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
+                    inv.toggleStatusScreen();
+                }
+            }
+            else
+            {
+                if(!msgboxactive && g_pInput->getPressedCommand(playerCount, IC_STATUS))
+                {
+                    g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
+                    inv.toggleStatusScreen();
+                }
+            }
+
+            playerCount++;
+        }
+
 
 		// process World Map if active. At the start it's enabled
 		if(m_WorldMap.isActive())
@@ -315,7 +319,10 @@ void CPlayGameGalaxy::ponder()
 			else if(g_pInput->getHoldedKey(KI))
 			{
 				eventContainer.add( new EventSendDialog("Get all Items!") );
-				m_Inventory.Item.triggerAllItemsCheat();
+
+                for( auto &inv : mInventoryVec )
+                    inv.Item.triggerAllItemsCheat();
+
 				m_Cheatmode.items = true;
 			}
 			else if(g_pInput->getHoldedKey(KN))
@@ -325,7 +332,9 @@ void CPlayGameGalaxy::ponder()
 			}
 			else if(g_pInput->getHoldedKey(KS))
 			{
-				m_Inventory.Item.triggerAllItemsCheat();
+		for( auto &inv : mInventoryVec )
+		    inv.Item.triggerAllItemsCheat();
+
 				m_Cheatmode.items = true;
 				m_Cheatmode.god = true;
 				m_Cheatmode.jump = true;
@@ -416,7 +425,6 @@ void CPlayGameGalaxy::ponder()
 					g_pMusicPlayer->stop();
 					m_WorldMap.setActive(false);
 					m_LevelPlay.loadLevel(NewLevel);
-					m_LevelName = m_LevelPlay.getLevelName();
 					g_pSound->playSound( SOUND_ENTER_LEVEL );
 					m_LevelPlay.setActive(true);
 				}
@@ -433,7 +441,6 @@ void CPlayGameGalaxy::ponder()
 		{
 			m_LevelPlay.setActive(false);
 			m_WorldMap.setActive(true);
-			m_LevelName = m_WorldMap.getLevelName();
 			m_WorldMap.loadAndPlayMusic();
 
 			const EventExitLevel &evCopy = *ev;
@@ -453,7 +460,6 @@ void CPlayGameGalaxy::ponder()
 			g_pMusicPlayer->stop();
 			m_LevelPlay.setActive(false);
 			m_WorldMap.setActive(true);
-			m_LevelName = m_WorldMap.getLevelName();
 			m_WorldMap.loadAndPlayMusic();
 			eventContainer.add( new EventPlayerRideFoot(*ev) );
 			eventContainer.pop_Event();
@@ -491,9 +497,10 @@ void CPlayGameGalaxy::render()
         }
 
         // We have to show the status screen, do so...
-        if( m_Inventory.showStatus() )
+        for( auto &inv : mInventoryVec )
         {
-            m_Inventory.drawStatus();
+            if( inv.showStatus() )
+                inv.drawStatus();
         }
 
         const bool msgboxactive = !mMessageBoxes.empty();

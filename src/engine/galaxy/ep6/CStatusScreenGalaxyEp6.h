@@ -15,7 +15,7 @@
 class CStatusScreenGalaxyEp6: public CStatusScreenGalaxy
 {
 public:
-	CStatusScreenGalaxyEp6(const stItemGalaxy& Item, const std::string &LevelName);
+    CStatusScreenGalaxyEp6(const stItemGalaxy& Item);
 
 	void GenerateStatus();
 };

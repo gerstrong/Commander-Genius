@@ -37,7 +37,7 @@ timer(0)
 	{
 		mpHUDBox = g_pGfxEngine->getSprite("HUDBACKGROUND");
 		m_Rect.h = mpHUDBox->getHeight()+2;
-		m_Rect.w = mpHUDBox->getWidth()+2;
+		m_Rect.w = (mpHUDBox->getWidth()+2)*4;
 		mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         
@@ -161,25 +161,36 @@ void CHUD::DrawCircle(int x, int y, int width)
 /**
  * \brief This part of the code will render the entire HUD. Galaxy Version
  */
-void CHUD::renderGalaxy()
+void CHUD::renderGalaxy(const int place,  const int players)
 {
-	m_Rect.x = 4;	m_Rect.y = 2;
-	m_Rect.w = 80;	m_Rect.h = 29;
-	
-	// Compute the score that really will be seen
-	int score, lives, charges;
-	score = (m_oldScore<999999999) ? m_oldScore : 999999999;
-	lives = (m_lives<99) ? m_lives : 99;
-	charges = (m_oldCharges<99) ? m_oldCharges : 99;
+  auto rect = m_Rect;
 
-	// Draw the HUD with all the digits
-	SDL_Surface* blitsfc = mpHUDBlit.get();
-    mpHUDBox->drawSprite( blitsfc, m_Rect.x, m_Rect.y );
-	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), m_Rect.x+8, m_Rect.y+4, blitsfc );
-	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2), m_Rect.x+64, m_Rect.y+20, blitsfc );
-	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), m_Rect.x+24, m_Rect.y+20, blitsfc );
-	
-    SDL_BlitSurface( mpHUDBlit.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
+  rect.w = 40;	rect.h = 29;
+
+  if(players > 3)
+  {
+      rect.x = place*(rect.w-1);	rect.y = 0;
+  }
+  else
+  {
+      rect.x = 4 + place*rect.w;	rect.y = 2;
+  }
+
+
+  // Compute the score that really will be seen
+  int score, lives, charges;
+  score = (m_oldScore<999999999) ? m_oldScore : 999999999;
+  lives = (m_lives<99) ? m_lives : 99;
+  charges = (m_oldCharges<99) ? m_oldCharges : 99;
+
+  // Draw the HUD with all the digits
+  SDL_Surface* blitsfc = mpHUDBlit.get();
+  mpHUDBox->drawSprite( blitsfc, rect.x, rect.y );
+  g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), rect.x+8, rect.y+4, blitsfc );
+  g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2), rect.x+64, rect.y+20, blitsfc );
+  g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), rect.x+24, rect.y+20, blitsfc );
+
+  SDL_BlitSurface( blitsfc, NULL, g_pVideoDriver->getBlitSurface(), &rect );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -220,7 +231,7 @@ void CHUD::renderVorticon()
 }
 
 
-void CHUD::render()
+void CHUD::render(const int place, const int players)
 {
 	size_t Episode = g_pBehaviorEngine->getEpisode();
 	
@@ -257,9 +268,9 @@ void CHUD::render()
 	}
 
 	if( Episode>=1 && Episode<=3 )
-		renderVorticon();
+	  renderVorticon();
 	else if( Episode>=4 && Episode<=6 )
-		renderGalaxy();
+	  renderGalaxy(place, players);
 }
 
 

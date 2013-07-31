@@ -28,7 +28,7 @@ class CMapLoaderGalaxy
 public:
 	CMapLoaderGalaxy(CExeFile &ExeFile,
 			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-			CInventory &Inventory, stCheat &Cheatmode);
+            std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 	
 	size_t getMapheadOffset();
 	bool gotoNextSignature(std::ifstream &MapFile);
@@ -50,7 +50,7 @@ protected:
 
 	CExeFile &m_ExeFile;
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &m_ObjectPtr;
-	CInventory &m_Inventory;
+    std::vector<CInventory> &mInventoryVec;
 	stCheat &m_Cheatmode;
 	std::string mLevelName;
     int mPlayerID;

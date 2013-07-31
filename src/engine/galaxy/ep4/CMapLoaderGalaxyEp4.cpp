@@ -45,8 +45,8 @@ namespace galaxy
 
 CMapLoaderGalaxyEp4::CMapLoaderGalaxyEp4(CExeFile &ExeFile,
 		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
-		CInventory &Inventory, stCheat &Cheatmode) :
-CMapLoaderGalaxy( ExeFile, ObjectPtr, Inventory, Cheatmode)
+        std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
+CMapLoaderGalaxy( ExeFile, ObjectPtr, inventoryVec, Cheatmode)
 {}
 
 
@@ -106,21 +106,24 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);
+	auto &inventory = mInventoryVec[mPlayerID];
 
 	switch(foe)
 	{
 	case 0x01:
 	case 0x02:                        
 		// This is the player on the map in one level
+		inventory.Item.mLevelName = Map.getLevelName();
 		p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-                (foe==0x01) ? RIGHT : LEFT, m_Inventory, m_Cheatmode, 0x98C, mPlayerID);
+                (foe==0x01) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x98C, mPlayerID);
         mPlayerID++;
 		break;
 
 	case 0x03:
 		// This is the player on the world map
 		// Add the Camera into the game scene and attach it to this player
-        p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, m_Inventory, m_Cheatmode, 0x15C2, mPlayerID);
+		inventory.Item.mLevelName = Map.getLevelName();
+		p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, inventory, m_Cheatmode, 0x15C2, mPlayerID);
         mPlayerID++;
 		break;
 
@@ -253,10 +256,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x22:
 		// Place a gun in case Keen is missing bullets
-		if(m_Inventory.Item.m_bullets < 5)
-		{
-		  p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
-		}
+        for( auto &inventory : mInventoryVec)
+        {
+            if(inventory.Item.m_bullets < 5)
+            {
+                p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
+                break;
+            }
+        }
 		break;
 
 	case 0x23:
@@ -273,8 +280,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x2A:
 		// This is Keen in the swimming suit
+        inventory.Item.mLevelName = Map.getLevelName();
 		p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
-                        RIGHT, m_Inventory, m_Cheatmode, mPlayerID);
+                        RIGHT, inventory, m_Cheatmode, mPlayerID);
         mPlayerID++;
 		break;
 	
