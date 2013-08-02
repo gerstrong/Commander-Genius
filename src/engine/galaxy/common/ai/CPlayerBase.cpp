@@ -155,7 +155,7 @@ CPlayerBase::CPlayerBase
         stCheat &Cheatmode,
         int playerID
 ) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxySpriteObject(pmap, foeID, x, y, playerID),
 m_Inventory(l_Inventory),
 m_camera(pmap,x,y,this),
 mPlayerNum(playerID),

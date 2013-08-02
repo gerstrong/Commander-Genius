@@ -131,10 +131,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	Planes.setOffsets(plane1, plane2, plane3, plane4, plane5);
 	
 	// load the image data
-	g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);
+    g_pGfxEngine->createEmptySprites(1,MAX_SPRITES+1);
 	for(int i=0 ; i<m_numsprites ; i++)
 	{
-		CSprite &Sprite = g_pGfxEngine->getSprite(i);
+        CSprite &Sprite = g_pGfxEngine->getSprite(0,i);
 		Sprite.setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
 		Sprite.setBoundingBoxCoordinates( (EGASpriteModell[i].hitbox_l << STC),
 				(EGASpriteModell[i].hitbox_u << STC),
@@ -153,7 +153,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	{
 		for(int s=0 ; s<m_numsprites ; s++)
 		{
-			sfc = g_pGfxEngine->getSprite(s).getSDLSurface();
+            sfc = g_pGfxEngine->getSprite(0,s).getSDLSurface();
 			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 			pixel = (Uint8*) sfc->pixels;
 
@@ -173,7 +173,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// use white on black masks whereas keen uses black on white.
 	for(int s=0 ; s<m_numsprites ; s++)
 	{
-		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+        CSprite &Sprite = g_pGfxEngine->getSprite(0,s);
 		SDL_Surface *pixsfc = Sprite.getSDLSurface();
 		SDL_Surface *masksfc = Sprite.getSDLMaskSurface();
 
@@ -206,9 +206,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// Now load the special TGA Sprites if some are available
 	//LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
 
-	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
+    for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec(0).size() ; s++)
 	{
-		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+        CSprite &Sprite = g_pGfxEngine->getSprite(0,s);
 		Sprite.optimizeSurface();
 
 		percent = (s*50)/m_numsprites;
@@ -231,7 +231,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		int num = getRessourceID(name, "sprite");
 		if(num < m_numsprites )
 		{
-			CSprite &Sprite = g_pGfxEngine->getSprite(num);
+            CSprite &Sprite = g_pGfxEngine->getSprite(0,num);
 			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
 			Sprite.loadHQSprite(filename);
 		}
@@ -242,25 +242,25 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
 	g_pResourceLoader->setPermilage(500);
 
-	const int NoSprites = g_pGfxEngine->getSpriteVec().size();
+    const int NoSprites = g_pGfxEngine->getSpriteVec(0).size();
 	for(Uint16 s=0 ; s<NoSprites ; s++)
 	{
-		g_pGfxEngine->getSprite(s).applyTransparency();
+        g_pGfxEngine->getSprite(0,s).applyTransparency();
 
 		percent = (s*250)/NoSprites;
 		g_pResourceLoader->setPermilage(500+percent);
 	}
 	
-	LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
+    LoadSpecialSprites( g_pGfxEngine->getSpriteVec(0) );
 
 	g_pResourceLoader->setPermilage(750);
 	// Apply the sprites for player 2,3 and 4
-	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
+    DerivePlayerSprites( g_pGfxEngine->getSpriteVec(0) );
 	g_pResourceLoader->setPermilage(900);
 
 
 	// Now create special sprites, like those for effects and the doors!
-	DeriveSpecialSprites( g_pGfxEngine->getTileMap(1), g_pGfxEngine->getSpriteVec() );
+    DeriveSpecialSprites( g_pGfxEngine->getTileMap(1), g_pGfxEngine->getSpriteVec(0) );
 	g_pResourceLoader->setPermilage(950);
 
 	// Here special Effects are applied, only when the option is enabled for it
@@ -268,6 +268,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		ApplySpecialFX();
 
 	g_pResourceLoader->setPermilage(1000);
+
+    for(unsigned int i=1 ; i<MAX_PLAYERS ; i++)
+    {
+        g_pGfxEngine->getSpriteVec(i) = g_pGfxEngine->getSpriteVec(0);
+    }
 
 	return true;
 }
@@ -319,9 +324,9 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 		sprites.at(s).optimizeSurface();
 	}
 
-	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
+    for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec(0).size() ; s++)
 	{
-		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+        CSprite &Sprite = g_pGfxEngine->getSprite(0,s);
 		Sprite.optimizeSurface();
 	}
 
@@ -338,7 +343,7 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 		int num = getRessourceID(name, "sprite");
 		if( num>=SECOND_PLAYER_BASEFRAME && num<FOURTH_PLAYER_BASEFRAME+48 )
 		{
-			CSprite &Sprite = g_pGfxEngine->getSprite(num);
+            CSprite &Sprite = g_pGfxEngine->getSprite(0,num);
 			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
 			Sprite.loadHQSprite(filename);
 			Sprite.applyTransparency();
@@ -376,16 +381,16 @@ void CEGASprit::DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &s
 	for(size_t i=1 ; i < TileProperties.size() ; i++ )
 	{
 		if(TileProperties.at(i).behaviour == DOOR_YELLOW)
-			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
+            g_pGfxEngine->copyTileToSprite(0,i-1, DOOR_YELLOW_SPRITE, 2);
 
 		if(TileProperties.at(i).behaviour == DOOR_RED)
-			g_pGfxEngine->copyTileToSprite(i-1, DOOR_RED_SPRITE, 2);
+            g_pGfxEngine->copyTileToSprite(0,i-1, DOOR_RED_SPRITE, 2);
 
 		if(TileProperties.at(i).behaviour == DOOR_GREEN)
-			g_pGfxEngine->copyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2);
+            g_pGfxEngine->copyTileToSprite(0,i-1, DOOR_GREEN_SPRITE, 2);
 
 		if(TileProperties.at(i).behaviour == DOOR_BLUE)
-			g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
+            g_pGfxEngine->copyTileToSprite(0,i-1, DOOR_BLUE_SPRITE, 2);
 	 }
 
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
@@ -447,37 +452,37 @@ void CEGASprit::ApplySpecialFX()
 	switch(m_Episode)
 	{
 	case 1:
-		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP1).applyTranslucency(200);
-		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP1).applyTranslucency(200);
-		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP1).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,OBJ_RAY_DEFSPRITE_EP1).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,RAY_FRAME_ZAP_EP1).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,RAY_FRAME_ZOT_EP1).applyTranslucency(200);
 		break;
 	case 2:
-		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP2).applyTranslucency(200);
-		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP2).applyTranslucency(200);
-		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP2).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,OBJ_RAY_DEFSPRITE_EP2).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,RAY_FRAME_ZAP_EP2).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,RAY_FRAME_ZOT_EP2).applyTranslucency(200);
 		break;
 	case 3:
-		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP3).applyTranslucency(200);
-		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP3).applyTranslucency(200);
-		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP3).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,OBJ_RAY_DEFSPRITE_EP3).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,RAY_FRAME_ZAP_EP3).applyTranslucency(200);
+        g_pGfxEngine->getSprite(0,RAY_FRAME_ZOT_EP3).applyTranslucency(200);
 		break;
 	default: break;
 	}
 
-	g_pGfxEngine->getSprite(PT100_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(PT200_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(PT500_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(PT1000_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(PT5000_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PT100_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PT200_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PT500_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PT1000_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PT5000_SPRITE).applyTranslucency(196);
 
-	g_pGfxEngine->getSprite(PTCARDY_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(PTCARDG_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(PTCARDR_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(PTCARDB_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PTCARDY_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PTCARDG_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PTCARDR_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,PTCARDB_SPRITE).applyTranslucency(196);
 
-	g_pGfxEngine->getSprite(GUNUP_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(SHOTUP_SPRITE).applyTranslucency(196);
-	g_pGfxEngine->getSprite(ANKHUP_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,GUNUP_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,SHOTUP_SPRITE).applyTranslucency(196);
+    g_pGfxEngine->getSprite(0,ANKHUP_SPRITE).applyTranslucency(196);
 
 }
 

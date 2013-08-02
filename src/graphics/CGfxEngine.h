@@ -29,7 +29,7 @@ class CGfxEngine : public CSingleton<CGfxEngine>
 public:
 	virtual ~CGfxEngine();
 	
-	void createEmptySprites(Uint16 num_sprites);
+    void createEmptySprites(const int numVar, const int num_sprites);
 	void dumpSprites();
 	void createEmptyBitmaps(Uint16 num_bmps);
 	void createEmptyMaskedBitmaps(Uint16 num_bmps);
@@ -53,10 +53,10 @@ public:
 	void freeFonts();
 	void freeCursor();
 	
-	void copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy );
+    void copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 ntilestocopy );
 	
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour = 0xFFFFFF);
-	int getNumSprites() { return Sprite.size(); }
+    int getNumSprites(const int var) { return Sprite[var].size(); }
 
 	CTilemap &getTileMap(size_t tilemap) { return Tilemap.at(tilemap); }
 	std::vector<CTilemap> &getTileMaps() { return Tilemap; }
@@ -64,7 +64,7 @@ public:
 	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
 	CBitmap *getBitmap(const std::string &name) const;
 
-	CSprite *getSprite(const std::string &name) const;
+    CSprite *getSprite(const int var, const std::string &name) const;
 
 	CEffects *Effect() { return mpEffects.get(); }
 
@@ -75,8 +75,8 @@ public:
 	    return false;	    
 	}
 	
-	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }
-	std::vector<CSprite> &getSpriteVec() { return Sprite; }
+    CSprite &getSprite(const int var, const int slot) { return Sprite[var][slot]; }
+    std::vector<CSprite> &getSpriteVec(const int var) { return Sprite[var]; }
 	CFont &getFont(Uint8 index) { return Font.at(index); }
 	CCursor *getCursor() { return mpCursor.get(); }
 	bool runningEffect();
@@ -92,7 +92,7 @@ private:
 	std::unique_ptr<CEffects> mpEffects;
 	std::vector<CBitmap> Bitmap;
 	std::vector<CBitmap> maskedBitmap;
-	std::vector<CSprite> Sprite;
+    std::vector< std::vector<CSprite> > Sprite;
 	std::unique_ptr<CCursor> mpCursor;
 };
 

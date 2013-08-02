@@ -26,7 +26,7 @@ m_speed(speed)
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 	m_BBox.x1 = rSprite.m_bboxX1;		m_BBox.x2 = rSprite.m_bboxX2;
 	m_BBox.y1 = rSprite.m_bboxY1;		m_BBox.y2 = rSprite.m_bboxY2;
 
@@ -111,20 +111,11 @@ void CRay::gotZapped()
 
 void CRay::moveinAir()
 {
-	//std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
-	//CSprite &raysprite = g_pGfxEngine->getSprite(sprite);
-	//bool hitlethal; // TODO: Why is this here?
 
 	if (m_HorDir == RIGHT)
 	{
 		// don't go through bonklethal tiles, even if they're not solid
 		// (for the arms on mortimer's machine)
-		/*if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, (getYPosition()>>CSF)+1)).behaviour == 1)
-			hitlethal = true;
-		else if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
-			hitlethal = true;
-		else
-			hitlethal = false;*/
 
 		if (blockedr)
 		{

@@ -29,8 +29,8 @@ const int CSF_DISTANCE_TO_GETBACK = 7<<CSF;
 namespace galaxy {
 
 CPlatformMoveAway::CPlatformMoveAway(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
-		const direction_t vertdir, const direction_t hordir, const int actionOffset) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+        const direction_t vertdir, const direction_t hordir, const int actionOffset, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 CPlatform(pmap, foeID, x, y),
 m_Origin(m_Pos)
 {

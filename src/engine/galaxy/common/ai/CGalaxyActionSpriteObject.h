@@ -13,10 +13,10 @@ namespace galaxy
 class CGalaxyActionSpriteObject : public CGalaxySpriteObject
 {
 public:
-	CGalaxyActionSpriteObject(CMap *pmap,
-				const Uint16 foeID,
-				Uint32 x,
-				Uint32 y );
+    CGalaxyActionSpriteObject(CMap *pmap,
+                const Uint16 foeID,
+                Uint32 x,
+                Uint32 y , const int sprVar);
 
 	void setActionForce(const size_t ActionNumber);
 

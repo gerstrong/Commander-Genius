@@ -124,6 +124,7 @@ void CPlayGameVorticon::goBacktoMap()
 		player->inventory.HasCardGreen = 0;
 		player->inventory.HasCardRed = 0;
 
+        const int varId = player->getSpriteVariantId();
 
 		// Now, that the level is complete, sprite can be shown again, and now goto map!
 		int width = player->w>>(CSF-4);
@@ -133,10 +134,10 @@ void CPlayGameVorticon::goBacktoMap()
 			int frame = player->playerbaseframe;
 			if(g_pBehaviorEngine->getEpisode() == 3) frame++;
 
-			g_pGfxEngine->getSprite(frame+0).setWidth(width);
-			g_pGfxEngine->getSprite(frame+1).setWidth(width);
-			g_pGfxEngine->getSprite(frame+2).setWidth(width);
-			g_pGfxEngine->getSprite(frame+3).setWidth(width);
+            g_pGfxEngine->getSprite(varId,frame+0).setWidth(width);
+            g_pGfxEngine->getSprite(varId,frame+1).setWidth(width);
+            g_pGfxEngine->getSprite(varId,frame+2).setWidth(width);
+            g_pGfxEngine->getSprite(varId,frame+3).setWidth(width);
 		}
 
 
@@ -221,8 +222,8 @@ void CPlayGameVorticon::showKeensLeft()
 		{
 			x = 12;
 			for( i=0 ; i<m_Player[p].inventory.lives && i<=10 ; i++ )
-			{
-                g_pGfxEngine->getSprite(m_Player[p].playerbaseframe+PMAPDOWNFRAME).drawSprite(boxsurface, x, y );
+			{                
+                g_pGfxEngine->getSprite(p,m_Player[p].playerbaseframe+PMAPDOWNFRAME).drawSprite(boxsurface, x, y );
 				x+=16;
 			}
 			y += 16;

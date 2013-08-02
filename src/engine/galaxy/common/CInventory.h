@@ -23,7 +23,7 @@
 class CInventory
 {
 public:
-    CInventory();
+    CInventory(const int id);
 	void reset();
 
 	// This function draws the HUD on the Screen
@@ -49,7 +49,7 @@ public:
 
 	stItemGalaxy Item;
 
-	CHUD m_HUD;
+	CHUD m_HUD;    
 	std::unique_ptr<CStatusScreenGalaxy> mp_StatusScreen;
 	SDL_Surface *mp_StatusBgrnd;
 };

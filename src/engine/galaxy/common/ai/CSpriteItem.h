@@ -20,7 +20,7 @@ namespace galaxy {
 class CSpriteItem : public CGalaxySpriteObject
 {
 public:
-	CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite, const bool gravity = false);
+    CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite, const int sprVar, const bool gravity = false);
 	void process();
 	void getTouchedBy(CSpriteObject &theObject);
 

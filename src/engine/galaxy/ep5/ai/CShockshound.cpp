@@ -112,7 +112,7 @@ void CShockshound::processBark()
 	const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
 	g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0, 
 							newX, getYUpPos()-(8<<STC),
-							0x2FC2, xDirection, CENTER,  150) );
+                            0x2FC2, xDirection, CENTER,  150, mSprVar) );
 	
 	// SD_PlaySound(SOUND_BARKSHOTDIE); This must be used in the Enemyshot class, but can't because it's too general
     }

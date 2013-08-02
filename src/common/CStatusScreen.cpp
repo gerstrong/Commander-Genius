@@ -20,7 +20,8 @@
 
 #define FADE_SPEED	10
 
-CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe ) :
+CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime,
+                             int baseframe, int varSprite ) :
  mp_level_completed(p_level_completed),
  m_ankhtime(ankhtime),
  m_closing(false),
@@ -33,11 +34,11 @@ CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_lev
 
 	// draw the episode-specific stuff
 	if (m_episode==1)
-		createInventorySfcEp1();
+        createInventorySfcEp1(varSprite);
 	else if (m_episode==2)
-		createInventorySfcEp2();
+        createInventorySfcEp2(varSprite);
 	else if (m_episode==3)
-		createInventorySfcEp3();
+        createInventorySfcEp3(varSprite);
 }
 
 void CStatusScreen::draw()
@@ -76,7 +77,7 @@ std::string CStatusScreen::fetchDifficultyText()
 	return out;
 }
 
-void CStatusScreen::createInventorySfcEp1()
+void CStatusScreen::createInventorySfcEp1(const int varSpr)
 {
 	int x,t,i,j;
 	std::string tempbuf;
@@ -193,7 +194,7 @@ void CStatusScreen::createInventorySfcEp1()
 	if (i>6) i=6;
 	for(j=0;j<i;j++)
 	{
-		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
+        CSprite &Sprite = g_pGfxEngine->getSprite(varSpr,m_baseframe);
         Sprite.drawSprite( p_surface, x, (0+4)<<3);
 		x += Sprite.getWidth();
 	}
@@ -209,7 +210,7 @@ void CStatusScreen::createInventorySfcEp1()
 	SDL_FreeSurface(p_surface);
 }
 
-void CStatusScreen::createInventorySfcEp2()
+void CStatusScreen::createInventorySfcEp2(const int varSpr)
 {
 	int x,i,j;
 	std::string tempbuf;
@@ -307,7 +308,7 @@ void CStatusScreen::createInventorySfcEp2()
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
+        CSprite &Sprite = g_pGfxEngine->getSprite(0,m_baseframe);
         Sprite.drawSprite( p_surface, x, (0+4)<<3 );
 		x += Sprite.getWidth();
 	}
@@ -333,7 +334,7 @@ void CStatusScreen::createInventorySfcEp2()
 	SDL_FreeSurface(p_surface);
 }
 
-void CStatusScreen::createInventorySfcEp3()
+void CStatusScreen::createInventorySfcEp3(const int varSpr)
 {
 	int x,i,j;
 	std::string tempbuf;
@@ -438,7 +439,7 @@ void CStatusScreen::createInventorySfcEp3()
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
+        CSprite &Sprite = g_pGfxEngine->getSprite(0,m_baseframe);
         Sprite.drawSprite(  p_surface, x, (0+4)<<3);
 		x += Sprite.getWidth();
 	}

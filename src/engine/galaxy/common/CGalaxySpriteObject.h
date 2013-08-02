@@ -16,7 +16,7 @@
 class CGalaxySpriteObject: public CSpriteObject
 {
 public:
-	CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+    CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar);
 
 	void setupGalaxyObjectOnMap(const size_t ActionBaseOffset = 0x0,
 				    const size_t ActionNumber = 0x0 );

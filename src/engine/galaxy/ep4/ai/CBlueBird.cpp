@@ -35,7 +35,7 @@ mTimer(0)
 	setupGalaxyObjectOnMap( 0x21B6, A_EAGLE_HATCHED );
 	xDirection = LEFT;
 
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 	performCollisions();
 	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 	processActionRoutine();

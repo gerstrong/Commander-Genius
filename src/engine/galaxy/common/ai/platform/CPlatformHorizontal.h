@@ -18,7 +18,7 @@ class CPlatformHorizontal : public CPlatform
 public:
 	CPlatformHorizontal(CMap *pmap, const Uint16 foeID, 
 			    const direction_t xDir, Uint32 x, Uint32 y,
-			    const int actionOffset );
+                const int actionOffset, const int sprVar );
 
 	/**
 	 * \brief Processes the platforms AI. It's just simple moving around of course

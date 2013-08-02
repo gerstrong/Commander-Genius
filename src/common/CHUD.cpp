@@ -16,7 +16,8 @@ const int EFFECT_TIME = 10;
 const int EFFECT_SPEED = 10;
 
 CHUD::CHUD(unsigned long &score, signed char &lives,
-		   unsigned int &charges, int *camlead) :
+           unsigned int &charges, const int id,
+           int *camlead) :
 m_score(score),
 m_lives(lives),
 m_charges(charges),
@@ -24,6 +25,7 @@ m_oldScore(score),
 m_oldCharges(charges),
 mpHUDBox(NULL),
 mpCamlead(camlead),
+mId(id),
 timer(0)
 {
 	m_Rect.x = 4;	m_Rect.y = 2;
@@ -35,7 +37,7 @@ timer(0)
 		CreateBackground();
 	else
 	{
-		mpHUDBox = g_pGfxEngine->getSprite("HUDBACKGROUND");
+        mpHUDBox = g_pGfxEngine->getSprite(mId,"HUDBACKGROUND");
 		m_Rect.h = mpHUDBox->getHeight()+2;
 		m_Rect.w = (mpHUDBox->getWidth()+2)*4;
 		mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
@@ -80,7 +82,7 @@ void CHUD::CreateBackground()
 	SDL_SetColorKey( temp, SDL_SRCCOLORKEY, colorkey );
 #endif
 
-	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
+    CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(mId,PMAPDOWNFRAME);
 	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );	
 
 	int sprite=0;
@@ -90,7 +92,7 @@ void CHUD::CreateBackground()
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 
 	// Draw the shot
-	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &KeenGunSprite = g_pGfxEngine->getSprite(mId,sprite);
 	headdstrect.w = headsrcrect.w = KeenGunSprite.getWidth();
 	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
 	headdstrect.x = m_Rect.x+45-(headsrcrect.w/2);

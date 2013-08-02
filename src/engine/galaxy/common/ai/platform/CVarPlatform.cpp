@@ -15,8 +15,8 @@ const int MOVE_SPEED = 20;
 CVarPlatform::CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
 		const direction_t horidir, 
 		const direction_t vertdir,
-		const int actionOffset) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+        const int actionOffset, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 CPlatform(pmap, foeID, x, y),
 CMoveTarget(m_Pos, xDirection, yDirection)
 {

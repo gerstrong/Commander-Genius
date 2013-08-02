@@ -21,8 +21,9 @@ const Uint32 hittime = 100;
 // Test
 //int slot = 64;
 
-CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int xDir, const int yDir) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CBullet::CBullet(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+                 const int xDir, const int yDir, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 mReversed(false)
 {
 	xDirection = xDir;

@@ -17,7 +17,7 @@ const int itemEffectTime = 50;
 const int itemEffectTime_Animation = 14;
 
 CItemEffect::CItemEffect(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint16 l_sprite, item_effect_type ieffect) :
-CGalaxySpriteObject(pmap, foeID, x, y)
+CGalaxySpriteObject(pmap, foeID, x, y, 0)
 {
 	m_timer = 0;
 	sprite = l_sprite-124;
@@ -25,7 +25,7 @@ CGalaxySpriteObject(pmap, foeID, x, y)
 	solid = false;
 	m_ieffect = ieffect;
 			
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 
 	int moveup = (1<<CSF)-1;
 	moveup -= ((rSprite.getHeight()+1)<<STC);

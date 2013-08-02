@@ -66,6 +66,9 @@ void CPlayGameVorticon::setupPlayers()
 	m_showKeensLeft=false;
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 
+    if(!mpHUDVec.empty())
+        mpHUDVec.clear();
+
 	for( ; it_player != m_Player.end() ; it_player++ )
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
@@ -85,7 +88,7 @@ void CPlayGameVorticon::setupPlayers()
 		it_player->pdie = PDIE_NODIE;
 
 		// Calibrate Player to the right position, so it won't fall when level starts
-		CSprite &sprite = g_pGfxEngine->getSprite(PSTANDFRAME);
+        CSprite &sprite = g_pGfxEngine->getSprite(i,PSTANDFRAME);
 		it_player->w = sprite.getWidth()<<STC;
         it_player->h = sprite.getHeight();
 		mMap->m_Dark = false;
@@ -95,11 +98,12 @@ void CPlayGameVorticon::setupPlayers()
 		it_player->setMapData(mMap.get());
 		it_player->exists = true;
 		if(it_player->m_playingmode == CPlayer::WORLDMAP) it_player->solid=!(it_player->godmode);
+
+        stInventory &inventory = m_Player.at(i).inventory;
+
+        mpHUDVec.push_back( move(std::unique_ptr<CHUD>(new CHUD(inventory.score, inventory.lives, inventory.charges, i, &mCamLead))) );
 	}
 
-	stInventory &inventory = m_Player.at(0).inventory;
-
-	mp_HUD.reset( new CHUD(inventory.score, inventory.lives, inventory.charges, &mCamLead) );
 }
 
 bool CPlayGameVorticon::init()
@@ -579,7 +583,7 @@ void CPlayGameVorticon::drawAllElements()
         {	// Draw the HUD
             for( short i=0 ; i<m_NumPlayers ; i++ )
             {
-                mp_HUD->render(i,m_NumPlayers);
+                mpHUDVec[i]->render(i,m_NumPlayers);
             }
         }
     }

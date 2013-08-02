@@ -5,19 +5,19 @@ namespace galaxy
 {  
 
 AutoGun::AutoGun(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, 
-		 direction_t horDir, direction_t vertDir, int basesprite) :
-CGalaxySpriteObject(pmap, foeID, x, y)
+         direction_t horDir, direction_t vertDir, int basesprite, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
 {
   // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5 and 6
   
-  AutoShot *shot = new AutoShot(mp_Map, x, y, horDir, vertDir, basesprite);
+  AutoShot *shot = new AutoShot(mp_Map, x, y, horDir, vertDir, basesprite, sprVar);
   g_pBehaviorEngine->m_EventList.spawnObj( shot );
 }
 
     
-AutoShot::AutoShot(CMap *pmap, const Uint32 x, const Uint32 y, 
-		 direction_t horDir, direction_t vertDir, int basesprite) :
-CGalaxySpriteObject(pmap, 0, x, y),
+AutoShot::AutoShot(CMap *pmap, const Uint32 x, const Uint32 y,
+         direction_t horDir, direction_t vertDir, int basesprite, const int sprVar) :
+CGalaxySpriteObject(pmap, 0, x, y, sprVar),
 mTimer(0)
 {
   // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5

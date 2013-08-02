@@ -18,8 +18,8 @@
 #include "engine/galaxy/ep6/CStatusScreenGalaxyEp6.h"
 
 
-CInventory::CInventory() :
-m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets),
+CInventory::CInventory(const int id) :
+m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets, id),
 mp_StatusBgrnd(NULL)
 {
 	reset();

@@ -160,7 +160,7 @@ void CPlatform::draw()
     if( sprite == BLANKSPRITE || dontdraw )
 	return;
     
-    CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
     
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -175,7 +175,7 @@ void CPlatform::draw()
 	Sprite.drawSprite( showX, showY, (255-transluceny) );
 	if(mp_CarriedPlayer)
 	{
-	    CSprite &playSprite = g_pGfxEngine->getSprite(mp_CarriedPlayer->sprite);
+        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,mp_CarriedPlayer->sprite);
 	    int distx = mp_CarriedPlayer->getXPosition()-getXPosition();
 	    int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
 	    

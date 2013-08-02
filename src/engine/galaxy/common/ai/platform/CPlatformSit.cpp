@@ -3,8 +3,8 @@
 namespace galaxy {
 
 CPlatformSit::CPlatformSit(CMap *pmap, const Uint16 foeID, 
-			     const Uint32 x, const Uint32 y, const int actionOff) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+                 const Uint32 x, const Uint32 y, const int actionOff, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 CPlatform(pmap, foeID, x, y)
 {
 	m_ActionBaseOffset = actionOff;

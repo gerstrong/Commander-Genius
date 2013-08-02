@@ -10,8 +10,8 @@
 
 static int spriteOffset;
 
-CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CSpriteObject(pmap, x, y),
+CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
+CSpriteObject(pmap, x, y, sprVar),
 mFoeID(foeID),
 m_ActionTicker(0),
 m_ActionNumber(0),
@@ -299,7 +299,7 @@ void CGalaxySpriteObject::setActionSprite()
     
 	if(sprite >= 0)
 	{
-	    CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+        CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 	    oldBoxY2 = rSprite.m_bboxY2;
 	    oldBoxY1 = rSprite.m_bboxY1;
 	}
@@ -311,7 +311,7 @@ void CGalaxySpriteObject::setActionSprite()
 	
 	
 	// Check the lower box for better collisions and move the sprite whether needed
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 	
 	unsigned int newBoxY2 = rSprite.m_bboxY2;
 	unsigned int newBoxY1 = rSprite.m_bboxY1;

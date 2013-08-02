@@ -15,14 +15,17 @@ int CSpriteObject::m_number_of_objects = 0; // The current number of total objec
 ///
 // Initialization Routine
 ///
-CSpriteObject::CSpriteObject(CMap *pmap, Uint32 x, Uint32 y) :
+CSpriteObject::CSpriteObject(CMap *pmap,
+                             Uint32 x, Uint32 y,
+                             const int spriteVar) :
 mHealthPoints(1),
 sprite(BLANKSPRITE),
 mp_Map(pmap),
 m_blinktime(0),
 m_invincible(false),
 m_Pos(x,y),
-transluceny(0)
+transluceny(0),
+mSprVar(spriteVar)
 {
 	m_number_of_objects++;
 	exists = true;
@@ -394,7 +397,7 @@ void CSpriteObject::draw()
 	if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
-	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;

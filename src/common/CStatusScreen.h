@@ -15,13 +15,13 @@
 class CStatusScreen
 {
 public:
-    CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe);
+    CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe, int varSprite);
 
 	void draw();
 	std::string fetchDifficultyText();
-	void createInventorySfcEp1();
-	void createInventorySfcEp2();
-	void createInventorySfcEp3();
+    void createInventorySfcEp1(const int varSpr);
+    void createInventorySfcEp2(const int varSpr);
+    void createInventorySfcEp3(const int varSpr);
 
 	bool isClosed() {	return m_closed;	}
 	void close() {	m_closing = true;	}

@@ -106,7 +106,7 @@ void CShikadi::processWalking()
 	// Spawn a Enemyshot in form electrostatic  charge which goes upwards
 	g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0, 
 								newX, getYUpPos(),
-								0x2E5A, 0, UP,  150) );
+                                0x2E5A, 0, UP,  150, mSprVar) );
 	setAction(A_SHIKADI_POLE_ZAPS); 
 	playSound(SOUND_POLEZAP);
 	return;

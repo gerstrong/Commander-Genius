@@ -19,8 +19,8 @@ namespace galaxy
 class CPlatformMoveAway : public CPlatform
 {
 public:
-	CPlatformMoveAway(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
-			const direction_t vertdir, const direction_t hordir, const int actionOffset);
+    CPlatformMoveAway(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
+            const direction_t vertdir, const direction_t hordir, const int actionOffset, const int sprVar);
 
 	bool isNearby(CSpriteObject &theObject);
 

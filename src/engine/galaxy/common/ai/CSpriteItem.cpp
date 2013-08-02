@@ -15,8 +15,8 @@ namespace galaxy {
 
 const int MAX_ANIMATION_TIMER = 20;
 
-CSpriteItem::CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite, const bool gravity) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CSpriteItem::CSpriteItem(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, Uint32 sprite, const int sprVar, const bool gravity) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 mGravity(gravity)
 {
 	m_basesprite = sprite;

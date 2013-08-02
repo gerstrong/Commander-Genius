@@ -69,7 +69,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		if( foe == i )
 		{
 			const Uint32 newsprite = 122+2*(i-0x39);
-			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
+            p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite,0);
 		}
 	}
 	
@@ -79,14 +79,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		if( foe == i )
 		{
 			const Uint32 newsprite = 108+2*(i-0x3D);
-			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
+            p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite,0);
 		}
 	}
 
 	// Neuronal-stunner
 	if( foe == 0x44 )
 	{
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131);
+        p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131,0);
 	}
 	
 	if( foe == 0x45 )
@@ -95,7 +95,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
         {
             if(inventory.Item.m_bullets < 5)
             {
-                p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131);
+                p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 131,0);
                 break;
             }
         }
@@ -105,7 +105,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	// This is the keycard. Keen 5 only!
 	if( foe == 0x46 )
 	{
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 105);
+        p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 105,0);
 	}	
 	
 	// If a foe was found, just return.
@@ -190,41 +190,41 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 		
 				
 	case 0x1B: 
-			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B5E );
+            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B5E, 0 );
 			break;
 	case 0x1C: 
-			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y, 0x1B5E );
+            p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y, 0x1B5E,0 );
 			break;
 	case 0x1D: 
-			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, DOWN, 0x1B5E );
+            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, DOWN, 0x1B5E,0 );
 			break;
 	case 0x1E: 
-			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1B5E );
+            p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1B5E,0 );
 			break;
 									
 	case 0x20:	
-			p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1BD6); break;
+            p_newfoe = new galaxy::CPlatformDrop( &Map, foe, x, y, 0x1BD6, 0); break;
 		
 
 	case 0x21: if (difficulty >= NORMAL) break;
 	case 0x22: if (difficulty >= HARD) break;
 	case 0x23: 
-			p_newfoe = new galaxy::CPlatformSit( &Map, foe, x, y, 0x1BD6); break;		
+            p_newfoe = new galaxy::CPlatformSit( &Map, foe, x, y, 0x1BD6,0 ); break;
 
 			
         // Var Plats red color
 	case 0x24:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B5E); break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B5E,0 ); break;
 	case 0x25:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1B5E);	break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1B5E,0 );	break;
 	case 0x26:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1B5E);	break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1B5E,0 );	break;
 	case 0x27:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER,0x1B5E);	break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER,0x1B5E, 0);	break;
 			
 			
 	case 0x28:
-			p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C);
+            p_newfoe = new galaxy::CPlatformMoveAway( &Map, foe, x, y, CENTER, LEFT, 0x1B7C, 0);
 			break;
 						
 	case 0x29:
@@ -234,35 +234,35 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	  } else {
 		Fuse1++;
 	  }*/
-			p_newfoe = new galaxy::CFuse( &Map, foe, x, y );
+            p_newfoe = new galaxy::CFuse( &Map, foe, x, y, 0);
 			break;
 
 
 	case 0x35: if ( difficulty < HARD ) break;
 	case 0x31: if ( difficulty < NORMAL ) break;
 	case 0x2D: 
-		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 134);
+        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 134, 0);
 		break;
 
 
 	case 0x36: if ( difficulty < HARD ) break;
 	case 0x32: if ( difficulty < NORMAL ) break;
 	case 0x2E: 
-		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 134);
+        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 134, 0);
 		break;
 
 
 	case 0x37: if ( difficulty < HARD ) break;
 	case 0x33: if ( difficulty < NORMAL ) break;
 	case 0x2F: 
-		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 134);
+        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 134, 0);
 		break;
 
 
 	case 0x38: if ( difficulty < HARD ) break;
 	case 0x34: if ( difficulty < NORMAL ) break;
 	case 0x30: 
-		p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 134);
+        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 134, 0);
 		break;
 
 	
@@ -336,30 +336,30 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	// All the Purple Plats
 	// Plat with trails
 	case 0x50: 
-	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B7C); break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, UP, 0x1B7C, 0); break;
 	case 0x51: 
-	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1B7C); break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, RIGHT, CENTER, 0x1B7C, 0); break;
 	case 0x52: 
-	  		p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1B7C); break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, CENTER, DOWN, 0x1B7C, 0); break;
 	case 0x53:
-			p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER, 0x1B7C); break;
+            p_newfoe = new galaxy::CVarPlatform( &Map, foe, x, y, LEFT, CENTER, 0x1B7C, 0); break;
 
 	// Without trails
 	case 0x54:			
-			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C ); break;
+            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, UP, 0x1B7C, 0 ); break;
 	case 0x55:			
-			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y, 0x1B7C ); break;
+            p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, RIGHT, x, y, 0x1B7C, 0 ); break;
 	case 0x56:			
-			p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, DOWN, 0x1B7C ); break;
+            p_newfoe = new galaxy::CPlatformVertical( &Map, foe, x, y, DOWN, 0x1B7C, 0 ); break;
 	case 0x57:			
-			p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1B7C ); break;
+            p_newfoe = new galaxy::CPlatformHorizontal( &Map, foe, LEFT, x, y, 0x1B7C, 0 ); break;
 
 			break;
 
 	// Not sure if after that there are more sprites to load		
 	// This special sprite is only loaded by saved game. Normal gamemaps do not have that flag
 	case CFlag::FOE_ID:
-		p_newfoe = new galaxy::CFlag(&Map, loc, loc, false);
+        p_newfoe = new galaxy::CFlag(&Map, loc, loc, false, 0);
 		break;
 			
 	default:

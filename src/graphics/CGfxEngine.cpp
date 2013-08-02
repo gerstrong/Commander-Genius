@@ -21,18 +21,23 @@ void CGfxEngine::createEmptyTilemaps(size_t num)
 	Tilemap.assign(num, oneTilemap);
 }
 
-void CGfxEngine::createEmptySprites(Uint16 num_sprites)
+void CGfxEngine::createEmptySprites(const int numVar, const int num_sprites)
 {
 	freeSprites();
 	CSprite sprite;
-	Sprite.assign(num_sprites, sprite);
+
+    std::vector<CSprite> spriteVec;
+
+    spriteVec.assign(num_sprites, sprite);
+
+    Sprite.assign(numVar, spriteVec);
 }
 
 void CGfxEngine::dumpSprites()
 {
-	for(size_t i = 0; i < Sprite.size(); i++)
+    for(size_t i = 0; i < Sprite[0].size(); i++)
 	{
-		CSprite &thisSprite = Sprite[i];
+        CSprite &thisSprite = Sprite[0][i];
 
 		// Temporary for testing!!
 		std::string fname = "sprite";
@@ -129,21 +134,19 @@ void CGfxEngine::freeBitmaps(std::vector<CBitmap> &Bitmap)
 
 void CGfxEngine::freeSprites()
 {
-	while( !Sprite.empty() )
-	{
-		Sprite.pop_back();
-	}
+    if( !Sprite.empty() )
+        Sprite.clear();
 }
 
-void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
+void CGfxEngine::copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 ntilestocopy )
 {
 	SDL_Rect src_rect, dst_rect;
 	
 	src_rect.w = src_rect.h = 16;
 	dst_rect.w = dst_rect.h = 16;
 
-	Sprite[s].setSize( 16, 16*ntilestocopy );
-	Sprite[s].createSurface( Tilemap.at(1).getSDLSurface()->flags, Palette.m_Palette );
+    Sprite[var][s].setSize( 16, 16*ntilestocopy );
+    Sprite[var][s].createSurface( Tilemap.at(1).getSDLSurface()->flags, Palette.m_Palette );
 	
 	for(Uint8 i=0 ; i<ntilestocopy ; i++)
 	{
@@ -153,7 +156,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 		dst_rect.x = 0;
 		dst_rect.y = 16*i;
 
-		SDL_BlitSurface( Tilemap.at(1).getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
+        SDL_BlitSurface( Tilemap.at(1).getSDLSurface(), &src_rect, Sprite[var][s].getSDLSurface(), &dst_rect);
 	}
 }
 
@@ -218,15 +221,15 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name) const
 	return NULL;
 }
 
-CSprite *CGfxEngine::getSprite(const std::string &name) const
+CSprite *CGfxEngine::getSprite(const int var, const std::string &name) const
 {
 	std::string s_name;
-	for(unsigned int i=0 ; i<Sprite.size() ; i++)
+    for(unsigned int i=0 ; i<Sprite[var].size() ; i++)
 	{
-		s_name = Sprite[i].getName();
+        s_name = Sprite[var][i].getName();
 
 		if(s_name == name)
-			return const_cast<CSprite*>(&Sprite[i]);
+            return const_cast<CSprite*>(&(Sprite[var][i]));
 	}
 
 	return NULL;

@@ -3,8 +3,8 @@
 namespace galaxy
 {
 
-CGalaxyActionSpriteObject::CGalaxyActionSpriteObject(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y) : 
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxyActionSpriteObject::CGalaxyActionSpriteObject(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 mp_processState(nullptr)
 {
 

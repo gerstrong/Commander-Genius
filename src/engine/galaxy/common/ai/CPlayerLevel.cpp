@@ -624,7 +624,7 @@ void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const int xDir, const i
 {
 	if(m_Inventory.Item.m_bullets > 0)
 	{
-		g_pBehaviorEngine->m_EventList.spawnObj(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir));
+        g_pBehaviorEngine->m_EventList.spawnObj(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir, mSprVar));
 		m_Inventory.Item.m_bullets--;
 	}
 	else
@@ -842,7 +842,7 @@ void CPlayerLevel::processCliffClimbingUp()
 	{
 		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 		const int spriteID = getSpriteIDFromAction(A_KEEN_STAND);
-		CSprite &standSpr = g_pGfxEngine->getSprite(spriteID);
+        CSprite &standSpr = g_pGfxEngine->getSprite(mSprVar,spriteID);
 
 
 		if( xDirection < 0 ) // left upper
@@ -1533,7 +1533,7 @@ void CPlayerLevel::processPressUp() {
 				    setAction(A_KEEN_ENTER_DOOR);
 				    
 				    setActionSprite();
-				    CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+                    CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 
 				    // Here the Player will be snapped to the center
 
@@ -1572,7 +1572,7 @@ void CPlayerLevel::processPressUp() {
 				setAction(A_KEEN_ENTER_DOOR);
 				
 				setActionSprite();
-				CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+                CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 
 				// Here the Player will be snapped to the center
 

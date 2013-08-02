@@ -63,7 +63,7 @@ namespace galaxy
 
 class CBullet : public CGalaxySpriteObject {
 public:
-	CBullet(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int xDir, const int yDir);
+    CBullet(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int xDir, const int yDir, const int sprVar);
 	
 	void reverse()
 	{ mReversed=true; }

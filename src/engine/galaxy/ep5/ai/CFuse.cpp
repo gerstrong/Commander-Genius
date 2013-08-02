@@ -18,8 +18,8 @@ $3186W #QED?
 namespace galaxy {  
   
   
-CFuse::CFuse(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CFuse::CFuse(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 mTimer(0)
 {  
 	// Adapt this AI

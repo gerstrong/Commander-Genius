@@ -167,8 +167,10 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num8MaskedTiles, 3, 1,
 			EpisodeInfo[m_episode-4].Index8MaskedTiles,
 			g_pGfxEngine->getTileMap(3), true)) return false;
+
 	if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
 			EpisodeInfo[m_episode-4].IndexSprites )) return false;
+
 	if(!readTexts())	return false;
 	//k456_export_texts();
 	//k456_export_misc();
@@ -815,7 +817,7 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 {
 	// Create all the sprites
-	g_pGfxEngine->createEmptySprites(NumSprites);
+    g_pGfxEngine->createEmptySprites(MAX_PLAYERS,NumSprites);
 
 	int ep = m_episode - 4;
 
@@ -828,7 +830,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		SpriteHeadStruct Head = SprHead[i];
 		std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
 
-		CSprite &Sprite = g_pGfxEngine->getSprite(i);
+        CSprite &Sprite = g_pGfxEngine->getSprite(0,i);
 		Sprite.setSize( Head.Width*8, Head.Height );
 
 		Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
@@ -909,6 +911,15 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
 		Sprite.setName(m_SpriteNameMap[ep][i]);
 	}
+
+    // Now let's copy all the sprites ant tint to the proper colors
+
+    auto &SpriteOrigVec = g_pGfxEngine->getSpriteVec();
+
+    for( int i=1 ; i<MAX_PLAYERS ; i++ )
+    {
+        g_pGfxEngine->getSpriteVec()[i] = SpriteOrigVec;
+    }
 
 	return true;
 }

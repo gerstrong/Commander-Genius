@@ -19,8 +19,8 @@ namespace galaxy
 {
 
 CPlatformVertical::CPlatformVertical(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y,
-								const direction_t vertdir, const int actionOffset) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+                                const direction_t vertdir, const int actionOffset, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 CPlatform(pmap, foeID, x, y),
 drawFire(false),
 dimFire(false),
@@ -107,7 +107,7 @@ void CPlatformVertical::draw()
     if( dontdraw )
 	return;
     
-    CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
     
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -122,8 +122,8 @@ void CPlatformVertical::draw()
 	
 	if(drawFire && dimFire)
 	{
-	    CSprite &fireSpriteR = g_pGfxEngine->getSprite(m_FireSprite);
-	    CSprite &fireSpriteL = g_pGfxEngine->getSprite(m_FireSprite+2);
+        CSprite &fireSpriteR = g_pGfxEngine->getSprite(mSprVar,m_FireSprite);
+        CSprite &fireSpriteL = g_pGfxEngine->getSprite(mSprVar,m_FireSprite+2);
 	    
 	    fireSpriteL.drawSprite(showX+1, showY+12);
 	    fireSpriteR.drawSprite(showX+Sprite.getWidth()-8, showY+9);
@@ -133,7 +133,8 @@ void CPlatformVertical::draw()
 	
 	if(mp_CarriedPlayer)
 	{
-	    CSprite &playSprite = g_pGfxEngine->getSprite(mp_CarriedPlayer->sprite);
+        CSprite &playSprite = g_pGfxEngine->getSprite(mp_CarriedPlayer->getSpriteVariantId(),
+                                                      mp_CarriedPlayer->sprite);
 	    int distx = mp_CarriedPlayer->getXPosition()-getXPosition();
 	    int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
 	    

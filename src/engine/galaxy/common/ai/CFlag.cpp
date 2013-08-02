@@ -27,8 +27,8 @@ const Uint16 SPEED = 64;
 
 CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 			const VectorD2<Uint32> &Destination,
-			bool newAction) :
-CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y),
+            const int sprVar, bool newAction ) :
+CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
 m_destination(Destination),
 m_baseframe(0)
 {

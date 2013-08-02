@@ -117,7 +117,7 @@ private:
 	std::list< std::shared_ptr<CMessageBoxVort> > mMessageBoxes;
 	bool m_showKeensLeft;
 	std::vector< std::unique_ptr<CVorticonSpriteObject> > mSpriteObjectContainer;
-	std::unique_ptr<CHUD> mp_HUD;
+    std::vector< std::unique_ptr<CHUD> > mpHUDVec;
 	std::shared_ptr<SDL_Surface> mpKeenLeftSfc;
 	SDL_Rect keenleft_rect;
 };

@@ -17,8 +17,8 @@ namespace galaxy {
 
 CPlatformHorizontal::CPlatformHorizontal(CMap *pmap, const Uint16 foeID, 
 					 const direction_t xDir, Uint32 x, const Uint32 y,
-					 const int actionOffset ) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+                     const int actionOffset, const int sprVar ) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 CPlatform(pmap, foeID, x, y),
 drawFire(false),
 m_FireSprite(FIRE_SPRITE),
@@ -90,7 +90,7 @@ void CPlatformHorizontal::draw()
     if( dontdraw )
 	return;
     
-    CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
+    CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
     
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -102,7 +102,7 @@ void CPlatformHorizontal::draw()
 	Uint16 showX = scrx+Sprite.getXOffset();
 	Uint16 showY = scry+Sprite.getYOffset();
 		
-	CSprite &fireSprite = g_pGfxEngine->getSprite(m_FireSprite);
+    CSprite &fireSprite = g_pGfxEngine->getSprite(mSprVar,m_FireSprite);
 	
 	if(drawFire && xDirection == RIGHT)
 	    fireSprite.drawSprite(showX-2, showY+8);
@@ -115,7 +115,7 @@ void CPlatformHorizontal::draw()
 	
 	if(mp_CarriedPlayer)
 	{
-	    CSprite &playSprite = g_pGfxEngine->getSprite(mp_CarriedPlayer->sprite);
+        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,mp_CarriedPlayer->sprite);
 	    int distx = mp_CarriedPlayer->getXPosition()-getXPosition();
 	    int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
 	    

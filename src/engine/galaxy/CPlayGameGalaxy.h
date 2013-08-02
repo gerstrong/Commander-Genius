@@ -45,7 +45,7 @@ public:
 
     void operator<<(boost::property_tree::ptree &invNode);
 
-	void cleanup() {};
+    void cleanup() {}
 
 private:
     std::vector<CInventory> mInventoryVec;

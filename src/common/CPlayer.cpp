@@ -930,7 +930,7 @@ bool CPlayer::drawStatusScreen()
         {
             const int ep = g_pBehaviorEngine->getEpisode();
 
-            mpStatusScr.reset(new CStatusScreen(ep, &inventory, mp_levels_completed, ankhtime, playerbaseframe));
+            mpStatusScr.reset(new CStatusScreen(ep, &inventory, mp_levels_completed, ankhtime, playerbaseframe, mSprVar));
         }
 		
 		mpStatusScr->draw();

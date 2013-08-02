@@ -86,7 +86,7 @@ struct ObjMoveCouple : public CEvent
 class CSpriteObject
 {
 public:
-	CSpriteObject(CMap *pmap, Uint32 x, Uint32 y);
+    CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, const int spriteVar);
 	
 	char mHealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;
@@ -268,6 +268,9 @@ public:
 
 	virtual ~CSpriteObject();
 
+    int getSpriteVariantId()
+    {  return mSprVar;    }
+
 
 protected:
 	CMap *mp_Map;
@@ -282,6 +285,8 @@ protected:
 	ActionFormatType m_Action;
 
 	Uint8 transluceny;
+
+    const int mSprVar; // Sprite variant, which is used by the Spritemap
 };
 
 #endif // __CSPRITEOBJECT_H_
