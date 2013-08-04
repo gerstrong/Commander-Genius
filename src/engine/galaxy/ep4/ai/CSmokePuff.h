@@ -9,7 +9,7 @@ namespace galaxy {
 class CSmokePuff : public CGalaxySpriteObject
 {
 public:
-    CSmokePuff(CMap *pmap, const Uint32 x, const Uint32 y);
+    CSmokePuff(CMap *pmap, const Uint32 x, const Uint32 y, const int sprVar);
 
     void process();
 };

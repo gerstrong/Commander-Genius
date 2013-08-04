@@ -163,7 +163,7 @@ void CMapPlayGalaxy::ponder()
 		{
 		    for( int y=-1 ; y<2 ; y++ )
 		    {
-			std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+(y<<CSF) ));
+            std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+(y<<CSF), 0 ));
 			mObjectPtr.push_back( smoke );
 		    }
 		}
@@ -357,7 +357,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		// TODO: Be careful here is a bad Null Pointer inside that structure
 		if(pNewfoe == NULL)
 		{
-		    pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
+            pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y, 0);
 		}
 
 		savedGame.decodeData( pNewfoe->dead );
@@ -537,6 +537,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
             auto &spriteNode = levelItem.second;
 
             foeID = spriteNode.get<int>("<xmlattr>.id");
+            int sprVarID = spriteNode.get<int>("<xmlattr>.Variant", 0);
             x = spriteNode.get<int>("<xmlattr>.x");;
             y = spriteNode.get<int>("<xmlattr>.y");;
 
@@ -545,7 +546,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
             // TODO: Be careful here is a bad Null Pointer inside that structure
             if(pNewfoe == nullptr)
             {
-                pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y);
+                pNewfoe = new CGalaxySpriteObject(&mMap, foeID, x, y, sprVarID);
             }
 
             pNewfoe->dead = spriteNode.get<bool>("dead", false);

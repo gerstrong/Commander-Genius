@@ -10,7 +10,7 @@ class CBipShip : public CGalaxyActionSpriteObject
 {
   
 public:
-  CBipShip(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y);
+  CBipShip(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar);
   
   /**
     * When it is moving normally

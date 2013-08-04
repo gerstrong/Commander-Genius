@@ -10,7 +10,8 @@
 
 static int spriteOffset;
 
-CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,
+                                         Uint32 x, Uint32 y, const int sprVar) :
 CSpriteObject(pmap, x, y, sprVar),
 mFoeID(foeID),
 m_ActionTicker(0),

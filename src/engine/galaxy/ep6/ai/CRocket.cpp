@@ -26,7 +26,7 @@ const int MOVE_SPEED = 50;
 
 
 CRocket::CRocket(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
-CGalaxyActionSpriteObject(pmap, foeID, x, y),
+CGalaxyActionSpriteObject(pmap, foeID, x, y, 0),
 CMoveTarget(m_Pos, xDirection, yDirection),
 mpCarriedPlayer(nullptr)
 {

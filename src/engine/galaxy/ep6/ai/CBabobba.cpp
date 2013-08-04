@@ -98,7 +98,7 @@ void CBabobba::processSitting()
 	
 	// Create cinder
 	CCinder *cinder = new CCinder(mp_Map, 0, 
-	    getXMidPos(), getYUpPos(), xDirection);
+        getXMidPos(), getYUpPos(), xDirection, mSprVar);
 	
 	g_pBehaviorEngine->m_EventList.spawnObj( cinder );
     }    
@@ -236,8 +236,8 @@ const int CINDER_DYING_TIME = 50;
 
 
 CCinder::CCinder(CMap* pmap, const Uint16 foeID, 
-		 const Uint32 x, const Uint32 y, const int horDir) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y),
+         const Uint32 x, const Uint32 y, const int horDir, const int sprVar) :
+CGalaxyActionSpriteObject(pmap, foeID, x, y, sprVar),
 mTimer(0)
 {
 	mActionMap[A_CINDER_TOSSED] = (void (CGalaxyActionSpriteObject::*)()) &CCinder::processTossed;

@@ -15,7 +15,7 @@ namespace galaxy {
 class CDopeFish : public CGalaxySpriteObject
 {
 public:
-	CDopeFish(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+    CDopeFish(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar);
 
 	// When Dopefish gets touched by something
 	void getTouchedBy(CSpriteObject &theObject);

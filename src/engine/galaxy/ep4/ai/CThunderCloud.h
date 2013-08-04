@@ -17,7 +17,7 @@ namespace galaxy
 class CThunderBolt: public CGalaxySpriteObject
 {
 public:
-	CThunderBolt(CMap *pmap, Uint32 x, Uint32 y);
+    CThunderBolt(CMap *pmap, Uint32 x, Uint32 y, const int sprVar);
 	void getTouchedBy(CSpriteObject &theObject);
 
 	void process();
@@ -29,7 +29,7 @@ public:
 class CThunderCloud: public CGalaxySpriteObject
 {
 public:
-	CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+    CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar);
 
 	void process();
 

@@ -77,14 +77,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		if( foe == i )
 		{
 			const Uint32 newsprite = 103+2*(i-61);
-			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
+            p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite, 0);
 		}
 	}
 
 	// Neuronal-stunner
 	if( foe == 68 )
 	{
-		p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
+        p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127, 0);
 	}
 
 	// Gems
@@ -93,7 +93,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		if( foe == i )
 		{
 			const Uint32 newsprite = 118+2*(i-57);
-			p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite);
+            p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, newsprite, 0);
 		}
 	}	
 	
@@ -154,7 +154,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x09:
 		//This is the Thunder Cloud
-		p_newfoe = new galaxy::CThunderCloud(&Map, foe, x, y);
+        p_newfoe = new galaxy::CThunderCloud(&Map, foe, x, y, 0);
 		break;
 		
 	case 0x0A:
@@ -187,15 +187,15 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	
 	case 0x0F:
 		// Dope Fish
-		p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y);
+        p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y, 0);
 		break;	    
 
 	case 0x10: 
-		p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
+        p_newfoe = new galaxy::CSchoolFish(&Map, foe, x, y);
 		break;
 		
 	case 0x11:
-		p_newfoe = new galaxy::CDevilSprite(&Map, foe, x, y);	    
+        p_newfoe = new galaxy::CDevilSprite(&Map, foe, x, y );
 		break;
 	    
 	case 0x12:
@@ -234,20 +234,20 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	// case 0x1A: This is vertical blocker, not a sprite to load!!
 
 	case 0x1B: // Plat starts moving up
-		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, UP, 0x316A); break;
+        p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, UP, 0x316A, 0); break;
 		
 	case 0x1D: // Plat starts moving down
-		p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, DOWN, 0x316A); break;
+        p_newfoe = new galaxy::CPlatformVertical(&Map, foe, x, y, DOWN, 0x316A, 0); break;
 		
 	case 0x1C: // plat moves to the RIGHT
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, RIGHT, x, y, 0x316A); break;
+        p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, RIGHT, x, y, 0x316A, 0); break;
 		
 	case 0x1E: // plat moves to the LEFT
-		p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, LEFT, x, y, 0x316A); break;
+        p_newfoe = new galaxy::CPlatformHorizontal(&Map, foe, LEFT, x, y, 0x316A, 0); break;
 		
 	//case 0x1F: break; // Platform-Blocker
 	case 0x20:
-		p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y, 0x316A); break;
+        p_newfoe = new galaxy::CPlatformDrop(&Map, foe, x, y, 0x316A, 0); break;
 
 	case 0x21:
 		// Place Miragia in Episode 4 on the Map
@@ -260,7 +260,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
         {
             if(inventory.Item.m_bullets < 5)
             {
-                p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127);
+                p_newfoe = new galaxy::CSpriteItem(&Map, foe, x, y, 127, 0);
                 break;
             }
         }
@@ -268,7 +268,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x23:
 		// Place Miragia in Episode 4 on the Map
-		p_newfoe = new galaxy::CDiveSuit(&Map, foe, x, y);
+        p_newfoe = new galaxy::CDiveSuit(&Map, foe, x, y, 0);
 		break;
 		
 	//case 0x24: break; // Seem to be an unused keen Sprite. Not sure though
@@ -357,20 +357,20 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x35 ... 0x38: 
 		// Dart guns
 		if(foe == 0x35)
-		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 256);
+            p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 256, 0);
 		else if(foe == 0x36)
-		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 260);
+            p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 260, 0);
 		else if(foe == 0x37)
-		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 258);
+            p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 258, 0);
 		else
-		    p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 262);
+            p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 262, 0);
 		break;
 
 	
 	case 0x58: if( difficulty < HARD ) break;
 	case 0x57: if( difficulty < NORMAL ) break;	    
 		// Dope Fish
-		p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y);
+        p_newfoe = new galaxy::CDopeFish(&Map, foe, x, y, 0);
 		break;
 		
 		

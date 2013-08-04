@@ -60,7 +60,7 @@ void CPoisonSlug::processCrawling()
 		m_timer = 0;
 		setAction( A_SLUG_POOING );
 		playSound( SOUND_SLUG_DEFECATE );
-		CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXMidPos(), getYDownPos()-(1<<CSF));
+        CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXMidPos(), getYDownPos()-(1<<CSF), 0);
 		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( slime ) );
 		
 		xDirection = -xDirection;

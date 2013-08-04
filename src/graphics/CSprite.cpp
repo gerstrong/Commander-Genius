@@ -17,9 +17,29 @@ CSprite::CSprite() :
 m_alpha(255)
 {
 	m_xsize = m_ysize = 0;
-	m_bboxX1 = m_bboxY1 = 0;
+    m_bboxX1 = m_bboxY1 = 0;
 	m_bboxX2 = m_bboxY2 = 0;
 	m_xoffset = m_yoffset = 0;
+}
+
+CSprite::CSprite(const CSprite& original) :
+m_alpha(original.getAlpha())
+{
+    original.readSize(m_xsize, m_ysize);
+    original.readBBox(m_bboxX1, m_bboxY1,
+                      m_bboxX2, m_bboxY2);
+    original.readOffsets(m_xoffset, m_yoffset);
+
+    auto origSfc = original.getSmartSDLSurface();
+    auto origMaskSfc = original.getSmartSDLMaskSurface();
+
+    if(origSfc)
+        mpSurface.reset(SDL_DisplayFormatAlpha(origSfc.get()), &SDL_FreeSurface);
+    if(origMaskSfc)
+        mpMasksurface.reset(SDL_DisplayFormatAlpha(origMaskSfc.get()), &SDL_FreeSurface);
+
+
+    // TODO: Now we need to empty the old surface in case of any and create new ones with the data of "orinigal"
 }
 
 /////////////////////////////

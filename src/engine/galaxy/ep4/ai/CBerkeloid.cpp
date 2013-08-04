@@ -19,7 +19,7 @@ const int BERKELOID_TIME = 5;
 	
 
 CBerkeloid::CBerkeloid(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxySpriteObject(pmap, foeID, x, y, 0),
 mTimer(0),
 mpProcessState(nullptr)
 {
@@ -152,7 +152,7 @@ const int A_FLAME_LANDED = 2;
 const int FLAME_INERTIAX = 150;
 
 CBerkFlame::CBerkFlame(CMap *pmap, Uint32 x, Uint32 y, const int xDir) :
-CGalaxySpriteObject(pmap, 0, x, y),
+CGalaxySpriteObject(pmap, 0, x, y, 0),
 mpProcessState(NULL)
 {
 	mActionMap[A_FLAME_THROWN] = &CBerkFlame::processThrown;

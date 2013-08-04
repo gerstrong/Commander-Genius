@@ -27,8 +27,8 @@ const int CSF_DISTANCE_TO_FOLLOW = 20<<CSF;
 const int DOPE_EAT_TIMER = 50;
 
 
-CDopeFish::CDopeFish(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CDopeFish::CDopeFish(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 m_eatTimer(0),
 m_burped(false)
 {

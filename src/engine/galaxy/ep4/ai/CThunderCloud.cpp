@@ -26,8 +26,8 @@ const int STRIKE_TIME = 120;
 const int TIME_TO_STRIKE_1 = 30;
 const int TIME_TO_STRIKE_2 = 90;
 
-CThunderCloud::CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CThunderCloud::CThunderCloud(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 mTimer(0),
 mpBolt(NULL),
 mSecondTry(false)
@@ -103,7 +103,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 				mSecondTry = !mSecondTry;
 				setAction(A_CLOUD_STRIKING);
 				playSound(SOUND_THUNDERCLOUD_STRIKE);
-				mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos() + (32<<STC) );
+                mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos() + (32<<STC), mSprVar );
 				g_pBehaviorEngine->m_EventList.spawnObj( mpBolt );
 			}
 		}
@@ -182,8 +182,8 @@ void CThunderCloud::process()
  */
 const int A_LIGHTNING_STRIKE = 0;
 
-CThunderBolt::CThunderBolt(CMap *pmap,Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, 0, x, y)
+CThunderBolt::CThunderBolt(CMap *pmap, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pmap, 0, x, y, sprVar)
 {
 	setupGalaxyObjectOnMap(0x2A44, A_LIGHTNING_STRIKE);
 	inhibitfall = false;

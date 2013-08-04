@@ -2,8 +2,8 @@
 
 namespace galaxy {
   
-CSmokePuff::CSmokePuff(CMap *pmap, const Uint32 x, const Uint32 y) :
-CGalaxySpriteObject(pmap, 0, x, y)
+CSmokePuff::CSmokePuff(CMap *pmap, const Uint32 x, const Uint32 y, const int sprVar) :
+CGalaxySpriteObject(pmap, 0, x, y, sprVar)
 {	
 	setupGalaxyObjectOnMap(0x2E22, 0);
 	xDirection = LEFT;

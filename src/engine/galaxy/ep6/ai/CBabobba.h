@@ -42,8 +42,8 @@ private:
 class CCinder : public CGalaxyActionSpriteObject
 {
 public:
-	CCinder(CMap *pmap, const Uint16 foeID, 
-		const Uint32 x, const Uint32 y, const int horDir);
+    CCinder(CMap *pmap, const Uint16 foeID,
+        const Uint32 x, const Uint32 y, const int horDir, const int sprVar);
 	
 	void processTossed();	
 	void processLanded();

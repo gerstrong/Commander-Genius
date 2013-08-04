@@ -20,7 +20,7 @@ const int MUSHROOM_LOW_INERTIA = 90;
 const int MUSHROOM_HIGH_INERTIA = 148;
 
 CMadMushroom::CMadMushroom(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxySpriteObject(pmap, foeID, x, y, 0),
 jumpcounter(0)
 {
 	setupGalaxyObjectOnMap(0x20E4, A_MUSHROOM_BOUNCE);

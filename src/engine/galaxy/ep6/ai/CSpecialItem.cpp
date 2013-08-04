@@ -5,7 +5,7 @@ namespace galaxy
 {
     
 CSpecialItem::CSpecialItem(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int actionoffset) : 
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxySpriteObject(pmap, foeID, x, y, 0),
 mTaken(false)
 {
 	setupGalaxyObjectOnMap(actionoffset, 0);

@@ -8,7 +8,7 @@ namespace galaxy
 class COrbatrix : public CGalaxyActionSpriteObject
 {
 public:
-    COrbatrix(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y);
+    COrbatrix(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar);
 
     void processFloat();
     void processMove();

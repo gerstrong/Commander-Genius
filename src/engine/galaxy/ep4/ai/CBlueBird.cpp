@@ -23,7 +23,7 @@ const int CHANCETOFLY = 50;
 const int CHANCETOSTAND = 50;
 
 CBlueBird::CBlueBird(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxySpriteObject(pmap, foeID, x, y, 0),
 mTimer(0)
 {
 	mActionMap[A_EAGLE_HATCHED] = &CBlueBird::processHatched;

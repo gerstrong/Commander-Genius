@@ -17,7 +17,7 @@ const int CSF_DISTANCE_TO_FOLLOW_TOLERANCE = 1<<CSF;
 const int FISH_SPEED = 40;
 
 CSchoolFish::CSchoolFish(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxySpriteObject(pmap, foeID, x, y, 0),
 m_moveSpeed(0)
 {
 	setupGalaxyObjectOnMap(0x3692, A_DOPEFISHFOOD_NORMAL);

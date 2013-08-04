@@ -33,7 +33,7 @@ const int SHOOT_TIME = 120;
 const int MAX_JUMP_INERTIA = -170;
 
 CBobba::CBobba(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
-CGalaxyActionSpriteObject(pmap, foeID, x, y)
+CGalaxyActionSpriteObject(pmap, foeID, x, y, 0)
 {
 	mActionMap[A_BOBBA_JUMP] = (void (CGalaxyActionSpriteObject::*)()) &CBobba::processJumping;
 	mActionMap[A_BOBBA_SIT] = (void (CGalaxyActionSpriteObject::*)()) &CBobba::processSitting;
@@ -81,7 +81,7 @@ void CBobba::processSitting()
     x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
     
     CEnemyShot *fireball = new CEnemyShot(mp_Map, 0, x_coord, getYUpPos(),
-				       0x2E76, xDirection, 0,  100);
+                       0x2E76, xDirection, 0,  100, mSprVar);
     g_pBehaviorEngine->m_EventList.spawnObj( fireball );
     
 }

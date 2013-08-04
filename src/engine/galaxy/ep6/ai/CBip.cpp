@@ -20,7 +20,7 @@ const int WALK_TIME = 300;
     
     
 CBip::CBip(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
-CGalaxyActionSpriteObject(pmap, foeID, x, y),
+CGalaxyActionSpriteObject(pmap, foeID, x, y, 0),
 mTimer(0)
 {
     	mActionMap[A_BIP_STAND] = (void (CGalaxyActionSpriteObject::*)()) &CBip::processStanding;

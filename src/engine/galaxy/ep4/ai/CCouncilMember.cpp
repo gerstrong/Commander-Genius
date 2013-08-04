@@ -26,7 +26,7 @@ int NumberToRescue;
 
 
 CCouncilMember::CCouncilMember(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y),
+CGalaxySpriteObject(pmap, foeID, x, y, 0),
 rescued(false),
 m_timer(0)
 {

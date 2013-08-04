@@ -914,11 +914,11 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
     // Now let's copy all the sprites ant tint to the proper colors
 
-    auto &SpriteOrigVec = g_pGfxEngine->getSpriteVec();
+    auto &SpriteOrigVec = g_pGfxEngine->getSpriteVec(0);
 
-    for( int i=1 ; i<MAX_PLAYERS ; i++ )
+    for( unsigned int i=1 ; i<MAX_PLAYERS ; i++ )
     {
-        g_pGfxEngine->getSpriteVec()[i] = SpriteOrigVec;
+        g_pGfxEngine->getSpriteVec(i) = SpriteOrigVec;
     }
 
 	return true;

@@ -27,8 +27,8 @@ const int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
 
 
 
-CBipShip::CBipShip(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y),
+CBipShip::CBipShip(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, const int sprVar) :
+CGalaxyActionSpriteObject(pmap, foeID, x, y, sprVar),
 mTimer(0),
 mKeenIsNear(false)
 {
@@ -76,7 +76,7 @@ void CBipShip::processMoving()
 		x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
 
 	  	CEnemyShot *laser = new CEnemyShot(mp_Map, 0, x_coord, getYMidPos()-(8<<STC),
-									0x2A7A, xDirection, 0,  100);
+                                    0x2A7A, xDirection, 0,  100, mSprVar);
 		g_pBehaviorEngine->m_EventList.spawnObj( laser );
 		mKeenIsNear = false; 
 	}

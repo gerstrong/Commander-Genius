@@ -22,7 +22,7 @@ const int A_EGG_SHELL3 = 4;
 
 
 CEgg::CEgg(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y)
+CGalaxySpriteObject(pmap, foeID, x, y, 0)
 {
 	setupGalaxyObjectOnMap(0x2120, A_EGG_NORMAL);
 }

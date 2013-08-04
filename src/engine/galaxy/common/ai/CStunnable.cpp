@@ -27,8 +27,8 @@ const unsigned int STARRING_ANIMATION_TIME = 5;
 
 CStunnable::CStunnable(	CMap *pmap,
 			const Uint16 foeID,
-			Uint32 x, Uint32 y ) :
-CGalaxyActionSpriteObject( pmap, foeID, x, y ),
+            Uint32 x, Uint32 y ) :
+CGalaxyActionSpriteObject( pmap, foeID, x, y, 0 ),
 m_stunned(false),
 m_animation_timer(0),
 starTimer(TIME_STAR_SHOWN)

@@ -50,8 +50,8 @@ const int TIME_UNTIL_SLIDE = 20;
 const int TIME_UNTIL_UNCURL = 200;
 const int TIME_UNTIL_FLOAT = 20;
 
-COrbatrix::COrbatrix(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y),
+COrbatrix::COrbatrix(CMap* pmap, const Uint16 foeID, Uint32 x, Uint32 y, const int sprVar) :
+CGalaxyActionSpriteObject(pmap, foeID, x, y, sprVar),
 mTimer(0),
 mGivesKey(false)
 {

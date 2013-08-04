@@ -13,9 +13,12 @@
 #include <vector>
 #include <memory>
 
-class CSprite {
+class CSprite
+{
 public:
-	CSprite();
+    CSprite();
+
+    CSprite(const CSprite& original);
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
@@ -32,8 +35,11 @@ public:
 	void setSize(Uint8 w, Uint8 h) { m_xsize = w; m_ysize = h; }
 	void setOffset(Sint16 x, Sint16 y) { m_xoffset = x; m_yoffset = y; }
 	void setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 );
-	SDL_Surface *getSDLSurface() { return mpSurface.get(); }
-	SDL_Surface *getSDLMaskSurface() { return mpMasksurface.get(); }
+    SDL_Surface *getSDLSurface() const { return mpSurface.get(); } // TODO: This must become obsolete
+    SDL_Surface *getSDLMaskSurface() const { return mpMasksurface.get(); } // TODO: This must become obsolete
+
+    std::shared_ptr<SDL_Surface> getSmartSDLSurface() const { return mpSurface; }
+    std::shared_ptr<SDL_Surface> getSmartSDLMaskSurface() const { return mpMasksurface; }
 
     void drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
     void drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
@@ -49,6 +55,24 @@ public:
 
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }
+
+    Uint8 getAlpha() const
+    { return m_alpha; }
+
+    void readSize(Uint8 &xsize, Uint8 &ysize) const
+    { xsize = m_xsize; ysize = m_ysize; }
+
+    void readBBox(Sint32 &bboxX1, Sint32 &bboxY1,
+                  Sint32 &bboxX2, Sint32 &bboxY2) const
+    {
+        bboxX1 = m_bboxX1; bboxY1 = m_bboxY1;
+        bboxX2 = m_bboxY2; bboxX2 = m_bboxY2;
+    }
+
+    void readOffsets(Sint16 &xoffset, Sint16 &yoffset) const
+    {
+        xoffset = m_xoffset ; yoffset = m_yoffset;
+    }
 
 	// bounding box for hit detection
 	Sint32 m_bboxX1, m_bboxY1;

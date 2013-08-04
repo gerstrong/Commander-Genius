@@ -16,7 +16,7 @@ namespace galaxy {
 const int MINE_SPEED = 20;
 
 CWaterMine::CWaterMine(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y, const direction_t xDir, const bool vertical) :
-CGalaxySpriteObject(pmap, foeID, x, y)
+CGalaxySpriteObject(pmap, foeID, x, y, 0)
 {
 	yDirection = 0;
 	xDirection = xDir;

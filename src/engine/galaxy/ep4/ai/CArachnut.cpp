@@ -19,7 +19,7 @@ const int A_ARACHNUT_STUNNED = 4;
 const int WALK_SPEED = 45;
 
 CArachnut::CArachnut(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y)
+CGalaxySpriteObject(pmap, foeID, x, y, 0)
 {
 	setupGalaxyObjectOnMap( 0x2378, A_ARACHNUT_WALK );
 	xDirection = LEFT;

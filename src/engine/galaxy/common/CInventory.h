@@ -23,7 +23,7 @@
 class CInventory
 {
 public:
-    CInventory(const int id);
+    CInventory(const int id=0);
 	void reset();
 
 	// This function draws the HUD on the Screen

@@ -26,7 +26,7 @@ const int HOR_SPEED = 20;
 
 
 CGik::CGik(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxyActionSpriteObject(pmap, foeID, x, y),
+CGalaxyActionSpriteObject(pmap, foeID, x, y, 0),
 mpInteractPlayer(nullptr)
 {
     mActionMap[A_GIK_WALK] = (GASOFctr) &CGik::processWalk;
