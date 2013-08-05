@@ -33,10 +33,20 @@ CSprite::CSprite(const CSprite& original)
     auto origSfc = original.getSmartSDLSurface();
     auto origMaskSfc = original.getSmartSDLMaskSurface();
 
+
+    mName = original.getName();
+
     if(origSfc)
-        mpSurface.reset(SDL_DisplayFormatAlpha(origSfc.get()), &SDL_FreeSurface);
+    {
+        auto *origSfcPtr = origSfc.get();
+        mpSurface.reset(SDL_ConvertSurface(origSfcPtr, origSfcPtr->format, origSfcPtr->flags), &SDL_FreeSurface);
+    }
     if(origMaskSfc)
-        mpMasksurface.reset(SDL_DisplayFormatAlpha(origMaskSfc.get()), &SDL_FreeSurface);
+    {
+        auto *origMaskSfcPtr = origSfc.get();
+        mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, origMaskSfcPtr->format, origMaskSfcPtr->flags), &SDL_FreeSurface);
+    }
+
 }
 
 CSprite CSprite::operator=(const CSprite& original)
@@ -50,6 +60,7 @@ CSprite CSprite::operator=(const CSprite& original)
     auto origSfc = original.getSmartSDLSurface();
     auto origMaskSfc = original.getSmartSDLMaskSurface();
 
+    mName = original.getName();
 
     if(origSfc)
     {
@@ -59,7 +70,6 @@ CSprite CSprite::operator=(const CSprite& original)
     if(origMaskSfc)
     {
         auto *origMaskSfcPtr = origSfc.get();
-
         mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, origMaskSfcPtr->format, origMaskSfcPtr->flags), &SDL_FreeSurface);
     }
 

@@ -25,28 +25,33 @@ m_oldScore(score),
 m_oldCharges(charges),
 mpHUDBox(NULL),
 mpCamlead(camlead),
-mId(id),
 timer(0)
 {
-	m_Rect.x = 4;	m_Rect.y = 2;
-	m_Rect.w = 80;	m_Rect.h = 32;
+    setup(id);
+}
 
-	size_t Episode = g_pBehaviorEngine->getEpisode();
+void CHUD::setup(const int id)
+{
+    mId = id;
+    m_Rect.x = 4;	m_Rect.y = 2;
+    m_Rect.w = 80;	m_Rect.h = 32;
 
-	if( Episode>=1 && Episode<=3 )
-		CreateBackground();
-	else
-	{
+    size_t Episode = g_pBehaviorEngine->getEpisode();
+
+    if( Episode>=1 && Episode<=3 )
+        CreateBackground();
+    else
+    {
         mpHUDBox = g_pGfxEngine->getSprite(mId,"HUDBACKGROUND");
-		m_Rect.h = mpHUDBox->getHeight()+2;
-		m_Rect.w = (mpHUDBox->getWidth()+2)*4;
-		mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
+        m_Rect.h = mpHUDBox->getHeight()+2;
+        m_Rect.w = (mpHUDBox->getWidth()+2)*4;
+        mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        
+
 #else
-		mpHUDBlit.reset( SDL_DisplayFormatAlpha(mpHUDBlit.get()), &SDL_FreeSurface );
+        mpHUDBlit.reset( SDL_DisplayFormatAlpha(mpHUDBlit.get()), &SDL_FreeSurface );
 #endif
-	}
+    }
 }
 
 /**

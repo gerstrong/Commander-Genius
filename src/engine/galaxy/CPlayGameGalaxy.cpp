@@ -34,7 +34,19 @@ m_WorldMap(ExeFile, mInventoryVec, m_Cheatmode),
 m_LevelPlay(ExeFile, mInventoryVec, m_Cheatmode),
 m_SavedGame(SavedGame)
 {
+    /*if(!mInventoryVec.empty())
+        mInventoryVec.clear();
+
+    for(int i=0 ; i<numplayers ; i++)
+        mInventoryVec.push_back(CInventory(0));*/
+
     mInventoryVec.resize(numplayers);
+
+    for(int i=0 ; i<numplayers ; i++)
+    {
+        mInventoryVec[i].setup(i);
+    }
+
     m_WorldMap.init();
 }
 

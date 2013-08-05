@@ -105,6 +105,11 @@ void CInventory::drawHUD(const int place, const int players)
     m_HUD.render(place, players);
 }
 
+void CInventory::setup(const int sprVar)
+{
+    m_HUD.setup(sprVar);
+}
+
 void CInventory::drawStatus()
 {
 	if(g_pGfxEngine->applyingEffects())

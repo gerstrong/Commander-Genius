@@ -35,6 +35,11 @@ public:
 	 * \brief This part of the code will render the entire HUD
 	 */
 	void render(const int place, const int players);
+
+    /**
+      * \brief Sets up the HUD Box for certain id sprite variant
+      */
+    void setup(const int id);
 	
 	/**
 	 * \brief This will sync some data in the HUD, especially the oldScore variable
@@ -62,7 +67,7 @@ private:
 	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpBackground;
 	std::shared_ptr<SDL_Surface> mpHUDBlit;
 	int *mpCamlead;
-    const int mId;
+    int mId;
 	
 	int timer;
 };

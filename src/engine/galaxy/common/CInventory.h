@@ -29,6 +29,8 @@ public:
 	// This function draws the HUD on the Screen
     void drawHUD(const int place, const int players);
 
+    void setup(const int sprVar);
+
 	// This one draw the Status screen whenever it's called
 	void drawStatus();
 
