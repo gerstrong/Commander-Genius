@@ -22,9 +22,9 @@ m_alpha(255)
 	m_xoffset = m_yoffset = 0;
 }
 
-CSprite::CSprite(const CSprite& original) :
-m_alpha(original.getAlpha())
+CSprite::CSprite(const CSprite& original)
 {
+    m_alpha = original.getAlpha();
     original.readSize(m_xsize, m_ysize);
     original.readBBox(m_bboxX1, m_bboxY1,
                       m_bboxX2, m_bboxY2);
@@ -37,9 +37,33 @@ m_alpha(original.getAlpha())
         mpSurface.reset(SDL_DisplayFormatAlpha(origSfc.get()), &SDL_FreeSurface);
     if(origMaskSfc)
         mpMasksurface.reset(SDL_DisplayFormatAlpha(origMaskSfc.get()), &SDL_FreeSurface);
+}
+
+CSprite CSprite::operator=(const CSprite& original)
+{
+    m_alpha = original.getAlpha();
+    original.readSize(m_xsize, m_ysize);
+    original.readBBox(m_bboxX1, m_bboxY1,
+                      m_bboxX2, m_bboxY2);
+    original.readOffsets(m_xoffset, m_yoffset);
+
+    auto origSfc = original.getSmartSDLSurface();
+    auto origMaskSfc = original.getSmartSDLMaskSurface();
 
 
-    // TODO: Now we need to empty the old surface in case of any and create new ones with the data of "orinigal"
+    if(origSfc)
+    {
+        auto *origSfcPtr = origSfc.get();
+        mpSurface.reset(SDL_ConvertSurface(origSfcPtr, origSfcPtr->format, origSfcPtr->flags), &SDL_FreeSurface);
+    }
+    if(origMaskSfc)
+    {
+        auto *origMaskSfcPtr = origSfc.get();
+
+        mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, origMaskSfcPtr->format, origMaskSfcPtr->flags), &SDL_FreeSurface);
+    }
+
+    return *this;
 }
 
 /////////////////////////////
@@ -366,6 +390,30 @@ void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 	}
 	if(SDL_MUSTLOCK(mpSurface.get())) SDL_UnlockSurface(mpSurface.get());
 }
+
+
+
+void CSprite::exchangeSpriteColor( const Uint16 find1, const Uint16 find2, Uint16 miny )
+{
+    Uint16 x,y;
+    Uint8* pixel;
+
+    if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
+    pixel = (Uint8*) mpSurface->pixels;
+    for(y=miny;y<m_ysize;y++)
+    {
+        for(x=0;x<m_xsize;x++)
+        {
+            if (pixel[y*m_xsize + x] == find1)
+                pixel[y*m_xsize + x] = find2;
+            else if (pixel[y*m_xsize + x] == find2)
+                pixel[y*m_xsize + x] = find1;
+        }
+    }
+    if(SDL_MUSTLOCK(mpSurface.get())) SDL_UnlockSurface(mpSurface.get());
+}
+
+
 
 void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
 {

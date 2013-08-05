@@ -918,7 +918,45 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
     for( unsigned int i=1 ; i<MAX_PLAYERS ; i++ )
     {
-        g_pGfxEngine->getSpriteVec(i) = SpriteOrigVec;
+        g_pGfxEngine->getSpriteVec(i) = SpriteOrigVec;                
+    }
+
+    // For the other variant let's exchange some colors
+    auto &SpriteVecPlayer2 = g_pGfxEngine->getSpriteVec(1);
+    for( auto &sprite : SpriteVecPlayer2)
+    {
+        // Red against Purple
+        sprite.exchangeSpriteColor( 5, 4, 0 );
+        sprite.exchangeSpriteColor( 13, 12, 0 );
+
+        // Yellow against Green
+        sprite.exchangeSpriteColor( 2, 6, 0 );
+        sprite.exchangeSpriteColor( 10, 14, 0 );
+    }
+
+    auto &SpriteVecPlayer3 = g_pGfxEngine->getSpriteVec(2);
+    for( auto &sprite : SpriteVecPlayer3)
+    {
+        // Red against Green
+        sprite.exchangeSpriteColor( 2, 4, 0 );
+        sprite.exchangeSpriteColor( 10, 12, 0 );
+
+        // Yellow against Purple
+        sprite.exchangeSpriteColor( 5, 6, 0 );
+        sprite.exchangeSpriteColor( 13, 14, 0 );
+    }
+
+
+    auto &SpriteVecPlayer4 = g_pGfxEngine->getSpriteVec(3);
+    for( auto &sprite : SpriteVecPlayer4)
+    {
+        // Red against Yellow
+        sprite.exchangeSpriteColor( 6, 4, 0 );
+        sprite.exchangeSpriteColor( 14, 12, 0 );
+
+        // Green against Purple
+        sprite.exchangeSpriteColor( 2, 5, 0 );
+        sprite.exchangeSpriteColor( 10, 13, 0 );
     }
 
 	return true;

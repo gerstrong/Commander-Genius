@@ -19,6 +19,7 @@ public:
     CSprite();
 
     CSprite(const CSprite& original);
+    CSprite operator=(const CSprite& original);
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
@@ -27,7 +28,8 @@ public:
 	void applyTransparency();
 	void applyTranslucency(Uint8 value);
 	void copy( CSprite &Destination, SDL_Color *Palette );
-	void replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny );
+    void replaceSpriteColor( const Uint16 find, const Uint16 replace, const Uint16 miny );
+    void exchangeSpriteColor(const Uint16 find1, const Uint16 find2, const Uint16 miny );
 
 	void generateSprite( const int points );
 	bool loadHQSprite( const std::string& filename );
