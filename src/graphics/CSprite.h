@@ -44,7 +44,7 @@ public:
     std::shared_ptr<SDL_Surface> getSmartSDLMaskSurface() const { return mpMasksurface; }
 
     void drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
-    void drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
+    void drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y );
 	void drawBlinkingSprite( Uint16 x, Uint16 y );
 	void _drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 

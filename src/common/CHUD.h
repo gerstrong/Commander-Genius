@@ -29,17 +29,18 @@ public:
 		 signed char &lives,
 		 unsigned int &charges,
          const int id,
+         const int numPlayers,
 		 int *camlead = NULL); // TODO: Must be removed later and replaced by a reference
 
 	/**
 	 * \brief This part of the code will render the entire HUD
 	 */
-	void render(const int place, const int players);
+    void render();
 
     /**
       * \brief Sets up the HUD Box for certain id sprite variant
       */
-    void setup(const int id);
+    void setup(const int id, const int numPlayers);
 	
 	/**
 	 * \brief This will sync some data in the HUD, especially the oldScore variable
@@ -49,7 +50,7 @@ public:
 private:
 
 	void CreateBackground();
-	void renderGalaxy(const int place, const int players);
+    void renderGalaxy();
 	void renderVorticon();
 	void DrawCircle(int x, int y, int width);
 
@@ -62,7 +63,7 @@ private:
 	unsigned long m_oldScore;
 	unsigned int m_oldCharges;	
 	
-	CSprite *mpHUDBox;
+    CSprite mHUDBox;
 
 	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpBackground;
 	std::shared_ptr<SDL_Surface> mpHUDBlit;

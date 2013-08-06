@@ -220,7 +220,7 @@ void CMapPlayGalaxy::render()
     {
         for( int pId = mInventoryVec.size()-1 ; pId>=0 ; pId-- )
         {
-            mInventoryVec[pId].drawHUD(pId, mInventoryVec.size());
+            mInventoryVec[pId].drawHUD();
         }
     }
 

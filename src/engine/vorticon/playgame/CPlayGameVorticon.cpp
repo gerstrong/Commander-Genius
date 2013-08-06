@@ -101,7 +101,8 @@ void CPlayGameVorticon::setupPlayers()
 
         stInventory &inventory = m_Player.at(i).inventory;
 
-        mpHUDVec.push_back( move(std::unique_ptr<CHUD>(new CHUD(inventory.score, inventory.lives, inventory.charges, i, &mCamLead))) );
+        mpHUDVec.push_back( move(std::unique_ptr<CHUD>(new CHUD(inventory.score, inventory.lives,
+                                                                inventory.charges, i, m_NumPlayers, &mCamLead))) );
 	}
 
 }
@@ -581,9 +582,9 @@ void CPlayGameVorticon::drawAllElements()
     {
         if(mp_option[OPT_HUD].value )
         {	// Draw the HUD
-            for( short i=0 ; i<m_NumPlayers ; i++ )
+            for( auto &hud : mpHUDVec )
             {
-                mpHUDVec[i]->render(i,m_NumPlayers);
+                hud->render();
             }
         }
     }

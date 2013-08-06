@@ -44,7 +44,7 @@ m_SavedGame(SavedGame)
 
     for(int i=0 ; i<numplayers ; i++)
     {
-        mInventoryVec[i].setup(i);
+        mInventoryVec[i].setup(i, numplayers);
     }
 
     m_WorldMap.init();

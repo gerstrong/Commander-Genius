@@ -18,8 +18,8 @@
 #include "engine/galaxy/ep6/CStatusScreenGalaxyEp6.h"
 
 
-CInventory::CInventory(const int id) :
-m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets, id),
+CInventory::CInventory(const int id, const int numPlayers) :
+m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets, id, numPlayers),
 mp_StatusBgrnd(NULL)
 {
 	reset();
@@ -100,14 +100,14 @@ void CInventory::toggleStatusScreen()
 }
 
 
-void CInventory::drawHUD(const int place, const int players)
+void CInventory::drawHUD()
 {
-    m_HUD.render(place, players);
+    m_HUD.render();
 }
 
-void CInventory::setup(const int sprVar)
+void CInventory::setup(const int sprVar, const int numPlayers)
 {
-    m_HUD.setup(sprVar);
+    m_HUD.setup(sprVar, numPlayers);
 }
 
 void CInventory::drawStatus()

@@ -317,6 +317,9 @@ void CSprite::applyTranslucency(Uint8 value)
 	
 	if(format->BitsPerPixel < 24)
 	{
+
+        mpSurface.reset(SDL_DisplayFormat(mpSurface.get()), &SDL_FreeSurface);
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_SetSurfaceAlphaMod(mpSurface.get(), value);
 #else
@@ -479,10 +482,10 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
  */
 void CSprite::drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha )
 {
-    drawSprite( g_pVideoDriver->getBlitSurface(), x, y, alpha );
+    drawSprite( g_pVideoDriver->getBlitSurface(), x, y/*, alpha*/ );
 }
 
-void CSprite::drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, const Uint8 alpha )
+void CSprite::drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y)
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;
@@ -503,7 +506,7 @@ void CSprite::drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y, cons
 	src_rect.h = dst_rect.h;
 	
 	SDL_Surface *src = mpSurface.get();
-		
+
 	SDL_BlitSurface( src, &src_rect, dst, &dst_rect );
 }
 
