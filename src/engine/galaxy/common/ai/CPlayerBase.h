@@ -113,10 +113,24 @@ public:
 	 */
 	void getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt);
 
+    /**
+     * \description Camera of the player gets performed here...
+     */
+    void processCamera();
+
+    /**
+     * @brief Player can always be visible and active, even if he is not seen.
+     * @return
+     */
+    bool calcVisibility();
+
 	/**
 	 * \description Read the Input of the Player and sets the variables accordingly
 	 */
 	virtual void processInput();
+
+    // The object can hold events process them here!
+    void processEvents();
 
 	void processLevelMiscFlagsCheck();
 

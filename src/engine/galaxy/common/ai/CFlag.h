@@ -25,7 +25,7 @@ namespace galaxy  {
     
     CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
       const VectorD2<Uint32> &Destination, const int sprVar,
-	  const bool newAction = true);
+      const bool newAction);
     
     
     void deserialize(CSaveGameController &savedGame) 

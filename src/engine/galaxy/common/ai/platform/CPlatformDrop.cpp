@@ -49,11 +49,12 @@ void CPlatformDrop::process()
 	    blockerDetected = true;
 
 	bool drop = false;	
-	if(mp_CarriedPlayer)
+    for( auto &player : mCarriedPlayerVec)
 	{
-	    if(! mp_CarriedPlayer->m_jumpdownfromobject)
+        if(!player->m_jumpdownfromobject)
 	    {
-		drop = true;
+            drop = true;
+            break;
 	    }
 	}
 	

@@ -211,7 +211,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 		else
 		{
-		    EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );		    
+            EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		}
 		
 		player->m_Inventory.Item.m_gem.empty();

@@ -298,7 +298,6 @@ public:
 	int checkSolidD( int x1, int x2, int y2, const bool push_mode=false );	
 
 
-	bool m_jumpdownfromobject;
 	bool mPlacingGem;
 	bool mExitTouched;
 

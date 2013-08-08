@@ -68,7 +68,7 @@ public:
                   Sint32 &bboxX2, Sint32 &bboxY2) const
     {
         bboxX1 = m_bboxX1; bboxY1 = m_bboxY1;
-        bboxX2 = m_bboxY2; bboxX2 = m_bboxY2;
+        bboxX2 = m_bboxY2; bboxY2 = m_bboxY2;
     }
 
     void readOffsets(Sint16 &xoffset, Sint16 &yoffset) const

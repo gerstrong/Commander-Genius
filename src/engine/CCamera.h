@@ -22,6 +22,11 @@ class CCamera : public CSpriteObject
 public:
 	CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher=NULL);
 
+    /**
+     * @brief cycleCamlead passes the camera lead only enables the cam which has the lead
+     */
+    void cycleCamlead();
+
 	/**
 	 * \brief Whenever the object where the camera has to follow up is created it needs to be attached
 	 *        in order to follow it.
@@ -63,6 +68,9 @@ public:
 	void reAdjust();
 
 	bool outOfSight();
+
+    bool CamLead() const
+    { return mCamlead; }
 	
 	bool m_attached;
 	bool m_freeze;
@@ -78,6 +86,8 @@ public:
 
 private:
 	CSpriteObject *mp_AttachedObject;
+    static int mCamlead;
+    static bool mCamLeadChange;
 };
 
 #endif /* CCAMERA_H_ */

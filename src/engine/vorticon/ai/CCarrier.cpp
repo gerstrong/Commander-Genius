@@ -2,42 +2,53 @@
 #include "sdl/CVideoDriver.h"
 
 CCarrier::CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type) : 
-CVorticonSpriteObject(pmap, x, y, type),
-mpCarriedPlayer(nullptr)
+CVorticonSpriteObject(pmap, x, y, type)
 {
 
 }
 
 void CCarrier::getTouchedBy(CVorticonSpriteObject& theObject)
-{
+{                
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {
-	if(player->getYDownPos() > getYMidPos())
-	{
-	    if( (player->getXMidPos() < getXMidPos() && yDirection >= 0) || yDirection <= 0 )
-		player->push(*this);	    
-	}
-	else
-	{
-	    mpCarriedPlayer = player;
-	    player->pSupportedbyobject = this;
-	    player->dontdraw = true;
-	}
+        if(player->getYDownPos() > getYMidPos())
+        {
+            if( (player->getXMidPos() < getXMidPos() && yDirection >= 0) || yDirection <= 0 )
+                player->push(*this);
+        }
+        else
+        {
+            bool playerFound = false;
+
+            for(auto &carriedPlayer : mCarriedPlayerVec)
+            {
+                if(carriedPlayer == player)
+                    playerFound = true;
+            }
+
+            if(!playerFound)
+            {
+                mCarriedPlayerVec.push_back(player);
+                player->pSupportedbyobject = this;
+                player->dontdraw = true;
+            }
+        }
     }
 }
 
 void CCarrier::process()
 {
-        // check if someone is still standing on the platform
-	if(mpCarriedPlayer)
-	{
-		if(!hitdetect(*mpCarriedPlayer) || mpCarriedPlayer->blockedu)
-		{
-			mpCarriedPlayer->pSupportedbyobject = nullptr;
-			mpCarriedPlayer->dontdraw = false;
-			mpCarriedPlayer = nullptr;
-		}
-	}
+    // check if someone is still standing on the platform
+    for(auto &carriedPlayer : mCarriedPlayerVec)
+    {
+        if(!hitdetect(*carriedPlayer) || carriedPlayer->blockedu)
+        {
+            carriedPlayer->pSupportedbyobject = nullptr;
+            carriedPlayer->dontdraw = false;
+            carriedPlayer = nullptr;
+        }
+    }
+
 }
 
 
@@ -45,7 +56,7 @@ void CCarrier::draw()
 {
     // This draw routine also is able to draw a second object in case it is holding one.
     if( dontdraw )
-	return;
+        return;
     
     CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
     
@@ -56,32 +67,33 @@ void CCarrier::draw()
     
     if( scrx < gameres.w && scry < gameres.h && exists )
     {
-	Uint16 showX = scrx+Sprite.getXOffset();
-	Uint16 showY = scry+Sprite.getYOffset();
-	if(m_blinktime > 0)
-	{
-	    Sprite.drawBlinkingSprite( showX, showY );
-	    m_blinktime--;
-	}
-	else
-	{
-	    Sprite.drawSprite( showX, showY, (255-transluceny) );
-	    if(mpCarriedPlayer)
-	    {
-        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,mpCarriedPlayer->sprite);
-		int distx = mpCarriedPlayer->getXPosition()-getXPosition();
-		int disty = mpCarriedPlayer->getYPosition()-getYPosition();
-		
-		distx = (distx>>STC);
-		distx += (playSprite.getXOffset()-Sprite.getXOffset());
-		disty = (disty>>STC);
-		disty += (playSprite.getYOffset()-Sprite.getYOffset());
-		
-		playSprite.drawSprite( showX+distx, showY+disty );
-	    }
-	}
-	hasbeenonscreen = true;
-    }    
+        Uint16 showX = scrx+Sprite.getXOffset();
+        Uint16 showY = scry+Sprite.getYOffset();
+        if(m_blinktime > 0)
+        {
+            Sprite.drawBlinkingSprite( showX, showY );
+            m_blinktime--;
+        }
+        else
+        {
+            Sprite.drawSprite( showX, showY, (255-transluceny) );
+
+            for(auto &carriedPlayer : mCarriedPlayerVec)
+            {
+                CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar, carriedPlayer->sprite);
+                int distx = carriedPlayer->getXPosition()-getXPosition();
+                int disty = carriedPlayer->getYPosition()-getYPosition();
+
+                distx = (distx>>STC);
+                distx += (playSprite.getXOffset()-Sprite.getXOffset());
+                disty = (disty>>STC);
+                disty += (playSprite.getYOffset()-Sprite.getYOffset());
+
+                playSprite.drawSprite( showX+distx, showY+disty );
+            }
+        }
+        hasbeenonscreen = true;
+    }
 }
 
 
@@ -89,12 +101,12 @@ void CCarrier::moveCarrierLeft(const int amnt)
 {
     // If the Player is standing on the plat move him with it!
     if(amnt <= 0)
-	return;
-    
-    if(mpCarriedPlayer)
+        return;
+
+    if(!mCarriedPlayerVec.empty())
     {
-	m_EventCont.add(new ObjMoveCouple(-amnt,0, *mpCarriedPlayer));
-	return;
+        m_EventCont.add(new ObjMoveCouples(-amnt,0, mCarriedPlayerVec));
+        return;
     }
     moveLeft(amnt);
 }
@@ -104,12 +116,12 @@ void CCarrier::moveCarrierRight(const int amnt)
 {
     // If the Player is standing on the plat move him with it!
     if(amnt <= 0)
-	return;
+        return;
     
-    if(mpCarriedPlayer)
-    {	    
-	m_EventCont.add(new ObjMoveCouple(amnt,0,*mpCarriedPlayer));
-	return;
+    if(!mCarriedPlayerVec.empty())
+    {
+        m_EventCont.add(new ObjMoveCouples(amnt,0, mCarriedPlayerVec));
+        return;
     }
     
     // Now move the platform itself.
@@ -119,10 +131,10 @@ void CCarrier::moveCarrierRight(const int amnt)
 void CCarrier::moveCarrierUp(const int amnt)
 {
     // First move the object on platform if any
-    if(mpCarriedPlayer)
+    if(!mCarriedPlayerVec.empty())
     {
-	m_EventCont.add(new ObjMoveCouple(0,-amnt,*mpCarriedPlayer));
-	return;
+        m_EventCont.add(new ObjMoveCouples(0,-amnt, mCarriedPlayerVec));
+        return;
     }
     
     // Now move the platform itself.
@@ -132,12 +144,12 @@ void CCarrier::moveCarrierUp(const int amnt)
 void CCarrier::moveCarrierDown(const int amnt)
 {
     // First move the object on platform if any
-    if(mpCarriedPlayer)
+    if(!mCarriedPlayerVec.empty())
     {
-	m_EventCont.add(new ObjMoveCouple(0,amnt,*mpCarriedPlayer));
-	return;
+        m_EventCont.add(new ObjMoveCouples(0,amnt, mCarriedPlayerVec));
+        return;
     }
-    
+
     // Now move the platform itself.
     moveDown(amnt);
 }

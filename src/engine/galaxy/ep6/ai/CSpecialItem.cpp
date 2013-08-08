@@ -43,7 +43,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		    default: break;
 		}
 		
-		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );		    
+        EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		
 		player->m_Inventory.Item.m_gem.empty();
 	}    

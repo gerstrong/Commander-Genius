@@ -113,11 +113,11 @@ void CPlatformHorizontal::draw()
 	    fireSprite.drawSprite(showX+Sprite.getWidth()-6, showY+8);
 
 	
-	if(mp_CarriedPlayer)
+    for( auto &player : mCarriedPlayerVec)
 	{
-        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,mp_CarriedPlayer->sprite);
-	    int distx = mp_CarriedPlayer->getXPosition()-getXPosition();
-	    int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
+        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,player->sprite);
+        int distx = player->getXPosition()-getXPosition();
+        int disty = player->getYPosition()-getYPosition();
 	    
 	    distx = (distx>>STC);
 	    distx += (playSprite.getXOffset()-Sprite.getXOffset());

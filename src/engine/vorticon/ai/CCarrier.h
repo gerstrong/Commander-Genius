@@ -23,7 +23,8 @@ public:
     void moveCarrierDown(const int amnt);
     
 private:
-    CPlayer *mpCarriedPlayer;
+
+    std::vector<CSpriteObject*> mCarriedPlayerVec;
 };
 
 #endif // CCARRIER_H

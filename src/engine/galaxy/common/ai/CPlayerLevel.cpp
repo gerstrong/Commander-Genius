@@ -52,7 +52,6 @@ CPlayerLevel::CPlayerLevel(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
                         CInventory &l_Inventory, stCheat &Cheatmode,
                         const size_t offset, const int playerID) :
 CPlayerBase(pmap, foeID, x, y, facedir, l_Inventory, Cheatmode, playerID),
-m_jumpdownfromobject(false),
 mPlacingGem(false),
 mPoleGrabTime(0),
 mExitDoorTimer(0),
@@ -1414,7 +1413,7 @@ void CPlayerLevel::processExiting()
 		g_pMusicPlayer->stop();
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
+        EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		g_pGfxEngine->setupEffect(new CDimDark(8));		
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
 		m_Inventory.Item.m_gem.empty();
@@ -1725,7 +1724,7 @@ void CPlayerLevel::processEnterDoor()
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
 		
-		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap) );		
+        g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar) );
 				
 		dontdraw = true;
 		m_Inventory.Item.m_gem.empty();
@@ -1741,7 +1740,7 @@ void CPlayerLevel::processEnterDoor()
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
-		g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+        g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		dontdraw = true;
 		m_Inventory.Item.m_gem.empty();
 		return;
@@ -1754,6 +1753,7 @@ void CPlayerLevel::processEnterDoor()
 	moveToForce(new_pos);
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
 	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
+
 	m_camera.setPosition(new_pos);
 
 	//o->ypos = TILE2MU(*t%256 - 1) + 15;
@@ -2556,7 +2556,7 @@ void CPlayerLevel::process()
 	    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 	    EventContainer.wait(1.0f);
 	    EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
-	    g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true) );
+        g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 	    m_Inventory.Item.m_gem.empty();
         m_Inventory.Item.fuse_levels_completed++;
 	    mp_Map->mFuseInLevel = false;
@@ -2583,8 +2583,7 @@ void CPlayerLevel::process()
 	{
 		processExiting();
 
-		m_camera.process();
-		m_camera.processEvents();
+        processCamera();
 
 		performCollisions();
 

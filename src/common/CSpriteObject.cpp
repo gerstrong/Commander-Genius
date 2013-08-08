@@ -20,12 +20,14 @@ CSpriteObject::CSpriteObject(CMap *pmap,
                              const int spriteVar) :
 mHealthPoints(1),
 sprite(BLANKSPRITE),
+m_jumpdownfromobject(false),
 mp_Map(pmap),
 m_blinktime(0),
 m_invincible(false),
 m_Pos(x,y),
 transluceny(0),
 mSprVar(spriteVar)
+
 {
 	m_number_of_objects++;
 	exists = true;

@@ -12,8 +12,7 @@
 namespace galaxy {
 
 CPlatform::CPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
-CGalaxySpriteObject(pmap, foeID, x, y, 0),
-mp_CarriedPlayer(NULL)
+CGalaxySpriteObject(pmap, foeID, x, y, 0)
 {
 	m_ActionBaseOffset = 0x316A;
 }
@@ -40,13 +39,15 @@ void CPlatform::movePlatLeft(const int amnt)
 	if(amnt <= 0)
 	    return;
 
-	if(mp_CarriedPlayer)
+    if(!mCarriedPlayerVec.empty())
 	{
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-		{
-		    m_EventCont.add(new ObjMoveCouple(-amnt,0, *mp_CarriedPlayer));
-		    return;
-		}
+        std::vector<CSpriteObject*> carriedObjVec;
+
+        for(auto &player : mCarriedPlayerVec)
+            carriedObjVec.push_back(player);
+
+        m_EventCont.add(new ObjMoveCouples(-amnt, 0, carriedObjVec));
+        return;
 	}		    
 	moveLeft(amnt);
 }
@@ -57,14 +58,17 @@ void CPlatform::movePlatRight(const int amnt)
 	if(amnt <= 0)
 	    return;
 
-	if(mp_CarriedPlayer)
-	{	    
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-		{
-		    m_EventCont.add(new ObjMoveCouple(amnt,0,*mp_CarriedPlayer));
-		    return;
-		}			
-	}
+    if(!mCarriedPlayerVec.empty())
+    {
+        std::vector<CSpriteObject*> carriedObjVec;
+
+        for(auto &player : mCarriedPlayerVec)
+            carriedObjVec.push_back(player);
+
+        m_EventCont.add(new ObjMoveCouples(amnt,0, carriedObjVec));
+        return;
+    }
+
 
 	// Now move the platform itself.
 	moveRight(amnt);
@@ -73,14 +77,16 @@ void CPlatform::movePlatRight(const int amnt)
 void CPlatform::movePlatUp(const int amnt)
 {
 	// First move the object on platform if any
-	if(mp_CarriedPlayer)
-	{
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-		{
-		    m_EventCont.add(new ObjMoveCouple(0,-amnt,*mp_CarriedPlayer));
-		    return;
-		}
-	}
+    if(!mCarriedPlayerVec.empty())
+    {
+        std::vector<CSpriteObject*> carriedObjVec;
+
+        for(auto &player : mCarriedPlayerVec)
+            carriedObjVec.push_back(player);
+
+        m_EventCont.add(new ObjMoveCouples(0,-amnt, carriedObjVec));
+        return;
+    }
 
 	// Now move the platform itself.
 	moveUp(amnt);
@@ -89,14 +95,16 @@ void CPlatform::movePlatUp(const int amnt)
 void CPlatform::movePlatDown(const int amnt)
 {
 	// First move the object on platform if any
-	if(mp_CarriedPlayer)
-	{
-		if(!mp_CarriedPlayer->m_jumpdownfromobject)
-		{
-		    m_EventCont.add(new ObjMoveCouple(0,amnt,*mp_CarriedPlayer));
-		    return;
-		}
-	}
+    if(!mCarriedPlayerVec.empty())
+    {
+        std::vector<CSpriteObject*> carriedObjVec;
+
+        for(auto &player : mCarriedPlayerVec)
+            carriedObjVec.push_back(player);
+
+        m_EventCont.add(new ObjMoveCouples(0, amnt, carriedObjVec));
+        return;
+    }
 
 	// Now move the platform itself.
 	moveDown(amnt);
@@ -111,26 +119,29 @@ void CPlatform::movePlat(const VectorD2<int> &speed)
 void CPlatform::process()
 {
 	// check if someone is still standing on the platform
-	if(mp_CarriedPlayer)
+
+    for(auto &carriedObj : mCarriedPlayerVec)
 	{
-		if(!hitdetect(*mp_CarriedPlayer) || mp_CarriedPlayer->blockedu )
+        auto carriedPlayer = dynamic_cast<CPlayerLevel*>(carriedObj);
+
+        if(!hitdetect(*carriedPlayer) || carriedPlayer->blockedu )
 		{
-			mp_CarriedPlayer->pSupportedbyobject = nullptr;
-			mp_CarriedPlayer->m_jumpdownfromobject = false;
-			mp_CarriedPlayer->dontdraw = false;
-			mp_CarriedPlayer = NULL;
+            carriedPlayer->pSupportedbyobject = nullptr;
+            carriedPlayer->m_jumpdownfromobject = false;
+            carriedPlayer->dontdraw = false;
+            carriedPlayer = NULL;
 		}
-		else if(!mp_CarriedPlayer->m_jumpdownfromobject)
+        else if(!carriedPlayer->m_jumpdownfromobject)
 		{
-		    if(mp_CarriedPlayer->getActionNumber(A_KEEN_STAND) || mp_CarriedPlayer->getActionNumber(A_KEEN_ON_PLAT))
+            if(carriedPlayer->getActionNumber(A_KEEN_STAND) || carriedPlayer->getActionNumber(A_KEEN_ON_PLAT))
 		    {
 			// Check that he correctly stands on the platform
 			const unsigned int standY = getYUpPos()+1;
 			
-			if( standY > mp_CarriedPlayer->getYDownPos() )
-			    mp_CarriedPlayer->moveDown((standY-mp_CarriedPlayer->getYDownPos())/2 + 1);
-			else if( standY < mp_CarriedPlayer->getYDownPos() )
-			    mp_CarriedPlayer->moveUp((mp_CarriedPlayer->getYDownPos()-standY)/2 + 1);
+            if( standY > carriedPlayer->getYDownPos() )
+                carriedPlayer->moveDown((standY-carriedPlayer->getYDownPos())/2 + 1);
+            else if( standY < carriedPlayer->getYDownPos() )
+                carriedPlayer->moveUp((carriedPlayer->getYDownPos()-standY)/2 + 1);
 		    }    
 		}
 	}
@@ -146,9 +157,24 @@ void CPlatform::getTouchedBy(CSpriteObject &theObject)
 		const int m_y2 = getYUpPos()+(4<<STC);
 		if( m_py2 <= m_y2 && !player->pSupportedbyobject && !player->m_jumpdownfromobject )
 		{
-			mp_CarriedPlayer = player;
-			player->pSupportedbyobject = this;
-			player->dontdraw = true;
+            bool playerInList = false;
+
+            for(auto &carriedObj : mCarriedPlayerVec)
+            {
+                if(player == carriedObj)
+                {
+                    playerInList = true;
+                    break;
+                }
+            }
+
+            if(!playerInList)
+            {
+                mCarriedPlayerVec.push_back(player);
+                player->pSupportedbyobject = this;
+                player->dontdraw = true;
+            }
+
 		}
 	}
 }
@@ -173,11 +199,12 @@ void CPlatform::draw()
 	Uint16 showY = scry+Sprite.getYOffset();
 		
 	Sprite.drawSprite( showX, showY, (255-transluceny) );
-	if(mp_CarriedPlayer)
+
+    for(auto &carriedObj : mCarriedPlayerVec)
 	{
-        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,mp_CarriedPlayer->sprite);
-	    int distx = mp_CarriedPlayer->getXPosition()-getXPosition();
-	    int disty = mp_CarriedPlayer->getYPosition()-getYPosition();
+        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,carriedObj->sprite);
+        int distx = carriedObj->getXPosition()-getXPosition();
+        int disty = carriedObj->getYPosition()-getYPosition();
 	    
 	    distx = (distx>>STC);
 	    distx += (playSprite.getXOffset()-Sprite.getXOffset());

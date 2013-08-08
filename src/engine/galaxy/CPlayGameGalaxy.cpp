@@ -296,7 +296,7 @@ void CPlayGameGalaxy::ponder()
 		{
             m_LevelPlay.setMsgBoxOpen(msgboxactive);
             m_LevelPlay.ponder();
-		}
+		}                
 
 		// Draw some Textboxes with Messages only if one of those is open and needs to be drawn
 		if(msgboxactive)

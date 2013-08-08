@@ -141,8 +141,7 @@ void CPlayerDive::processDiving()
 	else
 		m_breathtimer++;
 
-	m_camera.process();
-	m_camera.processEvents();
+    processCamera();
 }
 
 void CPlayerDive::process()

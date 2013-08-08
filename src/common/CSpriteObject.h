@@ -71,15 +71,30 @@ struct ObjMove : public CEvent
 // This is applied for example whenever keen is being moved on the platform
 struct ObjMoveCouple : public CEvent
 {
-	VectorD2<int> m_Vec;
-	CSpriteObject &mSecond;
-	ObjMoveCouple(const VectorD2<int>& Vector, 
-                      CSpriteObject &second) : 
-			m_Vec(Vector), mSecond(second)  {}
-	
-	ObjMoveCouple(const int offx, const int offy, 
-                      CSpriteObject &second) : 
-			m_Vec(offx, offy), mSecond(second) {}
+    VectorD2<int> m_Vec;
+    CSpriteObject &mSecond;
+    ObjMoveCouple(const VectorD2<int>& Vector,
+                      CSpriteObject &second) :
+            m_Vec(Vector), mSecond(second)  {}
+
+    ObjMoveCouple(const int offx, const int offy,
+                      CSpriteObject &second) :
+            m_Vec(offx, offy), mSecond(second) {}
+};
+
+// Same as above but for multiple couples
+
+struct ObjMoveCouples : public CEvent
+{
+    VectorD2<int> m_Vec;
+    std::vector<CSpriteObject*> mCarriedObjVec;
+    ObjMoveCouples(const VectorD2<int>& Vector,
+                      std::vector<CSpriteObject*> &carriedObjVec) :
+            m_Vec(Vector), mCarriedObjVec(carriedObjVec)  {}
+
+    ObjMoveCouples(const int offx, const int offy,
+                      std::vector<CSpriteObject*> &carriedObjVec) :
+            m_Vec(offx, offy), mCarriedObjVec(carriedObjVec) {}
 };
 
 
@@ -122,6 +137,9 @@ public:
 
 	// This container will held the triggered events of the object
 	CEventContainer m_EventCont;
+
+    bool m_jumpdownfromobject;
+
 
 	void calcBoundingBoxes();
 	void performCollisionsSameBox();
@@ -190,7 +208,7 @@ public:
 	virtual void process() { }
 	
 	// The object can hold events process them here!
-	void processEvents();
+    virtual void processEvents();
 
 	bool turnAroundOnCliff( int x1, int x2, int y2 );
 

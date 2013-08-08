@@ -15,6 +15,9 @@
 #include "sdl/input/CInput.h"
 #include "engine/spritedefines.h"
 
+int CCamera::mCamlead = 0;
+bool CCamera::mCamLeadChange = false;
+
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
 CSpriteObject(pmap, x, y, 0),
 mp_AttachedObject(p_attacher)
@@ -28,6 +31,21 @@ mp_AttachedObject(p_attacher)
 	m_moving = true;
 }
 
+void CCamera::cycleCamlead()
+{
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+
+    if( numPlayers == 1 ) // For one player this doesn't make sense
+        return;
+
+    if( mCamlead<(numPlayers-1) )
+        mCamlead++;
+    else
+        mCamlead = 0;
+
+    mCamLeadChange = true;
+}
+
 void CCamera::attachObject(CSpriteObject *p_attacher)
 {
 	mp_AttachedObject = p_attacher;
@@ -35,6 +53,7 @@ void CCamera::attachObject(CSpriteObject *p_attacher)
 
 void CCamera::setPosition(const VectorD2<int>& newpos)
 {
+
 	int cam_x = newpos.x-((g_pVideoDriver->getGameResolution().w/2)<<STC);
 	int cam_y = newpos.y-((g_pVideoDriver->getGameResolution().h/2)<<STC);
 
@@ -45,6 +64,11 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 		cam_y = 0;
 
 	moveToForce(newpos);
+
+    // Only the lead camera may change the scroll position
+    if(mCamlead != mp_AttachedObject->getSpriteVariantId())
+        return;
+
 	mp_Map->gotoPos(cam_x>>STC, cam_y>>STC);
 	
 	reAdjust();
@@ -52,7 +76,25 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 
 void CCamera::process(const bool force)
 {
-	if(m_freeze)
+    // Cycle Cam Code
+    if( g_pInput->getPressedCommand(mCamlead, IC_CAMLEAD) )
+    {
+        cycleCamlead();
+    }
+
+    const int camId = mp_AttachedObject->getSpriteVariantId();
+
+    if(camId != mCamlead)
+        return;
+
+    if(mCamLeadChange)
+    {
+        mCamLeadChange = false;
+
+        setPosition(m_Pos);
+    }
+
+    if(m_freeze)
 		return;
 	
 	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();

@@ -46,7 +46,7 @@ protected:
 	
 	void movePlat(const VectorD2<int> &speed);
 
-	CPlayerLevel *mp_CarriedPlayer;
+    std::vector<CPlayerLevel*> mCarriedPlayerVec;
 };
 
 }

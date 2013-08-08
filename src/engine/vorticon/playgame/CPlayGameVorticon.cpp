@@ -208,7 +208,7 @@ void CPlayGameVorticon::ponder()
 			    for( int i=0 ; i<m_NumPlayers ; i++ )
 			    {
 			      if(m_Player[i].pdie)
-				cycleCamLead();
+                        cycleCamLead();
 			    }
 			  }
 			  else

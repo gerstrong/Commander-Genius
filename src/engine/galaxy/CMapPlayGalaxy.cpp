@@ -91,29 +91,29 @@ void CMapPlayGalaxy::ponder()
 		    
 		    if( visibility )
 		    {
-			// Process the AI of the object as it's given
-			objRef.process();
+                // Process the AI of the object as it's given
+                objRef.process();
 			
-			// process all the objects' events
-			objRef.processEvents();
+                // process all the objects' events
+                objRef.processEvents();
 			
-			// Check collision between objects using NlogN order
-			auto theOther = obj; theOther++;			
-			for( ; theOther != mObjectPtr.end() ; theOther++)
-			{
-			    auto &theOtherRef = *(theOther->get());
-			    if( !theOtherRef.exists )
-                    continue;
+                // Check collision between objects using NlogN order
+                auto theOther = obj; theOther++;
+                for( ; theOther != mObjectPtr.end() ; theOther++)
+                {
+                    auto &theOtherRef = *(theOther->get());
+                    if( !theOtherRef.exists )
+                        continue;
 			    
-			    objRef.isNearby(theOtherRef);
-                theOtherRef.isNearby(objRef);
+                    objRef.isNearby(theOtherRef);
+                    theOtherRef.isNearby(objRef);
 			    
-			    if( objRef.hitdetect(theOtherRef) )
-			    {
-                    objRef.getTouchedBy(theOtherRef);
-                    theOtherRef.getTouchedBy(objRef);
-			    }
-			}
+                    if( objRef.hitdetect(theOtherRef) )
+                    {
+                        objRef.getTouchedBy(theOtherRef);
+                        theOtherRef.getTouchedBy(objRef);
+                    }
+                }
 		    }
 		}
 		

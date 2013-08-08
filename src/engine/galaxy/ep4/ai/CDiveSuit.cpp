@@ -40,7 +40,7 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"),
 				g_pBehaviorEngine->getString("SWIM_SUIT_TEXT"), LEFT) );
 
-		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
+        EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		player->m_Inventory.Item.m_gem.empty();
 	}
 }
