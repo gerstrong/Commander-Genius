@@ -221,7 +221,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	case 0x16:
 		// This is a Poison Slug.
-		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y);
+        p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y);
 		break;
 
 	case 0x18: if( difficulty < HARD ) break;
@@ -289,7 +289,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x2C: if( difficulty < HARD ) break;
 	case 0x2B: if( difficulty < NORMAL ) break;
 		// This is a Poison Slug.
-		p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y);
+        p_newfoe = new galaxy::CPoisonSlug(&Map, foe, x, y);
 		break;
 	
 

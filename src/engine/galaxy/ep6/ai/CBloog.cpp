@@ -25,6 +25,31 @@ CBloog::CBloog(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 mTimer(0)
 {
+
+    mHealthPoints = 1;
+
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    if(foeID == 0x04 && diff > HARD)
+    {
+        // Set the slug to another color and double his health
+        mSprVar = 1;
+        mHealthPoints *= 2;
+    }
+    if(foeID == 0x05 && diff > EXPERT)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 2;
+        mHealthPoints *= 3;
+    }
+    if(foeID == 0x06 && diff > NINJA)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 3;
+        mHealthPoints *= 4;
+    }
+
+
 	mActionMap[A_BLOOG_WALK] = (GASOFctr) &CBloog::processWalking;
 	mActionMap[A_BLOOG_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 	
@@ -60,10 +85,19 @@ void CBloog::getTouchedBy(CSpriteObject &theObject)
 
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
-	{
-		setAction(A_BLOOG_STUNNED);
-		dead = true;
-		theObject.dead = true;
+	{		
+        mHealthPoints--;
+        theObject.dead = true;
+
+        if(mHealthPoints == 0)
+        {
+            setAction(A_BLOOG_STUNNED);
+            dead = true;
+        }
+        else
+        {
+            blink(10);
+        }
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

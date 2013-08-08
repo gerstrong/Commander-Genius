@@ -78,7 +78,10 @@ public:
 
 		mpMenuDialog->addControl( new CGUIButton( "Easy", new StartNewGameEvent(EASY) ) );
 		mpMenuDialog->addControl( new CGUIButton( "Normal", new StartNewGameEvent(NORMAL) ) );
-		mpMenuDialog->addControl( new CGUIButton( "Hard", new StartNewGameEvent(HARD) ) );
+        mpMenuDialog->addControl( new CGUIButton( "Hard", new StartNewGameEvent(HARD) ) );
+        mpMenuDialog->addControl( new CGUIButton( "Expert", new StartNewGameEvent(EXPERT) ) );
+        mpMenuDialog->addControl( new CGUIButton( "Ninja", new StartNewGameEvent(NINJA) ) );
+        mpMenuDialog->addControl( new CGUIButton( "Elite", new StartNewGameEvent(ELITE) ) );
         setMenuLabel("NEWGAMELABEL");
 
 	}

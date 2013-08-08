@@ -29,6 +29,29 @@ CPoisonSlug::CPoisonSlug(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
 CStunnable(pmap, foeID, x, y),
 m_timer(0)
 {
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    mHealthPoints = 1;
+
+    if(foeID == 0x16 && diff > HARD)
+    {
+        // Set the slug to another color and double his health
+        mSprVar = 1;
+        mHealthPoints *= 2;
+    }
+    if(foeID == 0x2B && diff > EXPERT)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 2;
+        mHealthPoints *= 3;
+    }
+    if(foeID == 0x2C && diff > NINJA)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 3;
+        mHealthPoints *= 4;
+    }
+
 	mActionMap[A_SLUG_MOVE] = (GASOFctr) &CPoisonSlug::processCrawling;
 	mActionMap[A_SLUG_POOING] = (GASOFctr) &CPoisonSlug::processPooing;
 	mActionMap[A_SLUG_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
@@ -46,36 +69,36 @@ void CPoisonSlug::processCrawling()
 
     if( m_timer < SLUG_MOVE_TIMER )
     {
-	m_timer++;
-	return;
+        m_timer++;
+        return;
     }
     else
     {
-	m_timer = 0;
+        m_timer = 0;
     }
 
-	// Chance to poo
-	if( getProbability(30) )
-	{
-		m_timer = 0;
-		setAction( A_SLUG_POOING );
-		playSound( SOUND_SLUG_DEFECATE );
+    // Chance to poo
+    if( getProbability(30) )
+    {
+        m_timer = 0;
+        setAction( A_SLUG_POOING );
+        playSound( SOUND_SLUG_DEFECATE );
         CSlugSlime *slime = new CSlugSlime(mp_Map, 0, getXMidPos(), getYDownPos()-(1<<CSF), 0);
-		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( slime ) );
-		
-		xDirection = -xDirection;
-		return;		
-	}
+        g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( slime ) );
 
-	// Move normally in the direction
-	if( xDirection == RIGHT )
-	{
-		moveRight( m_Action.velX<<1 );
-	}
-	else
-	{
-		moveLeft( m_Action.velX<<1 );
-	}
+        xDirection = -xDirection;
+        return;
+    }
+
+    // Move normally in the direction
+    if( xDirection == RIGHT )
+    {
+        moveRight( m_Action.velX<<1 );
+    }
+    else
+    {
+        moveLeft( m_Action.velX<<1 );
+    }
 }
 
 
@@ -99,9 +122,18 @@ void CPoisonSlug::getTouchedBy(CSpriteObject &theObject)
 	// Was it a bullet? Than make it stunned.
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
-		setAction( rand()%2 ? A_SLUG_STUNNED : A_SLUG_STUNNED_ALT );
-		dead = true;
-		theObject.dead = true;
+        mHealthPoints--;
+        theObject.dead = true;
+
+        if(mHealthPoints == 0)
+        {
+            setAction( rand()%2 ? A_SLUG_STUNNED : A_SLUG_STUNNED_ALT );
+            dead = true;
+        }
+        else
+        {
+            blink(10);
+        }
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )

@@ -55,7 +55,10 @@ enum Difficulty
 	UNKNOWN = 0,
 	EASY = 1,
 	NORMAL = 2,
-	HARD = 3
+    HARD = 3,
+    EXPERT = 4,
+    NINJA = 5,
+    ELITE = 6,
 };
 
 

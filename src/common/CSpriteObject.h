@@ -289,7 +289,6 @@ public:
     int getSpriteVariantId()
     {  return mSprVar;    }
 
-
 protected:
 	CMap *mp_Map;
 
@@ -304,7 +303,7 @@ protected:
 
 	Uint8 transluceny;
 
-    const int mSprVar; // Sprite variant, which is used by the Spritemap
+    int mSprVar; // Sprite variant, which is used by the Spritemap
 };
 
 #endif // __CSPRITEOBJECT_H_
