@@ -131,7 +131,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	Planes.setOffsets(plane1, plane2, plane3, plane4, plane5);
 	
 	// load the image data
-    g_pGfxEngine->createEmptySprites(1,MAX_SPRITES+1);
+    g_pGfxEngine->createEmptySprites(MAX_PLAYERS,MAX_SPRITES+1);
 	for(int i=0 ; i<m_numsprites ; i++)
 	{
         CSprite &Sprite = g_pGfxEngine->getSprite(0,i);
@@ -203,9 +203,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	
-	// Now load the special TGA Sprites if some are available
-	//LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
-
     for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec(0).size() ; s++)
 	{
         CSprite &Sprite = g_pGfxEngine->getSprite(0,s);

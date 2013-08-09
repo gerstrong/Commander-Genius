@@ -103,7 +103,7 @@ bool COpenGL::createSurfaces()
 #else
 	// This function creates the surfaces which are needed for the game.
 	const CRect<Uint16> gamerect = m_VidConfig.m_GameRect;
-    ScrollSurface = createSurface( "ScrollSurface", true,
+    ScrollSurface = createSurface( "ScrollSurface", false,
 								  512, 512,
 								  RES_BPP,
 								  m_Mode, screen->format );
@@ -345,8 +345,9 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 	else // Otherwise, blit to a POT-sized surface
 	{
 		// While blitting, no involved surface should be locked.
-		SDL_BlitSurface(surface, NULL, FilteredSurface, NULL);
-		SDL_LockSurface(FilteredSurface);
+        SDL_BlitSurface(surface, NULL, FilteredSurface, NULL);
+
+        SDL_LockSurface(FilteredSurface);
 	}
 
 	glTexImage2D(m_texparam, 0, internalFormat,
