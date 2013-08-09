@@ -122,14 +122,17 @@ void CPlatform::process()
 
     for(auto &carriedObj : mCarriedPlayerVec)
 	{
-        auto carriedPlayer = dynamic_cast<CPlayerLevel*>(carriedObj);
+        if(carriedObj == nullptr)
+            continue;
+
+        CPlayerLevel* carriedPlayer = dynamic_cast<CPlayerLevel*>(carriedObj);
 
         if(!hitdetect(*carriedPlayer) || carriedPlayer->blockedu )
 		{
             carriedPlayer->pSupportedbyobject = nullptr;
             carriedPlayer->m_jumpdownfromobject = false;
             carriedPlayer->dontdraw = false;
-            carriedPlayer = NULL;
+            carriedObj = nullptr;
 		}
         else if(!carriedPlayer->m_jumpdownfromobject)
 		{
@@ -145,6 +148,12 @@ void CPlatform::process()
 		    }    
 		}
 	}
+
+    if(!mCarriedPlayerVec.empty())
+    {
+        if(mCarriedPlayerVec.back() == nullptr)
+            mCarriedPlayerVec.pop_back();
+    }
 
 	processActionRoutine();
 }
@@ -201,8 +210,8 @@ void CPlatform::draw()
 	Sprite.drawSprite( showX, showY, (255-transluceny) );
 
     for(auto &carriedObj : mCarriedPlayerVec)
-	{
-        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,carriedObj->sprite);
+	{        
+        CSprite &playSprite = g_pGfxEngine->getSprite(carriedObj->getSpriteVariantId(),carriedObj->sprite);
         int distx = carriedObj->getXPosition()-getXPosition();
         int disty = carriedObj->getYPosition()-getYPosition();
 	    

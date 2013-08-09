@@ -88,7 +88,7 @@ void CPlatformHorizontal::draw()
 {
     // This draw routine also is able to draw a second object in case it is holding one.
     if( dontdraw )
-	return;
+        return;
     
     CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
     
@@ -99,36 +99,36 @@ void CPlatformHorizontal::draw()
     
     if( scrx < gameres.w && scry < gameres.h && exists )
     {
-	Uint16 showX = scrx+Sprite.getXOffset();
-	Uint16 showY = scry+Sprite.getYOffset();
-		
-    CSprite &fireSprite = g_pGfxEngine->getSprite(mSprVar,m_FireSprite);
-	
-	if(drawFire && xDirection == RIGHT)
-	    fireSprite.drawSprite(showX-2, showY+8);
-	
-	Sprite.drawSprite( showX, showY, (255-transluceny) );
-	
-	if(drawFire && xDirection == LEFT)
-	    fireSprite.drawSprite(showX+Sprite.getWidth()-6, showY+8);
+        Uint16 showX = scrx+Sprite.getXOffset();
+        Uint16 showY = scry+Sprite.getYOffset();
 
-	
-    for( auto &player : mCarriedPlayerVec)
-	{
-        CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar,player->sprite);
-        int distx = player->getXPosition()-getXPosition();
-        int disty = player->getYPosition()-getYPosition();
-	    
-	    distx = (distx>>STC);
-	    distx += (playSprite.getXOffset()-Sprite.getXOffset());
-	    disty = (disty>>STC);
-	    disty += (playSprite.getYOffset()-Sprite.getYOffset());
-	    
-	    playSprite.drawSprite( showX+distx, showY+disty );
-	}	    
-	
-	hasbeenonscreen = true;
-    }    
+        CSprite &fireSprite = g_pGfxEngine->getSprite(mSprVar,m_FireSprite);
+
+        if(drawFire && xDirection == RIGHT)
+            fireSprite.drawSprite(showX-2, showY+8);
+
+        Sprite.drawSprite( showX, showY, (255-transluceny) );
+
+        if(drawFire && xDirection == LEFT)
+            fireSprite.drawSprite(showX+Sprite.getWidth()-6, showY+8);
+
+
+        for( auto &player : mCarriedPlayerVec)
+        {
+            CSprite &playSprite = g_pGfxEngine->getSprite(player->getSpriteVariantId(),player->sprite);
+            int distx = player->getXPosition()-getXPosition();
+            int disty = player->getYPosition()-getYPosition();
+
+            distx = (distx>>STC);
+            distx += (playSprite.getXOffset()-Sprite.getXOffset());
+            disty = (disty>>STC);
+            disty += (playSprite.getYOffset()-Sprite.getYOffset());
+
+            playSprite.drawSprite( showX+distx, showY+disty );
+        }
+
+        hasbeenonscreen = true;
+    }
 }
 
 }

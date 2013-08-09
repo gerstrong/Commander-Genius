@@ -57,6 +57,8 @@ m_baseframe(0)
 	    
 	if(!newAction)
 	    moveTo(m_destination);
+
+    pmap->lock();
 }
 
 void CFlag::getTouchedBy(CSpriteObject &theObject)
@@ -114,6 +116,7 @@ void CFlag::processFlipping()
 	else
 	{
 	    setAction(A_FLAG_WAVE);
+        mp_Map->unlock();
 	    setActionSprite();
 	    g_pSound->playSound( SOUND_FLAG_LAND );
 	    

@@ -109,6 +109,17 @@ public:
 	
 	void fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord);
 	void fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord);
+
+    /**
+     *  Locks the map, the way, no one can switch to a new level. This is important when another player tries to enter
+     *  a level, and the other hasn't even thrown the Flag (Galaxy)
+     */
+    void unlock();
+    void lock();
+
+    bool locked()
+    { return mLocked; }
+
 	
 
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
@@ -124,6 +135,7 @@ public:
 	bool isSecret;
 	int mNumFuses;
 	bool mFuseInLevel;
+
 
 private:
     
@@ -149,6 +161,8 @@ private:
 	std::string m_LevelName;
 	std::vector<int> scrollBlockX;
 	std::vector<int> scrollBlockY;
+
+    bool mLocked;
 };
 
 

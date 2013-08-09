@@ -126,6 +126,9 @@ VectorD2<int> CPlayerWM::fetchFootDestCoord()
  */
 void CPlayerWM::process()
 {
+    if(mp_Map->locked())
+        return;
+
     processInput();
 
 	// Perform animation cycle
@@ -954,7 +957,7 @@ void CPlayerWM::startLevel(Uint16 object)
 /*
  *	makes the player finish the level
  */
-void CPlayerWM::finishLevel(const int object)
+bool CPlayerWM::finishLevel(const int object)
 {
 	// if a door or other blocker was found remove it
 	int x, y;
@@ -1012,7 +1015,11 @@ void CPlayerWM::finishLevel(const int object)
 
 		// Mark the tileinfo on the map as level finished!! So player cannot just re-enter. Exception is if replayability is on.
 		mp_Map->setTile( x, y, 0, true, 2);
+
+        return true;
 	}
+
+    return false;
 }
 
 /**

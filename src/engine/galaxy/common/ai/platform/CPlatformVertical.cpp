@@ -105,7 +105,7 @@ void CPlatformVertical::draw()
 {
     // This draw routine also is able to draw a second object in case it is holding one.
     if( dontdraw )
-	return;
+        return;
     
     CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
     

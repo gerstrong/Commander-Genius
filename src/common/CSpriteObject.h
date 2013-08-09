@@ -270,7 +270,7 @@ public:
 	void processFallPhysics(const int boost);
 	void processFallPhysics();
 	virtual void processFalling();
-	virtual void getTouchedBy(CSpriteObject &theObject) {};
+    virtual void getTouchedBy(CSpriteObject &theObject) {}
 	virtual bool isNearby(CSpriteObject &theObject) { return true; }
 	virtual void getShotByRay(object_t &obj_type);
 	void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);

@@ -113,6 +113,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
             inventory.Item.mLevelName = Map.getLevelName();
 			p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
                     (foe==1) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x89A, mPlayerID);
+            mPlayerID++;
 			break;
 
 	case 0x03:
@@ -120,6 +121,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp6::addFoe(CMap &Map, word foe, size_t x, 
 			// Add the Camera into the game scene and attach it to this player
             inventory.Item.mLevelName = Map.getLevelName();
             p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, m_Cheatmode, 0x13E0, mPlayerID );
+            mPlayerID++;
 			break;
 
 	case 0x06: if( difficulty < HARD ) break;

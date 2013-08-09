@@ -825,6 +825,23 @@ void CSpriteObject::processEvents()
             pObjMove->mSecond.processMove(move);
             m_EventCont.pop_Event();
         }
+
+        if( ObjMoveCouples* pObjMove =  m_EventCont.occurredEvent<ObjMoveCouples>())
+        {
+            auto move = pObjMove->m_Vec;
+            auto playerVec = pObjMove->mCarriedObjVec;
+
+            processMove(move);
+
+            for(auto &player : playerVec)
+            {
+                if(!player->m_jumpdownfromobject)
+                      player->processMove(move);
+            }
+
+            m_EventCont.pop_Event();
+        }
+
 	    
 	    if( ObjMove* pObjMove =  m_EventCont.occurredEvent<ObjMove>())
 	    {

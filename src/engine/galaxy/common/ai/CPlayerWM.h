@@ -63,7 +63,7 @@ public:
 	void processLeavingTeleporter();
 
 	void startLevel(Uint16 object);
-	void finishLevel(const int object);
+    bool finishLevel(const int object);
 	
 	// Checks if Keen in CK6 can climb
 	bool checkforClimbing(direction_t &climbDir);

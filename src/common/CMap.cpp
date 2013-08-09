@@ -23,7 +23,8 @@ m_Dark(false),
 mNumFuses(0),
 mFuseInLevel(false),
 m_Tilemaps(g_pGfxEngine->getTileMaps()),
-mAnimtileTimer(0.0f)
+mAnimtileTimer(0.0f),
+mLocked(false)
 {
 	resetScrolls();
 	m_Level = 0;
@@ -215,6 +216,18 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
     }
     upCoord = blockYup;
     downCoord = blockYdown;
+}
+
+
+
+void CMap::unlock()
+{
+    mLocked = false;
+}
+
+void CMap::lock()
+{
+    mLocked = true;
 }
 
 

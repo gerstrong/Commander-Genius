@@ -1,9 +1,13 @@
 
-v1.5 Release:
+v1.6 Release:
 ---------------
 - XML based Savegame states in both galaxy and vorticon engine which in future 
   will make those savegames more robust, when coming from older or newer versions. 
   This means hopefully, no more crashes in savegames.
+- Up to four Players in Galaxy, with everyone having it's HUD
+- The HUD are now a bit translucent by default
+- Three new difficulty levels, making it six now...
+- Some enemies have new colours depending on how you play Keen
 
 v1.4.4 Release:
 ---------------
