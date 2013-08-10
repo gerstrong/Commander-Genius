@@ -2520,8 +2520,15 @@ bool CPlayerLevel::checkConveyorBelt()
 
 void CPlayerLevel::process()
 {
+
+    if(dead)
+    {
+        processCamera();
+        return;
+    }
+
     if(mExitTouched)
-	return;
+        return;
     
 	if(!m_dying)
 	{

@@ -191,7 +191,7 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 
 
 void CPlayerBase::processCamera()
-{                        
+{
     m_camera.process();
     m_camera.processEvents();
 }
@@ -498,35 +498,22 @@ void CPlayerBase::getEaten()
 void CPlayerBase::processDead()
 {
 	setActionForce(A_KEEN_DIE);
-	
-	if(m_Inventory.Item.m_lifes <= 0) // Game over?
-	{	    
-	    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	    
-	    const std::string end_text("GAME OVER!\n");	    
-	    EventContainer.add( new EventSendDialog(end_text) );
-	    EventContainer.add( new EventEndGamePlay() );
-	}
-	else // not yet!
-	{		
-	    m_Inventory.Item.m_lifes--;
-	    
-	    // Create the Event Selection screen
-	    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	    
-	    std::string loosemsg  = "You didn't make it past\n";
-	    loosemsg += mp_Map->getLevelName();
-	    EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
-	    pdialogevent->addOption("Try Again", new EventRestartLevel() );
-	    
-	    std::string exitMsg = "Exit to " + g_pBehaviorEngine->mapLevelName;
-        pdialogevent->addOption(exitMsg, new EventExitLevel(mp_Map->getLevel(), false, false, mSprVar) );
-	    EventContainer.add( pdialogevent );
-	}
-	
-	dead = false;
+
+    m_Inventory.Item.m_lifes--;
+
+    const int levelObj = mp_Map->getLevel();
+    const std::string &levelName = mp_Map->getLevelName();
+
+    m_camera.cycleCamlead();
+
+    g_pBehaviorEngine->m_EventList.add( new EventDieKeenPlayer(mPlayerNum,
+                                                               m_Inventory.Item.m_lifes<0,
+                                                               levelObj,
+                                                               levelName) );
+
+    dead = false;
 	m_dying = false;
-	exists = false;
+    exists = false;
 }
 
 

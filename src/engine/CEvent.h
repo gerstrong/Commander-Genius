@@ -42,6 +42,18 @@ struct InvokeFunctorEvent : CEvent
 struct EventEndGamePlay : CEvent
 {};
 
+struct EventDieKeenPlayer  : CEvent
+{
+    const int playerID;
+    const bool gameOver;
+    const int levelObj;
+    const std::string levelName;
+
+    EventDieKeenPlayer(const int id, const bool go, const int lo, const std::string &ln) :
+        playerID(id), gameOver(go),
+        levelObj(lo), levelName(ln){}
+};
+
 struct EventPlayerTeleportFromLevel : CEvent
 {};
 

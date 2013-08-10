@@ -193,10 +193,14 @@ void CHUD::renderGalaxy()
   // Draw the HUD with all the digits
   SDL_Surface* blitsfc = mpHUDBlit.get();
   SDL_SetAlpha(blitsfc, SDL_SRCALPHA, 220);
-  mHUDBox.drawSprite( blitsfc, -4, 0);
-  g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
-  g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
-  g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
+
+  if(lives >= 0)
+  {
+    mHUDBox.drawSprite( blitsfc, -4, 0);
+    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
+    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
+    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
+  }
 
   SDL_BlitSurface( blitsfc, NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
 }

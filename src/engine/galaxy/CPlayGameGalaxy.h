@@ -55,6 +55,9 @@ private:
     CBitmap m_BackgroundBitmap;
     std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
     stCheat m_Cheatmode;
+
+    std::vector<bool> mDead;
+    std::vector<bool> mGameOver;
 };
 
 }

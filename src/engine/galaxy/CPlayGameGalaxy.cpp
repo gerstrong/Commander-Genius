@@ -34,6 +34,9 @@ m_WorldMap(ExeFile, mInventoryVec, m_Cheatmode),
 m_LevelPlay(ExeFile, mInventoryVec, m_Cheatmode),
 m_SavedGame(SavedGame)
 {
+    mDead.assign(numplayers, false);
+    mGameOver.assign(numplayers, false);
+
     /*if(!mInventoryVec.empty())
         mInventoryVec.clear();
 
@@ -467,6 +470,53 @@ void CPlayGameGalaxy::ponder()
 
 			eventContainer.pop_Event();
 		}
+        else if( EventDieKeenPlayer *ev = eventContainer.occurredEvent<EventDieKeenPlayer>() )
+        {
+            // Check if all players are dead
+            bool allDead = true;
+            bool allGameOver = true;
+
+            const int playerID = ev->playerID;
+            const bool playerGameOver = ev->gameOver;
+            const int levelObj = ev->levelObj;
+            const std::string levelName = ev->levelName;
+
+            eventContainer.pop_Event();
+
+            mDead[playerID] = true;
+
+            if(playerGameOver)
+                mGameOver[playerID] = true;
+
+            for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
+                allDead &= (*deadIt);
+
+            for(auto goIt = mGameOver.begin() ; goIt != mGameOver.end() ; goIt++ )
+                allGameOver &= (*goIt);
+
+            if(allGameOver) // Game over?
+            {
+                const std::string end_text("GAME OVER!\n");
+                eventContainer.add( new EventSendDialog(end_text) );
+                eventContainer.add( new EventEndGamePlay() );
+            }
+            else if(allDead) // not yet!
+            {
+                // Create the Event Selection screen
+                std::string loosemsg  = "You didn't make it past\n";
+                loosemsg += levelName;
+                EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
+                pdialogevent->addOption("Try Again", new EventRestartLevel() );
+
+                std::string exitMsg = "Exit to " + g_pBehaviorEngine->mapLevelName;
+                pdialogevent->addOption(exitMsg, new EventExitLevel( levelObj, false, false, playerID) );
+                eventContainer.add( pdialogevent );
+
+                for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
+                    (*deadIt) = false;
+            }
+
+        }
 		else if( EventExitLevelWithFoot *ev = eventContainer.occurredEvent<EventExitLevelWithFoot>() )
 		{
 			g_pMusicPlayer->stop();
