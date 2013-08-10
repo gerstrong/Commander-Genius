@@ -6,6 +6,7 @@
  */
 
 #include "CHUD.h"
+#include "engine/CCamera.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/extensions.h"
@@ -194,12 +195,22 @@ void CHUD::renderGalaxy()
   SDL_Surface* blitsfc = mpHUDBlit.get();
   SDL_SetAlpha(blitsfc, SDL_SRCALPHA, 220);
 
+  mHUDBox.drawSprite( blitsfc, -4, 0);
+
   if(lives >= 0)
-  {
-    mHUDBox.drawSprite( blitsfc, -4, 0);
+  {    
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
+
+    if(mId == CCamera::getLead())
+    {
+        SDL_Rect rect;
+        rect.x = 7; rect.y = 29;
+        rect.h = 1; rect.w = 10;
+
+        SDL_FillRect(blitsfc, &rect, 0xffff0000);
+    }
   }
 
   SDL_BlitSurface( blitsfc, NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );

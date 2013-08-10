@@ -75,6 +75,11 @@ public:
     { return mCamlead; }
 
     void forbidLead(const int id);
+
+    static int getLead()
+    {
+        return mCamlead;
+    }
 	
 	bool m_attached;
 	bool m_freeze;
