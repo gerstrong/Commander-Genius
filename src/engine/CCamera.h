@@ -14,6 +14,8 @@
 
 #include "common/CSpriteObject.h"
 
+#include <array>
+
 #ifndef CCAMERA_H_
 #define CCAMERA_H_
 
@@ -71,6 +73,8 @@ public:
 
     bool CamLead() const
     { return mCamlead; }
+
+    void forbidLead(const int id);
 	
 	bool m_attached;
 	bool m_freeze;
@@ -87,7 +91,8 @@ public:
 private:
 	CSpriteObject *mp_AttachedObject;
     static int mCamlead;
-    static bool mCamLeadChange;
+    static bool mCamLeadChange;   
+    static std::array<bool, MAX_PLAYERS> mDontUseThisLead;
 };
 
 #endif /* CCAMERA_H_ */

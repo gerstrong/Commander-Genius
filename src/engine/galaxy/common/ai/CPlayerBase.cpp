@@ -504,6 +504,7 @@ void CPlayerBase::processDead()
     const int levelObj = mp_Map->getLevel();
     const std::string &levelName = mp_Map->getLevelName();
 
+    m_camera.forbidLead(mPlayerNum);
     m_camera.cycleCamlead();
 
     g_pBehaviorEngine->m_EventList.add( new EventDieKeenPlayer(mPlayerNum,

@@ -17,6 +17,7 @@
 
 int CCamera::mCamlead = 0;
 bool CCamera::mCamLeadChange = false;
+std::array<bool, MAX_PLAYERS> CCamera::mDontUseThisLead;
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
 CSpriteObject(pmap, x, y, 0),
@@ -29,19 +30,30 @@ mp_AttachedObject(p_attacher)
 	m_attached = true;
 	m_freeze = false;
 	m_moving = true;
+
+    const int camId = mp_AttachedObject->getSpriteVariantId();
+
+    mDontUseThisLead[camId] = false;
 }
 
 void CCamera::cycleCamlead()
 {
     const int numPlayers = g_pBehaviorEngine->mPlayers;
 
-    if( numPlayers == 1 ) // For one player this doesn't make sense
+    if( numPlayers == 1 ) // For one player this doesn't make sense to change
         return;
 
-    if( mCamlead<(numPlayers-1) )
-        mCamlead++;
-    else
-        mCamlead = 0;
+    for(int i=0 ; i<numPlayers ; i++)
+    {
+        if( mCamlead<(numPlayers-1) )
+            mCamlead++;
+        else
+            mCamlead = 0;
+
+        if(!mDontUseThisLead[mCamlead])
+            break;
+    }
+
 
     mCamLeadChange = true;
 }
@@ -281,4 +293,9 @@ bool CCamera::outOfSight()
 		outofsight |= true;
 
 	return outofsight;
+}
+
+void CCamera::forbidLead(const int id)
+{
+    mDontUseThisLead[id] = true;
 }
