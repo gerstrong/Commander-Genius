@@ -211,17 +211,20 @@ void CPlatform::draw()
 
     for(auto &carriedObj : mCarriedPlayerVec)
 	{        
-        CSprite &playSprite = g_pGfxEngine->getSprite(carriedObj->getSpriteVariantId(),carriedObj->sprite);
-        int distx = carriedObj->getXPosition()-getXPosition();
-        int disty = carriedObj->getYPosition()-getYPosition();
-	    
-	    distx = (distx>>STC);
-	    distx += (playSprite.getXOffset()-Sprite.getXOffset());
-	    disty = (disty>>STC);
-	    disty += (playSprite.getYOffset()-Sprite.getYOffset());
-	    
-	    playSprite.drawSprite( showX+distx, showY+disty );
-	}
+        if(carriedObj)
+        {
+            CSprite &playSprite = g_pGfxEngine->getSprite(carriedObj->getSpriteVariantId(),carriedObj->sprite);
+            int distx = carriedObj->getXPosition()-getXPosition();
+            int disty = carriedObj->getYPosition()-getYPosition();
+
+            distx = (distx>>STC);
+            distx += (playSprite.getXOffset()-Sprite.getXOffset());
+            disty = (disty>>STC);
+            disty += (playSprite.getYOffset()-Sprite.getYOffset());
+
+            playSprite.drawSprite( showX+distx, showY+disty );
+        }
+    }
 	
 	hasbeenonscreen = true;
     }    

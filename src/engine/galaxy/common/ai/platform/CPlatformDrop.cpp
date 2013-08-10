@@ -51,6 +51,9 @@ void CPlatformDrop::process()
 	bool drop = false;	
     for( auto &player : mCarriedPlayerVec)
 	{
+        if(!player)
+            continue;
+
         if(!player->m_jumpdownfromobject)
 	    {
             drop = true;

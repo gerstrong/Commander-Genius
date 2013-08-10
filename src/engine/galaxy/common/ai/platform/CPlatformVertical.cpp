@@ -133,6 +133,9 @@ void CPlatformVertical::draw()
 
         for( auto &player : mCarriedPlayerVec)
         {
+            if(!player)
+                continue;
+
             CSprite &playSprite = g_pGfxEngine->getSprite(player->getSpriteVariantId(),
                                                           player->sprite);
             int distx = player->getXPosition()-getXPosition();
