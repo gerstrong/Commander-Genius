@@ -25,7 +25,8 @@ m_charges(charges),
 m_oldScore(score),
 m_oldCharges(charges),
 mpCamlead(camlead),
-timer(0)
+timer(0),
+mNumPlayers(numPlayers)
 {
     setup(id, numPlayers);
 }
@@ -203,7 +204,7 @@ void CHUD::renderGalaxy()
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
 
-    if(mId == CCamera::getLead())
+    if(mNumPlayers > 1 && mId == CCamera::getLead())
     {
         SDL_Rect rect;
         rect.x = 7; rect.y = 29;

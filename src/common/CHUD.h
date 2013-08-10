@@ -71,6 +71,8 @@ private:
     int mId;
 	
 	int timer;
+
+    const int mNumPlayers;
 };
 
 #endif /* CHUD_H_ */
