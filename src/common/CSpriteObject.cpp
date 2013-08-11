@@ -27,7 +27,6 @@ m_invincible(false),
 m_Pos(x,y),
 transluceny(0),
 mSprVar(spriteVar)
-
 {
 	m_number_of_objects++;
 	exists = true;

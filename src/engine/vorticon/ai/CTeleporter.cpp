@@ -26,7 +26,7 @@ const int TELEPORTER_NUMFRAMES_EP1 = 20;
 
 CTeleporter::CTeleporter(CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CVorticonSpriteObject(p_map, x, y, OBJ_TELEPORTER),
+CVorticonSpriteObject(p_map, x, y, OBJ_TELEPORTER, 0),
 m_Player(mp_vec_Player)
 {
 	int mx, my;

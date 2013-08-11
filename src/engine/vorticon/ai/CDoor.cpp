@@ -3,7 +3,7 @@
 #include "graphics/CGfxEngine.h"
 
 CDoor::CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID):
-CVorticonSpriteObject(pmap, x, y, OBJ_DOOR)
+CVorticonSpriteObject(pmap, x, y, OBJ_DOOR, 0)
 {
 	sprite=doorspriteID;
     CSprite &Doorsprite = g_pGfxEngine->getSprite(mSprVar,sprite);

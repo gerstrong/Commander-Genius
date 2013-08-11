@@ -26,7 +26,7 @@ BABY_JUMP_BIG, BABY_JUMP_SMALL
 };
 
 CVortikid::CVortikid( CMap *p_map, Uint32 x, Uint32 y ) :
-CVorticonSpriteObject(p_map, x, y, OBJ_BABY)
+CVorticonSpriteObject(p_map, x, y, OBJ_BABY, 0)
 {
 	bool ep3;
 	state = BABY_RUN;

@@ -34,7 +34,7 @@ mNumPlayers(numPlayers)
 void CHUD::setup(const int id, const int numPlayers)
 {
     mId = id;
-    m_Rect.w = 80;	m_Rect.h = 30;
+
     m_Rect.x = 8;	m_Rect.y = 4;
 
     if(numPlayers > 3)
@@ -42,30 +42,29 @@ void CHUD::setup(const int id, const int numPlayers)
         m_Rect.x = 0;	m_Rect.y = 0;
     }
 
-
     size_t Episode = g_pBehaviorEngine->getEpisode();
 
-    if( Episode>=1 && Episode<=3 )
+    if( Episode >= 1 && Episode <= 3 )
     {
+        m_Rect.w = 84;	m_Rect.h = 30;
+        m_Rect.x += (m_Rect.w-4)*id;
         CreateBackground();
     }
-    else
+    else // Galaxy HUD
     {
+        m_Rect.w = 80;	m_Rect.h = 30;
         mHUDBox = *g_pGfxEngine->getSprite(mId,"HUDBACKGROUND");
         m_Rect.h = mHUDBox.getHeight();
         m_Rect.w = mHUDBox.getWidth()-7;
-
         m_Rect.x += (m_Rect.w-2)*id;
-
         mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
-
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
 #else
         mpHUDBlit.reset(SDL_DisplayFormat(mpHUDBlit.get()), &SDL_FreeSurface);
 #endif
-
+        SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
     }
 }
 
@@ -84,13 +83,13 @@ void CHUD::CreateBackground()
 	headsrcrect.y = 0;
 	headdstrect.w = headsrcrect.w = 16;
 	headdstrect.h = headsrcrect.h = 16;
-	headdstrect.x = m_Rect.x;
-	headdstrect.y = m_Rect.y+11;
+    headdstrect.x = 0;
+    headdstrect.y = 11;
 	
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
-	temp = SDL_DisplayFormat(mpBackground.get());
+    temp = SDL_DisplayFormat(mpBackground.get());
 	mpBackground.reset(temp);
 #endif
 	
@@ -115,24 +114,23 @@ void CHUD::CreateBackground()
     CSprite &KeenGunSprite = g_pGfxEngine->getSprite(mId,sprite);
 	headdstrect.w = headsrcrect.w = KeenGunSprite.getWidth();
 	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
-	headdstrect.x = m_Rect.x+45-(headsrcrect.w/2);
-	headdstrect.y = m_Rect.y+19-(headsrcrect.h/2);
+    headdstrect.x = 45-(headsrcrect.w/2);
+    headdstrect.y = 19-(headsrcrect.h/2);
 		
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
 	
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
-    //mpHUDBlit.reset(SDL_DisplayFormatAlpha(mpBackground.get()), &SDL_FreeSurface);
-    mpHUDBlit.reset(SDL_DisplayFormat(mpBackground.get()), &SDL_FreeSurface);
+     mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 #endif
 
-	// Draw the rounded borders
-	DrawCircle(0, 0, 80);
-	DrawCircle(17, 15, 22);
-	DrawCircle(58, 15, 22);
-	if(g_pBehaviorEngine->mPlayers > 1)
-		DrawCircle(0, 0, 15);
+    SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
+
+	// Draw the rounded borders        
+    DrawCircle(0, 0, 76);
+    DrawCircle(17-4, 15-2, 22);
+    DrawCircle(58-4, 15-2, 22);
 }
 
 // Draw a circle on the surface
@@ -193,8 +191,7 @@ void CHUD::renderGalaxy()
   charges = (m_oldCharges<99) ? m_oldCharges : 99;
 
   // Draw the HUD with all the digits
-  SDL_Surface* blitsfc = mpHUDBlit.get();
-  SDL_SetAlpha(blitsfc, SDL_SRCALPHA, 220);
+  SDL_Surface* blitsfc = mpHUDBlit.get();  
 
   mHUDBox.drawSprite( blitsfc, -4, 0);
 
@@ -223,7 +220,7 @@ void CHUD::renderVorticon()
 {
 	// Compute the score that really will be seen
 	int score, lives, charges;
-	score = (m_oldScore<999999999) ? m_oldScore : 999999999;
+    score = (m_oldScore<99999999) ? m_oldScore : 99999999;
 	lives = (m_lives<99) ? m_lives : 99;
 	charges = (m_oldCharges<99) ? m_oldCharges : 99;
 
@@ -231,25 +228,14 @@ void CHUD::renderVorticon()
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 	
 	CFont &Font = g_pGfxEngine->getFont(1);
+
 	// Draw the lives
-	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15+m_Rect.x, 15+m_Rect.y);
+    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15, 15);
 
 	// Draw the charges
-	Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(charges),2), 56+m_Rect.x, 15+m_Rect.y);
+    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(charges),2), 56, 15);
 
-	// In multiplayer mode we show a number indicating the cam owner
-	if( mpCamlead && g_pBehaviorEngine->mPlayers > 1 )
-	{
-		// Draw the Player which controls the camera
-		Font.drawFont(mpHUDBlit.get(), itoa((*mpCamlead)+1), m_Rect.x, m_Rect.y);
-
-		// Draw the score
-		Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),7), 16+m_Rect.x, m_Rect.y);
-	}
-	else
-	{
-		Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),9), m_Rect.x, m_Rect.y);
-	}
+    Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2);
 
     SDL_BlitSurface( mpHUDBlit.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
 }

@@ -286,8 +286,11 @@ public:
 
 	virtual ~CSpriteObject();
 
-    int getSpriteVariantId()
-    {  return mSprVar;    }
+    int getSpriteVariantId() const
+    {   return mSprVar;    }
+
+    void setSpriteVariantId(const int i)
+    {   mSprVar = i;    }
 
 protected:
 	CMap *mp_Map;

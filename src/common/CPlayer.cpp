@@ -23,8 +23,8 @@
 // Initialization Part
 ///
 CPlayer::CPlayer(bool *mp_level_completed,
-				 CMap &map) :
-CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER),
+                 CMap &map, const int sprVar) :
+CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER, sprVar),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
 mp_levels_completed(mp_level_completed),
 mp_option(g_pBehaviorEngine->m_option)
@@ -50,7 +50,9 @@ mp_option(g_pBehaviorEngine->m_option)
 
 
 CPlayer::CPlayer(const CPlayer &player) :
-CVorticonSpriteObject(player.mp_Map, player.getXPosition(), player.getYPosition(), OBJ_PLAYER),
+CVorticonSpriteObject(player.mp_Map,
+                      player.getXPosition(), player.getYPosition(),
+                      OBJ_PLAYER, player.getSpriteVariantId() ),
 pjumpupspeed_decrease(player.pjumpupspeed_decrease),
 mp_levels_completed(player.mp_levels_completed),
 mp_option(g_pBehaviorEngine->m_option)
@@ -105,7 +107,7 @@ CPlayer& CPlayer::operator=(const CPlayer &player)
 
 void CPlayer::setupCameraObject()
 {
-    mpCamera.reset(new CCamera(mp_Map, 0, 0));
+    mpCamera.reset(new CCamera(mp_Map, 0, 0, this));
 }
 
 
@@ -161,8 +163,8 @@ void CPlayer::setDatatoZero()
   	beingteleported = false;
 
 
-  	// This will setup the proper frames, so second, third and fourth player get the correct sprites
-   	playerbaseframe = (m_index==0) ? 0 : SECOND_PLAYER_BASEFRAME+(m_index-1)*48;
+    // This will setup the proper frames, in episode 3, there are differences
+    playerbaseframe = 0;
     if(ep == 3) playerbaseframe--;
 
     // Set all the inventory to zero.

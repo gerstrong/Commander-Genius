@@ -86,9 +86,9 @@ bool CEGASprit::loadHead(char *data)
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
 	byte *RawData;
-    	SDL_Surface *sfc;
-    	Uint8* pixel;
-    	Uint32 percent = 0;
+    SDL_Surface *sfc;
+    Uint8* pixel;
+    Uint32 percent = 0;
 	
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 	
@@ -187,7 +187,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			for(int x=0 ; x<masksfc->w ; x++)
 			{
 				if(Planes.getbit(4))
-					pixel[y*masksfc->w + x] = ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x];
+                    pixel[y*masksfc->w + x] = ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x];
 				else
 					pixel[y*masksfc->w + x] = 15;
 			}
@@ -203,18 +203,68 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	
-    for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec(0).size() ; s++)
-	{
-        CSprite &Sprite = g_pGfxEngine->getSprite(0,s);
-		Sprite.optimizeSurface();
+    //LoadSpecialSprites( g_pGfxEngine->getSpriteVec(0) );
 
-		percent = (s*50)/m_numsprites;
-		g_pResourceLoader->setPermilage(300+percent);
-	}
+    for(unsigned int i=1 ; i<MAX_PLAYERS ; i++)
+    {
+        g_pGfxEngine->getSpriteVec(i) = g_pGfxEngine->getSpriteVec(0);
+    }
 
-	g_pResourceLoader->setPermilage(350);
+    // For the other variant let's exchange some colors
+    auto &SpriteVecPlayer2 = g_pGfxEngine->getSpriteVec(1);
+    //for( auto &sprite : SpriteVecPlayer2)
+    for( unsigned int i = 0 ; i < SpriteVecPlayer2.size() ; i++)
+    {
+        auto &sprite = SpriteVecPlayer2[i];
+        // Red against Purple
+        sprite.exchangeSpriteColor( 5, 4, 0 );
+        sprite.exchangeSpriteColor( 13, 12, 0 );
 
-	std::set<std::string> filelist;
+        // Yellow against Green
+        sprite.exchangeSpriteColor( 2, 6, 0 );
+        sprite.exchangeSpriteColor( 10, 14, 0 );
+    }
+
+    auto &SpriteVecPlayer3 = g_pGfxEngine->getSpriteVec(2);
+    for( auto &sprite : SpriteVecPlayer3)
+    {
+        // Red against Green
+        sprite.exchangeSpriteColor( 2, 4, 0 );
+        sprite.exchangeSpriteColor( 10, 12, 0 );
+
+        // Yellow against Purple
+        sprite.exchangeSpriteColor( 5, 6, 0 );
+        sprite.exchangeSpriteColor( 13, 14, 0 );
+    }
+
+    auto &SpriteVecPlayer4 = g_pGfxEngine->getSpriteVec(3);
+    for( auto &sprite : SpriteVecPlayer4)
+    {
+        // Red against Yellow
+        sprite.exchangeSpriteColor( 6, 4, 0 );
+        sprite.exchangeSpriteColor( 14, 12, 0 );
+
+        // Green against Purple
+        sprite.exchangeSpriteColor( 2, 5, 0 );
+        sprite.exchangeSpriteColor( 10, 13, 0 );
+    }
+
+
+    for(unsigned int i=0 ; i<MAX_PLAYERS ; i++)
+    {
+        for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec(i).size() ; s++)
+        {
+            CSprite &Sprite = g_pGfxEngine->getSprite(i,s);
+            Sprite.optimizeSurface();
+
+            percent = (s*50)/m_numsprites;
+            g_pResourceLoader->setPermilage(300+percent);
+        }
+    }
+
+    g_pResourceLoader->setPermilage(350);
+
+    std::set<std::string> filelist;
 	FileListAdder fileListAdder;
 	std::string gfxpath = JoinPaths(m_gamepath, "gfx");
 	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
@@ -235,41 +285,40 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
 		percent = (c*150)/listsize;
 		g_pResourceLoader->setPermilage(350+percent);
-	}
+    }
 
 	g_pResourceLoader->setPermilage(500);
 
-    const int NoSprites = g_pGfxEngine->getSpriteVec(0).size();
-	for(Uint16 s=0 ; s<NoSprites ; s++)
-	{
-        g_pGfxEngine->getSprite(0,s).applyTransparency();
+    for(unsigned int i=0 ; i<MAX_PLAYERS ; i++)
+    {
+        const int NoSprites = g_pGfxEngine->getSpriteVec(i).size();
+        for(Uint16 s=0 ; s<NoSprites ; s++)
+        {
+            g_pGfxEngine->getSprite(i,s).applyTransparency();
 
-		percent = (s*250)/NoSprites;
-		g_pResourceLoader->setPermilage(500+percent);
-	}
-	
-    LoadSpecialSprites( g_pGfxEngine->getSpriteVec(0) );
+            percent = (s*250)/NoSprites;
+            g_pResourceLoader->setPermilage(500+percent);
+        }
+    }
 
-	g_pResourceLoader->setPermilage(750);
-	// Apply the sprites for player 2,3 and 4
-    DerivePlayerSprites( g_pGfxEngine->getSpriteVec(0) );
-	g_pResourceLoader->setPermilage(900);
-
+    g_pResourceLoader->setPermilage(750);
 
 	// Now create special sprites, like those for effects and the doors!
     DeriveSpecialSprites( g_pGfxEngine->getTileMap(1), g_pGfxEngine->getSpriteVec(0) );
-	g_pResourceLoader->setPermilage(950);
+    g_pResourceLoader->setPermilage(800);
 
 	// Here special Effects are applied, only when the option is enabled for it
 	if(g_pVideoDriver->getSpecialFXConfig())
 		ApplySpecialFX();
 
-	g_pResourceLoader->setPermilage(1000);
+    g_pResourceLoader->setPermilage(900);
 
-    for(unsigned int i=1 ; i<MAX_PLAYERS ; i++)
-    {
-        g_pGfxEngine->getSpriteVec(i) = g_pGfxEngine->getSpriteVec(0);
-    }
+    // Apply the sprites for player 2,3 and 4
+    /*DerivePlayerSprites( 1,g_pGfxEngine->getSpriteVec(1) );
+    DerivePlayerSprites( 2,g_pGfxEngine->getSpriteVec(2) );
+    DerivePlayerSprites( 3,g_pGfxEngine->getSpriteVec(3) );*/
+    g_pResourceLoader->setPermilage(1000);
+
 
 	return true;
 }
@@ -285,45 +334,11 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 	sprite[PT5000_SPRITE].generateSprite( 5000 );
 }
 
-void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
+void CEGASprit::DerivePlayerSprites( const int id, std::vector<CSprite> &sprites )
 {
-	// create the sprites for player 2, 3 and 4
-	for( size_t i=0 ; i<48 ; i++ )
+    for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec(id).size() ; s++)
 	{
-		size_t s = SECOND_PLAYER_BASEFRAME+i;
-		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(s).replaceSpriteColor( 13, 11 ,0 );
-		sprites.at(s).replaceSpriteColor( 5, 3 ,0 );
-		sprites.at(s).replaceSpriteColor( 12, 9 ,0 );
-		sprites.at(s).replaceSpriteColor( 4, 1 ,0 );
-		sprites.at(s).optimizeSurface();
-	}
-	for(size_t i=0;i<48;i++)
-	{
-		size_t s = THIRD_PLAYER_BASEFRAME+i;
-
-		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(s).replaceSpriteColor( 13, 10, 0 ); // Shirt light
-		sprites.at(s).replaceSpriteColor( 5, 2, 0 ); // Shirt dark
-		sprites.at(s).replaceSpriteColor( 12, 2, 16 ); // Shoes light
-		sprites.at(s).replaceSpriteColor( 4, 0, 16 ); // Shoes dark
-		sprites.at(s).optimizeSurface();
-
-	}
-	for(size_t i=0;i<48;i++)
-	{
-		size_t s = FOURTH_PLAYER_BASEFRAME+i;
-		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(s).replaceSpriteColor( 13, 14, 0 ); // Shirt light
-		sprites.at(s).replaceSpriteColor( 5, 6, 0 ); // Shirt dark
-		sprites.at(s).replaceSpriteColor( 12, 6, 16 ); // Shoes light
-		sprites.at(s).replaceSpriteColor( 4, 0, 16 ); // Shoes dark
-		sprites.at(s).optimizeSurface();
-	}
-
-    for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec(0).size() ; s++)
-	{
-        CSprite &Sprite = g_pGfxEngine->getSprite(0,s);
+        CSprite &Sprite = g_pGfxEngine->getSprite(id,s);
 		Sprite.optimizeSurface();
 	}
 
@@ -336,16 +351,14 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 	std::set<std::string>::iterator it = filelist.begin();
 	for( ; it != filelist.end() ; it++ )
 	{
-		std::string name=*it;
-		int num = getRessourceID(name, "sprite");
-		if( num>=SECOND_PLAYER_BASEFRAME && num<FOURTH_PLAYER_BASEFRAME+48 )
-		{
-            CSprite &Sprite = g_pGfxEngine->getSprite(0,num);
-			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
-			Sprite.loadHQSprite(filename);
-			Sprite.applyTransparency();
-		}
-	}
+        std::string name = *it;
+        const std::string spriteFn = "sprite"+itoa(id)+"_";
+        int num = getRessourceID(name, spriteFn);
+        CSprite &Sprite = g_pGfxEngine->getSprite(id,num);
+        std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
+        Sprite.loadHQSprite(filename);
+        Sprite.applyTransparency();
+    }
 }
 
 // This function has the task to make some items-tiles

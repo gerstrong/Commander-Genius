@@ -15,7 +15,7 @@ CAnkhShield::CAnkhShield(CPlayer &attachedPlayer) :
 CVorticonSpriteObject(attachedPlayer.getMapPtr(),
 		attachedPlayer.getXPosition(),
 		attachedPlayer.getYPosition(),
-		OBJ_ANKHSHIELD),
+        OBJ_ANKHSHIELD, 0),
 m_attachedPlayer(attachedPlayer),
 ankhtime(attachedPlayer.ankhtime)
 {

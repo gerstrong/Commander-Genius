@@ -43,7 +43,7 @@ CSprite::CSprite(const CSprite& original)
     }
     if(origMaskSfc)
     {
-        auto *origMaskSfcPtr = origSfc.get();
+        auto *origMaskSfcPtr = origMaskSfc.get();
         mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, origMaskSfcPtr->format, origMaskSfcPtr->flags), &SDL_FreeSurface);
     }
 
@@ -69,7 +69,7 @@ CSprite CSprite::operator=(const CSprite& original)
     }
     if(origMaskSfc)
     {
-        auto *origMaskSfcPtr = origSfc.get();
+        auto *origMaskSfcPtr = origMaskSfc.get();
         mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, origMaskSfcPtr->format, origMaskSfcPtr->flags), &SDL_FreeSurface);
     }
 
@@ -261,11 +261,11 @@ void CSprite::applyTransparency()
 	
 	if( !mpSurface || !mpMasksurface ) return;
 
-	if(mpSurface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat before ???
+    if(mpSurface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat before ???
 	{
 		SDL_BlitSurface(mpMasksurface.get(), NULL, mpSurface.get(), NULL);
 		return;
-	}
+    }
 	
 	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
 	if(SDL_MUSTLOCK(mpMasksurface.get())) SDL_LockSurface(mpMasksurface.get());
@@ -408,6 +408,9 @@ void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 
 void CSprite::exchangeSpriteColor( const Uint16 find1, const Uint16 find2, Uint16 miny )
 {
+    if(!mpSurface)
+        return;
+
     Uint16 x,y;
     Uint8* pixel;
 

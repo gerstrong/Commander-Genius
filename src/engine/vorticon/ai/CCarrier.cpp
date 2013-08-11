@@ -2,7 +2,7 @@
 #include "sdl/CVideoDriver.h"
 
 CCarrier::CCarrier(CMap* pmap, Uint32 x, Uint32 y, object_t type) : 
-CVorticonSpriteObject(pmap, x, y, type)
+CVorticonSpriteObject(pmap, x, y, type, 0)
 {
 
 }

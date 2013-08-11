@@ -60,9 +60,9 @@ bool CPlayGameVorticon::loadGameState()
 	if(!m_Player.empty())
 	  m_Player.clear();
 	
-    m_Player.assign(m_NumPlayers, CPlayer(mp_level_completed, *mMap.get() ) );
 	for( size_t i=0 ; i < m_Player.size() ; i++ )
 	{
+      m_Player.push_back( CPlayer(mp_level_completed, *mMap.get(), i) );
 	  m_Player.at(i).m_index = i;
 	  m_Player.at(i).setDatatoZero();
 	}
@@ -103,7 +103,7 @@ bool CPlayGameVorticon::loadGameState()
 	  
 	  if(i >= mSpriteObjectContainer.size())
 	  {
-	    std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap.get(), 0, 0, OBJ_NONE) );
+        std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap.get(), 0, 0, OBJ_NONE, 0) );
 	    object->exists = false;
 	    mSpriteObjectContainer.push_back(move(object));
 	  }
@@ -266,7 +266,7 @@ bool CPlayGameVorticon::loadXMLGameState()
         const std::string tag = stateTree.first;
         if(tag == "Player")
         {
-            CPlayer loadedPlayer(mp_level_completed, *(mMap.get()) );
+            CPlayer loadedPlayer(mp_level_completed, *(mMap.get()), 0 );
             m_Player.push_back(loadedPlayer);
 
             auto &player = m_Player.back();
@@ -295,9 +295,11 @@ bool CPlayGameVorticon::loadXMLGameState()
             object_t type;
             Uint32 x, y;
 
+            int sprVarID = spriteTree.get<int>("<xmlattr>.variant", 0);
+
             if(spriteId >= mSpriteObjectContainer.size())
             {
-              std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap.get(), 0, 0, OBJ_NONE) );
+              std::unique_ptr<CVorticonSpriteObject> object( new CVorticonSpriteObject( mMap.get(), 0, 0, OBJ_NONE, sprVarID) );
               object->exists = false;
               mSpriteObjectContainer.push_back(move(object));
             }
@@ -359,8 +361,11 @@ bool CPlayGameVorticon::loadXMLGameState()
     // now setup the loaded data correctly!
 
 
-    m_Player[0].setupCameraObject();
-    m_Player[0].mpCamera->attachObject(&m_Player[0]);
+    for(auto &player : m_Player)
+    {
+        player.setupCameraObject();
+        player.mpCamera->attachObject(&player);
+    }
 
     while(m_Player[0].mpCamera->m_moving)
     {
@@ -420,6 +425,7 @@ bool CPlayGameVorticon::saveXMLGameState()
         auto &player = m_Player[i];
         ptree &playerNode = stateNode.add("Player", "");
         playerNode.put("<xmlattr>.id", i);
+        playerNode.put("<xmlattr>.variant", player.getSpriteVariantId());
 
         playerNode.put("x", player.getXPosition());
         playerNode.put("y", player.getYPosition());
@@ -439,6 +445,7 @@ bool CPlayGameVorticon::saveXMLGameState()
         // save all the objects states
         auto &spriteObj = mSpriteObjectContainer[i];
         ptree &spriteNode = stateNode.add("SpriteObj", "");
+        spriteNode.put("<xmlattr>.variant", spriteObj->getSpriteVariantId());
         spriteNode.put("type", spriteObj->m_type);
         spriteNode.put("x", spriteObj->getXPosition());
         spriteNode.put("y", spriteObj->getYPosition());

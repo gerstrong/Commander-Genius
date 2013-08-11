@@ -95,33 +95,6 @@ bool CPlayGameGalaxy::loadGameState()
 }
 
 
-/*bool CPlayGameGalaxy::saveGameState()
-{
-	CSaveGameController &savedGame = *(gpSaveGameController);
-
-	/// Save the Game in the CSavedGame object
-	// store the episode, level and difficulty
-	savedGame.encodeData(m_Episode);
-	savedGame.encodeData(g_pBehaviorEngine->mDifficulty);
-
-	// Save number of Players
-	savedGame.encodeData(m_NumPlayers);
-
-	m_Inventory >> savedGame;
-
-	bool active = m_WorldMap.isActive();
-	savedGame.encodeData( active );
-	m_WorldMap >> savedGame;
-
-	active = m_LevelPlay.isActive();
-	savedGame.encodeData( active );
-
-	if( active )
-		m_LevelPlay >> savedGame;
-
-
-	return savedGame.save();
-}*/
 
 bool CPlayGameGalaxy::loadXMLGameState()
 {            

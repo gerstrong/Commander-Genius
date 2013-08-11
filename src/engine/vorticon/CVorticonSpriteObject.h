@@ -13,7 +13,7 @@
 class CVorticonSpriteObject : public CSpriteObject
 {
 public:
-	CVorticonSpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
+    CVorticonSpriteObject(CMap *pmap, Uint32 x, Uint32 y, object_t type, const int sprVar=0);
 
 	void setupObjectType(const int Episode);
 	bool checkforScenario();

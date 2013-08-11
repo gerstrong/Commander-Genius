@@ -35,17 +35,19 @@ CPlayGame(ExeFile, level, numplayers)
 	if(!m_Player.empty())
 		m_Player.clear();
 
-    m_Player.assign(m_NumPlayers, CPlayer(mp_level_completed, *mMap.get() ) );
-	
-	for(int i=0 ; i<m_NumPlayers ; i++)
-	{
-		// Put some important Player properties
-		CPlayer &thisPlayer = m_Player[i];
-		thisPlayer.m_index = i;
-		thisPlayer.setDatatoZero();
-		thisPlayer.setupCameraObject();
-		thisPlayer.mpCamera->attachObject(&thisPlayer);
-	}
+    m_Player.assign( m_NumPlayers, CPlayer(mp_level_completed, *mMap.get(), 0) );
+
+    for(int i=0 ; i<m_NumPlayers ; i++ )
+    {
+        // Put some important Player properties
+        auto &player = m_Player[i];
+        player.m_index = i;
+        player.setDatatoZero();
+        player.setupCameraObject();
+        player.setSpriteVariantId(i);
+        player.mpCamera->attachObject(&player);
+    }
+
 
 	// Set the whole completed level list to false
 	memset( mp_level_completed, false, MAX_LEVELS_VORTICON*sizeof(bool));
@@ -69,35 +71,36 @@ void CPlayGameVorticon::setupPlayers()
     if(!mpHUDVec.empty())
         mpHUDVec.clear();
 
-	for( ; it_player != m_Player.end() ; it_player++ )
-	for (int i=0 ; i<m_NumPlayers ; i++)
+    for (int i=0 ; i<m_NumPlayers ; i++)
 	{
+        auto &player = m_Player[i];
+
 		if( m_Level == WORLD_MAP_LEVEL_VORTICON )
 		{
-			it_player->m_playingmode = CPlayer::WORLDMAP;
-			m_showKeensLeft |= ( it_player->pdie == PDIE_DEAD );
-			if(it_player->godmode) it_player->solid = false;
+            player.m_playingmode = CPlayer::WORLDMAP;
+            m_showKeensLeft |= ( player.pdie == PDIE_DEAD );
+            if(player.godmode) player.solid = false;
 		}
 		else
 		{
-			it_player->m_playingmode = CPlayer::LEVELPLAY;
-			it_player->sprite = PSTANDFRAME;
-			it_player->solid=true;
+            player.m_playingmode = CPlayer::LEVELPLAY;
+            player.sprite = PSTANDFRAME;
+            player.solid=true;
 		}
-		it_player->dontdraw = false;
-		it_player->pdie = PDIE_NODIE;
+        player.dontdraw = false;
+        player.pdie = PDIE_NODIE;
 
 		// Calibrate Player to the right position, so it won't fall when level starts
         CSprite &sprite = g_pGfxEngine->getSprite(i,PSTANDFRAME);
-		it_player->w = sprite.getWidth()<<STC;
-        it_player->h = sprite.getHeight();
+        player.w = sprite.getWidth()<<STC;
+        player.h = sprite.getHeight();
 		mMap->m_Dark = false;
 		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
 
 		// Set the pointers to the map and object data
-		it_player->setMapData(mMap.get());
-		it_player->exists = true;
-		if(it_player->m_playingmode == CPlayer::WORLDMAP) it_player->solid=!(it_player->godmode);
+        player.setMapData(mMap.get());
+        player.exists = true;
+        if(player.m_playingmode == CPlayer::WORLDMAP) player.solid = !(player.godmode);
 
         stInventory &inventory = m_Player.at(i).inventory;
 

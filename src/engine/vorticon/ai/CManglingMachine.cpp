@@ -70,7 +70,7 @@ bool armsDestroy = false;
 bool legsDestroy = false;
 
 CManglingMachine::CManglingMachine(CMap *p_map, Uint32 x, Uint32 y, unsigned int se_type) :
-CVorticonSpriteObject(p_map, x, y, OBJ_SECTOREFFECTOR),
+CVorticonSpriteObject(p_map, x, y, OBJ_SECTOREFFECTOR, 0),
 setype(se_type),
 timer(0)
 {	

@@ -22,7 +22,7 @@
 class CCamera : public CSpriteObject
 {
 public:
-	CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher=NULL);
+    CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher);
 
     /**
      * @brief cycleCamlead passes the camera lead only enables the cam which has the lead

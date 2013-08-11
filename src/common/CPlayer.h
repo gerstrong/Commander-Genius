@@ -52,7 +52,7 @@ public:
 		NONE, WORLDMAP, LEVELPLAY
 	};
 
-    CPlayer(bool *mp_level_completed, CMap &map);
+    CPlayer(bool *mp_level_completed, CMap &map, const int sprVar);
 	
 	// Copy player Data
 	CPlayer(const CPlayer &player);

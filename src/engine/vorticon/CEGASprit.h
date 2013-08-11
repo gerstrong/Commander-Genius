@@ -53,7 +53,7 @@ private:
 
 	void generateSprite( const int points, CSprite &sprite );
 	void LoadSpecialSprites( std::vector<CSprite> &sprite );
-	void DerivePlayerSprites( std::vector<CSprite> &sprites );
+    void DerivePlayerSprites( const int id, std::vector<CSprite> &sprites );
 	void DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &sprites );
 	void CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprite& sprite );
 	void ApplySpecialFX();

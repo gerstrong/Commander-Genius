@@ -145,7 +145,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	};
 	
 	
-        g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
+    g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
 	g_pResourceLoader->RunLoadAction(
 					new SpriteLoad(m_Sprit,
 							((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(m_episode),
