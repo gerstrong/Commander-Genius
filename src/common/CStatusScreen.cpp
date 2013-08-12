@@ -66,13 +66,22 @@ SDL_Surface* CStatusScreen::CreateStatusSfc()
 std::string CStatusScreen::fetchDifficultyText()
 {
 	std::string out;
-	if(g_pBehaviorEngine->mDifficulty == EASY)
-		out = "Easy-";
-	else if(g_pBehaviorEngine->mDifficulty == NORMAL)
-		out = "Normal-";
-	else if(g_pBehaviorEngine->mDifficulty == HARD)
-		out = "Hard-";
-	out += "Mode";
+
+    auto diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff == EASY)
+        out = "Easy-";
+    else if(diff == NORMAL)
+        out = "Normal-";
+    else if(diff == HARD)
+        out = "Hard-";
+    else if(diff == EXPERT)
+        out = "Expert-";
+    else if(diff == NINJA)
+        out = "Ninja-";
+    else if(diff == ELITE)
+        out = "Elite-";
+    out += "Mode";
 
 	return out;
 }

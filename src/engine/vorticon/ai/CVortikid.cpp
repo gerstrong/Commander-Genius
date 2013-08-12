@@ -35,12 +35,31 @@ CVorticonSpriteObject(p_map, x, y, OBJ_BABY, 0)
 	walktimer = 0;
 	canbezapped = true;
 
+    const auto diff = g_pBehaviorEngine->mDifficulty;
+
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3
 	if (g_pBehaviorEngine->getEpisode()==3) ep3 = true; else ep3 = false;
 	sprite = BABY_WALK_RIGHT_FRAME - ep3;
 
-	if(g_pBehaviorEngine->mDifficulty > NORMAL)
+    if(diff > NORMAL)
 		mHealthPoints++;
+
+    if(diff == EXPERT)
+    {
+        mSprVar = 1;
+        mHealthPoints *= 2;
+    }
+    else if(diff == NINJA)
+    {
+        mSprVar = 2;
+        mHealthPoints *= 3;
+    }
+    else if(diff == ELITE)
+    {
+        mSprVar = 3;
+        mHealthPoints *= 4;
+    }
+
 }
 
 void CVortikid::getTouchedBy(CVorticonSpriteObject &theObject)

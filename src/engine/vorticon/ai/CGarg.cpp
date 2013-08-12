@@ -16,9 +16,27 @@ dist_traveled(0),
 movedir(CENTER),
 m_hardmode(g_pBehaviorEngine->mDifficulty==HARD)
 {
+    const auto diff = g_pBehaviorEngine->mDifficulty;
+
 	canbezapped = true;
 	if(g_pBehaviorEngine->mDifficulty==HARD)
 		mHealthPoints++;
+
+    if(diff == EXPERT)
+    {
+        mSprVar = 1;
+        mHealthPoints *= 2;
+    }
+    else if(diff == NINJA)
+    {
+        mSprVar = 2;
+        mHealthPoints *= 3;
+    }
+    else if(diff == ELITE)
+    {
+        mSprVar = 3;
+        mHealthPoints *= 4;
+    }
 }
 
 bool CGarg::isNearby(CVorticonSpriteObject &theObject)

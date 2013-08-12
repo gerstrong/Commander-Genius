@@ -59,10 +59,29 @@ CVorticon(p_map, x, y, 4, OBJ_VORTELITE)
 	canbezapped = true;
 	m_speed = 0;
 
-	if(g_pBehaviorEngine->mDifficulty > NORMAL)
+    const auto diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > NORMAL)
 		mHealthPoints++;
-	else if(g_pBehaviorEngine->mDifficulty < NORMAL)
+    else if(diff < NORMAL)
 		mHealthPoints--;
+
+    if(diff == EXPERT)
+    {
+        mSprVar = 1;
+        mHealthPoints *= 2;
+    }
+    else if(diff == NINJA)
+    {
+        mSprVar = 2;
+        mHealthPoints *= 3;
+    }
+    else if(diff == ELITE)
+    {
+        mSprVar = 3;
+        mHealthPoints *= 4;
+    }
+
 }
 
 

@@ -18,9 +18,11 @@ CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype)
 	mHealthPoints = hp;
 	canbezapped = true;
 
-	if(g_pBehaviorEngine->mDifficulty > NORMAL)
+    const auto diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > NORMAL)
 		mHealthPoints++;
-	else if( g_pBehaviorEngine->mDifficulty < NORMAL && mHealthPoints > 1 )
+    else if( diff < NORMAL && mHealthPoints > 1 )
 		mHealthPoints--;
 
 	short Episode = g_pBehaviorEngine->getEpisode();
@@ -49,6 +51,23 @@ CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype)
 		DyingFrame = VORT3_DYING_FRAME;
 		DeadFrame = VORT3_DEAD_FRAME;
 	}
+
+    if(diff == EXPERT)
+    {
+        mSprVar = 1;
+        mHealthPoints *= 2;
+    }
+    else if(diff == NINJA)
+    {
+        mSprVar = 2;
+        mHealthPoints *= 3;
+    }
+    else if(diff == ELITE)
+    {
+        mSprVar = 3;
+        mHealthPoints *= 4;
+    }
+
 }
 
 

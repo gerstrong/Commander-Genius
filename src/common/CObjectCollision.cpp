@@ -833,10 +833,13 @@ void CSpriteObject::processEvents()
 
             processMove(move);
 
-            for(auto &player : playerVec)
+            for(auto &player : playerVec)                
             {
-                if(!player->m_jumpdownfromobject)
+                if(player)
+                {
+                    if(!player->m_jumpdownfromobject)
                       player->processMove(move);
+                }
             }
 
             m_EventCont.pop_Event();

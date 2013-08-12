@@ -73,7 +73,7 @@ class CDifficultySelection : public CBaseMenu
 
 public:
 	CDifficultySelection() :
-		CBaseMenu( CRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
+        CBaseMenu( CRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
 	{
 
 		mpMenuDialog->addControl( new CGUIButton( "Easy", new StartNewGameEvent(EASY) ) );
