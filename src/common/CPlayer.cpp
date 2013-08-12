@@ -686,9 +686,7 @@ void CPlayer::InertiaAndFriction_Y()
 		pinertia_y = 0;
 	else if( isWMSolid(getXMidPos(), getYMidPos()) )
 		pinertia_y = 0;
-	
-	// check first if the player is not blocked by a level
-	verifySolidLevels();
+
 
 	// then apply pinertia_y
 	if( (!blockedu && pinertia_y<0) || (!blockedd && pinertia_y>0) )

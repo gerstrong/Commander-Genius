@@ -216,8 +216,12 @@ void CPlayGameVorticon::ponder()
 			  }
 			  else
 			  {
-			    // Process Players' Cameras
-			    m_Player[mCamLead].processCamera();
+
+                for(auto &player : m_Player)
+                {
+                    // Process Players' Cameras
+                    player.processCamera();
+                }
 			  }  
 			}
 			

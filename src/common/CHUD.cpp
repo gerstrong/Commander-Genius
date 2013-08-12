@@ -125,8 +125,6 @@ void CHUD::CreateBackground()
      mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 #endif
 
-    SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
-
 	// Draw the rounded borders        
     DrawCircle(0, 0, 76);
     DrawCircle(17-4, 15-2, 22);

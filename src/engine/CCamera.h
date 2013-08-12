@@ -80,6 +80,12 @@ public:
     {
         return mCamlead;
     }
+
+    static void resetCamLead()
+    {
+        mCamlead = 0;
+        mCamLeadChange = false;
+    }
 	
 	bool m_attached;
 	bool m_freeze;

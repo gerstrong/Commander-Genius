@@ -35,6 +35,8 @@ mp_AttachedObject(p_attacher)
     const int camId = mp_AttachedObject->getSpriteVariantId();
 
     mDontUseThisLead[camId] = false;
+
+    resetCamLead();
 }
 
 void CCamera::cycleCamlead()

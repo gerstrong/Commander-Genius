@@ -32,6 +32,8 @@ void CPlayer::processWorldMap()
     {
     	WalkingAnimation();
 
+        // check first if the player is not blocked by a level
+        verifySolidLevels();
     	InertiaAndFriction_X();
     	InertiaAndFriction_Y();
 
@@ -115,6 +117,8 @@ bool CPlayer::isWMSolid(int xb, int yb)
 	return false;
 }
 
+const int WMSOLIDBUMPSPEED = 1;
+
 void CPlayer::verifySolidLevels()
 {
 	if(godmode) return;
@@ -127,19 +131,19 @@ void CPlayer::verifySolidLevels()
 	int xmid = getXMidPos();
 
 	if(isWMSolid(xmid,y1)) {
-		moveDown(1);
+        moveDown(WMSOLIDBUMPSPEED);
 		blockedu = true;
 	}
 	if(isWMSolid(xmid,y2)) {
-		moveUp(1);
+        moveUp(WMSOLIDBUMPSPEED);
 		blockedd = true;
 	}
 	if(isWMSolid(x1,ymid)) {
-		moveRight(1);
+        moveRight(WMSOLIDBUMPSPEED);
 		blockedl = true;
 	}
 	if(isWMSolid(x2,ymid)) {
-		moveLeft(1);
+        moveLeft(WMSOLIDBUMPSPEED);
 		blockedr = true;
 	}
 }

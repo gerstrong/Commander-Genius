@@ -314,9 +314,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     g_pResourceLoader->setPermilage(900);
 
     // Apply the sprites for player 2,3 and 4
-    /*DerivePlayerSprites( 1,g_pGfxEngine->getSpriteVec(1) );
+    DerivePlayerSprites( 1,g_pGfxEngine->getSpriteVec(1) );
     DerivePlayerSprites( 2,g_pGfxEngine->getSpriteVec(2) );
-    DerivePlayerSprites( 3,g_pGfxEngine->getSpriteVec(3) );*/
+    DerivePlayerSprites( 3,g_pGfxEngine->getSpriteVec(3) );
     g_pResourceLoader->setPermilage(1000);
 
 
@@ -347,13 +347,14 @@ void CEGASprit::DerivePlayerSprites( const int id, std::vector<CSprite> &sprites
 	FileListAdder fileListAdder;
 	std::string gfxpath = JoinPaths(m_gamepath, "gfx");
 	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
-	FilterFilelist(filelist, "sprite");
+    const std::string spriteFn = "sprite"+itoa(id)+"_";
+    FilterFilelist(filelist, spriteFn);
 	std::set<std::string>::iterator it = filelist.begin();
 	for( ; it != filelist.end() ; it++ )
 	{
         std::string name = *it;
-        const std::string spriteFn = "sprite"+itoa(id)+"_";
-        int num = getRessourceID(name, spriteFn);
+
+        const int num = getRessourceID(name, spriteFn);
         CSprite &Sprite = g_pGfxEngine->getSprite(id,num);
         std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
         Sprite.loadHQSprite(filename);
