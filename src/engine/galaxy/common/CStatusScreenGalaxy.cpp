@@ -16,6 +16,30 @@ m_showstatus(false),
 m_Item(Item)
 {}
 
+std::string CStatusScreenGalaxy::getDifficultyText()
+{
+    auto diff = g_pBehaviorEngine->mDifficulty;
+
+    std::string difftext;
+
+    if(diff == EASY)
+        difftext = "Easy";
+    else if(diff == NORMAL)
+        difftext = "Normal";
+    else if(diff == HARD)
+        difftext = "Hard";
+    else if(diff == EXPERT)
+        difftext = "Expert";
+    else if(diff == NINJA)
+        difftext = "Ninja";
+    else if(diff == ELITE)
+        difftext = "Elite";
+    else
+        difftext = "???";
+
+    return difftext;
+}
+
 void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 {
 	// Create a surface for that

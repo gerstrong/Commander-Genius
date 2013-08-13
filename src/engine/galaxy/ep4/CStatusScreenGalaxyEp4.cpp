@@ -95,14 +95,9 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
 	Font.setupColor(0x0);
 	std::string difftext;
-	if(g_pBehaviorEngine->mDifficulty == EASY)
-		difftext = "Easy";
-	else if(g_pBehaviorEngine->mDifficulty == NORMAL)
-		difftext = "Normal";
-	else if(g_pBehaviorEngine->mDifficulty == HARD)
-		difftext = "Hard";
-	else
-		difftext = "???";
+
+    const std::string difftext = getDifficultyText();
+
 	Font.drawFontCentered(mpStatusSurface.get(), difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
 	Font.setupColor(0x333333);
 

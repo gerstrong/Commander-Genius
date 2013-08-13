@@ -23,6 +23,9 @@ public:
 	// This will generate the status screen. It must be derived by other classes, depending on the Episode
 	virtual void GenerateStatus() = 0;
 
+    // Returns the right text string to show if the currently setup difficulty
+    std::string getDifficultyText();
+
 	// Generate the base for the Status screen. This function is common for all Keen4-6 galaxy games
 	// and start_x and start_y will return the start offset pixel where particular stuff can be drawn
 	void drawBase(SDL_Rect &EditRect);
