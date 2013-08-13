@@ -9,13 +9,6 @@
 
 // If the max Speed is reached, the platform won't return.
 const int DROP_MAX_SPEED_LIMIT = 200;
-//const int DROP_MAX_SPEED_LIMIT = 150;
-
-// Times the cycle has to run through until Speed is raised
-const int DROP_SPEED_ACC = 5;
-
-// Speed at what the Platform might return to the original position
-const int HOVER_SPEED = 25;
 
 const int BLOCKSPRITEID = 0x1F;
 
@@ -32,7 +25,29 @@ m_Origin(m_Pos)
 	m_ActionBaseOffset = actionOff;
 	xDirection = 0;
 	yDirection = 0;
-	solid = false;
+    solid = false;
+
+    dropSpeedAcc = 5;
+    hoverSpeed = 25;
+
+    auto diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > NINJA)
+    {
+        dropSpeedAcc = 10;
+        hoverSpeed = 10;
+    }
+    if(diff > EXPERT)
+    {
+        dropSpeedAcc = 5;
+        hoverSpeed = 10;
+    }
+    if(diff > HARD)
+    {
+        dropSpeedAcc = 5;
+        hoverSpeed = 20;
+    }
+
 	setActionForce(A_PLATFORM_DROP);
 	setActionSprite();
 	calcBoundingBoxes();
@@ -71,7 +86,7 @@ void CPlatformDrop::process()
 
 		// If speed is lower than max increase it...
 		if(m_drop_speed < DROP_MAX_SPEED_LIMIT)
-			m_drop_speed += DROP_SPEED_ACC;
+            m_drop_speed += dropSpeedAcc;
 		else // else set the max speed
 			m_drop_speed = DROP_MAX_SPEED_LIMIT;
 	    }
@@ -82,7 +97,7 @@ void CPlatformDrop::process()
 		m_drop_speed = 0;
 
 		if(m_Origin.y < m_Pos.y)
-			moveUp(HOVER_SPEED);
+            moveUp(hoverSpeed);
 		else if(m_Origin.y > m_Pos.y)
 			moveDown(1);
 	}

@@ -94,7 +94,6 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	TempRect.x = EditRect.x+96;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFFFFFFFF);
 	Font.setupColor(0x0);
-	std::string difftext;
 
     const std::string difftext = getDifficultyText();
 

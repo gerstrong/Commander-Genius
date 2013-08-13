@@ -30,6 +30,13 @@ public:
 private:
 	int m_delay_for_drop;
 	int m_drop_speed;
+
+    // Times the cycle has to run through until Speed is raised
+    int dropSpeedAcc;
+
+    // Speed at what the Platform might return to the original position
+    int hoverSpeed;
+
 	const VectorD2<Uint32> m_Origin;
 };
 
