@@ -9,8 +9,6 @@
 #include "common/CBehaviorEngine.h"
 #include "sdl/CVideoDriver.h"
 
-// Vertical platform speed
-const int MOVE_VERT_SPEED = 20;
 
 const int FIRE_CHANGE_TIME = 5;
 const int FIRE_SPRITE = 363;
@@ -32,13 +30,28 @@ m_fireTimer(0)
 	
 	const int episode = g_pBehaviorEngine->getEpisode();	
 	if(episode == 4)
-	{
 	    drawFire = true;
-	}
 	else
-	{
 	    drawFire = false;
-	}
+
+    moveVertSpeed = 20;
+
+
+    auto diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > NINJA)
+    {
+        moveVertSpeed = 40;
+    }
+    if(diff > EXPERT)
+    {
+        moveVertSpeed = 30;
+    }
+    if(diff > HARD)
+    {
+        moveVertSpeed = 25;
+    }
+
 	
 	m_ActionBaseOffset = actionOffset;
     solid = false;
@@ -70,21 +83,21 @@ void CPlatformVertical::process()
 
 	if(yDirection == UP)
 	{
-	    movePlatUp(MOVE_VERT_SPEED);
+        movePlatUp(moveVertSpeed);
 	}
 	else
 	{
-	    movePlatDown(MOVE_VERT_SPEED);
+        movePlatDown(moveVertSpeed);
 	}
 	
 	// If any Plat is stuck, because it is in some wall and can't move properly, try to pull it!
 	if(blockedl)
 	{
-	    movePlatRight(MOVE_VERT_SPEED);
+        movePlatRight(moveVertSpeed);
 	}	
 	if(blockedr)
 	{
-	    movePlatLeft(MOVE_VERT_SPEED);
+        movePlatLeft(moveVertSpeed);
 	}
 
 	

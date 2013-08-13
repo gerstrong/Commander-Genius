@@ -33,7 +33,6 @@ const int TIME_UNTIL_LOOK = 200;
 
 const int TIME_SHOOTING = 200;
 
-const int MOVE_SPEED = 15;
 
 const int CSF_DISTANCE_TO_SHOOT = 8<<CSF;
 
@@ -49,6 +48,25 @@ mKeenNearby(false)
 	mActionMap[A_RED_PAUSE] = (GASOFctr) &CRoboRed::processPauseBeforeShoot;
 	mActionMap[A_RED_SHOOT] = (GASOFctr) &CRoboRed::processShoot;
   
+
+    auto diff = g_pBehaviorEngine->mDifficulty;
+
+    moveHorizSpeed = 15;
+
+    if(diff > NINJA)
+    {
+        moveHorizSpeed = 30;
+    }
+    if(diff > EXPERT)
+    {
+        moveHorizSpeed = 25;
+    }
+    if(diff > HARD)
+    {
+        moveHorizSpeed = 20;
+    }
+
+
 	// Adapt this AI
 	setupGalaxyObjectOnMap(0x2734, A_RED_MOVE);
 	
@@ -62,11 +80,11 @@ void CRoboRed::processMoving()
   // Move normally in the direction
   if( xDirection == RIGHT )
   {
-    moveRight( MOVE_SPEED );
+    moveRight( moveHorizSpeed );
   }
   else
   {
-    moveLeft( MOVE_SPEED );
+    moveLeft( moveHorizSpeed );
   }
   
   if(getProbability(60) && mKeenNearby)

@@ -79,17 +79,17 @@ void CPlatformDrop::process()
 	// Player is standing on the platform or the platform is already falling too fast
 	if(drop)
 	{
-	    if(!blockerDetected)
-	    {	    
-		// move down
-		movePlatDown(m_drop_speed);
+        if(!blockerDetected)
+        {
+            // move down
+            movePlatDown(m_drop_speed);
 
-		// If speed is lower than max increase it...
-		if(m_drop_speed < DROP_MAX_SPEED_LIMIT)
-            m_drop_speed += dropSpeedAcc;
-		else // else set the max speed
-			m_drop_speed = DROP_MAX_SPEED_LIMIT;
-	    }
+            // If speed is lower than max increase it...
+            if(m_drop_speed < DROP_MAX_SPEED_LIMIT)
+                m_drop_speed += dropSpeedAcc;
+            else // else set the max speed
+                m_drop_speed = DROP_MAX_SPEED_LIMIT;
+        }
 	}
 	else // Player is not on the platform
 	{

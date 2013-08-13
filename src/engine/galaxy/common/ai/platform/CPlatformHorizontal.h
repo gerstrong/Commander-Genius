@@ -32,6 +32,8 @@ private:
 	bool drawFire;
 	int m_FireSprite;
 	int m_fireTimer;
+
+    int moveHorizSpeed;
 };
 
 }

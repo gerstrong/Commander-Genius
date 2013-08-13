@@ -29,15 +29,29 @@ m_fireTimer(0)
 	yDirection = 0;
 	
 	const int episode = g_pBehaviorEngine->getEpisode();	
+
 	if(episode == 4)
-	{
 	    drawFire = true;
-	}
 	else
-	{
 	    drawFire = false;
-	}
-	
+
+    moveHorizSpeed = 20;
+
+    auto diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > NINJA)
+    {
+        moveHorizSpeed = 40;
+    }
+    if(diff > EXPERT)
+    {
+        moveHorizSpeed = 30;
+    }
+    if(diff > HARD)
+    {
+        moveHorizSpeed = 25;
+    }
+
 	setActionForce(A_PLATFORM_MOVE);
 	setActionSprite();
 	calcBoundingBoxes();
@@ -47,8 +61,6 @@ m_fireTimer(0)
 	processMove( -(3<<CSF), 0 );
 	processMove(  (3<<CSF), 0 );
 }
-
-const int MOVE_HORIZ_SPEED = 20;
 
 void CPlatformHorizontal::process()
 {
@@ -65,11 +77,11 @@ void CPlatformHorizontal::process()
 	// direction change is processed here!
 	if(xDirection == RIGHT)
 	{
-	    movePlatRight(MOVE_HORIZ_SPEED);
+        movePlatRight(moveHorizSpeed);
 	}
 	else if(xDirection == LEFT)
 	{
-	    movePlatLeft(MOVE_HORIZ_SPEED);
+        movePlatLeft(moveHorizSpeed);
 	}
 	
 	// If Timer passed swap Sprite

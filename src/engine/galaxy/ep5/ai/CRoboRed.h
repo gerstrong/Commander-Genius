@@ -44,6 +44,8 @@ private:
 	int mLookTimer;
 	bool swapYDir;
 	bool mKeenNearby;
+
+    int moveHorizSpeed;
 };
 
 }

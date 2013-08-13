@@ -31,6 +31,9 @@ private:
 	bool dimFire;
 	int m_FireSprite;
 	int m_fireTimer;
+
+    // Vertical platform speed
+    int moveVertSpeed;
 };
 
 
