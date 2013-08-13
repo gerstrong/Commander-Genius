@@ -249,15 +249,27 @@ void CAmpton::getTouchedBy(CSpriteObject &theObject)
 
 	CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet? Than make it stunned.
-	if( dynamic_cast<CBullet*>(&theObject) )
-	{
-		playSound(SOUND_ROBO_STUN);
-		setAction(A_AMPTON_STUNNED);
-		solid = true;
-		dead = true;
-		theObject.dead = true;
-	}
+    // Was it a bullet? Than make it stunned when health goes to zero.
+    if( dynamic_cast<CBullet*>(&theObject) )
+    {
+        mHealthPoints--;
+        theObject.dead = true;
+
+        playSound(SOUND_ROBO_STUN);
+
+        if(mHealthPoints == 0)
+        {
+            setAction(A_AMPTON_STUNNED);
+            dead = true;
+            solid = true;
+        }
+        else
+        {
+            blink(10);
+        }
+    }
+
+
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
 	{

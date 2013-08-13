@@ -206,12 +206,21 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 
 	CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet? Than make it stunned.
+    // Was it a bullet? Than make it stunned when health goes to zero.
 	if( dynamic_cast<CBullet*>(&theObject) )
-	{
-		setAction(A_SPARKY_STUNNED);
-		dead = true;
-		theObject.dead = true;
+	{        
+        mHealthPoints--;
+        theObject.dead = true;
+
+        if(mHealthPoints == 0)
+        {
+            setAction(A_SPARKY_STUNNED);
+            dead = true;
+        }
+        else
+        {
+            blink(10);
+        }
 	}
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
