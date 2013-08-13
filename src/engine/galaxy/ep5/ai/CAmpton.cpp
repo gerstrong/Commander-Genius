@@ -49,6 +49,24 @@ mTimer(0)
   
 	// Adapt this AI
 	setupGalaxyObjectOnMap(0x21DC, A_AMPTON_WALK);
+
+    auto diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > NINJA && foeID == 0x2C)
+    {
+        mSprVar = 3;
+        mHealthPoints = 4;
+    }
+    if(diff > EXPERT && foeID == 0x2b)
+    {
+        mSprVar = 2;
+        mHealthPoints = 3;
+    }
+    if(diff > HARD && foeID == 0x2A)
+    {
+        mSprVar = 1;
+        mHealthPoints = 2;
+    }
 	
 	xDirection = LEFT;
 }

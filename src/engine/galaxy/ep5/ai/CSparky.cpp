@@ -53,6 +53,26 @@ mGoodChargeChance(false)
     mActionMap[A_SPARKY_TURN] = (void (CGalaxyActionSpriteObject::*)()) &CSparky::processTurn;
     mActionMap[A_SPARKY_STUNNED] = (void (CGalaxyActionSpriteObject::*)()) &CStunnable::processGettingStunned;
   
+    auto diff = g_pBehaviorEngine->mDifficulty;
+
+
+    if(diff > NINJA && foeID == 0x06)
+    {
+        mSprVar = 3;
+        mHealthPoints = 4;
+    }
+    if(diff > EXPERT && foeID == 0x05)
+    {
+        mSprVar = 2;
+        mHealthPoints = 3;
+    }
+    if(diff > HARD && foeID == 0x04)
+    {
+        mSprVar = 1;
+        mHealthPoints = 2;
+    }
+
+
     // Adapt this AI
     setupGalaxyObjectOnMap(0x1F0C, A_SPARKY_WALK);
 
