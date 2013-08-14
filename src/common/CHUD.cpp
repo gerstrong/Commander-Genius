@@ -31,10 +31,6 @@ mNumPlayers(numPlayers)
     setup(id, numPlayers);
 }
 
-/*CHUD::CHUD(const CHUD &orig)
-{
-
-}*/
 
 void CHUD::setup(const int id, const int numPlayers)
 {
@@ -81,7 +77,7 @@ void CHUD::CreateBackground()
 {
 	// Create a surface for that
 	SDL_Surface *temp;
-	mpBackground.reset( CG_CreateRGBSurface( m_Rect ) );
+    mpBackground.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 
 	SDL_Rect headsrcrect, headdstrect;
 	headsrcrect.x = 0;
@@ -95,7 +91,7 @@ void CHUD::CreateBackground()
 
 #else
     temp = SDL_DisplayFormat(mpBackground.get());
-	mpBackground.reset(temp);
+    mpBackground.reset(temp, &SDL_FreeSurface);
 #endif
 
 	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);
