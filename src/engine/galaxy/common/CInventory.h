@@ -42,7 +42,7 @@ public:
 	void toggleStatusScreen();
 
 	// Saves the inventory using the Savegamecontroller.
-	void operator>>(CSaveGameController &savedGame);    
+	void operator>>(CSaveGameController &savedGame);
     void operator>>(boost::property_tree::ptree &invNode);
 
 	// This is for loading the game
@@ -51,8 +51,8 @@ public:
 
 	stItemGalaxy Item;
 
-	CHUD m_HUD;    
-	std::unique_ptr<CStatusScreenGalaxy> mp_StatusScreen;
+	CHUD m_HUD;
+	std::shared_ptr<CStatusScreenGalaxy> mp_StatusScreen;
 	SDL_Surface *mp_StatusBgrnd;
 };
 

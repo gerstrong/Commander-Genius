@@ -31,6 +31,11 @@ mNumPlayers(numPlayers)
     setup(id, numPlayers);
 }
 
+/*CHUD::CHUD(const CHUD &orig)
+{
+
+}*/
+
 void CHUD::setup(const int id, const int numPlayers)
 {
     mId = id;
@@ -85,15 +90,15 @@ void CHUD::CreateBackground()
 	headdstrect.h = headsrcrect.h = 16;
     headdstrect.x = 0;
     headdstrect.y = 11;
-	
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 #else
     temp = SDL_DisplayFormat(mpBackground.get());
 	mpBackground.reset(temp);
 #endif
-	
-	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);	
+
+	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);
 	SDL_FillRect(temp, NULL, colorkey );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetColorKey( temp, SDL_TRUE, colorkey );
@@ -102,7 +107,7 @@ void CHUD::CreateBackground()
 #endif
 
     CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(mId,PMAPDOWNFRAME);
-	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );	
+	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
 
 	int sprite=0;
 	const int Episode = g_pBehaviorEngine->getEpisode();
@@ -116,16 +121,16 @@ void CHUD::CreateBackground()
 	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
     headdstrect.x = 45-(headsrcrect.w/2);
     headdstrect.y = 19-(headsrcrect.h/2);
-		
+
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
-	
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 #else
      mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 #endif
 
-	// Draw the rounded borders        
+	// Draw the rounded borders
     DrawCircle(0, 0, 76);
     DrawCircle(17-4, 15-2, 22);
     DrawCircle(58-4, 15-2, 22);
@@ -189,12 +194,12 @@ void CHUD::renderGalaxy()
   charges = (m_oldCharges<99) ? m_oldCharges : 99;
 
   // Draw the HUD with all the digits
-  SDL_Surface* blitsfc = mpHUDBlit.get();  
+  SDL_Surface* blitsfc = mpHUDBlit.get();
 
   mHUDBox.drawSprite( blitsfc, -4, 0);
 
   if(lives >= 0)
-  {    
+  {
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
@@ -224,7 +229,7 @@ void CHUD::renderVorticon()
 
 	// Draw the background
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
-	
+
 	CFont &Font = g_pGfxEngine->getFont(1);
 
 	// Draw the lives
@@ -242,21 +247,21 @@ void CHUD::renderVorticon()
 void CHUD::render()
 {
 	size_t Episode = g_pBehaviorEngine->getEpisode();
-	
+
 	timer++;
-	
+
 	if(timer >= EFFECT_TIME)
 	{
 	    timer = 0;
-	    
+
 	    if(m_oldCharges < m_charges)
 		m_oldCharges++;
 	    else if(m_oldCharges > m_charges)
 		m_oldCharges--;
 	}
-	
+
 	int delta = (m_score-m_oldScore)/EFFECT_SPEED;
-	
+
 	if(m_oldScore < m_score)
 	{
 	    if(delta == 0)

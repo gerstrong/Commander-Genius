@@ -32,6 +32,10 @@ public:
          const int numPlayers,
 		 int *camlead = NULL); // TODO: Must be removed later and replaced by a reference
 
+
+	//CHUD(const CHUD &orig);
+
+
 	/**
 	 * \brief This part of the code will render the entire HUD
 	 */
@@ -41,10 +45,10 @@ public:
       * \brief Sets up the HUD Box for certain id sprite variant
       */
     void setup(const int id, const int numPlayers);
-	
+
 	/**
 	 * \brief This will sync some data in the HUD, especially the oldScore variable
-	 */	
+	 */
 	void sync();
 
 private:
@@ -59,17 +63,17 @@ private:
 	unsigned long &m_score;
 	signed char &m_lives;
 	unsigned int &m_charges;
-	
+
 	unsigned long m_oldScore;
-	unsigned int m_oldCharges;	
-	
+	unsigned int m_oldCharges;
+
     CSprite mHUDBox;
 
-	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpBackground;
+	std::shared_ptr<SDL_Surface> mpBackground;
 	std::shared_ptr<SDL_Surface> mpHUDBlit;
 	int *mpCamlead;
     int mId;
-	
+
 	int timer;
 
     const int mNumPlayers;

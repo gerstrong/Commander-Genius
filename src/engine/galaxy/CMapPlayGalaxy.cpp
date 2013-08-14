@@ -79,24 +79,24 @@ void CMapPlayGalaxy::ponder()
 	mMap.animateAllTiles();
 
 	if(!pause)
-	{	    
+	{
 	    for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
 	    {
-		auto &objRef = *(obj->get());	
+		auto &objRef = *(obj->get());
 		bool visibility = false;
 
 		if( objRef.exists )
 		{
 		    visibility = objRef.calcVisibility();
-		    
+
 		    if( visibility )
 		    {
                 // Process the AI of the object as it's given
                 objRef.process();
-			
+
                 // process all the objects' events
                 objRef.processEvents();
-			
+
                 // Check collision between objects using NlogN order
                 auto theOther = obj; theOther++;
                 for( ; theOther != mObjectPtr.end() ; theOther++)
@@ -104,10 +104,10 @@ void CMapPlayGalaxy::ponder()
                     auto &theOtherRef = *(theOther->get());
                     if( !theOtherRef.exists )
                         continue;
-			    
+
                     objRef.isNearby(theOtherRef);
                     theOtherRef.isNearby(objRef);
-			    
+
                     if( objRef.hitdetect(theOtherRef) )
                     {
                         objRef.getTouchedBy(theOtherRef);
@@ -116,7 +116,7 @@ void CMapPlayGalaxy::ponder()
                 }
 		    }
 		}
-		
+
 		// If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
 		// how the death-message or go gameover.
 		if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
@@ -125,8 +125,8 @@ void CMapPlayGalaxy::ponder()
 		    if( player->dead || (!visibility && player->m_dying) )
 			player->processDead();
 		}
-		
-	    }	    
+
+	    }
 	}
 
 
@@ -167,7 +167,7 @@ void CMapPlayGalaxy::ponder()
 			mObjectPtr.push_back( smoke );
 		    }
 		}
-			
+
 		std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
 		mObjectPtr.push_back( foot );
 
@@ -186,7 +186,7 @@ void CMapPlayGalaxy::render()
     // Draw all the sprites without player
     // The player sprites are drawn at the end
     galaxy::CPlayerBase* player[MAX_PLAYERS] = {nullptr, nullptr, nullptr, nullptr};
-    
+
     int pIt = 0;
     for( ; obj!=mObjectPtr.rend() ; obj++ )
     {
@@ -234,9 +234,9 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	const Uint16 level = mMap.getLevel();
 	savedGame.encodeData( level );
 
-	std::vector< std::shared_ptr<CGalaxySpriteObject> > filteredObjects;	
+	std::vector< std::shared_ptr<CGalaxySpriteObject> > filteredObjects;
 
-	// let's filter the Foe out that won't do any good!	
+	// let's filter the Foe out that won't do any good!
 	for( auto &it : mObjectPtr )
 	{
 	    if( it->mFoeID != 0 )
@@ -244,9 +244,9 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		filteredObjects.push_back( it );
 	    }
 	}
-	
+
 	const size_t size = filteredObjects.size();
-		
+
 	// save the number of objects on screen
 	savedGame.encodeData(size);
 
@@ -254,8 +254,8 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 	{
 		// save all the objects states
 		unsigned int newYpos = it->getYPosition();
-		unsigned int newXpos = it->getXPosition();	
-		
+		unsigned int newXpos = it->getXPosition();
+
 		savedGame.encodeData( it->mFoeID );
 		savedGame.encodeData( newXpos );
 		savedGame.encodeData( newYpos );
@@ -266,9 +266,9 @@ void CMapPlayGalaxy::operator>>(CSaveGameController &savedGame)
 		savedGame.encodeData( it->blockedd );
 		savedGame.encodeData( it->blockedu );
 		savedGame.encodeData( it->blockedl );
-		savedGame.encodeData( it->blockedr );	
+		savedGame.encodeData( it->blockedr );
 		savedGame.encodeData( it->xDirection );
-		savedGame.encodeData( it->yDirection );		
+		savedGame.encodeData( it->yDirection );
 		savedGame.encodeData( it->mHealthPoints );
 		savedGame.encodeData( it->canbezapped );
 		savedGame.encodeData( it->cansupportplayer );
@@ -342,7 +342,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 
 	if(!mObjectPtr.empty())
 		mObjectPtr.clear();
-	
+
 	mMap.mNumFuses = 0;
 	mMap.mFuseInLevel = false;
 
@@ -382,7 +382,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 		if(pNewfoe->exists)
 		{
 		    pNewfoe->setActionForce(actionNumber);
-		    std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);		    
+		    std::shared_ptr<CGalaxySpriteObject> newFoe(pNewfoe);
 		    mObjectPtr.push_back(newFoe);
 		}
 	}
@@ -481,7 +481,7 @@ void CMapPlayGalaxy::operator>>(boost::property_tree::ptree &levelNode)
 // This is for loading the game
 void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
 {
-    int level = levelNode.get<int>("level", level);
+    int level = levelNode.get<int>("level", 0);
 
     std::unique_ptr<galaxy::CMapLoaderGalaxy> mapLoader;
     const unsigned int episode = g_pBehaviorEngine->getEpisode();
@@ -502,7 +502,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     {
         g_pLogFile->textOut("Error loading the file. This game is not supported!");
         return;
-    }   
+    }
 
     // Load the World map level.
     mapLoader->loadMap( mMap, level );
@@ -532,7 +532,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     mMap.mFuseInLevel = false;
 
     for( auto &levelItem : levelNode )
-    {                        
+    {
         if(levelItem.first == "Sprite")
         {
             auto &spriteNode = levelItem.second;
