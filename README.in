@@ -146,11 +146,17 @@ Setting up the data of the game:
    otherwise download the shareware version and copy them there. 
    You also can use mods. If you have a bundled version, 
    you already should be able to play episodes  1 and 4, as they are in that directory.
- * If you want to use some patched mods just copy them as separate games. 
- * Go into the root directory and start the interpreter. If you have downloaded 
+   If you connect your Android Device to the PC normally you find a directory a path called like
+   "/Android/data/net.sourceforge.clonekeenplus/files/games". 
+   Copy the games there were the shareware versions are and you should be fine.
+
+ * If you want to use some patched mods just copy them as separate games to that path as well
+ 
+ * Go into the root directory and start CG. If you have downloaded 
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
    will find the executable in the root directory of the extracted game.
-   Under Linux it is called "CGenius", under Windows "CGenius.exe".    
+   Under Linux it is called "CommanderGenius", under Windows "CGenius.exe".    
+
  * If you want improved sounds and music, just download the High Quality Pack (HQP).
    Read that readme of HQP for more information in how to use those resources.
    Using HQP you might have to copy some resources to the specific game directory so
@@ -158,7 +164,7 @@ Setting up the data of the game:
  
 How to launch Commander Genius (If you didn't compile it):
  * Go to the program's directory.
- * Under Windows you start "CGenius.exe", under Linux "./CGenius"
+ * Under Windows you start "CGenius.exe", under Linux "./CommanderGenius"
 
 
 Getting the most recent Source Code:
@@ -311,6 +317,7 @@ Contributors:
 Pickle
 Sciz CT
 Lemm
+Markus Arnold (ThinkLabs. Thanks for your generous contribution)
 DSL (Nice icon contribution)
 Motorfingers
 Chrisfischtopher
@@ -335,7 +342,7 @@ Even in difficult times he always supports us.
 Furthermore special thanks to Scott (Pickle) and Albert Zeyer
 for his changes. They helped out a lot on the quality of the code and performance incrate.
 
-Also special thanks to NY00123 for helping to test the most recent 0.4 version.
+Also special thanks to NY00123 for helping to test many different versions and improving upon.
 
 I'm sure, there were more people who helped us and we forgot to mention, but
 many thanks to them also.
