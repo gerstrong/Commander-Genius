@@ -551,8 +551,8 @@ void Logger::unlock() {
 static void CoutPrint(const std::string& str) {
 	// TODO: We have used std::cout here before but it doesn't seem to work after a while for some reason.
 	printf("%s", str.c_str());
-#ifdef ANDROID
-	__android_log_print(ANDROID_LOG_INFO, "Commander Genius", str.c_str());
+#ifdef ANDROID    
+    __android_log_print(ANDROID_LOG_INFO, "Commander Genius","%s", str.c_str());
 #endif
 }
 

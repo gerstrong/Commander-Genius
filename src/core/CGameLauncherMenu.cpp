@@ -115,29 +115,37 @@ bool CGameLauncherMenu::loadGalaxyResources(const Uint8 flags)
 	if(!mp_EGAGraphics)
 	    return false;
 	
-	mp_EGAGraphics->loadData();
-	g_pResourceLoader->setPermilage(400);
-    }    
+    mp_EGAGraphics->loadData();
+    g_pResourceLoader->setPermilage(400);
+    }
     
     if( (flags & LOADSTR) == LOADSTR )
     {
-	// load the strings.
-	CMessages Messages(p_exedata, Episode, version);
-	Messages.extractGlobalStrings();
-	g_pResourceLoader->setPermilage(450);
+        // load the strings.
+        CMessages Messages(p_exedata, Episode, version);
+        Messages.extractGlobalStrings();
+        g_pResourceLoader->setPermilage(450);
     }
-        
+
     if( (flags & LOADSND) == LOADSND )
     {
-	// Load the sound data
-	g_pSound->loadSoundData();
-	g_pResourceLoader->setPermilage(900);
+        g_pLogFile->ftextOut("Loading audio... <br>");
+        // Load the sound data
+        g_pSound->loadSoundData();
+        g_pResourceLoader->setPermilage(900);
+        g_pLogFile->ftextOut("Done loading audio.<br>");
     }
     
+    g_pLogFile->ftextOut("Loading game constants...<br>");
+
     g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+
+    g_pLogFile->ftextOut("Looking for patches...<br>");
     
     // If there are patches left that must be applied later, do it here!
     Patcher.postProcess();
+
+    g_pLogFile->ftextOut("Done loading the resources...<br>");
     
     g_pResourceLoader->setPermilage(1000);
     
@@ -213,37 +221,37 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 
 		return true;
 	}
-	else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
-	{
-	    g_pTimer->setLPS(DEFAULT_LPS_GALAXY);
-	    
-	    g_pResourceLoader->setStyle(PROGRESS_STYLE_BAR);
-	    const std::string threadname = "Loading Keen " + itoa(Episode);
-	    
-	    struct GalaxyDataLoad : public Action
-	    {
-		CGameLauncherMenu &mGlm;
-		const Uint8 mFlags;
-		
-		GalaxyDataLoad(CGameLauncherMenu &glm, const Uint8 flags) :
-		    mGlm(glm), mFlags(flags) {};
-		
-		int handle()
-		{		    
-		    mGlm.loadGalaxyResources(mFlags);		    
-		    return 1;
-		}
-	    };
-	    
-	    if(g_pResourceLoader->RunLoadAction(new GalaxyDataLoad(*this, flags), threadname) == 0)
-	    {
-		g_pBehaviorEngine->EventList().add( new GMQuit() );
-		return false;
-	    }  
-	    
-	    return true;	    
-	}
-	return false;
+    else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
+    {
+        g_pTimer->setLPS(DEFAULT_LPS_GALAXY);
+
+        g_pResourceLoader->setStyle(PROGRESS_STYLE_BAR);
+        const std::string threadname = "Loading Keen " + itoa(Episode);
+
+        struct GalaxyDataLoad : public Action
+        {
+            CGameLauncherMenu &mGlm;
+            const Uint8 mFlags;
+
+            GalaxyDataLoad(CGameLauncherMenu &glm, const Uint8 flags) :
+                mGlm(glm), mFlags(flags) {}
+
+            int handle()
+            {
+                mGlm.loadGalaxyResources(mFlags);
+                return 1;
+            }
+        };
+
+        if(g_pResourceLoader->RunLoadAction(new GalaxyDataLoad(*this, flags), threadname) == 0)
+        {
+            g_pBehaviorEngine->EventList().add( new GMQuit() );
+            return false;
+        }
+
+        return true;
+    }
+    return false;
 }
 
 

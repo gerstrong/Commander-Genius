@@ -185,7 +185,7 @@ void CMapPlayGalaxy::render()
 
     // Draw all the sprites without player
     // The player sprites are drawn at the end
-    galaxy::CPlayerBase* player[MAX_PLAYERS] = {nullptr, nullptr, nullptr, nullptr};
+    galaxy::CPlayerBase* player[] = {nullptr, nullptr, nullptr, nullptr};
 
     int pIt = 0;
     for( ; obj!=mObjectPtr.rend() ; obj++ )
