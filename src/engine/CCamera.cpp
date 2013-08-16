@@ -17,7 +17,7 @@
 
 int CCamera::mCamlead = 0;
 bool CCamera::mCamLeadChange = false;
-std::array<bool, MAX_PLAYERS> CCamera::mDontUseThisLead;
+std::array<bool, 4> CCamera::mDontUseThisLead;
 
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :

@@ -103,7 +103,7 @@ private:
 	CSpriteObject *mp_AttachedObject;
     static int mCamlead;
     static bool mCamLeadChange;   
-    static std::array<bool, MAX_PLAYERS> mDontUseThisLead;
+    static std::array<bool, 4> mDontUseThisLead;
 };
 
 #endif /* CCAMERA_H_ */

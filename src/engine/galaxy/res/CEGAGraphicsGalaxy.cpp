@@ -817,7 +817,7 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 {
 	// Create all the sprites
-    g_pGfxEngine->createEmptySprites(MAX_PLAYERS,NumSprites);
+    g_pGfxEngine->createEmptySprites(4,NumSprites);
 
 	int ep = m_episode - 4;
 
@@ -916,7 +916,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
     auto &SpriteOrigVec = g_pGfxEngine->getSpriteVec(0);
 
-    for( unsigned int i=1 ; i<MAX_PLAYERS ; i++ )
+    for( unsigned int i=1 ; i<4 ; i++ )
     {
         g_pGfxEngine->getSpriteVec(i) = SpriteOrigVec;                
     }

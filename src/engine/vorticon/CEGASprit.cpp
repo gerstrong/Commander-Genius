@@ -131,7 +131,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	Planes.setOffsets(plane1, plane2, plane3, plane4, plane5);
 	
 	// load the image data
-    g_pGfxEngine->createEmptySprites(MAX_PLAYERS,MAX_SPRITES+1);
+    g_pGfxEngine->createEmptySprites(4,MAX_SPRITES+1);
 	for(int i=0 ; i<m_numsprites ; i++)
 	{
         CSprite &Sprite = g_pGfxEngine->getSprite(0,i);
@@ -205,7 +205,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
     //LoadSpecialSprites( g_pGfxEngine->getSpriteVec(0) );
 
-    for(unsigned int i=1 ; i<MAX_PLAYERS ; i++)
+    for(unsigned int i=1 ; i<4 ; i++)
     {
         g_pGfxEngine->getSpriteVec(i) = g_pGfxEngine->getSpriteVec(0);
     }
@@ -250,7 +250,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     }
 
 
-    for(unsigned int i=0 ; i<MAX_PLAYERS ; i++)
+    for(unsigned int i=0 ; i<4 ; i++)
     {
         for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec(i).size() ; s++)
         {
@@ -289,7 +289,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
 	g_pResourceLoader->setPermilage(500);
 
-    for(unsigned int i=0 ; i<MAX_PLAYERS ; i++)
+    for(unsigned int i=0 ; i<4 ; i++)
     {
         const int NoSprites = g_pGfxEngine->getSpriteVec(i).size();
         for(Uint16 s=0 ; s<NoSprites ; s++)

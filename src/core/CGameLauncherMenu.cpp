@@ -127,6 +127,7 @@ bool CGameLauncherMenu::loadGalaxyResources(const Uint8 flags)
         g_pResourceLoader->setPermilage(450);
     }
 
+
     if( (flags & LOADSND) == LOADSND )
     {
         g_pLogFile->ftextOut("Loading audio... <br>");
