@@ -120,11 +120,21 @@ bool CPlayGameGalaxy::loadXMLGameState()
 
 
     mInventoryVec.resize(numPlayers);
+    mDead.assign(numPlayers, false);
+    mGameOver.assign(numPlayers, false);
 
     unsigned int variant;
 
     for( auto &node : pt )
     {
+        if(node.first == "death")
+        {
+            ptree &deadNode = node.second;
+            const int id = deadNode.get<int>("<xmlattr>.player", 0);
+            mDead[id] = deadNode.get<bool>("<xmlattr>.dead", false);
+            mGameOver[id] = deadNode.get<bool>("<xmlattr>.gameover", false);
+        }
+
         if(node.first == "Player")
         {
             ptree &playerNode = node.second;
@@ -173,6 +183,14 @@ bool CPlayGameGalaxy::saveXMLGameState()
     // Save number of Players
     const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
     stateNode.put("NumPlayer", numPlayers);
+
+    ptree &deadNode = pt.add("death", "");
+    for(unsigned int id = 0 ; id < mDead.size() ; id++ )
+    {
+        deadNode.put("<xmlattr>.player", id);
+        deadNode.put("<xmlattr>.dead", mDead[id]);
+        deadNode.put("<xmlattr>.gameover", mGameOver[id]);
+    }
 
     for( unsigned int id=0 ; id<numPlayers ; id++ )
     {

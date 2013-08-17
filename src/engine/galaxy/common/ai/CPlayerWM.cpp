@@ -1009,7 +1009,7 @@ bool CPlayerWM::finishLevel(const int object)
 		VectorD2<Uint32> dst(csfX, csfY);
 
 
-        CFlag *pFlag = new CFlag(mp_Map, src, dst, mSprVar, true);
+        CFlag *pFlag = new CFlag(mp_Map, src, dst, mSprVar, true, true);
 		g_pBehaviorEngine->m_EventList.spawnObj(pFlag);
 
 

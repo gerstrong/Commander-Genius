@@ -25,7 +25,7 @@ namespace galaxy  {
     
     CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
       const VectorD2<Uint32> &Destination, const int sprVar,
-      const bool newAction);
+      const bool newAction, const bool canLock );
     
     
     void deserialize(CSaveGameController &savedGame) 
@@ -55,6 +55,12 @@ namespace galaxy  {
     void processFlipping();
     void processWaving();
     
+    /**
+     * @brief Flag can always be visible and active, even if he is not seen.
+     * @return
+     */
+    bool calcVisibility();
+
     void setActionForce(const size_t ActionNumber);
     
   private:

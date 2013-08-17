@@ -27,7 +27,7 @@ const Uint16 SPEED = 64;
 
 CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 			const VectorD2<Uint32> &Destination,
-            const int sprVar, bool newAction ) :
+            const int sprVar, bool newAction, const bool canLock ) :
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
 m_destination(Destination),
 m_baseframe(0)
@@ -39,6 +39,9 @@ m_baseframe(0)
 	mActionMap[A_FLAG_FLIP] = &CFlag::processFlipping;
 	
 	const auto episode = g_pBehaviorEngine->getEpisode();
+
+    if(canLock)
+        mp_Map->lock();
 
 	if(episode == 6)
 	{
@@ -62,12 +65,15 @@ m_baseframe(0)
 void CFlag::getTouchedBy(CSpriteObject &theObject)
 {    
     if( getActionNumber(A_FLAG_FLIP) )
-	return;
+        return;
     
     // In case another flag is sitting in the pole, make that one non existent
     if( CFlag *flag = dynamic_cast<CFlag*>(&theObject) )
     {
-        flag->exists = false;
+        if( flag->getActionNumber(A_FLAG_WAVE) )
+        {
+            exists = false;
+        }
     }
 }
 
@@ -97,8 +103,7 @@ void CFlag::process()
 void CFlag::processFlipping()
 {
 	if(m_Pos != m_destination)
-	{
-        mp_Map->lock();
+	{        
 		VectorD2<int> dir = m_destination - m_Pos;
 		float length = dir.GetLength();
 		VectorD2<float> base_dir( dir.x/length, dir.y/length );
@@ -114,8 +119,7 @@ void CFlag::processFlipping()
 	}
 	else
 	{
-	    setAction(A_FLAG_WAVE);
-        mp_Map->unlock();
+	    setAction(A_FLAG_WAVE);        
 	    setActionSprite();
 	    g_pSound->playSound( SOUND_FLAG_LAND );
 	    
@@ -139,5 +143,10 @@ void CFlag::processFlipping()
  */
 void CFlag::processWaving()
 {}
+
+bool CFlag::calcVisibility()
+{
+    return true;
+}
 
 }
