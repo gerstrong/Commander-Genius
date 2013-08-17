@@ -71,6 +71,7 @@ bool CPlayGameGalaxy::loadGameState()
     savedGame.decodeData(g_pBehaviorEngine->mPlayers);
 
 	// We need to load both Levels first, before we do the writing from the saved state.
+
     mInventoryVec[0] << savedGame;
 
 	bool active;
@@ -116,7 +117,8 @@ bool CPlayGameGalaxy::loadXMLGameState()
 
     mInventoryVec.resize(numPlayers);
 
-    unsigned int variant;
+    unsigned int variant; ....
+    // TODO: Fix this. That loop the way it is won't work...
     for( unsigned int id=0 ; id<numPlayers ; id++ )
     {        
         ptree &playerNode = pt.get_child("Player");
@@ -168,7 +170,7 @@ bool CPlayGameGalaxy::saveXMLGameState()
     for( unsigned int id=0 ; id<numPlayers ; id++ )
     {
         ptree &playerNode = pt.add("Player", "");
-        playerNode.put("<xmlattr>.id", id);
+        playerNode.put("<xmlattr>.variant", id);
         auto &invNode = playerNode.put("inventory", "");
         mInventoryVec[id] >> invNode;
     }

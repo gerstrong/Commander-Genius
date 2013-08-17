@@ -1,6 +1,11 @@
 
-v1.6 Release:
+v1.6.1 Release:
 ---------------
+- A lot of bug fixes the last had
+- Keen can now stand on another keen in multiplayer mode
+
+v1.6 Release:
+-------------
 - XML based Savegame states in both galaxy and vorticon engine which in future 
   will make those savegames more robust, when coming from older or newer versions. 
   This means hopefully, no more crashes in savegames.

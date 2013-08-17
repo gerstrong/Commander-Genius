@@ -594,7 +594,24 @@ void CPlayerLevel::processMoveBitDown()
 }
 
 
+void CPlayerLevel::getTouchedBy(CSpriteObject &theObject)
+{
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    {
+        if(player->getYDownPos() < getYUpPos()+(6<<STC) )
+        {
+            // The other keen might be able use this one to reach higher places
+            const int myAction = getActionNumber();
 
+            if( myAction < A_KEEN_BOOK_OPEN ||  myAction > A_KEEN_BOOK_CLOSE )
+            {
+               player->blockedd = true;
+               playSound(SOUND_KEEN_BUMPHEAD);
+            }
+        }
+
+    }
+}
 
 
 void CPlayerLevel::processInput()
@@ -1084,8 +1101,9 @@ void CPlayerLevel::processPogo()
 			state.jumpTimer--;
 
 		if (!state.jumpTimer && m_Action.Next_action )
-			//m_Action.setNextActionFormat();
+        {
 			setAction(A_KEEN_POGO_HIGH);
+        }
 	}
 
 
