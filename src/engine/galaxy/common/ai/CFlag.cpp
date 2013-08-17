@@ -42,7 +42,7 @@ m_baseframe(0)
 
 	if(episode == 6)
 	{
-	    setupGalaxyObjectOnMap(0x13F4, A_FLAG_FLIP);
+	    setupGalaxyObjectOnMap(0x13F4, A_FLAG_FLIP);        
 	}
 	else if(episode == 5)
 	{
@@ -52,13 +52,11 @@ m_baseframe(0)
 	}
 	else
 	{
-	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);
+	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);        
 	}
 	    
 	if(!newAction)
-	    moveTo(m_destination);
-
-    pmap->lock();
+	    moveTo(m_destination);   
 }
 
 void CFlag::getTouchedBy(CSpriteObject &theObject)
@@ -69,7 +67,7 @@ void CFlag::getTouchedBy(CSpriteObject &theObject)
     // In case another flag is sitting in the pole, make that one non existent
     if( CFlag *flag = dynamic_cast<CFlag*>(&theObject) )
     {
-	flag->exists = false;
+        flag->exists = false;
     }
 }
 
@@ -100,6 +98,7 @@ void CFlag::processFlipping()
 {
 	if(m_Pos != m_destination)
 	{
+        mp_Map->lock();
 		VectorD2<int> dir = m_destination - m_Pos;
 		float length = dir.GetLength();
 		VectorD2<float> base_dir( dir.x/length, dir.y/length );
@@ -121,17 +120,17 @@ void CFlag::processFlipping()
 	    g_pSound->playSound( SOUND_FLAG_LAND );
 	    
 	    const auto episode = g_pBehaviorEngine->getEpisode();
+        if(episode == 6)
+        {
+            VectorD2<int> tilePos = m_Pos;
 
-	    if(episode == 6)	    
-	    {
-		VectorD2<int> tilePos = m_Pos;
-		
-		tilePos.y = getYDownPos();
-		
-		Uint32 new_tile_no = mp_Map->getPlaneDataAt(1, tilePos)+1;
-		tilePos = tilePos>>CSF;
-		mp_Map->setTile(tilePos.x, tilePos.y, new_tile_no, true);
-	    }
+            tilePos.y = getYDownPos();
+
+            Uint32 new_tile_no = mp_Map->getPlaneDataAt(1, tilePos)+1;
+            tilePos = tilePos>>CSF;
+            mp_Map->setTile(tilePos.x, tilePos.y, new_tile_no, true);
+        }
+        mp_Map->unlock();
 	}
 }
 

@@ -603,10 +603,10 @@ void CPlayerLevel::getTouchedBy(CSpriteObject &theObject)
             // The other keen might be able use this one to reach higher places
             const int myAction = getActionNumber();
 
-            if( myAction < A_KEEN_BOOK_OPEN ||  myAction > A_KEEN_BOOK_CLOSE )
+            if( (myAction < A_KEEN_BOOK_OPEN ||  myAction > A_KEEN_BOOK_CLOSE) &&
+                (myAction < A_KEEN_POLE ||  myAction > A_KEEN_POLE_SHOOTDOWN))
             {
                player->blockedd = true;
-               playSound(SOUND_KEEN_BUMPHEAD);
             }
         }
 

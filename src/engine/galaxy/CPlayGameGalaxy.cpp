@@ -115,17 +115,24 @@ bool CPlayGameGalaxy::loadXMLGameState()
     const unsigned int numPlayers = stateNode.get<int>("NumPlayer");
     g_pBehaviorEngine->mPlayers = numPlayers;
 
+    if(!mInventoryVec.empty())
+        mInventoryVec.clear();
+
+
     mInventoryVec.resize(numPlayers);
 
-    unsigned int variant; ....
-    // TODO: Fix this. That loop the way it is won't work...
-    for( unsigned int id=0 ; id<numPlayers ; id++ )
-    {        
-        ptree &playerNode = pt.get_child("Player");
-        variant = playerNode.get<int>("<xmlattr>.variant", id);
-        auto &invNode = playerNode.get_child("inventory");
-        mInventoryVec[variant].setup(variant);
-        mInventoryVec[variant] << invNode;
+    unsigned int variant;
+
+    for( auto &node : pt )
+    {
+        if(node.first == "Player")
+        {
+            ptree &playerNode = node.second;
+            variant = playerNode.get<int>("<xmlattr>.variant");
+            auto &invNode = playerNode.get_child("inventory");
+            mInventoryVec[variant].setup(variant);
+            mInventoryVec[variant] << invNode;
+        }
     }
 
 
@@ -229,9 +236,9 @@ void CPlayGameGalaxy::ponder()
 
 	if( !gpMenuController->active() )
 	{
-	processInput();
+        processInput();
 
-	const bool msgboxactive = !mMessageBoxes.empty();
+        const bool msgboxactive = !mMessageBoxes.empty();
 
         int playerCount = 0;
         for( auto &inv : mInventoryVec )
