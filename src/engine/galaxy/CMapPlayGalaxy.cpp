@@ -528,6 +528,8 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     if(!mObjectPtr.empty())
         mObjectPtr.clear();
 
+    mapLoader->resetNumLoadedPlayers();
+
     mMap.mNumFuses = 0;
     mMap.mFuseInLevel = false;
 
@@ -558,15 +560,15 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
             pNewfoe->blockedu = spriteNode.get<bool>("blockedu", false);
             pNewfoe->blockedl = spriteNode.get<bool>("blockedl", false);
             pNewfoe->blockedr = spriteNode.get<bool>("blockedr", false);
-            pNewfoe->xDirection = spriteNode.get<int>("xDirection", false);
-            pNewfoe->yDirection = spriteNode.get<int>("yDirection", false);
-            pNewfoe->mHealthPoints = spriteNode.get<int>("health", false);
+            pNewfoe->xDirection = spriteNode.get<int>("xDirection", 0);
+            pNewfoe->yDirection = spriteNode.get<int>("yDirection", 0);
+            pNewfoe->mHealthPoints = spriteNode.get<int>("health", 1);
             pNewfoe->canbezapped = spriteNode.get<bool>("canbezapped", false);
             pNewfoe->cansupportplayer = spriteNode.get<bool>("cansupportplayer", false);
             pNewfoe->inhibitfall = spriteNode.get<bool>("inhibitfall", false);
             pNewfoe->honorPriority = spriteNode.get<bool>("honorPriority", false);
-            pNewfoe->sprite = spriteNode.get<int>("spritePic", false);
-            const Uint16 actionNumber = spriteNode.get<int>("Actionumber", false);
+            pNewfoe->sprite = spriteNode.get<int>("spritePic", 1);
+            const Uint16 actionNumber = spriteNode.get<int>("Actionumber", 1);
             pNewfoe->deserialize(spriteNode);
 
             if(pNewfoe->exists)

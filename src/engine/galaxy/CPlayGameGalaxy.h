@@ -28,8 +28,7 @@ class CPlayGameGalaxy : public CPlayGame
 {
 public:
     CPlayGameGalaxy(CExeFile &ExeFile, char level,
-			 char numplayers,
-			 CSaveGameController &SavedGame);
+             CSaveGameController &SavedGame);
 
     bool loadGameState();
     //bool saveGameState();

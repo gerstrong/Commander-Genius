@@ -42,6 +42,16 @@ public:
 	virtual CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y) = 0;
 	virtual ~CMapLoaderGalaxy() {}
 
+    int numLoadedPlayers()
+    {
+        return mNumLoadedPlayers;
+    }
+
+    void resetNumLoadedPlayers()
+    {
+        mNumLoadedPlayers = 0;
+    }
+
 protected:
 	void unpackPlaneData(std::ifstream &MapFile,
 			CMap &Map, size_t PlaneNumber,
@@ -53,7 +63,7 @@ protected:
     std::vector<CInventory> &mInventoryVec;
 	stCheat &m_Cheatmode;
 	std::string mLevelName;
-    int mPlayerID;
+    int mNumLoadedPlayers;
 };
 
 }

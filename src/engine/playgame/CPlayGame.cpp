@@ -8,9 +8,7 @@
 #include "CPlayGame.h"
 #include "graphics/CGfxEngine.h"
 
-CPlayGame::CPlayGame(CExeFile &ExeFile, char level,
-		 char numplayers) :
-m_NumPlayers(numplayers),
+CPlayGame::CPlayGame(CExeFile &ExeFile, char level) :
 m_endgame(false),
 m_ExeFile(ExeFile),
 m_Episode(ExeFile.getEpisode()),
@@ -36,4 +34,3 @@ bool CPlayGame::getEndGame() { return m_endgame; }
 bool CPlayGame::getStartGame() { return m_startgame; }
 bool CPlayGame::getExitEvent() { return m_exitgame; }
 char CPlayGame::getEpisode() { return m_Episode; }
-char CPlayGame::getNumPlayers() { return m_NumPlayers; }

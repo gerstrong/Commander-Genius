@@ -23,13 +23,13 @@
 class CInventory
 {
 public:
-    CInventory(const int id = 0, const int numPlayers = 0);
+    CInventory(const int id = 0);
 	void reset();
 
 	// This function draws the HUD on the Screen
     void drawHUD();
 
-    void setup(const int sprVar, const int numPlayers);
+    void setup(const int sprVar);
 
 	// This one draw the Status screen whenever it's called
 	void drawStatus();

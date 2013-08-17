@@ -28,26 +28,21 @@ namespace galaxy
 {
 
 CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
-		 char numplayers, CSaveGameController &SavedGame) :
-CPlayGame(ExeFile, level, numplayers ),
+                                 CSaveGameController &SavedGame) :
+CPlayGame(ExeFile, level),
 m_WorldMap(ExeFile, mInventoryVec, m_Cheatmode),
 m_LevelPlay(ExeFile, mInventoryVec, m_Cheatmode),
 m_SavedGame(SavedGame)
 {
-    mDead.assign(numplayers, false);
-    mGameOver.assign(numplayers, false);
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    mDead.assign(numPlayers, false);
+    mGameOver.assign(numPlayers, false);
 
-    /*if(!mInventoryVec.empty())
-        mInventoryVec.clear();
+    mInventoryVec.resize(numPlayers);
 
-    for(int i=0 ; i<numplayers ; i++)
-        mInventoryVec.push_back(CInventory(0));*/
-
-    mInventoryVec.resize(numplayers);
-
-    for(int i=0 ; i<numplayers ; i++)
+    for(int i=0 ; i<numPlayers ; i++)
     {
-        mInventoryVec[i].setup(i, numplayers);
+        mInventoryVec[i].setup(i);
     }
 
     m_WorldMap.init();
@@ -73,7 +68,7 @@ bool CPlayGameGalaxy::loadGameState()
 	savedGame.decodeData(g_pBehaviorEngine->mDifficulty);
 
 	// Load number of Players
-	savedGame.decodeData(m_NumPlayers);
+    savedGame.decodeData(g_pBehaviorEngine->mPlayers);
 
 	// We need to load both Levels first, before we do the writing from the saved state.
     mInventoryVec[0] << savedGame;
@@ -109,20 +104,26 @@ bool CPlayGameGalaxy::loadXMLGameState()
     /// Read the nodes and store the data as needed
     ptree &stateNode = pt.get_child("GameState");
 
+
     /// Load the Game in the CSavedGame object
     // Get the episode, and difficulty
     m_Episode = stateNode.get<int>("episode");
     g_pBehaviorEngine->mDifficulty = static_cast<Difficulty>(stateNode.get<int>("difficulty", 1));
 
     // Get number of Players
-    m_NumPlayers = stateNode.get<int>("NumPlayer");
+    const unsigned int numPlayers = stateNode.get<int>("NumPlayer");
+    g_pBehaviorEngine->mPlayers = numPlayers;
 
-    for( unsigned int id=0 ; id<m_NumPlayers ; id++ )
-    {
+    mInventoryVec.resize(numPlayers);
+
+    unsigned int variant;
+    for( unsigned int id=0 ; id<numPlayers ; id++ )
+    {        
         ptree &playerNode = pt.get_child("Player");
-        //id = playerNode.get<int>("<xmlattr>.id", );
+        variant = playerNode.get<int>("<xmlattr>.variant", id);
         auto &invNode = playerNode.get_child("inventory");
-        mInventoryVec[id] << invNode;
+        mInventoryVec[variant].setup(variant);
+        mInventoryVec[variant] << invNode;
     }
 
 
@@ -140,12 +141,6 @@ bool CPlayGameGalaxy::loadXMLGameState()
 
     return true;
 }
-
-
-/*void CPlayGameGalaxy::operator<<(boost::property_tree::ptree &invNode)
-{
-    m_Inventory<<invNode;
-}*/
 
 
 bool CPlayGameGalaxy::saveXMLGameState()
@@ -167,9 +162,10 @@ bool CPlayGameGalaxy::saveXMLGameState()
     stateNode.put("difficulty", g_pBehaviorEngine->mDifficulty);
 
     // Save number of Players
-    stateNode.put("NumPlayer", m_NumPlayers);
+    const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+    stateNode.put("NumPlayer", numPlayers);
 
-    for( unsigned int id=0 ; id<m_NumPlayers ; id++ )
+    for( unsigned int id=0 ; id<numPlayers ; id++ )
     {
         ptree &playerNode = pt.add("Player", "");
         playerNode.put("<xmlattr>.id", id);

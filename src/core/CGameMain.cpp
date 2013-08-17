@@ -92,7 +92,7 @@ void CGameMain::ponder()
 		    const unsigned int ep = g_pBehaviorEngine->getEpisode();
 		    const std::string &dir = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
 		    
-		    std::unique_ptr<CGamePlayMode> gameplay(new CGamePlayMode( ep, 1, dir, 0));
+            std::unique_ptr<CGamePlayMode> gameplay(new CGamePlayMode( ep, dir, 0));
 		    
 		    gameplay->init();
 		    

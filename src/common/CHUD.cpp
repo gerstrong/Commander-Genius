@@ -17,7 +17,7 @@ const int EFFECT_TIME = 10;
 const int EFFECT_SPEED = 10;
 
 CHUD::CHUD(unsigned long &score, signed char &lives,
-           unsigned int &charges, const int id, const int numPlayers,
+           unsigned int &charges, const int id,
            int *camlead) :
 m_score(score),
 m_lives(lives),
@@ -25,20 +25,19 @@ m_charges(charges),
 m_oldScore(score),
 m_oldCharges(charges),
 mpCamlead(camlead),
-timer(0),
-mNumPlayers(numPlayers)
+timer(0)
 {
-    setup(id, numPlayers);
+    setup(id);
 }
 
 
-void CHUD::setup(const int id, const int numPlayers)
+void CHUD::setup(const int id)
 {
     mId = id;
 
-    m_Rect.x = 8;	m_Rect.y = 4;
+    m_Rect.x = 8;	m_Rect.y = 4;        
 
-    if(numPlayers > 3)
+    if(g_pBehaviorEngine->mPlayers > 3)
     {
         m_Rect.x = 0;	m_Rect.y = 0;
     }
@@ -200,7 +199,7 @@ void CHUD::renderGalaxy()
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
     g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
 
-    if(mNumPlayers > 1 && mId == CCamera::getLead())
+    if(g_pBehaviorEngine->mPlayers > 1 && mId == CCamera::getLead())
     {
         SDL_Rect rect;
         rect.x = 7; rect.y = 29;

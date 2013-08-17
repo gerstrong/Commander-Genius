@@ -22,6 +22,7 @@ bool CPlayGameVorticon::loadGameState()
         return true;
 
 	CSaveGameController &savedGame = *(gpSaveGameController);
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
 	
 	bool ok = true;
 
@@ -55,7 +56,7 @@ bool CPlayGameVorticon::loadGameState()
 	ok &= savedGame.decodeData(dark);
 	
 	// Load number of Players
-	ok &= savedGame.decodeData(m_NumPlayers);
+    ok &= savedGame.decodeData(g_pBehaviorEngine->mPlayers);
 	
 	if(!m_Player.empty())
 	  m_Player.clear();
@@ -123,7 +124,7 @@ bool CPlayGameVorticon::loadGameState()
 	  ok &= savedGame.decodeData(object.blockedl);
 	  ok &= savedGame.decodeData(object.blockedr);
 	  ok &= savedGame.decodeData(object.mHealthPoints);
-	  ok &= savedGame.decodeData(object.canbezapped);
+      ok &= savedGame.decodeData(object.canbezapped);
 	  ok &= savedGame.decodeData(object.cansupportplayer);
 	  ok &= savedGame.decodeData(object.inhibitfall);
 	  ok &= savedGame.decodeData(object.honorPriority);
@@ -151,7 +152,7 @@ bool CPlayGameVorticon::loadGameState()
 	// Load completed levels
 	ok &= savedGame.readDataBlock( (byte*)(mp_level_completed) );
 	
-	m_Player[0].setMapData(mMap.get());
+    m_Player[0].setMapData(mMap.get());
 	m_Player[0].setupCameraObject();
 	m_Player[0].mpCamera->attachObject(&m_Player[0]);
 	
@@ -168,7 +169,7 @@ bool CPlayGameVorticon::loadGameState()
 	
 	
 	mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
-						      m_NumPlayers, m_Episode, m_Level,
+                              numPlayers, m_Episode, m_Level,
 					       mMap->m_Dark) );
 	setupPlayers();
 	
@@ -380,7 +381,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
 
     mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
-                              m_NumPlayers, m_Episode, m_Level,
+                              g_pBehaviorEngine->mPlayers, m_Episode, m_Level,
                            mMap->m_Dark) );
     setupPlayers();
 
@@ -419,8 +420,10 @@ bool CPlayGameVorticon::saveXMLGameState()
 
     stateNode.put("dark", mMap->m_Dark);
 
+    const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+
     // Now save the inventory of every player
-    for( size_t i=0 ; i<m_NumPlayers ; i++ )
+    for( size_t i=0 ; i<numPlayers ; i++ )
     {
         auto &player = m_Player[i];
         ptree &playerNode = stateNode.add("Player", "");
@@ -509,10 +512,11 @@ bool CPlayGameVorticon::saveGameState()
 	savedGame.encodeData(mMap->m_Dark);
 
 	// Save number of Players
-	savedGame.encodeData(m_NumPlayers);
+    const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+    savedGame.encodeData(numPlayers);
 
-	// Now save the inventory of every player
-	for( size_t i=0 ; i<m_NumPlayers ; i++ )
+	// Now save the inventory of every player    
+    for( size_t i=0 ; i<numPlayers ; i++ )
 	{
 		savedGame.encodeData(m_Player[i].getXPosition());
 		savedGame.encodeData(m_Player[i].getYPosition());

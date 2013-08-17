@@ -58,7 +58,7 @@ enum Difficulty
     HARD = 3,
     EXPERT = 4,
     NINJA = 5,
-    ELITE = 6,
+    ELITE = 6
 };
 
 

@@ -13,19 +13,17 @@
 #include "sdl/CTimer.h"
 #include <memory>
 
-CGamePlayMode::CGamePlayMode(const int Episode, const int Numplayers,
-		const std::string& DataDirectory,
-		const int startLevel) :
+CGamePlayMode::CGamePlayMode(const int Episode,
+        const std::string& DataDirectory,
+        const int startLevel) :
 m_startLevel(startLevel),
 m_Episode(Episode),
-m_Numplayers(Numplayers),
 m_DataDirectory(DataDirectory)
 {}
 
 CGamePlayMode::CGamePlayMode( GMSwitchToPlayGameMode &gpmode ) :
 m_startLevel(gpmode.m_startlevel),
 m_Episode(gpmode.m_Episode),
-m_Numplayers(gpmode.m_Numplayers),
 m_DataDirectory(gpmode.m_DataDirectory)
 {}
 
@@ -46,13 +44,13 @@ void CGamePlayMode::init()
 		{
 		    m_startLevel = WORLD_MAP_LEVEL_GALAXY;
 		}
-		mp_PlayGame.reset( new galaxy::CPlayGameGalaxy( ExeFile, m_startLevel, m_Numplayers, m_SavedGame) );
+        mp_PlayGame.reset( new galaxy::CPlayGameGalaxy( ExeFile, m_startLevel, m_SavedGame) );
 	}
 	else
 	{
 		if(m_startLevel == WORLD_MAP_LEVEL_GALAXY)
 			m_startLevel = WORLD_MAP_LEVEL_VORTICON;
-		mp_PlayGame.reset( new CPlayGameVorticon( ExeFile, m_startLevel, m_Numplayers, m_SavedGame) );
+        mp_PlayGame.reset( new CPlayGameVorticon( ExeFile, m_startLevel, m_SavedGame) );
 	}
 
 	// Create the special merge effect (Fadeout)
@@ -104,8 +102,7 @@ void CGamePlayMode::ponder()
 	}
 	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game
-		m_Numplayers = g_pBehaviorEngine->mPlayers;
-		EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, m_Numplayers, m_DataDirectory) );
+        EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, g_pBehaviorEngine->mPlayers, m_DataDirectory) );
 	}
 	else if( mp_PlayGame->getExitEvent() )
 	{

@@ -116,7 +116,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);	
-    auto &inventory = mInventoryVec[mPlayerID];
+    auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
 	switch(foe)
 	{
@@ -130,10 +130,10 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
             inventory.Item.mLevelName = Map.getLevelName();
 
             p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-               (foe==1) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x0888, mPlayerID);
+               (foe==1) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x0888, mNumLoadedPlayers);
         }
-            mPlayerID++;
-			break;
+        mNumLoadedPlayers++;
+        break;
 
 	case 0x03:
 
@@ -142,11 +142,11 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 			// This is the player on the world map
 			// Add the Camera into the game scene and attach it to this player
             inventory.Item.mLevelName = Map.getLevelName();
-            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, m_Cheatmode, 0x146E, mPlayerID );
+            p_newfoe = new galaxy::CPlayerWM(&Map,foe, x, y, inventory, m_Cheatmode, 0x146E, mNumLoadedPlayers );
 			// 0x137A
         }
-            mPlayerID++;
-			break;
+        mNumLoadedPlayers++;
+        break;
 
 			
 	case 0x06: if( difficulty < HARD ) break;

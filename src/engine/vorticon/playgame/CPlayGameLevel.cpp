@@ -16,8 +16,10 @@ void CPlayGameVorticon::processInLevel()
 	if(m_gameover)
 		return;
 
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+
 	// Perform player Objects...
-	for( int i=0 ; i<m_NumPlayers ; i++ )
+    for( int i=0 ; i<numPlayers ; i++ )
 	{
 		// check if someone has lives
 		if(m_Player[i].inventory.lives==0 && m_Player[i].pdie==PDIE_DEAD)
@@ -70,7 +72,7 @@ void CPlayGameVorticon::processInLevel()
 	{
 		g_pMusicPlayer->stop();
 		m_gameover = true; // proof contrary case
-		for( int i=0 ; i<m_NumPlayers ; i++ )
+        for( int i=0 ; i<numPlayers ; i++ )
 			m_gameover &= ( m_Player[i].inventory.lives < 0 );
 
 		if(!m_gameover) // Check if no player has lives left and must go in game over mode.

@@ -40,7 +40,7 @@ m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
 mInventoryVec(inventoryVec),
 m_Cheatmode(Cheatmode),
-mPlayerID(0)
+mNumLoadedPlayers(0)
 {}
 
 // Gets returns the address of the datablock of the exe file, in where the
@@ -250,15 +250,15 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 	 *			  Name:           Byte[16]  Null-terminated string specifying the name of the level.  This name is used only by TED5, not by Keen.
 	 *			  Signature:      Byte[4]   Marks the end of the Level Header.  Always "!ID!".
 	 */
-	int jumpback = 3*sizeof(longword) + 3*sizeof(word) +
-	2*sizeof(word) + 16*sizeof(byte) + 4*sizeof(byte);
-	
-	headbegin = static_cast<int>(MapFile.tellg()) - jumpback;
+          int jumpback = 3*sizeof(longword) + 3*sizeof(word) +
+                  2*sizeof(word) + 16*sizeof(byte) + 4*sizeof(byte);
+
+          headbegin = static_cast<int>(MapFile.tellg()) - jumpback;
       }
       else
       {
-	MapFile.clear();
-	headbegin =  level_offset;
+          MapFile.clear();
+          headbegin =  level_offset;
       }
       
       MapFile.seekg( headbegin, std::ios_base::beg);
@@ -283,7 +283,9 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
       Height = fgetw(MapFile);
       
       for(int c=0 ; c<16 ; c++)
-	name[c] = MapFile.get();
+      {
+        name[c] = MapFile.get();
+      }
       name[16] = '\0';
       
       // Get and check the signature
@@ -324,7 +326,8 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   {
     return false;
   }
-  
+
+
   // Set Scrollbuffer
   g_pVideoDriver->updateScrollBuffer(Map);
   

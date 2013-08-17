@@ -106,7 +106,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 
 	// otherwise look for special foe.
 	VectorD2<Uint32> loc(x,y);
-	auto &inventory = mInventoryVec[mPlayerID];
+    auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
 	switch(foe)
 	{
@@ -118,9 +118,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
             // This is the player on the map in one level
             inventory.Item.mLevelName = Map.getLevelName();
             p_newfoe = new galaxy::CPlayerLevel(&Map, foe, x, y, m_ObjectPtr,
-                    (foe==0x01) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x98C, mPlayerID);
+                    (foe==0x01) ? RIGHT : LEFT, inventory, m_Cheatmode, 0x98C, mNumLoadedPlayers);
         }
-        mPlayerID++;
+        mNumLoadedPlayers++;
 		break;
 
 	case 0x03:
@@ -130,9 +130,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
             // This is the player on the world map
             // Add the Camera into the game scene and attach it to this player
             inventory.Item.mLevelName = Map.getLevelName();
-            p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, inventory, m_Cheatmode, 0x15C2, mPlayerID);
+            p_newfoe = new galaxy::CPlayerWM(&Map, foe, x, y, inventory, m_Cheatmode, 0x15C2, mNumLoadedPlayers);
         }
-        mPlayerID++;
+        mNumLoadedPlayers++;
 		break;
 
 	case 0x04:
@@ -290,8 +290,8 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		// This is Keen in the swimming suit
         inventory.Item.mLevelName = Map.getLevelName();
 		p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
-                        RIGHT, inventory, m_Cheatmode, mPlayerID);
-        mPlayerID++;
+                        RIGHT, inventory, m_Cheatmode, mNumLoadedPlayers);
+        mNumLoadedPlayers++;
 		break;
 	
 	case 0x2C: if( difficulty < HARD ) break;

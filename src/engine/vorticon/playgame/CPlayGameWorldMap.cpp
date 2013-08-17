@@ -20,7 +20,8 @@ const int LVLS_SHIP = 20;
 
 void CPlayGameVorticon::processOnWorldMap()
 {
-	for( int i=0 ; i<m_NumPlayers ; i++ )
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    for( int i=0 ; i<numPlayers ; i++ )
 	{
 		CPlayer &player = m_Player[i];
 
@@ -157,7 +158,8 @@ void CPlayGameVorticon::YourShipNeedsTheseParts()
 	joy = bat = vac = wis = false;
 
 	// The Multiplayer support for this dialog. You collect those parts together if more than one player.
-	for(int i=0 ; i<m_NumPlayers ; i++)
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    for(int i=0 ; i<numPlayers ; i++)
 	{
 		joy |= m_Player[i].inventory.HasJoystick;
 		bat |= m_Player[i].inventory.HasBattery;
@@ -182,7 +184,9 @@ void CPlayGameVorticon::ShipEp3()
 }
 
 void CPlayGameVorticon::showKeensLeft()
-{
+{    
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+
 	const unsigned int KEENSLEFT_X = 7;
 	const unsigned int KEENSLEFT_Y = 10;
 
@@ -195,8 +199,8 @@ void CPlayGameVorticon::showKeensLeft()
 		const unsigned int KEENSLEFT_W = 24;
 		const unsigned int KEENSLEFT_H = 4;
 
-		boxY = KEENSLEFT_Y - m_NumPlayers;
-		boxH = KEENSLEFT_H + m_NumPlayers*2;
+        boxY = KEENSLEFT_Y - numPlayers;
+        boxH = KEENSLEFT_H + numPlayers*2;
 
 		SDL_Rect rect;
 		rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
@@ -218,7 +222,7 @@ void CPlayGameVorticon::showKeensLeft()
 
 
 		y = 20;
-		for(p=0; p<m_NumPlayers ; p++)
+        for(p=0; p<numPlayers ; p++)
 		{
 			x = 12;
 			for( i=0 ; i<m_Player[p].inventory.lives && i<=10 ; i++ )
@@ -236,7 +240,7 @@ void CPlayGameVorticon::showKeensLeft()
 	else
 	{
 		keenleft_rect.x = (KEENSLEFT_X+1)*8;
-		keenleft_rect.y = (KEENSLEFT_Y - m_NumPlayers + 2)*8;
+        keenleft_rect.y = (KEENSLEFT_Y - numPlayers + 2)*8;
 		keenleft_rect.w = mpKeenLeftSfc->w;
 		keenleft_rect.h = mpKeenLeftSfc->h;
 

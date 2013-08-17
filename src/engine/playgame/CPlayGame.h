@@ -25,8 +25,7 @@ const int WM_MAP_NUM = 80;
 class CPlayGame : public GameState
 {
 public:
-	CPlayGame(CExeFile &ExeFile, char level,
-			 char numplayers);
+    CPlayGame(CExeFile &ExeFile, char level);
 
     virtual bool loadGameState() = 0;
     //virtual bool saveGameState() = 0;
@@ -44,7 +43,6 @@ public:
 	CSaveGameController getSavedGameBlock();
 
 protected:
-	unsigned char m_NumPlayers;
 	bool m_endgame;
 	CExeFile &m_ExeFile;
 	char m_Episode;

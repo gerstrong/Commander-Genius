@@ -26,8 +26,8 @@
 // Creation Routine
 ////
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
-		  char numplayers, CSaveGameController &SavedGame) :
-CPlayGame(ExeFile, level, numplayers)
+                                      CSaveGameController &SavedGame) :
+CPlayGame(ExeFile, level)
 {
 	mMap.reset(new CMap());
 	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
@@ -35,9 +35,11 @@ CPlayGame(ExeFile, level, numplayers)
 	if(!m_Player.empty())
 		m_Player.clear();
 
-    m_Player.assign( m_NumPlayers, CPlayer(mp_level_completed, *mMap.get(), 0) );
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
 
-    for(int i=0 ; i<m_NumPlayers ; i++ )
+    m_Player.assign( numPlayers, CPlayer(mp_level_completed, *mMap.get(), 0) );
+
+    for(int i=0 ; i<numPlayers ; i++ )
     {
         // Put some important Player properties
         auto &player = m_Player[i];
@@ -71,7 +73,9 @@ void CPlayGameVorticon::setupPlayers()
     if(!mpHUDVec.empty())
         mpHUDVec.clear();
 
-    for (int i=0 ; i<m_NumPlayers ; i++)
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+
+    for (int i=0 ; i<numPlayers ; i++)
 	{
         auto &player = m_Player[i];
 
@@ -105,7 +109,7 @@ void CPlayGameVorticon::setupPlayers()
         stInventory &inventory = m_Player.at(i).inventory;
 
         mpHUDVec.push_back( move(std::unique_ptr<CHUD>(new CHUD(inventory.score, inventory.lives,
-                                                                inventory.charges, i, m_NumPlayers, &mCamLead))) );
+                                                                inventory.charges, i, &mCamLead))) );
 	}
 
 }
@@ -114,6 +118,7 @@ bool CPlayGameVorticon::init()
 {
 	CVorticonMapLoaderWithPlayer MapLoader( mMap, m_Player, mSpriteObjectContainer );
 	MapLoader.m_checkpointset = m_checkpointset;
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
 
 	// load level map
 	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
@@ -135,7 +140,7 @@ bool CPlayGameVorticon::init()
 
 	// Initialize the AI
 	mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
-			m_NumPlayers, m_Episode, m_Level,
+            numPlayers, m_Episode, m_Level,
 			mMap->m_Dark) );
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
@@ -173,7 +178,8 @@ bool CPlayGameVorticon::init()
 bool CPlayGameVorticon::StatusScreenOpen()
 {
 	bool isOpen = false;
-	for( unsigned short i=0 ; i<m_NumPlayers ; i++ )
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    for( unsigned short i=0 ; i<numPlayers ; i++ )
 	{
 		isOpen |= m_Player[i].m_showStatusScreen;
 	}
@@ -208,7 +214,8 @@ void CPlayGameVorticon::ponder()
 			  
 			  if(m_Player[mCamLead].pdie)
 			  {
-			    for( int i=0 ; i<m_NumPlayers ; i++ )
+                  const int numPlayers = g_pBehaviorEngine->mPlayers;
+                for( int i=0 ; i<numPlayers ; i++ )
 			    {
 			      if(m_Player[i].pdie)
                         cycleCamLead();
@@ -299,7 +306,8 @@ void CPlayGameVorticon::cycleCamLead()
 {
 	mCamLead++;
 
-	if( mCamLead >= m_NumPlayers  )
+    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    if( mCamLead >= numPlayers  )
 		mCamLead = 0;
 }
 
@@ -314,7 +322,8 @@ void CPlayGameVorticon::handleFKeys()
 			g_pInput->getHoldedKey(KSPACE))
 	{
 		g_pInput->flushAll();
-		for(i=0;i<m_NumPlayers;i++)
+        const int numPlayers = g_pBehaviorEngine->mPlayers;
+        for(i=0;i<numPlayers;i++)
 		{
 			m_Player[i].pfiring = false;
 			if (m_Player[i].m_playingmode)
@@ -421,7 +430,8 @@ void CPlayGameVorticon::verifyFinales()
 		hasBattery = hasWiskey = hasJoystick = hasVaccum = false;
 
 		// Check if one of the Players has the items
-		for( int i=0 ;i < m_NumPlayers ; i++)
+        const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+        for( size_t i=0 ;i < numPlayers ; i++)
 		{
 			hasBattery |= m_Player[i].inventory.HasBattery;
 			hasWiskey |= m_Player[i].inventory.HasWiskey;
@@ -558,7 +568,8 @@ void CPlayGameVorticon::drawAllElements()
     mMap->_drawForegroundTiles();
 
 
-    for( short i=0 ; i<m_NumPlayers ; i++ )
+    const unsigned int numPlayers = g_pBehaviorEngine->mPlayers;
+    for( size_t i=0 ; i<numPlayers ; i++ )
     {
         m_Player[i].drawStatusScreen();
     }

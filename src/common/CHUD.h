@@ -25,12 +25,11 @@
 class CHUD
 {
 public:
-	CHUD(unsigned long &score,
-		 signed char &lives,
-		 unsigned int &charges,
+    CHUD(unsigned long &score,
+         signed char &lives,
+         unsigned int &charges,
          const int id,
-         const int numPlayers,
-		 int *camlead = NULL); // TODO: Must be removed later and replaced by a reference
+         int *camlead = NULL); // TODO: Must be removed later and replaced by a reference
 
 
 	//CHUD(const CHUD &orig);
@@ -44,7 +43,7 @@ public:
     /**
       * \brief Sets up the HUD Box for certain id sprite variant
       */
-    void setup(const int id, const int numPlayers);
+    void setup(const int id);
 
 	/**
 	 * \brief This will sync some data in the HUD, especially the oldScore variable
@@ -75,8 +74,6 @@ private:
     int mId;
 
 	int timer;
-
-    const int mNumPlayers;
 };
 
 #endif /* CHUD_H_ */
