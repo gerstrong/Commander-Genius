@@ -318,11 +318,11 @@ void CSprite::applyTranslucency(Uint8 value)
 	if(format->BitsPerPixel < 24)
 	{
 
-        mpSurface.reset(SDL_DisplayFormat(mpSurface.get()), &SDL_FreeSurface);
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+        //mpSurface.reset(SDL_DisplayFormat(mpSurface.get()), &SDL_FreeSurface); // TODO: doesn't work yet...
         SDL_SetSurfaceAlphaMod(mpSurface.get(), value);
 #else
+        mpSurface.reset(SDL_DisplayFormat(mpSurface.get()), &SDL_FreeSurface);
         SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, value);
 #endif
 	    m_alpha = value;

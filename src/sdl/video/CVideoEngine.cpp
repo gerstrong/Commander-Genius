@@ -17,7 +17,9 @@ ScrollSurface(NULL),       // 512x512 scroll buffer
 m_VidConfig(VidConfig),
 mSbufferx(0),
 mSbuffery(0),
-screen(NULL),
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
+    screen(NULL),
+#endif
 m_Mode(0)
 {}
 
@@ -37,7 +39,9 @@ bool CVideoEngine::init()
 	m_Mode = SDL_HWSURFACE;
 #else
 	// Support for double-buffering
-	m_Mode = SDL_HWPALETTE;
+    #if !SDL_VERSION_ATLEAST(2, 0, 0)
+        m_Mode = SDL_HWPALETTE;
+    #endif
 #endif
 
 	// Enable OpenGL
@@ -140,11 +144,13 @@ void CVideoEngine::aspectCorrectResizing(const CRect<Uint16>& newDim, const int 
 	aspectCorrectionRect.y = (newDim.h-aspectCorrectionRect.h)/2;
 }
 
-SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format )
+SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode)
 {
 	SDL_Surface *temporary, *optimized;
 
-	temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
+    Colormask mask = getColourMask32bit();
+
+    temporary = SDL_CreateRGBSurface( mode, width, height, bpp, mask.r, mask.g, mask.b, mask.a);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     //Temporary fix until we figure out how to create our own version of DisplayFormatAlpha and DisplayFormat
     optimized = temporary;
@@ -153,9 +159,9 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 		optimized = SDL_DisplayFormatAlpha( temporary );
 	else
 		optimized = SDL_DisplayFormat( temporary );
-#endif
 
-	SDL_FreeSurface(temporary);
+    SDL_FreeSurface(temporary);
+#endif
 
 	if (!optimized)
 	{

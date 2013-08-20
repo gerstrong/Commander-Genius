@@ -325,7 +325,7 @@ void CGUIDialog::initVorticonBackground()
     const SDL_Rect Rect = g_pVideoDriver->toBlitRect(mRect);
     mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-
+    mpBackgroundSfc = mpBackgroundSfc;
 #else
     mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 #endif
@@ -350,7 +350,13 @@ void CGUIDialog::initVorticonBackground()
 	// Now draw the borders
     drawBorderRect(backSfc, Rect);
 
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    mpTempSfc = mpBackgroundSfc;
+#else
     mpTempSfc.reset( SDL_DisplayFormat( backSfc ), &SDL_FreeSurface );
+#endif
+
 }
 
 

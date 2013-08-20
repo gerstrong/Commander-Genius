@@ -60,11 +60,11 @@ void CHUD::setup(const int id)
         mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-
+        //SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220); // TODO: Find a way to get this done!
 #else
         mpHUDBlit.reset(SDL_DisplayFormat(mpHUDBlit.get()), &SDL_FreeSurface);
-#endif
         SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
+#endif
     }
 }
 

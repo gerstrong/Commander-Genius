@@ -171,7 +171,10 @@ bool COpenGL::init()
 	const GLint oglfilter = m_VidConfig.m_opengl_filter;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    window = SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED,
+                              m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h,
+                              /*SDL_WINDOW_BORDERLESS|*/SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
     glcontext = SDL_GL_CreateContext(window);
     
 	// Set clear colour

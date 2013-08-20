@@ -35,7 +35,7 @@ public:
 	virtual void updateScreen() = 0;
 	virtual void shutdown();
 
-	SDL_Surface *createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
+    SDL_Surface *createSurface(std::string name, bool alpha, int width, int height, int bpp, int mode);
 	virtual bool createSurfaces() = 0;
 	void fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr, unsigned int &width, unsigned int &height);
 	virtual void collectSurfaces() = 0;
@@ -50,7 +50,6 @@ public:
                             const Uint16 height );
 
 	SDL_Surface *getBlitSurface() { return BlitSurface; }
-	SDL_Surface *getScreenSurface() { return screen; }
 
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 
@@ -90,7 +89,12 @@ protected:
 	Sint16 mSbufferx;
 	Sint16 mSbuffery;
 
-	SDL_Surface *screen;                // the actual video memory/window
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_Texture *sdlTexture;
+#else
+    SDL_Surface *screen;                // the actual video memory/window
+#endif
+
 
 	// Those variables are used for the rendering process, so they don't need to be recalculated
 	unsigned m_dst_slice, m_src_slice;

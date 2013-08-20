@@ -576,10 +576,14 @@ void CInput::pollEvents()
 			break;
 #else
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+         // TODO: Need something similar...
+#else
 		case SDL_VIDEORESIZE:
 			g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
 					CRect<Uint16>(Event.resize.w, Event.resize.h) );
 			break;
+#endif
 
 		case SDL_MOUSEBUTTONDOWN:
 			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());

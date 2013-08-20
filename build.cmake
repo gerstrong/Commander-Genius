@@ -310,8 +310,12 @@ IF(BUILD_TARGET STREQUAL WIN32)
 	MESSAGE( "Will build with the CG-Icon for Windows." )
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
-target_link_libraries(CommanderGenius ${SDL_LIBRARIES})
+if(SDL2_FOUND)
+    target_link_libraries(CommanderGenius ${SDL2_LIBRARY})
+else(SDL2_FOUND)
+    target_link_libraries(CommanderGenius ${SDL_LIBRARIES})
 #target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
+    endif(SDL2_FOUND)
 target_link_libraries(CommanderGenius SDL_image)
 
 
