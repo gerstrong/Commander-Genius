@@ -20,8 +20,10 @@ INSTALL(TARGETS CommanderGenius
 	DESTINATION ${APPDIR})
 
 # This will copy the resources files to the proper directory
-INSTALL(DIRECTORY vfsroot/ 
-	DESTINATION ${DATADIR})
+IF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
+	INSTALL(DIRECTORY vfsroot/ 
+		DESTINATION ${DATADIR})
+ENDIF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
 
 # This will copy the readme file. 
 INSTALL(FILES README 
