@@ -163,12 +163,10 @@ bool CFont::loadAlternateFont()
 bool CFont::loadinternalFont()
 {
 	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-#else
+
     mFontSurface.reset( loadfromXPMData( CGFont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
-#endif
-	return true;
+
+    return true;
 }
 
 // This sets the width of the characters so the text is printed nicely.
@@ -375,15 +373,15 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 {
 	SDL_Rect scrrect, dstrect;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
+//#else
     scrrect.x = (mFontSurface->w/16)*(character%16);
 	scrrect.y = (mFontSurface->h/16)*(character/16);
 	scrrect.w = dstrect.w = (mWidthtable[character]);
 	scrrect.h = dstrect.h = (mFontSurface->h/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
-#endif
+//#endif
 
 	SDL_BlitSurface(mFontSurface.get(), &scrrect, dst, &dstrect);
 }
