@@ -23,12 +23,14 @@ CBitmap::CBitmap(const CBitmap &bitmap) :
 mName(bitmap.getName())
 {
 	SDL_Surface *sfc = bitmap.getSDLSurface();
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
+//#else
     if( sfc != nullptr )
-		mpBitmapSurface.reset(SDL_DisplayFormat( sfc ), &SDL_FreeSurface );
-#endif
+    {
+        mpBitmapSurface.reset(g_pVideoDriver->convertThroughBlitSfc( sfc ), &SDL_FreeSurface );
+    }
+//#endif
 }
 
 ///
@@ -56,12 +58,12 @@ bool CBitmap::optimizeSurface()
 	if(mpBitmapSurface)
 	{
 		SDL_Surface *temp_surface;
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
         
-#else
-        temp_surface = SDL_DisplayFormat(mpBitmapSurface.get());
+//#else
+        temp_surface = g_pVideoDriver->convertThroughBlitSfc(mpBitmapSurface.get());
 		mpBitmapSurface.reset( temp_surface, &SDL_FreeSurface );
-#endif
+//#endif
 		return true;
 	}
 	else

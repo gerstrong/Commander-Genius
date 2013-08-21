@@ -30,11 +30,11 @@ m_timer(0)
 
 	if( finale_draw( mpSceneSurface.get(), scene_file, game_path) )
 	{
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
         
-#else
-		mpSceneSurface.reset(SDL_DisplayFormatAlpha(mpSceneSurface.get()), &SDL_FreeSurface);
-#endif
+//#else
+        mpSceneSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSceneSurface.get()), &SDL_FreeSurface);
+//#endif
 	}
 	else
 	{

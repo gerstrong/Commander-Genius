@@ -16,11 +16,11 @@ mInitialSpeed(speed),
 mScrollPos(initialPos),
 mpScrollSurface(pScrollSurface)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mpOldSurface.reset( SDL_DisplayFormat(pBackground), &SDL_FreeSurface );
-#endif
+//#else
+    mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc(pBackground), &SDL_FreeSurface );
+//#endif
 }
 
 void CScrollEffect::ponder()

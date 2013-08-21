@@ -59,10 +59,11 @@ void CHUD::setup(const int id)
         m_Rect.x += (m_Rect.w-2)*id;
         mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 
+        mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         //SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220); // TODO: Find a way to get this done!
 #else
-        mpHUDBlit.reset(SDL_DisplayFormat(mpHUDBlit.get()), &SDL_FreeSurface);
         SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
 #endif
     }
@@ -86,12 +87,12 @@ void CHUD::CreateBackground()
     headdstrect.x = 0;
     headdstrect.y = 11;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-#else
-    temp = SDL_DisplayFormat(mpBackground.get());
+//#else
+    temp = g_pVideoDriver->convertThroughBlitSfc(mpBackground.get());
     mpBackground.reset(temp, &SDL_FreeSurface);
-#endif
+//#endif
 
 	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);
 	SDL_FillRect(temp, NULL, colorkey );

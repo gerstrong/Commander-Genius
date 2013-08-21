@@ -211,11 +211,11 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mpStatusSfc.reset(SDL_DisplayFormat(p_surface), &SDL_FreeSurface);
-#endif
+//#else
+    mpStatusSfc.reset(g_pVideoDriver->convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
+//#endif
 	SDL_FreeSurface(p_surface);
 }
 
@@ -335,11 +335,11 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-	mpStatusSfc.reset(SDL_DisplayFormat(p_surface), &SDL_FreeSurface);
-#endif
+//#else
+    mpStatusSfc.reset(g_pVideoDriver->convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
+//#endif
 	SDL_FreeSurface(p_surface);
 }
 
@@ -456,10 +456,10 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-	mpStatusSfc.reset(SDL_DisplayFormat(p_surface), &SDL_FreeSurface);
-#endif
+//#else
+    mpStatusSfc.reset(g_pVideoDriver->convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
+//#endif
 	SDL_FreeSurface(p_surface);
 }

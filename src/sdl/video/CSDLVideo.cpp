@@ -90,18 +90,19 @@ bool CSDLVideo::initOverlaySurface( const bool useAlpha,
                                        const Uint16 height )
 {
 
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    //SDL_SetSurfaceAlphaMod( overlay, 0); // TODO: Make it work again
-#else
     SDL_Surface *overlay = createSurface( "OverlaySurface",
                                          useAlpha,
                                          width,
                                          height,
                                          RES_BPP,
-                                         m_Mode, screen->format );
+                                         m_Mode );
 
     mpOverlaySurface.reset( overlay );
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceAlphaMod( overlay, 0);
+#else
 
     SDL_SetAlpha( overlay, SDL_SRCALPHA, 0);
 #endif
@@ -136,13 +137,7 @@ bool CSDLVideo::createSurfaces()
     Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
     Scaler.setFilterType(m_VidConfig.m_normal_scale);
 
-    // This function creates the surfaces which are needed for the game.
     const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
-    ScrollSurface = createSurface( "ScrollSurface", false,//true,
-            512,
-            512,
-            RES_BPP,
-            m_Mode );
 
     g_pLogFile->textOut("Blitsurface creation!\n");
 
@@ -151,6 +146,15 @@ bool CSDLVideo::createSurfaces()
                 gamerect.h,
                 RES_BPP,
                 m_Mode );
+
+
+    // This function creates the surfaces which are needed for the game.    
+    ScrollSurface = createSurface( "ScrollSurface", false,//true,
+            512,
+            512,
+            RES_BPP,
+            m_Mode );
+
 
     g_pLogFile->textOut("FilteredSurface creation!\n");
 

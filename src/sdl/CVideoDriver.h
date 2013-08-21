@@ -80,6 +80,12 @@ public:
 
 	SDL_Surface *getBlitSurface() { return mpVideoEngine->getBlitSurface(); }
 
+    SDL_Surface *convertThroughBlitSfc( SDL_Surface *sfc )
+    {
+        SDL_Surface *blit = mpVideoEngine->getBlitSurface();
+        return SDL_ConvertSurface(sfc, blit->format, blit->flags );
+    }
+
 	bool isOpenGL(void) { return m_VidConfig.m_opengl; }
 #ifdef USE_OPENGL
 	unsigned char getOGLFilter(void) { return m_VidConfig.m_opengl_filter; }

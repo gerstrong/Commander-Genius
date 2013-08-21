@@ -271,14 +271,14 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	// Adapt the newly created surface to the running screen.
 	SDL_Surface *temp;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
+//#else
     if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
-		temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
+        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
 	else // or
-		temp = SDL_DisplayFormat(pColoredTextSurface);
-#endif
+        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
+//#endif
 
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;

@@ -34,11 +34,11 @@ void CVibrate::render()
     SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
 
     // then erase the entire old surface ...
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-#else
-    mpVibSfc.reset( SDL_DisplayFormat(sfc), &SDL_FreeSurface );
-#endif
+//#else
+    mpVibSfc.reset( g_pVideoDriver->convertThroughBlitSfc(sfc), &SDL_FreeSurface );
+//#endif
     SDL_FillRect(sfc, &gamerect, SDL_MapRGB(sfc->format, 0,0,0));
 
     // ... and create that moved to some direction;

@@ -39,11 +39,11 @@ m_speed(speed)
 void CPixelate::getSnapshot()
 {
 	g_pVideoDriver->collectSurfaces();
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    if(!mp_OldSurface) mp_OldSurface = SDL_DisplayFormat(g_pVideoDriver->getBlitSurface());
-#endif
+//#else
+    if(!mp_OldSurface) mp_OldSurface = g_pVideoDriver->convertThroughBlitSfc(g_pVideoDriver->getBlitSurface());
+//#endif
 	
 	//Map the color key
 	mColorkey = SDL_MapRGB( mp_OldSurface->format, 0, 0xFF, 0xFF );

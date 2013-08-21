@@ -82,11 +82,11 @@ bool CTilemap::optimizeSurface()
 	if(m_Tilesurface)
 	{
 		SDL_Surface *temp_surface;
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
         
-#else
-        temp_surface = SDL_DisplayFormatAlpha(m_Tilesurface);
-#endif
+//#else
+        temp_surface = g_pVideoDriver->convertThroughBlitSfc(m_Tilesurface);
+//#endif
 		SDL_FreeSurface(m_Tilesurface);
 		m_Tilesurface = temp_surface;
 		return true;

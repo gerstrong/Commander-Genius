@@ -11,14 +11,16 @@
 
 #include "CCursor.h"
 
+#include "sdl/CVideoDriver.h"
+
 CCursor::CCursor(SDL_Surface *p_screen)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mp_Surface = SDL_DisplayFormat(p_screen);
+//#else
+    mp_Surface = g_pVideoDriver->convertThroughBlitSfc(p_screen);
 	SDL_FillRect(mp_Surface ,NULL, 0x0);
-#endif
+//#endif
 }
 
 void CCursor::generateTwirls(CFont &Font)

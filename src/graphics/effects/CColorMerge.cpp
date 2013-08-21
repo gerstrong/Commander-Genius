@@ -20,11 +20,11 @@ m_Alpha(0)
 void CColorMerge::getSnapshot()
 {
     g_pVideoDriver->collectSurfaces();
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mpOldSurface.reset( SDL_DisplayFormat( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
-#endif
+//#else
+    mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
+//#endif
 }
 
 // Effect cycle

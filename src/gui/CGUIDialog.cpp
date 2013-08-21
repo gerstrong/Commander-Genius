@@ -277,11 +277,11 @@ void CGUIDialog::initEmptyBackround()
 {
     const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
     mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-#else
-    mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-#endif
+//#else
+    mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+//#endif
 
 	SDL_Surface *sfc = mpBackgroundSfc.get();    
     SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );        
@@ -324,11 +324,11 @@ void CGUIDialog::initVorticonBackground()
 {
     const SDL_Rect Rect = g_pVideoDriver->toBlitRect(mRect);
     mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    mpBackgroundSfc = mpBackgroundSfc;
-#else
-    mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-#endif
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
+    //mpBackgroundSfc = mpBackgroundSfc;
+//#else
+    mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+//#endif
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(1);
@@ -351,11 +351,10 @@ void CGUIDialog::initVorticonBackground()
     drawBorderRect(backSfc, Rect);
 
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    mpTempSfc = mpBackgroundSfc;
-#else
-    mpTempSfc.reset( SDL_DisplayFormat( backSfc ), &SDL_FreeSurface );
-#endif
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#else
+    mpTempSfc.reset( g_pVideoDriver->convertThroughBlitSfc( backSfc ), &SDL_FreeSurface );
+//#endif
 
 }
 
@@ -364,11 +363,11 @@ void CGUIDialog::initGalaxyBackround()
 {
     const SDL_Rect Rect = g_pVideoDriver->getGameResolution().SDLRect();
     mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-#else
-    mpBackgroundSfc.reset( SDL_DisplayFormat( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-#endif
+//#else
+    mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+//#endif
 
 	// Besides the Background Bitmap we need to draw two scores. One is underline the other upper line
 	SDL_Surface *backSfc = mpBackgroundSfc.get();

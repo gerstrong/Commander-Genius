@@ -31,11 +31,11 @@ mAlignment(alignment)
 	mMBRect.y = (200-mMBRect.h)/2;
 
 	mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
-#endif
+//#else
+    mpMBSurface.reset(g_pVideoDriver->convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
+//#endif
 }
 
 void CMessageBoxBitmapGalaxy::init()

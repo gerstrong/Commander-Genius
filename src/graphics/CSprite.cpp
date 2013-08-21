@@ -103,12 +103,12 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 
 bool CSprite::optimizeSurface()
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
+//#else
     if(mpSurface)
-	mpSurface.reset(SDL_DisplayFormatAlpha(mpSurface.get()), &SDL_FreeSurface);
-#endif
+    mpSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
+//#endif
 
     return true;
 }
@@ -318,11 +318,11 @@ void CSprite::applyTranslucency(Uint8 value)
 	if(format->BitsPerPixel < 24)
 	{
 
+        mpSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        //mpSurface.reset(SDL_DisplayFormat(mpSurface.get()), &SDL_FreeSurface); // TODO: doesn't work yet...
         SDL_SetSurfaceAlphaMod(mpSurface.get(), value);
 #else
-        mpSurface.reset(SDL_DisplayFormat(mpSurface.get()), &SDL_FreeSurface);
         SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, value);
 #endif
 	    m_alpha = value;
@@ -540,12 +540,12 @@ void CSprite::_drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-	SDL_Surface *blanksfc = SDL_DisplayFormatAlpha(mpSurface.get());
+//#else
+    SDL_Surface *blanksfc = g_pVideoDriver->convertThroughBlitSfc(mpSurface.get());
 	blitMaskedSprite(blanksfc, mpSurface.get(), 0xFFFFFF);
 	SDL_BlitSurface( blanksfc, &src_rect, dst, &dst_rect );
 	SDL_FreeSurface(blanksfc);
-#endif
+//#endif
 }

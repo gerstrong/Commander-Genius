@@ -28,11 +28,11 @@ m_timer(0)
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mpTextVSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
-#endif
+//#else
+    mpTextVSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+//#endif
 	SDL_FreeSurface(temp);
 }
 

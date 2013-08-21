@@ -48,11 +48,11 @@ blendup(true)
 void CMessageBoxSelection::init()
 {
     mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mpMBSurface.reset(SDL_DisplayFormatAlpha( mpMBSurface.get() ), &SDL_FreeSurface);
-#endif
+//#else
+    mpMBSurface.reset(g_pVideoDriver->convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
+//#endif
     
 	initGalaxyFrame();
 
@@ -85,14 +85,14 @@ void CMessageBoxSelection::init()
 	// Adapt the newly created surface to the running screen.
 	SDL_Surface *temp;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
+//#else
     if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
-		temp = SDL_DisplayFormatAlpha(pColoredTextSurface);
+        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
 	else // or
-		temp = SDL_DisplayFormat(pColoredTextSurface);
-#endif
+        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
+//#endif
 
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
@@ -117,12 +117,12 @@ void CMessageBoxSelection::init()
 	cutRect.h -= 4;
 		
     	mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mpSelSurface1.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);
-	mpSelSurface2.reset(SDL_DisplayFormat( mpSelSurface1.get() ), &SDL_FreeSurface);
-#endif
+//#else
+    mpSelSurface1.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
+    mpSelSurface2.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
+//#endif
 	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
 #if SDL_VERSION_ATLEAST(2, 0, 0)

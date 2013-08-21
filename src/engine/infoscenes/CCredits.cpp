@@ -88,11 +88,11 @@ void CCredits::init()
 		m_mid[j] = 160-(m_scrolltext[j].size()*4);
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
-    mpDrawSfc.reset(SDL_DisplayFormatAlpha(temp), &SDL_FreeSurface);
-#endif
+//#else
+    mpDrawSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+//#endif
 	SDL_FreeSurface(temp);
 }
 
