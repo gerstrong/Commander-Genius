@@ -166,6 +166,10 @@ bool CFont::loadinternalFont()
 
     mFontSurface.reset( loadfromXPMData( CGFont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceBlendMode(mFontSurface.get(), SDL_BLENDMODE_BLEND);
+#endif
+
     return true;
 }
 
@@ -416,7 +420,7 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, const Uint8 alpha)
 {
 	unsigned int i,x=xoff,y=yoff;
-	
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod(mFontSurface.get(), alpha);
 #else
