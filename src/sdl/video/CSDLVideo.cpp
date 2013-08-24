@@ -195,10 +195,10 @@ bool CSDLVideo::createSurfaces()
 
 void CSDLVideo::collectSurfaces()
 {
-    /*SDL_Surface *overlay = mpOverlaySurface.get();
+    SDL_Surface *overlay = mpOverlaySurface.get();
 
     if( getPerSurfaceAlpha(overlay) )
-        SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);*/
+        SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);
 }
 
 void CSDLVideo::clearSurfaces()

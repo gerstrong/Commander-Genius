@@ -58,7 +58,8 @@ void CPassiveGalaxy::processIntro()
 
 	m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
 
-	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
+    auto blit = g_pVideoDriver->getBlitSurface();
+    SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
 	g_pGfxEngine->setupEffect(new CPixelate(2));
 
 	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
