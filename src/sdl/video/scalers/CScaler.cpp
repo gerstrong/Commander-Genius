@@ -351,7 +351,6 @@ void CScaler::scaleUp(	SDL_Surface				*dstSfc,
 		dstrect.w = scrrect.w = srcSfc->w;
 
 		SDL_BlitSurface(srcSfc, &scrrect, dstSfc, &dstrect);
-
 	}
 }
 

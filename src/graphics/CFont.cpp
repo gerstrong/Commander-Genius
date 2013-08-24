@@ -270,7 +270,6 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 
     SDL_SetSurfaceBlendMode(pColoredTextSurface, SDL_BLENDMODE_BLEND);
 
-
     SDL_FillRect( pColoredTextSurface, nullptr, SDL_MapRGBA(pColoredTextSurface->format, 0, 0, 0, 0) );
 
 	const Uint32 oldColor = getFGColor();
@@ -278,21 +277,6 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	setupColor( fgColor );
 
     drawFont( pColoredTextSurface, text, 0, 0);
-
-	// Adapt the newly created surface to the running screen.
-    //SDL_Surface *temp;
-
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    /*if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
-        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
-	else // or
-        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);*/
-//#endif
-
-    //SDL_FreeSurface(pColoredTextSurface);
-    //pColoredTextSurface = temp;
 
 	setupColor( oldColor );
 
