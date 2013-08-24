@@ -19,7 +19,7 @@
 
 
 CPixelate::CPixelate(unsigned short speed) :
-mp_OldSurface(NULL),
+mp_OldSurface(nullptr),
 m_speed(speed)
 {
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
@@ -30,10 +30,10 @@ m_speed(speed)
 	m_drawmap = new bool[gameres.h*gameres.w];
 	m_pixels_per_line = new unsigned short[gameres.h];
 
-	for(size_t y=0 ; y<gameres.h ; y++)
+    for(int y=0 ; y<gameres.h ; y++)
 	{
 		m_pixels_per_line[y] = 0;
-		for(size_t x=0 ; x<gameres.w ; x++)
+        for(int x=0 ; x<gameres.w ; x++)
 			m_drawmap[y*gameres.w+x] = false;
 	}
 }
@@ -108,8 +108,11 @@ void CPixelate::render()
             m_pixels_per_line[y]++;
             m_drawmap[y*gameres.w + x] = true;
 
-            memcpy(pixels + y*mp_OldSurface->pitch + x*mp_OldSurface->format->BytesPerPixel,
-                   &mColorkey, mp_OldSurface->format->BytesPerPixel);
+            memcpy(pixels +
+                   y*mp_OldSurface->pitch +
+                   x*mp_OldSurface->format->BytesPerPixel,
+                   &mColorkey,
+                   mp_OldSurface->format->BytesPerPixel);
 
             // If there are no more pixels to draw in this line, m_lines_completed++, it won't be scanned again.
             // This will be checked against m_pixels_per_line

@@ -43,8 +43,6 @@ bool CBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
     auto bmpSfc = mpBitmapSurface.get();
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)   
-    //SDL_SetSurfaceColorMod(mpBitmapSurface.get(), Palette->r, Palette->g, Palette->b);
-    //SDL_SetSurfaceColorMod(mpBitmapSurface.get(), 255, 255, 255);
     SDL_SetPaletteColors(bmpSfc->format->palette, Palette, 0, 255);
     SDL_SetColorKey(bmpSfc, SDL_TRUE, COLORKEY);
 #else

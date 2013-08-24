@@ -40,7 +40,7 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
 			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceColorMod(mFontSurface.get(), Palette->r, Palette->g, Palette->b);
+    //SDL_SetSurfaceColorMod(mFontSurface.get(), Palette->r, Palette->g, Palette->b);
 	SDL_SetColorKey(mFontSurface.get(), SDL_TRUE, COLORKEY);
 #else
     SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
@@ -220,18 +220,16 @@ void CFont::setupColor( const Uint32 fgColor )
 	// the given color
 	SDL_Color color[16];
 	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-#else
-    SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
-#endif
+
+    SDL_PixelFormat *pPixelformat = g_pVideoDriver->getBlitSurface()->format;
+
+    SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 
 	// Change palette colors to the desired one
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    //SDL_GetSurfaceColorMod(fgColor, &color[15].r, &color[15].g, &color[15].b);
-	SDL_SetSurfaceColorMod( mFontSurface.get(), color->r, color->g, color->b);
-#else
-    SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
+    SDL_SetPaletteColors(mFontSurface->format->palette, color, 0, 255);
+    SDL_SetColorKey( mFontSurface.get(), SDL_TRUE, COLORKEY);
+#else    
 	SDL_SetColors( mFontSurface.get(), color, 0, 16);
 #endif
 }
@@ -242,18 +240,11 @@ Uint32 CFont::getFGColor()
 	// the given color
 	SDL_Color color[16];
 	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-#else
-    SDL_PixelFormat *pPixelformat = SDL_GetVideoSurface()->format;
-#endif
+
+    SDL_PixelFormat *pPixelformat = g_pVideoDriver->getBlitSurface()->format;
 
 	// Change palette colors to the desired one
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-#else
     return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
-#endif
 }
 
 
@@ -264,28 +255,44 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	rect.w = getPixelTextWidth(text);
 	rect.h = getPixelTextHeight()*calcNumLines(text);
 
-	SDL_Surface *pColoredTextSurface = CG_CreateRGBSurface(rect);
+    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+    SDL_PixelFormat *format = blit->format;
+
+
+    SDL_Surface *pColoredTextSurface =
+          SDL_CreateRGBSurface( SDL_SWSURFACE,
+                                rect.w, rect.h,
+                                format->BitsPerPixel,
+                                format->Rmask,
+                                format->Gmask,
+                                format->Bmask,
+                                format->Amask );
+
+    SDL_SetSurfaceBlendMode(pColoredTextSurface, SDL_BLENDMODE_BLEND);
+
+
+    SDL_FillRect( pColoredTextSurface, nullptr, SDL_MapRGBA(pColoredTextSurface->format, 0, 0, 0, 0) );
 
 	const Uint32 oldColor = getFGColor();
 
 	setupColor( fgColor );
 
-	drawFont( pColoredTextSurface, text, 0, 0);
+    drawFont( pColoredTextSurface, text, 0, 0);
 
 	// Adapt the newly created surface to the running screen.
-	SDL_Surface *temp;
+    //SDL_Surface *temp;
 
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
+    /*if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
         temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
 	else // or
-        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
+        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);*/
 //#endif
 
-	SDL_FreeSurface(pColoredTextSurface);
-	pColoredTextSurface = temp;
+    //SDL_FreeSurface(pColoredTextSurface);
+    //pColoredTextSurface = temp;
 
 	setupColor( oldColor );
 
@@ -330,13 +337,9 @@ unsigned int CFont::getPixelTextHeight()
 
 Uint32 CFont::getBGColour(const bool highlight)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-#else
-    SDL_PixelFormat *format = SDL_GetVideoSurface()->format;
+    SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
 
 	return getBGColour(format, highlight);
-#endif
 }
 
 

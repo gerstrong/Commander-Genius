@@ -362,7 +362,15 @@ void CGUIDialog::initVorticonBackground()
 void CGUIDialog::initGalaxyBackround()
 {
     const SDL_Rect Rect = g_pVideoDriver->getGameResolution().SDLRect();
-    mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
+    //mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
+    mpBackgroundSfc.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
+                                                 Rect.w,
+                                                 Rect.h,
+                                                 RES_BPP,
+                                                 0,0,0,0 )
+                                                , &SDL_FreeSurface );
+
+
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
 
 //#else
