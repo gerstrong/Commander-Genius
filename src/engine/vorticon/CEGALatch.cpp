@@ -47,6 +47,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 {
 	SDL_Rect bmpRect;
 	bmpRect.x = bmpRect.y = 0;
+    bmpRect.w = bmpRect.h = 0;
 
 	data += m_bitmaptablelocation;
 
@@ -112,13 +113,13 @@ void CEGALatch::loadTilemap(CTilemap &Tilemap, CPlanes &Planes, const int episod
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap	
-	if(Tilemap.loadHiresTile("gfx/ck" + itoa(episode) + "tiles", path))
+    if(Tilemap.loadHiresTile("gfx/ck" + itoa(episode) + "tiles", path))
 	{
 	  g_pLogFile->textOut(GREEN, "Additional VGA Bitmap for the Tileset has been loaded successfully!");
-	}
+    }
 
 	// Adapt the tilemap to the display, so they are faster blit
-	Tilemap.optimizeSurface();  
+    //Tilemap.optimizeSurface();
 }
 
 
@@ -258,11 +259,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 
 	// optimize the bitmaps and load hq bitmaps if there are some.
-	for(int b=0 ; b<m_bitmaps ; b++)
+    /*for(int b=0 ; b<m_bitmaps ; b++)
 	{
 		CBitmap &bitmap = g_pGfxEngine->getBitmap(b);
 		bitmap.optimizeSurface();
-	}
+    }*/
 
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;

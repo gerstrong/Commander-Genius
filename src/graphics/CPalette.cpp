@@ -83,24 +83,24 @@ void CPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 	}
 	else
 	{	// Default Palette
-		setPaletteColour( 0, 0x00, 0x00, 0x00);
-		setPaletteColour( 1, 0x00, 0x00, 0xa8);
-		setPaletteColour( 2, 0x00, 0xa8, 0x00);
-		setPaletteColour( 3, 0x00, 0xa8, 0xa8);
-		setPaletteColour( 4, 0xa8, 0x00, 0x00);
-		setPaletteColour( 5, 0xa8, 0x00, 0xa8);
-		setPaletteColour( 6, 0xa8, 0x54, 0x00);
-		setPaletteColour( 7, 0xa8, 0xa8, 0xa8);
-		setPaletteColour( 8, 0x54, 0x54, 0x54);
-		setPaletteColour( 9, 0x54, 0x54, 0xfc);
-		setPaletteColour(10, 0x54, 0xfc, 0x54);
-		setPaletteColour(11, 0x54, 0xfc, 0xfc);
-		setPaletteColour(12, 0xfc, 0x54, 0x54);
-		setPaletteColour(13, 0xfc, 0x54, 0xfc);
-		setPaletteColour(14, 0xfc, 0xfc, 0x54);
-		setPaletteColour(15, 0xfc, 0xfc, 0xfc);
-		setPaletteColour(16, 0x00, 0xff, 0xff);
-	}
+        setPaletteColour( 0, 0x00, 0x00, 0x00);
+        setPaletteColour( 1, 0x00, 0x00, 0xa8);
+        setPaletteColour( 2, 0x00, 0xa8, 0x00);
+        setPaletteColour( 3, 0x00, 0xa8, 0xa8);
+        setPaletteColour( 4, 0xa8, 0x00, 0x00);
+        setPaletteColour( 5, 0xa8, 0x00, 0xa8);
+        setPaletteColour( 6, 0xa8, 0x54, 0x00);
+        setPaletteColour( 7, 0xa8, 0xa8, 0xa8);
+        setPaletteColour( 8, 0x54, 0x54, 0x54);
+        setPaletteColour( 9, 0x54, 0x54, 0xfc);
+        setPaletteColour(10, 0x54, 0xfc, 0x54);
+        setPaletteColour(11, 0x54, 0xfc, 0xfc);
+        setPaletteColour(12, 0xfc, 0x54, 0x54);
+        setPaletteColour(13, 0xfc, 0x54, 0xfc);
+        setPaletteColour(14, 0xfc, 0xfc, 0x54);
+        setPaletteColour(15, 0xfc, 0xfc, 0xfc);
+        setPaletteColour(16, 0x00, 0xff, 0xff);
+    }
 }
 
 ///
@@ -109,9 +109,9 @@ void CPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 
 void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
 {
-	m_Palette[c].r = r;
-	m_Palette[c].g = g;
-	m_Palette[c].b = b;
+    m_Palette[c].r = r;
+    m_Palette[c].g = g;
+    m_Palette[c].b = b;
 }
 
 // sets whether to use the "dark" (lights off) or not

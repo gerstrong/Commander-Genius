@@ -37,17 +37,23 @@ mName(bitmap.getName())
 // Creation Routines
 ///
 bool CBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
-{
-	mpBitmapSurface.reset( SDL_CreateRGBSurface(flags, rect.w, rect.h, 8, 0, 0, 0, 0), &SDL_FreeSurface );
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceColorMod(mpBitmapSurface.get(), Palette->r, Palette->g, Palette->b);
-    SDL_SetColorKey(mpBitmapSurface.get(), SDL_TRUE, COLORKEY);
+{        
+    mpBitmapSurface.reset( SDL_CreateRGBSurface(flags, rect.w, rect.h, 8, 0, 0, 0, 0 ), &SDL_FreeSurface );
+
+    auto bmpSfc = mpBitmapSurface.get();
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)   
+    //SDL_SetSurfaceColorMod(mpBitmapSurface.get(), Palette->r, Palette->g, Palette->b);
+    //SDL_SetSurfaceColorMod(mpBitmapSurface.get(), 255, 255, 255);
+    SDL_SetPaletteColors(bmpSfc->format->palette, Palette, 0, 255);
+    SDL_SetColorKey(bmpSfc, SDL_TRUE, COLORKEY);
 #else
-    SDL_SetColors(mpBitmapSurface.get(), Palette, 0, 255);
-	SDL_SetColorKey(mpBitmapSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
+    SDL_SetColors(bmpSfc, Palette, 0, 255);
+    SDL_SetColorKey(bmpSfc, SDL_SRCCOLORKEY, COLORKEY);
 #endif
-	
-	if(mpBitmapSurface)
+
+
+    if(mpBitmapSurface)
 	  return true;
 	else
 	  return false;

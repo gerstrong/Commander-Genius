@@ -132,7 +132,6 @@ void CSDLVideo::setLightIntensity(const float intensity)
 
 bool CSDLVideo::createSurfaces()
 {
-
     // Configure the Scaler
     Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
     Scaler.setFilterType(m_VidConfig.m_normal_scale);
@@ -141,19 +140,28 @@ bool CSDLVideo::createSurfaces()
 
     g_pLogFile->textOut("Blitsurface creation!\n");
 
-    BlitSurface = createSurface( "BlitSurface", true,
-                gamerect.w,
-                gamerect.h,
-                RES_BPP,
-                m_Mode );
+
+    BlitSurface = SDL_CreateRGBSurface( m_Mode, gamerect.w, gamerect.h, RES_BPP,
+                                          0x00FF0000,
+                                          0x0000FF00,
+                                          0x000000FF,
+                                          0xFF000000);
 
 
     // This function creates the surfaces which are needed for the game.    
-    ScrollSurface = createSurface( "ScrollSurface", false,//true,
+    /*ScrollSurface = createSurface( "ScrollSurface", false,//true,
             512,
             512,
             RES_BPP,
-            m_Mode );
+            m_Mode );*/
+    ScrollSurface = SDL_CreateRGBSurface( m_Mode, 512, 512, 32,
+                                          0x00FF0000,
+                                          0x0000FF00,
+                                          0x000000FF,
+                                          0x00000000);
+    /*SDL_SetPaletteColors(ScrollSurface->format->palette, g_pGfxEngine->Palette.m_Palette, 0, 255);
+    SDL_SetColorKey(ScrollSurface, SDL_TRUE, COLORKEY);*/
+
 
 
     g_pLogFile->textOut("FilteredSurface creation!\n");
@@ -163,6 +171,10 @@ bool CSDLVideo::createSurfaces()
                 BlitSurface->h*m_VidConfig.m_ScaleXFilter,
                 RES_BPP,
                 m_Mode );
+
+    FilteredSurface = SDL_CreateRGBSurface( m_Mode, BlitSurface->w*m_VidConfig.m_ScaleXFilter,
+                                            BlitSurface->h*m_VidConfig.m_ScaleXFilter,
+                                            RES_BPP, 0,0,0,0);
 
      m_dst_slice = FilteredSurface->pitch;
 
@@ -183,10 +195,10 @@ bool CSDLVideo::createSurfaces()
 
 void CSDLVideo::collectSurfaces()
 {
-    SDL_Surface *overlay = mpOverlaySurface.get();
+    /*SDL_Surface *overlay = mpOverlaySurface.get();
 
     if( getPerSurfaceAlpha(overlay) )
-        SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);
+        SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);*/
 }
 
 void CSDLVideo::clearSurfaces()

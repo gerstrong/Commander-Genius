@@ -151,11 +151,12 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
     Colormask mask = getColourMask32bit();
 
     temporary = SDL_CreateRGBSurface( mode, width, height, bpp, mask.r, mask.g, mask.b, mask.a);
+    //temporary = SDL_CreateRGBSurface( mode, width, height, bpp, 0, 0, 0, 0);
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     //Temporary fix until we figure out how to create our own version of DisplayFormatAlpha and DisplayFormat
 //#else
 
-    if(!BlitSurface)
+    //if(!BlitSurface)
     {
        return temporary;
     }

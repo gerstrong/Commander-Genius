@@ -29,10 +29,12 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 	m_numtiles = numtiles;
 	m_pbasesize = pbasesize;
 	m_column = column;
-	m_Tilesurface = SDL_CreateRGBSurface(Flags, m_column<<m_pbasesize,
-										(m_numtiles/m_column)<<m_pbasesize, 8, 0, 0, 0, 0);
+    m_Tilesurface = SDL_CreateRGBSurface(Flags, m_column<<m_pbasesize,
+                                        (m_numtiles/m_column)<<m_pbasesize, 8, 0, 0, 0, 0);
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetPaletteColors(m_Tilesurface->format->palette, Palette, 0, 255);
+    SDL_SetColorKey(m_Tilesurface, SDL_TRUE, COLORKEY);
 #else
     SDL_SetColors(m_Tilesurface, Palette, 0, 255);
 	SDL_SetColorKey(m_Tilesurface, SDL_SRCCOLORKEY, COLORKEY);
@@ -183,7 +185,7 @@ void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, Sint
 
 void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 {
-	SDL_Rect src_rect, dst_rect;
+    SDL_Rect src_rect, dst_rect;
 	src_rect.x = (t%m_column)<<m_pbasesize;
 	src_rect.y = (t/m_column)<<m_pbasesize;
 	const int size = 1<<m_pbasesize;
@@ -191,7 +193,7 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 
 	dst_rect.x = x;		dst_rect.y = y;
 	
-	SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
+    SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
 
 #ifdef DEBUG_COLLISION
 	//std::vector<CTileProperties> &TileProp = g_pBehaviorEngine->getTileProperties(1);

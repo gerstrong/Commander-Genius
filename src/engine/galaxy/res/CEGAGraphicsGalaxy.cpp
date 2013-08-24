@@ -201,7 +201,7 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 			// get location of plane p
 			if(masked)
 			{
-				Uint8* pointer = &data[0] + (p+1) * Width * Height;
+                Uint8* pointer = &data[0] + (p+1) * Width * Height;
 
 				// now try to extract the bits and pass it to the SDL-Surface
 				for(size_t y = 0; y < Height; y++)
@@ -210,8 +210,8 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 					{
 						for(Uint8 b=0 ; b<8 ; b++)
 						{
-							Uint8 bit = getBit(*pointer, 7-b);
-							*pixel |= (bit<<p);
+                            Uint8 bit = getBit(*pointer, 7-b);
+                            *pixel |= (bit<<p);
 							pixel++;
 						}
 						pointer++;
@@ -220,7 +220,7 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 			}
 			else
 			{
-				Uint8* pointer = &data[0] + p * Width * Height;
+                Uint8* pointer = &data[0] + p * Width * Height;
 
 				// now try to extract the bits and pass it to the SDL-Surface
 				for(size_t y = 0; y < Height; y++)
@@ -229,8 +229,8 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 					{
 						for(Uint8 b=0 ; b<8 ; b++)
 						{
-							Uint8 bit = getBit(*pointer, 7-b);
-							*pixel |= (bit<<p);
+                            Uint8 bit = getBit(*pointer, 7-b);
+                            *pixel |= (bit<<p);
 							pixel++;
 						}
 						pointer++;
