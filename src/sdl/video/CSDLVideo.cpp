@@ -147,6 +147,8 @@ bool CSDLVideo::createSurfaces()
                                           0x000000FF,
                                           0xFF000000);
 
+    SDL_SetSurfaceBlendMode(BlitSurface, SDL_BLENDMODE_NONE);
+
 
     // This function creates the surfaces which are needed for the game.    
     /*ScrollSurface = createSurface( "ScrollSurface", false,//true,
@@ -168,31 +170,19 @@ bool CSDLVideo::createSurfaces()
 
     auto *format = BlitSurface->format;
 
-    /*FilteredSurface = SDL_CreateRGBSurface( m_Mode,
+    FilteredSurface = SDL_CreateRGBSurface( m_Mode,
                                 BlitSurface->w*m_VidConfig.m_ScaleXFilter,
                                 BlitSurface->h*m_VidConfig.m_ScaleXFilter,
                                 RES_BPP,
                                 format->Rmask,
                                 format->Gmask,
                                 format->Bmask,
-                                format->Amask );*/
+                                format->Amask );
 
-    /*FilteredSurface = SDL_CreateRGBSurface( m_Mode, gamerect.w, gamerect.h, RES_BPP,
-                                          0x00FF0000,
-                                          0x0000FF00,
-                                          0x000000FF,
-                                          0xFF000000);*/
-
-    SDL_SetSurfaceBlendMode(BlitSurface, SDL_BLENDMODE_NONE);
-    //SDL_SetColorKey(BlitSurface, SDL_FALSE, 0);
-
-    FilteredSurface = SDL_CreateRGBSurface( m_Mode, BlitSurface->w*m_VidConfig.m_ScaleXFilter,
-                                            BlitSurface->h*m_VidConfig.m_ScaleXFilter,
-                                            RES_BPP, 0,0,0,0);
 
     m_dst_slice = FilteredSurface->pitch;
 
-    //initOverlaySurface(false, BlitSurface->w, BlitSurface->h);
+    initOverlaySurface(false, BlitSurface->w, BlitSurface->h);
 
     Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
     Scaler.setFilterType(m_VidConfig.m_normal_scale);
@@ -206,14 +196,14 @@ void CSDLVideo::collectSurfaces()
 {
     SDL_Surface *overlay = mpOverlaySurface.get();
 
-    /*if( getPerSurfaceAlpha(overlay) )
-        SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);*/
+    if( getPerSurfaceAlpha(overlay) )
+        SDL_BlitSurface(overlay, NULL, BlitSurface, NULL);
 }
 
 void CSDLVideo::clearSurfaces()
 {
     SDL_FillRect(mpOverlaySurface.get(), NULL, 0x0);
-    //SDL_FillRect(BlitSurface, NULL, 0x0);
+    SDL_FillRect(BlitSurface, NULL, 0x0);
 }
 
 
@@ -243,27 +233,12 @@ void CSDLVideo::updateScreen()
 	else
 	{
 		// First apply the conventional filter if any (GameScreen -> FilteredScreen)
-        //Scaler.scaleUp(FilteredSurface, BlitSurface, SCALEX, aspectCorrectionRect);
-
-
-        //SDL_LockSurface(FilteredSurface);
-        //SDL_LockSurface(BlitSurface);
-
-        SDL_BlitSurface(BlitSurface, nullptr, FilteredSurface, nullptr);
-        //memcpy(FilteredSurface->pixels, BlitSurface->pixels, BlitSurface->pitch*BlitSurface->h);
-
-        //SDL_UnlockSurface(BlitSurface);
-        //SDL_UnlockSurface(FilteredSurface);
+        Scaler.scaleUp(FilteredSurface, BlitSurface, SCALEX, aspectCorrectionRect);
 
         #if SDL_VERSION_ATLEAST(2, 0, 0)
-
             SDL_LockSurface(FilteredSurface);
             SDL_UpdateTexture(sdlTexture, nullptr, FilteredSurface->pixels, FilteredSurface->w * sizeof (Uint32));
             SDL_UnlockSurface(FilteredSurface);
-
-        /*SDL_LockSurface(BlitSurface);
-        SDL_UpdateTexture(sdlTexture, nullptr, BlitSurface->pixels, BlitSurface->w * sizeof (Uint32));
-        SDL_UnlockSurface(BlitSurface);*/
         #else
             // Now scale up to the new DisplayRect (FilteredScreen -> screen)
             Scaler.scaleUp(screen, FilteredSurface, DYNAMIC, aspectCorrectionRect);
