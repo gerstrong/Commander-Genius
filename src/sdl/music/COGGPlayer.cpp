@@ -23,7 +23,7 @@ m_music_pos(0),
 m_reading_stream(false),
 m_bitStream(0)
 {
-    m_Audio_cvt.buf = NULL;
+    m_Audio_cvt.buf = nullptr;
 }
 
 
@@ -35,7 +35,7 @@ m_music_pos(0),
 m_reading_stream(false),
 m_bitStream(0)
 {
-	m_Audio_cvt.buf = NULL;
+    m_Audio_cvt.buf = nullptr;
 }
 
 

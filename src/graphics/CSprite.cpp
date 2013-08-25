@@ -84,7 +84,8 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 {
 	mpSurface.reset(SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetPaletteColors(mpSurface->format->palette, Palette, 0, 255);
+    SDL_SetColorKey(mpSurface.get(), SDL_TRUE, COLORKEY);
 #else
     SDL_SetColors( mpSurface.get(), Palette, 0, 255);
 	SDL_SetColorKey( mpSurface.get(), SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
@@ -92,7 +93,8 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 
 	mpMasksurface.reset(SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetPaletteColors(mpMasksurface->format->palette, Palette, 0, 255);
+    SDL_SetColorKey(mpMasksurface.get(), SDL_TRUE, COLORKEY);
 #else
     SDL_SetColors( mpMasksurface.get(), Palette, 0, 255);
 	SDL_SetColorKey( mpMasksurface.get(), SDL_SRCCOLORKEY, COLORKEY ); // color key.
@@ -440,6 +442,14 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
 	const int pitchdst = dst->pitch;
 	const int bytePPsrc = src->format->BytesPerPixel;
 	const int pitchsrc = src->pitch;
+
+    Uint32 colorkey;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_GetColorKey(dst, &colorkey);
+#else
+    colorkey = dst->format->colorkey;
+#endif
 	
 	for(int y=0;y<dst->h;y++)
 	{
@@ -452,10 +462,7 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
 			byte *srcPtr = (byte*)src->pixels;
 			srcPtr += (pitchsrc*y+x*bytePPsrc);
 			
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-            
-#else
-            if(dst->format->colorkey == *srcPtr)
+            if(colorkey == *srcPtr)
 			{			
 			  Uint32 newValue = SDL_MapRGBA(dst->format, r, g, b, a);
 			
@@ -464,8 +471,6 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
 			
 			  memcpy( dstPtr, &newValue, bytePPdst );			  
 			}
-#endif
-			
 		}
 	}
 	if(SDL_MUSTLOCK(src)) SDL_UnlockSurface(src);
