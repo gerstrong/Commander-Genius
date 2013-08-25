@@ -361,26 +361,12 @@ void CGUIDialog::initVorticonBackground()
 
 void CGUIDialog::initGalaxyBackround()
 {
-    const SDL_Rect Rect = g_pVideoDriver->getGameResolution().SDLRect();
-    //mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
-    mpBackgroundSfc.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
-                                                 Rect.w,
-                                                 Rect.h,
-                                                 RES_BPP,
-                                                 0,0,0,0 )
-                                                , &SDL_FreeSurface );
+    SDL_Surface *swatchBmp = g_pGfxEngine->getBitmap("KEENSWATCH")->getSDLSurface();
 
+    mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( swatchBmp ), &SDL_FreeSurface );
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-//#else
-    mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-//#endif
-
-	// Besides the Background Bitmap we need to draw two scores. One is underline the other upper line
+    // Besides the Background Bitmap we need to draw two lines
 	SDL_Surface *backSfc = mpBackgroundSfc.get();
-
-	g_pGfxEngine->getBitmap("KEENSWATCH")->_draw(backSfc, 0, 0);
 
 	Uint32 color = SDL_MapRGB( backSfc->format, 84, 234, 84);
 	SDL_Rect scoreRect;

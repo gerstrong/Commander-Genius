@@ -2,7 +2,7 @@
  * COGGPlayer.cpp
  *
  *  Created on: 17.02.2011
- *      Author: gerhard
+ *      Author: Gerstrong
  */
 
 #if defined(OGG) || defined(TREMOR)
@@ -112,7 +112,7 @@ bool COGGPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 	if(m_filename.empty())	
 	   return false;
 	    
-        return open();
+    return open();
 }
 
 
@@ -168,7 +168,7 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	bool rewind = false;
 
 	// read the ogg stream
-	if( m_AudioSpec.freq >= 48000 )
+    /*if( m_AudioSpec.freq >= 48000 )
 	{
 		Uint32 insize = (m_Audio_cvt.len*441*100)/m_AudioSpec.freq;
 		Uint8 mult = m_AudioFileSpec.channels;
@@ -180,12 +180,16 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 		insize++;
 		insize *= mult;
 
-		rewind = readOGGStreamAndResample(m_oggStream, m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
-	}
-	else
+        memset(m_Audio_cvt.buf, 0, length);
+
+        //rewind = readOGGStreamAndResample(m_oggStream, m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
+    }
+    else
 	{
 		rewind = readOGGStream(m_oggStream, reinterpret_cast<char*>(m_Audio_cvt.buf), m_Audio_cvt.len, m_AudioFileSpec);
-	}
+    }*/
+
+    memset(m_Audio_cvt.buf, 0, length);
 
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format

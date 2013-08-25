@@ -16,15 +16,15 @@ mpBitmap(move(pBitmap))
 
 CGUIBitmap::CGUIBitmap(const std::string &text)
 {
-
 	mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmap(text) ));
-
 }
 
 
 
 void CGUIBitmap::processLogic()
-{}
+{
+
+}
 
 
 

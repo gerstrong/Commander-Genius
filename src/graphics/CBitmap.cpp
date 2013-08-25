@@ -23,14 +23,14 @@ CBitmap::CBitmap(const CBitmap &bitmap) :
 mName(bitmap.getName())
 {
 	SDL_Surface *sfc = bitmap.getSDLSurface();
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
+
     if( sfc != nullptr )
     {
-        mpBitmapSurface.reset(g_pVideoDriver->convertThroughBlitSfc( sfc ), &SDL_FreeSurface );
+        // Create new and compatible surface for that bitmap
+        SDL_Surface *optSfc = g_pVideoDriver->convertThroughBlitSfc( sfc );
+        mpBitmapSurface.reset( optSfc, &SDL_FreeSurface );
     }
-//#endif
+
 }
 
 ///

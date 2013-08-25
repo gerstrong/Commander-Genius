@@ -50,7 +50,9 @@ static const int availableRates[numAvailableRates]=
 
 // define a callback function we can work with
 inline static void CCallback(void *unused, Uint8 *stream, int len)
-{
+{    
+    SDL_memset(stream, 0, len);
+
     // let it call a method on my (singleton) sound object
     CSound::GetNoPtrChk()->callback(unused, stream, len);
 }

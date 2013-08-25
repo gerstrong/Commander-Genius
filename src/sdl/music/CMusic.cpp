@@ -42,8 +42,8 @@ bool CMusic::load(const CExeFile& ExeFile, const int level)
     std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
     if(oggPlayer->loadMusicForLevel(ExeFile, level))
     {
-	mpPlayer = move(oggPlayer);
-	return true;
+        mpPlayer = move(oggPlayer);
+        return true;
     }
 #endif
 
@@ -52,7 +52,7 @@ bool CMusic::load(const CExeFile& ExeFile, const int level)
 
     if(!imfPlayer->open())
     {
-	return false;
+        return false;
     }
 
     mpPlayer = move(imfPlayer);

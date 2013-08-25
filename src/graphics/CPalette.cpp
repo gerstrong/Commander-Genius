@@ -112,6 +112,11 @@ void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
     m_Palette[c].r = r;
     m_Palette[c].g = g;
     m_Palette[c].b = b;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    m_Palette[c].a = 255;
+#endif
+
 }
 
 // sets whether to use the "dark" (lights off) or not

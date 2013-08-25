@@ -404,3 +404,13 @@ SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
 	return RectDispCoord.SDLRect();
 }
 
+
+
+SDL_Surface *CVideoDriver::convertThroughBlitSfc( SDL_Surface *sfc )
+{
+    SDL_Surface *blit = mpVideoEngine->getBlitSurface();
+    SDL_Surface *newSfc = SDL_ConvertSurface(sfc, blit->format, 0 );
+    return newSfc;
+}
+
+
