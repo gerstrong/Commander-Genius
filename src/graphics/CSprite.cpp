@@ -24,32 +24,17 @@ m_alpha(255)
 
 CSprite::CSprite(const CSprite& original)
 {
-    m_alpha = original.getAlpha();
-    original.readSize(m_xsize, m_ysize);
-    original.readBBox(m_bboxX1, m_bboxY1,
-                      m_bboxX2, m_bboxY2);
-    original.readOffsets(m_xoffset, m_yoffset);
-
-    auto origSfc = original.getSmartSDLSurface();
-    auto origMaskSfc = original.getSmartSDLMaskSurface();
-
-
-    mName = original.getName();
-
-    if(origSfc)
-    {
-        auto *origSfcPtr = origSfc.get();
-        mpSurface.reset(SDL_ConvertSurface(origSfcPtr, origSfcPtr->format, origSfcPtr->flags), &SDL_FreeSurface);
-    }
-    if(origMaskSfc)
-    {
-        auto *origMaskSfcPtr = origMaskSfc.get();
-        mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, origMaskSfcPtr->format, origMaskSfcPtr->flags), &SDL_FreeSurface);
-    }
-
+    this->copy(original);
 }
 
 CSprite CSprite::operator=(const CSprite& original)
+{
+    this->copy(original);
+    return *this;
+}
+
+
+void CSprite::copy(const CSprite& original)
 {
     m_alpha = original.getAlpha();
     original.readSize(m_xsize, m_ysize);
@@ -62,18 +47,34 @@ CSprite CSprite::operator=(const CSprite& original)
 
     mName = original.getName();
 
+    auto blitSfc = g_pVideoDriver->mpVideoEngine->getBlitSurface();
+    auto format = blitSfc->format;
+    auto flags = blitSfc->flags;
+
+
     if(origSfc)
     {
+        createSurface( 0, original.getSDLSurface()->format->palette->colors );
+
         auto *origSfcPtr = origSfc.get();
-        mpSurface.reset(SDL_ConvertSurface(origSfcPtr, origSfcPtr->format, origSfcPtr->flags), &SDL_FreeSurface);
+
+        /*mpSurface.reset(SDL_ConvertSurface(origSfcPtr, format, flags),
+                        &SDL_FreeSurface);*/
+        SDL_FillRect( mpSurface.get(), NULL, COLORKEY );
+        SDL_BlitSurface( origSfcPtr, NULL, mpSurface.get(), NULL);
     }
+
     if(origMaskSfc)
     {
         auto *origMaskSfcPtr = origMaskSfc.get();
-        mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, origMaskSfcPtr->format, origMaskSfcPtr->flags), &SDL_FreeSurface);
+
+        /*mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, format, flags),
+                            &SDL_FreeSurface);*/
+
+        SDL_FillRect( mpMasksurface.get(), NULL, COLORKEY );
+        SDL_BlitSurface( origMaskSfcPtr, NULL, mpMasksurface.get(), NULL);
     }
 
-    return *this;
 }
 
 /////////////////////////////
@@ -81,7 +82,7 @@ CSprite CSprite::operator=(const CSprite& original)
 /////////////////////////////
 
 bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
-{
+{        
 	mpSurface.reset(SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetPaletteColors(mpSurface->format->palette, Palette, 0, 255);
@@ -488,12 +489,12 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
  * \param x				X-Coordinate, indicating the position on dst
  * \param y				Y-Coordinate, indicating the position on dst
  */
-void CSprite::drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha )
+void CSprite::drawSprite(const int x, const int y, const Uint8 alpha )
 {
     drawSprite( g_pVideoDriver->getBlitSurface(), x, y/*, alpha*/ );
 }
 
-void CSprite::drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y)
+void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y)
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;

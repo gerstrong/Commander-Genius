@@ -103,7 +103,6 @@ bool CSDLVideo::initOverlaySurface( const bool useAlpha,
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( overlay, 0);
 #else
-
     SDL_SetAlpha( overlay, SDL_SRCALPHA, 0);
 #endif
 

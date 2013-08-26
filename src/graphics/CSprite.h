@@ -19,7 +19,8 @@ public:
     CSprite();
 
     CSprite(const CSprite& original);
-    CSprite operator=(const CSprite& original);
+    CSprite operator=(const CSprite& original);    
+    void copy(const CSprite& original);
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
@@ -43,8 +44,8 @@ public:
     std::shared_ptr<SDL_Surface> getSmartSDLSurface() const { return mpSurface; }
     std::shared_ptr<SDL_Surface> getSmartSDLMaskSurface() const { return mpMasksurface; }
 
-    void drawSprite( const Uint16 x, const Uint16 y, const Uint8 alpha=255 );
-    void drawSprite( SDL_Surface *dst, const Uint16 x, const Uint16 y );
+    void drawSprite( const int x, const int y, const Uint8 alpha=255 );
+    void drawSprite(SDL_Surface *dst, const int x, const int y );
 	void drawBlinkingSprite( Uint16 x, Uint16 y );
 	void _drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 

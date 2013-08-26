@@ -84,7 +84,9 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 		SDL_Surface *tempSurface = SDL_LoadBMP(GetFullFileName(filename).c_str());
 		if(tempSurface)
 		{
-			SDL_Surface *displaysurface = SDL_ConvertSurface(tempSurface, mpBitmapSurface->format, mpBitmapSurface->flags);
+            SDL_Surface *displaysurface = SDL_ConvertSurface(tempSurface,
+                                                             mpBitmapSurface->format,
+                                                             mpBitmapSurface->flags);
 			SDL_BlitSurface(displaysurface, NULL, mpBitmapSurface.get(), NULL);
 			SDL_FreeSurface(displaysurface);
 			SDL_FreeSurface(tempSurface);

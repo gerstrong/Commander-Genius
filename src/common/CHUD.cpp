@@ -57,12 +57,21 @@ void CHUD::setup(const int id)
         m_Rect.h = mHUDBox.getHeight();
         m_Rect.w = mHUDBox.getWidth()-7;
         m_Rect.x += (m_Rect.w-2)*id;
+
+
         mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 
         mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
 
+        SDL_FillRect( mpHUDBlit.get(), NULL, 0xFF00FF00 );
+
+        /*SDL_BlitSurface(mHUDBox.getSDLSurface(),
+                        NULL,
+                        mpHUDBlit.get(),
+                        NULL);*/
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        //SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220); // TODO: Find a way to get this done!
+        SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
 #else
         SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
 #endif
@@ -123,7 +132,7 @@ void CHUD::CreateBackground()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
 #else
-     mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
+    mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
 #endif
 
 	// Draw the rounded borders
