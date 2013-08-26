@@ -50,7 +50,9 @@ private:
 	Uint32 m_pcm_size;
 	Uint32 m_music_pos;
 	bool m_reading_stream;
-	int m_bitStream;
+	int m_bitStream;    
+    vorbis_info*    mVorbisInfo;    // some formatting data
+    bool mHasCommonFreqBase;
 };
 
 #if defined(TREMOR)

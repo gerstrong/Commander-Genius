@@ -60,22 +60,32 @@ bool COGGPlayer::open()
 {
 	// If Ogg detected, decode it into the stream psound->sound_buffer.
 	// It must fit into the Audio_cvt structure, so that it can be converted
+    mHasCommonFreqBase = true;
 
     if(ov_fopen((char*)GetFullFileName(m_filename).c_str(), &m_oggStream) != 0)
         return false;
 
-    vorbis_info*    vorbisInfo;    // some formatting data
-
-    vorbisInfo = ov_info(&m_oggStream, -1);
+    mVorbisInfo = ov_info(&m_oggStream, -1);
     ov_comment(&m_oggStream, -1);
 
     m_AudioFileSpec.format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
 
-    m_AudioFileSpec.channels = vorbisInfo->channels;
-    m_AudioFileSpec.freq = vorbisInfo->rate;
+    m_AudioFileSpec.channels = mVorbisInfo->channels;
+    m_AudioFileSpec.freq = mVorbisInfo->rate;
+
+    // Since I cannot convert with a proper quality from 44100 to 48000 Ogg wave output
+    // we set m_AudioFileSpec frequency to the same as the one of the SDL initialized AudioSpec
+    // scale just the buffer using readOGGStreamAndResample.
+    // This is base problem, but we have workarounds for that...
+    if( (m_AudioFileSpec.freq%m_AudioSpec.freq != 0) &&
+        (m_AudioSpec.freq%m_AudioFileSpec.freq != 0) )
+    {
+        m_AudioFileSpec.freq = m_AudioSpec.freq;
+        mHasCommonFreqBase = false;
+    }
 
     m_pcm_size = ov_pcm_total(&m_oggStream,-1);
-    m_pcm_size *= (vorbisInfo->channels*sizeof(Sint16));
+    m_pcm_size *= (mVorbisInfo->channels*sizeof(Sint16));
     m_music_pos = 0;
 
 	g_pLogFile->ftextOut("OGG-Player: File \"%s\" was opened successfully!<br>", m_filename.c_str());
@@ -86,8 +96,13 @@ bool COGGPlayer::open()
 		return false;
 
 	const size_t length = m_AudioSpec.size;
-	m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
-	m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
+    //m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
+
+    m_Audio_cvt.len = (length)/m_Audio_cvt.len_ratio;
+
+    m_Audio_cvt.len = (m_Audio_cvt.len>>2)<<2;
+
+    m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len*m_Audio_cvt.len_mult];
 
     return true;
 }
@@ -155,7 +170,7 @@ bool COGGPlayer::readOGGStreamAndResample( OggVorbis_File  &oggStream, Uint8 *bu
 
 	bool eof = readOGGStream( oggStream, reinterpret_cast<char*>(buf), input_size, OGGAudioSpec );
 
-	resample( buffer, buf, output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
+    resample( buffer, buf, output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
 
 	return eof;
 }
@@ -168,9 +183,9 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	bool rewind = false;
 
 	// read the ogg stream
-    /*if( m_AudioSpec.freq >= 48000 )
+    if( !mHasCommonFreqBase )
 	{
-		Uint32 insize = (m_Audio_cvt.len*441*100)/m_AudioSpec.freq;
+        Uint64 insize = (m_Audio_cvt.len*mVorbisInfo->rate)/m_AudioSpec.freq;
 		Uint8 mult = m_AudioFileSpec.channels;
 
 		if(m_AudioFileSpec.format == AUDIO_S16)
@@ -182,14 +197,21 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 
         memset(m_Audio_cvt.buf, 0, length);
 
-        //rewind = readOGGStreamAndResample(m_oggStream, m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
+        rewind = readOGGStreamAndResample(m_oggStream,
+                                          m_Audio_cvt.buf,
+                                          m_Audio_cvt.len_cvt,
+                                          insize,
+                                          m_AudioFileSpec);
     }
     else
 	{
-		rewind = readOGGStream(m_oggStream, reinterpret_cast<char*>(m_Audio_cvt.buf), m_Audio_cvt.len, m_AudioFileSpec);
-    }*/
+        rewind = readOGGStream(m_oggStream,
+                               reinterpret_cast<char*>(m_Audio_cvt.buf),
+                               m_Audio_cvt.len,
+                               m_AudioFileSpec);
+    }
 
-    memset(m_Audio_cvt.buf, 0, length);
+    //memset(m_Audio_cvt.buf, 0, length);
 
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format

@@ -132,8 +132,9 @@ void resample(const Uint8* output_buffer, const Uint8 *input_buffer,
 	if(format == AUDIO_S16)
 	{
 		memset((Uint8*)output_buffer, WAVE_SILENCE_S16, output_len);
-		resampleAnyBits( (Sint16*) (void *)output_buffer, (Sint16*) (void *)input_buffer,
-				output_len, input_len, channels);
+
+        resampleAnyBits( (Sint16*) (void *)output_buffer, (Sint16*) (void *)input_buffer,
+                output_len, input_len, channels);
 	}
 	else if(format == AUDIO_U8)
 	{
