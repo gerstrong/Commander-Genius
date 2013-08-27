@@ -52,8 +52,8 @@ public:
 	void drawBlinkingSprite( Uint16 x, Uint16 y );
 	void _drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 
-	Uint16 getXOffset() { return m_xoffset; }
-	Uint16 getYOffset() { return m_yoffset; }
+    Sint16 getXOffset() { return m_xoffset; }
+    Sint16 getYOffset() { return m_yoffset; }
     Uint8 getWidth() { return m_xsize; }
     Uint8 getHeight() { return m_ysize; }
     void setWidth(Uint8 w) { m_xsize=w; }

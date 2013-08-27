@@ -506,11 +506,14 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
 void CSprite::drawSprite(const int x, const int y, const Uint8 alpha )
 {
 
+    if(alpha < 255)
+    {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod( mpSurface.get(), alpha);
+        SDL_SetSurfaceAlphaMod( mpSurface.get(), alpha);
 #else
-    SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, alpha);
+        SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, alpha);
 #endif
+    }
 
     drawSprite( g_pVideoDriver->getBlitSurface(), x, y );
 }
