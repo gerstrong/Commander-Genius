@@ -37,6 +37,8 @@ private:
 	byte *m_sounddata;
 	unsigned int m_soundlength;
 	SDL_AudioSpec *m_pAudioSpec;
+    bool mHasCommonFreqBase;
+    int mOggFreq;
 };
 
 #endif /* CSOUNDSLOT_H_ */

@@ -16,6 +16,7 @@
 #include "sdl/sound/Sampling.h"
 #include "FindFile.h"
 
+
 #if defined(OGG)
 #include <vorbisfile.h>
 #elif defined(TREMOR)
@@ -37,19 +38,39 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
     const unsigned int BUFFER_SIZE = 32768;     // 32 KB buffers
     SoundBuffer = NULL;
 
+    SDL_AudioSpec &AudioSpec = *m_pAudioSpec;
+
     if(ov_fopen( (char *)GetFullFileName(filename).c_str(), &oggStream ) == 0)
     {
     	long bytes;
     	char array[BUFFER_SIZE];
     	std::vector<char> buffer;
-        vorbis_info*    vorbisInfo;    // some formatting data
 
     	int bitStream;
-        vorbisInfo = ov_info(&oggStream, -1);
+        vorbis_info*  vorbisInfo = ov_info(&oggStream, -1);
         ov_comment(&oggStream, -1);
         pspec->format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
         pspec->channels = vorbisInfo->channels;
-        pspec->freq = vorbisInfo->rate;
+
+        mOggFreq = vorbisInfo->rate;
+
+        pspec->freq = mOggFreq;
+
+
+        mHasCommonFreqBase = true;
+
+        // Since I cannot convert with a proper quality from 44100 to 48000 Ogg wave output
+        // we set m_AudioFileSpec frequency to the same as the one of the SDL initialized AudioSpec
+        // scale just the buffer using readOGGStreamAndResample.
+        // This is base problem, but we have workarounds for that...
+        if( (pspec->freq%AudioSpec.freq != 0) &&
+            (AudioSpec.freq%pspec->freq != 0) )
+        {
+            pspec->freq = AudioSpec.freq;
+            mHasCommonFreqBase = false;
+        }
+
+
         SoundLen = 0;
 
         do {
@@ -155,15 +176,15 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	SDL_ConvertAudio(&Audio_cvt);
 
 	// copy the converted stuff to the original soundbuffer
-	if(AudioSpec.freq == 48000)
+    if( !mHasCommonFreqBase )
 	{
-		const float factor = float(AudioSpec.freq)/44100.0f;
+        const float factor = float(AudioSpec.freq)/mOggFreq;
 		length = Audio_cvt.len_cvt;
 		const unsigned long out_len = (float)length*factor;
 		snddata = (Uint8*) malloc(out_len);
 
 		resample(snddata, Audio_cvt.buf,
-				out_len, length, AudioSpec.format, AudioSpec.channels);
+                out_len, length, AudioSpec.format, AudioSpec.channels);
 		length = out_len;
 	}
 	else

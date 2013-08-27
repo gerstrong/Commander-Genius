@@ -84,7 +84,6 @@ CSound::~CSound()
 bool CSound::init()
 {
 	g_pLogFile->ftextOut("Starting the sound driver...<br>");
-	char name[256];
 	SDL_AudioSpec obtained;
 
 	// now start up the SDL sound system
