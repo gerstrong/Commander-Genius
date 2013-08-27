@@ -33,7 +33,8 @@ timer(0)
 void CHUD::createHUDBlit()
 {
     mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
-    mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
+    mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);   
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
 #else
@@ -68,6 +69,10 @@ void CHUD::setup(const int id)
         m_Rect.h = mHUDBox.getHeight();
         m_Rect.w = mHUDBox.getWidth()-7;
         m_Rect.x += (m_Rect.w-2)*id;
+
+        #if SDL_VERSION_ATLEAST(2, 0, 0)
+            SDL_SetSurfaceBlendMode(mHUDBox.getSDLSurface(), SDL_BLENDMODE_NONE);
+        #endif
 
         createHUDBlit();
     }
@@ -128,12 +133,6 @@ void CHUD::CreateVorticonBackground()
     DrawCircle(0, 0, 76);
     DrawCircle(17-4, 15-2, 22);
     DrawCircle(58-4, 15-2, 22);
-
-    //SDL_FillRect( mpBackground.get(), NULL, 0xFFFFFFFF);
-
-
-    //SDL_BlitSurface( mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
-
 }
 
 // Draw a circle on the surface

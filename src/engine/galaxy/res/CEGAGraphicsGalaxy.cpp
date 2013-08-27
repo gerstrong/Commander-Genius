@@ -959,6 +959,11 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         sprite.exchangeSpriteColor( 10, 13, 0 );
     }
 
+    for(auto &sprite : g_pGfxEngine->getSpriteVec(0))
+    {
+        sprite.optimizeSurface();
+    }
+
 	return true;
 }
 
