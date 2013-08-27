@@ -63,13 +63,6 @@ void CHUD::setup(const int id)
 
         mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
 
-        SDL_FillRect( mpHUDBlit.get(), NULL, 0xFF00FF00 );
-
-        /*SDL_BlitSurface(mHUDBox.getSDLSurface(),
-                        NULL,
-                        mpHUDBlit.get(),
-                        NULL);*/
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
 #else
@@ -96,15 +89,12 @@ void CHUD::CreateBackground()
     headdstrect.x = 0;
     headdstrect.y = 11;
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-//#else
     temp = g_pVideoDriver->convertThroughBlitSfc(mpBackground.get());
     mpBackground.reset(temp, &SDL_FreeSurface);
-//#endif
 
 	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);
 	SDL_FillRect(temp, NULL, colorkey );
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetColorKey( temp, SDL_TRUE, colorkey );
 #else
@@ -129,11 +119,11 @@ void CHUD::CreateBackground()
 
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-#else
+//#else
     mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
-#endif
+//#endif
 
 	// Draw the rounded borders
     DrawCircle(0, 0, 76);
