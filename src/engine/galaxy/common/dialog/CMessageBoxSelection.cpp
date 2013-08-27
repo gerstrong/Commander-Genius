@@ -126,10 +126,11 @@ void CMessageBoxSelection::init()
 	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    SDL_SetColorKey(mpSelSurface1.get(), SDL_TRUE, SDL_MapRGB( format, 0, 0, 0 ));
+    SDL_SetColorKey(mpSelSurface2.get(), SDL_TRUE, SDL_MapRGB( format, 0, 0, 0 ));
 #else
     SDL_SetColorKey( mpSelSurface1.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
-	SDL_SetColorKey( mpSelSurface2.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
+    SDL_SetColorKey( mpSelSurface2.get(), SDL_SRCCOLORKEY, SDL_MapRGB( format, 0, 0, 0 ) );
 #endif
 	SDL_FillRect( mpSelSurface1.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &cutRect, SDL_MapRGB( format, 0, 0, 0 ) );

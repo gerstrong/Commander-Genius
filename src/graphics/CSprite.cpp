@@ -119,9 +119,12 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 bool CSprite::optimizeSurface()
 {
     if(mpSurface)
+    {
         mpSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
+        return true;
+    }
 
-    return true;
+    return false;
 }
 
 

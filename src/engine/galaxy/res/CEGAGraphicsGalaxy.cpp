@@ -932,6 +932,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         // Yellow against Green
         sprite.exchangeSpriteColor( 2, 6, 0 );
         sprite.exchangeSpriteColor( 10, 14, 0 );
+        sprite.optimizeSurface();
     }
 
     auto &SpriteVecPlayer3 = g_pGfxEngine->getSpriteVec(2);
@@ -944,6 +945,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         // Yellow against Purple
         sprite.exchangeSpriteColor( 5, 6, 0 );
         sprite.exchangeSpriteColor( 13, 14, 0 );
+        sprite.optimizeSurface();
     }
 
 
@@ -957,6 +959,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         // Green against Purple
         sprite.exchangeSpriteColor( 2, 5, 0 );
         sprite.exchangeSpriteColor( 10, 13, 0 );
+        sprite.optimizeSurface();
     }
 
     for(auto &sprite : g_pGfxEngine->getSpriteVec(0))
