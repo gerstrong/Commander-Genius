@@ -347,7 +347,7 @@ void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 		default: spr = 0; break;
 	}
 
-	if (spr) riseBonus(spr, mpx, mpy);
+    if (spr) riseBonus(spr, mpx, mpy);
 }
 
 

@@ -132,23 +132,29 @@ void CSprite::generateSprite( const int points )
 	Uint8 r,g,b,a;
 	std::string pointStr = itoa(points);
 
-	setSize( pointStr.size()*8, 8);
+    // +2 for the outline
+    setSize( (pointStr.size()*8)+2, 8+2);
 
-	createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette  );
-	optimizeSurface();
+    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+    SDL_PixelFormat *format = blit->format;
 
-	SDL_FillRect(mpSurface.get(), NULL, 0xFFFFFFFF);
+    mpSurface.reset(SDL_CreateRGBSurface( 0, m_xsize, m_ysize, 32,
+                                          format->Rmask,
+                                          format->Gmask,
+                                          format->Bmask,
+                                          format->Amask),
+                    &SDL_FreeSurface);
 
 	CFont &smallFont = g_pGfxEngine->getFont(2);
 
 	// Create Text Borders TODO: Make this code to draw better looking fonts
-	smallFont.drawFont( mpSurface.get(), pointStr, -1,  0 );
-	smallFont.drawFont( mpSurface.get(), pointStr,  0, -1 );
-	smallFont.drawFont( mpSurface.get(), pointStr,  1, 0 );
-	smallFont.drawFont( mpSurface.get(), pointStr,  0, 1 );
+    smallFont.drawFont( mpSurface.get(), pointStr,  0,  1 );
+    smallFont.drawFont( mpSurface.get(), pointStr,  1, 0 );
+    smallFont.drawFont( mpSurface.get(), pointStr,  2, 1 );
+    smallFont.drawFont( mpSurface.get(), pointStr,  1, 2 );
 
 	// Now draw the alternate font. It just has another color.
-	smallFont.drawFont( mpSurface.get(), pointStr, 0,  0, true );
+    smallFont.drawFont( mpSurface.get(), pointStr, 1,  1, true );
 
 	if(SDL_MUSTLOCK(mpSurface.get())) SDL_LockSurface(mpSurface.get());
 
@@ -502,7 +508,7 @@ void CSprite::drawSprite(const int x, const int y, const Uint8 alpha )
     drawSprite( g_pVideoDriver->getBlitSurface(), x, y/*, alpha*/ );
 }
 
-void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y)
+void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y )
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;

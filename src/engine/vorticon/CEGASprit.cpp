@@ -203,7 +203,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	
-    //LoadSpecialSprites( g_pGfxEngine->getSpriteVec(0) );
+    LoadSpecialSprites( g_pGfxEngine->getSpriteVec(0) );
 
     for(unsigned int i=1 ; i<4 ; i++)
     {
