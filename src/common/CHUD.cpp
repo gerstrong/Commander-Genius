@@ -30,6 +30,16 @@ timer(0)
     setup(id);
 }
 
+void CHUD::createHUDBlit()
+{
+    mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
+    mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
+#else
+    SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
+#endif
+}
 
 void CHUD::setup(const int id)
 {
@@ -48,7 +58,8 @@ void CHUD::setup(const int id)
     {
         m_Rect.w = 84;	m_Rect.h = 30;
         m_Rect.x += (m_Rect.w-4)*id;
-        CreateBackground();
+        createHUDBlit();
+        CreateVorticonBackground();
     }
     else // Galaxy HUD
     {
@@ -58,16 +69,7 @@ void CHUD::setup(const int id)
         m_Rect.w = mHUDBox.getWidth()-7;
         m_Rect.x += (m_Rect.w-2)*id;
 
-
-        mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
-
-        mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-        SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
-#else
-        SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
-#endif
+        createHUDBlit();
     }
 }
 
@@ -75,11 +77,12 @@ void CHUD::setup(const int id)
  * \brief This function prepares the Background, so in process it can be rendered.
  * This function should only be called once!
  */
-void CHUD::CreateBackground()
+void CHUD::CreateVorticonBackground()
 {
-	// Create a surface for that
-	SDL_Surface *temp;
-    mpBackground.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
+    // Create a surface for the Background
+    mpBackground.reset( SDL_ConvertSurface( mpHUDBlit.get(), mpHUDBlit->format, 0), &SDL_FreeSurface );
+
+    //SDL_FillRect( mpBackground.get(), NULL, 0xFFFFFFFF);
 
 	SDL_Rect headsrcrect, headdstrect;
 	headsrcrect.x = 0;
@@ -89,20 +92,16 @@ void CHUD::CreateBackground()
     headdstrect.x = 0;
     headdstrect.y = 11;
 
-    temp = g_pVideoDriver->convertThroughBlitSfc(mpBackground.get());
-    mpBackground.reset(temp, &SDL_FreeSurface);
+    mKeenHeadSprite = g_pGfxEngine->getSprite(mId,PMAPDOWNFRAME);
 
-	const Uint32 colorkey = SDL_MapRGB(mpBackground->format, 0x00, 0xFF, 0xFF);
-	SDL_FillRect(temp, NULL, colorkey );
+    SDL_Surface *keenHeadSfc = mKeenHeadSprite.getSDLSurface();
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetColorKey( temp, SDL_TRUE, colorkey );
-#else
-	SDL_SetColorKey( temp, SDL_SRCCOLORKEY, colorkey );
+    SDL_SetSurfaceBlendMode( keenHeadSfc, SDL_BLENDMODE_NONE);
 #endif
 
-    CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(mId,PMAPDOWNFRAME);
-	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
+    SDL_BlitSurface( keenHeadSfc, &headsrcrect, mpBackground.get(), &headdstrect );
+
 
 	int sprite=0;
 	const int Episode = g_pBehaviorEngine->getEpisode();
@@ -111,24 +110,30 @@ void CHUD::CreateBackground()
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 
 	// Draw the shot
-    CSprite &KeenGunSprite = g_pGfxEngine->getSprite(mId,sprite);
-	headdstrect.w = headsrcrect.w = KeenGunSprite.getWidth();
-	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
+    mKeenGunSprite = g_pGfxEngine->getSprite(mId,sprite);
+    headdstrect.w = headsrcrect.w = mKeenGunSprite.getWidth();
+    headdstrect.h = headsrcrect.h = mKeenGunSprite.getHeight();
     headdstrect.x = 45-(headsrcrect.w/2);
     headdstrect.y = 19-(headsrcrect.h/2);
 
-	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, mpBackground.get(), &headdstrect );
+    SDL_Surface *keenGunSfc = mKeenGunSprite.getSDLSurface();
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceBlendMode(keenGunSfc, SDL_BLENDMODE_NONE);
+#endif
 
-//#else
-    mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
-//#endif
+    SDL_BlitSurface( keenGunSfc, &headsrcrect, mpBackground.get(), &headdstrect );
 
 	// Draw the rounded borders
     DrawCircle(0, 0, 76);
     DrawCircle(17-4, 15-2, 22);
     DrawCircle(58-4, 15-2, 22);
+
+    //SDL_FillRect( mpBackground.get(), NULL, 0xFFFFFFFF);
+
+
+    //SDL_BlitSurface( mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
+
 }
 
 // Draw a circle on the surface
@@ -209,6 +214,7 @@ void CHUD::renderGalaxy()
     }
   }
 
+
   SDL_BlitSurface( blitsfc, NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
 }
 /**
@@ -222,8 +228,12 @@ void CHUD::renderVorticon()
 	lives = (m_lives<99) ? m_lives : 99;
 	charges = (m_oldCharges<99) ? m_oldCharges : 99;
 
+    //SDL_FillRect( mpBackground.get(), NULL, 0xFF8FFF8F);
+
+
 	// Draw the background
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
+
 
 	CFont &Font = g_pGfxEngine->getFont(1);
 
@@ -235,7 +245,7 @@ void CHUD::renderVorticon()
 
     Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2);
 
-    SDL_BlitSurface( mpHUDBlit.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
+    SDL_BlitSurface( mpHUDBlit.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );   
 }
 
 

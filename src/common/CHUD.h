@@ -40,6 +40,8 @@ public:
 	 */
     void render();
 
+    void createHUDBlit();
+
     /**
       * \brief Sets up the HUD Box for certain id sprite variant
       */
@@ -52,7 +54,7 @@ public:
 
 private:
 
-	void CreateBackground();
+    void CreateVorticonBackground();
     void renderGalaxy();
 	void renderVorticon();
 	void DrawCircle(int x, int y, int width);
@@ -74,6 +76,9 @@ private:
     int mId;
 
 	int timer;
+
+    CSprite mKeenHeadSprite;
+    CSprite mKeenGunSprite;
 };
 
 #endif /* CHUD_H_ */

@@ -18,6 +18,9 @@ class CSprite
 public:
     CSprite();
 
+
+    std::shared_ptr<SDL_Surface> createCopySDLSurface(const std::shared_ptr<SDL_Surface>& original);
+
     CSprite(const CSprite& original);
     CSprite operator=(const CSprite& original);    
     void copy(const CSprite& original);

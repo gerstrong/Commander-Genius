@@ -34,6 +34,30 @@ CSprite CSprite::operator=(const CSprite& original)
 }
 
 
+
+std::shared_ptr<SDL_Surface> CSprite::createCopySDLSurface(
+        const std::shared_ptr<SDL_Surface>& original)
+{
+    std::shared_ptr<SDL_Surface> surface;
+
+    surface.reset(SDL_CreateRGBSurface( 0, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetPaletteColors(surface->format->palette, original->format->palette->colors, 0, 255);
+    SDL_SetColorKey(surface.get(), SDL_TRUE, COLORKEY);
+#else
+    SDL_SetColors( surface.get(), original->format->palette->colors, 0, 255);
+    SDL_SetColorKey( surface.get(), SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
+#endif
+
+    auto *origSfcPtr = original.get();
+
+    SDL_FillRect( surface.get(), NULL, COLORKEY );
+    SDL_BlitSurface( origSfcPtr, NULL, surface.get(), NULL);
+
+    return surface;
+}
+
+
 void CSprite::copy(const CSprite& original)
 {
     m_alpha = original.getAlpha();
@@ -47,32 +71,14 @@ void CSprite::copy(const CSprite& original)
 
     mName = original.getName();
 
-    auto blitSfc = g_pVideoDriver->mpVideoEngine->getBlitSurface();
-    auto format = blitSfc->format;
-    auto flags = blitSfc->flags;
-
-
     if(origSfc)
     {
-        createSurface( 0, original.getSDLSurface()->format->palette->colors );
-
-        auto *origSfcPtr = origSfc.get();
-
-        /*mpSurface.reset(SDL_ConvertSurface(origSfcPtr, format, flags),
-                        &SDL_FreeSurface);*/
-        SDL_FillRect( mpSurface.get(), NULL, COLORKEY );
-        SDL_BlitSurface( origSfcPtr, NULL, mpSurface.get(), NULL);
+        mpSurface = createCopySDLSurface( origSfc );
     }
 
     if(origMaskSfc)
     {
-        auto *origMaskSfcPtr = origMaskSfc.get();
-
-        /*mpMasksurface.reset(SDL_ConvertSurface(origMaskSfcPtr, format, flags),
-                            &SDL_FreeSurface);*/
-
-        SDL_FillRect( mpMasksurface.get(), NULL, COLORKEY );
-        SDL_BlitSurface( origMaskSfcPtr, NULL, mpMasksurface.get(), NULL);
+        mpMasksurface = createCopySDLSurface( origMaskSfc );
     }
 
 }
@@ -106,12 +112,8 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 
 bool CSprite::optimizeSurface()
 {
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
     if(mpSurface)
-    mpSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
-//#endif
+        mpSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
 
     return true;
 }
