@@ -175,7 +175,6 @@ void CMessageBoxSelection::render()
 
 
     // now draw the glowing rectangle. It fades here!
-
     if(blendup)
         blend+= BLEND_SPEED;
     else

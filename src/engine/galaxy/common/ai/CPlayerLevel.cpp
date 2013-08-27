@@ -2567,9 +2567,21 @@ void CPlayerLevel::process()
 
 		if ( mPoleGrabTime < MAX_POLE_GRAB_TIME )
 		    mPoleGrabTime++;
-	}
 
-	(this->*mp_processState)();
+        (this->*mp_processState)();
+	}
+    else // Otherwise keen is dying
+    {
+        // Might happen if dopefish eats keen
+        if(mp_processState == &CPlayerBase::processGetEaten)
+        {
+            processGetEaten();
+        }
+        else
+        {
+            processDying();
+        }
+    }
 	
 	
 	if(mp_Map->mFuseInLevel && mp_Map->mNumFuses == 0)

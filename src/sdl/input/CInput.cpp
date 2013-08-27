@@ -508,8 +508,8 @@ void CInput::transMouseRelCoord(CVec &Pos,
 								const SDL_MouseMotionEvent motion,
 								const CRect<Uint16> &transformRect)
 {
-	Pos.x = ( static_cast<float>(motion.x-transformRect.x)/static_cast<float>(transformRect.w) );
-	Pos.y = ( static_cast<float>(motion.y-transformRect.y)/static_cast<float>(transformRect.h) );
+    Pos.x = ( static_cast<float>(motion.x-transformRect.x)/static_cast<float>(transformRect.w) );
+    Pos.y = ( static_cast<float>(motion.y-transformRect.y)/static_cast<float>(transformRect.h) );
 }
 
 
@@ -521,8 +521,8 @@ void CInput::pollEvents()
     
     if(remapper.mappingInput)
     {
-	readNewEvent();
-	return;
+        readNewEvent();
+        return;
     }
     
 	CVec Pos;
@@ -538,6 +538,14 @@ void CInput::pollEvents()
 	for(int i=0 ; i<MAX_COMMANDS ; i++)
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    const CRect<Uint16> gameArea =  g_pVideoDriver->getGameResolution();
+#else
+    const CRect<Uint16> gameArea =  g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
+#endif
+
 
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
@@ -586,17 +594,17 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_MOUSEBUTTONDOWN:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
+            transMouseRelCoord(Pos, Event.motion, gameArea);
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
+            transMouseRelCoord(Pos, Event.motion, gameArea);
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
 			break;
 
 		case SDL_MOUSEMOTION:
-			transMouseRelCoord(Pos, Event.motion, g_pVideoDriver->mpVideoEngine->getAspectCorrRect());
+            transMouseRelCoord(Pos, Event.motion, gameArea);
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
 			break;
 #endif

@@ -564,14 +564,14 @@ void CPlayerBase::processGetEaten()
 void CPlayerBase::kill(const bool force)
 {
     if(getActionNumber(A_KEEN_ENTER_DOOR))
-	return;
+        return;
     
     if(m_Cheatmode.god && !force)
-	return;
+        return;
     
     // Here were prepare Keen to die, setting the action to die
     if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
-	return;
+        return;
 	
     m_dying = true;
     yinertia = -DIE_FALL_MAX_INERTIA;
