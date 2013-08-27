@@ -40,7 +40,7 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
 			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    //SDL_SetSurfaceColorMod(mFontSurface.get(), Palette->r, Palette->g, Palette->b);
+    SDL_SetPaletteColors(mFontSurface->format->palette, Palette, 0, 255);
 	SDL_SetColorKey(mFontSurface.get(), SDL_TRUE, COLORKEY);
 #else
     SDL_SetColors(mFontSurface.get(), Palette, 0, 255);

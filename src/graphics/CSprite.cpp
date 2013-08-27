@@ -34,7 +34,6 @@ CSprite CSprite::operator=(const CSprite& original)
 }
 
 
-
 std::shared_ptr<SDL_Surface> CSprite::createCopySDLSurface(
         const std::shared_ptr<SDL_Surface>& original)
 {
