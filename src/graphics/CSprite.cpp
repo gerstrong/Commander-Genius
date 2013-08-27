@@ -40,19 +40,26 @@ std::shared_ptr<SDL_Surface> CSprite::createCopySDLSurface(
 {
     std::shared_ptr<SDL_Surface> surface;
 
-    surface.reset(SDL_CreateRGBSurface( 0, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
+    if(original->format->BitsPerPixel < 16)
+    {
+        surface.reset(SDL_CreateRGBSurface( 0, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetPaletteColors(surface->format->palette, original->format->palette->colors, 0, 255);
-    SDL_SetColorKey(surface.get(), SDL_TRUE, COLORKEY);
+        SDL_SetPaletteColors(surface->format->palette, original->format->palette->colors, 0, 255);
+        SDL_SetColorKey(surface.get(), SDL_TRUE, COLORKEY);
 #else
-    SDL_SetColors( surface.get(), original->format->palette->colors, 0, 255);
-    SDL_SetColorKey( surface.get(), SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
+        SDL_SetColors( surface.get(), original->format->palette->colors, 0, 255);
+        SDL_SetColorKey( surface.get(), SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
 #endif
 
-    auto *origSfcPtr = original.get();
+        auto *origSfcPtr = original.get();
 
-    SDL_FillRect( surface.get(), NULL, COLORKEY );
-    SDL_BlitSurface( origSfcPtr, NULL, surface.get(), NULL);
+        SDL_FillRect( surface.get(), NULL, COLORKEY );
+        SDL_BlitSurface( origSfcPtr, NULL, surface.get(), NULL);
+    }
+    else
+    {
+        surface.reset(SDL_ConvertSurface(original.get(),original->format,0));
+    }
 
     return surface;
 }
