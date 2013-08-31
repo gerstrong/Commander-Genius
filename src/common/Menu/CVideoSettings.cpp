@@ -93,8 +93,24 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpMenuDialog->addControl( mpAspectSelection );
 
 
-	mpScalerSelection = new CGUIComboSelection( "Scaler",
-		filledStrList( 7, "none", "normal2x", "normal3x", "normal4x", "scale2x", "scale3x", "scale4x" ) );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    mpScalerSelection =
+            new CGUIComboSelection( "Scaler",
+                filledStrList( 7, "none",
+                                  "scale2x",
+                                  "scale3x",
+                                  "scale4x" ) );
+#else
+    mpScalerSelection =
+            new CGUIComboSelection( "Scaler",
+                filledStrList( 7, "none",
+                                  "normal2x",
+                                  "normal3x",
+                                  "normal4x",
+                                  "scale2x",
+                                  "scale3x",
+                                  "scale4x" ) );
+#endif
 	mpMenuDialog->addControl( mpScalerSelection );
 
 

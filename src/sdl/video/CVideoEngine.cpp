@@ -17,15 +17,39 @@ ScrollSurface(NULL),       // 512x512 scroll buffer
 m_VidConfig(VidConfig),
 mSbufferx(0),
 mSbuffery(0),
-#if !SDL_VERSION_ATLEAST(2, 0, 0)
-    screen(NULL),
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    window(nullptr),
+    renderer(nullptr),
+    sdlTexture(nullptr),
+#else
+    screen(nullptr),
 #endif
 m_Mode(0)
 {}
 
 
 CVideoEngine::~CVideoEngine()
-{}
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+    if(sdlTexture)
+    {
+        SDL_DestroyTexture(sdlTexture);
+    }
+
+    if(renderer)
+    {
+        SDL_DestroyRenderer(renderer);
+    }
+
+    if(window)
+    {
+        SDL_DestroyWindow(window);
+    }
+
+#endif
+
+}
 
 
 bool CVideoEngine::init()

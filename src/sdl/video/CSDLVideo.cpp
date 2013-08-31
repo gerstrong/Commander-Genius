@@ -25,12 +25,25 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
   
   
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+
+    if(window)
+    {
+        SDL_DestroyWindow(window);
+    }
+
+
     window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               m_VidConfig.m_DisplayRect.w,
                               m_VidConfig.m_DisplayRect.h,
-                              /*SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|*/SDL_WINDOW_SHOWN);
+                              /*SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|*/
+                              SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
+    if(renderer)
+    {
+        SDL_DestroyRenderer(renderer);
+    }
 
     renderer = SDL_CreateRenderer(window, -1, 0);
      
@@ -44,14 +57,23 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 
     SDL_RenderSetLogicalSize(renderer, gamerect.w, gamerect.h);
 
+    if(sdlTexture)
+    {
+        SDL_DestroyTexture(sdlTexture);
+    }
 
-    if(FilteredSurface)
+
+    if(m_VidConfig.m_ScaleXFilter > 1)
     {
         sdlTexture = SDL_CreateTexture(renderer,
                                        SDL_PIXELFORMAT_ARGB8888,
                                        SDL_TEXTUREACCESS_STREAMING,
                                        gamerect.w*m_VidConfig.m_ScaleXFilter,
                                        gamerect.h*m_VidConfig.m_ScaleXFilter);
+
+        /*Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
+                                 float(FilteredSurface->h)/float(aspectCorrectionRect.h));*/
+
     }
     else
     {
@@ -62,7 +84,9 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
                                        gamerect.h);
     }
 
+
 #else
+
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 
 	if (!screen)
@@ -73,13 +97,14 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 
 	aspectCorrectResizing(newDim, w, h);
 
-#endif
-
     if(FilteredSurface)
     {
         Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
                                  float(FilteredSurface->h)/float(aspectCorrectionRect.h));
     }
+
+#endif
+
 
 	return true;
 }
@@ -121,7 +146,7 @@ void CSDLVideo::setLightIntensity(const float intensity)
     Uint32 color = SDL_MapRGB(sfc->format, 0, 0, 0);
 
     #if SDL_VERSION_ATLEAST(2, 0, 0)
-        //SDL_SetAlpha( sfc, SDL_SRCALPHA, 255-intense); //TODO: Make it working...
+        SDL_SetSurfaceAlphaMod( sfc, 255-intense);
     #else
         SDL_SetAlpha( sfc, SDL_SRCALPHA, 255-intense);
     #endif
