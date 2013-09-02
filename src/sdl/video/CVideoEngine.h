@@ -20,6 +20,12 @@
 #include <memory>
 
 
+/**
+ * This function calculates an equivalent value near by the power of two. That is needed so we support POT Textures
+ */
+Uint16 getPowerOfTwo(const Uint16 value);
+
+
 class CVideoEngine
 {
 public:
@@ -61,11 +67,11 @@ public:
 		mSbuffery = 0;
 	}
 
-	inline void UpdateScrollBufX(const Sint16 SBufferX)
-	{		mSbufferx = SBufferX&511;	}
+    inline void UpdateScrollBufX(const Sint16 SBufferX, const int drawMask)
+    {		mSbufferx = SBufferX&drawMask;	}
 
-	inline void UpdateScrollBufY(const Sint16 SBufferY)
-	{		mSbuffery = SBufferY&511;	}
+    inline void UpdateScrollBufY(const Sint16 SBufferY, const int drawMask)
+    {		mSbuffery = SBufferY&drawMask;	}
 
 	void readScrollBuffer(Sint16 &x, Sint16 &y)
 	{	x = mSbufferx; y = mSbuffery;}
@@ -80,7 +86,7 @@ protected:
 
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FilteredSurface;
-	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer    
+    SDL_Surface *ScrollSurface;       	// Squared scroll buffer
 
     CScaler Scaler;
 

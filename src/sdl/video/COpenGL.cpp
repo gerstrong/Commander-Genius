@@ -15,16 +15,6 @@
 #include "CLogFile.h"
 #include "graphics/PerSurfaceAlpha.h"
 
-/**
- * This function calculates an equivalent value near by the power of two. That is needed so we support POT Textures
- */
-Uint16 getPowerOfTwo(Uint16 value)
-{
-	Uint16 output = 1;
-	while (output<value)
-		output <<= 1;
-	return output;
-}
 
 // gamerect is the base resolution for the game which is scaled with the filter
 // depending on what resolution has been chosen, it is mostly 320x200 or 320x240

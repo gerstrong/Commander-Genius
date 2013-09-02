@@ -10,10 +10,19 @@
 #include "CLogFile.h"
 #include <SDL_syswm.h>
 
+
+Uint16 getPowerOfTwo(const Uint16 value)
+{
+    Uint16 output = 1;
+    while (output<value)
+        output <<= 1;
+    return output;
+}
+
 CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
 BlitSurface(NULL),
 FilteredSurface(NULL),
-ScrollSurface(NULL),       // 512x512 scroll buffer
+ScrollSurface(NULL),       // Squared scroll buffer
 m_VidConfig(VidConfig),
 mSbufferx(0),
 mSbuffery(0),
@@ -120,19 +129,19 @@ bool CVideoEngine::init()
 	}
 	
 	#ifdef _WIN32 // So far this only works under windows
-	else
-	{
-	    SDL_SysWMinfo info;
-	    SDL_VERSION(&info.version);
-	    if( int ok = SDL_GetWMInfo(&info) )
-	    {
-		if(ok > 0)
-		{
-		    ShowWindow(info.window, SW_SHOWNORMAL);		    
-		}
-	    }
-	    
-	}
+    else
+    {
+        SDL_SysWMinfo info;
+        SDL_VERSION(&info.version);
+        if( int ok = SDL_GetWMInfo(&info) )
+        {
+            if(ok > 0)
+            {
+                ShowWindow(info.window, SW_SHOWNORMAL);
+            }
+        }
+
+    }
 	#endif
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -213,17 +222,19 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 	Sint16 sbufferx, sbuffery;
 	const SDL_Rect Gamerect = m_VidConfig.m_GameRect.SDLRect();
 
+    const int squareSize = ScrollSurface->w;
+
 	dstrect.x = 0; dstrect.y = 0;
 	srcrect.x =	sbufferx = mSbufferx;
 	srcrect.y = sbuffery = mSbuffery;
 
-	const bool wraphoz = (sbufferx > (512-Gamerect.w));
-	const bool wrapvrt = (sbuffery > (512-Gamerect.h));
+    const bool wraphoz = (sbufferx > (squareSize-Gamerect.w));
+    const bool wrapvrt = (sbuffery > (squareSize-Gamerect.h));
 
 	dstrect.w = (Gamerect.w>sbufferx) ? Gamerect.w-sbufferx : Gamerect.w ;
 	dstrect.h = (Gamerect.h>sbuffery) ? Gamerect.h-sbuffery : Gamerect.h ;
-	srcrect.w = wraphoz ? (512-sbufferx) : Gamerect.w;
-	srcrect.h = wrapvrt ? (512-sbuffery) : Gamerect.h;
+    srcrect.w = wraphoz ? (squareSize-sbufferx) : Gamerect.w;
+    srcrect.h = wrapvrt ? (squareSize-sbuffery) : Gamerect.h;
 
 	SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
 

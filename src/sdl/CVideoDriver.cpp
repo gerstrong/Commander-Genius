@@ -286,8 +286,11 @@ void CVideoDriver::setScaleType(bool IsNormal)
 void CVideoDriver::updateScrollBuffer(CMap &map) 
 {
 	map.drawAll();
-	mpVideoEngine->UpdateScrollBufX(map.m_scrollx);
-	mpVideoEngine->UpdateScrollBufY(map.m_scrolly);
+
+    const int drawMask = getScrollSurface()->w-1;
+
+    mpVideoEngine->UpdateScrollBufX(map.m_scrollx, drawMask);
+    mpVideoEngine->UpdateScrollBufY(map.m_scrolly, drawMask);
 }
 
 void CVideoDriver::blitScrollSurface() // This is only for tiles

@@ -174,13 +174,12 @@ bool CSDLVideo::createSurfaces()
     SDL_SetSurfaceBlendMode(BlitSurface, SDL_BLENDMODE_NONE);
 
 
+    const int squareSize = getPowerOfTwo( gamerect.h > gamerect.w ? gamerect.h : gamerect.w );
+
     // This function creates the surfaces which are needed for the game.    
-    /*ScrollSurface = createSurface( "ScrollSurface", false,//true,
-            512,
-            512,
-            RES_BPP,
-            m_Mode );*/
-    ScrollSurface = SDL_CreateRGBSurface( m_Mode, 512, 512, 32,
+    ScrollSurface = SDL_CreateRGBSurface( m_Mode,
+                                          squareSize,
+                                          squareSize, 32,
                                           0x00FF0000,
                                           0x0000FF00,
                                           0x000000FF,

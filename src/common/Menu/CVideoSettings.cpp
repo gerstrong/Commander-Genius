@@ -84,19 +84,17 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
 	
 #if !defined(EMBEDDED)	
-	//mpAspectSwitch = new CGUISwitch( "Aspect Correct" );
 	
 	mpAspectSelection = new CGUIComboSelection( "Aspect Corr",
 		filledStrList(1, "disabled") );
 	
-	//mpMenuDialog->addControl( mpAspectSwitch );
 	mpMenuDialog->addControl( mpAspectSelection );
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     mpScalerSelection =
             new CGUIComboSelection( "Scaler",
-                filledStrList( 7, "none",
+                filledStrList( 4, "none",
                                   "scale2x",
                                   "scale3x",
                                   "scale4x" ) );

@@ -48,9 +48,11 @@ bool CSettings::saveDrvCfg()
 	Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
 	Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
 
-	Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
-	Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
-	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
+    Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
+    Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+    Configuration.WriteInt("Video", "gameWidth", VidConf.m_GameRect.w);
+    Configuration.WriteInt("Video", "gameHeight", VidConf.m_GameRect.h);
+    Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #if defined(USE_OPENGL)
     Configuration.WriteString("Video", "OGLfilter", VidConf.m_opengl_filter == GL_NEAREST ? "nearest" : "linear" );
 #endif
@@ -96,14 +98,19 @@ bool CSettings::loadDrvCfg()
 	else
 	{
 		CVidConfig VidConf;
-		CRect<Uint16> &res = VidConf.m_DisplayRect;
-		//Configuration.ReadInteger("Video", "bpp", &res.depth, 32);
-		int value = 0;
-		Configuration.ReadInteger("Video", "width", &value, 320);
-		res.w = value;
-		Configuration.ReadInteger("Video", "height", &value, 200);
-		res.h = value;
-		
+        CRect<Uint16> &res = VidConf.m_DisplayRect;
+        CRect<Uint16> &gamesRes = VidConf.m_GameRect;
+        int value = 0;
+        Configuration.ReadInteger("Video", "width", &value, 320);
+        res.w = value;
+        Configuration.ReadInteger("Video", "height", &value, 200);
+        res.h = value;
+
+        Configuration.ReadInteger("Video", "gameWidth", &value, 320);
+        gamesRes.w = value;
+        Configuration.ReadInteger("Video", "gameHeight", &value, 200);
+        gamesRes.h = value;
+
 		if(res.w*res.h <= 0)
 		{
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file!<br>");
@@ -229,10 +236,9 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_KEYSTACK,			"Keystacking      ", "keystack", 0 );
 	setOption( OPT_LVLREPLAYABILITY,	"Replay Levels    ", "level_replayability", 0 );
 	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
-	//setOption( OPT_SWITCHSCORES,		"Score Fix (EP3)  ", "switch_scores", 0 );
+    setOption( OPT_MODERN,		"Modern Style     ", "modern_style", 1 );
 	setOption( OPT_HUD,				"HUD Display      ", "hud", 1 );
 	setOption( OPT_FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
-	//setOption( OPT_FIXLEVELERRORS,	"Fix Level Errors ", "fix_level", 1 );
 }
 
 /**

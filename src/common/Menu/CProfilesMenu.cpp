@@ -37,8 +37,9 @@ public:
 		p_option[OPT_ALLOWPKING].value = 0;
 		p_option[OPT_KEYSTACK].value = 0;
 		p_option[OPT_LVLREPLAYABILITY].value = 0;
-		p_option[OPT_RISEBONUS].value = 0;
-		p_option[OPT_HUD].value = 0;
+        p_option[OPT_RISEBONUS].value = 0;
+        p_option[OPT_MODERN].value = 1;
+        p_option[OPT_HUD].value = 0;
 		g_pSettings->saveDrvCfg();
 	}
 };
@@ -64,6 +65,7 @@ public:
 		g_pTimer->setFPS(60);
 		p_option[OPT_KEYSTACK].value = 1;
 		p_option[OPT_RISEBONUS].value = 1;
+        p_option[OPT_MODERN].value = 1;
 		p_option[OPT_HUD].value = 1;
 		g_pSettings->saveDrvCfg();
 	}
