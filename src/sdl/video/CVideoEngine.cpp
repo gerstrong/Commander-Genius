@@ -224,6 +224,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 
     const int squareSize = ScrollSurface->w;
 
+
 	dstrect.x = 0; dstrect.y = 0;
 	srcrect.x =	sbufferx = mSbufferx;
 	srcrect.y = sbuffery = mSbuffery;

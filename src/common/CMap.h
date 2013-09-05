@@ -17,6 +17,7 @@
 #include "fileio/TypeDefinitions.h"
 #include "CPlane.h"
 #include "engine/CEvent.h"
+#include "utils/Geometry.h"
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME      256
@@ -54,6 +55,7 @@ public:
 	bool scrollUp(const bool force=false);
 	bool scrollDown(const bool force=false);
 
+    void refreshVisibleArea();
 	void redrawAt(const Uint32 mx, const Uint32 my);
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
@@ -134,13 +136,12 @@ public:
 	bool m_Dark;
 	bool isSecret;
 	int mNumFuses;
-	bool mFuseInLevel;
-
+	bool mFuseInLevel;    
 
 private:
     
-	bool findVerticalScrollBlocker(const int x);
-    	bool findHorizontalScrollBlocker(const int y);
+    bool findVerticalScrollBlocker(const int x);
+    bool findHorizontalScrollBlocker(const int y);
 	
 
 

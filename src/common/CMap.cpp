@@ -248,7 +248,9 @@ bool CMap::findVerticalScrollBlocker(const int x)
 
 bool CMap::findHorizontalScrollBlocker(const int y)
 {
-    int blockYup, blockYdown;
+    int blockYup = 0;
+    int blockYdown = 0;
+
     fetchNearestHorBlockers(y, blockYup, blockYdown);
 
     if(y-(1<<CSF) < blockYup)
@@ -454,7 +456,7 @@ bool CMap::scrollDown(const bool force)
 {
 	const int res_height = g_pVideoDriver->getGameResolution().h;
 
-	if( !force && findHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
+    if( !force && findHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
 		return false;
 
     const int squareSize = g_pVideoDriver->getScrollSurface()->w;
@@ -483,7 +485,7 @@ bool CMap::scrollDown(const bool force)
 
 bool CMap::scrollUp(const bool force)
 {
-	if( !force && findHorizontalScrollBlocker((m_scrolly-1)<<STC) )
+    if( !force && findHorizontalScrollBlocker((m_scrolly-1)<<STC) )
 		return false;
 
     const int squareSize = g_pVideoDriver->getScrollSurface()->w;
@@ -523,6 +525,38 @@ bool CMap::scrollUp(const bool force)
 // called at start of level to draw the upper-left corner of the map
 // onto the scrollbuffer...from then on the map will only be drawn
 // in stripes as it scrolls around.
+
+
+
+void CMap::refreshVisibleArea()
+{
+    // TODO: First we need to get the scroll boundaries and
+    // derive the rect from it.
+    int blockYup, blockYdown;
+    int blockXleft, blockXright;
+
+    CRect<int> relativeVisGameArea;
+
+    fetchNearestVertBlockers((m_scrollx-1)<<STC, blockXleft, blockXright);
+    fetchNearestHorBlockers((m_scrolly-1)<<STC, blockYup, blockYdown);
+
+    relativeVisGameArea.x = (blockXleft>>STC)-m_scrollx;
+    relativeVisGameArea.y = (blockYup>>STC)-m_scrolly;
+    relativeVisGameArea.w = ((blockXright-blockXleft)>>STC);
+    relativeVisGameArea.h = ((blockYdown-blockYup)>>STC);
+
+    CRect<int> GameResolution(g_pVideoDriver->getGameResolution());
+
+    // TODO: Using the GameResolution to intersect the
+    // calculated visible area we get another which is the Rect
+    // allowed for blit operations
+    GameResolution.intersect(relativeVisGameArea);
+
+    g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea = GameResolution;
+}
+
+
+
 void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 {
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
@@ -552,6 +586,9 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 // For an faster update of tiles use redrawAt instead.
 void CMap::drawAll()
 {
+
+    //refreshVisibleArea();
+
     SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
     const int drawMask = ScrollSurface->w-1;
@@ -585,6 +622,9 @@ void CMap::drawAll()
 // draw a horizontal stripe, for vertical scrolling
 void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 {
+    //refreshVisibleArea();
+
+
 	if(mpy >= m_height) return;
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 	Uint32 num_v_tiles= ScrollSurface->w/16;
@@ -608,6 +648,9 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 // draws a vertical stripe from map position mapx to scrollbuffer position x
 void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 {
+    //refreshVisibleArea();
+
+
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
     const int drawMask = ScrollSurface->w-1;

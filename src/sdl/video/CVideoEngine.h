@@ -82,6 +82,8 @@ public:
     SDL_GLContext glcontext;
 #endif
 
+    CRect<int> mRelativeVisGameArea;
+
 protected:
 
 	SDL_Surface *BlitSurface;

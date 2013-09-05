@@ -130,6 +130,48 @@ struct CRect
 	}
 
 
+    void intersect(const CRect &other)
+    {
+        if (other.x > x)
+        {
+            const int firstX2 = x + w;
+            const int newWidth = firstX2 - other.x;
+
+            if(newWidth < w)
+                w = newWidth;
+
+            x = other.x;
+        }
+        else
+        {
+            const int secondX2 = other.x + other.w;
+            const int newWidth = secondX2 - x;
+
+            if(newWidth < w)
+                w = newWidth;
+        }
+
+        if (other.y > y)
+        {
+            const int firstY2 = y + h;
+            const int newHeight = firstY2 - other.y;
+
+            if(newHeight < h)
+                h = newHeight;
+
+            y = other.y;
+        }
+        else
+        {
+            const int secondY2 = other.y + other.h;
+            const int newHeight = secondY2 - y;
+
+            if(newHeight < h)
+                h = newHeight;
+        }
+    }
+
+
 	T x, y, w, h;
 };
 
