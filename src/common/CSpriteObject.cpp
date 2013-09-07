@@ -409,6 +409,16 @@ void CSpriteObject::draw()
 	{
         int showX = scrx+Sprite.getXOffset();
         int showY = scry+Sprite.getYOffset();
+
+        auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
+
+        if( showX < visGA.x || showX > visGA.x+visGA.w )
+            return;
+
+        if( showY < visGA.y || showY > visGA.y+visGA.h )
+            return;
+
+
 		if(m_blinktime > 0)
 		{
 			Sprite.drawBlinkingSprite( showX, showY );
