@@ -85,6 +85,9 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
         return;
 
 	mp_Map->gotoPos(cam_x>>STC, cam_y>>STC);
+
+    mp_Map->mGamePlayPosX = mp_AttachedObject->getXMidPos();
+    mp_Map->mGamePlayPosY = mp_AttachedObject->getYMidPos();
 	
 	reAdjust();
 }

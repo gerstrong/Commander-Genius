@@ -394,7 +394,7 @@ bool CMap::gotoPos(int x, int y)
 
 // scrolls the map one pixel right
 bool CMap::scrollRight(const bool force)
-{
+{   
     const int res_width = g_pVideoDriver->getGameResolution().w;
 
     if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
@@ -551,17 +551,10 @@ void CMap::refreshVisibleArea()
 
     CRect<int> GameResolution(g_pVideoDriver->getGameResolution());
 
-    // TODO: Using the GameResolution to intersect the
-    // calculated visible area we get another which is the Rect
-    // allowed for blit operations
+    // Using the GameResolution to intersect the
+    // calculated visible area we get another on
+    // which is the rect allowed for blit operations
     GameResolution.intersect(relativeVisGameArea);
-
-    /*GameResolution.x = 50;
-    GameResolution.y = 50;
-    GameResolution.w -= 100;
-    GameResolution.h -= 100;*/
-    /*GameResolution.x = 0;
-    GameResolution.y = 0;*/
 
     g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea = GameResolution;
 }
@@ -660,7 +653,6 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 {
     refreshVisibleArea();
 
-
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
     const int drawMask = ScrollSurface->w-1;
@@ -693,29 +685,40 @@ void CMap::_drawForegroundTiles()
 	SDL_Surface *surface = g_pVideoDriver->getBlitSurface();
 	const Uint16 num_h_tiles = surface->h;
 	const Uint16 num_v_tiles = surface->w;
-	const Uint16 x1 = m_scrollx>>TILE_S;
-	const Uint16 y1 = m_scrolly>>TILE_S;
-	const Uint16 x2 = (m_scrollx+num_v_tiles)>>TILE_S;
-	const Uint16 y2 = (m_scrolly+num_h_tiles)>>TILE_S;
+    Uint16 x1 = m_scrollx>>TILE_S;
+    Uint16 y1 = m_scrolly>>TILE_S;
+    Uint16 x2 = (m_scrollx+num_v_tiles)>>TILE_S;
+    Uint16 y2 = (m_scrolly+num_h_tiles)>>TILE_S;
 
 	std::vector<CTileProperties> &TileProperties =
 			g_pBehaviorEngine->getTileProperties(1);
-	for( size_t y=y1 ; y<=y2 ; y++)
-	{
-		for( size_t x=x1 ; x<=x2 ; x++)
-		{
-			Uint16 fg = m_Plane[1].getMapDataAt(x,y);
 
-			const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
-			const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
+    auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
 
-			if(fg != 0)
-			{
-			   if(TileProperties[fg].behaviour < 0)
-				m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
-			}
-		}
-	}
+    for( size_t y=y1 ; y<=y2 ; y++)
+    {
+        for( size_t x=x1 ; x<=x2 ; x++)
+        {
+            Uint16 fg = m_Plane[1].getMapDataAt(x,y);
+
+            const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
+            const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
+
+            if(fg != 0)
+            {
+                if(TileProperties[fg].behaviour < 0)
+                {
+                    if( loc_x < visGA.x || loc_x > visGA.x+visGA.w )
+                        continue;
+
+                    if( loc_y < visGA.y || loc_y > visGA.y+visGA.h )
+                        continue;
+
+                    m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
+                }
+            }
+        }
+    }
 }
 
 /////////////////////////

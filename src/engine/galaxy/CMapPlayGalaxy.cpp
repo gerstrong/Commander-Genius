@@ -206,7 +206,7 @@ void CMapPlayGalaxy::render()
         player[i]->draw();
     }
 
-    // Draw masked tiles here!
+    // Draw foregroundtiles here!
     mMap._drawForegroundTiles();
 
     for( obj=mObjectPtr.rbegin() ;
