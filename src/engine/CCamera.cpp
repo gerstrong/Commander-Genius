@@ -137,6 +137,9 @@ void CCamera::process(const bool force)
 
 		m_moving = false;
 
+        mp_Map->mGamePlayPosX = mp_AttachedObject->getXMidPos();
+        mp_Map->mGamePlayPosY = mp_AttachedObject->getYMidPos();
+
 		const Uint32 attached_x = mp_AttachedObject->getXPosition() + m_relcam.x;
 		const Uint32 attached_y = mp_AttachedObject->getYPosition() + m_relcam.y;
 		const Uint32 local_x = getXPosition();

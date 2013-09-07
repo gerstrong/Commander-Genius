@@ -71,9 +71,6 @@ public:
 
 	bool outOfSight();
 
-    bool CamLead() const
-    { return mCamlead; }
-
     void forbidLead(const int id);
 
     static int getLead()

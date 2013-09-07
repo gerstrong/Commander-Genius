@@ -136,7 +136,11 @@ public:
 	bool m_Dark;
 	bool isSecret;
 	int mNumFuses;
-	bool mFuseInLevel;    
+    bool mFuseInLevel;
+
+
+    int mGamePlayPosX;
+    int mGamePlayPosY;
 
 private:
     

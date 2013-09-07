@@ -22,6 +22,8 @@ m_animation_enabled(true),
 m_Dark(false),
 mNumFuses(0),
 mFuseInLevel(false),
+mGamePlayPosX(0),
+mGamePlayPosY(0),
 m_Tilemaps(g_pGfxEngine->getTileMaps()),
 mAnimtileTimer(0.0f),
 mLocked(false)
@@ -171,18 +173,18 @@ void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord
     // Find the vertical edges coordinates
     for( ; right != scrollBlockX.end() ; )
     {
-	blockXleft = *left;
-	blockXright = *right;
+        blockXleft = *left;
+        blockXright = *right;
 
-	if( x > blockXleft && x < blockXright )
-	{
-	    leftCoord = blockXleft;
-	    rightCoord = blockXright;
-	    return;
-	}
+        if( x > blockXleft && x < blockXright )
+        {
+            leftCoord = blockXleft;
+            rightCoord = blockXright;
+            return;
+        }
 
-	left++;
-	right++;
+        left++;
+        right++;
     }
 
     leftCoord = blockXleft;
@@ -201,18 +203,18 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
 
     for( ; down != scrollBlockY.end() ; )
     {
-	blockYup = *up;
-	blockYdown = *down;
+        blockYup = *up;
+        blockYdown = *down;
 
-	if( y > blockYup && y < blockYdown )
-	{
-	    upCoord = blockYup;
-	    downCoord = blockYdown;
-	    return;
-	}
+        if( y > blockYup && y < blockYdown )
+        {
+            upCoord = blockYup;
+            downCoord = blockYdown;
+            return;
+        }
 
-	up++;
-	down++;
+        up++;
+        down++;
     }
     upCoord = blockYup;
     downCoord = blockYdown;
@@ -408,7 +410,8 @@ bool CMap::scrollRight(const bool force)
 		m_scrollpix++;
         if (m_scrollpix >= 16)
 		{  // need to draw a new stripe
-			drawVstripe(m_mapxstripepos, m_mapx + 32);
+            const int totalNumTiles = squareSize/16;
+            drawVstripe(m_mapxstripepos, m_mapx + totalNumTiles);
 			m_mapx++;
 			m_mapxstripepos += 16;
             if (m_mapxstripepos >= squareSize) m_mapxstripepos = 0;
@@ -469,7 +472,8 @@ bool CMap::scrollDown(const bool force)
 		m_scrollpixy++;
 		if (m_scrollpixy>=16)
 		{  // need to draw a new stripe
-			drawHstripe(m_mapystripepos, m_mapy + 32);
+            const int totalNumTiles = squareSize/16;
+            drawHstripe(m_mapystripepos, m_mapy + totalNumTiles);
 			m_mapy++;
 			m_mapystripepos += 16;
             if (m_mapystripepos >= squareSize) m_mapystripepos = 0;
@@ -537,8 +541,8 @@ void CMap::refreshVisibleArea()
 
     CRect<int> relativeVisGameArea;
 
-    fetchNearestVertBlockers((m_scrollx-1)<<STC, blockXleft, blockXright);
-    fetchNearestHorBlockers((m_scrolly-1)<<STC, blockYup, blockYdown);
+    fetchNearestVertBlockers( mGamePlayPosX, blockXleft, blockXright);
+    fetchNearestHorBlockers( mGamePlayPosY, blockYup, blockYdown);
 
     relativeVisGameArea.x = (blockXleft>>STC)-m_scrollx;
     relativeVisGameArea.y = (blockYup>>STC)-m_scrolly;
@@ -551,6 +555,13 @@ void CMap::refreshVisibleArea()
     // calculated visible area we get another which is the Rect
     // allowed for blit operations
     GameResolution.intersect(relativeVisGameArea);
+
+    /*GameResolution.x = 50;
+    GameResolution.y = 50;
+    GameResolution.w -= 100;
+    GameResolution.h -= 100;*/
+    /*GameResolution.x = 0;
+    GameResolution.y = 0;*/
 
     g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea = GameResolution;
 }
@@ -586,8 +597,7 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 // For an faster update of tiles use redrawAt instead.
 void CMap::drawAll()
 {
-
-    //refreshVisibleArea();
+    refreshVisibleArea();
 
     SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
@@ -622,7 +632,7 @@ void CMap::drawAll()
 // draw a horizontal stripe, for vertical scrolling
 void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 {
-    //refreshVisibleArea();
+    refreshVisibleArea();
 
 
 	if(mpy >= m_height) return;
@@ -648,7 +658,7 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 // draws a vertical stripe from map position mapx to scrollbuffer position x
 void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 {
-    //refreshVisibleArea();
+    refreshVisibleArea();
 
 
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();

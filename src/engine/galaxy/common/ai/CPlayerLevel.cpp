@@ -2538,9 +2538,8 @@ bool CPlayerLevel::checkConveyorBelt()
 
 void CPlayerLevel::process()
 {
-
-    if(dead)
-    {
+    if(dead) // If this player is dead, the camera still runs,
+    {       // in case a second player inherits the camera lead
         processCamera();
         return;
     }
