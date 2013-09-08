@@ -13,6 +13,8 @@
 #include <string>
 #include <memory>
 
+#include "utils/Geometry.h"
+
 class CBitmap
 {
 public:
@@ -34,6 +36,8 @@ public:
 
 	Uint16 getWidth() const { return mpBitmapSurface->w; }
 	Uint16 getHeight() const { return mpBitmapSurface->h; }
+
+    bool scaleTo(const CRect<Uint16> gameRes);
 
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }

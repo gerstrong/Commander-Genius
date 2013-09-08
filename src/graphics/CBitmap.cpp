@@ -10,6 +10,8 @@
 #include "FindFile.h"
 #include "sdl/CVideoDriver.h"
 
+#include "CLogFile.h"
+
 CBitmap::CBitmap()
 {}
 
@@ -62,12 +64,8 @@ bool CBitmap::optimizeSurface()
 	if(mpBitmapSurface)
 	{
 		SDL_Surface *temp_surface;
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-        
-//#else
         temp_surface = g_pVideoDriver->convertThroughBlitSfc(mpBitmapSurface.get());
 		mpBitmapSurface.reset( temp_surface, &SDL_FreeSurface );
-//#endif
 		return true;
 	}
 	else
@@ -96,6 +94,54 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 	return false;
 }
 
+
+bool CBitmap::scaleTo(const CRect<Uint16> gameRes)
+{
+    SDL_Rect newRect = gameRes.SDLRect();
+    auto bmpSfc = mpBitmapSurface.get();
+
+    if(newRect.w == bmpSfc->w && newRect.h == bmpSfc->h)
+        return true;
+
+    // TODO: This is not compatible with SDL 1.2, we need a wrapper for that.
+    std::shared_ptr<SDL_Surface> newSfc;
+
+    // Need to do that, otherwise it won't work.
+    optimizeSurface();
+
+    auto bmpFormat = bmpSfc->format;
+
+    newSfc.reset( SDL_CreateRGBSurface(bmpSfc->flags,
+                                       newRect.w,
+                                       newRect.h,
+                                       bmpFormat->BitsPerPixel,
+                                       0,
+                                       0,
+                                       0,
+                                       0 ),
+                    &SDL_FreeSurface );
+
+    if(!newSfc)
+      return false;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    int error = SDL_BlitScaled( bmpSfc, &bmpSfc->clip_rect, newSfc.get(), &newRect );
+    if(error)
+    {
+        std::string errorMsg = SDL_GetError();
+        g_pLogFile->textOut("SDL_Blit failed: " + errorMsg);
+        return false;
+    }
+#else
+    g_pLogFile->textOut("SDL 1.2 doesn't support Bitmap scaling to higher resolutions, "
+                        "please let the devs know about this message.");
+    return false;
+#endif
+
+    mpBitmapSurface = newSfc;
+
+    return true;
+}
 
 /**
  * \brief The function that blits the sprite to dst

@@ -22,14 +22,12 @@ m_max_permil(1000),
 m_style(PROGRESS_STYLE_TEXT)
 {
     SDL_Rect rect;
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     rect.x = 0;		rect.y = 0;
-    rect.w = 320;	rect.h = 200;
+    rect.w = gameRes.w;	rect.h = gameRes.h;
+
     mpProgressSfc.reset( CG_CreateRGBSurface( rect ), &SDL_FreeSurface );
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
     mpProgressSfc.reset( g_pVideoDriver->convertThroughBlitSfc(mpProgressSfc.get()), &SDL_FreeSurface );
-//#endif
 }
 
 /**
@@ -221,25 +219,28 @@ void CResourceLoader::renderLoadingGraphic()
 	}
 	else if(m_style == PROGRESS_STYLE_BAR)
 	{		
-		const int width = 160;
-		const int height = 0;
+        CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+
+        const int width = gameRes.w;
+        const int height = gameRes.h;
+        const int halfWidth = width/2;
 	
 		SDL_Rect rect;
 		SDL_Rect bgRect;
-		rect.x = (320-width)/2;
-		rect.y = (200+height)/2;
+        rect.x = (width-halfWidth)/2;
+        rect.y = height/2;
 		
-		rect.w = (width*m_permil)/1000;		
-		rect.h = 4;
+        rect.w = (halfWidth*m_permil)/1000;
+        rect.h = height/50;
 		
 		bgRect = rect;
 		bgRect.x--;
 		bgRect.y--;
-		bgRect.w = width+2;
-		bgRect.h = 6;
+        bgRect.w = halfWidth+2;
+        bgRect.h = rect.h+2;
 
 		// Fade from yellow to green with this formula
-		Uint32 color = SDL_MapRGB(sfc->format, 200-(200*m_permil)/1000, 200, 0 );
+        Uint32 color = SDL_MapRGB(sfc->format, height-(height*m_permil)/1000, height, 0 );
 		
 		SDL_FillRect(sfc, &bgRect, SDL_MapRGB(sfc->format, 128, 128, 128));
 		SDL_FillRect(sfc, &rect, color);
