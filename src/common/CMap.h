@@ -55,6 +55,7 @@ public:
 	bool scrollUp(const bool force=false);
 	bool scrollDown(const bool force=false);
 
+    void calcVisibleArea();
     void refreshVisibleArea();
 	void redrawAt(const Uint32 mx, const Uint32 my);
 	void drawAll();
@@ -139,8 +140,7 @@ public:
     bool mFuseInLevel;
 
 
-    int mGamePlayPosX;
-    int mGamePlayPosY;
+    VectorD2<int> mGamePlayPos;
 
 private:
     
@@ -168,6 +168,8 @@ private:
 	std::vector<int> scrollBlockY;
 
     bool mLocked;
+
+    CRect<int> mVisArea;
 };
 
 

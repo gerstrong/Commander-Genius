@@ -95,12 +95,11 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 }
 
 
-bool CBitmap::scaleTo(const CRect<Uint16> gameRes)
+bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
 {
     SDL_Rect newRect = gameRes.SDLRect();
-    auto bmpSfc = mpBitmapSurface.get();
 
-    if(newRect.w == bmpSfc->w && newRect.h == bmpSfc->h)
+    if(newRect.w == mpBitmapSurface->w && newRect.h == mpBitmapSurface->h)
         return true;
 
     // TODO: This is not compatible with SDL 1.2, we need a wrapper for that.
@@ -109,6 +108,7 @@ bool CBitmap::scaleTo(const CRect<Uint16> gameRes)
     // Need to do that, otherwise it won't work.
     optimizeSurface();
 
+    auto bmpSfc = mpBitmapSurface.get();
     auto bmpFormat = bmpSfc->format;
 
     newSfc.reset( SDL_CreateRGBSurface(bmpSfc->flags,

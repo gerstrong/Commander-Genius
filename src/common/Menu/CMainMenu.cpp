@@ -81,7 +81,6 @@ void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 
 	mpMenuDialog->addControl( button );
 
-
 	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
 
 	CGUIButton *loadButton = new CGUIButton( "Load",

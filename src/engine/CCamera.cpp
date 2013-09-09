@@ -86,8 +86,8 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 
 	mp_Map->gotoPos(cam_x>>STC, cam_y>>STC);
 
-    mp_Map->mGamePlayPosX = mp_AttachedObject->getXMidPos();
-    mp_Map->mGamePlayPosY = mp_AttachedObject->getYMidPos();
+    VectorD2<int> camPos(cam_x, cam_y);
+    mp_Map->mGamePlayPos = camPos;
 	
 	reAdjust();
 }
@@ -140,8 +140,7 @@ void CCamera::process(const bool force)
 
 		m_moving = false;
 
-        mp_Map->mGamePlayPosX = mp_AttachedObject->getXMidPos();
-        mp_Map->mGamePlayPosY = mp_AttachedObject->getYMidPos();
+        mp_Map->mGamePlayPos = mp_AttachedObject->getMidPos();
 
 		const Uint32 attached_x = mp_AttachedObject->getXPosition() + m_relcam.x;
 		const Uint32 attached_y = mp_AttachedObject->getYPosition() + m_relcam.y;
@@ -227,7 +226,7 @@ void CCamera::process(const bool force)
 
 void CCamera::reAdjust() 
 {
-	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect gameRes = g_pVideoDriver->getGameResolution().SDLRect();
   
 	Uint16 &scroll_x = mp_Map->m_scrollx;
 	Uint16 &scroll_y = mp_Map->m_scrolly;
@@ -240,40 +239,51 @@ void CCamera::reAdjust()
 	mp_Map->fetchNearestVertBlockers(x, blockXleft, blockXright);
 	mp_Map->fetchNearestHorBlockers(y, blockYup, blockYdown);
 	
-	blockXleft >>= STC;
+    blockXleft >>= STC;
 	blockXright >>= STC;
 	blockYup >>= STC;
-	blockYdown >>= STC;  
+    blockYdown >>= STC;
+
+    if( (blockYdown-blockYup) < gameRes.h ||
+        (blockXright-blockXleft) < gameRes.w)
+    {
+        mp_Map->calcVisibleArea();
+        mp_Map->refreshVisibleArea();
+        return;
+    }
 
 	// This will always snap correctly to the edges
-	if(scroll_x < blockXleft)
+    if(scroll_x < blockXleft)
 	{
-	    for(int amt=0 ; amt<gamerect.w ; amt++ )
-		mp_Map->scrollRight();
-	    for(int amt=0 ; amt<gamerect.w ; amt++ )
-		mp_Map->scrollLeft();
+        for(int amt=0 ; amt<gameRes.w ; amt++ )
+            mp_Map->scrollRight();
+        for(int amt=0 ; amt<gameRes.w ; amt++ )
+            mp_Map->scrollLeft();
 	}
-	if(scroll_x > blockXright - gamerect.w)
+    if(scroll_x > blockXright - gameRes.w)
 	{
-    	    for(int amt=0 ; amt<gamerect.w ; amt++ )
-		mp_Map->scrollLeft();
-	    for(int amt=0 ; amt<gamerect.w ; amt++ )
-		mp_Map->scrollRight();
+            for(int amt=0 ; amt<gameRes.w ; amt++ )
+            mp_Map->scrollLeft();
+        for(int amt=0 ; amt<gameRes.w ; amt++ )
+            mp_Map->scrollRight();
 	}	
 	if(scroll_y < blockYup)
 	{
-	    for(int amt=0 ; amt<gamerect.h ; amt++ )
-		mp_Map->scrollDown();
-	    for(int amt=0 ; amt<gamerect.h ; amt++ )
-		mp_Map->scrollUp();
+        for(int amt=0 ; amt<gameRes.h ; amt++ )
+            mp_Map->scrollDown();
+        for(int amt=0 ; amt<gameRes.h ; amt++ )
+            mp_Map->scrollUp();
 	}
-	if(scroll_y > blockYdown - gamerect.h)
+    if(scroll_y > blockYdown - gameRes.h)
 	{
-	    for(int amt=0 ; amt<gamerect.h ; amt++ )
-		mp_Map->scrollUp();
-	    for(int amt=0 ; amt<gamerect.h ; amt++ )
-		mp_Map->scrollDown();
-	}
+        for(int amt=0 ; amt<gameRes.h ; amt++ )
+            mp_Map->scrollUp();
+        for(int amt=0 ; amt<gameRes.h ; amt++ )
+            mp_Map->scrollDown();
+    }
+
+    mp_Map->calcVisibleArea();
+    mp_Map->refreshVisibleArea();
 }
 
 

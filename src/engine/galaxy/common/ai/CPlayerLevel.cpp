@@ -1772,7 +1772,8 @@ void CPlayerLevel::processEnterDoor()
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
 	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
 
-	m_camera.setPosition(new_pos);
+    mp_Map->mGamePlayPos = new_pos;
+	m_camera.setPosition(new_pos);    
 
 	//o->ypos = TILE2MU(*t%256 - 1) + 15;
 	//o->xpos = (*t >> 8 << 8);

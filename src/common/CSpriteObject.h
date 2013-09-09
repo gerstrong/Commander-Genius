@@ -247,9 +247,9 @@ public:
 	void moveSlopedTileUp( int x, int y, const int xspeed );
 
 	// getters for positions
-	VectorD2<Uint32> &getPosition()
-	{ return m_Pos; }
-	Uint32 getXPosition() const
+    VectorD2<Uint32> &getPosition()
+    { return m_Pos; }
+    Uint32 getXPosition() const
 	{ return m_Pos.x; }
 	Uint32 getYPosition() const
 	{ return m_Pos.y; }
@@ -265,7 +265,8 @@ public:
 	{ return m_Pos.y+m_BBox.y2; }
 	Uint32 getYMidPos()
 	{ return m_Pos.y+(m_BBox.y2-m_BBox.y1)/2; }	
-	
+    VectorD2<Uint32> getMidPos()
+    { return VectorD2<Uint32>(getXMidPos(), getYMidPos()); }
 	
 	void processFallPhysics(const int boost);
 	void processFallPhysics();

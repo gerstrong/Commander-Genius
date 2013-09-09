@@ -869,6 +869,10 @@ void CPlayerWM::processWarpInTeleporter()
 	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
 	m_camera.setPosition(new_pos);
 
+    mp_Map->mGamePlayPos = new_pos;
+    mp_Map->calcVisibleArea();
+    mp_Map->refreshVisibleArea();
+
 	mProcessPtr = &CPlayerWM::processLeavingTeleporter;
 	playSound(SOUND_TELEPORT);
 

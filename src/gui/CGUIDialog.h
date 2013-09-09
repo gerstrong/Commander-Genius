@@ -107,6 +107,7 @@ private:
 
 	// SDL_Surface of the Background
     std::shared_ptr<SDL_Surface>    mpBackgroundSfc;
+    CBitmap mBackgroundBmp;
     std::shared_ptr<SDL_Surface>    mpTempSfc;
 
 	int mSelection;

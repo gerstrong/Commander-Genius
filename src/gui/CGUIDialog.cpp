@@ -277,11 +277,8 @@ void CGUIDialog::initEmptyBackround()
 {
     const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
     mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-//#else
     mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-//#endif
 
 	SDL_Surface *sfc = mpBackgroundSfc.get();    
     SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );        
@@ -350,25 +347,26 @@ void CGUIDialog::initVorticonBackground()
 	// Now draw the borders
     drawBorderRect(backSfc, Rect);
 
-
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-//#else
     mpTempSfc.reset( g_pVideoDriver->convertThroughBlitSfc( backSfc ), &SDL_FreeSurface );
-//#endif
-
 }
 
 
 void CGUIDialog::initGalaxyBackround()
-{
-    SDL_Surface *swatchBmp = g_pGfxEngine->getBitmap("KEENSWATCH")->getSDLSurface();
+{   
+    mBackgroundBmp = *g_pGfxEngine->getBitmap("KEENSWATCH");
+
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    mBackgroundBmp.scaleTo(gameRes);
+
+    SDL_Surface *swatchBmp = mBackgroundBmp.getSDLSurface();
 
     mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( swatchBmp ), &SDL_FreeSurface );
+
 
     // Besides the Background Bitmap we need to draw two lines
 	SDL_Surface *backSfc = mpBackgroundSfc.get();
 
-	Uint32 color = SDL_MapRGB( backSfc->format, 84, 234, 84);
+    Uint32 color = SDL_MapRGB( backSfc->format, 84, 234, 84 );
 	SDL_Rect scoreRect;
 	scoreRect.w = 150;
 	scoreRect.h = 1;

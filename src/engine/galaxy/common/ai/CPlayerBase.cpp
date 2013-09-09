@@ -173,6 +173,7 @@ mp_processState(NULL)
 	memset(m_playcontrol, 0, PA_MAX_ACTIONS);
 	m_camera.setPosition(m_Pos);
 
+    mp_Map->calcVisibleArea();
     mp_Map->refreshVisibleArea();
 }
 
