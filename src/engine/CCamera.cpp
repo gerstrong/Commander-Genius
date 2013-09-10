@@ -72,11 +72,21 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 	int cam_x = newpos.x-((g_pVideoDriver->getGameResolution().w/2)<<STC);
 	int cam_y = newpos.y-((g_pVideoDriver->getGameResolution().h/2)<<STC);
 
-	if(cam_x<0)
-		cam_x = 0;
+    const int minimumEdgeDist = (2<<CSF)+1;
+    const int maxWidth = (mp_Map->m_width<<CSF)-1;
+    const int maxHeight = (mp_Map->m_height<<CSF)-1;
 
-	if(cam_y<0)
-		cam_y = 0;
+    if(cam_x<minimumEdgeDist)
+        cam_x = minimumEdgeDist;
+
+    if(cam_y<minimumEdgeDist)
+        cam_y = minimumEdgeDist;
+
+    if(cam_x>maxWidth)
+        cam_x = maxWidth;
+
+    if(cam_y>maxHeight)
+        cam_y = maxHeight;
 
 	moveToForce(newpos);
 
@@ -87,7 +97,7 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 	mp_Map->gotoPos(cam_x>>STC, cam_y>>STC);
 
     VectorD2<int> camPos(cam_x, cam_y);
-    mp_Map->mGamePlayPos = camPos;
+    mp_Map->mGamePlayPos = newpos;
 	
 	reAdjust();
 }

@@ -129,34 +129,34 @@ void CMap::collectBlockersCoordiantes()
     scrollBlockX.clear();
     scrollBlockY.clear();
 
-    scrollBlockY.push_back(1<<CSF);
-    scrollBlockX.push_back(1<<CSF);
+    scrollBlockY.push_back(2<<CSF);
+    scrollBlockX.push_back(2<<CSF);
 
     int ep = g_pBehaviorEngine->getEpisode();
 
     if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
     {
-	const word* map_ptr = m_Plane[2].getMapDataPtr();
+        const word* map_ptr = m_Plane[2].getMapDataPtr();
 
-	for(int y=0 ; y<(int)m_height ; y++)
-	{
-	    for(int x=0 ; x<(int)m_width ; x++)
-	    {
-		// Check the row for a blocker which has the proper value
-		if(*map_ptr == 0x19)
-		    scrollBlockY.push_back(y<<(CSF));
-		// In Keen 5 it is only used on the map and stands for the teleporter from some in level
-		if(*map_ptr == 0x1A && ep != 5)
-		    scrollBlockX.push_back(x<<(CSF));
+        for(int y=0 ; y<(int)m_height ; y++)
+        {
+            for(int x=0 ; x<(int)m_width ; x++)
+            {
+                // Check the row for a blocker which has the proper value
+                if(*map_ptr == 0x19)
+                    scrollBlockY.push_back(y<<(CSF));
+                // In Keen 5 it is only used on the map and stands for the teleporter from some in level
+                if(*map_ptr == 0x1A && ep != 5)
+                    scrollBlockX.push_back(x<<(CSF));
 
-		map_ptr++;
-	    }
-	}
+                map_ptr++;
+            }
+        }
 
     }
 
-    scrollBlockY.push_back((m_height-1)<<(CSF));
-    scrollBlockX.push_back((m_width-1)<<(CSF));
+    scrollBlockY.push_back((m_height-2)<<(CSF));
+    scrollBlockX.push_back((m_width-2)<<(CSF));
 
 }
 
@@ -259,7 +259,7 @@ bool CMap::findVerticalScrollBlocker(const int x)
     fetchNearestVertBlockers(x, blockXleft, blockXright);
 
     if(x-(1<<CSF) < blockXleft)
-	return true;
+        return true;
     return false;
 }
 
@@ -272,7 +272,7 @@ bool CMap::findHorizontalScrollBlocker(const int y)
     fetchNearestHorBlockers(y, blockYup, blockYdown);
 
     if(y-(1<<CSF) < blockYup)
-	return true;
+        return true;
     return false;
 }
 
@@ -737,10 +737,10 @@ void CMap::_drawForegroundTiles()
             {
                 if(TileProperties[fg].behaviour < 0)
                 {
-                    if( loc_x < visGA.x || loc_x > visGA.x+visGA.w )
+                    if( loc_x < visGA.x || loc_x > visGA.x+visGA.w-16 )
                         continue;
 
-                    if( loc_y < visGA.y || loc_y > visGA.y+visGA.h )
+                    if( loc_y < visGA.y || loc_y > visGA.y+visGA.h-16 )
                         continue;
 
                     m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
