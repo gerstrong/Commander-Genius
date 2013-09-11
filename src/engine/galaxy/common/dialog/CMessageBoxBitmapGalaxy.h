@@ -23,7 +23,8 @@ public:
 	 */
 	CMessageBoxBitmapGalaxy( const std::string& Text, const CBitmap &BitmapRef,
 							const direction_t alignment = LEFT );
-	virtual ~CMessageBoxBitmapGalaxy() {};
+
+    virtual ~CMessageBoxBitmapGalaxy() {}
 
 	virtual void init();
 

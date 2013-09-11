@@ -38,22 +38,19 @@ blendup(true)
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
 
 	// Create a surface for that
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 	mMBRect.w = Font.getPixelTextWidth(mText)+16;
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
-	mMBRect.x = (320-mMBRect.w)/2;
-	mMBRect.y = (200-mMBRect.h)/2;	
+    mMBRect.x = (gameRes.w-mMBRect.w)/2;
+    mMBRect.y = (gameRes.h-mMBRect.h)/2;
 }
 
 
 void CMessageBoxSelection::init()
 {
     mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
     mpMBSurface.reset(g_pVideoDriver->convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
-//#endif
-    
+
 	initGalaxyFrame();
 
 	SDL_Rect rect = mMBRect;
@@ -85,14 +82,11 @@ void CMessageBoxSelection::init()
 	// Adapt the newly created surface to the running screen.
 	SDL_Surface *temp;
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
+
     if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
         temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
 	else // or
         temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
-//#endif
 
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
@@ -117,12 +111,10 @@ void CMessageBoxSelection::init()
 	cutRect.h -= 4;
 		
     	mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
+
     mpSelSurface1.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
     mpSelSurface2.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
-//#endif
+
 	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
 #if SDL_VERSION_ATLEAST(2, 0, 0)

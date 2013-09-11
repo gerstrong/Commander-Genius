@@ -18,6 +18,7 @@ CMessageBoxGalaxy(Text),
 mBitmap(BitmapRef),
 mAlignment(alignment)
 {
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
 	// Looking if the Bitmap is too big for the Message box. In that case enlarge it!
 	if( (mBitmap.getHeight()+26) > mMBRect.h )
@@ -27,8 +28,8 @@ mAlignment(alignment)
 
 	mMBRect.w += (mBitmap.getWidth()+32);
 
-	mMBRect.x = (320-mMBRect.w)/2;
-	mMBRect.y = (200-mMBRect.h)/2;
+    mMBRect.x = (gameRes.w-mMBRect.w)/2;
+    mMBRect.y = (gameRes.h-mMBRect.h)/2;
 
 	mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
 //#if SDL_VERSION_ATLEAST(2, 0, 0)

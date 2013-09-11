@@ -26,23 +26,20 @@ mText(Text)
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
 	// Create a surface for that
 	mMBRect.w = Font.getPixelTextWidth(mText)+16;
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
-	mMBRect.x = (320-mMBRect.w)/2;
-	mMBRect.y = (200-mMBRect.h)/2;
+    mMBRect.x = (gameRes.w-mMBRect.w)/2;
+    mMBRect.y = (gameRes.h-mMBRect.h)/2;
 }
 
 void CMessageBoxGalaxy::init()
 {    
     mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
     mpMBSurface.reset(g_pVideoDriver->convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
-//#endif
-    
+
 	initGalaxyFrame();
 
 	SDL_Rect rect = mMBRect;
