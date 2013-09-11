@@ -70,7 +70,7 @@ void CBaseMenu::ponder()
 		if( g_pInput->getPressedCommand(cmd) )
 		{
 		    std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommands>(cmd) ));
-		    sendEvent(command);
+            sendEvent(command);
 		    break;
 		}
 	}

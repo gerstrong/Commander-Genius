@@ -492,7 +492,9 @@ void CInput::readNewEvent()
 				remapper.mappingInput = false;
 				break;
 		}
-	}
+
+        flushAll();
+    }
 }
 
 bool CInput::getExitEvent(void) {	return m_exit;	}
