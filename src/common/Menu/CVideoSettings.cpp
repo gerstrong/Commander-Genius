@@ -116,9 +116,13 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpVSyncSwitch = new CGUISwitch( "VSync" );
 	mpMenuDialog->addControl( mpVSyncSwitch );
 
-	mpResolutionSelection = new CGUIComboSelection( "Size",
-		filledStrList(1, "?x?") );
-	mpMenuDialog->addControl( mpResolutionSelection );
+    mpResolutionSelection = new CGUIComboSelection( "Size",
+        filledStrList(1, "?x?") );
+    mpMenuDialog->addControl( mpResolutionSelection );
+
+    mpGameResSelection = new CGUIComboSelection( "GameRes",
+        filledStrList(1, "?x?") );
+    mpMenuDialog->addControl( mpGameResSelection );
 
 
 
@@ -166,12 +170,24 @@ void CVideoSettings::init()
 	mpVSyncSwitch->enable( mUserVidConf.vsync );
 	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
 
-	mpResolutionSelection->setList( ResolutionsList, NUM_MAIN_RESOLUTIONS );
+    mpResolutionSelection->setList( ResolutionsList, NUM_MAIN_RESOLUTIONS );
+
 	std::string resStr;
+
 	resStr = itoa(mUserVidConf.m_DisplayRect.w);
 	resStr += "x";
-	resStr += itoa(mUserVidConf.m_DisplayRect.h);
-	mpResolutionSelection->setSelection(resStr);
+	resStr += itoa(mUserVidConf.m_DisplayRect.h);        
+	mpResolutionSelection->setSelection(resStr);        
+
+
+    mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
+
+    resStr = itoa(mUserVidConf.m_GameRect.w);
+    resStr += "x";
+    resStr += itoa(mUserVidConf.m_GameRect.h);
+    mpGameResSelection->setSelection(resStr);
+
+
 #endif
 
 }
@@ -194,9 +210,12 @@ void CVideoSettings::release()
 	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
 	std::string scalerStr = mpScalerSelection->getSelection();
 
-	const std::string res = mpResolutionSelection->getSelection();
-	sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
-	
+    const std::string res = mpResolutionSelection->getSelection();
+    sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
+
+    const std::string GameResStr = mpGameResSelection->getSelection();
+    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.m_GameRect.w, &mUserVidConf.m_GameRect.h );
+
 	int w, h;
 	const std::string aspect = mpAspectSelection->getSelection();
 	if( sscanf( aspect.c_str(), "%i:%i", &w, &h ) == 2 )

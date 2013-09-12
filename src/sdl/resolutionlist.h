@@ -15,6 +15,15 @@
 
 #include <string>
 
+static const char* GamesResList[] =
+{
+"320x200",
+"320x240",
+"640x480"
+};
+
+
+
 #if defined(ANDROID)
 
 static const char* ResolutionsList[] =
@@ -73,6 +82,7 @@ static const char* ResolutionsList[] =
 #endif
 
 const unsigned int NUM_MAIN_RESOLUTIONS = sizeof(ResolutionsList)/sizeof(char*);
+const unsigned int NUM_GAME_RESOLUTIONS = sizeof(GamesResList)/sizeof(char*);
 
 #ifndef RESOLUTIONLIST_H_
 #define RESOLUTIONLIST_H_
