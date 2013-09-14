@@ -27,8 +27,29 @@ mCommanderTextSfc(g_pGfxEngine->getMiscBitmap(0)),
 mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
 {
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+
+    const int scaleFactor = gameRes.h/mCommanderTextSfc.getHeight();
+
+    mMaxSeparationWidth = 60*scaleFactor;
+
+    CRect<Uint16> cmdTextRect, keenTextRect;
+    cmdTextRect.w = mCommanderTextSfc.getSDLSurface()->w;
+    cmdTextRect.x = cmdTextRect.y = 0;
+    cmdTextRect.h = mCommanderTextSfc.getSDLSurface()->h;
+    keenTextRect.w = mKeenTextSfc.getSDLSurface()->w;
+    keenTextRect.h = mKeenTextSfc.getSDLSurface()->h;
+    keenTextRect.x = keenTextRect.y = 0;
+
+    cmdTextRect.h *= scaleFactor;
+    cmdTextRect.w *= scaleFactor;
+    keenTextRect.h *= scaleFactor;
+    keenTextRect.w *= scaleFactor;
+
+    mCommanderTextSfc.scaleTo(cmdTextRect);
+    mKeenTextSfc.scaleTo(keenTextRect);
+
     mCommanderTextPos = VectorD2<int>(gameRes.w, 0);
-    mKeenTextPos = VectorD2<int>(-mKeenTextSfc.getWidth(), gameRes.h-mKeenTextSfc.getHeight());
+    mKeenTextPos = VectorD2<int>(-mKeenTextSfc.getWidth(), 0);
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( mCommanderTextSfc.getSDLSurface(), 128);
@@ -45,7 +66,7 @@ bool CPassiveGalaxy::init(char mode)
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
 
 	return true;
-};
+}
 
 // This function is always called from the base class.
 // Here it will execute the mode we are currently running
@@ -66,8 +87,6 @@ void CPassiveGalaxy::render()
 }
 
 
-const int maxSeparationWidth = 60;
-
 // TODO: This will show the animation of the intro you see in every galaxy game...
 // Letters are big and scrolling around the screen...
 void CPassiveGalaxy::processIntro()
@@ -82,7 +101,7 @@ void CPassiveGalaxy::processIntro()
 
     const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.getWidth()) - mKeenTextPos.x;
 
-    if(textSeparation <= -maxSeparationWidth || g_pInput->getPressedAnyCommand())
+    if(textSeparation <= -mMaxSeparationWidth || g_pInput->getPressedAnyCommand())
     {
         processMode = &CPassiveGalaxy::processTitle;
         m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");

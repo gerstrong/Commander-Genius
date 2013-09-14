@@ -34,6 +34,8 @@ public:
     VectorD2<int> mCommanderTextPos;
     VectorD2<int> mKeenTextPos;
 
+    int mMaxSeparationWidth;
+
 	bool m_restartVideo;
 
     int mTimer;
