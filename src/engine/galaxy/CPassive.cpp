@@ -37,8 +37,6 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     SDL_SetAlpha(mCommanderTextSfc.getSDLSurface(), SDL_SRCALPHA, 128);
     SDL_SetAlpha(mKeenTextSfc.getSDLSurface(), SDL_SRCALPHA, 128);
 #endif
-
-    mtimeForTerminatorText = 1400;
 }
 
 bool CPassiveGalaxy::init(char mode)
@@ -67,6 +65,9 @@ void CPassiveGalaxy::render()
     (this->*processMode)();
 }
 
+
+const int maxSeparationWidth = 60;
+
 // TODO: This will show the animation of the intro you see in every galaxy game...
 // Letters are big and scrolling around the screen...
 void CPassiveGalaxy::processIntro()
@@ -79,7 +80,9 @@ void CPassiveGalaxy::processIntro()
 
     mTimer++;
 
-    if(mTimer >= mtimeForTerminatorText || g_pInput->getPressedAnyCommand())
+    const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.getWidth()) - mKeenTextPos.x;
+
+    if(textSeparation <= -maxSeparationWidth || g_pInput->getPressedAnyCommand())
     {
         processMode = &CPassiveGalaxy::processTitle;
         m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");

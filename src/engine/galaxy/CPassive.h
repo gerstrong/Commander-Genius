@@ -37,8 +37,6 @@ public:
 	bool m_restartVideo;
 
     int mTimer;
-
-    int mtimeForTerminatorText;
 };
 
 }
