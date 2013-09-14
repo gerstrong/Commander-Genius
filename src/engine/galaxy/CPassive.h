@@ -22,23 +22,32 @@ public:
 	bool init(char mode);
     void ponder();
     void render();
-	void processIntro();
-	void processTitle();
+    void processIntro();
+    void processIntroZoom();
+    void processTitle();
 
 	void (CPassiveGalaxy::*processMode)();
 
 	CBitmap m_BackgroundBitmap;
     CBitmap mCommanderTextSfc;
     CBitmap mKeenTextSfc;
+    CBitmap mCurrentLogoBmp;
+
+    std::shared_ptr<SDL_Surface> mpZoomSurface;
 
     VectorD2<int> mCommanderTextPos;
     VectorD2<int> mKeenTextPos;
+    VectorD2<int> mZoomSfcPos;
+    VectorD2<int> mZoomSfcZoom;
 
     int mMaxSeparationWidth;
+    int mLogoPosY;
+    int mScaleFactor;
 
 	bool m_restartVideo;
 
-    int mTimer;
+    int mTerminatorTimer;
+    int mTerminatorLogoNum;
 };
 
 }
