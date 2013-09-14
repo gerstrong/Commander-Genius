@@ -28,7 +28,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
 {
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     mCommanderTextPos = VectorD2<int>(gameRes.w, 0);
-    mKeenTextPos = VectorD2<int>(0, 0);
+    mKeenTextPos = VectorD2<int>(-mKeenTextSfc.getWidth(), gameRes.h-mKeenTextSfc.getHeight());
 }
 
 bool CPassiveGalaxy::init(char mode)
@@ -57,7 +57,7 @@ void CPassiveGalaxy::render()
     (this->*processMode)();
 }
 
-const int timeForTerminatorText = 6000;
+const int timeForTerminatorText = 2000;
 
 // TODO: This will show the animation of the intro you see in every galaxy game...
 // Letters are big and scrolling around the screen...
@@ -65,6 +65,9 @@ void CPassiveGalaxy::processIntro()
 {	       
     mCommanderTextSfc.draw(mCommanderTextPos.x, mCommanderTextPos.y);
     mCommanderTextPos.x--;
+
+    mKeenTextSfc.draw(mKeenTextPos.x, mKeenTextPos.y);
+    mKeenTextPos.x++;
 
     mTimer++;
 
