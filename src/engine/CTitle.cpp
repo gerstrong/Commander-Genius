@@ -41,7 +41,7 @@ bool CTitle::init(int Episode)
 		const int width = 160-(pBitmap->getWidth()/2);
 		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
 		obj->setScrPos( width, 0 );		
-		pBitmap->_draw( pSurface, width, 0);
+        pBitmap->_draw( width, 0, pSurface );
 		obj->draw();
 		mObjects.push_back(std::move(obj));
 	}
@@ -52,7 +52,7 @@ bool CTitle::init(int Episode)
 		pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
 		obj->setScrPos( width, 182 );
-		pBitmap->_draw( pSurface, width, 182);
+        pBitmap->_draw( width, 182, pSurface);
 		mObjects.push_back(move(obj));
 	}
 	

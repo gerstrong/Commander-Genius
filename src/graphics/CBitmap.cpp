@@ -166,7 +166,6 @@ void CBitmap::draw(const int x, const int y)
  */
 void CBitmap::_draw(const int x, const int y, SDL_Surface *dst) const
 {
-
     SDL_Rect dst_rect, src_rect;
 
     SDL_Surface *bmpPtr = mpBitmapSurface.get();
@@ -193,4 +192,4 @@ void CBitmap::_draw(const int x, const int y, SDL_Surface *dst) const
     SDL_BlitSurface( bmpPtr, &src_rect, dst, &dst_rect );
 }
 
-}
+
