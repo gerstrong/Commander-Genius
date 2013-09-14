@@ -28,8 +28,15 @@ public:
 	void (CPassiveGalaxy::*processMode)();
 
 	CBitmap m_BackgroundBitmap;
+    CBitmap mCommanderTextSfc;
+    CBitmap mKeenTextSfc;
+
+    VectorD2<int> mCommanderTextPos;
+    VectorD2<int> mKeenTextPos;
+
 	bool m_restartVideo;
 
+    int mTimer;
 };
 
 }

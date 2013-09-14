@@ -171,9 +171,15 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
 			EpisodeInfo[m_episode-4].IndexSprites )) return false;
 
-	if(!readTexts())	return false;
-	//k456_export_texts();
-	//k456_export_misc();
+    if(!readTexts())
+        return false;
+
+
+    //k456_export_texts();
+
+    if( !readMiscStuff() )
+        return false;
+
 	//k456_export_demos();
 	//k456_export_end();
 
@@ -753,7 +759,7 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
 
 	g_pGfxEngine->createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
-
+    g_pGfxEngine->createEmptyMiscBitmaps(2);
 
 	SDL_Rect bmpRect;
 	bmpRect.x = bmpRect.y = 0;
@@ -769,7 +775,6 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
 				BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
-
 	}
 	return true;
 }
@@ -813,6 +818,11 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 
 	return true;
 }
+
+
+
+
+
 
 bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 {
@@ -1007,5 +1017,100 @@ bool CEGAGraphicsGalaxy::readTexts()
 	completemsg();*/
 	 return true;
 }
+
+
+
+
+bool CEGAGraphicsGalaxy::readMiscStuff()
+{
+    int width = 0; int height = 0;
+
+
+
+    /*
+
+
+        Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, bmpRect, Palette);
+
+        extractPicture(Bitmap.getSDLSurface(),
+                m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
+                BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
+
+
+*/
+    SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+
+    //const int numMisc = EpisodeInfo[m_episode-4].NumMisc;
+
+    // Only position 1 and 2 are read. This will the terminator text.
+    // Those are monochrom...
+    for(int misc = 1 ; misc<3 ; misc++)
+    {
+        const int index = EpisodeInfo[m_episode-4].IndexMisc + misc;
+        auto &miscData = m_egagraph.at(index).data;
+        Uint16 *dataPtr = reinterpret_cast<Uint16*>( miscData.data() );
+
+        memcpy(&height, dataPtr, sizeof(Uint16) );
+        dataPtr++;
+        memcpy(&width, dataPtr, sizeof(Uint16) );
+        dataPtr++;
+
+        SDL_Rect bmpRect;
+
+        CBitmap &Bitmap = g_pGfxEngine->getMiscBitmap(misc-1);
+        bmpRect.w = width;
+        bmpRect.h = height;
+
+        Uint16 *rlepointer = dataPtr;
+        rlepointer += height;
+
+        Bitmap.createSurface(0, bmpRect, Palette);
+
+        SDL_Surface *bmp = Bitmap.getSDLSurface();
+
+        SDL_LockSurface(bmp);
+
+        Uint8 *sfcPtr =  static_cast<Uint8*>(bmp->pixels);
+
+        const int bytePerPixel = bmp->format->BytesPerPixel;
+
+        const Uint32 whiteColor = SDL_MapRGB(bmp->format, 255,255,255);
+        const Uint32 blackColor = SDL_MapRGB(bmp->format, 0,0,0);
+
+        Uint32 currentColor = blackColor;
+
+        for(int line=0 ; line < height ; line++)
+        {
+            Uint16 pixelCount = *rlepointer;
+
+            while( pixelCount != 0xFFFF ) // End-Flag
+            {
+                for(int i=0 ; i<pixelCount ; i++)
+                {
+                    *sfcPtr = currentColor;
+                    sfcPtr += bytePerPixel;
+                }
+
+                currentColor =
+                        (currentColor == blackColor) ?
+                            whiteColor : blackColor;
+
+                rlepointer++;
+                pixelCount = *rlepointer;
+            }
+
+            currentColor =
+                    (currentColor == blackColor) ?
+                        whiteColor : blackColor;
+
+            rlepointer++;
+        }
+
+        SDL_UnlockSurface(bmp);
+    }
+
+    return true;
+}
+
 
 }

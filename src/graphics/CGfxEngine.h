@@ -32,8 +32,9 @@ public:
     void createEmptySprites(const int numVar, const int num_sprites);
 	void dumpSprites();
 	void createEmptyBitmaps(Uint16 num_bmps);
-	void createEmptyMaskedBitmaps(Uint16 num_bmps);
-	void createEmptyFontmaps(Uint8 num_fonts);
+    void createEmptyMaskedBitmaps(Uint16 num_bmps);
+    void createEmptyMiscBitmaps(Uint16 num_bmps);
+    void createEmptyFontmaps(Uint8 num_fonts);
 	void createEmptyTilemaps(size_t num);
 	void createEmptyCursorMap(SDL_Surface *surface);
 	
@@ -61,8 +62,9 @@ public:
 	CTilemap &getTileMap(size_t tilemap) { return Tilemap.at(tilemap); }
 	std::vector<CTilemap> &getTileMaps() { return Tilemap; }
 	CBitmap &getBitmap(Uint16 slot) { return Bitmap.at(slot); }
-	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
-	CBitmap *getBitmap(const std::string &name) const;
+    CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
+    CBitmap &getMiscBitmap(Uint16 slot) { return miscBitmap.at(slot); }
+    CBitmap *getBitmap(const std::string &name) const;
 
     CSprite *getSprite(const int var, const std::string &name) const;
 
@@ -91,7 +93,8 @@ private:
 	std::vector<CFont> Font;
 	std::unique_ptr<CEffects> mpEffects;
 	std::vector<CBitmap> Bitmap;
-	std::vector<CBitmap> maskedBitmap;
+    std::vector<CBitmap> maskedBitmap;
+    std::vector<CBitmap> miscBitmap;
     std::vector< std::vector<CSprite> > Sprite;
 	std::unique_ptr<CCursor> mpCursor;
 };

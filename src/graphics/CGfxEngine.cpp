@@ -61,6 +61,14 @@ void CGfxEngine::createEmptyMaskedBitmaps(Uint16 num_bmps)
 	maskedBitmap.assign(num_bmps, bitmap);
 }
 
+void CGfxEngine::createEmptyMiscBitmaps(Uint16 num_bmps)
+{
+    freeBitmaps(miscBitmap);
+    CBitmap bitmap;
+    miscBitmap.assign(num_bmps, bitmap);
+}
+
+
 
 void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
 {

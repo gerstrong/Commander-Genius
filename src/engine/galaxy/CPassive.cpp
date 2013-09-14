@@ -22,12 +22,19 @@ namespace galaxy
 
 CPassiveGalaxy::CPassiveGalaxy() :
 processMode(&CPassiveGalaxy::processIntro),
-m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE"))
-{ }
+m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
+mCommanderTextSfc(g_pGfxEngine->getMiscBitmap(0)),
+mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
+{
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    mCommanderTextPos = VectorD2<int>(gameRes.w, 0);
+    mKeenTextPos = VectorD2<int>(0, 0);
+}
 
 bool CPassiveGalaxy::init(char mode)
 {
-	// TODO: Coding has still to be done!!
+    auto blit = g_pVideoDriver->getBlitSurface();
+    SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
 
 	return true;
 };
@@ -50,26 +57,27 @@ void CPassiveGalaxy::render()
     (this->*processMode)();
 }
 
+const int timeForTerminatorText = 6000;
+
 // TODO: This will show the animation of the intro you see in every galaxy game...
 // Letters are big and scrolling around the screen...
 void CPassiveGalaxy::processIntro()
-{
-	processMode = &CPassiveGalaxy::processTitle;
+{	       
+    mCommanderTextSfc.draw(mCommanderTextPos.x, mCommanderTextPos.y);
+    mCommanderTextPos.x--;
 
-	m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
+    mTimer++;
 
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
-    m_BackgroundBitmap.scaleTo(gameRes);
+    if(mTimer == timeForTerminatorText)
+    {
+        processMode = &CPassiveGalaxy::processTitle;
+        m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
 
-    auto blit = g_pVideoDriver->getBlitSurface();
-    SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
-	g_pGfxEngine->setupEffect(new CPixelate(2));
-
-    /*SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
-
-    mpTextSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface );
-
-    SDL_FreeSurface(temp);*/
+        CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+        m_BackgroundBitmap.scaleTo(gameRes);
+        g_pGfxEngine->setupEffect(new CPixelate(2));
+        mTimer = 0;
+    }
 }
 
 // Just show the title screen with the pixelation effect

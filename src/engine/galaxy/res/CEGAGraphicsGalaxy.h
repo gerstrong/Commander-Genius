@@ -52,6 +52,9 @@ public:
 			size_t rowlength, size_t IndexOfTiles,
 			CTilemap &Tilemap, bool tileoff );
 	bool readTexts();
+
+    bool readMiscStuff();
+
 	bool readSprites( size_t NumSprites, size_t IndexSprite );
 
 	void createBitmapsIDs();

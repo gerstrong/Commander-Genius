@@ -188,6 +188,12 @@ void CResourceLoader::renderLoadingGraphic()
     SDL_Surface *sfc = mpProgressSfc.get();
     SDL_FillRect(sfc, nullptr, 0x0);
     
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+
+    const int gameWidth = gameRes.w;
+    const int gameHeight = gameRes.h;
+    const int halfWidth = gameWidth/2;
+
 	if(m_style == PROGRESS_STYLE_TEXT)
 	{
 		// Draw Loading Font... here!
@@ -204,12 +210,12 @@ void CResourceLoader::renderLoadingGraphic()
 		SDL_Rect rect;
 		int width = Bitmap.getWidth();
 		int height = Bitmap.getHeight();
-		Bitmap._draw(sfc, (320-width)/2, (200-height)/2);
+        Bitmap._draw( (gameWidth-width)/2, (gameHeight-height)/2, sfc);
 		
-		rect.x = (320-width)/2;
-		rect.y = (200+height)/2;
+        rect.x = (gameWidth-width)/2;
+        rect.y = (gameHeight+height)/2;
 		
-		rect.w = (width*m_permil)/1000;		
+        rect.w = (gameWidth*m_permil)/1000;
 		rect.h = 4;
 
 		// Fade from yellow to green with this formula
@@ -218,20 +224,14 @@ void CResourceLoader::renderLoadingGraphic()
 		SDL_FillRect(sfc, &rect, color);
 	}
 	else if(m_style == PROGRESS_STYLE_BAR)
-	{		
-        CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
-
-        const int width = gameRes.w;
-        const int height = gameRes.h;
-        const int halfWidth = width/2;
-	
+	{			
 		SDL_Rect rect;
 		SDL_Rect bgRect;
-        rect.x = (width-halfWidth)/2;
-        rect.y = height/2;
+        rect.x = (gameWidth-halfWidth)/2;
+        rect.y = gameHeight/2;
 		
         rect.w = (halfWidth*m_permil)/1000;
-        rect.h = height/50;
+        rect.h = gameHeight/50;
 		
 		bgRect = rect;
 		bgRect.x--;
@@ -240,7 +240,7 @@ void CResourceLoader::renderLoadingGraphic()
         bgRect.h = rect.h+2;
 
 		// Fade from yellow to green with this formula
-        Uint32 color = SDL_MapRGB(sfc->format, height-(height*m_permil)/1000, height, 0 );
+        Uint32 color = SDL_MapRGB(sfc->format, gameHeight-(gameHeight*m_permil)/1000, gameHeight, 0 );
 		
 		SDL_FillRect(sfc, &bgRect, SDL_MapRGB(sfc->format, 128, 128, 128));
 		SDL_FillRect(sfc, &rect, color);

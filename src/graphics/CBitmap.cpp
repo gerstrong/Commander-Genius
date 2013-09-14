@@ -143,23 +143,54 @@ bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
     return true;
 }
 
-/**
- * \brief The function that blits the sprite to dst
- * \param x		 		X-Coordinate, indicating the position on dst
- * \param y				Y-Coordinate, indicating the position on dst
- */
-void CBitmap::draw(Uint16 x, Uint16 y)
-{
-    _draw( g_pVideoDriver->getBlitSurface(), x, y);
-}
 
 ///
 // Drawing Routines
 ///
-void CBitmap::_draw(SDL_Surface *dst, Uint16 x, Uint16 y) const
+
+/**
+ * \brief The function that blits the sprite to the main blitSurface
+ * \param x		 		X-Coordinate, indicating the position on dst
+ * \param y				Y-Coordinate, indicating the position on dst
+ */
+void CBitmap::draw(const int x, const int y)
 {
-	SDL_Rect dst_rect;
-	dst_rect.x = x;	dst_rect.y = y;
-	
-	SDL_BlitSurface(mpBitmapSurface.get(), NULL, dst, &dst_rect);
+    _draw( x, y, g_pVideoDriver->getBlitSurface() );
+}
+
+/**
+ * \brief The function that blits the sprite to dst
+ * \param x		 		X-Coordinate, indicating the position on dst
+ * \param y				Y-Coordinate, indicating the position on dst
+ * \param dst           Surface where to blit that Bitmap
+ */
+void CBitmap::_draw(const int x, const int y, SDL_Surface *dst) const
+{
+
+    SDL_Rect dst_rect, src_rect;
+
+    SDL_Surface *bmpPtr = mpBitmapSurface.get();
+
+    dst_rect.x = x;	dst_rect.y = y;
+    src_rect.x = 0; src_rect.y = 0;
+    src_rect.w = bmpPtr->w;
+    src_rect.h = bmpPtr->h;
+
+    if(dst_rect.x < 0)
+    {
+        src_rect.x = -dst_rect.x;
+        dst_rect.x = 0;
+        src_rect.w -= src_rect.x;
+    }
+
+    if(dst_rect.y < 0)
+    {
+        src_rect.y = -dst_rect.y;
+        dst_rect.y = 0;
+        src_rect.h -= src_rect.y;
+    }
+
+    SDL_BlitSurface( bmpPtr, &src_rect, dst, &dst_rect );
+}
+
 }

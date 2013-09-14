@@ -42,8 +42,8 @@ public:
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }
 
-	void draw(Uint16 x, Uint16 y);
-	void _draw(SDL_Surface *dst, Uint16 x, Uint16 y) const;
+    void draw(const int x, const int y);
+    void _draw(const int x, const int y, SDL_Surface *dst) const;
 
 private:
 	std::string mName;
