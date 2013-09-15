@@ -94,6 +94,65 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 	return false;
 }
 
+void CBitmap::exchangeColor( const Uint32 oldColor, const Uint32 newColor )
+{
+    SDL_Surface *bmpSfc = mpBitmapSurface.get();
+
+    if(SDL_MUSTLOCK(bmpSfc))
+        SDL_LockSurface(bmpSfc);
+
+    Uint8* pixel = (Uint8*) bmpSfc->pixels;
+
+    const int width = bmpSfc->w;
+    const int height = bmpSfc->h;
+
+    Uint32 color = 0;
+    auto format = bmpSfc->format;
+
+    const int pixelSize = format->BytesPerPixel;
+
+    for( int y=0 ; y<height ; y++ )
+    {
+        for( int x=0; x<width ; x++ )
+        {
+            memcpy(&color, pixel, pixelSize );
+
+            if(color == oldColor) // Here we make it transparent
+            {
+                memcpy(pixel, &newColor, pixelSize );
+            }
+
+            pixel += pixelSize;
+        }
+    }
+
+    if(SDL_MUSTLOCK(bmpSfc))
+        SDL_UnlockSurface(bmpSfc);
+}
+
+void CBitmap::exchangeColor( const Uint8 oldR, const Uint8 oldG, const Uint8 oldB,
+                             const Uint8 newR, const Uint8 newG, const Uint8 newB)
+{
+    SDL_Surface *bmpSfc = mpBitmapSurface.get();
+
+    const Uint32 oldColor = SDL_MapRGB( bmpSfc->format, oldR, oldG, oldB );
+    const Uint32 newColor = SDL_MapRGB( bmpSfc->format, newR, newG, newB );
+
+    exchangeColor( oldColor, newColor );
+}
+
+void CBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
+{
+    auto bmpSfc = mpBitmapSurface.get();
+    auto format = bmpSfc->format;
+    auto colorkey = SDL_MapRGB( format, r, g, b );
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetColorKey(bmpSfc, SDL_TRUE, colorkey);
+#else
+    SDL_SetColorKey(bmpSfc, SDL_SRCCOLORKEY, colorkey);
+#endif
+}
 
 bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
 {

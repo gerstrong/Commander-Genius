@@ -428,7 +428,7 @@ void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 
 void CSprite::exchangeSpriteColor( const Uint16 find1, const Uint16 find2, Uint16 miny )
 {
-    if(!mpSurface)
+    if(!mpSurface) // TODO: This should throw an exception
         return;
 
     Uint16 x,y;

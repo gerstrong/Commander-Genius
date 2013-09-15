@@ -29,6 +29,11 @@ public:
 	bool optimizeSurface();
 	bool loadHQBitmap( const std::string& filename );
 
+    void exchangeColor( const Uint8 oldR, const Uint8 oldG, const Uint8 oldB,
+                        const Uint8 newR, const Uint8 newG, const Uint8 newB);
+    void exchangeColor( const Uint32 oldColor, const Uint32 newColor );
+    void makeBlackTransparent();
+
 	SDL_Surface *getSDLSurface() const
 	{
 		return mpBitmapSurface.get();
@@ -37,6 +42,7 @@ public:
 	Uint16 getWidth() const { return mpBitmapSurface->w; }
 	Uint16 getHeight() const { return mpBitmapSurface->h; }
 
+    void setColorKey(const Uint8 r, const Uint8 g, const Uint8 b);
     bool scaleTo(const CRect<Uint16> &gameRes);
 
 	std::string getName() const { return mName; }

@@ -1074,7 +1074,16 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         const int bytePerPixel = bmp->format->BytesPerPixel;
 
-        const Uint32 whiteColor = SDL_MapRGB(bmp->format, 255,255,255);
+        Uint32 textColor;
+
+        switch(m_episode) // The color of the terminator depends on the episode.
+        {
+        case 6:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0xff); break;
+        case 5:  textColor = SDL_MapRGB(bmp->format, 0xff,0x55,0x55); break;
+        default: textColor = SDL_MapRGB(bmp->format, 0xaa,0xaa,0xaa); break;
+        }
+
+
         const Uint32 blackColor = SDL_MapRGB(bmp->format, 0,0,0);
 
         Uint32 currentColor = blackColor;
@@ -1093,7 +1102,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
                 currentColor =
                         (currentColor == blackColor) ?
-                            whiteColor : blackColor;
+                            textColor : blackColor;
 
                 rlepointer++;
                 pixelCount = *rlepointer;
@@ -1101,7 +1110,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
             currentColor =
                     (currentColor == blackColor) ?
-                        whiteColor : blackColor;
+                        textColor : blackColor;
 
             rlepointer++;
         }

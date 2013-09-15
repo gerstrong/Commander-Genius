@@ -35,7 +35,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     else
         mCreditsBmpID = 23;
 
-    mCurrentLogoBmp = g_pGfxEngine->getBitmap(mCreditsBmpID);
+    mCurrentLogoBmp = g_pGfxEngine->getBitmap(mCreditsBmpID);    
 
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
@@ -62,7 +62,9 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     keenTextRect.w *= mScaleFactor;
 
     mCommanderTextSfc.scaleTo(cmdTextRect);
+    mCommanderTextSfc.setColorKey( 0, 0, 0 );
     mKeenTextSfc.scaleTo(keenTextRect);
+    mKeenTextSfc.setColorKey( 0, 0, 0 );
 
     mCommanderTextPos = VectorD2<int>(gameRes.w, (gameRes.h-cmdTextRect.h)/2 );
     mKeenTextPos = VectorD2<int>(-mKeenTextSfc.getWidth(), (gameRes.h-cmdTextRect.h)/2 );
@@ -74,6 +76,11 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     logoBmpRect.h *= mScaleFactor;
     logoBmpRect.w *= mScaleFactor;
     mCurrentLogoBmp.scaleTo(logoBmpRect);
+    mCurrentLogoBmp.setColorKey( 0, 0, 0 );
+    mCurrentLogoBmp.optimizeSurface();
+    mCurrentLogoBmp.exchangeColor( 0x0 , 0xa8, 0x0,
+                                   0x55, 0x55 , 0xFF);
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( mCommanderTextSfc.getSDLSurface(), 128);
@@ -126,16 +133,20 @@ const int logoSpeed = 1;
 // Letters are big and scrolling around the screen...
 void CPassiveGalaxy::processIntro()
 {	       
-    CBitmap &bmpLogo = g_pGfxEngine->getBitmap(mTerminatorLogoNum+mCreditsBmpID);
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     SDL_Rect gameResSDL = gameRes.SDLRect();
 
-    const int logoPosX = (gameRes.w-bmpLogo.getWidth())/2;
-    const int logoMidPosY = mLogoPosY+bmpLogo.getHeight()/2;
+    const int logoPosX = (gameRes.w-mCurrentLogoBmp.getWidth())/2;
+    const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.getHeight()/2;
 
     SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
 
+    mCommanderTextSfc.draw(mCommanderTextPos.x, mCommanderTextPos.y);
+    mCommanderTextPos.x -= 2;
+
+    mKeenTextSfc.draw(mKeenTextPos.x, mKeenTextPos.y);
+    mKeenTextPos.x++;
 
     if(mTerminatorLogoNum < 4)
     {
@@ -147,31 +158,32 @@ void CPassiveGalaxy::processIntro()
         else
             mTerminatorTimer++;
 
-        bmpLogo.draw(logoPosX, mLogoPosY);
+        mCurrentLogoBmp.draw(logoPosX, mLogoPosY);
 
         // Change Logo
-        if(mLogoPosY+bmpLogo.getHeight() <= 0)
+        if(mLogoPosY+mCurrentLogoBmp.getHeight() <= 0)
         {
             mLogoPosY = gameRes.h;
             mTerminatorLogoNum++;
             mTerminatorTimer = 0;
 
             mCurrentLogoBmp = g_pGfxEngine->getBitmap(mCreditsBmpID+mTerminatorLogoNum);
+            mCurrentLogoBmp.optimizeSurface();
+
             CRect<Uint16> logoBmpRect;
             logoBmpRect.w = mCurrentLogoBmp.getWidth();
             logoBmpRect.h = mCurrentLogoBmp.getHeight();
             logoBmpRect.x = logoBmpRect.y = 0;
             logoBmpRect.h *= mScaleFactor;
             logoBmpRect.w *= mScaleFactor;
-            mCurrentLogoBmp.scaleTo(logoBmpRect);
+
+            mCurrentLogoBmp.scaleTo(logoBmpRect);            
+            mCurrentLogoBmp.exchangeColor( 0x0 , 0xa8, 0x0,
+                                           0x55, 0x55 , 0xFF);
+            mCurrentLogoBmp.setColorKey( 0, 0, 0 );
+
         }
     }
-
-    mCommanderTextSfc.draw(mCommanderTextPos.x, mCommanderTextPos.y);
-    mCommanderTextPos.x -= 2;
-
-    mKeenTextSfc.draw(mKeenTextPos.x, mKeenTextPos.y);
-    mKeenTextPos.x++;
 
     const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.getWidth()) - mKeenTextPos.x;
     if(textSeparation <= -mMaxSeparationWidth || g_pInput->getPressedAnyCommand())
