@@ -412,10 +412,10 @@ void CSpriteObject::draw()
 
         auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
 
-        if( showX < visGA.x || showX > visGA.x+visGA.w )
+        if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
             return;
 
-        if( showY < visGA.y || showY > visGA.y+visGA.h )
+        if( showY+Sprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
             return;
 
 

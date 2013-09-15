@@ -535,7 +535,21 @@ void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y )
 		dst_rect.w = max_width - x;
 
 	if( m_ysize + y > max_height )
-		dst_rect.h = max_height - y;
+        dst_rect.h = max_height - y;
+
+    if( dst_rect.x < 0 )
+    {
+        src_rect.x = -x;
+        src_rect.w += x;
+        dst_rect.x = 0;
+    }
+
+    if( dst_rect.y < 0 )
+    {
+        src_rect.y = -y;
+        src_rect.h += y;
+        dst_rect.y = 0;
+    }
 
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
@@ -550,7 +564,7 @@ void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y )
  * \param x	X-Coordinate, indicating the position on dst
  * \param y	Y-Coordinate, indicating the position on dst
  */
-void CSprite::drawBlinkingSprite( Uint16 x, Uint16 y )
+void CSprite::drawBlinkingSprite( int x, int y )
 {
     _drawBlinkingSprite(g_pVideoDriver->getBlitSurface(), x, y);
 }

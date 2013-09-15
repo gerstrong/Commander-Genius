@@ -193,7 +193,7 @@ void CPlatform::draw()
 {
     // This draw routine also is able to draw a second object in case it is holding one.
     if( sprite == BLANKSPRITE || dontdraw )
-	return;
+        return;
     
     CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
     
@@ -204,35 +204,35 @@ void CPlatform::draw()
     
     if( scrx < gameres.w && scry < gameres.h && exists )
     {
-	Uint16 showX = scrx+Sprite.getXOffset();
-	Uint16 showY = scry+Sprite.getYOffset();
-		
-	Sprite.drawSprite( showX, showY, (255-transluceny) );
+        int showX = scrx+Sprite.getXOffset();
+        int showY = scry+Sprite.getYOffset();
 
-    for(auto &carriedObj : mCarriedPlayerVec)
-	{        
-        if(carriedObj)
+        Sprite.drawSprite( showX, showY, (255-transluceny) );
+
+        for(auto &carriedObj : mCarriedPlayerVec)
         {
-            CSprite &playSprite = g_pGfxEngine->getSprite(carriedObj->getSpriteVariantId(),carriedObj->sprite);
-            int distx = carriedObj->getXPosition()-getXPosition();
-            int disty = carriedObj->getYPosition()-getYPosition();
+            if(carriedObj)
+            {
+                CSprite &playSprite = g_pGfxEngine->getSprite(carriedObj->getSpriteVariantId(),carriedObj->sprite);
+                int distx = carriedObj->getXPosition()-getXPosition();
+                int disty = carriedObj->getYPosition()-getYPosition();
 
-            distx = (distx>>STC);
-            distx += (playSprite.getXOffset()-Sprite.getXOffset());
-            disty = (disty>>STC);
-            disty += (playSprite.getYOffset()-Sprite.getYOffset());
+                distx = (distx>>STC);
+                distx += (playSprite.getXOffset()-Sprite.getXOffset());
+                disty = (disty>>STC);
+                disty += (playSprite.getYOffset()-Sprite.getYOffset());
 
-            playSprite.drawSprite( showX+distx, showY+disty );
+                playSprite.drawSprite( showX+distx, showY+disty );
+            }
         }
+
+        hasbeenonscreen = true;
     }
-	
-	hasbeenonscreen = true;
-    }    
 }
 
 bool CPlatform::calcVisibility()
 {
-	return true;
+    return true;
 }
 
 

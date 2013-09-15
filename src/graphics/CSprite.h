@@ -49,7 +49,7 @@ public:
 
     void drawSprite( const int x, const int y, const Uint8 alpha=255 );
     void drawSprite(SDL_Surface *dst, const int x, const int y );
-	void drawBlinkingSprite( Uint16 x, Uint16 y );
+    void drawBlinkingSprite(int x, int y );
 	void _drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 
     Sint16 getXOffset() { return m_xoffset; }

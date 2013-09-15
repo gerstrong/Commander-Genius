@@ -13,25 +13,25 @@ namespace galaxy {
 const int MOVE_SPEED = 20;
 
 CVarPlatform::CVarPlatform(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y,
-		const direction_t horidir, 
-		const direction_t vertdir,
-        const int actionOffset, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
-CPlatform(pmap, foeID, x, y),
-CMoveTarget(m_Pos, xDirection, yDirection)
+                           const direction_t horidir,
+                           const direction_t vertdir,
+                           const int actionOffset, const int sprVar) :
+    CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
+    CPlatform(pmap, foeID, x, y),
+    CMoveTarget(m_Pos, xDirection, yDirection)
 {
-	m_ActionBaseOffset = actionOffset;
+    m_ActionBaseOffset = actionOffset;
 
-	setActionForce(A_PLATFORM_MOVE);
-	setActionSprite();
+    setActionForce(A_PLATFORM_MOVE);
+    setActionSprite();
 
-	xDirection = horidir;
-	yDirection = vertdir;
-	
-	solid = false; // I think they must be false, because some plats like those in Keen6
-		       // should only obey to the set markers
+    xDirection = horidir;
+    yDirection = vertdir;
 
-	calcBoundingBoxes();
+    solid = false; // I think they must be false, because some plats like those in Keen6
+    // should only obey to the set markers
+
+    calcBoundingBoxes();
 }
 
 void CVarPlatform::process()
@@ -44,45 +44,45 @@ void CVarPlatform::process()
     
     if( xBlockPosAbs < MOVE_SPEED && yBlockPosAbs < MOVE_SPEED )
     {
-	const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
-	
-	VectorD2<int> speed(xBlockPos, yBlockPos);	    
-	movePlat(speed);
-	
-	readDirection(object, xDirection, yDirection );
-	detectNextTarget(target, xDirection, yDirection);
-	
+        const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
+
+        VectorD2<int> speed(xBlockPos, yBlockPos);
+        movePlat(speed);
+
+        readDirection(object, xDirection, yDirection );
+        detectNextTarget(target, xDirection, yDirection);
+
     }
     
     if(yDirection == UP && blockedu)
-	yDirection = DOWN;
+        yDirection = DOWN;
     else if(yDirection == DOWN && blockedd)
-	yDirection = UP;
+        yDirection = UP;
     
     if(xDirection == RIGHT && blockedr)
-	xDirection = LEFT;
+        xDirection = LEFT;
     else if(xDirection == LEFT && blockedl)
-	xDirection = RIGHT;
+        xDirection = RIGHT;
     
     VectorD2<int> speed;
     
     if(yDirection == UP)
     {
-	speed.y = -MOVE_SPEED;
+        speed.y = -MOVE_SPEED;
     }
     else if(yDirection == DOWN)
     {
-	speed.y = MOVE_SPEED;
+        speed.y = MOVE_SPEED;
     }
     
     
     if(xDirection == RIGHT)
     {
-	speed.x = MOVE_SPEED;
+        speed.x = MOVE_SPEED;
     }
     else if(xDirection == LEFT)
     {
-	speed.x = -MOVE_SPEED;
+        speed.x = -MOVE_SPEED;
     }
     
     movePlat(speed);

@@ -111,8 +111,8 @@ void CPlatformHorizontal::draw()
     
     if( scrx < gameres.w && scry < gameres.h && exists )
     {
-        Uint16 showX = scrx+Sprite.getXOffset();
-        Uint16 showY = scry+Sprite.getYOffset();
+        int showX = scrx+Sprite.getXOffset();
+        int showY = scry+Sprite.getYOffset();
 
         CSprite &fireSprite = g_pGfxEngine->getSprite(mSprVar,m_FireSprite);
 
