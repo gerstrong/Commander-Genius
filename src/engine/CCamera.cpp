@@ -96,7 +96,6 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 
 	mp_Map->gotoPos(cam_x>>STC, cam_y>>STC);
 
-    VectorD2<int> camPos(cam_x, cam_y);
     mp_Map->mGamePlayPos = newpos;
 	
 	reAdjust();
@@ -163,7 +162,6 @@ void CCamera::process(const bool force)
 		{
 			moveRight( attached_x - local_x );
 			m_moving |= true;
-
 		}
 		else if( attached_x < local_x )
 		{
@@ -206,7 +204,7 @@ void CCamera::process(const bool force)
 			    break;
 		}while(delta_x > right+speed);
 	}
-	else if(delta_x < left && scroll_x > 32)
+    else if(delta_x < left && scroll_x > 32)
 	{
 		do{
 			delta_x = (getXPosition()>>STC)-scroll_x;

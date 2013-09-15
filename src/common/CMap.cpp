@@ -258,7 +258,7 @@ bool CMap::findVerticalScrollBlocker(const int x)
 
     fetchNearestVertBlockers(x, blockXleft, blockXright);
 
-    if(x-(1<<CSF) < blockXleft)
+    if(x < blockXleft)
         return true;
     return false;
 }
@@ -271,7 +271,7 @@ bool CMap::findHorizontalScrollBlocker(const int y)
 
     fetchNearestHorBlockers(y, blockYup, blockYdown);
 
-    if(y-(1<<CSF) < blockYup)
+    if(y < blockYup)
         return true;
     return false;
 }
@@ -421,7 +421,7 @@ bool CMap::scrollRight(const bool force)
 
     const int squareSize = g_pVideoDriver->getScrollSurface()->w;
 
-	if(m_scrollx < ((m_width-2)<<4) - g_pVideoDriver->getGameResolution().w)
+    if(m_scrollx < ((m_width-2)<<4) - res_width)
 	{
 		m_scrollx++;
         g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx, squareSize-1);
@@ -446,7 +446,7 @@ bool CMap::scrollRight(const bool force)
 // scrolls the map one pixel left
 bool CMap::scrollLeft(const bool force)
 {
-    if( !force && findVerticalScrollBlocker((m_scrollx-2)<<STC) )
+    if( !force && findVerticalScrollBlocker((m_scrollx)<<STC) )
         return false;
 
     const int squareSize = g_pVideoDriver->getScrollSurface()->w;
