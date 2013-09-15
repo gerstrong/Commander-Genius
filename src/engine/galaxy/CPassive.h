@@ -48,6 +48,7 @@ public:
 
     int mTerminatorTimer;
     int mTerminatorLogoNum;
+    int mCreditsBmpID;
 };
 
 }

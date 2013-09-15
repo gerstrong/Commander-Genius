@@ -24,9 +24,19 @@ CPassiveGalaxy::CPassiveGalaxy() :
 processMode(&CPassiveGalaxy::processIntro),
 m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
 mCommanderTextSfc(g_pGfxEngine->getMiscBitmap(0)),
-mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1)),
-mCurrentLogoBmp(g_pGfxEngine->getBitmap(98)) // TODO: This number depending on the episode used.
+mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
 {
+    const int episode = g_pBehaviorEngine->getEpisode();
+
+    if(episode == 4)
+        mCreditsBmpID = 98;
+    else if(episode == 5)
+        mCreditsBmpID = 77;
+    else
+        mCreditsBmpID = 23;
+
+    mCurrentLogoBmp = g_pGfxEngine->getBitmap(mCreditsBmpID);
+
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
     mScaleFactor = gameRes.h/mCommanderTextSfc.getHeight();
@@ -116,7 +126,7 @@ const int logoSpeed = 1;
 // Letters are big and scrolling around the screen...
 void CPassiveGalaxy::processIntro()
 {	       
-    CBitmap &bmpLogo = g_pGfxEngine->getBitmap(mTerminatorLogoNum+98);
+    CBitmap &bmpLogo = g_pGfxEngine->getBitmap(mTerminatorLogoNum+mCreditsBmpID);
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     SDL_Rect gameResSDL = gameRes.SDLRect();
 
@@ -146,7 +156,7 @@ void CPassiveGalaxy::processIntro()
             mTerminatorLogoNum++;
             mTerminatorTimer = 0;
 
-            mCurrentLogoBmp = g_pGfxEngine->getBitmap(98+mTerminatorLogoNum);
+            mCurrentLogoBmp = g_pGfxEngine->getBitmap(mCreditsBmpID+mTerminatorLogoNum);
             CRect<Uint16> logoBmpRect;
             logoBmpRect.w = mCurrentLogoBmp.getWidth();
             logoBmpRect.h = mCurrentLogoBmp.getHeight();
