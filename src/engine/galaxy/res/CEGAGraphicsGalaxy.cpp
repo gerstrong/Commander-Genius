@@ -1024,23 +1024,7 @@ bool CEGAGraphicsGalaxy::readTexts()
 bool CEGAGraphicsGalaxy::readMiscStuff()
 {
     int width = 0; int height = 0;
-
-
-
-    /*
-
-
-        Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, bmpRect, Palette);
-
-        extractPicture(Bitmap.getSDLSurface(),
-                m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
-                BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
-
-
-*/
     SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
-
-    //const int numMisc = EpisodeInfo[m_episode-4].NumMisc;
 
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...

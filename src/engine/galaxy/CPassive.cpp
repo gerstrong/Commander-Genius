@@ -268,7 +268,6 @@ void CPassiveGalaxy::processIntroZoom()
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-
     int error = SDL_BlitScaled( zoomSfc, &srcRect, blit, &dstRect );
     if(error)
     {
@@ -277,8 +276,8 @@ void CPassiveGalaxy::processIntroZoom()
         return;
     }
 #else
-            g_pLogFile->textOut("SDL 1.2 doesn't support Bitmap scaling to higher resolutions, "
-                                "please let the devs know about this problem.");
+    g_pLogFile->textOut("SDL 1.2 doesn't support Bitmap scaling to higher resolutions, "
+                        "please let the devs know about this problem.");
     return false;
 #endif
 
