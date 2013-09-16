@@ -51,7 +51,6 @@ void CVarPlatform::process()
 
         readDirection(object, xDirection, yDirection );
         detectNextTarget(target, xDirection, yDirection);
-
     }
     
     if(yDirection == UP && blockedu)

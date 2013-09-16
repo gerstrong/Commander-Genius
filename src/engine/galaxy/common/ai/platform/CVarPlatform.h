@@ -46,6 +46,13 @@ public:
         posNode.put("<xmlattr>.y", target.y);
     }
 
+    void deserialize(boost::property_tree::ptree &node)
+    {
+        auto &posNode = node.get_child("target");
+        target.x = posNode.get<int>("<xmlattr>.x");
+        target.y = posNode.get<int>("<xmlattr>.y");
+    }
+
 
 	
 };
