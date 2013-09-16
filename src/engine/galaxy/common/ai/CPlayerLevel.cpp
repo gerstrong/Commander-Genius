@@ -2030,13 +2030,25 @@ void CPlayerLevel::openDoorsTile()
 	Uint32 newY = targetXY & 0xFF;
 	Uint32 tileno, next_tileno;
 
-	do
+    // Get the tile position of the last tile to change. on the right of
+    std::vector<CTileProperties> &tilePropVec = g_pBehaviorEngine->getTileProperties(1);
+
+    while(1)
 	{
 		tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
 		mp_Map->setTile(newX, newY, tileno+1, true, 1);
 		newY++;
 		next_tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
-	}while(next_tileno == tileno || next_tileno == tileno+18 || next_tileno == tileno+2*18);
+
+        const int freeTileno = mp_Map->getPlaneDataAt(1, (newX+1)<<CSF, newY<<CSF);
+        const bool isBlock = tilePropVec[freeTileno].bup;
+
+        if( !isBlock ) // Freeshot for some doors, which might have strange
+            continue;   // tiles setup. v.g. Keen 7 Krodacia
+
+        if( next_tileno != tileno && next_tileno != tileno+18 && next_tileno != tileno+2*18)
+            break;
+    }
 }
 
 

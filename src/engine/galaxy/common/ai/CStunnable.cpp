@@ -118,6 +118,15 @@ void CStunnable::draw()
       {
         int showX = scrx+StarSprite.getXOffset();
         int showY = scry+StarSprite.getYOffset();
+
+        auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
+
+        if( showX+StarSprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
+            return;
+
+        if( showY+StarSprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
+            return;
+
         StarSprite.drawSprite( showX, showY, (255-transluceny) );
       }
     }
