@@ -207,6 +207,14 @@ void CPlatform::draw()
         int showX = scrx+Sprite.getXOffset();
         int showY = scry+Sprite.getYOffset();
 
+        auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
+
+        if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
+            return;
+
+        if( showY+Sprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
+            return;
+
         Sprite.drawSprite( showX, showY, (255-transluceny) );
 
         for(auto &carriedObj : mCarriedPlayerVec)

@@ -52,6 +52,7 @@ m_baseframe(0)
 	    // In Episode 5 the sign is not thrown! It just appears in the holder. Move it there!
 	    moveTo(m_destination);
 	    setupGalaxyObjectOnMap(0x148A, A_FLAG_WAVE);
+        mp_Map->unlock();
 	}
 	else
 	{

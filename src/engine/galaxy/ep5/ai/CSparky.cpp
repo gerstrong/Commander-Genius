@@ -232,13 +232,10 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 
 int CSparky::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-  //if(getActionNumber(A_SPARKY_WALK))
-  {
-	if(turnAroundOnCliff( x1, x2, y2 ))
-	  setAction(A_SPARKY_TURN);
-  }
+    if(turnAroundOnCliff( x1, x2, y2 ))
+        setAction(A_SPARKY_TURN);
 
-	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
+    return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
 
 

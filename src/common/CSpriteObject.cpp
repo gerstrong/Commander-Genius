@@ -418,7 +418,6 @@ void CSpriteObject::draw()
         if( showY+Sprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
             return;
 
-
 		if(m_blinktime > 0)
 		{
 			Sprite.drawBlinkingSprite( showX, showY );
