@@ -1028,11 +1028,13 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
+
     for(int misc = 1 ; misc<3 ; misc++)
     {
         const int index = EpisodeInfo[m_episode-4].IndexMisc + misc;
-        auto &miscData = m_egagraph.at(index).data;
-        Uint16 *dataPtr = reinterpret_cast<Uint16*>( miscData.data() );
+        Uint16 *dataPtr;
+
+        memcpy( &dataPtr, &(m_egagraph.at(index).data), sizeof(Uint16 *) );
 
         memcpy(&height, dataPtr, sizeof(Uint16) );
         dataPtr++;
