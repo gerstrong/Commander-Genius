@@ -110,13 +110,13 @@ bool CGameLauncherMenu::loadGalaxyResources(const Uint8 flags)
     
     if( (flags & LOADGFX) == LOADGFX )
     {
-	// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-	mp_EGAGraphics.reset(new galaxy::CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
-	if(!mp_EGAGraphics)
-	    return false;
-	
-    mp_EGAGraphics->loadData();
-    g_pResourceLoader->setPermilage(400);
+        // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
+        mp_EGAGraphics.reset(new galaxy::CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
+        if(!mp_EGAGraphics)
+            return false;
+
+        mp_EGAGraphics->loadData();
+        g_pResourceLoader->setPermilage(400);
     }
     
     if( (flags & LOADSTR) == LOADSTR )

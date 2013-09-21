@@ -149,19 +149,19 @@ bool CEGAGraphicsGalaxy::loadData()
 						EpisodeInfo[m_episode-4].Num16MaskedTiles))
 		return false;
 
-	if(!readfonts()) return false;
-	if(!readBitmaps()) return false;
-	if(!readMaskedBitmaps()) return false;
+    if(!readfonts()) return false;
+    if(!readBitmaps()) return false;
+    if(!readMaskedBitmaps()) return false;
 
 	g_pGfxEngine->createEmptyTilemaps(4);
 
-	if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
+    if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
 			EpisodeInfo[m_episode-4].Index16Tiles,
 			g_pGfxEngine->getTileMap(0), false)) return false;
 	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num16MaskedTiles, 4, 18,
 			EpisodeInfo[m_episode-4].Index16MaskedTiles,
 			g_pGfxEngine->getTileMap(1), false)) return false;
-	if(!readTilemaps(EpisodeInfo[m_episode-4].Num8Tiles, 3, 1,
+    if(!readTilemaps(EpisodeInfo[m_episode-4].Num8Tiles, 3, 1,
 			EpisodeInfo[m_episode-4].Index8Tiles,
 			g_pGfxEngine->getTileMap(2), true)) return false;
 	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num8MaskedTiles, 3, 1,
@@ -1072,6 +1072,8 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         Uint32 currentColor = blackColor;
 
+        int amountOfPixels = 0;
+
         for(int line=0 ; line < height ; line++)
         {
             Uint16 pixelCount = *rlepointer;
@@ -1082,6 +1084,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
                 {
                     *sfcPtr = currentColor;
                     sfcPtr += bytePerPixel;
+                    amountOfPixels++;
                 }
 
                 currentColor =
@@ -1099,8 +1102,14 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
             rlepointer++;
         }
 
+        if(amountOfPixels != height*width)
+        {
+            g_pLogFile->ftextOut("Warning! Someting is wrong with the amount of read pixels in MiscBitmap %d.\n", misc);
+        }
+
         SDL_UnlockSurface(bmp);
     }
+
 
     return true;
 }
