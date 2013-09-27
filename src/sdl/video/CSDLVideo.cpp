@@ -37,7 +37,6 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
                               SDL_WINDOWPOS_CENTERED,
                               m_VidConfig.m_DisplayRect.w,
                               m_VidConfig.m_DisplayRect.h,
-                              /*SDL_WINDOW_BORDERLESS|SDL_WINDOW_OPENGL|*/
                               SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if(renderer)
@@ -154,7 +153,7 @@ void CSDLVideo::setLightIntensity(const float intensity)
     SDL_FillRect( sfc, nullptr, color);
 }
 
-bool CSDLVideo::createSurfaces()
+/*bool CSDLVideo::createSurfaces()
 {
     // Configure the Scaler
     Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
@@ -184,10 +183,6 @@ bool CSDLVideo::createSurfaces()
                                           0x0000FF00,
                                           0x000000FF,
                                           0x00000000);
-    /*SDL_SetPaletteColors(ScrollSurface->format->palette, g_pGfxEngine->Palette.m_Palette, 0, 255);
-    SDL_SetColorKey(ScrollSurface, SDL_TRUE, COLORKEY);*/
-
-
 
     g_pLogFile->textOut("FilteredSurface creation!\n");
 
@@ -213,7 +208,7 @@ bool CSDLVideo::createSurfaces()
                              float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 
 	return true;
-}
+}*/
 
 void CSDLVideo::collectSurfaces()
 {

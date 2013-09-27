@@ -20,12 +20,6 @@ Uint16 getPowerOfTwo(const Uint16 value)
 }
 
 CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
-BlitSurface(NULL),
-FilteredSurface(NULL),
-ScrollSurface(NULL),       // Squared scroll buffer
-m_VidConfig(VidConfig),
-mSbufferx(0),
-mSbuffery(0),
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     window(nullptr),
     renderer(nullptr),
@@ -33,6 +27,12 @@ mSbuffery(0),
 #else
     screen(nullptr),
 #endif
+BlitSurface(NULL),
+FilteredSurface(NULL),
+ScrollSurface(nullptr),       // Squared scroll buffer
+m_VidConfig(VidConfig),
+mSbufferx(0),
+mSbuffery(0),
 m_Mode(0)
 {}
 
@@ -63,8 +63,6 @@ CVideoEngine::~CVideoEngine()
 
 bool CVideoEngine::init()
 {
-	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
-
 	// Setup mode depends on some systems.
 #if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID) || defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_Mode = SDL_SWSURFACE;
@@ -147,6 +145,7 @@ bool CVideoEngine::init()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
+    const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
  	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
 #endif
 
@@ -214,6 +213,63 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 	return optimized;
 }
 
+
+bool CVideoEngine::createSurfaces()
+{
+    // Configure the Scaler
+    Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+    Scaler.setFilterType(m_VidConfig.m_normal_scale);
+
+    const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
+
+    g_pLogFile->textOut("Blitsurface creation!\n");
+
+
+    BlitSurface = SDL_CreateRGBSurface( m_Mode, gamerect.w, gamerect.h, RES_BPP,
+                                          0x00FF0000,
+                                          0x0000FF00,
+                                          0x000000FF,
+                                          0xFF000000);
+
+    SDL_SetSurfaceBlendMode(BlitSurface, SDL_BLENDMODE_NONE);
+
+
+    const int squareSize = getPowerOfTwo( gamerect.h > gamerect.w ? gamerect.h : gamerect.w );
+
+    // This function creates the surfaces which are needed for the game.
+    ScrollSurface = SDL_CreateRGBSurface( m_Mode,
+                                          squareSize,
+                                          squareSize, 32,
+                                          0x00FF0000,
+                                          0x0000FF00,
+                                          0x000000FF,
+                                          0x00000000);
+
+    g_pLogFile->textOut("FilteredSurface creation!\n");
+
+    auto *format = BlitSurface->format;
+
+    FilteredSurface = SDL_CreateRGBSurface( m_Mode,
+                                BlitSurface->w*m_VidConfig.m_ScaleXFilter,
+                                BlitSurface->h*m_VidConfig.m_ScaleXFilter,
+                                RES_BPP,
+                                format->Rmask,
+                                format->Gmask,
+                                format->Bmask,
+                                format->Amask );
+
+
+    m_dst_slice = FilteredSurface->pitch;
+
+    initOverlaySurface(false, BlitSurface->w, BlitSurface->h);
+
+    Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+    Scaler.setFilterType(m_VidConfig.m_normal_scale);
+    Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
+                             float(FilteredSurface->h)/float(aspectCorrectionRect.h));
+
+    return true;
+}
 
 
 void CVideoEngine::blitScrollSurface() // This is only for tiles

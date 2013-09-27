@@ -18,7 +18,7 @@ public:
 	CSDLVideo(const CVidConfig& VidConfig);
 
 	bool resizeDisplayScreen(const CRect<Uint16>& newDim);
-	bool createSurfaces();
+    //bool createSurfaces();
 	void collectSurfaces();
 	void clearSurfaces();
 
@@ -29,8 +29,8 @@ public:
 									SDL_Surface *dstSfc,
 									const SDL_Rect *dstrect );
 
-    SDL_Surface *getOverlaySurface()
-    { return mpOverlaySurface.get(); }
+    /*SDL_Surface *getOverlaySurface()
+    { return mpOverlaySurface.get(); }*/
 
     bool initOverlaySurface( const bool useAlpha,
                              const Uint16 width,

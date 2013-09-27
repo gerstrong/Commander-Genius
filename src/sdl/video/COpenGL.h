@@ -42,7 +42,7 @@ public:
 	void setUpViewPort(const CRect<Uint16> &newDim);
 	bool resizeDisplayScreen(const CRect<Uint16>& newDim);
 	void loadSurface(GLuint texture, SDL_Surface* surface);
-	bool createSurfaces();
+    //bool createSurfaces();
 	void collectSurfaces();
 	void clearSurfaces();
 

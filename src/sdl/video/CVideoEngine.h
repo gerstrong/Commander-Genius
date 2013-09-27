@@ -42,7 +42,12 @@ public:
 	virtual void shutdown();
 
     SDL_Surface *createSurface(std::string name, bool alpha, int width, int height, int bpp, int mode);
-	virtual bool createSurfaces() = 0;
+    virtual bool createSurfaces();
+
+    virtual bool initOverlaySurface( const bool useAlpha,
+                             const Uint16 width,
+                             const Uint16 height ) { return true; }
+
 	void fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr, unsigned int &width, unsigned int &height);
 	virtual void collectSurfaces() = 0;
 	virtual void clearSurfaces() = 0;
@@ -50,10 +55,6 @@ public:
 	void stop();
 
     virtual void setLightIntensity(const float intensity) = 0;
-
-    bool initOverlaySurface(const bool useAlpha,
-                            const Uint16 width,
-                            const Uint16 height );
 
 	SDL_Surface *getBlitSurface() { return BlitSurface; }
 
@@ -86,6 +87,12 @@ public:
 
 protected:
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_Texture *sdlTexture;
+#else
+    SDL_Surface *screen;                // the actual video memory/window
+#endif
+
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FilteredSurface;
     SDL_Surface *ScrollSurface;       	// Squared scroll buffer
@@ -97,11 +104,6 @@ protected:
 	Sint16 mSbufferx;
 	Sint16 mSbuffery;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_Texture *sdlTexture;
-#else
-    SDL_Surface *screen;                // the actual video memory/window
-#endif
 
 
 	// Those variables are used for the rendering process, so they don't need to be recalculated

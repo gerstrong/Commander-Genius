@@ -61,6 +61,7 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 #if SDL_VERSION_ATLEAST(2, 0, 0)        
   
     aspectCorrectResizing(newDim, w, h);
+
 #else
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 
@@ -79,45 +80,6 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 
 		setUpViewPort(aspectCorrectionRect);
 	}
-#endif
-
-
-	return true;
-}
-
-
-bool COpenGL::createSurfaces()
-{
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-#else
-	// This function creates the surfaces which are needed for the game.
-	const CRect<Uint16> gamerect = m_VidConfig.m_GameRect;
-    ScrollSurface = createSurface( "ScrollSurface", false,
-								  512, 512,
-								  RES_BPP,
-								  m_Mode, screen->format );
-
-    g_pLogFile->textOut("Blitsurface = creatergbsurface<br>");
-
-    BlitSurface = createSurface( "BlitSurface", true,
-    		gamerect.w, gamerect.h,
-    		RES_BPP,
-    		m_Mode, screen->format );
-
-    g_pLogFile->textOut("FilteredSurface = creatergbsurface<br>");
-
-	FilteredSurface = createSurface( "FilteredSurface", true,
-				m_GamePOTScaleDim.w, m_GamePOTScaleDim.h,
-				RES_BPP,
-				m_Mode, screen->format );
-
-    m_dst_slice = FilteredSurface->w*screen->format->BytesPerPixel;
-
-	Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
-	Scaler.setFilterType(m_VidConfig.m_normal_scale);
-	Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
-				 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
 #endif
 
 
@@ -160,11 +122,14 @@ bool COpenGL::init()
 	CVideoEngine::init();
 	const GLint oglfilter = m_VidConfig.m_opengl_filter;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    window = SDL_CreateWindow("Commander Genius", SDL_WINDOWPOS_CENTERED,
+#if SDL_VERSION_ATLEAST(2, 0, 0)    
+    window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
-                              m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h,
-                              /*SDL_WINDOW_BORDERLESS|*/SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
+                              SDL_WINDOWPOS_CENTERED,
+                              m_VidConfig.m_DisplayRect.w,
+                              m_VidConfig.m_DisplayRect.h,
+                              SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
     glcontext = SDL_GL_CreateContext(window);
     
 	// Set clear colour
@@ -324,9 +289,9 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 		externalFormat = GL_BGRA;
 	}
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     
-#else
+//#else
 	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
 	if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
 	{
@@ -350,7 +315,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 				GL_UNSIGNED_BYTE, FilteredSurface->pixels);
 
 	SDL_UnlockSurface(FilteredSurface);
-#endif
+//#endif
 }
 
 void COpenGL::updateScreen()
