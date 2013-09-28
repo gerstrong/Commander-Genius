@@ -48,13 +48,13 @@ public:
 
     void setLightIntensity(const float intensity);
 
-	void updateScreen();
+    void transformScreenToDisplay();
 	bool init();
 
 private:
 	unsigned int	m_texparam;
 
-	float	m_aspectratio;
+    //float	m_aspectratio;
 
 	stDims m_GameScaleDim, m_GamePOTScaleDim;
 

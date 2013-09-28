@@ -71,7 +71,7 @@ bool CResourceLoader::process(int* ret)
     
     // Draw the first Frame, so transition looks complete!
     renderLoadingGraphic();
-    g_pVideoDriver->updateScreen();
+    g_pVideoDriver->updateDisplay();
     
     start = timerTicks();
     
@@ -116,7 +116,7 @@ bool CResourceLoader::process(int* ret)
 		
 		// Now you really render the screen
 		// When enabled, it also will apply Filters
-		g_pVideoDriver->updateScreen();
+        g_pVideoDriver->updateDisplay();
 		
 		elapsed = timerTicks() - start;
 		total_elapsed += elapsed;
@@ -143,7 +143,7 @@ bool CResourceLoader::process(int* ret)
 	setPermilageForce(m_max_permil);
 	setPermilage(m_max_permil);
 	renderLoadingGraphic();
-	g_pVideoDriver->updateScreen();	
+    g_pVideoDriver->updateDisplay();
 	
 	m_permiltarget = m_permil = m_min_permil;
 	

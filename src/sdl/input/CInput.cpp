@@ -548,7 +548,6 @@ void CInput::pollEvents()
     const CRect<Uint16> gameArea =  g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
 #endif
 
-
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
 	{
@@ -587,7 +586,15 @@ void CInput::pollEvents()
 #else
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-         // TODO: Need something similar...
+
+        case SDL_WINDOWEVENT:
+            if(Event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
+                        CRect<Uint16>(Event.window.data1,
+                                      Event.window.data2) );
+            }
+            break;
 #else
 		case SDL_VIDEORESIZE:
 			g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(

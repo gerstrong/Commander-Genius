@@ -309,9 +309,10 @@ void CVideoDriver::clearSurfaces()
 	mpVideoEngine->clearSurfaces();
 }
 
-void CVideoDriver::updateScreen()
+void CVideoDriver::updateDisplay()
 {
-	mpVideoEngine->updateScreen();
+    mpVideoEngine->filterUp();
+    mpVideoEngine->transformScreenToDisplay();
 }
 
 void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds) 

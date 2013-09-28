@@ -50,7 +50,7 @@ public:
 	
 	void collectSurfaces();
 	void clearSurfaces();
-	void updateScreen();
+    void updateDisplay();
 
     void setLightIntensity(const float intensity)
     {

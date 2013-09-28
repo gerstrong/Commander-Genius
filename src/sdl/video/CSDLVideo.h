@@ -36,7 +36,7 @@ public:
                              const Uint16 width,
                              const Uint16 height );
 
-	void updateScreen();
+    void transformScreenToDisplay();
 
 private:
 

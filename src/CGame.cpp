@@ -181,7 +181,7 @@ void CGame::run()
 
         // Now you really render the screen
         // When enabled, it also will apply Filters
-        g_pVideoDriver->updateScreen();
+        g_pVideoDriver->updateDisplay();
 
         /*
          const double alpha = acc / logicLatency;

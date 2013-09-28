@@ -21,7 +21,6 @@
 COpenGL::COpenGL(const CVidConfig &VidConfig) :
 CVideoEngine(VidConfig),
 m_texparam(GL_TEXTURE_2D),
-m_aspectratio(m_VidConfig.m_DisplayRect.aspectRatio()),
 m_GameScaleDim(m_VidConfig.m_GameRect.w*m_VidConfig.m_ScaleXFilter,
 				m_VidConfig.m_GameRect.h*m_VidConfig.m_ScaleXFilter),
 m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.h))
@@ -53,14 +52,15 @@ void COpenGL::setUpViewPort(const CRect<Uint16> &newDim)
 
 bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
-	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		
-  
+	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		  
     const int w = m_VidConfig.mAspectCorrection.w;
     const int h = m_VidConfig.mAspectCorrection.h;
   
 #if SDL_VERSION_ATLEAST(2, 0, 0)        
   
     aspectCorrectResizing(newDim, w, h);
+
+    setUpViewPort(aspectCorrectionRect);
 
 #else
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
@@ -93,7 +93,7 @@ void COpenGL::collectSurfaces()
 
 void COpenGL::clearSurfaces()
 {
-    SDL_FillRect(BlitSurface, NULL, 0x0);
+    SDL_FillRect(mpScreenSfc.get(), NULL, 0x0);
 }
 
 
@@ -147,13 +147,16 @@ bool COpenGL::init()
 	// Now Initialize modelview matrix
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-    
+
     // Setup the view port for the first time
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	glViewport(0, 0, 480, 320);
 #else
     setUpViewPort(aspectCorrectionRect);
 #endif
+
+    glViewport(0, 0, 512, 1024);
+
     /*Using the standard OpenGL API for specifying a 2D texture
      image: glTexImage2D, glSubTexImage2D, glCopyTexImage2D,
      and glCopySubTexImage2D.  The target for these commands is
@@ -175,9 +178,9 @@ bool COpenGL::init()
 	{	// In that case we can do a texture based rendering
 		createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
 	}
-#else
+#else // not SDL 2.0
 	// Setup the view port for the first time
-	setUpViewPort(aspectCorrectionRect);
+    setUpViewPort(aspectCorrectionRect);
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -292,33 +295,36 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
+
+    SDL_LockSurface(mpScreenSfc.get());
+
 	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
-	if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
+    /*if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
 	{
-		SDL_LockSurface(FilteredSurface);
+        SDL_LockSurface(mpScreenSfc.get());
 		SDL_LockSurface(surface);
 		Scaler.scaleUp(FilteredSurface, surface, SCALEX, aspectCorrectionRect);
-		SDL_UnlockSurface(surface);
-	}
-	else // Otherwise, blit to a POT-sized surface
-	{
+        SDL_UnlockSurface(surface);
+    }*/
+    //else // Otherwise, blit to a POT-sized surface
+    /*{
 		// While blitting, no involved surface should be locked.
         SDL_BlitSurface(surface, NULL, FilteredSurface, NULL);
 
         SDL_LockSurface(FilteredSurface);
-	}
+    }*/
 
 	glTexImage2D(m_texparam, 0, internalFormat,
-				FilteredSurface->w,
-				FilteredSurface->h,
+                mpScreenSfc->w,
+                mpScreenSfc->h,
 				0, externalFormat,
-				GL_UNSIGNED_BYTE, FilteredSurface->pixels);
+                GL_UNSIGNED_BYTE, mpScreenSfc->pixels);
 
-	SDL_UnlockSurface(FilteredSurface);
+    SDL_UnlockSurface(mpScreenSfc.get());
 //#endif
 }
 
-void COpenGL::updateScreen()
+void COpenGL::transformScreenToDisplay()
 {
 	glEnable(GL_TEXTURE_2D);
 	// Set up an array of values to use as the sprite vertices.
@@ -348,7 +354,7 @@ void COpenGL::updateScreen()
 
 	glEnable(GL_BLEND);
 
-	loadSurface(m_texture, BlitSurface);
+    loadSurface(m_texture, mpScreenSfc.get());
 	renderTexture(m_texture);
 
 	glDisableClientState(GL_VERTEX_ARRAY);

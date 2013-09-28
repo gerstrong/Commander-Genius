@@ -30,15 +30,21 @@ class CVideoEngine
 {
 public:
 
+
+    /**
+     * @brief CVideoEngine
+     * @param VidConfig Video Configuration flags used to setup the Video Engine
+     */
 	CVideoEngine(const CVidConfig& VidConfig);
 	~CVideoEngine();
+
 
 	virtual bool init();
 
 	virtual bool resizeDisplayScreen(const CRect<Uint16>& newDim) = 0;
 	void aspectCorrectResizing(const CRect<Uint16>& newDim, const int width, const int height);
 
-	virtual void updateScreen() = 0;
+    virtual void transformScreenToDisplay() = 0;
 	virtual void shutdown();
 
     SDL_Surface *createSurface(std::string name, bool alpha, int width, int height, int bpp, int mode);
@@ -56,7 +62,7 @@ public:
 
     virtual void setLightIntensity(const float intensity) = 0;
 
-	SDL_Surface *getBlitSurface() { return BlitSurface; }
+    SDL_Surface *getBlitSurface() { return mpGameSfc.get(); }
 
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 
@@ -67,6 +73,8 @@ public:
 		mSbufferx = 0;
 		mSbuffery = 0;
 	}
+
+    void filterUp();
 
     inline void UpdateScrollBufX(const Sint16 SBufferX, const int drawMask)
     {		mSbufferx = SBufferX&drawMask;	}
@@ -83,18 +91,22 @@ public:
     SDL_GLContext glcontext;
 #endif
 
-    CRect<int> mRelativeVisGameArea;
+    CRect<int> mRelativeVisGameArea;        
 
 protected:
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_Texture *sdlTexture;
 #else
-    SDL_Surface *screen;                // the actual video memory/window
+    SDL_Surface *mDisplaySfc;                // the actual video memory/window
 #endif
 
-	SDL_Surface *BlitSurface;
-	SDL_Surface *FilteredSurface;
+    std::shared_ptr<SDL_Surface> mpGameSfc;
+    std::shared_ptr<SDL_Surface> mpScreenSfc;
+
+    //SDL_Surface *BlitSurface;
+    //SDL_Surface *FilteredSurface;
     SDL_Surface *ScrollSurface;       	// Squared scroll buffer
 
     CScaler Scaler;
@@ -103,8 +115,6 @@ protected:
 
 	Sint16 mSbufferx;
 	Sint16 mSbuffery;
-
-
 
 	// Those variables are used for the rendering process, so they don't need to be recalculated
 	unsigned m_dst_slice, m_src_slice;
