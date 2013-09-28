@@ -58,9 +58,9 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
   
 #if SDL_VERSION_ATLEAST(2, 0, 0)        
   
-    aspectCorrectResizing(newDim, w, h);
+    updateAspectRect(newDim, w, h);
 
-    setUpViewPort(aspectCorrectionRect);
+    setUpViewPort(mAspectCorrectionRect);
 
 #else
     screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
@@ -152,10 +152,8 @@ bool COpenGL::init()
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	glViewport(0, 0, 480, 320);
 #else
-    setUpViewPort(aspectCorrectionRect);
+    setUpViewPort(mAspectCorrectionRect);
 #endif
-
-    glViewport(0, 0, 512, 1024);
 
     /*Using the standard OpenGL API for specifying a 2D texture
      image: glTexImage2D, glSubTexImage2D, glCopyTexImage2D,

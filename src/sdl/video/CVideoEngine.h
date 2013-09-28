@@ -42,7 +42,15 @@ public:
 	virtual bool init();
 
 	virtual bool resizeDisplayScreen(const CRect<Uint16>& newDim) = 0;
-	void aspectCorrectResizing(const CRect<Uint16>& newDim, const int width, const int height);
+
+
+    /**
+     * @brief updateAspectRect Updates the mAspectCorrectionRect which is used when rendering the screen
+     * @param displayRes The dimension of the window or resolution of the display when in Fullscreen
+     * @param aspWidth wished aspect width
+     * @param aspHeight wished aspect height
+     */
+    void updateAspectRect(const CRect<Uint16>& displayRes, const int aspWidth, const int aspHeight);
 
     virtual void transformScreenToDisplay() = 0;
 	virtual void shutdown();
@@ -66,7 +74,7 @@ public:
 
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 
-	CRect<Uint16> &getAspectCorrRect() { return aspectCorrectionRect; }
+    CRect<Uint16> &getAspectCorrRect() { return mAspectCorrectionRect; }
 
 	void resetScrollbuffer()
 	{
@@ -122,7 +130,7 @@ protected:
 	unsigned int m_Mode;
 
 	// A sub-rectangle where an aspect-corrected frame is displayed
-	CRect<Uint16> aspectCorrectionRect;
+    CRect<Uint16> mAspectCorrectionRect;
 };
 
 #endif /* CVIDEOENGINE_H_ */

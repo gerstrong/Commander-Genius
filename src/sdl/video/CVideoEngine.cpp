@@ -116,8 +116,8 @@ bool CVideoEngine::init()
 	else
 		m_Mode |= SDL_RESIZABLE;
 #endif
+	    
 
-	
 	// And set the proper Display Dimensions
 	// The screen is also setup in this function
 	if( !resizeDisplayScreen(m_VidConfig.m_DisplayRect) )
@@ -151,28 +151,28 @@ bool CVideoEngine::init()
 	return true;
 }
 
-void CVideoEngine::aspectCorrectResizing(const CRect<Uint16>& newDim, const int width, const int height)
+void CVideoEngine::updateAspectRect(const CRect<Uint16>& displayRes, const int aspWidth, const int aspHeight)
 {
-	if (width == 0 || height == 0)
+    if (aspWidth == 0 || aspHeight == 0)
 	{
-		aspectCorrectionRect.x = aspectCorrectionRect.y = 0;
-		aspectCorrectionRect.w = newDim.w;
-		aspectCorrectionRect.h = newDim.h;
+        mAspectCorrectionRect.x = mAspectCorrectionRect.y = 0;
+        mAspectCorrectionRect.w = displayRes.w;
+        mAspectCorrectionRect.h = displayRes.h;
 		return;
 	}
 	
-	if (height*newDim.w >= width*newDim.h) // Wider than width:3, so shrink newDim.w
+    if (aspHeight*displayRes.w >= aspWidth*displayRes.h) // Wider than width:height, so shrink width
 	{
-		aspectCorrectionRect.h = newDim.h-newDim.h%height;
-		aspectCorrectionRect.w = newDim.h/height*width;
+        mAspectCorrectionRect.h = displayRes.h-displayRes.h%aspHeight;
+        mAspectCorrectionRect.w = displayRes.h/aspHeight*aspWidth;
 	}
-	else // Taller than width:height so shrink newDim.h
+    else // Taller than width:height so shrink height
 	{
-		aspectCorrectionRect.w = newDim.w-newDim.w%width;
-		aspectCorrectionRect.h = newDim.w/width*height;
+        mAspectCorrectionRect.w = displayRes.w-displayRes.w%aspWidth;
+        mAspectCorrectionRect.h = displayRes.w/aspWidth*aspHeight;
 	}
-	aspectCorrectionRect.x = (newDim.w-aspectCorrectionRect.w)/2;
-	aspectCorrectionRect.y = (newDim.h-aspectCorrectionRect.h)/2;
+    mAspectCorrectionRect.x = (displayRes.w-mAspectCorrectionRect.w)/2;
+    mAspectCorrectionRect.y = (displayRes.h-mAspectCorrectionRect.h)/2;
 }
 
 SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode)

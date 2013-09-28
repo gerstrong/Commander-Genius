@@ -16,12 +16,15 @@ CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :
 CVideoEngine(VidConfig)
 {}
 
-bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
+bool CSDLVideo::init()
 {
+    if(!CVideoEngine::init())
+        return false;
+
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
 	
-    const int w = m_VidConfig.mAspectCorrection.w;
-    const int h = m_VidConfig.mAspectCorrection.h;
+    const int aspW = m_VidConfig.mAspectCorrection.w;
+    const int aspH = m_VidConfig.mAspectCorrection.h;
   
   
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -50,7 +53,7 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
     
-    aspectCorrectResizing(newDim, w, h);
+    updateAspectRect(m_VidConfig.m_DisplayRect, aspW, aspH);
 
     const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
 
@@ -88,9 +91,12 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 
 #endif
 
-
 	return true;
 }
+
+
+bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
+{ return true; } // Nothing to do here in SDL 2.0. For SDL 1.2 we need some code
 
 
 bool CSDLVideo::initOverlaySurface( const bool useAlpha,
