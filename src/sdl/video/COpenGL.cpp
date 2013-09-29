@@ -28,26 +28,12 @@ m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.
 
 void COpenGL::setUpViewPort(const CRect<Uint16> &newDim)
 {
-	// Calculate the proper viewport for any resolution
-	float base_width = m_GameScaleDim.w;
-	float base_height = m_GameScaleDim.h;
+    const float width = static_cast<float>(newDim.w);
+    const float height = static_cast<float>(newDim.h);
+    const float ypos = static_cast<float>(newDim.y);
+    const float xpos = static_cast<float>(newDim.x);
 
-	float scale_width = (float)(newDim.w)/base_width;
-	float scale_height = (float)(newDim.h)/base_height;
-
-	float width = ((float)m_GamePOTScaleDim.w)*scale_width;
-	float height = ((float)m_GamePOTScaleDim.h)*scale_height;
-#if 0 
-	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height;
-	float xpos = 0.0f; // Not needed because the x-axis of ogl and sdl_surfaces are the same.
-#endif
-	float ypos = (base_height-m_GamePOTScaleDim.h)*scale_height+newDim.y;
-	// No more than newDim.x is added here because the x-axis of ogl and sdl_surfaces are the same.
-	float xpos = newDim.x;
-
-	// strange constants here; 225 seems good for pc. 200 is better for iphone
-	// the size is the same as the texture buffers
-	glViewport(xpos, ypos, width, height);
+    glViewport(xpos, ypos, width, height);
 }
 
 bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
@@ -55,7 +41,14 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		  
     const int w = m_VidConfig.mAspectCorrection.w;
     const int h = m_VidConfig.mAspectCorrection.h;
-  
+
+    // Render a black surface which cleans the screen, in case there already is some content in the screen
+    if(mpScreenSfc)
+    {
+        clearSurfaces();
+        transformScreenToDisplay();
+    }
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)        
   
     updateAspectRect(newDim, w, h);
@@ -93,7 +86,8 @@ void COpenGL::collectSurfaces()
 
 void COpenGL::clearSurfaces()
 {
-    SDL_FillRect(mpScreenSfc.get(), NULL, 0x0);
+    auto screen = mpScreenSfc.get();
+    SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format,0,0,0) );
 }
 
 

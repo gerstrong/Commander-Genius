@@ -159,18 +159,22 @@ void CVideoEngine::updateAspectRect(const CRect<Uint16>& displayRes, const int a
         mAspectCorrectionRect.w = displayRes.w;
         mAspectCorrectionRect.h = displayRes.h;
 		return;
-	}
+    }
 	
     if (aspHeight*displayRes.w >= aspWidth*displayRes.h) // Wider than width:height, so shrink width
 	{
-        mAspectCorrectionRect.h = displayRes.h-displayRes.h%aspHeight;
-        mAspectCorrectionRect.w = displayRes.h/aspHeight*aspWidth;
-	}
+        //mAspectCorrectionRect.h = displayRes.h-displayRes.h%aspHeight;
+        //mAspectCorrectionRect.w = displayRes.h/aspHeight*aspWidth;
+        mAspectCorrectionRect.h = displayRes.h;
+        mAspectCorrectionRect.w = (displayRes.h*aspWidth)/aspHeight;
+    }
     else // Taller than width:height so shrink height
 	{
-        mAspectCorrectionRect.w = displayRes.w-displayRes.w%aspWidth;
-        mAspectCorrectionRect.h = displayRes.w/aspWidth*aspHeight;
-	}
+        //mAspectCorrectionRect.w = displayRes.w-displayRes.w%aspWidth;
+        //mAspectCorrectionRect.h = displayRes.w/aspWidth*aspHeight;
+        mAspectCorrectionRect.w = displayRes.w;
+        mAspectCorrectionRect.h = (displayRes.w*aspHeight)/aspWidth;
+    }
     mAspectCorrectionRect.x = (displayRes.w-mAspectCorrectionRect.w)/2;
     mAspectCorrectionRect.y = (displayRes.h-mAspectCorrectionRect.h)/2;
 }

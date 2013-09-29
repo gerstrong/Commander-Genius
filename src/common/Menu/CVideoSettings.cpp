@@ -65,53 +65,25 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpFPSSelection = new CGUINumberControl( "FPS", 10, 120, 10, 60, false );
 	mpMenuDialog->addControl( mpFPSSelection );
 
-
-#if defined(USE_OPENGL)
-	mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
-	mpMenuDialog->addControl( mpOpenGLSwitch );
-
-	mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
-		filledStrList( 2, "nearest", "linear" ) );
-	mpMenuDialog->addControl( mpOGLFilterSelection );
-#endif
-
-	mpShowFPSSwitch = new CGUISwitch( "Show FPS" );
-	mpMenuDialog->addControl( mpShowFPSSwitch );
-
-
-	mpSFXSwitch = new CGUISwitch( "Special FX" );
-	mpMenuDialog->addControl( mpSFXSwitch );
-
+    mpGameResSelection = new CGUIComboSelection( "GameRes",
+        filledStrList(1, "?x?") );
+    mpMenuDialog->addControl( mpGameResSelection );
 	
 #if !defined(EMBEDDED)	
 	
-	mpAspectSelection = new CGUIComboSelection( "Aspect Corr",
+    mpAspectSelection = new CGUIComboSelection( "Aspect",
 		filledStrList(1, "disabled") );
 	
 	mpMenuDialog->addControl( mpAspectSelection );
 
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
     mpScalerSelection =
             new CGUIComboSelection( "Scaler",
                 filledStrList( 4, "none",
                                   "scale2x",
                                   "scale3x",
                                   "scale4x" ) );
-#else
-    mpScalerSelection =
-            new CGUIComboSelection( "Scaler",
-                filledStrList( 7, "none",
-                                  "normal2x",
-                                  "normal3x",
-                                  "normal4x",
-                                  "scale2x",
-                                  "scale3x",
-                                  "scale4x" ) );
-#endif
+
 	mpMenuDialog->addControl( mpScalerSelection );
-
-
 
 	mpVSyncSwitch = new CGUISwitch( "VSync" );
 	mpMenuDialog->addControl( mpVSyncSwitch );
@@ -120,16 +92,26 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
         filledStrList(1, "?x?") );
     mpMenuDialog->addControl( mpResolutionSelection );
 
-    mpGameResSelection = new CGUIComboSelection( "GameRes",
-        filledStrList(1, "?x?") );
-    mpMenuDialog->addControl( mpGameResSelection );
-
-
-
 	mpFullScreenSwitch = new CGUIButton( "Unknown mode",
 										new toggleFullscreenFunctor(*this) );
 	mpMenuDialog->addControl( mpFullScreenSwitch );
 #endif
+
+#if defined(USE_OPENGL)
+    mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
+    mpMenuDialog->addControl( mpOpenGLSwitch );
+
+    mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
+        filledStrList( 2, "nearest", "linear" ) );
+    mpMenuDialog->addControl( mpOGLFilterSelection );
+#endif
+
+    mpShowFPSSwitch = new CGUISwitch( "Show FPS" );
+    mpMenuDialog->addControl( mpShowFPSSwitch );
+
+
+    mpSFXSwitch = new CGUISwitch( "Special FX" );
+    mpMenuDialog->addControl( mpSFXSwitch );
 
 	setMenuLabel("OPTIONSMENULABEL");
 }
