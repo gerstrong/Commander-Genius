@@ -7,6 +7,7 @@
 
 #include "CGUIBitmap.h"
 #include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
 
 CGUIBitmap::CGUIBitmap(std::unique_ptr<CBitmap>&& pBitmap) :
 mpBitmap(move(pBitmap))
@@ -16,7 +17,15 @@ mpBitmap(move(pBitmap))
 
 CGUIBitmap::CGUIBitmap(const std::string &text)
 {
-	mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmap(text) ));
+    CRect<Uint16> sizeForScreen = g_pVideoDriver->getGameResolution();
+	mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmap(text) ));        
+
+    sizeForScreen.w /= 320;
+    sizeForScreen.h /= 200;
+    sizeForScreen.w *= mpBitmap->getWidth();
+    sizeForScreen.h *= mpBitmap->getHeight();
+
+    mpBitmap->scaleTo(sizeForScreen);
 }
 
 
@@ -37,3 +46,4 @@ void CGUIBitmap::processRender(const CRect<float> &RectDispCoordFloat)
 
 	mpBitmap->draw( lRect.x, lRect.y );
 }
+

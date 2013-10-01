@@ -368,10 +368,14 @@ void CGUIDialog::initGalaxyBackround()
 
     Uint32 color = SDL_MapRGB( backSfc->format, 84, 234, 84 );
 	SDL_Rect scoreRect;
-	scoreRect.w = 150;
-	scoreRect.h = 1;
-	scoreRect.x = 80;
-	scoreRect.y = 55;
+    scoreRect.w = 15*gameRes.w/32;
+    scoreRect.h = gameRes.h/200;
+    scoreRect.x = gameRes.w/4;
+
+    if(gameRes.h > 200) // This will display the line score correctly.
+        scoreRect.y = 55*gameRes.h/202;
+    else
+        scoreRect.y = 55;
 
 	SDL_FillRect(backSfc, &scoreRect, color);
 }

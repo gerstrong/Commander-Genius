@@ -20,7 +20,7 @@ mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) )
 
 	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
-		CRect<float> rect(0.30f, 0.28f, 0.5f, 0.5f);
+        CRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
 		mpMenuDialog->setRect(rect);
 		closeString = "x";
 		pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::GALAXY );
@@ -36,7 +36,6 @@ mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) )
 
 	pButton->setDown(true);
 	mpReturnButton = pButton;
-
 }
 
 
