@@ -543,7 +543,11 @@ void CInput::pollEvents()
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    const CRect<Uint16> gameArea =  g_pVideoDriver->getGameResolution();
+    CRect<Uint16> gameArea;
+    if(!g_pVideoDriver->isOpenGL())
+        gameArea =  g_pVideoDriver->getGameResolution();
+    else
+        gameArea =  g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
 #else
     const CRect<Uint16> gameArea =  g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
 #endif
@@ -1334,7 +1338,8 @@ static bool checkMousewrapperKey(int& key) {
 	return true;
 }
 
-void CInput::processMouse() {
+void CInput::processMouse()
+{
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 
 	for(int i = 0; i < phoneButtonN; ++i) {
