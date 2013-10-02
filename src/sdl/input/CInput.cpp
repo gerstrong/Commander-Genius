@@ -542,15 +542,7 @@ void CInput::pollEvents()
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    CRect<Uint16> gameArea;
-    if(!g_pVideoDriver->isOpenGL())
-        gameArea =  g_pVideoDriver->getGameResolution();
-    else
-        gameArea =  g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
-#else
-    const CRect<Uint16> gameArea =  g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
-#endif
+    const CRect<Uint16> clickGameArea = g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
 
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
@@ -607,17 +599,17 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_MOUSEBUTTONDOWN:
-            transMouseRelCoord(Pos, Event.motion, gameArea);
+            transMouseRelCoord(Pos, Event.motion, clickGameArea);
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-            transMouseRelCoord(Pos, Event.motion, gameArea);
+            transMouseRelCoord(Pos, Event.motion, clickGameArea);
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
 			break;
 
 		case SDL_MOUSEMOTION:
-            transMouseRelCoord(Pos, Event.motion, gameArea);
+            transMouseRelCoord(Pos, Event.motion, clickGameArea);
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
 			break;
 #endif

@@ -22,11 +22,17 @@ public:
 	bool init(char mode);
     void ponder();
     void render();
+
     void processIntro();
     void processIntroZoom();
     void processTitle();
 
-	void (CPassiveGalaxy::*processMode)();
+    void renderIntro();
+    void renderIntroZoom();
+    void renderTitle();
+
+    void (CPassiveGalaxy::*processPonderMode)();
+    void (CPassiveGalaxy::*processRenderMode)();
 
 	CBitmap m_BackgroundBitmap;
     CBitmap mCommanderTextSfc;

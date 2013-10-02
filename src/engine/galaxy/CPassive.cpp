@@ -21,7 +21,8 @@ namespace galaxy
 {
 
 CPassiveGalaxy::CPassiveGalaxy() :
-processMode(&CPassiveGalaxy::processIntro),
+processPonderMode(&CPassiveGalaxy::processIntro),
+processRenderMode(&CPassiveGalaxy::renderIntro),
 m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
 mCommanderTextSfc(g_pGfxEngine->getMiscBitmap(0)),
 mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
@@ -48,7 +49,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     mMaxSeparationWidth = 60*mScaleFactor;
 
     // Scale Bitmaps to adapt the resolutions
-    CRect<Uint16> cmdTextRect, keenTextRect, logoBmp;
+    CRect<Uint16> cmdTextRect, keenTextRect;
     cmdTextRect.w = mCommanderTextSfc.getSDLSurface()->w;
     cmdTextRect.x = cmdTextRect.y = 0;
     cmdTextRect.h = mCommanderTextSfc.getSDLSurface()->h;
@@ -96,7 +97,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
                                             mMaxSeparationWidth,
                                             cmdTextRect.h,
                                             32, 0, 0, 0, 0), &SDL_FreeSurface );
-
+    g_pInput->flushAll();
 }
 
 bool CPassiveGalaxy::init(char mode)
@@ -118,34 +119,49 @@ void CPassiveGalaxy::ponder()
 		EventContainer.pop_Event();
 		m_modeg = true;
 	}
+
+    (this->*processPonderMode)();
 }
 
 void CPassiveGalaxy::render()
 {
-    (this->*processMode)();
+    (this->*processRenderMode)();
 }
 
 
 const int logoStayTime = 150;
 const int logoSpeed = 1;
 
-// TODO: This will show the animation of the intro you see in every galaxy game...
-// Letters are big and scrolling around the screen...
-void CPassiveGalaxy::processIntro()
-{	       
+void CPassiveGalaxy::renderIntro()
+{
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     SDL_Rect gameResSDL = gameRes.SDLRect();
 
     const int logoPosX = (gameRes.w-mCurrentLogoBmp.getWidth())/2;
-    const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.getHeight()/2;
 
     SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
 
     mCommanderTextSfc.draw(mCommanderTextPos.x, mCommanderTextPos.y);
-    mCommanderTextPos.x -= 2;
 
     mKeenTextSfc.draw(mKeenTextPos.x, mKeenTextPos.y);
+    if(mTerminatorLogoNum < 4)
+    {
+        mCurrentLogoBmp.draw(logoPosX, mLogoPosY);
+    }
+
+}
+
+
+// TODO: This will show the animation of the intro you see in every galaxy game...
+// Letters are big and scrolling around the screen...
+void CPassiveGalaxy::processIntro()
+{	       
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+
+    const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.getHeight()/2;
+
+    mCommanderTextPos.x -= 2;
     mKeenTextPos.x++;
 
     if(mTerminatorLogoNum < 4)
@@ -157,8 +173,6 @@ void CPassiveGalaxy::processIntro()
             mLogoPosY -= (logoSpeed*mScaleFactor);
         else
             mTerminatorTimer++;
-
-        mCurrentLogoBmp.draw(logoPosX, mLogoPosY);
 
         // Change Logo
         if(mLogoPosY+mCurrentLogoBmp.getHeight() <= 0)
@@ -186,12 +200,14 @@ void CPassiveGalaxy::processIntro()
     }
 
     const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.getWidth()) - mKeenTextPos.x;
+
     if(textSeparation <= -mMaxSeparationWidth || g_pInput->getPressedAnyCommand())
     {        
         mZoomSfcPos.x = (gameRes.w-mpZoomSurface->w)/2;
         mZoomSfcZoom.x = mpZoomSurface->w;
         mZoomSfcZoom.y = mpZoomSurface->h;
-        processMode = &CPassiveGalaxy::processIntroZoom;
+        processPonderMode = &CPassiveGalaxy::processIntroZoom;
+        processRenderMode = &CPassiveGalaxy::renderIntroZoom;
         g_pInput->flushAll();
 
         mCommanderTextSfc._draw(0,0, mpZoomSurface.get() );
@@ -199,27 +215,14 @@ void CPassiveGalaxy::processIntro()
 
         mTerminatorTimer = 0;
     }
-
 }
 
 void CPassiveGalaxy::processIntroZoom()
 {
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
-    SDL_Rect gameResSDL = gameRes.SDLRect();
-
-    SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
-    SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
-
-    SDL_Surface *zoomSfc = mpZoomSurface.get();
-    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
-    SDL_Rect dstRect, srcRect;
-
-    srcRect.x = srcRect.y = 0;
 
     if(mZoomSfcPos.x < 16)
     {
-        srcRect.x -= mZoomSfcPos.x;
-
         mZoomSfcPos.x += 20;
         mZoomSfcZoom.x -= 4;
     }
@@ -240,8 +243,6 @@ void CPassiveGalaxy::processIntroZoom()
 
     if(mZoomSfcPos.y > 8)
     {
-        srcRect.y -= mZoomSfcPos.y;
-
         mZoomSfcPos.y -= 20;
         mZoomSfcZoom.y -= 4;
     }
@@ -256,6 +257,46 @@ void CPassiveGalaxy::processIntroZoom()
     }
 
 
+
+    if( (mZoomSfcPos.x >= 16 &&
+         mZoomSfcPos.y <= 8 &&
+         mZoomSfcZoom.x <= gameRes.w &&
+         mZoomSfcZoom.y <= mScaleFactor*32 ) ||
+         g_pInput->getPressedAnyCommand())
+    {
+        g_pInput->flushAll();
+        processPonderMode = &CPassiveGalaxy::processTitle;
+        processRenderMode = &CPassiveGalaxy::renderTitle;
+        m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
+
+        CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+        m_BackgroundBitmap.scaleTo(gameRes);
+        g_pGfxEngine->setupEffect(new CPixelate(2));
+    }
+}
+
+void CPassiveGalaxy::renderIntroZoom()
+{
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    SDL_Rect gameResSDL = gameRes.SDLRect();
+
+    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+
+    SDL_Rect dstRect, srcRect;
+    srcRect.x = srcRect.y = 0;
+
+    if(mZoomSfcPos.x < 16)
+    {
+        srcRect.x -= mZoomSfcPos.x;
+    }
+
+    if(mZoomSfcPos.y > 8)
+    {
+        srcRect.y -= mZoomSfcPos.y;
+    }
+
+    SDL_Surface *zoomSfc = mpZoomSurface.get();
+
     // Here we define the Rects to zoom
     srcRect.w = zoomSfc->w;
     srcRect.h = zoomSfc->h;
@@ -265,6 +306,10 @@ void CPassiveGalaxy::processIntroZoom()
     dstRect.y = mZoomSfcPos.y;
     dstRect.w = mZoomSfcZoom.x;
     dstRect.h = mZoomSfcZoom.y;
+
+
+    SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
+    SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -281,20 +326,8 @@ void CPassiveGalaxy::processIntroZoom()
     return false;
 #endif
 
-    if( (mZoomSfcPos.x >= 16 &&
-         mZoomSfcPos.y <= 8 &&
-         mZoomSfcZoom.x <= gameRes.w &&
-         mZoomSfcZoom.y <= mScaleFactor*32 ) ||
-         g_pInput->getPressedAnyCommand())
-    {
-        processMode = &CPassiveGalaxy::processTitle;
-        m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
-
-        CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
-        m_BackgroundBitmap.scaleTo(gameRes);
-        g_pGfxEngine->setupEffect(new CPixelate(2));
-    }
 }
+
 
 // Just show the title screen with the pixelation effect
 void CPassiveGalaxy::processTitle()
@@ -304,13 +337,20 @@ void CPassiveGalaxy::processTitle()
 	{
 		if( g_pInput->getPressedAnyCommand() )
 		{
+            g_pInput->flushAll();
 		    gpMenuController->openMainMenu();
 		}	    
-	}
-    
-	// draw the title bitmap here!
-	m_BackgroundBitmap.draw(0, 0);
+	}    
 }
+
+
+
+void CPassiveGalaxy::renderTitle()
+{
+    // draw the title bitmap here!
+    m_BackgroundBitmap.draw(0, 0);
+}
+
 
 
 }
