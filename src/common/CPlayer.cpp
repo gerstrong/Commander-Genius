@@ -926,26 +926,13 @@ bool CPlayer::drawStatusScreen()
 {
 	if(m_showStatusScreen)
 	{
-		if(!mpStatusScr)
-        {
-            const int ep = g_pBehaviorEngine->getEpisode();
-
-            mpStatusScr.reset(new CStatusScreen(ep, &inventory, mp_levels_completed, ankhtime, playerbaseframe, mSprVar));
-        }
+        if(mpStatusScr)
+            mpStatusScr->draw();
 		
-		mpStatusScr->draw();
-		
-		if( mpStatusScr->isClosed() )
-		{
-			m_showStatusScreen = false;
-			mpStatusScr.release();
-		}
-		else if( g_pInput->getPressedAnyButtonCommand(m_index) )
-		{
-			mpStatusScr->close();
-			g_pInput->flushCommands();
-		}
 		return false;
 	}
-	else return true;
+    else
+    {
+        return true;
+    }
 }

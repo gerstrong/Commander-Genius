@@ -177,14 +177,17 @@ bool CPlayGameVorticon::init()
 
 bool CPlayGameVorticon::StatusScreenOpen()
 {
-	bool isOpen = false;
     const int numPlayers = g_pBehaviorEngine->mPlayers;
     for( unsigned short i=0 ; i<numPlayers ; i++ )
 	{
-		isOpen |= m_Player[i].m_showStatusScreen;
+        if(m_Player[i].m_showStatusScreen)
+        {
+            m_Player[i].processStatusScreen();
+            return true;
+        }
 	}
 
-	return isOpen;
+    return false;
 }
 
 
@@ -214,12 +217,12 @@ void CPlayGameVorticon::ponder()
 			  
 			  if(m_Player[mCamLead].pdie)
 			  {
-                  const int numPlayers = g_pBehaviorEngine->mPlayers;
+                const int numPlayers = g_pBehaviorEngine->mPlayers;
                 for( int i=0 ; i<numPlayers ; i++ )
 			    {
 			      if(m_Player[i].pdie)
                         cycleCamLead();
-			    }
+			    }                                
 			  }
 			  else
 			  {
@@ -573,7 +576,6 @@ void CPlayGameVorticon::drawAllElements()
     {
         m_Player[i].drawStatusScreen();
     }
-
 
     if(mpFinale) // Finale processing if it is opened
     {

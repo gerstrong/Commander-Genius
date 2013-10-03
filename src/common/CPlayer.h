@@ -97,6 +97,7 @@ public:
 	void SelectFrame();
 	LEVEL_TRIGGER pollLevelTrigger();
 	void getShotByRay(object_t &obj_type);
+    void processStatusScreen();
 
 	bool checkMapBoundaryL(const int x1);
 	bool checkMapBoundaryR(const int x2);
