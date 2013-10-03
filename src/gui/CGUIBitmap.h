@@ -23,15 +23,17 @@ public:
 	// Load an Bitmap using an internal string ID of all the loaded Bitmaps
 	CGUIBitmap(const std::string &text);
 
+    void updateGraphics();
 
 	void processLogic();
 
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
+
 private:
 
 	std::unique_ptr<CBitmap> mpBitmap;
-
+    std::string mTextID;
 };
 
 #endif /* CGUIBITMAP_H_ */

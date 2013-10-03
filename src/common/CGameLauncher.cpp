@@ -30,7 +30,7 @@ mLauncherDialog(CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EX
 	m_mustquit      = false;
 	m_chosenGame    = -1;
 	m_ep1slot       = -1;
-	mLauncherDialog.initBackground();
+    mLauncherDialog.updateBackground();
 	mSelection = -1;
 }
 

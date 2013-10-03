@@ -35,7 +35,7 @@ mFXvStep(0)
 }
 
 
-void CGUIDialog::initBackground()
+void CGUIDialog::updateBackground()
 {
 	if( g_pBehaviorEngine->getEngine() == ENGINE_VORTICON )
 	{
@@ -49,6 +49,15 @@ void CGUIDialog::initBackground()
 	{
 		initEmptyBackround();
 	}
+}
+
+void CGUIDialog::updateGraphics()
+{
+    updateBackground();
+    for( auto &control : mControlList )
+    {
+        control->updateGraphics();
+    }
 }
 
 
@@ -349,7 +358,6 @@ void CGUIDialog::initVorticonBackground()
 
     mpTempSfc.reset( g_pVideoDriver->convertThroughBlitSfc( backSfc ), &SDL_FreeSurface );
 }
-
 
 void CGUIDialog::initGalaxyBackround()
 {   

@@ -17,6 +17,7 @@
 #include "fileio/CSaveGameController.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CTimer.h"
+#include "sdl/CVideoDriver.h"
 #include "common/CBehaviorEngine.h"
 #include "CLogFile.h"
 #include "Debug.h"
@@ -43,6 +44,14 @@ bool CGameLauncherMenu::loadMenuResources()
 
 void CGameLauncherMenu::init()
 {
+    // Here it always makes sense to have the mouse cursor active
+    SDL_ShowCursor(SDL_ENABLE);
+
+    // In some cases especially when another game was running, the scene wasn't cleaned up.
+    // We do this here
+    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+    SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0, 0, 0) );
+
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	// If game was started for the first time, also open the firsttime dialog with configs.

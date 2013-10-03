@@ -14,6 +14,7 @@
 #include "sdl/CTimer.h"
 #include "sdl/extensions.h"
 #include "StringUtils.h"
+#include "common/Menu/CMenuController.h"
 
 
 
@@ -86,6 +87,15 @@ bool CGUIButton::sendEvent(const InputCommands command)
 		return true;
 	}
 	return false;
+}
+
+
+void CGUIButton::updateGraphics()
+{
+    if( auto menuEv = std::dynamic_pointer_cast<OpenMenuEvent>(mEvent)  )
+    {
+        menuEv->mMenuDialogPointer->updateGraphics();
+    }
 }
 
 

@@ -15,10 +15,17 @@ mpBitmap(move(pBitmap))
 
 
 
-CGUIBitmap::CGUIBitmap(const std::string &text)
+CGUIBitmap::CGUIBitmap(const std::string &text) :
+mTextID(text)
+{
+    updateGraphics();
+}
+
+
+void CGUIBitmap::updateGraphics()
 {
     CRect<Uint16> sizeForScreen = g_pVideoDriver->getGameResolution();
-	mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmap(text) ));        
+    mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmap(mTextID) ));
 
     sizeForScreen.w /= 320;
     sizeForScreen.h /= 200;
@@ -27,7 +34,6 @@ CGUIBitmap::CGUIBitmap(const std::string &text)
 
     mpBitmap->scaleTo(sizeForScreen);
 }
-
 
 
 void CGUIBitmap::processLogic()

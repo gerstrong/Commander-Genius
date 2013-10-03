@@ -54,6 +54,11 @@ public:
 		mpReturnButton->setText( newProperty == CLOSEABLE ? "x" : "\025" );
 	}
 
+    void updateGraphics()
+    {
+        mpMenuDialog->updateGraphics();
+    }
+
 
 protected:
 	std::unique_ptr<CGUIDialog> mpMenuDialog;

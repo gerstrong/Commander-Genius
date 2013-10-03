@@ -32,6 +32,8 @@ public:
 	virtual void processLogic() = 0;
 	virtual void processRender(const CRect<float> &RectDispCoordFloat) = 0;
 
+    virtual void updateGraphics() {}
+
 
 	void setRect( const CRect<float>& rect )
 	{	mRect = rect;	}

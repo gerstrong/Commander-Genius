@@ -56,6 +56,12 @@ public:
 	// processes the whole rendering of the Dialog
 	void processRendering();
 
+    // Update the backround. Happens when the Menu is created or graphical settings are changed within the game
+    void updateBackground();
+
+    // Update all graphics. Happens when Video settings are normally changed
+    void updateGraphics();
+
 	// Adds a control instance to the list of controls to be processed.
 	void addControl( std::unique_ptr<CGUIControl> &newControl,
 			 	 	 const CRect<float>& RelRect );

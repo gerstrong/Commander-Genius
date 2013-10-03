@@ -64,7 +64,7 @@ m_mustclose(false)
 	closeRect.x = mRect.x;
 	closeRect.y = mRect.y;
 	pButton->setRect(closeRect);
-	initBackground();
+    updateBackground();
 }
 
 void CMessageBox::processLogic()

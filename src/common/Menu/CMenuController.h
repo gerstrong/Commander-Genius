@@ -67,6 +67,8 @@ public:
 
 	bool mOpenedGamePlay;
 
+    void updateGraphics();
+
 private:
 
 	void popBackMenu();

@@ -137,7 +137,7 @@ void CMenuController::popBackMenu()
         // The last menu has been removed. Restore back the game status
         g_pBehaviorEngine->setPause(false);
 		
-        // When menu is opened show the cursor
+        // When menu is closed hide the cursor
         SDL_ShowCursor(SDL_DISABLE);
     }
 }
@@ -149,5 +149,14 @@ void CMenuController::render()
     if( !mMenuStack.empty() && !mHidden )
     {
         mMenuStack.back()->render();
+    }
+}
+
+
+void CMenuController::updateGraphics()
+{
+    for( auto &menu : mMenuStack)
+    {
+        menu->updateGraphics();
     }
 }

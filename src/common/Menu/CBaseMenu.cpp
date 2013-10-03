@@ -16,7 +16,7 @@ mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) )
 	std::string closeString;
 	CGUIButton*	pButton;
 
-	mpMenuDialog->initBackground();
+    mpMenuDialog->updateBackground();
 
 	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{

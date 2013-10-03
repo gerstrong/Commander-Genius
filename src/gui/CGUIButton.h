@@ -29,6 +29,8 @@ public:
 
 	bool sendEvent(const InputCommands command);
 
+    void updateGraphics();
+
 	void processLogic();
 
 	void drawNoStyle(SDL_Rect& lRect);

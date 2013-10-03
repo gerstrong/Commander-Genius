@@ -230,6 +230,7 @@ void CVideoSettings::release()
 	mUserVidConf.m_DisplayRect.h = 200;
 #endif
 
+
 	mUserVidConf.showfps = mpShowFPSSwitch->isEnabled();
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
@@ -242,15 +243,17 @@ void CVideoSettings::release()
 	// At this point we also must apply and save the settings
 	if( !g_pVideoDriver->applyMode() )
 	{
-		g_pSettings->loadDrvCfg();
+        g_pSettings->loadDrvCfg(); // If it fails load the old settings
 		return;
 	}		
 
-	if( !g_pVideoDriver->start() )
+    if( !g_pVideoDriver->start() ) // Here the same situation
 	{
 		g_pVideoDriver->setVidConfig(oldVidConf);
 		g_pVideoDriver->start();
 	}
 	
 	g_pSettings->saveDrvCfg();
+
+    gpMenuController->updateGraphics();
 }
