@@ -188,11 +188,15 @@ void CCamera::process(const bool force)
 	int delta_x = (getXPosition()>>STC)-scroll_x;
 	int delta_y = (getYPosition()>>STC)-scroll_y;
 
-	st_camera_bounds CameraBounds = g_pVideoDriver->getCameraBounds();
-	const int left = CameraBounds.left;
-	const int up = CameraBounds.up;
-	const int right = CameraBounds.right;
-	const int down = CameraBounds.down;
+    // The bounds are relatively scaled for bigger game resolutions
+    const int scFacW = gamerect.w/320;
+    const int scFacH = gamerect.h/200;
+
+    st_camera_bounds CameraBounds = g_pVideoDriver->getCameraBounds();
+    const int left = CameraBounds.left*scFacW;
+    const int up = CameraBounds.up*scFacH;
+    const int right = CameraBounds.right*scFacW;
+    const int down = CameraBounds.down*scFacH;
 	const int speed = CameraBounds.speed;
 
 	// left-right scrolling
