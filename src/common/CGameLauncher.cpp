@@ -238,20 +238,20 @@ void CGameLauncher::ponder()
     // Check if the selection changed. Update the right data panel
     if(mSelection != mpSelList->mSelection)
     {
-	mSelection = mpSelList->mSelection;
-	const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
-	mpEpisodeText->setText(nameText);
-	float fVer = m_Entries[mSelection].version;
-	fVer /= 100.0f;
-	mpVersionText->setText("Version: " + ftoa(fVer));
+        mSelection = mpSelList->mSelection;
+        const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
+        mpEpisodeText->setText(nameText);
+        float fVer = m_Entries[mSelection].version;
+        fVer /= 100.0f;
+        mpVersionText->setText("Version: " + ftoa(fVer));
     }
     
     mLauncherDialog.processLogic();
     
     if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
     {
-	setChosenGame(Starter->mSlot);
-	g_pBehaviorEngine->m_EventList.pop_Event();
+        setChosenGame(Starter->mSlot);
+        g_pBehaviorEngine->m_EventList.pop_Event();
     }
     
 }

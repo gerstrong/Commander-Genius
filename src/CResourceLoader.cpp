@@ -67,7 +67,12 @@ bool CResourceLoader::process(int* ret)
   int counter = 0;    
         
     if(!mp_Thread)
-	return false;
+        return false;
+
+    // Background go black while rendering
+    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+    SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0, 0, 0) );
+
     
     // Draw the first Frame, so transition looks complete!
     renderLoadingGraphic();
@@ -215,7 +220,7 @@ void CResourceLoader::renderLoadingGraphic()
         rect.x = (gameWidth-width)/2;
         rect.y = (gameHeight+height)/2;
 		
-        rect.w = (gameWidth*m_permil)/1000;
+        rect.w = (width*m_permil)/1000;
 		rect.h = 4;
 
 		// Fade from yellow to green with this formula
