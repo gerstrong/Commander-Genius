@@ -36,6 +36,33 @@ m_overwrite(false)
 	setMenuLabel("SAVEMENULABEL");
 }
 
+void CSaveMenu::ponder()
+{
+    CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
+
+    int minIC = IC_LEFT;
+
+    if(pInput!=nullptr)
+    {
+        if(pInput->Typing())
+            minIC = IC_JUMP;
+    }
+
+    // Command (Keyboard/Joystick) are handled here
+    for( int cmd = minIC ; cmd < MAX_COMMANDS ; cmd++ )
+    {
+        if( g_pInput->getPressedCommand(cmd) )
+        {
+            std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommands>(cmd) ));
+            sendEvent(command);
+            break;
+        }
+    }
+
+    mpMenuDialog->processLogic();
+
+}
+
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
 	// Before all events are sent to the dialog which handles selection catch some specific events
@@ -62,6 +89,10 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 				}
 				return;
 			}
+            else if(ev->mCommand == IC_BACK)
+            {
+                g_pBehaviorEngine->EventList().add( new CloseMenuEvent() );
+            }
 		}
 	}
 

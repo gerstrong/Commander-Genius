@@ -15,6 +15,7 @@ class CSaveMenu : public CBaseMenu
 public:
 	CSaveMenu();
     void processSpecific(){}
+    void ponder();
 	void sendEvent(std::shared_ptr<CEvent> &command);
 
 private:
