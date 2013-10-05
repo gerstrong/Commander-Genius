@@ -692,33 +692,20 @@ void CSpriteObject::processMoveBitUp()
 
 void CSpriteObject::processMoveBitDown()
 {
-	/// Now check the neighboring tile to the down
-	const unsigned int x1 = getXPosition()+m_BBox.x1;
-	const unsigned int x2 = getXPosition()+m_BBox.x2;
-	const unsigned int y2 = getYPosition()+m_BBox.y2;
 
-	if( ( blockedd = checkSolidD(x1, x2, y2) ) == true )
+    /// Now check the neighboring tile to the down
+    const unsigned int x1 = getXPosition()+m_BBox.x1;
+    const unsigned int x2 = getXPosition()+m_BBox.x2;
+    const unsigned int y2 = getYPosition()+m_BBox.y2;
+
+    if( ( blockedd = checkSolidD(x1, x2, y2) ) == true )
     {
-        if(g_pBehaviorEngine->getEpisode()<=3) // Galaxy only!
-            return;
-
-        // additionally if there is a narrow space and the object might fit in, try to move it into that space
-        const int xMid = (x1+x2)/2;
-        if(checkSolidU(x1, xMid, y2) == false)
-        {
-            processMoveBitLeft();
-        }
-        else if(checkSolidU(xMid, x2, y2) == false)
-        {
-            processMoveBitRight();
-        }
-
-		return;
+        return;
     }
 
-	// if we are here, the tiles aren't blocking us.
-	// TODO: Here we need the Object collision part
-	m_Pos.y+=MOVE_RES;
+    // if we are here, the tiles aren't blocking us.
+    // TODO: Here we need the Object collision part
+    m_Pos.y+=MOVE_RES;
 }
 
 

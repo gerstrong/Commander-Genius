@@ -581,13 +581,13 @@ void CPlayerLevel::processMoveBitDown()
     auto obj = mObjectPtrs.begin();
     for(  ; obj != mObjectPtrs.end() ; obj++ )
     {
-	if( CPlatform *platform = dynamic_cast<CPlatform*>(obj->get()) )
-	{
-	    if(platform->hitdetect(*this))
-	    {
-		platform->getTouchedBy(*this);
-	    }
-	}
+        if( CPlatform *platform = dynamic_cast<CPlatform*>(obj->get()) )
+        {
+            if(platform->hitdetect(*this))
+            {
+                platform->getTouchedBy(*this);
+            }
+        }
     }
 
     CSpriteObject::processMoveBitDown();

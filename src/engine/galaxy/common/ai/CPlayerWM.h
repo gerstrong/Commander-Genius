@@ -74,6 +74,8 @@ public:
 	
 	void setMounted(const bool value);
 
+    void processMoveBitDown();
+
 private:
 	Uint16 m_basesprite;
 	Uint16 m_teleportanibasetile;
