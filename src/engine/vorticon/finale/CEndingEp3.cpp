@@ -157,7 +157,7 @@ void CEndingEp3::AwardSceneRender()
 {
     if( !mMessageBoxes.empty() )
     {
-        mpFinaleStaticScene->render();
+        mpFinaleStaticScene->render(m_step);
     }
 
 }

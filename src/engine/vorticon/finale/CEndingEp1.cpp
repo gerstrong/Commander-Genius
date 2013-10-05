@@ -145,7 +145,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	else
 	{
 		// Shutdown code here!
-		mpShipFlySys = NULL;
+        mpShipFlySys = nullptr;
 		m_step++;
 		m_mustsetup = true;
 	}
@@ -185,13 +185,13 @@ void CEndingEp1::BackAtHome()
 		// Shutdown code here!
 		mpFinaleStaticScene.release();
 		mpMap->m_animation_enabled = true;
-		m_step++;
+		m_step++;        
 		m_mustsetup = true;
 	}
 	else
 	{
         mpFinaleStaticScene->ponder();
-        mpFinaleStaticScene->render();
+        mpFinaleStaticScene->render(8-mMessageBoxes.size());
 	}
 
 }

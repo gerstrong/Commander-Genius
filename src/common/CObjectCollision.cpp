@@ -668,11 +668,26 @@ void CSpriteObject::processMoveBitUp()
 	const unsigned int y1 = getYPosition()+m_BBox.y1;
 
 	if( (blockedu = checkSolidU(x1, x2, y1)) == true)
-		return;
+    {
+        if(g_pBehaviorEngine->getEpisode()<=3) // Galaxy only!
+            return;
 
-	// if we are here, the tiles aren't blocking us.
-	// TODO: Here we need the Object collision part
-	m_Pos.y-=MOVE_RES;
+        // additionally if there is a narrow space and the object might fit in, try to move it into that space
+        const int xMid = (x1+x2)/2;
+        if(checkSolidU(x1, xMid, y1) == false)
+        {
+            processMoveBitLeft();
+        }
+        else if(checkSolidU(xMid, x2, y1) == false)
+        {
+            processMoveBitRight();
+        }
+
+		return;
+    }
+
+    // If we are here, the tiles aren't blocking us.
+    m_Pos.y -= MOVE_RES;
 }
 
 void CSpriteObject::processMoveBitDown()
@@ -683,7 +698,23 @@ void CSpriteObject::processMoveBitDown()
 	const unsigned int y2 = getYPosition()+m_BBox.y2;
 
 	if( ( blockedd = checkSolidD(x1, x2, y2) ) == true )
+    {
+        if(g_pBehaviorEngine->getEpisode()<=3) // Galaxy only!
+            return;
+
+        // additionally if there is a narrow space and the object might fit in, try to move it into that space
+        const int xMid = (x1+x2)/2;
+        if(checkSolidU(x1, xMid, y2) == false)
+        {
+            processMoveBitLeft();
+        }
+        else if(checkSolidU(xMid, x2, y2) == false)
+        {
+            processMoveBitRight();
+        }
+
 		return;
+    }
 
 	// if we are here, the tiles aren't blocking us.
 	// TODO: Here we need the Object collision part
@@ -713,7 +744,7 @@ void CSpriteObject::processMove(const int move_x, const int move_y)
     }
     else if(xoff < 0)
     {
-	// move right
+    // move left
 	for(int c = 0 ; c<-xoff ; c++ )
 	    processMoveBitLeft();
     }
@@ -727,7 +758,7 @@ void CSpriteObject::processMove(const int move_x, const int move_y)
     }
     else if(yoff < 0)
     {
-	// move right
+    // move up
 	for(int c = 0 ; c<-yoff ; c++ )
 	    processMoveBitUp();
     }

@@ -14,45 +14,45 @@
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 m_mustclose(false),
-m_count(0),
 m_timer(0)
 {
 	const SDL_Rect resrect =  g_pVideoDriver->getGameResolution().SDLRect();
 	const Uint32 flags = g_pVideoDriver->getBlitSurface()->flags;
 
-	mpSceneSurface.reset(SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0), &SDL_FreeSurface);
+    mpSceneSurface.reset(SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0),
+                         &SDL_FreeSurface);
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceColorMod( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette->r, g_pGfxEngine->Palette.m_Palette->g, g_pGfxEngine->Palette.m_Palette->b);
+    SDL_SetPaletteColors(mpSceneSurface->format->palette, g_pGfxEngine->Palette.m_Palette, 0, 255);
+    SDL_SetColorKey(mpSceneSurface.get(), SDL_TRUE, COLORKEY);
 #else
-    SDL_SetColors( mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
+    SDL_SetColors(mpSceneSurface.get(), Palette, 0, 255);
+    SDL_SetColorKey(mpSceneSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
 #endif
 
-
-	if( finale_draw( mpSceneSurface.get(), scene_file, game_path) )
+    if( finale_draw( mpSceneSurface.get(), scene_file, game_path) )
 	{
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
         
-//#else
+#else
         mpSceneSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSceneSurface.get()), &SDL_FreeSurface);
-//#endif
-	}
+#endif
+    }
 	else
 	{
 		m_mustclose = true;
-	}
-
-    SDL_FillRect(mpSceneSurface.get(),nullptr, SDL_MapRGB(mpSceneSurface.get()->format,255,0,255));
+    }
 }
 
 
 void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y)
 {
 	bitmap_structure bmp_struct;
-	bmp_struct.p_bitmap = g_pGfxEngine->getBitmap(bitmapname);
+    bmp_struct.bitmap = *g_pGfxEngine->getBitmap(bitmapname);
 	bmp_struct.dest_rect.x = x;
 	bmp_struct.dest_rect.y = y;
-	bmp_struct.dest_rect.w = bmp_struct.p_bitmap->getWidth();
-	bmp_struct.dest_rect.h = bmp_struct.p_bitmap->getHeight();
+    bmp_struct.dest_rect.w = bmp_struct.bitmap.getWidth();
+    bmp_struct.dest_rect.h = bmp_struct.bitmap.getHeight();
 	bmp_struct.from_count = from_count;
 	bmp_struct.to_count = to_count;
 	m_BitmapVector.push_back(bmp_struct);
@@ -64,7 +64,7 @@ void CFinaleStaticScene::ponder()
         m_timer--;
 }
 
-void CFinaleStaticScene::render()
+void CFinaleStaticScene::render(const int step)
 {
     if(mpSceneSurface)
     {
@@ -73,13 +73,13 @@ void CFinaleStaticScene::render()
 
     if(m_timer <= 0)
     {
-        // Draw any requested Bitmap
+        // Draw any requested extra bitmap
         for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
              i!=m_BitmapVector.end() ; i++ )
         {
-            if( m_count >= i->from_count && m_count <= i->to_count ) // Is it within this interval?
+            if( step >= i->from_count && step <= i->to_count ) // Is it within this interval?
             { // show it!
-                i->p_bitmap->draw(i->dest_rect.x, i->dest_rect.y);
+                i->bitmap.draw(i->dest_rect.x, i->dest_rect.y);
             }
         }
     }

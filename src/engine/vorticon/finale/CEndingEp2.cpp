@@ -190,7 +190,7 @@ void CEndingEp2::SnowedOutsideRender()
 {
     if( !mMessageBoxes.empty() )
     {
-        mpFinaleStaticScene->render();
+        mpFinaleStaticScene->render(m_step);
     }
 }
 
