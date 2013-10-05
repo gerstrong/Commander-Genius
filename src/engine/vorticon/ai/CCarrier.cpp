@@ -41,6 +41,9 @@ void CCarrier::process()
     // check if someone is still standing on the platform
     for(auto &carriedPlayer : mCarriedPlayerVec)
     {
+        if(!carriedPlayer)
+            continue;
+
         if(!hitdetect(*carriedPlayer) || carriedPlayer->blockedu)
         {
             carriedPlayer->pSupportedbyobject = nullptr;
@@ -80,6 +83,9 @@ void CCarrier::draw()
 
             for(auto &carriedPlayer : mCarriedPlayerVec)
             {
+                if(!carriedPlayer)
+                    continue;
+
                 CSprite &playSprite = g_pGfxEngine->getSprite(mSprVar, carriedPlayer->sprite);
                 int distx = carriedPlayer->getXPosition()-getXPosition();
                 int disty = carriedPlayer->getYPosition()-getYPosition();

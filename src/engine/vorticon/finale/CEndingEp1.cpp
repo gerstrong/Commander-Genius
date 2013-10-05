@@ -51,10 +51,6 @@ void CEndingEp1::render()
 {    
     switch(m_step)
     {
-    /*case 0: ReturnsToShip(); break;
-    case 1: ShipFlyMarsToEarth(); break;
-    case 2: BackAtHome(); break;
-    case 3: ShipFlyEarthToMShip(); break;*/
     case 4: renderEndingText(); break;
     default: break;
     }

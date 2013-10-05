@@ -298,6 +298,9 @@ void CPlayerBase::processEvents()
 
             for(auto &player : playerVec)
             {
+                if(!player)
+                    continue;
+
                 if(!player->m_jumpdownfromobject)
                       player->processMove(move);
             }

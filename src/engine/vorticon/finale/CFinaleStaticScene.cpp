@@ -40,6 +40,8 @@ m_timer(0)
 	{
 		m_mustclose = true;
 	}
+
+    SDL_FillRect(mpSceneSurface.get(),nullptr, SDL_MapRGB(mpSceneSurface.get()->format,255,0,255));
 }
 
 
@@ -71,14 +73,14 @@ void CFinaleStaticScene::render()
 
     if(m_timer <= 0)
     {
-            // Draw any requested Bitmap
-            for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
-                    i!=m_BitmapVector.end() ; i++ )
-            {
-                if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
-                { // show it!
-                    i->p_bitmap->draw(i->dest_rect.x, i->dest_rect.y);
-                }
+        // Draw any requested Bitmap
+        for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
+             i!=m_BitmapVector.end() ; i++ )
+        {
+            if( m_count >= i->from_count && m_count <= i->to_count ) // Is it within this interval?
+            { // show it!
+                i->p_bitmap->draw(i->dest_rect.x, i->dest_rect.y);
             }
+        }
     }
 }
