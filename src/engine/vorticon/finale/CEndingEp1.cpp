@@ -51,10 +51,6 @@ void CEndingEp1::render()
 {    
     switch(m_step)
     {
-    /*case 0: ReturnsToShip(); break;
-    case 1: ShipFlyMarsToEarth(); break;
-    case 2: BackAtHome(); break;
-    case 3: ShipFlyEarthToMShip(); break;*/
     case 4: renderEndingText(); break;
     default: break;
     }
@@ -149,7 +145,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	else
 	{
 		// Shutdown code here!
-		mpShipFlySys = NULL;
+        mpShipFlySys = nullptr;
 		m_step++;
 		m_mustsetup = true;
 	}
@@ -189,13 +185,13 @@ void CEndingEp1::BackAtHome()
 		// Shutdown code here!
 		mpFinaleStaticScene.release();
 		mpMap->m_animation_enabled = true;
-		m_step++;
+		m_step++;        
 		m_mustsetup = true;
 	}
 	else
 	{
         mpFinaleStaticScene->ponder();
-        mpFinaleStaticScene->render();
+        mpFinaleStaticScene->render(8-mMessageBoxes.size());
 	}
 
 }

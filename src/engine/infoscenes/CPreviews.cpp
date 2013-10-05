@@ -83,7 +83,7 @@ bool CPreviews::openScene(const std::string& filename)
 void CPreviews::drawPreviewScene()
 {
 	// This will show a scene of the preview scenes
-    mp_StaticScene->render();
+    mp_StaticScene->render(0);
 }
 
 void CPreviews::showText()

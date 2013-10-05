@@ -17,7 +17,7 @@
 
 struct bitmap_structure
 {
-	CBitmap *p_bitmap;
+    CBitmap bitmap;
 	SDL_Rect dest_rect;
 	Uint16 from_count;
 	Uint16 to_count;
@@ -34,15 +34,14 @@ public:
 	void showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y);
 	void setTimer(Uint16 timer) {	m_timer = timer;	}
     void ponder();
-    void render();
+    void render(const int step);
     bool mustclose() { return m_mustclose; }
 
 private:
 
 	std::vector<bitmap_structure> m_BitmapVector;
 	std::shared_ptr<SDL_Surface> mpSceneSurface;
-	bool m_mustclose;
-    int m_count;
+	bool m_mustclose;    
     int m_timer; // Only used, if no Text to display is set. Example is the preview section
 };
 
