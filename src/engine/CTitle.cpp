@@ -46,15 +46,21 @@ bool CTitle::init(int Episode)
 		mObjects.push_back(std::move(obj));
 	}
 
-	if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
-	{
-		const int width = (Episode == 3) ? 128 : 96;
-		pBitmap = g_pGfxEngine->getBitmap("F1HELP");
-		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
-		obj->setScrPos( width, 182 );
-        pBitmap->_draw( width, 182, pSurface);
-		mObjects.push_back(move(obj));
-	}
+
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+
+    if(gameRes.w == 320 && gameRes.h == 200 )
+    {
+        if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
+        {
+            const int width = (Episode == 3) ? 128 : 96;
+            pBitmap = g_pGfxEngine->getBitmap("F1HELP");
+            std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
+            obj->setScrPos( width, 182 );
+            pBitmap->_draw( width, 182, pSurface);
+            mObjects.push_back(move(obj));
+        }
+    }
 	
 	mMap.changeTileArrayY(2, 15, 2, g_pGfxEngine->getTileMap(1).EmptyBackgroundTile());
 

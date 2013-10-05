@@ -75,7 +75,6 @@ void CGUIInputText::processLogic()
 		{
 			mText.erase(mText.length()-1);
 		}
-
 	}
 	else
 	{

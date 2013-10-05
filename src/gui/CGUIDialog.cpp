@@ -205,8 +205,7 @@ bool CGUIDialog::sendEvent( const std::shared_ptr<CEvent> &command )
 		// Send all the other events the active control element
 		int i=0;
         for( auto &it : mControlList )
-        {
-            //if( (i == mSelection) && it->getHovered() )
+        {            
             if( i == mSelection )
             {
                 if( !it->getHovered() )
@@ -406,24 +405,45 @@ void CGUIDialog::processLogic()
         }
     }
 
-    // Prepare the subcontrols for rendering
-    int sel = 0;
+    // Try to get a control that is waiting for input to be typed
+    CGUIInputText *pInputCtrl = nullptr;
     for( auto &it : mControlList )
     {
         CGUIControl *ctrl = it.get();
-
-        ctrl->processLogic();
-
-        if( dynamic_cast<CGUIButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
+        pInputCtrl = dynamic_cast<CGUIInputText*>(ctrl);
+        if(pInputCtrl)
         {
-            if( ctrl->getHovered() )
-            {
-                mpCurrentCtrl = ctrl;
-                mSelection = sel;
-            }
-
+            if(pInputCtrl->Typing())
+               break;
+            pInputCtrl = nullptr;
         }
-        sel++;
+    }
+
+    if(pInputCtrl != nullptr)
+    {
+        pInputCtrl->processLogic();
+    }
+    else
+    {
+
+        // Process the subcontrols its logic
+        int sel = 0;
+        for( auto &it : mControlList )
+        {
+            CGUIControl *ctrl = it.get();
+
+            ctrl->processLogic();
+
+            if( dynamic_cast<CGUIButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
+            {
+                if( ctrl->getHovered() )
+                {
+                    mpCurrentCtrl = ctrl;
+                    mSelection = sel;
+                }
+            }
+            sel++;
+        }
     }
 
     if(!g_pInput->m_EventList.empty())
