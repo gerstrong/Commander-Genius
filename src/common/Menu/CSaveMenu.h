@@ -17,6 +17,7 @@ public:
     void processSpecific(){}
     void ponder();
 	void sendEvent(std::shared_ptr<CEvent> &command);
+    void release();
 
 private:
 	CConfirmMenu *mp_OverwriteMenu;

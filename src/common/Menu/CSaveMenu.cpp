@@ -72,10 +72,10 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 		const int sel = mpMenuDialog->Selection();
 		if( sel > 0 )
 		{
-			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
-			{
-				CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
+            CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
 
+			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
+			{			
 				if(pInput->Typing())
 				{
 					gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
@@ -89,13 +89,18 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 				}
 				return;
 			}
-            else if(ev->mCommand == IC_BACK)
-            {
-                g_pBehaviorEngine->EventList().add( new CloseMenuEvent() );
-            }
 		}
 	}
 
 	mpMenuDialog->sendEvent(command);
 }
 
+void CSaveMenu::release()
+{
+    CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
+
+    if(pInput)
+    {
+        pInput->setTypeMode(false);
+    }
+}
