@@ -425,7 +425,6 @@ void CGUIDialog::processLogic()
     }
     else
     {
-
         // Process the subcontrols its logic
         int sel = 0;
         for( auto &it : mControlList )
