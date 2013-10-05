@@ -187,8 +187,13 @@ void CPlayGameVorticon::showKeensLeft()
 {    
     const int numPlayers = g_pBehaviorEngine->mPlayers;
 
-	const unsigned int KEENSLEFT_X = 7;
-	const unsigned int KEENSLEFT_Y = 10;
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+
+    const int scW = gameRes.w/320;
+    const int scH = gameRes.h/200;
+
+    const unsigned int KEENSLEFT_X = 7*scW;
+    const unsigned int KEENSLEFT_Y = 10*scH;
 
 	if(!mpKeenLeftSfc)
 	{

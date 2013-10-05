@@ -219,6 +219,9 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	
 	loadTilemap(g_pGfxEngine->getTileMap(1), Planes, episode, path);
 
+    g_pGfxEngine->getTileMap(0).optimizeSurface();
+    g_pGfxEngine->getTileMap(1).optimizeSurface();
+
 	// make masked tiles according to it's surfaces
 	applyMasks();
 
@@ -292,6 +295,8 @@ void CEGALatch::applyMasks()
 {
 	SDL_Surface *frontSfc = g_pGfxEngine->getTileMap(1).getSDLSurface();
 	SDL_Surface *backSfc = g_pGfxEngine->getTileMap(0).getSDLSurface();
+
+
 
 	if(SDL_MUSTLOCK(frontSfc)) SDL_LockSurface(frontSfc);
 	if(SDL_MUSTLOCK(backSfc)) SDL_LockSurface(backSfc);
