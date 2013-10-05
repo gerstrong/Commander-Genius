@@ -346,6 +346,12 @@ void CIMFPlayer::close()
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {
+    if(!mMixBuffer)
+    {
+        g_pLogFile->textOut("Warning OPL Buffer is empty!");
+        return;
+    }
+
     m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.get() );
 
     // Mix into the destination buffer, doubling up into stereo.

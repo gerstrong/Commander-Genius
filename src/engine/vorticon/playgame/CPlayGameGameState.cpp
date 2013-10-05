@@ -244,7 +244,9 @@ bool CPlayGameVorticon::loadXMLGameState()
 
     CVorticonMapLoaderWithPlayer Maploader(mMap, m_Player, mSpriteObjectContainer);
 
-    const bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
+    const bool isMap = (m_Level == 80);
+
+    const bool loadmusic = ( m_Level != newLevel || isMap );
     m_Level = newLevel;
 
     if(!Maploader.load(m_Episode, m_Level, m_Gamepath, loadmusic, false))
@@ -268,10 +270,12 @@ bool CPlayGameVorticon::loadXMLGameState()
         if(tag == "Player")
         {
             CPlayer loadedPlayer(mp_level_completed, *(mMap.get()), 0 );
+
             m_Player.push_back(loadedPlayer);
 
             auto &player = m_Player.back();
             auto &playerTree = stateTree.second;
+            player.setupforLevelPlay();
 
             Uint32 x, y;
             x = playerTree.get<int>("x");
@@ -288,6 +292,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
             player.m_index = m_Player.size()-1;
             player.setDatatoZero();
+            player.pdie = 0;
         }
         else if(tag == "SpriteObj")
         {
@@ -359,9 +364,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     base64Decode( reinterpret_cast<byte*>(mp_level_completed), b64text);
 
 
-    // now setup the loaded data correctly!
-
-
+    // adjust camera settings
     for(auto &player : m_Player)
     {
         player.setupCameraObject();
@@ -390,6 +393,7 @@ bool CPlayGameVorticon::loadXMLGameState()
 
     m_Player[0].mpCamera->reAdjust();
 
+    g_pBehaviorEngine->mPlayers = m_Player.size();
 
     return true;
 }

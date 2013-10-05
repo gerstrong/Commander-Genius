@@ -214,27 +214,30 @@ void CPlayGameVorticon::ponder()
 			  {
 			    processInLevel();
 			  }
-			  
-			  if(m_Player[mCamLead].pdie)
-			  {
-                const int numPlayers = g_pBehaviorEngine->mPlayers;
-                for( int i=0 ; i<numPlayers ; i++ )
-			    {
-			      if(m_Player[i].pdie)
-                        cycleCamLead();
-			    }                                
-			  }
-			  else
-			  {
 
-                for(auto &player : m_Player)
-                {
-                    // Process Players' Cameras
-                    player.processCamera();
-                }
-			  }  
-			}
-			
+              if(m_Player.size() > (unsigned int)mCamLead )
+              {
+
+                  if(m_Player[mCamLead].pdie)
+                  {
+                      const int numPlayers = g_pBehaviorEngine->mPlayers;
+                      for( int i=0 ; i<numPlayers ; i++ )
+                      {
+                          if(m_Player[i].pdie)
+                              cycleCamLead();
+                      }
+                  }
+                  else
+                  {
+                      for(auto &player : m_Player)
+                      {
+                          // Process Players' Cameras
+                          player.processCamera();
+                      }
+                  }
+              }
+            }
+
 		}
 	}
 
@@ -321,8 +324,8 @@ void CPlayGameVorticon::handleFKeys()
 
 	// CTSpace Cheat
 	if (g_pInput->getHoldedKey(KC) &&
-			g_pInput->getHoldedKey(KT) &&
-			g_pInput->getHoldedKey(KSPACE))
+        g_pInput->getHoldedKey(KT) &&
+        g_pInput->getHoldedKey(KSPACE))
 	{
 		g_pInput->flushAll();
         const int numPlayers = g_pBehaviorEngine->mPlayers;
@@ -395,6 +398,9 @@ void CPlayGameVorticon::handleFKeys()
 		std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort("Game Paused") );
 		mMessageBoxes.push_back(move(msg));
 	}
+
+    if(m_Player.empty())
+        return;
 
 	// Menus will only open if Keen is solid or in god mode. This means neither dying nor teleporting
 	if( m_Player[0].solid || ( m_Player[0].godmode && !m_Player[0].dying ) )

@@ -197,7 +197,6 @@ protected:
 	static const int mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS];
 
 	VectorD2<int> mTarget;
-    //static int numPlayers;
 };
 
 };

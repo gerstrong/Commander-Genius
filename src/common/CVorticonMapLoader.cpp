@@ -174,14 +174,15 @@ void CVorticonMapLoaderWithPlayer::loadSprites( Uint8 episode,
 	
 	for( size_t curmapx = 0; curmapx<mpMap->m_width ; curmapx++ )
 	{
-	    for( size_t curmapy = 0; curmapy<mpMap->m_height ; curmapy++ )
-	    {
-		const size_t t = mpMap->getPlaneDataAt(2, curmapx<<CSF, curmapy<<CSF);
-	    
-		if (mpMap->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
-		else addSpriteObject(t, curmapx, curmapy, episode, level);
+        for( size_t curmapy = 0; curmapy<mpMap->m_height ; curmapy++ )
+        {
+            const size_t t = mpMap->getPlaneDataAt(2, curmapx<<CSF, curmapy<<CSF);
 
-	    }
+            if (mpMap->m_worldmap)
+                addWorldMapObject(t, curmapx, curmapy,  episode );
+            else
+                addSpriteObject(t, curmapx, curmapy, episode, level);
+        }
 
 	}	
 }
@@ -207,112 +208,116 @@ bool CVorticonMapLoaderBase::load( Uint8 episode,
 }
 
 bool CVorticonMapLoaderWithPlayer::load( Uint8 episode, 
-				    Uint8 level, 
-				    const std::string& path, 
-				    bool loadNewMusic, 
-				    bool stategame )
+                                         Uint8 level,
+                                         const std::string& path,
+                                         bool loadNewMusic,
+                                         bool stategame )
 {	
-	if( !loadBase( episode, level, path, loadNewMusic ) )
-	{
-	    return false;
-	}
-	
-	if( !stategame )
-	{
-	    loadSprites(episode, level );
-	}
-	
-	// Set Map Delegation Object and refresh whole level
-	g_pVideoDriver->updateScrollBuffer( mpMap );
+    if( !loadBase( episode, level, path, loadNewMusic ) )
+    {
+        return false;
+    }
 
-	return true;
+    if( !stategame )
+    {
+        loadSprites(episode, level );
+    }
+
+    // Set Map Delegation Object and refresh whole level
+    g_pVideoDriver->updateScrollBuffer( mpMap );
+
+    return true;
 }
 
 void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
-	// This function add sprites on the map. Most of the objects are invisible.
-	// TODO : Please convert this into ifs. There are more conditions than just switch.agree
-	switch(t)
-	{
-		case 0: break;       // blank
-		case 255:            // player start
-			if(!m_checkpointset)
-			{
-			    for( auto &player : mPlayerContainer )
-			    {
-				player.exists = false;
-				player.moveToForce(x<<CSF, y<<CSF);
-			    }
-			}
+    // This function add sprites on the map. Most of the objects are invisible.
+    // TODO : Please convert this into ifs. There are more conditions than just switch.agree
+    switch(t)
+    {
+    case 0: break;       // blank
+    case 255:            // player start
+        if(!m_checkpointset)
+        {
+            for( auto &player : mPlayerContainer )
+            {
+                player.exists = false;
+                player.moveToForce(x<<CSF, y<<CSF);
+            }
+        }
 
-			for( auto &player : mPlayerContainer )
-			{
-			    player.setupforLevelPlay();
-			    player.solid = player.godmode;
-			}
+        for( auto &player : mPlayerContainer )
+        {
+            player.setupforLevelPlay();
+            player.solid = player.godmode;
+        }
 
-			break;
-		case NESSIE_PATH:          // spawn nessie at first occurance of her path
-			if (episode==3)
-			{
-				if (!m_NessieAlreadySpawned)
-				{
-				    std::unique_ptr<CMessie> messie(new CMessie(mpMap.get(), x<<CSF, y<<CSF));
-				    m_NessieAlreadySpawned = true;
-				    mpSpriteObjectContainer.push_back(move(messie));
-				}
-			}
-			break;
-		default:             // level marker
+        break;
+    case NESSIE_PATH:          // spawn nessie at first occurance of her path
+        if (episode==3)
+        {
+            if (!m_NessieAlreadySpawned)
+            {
+                std::unique_ptr<CMessie> messie(new CMessie(mpMap.get(), x<<CSF, y<<CSF));
+                m_NessieAlreadySpawned = true;
+                mpSpriteObjectContainer.push_back(move(messie));
+            }
+        }
+        break;
+    default:             // level marker
 
-			// Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
-			if(episode == 1 && g_pBehaviorEngine->mDifficulty >= HARD)
-			{
-				if(t == 5)
-					t = 9;
-				else if(t == 9)
-					t = 5;
-			}
+        // Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
+        if(episode == 1 && g_pBehaviorEngine->mDifficulty >= HARD)
+        {
+            if(t == 5)
+                t = 9;
+            else if(t == 9)
+                t = 5;
+        }
 
-			if ((t&0x7fff) <= 16 && mPlayerContainer.front().mp_levels_completed[t&0x00ff])
-			{
-				// Change the level tile to a done sign
-				int newtile = g_pBehaviorEngine->getTileProperties()[mpMap->at(x,y)].chgtile;
+        if(!mPlayerContainer.empty())
+        {
 
-				// Consistency check! Some Mods have issues with that.
-				if(episode == 1 || episode == 2)
-				{
-					//Use default small tile
-					newtile = 77;
+            if ((t&0x7fff) <= 16 && mPlayerContainer.front().mp_levels_completed[t&0x00ff])
+            {
+                // Change the level tile to a done sign
+                int newtile = g_pBehaviorEngine->getTileProperties()[mpMap->at(x,y)].chgtile;
 
-					// try to guess, if it is a 32x32 (4 16x16) Tile
-					if(mpMap->at(x-1,y-1) == (unsigned int) newtile &&
-							mpMap->at(x,y-1) == (unsigned int) newtile  &&
-							mpMap->at(x-1,y) == (unsigned int) newtile)
-					{
-						mpMap->setTile(x-1, y-1, 78);
-						mpMap->setTile(x, y-1, 79);
-						mpMap->setTile(x-1, y, 80);
-						newtile = 81; // br. this one
-					}
-				}
-				else if(episode == 3)
-				{
-					newtile = 56;
-					// try to guess, if it is a 32x32 (4 16x16) Tile
-					if(mpMap->at(x-1, y-1) == (unsigned int) newtile &&
-							mpMap->at(x, y-1) == (unsigned int) newtile  &&
-							mpMap->at(x-1, y) == (unsigned int) newtile)
-					{
-						mpMap->setTile(x-1, y-1, 52);
-						mpMap->setTile(x, y-1, 53);
-						mpMap->setTile(x-1, y, 54);
-						newtile = 55;
-					}
-				}
-				mpMap->setTile(x, y, newtile);
-			}
-			break;
+                // Consistency check! Some Mods have issues with that.
+                if(episode == 1 || episode == 2)
+                {
+                    //Use default small tile
+                    newtile = 77;
+
+                    // try to guess, if it is a 32x32 (4 16x16) Tile
+                    if(mpMap->at(x-1,y-1) == (unsigned int) newtile &&
+                            mpMap->at(x,y-1) == (unsigned int) newtile  &&
+                            mpMap->at(x-1,y) == (unsigned int) newtile)
+                    {
+                        mpMap->setTile(x-1, y-1, 78);
+                        mpMap->setTile(x, y-1, 79);
+                        mpMap->setTile(x-1, y, 80);
+                        newtile = 81; // br. this one
+                    }
+                }
+                else if(episode == 3)
+                {
+                    newtile = 56;
+                    // try to guess, if it is a 32x32 (4 16x16) Tile
+                    if(mpMap->at(x-1, y-1) == (unsigned int) newtile &&
+                            mpMap->at(x, y-1) == (unsigned int) newtile  &&
+                            mpMap->at(x-1, y) == (unsigned int) newtile)
+                    {
+                        mpMap->setTile(x-1, y-1, 52);
+                        mpMap->setTile(x, y-1, 53);
+                        mpMap->setTile(x-1, y, 54);
+                        newtile = 55;
+                    }
+                }
+                mpMap->setTile(x, y, newtile);
+            }
+        }
+        break;
 	}
 }
 

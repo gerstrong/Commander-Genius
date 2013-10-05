@@ -20,7 +20,7 @@ const int LVLS_SHIP = 20;
 
 void CPlayGameVorticon::processOnWorldMap()
 {
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = m_Player.size();
     for( int i=0 ; i<numPlayers ; i++ )
 	{
 		CPlayer &player = m_Player[i];
