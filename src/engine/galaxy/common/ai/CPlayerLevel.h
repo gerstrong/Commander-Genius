@@ -46,8 +46,6 @@ public:
 	 */
 	void handleInputOnGround();
 
-    void getTouchedBy(CSpriteObject &theObject);
-
 
 	/**
 	 * \description Read the Input of the Player and sets the variables accordingly

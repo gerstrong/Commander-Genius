@@ -758,7 +758,11 @@ void CPlayer::raygun()
 				if (pDir.x == RIGHT) xdir = getXRightPos()+xinertia;
 				else xdir = getXLeftPos()+xinertia-(16<<STC);
 
-				CRay *rayobject = new CRay(mp_Map, xdir, ydir, static_cast<direction_t>(pDir.x), CENTER, OBJ_PLAYER, m_index);
+                CRay *rayobject = new CRay(mp_Map, xdir, ydir,
+                                           static_cast<direction_t>(pDir.x),
+                                           CENTER,
+                                           getSpriteVariantId(),
+                                           OBJ_PLAYER, m_index);
 				rayobject->setSpeed(124);
 				g_pBehaviorEngine->EventList().add(new EventSpawnObject(rayobject) );
 			}
@@ -786,6 +790,8 @@ void CPlayer::raygun()
 		plastfire = false;
 	}
 }
+
+
 
 // select the appropriate player frame based on what he's doing
 void CPlayer::SelectFrame()

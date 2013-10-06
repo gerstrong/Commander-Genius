@@ -50,19 +50,31 @@ mReversed(false)
 
 void CBullet::getTouchedBy(CSpriteObject& theObject)
 {
-  if( getActionNumber(A_KEENSHOT_IMPACT) )
-    return;
-  
-  if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-  {
-    if(mReversed)
+    if( getActionNumber(A_KEENSHOT_IMPACT) )
+        return;
+
+    if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-      player->stun();
-      dead = true;
-      setAction(A_KEENSHOT_IMPACT);
+        if(mReversed) // Happens usually in Episode 6
+        {
+            player->stun();
+            dead = true;
+            setAction(A_KEENSHOT_IMPACT);
+        }
+
+        // Friendly fire?
+        if(!g_pBehaviorEngine->m_option[OPT_ALLOWPKING].value)
+            return;
+
+        if( player->getSpriteVariantId() != getSpriteVariantId() )
+        {
+            player->kill();
+        }
     }
-  }
 }
+
+
+
 
 
 void CBullet::process()

@@ -14,7 +14,7 @@
 
 CSoundWave::CSoundWave(CMap *p_map, Uint32 x, Uint32 y,
 		direction_t dir, object_t byType, size_t byID) :
-CRay(p_map, x, y, dir, CENTER, byType, byID),
+CRay(p_map, x, y, dir, CENTER, 0,byType, byID),
 animframe(0),
 animtimer(0),
 offscreentime(0)

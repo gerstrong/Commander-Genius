@@ -876,6 +876,7 @@ void CPlayer::freeze()
 }
 
 
+
 bool CPlayer::checkMapBoundaryR(const int x2)
 {
 	if( solid && x2 >= (int)((mp_Map->m_width-2)<<CSF) )

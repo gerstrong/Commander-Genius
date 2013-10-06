@@ -570,11 +570,6 @@ void CPlayerLevel::processLookingDown()
 }
 
 
-
-
-
-
-
 // This special code is important, so platforms in all cases will catch Keen when he is falling on them
 void CPlayerLevel::processMoveBitDown()
 {
@@ -591,26 +586,6 @@ void CPlayerLevel::processMoveBitDown()
     }
 
     CSpriteObject::processMoveBitDown();
-}
-
-
-void CPlayerLevel::getTouchedBy(CSpriteObject &theObject)
-{
-    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-    {
-        if(player->getYDownPos() < getYUpPos()+(6<<STC) )
-        {
-            // The other keen might be able use this one to reach higher places
-            const int myAction = getActionNumber();
-
-            if( (myAction < A_KEEN_BOOK_OPEN ||  myAction > A_KEEN_BOOK_CLOSE) &&
-                (myAction < A_KEEN_POLE ||  myAction > A_KEEN_POLE_SHOOTDOWN))
-            {
-               player->blockedd = true;
-            }
-        }
-
-    }
 }
 
 
@@ -802,13 +777,7 @@ void CPlayerLevel::processCliffHanging()
 			return;
 		}
 	}
-    
-    
-    
-    
-    
-    
-    
+
     
 	// In case you released the direction
 	if( m_playcontrol[PA_Y] == 0 && m_playcontrol[PA_X] == 0)

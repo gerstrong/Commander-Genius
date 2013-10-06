@@ -8,7 +8,6 @@
  */
 
 #include "CYorp.h"
-#include "CRay.h"
 #include "sdl/sound/CSound.h"
 #include "misc.h"
 

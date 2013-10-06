@@ -17,8 +17,12 @@ unsigned int rnd(void);
 class CRay : public CVorticonSpriteObject
 {
 public:
-	CRay(CMap *p_map, Uint32 x, Uint32 y,
-		direction_t hdir, direction_t vdir, object_t byType=OBJ_RAY, size_t byID=0, size_t speed=RAY_DEFAULTSPEED);
+    CRay(CMap *p_map, Uint32 x, Uint32 y,
+        direction_t hdir, direction_t vdir,
+         const int spriteVar,
+         object_t byType=OBJ_RAY,
+         size_t byID=0,
+         size_t speed=RAY_DEFAULTSPEED);
 
 	virtual void process();
 	void moveinAir();

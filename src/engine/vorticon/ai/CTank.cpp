@@ -158,9 +158,9 @@ void CTank::process()
 			if (onscreen)
 				playSound(SOUND_TANK_FIRE);
 			if (movedir==RIGHT)
-				newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, RIGHT, CENTER);
+                newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, RIGHT, CENTER, getSpriteVariantId());
 			else
-				newobject = new CRay(mp_Map, getXMidPos()-(1<<CSF), getYUpPos()+height_top, LEFT, CENTER);
+                newobject = new CRay(mp_Map, getXMidPos()-(1<<CSF), getYUpPos()+height_top, LEFT, CENTER, getSpriteVariantId());
 			newobject->setOwner(OBJ_TANK, m_index);
 			newobject->setSpeed(108);
 			newobject->sprite = ENEMYRAY;
