@@ -42,7 +42,6 @@ private:
 	//CGUISwitch		*mpAspectSwitch;
 	CGUIComboSelection	*mpAspectSelection;
 	CGUISwitch		*mpVSyncSwitch;
-	CGUISwitch		*mpShowFPSSwitch;
 	CGUISwitch		*mpSFXSwitch;
 	CGUIButton		*mpFullScreenSwitch;
     CGUIComboSelection	*mpResolutionSelection;

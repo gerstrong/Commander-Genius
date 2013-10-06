@@ -71,7 +71,6 @@ public:
 
 	CVidConfig &getVidConfig();
 	short getZoomValue();
-	bool getShowFPS();
 	bool getFullscreen();
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;

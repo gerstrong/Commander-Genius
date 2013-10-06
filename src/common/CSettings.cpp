@@ -60,7 +60,6 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
 	Configuration.WriteInt("Video", "fps", g_pTimer->FPS());
-	Configuration.SetKeyword("Video", "showfps", VidConf.showfps);
 	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
 		
 	const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
@@ -122,7 +121,6 @@ bool CSettings::loadDrvCfg()
 		VidConf.Zoom = value;
 		
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
-		Configuration.ReadKeyword("Video", "showfps", &VidConf.showfps, false);
 		
 		std::string arcStr;
 		Configuration.ReadString("Video", "aspect", arcStr, "none");
@@ -237,8 +235,9 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_LVLREPLAYABILITY,	"Replay Levels    ", "level_replayability", 0 );
 	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
     setOption( OPT_MODERN,		"Modern Style     ", "modern_style", 1 );
-	setOption( OPT_HUD,				"HUD Display      ", "hud", 1 );
-	setOption( OPT_FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
+    setOption( OPT_HUD,				"HUD Display      ", "hud", 1 );
+    setOption( OPT_SHOWFPS,			"Show FPS         ", "showfps", 0 );
+    setOption( OPT_FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
 }
 
 /**

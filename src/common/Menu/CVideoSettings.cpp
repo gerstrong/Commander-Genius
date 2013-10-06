@@ -106,9 +106,6 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpMenuDialog->addControl( mpOGLFilterSelection );
 #endif
 
-    mpShowFPSSwitch = new CGUISwitch( "Show FPS" );
-    mpMenuDialog->addControl( mpShowFPSSwitch );
-
 
     mpSFXSwitch = new CGUISwitch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
@@ -131,7 +128,6 @@ void CVideoSettings::init()
 	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
 #endif
 
-	mpShowFPSSwitch->enable( mUserVidConf.showfps );
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
 
 #if !defined(EMBEDDED)
@@ -231,7 +227,6 @@ void CVideoSettings::release()
 #endif
 
 
-	mUserVidConf.showfps = mpShowFPSSwitch->isEnabled();
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
 	// In case the user changed something in the camera settings, reload that.

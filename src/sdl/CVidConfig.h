@@ -60,7 +60,6 @@ public:
 	bool m_opengl;
 	CRect<int> mAspectCorrection;
 	bool m_special_fx;
-	bool showfps;
 	bool vsync;
 
 	st_camera_bounds m_CameraBounds;

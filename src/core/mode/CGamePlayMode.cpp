@@ -115,7 +115,7 @@ void CGamePlayMode::render()
 {
     mp_PlayGame->render();
 
-    if (g_pVideoDriver->getVidConfig().showfps)
+    if(!g_pBehaviorEngine->m_option[OPT_SHOWFPS].value)
     {
         SDL_Rect rect;
         rect.x = 5;

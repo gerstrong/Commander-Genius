@@ -26,7 +26,6 @@ bool CVidConfig::operator!=(const CVidConfig& target)
 void CVidConfig::reset()
 {
 	// Default values
-	showfps = false;
 	vsync = true;
 	
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
