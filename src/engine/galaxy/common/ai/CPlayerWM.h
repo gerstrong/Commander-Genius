@@ -33,12 +33,23 @@ public:
 
 	void serialize(CSaveGameController &savedGame) 
 	{
-	  savedGame.encodeData(mUsedGrapplingHook);
+	  savedGame.encodeData(mUsedGrapplingHook);                  
 	}
 
     void serialize(boost::property_tree::ptree &node)
     {
         node.put("usedGrapplingHook",mUsedGrapplingHook);
+
+        const bool swimming = isSwimming();
+        node.put("isSwimming",swimming);
+    }
+    void deserialize(boost::property_tree::ptree &node)
+    {
+        mUsedGrapplingHook = node.get<bool>("usedGrapplingHook", false);
+
+        bool swimming;
+        swimming = node.get<bool>("isSwimming",false);
+        makeHimSwim(swimming);
     }
 
 	void process();
@@ -75,6 +86,9 @@ public:
 	void setMounted(const bool value);
 
     void processMoveBitDown();
+
+    bool isSwimming();
+    void makeHimSwim(const bool value);
 
 private:
 	Uint16 m_basesprite;

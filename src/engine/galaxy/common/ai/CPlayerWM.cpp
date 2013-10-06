@@ -416,7 +416,7 @@ void CPlayerWM::processMoving()
             return;
         }
     }
-    else if(m_basesprite == swimBaseFrame)
+    else if( isSwimming() )
     {
         if(m_Inventory.Item.m_special.ep4.swimsuit)
         {
@@ -1050,44 +1050,44 @@ void CPlayerWM::checkforSwimming(bool &bleft, bool &bright, bool &bup, bool &bdo
 	if(up == 11)
 	{
 		bdown = true;
-		m_basesprite = swimBaseFrame;
+        makeHimSwim(true);
 	}
 	else if(down == 11)
 	{
-		m_basesprite = walkBaseFrame;
+        makeHimSwim(false);
 	}
 
 	// from right
 	if(right == 12)
 	{
 		bleft = true;
-		m_basesprite = swimBaseFrame;
+        makeHimSwim(true);
 	}
 	else if(left == 12)
 	{
-		m_basesprite = walkBaseFrame;
+        makeHimSwim(false);
 	}
 
 	// from bottom
 	if(down == 13)
 	{
 		bup = true;
-		m_basesprite = swimBaseFrame;
+        makeHimSwim(true);
 	}
 	else if(up == 13)
 	{
-		m_basesprite = walkBaseFrame;
+        makeHimSwim(false);
 	}
 
 	// from left
 	if(left == 14)
 	{
 		bright = true;
-		m_basesprite = swimBaseFrame;
+        makeHimSwim(true);
 	}
 	else if(right == 14)
 	{
-		m_basesprite = walkBaseFrame;
+        makeHimSwim(false);
 	}
 
 	if(m_Inventory.Item.m_special.ep4.swimsuit)
@@ -1223,6 +1223,21 @@ void CPlayerWM::processMoveBitDown()
     // if we are here, the tiles aren't blocking us.
     m_Pos.y++;
 }
+
+
+bool CPlayerWM::isSwimming()
+{
+    return (m_basesprite == swimBaseFrame);
+}
+
+void CPlayerWM::makeHimSwim(const bool value)
+{
+    if(value)
+        m_basesprite = swimBaseFrame;
+    else
+        m_basesprite = walkBaseFrame;
+}
+
 
 
 

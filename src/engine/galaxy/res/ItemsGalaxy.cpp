@@ -122,7 +122,7 @@ void stItemGalaxy::operator<<(boost::property_tree::ptree &invNode)
     if(ep == 4)
     {
        m_special.ep4.elders = invNode.get<int>("elders", 0);
-       m_special.ep4.swimsuit = invNode.get<int>("swimsuit", 0);
+       m_special.ep4.swimsuit = invNode.get<bool>("swimsuit", false);
     }
     else if(ep == 6)
     {
