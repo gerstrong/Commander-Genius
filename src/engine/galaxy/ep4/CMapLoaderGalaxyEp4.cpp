@@ -323,12 +323,9 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x34: if( difficulty < HARD ) break;
 	case 0x33: if( difficulty < NORMAL ) break;	
 		// This is a wormmouth difficult mode
-		p_newfoe = new galaxy::CWormmouth(&Map, foe, x, y);		
-	//case 0x35 ... 0x36: break;
+        p_newfoe = new galaxy::CWormmouth(&Map, foe, x, y);
+        break;
 
-		
-	//case 0x39 ... 0x45: // Sprite item like the gems 0x45 is unused
-	
 	
 	case 0x46:
 		// Watermine horizontal
