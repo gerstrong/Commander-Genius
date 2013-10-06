@@ -294,8 +294,8 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 
     Gamerect.x = mRelativeVisGameArea.x;
     Gamerect.y = mRelativeVisGameArea.y;
-    Gamerect.w = mRelativeVisGameArea.w;
-    Gamerect.h = mRelativeVisGameArea.h;
+    Gamerect.w = mRelativeVisGameArea.w+16;
+    Gamerect.h = mRelativeVisGameArea.h+16;
 
     dstrect.x = Gamerect.x;
     dstrect.y = Gamerect.y;

@@ -192,7 +192,13 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 	src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = size;
 
 	dst_rect.x = x;		dst_rect.y = y;
-	
+
+    if( dst_rect.y + src_rect.h > dst->h )
+        src_rect.h = dst->h - dst_rect.y;
+
+    if( dst_rect.x + src_rect.w > dst->w )
+        src_rect.w = dst->w - dst_rect.x;
+
     SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
 
 #ifdef DEBUG_COLLISION

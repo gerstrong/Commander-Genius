@@ -579,8 +579,8 @@ void CMap::refreshVisibleArea()
 
     relativeVisGameArea.x = (mVisArea.x>>STC)-m_scrollx;
     relativeVisGameArea.y = (mVisArea.y>>STC)-m_scrolly;
-    relativeVisGameArea.w = (mVisArea.w>>STC);
-    relativeVisGameArea.h = (mVisArea.h>>STC);
+    relativeVisGameArea.w = (mVisArea.w>>STC)-16;
+    relativeVisGameArea.h = (mVisArea.h>>STC)-16;
 
     CRect<int> gameResolution(g_pVideoDriver->getGameResolution());
 
@@ -737,10 +737,10 @@ void CMap::_drawForegroundTiles()
             {
                 if(TileProperties[fg].behaviour < 0)
                 {
-                    if( loc_x < visGA.x || loc_x > visGA.x+visGA.w-16 )
+                    if( loc_x < visGA.x || loc_x > visGA.x+visGA.w )
                         continue;
 
-                    if( loc_y < visGA.y || loc_y > visGA.y+visGA.h-16 )
+                    if( loc_y < visGA.y || loc_y > visGA.y+visGA.h )
                         continue;
 
                     m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
