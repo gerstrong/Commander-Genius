@@ -135,10 +135,18 @@ struct CRect
         if (other.x > x)
         {
             const int firstX2 = x + w;
-            const int newWidth = firstX2 - other.x;
 
-            if(newWidth < w)
-                w = newWidth;
+            if( firstX2 > other.x + other.w )
+            {
+                w = other.w;
+            }
+            else
+            {
+                const int newWidth = firstX2 - other.x;
+
+                if(newWidth < w)
+                    w = newWidth;
+            }
 
             x = other.x;
         }
@@ -154,10 +162,18 @@ struct CRect
         if (other.y > y)
         {
             const int firstY2 = y + h;
-            const int newHeight = firstY2 - other.y;
 
-            if(newHeight < h)
-                h = newHeight;
+            if( firstY2 > other.y + other.h )
+            {
+                h = other.h;
+            }
+            else
+            {
+                const int newHeight = firstY2 - other.y;
+
+                if(newHeight < h)
+                    h = newHeight;
+            }
 
             y = other.y;
         }

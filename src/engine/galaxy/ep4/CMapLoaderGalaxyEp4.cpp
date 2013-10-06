@@ -325,7 +325,6 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		// This is a wormmouth difficult mode
         p_newfoe = new galaxy::CWormmouth(&Map, foe, x, y);
         break;
-
 	
 	case 0x46:
 		// Watermine horizontal
