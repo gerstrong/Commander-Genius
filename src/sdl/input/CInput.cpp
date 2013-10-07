@@ -542,7 +542,13 @@ void CInput::pollEvents()
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
 
-    const CRect<Uint16> clickGameArea = g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
+    CRect<Uint16> clickGameArea = g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
+
+    if( !g_pVideoDriver->isOpenGL() )
+    {
+        clickGameArea.x = 0;
+        clickGameArea.y = 0;
+    }
 
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
