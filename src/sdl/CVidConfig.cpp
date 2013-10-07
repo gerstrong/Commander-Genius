@@ -7,6 +7,8 @@
 
 #include "CVidConfig.h"
 
+#include <cstring>
+#include <cstdio>
 
 CVidConfig::CVidConfig()
 {
@@ -27,7 +29,7 @@ void CVidConfig::reset()
 {
 	// Default values
 	vsync = true;
-	
+
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
 	//m_Resolution.width=320;
 	//m_Resolution.height=240;
@@ -67,14 +69,14 @@ void CVidConfig::reset()
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_opengl = true;
 	mAspectCorrection.w=0;
-	mAspectCorrection.h=0;	
+	mAspectCorrection.h=0;
 #endif
 
 #if defined(ANDROID)
 	mAspectCorrection.w=0;
-	mAspectCorrection.h=0;	
+	mAspectCorrection.h=0;
 #endif
-	
+
 }
 
 

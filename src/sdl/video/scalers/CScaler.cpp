@@ -8,6 +8,10 @@
 #include "CScaler.h"
 #include "scalebit.h"
 
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
 /**
  * Setters
  */
@@ -353,5 +357,4 @@ void CScaler::scaleUp(	SDL_Surface				*dstSfc,
 		SDL_BlitSurface(srcSfc, &scrrect, dstSfc, &dstrect);
 	}
 }
-
 

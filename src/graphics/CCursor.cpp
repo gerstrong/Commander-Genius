@@ -12,11 +12,13 @@
 #include "CCursor.h"
 
 #include "sdl/CVideoDriver.h"
+#include <cstring>
+#include <cstdio>
 
 CCursor::CCursor(SDL_Surface *p_screen)
 {
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 //#else
     mp_Surface = g_pVideoDriver->convertThroughBlitSfc(p_screen);
 	SDL_FillRect(mp_Surface ,NULL, 0x0);

@@ -11,7 +11,8 @@
 
 #include "sdl/CVideoDriver.h"
 
-
+#include <cstring>
+#include <cstdio>
 
 Uint32 getPixel(SDL_Surface *surface, int x, int y)
 {

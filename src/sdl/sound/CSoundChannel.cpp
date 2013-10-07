@@ -7,6 +7,11 @@
 
 #include "CSoundChannel.h"
 
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+
+
 CSoundChannel::CSoundChannel(SDL_AudioSpec AudioSpec) :
 mp_current_SndSlot(nullptr),
 m_AudioSpec(AudioSpec)
@@ -47,10 +52,10 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 		Sint32 Pulse32;
 		const Sint32 Silence = m_AudioSpec.silence;
 		const Uint32 length = len/sizeof(T);
-		
+
 		Sint32 leftamt = -m_balance;
 		Sint32 rightamt = m_balance;
-		
+
 		if(leftamt > 127)
 		{
 		    leftamt = 254 - leftamt;
@@ -62,13 +67,13 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 		    rightamt = 254 - rightamt;
 		    leftamt = 0;
 		}
-		
+
 		// balance the left channel.
 		for( Uint32 index = 0 ; index < length ; )
 		{
 			/// balance here!
 			// first the left channel
-			Pulse32 = waveform[index] - Silence;			
+			Pulse32 = waveform[index] - Silence;
 			Pulse32 *= (129 + leftamt);
 			Pulse32 >>= 8;
 			waveform[index++] = Pulse32 + Silence;

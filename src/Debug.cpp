@@ -10,7 +10,8 @@
 #include "Debug.h"
 #include "StringUtils.h"
 #include "CrashHandler.h"
-
+#include <stdio.h>
+#include <string.h>
 
 #include <time.h>
 
@@ -551,7 +552,7 @@ void Logger::unlock() {
 static void CoutPrint(const std::string& str) {
 	// TODO: We have used std::cout here before but it doesn't seem to work after a while for some reason.
 	printf("%s", str.c_str());
-#ifdef ANDROID    
+#ifdef ANDROID
     __android_log_print(ANDROID_LOG_INFO, "Commander Genius","%s", str.c_str());
 #endif
 }

@@ -14,8 +14,11 @@
 #include "sdl/input/CInput.h"
 #include "sdl/CTimer.h"
 
-
 #include "graphics/CGfxEngine.h"
+
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
 
 
 CPixelate::CPixelate(unsigned short speed) :
@@ -43,7 +46,7 @@ void CPixelate::getSnapshot()
 {
 	g_pVideoDriver->collectSurfaces();
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 //#else
     if(!mp_OldSurface)
     {
@@ -51,21 +54,21 @@ void CPixelate::getSnapshot()
         mp_OldSurface = g_pVideoDriver->convertThroughBlitSfc(g_pVideoDriver->getBlitSurface());
     }
 //#endif
-	
+
 	//Map the color key
 	mColorkey = SDL_MapRGB( mp_OldSurface->format, 0, 0xFF, 0xFF );
-	//Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent 
+	//Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetColorKey( mp_OldSurface, SDL_TRUE, mColorkey );
 #else
     SDL_SetColorKey( mp_OldSurface, SDL_SRCCOLORKEY, mColorkey );
 #endif
-	
+
 }
 
 // Effect cycle
 void CPixelate::ponder()
-{	
+{
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 
 	if(m_line < gameres.h)
@@ -78,7 +81,7 @@ void CPixelate::ponder()
 	{
 		// In this case the algorithm has finished
 		mFinished = true;
-	}	
+	}
 }
 
 void CPixelate::render()

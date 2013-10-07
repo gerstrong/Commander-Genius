@@ -1037,7 +1037,7 @@ std::string JoinPaths(const std::string& path1, const std::string& path2)
 
 // These are taken from SDL_rwops.c
 #ifdef WIN32
-static int stdio_seek(SDL_RWops *context, int offset, int whence)
+/*static int stdio_seek(SDL_RWops *context, int offset, int whence)
 {
 	if ( fseek(context->hidden.stdio.fp, offset, whence) == 0 ) {
 		return(ftell(context->hidden.stdio.fp));
@@ -1070,19 +1070,19 @@ static int stdio_close(SDL_RWops *context)
 {
 	if ( context ) {
 		if ( context->hidden.stdio.autoclose ) {
-			/* WARNING:  Check the return value here! */
+			// WARNING:  Check the return value here!
 			fclose(context->hidden.stdio.fp);
 		}
 		free(context);
 	}
 	return(0);
-}
+}*/
 #endif
 
 ////////////////
 // Creates SDL_RWops from a file pointer
 SDL_RWops *RWopsFromFP(FILE *fp, bool autoclose)  {
-#ifdef WIN32
+/*#ifdef WIN32
 	// Taken from SDL code
 	SDL_RWops *rwops = SDL_AllocRW();
 	if ( rwops != NULL ) {
@@ -1095,9 +1095,9 @@ SDL_RWops *RWopsFromFP(FILE *fp, bool autoclose)  {
 	}
 	return(rwops);
 
-#else
+#else*/
 	return SDL_RWFromFP(fp, (SDL_bool)autoclose);
-#endif
+//#endif
 }
 
 bool Rename(const std::string& oldpath, const std::string& newpath) {

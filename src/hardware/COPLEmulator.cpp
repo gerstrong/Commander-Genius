@@ -13,6 +13,9 @@
 #include "COPLEmulator.h"
 #include <fstream>
 
+#include <cstring>
+#include <cstdio>
+
 const int KEEN_IMF_CLOCK_RATE = 560;
 
 COPLEmulator::COPLEmulator(const SDL_AudioSpec &AudioSpec) :
@@ -69,20 +72,20 @@ void COPLEmulator::init()
 void COPLEmulator::setup()
 {
     m_opl_chip.clear();
-    Chip__Chip(&m_opl_chip);  
+    Chip__Chip(&m_opl_chip);
     Chip__Setup(&m_opl_chip, m_AudioDevSpec.freq);
     StartOPLforAdlibSound();
 }
 
 
 unsigned int COPLEmulator::getIMFClockRate()
-{	
-  return m_imf_clock_rate;	  
+{
+  return m_imf_clock_rate;
 }
 
 void COPLEmulator::setIMFClockrate(const unsigned int clock_rate)
-{	
-  m_imf_clock_rate = clock_rate;  
+{
+  m_imf_clock_rate = clock_rate;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -125,14 +128,14 @@ void dumpData(const std::string filename, const void *data, const int size)
 {
     std::ofstream file(filename.c_str());
 
-    unsigned char byte;    
+    unsigned char byte;
     unsigned char *ptr = (unsigned char *)(data);
     for( int i=0 ; i<size ; i++ )
-    {	
-	memcpy(&byte, ptr, 1);
-	file << byte << "\n";
-	ptr++;
-    }    
+    {
+        memcpy(&byte, ptr, 1);
+        file << byte << "\n";
+        ptr++;
+    }
 }
 
 void COPLEmulator::dump()

@@ -10,6 +10,10 @@
 
 #include <SDL.h>
 
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+
 #define WAVE_SILENCE_U8         128
 #define WAVE_SILENCE_S16        0
 

@@ -9,6 +9,10 @@
 #include "../graphics/PerSurfaceAlpha.h"
 #include "sdl/CVideoDriver.h"
 
+#include <cstring>
+#include <cstdio>
+
+
 ///
 // Initialization
 ///
@@ -174,7 +178,7 @@ void CPalette::applyFade()
 
     Uint8 current_alpha = getPerSurfaceAlpha(overlay);
 
-	
+
 	if( m_alpha!=current_alpha )
 	{
 		m_fade_in_progess = true;
@@ -192,7 +196,7 @@ void CPalette::applyFade()
 			else
 				current_alpha -= m_fadespeed;
 		}
-		
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_SetSurfaceAlphaMod( overlay, current_alpha);
 #else

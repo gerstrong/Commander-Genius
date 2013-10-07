@@ -89,7 +89,7 @@ bool CVideoEngine::init()
 		}
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        
+
 #else
         m_Mode |= SDL_OPENGL;
 #endif
@@ -100,7 +100,7 @@ bool CVideoEngine::init()
 		if(m_VidConfig.vsync)
 		{
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-            
+
 #else
             m_Mode |= (SDL_DOUBLEBUF | SDL_HWSURFACE);
 #endif
@@ -109,14 +109,14 @@ bool CVideoEngine::init()
 
 	// Now we decide if it will be fullscreen or windowed mode.
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 #else
     if(m_VidConfig.Fullscreen)
 		m_Mode |= SDL_FULLSCREEN;
 	else
 		m_Mode |= SDL_RESIZABLE;
 #endif
-	    
+
 
 	// And set the proper Display Dimensions
 	// The screen is also setup in this function
@@ -124,17 +124,28 @@ bool CVideoEngine::init()
 	{
 		return false;
 	}
-	
+
 	#ifdef _WIN32 // So far this only works under windows
     else
     {
         SDL_SysWMinfo info;
         SDL_VERSION(&info.version);
-        if( int ok = SDL_GetWMInfo(&info) )
+
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
+        int ok = SDL_GetWindowWMInfo(window,&info);
+    #else
+        int ok = SDL_GetWMInfo(&info);
+    #endif
+
+        if( ok )
         {
             if(ok > 0)
             {
-                ShowWindow(info.window, SW_SHOWNORMAL);
+                #if SDL_VERSION_ATLEAST(2, 0, 0)
+                    SDL_ShowWindow(window);
+                #else
+                    ShowWindow(info.window, SW_SHOWNORMAL);
+                #endif
             }
         }
 
@@ -142,7 +153,7 @@ bool CVideoEngine::init()
 	#endif
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 #else
     const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
  	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
@@ -160,7 +171,7 @@ void CVideoEngine::updateAspectRect(const CRect<Uint16>& displayRes, const int a
         mAspectCorrectionRect.h = displayRes.h;
 		return;
     }
-	
+
     if (aspHeight*displayRes.w >= aspWidth*displayRes.h) // Wider than width:height, so shrink width
 	{
         //mAspectCorrectionRect.h = displayRes.h-displayRes.h%aspHeight;
@@ -383,7 +394,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
         SDL_FreeSurface(ScrollSurface);
         g_pLogFile->textOut("freed ScrollSurface<br>");
         ScrollSurface = NULL;
-    }    
+    }
 }*/
 
 
@@ -412,7 +423,6 @@ void CVideoEngine::filterUp()
         SDL_UnlockSurface( srcSfc );
     }
 }
-
 
 void CVideoEngine::shutdown()
 {

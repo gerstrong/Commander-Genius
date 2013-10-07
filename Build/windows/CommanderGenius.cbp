@@ -65,6 +65,7 @@
 			<Add library="SDL_image" />
 			<Add directory="C:/mingw95/MinGW/lib/x86" />
 		</Linker>
+		<Unit filename="../../src/Base64.cpp" />
 		<Unit filename="../../src/CGLogo.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
@@ -484,6 +485,7 @@
 		<Unit filename="../../src/engine/galaxy/res/CEGAGraphicsGalaxy.h" />
 		<Unit filename="../../src/engine/galaxy/res/EGAStructs.h" />
 		<Unit filename="../../src/engine/galaxy/res/GraphicsIDs.cpp" />
+		<Unit filename="../../src/engine/galaxy/res/ItemsGalaxy.cpp" />
 		<Unit filename="../../src/engine/galaxy/res/ItemsGalaxy.h" />
 		<Unit filename="../../src/engine/infoscenes/CAbout.cpp" />
 		<Unit filename="../../src/engine/infoscenes/CAbout.h" />
