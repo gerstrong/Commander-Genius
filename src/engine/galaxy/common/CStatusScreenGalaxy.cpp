@@ -42,14 +42,11 @@ std::string CStatusScreenGalaxy::getDifficultyText()
 
 void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 {
-	// Create a surface for that
-	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> temp;
-
-   	const SDL_Rect DestRect = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect DestRect;
+    DestRect.w = 320;    DestRect.h = 200;
    	mpStatusSurface.reset(CG_CreateRGBSurface(DestRect), &SDL_FreeSurface);
 
-
-	/// Draw the required bitmaps and backgrounds
+    /// Draw the required bitmaps and backgrounds for Statusscreen
 	// Draw the support Bitmap and see where the gray rectangle starts...
 	// Prepare the drawrect for positions
 	SDL_Rect Dest;
@@ -60,13 +57,9 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 	SupportRect.w = SupportBmp.getSDLSurface()->w;
 	SupportRect.h = SupportBmp.getSDLSurface()->h;
-	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0;
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    temp.reset(g_pVideoDriver->convertThroughBlitSfc( SupportBmp.getSDLSurface() ));
-//#endif
-	SDL_BlitSurface( temp.get(), NULL, mpStatusSurface.get(), &Dest );
+	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0; 
+
+    SDL_BlitSurface( SupportBmp.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
 
 	// Draw the gray surface
 	SDL_Rect BackRect;
@@ -82,12 +75,8 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	CableRect.w = Cables_Bitmap.getSDLSurface()->w;
 	CableRect.h = Cables_Bitmap.getSDLSurface()->h;
 	Dest.x = BackRect.x - CableRect.w;	Dest.y = 0;
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    temp.reset(g_pVideoDriver->convertThroughBlitSfc( Cables_Bitmap.getSDLSurface() ));
-//#endif
-	SDL_BlitSurface( temp.get(), NULL, mpStatusSurface.get(), &Dest );
+
+    SDL_BlitSurface( Cables_Bitmap.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
 
 	// Now draw the borders
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
@@ -128,5 +117,20 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 void CStatusScreenGalaxy::draw()
 {
+    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    const int scaleFac = gameres.h/200;
+
+    SDL_Rect src = mpStatusSurface->clip_rect;
+    src.w *= scaleFac;
+    src.h *= scaleFac;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_BlitScaled(mpStatusSurface.get(),
+                   &src,
+                   g_pVideoDriver->getBlitSurface(),
+                   &src);
+#else
     SDL_BlitSurface(mpStatusSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+#endif
+
 }

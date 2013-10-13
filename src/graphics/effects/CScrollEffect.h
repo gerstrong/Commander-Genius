@@ -27,9 +27,9 @@ public:
 
 private:
 
-    Sint8 mInitSpeed;
-	Sint8 mSpeed;
-	Sint8 mInitialSpeed;
+    Sint16 mInitSpeed;
+    Sint16 mSpeed;
+    Sint16 mInitialSpeed;
 	Sint16 mScrollPos;
 	std::shared_ptr<SDL_Surface> mpOldSurface;
 	SDL_Surface *mpScrollSurface;

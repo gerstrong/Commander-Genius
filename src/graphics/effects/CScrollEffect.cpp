@@ -16,11 +16,7 @@ mInitialSpeed(speed),
 mScrollPos(initialPos),
 mpScrollSurface(pScrollSurface)
 {
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
     mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc(pBackground), &SDL_FreeSurface );
-//#endif
 }
 
 void CScrollEffect::ponder()
@@ -54,13 +50,22 @@ void CScrollEffect::render()
 {
     SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
     SDL_Rect dest = gameres;
-    SDL_Rect src = gameres;
+    SDL_Rect src = mpScrollSurface->clip_rect;
+
+    const int scaleFac = gameres.h/200;
 
     src.y = mpScrollSurface->h-mScrollPos;
-    dest.h = mScrollPos;
+    dest.h = mScrollPos*scaleFac;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_BlitScaled(mpScrollSurface,
+                   &src,
+                   g_pVideoDriver->getBlitSurface(),
+                   &dest);
+#else
     SDL_BlitSurface( mpScrollSurface, &src,
                      g_pVideoDriver->getBlitSurface(), &dest );
+#endif
 }
 
 Sint16 CScrollEffect::getScrollPosition()

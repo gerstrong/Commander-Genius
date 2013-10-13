@@ -67,11 +67,8 @@ void CInventory::toggleStatusScreen()
 
 		mp_StatusScreen->GenerateStatus();
 		g_pVideoDriver->collectSurfaces();
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-        
-//#else
+
         mp_StatusBgrnd = g_pVideoDriver->convertThroughBlitSfc(g_pVideoDriver->mpVideoEngine->getBlitSurface());
-//#endif
 
 		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
 
@@ -81,12 +78,12 @@ void CInventory::toggleStatusScreen()
 		g_pGfxEngine->setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), mp_StatusBgrnd, scroll_pos, 10));
 	}
 	else
-	{
-		// Check if it's already scrolling and get the position
+	{		
 		int scroll_pos = 160;
 
 		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
 
+        // Check if it's already scrolling and get the position
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
 
