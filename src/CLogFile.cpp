@@ -37,17 +37,13 @@ void CLogFile::CreateLogfile(const char *LogName)
 	textOut("BUILD: RELEASE<br>");
 #endif
 	
-#ifdef TARGET_LNX
-	textOut("PLATFORM: LINUX<br>");
-#elif TARGET_WIN32
-	textOut("PLATFORM: WINDOWS<br>");
-#elif __APPLE__
-	textOut("PLATFORM: MAC OS X<br>");
-#else
-	textOut("PLATFORM: UNKNOWN<br>");
-#endif
+    std::string platformText = "PLATFORM: ";
+    platformText += SDL_GetPlatform();
+    platformText += "<br>";
 
-	// Ads
+    textOut(platformText);
+
+    // Ads
 	textOut("<br>");
 	std::string datestring = __DATE__;
 	const std::string Teamyear = "by The Commander Genius Team " + datestring.substr(datestring.size()-4);

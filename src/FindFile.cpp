@@ -629,7 +629,7 @@ std::string GetWriteFullFileName(const std::string& path, bool create_nes_dirs) 
 
 		CreateRecDir(tmp);
 		if(!CanWriteToDir(tmp)) {
-			errors << "we cannot write to " << tmp << " => we are writing to your temp-dir now..." << endl;
+            errors << "we cannot write to " << tmp << " => we are writing to your temp-dir now..." << endl;
 			tmp = GetTempDir();
 		}
 
