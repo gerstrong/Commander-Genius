@@ -29,6 +29,9 @@
  */
 
 #ifdef ANDROID
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
+        #define SDL_MAIN_HANDLED
+    #endif
 	#include <SDL_main.h>
 #endif
 
@@ -50,6 +53,13 @@
  */
 int main(int argc, char *argv[])
 {
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    #ifdef ANDROID
+        SDL_SetMainReady( );
+    #endif
+#endif
+
 	// Check if CG should look into a given directory
 	if(argc >= 1)
 	{

@@ -47,7 +47,7 @@ void CLogFile::CreateLogfile(const char *LogName)
 	textOut("<br>");
 	std::string datestring = __DATE__;
 	const std::string Teamyear = "by The Commander Genius Team " + datestring.substr(datestring.size()-4);
-	textOut("Built on: " + datestring);
+    textOut("Build date: " + datestring);
     textOut(Teamyear);
     textOut("<br>");
     textOut("BY FANS, FOR FANS. ALL \"COMMANDER KEEN\" GRAPHICS,<br>");
