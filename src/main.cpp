@@ -29,9 +29,7 @@
  */
 
 #ifdef ANDROID
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
-        #define SDL_MAIN_HANDLED
-    #endif
+    #define SDL_MAIN_HANDLED
 	#include <SDL_main.h>
 #endif
 
