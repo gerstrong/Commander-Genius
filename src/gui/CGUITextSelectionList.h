@@ -19,7 +19,7 @@ public:
 
 	CGUITextSelectionList() :
 	mHoverSelection(0),
-	mSelection(0) {}
+    mSelection(-1) {}
 
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);

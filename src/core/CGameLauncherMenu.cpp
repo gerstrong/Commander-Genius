@@ -80,7 +80,7 @@ void CGameLauncherMenu::init()
 			mp_GameLauncher.reset( new CGameLauncher() );
 			if(!mp_GameLauncher->init())
 			{
-				g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
+                g_pLogFile->textOut(RED,"No game can be launched, because you are missing game data files.<br>");
 				return 0;
 			}
 
@@ -91,10 +91,10 @@ void CGameLauncherMenu::init()
 	const std::string threadname = "Scanning Game-Directory";
 	// He we start the thread for cycling the loading screen
 	g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
-	if(g_pResourceLoader->RunLoadAction(new GamesScan(mp_GameLauncher), threadname) == 0)
-		EventContainer.add( new GMQuit() );
-	else
+    if(g_pResourceLoader->RunLoadAction(new GamesScan(mp_GameLauncher), threadname) != 0)
+    {
 		mp_GameLauncher->setChosenGame(m_start_game_no);
+    }
 
 	return;
 }

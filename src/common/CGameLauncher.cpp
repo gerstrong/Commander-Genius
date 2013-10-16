@@ -63,13 +63,11 @@ bool CGameLauncher::init()
         gamedetected = true;
     g_pResourceLoader->setPermilage(900);
 
-    if(!gamedetected)
-    	return false;
+    mpSelList = new CGUITextSelectionList();
 
     // Save any custom labels
     putLabels();
 
-    mpSelList = new CGUITextSelectionList();
 
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
     for( ; it != m_Entries.end() ; it++	)
@@ -110,6 +108,9 @@ bool CGameLauncher::init()
 					"and the CG Contributors\n");
     
     mLauncherDialog.addControl( banner, CRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
+
+    if(!gamedetected)
+        return false;
     
     return true;
 }
@@ -220,19 +221,19 @@ void CGameLauncher::ponder()
     // Did the user press (X)?
     if( g_pInput->getExitEvent() )
     {
-	m_mustquit = true;
-	return;
+        m_mustquit = true;
+        return;
     }
     
     
     // Command (Keyboard/Joystick) are handled here
     for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
     {
-	if( g_pInput->getPressedCommand(cmd) )
-	{
-	    mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
-	    break;
-	}
+        if( g_pInput->getPressedCommand(cmd) )
+        {
+            mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
+            break;
+        }
     }
     
     // Check if the selection changed. Update the right data panel
