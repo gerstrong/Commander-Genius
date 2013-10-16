@@ -251,11 +251,19 @@ bool CVideoDriver::start()
 			applyMode();
 			mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
 			retval = mpVideoEngine->init();
-		}
-	} else {
+            g_pLogFile->textOut("will be using SDL Video<br>");
+        }
+        else
+        {
+            g_pLogFile->textOut("will be using OpenGL<br>");
+        }
+    }
+    else
+    {
 #endif
 		mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
 		retval = mpVideoEngine->init();
+        g_pLogFile->textOut("will be using SDL Video<br>");
 
 #ifdef USE_OPENGL
 	}
