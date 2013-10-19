@@ -312,20 +312,7 @@ void CPassiveGalaxy::renderIntroZoom()
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
 
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    int error = SDL_BlitScaled( zoomSfc, &srcRect, blit, &dstRect );
-    if(error)
-    {
-        std::string errorMsg = SDL_GetError();
-        g_pLogFile->textOut("SDL_Blit failed: " + errorMsg);
-        return;
-    }
-#else
-    g_pLogFile->textOut("SDL 1.2 doesn't support Bitmap scaling to higher resolutions, "
-                        "please let the devs know about this problem.");
-    return false;
-#endif
-
+    SDL_BlitScaledWrap( zoomSfc, &srcRect, blit, &dstRect );
 }
 
 

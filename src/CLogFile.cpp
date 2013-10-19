@@ -38,7 +38,9 @@ void CLogFile::CreateLogfile(const char *LogName)
 #endif
 	
     std::string platformText = "PLATFORM: ";
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     platformText += SDL_GetPlatform();
+#endif
     platformText += "<br>";
 
     textOut(platformText);

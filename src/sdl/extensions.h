@@ -24,6 +24,8 @@ SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect );
 
 void drawEmptyRect(SDL_Surface *sfc, SDL_Rect *pRect, Uint32 color);
 
+int SDL_BlitScaledWrap( SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstSfc, SDL_Rect *dstRect );
+
 struct SDL_Surface_Deleter
 {
     void operator()(SDL_Surface* sfc)

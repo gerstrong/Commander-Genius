@@ -26,7 +26,7 @@ m_timer(0)
     SDL_SetPaletteColors(mpSceneSurface->format->palette, g_pGfxEngine->Palette.m_Palette, 0, 255);
     SDL_SetColorKey(mpSceneSurface.get(), SDL_TRUE, COLORKEY);
 #else
-    SDL_SetColors(mpSceneSurface.get(), Palette, 0, 255);
+    SDL_SetColors(mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
     SDL_SetColorKey(mpSceneSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
 #endif
 

@@ -14,6 +14,11 @@
 #include <cstring>
 #include <cstdio>
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
+#include "SDL_rotozoom.h"
+#endif
+
 Uint32 getPixel(SDL_Surface *surface, int x, int y)
 {
     int bpp = surface->format->BytesPerPixel;
@@ -92,6 +97,33 @@ inline Colormask getColourMask32bit()
     #endif
 
 	return mask;
+}
+
+int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstSfc, SDL_Rect *dstRect )
+{
+    int error;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    int error = SDL_BlitScaled( srcSfc, srcRect, dstSfc, dstRect );
+    if(error)
+    {
+        std::string errorMsg = SDL_GetError();
+        g_pLogFile->textOut("SDL_Blit failed: " + errorMsg);
+    }
+#else
+
+    double zoomx = dstRect->w/srcRect->w;
+    double zoomy = dstRect->h/srcRect->h;
+
+    // As SDL 1.2 doesn't support that, we need to do it here through Software with SDL_rotozoom.
+    std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>
+            temp( zoomSurface( srcSfc, zoomx, zoomy, SMOOTHING_OFF ) );
+
+    SDL_BlitSurface(temp.get(), srcrect, dstSfc, dstSfc);
+
+#endif
+
+    return error;
 }
 
 

@@ -5,6 +5,7 @@ PROJECT(CommanderGenius)
 OPTION(OPENGL "OpenGL support" Yes)
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
+OPTION(USE_SDL2 "SDL2 support" No)
 
 
 #
@@ -172,10 +173,10 @@ ENDIF(UNIX)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 include(FindSDL2 OPTIONAL)
 
-if(SDL2_FOUND)
+if(SDL2_FOUND AND USE_SDL2)
         message("Using shared SDL2")
         include_directories(${SDL2_INCLUDE_DIR})
-else(SDL2_FOUND)
+else(SDL2_FOUND AND USE_SDL2)
         # SDL2 not found, try SDL
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)
@@ -189,7 +190,7 @@ else(SDL2_FOUND)
                 include_directories(Externals/SDL Externals/SDL/include)
                 add_subdirectory(Externals/SDL)
         endif(SDL_FOUND)
-endif(SDL2_FOUND)
+endif(SDL2_FOUND AND USE_SDL2)
 
 
 #IF(BUILD_TARGET STREQUAL WIN32)

@@ -73,21 +73,21 @@ bool CSDLVideo::init()
 
 #else
 
-    display = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+    mDisplaySfc = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 
-	if (!screen)
+    if (!mDisplaySfc)
 	{
 		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
 	}
 
-	aspectCorrectResizing(newDim, w, h);
+    /*aspectCorrectResizing(newDim, w, h);
 
     if(FilteredSurface)
     {
         Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
                                  float(FilteredSurface->h)/float(aspectCorrectionRect.h));
-    }
+    }*/
 
 #endif
 
@@ -97,7 +97,6 @@ bool CSDLVideo::init()
 
 bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 {
-    // NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
     const int w = m_VidConfig.mAspectCorrection.w;
     const int h = m_VidConfig.mAspectCorrection.h;
 

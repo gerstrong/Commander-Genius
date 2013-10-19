@@ -56,23 +56,18 @@ bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
     setUpViewPort(mAspectCorrectionRect);
 
 #else
-    screen = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+    mDisplaySfc = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
 
-	if (!screen)
+    if (!mDisplaySfc)
 	{
 		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
 	}
 
-	aspectCorrectResizing(newDim, w, h);
+    updateAspectRect(newDim, w, h);
 
-	if(FilteredSurface)
-	{
-		Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
-								 float(FilteredSurface->h)/float(aspectCorrectionRect.h));
+    setUpViewPort(mAspectCorrectionRect);
 
-		setUpViewPort(aspectCorrectionRect);
-	}
 #endif
 
 

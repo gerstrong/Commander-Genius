@@ -26,7 +26,7 @@ CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
     renderer(nullptr),
     sdlTexture(nullptr),
 #else
-    screen(nullptr),
+    mDisplaySfc(nullptr),
 #endif
 ScrollSurface(nullptr),       // Squared scroll buffer
 m_VidConfig(VidConfig),
@@ -156,7 +156,7 @@ bool CVideoEngine::init()
 
 #else
     const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
- 	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
+    m_src_slice = GameRect.w*mDisplaySfc->format->BytesPerPixel;
 #endif
 
 	return true;
@@ -245,7 +245,9 @@ bool CVideoEngine::createSurfaces()
                                           0x000000FF,
                                           0xFF000000), SDL_FreeSurface );
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(mpGameSfc.get(), SDL_BLENDMODE_NONE);
+#endif
 
 
     const int squareSize = getPowerOfTwo( gamerect.h > gamerect.w ? gamerect.h : gamerect.w );

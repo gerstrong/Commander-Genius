@@ -191,18 +191,9 @@ bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
     SDL_GetSurfaceBlendMode(bmpSfc, &blendMode);
     SDL_SetSurfaceBlendMode(newSfc.get(), blendMode);
 
-    int error = SDL_BlitScaled( bmpSfc, &bmpSfc->clip_rect, newSfc.get(), &newRect );
-    if(error)
-    {
-        std::string errorMsg = SDL_GetError();
-        g_pLogFile->textOut("SDL_Blit failed: " + errorMsg);
-        return false;
-    }
-#else
-    g_pLogFile->textOut("SDL 1.2 doesn't support Bitmap scaling to higher resolutions, "
-                        "please let the devs know about this problem.");
-    return false;
 #endif
+
+    SDL_BlitScaledWrap( bmpSfc, &bmpSfc->clip_rect, newSfc.get(), &newRect );
 
     mpBitmapSurface = newSfc;
 
