@@ -10,6 +10,7 @@
 #include "extensions.h"
 
 #include "sdl/CVideoDriver.h"
+#include "CLogFile.h"
 
 #include <cstring>
 #include <cstdio>
@@ -104,7 +105,7 @@ int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstS
     int error;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    int error = SDL_BlitScaled( srcSfc, srcRect, dstSfc, dstRect );
+    error = SDL_BlitScaled( srcSfc, srcRect, dstSfc, dstRect );
     if(error)
     {
         std::string errorMsg = SDL_GetError();
@@ -119,7 +120,7 @@ int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstS
     std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>
             temp( zoomSurface( srcSfc, zoomx, zoomy, SMOOTHING_OFF ) );
 
-    SDL_BlitSurface(temp.get(), srcRect, dstSfc, dstRect);
+    error = SDL_BlitSurface(temp.get(), srcRect, dstSfc, dstRect);
 
 #endif
 
