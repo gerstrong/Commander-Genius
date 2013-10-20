@@ -268,7 +268,9 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
                                 format->Bmask,
                                 format->Amask );
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(pColoredTextSurface, SDL_BLENDMODE_BLEND);
+#endif
 
     SDL_FillRect( pColoredTextSurface, nullptr, SDL_MapRGBA(pColoredTextSurface->format, 0, 0, 0, 0) );
 

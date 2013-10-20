@@ -73,7 +73,7 @@ bool CSDLVideo::init()
 
 #else
 
-    mDisplaySfc = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+    mDisplaySfc = SDL_SetVideoMode( m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, 32, m_Mode );
 
     if (!mDisplaySfc)
 	{
@@ -102,7 +102,9 @@ bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
 
     updateAspectRect(newDim, w, h);
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_RenderSetLogicalSize(renderer, mAspectCorrectionRect.w, mAspectCorrectionRect.h);
+#endif
 
     return true;
 }
@@ -219,7 +221,7 @@ void CSDLVideo::transformScreenToDisplay()
     SDL_RenderPresent(renderer);
 #else
 	// Flip the screen (We use double-buffering on some systems.)
-    SDL_Flip(screen);
+    SDL_Flip(mDisplaySfc);
 #endif
 
 }

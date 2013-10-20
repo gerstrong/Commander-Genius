@@ -171,18 +171,24 @@ IF(UNIX)
 ENDIF(UNIX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
-include(FindSDL2 OPTIONAL)
 
-if(SDL2_FOUND AND USE_SDL2)
-        message("Using shared SDL2")
+if(USE_SDL2)
+
+    include(FindSDL2 OPTIONAL)
+
+    if(SDL2_FOUND)
+        message("Using shared SDL Version 2")
         include_directories(${SDL2_INCLUDE_DIR})
-else(SDL2_FOUND AND USE_SDL2)
+    endif(SDL2_FOUND)
+
+else(USE_SDL2)
         # SDL2 not found, try SDL
+        FIND_PACKAGE( SDL REQUIRED )
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)
         endif()
         if(SDL_FOUND)
-                message("Using shared SDL")
+                message("Using shared SDL Version 1.2")
                 include_directories(${SDL_INCLUDE_DIR})
         else(SDL_FOUND)
                 # TODO: Use the prebuilt one on Windows
@@ -190,7 +196,7 @@ else(SDL2_FOUND AND USE_SDL2)
                 include_directories(Externals/SDL Externals/SDL/include)
                 add_subdirectory(Externals/SDL)
         endif(SDL_FOUND)
-endif(SDL2_FOUND AND USE_SDL2)
+endif(USE_SDL2)
 
 
 #IF(BUILD_TARGET STREQUAL WIN32)
@@ -315,7 +321,7 @@ if(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL2_LIBRARY})
 else(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL_LIBRARIES})
-#target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
+    target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
     endif(SDL2_FOUND)
 target_link_libraries(CommanderGenius SDL_image)
 

@@ -167,7 +167,7 @@ bool COpenGL::init()
 	}
 #else // not SDL 2.0
 	// Setup the view port for the first time
-    setUpViewPort(aspectCorrectionRect);
+    setUpViewPort(mAspectCorrectionRect);
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
