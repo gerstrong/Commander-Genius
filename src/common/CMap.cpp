@@ -38,7 +38,6 @@ mLocked(false)
 void CMap::setLevel( const Uint16 level )
 {
     m_Level = level;
-
 }
 
 Uint16 CMap::getLevel()
