@@ -387,12 +387,19 @@ void CShikadiMine::draw()
 		}
 		else
 		{
-		    Sprite.drawSprite( showX, showY, (255-transluceny) );
+            const int w = Sprite.getWidth();
+            const int h = Sprite.getHeight();
+
+            Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
 
 		    if(!getActionNumber(A_MINE_DETONATE))
 		    {
               CSprite &eyeSprite = g_pGfxEngine->getSprite(mSprVar,mEyeSprite);
-		      eyeSprite.drawSprite( showX+mEyeXOffset, showY+mEyeYOffset );
+
+              const int eyeW = eyeSprite.getWidth();
+              const int eyeH = eyeSprite.getHeight();
+
+              eyeSprite.drawSprite( showX+mEyeXOffset, showY+mEyeYOffset, eyeW, eyeH );
 		    }
 		}
 		hasbeenonscreen = true;

@@ -152,7 +152,9 @@ void CCeilick::draw()
         }
         else
         {
-            Sprite.drawSprite( showX, showY, (255-transluceny) );
+            const int w = Sprite.getWidth();
+            const int h = Sprite.getHeight();
+            Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
         }
         hasbeenonscreen = true;
     }

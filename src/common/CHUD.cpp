@@ -195,7 +195,10 @@ void CHUD::renderGalaxy()
   // Draw the HUD with all the digits
   SDL_Surface* blitsfc = mpHUDBlit.get();
 
-  mHUDBox.drawSprite( blitsfc, -4, 0);
+  const int w = mHUDBox.getWidth();
+  const int h = mHUDBox.getHeight();
+
+  mHUDBox.drawSprite( blitsfc, -4, 0, w, h);
 
   if(lives >= 0)
   {

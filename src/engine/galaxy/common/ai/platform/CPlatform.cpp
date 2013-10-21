@@ -215,7 +215,10 @@ void CPlatform::draw()
         if( showY+Sprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
             return;
 
-        Sprite.drawSprite( showX, showY, (255-transluceny) );
+        int w = Sprite.getWidth();
+        int h = Sprite.getHeight();
+
+        Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
 
         for(auto &carriedObj : mCarriedPlayerVec)
         {
@@ -230,7 +233,10 @@ void CPlatform::draw()
                 disty = (disty>>STC);
                 disty += (playSprite.getYOffset()-Sprite.getYOffset());
 
-                playSprite.drawSprite( showX+distx, showY+disty );
+                int playW = playSprite.getWidth();
+                int playH = playSprite.getHeight();
+
+                playSprite.drawSprite( showX+distx, showY+disty, playW, playH );
             }
         }
 

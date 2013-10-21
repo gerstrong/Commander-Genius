@@ -241,6 +241,27 @@ void CPlayGameVorticon::ponder()
 		}
 	}
 
+    if(mpFinale) // Finale processing if it is opened
+    {
+        mpFinale->ponder();
+
+        if(mpFinale->getHasFinished()) // -> This shouldn't be here!
+        {
+            mpFinale.release();
+
+            if(!m_gameover)
+            {
+                CHighScores *pHighScores = new CHighScores();
+                pHighScores->init();
+                collectHighScoreInfo(*pHighScores);
+                g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
+                g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
+            }
+        }
+
+        m_Player[0].processEvents(); // -> This shouldn't be here!
+    }
+
     // Render the dialogs which are seen when the game is paused
     if( !mMessageBoxes.empty() )
     {
@@ -585,33 +606,13 @@ void CPlayGameVorticon::drawAllElements()
 
     if(mpFinale) // Finale processing if it is opened
     {
-        mpFinale->ponder();
         mpFinale->render();
-
-        if(mpFinale->getHasFinished())
-        {
-            mpFinale.release();
-
-            if(!m_gameover)
-            {
-                CHighScores *pHighScores = new CHighScores();
-                pHighScores->init();
-                collectHighScoreInfo(*pHighScores);
-                g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(m_Gamepath, m_Episode));
-                g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
-            }
-        }
-
-        m_Player[0].processEvents();
-    }
-    else
+    }    
+    else if(mp_option[OPT_HUD].value ) // Draw the HUD
     {
-        if(mp_option[OPT_HUD].value )
-        {	// Draw the HUD
-            for( auto &hud : mpHUDVec )
-            {
-                hud->render();
-            }
+        for( auto &hud : mpHUDVec )
+        {
+            hud->render();
         }
     }
 

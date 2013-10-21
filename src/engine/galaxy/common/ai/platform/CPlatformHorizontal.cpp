@@ -103,7 +103,10 @@ void CPlatformHorizontal::draw()
         return;
     
     CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
-    
+
+    const int sprW = Sprite.getWidth();
+    const int sprH = Sprite.getHeight();
+
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
     
@@ -116,13 +119,16 @@ void CPlatformHorizontal::draw()
 
         CSprite &fireSprite = g_pGfxEngine->getSprite(mSprVar,m_FireSprite);
 
-        if(drawFire && xDirection == RIGHT)
-            fireSprite.drawSprite(showX-2, showY+8);
+        const int w = fireSprite.getWidth();
+        const int h = fireSprite.getHeight();
 
-        Sprite.drawSprite( showX, showY, (255-transluceny) );
+        if(drawFire && xDirection == RIGHT)
+            fireSprite.drawSprite(showX-2, showY+8, w, h);
+
+        Sprite.drawSprite( showX, showY, sprW, sprH, (255-transluceny) );
 
         if(drawFire && xDirection == LEFT)
-            fireSprite.drawSprite(showX+Sprite.getWidth()-6, showY+8);
+            fireSprite.drawSprite(showX+Sprite.getWidth()-6, showY+8, w, h);
 
 
         for( auto &player : mCarriedPlayerVec)
@@ -139,7 +145,10 @@ void CPlatformHorizontal::draw()
             disty = (disty>>STC);
             disty += (playSprite.getYOffset()-Sprite.getYOffset());
 
-            playSprite.drawSprite( showX+distx, showY+disty );
+            const int playW = playSprite.getWidth();
+            const int playH = playSprite.getHeight();
+
+            playSprite.drawSprite( showX+distx, showY+disty, playW, playH );
         }
 
         hasbeenonscreen = true;

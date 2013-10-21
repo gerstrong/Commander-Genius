@@ -79,7 +79,10 @@ void CCarrier::draw()
         }
         else
         {
-            Sprite.drawSprite( showX, showY, (255-transluceny) );
+            const int w = Sprite.getWidth();
+            const int h = Sprite.getHeight();
+
+            Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
 
             for(auto &carriedPlayer : mCarriedPlayerVec)
             {
@@ -95,7 +98,10 @@ void CCarrier::draw()
                 disty = (disty>>STC);
                 disty += (playSprite.getYOffset()-Sprite.getYOffset());
 
-                playSprite.drawSprite( showX+distx, showY+disty );
+                const int playW = playSprite.getWidth();
+                const int playH = playSprite.getHeight();
+
+                playSprite.drawSprite( showX+distx, showY+disty, playW, playH );
             }
         }
         hasbeenonscreen = true;

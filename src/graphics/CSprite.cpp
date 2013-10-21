@@ -506,7 +506,7 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
  * \param x				X-Coordinate, indicating the position on dst
  * \param y				Y-Coordinate, indicating the position on dst
  */
-void CSprite::drawSprite(const int x, const int y, const Uint8 alpha )
+void CSprite::drawSprite(const int x, const int y, const int w, const int h, const Uint8 alpha )
 {
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -515,12 +515,10 @@ void CSprite::drawSprite(const int x, const int y, const Uint8 alpha )
     SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, alpha);
 #endif
 
-
-
-    drawSprite( g_pVideoDriver->getBlitSurface(), x, y );
+    drawSprite( g_pVideoDriver->getBlitSurface(), x, y, w, h );
 }
 
-void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y )
+void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y, const int w, const int h )
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;
@@ -551,9 +549,9 @@ void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y )
         dst_rect.y = 0;
     }
 
-	src_rect.w = dst_rect.w;
-	src_rect.h = dst_rect.h;
-	
+    src_rect.w = dst_rect.w = w;
+    src_rect.h = dst_rect.h = h;
+
 	SDL_Surface *src = mpSurface.get();
 
 	SDL_BlitSurface( src, &src_rect, dst, &dst_rect );

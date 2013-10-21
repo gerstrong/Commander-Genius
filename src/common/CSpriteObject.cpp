@@ -410,13 +410,21 @@ void CSpriteObject::draw()
         int showX = scrx+Sprite.getXOffset();
         int showY = scry+Sprite.getYOffset();
 
+        int w = Sprite.getWidth();
+        int h = Sprite.getHeight();
+
         auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
 
-        if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
+        if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w+16 )
             return;
 
-        if( showY+Sprite.getHeight() < visGA.y || showY > visGA.y+visGA.h )
+        if( showY+Sprite.getHeight() < visGA.y || showY > visGA.y+visGA.h+16 )
             return;
+
+        if( showX+w > visGA.x+visGA.w+16 )
+            w = w - ((showX+w) - (visGA.x+visGA.w+16));
+        if( showY+h > visGA.y+visGA.h+16 )
+            h = h - ((showY+h) - (visGA.y+visGA.h+16));
 
 		if(m_blinktime > 0)
 		{
@@ -425,7 +433,7 @@ void CSpriteObject::draw()
 		}
 		else
 		{
-		    Sprite.drawSprite( showX, showY, (255-transluceny) );
+            Sprite.drawSprite( showX, showY, w, h, (255-transluceny) );
 		}
 		hasbeenonscreen = true;
 	}
