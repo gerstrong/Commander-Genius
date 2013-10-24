@@ -449,7 +449,7 @@ void CInput::readNewEvent()
 				// on iPhone, we just want to quit in this case
 				exit(0);
 #endif
-				break;
+                break;
 
 			case SDL_KEYDOWN:
 				lokalInput.joyeventtype = ETYPE_KEYBOARD;
@@ -579,15 +579,12 @@ void CInput::pollEvents()
 			processJoystickHat();
 			break;
 
-#ifdef MOUSEWRAPPER
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		case SDL_FINGERDOWN:
 		case SDL_FINGERUP:
 		case SDL_FINGERMOTION:
 			processMouse(Event);
 			break;
-#else
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
 
         case SDL_WINDOWEVENT:
             if(Event.window.event == SDL_WINDOWEVENT_RESIZED)
@@ -618,7 +615,6 @@ void CInput::pollEvents()
             transMouseRelCoord(Pos, Event.motion, clickGameArea);
 			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
 			break;
-#endif
 		}
 	}
 #ifdef MOUSEWRAPPER
@@ -1276,7 +1272,8 @@ static const int w = 480, h = 320;
 
 #define KSHOWHIDECTRLS	(-10)
 
-#if defined(MOUSEWRAPPER)
+//#if defined(MOUSEWRAPPER)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 
 	static TouchButton phoneButtons[] = {
@@ -1356,9 +1353,9 @@ void CInput::processMouse()
 
 void CInput::processMouse(SDL_Event& ev) {
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
 	SDL_Rect screenRect;
-    SDL_Touch* touch = SDL_GetTouch(ev.tfinger.touchId);
+    //SDL_Touch* touch = SDL_GetTouch(ev.tfinger.touchId);
+    SDL_Finger* touch = SDL_GetTouchFinger(ev.tfinger.touchId, 0);
     int x, y, dx, dy, w, h;
 
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
@@ -1368,8 +1365,10 @@ void CInput::processMouse(SDL_Event& ev) {
     
     if(touch == NULL) return; //The touch has been removed
     
-    float fx = ((float)ev.tfinger.x)/touch->xres;
-    float fy = ((float)ev.tfinger.y)/touch->yres;
+    //float fx = ((float)ev.tfinger.x)/touch->xres;
+    //float fy = ((float)ev.tfinger.y)/touch->yres;
+    float fx = ((float)ev.tfinger.x)/touch->x;
+    float fy = ((float)ev.tfinger.y)/touch->y;
     x = (int)(fx*w); y = (int)(fy*h);
     
     
@@ -1384,14 +1383,16 @@ void CInput::processMouse(SDL_Event& ev) {
 			break;
 
 		case SDL_FINGERMOTION:
-            float fdx = ((float)ev.tfinger.dx)/touch->xres;
-            float fdy = ((float)ev.tfinger.dy)/touch->yres;
+            //float fdx = ((float)ev.tfinger.dx)/touch->xres;
+            //float fdy = ((float)ev.tfinger.dy)/touch->yres;
+            float fdx = ((float)ev.tfinger.dx)/touch->x;
+            float fdy = ((float)ev.tfinger.dy)/touch->y;
             dx = (int)(fdx*w); dy = (int)(fdy*h);
 			processMouse(x - dx, y - dy, false, ev.tfinger.fingerId);
 			processMouse(x, y, true, ev.tfinger.fingerId);
 			break;
 	}
-#endif
+//#endif
 }
 
 void CInput::processMouse(int x, int y, bool down, int mouseindex) {
