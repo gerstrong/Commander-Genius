@@ -234,6 +234,8 @@ std::string CGUIInputText::getInputString()
 void CGUIInputText::setTypeMode( const bool value )
 {
 #ifdef ANDROID
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
 	if(!mTyping && value)
 	{
 		// Invoke Android native text edit field with on-screen keyboard
@@ -243,6 +245,7 @@ void CGUIInputText::setTypeMode( const bool value )
 		SDL_ANDROID_ToggleScreenKeyboardTextInput(buf);
 		mText.clear();		
 	}
+#endif
 #endif
 
 	mTyping = value;
