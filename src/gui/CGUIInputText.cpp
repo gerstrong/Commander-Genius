@@ -15,7 +15,10 @@
 #include "sdl/CTimer.h"
 #include "sdl/extensions.h"
 #ifdef ANDROID
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
 #include <SDL_screenkeyboard.h>
+#endif
 #endif
 
 
