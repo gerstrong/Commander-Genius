@@ -158,10 +158,13 @@ bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
 {
     SDL_Rect newRect = gameRes.SDLRect();
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
     if(newRect.w == mpBitmapSurface->w && newRect.h == mpBitmapSurface->h)
         return true;
 
-    // TODO: This is not compatible with SDL 1.2, we need a wrapper for that.
+#endif
+
     std::shared_ptr<SDL_Surface> newSfc;
 
     // Need to do that, otherwise it won't work.
