@@ -69,7 +69,7 @@ void CPlayer::setWorldMapdir()
     if (playcontrol[PA_Y] > 0) pShowDir.y = DOWN;
 
 
-	dpadlastcount = dpadcount;
+    //dpadlastcount = dpadcount;
 }
 
 // tell me, if the player tries to use an object on the map like entering the level

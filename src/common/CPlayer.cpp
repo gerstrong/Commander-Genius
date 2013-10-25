@@ -159,7 +159,7 @@ void CPlayer::setDatatoZero()
     m_showStatusScreen = false;
 	
     level_done_timer = 0;
-  	dpadcount = dpadlastcount = 0;
+    dpadcount /*= dpadlastcount*/ = 0;
   	beingteleported = false;
 
 
