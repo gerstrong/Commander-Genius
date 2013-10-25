@@ -38,8 +38,6 @@ void CHUD::createHUDBlit()
 
     SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
 #else    
-
-
     auto *blit = g_pVideoDriver->getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
@@ -50,12 +48,7 @@ void CHUD::createHUDBlit()
                 format->Bmask,
                 format->Amask );
 
-    //SDL_SetColorKey(sfc,SDL_SRCCOLORKEY, COLORKEY);
-
     mpHUDBlit.reset( sfc, &SDL_FreeSurface );
-    //mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
-
-    //SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
 #endif
 }
 
@@ -94,6 +87,8 @@ void CHUD::setup(const int id)
 
         #if SDL_VERSION_ATLEAST(2, 0, 0)
             SDL_SetSurfaceBlendMode(mHUDBox.getSDLSurface(), SDL_BLENDMODE_NONE);
+        #else
+            SDL_SetAlpha(mHUDBox.getSDLSurface(), 0, 0);
         #endif
 
         createHUDBlit();
