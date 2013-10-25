@@ -38,6 +38,7 @@ void CHUD::createHUDBlit()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
 #else
+    mHUDBox.optimizeSurface();
     SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
 #endif
 }
@@ -66,6 +67,11 @@ void CHUD::setup(const int id)
     {
         m_Rect.w = 80;	m_Rect.h = 30;
         mHUDBox = *g_pGfxEngine->getSprite(mId,"HUDBACKGROUND");
+
+        #if SDL_VERSION_ATLEAST(2, 0, 0)
+        #else
+            mHUDBox.optimizeSurface();
+        #endif
         m_Rect.h = mHUDBox.getHeight();
         m_Rect.w = mHUDBox.getWidth()-7;
         m_Rect.x += (m_Rect.w-2)*id;

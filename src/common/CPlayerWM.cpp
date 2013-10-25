@@ -48,23 +48,26 @@ void CPlayer::processWorldMap()
 // select proper player direction
 void CPlayer::setWorldMapdir()
 {
-	bool exception=false;
-	dpadcount = 0;
-	if (playcontrol[PA_X] < 0) { pDir.x = LEFT; pDir.y = 0; dpadcount++; }
-	if (playcontrol[PA_X] > 0) { pDir.x = RIGHT; pDir.y = 0; dpadcount++; }
-	if (playcontrol[PA_Y] < 0) { pDir.y = UP; pDir.x = 0; dpadcount++; }
-	if (playcontrol[PA_Y] > 0) { pDir.y = DOWN; pDir.x = 0; dpadcount++; }
-	
-	if ( pShowDir.y == UP && !playcontrol[PA_Y] < 0) exception = true;
-	if ( pShowDir.y == DOWN && !playcontrol[PA_Y] > 0) exception = true;
-	if ( pShowDir.x == LEFT && !playcontrol[PA_X] < 0) exception = true;
-	if ( pShowDir.x == RIGHT && !playcontrol[PA_X] > 0) exception = true;
-	
-	if (playcontrol[PA_Y] < 0) pShowDir.y = UP;
-	if (playcontrol[PA_Y] > 0) pShowDir.y = DOWN;
+    //bool exception=false;
+    int playX = playcontrol[PA_X];
+    int playY = playcontrol[PA_Y];
 
-	if (dpadcount==1 || dpadlastcount==0 || exception)
-		pShowDir = pDir;
+    // How many buttons are pressed?
+	dpadcount = 0;
+
+    if (playX < 0) { pDir.x = LEFT; pDir.y = 0; dpadcount++; }
+    if (playX > 0) { pDir.x = RIGHT; pDir.y = 0; dpadcount++; }
+    if (playY < 0) { pDir.y = UP; pDir.x = 0; dpadcount++; }
+    if (playY > 0) { pDir.y = DOWN; pDir.x = 0; dpadcount++; }
+	
+	
+    if (playX != 0)
+        pShowDir = pDir;
+
+
+    if (playcontrol[PA_Y] < 0) pShowDir.y = UP;
+    if (playcontrol[PA_Y] > 0) pShowDir.y = DOWN;
+
 
 	dpadlastcount = dpadcount;
 }
@@ -153,7 +156,8 @@ void CPlayer::selectFrameOnWorldMap()
     // select base frame for current direction
     if (pShowDir.x==RIGHT) sprite = playerbaseframe + PMAPRIGHTFRAME;
     else if (pShowDir.x==LEFT) sprite = playerbaseframe + PMAPLEFTFRAME;
-    else if (pShowDir.y==UP) sprite = playerbaseframe + PMAPUPFRAME;
+
+    if (pShowDir.y==UP) sprite = playerbaseframe + PMAPUPFRAME;
     else if (pShowDir.y==DOWN) sprite = playerbaseframe + PMAPDOWNFRAME;
 
     // add in walk frame if walking
