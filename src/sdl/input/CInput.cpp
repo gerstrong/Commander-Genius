@@ -1395,8 +1395,10 @@ void CInput::processMouse(SDL_Event& ev) {
 //#endif
 }
 
-void CInput::processMouse(int x, int y, bool down, int mouseindex) {
-	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
+void CInput::processMouse(int x, int y, bool down, int mouseindex)
+{
+
+    TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 
 	for(int i = 0; i < phoneButtonN; ++i) {
 		TouchButton& b = phoneButtons[i];
@@ -1407,7 +1409,7 @@ void CInput::processMouse(int x, int y, bool down, int mouseindex) {
 
 			break;
 		}
-	}
+	}   
 
 }
 
