@@ -31,15 +31,31 @@ timer(0)
 }
 
 void CHUD::createHUDBlit()
-{
-    mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
-    mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);   
-
+{    
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
+    mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
+
     SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
-#else
-    mHUDBox.optimizeSurface();
-    SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
+#else    
+
+
+    auto *blit = g_pVideoDriver->getBlitSurface();
+    SDL_PixelFormat *format = blit->format;
+
+    SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
+                m_Rect.w, m_Rect.h, RES_BPP,
+                format->Rmask,
+                format->Gmask,
+                format->Bmask,
+                format->Amask );
+
+    //SDL_SetColorKey(sfc,SDL_SRCCOLORKEY, COLORKEY);
+
+    mpHUDBlit.reset( sfc, &SDL_FreeSurface );
+    //mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
+
+    //SDL_SetAlpha(mpHUDBlit.get(), SDL_SRCALPHA, 220);
 #endif
 }
 
@@ -93,7 +109,10 @@ void CHUD::CreateVorticonBackground()
     // Create a surface for the Background
     mpBackground.reset( SDL_ConvertSurface( mpHUDBlit.get(), mpHUDBlit->format, 0), &SDL_FreeSurface );
 
-    //SDL_FillRect( mpBackground.get(), NULL, 0xFFFFFFFF);
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
+    #else
+        SDL_SetAlpha(mpBackground.get(), 0, 0);
+    #endif
 
 	SDL_Rect headsrcrect, headdstrect;
 	headsrcrect.x = 0;
@@ -109,6 +128,8 @@ void CHUD::CreateVorticonBackground()
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode( keenHeadSfc, SDL_BLENDMODE_NONE);
+#else
+    SDL_SetAlpha(keenHeadSfc, 0, 0);
 #endif
 
     SDL_BlitSurface( keenHeadSfc, &headsrcrect, mpBackground.get(), &headdstrect );
@@ -131,7 +152,10 @@ void CHUD::CreateVorticonBackground()
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(keenGunSfc, SDL_BLENDMODE_NONE);
+#else
+    SDL_SetAlpha(keenGunSfc, 0, 0);
 #endif
+
 
     SDL_BlitSurface( keenGunSfc, &headsrcrect, mpBackground.get(), &headdstrect );
 
@@ -235,9 +259,6 @@ void CHUD::renderVorticon()
     score = (m_oldScore<99999999) ? m_oldScore : 99999999;
 	lives = (m_lives<99) ? m_lives : 99;
 	charges = (m_oldCharges<99) ? m_oldCharges : 99;
-
-    //SDL_FillRect( mpBackground.get(), NULL, 0xFF8FFF8F);
-
 
 	// Draw the background
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );

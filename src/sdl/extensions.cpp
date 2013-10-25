@@ -133,18 +133,6 @@ int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstS
 
 SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
 {
-	//SDL_Surface *video = SDL_GetVideoSurface();
-    //Colormask mask = getColourMask32bit();
-
-    /*SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
-            rect.w,
-            rect.h,
-            RES_BPP,
-            mask.r,
-            mask.g,
-            mask.b,
-            mask.a );*/
-
     auto *blit = g_pVideoDriver->getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
@@ -156,16 +144,6 @@ SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
                 format->Gmask,
                 format->Bmask,
                 format->Amask );
-
-
-	/*SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
-			rect.w,
-			rect.h,
-			RES_BPP,
-			video->format->Rmask,
-			video->format->Gmask,
-			video->format->Bmask,
-			video->format->Amask);*/
 
 	return sfc;
 }
