@@ -207,6 +207,10 @@ void CResourceLoader::renderLoadingGraphic()
 		int rest = m_permil%10;
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
 		
+        SDL_Rect textRect;
+        textRect.x = 80;        textRect.y = 100;
+        textRect.w = 200;        textRect.h = 10;
+        SDL_FillRect(sfc, &textRect, SDL_MapRGB(sfc->format, 0, 0, 0));
 		Font.drawFont(sfc, text , 80, 100, true);
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
