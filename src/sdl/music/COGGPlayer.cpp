@@ -195,7 +195,10 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 		insize++;
 		insize *= mult;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
         memset(m_Audio_cvt.buf, 0, length);
+#endif
 
         rewind = readOGGStreamAndResample(m_oggStream,
                                           m_Audio_cvt.buf,
@@ -211,7 +214,7 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
                                m_AudioFileSpec);
     }
 
-    //memset(m_Audio_cvt.buf, 0, length);
+    memset(m_Audio_cvt.buf, 0, length);
 
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format

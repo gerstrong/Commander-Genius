@@ -120,6 +120,9 @@ int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstS
     std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>
             temp( zoomSurface( srcSfc, zoomx, zoomy, SMOOTHING_OFF ) );
 
+    srcRect->w = dstRect->w;
+    srcRect->h = dstRect->h;
+
     error = SDL_BlitSurface(temp.get(), srcRect, dstSfc, dstRect);
 
 #endif
