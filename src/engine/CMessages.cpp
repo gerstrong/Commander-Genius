@@ -305,8 +305,8 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "GODMODEOFF", 0x19BF5, 0x19C06, -512 ) );
 					StringMap.insert( extractString( "EP2_StatusBox" , 0x19C40, 0x19CAE, -804 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x1A9B2, 0x1A9BF, -776 ) );
-					StringMap.insert( extractString( "EP2_VE_NOJUMPINDARK" , 0x1A2D2, 0x1A390, -774 ) );
-					StringMap.insert( extractString( "EP2_VE_EVILBELTS" , 0x1A391, 0x1A4A5, -774) );
+                    StringMap.insert( extractString( "EP2_VE_NOJUMPINDARK" , 0x1A2D2, 0x1A391, -774 ) );
+                    StringMap.insert( extractString( "EP2_VE_EVILBELTS" , 0x1A392, 0x1A4A5, -774) );
 					StringMap.insert( extractString( "EP2_LVL4_TargetName" , 0x19CCF, 0x19CD5, -804) );
 					StringMap.insert( extractString( "EP2_LVL6_TargetName" , 0x19CD6, 0x19CDB, -804) );
 					StringMap.insert( extractString( "EP2_LVL7_TargetName" , 0x19CDC, 0x19CE2, -804) );

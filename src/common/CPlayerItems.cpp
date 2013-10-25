@@ -319,7 +319,7 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 
 std::string CPlayer::pollHintMessage()
 {
-	if(hintstring != "")
+    if(hintstring != "")
 	{
 		std::string text = hintstring;
 		hintstring = "";

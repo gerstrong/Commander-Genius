@@ -65,6 +65,15 @@ public:
     Uint8 getAlpha() const
     { return m_alpha; }
 
+    // A valid sprite has height and width and of course a real surface
+    bool valid()
+    {
+        if(mpSurface)
+            return true;
+
+        return false;
+    }
+
     void readSize(Uint8 &xsize, Uint8 &ysize) const
     { xsize = m_xsize; ysize = m_ysize; }
 

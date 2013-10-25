@@ -395,10 +395,13 @@ void CSpriteObject::playSound( const GameSound snd,
 // or priority tile!
 void CSpriteObject::draw()
 {
-	if( sprite == BLANKSPRITE || dontdraw )
+    if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
     CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
+
+    if(!Sprite.valid())
+        return;
 
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
