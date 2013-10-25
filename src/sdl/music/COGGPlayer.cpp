@@ -195,16 +195,19 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 		insize++;
 		insize *= mult;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-#else
-        memset(m_Audio_cvt.buf, 0, length);
-#endif
+        if(m_Audio_cvt.len_cvt <= 0)
+        {
+            rewind = true;
+        }
+        else
+        {
 
-        rewind = readOGGStreamAndResample(m_oggStream,
-                                          m_Audio_cvt.buf,
-                                          m_Audio_cvt.len_cvt,
-                                          insize,
-                                          m_AudioFileSpec);
+            rewind = readOGGStreamAndResample(m_oggStream,
+                                              m_Audio_cvt.buf,
+                                              m_Audio_cvt.len_cvt,
+                                              insize,
+                                              m_AudioFileSpec);
+        }
     }
     else
 	{
