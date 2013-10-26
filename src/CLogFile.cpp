@@ -45,6 +45,17 @@ void CLogFile::CreateLogfile(const char *LogName)
 
     textOut(platformText);
 
+    SDL_version compiled;
+    SDL_version linked;
+
+    SDL_VERSION(&compiled);
+    SDL_GetVersion(&linked);
+
+    ftextOut("We compiled against SDL version %d.%d.%d ...",
+           compiled.major, compiled.minor, compiled.patch);
+    ftextOut("But we are linking against SDL version %d.%d.%d.",
+           linked.major, linked.minor, linked.patch);
+
     // Ads
 	textOut("<br>");
 	std::string datestring = __DATE__;

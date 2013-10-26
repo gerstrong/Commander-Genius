@@ -156,7 +156,7 @@ void CSound::destroy()
 {
 	stopAllSounds();
 
-	SDL_LockAudio();
+    SDL_LockAudio();
 	SDL_CloseAudio();
 	m_mixing_channels = 0;
 

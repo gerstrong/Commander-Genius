@@ -174,11 +174,15 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 
 if(USE_SDL2)
 
+    #INCLUDE(FindPkgConfig)
+    #PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+
     include(FindSDL2 OPTIONAL)
 
     if(SDL2_FOUND)
         message("Using shared SDL Version 2")
         include_directories(${SDL2_INCLUDE_DIR})
+        include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
 else(USE_SDL2)
@@ -190,6 +194,7 @@ else(USE_SDL2)
         if(SDL_FOUND)
                 message("Using shared SDL Version 1.2")
                 include_directories(${SDL_INCLUDE_DIR})
+                INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
         else(SDL_FOUND)
                 # TODO: Use the prebuilt one on Windows
                 message("Using static SDL from Externals")
@@ -216,6 +221,7 @@ Find_Package ( SDL_image REQUIRED )
 #	set(SDL_INCLUDE_DIRS ${PREFIX}/include/SDL)
 #endif(BUILD_TARGET STREQUAL WIN32)
 	
+
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
 
 
@@ -319,10 +325,12 @@ ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 if(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL2_LIBRARY})
+    target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
 else(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL_LIBRARIES})
     target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
-    endif(SDL2_FOUND)
+endif(SDL2_FOUND)
+
 target_link_libraries(CommanderGenius SDL_image)
 
 
