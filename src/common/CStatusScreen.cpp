@@ -38,7 +38,7 @@ CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_lev
 	else if (m_episode==2)
         createInventorySfcEp2(varSprite);
 	else if (m_episode==3)
-        createInventorySfcEp3(varSprite);
+        createInventorySfcEp3(varSprite);                  
 }
 
 void CStatusScreen::draw()
@@ -54,7 +54,12 @@ void CStatusScreen::draw()
 
 	if(!m_closed)
 	{
-        SDL_BlitSurface( mpStatusSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_StatusRect);
+        SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+
+        m_StatusRect.x = (blit->w-m_StatusRect.w)/2;
+        m_StatusRect.y = (blit->h-m_StatusRect.h)/2;
+
+        SDL_BlitSurface( mpStatusSfc.get(), NULL, blit, &m_StatusRect);
 	}
 }
 
@@ -93,8 +98,6 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	int dlgW,dlgH;
 	CFont &Font = g_pGfxEngine->getFont(1);
 
-	m_StatusRect.x = 5*8;
-	m_StatusRect.y = 5*8;
 	dlgW = 29;
 	dlgH = 15;
 	m_StatusRect.w = (dlgW+1)*8;
@@ -228,16 +231,14 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	int dlgW,dlgH;
 	CFont &Font = g_pGfxEngine->getFont(1);
 
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
-
-	m_StatusRect.x = 5*8;
-	m_StatusRect.y = 5*8;
 	dlgW = 29;
 	dlgH = 14;
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 
 	SDL_Surface *p_surface = CreateStatusSfc();
+    CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
+
 	tempbuf = g_pBehaviorEngine->getString("EP2_StatusBox");
 	g_pGfxEngine->drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (0+1)<<3, (0+1)<<3, true);
@@ -352,18 +353,16 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	CFont &Font = g_pGfxEngine->getFont(1);
+	CFont &Font = g_pGfxEngine->getFont(1);	
 
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
-
-	m_StatusRect.x = 5*8;
-	m_StatusRect.y = 5*8;
 	dlgW = 29;
 	dlgH = 13;
 	m_StatusRect.w = (dlgW+1)*8;
 	m_StatusRect.h = dlgH*8;
 
 	SDL_Surface *p_surface = CreateStatusSfc();
+    CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
+
 	tempbuf = g_pBehaviorEngine->getString("EP3_StatusBox");
 	g_pGfxEngine->drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (0+1)<<3, (0+1)<<3, true);
@@ -462,10 +461,6 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
     mpStatusSfc.reset(g_pVideoDriver->convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
-//#endif
 	SDL_FreeSurface(p_surface);
 }
