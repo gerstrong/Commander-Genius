@@ -103,7 +103,7 @@ bool finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	finale_done = 0;
 	
 	// In case the surface is bigger than the compressed image, fill it with black first
-	SDL_FillRect(sfc,NULL,0);
+    SDL_FillRect( sfc, nullptr, 0);
 
 	// decompress/draw the image
 	do

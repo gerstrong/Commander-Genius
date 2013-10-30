@@ -208,10 +208,13 @@ void CResourceLoader::renderLoadingGraphic()
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
 		
         SDL_Rect textRect;
-        textRect.x = 80;        textRect.y = 100;
+        CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+        const float scaleUpW = float(gameRes.w)/320.0f;
+        const float scaleUpH = float(gameRes.h)/200.0f;
+        textRect.x = (int)(80.0*scaleUpW);        textRect.y = (int)(100.0*scaleUpH);
         textRect.w = 200;        textRect.h = 10;
         SDL_FillRect(sfc, &textRect, SDL_MapRGB(sfc->format, 0, 0, 0));
-		Font.drawFont(sfc, text , 80, 100, true);
+        Font.drawFont(sfc, text , textRect.x, textRect.y, true);
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
 	{

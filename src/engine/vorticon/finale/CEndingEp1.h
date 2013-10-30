@@ -32,6 +32,9 @@ public:
 	void ReturnsToShip();
 	void ShipFlyMarsToEarth();
 	void BackAtHome();
+
+    void renderBackAtHome();
+
 	void ShipFlyEarthToMShip();
 
 private:

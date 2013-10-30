@@ -51,6 +51,7 @@ void CEndingEp1::render()
 {    
     switch(m_step)
     {
+    case 2: renderBackAtHome(); break;
     case 4: renderEndingText(); break;
     default: break;
     }
@@ -154,45 +155,53 @@ void CEndingEp1::ShipFlyMarsToEarth()
 
 void CEndingEp1::BackAtHome()
 {
-	if(m_mustsetup)
-	{
-		//Initialization
-		m_hideobjects = true;
-		mpMap->gotoPos(0,0);
-		mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
-		mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
-		m_Player[0].hideplayer = true;
-		mpFinaleStaticScene.reset( new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck1") );
+    if(m_mustsetup)
+    {
+        //Initialization
+        m_hideobjects = true;
+        mpMap->gotoPos(0,0);
+        mpMap->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
+        mpMap->m_animation_enabled = false; // Needed, because the other map is still loaded
+        m_Player[0].hideplayer = true;
+        mpFinaleStaticScene.reset( new CFinaleStaticScene(mpMap->m_gamepath, "finale.ck1") );
 
-		addMsgBoxString("EP1_ESEQ_PART2_PAGE1");
-		addMsgBoxString("EP1_ESEQ_PART2_PAGE2");
-		addMsgBoxString("EP1_ESEQ_PART2_PAGE3");
-		addMsgBoxString("EP1_ESEQ_PART2_PAGE4");
-		addMsgBoxString("EP1_ESEQ_PART2_PAGE5");
-		addMsgBoxString("EP1_ESEQ_PART2_PAGE6");
-		addMsgBoxString("EP1_ESEQ_PART2_PAGE7");
-		addMsgBoxString("EP1_ESEQ_PART2_PAGE8");
+        addMsgBoxString("EP1_ESEQ_PART2_PAGE1");
+        addMsgBoxString("EP1_ESEQ_PART2_PAGE2");
+        addMsgBoxString("EP1_ESEQ_PART2_PAGE3");
+        addMsgBoxString("EP1_ESEQ_PART2_PAGE4");
+        addMsgBoxString("EP1_ESEQ_PART2_PAGE5");
+        addMsgBoxString("EP1_ESEQ_PART2_PAGE6");
+        addMsgBoxString("EP1_ESEQ_PART2_PAGE7");
+        addMsgBoxString("EP1_ESEQ_PART2_PAGE8");
 
-		// The Bitmaps of the Window Lights on should drawn at Page 4
-		mpFinaleStaticScene->showBitmapAt("WINDON", 2, 6, 80, 0);
-		mpFinaleStaticScene->showBitmapAt("WINDOFF", 6, 8, 80, 0);
+        // The Bitmaps of the Window Lights on should drawn at Page 4
+        mpFinaleStaticScene->showBitmapAt("WINDON", 2, 6, 80, 0);
+        mpFinaleStaticScene->showBitmapAt("WINDOFF", 6, 8, 80, 0);
 
-		m_mustsetup = false;
-	}
+        m_mustsetup = false;
+    }
 
-	if( mMessageBoxes.empty() )
-	{
-		// Shutdown code here!
-		mpFinaleStaticScene.release();
-		mpMap->m_animation_enabled = true;
-		m_step++;        
-		m_mustsetup = true;
-	}
-	else
-	{
+    if( mMessageBoxes.empty() )
+    {
+        // Shutdown code here!
+        mpFinaleStaticScene.release();
+        mpMap->m_animation_enabled = true;
+        m_step++;
+        m_mustsetup = true;
+    }
+    else
+    {
         mpFinaleStaticScene->ponder();
+    }
+
+}
+
+void CEndingEp1::renderBackAtHome()
+{
+    if( !mMessageBoxes.empty() )
+    {
         mpFinaleStaticScene->render(8-mMessageBoxes.size());
-	}
+    }
 
 }
 

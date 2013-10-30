@@ -16,10 +16,7 @@ CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::
 m_mustclose(false),
 m_timer(0)
 {
-	const SDL_Rect resrect =  g_pVideoDriver->getGameResolution().SDLRect();
-	const Uint32 flags = g_pVideoDriver->getBlitSurface()->flags;
-
-    mpSceneSurface.reset(SDL_CreateRGBSurface( flags, resrect.w, resrect.h, 8, 0, 0, 0, 0),
+    mpSceneSurface.reset(SDL_CreateRGBSurface( 0, 320, 200, 8, 0, 0, 0, 0),
                          &SDL_FreeSurface);
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -37,6 +34,32 @@ m_timer(0)
 #else
         mpSceneSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSceneSurface.get()), &SDL_FreeSurface);
 #endif
+
+        SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+
+        std::shared_ptr<SDL_Surface> scaledScene(
+                    SDL_ConvertSurface(blit, blit->format, 0),
+                    &SDL_FreeSurface);
+
+
+        SDL_Rect srcRect, dstRect;
+
+        srcRect.x = 0;  srcRect.y = 0;
+        srcRect.w = mpSceneSurface->w;
+        srcRect.h = mpSceneSurface->h;
+
+        dstRect.x = 0;  dstRect.y = 0;
+        dstRect.w = scaledScene->w;
+        dstRect.h = scaledScene->h;
+
+        SDL_FillRect(scaledScene.get(), nullptr, SDL_MapRGB(scaledScene->format, 0, 0, 0) );
+
+        SDL_BlitScaledWrap(mpSceneSurface.get(),
+                           &srcRect,
+                           scaledScene.get(),
+                           &dstRect);
+
+        mpSceneSurface = scaledScene;
     }
 	else
 	{
@@ -47,14 +70,30 @@ m_timer(0)
 
 void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y)
 {
+    const int scaleFactor = mpSceneSurface->w / 320;
+
 	bitmap_structure bmp_struct;
+
     bmp_struct.bitmap = *g_pGfxEngine->getBitmap(bitmapname);
-	bmp_struct.dest_rect.x = x;
-	bmp_struct.dest_rect.y = y;
+    bmp_struct.dest_rect.x = x*scaleFactor;
+    bmp_struct.dest_rect.y = y*scaleFactor;
+    bmp_struct.dest_rect.w = bmp_struct.bitmap.getWidth();
+    bmp_struct.dest_rect.h = bmp_struct.bitmap.getHeight();    
+
+    CRect<Uint16> bmpDim;
+    bmpDim.w = bmp_struct.dest_rect.w*scaleFactor;
+    bmpDim.h = bmp_struct.dest_rect.h*scaleFactor;
+    bmpDim.x = 0; bmpDim.y = 0;
+
+    bmp_struct.bitmap.scaleTo(bmpDim);
+
     bmp_struct.dest_rect.w = bmp_struct.bitmap.getWidth();
     bmp_struct.dest_rect.h = bmp_struct.bitmap.getHeight();
+
+
 	bmp_struct.from_count = from_count;
 	bmp_struct.to_count = to_count;
+
 	m_BitmapVector.push_back(bmp_struct);
 }
 
@@ -68,7 +107,8 @@ void CFinaleStaticScene::render(const int step)
 {
     if(mpSceneSurface)
     {
-        SDL_BlitSurface(mpSceneSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+        SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
+        SDL_BlitSurface(mpSceneSurface.get(), nullptr, sfc, nullptr);        
     }
 
     if(m_timer <= 0)
