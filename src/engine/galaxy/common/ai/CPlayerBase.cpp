@@ -163,7 +163,6 @@ m_Cheatmode(Cheatmode),
 mp_processState(NULL)
 {
 	mActionMap[A_KEEN_DIE] = &CPlayerBase::processDying;
-	mActionMap[A_KEEN_DIE+1] = &CPlayerBase::processDying;
 
 	m_walktimer = 0;
 	m_timer = 0;
@@ -337,6 +336,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 2<<STC))
 	{
 		kill();
+        return;
 	}
 
 	// Another property of the tiles may kill keen, also in god mode
@@ -564,9 +564,6 @@ void CPlayerBase::processGetEaten()
 
 
 
-
-
-
 void CPlayerBase::kill(const bool force)
 {
     if(getActionNumber(A_KEEN_ENTER_DOOR))
@@ -575,13 +572,14 @@ void CPlayerBase::kill(const bool force)
     if(m_Cheatmode.god && !force)
         return;
     
+    m_dying = true;
+
     // Here were prepare Keen to die, setting the action to die
     if(mp_processState == &CPlayerBase::processDying && yinertia < 0)
         return;
-	
-    m_dying = true;
+	    
     yinertia = -DIE_FALL_MAX_INERTIA;
-    setAction( A_KEEN_DIE + (rand()%2) );
+    setAction( A_KEEN_DIE );
     solid = false;
     honorPriority = false;
     g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
@@ -665,6 +663,8 @@ int CPlayerBase::getSpriteIDFromAction(const int16_t ActionNumber)
 
 void CPlayerBase::setActionForce(const size_t ActionNumber)
 {
+    CGalaxySpriteObject::setActionForce(ActionNumber);
+
 	const int epID = g_pBehaviorEngine->getEpisode()-4;
 	mEndOfAction = false;
 	m_ActionNumber = ActionNumber;

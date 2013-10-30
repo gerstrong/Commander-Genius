@@ -398,7 +398,7 @@ void CSpriteObject::draw()
     if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
-    CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
+    CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar, sprite);
 
     if(!Sprite.valid())
         return;

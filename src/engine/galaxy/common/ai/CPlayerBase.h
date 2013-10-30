@@ -87,8 +87,7 @@ public:
                 stCheat &Cheatmode,
                 int playerID);
 
-
-	/**
+    /**
 	 * Pushes the players by the given object Reference
 	 */
 	void push( CGalaxySpriteObject &theObject );

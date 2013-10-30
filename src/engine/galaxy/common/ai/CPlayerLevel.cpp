@@ -2520,6 +2520,18 @@ bool CPlayerLevel::checkConveyorBelt()
 
 void CPlayerLevel::process()
 {
+    if(m_dying)
+    {
+        const bool dieStatus1 = getActionStatus(A_KEEN_DIE);
+
+        if( !dieStatus1 )
+        {
+           setActionForce( A_KEEN_DIE );
+        }
+        setActionSprite();
+
+    }
+
     if(dead) // If this player is dead, the camera still runs,
     {       // in case a second player inherits the camera lead
         processCamera();
@@ -2589,6 +2601,9 @@ void CPlayerLevel::process()
 	}
 
 	processLevelMiscFlagsCheck();
+
+    if(m_dying)
+        return;
 
 	if(!mExitDoorTimer)
 	{
