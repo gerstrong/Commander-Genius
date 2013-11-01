@@ -110,15 +110,9 @@ void CMessageBoxSelection::init()
 	cutRect.w -= 4;
 	cutRect.h -= 4;
 		
-    mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
-
-    //mpSelSurface1.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
-    //mpSelSurface2.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
-
-
     mpSelSurface1.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
-                                               rect.w,
-                                               rect.h,
+                                               selRect.w,
+                                               selRect.h,
                                                RES_BPP,
                                                format->Rmask,
                                                format->Gmask,
@@ -127,8 +121,8 @@ void CMessageBoxSelection::init()
                          &SDL_FreeSurface);
 
     mpSelSurface2.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
-                                               rect.w,
-                                               rect.h,
+                                               selRect.w,
+                                               selRect.h,
                                                RES_BPP,
                                                format->Rmask,
                                                format->Gmask,
