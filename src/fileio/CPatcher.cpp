@@ -36,6 +36,7 @@ void CPatcher::process()
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
 
+
 	g_pLogFile->textOut("Trying to load and apply the patch we found...<br>");
 	m_is_a_mod = true;
 
@@ -128,6 +129,13 @@ void CPatcher::process()
 			size_t width;
 			if(readIntValue(textline, offset))
 			{
+                // Terror from outer-space workaround to avoid it crash!
+                if(offset == 0x3D740 && m_episode == 4)
+                {
+                    g_pLogFile->textOut("Appling TFOS mod workaround...");
+                    continue;
+                }
+
 				while(!PatchItem.value.empty())
 				{
 					// after we have it, distinguish between text case and number case

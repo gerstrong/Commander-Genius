@@ -47,6 +47,7 @@ public:
 
 
 	void resetScrolls();
+    void refreshStripes();
 
 
 	// If force is enabled it will ignore scroll blockers

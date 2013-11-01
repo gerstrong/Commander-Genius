@@ -40,8 +40,17 @@ void CCarmack::expand( std::vector<byte>& dst, std::vector<byte>& src )
 	uint32_t i, j, offset, length, inc;
 
 	dst.clear();
-	for( i=WORDSIZE; i<src.size(); i+=inc )
+
+    const unsigned int srcSize = src.size();
+
+    for( i=WORDSIZE ; i<srcSize ; i+=inc )
 	{
+        if(TAG >= srcSize)
+        {
+            g_pLogFile->textOut("Something went wrong with the Carmack compression!\n");
+            return;
+        }
+
 		switch( src.at(TAG) )
 		{
 		case NEARTAG:

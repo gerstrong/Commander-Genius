@@ -71,14 +71,26 @@ bool CMap::createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height)
 
 void CMap::resetScrolls()
 {
-	m_scrollx = m_scrolly = 0;
+    m_scrollx = m_scrolly = 0;
 
-	g_pVideoDriver->mpVideoEngine->resetScrollbuffer();
+    g_pVideoDriver->mpVideoEngine->resetScrollbuffer();
 
-	m_scrollpix = m_scrollpixy = 0;
-	m_mapx = m_mapy = 0;           // map X location shown at scrollbuffer row 0
-	m_mapxstripepos = m_mapystripepos = 0;  // X pixel position of next stripe row
+    m_scrollpix = m_scrollpixy = 0;
+    m_mapx = m_mapy = 0;           // map X location shown at scrollbuffer row 0
+    m_mapxstripepos = m_mapystripepos = 0;  // X pixel position of next stripe row
 }
+
+
+void CMap::refreshStripes()
+{
+    const int oldx = m_mapx<<4;
+    const int oldy = m_mapy<<4;
+
+    resetScrolls();
+
+    gotoPos(oldx, oldy);
+}
+
 
 /////////////////////////
 // Getters and Setters //
@@ -223,7 +235,7 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
 
         if( y > blockYup && y < blockYdown )
         {
-            upCoord = blockYup;
+            upCoord = blockYup+(1<<CSF);
             downCoord = blockYdown;
             return;
         }
@@ -389,8 +401,16 @@ bool CMap::gotoPos(int x, int y)
 	dy = y - m_scrolly;
 
 	if( dx > 0 )
-		for( int scrollx=0 ; scrollx<dx ; scrollx++) scrollRight(true);
-	else retval = true;
+    {
+        for( int scrollx=0 ; scrollx<dx ; scrollx++)
+        {
+            scrollRight(true);
+        }
+    }
+    else
+    {
+        retval = true;
+    }
 
 	if( dx < 0 )
 		for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft(true);
@@ -771,6 +791,7 @@ void CMap::animateAllTiles()
 
     if(g_pVideoDriver->getRefreshSignal())
     {
+        refreshStripes();
         drawAll();
 
         g_pVideoDriver->blitScrollSurface();
