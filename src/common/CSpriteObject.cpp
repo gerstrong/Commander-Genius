@@ -353,6 +353,7 @@ void CSpriteObject::kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theO
 			 {
 				 theObject.kill();
 				 theObject.dontdraw = true;
+                 theObject.exists = false;
 			 }
 		 }
 	 }

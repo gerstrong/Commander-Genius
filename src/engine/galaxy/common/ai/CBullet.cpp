@@ -75,20 +75,14 @@ void CBullet::getTouchedBy(CSpriteObject& theObject)
 
 
 
+bool CBullet::calcVisibility()
+{
+    return true;
+}
 
 
 void CBullet::process()
-{
-    /*int trans = transluceny;
-    
-    if( trans > 30 )    
-	trans -= 10;
-    else
-	trans = 30;
-        
-    transluceny = trans;*/
-    
-    
+{    
 	if( !getActionNumber(A_KEENSHOT_IMPACT) && (blockedd || blockedu || blockedl || blockedr || onslope) )
 	{
 		setAction(A_KEENSHOT_IMPACT);
@@ -97,7 +91,9 @@ void CBullet::process()
 	}
 
 	if(!processActionRoutine())
+    {
 			exists = false;
+    }
 }
 
 }

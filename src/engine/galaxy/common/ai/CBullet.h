@@ -70,6 +70,7 @@ public:
 	
 	void getTouchedBy(CSpriteObject& theObject);
 	
+    bool calcVisibility();
 	void process();
 
 private:

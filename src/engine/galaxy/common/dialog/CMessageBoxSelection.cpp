@@ -110,10 +110,32 @@ void CMessageBoxSelection::init()
 	cutRect.w -= 4;
 	cutRect.h -= 4;
 		
-    	mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
+    mpSelSurface1.reset(CG_CreateRGBSurface( selRect ), &SDL_FreeSurface);
 
-    mpSelSurface1.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
-    mpSelSurface2.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
+    //mpSelSurface1.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
+    //mpSelSurface2.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
+
+
+    mpSelSurface1.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
+                                               rect.w,
+                                               rect.h,
+                                               RES_BPP,
+                                               format->Rmask,
+                                               format->Gmask,
+                                               format->Bmask,
+                                               0 ),
+                         &SDL_FreeSurface);
+
+    mpSelSurface2.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
+                                               rect.w,
+                                               rect.h,
+                                               RES_BPP,
+                                               format->Rmask,
+                                               format->Gmask,
+                                               format->Bmask,
+                                               0 ),
+                         &SDL_FreeSurface);
+    //mpSelSurface2.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
 
 	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );

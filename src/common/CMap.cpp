@@ -155,7 +155,9 @@ void CMap::collectBlockersCoordiantes()
             {
                 // Check the row for a blocker which has the proper value
                 if(*map_ptr == 0x19)
+                {
                     scrollBlockY.push_back(y<<(CSF));
+                }
                 // In Keen 5 it is only used on the map and stands for the teleporter from some in level
                 if(*map_ptr == 0x1A && ep != 5)
                     scrollBlockX.push_back(x<<(CSF));
@@ -235,7 +237,15 @@ void CMap::fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord)
 
         if( y > blockYup && y < blockYdown )
         {
-            upCoord = blockYup+(1<<CSF);
+            upCoord = blockYup;
+
+            if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+            {
+                // This will hide even more level blockers in Galaxy. In Vorticon
+                // this is not needed
+                upCoord += (1<<CSF);
+            }
+
             downCoord = blockYdown;
             return;
         }
