@@ -129,7 +129,6 @@ void CMessageBoxSelection::init()
                                                format->Bmask,
                                                0 ),
                          &SDL_FreeSurface);
-    //mpSelSurface2.reset(g_pVideoDriver->convertThroughBlitSfc( mpSelSurface1.get() ), &SDL_FreeSurface);
 
 	SDL_FillRect( mpSelSurface1.get(), &selRect, SDL_MapRGB( format, 255, 0, 0 ) );
 	SDL_FillRect( mpSelSurface2.get(), &selRect, SDL_MapRGB( format, 0, 0, 255 ) );
@@ -180,7 +179,6 @@ void CMessageBoxSelection::ponder()
 void CMessageBoxSelection::render()
 {
     SDL_BlitSurface(mpMBSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), &mMBRect);
-
 
     // now draw the glowing rectangle. It fades here!
     if(blendup)

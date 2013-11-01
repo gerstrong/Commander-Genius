@@ -198,6 +198,14 @@ void CMap::fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord
         if( x > blockXleft && x < blockXright )
         {
             leftCoord = blockXleft;
+
+            if(leftCoord > (2<<CSF) &&  g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+            {
+                // This will hide even more level blockers in Galaxy. In Vorticon
+                // this is not needed
+                leftCoord += (1<<CSF);
+            }
+
             rightCoord = blockXright;
             return;
         }

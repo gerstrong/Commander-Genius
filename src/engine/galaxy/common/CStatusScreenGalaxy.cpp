@@ -124,8 +124,16 @@ void CStatusScreenGalaxy::draw()
     src.w *= scaleFac;
     src.h *= scaleFac;
 
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_BlitScaledWrap(mpStatusSurface.get(),
                    &src,
                    g_pVideoDriver->getBlitSurface(),
                    &src);
+#else
+    SDL_BlitSurface(mpStatusSurface.get(),
+                   &src,
+                   g_pVideoDriver->getBlitSurface(),
+                   &src);
+#endif
 }
