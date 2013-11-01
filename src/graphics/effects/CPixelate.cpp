@@ -45,24 +45,30 @@ m_speed(speed)
 void CPixelate::getSnapshot()
 {
 	g_pVideoDriver->collectSurfaces();
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-//#else
     if(!mp_OldSurface)
     {
-        //mp_OldSurface = g_pVideoDriver->convertThroughBlitSfc(g_pVideoDriver->getBlitSurface());
         mp_OldSurface = g_pVideoDriver->convertThroughBlitSfc(g_pVideoDriver->getBlitSurface());
     }
-//#endif
 
-	//Map the color key
-	mColorkey = SDL_MapRGB( mp_OldSurface->format, 0, 0xFF, 0xFF );
-	//Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetColorKey( mp_OldSurface, SDL_TRUE, mColorkey );
-#else
-    SDL_SetColorKey( mp_OldSurface, SDL_SRCCOLORKEY, mColorkey );
-#endif
+    // Surface might have alpha mask. In that case the mColorKey can be zero
+    if(mp_OldSurface->format->Amask != 0)
+    {
+        mColorkey = SDL_MapRGBA( mp_OldSurface->format, 0, 0, 0, 0 );
+    }
+    else
+    {
+        //Map the color key
+        //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
+
+        mColorkey = SDL_MapRGB( mp_OldSurface->format, 0, 0xFF, 0xFF );
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
+        SDL_SetColorKey( mp_OldSurface, SDL_TRUE, mColorkey );
+    #else
+        SDL_SetColorKey( mp_OldSurface, SDL_SRCCOLORKEY, mColorkey );
+    #endif
+    }
+
 
 }
 

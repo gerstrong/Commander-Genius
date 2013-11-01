@@ -30,15 +30,17 @@ void CIntro::init()
 	mp_bm[3] = g_pGfxEngine->getBitmap("OFAN");
 	mp_bm[4] = g_pGfxEngine->getBitmap("IDSOFT");
 	mp_bm[5] = g_pGfxEngine->getBitmap("PRODUCT");
+
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 	
 	for(int j=0 ; j<6 ; j++)
 	{
 		if(mp_bm[j] == NULL)
 			continue;
 		if (j==0)
-			m_mid[j] = (320/2)-((mp_bm[j]->getWidth()+4)/2);
+            m_mid[j] = gameRes.w - (320/2)-((mp_bm[j]->getWidth()+4)/2);
 		else
-			m_mid[j] = (320/2)-(mp_bm[j]->getWidth()/2);
+            m_mid[j] = gameRes.w - (320/2)-(mp_bm[j]->getWidth()/2);
 	}
 	
 	g_pTimer->ResetSecondsTimer();
