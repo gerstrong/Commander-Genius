@@ -41,7 +41,7 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 {    
     if( !getActionStatus(A_BOUNDER_STUNNED) )
     {
-	CStunnable::getTouchedBy(theObject);
+        CStunnable::getTouchedBy(theObject);
     }
 
 	if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
@@ -52,7 +52,6 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 		const int m_y2 = getYUpPos()+(4<<STC);
 		if( m_py2 <= m_y2 && !player->pSupportedbyobject && !player->m_jumpdownfromobject )
 			player->pSupportedbyobject = this;
-
 	}
 	
 	if(dead || theObject.dead)

@@ -45,7 +45,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		
         EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		
-		player->m_Inventory.Item.m_gem.empty();
+        player->m_Inventory.Item.m_gem.clear();
 	}    
 }
 

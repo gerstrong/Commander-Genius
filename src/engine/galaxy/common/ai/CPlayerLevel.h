@@ -306,6 +306,8 @@ private:
 	/** \brief Special code when Keen moving down... */
 	void processMoveBitDown();
 
+    void getTouchedBy(CSpriteObject &theObject);
+
 	KeenState state;
 
 	bool m_ptogglingswitch;

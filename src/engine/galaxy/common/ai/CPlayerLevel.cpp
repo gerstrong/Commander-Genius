@@ -589,6 +589,32 @@ void CPlayerLevel::processMoveBitDown()
 }
 
 
+
+void CPlayerLevel::getTouchedBy(CSpriteObject &theObject)
+{
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    {
+        if(player->getYDownPos() < getYUpPos()+(6<<STC) )
+        {
+
+            // The other keen might be able use this one to reach higher places
+            const int myAction = getActionNumber();
+
+            if( (myAction < A_KEEN_BOOK_OPEN ||  myAction > A_KEEN_BOOK_CLOSE) &&
+                (myAction < A_KEEN_POLE ||  myAction > A_KEEN_POLE_SHOOTDOWN))
+
+            {
+               player->blockedd = true;
+            }
+        }
+    }
+}
+
+
+
+
+
+
 void CPlayerLevel::processInput()
 {
 	CPlayerBase::processInput();
@@ -1403,7 +1429,7 @@ void CPlayerLevel::processExiting()
         EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		g_pGfxEngine->setupEffect(new CDimDark(8));		
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
-		m_Inventory.Item.m_gem.empty();
+        m_Inventory.Item.m_gem.clear();
 		mExitTouched = true;
 	}
 }
@@ -1714,7 +1740,7 @@ void CPlayerLevel::processEnterDoor()
         g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar) );
 				
 		dontdraw = true;
-		m_Inventory.Item.m_gem.empty();
+        m_Inventory.Item.m_gem.clear();
 		return;
 	}
 
@@ -1729,7 +1755,7 @@ void CPlayerLevel::processEnterDoor()
 		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
         g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		dontdraw = true;
-		m_Inventory.Item.m_gem.empty();
+        m_Inventory.Item.m_gem.clear();
 		return;
 	}
 
@@ -2587,7 +2613,7 @@ void CPlayerLevel::process()
 	    EventContainer.wait(1.0f);
 	    EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
         g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
-	    m_Inventory.Item.m_gem.empty();
+        m_Inventory.Item.m_gem.clear();
         m_Inventory.Item.fuse_levels_completed++;
 	    mp_Map->mFuseInLevel = false;
 	    return;

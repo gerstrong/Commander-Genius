@@ -29,7 +29,7 @@ struct stItemGalaxy
         {
             red = 1, blue = 1, green = 1, yellow = 1;
         }
-		void empty()
+        void clear()
         {
             red = 0, blue = 0, green = 0, yellow = 0;
         }

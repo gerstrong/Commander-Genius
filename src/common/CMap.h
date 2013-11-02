@@ -18,6 +18,7 @@
 #include "CPlane.h"
 #include "engine/CEvent.h"
 #include "utils/Geometry.h"
+#include <map>
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME      256
@@ -124,7 +125,17 @@ public:
     bool locked()
     { return mLocked; }
 
-	
+
+    void setSpriteOrigin(const int sprId, const VectorD2<int> &origin)
+    {
+        mSpriteOriginList[sprId] = origin;
+    }
+
+    VectorD2<int> getSpriteOrigin(const int sprId)
+    {
+        return mSpriteOriginList[sprId];
+    }
+
 
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
 	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
@@ -171,6 +182,8 @@ private:
     bool mLocked;
 
     CRect<int> mVisArea;
+
+    std::map< int, VectorD2<int> > mSpriteOriginList;
 };
 
 

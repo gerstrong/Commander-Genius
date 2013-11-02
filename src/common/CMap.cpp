@@ -278,8 +278,6 @@ void CMap::lock()
 }
 
 
-
-
 bool CMap::findVerticalScrollBlocker(const int x)
 {
     int blockXleft = 0;

@@ -152,6 +152,7 @@ public:
 	 */
 	void playSwimSound();
 
+    void respawnImportantItem(const int itemId);
 
 	void processDead();
 	virtual void processDying();

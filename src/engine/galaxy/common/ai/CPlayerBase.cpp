@@ -7,6 +7,7 @@
 
 #include "CPlayerBase.h"
 #include "CItemEffect.h"
+#include "CSpriteItem.h"
 #include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
 
@@ -499,6 +500,43 @@ void CPlayerBase::getEaten()
 
 
 
+void CPlayerBase::respawnImportantItem(const int itemId)
+{
+    int epOffset = 0;
+    int itemOffset = 0;
+
+    int episode = g_pBehaviorEngine->getEpisode();
+
+    if(episode == 4)
+    {
+        epOffset = 118;
+        itemOffset = 57;
+    }
+    else if(episode == 5)
+    {
+        epOffset = 122;
+        itemOffset = 0x39;
+
+        if(itemId == 4)
+        {
+            VectorD2<int> where = mp_Map->getSpriteOrigin(105);
+            g_pBehaviorEngine->m_EventList.spawnObj( new galaxy::CSpriteItem(mp_Map, 0x46, where.x, where.y, 105, 0) );
+            return;
+        }
+    }
+    else if(episode == 6)
+    {
+        epOffset = 118;
+        itemOffset = 0x39;
+    }
+
+    const Uint32 newsprite = epOffset+2*itemId;
+
+    // Now respawn the item
+    VectorD2<int> where = mp_Map->getSpriteOrigin(itemId+itemOffset);
+    g_pBehaviorEngine->m_EventList.spawnObj( new galaxy::CSpriteItem(mp_Map, itemId+itemOffset, where.x, where.y, newsprite, 0) );
+}
+
 
 
 void CPlayerBase::processDead()
@@ -521,6 +559,20 @@ void CPlayerBase::processDead()
     dead = false;
 	m_dying = false;
     exists = false;
+
+    if(m_Inventory.Item.m_gem.red)
+        respawnImportantItem(0);
+    if(m_Inventory.Item.m_gem.yellow)
+        respawnImportantItem(1);
+    if(m_Inventory.Item.m_gem.blue)
+        respawnImportantItem(2);
+    if(m_Inventory.Item.m_gem.green)
+        respawnImportantItem(3);
+
+    if(m_Inventory.Item.m_keycards)
+        respawnImportantItem(4);
+
+    m_Inventory.Item.m_gem.clear();
 }
 
 
@@ -538,8 +590,7 @@ void CPlayerBase::processDying()
 	if( m_camera.outOfSight() )
 	{
 	    dead = true;
-	    honorPriority = true;
-	    m_Inventory.Item.m_gem.empty();
+	    honorPriority = true;	    
 	}
 }
 

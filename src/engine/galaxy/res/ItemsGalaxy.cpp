@@ -19,7 +19,7 @@ void stItemGalaxy::reset()
     m_lifeAt = 20000;
     m_drops = 0;
     m_bullets = 0;
-    m_gem.empty();
+    m_gem.clear();
 
     m_keycards = 0;
 

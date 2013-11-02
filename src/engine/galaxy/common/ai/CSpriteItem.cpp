@@ -25,15 +25,15 @@ mGravity(gravity)
 	calcBoundingBoxes();
 	inhibitfall = true;
 	yinertia = -70;
+    pmap->setSpriteOrigin(foeID, VectorD2<int>(x, y));
 }
 
 void CSpriteItem::process()
 {
     if(mGravity)
     {
-	performCollisions();
-	
-	performGravityHigh();
+        performCollisions();
+        performGravityHigh();
     }
     
     // Do the animation stuff here!
