@@ -30,6 +30,7 @@ public:
 	void getTouchedBy(CSpriteObject &theObject);
 private:
     int m_timer;
+
 };
 
 };

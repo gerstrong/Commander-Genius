@@ -25,6 +25,9 @@ m_timer(0)
 
 void CSlugSlime::getTouchedBy(CSpriteObject &theObject)
 {
+    if(!getActionStatus(A_SLUGPOISON_NORMAL))
+        return;
+
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		player->kill();
@@ -38,12 +41,12 @@ void CSlugSlime::process()
 	
     if( m_timer < POISON_TIME )
     {
-	m_timer++;
-	return;
+        m_timer++;
+        return;
     }
     else
     {
-	m_timer = 0;
+        m_timer = 0;
     }	
 	
 	if(!processActionRoutine())
