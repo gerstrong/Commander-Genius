@@ -61,27 +61,31 @@ CVorticon(p_map, x, y, 4, OBJ_VORTELITE)
 
     const auto diff = g_pBehaviorEngine->mDifficulty;
 
-    if(diff > NORMAL)
-		mHealthPoints++;
-    else if(diff < NORMAL)
-		mHealthPoints--;
 
-    if(diff == EXPERT)
+    switch(diff)
     {
+    case EASY:
+        mHealthPoints = 1;
+        break;
+    case NORMAL:
+        break;
+    case HARD:
+        mHealthPoints++;
+        break;
+    case EXPERT:
         mSprVar = 1;
-        mHealthPoints *= 2;
-    }
-    else if(diff == NINJA)
-    {
+        mHealthPoints += 2;
+        break;
+    case NINJA:
         mSprVar = 2;
-        mHealthPoints *= 3;
-    }
-    else if(diff == ELITE)
-    {
+        mHealthPoints += 3;
+        break;
+    case ELITE:
         mSprVar = 3;
-        mHealthPoints *= 4;
+        mHealthPoints += 4;
+        break;
+    default: break;
     }
-
 }
 
 
