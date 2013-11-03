@@ -99,12 +99,10 @@ bool CGameLauncher::init()
     
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
-					"By Gerstrong\n"
-					"Albert Zeyer\n"
-					"Tulip\n"
-					"Pelya\n"
-					"NY00123\n"
-                    "pizza2004\n"
+                    "By Gerstrong,\n"
+                    "Hagel,\n"
+                    "NY00123,\n"
+                    "Pelya,\n"
 					"and the CG Contributors\n");
     
     mLauncherDialog.addControl( banner, CRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
