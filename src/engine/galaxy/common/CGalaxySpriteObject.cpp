@@ -295,8 +295,8 @@ void CGalaxySpriteObject::setAction(size_t ActionNumber)
 // Sets the proper sprite of action format to the local object
 void CGalaxySpriteObject::setActionSprite()
 {
-	unsigned int oldBoxY2 = 0;
-	unsigned int oldBoxY1 = 0;
+    int oldBoxY2 = 0;
+    int oldBoxY1 = 0;
     
 	if(sprite >= 0)
 	{
@@ -314,17 +314,20 @@ void CGalaxySpriteObject::setActionSprite()
 	// Check the lower box for better collisions and move the sprite whether needed
     CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
 	
-	unsigned int newBoxY2 = rSprite.m_bboxY2;
-	unsigned int newBoxY1 = rSprite.m_bboxY1;
+    int newBoxY2 = rSprite.m_bboxY2;
+    int newBoxY1 = rSprite.m_bboxY1;
 	
-	if(oldBoxY2 && blockedd)
+    const int diffY2 = oldBoxY2-newBoxY2;
+    const int diffY1 = oldBoxY1-newBoxY1;
+
+    if(diffY2 && oldBoxY2 && blockedd)
 	{
-	    processMove(0, (oldBoxY2-newBoxY2));
+        processMove(0, diffY2);
 	}
 
-	if(oldBoxY1 && blockedu)
+    if(diffY1 && oldBoxY1 && blockedu)
 	{
-	    processMove(0, (oldBoxY1-newBoxY1));
+        processMove(0, diffY1);
 	}
 }
 

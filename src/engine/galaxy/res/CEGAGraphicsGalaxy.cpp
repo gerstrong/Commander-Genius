@@ -843,7 +843,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         CSprite &Sprite = g_pGfxEngine->getSprite(0,i);
 		Sprite.setSize( Head.Width*8, Head.Height );
 
-		Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
+        Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
 
 		// Setup the collision information
 		int boxX1 = ((Head.Rx1) << (STC-TILE_S));

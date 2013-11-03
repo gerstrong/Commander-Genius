@@ -32,19 +32,19 @@ mTimer(0)
 
     if(foeID == 0x04 && diff > HARD)
     {
-        // Set the slug to another color and double his health
+        // Set the bloog to another color and double his health
         mSprVar = 1;
         mHealthPoints *= 2;
     }
     if(foeID == 0x05 && diff > EXPERT)
     {
-        // Set the slug to another color and increase his health
+        // Set the bloog to another color and increase his health
         mSprVar = 2;
         mHealthPoints *= 3;
     }
     if(foeID == 0x06 && diff > NINJA)
     {
-        // Set the slug to another color and increase his health
+        // Set the bloog to another color and increase his health
         mSprVar = 3;
         mHealthPoints *= 4;
     }
@@ -56,6 +56,12 @@ mTimer(0)
 	setupGalaxyObjectOnMap(0x1EE6, A_BLOOG_WALK);
 	
 	xDirection = LEFT;
+
+    // Some mods suffer the fact (Keen 8 Dead in Desert) that those foes appear embedded in the floor
+    CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
+    performCollisions();
+    processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
+    processActionRoutine();
 }
 
 

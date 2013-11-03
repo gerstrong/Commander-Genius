@@ -232,7 +232,7 @@ void CSparky::getTouchedBy(CSpriteObject &theObject)
 
 int CSparky::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-    if(turnAroundOnCliff( x1, x2, y2 ))
+    if(turnAroundOnCliff( x1, x2, y2 ) && !dead)
         setAction(A_SPARKY_TURN);
 
     return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
@@ -243,7 +243,7 @@ void CSparky::process()
 {
 	performCollisions();
 	
-	performGravityMid();
+    performGravityMid();
 
 	if(!dead) // If we is dead, there is no way to continue moving or turning
 	{
