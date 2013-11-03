@@ -541,9 +541,7 @@ void CPlayerBase::respawnImportantItem(const int itemId)
 
 void CPlayerBase::processDead()
 {
-	setActionForce(A_KEEN_DIE);
-
-    m_Inventory.Item.m_lifes--;
+	setActionForce(A_KEEN_DIE);   
 
     const int levelObj = mp_Map->getLevel();
     const std::string &levelName = mp_Map->getLevelName();
@@ -623,7 +621,10 @@ void CPlayerBase::kill(const bool force)
     if(m_Cheatmode.god && !force)
         return;
     
-    m_dying = true;
+    if(!m_dying)
+        m_Inventory.Item.m_lifes--;
+
+    m_dying = true;    
 
     // Here were prepare Keen to die, setting the action to die
     if(mp_processState == &CPlayerBase::processDying && yinertia < 0)

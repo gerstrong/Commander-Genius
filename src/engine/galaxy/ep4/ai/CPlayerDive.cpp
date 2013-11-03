@@ -48,7 +48,11 @@ void CPlayerDive::kill(const bool force)
 
 		g_pSound->playSound( SOUND_KEEN_DIE, PLAY_NORESTART );
 		setupGalaxyObjectOnMap(0x0D2E, (rand()%2));
-		m_dying = true;
+
+        if(!m_dying)
+            m_Inventory.Item.m_lifes--;
+
+		m_dying = true;                
 		yinertia = -DIE_FALL_MAX_INERTIA;
 		solid = false;
 		honorPriority = false;
