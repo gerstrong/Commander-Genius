@@ -81,6 +81,9 @@ bool CSDLVideo::init()
 		return false;
 	}
 
+    const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
+    m_src_slice = GameRect.w*mDisplaySfc->format->BytesPerPixel;
+
     /*aspectCorrectResizing(newDim, w, h);
 
     if(FilteredSurface)
@@ -220,6 +223,9 @@ void CSDLVideo::transformScreenToDisplay()
     SDL_RenderCopy(renderer, sdlTexture, NULL, NULL);
     SDL_RenderPresent(renderer);
 #else
+
+    SDL_BlitSurface(mpScreenSfc.get(), NULL, mDisplaySfc, NULL);
+
 	// Flip the screen (We use double-buffering on some systems.)
     SDL_Flip(mDisplaySfc);
 #endif

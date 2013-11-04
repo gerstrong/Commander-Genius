@@ -179,7 +179,8 @@ void CVideoSettings::release()
 
 #if defined(USE_OPENGL)
 	mUserVidConf.m_opengl_filter = mpOGLFilterSelection->getSelection() == "linear" ? GL_LINEAR : GL_NEAREST;
-	mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
+    //mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
+    mUserVidConf.m_opengl = true;
 #endif
 
 	

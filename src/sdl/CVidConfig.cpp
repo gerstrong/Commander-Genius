@@ -55,7 +55,8 @@ void CVidConfig::reset()
 	m_opengl_filter = GL_LINEAR;
 #endif
 
-	m_opengl = false; // Must stay optional for better compatibility
+    //m_opengl = false; // Must stay optional for better compatibility
+    m_opengl = true;
 	mAspectCorrection.w=4;
 	mAspectCorrection.h=3;
 	m_CameraBounds.reset();

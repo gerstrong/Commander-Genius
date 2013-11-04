@@ -143,9 +143,13 @@ bool CSettings::loadDrvCfg()
 		}
 		
 
-		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
 
 #if defined(USE_OPENGL)
+
+        //Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, true);
+        VidConf.m_opengl = true;
+
+
         std::string oglFilter;
         Configuration.ReadString("Video", "OGLfilter",  oglFilter, "nearest");
 

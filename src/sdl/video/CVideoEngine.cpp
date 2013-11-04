@@ -152,13 +152,6 @@ bool CVideoEngine::init()
     }
 	#endif
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-#else
-    const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
-    m_src_slice = GameRect.w*mDisplaySfc->format->BytesPerPixel;
-#endif
-
 	return true;
 }
 
