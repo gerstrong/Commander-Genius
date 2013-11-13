@@ -18,6 +18,8 @@
 ///////////////////////////
 bool CPlayGameVorticon::loadGameState()
 {
+    g_pMusicPlayer->stop();
+
     if(loadXMLGameState())
         return true;
 

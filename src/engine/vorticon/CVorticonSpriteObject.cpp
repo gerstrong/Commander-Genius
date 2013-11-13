@@ -103,7 +103,8 @@ bool CVorticonSpriteObject::checkforScenario()
 	if ( !exists || m_type==OBJ_PLAYER ) return false;
 
 	if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK
-			|| m_type == OBJ_BRIDGE || m_type == OBJ_NONE ) return true;
+            || m_type == OBJ_BRIDGE || m_type == OBJ_NONE
+            || m_type == OBJ_TELEPORTER  ) return true;
 
 	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
 	if(!mp_Map->m_worldmap)
