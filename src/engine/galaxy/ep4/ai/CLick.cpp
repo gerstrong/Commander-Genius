@@ -41,6 +41,31 @@ keenNear(false)
 	mActionMap[A_LICK_BREATHE] = (GASOFctr) (&CLick::processBreathe);
 	mActionMap[A_LICK_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
+
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    if(foeID == 0x0E && diff > HARD)
+    {
+        // Set the slug to another color and double his health
+        mSprVar = 1;
+        mHealthPoints++;
+    }
+    if(foeID == 0x2F && diff > EXPERT)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 2;
+        mHealthPoints++;
+    }
+    if(foeID == 0x30 && diff > NINJA)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 3;
+        mHealthPoints++;
+    }
+
+
+
+
 	setupGalaxyObjectOnMap(0x2FC6, A_LICK_HOP);
 
 	xDirection = LEFT;
@@ -130,10 +155,15 @@ bool CLick::isNearby(CSpriteObject &theObject)
 
 void CLick::processHop()
 {
-    int realHopXSpeed = LICK_HOP_X_SPEED_LOW;
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    int realHopXSpeed = LICK_HOP_X_SPEED_LOW;    
     
     if(keenNear)
-	realHopXSpeed = LICK_HOP_X_SPEED_HIGH;
+        realHopXSpeed = LICK_HOP_X_SPEED_HIGH;
+
+    if(diff > HARD)
+        realHopXSpeed*=2;
     
     // Move left or right according to set direction
 	if(xDirection == RIGHT)

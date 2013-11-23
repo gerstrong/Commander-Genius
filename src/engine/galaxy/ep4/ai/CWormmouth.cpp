@@ -30,6 +30,32 @@ mTimer(0)
 	mActionMap[A_WORMMOUTH_EAT]     = (GASOFctr) &CWormmouth::processEating;
 	mActionMap[A_WORMMOUTH_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
+
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    mHealthPoints = 1;
+
+    if(foeID == 0x07 && diff > HARD)
+    {
+        // Set the slug to another color and double his health
+        mSprVar = 1;
+        mHealthPoints++;
+    }
+    if(foeID == 0x33 && diff > EXPERT)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 2;
+        mHealthPoints++;
+    }
+    if(foeID == 0x34 && diff > NINJA)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 3;
+        mHealthPoints++;
+    }
+
+
+
 	setupGalaxyObjectOnMap(0x26DE, A_WORMMOUTH_MOVE);
 	processMove(0, -(1<<CSF));	
 	processMove(0, (1<<CSF));	
@@ -121,6 +147,20 @@ void CWormmouth::processMoving()
 		mTurnAround = false;
 		setAction( A_WORMMOUTH_LOOK );
 	}
+
+
+    int lookTimer = LOOK_TIMER;
+
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > HARD)
+    {
+        lookTimer--;
+    }
+    if(diff > EXPERT)
+    {
+        lookTimer/=2;
+    }
 
 	if( mTimer < LOOK_TIMER )
 	{
