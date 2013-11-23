@@ -38,6 +38,11 @@ public:
 	bool showStatus()
 	{	return mp_StatusScreen->m_showstatus;	}
 
+    // If a player dies forever and carried and important item, we might
+    // want to pass those important item to another one
+    // so the game can be continued.
+    void fetchImportantStuff(const CInventory &other);
+
 	// make the status get opened or closed
 	void toggleStatusScreen();
 

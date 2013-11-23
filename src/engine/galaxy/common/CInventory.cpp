@@ -57,6 +57,17 @@ void CInventory::reset()
 	Item.reset();
 }
 
+
+void CInventory::fetchImportantStuff(const CInventory &other)
+{
+    Item.m_special.ep4.swimsuit |= other.Item.m_special.ep4.swimsuit;
+    Item.m_special.ep4.elders += other.Item.m_special.ep4.elders;
+    Item.m_special.ep6.sandwich |= other.Item.m_special.ep6.sandwich;
+    Item.m_special.ep6.hook |= other.Item.m_special.ep6.hook;
+    Item.m_special.ep6.rocketKeycard |= other.Item.m_special.ep6.rocketKeycard;
+}
+
+
 void CInventory::toggleStatusScreen()
 {
 	mp_StatusScreen->m_showstatus = !mp_StatusScreen->m_showstatus;

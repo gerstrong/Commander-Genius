@@ -240,6 +240,74 @@ bool CPlayGameGalaxy::init()
 	return true;
 }
 
+
+
+void CPlayGameGalaxy::looseManagement( const int playerID,
+                                       const bool playerGameOver,
+                                       const int levelObj,
+                                       const std::string &levelName )
+{
+    CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
+
+    // Check if all players are dead
+    bool allDead = true;
+    bool allGameOver = true;
+
+    unsigned int nextAliveID = 0;
+
+    while(mDead[nextAliveID]) nextAliveID++;
+
+    mDead[playerID] = true;
+
+    if(playerGameOver)
+        mGameOver[playerID] = true;
+
+    for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
+    {
+        allDead &= (*deadIt);
+    }
+
+    for(auto goIt = mGameOver.begin() ; goIt != mGameOver.end() ; goIt++ )
+    {
+        allGameOver &= (*goIt);
+    }
+
+    if(allGameOver) // Game over?
+    {
+        const std::string end_text("GAME OVER!\n");
+        eventContainer.add( new EventSendDialog(end_text) );
+        eventContainer.add( new EventEndGamePlay() );
+        return;
+    }
+    else if(allDead) // not yet!
+    {
+        // Create the Event Selection screen
+        std::string loosemsg  = "You didn't make it past\n";
+        loosemsg += levelName;
+        EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
+        pdialogevent->addOption("Try Again", new EventRestartLevel() );
+
+        std::string exitMsg = "Exit to " + g_pBehaviorEngine->mapLevelName;
+        pdialogevent->addOption(exitMsg, new EventExitLevel( levelObj, false, false, playerID) );
+        eventContainer.add( pdialogevent );
+
+        for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
+            (*deadIt) = false;
+    }
+
+    // Now let's check for important items
+    // If one player goes game over on of the other should get the item then.
+    if( nextAliveID < mDead.size() )
+    {
+        auto &next = mInventoryVec[nextAliveID];
+        auto &dying = mInventoryVec[playerID];
+
+        next.fetchImportantStuff(dying);
+    }
+
+}
+
+
 /**
  *  The main ingame process cycle when keen galaxy is up and running
  */
@@ -467,51 +535,13 @@ void CPlayGameGalaxy::ponder()
 			eventContainer.pop_Event();
 		}
         else if( EventDieKeenPlayer *ev = eventContainer.occurredEvent<EventDieKeenPlayer>() )
-        {
-            // Check if all players are dead
-            bool allDead = true;
-            bool allGameOver = true;
-
-            const int playerID = ev->playerID;
-            const bool playerGameOver = ev->gameOver;
-            const int levelObj = ev->levelObj;
-            const std::string levelName = ev->levelName;
+        {                        
+            looseManagement(ev->playerID,
+                            ev->gameOver,
+                            ev->levelObj,
+                            ev->levelName);
 
             eventContainer.pop_Event();
-
-            mDead[playerID] = true;
-
-            if(playerGameOver)
-                mGameOver[playerID] = true;
-
-            for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
-                allDead &= (*deadIt);
-
-            for(auto goIt = mGameOver.begin() ; goIt != mGameOver.end() ; goIt++ )
-                allGameOver &= (*goIt);
-
-            if(allGameOver) // Game over?
-            {
-                const std::string end_text("GAME OVER!\n");
-                eventContainer.add( new EventSendDialog(end_text) );
-                eventContainer.add( new EventEndGamePlay() );
-            }
-            else if(allDead) // not yet!
-            {
-                // Create the Event Selection screen
-                std::string loosemsg  = "You didn't make it past\n";
-                loosemsg += levelName;
-                EventSendSelectionDialogMsg *pdialogevent = new EventSendSelectionDialogMsg(loosemsg);
-                pdialogevent->addOption("Try Again", new EventRestartLevel() );
-
-                std::string exitMsg = "Exit to " + g_pBehaviorEngine->mapLevelName;
-                pdialogevent->addOption(exitMsg, new EventExitLevel( levelObj, false, false, playerID) );
-                eventContainer.add( pdialogevent );
-
-                for(auto deadIt = mDead.begin() ; deadIt != mDead.end() ; deadIt++ )
-                    (*deadIt) = false;
-            }
-
         }
 		else if( EventExitLevelWithFoot *ev = eventContainer.occurredEvent<EventExitLevelWithFoot>() )
 		{

@@ -30,11 +30,11 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		// Sound play
 		g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);
 
-
 		// Show got item message
 		EventContainer.add( new EventSendBitmapDialogMsg(
 		    g_pGfxEngine->getBitmap(30),g_pBehaviorEngine->getString(answermap[mFoeID-0x63]), LEFT) );
 		
+
 		switch(mFoeID)
 		{
 		    case 0x63: item.hook++; break;

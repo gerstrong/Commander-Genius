@@ -36,6 +36,11 @@ public:
     bool saveXMLGameState();
 	bool init();
 
+    void looseManagement(const int playerID,
+                         const bool playerGameOver,
+                         const int levelObj,
+                         const std::string &levelName);
+
     void ponder();
     void render();
 
