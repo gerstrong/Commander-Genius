@@ -32,6 +32,21 @@ mpInteractPlayer(NULL)
 	mActionMap[A_BOUNDER_ONFLOOR] = (GASOFctr) &CBounder::processOnFloor;
 	mActionMap[A_BOUNDER_STUNNED] = (GASOFctr) &CStunnable::processGettingStunned;
 
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > HARD)
+    {
+        // Set the slug to another color and double his health
+        mSprVar = 1;
+        mHealthPoints++;
+    }
+    if(diff > EXPERT)
+    {
+        // Set the slug to another color and increase his health
+        mSprVar = 2;
+        mHealthPoints+=2;
+    }
+
 	setupGalaxyObjectOnMap(0x2F12, A_BOUNDER_BOUNCE);
 	xDirection = 0;	
 }
@@ -96,20 +111,34 @@ void CBounder::processBounce()
 		}
 	}
 
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    const int horSpeed = (diff > HARD) ? (HOR_SPEED*3)/2 : HOR_SPEED;
+
 	if(xDirection == LEFT)
 	{
-		moveLeft(HOR_SPEED, false);
+        moveLeft(horSpeed, false);
 	}
 	else if(xDirection == RIGHT)
 	{
-		moveRight(HOR_SPEED, false);
+        moveRight(horSpeed, false);
 	}
 }
 
 void CBounder::processOnFloor()
 {
-	yinertia = MAX_BOUNCE_BOOST;
-	playSound( SOUND_BOUNCE_LOW );
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > HARD)
+    {
+        yinertia = (MAX_BOUNCE_BOOST*4/3);
+    }
+    else
+    {
+        yinertia = MAX_BOUNCE_BOOST;
+    }
+
+    playSound( SOUND_BOUNCE_LOW );
 
 	// Decide whether go left, right or just bounce up.
 	switch( rand() % 3 )
@@ -233,9 +262,19 @@ void CBounder::moveDown(const int amnt)
 
 void CBounder::process()
 {
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
 	// Bounce
 	performCollisions();
-	performGravityMid();
+
+    if(diff > HARD)
+    {
+        performGravityHigh();
+    }
+    else
+    {
+        performGravityMid();
+    }
 
 	(this->*mp_processState)();
 
