@@ -64,8 +64,6 @@ keenNear(false)
     }
 
 
-
-
 	setupGalaxyObjectOnMap(0x2FC6, A_LICK_HOP);
 
 	xDirection = LEFT;
@@ -163,7 +161,7 @@ void CLick::processHop()
         realHopXSpeed = LICK_HOP_X_SPEED_HIGH;
 
     if(diff > HARD)
-        realHopXSpeed*=2;
+        realHopXSpeed++;
     
     // Move left or right according to set direction
 	if(xDirection == RIGHT)
