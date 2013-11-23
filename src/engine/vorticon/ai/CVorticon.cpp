@@ -55,17 +55,17 @@ CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype)
     if(diff == EXPERT)
     {
         mSprVar = 1;
-        mHealthPoints *= 2;
+        mHealthPoints++;
     }
     else if(diff == NINJA)
     {
         mSprVar = 2;
-        mHealthPoints *= 3;
+        mHealthPoints+=2;
     }
     else if(diff == ELITE)
     {
         mSprVar = 3;
-        mHealthPoints *= 4;
+        mHealthPoints+=3;
     }
 
 }

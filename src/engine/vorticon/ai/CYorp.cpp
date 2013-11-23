@@ -28,10 +28,25 @@ movedir(LEFT)
 	m_type = OBJ_YORP;
 	sprite = OBJ_YORP_DEFSPRITE;
 	canbezapped = true;
+    deadly = false;
 
-	if(g_pBehaviorEngine->mDifficulty > NORMAL)
+    const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
+    if(diff > NORMAL)
+    {
 		mHealthPoints++;
-	
+    }
+
+    if(diff > HARD)
+    {
+        mSprVar = 1;
+        deadly = true;
+    }
+    if(diff > EXPERT)
+    {
+        mSprVar = 2;
+    }
+
 	numlooks = m_hardmode ? YORP_NUM_LOOKS_FAST : YORP_NUM_LOOKS;	
 }
 
@@ -70,22 +85,22 @@ bool CYorp::isNearby(CVorticonSpriteObject &theObject)
 {       
     if( state == YORP_LOOK )
     {
-	if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
-	{
-	        if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
-		{
-		    movedir = (player->getXPosition() < getXPosition()) ? LEFT : RIGHT;
-		}		
+        if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
+        {
+            if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
+            {
+                movedir = (player->getXPosition() < getXPosition()) ? LEFT : RIGHT;
+            }
 
-		// unless we're can't go that way
-		if (blockedl) movedir = RIGHT;
-		if (blockedr) movedir = LEFT;
+            // unless we're can't go that way
+            if (blockedl) movedir = RIGHT;
+            if (blockedr) movedir = LEFT;
 
-		timer = 0;
-		walkframe = 0;
-		dist_traveled = 0;
-		state = YORP_MOVE;
-	}
+            timer = 0;
+            walkframe = 0;
+            dist_traveled = 0;
+            state = YORP_MOVE;
+        }
     }
     return true;
 }
@@ -216,13 +231,15 @@ void CYorp::processDying()
 void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
-	{
+	{                        
 		// code for the yorps to push keen, and code for them to get stunned
 		if (state != YORP_STUNNED && state != YORP_DYING  && !player->pdie)
-		{
+		{            
+            const Difficulty diff = g_pBehaviorEngine->mDifficulty;
+
 			if ( player->getYDownPos() < getYDownPos()-(1<<CSF) )
 			{
-				if (!m_hardmode)
+                if (!m_hardmode || (deadly && diff<ELITE) )
 				{
 					playSound(SOUND_YORP_STUN);
 					state = YORP_STUNNED;
@@ -243,6 +260,12 @@ void CYorp::getTouchedBy(CVorticonSpriteObject &theObject)
 			}
 			else
 			{
+                if(deadly)
+                {
+                    player->kill();
+                    return;
+                }
+
 				// if yorp is moving, also push in direction he's moving
 				// in. this allows walking through a yorp if he is walking
 				// away from Keen

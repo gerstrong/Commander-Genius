@@ -30,6 +30,7 @@ public:
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
 
+    bool deadly;
 };
 
 #endif /* CVORTICONSPRITEOBJECT_H_ */
