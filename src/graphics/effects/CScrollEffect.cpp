@@ -57,10 +57,16 @@ void CScrollEffect::render()
     src.y = mpScrollSurface->h-mScrollPos;
     dest.h = mScrollPos*scaleFac;
 
-    SDL_BlitScaledWrap(mpScrollSurface,
+    SDL_BlitSurface(mpScrollSurface,
+                    &src,
+                    g_pVideoDriver->getBlitSurface(),
+                    &dest);
+    /*SDL_BlitScaledWrap(mpScrollSurface,
                    &src,
                    g_pVideoDriver->getBlitSurface(),
-                   &dest);
+                   &dest);*/
+
+
 }
 
 Sint16 CScrollEffect::getScrollPosition()
