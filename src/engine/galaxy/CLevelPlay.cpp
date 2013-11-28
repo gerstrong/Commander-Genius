@@ -54,6 +54,7 @@ void CLevelPlay::loadMap(const int level)
 void CLevelPlay::reloadLevel()
 {
 	loadMap( mMap.getLevel() );
+
 	// Create the special merge effect (Fadeout)
 	g_pGfxEngine->setupEffect(new CDimDark(8));	
 }

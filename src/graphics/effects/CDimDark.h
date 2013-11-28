@@ -29,8 +29,8 @@ public:
     
 private:
 	
-	Uint8 m_Speed;
-	Uint8 m_Alpha;
+    int m_Speed;
+    int m_Alpha;
 	bool dimDark;
 
 	std::shared_ptr<SDL_Surface> mpOldSurface;    

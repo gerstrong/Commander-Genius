@@ -18,9 +18,22 @@ dimDark(true)
     
 //#else
     mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
-    mpDarkSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
+    //mpDarkSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
 //#endif
-    SDL_FillRect( mpDarkSurface.get(), NULL, 0x0 );
+
+    auto *blit = g_pVideoDriver->getBlitSurface();
+    SDL_PixelFormat *format = blit->format;
+
+    SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
+                blit->w, blit->h, RES_BPP,
+                format->Rmask,
+                format->Gmask,
+                format->Bmask,
+                0 );
+
+    mpDarkSurface.reset( sfc, &SDL_FreeSurface );
+
+    SDL_FillRect( mpDarkSurface.get(), NULL, SDL_MapRGB(mpDarkSurface->format, 0, 0, 0) );
 }
 
 void CDimDark::ponder()
