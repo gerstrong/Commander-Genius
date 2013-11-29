@@ -17,7 +17,7 @@ const int A_WORMMOUTH_LOOK = 1;
 const int A_WORMMOUTH_EAT = 9;
 const int A_WORMMOUTH_STUNNED = 14;
 
-const int DIST_TO_EAT = 2<<CSF;
+const int DIST_TO_EAT = (1<<CSF)/2;
 const int LOOK_TIMER = 10;
 
 CWormmouth::CWormmouth(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
