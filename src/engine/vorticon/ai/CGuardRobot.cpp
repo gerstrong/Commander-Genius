@@ -113,29 +113,32 @@ void CGuardRobot::process()
 		if (firetimes)
 		{
 			// is it time to fire the next shot in the volley?
-			if (!timetillnextshot)
+            if (timetillnextshot)
+            {
+                timetillnextshot--;
+            }
+            else
 			{
-				CRay *newobject;
-				if (onscreen)
-					playSound(SOUND_TANK_FIRE);
-				if (movedir==RIGHT)
-                    newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT, CENTER, getSpriteVariantId());
-				else
-                    newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT, CENTER, getSpriteVariantId());
-				newobject->setOwner(OBJ_GUARDROBOT, m_index);
-				newobject->sprite = ENEMYRAYEP2;
+                if( !blockedl && !blockedr )
+                {
+                    CRay *newobject;
+                    if (onscreen)
+                        playSound(SOUND_TANK_FIRE);
+                    if (movedir==RIGHT)
+                        newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT, CENTER, getSpriteVariantId());
+                    else
+                        newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT, CENTER, getSpriteVariantId());
+                    newobject->setOwner(OBJ_GUARDROBOT, m_index);
+                    newobject->sprite = ENEMYRAYEP2;
 
-				g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
+                    g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
 
-				timetillnextshot = TIME_BETWEEN_SHOTS;
-				if (!--firetimes)
-				{
-					pausetime = FIRE_PAUSE_TIME;
-				}
-			}
-			else
-			{
-				timetillnextshot--;
+                    timetillnextshot = TIME_BETWEEN_SHOTS;
+                    if (!--firetimes)
+                    {
+                        pausetime = FIRE_PAUSE_TIME;
+                    }
+                }
 			}
 
 			// don't move when firing except on hard mode
