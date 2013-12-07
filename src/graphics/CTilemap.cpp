@@ -183,7 +183,7 @@ void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, Sint
 }
 #endif
 
-void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
+void CTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 {
     SDL_Rect src_rect, dst_rect;
 	src_rect.x = (t%m_column)<<m_pbasesize;
@@ -194,10 +194,14 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 	dst_rect.x = x;		dst_rect.y = y;
 
     if( dst_rect.y + src_rect.h > dst->h )
+    {
         src_rect.h = dst->h - dst_rect.y;
+    }
 
     if( dst_rect.x + src_rect.w > dst->w )
+    {
         src_rect.w = dst->w - dst_rect.x;
+    }
 
     SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
 

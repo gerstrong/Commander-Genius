@@ -28,7 +28,7 @@ public:
 
 	int EmptyBackgroundTile() { return m_EmptyBackgroundTile; }
 
-	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);
+    void drawTile(SDL_Surface *dst, int x, int y, Uint16 t);
 
 	virtual ~CTilemap();
 
