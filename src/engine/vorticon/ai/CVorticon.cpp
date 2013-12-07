@@ -27,14 +27,17 @@ CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype)
 
 	short Episode = g_pBehaviorEngine->getEpisode();
 	// copy in animation frame indexes for the current ep
-	if (Episode == 1) {
+    if (Episode == 1)
+    {
 		WalkLeftFrame = VORT1_WALK_LEFT_FRAME;
 		WalkRightFrame = VORT1_WALK_RIGHT_FRAME;
 		LookFrame = VORT1_LOOK_FRAME;
 		JumpRightFrame = VORT1_JUMP_RIGHT_FRAME;
 		JumpLeftFrame = VORT1_JUMP_LEFT_FRAME;
 		DyingFrame = VORT1_DYING_FRAME;
-	} else if (Episode == 2) {
+    }
+    else if (Episode == 2)
+    {
 		WalkLeftFrame = VORT2_WALK_LEFT_FRAME;
 		WalkRightFrame = VORT2_WALK_RIGHT_FRAME;
 		LookFrame = VORT2_LOOK_FRAME;
@@ -42,7 +45,9 @@ CVorticon::CVorticon(CMap *p_map, Uint32 x, Uint32 y, char hp, object_t objtype)
 		JumpLeftFrame = VORT2_JUMP_LEFT_FRAME;
 		DyingFrame = VORT2_DYING_FRAME;
 		DeadFrame = VORT2_DEAD_FRAME;
-	} else if (Episode == 3) {
+    }
+    else if (Episode == 3)
+    {
 		WalkLeftFrame = VORT3_WALK_LEFT_FRAME;
 		WalkRightFrame = VORT3_WALK_RIGHT_FRAME;
 		LookFrame = VORT3_LOOK_FRAME;
@@ -77,39 +82,39 @@ bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-	if(state == VORT_LOOK) 
-	{
-	    sprite = LookFrame + frame;
-	    
-	    if (animtimer > VORT_LOOK_ANIM_TIME) 
-	    {
-		if (frame > 0) 
-		{		    
-		    int absdist = abs(player->getXPosition() < getXPosition());
-		 
-		    if(absdist <= VORTICON_PLAYER_MIN_DIST)
-		    {
-			if (player->getXPosition() < getXPosition() && !blockedl) 
-			    movedir = LEFT;
-			else if( !blockedr ) 
-			    movedir = RIGHT;
-		    }
-		    
-		    timer = 0;
-		    frame = 0;
-		    state = VORT_WALK;
-		} 
-		else
-		{
-		    frame++;
-		}
-		animtimer = 0;
-	    } 
-	    else
-	    {
-		animtimer++;
-	    }
-	}    
+        if(state == VORT_LOOK)
+        {
+            sprite = LookFrame + frame;
+
+            if (animtimer > VORT_LOOK_ANIM_TIME)
+            {
+                if (frame > 0)
+                {
+                    int absdist = abs(player->getXPosition() < getXPosition());
+
+                    if(absdist <= VORTICON_PLAYER_MIN_DIST)
+                    {
+                        if (player->getXPosition() < getXPosition() && !blockedl)
+                            movedir = LEFT;
+                        else if( !blockedr )
+                            movedir = RIGHT;
+                    }
+
+                    timer = 0;
+                    frame = 0;
+                    state = VORT_WALK;
+                }
+                else
+                {
+                    frame++;
+                }
+                animtimer = 0;
+            }
+            else
+            {
+                animtimer++;
+            }
+        }
     }
     
     return true;
@@ -224,7 +229,7 @@ void CVorticon::process()
 
 			if (!blockedl)
 				xinertia = -VORT_WALK_SPEED;
-			else
+            else if(!m_Dark)
 			{
 				frame = 0;
 				animtimer = 0;
@@ -245,12 +250,14 @@ void CVorticon::process()
 				} else
 					dist_traveled = 0;
 			}
-		} else { // move right
+        }
+        else
+        { // move right
 			sprite = WalkRightFrame + frame;
 
 			if (!blockedr)
 				xinertia = VORT_WALK_SPEED;
-			else
+            else if(!m_Dark)
 			{
 				frame = 0;
 				animtimer = 0;
