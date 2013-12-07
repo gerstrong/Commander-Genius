@@ -291,7 +291,10 @@ void CPlayGameVorticon::ponder()
 			CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap) );
-			mpGameoverBmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+
+            CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+
+            mpGameoverBmp->setScrPos( (gameRes.w/2) -(pBitmap->getWidth()/2), (gameRes.h/2) -(pBitmap->getHeight()/2) );
 		}
 	}
 	else // No game over
