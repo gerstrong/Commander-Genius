@@ -162,10 +162,10 @@ void CEndingEp2::SnowedOutside()
 		m_Player[0].hideplayer = true;
 		mpFinaleStaticScene.reset( new CFinaleStaticScene( mpMap->m_gamepath, "finale.ck2" ) );
 
-		addMsgBoxString("EP2_ESEQ_PART1");
-		addMsgBoxString("EP2_ESEQ_PART2");
-		addMsgBoxString("EP2_ESEQ_PART3");
-		addMsgBoxString("EP2_ESEQ_PART4");
+        addMsgBoxString("EP2_ESEQ_PART3_PAGE1");
+        addMsgBoxString("EP2_ESEQ_PART3_PAGE2");
+        addMsgBoxString("EP2_ESEQ_PART3_PAGE3");
+        addMsgBoxString("EP2_ESEQ_PART3_PAGE4");
 
 
 		m_mustsetup = false;
