@@ -17,6 +17,7 @@ public:
     
     void draw();
     
+    std::vector<CSpriteObject*> fetchCarriedPlayer();
     void moveCarrierLeft(const int amnt);
     void moveCarrierRight(const int amnt);
     void moveCarrierUp(const int amnt);
@@ -24,7 +25,7 @@ public:
     
 private:
 
-    std::vector<CSpriteObject*> mCarriedPlayerVec;
+    std::vector<CPlayer*> mCarriedPlayerVec;
 };
 
 #endif // CCARRIER_H

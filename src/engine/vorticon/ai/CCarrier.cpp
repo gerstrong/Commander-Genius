@@ -108,6 +108,22 @@ void CCarrier::draw()
     }
 }
 
+std::vector<CSpriteObject*> CCarrier::fetchCarriedPlayer()
+{
+    std::vector<CSpriteObject*> carriedSO;
+
+    for( auto &player : mCarriedPlayerVec)
+    {
+        if(player == nullptr)
+            continue;
+
+        if( !player->dead || !player->dying )
+            carriedSO.push_back( (CSpriteObject*) player);
+    }
+
+    return carriedSO;
+}
+
 
 void CCarrier::moveCarrierLeft(const int amnt)
 {
@@ -115,9 +131,11 @@ void CCarrier::moveCarrierLeft(const int amnt)
     if(amnt <= 0)
         return;
 
+    std::vector<CSpriteObject*> carriedSO = fetchCarriedPlayer();
+
     if(!mCarriedPlayerVec.empty())
     {
-        m_EventCont.add(new ObjMoveCouples(-amnt,0, mCarriedPlayerVec));
+        m_EventCont.add(new ObjMoveCouples(-amnt,0, carriedSO));
         return;
     }
     moveLeft(amnt);
@@ -129,10 +147,12 @@ void CCarrier::moveCarrierRight(const int amnt)
     // If the Player is standing on the plat move him with it!
     if(amnt <= 0)
         return;
-    
+
+    std::vector<CSpriteObject*> carriedSO = fetchCarriedPlayer();
+
     if(!mCarriedPlayerVec.empty())
     {
-        m_EventCont.add(new ObjMoveCouples(amnt,0, mCarriedPlayerVec));
+        m_EventCont.add(new ObjMoveCouples(amnt,0, carriedSO));
         return;
     }
     
@@ -142,10 +162,12 @@ void CCarrier::moveCarrierRight(const int amnt)
 
 void CCarrier::moveCarrierUp(const int amnt)
 {
+    std::vector<CSpriteObject*> carriedSO = fetchCarriedPlayer();
+
     // First move the object on platform if any
     if(!mCarriedPlayerVec.empty())
     {
-        m_EventCont.add(new ObjMoveCouples(0,-amnt, mCarriedPlayerVec));
+        m_EventCont.add(new ObjMoveCouples(0,-amnt, carriedSO));
         return;
     }
     
@@ -155,10 +177,12 @@ void CCarrier::moveCarrierUp(const int amnt)
 
 void CCarrier::moveCarrierDown(const int amnt)
 {
+    std::vector<CSpriteObject*> carriedSO = fetchCarriedPlayer();
+
     // First move the object on platform if any
     if(!mCarriedPlayerVec.empty())
     {
-        m_EventCont.add(new ObjMoveCouples(0,amnt, mCarriedPlayerVec));
+        m_EventCont.add(new ObjMoveCouples(0,amnt, carriedSO));
         return;
     }
 

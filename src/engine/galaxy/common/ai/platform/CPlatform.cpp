@@ -39,6 +39,9 @@ std::vector<CSpriteObject*> CPlatform::fetchCarryingPlayer()
 
     for(auto &player : mCarriedPlayerVec)
     {
+        if(player == nullptr)
+            continue;
+
         if(!player->dying || !player->dead)
             carriedObjVec.push_back(player);
     }
