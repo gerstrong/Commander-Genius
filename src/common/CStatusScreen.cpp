@@ -20,7 +20,7 @@
 
 #define FADE_SPEED	10
 
-CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime,
+CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int &ankhtime,
                              int baseframe, int varSprite ) :
  mp_level_completed(p_level_completed),
  m_ankhtime(ankhtime),

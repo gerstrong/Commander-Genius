@@ -38,7 +38,7 @@ private:
 	size_t frame;
 	size_t timer;
 	CPlayer &m_attachedPlayer;
-	size_t &ankhtime;
+    int &ankhtime;
 };
 
 #endif /* CANKHSHIELD_H_ */

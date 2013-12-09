@@ -163,7 +163,7 @@ public:
 	bool pjustjumped;
 	bool pjustfell;
 	unsigned char pjumpfloattimer;
-	size_t ankhtime;
+    int ankhtime;
 
 
 	VectorD2<int> pDir,pShowDir,lastPDir;

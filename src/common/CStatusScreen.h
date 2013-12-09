@@ -15,7 +15,7 @@
 class CStatusScreen
 {
 public:
-    CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe, int varSprite);
+    CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int &ankhtime, int baseframe, int varSprite);
 
 	void draw();
 	std::string fetchDifficultyText();
@@ -34,7 +34,7 @@ private:
 	int m_baseframe;
 	stInventory *mp_inventory;
     bool *mp_level_completed;
-	int m_ankhtime;
+    int &m_ankhtime;
 
 	bool m_closing, m_closed;
 
