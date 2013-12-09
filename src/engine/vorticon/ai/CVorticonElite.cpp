@@ -93,52 +93,53 @@ bool CVorticonElite::isNearby(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-	if(state == VORTELITE_WALK)
-	{
-	    	// If Player is nearby, make vorticon go faster
-		if(getYDownPos() > player->getYDownPos()-(1<<CSF) and
-		   getYDownPos() < player->getYDownPos()+(1<<CSF) )
-		{
-			int dist;
-			if(getXMidPos() > player->getXMidPos())
-				dist = getXMidPos()-player->getXMidPos();
-			else
-				dist = player->getXMidPos()-getXMidPos();
+        if(state == VORTELITE_WALK)
+        {
+            // If Player is nearby, make vorticon go faster
+            state = VORTELITE_WALK;
 
-			if(dist < PLAYER_DISTANCE)
-				state = VORTELITE_CHARGE;
-		}
-		
-				dist_traveled++;
+            if(getYDownPos() > player->getYDownPos()-(2<<CSF) and
+                    getYDownPos() < player->getYDownPos()+(2<<CSF) )
+            {
+                int dist;
+                if(getXMidPos() > player->getXMidPos())
+                    dist = getXMidPos()-player->getXMidPos();
+                else
+                    dist = player->getXMidPos()-getXMidPos();
 
-		state = VORTELITE_WALK;
+                if(dist < PLAYER_DISTANCE)
+                    state = VORTELITE_CHARGE;
+            }
 
-		if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
-		{  // let's jump.
-			initiatejump();
-			return true;
-		}
-		else
-		{
-			if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
-			{
-				if (getProbability(VORTELITE_FIRE_PROB))
-				{  	// let's fire
-					// usually shoot toward keen
-					if (rand()%5 != 0)
-					{
-						if (getXPosition() < player->getXPosition())
-							movedir = RIGHT;
-						else
-							movedir = LEFT;
-					}
-					timer = 0;
-					state = VORTELITE_ABOUTTOFIRE;
-				}
-			}
-			else timesincefire++;
-		}
-	}
+            dist_traveled++;
+
+
+            if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
+            {  // let's jump.
+                initiatejump();
+                return true;
+            }
+            else
+            {
+                if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
+                {
+                    if (getProbability(VORTELITE_FIRE_PROB))
+                    {  	// let's fire
+                        // usually shoot toward keen
+                        if (rand()%5 != 0)
+                        {
+                            if (getXPosition() < player->getXPosition())
+                                movedir = RIGHT;
+                            else
+                                movedir = LEFT;
+                        }
+                        timer = 0;
+                        state = VORTELITE_ABOUTTOFIRE;
+                    }
+                }
+                else timesincefire++;
+            }
+        }
     }
     
     return true;
