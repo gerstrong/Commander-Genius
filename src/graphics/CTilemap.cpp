@@ -193,6 +193,11 @@ void CTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 
 	dst_rect.x = x;		dst_rect.y = y;
 
+    if(y<0)
+    {
+        printf("Aha!\n");
+    }
+
     if( dst_rect.y + src_rect.h > dst->h )
     {
         src_rect.h = dst->h - dst_rect.y;

@@ -765,17 +765,17 @@ void CMap::_drawForegroundTiles()
         {
             Uint16 fg = m_Plane[1].getMapDataAt(x,y);
 
-            const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
-            const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
+            const int loc_x = (x<<TILE_S)-m_scrollx;
+            const int loc_y = (y<<TILE_S)-m_scrolly;
 
             if(fg != 0)
             {
                 if(TileProperties[fg].behaviour < 0)
                 {
-                    if( loc_x < visGA.x || loc_x > visGA.x+visGA.w )
+                    if( loc_x+16 < visGA.x || loc_x > visGA.x+visGA.w )
                         continue;
 
-                    if( loc_y < visGA.y || loc_y > visGA.y+visGA.h )
+                    if( loc_y+16 < visGA.y || loc_y > visGA.y+visGA.h )
                         continue;
 
                     m_Tilemaps[1].drawTile(surface, loc_x, loc_y, fg );
