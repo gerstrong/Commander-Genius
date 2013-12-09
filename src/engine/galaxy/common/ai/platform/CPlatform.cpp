@@ -33,6 +33,19 @@ void CPlatform::movePlatY(const int amnt)
 		movePlatUp(-amnt);
 }
 
+std::vector<CSpriteObject*> CPlatform::fetchCarryingPlayer()
+{
+    std::vector<CSpriteObject*> carriedObjVec;
+
+    for(auto &player : mCarriedPlayerVec)
+    {
+        if(!player->dying || !player->dead)
+            carriedObjVec.push_back(player);
+    }
+
+    return carriedObjVec;
+}
+
 void CPlatform::movePlatLeft(const int amnt)
 {
     // If the Player is standing on the plat move him with it!
@@ -41,11 +54,7 @@ void CPlatform::movePlatLeft(const int amnt)
 
     if(!mCarriedPlayerVec.empty())
 	{
-        std::vector<CSpriteObject*> carriedObjVec;
-
-        for(auto &player : mCarriedPlayerVec)
-            carriedObjVec.push_back(player);
-
+        std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();
         m_EventCont.add(new ObjMoveCouples(-amnt, 0, carriedObjVec));
         return;
 	}		    
@@ -60,11 +69,7 @@ void CPlatform::movePlatRight(const int amnt)
 
     if(!mCarriedPlayerVec.empty())
     {
-        std::vector<CSpriteObject*> carriedObjVec;
-
-        for(auto &player : mCarriedPlayerVec)
-            carriedObjVec.push_back(player);
-
+        std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();
         m_EventCont.add(new ObjMoveCouples(amnt,0, carriedObjVec));
         return;
     }
@@ -79,11 +84,7 @@ void CPlatform::movePlatUp(const int amnt)
 	// First move the object on platform if any
     if(!mCarriedPlayerVec.empty())
     {
-        std::vector<CSpriteObject*> carriedObjVec;
-
-        for(auto &player : mCarriedPlayerVec)
-            carriedObjVec.push_back(player);
-
+        std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();
         m_EventCont.add(new ObjMoveCouples(0,-amnt, carriedObjVec));
         return;
     }
@@ -97,11 +98,7 @@ void CPlatform::movePlatDown(const int amnt)
 	// First move the object on platform if any
     if(!mCarriedPlayerVec.empty())
     {
-        std::vector<CSpriteObject*> carriedObjVec;
-
-        for(auto &player : mCarriedPlayerVec)
-            carriedObjVec.push_back(player);
-
+        std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();
         m_EventCont.add(new ObjMoveCouples(0, amnt, carriedObjVec));
         return;
     }

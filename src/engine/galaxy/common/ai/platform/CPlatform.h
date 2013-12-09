@@ -36,6 +36,8 @@ public:
 
 protected:
 
+    std::vector<CSpriteObject*> fetchCarryingPlayer();
+
 	void movePlatX(const int amnt);
 	void movePlatY(const int amnt);
 
