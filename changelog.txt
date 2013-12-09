@@ -1,6 +1,10 @@
+v1.6.5.3 Beta:
+--------------
+- More effects readded
+- Many bug fixes especially Keen 1,2 and 4
 
-v1.6.5 Release:
----------------
+v1.6.5 Beta:
+------------
 - Internal Keen game resolution now selectable to 320x240 and 640x480
 - Gems and keycards are now reput in the level when one of multiplayer keen dies, making levels finishable in such cases
 - Full SDL 2.0 support

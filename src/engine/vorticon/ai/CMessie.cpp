@@ -69,7 +69,7 @@ void CMessie::getTouchedBy(CVorticonSpriteObject &theObject)
 
 bool CMessie::tryMounting(CPlayer &player)
 {
-	const int dist = 1<<CSF;
+    const int dist = 2<<CSF;
 	const int nessie_x = getXPosition();
 	const int nessie_y = getYPosition();
 	
@@ -77,16 +77,16 @@ bool CMessie::tryMounting(CPlayer &player)
 	const int x = player.getXPosition();
 	const int y = player.getYPosition();
 	
-	if( x >= nessie_x-dist+m_BBox.x1 and x <= nessie_x+dist+m_BBox.x2 )
-	{
-	    if( y >= nessie_y-dist+m_BBox.y1 and y <= nessie_y+dist+m_BBox.y2 )
-	    {
-		player.solid = false;
-		player.beingteleported = true;
-		mounted = &player;
-		return true;
-	    }
-	}
+    if( x >= nessie_x-dist+m_BBox.x1 and x <= nessie_x+dist+m_BBox.x2 )
+    {
+        if( y >= nessie_y-dist+m_BBox.y1 and y <= nessie_y+dist+m_BBox.y2 )
+        {
+            player.solid = false;
+            player.beingteleported = true;
+            mounted = &player;
+            return true;
+        }
+    }
 	return false;
 }
 
@@ -96,29 +96,33 @@ bool CMessie::tryToUnmount()
     // Check if a NESSIE_LAND_OBJ is nearby the player. Only then he can unmount
     const int x = mounted->getXPosition()>>CSF;
     const int y = mounted->getYPosition()>>CSF;
-    for(int dy=-1 ; dy <= 1 ; dy++)
+    for(int dy=-2 ; dy <= 2 ; dy++)
     {
-	for(int dx=-1 ; dx <= 1 ; dx++)
-	{
-	    // If NESSIE_LAND_OBJ was found, than put the player there!
-	    if(mp_Map->getObjectat(x+dx, y+dy) == NESSIE_LAND)
-	    {
-		// Look for the Nessie object
-		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-		CTileProperties &Tile = TileProperty[mp_Map->at(x+dx, y+dy)];
-		if( !Tile.bdown and !Tile.bup and
-		    !Tile.bleft and !Tile.bright )
-		{
-		    // unmount Messie!		    
-		    mounted->solid = !mounted->godmode;
-		    mounted->beingteleported = false;
-		    mounted->moveXDir(dx<<CSF);
-		    mounted->moveYDir(dy<<CSF);
-		    mounted = nullptr;
-		    return true;
-		}
-	    }
-	}
+        for(int dx=-2 ; dx <= 2 ; dx++)
+        {
+            // If NESSIE_LAND_OBJ was found, than put the player there!
+            const int infotile = mp_Map->getObjectat(x+dx, y+dy);
+
+            if(infotile == NESSIE_LAND)
+            {
+                // Look for the Nessie object
+                std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+                CTileProperties &Tile = TileProperty[mp_Map->at(x+dx, y+dy)];
+                if( !Tile.bdown and !Tile.bup and
+                        !Tile.bleft and !Tile.bright )
+                {
+                    // unmount Messie!
+                    mounted->solid = !mounted->godmode;
+                    mounted->beingteleported = false;
+
+                    mounted->moveToForce((x+dx)<<CSF, (y+dy)<<CSF);
+
+                    mounted = nullptr;
+                    g_pInput->flushAll();
+                    return true;
+                }
+            }
+        }
     }
     return false;
 }
@@ -158,10 +162,10 @@ void CMessie::process()
 	    sprite += 8;
 	    
 	    // If first Player pushes the first button, unmount!
-	    if(g_pInput->getPressedAnyCommand(0))
+        if(g_pInput->getPressedCommand(IC_JUMP))
 	    {
-		tryToUnmount();
-		g_pInput->flushAll();
+            tryToUnmount();
+            g_pInput->flushAll();
 	    }	    
 	}
 	
