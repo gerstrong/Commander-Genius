@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cassert>
 
 /**
  * Setters
@@ -225,9 +226,28 @@ void blitScaled(SDL_Surface *srcSfc,
                       SDL_Rect &dstRect,
                       filterOptionType filter)
 {            
+
+#ifdef DEBUG
+    assert(filter>=NONE && filter<=SCALE_4X);
+#endif
+
     // First phase: Filter the surface (scaleX)
     SDL_Rect lSrcRect = srcRect;
     SDL_Rect lDstRect = dstRect;
+
+
+    // Check for filter and reduce if the surface to be scaled is way too small
+    while( filter>NONE )
+    {
+        // Does it fit?
+        if( dstSfc->w >= srcSfc->w*filter &&
+            dstSfc->h >= srcSfc->h*filter )
+        {
+            break;
+        }
+
+        filter = (filterOptionType)((int)(filter)-1);
+    }
 
     if( filter>NONE )
     {
