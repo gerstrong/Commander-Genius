@@ -393,92 +393,94 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
     CPlayer* player = dynamic_cast<CPlayer*>(obj);
     
     if(player)
-    {	
-	switch(state)
-	{
-	    case HEART_ZAPSRUNUP:
-		if (!timer)
-		{	// spawn another wave of zaps
-		int x = getXPosition();
-		int y = getYPosition();
-		
-		CManglingMachine *newobject = new CManglingMachine(mp_Map, 
-								 x, y,SE_MORTIMER_ZAPSUP);
-		newobject->my = MORTIMER_MACHINE_YEND;
-		newobject->timer = 0;
-		newobject->destroytiles = 0;
-		newobject->state = ZAPSUP_NORMAL;
-		newobject->hasbeenonscreen = false;
-		
-		timer = MORTIMER_ZAPWAVESPACING;
-		if (counter > MORTIMER_NUMZAPWAVES)
-		{
-		    newobject->destroytiles = true;
-		    exists = false;
-		}
-		else counter++;
-		
-		g_pBehaviorEngine->EventList().spawnObj(newobject);
-		}
-		else timer--;
-		break;
-	    case HEART_ZAPSRUNDOWN:
-		if (!timer)
-		{
-		    for(int x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
-		    {
-			// delete the tile
-			mp_Map->setTile(x,my,169);
-			// spawn a ZAP! or a ZOT!
-            CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
-			newobject->state = CRay::RAY_STATE_SETZAPZOT;
-			newobject->inhibitfall = true;
-			g_pBehaviorEngine->EventList().spawnObj(newobject);				
-		    }
-		    
-		    timer = MACHINE_DESTROY_RATE;
-		    if (my > MORTIMER_MACHINE_YEND)
-		    {
-			exists = false;
-		    }
-		    else my++;
-		}
-		else timer--;
-		break;
-	}	
+    {
+        switch(state)
+        {
+        case HEART_ZAPSRUNUP:
+            if (!timer)
+            {	// spawn another wave of zaps
+                int x = getXPosition();
+                int y = getYPosition();
+
+                CManglingMachine *newobject = new CManglingMachine(mp_Map,
+                                                                   x, y,SE_MORTIMER_ZAPSUP);
+                newobject->my = MORTIMER_MACHINE_YEND;
+                newobject->timer = 0;
+                newobject->destroytiles = 0;
+                newobject->state = ZAPSUP_NORMAL;
+                newobject->hasbeenonscreen = false;
+
+                timer = MORTIMER_ZAPWAVESPACING;
+                if (counter > MORTIMER_NUMZAPWAVES)
+                {
+                    newobject->destroytiles = true;
+                    exists = false;
+                }
+                else counter++;
+
+                g_pBehaviorEngine->EventList().spawnObj(newobject);
+            }
+            else timer--;
+            break;
+        case HEART_ZAPSRUNDOWN:
+            if (!timer)
+            {
+                for(int x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
+                {
+                    // delete the tile
+                    mp_Map->setTile(x,my,169);
+                    // spawn a ZAP! or a ZOT!
+                    CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
+                    newobject->state = CRay::RAY_STATE_SETZAPZOT;
+                    newobject->inhibitfall = true;
+                    g_pBehaviorEngine->EventList().spawnObj(newobject);
+                }
+
+                timer = MACHINE_DESTROY_RATE;
+                if (my > MORTIMER_MACHINE_YEND)
+                {
+                    exists = false;
+                }
+                else my++;
+            }
+            else timer--;
+            break;
+        }
     }
     else
     {
-	
-	switch(state)
-	{
-	    case HEART_IDLE:
-		sprite = MORTIMER_HEART_BASEFRAME + frame;
-		
-		if (timer > HEART_ANIMRATE)
-		{
-		    frame ^= 1;
-		    timer = 0;
-		}
-		else timer++;
-		
-		if (mHealthPoints <= 0)
-		{
-		    legsDestroy = true;
-		    sprite = BLANKSPRITE;
-		    set_mortimer_surprised(true);
-		    
-		    // destroy Mortimer's machine
-		    g_pGfxEngine->setupEffect(new CVibrate(10000));
 
-            set_mortimer_surprised(true);
-            // have waves of zaps run up mortimer's machine
-            timer = 0;
-		    state = HEART_ZAPSRUNUP;
-		    counter = 0;
-		}
-		break;
-	}
+        switch(state)
+        {
+        case HEART_IDLE:
+            sprite = MORTIMER_HEART_BASEFRAME + frame;
+
+            if (timer > HEART_ANIMRATE)
+            {
+                frame ^= 1;
+                timer = 0;
+            }
+            else timer++;
+
+            if (mHealthPoints <= 0)
+            {
+                legsDestroy = true;
+                sprite = BLANKSPRITE;
+                set_mortimer_surprised(true);
+
+                // destroy Mortimer's machine
+                g_pGfxEngine->setupEffect(new CVibrate(10000));
+
+                set_mortimer_surprised(true);
+                // have waves of zaps run up mortimer's machine
+                timer = 0;
+                state = HEART_ZAPSRUNUP;
+                counter = 0;
+
+                g_pBehaviorEngine->EventList().add(new EventEraseAllMeeps());
+            }
+            break;
+        }
     }
 }
 

@@ -9,6 +9,8 @@
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 
+#include "engine/vorticon/ai/CMeep.h"
+
 CVorticonSpriteObjectAI::CVorticonSpriteObjectAI(CMap *p_map, 
 					 std::vector< std::unique_ptr<CVorticonSpriteObject> > &objvect,
 					 std::vector<CPlayer> &Player,
@@ -99,19 +101,32 @@ void CVorticonSpriteObjectAI::process()
 	    EventContainer.pop_Event();
 	}
 
-	if( EventContainer.occurredEvent<EventEraseAllEnemies>() )
-	{
-	    for( auto &obj : m_Objvect )
-	    {
-		// Only remove non-player objects!
-		if( dynamic_cast<CPlayer*>(obj.get()) == nullptr )
-		{
-		    obj->exists = false;
-		}
-	    }
-	    EventContainer.pop_Event();
-	}
-		
+    if( EventContainer.occurredEvent<EventEraseAllEnemies>() )
+    {
+        for( auto &obj : m_Objvect )
+        {
+            // Only remove non-player objects!
+            if( dynamic_cast<CPlayer*>(obj.get()) == nullptr )
+            {
+                obj->exists = false;
+            }
+        }
+        EventContainer.pop_Event();
+    }
+
+    if( EventContainer.occurredEvent<EventEraseAllMeeps>() )
+    {
+        for( auto &obj : m_Objvect )
+        {
+            // Only remove non-player objects!
+            if( dynamic_cast<CMeep*>(obj.get()) != nullptr )
+            {
+                obj->exists = false;
+            }
+        }
+        EventContainer.pop_Event();
+    }
+
 
 	if( !m_Objvect.empty() )
 	{	
