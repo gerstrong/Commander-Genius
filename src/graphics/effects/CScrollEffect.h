@@ -19,7 +19,7 @@ class CScrollEffect : public CEffects
 {
 public:        
 
-    CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
+    CScrollEffect(SDL_Surface *pScrollSurface,
             const Sint16 initialPos, Sint8 speed, const direction_t hDir, const direction_t vDir);
 
     void ponder();

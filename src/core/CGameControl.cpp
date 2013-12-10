@@ -163,7 +163,7 @@ void CGameControl::ponder()
 		}
 	}
 	
-    gpMenuController->ponder();
+    gpMenuController->ponder();    
 }
 
 void CGameControl::render()

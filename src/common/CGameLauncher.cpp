@@ -251,7 +251,7 @@ void CGameLauncher::ponder()
     if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
     {
         setChosenGame(Starter->mSlot);
-        g_pGfxEngine->setupEffect(new CScrollEffect(g_pVideoDriver->getBlitSurface(), g_pVideoDriver->getBlitSurface(), 0, 10, RIGHT, CENTER));
+        //g_pGfxEngine->setupEffect(new CScrollEffect(g_pVideoDriver->getBlitSurface(), g_pVideoDriver->getBlitSurface(), 0, 10, RIGHT, CENTER));
         g_pBehaviorEngine->m_EventList.pop_Event();
     }
     

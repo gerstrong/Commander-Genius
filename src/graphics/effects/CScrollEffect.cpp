@@ -11,7 +11,7 @@
 #include <cassert>
 
 
-CScrollEffect::CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
+CScrollEffect::CScrollEffect(SDL_Surface *pScrollSurface,
                              const Sint16 initialPos, Sint8 speed,
                              const direction_t hDir, const direction_t vDir) :
 mInitSpeed(speed),
@@ -21,7 +21,6 @@ mScrollPos(initialPos),
 mHDir(hDir),
 mVDir(vDir)
 {
-    mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc(pBackground), &SDL_FreeSurface );
     mpScrollSurface.reset( g_pVideoDriver->convertThroughBlitSfc(pScrollSurface), &SDL_FreeSurface );
 }
 
@@ -50,12 +49,12 @@ void CScrollEffect::ponder()
 
         if(mVDir == DOWN)
         {
-            posOldSfc = mpOldSurface->h;
+            posOldSfc = g_pVideoDriver->getBlitSurface()->h;
             posScrollSfc = mpScrollSurface->h;
         }
         else if(mHDir == RIGHT)
         {
-            posOldSfc = mpOldSurface->w;
+            posOldSfc = g_pVideoDriver->getBlitSurface()->w;
             posScrollSfc = mpScrollSurface->w;
         }
 
