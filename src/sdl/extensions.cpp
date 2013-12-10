@@ -102,7 +102,7 @@ inline Colormask getColourMask32bit()
 
 int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstSfc, SDL_Rect *dstRect )
 {
-    int error;
+    int error = 0;
 
     /*const float zoomx = dstRect->w/srcRect->w;
     const float zoomy = dstRect->h/srcRect->h;
@@ -114,7 +114,9 @@ int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstS
 
     scaler.scaleUp( dstSfc, srcSfc, SCALEX, dstRectC);*/
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+    blitScaled(srcSfc, *srcRect, dstSfc, *dstRect, NONE);
+
+/*#if SDL_VERSION_ATLEAST(2, 0, 0)
     error = SDL_BlitScaled( srcSfc, srcRect, dstSfc, dstRect );
     if(error)
     {
@@ -135,7 +137,7 @@ int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstS
 
     error = SDL_BlitSurface(temp.get(), srcRect, dstSfc, dstRect);
 
-#endif
+#endif*/
 
     return error;
 }

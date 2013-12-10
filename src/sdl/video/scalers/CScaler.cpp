@@ -36,10 +36,10 @@ void CScaler::setFilterType( bool IsNormal )
 /**
  * Scale functions
  */
-void CScaler::scaleDynamic( SDL_Surface *srcSfc,
-                            SDL_Rect &srcRect,
-                            SDL_Surface *dstSfc,
-                            SDL_Rect &dstRect )
+void scaleDynamic( SDL_Surface *srcSfc,
+                   SDL_Rect &srcRect,
+                   SDL_Surface *dstSfc,
+                   SDL_Rect &dstRect )
 {
 	const bool equalWidth  = (dstRect.w == srcSfc->w);
 	const bool equalHeight = (dstRect.h == srcSfc->h);
@@ -219,44 +219,48 @@ void CScaler::scaleDynamic( SDL_Surface *srcSfc,
 }
 */
 
-void CScaler::process()
+void blitScaled(SDL_Surface *srcSfc,
+                      SDL_Rect &srcRect,
+                      SDL_Surface *dstSfc,
+                      SDL_Rect &dstRect,
+                      filterOptionType filter)
 {            
     // First phase: Filter the surface (scaleX)
-    SDL_Rect srcRect = mpSrcSfc->clip_rect;
-    SDL_Rect dstRect = mpDstSfc->clip_rect;
+    SDL_Rect lSrcRect = srcRect;
+    SDL_Rect lDstRect = dstRect;
 
-    if( mFilter>NONE )
+    if( filter>NONE )
     {
-        SDL_LockSurface( mpSrcSfc );
-        SDL_LockSurface( mpDstSfc );
+        SDL_LockSurface( srcSfc );
+        SDL_LockSurface( dstSfc );
 
-        scale( 	mFilter,
-                mpDstSfc->pixels,
-                mpDstSfc->pitch,
-                mpSrcSfc->pixels,
-                mpSrcSfc->pitch,
-                mpDstSfc->format->BytesPerPixel,
-                mpSrcSfc->w,
-                mpSrcSfc->h	);
+        scale( 	filter,
+                dstSfc->pixels,
+                dstSfc->pitch,
+                srcSfc->pixels,
+                srcSfc->pitch,
+                dstSfc->format->BytesPerPixel,
+                srcSfc->w,
+                srcSfc->h	);
 
-        SDL_UnlockSurface( mpDstSfc );
-        SDL_UnlockSurface( mpSrcSfc );
+        SDL_UnlockSurface( dstSfc );
+        SDL_UnlockSurface( srcSfc );
 
-        srcRect.w = srcRect.w*mFilter;
-        srcRect.h = srcRect.h*mFilter;
+        lSrcRect.w = lSrcRect.w*filter;
+        lSrcRect.h = lSrcRect.h*filter;
     }
 
-
+    // Second phase: Scale it normally
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    SDL_BlitScaled( mpSrcSfc, &srcRect, mpDstSfc, &dstRect );
+    SDL_BlitScaled( srcSfc, &lSrcRect, dstSfc, &lDstRect );
 
 #else
 
     SDL_LockSurface( srcSfc );
     SDL_LockSurface( dstSfc );
 
-    scaleDynamic( mpSrcSfc, srcRect, mpDstSfc, dstRect );
+    scaleDynamic( srcSfc, lSrcRect, dstSfc, lDstRect );
 
     SDL_UnlockSurface( dstSfc );
     SDL_UnlockSurface( srcSfc );
