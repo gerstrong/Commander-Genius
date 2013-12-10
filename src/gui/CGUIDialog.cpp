@@ -329,11 +329,7 @@ void CGUIDialog::initVorticonBackground()
 {
     const SDL_Rect Rect = g_pVideoDriver->toBlitRect(mRect);
     mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    //mpBackgroundSfc = mpBackgroundSfc;
-//#else
     mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
-//#endif
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(1);
