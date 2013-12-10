@@ -16,7 +16,7 @@ class CBallJack : public CVorticonSpriteObject
 {
 public:
 	CBallJack(CMap *pmap, Uint32 x, Uint32 y, object_t type);
-	void getTouchedBy(CSpriteObject &theObject);
+    void getTouchedBy(CVorticonSpriteObject &theObject);
 	void process();
 
 	void getShotByRay(object_t &obj_type);

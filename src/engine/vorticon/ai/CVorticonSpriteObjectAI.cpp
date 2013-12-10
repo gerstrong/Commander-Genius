@@ -51,13 +51,13 @@ void CVorticonSpriteObjectAI::process()
 					{
 					    if(object.isNearby(*it_player))
 					    {					    
-						if ( object.hitdetect(*it_player) )
-						{						    
-							object.getTouchedBy(*it_player);
-							object.touchPlayer = true;
-							object.touchedBy = it_player->m_index;
-							break;
-						}
+                            if ( object.hitdetect(*it_player) )
+                            {
+                                object.getTouchedBy(*it_player);
+                                object.touchPlayer = true;
+                                object.touchedBy = it_player->m_index;
+                                break;
+                            }
 					    }
 					}
 
@@ -68,19 +68,19 @@ void CVorticonSpriteObjectAI::process()
 				auto theOther = objectPtr; theOther++;
 				for( ; theOther != m_Objvect.end() ; theOther++ )
 				{
-				    bool nearBy = false;
-				    
-				    nearBy |= object.isNearby(**theOther);
-				    nearBy |= (*theOther)->isNearby(object);
+                    bool nearBy = false;
 
-				    if(nearBy)
-				    {									    
-					if( object.hitdetect(**theOther) )
-					{
-						object.getTouchedBy(**theOther);
-						(*theOther)->getTouchedBy(object);
-					}
-				    }
+                    nearBy |= object.isNearby(**theOther);
+                    nearBy |= (*theOther)->isNearby(object);
+
+                    if(nearBy)
+                    {
+                        if( object.hitdetect(**theOther) )
+                        {
+                            object.getTouchedBy(**theOther);
+                            (*theOther)->getTouchedBy(object);
+                        }
+                    }
 				}
 			}
 

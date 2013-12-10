@@ -34,27 +34,27 @@ CVorticonSpriteObject(pmap, x, y, type)
 	performCollisions();
 }
 
-void CBallJack::getTouchedBy(CSpriteObject &theObject)
+void CBallJack::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {
-	if (m_type==OBJ_BALL)
-	{
-	    player->push(*this);
-	    
-	    switch(m_Direction)
-	    {
-		case DUPRIGHT: m_Direction = DUPLEFT; break;
-		case DUPLEFT: m_Direction = DUPRIGHT; break;
-		case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
-		case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
-		default: break;
-	    }
-	}
-	else
-	{
-	    player->kill();	
-	}
+        if (m_type==OBJ_BALL)
+        {
+            player->push(*this);
+
+            switch(m_Direction)
+            {
+            case DUPRIGHT: m_Direction = DUPLEFT; break;
+            case DUPLEFT: m_Direction = DUPRIGHT; break;
+            case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
+            case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
+            default: break;
+            }
+        }
+        else
+        {
+            player->kill();
+        }
     }
 }
 

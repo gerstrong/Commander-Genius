@@ -11,10 +11,18 @@ void CCarrier::getTouchedBy(CVorticonSpriteObject& theObject)
 {                
     if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
     {
-        if(player->getYDownPos() > getYMidPos())
+        const int m_py2 = player->getYMidPos();
+        const int m_y2 = getYUpPos()+(4<<STC);
+
+        if(m_py2 > m_y2)
         {
             if( (player->getXMidPos() < getXMidPos() && yDirection >= 0) || yDirection <= 0 )
+            {
                 player->push(*this);
+                player->pjustjumped = true;
+                player->yinertia = 0;
+                player->pfalling = true;
+            }
         }
         else
         {
@@ -34,6 +42,41 @@ void CCarrier::getTouchedBy(CVorticonSpriteObject& theObject)
             }
         }
     }
+
+
+
+    //////
+
+
+    /*{
+        const int m_py2 = player->getYDownPos();
+        const int m_y2 = getYUpPos()+(4<<STC);
+        if( m_py2 <= m_y2 && !player->pSupportedbyobject && !player->m_jumpdownfromobject )
+        {
+            bool playerInList = false;
+
+            for(auto &carriedObj : mCarriedPlayerVec)
+            {
+                if(player == carriedObj)
+                {
+                    playerInList = true;
+                    break;
+                }
+            }
+
+            if(!playerInList)
+            {
+                mCarriedPlayerVec.push_back(player);
+                player->pSupportedbyobject = this;
+                player->dontdraw = true;
+            }
+
+        }
+    } */
+
+
+
+
 }
 
 void CCarrier::process()
