@@ -196,7 +196,11 @@ bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
 
 #endif
 
-    SDL_BlitScaledWrap( bmpSfc, &bmpSfc->clip_rect, newSfc.get(), &newRect );
+    blitScaled(bmpSfc,
+               bmpSfc->clip_rect,
+               newSfc.get(),
+               newRect,
+               NONE);
 
     mpBitmapSurface = newSfc;
 

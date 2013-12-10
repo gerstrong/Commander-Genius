@@ -10,7 +10,7 @@
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/extensions.h"
+#include "sdl/video/scalers/CScaler.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 m_mustclose(false),
@@ -54,10 +54,11 @@ m_timer(0)
 
         SDL_FillRect(scaledScene.get(), nullptr, SDL_MapRGB(scaledScene->format, 0, 0, 0) );
 
-        SDL_BlitScaledWrap(mpSceneSurface.get(),
-                           &srcRect,
-                           scaledScene.get(),
-                           &dstRect);
+        blitScaled(mpSceneSurface.get(),
+                   srcRect,
+                   scaledScene.get(),
+                   dstRect,
+                   NONE);
 
         mpSceneSurface = scaledScene;
     }

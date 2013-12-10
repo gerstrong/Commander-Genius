@@ -100,47 +100,6 @@ inline Colormask getColourMask32bit()
 	return mask;
 }
 
-int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstSfc, SDL_Rect *dstRect )
-{
-    int error = 0;
-
-    /*const float zoomx = dstRect->w/srcRect->w;
-    const float zoomy = dstRect->h/srcRect->h;
-
-    CScaler scaler;
-    scaler.setDynamicFactor(zoomx, zoomy);
-
-    const CRect<Uint16> dstRectC( *dstRect );
-
-    scaler.scaleUp( dstSfc, srcSfc, SCALEX, dstRectC);*/
-
-    blitScaled(srcSfc, *srcRect, dstSfc, *dstRect, NONE);
-
-/*#if SDL_VERSION_ATLEAST(2, 0, 0)
-    error = SDL_BlitScaled( srcSfc, srcRect, dstSfc, dstRect );
-    if(error)
-    {
-        std::string errorMsg = SDL_GetError();
-        g_pLogFile->textOut("SDL_Blit failed: " + errorMsg);
-    }
-#else
-
-    double zoomx = dstRect->w/srcRect->w;
-    double zoomy = dstRect->h/srcRect->h;
-
-    // As SDL 1.2 doesn't support that, we need to do it here through Software with SDL_rotozoom.
-    std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>
-            temp( zoomSurface( srcSfc, zoomx, zoomy, SMOOTHING_OFF ) );
-
-    srcRect->w = dstRect->w;
-    srcRect->h = dstRect->h;
-
-    error = SDL_BlitSurface(temp.get(), srcRect, dstSfc, dstRect);
-
-#endif*/
-
-    return error;
-}
 
 
 SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )

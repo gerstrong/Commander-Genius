@@ -17,6 +17,9 @@ mScrollPos(initialPos),
 mpScrollSurface(pScrollSurface)
 {
     mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc(pBackground), &SDL_FreeSurface );
+
+    // TODO: Scale this inventory surface up for higher resolutions.
+
 }
 
 void CScrollEffect::ponder()
@@ -57,15 +60,11 @@ void CScrollEffect::render()
     src.y = mpScrollSurface->h-mScrollPos;
     dest.h = mScrollPos*scaleFac;
 
-    SDL_BlitSurface(mpScrollSurface,
-                    &src,
-                    g_pVideoDriver->getBlitSurface(),
-                    &dest);
-    /*SDL_BlitScaledWrap(mpScrollSurface,
-                   &src,
-                   g_pVideoDriver->getBlitSurface(),
-                   &dest);*/
-
+    blitScaled(mpScrollSurface,
+               src,
+               g_pVideoDriver->getBlitSurface(),
+               dest,
+               NONE);
 
 }
 

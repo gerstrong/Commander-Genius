@@ -312,7 +312,7 @@ void CPassiveGalaxy::renderIntroZoom()
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
 
 
-    SDL_BlitScaledWrap( zoomSfc, &srcRect, blit, &dstRect );
+    blitScaled( zoomSfc, srcRect, blit, dstRect, NONE );
 }
 
 
