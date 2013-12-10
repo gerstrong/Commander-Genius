@@ -13,6 +13,7 @@
 
 #include <SDL.h>
 #include "hardware/Configurator.h"
+#include "sdl/video/scalers/CScaler.h"
 
 const unsigned int RES_BPP = 32;
 
@@ -54,7 +55,7 @@ public:
 	CRect<Uint16> m_DisplayRect; // The Fullscreen-Resolution or the Window Size
 
 	bool Fullscreen;
-	short m_ScaleXFilter;
+    filterOptionType m_ScaleXFilter;
 	bool m_normal_scale;
 	unsigned short Zoom;
 	bool m_opengl;

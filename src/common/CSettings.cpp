@@ -129,7 +129,7 @@ bool CSettings::loadDrvCfg()
 		
 		Configuration.ReadKeyword("Video", "vsync", &VidConf.vsync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
-		VidConf.m_ScaleXFilter = value;
+        VidConf.m_ScaleXFilter = (filterOptionType)(value);
 
 		std::string scaleType;
 		Configuration.ReadString("Video", "scaletype", scaleType, "normal");
@@ -206,7 +206,7 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 #else
 	g_pVideoDriver->setAspectCorrection(4,3);
 #endif
-	g_pVideoDriver->setFilter(1);
+    g_pVideoDriver->setFilter(NONE);
 	g_pVideoDriver->setScaleType(true);
 
 }

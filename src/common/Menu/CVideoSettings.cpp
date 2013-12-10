@@ -76,14 +76,14 @@ CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	
 	mpMenuDialog->addControl( mpAspectSelection );
 
-    mpScalerSelection =
-            new CGUIComboSelection( "Scaler",
+    mpFilterSelection =
+            new CGUIComboSelection( "Filter",
                 filledStrList( 4, "none",
                                   "scale2x",
                                   "scale3x",
                                   "scale4x" ) );
 
-	mpMenuDialog->addControl( mpScalerSelection );
+    mpMenuDialog->addControl( mpFilterSelection );
 
 	mpVSyncSwitch = new CGUISwitch( "VSync" );
 	mpMenuDialog->addControl( mpVSyncSwitch );
@@ -144,7 +144,7 @@ void CVideoSettings::init()
 	mpAspectSelection->setSelection(arcStr);
 
 	
-	mpScalerSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : (mUserVidConf.m_normal_scale ? "normal" : "scale") + itoa(mUserVidConf.m_ScaleXFilter) + "x" );
+    mpFilterSelection->setSelection( mUserVidConf.m_ScaleXFilter==1 ? "none" : (mUserVidConf.m_normal_scale ? "normal" : "scale") + itoa(mUserVidConf.m_ScaleXFilter) + "x" );
 	mpVSyncSwitch->enable( mUserVidConf.vsync );
 	mpFullScreenSwitch->setText( mUserVidConf.Fullscreen ? "Go Windowed" : "Go Fullscreen" );
 
@@ -187,7 +187,7 @@ void CVideoSettings::release()
 #if !defined(EMBEDDED)	
 	//mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();	
 	mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
-	std::string scalerStr = mpScalerSelection->getSelection();
+    std::string scalerStr = mpFilterSelection->getSelection();
 
     const std::string res = mpResolutionSelection->getSelection();
     sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
@@ -212,13 +212,13 @@ void CVideoSettings::release()
 	{
 		mUserVidConf.m_normal_scale = (scalerStr.at(0) == 'n');
 		if (mUserVidConf.m_normal_scale)
-			mUserVidConf.m_ScaleXFilter = scalerStr.at(6)-'0';
+            mUserVidConf.m_ScaleXFilter = (filterOptionType)(scalerStr.at(6)-'0');
 		else
-			mUserVidConf.m_ScaleXFilter = scalerStr.at(5)-'0';
+            mUserVidConf.m_ScaleXFilter = (filterOptionType)(scalerStr.at(5)-'0');
 	}
 	else
 	{
-		mUserVidConf.m_ScaleXFilter = 1;
+        mUserVidConf.m_ScaleXFilter = NONE;
 	}
 #endif
 

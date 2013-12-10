@@ -93,7 +93,7 @@ public:
 	void setMode(int width, int height,int depth);
 	void setMode(const CRect<Uint16>& res);
 	void setSpecialFXMode(bool SpecialFX);
-	void setFilter(short value);
+    void setFilter(const filterOptionType value);
 	void setScaleType(bool IsNormal);
 	void setZoom(short vale);
 #ifdef USE_OPENGL

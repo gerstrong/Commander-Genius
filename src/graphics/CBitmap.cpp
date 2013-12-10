@@ -196,11 +196,13 @@ bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
 
 #endif
 
+    CVidConfig &vidConf = g_pVideoDriver->getVidConfig();
+
     blitScaled(bmpSfc,
                bmpSfc->clip_rect,
                newSfc.get(),
                newRect,
-               NONE);
+               vidConf.m_ScaleXFilter);
 
     mpBitmapSurface = newSfc;
 

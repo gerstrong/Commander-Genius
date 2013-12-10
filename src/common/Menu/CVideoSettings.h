@@ -38,8 +38,7 @@ private:
 	CGUIComboSelection	*mpOGLFilterSelection;
 #endif
 
-	CGUIComboSelection	*mpScalerSelection;
-	//CGUISwitch		*mpAspectSwitch;
+    CGUIComboSelection	*mpFilterSelection;
 	CGUIComboSelection	*mpAspectSelection;
 	CGUISwitch		*mpVSyncSwitch;
 	CGUISwitch		*mpSFXSwitch;

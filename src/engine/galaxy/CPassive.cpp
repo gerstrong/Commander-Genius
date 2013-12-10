@@ -311,8 +311,9 @@ void CPassiveGalaxy::renderIntroZoom()
     SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
 
+    CVidConfig &vidConf = g_pVideoDriver->getVidConfig();
 
-    blitScaled( zoomSfc, srcRect, blit, dstRect, NONE );
+    blitScaled( zoomSfc, srcRect, blit, dstRect, vidConf.m_ScaleXFilter );
 }
 
 

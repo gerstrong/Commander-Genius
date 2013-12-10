@@ -47,8 +47,8 @@ void CVidConfig::reset()
 	Fullscreen=false;
 #endif
 
-	m_ScaleXFilter=1;
-	m_normal_scale=true;
+    m_ScaleXFilter = NONE;
+    m_normal_scale = true;
 	Zoom=1;
 
 #ifdef USE_OPENGL

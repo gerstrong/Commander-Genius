@@ -277,9 +277,9 @@ bool CVideoDriver::start()
 	return retval;
 }
 
-void CVideoDriver::setFilter(short value) 
+void CVideoDriver::setFilter(const filterOptionType value)
 {
-	m_VidConfig.m_ScaleXFilter = value;
+    m_VidConfig.m_ScaleXFilter = value;
 } // 1 means no filter
 
 void CVideoDriver::setZoom(short value) {
