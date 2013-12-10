@@ -254,14 +254,14 @@ void blitScaled(SDL_Surface *srcSfc,
         SDL_LockSurface( srcSfc );
         SDL_LockSurface( dstSfc );
 
-        scale( 	filter,
-                dstSfc->pixels,
-                dstSfc->pitch,
-                srcSfc->pixels,
-                srcSfc->pitch,
-                dstSfc->format->BytesPerPixel,
-                srcSfc->w,
-                srcSfc->h	);
+        scale( filter,
+               dstSfc->pixels,
+               dstSfc->pitch,
+               srcSfc->pixels,
+               srcSfc->pitch,
+               dstSfc->format->BytesPerPixel,
+               srcSfc->w,
+               srcSfc->h );
 
         SDL_UnlockSurface( dstSfc );
         SDL_UnlockSurface( srcSfc );

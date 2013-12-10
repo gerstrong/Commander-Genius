@@ -12,13 +12,15 @@
 #include <memory>
 
 #include "CEffects.h"
+#include "common/direction.h"
 
 
 class CScrollEffect : public CEffects
 {
-public:
-	CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
-			const Sint16 initialPos, Sint8 speed);
+public:        
+
+    CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
+            const Sint16 initialPos, Sint8 speed, const direction_t hDir, const direction_t vDir);
 
     void ponder();
     void render();
@@ -31,8 +33,10 @@ private:
     Sint16 mSpeed;
     Sint16 mInitialSpeed;
 	Sint16 mScrollPos;
-	std::shared_ptr<SDL_Surface> mpOldSurface;
-	SDL_Surface *mpScrollSurface;
+    const direction_t mHDir;
+    const direction_t mVDir;
+    std::shared_ptr<SDL_Surface> mpOldSurface;
+    std::shared_ptr<SDL_Surface> mpScrollSurface;
 };
 
 #endif /* CSCROLLEFFECT_H_ */

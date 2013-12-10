@@ -8,18 +8,21 @@
 #include "CScrollEffect.h"
 #include "sdl/CVideoDriver.h"
 
+#include <cassert>
+
+
 CScrollEffect::CScrollEffect(SDL_Surface *pScrollSurface, SDL_Surface *pBackground,
-							const Sint16 initialPos, Sint8 speed) :
+                             const Sint16 initialPos, Sint8 speed,
+                             const direction_t hDir, const direction_t vDir) :
 mInitSpeed(speed),
 mSpeed(2*speed),
 mInitialSpeed(speed),
 mScrollPos(initialPos),
-mpScrollSurface(pScrollSurface)
+mHDir(hDir),
+mVDir(vDir)
 {
     mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc(pBackground), &SDL_FreeSurface );
-
-    // TODO: Scale this inventory surface up for higher resolutions.
-
+    mpScrollSurface.reset( g_pVideoDriver->convertThroughBlitSfc(pScrollSurface), &SDL_FreeSurface );
 }
 
 void CScrollEffect::ponder()
@@ -41,10 +44,26 @@ void CScrollEffect::ponder()
             mSpeed--;
 
 		mScrollPos += mSpeed;
-		if(mScrollPos  > mpOldSurface->h)
-			mScrollPos = mpScrollSurface->h;
 
-        if(mScrollPos+mSpeed >= mpScrollSurface->h)
+
+        int posOldSfc, posScrollSfc;
+
+        if(mVDir == DOWN)
+        {
+            posOldSfc = mpOldSurface->h;
+            posScrollSfc = mpScrollSurface->h;
+        }
+        else if(mHDir == RIGHT)
+        {
+            posOldSfc = mpOldSurface->w;
+            posScrollSfc = mpScrollSurface->w;
+        }
+
+
+        if(mScrollPos  > posOldSfc)
+            mScrollPos = posScrollSfc;
+
+        if(mScrollPos+mSpeed >= posScrollSfc)
             mFinished = true;
 	}
 }
@@ -57,10 +76,18 @@ void CScrollEffect::render()
 
     const int scaleFac = gameres.h/200;
 
-    src.y = mpScrollSurface->h-mScrollPos;
-    dest.h = mScrollPos*scaleFac;
+    if(mVDir == DOWN)
+    {
+        src.y = mpScrollSurface->h-mScrollPos;
+        dest.h = mScrollPos*scaleFac;
+    }
+    else if(mHDir == RIGHT)
+    {
+        src.x = mpScrollSurface->w-mScrollPos;
+        dest.w = mScrollPos*scaleFac;
+    }
 
-    blitScaled(mpScrollSurface,
+    blitScaled(mpScrollSurface.get(),
                src,
                g_pVideoDriver->getBlitSurface(),
                dest,

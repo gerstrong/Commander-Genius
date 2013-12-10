@@ -14,6 +14,7 @@
 #include "gui/CGUIBanner.h"
 #include "gui/CGUIButton.h"
 #include "graphics/CGfxEngine.h"
+#include "graphics/effects/CScrollEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include "StringUtils.h"
@@ -250,6 +251,7 @@ void CGameLauncher::ponder()
     if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
     {
         setChosenGame(Starter->mSlot);
+        g_pGfxEngine->setupEffect(new CScrollEffect(g_pVideoDriver->getBlitSurface(), g_pVideoDriver->getBlitSurface(), 0, 10, RIGHT, CENTER));
         g_pBehaviorEngine->m_EventList.pop_Event();
     }
     
@@ -257,7 +259,7 @@ void CGameLauncher::ponder()
 
 
 void CGameLauncher::render()
-{
+{      
     // Get the draw routines here!
     mLauncherDialog.processRendering();
 }

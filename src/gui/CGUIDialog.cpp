@@ -513,7 +513,6 @@ void CGUIDialog::processRendering()
             return;
     }
 
-
 	for( auto &it : mControlList )
 	{
         it->processRender(screenRect);

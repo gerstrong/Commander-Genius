@@ -31,6 +31,8 @@ public:
 	
 	bool init(int argc, char *argv[]);
 
+    void pollEvents();
+
     void ponder();
 
     void render();

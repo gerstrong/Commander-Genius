@@ -94,56 +94,62 @@ bool CGameControl::init(int argc, char *argv[])
 	return ok;
 }
 
+
+void CGameControl::pollEvents()
+{
+    // process any triggered Game Control related event
+    CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+
+    if( !EventContainer.empty() )
+    {
+        if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
+        {
+            g_pSound->unloadSoundData();
+            gpMenuController->emptyMenuStack();
+            mpEngine.reset(new CGameLauncherMenu( m_firsttime,
+                              p_Launcher->m_ChosenGame,
+                              p_Launcher->m_StartLevel) );
+            mpEngine->init();
+            EventContainer.pop_Event();
+        }
+        else if( EventContainer.occurredEvent<StartMainGameEvent>() )
+        {
+            mpEngine.reset(new CGameMain(gpMenuController->mOpenedGamePlay));
+            mpEngine->init();
+            EventContainer.pop_Event();
+        }
+        else if( EventContainer.occurredEvent<GMQuit>() )
+        {
+            mpEngine.release();
+            EventContainer.pop_Event();
+
+            return;
+        }
+        else if( InvokeFunctorEvent *iEv = EventContainer.occurredEvent<InvokeFunctorEvent>() )
+        {
+            (*iEv)();
+            EventContainer.pop_Event();
+
+            return;
+        }
+    }
+
+
+    if( g_pInput->getExitEvent() )
+    {
+      mpEngine.release();
+      return;
+    }
+}
+
+
 ////
 // Process Routine
 ////
 // This function is run every time, the Timer says so, through.
 void CGameControl::ponder()
-{
-	// process any triggered Game Control related event
-	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
-
-	if( !EventContainer.empty() )	    
-	{
-		if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
-		{
-		    g_pSound->unloadSoundData();
-		    gpMenuController->emptyMenuStack();
-		    mpEngine.reset(new CGameLauncherMenu( m_firsttime, 
-							  p_Launcher->m_ChosenGame,
-							  p_Launcher->m_StartLevel) );
-		    mpEngine->init();
-		    EventContainer.pop_Event();
-		}
-		else if( EventContainer.occurredEvent<StartMainGameEvent>() )
-		{
-			mpEngine.reset(new CGameMain(gpMenuController->mOpenedGamePlay));
-			mpEngine->init();
-			EventContainer.pop_Event();
-		}
-		else if( EventContainer.occurredEvent<GMQuit>() )
-		{
-			mpEngine.release();
-			EventContainer.pop_Event();
-
-			return;
-		}
-		else if( InvokeFunctorEvent *iEv = EventContainer.occurredEvent<InvokeFunctorEvent>() )
-		{
-			(*iEv)();
-			EventContainer.pop_Event();
-
-			return;
-		}
-	}
-	
-	
-	if( g_pInput->getExitEvent() )
-	{
-	  mpEngine.release();
-	  return;
-	}
-	
+{    
+    pollEvents();
 
 	// Process the game control object if no effects are being processed
 	if(mpEngine)
