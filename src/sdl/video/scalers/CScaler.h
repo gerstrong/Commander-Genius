@@ -11,19 +11,28 @@
 #include <SDL.h>
 #include <utils/Geometry.h>
 
-enum scaleOptionType
+enum filterOptionType
 {
-	NO_SCALE,
-	SCALEX,
-	DYNAMIC
+    NONE = 1,
+    SCALE_2X = 2,
+    SCALE_3X = 3,
+    SCALE_4X = 4
 };
+
+
 
 class CScaler
 {
 
 public:
 
-	CScaler() : wFac(1.0f), hFac(1.0f) {}
+    CScaler(SDL_Surface *srcSfc,
+            SDL_Surface *dstSfc,
+            filterOptionType scaleOption) :
+        mpSrcSfc(srcSfc),
+        mpDstSfc(dstSfc),
+        mFilter(scaleOption)
+        {}
 
 	/**
 	 * \description This functions takes care of the scaling one surface to another
@@ -34,17 +43,14 @@ public:
 	 * 				SCALEX 	= use ScaleX
 	 * 				DYNAMIC = Use the Software Scaler for window resizal recommended
 	 */
-	void scaleUp(	SDL_Surface				*dstSfc,
-					SDL_Surface				*srcSfc,
-					const scaleOptionType	scaleOption,
-					const CRect<Uint16>& dstRect );
+    void process();
 
 
 	void setDynamicFactor( const float wFac, const float hFac);
 
 	void setFilterFactor( const Uint32 FilterFactor );
 
-	Uint32 filterFactor() { return FilterFactor; }
+//	Uint32 filterFactor() { return FilterFactor; }
 
 	void setFilterType( bool IsNormal );
 
@@ -53,18 +59,16 @@ public:
 private:
 
 	void scaleDynamicLinear( SDL_Surface *srcSfc,
-								SDL_Surface *dstSfc );
+                             SDL_Surface *dstSfc );
 
-	void scaleDynamic( 	SDL_Surface *srcSfc,
-	                   	SDL_Surface *dstSfc,
-						const CRect<Uint16>& dstRect );
-	void scaleNormal( 	SDL_Surface *srcSfc,
-						SDL_Surface *dstSfc );
+    void scaleDynamic( SDL_Surface *srcSfc,
+                       SDL_Rect &srcRect,
+                       SDL_Surface *dstSfc,
+                       SDL_Rect &dstRect );
 
-	float 	wFac;
-	float 	hFac;
-	Uint32 	FilterFactor;
-	bool    IsFilterNormal;
+    SDL_Surface *mpSrcSfc;
+    SDL_Surface *mpDstSfc;
+    filterOptionType mFilter;
 };
 
 #endif /* CSCALER_H_ */

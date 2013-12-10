@@ -104,6 +104,16 @@ int SDL_BlitScaledWrap(SDL_Surface *srcSfc, SDL_Rect *srcRect, SDL_Surface *dstS
 {
     int error;
 
+    /*const float zoomx = dstRect->w/srcRect->w;
+    const float zoomy = dstRect->h/srcRect->h;
+
+    CScaler scaler;
+    scaler.setDynamicFactor(zoomx, zoomy);
+
+    const CRect<Uint16> dstRectC( *dstRect );
+
+    scaler.scaleUp( dstSfc, srcSfc, SCALEX, dstRectC);*/
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     error = SDL_BlitScaled( srcSfc, srcRect, dstSfc, dstRect );
     if(error)

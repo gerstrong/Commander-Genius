@@ -36,6 +36,16 @@ struct CRect
 		   const T lh )
 		{ x=lx; y=ly; w=lw; h=lh; }
 
+    CRect( const SDL_Rect &sdlRect ) :
+        x(sdlRect.x),
+        y(sdlRect.y),
+        w(sdlRect.w),
+        h(sdlRect.h)
+    {}
+
+
+
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else

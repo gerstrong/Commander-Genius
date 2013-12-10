@@ -117,7 +117,7 @@ protected:
     //SDL_Surface *FilteredSurface;
     SDL_Surface *ScrollSurface;       	// Squared scroll buffer
 
-    CScaler Scaler;
+    //CScaler Scaler;
 
 	const CVidConfig &m_VidConfig;
 

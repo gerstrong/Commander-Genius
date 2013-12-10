@@ -224,8 +224,8 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 bool CVideoEngine::createSurfaces()
 {
     // Configure the Scaler
-    Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
-    Scaler.setFilterType(m_VidConfig.m_normal_scale);
+    //Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
+    //Scaler.setFilterType(m_VidConfig.m_normal_scale);
 
     const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
 

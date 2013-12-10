@@ -15,7 +15,7 @@
 /**
  * Setters
  */
-void CScaler::setDynamicFactor( const float wFac, const float hFac)
+/*void CScaler::setDynamicFactor( const float wFac, const float hFac)
 {
 	this->hFac = hFac;
 	this->wFac = wFac;
@@ -30,14 +30,16 @@ void CScaler::setFilterFactor( const Uint32 FilterFactor )
 void CScaler::setFilterType( bool IsNormal )
 {
 	this->IsFilterNormal = IsNormal;
-}
+}*/
 
 
 /**
  * Scale functions
  */
-void CScaler::scaleDynamic( SDL_Surface *srcSfc, SDL_Surface *dstSfc,
-							const CRect<Uint16>& dstRect)
+void CScaler::scaleDynamic( SDL_Surface *srcSfc,
+                            SDL_Rect &srcRect,
+                            SDL_Surface *dstSfc,
+                            SDL_Rect &dstRect )
 {
 	const bool equalWidth  = (dstRect.w == srcSfc->w);
 	const bool equalHeight = (dstRect.h == srcSfc->h);
@@ -57,13 +59,13 @@ void CScaler::scaleDynamic( SDL_Surface *srcSfc, SDL_Surface *dstSfc,
 	Uint32 pitch;
 
 	// Pass those numbers to the stack
-	const float l_wFac = wFac;
-	const float l_hFac = hFac;
+    const float wFac = (float(dstRect.w)) / (float(srcSfc->w));
+    const float hFac = (float(dstRect.h)) / (float(srcRect.h));
 
 	float xSrc, ySrc;
 
 	ySrc = 0.0f;
-	for( Uint32 yDst = 0, xDst ; yDst<dstRect.h ; yDst++ )
+    for( int yDst = 0 ; yDst<dstRect.h ; yDst++ )
 	{
 		xSrc = 0.0f;
 
@@ -76,17 +78,17 @@ void CScaler::scaleDynamic( SDL_Surface *srcSfc, SDL_Surface *dstSfc,
 		else
 		{
 
-			for( xDst = 0; xDst<dstRect.w ; xDst++ )
+            for( int xDst = 0; xDst<dstRect.w ; xDst++ )
 			{
 				*dstPixel = srcPixel[pitch+Uint32(xSrc)];
 
-				xSrc += l_wFac;
+                xSrc += wFac;
 				dstPixel++;
 			}
 			dstPixel += dstSfc->w-dstRect.w;
 		}
 
-		ySrc += l_hFac;
+        ySrc += hFac;
 	}
 
 }
@@ -95,7 +97,7 @@ void CScaler::scaleDynamic( SDL_Surface *srcSfc, SDL_Surface *dstSfc,
 // Software implementation of linear interpolation - too slow for us.
 // The interpolation itself is based on code by Bruno Augier http://dzzd.net/
 // See here for the code: http://www.java-gaming.org/index.php?topic=22121.0
-void CScaler::scaleDynamicLinear( SDL_Surface *srcSfc,
+/*void CScaler::scaleDynamicLinear( SDL_Surface *srcSfc,
 							SDL_Surface *dstSfc )
 {
 	if((dstSfc->w == srcSfc->w) && (dstSfc->h == srcSfc->h))
@@ -180,103 +182,12 @@ void CScaler::scaleDynamicLinear( SDL_Surface *srcSfc,
 		ySrc += l_hFac;
 	}
 
-}
+}*/
 
-
-
-// Another implementation of linear interpolation
-// The interpolation itself is based on code by Bruno Augier http://dzzd.net/
-// See here for the code: http://www.java-gaming.org/index.php?topic=22121.0
-/*
-void CScaler::scaleDynamicLinear( SDL_Surface *srcSfc,
-							SDL_Surface *dstSfc )
+/*void CScaler::scaleNormal( SDL_Surface *srcSfc,
+                           SDL_Surface *dstSfc )
 {
-	if((dstSfc->w == srcSfc->w) && (dstSfc->h == srcSfc->h))
-	{
-		SDL_BlitSurface(srcSfc, NULL, dstSfc, NULL);
-		return;
-	}
-
-	const Uint32 srcWidth  = Uint32(srcSfc->w);
-	const Uint32 srcHeight = Uint32(srcSfc->h);
-	const Uint32 srcWidthMinusOne  = srcWidth-1;
-	const Uint32 srcHeightMinusOne = srcHeight-1;
-	const Uint32 dstWidth  = Uint32(dstSfc->w);
-	const Uint32 dstHeight = Uint32(dstSfc->h);
-
-	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels), *currDstPixel;
-	Uint32 *srcPixel = static_cast<Uint32*>(srcSfc->pixels);
-
-	Uint32 *topLeftPixel = srcPixel, *topRightPixel, *bottomLeftPixel, *bottomRightPixel;
-	Uint32 blackPixel[] = {0};
-
-	Uint32 xDst, xDstMin, xDstMax, xDstDiff, yDst, yDstMin, yDstMax, yDstDiff;
-	yDstMax = 0;
-
-	Uint8 bX, bY, f24, f23, f14, f13;
-
-	for( Uint32 ySrc = 0, xSrc ; ySrc<srcHeight ; ySrc++ )
-	{
-		yDstMin = yDstMax;
-		yDstMax = (ySrc+1)*dstHeight/srcHeight;
-		yDstDiff = yDstMax - yDstMin;
-
-		xDstMax = 0;
-		for( xSrc = 0 ; xSrc<srcWidth ; xSrc++ )
-		{
-			xDstMin = xDstMax;
-			xDstMax = (xSrc+1)*dstWidth/srcWidth;
-			xDstDiff = xDstMax - xDstMin;
-			if (xSrc < srcWidthMinusOne)
-			{
-				topRightPixel = topLeftPixel+1;
-				if (ySrc < srcHeightMinusOne)
-				{
-					bottomLeftPixel = topLeftPixel+srcWidth;
-					bottomRightPixel = bottomLeftPixel+1;
-				}
-				else
-					bottomLeftPixel = bottomRightPixel = blackPixel;
-			}
-			else
-			{
-				topRightPixel = bottomRightPixel = blackPixel;
-				bottomLeftPixel = (ySrc < srcHeightMinusOne) ? topLeftPixel+srcWidth : blackPixel;
-			}
-			// TODO: What if yDstMax == yDstMin???? Or something
-			currDstPixel = dstPixel + yDstMin*dstWidth + xDstMin;
-			for ( yDst = yDstMin ; yDst < yDstMax ; yDst++ )
-			{
-				bY = Uint8(((yDst-yDstMin)<<8)/yDstDiff);
-				for ( xDst = xDstMin ; xDst < xDstMax ; xDst++ )
-				{
-					bX = Uint8(((xDst-xDstMin)<<8)/xDstDiff);
-					f24=(bX*bY)>>8;
-					f23=bX-f24;
-					f14=bY-f24;
-					f13=((255-bX)*(255-bY))>>8;
-
-					*currDstPixel = ((((*topLeftPixel&0xFF00FF)*f13+(*topRightPixel&0xFF00FF)*f23+(*bottomLeftPixel&0xFF00FF)*f14+(*bottomRightPixel&0xFF00FF)*f24)&0xFF00FF00)|
-					                 (((*topLeftPixel&0x00FF00)*f13+(*topRightPixel&0x00FF00)*f23+(*bottomLeftPixel&0x00FF00)*f14+(*bottomRightPixel&0x00FF00)*f24)&0x00FF0000))>>8;
-//					                 (((*topLeftPixel&0xFF00FF00)*f13+(*topRightPixel&0xFF00FF00)*f23+(*bottomLeftPixel&0xFF00FF00)*f14+(*bottomRightPixel&0xFF00FF00)*f24)&0xFF00FF0000))>>8;
-
-					currDstPixel++;
-				}
-				currDstPixel-=xDstDiff;
-				currDstPixel+=dstWidth;
-			}
-			topLeftPixel++;
-		}
-	}
-}
-*/
-
-
-
-void CScaler::scaleNormal( SDL_Surface *srcSfc,
-							SDL_Surface *dstSfc )
-{
-	if((dstSfc->w == srcSfc->w) && (dstSfc->h == srcSfc->h))
+    if( (dstSfc->w == srcSfc->w) && (dstSfc->h == srcSfc->h) )
 	{
 		SDL_BlitSurface(srcSfc, NULL, dstSfc, NULL);
 		return;
@@ -306,55 +217,50 @@ void CScaler::scaleNormal( SDL_Surface *srcSfc,
 		origDstPixel += zoomIndex*dstWidth;
 	}
 }
+*/
+
+void CScaler::process()
+{            
+    // First phase: Filter the surface (scaleX)
+    SDL_Rect srcRect = mpSrcSfc->clip_rect;
+    SDL_Rect dstRect = mpDstSfc->clip_rect;
+
+    if( mFilter>NONE )
+    {
+        SDL_LockSurface( mpSrcSfc );
+        SDL_LockSurface( mpDstSfc );
+
+        scale( 	mFilter,
+                mpDstSfc->pixels,
+                mpDstSfc->pitch,
+                mpSrcSfc->pixels,
+                mpSrcSfc->pitch,
+                mpDstSfc->format->BytesPerPixel,
+                mpSrcSfc->w,
+                mpSrcSfc->h	);
+
+        SDL_UnlockSurface( mpDstSfc );
+        SDL_UnlockSurface( mpSrcSfc );
+
+        srcRect.w = srcRect.w*mFilter;
+        srcRect.h = srcRect.h*mFilter;
+    }
 
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 
-void CScaler::scaleUp(	SDL_Surface				*dstSfc,
-						SDL_Surface				*srcSfc,
-						const scaleOptionType	scaleOption,
-						const CRect<Uint16>& dstRect )
-{
-	if( scaleOption == SCALEX && FilterFactor > 1 )
-	{
+    SDL_BlitScaled( mpSrcSfc, &srcRect, mpDstSfc, &dstRect );
 
-		SDL_LockSurface( srcSfc );
-		SDL_LockSurface( dstSfc );
+#else
 
-		if (IsFilterNormal)
-			scaleNormal( srcSfc, dstSfc );
-		else
-			scale( 	FilterFactor,
-					dstSfc->pixels,
-					dstSfc->pitch,
-					srcSfc->pixels,
-					srcSfc->pitch,
-					dstSfc->format->BytesPerPixel,
-					srcSfc->w,
-					srcSfc->h	);
+    SDL_LockSurface( srcSfc );
+    SDL_LockSurface( dstSfc );
 
-		SDL_UnlockSurface( dstSfc );
-		SDL_UnlockSurface( srcSfc );
-	}
-	else if( scaleOption == DYNAMIC )
-	{
-		SDL_LockSurface( srcSfc );
-		SDL_LockSurface( dstSfc );
+    scaleDynamic( mpSrcSfc, srcRect, mpDstSfc, dstRect );
 
-		scaleDynamic( srcSfc, dstSfc, dstRect );
+    SDL_UnlockSurface( dstSfc );
+    SDL_UnlockSurface( srcSfc );
 
-		SDL_UnlockSurface( dstSfc );
-		SDL_UnlockSurface( srcSfc );
-	}
-	else
-	{
+#endif
 
-		SDL_Rect scrrect, dstrect;
-		dstrect.x = scrrect.y = 0;
-		dstrect.y = scrrect.x = 0;
-		dstrect.h = scrrect.h = srcSfc->h;
-		dstrect.w = scrrect.w = srcSfc->w;
-
-		SDL_BlitSurface(srcSfc, &scrrect, dstSfc, &dstrect);
-	}
 }
-
