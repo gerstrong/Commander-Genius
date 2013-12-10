@@ -53,8 +53,11 @@ public:
 	// processes the whole logic of the Dialog
 	void processLogic();
 
+    // processes the whole rendering of the Dialog
+    void processRendering();
+
 	// processes the whole rendering of the Dialog
-	void processRendering();
+    void processRendering(SDL_Surface *blit);
 
     // Update the backround. Happens when the Menu is created or graphical settings are changed within the game
     void updateBackground();

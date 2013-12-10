@@ -450,12 +450,17 @@ void CGUIDialog::processLogic()
 }
 
 void CGUIDialog::processRendering()
+{
+    processRendering(g_pVideoDriver->getBlitSurface());
+}
+
+
+void CGUIDialog::processRendering(SDL_Surface *blit)
 {        
     CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
     CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
     auto engine = g_pBehaviorEngine->getEngine();
-    auto *blit = g_pVideoDriver->getBlitSurface();
     auto *bgSfc = mpBackgroundSfc.get();
 
     if( engine == ENGINE_GALAXY )

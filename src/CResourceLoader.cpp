@@ -79,10 +79,12 @@ bool CResourceLoader::process(int* ret)
     g_pVideoDriver->updateDisplay();
     
     start = timerTicks();
+
+    bool threadFinalized = false;
     
 	// Now, do rendering here and the cycle
-	while(!threadPool->finalizeIfReady(mp_Thread.get(), ret))
-	{
+    while(!threadFinalized || g_pGfxEngine->applyingEffects())
+	{                
 		const float logicLatency = g_pTimer->LogicLatency();
 		const float renderLatency = g_pTimer->RenderLatency();
 		
@@ -149,6 +151,9 @@ bool CResourceLoader::process(int* ret)
 		    g_pTimer->setTimeforLastLoop(total_elapsed/100.0f);
 		    total_elapsed = 0.0f;
 		}
+
+        if(!threadFinalized)
+            threadFinalized = threadPool->finalizeIfReady(mp_Thread.get(), ret);
 	}
 	
 	// Draw the last Frame, so transition looks complete!

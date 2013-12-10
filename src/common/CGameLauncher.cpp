@@ -251,8 +251,20 @@ void CGameLauncher::ponder()
     if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
     {
         setChosenGame(Starter->mSlot);
-        mLauncherDialog.processRendering();
+
+        // Create a surface which only will contain the dialog and else transparent background
         SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+        /*std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>
+                dlgSfc( g_pVideoDriver->convertThroughBlitSfc(blit) );
+
+        auto _dlgSfc = dlgSfc.get();
+
+        SDL_FillRect(_dlgSfc, nullptr, SDL_MapRGBA(_dlgSfc->format, 0,0,0,0));
+
+        mLauncherDialog.processRendering(_dlgSfc);
+        g_pGfxEngine->setupEffect(new CScrollEffect(_dlgSfc, _dlgSfc->w, -18, RIGHT, CENTER));*/
+        mLauncherDialog.processRendering();
+
         g_pGfxEngine->setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
         g_pBehaviorEngine->m_EventList.pop_Event();
     }
