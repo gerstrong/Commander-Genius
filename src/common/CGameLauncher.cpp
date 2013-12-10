@@ -251,7 +251,9 @@ void CGameLauncher::ponder()
     if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
     {
         setChosenGame(Starter->mSlot);
-        //g_pGfxEngine->setupEffect(new CScrollEffect(g_pVideoDriver->getBlitSurface(), g_pVideoDriver->getBlitSurface(), 0, 10, RIGHT, CENTER));
+        mLauncherDialog.processRendering();
+        SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+        g_pGfxEngine->setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
         g_pBehaviorEngine->m_EventList.pop_Event();
     }
     
@@ -260,6 +262,9 @@ void CGameLauncher::ponder()
 
 void CGameLauncher::render()
 {      
+    if(g_pGfxEngine->applyingEffects())
+        return;
+
     // Get the draw routines here!
     mLauncherDialog.processRendering();
 }

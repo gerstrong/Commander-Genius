@@ -73,24 +73,21 @@ void CScrollEffect::render()
     SDL_Rect dest = gameres;
     SDL_Rect src = mpScrollSurface->clip_rect;
 
-    const int scaleFac = gameres.h/200;
-
     if(mVDir == DOWN)
     {
         src.y = mpScrollSurface->h-mScrollPos;
-        dest.h = mScrollPos*scaleFac;
+        dest.h = mScrollPos;
     }
     else if(mHDir == RIGHT)
     {
         src.x = mpScrollSurface->w-mScrollPos;
-        dest.w = mScrollPos*scaleFac;
+        dest.w = mScrollPos;
     }
 
-    blitScaled(mpScrollSurface.get(),
-               src,
-               g_pVideoDriver->getBlitSurface(),
-               dest,
-               NONE);
+    SDL_BlitSurface(mpScrollSurface.get(),
+                   &src,
+                   g_pVideoDriver->getBlitSurface(),
+                   &dest);
 
 }
 

@@ -114,10 +114,17 @@ bool CResourceLoader::process(int* ret)
 		    
 		    // Here we try to process all the drawing related Tasks not yet done
 		    acc -= logicLatency;
+
+            // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
+            g_pGfxEngine->ponder();
+
 		}	
 		
 		// Pass all the surfaces to one
 		g_pVideoDriver->collectSurfaces();
+
+        // Apply graphical effects if any.
+        g_pGfxEngine->render();
 		
 		// Now you really render the screen
 		// When enabled, it also will apply Filters
