@@ -159,10 +159,10 @@ bool CRoboRed::isNearby(CSpriteObject &theObject)
 	  {
 	    if(!getActionNumber(A_RED_SHOOT))
 	    {
-    		if( theObject.getXMidPos() < getXMidPos() )
+            /*if( theObject.getXMidPos() < getXMidPos() )
 			xDirection = LEFT;
 		else
-			xDirection = RIGHT;
+            xDirection = RIGHT;*/
 	    }
 	  
 	    if( std::abs(dx) < CSF_DISTANCE_TO_SHOOT )

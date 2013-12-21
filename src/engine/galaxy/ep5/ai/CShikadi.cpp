@@ -100,17 +100,17 @@ void CShikadi::processWalking()
   
   if(hitdetectWithTilePropertyVert(1, newX, getYUpPos(), getYDownPos(), (1<<STC) ))
   {
-    if(getProbability(700))
-    {	
-	newX = (newX>>CSF)<<CSF;
-	// Spawn a Enemyshot in form electrostatic  charge which goes upwards
-	g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0, 
-								newX, getYUpPos(),
-                                0x2E5A, 0, UP,  150, mSprVar) );
-	setAction(A_SHIKADI_POLE_ZAPS); 
-	playSound(SOUND_POLEZAP);
-	return;
-    }      
+      if(getProbability(700))
+      {
+          newX = (newX>>CSF)<<CSF;
+          // Spawn a Enemyshot in form electrostatic  charge which goes upwards
+          g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0,
+                                                                  newX, getYUpPos(),
+                                                                  0x2E5A, 0, UP,  150, mSprVar) );
+          setAction(A_SHIKADI_POLE_ZAPS);
+          playSound(SOUND_POLEZAP);
+          return;
+      }
   }
 
   if(getProbability(300))
@@ -142,24 +142,24 @@ void CShikadi::getTouchedBy(CSpriteObject &theObject)
 	if(dead || theObject.dead)
 		return;
 
-	CStunnable::getTouchedBy(theObject);
+    CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet? Than make loose health.
-	if( dynamic_cast<CBullet*>(&theObject) )
-	{
-	    mHealth--;
-	    theObject.dead = true;
-	    
-	    if(mHealth == 0)
-	    {
-		setAction(A_SHIKADI_STUNNED);
-		dead = true;
-	    }
-	    else
-	    {
-	      blink(10);
-	    }
-	}
+    // Was it a bullet? Than make loose health.
+    if( dynamic_cast<CBullet*>(&theObject) )
+    {
+        mHealth--;
+        theObject.dead = true;
+
+        if(mHealth == 0)
+        {
+            setAction(A_SHIKADI_STUNNED);
+            dead = true;
+        }
+        else
+        {
+            blink(10);
+        }
+    }
 
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
