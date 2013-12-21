@@ -62,22 +62,29 @@ void CShikadiMaster::processStanding()
 {
     /*mTimer++;
     if(mTimer < TIME_UNTIL_REACT)
-	mTimer = 0;*/
+    mTimer = 0;*/
     
     if(getProbability(250))
-	return;
+        return;
     
     
     if(mTeleport)
     {
-	setAction(A_MASTER_TELEPORT);
-	mTeleport = false;
+        setAction(A_MASTER_TELEPORT);
+        mTeleport = false;
     }
     else
     {
-	mTeleport = true;
-	xDirection = mKeenAlignment;
-	setAction(A_MASTER_SHOOT);
+        mTeleport = true;
+        xDirection = mKeenAlignment;
+        setAction(A_MASTER_SHOOT);
+
+        // ... and spawn a shot that might hurt Keen
+        const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
+        g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0,
+                                    newX, getYUpPos()+(8<<STC),
+                                    0x2C3E, xDirection, CENTER,  150, mSprVar) );
+
     }
 }
 
@@ -86,15 +93,10 @@ void CShikadiMaster::processShooting()
 {
     mTimer++;
     if(mTimer < TIME_UNTIL_SHOOT)
-	return;
+        return;
     
     mTimer = 0;
-    
-    const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
-    g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0, 
-							    newX, getYUpPos()+(8<<STC),
-                                0x2C3E, xDirection, CENTER,  150, mSprVar) );
-    
+        
     playSound(SOUND_MASTERSHOT);
     setAction(A_MASTER_STAND);        
 }
