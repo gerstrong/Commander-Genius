@@ -82,44 +82,46 @@ void CMapPlayGalaxy::ponder()
 	{
 	    for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
 	    {
-		auto &objRef = *(obj->get());
-		bool visibility = false;
+            auto &objRef = *(obj->get());
+            bool visibility = false;
 
-		if( objRef.exists )
-		{
-		    visibility = objRef.calcVisibility();
+            if( objRef.exists )
+            {
 
-		    if( visibility )
-		    {
-                // Process the AI of the object as it's given
-                objRef.process();
 
-                // process all the objects' events
-                objRef.processEvents();
+                visibility = objRef.calcVisibility();
 
-                // Check collision between objects using NlogN order
-                auto theOther = obj; theOther++;
-                for( ; theOther != mObjectPtr.end() ; theOther++)
+                if( visibility )
                 {
-                    auto &theOtherRef = *(theOther->get());
-                    if( !theOtherRef.exists )
-                        continue;
+                    // Process the AI of the object as it's given
+                    objRef.process();
 
-                    objRef.isNearby(theOtherRef);
-                    theOtherRef.isNearby(objRef);
+                    // process all the objects' events
+                    objRef.processEvents();
 
-                    if( objRef.hitdetect(theOtherRef) )
+                    // Check collision between objects using NlogN order
+                    auto theOther = obj; theOther++;
+                    for( ; theOther != mObjectPtr.end() ; theOther++)
                     {
-                        objRef.getTouchedBy(theOtherRef);
-                        theOtherRef.getTouchedBy(objRef);
+                        auto &theOtherRef = *(theOther->get());
+                        if( !theOtherRef.exists )
+                            continue;
+
+                        objRef.isNearby(theOtherRef);
+                        theOtherRef.isNearby(objRef);
+
+                        if( objRef.hitdetect(theOtherRef) )
+                        {
+                            objRef.getTouchedBy(theOtherRef);
+                            theOtherRef.getTouchedBy(objRef);
+                        }
                     }
                 }
-		    }
-		}
+            }
 
-		// If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
-		// how the death-message or go gameover.
-		if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
+            // If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
+            // how the death-message or go gameover.
+            if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
 		{
 		    // Is he really dead?
 		    if( player->dead || (!visibility && player->m_dying) )

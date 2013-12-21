@@ -17,7 +17,7 @@
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 #else
-#include "SDL_rotozoom.h"
+//#include "SDL_rotozoom.h"
 #endif
 
 Uint32 getPixel(SDL_Surface *surface, int x, int y)

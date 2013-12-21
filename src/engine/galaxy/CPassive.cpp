@@ -206,8 +206,11 @@ void CPassiveGalaxy::processIntro()
         mZoomSfcPos.x = (gameRes.w-mpZoomSurface->w)/2;
         mZoomSfcZoom.x = mpZoomSurface->w;
         mZoomSfcZoom.y = mpZoomSurface->h;
-        processPonderMode = &CPassiveGalaxy::processIntroZoom;
-        processRenderMode = &CPassiveGalaxy::renderIntroZoom;
+        //processPonderMode = &CPassiveGalaxy::processIntroZoom;
+        //processRenderMode = &CPassiveGalaxy::renderIntroZoom;
+        processPonderMode = &CPassiveGalaxy::processTitle;
+        processRenderMode = &CPassiveGalaxy::renderTitle;
+
         g_pInput->flushAll();
 
         mCommanderTextSfc._draw(0,0, mpZoomSurface.get() );

@@ -4,71 +4,59 @@
 namespace galaxy
 {  
 
-AutoGun::AutoGun(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y, 
+AutoShot::AutoShot(CMap *pmap, const Uint32 foeID, const Uint32 x, const Uint32 y,
          direction_t horDir, direction_t vertDir, int basesprite, const int sprVar) :
-CGalaxySpriteObject(pmap, foeID, x, y, sprVar)
-{
-  // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5 and 6
-  
-  AutoShot *shot = new AutoShot(mp_Map, x, y, horDir, vertDir, basesprite, sprVar);
-  g_pBehaviorEngine->m_EventList.spawnObj( shot );
-}
-
-    
-AutoShot::AutoShot(CMap *pmap, const Uint32 x, const Uint32 y,
-         direction_t horDir, direction_t vertDir, int basesprite, const int sprVar) :
-CGalaxySpriteObject(pmap, 0, x, y, sprVar),
+CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 mTimer(0)
 {
-  // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5
-  
-  const int ep = g_pBehaviorEngine->getEpisode();
-  
-  xDirection = horDir;
-  yDirection = vertDir;
-  
-  mBaseSprite = basesprite;
-  
-  if(ep == 4)
-  {      
-      if(xDirection == LEFT && yDirection == CENTER)
-      {
-	  m_Pos.x += (1<<CSF);    
-	  m_Pos.y += (7<<STC);
-      }
-      else if(xDirection == CENTER && yDirection == UP)
-      {
-	  m_Pos.y -= (1<<CSF);    
-	  m_Pos.x += (7<<STC);
-      }
-      else if(xDirection == RIGHT && yDirection == CENTER)
-      {
-	  m_Pos.x -= (1<<CSF);
-	  m_Pos.y += (7<<STC);
-      }
-      else if(xDirection == CENTER && yDirection == DOWN)
-      {
-	  m_Pos.x += (7<<STC);
-      }
-  }
-  
-  if(ep > 4)
-  {
-    mNumAnimSprites = 4;
-  }
-  else
-  {
-    mNumAnimSprites = 2;
-    dontdraw = true;
-  }
+    // Coding for autogun. It covers Keen 4 Darts in Pyramids and the auto shooting guns in Keen 5
 
-  processState = &AutoShot::waiting;  
-  sprite = mBaseSprite;  
-  
-  origin = getPosition();   
-  
-  performCollisions();
-  
+    const int ep = g_pBehaviorEngine->getEpisode();
+
+    xDirection = horDir;
+    yDirection = vertDir;
+
+    mBaseSprite = basesprite;
+
+    if(ep == 4)
+    {
+        if(xDirection == LEFT && yDirection == CENTER)
+        {
+            m_Pos.x += (1<<CSF);
+            m_Pos.y += (7<<STC);
+        }
+        else if(xDirection == CENTER && yDirection == UP)
+        {
+            m_Pos.y -= (1<<CSF);
+            m_Pos.x += (7<<STC);
+        }
+        else if(xDirection == RIGHT && yDirection == CENTER)
+        {
+            m_Pos.x -= (1<<CSF);
+            m_Pos.y += (7<<STC);
+        }
+        else if(xDirection == CENTER && yDirection == DOWN)
+        {
+            m_Pos.x += (7<<STC);
+        }
+    }
+
+    if(ep > 4)
+    {
+        mNumAnimSprites = 4;
+    }
+    else
+    {
+        mNumAnimSprites = 2;
+        dontdraw = true;
+    }
+
+    processState = &AutoShot::waiting;
+    sprite = mBaseSprite;
+
+    origin = getPosition();
+
+    performCollisions();
 }
 
 void AutoShot::waiting()
@@ -76,21 +64,21 @@ void AutoShot::waiting()
     const int ep = g_pBehaviorEngine->getEpisode();
     if(ep > 4)
     {
-	if(sprite < mBaseSprite + mNumAnimSprites + 1)
-	    sprite++;
-	else
-	{
-	    sprite = mBaseSprite;
-	    dontdraw = true;
-	}
+        if(sprite < mBaseSprite + mNumAnimSprites + 1)
+            sprite++;
+        else
+        {
+            sprite = mBaseSprite;
+            dontdraw = true;
+        }
     }
     
-  if( mTimer < WAIT_TIME )
-  {
-    mTimer++;
-    return;
-  }
-  
+    if( mTimer < WAIT_TIME )
+    {
+        mTimer++;
+        return;
+    }
+
   if(m_Pos != origin)
   {
     moveToForce(origin);  
@@ -173,7 +161,7 @@ void AutoShot::process()
 {
     mTimer++;
     
-  (this->*processState)();
+    (this->*processState)();
 }
 
 };

@@ -250,28 +250,28 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	case 0x35: if ( difficulty < HARD ) break;
 	case 0x31: if ( difficulty < NORMAL ) break;
 	case 0x2D: 
-        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, UP, 134, 0);
+        p_newfoe = new galaxy::AutoShot(&Map, foe, x, y, CENTER, UP, 134, 0);
 		break;
 
 
 	case 0x36: if ( difficulty < HARD ) break;
 	case 0x32: if ( difficulty < NORMAL ) break;
 	case 0x2E: 
-        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, RIGHT, CENTER, 134, 0);
+        p_newfoe = new galaxy::AutoShot(&Map, foe, x, y, RIGHT, CENTER, 134, 0);
 		break;
 
 
 	case 0x37: if ( difficulty < HARD ) break;
 	case 0x33: if ( difficulty < NORMAL ) break;
 	case 0x2F: 
-        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, CENTER, DOWN, 134, 0);
+        p_newfoe = new galaxy::AutoShot(&Map, foe, x, y, CENTER, DOWN, 134, 0);
 		break;
 
 
 	case 0x38: if ( difficulty < HARD ) break;
 	case 0x34: if ( difficulty < NORMAL ) break;
 	case 0x30: 
-        p_newfoe = new galaxy::AutoGun(&Map, foe, x, y, LEFT, CENTER, 134, 0);
+        p_newfoe = new galaxy::AutoShot(&Map, foe, x, y, LEFT, CENTER, 134, 0);
 		break;
 
 	
@@ -379,4 +379,4 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp5::addFoe(CMap &Map, word foe, size_t x, 
 	return p_newfoe;
 }
 
-};
+}
