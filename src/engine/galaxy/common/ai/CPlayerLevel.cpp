@@ -674,7 +674,7 @@ void CPlayerLevel::shootInAir()
 
 		const VectorD2<int> newVec(getXPosition() + ((xDirection < 0) ? -(16<<STC) : (16<<STC)),
 									getYPosition()+(4<<STC));
-		tryToShoot(newVec, xDirection, yDirection);
+        tryToShoot(newVec, xDirection, 0);
 	}
 	m_fire_recharge_time = FIRE_RECHARGE_TIME;
 }
