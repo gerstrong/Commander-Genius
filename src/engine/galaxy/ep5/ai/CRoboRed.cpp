@@ -141,57 +141,57 @@ void CRoboRed::processShoot()
 
 bool CRoboRed::isNearby(CSpriteObject &theObject)
 {
-	if( dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-	    mLookTimer++;
-	    if(mLookTimer < TIME_UNTIL_LOOK)
-		return true;
-	
-	    mLookTimer = 0;	    
-	    
-	  mKeenNearby = false;
-		  
-	  const int objX = theObject.getXMidPos();
-	  const int roboX = getXMidPos();
-	  const int dx = objX - roboX;
+    if( dynamic_cast<CPlayerLevel*>(&theObject) )
+    {
+        mLookTimer++;
+        if(mLookTimer < TIME_UNTIL_LOOK)
+            return true;
 
-  	  if( theObject.getYDownPos() > getYUpPos() && theObject.getYUpPos() < getYDownPos() )
-	  {
-	    if(!getActionNumber(A_RED_SHOOT))
-	    {
-            /*if( theObject.getXMidPos() < getXMidPos() )
-			xDirection = LEFT;
-		else
-            xDirection = RIGHT;*/
-	    }
-	  
-	    if( std::abs(dx) < CSF_DISTANCE_TO_SHOOT )
-	    {
-	      mKeenNearby = true;
-	    }
-	  }
-	}
+        mLookTimer = 0;
 
-	return true;
+        mKeenNearby = false;
+
+        const int objX = theObject.getXMidPos();
+        const int roboX = getXMidPos();
+        const int dx = objX - roboX;
+
+        if( theObject.getYDownPos() > getYUpPos() && theObject.getYUpPos() < getYDownPos() )
+        {
+            if(getActionNumber(A_RED_PAUSE))
+            {
+                if( theObject.getXMidPos() < getXMidPos() )
+                    xDirection = LEFT;
+                else
+                    xDirection = RIGHT;
+            }
+
+            if( std::abs(dx) < CSF_DISTANCE_TO_SHOOT )
+            {
+                mKeenNearby = true;
+            }
+        }
+    }
+
+    return true;
 }
 
 void CRoboRed::getTouchedBy(CSpriteObject &theObject)
 {
-	if(dead || theObject.dead)
-		return;
+    if(dead || theObject.dead)
+        return;
 
-	CStunnable::getTouchedBy(theObject);
+    CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet?
-	if( dynamic_cast<CBullet*>(&theObject) )
-	{
-	  theObject.dead = true;
-	}
+    // Was it a bullet?
+    if( dynamic_cast<CBullet*>(&theObject) && !getActionNumber(A_RED_SHOOT) )
+    {
+        setAction(A_RED_PAUSE);
+    }
 
-	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
-	{
-	  player->kill();
-	}
+    if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
+    {
+        player->kill();
+    }
 }
 
 

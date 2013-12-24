@@ -4,6 +4,9 @@
 namespace galaxy
 {  
 
+// TODO: Autoguns should only shoot when they are visible.
+// In that matter they get different patterns that might help getting through the game
+
 AutoShot::AutoShot(CMap *pmap, const Uint32 foeID, const Uint32 x, const Uint32 y,
          direction_t horDir, direction_t vertDir, int basesprite, const int sprVar) :
 CGalaxySpriteObject(pmap, foeID, x, y, sprVar),

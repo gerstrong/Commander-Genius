@@ -34,6 +34,9 @@ const int SLIDE_SPEED = 25;
 
 const int UMOUNT_TIME = 30;
 
+
+
+// TODO: There is a pole sound for Amptoms, find its slot and implement it!
   
 CAmpton::CAmpton(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
@@ -97,32 +100,32 @@ void CAmpton::processWalking()
     
     if(hitdetectWithTilePropertyRectRO(1, l_x_mid, l_y, l_w, l_h, 1<<CSF))
     {
-      if( getProbability(600) )
-      //if (rand() < 0xC4)
-      {
-	bool polebelow = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYDownPos(), 1<<CSF);
-	bool poleabove = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYUpPos(), 1<<CSF); 
-	
-	if( getProbability(400) )
-	//if (rand() < 0x80) 
-	  poleabove = false;
-	else 
-	  polebelow = false;
-	
-	//climb up
-	if (poleabove) 
-	{
-	  setAction(A_AMPTON_START_POLE);
-	  yDirection = UP;
-	  return;
-	}	  
-	else if (polebelow) 
-	{
-	  setAction(A_AMPTON_START_POLE);
-	  yDirection = DOWN;
-	  return;
-	}
-      }
+        if( getProbability(600) )
+            //if (rand() < 0xC4)
+        {
+            bool polebelow = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYDownPos(), 1<<CSF);
+            bool poleabove = hitdetectWithTilePropertyHor(1, l_x_l, l_x_r, getYUpPos(), 1<<CSF);
+
+            if( getProbability(400) )
+                //if (rand() < 0x80)
+                poleabove = false;
+            else
+                polebelow = false;
+
+            //climb up
+            if (poleabove)
+            {
+                setAction(A_AMPTON_START_POLE);
+                yDirection = UP;
+                return;
+            }
+            else if (polebelow)
+            {
+                setAction(A_AMPTON_START_POLE);
+                yDirection = DOWN;
+                return;
+            }
+        }
     }
   }
   

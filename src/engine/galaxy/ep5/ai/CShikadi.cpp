@@ -100,7 +100,7 @@ void CShikadi::processWalking()
   
   if(hitdetectWithTilePropertyVert(1, newX, getYUpPos(), getYDownPos(), (1<<STC) ))
   {
-      if(getProbability(700))
+      if(getProbability(500))
       {
           newX = (newX>>CSF)<<CSF;
           // Spawn a Enemyshot in form electrostatic  charge which goes upwards
