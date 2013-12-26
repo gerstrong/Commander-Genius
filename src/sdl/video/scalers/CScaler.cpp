@@ -38,9 +38,9 @@ void CScaler::setFilterType( bool IsNormal )
  * Scale functions
  */
 void scaleDynamic( SDL_Surface *srcSfc,
-                   SDL_Rect &srcRect,
+                   SDL_Rect srcRect,
                    SDL_Surface *dstSfc,
-                   SDL_Rect &dstRect )
+                   SDL_Rect dstRect )
 {
 	const bool equalWidth  = (dstRect.w == srcSfc->w);
 	const bool equalHeight = (dstRect.h == srcSfc->h);
@@ -57,43 +57,65 @@ void scaleDynamic( SDL_Surface *srcSfc,
     SDL_LockSurface( srcSfc );
     SDL_LockSurface( dstSfc );
 
-	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels)
-	                   +dstRect.x+dstRect.y*dstSfc->w;
-	Uint32 *srcPixel = static_cast<Uint32*>(srcSfc->pixels);
-	Uint32 pitch;
+    Uint32 *dstFirstPixel = static_cast<Uint32*>(dstSfc->pixels);
+    Uint32 *srcFirstPixel = static_cast<Uint32*>(srcSfc->pixels);
+    Uint32 *dstPixel = dstFirstPixel;
+    Uint32 *srcPixel = srcFirstPixel;
 
-	// Pass those numbers to the stack
-    const float wFac = (float(dstRect.w)) / (float(srcSfc->w));
-    const float hFac = (float(dstRect.h)) / (float(srcRect.h));
+    // Pass those numbers to the stack, they are used very often.
+    const float wFac = (float(srcSfc->w)) / (float(dstRect.w));
+    const float hFac = (float(srcRect.h)) / (float(dstRect.h));
+
+    int pitch = dstRect.y*dstSfc->w;
+
+
+    if(pitch >= 0)
+        dstPixel += pitch;
+
+    if(dstRect.x >= 0)
+        dstPixel += dstRect.x;
+
+    if(dstRect.w > dstSfc->w)
+        dstRect.w = dstSfc->w;
+
+    if(dstRect.h > dstSfc->h)
+        dstRect.h = dstSfc->h;
 
 	float xSrc, ySrc;
 
-	ySrc = 0.0f;
-    for( int yDst = 0 ; yDst<dstRect.h ; yDst++ )
-	{
-		xSrc = 0.0f;
+    ySrc = 0.0f;
 
-		pitch = Uint32(ySrc)*srcSfc->w;
-		if(equalWidth)
-		{
-			memcpy(dstPixel, srcPixel+pitch, srcSfc->pitch);
-			dstPixel += dstSfc->w;
-		}
-		else
-		{
+    if(equalWidth)
+    {
+        pitch = Uint32(ySrc)*srcSfc->w;
+
+        for( int yDst = 0 ; yDst<dstRect.h ; yDst++ )
+        {
+            memcpy(dstPixel, srcPixel+pitch, srcSfc->pitch);
+            dstPixel += dstSfc->w;
+        }
+    }
+    else
+    {
+        for( int yDst = 0 ; yDst<dstRect.h ; yDst++ )
+        {
+            xSrc = 0.0f;
+
+            pitch = Uint32(ySrc)*srcSfc->w;
 
             for( int xDst = 0; xDst<dstRect.w ; xDst++ )
-			{
-				*dstPixel = srcPixel[pitch+Uint32(xSrc)];
+            {
+                *dstPixel = srcPixel[pitch+Uint32(xSrc)];
 
                 xSrc += wFac;
-				dstPixel++;
-			}
-			dstPixel += dstSfc->w-dstRect.w;
-		}
+                dstPixel++;
+            }
 
-        ySrc += hFac;
-	}
+            dstPixel = dstFirstPixel + (dstSfc->w*yDst);
+
+            ySrc += hFac;
+        }
+    }
 
     SDL_UnlockSurface( dstSfc );
     SDL_UnlockSurface( srcSfc );

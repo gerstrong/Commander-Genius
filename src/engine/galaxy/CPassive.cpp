@@ -206,10 +206,10 @@ void CPassiveGalaxy::processIntro()
         mZoomSfcPos.x = (gameRes.w-mpZoomSurface->w)/2;
         mZoomSfcZoom.x = mpZoomSurface->w;
         mZoomSfcZoom.y = mpZoomSurface->h;
-        //processPonderMode = &CPassiveGalaxy::processIntroZoom;
-        //processRenderMode = &CPassiveGalaxy::renderIntroZoom;
-        processPonderMode = &CPassiveGalaxy::processTitle;
-        processRenderMode = &CPassiveGalaxy::renderTitle;
+        processPonderMode = &CPassiveGalaxy::processIntroZoom;
+        processRenderMode = &CPassiveGalaxy::renderIntroZoom;
+        //processPonderMode = &CPassiveGalaxy::processTitle;
+        //processRenderMode = &CPassiveGalaxy::renderTitle;
 
         g_pInput->flushAll();
 
@@ -236,7 +236,7 @@ void CPassiveGalaxy::processIntroZoom()
 
     if(mZoomSfcZoom.x > gameRes.w)
     {
-       mZoomSfcZoom.x -= mScaleFactor*2*4;
+       mZoomSfcZoom.x -= mScaleFactor*8;
     }
     else
     {
@@ -316,7 +316,7 @@ void CPassiveGalaxy::renderIntroZoom()
 
     CVidConfig &vidConf = g_pVideoDriver->getVidConfig();
 
-    blitScaled( zoomSfc, srcRect, blit, dstRect, vidConf.m_ScaleXFilter );
+    blitScaled( zoomSfc, srcRect, blit, dstRect, vidConf.m_ScaleXFilter ); // TODO: This still makes CG crash!!
 }
 
 
