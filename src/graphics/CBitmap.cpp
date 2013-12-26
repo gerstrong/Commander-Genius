@@ -169,8 +169,6 @@ bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
     // Need to do that, otherwise it won't work.
     optimizeSurface();
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
     auto bmpSfc = mpBitmapSurface.get();
     auto bmpFormat = bmpSfc->format;
 
@@ -187,30 +185,12 @@ bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
     if(!newSfc)
       return false;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 
     SDL_BlendMode blendMode;
 
     SDL_GetSurfaceBlendMode(bmpSfc, &blendMode);
     SDL_SetSurfaceBlendMode(newSfc.get(), blendMode);
-
-#else
-
-    auto bmpSfc = mpBitmapSurface.get();
-    auto bmpFormat = bmpSfc->format;
-
-    newSfc.reset( SDL_CreateRGBSurface(bmpSfc->flags,
-                                       newRect.w,
-                                       newRect.h,
-                                       bmpFormat->BitsPerPixel,
-                                       bmpFormat->Rmask,
-                                       bmpFormat->Gmask,
-                                       bmpFormat->Bmask,
-                                       0 ),
-                    &SDL_FreeSurface );
-
-    if(!newSfc)
-      return false;
-
 
 #endif
 
