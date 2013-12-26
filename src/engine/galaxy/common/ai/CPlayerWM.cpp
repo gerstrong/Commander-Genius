@@ -315,7 +315,8 @@ void CPlayerWM::processMoving()
                 // Tell the player he cannot climb yet
                 CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
                 EventContainer.add( new EventSendBitmapDialogMsg(
-                                        g_pGfxEngine->getBitmap(29), g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), RIGHT) );
+                                        g_pGfxEngine->getBitmapFromId(29),
+                                        g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), RIGHT) );
 
                 moveYDir(-(climbDir<<CSF)/2);
             }
@@ -429,7 +430,7 @@ void CPlayerWM::processMoving()
                 CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
                 g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
-                EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(105),
+                EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(105),
                                                                  g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
 
                 m_cantswim = true;

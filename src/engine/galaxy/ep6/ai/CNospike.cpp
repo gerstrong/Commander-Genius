@@ -239,8 +239,10 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
       
 	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
       
-	std::unique_ptr<EventSendBitmapDialogMsg> msg1(new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(3), "Thanks for the rescue", LEFT));
-	std::unique_ptr<EventSendBitmapDialogMsg> msg2(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), "Null Problemo", RIGHT));
+    std::unique_ptr<EventSendBitmapDialogMsg> msg1(
+                new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(3), "Thanks for the rescue", LEFT));
+    std::unique_ptr<EventSendBitmapDialogMsg> msg2(
+                new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), "Null Problemo", RIGHT));
 	msgs.push_back( move(msg1) );
 	msgs.push_back( move(msg2) );
       

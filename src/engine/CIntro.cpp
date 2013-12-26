@@ -24,12 +24,12 @@ CIntro::CIntro()
 void CIntro::init()
 {
 	// Load the Title Bitmap
-	mp_bm[0] = g_pGfxEngine->getBitmap("AN");
-	mp_bm[1] = g_pGfxEngine->getBitmap("APOGEE");
-	mp_bm[2] = g_pGfxEngine->getBitmap("PRESENT");
-	mp_bm[3] = g_pGfxEngine->getBitmap("OFAN");
-	mp_bm[4] = g_pGfxEngine->getBitmap("IDSOFT");
-	mp_bm[5] = g_pGfxEngine->getBitmap("PRODUCT");
+    mp_bm[0] = g_pGfxEngine->getBitmapFromStr("AN");
+    mp_bm[1] = g_pGfxEngine->getBitmapFromStr("APOGEE");
+    mp_bm[2] = g_pGfxEngine->getBitmapFromStr("PRESENT");
+    mp_bm[3] = g_pGfxEngine->getBitmapFromStr("OFAN");
+    mp_bm[4] = g_pGfxEngine->getBitmapFromStr("IDSOFT");
+    mp_bm[5] = g_pGfxEngine->getBitmapFromStr("PRODUCT");
 
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 	

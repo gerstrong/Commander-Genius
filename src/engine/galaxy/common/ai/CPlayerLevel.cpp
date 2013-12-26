@@ -1428,7 +1428,7 @@ void CPlayerLevel::processExiting()
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
         EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		g_pGfxEngine->setupEffect(new CDimDark(8));		
-		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+        EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
         m_Inventory.Item.m_gem.clear();
 		mExitTouched = true;
 	}
@@ -1735,7 +1735,7 @@ void CPlayerLevel::processEnterDoor()
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+        EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
 		
         g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar) );
 				
@@ -1752,7 +1752,7 @@ void CPlayerLevel::processEnterDoor()
 		g_pSound->playSound( SOUND_LEVEL_DONE );		
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-		EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+        EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
         g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		dontdraw = true;
         m_Inventory.Item.m_gem.clear();
@@ -2611,7 +2611,7 @@ void CPlayerLevel::process()
 	    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 	    EventContainer.wait(1.0f);
-	    EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), loading_text, LEFT) );				
+        EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
         g_pBehaviorEngine->m_EventList.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         m_Inventory.Item.m_gem.clear();
         m_Inventory.Item.fuse_levels_completed++;

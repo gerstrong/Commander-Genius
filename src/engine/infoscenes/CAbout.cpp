@@ -33,7 +33,7 @@ void CAbout::init()
 	// Load the SDL_Bitmap
 	if(m_type == "ID")
 	{
-		mp_bmp = g_pGfxEngine->getBitmap("IDLOGO");
+        mp_bmp = g_pGfxEngine->getBitmapFromStr("IDLOGO");
 		
 		// Get the offset where in the data the info is...
 		size_t offset = 0;

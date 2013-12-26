@@ -70,7 +70,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	g_pGfxEngine->setupEffect(new CDimDark(8));
-	EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), 
+    EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"),
 							  loading_text, LEFT) );
 
 	mMap.drawAll();

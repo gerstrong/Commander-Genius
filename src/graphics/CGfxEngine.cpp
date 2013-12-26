@@ -210,7 +210,7 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 // Getters
 ///
 
-CBitmap *CGfxEngine::getBitmap(const std::string &name) const
+CBitmap *CGfxEngine::getBitmapFromStr(const std::string &name) const
 {
 	std::string s_name;
 	for(unsigned int i=0 ; i<Bitmap.size() ; i++)

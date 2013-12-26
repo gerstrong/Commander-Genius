@@ -356,7 +356,7 @@ void CGUIDialog::initVorticonBackground()
 
 void CGUIDialog::initGalaxyBackround()
 {   
-    mBackgroundBmp = *g_pGfxEngine->getBitmap("KEENSWATCH");
+    mBackgroundBmp = *g_pGfxEngine->getBitmapFromStr("KEENSWATCH");
 
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     mBackgroundBmp.scaleTo(gameRes);

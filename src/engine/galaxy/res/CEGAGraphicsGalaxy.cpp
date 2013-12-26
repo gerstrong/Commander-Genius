@@ -734,7 +734,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
 	{
-		CBitmap &Bitmap = g_pGfxEngine->getBitmap(i);
+        CBitmap &Bitmap = g_pGfxEngine->getBitmapFromId(i);
 		bmpRect.w = BmpHead[i].Width*8;
 		bmpRect.h = BmpHead[i].Height;
 		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, bmpRect, Palette);

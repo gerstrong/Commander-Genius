@@ -36,7 +36,7 @@ bool CTitle::init(int Episode)
 	else
 		g_pGfxEngine->setupEffect(new CPixelate(16));
 	
-	if( (pBitmap = g_pGfxEngine->getBitmap("TITLE")) != NULL )
+    if( (pBitmap = g_pGfxEngine->getBitmapFromStr("TITLE")) != NULL )
 	{
 		const int width = 160-(pBitmap->getWidth()/2);
 		std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
@@ -51,10 +51,10 @@ bool CTitle::init(int Episode)
 
     if(gameRes.w == 320 && gameRes.h == 200 )
     {
-        if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
+        if( (pBitmap = g_pGfxEngine->getBitmapFromStr("F1HELP")) != NULL )
         {
             const int width = (Episode == 3) ? 128 : 96;
-            pBitmap = g_pGfxEngine->getBitmap("F1HELP");
+            pBitmap = g_pGfxEngine->getBitmapFromStr("F1HELP");
             std::unique_ptr<CSpriteObject> obj(new CEGABitmap( &mMap, pSurface, pBitmap ));
             obj->setScrPos( width, 182 );
             pBitmap->_draw( width, 182, pSurface);

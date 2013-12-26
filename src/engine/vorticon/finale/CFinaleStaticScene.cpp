@@ -75,7 +75,7 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
 
 	bitmap_structure bmp_struct;
 
-    bmp_struct.bitmap = *g_pGfxEngine->getBitmap(bitmapname);
+    bmp_struct.bitmap = *g_pGfxEngine->getBitmapFromStr(bitmapname);
     bmp_struct.dest_rect.x = x*scaleFactor;
     bmp_struct.dest_rect.y = y*scaleFactor;
     bmp_struct.dest_rect.w = bmp_struct.bitmap.getWidth();

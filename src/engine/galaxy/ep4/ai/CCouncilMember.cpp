@@ -129,10 +129,14 @@ void CCouncilMember::performJanitorMode()
 
 	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 
-	std::unique_ptr<EventSendBitmapDialogMsg> msg1( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT) );
-	std::unique_ptr<EventSendBitmapDialogMsg> msg2( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[1], LEFT) );
-	std::unique_ptr<EventSendBitmapDialogMsg> msg3( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTALKING"), elder_text[2], RIGHT) );
-	std::unique_ptr<EventSendBitmapDialogMsg> msg4( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[3], LEFT) );
+    std::unique_ptr<EventSendBitmapDialogMsg> msg1(
+                new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(104), elder_text[0], LEFT) );
+    std::unique_ptr<EventSendBitmapDialogMsg> msg2(
+                new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(104), elder_text[1], LEFT) );
+    std::unique_ptr<EventSendBitmapDialogMsg> msg3(
+                new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTALKING"), elder_text[2], RIGHT) );
+    std::unique_ptr<EventSendBitmapDialogMsg> msg4(
+                new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(104), elder_text[3], LEFT) );
 
 	msgs.push_back( move(msg1) );
 	msgs.push_back( move(msg2) );
@@ -186,8 +190,10 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 		std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 
-		std::unique_ptr<EventSendBitmapDialogMsg> msg1(new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmap(104), elder_text[0], LEFT));
-		std::unique_ptr<EventSendBitmapDialogMsg> msg2(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), elder_text[1], RIGHT));
+        std::unique_ptr<EventSendBitmapDialogMsg> msg1(
+                    new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(104), elder_text[0], LEFT));
+        std::unique_ptr<EventSendBitmapDialogMsg> msg2(
+                    new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), elder_text[1], RIGHT));
 		msgs.push_back( move(msg1) );
 		msgs.push_back( move(msg2) );
 
@@ -197,7 +203,8 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		
 		if(rescuedelders >= NumberToRescue) // In this case the game ends.
 		{
-		    std::unique_ptr<EventSendBitmapDialogMsg> msg1(new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmap("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT));
+            std::unique_ptr<EventSendBitmapDialogMsg> msg1(
+                        new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT));
 		    msgs.push_back( move(msg1) );
 		    
 		    const std::string end_text("End of Episode.\n"

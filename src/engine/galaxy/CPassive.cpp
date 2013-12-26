@@ -23,7 +23,7 @@ namespace galaxy
 CPassiveGalaxy::CPassiveGalaxy() :
 processPonderMode(&CPassiveGalaxy::processIntro),
 processRenderMode(&CPassiveGalaxy::renderIntro),
-m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
+m_BackgroundBitmap(*g_pGfxEngine->getBitmapFromStr("TITLE")),
 mCommanderTextSfc(g_pGfxEngine->getMiscBitmap(0)),
 mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
 {
@@ -36,7 +36,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     else
         mCreditsBmpID = 23;
 
-    mCurrentLogoBmp = g_pGfxEngine->getBitmap(mCreditsBmpID);    
+    mCurrentLogoBmp = g_pGfxEngine->getBitmapFromId(mCreditsBmpID);
 
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
@@ -181,7 +181,7 @@ void CPassiveGalaxy::processIntro()
             mTerminatorLogoNum++;
             mTerminatorTimer = 0;
 
-            mCurrentLogoBmp = g_pGfxEngine->getBitmap(mCreditsBmpID+mTerminatorLogoNum);
+            mCurrentLogoBmp = g_pGfxEngine->getBitmapFromId(mCreditsBmpID+mTerminatorLogoNum);
             mCurrentLogoBmp.optimizeSurface();
 
             CRect<Uint16> logoBmpRect;
@@ -270,7 +270,7 @@ void CPassiveGalaxy::processIntroZoom()
         g_pInput->flushAll();
         processPonderMode = &CPassiveGalaxy::processTitle;
         processRenderMode = &CPassiveGalaxy::renderTitle;
-        m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
+        m_BackgroundBitmap = *g_pGfxEngine->getBitmapFromStr("TITLE");
 
         CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
         m_BackgroundBitmap.scaleTo(gameRes);

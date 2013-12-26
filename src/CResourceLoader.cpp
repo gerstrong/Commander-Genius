@@ -230,7 +230,7 @@ void CResourceLoader::renderLoadingGraphic()
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
 	{
-		CBitmap &Bitmap = *g_pGfxEngine->getBitmap("ONEMOMEN");
+        CBitmap &Bitmap = *g_pGfxEngine->getBitmapFromStr("ONEMOMEN");
 		SDL_Rect rect;
 		int width = Bitmap.getWidth();
 		int height = Bitmap.getHeight();

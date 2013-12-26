@@ -32,7 +32,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 
 		// Show got item message
 		EventContainer.add( new EventSendBitmapDialogMsg(
-		    g_pGfxEngine->getBitmap(30),g_pBehaviorEngine->getString(answermap[mFoeID-0x63]), LEFT) );
+            g_pGfxEngine->getBitmapFromId(30),g_pBehaviorEngine->getString(answermap[mFoeID-0x63]), LEFT) );
 		
 
 		switch(mFoeID)

@@ -32,7 +32,6 @@ mName(bitmap.getName())
         SDL_Surface *optSfc = g_pVideoDriver->convertThroughBlitSfc( sfc );
         mpBitmapSurface.reset( optSfc, &SDL_FreeSurface );
     }
-
 }
 
 ///
@@ -248,11 +247,23 @@ void CBitmap::_draw(const int x, const int y, SDL_Surface *dst) const
         src_rect.w -= src_rect.x;
     }
 
+    if(dst_rect.x + src_rect.w > dst->w )
+    {
+        // src Surface too large! Clip it down!
+        src_rect.w = dst->w - dst_rect.x;
+    }
+
     if(dst_rect.y < 0)
     {
         src_rect.y = -dst_rect.y;
         dst_rect.y = 0;
         src_rect.h -= src_rect.y;
+    }
+
+    if(dst_rect.y + src_rect.h > dst->h )
+    {
+        // src Surface too large! Clip it down!
+        src_rect.h = dst->h - dst_rect.y;
     }
 
     SDL_BlitSurface( bmpPtr, &src_rect, dst, &dst_rect );

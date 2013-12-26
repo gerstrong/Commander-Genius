@@ -288,7 +288,7 @@ void CPlayGameVorticon::ponder()
 		}
 		else // Bitmap must first be created
 		{
-			CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
+            CBitmap *pBitmap = g_pGfxEngine->getBitmapFromStr("GAMEOVER");
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap) );
 

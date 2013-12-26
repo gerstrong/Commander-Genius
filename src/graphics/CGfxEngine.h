@@ -61,10 +61,10 @@ public:
 
 	CTilemap &getTileMap(size_t tilemap) { return Tilemap.at(tilemap); }
 	std::vector<CTilemap> &getTileMaps() { return Tilemap; }
-	CBitmap &getBitmap(Uint16 slot) { return Bitmap.at(slot); }
+    CBitmap &getBitmapFromId(Uint16 slot) { return Bitmap.at(slot); }
     CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
     CBitmap &getMiscBitmap(Uint16 slot) { return miscBitmap.at(slot); }
-    CBitmap *getBitmap(const std::string &name) const;
+    CBitmap *getBitmapFromStr(const std::string &name) const;
 
     CSprite *getSprite(const int var, const std::string &name) const;
 

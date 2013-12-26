@@ -56,7 +56,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 	{
 		std::string name;
 		//char name[9];
-		CBitmap &Bitmap = g_pGfxEngine->getBitmap(i);
+        CBitmap &Bitmap = g_pGfxEngine->getBitmapFromId(i);
 		memcpy(&bmpRect.w,data+16*i,2);
 		memcpy(&bmpRect.h,data+16*i+2,2);
 		name = static_cast<const char*>(data+16*i+8);
@@ -243,7 +243,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	{
 		for(int b=0 ; b<m_bitmaps ; b++)
 		{
-		    CBitmap &bitmap = g_pGfxEngine->getBitmap(b);
+            CBitmap &bitmap = g_pGfxEngine->getBitmapFromId(b);
 			// this points to the location that we're currently
 			// decoding bitmap data to
 
@@ -280,7 +280,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	{
 		std::string filename=*it;
 		int num = getRessourceID(filename, "bitmap");
-		CBitmap &bitmap = g_pGfxEngine->getBitmap(num);
+        CBitmap &bitmap = g_pGfxEngine->getBitmapFromId(num);
 		filename = getResourceFilename("gfx/" + filename, path, false);
 		bitmap.loadHQBitmap(filename);
 	}
