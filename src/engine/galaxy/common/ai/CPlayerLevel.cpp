@@ -939,8 +939,13 @@ void CPlayerLevel::processCliffClimbingOntoFloor()
 
 bool CPlayerLevel::stun()
 {
-    if(!blockedd || getActionStatus(A_KEEN_SLIDE))
-	return false;
+    bool rejectCriteria = false;
+
+    rejectCriteria |= !blockedd;
+    rejectCriteria |= getActionStatus(A_KEEN_SLIDE);
+
+    if(rejectCriteria)
+        return false;
 
     setAction(A_KEEN_STUNNED);
     playSound(SOUND_KEEN_STUNNED);

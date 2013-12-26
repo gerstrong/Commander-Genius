@@ -197,30 +197,35 @@ bool COrbatrix::isNearby(CSpriteObject &theObject)
 void COrbatrix::getTouchedBy(CSpriteObject& theObject)
 {
     if(dead || theObject.dead)
-	return;
-        
-    // Was it a bullet? Then loose health.
+        return;
+
+    // Was it a bullet, make it zap/zot
     if( dynamic_cast<CBullet*>(&theObject) )
     {
-	theObject.dead = true;
-	return;
+        setAction(A_ORBATRIX_FLOAT);
+        theObject.dead = true;
+        return;
     }
     
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
-      if(!mGivesKey)
-      {
-	player->kill();
-      }
-      else
-      {
-	stItemGalaxy &Item = player->m_Inventory.Item;
-	Item.m_gem.red++;
-	g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), got_sprite_item_pics[2][2], FADEOUT));
-	dead = true;
-	exists = false;
-      }
-    } 
+        if(!mGivesKey)
+        {
+            // Only kill Keen, if Orbatrix bounces
+            if(getActionNumber(A_ORBATRIX_BOUNCE))
+            {
+                player->kill();
+            }
+        }
+        else
+        {
+            stItemGalaxy &Item = player->m_Inventory.Item;
+            Item.m_gem.red++;
+            g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), got_sprite_item_pics[2][2], FADEOUT));
+            dead = true;
+            exists = false;
+        }
+    }
 }
 
 void COrbatrix::process()
