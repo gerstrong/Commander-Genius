@@ -50,9 +50,12 @@ void scaleDynamic( SDL_Surface *srcSfc,
 		SDL_Rect sdldstrect;
 		sdldstrect.x = dstRect.x; sdldstrect.y = dstRect.y;
 		sdldstrect.w = dstRect.w; sdldstrect.h = dstRect.h;
-		SDL_BlitSurface(srcSfc, NULL, dstSfc, &sdldstrect);
+        SDL_BlitSurface(srcSfc, &srcRect, dstSfc, &sdldstrect);
 		return;
 	}
+
+    SDL_LockSurface( srcSfc );
+    SDL_LockSurface( dstSfc );
 
 	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels)
 	                   +dstRect.x+dstRect.y*dstSfc->w;
@@ -92,6 +95,8 @@ void scaleDynamic( SDL_Surface *srcSfc,
         ySrc += hFac;
 	}
 
+    SDL_UnlockSurface( dstSfc );
+    SDL_UnlockSurface( srcSfc );
 }
 
 
@@ -277,13 +282,7 @@ void blitScaled(SDL_Surface *srcSfc,
 
 #else
 
-    SDL_LockSurface( srcSfc );
-    SDL_LockSurface( dstSfc );
-
     scaleDynamic( srcSfc, lSrcRect, dstSfc, lDstRect );
-
-    SDL_UnlockSurface( dstSfc );
-    SDL_UnlockSurface( srcSfc );
 
 #endif
 
