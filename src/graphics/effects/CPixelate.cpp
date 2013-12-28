@@ -46,9 +46,17 @@ void CPixelate::getSnapshot()
 {
 	g_pVideoDriver->collectSurfaces();
 
+    SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
+
     if(!mp_OldSurface)
     {
-        mp_OldSurface = g_pVideoDriver->convertThroughBlitSfc(g_pVideoDriver->getBlitSurface());
+        SDL_PixelFormat *format = blitSfc->format;
+        mp_OldSurface = SDL_CreateRGBSurface( SDL_SWSURFACE,
+                                              blitSfc->w, blitSfc->h, 32,
+                                              format->Rmask,
+                                              format->Gmask,
+                                              format->Bmask,
+                                              0 );
     }
 
     // Surface might have alpha mask. In that case the mColorKey can be zero
@@ -69,7 +77,9 @@ void CPixelate::getSnapshot()
     #endif
     }
 
+    //SDL_FillRect(mp_OldSurface, nullptr, SDL_MapRGB(mp_OldSurface->format, 0x0, 0x0, 0x0) );
 
+    SDL_BlitSurface(g_pVideoDriver->getBlitSurface(), nullptr, mp_OldSurface, nullptr);
 }
 
 // Effect cycle

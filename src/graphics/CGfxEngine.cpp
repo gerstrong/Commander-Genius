@@ -84,7 +84,7 @@ void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 }
 
 // This will store the effect pointer the developer created in one function
-// You need this call to make you effect work!
+// You need this call this to make the effect work!
 void CGfxEngine::setupEffect(CEffects *pEffect)
 {
     mpEffects.reset(pEffect);

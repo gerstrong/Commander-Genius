@@ -274,17 +274,13 @@ void CPassiveGalaxy::processIntroZoom()
 
         CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
         m_BackgroundBitmap.scaleTo(gameRes);
+        renderIntroZoom();
         g_pGfxEngine->setupEffect(new CPixelate(2));
     }
 }
 
 void CPassiveGalaxy::renderIntroZoom()
 {
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
-    SDL_Rect gameResSDL = gameRes.SDLRect();
-
-    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
-
     SDL_Rect dstRect, srcRect;
     srcRect.x = srcRect.y = 0;
 
@@ -310,13 +306,15 @@ void CPassiveGalaxy::renderIntroZoom()
     dstRect.w = mZoomSfcZoom.x;
     dstRect.h = mZoomSfcZoom.y;
 
+    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    SDL_Rect gameResSDL = gameRes.SDLRect();
 
     SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
 
     CVidConfig &vidConf = g_pVideoDriver->getVidConfig();
 
-    blitScaled( zoomSfc, srcRect, blit, dstRect, vidConf.m_ScaleXFilter ); // TODO: This still makes CG crash!!
+    blitScaled( zoomSfc, srcRect, blitSfc, dstRect, vidConf.m_ScaleXFilter ); // TODO: This still makes CG crash!!
 }
 
 
