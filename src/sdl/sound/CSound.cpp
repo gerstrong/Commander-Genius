@@ -67,11 +67,7 @@ m_OPL_Player(mAudioSpec),
 m_pause_gameplay(false)
 {
 	mAudioSpec.channels = 2; // Stereo Sound
-#if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(ANDROID)
 	mAudioSpec.format = AUDIO_S16; // 16-bit sound
-#else
-	mAudioSpec.format = AUDIO_U8; // 8-bit sound
-#endif
 	mAudioSpec.freq = 44100; // high quality
 }
 
