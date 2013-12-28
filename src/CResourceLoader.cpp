@@ -270,5 +270,10 @@ void CResourceLoader::renderLoadingGraphic()
 		SDL_FillRect(sfc, &rect, color);
 	}
 	
-    SDL_BlitSurface( mpProgressSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr );
+    // In there is garbage of other drawn stuff clean it up.
+    auto blit = g_pVideoDriver->getBlitSurface();
+
+    SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0,0,0) );
+
+    SDL_BlitSurface( mpProgressSfc.get(), nullptr, blit, nullptr );
 }

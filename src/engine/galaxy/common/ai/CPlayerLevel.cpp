@@ -1648,7 +1648,6 @@ void CPlayerLevel::processSliding()
 
 
 	m_timer = 0;
-	makeHimStand();
 
 	if(mPlacingGem)
 	{
@@ -1660,6 +1659,8 @@ void CPlayerLevel::processSliding()
 		mPlacingGem = false;
 		playSound( SOUND_DOOR_OPEN );
 	}
+
+    makeHimStand();
 }
 
 

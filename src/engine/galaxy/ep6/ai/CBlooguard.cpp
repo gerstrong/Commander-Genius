@@ -62,10 +62,10 @@ void CBlooguard::processClubbing()
 {
     if( getActionStatus(A_BLOOGUARD_WALK) )
     {
-	// At this point Keen must get stunned!
-	mStubPlayer = true;
-	setAction(A_BLOOGUARD_WALK);
-	playSound(SOUND_BLOOGGUARD_STUB);	
+        // At this point Keen must get stunned!
+        mStubPlayer = true;
+        setAction(A_BLOOGUARD_WALK);
+        playSound(SOUND_BLOOGGUARD_STUB);
     }
 }
 

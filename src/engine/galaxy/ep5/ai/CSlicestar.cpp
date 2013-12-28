@@ -14,7 +14,7 @@ namespace galaxy {
   
 enum SLICESTARACTIONS
 {
-A_SLICESTAR_MOVE = 0,
+A_SLICESTAR_MOVE = 0
 };
 
 const int MOVE_SPEED = 25;
@@ -45,7 +45,7 @@ void CSlicestar::getTouchedBy(CSpriteObject &theObject)
 
 	CStunnable::getTouchedBy(theObject);
 
-	// Was it a bullet? Than make it stunned.
+    // Was it a bullet? Zap zot!
 	if( dynamic_cast<CBullet*>(&theObject) )
 	{
 		theObject.dead = true;

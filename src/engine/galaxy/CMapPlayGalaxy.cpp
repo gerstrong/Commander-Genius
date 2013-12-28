@@ -70,25 +70,23 @@ void CMapPlayGalaxy::ponder()
 
     bool pause = msgboxactive;
 
-	// Check if the engine need to be paused
+    // Check if the engine need to be paused
     for( auto &inv : mInventoryVec)
         pause |= inv.showStatus();
 
-	// Animate the tiles of the map
-	mMap.m_animation_enabled = !pause;
-	mMap.animateAllTiles();
+    // Animate the tiles of the map
+    mMap.m_animation_enabled = !pause;
+    mMap.animateAllTiles();
 
-	if(!pause)
-	{
-	    for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
-	    {
+    if(!pause)
+    {
+        for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
+        {
             auto &objRef = *(obj->get());
             bool visibility = false;
 
             if( objRef.exists )
             {
-
-
                 visibility = objRef.calcVisibility();
 
                 if( visibility )
@@ -120,15 +118,24 @@ void CMapPlayGalaxy::ponder()
             }
 
             // If the Player is not only dying, but also lost it's existence, meaning he got out of the screen
-            // how the death-message or go gameover.
+            // show the death-message or go gameover.
             if( galaxy::CPlayerBase *player = dynamic_cast<galaxy::CPlayerBase*>(obj->get()) )
-		{
-		    // Is he really dead?
-		    if( player->dead || (!visibility && player->m_dying) )
-			player->processDead();
-		}
+            {
+                // Special cases, when Keen is god, but still has to die,
+                // kill him anyways.
+                if( player->touchedBottomOfMap() )
+                {
+                    player->kill(true);
+                }
 
-	    }
+                // Is he really dead?
+                if( player->dead || (!visibility && player->m_dying) )
+                {
+                    player->processDead();
+                }
+            }
+
+        }
 	}
 
 

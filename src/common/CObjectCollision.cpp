@@ -268,6 +268,23 @@ bool CSpriteObject::hitdetect(CSpriteObject &hitobject)
 }
 
 
+bool CSpriteObject::hitdetectWithTile(const int num, const int lx, const int ly, const int lw, const int lh, const int res)
+{
+    for( int i=0 ; i<lw ; i+=res )
+    {
+        for( int j=0 ; j<lh ; j+=res )
+        {
+            if( mp_Map->getPlaneDataAt(1, lx+i, ly+j) == num )
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
 
 /**
  * \brief this new type of hit detection only checks if the foe touches something that has that property tile

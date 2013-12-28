@@ -29,6 +29,13 @@ public:
         posNode.put("<xmlattr>.x", m_Pos.x);
         posNode.put("<xmlattr>.y", m_Pos.y);
     }
+    void deserialize(boost::property_tree::ptree &node)
+    {
+        auto &posNode = node.put("pos", "");
+        m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
+        m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
+    }
+
 
     
     void processHungry();

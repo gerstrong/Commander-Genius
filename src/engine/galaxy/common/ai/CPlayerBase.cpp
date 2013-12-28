@@ -538,6 +538,47 @@ void CPlayerBase::respawnImportantItem(const int itemId)
 }
 
 
+bool CPlayerBase::touchedBottomOfMap()
+{
+    int l_x = getXLeftPos();
+    int l_y = getYUpPos();
+    int l_w = getXRightPos() - getXLeftPos();
+    int l_h = getYDownPos() - getYUpPos();
+
+    const int ep = g_pBehaviorEngine->getEpisode();
+
+    // Some tests will force Keen to death!!
+    if(ep == 4)
+    {
+        // In Keen 4 most of the levels have that block and normally can only be touched at some time
+        // if in godmode. In that case, we force Keen to die.
+        bool bottomTouched = false;
+
+        bottomTouched |= hitdetectWithTile(0x03CD, l_x, l_y, l_w, l_h, 2<<STC);
+
+        if(bottomTouched)
+        {
+            return true;
+        }
+    }
+    else if(ep == 6)
+    {
+        // In Keen 6 some levels have that block and normally can only be touched in case
+        // if in godmode. In that case, we force Keen to die.
+        bool bottomTouched = false;
+
+        bottomTouched |= hitdetectWithTile(0x03F2, l_x, l_y, l_w, l_h, 2<<STC);
+        bottomTouched |= hitdetectWithTile(0x03F3, l_x, l_y, l_w, l_h, 2<<STC);
+
+        if(bottomTouched)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
 void CPlayerBase::processDead()
 {

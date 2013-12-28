@@ -154,6 +154,8 @@ public:
 
     void respawnImportantItem(const int itemId);
 
+    bool touchedBottomOfMap();
+
 	void processDead();
 	virtual void processDying();
 	virtual void kill(const bool force = false);
