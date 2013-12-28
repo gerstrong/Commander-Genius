@@ -129,27 +129,27 @@ void COrbatrix::processBounce()
     // Move normally in the direction
     if( xDirection == RIGHT )
     {
-	moveRight( HOR_SPEED );
+        moveRight( HOR_SPEED );
     }
     else
     {
-	moveLeft( HOR_SPEED );
-    }    
+        moveLeft( HOR_SPEED );
+    }
     
     if(blockedd && yinertia >= 0)
     {
-	yinertia = MAX_BOUNCE_BOOST;
-	xDirection = -xDirection;
-	playSound(SOUND_ORBATRIX_BUMP);
+        yinertia = MAX_BOUNCE_BOOST;
+        xDirection = -xDirection;
+        playSound(SOUND_ORBATRIX_BUMP);
     }
     
     mTimer++;
-    if( mTimer < TIME_UNTIL_UNCURL )  
-	return;
+    if( mTimer < TIME_UNTIL_UNCURL )
+        return;
     
     mTimer = 0;
     
-    setAction(A_ORBATRIX_SLIDE);       
+    setAction(A_ORBATRIX_SLIDE);
 }
 
 void COrbatrix::processLand()

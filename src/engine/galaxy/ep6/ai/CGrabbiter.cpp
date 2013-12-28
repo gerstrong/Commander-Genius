@@ -8,11 +8,11 @@ namespace galaxy
 enum GRABBITERACTIONS
 {
     A_GRABBITER_HUNGRY = 0,    
-    A_GRABBITER_NAPPING = 2,
+    A_GRABBITER_NAPPING = 2
 };
 
 
-CGrabbiter::CGrabbiter(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) : 
+CGrabbiter::CGrabbiter(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y)
 {
 	mActionMap[A_GRABBITER_HUNGRY] = (GASOFctr) &CGrabbiter::processHungry;

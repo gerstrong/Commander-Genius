@@ -21,15 +21,15 @@ public:
   void deserialize(boost::property_tree::ptree &node)
   {
       auto &posNode = node.put("origin", "");
-      origin.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
-      origin.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
+      m_Pos.x = posNode.get<Uint32>("<xmlattr>.x", m_Pos.x);
+      m_Pos.y = posNode.get<Uint32>("<xmlattr>.y", m_Pos.y);
   }
 
   void serialize(boost::property_tree::ptree &node)
   {
-    auto &posNode = node.put("origin", "");
-    posNode.put("<xmlattr>.x", origin.x);
-    posNode.put("<xmlattr>.y", origin.y);
+      auto &posNode = node.put("origin", "");
+      posNode.put("<xmlattr>.x", origin.x);
+      posNode.put("<xmlattr>.y", origin.y);
   }
   
 private:
