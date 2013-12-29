@@ -5,7 +5,7 @@
  *      Author: gerstrong
  *  This Game-engine stripes down the main function
  *  and provides more dynamic control over the game engine itself
- * 
+ *
  *  It also manages the load of drivers and main game cycle
  */
 
@@ -62,6 +62,8 @@ bool CGame::init(int argc, char *argv[])
 	// Check if there are settings on the PC, otherwise use defaults.
 	if(!g_pSettings->loadDrvCfg())
 	{
+	    // TODO: Check this part! It shouldn't be here and it is wrong! loadDrv could fail loading, to first
+	    // time message it is unrelated.
 		m_firsttime = true;
 		g_pLogFile->textOut(RED,"First time message: CG didn't find the driver config file. ");
 		g_pLogFile->textOut(RED,"However, it generated some default values and will save them now.\n");
@@ -80,10 +82,10 @@ bool CGame::init(int argc, char *argv[])
 		g_pLogFile->textOut(RED,"The game cannot start, because you do not meet the hardware requirements.<br>");
 		return false;
 	}
-	
+
 	// Initialize the way the launcher is started
 	if(!mGameControl.init(argc, argv))	return false;
-	
+
 	return true;
 }
 
@@ -102,10 +104,10 @@ bool CGame::loadCKPDrivers()
 {
 	// Init graphics
 	if (!g_pVideoDriver->start()) return false;
-	
+
 	// Init the sound
 	g_pSound->init();
-	
+
 	return true;
 }
 
@@ -137,7 +139,7 @@ void CGame::run()
         if(g_pTimer->resetLogicSingal())
             start = curr;
 
-        elapsed = curr - start;        
+        elapsed = curr - start;
 
         start = timerTicks();
 

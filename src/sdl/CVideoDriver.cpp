@@ -42,7 +42,7 @@ CVideoDriver::~CVideoDriver()
 
 
 // TODO: This should return something!
-void CVideoDriver::resetSettings() 
+void CVideoDriver::resetSettings()
 {
 
 	m_VidConfig.reset();
@@ -54,14 +54,14 @@ void CVideoDriver::resetSettings()
 		g_pLogFile->textOut(GREEN, "SDL was successfully initialized!<br>");
 
 	initResolutionList();
-	
-	
+
+
 	if(!mSDLImageInUse)
 	{
 	  // load support for the JPG and PNG image formats
 	  int flags=IMG_INIT_JPG|IMG_INIT_PNG;
 	  const int initted=IMG_Init(flags);
-	  if( (initted & flags) != flags) 
+	  if( (initted & flags) != flags)
 	  {
 	      g_pLogFile->textOut(RED, "IMG_Init: Failed to init required jpg and png support!\n");
 	      g_pLogFile->textOut(RED, "IMG_Init: %s\n", IMG_GetError());
@@ -81,26 +81,34 @@ void CVideoDriver::resetSettings()
 // initResolutionList() reads the local list of available resolution.
 // This function can only be called internally
 // TODO: This should return something!
-void CVideoDriver::initResolutionList() 
+void CVideoDriver::initResolutionList()
 {
 	// This call will get the resolution we have right now and set it up for the system
 	// On Handheld devices this means, they will only take that resolution and that would it be.
 	// On the PC, this is the current resolution but will add others.
+
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+    CRect<Uint16> resolution(CRect<Uint16>(320,200));
 #else
     CRect<Uint16> resolution(SDL_GetVideoInfo());
-	
+#endif
+
+
 #if defined(ANDROID)
 	resolution.w = 320;
 	resolution.h = 200;
 #endif
-	
+
 	CRect<Uint16> desktopResolution(resolution);
 
 	// We have a resolution list, clear it and create a new one.
+    if(!m_Resolutionlist.empty())
+        m_Resolutionlist.clear();
 
-	m_Resolutionlist.clear();
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+#else
 
 // TODO: Not sure if those defines are really needed anymore.
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
@@ -142,19 +150,20 @@ void CVideoDriver::initResolutionList()
 #endif
 
 
+#endif
 
 	// The last resolution in the list is the desktop normally, therefore the highest
 	m_Resolutionlist.push_back(desktopResolution);
 
 	m_Resolution_pos = m_Resolutionlist.begin();
-#endif
+
 }
 
 void CVideoDriver::verifyResolution(CRect<Uint16>& resolution,
-		const int flags) 
+		const int flags)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 #else
     if (SDL_VideoModeOK(resolution.w, resolution.h, 32, flags)) {
 		std::list< CRect<Uint16> >::iterator i;
@@ -204,7 +213,7 @@ void CVideoDriver::setMode(const CRect<Uint16>& res) {
 	}
 }
 
-bool CVideoDriver::applyMode() 
+bool CVideoDriver::applyMode()
 {
 	const CRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
 	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
@@ -227,7 +236,7 @@ bool CVideoDriver::applyMode()
 	return true;
 }
 
-bool CVideoDriver::start() 
+bool CVideoDriver::start()
 {
 	bool retval;
 	std::string caption = "Commander Genius";
@@ -245,7 +254,7 @@ bool CVideoDriver::start()
 		mpVideoEngine.reset(new COpenGL(m_VidConfig));
 		retval = mpVideoEngine->init();
 
-		if (!retval) 
+		if (!retval)
 		{
 			m_VidConfig.m_opengl = false;
 			applyMode();
@@ -291,7 +300,7 @@ void CVideoDriver::setScaleType(bool IsNormal)
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // it might have when a level-map is loaded.
-void CVideoDriver::updateScrollBuffer(CMap &map) 
+void CVideoDriver::updateScrollBuffer(CMap &map)
 {
 	map.drawAll();
 
@@ -307,12 +316,12 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 	mpVideoEngine->blitScrollSurface();
 }
 
-void CVideoDriver::collectSurfaces() 
+void CVideoDriver::collectSurfaces()
 {
 	mpVideoEngine->collectSurfaces();
 }
 
-void CVideoDriver::clearSurfaces() 
+void CVideoDriver::clearSurfaces()
 {
 	mpVideoEngine->clearSurfaces();
 }
@@ -323,7 +332,7 @@ void CVideoDriver::updateDisplay()
     mpVideoEngine->transformScreenToDisplay();
 }
 
-void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds) 
+void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 {
 	int &left = CameraBounds.left;
 	int &up = CameraBounds.up;
@@ -359,7 +368,7 @@ void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)
 		cam = CameraBounds;
 }
 
-CVidConfig &CVideoDriver::getVidConfig() 
+CVidConfig &CVideoDriver::getVidConfig()
 {
 	return m_VidConfig;
 }
@@ -384,17 +393,17 @@ unsigned int CVideoDriver::getHeight() const {
 	return m_VidConfig.m_DisplayRect.h;
 }
 
-unsigned short CVideoDriver::getDepth() const 
+unsigned short CVideoDriver::getDepth() const
 {
 	return 32;
 }
 
-SDL_Surface *CVideoDriver::getScrollSurface() 
+SDL_Surface *CVideoDriver::getScrollSurface()
 {
 	return mpVideoEngine->getScrollSurface();
 }
 
-st_camera_bounds &CVideoDriver::getCameraBounds() 
+st_camera_bounds &CVideoDriver::getCameraBounds()
 {
 	return m_VidConfig.m_CameraBounds;
 }
