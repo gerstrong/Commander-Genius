@@ -285,7 +285,7 @@ void CInput::saveControlconfig()
  * Gets the event name from the last mapped event
  */
 std::string CInput::getNewMappedEvent(int &rPos, unsigned char &rInp)
-{    
+{
     rPos = remapper.mapPosition;
     rInp = remapper.mapDevice;
     return getEventShortName(remapper.mapPosition, remapper.mapDevice);
@@ -314,8 +314,8 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 	else // In case only keyboard was triggered
 	{
 	  buf = SDL_GetKeyName(InputCommand[input][command].keysym);
-	}  
-	
+	}
+
 	return buf;
 }
 
@@ -510,8 +510,14 @@ void CInput::transMouseRelCoord(CVec &Pos,
 								const SDL_MouseMotionEvent motion,
 								const CRect<Uint16> &transformRect)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    Pos.x = ( static_cast<float>(motion.x)/static_cast<float>(transformRect.w) );
+    Pos.y = ( static_cast<float>(motion.y)/static_cast<float>(transformRect.h) );
+#else
     Pos.x = ( static_cast<float>(motion.x-transformRect.x)/static_cast<float>(transformRect.w) );
     Pos.y = ( static_cast<float>(motion.y-transformRect.y)/static_cast<float>(transformRect.h) );
+#endif
+
 }
 
 
@@ -520,16 +526,16 @@ void CInput::transMouseRelCoord(CVec &Pos,
  */
 void CInput::pollEvents()
 {
-    
+
     if(remapper.mappingInput)
     {
         readNewEvent();
         return;
     }
-    
+
 	CVec Pos;
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 #else
     CRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
 #endif
@@ -1362,16 +1368,16 @@ void CInput::processMouse(SDL_Event& ev) {
 		w = screenRect.w;
         h = screenRect.h;
 	}
-    
+
     if(touch == NULL) return; //The touch has been removed
-    
+
     //float fx = ((float)ev.tfinger.x)/touch->xres;
     //float fy = ((float)ev.tfinger.y)/touch->yres;
     float fx = ((float)ev.tfinger.x)/touch->x;
     float fy = ((float)ev.tfinger.y)/touch->y;
     x = (int)(fx*w); y = (int)(fy*h);
-    
-    
+
+
 
 	switch(ev.type) {
 		case SDL_FINGERDOWN:
@@ -1409,7 +1415,7 @@ void CInput::processMouse(int x, int y, bool down, int mouseindex)
 
 			break;
 		}
-	}   
+	}
 
 }
 
