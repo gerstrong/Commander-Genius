@@ -100,7 +100,6 @@ void CGUIButton::updateGraphics()
 
 void CGUIButton::processLogic()
 {
-
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{

@@ -120,11 +120,11 @@ struct CRect
 	bool HasPoint(VectorD2<T>& Pos)
 	{
 		// check X coordinate. is it outside, return false
-		if( Pos.x < x || Pos.x > x+w )
+        if( Pos.x < x || Pos.x >= x+w )
 			return false;
 
 		// check Y coordinate. is it outside, return false
-		if( Pos.y < y || Pos.y > y+h )
+        if( Pos.y < y || Pos.y >= y+h )
 			return false;
 
 		return true;
