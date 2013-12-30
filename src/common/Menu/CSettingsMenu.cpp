@@ -21,7 +21,7 @@
 
 
 CSettingsMenu::CSettingsMenu() :
-CBaseMenu( CRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
+CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 {
  	mpMenuDialog->addControl(new CGUIButton( "Video",
 									new OpenMenuEvent( new CVideoSettings() ) ) );

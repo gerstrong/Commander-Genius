@@ -38,7 +38,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
 
     mCurrentLogoBmp = g_pGfxEngine->getBitmapFromId(mCreditsBmpID);
 
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
     mScaleFactor = gameRes.h/mCommanderTextSfc.getHeight();
 
@@ -49,7 +49,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     mMaxSeparationWidth = 60*mScaleFactor;
 
     // Scale Bitmaps to adapt the resolutions
-    CRect<Uint16> cmdTextRect, keenTextRect;
+    GsRect<Uint16> cmdTextRect, keenTextRect;
     cmdTextRect.w = mCommanderTextSfc.getSDLSurface()->w;
     cmdTextRect.x = cmdTextRect.y = 0;
     cmdTextRect.h = mCommanderTextSfc.getSDLSurface()->h;
@@ -70,7 +70,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     mCommanderTextPos = VectorD2<int>(gameRes.w, (gameRes.h-cmdTextRect.h)/2 );
     mKeenTextPos = VectorD2<int>(-mKeenTextSfc.getWidth(), (gameRes.h-cmdTextRect.h)/2 );
 
-    CRect<Uint16> logoBmpRect;
+    GsRect<Uint16> logoBmpRect;
     logoBmpRect.w = mCurrentLogoBmp.getWidth();
     logoBmpRect.h = mCurrentLogoBmp.getHeight();
     logoBmpRect.x = logoBmpRect.y = 0;
@@ -134,7 +134,7 @@ const int logoSpeed = 1;
 
 void CPassiveGalaxy::renderIntro()
 {
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     SDL_Rect gameResSDL = gameRes.SDLRect();
 
     const int logoPosX = (gameRes.w-mCurrentLogoBmp.getWidth())/2;
@@ -157,7 +157,7 @@ void CPassiveGalaxy::renderIntro()
 // Letters are big and scrolling around the screen...
 void CPassiveGalaxy::processIntro()
 {	       
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
     const int logoMidPosY = mLogoPosY+mCurrentLogoBmp.getHeight()/2;
 
@@ -184,7 +184,7 @@ void CPassiveGalaxy::processIntro()
             mCurrentLogoBmp = g_pGfxEngine->getBitmapFromId(mCreditsBmpID+mTerminatorLogoNum);
             mCurrentLogoBmp.optimizeSurface();
 
-            CRect<Uint16> logoBmpRect;
+            GsRect<Uint16> logoBmpRect;
             logoBmpRect.w = mCurrentLogoBmp.getWidth();
             logoBmpRect.h = mCurrentLogoBmp.getHeight();
             logoBmpRect.x = logoBmpRect.y = 0;
@@ -222,7 +222,7 @@ void CPassiveGalaxy::processIntro()
 
 void CPassiveGalaxy::processIntroZoom()
 {
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
     if(mZoomSfcPos.x < 16)
     {
@@ -272,7 +272,7 @@ void CPassiveGalaxy::processIntroZoom()
         processRenderMode = &CPassiveGalaxy::renderTitle;
         m_BackgroundBitmap = *g_pGfxEngine->getBitmapFromStr("TITLE");
 
-        CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+        GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
         m_BackgroundBitmap.scaleTo(gameRes);
         renderIntroZoom();
         g_pGfxEngine->setupEffect(new CPixelate(2));
@@ -281,24 +281,24 @@ void CPassiveGalaxy::processIntroZoom()
 
 void CPassiveGalaxy::renderIntroZoom()
 {
-    SDL_Rect dstRect, srcRect;
-    srcRect.x = srcRect.y = 0;
+    SDL_Rect dstRect, srGsRect;
+    srGsRect.x = srGsRect.y = 0;
 
     if(mZoomSfcPos.x < 16)
     {
-        srcRect.x -= mZoomSfcPos.x;
+        srGsRect.x -= mZoomSfcPos.x;
     }
 
     if(mZoomSfcPos.y > 8)
     {
-        srcRect.y -= mZoomSfcPos.y;
+        srGsRect.y -= mZoomSfcPos.y;
     }
 
     SDL_Surface *zoomSfc = mpZoomSurface.get();
 
     // Here we define the Rects to zoom
-    srcRect.w = zoomSfc->w;
-    srcRect.h = zoomSfc->h;
+    srGsRect.w = zoomSfc->w;
+    srGsRect.h = zoomSfc->h;
 
 
     dstRect.x = mZoomSfcPos.x;
@@ -306,7 +306,7 @@ void CPassiveGalaxy::renderIntroZoom()
     dstRect.w = mZoomSfcZoom.x;
     dstRect.h = mZoomSfcZoom.y;
 
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     SDL_Rect gameResSDL = gameRes.SDLRect();
 
     SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
@@ -314,7 +314,7 @@ void CPassiveGalaxy::renderIntroZoom()
 
     CVidConfig &vidConf = g_pVideoDriver->getVidConfig();
 
-    blitScaled( zoomSfc, srcRect, blitSfc, dstRect, vidConf.m_ScaleXFilter ); // TODO: This still makes CG crash!!
+    blitScaled( zoomSfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter ); // TODO: This still makes CG crash!!
 }
 
 

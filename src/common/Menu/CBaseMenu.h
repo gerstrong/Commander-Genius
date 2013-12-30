@@ -27,7 +27,7 @@ public:
 	};
 
 
-	CBaseMenu( const CRect<float>& rect );
+	CBaseMenu( const GsRect<float>& rect );
 
     virtual ~CBaseMenu() { }
 

@@ -16,27 +16,27 @@
  * This structure defines the resolution composed of width height and depth
  */
 template <typename T>
-struct CRect
+struct GsRect
 {
 	template <typename T2>
-	CRect( CRect<T2> rect )
+    GsRect( GsRect<T2> rect )
 	{
 		x = rect.x;		y = rect.y;
 		w = rect.w;		h = rect.h;
 	}
 
 
-	CRect( const T lwidth = 0,
+    GsRect( const T lwidth = 0,
 		   const T lheight = 0 )
 		{ w=lwidth; h=lheight; }
 
-	CRect( const T lx,
+    GsRect( const T lx,
 		   const T ly,
 		   const T lw,
 		   const T lh )
 		{ x=lx; y=ly; w=lw; h=lh; }
 
-    CRect( const SDL_Rect &sdlRect ) :
+    GsRect( const SDL_Rect &sdlRect ) :
         x(sdlRect.x),
         y(sdlRect.y),
         w(sdlRect.w),
@@ -49,11 +49,11 @@ struct CRect
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
-    CRect( const SDL_VideoInfo* InfoPtr )
+    GsRect( const SDL_VideoInfo* InfoPtr )
 		{ w=InfoPtr->current_w; h=InfoPtr->current_h; };
 #endif
 
-	bool operator==( const CRect &target )
+    bool operator==( const GsRect &target )
 	{
 		return (target.x == x && target.y == y &&
 				target.w == w && target.h == h);
@@ -65,9 +65,9 @@ struct CRect
 	}
 
 	template <typename T2>
-	CRect<T>& operator=( const CRect<T2> &newRect )
+    GsRect<T>& operator=( const GsRect<T2> &newRect )
 	{
-		CRect<T> retRect;
+        GsRect<T> retRect;
 		x = static_cast<T>(newRect.x);
 		y = static_cast<T>(newRect.y);
 		w = static_cast<T>(newRect.w);
@@ -85,7 +85,7 @@ struct CRect
 		return Rect;
 	}
 
-	void transformInverse(const CRect &scaleRect)
+    void transformInverse(const GsRect &scaleRect)
 	{
 		x /= scaleRect.w;
 		x -= scaleRect.x;
@@ -95,7 +95,7 @@ struct CRect
 		h /= scaleRect.h;
 	}
 
-	void transform(const CRect &scaleRect)
+    void transform(const GsRect &scaleRect)
 	{
 		x *= scaleRect.w;
 		x += scaleRect.x;
@@ -107,9 +107,9 @@ struct CRect
 
 
 	template <typename T2>
-	void transform(const CRect<T2> &scaleRect)
+    void transform(const GsRect<T2> &scaleRect)
 	{
-		CRect<T> TRect;
+        GsRect<T> TRect;
 		TRect = scaleRect;
 		transform(TRect);
 	}
@@ -140,7 +140,7 @@ struct CRect
 	}
 
 
-    void intersect(const CRect &other)
+    void intersect(const GsRect &other)
     {
         if (other.x > x)
         {

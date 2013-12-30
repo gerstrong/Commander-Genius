@@ -24,10 +24,10 @@ public:
 
 	virtual void processLogic();
 	void drawGalaxyStyle(SDL_Rect& lRect);
-	virtual void processRender(const CRect<float> &RectDispCoordFloat);
+    virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
 	// Defines in character units how tall and wide the entire text is.
-	CRect<unsigned int> mTextDim;
+    GsRect<unsigned int> mTextDim;
 
 protected:
 	std::list<std::string> mTextList;

@@ -23,7 +23,7 @@ struct CloseDialog : public InvokeFunctorEvent
 };
 
 CMessageBox::CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound, const FXState fx) :
-CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f), fx),
+CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.8f), fx),
 m_mustclose(false)
 {
 	const char closeChar = 0x1F;
@@ -31,7 +31,7 @@ m_mustclose(false)
 	closeString = closeChar;
 	CGUIButton*	pButton	= new CGUIButton( closeString, new CloseDialog(m_mustclose), CGUIButton::NONE );
 
-	addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/0.8f, 0.06f/0.8f) );
+	addControl( pButton, GsRect<float>(0.0f, 0.0f, 0.06f/0.8f, 0.06f/0.8f) );
 
 	mpReturnButton = pButton;
 
@@ -47,7 +47,7 @@ m_mustclose(false)
 	mRect.y = (1.0f - mRect.h)/2.0f;
 
 	// now let's center that long text...
-	CRect<float> TextRect;
+	GsRect<float> TextRect;
 	TextRect.w = ((mpTextCtrl->mTextDim.w*8)/screenW) / mRect.w;
 	TextRect.h = ((mpTextCtrl->mTextDim.h*8)/screenH) / mRect.h;
 	TextRect.x = (2.5f*TextRect.w)/(static_cast<float>(mpTextCtrl->mTextDim.w));
@@ -60,7 +60,7 @@ m_mustclose(false)
 
 	addControl( mpTextCtrl, TextRect );
 
-	CRect<float> closeRect = pButton->mRect;
+	GsRect<float> closeRect = pButton->mRect;
 	closeRect.x = mRect.x;
 	closeRect.y = mRect.y;
 	pButton->setRect(closeRect);

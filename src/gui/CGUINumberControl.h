@@ -44,7 +44,7 @@ public:
 	void drawVorticonStyle(SDL_Rect& lRect);
 
 
-	void processRender(const CRect<float> &RectDispCoordFloat);
+	void processRender(const GsRect<float> &RectDispCoordFloat);
 
 private:
 

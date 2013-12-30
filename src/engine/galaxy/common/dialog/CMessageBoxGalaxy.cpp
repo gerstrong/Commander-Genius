@@ -26,7 +26,7 @@ mText(Text)
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
 	// Create a surface for that
 	mMBRect.w = Font.getPixelTextWidth(mText)+16;

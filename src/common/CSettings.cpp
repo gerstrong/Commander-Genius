@@ -97,8 +97,8 @@ bool CSettings::loadDrvCfg()
 	else
 	{
 		CVidConfig VidConf;
-        CRect<Uint16> &res = VidConf.m_DisplayRect;
-        CRect<Uint16> &gamesRes = VidConf.m_GameRect;
+        GsRect<Uint16> &res = VidConf.m_DisplayRect;
+        GsRect<Uint16> &gamesRes = VidConf.m_GameRect;
         int value = 0;
         Configuration.ReadInteger("Video", "width", &value, 320);
         res.w = value;

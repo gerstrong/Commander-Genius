@@ -161,7 +161,7 @@ public:
 	 */
 	void transMouseRelCoord(CVec &Pos,
 							const SDL_MouseMotionEvent motion,
-							const CRect<Uint16> &transformRect);
+							const GsRect<Uint16> &transformRect);
 
 	void pollEvents();
 

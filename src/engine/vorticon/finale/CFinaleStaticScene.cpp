@@ -42,11 +42,11 @@ m_timer(0)
                     &SDL_FreeSurface);
 
 
-        SDL_Rect srcRect, dstRect;
+        SDL_Rect srGsRect, dstRect;
 
-        srcRect.x = 0;  srcRect.y = 0;
-        srcRect.w = mpSceneSurface->w;
-        srcRect.h = mpSceneSurface->h;
+        srGsRect.x = 0;  srGsRect.y = 0;
+        srGsRect.w = mpSceneSurface->w;
+        srGsRect.h = mpSceneSurface->h;
 
         dstRect.x = 0;  dstRect.y = 0;
         dstRect.w = scaledScene->w;
@@ -55,7 +55,7 @@ m_timer(0)
         SDL_FillRect(scaledScene.get(), nullptr, SDL_MapRGB(scaledScene->format, 0, 0, 0) );
 
         blitScaled(mpSceneSurface.get(),
-                   srcRect,
+                   srGsRect,
                    scaledScene.get(),
                    dstRect,
                    NONE);
@@ -81,7 +81,7 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
     bmp_struct.dest_rect.w = bmp_struct.bitmap.getWidth();
     bmp_struct.dest_rect.h = bmp_struct.bitmap.getHeight();    
 
-    CRect<Uint16> bmpDim;
+    GsRect<Uint16> bmpDim;
     bmpDim.w = bmp_struct.dest_rect.w*scaleFactor;
     bmpDim.h = bmp_struct.dest_rect.h*scaleFactor;
     bmpDim.x = 0; bmpDim.y = 0;

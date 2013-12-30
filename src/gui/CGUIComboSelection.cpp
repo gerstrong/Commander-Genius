@@ -144,14 +144,14 @@ void CGUIComboSelection::processLogic()
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 			{
-				mButtonDown = true;
+                mPressed = true;
 				g_pInput->m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
-				mButtonUp = true;
+                mReleased = true;
 				mHovered = true;
-				mButtonDown = false;
+                mPressed = false;
 
 				cycleOption();
 
@@ -161,8 +161,8 @@ void CGUIComboSelection::processLogic()
 		else
 		{
 			mHovered = false;
-			mButtonDown = false;
-			mButtonUp = false;
+            mPressed = false;
+            mReleased = false;
 		}
 	}
 }
@@ -219,11 +219,11 @@ void CGUIComboSelection::drawNoStyle(SDL_Rect& lRect)
 
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
-	if( mButtonUp )
+    if( mReleased )
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
 	}
-	else if( mButtonDown )
+    else if( mPressed )
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
 	}
@@ -244,11 +244,11 @@ void CGUIComboSelection::drawNoStyle(SDL_Rect& lRect)
 }
 
 
-void CGUIComboSelection::processRender(const CRect<float> &RectDispCoordFloat)
+void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 
 	// Transform to the display coordinates
-	CRect<float> displayRect = mRect;
+    GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 

@@ -38,7 +38,7 @@ void CScaler::setFilterType( bool IsNormal )
  * Scale functions
  */
 void scaleDynamic( SDL_Surface *srcSfc,
-                   SDL_Rect srcRect,
+                   SDL_Rect srGsRect,
                    SDL_Surface *dstSfc,
                    SDL_Rect dstRect )
 {
@@ -50,7 +50,7 @@ void scaleDynamic( SDL_Surface *srcSfc,
 		SDL_Rect sdldstrect;
 		sdldstrect.x = dstRect.x; sdldstrect.y = dstRect.y;
 		sdldstrect.w = dstRect.w; sdldstrect.h = dstRect.h;
-        SDL_BlitSurface(srcSfc, &srcRect, dstSfc, &sdldstrect);
+        SDL_BlitSurface(srcSfc, &srGsRect, dstSfc, &sdldstrect);
 		return;
 	}
 
@@ -64,7 +64,7 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
     // Pass those numbers to the stack, they are used very often.
     const float wFac = (float(srcSfc->w)) / (float(dstRect.w));
-    const float hFac = (float(srcRect.h)) / (float(dstRect.h));
+    const float hFac = (float(srGsRect.h)) / (float(dstRect.h));
 
     int pitch = dstRect.y*dstSfc->w;
 
@@ -248,7 +248,7 @@ void scaleDynamic( SDL_Surface *srcSfc,
 */
 
 void blitScaled(SDL_Surface *srcSfc,
-                      SDL_Rect &srcRect,
+                      SDL_Rect &srGsRect,
                       SDL_Surface *dstSfc,
                       SDL_Rect &dstRect,
                       filterOptionType filter)
@@ -259,7 +259,7 @@ void blitScaled(SDL_Surface *srcSfc,
 #endif
 
     // First phase: Filter the surface (scaleX)
-    SDL_Rect lSrcRect = srcRect;
+    SDL_Rect lSrGsRect = srGsRect;
     SDL_Rect lDstRect = dstRect;
 
 
@@ -293,18 +293,18 @@ void blitScaled(SDL_Surface *srcSfc,
         SDL_UnlockSurface( dstSfc );
         SDL_UnlockSurface( srcSfc );
 
-        lSrcRect.w = lSrcRect.w*filter;
-        lSrcRect.h = lSrcRect.h*filter;
+        lSrGsRect.w = lSrGsRect.w*filter;
+        lSrGsRect.h = lSrGsRect.h*filter;
     }
 
     // Second phase: Scale it normally
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
-    SDL_BlitScaled( srcSfc, &lSrcRect, dstSfc, &lDstRect );
+    SDL_BlitScaled( srcSfc, &lSrGsRect, dstSfc, &lDstRect );
 
 #else
 
-    scaleDynamic( srcSfc, lSrcRect, dstSfc, lDstRect );
+    scaleDynamic( srcSfc, lSrGsRect, dstSfc, lDstRect );
 
 #endif
 

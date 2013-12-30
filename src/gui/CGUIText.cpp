@@ -59,10 +59,10 @@ void CGUIText::processLogic()
 
 }
 
-void CGUIText::processRender(const CRect<float> &RectDispCoordFloat)
+void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates
-	CRect<float> displayRect = mRect;
+	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 

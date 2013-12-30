@@ -36,9 +36,9 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 
 	rect.x = x;	rect.y = y;
 
-	CRect<float> fRect( x, y, 16.0f, 16.0f);
+	GsRect<float> fRect( x, y, 16.0f, 16.0f);
 
-	CRect<float> gameRect = g_pVideoDriver->getGameResolution();
+	GsRect<float> gameRect = g_pVideoDriver->getGameResolution();
 	fRect.transformInverse(gameRect);
 	fRect.transform(mRect);
 

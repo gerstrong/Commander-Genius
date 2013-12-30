@@ -20,8 +20,8 @@ const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
 const unsigned int MAX_STEPS = 20;
 
 
-CGUIDialog::CGUIDialog(const CRect<float> &SrcRect, const FXState fx) :
-mRect(SrcRect),
+CGUIDialog::CGUIDialog(const GsRect<float> &SrGsRect, const FXState fx) :
+mRect(SrGsRect),
 mSelection(0),
 mFXSetup(fx),
 mFXhStep(0),
@@ -63,9 +63,9 @@ void CGUIDialog::updateGraphics()
 
 
 void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl,
-							    const CRect<float>& RelRect )
+                                const GsRect<float>& RelRect )
 {
-	CRect<float> AbsRect = RelRect;
+    GsRect<float> AbsRect = RelRect;
 	AbsRect.transform(mRect);
 	newControl->mRect = AbsRect;
 	mControlList.push_back( move(newControl) );
@@ -91,7 +91,7 @@ void CGUIDialog::addControl( std::unique_ptr<CGUIControl> &newControl )
 }
 
 void CGUIDialog::addControl( CGUIControl *newControl,
-		 	 const CRect<float>& RelRect )
+             const GsRect<float>& RelRect )
 {
     std::unique_ptr<CGUIControl> ctrl(newControl);
     addControl( ctrl, RelRect );    
@@ -251,7 +251,7 @@ void CGUIDialog::fit()
 	size_t c = 1;
 	for( ; it != mControlList.end() ; it++ )
 	{
-		CRect<float> rect( 0.05f,
+        GsRect<float> rect( 0.05f,
 				   charHeight*((float)c),
 				   mRect.w,
 				   charHeight-0.01f );
@@ -265,7 +265,7 @@ void CGUIDialog::fit()
 }
 
 
-void CGUIDialog::setRect(const CRect<float> &rect)
+void CGUIDialog::setRect(const GsRect<float> &rect)
 {
 	mRect = rect;
 
@@ -358,7 +358,7 @@ void CGUIDialog::initGalaxyBackround()
 {   
     mBackgroundBmp = *g_pGfxEngine->getBitmapFromStr("KEENSWATCH");
 
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     mBackgroundBmp.scaleTo(gameRes);
 
     SDL_Surface *swatchBmp = mBackgroundBmp.getSDLSurface();
@@ -454,8 +454,8 @@ void CGUIDialog::processRendering()
 
 void CGUIDialog::processRendering(SDL_Surface *blit)
 {        
-    CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
-    CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
+    GsRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
+    GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
     auto engine = g_pBehaviorEngine->getEngine();
     auto *bgSfc = mpBackgroundSfc.get();
@@ -475,7 +475,7 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
         }
         else
         {
-            CRect<float> fxRect = mRect;
+            GsRect<float> fxRect = mRect;
 
             if( mFXhStep > 0 )
             {
@@ -495,19 +495,19 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
             if( engine == ENGINE_VORTICON && lRect.h < 16 )
                 lRect.h = 16;
 
-            auto srcRect = lRect;
-            srcRect.y = srcRect.x = 0;
+            auto srGsRect = lRect;
+            srGsRect.y = srGsRect.x = 0;
 
             if( engine == ENGINE_VORTICON )
             {
                 auto *tmpSfc = mpTempSfc.get();
-                SDL_FillRect( tmpSfc, &srcRect, 0xFFFFFFFF );
-                drawBorderRect( tmpSfc, srcRect );
-                SDL_BlitSurface( tmpSfc, &srcRect, blit, &lRect );
+                SDL_FillRect( tmpSfc, &srGsRect, 0xFFFFFFFF );
+                drawBorderRect( tmpSfc, srGsRect );
+                SDL_BlitSurface( tmpSfc, &srGsRect, blit, &lRect );
             }
             else
             {
-                SDL_BlitSurface( bgSfc, &srcRect, blit, &lRect );
+                SDL_BlitSurface( bgSfc, &srGsRect, blit, &lRect );
             }
         }
 

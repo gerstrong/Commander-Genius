@@ -610,14 +610,14 @@ void CMap::calcVisibleArea()
 
 void CMap::refreshVisibleArea()
 {
-    CRect<int> relativeVisGameArea;
+    GsRect<int> relativeVisGameArea;
 
     relativeVisGameArea.x = (mVisArea.x>>STC)-m_scrollx;
     relativeVisGameArea.y = (mVisArea.y>>STC)-m_scrolly;
     relativeVisGameArea.w = (mVisArea.w>>STC)-16;
     relativeVisGameArea.h = (mVisArea.h>>STC)-16;
 
-    CRect<int> gameResolution(g_pVideoDriver->getGameResolution());
+    GsRect<int> gameResolution(g_pVideoDriver->getGameResolution());
 
     // Using the GameResolution to intersect the
     // calculated visible area we get another one

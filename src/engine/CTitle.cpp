@@ -47,7 +47,7 @@ bool CTitle::init(int Episode)
 	}
 
 
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
     if(gameRes.w == 320 && gameRes.h == 200 )
     {

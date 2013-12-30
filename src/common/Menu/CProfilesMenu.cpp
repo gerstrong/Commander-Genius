@@ -72,7 +72,7 @@ public:
 };
 
 CProfilesMenu::CProfilesMenu() :
-CBaseMenu( CRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
+CBaseMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 {
 	mpMenuDialog->addControl(new CGUIButton( "Classic mode",
 										     new SetDefaultClassic() ) );

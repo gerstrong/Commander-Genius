@@ -31,7 +31,7 @@ void CIntro::init()
     mp_bm[4] = g_pGfxEngine->getBitmapFromStr("IDSOFT");
     mp_bm[5] = g_pGfxEngine->getBitmapFromStr("PRODUCT");
 
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 	
 	for(int j=0 ; j<6 ; j++)
 	{

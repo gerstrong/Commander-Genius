@@ -508,7 +508,7 @@ void CInput::enableAnalog(const int player, const bool value) { mAnalogAxesMovem
 
 void CInput::transMouseRelCoord(CVec &Pos,
 								const SDL_MouseMotionEvent motion,
-								const CRect<Uint16> &transformRect)
+								const GsRect<Uint16> &transformRect)
 {
     Pos.x = ( static_cast<float>(motion.x-transformRect.x)/static_cast<float>(transformRect.w) );
     Pos.y = ( static_cast<float>(motion.y-transformRect.y)/static_cast<float>(transformRect.h) );
@@ -531,7 +531,7 @@ void CInput::pollEvents()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
-    CRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
+    GsRect<Uint16> Res(SDL_GetVideoSurface()->w, SDL_GetVideoSurface()->h);
 #endif
 
 	// copy all the input of the last poll to a space for checking pressing or holding a button
@@ -542,7 +542,7 @@ void CInput::pollEvents()
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
 
-    CRect<Uint16> clickGameArea = g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
+    GsRect<Uint16> clickGameArea = g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
 
     if( !g_pVideoDriver->isOpenGL() )
     {
@@ -590,14 +590,14 @@ void CInput::pollEvents()
             if(Event.window.event == SDL_WINDOWEVENT_RESIZED)
             {
                 g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
-                        CRect<Uint16>(Event.window.data1,
+                        GsRect<Uint16>(Event.window.data1,
                                       Event.window.data2) );
             }
             break;
 #else
 		case SDL_VIDEORESIZE:
 			g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
-					CRect<Uint16>(Event.resize.w, Event.resize.h) );
+					GsRect<Uint16>(Event.resize.w, Event.resize.h) );
 			break;
 #endif
 

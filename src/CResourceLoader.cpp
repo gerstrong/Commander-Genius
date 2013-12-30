@@ -22,7 +22,7 @@ m_max_permil(1000),
 m_style(PROGRESS_STYLE_TEXT)
 {
     SDL_Rect rect;
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     rect.x = 0;		rect.y = 0;
     rect.w = gameRes.w;	rect.h = gameRes.h;
 
@@ -205,7 +205,7 @@ void CResourceLoader::renderLoadingGraphic()
     SDL_Surface *sfc = mpProgressSfc.get();
     SDL_FillRect(sfc, nullptr, 0x0);
     
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
     const int gameWidth = gameRes.w;
     const int gameHeight = gameRes.h;
@@ -220,7 +220,7 @@ void CResourceLoader::renderLoadingGraphic()
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
 		
         SDL_Rect textRect;
-        CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+        GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
         const float scaleUpW = float(gameRes.w)/320.0f;
         const float scaleUpH = float(gameRes.h)/200.0f;
         textRect.x = (int)(80.0*scaleUpW);        textRect.y = (int)(100.0*scaleUpH);

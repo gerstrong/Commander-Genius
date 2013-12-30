@@ -10,7 +10,7 @@
 #include "common/Menu/CMenuController.h"
 #include "gui/CGUIBitmap.h"
 
-CBaseMenu::CBaseMenu(const CRect<float>& rect) :
+CBaseMenu::CBaseMenu(const GsRect<float>& rect) :
 mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) )
 {
 	std::string closeString;
@@ -20,18 +20,18 @@ mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) )
 
 	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
-        CRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
+        GsRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
 		mpMenuDialog->setRect(rect);
 		closeString = "x";
 		pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::GALAXY );
-		mpMenuDialog->addControl( pButton, CRect<float>(-0.1f, 0.1f, 0.03f/rect.w, 0.03f/rect.h) );
+		mpMenuDialog->addControl( pButton, GsRect<float>(-0.1f, 0.1f, 0.03f/rect.w, 0.03f/rect.h) );
 	}
 	else
 	{
 		const char closeChar = 0x1F;
 		closeString = closeChar;
 		pButton	= new CGUIButton( closeString, new CloseMenuEvent(), CGUIButton::NONE );
-		mpMenuDialog->addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
+		mpMenuDialog->addControl( pButton, GsRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
 	}
 
 	pButton->setDown(true);
@@ -53,7 +53,7 @@ void CBaseMenu::setMenuLabel(const std::string &label)
 {
 	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
-		CRect<float> rect(-0.08f, -0.08f, 1.0f, 1.0f);
+		GsRect<float> rect(-0.08f, -0.08f, 1.0f, 1.0f);
         CGUIBitmap* control = new CGUIBitmap(label);
 		mpMenuDialog->addControl(control, rect);
         control->mEnabled = false;

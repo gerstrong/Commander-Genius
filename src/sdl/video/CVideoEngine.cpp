@@ -155,7 +155,7 @@ bool CVideoEngine::init()
 	return true;
 }
 
-void CVideoEngine::updateAspectRect(const CRect<Uint16>& displayRes, const int aspWidth, const int aspHeight)
+void CVideoEngine::updateAspectRect(const GsRect<Uint16>& displayRes, const int aspWidth, const int aspHeight)
 {
     if (aspWidth == 0 || aspHeight == 0)
 	{
@@ -227,7 +227,7 @@ bool CVideoEngine::createSurfaces()
     //Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
     //Scaler.setFilterType(m_VidConfig.m_normal_scale);
 
-    const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
+    const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
 
     g_pLogFile->textOut("Blitsurface creation!\n");
 
@@ -290,7 +290,7 @@ bool CVideoEngine::createSurfaces()
 
 void CVideoEngine::blitScrollSurface() // This is only for tiles
 {									   // The name should be changed
-	SDL_Rect srcrect, dstrect;
+	SDL_Rect srGsRect, dstrect;
     int sbufferx, sbuffery;
     auto BlitSurface = mpGameSfc.get();
     SDL_Rect Gamerect = m_VidConfig.m_GameRect.SDLRect();
@@ -317,53 +317,53 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 
     SDL_FillRect(BlitSurface, nullptr, SDL_MapRGB(BlitSurface->format, 0, 0, 0));
 
-    srcrect.x =	sbufferx;
-    srcrect.y = sbuffery;
+    srGsRect.x =	sbufferx;
+    srGsRect.y = sbuffery;
 
     const bool wraphoz = (sbufferx+Gamerect.w > scrollSfcWidth);
     const bool wrapvrt = (sbuffery+Gamerect.h > scrollSfcHeight);
 
     // Upper-Left Part to draw from the Scrollbuffer
-    srcrect.w = wraphoz ? (scrollSfcWidth-sbufferx) : Gamerect.w;
-    srcrect.h = wrapvrt ? (scrollSfcHeight-sbuffery) : Gamerect.h;
+    srGsRect.w = wraphoz ? (scrollSfcWidth-sbufferx) : Gamerect.w;
+    srGsRect.h = wrapvrt ? (scrollSfcHeight-sbuffery) : Gamerect.h;
 
-    SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+    SDL_BlitSurface(ScrollSurface, &srGsRect, BlitSurface, &dstrect);
 
-    const Uint16 upperLeftW = srcrect.w;
-    const Uint16 upperLeftH =  srcrect.h;
+    const Uint16 upperLeftW = srGsRect.w;
+    const Uint16 upperLeftH =  srGsRect.h;
 
     // upper-right part
     if (wraphoz)
 	{
-        srcrect.w = Gamerect.w - upperLeftW;
-        srcrect.x = 0;
+        srGsRect.w = Gamerect.w - upperLeftW;
+        srGsRect.x = 0;
         dstrect.x = Gamerect.x + upperLeftW;
 
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+		SDL_BlitSurface(ScrollSurface, &srGsRect, BlitSurface, &dstrect);
     }
 
     // lower-right part
     if (wrapvrt)
 	{
-        srcrect.h = Gamerect.h - upperLeftH;
-        srcrect.y = 0;
+        srGsRect.h = Gamerect.h - upperLeftH;
+        srGsRect.y = 0;
         dstrect.y = Gamerect.y + upperLeftH;
 
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+		SDL_BlitSurface(ScrollSurface, &srGsRect, BlitSurface, &dstrect);
 	}
 
     if(!wraphoz || !wrapvrt)
         return;
 
     // and lower-left part
-    srcrect.x = sbufferx;
-    srcrect.y = 0;
-    srcrect.w = upperLeftW;
+    srGsRect.x = sbufferx;
+    srGsRect.y = 0;
+    srGsRect.w = upperLeftW;
 
     dstrect.x = Gamerect.x;
     dstrect.y = Gamerect.y+upperLeftH;
 
-    SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+    SDL_BlitSurface(ScrollSurface, &srGsRect, BlitSurface, &dstrect);
 }
 
 /*void CVideoEngine::stop()

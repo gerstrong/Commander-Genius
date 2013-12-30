@@ -25,7 +25,7 @@
 #include <fstream>
 
 CGameLauncher::CGameLauncher() :
-mLauncherDialog(CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND))
+mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND))
 {
 	g_pBehaviorEngine->setEpisode(0);
 	m_mustquit      = false;
@@ -80,16 +80,16 @@ bool CGameLauncher::init()
     mpSelList->setBackButtonEvent(new GMQuit());
 
 
-    mLauncherDialog.addControl(new CGUIText("Pick a Game"), CRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    mLauncherDialog.addControl(new CGUIButton( "x", new GMQuit() ), CRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
-    mLauncherDialog.addControl(mpSelList, CRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
+    mLauncherDialog.addControl(new CGUIText("Pick a Game"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+    mLauncherDialog.addControl(new CGUIButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
+    mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
-    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ), CRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
+    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
-    mLauncherDialog.addControl(mpEpisodeText, CRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
-    mLauncherDialog.addControl(mpVersionText, CRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
+    mLauncherDialog.addControl(mpEpisodeText, GsRect<float>(0.5f, 0.75f, 0.5f, 0.05f));
+    mLauncherDialog.addControl(mpVersionText, GsRect<float>(0.5f, 0.80f, 0.5f, 0.05f));
 
     // This way it goes right to the selection list.
     mLauncherDialog.setSelection(2);
@@ -106,7 +106,7 @@ bool CGameLauncher::init()
                     "Pelya,\n"
 					"and the CG Contributors\n");
     
-    mLauncherDialog.addControl( banner, CRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
+    mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 
     if(!gamedetected)
         return false;

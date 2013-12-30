@@ -81,8 +81,8 @@ void CGUIInputText::processLogic()
 	}
 	else
 	{
-		mButtonDown = false;
-		mButtonUp = false;
+		mPressed = false;
+		mReleased = false;
 	}
 
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
@@ -99,13 +99,13 @@ void CGUIInputText::processLogic()
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 			{
-				mButtonDown = true;
+				mPressed = true;
 				mTyping = !mTyping;
 				g_pInput->m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
-				mButtonUp = true;
+				mReleased = true;
 				g_pInput->m_EventList.pop_Event();
 			}
 		}
@@ -113,8 +113,8 @@ void CGUIInputText::processLogic()
 		{
 
 			mHovered = false;
-			mButtonDown = false;
-			mButtonUp = false;
+			mPressed = false;
+			mReleased = false;
 		}
 	}
 }
@@ -138,7 +138,7 @@ void CGUIInputText::drawGalaxyStyle(SDL_Rect& lRect)
 
 	Uint32 newcolor;
 
-	if(mHovered || mButtonDown)
+	if(mHovered || mPressed)
 		newcolor = SDL_MapRGB( format, 84, 234, 84);
 	else
 		newcolor = SDL_MapRGB( format, 38, 134, 38);
@@ -176,11 +176,11 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
-	if( mButtonUp )
+	if( mReleased )
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
 	}
-	else if( mButtonDown )
+	else if( mPressed )
 	{
 		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
 	}
@@ -200,10 +200,10 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 }
 
 
-void CGUIInputText::processRender(const CRect<float> &RectDispCoordFloat)
+void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates
-	CRect<float> displayRect = mRect;
+	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 

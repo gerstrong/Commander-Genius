@@ -20,10 +20,10 @@ CGUIControl::CGUIControl() :
 mEnabled(true),
 mFontID(0),
 mHovered(false),
-mButtonDown(false),
-mButtonUp(false)
+mPressed(false),
+mReleased(false)
 {
-	CRect<float> NewRect(0.0f, 0.0f, 0.0f, 0.0f);
+    GsRect<float> NewRect(0.0f, 0.0f, 0.0f, 0.0f);
 	mRect = NewRect;
 	mTwirliconID = 10;
 }
@@ -46,7 +46,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 			mTwirliconID = 9;
 	}
 
-	if( mButtonDown )
+    if( mPressed )
 	{
 		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+12, lRect.y );
 	}

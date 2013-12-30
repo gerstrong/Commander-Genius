@@ -43,7 +43,7 @@ public:
 	Uint16 getHeight() const { return mpBitmapSurface->h; }
 
     void setColorKey(const Uint8 r, const Uint8 g, const Uint8 b);
-    bool scaleTo(const CRect<Uint16> &gameRes);
+    bool scaleTo(const GsRect<Uint16> &gameRes);
 
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }

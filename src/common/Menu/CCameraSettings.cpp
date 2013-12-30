@@ -10,7 +10,7 @@
 #include "StringUtils.h"
 
 CCameraSettings::CCameraSettings():
-CBaseMenu(CRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
+CBaseMenu(GsRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
 m_CameraBounds(g_pVideoDriver->getCameraBounds())
 {
 

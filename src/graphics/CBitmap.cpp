@@ -153,7 +153,7 @@ void CBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
 #endif
 }
 
-bool CBitmap::scaleTo(const CRect<Uint16> &gameRes)
+bool CBitmap::scaleTo(const GsRect<Uint16> &gameRes)
 {
     SDL_Rect newRect = gameRes.SDLRect();
 

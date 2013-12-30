@@ -55,7 +55,7 @@ bool CSDLVideo::init()
     
     updateAspectRect(m_VidConfig.m_DisplayRect, aspW, aspH);
 
-    const CRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
+    const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
 
     SDL_RenderSetLogicalSize(renderer, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
 
@@ -81,7 +81,7 @@ bool CSDLVideo::init()
 		return false;
 	}
 
-    const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
+    const GsRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
     m_src_slice = GameRect.w*mDisplaySfc->format->BytesPerPixel;
 
     /*aspectCorrectResizing(newDim, w, h);
@@ -98,7 +98,7 @@ bool CSDLVideo::init()
 }
 
 
-bool CSDLVideo::resizeDisplayScreen(const CRect<Uint16>& newDim)
+bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
     const int w = m_VidConfig.mAspectCorrection.w;
     const int h = m_VidConfig.mAspectCorrection.h;

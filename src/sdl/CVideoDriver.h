@@ -58,7 +58,7 @@ public:
     }
 
 	// Drawing related stuff
-	SDL_Rect toBlitRect(const CRect<float> &rect);
+	SDL_Rect toBlitRect(const GsRect<float> &rect);
 
 	/**
 	 * \description This function saves the given camera bounds. It is usually called
@@ -75,7 +75,7 @@ public:
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
 	unsigned short getDepth() const;
-	CRect<Uint16> getGameResolution() const { return m_VidConfig.m_GameRect; }
+	GsRect<Uint16> getGameResolution() const { return m_VidConfig.m_GameRect; }
 
 	SDL_Surface *getBlitSurface() { return mpVideoEngine->getBlitSurface(); }
 
@@ -91,7 +91,7 @@ public:
 
 	void setVidConfig(const CVidConfig& VidConf);
 	void setMode(int width, int height,int depth);
-	void setMode(const CRect<Uint16>& res);
+	void setMode(const GsRect<Uint16>& res);
 	void setSpecialFXMode(bool SpecialFX);
     void setFilter(const filterOptionType value);
 	void setScaleType(bool IsNormal);
@@ -114,8 +114,8 @@ public:
 	 * \return nothing. It does not return because it always adapts the resolution to some working mode.
 	 *         If video cannot be opened at all, another function of LibSDL will find that out.
 	 */
-	void verifyResolution( CRect<Uint16>& resolution, const int flags );
-	CRect<Uint16>& getResolution() const { return *m_Resolution_pos; }
+	void verifyResolution( GsRect<Uint16>& resolution, const int flags );
+	GsRect<Uint16>& getResolution() const { return *m_Resolution_pos; }
 
 	void initResolutionList();
 
@@ -135,8 +135,8 @@ public:
 
 	CEventContainer mDrawTasks;
 
-	std::list< CRect<Uint16> > m_Resolutionlist;
-	std::list< CRect<Uint16> > :: iterator m_Resolution_pos;
+	std::list< GsRect<Uint16> > m_Resolutionlist;
+	std::list< GsRect<Uint16> > :: iterator m_Resolution_pos;
 
 private:
 

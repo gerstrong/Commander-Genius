@@ -81,7 +81,7 @@ void CGUITextSelectionList::processLogic()
 	const float y_innerbound_max = y_innerbound_min +
 			static_cast<float>( mItemList.size()*TEXT_HEIGHT )/bh;
 
-	CRect<float> rRect(fx, fy, fw, fh);
+    GsRect<float> rRect(fx, fy, fw, fh);
 
 	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
@@ -104,13 +104,13 @@ void CGUITextSelectionList::processLogic()
 	}
 }
 
-void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat)
+void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Blit the List surface
 	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
 
 	// Transform to the display coordinates
-	CRect<float> displayRect = mRect;
+    GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 
 	SDL_Rect lRect = displayRect.SDLRect();

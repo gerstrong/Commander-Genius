@@ -26,7 +26,7 @@ m_GameScaleDim(m_VidConfig.m_GameRect.w*m_VidConfig.m_ScaleXFilter,
 m_GamePOTScaleDim(getPowerOfTwo(m_GameScaleDim.w), getPowerOfTwo(m_GameScaleDim.h))
 {}
 
-void COpenGL::setUpViewPort(const CRect<Uint16> &newDim)
+void COpenGL::setUpViewPort(const GsRect<Uint16> &newDim)
 {
     const float width = static_cast<float>(newDim.w);
     const float height = static_cast<float>(newDim.h);
@@ -36,7 +36,7 @@ void COpenGL::setUpViewPort(const CRect<Uint16> &newDim)
     glViewport(xpos, ypos, width, height);
 }
 
-bool COpenGL::resizeDisplayScreen(const CRect<Uint16>& newDim)
+bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL		  
     const int w = m_VidConfig.mAspectCorrection.w;

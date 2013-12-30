@@ -33,7 +33,7 @@ public:
 
 
 	// Constructor which needs the Rect for the placement of the Dialog
-    CGUIDialog(const CRect<float> &NewRect, const FXState fx = NONE);
+    CGUIDialog(const GsRect<float> &NewRect, const FXState fx = NONE);
 
 	// Automatic Background draw function. It creates the background depending on what engine is currently running
 	void initBackground();
@@ -67,12 +67,12 @@ public:
 
 	// Adds a control instance to the list of controls to be processed.
 	void addControl( std::unique_ptr<CGUIControl> &newControl,
-			 	 	 const CRect<float>& RelRect );
+			 	 	 const GsRect<float>& RelRect );
 
 	void addControl( std::unique_ptr<CGUIControl> &newControl );
 
 	void addControl( CGUIControl *newControl,
-			 	 const CRect<float>& RelRect );
+			 	 const GsRect<float>& RelRect );
 
 	void addControl( CGUIControl *newControl );
 
@@ -86,7 +86,7 @@ public:
 
 	void fit();
 
-	void setRect(const CRect<float> &rect);
+	void setRect(const GsRect<float> &rect);
 	void setPosition(const float x, const float y);
 
 	std::list< std::shared_ptr<CGUIControl> >& getControlList()
@@ -107,7 +107,7 @@ protected:
 	void selectNextItem();
 
 
-	CRect<float> mRect;
+	GsRect<float> mRect;
 
 private:
 

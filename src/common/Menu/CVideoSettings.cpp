@@ -52,9 +52,9 @@ private:
 
 CVideoSettings::CVideoSettings() :
 #if defined(EMBEDDED)
-CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.25f) )
+CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.25f) )
 #else
-CBaseMenu(CRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
+CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 #endif
 {
 	// Create the fps config selection control

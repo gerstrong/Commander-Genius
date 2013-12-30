@@ -181,7 +181,7 @@ private:
 
     bool mLocked;
 
-    CRect<int> mVisArea;
+    GsRect<int> mVisArea;
 
     std::map< int, VectorD2<int> > mSpriteOriginList;
 };

@@ -307,14 +307,14 @@ void CEGALatch::applyMasks()
 	{
 		if( g_pBehaviorEngine->getTileProperties().at(t).behaviour == -2 )  // This is for masked tiles.
 		{
-			SDL_Rect srcRect, dstRect;
-			srcRect.w = srcRect.h = 16;
+			SDL_Rect srGsRect, dstRect;
+			srGsRect.w = srGsRect.h = 16;
 			dstRect.w = dstRect.h = 16;
 			
-			srcRect.x = 16*(t%13);
-			srcRect.y = 16*(t/13);		  
+			srGsRect.x = 16*(t%13);
+			srGsRect.y = 16*(t/13);		  
 		  
-			SDL_FillRect( frontSfc, &srcRect, SDL_MapRGBA(frontSfc->format, 0, 0, 0, 0) );
+			SDL_FillRect( frontSfc, &srGsRect, SDL_MapRGBA(frontSfc->format, 0, 0, 0, 0) );
 		  
 			for( Uint16 x=0 ; x<16 ; x++ ) for( Uint16 y=0 ; y<16 ; y++ )
 			{	
@@ -325,9 +325,9 @@ void CEGALatch::applyMasks()
 				SDL_GetRGB( u_colour, backSfc->format, &r, &g, &b );
 
 				/*SDL_Rect dstRect;
-				srcRect.w = srcRect.h = 1;
-				srcRect.x = 16*((t+1)%13) + x;
-				srcRect.y = y+16*((t+1)/13);*/
+				srGsRect.w = srGsRect.h = 1;
+				srGsRect.x = 16*((t+1)%13) + x;
+				srGsRect.y = y+16*((t+1)/13);*/
 
 				Uint8 alpha;
 					
@@ -343,14 +343,14 @@ void CEGALatch::applyMasks()
 				    SDL_GetRGB( u_colour, backSfc->format, &r, &g, &b);					    
 				}
 				
-				SDL_Rect srcRect;
-				srcRect.w = srcRect.h = 1;
-				//srcRect.x = 16*((t+1)%13) + x;
-				//srcRect.y = y+16*((t+1)/13);
-				srcRect.x = 16*((t)%13) + x;
-				srcRect.y = y+16*((t)/13);
+				SDL_Rect srGsRect;
+				srGsRect.w = srGsRect.h = 1;
+				//srGsRect.x = 16*((t+1)%13) + x;
+				//srGsRect.y = y+16*((t+1)/13);
+				srGsRect.x = 16*((t)%13) + x;
+				srGsRect.y = y+16*((t)/13);
 				
-				SDL_FillRect( frontSfc, &srcRect, SDL_MapRGBA(frontSfc->format, r, g, b, alpha) );
+				SDL_FillRect( frontSfc, &srGsRect, SDL_MapRGBA(frontSfc->format, r, g, b, alpha) );
 			}
 		}
 	}

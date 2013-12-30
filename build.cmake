@@ -139,7 +139,30 @@ configure_file(README.in README)
 # main includes
 INCLUDE_DIRECTORIES(src)
 
-file(GLOB_RECURSE ALL_SRCS src/*.c* src/*.h*)
+file(GLOB ALL_SRCS_PART_ROOT src/*.c* src/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_COMMON src/common/*.c* src/common/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_CORE src/core/*.c* src/core/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_DIALOG src/dialog/*.c* src/dialog/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_ENGINE src/engine/*.c* src/engine/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_FILEIO src/fileio/*.c* src/fileio/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_GRAPHICS src/graphics/*.c* src/graphics/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_GUI src/gui/*.c* src/gui/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_HARDWARE src/hardware/*.c* src/hardware/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_SDL src/sdl/*.c* src/sdl/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_UTILS src/utils/*.c* src/utils/*.h*)
+
+SET(ALL_SRCS ${ALL_SRCS_PART_ROOT}
+             ${ALL_SRCS_PART_COMMON}
+             ${ALL_SRCS_PART_CORE}
+             ${ALL_SRCS_PART_DIALOG}
+             ${ALL_SRCS_PART_ENGINE}
+             ${ALL_SRCS_PART_FILEIO}
+             ${ALL_SRCS_PART_GRAPHICS}
+             ${ALL_SRCS_PART_GUI}
+             ${ALL_SRCS_PART_HARDWARE}
+             ${ALL_SRCS_PART_SDL}
+             ${ALL_SRCS_PART_UTILS}
+             ${ALL_SRCS_PART_GRAPHICS})
 
 IF(UNIX)
 # Compilation under Linux

@@ -24,7 +24,7 @@ mTextID(text)
 
 void CGUIBitmap::updateGraphics()
 {
-    CRect<Uint16> sizeForScreen = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> sizeForScreen = g_pVideoDriver->getGameResolution();
     mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmapFromStr(mTextID) ));
 
     sizeForScreen.w /= 320;
@@ -43,10 +43,10 @@ void CGUIBitmap::processLogic()
 
 
 
-void CGUIBitmap::processRender(const CRect<float> &RectDispCoordFloat)
+void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates
-	CRect<float> displayRect = mRect;
+	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 

@@ -9,7 +9,7 @@ public:
     CGUIBanner(const std::string& text);
     
     void processLogic();
-    void processRender(const CRect<float> &RectDispCoordFloat);
+    void processRender(const GsRect<float> &RectDispCoordFloat);
     void setText(const std::string& text);
     
 private:    

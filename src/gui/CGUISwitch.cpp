@@ -43,11 +43,11 @@ void CGUISwitch::drawVorticonStyle(SDL_Rect& lRect)
 
 }
 
-void CGUISwitch::processRender(const CRect<float> &RectDispCoordFloat)
+void CGUISwitch::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 
 	// Transform to the display coordinates
-	CRect<float> displayRect = mRect;
+	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 

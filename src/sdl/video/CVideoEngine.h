@@ -41,7 +41,7 @@ public:
 
 	virtual bool init();
 
-	virtual bool resizeDisplayScreen(const CRect<Uint16>& newDim) = 0;
+	virtual bool resizeDisplayScreen(const GsRect<Uint16>& newDim) = 0;
 
 
     /**
@@ -50,7 +50,7 @@ public:
      * @param aspWidth wished aspect width
      * @param aspHeight wished aspect height
      */
-    void updateAspectRect(const CRect<Uint16>& displayRes, const int aspWidth, const int aspHeight);
+    void updateAspectRect(const GsRect<Uint16>& displayRes, const int aspWidth, const int aspHeight);
 
     virtual void transformScreenToDisplay() = 0;
 	virtual void shutdown();
@@ -74,7 +74,7 @@ public:
 
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 
-    CRect<Uint16> &getAspectCorrRect() { return mAspectCorrectionRect; }
+    GsRect<Uint16> &getAspectCorrRect() { return mAspectCorrectionRect; }
 
 	void resetScrollbuffer()
 	{
@@ -99,7 +99,7 @@ public:
     SDL_GLContext glcontext;
 #endif
 
-    CRect<int> mRelativeVisGameArea;        
+    GsRect<int> mRelativeVisGameArea;        
 
 protected:
 
@@ -130,7 +130,7 @@ protected:
 	unsigned int m_Mode;
 
 	// A sub-rectangle where an aspect-corrected frame is displayed
-    CRect<Uint16> mAspectCorrectionRect;
+    GsRect<Uint16> mAspectCorrectionRect;
 };
 
 #endif /* CVIDEOENGINE_H_ */

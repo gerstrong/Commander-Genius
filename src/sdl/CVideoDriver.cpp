@@ -89,14 +89,14 @@ void CVideoDriver::initResolutionList()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
-    CRect<Uint16> resolution(SDL_GetVideoInfo());
+    GsRect<Uint16> resolution(SDL_GetVideoInfo());
 	
 #if defined(ANDROID)
 	resolution.w = 320;
 	resolution.h = 200;
 #endif
 	
-	CRect<Uint16> desktopResolution(resolution);
+	GsRect<Uint16> desktopResolution(resolution);
 
 	// We have a resolution list, clear it and create a new one.
 
@@ -150,14 +150,14 @@ void CVideoDriver::initResolutionList()
 #endif
 }
 
-void CVideoDriver::verifyResolution(CRect<Uint16>& resolution,
+void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
 		const int flags) 
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     
 #else
     if (SDL_VideoModeOK(resolution.w, resolution.h, 32, flags)) {
-		std::list< CRect<Uint16> >::iterator i;
+		std::list< GsRect<Uint16> >::iterator i;
 		for (i = m_Resolutionlist.begin(); i != m_Resolutionlist.end(); i++) {
 			if (*i == resolution)
 				break;
@@ -184,11 +184,11 @@ void CVideoDriver::setSpecialFXMode(bool SpecialFX) {
 }
 
 void CVideoDriver::setMode(int width, int height, int depth) {
-	CRect<Uint16> res(width, height);
+	GsRect<Uint16> res(width, height);
 	setMode(res);
 }
 
-void CVideoDriver::setMode(const CRect<Uint16>& res) {
+void CVideoDriver::setMode(const GsRect<Uint16>& res) {
 	m_VidConfig.setResolution(res);
 
 	// TODO: Cycle through the list until the matching resolution is matched. If it doesn't exist
@@ -206,8 +206,8 @@ void CVideoDriver::setMode(const CRect<Uint16>& res) {
 
 bool CVideoDriver::applyMode() 
 {
-	const CRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
-	const CRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
+	const GsRect<Uint16> &Res = m_VidConfig.m_DisplayRect;
+	const GsRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
 
 	// Before the resolution is set, check, if the zoom factor is too high!
 	while (((Res.w / GameRect.w) < m_VidConfig.Zoom
@@ -402,16 +402,16 @@ st_camera_bounds &CVideoDriver::getCameraBounds()
 ////
 //// Drawing stuff related Stuff
 ////
-SDL_Rect CVideoDriver::toBlitRect(const CRect<float> &rect)
+SDL_Rect CVideoDriver::toBlitRect(const GsRect<float> &rect)
 {
-	CRect<Uint16> GameRes = getGameResolution();
-	CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
-	CRect<float> RectDispCoordFloat = rect;
+	GsRect<Uint16> GameRes = getGameResolution();
+	GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
+	GsRect<float> RectDispCoordFloat = rect;
 
 	// Transform to the blit coordinates
 	RectDispCoordFloat.transform(screenRect);
 
-	CRect<Uint16> RectDispCoord;
+	GsRect<Uint16> RectDispCoord;
 	RectDispCoord = RectDispCoordFloat;
 	return RectDispCoord.SDLRect();
 }

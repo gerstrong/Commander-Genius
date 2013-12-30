@@ -187,7 +187,7 @@ void CPlayGameVorticon::showKeensLeft()
 {    
     const int numPlayers = g_pBehaviorEngine->mPlayers;
 
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 
     const int scW = gameRes.w/320;
     const int scH = gameRes.h/200;

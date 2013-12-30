@@ -101,7 +101,7 @@ void CGUIButton::updateGraphics()
 void CGUIButton::processLogic()
 {
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
+    /*if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
 
@@ -125,14 +125,14 @@ void CGUIButton::processLogic()
 
 			if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 			{
-				mButtonDown = true;
+                mPressed = true;
 				g_pInput->m_EventList.pop_Event();
 				return;
 			}
 
 			if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
-				mButtonUp = true;
+                mReleased = true;
 				g_pBehaviorEngine->m_EventList.add(mEvent);
 				g_pInput->m_EventList.pop_Event();
 				return;
@@ -142,10 +142,10 @@ void CGUIButton::processLogic()
 		{
 
 			mHovered = false;
-			mButtonDown = false;
-			mButtonUp = false;
+            mPressed = false;
+            mReleased = false;
 		}
-	}
+    }*/
 
 }
 
@@ -185,7 +185,7 @@ void CGUIButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
 
 	if(!mEnabled)
 		newcolor = SDL_MapRGB( format, 123, 150, 123);
-	else if(mHovered || mButtonDown)
+    else if(mHovered || mPressed)
 		newcolor = SDL_MapRGB( format, 84, 234, 84);
 	else
 		newcolor = SDL_MapRGB( format, 38, 134, 38);
@@ -231,11 +231,11 @@ void CGUIButton::drawNoStyle(SDL_Rect& lRect)
 
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
-	if( mButtonUp )
+    if( mReleased )
 	{
 		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFBFBFBF );
 	}
-	else if( mButtonDown )
+    else if( mPressed )
 	{
 		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFCFCFCF );
 	}
@@ -255,10 +255,10 @@ void CGUIButton::drawNoStyle(SDL_Rect& lRect)
 }
 
 
-void CGUIButton::processRender(const CRect<float> &RectDispCoordFloat)
+void CGUIButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates
-	CRect<float> displayRect = mRect;
+    GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 

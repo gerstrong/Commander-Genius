@@ -109,11 +109,11 @@ void CHUD::CreateVorticonBackground()
         SDL_SetAlpha(mpBackground.get(), 0, 0);
     #endif
 
-	SDL_Rect headsrcrect, headdstrect;
-	headsrcrect.x = 0;
-	headsrcrect.y = 0;
-	headdstrect.w = headsrcrect.w = 16;
-	headdstrect.h = headsrcrect.h = 16;
+	SDL_Rect headsrGsRect, headdstrect;
+	headsrGsRect.x = 0;
+	headsrGsRect.y = 0;
+	headdstrect.w = headsrGsRect.w = 16;
+	headdstrect.h = headsrGsRect.h = 16;
     headdstrect.x = 0;
     headdstrect.y = 11;
 
@@ -127,7 +127,7 @@ void CHUD::CreateVorticonBackground()
     SDL_SetAlpha(keenHeadSfc, 0, 0);
 #endif
 
-    SDL_BlitSurface( keenHeadSfc, &headsrcrect, mpBackground.get(), &headdstrect );
+    SDL_BlitSurface( keenHeadSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
 
 
 	int sprite=0;
@@ -138,10 +138,10 @@ void CHUD::CreateVorticonBackground()
 
 	// Draw the shot
     mKeenGunSprite = g_pGfxEngine->getSprite(mId,sprite);
-    headdstrect.w = headsrcrect.w = mKeenGunSprite.getWidth();
-    headdstrect.h = headsrcrect.h = mKeenGunSprite.getHeight();
-    headdstrect.x = 45-(headsrcrect.w/2);
-    headdstrect.y = 19-(headsrcrect.h/2);
+    headdstrect.w = headsrGsRect.w = mKeenGunSprite.getWidth();
+    headdstrect.h = headsrGsRect.h = mKeenGunSprite.getHeight();
+    headdstrect.x = 45-(headsrGsRect.w/2);
+    headdstrect.y = 19-(headsrGsRect.h/2);
 
     SDL_Surface *keenGunSfc = mKeenGunSprite.getSDLSurface();
 
@@ -152,7 +152,7 @@ void CHUD::CreateVorticonBackground()
 #endif
 
 
-    SDL_BlitSurface( keenGunSfc, &headsrcrect, mpBackground.get(), &headdstrect );
+    SDL_BlitSurface( keenGunSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
 
 	// Draw the rounded borders
     DrawCircle(0, 0, 76);

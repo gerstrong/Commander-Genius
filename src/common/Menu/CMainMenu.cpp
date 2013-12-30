@@ -117,7 +117,7 @@ void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 
 
 CMainMenu::CMainMenu( const bool openedGamePlay ) :
-CBaseMenu( CRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
+CBaseMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
 	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{

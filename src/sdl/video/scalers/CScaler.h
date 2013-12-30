@@ -20,7 +20,7 @@ enum filterOptionType
 };
 
 void blitScaled(SDL_Surface *srcSfc,
-                      SDL_Rect &srcRect,
+                      SDL_Rect &srGsRect,
                       SDL_Surface *dstSfc,
                       SDL_Rect &dstRect,
                       filterOptionType filter);

@@ -42,7 +42,7 @@ public:
 
 	void drawGalaxyStyle(SDL_Rect& lRect);
 
-	virtual void processRender(const CRect<float> &RectDispCoordFloat);
+	virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
 protected:
 

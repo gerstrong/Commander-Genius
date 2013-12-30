@@ -38,7 +38,7 @@ blendup(true)
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
 
 	// Create a surface for that
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
 	mMBRect.w = Font.getPixelTextWidth(mText)+16;
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
     mMBRect.x = (gameRes.w-mMBRect.w)/2;
