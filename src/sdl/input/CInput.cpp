@@ -17,6 +17,7 @@
 #include "fileio/CConfiguration.h"
 #include "common/CSettings.h"
 #include "common/CBehaviorEngine.h"
+#include <lib/base/PointDevice.h>
 
 // Input Events
 

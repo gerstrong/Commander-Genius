@@ -93,14 +93,9 @@ public:
 
 
     // The relative rect describes the rect which is normally tied to its parent.
-    //GsRect<float> mRelRect;
-
-    // In contrast the absolute rect is position and size to the root element, which is normally
-    // the surface where the control will be drawn
-    //GsRect<Uint16> mAbsRect;
-    GsRect<Uint16> mRect;
+    GsRect<float> mRect;
 	
-    	bool mEnabled;
+    bool mEnabled;
 
 protected:
     
