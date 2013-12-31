@@ -1,5 +1,5 @@
 /*
- * CGame.cpp
+ * GsApp.cpp
  *
  *  Created on: 01.05.2009
  *      Author: gerstrong
@@ -9,16 +9,20 @@
  *  It also manages the load of drivers and main game cycle
  */
 
-#include "CGame.h"
+#include "GsApp.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
+#include "sdl/sound/CSound.h"
 #include "sdl/CTimer.h"
 #include "common/CSettings.h"
+#include "CLogFile.h"
 #include "common/Menu/CMenuController.h"
 
-CGame::CGame() :
+#include "graphics/CGfxEngine.h"
+
+GsApp::GsApp() :
 m_firsttime(false),
-mGameControl(m_firsttime)
+mAppState(m_firsttime)
 {}
 
 
@@ -31,7 +35,7 @@ mGameControl(m_firsttime)
  * 					This can happen at the end of the program
  * 					or when an engine may be changed.
  */
-CGame::~CGame()
+GsApp::~GsApp()
 {
 	gpMenuController->emptyMenuStack();
 	g_pInput->Del();
@@ -57,7 +61,7 @@ CGame::~CGame()
  * 					the game, it will return true, else it
  * 					will be false.
  */
-bool CGame::init(int argc, char *argv[])
+bool GsApp::init(int argc, char *argv[])
 {
 	// Check if there are settings on the PC, otherwise use defaults.
 	if(!g_pSettings->loadDrvCfg())
@@ -82,7 +86,7 @@ bool CGame::init(int argc, char *argv[])
 	}
 	
 	// Initialize the way the launcher is started
-	if(!mGameControl.init(argc, argv))	return false;
+    if(!mAppState.init(argc, argv))	return false;
 	
 	return true;
 }
@@ -98,7 +102,7 @@ bool CGame::init(int argc, char *argv[])
  * 					will be false.
  */
 // Load the driver needed to start the game
-bool CGame::loadCKPDrivers()
+bool GsApp::loadCKPDrivers()
 {
 	// Init graphics
 	if (!g_pVideoDriver->start()) return false;
@@ -118,7 +122,7 @@ bool CGame::loadCKPDrivers()
  * 		which engine is chosen, it always get to this point
  * 		Mainly timer and logic processes are performed here.
  */
-void CGame::run()
+void GsApp::run()
 {
     float acc = 0.0f;
     float start = 0.0f;
@@ -157,7 +161,7 @@ void CGame::run()
             g_pInput->pollEvents();
 
             // Ponder Game Control
-            mGameControl.ponder();
+            mAppState.ponder();
 
             /*
               previousState = currentState;
@@ -171,7 +175,7 @@ void CGame::run()
         }
 
         // Now we render the whole GameControl Object to the blit surface
-        mGameControl.render(0);
+        mAppState.render(0);
 
         // Apply graphical effects if any.
         g_pGfxEngine->render();
@@ -194,7 +198,7 @@ void CGame::run()
         elapsed = timerTicks() - start;
         total_elapsed += elapsed;
 
-        if( mGameControl.mustShutdown() )
+        if( mAppState.mustShutdown() )
             break;
 
         int waitTime = renderLatency - elapsed;

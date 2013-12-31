@@ -1,20 +1,20 @@
 /**
- * CGame.h
+ * GsApp.h
  *
  *  Created on: 01.05.2009
  *      Author: gerstrong
  */
 
-#ifndef CGAME_H_
-#define CGAME_H_
+#ifndef GsApp_H_
+#define GsApp_H_
 
-#include "core/CGameControl.h"
+#include <base/GsAppState.h>
 
-class CGame
+class GsApp
 {
 public:
-	CGame();
-	~CGame();
+    GsApp();
+    ~GsApp();
 	
 	bool init(int argc, char *argv[]);
 	bool loadCKPDrivers();
@@ -24,7 +24,7 @@ public:
 
 private:
 	bool m_firsttime;
-	CGameControl mGameControl;
+    GsAppState mAppState;
 };
 
-#endif /* CGAME_H_ */
+#endif /* GsApp_H_ */

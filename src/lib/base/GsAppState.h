@@ -10,24 +10,17 @@
 #ifndef CGAMECONTROL_H_
 #define CGAMECONTROL_H_
 
-#include "common/CGameLauncher.h"
-#include "common/options.h"
-#include "common/Menu/CMenuController.h"
+#include "common/CBehaviorEngine.h"
 #include "core/CBaseEngine.h"
-#include "engine/CEGAGraphics.h"
-#include "engine/CMessages.h"
-#include "engine/CPassive.h"
-#include "core/mode/CGameMode.h"
-#include "core/LogicDrawSplitter.h"
 
 #include <string>
 #include <memory>
 
-class CGameControl /*: public GameState*/
+class GsAppState /*: public GameState*/
 {
 public:
 
-	CGameControl(bool &firsttime);
+    GsAppState(bool &firsttime);
 	
 	bool init(int argc, char *argv[]);
 

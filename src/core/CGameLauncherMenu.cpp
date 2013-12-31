@@ -182,7 +182,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 
 	if( ExeFile.getHeaderData() == NULL)
 	{
-		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
+		g_pLogFile->textOut(RED, "GsAppState::loadResources: Could not load data from the EXE File<br>");
 		return false;
 	}
 

@@ -32,7 +32,8 @@
 	#include <SDL_main.h>
 #endif
 
-#include "CGame.h"
+#include <base/GsApp.h>
+#include "CLogFile.h"
 #include "FindFile.h"
 #include "ThreadPool.h"
 
@@ -88,20 +89,18 @@ int main(int argc, char *argv[])
 
 	// The Game Class instance is the main class managing whole
 	// interpreter instance. TODO: It should be a singleton
-	CGame Game;
+    GsApp app;
 	
 	////////////////////////////
 	// Initialize Game Engine //
 	////////////////////////////
-	if( Game.init( argc, argv ) )
+    if( app.init( argc, argv ) )
 	{
 		///////////////////////
 		// Start Game Engine //
 		///////////////////////
-		Game.run();
+        app.run();
 	}
-
-	std::cout << "Thank you very much for playing this game!" << std::endl;
 
 	UnInitThreadPool();
 	return 0;

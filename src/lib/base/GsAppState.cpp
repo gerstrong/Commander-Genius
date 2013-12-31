@@ -1,11 +1,11 @@
 /*
- * CGameControl.cpp
+ * GsAppState.cpp
  *
  *  Created on: 22.09.2009
  *      Author: gerstrong
  */
 
-#include "CGameControl.h"
+#include "GsAppState.h"
 #include "CResourceLoader.h"
 #include "fileio/CExeFile.h"
 #include "fileio/CPatcher.h"
@@ -15,18 +15,27 @@
 
 #include "common/Menu/CMenuController.h"
 
-#include "CGameMain.h"
-#include "CGameLauncherMenu.h"
-#include "mode/CGamePlayMode.h"
-#include "mode/CGamePassiveMode.h"
+#include "core/CGameLauncherMenu.h"
+#include "core/mode/CGamePlayMode.h"
+#include "core/mode/CGamePassiveMode.h"
 
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 
+#include "core/CGameMain.h"
+
+//#include "common/CGameLauncher.h"
+//#include "common/options.h"
+//#include "common/Menu/CMenuController.h"
+//#include "engine/CEGAGraphics.h"
+//#include "engine/CMessages.h"
+//#include "engine/CPassive.h"
+//#include "core/mode/CGameMode.h"
+
 
 #include "arguments.h"
 
-CGameControl::CGameControl(bool &firsttime) :
+GsAppState::GsAppState(bool &firsttime) :
 m_firsttime(firsttime),
 m_startGame_no(-1),
 m_startLevel(-1)
@@ -35,7 +44,7 @@ m_startLevel(-1)
 ////
 // Initialization Routine
 ////
-bool CGameControl::init(int argc, char *argv[])
+bool GsAppState::init(int argc, char *argv[])
 {
 	bool ok = true;
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
@@ -95,7 +104,7 @@ bool CGameControl::init(int argc, char *argv[])
 }
 
 
-void CGameControl::pollEvents()
+void GsAppState::pollEvents()
 {
     // process any triggered Game Control related event
     CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
@@ -147,7 +156,7 @@ void CGameControl::pollEvents()
 // Process Routine
 ////
 // This function is run every time, the Timer says so, through.
-void CGameControl::ponder()
+void GsAppState::ponder()
 {    
     pollEvents();
 
@@ -166,7 +175,7 @@ void CGameControl::ponder()
     gpMenuController->ponder();    
 }
 
-void CGameControl::render(const float deltaT)
+void GsAppState::render(const float deltaT)
 {
     if(mpEngine)
         mpEngine->render(deltaT);

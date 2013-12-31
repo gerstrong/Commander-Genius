@@ -9,10 +9,9 @@
 #include "CAudioSettings.h"
 #include "StringUtils.h"
 #include "sdl/music/CMusic.h"
+#include "sdl/sound/CSound.h"
 
 #include "gui/CGUIButton.h"
-
-#include "core/CGameControl.h"
 
 CAudioSettings::CAudioSettings() :
 CBaseMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )

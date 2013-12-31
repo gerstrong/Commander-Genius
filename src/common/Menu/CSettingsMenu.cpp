@@ -17,7 +17,7 @@
 #include "sdl/CVideoDriver.h"
 #include "gui/CGUIButton.h"
 
-#include "core/CGameControl.h"
+#include "common/Menu/CMenuController.h"
 
 
 CSettingsMenu::CSettingsMenu() :
