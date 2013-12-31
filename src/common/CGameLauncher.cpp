@@ -76,7 +76,7 @@ bool CGameLauncher::init()
     	mpSelList->addText(it->name);
     }
 
-    mpSelList->setConfirmButtonEvent(new GMStart(mpSelList->mSelection));
+    mpSelList->setConfirmButtonEvent(new GMStart(mpSelList->getSelection()));
     mpSelList->setBackButtonEvent(new GMQuit());
 
 
@@ -84,7 +84,7 @@ bool CGameLauncher::init()
     mLauncherDialog.addControl(new CGUIButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
-    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->mSelection) ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
+    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->getSelection()) ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
@@ -236,9 +236,9 @@ void CGameLauncher::ponder()
     }
     
     // Check if the selection changed. Update the right data panel
-    if(mSelection != mpSelList->mSelection)
+    if(mSelection != mpSelList->getSelection())
     {
-        mSelection = mpSelList->mSelection;
+        mSelection = mpSelList->getSelection();
         const std::string nameText = "Episode " + itoa(m_Entries[mSelection].episode);
         mpEpisodeText->setText(nameText);
         float fVer = m_Entries[mSelection].version;

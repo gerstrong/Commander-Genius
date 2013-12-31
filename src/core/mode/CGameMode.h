@@ -50,11 +50,11 @@ struct GMQuit : CEvent {};
 // It's a simple start event which will force CG launch a game from a specified slot
 struct GMStart : CEvent
 {
-	GMStart(int &Slot) :
+    GMStart(const int &Slot) :
 	mSlot(Slot)
 	{}
 
-	int &mSlot;
+    const int &mSlot;
 };
 
 ///////

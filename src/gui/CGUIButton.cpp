@@ -100,34 +100,8 @@ void CGUIButton::updateGraphics()
 
 
 void CGUIButton::processLogic()
-{    
-    GsPointingState &pointingState = gPointDevice.mPointingState;
-
-    const bool hasPoint = mRect.HasPoint(pointingState.mPos);
-    const bool bDown = (pointingState.mActionButton>0);
-
-    mReleased = false;
-
-    if(!bDown && mPressed)
-    {
-        mPressed = false;
-
-        if(hasPoint)
-        {
-            mReleased = true;
-        }
-    }
-
-    if(!bDown || mPressed)
-    {
-        mHovered = hasPoint;
-    }
-
-    if(mHovered && bDown)
-    {
-        mPressed = true;
-    }
-
+{        
+    processPointingState();
 
     // If button was pushed and gets released, trigger the assigned event.
     if(mReleased)

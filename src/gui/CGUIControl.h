@@ -30,37 +30,12 @@ public:
 	virtual ~CGUIControl() {}
 
 	virtual void processLogic() = 0;
+
+    void processPointingState();
+
     virtual void processRender(const GsRect<float> &RectDispCoordFloat) = 0;
 
     virtual void updateGraphics() {}
-
-    /*void processInputState(const GsInputState &inputState)
-    {
-        const bool hasPoint = mAbsRect.hasPoint(inputState.mPos);
-        const bool bDown = (inputState.mActionButton>0);
-
-        mReleased = false;
-
-        if(!bDown && mPressed)
-        {
-            mPressed = false;
-
-            if(hasPoint)
-            {
-                mReleased = true;
-            }
-        }
-
-        if(!bDown || mPressed)
-        {
-            mHovered = hasPoint;
-        }
-
-        if(mHovered && bDown)
-        {
-            mPressed = true;
-        }
-    }*/
 
 
     void setRect( const GsRect<float>& rect )

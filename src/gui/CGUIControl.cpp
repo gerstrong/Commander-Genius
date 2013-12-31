@@ -13,6 +13,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/CTimer.h"
 
+#include <lib/base/PointDevice.h>
 
 int CGUIControl::mTwirliconID;
 
@@ -28,6 +29,36 @@ mReleased(false)
 	mTwirliconID = 10;
 }
 
+
+void CGUIControl::processPointingState()
+{
+    GsPointingState &pointingState = gPointDevice.mPointingState;
+
+    const bool hasPoint = mRect.HasPoint(pointingState.mPos);
+    const bool bDown = (pointingState.mActionButton>0);
+
+    mReleased = false;
+
+    if(!bDown && mPressed)
+    {
+        mPressed = false;
+
+        if(hasPoint)
+        {
+            mReleased = true;
+        }
+    }
+
+    if(!bDown || mPressed)
+    {
+        mHovered = hasPoint;
+    }
+
+    if(mHovered && bDown)
+    {
+        mPressed = true;
+    }
+}
 
 
 void CGUIControl::drawTwirl( const SDL_Rect& lRect )

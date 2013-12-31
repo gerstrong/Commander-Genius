@@ -12,6 +12,8 @@
 #include "sdl/input/InputEvents.h"
 #include "sdl/input/CInput.h"
 
+#include <lib/base/PointDevice.h>
+
 const float TEXT_HEIGHT = 10.0f;
 
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
@@ -28,18 +30,18 @@ bool CGUITextSelectionList::sendEvent(const InputCommands command)
 {
 	if(command == IC_UP)
 	{
-		mSelection--;
+        mPressedSelection--;
 
-		if(mSelection < 0)
-			mSelection = mItemList.size()-1;
+        if(mPressedSelection < 0)
+            mPressedSelection = mItemList.size()-1;
 		return true;
 	}
 	else if(command == IC_DOWN)
 	{
-		mSelection++;
+        mPressedSelection++;
 
-		if(mSelection >= static_cast<int>(mItemList.size()) )
-			mSelection = 0;
+        if(mPressedSelection >= static_cast<int>(mItemList.size()) )
+            mPressedSelection = 0;
 		return true;
 	}
 	else if(command == IC_STATUS || command == IC_JUMP ||
@@ -83,25 +85,26 @@ void CGUITextSelectionList::processLogic()
 
     GsRect<float> rRect(fx, fy, fw, fh);
 
-	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
-	{
-		CVec MousePos = mouseevent->Pos;
+    GsPointingState &pointingState = gPointDevice.mPointingState;
 
-		if( rRect.HasPoint(MousePos) )
-		{
-			if( MousePos.y > y_innerbound_min && MousePos.y < y_innerbound_max )
-			{
-				int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1;
+    processPointingState();
 
-				if(mouseevent->Type == MOUSEEVENT_MOVED)
-					mHoverSelection = newselection;
-				else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
-					mSelection = newselection;
-			}
+    CVec MousePos = pointingState.mPos;
 
-			g_pInput->m_EventList.pop_Event();
-		}
-	}
+    if( rRect.HasPoint(MousePos) )
+    {
+        if( MousePos.y > y_innerbound_min && MousePos.y < y_innerbound_max )
+        {
+            int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1;
+
+            if(mHovered)
+                mHoverSelection = newselection;
+            if(mPressed)
+                mPressedSelection = newselection;
+            if(mReleased)
+                mReleasedSelection = newselection;
+        }
+    }
 }
 
 void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
@@ -128,11 +131,22 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 	std::list<std::string> :: iterator it = mItemList.begin();
 	for ( int line = 0; it != mItemList.end() ; it++, line++ )
 	{
-		if(mSelection == line)
+        if(mPressedSelection == line)
+        {
+            lRect.y = ypos+(line*10)-1;
+            SDL_FillRect(Blitsurface, &lRect, 0xFFB5B5F1);
+        }
+        else if(mReleasedSelection == line)
 		{
 			lRect.y = ypos+(line*10)-1;
 			SDL_FillRect(Blitsurface, &lRect, 0xFFC5C5F1);
 		}
+        else if(mHoverSelection == line)
+        {
+            lRect.y = ypos+(line*10)-1;
+            SDL_FillRect(Blitsurface, &lRect, 0xFFE5E5F1);
+        }
+
 
 		trimmedText = *it;
 		if(trimmedText.size() > textlimitWidth)

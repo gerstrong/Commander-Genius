@@ -14,12 +14,14 @@
 #include <string>
 #include "CGUIControl.h"
 
-class CGUITextSelectionList : public CGUIControl {
+class CGUITextSelectionList : public CGUIControl
+{
 public:
 
 	CGUITextSelectionList() :
 	mHoverSelection(0),
-    mSelection(-1) {}
+    mPressedSelection(-1),
+    mReleasedSelection(-1) {}
 
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
@@ -29,13 +31,20 @@ public:
 	void processLogic();
     void processRender(const GsRect<float> &RectDispCoordFloat);
 
+    int getSelection() const
+    { return mReleasedSelection; }
+
+    void setSelection(const int sel)
+    { mReleasedSelection = sel; }
 
 	std::list<std::string> mItemList;
-
-	int mHoverSelection;
-	int mSelection;
 	
 private:
+
+    int mHoverSelection;
+    int mPressedSelection;
+    int mReleasedSelection;
+
     
 	int mTextWidthLimit;
 	
