@@ -604,17 +604,23 @@ void CInput::pollEvents()
 
 		case SDL_MOUSEBUTTONDOWN:
             transMouseRelCoord(Pos, Event.motion, clickGameArea);
-			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
+            m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
+            gPointDevice.mPointingState.mActionButton = 1;
+            gPointDevice.mPointingState.mPos = Pos;
 			break;
 
 		case SDL_MOUSEBUTTONUP:
             transMouseRelCoord(Pos, Event.motion, clickGameArea);
-			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
+            m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
+            gPointDevice.mPointingState.mActionButton = 0;
+            gPointDevice.mPointingState.mPos = Pos;
+
 			break;
 
 		case SDL_MOUSEMOTION:
             transMouseRelCoord(Pos, Event.motion, clickGameArea);
-			m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
+            m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
+            gPointDevice.mPointingState.mPos = Pos;
 			break;
 		}
 	}

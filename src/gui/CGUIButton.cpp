@@ -15,6 +15,7 @@
 #include "sdl/extensions.h"
 #include "StringUtils.h"
 #include "common/Menu/CMenuController.h"
+#include <lib/base/PointDevice.h>
 
 
 
@@ -99,53 +100,40 @@ void CGUIButton::updateGraphics()
 
 
 void CGUIButton::processLogic()
-{
-	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-    if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
-	{
-		CVec MousePos = mouseevent->Pos;
+{    
+    GsPointingState &pointingState = gPointDevice.mPointingState;
 
-		if( mRect.HasPoint(MousePos) )
-		{
-			if(mouseevent->Type == MOUSEEVENT_MOVED)
-			{
-				mHovered = true;
+    const bool hasPoint = mRect.HasPoint(pointingState.mPos);
+    const bool bDown = (pointingState.mActionButton>0);
 
-				if(!mEnabled)
-					return;
+    mReleased = false;
 
-				g_pInput->m_EventList.pop_Event();
-				return;
-			}
+    if(!bDown && mPressed)
+    {
+        mPressed = false;
 
-
-			if(!mEnabled)
-				return;
-
-
-			if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
-			{
-                mPressed = true;
-				g_pInput->m_EventList.pop_Event();
-				return;
-			}
-
-			if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
-			{
-                mReleased = true;
-				g_pBehaviorEngine->m_EventList.add(mEvent);
-				g_pInput->m_EventList.pop_Event();
-				return;
-			}
-		}
-		else
-		{
-			mHovered = false;
-            mPressed = false;
-            mReleased = false;
-		}
+        if(hasPoint)
+        {
+            mReleased = true;
+        }
     }
 
+    if(!bDown || mPressed)
+    {
+        mHovered = hasPoint;
+    }
+
+    if(mHovered && bDown)
+    {
+        mPressed = true;
+    }
+
+
+    // If button was pushed and gets released, trigger the assigned event.
+    if(mReleased)
+    {
+        g_pBehaviorEngine->m_EventList.add(mEvent);
+    }
 }
 
 
@@ -225,27 +213,26 @@ void CGUIButton::drawGalaxyStyle(SDL_Rect& lRect)
 
 void CGUIButton::drawNoStyle(SDL_Rect& lRect)
 {
-	if(!mEnabled)
-		return;
+    if(!mEnabled) // TODO: I think, if it is disabled, it should use another color
+        return;
 
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+    SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
-    if( mReleased )
-	{
-		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFBFBFBF );
-	}
-    else if( mPressed )
-	{
-		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFCFCFCF );
-	}
-	else if( mHovered )
-	{
-		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFDFDFDF );
-	}
-	else
-	{
-		drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFFFFFFF );
-	}
+    if( mHovered )
+    {
+        if( mPressed )
+        {
+            drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFCFCFCF );
+        }
+        else
+        {
+            drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFDFDFDF );
+        }
+    }
+    else
+    {
+        drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFFFFFFF );
+    }
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);

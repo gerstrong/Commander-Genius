@@ -14,17 +14,19 @@ struct GsPointingState
         mPos(pos),
         mActionButton(actionbutton)   {}
 
+    GsPointingState()
+        {}
+
     CVec mPos;
     Uint32 mActionButton;
 };
 
-class PointDevice
+class PointDevice : public GsSingleton<PointDevice>
 {
   public:
-
     GsPointingState mPointingState;
 };
 
-#define gPointDevice GsSingleton<PointDevice>::get()
+#define gPointDevice PointDevice::get()
 
 #endif // POINTDEVICE_H_
