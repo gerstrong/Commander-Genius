@@ -171,7 +171,7 @@ void CGame::run()
         }
 
         // Now we render the whole GameControl Object to the blit surface
-        mGameControl.render();
+        mGameControl.render(0);
 
         // Apply graphical effects if any.
         g_pGfxEngine->render();

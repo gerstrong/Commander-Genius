@@ -42,7 +42,7 @@ public:
 	// Processes the stuff that the menus have in common
     virtual void ponder();
 
-    virtual void render();
+    virtual void render(const float deltaT);
 
 	virtual void sendEvent(std::shared_ptr<CEvent> &command)
 	{

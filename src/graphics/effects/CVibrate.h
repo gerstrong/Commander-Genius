@@ -19,7 +19,7 @@ public:
 	CVibrate(Uint32 msecs);
 
     void ponder();
-    void render();
+    void render(const float deltaT);
 
 private:
 	Uint32 m_StartTime;

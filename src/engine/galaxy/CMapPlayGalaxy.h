@@ -44,7 +44,7 @@ public:
 
     void ponder();
 
-    void render();
+    void render(const float deltaT);
 
 	// Push data to Savegame-Controller
 	void operator>>(CSaveGameController &savedGame);

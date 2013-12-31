@@ -22,7 +22,7 @@ public:
 	void initialize();
 	void renderBox();
     void ponder();
-    void render();
+    void render(const float deltaT);
 
 	void formatText(const std::string &text);
 	bool loadTextfromFile(const std::string &filename);

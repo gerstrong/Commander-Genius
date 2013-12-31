@@ -311,7 +311,7 @@ void CPlayGameVorticon::ponder()
 	}
 }
 
-void CPlayGameVorticon::render()
+void CPlayGameVorticon::render(const float deltaT)
 {
     // Check for fading processes if necessary
     if(g_pGfxEngine->Palette.in_progress())

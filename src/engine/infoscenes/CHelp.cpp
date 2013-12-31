@@ -127,6 +127,6 @@ void CHelp::render()
 {
     if(mpTextViewer)
     {
-        mpTextViewer->render();
+        mpTextViewer->render(0);
     }
 }

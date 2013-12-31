@@ -51,6 +51,6 @@ void CFinale::renderEndingText()
 {
     if(mpTextViewer)
     {
-        mpTextViewer->render();
+        mpTextViewer->render(0);
     }
 }

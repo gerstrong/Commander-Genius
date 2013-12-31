@@ -23,7 +23,7 @@ public:
 	CColorMerge(const Uint8 speed);
 
     void ponder();
-    void render();
+    void render(const float deltaT);
 	
 	std::shared_ptr<SDL_Surface> &getSfc()
 	{  return mpOldSurface;  }

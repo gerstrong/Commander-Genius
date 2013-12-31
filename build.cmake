@@ -138,8 +138,10 @@ configure_file(README.in README)
 
 # main includes
 INCLUDE_DIRECTORIES(src)
+INCLUDE_DIRECTORIES(src/lib)
 
 file(GLOB ALL_SRCS_PART_ROOT src/*.c* src/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_LIB src/lib/*.c* src/lib/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_COMMON src/common/*.c* src/common/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_CORE src/core/*.c* src/core/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_DIALOG src/dialog/*.c* src/dialog/*.h*)
@@ -151,7 +153,8 @@ file(GLOB_RECURSE ALL_SRCS_PART_HARDWARE src/hardware/*.c* src/hardware/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_SDL src/sdl/*.c* src/sdl/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_UTILS src/utils/*.c* src/utils/*.h*)
 
-SET(ALL_SRCS ${ALL_SRCS_PART_ROOT}
+SET(ALL_SRCS ${ALL_SRCS_PART_LIB}
+             ${ALL_SRCS_PART_ROOT}
              ${ALL_SRCS_PART_COMMON}
              ${ALL_SRCS_PART_CORE}
              ${ALL_SRCS_PART_DIALOG}

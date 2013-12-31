@@ -111,9 +111,9 @@ void CGamePlayMode::ponder()
 
 }
 
-void CGamePlayMode::render()
+void CGamePlayMode::render(const float deltaT)
 {
-    mp_PlayGame->render();
+    mp_PlayGame->render(deltaT);
 
     if(g_pBehaviorEngine->m_option[OPT_SHOWFPS].value)
     {

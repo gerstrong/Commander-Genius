@@ -258,7 +258,7 @@ void CGfxEngine::render()
 {
     if(mpEffects)
     {
-        mpEffects->render();
+        mpEffects->render(0);
 
         if( !runningEffect() )
         {

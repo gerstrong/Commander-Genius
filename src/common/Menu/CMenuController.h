@@ -54,7 +54,7 @@ public:
 
     void ponder();
 
-    void render();
+    void render(const float deltaT);
 
 	bool active()
 	{	return	!mMenuStack.empty();	}

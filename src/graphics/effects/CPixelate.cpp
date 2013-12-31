@@ -100,7 +100,7 @@ void CPixelate::ponder()
 	}
 }
 
-void CPixelate::render()
+void CPixelate::render(const float deltaT)
 {
     SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
 

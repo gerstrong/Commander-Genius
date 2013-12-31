@@ -235,7 +235,7 @@ void CTextViewer::ponder()
 
 
 
-void CTextViewer::render()
+void CTextViewer::render(const float deltaT)
 {
     renderBox();
     // This comes after, because it does use semi-transparent overlay

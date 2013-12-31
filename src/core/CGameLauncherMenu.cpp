@@ -336,14 +336,14 @@ void CGameLauncherMenu::ponder()
 }
 
 
-void CGameLauncherMenu::render()
+void CGameLauncherMenu::render(const float deltaT)
 {
     if(!mp_FirstTimeMenu)
     {
-        mp_GameLauncher->render();
+        mp_GameLauncher->render(deltaT);
     }
     else
     {
-        mp_FirstTimeMenu->render();
+        mp_FirstTimeMenu->render(deltaT);
     }
 }

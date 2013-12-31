@@ -67,7 +67,7 @@ void CScrollEffect::ponder()
 	}
 }
 
-void CScrollEffect::render()
+void CScrollEffect::render(const float deltaT)
 {
     SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
     SDL_Rect dest = gameres;

@@ -24,7 +24,7 @@ protected:
 
 	void init() {}
     void ponder();
-    void render();
+    void render(const float deltaT);
 
 private:
 

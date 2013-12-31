@@ -166,10 +166,10 @@ void CGameControl::ponder()
     gpMenuController->ponder();    
 }
 
-void CGameControl::render()
+void CGameControl::render(const float deltaT)
 {
     if(mpEngine)
-        mpEngine->render();
+        mpEngine->render(deltaT);
 
-    gpMenuController->render();
+    gpMenuController->render(deltaT);
 }

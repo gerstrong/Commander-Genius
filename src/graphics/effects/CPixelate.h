@@ -16,7 +16,7 @@ public:
 	CPixelate(unsigned short speed);
 	void getSnapshot();
     void ponder();
-    void render();
+    void render(const float deltaT);
 	virtual ~CPixelate();
 
 private:

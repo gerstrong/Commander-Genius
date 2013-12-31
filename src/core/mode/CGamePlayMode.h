@@ -30,7 +30,7 @@ public:
 	void loadGame();
 
     void ponder();
-    void render();
+    void render(const float deltaT);
 
 private:
 	int m_startLevel;

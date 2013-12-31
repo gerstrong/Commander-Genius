@@ -76,7 +76,7 @@ bool CGameLauncher::init()
     	mpSelList->addText(it->name);
     }
 
-    mpSelList->setConfirmButtonEvent(new GMStart(mpSelList->getSelection()));
+    mpSelList->setConfirmButtonEvent(new GMStart());
     mpSelList->setBackButtonEvent(new GMQuit());
 
 
@@ -84,7 +84,7 @@ bool CGameLauncher::init()
     mLauncherDialog.addControl(new CGUIButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
-    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart(mpSelList->getSelection()) ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
+    mLauncherDialog.addControl(new CGUIButton( "Start >", new GMStart() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
@@ -248,9 +248,9 @@ void CGameLauncher::ponder()
     
     mLauncherDialog.processLogic();
     
-    if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
-    {
-        setChosenGame(Starter->mSlot);
+    if( g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
+    {        
+        setChosenGame(mpSelList->getSelection());
 
         // Create a surface which only will contain the dialog and else transparent background
         SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
@@ -272,7 +272,7 @@ void CGameLauncher::ponder()
 }
 
 
-void CGameLauncher::render()
+void CGameLauncher::render(const float deltaT)
 {      
     if(g_pGfxEngine->applyingEffects())
         return;

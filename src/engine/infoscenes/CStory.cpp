@@ -106,7 +106,7 @@ void CStory::render()
 
     if(mpTextViewer)
     {
-        mpTextViewer->render();
+        mpTextViewer->render(0);
     }
 }
 

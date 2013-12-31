@@ -567,7 +567,7 @@ void CPlayGameGalaxy::ponder()
 	}
 }
 
-void CPlayGameGalaxy::render()
+void CPlayGameGalaxy::render(const float deltaT)
 {
     if( !gpMenuController->active() )
     {
@@ -575,13 +575,13 @@ void CPlayGameGalaxy::render()
         // process World Map if active. At the start it's enabled
         if(m_WorldMap.isActive())
         {
-            m_WorldMap.render();
+            m_WorldMap.render(deltaT);
         }
 
         // process World Map if active. At the start it's disabled, m_WorldMap turns it on.
         if(m_LevelPlay.isActive())
         {
-            m_LevelPlay.render();
+            m_LevelPlay.render(deltaT);
         }
 
         // We have to show the status screen, do so...

@@ -143,12 +143,12 @@ void CMenuController::popBackMenu()
 }
 
 
-void CMenuController::render()
+void CMenuController::render(const float deltaT)
 {
     // Render the Menu if open
     if( !mMenuStack.empty() && !mHidden )
     {
-        mMenuStack.back()->render();
+        mMenuStack.back()->render(deltaT);
     }
 }
 

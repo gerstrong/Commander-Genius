@@ -83,7 +83,7 @@ void CDimDark::ponder()
     }
 }
 
-void CDimDark::render()
+void CDimDark::render(const float deltaT)
 {
     if(dimDark) // dim dark here
     {

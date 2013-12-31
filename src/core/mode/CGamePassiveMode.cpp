@@ -59,7 +59,7 @@ void CGamePassiveMode::ponder()
 	}
 }
 
-void CGamePassiveMode::render()
+void CGamePassiveMode::render(const float deltaT)
 {
     mpPassive->render();
 }

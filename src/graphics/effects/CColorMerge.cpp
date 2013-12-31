@@ -50,7 +50,7 @@ void CColorMerge::ponder()
 	}
 }
 
-void CColorMerge::render()
+void CColorMerge::render(const float deltaT)
 {
     SDL_BlitSurface( mpOldSurface.get(), NULL,
                 g_pVideoDriver->getBlitSurface(), NULL );

@@ -15,7 +15,7 @@ class GameState
 {
   public:
     virtual void ponder() = 0;
-    virtual void render() = 0;
+    virtual void render(const float deltaT) = 0;
 
     // copy operator
     /*virtual void operator=(const GameState &rhs) = 0;

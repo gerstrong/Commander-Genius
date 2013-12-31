@@ -127,12 +127,12 @@ void CGameMain::ponder()
 	}
 }
 
-void CGameMain::render()
+void CGameMain::render(const float deltaT)
 {
     if( !mpInfoScene )
     {
         // Render the game mode object
-        mpGameMode->render();
+        mpGameMode->render(deltaT);
     }
     else
     {

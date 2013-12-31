@@ -108,7 +108,7 @@ void CFlash::ponder()
         mFinished = true;
 }
 
-void CFlash::render()
+void CFlash::render(const float deltaT)
 {
     // Blit it and free temp surface
     SDL_BlitSurface( mpFadeSurface.get(), NULL,

@@ -21,7 +21,7 @@ public:
 
 	void init();
     void ponder();
-    void render();
+    void render(const float deltaT);
 
 private:
 	std::unique_ptr<CPassive> mpPassive;

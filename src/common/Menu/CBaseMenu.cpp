@@ -79,7 +79,7 @@ void CBaseMenu::ponder()
 }
 
 
-void CBaseMenu::render()
+void CBaseMenu::render(const float deltaT)
 {
     mpMenuDialog->processRendering();
 }

@@ -35,7 +35,7 @@ public:
 
     void ponder();
 
-    void render();
+    void render(const float deltaT);
 
     /*void operator=(const GameState &rhs);
 

@@ -61,7 +61,7 @@ public:
 	void processOnWorldMap();
 	void processInLevel();
 
-    void render();
+    void render(const float deltaT);
 
 	void showKeensLeft();
 	void goBacktoMap();

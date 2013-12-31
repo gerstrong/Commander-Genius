@@ -28,7 +28,7 @@ void CVibrate::ponder()
 		mFinished = true;
 }
 
-void CVibrate::render()
+void CVibrate::render(const float deltaT)
 {
     SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
     SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();

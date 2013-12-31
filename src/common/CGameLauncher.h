@@ -57,7 +57,7 @@ public:
     void cleanup();
 
     void ponder();
-    void render();
+    void render(const float deltaT);
 
 	int getChosengame(){ return m_chosenGame; }
 	bool setChosenGame(int chosengame) { m_chosenGame = chosengame; return waschosen();  }

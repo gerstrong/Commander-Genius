@@ -186,7 +186,7 @@ void CMapPlayGalaxy::ponder()
 
 }
 
-void CMapPlayGalaxy::render()
+void CMapPlayGalaxy::render(const float deltaT)
 {
     g_pVideoDriver->blitScrollSurface();
 

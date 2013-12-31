@@ -23,7 +23,7 @@ public:
             const Sint16 initialPos, Sint8 speed, const direction_t hDir, const direction_t vDir);
 
     void ponder();
-    void render();
+    void render(const float deltaT);
 
 	Sint16 getScrollPosition();
 

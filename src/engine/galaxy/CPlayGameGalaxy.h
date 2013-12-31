@@ -42,7 +42,7 @@ public:
                          const std::string &levelName);
 
     void ponder();
-    void render();
+    void render(const float deltaT);
 
     void processInput();
     void processRendering();
