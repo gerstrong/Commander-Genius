@@ -36,7 +36,7 @@ struct EventEnterLevel : CEvent {
 
 struct InvokeFunctorEvent : CEvent
 {
-	virtual void operator()() = 0;
+    virtual void operator()() const = 0;
 };
 
 struct EventEndGamePlay : CEvent

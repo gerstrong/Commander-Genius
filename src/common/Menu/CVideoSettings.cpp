@@ -39,7 +39,7 @@ public:
 
 private:
 
-	void operator()()
+    void operator()() const
 	{
 		mVSettings.mUserVidConf.Fullscreen = !mVSettings.mUserVidConf.Fullscreen;
 		mVSettings.release();

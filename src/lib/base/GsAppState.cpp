@@ -35,11 +35,26 @@
 
 #include "arguments.h"
 
+
+void GsAppStateEventSink::pumpEvent(const CEvent *ev)
+{
+    mpAppState->pumpEvent(ev);
+}
+
+
 GsAppState::GsAppState(bool &firsttime) :
 m_firsttime(firsttime),
 m_startGame_no(-1),
-m_startLevel(-1)
-{}
+m_startLevel(-1),
+mSink(this)
+{
+    g_pBehaviorEngine->EventList().regSink(&mSink);
+}
+
+GsAppState::~GsAppState()
+{
+    g_pBehaviorEngine->EventList().unregSink(&mSink);
+}
 
 ////
 // Initialization Routine
@@ -104,46 +119,41 @@ bool GsAppState::init(int argc, char *argv[])
 }
 
 
+
+void GsAppState::pumpEvent(const CEvent *evPtr)
+{
+    // Pump all the events related to the root of AppState    
+    if( const GMSwitchToGameLauncher* p_Launcher = dynamic_cast<const GMSwitchToGameLauncher*>(evPtr) )
+    {
+        g_pSound->unloadSoundData();
+        gpMenuController->emptyMenuStack();
+        mpEngine.reset(new CGameLauncherMenu( m_firsttime,
+                          p_Launcher->m_ChosenGame,
+                          p_Launcher->m_StartLevel) );
+        mpEngine->init();
+    }
+    else if( dynamic_cast<const StartMainGameEvent*>(evPtr) )
+    {
+        mpEngine.reset(new CGameMain(gpMenuController->mOpenedGamePlay));
+        mpEngine->init();
+    }
+    else if( dynamic_cast<const GMQuit*>(evPtr) )
+    {
+        mpEngine.release();
+    }
+    else if( const InvokeFunctorEvent *iEv = dynamic_cast<const InvokeFunctorEvent*>(evPtr) )
+    {
+        (*iEv)();
+    }
+    else // none of the above, let's see if the children have events to be processed
+    {
+
+    }
+}
+
+
 void GsAppState::pollEvents()
 {
-    // process any triggered Game Control related event
-    CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
-
-    if( !EventContainer.empty() )
-    {
-        if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
-        {
-            g_pSound->unloadSoundData();
-            gpMenuController->emptyMenuStack();
-            mpEngine.reset(new CGameLauncherMenu( m_firsttime,
-                              p_Launcher->m_ChosenGame,
-                              p_Launcher->m_StartLevel) );
-            mpEngine->init();
-            EventContainer.pop_Event();
-        }
-        else if( EventContainer.occurredEvent<StartMainGameEvent>() )
-        {
-            mpEngine.reset(new CGameMain(gpMenuController->mOpenedGamePlay));
-            mpEngine->init();
-            EventContainer.pop_Event();
-        }
-        else if( EventContainer.occurredEvent<GMQuit>() )
-        {
-            mpEngine.release();
-            EventContainer.pop_Event();
-
-            return;
-        }
-        else if( InvokeFunctorEvent *iEv = EventContainer.occurredEvent<InvokeFunctorEvent>() )
-        {
-            (*iEv)();
-            EventContainer.pop_Event();
-
-            return;
-        }
-    }
-
-
     if( g_pInput->getExitEvent() )
     {
       mpEngine.release();

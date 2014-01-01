@@ -14,6 +14,15 @@
 #include <deque>
 #include <ctime>
 
+/**
+ * @brief The GsEventSink derived objects are those which receive the added event to the container
+ */
+class GsEventSink
+{
+public:
+    virtual void pumpEvent(const CEvent *ev) = 0;
+};
+
 
 class CEventContainer
 {
@@ -24,7 +33,39 @@ public:
 	size_t size() { return m_EventList.size(); }
 	bool empty() { return m_EventList.empty(); }
 	void clear() { m_EventList.clear(); }
-	
+
+    /**
+     * @brief regSink will register the sink in the Container
+     *        when you are destroying the object, you must call unregSink() first!
+     *        Otherwise app might crash.
+     * @param pSink pointer to the sink to be registered
+     */
+    void regSink(GsEventSink *pSink)
+    {
+        mSinkPtrList.push_back(pSink);
+    }
+
+    void unregSink(GsEventSink *pSink)
+    {
+        // TODO: Code for unregistering the Sink
+    }
+
+    void processSinks()
+    {
+        if(m_EventList.empty())
+            return;
+
+        for( GsEventSink* sink : mSinkPtrList )
+        {
+            for( auto &event : m_EventList )
+            {
+                sink->pumpEvent( event.get() );
+            }
+        }
+
+        m_EventList.clear();
+    }
+
 	void add(std::shared_ptr<CEvent>& ev) 
 	{ 
 	    m_EventList.push_back(ev);
@@ -60,13 +101,15 @@ public:
 	template<typename T> T* occurredEvent();
 	void pop_Event() { m_EventList.pop_front(); }
 
-	// Spawning Event for the Foes
+    // Spawning Event for the Foes // TODO: Workaround. I think it should go into another section
 	void spawnObj(const CSpriteObject *obj)
 	{
 	    add(new EventSpawnObject( obj ));
 	}
 	
 private:
+    std::list< GsEventSink* > mSinkPtrList;
+
 	std::deque< std::shared_ptr<CEvent> > m_EventList;
 	
 	clock_t pausetime;

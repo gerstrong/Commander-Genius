@@ -16,7 +16,7 @@ struct CloseDialog : public InvokeFunctorEvent
 {
 	CloseDialog(bool &mustClose) : mMustClose(mustClose) {}
 
-	void operator()()
+    void operator()() const
 	{		mMustClose = true;	}
 
 	bool &mMustClose;

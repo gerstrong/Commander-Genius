@@ -22,7 +22,7 @@
 class SetDefaultClassic : public InvokeFunctorEvent
 {
 public:
-	void operator()()
+    void operator()() const
 	{
 		stOption *p_option = g_pBehaviorEngine->m_option;
 		g_pSettings->loadDrvCfg();
@@ -51,7 +51,7 @@ public:
 class SetDefaultEnhanced : public InvokeFunctorEvent
 {
 public:
-	void operator()()
+    void operator()() const
 	{
 		stOption *p_option = g_pBehaviorEngine->m_option;
 		g_pSettings->loadDrvCfg();

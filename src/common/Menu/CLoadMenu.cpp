@@ -19,7 +19,7 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 {
 	LoadGameSlotFunctorEvent(const Uint32 slot) : mSlot(slot) {}
 
-	void operator()()
+    void operator()() const
 	{
 		g_pBehaviorEngine->EventList().add( new CloseAllMenusEvent() );
 		gpSaveGameController->prepareLoadGame(mSlot);

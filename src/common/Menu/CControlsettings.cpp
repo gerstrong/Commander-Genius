@@ -35,7 +35,7 @@ public:
 		mpButton = button;
 	}
 
-	void operator()()
+    void operator()() const
 	{
 		g_pInput->setupNewEvent(mSelPlayer-1, mCommand);
 
@@ -61,7 +61,7 @@ public:
 		mSelPlayer(selPlayer)
 		{}
 
-	void operator()()
+    void operator()() const
 	{
 		g_pInput->resetControls(mSelPlayer);
 	}

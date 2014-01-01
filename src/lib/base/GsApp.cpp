@@ -158,7 +158,10 @@ void GsApp::run()
         while( acc > logicLatency )
         {
             // Poll Inputs
-            g_pInput->pollEvents();
+            g_pInput->pollEvents();                        
+
+            // Process App Events
+            g_pBehaviorEngine->EventList().processSinks();
 
             // Ponder Game Control
             mAppState.ponder();
