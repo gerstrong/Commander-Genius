@@ -53,7 +53,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
         EventContainer.pop_Event();
     }
 
-    if( dynamic_cast<const CloseMenuEvent>(evPtr) )
+    if( dynamic_cast<const CloseMenuEvent*>(evPtr) )
     {
         popBackMenu();
         EventContainer.pop_Event();
@@ -62,7 +62,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
             g_pMusicPlayer->play();
     }
 
-    if( dynamic_cast<const CloseAllMenusEvent>(evPtr) )
+    if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
     {
         emptyMenuStack();
 
@@ -71,7 +71,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
     }
 
     // Control Menu Events
-    if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent>(evPtr) )
+    if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         EventContainer.pop_Event();
@@ -79,7 +79,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
                                 new CControlSettingsMovement(players) ) );
     }
 
-    if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent>(evPtr) )
+    if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         EventContainer.pop_Event();
@@ -87,7 +87,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
                                 new CControlSettingsButtons(players) ) );
     }
 
-    if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent>(evPtr) )
+    if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         EventContainer.pop_Event();
