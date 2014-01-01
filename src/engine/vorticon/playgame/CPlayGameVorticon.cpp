@@ -275,8 +275,6 @@ void CPlayGameVorticon::ponder()
                 g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
             }
         }
-
-        m_Player[0].processEvents(); // -> This shouldn't be here!
     }
 
     // Render the dialogs which are seen when the game is paused

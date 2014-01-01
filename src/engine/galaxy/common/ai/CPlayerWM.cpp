@@ -121,7 +121,7 @@ VectorD2<int> CPlayerWM::fetchFootDestCoord()
 
 void CPlayerWM::pumpEvent(const CEvent *evPtr)
 {
-    CSpriteObject::pumpEvent();
+    CSpriteObject::pumpEvent(evPtr);
 
     // Events for the Player are processed here.
     if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )

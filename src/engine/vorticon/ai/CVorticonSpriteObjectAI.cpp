@@ -86,7 +86,7 @@ void CVorticonSpriteObjectAI::process()
 				}
 			}
 
-			object.processEvents();
+            //object.processEvents();
 			object.InertiaAndFriction_X();
 		}
 	}
