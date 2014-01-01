@@ -34,12 +34,74 @@ void CMenuController::openMainMenu()
 }
 
 
+void CMenuController::pumpEvent(const CEvent *evPtr)
+{
+    CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+
+    if( const OpenMenuEvent* openMenu = dynamic_cast<const OpenMenuEvent*>(evPtr) )
+    {
+        CBaseMenu &menu = *openMenu->mMenuDialogPointer.get();
+        menu.init();
+
+        // Select the second element. The first one (0) is the close button.
+        menu.select(1);
+
+        if( !mMenuStack.empty() )
+        menu.setProperty( CBaseMenu::CANGOBACK );
+
+        mMenuStack.push_back( openMenu->mMenuDialogPointer );
+        EventContainer.pop_Event();
+    }
+
+    if( dynamic_cast<const CloseMenuEvent>(evPtr) )
+    {
+        popBackMenu();
+        EventContainer.pop_Event();
+
+        if(mMenuStack.empty())
+            g_pMusicPlayer->play();
+    }
+
+    if( dynamic_cast<const CloseAllMenusEvent>(evPtr) )
+    {
+        emptyMenuStack();
+
+        EventContainer.pop_Event();
+        g_pMusicPlayer->play();
+    }
+
+    // Control Menu Events
+    if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        EventContainer.pop_Event();
+        EventContainer.add( new OpenMenuEvent(
+                                new CControlSettingsMovement(players) ) );
+    }
+
+    if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        EventContainer.pop_Event();
+        EventContainer.add( new OpenMenuEvent(
+                                new CControlSettingsButtons(players) ) );
+    }
+
+    if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        EventContainer.pop_Event();
+        EventContainer.add( new OpenMenuEvent(
+                                new CControlsettings(players) ) );
+    }
+}
+
+
 void CMenuController::ponder()
 {
 	if(mLocked)
 	    return;
     
-	// process any triggered Game Control related event
 	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
 
 
@@ -57,70 +119,7 @@ void CMenuController::ponder()
 	}
 
 
-
-	if(!EventContainer.empty())
-	{
-		if( OpenMenuEvent* openMenu = EventContainer.occurredEvent<OpenMenuEvent>() )
-		{
-		    CBaseMenu &menu = *openMenu->mMenuDialogPointer.get();
-		    menu.init();
-
-		    // Select the second element. The first one (0) is the close button.
-		    menu.select(1);
-
-		    if( !mMenuStack.empty() )
-			menu.setProperty( CBaseMenu::CANGOBACK );
-
-		    mMenuStack.push_back( openMenu->mMenuDialogPointer );
-		    EventContainer.pop_Event();
-		}
-
-		if( EventContainer.occurredEvent<CloseMenuEvent>() )
-		{
-			popBackMenu();
-			EventContainer.pop_Event();
-
-			if(mMenuStack.empty())
-				g_pMusicPlayer->play();
-		}
-
-		if( EventContainer.occurredEvent<CloseAllMenusEvent>() )
-		{
-			emptyMenuStack();
-
-			EventContainer.pop_Event();
-			g_pMusicPlayer->play();
-		}
-
-		// Control Menu Events
-		if( OpenMovementControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenMovementControlMenuEvent>() )
-		{
-			const int players = ctrlMenu->mSelection;
-			EventContainer.pop_Event();
-			EventContainer.add( new OpenMenuEvent(
-									new CControlSettingsMovement(players) ) );
-		}
-
-		if( OpenButtonsControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenButtonsControlMenuEvent>() )
-		{
-			const int players = ctrlMenu->mSelection;
-			EventContainer.pop_Event();
-			EventContainer.add( new OpenMenuEvent(
-									new CControlSettingsButtons(players) ) );
-		}
-
-		if( OpenControlMenuEvent* ctrlMenu = EventContainer.occurredEvent<OpenControlMenuEvent>() )
-		{
-			const int players = ctrlMenu->mSelection;
-			EventContainer.pop_Event();
-			EventContainer.add( new OpenMenuEvent(
-									new CControlsettings(players) ) );
-		}
-
-	}
-
-	
-	// Process Menu if open
+    // Process Menu if open
 	if( !mMenuStack.empty() )
 	{
         mMenuStack.back()->ponder();

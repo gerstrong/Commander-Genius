@@ -52,6 +52,8 @@ public:
 
 	void openMainMenu();
 
+    void pumpEvent(const CEvent *evPtr);
+
     void ponder();
 
     void render(const float deltaT);

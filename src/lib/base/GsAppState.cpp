@@ -148,6 +148,7 @@ void GsAppState::pumpEvent(const CEvent *evPtr)
     else // none of the above, let's see if the children have events to be processed
     {
         mpEngine->pumpEvent(evPtr);
+        gpMenuController->pumpEvent(evPtr);
     }
 }
 
