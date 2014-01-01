@@ -113,6 +113,8 @@ public:
 	 */
 	void getAnotherLife(const int lc_x, const int lc_y, const bool display, const bool alt);
 
+    virtual void pumpEvent(const CEvent *evPtr);
+
     /**
      * \description Camera of the player gets performed here...
      */

@@ -193,10 +193,16 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 
 
 
+void CPlayerBase::pumpEvent(const CEvent *evPtr)
+{
+    CGalaxySpriteObject::pumpEvent(evPtr);
+    m_camera.pumpEvent(evPtr);
+}
+
+
 void CPlayerBase::processCamera()
 {
     m_camera.process();
-    m_camera.processEvents();
 }
 
 bool CPlayerBase::calcVisibility()
