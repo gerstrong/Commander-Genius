@@ -33,7 +33,7 @@ void CDlgFrame::draw(SDL_Surface *dst)
 	if( m_theme == ENGINE_VORTICON )
 	{
 		drawVorticonFrame(dst);
-	}
+    }
 	else if(m_theme == ENGINE_GALAXY )
 	{
 		//drawGalaxyFrame(dst);

@@ -60,6 +60,8 @@ public:
 	CGameMode() {}
 	virtual ~CGameMode() {}
 
+    virtual void pumpEvent(const CEvent *evPtr) {}
+
 	virtual void init() = 0;
 };
 

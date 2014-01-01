@@ -308,6 +308,141 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
 }
 
 
+void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
+{
+    // In this part we will poll all the relevant Events that are important for the
+    // Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
+    // are some of those events.
+    CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
+
+    if( const EventSendBitmapDialogMsg *ev = dynamic_cast<const EventSendBitmapDialogMsg*>(evPtr) )
+    {
+        std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction ) );
+        pMsgBox->init();
+
+        // Create the special merge effect (Fadeout) if requested
+        if( g_pGfxEngine->runningEffect() )
+        {
+            CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(g_pGfxEngine->Effect());
+            if( pColorMerge != NULL )
+            {
+                SDL_Surface *fxSfc = pColorMerge->getSfc().get();
+                SDL_Rect cutRect = pMsgBox->getRect();
+                SDL_Surface *msgSfc = pMsgBox->getSfc();
+                SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
+            }
+
+            CDimDark *pDimDark = dynamic_cast<CDimDark*>(g_pGfxEngine->Effect());
+            if( pDimDark != NULL )
+            {
+                SDL_Surface *fxSfc = pDimDark->getSfc().get();
+                SDL_Surface *darkSfc = pDimDark->getDarkSfc().get();
+                SDL_Rect cutRect = pMsgBox->getRect();
+                SDL_Surface *msgSfc = pMsgBox->getSfc();
+                SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
+                SDL_BlitSurface(msgSfc, NULL, darkSfc, &cutRect);
+            }
+        }
+
+        g_pInput->flushAll();
+        mMessageBoxes.push_back( move(pMsgBox) );
+    }
+    else if( const EventSendBitmapDialogMessages *ev = dynamic_cast<const EventSendBitmapDialogMessages*>(evPtr) )
+    {
+        for( auto &it : ev->msgs )
+        {
+            std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( it->Msg, it->BitmapRef, it->Direction ) );
+            pMsgBox->init();
+
+            mMessageBoxes.push_back( move(pMsgBox) );
+        }
+        g_pInput->flushAll();
+    }
+    else if( const EventSendDialog *ev = dynamic_cast<const EventSendDialog*>(evPtr) )
+    {
+        std::unique_ptr<CMessageBoxGalaxy> pMsgBox( new CMessageBoxGalaxy( ev->Msg ) );
+        pMsgBox->init();
+
+        mMessageBoxes.push_back( move(pMsgBox) );
+        g_pInput->flushAll();
+    }
+    else if( const EventSendSelectionDialogMsg* ev = dynamic_cast<const EventSendSelectionDialogMsg*>(evPtr) )
+    {
+        g_pMusicPlayer->stop();
+        std::unique_ptr<CMessageBoxSelection> pMsgBox( new CMessageBoxSelection( ev->Message, ev->Options ) );
+        pMsgBox->init();
+
+        mMessageBoxes.push_back( move(pMsgBox) );
+    }
+
+    if(mMessageBoxes.empty())
+    {
+        if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
+        {
+            if(ev->data >= 0xC000)	// Start a new level!
+            {
+                const Uint16 NewLevel = ev->data - 0xC000;
+                if(NewLevel < 50)
+                {
+                    g_pMusicPlayer->stop();
+                    m_WorldMap.setActive(false);
+                    m_LevelPlay.loadLevel(NewLevel);
+                    g_pSound->playSound( SOUND_ENTER_LEVEL );
+                    m_LevelPlay.setActive(true);
+                }
+            }
+        }
+        else if( dynamic_cast<const EventRestartLevel*>(evPtr) )
+        {
+            g_pMusicPlayer->stop();
+            m_LevelPlay.reloadLevel();
+        }
+        else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
+        {
+            m_LevelPlay.setActive(false);
+            m_WorldMap.setActive(true);
+            m_WorldMap.loadAndPlayMusic();
+
+            const EventExitLevel &evCopy = *ev;
+
+            eventContainer.add( new EventPlayerEndLevel(evCopy) );
+
+            // Should only happen in Keen 5. This should trigger on map teleportation
+            if(evCopy.teleport)
+            {
+              eventContainer.add( new EventPlayerTeleportFromLevel() );
+            }
+        }
+        else if( const EventDieKeenPlayer *ev = dynamic_cast<const EventDieKeenPlayer*>(evPtr) )
+        {
+            looseManagement(ev->playerID,
+                            ev->gameOver,
+                            ev->levelObj,
+                            ev->levelName);
+
+        }
+        else if( const EventExitLevelWithFoot *ev = dynamic_cast<const EventExitLevelWithFoot*>(evPtr) )
+        {
+            g_pMusicPlayer->stop();
+            m_LevelPlay.setActive(false);
+            m_WorldMap.setActive(true);
+            m_WorldMap.loadAndPlayMusic();
+            eventContainer.add( new EventPlayerRideFoot(*ev) );
+        }
+        else if( const EventPlayTrack *ev =  dynamic_cast<const EventPlayTrack*>(evPtr) )
+        {
+            g_pMusicPlayer->stop();
+            if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
+                g_pMusicPlayer->play();
+        }
+        else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+        {
+            m_endgame = true;
+        }
+    }
+
+}
+
 /**
  *  The main ingame process cycle when keen galaxy is up and running
  */
@@ -315,10 +450,9 @@ void CPlayGameGalaxy::ponder()
 {
 	if(g_pSound->pauseGamePlay() )
 		return;
-
-	CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
 	
-	eventContainer.update();
+    CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
+    //eventContainer.update();
 
 	if( !gpMenuController->active() )
 	{
@@ -423,148 +557,6 @@ void CPlayGameGalaxy::ponder()
 
 	}
 
-	// In this part we will poll all the relevant Events that are important for the
-	// Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
-	// are some of those events.
-
-	if( EventSendBitmapDialogMsg *ev = eventContainer.occurredEvent<EventSendBitmapDialogMsg>() )
-	{
-		std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction ) );
-		pMsgBox->init();
-
-		// Create the special merge effect (Fadeout) if requested
-		if( g_pGfxEngine->runningEffect() )
-		{
-		    CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(g_pGfxEngine->Effect());
-		    if( pColorMerge != NULL )
-		    {
-                SDL_Surface *fxSfc = pColorMerge->getSfc().get();
-                SDL_Rect cutRect = pMsgBox->getRect();
-                SDL_Surface *msgSfc = pMsgBox->getSfc();
-                SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
-		    }
-
-		    CDimDark *pDimDark = dynamic_cast<CDimDark*>(g_pGfxEngine->Effect());
-		    if( pDimDark != NULL )
-		    {
-                SDL_Surface *fxSfc = pDimDark->getSfc().get();
-                SDL_Surface *darkSfc = pDimDark->getDarkSfc().get();
-                SDL_Rect cutRect = pMsgBox->getRect();
-                SDL_Surface *msgSfc = pMsgBox->getSfc();
-                SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
-                SDL_BlitSurface(msgSfc, NULL, darkSfc, &cutRect);
-		    }
-		}
-
-		g_pInput->flushAll();
-		mMessageBoxes.push_back( move(pMsgBox) );
-		eventContainer.pop_Event();
-	}
-	else if( EventSendBitmapDialogMessages *ev = eventContainer.occurredEvent<EventSendBitmapDialogMessages>() )
-	{
-		for( auto &it : ev->msgs )
-		{
-			std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( it->Msg, it->BitmapRef, it->Direction ) );
-			pMsgBox->init();
-
-			mMessageBoxes.push_back( move(pMsgBox) );
-		}
-		g_pInput->flushAll();
-		eventContainer.pop_Event();
-	}
-	else if( EventSendDialog *ev = eventContainer.occurredEvent<EventSendDialog>() )
-	{
-		std::unique_ptr<CMessageBoxGalaxy> pMsgBox( new CMessageBoxGalaxy( ev->Msg ) );
-		pMsgBox->init();
-
-		mMessageBoxes.push_back( move(pMsgBox) );
-		g_pInput->flushAll();
-		eventContainer.pop_Event();
-	}
-	else if( EventSendSelectionDialogMsg* ev = eventContainer.occurredEvent<EventSendSelectionDialogMsg>() )
-	{
-		g_pMusicPlayer->stop();
-		std::unique_ptr<CMessageBoxSelection> pMsgBox( new CMessageBoxSelection( ev->Message, ev->Options ) );
-		pMsgBox->init();
-
-		mMessageBoxes.push_back( move(pMsgBox) );
-		eventContainer.pop_Event();
-	}
-
-
-	if(mMessageBoxes.empty())
-	{
-		if( EventEnterLevel *ev = eventContainer.occurredEvent<EventEnterLevel>() )
-		{
-			if(ev->data >= 0xC000)	// Start a new level!
-			{
-				const Uint16 NewLevel = ev->data - 0xC000;
-				if(NewLevel < 50)
-				{
-					g_pMusicPlayer->stop();
-					m_WorldMap.setActive(false);
-					m_LevelPlay.loadLevel(NewLevel);
-					g_pSound->playSound( SOUND_ENTER_LEVEL );
-					m_LevelPlay.setActive(true);
-				}
-			}
-			eventContainer.pop_Event();
-		}
-		else if( eventContainer.occurredEvent<EventRestartLevel>() )
-		{
-			g_pMusicPlayer->stop();
-			m_LevelPlay.reloadLevel();
-			eventContainer.pop_Event();
-		}
-		else if( EventExitLevel *ev = eventContainer.occurredEvent<EventExitLevel>() )
-		{
-			m_LevelPlay.setActive(false);
-			m_WorldMap.setActive(true);
-			m_WorldMap.loadAndPlayMusic();
-
-			const EventExitLevel &evCopy = *ev;
-
-			eventContainer.add( new EventPlayerEndLevel(evCopy) );
-
-            // Should only happen in Keen 5. This should trigger on map teleportation
-			if(evCopy.teleport)
-			{
-			  eventContainer.add( new EventPlayerTeleportFromLevel() );
-			}
-
-			eventContainer.pop_Event();
-		}
-        else if( EventDieKeenPlayer *ev = eventContainer.occurredEvent<EventDieKeenPlayer>() )
-        {                        
-            looseManagement(ev->playerID,
-                            ev->gameOver,
-                            ev->levelObj,
-                            ev->levelName);
-
-            eventContainer.pop_Event();
-        }
-		else if( EventExitLevelWithFoot *ev = eventContainer.occurredEvent<EventExitLevelWithFoot>() )
-		{
-			g_pMusicPlayer->stop();
-			m_LevelPlay.setActive(false);
-			m_WorldMap.setActive(true);
-			m_WorldMap.loadAndPlayMusic();
-			eventContainer.add( new EventPlayerRideFoot(*ev) );
-			eventContainer.pop_Event();
-		}
-		else if( EventPlayTrack *ev =  eventContainer.occurredEvent<EventPlayTrack>() )
-		{
-			g_pMusicPlayer->stop();
-			if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
-				g_pMusicPlayer->play();
-			eventContainer.pop_Event();
-		}
-		else if( eventContainer.occurredEvent<EventEndGamePlay>() )
-		{
-			m_endgame = true;
-			eventContainer.pop_Event();
-		}
-	}
 }
 
 void CPlayGameGalaxy::render(const float deltaT)

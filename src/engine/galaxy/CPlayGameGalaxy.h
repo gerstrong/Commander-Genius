@@ -41,6 +41,8 @@ public:
                          const int levelObj,
                          const std::string &levelName);
 
+    void pumpEvent(const CEvent *evPtr);
+
     void ponder();
     void render(const float deltaT);
 

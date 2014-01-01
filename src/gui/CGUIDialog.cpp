@@ -268,8 +268,6 @@ void CGUIDialog::fit()
 void CGUIDialog::setRect(const GsRect<float> &rect)
 {
 	mRect = rect;
-
-
 }
 
 

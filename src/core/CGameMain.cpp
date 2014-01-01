@@ -97,6 +97,10 @@ void CGameMain::pumpEvent(const CEvent *evPtr)
         mOpenedGamePlay = true;
         EventContainer.add( new CloseAllMenusEvent() );
     }
+    else // Otherwise send to the existing created mGameMode Object
+    {
+        mpGameMode->pumpEvent(evPtr);
+    }
 }
 
 

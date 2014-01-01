@@ -29,6 +29,7 @@ public:
 
 	void loadGame();
 
+    void pumpEvent(const CEvent *evPtr);
     void ponder();
     void render(const float deltaT);
 

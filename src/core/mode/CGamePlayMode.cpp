@@ -78,6 +78,10 @@ void CGamePlayMode::loadGame()
     mp_PlayGame->loadGameState();
 }
 
+void CGamePlayMode::pumpEvent(const CEvent *evPtr)
+{
+    mp_PlayGame->pumpEvent(evPtr);
+}
 
 void CGamePlayMode::ponder()
 {
