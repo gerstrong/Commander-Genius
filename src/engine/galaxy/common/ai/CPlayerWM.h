@@ -25,6 +25,8 @@ public:
             const int playerID);
 
 	VectorD2<int> fetchFootDestCoord();
+
+    void pumpEvent(const CEvent *evPtr);
 	
 	void deserialize(CSaveGameController &savedGame) 
 	{

@@ -441,6 +441,9 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         }
     }
 
+    m_WorldMap.pumpEvent(evPtr);
+    m_LevelPlay.pumpEvent(evPtr);
+
 }
 
 /**

@@ -119,31 +119,10 @@ VectorD2<int> CPlayerWM::fetchFootDestCoord()
 
 
 
-
-
-/**
- * The main process cycle for the player itself only on the map
- */
-void CPlayerWM::process()
+void CPlayerWM::pumpEvent(const CEvent *evPtr)
 {
-    if(mp_Map->locked())
-        return;
-
-    processInput();
-
-	// Perform animation cycle
-	if(m_animation_ticker >= m_animation_time)
-	{
-		m_animation++;
-		m_animation_ticker = 0;
-	}
-	else m_animation_ticker++;
-
-	(this->*mProcessPtr)();
-
     // Events for the Player are processed here.
-    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-    if( EventPlayerEndLevel* ev = EventContainer.occurredEvent<EventPlayerEndLevel>() )
+    if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )
     {
         if(ev->who == mSprVar)
         {
@@ -185,43 +164,63 @@ void CPlayerWM::process()
                     }
                 }
             }
-            EventContainer.pop_Event();
         }
-	}
+    }
 
-	if( EventPlayerRideFoot* ev = EventContainer.occurredEvent<EventPlayerRideFoot>() )
+    if( const EventPlayerRideFoot* ev = dynamic_cast<const EventPlayerRideFoot*>(evPtr) )
+    {
+        finishLevel(ev->levelObject);
+        solid = false;
+
+        // Here we need to set the coordinates calculated to where Keen has to go.
+        target = fetchFootDestCoord();
+
+        // Make Keen ride on the foot
+        m_Action.setActionFormat(0x1492);
+        setActionSprite();
+        mProcessPtr = &CPlayerWM::processRiding;
+    }
+
+    if( dynamic_cast<const EventPlayerTeleportFromLevel*>(evPtr) )
+    {
+      // Find the spot of the teleportation destination
+      // TODO: This part is only meant for Episode 5. We should catch exception
+      // Whenever another episode tries to trigger this call.
+      int x,y;
+      mp_Map->findTile( 0x1A, &x, &y, 2);
+
+      const int newX = x<<CSF;
+      const int newY = y<<CSF;
+
+      m_Pos.x = newX;
+      m_Pos.y = newY;
+
+      m_camera.setPosition(m_Pos);
+    }
+}
+
+
+
+/**
+ * The main process cycle for the player itself only on the map
+ */
+void CPlayerWM::process()
+{
+    if(mp_Map->locked())
+        return;
+
+    processInput();
+
+	// Perform animation cycle
+	if(m_animation_ticker >= m_animation_time)
 	{
-		finishLevel(ev->levelObject);
-		solid = false;
-
-		// Here we need to set the coordinates calculated to where Keen has to go.
-		target = fetchFootDestCoord();
-
-		// Make Keen ride on the foot
-		m_Action.setActionFormat(0x1492);
-		setActionSprite();
-		mProcessPtr = &CPlayerWM::processRiding;
-		EventContainer.pop_Event();
+		m_animation++;
+		m_animation_ticker = 0;
 	}
+	else m_animation_ticker++;
 
-	if( EventContainer.occurredEvent<EventPlayerTeleportFromLevel>() )
-	{
-	  // Find the spot of the teleportation destination
-	  // TODO: This part is only meant for Episode 5. We should catch exception
-	  // Whenever another episode tries to trigger this call.
-	  int x,y;
-	  mp_Map->findTile( 0x1A, &x, &y, 2);
+	(this->*mProcessPtr)();
 
-	  const int newX = x<<CSF;
-	  const int newY = y<<CSF;
-
-	  m_Pos.x = newX;
-	  m_Pos.y = newY;
-
-	  m_camera.setPosition(m_Pos);
-
-	  EventContainer.pop_Event();
-	}
 
     processCamera();
 }

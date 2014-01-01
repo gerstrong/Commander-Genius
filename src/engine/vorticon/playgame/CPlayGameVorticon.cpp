@@ -192,6 +192,22 @@ bool CPlayGameVorticon::StatusScreenOpen()
 }
 
 
+void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
+{
+    // Process Related Events.
+    if( dynamic_cast<const ResetScrollSurface*>(evPtr) )
+    {
+        g_pVideoDriver->updateScrollBuffer(mMap);
+        return;
+    }
+    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    {
+        m_endgame = true;
+    }
+
+}
+
+
 ////
 // Process Routine
 ////
@@ -303,12 +319,6 @@ void CPlayGameVorticon::ponder()
 		handleFKeys();
 	}
 	
-	auto &eventContainer = g_pBehaviorEngine->EventList();	
-	if( eventContainer.occurredEvent<EventEndGamePlay>() )
-	{
-		m_endgame = true;
-		eventContainer.pop_Event();
-	}
 }
 
 void CPlayGameVorticon::render(const float deltaT)
@@ -630,18 +640,6 @@ void CPlayGameVorticon::drawAllElements()
     }
 
 
-    // Process Related Events.
-    CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
-    if(!EventContainer.empty())
-    {
-        if( EventContainer.occurredEvent<ResetScrollSurface>() )
-        {
-            g_pVideoDriver->updateScrollBuffer(mMap);
-            EventContainer.pop_Event();
-            return;
-        }
-    }
 }
 ////
 // Cleanup Routine

@@ -112,6 +112,8 @@ public:
 	int yDirection;					// same for vertical
 
 	int scrx, scry;           		// x,y pixel position on screen
+
+    virtual void pumpEvent(const CEvent *evPtr) {}
 	
 	// Bounding Boxes
 	BoundingBox m_BBox;

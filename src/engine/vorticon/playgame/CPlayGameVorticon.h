@@ -57,6 +57,8 @@ public:
     bool loadXMLGameState();
     bool saveXMLGameState();
 
+    void pumpEvent(const CEvent *evPtr);
+
     void ponder();
 	void processOnWorldMap();
 	void processInLevel();
