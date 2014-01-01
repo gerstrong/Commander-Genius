@@ -850,34 +850,43 @@ void CSpriteObject::processPushOutCollision()
 }
 
 void CSpriteObject::pumpEvent(const CEvent *evPtr)
+{}
+
+void CSpriteObject::processEvents()
 {
-    if( const ObjMoveCouple* pObjMove =  dynamic_cast<const ObjMoveCouple*>(evPtr))
+    while(!m_EventCont.empty())
     {
-        auto move = pObjMove->m_Vec;
-        processMove(move);
-        pObjMove->mSecond.processMove(move);
-    }
-
-    if( const ObjMoveCouples* pObjMove = dynamic_cast<const ObjMoveCouples*>(evPtr))
-    {
-        auto move = pObjMove->m_Vec;
-        auto playerVec = pObjMove->mCarriedObjVec;
-
-        processMove(move);
-
-        for(auto &player : playerVec)
+        if( ObjMoveCouple* pObjMove = m_EventCont.occurredEvent<ObjMoveCouple>())
         {
-            if(player)
+            auto move = pObjMove->m_Vec;
+            processMove(move);
+            pObjMove->mSecond.processMove(move);
+            m_EventCont.pop_Event();
+        }
+
+        if( ObjMoveCouples* pObjMove = m_EventCont.occurredEvent<ObjMoveCouples>())
+        {
+            auto move = pObjMove->m_Vec;
+            auto playerVec = pObjMove->mCarriedObjVec;
+
+            processMove(move);
+
+            for(auto &player : playerVec)
             {
+                if(!player)
+                    continue;
+
                 if(!player->m_jumpdownfromobject)
                     player->processMove(move);
             }
+
+            m_EventCont.pop_Event();
         }
-    }
 
-
-    if( const ObjMove* pObjMove = dynamic_cast<const ObjMove*>(evPtr))
-    {
-        processMove(pObjMove->m_Vec);
+        if( ObjMove* pObjMove = m_EventCont.occurredEvent<ObjMove>())
+        {
+            processMove(pObjMove->m_Vec);
+            m_EventCont.pop_Event();
+        }
     }
 }

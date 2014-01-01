@@ -139,6 +139,7 @@ void CMapPlayGalaxy::ponder()
                 }
             }
 
+            objRef.processEvents();
         }
 	}
 

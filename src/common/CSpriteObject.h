@@ -114,6 +114,8 @@ public:
 	int scrx, scry;           		// x,y pixel position on screen
 
     virtual void pumpEvent(const CEvent *evPtr);
+
+    virtual void processEvents();
 	
 	// Bounding Boxes
 	BoundingBox m_BBox;

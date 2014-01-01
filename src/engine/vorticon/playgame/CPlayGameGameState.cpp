@@ -161,7 +161,7 @@ bool CPlayGameVorticon::loadGameState()
 	while(m_Player[0].mpCamera->m_moving)
 	{
 	  m_Player[0].mpCamera->process();
-      //m_Player[0].mpCamera->processEvents();
+      m_Player[0].mpCamera->processEvents();
 	}
 	
 	mMap->drawAll();
@@ -376,7 +376,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     while(m_Player[0].mpCamera->m_moving)
     {
       m_Player[0].mpCamera->process();
-      //m_Player[0].mpCamera->processEvents();
+      m_Player[0].mpCamera->processEvents();
     }
 
     mMap->drawAll();

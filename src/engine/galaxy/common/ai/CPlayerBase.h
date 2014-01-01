@@ -131,8 +131,6 @@ public:
 	 */
 	virtual void processInput();
 
-    // The object can hold events process them here!
-    void processEvents();
 
 	void processLevelMiscFlagsCheck();
 

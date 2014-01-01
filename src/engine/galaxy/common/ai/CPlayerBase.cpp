@@ -203,6 +203,7 @@ void CPlayerBase::pumpEvent(const CEvent *evPtr)
 void CPlayerBase::processCamera()
 {
     m_camera.process();
+    m_camera.processEvents();
 }
 
 bool CPlayerBase::calcVisibility()
@@ -281,46 +282,6 @@ void CPlayerBase::processInput()
 }
 
 
-
-
-void CPlayerBase::processEvents()
-{
-    while(!m_EventCont.empty())
-    {
-        if( ObjMoveCouple* pObjMove =  m_EventCont.occurredEvent<ObjMoveCouple>())
-        {
-            auto move = pObjMove->m_Vec;
-            processMove(move);
-            pObjMove->mSecond.processMove(move);
-            m_EventCont.pop_Event();
-        }
-
-        if( ObjMoveCouples* pObjMove =  m_EventCont.occurredEvent<ObjMoveCouples>())
-        {
-            auto move = pObjMove->m_Vec;
-            auto playerVec = pObjMove->mCarriedObjVec;
-
-            processMove(move);
-
-            for(auto &player : playerVec)
-            {
-                if(!player)
-                    continue;
-
-                if(!player->m_jumpdownfromobject)
-                      player->processMove(move);
-            }
-
-            m_EventCont.pop_Event();
-        }
-
-        if( ObjMove* pObjMove =  m_EventCont.occurredEvent<ObjMove>())
-        {
-            processMove(pObjMove->m_Vec);
-            m_EventCont.pop_Event();
-        }
-    }
-}
 
 
 
