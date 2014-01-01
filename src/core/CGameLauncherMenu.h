@@ -33,6 +33,7 @@ public:
 	bool loadGalaxyResources(const Uint8 flags);
 	bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
 	void init();
+    void pumpEvent(const CEvent *evPtr);
     void ponder();
     void render(const float deltaT);
 

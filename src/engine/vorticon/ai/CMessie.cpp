@@ -132,17 +132,17 @@ void CMessie::process()
     auto &evList = g_pBehaviorEngine->EventList();
     
     if( CPlayer::Mount *ev = evList.occurredEvent<CPlayer::Mount>() )
-    {		
-	// Let's see if he can do that...
-	if(tryMounting( const_cast<CPlayer&>(ev->player) ))
-	{
-	    evList.pop_Event();
-	    // TODO: Create an Event here that hides all the Players
-	}
-	else
-	{
-	    evList.pop_Event();
-	}
+    {
+        // Let's see if he can do that...
+        if(tryMounting( const_cast<CPlayer&>(ev->player) ))
+        {
+            evList.pop_Event();
+            // TODO: Create an Event here that hides all the Players
+        }
+        else
+        {
+            evList.pop_Event();
+        }
     }
     
     // Search for the next where Messie has to swim

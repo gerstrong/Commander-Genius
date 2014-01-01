@@ -12,12 +12,15 @@
 
 #include "mode/CGameMode.h"
 #include "core/LogicDrawSplitter.h"
+#include "engine/CEvent.h"
 
 class CBaseEngine : public GameState
 {
 
 public:
 	virtual ~CBaseEngine() {}
+
+    virtual void pumpEvent(const CEvent *evPtr) = 0;
 
 	virtual void init() = 0;
 };

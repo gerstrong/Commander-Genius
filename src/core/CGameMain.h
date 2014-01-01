@@ -16,13 +16,14 @@
 class CGameMain : public CBaseEngine
 {
 public:
-	CGameMain(bool &openedGamePlay) : mOpenedGamePlay(openedGamePlay) {};
+    CGameMain(bool &openedGamePlay) : mOpenedGamePlay(openedGamePlay) {}
 
 protected:
 
 	void switchToGamePlayMode();
 
 	void init() {}
+    void pumpEvent(const CEvent *evPtr);
     void ponder();
     void render(const float deltaT);
 

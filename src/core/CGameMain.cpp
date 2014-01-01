@@ -33,81 +33,75 @@ void CGameMain::switchToGamePlayMode()
 }
 
 
+void CGameMain::pumpEvent(const CEvent *evPtr)
+{
+    // process any triggered Game Main related event
+    auto &EventContainer = g_pBehaviorEngine->EventList();
+
+    if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
+    {
+        std::unique_ptr<CGamePassiveMode> passive(new CGamePassiveMode());
+        mpGameMode = move(passive);
+        mpGameMode->init();
+        mOpenedGamePlay = false;
+        gpMenuController->emptyMenuStack();
+    }
+    else if( const GMSwitchToPlayGameMode* p_PlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
+    {
+        // TODO: This const_cast must be removed. So adapt the rest of the structure to make it more secure
+        GMSwitchToPlayGameMode *playGame = const_cast<GMSwitchToPlayGameMode*>(p_PlayGame);
+        std::unique_ptr<CGamePlayMode> gameplay( new CGamePlayMode(*playGame) );
+        mpGameMode = move(gameplay);
+        mpGameMode->init();
+        mOpenedGamePlay = true;
+        EventContainer.add( new CloseAllMenusEvent() );
+    }
+    else if( const StartInfoSceneEvent *scene = dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
+    {
+        gpMenuController->lock(true);
+        gpMenuController->hide(true);
+        mpInfoScene = scene->mpScene;
+        mpInfoScene->init();
+
+        return;
+    }
+    else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
+    {
+        g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
+        EventContainer.add( new OpenMenuEvent(new CDifficultySelection) );
+        return;
+    }
+
+    else if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
+    {
+        g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
+        switchToGamePlayMode();
+        return;
+    }
+
+    else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
+    {
+        // TODO: we need to pass less arguments here! Make this code more pleasant
+
+        const unsigned int ep = g_pBehaviorEngine->getEpisode();
+        const std::string &dir = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
+
+        std::unique_ptr<CGamePlayMode> gameplay(new CGamePlayMode( ep, dir, 0));
+
+        gameplay->init();
+
+        gameplay->loadGame();
+
+        mpGameMode = move(gameplay);
+
+        mOpenedGamePlay = true;
+        EventContainer.add( new CloseAllMenusEvent() );
+    }
+}
+
 
 void CGameMain::ponder()
 {
-	// process any triggered Game Main related event
-	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
-
-	if( !EventContainer.empty() )
-	{
-		if( EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
-		{
-		    std::unique_ptr<CGamePassiveMode> passive(new CGamePassiveMode());
-		    mpGameMode = move(passive);
-		    mpGameMode->init();
-		    mOpenedGamePlay = false;
-		    gpMenuController->emptyMenuStack();
-		    EventContainer.pop_Event();
-		}
-		else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
-		{
-		    std::unique_ptr<CGamePlayMode> gameplay( new CGamePlayMode(*p_PlayGame) );			
-		    mpGameMode = move(gameplay); 
-		    mpGameMode->init();
-		    mOpenedGamePlay = true;
-		    EventContainer.pop_Event();
-		    EventContainer.add( new CloseAllMenusEvent() );
-		}
-		else if( StartInfoSceneEvent *scene = EventContainer.occurredEvent<StartInfoSceneEvent>() )
-		{
-		    gpMenuController->lock(true);
-            gpMenuController->hide(true);
-		    mpInfoScene = scene->mpScene;
-		    mpInfoScene->init();
-
-		    EventContainer.pop_Event();
-		    return;
-		}
-		else if( NewGamePlayersEvent* pNewGame = EventContainer.occurredEvent<NewGamePlayersEvent>() )
-		{
-			EventContainer.pop_Event();
-			g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
-			EventContainer.add( new OpenMenuEvent(new CDifficultySelection) );
-			return;
-		}
-
-		else if( StartNewGameEvent* pStart = EventContainer.occurredEvent<StartNewGameEvent>() )
-		{
-			EventContainer.pop_Event();
-			g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
-			switchToGamePlayMode();
-			return;
-		}
-
-		else if( EventContainer.occurredEvent<LoadGameEvent>() ) // If GamePlayMode is not running but loading is requested...
-		{
-		    // TODO: we need to pass less arguments here! Make this code more pleasant
-		    
-		    const unsigned int ep = g_pBehaviorEngine->getEpisode();
-		    const std::string &dir = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
-		    
-            std::unique_ptr<CGamePlayMode> gameplay(new CGamePlayMode( ep, dir, 0));
-		    
-		    gameplay->init();
-		    
-		    gameplay->loadGame();
-		    
-		    mpGameMode = move(gameplay);
-
-		    mOpenedGamePlay = true;
-		    EventContainer.pop_Event();
-		    EventContainer.add( new CloseAllMenusEvent() );
-		}
-
-
-	}
-
 	if( mpInfoScene )
 	{
         mpInfoScene->ponder();
