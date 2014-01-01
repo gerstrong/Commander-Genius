@@ -105,6 +105,11 @@ void CGUITextSelectionList::processLogic()
                 mReleasedSelection = newselection;
         }
     }
+    else
+    {
+        mHoverSelection = -1;
+        mPressedSelection = -1;
+    }
 }
 
 void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
