@@ -131,6 +131,8 @@ void CMessie::process()
 {    
     auto &evList = g_pBehaviorEngine->EventList();
     
+    // TODO: Pump should happens to this object as well.
+
     if( CPlayer::Mount *ev = evList.occurredEvent<CPlayer::Mount>() )
     {
         // Let's see if he can do that...

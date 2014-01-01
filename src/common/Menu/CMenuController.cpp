@@ -50,13 +50,11 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
         menu.setProperty( CBaseMenu::CANGOBACK );
 
         mMenuStack.push_back( openMenu->mMenuDialogPointer );
-        EventContainer.pop_Event();
     }
 
     if( dynamic_cast<const CloseMenuEvent*>(evPtr) )
     {
         popBackMenu();
-        EventContainer.pop_Event();
 
         if(mMenuStack.empty())
             g_pMusicPlayer->play();

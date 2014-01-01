@@ -266,7 +266,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 
 void CGameLauncherMenu::pumpEvent(const CEvent *evPtr)
 {
-
+    mp_GameLauncher->pumpEvent(evPtr);
 }
 
 void CGameLauncherMenu::ponder()

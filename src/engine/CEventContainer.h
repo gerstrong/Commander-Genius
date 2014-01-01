@@ -12,6 +12,7 @@
 
 #include "CEvent.h"
 #include <deque>
+#include <vector>
 #include <ctime>
 
 /**
@@ -28,7 +29,10 @@ class CEventContainer
 {
 public:
     
-	CEventContainer() : pausetime(0), timepoint(0) {}
+    CEventContainer() :
+        pausetime(0),
+        timepoint(0)
+    {}
 
 	size_t size() { return m_EventList.size(); }
 	bool empty() { return m_EventList.empty(); }
@@ -52,23 +56,32 @@ public:
 
     void processSinks()
     {
+        // First check if there are pendingEvents to be processed
         if(m_EventList.empty())
             return;
 
+        // Make a copy of that list, because the original
+        // could change, while pumping happens
+        for(auto &ev : m_EventList)
+            mPumpEventPtrs.push_back(ev);
+
+        // We don't need anything from this list anymore
+        m_EventList.clear();
+
         for( GsEventSink* sink : mSinkPtrList )
         {
-            for( auto &event : m_EventList )
+            for( auto &event : mPumpEventPtrs )
             {
                 sink->pumpEvent( event.get() );
             }
         }
 
-        m_EventList.clear();
+        mPumpEventPtrs.clear();
     }
 
 	void add(std::shared_ptr<CEvent>& ev) 
 	{ 
-	    m_EventList.push_back(ev);
+        m_EventList.push_back(ev);
 	}
 	
 	void add(CEvent *ev) 
@@ -111,7 +124,8 @@ private:
     std::list< GsEventSink* > mSinkPtrList;
 
 	std::deque< std::shared_ptr<CEvent> > m_EventList;
-	
+    std::vector< std::shared_ptr<CEvent> > mPumpEventPtrs;
+
 	clock_t pausetime;
 	clock_t timepoint;
 };

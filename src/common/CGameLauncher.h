@@ -56,6 +56,7 @@ public:
 	bool init();
     void cleanup();
 
+    void pumpEvent(const CEvent *evPtr);
     void ponder();
     void render(const float deltaT);
 

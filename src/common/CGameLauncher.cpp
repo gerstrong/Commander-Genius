@@ -212,6 +212,22 @@ bool CGameLauncher::scanExecutables(const std::string& path)
     return result;
 }
 
+
+void CGameLauncher::pumpEvent(const CEvent *evPtr)
+{
+    if( dynamic_cast<const GMStart*>(evPtr) )
+    {
+        setChosenGame(mpSelList->getSelection());
+
+        // Create a surface which only will contain the dialog and else transparent background
+        SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+        mLauncherDialog.processRendering();
+
+        g_pGfxEngine->setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
+    }
+}
+
+
 ////
 // Process Routine
 ////
@@ -247,28 +263,6 @@ void CGameLauncher::ponder()
     }
     
     mLauncherDialog.processLogic();
-    
-    if( g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
-    {        
-        setChosenGame(mpSelList->getSelection());
-
-        // Create a surface which only will contain the dialog and else transparent background
-        SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
-        /*std::unique_ptr<SDL_Surface, SDL_Surface_Deleter>
-                dlgSfc( g_pVideoDriver->convertThroughBlitSfc(blit) );
-
-        auto _dlgSfc = dlgSfc.get();
-
-        SDL_FillRect(_dlgSfc, nullptr, SDL_MapRGBA(_dlgSfc->format, 0,0,0,0));
-
-        mLauncherDialog.processRendering(_dlgSfc);
-        g_pGfxEngine->setupEffect(new CScrollEffect(_dlgSfc, _dlgSfc->w, -18, RIGHT, CENTER));*/
-        mLauncherDialog.processRendering();
-
-        g_pGfxEngine->setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
-        g_pBehaviorEngine->m_EventList.pop_Event();
-    }
-    
 }
 
 
