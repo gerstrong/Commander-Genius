@@ -75,8 +75,6 @@ void CPlayer::processInLevel()
 		if(!inhibitfall) Playerfalling();
 	}
 
-    processEvents();
-
     if(pSupportedbyobject)
     	blockedd = true;
 }

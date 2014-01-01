@@ -104,6 +104,7 @@ public:
 	bool checkMapBoundaryU(const int y1);
 
 	// Used for both situations
+    virtual void pumpEvent(const CEvent *evPtr);
 	void processCamera();
 	void InertiaAndFriction_X();
 	void Walking();

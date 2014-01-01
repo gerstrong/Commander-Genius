@@ -42,7 +42,6 @@ void CPlayer::processWorldMap()
     	selectFrameOnWorldMap();
     }
 
-    processEvents();
 }
 
 // select proper player direction

@@ -553,13 +553,18 @@ void CPlayer::WalkingAnimation()
     }
 }
 
+void CPlayer::pumpEvent(const CEvent *evPtr)
+{
+    CSpriteObject::pumpEvent(evPtr);
+    mpCamera->pumpEvent(evPtr);
+}
+
 /*
  * This function calls the camera object of the player
  */
 void CPlayer::processCamera()
 {
 	mpCamera->process();
-	mpCamera->processEvents();
 }
 
 

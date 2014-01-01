@@ -113,7 +113,7 @@ public:
 
 	int scrx, scry;           		// x,y pixel position on screen
 
-    virtual void pumpEvent(const CEvent *evPtr) {}
+    virtual void pumpEvent(const CEvent *evPtr);
 	
 	// Bounding Boxes
 	BoundingBox m_BBox;
@@ -209,9 +209,6 @@ public:
 
 	virtual void process() { }
 	
-	// The object can hold events process them here!
-    virtual void processEvents();
-
 	bool turnAroundOnCliff( int x1, int x2, int y2 );
 
 
