@@ -8,7 +8,7 @@
 #include "CVorticonMapLoader.h"
 #include <iostream>
 #include <fstream>
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include <lib/base/GsLogging.h>
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"

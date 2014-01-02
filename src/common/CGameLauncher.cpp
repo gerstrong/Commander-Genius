@@ -19,7 +19,7 @@
 #include "core/mode/CGameMode.h"
 #include "StringUtils.h"
 #include "CResourceLoader.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "../version.h"
 #include <iostream>
 #include <fstream>

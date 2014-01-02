@@ -9,7 +9,7 @@
 #include <string.h>
 #include <fstream>
 #include <iostream>
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "StringUtils.h"
 #include <lib/base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"

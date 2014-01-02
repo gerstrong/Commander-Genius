@@ -14,7 +14,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "fileio/TypeDefinitions.h"
 #include "sdl/sound/Sampling.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 
 
 #if defined(OGG)

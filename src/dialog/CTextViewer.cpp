@@ -13,7 +13,7 @@
 #include "sdl/extensions.h"
 #include "sdl/CVideoDriver.h"
 
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include <lib/base/GsLogging.h>
 
 CTextViewer::CTextViewer(int x, int y, int w, int h) :

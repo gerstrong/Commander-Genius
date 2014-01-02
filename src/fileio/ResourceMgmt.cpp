@@ -9,7 +9,7 @@
  */
 
 #include "ResourceMgmt.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include <lib/base/GsLogging.h>
 
 const std::string GLOBAL_DIR = "global";

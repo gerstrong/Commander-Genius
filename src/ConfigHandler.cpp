@@ -20,7 +20,7 @@
 #include <map>
 #include <string>
 #include "ConfigHandler.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "StringUtils.h"
 #include "MathLib.h"
 

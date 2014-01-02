@@ -15,7 +15,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 
 
 void CStory::init()

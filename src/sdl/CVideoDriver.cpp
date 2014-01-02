@@ -17,7 +17,7 @@
 
 #include "graphics/CGfxEngine.h"
 #include <lib/base/GsLogging.h>
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "graphics/PerSurfaceAlpha.h"
 #include <iostream>
 #include <fstream>

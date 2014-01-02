@@ -11,7 +11,7 @@
 
 #include "CMapLoaderGalaxy.h"
 #include "StringUtils.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CCarmack.h"
 #include "fileio/compression/CRLE.h"

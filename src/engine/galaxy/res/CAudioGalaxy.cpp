@@ -8,7 +8,7 @@
 #include <fstream>
 #include "CAudioGalaxy.h"
 #include <lib/base/GsLogging.h>
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "fileio/ResourceMgmt.h"
 #include "sdl/sound/CSound.h"
 #include "fileio/compression/CHuffman.h"

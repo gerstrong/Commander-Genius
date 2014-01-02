@@ -7,7 +7,7 @@
 
 #include "CSprite.h"
 #include "CPalette.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include <string.h>
 #include "sdl/CVideoDriver.h"
 #include "sdl/extensions.h"

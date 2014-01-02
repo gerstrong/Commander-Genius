@@ -10,8 +10,8 @@
 #include <string.h>
 #include <fstream>
 #include <lib/base/GsLogging.h>
-#include "FindFile.h"
-#include "Debug.h"
+#include <lib/base/FindFile.h>
+#include <lib/base/Debug.h>
 
 
 CLogFile::CLogFile() {}

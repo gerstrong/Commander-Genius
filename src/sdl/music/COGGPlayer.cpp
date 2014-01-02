@@ -10,7 +10,7 @@
 #include "COGGPlayer.h"
 
 #include "engine/galaxy/res/CAudioGalaxy.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "sdl/sound/Sampling.h"
 #include "fileio/ResourceMgmt.h"
 #include <lib/base/GsLogging.h>

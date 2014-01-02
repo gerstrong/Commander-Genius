@@ -24,9 +24,9 @@
 #endif
 
 #include <fstream>
-#include "FindFile.h"
+#include <base/FindFile.h>
+#include <base/Debug.h>
 #include "StringUtils.h"
-#include "Debug.h"
 #include "ConfigHandler.h"
 #include "common/CSettings.h"
 

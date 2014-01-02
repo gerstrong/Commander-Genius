@@ -6,7 +6,7 @@
  */
 
 #include <lib/base/GsLogging.h>
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "ConfigHandler.h"
 #include "CSettings.h"
 #include <lib/base/GsTimer.h>

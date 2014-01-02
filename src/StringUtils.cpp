@@ -13,7 +13,6 @@
 #endif
 
 #include "StringUtils.h"
-#include "FindFile.h"
 #include "MathLib.h"
 #include "StringBuf.h"
 

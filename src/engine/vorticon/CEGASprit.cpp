@@ -11,7 +11,7 @@
 
 #include "CEGASprit.h"
 #include "engine/CPlanes.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "sdl/CVideoDriver.h"
 #include "engine/spritedefines.h"
 #include "fileio/lz.h"

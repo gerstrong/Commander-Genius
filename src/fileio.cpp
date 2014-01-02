@@ -12,8 +12,8 @@
 #include "fileio.h"
 #include <lib/base/GsLogging.h>
 #include "StringUtils.h"
-#include "Debug.h"
-#include "FindFile.h"
+#include <base/Debug.h>
+#include <base/FindFile.h>
 
 #ifdef TARGET_WIN32
 #define uint unsigned int

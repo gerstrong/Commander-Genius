@@ -11,7 +11,7 @@
 #include "CIMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include <lib/base/GsLogging.h>
 #include <fstream>
 #include <string>

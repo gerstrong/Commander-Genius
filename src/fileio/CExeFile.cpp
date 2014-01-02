@@ -11,7 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include "StringUtils.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include <lib/base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
 

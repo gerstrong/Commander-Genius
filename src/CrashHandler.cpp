@@ -9,7 +9,7 @@
 
 #include "CrashHandler.h"
 #include "StringUtils.h"
-#include "Debug.h"
+#include <base/Debug.h>
 
 
 #ifndef WIN32
@@ -45,7 +45,7 @@ void SetCrashHandlerReturnPoint(const char* name) {
 
 #include <DbgHelp.h>
 #include <ShlObj.h>
-#include "FindFile.h" // for IsFileAvailable and mkdir
+#include <base/FindFile.h> // for IsFileAvailable and mkdir
 
 LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo);
 

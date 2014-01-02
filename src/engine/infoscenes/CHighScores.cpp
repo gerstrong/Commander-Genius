@@ -13,7 +13,7 @@
 #include "sdl/input/CInput.h"
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "sdl/CVideoDriver.h"
 #include "common/CVorticonMapLoader.h"
 #include "sdl/extensions.h"

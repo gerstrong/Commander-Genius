@@ -10,7 +10,7 @@
 #include "StringUtils.h"
 #include "CMusic.h"
 #include <lib/base/GsLogging.h>
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
 #include "sdl/music/COGGPlayer.h"

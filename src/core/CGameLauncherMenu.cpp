@@ -20,7 +20,7 @@
 #include "sdl/CVideoDriver.h"
 #include "common/CBehaviorEngine.h"
 #include <lib/base/GsLogging.h>
-#include "Debug.h"
+#include <base/Debug.h>
 
 CGameLauncherMenu::CGameLauncherMenu(bool& first_time, 
 				      const int start_game_no, 

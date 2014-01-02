@@ -7,7 +7,7 @@
 
 #include "CEGAGraphics.h"
 #include "fileio/ResourceMgmt.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include <lib/base/GsLogging.h>
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"

@@ -7,7 +7,7 @@
 
 #include "CFont.h"
 #include "CPalette.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "sdl/CVideoDriver.h"
 #include "CGFont.xpm"
 #include "alternatefont.xpm"

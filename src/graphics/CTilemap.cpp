@@ -9,7 +9,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "sdl/CVideoDriver.h"
 #include <SDL_image.h>
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "CTilemap.h"
 #include "CPalette.h"
 #include <lib/base/GsLogging.h>

@@ -7,7 +7,7 @@
 
 #include "CBitmap.h"
 #include "CPalette.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "sdl/CVideoDriver.h"
 
 #include <lib/base/GsLogging.h>

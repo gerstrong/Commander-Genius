@@ -34,9 +34,9 @@
 	#include <SDL_main.h>
 #endif
 
+#include <base/FindFile.h>
 #include <base/GsApp.h>
 #include <lib/base/GsLogging.h>
-#include "FindFile.h"
 #include "ThreadPool.h"
 
 /**

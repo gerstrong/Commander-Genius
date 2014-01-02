@@ -6,7 +6,7 @@
 
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 
 #include <fstream>
 
