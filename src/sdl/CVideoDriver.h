@@ -133,8 +133,6 @@ public:
 
 	std::unique_ptr<CVideoEngine> mpVideoEngine;
 
-	CEventContainer mDrawTasks;
-
 	std::list< GsRect<Uint16> > m_Resolutionlist;
 	std::list< GsRect<Uint16> > :: iterator m_Resolution_pos;
 

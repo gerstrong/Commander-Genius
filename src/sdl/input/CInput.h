@@ -239,7 +239,7 @@ public:
 	virtual ~CInput();
 
 	// Input Events
-	CEventContainer m_EventList;
+    CEventContainer m_EventList;
 
 	bool MappingInput()
 	{ return remapper.mappingInput; }

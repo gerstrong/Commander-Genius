@@ -62,11 +62,17 @@ std::string CMapPlayGalaxy::getLevelName()
 
 void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
 {
-    for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
+    /*if( const ObjMove* pObjMove = dynamic_cast<const ObjMove*>(evPtr))
+    {
+        pObjMove->mSprObjRef.processMove(pObjMove->m_Vec);
+        //m_EventCont.pop_Event();
+    }*/
+
+    /*for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
     {
         auto &objRef = *(obj->get());
         objRef.pumpEvent(evPtr);
-    }
+    }*/
 }
 
 

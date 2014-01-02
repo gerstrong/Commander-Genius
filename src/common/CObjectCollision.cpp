@@ -850,21 +850,36 @@ void CSpriteObject::processPushOutCollision()
 }
 
 void CSpriteObject::pumpEvent(const CEvent *evPtr)
-{}
+{
+    /*if( ObjMove* pObjMove = dynamic_cast<ObjMove>(evPtr))
+    {
+        processMove(pObjMove->m_Vec);
+        //m_EventCont.pop_Event();
+    }*/
+}
 
 void CSpriteObject::processEvents()
 {
-    while(!m_EventCont.empty())
+    if(mMoveTasks.empty())
+        return;
+
+    //while(!mMoveTasks.empty())
+    for( auto task : mMoveTasks)
     {
-        if( ObjMoveCouple* pObjMove = m_EventCont.occurredEvent<ObjMoveCouple>())
+        ObjMove *objMove = task;
+
+        /*if( ObjMove* pObjMove = dynamic_cast<>(taskPtr) )
+        {
+
+        }*/
+
+        if( ObjMoveCouple* pObjMove = dynamic_cast<ObjMoveCouple*>(objMove) )
         {
             auto move = pObjMove->m_Vec;
             processMove(move);
             pObjMove->mSecond.processMove(move);
-            m_EventCont.pop_Event();
         }
-
-        if( ObjMoveCouples* pObjMove = m_EventCont.occurredEvent<ObjMoveCouples>())
+        else if( ObjMoveCouples* pObjMove = dynamic_cast<ObjMoveCouples*>(objMove) )
         {
             auto move = pObjMove->m_Vec;
             auto playerVec = pObjMove->mCarriedObjVec;
@@ -879,14 +894,20 @@ void CSpriteObject::processEvents()
                 if(!player->m_jumpdownfromobject)
                     player->processMove(move);
             }
-
-            m_EventCont.pop_Event();
+        }
+        else
+        {
+            processMove(objMove->m_Vec);
         }
 
-        if( ObjMove* pObjMove = m_EventCont.occurredEvent<ObjMove>())
+        /*if( ObjMove* pObjMove = m_EventCont.occurredEvent<ObjMove>())
         {
             processMove(pObjMove->m_Vec);
             m_EventCont.pop_Event();
-        }
+        }*/
+
+        delete task;
     }
+
+    mMoveTasks.clear();
 }

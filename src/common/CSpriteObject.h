@@ -60,41 +60,43 @@ struct BoundingBox
 class CSpriteObject;
 
 // Event that will be used to move the objects in the game
-struct ObjMove : public CEvent
+struct ObjMove
 {
 	VectorD2<int> m_Vec;
-	ObjMove(const VectorD2<int>& Vector) : m_Vec(Vector) {}
-	ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
+
+    ObjMove(const VectorD2<int>& Vector) : m_Vec(Vector) {}
+    ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
+
+    virtual ~ObjMove() {}
 };
 
 // Event that will be used to move the objects in the game together with another object.
 // This is applied for example whenever keen is being moved on the platform
-struct ObjMoveCouple : public CEvent
+struct ObjMoveCouple : ObjMove
 {
-    VectorD2<int> m_Vec;
     CSpriteObject &mSecond;
-    ObjMoveCouple(const VectorD2<int>& Vector,
+    ObjMoveCouple(const VectorD2<int>& vec,
                       CSpriteObject &second) :
-            m_Vec(Vector), mSecond(second)  {}
+        ObjMove(vec), mSecond(second)  {}
 
     ObjMoveCouple(const int offx, const int offy,
                       CSpriteObject &second) :
-            m_Vec(offx, offy), mSecond(second) {}
+        ObjMove(offx, offy), mSecond(second) {}
 };
 
 // Same as above but for multiple couples
 
-struct ObjMoveCouples : public CEvent
+struct ObjMoveCouples : ObjMove
 {
-    VectorD2<int> m_Vec;
     std::vector<CSpriteObject*> mCarriedObjVec;
+
     ObjMoveCouples(const VectorD2<int>& Vector,
                       std::vector<CSpriteObject*> &carriedObjVec) :
-            m_Vec(Vector), mCarriedObjVec(carriedObjVec)  {}
+            ObjMove(Vector), mCarriedObjVec(carriedObjVec)  {}
 
     ObjMoveCouples(const int offx, const int offy,
                       std::vector<CSpriteObject*> &carriedObjVec) :
-            m_Vec(offx, offy), mCarriedObjVec(carriedObjVec) {}
+            ObjMove(offx, offy), mCarriedObjVec(carriedObjVec) {}
 };
 
 
@@ -140,7 +142,8 @@ public:
 	bool dead, dying;
 
 	// This container will held the triggered events of the object
-	CEventContainer m_EventCont;
+
+    std::vector< ObjMove* > mMoveTasks;
 
     bool m_jumpdownfromobject;
 

@@ -178,7 +178,7 @@ void CCarrier::moveCarrierLeft(const int amnt)
 
     if(!mCarriedPlayerVec.empty())
     {
-        m_EventCont.add(new ObjMoveCouples(-amnt,0, carriedSO));
+        mMoveTasks.push_back(new ObjMoveCouples(-amnt,0, carriedSO));
         return;
     }
     moveLeft(amnt);
@@ -195,7 +195,7 @@ void CCarrier::moveCarrierRight(const int amnt)
 
     if(!mCarriedPlayerVec.empty())
     {
-        m_EventCont.add(new ObjMoveCouples(amnt,0, carriedSO));
+        mMoveTasks.push_back(new ObjMoveCouples(amnt,0, carriedSO));
         return;
     }
     
@@ -210,7 +210,7 @@ void CCarrier::moveCarrierUp(const int amnt)
     // First move the object on platform if any
     if(!mCarriedPlayerVec.empty())
     {
-        m_EventCont.add(new ObjMoveCouples(0,-amnt, carriedSO));
+        mMoveTasks.push_back(new ObjMoveCouples(0,-amnt, carriedSO));
         return;
     }
     
@@ -225,7 +225,7 @@ void CCarrier::moveCarrierDown(const int amnt)
     // First move the object on platform if any
     if(!mCarriedPlayerVec.empty())
     {
-        m_EventCont.add(new ObjMoveCouples(0,amnt, carriedSO));
+        mMoveTasks.push_back(new ObjMoveCouples(0,amnt, carriedSO));
         return;
     }
 

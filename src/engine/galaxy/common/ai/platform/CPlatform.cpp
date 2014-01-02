@@ -57,8 +57,8 @@ void CPlatform::movePlatLeft(const int amnt)
 
     if(!mCarriedPlayerVec.empty())
 	{
-        std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();
-        m_EventCont.add(new ObjMoveCouples(-amnt, 0, carriedObjVec));
+        std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();        
+        mMoveTasks.push_back(new ObjMoveCouples(-amnt, 0, carriedObjVec));
         return;
 	}		    
 	moveLeft(amnt);
@@ -73,7 +73,7 @@ void CPlatform::movePlatRight(const int amnt)
     if(!mCarriedPlayerVec.empty())
     {
         std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();
-        m_EventCont.add(new ObjMoveCouples(amnt,0, carriedObjVec));
+        mMoveTasks.push_back(new ObjMoveCouples(amnt,0, carriedObjVec));
         return;
     }
 
@@ -88,7 +88,7 @@ void CPlatform::movePlatUp(const int amnt)
     if(!mCarriedPlayerVec.empty())
     {
         std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();
-        m_EventCont.add(new ObjMoveCouples(0,-amnt, carriedObjVec));
+        mMoveTasks.push_back(new ObjMoveCouples(0,-amnt, carriedObjVec));
         return;
     }
 
@@ -102,7 +102,7 @@ void CPlatform::movePlatDown(const int amnt)
     if(!mCarriedPlayerVec.empty())
     {
         std::vector<CSpriteObject*> carriedObjVec = fetchCarryingPlayer();
-        m_EventCont.add(new ObjMoveCouples(0, amnt, carriedObjVec));
+        mMoveTasks.push_back(new ObjMoveCouples(0, amnt, carriedObjVec));
         return;
     }
 

@@ -210,7 +210,7 @@ void CSpriteObject::moveLeft(const int amnt, const bool force)
 	if(amnt <= 0)
 		return;
 
-	m_EventCont.add(new ObjMove(-amnt,0));
+    mMoveTasks.push_back(new ObjMove(-amnt, 0));
 }
 
 void CSpriteObject::moveRight(const int amnt, const bool force)
@@ -218,7 +218,7 @@ void CSpriteObject::moveRight(const int amnt, const bool force)
 	if(amnt <= 0)
 		return;
 
-	m_EventCont.add(new ObjMove(amnt,0));
+    mMoveTasks.push_back(new ObjMove(amnt, 0));
 }
 
 void CSpriteObject::moveUp(const int amnt)
@@ -226,7 +226,7 @@ void CSpriteObject::moveUp(const int amnt)
 	if(amnt <= 0)
 		return;
 
-	m_EventCont.add(new ObjMove(0,-amnt));
+    mMoveTasks.push_back(new ObjMove(0, -amnt));
 }
 
 void CSpriteObject::moveDown(const int amnt)
@@ -235,7 +235,7 @@ void CSpriteObject::moveDown(const int amnt)
 	if(amnt <= 0)
 		return;
 
-	m_EventCont.add(new ObjMove(0, amnt));
+    mMoveTasks.push_back(new ObjMove(0, amnt));
 }
 
 // This decreases the inertia we have of the object in X-direction.
