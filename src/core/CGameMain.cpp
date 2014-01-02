@@ -29,7 +29,7 @@ void CGameMain::switchToGamePlayMode()
 
 	const int Numplayers = g_pBehaviorEngine->mPlayers;
 	std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
-	g_pBehaviorEngine->m_EventList.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
+    gEventManager.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
 }
 
 

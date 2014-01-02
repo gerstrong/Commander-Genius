@@ -235,7 +235,7 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
     {
       if( mCanFinishGame && getActionNumber(A_NOSPIKE_STUNNED) ) // This will only happen in the Keen 8 Mod!
       {
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	CEventContainer& EventContainer = gEventManager;
       
 	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
       

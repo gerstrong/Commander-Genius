@@ -53,12 +53,12 @@ void CEgg::hatch()
 	shard2->setActionSprite();
 	shard3->setActionSprite();
 
-	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( shard1 ) );
-	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( shard2 ) );
-	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( shard3 ) );
+	gEventManager.add( new EventSpawnObject( shard1 ) );
+	gEventManager.add( new EventSpawnObject( shard2 ) );
+	gEventManager.add( new EventSpawnObject( shard3 ) );
 
 	CBlueBird *blueBird = new CBlueBird( getMapPtr(), mFoeID, getXMidPos(), getYMidPos() );
-	g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( blueBird ) );
+	gEventManager.add( new EventSpawnObject( blueBird ) );
 }
 
 

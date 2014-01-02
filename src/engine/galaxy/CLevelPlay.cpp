@@ -67,10 +67,8 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
 	const std::string loading_text = g_pBehaviorEngine->getString(level_text);
 
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
 	g_pGfxEngine->setupEffect(new CDimDark(8));
-    EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"),
+    gEventManager.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"),
 							  loading_text, LEFT) );
 
 	mMap.drawAll();

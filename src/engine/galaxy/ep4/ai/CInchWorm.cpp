@@ -61,7 +61,7 @@ bool CInchWorm::isNearby(CSpriteObject &theObject)
 
 		if(mInchWormContacts >= 11)
 		{
-			g_pBehaviorEngine->m_EventList.add( new EventSpawnFoot(  getXMidPos(), getYUpPos(), 67 ) );
+			gEventManager.add( new EventSpawnFoot(  getXMidPos(), getYUpPos(), 67 ) );
 		}
 	}
 

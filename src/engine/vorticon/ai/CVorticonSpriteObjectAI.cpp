@@ -92,7 +92,7 @@ void CVorticonSpriteObjectAI::process()
 	}
 	
 	
-	CEventContainer &EventContainer = g_pBehaviorEngine->m_EventList;
+	CEventContainer &EventContainer = gEventManager;
 	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
 	{
 	    CVorticonSpriteObject *ptr = (CVorticonSpriteObject*)(ev->pObject);

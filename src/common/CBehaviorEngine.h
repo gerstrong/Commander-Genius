@@ -96,7 +96,7 @@ public:
 	{ return m_TeleporterTable; }
 
 	CEventContainer &EventList()
-	{	return m_EventList;	}
+    {	return gEventManager;	}
 
 	void setEpisode(size_t Episode);
 
@@ -106,8 +106,6 @@ public:
 	bool paused()
 	{	return mPausedGamePlay;	}
 
-	// TODO: EventList must an own singleton Container, as it very often used.
-	CEventContainer m_EventList;
 	CExeFile m_ExeFile;
 	bool m_is_a_mod;
 	stOption m_option[NUM_OPTIONS];

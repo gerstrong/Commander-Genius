@@ -139,7 +139,7 @@ void CPlayerDive::processDiving()
 		playSound(SOUND_BUBBLE);
 		int dir_offset = (xDirection==RIGHT) ? +(1<<CSF) : -(1<<CSF) ;
 		CBubbles *Bubble = new CBubbles(mp_Map, 0, getXMidPos()+dir_offset, getYMidPos(), false);
-		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Bubble ) );
+		gEventManager.add( new EventSpawnObject( Bubble ) );
 		m_breathtimer = 0;
 	}
 	else

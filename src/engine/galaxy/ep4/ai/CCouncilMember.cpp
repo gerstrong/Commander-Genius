@@ -118,7 +118,7 @@ void CCouncilMember::process()
 
 void CCouncilMember::performJanitorMode()
 {
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	CEventContainer& EventContainer = gEventManager;
 
 	std::string elder_text[4];
 
@@ -160,7 +160,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 	{
 		int &rescuedelders = player->m_Inventory.Item.m_special.ep4.elders;
 
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		CEventContainer& EventContainer = gEventManager;
 
 		// TODO: In this part we have to check which level we are and send the proper messages
 

@@ -30,7 +30,7 @@ m_DataDirectory(gpmode.m_DataDirectory)
 void CGamePlayMode::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer& EventContainer = gEventManager;
 
 	// If no level has been set or is out of bound, set it to map.
 	if(m_startLevel > 100 || m_startLevel < 0 )
@@ -86,7 +86,7 @@ void CGamePlayMode::pumpEvent(const CEvent *evPtr)
 void CGamePlayMode::ponder()
 {
 	// The player is playing the game. It also includes scenes like ending
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer& EventContainer = gEventManager;
 
     mp_PlayGame->ponder();
 	

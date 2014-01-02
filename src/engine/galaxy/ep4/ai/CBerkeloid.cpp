@@ -105,7 +105,7 @@ void CBerkeloid::processMoving()
 		setAction( A_BERKELOID_THROW );
 		playSound( SOUND_BERKELOID_WINDUP );
 		CBerkFlame *flame = new CBerkFlame( getMapPtr(), getXMidPos(), getYUpPos(), xDirection );
-		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( flame ) );
+		gEventManager.add( new EventSpawnObject( flame ) );
 		return;
 	}
 

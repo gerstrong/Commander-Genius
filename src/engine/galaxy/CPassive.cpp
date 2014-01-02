@@ -112,7 +112,7 @@ bool CPassiveGalaxy::init(char mode)
 // Here it will execute the mode we are currently running
 void CPassiveGalaxy::ponder()
 {		
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	CEventContainer& EventContainer = gEventManager;
 	
 	if( EventContainer.occurredEvent<EventEndGamePlay>() )
 	{

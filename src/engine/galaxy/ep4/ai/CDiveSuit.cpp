@@ -32,7 +32,7 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 	{
 		bool &swimsuit = player->m_Inventory.Item.m_special.ep4.swimsuit;
 
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		CEventContainer& EventContainer = gEventManager;
 
 		g_pSound->playSound( SOUND_GET_WETSUIT, PLAY_PAUSEALL );
 		taken = swimsuit = true;

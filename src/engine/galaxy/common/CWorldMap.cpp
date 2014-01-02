@@ -33,13 +33,12 @@ void CWorldMap::init()
 	g_pBehaviorEngine->mapLevelName = MapLoader->getLevelName();
 
 	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	g_pGfxEngine->setupEffect(new CColorMerge(8));
 	
 	if(!gpSaveGameController->busy())
 	{
-        EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
+        gEventManager.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
 	}
 
 	mMap.drawAll();

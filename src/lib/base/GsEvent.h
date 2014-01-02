@@ -25,7 +25,8 @@ public:
 
     CEventContainer() :
         pausetime(0),
-        timepoint(0)
+        timepoint(0),
+        mFlush(false)
     {}
 
     size_t size() { return m_EventList.size(); }
@@ -67,10 +68,24 @@ public:
             for( auto &event : mPumpEventPtrs )
             {
                 sink->pumpEvent( event.get() );
+
+                if(mFlush)
+                    break;
             }
+
+            if(mFlush)
+                break;
         }
 
         mPumpEventPtrs.clear();
+
+        mFlush = false;
+    }
+
+    void flush()
+    {
+        m_EventList.clear();
+        mFlush = true;
     }
 
     void add(std::shared_ptr<CEvent>& ev)
@@ -116,6 +131,8 @@ private:
 
     clock_t pausetime;
     clock_t timepoint;
+
+    bool mFlush;
 };
 
 template<typename T>

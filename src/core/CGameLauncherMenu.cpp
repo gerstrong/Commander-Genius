@@ -52,7 +52,7 @@ void CGameLauncherMenu::init()
     SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
     SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0, 0, 0) );
 
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer& EventContainer = gEventManager;
 
 	// If game was started for the first time, also open the firsttime dialog with configs.
 	if(m_firsttime)
@@ -307,7 +307,7 @@ void CGameLauncherMenu::ponder()
 					if( loadResources(DataDirectory, Episode) )
 					{
 						// Now look if there are any old savegames that need to be converted
-						CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+                        CEventContainer& EventContainer = gEventManager;
 						CSaveGameController &savedgames = *gpSaveGameController;
 						savedgames.setGameDirectory(DataDirectory);
 						savedgames.setEpisode(Episode);
@@ -333,7 +333,7 @@ void CGameLauncherMenu::ponder()
 		else if(mp_GameLauncher->getQuit())
 		{
 			// User chose "exit". So make CG quit...
-			CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+            CEventContainer& EventContainer = gEventManager;
 			EventContainer.add( new GMQuit() );
 		}
 	}

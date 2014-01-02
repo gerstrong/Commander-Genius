@@ -29,7 +29,7 @@ void CGamePassiveMode::init()
 
 	if( mpPassive->init() ) return;
 
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer& EventContainer = gEventManager;
 	EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
 
 }
@@ -41,7 +41,7 @@ void CGamePassiveMode::ponder()
 
 	// Process Events
 
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer& EventContainer = gEventManager;
 
 	// check here what the player chose from the menu over the passive mode.
 	// NOTE: Demo is not part of playgame anymore!!

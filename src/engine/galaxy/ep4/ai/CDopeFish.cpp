@@ -144,7 +144,7 @@ void CDopeFish::processBurp()
 	{
 		g_pSound->playSound(SOUND_DOPEFISH_BURP);
 		CBubbles *Bubble = new CBubbles(mp_Map, 0, getXMidPos()+(1<<CSF), getYMidPos()+(1<<CSF), true);
-		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Bubble ) );
+		gEventManager.add( new EventSpawnObject( Bubble ) );
 		m_burped = true;
 	}
 

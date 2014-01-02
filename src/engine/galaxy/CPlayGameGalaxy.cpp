@@ -247,7 +247,7 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
                                        const int levelObj,
                                        const std::string &levelName )
 {
-    CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer &eventContainer = gEventManager;
 
     // Check if all players are dead
     bool allDead = true;
@@ -313,7 +313,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     // In this part we will poll all the relevant Events that are important for the
     // Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
     // are some of those events.
-    CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer &eventContainer = gEventManager;
 
     if( const EventSendBitmapDialogMsg *ev = dynamic_cast<const EventSendBitmapDialogMsg*>(evPtr) )
     {
@@ -406,12 +406,6 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             const EventExitLevel &evCopy = *ev;
 
             eventContainer.add( new EventPlayerEndLevel(evCopy) );
-
-            // Should only happen in Keen 5. This should trigger on map teleportation
-            if(evCopy.teleport)
-            {
-              eventContainer.add( new EventPlayerTeleportFromLevel() );
-            }
         }
         else if( const EventDieKeenPlayer *ev = dynamic_cast<const EventDieKeenPlayer*>(evPtr) )
         {
@@ -453,7 +447,7 @@ void CPlayGameGalaxy::ponder()
 	if(g_pSound->pauseGamePlay() )
 		return;
 	
-    CEventContainer &eventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer &eventContainer = gEventManager;
     //eventContainer.update();
 
 	if( !gpMenuController->active() )

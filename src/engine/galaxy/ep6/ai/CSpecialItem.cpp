@@ -25,7 +25,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 	    mTaken = true;
 		auto &item = player->m_Inventory.Item.m_special.ep6;
 
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		CEventContainer& EventContainer = gEventManager;
 
 		// Sound play
 		g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);

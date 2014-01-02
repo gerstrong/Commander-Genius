@@ -28,7 +28,7 @@ void CFoot::getTouchedBy(CSpriteObject &theObject)
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		// TODO: This is not all. He exits the level but must also transport to the secret level. Add this event.
-        g_pBehaviorEngine->m_EventList.add( new EventExitLevelWithFoot(mp_Map->getLevel(), player->getSpriteVariantId()) );
+        gEventManager.add( new EventExitLevelWithFoot(mp_Map->getLevel(), player->getSpriteVariantId()) );
         player->m_Inventory.Item.m_gem.clear();
 	}
 }

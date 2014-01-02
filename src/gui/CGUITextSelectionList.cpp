@@ -48,13 +48,13 @@ bool CGUITextSelectionList::sendEvent(const InputCommands command)
 			 command == IC_POGO || command == IC_FIRE)
 	{
 		if(mConfirmEvent)
-			g_pBehaviorEngine->m_EventList.add(mConfirmEvent);
+			gEventManager.add(mConfirmEvent);
 		return true;
 	}
 	else if(command == IC_BACK)
 	{
 		if(mBackEvent)
-			g_pBehaviorEngine->m_EventList.add(mBackEvent);
+			gEventManager.add(mBackEvent);
 		return true;
 	}
 	else

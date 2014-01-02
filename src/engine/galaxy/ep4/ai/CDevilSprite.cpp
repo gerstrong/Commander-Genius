@@ -114,7 +114,7 @@ void CDevilSprite::processShoot()
 		x_coord += (xDirection == LEFT) ? -(8<<STC) : +(8<<STC);
 		CEnemyShot *Spark = new CEnemyShot(mp_Map, 0, x_coord, getYMidPos()-(8<<STC),
                                             0x3818, xDirection, 0,  100, 0);
-		g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( Spark ) );
+		gEventManager.add( new EventSpawnObject( Spark ) );
 	}
 
 	if( m_timer <= 0 )

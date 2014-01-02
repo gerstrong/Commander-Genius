@@ -52,8 +52,6 @@ struct EventDieKeenPlayer  : CEvent
         levelObj(lo), levelName(ln){}
 };
 
-struct EventPlayerTeleportFromLevel : CEvent
-{};
 
 struct EventExitLevel : CEvent {
 	const uint16_t levelObject;
@@ -78,9 +76,12 @@ struct EventPlayerEndLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;
     const int who;
+    const bool teleport;
 	EventPlayerEndLevel(const EventExitLevel &ev) :
-                    levelObject(ev.levelObject), sucess(ev.sucess),
-                    who(ev.who) {}
+                    levelObject(ev.levelObject),
+                    sucess(ev.sucess),
+                    who(ev.who),
+                    teleport(ev.teleport){}
 };
 
 struct EventPlayerRideFoot : CEvent {

@@ -136,7 +136,8 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
                 {
                     // enough fuses broken, in fact of all the fuses levels, except the secret one.
                     // then open the elevator door for the last level!
-                    // NOTE: I'm not sure, if there is a better way to do it. if you know one, go ahead and improve this!
+                    // NOTE: I'm not sure, if there is a better way to do it.
+                    // if you know one, go ahead and improve this!
                     if(m_Inventory.Item.fuse_levels_completed >= 4)
                     {
                         // Must happen only once!
@@ -167,9 +168,26 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
                 }
             }
         }
+
+        if(ev->teleport)
+        {
+            // Find the spot of the teleportation destination
+            // TODO: This part is only meant for Episode 5. We should catch exception
+            // Whenever another episode tries to trigger this call.
+            int x,y;
+            mp_Map->findTile( 0x1A, &x, &y, 2);
+
+            const int newX = x<<CSF;
+            const int newY = y<<CSF;
+
+            m_Pos.x = newX;
+            m_Pos.y = newY;
+
+            m_camera.setPosition(m_Pos);
+        }
     }
 
-    if( const EventPlayerRideFoot* ev = dynamic_cast<const EventPlayerRideFoot*>(evPtr) )
+    else if( const EventPlayerRideFoot* ev = dynamic_cast<const EventPlayerRideFoot*>(evPtr) )
     {
         finishLevel(ev->levelObject);
         solid = false;
@@ -181,23 +199,6 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
         m_Action.setActionFormat(0x1492);
         setActionSprite();
         mProcessPtr = &CPlayerWM::processRiding;
-    }
-
-    if( dynamic_cast<const EventPlayerTeleportFromLevel*>(evPtr) )
-    {
-      // Find the spot of the teleportation destination
-      // TODO: This part is only meant for Episode 5. We should catch exception
-      // Whenever another episode tries to trigger this call.
-      int x,y;
-      mp_Map->findTile( 0x1A, &x, &y, 2);
-
-      const int newX = x<<CSF;
-      const int newY = y<<CSF;
-
-      m_Pos.x = newX;
-      m_Pos.y = newY;
-
-      m_camera.setPosition(m_Pos);
     }
 }
 
@@ -314,7 +315,7 @@ void CPlayerWM::processMoving()
             else
             {
                 // Tell the player he cannot climb yet
-                CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+                CEventContainer& EventContainer = gEventManager;
                 EventContainer.add( new EventSendBitmapDialogMsg(
                                         g_pGfxEngine->getBitmapFromId(29),
                                         g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), RIGHT) );
@@ -428,7 +429,7 @@ void CPlayerWM::processMoving()
         {
             if( !m_cantswim )
             {
-                CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+                CEventContainer& EventContainer = gEventManager;
 
                 g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
                 EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(105),
@@ -956,7 +957,7 @@ void CPlayerWM::startLevel(Uint16 object)
 
     if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
     {
-        g_pBehaviorEngine->m_EventList.add(new EventEnterLevel(object));
+        gEventManager.add(new EventEnterLevel(object));
     }
 }
 

@@ -64,7 +64,7 @@ bool CPassiveVort::init(char mode)
 void CPassiveVort::ponder()
 {
 
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	CEventContainer& EventContainer = gEventManager;
 
 	if(!EventContainer.empty())
 	{

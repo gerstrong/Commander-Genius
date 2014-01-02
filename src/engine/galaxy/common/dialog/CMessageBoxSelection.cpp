@@ -151,12 +151,10 @@ void CMessageBoxSelection::ponder()
 	// Look, if somebody pressed a button, and close this dialog!
 	if(g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
 	{
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
 		for( int c=0 ; c<m_selection ; c++ )
 			m_Options.pop_front();
 
-		EventContainer.add( m_Options.front().event );
+        gEventManager.add( m_Options.front().event );
 
 		mMustClose = true;
 		g_pInput->flushCommands();

@@ -53,7 +53,7 @@ GsAppState::~GsAppState()
 bool GsAppState::init(int argc, char *argv[])
 {
 	bool ok = true;
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer& EventContainer = gEventManager;
 	std::string argument;
 	argument = getArgument( argc, argv, "-game" );
 

@@ -46,7 +46,7 @@ void CMolly::getTouchedBy(CSpriteObject& theObject)
 	//if( typeid(theObject) == typeid(CPlayerLevel) )
 	if( /*CPlayerBase *player = */dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		CEventContainer& EventContainer = gEventManager;
 
 		std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 

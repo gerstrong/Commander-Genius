@@ -502,7 +502,7 @@ void CMineShards::process()
 	    }
 
 
-		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		CEventContainer& EventContainer = gEventManager;
 
 		const std::string end_text("End of Episode.\n"
 					       "The game will be restarted.\n"

@@ -187,7 +187,7 @@ void CPlayerBase::getAnotherLife(const int lc_x, const int lc_y, const bool disp
 	    const int ep = g_pBehaviorEngine->getEpisode();
 	    const int id = alt ? 12 : 10;
 	    CItemEffect *lifeUp = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][id], FADEOUT);
-	    g_pBehaviorEngine->m_EventList.add( new EventSpawnObject( lifeUp ) );	    
+        gEventManager.add( new EventSpawnObject( lifeUp ) );
 	}
 }
 
@@ -557,7 +557,7 @@ void CPlayerBase::processDead()
     m_camera.forbidLead(mPlayerNum);
     m_camera.cycleCamlead();
 
-    g_pBehaviorEngine->m_EventList.add( new EventDieKeenPlayer(mPlayerNum,
+    gEventManager.add( new EventDieKeenPlayer(mPlayerNum,
                                                                m_Inventory.Item.m_lifes<0,
                                                                levelObj,
                                                                levelName) );

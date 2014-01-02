@@ -83,7 +83,7 @@ bool CGUIButton::sendEvent(const InputCommands command)
 {
 	if(command == IC_STATUS || command == IC_JUMP)
 	{
-		g_pBehaviorEngine->m_EventList.add(mEvent);
+		gEventManager.add(mEvent);
 		return true;
 	}
 	return false;
@@ -106,7 +106,7 @@ void CGUIButton::processLogic()
     // If button was pushed and gets released, trigger the assigned event.
     if(mReleased)
     {
-        g_pBehaviorEngine->m_EventList.add(mEvent);
+        gEventManager.add(mEvent);
     }
 }
 

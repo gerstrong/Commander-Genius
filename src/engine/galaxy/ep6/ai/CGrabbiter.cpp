@@ -48,7 +48,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 	const int diffX = getXMidPos()-player->getXMidPos();
         player->moveXDir(-diffX/4);
 
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	CEventContainer& EventContainer = gEventManager;
 	
 	if(player->m_Inventory.Item.m_special.ep6.sandwich > 0)
 	{
