@@ -9,7 +9,6 @@
 #define CLOGFILE_H_
 
 #include <base/Singleton.h>
-
 #include <string>
 
 const std::string APP_NAME = "Commander Genius";

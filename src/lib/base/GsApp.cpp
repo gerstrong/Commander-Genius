@@ -10,12 +10,15 @@
  */
 
 #include "GsApp.h"
+
+#include <lib/base/GsTimer.h>
+#include <lib/base/GsLogging.h>
+
+
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
-#include <lib/base/GsTimer.h>
 #include "common/CSettings.h"
-#include <lib/base/GsLogging.h>
 #include "common/Menu/CMenuController.h"
 
 #include "graphics/CGfxEngine.h"
