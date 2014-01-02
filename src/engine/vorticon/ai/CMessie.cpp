@@ -1,5 +1,5 @@
 #include "CMessie.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 
 // Nessie (in ep3) (on the world map)
 enum nessie_actions{

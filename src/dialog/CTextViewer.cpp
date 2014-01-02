@@ -7,7 +7,7 @@
 
 #include <fstream>
 
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "CTextViewer.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"

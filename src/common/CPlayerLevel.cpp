@@ -12,7 +12,7 @@
 #include "engine/vorticon/ai/CBridges.h"
 #include "engine/spritedefines.h"
 #include "sdl/sound/CSound.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/music/CMusic.h"
 #include "graphics/CGfxEngine.h"
 #include "CPhysicsSettings.h"

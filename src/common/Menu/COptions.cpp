@@ -6,7 +6,7 @@
  */
 
 #include "COptions.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/CVideoDriver.h"
 #include "common/CSettings.h"
 

@@ -10,7 +10,7 @@
 #include "CControlsettings.h"
 #include "common/CBehaviorEngine.h"
 
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/CVideoDriver.h"
 
 

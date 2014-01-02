@@ -14,7 +14,7 @@
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include <base/FindFile.h>
 
 

@@ -20,7 +20,7 @@
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
 #include "core/LogicDrawSplitter.h"

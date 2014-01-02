@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "CBaseMenu.h"
 #include "common/Menu/CMenuController.h"
 #include "gui/CGUIBitmap.h"

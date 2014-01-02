@@ -16,7 +16,8 @@
 
 
 #include "sdl/CVideoDriver.h"
-#include "sdl/input/CInput.h"
+
+#include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include "common/CSettings.h"
 #include "common/Menu/CMenuController.h"
@@ -40,7 +41,6 @@ mAppState(m_firsttime)
  */
 GsApp::~GsApp()
 {
-    //gpMenuController->emptyMenuStack();
 	g_pInput->Del();
 	g_pSound->destroy();
 	g_pVideoDriver->Del();
@@ -162,7 +162,7 @@ void GsApp::run()
             g_pInput->pollEvents();                        
 
             // Process App Events
-            g_pBehaviorEngine->EventList().processSinks();
+            gEventManager.processSinks();
 
             // Ponder Game Control
             mAppState.ponder();

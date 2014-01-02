@@ -11,7 +11,7 @@
 #include "engine/galaxy/common/ai/CFlag.h"
 #include <engine/galaxy/ep6/ai/CRope.h>
 #include "common/CBehaviorEngine.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 

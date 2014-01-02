@@ -11,7 +11,7 @@
 #include "common/CVorticonMapLoader.h"
 #include "common/CTileProperties.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/extensions.h"
 #include "core/mode/CGameMode.h"
 

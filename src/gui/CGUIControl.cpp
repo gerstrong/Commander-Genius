@@ -8,8 +8,8 @@
 #include "CGUIControl.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/input/CInput.h"
-#include "sdl/input/InputEvents.h"
+#include <base/CInput.h>
+//#include "sdl/input/InputEvents.h"
 #include "sdl/CVideoDriver.h"
 #include <lib/base/GsTimer.h>
 

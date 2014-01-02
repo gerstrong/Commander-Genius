@@ -9,4 +9,5 @@ add_library(GsKit_base GsApp.cpp
                        GsAppState.cpp
                        GsLogging.cpp
                        GsTimer.cpp
-                       GsEvent.h)
+                       GsEvent.h
+                       CInput.cpp)

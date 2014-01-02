@@ -13,7 +13,9 @@
 #include <list>
 #include "utils/Geometry.h"
 #include "engine/CEventContainer.h"
-#include "InputEvents.h"
+#include <base/GsEvent.h>
+#include <base/InputEvents.h>
+//#include "InputEvents.h"
 
 #include "CSingleton.h"
 #define g_pInput	CInput::Get()

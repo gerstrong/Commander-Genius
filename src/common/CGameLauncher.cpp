@@ -9,7 +9,7 @@
 #include <lib/base/GsLogging.h>
 #include "gui/CGUIText.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "gui/CGUITextSelectionList.h"
 #include "gui/CGUIBanner.h"
 #include "gui/CGUIButton.h"

@@ -14,7 +14,7 @@
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CPixelate.h"
 #include "common/Menu/CMenuController.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 
 ////
 // Creation Routine

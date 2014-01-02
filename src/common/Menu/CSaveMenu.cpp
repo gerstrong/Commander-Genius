@@ -8,7 +8,7 @@
 #include "CSaveMenu.h"
 #include "CBaseMenu.h"
 #include "CConfirmMenu.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "gui/CGUIInputText.h"
 #include "fileio/CSaveGameController.h"
 #include "common/CBehaviorEngine.h"

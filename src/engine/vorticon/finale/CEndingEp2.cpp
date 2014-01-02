@@ -8,7 +8,7 @@
 #include "CEndingEp2.h"
 #include "StringUtils.h"
 #include <lib/base/GsTimer.h>
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CVorticonMapLoader.h"

@@ -9,7 +9,7 @@
 #include <lib/base/GsLogging.h>
 #include "StringUtils.h"
 
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 
 ///
 // Creation Routines

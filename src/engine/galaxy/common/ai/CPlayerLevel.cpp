@@ -10,7 +10,7 @@
 #include "common/CBehaviorEngine.h"
 #include "platform/CPlatform.h"
 #include <engine/galaxy/ep5/ai/CSecurityDoor.h>
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"

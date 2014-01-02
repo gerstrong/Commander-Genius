@@ -7,8 +7,8 @@
 
 #include "CGUINumberControl.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/input/CInput.h"
-#include "sdl/input/InputEvents.h"
+#include <base/CInput.h>
+//#include "sdl/input/InputEvents.h"
 #include "sdl/CVideoDriver.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"

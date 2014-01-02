@@ -7,7 +7,7 @@
 
 #include "CAbout.h"
 #include <base/FindFile.h>
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include <lib/base/GsLogging.h>
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"

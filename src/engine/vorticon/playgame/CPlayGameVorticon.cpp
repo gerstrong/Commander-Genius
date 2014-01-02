@@ -10,7 +10,7 @@
 #include <lib/base/GsTimer.h>
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "core/mode/CGameMode.h"
 #include "common/CVorticonMapLoader.h"
 #include "graphics/CGfxEngine.h"

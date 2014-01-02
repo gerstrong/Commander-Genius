@@ -13,7 +13,7 @@
 #include "common/Menu/CMenuController.h"
 #include "common/Menu/CSelectionMenu.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 
 #include "common/Menu/CMainMenu.h"
 #include "common/Menu/CHelpMenu.h"

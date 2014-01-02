@@ -10,7 +10,7 @@
 #include "graphics/CGfxEngine.h"
 #include "graphics/effects/CPixelate.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "sdl/extensions.h"
 #include "core/CGameLauncherMenu.h"
 #include "common/Menu/CMenuController.h"

@@ -8,7 +8,7 @@
 #include "CPlayer.h"
 #include "engine/vorticon/ai/CMessie.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 
 ///
 // Process Part

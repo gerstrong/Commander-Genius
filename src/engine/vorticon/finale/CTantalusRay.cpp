@@ -9,7 +9,7 @@
 #include "graphics/effects/CVibrate.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/sound/CSound.h"
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "common/CVorticonMapLoader.h"
 
 #include "engine/vorticon/ai/CRay.h"
