@@ -156,7 +156,7 @@ void CAbout::init()
 
 void CAbout::ponder()
 {
-    if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
+    if(gInput.getPressedAnyKey() || gInput.getPressedAnyCommand())
         m_destroy_me=true;
 }
 

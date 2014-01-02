@@ -100,7 +100,7 @@ void CMenuController::ponder()
 
 
 	// Did the player press the quit/back button
-	if( g_pInput->getPressedCommand(IC_BACK) )
+	if( gInput.getPressedCommand(IC_BACK) )
 	{
 		if( mMenuStack.empty() ) // If no menu is open, open the main menu
 		{

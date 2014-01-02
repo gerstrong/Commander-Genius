@@ -224,7 +224,7 @@ void CHighScores::render()
 
 void CHighScores::processShowing()
 {
-	if(g_pInput->getPressedAnyCommand())
+	if(gInput.getPressedAnyCommand())
 		m_destroy_me=true;
 }
 
@@ -233,17 +233,17 @@ void CHighScores::processWriting()
 
 #ifndef NOKEYBOARD
 	// Get the input
-	if(g_pInput->getPressedIsTypingKey() && (m_Name[m_Place].length() < 13))
+	if(gInput.getPressedIsTypingKey() && (m_Name[m_Place].length() < 13))
 	{
-		m_Name[m_Place] += g_pInput->getPressedTypingKey();
+		m_Name[m_Place] += gInput.getPressedTypingKey();
 	}
 	
-	if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (m_Name[m_Place].length() > 0))
+	if(gInput.getPulsedKey(KBCKSPCE, 5) && (m_Name[m_Place].length() > 0))
 	{
 		m_Name[m_Place].erase(m_Name[m_Place].length()-1);
 	}
 	
-	if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedKey(KENTER) )
+	if( gInput.getPressedCommand(IC_STATUS) || gInput.getPressedKey(KENTER) )
 	{
 		// Save the Table and change to show mode, which can be closed by any other key
 		saveHighScoreTable();
@@ -261,7 +261,7 @@ void CHighScores::processWriting()
 #else
 	m_CurrentLetter = m_Name[m_Place].at(m_CursorPosition);
 	// Get the input
-	if(g_pInput->getPulsedKey(KUP, 15))
+	if(gInput.getPulsedKey(KUP, 15))
 	{
 		m_CurrentLetter += 1;
 		if(m_CurrentLetter > 126)
@@ -269,7 +269,7 @@ void CHighScores::processWriting()
 		m_Name[m_Place].erase( m_CursorPosition, 1);
 		m_Name[m_Place].insert( m_CursorPosition, 1, m_CurrentLetter);
 	}
-	else if(g_pInput->getPulsedKey(KDOWN, 15))
+	else if(gInput.getPulsedKey(KDOWN, 15))
 	{
 		m_CurrentLetter -= 1;
 		if(m_CurrentLetter < 32)
@@ -278,14 +278,14 @@ void CHighScores::processWriting()
 		m_Name[m_Place].insert( m_CursorPosition, 1, m_CurrentLetter);
 	}
 	
-	if(g_pInput->getPressedKey(KRIGHT))
+	if(gInput.getPressedKey(KRIGHT))
 	{
 		m_CursorPosition += 1;
 		if(m_CursorPosition > 13)
 			m_CursorPosition = 0;
 		m_CurrentLetter = m_Name[m_Place].at(m_CursorPosition);
 	}
-	else if(g_pInput->getPressedKey(KLEFT))
+	else if(gInput.getPressedKey(KLEFT))
 	{
 		m_CursorPosition -= 1;
 		if(m_CursorPosition < 0)
@@ -293,7 +293,7 @@ void CHighScores::processWriting()
 		m_CurrentLetter = m_Name[m_Place].at(m_CursorPosition);
 	}
 	
-	if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedKey(KENTER) )
+	if( gInput.getPressedCommand(IC_STATUS) || gInput.getPressedKey(KENTER) )
 	{
 		// Save the Table and change to show mode, which can be closed by any other key
 		saveHighScoreTable();

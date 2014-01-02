@@ -104,7 +104,7 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 void CCamera::process(const bool force)
 {
     // Cycle Cam Code
-    if( g_pInput->getPressedCommand(mCamlead, IC_CAMLEAD) )
+    if( gInput.getPressedCommand(mCamlead, IC_CAMLEAD) )
     {
         cycleCamlead();
     }
@@ -133,13 +133,13 @@ void CCamera::process(const bool force)
 	{	// This means, that there is no attached object. Let the camera scroll freely!
 		size_t movespeed = 100;
 
-		if(g_pInput->getHoldedCommand(IC_LEFT))
+		if(gInput.getHoldedCommand(IC_LEFT))
 			moveLeft(movespeed);
-		else if(g_pInput->getHoldedCommand(IC_RIGHT))
+		else if(gInput.getHoldedCommand(IC_RIGHT))
 			moveRight(movespeed);
-		if(g_pInput->getHoldedCommand(IC_UP))
+		if(gInput.getHoldedCommand(IC_UP))
 			moveUp(movespeed);
-		else if(g_pInput->getHoldedCommand(IC_DOWN))
+		else if(gInput.getHoldedCommand(IC_DOWN))
 			moveDown(movespeed);
 	}
 	else

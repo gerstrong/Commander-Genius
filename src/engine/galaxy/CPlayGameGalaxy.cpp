@@ -344,7 +344,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             }
         }
 
-        g_pInput->flushAll();
+        gInput.flushAll();
         mMessageBoxes.push_back( move(pMsgBox) );
     }
     else if( const EventSendBitmapDialogMessages *ev = dynamic_cast<const EventSendBitmapDialogMessages*>(evPtr) )
@@ -356,7 +356,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
             mMessageBoxes.push_back( move(pMsgBox) );
         }
-        g_pInput->flushAll();
+        gInput.flushAll();
     }
     else if( const EventSendDialog *ev = dynamic_cast<const EventSendDialog*>(evPtr) )
     {
@@ -364,7 +364,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         pMsgBox->init();
 
         mMessageBoxes.push_back( move(pMsgBox) );
-        g_pInput->flushAll();
+        gInput.flushAll();
     }
     else if( const EventSendSelectionDialogMsg* ev = dynamic_cast<const EventSendSelectionDialogMsg*>(evPtr) )
     {
@@ -462,7 +462,7 @@ void CPlayGameGalaxy::ponder()
             // Trigger the Status screen here
             if(inv.showStatus())
             {
-                if( g_pInput->getPressedAnyButtonCommand(playerCount) )
+                if( gInput.getPressedAnyButtonCommand(playerCount) )
                 {
                     g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
                     inv.toggleStatusScreen();
@@ -470,7 +470,7 @@ void CPlayGameGalaxy::ponder()
             }
             else
             {
-                if(!msgboxactive && g_pInput->getPressedCommand(playerCount, IC_STATUS))
+                if(!msgboxactive && gInput.getPressedCommand(playerCount, IC_STATUS))
                 {
                     g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
                     inv.toggleStatusScreen();
@@ -509,23 +509,23 @@ void CPlayGameGalaxy::ponder()
 
 		//// Special Keyboard Input
 		/// Cheat Codes
-		if( g_pInput->getHoldedKey(KF10) )
+		if( gInput.getHoldedKey(KF10) )
 		{
-			if(g_pInput->getHoldedKey(KJ))
+			if(gInput.getHoldedKey(KJ))
 			{
 				m_Cheatmode.jump = !m_Cheatmode.jump;
 				std::string jumpstring = "Jump-Cheat has been ";
 				jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
 				eventContainer.add( new EventSendDialog(jumpstring) );
 			}
-			else if(g_pInput->getHoldedKey(KG))
+			else if(gInput.getHoldedKey(KG))
 			{
 				m_Cheatmode.god = !m_Cheatmode.god;
 				std::string godstring = "God-Mode has been ";
 				godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
 				eventContainer.add( new EventSendDialog(godstring) );
 			}
-			else if(g_pInput->getHoldedKey(KI))
+			else if(gInput.getHoldedKey(KI))
 			{
 				eventContainer.add( new EventSendDialog("Get all Items!") );
 
@@ -534,12 +534,12 @@ void CPlayGameGalaxy::ponder()
 
 				m_Cheatmode.items = true;
 			}
-			else if(g_pInput->getHoldedKey(KN))
+			else if(gInput.getHoldedKey(KN))
 			{
 				m_Cheatmode.noclipping = true;
 				eventContainer.add( new EventSendDialog("No clipping toggle!") );
 			}
-			else if(g_pInput->getHoldedKey(KS))
+			else if(gInput.getHoldedKey(KS))
 			{
 		for( auto &inv : mInventoryVec )
 		    inv.Item.triggerAllItemsCheat();

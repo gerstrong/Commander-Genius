@@ -104,7 +104,7 @@ void CInventory::toggleStatusScreen()
 		mp_StatusBgrnd = NULL;
 	}
 
-	g_pInput->flushAll();
+	gInput.flushAll();
 }
 
 

@@ -131,7 +131,7 @@ void CGUIComboSelection::processLogic()
 		return;
 
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
+	if( MouseMoveEvent *mouseevent = gInput.m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
 
@@ -140,12 +140,12 @@ void CGUIComboSelection::processLogic()
 			if(mouseevent->Type == MOUSEEVENT_MOVED)
 			{
 				mHovered = true;
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 			{
                 mPressed = true;
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
@@ -155,7 +155,7 @@ void CGUIComboSelection::processLogic()
 
 				cycleOption();
 
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 		}
 		else

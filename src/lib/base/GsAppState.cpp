@@ -146,7 +146,7 @@ void GsAppState::pumpEvent(const CEvent *evPtr)
 
 void GsAppState::pollEvents()
 {
-    if( g_pInput->getExitEvent() )
+    if( gInput.getExitEvent() )
     {
       mpEngine.release();
       return;
@@ -168,7 +168,7 @@ void GsAppState::ponder()
 
 	if(g_pGfxEngine->runningEffect())
 	{
-		if( g_pInput->getPressedAnyCommand() || g_pInput->mouseClicked() )
+		if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
 		{
             g_pGfxEngine->setFXfinished(true);
 		}

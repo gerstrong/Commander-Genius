@@ -149,7 +149,7 @@ void CMessageBoxSelection::init()
 void CMessageBoxSelection::ponder()
 {
 	// Look, if somebody pressed a button, and close this dialog!
-	if(g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
+	if(gInput.getPressedCommand(IC_JUMP) || gInput.getPressedKey(KENTER) )
 	{
 		for( int c=0 ; c<m_selection ; c++ )
 			m_Options.pop_front();
@@ -157,17 +157,17 @@ void CMessageBoxSelection::ponder()
         gEventManager.add( m_Options.front().event );
 
 		mMustClose = true;
-		g_pInput->flushCommands();
+		gInput.flushCommands();
 		return;
 	}
-	else if(g_pInput->getPressedCommand(IC_DOWN))
+	else if(gInput.getPressedCommand(IC_DOWN))
 	{
 		if(m_selection >= ((int)m_Options.size()-1) )
 			m_selection = 0;
 		else
 			m_selection++;
 	}
-	else if(g_pInput->getPressedCommand(IC_UP))
+	else if(gInput.getPressedCommand(IC_UP))
 	{
 		if(m_selection <= 0 )
 			m_selection = m_Options.size()-1;

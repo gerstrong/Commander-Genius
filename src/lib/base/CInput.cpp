@@ -664,7 +664,7 @@ void CInput::pollEvents()
 			g_pVideoDriver->start();
 		}
 
-		g_pInput->flushAll();
+		gInput.flushAll();
 	}
 
 	// Check, if LALT+Q or LALT+F4 was pressed
@@ -680,9 +680,9 @@ void CInput::pollEvents()
 #endif
 
     // Fix up settings if everything gets messed up
-	if (g_pInput->getHoldedKey(KF) &&
-		g_pInput->getHoldedKey(KI) &&
-		g_pInput->getHoldedKey(KX))
+	if (gInput.getHoldedKey(KF) &&
+		gInput.getHoldedKey(KI) &&
+		gInput.getHoldedKey(KX))
 	{
 		g_pSettings->loadDefaultGraphicsCfg();
 		g_pSettings->saveDrvCfg();

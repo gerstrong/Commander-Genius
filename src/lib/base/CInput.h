@@ -17,8 +17,9 @@
 #include <base/InputEvents.h>
 //#include "InputEvents.h"
 
-#include "CSingleton.h"
-#define g_pInput	CInput::Get()
+#include <base/Singleton.h>
+
+#define gInput	CInput::get()
 
 // key defines, locations in keytable[]
 enum keys{
@@ -153,7 +154,7 @@ struct stInputCommand
 	int joyhatval;	// in which direction the hat is really moved
 };
 
-class CInput : public CSingleton<CInput>
+class CInput : public GsSingleton<CInput>
 {
 public:
 	CInput();

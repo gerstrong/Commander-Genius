@@ -349,7 +349,7 @@ void COpenGL::transformScreenToDisplay()
 	glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
 
-	g_pInput->renderOverlay();
+	gInput.renderOverlay();
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_GL_SwapWindow(window);

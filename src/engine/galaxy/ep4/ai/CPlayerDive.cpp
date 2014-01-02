@@ -77,7 +77,7 @@ void CPlayerDive::processDiving()
 
 
 	// If Player presses Jump button, make Keen swim faster
-	if(g_pInput->getPressedCommand(IC_JUMP))
+	if(gInput.getPressedCommand(IC_JUMP))
 	{
 		// Animate more Keen when pressing Jump button
 		if(getActionNumber(A_KEENSWIM_MOVE))
@@ -90,17 +90,17 @@ void CPlayerDive::processDiving()
 	}
 
 	// Swimming - Left and Right
-	if(g_pInput->getHoldedCommand(IC_LEFT))
+	if(gInput.getHoldedCommand(IC_LEFT))
 	{
-		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+		if(!gInput.getHoldedCommand(IC_UP) && !gInput.getHoldedCommand(IC_DOWN))
 			yDirection = 0;
 
 		moveLeft(MOVESPEED+m_swimupspeed);
 		xDirection = LEFT;
 	}
-	else if(g_pInput->getHoldedCommand(IC_RIGHT))
+	else if(gInput.getHoldedCommand(IC_RIGHT))
 	{
-		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+		if(!gInput.getHoldedCommand(IC_UP) && !gInput.getHoldedCommand(IC_DOWN))
 			yDirection = 0;
 
 		moveRight(MOVESPEED+m_swimupspeed);
@@ -108,13 +108,13 @@ void CPlayerDive::processDiving()
 	}
 
 	// Up and down swimming
-	if( g_pInput->getHoldedCommand(IC_UP))
+	if( gInput.getHoldedCommand(IC_UP))
 	{
 		moveUp(MOVESPEED+m_swimupspeed);
 		yDirection = UP;
 	}
 	
-	else if(g_pInput->getHoldedCommand(IC_DOWN))
+	else if(gInput.getHoldedCommand(IC_DOWN))
 	{
 		moveDown(MOVESPEED+m_swimupspeed);
 		yDirection = DOWN;

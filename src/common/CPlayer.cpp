@@ -729,44 +729,44 @@ void CPlayer::ProcessInput()
 	    playpushed_decreasetimer++;
 
 	
-	if(g_pInput->getHoldedCommand(m_index, IC_LEFT) && playpushed_decreasetimer<=0 )
+	if(gInput.getHoldedCommand(m_index, IC_LEFT) && playpushed_decreasetimer<=0 )
 	{
-	    const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_LEFT) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_LEFT) : 100;
+	    const int newval = gInput.isJoystickAssgmnt(m_index, IC_LEFT) && gInput.isAnalog(m_index) ? -gInput.getJoyValue(m_index, IC_LEFT) : 100;
 	    playcontrol[PA_X] -= newval;
 	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT) && playpushed_decreasetimer>=0 )
+	else if(gInput.getHoldedCommand(m_index, IC_RIGHT) && playpushed_decreasetimer>=0 )
 	{
-	    const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_RIGHT) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_RIGHT) : 100;
+	    const int newval = gInput.isJoystickAssgmnt(m_index, IC_RIGHT) && gInput.isAnalog(m_index) ? gInput.getJoyValue(m_index, IC_RIGHT) : 100;
 	    playcontrol[PA_X] += newval;
 	}
 	
-	if(g_pInput->getHoldedCommand(m_index, IC_DOWN) )
+	if(gInput.getHoldedCommand(m_index, IC_DOWN) )
 	{
-	    const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_DOWN) && g_pInput->isAnalog(m_index) ? g_pInput->getJoyValue(m_index, IC_DOWN) : 100;
+	    const int newval = gInput.isJoystickAssgmnt(m_index, IC_DOWN) && gInput.isAnalog(m_index) ? gInput.getJoyValue(m_index, IC_DOWN) : 100;
 	    playcontrol[PA_Y] += newval;
 	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
+	else if(gInput.getHoldedCommand(m_index, IC_UP))
 	{
-	    const int newval = g_pInput->isJoystickAssgmnt(m_index, IC_UP) && g_pInput->isAnalog(m_index) ? -g_pInput->getJoyValue(m_index, IC_UP) : 100;
+	    const int newval = gInput.isJoystickAssgmnt(m_index, IC_UP) && gInput.isAnalog(m_index) ? -gInput.getJoyValue(m_index, IC_UP) : 100;
 	    playcontrol[PA_Y] -= newval;
 	}	    
 	
-	if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
+	if(gInput.getHoldedCommand(m_index, IC_UPPERLEFT))
 	{
 	    playcontrol[PA_X] -= 100;
 	    playcontrol[PA_Y] -= 100;
 	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_UPPERRIGHT))
+	else if(gInput.getHoldedCommand(m_index, IC_UPPERRIGHT))
 	{
 	    playcontrol[PA_X] += 100;
 	    playcontrol[PA_Y] -= 100;
 	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERLEFT))
+	else if(gInput.getHoldedCommand(m_index, IC_LOWERLEFT))
 	{
 	    playcontrol[PA_X] -= 100;
 	    playcontrol[PA_Y] += 100;
 	}
-	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERRIGHT))
+	else if(gInput.getHoldedCommand(m_index, IC_LOWERRIGHT))
 	{
 	    playcontrol[PA_X] += 100;
 	    playcontrol[PA_Y] += 100;
@@ -775,22 +775,22 @@ void CPlayer::ProcessInput()
 
 	if(!pfiring)
 	{
-		if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
+		if(gInput.getHoldedCommand(m_index, IC_JUMP))
 			playcontrol[PA_JUMP]++;
 		else
 			playcontrol[PA_JUMP] = 0;
 
 	}
 	else
-		playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(m_index, IC_JUMP)   ? 1 : 0;
+		playcontrol[PA_JUMP]   = gInput.getHoldedCommand(m_index, IC_JUMP)   ? 1 : 0;
 
-	playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
+	playcontrol[PA_POGO]   = gInput.getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
 	
 	// The possibility to charge jumps. This is mainly used for the pogo.
 	if( playcontrol[PA_JUMP] > 50) playcontrol[PA_JUMP] = 50;
 	
 	// Two button firing process
-	if(g_pInput->getTwoButtonFiring(m_index))
+	if(gInput.getTwoButtonFiring(m_index))
 	{
 		if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
 		{
@@ -803,14 +803,14 @@ void CPlayer::ProcessInput()
 			playcontrol[PA_FIRE] = 0;
 			playcontrol[PA_JUMP] = 0;
 			playcontrol[PA_POGO] = 0;
-			g_pInput->flushCommand(IC_JUMP);
-			g_pInput->flushCommand(IC_FIRE);
-			g_pInput->flushCommand(IC_POGO);
+			gInput.flushCommand(IC_JUMP);
+			gInput.flushCommand(IC_FIRE);
+			gInput.flushCommand(IC_POGO);
 		}
 
 	}
 	else
-		playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
+		playcontrol[PA_FIRE]   = gInput.getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
 }
 
 /**
@@ -855,7 +855,7 @@ void CPlayer::ProcessExitLevel()
 
 void CPlayer::StatusBox()
 {
-	if( g_pInput->getPressedCommand(m_index, IC_STATUS) && !level_done )
+	if( gInput.getPressedCommand(m_index, IC_STATUS) && !level_done )
 		m_showStatusScreen=true; // PlayGame class detects that variable and launches drawStatusScreen()
 }
 

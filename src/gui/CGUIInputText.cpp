@@ -67,14 +67,14 @@ void CGUIInputText::processLogic()
 	if(mTyping)
 	{
 
-		if(g_pInput->getPressedIsTypingKey())
+		if(gInput.getPressedIsTypingKey())
 		{
-			std::string c = g_pInput->getPressedTypingKey();
+			std::string c = gInput.getPressedTypingKey();
 
 			mText.append(c);
 		}
 
-		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (mText.length() > 0))
+		if(gInput.getPulsedKey(KBCKSPCE, 5) && (mText.length() > 0))
 		{
 			mText.erase(mText.length()-1);
 		}
@@ -86,7 +86,7 @@ void CGUIInputText::processLogic()
 	}
 
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
+	if( MouseMoveEvent *mouseevent = gInput.m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
 
@@ -95,18 +95,18 @@ void CGUIInputText::processLogic()
 			if(mouseevent->Type == MOUSEEVENT_MOVED)
 			{
 				mHovered = true;
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 			{
 				mPressed = true;
 				mTyping = !mTyping;
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
 				mReleased = true;
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 		}
 		else

@@ -115,10 +115,10 @@ void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 void CMessageBoxGalaxy::ponder()
 {
     // Look, if somebody pressed a button, and close this dialog!
-    if( g_pInput->getPressedAnyCommand() )
+    if( gInput.getPressedAnyCommand() )
     {
         mMustClose = true;
-        g_pInput->flushCommands();
+        gInput.flushCommands();
         return;
     }
 }

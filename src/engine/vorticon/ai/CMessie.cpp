@@ -118,7 +118,7 @@ bool CMessie::tryToUnmount()
                     mounted->moveToForce((x+dx)<<CSF, (y+dy)<<CSF);
 
                     mounted = nullptr;
-                    g_pInput->flushAll();
+                    gInput.flushAll();
                     return true;
                 }
             }
@@ -164,10 +164,10 @@ void CMessie::process()
 	    sprite += 8;
 	    
 	    // If first Player pushes the first button, unmount!
-        if(g_pInput->getPressedCommand(IC_JUMP))
+        if(gInput.getPressedCommand(IC_JUMP))
 	    {
             tryToUnmount();
-            g_pInput->flushAll();
+            gInput.flushAll();
 	    }	    
 	}
 	

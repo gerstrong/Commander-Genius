@@ -41,7 +41,6 @@ mAppState(m_firsttime)
  */
 GsApp::~GsApp()
 {
-	g_pInput->Del();
 	g_pSound->destroy();
 	g_pVideoDriver->Del();
 }
@@ -159,7 +158,7 @@ void GsApp::run()
         while( acc > logicLatency )
         {
             // Poll Inputs
-            g_pInput->pollEvents();                        
+            gInput.pollEvents();
 
             // Process App Events
             gEventManager.processSinks();

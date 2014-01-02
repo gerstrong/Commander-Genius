@@ -98,7 +98,7 @@ void CPreviews::processPreviewScene()
     // This will show a scene of the preview scenes
     mp_StaticScene->ponder();
 
-    if( mp_StaticScene->mustclose() || g_pInput->getPressedAnyCommand() )
+    if( mp_StaticScene->mustclose() || gInput.getPressedAnyCommand() )
         openNextScene();
 }
 

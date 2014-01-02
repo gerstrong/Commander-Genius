@@ -408,9 +408,9 @@ void CPlayer::JumpAndPogo()
 					// jump high if JUMP key down, else bounce low
 					if (playcontrol[PA_JUMP])
 					{
-						if( !g_pInput->SuperPogo(m_index) )
+						if( !gInput.SuperPogo(m_index) )
 						{  // normal high pogo jump
-							if( playcontrol[PA_JUMP] > 12 || !g_pInput->ImpossiblePogo(m_index) )
+							if( playcontrol[PA_JUMP] > 12 || !gInput.ImpossiblePogo(m_index) )
 							{
 								if(!pogofirsttime)
 								{
@@ -679,7 +679,7 @@ void CPlayer::Playerfalling()
 			pfallspeed += PhysicsSettings.fallspeed_increase;
 
 		// add current fall speed to player Y or make him fly in godmode with pogo
-		if( !godmode || !ppogostick || !g_pInput->getHoldedCommand(IC_JUMP) )
+		if( !godmode || !ppogostick || !gInput.getHoldedCommand(IC_JUMP) )
 			moveDown(pfallspeed);
 	}
 	else
@@ -716,14 +716,14 @@ void CPlayer::raygun()
 	if (pfireframetimer) pfireframetimer--;
 	
 	// FIRE button down, and not keencicled?
-	if ( playcontrol[PA_FIRE] && !pfrozentime && !(g_pInput->getHoldedKey(KC) && g_pInput->getHoldedKey(KT)) )
+	if ( playcontrol[PA_FIRE] && !pfrozentime && !(gInput.getHoldedKey(KC) && gInput.getHoldedKey(KT)) )
 	{ // fire is pressed
 		inhibitwalking = 1;            // prevent moving
 		pfiring = true;  // flag that we're firing
 		ppogostick = false;            // put away pogo stick if out
 		
 		// limit how quickly shots can be fired
-		if ( !plastfire || g_pInput->AutoGun(m_index) )
+		if ( !plastfire || gInput.AutoGun(m_index) )
 		{
 			if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ_FA) canRefire = true;
 			else canRefire = false;
@@ -969,9 +969,9 @@ void CPlayer::processStatusScreen()
         m_showStatusScreen = false;
         mpStatusScr.release();
     }
-    else if( g_pInput->getPressedAnyButtonCommand(m_index) )
+    else if( gInput.getPressedAnyButtonCommand(m_index) )
     {
         mpStatusScr->close();
-        g_pInput->flushCommands();
+        gInput.flushCommands();
     }
 }

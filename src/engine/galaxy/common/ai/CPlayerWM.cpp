@@ -402,7 +402,7 @@ void CPlayerWM::processMoving()
         {
             // start the level
             startLevel(object);
-            g_pInput->flushCommands();
+            gInput.flushCommands();
         }
     }
     

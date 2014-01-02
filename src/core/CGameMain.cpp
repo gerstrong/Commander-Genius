@@ -113,7 +113,7 @@ void CGameMain::ponder()
 		{		    
 			mpInfoScene->teardown();
 			mpInfoScene = nullptr;
-			g_pInput->flushAll();
+			gInput.flushAll();
 			gpMenuController->lock(false);
             gpMenuController->hide(false);
 		}

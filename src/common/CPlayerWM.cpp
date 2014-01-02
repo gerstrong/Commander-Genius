@@ -111,7 +111,7 @@ bool CPlayer::isWMSolid(int xb, int yb)
 		if( mp_levels_completed[level_coordinates & 0x7fff] ) // check if level is done
 			  return false;
 
-		if( (g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT)) || godmode )
+		if( (gInput.getHoldedKey(KTAB) && gInput.getHoldedKey(KSHIFT)) || godmode )
 			  return false;
 		else
 			  return true;

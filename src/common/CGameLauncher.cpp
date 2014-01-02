@@ -234,7 +234,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 void CGameLauncher::ponder()
 {
     // Did the user press (X)?
-    if( g_pInput->getExitEvent() )
+    if( gInput.getExitEvent() )
     {
         m_mustquit = true;
         return;
@@ -244,7 +244,7 @@ void CGameLauncher::ponder()
     // Command (Keyboard/Joystick) are handled here
     for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
     {
-        if( g_pInput->getPressedCommand(cmd) )
+        if( gInput.getPressedCommand(cmd) )
         {
             mLauncherDialog.sendEvent(new CommandEvent( static_cast<InputCommands>(cmd) ));
             break;

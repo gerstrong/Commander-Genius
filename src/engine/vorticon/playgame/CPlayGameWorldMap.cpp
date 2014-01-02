@@ -53,7 +53,7 @@ void CPlayGameVorticon::processOnWorldMap()
 					case NESSIE_PATH: break;
 					case NESSIE_LAND:
 						g_pBehaviorEngine->EventList().add(new CPlayer::Mount(player));
-						g_pInput->flushAll();
+						gInput.flushAll();
 						break;
 
 					case LVLS_SHIP:
@@ -63,7 +63,7 @@ void CPlayGameVorticon::processOnWorldMap()
 						else if (m_Episode==3)
 							ShipEp3();
 
-						g_pInput->flushCommands();
+						gInput.flushCommands();
 
 					}
 					break;
@@ -254,11 +254,11 @@ void CPlayGameVorticon::showKeensLeft()
 		keenleft_rect.h = mpKeenLeftSfc->h;
 
 
-		if( gTimer.HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
+		if( gTimer.HasTimeElapsed(3000) || gInput.getPressedAnyCommand() )
 		{
 			m_showKeensLeft = false;
 			mpKeenLeftSfc.reset();
-			g_pInput->flushAll();
+			gInput.flushAll();
 		}
 		else
 		{

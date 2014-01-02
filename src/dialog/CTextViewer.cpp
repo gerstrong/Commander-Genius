@@ -208,13 +208,13 @@ void CTextViewer::drawTextlines()
 void CTextViewer::ponder()
 {
 	 // Normal Keys/Axes
-	 if( g_pInput->getHoldedCommand(IC_DOWN) )
+	 if( gInput.getHoldedCommand(IC_DOWN) )
 	 {
 		 m_timer++;
 		 if(m_timer >= 2)
 			 scrollDown();
 	 }
-	 if( g_pInput->getHoldedCommand(IC_UP) )
+	 if( gInput.getHoldedCommand(IC_UP) )
 	 {
 		 m_timer++;
 		 if(m_timer >= 2)
@@ -222,14 +222,14 @@ void CTextViewer::ponder()
 	 }
 	 
 	 // Page Keys
-	 if( g_pInput->getPressedKey(KPGDN) )
+	 if( gInput.getPressedKey(KPGDN) )
 		 setPosition(m_linepos+16);
-	 if( g_pInput->getPressedKey(KPGUP) )
+	 if( gInput.getPressedKey(KPGUP) )
 		 setPosition(m_linepos-16);
 	 
 	 if(m_timer>=8) m_timer=0;
 	 
-	 if(g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedKey(KQ) || g_pInput->getPressedCommand(IC_BACK) )
+	 if(gInput.getPressedKey(KQUIT) || gInput.getPressedKey(KQ) || gInput.getPressedCommand(IC_BACK) )
 		 m_mustclose = true;	 
 }
 

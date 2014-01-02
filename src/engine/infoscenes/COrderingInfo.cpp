@@ -157,7 +157,7 @@ void COrderingInfo::ponder()
 		return;
 	}
 
-	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
+	if(gInput.getPressedAnyKey() || gInput.getPressedAnyCommand())
 		m_destroy_me=true;
 }
 

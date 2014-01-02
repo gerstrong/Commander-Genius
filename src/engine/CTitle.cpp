@@ -84,7 +84,7 @@ void CTitle::ponder()
 	
 	if( !g_pGfxEngine->runningEffect() && !gpMenuController->active() )
 	{
-		if( g_pInput->getPressedAnyCommand() )
+		if( gInput.getPressedAnyCommand() )
 		{
 		    gpMenuController->openMainMenu();
 		}	    

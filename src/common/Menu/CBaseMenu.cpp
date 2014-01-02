@@ -66,7 +66,7 @@ void CBaseMenu::ponder()
 	// Command (Keyboard/Joystick) are handled here
 	for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
 	{
-		if( g_pInput->getPressedCommand(cmd) )
+		if( gInput.getPressedCommand(cmd) )
 		{
 		    std::shared_ptr<CEvent> command(new CommandEvent( static_cast<InputCommands>(cmd) ));
             sendEvent(command);

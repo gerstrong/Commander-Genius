@@ -37,7 +37,7 @@ public:
 
     void operator()() const
 	{
-		g_pInput->setupNewEvent(mSelPlayer-1, mCommand);
+		gInput.setupNewEvent(mSelPlayer-1, mCommand);
 
 		const std::string buf = mCommandName;		
 		mpButton->setText(buf + "=Reading=");
@@ -63,7 +63,7 @@ public:
 
     void operator()() const
 	{
-		g_pInput->resetControls(mSelPlayer);
+		gInput.resetControls(mSelPlayer);
 	}
 
 	int mSelPlayer;
@@ -84,19 +84,19 @@ mSelectedPlayer(selectedPlayer)
 	mpMenuDialog->addControl( button );
 
 	mpTwoButtonSwitch = new CGUISwitch( "Two Button Fire" );
-	mpTwoButtonSwitch->enable(g_pInput->getTwoButtonFiring(mSelectedPlayer-1));
+	mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
 
 	mpAnalogSwitch = new CGUISwitch( "Analog Movement" );
-	mpAnalogSwitch->enable(g_pInput->isAnalog(mSelectedPlayer-1));
+	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
 
 	mpSuperPogoSwitch = new CGUISwitch( "Super Pogo" );
-	mpSuperPogoSwitch->enable(g_pInput->SuperPogo(mSelectedPlayer-1));
+	mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
 
 	mpImpPogoSwitch = new CGUISwitch( "Impossible Pogo" );
-	mpImpPogoSwitch->enable(g_pInput->ImpossiblePogo(mSelectedPlayer-1));
+	mpImpPogoSwitch->enable(gInput.ImpossiblePogo(mSelectedPlayer-1));
 
 	mpAutoGunSwitch = new CGUISwitch( "Auto Gun" );
-	mpAutoGunSwitch->enable(g_pInput->AutoGun(mSelectedPlayer-1));
+	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
 	mpMenuDialog->addControl( mpTwoButtonSwitch );
 	mpMenuDialog->addControl( mpAnalogSwitch );
@@ -116,12 +116,12 @@ void CControlsettings::init()
 
 void CControlsettings::release()
 {
-	g_pInput->setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
-	g_pInput->enableAnalog(mSelectedPlayer-1, mpAnalogSwitch->isEnabled() );
-	g_pInput->setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
-	g_pInput->setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
-	g_pInput->setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
-	g_pInput->saveControlconfig();
+	gInput.setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
+	gInput.enableAnalog(mSelectedPlayer-1, mpAnalogSwitch->isEnabled() );
+	gInput.setSuperPogo(mSelectedPlayer-1, mpSuperPogoSwitch->isEnabled() );
+	gInput.setImpossiblePogo(mSelectedPlayer-1, mpImpPogoSwitch->isEnabled() );
+	gInput.setAutoGun(mSelectedPlayer-1, mpAutoGunSwitch->isEnabled() );
+	gInput.saveControlconfig();
 }
 
 
@@ -151,7 +151,7 @@ void CControlSettingsMovement::init()
 	for ( ; it != mCommandName.end(); it++ )
 	{
 		const std::string buf = it->second;
-		const std::string buf2 = g_pInput->getEventShortName( it->first, mSelectedPlayer-1 );
+		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
 		CGUIButton	*guiButton = new CGUIButton( buf+buf2, rie );
@@ -168,12 +168,12 @@ void CControlSettingsMovement::ponder()
 {
     if( !mapping )
     {
-	if(g_pInput->MappingInput()) // mapping changed!
+	if(gInput.MappingInput()) // mapping changed!
 	    mapping = true;
     }
     else
     {
-	if( !g_pInput->MappingInput() )
+	if( !gInput.MappingInput() )
 	{
 	    // mapping changed!
 	    mapping = false;
@@ -182,7 +182,7 @@ void CControlSettingsMovement::ponder()
 	    if(button)
 	    {
 		int pos; unsigned char input;
-		std::string evName = g_pInput->getNewMappedEvent(pos, input);		
+		std::string evName = gInput.getNewMappedEvent(pos, input);		
 		InputCommands com = static_cast<InputCommands>(pos);		
 		button->setText(mCommandName[com] + evName);
 	    }
@@ -196,7 +196,7 @@ void CControlSettingsMovement::release()
 	if(!mCommandName.empty())
 		mCommandName.clear();
 	
-	g_pInput->saveControlconfig();
+	gInput.saveControlconfig();
 }
 
 
@@ -226,7 +226,7 @@ void CControlSettingsButtons::init()
 	for ( ; it != mCommandName.end(); it++ )
 	{
 		const std::string buf = it->second;
-		const std::string buf2 = g_pInput->getEventShortName( it->first, mSelectedPlayer-1 );
+		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
 		CGUIButton	*guiButton = new CGUIButton( buf+buf2, rie );
@@ -245,12 +245,12 @@ void CControlSettingsButtons::ponder()
 {
     if( !mapping )
     {
-        if(g_pInput->MappingInput()) // mapping changed!
+        if(gInput.MappingInput()) // mapping changed!
             mapping = true;
     }
     else
     {
-        if( !g_pInput->MappingInput() )
+        if( !gInput.MappingInput() )
         {
             // mapping changed!
             mapping = false;
@@ -259,7 +259,7 @@ void CControlSettingsButtons::ponder()
             if(button)
             {
                 int pos; unsigned char input;
-                std::string evName = g_pInput->getNewMappedEvent(pos, input);
+                std::string evName = gInput.getNewMappedEvent(pos, input);
                 InputCommands com = static_cast<InputCommands>(pos);
                 button->setText(mCommandName[com] + evName);
             }
@@ -274,6 +274,6 @@ void CControlSettingsButtons::release()
 	if(!mCommandName.empty())
 		mCommandName.clear();
 	
-	g_pInput->saveControlconfig();
+	gInput.saveControlconfig();
 }
 

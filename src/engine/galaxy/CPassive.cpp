@@ -97,7 +97,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
                                             mMaxSeparationWidth,
                                             cmdTextRect.h,
                                             32, 0, 0, 0, 0), &SDL_FreeSurface );
-    g_pInput->flushAll();
+    gInput.flushAll();
 }
 
 bool CPassiveGalaxy::init(char mode)
@@ -201,7 +201,7 @@ void CPassiveGalaxy::processIntro()
 
     const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.getWidth()) - mKeenTextPos.x;
 
-    if(textSeparation <= -mMaxSeparationWidth || g_pInput->getPressedAnyCommand())
+    if(textSeparation <= -mMaxSeparationWidth || gInput.getPressedAnyCommand())
     {        
         mZoomSfcPos.x = (gameRes.w-mpZoomSurface->w)/2;
         mZoomSfcZoom.x = mpZoomSurface->w;
@@ -211,7 +211,7 @@ void CPassiveGalaxy::processIntro()
         //processPonderMode = &CPassiveGalaxy::processTitle;
         //processRenderMode = &CPassiveGalaxy::renderTitle;
 
-        g_pInput->flushAll();
+        gInput.flushAll();
 
         mCommanderTextSfc._draw(0,0, mpZoomSurface.get() );
         mKeenTextSfc._draw(mCommanderTextSfc.getWidth()+59*mScaleFactor, 0, mpZoomSurface.get() );
@@ -265,9 +265,9 @@ void CPassiveGalaxy::processIntroZoom()
          mZoomSfcPos.y <= 8 &&
          mZoomSfcZoom.x <= gameRes.w &&
          mZoomSfcZoom.y <= mScaleFactor*32 ) ||
-         g_pInput->getPressedAnyCommand())
+         gInput.getPressedAnyCommand())
     {
-        g_pInput->flushAll();
+        gInput.flushAll();
         processPonderMode = &CPassiveGalaxy::processTitle;
         processRenderMode = &CPassiveGalaxy::renderTitle;
         m_BackgroundBitmap = *g_pGfxEngine->getBitmapFromStr("TITLE");
@@ -324,9 +324,9 @@ void CPassiveGalaxy::processTitle()
     // If something is pressed, popup the menu
 	if( !g_pGfxEngine->runningEffect() && !gpMenuController->active() )
 	{
-		if( g_pInput->getPressedAnyCommand() )
+		if( gInput.getPressedAnyCommand() )
 		{
-            g_pInput->flushAll();
+            gInput.flushAll();
 		    gpMenuController->openMainMenu();
 		}	    
 	}    

@@ -440,8 +440,8 @@ void CGUIDialog::processLogic()
         }
     }
 
-    if(!g_pInput->m_EventList.empty())
-        g_pInput->m_EventList.clear();
+    if(!gInput.m_EventList.empty())
+        gInput.m_EventList.clear();
 }
 
 void CGUIDialog::processRendering()

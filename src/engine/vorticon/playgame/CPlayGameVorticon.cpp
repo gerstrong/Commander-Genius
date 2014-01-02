@@ -137,7 +137,7 @@ bool CPlayGameVorticon::init()
 	// Well, all players are living because they were newly spawn.
 	gTimer.ResetSecondsTimer();
 
-	g_pInput->flushAll();
+	gInput.flushAll();
 
 	// Initialize the AI
 	mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
@@ -291,7 +291,7 @@ void CPlayGameVorticon::ponder()
 	{
 		if( mpGameoverBmp )
 		{
-			if( g_pInput->getPressedAnyCommand() )
+			if( gInput.getPressedAnyCommand() )
 			{
 				CHighScores *pHighScores = new CHighScores();
 				pHighScores->init();
@@ -356,11 +356,11 @@ void CPlayGameVorticon::handleFKeys()
 	int i;
 
 	// CTSpace Cheat
-	if (g_pInput->getHoldedKey(KC) &&
-        g_pInput->getHoldedKey(KT) &&
-        g_pInput->getHoldedKey(KSPACE))
+	if (gInput.getHoldedKey(KC) &&
+        gInput.getHoldedKey(KT) &&
+        gInput.getHoldedKey(KSPACE))
 	{
-		g_pInput->flushAll();
+		gInput.flushAll();
         const int numPlayers = g_pBehaviorEngine->mPlayers;
         for(i=0;i<numPlayers;i++)
 		{
@@ -398,14 +398,14 @@ void CPlayGameVorticon::handleFKeys()
 	}
 
 	// Cycle Cam Code
-	if( g_pInput->getPressedCommand(mCamLead, IC_CAMLEAD) )
+	if( gInput.getPressedCommand(mCamLead, IC_CAMLEAD) )
 	{
 		cycleCamLead();
 	}
 
 
 	// GOD cheat -- toggle god mode
-	if ( g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
+	if ( gInput.getHoldedKey(KG) && gInput.getHoldedKey(KO) && gInput.getHoldedKey(KD) )
 	{
 		std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++)
@@ -422,10 +422,10 @@ void CPlayGameVorticon::handleFKeys()
 		// Show a message like in the original game
 		std::unique_ptr<CMessageBoxVort> msg(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
 		mMessageBoxes.push_back(move(msg));
-		g_pInput->flushKeys();
+		gInput.flushKeys();
 	}
 
-	if(g_pInput->getPressedKey(KP) && mMessageBoxes.empty())
+	if(gInput.getPressedKey(KP) && mMessageBoxes.empty())
 	{
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 		std::unique_ptr<CMessageBoxVort> msg( new CMessageBoxVort("Game Paused") );
@@ -439,21 +439,21 @@ void CPlayGameVorticon::handleFKeys()
 	if( m_Player[0].solid || ( m_Player[0].godmode && !m_Player[0].dying ) )
 	{
 		// F2 - Sound Menu
-		if ( g_pInput->getPressedKey(KF2) )
+		if ( gInput.getPressedKey(KF2) )
 		{
 			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
 				//	m_SavedGame,  m_restartVideo, m_hideobjects );
 			//mp_Menu->init(AUDIO);
 		}
 		// F3 - Controls Menu
-		else if ( g_pInput->getPressedKey(KF3) )
+		else if ( gInput.getPressedKey(KF3) )
 		{
 			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
 				//	m_SavedGame,  m_restartVideo, m_hideobjects );
 			//mp_Menu->init(CONTROLS);
 		}
 		// F5 - save game
-		else if ( g_pInput->getPressedKey(KF5) )
+		else if ( gInput.getPressedKey(KF5) )
 		{
 			//mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
 				//	m_SavedGame,  m_restartVideo, m_hideobjects );

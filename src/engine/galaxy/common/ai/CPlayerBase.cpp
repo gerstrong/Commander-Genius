@@ -218,45 +218,45 @@ void CPlayerBase::processInput()
 	m_playcontrol[PA_X] = 0;
 	m_playcontrol[PA_Y] = 0;
 
-	if(g_pInput->getHoldedCommand(mPlayerNum, IC_LEFT))
+	if(gInput.getHoldedCommand(mPlayerNum, IC_LEFT))
 		m_playcontrol[PA_X] -= 100;
-	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_RIGHT))
+	else if(gInput.getHoldedCommand(mPlayerNum, IC_RIGHT))
 		m_playcontrol[PA_X] += 100;
 
-	if(g_pInput->getHoldedCommand(mPlayerNum, IC_DOWN))
+	if(gInput.getHoldedCommand(mPlayerNum, IC_DOWN))
 		m_playcontrol[PA_Y] += 100;
-	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_UP))
+	else if(gInput.getHoldedCommand(mPlayerNum, IC_UP))
 		m_playcontrol[PA_Y] -= 100;
 
-	if(g_pInput->getHoldedCommand(mPlayerNum, IC_UPPERLEFT))
+	if(gInput.getHoldedCommand(mPlayerNum, IC_UPPERLEFT))
 	{
 		m_playcontrol[PA_X] -= 100;
 		m_playcontrol[PA_Y] -= 100;
 	}
-	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_UPPERRIGHT))
+	else if(gInput.getHoldedCommand(mPlayerNum, IC_UPPERRIGHT))
 	{
 		m_playcontrol[PA_X] += 100;
 		m_playcontrol[PA_Y] -= 100;
 	}
-	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_LOWERLEFT))
+	else if(gInput.getHoldedCommand(mPlayerNum, IC_LOWERLEFT))
 	{
 		m_playcontrol[PA_X] -= 100;
 		m_playcontrol[PA_Y] += 100;
 	}
-	else if(g_pInput->getHoldedCommand(mPlayerNum, IC_LOWERRIGHT))
+	else if(gInput.getHoldedCommand(mPlayerNum, IC_LOWERRIGHT))
 	{
 		m_playcontrol[PA_X] += 100;
 		m_playcontrol[PA_Y] += 100;
 	}
 
-	m_playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(mPlayerNum, IC_JUMP)   ? 1 : 0;
-	m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(mPlayerNum, IC_POGO)   ? 1 : 0;
+	m_playcontrol[PA_JUMP]   = gInput.getHoldedCommand(mPlayerNum, IC_JUMP)   ? 1 : 0;
+	m_playcontrol[PA_POGO]   = gInput.getHoldedCommand(mPlayerNum, IC_POGO)   ? 1 : 0;
 
 	// The possibility to charge jumps. This is mainly used for the pogo. it is limited to 50
 	if( m_playcontrol[PA_JUMP] > 50) m_playcontrol[PA_JUMP] = 50;
 
 	// Two button firing process
-	if(g_pInput->getTwoButtonFiring(mPlayerNum))
+	if(gInput.getTwoButtonFiring(mPlayerNum))
 	{
 		if(m_playcontrol[PA_JUMP] && m_playcontrol[PA_POGO])
 		{
@@ -269,15 +269,15 @@ void CPlayerBase::processInput()
 			m_playcontrol[PA_FIRE] = 0;
 			m_playcontrol[PA_JUMP] = 0;
 			m_playcontrol[PA_POGO] = 0;
-			g_pInput->flushCommand(IC_JUMP);
-			g_pInput->flushCommand(IC_FIRE);
-			g_pInput->flushCommand(IC_POGO);
+			gInput.flushCommand(IC_JUMP);
+			gInput.flushCommand(IC_FIRE);
+			gInput.flushCommand(IC_POGO);
 		}
 
 	}
 	else
 	{
-		m_playcontrol[PA_FIRE] = g_pInput->getHoldedCommand(mPlayerNum, IC_FIRE) ? 1 : 0;
+		m_playcontrol[PA_FIRE] = gInput.getHoldedCommand(mPlayerNum, IC_FIRE) ? 1 : 0;
 	}
 }
 

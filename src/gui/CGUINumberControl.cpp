@@ -148,7 +148,7 @@ void CGUINumberControl::setupButtonSurface()
 void CGUINumberControl::processLogic()
 {
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
+	if( MouseMoveEvent *mouseevent = gInput.m_EventList.occurredEvent<MouseMoveEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
 
@@ -165,12 +165,12 @@ void CGUINumberControl::processLogic()
 					mIncSel = true;
 
 				mHovered = true;
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
 			{
 				mPressed = true;
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
 			{
@@ -193,7 +193,7 @@ void CGUINumberControl::processLogic()
 				}
 
 				setupButtonSurface();
-				g_pInput->m_EventList.pop_Event();
+				gInput.m_EventList.pop_Event();
 			}
 		}
 		else
