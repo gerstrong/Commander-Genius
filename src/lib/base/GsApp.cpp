@@ -42,7 +42,6 @@ GsApp::~GsApp()
 	g_pSound->destroy();
 	g_pVideoDriver->Del();
 	g_pTimer->Del();
-	g_pLogFile->Del();
 }
 
 
@@ -67,8 +66,8 @@ bool GsApp::init(int argc, char *argv[])
 	if(!g_pSettings->loadDrvCfg())
 	{
 		m_firsttime = true;
-		g_pLogFile->textOut(RED,"First time message: CG didn't find the driver config file. ");
-		g_pLogFile->textOut(RED,"However, it generated some default values and will save them now.\n");
+		gLogging.textOut(RED,"First time message: CG didn't find the driver config file. ");
+		gLogging.textOut(RED,"However, it generated some default values and will save them now.\n");
 		g_pSettings->saveDrvCfg();
 	}
 
@@ -78,10 +77,10 @@ bool GsApp::init(int argc, char *argv[])
 	}
 
 	// Setup the Hardware using the settings we have loaded
-	g_pLogFile->textOut(GREEN,"Loading hardware settings...<br>");
+	gLogging.textOut(GREEN,"Loading hardware settings...<br>");
 	if(!loadCKPDrivers())
 	{
-		g_pLogFile->textOut(RED,"The game cannot start, because you do not meet the hardware requirements.<br>");
+		gLogging.textOut(RED,"The game cannot start, because you do not meet the hardware requirements.<br>");
 		return false;
 	}
 	

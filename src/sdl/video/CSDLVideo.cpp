@@ -77,7 +77,7 @@ bool CSDLVideo::init()
 
     if (!mDisplaySfc)
 	{
-		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
+		gLogging.textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
 	}
 

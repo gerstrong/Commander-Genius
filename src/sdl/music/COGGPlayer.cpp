@@ -88,7 +88,7 @@ bool COGGPlayer::open()
     m_pcm_size *= (mVorbisInfo->channels*sizeof(Sint16));
     m_music_pos = 0;
 
-	g_pLogFile->ftextOut("OGG-Player: File \"%s\" was opened successfully!<br>", m_filename.c_str());
+	gLogging.ftextOut("OGG-Player: File \"%s\" was opened successfully!<br>", m_filename.c_str());
 	int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
 			m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
 			m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
@@ -117,7 +117,7 @@ bool COGGPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 	
 	if(music_order > 20)
 	{
-	  g_pLogFile->textOut("Sorry, this track is invalid! Please report the developers.");
+	  gLogging.textOut("Sorry, this track is invalid! Please report the developers.");
 	  return false;
 	}
 	

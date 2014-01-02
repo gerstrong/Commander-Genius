@@ -53,7 +53,7 @@ m_dir(LEFT)
 			{
 				if (m_platx==mp_Map->m_width)
 				{
-					g_pLogFile->ftextOut("SE_RETRACT_PLATFORM: Failed to find end of platform when scanning right.");
+					gLogging.ftextOut("SE_RETRACT_PLATFORM: Failed to find end of platform when scanning right.");
 					return;
 				}
 				m_platx++;
@@ -62,7 +62,7 @@ m_dir(LEFT)
 			{ // platform will be removed in a right-going direction
 				if (m_platx==0)
 				{
-					g_pLogFile->ftextOut("SE_RETRACT_PLATFORM: Failed to find end of platform when scanning left.");
+					gLogging.ftextOut("SE_RETRACT_PLATFORM: Failed to find end of platform when scanning left.");
 					return;
 				}
 				m_platx--;

@@ -8,12 +8,17 @@
 #ifndef CLOGFILE_H_
 #define CLOGFILE_H_
 
-#include "CSingleton.h"
+//#include "CSingleton.h"
+
+#include <base/Singleton.h>
+
 #include <string>
 
 const std::string APP_NAME = "Commander Genius";
 
-#define g_pLogFile	CLogFile::Get()
+//#define g_pLogFile	CLogFile::Get()
+
+#define gLogging	CLogFile::get()
 
 const int MAX_BUFFER = 1024;
 
@@ -26,7 +31,7 @@ enum FONTCOLORS
 	PURPLE
 };
 
-class CLogFile : public CSingleton <CLogFile>
+class CLogFile : public GsSingleton<CLogFile>
 {
 public:
 	

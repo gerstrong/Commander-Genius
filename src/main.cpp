@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 	InitThreadPool();
 	InitSearchPaths();
 
-    g_pLogFile->CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
+    gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 
 	// The Game Class instance is the main class managing whole
 	// interpreter instance. TODO: It should be a singleton

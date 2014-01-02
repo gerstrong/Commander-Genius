@@ -57,7 +57,7 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     m_IMF_Data.reserve(imf_chunks);
     
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
-	g_pLogFile->textOut("The IMF-File seems to be corrupt.");
+	gLogging.textOut("The IMF-File seems to be corrupt.");
     else
 	ok = true;
     
@@ -294,7 +294,7 @@ bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 	
 	if(music_order > 20)
 	{
-	  g_pLogFile->textOut("Sorry, this track is invalid! Please report it the developers.");
+	  gLogging.textOut("Sorry, this track is invalid! Please report it the developers.");
 	  return false;
 	}
 
@@ -348,7 +348,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {
     if(!mMixBuffer)
     {
-        g_pLogFile->textOut("Warning OPL Buffer is empty!");
+        gLogging.textOut("Warning OPL Buffer is empty!");
         return;
     }
 

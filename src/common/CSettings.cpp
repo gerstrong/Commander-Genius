@@ -112,7 +112,7 @@ bool CSettings::loadDrvCfg()
 
 		if(res.w*res.h <= 0)
 		{
-			g_pLogFile->ftextOut(RED,"Error reading the configuration file!<br>");
+			gLogging.ftextOut(RED,"Error reading the configuration file!<br>");
 			return false;
 		}
 
@@ -266,7 +266,7 @@ bool CSettings::loadGameOptions()
 		p_option[i].value = (newvalue) ? 1 : 0;
 	}
 	
-	g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
+	gLogging.ftextOut("<br>Your personal settings were loaded successfully...<br>");
 	return true;
 }
 

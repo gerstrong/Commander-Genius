@@ -71,8 +71,8 @@ bool CTilemap::loadHiresTile( const std::string& filename, const std::string& pa
 		}
 		else
 		{
-		  g_pLogFile->textOut(RED, "IMG_Load: %s\n", IMG_GetError());
-		  g_pLogFile->textOut(RED, "IMG_Load: CG will ignore those images\n");
+		  gLogging.textOut(RED, "IMG_Load: %s\n", IMG_GetError());
+		  gLogging.textOut(RED, "IMG_Load: CG will ignore those images\n");
 		}
 	}
 	

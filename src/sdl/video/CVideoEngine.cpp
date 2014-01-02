@@ -212,7 +212,7 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 
 	if (!optimized)
 	{
-		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
+		gLogging.textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
 		return NULL;
 	}
 
@@ -229,7 +229,7 @@ bool CVideoEngine::createSurfaces()
 
     const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
 
-    g_pLogFile->textOut("Blitsurface creation!\n");
+    gLogging.textOut("Blitsurface creation!\n");
 
 
     mpGameSfc.reset(SDL_CreateRGBSurface( m_Mode, gamerect.w, gamerect.h, RES_BPP,
@@ -254,7 +254,7 @@ bool CVideoEngine::createSurfaces()
                                           0x000000FF,
                                           0x00000000);
 
-    g_pLogFile->textOut("FilteredSurface creation!\n");
+    gLogging.textOut("FilteredSurface creation!\n");
 
     auto blit = mpGameSfc.get();
     auto *format = blit->format;
@@ -368,26 +368,26 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 
 /*void CVideoEngine::stop()
 {
-	g_pLogFile->textOut(GREEN, "Freeing the following graphical surfaces:<br>\n");
+	gLogging.textOut(GREEN, "Freeing the following graphical surfaces:<br>\n");
 
     if( BlitSurface )
     {
         SDL_FreeSurface(BlitSurface);
-        g_pLogFile->textOut("freed BlitSurface<br>");
+        gLogging.textOut("freed BlitSurface<br>");
         BlitSurface=NULL;
     }
 
     if( FilteredSurface )
     {
         SDL_FreeSurface(FilteredSurface);
-        g_pLogFile->textOut("freed FilteredSurface<br>");
+        gLogging.textOut("freed FilteredSurface<br>");
         FilteredSurface = NULL;
     }
 
     if( ScrollSurface && (ScrollSurface->map != NULL) )
     {
         SDL_FreeSurface(ScrollSurface);
-        g_pLogFile->textOut("freed ScrollSurface<br>");
+        gLogging.textOut("freed ScrollSurface<br>");
         ScrollSurface = NULL;
     }
 }*/

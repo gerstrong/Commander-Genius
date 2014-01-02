@@ -65,7 +65,7 @@ void CGameLauncherMenu::init()
     // Resources for the main menu
 	if(!loadMenuResources())
 	{
-		g_pLogFile->textOut(RED, "Sorry, but the basic for creating the menu is missing, please reinstall CG with all the data.<br>");
+		gLogging.textOut(RED, "Sorry, but the basic for creating the menu is missing, please reinstall CG with all the data.<br>");
 		EventContainer.add( new GMQuit() );
 		return;
 	}
@@ -80,7 +80,7 @@ void CGameLauncherMenu::init()
 			mp_GameLauncher.reset( new CGameLauncher() );
 			if(!mp_GameLauncher->init())
 			{
-                g_pLogFile->textOut(RED,"No game can be launched, because you are missing game data files.<br>");
+                gLogging.textOut(RED,"No game can be launched, because you are missing game data files.<br>");
 				return 0;
 			}
 
@@ -139,23 +139,23 @@ bool CGameLauncherMenu::loadGalaxyResources(const Uint8 flags)
 
     if( (flags & LOADSND) == LOADSND )
     {
-        g_pLogFile->ftextOut("Loading audio... <br>");
+        gLogging.ftextOut("Loading audio... <br>");
         // Load the sound data
         g_pSound->loadSoundData();
         g_pResourceLoader->setPermilage(900);
-        g_pLogFile->ftextOut("Done loading audio.<br>");
+        gLogging.ftextOut("Done loading audio.<br>");
     }
     
-    g_pLogFile->ftextOut("Loading game constants...<br>");
+    gLogging.ftextOut("Loading game constants...<br>");
 
     g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
 
-    g_pLogFile->ftextOut("Looking for patches...<br>");
+    gLogging.ftextOut("Looking for patches...<br>");
     
     // If there are patches left that must be applied later, do it here!
     Patcher.postProcess();
 
-    g_pLogFile->ftextOut("Done loading the resources...<br>");
+    gLogging.ftextOut("Done loading the resources...<br>");
     
     g_pResourceLoader->setPermilage(1000);
     
@@ -177,12 +177,12 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 	version = ExeFile.getEXEVersion();
 	p_exedata = ExeFile.getRawData();
 
-	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
-	if( Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
+	gLogging.ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
+	if( Episode == 1 && version == 134) gLogging.ftextOut("This version of the game is not supported!<br>");
 
 	if( ExeFile.getHeaderData() == NULL)
 	{
-		g_pLogFile->textOut(RED, "GsAppState::loadResources: Could not load data from the EXE File<br>");
+		gLogging.textOut(RED, "GsAppState::loadResources: Could not load data from the EXE File<br>");
 		return false;
 	}
 
@@ -327,7 +327,7 @@ void CGameLauncherMenu::ponder()
 			else
 			{
 				mp_GameLauncher->letchooseagain();
-				g_pLogFile->textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
+				gLogging.textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
 			}
 		}
 		else if(mp_GameLauncher->getQuit())

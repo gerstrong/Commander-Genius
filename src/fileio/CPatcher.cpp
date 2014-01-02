@@ -37,7 +37,7 @@ void CPatcher::process()
 	// Exe-file data m_data
 
 
-	g_pLogFile->textOut("Trying to load and apply the patch we found...<br>");
+	gLogging.textOut("Trying to load and apply the patch we found...<br>");
 	m_is_a_mod = true;
 
 	filterPatches(m_TextList);
@@ -59,7 +59,7 @@ void CPatcher::process()
 			{
 				if(atoi(extText.substr(2)) != m_episode)
 				{
-					g_pLogFile->textOut("Error! The patch-file does not match the opened episode!!!<br>");
+					gLogging.textOut("Error! The patch-file does not match the opened episode!!!<br>");
 					return;
 				}
 			}
@@ -132,7 +132,7 @@ void CPatcher::process()
                 // Terror from outer-space workaround to avoid it crash!
                 if(offset == 0x3D740 && m_episode == 4)
                 {
-                    g_pLogFile->textOut("Appling TFOS mod workaround...");
+                    gLogging.textOut("Appling TFOS mod workaround...");
                     continue;
                 }
 
@@ -155,7 +155,7 @@ void CPatcher::process()
 
 						if(offset + textsize > m_datasize)
 						{
-							g_pLogFile->textOut("Patch addresses exceed the file size<br>");
+							gLogging.textOut("Patch addresses exceed the file size<br>");
 							break;
 						}
 
@@ -165,7 +165,7 @@ void CPatcher::process()
 				}
 			}
 			else
-				g_pLogFile->textOut("Something is wrong with the \%patch command. A number was expected<br>");
+				gLogging.textOut("Something is wrong with the \%patch command. A number was expected<br>");
 		}
 		else if(PatchItem.keyword == "level.hint" )
 		{
@@ -183,11 +183,11 @@ void CPatcher::process()
 		{
 			std::string textline = readPatchItemsNextValue(PatchItem.value);
 			if(readPatchString(textline, dumpfilename))
-				g_pLogFile->textOut("CG will dump out the exe-content to \""+ dumpfilename +"\"<br>" );
+				gLogging.textOut("CG will dump out the exe-content to \""+ dumpfilename +"\"<br>" );
 		}
 		else if(PatchItem.keyword == "end" )
 		{
-			g_pLogFile->textOut("End of Patchfile!<br>");
+			gLogging.textOut("End of Patchfile!<br>");
 			break;
 		}
 		else
@@ -237,7 +237,7 @@ void CPatcher::postProcess()
 		}
 		else
 		{
-		    g_pLogFile->textOut("The Keyword \"" + it->keyword + "\" is unknown to Commander Genius.");
+		    gLogging.textOut("The Keyword \"" + it->keyword + "\" is unknown to Commander Genius.");
 		}
 
 		it->keyword.clear();
@@ -277,7 +277,7 @@ bool CPatcher::loadPatchfile()
 		return false;
 
 	if (patchlist.list.size() > 1)
-		g_pLogFile->textOut(PURPLE,"Multiple Patches are not yet supported! Please remove a file. Taking one File.<br>");
+		gLogging.textOut(PURPLE,"Multiple Patches are not yet supported! Please remove a file. Taking one File.<br>");
 
 	while(!patchlist.list.empty())
 	{
@@ -309,7 +309,7 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 
 	if(!m_data)
 	{
-		g_pLogFile->textOut(PURPLE,"Warning: The patchfile was wrongly read!<br>");
+		gLogging.textOut(PURPLE,"Warning: The patchfile was wrongly read!<br>");
 		return;
 	}
 

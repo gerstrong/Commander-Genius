@@ -126,10 +126,10 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	{
 		// only record this error message on build platforms that log errors
 		// to a file and not to the screen.
-		g_pLogFile->ftextOut("MapLoader: unable to open file %s<br>", levelname.c_str());
+		gLogging.ftextOut("MapLoader: unable to open file %s<br>", levelname.c_str());
 		return false;
 	}
-	g_pLogFile->ftextOut("MapLoader: file %s opened. Loading...<br>", levelname.c_str());
+	gLogging.ftextOut("MapLoader: file %s opened. Loading...<br>", levelname.c_str());
 
 	MapFile.seekg (0, std::ios::beg);
 
@@ -496,7 +496,7 @@ void CVorticonMapLoaderWithPlayer::addSpriteObject(unsigned int t, Uint16 x, Uin
 				enemyobject->solid = false;
 				break;
 			default:
-				g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
+				gLogging.ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
 				break;
 			}
 

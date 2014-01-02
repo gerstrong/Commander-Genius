@@ -152,7 +152,7 @@ void COrderingInfo::ponder()
 {	 
 	if(m_Textline.empty())
 	{
-		g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
+		gLogging.textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
 		m_destroy_me=true;
 		return;
 	}

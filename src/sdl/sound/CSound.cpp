@@ -79,7 +79,7 @@ CSound::~CSound()
 
 bool CSound::init()
 {
-	g_pLogFile->ftextOut("Starting the sound driver...<br>");
+	gLogging.ftextOut("Starting the sound driver...<br>");
 	SDL_AudioSpec obtained;
 
 	// now start up the SDL sound system
@@ -97,8 +97,8 @@ bool CSound::init()
 	// Initialize variables
 	if( SDL_OpenAudio(&mAudioSpec, &obtained) < 0 )
 	{
-		g_pLogFile->ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
-		g_pLogFile->ftextOut("Sound will be disabled.<br>");
+		gLogging.ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
+		gLogging.ftextOut("Sound will be disabled.<br>");
 		mAudioSpec.channels = 0;
 		mAudioSpec.format = 0;
 		mAudioSpec.freq = 0;
@@ -109,26 +109,26 @@ bool CSound::init()
 
 	m_MixedForm.reserve(mAudioSpec.size);
 
-	g_pLogFile->ftextOut("SDL_AudioSpec:<br>");
-	g_pLogFile->ftextOut("  freq: %d<br>", mAudioSpec.freq);
-	g_pLogFile->ftextOut("  channels: %d<br>", mAudioSpec.channels);
-	g_pLogFile->ftextOut("  audio buffer size: %d<br>", mAudioSpec.size);
+	gLogging.ftextOut("SDL_AudioSpec:<br>");
+	gLogging.ftextOut("  freq: %d<br>", mAudioSpec.freq);
+	gLogging.ftextOut("  channels: %d<br>", mAudioSpec.channels);
+	gLogging.ftextOut("  audio buffer size: %d<br>", mAudioSpec.size);
 	switch( mAudioSpec.format )
 	{
 		case AUDIO_U8:
-			g_pLogFile->ftextOut("  format: AUDIO_U8<br>" );
+			gLogging.ftextOut("  format: AUDIO_U8<br>" );
 			break;
 		case AUDIO_S16:
-			g_pLogFile->ftextOut("  format: AUDIO_S16<br>" );
+			gLogging.ftextOut("  format: AUDIO_S16<br>" );
 			break;
 		default:
-			g_pLogFile->ftextOut("  format: UNKNOWN %d<br>", mAudioSpec.format );
+			gLogging.ftextOut("  format: UNKNOWN %d<br>", mAudioSpec.format );
 			break;
 	}
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_GetCurrentAudioDriver());
+    gLogging.ftextOut("Using audio driver: %s<br>", SDL_GetCurrentAudioDriver());
 #else
-   // g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
+   // gLogging.ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
 #endif
 
 	//m_mixing_channels = 15;
@@ -140,7 +140,7 @@ bool CSound::init()
 
 	SDL_PauseAudio(0);
 
-	g_pLogFile->ftextOut("Sound System: SDL sound system initialized.<br>");
+	gLogging.ftextOut("Sound System: SDL sound system initialized.<br>");
 
 	// Let's initialize the OPL Emulator here!
 	m_OPL_Player.init();
@@ -163,7 +163,7 @@ void CSound::destroy()
 		m_soundchannel.clear();
 
 	// Shutdown the OPL Emulator here!
-	g_pLogFile->ftextOut("SoundDrv_Stop(): shut down.<br>");
+	gLogging.ftextOut("SoundDrv_Stop(): shut down.<br>");
 
 	m_OPL_Player.shutdown();
 }

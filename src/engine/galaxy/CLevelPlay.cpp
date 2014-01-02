@@ -45,7 +45,7 @@ void CLevelPlay::loadMap(const int level)
 	g_pMusicPlayer->stop();
 
     if( !g_pMusicPlayer->load(mExeFile, level) )
-    	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    	gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
     	g_pMusicPlayer->play();
 }

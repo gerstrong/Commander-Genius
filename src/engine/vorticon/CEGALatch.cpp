@@ -115,7 +115,7 @@ void CEGALatch::loadTilemap(CTilemap &Tilemap, CPlanes &Planes, const int episod
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap	
     if(Tilemap.loadHiresTile("gfx/ck" + itoa(episode) + "tiles", path))
 	{
-	  g_pLogFile->textOut(GREEN, "Additional VGA Bitmap for the Tileset has been loaded successfully!");
+	  gLogging.textOut(GREEN, "Additional VGA Bitmap for the Tileset has been loaded successfully!");
     }
 
 	// Adapt the tilemap to the display, so they are faster blit

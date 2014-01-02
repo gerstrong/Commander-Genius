@@ -130,7 +130,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 		if(snddata == NULL)
 			return false;
 #else
-		g_pLogFile->textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
+		gLogging.textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
 #endif
 
 #if defined(OGG) || defined(TREMOR)
@@ -159,7 +159,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	// Check that the convert was built
 	if(ret == -1)
 	{
-		g_pLogFile->textOut(PURPLE,"Couldn't convert the sound correctly!<br>");
+		gLogging.textOut(PURPLE,"Couldn't convert the sound correctly!<br>");
 		SDL_FreeWAV(snddata);
 		return false;
 	}

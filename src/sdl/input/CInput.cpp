@@ -36,7 +36,7 @@ CInput::CInput()
 	volume = 60-VOLUME_CHANGE_RATE;
 	WIZ_AdjustVolume(VOLUME_UP);
 #endif
-	g_pLogFile->ftextOut("Starting the input driver...<br>");
+	gLogging.ftextOut("Starting the input driver...<br>");
 	memset(InputCommand, 0, NUM_INPUTS*MAX_COMMANDS*sizeof(stInputCommand));
 
 	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
@@ -61,7 +61,7 @@ void CInput::resetControls(int player)
 	if(player == 0)
 	{
 		player = 1;
-		g_pLogFile->textOut("Warning when resetting controls. The function has been used incorrectly, please report that the developer!");
+		gLogging.textOut("Warning when resetting controls. The function has been used incorrectly, please report that the developer!");
 	}
 	// not a good idea, beause it would write twice in one array, and forget about the last one. (for example 4)
 	// At least this warning will tell the people, that something is not right here!
@@ -147,11 +147,11 @@ void CInput::resetControls(int player)
  */
 bool CInput::startJoyDriver()
 {
-	g_pLogFile->textOut("JoyDrv_Start() : ");
+	gLogging.textOut("JoyDrv_Start() : ");
 
 	if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
 	{
-		g_pLogFile->ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
+		gLogging.ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
 		return 1;
 	}
 	else
@@ -160,29 +160,29 @@ bool CInput::startJoyDriver()
 		if( joyNum > 0 )
 		{
 			SDL_JoystickEventState(SDL_ENABLE);
-			g_pLogFile->ftextOut("Detected %i joystick(s).<br>\n", joyNum );
-			g_pLogFile->textOut("The names of the joysticks are:<br>");
+			gLogging.ftextOut("Detected %i joystick(s).<br>\n", joyNum );
+			gLogging.textOut("The names of the joysticks are:<br>");
 
 			for( size_t i=0; i < joyNum; i++ )
 			{
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-                g_pLogFile->ftextOut("    %s<br>", SDL_JoystickNameForIndex(i));
+                gLogging.ftextOut("    %s<br>", SDL_JoystickNameForIndex(i));
 #else
-                g_pLogFile->ftextOut("    %s<br>", SDL_JoystickName(i));
+                gLogging.ftextOut("    %s<br>", SDL_JoystickName(i));
 #endif
 
 				SDL_Joystick *pJoystick = SDL_JoystickOpen(i);
 				mp_Joysticks.push_back(pJoystick);
 
-				g_pLogFile->ftextOut("     Axes: %i<br>", SDL_JoystickNumAxes(pJoystick));
-				g_pLogFile->ftextOut("     Buttons: %i <br>", SDL_JoystickNumButtons(pJoystick));
-				g_pLogFile->ftextOut("     Balls: %i <br>", SDL_JoystickNumBalls(pJoystick));
-				g_pLogFile->ftextOut("     Hats: %i<br>", SDL_JoystickNumHats(pJoystick));
+				gLogging.ftextOut("     Axes: %i<br>", SDL_JoystickNumAxes(pJoystick));
+				gLogging.ftextOut("     Buttons: %i <br>", SDL_JoystickNumButtons(pJoystick));
+				gLogging.ftextOut("     Balls: %i <br>", SDL_JoystickNumBalls(pJoystick));
+				gLogging.ftextOut("     Hats: %i<br>", SDL_JoystickNumHats(pJoystick));
 			}
 		}
 		else
 		{
-			g_pLogFile->ftextOut("No joysticks were found.<br>\n");
+			gLogging.ftextOut("No joysticks were found.<br>\n");
 		}
 	}
 
@@ -445,7 +445,7 @@ void CInput::readNewEvent()
 		switch ( Event.type )
 		{
 			case SDL_QUIT:
-				g_pLogFile->textOut("SDL: Got quit event in readNewEvent!");
+				gLogging.textOut("SDL: Got quit event in readNewEvent!");
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 				// on iPhone, we just want to quit in this case
 				exit(0);
@@ -557,7 +557,7 @@ void CInput::pollEvents()
 		switch( Event.type )
 		{
 		case SDL_QUIT:
-			g_pLogFile->textOut("SDL: Got quit event!");
+			gLogging.textOut("SDL: Got quit event!");
 			m_exit = true;
 			break;
 		case SDL_KEYDOWN:
@@ -647,19 +647,19 @@ void CInput::pollEvents()
 		bool value;
 		value = g_pVideoDriver->getFullscreen();
 		value = !value;
-		g_pLogFile->textOut(GREEN,"Fullscreen mode triggered by user!<br>");
+		gLogging.textOut(GREEN,"Fullscreen mode triggered by user!<br>");
 		g_pVideoDriver->isFullscreen(value);
 
 		// initialize/activate all drivers
-		g_pLogFile->ftextOut("Restarting graphics driver...<br>");
+		gLogging.ftextOut("Restarting graphics driver...<br>");
 		if ( g_pVideoDriver->applyMode() && g_pVideoDriver->start() )
 		{
-			g_pLogFile->ftextOut(PURPLE, "Toggled Fullscreen quick shortcut...<br>");
+			gLogging.ftextOut(PURPLE, "Toggled Fullscreen quick shortcut...<br>");
 		}
 		else
 		{
 			value = !value;
-			g_pLogFile->ftextOut(PURPLE, "Couldn't change the resolution, Rolling back...<br>");
+			gLogging.ftextOut(PURPLE, "Couldn't change the resolution, Rolling back...<br>");
 			g_pVideoDriver->applyMode();
 			g_pVideoDriver->start();
 		}
@@ -670,7 +670,7 @@ void CInput::pollEvents()
 	// Check, if LALT+Q or LALT+F4 was pressed
 	if(getHoldedKey(KALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
 	{
-		g_pLogFile->textOut("User exit request!");
+		gLogging.textOut("User exit request!");
 		m_exit = true;
 	}
 #endif

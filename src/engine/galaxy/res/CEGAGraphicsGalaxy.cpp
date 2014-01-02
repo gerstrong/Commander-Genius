@@ -486,7 +486,7 @@ bool CEGAGraphicsGalaxy::begin()
 
 	if( Huffman.readDictionaryFromFile(filename) )
 	{
-		g_pLogFile->textOut("EGADICT was read from external file");
+		gLogging.textOut("EGADICT was read from external file");
 	}
 	else
 	{
@@ -496,7 +496,7 @@ bool CEGAGraphicsGalaxy::begin()
 	// Now we go for EGAHEAD
 	if(!readEGAHead())
 	{
-		g_pLogFile->textOut("Error! Couldn't read EGAHEAD from this game!");
+		gLogging.textOut("Error! Couldn't read EGAHEAD from this game!");
 		return false;
 	}
 
@@ -508,7 +508,7 @@ bool CEGAGraphicsGalaxy::begin()
 
 	if(!File)
 	{
-		g_pLogFile->textOut(RED,"Error the file \"" + filename + "\" is missing or can't be read!");
+		gLogging.textOut(RED,"Error the file \"" + filename + "\" is missing or can't be read!");
 		return false;
 	}
 
@@ -517,7 +517,7 @@ bool CEGAGraphicsGalaxy::begin()
 	egagraphlen = File.tellg();
 	if(egagraphlen == 0)
 	{
-		g_pLogFile->textOut(RED,"Error the file \"" + filename + "\" is empty!");
+		gLogging.textOut(RED,"Error the file \"" + filename + "\" is empty!");
 		return false;
 	}
 	egagraphlen--;
@@ -1106,7 +1106,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         if(amountOfPixels != height*width)
         {
-            g_pLogFile->ftextOut("Warning! Someting is wrong with the amount of read pixels in MiscBitmap %d.\n", misc);
+            gLogging.ftextOut("Warning! Someting is wrong with the amount of read pixels in MiscBitmap %d.\n", misc);
         }
 
         SDL_UnlockSurface(bmp);

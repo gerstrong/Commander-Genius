@@ -329,7 +329,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	}
 	else
 	{
-		g_pLogFile->textOut("Error loading the file. This game is not supported!");
+		gLogging.textOut("Error loading the file. This game is not supported!");
 		return false;
 	}
 
@@ -340,7 +340,7 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
 	g_pMusicPlayer->stop();
 
     if( !g_pMusicPlayer->load(mExeFile, level) )
-    	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    	gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
     	g_pMusicPlayer->play();
 
@@ -514,7 +514,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     }
     else
     {
-        g_pLogFile->textOut("Error loading the file. This game is not supported!");
+        gLogging.textOut("Error loading the file. This game is not supported!");
         return;
     }
 
@@ -525,7 +525,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     g_pMusicPlayer->stop();
 
     if( !g_pMusicPlayer->load(mExeFile, level) )
-        g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+        gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
         g_pMusicPlayer->play();
 

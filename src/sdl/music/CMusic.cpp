@@ -88,7 +88,7 @@ bool CMusic::load(const std::string &musicfile)
 		    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
 		    mpPlayer = move( oggPlayer );
 #else
-		    g_pLogFile->ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");
+		    gLogging.ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");
 		    return false;
 #endif
 		}
@@ -96,7 +96,7 @@ bool CMusic::load(const std::string &musicfile)
 		if(!mpPlayer->open())
 		{
 		    mpPlayer.reset();
-		    g_pLogFile->textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
+		    gLogging.textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
 		    return false;
 		}
 		return true;
@@ -104,7 +104,7 @@ bool CMusic::load(const std::string &musicfile)
 	}
 	else
 	{
-		g_pLogFile->textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
+		gLogging.textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
 	}
 
 	return false;

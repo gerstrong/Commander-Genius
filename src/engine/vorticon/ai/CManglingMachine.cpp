@@ -114,7 +114,7 @@ timer(0)
 		break;
 
 	default:
-		g_pLogFile->ftextOut("Invalid sector effector type %d", setype);
+		gLogging.ftextOut("Invalid sector effector type %d", setype);
 		break;
 	}
 

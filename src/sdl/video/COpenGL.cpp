@@ -60,7 +60,7 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 
     if (!mDisplaySfc)
 	{
-		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
+		gLogging.textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
 	}
 
@@ -216,7 +216,7 @@ bool COpenGL::init()
 	error = glGetError();
 	if( error != GL_NO_ERROR)
 	{
-		g_pLogFile->ftextOut("OpenGL Init(): %d<br>",error);
+		gLogging.ftextOut("OpenGL Init(): %d<br>",error);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_DestroyWindow(window);
         SDL_GL_DeleteContext(glcontext);
@@ -224,7 +224,7 @@ bool COpenGL::init()
 		return false;
 	}
 
-    g_pLogFile->ftextOut("OpenGL Init(): Interface successfully opened!<br>");
+    gLogging.ftextOut("OpenGL Init(): Interface successfully opened!<br>");
 
 
     GLfloat light_ambient[] = { 1.0, 1.0, 1.0, 1.0 };

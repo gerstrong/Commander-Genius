@@ -224,7 +224,7 @@ CBitmap *CGfxEngine::getBitmapFromStr(const std::string &name) const
 	std::string error = "Ooops! Wrong TextID ";
 	error += "name";
 	error += "used!";
-	g_pLogFile->textOut(error);
+	gLogging.textOut(error);
 
 	return NULL;
 }

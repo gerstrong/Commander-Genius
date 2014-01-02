@@ -299,7 +299,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 		if( audiofilename == "" )
 		{
-			g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): Audio File not found!");
+			gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): Audio File not found!");
 			return false;
 		}
 
@@ -372,7 +372,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 		if(audiohed.empty())
 		{
-			g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): No audio was found in that file! It seems to be empty.");
+			gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): No audio was found in that file! It seems to be empty.");
 			delete [] AudioCompFileData;
 			return false;
 		}
@@ -425,7 +425,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		delete [] AudioCompFileData;
 	}
 	else
-		g_pLogFile->textOut("CAudioGalaxy::LoadFromAudioCK(): Wrong Audio Format");
+		gLogging.textOut("CAudioGalaxy::LoadFromAudioCK(): Wrong Audio Format");
 
 	return true;
 }
@@ -444,7 +444,7 @@ bool CAudioGalaxy::loadSoundData()
 
 	if(!ok)
 	{
-		g_pLogFile->textOut("CAudioGalaxy::loadSoundData(): The function cannot read audio of that game");
+		gLogging.textOut("CAudioGalaxy::loadSoundData(): The function cannot read audio of that game");
 		return false;
 	}
 

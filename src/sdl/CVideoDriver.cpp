@@ -48,10 +48,10 @@ void CVideoDriver::resetSettings()
 	m_VidConfig.reset();
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
-		g_pLogFile->textOut(RED, "Could not initialize SDL: %s<br>",
+		gLogging.textOut(RED, "Could not initialize SDL: %s<br>",
 				SDL_GetError());
 	else
-		g_pLogFile->textOut(GREEN, "SDL was successfully initialized!<br>");
+		gLogging.textOut(GREEN, "SDL was successfully initialized!<br>");
 
 	initResolutionList();
 	
@@ -63,9 +63,9 @@ void CVideoDriver::resetSettings()
 	  const int initted=IMG_Init(flags);
 	  if( (initted & flags) != flags) 
 	  {
-	      g_pLogFile->textOut(RED, "IMG_Init: Failed to init required jpg and png support!\n");
-	      g_pLogFile->textOut(RED, "IMG_Init: %s\n", IMG_GetError());
-	      g_pLogFile->textOut(RED, "IMG_Init: CG will try to continue without that support.\n", IMG_GetError());
+	      gLogging.textOut(RED, "IMG_Init: Failed to init required jpg and png support!\n");
+	      gLogging.textOut(RED, "IMG_Init: %s\n", IMG_GetError());
+	      gLogging.textOut(RED, "IMG_Init: CG will try to continue without that support.\n", IMG_GetError());
 	  }
 	  else
 	  {
@@ -165,7 +165,7 @@ void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
 
 		if (i == m_Resolutionlist.end()) {
 #ifdef DEBUG
-			g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n",
+			gLogging.ftextOut(BLUE, "Resolution %ix%ix%i %X added\n",
 					resolution.w, resolution.h, 32);
 #endif
 			m_Resolutionlist.push_back(resolution);
@@ -237,7 +237,7 @@ bool CVideoDriver::start()
 	// When the program is through executing, call SDL_Quit
 	atexit(SDL_Quit);
 
-	g_pLogFile->textOut("Starting graphics driver...<br>");
+	gLogging.textOut("Starting graphics driver...<br>");
 
 #ifdef USE_OPENGL
 	if (m_VidConfig.m_opengl) // If OpenGL could be set, initialize the
@@ -251,11 +251,11 @@ bool CVideoDriver::start()
 			applyMode();
 			mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
 			retval = mpVideoEngine->init();
-            g_pLogFile->textOut("will be using SDL Video<br>");
+            gLogging.textOut("will be using SDL Video<br>");
         }
         else
         {
-            g_pLogFile->textOut("will be using OpenGL<br>");
+            gLogging.textOut("will be using OpenGL<br>");
         }
     }
     else
@@ -263,7 +263,7 @@ bool CVideoDriver::start()
 #endif
 		mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
 		retval = mpVideoEngine->init();
-        g_pLogFile->textOut("will be using SDL Video<br>");
+        gLogging.textOut("will be using SDL Video<br>");
 
 #ifdef USE_OPENGL
 	}

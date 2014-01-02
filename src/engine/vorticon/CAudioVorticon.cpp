@@ -36,7 +36,7 @@ Uint8* CAudioVorticon::loadSoundStream(Uint32 &buffer_size, Uint8* exedata)
 	buffer_size = 0;
 	const std::string gamepath = m_ExeFile.getDataDirectory();
 	const std::string soundfile = "sounds.ck" + itoa(m_ExeFile.getEpisode());
-	g_pLogFile->ftextOut("loadSoundStream(): trying to open the game audio...<br>");
+	gLogging.ftextOut("loadSoundStream(): trying to open the game audio...<br>");
 
 	std::ifstream file;
 	if(!OpenGameFileR(file, getResourceFilename(soundfile, gamepath, false, true), std::ios::binary))
@@ -56,7 +56,7 @@ Uint8* CAudioVorticon::loadSoundStream(Uint32 &buffer_size, Uint8* exedata)
 		}
 		else
 		{
-			g_pLogFile->ftextOut("Warning: I cannot extract sounds from that game. Please provide a \"sounds.ck%d\" for that game.", m_ExeFile.getEpisode());
+			gLogging.ftextOut("Warning: I cannot extract sounds from that game. Please provide a \"sounds.ck%d\" for that game.", m_ExeFile.getEpisode());
 		    return NULL;
 		}
 
@@ -115,7 +115,7 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 
 			const int AMP = ((IsSigned ? ((1<<(sizeof(T)*8))>>2)-1 : (1<<(sizeof(T)*8)>>1)-1)*PC_Speaker_Volume)/100;
 			generateWave(waveform, buf_ptr, 0, true, AMP);
-			g_pLogFile->ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());
+			gLogging.ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());
 
 			return true;
 		}
@@ -126,7 +126,7 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 		mayContinue |= (buffDiff < buf_size);
 	}
 	// sound could not be found
-	g_pLogFile->ftextOut("CAudioVorticon::loadSound : sound \"%s\" could not be found.<br>", searchname.c_str());
+	gLogging.ftextOut("CAudioVorticon::loadSound : sound \"%s\" could not be found.<br>", searchname.c_str());
 
 	return false;
 }
@@ -240,7 +240,7 @@ bool CAudioVorticon::loadSoundData()
 	const std::string soundfile = "sounds.ck" + itoa(episode);
 	const std::string DataDirectory = m_ExeFile.getDataDirectory();
 
-	g_pLogFile->ftextOut("loadSoundData(): loading all sounds...<br>");
+	gLogging.ftextOut("loadSoundData(): loading all sounds...<br>");
 
 	Uint32 buffer_size;
 	Uint8 *buffer = loadSoundStream( buffer_size, m_ExeFile.getRawData() );

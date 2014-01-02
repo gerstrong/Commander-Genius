@@ -46,7 +46,7 @@ bool CGameLauncher::init()
     m_DirList.clear();
     m_Entries.clear();
 	
-    g_pLogFile->ftextOut("Game Autodetection Started<br>" );
+    gLogging.ftextOut("Game Autodetection Started<br>" );
 	
     // Process any custom labels
     getLabels();
@@ -96,7 +96,7 @@ bool CGameLauncher::init()
 
     g_pResourceLoader->setPermilage(1000);
 	
-    g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
+    gLogging.ftextOut("Game Autodetection Finished<br>" );
     
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
@@ -150,7 +150,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 {
     bool result = false;
 	
-    g_pLogFile->ftextOut("Search: %s<br>", path.c_str() );
+    gLogging.ftextOut("Search: %s<br>", path.c_str() );
 	
 	for(int i = 1; i <= 6; ++i) {
 		CExeFile executable;
@@ -198,13 +198,13 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		// Save the type information about the exe
 		m_Entries.push_back(newentry);
 
-		g_pLogFile->textOut(gamespecstring);
+        gLogging.textOut(gamespecstring);
 		
 		// The original episode 1 exe is needed to load gfx's for game launcher menu
 		if ( m_ep1slot <= -1 && newentry.crcpass == true )
 		{
 			m_ep1slot = m_Entries.size()-1;
-			g_pLogFile->ftextOut("   Using for in-game menu resources<br>" );
+            gLogging.ftextOut("   Using for in-game menu resources<br>" );
 		}
 		result = true;
 	}

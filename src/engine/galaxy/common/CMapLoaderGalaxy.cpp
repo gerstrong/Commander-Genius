@@ -102,8 +102,8 @@ bool CMapLoaderGalaxy::gotoNextSignature(std::ifstream &MapFile)
 	if(pos != std::string::npos)
 	  return true;
 
-	g_pLogFile->textOut("Warning! Your are opening a map which is not correctly signed. Some Mods, using different Editors, have that issue!!");
-	g_pLogFile->textOut("If you are playing a mod it might okay though. If it's an original game, it is tainted. Continuing...");
+	gLogging.textOut("Warning! Your are opening a map which is not correctly signed. Some Mods, using different Editors, have that issue!!");
+	gLogging.textOut("If you are playing a mod it might okay though. If it's an original game, it is tainted. Continuing...");
 	
 	return false;	
 }
@@ -136,7 +136,7 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 	
       if( decarmacksize > RLE_Plane.size() )
       {
-	  g_pLogFile->textOut( "\nWARNING Plane Uncompress Carmack Size differs to the one of the headers: Actual " + itoa(RLE_Plane.size()) + 
+	  gLogging.textOut( "\nWARNING Plane Uncompress Carmack Size differs to the one of the headers: Actual " + itoa(RLE_Plane.size()) + 
 			      " bytes Expected " + itoa(decarmacksize) + " bytes. Trying to reconstruct level anyway!<br>");	  
 	  
 	  while( decarmacksize > RLE_Plane.size() )
@@ -165,12 +165,12 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 
         if( derlesize/2 != Plane.size() )
         {
-            g_pLogFile->textOut( "\nERROR Plane Uncompress RLE Size Failed: Actual "+ itoa(2*Plane.size()) +" bytes Expected " + itoa(derlesize) + " bytes<br>");
+            gLogging.textOut( "\nERROR Plane Uncompress RLE Size Failed: Actual "+ itoa(2*Plane.size()) +" bytes Expected " + itoa(derlesize) + " bytes<br>");
         }
     }
     else
     {
-    	g_pLogFile->textOut( "\nERROR Plane Uncompress Carmack Size Failed: Actual " + itoa(RLE_Plane.size()) + " bytes Expected " + itoa(decarmacksize) + " bytes<br>");
+    	gLogging.textOut( "\nERROR Plane Uncompress Carmack Size Failed: Actual " + itoa(RLE_Plane.size()) + " bytes Expected " + itoa(decarmacksize) + " bytes<br>");
     }
 
     MapFile.seekg(initial_pos);
@@ -208,7 +208,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     }
     else
     {
-      g_pLogFile->textOut("ERROR The MapHead File was not found. Please check that file or take a look into your patch file");
+      gLogging.textOut("ERROR The MapHead File was not found. Please check that file or take a look into your patch file");
     }
   }
   
@@ -232,7 +232,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     if(level_offset == 0 && mapHeadContainer.empty())
     {
         MapFile.close();
-        g_pLogFile->textOut("This Level doesn't exist in GameMaps");
+        gLogging.textOut("This Level doesn't exist in GameMaps");
         return false;
     }
 
@@ -294,13 +294,13 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     name[16] = '\0';
 
     // Get and check the signature
-    g_pLogFile->textOut("Loading the Level \"" + static_cast<std::string>(name) + "\" (Level No. "+ itoa(level) + ")<br>" );
+    gLogging.textOut("Loading the Level \"" + static_cast<std::string>(name) + "\" (Level No. "+ itoa(level) + ")<br>" );
     Map.setLevelName(name);
 
     mLevelName = name;
 
     // Then decompress the level data using rlew and carmack
-    g_pLogFile->textOut("Decompressing the Map...<br>" );
+    gLogging.textOut("Decompressing the Map...<br>" );
 
     // Start with the Background
     Map.createEmptyDataPlane(0, Width, Height);

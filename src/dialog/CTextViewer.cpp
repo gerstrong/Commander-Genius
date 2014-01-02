@@ -178,7 +178,7 @@ bool CTextViewer::loadTextfromFile(const std::string &filename)
     }
     else
     {
-    	g_pLogFile->textOut("Error reading \"" + filename + "\". Check if this file is in your directory!");
+    	gLogging.textOut("Error reading \"" + filename + "\". Check if this file is in your directory!");
     	return false;
     }
 
