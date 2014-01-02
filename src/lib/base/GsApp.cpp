@@ -37,11 +37,10 @@ mAppState(m_firsttime)
  */
 GsApp::~GsApp()
 {
-	gpMenuController->emptyMenuStack();
+    //gpMenuController->emptyMenuStack();
 	g_pInput->Del();
 	g_pSound->destroy();
 	g_pVideoDriver->Del();
-	g_pTimer->Del();
 }
 
 
@@ -132,12 +131,12 @@ void GsApp::run()
 
     while(1)
     {
-        const float logicLatency = g_pTimer->LogicLatency();
-        const float renderLatency = g_pTimer->RenderLatency();
+        const float logicLatency = gTimer.LogicLatency();
+        const float renderLatency = gTimer.RenderLatency();
 
         curr = timerTicks();
 
-        if(g_pTimer->resetLogicSingal())
+        if(gTimer.resetLogicSingal())
             start = curr;
 
         elapsed = curr - start;        
@@ -216,7 +215,7 @@ void GsApp::run()
         if(counter >= 100)
         {
             counter = 0;
-            g_pTimer->setTimeforLastLoop(total_elapsed/100.0f);
+            gTimer.setTimeforLastLoop(total_elapsed/100.0f);
             total_elapsed = 0.0f;
         }
     }

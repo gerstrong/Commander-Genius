@@ -10,7 +10,7 @@
 
 /*#if SDL_VERSION_ATLEAST(2, 0, 0)
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
-    m_StartTime(g_pTimer->getTicks()),
+    m_StartTime(gTimer.getTicks()),
     m_RunTime(msecs),
     m_Speed(speed),
     m_Color(color),
@@ -24,7 +24,7 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
 }
 #else*/
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
-    m_StartTime(g_pTimer->getTicks()),
+    m_StartTime(gTimer.getTicks()),
     m_RunTime(msecs),
     m_Speed(speed),
     m_Color(color),
@@ -42,7 +42,7 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
 
 /*#if SDL_VERSION_ATLEAST(2, 0, 0)
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
-    m_StartTime(g_pTimer->getTicks()),
+    m_StartTime(gTimer.getTicks()),
     m_RunTime(msecs),
     m_Speed(speed),
     m_Color(color),
@@ -56,7 +56,7 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
 }
 #else*/
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
-    m_StartTime(g_pTimer->getTicks()),
+    m_StartTime(gTimer.getTicks()),
     m_RunTime(msecs),
     m_Speed(speed),
     m_Color(color),
@@ -73,7 +73,7 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
 // Process the flashing effect here
 void CFlash::ponder()
 {
-    Uint32 ElapsedTime = g_pTimer->getTicks() - m_StartTime;
+    Uint32 ElapsedTime = gTimer.getTicks() - m_StartTime;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod(mpFadeSurface.get(), m_Alpha);

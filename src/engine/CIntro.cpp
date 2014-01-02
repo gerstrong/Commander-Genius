@@ -43,7 +43,7 @@ void CIntro::init()
             m_mid[j] = gameRes.w - (320/2)-(mp_bm[j]->getWidth()/2);
 	}
 	
-	g_pTimer->ResetSecondsTimer();
+	gTimer.ResetSecondsTimer();
 }
 
 void CIntro::ponder()
@@ -62,7 +62,7 @@ void CIntro::ponder()
 	}
 	
 	// Check if time for Intro is out
-	if(g_pTimer->HasSecElapsed())
+	if(gTimer.HasSecElapsed())
 	{
 		if(m_introtime <= 0) m_finished = true;
 		else m_introtime--;

@@ -254,7 +254,7 @@ void CPlayGameVorticon::showKeensLeft()
 		keenleft_rect.h = mpKeenLeftSfc->h;
 
 
-		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
+		if( gTimer.HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		{
 			m_showKeensLeft = false;
 			mpKeenLeftSfc.reset();

@@ -85,8 +85,8 @@ bool CResourceLoader::process(int* ret)
 	// Now, do rendering here and the cycle
     while(!threadFinalized || g_pGfxEngine->applyingEffects())
 	{                
-		const float logicLatency = g_pTimer->LogicLatency();
-		const float renderLatency = g_pTimer->RenderLatency();
+        const float logicLatency = gTimer.LogicLatency();
+        const float renderLatency = gTimer.RenderLatency();
 		
 		curr = timerTicks();
 		
@@ -148,7 +148,7 @@ bool CResourceLoader::process(int* ret)
 		if(counter >= 100)
 		{
 		    counter = 0;
-		    g_pTimer->setTimeforLastLoop(total_elapsed/100.0f);
+            gTimer.setTimeforLastLoop(total_elapsed/100.0f);
 		    total_elapsed = 0.0f;
 		}
 
@@ -167,7 +167,7 @@ bool CResourceLoader::process(int* ret)
 	// Put everything to zero!
 	mp_Thread.release();
 	
-	g_pTimer->setLogicReset(true);
+    gTimer.setLogicReset(true);
 	
 	return true;
 }

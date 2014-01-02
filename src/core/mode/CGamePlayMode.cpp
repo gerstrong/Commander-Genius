@@ -132,7 +132,7 @@ void CGamePlayMode::render(const float deltaT)
             mpFPSSurface.reset(CG_CreateRGBSurface(rect), &SDL_FreeSurface);
         }
 
-        std::string tempbuf = "FPS: " + ftoa(g_pTimer->LastFPS());
+        std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());
         SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
         g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
 

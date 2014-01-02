@@ -59,7 +59,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
 	Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
-	Configuration.WriteInt("Video", "fps", g_pTimer->FPS());
+	Configuration.WriteInt("Video", "fps", gTimer.FPS());
 	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
 		
 	const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
@@ -167,7 +167,7 @@ bool CSettings::loadDrvCfg()
 
 		int framerate;
 		Configuration.ReadInteger("Video", "fps", &framerate, 60);
-		g_pTimer->setFPS( framerate );
+		gTimer.setFPS( framerate );
 
 
 		int audio_rate, audio_channels, audio_format;
@@ -200,7 +200,7 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 #endif
 
 	g_pVideoDriver->setZoom(1);
-	g_pTimer->setFPS(60);
+	gTimer.setFPS(60);
 #if defined(ANDROID)	
 	g_pVideoDriver->setAspectCorrection(0,0);
 #else

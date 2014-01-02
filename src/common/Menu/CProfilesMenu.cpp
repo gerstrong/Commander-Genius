@@ -33,7 +33,7 @@ public:
 		CameraBounds.right = 180;
 		CameraBounds.down = 130;
 		CameraBounds.speed = 5;
-		g_pTimer->setFPS(30);
+		gTimer.setFPS(30);
 		p_option[OPT_ALLOWPKING].value = 0;
 		p_option[OPT_KEYSTACK].value = 0;
 		p_option[OPT_LVLREPLAYABILITY].value = 0;
@@ -62,7 +62,7 @@ public:
 		CameraBounds.right = 168;
 		CameraBounds.down = 108;
 		CameraBounds.speed = 20;
-		g_pTimer->setFPS(60);
+		gTimer.setFPS(60);
 		p_option[OPT_KEYSTACK].value = 1;
 		p_option[OPT_RISEBONUS].value = 1;
         p_option[OPT_MODERN].value = 1;

@@ -28,7 +28,7 @@ bool CTitle::init(int Episode)
 {
 	SDL_Surface *pSurface;
 	CBitmap *pBitmap;
-	g_pTimer->ResetSecondsTimer();
+	gTimer.ResetSecondsTimer();
 	mTime = 10; // show the title screen for 10 secs.
 	pSurface = g_pVideoDriver->mpVideoEngine->getBlitSurface();
 	if(!g_pVideoDriver->getSpecialFXConfig())
@@ -75,7 +75,7 @@ bool CTitle::init(int Episode)
 void CTitle::ponder()
 {
 	if( mTime == 0) mFinished = true;
-	else mTime -= g_pTimer->HasSecElapsed();
+	else mTime -= gTimer.HasSecElapsed();
 	
 	for( auto &obj : mObjects )
 	{

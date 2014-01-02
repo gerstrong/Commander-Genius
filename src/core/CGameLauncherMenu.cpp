@@ -196,7 +196,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 		CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
 		Patcher.process();
 
-		g_pTimer->setLPS(DEFAULT_LPS_VORTICON);
+		gTimer.setLPS(DEFAULT_LPS_VORTICON);
 	    
 		g_pBehaviorEngine->readTeleporterTable(p_exedata);
 
@@ -233,7 +233,7 @@ bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const i
 	}
     else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
     {
-        g_pTimer->setLPS(DEFAULT_LPS_GALAXY);
+        gTimer.setLPS(DEFAULT_LPS_GALAXY);
 
         g_pResourceLoader->setStyle(PROGRESS_STYLE_BAR);
         const std::string threadname = "Loading Keen " + itoa(Episode);

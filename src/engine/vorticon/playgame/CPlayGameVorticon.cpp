@@ -135,7 +135,7 @@ bool CPlayGameVorticon::init()
 	setupPlayers();
 
 	// Well, all players are living because they were newly spawn.
-	g_pTimer->ResetSecondsTimer();
+	gTimer.ResetSecondsTimer();
 
 	g_pInput->flushAll();
 

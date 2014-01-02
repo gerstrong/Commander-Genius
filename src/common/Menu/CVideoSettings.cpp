@@ -119,7 +119,7 @@ void CVideoSettings::init()
 
 	// Load the config into the GUI
 	// TODO: Temporary. This must become a float later...
-	mpFPSSelection->setSelection( static_cast<int>( g_pTimer->FPS() ) );
+	mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
 
 #if defined(USE_OPENGL)
 	std::string OGLFilterStr;
@@ -175,7 +175,7 @@ void CVideoSettings::release()
 {
 	// Save up the changed stuff
 
-	g_pTimer->setFPS( mpFPSSelection->getSelection() );
+	gTimer.setFPS( mpFPSSelection->getSelection() );
 
 #if defined(USE_OPENGL)
 	mUserVidConf.m_opengl_filter = mpOGLFilterSelection->getSelection() == "linear" ? GL_LINEAR : GL_NEAREST;

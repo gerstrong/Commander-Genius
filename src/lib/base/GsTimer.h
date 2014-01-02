@@ -10,8 +10,9 @@
 #define CTIMER_H_
 
 #include <SDL.h>
-#include "CSingleton.h"
-#define g_pTimer	CTimer::Get()
+#include <base/Singleton.h>
+
+#define gTimer CTimer::get()
 
 #if defined(WIZ)
 #include "sys/wizgp2x.h"
@@ -34,7 +35,7 @@ const float DEFAULT_FPS = 60.0f;
 
 #define ulong unsigned long
 
-class CTimer : public CSingleton<CTimer>
+class CTimer : public GsSingleton<CTimer>
 {
 public:
     CTimer();

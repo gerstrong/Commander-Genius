@@ -9,7 +9,7 @@
 #include "sdl/CVideoDriver.h"
 
 CVibrate::CVibrate(Uint32 msecs) :
-m_StartTime(g_pTimer->getTicks()),
+m_StartTime(gTimer.getTicks()),
 m_RunTime(msecs)
 {}
 
@@ -24,7 +24,7 @@ void CVibrate::ponder()
 	else { m_dir_x = 0; m_dir_y = 0; }
 
 	// The developer set a time in the constructor. This effect will last for the given time.
-	if(g_pTimer->getTicks() - m_StartTime >= m_RunTime)
+	if(gTimer.getTicks() - m_StartTime >= m_RunTime)
 		mFinished = true;
 }
 

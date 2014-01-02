@@ -23,7 +23,7 @@ m_Player(Player)
 {
 	m_Episode = 3;
 	m_step = 0;
-	m_starttime = g_pTimer->getTicks();
+	m_starttime = gTimer.getTicks();
 	m_timepassed = 0;
 	m_mustsetup = true;
 	m_mustfinishgame = false;
@@ -32,7 +32,7 @@ m_Player(Player)
 
 void CEndingEp3::ponder()
 {
-    m_timepassed = g_pTimer->getTicks() - m_starttime;
+    m_timepassed = gTimer.getTicks() - m_starttime;
 
     switch(m_step)
     {

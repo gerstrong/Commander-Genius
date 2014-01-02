@@ -69,7 +69,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
-	if( g_pTimer->HasTimeElapsed(100) )
+	if( gTimer.HasTimeElapsed(100) )
 	{
 		mTwirliconID++;
 
@@ -94,7 +94,7 @@ void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 {
 	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
 
-	if( g_pTimer->HasTimeElapsed(500) )
+	if( gTimer.HasTimeElapsed(500) )
 		mTwirliconID = !mTwirliconID;
 
 

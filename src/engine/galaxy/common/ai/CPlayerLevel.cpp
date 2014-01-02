@@ -504,7 +504,7 @@ void CPlayerLevel::processLookingDown()
 
 		#define max(a,b) ((a>b)?a:b)
 
-		int deltay = max(g_pTimer->getTicksPerFrame(),4) << 4;
+		int deltay = max(gTimer.getTicksPerFrame(),4) << 4;
 
 		//TODO: Moving platforms
 
