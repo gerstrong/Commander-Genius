@@ -25,7 +25,7 @@
 #include "CTileProperties.h"
 #include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
-#include "engine/CEventContainer.h"
+#include <base/GsEvent.h>
 #include "common/options.h"
 
 #include <lib/base/GsEvent.h>

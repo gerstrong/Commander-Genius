@@ -15,7 +15,7 @@
 #include "CSingleton.h"
 #include "CVidConfig.h"
 #include "video/CVideoEngine.h"
-#include "engine/CEventContainer.h"
+#include <base/GsEvent.h>
 #include "common/CMap.h"
 
 #ifdef USE_OPENGL

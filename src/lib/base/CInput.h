@@ -12,7 +12,6 @@
 #include <string>
 #include <list>
 #include "utils/Geometry.h"
-#include "engine/CEventContainer.h"
 #include <base/GsEvent.h>
 #include <base/InputEvents.h>
 //#include "InputEvents.h"
