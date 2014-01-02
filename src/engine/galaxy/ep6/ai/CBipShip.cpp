@@ -77,7 +77,7 @@ void CBipShip::processMoving()
 
 	  	CEnemyShot *laser = new CEnemyShot(mp_Map, 0, x_coord, getYMidPos()-(8<<STC),
                                     0x2A7A, xDirection, 0,  100, mSprVar);
-		g_pBehaviorEngine->m_EventList.spawnObj( laser );
+		spawnObj( laser );
 		mKeenIsNear = false; 
 	}
 }
@@ -103,7 +103,7 @@ void CBipShip::processHit()
 	const int newX = getXMidPos();
 	const int newY = getYUpPos();
 	auto *bip = new CBip(mp_Map, 0x6C, newX, newY);
-	g_pBehaviorEngine->m_EventList.spawnObj( bip );
+	spawnObj( bip );
 	setAction(A_BIPSHIP_WRECKAGE);
     }
 }

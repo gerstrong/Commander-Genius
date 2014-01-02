@@ -65,7 +65,7 @@ void CIceCannon::process()
 		    silent = true;
 		}
 
-		g_pBehaviorEngine->EventList().spawnObj(chunk);
+		spawnObj(chunk);
 		mTimer = 0;
 	}
 	else
@@ -192,19 +192,19 @@ void CIceChunk::smash()
 
 		// upleft
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, -1);
-		g_pBehaviorEngine->EventList().spawnObj(chunk);
+		spawnObj(chunk);
 
 		// upright
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), 1, -1);
-		g_pBehaviorEngine->EventList().spawnObj(chunk);
+		spawnObj(chunk);
 
 		// downleft
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), -1, 1);
-		g_pBehaviorEngine->EventList().spawnObj(chunk);
+		spawnObj(chunk);
 
 		// downright
 		chunk = new CIceBit(mp_Map, getXPosition(), getYPosition(), 1, 1);
-		g_pBehaviorEngine->EventList().spawnObj(chunk);
+		spawnObj(chunk);
 	}
 	exists = false;
 }

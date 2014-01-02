@@ -82,7 +82,7 @@ void CBobba::processSitting()
     
     CEnemyShot *fireball = new CEnemyShot(mp_Map, 0, x_coord, getYUpPos(),
                        0x2E76, xDirection, 0,  100, mSprVar);
-    g_pBehaviorEngine->m_EventList.spawnObj( fireball );
+    spawnObj( fireball );
     
 }
 

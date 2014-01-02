@@ -452,3 +452,9 @@ CSpriteObject::~CSpriteObject()
 		m_number_of_objects--;
 }
 
+void spawnObj(const CSpriteObject *obj)
+{
+    gEventManager.add(new EventSpawnObject( obj ));
+}
+
+

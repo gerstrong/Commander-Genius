@@ -358,7 +358,7 @@ void CManglingMachine::se_mortimer_spark()
                     CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
-					g_pBehaviorEngine->EventList().spawnObj(newobject);
+					spawnObj(newobject);
 				}
 
 				mx = MORTIMER_RIGHT_ARM_X+x;
@@ -369,7 +369,7 @@ void CManglingMachine::se_mortimer_spark()
                     CRay *newobject = new CRay(mp_Map, ((mx<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
 					newobject->state = CRay::RAY_STATE_SETZAPZOT;
 					newobject->inhibitfall = true;
-					g_pBehaviorEngine->EventList().spawnObj(newobject);
+					spawnObj(newobject);
 				}
 
 			}
@@ -418,7 +418,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                 }
                 else counter++;
 
-                g_pBehaviorEngine->EventList().spawnObj(newobject);
+                spawnObj(newobject);
             }
             else timer--;
             break;
@@ -433,7 +433,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                     CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, my<<4<<STC, CENTER, DOWN, getSpriteVariantId());
                     newobject->state = CRay::RAY_STATE_SETZAPZOT;
                     newobject->inhibitfall = true;
-                    g_pBehaviorEngine->EventList().spawnObj(newobject);
+                    spawnObj(newobject);
                 }
 
                 timer = MACHINE_DESTROY_RATE;
@@ -532,7 +532,7 @@ void CManglingMachine::se_mortimer_zapsup()
             CRay *newobject = new CRay(mp_Map, ((x<<4)+4)<<STC, (my+1)<<CSF, CENTER, DOWN, getSpriteVariantId());
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->inhibitfall = true;
-			g_pBehaviorEngine->EventList().spawnObj(newobject);
+			spawnObj(newobject);
 
 			if (destroytiles)
 			{
@@ -761,7 +761,7 @@ void CManglingMachine::se_mortimer_randomzaps()
         CRay *newobject = new CRay(mp_Map,x<<CSF, y<<CSF, RIGHT, CENTER, getSpriteVariantId() );
 		newobject->state = CRay::RAY_STATE_SETZAPZOT;
 		newobject->inhibitfall = true;
-		g_pBehaviorEngine->EventList().spawnObj(newobject);
+		spawnObj(newobject);
 
 		timer = TIME_BETWEEN_ZAPS;
 		if (counter > NUM_RANDOM_ZAPS)

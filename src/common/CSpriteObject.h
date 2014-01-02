@@ -12,7 +12,8 @@
 #ifndef __CSPRITEOBJECT_H_
 #define __CSPRITEOBJECT_H_
 
-#include "engine/CEventContainer.h"
+#include <lib/base/GsEvent.h>
+
 #include "ActionFormat.h"
 #include "CVec.h"
 #include "direction.h"
@@ -99,6 +100,9 @@ struct ObjMoveCouples : ObjMove
             ObjMove(offx, offy), mCarriedObjVec(carriedObjVec) {}
 };
 
+
+// Small special routine for spawning objects. Might be called by other objects and the level manager
+void spawnObj(const CSpriteObject *obj);
 
 class CSpriteObject
 {

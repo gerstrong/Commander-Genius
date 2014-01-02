@@ -207,7 +207,7 @@ void CTreasureEater::checkForItem()
 			const int ep = g_pBehaviorEngine->getEpisode();
 			
 			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );			
-			g_pBehaviorEngine->m_EventList.spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
+			spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
 			mStolen = true;
 			
 		}

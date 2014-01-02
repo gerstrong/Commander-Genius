@@ -258,7 +258,7 @@ void CVorticonElite::process()
 			newobject->setOwner( m_type, m_index);
 			newobject->sprite = ENEMYRAYEP2;
 			// don't shoot other vorticon elite
-			g_pBehaviorEngine->EventList().spawnObj(newobject);
+			spawnObj(newobject);
 
 			if (onscreen)
 				playSound(SOUND_KEEN_FIRE);

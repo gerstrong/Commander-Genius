@@ -100,7 +100,7 @@ void CBabobba::processSitting()
 	CCinder *cinder = new CCinder(mp_Map, 0, 
         getXMidPos(), getYUpPos(), xDirection, mSprVar);
 	
-	g_pBehaviorEngine->m_EventList.spawnObj( cinder );
+	spawnObj( cinder );
     }    
 
     setAction(A_BABOBBA_NAPPING);

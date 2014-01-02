@@ -346,7 +346,7 @@ void CPlayer::TogglePogo_and_Switches()
 					// spawn a "sector effector" to extend/retract the platform
 					CBridges *platobject = new CBridges(mp_Map, mx<<CSF, my<<CSF,
 							platx, platy);
-					g_pBehaviorEngine->EventList().spawnObj(platobject);
+                    spawnObj(platobject);
 				}
 
 				ppogostick = false;

@@ -339,7 +339,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 	  const int lc_y = l_y>>CSF;
 	  mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
 	  CItemEffect *iEffect = new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, dropanimation_sprite, ANIMATE);
-	  g_pBehaviorEngine->m_EventList.spawnObj( iEffect );
+      spawnObj( iEffect );
 	  m_Item.m_drops++;
 	  
 	  if(m_Item.m_drops >= 100)
@@ -362,7 +362,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 			const int ep = g_pBehaviorEngine->getEpisode();
 			
 			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-			g_pBehaviorEngine->m_EventList.spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
+            spawnObj( new CItemEffect(mp_Map, 0, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[ep-4][4+i-21], FADEOUT) );
 			switch(i)
 			{
 			case 21: m_Item.m_points += 100;	g_pSound->playSound( SOUND_GET_BONUS );	break;
@@ -487,7 +487,7 @@ void CPlayerBase::respawnImportantItem(const int itemId)
         if(itemId == 4)
         {
             VectorD2<int> where = mp_Map->getSpriteOrigin(105);
-            g_pBehaviorEngine->m_EventList.spawnObj( new galaxy::CSpriteItem(mp_Map, 0x46, where.x, where.y, 105, 0) );
+            spawnObj( new galaxy::CSpriteItem(mp_Map, 0x46, where.x, where.y, 105, 0) );
             return;
         }
     }
@@ -501,7 +501,7 @@ void CPlayerBase::respawnImportantItem(const int itemId)
 
     // Now respawn the item
     VectorD2<int> where = mp_Map->getSpriteOrigin(itemId+itemOffset);
-    g_pBehaviorEngine->m_EventList.spawnObj( new galaxy::CSpriteItem(mp_Map, itemId+itemOffset, where.x, where.y, newsprite, 0) );
+    spawnObj( new galaxy::CSpriteItem(mp_Map, itemId+itemOffset, where.x, where.y, newsprite, 0) );
 }
 
 

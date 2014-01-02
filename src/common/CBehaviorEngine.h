@@ -28,6 +28,8 @@
 #include "engine/CEventContainer.h"
 #include "common/options.h"
 
+#include <lib/base/GsEvent.h>
+
 #include "CSingleton.h"
 
 #if defined (SINGLEPLAYER)

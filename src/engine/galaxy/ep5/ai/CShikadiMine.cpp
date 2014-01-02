@@ -293,13 +293,13 @@ void CShikadiMine::processDetonate()
       const int newX = getXMidPos();
       const int newY = getYUpPos();
 
-      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(),
+      spawnObj( new CMineShards( getMapPtr(),
 							     0, newX, newY, -100 ) );
-      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(),
+      spawnObj( new CMineShards( getMapPtr(),
 							     0, newX, newY, -50 ) );
-      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(),
+      spawnObj( new CMineShards( getMapPtr(),
 							     0, newX, newY, 50 ) );
-      g_pBehaviorEngine->m_EventList.spawnObj( new CMineShards( getMapPtr(),
+      spawnObj( new CMineShards( getMapPtr(),
 							     0, newX, newY, 100 ) );
 
   }

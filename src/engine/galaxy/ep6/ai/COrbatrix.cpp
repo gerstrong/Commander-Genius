@@ -221,7 +221,7 @@ void COrbatrix::getTouchedBy(CSpriteObject& theObject)
         {
             stItemGalaxy &Item = player->m_Inventory.Item;
             Item.m_gem.red++;
-            g_pBehaviorEngine->m_EventList.spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), got_sprite_item_pics[2][2], FADEOUT));
+            spawnObj(new CItemEffect(mp_Map, 0, getXPosition(), getYPosition(), got_sprite_item_pics[2][2], FADEOUT));
             dead = true;
             exists = false;
         }

@@ -104,7 +104,7 @@ bool CThunderCloud::isNearby(CSpriteObject &theObject)
 				setAction(A_CLOUD_STRIKING);
 				playSound(SOUND_THUNDERCLOUD_STRIKE);
                 mpBolt = new CThunderBolt( mp_Map, getXLeftPos() + (12<<STC), getYDownPos() + (32<<STC), mSprVar );
-				g_pBehaviorEngine->m_EventList.spawnObj( mpBolt );
+				spawnObj( mpBolt );
 			}
 		}
 		}

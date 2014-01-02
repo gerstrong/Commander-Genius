@@ -168,7 +168,7 @@ void CMeep::process()
 				newobject = new CSoundWave(mp_Map, getXLeftPos(), getYPosition()+(5<<STC), LEFT);
 			newobject->setOwner(OBJ_MEEP, m_index);
 			newobject->solid = false;
-			g_pBehaviorEngine->EventList().spawnObj(newobject);
+			spawnObj(newobject);
 			playSound(SOUND_MEEP);
 			state = MEEP_WALK;
 		}

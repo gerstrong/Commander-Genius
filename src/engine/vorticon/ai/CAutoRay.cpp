@@ -66,7 +66,7 @@ void CAutoRay::process()
 			NewRay->sprite = ENEMYRAYEP3;
 			NewRay->m_HorDir = RIGHT;
 		}
-		g_pBehaviorEngine->EventList().spawnObj(NewRay);
+		spawnObj(NewRay);
 
 		if(!silent)
 		{

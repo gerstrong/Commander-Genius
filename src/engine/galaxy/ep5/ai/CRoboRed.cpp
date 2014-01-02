@@ -122,7 +122,7 @@ void CRoboRed::processShoot()
     swapYDir = !swapYDir;
     int newX = 	xDirection == RIGHT ? getXRightPos() : getXLeftPos();
     int newY = 	getYPosition() + 0x300;
-    g_pBehaviorEngine->m_EventList.spawnObj( new CRedShot( getMapPtr(), 
+    spawnObj( new CRedShot( getMapPtr(), 
 							     0, 
 							     newX, newY,
 							     newXDir, newYDir ) );

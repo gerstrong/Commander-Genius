@@ -110,7 +110,7 @@ void CShockshound::processBark()
     {	    
 	// Spawn a Enemyshot in form electrostatic
 	const int newX = (xDirection == LEFT) ? getXLeftPos()+(4<<STC) : getXRightPos()-(4<<STC);
-	g_pBehaviorEngine->m_EventList.spawnObj( new CEnemyShot(mp_Map, 0, 
+	spawnObj( new CEnemyShot(mp_Map, 0, 
 							newX, getYUpPos()-(8<<STC),
                             0x2FC2, xDirection, CENTER,  150, mSprVar) );
 	

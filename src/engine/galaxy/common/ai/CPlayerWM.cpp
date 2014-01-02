@@ -308,7 +308,7 @@ void CPlayerWM::processMoving()
                 x = x>>CSF; y = y>>CSF;
                 x = x<<CSF; y = (y+climbDir)<<CSF;
 
-                g_pBehaviorEngine->m_EventList.spawnObj(new CRope(mp_Map, x, y));
+                spawnObj(new CRope(mp_Map, x, y));
                 playSound(SOUND_ROPE_THROW);
             }
             else
@@ -1016,7 +1016,7 @@ bool CPlayerWM::finishLevel(const int object)
 
 
         CFlag *pFlag = new CFlag(mp_Map, src, dst, mSprVar, true, true);
-		g_pBehaviorEngine->m_EventList.spawnObj(pFlag);
+		spawnObj(pFlag);
 
 
 		// Mark the tileinfo on the map as level finished!! So player cannot just re-enter. Exception is if replayability is on.

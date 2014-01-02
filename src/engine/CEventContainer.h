@@ -10,7 +10,9 @@
 #ifndef CEVENTCONTAINER_H_
 #define CEVENTCONTAINER_H_
 
-#include "CEvent.h"
+#include <lib/base/GsEvent.h>
+
+/*#include "CEvent.h"
 #include <deque>
 #include <vector>
 #include <ctime>
@@ -27,7 +29,7 @@ public:
 
 	size_t size() { return m_EventList.size(); }
 	bool empty() { return m_EventList.empty(); }
-	void clear() { m_EventList.clear(); }
+    void clear() { m_EventList.clear(); }*/
 
     /**
      * @brief regSink will register the sink in the Container
@@ -35,7 +37,7 @@ public:
      *        Otherwise app might crash.
      * @param pSink pointer to the sink to be registered
      */
-    void regSink(GsEventSink *pSink)
+    /*void regSink(GsEventSink *pSink)
     {
         mSinkPtrList.push_back(pSink);
     }
@@ -129,6 +131,5 @@ T* CEventContainer::occurredEvent()
 
 	return dynamic_cast<T*> (m_EventList.front().get());
 }
-
-
+*/
 #endif /* CEVENTCONTAINER_H_ */

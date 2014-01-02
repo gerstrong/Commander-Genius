@@ -641,7 +641,7 @@ void CPlayerLevel::tryToShoot( const VectorD2<int> &pos, const int xDir, const i
 {
 	if(m_Inventory.Item.m_bullets > 0)
 	{
-        g_pBehaviorEngine->m_EventList.spawnObj(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir, mSprVar));
+        spawnObj(new CBullet(mp_Map, 0, pos.x, pos.y, xDir, yDir, mSprVar));
 		m_Inventory.Item.m_bullets--;
 	}
 	else
@@ -1542,7 +1542,7 @@ void CPlayerLevel::processPressUp() {
 				    //check_ground(new_object, ACTION_SECURITYDOOROPEN);
 				    //o->action = ACTION_KEENENTERDOOR0;
 				    //o->int16 = 0;
-				    g_pBehaviorEngine->EventList().spawnObj( new CSecurityDoor(getMapPtr(), 0, x_left-(1<<CSF), up_y-(3<<CSF) ) );
+                    spawnObj( new CSecurityDoor(getMapPtr(), 0, x_left-(1<<CSF), up_y-(3<<CSF) ) );
 				    
 				    mTarget = getPosition();
 				    mTarget.y -= (1<<CSF);
