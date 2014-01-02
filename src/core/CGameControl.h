@@ -10,36 +10,16 @@
 #ifndef GsAppState_H_
 #define GsAppState_H_
 
-//#include "common/CGameLauncher.h"
-//#include "common/options.h"
-//#include "common/Menu/CMenuController.h"
-//#include "core/CBaseEngine.h"
-//#include "engine/CEGAGraphics.h"
-//#include "engine/CMessages.h"
-//#include "engine/CPassive.h"
-//#include "core/mode/CGameMode.h"
-
+#include <lib/base/GsAppState.h>
 #include <string>
 #include <memory>
 
-class GsAppState /*: public GameState*/
+class CGState : public GsAppState
 {
 public:
 
-    GsAppState(bool &firsttime);
+    CGState(bool &firsttime);
 	
-	bool init(int argc, char *argv[]);
-
-    void pollEvents();
-
-    void ponder();
-
-    void render(const float deltaT);
-
-    /*void operator=(const GameState &rhs);
-
-    void operator=(const GameState &&rhs);*/
-
 	bool mustShutdown(){ return (mpEngine.get()==nullptr); }
 	
 protected:

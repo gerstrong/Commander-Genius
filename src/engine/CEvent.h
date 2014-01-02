@@ -21,12 +21,10 @@
 #include <vector>
 #include <memory>
 
+#include <base/GsEvent.h>
+
 class CSpriteObject;
 
-
-// TODO: These Event Interfaces must go to another file. Those are Inlevel Galaxy Events
-
-struct CEvent { virtual ~CEvent() {} };
 
 struct EventEnterLevel : CEvent {
 	uint16_t data;

@@ -56,19 +56,19 @@ public:
 
     void operator=(const GameState &&rhs);*/
 
-	bool mustShutdown(){ return (mpEngine.get()==nullptr); }
+    bool mustShutdown(){ return (mpEngine.get()==nullptr); }
 
     void pumpEvent(const CEvent *evPtr);
 	
 protected:
 
 
-	std::unique_ptr<CBaseEngine> mpEngine;
+    std::unique_ptr<CBaseEngine> mpEngine;
 
-	bool &m_firsttime;
-	int m_startGame_no;
-	int m_startLevel;
-	Difficulty m_startDifficulty;
+    bool &m_firsttime;
+    int m_startGame_no;
+    int m_startLevel;
+    Difficulty m_startDifficulty;
 
     GsAppStateEventSink mSink;
 };

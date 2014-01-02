@@ -141,7 +141,7 @@ INCLUDE_DIRECTORIES(src)
 INCLUDE_DIRECTORIES(src/lib)
 
 file(GLOB ALL_SRCS_PART_ROOT src/*.c* src/*.h*)
-file(GLOB_RECURSE ALL_SRCS_PART_LIB src/lib/*.c* src/lib/*.h*)
+#file(GLOB_RECURSE ALL_SRCS_PART_LIB src/lib/*.c* src/lib/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_COMMON src/common/*.c* src/common/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_CORE src/core/*.c* src/core/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_DIALOG src/dialog/*.c* src/dialog/*.h*)
@@ -152,6 +152,7 @@ file(GLOB_RECURSE ALL_SRCS_PART_GUI src/gui/*.c* src/gui/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_HARDWARE src/hardware/*.c* src/hardware/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_SDL src/sdl/*.c* src/sdl/*.h*)
 file(GLOB_RECURSE ALL_SRCS_PART_UTILS src/utils/*.c* src/utils/*.h*)
+
 
 SET(ALL_SRCS ${ALL_SRCS_PART_LIB}
              ${ALL_SRCS_PART_ROOT}
@@ -309,6 +310,8 @@ ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 # Executable definition
 ADD_EXECUTABLE(CommanderGenius ${ALL_SRCS})
 
+target_link_libraries(CommanderGenius GsKit_base)
+
 # Linking part under Linux
 IF(BUILD_TARGET STREQUAL WIN32)
 	TARGET_LINK_LIBRARIES(CommanderGenius mingw32)
@@ -356,6 +359,9 @@ else(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL_LIBRARY})
     target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
 endif(SDL2_FOUND)
+
+# Add GsKit
+add_subdirectory("src/lib")
 
 
 #MESSAGE( "BUILD_TARGET = ${BUILD_TARGET}" )
