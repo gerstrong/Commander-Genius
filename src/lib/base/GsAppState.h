@@ -10,7 +10,7 @@
 #ifndef CGAMECONTROL_H_
 #define CGAMECONTROL_H_
 
-#include "common/CBehaviorEngine.h"
+#include <base/GsEvent.h>
 #include "core/CBaseEngine.h"
 
 #include <string>
@@ -68,7 +68,6 @@ protected:
     bool &m_firsttime;
     int m_startGame_no;
     int m_startLevel;
-    Difficulty m_startDifficulty;
 
     GsAppStateEventSink mSink;
 };

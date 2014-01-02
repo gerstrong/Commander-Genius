@@ -16,8 +16,6 @@
 
 const std::string APP_NAME = "Commander Genius";
 
-//#define g_pLogFile	CLogFile::Get()
-
 #define gLogging	CLogFile::get()
 
 const int MAX_BUFFER = 1024;
