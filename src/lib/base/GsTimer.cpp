@@ -6,10 +6,9 @@
  */
 
 #include <SDL.h>
+#include <base/GsLogging.h>
+
 #include "GsTimer.h"
-#include <lib/base/GsLogging.h>
-#include "StringUtils.h"
-#include "common/CBehaviorEngine.h"
 
 CTimer::CTimer() :
 mRenderLatency(1000.0f/DEFAULT_FPS),

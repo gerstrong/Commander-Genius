@@ -8,4 +8,5 @@ project(GsKit_base)
 add_library(GsKit_base GsApp.cpp
                        GsAppState.cpp
                        GsLogging.cpp
-                       GsTimer.cpp)
+                       GsTimer.cpp
+                       GsEvent.h)

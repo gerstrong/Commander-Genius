@@ -8,8 +8,6 @@
 #ifndef CLOGFILE_H_
 #define CLOGFILE_H_
 
-//#include "CSingleton.h"
-
 #include <base/Singleton.h>
 
 #include <string>
