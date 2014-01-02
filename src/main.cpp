@@ -28,6 +28,8 @@
  Commander Genius   2012-2013   Hagel
  */
 
+#include "../version.h"
+
 #ifdef ANDROID
 	#include <SDL_main.h>
 #endif
@@ -85,7 +87,7 @@ int main(int argc, char *argv[])
 	InitThreadPool();
 	InitSearchPaths();
 
-	g_pLogFile->CreateLogfile("CGLog.html");
+    g_pLogFile->CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 
 	// The Game Class instance is the main class managing whole
 	// interpreter instance. TODO: It should be a singleton

@@ -9,7 +9,6 @@
 #include <iostream>
 #include <string.h>
 #include <fstream>
-#include "../version.h"
 #include <lib/base/GsLogging.h>
 #include "FindFile.h"
 #include "Debug.h"
@@ -17,7 +16,9 @@
 
 CLogFile::CLogFile() {}
 
-void CLogFile::CreateLogfile(const char *LogName)
+void CLogFile::CreateLogfile(const char *LogName,
+                             const std::string &appName,
+                             const std::string &version)
 {
 	// Open and empty the log file
 	m_Logfile = OpenGameFile(LogName, "wt");
@@ -27,8 +28,7 @@ void CLogFile::CreateLogfile(const char *LogName)
 	textOut("<body><font face='courier new'>");
 	WriteTopic("Logfile", 3);
 	
-	std::string versionstring = CGVERSION;
-	textOut(BLUE, APP_NAME + " v" + versionstring);
+    textOut(BLUE, appName + " v" + version);
 
 	// Mark the Build and Platform
 #ifdef DEBUG

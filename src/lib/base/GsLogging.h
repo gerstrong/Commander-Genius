@@ -33,7 +33,9 @@ public:
 	CLogFile();
 	virtual ~CLogFile();
 	
-	void CreateLogfile	(const char *LogName);
+    void CreateLogfile	(const char *LogName,
+                         const std::string &appName,
+                         const std::string &version);
 	void WriteTopic		(const char *Topic, int Size);
 	void textOut		(const std::string& Text);
 	void textOut		(FONTCOLORS Color, const std::string& Text);
