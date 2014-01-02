@@ -12,7 +12,7 @@
 #include <fstream>
 #include "StringUtils.h"
 #include "FindFile.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
 
 CExeFile::CExeFile() :

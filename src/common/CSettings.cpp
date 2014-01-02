@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "FindFile.h"
 #include "ConfigHandler.h"
 #include "CSettings.h"

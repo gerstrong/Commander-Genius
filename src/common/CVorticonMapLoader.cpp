@@ -9,7 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include "FindFile.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CRLE.h"

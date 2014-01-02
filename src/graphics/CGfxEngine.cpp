@@ -6,7 +6,7 @@
  */
 
 #include "CGfxEngine.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "StringUtils.h"
 
 #include "sdl/input/CInput.h"

@@ -6,7 +6,7 @@
  */
 
 #include "CCarmack.h"
-#include "../../CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "../../StringUtils.h"
 
 CCarmack::CCarmack()

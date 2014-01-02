@@ -11,7 +11,7 @@
 #include <iostream>
 #include "FindFile.h"
 #include "StringUtils.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
 

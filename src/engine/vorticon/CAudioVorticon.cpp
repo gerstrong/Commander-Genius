@@ -6,7 +6,7 @@
  */
 
 #include "CAudioVorticon.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "FindFile.h"
 #include "fileio/ResourceMgmt.h"
 #include <fstream>

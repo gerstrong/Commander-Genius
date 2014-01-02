@@ -9,7 +9,7 @@
 #include <fstream>
 #include <vector>
 #include "CSoundSlot.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/TypeDefinitions.h"

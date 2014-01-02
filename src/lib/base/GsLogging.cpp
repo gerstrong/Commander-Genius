@@ -10,7 +10,7 @@
 #include <string.h>
 #include <fstream>
 #include "../version.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "FindFile.h"
 #include "Debug.h"
 

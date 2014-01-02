@@ -33,7 +33,7 @@
 #endif
 
 #include <base/GsApp.h>
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "FindFile.h"
 #include "ThreadPool.h"
 

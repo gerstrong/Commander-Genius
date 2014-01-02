@@ -15,7 +15,7 @@
 #include "sdl/sound/CSound.h"
 #include <lib/base/GsTimer.h>
 #include "common/CSettings.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "common/Menu/CMenuController.h"
 
 #include "graphics/CGfxEngine.h"

@@ -6,7 +6,7 @@
  */
 
 #include "CTileLoader.h"
-#include "../CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "../StringUtils.h"
 #include "../FindFile.h"
 #include "TypeDefinitions.h"

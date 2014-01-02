@@ -18,7 +18,7 @@
 #include "fileio.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "engine/CCamera.h"
 
 /// AI Headers

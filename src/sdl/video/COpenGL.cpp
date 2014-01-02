@@ -12,7 +12,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h" // for CInput::renderOverlay
 #include "graphics/CGfxEngine.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "graphics/PerSurfaceAlpha.h"
 
 

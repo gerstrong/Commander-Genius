@@ -4,7 +4,7 @@
 
 #include "engine/spritedefines.h"
 #include "sdl/sound/CSound.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "graphics/effects/CVibrate.h"
 #include "common/CBehaviorEngine.h"
 

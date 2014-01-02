@@ -7,7 +7,7 @@
 
 #include "CSDLVideo.h"
 #include "CVideoEngine.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 
 #include "graphics/CGfxEngine.h"
 #include "graphics/PerSurfaceAlpha.h"

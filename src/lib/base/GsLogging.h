@@ -14,7 +14,8 @@
 const std::string APP_NAME = "Commander Genius";
 
 #define g_pLogFile	CLogFile::Get()
-#define MAX_BUFFER 1024
+
+const int MAX_BUFFER = 1024;
 
 enum FONTCOLORS
 {

@@ -2,7 +2,7 @@
  This file contains the functions which decompress the graphics
  data from Keen 1.
  */
-#include "../CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include <cstdio>
 
 #define LZ_STARTBITS        9

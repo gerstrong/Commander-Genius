@@ -18,7 +18,7 @@
 #include "common/CBehaviorEngine.h"
 #include "fileio/compression/CHuffman.h"
 #include "FindFile.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "StringUtils.h"
 #include "sdl/CVideoDriver.h"
 #include "fileio/CTileLoader.h"

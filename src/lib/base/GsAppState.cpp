@@ -10,7 +10,7 @@
 #include "fileio/CExeFile.h"
 #include "fileio/CPatcher.h"
 #include "fileio.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "sdl/sound/CSound.h"
 
 #include "common/Menu/CMenuController.h"

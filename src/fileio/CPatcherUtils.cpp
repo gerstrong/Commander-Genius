@@ -12,7 +12,7 @@
 #include <fstream>
 #include "../FindFile.h"
 #include "../StringUtils.h"
-#include "../CLogFile.h"
+#include <lib/base/GsLogging.h>
 
 /**
  * \brief   given a text line(string) with various items to patch, it will read of those

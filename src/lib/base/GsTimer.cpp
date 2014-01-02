@@ -7,8 +7,7 @@
 
 #include <SDL.h>
 #include "GsTimer.h"
-//#include "CVideoDriver.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "StringUtils.h"
 #include "common/CBehaviorEngine.h"
 

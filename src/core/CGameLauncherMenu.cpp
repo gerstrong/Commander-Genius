@@ -19,7 +19,7 @@
 #include <lib/base/GsTimer.h>
 #include "sdl/CVideoDriver.h"
 #include "common/CBehaviorEngine.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "Debug.h"
 
 CGameLauncherMenu::CGameLauncherMenu(bool& first_time, 

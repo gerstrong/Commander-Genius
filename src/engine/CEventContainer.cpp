@@ -7,4 +7,4 @@
 
 #include "CEventContainer.h"
 #include <string.h>
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>

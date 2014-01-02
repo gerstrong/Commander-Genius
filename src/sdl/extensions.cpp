@@ -10,7 +10,7 @@
 #include "extensions.h"
 
 #include "sdl/CVideoDriver.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 
 #include <cstring>
 #include <cstdio>

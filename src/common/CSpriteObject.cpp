@@ -7,7 +7,7 @@
 
 #include "engine/spritedefines.h"
 #include "CSpriteObject.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "sdl/CVideoDriver.h"
 
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!

@@ -7,7 +7,7 @@
 
 #include "COrderingInfo.h"
 #include "sdl/input/CInput.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"

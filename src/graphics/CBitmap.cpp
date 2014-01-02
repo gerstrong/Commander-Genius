@@ -10,7 +10,7 @@
 #include "FindFile.h"
 #include "sdl/CVideoDriver.h"
 
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 
 CBitmap::CBitmap()
 {}

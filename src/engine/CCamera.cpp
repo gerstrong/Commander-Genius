@@ -10,7 +10,7 @@
  */
 
 #include "CCamera.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "engine/spritedefines.h"

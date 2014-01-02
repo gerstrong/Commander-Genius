@@ -14,7 +14,7 @@
 #include "sdl/CVideoDriver.h"
 
 #include "FindFile.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 
 CTextViewer::CTextViewer(int x, int y, int w, int h) :
 m_timer(0)

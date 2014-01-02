@@ -18,7 +18,7 @@
 
 #include <lib/base/GsTimer.h>
 #include "CVec.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 
 namespace galaxy {
 

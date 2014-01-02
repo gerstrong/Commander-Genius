@@ -7,7 +7,7 @@
 
 #include <lib/base/GsTimer.h>
 #include "CVideoEngine.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include <SDL_syswm.h>
 #include "scalers/scalebit.h"
 

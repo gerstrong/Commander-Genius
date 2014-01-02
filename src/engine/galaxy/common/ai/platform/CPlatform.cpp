@@ -6,7 +6,7 @@
  */
 
 #include "CPlatform.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "sdl/CVideoDriver.h"
 
 namespace galaxy {

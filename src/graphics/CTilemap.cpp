@@ -12,7 +12,7 @@
 #include "FindFile.h"
 #include "CTilemap.h"
 #include "CPalette.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include <stdlib.h>
 
 CTilemap::CTilemap() :

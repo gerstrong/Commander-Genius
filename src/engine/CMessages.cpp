@@ -11,7 +11,7 @@
 
 #include "CMessages.h"
 #include "StringUtils.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include "common/CBehaviorEngine.h"
 
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
