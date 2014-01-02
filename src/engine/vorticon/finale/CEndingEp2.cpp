@@ -7,7 +7,7 @@
 
 #include "CEndingEp2.h"
 #include "StringUtils.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "sdl/input/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"

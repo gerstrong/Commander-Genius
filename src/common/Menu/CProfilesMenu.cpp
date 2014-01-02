@@ -9,7 +9,7 @@
 #include "common/Menu/CSelectionMenu.h"
 #include "common/CSettings.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "common/CBehaviorEngine.h"
 #include "engine/CEvent.h"
 #include <list>

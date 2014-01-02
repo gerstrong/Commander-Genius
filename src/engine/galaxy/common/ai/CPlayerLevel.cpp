@@ -16,7 +16,7 @@
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
 
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "CVec.h"
 #include "CLogFile.h"
 

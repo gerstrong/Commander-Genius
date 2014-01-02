@@ -10,7 +10,7 @@
 #include "engine/vorticon/playgame/CPlayGameVorticon.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/music/CMusicPlayer.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include <memory>
 
 CGamePlayMode::CGamePlayMode(const int Episode,

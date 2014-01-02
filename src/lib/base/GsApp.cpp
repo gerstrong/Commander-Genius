@@ -13,7 +13,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
 #include "sdl/sound/CSound.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "common/CSettings.h"
 #include "CLogFile.h"
 #include "common/Menu/CMenuController.h"

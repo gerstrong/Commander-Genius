@@ -11,7 +11,7 @@
 #include "sdl/input/InputEvents.h"
 #include "sdl/CVideoDriver.h"
 #include "core/mode/CGameMode.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "sdl/extensions.h"
 #include "StringUtils.h"
 #include "common/Menu/CMenuController.h"

@@ -10,7 +10,7 @@
 
 #include "CSpriteObject.h"
 #include "engine/spritedefines.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 
 /*
  * \brief Performs collision without bouncing box recalculation

@@ -10,7 +10,7 @@
 #include "FindFile.h"
 #include "CLogFile.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "graphics/CGfxEngine.h"
 #include <iostream>
 #include <fstream>

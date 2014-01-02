@@ -6,4 +6,5 @@ cmake_minimum_required(VERSION 2.8)
 project(GsKit_base)
 
 add_library(GsKit_base GsApp.cpp
-		       GsAppState.cpp)
+                       GsAppState.cpp
+                       GsTimer.cpp)

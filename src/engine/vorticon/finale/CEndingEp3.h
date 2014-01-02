@@ -12,7 +12,7 @@
 #include "common/CMap.h"
 #include "common/CPlayer.h"
 #include "engine/vorticon/dialog/CMessageBoxVort.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include <vector>
 #include <list>
 #include <SDL.h>

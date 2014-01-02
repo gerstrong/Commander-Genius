@@ -6,8 +6,8 @@
  */
 
 #include <SDL.h>
-#include "CTimer.h"
-#include "CVideoDriver.h"
+#include "GsTimer.h"
+//#include "CVideoDriver.h"
 #include "CLogFile.h"
 #include "StringUtils.h"
 #include "common/CBehaviorEngine.h"

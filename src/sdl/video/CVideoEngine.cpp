@@ -5,7 +5,7 @@
  *      Author: gerhard
  */
 
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "CVideoEngine.h"
 #include "CLogFile.h"
 #include <SDL_syswm.h>

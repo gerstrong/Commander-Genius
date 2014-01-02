@@ -8,7 +8,7 @@
  */
 
 #include "CTitle.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "sdl/CVideoDriver.h"
 #include "vorticon/ai/CEGABitmap.h"
 #include "graphics/effects/CColorMerge.h"

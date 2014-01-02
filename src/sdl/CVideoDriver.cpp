@@ -9,7 +9,7 @@
  */
 #include "CVideoDriver.h"
 #include "input/CInput.h"
-#include "CTimer.h"
+//#include <lib/base/GsTimer.h>
 
 #include "video/CSDLVideo.h"
 #include "video/COpenGL.h"

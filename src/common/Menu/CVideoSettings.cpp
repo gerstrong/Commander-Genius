@@ -9,7 +9,7 @@
 #include "common/CSettings.h"
 #include "CCameraSettings.h"
 #include "sdl/input/CInput.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "sdl/resolutionlist.h"
 #include "CVideoSettings.h"
 #include "CSettingsMenu.h"

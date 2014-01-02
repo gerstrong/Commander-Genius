@@ -12,7 +12,7 @@
 #include "sdl/CVideoDriver.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "sdl/extensions.h"
 #ifdef ANDROID
 #if SDL_VERSION_ATLEAST(2, 0, 0)

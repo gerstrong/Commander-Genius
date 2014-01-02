@@ -13,7 +13,7 @@
 #include "CControlsettings.h"
 #include "CProfilesMenu.h"
 #include "CSelectionMenu.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "sdl/CVideoDriver.h"
 #include "gui/CGUIButton.h"
 

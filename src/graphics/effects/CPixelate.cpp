@@ -12,7 +12,7 @@
 #include "CPixelate.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/input/CInput.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 
 #include "graphics/CGfxEngine.h"
 

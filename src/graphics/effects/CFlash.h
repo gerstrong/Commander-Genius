@@ -14,7 +14,7 @@
 
 #include <memory>
 #include "CEffects.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 
 class CFlash : public CEffects
 {

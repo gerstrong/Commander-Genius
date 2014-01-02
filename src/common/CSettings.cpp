@@ -9,7 +9,7 @@
 #include "FindFile.h"
 #include "ConfigHandler.h"
 #include "CSettings.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
 #include "common/options.h"

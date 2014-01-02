@@ -11,7 +11,7 @@
 #include "sdl/input/CInput.h"
 #include "sdl/input/InputEvents.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 
 #include <lib/base/PointDevice.h>
 
