@@ -126,10 +126,11 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
     // Events for the Player are processed here.
     if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )
     {
+        gEventManager.flush();
         if(ev->who == mSprVar)
-        {
+        {            
             if(ev->sucess)
-            {
+            {                
                 finishLevel(ev->levelObject);
 
                 if(g_pBehaviorEngine->getEpisode() == 5)
@@ -189,6 +190,7 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
 
     else if( const EventPlayerRideFoot* ev = dynamic_cast<const EventPlayerRideFoot*>(evPtr) )
     {
+        gEventManager.flush();
         finishLevel(ev->levelObject);
         solid = false;
 
