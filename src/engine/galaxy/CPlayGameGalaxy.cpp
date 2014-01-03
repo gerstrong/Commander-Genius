@@ -442,7 +442,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 /**
  *  The main ingame process cycle when keen galaxy is up and running
  */
-void CPlayGameGalaxy::ponder()
+void CPlayGameGalaxy::ponder(const float deltaT)
 {
 	if(g_pSound->pauseGamePlay() )
 		return;
@@ -485,14 +485,14 @@ void CPlayGameGalaxy::ponder()
 		if(m_WorldMap.isActive())
 		{
             m_WorldMap.setMsgBoxOpen(msgboxactive);
-            m_WorldMap.ponder();
+            m_WorldMap.ponder(deltaT);
 		}
 
 		// process World Map if active. At the start it's disabled, m_WorldMap turns it on.
 		if(m_LevelPlay.isActive())
 		{
             m_LevelPlay.setMsgBoxOpen(msgboxactive);
-            m_LevelPlay.ponder();
+            m_LevelPlay.ponder(deltaT);
 		}                
 
 		// Draw some Textboxes with Messages only if one of those is open and needs to be drawn
@@ -555,7 +555,7 @@ void CPlayGameGalaxy::ponder()
 
 }
 
-void CPlayGameGalaxy::render(const float deltaT)
+void CPlayGameGalaxy::render()
 {
     if( !gpMenuController->active() )
     {
@@ -563,13 +563,13 @@ void CPlayGameGalaxy::render(const float deltaT)
         // process World Map if active. At the start it's enabled
         if(m_WorldMap.isActive())
         {
-            m_WorldMap.render(deltaT);
+            m_WorldMap.render();
         }
 
         // process World Map if active. At the start it's disabled, m_WorldMap turns it on.
         if(m_LevelPlay.isActive())
         {
-            m_LevelPlay.render(deltaT);
+            m_LevelPlay.render();
         }
 
         // We have to show the status screen, do so...

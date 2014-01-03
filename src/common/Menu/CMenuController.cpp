@@ -91,7 +91,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
 }
 
 
-void CMenuController::ponder()
+void CMenuController::ponder(const float deltaT)
 {
 	if(mLocked)
 	    return;
@@ -116,7 +116,7 @@ void CMenuController::ponder()
     // Process Menu if open
 	if( !mMenuStack.empty() )
 	{
-        mMenuStack.back()->ponder();
+        mMenuStack.back()->ponder(deltaT);
 	}
 }
 
@@ -136,12 +136,12 @@ void CMenuController::popBackMenu()
 }
 
 
-void CMenuController::render(const float deltaT)
+void CMenuController::render()
 {
     // Render the Menu if open
     if( !mMenuStack.empty() && !mHidden )
     {
-        mMenuStack.back()->render(deltaT);
+        mMenuStack.back()->render();
     }
 }
 

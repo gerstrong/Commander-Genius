@@ -59,11 +59,11 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 
-    void ponder();
+    void ponder(const float deltaT);
 	void processOnWorldMap();
 	void processInLevel();
 
-    void render(const float deltaT);
+    void render();
 
 	void showKeensLeft();
 	void goBacktoMap();

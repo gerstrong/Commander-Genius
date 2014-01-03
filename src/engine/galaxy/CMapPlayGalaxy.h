@@ -44,9 +44,9 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 
-    void ponder();
+    void ponder(const float deltaT);
 
-    void render(const float deltaT);
+    void render();
 
 	// Push data to Savegame-Controller
 	void operator>>(CSaveGameController &savedGame);

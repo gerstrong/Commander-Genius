@@ -113,7 +113,7 @@ void CHelp::ponder()
 
 	if(mpTextViewer)
 	{
-        mpTextViewer->ponder();
+        mpTextViewer->ponder(0);
 		if(mpTextViewer->hasClosed())
 			m_destroy_me=true;
 	}
@@ -127,6 +127,6 @@ void CHelp::render()
 {
     if(mpTextViewer)
     {
-        mpTextViewer->render(0);
+        mpTextViewer->render();
     }
 }

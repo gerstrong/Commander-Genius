@@ -83,7 +83,7 @@ void CPixelate::getSnapshot()
 }
 
 // Effect cycle
-void CPixelate::ponder()
+void CPixelate::ponder(const float deltaT)
 {
 	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
@@ -100,7 +100,7 @@ void CPixelate::ponder()
 	}
 }
 
-void CPixelate::render(const float deltaT)
+void CPixelate::render()
 {
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 

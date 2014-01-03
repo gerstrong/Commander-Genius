@@ -34,8 +34,8 @@ public:
 	bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
     void start();
     void pumpEvent(const CEvent *evPtr);
-    void ponder();
-    void render(const float deltaT);
+    void ponder(const float deltaT);
+    void render();
 
 private:
 	std::unique_ptr<CGameLauncher> mp_GameLauncher;

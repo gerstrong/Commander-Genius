@@ -204,7 +204,7 @@ void CTextViewer::drawTextlines()
 }
 
 // Most common render function for this TextViewer
-void CTextViewer::ponder()
+void CTextViewer::ponder(const float deltaT)
 {
 	 // Normal Keys/Axes
 	 if( gInput.getHoldedCommand(IC_DOWN) )
@@ -234,7 +234,7 @@ void CTextViewer::ponder()
 
 
 
-void CTextViewer::render(const float deltaT)
+void CTextViewer::render()
 {
     renderBox();
     // This comes after, because it does use semi-transparent overlay

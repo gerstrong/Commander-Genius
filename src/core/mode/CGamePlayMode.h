@@ -30,8 +30,8 @@ public:
 	void loadGame();
 
     void pumpEvent(const CEvent *evPtr);
-    void ponder();
-    void render(const float deltaT);
+    void ponder(const float deltaT);
+    void render();
 
 private:
 	int m_startLevel;

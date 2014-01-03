@@ -26,8 +26,8 @@ protected:
 
     void start() {}
     void pumpEvent(const CEvent *evPtr);
-    void ponder();
-    void render(const float deltaT);
+    void ponder(const float deltaT);
+    void render();
 
 private:
 

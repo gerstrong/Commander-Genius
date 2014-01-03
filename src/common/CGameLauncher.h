@@ -46,7 +46,7 @@ struct GameEntry
 
 };
 
-class CGameLauncher : public GameState
+class CGameLauncher //: public GameState
 {
 public:
 	CGameLauncher();
@@ -57,8 +57,8 @@ public:
     void cleanup();
 
     void pumpEvent(const CEvent *evPtr);
-    void ponder();
-    void render(const float deltaT);
+    void ponder(const float deltaT);
+    void render();
 
 	int getChosengame(){ return m_chosenGame; }
 	bool setChosenGame(int chosengame) { m_chosenGame = chosengame; return waschosen();  }

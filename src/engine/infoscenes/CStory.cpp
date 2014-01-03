@@ -90,7 +90,7 @@ void CStory::ponder()
 {
 	if(mpTextViewer)
 	{
-        mpTextViewer->ponder();
+        mpTextViewer->ponder(0);
 		if(mpTextViewer->hasClosed())
 			m_destroy_me=true;
 	}
@@ -106,7 +106,7 @@ void CStory::render()
 
     if(mpTextViewer)
     {
-        mpTextViewer->render(0);
+        mpTextViewer->render();
     }
 }
 

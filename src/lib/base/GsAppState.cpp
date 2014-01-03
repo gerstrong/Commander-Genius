@@ -173,13 +173,13 @@ void GsAppState::pollEvents()
 // Process Routine
 ////
 // This function is run every time, the Timer says so, through.
-void GsAppState::ponder()
+void GsAppState::ponder(const float deltaT)
 {    
     pollEvents();
 
 	// Process the game control object if no effects are being processed
 	if(mpEngine)
-        mpEngine->ponder();
+        mpEngine->ponder(deltaT);
 
 	if(g_pGfxEngine->runningEffect())
 	{
@@ -189,13 +189,13 @@ void GsAppState::ponder()
 		}
 	}
 	
-    gpMenuController->ponder();    
+    gpMenuController->ponder(deltaT);
 }
 
-void GsAppState::render(const float deltaT)
+void GsAppState::render()
 {
     if(mpEngine)
-        mpEngine->render(deltaT);
+        mpEngine->render();
 
-    gpMenuController->render(deltaT);
+    gpMenuController->render();
 }

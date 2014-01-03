@@ -269,7 +269,7 @@ void CGameLauncherMenu::pumpEvent(const CEvent *evPtr)
     mp_GameLauncher->pumpEvent(evPtr);
 }
 
-void CGameLauncherMenu::ponder()
+void CGameLauncherMenu::ponder(const float deltaT)
 {
 	// If the firsttime menu is open, process it
 	if(mp_FirstTimeMenu)
@@ -282,7 +282,7 @@ void CGameLauncherMenu::ponder()
 	else
 	{
 		// Launch the code of the Startmenu here! The one for choosing the games
-        mp_GameLauncher->ponder();
+        mp_GameLauncher->ponder(deltaT);
 		m_start_game_no = mp_GameLauncher->getChosengame();
 
 		if( m_start_game_no >= 0 ) // Means a game has been selected
@@ -340,14 +340,14 @@ void CGameLauncherMenu::ponder()
 }
 
 
-void CGameLauncherMenu::render(const float deltaT)
+void CGameLauncherMenu::render()
 {
     if(!mp_FirstTimeMenu)
     {
-        mp_GameLauncher->render(deltaT);
+        mp_GameLauncher->render();
     }
     else
     {
-        mp_FirstTimeMenu->render(deltaT);
+        mp_FirstTimeMenu->render();
     }
 }

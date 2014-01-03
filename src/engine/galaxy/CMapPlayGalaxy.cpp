@@ -72,7 +72,7 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
 
 
 
-void CMapPlayGalaxy::ponder()
+void CMapPlayGalaxy::ponder(const float deltaT)
 {
     const bool msgboxactive = mMsgBoxOpen;
 
@@ -192,7 +192,7 @@ void CMapPlayGalaxy::ponder()
 
 }
 
-void CMapPlayGalaxy::render(const float deltaT)
+void CMapPlayGalaxy::render()
 {
     gVideoDriver.blitScrollSurface();
 

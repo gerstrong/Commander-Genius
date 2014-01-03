@@ -104,7 +104,7 @@ void CGameMain::pumpEvent(const CEvent *evPtr)
 }
 
 
-void CGameMain::ponder()
+void CGameMain::ponder(const float deltaT)
 {
 	if( mpInfoScene )
 	{
@@ -121,16 +121,16 @@ void CGameMain::ponder()
 	else
 	{
 		// Process the game mode object
-        mpGameMode->ponder();
+        mpGameMode->ponder(deltaT);
 	}
 }
 
-void CGameMain::render(const float deltaT)
+void CGameMain::render()
 {
     if( !mpInfoScene )
     {
         // Render the game mode object
-        mpGameMode->render(deltaT);
+        mpGameMode->render();
     }
     else
     {

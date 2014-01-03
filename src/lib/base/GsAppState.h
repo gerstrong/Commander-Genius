@@ -47,9 +47,9 @@ public:
 
     void pollEvents();
 
-    void ponder();
+    void ponder(const float deltaT);
 
-    void render(const float deltaT);
+    void render();
 
     bool mustShutdown(){ return (mpEngine.get()==nullptr); }
 

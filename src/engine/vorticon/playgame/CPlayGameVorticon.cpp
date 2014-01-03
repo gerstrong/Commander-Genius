@@ -211,7 +211,7 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 ////
 // Process Routine
 ////
-void CPlayGameVorticon::ponder()
+void CPlayGameVorticon::ponder(const float deltaT)
 {
 	if( !mpFinale && !gpMenuController->active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
@@ -319,7 +319,7 @@ void CPlayGameVorticon::ponder()
 	
 }
 
-void CPlayGameVorticon::render(const float deltaT)
+void CPlayGameVorticon::render()
 {
     // Check for fading processes if necessary
     if(g_pGfxEngine->Palette.in_progress())

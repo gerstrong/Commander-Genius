@@ -35,9 +35,9 @@ void COptions::init()
 }
 
 
-void COptions::ponder()
+void COptions::ponder(const float deltaT)
 {
-    CBaseMenu::ponder();
+    CBaseMenu::ponder(0);
 
     auto it = mpOptionList.begin();
 

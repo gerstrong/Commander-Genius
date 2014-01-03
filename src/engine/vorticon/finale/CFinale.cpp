@@ -37,7 +37,7 @@ void CFinale::showEndingText()
 		mpTextViewer->loadTextfromFile(mpMap->m_gamepath + "endtext.ck" + itoa(m_Episode));
 	}
 
-    mpTextViewer->ponder();
+    mpTextViewer->ponder(0);
 
 	if(mpTextViewer->hasClosed())
 	{
@@ -51,6 +51,6 @@ void CFinale::renderEndingText()
 {
     if(mpTextViewer)
     {
-        mpTextViewer->render(0);
+        mpTextViewer->render();
     }
 }

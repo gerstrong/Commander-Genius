@@ -14,7 +14,7 @@ m_RunTime(msecs)
 {}
 
 // Spawns the vibration effect
-void CVibrate::ponder()
+void CVibrate::ponder(const float deltaT)
 {
 	// First we need to figure out the coordinates
 	if(m_dir_x == 0 && m_dir_y == 0) m_dir_x = -1;
@@ -28,7 +28,7 @@ void CVibrate::ponder()
 		mFinished = true;
 }
 
-void CVibrate::render(const float deltaT)
+void CVibrate::render()
 {
     SDL_Surface *sfc = gVideoDriver.getBlitSurface();
     SDL_Rect gamerect = gVideoDriver.getGameResolution().SDLRect();

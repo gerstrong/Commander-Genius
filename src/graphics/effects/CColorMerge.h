@@ -22,8 +22,8 @@ class CColorMerge : public CEffects
 public:
 	CColorMerge(const Uint8 speed);
 
-    void ponder();
-    void render(const float deltaT);
+    void ponder(const float deltaT);
+    void render();
 	
 	std::shared_ptr<SDL_Surface> &getSfc()
 	{  return mpOldSurface;  }

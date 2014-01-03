@@ -17,8 +17,8 @@ class CDimDark : public CEffects
 
 public:
     CDimDark(const Uint8 speed);
-    void ponder();
-    void render(const float deltaT);
+    void ponder(const float deltaT);
+    void render();
     
     std::shared_ptr<SDL_Surface> &getDarkSfc()
     {  return mpDarkSurface;  }

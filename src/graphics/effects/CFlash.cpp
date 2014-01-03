@@ -71,7 +71,7 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
 //#endif
 
 // Process the flashing effect here
-void CFlash::ponder()
+void CFlash::ponder(const float deltaT)
 {
     Uint32 ElapsedTime = gTimer.getTicks() - m_StartTime;
 
@@ -108,7 +108,7 @@ void CFlash::ponder()
         mFinished = true;
 }
 
-void CFlash::render(const float deltaT)
+void CFlash::render()
 {
     // Blit it and free temp surface
     SDL_BlitSurface( mpFadeSurface.get(), NULL,

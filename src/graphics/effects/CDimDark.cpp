@@ -36,7 +36,7 @@ dimDark(true)
     SDL_FillRect( mpDarkSurface.get(), NULL, SDL_MapRGB(mpDarkSurface->format, 0, 0, 0) );
 }
 
-void CDimDark::ponder()
+void CDimDark::ponder(const float deltaT)
 {
     if(dimDark) // dim dark here
     {
@@ -83,7 +83,7 @@ void CDimDark::ponder()
     }
 }
 
-void CDimDark::render(const float deltaT)
+void CDimDark::render()
 {
     if(dimDark) // dim dark here
     {

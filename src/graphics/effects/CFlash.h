@@ -25,8 +25,8 @@ public:
 	CFlash(Uint32 msecs, Uint8 speed=1,Uint32 color=0xFFFFFF );
 	CFlash(Uint32 msecs, Uint8 speed=1,Uint32 color=0xFFFFFF, Uint8 m_maxalpha=128 );
 
-    void ponder();
-    void render(const float deltaT);
+    void ponder(const float deltaT);
+    void render();
 
 private:
 

@@ -71,7 +71,7 @@ void CGamePlayMode::init()
 
 void CGamePlayMode::loadGame()
 {
-    mp_PlayGame->ponder();
+    mp_PlayGame->ponder(0);
 
     if(mp_PlayGame->loadXMLGameState())
         return;
@@ -84,12 +84,12 @@ void CGamePlayMode::pumpEvent(const CEvent *evPtr)
     mp_PlayGame->pumpEvent(evPtr);
 }
 
-void CGamePlayMode::ponder()
+void CGamePlayMode::ponder(const float deltaT)
 {
 	// The player is playing the game. It also includes scenes like ending
     CEventContainer& EventContainer = gEventManager;
 
-    mp_PlayGame->ponder();
+    mp_PlayGame->ponder(deltaT);
 	
 	if( EventContainer.occurredEvent<SaveGameEvent>() )
 	{
@@ -116,9 +116,9 @@ void CGamePlayMode::ponder()
 
 }
 
-void CGamePlayMode::render(const float deltaT)
+void CGamePlayMode::render()
 {
-    mp_PlayGame->render(deltaT);
+    mp_PlayGame->render();
 
     if(g_pBehaviorEngine->m_option[OPT_SHOWFPS].value)
     {

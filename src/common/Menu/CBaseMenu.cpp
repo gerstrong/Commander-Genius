@@ -61,7 +61,7 @@ void CBaseMenu::setMenuLabel(const std::string &label)
 }
 
 
-void CBaseMenu::ponder()
+void CBaseMenu::ponder(const float deltaT)
 {
 	// Command (Keyboard/Joystick) are handled here
 	for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
@@ -79,7 +79,7 @@ void CBaseMenu::ponder()
 }
 
 
-void CBaseMenu::render(const float deltaT)
+void CBaseMenu::render()
 {
     mpMenuDialog->processRendering();
 }

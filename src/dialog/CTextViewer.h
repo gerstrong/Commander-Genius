@@ -21,8 +21,8 @@ public:
 
 	void initialize();
 	void renderBox();
-    void ponder();
-    void render(const float deltaT);
+    void ponder(const float deltaT);
+    void render();
 
 	void formatText(const std::string &text);
 	bool loadTextfromFile(const std::string &filename);

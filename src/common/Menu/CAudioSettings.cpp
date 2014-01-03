@@ -55,9 +55,9 @@ void CAudioSettings::init()
 }
 
 
-void CAudioSettings::ponder()
+void CAudioSettings::ponder(const float deltaT)
 {
-    CBaseMenu::ponder();
+    CBaseMenu::ponder(0);
 
 	if( mSoundVolume != mpSoundVolume->getSelection() )
 		g_pSound->playSound(SOUND_GET_ITEM);

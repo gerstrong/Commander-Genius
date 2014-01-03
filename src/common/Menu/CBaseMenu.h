@@ -16,7 +16,7 @@ const int NO_SELECTION = -1;
 #include <list>
 #include <memory>
 
-class CBaseMenu : public GameState
+class CBaseMenu //: public GameState
 {
 public:
 
@@ -40,9 +40,9 @@ public:
 	void setMenuLabel(const std::string &label);
 
 	// Processes the stuff that the menus have in common
-    virtual void ponder();
+    virtual void ponder(const float deltaT);
 
-    virtual void render(const float deltaT);
+    virtual void render();
 
 	virtual void sendEvent(std::shared_ptr<CEvent> &command)
 	{

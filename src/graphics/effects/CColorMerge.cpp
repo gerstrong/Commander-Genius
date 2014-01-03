@@ -28,7 +28,7 @@ void CColorMerge::getSnapshot()
 }
 
 // Effect cycle
-void CColorMerge::ponder()
+void CColorMerge::ponder(const float deltaT)
 {
 	// Process the effect
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -50,7 +50,7 @@ void CColorMerge::ponder()
 	}
 }
 
-void CColorMerge::render(const float deltaT)
+void CColorMerge::render()
 {
     SDL_BlitSurface( mpOldSurface.get(), NULL,
                 gVideoDriver.getBlitSurface(), NULL );

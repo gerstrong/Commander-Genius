@@ -25,7 +25,7 @@ public:
 
 	void init();
 
-    void ponder();
+    void ponder(const float deltaT);
 
 	void release();
 

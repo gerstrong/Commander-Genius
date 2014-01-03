@@ -161,7 +161,7 @@ void GsApp::run()
             gEventManager.processSinks();
 
             // Ponder Game Control
-            mAppState.ponder();
+            mAppState.ponder(logicLatency);
 
             /*
               previousState = currentState;
@@ -175,7 +175,7 @@ void GsApp::run()
         }
 
         // Now we render the whole GameControl Object to the blit surface
-        mAppState.render(0);
+        mAppState.render();
 
         // Apply graphical effects if any.
         g_pGfxEngine->render();

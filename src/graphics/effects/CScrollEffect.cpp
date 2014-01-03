@@ -24,7 +24,7 @@ mVDir(vDir)
     mpScrollSurface.reset( gVideoDriver.convertThroughBlitSfc(pScrollSurface), &SDL_FreeSurface );
 }
 
-void CScrollEffect::ponder()
+void CScrollEffect::ponder(const float deltaT)
 {        
     if(mSpeed < 0)
 	{
@@ -67,7 +67,7 @@ void CScrollEffect::ponder()
 	}
 }
 
-void CScrollEffect::render(const float deltaT)
+void CScrollEffect::render()
 {
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     SDL_Rect dest = gameres;

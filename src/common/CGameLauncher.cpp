@@ -231,7 +231,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 ////
 // Process Routine
 ////
-void CGameLauncher::ponder()
+void CGameLauncher::ponder(const float deltaT)
 {
     // Did the user press (X)?
     if( gInput.getExitEvent() )
@@ -266,7 +266,7 @@ void CGameLauncher::ponder()
 }
 
 
-void CGameLauncher::render(const float deltaT)
+void CGameLauncher::render()
 {      
     if(g_pGfxEngine->applyingEffects())
         return;

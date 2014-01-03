@@ -250,7 +250,7 @@ void CGfxEngine::ponder()
 {
     if(mpEffects)
     {
-        mpEffects->ponder();
+        mpEffects->ponder(0);
     }
 }
 
@@ -258,7 +258,7 @@ void CGfxEngine::render()
 {
     if(mpEffects)
     {
-        mpEffects->render(0);
+        mpEffects->render();
 
         if( !runningEffect() )
         {

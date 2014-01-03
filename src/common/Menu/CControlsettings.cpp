@@ -187,7 +187,7 @@ void CControlSettingsMovement::ponder()
 	    }
 	}
     }	
-    CBaseMenu::ponder();
+    CBaseMenu::ponder(0);
 }
 
 void CControlSettingsMovement::release()
@@ -265,7 +265,7 @@ void CControlSettingsButtons::ponder()
         }
     }
     
-    CBaseMenu::ponder();
+    CBaseMenu::ponder(0);
 }
 
 void CControlSettingsButtons::release()
