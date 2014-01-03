@@ -7,7 +7,7 @@
 
 #include "CStatusScreenGalaxy.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 #include "sdl/extensions.h"
 
@@ -117,7 +117,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 
 void CStatusScreenGalaxy::draw()
 {
-    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     const int scaleFac = gameres.h/200;
 
     SDL_Rect src = mpStatusSurface->clip_rect;
@@ -126,7 +126,7 @@ void CStatusScreenGalaxy::draw()
 
     blitScaled(mpStatusSurface.get(),
                src,
-               g_pVideoDriver->getBlitSurface(),
+               gVideoDriver.getBlitSurface(),
                src,
                NONE);
 

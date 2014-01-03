@@ -15,7 +15,8 @@
 #include "ep4/ai/CInchWorm.h"
 #include "ep4/ai/CFoot.h"
 #include "ep4/ai/CSmokePuff.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
+#include <base/video/CVideoDriver.h>
 
 #include <boost/property_tree/ptree.hpp>
 #include "Base64.h"
@@ -43,7 +44,7 @@ void CMapPlayGalaxy::setActive(bool value)
 	if(mActive)
 	{
 	    mMap.drawAll();
-	    g_pVideoDriver->updateScrollBuffer(mMap);
+	    gVideoDriver.updateScrollBuffer(mMap);
 	}
 }
 
@@ -193,7 +194,7 @@ void CMapPlayGalaxy::ponder()
 
 void CMapPlayGalaxy::render(const float deltaT)
 {
-    g_pVideoDriver->blitScrollSurface();
+    gVideoDriver.blitScrollSurface();
 
     auto obj = mObjectPtr.rbegin();
 

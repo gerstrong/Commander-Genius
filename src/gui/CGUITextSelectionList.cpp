@@ -7,7 +7,7 @@
 
 #include "CGUITextSelectionList.h"
 #include "common/CBehaviorEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "graphics/CGfxEngine.h"
 //#include "sdl/input/InputEvents.h"
 #include <base/CInput.h>
@@ -71,8 +71,8 @@ void CGUITextSelectionList::processLogic()
 {
 	// Here we check if the mouse-cursor/Touch entry clicked on something!!
 
-	//const float bw = g_pVideoDriver->getGameResolution().w;
-	const float bh = g_pVideoDriver->getGameResolution().h;
+	//const float bw = gVideoDriver.getGameResolution().w;
+	const float bh = gVideoDriver.getGameResolution().h;
 
 	const float fx = mRect.x;
 	const float fw = mRect.w;
@@ -115,7 +115,7 @@ void CGUITextSelectionList::processLogic()
 void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Blit the List surface
-	SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *Blitsurface = gVideoDriver.getBlitSurface();
 
 	// Transform to the display coordinates
     GsRect<float> displayRect = mRect;

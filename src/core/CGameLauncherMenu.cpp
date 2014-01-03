@@ -17,7 +17,7 @@
 #include "fileio/CSaveGameController.h"
 #include "sdl/sound/CSound.h"
 #include <lib/base/GsTimer.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 #include <lib/base/GsLogging.h>
 #include <base/Debug.h>
@@ -49,7 +49,7 @@ void CGameLauncherMenu::init()
 
     // In some cases especially when another game was running, the scene wasn't cleaned up.
     // We do this here
-    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+    SDL_Surface *blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0, 0, 0) );
 
     CEventContainer& EventContainer = gEventManager;

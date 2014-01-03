@@ -11,7 +11,7 @@
 
 #include "CCamera.h"
 #include <lib/base/GsLogging.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "engine/spritedefines.h"
 
@@ -69,8 +69,8 @@ void CCamera::attachObject(CSpriteObject *p_attacher)
 void CCamera::setPosition(const VectorD2<int>& newpos)
 {
 
-	int cam_x = newpos.x-((g_pVideoDriver->getGameResolution().w/2)<<STC);
-	int cam_y = newpos.y-((g_pVideoDriver->getGameResolution().h/2)<<STC);
+	int cam_x = newpos.x-((gVideoDriver.getGameResolution().w/2)<<STC);
+	int cam_y = newpos.y-((gVideoDriver.getGameResolution().h/2)<<STC);
 
     const int minimumEdgeDist = (2<<CSF)+1;
     const int maxWidth = (mp_Map->m_width<<CSF)-1;
@@ -124,7 +124,7 @@ void CCamera::process(const bool force)
     if(m_freeze)
 		return;
 	
-	SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
+	SDL_Rect gamerect = gVideoDriver.getGameResolution().SDLRect();
 	const int maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 32;
 	const int maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 32;
 	
@@ -192,7 +192,7 @@ void CCamera::process(const bool force)
     const int scFacW = gamerect.w/320;
     const int scFacH = gamerect.h/200;
 
-    st_camera_bounds CameraBounds = g_pVideoDriver->getCameraBounds();
+    st_camera_bounds CameraBounds = gVideoDriver.getCameraBounds();
     const int left = CameraBounds.left*scFacW;
     const int up = CameraBounds.up*scFacH;
     const int right = CameraBounds.right*scFacW;
@@ -238,7 +238,7 @@ void CCamera::process(const bool force)
 
 void CCamera::reAdjust() 
 {
-    SDL_Rect gameRes = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect gameRes = gVideoDriver.getGameResolution().SDLRect();
   
 	Uint16 &scroll_x = mp_Map->m_scrollx;
 	Uint16 &scroll_y = mp_Map->m_scrolly;
@@ -303,8 +303,8 @@ bool CCamera::outOfSight()
 {
 	bool outofsight = false;
 
-	const int cam_width = ((g_pVideoDriver->getGameResolution().w/2)<<STC);
-	const int cam_height = ((g_pVideoDriver->getGameResolution().h/2)<<STC);
+	const int cam_width = ((gVideoDriver.getGameResolution().w/2)<<STC);
+	const int cam_height = ((gVideoDriver.getGameResolution().h/2)<<STC);
 
 	const int camX = getXPosition();
 	const int camY = getYPosition();

@@ -1,6 +1,6 @@
 #include "misc.h"
 #include "sdl/sound/CSound.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "graphics/CGfxEngine.h"
 #include "engine/spritedefines.h"
 
@@ -316,7 +316,7 @@ void CVorticonElite::getShotByRay(object_t &obj_type)
 {
 	if( !m_invincible && mHealthPoints>0 && obj_type != OBJ_GUARDROBOT)
 	{
-		if(mHealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+		if(mHealthPoints>1 && gVideoDriver.getSpecialFXConfig())
 			blink(10);
 		mHealthPoints--;
 	}

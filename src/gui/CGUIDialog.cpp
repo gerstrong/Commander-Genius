@@ -10,7 +10,7 @@
 #include "CGUIDialog.h"
 #include "CGUIButton.h"
 #include "CGUIInputText.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
@@ -281,10 +281,10 @@ void CGUIDialog::setPosition(const float x, const float y)
 
 void CGUIDialog::initEmptyBackround()
 {
-    const SDL_Rect lRect = g_pVideoDriver->toBlitRect(mRect);
+    const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
     mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
 
-    mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 
 	SDL_Surface *sfc = mpBackgroundSfc.get();    
     SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );        
@@ -325,9 +325,9 @@ void CGUIDialog::drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect)
 
 void CGUIDialog::initVorticonBackground()
 {
-    const SDL_Rect Rect = g_pVideoDriver->toBlitRect(mRect);
+    const SDL_Rect Rect = gVideoDriver.toBlitRect(mRect);
     mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
-    mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(1);
@@ -349,19 +349,19 @@ void CGUIDialog::initVorticonBackground()
 	// Now draw the borders
     drawBorderRect(backSfc, Rect);
 
-    mpTempSfc.reset( g_pVideoDriver->convertThroughBlitSfc( backSfc ), &SDL_FreeSurface );
+    mpTempSfc.reset( gVideoDriver.convertThroughBlitSfc( backSfc ), &SDL_FreeSurface );
 }
 
 void CGUIDialog::initGalaxyBackround()
 {   
     mBackgroundBmp = *g_pGfxEngine->getBitmapFromStr("KEENSWATCH");
 
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     mBackgroundBmp.scaleTo(gameRes);
 
     SDL_Surface *swatchBmp = mBackgroundBmp.getSDLSurface();
 
-    mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( swatchBmp ), &SDL_FreeSurface );
+    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( swatchBmp ), &SDL_FreeSurface );
 
 
     // Besides the Background Bitmap we need to draw two lines
@@ -446,13 +446,13 @@ void CGUIDialog::processLogic()
 
 void CGUIDialog::processRendering()
 {
-    processRendering(g_pVideoDriver->getBlitSurface());
+    processRendering(gVideoDriver.getBlitSurface());
 }
 
 
 void CGUIDialog::processRendering(SDL_Surface *blit)
 {        
-    GsRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> GameRes = gVideoDriver.getGameResolution();
     GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
     auto engine = g_pBehaviorEngine->getEngine();
@@ -468,7 +468,7 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
 
         if( mFXhStep == 0 && mFXvStep == 0 )
         {
-            lRect = g_pVideoDriver->toBlitRect(mRect);
+            lRect = gVideoDriver.toBlitRect(mRect);
             SDL_BlitSurface( bgSfc, nullptr, blit, &lRect );
         }
         else
@@ -487,7 +487,7 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
                 fxRect.y = fxRect.y + (mRect.h-fxRect.h)/2;
             }
 
-            lRect = g_pVideoDriver->toBlitRect(fxRect);
+            lRect = gVideoDriver.toBlitRect(fxRect);
 
             // Makes the Border look more like in DOS-Keen
             if( engine == ENGINE_VORTICON && lRect.h < 16 )

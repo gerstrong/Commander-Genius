@@ -10,7 +10,7 @@
  */
 
 #include "CMessageBoxGalaxy.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"
@@ -26,7 +26,7 @@ mText(Text)
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
 	// Create a surface for that
 	mMBRect.w = Font.getPixelTextWidth(mText)+16;
@@ -38,7 +38,7 @@ mText(Text)
 void CMessageBoxGalaxy::init()
 {    
     mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-    mpMBSurface.reset(g_pVideoDriver->convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
+    mpMBSurface.reset(gVideoDriver.convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
 
 	initGalaxyFrame();
 
@@ -106,7 +106,7 @@ void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 {
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
-	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> pTextSfc(Font.fetchColoredTextSfc( mText, SDL_MapRGB( format, 0, 0, 0 ) ));
 	SDL_BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
@@ -126,5 +126,5 @@ void CMessageBoxGalaxy::ponder()
 void CMessageBoxGalaxy::render()
 {
     // Just render the MessageBox
-    SDL_BlitSurface(mpMBSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), &mMBRect);
+    SDL_BlitSurface(mpMBSurface.get(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
 }

@@ -6,7 +6,7 @@
  */
 
 #include "CMessageBoxVort.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"
@@ -38,7 +38,7 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 
 	GsRect<float> fRect( x, y, 16.0f, 16.0f);
 
-	GsRect<float> gameRect = g_pVideoDriver->getGameResolution();
+	GsRect<float> gameRect = gVideoDriver.getGameResolution();
 	fRect.transformInverse(gameRect);
 	fRect.transform(mRect);
 

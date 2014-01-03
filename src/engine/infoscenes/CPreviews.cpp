@@ -9,7 +9,7 @@
 
 #include "common/CBehaviorEngine.h"
 #include <base/FindFile.h>
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
 #include "StringUtils.h"
 #include "common/CVorticonMapLoader.h"

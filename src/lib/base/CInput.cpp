@@ -10,13 +10,13 @@
 
 #include "InputEvents.h"
 #include "CInput.h"
-#include "sdl/CVideoDriver.h"
-#include <lib/base/GsLogging.h>
+#include <base/video/CVideoDriver.h>
+#include <base/GsLogging.h>
 #include <base/FindFile.h>
 #include "StringUtils.h"
 #include "fileio/CConfiguration.h"
 #include "common/CSettings.h"
-#include "common/CBehaviorEngine.h"
+//#include "common/CBehaviorEngine.h"
 #include <lib/base/PointDevice.h>
 
 // Input Events
@@ -543,9 +543,9 @@ void CInput::pollEvents()
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
 
-    GsRect<Uint16> clickGameArea = g_pVideoDriver->mpVideoEngine->getAspectCorrRect();
+    GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
 
-    if( !g_pVideoDriver->isOpenGL() )
+    if( !gVideoDriver.isOpenGL() )
     {
         clickGameArea.x = 0;
         clickGameArea.y = 0;
@@ -590,14 +590,14 @@ void CInput::pollEvents()
         case SDL_WINDOWEVENT:
             if(Event.window.event == SDL_WINDOWEVENT_RESIZED)
             {
-                g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
+                gVideoDriver.mpVideoEngine->resizeDisplayScreen(
                         GsRect<Uint16>(Event.window.data1,
                                       Event.window.data2) );
             }
             break;
 #else
 		case SDL_VIDEORESIZE:
-			g_pVideoDriver->mpVideoEngine->resizeDisplayScreen(
+            gVideoDriver.mpVideoEngine->resizeDisplayScreen(
 					GsRect<Uint16>(Event.resize.w, Event.resize.h) );
 			break;
 #endif
@@ -645,14 +645,14 @@ void CInput::pollEvents()
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
 	{
 		bool value;
-		value = g_pVideoDriver->getFullscreen();
+        value = gVideoDriver.getFullscreen();
 		value = !value;
 		gLogging.textOut(GREEN,"Fullscreen mode triggered by user!<br>");
-		g_pVideoDriver->isFullscreen(value);
+        gVideoDriver.isFullscreen(value);
 
 		// initialize/activate all drivers
 		gLogging.ftextOut("Restarting graphics driver...<br>");
-		if ( g_pVideoDriver->applyMode() && g_pVideoDriver->start() )
+        if ( gVideoDriver.applyMode() && gVideoDriver.start() )
 		{
 			gLogging.ftextOut(PURPLE, "Toggled Fullscreen quick shortcut...<br>");
 		}
@@ -660,8 +660,8 @@ void CInput::pollEvents()
 		{
 			value = !value;
 			gLogging.ftextOut(PURPLE, "Couldn't change the resolution, Rolling back...<br>");
-			g_pVideoDriver->applyMode();
-			g_pVideoDriver->start();
+            gVideoDriver.applyMode();
+            gVideoDriver.start();
 		}
 
 		gInput.flushAll();
@@ -686,7 +686,7 @@ void CInput::pollEvents()
 	{
 		g_pSettings->loadDefaultGraphicsCfg();
 		g_pSettings->saveDrvCfg();
-		g_pVideoDriver->start();
+        gVideoDriver.start();
 	}
 }
 

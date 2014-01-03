@@ -8,7 +8,7 @@
 #include "CGUISwitch.h"
 #include "StringUtils.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 
 CGUISwitch::CGUISwitch( const std::string& text ) :
@@ -22,7 +22,7 @@ void CGUISwitch::drawVorticonStyle(SDL_Rect& lRect)
 	if(!mEnabled)
 		return;
 
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(2);

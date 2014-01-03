@@ -11,10 +11,9 @@
 #include "CTextViewer.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"
-#include "sdl/CVideoDriver.h"
-
+#include <base/video/CVideoDriver.h>
 #include <base/FindFile.h>
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 CTextViewer::CTextViewer(int x, int y, int w, int h) :
 m_timer(0)
@@ -26,12 +25,12 @@ m_timer(0)
 	m_8x8tilewidth = m_8x8tileheight = 8;
 	m_mustclose = false;
 
-	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpTextVSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+    mpTextVSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(temp);
 }
@@ -240,7 +239,7 @@ void CTextViewer::render(const float deltaT)
     renderBox();
     // This comes after, because it does use semi-transparent overlay
 
-    SDL_BlitSurface(mpTextVSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL);
+    SDL_BlitSurface(mpTextVSfc.get(), NULL, gVideoDriver.getBlitSurface(), NULL);
 }
 
 

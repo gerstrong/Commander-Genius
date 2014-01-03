@@ -8,7 +8,7 @@
 #include "CFont.h"
 #include "CPalette.h"
 #include <base/FindFile.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "CGFont.xpm"
 #include "alternatefont.xpm"
 #include "StringUtils.h"
@@ -153,7 +153,7 @@ bool CFont::loadAlternateFont()
 {
 	// Has the Surface to the entire font been loaded?
 
-	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blit = gVideoDriver.getBlitSurface();
 	mFontSurface.reset( loadfromXPMData( alternatefont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
 	return true;
 }
@@ -162,7 +162,7 @@ bool CFont::loadAlternateFont()
 
 bool CFont::loadinternalFont()
 {
-	SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blit = gVideoDriver.getBlitSurface();
 
     mFontSurface.reset( loadfromXPMData( CGFont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
 
@@ -221,7 +221,7 @@ void CFont::setupColor( const Uint32 fgColor )
 	SDL_Color color[16];
 	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
 
-    SDL_PixelFormat *pPixelformat = g_pVideoDriver->getBlitSurface()->format;
+    SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
     SDL_GetRGB(fgColor, pPixelformat, &color[15].r, &color[15].g, &color[15].b);
 
@@ -241,7 +241,7 @@ Uint32 CFont::getFGColor()
 	SDL_Color color[16];
 	memcpy( color, mFontSurface->format->palette->colors, 16*sizeof(SDL_Color) );
 
-    SDL_PixelFormat *pPixelformat = g_pVideoDriver->getBlitSurface()->format;
+    SDL_PixelFormat *pPixelformat = gVideoDriver.getBlitSurface()->format;
 
 	// Change palette colors to the desired one
     return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
@@ -255,7 +255,7 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 	rect.w = getPixelTextWidth(text);
 	rect.h = getPixelTextHeight()*calcNumLines(text);
 
-    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+    SDL_Surface *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
 
@@ -323,7 +323,7 @@ unsigned int CFont::getPixelTextHeight()
 
 Uint32 CFont::getBGColour(const bool highlight)
 {
-    SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+    SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	return getBGColour(format, highlight);
 }

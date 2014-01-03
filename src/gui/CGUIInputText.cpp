@@ -9,7 +9,7 @@
 #include "graphics/CGfxEngine.h"
 #include <base/CInput.h>
 //#include "sdl/input/InputEvents.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include <lib/base/GsTimer.h>
@@ -125,12 +125,12 @@ void CGUIInputText::drawGalaxyStyle(SDL_Rect& lRect)
 	if(!mEnabled)
 		return;
 
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
-	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 
 	const Uint32 oldcolor = Font.getFGColor();
@@ -159,7 +159,7 @@ void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 		return;
 
 
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
@@ -174,7 +174,7 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 	if(!mEnabled)
 		return;
 
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	if( mReleased )
 	{

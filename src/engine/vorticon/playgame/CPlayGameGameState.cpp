@@ -8,7 +8,7 @@
 #include "CPlayGameVorticon.h"
 #include "StringUtils.h"
 #include "graphics/effects/CColorMerge.h"
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include "common/CVorticonMapLoader.h"
 #include "Base64.h"
 

@@ -7,7 +7,7 @@
 
 #include "CCredits.h"
 #include <base/CInput.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "graphics/CGfxEngine.h"
 #include "common/CVorticonMapLoader.h"
 #include "sdl/extensions.h"
@@ -87,11 +87,11 @@ void CCredits::init()
 	for(int j=0 ; j<54 ; j++)
 		m_mid[j] = 160-(m_scrolltext[j].size()*4);
 
-	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpDrawSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+    mpDrawSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(temp);
 }
@@ -104,7 +104,7 @@ void CCredits::ponder()
 		m_timer=0;
 		if(m_scrolly>-54*8) m_scrolly--;
 		else
-			m_scrolly = g_pVideoDriver->getGameResolution().h;
+			m_scrolly = gVideoDriver.getGameResolution().h;
 	}
 	
 
@@ -116,19 +116,19 @@ void CCredits::render()
 {
     CFont &creditFont = g_pGfxEngine->getFont(0);
     mpMap->animateAllTiles();
-    g_pVideoDriver->blitScrollSurface();
+    gVideoDriver.blitScrollSurface();
 
     SDL_FillRect(mpDrawSfc.get(), NULL, 0x0);
 
     for(int j=0 ; j<54 ; j++)
     {
-        if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
+        if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < gVideoDriver.getGameResolution().h)
         {
             creditFont.drawFont( mpDrawSfc.get(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
         }
     }
 
-    SDL_BlitSurface(mpDrawSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+    SDL_BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
 }
 
 

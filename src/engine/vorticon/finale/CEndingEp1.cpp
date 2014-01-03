@@ -9,7 +9,7 @@
 #include "StringUtils.h"
 #include <lib/base/GsTimer.h>
 #include <base/CInput.h>
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CVorticonMapLoader.h"
 #include "common/Playerdefines.h"

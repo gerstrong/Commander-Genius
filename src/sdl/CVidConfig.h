@@ -13,7 +13,7 @@
 
 #include <SDL.h>
 #include "hardware/Configurator.h"
-#include "sdl/video/scalers/CScaler.h"
+#include <base/video/scaler/CScaler.h>
 
 const unsigned int RES_BPP = 32;
 

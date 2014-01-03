@@ -14,7 +14,7 @@
 #include "CProfilesMenu.h"
 #include "CSelectionMenu.h"
 #include <lib/base/GsTimer.h>
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include "gui/CGUIButton.h"
 
 #include "common/Menu/CMenuController.h"

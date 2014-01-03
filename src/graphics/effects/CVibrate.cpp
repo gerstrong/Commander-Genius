@@ -6,7 +6,7 @@
  */
 
 #include "CVibrate.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 CVibrate::CVibrate(Uint32 msecs) :
 m_StartTime(gTimer.getTicks()),
@@ -30,14 +30,14 @@ void CVibrate::ponder()
 
 void CVibrate::render(const float deltaT)
 {
-    SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
-    SDL_Rect gamerect = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+    SDL_Rect gamerect = gVideoDriver.getGameResolution().SDLRect();
 
     // then erase the entire old surface ...
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
 
 //#else
-    mpVibSfc.reset( g_pVideoDriver->convertThroughBlitSfc(sfc), &SDL_FreeSurface );
+    mpVibSfc.reset( gVideoDriver.convertThroughBlitSfc(sfc), &SDL_FreeSurface );
 //#endif
     SDL_FillRect(sfc, &gamerect, SDL_MapRGB(sfc->format, 0,0,0));
 
@@ -49,5 +49,5 @@ void CVibrate::render(const float deltaT)
 
     // Blit it and free temp surface
     SDL_BlitSurface( mpVibSfc.get(), &gamerect,
-                     g_pVideoDriver->getBlitSurface(), &mVibRect );
+                     gVideoDriver.getBlitSurface(), &mVibRect );
 }

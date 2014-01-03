@@ -15,7 +15,7 @@
 #include "fileio/compression/CRLE.h"
 #include "common/CBehaviorEngine.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "CResourceLoader.h"
 
 #include "engine/vorticon/ai/CYorp.h"
@@ -202,7 +202,7 @@ bool CVorticonMapLoaderBase::load( Uint8 episode,
 	}
 	
 	// Set Map Delegation Object and refresh whole level
-	g_pVideoDriver->updateScrollBuffer( mpMap );
+	gVideoDriver.updateScrollBuffer( mpMap );
 
 	return true;
 }
@@ -224,7 +224,7 @@ bool CVorticonMapLoaderWithPlayer::load( Uint8 episode,
     }
 
     // Set Map Delegation Object and refresh whole level
-    g_pVideoDriver->updateScrollBuffer( mpMap );
+    gVideoDriver.updateScrollBuffer( mpMap );
 
     return true;
 }

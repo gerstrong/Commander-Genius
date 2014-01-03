@@ -12,25 +12,25 @@
 #ifndef CVIDEODRIVER_H_
 #define CVIDEODRIVER_H_
 
-#include "CSingleton.h"
-#include "CVidConfig.h"
-#include "video/CVideoEngine.h"
+#include <base/Singleton.h>
+//#include "CVidConfig.h"
+#include <base/video/CVideoEngine.h>
 #include <base/GsEvent.h>
 #include "common/CMap.h"
 
 #ifdef USE_OPENGL
-	#include "sdl/video/COpenGL.h"
+    #include <base/video/COpenGL.h>
 #endif
 
 
-#define g_pVideoDriver CVideoDriver::Get()
+#define gVideoDriver CVideoDriver::get()
 
 #include <SDL.h>
 #include <iostream>
 #include <list>
 #include <memory>
 
-class CVideoDriver : public CSingleton<CVideoDriver>
+class CVideoDriver : public GsSingleton<CVideoDriver>
 {
 public:
 	CVideoDriver();

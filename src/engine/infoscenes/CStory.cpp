@@ -13,7 +13,7 @@
 #include "common/CVorticonMapLoader.h"
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <base/FindFile.h>
 
@@ -102,7 +102,7 @@ void CStory::ponder()
 void CStory::render()
 {
     mpMap->animateAllTiles();
-    g_pVideoDriver->blitScrollSurface();
+    gVideoDriver.blitScrollSurface();
 
     if(mpTextViewer)
     {

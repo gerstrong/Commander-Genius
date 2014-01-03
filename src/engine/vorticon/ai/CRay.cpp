@@ -4,7 +4,7 @@
 #include "CRay.h"
 #include "engine/spritedefines.h"
 #include "common/CBehaviorEngine.h"
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 
 #define Sprite g_pGfxEngine->Sprite
 

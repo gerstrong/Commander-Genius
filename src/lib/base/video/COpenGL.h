@@ -23,7 +23,7 @@
 #include <SDL_opengl.h>
 #endif
 
-#include "CVideoEngine.h"
+#include <base/video/CVideoEngine.h>
 
 // Structure used for dimensions
 struct stDims{

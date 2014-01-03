@@ -16,7 +16,7 @@
 #include "fileio/compression/CCarmack.h"
 #include "fileio/compression/CRLE.h"
 #include "fileio.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/music/CMusic.h"
 #include <lib/base/GsLogging.h>
 #include "engine/CCamera.h"
@@ -327,7 +327,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
 
   // Set Scrollbuffer
-  g_pVideoDriver->updateScrollBuffer(Map);
+  gVideoDriver.updateScrollBuffer(Map);
   
   return true;
 }

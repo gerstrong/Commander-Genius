@@ -10,7 +10,8 @@
 #include "engine/vorticon/playgame/CPlayGameVorticon.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/music/CMusicPlayer.h"
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
+#include <base/video/CVideoDriver.h>
 #include <memory>
 
 CGamePlayMode::CGamePlayMode(const int Episode,
@@ -136,7 +137,7 @@ void CGamePlayMode::render(const float deltaT)
         SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
         g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
 
-        SDL_BlitSurface(mpFPSSurface.get(), NULL, g_pVideoDriver->getBlitSurface(), &rect);
+        SDL_BlitSurface(mpFPSSurface.get(), NULL, gVideoDriver.getBlitSurface(), &rect);
     }
 }
 

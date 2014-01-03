@@ -7,7 +7,7 @@
 
 #include "CGUIText.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "StringUtils.h"
 
 CGUIText::CGUIText(const std::string& text)
@@ -72,6 +72,6 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 	std::list<std::string>::iterator text = mTextList.begin();
 	for( size_t i=0 ; text != mTextList.end() ; text++, i++ )
 	{
-		Font.drawFontCentered(g_pVideoDriver->getBlitSurface(), *text, lRect.x, lRect.w, lRect.y+i*8, false);
+		Font.drawFontCentered(gVideoDriver.getBlitSurface(), *text, lRect.x, lRect.w, lRect.y+i*8, false);
 	}
 }

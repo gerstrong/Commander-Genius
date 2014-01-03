@@ -8,7 +8,7 @@
 #include "CGameLauncher.h"
 #include <lib/base/GsLogging.h>
 #include "gui/CGUIText.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "gui/CGUITextSelectionList.h"
 #include "gui/CGUIBanner.h"
@@ -220,7 +220,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         setChosenGame(mpSelList->getSelection());
 
         // Create a surface which only will contain the dialog and else transparent background
-        SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+        SDL_Surface *blit = gVideoDriver.getBlitSurface();
         mLauncherDialog.processRendering();
 
         g_pGfxEngine->setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));

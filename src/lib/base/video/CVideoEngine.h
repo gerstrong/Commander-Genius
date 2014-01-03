@@ -14,7 +14,7 @@
 #include <SDL.h>
 #include <string>
 
-#include "scalers/CScaler.h"
+//#include "scalers/CScaler.h"
 #include "sdl/CVidConfig.h"
 #include "sdl/extensions.h"
 #include <memory>

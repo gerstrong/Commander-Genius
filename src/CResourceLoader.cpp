@@ -8,7 +8,7 @@
 #include "CResourceLoader.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 #include "StringUtils.h"
 #include <cassert>
@@ -22,12 +22,12 @@ m_max_permil(1000),
 m_style(PROGRESS_STYLE_TEXT)
 {
     SDL_Rect rect;
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
     rect.x = 0;		rect.y = 0;
     rect.w = gameRes.w;	rect.h = gameRes.h;
 
     mpProgressSfc.reset( CG_CreateRGBSurface( rect ), &SDL_FreeSurface );
-    mpProgressSfc.reset( g_pVideoDriver->convertThroughBlitSfc(mpProgressSfc.get()), &SDL_FreeSurface );
+    mpProgressSfc.reset( gVideoDriver.convertThroughBlitSfc(mpProgressSfc.get()), &SDL_FreeSurface );
 }
 
 /**
@@ -50,7 +50,7 @@ int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, i
 	m_permil = m_min_permil;
 	m_permiltarget = m_min_permil;
 	mp_Thread.reset(threadPool->start(act, threadname));
-	g_pVideoDriver->clearSurfaces();
+	gVideoDriver.clearSurfaces();
 	
 	int ret = 0;
 	process(&ret);
@@ -70,13 +70,13 @@ bool CResourceLoader::process(int* ret)
         return false;
 
     // Background go black while rendering
-    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+    SDL_Surface *blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0, 0, 0) );
 
     
     // Draw the first Frame, so transition looks complete!
     renderLoadingGraphic();
-    g_pVideoDriver->updateDisplay();
+    gVideoDriver.updateDisplay();
     
     start = timerTicks();
 
@@ -123,14 +123,14 @@ bool CResourceLoader::process(int* ret)
 		}	
 		
 		// Pass all the surfaces to one
-		g_pVideoDriver->collectSurfaces();
+		gVideoDriver.collectSurfaces();
 
         // Apply graphical effects if any.
         g_pGfxEngine->render();
 		
 		// Now you really render the screen
 		// When enabled, it also will apply Filters
-        g_pVideoDriver->updateDisplay();
+        gVideoDriver.updateDisplay();
 		
 		elapsed = timerTicks() - start;
 		total_elapsed += elapsed;
@@ -160,7 +160,7 @@ bool CResourceLoader::process(int* ret)
 	setPermilageForce(m_max_permil);
 	setPermilage(m_max_permil);
 	renderLoadingGraphic();
-    g_pVideoDriver->updateDisplay();
+    gVideoDriver.updateDisplay();
 	
 	m_permiltarget = m_permil = m_min_permil;
 	
@@ -205,7 +205,7 @@ void CResourceLoader::renderLoadingGraphic()
     SDL_Surface *sfc = mpProgressSfc.get();
     SDL_FillRect(sfc, nullptr, 0x0);
     
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
     const int gameWidth = gameRes.w;
     const int gameHeight = gameRes.h;
@@ -220,7 +220,7 @@ void CResourceLoader::renderLoadingGraphic()
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
 		
         SDL_Rect textRect;
-        GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+        GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
         const float scaleUpW = float(gameRes.w)/320.0f;
         const float scaleUpH = float(gameRes.h)/200.0f;
         textRect.x = (int)(80.0*scaleUpW);        textRect.y = (int)(100.0*scaleUpH);
@@ -271,7 +271,7 @@ void CResourceLoader::renderLoadingGraphic()
 	}
 	
     // In there is garbage of other drawn stuff clean it up.
-    auto blit = g_pVideoDriver->getBlitSurface();
+    auto blit = gVideoDriver.getBlitSurface();
 
     SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0,0,0) );
 

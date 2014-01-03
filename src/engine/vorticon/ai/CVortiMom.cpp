@@ -1,5 +1,5 @@
 #include "../../../sdl/sound/CSound.h"
-#include "../../../sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "../../../misc.h"
 
 #include "CVortiMom.h"
@@ -184,7 +184,7 @@ void CVortiMom::getShotByRay(object_t &obj_type)
 {
 	if( state != MOTHER_HURT && mHealthPoints>0 )
 	{
-		if(mHealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+		if(mHealthPoints>1 && gVideoDriver.getSpecialFXConfig())
 			blink(10);
 		sprite = MOTHER_HURT_FRAME;
 		mHealthPoints--;

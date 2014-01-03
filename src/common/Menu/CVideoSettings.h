@@ -9,7 +9,7 @@
 #define CVIDEOSETTINGS_H_
 
 #include "CBaseMenu.h"
-#include "sdl/CVideoDriver.h"
+#include "sdl/CVidConfig.h"
 #include <SDL.h>
 #include <string>
 

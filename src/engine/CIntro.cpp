@@ -7,8 +7,9 @@
 
 #include "CIntro.h"
 #include <base/CInput.h>
-#include "sdl/CVideoDriver.h"
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
+#include <base/video/CVideoDriver.h>
+
 
 CIntro::CIntro()
 {
@@ -17,7 +18,7 @@ CIntro::CIntro()
 	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
 	m_scrolly = 200;
 	m_finished = false;
-	mp_bmp_surface = g_pVideoDriver->mpVideoEngine->getBlitSurface();
+	mp_bmp_surface = gVideoDriver.mpVideoEngine->getBlitSurface();
 	SDL_FillRect(mp_bmp_surface, NULL, 0);
 }
 
@@ -31,7 +32,7 @@ void CIntro::init()
     mp_bm[4] = g_pGfxEngine->getBitmapFromStr("IDSOFT");
     mp_bm[5] = g_pGfxEngine->getBitmapFromStr("PRODUCT");
 
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 	
 	for(int j=0 ; j<6 ; j++)
 	{

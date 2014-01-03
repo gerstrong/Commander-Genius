@@ -6,11 +6,11 @@
  */
 
 #include "CFinaleStaticScene.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/video/scalers/CScaler.h"
+//#include "sdl/video/scalers/CScaler.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 m_mustclose(false),
@@ -32,10 +32,10 @@ m_timer(0)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         
 #else
-        mpSceneSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSceneSurface.get()), &SDL_FreeSurface);
+        mpSceneSurface.reset(gVideoDriver.convertThroughBlitSfc(mpSceneSurface.get()), &SDL_FreeSurface);
 #endif
 
-        SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+        SDL_Surface *blit = gVideoDriver.getBlitSurface();
 
         std::shared_ptr<SDL_Surface> scaledScene(
                     SDL_ConvertSurface(blit, blit->format, 0),
@@ -108,7 +108,7 @@ void CFinaleStaticScene::render(const int step)
 {
     if(mpSceneSurface)
     {
-        SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
+        SDL_Surface *sfc = gVideoDriver.getBlitSurface();
         SDL_BlitSurface(mpSceneSurface.get(), nullptr, sfc, nullptr);        
     }
 

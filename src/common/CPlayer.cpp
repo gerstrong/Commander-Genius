@@ -14,7 +14,7 @@
 
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "graphics/CGfxEngine.h"
 #include "engine/spritedefines.h"
 #include <stdlib.h>

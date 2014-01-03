@@ -6,11 +6,11 @@
  */
 
 #include "CGUIControl.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "graphics/CGfxEngine.h"
 #include <base/CInput.h>
 //#include "sdl/input/InputEvents.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 
 #include <lib/base/PointDevice.h>
@@ -64,7 +64,7 @@ void CGUIControl::processPointingState()
 void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 {
 
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
@@ -92,7 +92,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 
 void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 {
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	if( gTimer.HasTimeElapsed(500) )
 		mTwirliconID = !mTwirliconID;

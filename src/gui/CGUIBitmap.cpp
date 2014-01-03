@@ -7,7 +7,7 @@
 
 #include "CGUIBitmap.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 CGUIBitmap::CGUIBitmap(std::unique_ptr<CBitmap>&& pBitmap) :
 mpBitmap(move(pBitmap))
@@ -24,7 +24,7 @@ mTextID(text)
 
 void CGUIBitmap::updateGraphics()
 {
-    GsRect<Uint16> sizeForScreen = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> sizeForScreen = gVideoDriver.getGameResolution();
     mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmapFromStr(mTextID) ));
 
     sizeForScreen.w /= 320;

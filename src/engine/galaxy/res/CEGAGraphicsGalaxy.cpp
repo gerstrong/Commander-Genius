@@ -20,7 +20,7 @@
 #include <base/FindFile.h>
 #include <lib/base/GsLogging.h>
 #include "StringUtils.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "fileio/CTileLoader.h"
 #include "common/CSpriteObject.h"
 #include "engine/CPlanes.h"
@@ -664,7 +664,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 					maxwidth = FontHead->Width[j];
 			}
 
-			Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
+			Font.CreateSurface(Palette, gVideoDriver.getScrollSurface()->flags, maxwidth*16, FontHead->Height * 16);
 
 			SDL_Surface* sfc = Font.getSDLSurface();
 
@@ -737,7 +737,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
         CBitmap &Bitmap = g_pGfxEngine->getBitmapFromId(i);
 		bmpRect.w = BmpHead[i].Width*8;
 		bmpRect.h = BmpHead[i].Height;
-		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, bmpRect, Palette);
+		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
 
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexBitmaps + i).data,
@@ -770,7 +770,7 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 		bmpRect.w = BmpMaskedHead[i].Width*8;
 		bmpRect.h = BmpMaskedHead[i].Height;
 
-		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, bmpRect, Palette);
+		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
 
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
@@ -865,7 +865,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
 		Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 
-		Sprite.createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags,
+		Sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
 				g_pGfxEngine->Palette.m_Palette );
 
 		SDL_Surface *sfc = Sprite.getSDLSurface();

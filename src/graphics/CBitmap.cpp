@@ -8,7 +8,7 @@
 #include "CBitmap.h"
 #include "CPalette.h"
 #include <base/FindFile.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 #include <lib/base/GsLogging.h>
 
@@ -29,7 +29,7 @@ mName(bitmap.getName())
     if( sfc != nullptr )
     {
         // Create new and compatible surface for that bitmap
-        SDL_Surface *optSfc = g_pVideoDriver->convertThroughBlitSfc( sfc );
+        SDL_Surface *optSfc = gVideoDriver.convertThroughBlitSfc( sfc );
         mpBitmapSurface.reset( optSfc, &SDL_FreeSurface );
     }
 }
@@ -63,7 +63,7 @@ bool CBitmap::optimizeSurface()
 	if(mpBitmapSurface)
 	{
 		SDL_Surface *temp_surface;
-        temp_surface = g_pVideoDriver->convertThroughBlitSfc(mpBitmapSurface.get());
+        temp_surface = gVideoDriver.convertThroughBlitSfc(mpBitmapSurface.get());
 		mpBitmapSurface.reset( temp_surface, &SDL_FreeSurface );
 		return true;
 	}
@@ -196,7 +196,7 @@ bool CBitmap::scaleTo(const GsRect<Uint16> &gameRes)
 
 
 
-    CVidConfig &vidConf = g_pVideoDriver->getVidConfig();
+    CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
     blitScaled(bmpSfc,
                bmpSfc->clip_rect,
@@ -221,7 +221,7 @@ bool CBitmap::scaleTo(const GsRect<Uint16> &gameRes)
  */
 void CBitmap::draw(const int x, const int y)
 {
-    _draw( x, y, g_pVideoDriver->getBlitSurface() );
+    _draw( x, y, gVideoDriver.getBlitSurface() );
 }
 
 /**

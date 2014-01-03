@@ -11,7 +11,7 @@
 #include "graphics/CGfxEngine.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"

@@ -14,7 +14,7 @@
 #include "common/CMap.h"
 #include "engine/vorticon/ai/CVorticonSpriteObjectAI.h"
 #include "graphics/CBitmap.h"
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 
 class CTantalusRay : public CFinale
 {

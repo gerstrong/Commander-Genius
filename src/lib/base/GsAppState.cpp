@@ -19,7 +19,7 @@
 #include "core/mode/CGamePlayMode.h"
 #include "core/mode/CGamePassiveMode.h"
 
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
 
 #include "core/CGameMain.h"

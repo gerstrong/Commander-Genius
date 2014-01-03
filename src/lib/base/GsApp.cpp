@@ -11,11 +11,9 @@
 
 #include "GsApp.h"
 
-#include <lib/base/GsTimer.h>
-#include <lib/base/GsLogging.h>
-
-
-#include "sdl/CVideoDriver.h"
+#include <base/GsTimer.h>
+#include <base/GsLogging.h>
+#include <base/video/CVideoDriver.h>
 
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
@@ -42,7 +40,6 @@ mAppState(m_firsttime)
 GsApp::~GsApp()
 {
 	g_pSound->destroy();
-	g_pVideoDriver->Del();
 }
 
 
@@ -105,7 +102,7 @@ bool GsApp::init(int argc, char *argv[])
 bool GsApp::loadCKPDrivers()
 {
 	// Init graphics
-	if (!g_pVideoDriver->start()) return false;
+    if (!gVideoDriver.start()) return false;
 	
 	// Init the sound
 	g_pSound->init();
@@ -184,11 +181,11 @@ void GsApp::run()
         g_pGfxEngine->render();
 
         // Pass all the surfaces to one. Some special surfaces are used and are collected here
-        g_pVideoDriver->collectSurfaces();
+        gVideoDriver.collectSurfaces();
 
         // Now you really render the screen
         // When enabled, it also will apply Filters
-        g_pVideoDriver->updateDisplay();
+        gVideoDriver.updateDisplay();
 
         /*
          const double alpha = acc / logicLatency;

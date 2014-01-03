@@ -10,7 +10,7 @@
 #include "graphics/CGfxEngine.h"
 #include "common/CVorticonMapLoader.h"
 #include "common/CTileProperties.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "sdl/extensions.h"
 #include "core/mode/CGameMode.h"
@@ -23,11 +23,11 @@ bool CPassiveVort::init(char mode)
 	m_mode = mode;
 
 
-	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpTextSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+    mpTextSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(temp);
 
@@ -70,7 +70,7 @@ void CPassiveVort::ponder()
 	{
 		if( EventContainer.occurredEvent<ResetScrollSurface>() )
 		{
-		    g_pVideoDriver->updateScrollBuffer( mpMap );
+		    gVideoDriver.updateScrollBuffer( mpMap );
 		    EventContainer.pop_Event();
 		    return;
 		}
@@ -115,11 +115,11 @@ void CPassiveVort::render()
     mpMap->animateAllTiles();
 
     // Blit the background
-    g_pVideoDriver->blitScrollSurface();
+    gVideoDriver.blitScrollSurface();
 
     SDL_BlitSurface( mpTextSfc.get(),
                      nullptr,
-                     g_pVideoDriver->getBlitSurface(),
+                     gVideoDriver.getBlitSurface(),
                      nullptr );
 
 

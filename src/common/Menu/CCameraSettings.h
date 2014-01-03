@@ -9,7 +9,7 @@
 #define CCAMERASETTINGS_H_
 
 #include "CBaseMenu.h"
-#include "sdl/CVideoDriver.h"
+#include "sdl/CVidConfig.h"
 #include "gui/CGUINumberControl.h"
 
 

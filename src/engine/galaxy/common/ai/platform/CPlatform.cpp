@@ -7,7 +7,7 @@
 
 #include "CPlatform.h"
 #include <lib/base/GsLogging.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 namespace galaxy {
 
@@ -200,14 +200,14 @@ void CPlatform::draw()
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
     
-    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     
     if( scrx < gameres.w && scry < gameres.h && exists )
     {
         int showX = scrx+Sprite.getXOffset();
         int showY = scry+Sprite.getYOffset();
 
-        auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
+        auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
         if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
             return;

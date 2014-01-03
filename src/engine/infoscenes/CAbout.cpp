@@ -11,7 +11,7 @@
 #include <lib/base/GsLogging.h>
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/CVorticonMapLoader.h"
 #include "fileio/ResourceMgmt.h"
 #include "sdl/extensions.h"
@@ -144,11 +144,11 @@ void CAbout::init()
 		m_logo_rect.y = 22;
 	}
 
-	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpDrawSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+    mpDrawSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(temp);
 }
@@ -163,7 +163,7 @@ void CAbout::ponder()
 void CAbout::render()
 {
     mpMap->animateAllTiles();
-    g_pVideoDriver->blitScrollSurface();
+    gVideoDriver.blitScrollSurface();
 
     if(m_type == "ID")
     {
@@ -172,7 +172,7 @@ void CAbout::render()
     else if(m_type == "CG")
     {
         if(mpLogoBMP)
-            SDL_BlitSurface(mpLogoBMP.get(), nullptr, g_pVideoDriver->getBlitSurface(), &m_logo_rect);
+            SDL_BlitSurface(mpLogoBMP.get(), nullptr, gVideoDriver.getBlitSurface(), &m_logo_rect);
     }
 
     for(std::size_t i=0 ; i<m_lines.size() ; i++)
@@ -180,7 +180,7 @@ void CAbout::render()
         g_pGfxEngine->getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
     }
 
-    SDL_BlitSurface(mpDrawSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+    SDL_BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
 }
 
 void CAbout::teardown()

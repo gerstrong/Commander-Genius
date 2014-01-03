@@ -8,7 +8,7 @@
 #include "CEndingEp3.h"
 #include "StringUtils.h"
 #include <base/CInput.h>
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include "graphics/effects/CFlash.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CVorticonMapLoader.h"

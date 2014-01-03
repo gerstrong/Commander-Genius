@@ -1,6 +1,6 @@
 #include "CGUIBanner.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 
 const int TIME_UNTIL_CHANGE = 180;
@@ -73,12 +73,12 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
 
 	if(transition)
 	{
-	    Font.drawFontCenteredAlpha(g_pVideoDriver->getBlitSurface(), *prevTextIt, lRect.x, lRect.w, lRect.y, 255-alpha);
-	    Font.drawFontCenteredAlpha(g_pVideoDriver->getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, alpha);
+	    Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *prevTextIt, lRect.x, lRect.w, lRect.y, 255-alpha);
+	    Font.drawFontCenteredAlpha(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, alpha);
 	}
 	else
 	{
-	    Font.drawFontCentered(g_pVideoDriver->getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, false);
+	    Font.drawFontCentered(gVideoDriver.getBlitSurface(), *curTextIt, lRect.x, lRect.w, lRect.y, false);
 	}
 	
 }

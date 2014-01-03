@@ -6,7 +6,7 @@
  */
 
 #include "CMessageBoxBitmapGalaxy.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
 
 const int FONT_ID = 0;
@@ -18,7 +18,7 @@ CMessageBoxGalaxy(Text),
 mBitmap(BitmapRef),
 mAlignment(alignment)
 {
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
 	// Looking if the Bitmap is too big for the Message box. In that case enlarge it!
 	if( (mBitmap.getHeight()+26) > mMBRect.h )
@@ -35,7 +35,7 @@ mAlignment(alignment)
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpMBSurface.reset(g_pVideoDriver->convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
+    mpMBSurface.reset(gVideoDriver.convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
 //#endif
 }
 

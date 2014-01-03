@@ -10,7 +10,7 @@
 #include <lib/base/GsLogging.h>
 #include "fileio/CExeFile.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
@@ -139,11 +139,11 @@ void COrderingInfo::init()
 			break;
 	}
 
-	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpTextSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+    mpTextSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(temp);
 }
@@ -164,7 +164,7 @@ void COrderingInfo::ponder()
 void COrderingInfo::render()
 {
     mpMap->animateAllTiles();
-    g_pVideoDriver->blitScrollSurface();
+    gVideoDriver.blitScrollSurface();
 
     for(int i=0 ; i<m_numberoflines ; i++)
     {
@@ -172,7 +172,7 @@ void COrderingInfo::render()
                                             160-m_Textline[i].size()*4, 8*(i+m_starty), true);
     }
 
-    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+    SDL_BlitSurface(mpTextSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
 }
 
 void COrderingInfo::teardown()

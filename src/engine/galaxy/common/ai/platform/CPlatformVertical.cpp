@@ -7,7 +7,7 @@
 
 #include "CPlatformVertical.h"
 #include "common/CBehaviorEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 
 const int FIRE_CHANGE_TIME = 5;
@@ -125,7 +125,7 @@ void CPlatformVertical::draw()
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
     
-    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     
     if( scrx < gameres.w && scry < gameres.h && exists )
     {

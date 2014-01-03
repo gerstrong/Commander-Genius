@@ -8,7 +8,7 @@
 #include "CProfilesMenu.h"
 #include "common/Menu/CSelectionMenu.h"
 #include "common/CSettings.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 #include "common/CBehaviorEngine.h"
 #include "engine/CEvent.h"
@@ -26,8 +26,8 @@ public:
 	{
 		stOption *p_option = g_pBehaviorEngine->m_option;
 		g_pSettings->loadDrvCfg();
-		g_pVideoDriver->setSpecialFXMode(false);
-		st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
+		gVideoDriver.setSpecialFXMode(false);
+		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
 		CameraBounds.left = 140;
 		CameraBounds.up = 50;
 		CameraBounds.right = 180;
@@ -55,8 +55,8 @@ public:
 	{
 		stOption *p_option = g_pBehaviorEngine->m_option;
 		g_pSettings->loadDrvCfg();
-		g_pVideoDriver->setSpecialFXMode(true);
-		st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
+		gVideoDriver.setSpecialFXMode(true);
+		st_camera_bounds &CameraBounds = gVideoDriver.getCameraBounds();
 		CameraBounds.left = 152;
 		CameraBounds.up = 92;
 		CameraBounds.right = 168;

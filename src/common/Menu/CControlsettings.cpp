@@ -11,7 +11,6 @@
 #include "common/CBehaviorEngine.h"
 
 #include <base/CInput.h>
-#include "sdl/CVideoDriver.h"
 
 
 /**

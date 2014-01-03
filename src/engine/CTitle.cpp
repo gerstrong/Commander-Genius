@@ -9,7 +9,7 @@
 
 #include "CTitle.h"
 #include <lib/base/GsTimer.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "vorticon/ai/CEGABitmap.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CPixelate.h"
@@ -30,8 +30,8 @@ bool CTitle::init(int Episode)
 	CBitmap *pBitmap;
 	gTimer.ResetSecondsTimer();
 	mTime = 10; // show the title screen for 10 secs.
-	pSurface = g_pVideoDriver->mpVideoEngine->getBlitSurface();
-	if(!g_pVideoDriver->getSpecialFXConfig())
+	pSurface = gVideoDriver.mpVideoEngine->getBlitSurface();
+	if(!gVideoDriver.getSpecialFXConfig())
 		g_pGfxEngine->setupEffect(new CColorMerge(16));
 	else
 		g_pGfxEngine->setupEffect(new CPixelate(16));
@@ -47,7 +47,7 @@ bool CTitle::init(int Episode)
 	}
 
 
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
     if(gameRes.w == 320 && gameRes.h == 200 )
     {

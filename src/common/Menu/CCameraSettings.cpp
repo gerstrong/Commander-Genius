@@ -5,13 +5,14 @@
  *      Author: gerstrong
  */
 
+#include <base/video/CVideoDriver.h>
 #include "CCameraSettings.h"
 #include "common/CSettings.h"
 #include "StringUtils.h"
 
 CCameraSettings::CCameraSettings():
 CBaseMenu(GsRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
-m_CameraBounds(g_pVideoDriver->getCameraBounds())
+m_CameraBounds(gVideoDriver.getCameraBounds())
 {
 
 	mpLeftAdjust = new CGUINumberControl( "Left",
@@ -58,7 +59,7 @@ void CCameraSettings::release()
 	m_CameraBounds.down = mpBottomAdjust->getSelection();
 	m_CameraBounds.speed = mpSpeedAdjust->getSelection();
 
-	g_pVideoDriver->saveCameraBounds(m_CameraBounds);
+	gVideoDriver.saveCameraBounds(m_CameraBounds);
 
 	g_pSettings->saveDrvCfg();
 }

@@ -10,7 +10,7 @@
 #ifndef CSDLVIDEO_H_
 #define CSDLVIDEO_H_
 
-#include "sdl/video/CVideoEngine.h"
+#include <base/video/CVideoEngine.h>
 
 class CSDLVideo : public CVideoEngine
 {

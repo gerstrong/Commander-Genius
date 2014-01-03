@@ -13,7 +13,7 @@
 #include "CStunnable.h"
 #include "CBullet.h"
 #include "common/CBehaviorEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 const int STARRING_SPRITE = 40;
 const int STARRING_SPRITE_EP5 = 41;
@@ -112,7 +112,7 @@ void CStunnable::draw()
       scrx = ((getXMidPos()-xoffset/2)>>STC)-mp_Map->m_scrollx;
       scry = ((m_Pos.y-yoffset)>>STC)-mp_Map->m_scrolly;
       
-      SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+      SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
       
       if( scrx < gameres.w && scry < gameres.h && exists )
       {
@@ -121,7 +121,7 @@ void CStunnable::draw()
         int w = StarSprite.getWidth();
         int h = StarSprite.getHeight();
 
-        auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
+        auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
         if( showX+StarSprite.getWidth() < visGA.x || showX > visGA.x+visGA.w )
             return;

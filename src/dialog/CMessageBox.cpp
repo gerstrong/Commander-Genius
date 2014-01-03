@@ -6,7 +6,7 @@
  */
 
 #include "CMessageBox.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
@@ -39,8 +39,8 @@ m_mustclose(false)
 
 	// Those formulas work well with our constellation but I don't think they are perfect.
 	// They transform the Message Box the way the text fits perfectly in.
-	const float screenW = g_pVideoDriver->getGameResolution().w;
-	const float screenH = g_pVideoDriver->getGameResolution().h;
+	const float screenW = gVideoDriver.getGameResolution().w;
+	const float screenH = gVideoDriver.getGameResolution().h;
 	mRect.w = static_cast<float>( (mpTextCtrl->mTextDim.w+4)*8 )/screenW;
 	mRect.h = static_cast<float>( (mpTextCtrl->mTextDim.h+2)*8 )/screenH;
 	mRect.x = (1.0f - mRect.w)/2.0f;

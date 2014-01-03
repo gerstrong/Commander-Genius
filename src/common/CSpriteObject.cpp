@@ -8,7 +8,7 @@
 #include "engine/spritedefines.h"
 #include "CSpriteObject.h"
 #include <lib/base/GsLogging.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
@@ -78,7 +78,7 @@ bool CSpriteObject::calcVisibility()
 {
 	int visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
 	const Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
 							(mp_Map->m_scrollx<<STC)-(visibility<<CSF);
@@ -329,7 +329,7 @@ void CSpriteObject::getShotByRay(object_t &obj_type)
 {
 	if( !m_invincible && mHealthPoints>0)
 	{
-		if(mHealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+		if(mHealthPoints>1 && gVideoDriver.getSpecialFXConfig())
 			blink(10);
 		mHealthPoints--;
 	}
@@ -407,7 +407,7 @@ void CSpriteObject::draw()
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
 	if( scrx < gameres.w && scry < gameres.h && exists )
 	{
@@ -417,7 +417,7 @@ void CSpriteObject::draw()
         int w = Sprite.getWidth();
         int h = Sprite.getHeight();
 
-        auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
+        auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
         if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w+16 )
             return;

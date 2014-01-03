@@ -14,7 +14,7 @@
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
 #include <base/FindFile.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
@@ -148,11 +148,11 @@ void CHighScores::init()
 	bmp.rect.h = bmp.p_Bitmap->getHeight();
 	m_Bitmaps.push_back(bmp);
 
-	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpTextSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+    mpTextSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(temp);
 }
@@ -182,7 +182,7 @@ void CHighScores::render()
     mpMap->animateAllTiles();
 
     // Blit the background
-    g_pVideoDriver->blitScrollSurface();
+    gVideoDriver.blitScrollSurface();
 
     // draw the Bitmaps
     std::vector<stBitmap>::iterator it_bmp = m_Bitmaps.begin();
@@ -218,7 +218,7 @@ void CHighScores::render()
             Font.drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
     }
 
-    SDL_BlitSurface(mpTextSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), nullptr);
+    SDL_BlitSurface(mpTextSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
 }
 
 

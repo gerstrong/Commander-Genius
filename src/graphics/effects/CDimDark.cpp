@@ -6,22 +6,22 @@
  */
 
 #include "CDimDark.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 CDimDark::CDimDark(const Uint8 speed) :
 m_Speed(speed),
 m_Alpha(0),
 dimDark(true)
 {
-    g_pVideoDriver->collectSurfaces();
+    gVideoDriver.collectSurfaces();
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
-    //mpDarkSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
+    mpOldSurface.reset( gVideoDriver.convertThroughBlitSfc( gVideoDriver.mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
+    //mpDarkSurface.reset( gVideoDriver.convertThroughBlitSfc( gVideoDriver.mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
 //#endif
 
-    auto *blit = g_pVideoDriver->getBlitSurface();
+    auto *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
     SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
@@ -89,17 +89,17 @@ void CDimDark::render(const float deltaT)
     {
         // Process the effect
         SDL_BlitSurface( mpOldSurface.get(), NULL,
-                         g_pVideoDriver->getBlitSurface(), NULL );
+                         gVideoDriver.getBlitSurface(), NULL );
 
         SDL_BlitSurface( mpDarkSurface.get(), NULL,
-                         g_pVideoDriver->getBlitSurface(), NULL );
+                         gVideoDriver.getBlitSurface(), NULL );
 
     }
     else // Undim the upcoming surface.
     {
 
         SDL_BlitSurface( mpDarkSurface.get(), NULL,
-                         g_pVideoDriver->getBlitSurface(), NULL );
+                         gVideoDriver.getBlitSurface(), NULL );
     }
 }
 

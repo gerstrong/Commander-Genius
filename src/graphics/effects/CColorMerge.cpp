@@ -6,7 +6,7 @@
  */
 
 #include "CColorMerge.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 
 CColorMerge::CColorMerge(const Uint8 speed) :
@@ -19,11 +19,11 @@ m_Alpha(0)
 // use this function. If you don't that, the effect won't work.
 void CColorMerge::getSnapshot()
 {
-    g_pVideoDriver->collectSurfaces();
+    gVideoDriver.collectSurfaces();
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
+    mpOldSurface.reset( gVideoDriver.convertThroughBlitSfc( gVideoDriver.mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
 //#endif
 }
 
@@ -53,7 +53,7 @@ void CColorMerge::ponder()
 void CColorMerge::render(const float deltaT)
 {
     SDL_BlitSurface( mpOldSurface.get(), NULL,
-                g_pVideoDriver->getBlitSurface(), NULL );
+                gVideoDriver.getBlitSurface(), NULL );
 
 }
 

@@ -9,7 +9,7 @@
 #include <lib/base/GsTimer.h>
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "graphics/CGfxEngine.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/sound/CSound.h"
@@ -187,7 +187,7 @@ void CPlayGameVorticon::showKeensLeft()
 {    
     const int numPlayers = g_pBehaviorEngine->mPlayers;
 
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
     const int scW = gameRes.w/320;
     const int scH = gameRes.h/200;
@@ -242,7 +242,7 @@ void CPlayGameVorticon::showKeensLeft()
 			y += 16;
 		}
 
-		const SDL_Surface *blit = g_pVideoDriver->mpVideoEngine->getBlitSurface();
+		const SDL_Surface *blit = gVideoDriver.mpVideoEngine->getBlitSurface();
 		mpKeenLeftSfc.reset(SDL_ConvertSurface( boxsurface, blit->format, blit->flags ), &SDL_FreeSurface);
 		SDL_FreeSurface(boxsurface);
 	}
@@ -262,7 +262,7 @@ void CPlayGameVorticon::showKeensLeft()
 		}
 		else
 		{
-            SDL_BlitSurface(mpKeenLeftSfc.get(), nullptr, g_pVideoDriver->getBlitSurface(), &keenleft_rect);
+            SDL_BlitSurface(mpKeenLeftSfc.get(), nullptr, gVideoDriver.getBlitSurface(), &keenleft_rect);
 		}
 	}
 }

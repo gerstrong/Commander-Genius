@@ -9,7 +9,7 @@
 #ifdef USE_OPENGL
 
 #include "COpenGL.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h> // for CInput::renderOverlay
 #include "graphics/CGfxEngine.h"
 #include <lib/base/GsLogging.h>

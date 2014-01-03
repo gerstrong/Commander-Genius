@@ -11,8 +11,8 @@
 //#include "input/CInput.h"
 //#include <lib/base/GsTimer.h>
 
-#include "video/CSDLVideo.h"
-#include "video/COpenGL.h"
+#include <base/video/CSDLVideo.h>
+#include <base/video/COpenGL.h>
 #include "resolutionlist.h"
 
 #include "graphics/CGfxEngine.h"

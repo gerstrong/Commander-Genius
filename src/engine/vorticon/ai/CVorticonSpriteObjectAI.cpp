@@ -6,7 +6,7 @@
  */
 
 #include "CVorticonSpriteObjectAI.h"
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include <lib/base/GsLogging.h>
 
 #include "engine/vorticon/ai/CMeep.h"

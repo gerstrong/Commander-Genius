@@ -7,7 +7,7 @@
 
 #include "fileio/CTileLoader.h"
 #include "fileio/ResourceMgmt.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <SDL_image.h>
 #include <base/FindFile.h>
 #include "CTilemap.h"
@@ -87,7 +87,7 @@ bool CTilemap::optimizeSurface()
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
         
 //#else
-        temp_surface = g_pVideoDriver->convertThroughBlitSfc(m_Tilesurface);
+        temp_surface = gVideoDriver.convertThroughBlitSfc(m_Tilesurface);
 //#endif
 		SDL_FreeSurface(m_Tilesurface);
 		m_Tilesurface = temp_surface;

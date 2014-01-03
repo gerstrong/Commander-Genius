@@ -11,7 +11,7 @@
 
 #include "CStatusScreen.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
 #include "StringUtils.h"
 #include "common/Playerdefines.h"
@@ -46,15 +46,15 @@ void CStatusScreen::draw()
 	// Fade in and out process
 	if(m_closing)
 	{
-		if(g_pVideoDriver->getSpecialFXConfig() && !g_pGfxEngine->runningEffect())
+		if(gVideoDriver.getSpecialFXConfig() && !g_pGfxEngine->runningEffect())
 			m_closed = true;
-		else if(!g_pVideoDriver->getSpecialFXConfig())
+		else if(!gVideoDriver.getSpecialFXConfig())
 			m_closed = true;
 	}
 
 	if(!m_closed)
 	{
-        SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+        SDL_Surface *blit = gVideoDriver.getBlitSurface();
 
         m_StatusRect.x = (blit->w-m_StatusRect.w)/2;
         m_StatusRect.y = (blit->h-m_StatusRect.h)/2;
@@ -219,7 +219,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpStatusSfc.reset(g_pVideoDriver->convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
+    mpStatusSfc.reset(gVideoDriver.convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(p_surface);
 }
@@ -343,7 +343,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpStatusSfc.reset(g_pVideoDriver->convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
+    mpStatusSfc.reset(gVideoDriver.convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(p_surface);
 }
@@ -461,6 +461,6 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
-    mpStatusSfc.reset(g_pVideoDriver->convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
+    mpStatusSfc.reset(gVideoDriver.convertThroughBlitSfc(p_surface), &SDL_FreeSurface);
 	SDL_FreeSurface(p_surface);
 }

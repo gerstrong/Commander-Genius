@@ -9,8 +9,9 @@
 #include "common/CSettings.h"
 #include "CCameraSettings.h"
 #include <base/CInput.h>
-#include <lib/base/GsTimer.h>
-#include "sdl/resolutionlist.h"
+#include <base/GsTimer.h>
+#include <base/video/resolutionlist.h>
+#include <base/video/CVideoDriver.h>
 #include "CVideoSettings.h"
 #include "CSettingsMenu.h"
 #include "StringUtils.h"
@@ -115,7 +116,7 @@ CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
 void CVideoSettings::init()
 {
-	mUserVidConf = g_pVideoDriver->getVidConfig();
+	mUserVidConf = gVideoDriver.getVidConfig();
 
 	// Load the config into the GUI
 	// TODO: Temporary. This must become a float later...
@@ -231,22 +232,22 @@ void CVideoSettings::release()
 	mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
 	// In case the user changed something in the camera settings, reload that.
-	mUserVidConf.m_CameraBounds = g_pVideoDriver->getCameraBounds();
+	mUserVidConf.m_CameraBounds = gVideoDriver.getCameraBounds();
 
-	CVidConfig oldVidConf = g_pVideoDriver->getVidConfig();
-	g_pVideoDriver->setVidConfig(mUserVidConf);		
+	CVidConfig oldVidConf = gVideoDriver.getVidConfig();
+	gVideoDriver.setVidConfig(mUserVidConf);		
 
 	// At this point we also must apply and save the settings
-	if( !g_pVideoDriver->applyMode() )
+	if( !gVideoDriver.applyMode() )
 	{
         g_pSettings->loadDrvCfg(); // If it fails load the old settings
 		return;
 	}		
 
-    if( !g_pVideoDriver->start() ) // Here the same situation
+    if( !gVideoDriver.start() ) // Here the same situation
 	{
-		g_pVideoDriver->setVidConfig(oldVidConf);
-		g_pVideoDriver->start();
+		gVideoDriver.setVidConfig(oldVidConf);
+		gVideoDriver.start();
 	}
 	
 	g_pSettings->saveDrvCfg();

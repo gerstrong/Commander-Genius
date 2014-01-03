@@ -8,7 +8,7 @@
 #include "CEGAGraphicsVort.h"
 #include "CResourceLoader.h"
 
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include "fileio/CTileLoader.h"
 
 #ifdef TARGET_WIN32

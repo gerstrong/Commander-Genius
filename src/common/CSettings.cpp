@@ -11,7 +11,7 @@
 #include "CSettings.h"
 #include <lib/base/GsTimer.h>
 #include "sdl/sound/CSound.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/options.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/CConfiguration.h"
@@ -44,7 +44,7 @@ bool CSettings::saveDrvCfg()
 	for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
 		Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
 	
-	CVidConfig &VidConf = g_pVideoDriver->getVidConfig();
+	CVidConfig &VidConf = gVideoDriver.getVidConfig();
 	Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
 	Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
 
@@ -163,7 +163,7 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Bound", "up", &CameraBounds.up, 92);
 		Configuration.ReadInteger("Bound", "down", &CameraBounds.down, 108);
 		Configuration.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
-		g_pVideoDriver->setVidConfig(VidConf);
+		gVideoDriver.setVidConfig(VidConf);
 
 		int framerate;
 		Configuration.ReadInteger("Video", "fps", &framerate, 60);
@@ -191,23 +191,23 @@ bool CSettings::loadDrvCfg()
 
 void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
-	g_pVideoDriver->setMode(320,200,32);
-	g_pVideoDriver->isFullscreen(false);
+	gVideoDriver.setMode(320,200,32);
+	gVideoDriver.isFullscreen(false);
 
 #if defined(USE_OPENGL)
-	g_pVideoDriver->enableOpenGL(false);
-	g_pVideoDriver->setOGLFilter(GL_LINEAR);
+	gVideoDriver.enableOpenGL(false);
+	gVideoDriver.setOGLFilter(GL_LINEAR);
 #endif
 
-	g_pVideoDriver->setZoom(1);
+	gVideoDriver.setZoom(1);
 	gTimer.setFPS(60);
 #if defined(ANDROID)	
-	g_pVideoDriver->setAspectCorrection(0,0);
+	gVideoDriver.setAspectCorrection(0,0);
 #else
-	g_pVideoDriver->setAspectCorrection(4,3);
+	gVideoDriver.setAspectCorrection(4,3);
 #endif
-    g_pVideoDriver->setFilter(NONE);
-	g_pVideoDriver->setScaleType(true);
+    gVideoDriver.setFilter(NONE);
+	gVideoDriver.setScaleType(true);
 
 }
 

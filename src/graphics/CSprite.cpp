@@ -9,7 +9,7 @@
 #include "CPalette.h"
 #include <base/FindFile.h>
 #include <string.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
 
@@ -120,7 +120,7 @@ bool CSprite::optimizeSurface()
 {
     if(mpSurface)
     {
-        mpSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
+        mpSurface.reset(gVideoDriver.convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
         return true;
     }
 
@@ -138,7 +138,7 @@ void CSprite::generateSprite( const int points )
     // +2 for the outline
     setSize( (pointStr.size()*8)+2, 8+2);
 
-    SDL_Surface *blit = g_pVideoDriver->getBlitSurface();
+    SDL_Surface *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
     mpSurface.reset(SDL_CreateRGBSurface( 0, m_xsize, m_ysize, 32,
@@ -326,7 +326,7 @@ void CSprite::applyTranslucency(Uint8 value)
 
 	r = g = b = a = 0;		
 	
-	if( !mpSurface || g_pVideoDriver->getZoomValue() > 1) 
+	if( !mpSurface || gVideoDriver.getZoomValue() > 1) 
 	    return;
 
 	if(m_alpha == value)
@@ -338,7 +338,7 @@ void CSprite::applyTranslucency(Uint8 value)
 	if(format->BitsPerPixel < 24)
 	{
 
-        mpSurface.reset(g_pVideoDriver->convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
+        mpSurface.reset(gVideoDriver.convertThroughBlitSfc(mpSurface.get()), &SDL_FreeSurface);
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_SetSurfaceAlphaMod(mpSurface.get(), value);
@@ -515,7 +515,7 @@ void CSprite::drawSprite(const int x, const int y, const int w, const int h, con
     SDL_SetAlpha(mpSurface.get(), SDL_SRCALPHA, alpha);
 #endif
 
-    drawSprite( g_pVideoDriver->getBlitSurface(), x, y, w, h );
+    drawSprite( gVideoDriver.getBlitSurface(), x, y, w, h );
 }
 
 void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y, const int w, const int h )
@@ -526,8 +526,8 @@ void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y, const int 
 
 	src_rect.x = 0;	src_rect.y = 0;
 	
-	const int max_width = g_pVideoDriver->getGameResolution().w;
-	const int max_height = g_pVideoDriver->getGameResolution().h;
+	const int max_width = gVideoDriver.getGameResolution().w;
+	const int max_height = gVideoDriver.getGameResolution().h;
 
 	if( m_xsize + x > max_width )
 		dst_rect.w = max_width - x;
@@ -564,7 +564,7 @@ void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y, const int 
  */
 void CSprite::drawBlinkingSprite( int x, int y )
 {
-    _drawBlinkingSprite(g_pVideoDriver->getBlitSurface(), x, y);
+    _drawBlinkingSprite(gVideoDriver.getBlitSurface(), x, y);
 }
 
 
@@ -587,7 +587,7 @@ void CSprite::_drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    SDL_Surface *blanksfc = g_pVideoDriver->convertThroughBlitSfc(mpSurface.get());
+    SDL_Surface *blanksfc = gVideoDriver.convertThroughBlitSfc(mpSurface.get());
 	blitMaskedSprite(blanksfc, mpSurface.get(), 0xFFFFFF);
 	SDL_BlitSurface( blanksfc, &src_rect, dst, &dst_rect );
 	SDL_FreeSurface(blanksfc);

@@ -10,4 +10,14 @@ add_library(GsKit_base GsApp.cpp
                        GsLogging.cpp
                        GsTimer.cpp
                        GsEvent.h
-                       CInput.cpp)
+                       CInput.cpp
+                       video/CVideoEngine.cpp
+                       video/CVideoDriver.cpp
+                       video/CSDLVideo.cpp
+                       video/COpenGL.cpp
+                       video/scaler/CScaler.cpp
+                       video/scaler/CScaler.cpp
+                       video/scaler/CScaler.cpp
+                       video/scaler/scale2x.cpp
+                       video/scaler/scale3x.cpp
+                       video/scaler/scalebit.cpp)

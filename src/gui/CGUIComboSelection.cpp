@@ -9,7 +9,7 @@
 #include "graphics/CGfxEngine.h"
 #include <base/CInput.h>
 //#include "sdl/input/InputEvents.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include <lib/base/GsTimer.h>
@@ -39,7 +39,7 @@ drawButton(&CGUIComboSelection::drawNoStyle)
 void CGUIComboSelection::setupButtonSurface(const std::string &optionText)
 {
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	const std::string showText = "  " + mText + ": " + optionText;
 	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38)));
@@ -173,7 +173,7 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 	if(!mEnabled)
 		return;
 
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
@@ -190,7 +190,7 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 
 void CGUIComboSelection::drawGalaxyStyle(SDL_Rect& lRect)
 {
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	if(!mEnabled)
 	{
@@ -217,7 +217,7 @@ void CGUIComboSelection::drawNoStyle(SDL_Rect& lRect)
 	if(!mEnabled)
 		return;
 
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
     if( mReleased )
 	{

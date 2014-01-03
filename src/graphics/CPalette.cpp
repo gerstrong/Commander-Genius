@@ -7,7 +7,7 @@
 
 #include "CPalette.h"
 #include "../graphics/PerSurfaceAlpha.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 #include <cstring>
 #include <cstdio>
@@ -129,9 +129,9 @@ void CPalette::setdark(bool dark)
 	m_dark = dark;
 
     if(dark)
-        g_pVideoDriver->setLightIntensity(0.1f);
+        gVideoDriver.setLightIntensity(0.1f);
     else
-        g_pVideoDriver->setLightIntensity(1.0f);
+        gVideoDriver.setLightIntensity(1.0f);
 
 	fadeto( m_dark ? m_darkness : 0, FADE_SPEED_SLOW);
 }
@@ -174,7 +174,7 @@ void CPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
 
 void CPalette::applyFade()
 {
-    /*SDL_Surface *overlay = g_pVideoDriver->getOverlaySurface();
+    /*SDL_Surface *overlay = gVideoDriver.getOverlaySurface();
 
     Uint8 current_alpha = getPerSurfaceAlpha(overlay);
 

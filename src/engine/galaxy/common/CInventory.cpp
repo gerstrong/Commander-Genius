@@ -8,7 +8,7 @@
 #include "CInventory.h"
 #include "common/CBehaviorEngine.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/effects/CScrollEffect.h"
 
@@ -77,9 +77,9 @@ void CInventory::toggleStatusScreen()
 		int scroll_pos = 0;
 
 		mp_StatusScreen->GenerateStatus();
-		g_pVideoDriver->collectSurfaces();
+		gVideoDriver.collectSurfaces();
 
-        mp_StatusBgrnd = g_pVideoDriver->convertThroughBlitSfc(g_pVideoDriver->mpVideoEngine->getBlitSurface());
+        mp_StatusBgrnd = gVideoDriver.convertThroughBlitSfc(gVideoDriver.mpVideoEngine->getBlitSurface());
 
 		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
 

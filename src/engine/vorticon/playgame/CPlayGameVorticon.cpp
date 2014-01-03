@@ -8,7 +8,7 @@
 
 #include "CPlayGameVorticon.h"
 #include <lib/base/GsTimer.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/sound/CSound.h"
 #include <base/CInput.h>
 #include "core/mode/CGameMode.h"
@@ -197,7 +197,7 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
     // Process Related Events.
     if( dynamic_cast<const ResetScrollSurface*>(evPtr) )
     {
-        g_pVideoDriver->updateScrollBuffer(mMap);
+        gVideoDriver.updateScrollBuffer(mMap);
         return;
     }
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
@@ -304,9 +304,9 @@ void CPlayGameVorticon::ponder()
 		{
             CBitmap *pBitmap = g_pGfxEngine->getBitmapFromStr("GAMEOVER");
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , g_pVideoDriver->getBlitSurface(), pBitmap) );
+			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
 
-            GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+            GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
             mpGameoverBmp->setScrPos( (gameRes.w/2) -(pBitmap->getWidth()/2), (gameRes.h/2) -(pBitmap->getHeight()/2) );
 		}
@@ -601,7 +601,7 @@ void CPlayGameVorticon::drawAllElements()
     mMap->animateAllTiles();
 
     // Blit the background
-    g_pVideoDriver->blitScrollSurface();
+    gVideoDriver.blitScrollSurface();
 
     // Draw all objects to the screen
     drawObjects();

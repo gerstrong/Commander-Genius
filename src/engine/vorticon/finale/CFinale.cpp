@@ -6,7 +6,7 @@
  */
 
 #include "CFinale.h"
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include <lib/base/GsLogging.h>
 #include <base/FindFile.h>
 #include <fstream>

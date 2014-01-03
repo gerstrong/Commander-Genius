@@ -9,7 +9,7 @@
 #include "fileio/ResourceMgmt.h"
 #include <base/FindFile.h>
 #include <lib/base/GsLogging.h>
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
 
 CEGAGraphics::CEGAGraphics(short episode, const std::string& path) {

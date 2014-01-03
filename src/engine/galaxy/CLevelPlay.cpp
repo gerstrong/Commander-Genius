@@ -11,7 +11,7 @@
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include <base/CInput.h>
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
 #include "graphics/effects/CDimDark.h"
 #include <lib/base/GsLogging.h>

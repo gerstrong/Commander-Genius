@@ -9,7 +9,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "fileio/lz.h"
 #include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "fileio/TypeDefinitions.h"
 #include "common/CBehaviorEngine.h"
 #include <lib/base/GsLogging.h>
@@ -88,7 +88,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 				Bitmap.setName( default_names[i] );
 			}
 		}
-		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags,
+		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags,
 							bmpRect,
 							g_pGfxEngine->Palette.m_Palette);
 	}

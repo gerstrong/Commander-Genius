@@ -9,7 +9,7 @@
 #include "graphics/CGfxEngine.h"
 #include <base/CInput.h>
 //#include "sdl/input/InputEvents.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "core/mode/CGameMode.h"
 #include <lib/base/GsTimer.h>
 #include "sdl/extensions.h"
@@ -70,7 +70,7 @@ void CGUIButton::setupButtonSurface()
 		return;
 
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
-	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38)));
 	mpTextLightSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84)));
@@ -113,7 +113,7 @@ void CGUIButton::processLogic()
 
 void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 {
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the button
 	if(mEnabled)
@@ -133,12 +133,12 @@ void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 
 void CGUIButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
 {
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
-	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	const Uint32 oldcolor = Font.getFGColor();
 
@@ -163,7 +163,7 @@ void CGUIButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
 
 void CGUIButton::drawGalaxyStyle(SDL_Rect& lRect)
 {
-	SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	if(!mEnabled)
 	{
@@ -190,7 +190,7 @@ void CGUIButton::drawNoStyle(SDL_Rect& lRect)
     if(!mEnabled) // TODO: I think, if it is disabled, it should use another color
         return;
 
-    SDL_Surface *blitsfc = g_pVideoDriver->getBlitSurface();
+    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
     if( mHovered )
     {

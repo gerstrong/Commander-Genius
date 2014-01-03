@@ -9,7 +9,7 @@
 #include "CVideoEngine.h"
 #include <lib/base/GsLogging.h>
 #include <SDL_syswm.h>
-#include "scalers/scalebit.h"
+#include <base/video/scaler/scalebit.h>
 
 
 Uint16 getPowerOfTwo(const Uint16 value)
@@ -203,9 +203,9 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
     optimized = SDL_ConvertSurface(temporary, mpGameSfc->format, mpGameSfc->flags );
 
     /*if (alpha && bpp==32)
-        optimized = g_pVideoDriver->convertThroughBlitSfc( temporary );
+        optimized = gVideoDriver.convertThroughBlitSfc( temporary );
 	else
-        optimized = g_pVideoDriver->convertThroughBlitSfc( temporary );*/
+        optimized = gVideoDriver.convertThroughBlitSfc( temporary );*/
 
     SDL_FreeSurface(temporary);
 //#endif

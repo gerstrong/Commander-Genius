@@ -7,7 +7,7 @@
 #include <vector>
 #include <stdio.h>
 
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/sound/CSound.h"
 #include "fileio.h"
 #include <lib/base/GsLogging.h>

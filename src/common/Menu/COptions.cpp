@@ -7,7 +7,7 @@
 
 #include "COptions.h"
 #include <base/CInput.h>
-#include "sdl/CVideoDriver.h"
+//#include "sdl/CVideoDriver.h"
 #include "common/CSettings.h"
 
 

@@ -12,7 +12,7 @@
 #include "CEGASprit.h"
 #include "engine/CPlanes.h"
 #include <base/FindFile.h>
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "engine/spritedefines.h"
 #include "fileio/lz.h"
 #include "fileio/ResourceMgmt.h"
@@ -140,7 +140,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 				(EGASpriteModell[i].hitbox_u << STC),
 				(EGASpriteModell[i].hitbox_r << STC),
 				(EGASpriteModell[i].hitbox_b << STC) );
-		Sprite.createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags,
+		Sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
 				g_pGfxEngine->Palette.m_Palette );
 
 		percent = (i*50)/m_numsprites;
@@ -308,7 +308,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     g_pResourceLoader->setPermilage(800);
 
 	// Here special Effects are applied, only when the option is enabled for it
-	if(g_pVideoDriver->getSpecialFXConfig())
+	if(gVideoDriver.getSpecialFXConfig())
 		ApplySpecialFX();
 
     g_pResourceLoader->setPermilage(900);
@@ -416,7 +416,7 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprit
 	tile_rect.w = tile_rect.h= 16;
 	
 	sprite.setSize(tile_rect.w, tile_rect.h);
-	sprite.createSurface( g_pVideoDriver->mpVideoEngine->getBlitSurface()->flags,
+	sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
 						  g_pGfxEngine->Palette.m_Palette );
 	sprite.optimizeSurface();
 	

@@ -8,7 +8,7 @@
 #include "CHUD.h"
 #include "engine/CCamera.h"
 #include "common/CBehaviorEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
 #include "StringUtils.h"
@@ -34,11 +34,11 @@ void CHUD::createHUDBlit()
 {    
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
-    mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
+    mpHUDBlit.reset(gVideoDriver.convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
 
     SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
 #else    
-    auto *blit = g_pVideoDriver->getBlitSurface();
+    auto *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
     SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
@@ -242,7 +242,7 @@ void CHUD::renderGalaxy()
   }
 
 
-  SDL_BlitSurface( blitsfc, NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
+  SDL_BlitSurface( blitsfc, NULL, gVideoDriver.getBlitSurface(), &m_Rect );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -269,7 +269,7 @@ void CHUD::renderVorticon()
 
     Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2);
 
-    SDL_BlitSurface( mpHUDBlit.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );   
+    SDL_BlitSurface( mpHUDBlit.get(), NULL, gVideoDriver.getBlitSurface(), &m_Rect );   
 }
 
 

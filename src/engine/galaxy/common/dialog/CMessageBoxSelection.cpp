@@ -6,7 +6,7 @@
  */
 
 #include "CMessageBoxSelection.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/CGfxEngine.h"
 #include "common/CBehaviorEngine.h"
@@ -38,7 +38,7 @@ blendup(true)
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
 
 	// Create a surface for that
-    GsRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 	mMBRect.w = Font.getPixelTextWidth(mText)+16;
 	mMBRect.h = Font.getPixelTextHeight()*(calcNumLines(mText)+1)+16;
     mMBRect.x = (gameRes.w-mMBRect.w)/2;
@@ -49,7 +49,7 @@ blendup(true)
 void CMessageBoxSelection::init()
 {
     mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
-    mpMBSurface.reset(g_pVideoDriver->convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
+    mpMBSurface.reset(gVideoDriver.convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
 
 	initGalaxyFrame();
 
@@ -61,7 +61,7 @@ void CMessageBoxSelection::init()
     
 	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
-	SDL_PixelFormat *format = g_pVideoDriver->getBlitSurface()->format;
+	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 	
 	SDL_Surface *pColoredTextSurface = CG_CreateRGBSurface(rect);
 
@@ -84,9 +84,9 @@ void CMessageBoxSelection::init()
 
 
     if(RES_BPP == 32) // Only if there is an Alpha Channel (32 BPP)
-        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
+        temp = gVideoDriver.convertThroughBlitSfc(pColoredTextSurface);
 	else // or
-        temp = g_pVideoDriver->convertThroughBlitSfc(pColoredTextSurface);
+        temp = gVideoDriver.convertThroughBlitSfc(pColoredTextSurface);
 
 	SDL_FreeSurface(pColoredTextSurface);
 	pColoredTextSurface = temp;
@@ -178,7 +178,7 @@ void CMessageBoxSelection::ponder()
 
 void CMessageBoxSelection::render()
 {
-    SDL_BlitSurface(mpMBSurface.get(), nullptr, g_pVideoDriver->getBlitSurface(), &mMBRect);
+    SDL_BlitSurface(mpMBSurface.get(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
 
     // now draw the glowing rectangle. It fades here!
     if(blendup)
@@ -217,8 +217,8 @@ void CMessageBoxSelection::render()
         if(i == m_selection)
         {
             cursorSel.y = mMBRect.y + 12*i + 44;
-            SDL_BlitSurface(mpSelSurface1.get(), nullptr, g_pVideoDriver->getBlitSurface(), &cursorSel);
-            SDL_BlitSurface(mpSelSurface2.get(), nullptr, g_pVideoDriver->getBlitSurface(), &cursorSel);
+            SDL_BlitSurface(mpSelSurface1.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
+            SDL_BlitSurface(mpSelSurface2.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
         }
     }
 }
