@@ -36,10 +36,9 @@ private:
 };
 
 
-class GsAppState /*: public GameState*/
+class GsAppState
 {
 public:
-
     GsAppState(bool &firsttime);
 
     ~GsAppState();
@@ -57,8 +56,6 @@ public:
     void pumpEvent(const CEvent *evPtr);
 	
 protected:
-
-
     std::unique_ptr<CBaseEngine> mpEngine;
 
     bool &m_firsttime;

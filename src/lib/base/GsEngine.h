@@ -10,10 +10,6 @@
 #ifndef CBASEENGINE_H_
 #define CBASEENGINE_H_
 
-//#include "mode/CGameMode.h"
-//#include "core/LogicDrawSplitter.h"
-//#include "engine/CEvent.h"
-
 class CBaseEngine
 {
 
