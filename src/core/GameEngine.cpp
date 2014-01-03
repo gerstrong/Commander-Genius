@@ -1,11 +1,11 @@
 /*
- * CGameMain.cpp
+ * GameEngine.cpp
  *
  *  Created on: 29.03.2012
  *      Author: gerstrong
  */
 
-#include "CGameMain.h"
+#include "GameEngine.h"
 #include "common/CBehaviorEngine.h"
 #include "mode/CGamePassiveMode.h"
 #include "mode/CGamePlayMode.h"
@@ -19,7 +19,7 @@
 #include "common/Menu/CHelpMenu.h"
 
 
-void CGameMain::switchToGamePlayMode()
+void GameEngine::switchToGamePlayMode()
 {
 	const int episode = g_pBehaviorEngine->getEpisode();
 
@@ -33,7 +33,7 @@ void CGameMain::switchToGamePlayMode()
 }
 
 
-void CGameMain::pumpEvent(const CEvent *evPtr)
+void GameEngine::pumpEvent(const CEvent *evPtr)
 {
     // process any triggered Game Main related event
     auto &EventContainer = g_pBehaviorEngine->EventList();
@@ -104,7 +104,7 @@ void CGameMain::pumpEvent(const CEvent *evPtr)
 }
 
 
-void CGameMain::ponder(const float deltaT)
+void GameEngine::ponder(const float deltaT)
 {
 	if( mpInfoScene )
 	{
@@ -125,7 +125,7 @@ void CGameMain::ponder(const float deltaT)
 	}
 }
 
-void CGameMain::render()
+void GameEngine::render()
 {
     if( !mpInfoScene )
     {

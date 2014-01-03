@@ -1,5 +1,5 @@
 /*
- * CGameMain.h
+ * GameEngine.h
  *
  *  Created on: 29.03.2012
  *      Author: gerstrong
@@ -11,13 +11,13 @@
 #include <base/GsEngine.h>
 #include <memory>
 
-#ifndef CGAMEMAIN_H_
-#define CGAMEMAIN_H_
+#ifndef __GAMEENGINE_H_
+#define __GAMEENGINE_H_
 
-class CGameMain : public GsEngine
+class GameEngine : public GsEngine
 {
 public:
-    CGameMain(const bool openedGamePlay) :
+    GameEngine(const bool openedGamePlay) :
         mOpenedGamePlay(openedGamePlay) {}
 
 protected:
@@ -42,8 +42,8 @@ private:
 struct StartMainGameEvent : public SwitchEngineEvent
 {
     StartMainGameEvent(const bool openedGamePlay) :
-        SwitchEngineEvent( new CGameMain(openedGamePlay) )
+        SwitchEngineEvent( new GameEngine(openedGamePlay) )
         { }
 };
 
-#endif /* CGAMEMAIN_H_ */
+#endif /* __GAMEENGINE_H_ */

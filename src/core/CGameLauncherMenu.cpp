@@ -9,7 +9,7 @@
 #include "CResourceLoader.h"
 #include "fileio/CPatcher.h"
 
-#include "CGameMain.h"
+#include "GameEngine.h"
 #include "engine/vorticon/CEGAGraphicsVort.h"
 #include "engine/galaxy/res/CEGAGraphicsGalaxy.h"
 #include "engine/CMessages.h"
