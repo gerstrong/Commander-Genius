@@ -12,7 +12,7 @@
 #include "sdl/music/CMusicPlayer.h"
 #include <base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
-#include <base/GsAppState.h>
+#include <base/GsApp.h>
 #include <memory>
 
 CGamePlayMode::CGamePlayMode(const int Episode,
@@ -95,7 +95,6 @@ void CGamePlayMode::ponder(const float deltaT)
 	if( EventContainer.occurredEvent<SaveGameEvent>() )
 	{
         mp_PlayGame->saveXMLGameState();
-        //mp_PlayGame->saveGameState();
         EventContainer.pop_Event();
 	}
 

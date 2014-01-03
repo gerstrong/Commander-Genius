@@ -10,7 +10,7 @@
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/galaxy/CPassive.h"
 #include <widgets/CMenuController.h>
-#include <base/GsAppState.h>
+#include <base/GsApp.h>
 #include "core/CGameLauncherMenu.h"
 #include "common/Menu/CSelectionMenu.h"
 
@@ -32,7 +32,6 @@ void CGamePassiveMode::init()
 
     CEventContainer& EventContainer = gEventManager;
 	EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
-
 }
 
 

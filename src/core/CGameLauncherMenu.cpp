@@ -20,7 +20,7 @@
 #include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 #include <lib/base/GsLogging.h>
-#include <base/GsAppState.h>
+#include <base/GsApp.h>
 #include <base/Debug.h>
 #include <widgets/CMenuController.h>
 
@@ -297,33 +297,33 @@ void CGameLauncherMenu::ponder(const float deltaT)
 			const std::string DataDirectory = mp_GameLauncher->getDirectory( m_start_game_no );
 
 			// We have to check which Episode will be used
-			const int Episode = mp_GameLauncher->getEpisode( m_start_game_no );
+            const int episode = mp_GameLauncher->getEpisode( m_start_game_no );
 
-			if( Episode > 0 ) // The game has to have a valid episode!
+            if( episode > 0 ) // The game has to have a valid episode!
 			{
 				// Get the EXE-Data of the game and load it into the memory.
-				if(!g_pBehaviorEngine->m_ExeFile.readData(Episode, DataDirectory))
+                if(!g_pBehaviorEngine->m_ExeFile.readData(episode, DataDirectory))
 				{
 					mp_GameLauncher->letchooseagain();
 				}
 				else
 				{
 					// Load the Resources
-					if( loadResources(DataDirectory, Episode) )
+                    if( loadResources(DataDirectory, episode) )
 					{
 						// Now look if there are any old savegames that need to be converted
                         CEventContainer& EventContainer = gEventManager;
 						CSaveGameController &savedgames = *gpSaveGameController;
 						savedgames.setGameDirectory(DataDirectory);
-						savedgames.setEpisode(Episode);
+                        savedgames.setEpisode(episode);
 						savedgames.convertAllOldFormats();
 
                         EventContainer.add( new StartMainGameEvent(false) );
 
 						if(m_start_level == -1) // Starts normally
-							EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, Episode) );
+                            EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, episode) );
 						else // This happens, when a level was passed as argument when launching CG
-							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1,  
+                            EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
 													DataDirectory, 
 													m_start_level) );
 					}

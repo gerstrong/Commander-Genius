@@ -5,10 +5,32 @@
  *      Author: gerstrong
  */
 
-#ifndef GsApp_H_
-#define GsApp_H_
+#ifndef __GSAPP_H_
+#define __GSAPP_H_
 
-#include <base/GsAppState.h>
+#include <base/GsEvent.h>
+#include <base/GsEngine.h>
+
+#include <memory>
+
+
+// Forward declaration
+class GsApp;
+
+// App State has an event sink that is registered thought the constructor and teared down through the deconstrcutor
+class GsAppEventSink : public GsEventSink
+{
+
+public:
+    GsAppEventSink(GsApp* pApp) :
+        mpApp(pApp) {}
+
+    void pumpEvent(const CEvent *ev);
+
+private:
+    GsApp* mpApp;
+
+};
 
 class GsApp
 {
@@ -17,14 +39,34 @@ public:
     ~GsApp();
 	
 	bool init(int argc, char *argv[]);
-	bool loadCKPDrivers();
+    bool loadDrivers();
 	
-	void run();
+    void runMainCycle();
 	void cleanup();
 
+    void pollEvents();
+
+    void ponder(const float deltaT);
+
+    void render();
+
+    bool mustShutdown(){ return (mpCurEngine==nullptr); }
+
+    void pumpEvent(const CEvent *evPtr);
+
+    /*
+    int m_startGame_no;
+    int m_startLevel;*/
+
+
 private:
-	bool m_firsttime;
-    GsAppState mAppState;
+
+    std::unique_ptr<GsEngine> mpCurEngine;
+	bool m_firsttime;    
+    GsAppEventSink mSink;
 };
 
-#endif /* GsApp_H_ */
+// It's a simple quit event which will force CG to close the App
+struct GMQuit : CEvent {};
+
+#endif /* __GSAPP_H_ */

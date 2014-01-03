@@ -17,7 +17,7 @@
 #include "gui/CGUIButton.h"
 #include "core/mode/CGameMode.h"
 #include "core/CGameLauncherMenu.h"
-#include <base/GsAppState.h>
+#include <base/GsApp.h>
 
 
 void CMainMenu::createVorticonMenu( const bool openedGamePlay )

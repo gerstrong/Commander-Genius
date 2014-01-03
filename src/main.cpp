@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 		///////////////////////
 		// Start Game Engine //
 		///////////////////////
-        app.run();
+        app.runMainCycle();
 	}
 
 	UnInitThreadPool();
