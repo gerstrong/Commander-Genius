@@ -10,7 +10,6 @@
 
 #include "mode/CGameMode.h"
 #include "common/CGameLauncher.h"
-//#include "core/CBaseEngine.h"
 #include "common/Menu/CProfilesMenu.h"
 #include "engine/CEGAGraphics.h"
 #include <base/GsEngine.h>

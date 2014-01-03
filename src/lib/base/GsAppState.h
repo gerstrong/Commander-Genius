@@ -52,10 +52,6 @@ public:
 
     void render(const float deltaT);
 
-    /*void operator=(const GameState &rhs);
-
-    void operator=(const GameState &&rhs);*/
-
     bool mustShutdown(){ return (mpEngine.get()==nullptr); }
 
     void pumpEvent(const CEvent *evPtr);

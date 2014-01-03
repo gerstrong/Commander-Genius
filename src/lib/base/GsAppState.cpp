@@ -5,22 +5,14 @@
  *      Author: gerstrong
  */
 
-#include "GsAppState.h"
-#include "CResourceLoader.h"
-#include "fileio/CExeFile.h"
-#include "fileio/CPatcher.h"
-#include "fileio.h"
-#include <lib/base/GsLogging.h>
-#include "sdl/sound/CSound.h"
+#include <base/GsAppState.h>
+#include <base/GsLogging.h>
+#include <base/CInput.h>
 
 #include "common/Menu/CMenuController.h"
 
 #include "core/CGameLauncherMenu.h"
-#include "core/mode/CGamePlayMode.h"
 #include "core/mode/CGamePassiveMode.h"
-
-//#include "sdl/CVideoDriver.h"
-#include <base/CInput.h>
 
 #include "core/CGameMain.h"
 
@@ -96,13 +88,13 @@ bool GsAppState::init(int argc, char *argv[])
 		}
 	}
 
-	// Check if finale cutscenes must be shown
-	if(getBooleanArgument( argc, argv, "-finale" ))
+    // TODO: Check if finale cutscenes must be shown
+    /*if(getBooleanArgument( argc, argv, "-finale" ))
 	{
 		argument = getArgument( argc, argv, "-finale" );
 		m_startGame_no = atoi(argument.c_str()+strlen("-finale"))-1;
 		m_startLevel = WM_MAP_NUM;
-	}
+    }*/
 
 	EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );
 
