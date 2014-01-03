@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 
-//#include "GsEngine.h"
 #include "engine/CEvent.h"
 #include "engine/infoscenes/CInfoScene.h"
 #include "core/mode/CGameMode.h"
@@ -18,7 +17,8 @@
 class CGameMain : public GsEngine
 {
 public:
-    CGameMain(bool &openedGamePlay) : mOpenedGamePlay(openedGamePlay) {}
+    CGameMain(const bool openedGamePlay) :
+        mOpenedGamePlay(openedGamePlay) {}
 
 protected:
 
@@ -34,11 +34,16 @@ private:
 	std::shared_ptr<CInfoScene> mpInfoScene;
 	std::unique_ptr<CGameMode> mpGameMode;
 
-	bool &mOpenedGamePlay;
+    bool mOpenedGamePlay;
 };
 
 
 // Events
-struct StartMainGameEvent : public CEvent {};
+struct StartMainGameEvent : public SwitchEngineEvent
+{
+    StartMainGameEvent(const bool openedGamePlay) :
+        SwitchEngineEvent( new CGameMain(openedGamePlay) )
+        { }
+};
 
 #endif /* CGAMEMAIN_H_ */

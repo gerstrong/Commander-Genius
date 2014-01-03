@@ -10,6 +10,10 @@
 #ifndef __GSENGINE_H_
 #define __GSENGINE_H_
 
+#include <base/GsEvent.h>
+#include <string>
+#include <memory>
+
 class GsEngine
 {
 
@@ -21,8 +25,17 @@ public:
 
     virtual void pumpEvent(const CEvent *evPtr) = 0;
 
-    //virtual void init() = 0;
     virtual void start() = 0;
 };
+
+
+struct SwitchEngineEvent : CEvent
+{
+    SwitchEngineEvent(GsEngine *ptr) :
+        mpEnginePtr( std::unique_ptr<GsEngine>(ptr) ) {}
+
+    std::unique_ptr<GsEngine> mpEnginePtr;
+};
+
 
 #endif /* __GSENGINE_H_ */

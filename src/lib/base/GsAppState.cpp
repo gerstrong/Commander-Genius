@@ -119,7 +119,7 @@ bool GsAppState::init(int argc, char *argv[])
 		m_startLevel = WM_MAP_NUM;
     }*/
 
-	EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );
+    EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );
 
 	return ok;
 }
@@ -128,24 +128,15 @@ bool GsAppState::init(int argc, char *argv[])
 
 void GsAppState::pumpEvent(const CEvent *evPtr)
 {
-    // Pump all the events related to the root of AppState    
-    if( const GMSwitchToGameLauncher* p_Launcher = dynamic_cast<const GMSwitchToGameLauncher*>(evPtr) )
+    if( const SwitchEngineEvent *swEng = dynamic_cast<const SwitchEngineEvent*>(evPtr) )
     {
-        g_pSound->unloadSoundData();
-        gpMenuController->emptyMenuStack();
-        mpEngine.reset(new CGameLauncherMenu( m_firsttime,
-                          p_Launcher->m_ChosenGame,
-                          p_Launcher->m_StartLevel) );
-        mpEngine->start();
-    }
-    else if( dynamic_cast<const StartMainGameEvent*>(evPtr) )
-    {
-        mpEngine.reset(new CGameMain(gpMenuController->mOpenedGamePlay));
-        mpEngine->start();
+        SwitchEngineEvent *swEngVar = const_cast<SwitchEngineEvent*>(swEng);
+        mpCurEngine.swap( swEngVar->mpEnginePtr );
+        mpCurEngine->start();
     }
     else if( dynamic_cast<const GMQuit*>(evPtr) )
     {
-        mpEngine.release();
+        mpCurEngine.release();
     }
     else if( const InvokeFunctorEvent *iEv = dynamic_cast<const InvokeFunctorEvent*>(evPtr) )
     {
@@ -153,7 +144,7 @@ void GsAppState::pumpEvent(const CEvent *evPtr)
     }
     else // none of the above, let's see if the children have events to be processed
     {
-        mpEngine->pumpEvent(evPtr);
+        mpCurEngine->pumpEvent(evPtr);
         gpMenuController->pumpEvent(evPtr);
     }
 }
@@ -163,7 +154,7 @@ void GsAppState::pollEvents()
 {
     if( gInput.getExitEvent() )
     {
-      mpEngine.release();
+      mpCurEngine = nullptr;
       return;
     }
 }
@@ -178,8 +169,8 @@ void GsAppState::ponder(const float deltaT)
     pollEvents();
 
 	// Process the game control object if no effects are being processed
-	if(mpEngine)
-        mpEngine->ponder(deltaT);
+    if(mpCurEngine)
+        mpCurEngine->ponder(deltaT);
 
 	if(g_pGfxEngine->runningEffect())
 	{
@@ -194,8 +185,8 @@ void GsAppState::ponder(const float deltaT)
 
 void GsAppState::render()
 {
-    if(mpEngine)
-        mpEngine->render();
+    if(mpCurEngine)
+        mpCurEngine->render();
 
     gpMenuController->render();
 }

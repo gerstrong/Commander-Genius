@@ -51,12 +51,12 @@ public:
 
     void render();
 
-    bool mustShutdown(){ return (mpEngine.get()==nullptr); }
+    bool mustShutdown(){ return (mpCurEngine==nullptr); }
 
     void pumpEvent(const CEvent *evPtr);
 	
 protected:
-    std::unique_ptr<GsEngine> mpEngine;
+    std::unique_ptr<GsEngine> mpCurEngine;
 
     bool &m_firsttime;
     int m_startGame_no;

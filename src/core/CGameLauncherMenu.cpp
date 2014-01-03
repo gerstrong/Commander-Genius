@@ -21,14 +21,18 @@
 #include "common/CBehaviorEngine.h"
 #include <lib/base/GsLogging.h>
 #include <base/Debug.h>
+#include "common/Menu/CMenuController.h"
 
-CGameLauncherMenu::CGameLauncherMenu(bool& first_time, 
+CGameLauncherMenu::CGameLauncherMenu(const bool first_time,
 				      const int start_game_no, 
 				      const int start_level ) :
 m_firsttime(first_time),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
-{}
+{
+    g_pSound->unloadSoundData();
+    gpMenuController->emptyMenuStack();
+}
 
 ///
 // Here the Resources for the menu are loaded. The file used here must exist in the directory
@@ -313,7 +317,7 @@ void CGameLauncherMenu::ponder(const float deltaT)
 						savedgames.setEpisode(Episode);
 						savedgames.convertAllOldFormats();
 
-						EventContainer.add( new StartMainGameEvent );
+                        EventContainer.add( new StartMainGameEvent(false) );
 
 						if(m_start_level == -1) // Starts normally
 							EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, Episode) );

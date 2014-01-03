@@ -25,7 +25,7 @@ LOADALL=0xFF
 class CGameLauncherMenu : public GsEngine
 {
 public:
-	CGameLauncherMenu(bool& first_time, 
+    CGameLauncherMenu(const bool first_time,
 			  const int start_game_no = -1, 
 			  const int start_level = -1 );
 
@@ -39,7 +39,7 @@ public:
 
 private:
 	std::unique_ptr<CGameLauncher> mp_GameLauncher;
-	bool &m_firsttime;
+    bool m_firsttime;
 	std::unique_ptr<CProfilesMenu> mp_FirstTimeMenu;
 	int m_start_game_no;
 	int m_start_level;
@@ -49,13 +49,10 @@ private:
 
 // Events
 // This event switches to the GameLauncher
-struct GMSwitchToGameLauncher : CEvent
+struct GMSwitchToGameLauncher : SwitchEngineEvent
 {
-	const int m_ChosenGame;
-	const int m_StartLevel;
 	GMSwitchToGameLauncher(	const int ChosenGame=-1, const int StartLevel=-1 ) :
-		m_ChosenGame(ChosenGame),
-		m_StartLevel(StartLevel)
+        SwitchEngineEvent( new CGameLauncherMenu(false, ChosenGame, ChosenGame) )
 		{ }
 };
 
