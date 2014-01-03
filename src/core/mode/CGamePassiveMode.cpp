@@ -10,6 +10,7 @@
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/galaxy/CPassive.h"
 #include <widgets/CMenuController.h>
+#include <base/GsAppState.h>
 #include "core/CGameLauncherMenu.h"
 #include "common/Menu/CSelectionMenu.h"
 

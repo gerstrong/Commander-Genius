@@ -22,9 +22,9 @@
 
 #include "graphics/CGfxEngine.h"
 
-GsApp::GsApp() :
+GsApp::GsApp(GsEngine *engPtr) :
 m_firsttime(false),
-mAppState(m_firsttime)
+mAppState(m_firsttime, engPtr)
 {}
 
 

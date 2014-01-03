@@ -12,6 +12,7 @@
 #include "sdl/music/CMusicPlayer.h"
 #include <base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
+#include <base/GsAppState.h>
 #include <memory>
 
 CGamePlayMode::CGamePlayMode(const int Episode,

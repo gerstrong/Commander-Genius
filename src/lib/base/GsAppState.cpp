@@ -12,8 +12,6 @@
 #include <base/video/GsEffectController.h>
 #include <widgets/CMenuController.h>
 
-#include "core/CGameLauncherMenu.h"
-
 
 std::string getArgument( int argc, char *argv[], const std::string& text )
 {
@@ -47,7 +45,9 @@ void GsAppStateEventSink::pumpEvent(const CEvent *ev)
 }
 
 
-GsAppState::GsAppState(bool &firsttime) :
+GsAppState::GsAppState(bool &firsttime,
+                       GsEngine *pEngineManager) :
+mpEngineManager(pEngineManager),
 m_firsttime(firsttime),
 m_startGame_no(-1),
 m_startLevel(-1),
@@ -118,7 +118,7 @@ bool GsAppState::init(int argc, char *argv[])
 		m_startLevel = WM_MAP_NUM;
     }*/
 
-    EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );
+    //EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );
 
 	return ok;
 }

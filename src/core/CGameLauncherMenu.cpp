@@ -20,6 +20,7 @@
 #include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 #include <lib/base/GsLogging.h>
+#include <base/GsAppState.h>
 #include <base/Debug.h>
 #include <widgets/CMenuController.h>
 

@@ -13,7 +13,7 @@
 class GsApp
 {
 public:
-    GsApp();
+    GsApp(GsEngine *engPtr);
     ~GsApp();
 	
 	bool init(int argc, char *argv[]);

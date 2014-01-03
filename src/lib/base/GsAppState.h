@@ -39,7 +39,8 @@ private:
 class GsAppState
 {
 public:
-    GsAppState(bool &firsttime);
+    GsAppState(bool &firsttime,
+               GsEngine *pEngineManager);
 
     ~GsAppState();
 
@@ -58,12 +59,18 @@ public:
 protected:
     std::unique_ptr<GsEngine> mpCurEngine;
 
+    GsEngine *mpEngineManager;
+
     bool &m_firsttime;
     int m_startGame_no;
     int m_startLevel;
 
     GsAppStateEventSink mSink;
 };
+
+
+// It's a simple quit event which will force CG to close the App
+struct GMQuit : CEvent {};
 
 
 #endif /* CGAMECONTROL_H_ */

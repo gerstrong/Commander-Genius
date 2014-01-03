@@ -10,6 +10,7 @@
 #include "gui/CGUIText.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <base/GsAppState.h>
 #include "gui/CGUITextSelectionList.h"
 #include "gui/CGUIBanner.h"
 #include "gui/CGUIButton.h"

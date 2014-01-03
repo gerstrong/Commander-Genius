@@ -37,7 +37,9 @@
 #include <base/FindFile.h>
 #include <base/GsApp.h>
 #include <lib/base/GsLogging.h>
+
 #include "ThreadPool.h"
+#include "core/CGameLauncherMenu.h"
 
 /**
  * \brief  This is the function where CG beings
@@ -91,7 +93,8 @@ int main(int argc, char *argv[])
 
 	// The Game Class instance is the main class managing whole
 	// interpreter instance. TODO: It should be a singleton
-    GsApp app;
+    CGameLauncherMenu launcher(false);
+    GsApp app((GsEngine*)(&launcher));
 	
 	////////////////////////////
 	// Initialize Game Engine //
