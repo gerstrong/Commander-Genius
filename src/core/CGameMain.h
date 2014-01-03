@@ -5,9 +5,11 @@
  *      Author: gerstrong
  */
 
-#include "CBaseEngine.h"
+//#include "CBaseEngine.h"
 #include "engine/CEvent.h"
 #include "engine/infoscenes/CInfoScene.h"
+#include "core/mode/CGameMode.h"
+#include <base/GsEngine.h>
 #include <memory>
 
 #ifndef CGAMEMAIN_H_
@@ -22,7 +24,7 @@ protected:
 
 	void switchToGamePlayMode();
 
-	void init() {}
+    void start() {}
     void pumpEvent(const CEvent *evPtr);
     void ponder();
     void render(const float deltaT);
@@ -32,7 +34,6 @@ private:
 	std::shared_ptr<CInfoScene> mpInfoScene;
 	std::unique_ptr<CGameMode> mpGameMode;
 
-	//bool mShowFinale; // This should be an event
 	bool &mOpenedGamePlay;
 };
 

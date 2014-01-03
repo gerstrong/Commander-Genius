@@ -10,19 +10,23 @@
 #ifndef CBASEENGINE_H_
 #define CBASEENGINE_H_
 
-#include "mode/CGameMode.h"
-#include "core/LogicDrawSplitter.h"
-#include "engine/CEvent.h"
+//#include "mode/CGameMode.h"
+//#include "core/LogicDrawSplitter.h"
+//#include "engine/CEvent.h"
 
-class CBaseEngine : public GameState
+class CBaseEngine
 {
 
 public:
 	virtual ~CBaseEngine() {}
 
+    virtual void ponder() = 0;
+    virtual void render(const float deltaT) = 0;
+
     virtual void pumpEvent(const CEvent *evPtr) = 0;
 
-	virtual void init() = 0;
+    //virtual void init() = 0;
+    virtual void start() = 0;
 };
 
 #endif /* CBASEENGINE_H_ */

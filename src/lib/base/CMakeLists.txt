@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(GsKit_base)
 
+# TODO: From this point we should recursively glob the files. I think it is the easiest way...
+
 add_library(GsKit_base GsApp.cpp
                        GsAppState.cpp
                        GsLogging.cpp

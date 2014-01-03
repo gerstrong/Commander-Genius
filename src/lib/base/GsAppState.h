@@ -11,7 +11,7 @@
 #define CGAMECONTROL_H_
 
 #include <base/GsEvent.h>
-#include "core/CBaseEngine.h"
+#include <base/GsEngine.h>
 
 #include <string>
 #include <memory>

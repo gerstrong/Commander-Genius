@@ -10,9 +10,10 @@
 
 #include "mode/CGameMode.h"
 #include "common/CGameLauncher.h"
-#include "core/CBaseEngine.h"
+//#include "core/CBaseEngine.h"
 #include "common/Menu/CProfilesMenu.h"
 #include "engine/CEGAGraphics.h"
+#include <base/GsEngine.h>
 #include <memory>
 
 enum load_states{
@@ -32,7 +33,7 @@ public:
 	bool loadMenuResources();
 	bool loadGalaxyResources(const Uint8 flags);
 	bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
-	void init();
+    void start();
     void pumpEvent(const CEvent *evPtr);
     void ponder();
     void render(const float deltaT);

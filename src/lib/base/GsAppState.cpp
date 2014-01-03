@@ -121,12 +121,12 @@ void GsAppState::pumpEvent(const CEvent *evPtr)
         mpEngine.reset(new CGameLauncherMenu( m_firsttime,
                           p_Launcher->m_ChosenGame,
                           p_Launcher->m_StartLevel) );
-        mpEngine->init();
+        mpEngine->start();
     }
     else if( dynamic_cast<const StartMainGameEvent*>(evPtr) )
     {
         mpEngine.reset(new CGameMain(gpMenuController->mOpenedGamePlay));
-        mpEngine->init();
+        mpEngine->start();
     }
     else if( dynamic_cast<const GMQuit*>(evPtr) )
     {

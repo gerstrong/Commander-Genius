@@ -42,7 +42,7 @@ bool CGameLauncherMenu::loadMenuResources()
 	return true;
 }
 
-void CGameLauncherMenu::init()
+void CGameLauncherMenu::start()
 {
     // Here it always makes sense to have the mouse cursor active
     SDL_ShowCursor(SDL_ENABLE);
