@@ -8,16 +8,13 @@
 #include <SDL.h>
 #include <stdio.h>
 
-#include "InputEvents.h"
-#include "CInput.h"
+#include <base/InputEvents.h>
+#include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsLogging.h>
 #include <base/FindFile.h>
-#include "StringUtils.h"
-#include "fileio/CConfiguration.h"
+#include <base/PointDevice.h>
 #include "common/CSettings.h"
-//#include "common/CBehaviorEngine.h"
-#include <lib/base/PointDevice.h>
 
 // Input Events
 
