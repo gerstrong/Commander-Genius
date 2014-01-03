@@ -310,7 +310,7 @@ ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 # Executable definition
 ADD_EXECUTABLE(CommanderGenius ${ALL_SRCS})
 
-target_link_libraries(CommanderGenius GsKit_base)
+target_link_libraries(CommanderGenius GsKit)
 
 # Linking part under Linux
 IF(BUILD_TARGET STREQUAL WIN32)

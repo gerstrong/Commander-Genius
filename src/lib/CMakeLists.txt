@@ -3,9 +3,10 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-include_directories ("${PROJECT_SOURCE_DIR}/base")
-add_subdirectory("base")
+project(GsKit)
 
-#project(GsKit)
+# TODO: From this point we should recursively glob the files. I think it is the easiest way...
 
-#target_link_libraries(GsKit GsKit_base)
+file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
+
+add_library(GsKit ${ALL_SRCS_GSKIT_BASE})
