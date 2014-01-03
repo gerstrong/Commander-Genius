@@ -14,7 +14,7 @@
 #include <base/CInput.h>
 #include "graphics/CGfxEngine.h"
 #include "sdl/extensions.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <memory>
 
 const int FONT_ID = 0;

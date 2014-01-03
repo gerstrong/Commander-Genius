@@ -11,7 +11,7 @@
 #include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
 #include "graphics/CGfxEngine.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 const int EFFECT_TIME = 10;
 const int EFFECT_SPEED = 10;

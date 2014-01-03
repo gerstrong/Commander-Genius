@@ -6,9 +6,8 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "StringUtils.h"
+//#include "StringUtils.h"
 #include "graphics/effects/CColorMerge.h"
-//#include "sdl/CVideoDriver.h"
 #include "common/CVorticonMapLoader.h"
 #include "Base64.h"
 
@@ -167,7 +166,7 @@ bool CPlayGameVorticon::loadGameState()
 	mMap->drawAll();
 	
 	// Create the special merge effect (Fadeout)
-	g_pGfxEngine->setupEffect(pColorMergeFX);
+    gEffectController.setupEffect(pColorMergeFX);
 	
 	
 	mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,
@@ -382,7 +381,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     mMap->drawAll();
 
     // Create the special merge effect (Fadeout)
-    g_pGfxEngine->setupEffect(pColorMergeFX);
+    gEffectController.setupEffect(pColorMergeFX);
 
 
     mpObjectAI.reset( new CVorticonSpriteObjectAI(mMap.get(), mSpriteObjectContainer, m_Player,

@@ -8,13 +8,13 @@
 #include <base/GsAppState.h>
 #include <base/GsLogging.h>
 #include <base/CInput.h>
+#include <base/utils/StringUtils.h>
+#include <base/video/GsEffectController.h>
 
 #include "common/Menu/CMenuController.h"
 
 #include "core/CGameLauncherMenu.h"
-#include "core/mode/CGamePassiveMode.h"
 
-#include "core/CGameMain.h"
 
 std::string getArgument( int argc, char *argv[], const std::string& text )
 {
@@ -145,7 +145,7 @@ void GsAppState::pumpEvent(const CEvent *evPtr)
     else // none of the above, let's see if the children have events to be processed
     {
         mpCurEngine->pumpEvent(evPtr);
-        gpMenuController->pumpEvent(evPtr);
+        gMenuController.pumpEvent(evPtr);
     }
 }
 
@@ -154,7 +154,7 @@ void GsAppState::pollEvents()
 {
     if( gInput.getExitEvent() )
     {
-      mpCurEngine = nullptr;
+      mpCurEngine.release();
       return;
     }
 }
@@ -172,15 +172,9 @@ void GsAppState::ponder(const float deltaT)
     if(mpCurEngine)
         mpCurEngine->ponder(deltaT);
 
-	if(g_pGfxEngine->runningEffect())
-	{
-		if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
-		{
-            g_pGfxEngine->setFXfinished(true);
-		}
-	}
-	
-    gpMenuController->ponder(deltaT);
+    gEffectController.run(deltaT);
+
+    gMenuController.ponder(deltaT);
 }
 
 void GsAppState::render()
@@ -188,5 +182,5 @@ void GsAppState::render()
     if(mpCurEngine)
         mpCurEngine->render();
 
-    gpMenuController->render();
+    gMenuController.render();
 }

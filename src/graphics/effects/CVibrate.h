@@ -10,7 +10,8 @@
 
 #include <memory>
 
-#include "CEffects.h"
+#include <base/video/GsEffectController.h>
+
 #include <lib/base/GsTimer.h>
 
 class CVibrate : public CEffects

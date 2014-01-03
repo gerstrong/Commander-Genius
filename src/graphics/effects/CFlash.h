@@ -13,7 +13,8 @@
 #define CFLASH_H_
 
 #include <memory>
-#include "CEffects.h"
+#include <base/video/GsEffectController.h>
+
 #include <lib/base/GsTimer.h>
 
 class CFlash : public CEffects

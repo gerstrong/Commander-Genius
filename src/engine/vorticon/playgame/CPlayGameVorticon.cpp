@@ -14,7 +14,7 @@
 #include "core/mode/CGameMode.h"
 #include "common/CVorticonMapLoader.h"
 #include "graphics/CGfxEngine.h"
-#include "StringUtils.h"
+//#include "StringUtils.h"
 #include "engine/vorticon/ai/CTeleporter.h"
 #include "common/Menu/CMenuController.h"
 #include "sdl/extensions.h"
@@ -213,7 +213,7 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 ////
 void CPlayGameVorticon::ponder(const float deltaT)
 {
-	if( !mpFinale && !gpMenuController->active() ) // Game is not paused, no messages have to be shown and no menu is open
+	if( !mpFinale && !gMenuController.active() ) // Game is not paused, no messages have to be shown and no menu is open
 	{
 		if(mMessageBoxes.empty() && !StatusScreenOpen())
 		{

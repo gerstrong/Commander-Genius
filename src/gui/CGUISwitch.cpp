@@ -6,7 +6,7 @@
  */
 
 #include "CGUISwitch.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "graphics/CGfxEngine.h"
 #include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"

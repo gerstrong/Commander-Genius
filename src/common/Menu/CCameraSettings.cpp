@@ -8,7 +8,7 @@
 #include <base/video/CVideoDriver.h>
 #include "CCameraSettings.h"
 #include "common/CSettings.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 CCameraSettings::CCameraSettings():
 CBaseMenu(GsRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),

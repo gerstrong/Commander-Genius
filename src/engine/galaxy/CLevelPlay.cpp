@@ -56,7 +56,7 @@ void CLevelPlay::reloadLevel()
 	loadMap( mMap.getLevel() );
 
 	// Create the special merge effect (Fadeout)
-	g_pGfxEngine->setupEffect(new CDimDark(8));	
+    gEffectController.setupEffect(new CDimDark(8));
 }
 
 bool CLevelPlay::loadLevel(const Uint16 level)
@@ -67,7 +67,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
 	const std::string loading_text = g_pBehaviorEngine->getString(level_text);
 
-	g_pGfxEngine->setupEffect(new CDimDark(8));
+    gEffectController.setupEffect(new CDimDark(8));
     gEventManager.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"),
 							  loading_text, LEFT) );
 

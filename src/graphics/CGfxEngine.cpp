@@ -6,9 +6,8 @@
  */
 
 #include "CGfxEngine.h"
-#include <lib/base/GsLogging.h>
-#include "StringUtils.h"
-
+#include <base/GsLogging.h>
+#include <base/utils/StringUtils.h>
 #include <base/CInput.h>
 
 ///
@@ -81,13 +80,6 @@ void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 {
 	freeCursor();
 	mpCursor.reset(new CCursor(surface));
-}
-
-// This will store the effect pointer the developer created in one function
-// You need this call this to make the effect work!
-void CGfxEngine::setupEffect(CEffects *pEffect)
-{
-    mpEffects.reset(pEffect);
 }
 
 /**
@@ -246,31 +238,8 @@ CSprite *CGfxEngine::getSprite(const int var, const std::string &name) const
 ///
 // Process Routines
 ///
-void CGfxEngine::ponder()
-{
-    if(mpEffects)
-    {
-        mpEffects->ponder(0);
-    }
-}
 
-void CGfxEngine::render()
-{
-    if(mpEffects)
-    {
-        mpEffects->render();
 
-        if( !runningEffect() )
-        {
-           mpEffects.release();
-        }
-    }
-}
-
-bool CGfxEngine::runningEffect()
-{
-	return ( mpEffects && !mpEffects->finished() );
-}
 
 CGfxEngine::~CGfxEngine()
 {

@@ -6,15 +6,15 @@
  */
 
 #include "CBaseMenu.h"
-#include "engine/CEvent.h"
-#include "CSingleton.h"
+#include <base/GsEvent.h>
+#include <base/Singleton.h>
 #include <memory>
 
 #ifndef CMENUCONTROLLER_H_
 #define CMENUCONTROLLER_H_
 
 
-#define gpMenuController CMenuController::Get()
+#define gMenuController CMenuController::get()
 
 
 /**
@@ -40,7 +40,7 @@ struct CloseAllMenusEvent : CEvent
  */
 
 
-class CMenuController : public CSingleton<CMenuController>
+class CMenuController : public GsSingleton<CMenuController>
 {
 
 public:

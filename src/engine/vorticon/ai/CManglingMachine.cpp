@@ -338,7 +338,7 @@ void CManglingMachine::se_mortimer_spark()
 		if (mHealthPoints <= 0)
 		{
 			set_mortimer_surprised(true);
-			g_pGfxEngine->setupEffect(new CVibrate(200));
+            gEffectController.setupEffect(new CVibrate(200));
 			mp_Map->redrawAt(getXPosition()>>CSF, getYPosition()>>CSF);
 		}		
 		
@@ -469,7 +469,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                 set_mortimer_surprised(true);
 
                 // destroy Mortimer's machine
-                g_pGfxEngine->setupEffect(new CVibrate(10000));
+                gEffectController.setupEffect(new CVibrate(10000));
 
                 set_mortimer_surprised(true);
                 // have waves of zaps run up mortimer's machine

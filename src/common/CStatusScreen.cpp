@@ -13,7 +13,7 @@
 #include "graphics/CGfxEngine.h"
 #include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "common/Playerdefines.h"
 #include "common/CBehaviorEngine.h"
 #include "engine/vorticon/ai/CAnkhShield.h"
@@ -46,7 +46,7 @@ void CStatusScreen::draw()
 	// Fade in and out process
 	if(m_closing)
 	{
-		if(gVideoDriver.getSpecialFXConfig() && !g_pGfxEngine->runningEffect())
+        if(gVideoDriver.getSpecialFXConfig() && !gEffectController.runningEffect())
 			m_closed = true;
 		else if(!gVideoDriver.getSpecialFXConfig())
 			m_closed = true;

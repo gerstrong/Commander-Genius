@@ -8,7 +8,7 @@
 #include "CStatusScreenGalaxyEp4.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CBehaviorEngine.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 CStatusScreenGalaxyEp4::CStatusScreenGalaxyEp4(const stItemGalaxy& Item) :
 CStatusScreenGalaxy(Item)

@@ -18,7 +18,7 @@
 #include "engine/vorticon/ai/CDoor.h"
 #include "engine/vorticon/ai/CRisingPoints.h"
 #include "engine/vorticon/ai/CAnkhShield.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 #define DOOR_YELLOW        2
 #define DOOR_RED           3

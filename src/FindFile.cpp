@@ -26,7 +26,7 @@
 #include <fstream>
 #include <base/FindFile.h>
 #include <base/Debug.h>
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "ConfigHandler.h"
 #include "common/CSettings.h"
 

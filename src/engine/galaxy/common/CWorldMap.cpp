@@ -34,7 +34,7 @@ void CWorldMap::init()
 
 	const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
 
-	g_pGfxEngine->setupEffect(new CColorMerge(8));
+    gEffectController.setupEffect(new CColorMerge(8));
 	
 	if(!gpSaveGameController->busy())
 	{

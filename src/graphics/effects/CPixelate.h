@@ -8,7 +8,8 @@
 #ifndef CPIXELATE_H_
 #define CPIXELATE_H_
 
-#include "CEffects.h"
+#include <base/video/GsEffectController.h>
+
 
 class CPixelate  : public CEffects
 {

@@ -32,9 +32,9 @@ bool CTitle::init(int Episode)
 	mTime = 10; // show the title screen for 10 secs.
 	pSurface = gVideoDriver.mpVideoEngine->getBlitSurface();
 	if(!gVideoDriver.getSpecialFXConfig())
-		g_pGfxEngine->setupEffect(new CColorMerge(16));
+        gEffectController.setupEffect(new CColorMerge(16));
 	else
-		g_pGfxEngine->setupEffect(new CPixelate(16));
+        gEffectController.setupEffect(new CPixelate(16));
 	
     if( (pBitmap = g_pGfxEngine->getBitmapFromStr("TITLE")) != NULL )
 	{
@@ -82,11 +82,11 @@ void CTitle::ponder()
 	    obj->process();
 	}
 	
-	if( !g_pGfxEngine->runningEffect() && !gpMenuController->active() )
+    if( !gEffectController.runningEffect() && !gMenuController.active() )
 	{
 		if( gInput.getPressedAnyCommand() )
 		{
-		    gpMenuController->openMainMenu();
+		    gMenuController.openMainMenu();
 		}	    
 	}
 

@@ -8,12 +8,11 @@
 #include "CGUIButton.h"
 #include "graphics/CGfxEngine.h"
 #include <base/CInput.h>
-//#include "sdl/input/InputEvents.h"
 #include <base/video/CVideoDriver.h>
 #include "core/mode/CGameMode.h"
 #include <lib/base/GsTimer.h>
 #include "sdl/extensions.h"
-#include "StringUtils.h"
+//#include "StringUtils.h"
 #include "common/Menu/CMenuController.h"
 #include <lib/base/PointDevice.h>
 

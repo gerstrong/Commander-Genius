@@ -147,7 +147,7 @@ void CVorticon::process()
 			// White Fade and back			
 			if(g_pBehaviorEngine->m_option[OPT_FLASHEFFECT].value)
 			{
-			    g_pGfxEngine->setupEffect(new CFlash(3000, 8, 0xFFFFFF, 200));
+                gEffectController.setupEffect(new CFlash(3000, 8, 0xFFFFFF, 200));
 			}
 			state = VORT_DYING;
 			dying = true;

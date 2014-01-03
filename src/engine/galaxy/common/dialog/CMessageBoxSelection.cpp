@@ -10,7 +10,7 @@
 #include <base/CInput.h>
 #include "graphics/CGfxEngine.h"
 #include "common/CBehaviorEngine.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 const int FONT_ID = 0;
 

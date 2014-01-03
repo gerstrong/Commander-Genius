@@ -21,7 +21,7 @@
 #define __CONFIGHANDLER_H__
 
 #include "CVec.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "MathLib.h"
 #include <string>
 #include <SDL.h>

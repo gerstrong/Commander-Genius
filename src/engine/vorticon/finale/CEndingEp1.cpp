@@ -6,10 +6,9 @@
  */
 
 #include "CEndingEp1.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <lib/base/GsTimer.h>
 #include <base/CInput.h>
-//#include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CVorticonMapLoader.h"
 #include "common/Playerdefines.h"

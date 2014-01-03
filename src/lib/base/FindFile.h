@@ -31,7 +31,7 @@
 #include "Iterator.h"
 #include "RefCounter.h"
 #include "Event.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 #ifndef WIN32
 #	include <dirent.h>

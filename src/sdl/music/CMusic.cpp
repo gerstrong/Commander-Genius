@@ -7,7 +7,7 @@
 
 #include "sdl/sound/CSound.h"
 #include "sdl/sound/Sampling.h"
-#include "StringUtils.h"
+//#include "StringUtils.h"
 #include "CMusic.h"
 #include <lib/base/GsLogging.h>
 #include <base/FindFile.h>

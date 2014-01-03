@@ -7,7 +7,7 @@
 
 #include "common/CSettings.h"
 #include "CAudioSettings.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
 

@@ -9,7 +9,7 @@
 #define CCONTROLSETTINGS_H_
 
 #include "CBaseMenu.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "gui/CGUIButton.h"
 #include "gui/CGUISwitch.h"
 #include "engine/CEvent.h"

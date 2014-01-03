@@ -11,7 +11,8 @@
 #include <SDL.h>
 #include <memory>
 
-#include "CEffects.h"
+#include <base/video/GsEffectController.h>
+
 #include "common/direction.h"
 
 

@@ -12,7 +12,7 @@
 #include "CHighScores.h"
 #include <base/CInput.h>
 #include "graphics/CGfxEngine.h"
-#include "StringUtils.h"
+//#include "StringUtils.h"
 #include <base/FindFile.h>
 #include <base/video/CVideoDriver.h>
 #include "common/CVorticonMapLoader.h"

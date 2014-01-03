@@ -81,24 +81,24 @@ void CInventory::toggleStatusScreen()
 
         mp_StatusBgrnd = gVideoDriver.convertThroughBlitSfc(gVideoDriver.mpVideoEngine->getBlitSurface());
 
-		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
+        CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(gEffectController.Effect());
 
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
 
-        g_pGfxEngine->setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, 10, CENTER, DOWN));
+        gEffectController.setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, 10, CENTER, DOWN));
 	}
 	else
 	{		
 		int scroll_pos = 160;
 
-		CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(g_pGfxEngine->Effect());
+        CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(gEffectController.Effect());
 
         // Check if it's already scrolling and get the position
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
 
-        g_pGfxEngine->setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, -10, CENTER, DOWN));
+        gEffectController.setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, -10, CENTER, DOWN));
 		if(mp_StatusBgrnd)
 			SDL_FreeSurface(mp_StatusBgrnd);
 		mp_StatusBgrnd = NULL;
@@ -120,7 +120,7 @@ void CInventory::setup(const int sprVar)
 
 void CInventory::drawStatus()
 {
-	if(g_pGfxEngine->applyingEffects())
+    if(gEffectController.applyingEffects())
 		return;
 
 	mp_StatusScreen->draw();

@@ -169,7 +169,7 @@ void GsApp::run()
             */
 
             // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
-            g_pGfxEngine->ponder();
+            gEffectController.run(logicLatency);
 
             acc -= logicLatency;
         }
@@ -178,7 +178,7 @@ void GsApp::run()
         mAppState.render();
 
         // Apply graphical effects if any.
-        g_pGfxEngine->render();
+        gEffectController.render();
 
         // Pass all the surfaces to one. Some special surfaces are used and are collected here
         gVideoDriver.collectSurfaces();

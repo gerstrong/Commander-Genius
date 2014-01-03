@@ -44,7 +44,7 @@ m_timer(0),
 mp_Bitmap(g_pGfxEngine->getBitmapFromStr("GAMEOVER")),
 mp_process(&CTantalusRay::shootray)
 {
-	g_pGfxEngine->setupEffect( new CVibrate(2000) );
+    gEffectController.setupEffect( new CVibrate(2000) );
 }
 
 void CTantalusRay::ponder()

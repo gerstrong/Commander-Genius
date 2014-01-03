@@ -21,7 +21,7 @@
 #include <string>
 #include "ConfigHandler.h"
 #include <base/FindFile.h>
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "MathLib.h"
 
 

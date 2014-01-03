@@ -8,7 +8,7 @@
 #include "CGUIText.h"
 #include "graphics/CGfxEngine.h"
 #include <base/video/CVideoDriver.h>
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 CGUIText::CGUIText(const std::string& text)
 {

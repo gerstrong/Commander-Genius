@@ -14,7 +14,7 @@
 #include <base/video/CVideoDriver.h>
 #include "CVideoSettings.h"
 #include "CSettingsMenu.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "Utils.h"
 #include "CMenuController.h"
 
@@ -252,5 +252,5 @@ void CVideoSettings::release()
 	
 	g_pSettings->saveDrvCfg();
 
-    gpMenuController->updateGraphics();
+    gMenuController.updateGraphics();
 }

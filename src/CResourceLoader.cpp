@@ -10,7 +10,7 @@
 #include "sdl/extensions.h"
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <cassert>
 
 
@@ -83,50 +83,49 @@ bool CResourceLoader::process(int* ret)
     bool threadFinalized = false;
     
 	// Now, do rendering here and the cycle
-    while(!threadFinalized || g_pGfxEngine->applyingEffects())
+    while(!threadFinalized || gEffectController.applyingEffects())
 	{                
         const float logicLatency = gTimer.LogicLatency();
         const float renderLatency = gTimer.RenderLatency();
-		
-		curr = timerTicks();
-		
-		elapsed = curr - start;      
-		acc += elapsed;
-		
-		start = timerTicks();
-		
-		// Perform the game cycle
-		while( acc > logicLatency )
-		{
-		    renderLoadingGraphic();
-		    
-		    if(m_permil >= m_permiltarget)
-		    {
+
+        curr = timerTicks();
+
+        elapsed = curr - start;
+        acc += elapsed;
+
+        start = timerTicks();
+
+        // Perform the game cycle
+        while( acc > logicLatency )
+        {
+            renderLoadingGraphic();
+
+            if(m_permil >= m_permiltarget)
+            {
                 setPermilage(m_permil+1);
-		    }
-		    else
-		    {
-			int delta_permil = (m_permiltarget-m_permil)/2;
-			
-			if(delta_permil == 0)			
-			    setPermilageForce(m_permil+1);
-			else
-			    setPermilageForce(m_permil+delta_permil);
-		    }
-		    
-		    // Here we try to process all the drawing related Tasks not yet done
-		    acc -= logicLatency;
+            }
+            else
+            {
+                int delta_permil = (m_permiltarget-m_permil)/2;
+
+                if(delta_permil == 0)
+                    setPermilageForce(m_permil+1);
+                else
+                    setPermilageForce(m_permil+delta_permil);
+            }
+
+            // Here we try to process all the drawing related Tasks not yet done
+            acc -= logicLatency;
 
             // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
-            g_pGfxEngine->ponder();
-
-		}	
+            gEffectController.run(logicLatency);
+        }
 		
 		// Pass all the surfaces to one
 		gVideoDriver.collectSurfaces();
 
         // Apply graphical effects if any.
-        g_pGfxEngine->render();
+        gEffectController.render();
 		
 		// Now you really render the screen
 		// When enabled, it also will apply Filters

@@ -7,20 +7,6 @@ project(GsKit_base)
 
 # TODO: From this point we should recursively glob the files. I think it is the easiest way...
 
-add_library(GsKit_base GsApp.cpp
-                       GsAppState.cpp
-                       GsLogging.cpp
-                       GsTimer.cpp
-                       GsEvent.h
-                       GsEngine.h
-                       CInput.cpp
-                       video/CVideoEngine.cpp
-                       video/CVideoDriver.cpp
-                       video/CSDLVideo.cpp
-                       video/COpenGL.cpp
-                       video/scaler/CScaler.cpp
-                       video/scaler/CScaler.cpp
-                       video/scaler/CScaler.cpp
-                       video/scaler/scale2x.cpp
-                       video/scaler/scale3x.cpp
-                       video/scaler/scalebit.cpp)
+file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
+
+add_library(GsKit_base ${ALL_SRCS_GSKIT_BASE})

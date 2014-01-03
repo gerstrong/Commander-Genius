@@ -14,7 +14,8 @@
 #include "sdl/extensions.h"
 #include "core/CGameLauncherMenu.h"
 #include "common/Menu/CMenuController.h"
-#include "graphics/effects/CEffects.h"
+
+#include <base/video/GsEffectController.h>
 
 
 namespace galaxy
@@ -275,7 +276,7 @@ void CPassiveGalaxy::processIntroZoom()
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
         m_BackgroundBitmap.scaleTo(gameRes);
         renderIntroZoom();
-        g_pGfxEngine->setupEffect(new CPixelate(2));
+        gEffectController.setupEffect(new CPixelate(2));
     }
 }
 
@@ -322,12 +323,12 @@ void CPassiveGalaxy::renderIntroZoom()
 void CPassiveGalaxy::processTitle()
 {
     // If something is pressed, popup the menu
-	if( !g_pGfxEngine->runningEffect() && !gpMenuController->active() )
+    if( !gEffectController.runningEffect() && !gMenuController.active() )
 	{
 		if( gInput.getPressedAnyCommand() )
 		{
             gInput.flushAll();
-		    gpMenuController->openMainMenu();
+		    gMenuController.openMainMenu();
 		}	    
 	}    
 }

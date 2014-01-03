@@ -10,7 +10,7 @@
  */
 
 #include "CMapLoaderGalaxy.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <base/FindFile.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CCarmack.h"

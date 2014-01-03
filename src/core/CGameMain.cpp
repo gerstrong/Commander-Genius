@@ -44,7 +44,7 @@ void CGameMain::pumpEvent(const CEvent *evPtr)
         mpGameMode = move(passive);
         mpGameMode->init();
         mOpenedGamePlay = false;
-        gpMenuController->emptyMenuStack();
+        gMenuController.emptyMenuStack();
     }
     else if( const GMSwitchToPlayGameMode* p_PlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
@@ -58,8 +58,8 @@ void CGameMain::pumpEvent(const CEvent *evPtr)
     }
     else if( const StartInfoSceneEvent *scene = dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
     {
-        gpMenuController->lock(true);
-        gpMenuController->hide(true);
+        gMenuController.lock(true);
+        gMenuController.hide(true);
         mpInfoScene = scene->mpScene;
         mpInfoScene->init();
 
@@ -114,8 +114,8 @@ void CGameMain::ponder(const float deltaT)
 			mpInfoScene->teardown();
 			mpInfoScene = nullptr;
 			gInput.flushAll();
-			gpMenuController->lock(false);
-            gpMenuController->hide(false);
+            gMenuController.lock(false);
+            gMenuController.hide(false);
 		}
 	}
 	else

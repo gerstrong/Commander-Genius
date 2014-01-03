@@ -1432,7 +1432,7 @@ void CPlayerLevel::processExiting()
         CEventContainer& EventContainer = gEventManager;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
         EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
-		g_pGfxEngine->setupEffect(new CDimDark(8));		
+        gEffectController.setupEffect(new CDimDark(8));
         EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
         m_Inventory.Item.m_gem.clear();
 		mExitTouched = true;

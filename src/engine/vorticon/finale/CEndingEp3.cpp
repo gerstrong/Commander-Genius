@@ -6,9 +6,8 @@
  */
 
 #include "CEndingEp3.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <base/CInput.h>
-//#include "sdl/CVideoDriver.h"
 #include "graphics/effects/CFlash.h"
 #include "graphics/CGfxEngine.h"
 #include "common/CVorticonMapLoader.h"
@@ -101,12 +100,14 @@ void CEndingEp3::PaparazziScene()
 	if(m_mustsetup)
 	{
 		mTimer.ResetSecondsTimer();
-		g_pGfxEngine->setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
+        gEffectController.setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
 		m_mustsetup = false;
 	}
 
 	if(m_counter==30 || m_counter==60 || m_counter==90)
-		g_pGfxEngine->setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
+    {
+        gEffectController.setupEffect(new CFlash(500, 32, 0xFFFFFF, 200));
+    }
 
 	m_counter++;
 

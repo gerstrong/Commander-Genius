@@ -11,11 +11,10 @@
 #include "graphics/CGfxEngine.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
-//#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "common/Menu/CMenuController.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
@@ -85,7 +84,7 @@ bool CPlayGameGalaxy::loadGameState()
         m_LevelPlay<<savedGame;
 
 	// Create the special merge effect (Fadeout)
-	g_pGfxEngine->setupEffect(pColorMergeFX);
+    gEffectController.setupEffect(pColorMergeFX);
 
 	return true;
 }
@@ -321,9 +320,9 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         pMsgBox->init();
 
         // Create the special merge effect (Fadeout) if requested
-        if( g_pGfxEngine->runningEffect() )
+        if( gEffectController.runningEffect() )
         {
-            CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(g_pGfxEngine->Effect());
+            CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(gEffectController.Effect());
             if( pColorMerge != NULL )
             {
                 SDL_Surface *fxSfc = pColorMerge->getSfc().get();
@@ -332,7 +331,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
                 SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
             }
 
-            CDimDark *pDimDark = dynamic_cast<CDimDark*>(g_pGfxEngine->Effect());
+            CDimDark *pDimDark = dynamic_cast<CDimDark*>(gEffectController.Effect());
             if( pDimDark != NULL )
             {
                 SDL_Surface *fxSfc = pDimDark->getSfc().get();
@@ -450,7 +449,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
     CEventContainer &eventContainer = gEventManager;
     //eventContainer.update();
 
-	if( !gpMenuController->active() )
+	if( !gMenuController.active() )
 	{
         processInput();
 
@@ -557,7 +556,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 
 void CPlayGameGalaxy::render()
 {
-    if( !gpMenuController->active() )
+    if( !gMenuController.active() )
     {
 
         // process World Map if active. At the start it's enabled

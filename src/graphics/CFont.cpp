@@ -11,7 +11,7 @@
 #include <base/video/CVideoDriver.h>
 #include "CGFont.xpm"
 #include "alternatefont.xpm"
-#include "StringUtils.h"
+//#include "StringUtils.h"
 #include "sdl/extensions.h"
 #include <string.h>
 #include <cstdlib>

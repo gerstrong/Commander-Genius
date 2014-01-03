@@ -9,7 +9,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/CGfxEngine.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 // This is a local functor that is invoked when the dialog has be closed
 struct CloseDialog : public InvokeFunctorEvent

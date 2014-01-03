@@ -12,11 +12,10 @@ const int NO_SELECTION = -1;
 
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIButton.h"
-#include "core/LogicDrawSplitter.h"
 #include <list>
 #include <memory>
 
-class CBaseMenu //: public GameState
+class CBaseMenu
 {
 public:
 

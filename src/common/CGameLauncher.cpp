@@ -17,7 +17,7 @@
 #include "graphics/effects/CScrollEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "CResourceLoader.h"
 #include <base/FindFile.h>
 #include "../version.h"
@@ -223,7 +223,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         SDL_Surface *blit = gVideoDriver.getBlitSurface();
         mLauncherDialog.processRendering();
 
-        g_pGfxEngine->setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
+        gEffectController.setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
     }
 }
 
@@ -268,7 +268,7 @@ void CGameLauncher::ponder(const float deltaT)
 
 void CGameLauncher::render()
 {      
-    if(g_pGfxEngine->applyingEffects())
+    if(gEffectController.applyingEffects())
         return;
 
     // Get the draw routines here!

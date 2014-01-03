@@ -9,7 +9,7 @@
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include <lib/base/GsLogging.h>
-#include "StringUtils.h"
+//#include "StringUtils.h"
 #include <base/FindFile.h>
 #include "sdl/music/CMusic.h"
 #include "common/CBehaviorEngine.h"

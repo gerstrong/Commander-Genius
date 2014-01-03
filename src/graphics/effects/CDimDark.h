@@ -9,7 +9,8 @@
 #ifndef CDIMDARK_H
 #define CDIMDARK_H
 
-#include "CEffects.h"
+#include <base/video/GsEffectController.h>
+
 #include <memory>
 
 class CDimDark : public CEffects

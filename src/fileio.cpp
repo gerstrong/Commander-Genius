@@ -11,7 +11,7 @@
 #include "sdl/sound/CSound.h"
 #include "fileio.h"
 #include <lib/base/GsLogging.h>
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <base/Debug.h>
 #include <base/FindFile.h>
 

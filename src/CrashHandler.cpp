@@ -8,7 +8,7 @@
  */
 
 #include "CrashHandler.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <base/Debug.h>
 
 

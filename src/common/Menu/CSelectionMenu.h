@@ -14,7 +14,7 @@
 #include "hardware/Configurator.h"
 #include "common/CBehaviorEngine.h"
 #include "CBaseMenu.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 struct SelectionEvent : CEvent
 {

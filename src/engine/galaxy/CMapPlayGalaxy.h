@@ -24,7 +24,7 @@
 //#include "sdl/CVideoDriver.h"
 #include "sdl/music/CMusic.h"
 #include "core/LogicDrawSplitter.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <memory>
 #include <vector>
 #include <list>

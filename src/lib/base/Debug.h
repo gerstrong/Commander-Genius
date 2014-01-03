@@ -12,7 +12,7 @@
 
 #include <string>
 #include <cassert>
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 // { these function should be safe to be called from everywhere, also from signalhandlers
 void RaiseDebugger(); // if run in a debugger, it should raise it; if not, it should do nothing

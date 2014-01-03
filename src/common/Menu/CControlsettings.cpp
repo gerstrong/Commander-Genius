@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "CSelectionMenu.h"
 #include "CControlsettings.h"
 #include "common/CBehaviorEngine.h"

@@ -10,7 +10,7 @@
 #ifndef __INI_READER_H__
 #define __INI_READER_H__
 
-#include "../StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include <map>
 
 struct Color;

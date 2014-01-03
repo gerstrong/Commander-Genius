@@ -17,7 +17,8 @@
 #include "CBitmap.h"
 #include "CPalette.h"
 #include "CCursor.h"
-#include "effects/CEffects.h"
+
+#include <base/video/GsEffectController.h>
 #include <vector>
 #include <memory>
 
@@ -38,13 +39,6 @@ public:
 	void createEmptyTilemaps(size_t num);
 	void createEmptyCursorMap(SDL_Surface *surface);
 	
-	void setupEffect(CEffects *pEffect);
-
-    void setFXfinished(const bool value)
-    {
-        mpEffects->setFinished(value);
-    }
-
 	void drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface);
 	void drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface);
 
@@ -68,20 +62,14 @@ public:
 
     CSprite *getSprite(const int var, const std::string &name) const;
 
-	CEffects *Effect() { return mpEffects.get(); }
 
-	bool applyingEffects() 
-	{ 
-	    if(mpEffects)
-            return true;
-	    return false;	    
-	}
 	
     CSprite &getSprite(const int var, const int slot) { return Sprite[var][slot]; }
     std::vector<CSprite> &getSpriteVec(const int var) { return Sprite[var]; }
 	CFont &getFont(Uint8 index) { return Font.at(index); }
 	CCursor *getCursor() { return mpCursor.get(); }
-	bool runningEffect();
+
+
 	
     void ponder();
     void render();
@@ -91,7 +79,6 @@ public:
 private:
 	std::vector<CTilemap> Tilemap;
 	std::vector<CFont> Font;
-	std::unique_ptr<CEffects> mpEffects;
 	std::vector<CBitmap> Bitmap;
     std::vector<CBitmap> maskedBitmap;
     std::vector<CBitmap> miscBitmap;
