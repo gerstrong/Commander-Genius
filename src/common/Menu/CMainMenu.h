@@ -5,7 +5,8 @@
  *      Author: gerstrong and pizza2004
  */
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 #include "engine/CEvent.h"
 
 #ifndef CMAINMENU_H_

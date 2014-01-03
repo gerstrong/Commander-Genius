@@ -8,7 +8,8 @@
 #ifndef CCAMERASETTINGS_H_
 #define CCAMERASETTINGS_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 #include "sdl/CVidConfig.h"
 #include "gui/CGUINumberControl.h"
 

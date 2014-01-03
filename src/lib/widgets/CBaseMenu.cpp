@@ -7,7 +7,7 @@
 
 #include <base/CInput.h>
 #include "CBaseMenu.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 #include "gui/CGUIBitmap.h"
 
 CBaseMenu::CBaseMenu(const GsRect<float>& rect) :

@@ -10,8 +10,7 @@
 #include <base/CInput.h>
 #include <base/utils/StringUtils.h>
 #include <base/video/GsEffectController.h>
-
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 
 #include "core/CGameLauncherMenu.h"
 

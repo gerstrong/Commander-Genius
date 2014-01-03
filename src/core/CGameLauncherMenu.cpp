@@ -21,7 +21,7 @@
 #include "common/CBehaviorEngine.h"
 #include <lib/base/GsLogging.h>
 #include <base/Debug.h>
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 
 CGameLauncherMenu::CGameLauncherMenu(const bool first_time,
 				      const int start_game_no, 

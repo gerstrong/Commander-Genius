@@ -8,7 +8,8 @@
 #ifndef CHELPMENU_H_
 #define CHELPMENU_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 
 class CHelpMenu : public CBaseMenu
 {

@@ -16,7 +16,7 @@
 #include "graphics/CGfxEngine.h"
 //#include "StringUtils.h"
 #include "engine/vorticon/ai/CTeleporter.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 #include "sdl/extensions.h"
 #include "engine/vorticon/finale/CEndingEp1.h"
 #include "engine/vorticon/finale/CEndingEp2.h"

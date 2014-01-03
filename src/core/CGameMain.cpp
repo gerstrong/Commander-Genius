@@ -10,7 +10,7 @@
 #include "mode/CGamePassiveMode.h"
 #include "mode/CGamePlayMode.h"
 #include "core/mode/CGameMode.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 #include "common/Menu/CSelectionMenu.h"
 //#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>

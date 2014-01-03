@@ -8,7 +8,7 @@
 #ifndef CCONFIRMMENU_H_
 #define CCONFIRMMENU_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
 
 #include <string>
 

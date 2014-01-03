@@ -8,7 +8,8 @@
 #ifndef CCONTROLSETTINGS_H_
 #define CCONTROLSETTINGS_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 #include <base/utils/StringUtils.h>
 #include "gui/CGUIButton.h"
 #include "gui/CGUISwitch.h"

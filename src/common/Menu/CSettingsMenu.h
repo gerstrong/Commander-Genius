@@ -8,7 +8,8 @@
 #ifndef CSETTINGSMENU_H_
 #define CSETTINGSMENU_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 #include "common/options.h"
 #include "fileio/CExeFile.h"
 #include "common/CBehaviorEngine.h"

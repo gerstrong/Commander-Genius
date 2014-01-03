@@ -8,7 +8,7 @@
 #ifndef COPTIONS_H_
 #define COPTIONS_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
 #include "gui/CGUISwitch.h"
 #include "common/CBehaviorEngine.h"
 #include <list>

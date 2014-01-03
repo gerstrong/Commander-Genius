@@ -8,7 +8,8 @@
 #ifndef CLOADMENU_H_
 #define CLOADMENU_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 
 class CLoadMenu : public CBaseMenu
 {

@@ -18,7 +18,7 @@
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include "common/CSettings.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 
 #include "graphics/CGfxEngine.h"
 

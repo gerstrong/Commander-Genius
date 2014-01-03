@@ -8,7 +8,8 @@
 #ifndef CVIDEOSETTINGS_H_
 #define CVIDEOSETTINGS_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 #include "sdl/CVidConfig.h"
 #include <SDL.h>
 #include <string>

@@ -16,7 +16,7 @@
 #include "CSettingsMenu.h"
 #include <base/utils/StringUtils.h>
 #include "Utils.h"
-#include "CMenuController.h"
+#include <widgets/CMenuController.h>
 
 
 static const char* aspectList[] =

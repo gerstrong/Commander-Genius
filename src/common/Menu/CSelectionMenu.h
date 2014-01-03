@@ -13,7 +13,7 @@
 
 #include "hardware/Configurator.h"
 #include "common/CBehaviorEngine.h"
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
 #include <base/utils/StringUtils.h>
 
 struct SelectionEvent : CEvent

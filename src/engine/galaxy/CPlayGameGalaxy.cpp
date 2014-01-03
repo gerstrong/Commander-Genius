@@ -15,7 +15,7 @@
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
 #include <base/utils/StringUtils.h>
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
 

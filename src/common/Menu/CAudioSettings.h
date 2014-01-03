@@ -8,7 +8,8 @@
 #ifndef CAUDIOSETTINGS_H_
 #define CAUDIOSETTINGS_H_
 
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 #include "fileio/CExeFile.h"
 #include <SDL.h>
 #include <string>

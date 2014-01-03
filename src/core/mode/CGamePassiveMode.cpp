@@ -9,7 +9,7 @@
 #include "sdl/sound/CSound.h"
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/galaxy/CPassive.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 #include "core/CGameLauncherMenu.h"
 #include "common/Menu/CSelectionMenu.h"
 

@@ -6,7 +6,7 @@
  */
 
 #include "CMainMenu.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 #include "common/Menu/CSettingsMenu.h"
 #include "common/Menu/CSelectionMenu.h"
 #include "common/Menu/CLoadMenu.h"

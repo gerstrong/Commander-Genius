@@ -13,7 +13,7 @@
 #include <lib/base/GsTimer.h>
 #include "sdl/extensions.h"
 //#include "StringUtils.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 #include <lib/base/PointDevice.h>
 
 

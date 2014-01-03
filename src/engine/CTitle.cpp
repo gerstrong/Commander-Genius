@@ -13,7 +13,7 @@
 #include "vorticon/ai/CEGABitmap.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CPixelate.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 #include <base/CInput.h>
 
 ////

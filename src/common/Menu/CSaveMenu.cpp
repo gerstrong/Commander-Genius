@@ -6,13 +6,14 @@
  */
 
 #include "CSaveMenu.h"
-#include "CBaseMenu.h"
+#include <widgets/CBaseMenu.h>
+
 #include "CConfirmMenu.h"
 #include <base/CInput.h>
 #include "gui/CGUIInputText.h"
 #include "fileio/CSaveGameController.h"
 #include "common/CBehaviorEngine.h"
-#include "common/Menu/CMenuController.h"
+#include <widgets/CMenuController.h>
 
 const std::string EMPTY_TEXT = "EMPTY";
 
