@@ -12,6 +12,7 @@ add_library(GsKit_base GsApp.cpp
                        GsLogging.cpp
                        GsTimer.cpp
                        GsEvent.h
+                       GsEngine.h
                        CInput.cpp
                        video/CVideoEngine.cpp
                        video/CVideoDriver.cpp

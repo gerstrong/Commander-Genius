@@ -24,7 +24,7 @@ public:
 	
 protected:
 
-	std::unique_ptr<CBaseEngine> mpEngine;
+    std::unique_ptr<GsEngine> mpEngine;
 
 	bool &m_firsttime;
 	int m_startGame_no;

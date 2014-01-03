@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-//#include "CBaseEngine.h"
+//#include "GsEngine.h"
 #include "engine/CEvent.h"
 #include "engine/infoscenes/CInfoScene.h"
 #include "core/mode/CGameMode.h"
@@ -15,7 +15,7 @@
 #ifndef CGAMEMAIN_H_
 #define CGAMEMAIN_H_
 
-class CGameMain : public CBaseEngine
+class CGameMain : public GsEngine
 {
 public:
     CGameMain(bool &openedGamePlay) : mOpenedGamePlay(openedGamePlay) {}

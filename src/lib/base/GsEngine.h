@@ -7,14 +7,14 @@
  *  Base for the engine. Some commons functions are performed here!
  */
 
-#ifndef CBASEENGINE_H_
-#define CBASEENGINE_H_
+#ifndef __GSENGINE_H_
+#define __GSENGINE_H_
 
-class CBaseEngine
+class GsEngine
 {
 
 public:
-	virtual ~CBaseEngine() {}
+    virtual ~GsEngine() {}
 
     virtual void ponder(const float deltaT) = 0;
     virtual void render() = 0;
@@ -25,4 +25,4 @@ public:
     virtual void start() = 0;
 };
 
-#endif /* CBASEENGINE_H_ */
+#endif /* __GSENGINE_H_ */

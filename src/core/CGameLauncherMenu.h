@@ -22,7 +22,7 @@ LOADSND=0x04,
 LOADALL=0xFF
 };
 
-class CGameLauncherMenu : public CBaseEngine
+class CGameLauncherMenu : public GsEngine
 {
 public:
 	CGameLauncherMenu(bool& first_time, 
