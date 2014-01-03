@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
 
 	// The Game Class instance is the main class managing whole
 	// interpreter instance. TODO: It should be a singleton
-    CGameLauncherMenu launcher(false);
-    GsApp app((GsEngine*)(&launcher));
+    CGameLauncherMenu *pLauncher = new CGameLauncherMenu(false);
+    GsApp app((GsEngine*)(pLauncher));
 	
 	////////////////////////////
 	// Initialize Game Engine //

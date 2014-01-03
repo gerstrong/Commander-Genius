@@ -47,7 +47,7 @@ void GsAppStateEventSink::pumpEvent(const CEvent *ev)
 
 GsAppState::GsAppState(bool &firsttime,
                        GsEngine *pEngineManager) :
-mpEngineManager(pEngineManager),
+mpCurEngine(pEngineManager),
 m_firsttime(firsttime),
 m_startGame_no(-1),
 m_startLevel(-1),
@@ -119,6 +119,7 @@ bool GsAppState::init(int argc, char *argv[])
     }*/
 
     //EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );
+    mpCurEngine->start();
 
 	return ok;
 }

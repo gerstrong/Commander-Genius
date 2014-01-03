@@ -59,8 +59,6 @@ public:
 protected:
     std::unique_ptr<GsEngine> mpCurEngine;
 
-    GsEngine *mpEngineManager;
-
     bool &m_firsttime;
     int m_startGame_no;
     int m_startLevel;
