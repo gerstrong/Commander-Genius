@@ -27,20 +27,20 @@
 
 CGameLauncher::CGameLauncher() :
 mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND))
-{
-	g_pBehaviorEngine->setEpisode(0);
-	m_mustquit      = false;
-	m_chosenGame    = -1;
-	m_ep1slot       = -1;
-    mLauncherDialog.updateBackground();
-	mSelection = -1;
-}
+{}
 
 ////
 // Initialization Routine
 ////
 bool CGameLauncher::init()
 {
+    g_pBehaviorEngine->setEpisode(0);
+    m_mustquit      = false;
+    m_chosenGame    = -1;
+    m_ep1slot       = -1;
+    mLauncherDialog.updateBackground();
+    mSelection      = -1;
+
     bool gamedetected = false;
 
     // Scan for games...

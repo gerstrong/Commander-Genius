@@ -22,15 +22,13 @@ public:
 			  const int start_game_no = -1, 
 			  const int start_level = -1 );
 
-    //bool loadGalaxyResources(const Uint8 flags);
-    //bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
     void start();
     void pumpEvent(const CEvent *evPtr);
     void ponder(const float deltaT);
     void render();
 
 private:
-	std::unique_ptr<CGameLauncher> mp_GameLauncher;
+    CGameLauncher mGameLauncher;
     bool m_firsttime;
 	std::unique_ptr<CProfilesMenu> mp_FirstTimeMenu;
 	int m_start_game_no;

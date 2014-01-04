@@ -66,13 +66,12 @@ void CGameLauncherMenu::start()
 
 	struct GamesScan: public Action
 	{
-		std::unique_ptr<CGameLauncher>& mp_GameLauncher;
+        CGameLauncher &mGameLauncher;
 
-		GamesScan(std::unique_ptr<CGameLauncher>& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
+        GamesScan(CGameLauncher &gameLauncher) : mGameLauncher(gameLauncher) {}
 		int handle()
 		{
-			mp_GameLauncher.reset( new CGameLauncher() );
-			if(!mp_GameLauncher->init())
+            if(!mGameLauncher.init())
 			{
                 gLogging.textOut(RED,"No game can be launched, because you are missing game data files.<br>");
 				return 0;
@@ -85,9 +84,9 @@ void CGameLauncherMenu::start()
 	const std::string threadname = "Scanning Game-Directory";
 	// He we start the thread for cycling the loading screen
 	g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
-    if(g_pResourceLoader->RunLoadAction(new GamesScan(mp_GameLauncher), threadname) != 0)
+    if(g_pResourceLoader->RunLoadAction(new GamesScan(mGameLauncher), threadname) != 0)
     {
-		mp_GameLauncher->setChosenGame(m_start_game_no);
+        mGameLauncher.setChosenGame(m_start_game_no);
     }
 
 	return;
@@ -98,7 +97,7 @@ void CGameLauncherMenu::start()
 
 void CGameLauncherMenu::pumpEvent(const CEvent *evPtr)
 {
-    mp_GameLauncher->pumpEvent(evPtr);
+    mGameLauncher.pumpEvent(evPtr);
 }
 
 void CGameLauncherMenu::ponder(const float deltaT)
@@ -114,24 +113,24 @@ void CGameLauncherMenu::ponder(const float deltaT)
 	else
 	{
 		// Launch the code of the Startmenu here! The one for choosing the games
-        mp_GameLauncher->ponder(deltaT);
-		m_start_game_no = mp_GameLauncher->getChosengame();
+        mGameLauncher.ponder(deltaT);
+        m_start_game_no = mGameLauncher.getChosengame();
 
 		if( m_start_game_no >= 0 ) // Means a game has been selected
 		{
 			//// Game has been chosen. Launch it!
 			// Get the path were to Launch the game
-			const std::string DataDirectory = mp_GameLauncher->getDirectory( m_start_game_no );
+            const std::string DataDirectory = mGameLauncher.getDirectory( m_start_game_no );
 
 			// We have to check which Episode will be used
-            const int episode = mp_GameLauncher->getEpisode( m_start_game_no );
+            const int episode = mGameLauncher.getEpisode( m_start_game_no );
 
             if( episode > 0 ) // The game has to have a valid episode!
 			{
 				// Get the EXE-Data of the game and load it into the memory.
                 if(!g_pBehaviorEngine->m_ExeFile.readData(episode, DataDirectory))
 				{
-					mp_GameLauncher->letchooseagain();
+                    mGameLauncher.letchooseagain();
 				}
 				else
 				{
@@ -152,11 +151,11 @@ void CGameLauncherMenu::ponder(const float deltaT)
 			}
 			else
 			{
-				mp_GameLauncher->letchooseagain();
+                mGameLauncher.letchooseagain();
 				gLogging.textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
 			}
 		}
-		else if(mp_GameLauncher->getQuit())
+        else if(mGameLauncher.getQuit())
 		{
 			// User chose "exit". So make CG quit...
             CEventContainer& EventContainer = gEventManager;
@@ -170,7 +169,7 @@ void CGameLauncherMenu::render()
 {
     if(!mp_FirstTimeMenu)
     {
-        mp_GameLauncher->render();
+        mGameLauncher.render();
     }
     else
     {
