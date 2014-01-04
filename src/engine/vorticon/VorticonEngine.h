@@ -21,10 +21,6 @@ public:
         mEp(ep) {}
 
     bool loadResources( const Uint8 flags );
-
-private:
-
-    //std::unique_ptr<CEGAGraphicsVort> mpEGAGraphics;
 };
 
 }

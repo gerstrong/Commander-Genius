@@ -19,7 +19,7 @@
 #include <base/video/CVideoDriver.h>
 
 #include <boost/property_tree/ptree.hpp>
-#include "Base64.h"
+#include <base/utils/Base64.h>
 
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
 mActive(false),

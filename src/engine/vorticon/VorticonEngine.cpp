@@ -45,11 +45,6 @@ bool VorticonEngine::loadResources( const Uint8 flags )
         // Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
         // This will also read the Tile-Properties
         CEGAGraphicsVort graphics(mEp, mDataPath);
-        /*mpEGAGraphics.reset( new vorticon::CEGAGraphicsVort(Episode, DataDirectory) );
-        if(!mp_EGAGraphics.get())
-            return false;*/
-
-        //mpEGAGraphics->loadData( version, p_exedata );
         graphics.loadData(version, p_exedata);
     }
 

@@ -160,7 +160,7 @@ bool CFont::loadAlternateFont()
 
 
 
-bool CFont::loadinternalFont()
+void CFont::loadinternalFont()
 {
 	SDL_Surface *blit = gVideoDriver.getBlitSurface();
 
@@ -169,8 +169,6 @@ bool CFont::loadinternalFont()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(mFontSurface.get(), SDL_BLENDMODE_BLEND);
 #endif
-
-    return true;
 }
 
 // This sets the width of the characters so the text is printed nicely.

@@ -21,10 +21,10 @@ protected:
 
     enum load_states
     {
-    LOADGFX=0x01,
-    LOADSTR=0x02,
-    LOADSND=0x04,
-    LOADALL=0xFF
+     LOADGFX=0x01,
+     LOADSTR=0x02,
+     LOADSND=0x04,
+     LOADALL=0xFF
     };
 
     const int mEp;

@@ -39,18 +39,6 @@ m_start_level(start_level)
     gMenuController.emptyMenuStack();
 }
 
-///
-// Here the Resources for the menu are loaded. The file used here must exist in the directory
-///
-bool CGameLauncherMenu::loadMenuResources()
-{
-	// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
-	mp_EGAGraphics.reset( new CEGAGraphics(0, ".") ); // It has to be the local data path where the interpreter is
-	if(!mp_EGAGraphics) return false;
-	mp_EGAGraphics->loadData();
-	return true;
-}
-
 void CGameLauncherMenu::start()
 {
     // Here it always makes sense to have the mouse cursor active
@@ -61,8 +49,6 @@ void CGameLauncherMenu::start()
     SDL_Surface *blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0, 0, 0) );
 
-    CEventContainer& EventContainer = gEventManager;
-
 	// If game was started for the first time, also open the firsttime dialog with configs.
 	if(m_firsttime)
 	{
@@ -71,13 +57,12 @@ void CGameLauncherMenu::start()
 	}
 
 	// Load the graphics for menu and background.
-    // Resources for the main menu
-	if(!loadMenuResources())
-	{
-		gLogging.textOut(RED, "Sorry, but the basic for creating the menu is missing, please reinstall CG with all the data.<br>");
-		EventContainer.add( new GMQuit() );
-		return;
-	}
+    // Resources for the main menu    
+    // This is only for the menu. We only need one fontmap for the list of games and some buttons
+    g_pGfxEngine->createEmptyFontmaps(1);
+    CFont &Font = g_pGfxEngine->getFont(0);
+
+    Font.loadinternalFont();
 
 	struct GamesScan: public Action
 	{

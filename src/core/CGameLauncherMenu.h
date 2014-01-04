@@ -11,7 +11,6 @@
 #include "mode/CGameMode.h"
 #include "common/CGameLauncher.h"
 #include "common/Menu/CProfilesMenu.h"
-#include "engine/CEGAGraphics.h"
 #include <base/GsEngine.h>
 #include <memory>
 
@@ -23,7 +22,6 @@ public:
 			  const int start_game_no = -1, 
 			  const int start_level = -1 );
 
-	bool loadMenuResources();
     //bool loadGalaxyResources(const Uint8 flags);
     //bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
     void start();
@@ -37,8 +35,6 @@ private:
 	std::unique_ptr<CProfilesMenu> mp_FirstTimeMenu;
 	int m_start_game_no;
 	int m_start_level;
-
-	std::unique_ptr<CEGAGraphics> mp_EGAGraphics;
 };
 
 // Events

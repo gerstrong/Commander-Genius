@@ -21,8 +21,8 @@ class CEGAGraphics
 public:
 	CEGAGraphics(short episode, const std::string& path);
 	
-	virtual bool loadData();
-    virtual bool loadData( int version, unsigned char *p_exedata ) { return false; }
+    //virtual bool loadData();
+    //virtual bool loadData( int version, unsigned char *p_exedata ) { return false; }
 
     //virtual int getNumSprites(){ return 0; }
     //virtual short getNumTiles(){ return 0; }

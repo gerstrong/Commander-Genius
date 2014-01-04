@@ -36,7 +36,7 @@ public:
 
 	bool loadAlternateFont();
 
-	bool loadinternalFont();
+    void loadinternalFont();
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
 	
