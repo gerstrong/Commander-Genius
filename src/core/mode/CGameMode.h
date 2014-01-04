@@ -20,11 +20,11 @@
 // This event switches to the PassiveMode
 struct GMSwitchToPassiveMode : CEvent
 {
-	const std::string m_DataDirectory;
-	const int m_Episode;
-	GMSwitchToPassiveMode( const std::string& DataDirectory, const int& Episode ) :
+    /*const std::string m_DataDirectory;
+    const int m_Episode;*/
+    GMSwitchToPassiveMode( /*const std::string& DataDirectory, const int& Episode*/ ) /*:
 		m_DataDirectory(DataDirectory),
-		m_Episode(Episode){}
+        m_Episode(Episode)*/{}
 };
 
 // This event switches to the PlayGameMode

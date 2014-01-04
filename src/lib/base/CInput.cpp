@@ -1504,7 +1504,8 @@ void CInput::flushAll(void){ flushKeys(); flushCommands(); }
 /**
  * \brief	shuts down the input driver.
  */
-CInput::~CInput() {
+void CInput::shutdown()
+{
 	// Shutdown Joysticks
 	while(!mp_Joysticks.empty())
 	{

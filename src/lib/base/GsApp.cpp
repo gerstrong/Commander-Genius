@@ -74,6 +74,11 @@ mSink(this)
  * 					or when an engine may be changed.
  */
 
+void GsApp::cleanup()
+{
+    gInput.shutdown();
+}
+
 GsApp::~GsApp()
 {
     gEventManager.unregSink(&mSink);
@@ -381,5 +386,7 @@ void GsApp::runMainCycle()
             total_elapsed = 0.0f;
         }
     }
+
+    cleanup();
 }
 

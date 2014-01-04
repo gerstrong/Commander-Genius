@@ -23,8 +23,8 @@ bool CSDLVideo::init()
 
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
 	
-    const int aspW = m_VidConfig.mAspectCorrection.w;
-    const int aspH = m_VidConfig.mAspectCorrection.h;
+    //const int aspW = m_VidConfig.mAspectCorrection.w;
+    //const int aspH = m_VidConfig.mAspectCorrection.h;
   
   
 #if SDL_VERSION_ATLEAST(2, 0, 0)

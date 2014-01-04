@@ -238,7 +238,7 @@ public:
 
 	void renderOverlay(); // for mouse wrapper gfx or other stuff
 
-	virtual ~CInput();
+    void shutdown();
 
 	// Input Events
     CEventContainer m_EventList;

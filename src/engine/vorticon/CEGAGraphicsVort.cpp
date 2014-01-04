@@ -65,7 +65,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	// assure that the last used resources are freed
 
 	// Set the palette, so the proper colours are loaded
-	g_pGfxEngine->Palette.setupColorPalettes(p_exedata, m_episode);
+    g_pGfxEngine->Palette.setupColorPalettes(p_exedata, m_episode);
 
 	std::ifstream HeadFile;
 	OpenGameFileR(HeadFile, ((m_path != "") ? m_path + "/" : "") + "egahead.ck" + itoa(m_episode), std::ios::binary);

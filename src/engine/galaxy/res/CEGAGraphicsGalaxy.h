@@ -22,7 +22,7 @@ namespace galaxy
 {
 
 //
-class CEGAGraphicsGalaxy : public ::CEGAGraphics
+class CEGAGraphicsGalaxy : public CEGAGraphics
 {
 public:
 	CEGAGraphicsGalaxy(CExeFile &ExeFile);

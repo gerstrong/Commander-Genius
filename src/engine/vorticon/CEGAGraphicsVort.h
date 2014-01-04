@@ -15,7 +15,6 @@
 namespace vorticon
 {
 
-
 class CEGAGraphicsVort : public CEGAGraphics
 {
 public:

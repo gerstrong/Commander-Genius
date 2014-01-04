@@ -15,12 +15,6 @@
 #include <base/GsEngine.h>
 #include <memory>
 
-enum load_states{
-LOADGFX=0x01,
-LOADSTR=0x02,
-LOADSND=0x04,
-LOADALL=0xFF
-};
 
 class CGameLauncherMenu : public GsEngine
 {
@@ -30,8 +24,8 @@ public:
 			  const int start_level = -1 );
 
 	bool loadMenuResources();
-	bool loadGalaxyResources(const Uint8 flags);
-	bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
+    //bool loadGalaxyResources(const Uint8 flags);
+    //bool loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags = LOADALL);
     void start();
     void pumpEvent(const CEvent *evPtr);
     void ponder(const float deltaT);

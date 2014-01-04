@@ -26,7 +26,8 @@ enum ProgressStyle
 	PROGRESS_STYLE_BAR
 };
 
-class CResourceLoader : public CSingleton<CResourceLoader> {
+class CResourceLoader : public CSingleton<CResourceLoader>
+{
 public:
 	CResourceLoader();
 

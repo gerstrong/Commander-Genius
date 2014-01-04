@@ -20,12 +20,11 @@ class GsEngine
 public:
     virtual ~GsEngine() {}
 
+    virtual void start() = 0;
     virtual void ponder(const float deltaT) = 0;
     virtual void render() = 0;
-
     virtual void pumpEvent(const CEvent *evPtr) = 0;
 
-    virtual void start() = 0;
 };
 
 

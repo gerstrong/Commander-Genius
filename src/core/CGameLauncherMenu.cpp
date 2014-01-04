@@ -10,6 +10,10 @@
 #include "fileio/CPatcher.h"
 
 #include "GameEngine.h"
+
+#include "engine/vorticon/VorticonEngine.h"
+#include "engine/galaxy/GalaxyEngine.h"
+
 #include "engine/vorticon/CEGAGraphicsVort.h"
 #include "engine/galaxy/res/CEGAGraphicsGalaxy.h"
 #include "engine/CMessages.h"
@@ -105,169 +109,7 @@ void CGameLauncherMenu::start()
 }
 
 
-bool CGameLauncherMenu::loadGalaxyResources(const Uint8 flags)
-{
-    CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-    int version = ExeFile.getEXEVersion();
-    unsigned char *p_exedata = ExeFile.getRawData();
-    const int Episode = ExeFile.getEpisode();
-    
-    g_pResourceLoader->setPermilage(10);
 
-    // Patch the EXE-File-Data directly in the memory.
-    CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
-    Patcher.process();    
-    
-    mp_GameLauncher->setChosenGame(m_start_game_no);
-    
-    g_pResourceLoader->setPermilage(50);    
-    
-    if( (flags & LOADGFX) == LOADGFX )
-    {
-        // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-        mp_EGAGraphics.reset(new galaxy::CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
-        if(!mp_EGAGraphics)
-            return false;
-
-        mp_EGAGraphics->loadData();
-        g_pResourceLoader->setPermilage(400);
-    }
-    
-    if( (flags & LOADSTR) == LOADSTR )
-    {
-        // load the strings.
-        CMessages Messages(p_exedata, Episode, version);
-        Messages.extractGlobalStrings();
-        g_pResourceLoader->setPermilage(450);
-    }
-
-
-    if( (flags & LOADSND) == LOADSND )
-    {
-        gLogging.ftextOut("Loading audio... <br>");
-        // Load the sound data
-        g_pSound->loadSoundData();
-        g_pResourceLoader->setPermilage(900);
-        gLogging.ftextOut("Done loading audio.<br>");
-    }
-    
-    gLogging.ftextOut("Loading game constants...<br>");
-
-    g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
-
-    gLogging.ftextOut("Looking for patches...<br>");
-    
-    // If there are patches left that must be applied later, do it here!
-    Patcher.postProcess();
-
-    gLogging.ftextOut("Done loading the resources...<br>");
-    
-    g_pResourceLoader->setPermilage(1000);
-    
-    return true;
-}
-
-
-///
-// This is used for loading all the resources of the game the use has chosen.
-// It loads graphics, sound and text into the memory
-///
-bool CGameLauncherMenu::loadResources( const std::string& DataDirectory, const int Episode, const Uint8 flags )
-{
-	int version;
-	unsigned char *p_exedata;
-
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-
-	version = ExeFile.getEXEVersion();
-	p_exedata = ExeFile.getRawData();
-
-	gLogging.ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
-	if( Episode == 1 && version == 134) gLogging.ftextOut("This version of the game is not supported!<br>");
-
-	if( ExeFile.getHeaderData() == NULL)
-	{
-		gLogging.textOut(RED, "GsAppState::loadResources: Could not load data from the EXE File<br>");
-		return false;
-	}
-
-	gpResource->setupFilenames(Episode);
-
-	g_pBehaviorEngine->setEpisode(Episode);
-
-	if( Episode == 1 || Episode == 2 || Episode == 3 ) // Vorticon resources
-	{
-	    	// Patch the EXE-File-Data directly in the memory.
-		CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
-		Patcher.process();
-
-		gTimer.setLPS(DEFAULT_LPS_VORTICON);
-	    
-		g_pBehaviorEngine->readTeleporterTable(p_exedata);
-
-		if( (flags & LOADGFX) == LOADGFX )
-		{
-			// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
-			// This will also read the Tile-Properties
-			mp_EGAGraphics.reset( new vorticon::CEGAGraphicsVort(Episode, DataDirectory) );
-			if(!mp_EGAGraphics.get())
-				return false;
-
-			mp_EGAGraphics->loadData( version, p_exedata );
-		}
-
-		if( (flags & LOADSTR) == LOADSTR )
-		{
-			// load the strings.
-			CMessages Messages(p_exedata, Episode, version);
-			Messages.extractGlobalStrings();
-		}
-
-		if( (flags & LOADSND) == LOADSND )
-		{
-			// Load the sound data
-			g_pSound->loadSoundData();
-		}
-
-		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
-		
-		// If there are patches left that must be apllied later, do it here!
-		Patcher.postProcess();		
-
-		return true;
-	}
-    else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
-    {
-        gTimer.setLPS(DEFAULT_LPS_GALAXY);
-
-        g_pResourceLoader->setStyle(PROGRESS_STYLE_BAR);
-        const std::string threadname = "Loading Keen " + itoa(Episode);
-
-        struct GalaxyDataLoad : public Action
-        {
-            CGameLauncherMenu &mGlm;
-            const Uint8 mFlags;
-
-            GalaxyDataLoad(CGameLauncherMenu &glm, const Uint8 flags) :
-                mGlm(glm), mFlags(flags) {}
-
-            int handle()
-            {
-                mGlm.loadGalaxyResources(mFlags);
-                return 1;
-            }
-        };
-
-        if(g_pResourceLoader->RunLoadAction(new GalaxyDataLoad(*this, flags), threadname) == 0)
-        {
-            g_pBehaviorEngine->EventList().add( new GMQuit() );
-            return false;
-        }
-
-        return true;
-    }
-    return false;
-}
 
 void CGameLauncherMenu::pumpEvent(const CEvent *evPtr)
 {
@@ -308,25 +150,19 @@ void CGameLauncherMenu::ponder(const float deltaT)
 				}
 				else
 				{
-					// Load the Resources
-                    if( loadResources(DataDirectory, episode) )
-					{
-						// Now look if there are any old savegames that need to be converted
-                        CEventContainer& EventContainer = gEventManager;
-						CSaveGameController &savedgames = *gpSaveGameController;
-						savedgames.setGameDirectory(DataDirectory);
-                        savedgames.setEpisode(episode);
-						savedgames.convertAllOldFormats();
-
-                        EventContainer.add( new StartMainGameEvent(false) );
-
-						if(m_start_level == -1) // Starts normally
-                            EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, episode) );
-						else // This happens, when a level was passed as argument when launching CG
-                            EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
-													DataDirectory, 
-													m_start_level) );
-					}
+                    if(episode >= 1 && episode <= 3)
+                    {
+                        gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
+                    }
+                    else if(episode >= 4 && episode <= 7)
+                    {
+                        gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
+                    }
+                    /*else
+                    {
+                        // Maybe another Game could be added here?
+                    }
+                    */
 				}
 			}
 			else

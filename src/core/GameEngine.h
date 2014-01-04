@@ -17,33 +17,30 @@
 class GameEngine : public GsEngine
 {
 public:
-    GameEngine(const bool openedGamePlay) :
-        mOpenedGamePlay(openedGamePlay) {}
+    GameEngine(const bool openedGamePlay,
+               const std::string &datapath) :
+        mOpenedGamePlay(openedGamePlay),
+        mDataPath(datapath)
+    {}
+
+    virtual void start() = 0;
+    void ponder(const float deltaT);
+    void render();
+    void pumpEvent(const CEvent *evPtr);
+
 
 protected:
 
 	void switchToGamePlayMode();
 
-    void start() {}
-    void pumpEvent(const CEvent *evPtr);
-    void ponder(const float deltaT);
-    void render();
 
-private:
-
-	std::shared_ptr<CInfoScene> mpInfoScene;
-	std::unique_ptr<CGameMode> mpGameMode;
+    std::shared_ptr<CInfoScene> mpInfoScene;
+    std::unique_ptr<CGameMode> mpGameMode;
 
     bool mOpenedGamePlay;
+
+    const std::string mDataPath;
 };
 
-
-// Events
-struct StartMainGameEvent : public SwitchEngineEvent
-{
-    StartMainGameEvent(const bool openedGamePlay) :
-        SwitchEngineEvent( new GameEngine(openedGamePlay) )
-        { }
-};
 
 #endif /* __GAMEENGINE_H_ */

@@ -17,7 +17,6 @@ class CInfoScene
 public:
 	CInfoScene();
 
-	//virtual void init() = 0;
 	virtual void init()
 	{ m_destroy_me = false; }
 	

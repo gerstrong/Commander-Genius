@@ -65,7 +65,7 @@ void CGamePlayMode::init()
 
 	if(!ok)
 	{
-		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode));
+        EventContainer.add( new GMSwitchToPassiveMode(/*m_DataDirectory, m_Episode*/));
 	}
 }
 
@@ -103,7 +103,7 @@ void CGamePlayMode::ponder(const float deltaT)
 	{
 		m_startLevel = 0;
 		g_pMusicPlayer->stop();
-		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode) );
+        EventContainer.add( new GMSwitchToPassiveMode(/*m_DataDirectory, m_Episode*/) );
 	}
 	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game
