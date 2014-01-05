@@ -61,7 +61,7 @@ private:
 
 // TODO: The resource will have to load in the background. Multithreading will be done later on...
 
-class CResourceLoaderBackground : public GsGear
+class CResourceLoaderBackground
 {
 public:
 

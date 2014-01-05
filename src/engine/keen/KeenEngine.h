@@ -15,8 +15,7 @@ public:
 
     void start();
 
-    void pumpEvent(const CEvent *evPtr);
-//    virtual void pumpChild(const CEvent evPtr) {}
+    virtual void pumpEvent(const CEvent *evPtr);
 
     virtual bool loadResources( const Uint8 flags ) = 0;
 

@@ -11,8 +11,9 @@
 #define __GSENGINE_H_
 
 #include <base/GsEvent.h>
-#include <string>
+#include <vector>
 #include <memory>
+#include <base/GsGear.h>
 
 class GsEngine
 {
@@ -21,10 +22,9 @@ public:
     virtual ~GsEngine() {}
 
     virtual void start() = 0;
+    virtual void pumpEvent(const CEvent *evPtr) = 0;
     virtual void ponder(const float deltaT) = 0;
     virtual void render() = 0;
-    virtual void pumpEvent(const CEvent *evPtr) = 0;
-
 };
 
 

@@ -36,6 +36,8 @@ void KeenEngine::start()
 
 void KeenEngine::pumpEvent(const CEvent *evPtr)
 {
+    GameEngine::pumpEvent(evPtr);
+
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
         // Now look if there are any old savegames that need to be converted

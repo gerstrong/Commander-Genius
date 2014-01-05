@@ -28,7 +28,7 @@ public:
     virtual void start() = 0;
     void ponder(const float deltaT);
     void render();
-    void pumpEvent(const CEvent *evPtr);
+    virtual void pumpEvent(const CEvent *evPtr);
 
 
 protected:

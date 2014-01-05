@@ -369,6 +369,7 @@ void CGameLauncher::ponder(const float deltaT)
             }
             else
             {
+                // Now let's decide which engine we have to start.
                 if(episode >= 1 && episode <= 3)
                 {
                     gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
