@@ -15,6 +15,9 @@ public:
 
     void start();
 
+    void pumpEvent(const CEvent *evPtr);
+//    virtual void pumpChild(const CEvent evPtr) {}
+
     virtual bool loadResources( const Uint8 flags ) = 0;
 
 protected:
@@ -29,6 +32,9 @@ protected:
 
     const int mEp;
 };
+
+
+struct FinishedLoadingResources : CEvent {};
 
 
 #endif /* __KEENENGINE_H__ */

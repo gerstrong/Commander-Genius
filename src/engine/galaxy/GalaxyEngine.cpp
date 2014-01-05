@@ -25,15 +25,17 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
     gTimer.setLPS(DEFAULT_LPS_GALAXY);
 
-    g_pResourceLoader->setStyle(PROGRESS_STYLE_BAR);
+    mEngineLoader.setStyle(PROGRESS_STYLE_BAR);
     const std::string threadname = "Loading Keen " + itoa(mEp);
 
     struct GalaxyDataLoad : public Action
     {
         const Uint8 mFlags;
+        CResourceLoaderBackground &mLoader;
 
-        GalaxyDataLoad(const Uint8 flags) :
-            mFlags(flags) {}
+        GalaxyDataLoad(const Uint8 flags, CResourceLoaderBackground &loader) :
+            mFlags(flags),
+            mLoader(loader) {}
 
         int handle()
         {
@@ -42,27 +44,22 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             unsigned char *p_exedata = ExeFile.getRawData();
             const int Episode = ExeFile.getEpisode();
 
-            g_pResourceLoader->setPermilage(10);
+            mLoader.setPermilage(10);
 
             // Patch the EXE-File-Data directly in the memory.
             CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
             Patcher.process();
 
-            g_pResourceLoader->setPermilage(50);
+            mLoader.setPermilage(50);
 
             if( (mFlags & LOADGFX) == LOADGFX )
             {
                 // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
                 CEGAGraphicsGalaxy graphics(ExeFile);
-                /*mpEGAGraphics.reset(new CEGAGraphicsGalaxy(ExeFile)); // Path is relative to the data directory
-                if(!mpEGAGraphics)
-                    return 0;*/
-
-                //mpEGAGraphics->loadData();
                 if( !graphics.loadData() )
                     return 0;
 
-                g_pResourceLoader->setPermilage(400);
+                mLoader.setPermilage(400);
             }
 
             if( (mFlags & LOADSTR) == LOADSTR )
@@ -70,7 +67,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
                 // load the strings.
                 CMessages Messages(p_exedata, Episode, version);
                 Messages.extractGlobalStrings();
-                g_pResourceLoader->setPermilage(450);
+                mLoader.setPermilage(450);
             }
 
 
@@ -79,7 +76,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
                 gLogging.ftextOut("Loading audio... <br>");
                 // Load the sound data
                 g_pSound->loadSoundData();
-                g_pResourceLoader->setPermilage(900);
+                mLoader.setPermilage(900);
                 gLogging.ftextOut("Done loading audio.<br>");
             }
 
@@ -94,17 +91,16 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
             gLogging.ftextOut("Done loading the resources...<br>");
 
-            g_pResourceLoader->setPermilage(1000);
+            mLoader.setPermilage(1000);
+
+            gEventManager.add(new FinishedLoadingResources());
 
             return 1;
         }
     };
 
-    if(g_pResourceLoader->RunLoadAction(new GalaxyDataLoad(flags), threadname) == 0)
-    {
-        gEventManager.add( new GMQuit() );
-        return false;
-    }
+    mEngineLoader.RunLoadActionBackground(new GalaxyDataLoad(flags, mEngineLoader));
+    mEngineLoader.start();
 
     return true;
 }

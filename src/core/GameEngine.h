@@ -8,6 +8,8 @@
 #include "engine/CEvent.h"
 #include "engine/infoscenes/CInfoScene.h"
 #include "core/mode/CGameMode.h"
+#include "CResourceLoader.h"
+
 #include <base/GsEngine.h>
 #include <memory>
 
@@ -30,6 +32,8 @@ public:
 
 
 protected:
+
+    CResourceLoaderBackground mEngineLoader;
 
 	void switchToGamePlayMode();
 

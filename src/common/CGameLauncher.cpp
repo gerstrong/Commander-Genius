@@ -280,8 +280,8 @@ void CGameLauncher::start()
 
     //const std::string threadname = "Scanning Game-Directory";
     // He we start the thread for cycling the loading screen
-    /*g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
-    if(g_pResourceLoader->RunLoadActionBackground(new GamesScan(mGameLauncher), threadname) != 0)
+    /*gResourceLoader.setStyle(PROGRESS_STYLE_TEXT);
+    if(gResourceLoader.RunLoadActionBackground(new GamesScan(mGameLauncher), threadname) != 0)
     {
         mGameLauncher.setChosenGame(m_start_game_no);
     }*/

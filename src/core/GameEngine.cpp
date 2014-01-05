@@ -108,6 +108,13 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
 
 void GameEngine::ponder(const float deltaT)
 {
+
+    if(mEngineLoader.isRunning())
+    {
+        mEngineLoader.run(deltaT);
+        return;
+    }
+
 	if( mpInfoScene )
 	{
         mpInfoScene->ponder();
@@ -129,6 +136,12 @@ void GameEngine::ponder(const float deltaT)
 
 void GameEngine::render()
 {
+    if(mEngineLoader.isRunning())
+    {
+        mEngineLoader.render();
+        return;
+    }
+
     if( !mpInfoScene )
     {
         // Render the game mode object

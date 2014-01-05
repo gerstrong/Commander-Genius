@@ -12,14 +12,14 @@
 #ifndef CRESOURCELOADER_H_
 #define CRESOURCELOADER_H_
 
-#include "CSingleton.h"
+#include <base/Singleton.h>
 #include "ThreadPool.h"
 
 #include <base/GsGear.h>
 #include <memory>
 #include <SDL.h>
 
-#define g_pResourceLoader CResourceLoader::Get()
+#define gResourceLoader CResourceLoader::get()
 
 enum ProgressStyle
 {
@@ -28,7 +28,7 @@ enum ProgressStyle
 	PROGRESS_STYLE_BAR
 };
 
-class CResourceLoader : public CSingleton<CResourceLoader>
+class CResourceLoader : public GsSingleton<CResourceLoader>
 {
 public:
 	CResourceLoader();

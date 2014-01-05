@@ -31,7 +31,12 @@ void KeenEngine::start()
     g_pBehaviorEngine->setEpisode(mEp);
 
     // Load the Resources
-    if( loadResources( LOADALL ) )
+    loadResources( LOADALL );
+}
+
+void KeenEngine::pumpEvent(const CEvent *evPtr)
+{
+    if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
         // Now look if there are any old savegames that need to be converted
         CSaveGameController &savedgames = *gpSaveGameController;
@@ -52,7 +57,12 @@ void KeenEngine::start()
                                     DataDirectory,
                                     m_start_level) );*/
     }
+    /*else
+    {
+        pumpChild(evPtr);
+    }*/
 
 }
+
 
 

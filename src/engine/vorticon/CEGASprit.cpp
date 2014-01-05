@@ -95,7 +95,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	if(!latchfile)
 		return false;
 	
-	g_pResourceLoader->setPermilage(10);
+	gResourceLoader.setPermilage(10);
 
 	RawData = new byte[m_planesize * 5];
     // get the data out of the file into the memory, decompressing it if necessary.
@@ -112,7 +112,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
     fclose(latchfile);
 
-	g_pResourceLoader->setPermilage(50);
+	gResourceLoader.setPermilage(50);
 	
     // TODO: Try to blit the Font map here!
 	// these are the offsets of the different video planes as
@@ -144,10 +144,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 				g_pGfxEngine->Palette.m_Palette );
 
 		percent = (i*50)/m_numsprites;
-		g_pResourceLoader->setPermilage(50+percent);
+		gResourceLoader.setPermilage(50+percent);
 	}
 
-	g_pResourceLoader->setPermilage(100);
+	gResourceLoader.setPermilage(100);
 
 	for(int p=0 ; p<4 ; p++)
 	{
@@ -162,11 +162,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
 			percent = (s*100)/m_numsprites;
-			g_pResourceLoader->setPermilage(100+percent);
+			gResourceLoader.setPermilage(100+percent);
 		}
 	}
 
-	g_pResourceLoader->setPermilage(200);
+	gResourceLoader.setPermilage(200);
 
 	// now load the 5th plane, which contains the sprite masks.
 	// note that we invert the mask because our graphics functions
@@ -196,10 +196,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 
 		percent = (s*100)/m_numsprites;
-		g_pResourceLoader->setPermilage(200+percent);
+		gResourceLoader.setPermilage(200+percent);
 	}
 
-	g_pResourceLoader->setPermilage(300);
+	gResourceLoader.setPermilage(300);
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	
@@ -258,11 +258,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
             Sprite.optimizeSurface();
 
             percent = (s*50)/m_numsprites;
-            g_pResourceLoader->setPermilage(300+percent);
+            gResourceLoader.setPermilage(300+percent);
         }
     }
 
-    g_pResourceLoader->setPermilage(350);
+    gResourceLoader.setPermilage(350);
 
     std::set<std::string> filelist;
 	FileListAdder fileListAdder;
@@ -284,10 +284,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		}
 
 		percent = (c*150)/listsize;
-		g_pResourceLoader->setPermilage(350+percent);
+		gResourceLoader.setPermilage(350+percent);
     }
 
-	g_pResourceLoader->setPermilage(500);
+	gResourceLoader.setPermilage(500);
 
     for(unsigned int i=0 ; i<4 ; i++)
     {
@@ -297,27 +297,27 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
             g_pGfxEngine->getSprite(i,s).applyTransparency();
 
             percent = (s*250)/NoSprites;
-            g_pResourceLoader->setPermilage(500+percent);
+            gResourceLoader.setPermilage(500+percent);
         }
     }
 
-    g_pResourceLoader->setPermilage(750);
+    gResourceLoader.setPermilage(750);
 
 	// Now create special sprites, like those for effects and the doors!
     DeriveSpecialSprites( g_pGfxEngine->getTileMap(1), g_pGfxEngine->getSpriteVec(0) );
-    g_pResourceLoader->setPermilage(800);
+    gResourceLoader.setPermilage(800);
 
 	// Here special Effects are applied, only when the option is enabled for it
 	if(gVideoDriver.getSpecialFXConfig())
 		ApplySpecialFX();
 
-    g_pResourceLoader->setPermilage(900);
+    gResourceLoader.setPermilage(900);
 
     // Apply the sprites for player 2,3 and 4
     DerivePlayerSprites( 1,g_pGfxEngine->getSpriteVec(1) );
     DerivePlayerSprites( 2,g_pGfxEngine->getSpriteVec(2) );
     DerivePlayerSprites( 3,g_pGfxEngine->getSpriteVec(3) );
-    g_pResourceLoader->setPermilage(1000);
+    gResourceLoader.setPermilage(1000);
 
 
 	return true;
