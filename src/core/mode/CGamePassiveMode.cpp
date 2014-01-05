@@ -11,7 +11,7 @@
 #include "engine/galaxy/CPassive.h"
 #include <widgets/CMenuController.h>
 #include <base/GsApp.h>
-#include "core/CGameLauncherMenu.h"
+#include "common/CGameLauncher.h"
 #include "common/Menu/CSelectionMenu.h"
 
 

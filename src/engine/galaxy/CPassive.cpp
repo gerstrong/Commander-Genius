@@ -12,7 +12,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "sdl/extensions.h"
-#include "core/CGameLauncherMenu.h"
+//#include "core/CGameLauncherMenu.h"
 #include <widgets/CMenuController.h>
 
 #include <base/video/GsEffectController.h>

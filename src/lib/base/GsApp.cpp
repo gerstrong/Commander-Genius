@@ -55,8 +55,7 @@ bool getBooleanArgument( int argc, char *argv[], const std::string& text )
 
 
 
-GsApp::GsApp(GsEngine *engPtr) :
-mpCurEngine(engPtr),
+GsApp::GsApp() :
 m_firsttime(false),
 mSink(this)
 {
@@ -178,7 +177,7 @@ bool GsApp::init(int argc, char *argv[])
         m_startLevel = WM_MAP_NUM;
     }*/
 
-    mpCurEngine->start();
+    //mpCurEngine->start();
 
     return ok;
 }
@@ -277,6 +276,11 @@ void GsApp::render()
 
 
 
+void GsApp::setEngine(GsEngine *engPtr)
+{
+    mpCurEngine.reset(engPtr);
+}
+
 
 ///////////////////////
 // This is the main cycle //
@@ -289,6 +293,11 @@ void GsApp::render()
  */
 void GsApp::runMainCycle()
 {
+    // I hope the engine has been set. Otherwise quit the app
+    assert(mpCurEngine);
+
+    mpCurEngine->start();
+
     float acc = 0.0f;
     float start = 0.0f;
     float elapsed = 0.0f;

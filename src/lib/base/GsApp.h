@@ -35,11 +35,13 @@ private:
 class GsApp
 {
 public:
-    GsApp(GsEngine *engPtr);
+    GsApp();
     ~GsApp();
 	
 	bool init(int argc, char *argv[]);
     bool loadDrivers();
+
+    void setEngine(GsEngine *engPtr);
 	
     void runMainCycle();
 	void cleanup();

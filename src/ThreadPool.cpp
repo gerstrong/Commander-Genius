@@ -117,7 +117,8 @@ int ThreadPool::threadWrapper(void* param) {
 	return 0;
 }
 
-ThreadPoolItem* ThreadPool::start(Action* act, const std::string& name, bool headless) {
+ThreadPoolItem* ThreadPool::start(Action* act, const std::string& name, bool headless)
+{
 	SDL_mutexP(startMutex); // If start() method will be called from different threads without mutex, hard-to-find crashes will occur
 	SDL_mutexP(mutex);
 	if(availableThreads.size() == 0) {

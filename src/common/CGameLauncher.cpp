@@ -6,33 +6,53 @@
  */
 
 #include "CGameLauncher.h"
-#include <lib/base/GsLogging.h>
-#include "gui/CGUIText.h"
+#include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <base/GsApp.h>
+
+#include "sdl/sound/CSound.h"
 #include "gui/CGUITextSelectionList.h"
 #include "gui/CGUIBanner.h"
 #include "gui/CGUIButton.h"
+#include "gui/CGUIText.h"
 #include "graphics/CGfxEngine.h"
 #include "graphics/effects/CScrollEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
-#include <base/utils/StringUtils.h>
-#include "CResourceLoader.h"
 #include <base/FindFile.h>
+#include <base/utils/StringUtils.h>
+#include <widgets/CMenuController.h>
+
+#include "CResourceLoader.h"
+
 #include "../version.h"
+
 #include <iostream>
 #include <fstream>
 
-CGameLauncher::CGameLauncher() :
-mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND))
-{}
+#include "engine/vorticon/VorticonEngine.h"
+#include "engine/galaxy/GalaxyEngine.h"
+
+
+
+CGameLauncher::CGameLauncher(const bool first_time,
+                             const int start_game_no,
+                             const int start_level) :
+mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND)),
+mGameScanner(),
+m_firsttime(first_time),
+m_start_game_no(start_game_no),
+m_start_level(start_level)
+{
+    g_pSound->unloadSoundData();
+    gMenuController.emptyMenuStack();
+}
 
 ////
 // Initialization Routine
 ////
-bool CGameLauncher::init()
+bool CGameLauncher::loadResources()
 {
     g_pBehaviorEngine->setEpisode(0);
     m_mustquit      = false;
@@ -55,15 +75,15 @@ bool CGameLauncher::init()
     // Scan VFS DIR_ROOT for exe's
     if (scanExecutables(DIR_ROOT))
         gamedetected = true;
-    g_pResourceLoader->setPermilage(300);
+    mGameScanner.setPermilage(300);
     // Recursivly scan into DIR_ROOT VFS subdir's for exe's
     if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT))
         gamedetected = true;
-    g_pResourceLoader->setPermilage(600);
+    mGameScanner.setPermilage(600);
     // Recursivly scan into DIR_GAMES subdir's for exe's
     if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES))
         gamedetected = true;
-    g_pResourceLoader->setPermilage(900);
+    mGameScanner.setPermilage(900);
 
     mpSelList = new CGUITextSelectionList();
 
@@ -95,7 +115,7 @@ bool CGameLauncher::init()
     // This way it goes right to the selection list.
     mLauncherDialog.setSelection(2);
 
-    g_pResourceLoader->setPermilage(1000);
+    mGameScanner.setPermilage(1000);
 	
     gLogging.ftextOut("Game Autodetection Finished<br>" );
     
@@ -214,6 +234,65 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 }
 
 
+void CGameLauncher::start()
+{
+    // Here it always makes sense to have the mouse cursor active
+    SDL_ShowCursor(SDL_ENABLE);
+
+    // In some cases especially when another game was running, the scene wasn't cleaned up.
+    // We do this here
+    SDL_Surface *blit = gVideoDriver.getBlitSurface();
+    SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0, 0, 0) );
+
+    // If game was started for the first time, also open the firsttime dialog with configs.
+    /*if(m_firsttime)
+    {
+        m_firsttime = false;
+        //mp_FirstTimeMenu = new CProfilesMenu(DLG_THEME_RED);
+    }*/
+
+    // Load the graphics for menu and background.
+    // Resources for the main menu
+    // This is only for the menu. We only need one fontmap for the list of games and some buttons
+    g_pGfxEngine->createEmptyFontmaps(1);
+    CFont &Font = g_pGfxEngine->getFont(0);
+
+    Font.loadinternalFont();
+
+    struct GamesScan : public Action
+    {
+        CGameLauncher &mGameLauncher;
+
+        GamesScan(CGameLauncher &launcher) :
+            mGameLauncher(launcher) {}
+
+        int handle()
+        {
+            if(!mGameLauncher.loadResources())
+            {
+                gLogging.textOut(RED,"No game can be launched, because game data files are missing.<br>");
+                return 0;
+            }
+
+            return 1;
+        }
+    };
+
+    //const std::string threadname = "Scanning Game-Directory";
+    // He we start the thread for cycling the loading screen
+    /*g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
+    if(g_pResourceLoader->RunLoadActionBackground(new GamesScan(mGameLauncher), threadname) != 0)
+    {
+        mGameLauncher.setChosenGame(m_start_game_no);
+    }*/
+
+    mGameScanner.setStyle(PROGRESS_STYLE_TEXT);
+    mGameScanner.RunLoadActionBackground(new GamesScan(*this));
+    mGameScanner.start();
+}
+
+
+
 void CGameLauncher::pumpEvent(const CEvent *evPtr)
 {
     if( dynamic_cast<const GMStart*>(evPtr) )
@@ -234,13 +313,19 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 ////
 void CGameLauncher::ponder(const float deltaT)
 {
+    // If GameScanner is running, don't do anything else
+    if(mGameScanner.isRunning())
+    {
+        mGameScanner.run(deltaT);
+        return;
+    }
+
     // Did the user press (X)?
     if( gInput.getExitEvent() )
     {
         m_mustquit = true;
         return;
-    }
-    
+    }    
     
     // Command (Keyboard/Joystick) are handled here
     for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
@@ -264,13 +349,58 @@ void CGameLauncher::ponder(const float deltaT)
     }
     
     mLauncherDialog.processLogic();
+
+    // Launch the code of the Startmenu here in case a game has been chosen
+    if( m_chosenGame >= 0 ) // Means a game has been selected
+    {
+        //// Game has been chosen. Launch it!
+        // Get the path were to Launch the game
+        const std::string DataDirectory = getDirectory( m_chosenGame );
+
+        // We have to check which Episode will be used
+        const int episode = getEpisode( m_chosenGame );
+
+        if( episode > 0 ) // The game has to have a valid episode!
+        {
+            // Get the EXE-Data of the game and load it into the memory.
+            if(!g_pBehaviorEngine->m_ExeFile.readData(episode, DataDirectory))
+            {
+                letchooseagain();
+            }
+            else
+            {
+                if(episode >= 1 && episode <= 3)
+                {
+                    gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
+                }
+                else if(episode >= 4 && episode <= 7)
+                {
+                    gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
+                }
+            }
+        }
+        else
+        {
+            letchooseagain();
+            gLogging.textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
+        }
+    }
+    else if(getQuit())
+    {
+        // User chose "exit". So make CG quit...
+        gEventManager.add( new GMQuit() );
+    }
 }
 
 
 void CGameLauncher::render()
-{      
-    if(gEffectController.applyingEffects())
+{          
+    // If GameScanner is running, don't do anything else
+    if(mGameScanner.isRunning())
+    {
+        mGameScanner.render();
         return;
+    }
 
     // Get the draw routines here!
     mLauncherDialog.processRendering();

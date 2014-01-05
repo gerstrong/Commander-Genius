@@ -16,7 +16,7 @@
 #include "common/CBehaviorEngine.h"
 #include "gui/CGUIButton.h"
 #include "core/mode/CGameMode.h"
-#include "core/CGameLauncherMenu.h"
+//#include "core/CGameLauncherMenu.h"
 #include <base/GsApp.h>
 
 

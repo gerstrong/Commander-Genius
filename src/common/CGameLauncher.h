@@ -8,11 +8,14 @@
 #ifndef CGAMELAUNCHER_H_
 #define CGAMELAUNCHER_H_
 
+#include <base/GsEngine.h>
+
 #include "core/LogicDrawSplitter.h"
 #include "fileio/CExeFile.h"
 #include "gui/CGUIDialog.h"
 #include "gui/CGUIText.h"
 #include "gui/CGUITextSelectionList.h"
+
 #include <string>
 #include <vector>
 #include <ostream>
@@ -46,16 +49,19 @@ struct GameEntry
 
 };
 
-class CGameLauncher //: public GameState
+class CGameLauncher : public GsEngine
 {
 public:
-	CGameLauncher();
+    CGameLauncher(const bool first_time,
+                  const int start_game_no = -1,
+                  const int start_level = -1 );
 
 	typedef std::vector<std::string> DirList;
 
-	bool init();
+    bool loadResources();
     void cleanup();
 
+    void start();
     void pumpEvent(const CEvent *evPtr);
     void ponder(const float deltaT);
     void render();
@@ -81,11 +87,16 @@ private:
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
 	CGUIDialog mLauncherDialog;
+    CResourceLoaderBackground mGameScanner;
 
 	CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
 	CGUITextSelectionList *mpSelList;
 	int mSelection;
+
+    bool m_firsttime;
+    int m_start_game_no;
+    int m_start_level;
 
 	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);
 	bool scanExecutables(const std::string& path);
@@ -93,6 +104,16 @@ private:
     void getLabels();
     std::string scanLabels(const std::string& path);
     void putLabels();
+};
+
+
+// Events
+// This event switches to the GameLauncher
+struct GMSwitchToGameLauncher : SwitchEngineEvent
+{
+    GMSwitchToGameLauncher(	const int ChosenGame=-1, const int StartLevel=-1 ) :
+        SwitchEngineEvent( new CGameLauncher(false, ChosenGame, ChosenGame) )
+        { }
 };
 
 #endif /* CGAMELAUNCHER_H_ */

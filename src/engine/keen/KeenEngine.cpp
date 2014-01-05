@@ -2,7 +2,7 @@
 #include <base/GsLogging.h>
 #include <widgets/CMenuController.h>
 
-#include "core/CGameLauncherMenu.h"
+#include "common/CGameLauncher.h"
 #include "core/mode/CGamePassiveMode.h"
 #include "KeenEngine.h"
 #include "fileio/ResourceMgmt.h"

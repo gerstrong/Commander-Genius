@@ -39,7 +39,7 @@
 #include <lib/base/GsLogging.h>
 
 #include "ThreadPool.h"
-#include "core/CGameLauncherMenu.h"
+#include "common/CGameLauncher.h"
 
 /**
  * \brief  This is the function where CG beings
@@ -91,19 +91,21 @@ int main(int argc, char *argv[])
 
     gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 
-	// The Game Class instance is the main class managing whole
-	// interpreter instance. TODO: It should be a singleton
-    CGameLauncherMenu *pLauncher = new CGameLauncherMenu(false);
-    GsApp app((GsEngine*)(pLauncher));
+    GsApp app;
 	
 	////////////////////////////
 	// Initialize Game Engine //
 	////////////////////////////
     if( app.init( argc, argv ) )
 	{
-		///////////////////////
-		// Start Game Engine //
-		///////////////////////
+        ////////////////////////////////
+        // Set GameLauncher as Engine //
+        ////////////////////////////////
+        app.setEngine(new CGameLauncher(false));
+
+        //////////////////////////////
+        // Run the Commander Genius //
+        //////////////////////////////
         app.runMainCycle();
 	}
 
