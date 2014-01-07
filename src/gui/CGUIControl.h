@@ -10,7 +10,6 @@
 #ifndef CGUICONTROL_H_
 #define CGUICONTROL_H_
 
-#include "utils/Geometry.h"
 #include <base/InputEvents.h>
 
 class CGUIControl

@@ -9,7 +9,6 @@
 #include <base/video/CVideoDriver.h>
 #include "graphics/CGfxEngine.h"
 #include <base/CInput.h>
-//#include "sdl/input/InputEvents.h"
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 
@@ -109,6 +108,6 @@ void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 		tile = (mTwirliconID && mHovered) ? 93 : 92;
 	}
 
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
-	Tilemap.drawTile(blitsfc, lRect.x, lRect.y, tile);
+    CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+    Tilemap.drawTile(blitsfc, lRect.x, lRect.y, tile);
 }

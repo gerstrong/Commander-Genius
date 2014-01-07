@@ -10,11 +10,10 @@
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include "core/mode/CGameMode.h"
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include "sdl/extensions.h"
-//#include "StringUtils.h"
 #include <widgets/CMenuController.h>
-#include <lib/base/PointDevice.h>
+#include <base/PointDevice.h>
 
 
 
