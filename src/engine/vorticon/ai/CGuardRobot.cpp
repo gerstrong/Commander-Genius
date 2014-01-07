@@ -131,7 +131,7 @@ void CGuardRobot::process()
                     newobject->setOwner(OBJ_GUARDROBOT, m_index);
                     newobject->sprite = ENEMYRAYEP2;
 
-                    g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
+                    gEventManager.add(new EventSpawnObject(newobject));
 
                     timetillnextshot = TIME_BETWEEN_SHOTS;
                     if (!--firetimes)

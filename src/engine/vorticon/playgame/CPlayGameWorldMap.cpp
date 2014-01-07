@@ -52,7 +52,7 @@ void CPlayGameVorticon::processOnWorldMap()
 					case NESSIE_WEED:
 					case NESSIE_PATH: break;
 					case NESSIE_LAND:
-						g_pBehaviorEngine->EventList().add(new CPlayer::Mount(player));
+						gEventManager.add(new CPlayer::Mount(player));
 						gInput.flushAll();
 						break;
 

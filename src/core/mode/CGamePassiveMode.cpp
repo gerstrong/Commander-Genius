@@ -19,6 +19,13 @@ CGamePassiveMode::CGamePassiveMode() :
 m_Difficulty(0)
 {}
 
+
+void CGamePassiveMode::pumpEvent(const CEvent *evPtr)
+{
+    mpPassive->pumpEvent(evPtr);
+}
+
+
 void CGamePassiveMode::init()
 {
 	// Create mp_PassiveMode object used for the screens while Player is not playing

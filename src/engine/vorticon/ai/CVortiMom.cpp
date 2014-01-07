@@ -150,7 +150,7 @@ void CVortiMom::process()
 			CFireBall *newobject = new CFireBall(mp_Map, getXMidPos()-(3<<STC),
 												getYPosition()+(11<<STC), dir,
 												OBJ_MOTHER, m_index);
-			g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
+			gEventManager.add(new EventSpawnObject(newobject));
 
 			if (onscreen)
 				playSound(SOUND_TANK_FIRE);

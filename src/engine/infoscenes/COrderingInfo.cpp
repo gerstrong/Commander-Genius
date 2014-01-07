@@ -180,6 +180,6 @@ void COrderingInfo::teardown()
 	if(!m_Textline.empty())
 		m_Textline.clear();
 	mpMap = NULL;
-	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	CEventContainer &EventContainer = gEventManager;
 	EventContainer.add(new ResetScrollSurface);
 }

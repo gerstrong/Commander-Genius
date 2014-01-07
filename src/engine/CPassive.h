@@ -34,7 +34,9 @@ public:
 	
 	CPassive();
 	
-	virtual bool init(char mode = INTRO) {return false;};
+    void pumpEvent(const CEvent *evPtr);
+
+    virtual bool init(char mode = INTRO) {return false;}
 	
     virtual void ponder() = 0;
 
@@ -50,7 +52,7 @@ public:
 	bool mustStartGame() { return (m_mode==STARTGAME); }
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
 	
-	virtual void cleanup() {};
+    virtual void cleanup() {}
 	
 	void createOutlinedText(const int splash_x, const int splash_y, const std::string &text);
 

@@ -762,7 +762,7 @@ void CPlayer::raygun()
                                            getSpriteVariantId(),
                                            OBJ_PLAYER, m_index);
 				rayobject->setSpeed(124);
-				g_pBehaviorEngine->EventList().add(new EventSpawnObject(rayobject) );
+				gEventManager.add(new EventSpawnObject(rayobject) );
 			}
 			else
 			{ // uh oh, out of bullets

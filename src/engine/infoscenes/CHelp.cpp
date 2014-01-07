@@ -101,7 +101,7 @@ void CHelp::init()
 
 void CHelp::teardown()
 {
-	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	CEventContainer &EventContainer = gEventManager;
 	EventContainer.add(new ResetScrollSurface);
 }
 

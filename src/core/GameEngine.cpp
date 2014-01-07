@@ -38,7 +38,7 @@ void GameEngine::switchToGamePlayMode()
 void GameEngine::pumpEvent(const CEvent *evPtr)
 {
     // process any triggered Game Main related event
-    auto &EventContainer = g_pBehaviorEngine->EventList();
+    auto &EventContainer = gEventManager;
 
     if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
     {

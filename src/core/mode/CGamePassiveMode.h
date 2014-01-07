@@ -19,6 +19,8 @@ class CGamePassiveMode : public CGameMode
 public:
 	CGamePassiveMode();
 
+    void pumpEvent(const CEvent *evPtr);
+
 	void init();
     void ponder(const float deltaT);
     void render();

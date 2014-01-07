@@ -13,7 +13,6 @@
 #include <base/GsEvent.h>
 #include <vector>
 #include <memory>
-#include <base/GsGear.h>
 
 class GsEngine
 {

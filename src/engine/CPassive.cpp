@@ -9,6 +9,7 @@
 #include "CPassive.h"
 #include "common/CBehaviorEngine.h"
 
+
 CPassive::CPassive()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
@@ -16,6 +17,15 @@ CPassive::CPassive()
 	m_mode = INTRO;
 	m_Episode = ExeFile.getEpisode();
 	m_DataDirectory = ExeFile.getDataDirectory();
+}
+
+
+void CPassive::pumpEvent(const CEvent *evPtr)
+{
+    if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    {
+        m_modeg = true;
+    }
 }
 
 

@@ -25,7 +25,7 @@ void CMenuController::openMainMenu()
 	if(mLocked)
 	    return;
 
-	g_pBehaviorEngine->EventList().add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
+    gEventManager.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
 	g_pBehaviorEngine->setPause(true);
 	g_pMusicPlayer->pause();	
 	
@@ -36,7 +36,7 @@ void CMenuController::openMainMenu()
 
 void CMenuController::pumpEvent(const CEvent *evPtr)
 {
-    CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+    CEventContainer &EventContainer = gEventManager;
 
     if( const OpenMenuEvent* openMenu = dynamic_cast<const OpenMenuEvent*>(evPtr) )
     {
@@ -96,7 +96,7 @@ void CMenuController::ponder(const float deltaT)
 	if(mLocked)
 	    return;
     
-	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+    CEventContainer &EventContainer = gEventManager;
 
 
 	// Did the player press the quit/back button

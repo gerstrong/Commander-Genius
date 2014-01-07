@@ -129,7 +129,7 @@ bool CMessie::tryToUnmount()
 
 void CMessie::process()
 {    
-    auto &evList = g_pBehaviorEngine->EventList();
+    auto &evList = gEventManager;
     
     // TODO: Pump should happens to this object as well.
 

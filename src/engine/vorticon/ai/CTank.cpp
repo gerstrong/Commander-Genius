@@ -165,7 +165,7 @@ void CTank::process()
 			newobject->setSpeed(108);
 			newobject->sprite = ENEMYRAY;
 			newobject->canbezapped = true;
-			g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
+			gEventManager.add(new EventSpawnObject(newobject));
 		}
 
 		state = TANK_WAIT_LOOK;

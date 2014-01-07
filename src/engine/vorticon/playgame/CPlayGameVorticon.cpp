@@ -271,8 +271,8 @@ void CPlayGameVorticon::ponder(const float deltaT)
                 CHighScores *pHighScores = new CHighScores();
                 pHighScores->init();
                 collectHighScoreInfo(*pHighScores);
-                g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(/*m_Gamepath, m_Episode*/));
-                g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
+                gEventManager.add(new GMSwitchToPassiveMode(/*m_Gamepath, m_Episode*/));
+                gEventManager.add(new StartInfoSceneEvent( pHighScores ));
             }
         }
     }
@@ -296,8 +296,8 @@ void CPlayGameVorticon::ponder(const float deltaT)
 				CHighScores *pHighScores = new CHighScores();
 				pHighScores->init();
 				collectHighScoreInfo(*pHighScores);
-                g_pBehaviorEngine->EventList().add(new GMSwitchToPassiveMode(/*m_Gamepath, m_Episode*/));
-				g_pBehaviorEngine->EventList().add(new StartInfoSceneEvent( pHighScores ));
+                gEventManager.add(new GMSwitchToPassiveMode(/*m_Gamepath, m_Episode*/));
+				gEventManager.add(new StartInfoSceneEvent( pHighScores ));
 			}
 		}
 		else // Bitmap must first be created

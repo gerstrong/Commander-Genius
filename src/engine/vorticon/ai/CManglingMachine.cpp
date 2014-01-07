@@ -477,7 +477,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                 state = HEART_ZAPSRUNUP;
                 counter = 0;
 
-                g_pBehaviorEngine->EventList().add(new EventEraseAllMeeps());
+                gEventManager.add(new EventEraseAllMeeps());
             }
             break;
         }
@@ -507,7 +507,7 @@ void CManglingMachine::se_mortimer_zapsup_nearby(CPlayer *player)
 		
 		if( state == ZAPSUP_ABOUTTOFADEOUT )
 		{
-		    g_pBehaviorEngine->EventList().add(new EventEraseAllEnemies());
+		    gEventManager.add(new EventEraseAllEnemies());
 		    player->level_done = LEVEL_DONE_FADEOUT;
 		    exists = false;
 		    return;

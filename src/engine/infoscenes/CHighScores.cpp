@@ -161,7 +161,7 @@ void CHighScores::init()
 
 void CHighScores::teardown()
 {
-	CEventContainer &EventContainer = g_pBehaviorEngine->EventList();
+	CEventContainer &EventContainer = gEventManager;
 	EventContainer.add(new ResetScrollSurface);
 }
 

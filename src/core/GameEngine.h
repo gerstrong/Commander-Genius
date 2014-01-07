@@ -37,7 +37,6 @@ protected:
 
 	void switchToGamePlayMode();
 
-
     std::shared_ptr<CInfoScene> mpInfoScene;
     std::unique_ptr<CGameMode> mpGameMode;
 

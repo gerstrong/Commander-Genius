@@ -59,11 +59,6 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
                                     DataDirectory,
                                     m_start_level) );*/
     }
-    /*else
-    {
-        pumpChild(evPtr);
-    }*/
-
 }
 
 

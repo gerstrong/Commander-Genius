@@ -89,7 +89,7 @@ void CSpark::process()
             CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF, CENTER, DOWN, getSpriteVariantId());
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->setOwner(m_type, m_index);
-			g_pBehaviorEngine->EventList().add( new EventSpawnObject(newobject) );
+			gEventManager.add( new EventSpawnObject(newobject) );
 			playSound(SOUND_SHOT_HIT);
 
 			blowy++;
@@ -134,7 +134,7 @@ void CSpark::process()
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
 				playSound(SOUND_SHOT_HIT);
-				g_pBehaviorEngine->EventList().add(new EventSpawnObject(newobject));
+				gEventManager.add(new EventSpawnObject(newobject));
 			}
 
 			blowx++;
