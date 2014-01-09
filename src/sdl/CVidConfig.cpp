@@ -30,6 +30,9 @@ void CVidConfig::reset()
 	// Default values
 	vsync = true;
 
+	m_DisplayRect.x = 0;
+	m_DisplayRect.y = 0;
+
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
 	//m_Resolution.width=320;
 	//m_Resolution.height=240;

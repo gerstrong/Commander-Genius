@@ -22,11 +22,12 @@ bool CSDLVideo::init()
         return false;
 
 	// NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
-	
     //const int aspW = m_VidConfig.mAspectCorrection.w;
     //const int aspH = m_VidConfig.mAspectCorrection.h;
-  
-  
+    const int aspW = m_VidConfig.mAspectCorrection.w;
+    const int aspH = m_VidConfig.mAspectCorrection.h;
+
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
     if(window)
@@ -48,16 +49,17 @@ bool CSDLVideo::init()
     }
 
     renderer = SDL_CreateRenderer(window, -1, 0);
-     
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
-    
+
     updateAspectRect(m_VidConfig.m_DisplayRect, aspW, aspH);
 
     const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
 
-    SDL_RenderSetLogicalSize(renderer, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
+    //SDL_RenderSetLogicalSize(renderer, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
+    resizeDisplayScreen(m_VidConfig.m_DisplayRect);
 
     if(sdlTexture)
     {
@@ -213,7 +215,7 @@ void CSDLVideo::transformScreenToDisplay()
     }*/
 
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)    
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     auto screen = mpScreenSfc.get();
     SDL_LockSurface(screen);
     SDL_UpdateTexture(sdlTexture, nullptr, screen->pixels, screen->w * sizeof (Uint32));

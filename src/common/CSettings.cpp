@@ -39,11 +39,10 @@ bool CSettings::saveDrvCfg()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
 	Configuration.Parse();
-	
+
 	int i = 1;
 	for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
 		Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
-	
 	CVidConfig &VidConf = gVideoDriver.getVidConfig();
 	Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
 	Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
@@ -61,17 +60,17 @@ bool CSettings::saveDrvCfg()
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
 	Configuration.WriteInt("Video", "fps", gTimer.FPS());
 	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
-		
+
 	const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
 	Configuration.WriteString("Video", "aspect", arc_str);
-	
+
 	st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 	Configuration.WriteInt("Bound", "left", CameraBounds.left);
 	Configuration.WriteInt("Bound", "right", CameraBounds.right);
 	Configuration.WriteInt("Bound", "up", CameraBounds.up);
 	Configuration.WriteInt("Bound", "down", CameraBounds.down);
 	Configuration.WriteInt("Bound", "speed", CameraBounds.speed);
-	
+
 	Configuration.WriteInt("Audio", "channels", (g_pSound->getAudioSpec()).channels);
 	Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
 	Configuration.WriteInt("Audio", "rate", (g_pSound->getAudioSpec()).freq);
@@ -79,7 +78,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Audio", "mixerch", (g_pSound->getMixingchannels()));
 	Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
 	Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
-	
+
 	return Configuration.saveCfgFile();
 }
 
@@ -92,7 +91,7 @@ bool CSettings::saveDrvCfg()
 bool CSettings::loadDrvCfg()
 {
 	CConfiguration Configuration(CONFIGFILENAME);
-	
+
 	if(!Configuration.Parse()) return false;
 	else
 	{
@@ -119,14 +118,14 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
 		Configuration.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
-		
+
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
-		
+
 		std::string arcStr;
 		Configuration.ReadString("Video", "aspect", arcStr, "none");
 		VidConf.mAspectCorrection.w = VidConf.mAspectCorrection.h = 0;
 		sscanf( arcStr.c_str(), "%i:%i", &VidConf.mAspectCorrection.w, &VidConf.mAspectCorrection.h );
-		
+
 		Configuration.ReadKeyword("Video", "vsync", &VidConf.vsync, true);
 		Configuration.ReadInteger("Video", "filter", &value, 1);
         VidConf.m_ScaleXFilter = (filterOptionType)(value);
@@ -134,14 +133,14 @@ bool CSettings::loadDrvCfg()
 		std::string scaleType;
 		Configuration.ReadString("Video", "scaletype", scaleType, "normal");
 		VidConf.m_normal_scale = (scaleType == "normal");
-		
+
 		// if ScaleX is one and scaletype is not at normal, this is wrong.
 		// we will change that and force it to normal
 		if(scaleType == "normal")
 		{
 		  VidConf.m_normal_scale = true;
 		}
-		
+
 
 
 #if defined(USE_OPENGL)
@@ -155,8 +154,8 @@ bool CSettings::loadDrvCfg()
 
         VidConf.m_opengl_filter = (oglFilter == "nearest") ? GL_NEAREST : GL_LINEAR;
 #endif
-		
-		
+
+
 		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);
 		Configuration.ReadInteger("Bound", "right", &CameraBounds.right, 168);
@@ -278,11 +277,11 @@ bool CSettings::saveGameOptions()
 	CConfiguration Configuration(CONFIGFILENAME);
 
 	if(!Configuration.Parse()) return false;
-	
+
 	stOption *p_option = g_pBehaviorEngine->m_option;
 	for (int i = 0; i < NUM_OPTIONS; i++)
 		Configuration.SetKeyword("Game", p_option[i].name, p_option[i].value);
-	
+
 	Configuration.saveCfgFile();
 	return true;
 }
