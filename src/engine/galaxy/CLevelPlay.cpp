@@ -68,7 +68,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	const std::string loading_text = g_pBehaviorEngine->getString(level_text);
 
     gEffectController.setupEffect(new CDimDark(8));
-    gEventManager.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"),
+    gEventManager.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
 							  loading_text, LEFT) );
 
 	mMap.drawAll();

@@ -52,7 +52,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	SDL_Rect Dest;
 
 	// Create upper stomp support
-	CBitmap &SupportBmp = g_pGfxEngine->getMaskedBitmap(2);
+	CBitmap &SupportBmp = gGraphics.getMaskedBitmap(2);
 	SDL_Rect SupportRect;
 
 	SupportRect.w = SupportBmp.getSDLSurface()->w;
@@ -70,7 +70,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	SDL_FillRect( mpStatusSurface.get(), &BackRect, 0xFFAAAAAA); //gray
 
 	// Draw the cables Bitmap
-	CBitmap &Cables_Bitmap = g_pGfxEngine->getMaskedBitmap(1);
+	CBitmap &Cables_Bitmap = gGraphics.getMaskedBitmap(1);
 	SDL_Rect CableRect;
 	CableRect.w = Cables_Bitmap.getSDLSurface()->w;
 	CableRect.h = Cables_Bitmap.getSDLSurface()->h;
@@ -79,7 +79,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
     SDL_BlitSurface( Cables_Bitmap.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
 
 	// Now draw the borders
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+	CTilemap &Tilemap = gGraphics.getTileMap(2);
 
 	// Upper Left corner
 	Tilemap.drawTile(mpStatusSurface.get(), BackRect.x, BackRect.y, 54);

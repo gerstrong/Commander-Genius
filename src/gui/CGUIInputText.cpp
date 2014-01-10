@@ -128,7 +128,7 @@ void CGUIInputText::drawGalaxyStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
@@ -162,7 +162,7 @@ void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
 
@@ -194,7 +194,7 @@ void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
 	}
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	Font.drawFontCentered( blitsfc, getInputString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
 }

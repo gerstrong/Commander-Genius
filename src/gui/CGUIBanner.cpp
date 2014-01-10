@@ -71,7 +71,7 @@ void CGUIBanner::processRender(const GsRect<float> &RectDispCoordFloat)
 	SDL_Rect lRect = displayRect.SDLRect();
 
 	// Now lets draw the text of the list control
-    GsFont &Font = g_pGfxEngine->getFont(mFontID);
+    GsFont &Font = gGraphics.getFont(mFontID);
 
 	if(transition)
 	{

@@ -137,7 +137,7 @@ short CEGAGraphicsGalaxy::getNumTiles()
 bool CEGAGraphicsGalaxy::loadData()
 {
 	// Set the palette, so the proper colours are loaded
-	g_pGfxEngine->Palette.setupColorPalettes(m_Exefile.getRawData(), m_episode);
+	gGraphics.Palette.setupColorPalettes(m_Exefile.getRawData(), m_episode);
 
 	if(!begin()) return false;
 
@@ -153,20 +153,20 @@ bool CEGAGraphicsGalaxy::loadData()
     if(!readBitmaps()) return false;
     if(!readMaskedBitmaps()) return false;
 
-	g_pGfxEngine->createEmptyTilemaps(4);
+	gGraphics.createEmptyTilemaps(4);
 
     if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
 			EpisodeInfo[m_episode-4].Index16Tiles,
-			g_pGfxEngine->getTileMap(0), false)) return false;
+			gGraphics.getTileMap(0), false)) return false;
 	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num16MaskedTiles, 4, 18,
 			EpisodeInfo[m_episode-4].Index16MaskedTiles,
-			g_pGfxEngine->getTileMap(1), false)) return false;
+			gGraphics.getTileMap(1), false)) return false;
     if(!readTilemaps(EpisodeInfo[m_episode-4].Num8Tiles, 3, 1,
 			EpisodeInfo[m_episode-4].Index8Tiles,
-			g_pGfxEngine->getTileMap(2), true)) return false;
+			gGraphics.getTileMap(2), true)) return false;
 	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num8MaskedTiles, 3, 1,
 			EpisodeInfo[m_episode-4].Index8MaskedTiles,
-			g_pGfxEngine->getTileMap(3), true)) return false;
+			gGraphics.getTileMap(3), true)) return false;
 
 	if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
 			EpisodeInfo[m_episode-4].IndexSprites )) return false;
@@ -640,13 +640,13 @@ bool CEGAGraphicsGalaxy::readfonts()
 	int bw, y, x;
 
 	int ep = m_episode - 4;
-	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+	SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-	g_pGfxEngine->createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
+	gGraphics.createEmptyFontmaps(EpisodeInfo[ep].NumFonts+1);
 
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
-		GsFont &Font = g_pGfxEngine->getFont(i);
+		GsFont &Font = gGraphics.getFont(i);
 		//Font.setMonochrome(true);
 
 		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
@@ -725,16 +725,16 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
 	BitmapHeadStruct BmpHead[EpisodeInfo[ep].NumBitmaps];
 	memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), EpisodeInfo[ep].NumBitmaps*sizeof(BitmapHeadStruct));
-	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+	SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-	g_pGfxEngine->createEmptyBitmaps(EpisodeInfo[ep].NumBitmaps);
+	gGraphics.createEmptyBitmaps(EpisodeInfo[ep].NumBitmaps);
 
 	SDL_Rect bmpRect;
 	bmpRect.x = bmpRect.y = 0;
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
 	{
-        CBitmap &Bitmap = g_pGfxEngine->getBitmapFromId(i);
+        CBitmap &Bitmap = gGraphics.getBitmapFromId(i);
 		bmpRect.w = BmpHead[i].Width*8;
 		bmpRect.h = BmpHead[i].Height;
 		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
@@ -756,17 +756,17 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
 	BitmapHeadStruct BmpMaskedHead[EpisodeInfo[ep].NumMaskedBitmaps];
 	memcpy( BmpMaskedHead, &(m_egagraph.at(1).data.at(0)), EpisodeInfo[ep].NumMaskedBitmaps*sizeof(BitmapHeadStruct) );
-	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+	SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
-	g_pGfxEngine->createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
-    g_pGfxEngine->createEmptyMiscBitmaps(2);
+	gGraphics.createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
+    gGraphics.createEmptyMiscBitmaps(2);
 
 	SDL_Rect bmpRect;
 	bmpRect.x = bmpRect.y = 0;
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
 	{
-		CBitmap &Bitmap = g_pGfxEngine->getMaskedBitmap(i);
+		CBitmap &Bitmap = gGraphics.getMaskedBitmap(i);
 		bmpRect.w = BmpMaskedHead[i].Width*8;
 		bmpRect.h = BmpMaskedHead[i].Height;
 
@@ -783,7 +783,7 @@ bool CEGAGraphicsGalaxy::readTilemaps(	size_t NumTiles, size_t pbasetilesize,
 										size_t rowlength, size_t IndexOfTiles,
 										CTilemap &Tilemap, bool tileoff)
 {
-	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE,
+	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
 							NumTiles, pbasetilesize, rowlength );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();
 	SDL_FillRect(sfc,NULL, 0);
@@ -803,7 +803,7 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 											size_t rowlength, size_t IndexOfTiles,
 											CTilemap &Tilemap, bool tileoff)
 {
-	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE,
+	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
 							NumTiles, pbasetilesize, rowlength );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();
 	SDL_FillRect(sfc,NULL, 0);
@@ -827,7 +827,7 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 {
 	// Create all the sprites
-    g_pGfxEngine->createEmptySprites(4,NumSprites);
+    gGraphics.createEmptySprites(4,NumSprites);
 
 	int ep = m_episode - 4;
 
@@ -840,7 +840,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		SpriteHeadStruct Head = SprHead[i];
 		std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
 
-        CSprite &Sprite = g_pGfxEngine->getSprite(0,i);
+        CSprite &Sprite = gGraphics.getSprite(0,i);
 		Sprite.setSize( Head.Width*8, Head.Height );
 
         Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
@@ -866,7 +866,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		Sprite.setBoundingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 
 		Sprite.createSurface( gVideoDriver.mpVideoEngine->getBlitSurface()->flags,
-				g_pGfxEngine->Palette.m_Palette );
+				gGraphics.Palette.m_Palette );
 
 		SDL_Surface *sfc = Sprite.getSDLSurface();
 		SDL_FillRect(sfc,NULL, 0);
@@ -924,15 +924,15 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
     // Now let's copy all the sprites ant tint to the proper colors
 
-    auto &SpriteOrigVec = g_pGfxEngine->getSpriteVec(0);
+    auto &SpriteOrigVec = gGraphics.getSpriteVec(0);
 
     for( unsigned int i=1 ; i<4 ; i++ )
     {
-        g_pGfxEngine->getSpriteVec(i) = SpriteOrigVec;                
+        gGraphics.getSpriteVec(i) = SpriteOrigVec;                
     }
 
     // For the other variant let's exchange some colors
-    auto &SpriteVecPlayer2 = g_pGfxEngine->getSpriteVec(1);
+    auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
     for( auto &sprite : SpriteVecPlayer2)
     {
         // Red against Purple
@@ -945,7 +945,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         sprite.optimizeSurface();
     }
 
-    auto &SpriteVecPlayer3 = g_pGfxEngine->getSpriteVec(2);
+    auto &SpriteVecPlayer3 = gGraphics.getSpriteVec(2);
     for( auto &sprite : SpriteVecPlayer3)
     {
         // Red against Green
@@ -959,7 +959,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
     }
 
 
-    auto &SpriteVecPlayer4 = g_pGfxEngine->getSpriteVec(3);
+    auto &SpriteVecPlayer4 = gGraphics.getSpriteVec(3);
     for( auto &sprite : SpriteVecPlayer4)
     {
         // Red against Yellow
@@ -972,7 +972,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
         sprite.optimizeSurface();
     }
 
-    for(auto &sprite : g_pGfxEngine->getSpriteVec(0))
+    for(auto &sprite : gGraphics.getSpriteVec(0))
     {
         sprite.optimizeSurface();
     }
@@ -1024,7 +1024,7 @@ bool CEGAGraphicsGalaxy::readTexts()
 bool CEGAGraphicsGalaxy::readMiscStuff()
 {
     int width = 0; int height = 0;
-    SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+    SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
     // Only position 1 and 2 are read. This will the terminator text.
     // Those are monochrom...
@@ -1043,7 +1043,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         SDL_Rect bmpRect;
 
-        CBitmap &Bitmap = g_pGfxEngine->getMiscBitmap(misc-1);
+        CBitmap &Bitmap = gGraphics.getMiscBitmap(misc-1);
         bmpRect.w = width;
         bmpRect.h = height;
 

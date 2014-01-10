@@ -67,7 +67,7 @@ void CGUIButton::setupButtonSurface()
 	if( drawButton == &CGUIButton::drawNoStyle  )
 		return;
 
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38)));
@@ -116,13 +116,13 @@ void CGUIButton::drawVorticonStyle(SDL_Rect& lRect)
 	// Now lets draw the text of the button
 	if(mEnabled)
 	{
-		GsFont &Font = g_pGfxEngine->getFont(mFontID);
+		GsFont &Font = gGraphics.getFont(mFontID);
 		Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 		drawTwirl(lRect);
 	}
 	else
 	{
-		GsFont &Font = g_pGfxEngine->getFont(0);
+		GsFont &Font = gGraphics.getFont(0);
 		Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, true );
 	}
 }
@@ -134,7 +134,7 @@ void CGUIButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
@@ -207,7 +207,7 @@ void CGUIButton::drawNoStyle(SDL_Rect& lRect)
     }
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
 }

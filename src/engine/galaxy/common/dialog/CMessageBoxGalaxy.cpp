@@ -23,7 +23,7 @@ CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text) :
 mMustClose(false),
 mText(Text)
 {
-	GsFont &Font = g_pGfxEngine->getFont(FONT_ID);
+	GsFont &Font = gGraphics.getFont(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
@@ -70,7 +70,7 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 	rect.w -= 16;
 	rect.h -= 16;
 
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(3);
+	CTilemap &Tilemap = gGraphics.getTileMap(3);
 
 	/// Now draw the borders
 	// Upper Left corner
@@ -104,7 +104,7 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 
 void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 {
-	GsFont &Font = g_pGfxEngine->getFont(FONT_ID);
+	GsFont &Font = gGraphics.getFont(FONT_ID);
 
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 

@@ -84,11 +84,11 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
         std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 
         std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                    new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(108), lindsey_text[0], LEFT) );
+                    new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(108), lindsey_text[0], LEFT) );
         std::unique_ptr<EventSendBitmapDialogMsg> msg2(
-                    new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(108), lindsey_text[1], LEFT) );
+                    new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(108), lindsey_text[1], LEFT) );
         std::unique_ptr<EventSendBitmapDialogMsg> msg3(
-                    new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), lindsey_text[2], RIGHT) );
+                    new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), lindsey_text[2], RIGHT) );
         msgs.push_back( move(msg1) );
         msgs.push_back( move(msg2) );
         msgs.push_back( move(msg3) );

@@ -67,7 +67,7 @@ void CDlgOptionText::setText(const std::string &text, unsigned int delimit) {
  */
 void CDlgOptionText::draw(SDL_Surface *Textsurface, Uint16 x, Uint16 y, bool highlight, Uint32 colour)
 {
-	GsFont &Font = g_pGfxEngine->getFont(m_FontMapID);
+	GsFont &Font = gGraphics.getFont(m_FontMapID);
 
 	//Font.setFGColour(Textsurface->format, colour);
 

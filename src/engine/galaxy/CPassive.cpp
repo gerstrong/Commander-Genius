@@ -24,9 +24,9 @@ namespace galaxy
 CPassiveGalaxy::CPassiveGalaxy() :
 processPonderMode(&CPassiveGalaxy::processIntro),
 processRenderMode(&CPassiveGalaxy::renderIntro),
-m_BackgroundBitmap(*g_pGfxEngine->getBitmapFromStr("TITLE")),
-mCommanderTextSfc(g_pGfxEngine->getMiscBitmap(0)),
-mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
+m_BackgroundBitmap(*gGraphics.getBitmapFromStr("TITLE")),
+mCommanderTextSfc(gGraphics.getMiscBitmap(0)),
+mKeenTextSfc(gGraphics.getMiscBitmap(1))
 {
     const int episode = g_pBehaviorEngine->getEpisode();
 
@@ -37,7 +37,7 @@ mKeenTextSfc(g_pGfxEngine->getMiscBitmap(1))
     else
         mCreditsBmpID = 23;
 
-    mCurrentLogoBmp = g_pGfxEngine->getBitmapFromId(mCreditsBmpID);
+    mCurrentLogoBmp = gGraphics.getBitmapFromId(mCreditsBmpID);
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
@@ -174,7 +174,7 @@ void CPassiveGalaxy::processIntro()
             mTerminatorLogoNum++;
             mTerminatorTimer = 0;
 
-            mCurrentLogoBmp = g_pGfxEngine->getBitmapFromId(mCreditsBmpID+mTerminatorLogoNum);
+            mCurrentLogoBmp = gGraphics.getBitmapFromId(mCreditsBmpID+mTerminatorLogoNum);
             mCurrentLogoBmp.optimizeSurface();
 
             GsRect<Uint16> logoBmpRect;
@@ -263,7 +263,7 @@ void CPassiveGalaxy::processIntroZoom()
         gInput.flushAll();
         processPonderMode = &CPassiveGalaxy::processTitle;
         processRenderMode = &CPassiveGalaxy::renderTitle;
-        m_BackgroundBitmap = *g_pGfxEngine->getBitmapFromStr("TITLE");
+        m_BackgroundBitmap = *gGraphics.getBitmapFromStr("TITLE");
 
         GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
         m_BackgroundBitmap.scaleTo(gameRes);

@@ -75,7 +75,7 @@ void CHUD::setup(const int id)
     else // Galaxy HUD
     {
         m_Rect.w = 80;	m_Rect.h = 30;
-        mHUDBox = *g_pGfxEngine->getSprite(mId,"HUDBACKGROUND");
+        mHUDBox = *gGraphics.getSprite(mId,"HUDBACKGROUND");
 
         #if SDL_VERSION_ATLEAST(2, 0, 0)
         #else
@@ -117,7 +117,7 @@ void CHUD::CreateVorticonBackground()
     headdstrect.x = 0;
     headdstrect.y = 11;
 
-    mKeenHeadSprite = g_pGfxEngine->getSprite(mId,PMAPDOWNFRAME);
+    mKeenHeadSprite = gGraphics.getSprite(mId,PMAPDOWNFRAME);
 
     SDL_Surface *keenHeadSfc = mKeenHeadSprite.getSDLSurface();
 
@@ -137,7 +137,7 @@ void CHUD::CreateVorticonBackground()
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 
 	// Draw the shot
-    mKeenGunSprite = g_pGfxEngine->getSprite(mId,sprite);
+    mKeenGunSprite = gGraphics.getSprite(mId,sprite);
     headdstrect.w = headsrGsRect.w = mKeenGunSprite.getWidth();
     headdstrect.h = headsrGsRect.h = mKeenGunSprite.getHeight();
     headdstrect.x = 45-(headsrGsRect.w/2);
@@ -166,7 +166,7 @@ void CHUD::DrawCircle(int x, int y, int width)
 	SDL_Rect text, outline;
 
 	Uint8 r,g,b;
-	GsFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 	Font.getBGColour(&r, &g, &b);
 
 	outline.x = x+4;
@@ -227,9 +227,9 @@ void CHUD::renderGalaxy()
 
   if(lives >= 0)
   {
-    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
-    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
-    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
 
     if(g_pBehaviorEngine->mPlayers > 1 && mId == CCamera::getLead())
     {
@@ -259,7 +259,7 @@ void CHUD::renderVorticon()
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 
 
-	GsFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 
 	// Draw the lives
     Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15, 15);

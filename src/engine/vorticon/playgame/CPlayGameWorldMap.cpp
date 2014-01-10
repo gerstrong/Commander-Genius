@@ -135,10 +135,10 @@ void CPlayGameVorticon::goBacktoMap()
 			int frame = player->playerbaseframe;
 			if(g_pBehaviorEngine->getEpisode() == 3) frame++;
 
-            g_pGfxEngine->getSprite(varId,frame+0).setWidth(width);
-            g_pGfxEngine->getSprite(varId,frame+1).setWidth(width);
-            g_pGfxEngine->getSprite(varId,frame+2).setWidth(width);
-            g_pGfxEngine->getSprite(varId,frame+3).setWidth(width);
+            gGraphics.getSprite(varId,frame+0).setWidth(width);
+            gGraphics.getSprite(varId,frame+1).setWidth(width);
+            gGraphics.getSprite(varId,frame+2).setWidth(width);
+            gGraphics.getSprite(varId,frame+3).setWidth(width);
 		}
 
 
@@ -199,7 +199,7 @@ void CPlayGameVorticon::showKeensLeft()
 	{
 		int x,y,i,p;
 		int boxY, boxH;
-		GsFont &Font = g_pGfxEngine->getFont(1);
+		GsFont &Font = gGraphics.getFont(1);
 
 		const unsigned int KEENSLEFT_W = 24;
 		const unsigned int KEENSLEFT_H = 4;
@@ -219,7 +219,7 @@ void CPlayGameVorticon::showKeensLeft()
 		Font.getBGColour(&r, &g, &b, true);
 		Uint32 color = SDL_MapRGB( boxsurface->format, r, g, b);
 
-		g_pGfxEngine->drawDialogBox( boxsurface, 0, 0, KEENSLEFT_W, boxH, color );
+		gGraphics.drawDialogBox( boxsurface, 0, 0, KEENSLEFT_W, boxH, color );
 		SDL_FillRect(boxsurface, &rect, color );
 		Font.getBGColour(&r, &g, &b, false);
 		SDL_FillRect(boxsurface, &rect, SDL_MapRGB( boxsurface->format, r, g, b) );
@@ -232,7 +232,7 @@ void CPlayGameVorticon::showKeensLeft()
 			x = 12;
 			for( i=0 ; i<m_Player[p].inventory.lives && i<=10 ; i++ )
             {
-                CSprite &livesSprite = g_pGfxEngine->getSprite(p,m_Player[p].playerbaseframe+PMAPDOWNFRAME);
+                CSprite &livesSprite = gGraphics.getSprite(p,m_Player[p].playerbaseframe+PMAPDOWNFRAME);
 
                 const int liveW = livesSprite.getWidth();
                 const int liveH = livesSprite.getHeight();

@@ -57,11 +57,11 @@ CPlayGame(ExeFile, level)
 	m_showPauseDialog = false;
 
 	if(g_pBehaviorEngine->mDifficulty==EASY)
-		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_EASY);
+		gGraphics.Palette.setdarkness(FADE_DARKNESS_EASY);
 	else if(g_pBehaviorEngine->mDifficulty==NORMAL)
-		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS);
+		gGraphics.Palette.setdarkness(FADE_DARKNESS);
 	else
-		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_HARD);
+		gGraphics.Palette.setdarkness(FADE_DARKNESS_HARD);
 }
 
 // Setup all the players, when one level is started
@@ -95,11 +95,11 @@ void CPlayGameVorticon::setupPlayers()
         player.pdie = PDIE_NODIE;
 
 		// Calibrate Player to the right position, so it won't fall when level starts
-        CSprite &sprite = g_pGfxEngine->getSprite(i,PSTANDFRAME);
+        CSprite &sprite = gGraphics.getSprite(i,PSTANDFRAME);
         player.w = sprite.getWidth()<<STC;
         player.h = sprite.getHeight();
 		mMap->m_Dark = false;
-		g_pGfxEngine->Palette.setdark(mMap->m_Dark);
+		gGraphics.Palette.setdark(mMap->m_Dark);
 
 		// Set the pointers to the map and object data
         player.setMapData(mMap.get());
@@ -148,7 +148,7 @@ bool CPlayGameVorticon::init()
 	verifyFinales();
 
 	// When Level starts it's never dark!
-	g_pGfxEngine->Palette.setdark(false);
+	gGraphics.Palette.setdark(false);
 
 	if(m_level_command == GOTO_FINALE)
 	  createFinale();
@@ -302,7 +302,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 		}
 		else // Bitmap must first be created
 		{
-            CBitmap *pBitmap = g_pGfxEngine->getBitmapFromStr("GAMEOVER");
+            CBitmap *pBitmap = gGraphics.getBitmapFromStr("GAMEOVER");
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
 
@@ -322,8 +322,8 @@ void CPlayGameVorticon::ponder(const float deltaT)
 void CPlayGameVorticon::render()
 {
     // Check for fading processes if necessary
-    if(g_pGfxEngine->Palette.in_progress())
-        g_pGfxEngine->Palette.applyFade();
+    if(gGraphics.Palette.in_progress())
+        gGraphics.Palette.applyFade();
 
     // Draw all the Stuff here!
     drawAllElements();

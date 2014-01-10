@@ -23,9 +23,12 @@
 #include <memory>
 
 #include "CSingleton.h"
-#define g_pGfxEngine CGfxEngine::Get()
 
-class CGfxEngine : public CSingleton<CGfxEngine>
+#include <base/Singleton.h>
+
+#define gGraphics CGfxEngine::get()
+
+class CGfxEngine : public GsSingleton<CGfxEngine>
 {
 public:
 	virtual ~CGfxEngine();

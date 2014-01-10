@@ -22,7 +22,7 @@ m_animation_enabled(true),
 m_Dark(false),
 mNumFuses(0),
 mFuseInLevel(false),
-m_Tilemaps(g_pGfxEngine->getTileMaps()),
+m_Tilemaps(gGraphics.getTileMaps()),
 mAnimtileTimer(0.0f),
 mLocked(false)
 {

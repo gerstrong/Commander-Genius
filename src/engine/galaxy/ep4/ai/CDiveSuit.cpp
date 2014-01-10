@@ -37,7 +37,7 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 		g_pSound->playSound( SOUND_GET_WETSUIT, PLAY_PAUSEALL );
 		taken = swimsuit = true;
 
-        EventContainer.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"),
+        EventContainer.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
 				g_pBehaviorEngine->getString("SWIM_SUIT_TEXT"), LEFT) );
 
         EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );

@@ -137,7 +137,7 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
 		    // Tell the player he cannot climb yet
 		    CEventContainer& EventContainer = gEventManager;
 		    EventContainer.add( new EventSendBitmapDialogMsg(
-            g_pGfxEngine->getBitmapFromId(29),
+            gGraphics.getBitmapFromId(29),
 			g_pBehaviorEngine->getString("KEEN_KEYCARD_REQUIRED"), 
 			RIGHT) );
 		    

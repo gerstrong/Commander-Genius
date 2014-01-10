@@ -25,7 +25,7 @@ mTextID(text)
 void CGUIBitmap::updateGraphics()
 {
     GsRect<Uint16> sizeForScreen = gVideoDriver.getGameResolution();
-    mpBitmap.reset(new CBitmap( *g_pGfxEngine->getBitmapFromStr(mTextID) ));
+    mpBitmap.reset(new CBitmap( *gGraphics.getBitmapFromStr(mTextID) ));
 
     sizeForScreen.w /= 320;
     sizeForScreen.h /= 200;

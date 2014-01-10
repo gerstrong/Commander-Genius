@@ -71,8 +71,8 @@ mTimer(0)
 
 void CShikadiMine::setEyeCenterOffset(int &x, int &y)
 {
-    CSprite &eyeSprite = g_pGfxEngine->getSprite(mSprVar,mEyeSprite);
-    CSprite &spriteRef = g_pGfxEngine->getSprite(mSprVar,sprite);
+    CSprite &eyeSprite = gGraphics.getSprite(mSprVar,mEyeSprite);
+    CSprite &spriteRef = gGraphics.getSprite(mSprVar,sprite);
     x = (spriteRef.getWidth()-eyeSprite.getWidth())/2;
     y = (spriteRef.getHeight()-eyeSprite.getHeight())/2;
 }
@@ -261,8 +261,8 @@ void CShikadiMine::processChangeDir()
     {
       setEyeCenterOffset(mTargetEyeXOffset, mTargetEyeYOffset);
 
-      CSprite &eyeSprite = g_pGfxEngine->getSprite(mSprVar,mEyeSprite);
-      CSprite &spriteRef = g_pGfxEngine->getSprite(mSprVar,sprite);
+      CSprite &eyeSprite = gGraphics.getSprite(mSprVar,mEyeSprite);
+      CSprite &spriteRef = gGraphics.getSprite(mSprVar,sprite);
 
       if(xDirection == LEFT)
 	mTargetEyeXOffset = 0;
@@ -369,7 +369,7 @@ void CShikadiMine::draw()
 	if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
-    CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar,sprite);
+    CSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
 
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -394,7 +394,7 @@ void CShikadiMine::draw()
 
 		    if(!getActionNumber(A_MINE_DETONATE))
 		    {
-              CSprite &eyeSprite = g_pGfxEngine->getSprite(mSprVar,mEyeSprite);
+              CSprite &eyeSprite = gGraphics.getSprite(mSprVar,mEyeSprite);
 
               const int eyeW = eyeSprite.getWidth();
               const int eyeH = eyeSprite.getHeight();

@@ -41,7 +41,7 @@ m_alternate_sprite(0),
 mp_MessageBox(new CMessageBoxVort("Uh-Oh")),
 mObjectAI(objectai),
 m_timer(0),
-mp_Bitmap(g_pGfxEngine->getBitmapFromStr("GAMEOVER")),
+mp_Bitmap(gGraphics.getBitmapFromStr("GAMEOVER")),
 mp_process(&CTantalusRay::shootray)
 {
     gEffectController.setupEffect( new CVibrate(2000) );

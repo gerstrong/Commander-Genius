@@ -58,7 +58,7 @@ mTimer(0)
 	xDirection = LEFT;
 
     // Some mods suffer the fact (Keen 8 Dead in Desert) that those foes appear embedded in the floor
-    CSprite &rSprite = g_pGfxEngine->getSprite(mSprVar,sprite);
+    CSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
     performCollisions();
     processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
     processActionRoutine();

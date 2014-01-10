@@ -20,7 +20,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	SDL_Rect EditRect;
 	drawBase(EditRect);
 
-	GsFont &Font = g_pGfxEngine->getFont(0);
+	GsFont &Font = gGraphics.getFont(0);
 	Font.setupColor(0x555555);
 
 	Font.drawFontCentered(mpStatusSurface.get(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);
@@ -51,12 +51,12 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	// Score Box
 	TempRect.w = 8*8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
+	gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_points), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
 
 	// Extra Box
 	TempRect.x = EditRect.x+96;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
+	gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
 	
 	TempRect.x = EditRect.x;
 	TempRect.y = EditRect.y+56;	
@@ -70,7 +70,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
 	if(m_Item.m_keycards)
 	{
-		g_pGfxEngine->drawDigit(40, TempRect.x+1, TempRect.y+1, mpStatusSurface.get());
+		gGraphics.drawDigit(40, TempRect.x+1, TempRect.y+1, mpStatusSurface.get());
 	}
 
 	// LEVEL Rects
@@ -101,13 +101,13 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	TempRect.x = TempRect.x+8*5;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
 	if(m_Item.m_gem.red)
-		g_pGfxEngine->drawDigit(36, TempRect.x, TempRect.y+1, mpStatusSurface.get());
+		gGraphics.drawDigit(36, TempRect.x, TempRect.y+1, mpStatusSurface.get());
 	if(m_Item.m_gem.yellow)
-		g_pGfxEngine->drawDigit(37, TempRect.x+8, TempRect.y+1, mpStatusSurface.get());
+		gGraphics.drawDigit(37, TempRect.x+8, TempRect.y+1, mpStatusSurface.get());
 	if(m_Item.m_gem.blue)
-		g_pGfxEngine->drawDigit(38, TempRect.x+16, TempRect.y+1, mpStatusSurface.get());
+		gGraphics.drawDigit(38, TempRect.x+16, TempRect.y+1, mpStatusSurface.get());
 	if(m_Item.m_gem.green)
-		g_pGfxEngine->drawDigit(39, TempRect.x+24, TempRect.y+1, mpStatusSurface.get());
+		gGraphics.drawDigit(39, TempRect.x+24, TempRect.y+1, mpStatusSurface.get());
 
 	// Ammo Box
 	TempRect.x = EditRect.x+96;
@@ -116,7 +116,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	TempRect.w = 8*3; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+	gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mpStatusSurface.get());
 
 	// Keens Box
 	TempRect.x = EditRect.x;
@@ -125,7 +125,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	TempRect.w = 8*2; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5+8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+	gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
 
 	// Drops Box
 	TempRect.x = EditRect.x+96;
@@ -134,10 +134,10 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	TempRect.w = 8*2; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5+8;
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
-	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
+	gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
 
 	// Press a Key Sign
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+	CTilemap &Tilemap = gGraphics.getTileMap(2);
 	TempRect.x = EditRect.x+(EditRect.w-80)/2;
 	TempRect.y = EditRect.y+110;
 	for( int c=0 ; c<10 ; c++ )

@@ -121,7 +121,7 @@ void CPlayer::walkbehindexitdoor()
         int frame = playerbaseframe;
         if(ep == 3) frame++;
 
-        auto &sprVec = g_pGfxEngine->getSpriteVec(mSprVar);
+        auto &sprVec = gGraphics.getSpriteVec(mSprVar);
 
         // set new width of all player walk frames
         sprVec[frame+0].setWidth(width);

@@ -174,7 +174,7 @@ bool CPlayGameVorticon::loadGameState()
 	setupPlayers();
 	
 	mMap->m_Dark = dark;
-	g_pGfxEngine->Palette.setdark(mMap->m_Dark);
+	gGraphics.Palette.setdark(mMap->m_Dark);
 	
 	
 	
@@ -388,7 +388,7 @@ bool CPlayGameVorticon::loadXMLGameState()
                            mMap->m_Dark) );
     setupPlayers();
 
-    g_pGfxEngine->Palette.setdark(mMap->m_Dark);
+    gGraphics.Palette.setdark(mMap->m_Dark);
 
 
     m_Player[0].mpCamera->reAdjust();

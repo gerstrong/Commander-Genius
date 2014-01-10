@@ -293,8 +293,8 @@ void CVorticon::process()
 			frame++;
 			if (frame >= 6) {
 				frame = 5;
-				g_pGfxEngine->Palette.fadeto(0, FADE_SPEED_VERY_SLOW);
-				if (!g_pGfxEngine->Palette.in_progress())
+				gGraphics.Palette.fadeto(0, FADE_SPEED_VERY_SLOW);
+				if (!gGraphics.Palette.in_progress())
 					dead = true;
 			}
 

@@ -319,7 +319,7 @@ void CPlayerWM::processMoving()
                 // Tell the player he cannot climb yet
                 CEventContainer& EventContainer = gEventManager;
                 EventContainer.add( new EventSendBitmapDialogMsg(
-                                        g_pGfxEngine->getBitmapFromId(29),
+                                        gGraphics.getBitmapFromId(29),
                                         g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), RIGHT) );
 
                 moveYDir(-(climbDir<<CSF)/2);
@@ -434,7 +434,7 @@ void CPlayerWM::processMoving()
                 CEventContainer& EventContainer = gEventManager;
 
                 g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
-                EventContainer.add( new EventSendBitmapDialogMsg(g_pGfxEngine->getBitmapFromId(105),
+                EventContainer.add( new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(105),
                                                                  g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
 
                 m_cantswim = true;
@@ -987,7 +987,7 @@ bool CPlayerWM::finishLevel(const int object)
 		VectorD2<Uint32> src(getXPosition(), getYPosition());
 
 		// Here we move the coordinates in order get it positioned correctly in the pole
-        CSprite &FlagSprite = g_pGfxEngine->getSprite(mSprVar,WAVING_BASEFRAME);
+        CSprite &FlagSprite = gGraphics.getSprite(mSprVar,WAVING_BASEFRAME);
 
 		unsigned int csfX = (x<<CSF);
 		unsigned int csfY = (y<<CSF);

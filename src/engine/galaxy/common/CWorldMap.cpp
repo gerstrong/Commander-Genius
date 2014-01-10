@@ -38,7 +38,7 @@ void CWorldMap::init()
 	
 	if(!gpSaveGameController->busy())
 	{
-        gEventManager.add( new EventSendBitmapDialogMsg(*g_pGfxEngine->getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
+        gEventManager.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
 	}
 
 	mMap.drawAll();

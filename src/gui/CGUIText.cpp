@@ -67,7 +67,7 @@ void CGUIText::processRender(const GsRect<float> &RectDispCoordFloat)
 	SDL_Rect lRect = displayRect.SDLRect();
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	std::list<std::string>::iterator text = mTextList.begin();
 	for( size_t i=0 ; text != mTextList.end() ; text++, i++ )

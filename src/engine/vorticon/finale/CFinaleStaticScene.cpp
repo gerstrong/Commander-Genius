@@ -20,10 +20,10 @@ m_timer(0)
                          &SDL_FreeSurface);
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetPaletteColors(mpSceneSurface->format->palette, g_pGfxEngine->Palette.m_Palette, 0, 255);
+    SDL_SetPaletteColors(mpSceneSurface->format->palette, gGraphics.Palette.m_Palette, 0, 255);
     SDL_SetColorKey(mpSceneSurface.get(), SDL_TRUE, COLORKEY);
 #else
-    SDL_SetColors(mpSceneSurface.get(), g_pGfxEngine->Palette.m_Palette, 0, 255);
+    SDL_SetColors(mpSceneSurface.get(), gGraphics.Palette.m_Palette, 0, 255);
     SDL_SetColorKey(mpSceneSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
 #endif
 
@@ -75,7 +75,7 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
 
 	bitmap_structure bmp_struct;
 
-    bmp_struct.bitmap = *g_pGfxEngine->getBitmapFromStr(bitmapname);
+    bmp_struct.bitmap = *gGraphics.getBitmapFromStr(bitmapname);
     bmp_struct.dest_rect.x = x*scaleFactor;
     bmp_struct.dest_rect.y = y*scaleFactor;
     bmp_struct.dest_rect.w = bmp_struct.bitmap.getWidth();

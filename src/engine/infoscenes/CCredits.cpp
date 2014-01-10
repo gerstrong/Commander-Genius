@@ -18,7 +18,7 @@ void CCredits::init()
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap.reset( new CMap );
 	
-	//creditFont = g_pGfxEngine->getFont(0);
+	//creditFont = gGraphics.getFont(0);
 	//creditFont.tintColor(SDL_MapRGB( creditFont.getSDLSurface()->format, 255, 0, 0) );
 
 	CVorticonMapLoaderBase Maploader(mpMap);
@@ -114,7 +114,7 @@ void CCredits::ponder()
 
 void CCredits::render()
 {
-    GsFont &creditFont = g_pGfxEngine->getFont(0);
+    GsFont &creditFont = gGraphics.getFont(0);
     mpMap->animateAllTiles();
     gVideoDriver.blitScrollSurface();
 

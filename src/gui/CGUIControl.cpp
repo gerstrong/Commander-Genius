@@ -66,7 +66,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	if( gTimer.HasTimeElapsed(100) )
 	{
@@ -108,6 +108,6 @@ void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 		tile = (mTwirliconID && mHovered) ? 93 : 92;
 	}
 
-    CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+    CTilemap &Tilemap = gGraphics.getTileMap(2);
     Tilemap.drawTile(blitsfc, lRect.x, lRect.y, tile);
 }

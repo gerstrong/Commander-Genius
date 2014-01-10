@@ -25,12 +25,12 @@ CIntro::CIntro()
 void CIntro::init()
 {
 	// Load the Title Bitmap
-    mp_bm[0] = g_pGfxEngine->getBitmapFromStr("AN");
-    mp_bm[1] = g_pGfxEngine->getBitmapFromStr("APOGEE");
-    mp_bm[2] = g_pGfxEngine->getBitmapFromStr("PRESENT");
-    mp_bm[3] = g_pGfxEngine->getBitmapFromStr("OFAN");
-    mp_bm[4] = g_pGfxEngine->getBitmapFromStr("IDSOFT");
-    mp_bm[5] = g_pGfxEngine->getBitmapFromStr("PRODUCT");
+    mp_bm[0] = gGraphics.getBitmapFromStr("AN");
+    mp_bm[1] = gGraphics.getBitmapFromStr("APOGEE");
+    mp_bm[2] = gGraphics.getBitmapFromStr("PRESENT");
+    mp_bm[3] = gGraphics.getBitmapFromStr("OFAN");
+    mp_bm[4] = gGraphics.getBitmapFromStr("IDSOFT");
+    mp_bm[5] = gGraphics.getBitmapFromStr("PRODUCT");
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 	

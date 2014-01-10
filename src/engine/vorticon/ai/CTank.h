@@ -48,7 +48,7 @@ unsigned int rnd(void);
 
 #define TANK_FIRE_PAUSE_TIME		25
 
-#define Sprite g_pGfxEngine->Sprite
+#define Sprite gGraphics.Sprite
 
 // this same struct is used for both ep1 and ep2 "tanks", although
 // they have seperate ai modules

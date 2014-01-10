@@ -96,7 +96,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	int x,t,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	GsFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 
 	dlgW = 29;
 	dlgH = 15;
@@ -104,9 +104,9 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	m_StatusRect.h = dlgH*8;
 	
 	SDL_Surface *p_surface = CreateStatusSfc();
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
+	CTilemap &Tilemap = gGraphics.getTileMap(1);
 
-	g_pGfxEngine->drawDialogBox( p_surface, 0, 0, dlgW,dlgH, Font.getBGColour(p_surface->format, true));
+	gGraphics.drawDialogBox( p_surface, 0, 0, dlgW,dlgH, Font.getBGColour(p_surface->format, true));
 	Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP1_StatusBox"), 1<<3, 1<<3, true);
 	
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
@@ -206,7 +206,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	if (i>6) i=6;
 	for(j=0;j<i;j++)
 	{
-        CSprite &Sprite = g_pGfxEngine->getSprite(varSpr,m_baseframe);
+        CSprite &Sprite = gGraphics.getSprite(varSpr,m_baseframe);
         const int w = Sprite.getWidth();
         const int h = Sprite.getHeight();
         Sprite.drawSprite( p_surface, x, (0+4)<<3, w, h);
@@ -229,7 +229,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	GsFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 
 	dlgW = 29;
 	dlgH = 14;
@@ -237,10 +237,10 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	m_StatusRect.h = dlgH*8;
 
 	SDL_Surface *p_surface = CreateStatusSfc();
-    CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
+    CTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	tempbuf = g_pBehaviorEngine->getString("EP2_StatusBox");
-	g_pGfxEngine->drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
+	gGraphics.drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (0+1)<<3, (0+1)<<3, true);
 
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
@@ -320,7 +320,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-        CSprite &Sprite = g_pGfxEngine->getSprite(0,m_baseframe);
+        CSprite &Sprite = gGraphics.getSprite(0,m_baseframe);
         const int w = Sprite.getWidth();
         const int h = Sprite.getHeight();
         Sprite.drawSprite( p_surface, x, (0+4)<<3, w, h );
@@ -353,7 +353,7 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	int x,i,j;
 	std::string tempbuf;
 	int dlgW,dlgH;
-	GsFont &Font = g_pGfxEngine->getFont(1);	
+	GsFont &Font = gGraphics.getFont(1);	
 
 	dlgW = 29;
 	dlgH = 13;
@@ -361,10 +361,10 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	m_StatusRect.h = dlgH*8;
 
 	SDL_Surface *p_surface = CreateStatusSfc();
-    CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
+    CTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	tempbuf = g_pBehaviorEngine->getString("EP3_StatusBox");
-	g_pGfxEngine->drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
+	gGraphics.drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (0+1)<<3, (0+1)<<3, true);
 
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
@@ -451,7 +451,7 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-        CSprite &Sprite = g_pGfxEngine->getSprite(0,m_baseframe);
+        CSprite &Sprite = gGraphics.getSprite(0,m_baseframe);
         const int w = Sprite.getWidth();
         const int h = Sprite.getHeight();
         Sprite.drawSprite(  p_surface, x, (0+4)<<3, w, h);

@@ -89,7 +89,7 @@ void CHighScores::init()
 	// Setup the Bitmaps that will be shown
 	stBitmap bmp;
 	
-    bmp.p_Bitmap = g_pGfxEngine->getBitmapFromStr("HIGHSCOR");
+    bmp.p_Bitmap = gGraphics.getBitmapFromStr("HIGHSCOR");
 	bmp.rect.x = 160-(bmp.p_Bitmap->getWidth()/2);
 	bmp.rect.y = 6;
 	bmp.rect.w = bmp.p_Bitmap->getWidth();
@@ -98,7 +98,7 @@ void CHighScores::init()
 	
 	if(m_Episode == 2)
 	{
-        bmp.p_Bitmap = g_pGfxEngine->getBitmapFromStr("SAVED");
+        bmp.p_Bitmap = gGraphics.getBitmapFromStr("SAVED");
 		bmp.rect.x = 232;
 		bmp.rect.y = 32;
 		bmp.rect.w = bmp.p_Bitmap->getWidth();
@@ -109,7 +109,7 @@ void CHighScores::init()
 	else if(m_Episode == 1)
 	{
 		
-        bmp.p_Bitmap = g_pGfxEngine->getBitmapFromStr("PARTS");
+        bmp.p_Bitmap = gGraphics.getBitmapFromStr("PARTS");
 		bmp.rect.x = 232;
 		bmp.rect.y = 32;
 		bmp.rect.w = bmp.p_Bitmap->getWidth();
@@ -136,13 +136,13 @@ void CHighScores::init()
 	}
 	else bmp.rect.y = 32;
 	
-    bmp.p_Bitmap = g_pGfxEngine->getBitmapFromStr("NAME");
+    bmp.p_Bitmap = gGraphics.getBitmapFromStr("NAME");
 	bmp.rect.x = (m_Episode == 3) ? 69 : 40;
 	bmp.rect.w = bmp.p_Bitmap->getWidth();
 	bmp.rect.h = bmp.p_Bitmap->getHeight();
 	m_Bitmaps.push_back(bmp);
 	
-    bmp.p_Bitmap = g_pGfxEngine->getBitmapFromStr("SCORE");
+    bmp.p_Bitmap = gGraphics.getBitmapFromStr("SCORE");
 	bmp.rect.x = (m_Episode == 3) ? 207 : 154;
 	bmp.rect.w = bmp.p_Bitmap->getWidth();
 	bmp.rect.h = bmp.p_Bitmap->getHeight();
@@ -177,7 +177,7 @@ void CHighScores::render()
 {
     // Process Drawing related stuff
     SDL_Surface *sfc = mpTextSfc.get();
-    GsFont &Font = g_pGfxEngine->getFont(1);
+    GsFont &Font = gGraphics.getFont(1);
 
     mpMap->animateAllTiles();
 

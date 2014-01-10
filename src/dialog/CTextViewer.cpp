@@ -196,7 +196,7 @@ unsigned char CTextViewer::getnextwordlength(const std::string nextword)
 void CTextViewer::drawTextlines()
 {
 	for(int i=1 ; i<(m_h/m_8x8tileheight) && i<(int)m_textline.size()-m_linepos ; i++)
-		g_pGfxEngine->getFont(1).drawFont(mpTextVSfc.get(),
+		gGraphics.getFont(1).drawFont(mpTextVSfc.get(),
 									 m_textline[i+m_linepos-1],
 									 m_x+m_8x8tilewidth,
 									 m_y + (i)*m_8x8tileheight-m_scrollpos,
@@ -250,7 +250,7 @@ void CTextViewer::renderBox()
 	SDL_Surface *sfc = mpTextVSfc.get();
 
 	// first draw the blank rect
-	GsFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 	int i, j;
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 	{

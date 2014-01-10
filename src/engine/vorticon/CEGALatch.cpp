@@ -51,12 +51,12 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 
 	data += m_bitmaptablelocation;
 
-	g_pGfxEngine->createEmptyBitmaps(m_bitmaps);
+	gGraphics.createEmptyBitmaps(m_bitmaps);
 	for(int i=0 ; i<m_bitmaps ; i++)
 	{
 		std::string name;
 		//char name[9];
-        CBitmap &Bitmap = g_pGfxEngine->getBitmapFromId(i);
+        CBitmap &Bitmap = gGraphics.getBitmapFromId(i);
 		memcpy(&bmpRect.w,data+16*i,2);
 		memcpy(&bmpRect.h,data+16*i+2,2);
 		name = static_cast<const char*>(data+16*i+8);
@@ -90,7 +90,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		}
 		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags,
 							bmpRect,
-							g_pGfxEngine->Palette.m_Palette);
+							gGraphics.Palette.m_Palette);
 	}
 	return true;
 }
@@ -100,7 +100,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 
 void CEGALatch::loadTilemap(CTilemap &Tilemap, CPlanes &Planes, const int episode, const std::string &path)
 {
-	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
+	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();
 	SDL_FillRect(sfc,NULL, 0);
 	
@@ -176,16 +176,16 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// The original vorticon engine only uses one fontmap, but we use another for
 	// extra icons. For example sliders are in that map
 
-	g_pGfxEngine->freeFonts();
-	g_pGfxEngine->createEmptyFontmaps(3);
+	gGraphics.freeFonts();
+	gGraphics.createEmptyFontmaps(3);
 
-	g_pGfxEngine->getFont(0).loadinternalFont();
+	gGraphics.getFont(0).loadinternalFont();
 
-	GsFont &Font = g_pGfxEngine->getFont(1);
-	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
+	GsFont &Font = gGraphics.getFont(1);
+	Font.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE );
 	sfc = Font.getSDLSurface();
 
-	g_pGfxEngine->getFont(2).loadAlternateFont();
+	gGraphics.getFont(2).loadAlternateFont();
 
 
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
@@ -205,10 +205,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					 plane4 + m_tiles16location,
 					 0);
 
-	g_pGfxEngine->freeTilemap();
-	g_pGfxEngine->createEmptyTilemaps(2);
+	gGraphics.freeTilemap();
+	gGraphics.createEmptyTilemaps(2);
 	
-	loadTilemap(g_pGfxEngine->getTileMap(0), Planes, episode, path);
+	loadTilemap(gGraphics.getTileMap(0), Planes, episode, path);
 	
 	// prepare to ** read the 16x16 tiles **, this is for the second plane.
 	Planes.setOffsets(plane1 + m_tiles16location,
@@ -217,10 +217,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					 plane4 + m_tiles16location,
 					 0);	
 	
-	loadTilemap(g_pGfxEngine->getTileMap(1), Planes, episode, path);
+	loadTilemap(gGraphics.getTileMap(1), Planes, episode, path);
 
-    g_pGfxEngine->getTileMap(0).optimizeSurface();
-    g_pGfxEngine->getTileMap(1).optimizeSurface();
+    gGraphics.getTileMap(0).optimizeSurface();
+    gGraphics.getTileMap(1).optimizeSurface();
 
 	// make masked tiles according to it's surfaces
 	applyMasks();
@@ -243,7 +243,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	{
 		for(int b=0 ; b<m_bitmaps ; b++)
 		{
-            CBitmap &bitmap = g_pGfxEngine->getBitmapFromId(b);
+            CBitmap &bitmap = gGraphics.getBitmapFromId(b);
 			// this points to the location that we're currently
 			// decoding bitmap data to
 
@@ -264,7 +264,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// optimize the bitmaps and load hq bitmaps if there are some.
     /*for(int b=0 ; b<m_bitmaps ; b++)
 	{
-		CBitmap &bitmap = g_pGfxEngine->getBitmap(b);
+		CBitmap &bitmap = gGraphics.getBitmap(b);
 		bitmap.optimizeSurface();
     }*/
 
@@ -280,7 +280,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	{
 		std::string filename=*it;
 		int num = getRessourceID(filename, "bitmap");
-        CBitmap &bitmap = g_pGfxEngine->getBitmapFromId(num);
+        CBitmap &bitmap = gGraphics.getBitmapFromId(num);
 		filename = getResourceFilename("gfx/" + filename, path, false);
 		bitmap.loadHQBitmap(filename);
 	}
@@ -293,8 +293,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 // Convert the normal tiles to masked tiles
 void CEGALatch::applyMasks()
 {
-	SDL_Surface *frontSfc = g_pGfxEngine->getTileMap(1).getSDLSurface();
-	SDL_Surface *backSfc = g_pGfxEngine->getTileMap(0).getSDLSurface();
+	SDL_Surface *frontSfc = gGraphics.getTileMap(1).getSDLSurface();
+	SDL_Surface *backSfc = gGraphics.getTileMap(0).getSDLSurface();
 
 
 

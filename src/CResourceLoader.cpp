@@ -218,7 +218,7 @@ void CResourceLoader::renderLoadingGraphic()
 	if(m_style == PROGRESS_STYLE_TEXT)
 	{
 		// Draw Loading Font... here!
-		GsFont &Font = g_pGfxEngine->getFont(0);
+        GsFont &Font = gGraphics.getFont(0);
 		int percent = m_permil/10;
 		int rest = m_permil%10;
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
@@ -234,7 +234,7 @@ void CResourceLoader::renderLoadingGraphic()
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
 	{
-        CBitmap &Bitmap = *g_pGfxEngine->getBitmapFromStr("ONEMOMEN");
+        CBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
 		SDL_Rect rect;
 		int width = Bitmap.getWidth();
 		int height = Bitmap.getHeight();
@@ -420,7 +420,7 @@ void CResourceLoaderBackground::render()
     if(m_style == PROGRESS_STYLE_TEXT)
     {
         // Draw Loading Font... here!
-        GsFont &Font = g_pGfxEngine->getFont(0);
+        GsFont &Font = gGraphics.getFont(0);
         int percent = m_permil/10;
         int rest = m_permil%10;
         std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
@@ -436,7 +436,7 @@ void CResourceLoaderBackground::render()
     }
     else if(m_style == PROGRESS_STYLE_BITMAP)
     {
-        CBitmap &Bitmap = *g_pGfxEngine->getBitmapFromStr("ONEMOMEN");
+        CBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
         SDL_Rect rect;
         int width = Bitmap.getWidth();
         int height = Bitmap.getHeight();

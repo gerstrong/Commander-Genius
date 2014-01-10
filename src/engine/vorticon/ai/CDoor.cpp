@@ -6,7 +6,7 @@ CDoor::CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID):
 CVorticonSpriteObject(pmap, x, y, OBJ_DOOR, 0)
 {
 	sprite=doorspriteID;
-    CSprite &Doorsprite = g_pGfxEngine->getSprite(mSprVar,sprite);
+    CSprite &Doorsprite = gGraphics.getSprite(mSprVar,sprite);
 	timer = 0;
 	Doorsprite.setHeight(32);
 	inhibitfall = true;
@@ -18,7 +18,7 @@ CVorticonSpriteObject(pmap, x, y, OBJ_DOOR, 0)
 
 void CDoor::process()
 {
-    CSprite &Doorsprite = g_pGfxEngine->getSprite(mSprVar,sprite);
+    CSprite &Doorsprite = gGraphics.getSprite(mSprVar,sprite);
 
 	if (timer > DOOR_OPEN_SPEED)
 	{

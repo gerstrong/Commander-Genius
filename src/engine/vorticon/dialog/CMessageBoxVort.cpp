@@ -21,7 +21,7 @@ CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::EXPAND)
 // This special Messagebox can hold up to 4 images
 void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 {
-	CTilemap &tilemap = g_pGfxEngine->getTileMap(1);
+	CTilemap &tilemap = gGraphics.getTileMap(1);
 
 	const int tileDim = tilemap.getDimension();
 

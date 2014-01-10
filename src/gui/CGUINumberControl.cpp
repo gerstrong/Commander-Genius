@@ -127,7 +127,7 @@ void CGUINumberControl::setupButtonSurface()
     if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
 	return;
     
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
@@ -247,14 +247,14 @@ void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
 
 	if(mSlider)
 	{
-		g_pGfxEngine->getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
+		gGraphics.getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
 	}
 	else
 	{
@@ -296,7 +296,7 @@ void CGUINumberControl::drawNoStyle(SDL_Rect& lRect)
 	}
 
 	// Now lets draw the text of the list control
-	GsFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = gGraphics.getFont(mFontID);
 
 	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
 

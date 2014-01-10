@@ -33,7 +33,7 @@ void CAbout::init()
 	// Load the SDL_Bitmap
 	if(m_type == "ID")
 	{
-        mp_bmp = g_pGfxEngine->getBitmapFromStr("IDLOGO");
+        mp_bmp = gGraphics.getBitmapFromStr("IDLOGO");
 		
 		// Get the offset where in the data the info is...
 		size_t offset = 0;
@@ -177,7 +177,7 @@ void CAbout::render()
 
     for(std::size_t i=0 ; i<m_lines.size() ; i++)
     {
-        g_pGfxEngine->getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
+        gGraphics.getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
     }
 
     SDL_BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);

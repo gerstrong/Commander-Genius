@@ -19,7 +19,7 @@ m_gameover(false),
 m_restartVideo(false),
 mp_option(g_pBehaviorEngine->m_option)
 {
-    m_NumSprites = g_pGfxEngine->getNumSprites(0);
+    m_NumSprites = gGraphics.getNumSprites(0);
 	m_Gamepath = ExeFile.getDataDirectory();
 	m_alldead = false;
 	m_hideobjects = false;
