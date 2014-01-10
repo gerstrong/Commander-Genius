@@ -1,4 +1,5 @@
 #include "CGUIBanner.h"
+
 #include "graphics/CGfxEngine.h"
 
 #include <base/video/CVideoDriver.h>
