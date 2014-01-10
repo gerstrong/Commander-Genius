@@ -22,17 +22,14 @@ bool CSDLVideo::init()
         return false;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-
     // NOTE: try not to free the last SDL_Surface of the screen, this is freed automatically by SDL
     const int aspW = m_VidConfig.mAspectCorrection.w;
     const int aspH = m_VidConfig.mAspectCorrection.h;
-
 
     if(window)
     {
         SDL_DestroyWindow(window);
     }
-
 
     window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
