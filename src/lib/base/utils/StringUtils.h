@@ -145,8 +145,8 @@ inline bool		strStartsWith(const std::string& str, const std::string& start) { i
 inline bool		strCaseStartsWith(const std::string& str, const std::string& start) { if(start.size() > str.size()) return false; return subStrCaseEqual(str,start,start.size()); }
 size_t			maxStartingEqualStr(const std::list<std::string>& strs);
 size_t			maxStartingCaseEqualStr(const std::list<std::string>& strs);
-std::vector<std::string> splitstring(const std::string& str, size_t maxlen, size_t maxwidth, class CFont& font);
-std::string		splitStringWithNewLine(const std::string& str, size_t maxlen, size_t maxwidth, class CFont& font);
+std::vector<std::string> splitstring(const std::string& str, size_t maxlen, size_t maxwidth, class GsFont& font);
+std::string		splitStringWithNewLine(const std::string& str, size_t maxlen, size_t maxwidth, class GsFont& font);
 std::string		GetFileExtension(const std::string& filename);
 std::string		GetBaseFilename(const std::string& filename);
 std::string		GetBaseFilenameWithoutExt(const std::string& filename);
@@ -159,7 +159,7 @@ std::string		Base64Encode(const std::string &data);
 std::string		UrlEncode(const std::string &data); // Substitute space with + and all non-alphanum symbols with %XX
 std::string		AutoDetectLinks(const std::string& text);
 std::string		HtmlEntityUnpairedBrackets(const std::string &txt);
-size_t			GetPosByTextWidth(const std::string& text, int width, CFont *fnt);
+size_t			GetPosByTextWidth(const std::string& text, int width, GsFont *fnt);
 std::string		ColToHex(Color col);
 std::string		EscapeHtmlTags( const std::string & src );	// Escape all "<" and ">" and "&"
 

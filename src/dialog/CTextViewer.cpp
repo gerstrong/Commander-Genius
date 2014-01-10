@@ -250,7 +250,7 @@ void CTextViewer::renderBox()
 	SDL_Surface *sfc = mpTextVSfc.get();
 
 	// first draw the blank rect
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = g_pGfxEngine->getFont(1);
 	int i, j;
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 	{

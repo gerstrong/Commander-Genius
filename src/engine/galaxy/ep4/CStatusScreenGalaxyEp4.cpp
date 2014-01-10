@@ -20,7 +20,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	SDL_Rect EditRect;
 	drawBase(EditRect);
 
-	CFont &Font = g_pGfxEngine->getFont(0);
+	GsFont &Font = g_pGfxEngine->getFont(0);
 	Font.setupColor(0x555555);
 
 	Font.drawFontCentered(mpStatusSurface.get(), "LOCATION", EditRect.x, EditRect.w, EditRect.y, false);

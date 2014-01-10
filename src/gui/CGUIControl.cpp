@@ -66,7 +66,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	if( gTimer.HasTimeElapsed(100) )
 	{

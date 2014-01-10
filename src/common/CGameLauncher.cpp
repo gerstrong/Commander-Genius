@@ -255,7 +255,7 @@ void CGameLauncher::start()
     // Resources for the main menu
     // This is only for the menu. We only need one fontmap for the list of games and some buttons
     g_pGfxEngine->createEmptyFontmaps(1);
-    CFont &Font = g_pGfxEngine->getFont(0);
+    GsFont &Font = g_pGfxEngine->getFont(0);
 
     Font.loadinternalFont();
 

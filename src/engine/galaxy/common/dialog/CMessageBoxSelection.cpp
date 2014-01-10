@@ -33,7 +33,7 @@ blendup(true)
 	
 	mText += "\n\n";
 	
-	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
+	GsFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
 
@@ -59,7 +59,7 @@ void CMessageBoxSelection::init()
 	rect.w -= 16;
 	rect.h -= 16;
     
-	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
+	GsFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 	

@@ -148,7 +148,7 @@ void CSprite::generateSprite( const int points )
                                           format->Amask),
                     &SDL_FreeSurface);
 
-	CFont &smallFont = g_pGfxEngine->getFont(2);
+	GsFont &smallFont = g_pGfxEngine->getFont(2);
 
 	// Create Text Borders TODO: Make this code to draw better looking fonts
     smallFont.drawFont( mpSurface.get(), pointStr,  0,  1 );

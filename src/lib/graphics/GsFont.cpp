@@ -1,24 +1,22 @@
 /*
- * CFont.cpp
+ * GsFont.cpp
  *
  *  Created on: 26.08.2009
  *      Author: gerstrong
  */
 
-#include "CFont.h"
-#include "CPalette.h"
+#include "GsFont.h"
+//#include "CPalette.h"
 #include <base/FindFile.h>
 #include <base/video/CVideoDriver.h>
-#include "CGFont.xpm"
-#include "alternatefont.xpm"
-//#include "StringUtils.h"
-#include "sdl/extensions.h"
+#include "GsFont.xpm"
+#include "AlternateFont.xpm"
 #include <string.h>
 #include <cstdlib>
 
 
 
-CFont::CFont()
+GsFont::GsFont()
 {
 	memset(&mWidthtable, 8, 256);
 }
@@ -32,19 +30,22 @@ CFont::CFont()
 ///////////////////////////////////
 
 
+// We have the colors from 0-15, which are 16 colors in our 4-bit colorspace.
+// Colour 16 represents transparency.
+const unsigned int COLORKEY_4BIT = 16;
 
 
-bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
+bool GsFont::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 							Uint16 width, Uint16 height)
 {
 	mFontSurface.reset(SDL_CreateRGBSurface(Flags, width,
 			height, 8, 0, 0, 0, 0), &SDL_FreeSurface );
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetPaletteColors(mFontSurface->format->palette, Palette, 0, 255);
-	SDL_SetColorKey(mFontSurface.get(), SDL_TRUE, COLORKEY);
+    SDL_SetColorKey(mFontSurface.get(), SDL_TRUE, COLORKEY_4BIT);
 #else
     SDL_SetColors(mFontSurface.get(), Palette, 0, 255);
-	SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
+    SDL_SetColorKey(mFontSurface.get(), SDL_SRCCOLORKEY, COLORKEY_4BIT);
 #endif
 
 	if( mFontSurface )
@@ -149,7 +150,7 @@ SDL_Surface *loadfromXPMData(const char **data, const SDL_PixelFormat *format, c
 
 
 
-bool CFont::loadAlternateFont()
+bool GsFont::loadAlternateFont()
 {
 	// Has the Surface to the entire font been loaded?
 
@@ -160,11 +161,11 @@ bool CFont::loadAlternateFont()
 
 
 
-void CFont::loadinternalFont()
+void GsFont::loadinternalFont()
 {
 	SDL_Surface *blit = gVideoDriver.getBlitSurface();
 
-    mFontSurface.reset( loadfromXPMData( CGFont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
+    mFontSurface.reset( loadfromXPMData( GsFont_xpm, blit->format, blit->flags ), &SDL_FreeSurface );
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(mFontSurface.get(), SDL_BLENDMODE_BLEND);
@@ -174,14 +175,14 @@ void CFont::loadinternalFont()
 // This sets the width of the characters so the text is printed nicely.
 // This is by default 8 pixels in vorticons and it is normally only used
 // in the galaxy engine.
-void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
+void GsFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 {
 	mWidthtable[letter] = width;
 }
 
 
 
-void CFont::tintColor( const Uint32 fgColor )
+void GsFont::tintColor( const Uint32 fgColor )
 {
     SDL_Surface *sfc = mFontSurface.get();
     Uint32 color = 0;
@@ -212,7 +213,7 @@ void CFont::tintColor( const Uint32 fgColor )
 }
 
 
-void CFont::setupColor( const Uint32 fgColor )
+void GsFont::setupColor( const Uint32 fgColor )
 {
 	// Here comes the main part. We have to manipulate the Surface the way it gets
 	// the given color
@@ -232,7 +233,7 @@ void CFont::setupColor( const Uint32 fgColor )
 #endif
 }
 
-Uint32 CFont::getFGColor()
+Uint32 GsFont::getFGColor()
 {
 	// Here comes the main part. We have to manipulate the Surface the way it gets
 	// the given color
@@ -246,7 +247,7 @@ Uint32 CFont::getFGColor()
 }
 
 
-SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fgColor )
+SDL_Surface* GsFont::fetchColoredTextSfc(const std::string& text, const Uint32 fgColor )
 {
 	SDL_Rect rect;
 	rect.x = rect.y = 0;
@@ -285,7 +286,7 @@ SDL_Surface* CFont::fetchColoredTextSfc(const std::string& text, const Uint32 fg
 
 
 
-unsigned int CFont::getPixelTextWidth( const std::string& text )
+unsigned int GsFont::getPixelTextWidth( const std::string& text )
 {
 	unsigned int c = 0, width = 0, len = 0;
 	for( ; c<text.size() ; c++)
@@ -313,13 +314,13 @@ unsigned int CFont::getPixelTextWidth( const std::string& text )
 
 
 
-unsigned int CFont::getPixelTextHeight()
+unsigned int GsFont::getPixelTextHeight()
 {
 	return mFontSurface->h/16;
 }
 
 
-Uint32 CFont::getBGColour(const bool highlight)
+Uint32 GsFont::getBGColour(const bool highlight)
 {
     SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
@@ -329,7 +330,7 @@ Uint32 CFont::getBGColour(const bool highlight)
 
 
 
-Uint32 CFont::getBGColour(SDL_PixelFormat *format, const bool highlight)
+Uint32 GsFont::getBGColour(SDL_PixelFormat *format, const bool highlight)
 {
 	Uint8 r, g, b;
 
@@ -342,7 +343,7 @@ Uint32 CFont::getBGColour(SDL_PixelFormat *format, const bool highlight)
 
 
 
-void  CFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
+void  GsFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
 {
 	SDL_LockSurface(mFontSurface.get());
 
@@ -360,7 +361,7 @@ void  CFont::getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight)
 ////////////////////////////
 ///// Drawing Routines /////
 ////////////////////////////
-void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
+void GsFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
 {
 	SDL_Rect scrrect, dstrect;
 
@@ -377,7 +378,7 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	SDL_BlitSurface(mFontSurface.get(), &scrrect, dst, &dstrect);
 }
 
-void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
+void GsFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
 {
 	unsigned int i,x=xoff,y=yoff;
 	
@@ -404,7 +405,7 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 	}
 }
 
-void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, const Uint8 alpha)
+void GsFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, const Uint8 alpha)
 {
 	unsigned int i,x=xoff,y=yoff;
 
@@ -442,17 +443,17 @@ void CFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff
 }
 
 
-void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, bool highlight)
+void GsFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, bool highlight)
 {
 	drawFontCentered(dst, text, 0, width, yoff, highlight);
 }
 
-void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, const Uint8 alpha)
+void GsFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, const Uint8 alpha)
 {
 	drawFontCenteredAlpha(dst, text, 0, width, yoff, alpha);
 }
 
-void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, const Uint8 alpha)
+void GsFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, const Uint8 alpha)
 {
 	Uint16 xmidpos = 0;
 
@@ -464,7 +465,7 @@ void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uin
 	drawFontAlpha(dst, text, xmidpos, yoff, alpha);
 }
 
-void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, bool highlight)
+void GsFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, bool highlight)
 {
 	Uint16 xmidpos = 0;
 
@@ -476,7 +477,7 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 	drawFont(dst, text, xmidpos, yoff, highlight);
 }
 
-void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, const Uint8 alpha)
+void GsFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, const Uint8 alpha)
 {
 	Uint16 xmidpos = 0;
 	Uint16 ymidpos = 0;
@@ -490,7 +491,7 @@ void CFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uin
 	drawFontAlpha(dst, text, xmidpos, ymidpos, alpha);
 }
 
-void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, bool highlight)
+void GsFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, bool highlight)
 {
 	Uint16 xmidpos = 0;
 	Uint16 ymidpos = 0;
@@ -518,7 +519,7 @@ void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x
 }
 
 
-void CFont::drawMap(SDL_Surface* dst)
+void GsFont::drawMap(SDL_Surface* dst)
 {
 	SDL_BlitSurface(mFontSurface.get(), NULL, dst, NULL);
 }

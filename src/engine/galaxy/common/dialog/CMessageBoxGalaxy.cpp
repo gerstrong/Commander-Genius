@@ -23,7 +23,7 @@ CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text) :
 mMustClose(false),
 mText(Text)
 {
-	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
+	GsFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
 	mTextHeight = Font.getPixelTextHeight()*calcNumLines(mText);
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
@@ -104,7 +104,7 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 
 void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 {
-	CFont &Font = g_pGfxEngine->getFont(FONT_ID);
+	GsFont &Font = g_pGfxEngine->getFont(FONT_ID);
 
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 

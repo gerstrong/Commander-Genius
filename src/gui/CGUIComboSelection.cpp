@@ -38,7 +38,7 @@ drawButton(&CGUIComboSelection::drawNoStyle)
 
 void CGUIComboSelection::setupButtonSurface(const std::string &optionText)
 {
-	CFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = g_pGfxEngine->getFont(mFontID);
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	const std::string showText = "  " + mText + ": " + optionText;
@@ -176,7 +176,7 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
 	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
@@ -237,7 +237,7 @@ void CGUIComboSelection::drawNoStyle(SDL_Rect& lRect)
 	}
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
 

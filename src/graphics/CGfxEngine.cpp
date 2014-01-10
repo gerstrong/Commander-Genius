@@ -72,7 +72,7 @@ void CGfxEngine::createEmptyMiscBitmaps(Uint16 num_bmps)
 void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
 {
 	freeFonts();
-	CFont font;
+	GsFont font;
 	Font.assign(num_fonts, font);
 }
 
@@ -161,7 +161,7 @@ void CGfxEngine::copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 nti
 }
 
 // draw an empty dialog box, for youseeinyourmind(), etc.
-// Maybe this should go to CFont, because it's drawn by fonts...
+// Maybe this should go to GsFont, because it's drawn by fonts...
 void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour)
 {
 	int x,y,i,j;

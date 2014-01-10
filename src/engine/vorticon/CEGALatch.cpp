@@ -172,7 +172,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	CPlanes Planes(RawData);
 	Planes.setOffsets(plane1 + m_fontlocation, plane2 + m_fontlocation,
 					  plane3 + m_fontlocation, plane4 + m_fontlocation, 0);
-	// Load these graphics into the CFont Class of CGfxEngine
+	// Load these graphics into the GsFont Class of CGfxEngine
 	// The original vorticon engine only uses one fontmap, but we use another for
 	// extra icons. For example sliders are in that map
 
@@ -181,7 +181,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	g_pGfxEngine->getFont(0).loadinternalFont();
 
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = g_pGfxEngine->getFont(1);
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	sfc = Font.getSDLSurface();
 

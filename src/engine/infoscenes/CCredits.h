@@ -13,7 +13,7 @@
 #include <memory>
 #include "CInfoScene.h"
 #include "common/CMap.h"
-#include <graphics/CFont.h>
+#include <graphics/GsFont.h>
 
 class CCredits : public CInfoScene
 {

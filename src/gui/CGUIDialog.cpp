@@ -293,7 +293,7 @@ void CGUIDialog::initEmptyBackround()
 
 void CGUIDialog::drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect)
 {
-    CFont &Font = g_pGfxEngine->getFont(1);
+    GsFont &Font = g_pGfxEngine->getFont(1);
     Font.drawCharacter( backSfc, 1, 0, 0 );
 
     for( int x=8 ; x<Rect.w-8 ; x+=8 )
@@ -330,7 +330,7 @@ void CGUIDialog::initVorticonBackground()
     mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = g_pGfxEngine->getFont(1);
 
 	SDL_Surface *backSfc = mpBackgroundSfc.get();
 

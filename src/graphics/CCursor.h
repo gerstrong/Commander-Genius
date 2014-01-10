@@ -12,14 +12,14 @@
 #ifndef CCURSOR_H_
 #define CCURSOR_H_
 
-#include "CFont.h"
+#include <graphics/GsFont.h>
 #include <SDL.h>
 
 class CCursor
 {
 public:
 	CCursor(SDL_Surface *p_screen);
-	void generateTwirls(CFont &Font);
+	void generateTwirls(GsFont &Font);
 	void draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y);
 	virtual ~CCursor();
 

@@ -1,5 +1,5 @@
 /* XPM */
-const static char * CGFont_xpm[] = {
+const static char * GsFont_xpm[] = {
 "128 128 39 1",
 " 	c None",
 ".	c #000000",

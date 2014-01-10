@@ -114,7 +114,7 @@ void CCredits::ponder()
 
 void CCredits::render()
 {
-    CFont &creditFont = g_pGfxEngine->getFont(0);
+    GsFont &creditFont = g_pGfxEngine->getFont(0);
     mpMap->animateAllTiles();
     gVideoDriver.blitScrollSurface();
 

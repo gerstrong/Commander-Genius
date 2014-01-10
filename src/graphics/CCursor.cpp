@@ -25,7 +25,7 @@ CCursor::CCursor(SDL_Surface *p_screen)
 //#endif
 }
 
-void CCursor::generateTwirls(CFont &Font)
+void CCursor::generateTwirls(GsFont &Font)
 {
 	// The positions from the fonts are from 9 to 14
 	// You see, just six direction

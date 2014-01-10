@@ -166,7 +166,7 @@ void CHUD::DrawCircle(int x, int y, int width)
 	SDL_Rect text, outline;
 
 	Uint8 r,g,b;
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = g_pGfxEngine->getFont(1);
 	Font.getBGColour(&r, &g, &b);
 
 	outline.x = x+4;
@@ -259,7 +259,7 @@ void CHUD::renderVorticon()
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 
 
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = g_pGfxEngine->getFont(1);
 
 	// Draw the lives
     Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15, 15);

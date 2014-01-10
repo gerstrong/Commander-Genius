@@ -1,5 +1,5 @@
 /*
- * CFont.h
+ * GsFont.h
  *
  *  Created on: 26.08.2009
  *      Author: gerstrong
@@ -12,20 +12,20 @@
  *  That missed in the original game and made the graphics less smooth
  */
 
-#ifndef CFONT_H_
-#define CFONT_H_
+#ifndef GsFont_H_
+#define GsFont_H_
 
 #include <SDL.h>
 #include <string>
 #include <vector>
 #include <memory>
 
-class CFont
+class GsFont
 {
 public:
-	CFont();
+	GsFont();
 	
-	/*CFont operator=(const CFont &font) // TODO: Copying Font does not yet work
+	/*GsFont operator=(const GsFont &font) // TODO: Copying Font does not yet work
 	{
 	    mFontSurface.reset(font.getSDLSurface());
 	    return *this;
@@ -96,4 +96,4 @@ private:
 	Uint8 mWidthtable[256];
 };
 
-#endif /* CFONT_H_ */
+#endif /* GsFont_H_ */

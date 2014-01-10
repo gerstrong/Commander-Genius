@@ -218,7 +218,7 @@ void CResourceLoader::renderLoadingGraphic()
 	if(m_style == PROGRESS_STYLE_TEXT)
 	{
 		// Draw Loading Font... here!
-		CFont &Font = g_pGfxEngine->getFont(0);
+		GsFont &Font = g_pGfxEngine->getFont(0);
 		int percent = m_permil/10;
 		int rest = m_permil%10;
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
@@ -420,7 +420,7 @@ void CResourceLoaderBackground::render()
     if(m_style == PROGRESS_STYLE_TEXT)
     {
         // Draw Loading Font... here!
-        CFont &Font = g_pGfxEngine->getFont(0);
+        GsFont &Font = g_pGfxEngine->getFont(0);
         int percent = m_permil/10;
         int rest = m_permil%10;
         std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";

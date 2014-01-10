@@ -177,7 +177,7 @@ void CHighScores::render()
 {
     // Process Drawing related stuff
     SDL_Surface *sfc = mpTextSfc.get();
-    CFont &Font = g_pGfxEngine->getFont(1);
+    GsFont &Font = g_pGfxEngine->getFont(1);
 
     mpMap->animateAllTiles();
 

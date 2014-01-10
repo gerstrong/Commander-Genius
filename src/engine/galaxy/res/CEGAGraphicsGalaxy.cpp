@@ -646,7 +646,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
-		CFont &Font = g_pGfxEngine->getFont(i);
+		GsFont &Font = g_pGfxEngine->getFont(i);
 		//Font.setMonochrome(true);
 
 		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))

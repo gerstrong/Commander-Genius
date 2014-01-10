@@ -125,7 +125,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 	SDL_FillRect(Blitsurface, &lRect, 0xFFFFFFFF);
 
 	// Now lets draw the text of the list control
-	CFont &Font = g_pGfxEngine->getFont(mFontID);
+	GsFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
 	const int xpos = lRect.x+16+1;

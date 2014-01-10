@@ -11,7 +11,7 @@
 #ifndef CGFXENGINE_H_
 #define CGFXENGINE_H_
 
-#include "CFont.h"
+#include <graphics/GsFont.h>
 #include "CTilemap.h"
 #include "CSprite.h"
 #include "CBitmap.h"
@@ -66,7 +66,7 @@ public:
 	
     CSprite &getSprite(const int var, const int slot) { return Sprite[var][slot]; }
     std::vector<CSprite> &getSpriteVec(const int var) { return Sprite[var]; }
-	CFont &getFont(Uint8 index) { return Font.at(index); }
+	GsFont &getFont(Uint8 index) { return Font.at(index); }
 	CCursor *getCursor() { return mpCursor.get(); }
 
 
@@ -78,7 +78,7 @@ public:
 	
 private:
 	std::vector<CTilemap> Tilemap;
-	std::vector<CFont> Font;
+	std::vector<GsFont> Font;
 	std::vector<CBitmap> Bitmap;
     std::vector<CBitmap> maskedBitmap;
     std::vector<CBitmap> miscBitmap;
