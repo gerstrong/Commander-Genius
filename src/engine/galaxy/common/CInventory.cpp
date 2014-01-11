@@ -7,7 +7,7 @@
 
 #include "CInventory.h"
 #include "common/CBehaviorEngine.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/effects/CScrollEffect.h"

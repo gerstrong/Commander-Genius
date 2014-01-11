@@ -14,7 +14,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CRLE.h"
 #include "common/CBehaviorEngine.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include "CResourceLoader.h"
 

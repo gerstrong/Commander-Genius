@@ -7,7 +7,7 @@
 
 #include "CDlgOptionText.h"
 
-#include "../graphics/CGfxEngine.h"
+#include <graphics/GsGraphics.h>
 
 /**
  * \brief  	Constructor of the class. It represents a text which can be selected in the menu.

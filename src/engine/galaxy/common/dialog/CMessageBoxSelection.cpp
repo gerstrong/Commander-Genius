@@ -8,7 +8,7 @@
 #include "CMessageBoxSelection.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "common/CBehaviorEngine.h"
 #include <base/utils/StringUtils.h>
 

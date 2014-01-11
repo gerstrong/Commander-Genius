@@ -11,7 +11,7 @@
 #include <string>
 #include <SDL.h>
 #include <vector>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "common/CTileProperties.h"
 
 

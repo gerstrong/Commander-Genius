@@ -8,7 +8,7 @@
 #include "CGUITextSelectionList.h"
 #include "common/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 //#include "sdl/input/InputEvents.h"
 #include <base/CInput.h>
 

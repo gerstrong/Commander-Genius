@@ -6,7 +6,7 @@
  */
 
 #include "CStatusScreenGalaxy.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 #include "sdl/extensions.h"

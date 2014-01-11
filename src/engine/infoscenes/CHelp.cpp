@@ -11,7 +11,7 @@
 #include "CHelp.h"
 #include "fileio/CExeFile.h"
 #include "common/CVorticonMapLoader.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 //#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
 #include <base/FindFile.h>

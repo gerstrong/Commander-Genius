@@ -10,7 +10,7 @@
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include <base/video/CVideoDriver.h>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/sound/CSound.h"
 #include "engine/vorticon/ai/CTeleporter.h"

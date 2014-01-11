@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 #include "CRisingPoints.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 // GotPoints object (rising numbers when you get a bonus item)
 // (this wasn't in original Keen)

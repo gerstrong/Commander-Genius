@@ -8,7 +8,7 @@
 #include "CEGALatch.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/lz.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include "fileio/TypeDefinitions.h"
 #include "common/CBehaviorEngine.h"
@@ -172,7 +172,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	CPlanes Planes(RawData);
 	Planes.setOffsets(plane1 + m_fontlocation, plane2 + m_fontlocation,
 					  plane3 + m_fontlocation, plane4 + m_fontlocation, 0);
-	// Load these graphics into the GsFont Class of CGfxEngine
+	// Load these graphics into the GsFont Class of GsGraphics
 	// The original vorticon engine only uses one fontmap, but we use another for
 	// extra icons. For example sliders are in that map
 

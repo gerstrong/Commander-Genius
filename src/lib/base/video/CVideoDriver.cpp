@@ -15,7 +15,7 @@
 #include <base/video/COpenGL.h>
 #include "resolutionlist.h"
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <lib/base/GsLogging.h>
 #include <base/FindFile.h>
 #include "graphics/PerSurfaceAlpha.h"

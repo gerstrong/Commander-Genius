@@ -13,7 +13,7 @@
 #include "common/options.h"
 #include "common/CPlayer.h"
 #include "common/CBehaviorEngine.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <vector>
 
 class CVorticonSpriteObjectAI

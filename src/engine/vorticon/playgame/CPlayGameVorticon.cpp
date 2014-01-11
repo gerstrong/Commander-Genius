@@ -13,7 +13,7 @@
 #include <base/CInput.h>
 #include "core/mode/CGameMode.h"
 #include "common/CVorticonMapLoader.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 //#include "StringUtils.h"
 #include "engine/vorticon/ai/CTeleporter.h"
 #include <widgets/CMenuController.h>

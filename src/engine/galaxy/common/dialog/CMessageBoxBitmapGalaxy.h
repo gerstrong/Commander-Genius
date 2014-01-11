@@ -9,7 +9,7 @@
 #define CMESSAGEBOXBITMAPGALAXY_H_
 
 #include "CMessageBoxGalaxy.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "common/CSpriteObject.h"
 
 class CMessageBoxBitmapGalaxy : public CMessageBoxGalaxy

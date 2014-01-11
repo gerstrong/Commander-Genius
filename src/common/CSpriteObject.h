@@ -21,7 +21,7 @@
 
 // structures for each AI module's data
 #include "CMap.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "options.h"
 #include "sdl/sound/CSound.h"
 #include "CVec.h"

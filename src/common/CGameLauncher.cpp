@@ -16,7 +16,7 @@
 #include "gui/CGUIBanner.h"
 #include "gui/CGUIButton.h"
 #include "gui/CGUIText.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "graphics/effects/CScrollEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"

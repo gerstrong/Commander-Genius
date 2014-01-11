@@ -1,6 +1,6 @@
 #include "CFoob.h"
 #include "sdl/sound/CSound.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y):
 CVorticonSpriteObject(p_map,x,y, OBJ_FOOB),

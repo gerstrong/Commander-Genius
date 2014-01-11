@@ -9,7 +9,7 @@
 
 #include <base/CInput.h>
 #include "CTextViewer.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
 #include <base/video/CVideoDriver.h>
 #include <base/FindFile.h>

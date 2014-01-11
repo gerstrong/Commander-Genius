@@ -13,7 +13,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "sdl/extensions.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "common/CBehaviorEngine.h"
 
 const unsigned int MAX_ELEMENTS_PER_PAGE = 7;

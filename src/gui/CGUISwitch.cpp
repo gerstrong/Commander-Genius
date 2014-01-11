@@ -7,7 +7,7 @@
 
 #include "CGUISwitch.h"
 #include <base/utils/StringUtils.h>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include "common/CBehaviorEngine.h"
 

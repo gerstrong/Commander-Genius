@@ -1,6 +1,6 @@
 #include "CDoor.h"
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 CDoor::CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID):
 CVorticonSpriteObject(pmap, x, y, OBJ_DOOR, 0)

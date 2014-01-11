@@ -24,7 +24,7 @@
 #include "common/CSettings.h"
 #include <widgets/CMenuController.h>
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 
 

@@ -7,7 +7,7 @@
 
 #include "CPassive.h"
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "graphics/effects/CPixelate.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>

@@ -11,7 +11,7 @@
 #include <string.h>
 #include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 CSprite::CSprite() :
 m_alpha(255)

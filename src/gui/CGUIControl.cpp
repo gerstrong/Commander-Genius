@@ -7,7 +7,7 @@
 
 #include "CGUIControl.h"
 #include <base/video/CVideoDriver.h>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>

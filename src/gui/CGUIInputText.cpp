@@ -6,7 +6,7 @@
  */
 
 #include "CGUIInputText.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/CInput.h>
 //#include "sdl/input/InputEvents.h"
 #include <base/video/CVideoDriver.h>

@@ -6,7 +6,7 @@
  */
 
 #include "CResourceLoader.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>

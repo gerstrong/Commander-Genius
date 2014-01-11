@@ -19,7 +19,7 @@
 #include "common/CBehaviorEngine.h"
 #include "CVorticonSpriteObject.h"
 #include "CResourceLoader.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>

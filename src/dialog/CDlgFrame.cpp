@@ -6,7 +6,7 @@
  */
 
 #include "CDlgFrame.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 CDlgFrame::CDlgFrame(int x, int y, int w, int h, int tilewidth, int tileheight)
 {

@@ -11,7 +11,7 @@
 #include "COpenGL.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h> // for CInput::renderOverlay
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <lib/base/GsLogging.h>
 #include "graphics/PerSurfaceAlpha.h"
 

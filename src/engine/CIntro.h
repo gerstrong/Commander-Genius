@@ -8,7 +8,7 @@
 #ifndef CINTRO_H_
 #define CINTRO_H_
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 class CIntro
 {

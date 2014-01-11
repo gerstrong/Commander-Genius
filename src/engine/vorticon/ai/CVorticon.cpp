@@ -1,6 +1,6 @@
 #include "misc.h"
 #include "sdl/sound/CSound.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "graphics/effects/CFlash.h"
 #include "CVorticon.h"
 

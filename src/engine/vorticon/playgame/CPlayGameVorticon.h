@@ -10,7 +10,7 @@
 #ifndef CPlayGameVorticon_H_
 #define CPlayGameVorticon_H_
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "fileio/CSaveGameController.h"
 #include "common/CPlayer.h"
 #include "common/CTileProperties.h"

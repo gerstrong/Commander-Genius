@@ -7,7 +7,7 @@
 
 #include "CPlayer.h"
 #include "engine/vorticon/ai/CMessie.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/CInput.h>
 
 ///

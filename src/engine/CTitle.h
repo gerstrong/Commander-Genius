@@ -19,7 +19,7 @@
 #include <SDL.h>
 #include <vector>
 #include <memory>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "common/CSpriteObject.h"
 #include "common/CMap.h"
 

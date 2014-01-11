@@ -14,7 +14,7 @@
 #include "sdl/sound/CSound.h"
 #include <base/CInput.h>
 #include "sdl/music/CMusic.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "CPhysicsSettings.h"
 
 #define PDIEFRAME             22

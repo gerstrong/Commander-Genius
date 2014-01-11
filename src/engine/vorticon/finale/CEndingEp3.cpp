@@ -9,7 +9,7 @@
 #include <base/utils/StringUtils.h>
 #include <base/CInput.h>
 #include "graphics/effects/CFlash.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "common/CVorticonMapLoader.h"
 #include "common/Playerdefines.h"
 

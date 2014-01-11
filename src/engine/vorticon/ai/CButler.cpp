@@ -1,6 +1,6 @@
 #include "CButler.h"
 #include "sdl/sound/CSound.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "common/CBehaviorEngine.h"
 
 CButler::CButler(CMap *pmap, Uint32 x, Uint32 y) :

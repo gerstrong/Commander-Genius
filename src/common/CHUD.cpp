@@ -10,7 +10,7 @@
 #include "common/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/utils/StringUtils.h>
 
 const int EFFECT_TIME = 10;

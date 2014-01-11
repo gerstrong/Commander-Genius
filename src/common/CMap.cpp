@@ -11,7 +11,7 @@
 #include <lib/base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <iostream>
 #include <fstream>
 

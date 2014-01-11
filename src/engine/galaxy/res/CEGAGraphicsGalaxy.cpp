@@ -13,7 +13,7 @@
  */
 
 #include "CEGAGraphicsGalaxy.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/compression/CHuffman.h"

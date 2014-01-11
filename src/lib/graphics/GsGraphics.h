@@ -1,5 +1,5 @@
 /*
- * CGfxEngine.h
+ * GsGraphics.h
  *
  *  Created on: 26.08.2009
  *      Author: gerstrong
@@ -11,7 +11,9 @@
 #ifndef __GSGRAPHICS_H__
 #define __GSGRAPHICS_H__
 
-#include <graphics/GsFont.h>
+#include <base/Singleton.h>
+
+#include "GsFont.h"
 #include "CTilemap.h"
 #include "CSprite.h"
 #include "CBitmap.h"
@@ -22,16 +24,14 @@
 #include <vector>
 #include <memory>
 
-#include "CSingleton.h"
 
-#include <base/Singleton.h>
 
-#define gGraphics CGfxEngine::get()
+#define gGraphics GsGraphics::get()
 
-class CGfxEngine : public GsSingleton<CGfxEngine>
+class GsGraphics : public GsSingleton<GsGraphics>
 {
 public:
-	virtual ~CGfxEngine();
+	virtual ~GsGraphics();
 	
     void createEmptySprites(const int numVar, const int num_sprites);
 	void dumpSprites();

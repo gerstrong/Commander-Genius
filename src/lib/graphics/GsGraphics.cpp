@@ -1,11 +1,11 @@
 /*
- * CGfxEngine.cpp
+ * GsGraphics.cpp
  *
  *  Created on: 26.08.2009
  *      Author: gerstrong
  */
 
-#include "CGfxEngine.h"
+#include "GsGraphics.h"
 #include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 #include <base/CInput.h>
@@ -13,14 +13,14 @@
 ///
 // Creation Routines
 ///
-void CGfxEngine::createEmptyTilemaps(size_t num)
+void GsGraphics::createEmptyTilemaps(size_t num)
 {
 	freeTilemap();
 	CTilemap oneTilemap;
 	Tilemap.assign(num, oneTilemap);
 }
 
-void CGfxEngine::createEmptySprites(const int numVar, const int num_sprites)
+void GsGraphics::createEmptySprites(const int numVar, const int num_sprites)
 {
 	freeSprites();
 	CSprite sprite;
@@ -32,7 +32,7 @@ void CGfxEngine::createEmptySprites(const int numVar, const int num_sprites)
     Sprite.assign(numVar, spriteVec);
 }
 
-void CGfxEngine::dumpSprites()
+void GsGraphics::dumpSprites()
 {
     for(size_t i = 0; i < Sprite[0].size(); i++)
 	{
@@ -46,21 +46,21 @@ void CGfxEngine::dumpSprites()
 	}
 }
 
-void CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
+void GsGraphics::createEmptyBitmaps(Uint16 num_bmps)
 {
 	freeBitmaps(Bitmap);
 	CBitmap bitmap;
 	Bitmap.assign(num_bmps, bitmap);
 }
 
-void CGfxEngine::createEmptyMaskedBitmaps(Uint16 num_bmps)
+void GsGraphics::createEmptyMaskedBitmaps(Uint16 num_bmps)
 {
 	freeBitmaps(maskedBitmap);
 	CBitmap bitmap;
 	maskedBitmap.assign(num_bmps, bitmap);
 }
 
-void CGfxEngine::createEmptyMiscBitmaps(Uint16 num_bmps)
+void GsGraphics::createEmptyMiscBitmaps(Uint16 num_bmps)
 {
     freeBitmaps(miscBitmap);
     CBitmap bitmap;
@@ -69,14 +69,14 @@ void CGfxEngine::createEmptyMiscBitmaps(Uint16 num_bmps)
 
 
 
-void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
+void GsGraphics::createEmptyFontmaps(Uint8 num_fonts)
 {
 	freeFonts();
 	GsFont font;
 	Font.assign(num_fonts, font);
 }
 
-void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
+void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
 {
 	freeCursor();
 	mpCursor.reset(new CCursor(surface));
@@ -85,7 +85,7 @@ void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 /**
  * Draws some digits using galaxy style
  */
-void CGfxEngine::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface)
+void GsGraphics::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface)
 {
 	CTilemap &Tilemap = getTileMap(2);
 
@@ -99,7 +99,7 @@ void CGfxEngine::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Sur
 /**
  * Draw one digits using galaxy style
  */
-void CGfxEngine::drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface)
+void GsGraphics::drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface)
 {
 	CTilemap &Tilemap = getTileMap(2);
 	Tilemap.drawTile(blitsurface, x, y, c);
@@ -109,22 +109,22 @@ void CGfxEngine::drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Sur
 ///
 // Destructors
 ///
-void CGfxEngine::freeCursor()
+void GsGraphics::freeCursor()
 {
 	mpCursor.release();
 }
-void CGfxEngine::freeTilemap()
+void GsGraphics::freeTilemap()
 {
 	if( !Tilemap.empty() )
 		Tilemap.clear();
 }
-void CGfxEngine::freeFonts()
+void GsGraphics::freeFonts()
 {
   while ( !Font.empty() )
     Font.pop_back();
 }
 
-void CGfxEngine::freeBitmaps(std::vector<CBitmap> &Bitmap)
+void GsGraphics::freeBitmaps(std::vector<CBitmap> &Bitmap)
 {
 	while ( !Bitmap.empty() )
 	{
@@ -132,13 +132,13 @@ void CGfxEngine::freeBitmaps(std::vector<CBitmap> &Bitmap)
 	}
 }
 
-void CGfxEngine::freeSprites()
+void GsGraphics::freeSprites()
 {
     if( !Sprite.empty() )
         Sprite.clear();
 }
 
-void CGfxEngine::copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 ntilestocopy )
+void GsGraphics::copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 ntilestocopy )
 {
 	SDL_Rect src_rect, dst_rect;
 	
@@ -162,7 +162,7 @@ void CGfxEngine::copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 nti
 
 // draw an empty dialog box, for youseeinyourmind(), etc.
 // Maybe this should go to GsFont, because it's drawn by fonts...
-void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour)
+void GsGraphics::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour)
 {
 	int x,y,i,j;
 	SDL_Rect rect;
@@ -202,7 +202,7 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 // Getters
 ///
 
-CBitmap *CGfxEngine::getBitmapFromStr(const std::string &name) const
+CBitmap *GsGraphics::getBitmapFromStr(const std::string &name) const
 {
 	std::string s_name;
 	for(unsigned int i=0 ; i<Bitmap.size() ; i++)
@@ -221,7 +221,7 @@ CBitmap *CGfxEngine::getBitmapFromStr(const std::string &name) const
 	return NULL;
 }
 
-CSprite *CGfxEngine::getSprite(const int var, const std::string &name) const
+CSprite *GsGraphics::getSprite(const int var, const std::string &name) const
 {
 	std::string s_name;
     for(unsigned int i=0 ; i<Sprite[var].size() ; i++)
@@ -241,7 +241,7 @@ CSprite *CGfxEngine::getSprite(const int var, const std::string &name) const
 
 
 
-CGfxEngine::~CGfxEngine()
+GsGraphics::~GsGraphics()
 {
 	freeCursor();
 	freeBitmaps(maskedBitmap);

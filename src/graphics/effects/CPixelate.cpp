@@ -14,7 +14,7 @@
 #include <base/CInput.h>
 #include <lib/base/GsTimer.h>
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 #include <cstring>
 #include <cstdio>

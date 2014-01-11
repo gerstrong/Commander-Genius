@@ -6,7 +6,7 @@
  */
 
 #include "CGUIButton.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include "core/mode/CGameMode.h"

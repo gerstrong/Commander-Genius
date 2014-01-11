@@ -9,7 +9,7 @@
 #include "CVideoEngine.h"
 #include <lib/base/GsLogging.h>
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "graphics/PerSurfaceAlpha.h"
 
 CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :

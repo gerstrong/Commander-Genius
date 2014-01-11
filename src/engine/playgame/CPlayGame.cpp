@@ -6,7 +6,7 @@
  */
 
 #include "CPlayGame.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 CPlayGame::CPlayGame(CExeFile &ExeFile, char level) :
 m_endgame(false),

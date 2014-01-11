@@ -8,7 +8,7 @@
 #include "CPlayGameGalaxy.h"
 #include "common/CMapLoaderGalaxy.h"
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
 #include <base/CInput.h>

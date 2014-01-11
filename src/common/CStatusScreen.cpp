@@ -10,7 +10,7 @@
  */
 
 #include "CStatusScreen.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
 #include <base/utils/StringUtils.h>

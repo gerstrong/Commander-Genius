@@ -12,7 +12,7 @@
 #include "CMessageBoxGalaxy.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
 #include <base/utils/StringUtils.h>
 #include <memory>
