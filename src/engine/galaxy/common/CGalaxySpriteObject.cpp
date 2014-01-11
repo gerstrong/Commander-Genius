@@ -300,7 +300,7 @@ void CGalaxySpriteObject::setActionSprite()
     
 	if(sprite >= 0)
 	{
-        CSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+        GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 	    oldBoxY2 = rSprite.m_bboxY2;
 	    oldBoxY1 = rSprite.m_bboxY1;
 	}
@@ -312,7 +312,7 @@ void CGalaxySpriteObject::setActionSprite()
 	
 	
 	// Check the lower box for better collisions and move the sprite whether needed
-    CSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 	
     int newBoxY2 = rSprite.m_bboxY2;
     int newBoxY1 = rSprite.m_bboxY1;

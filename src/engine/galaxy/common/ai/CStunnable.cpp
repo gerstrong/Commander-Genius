@@ -104,7 +104,7 @@ void CStunnable::draw()
       m_animation_timer++;
       
       
-      CSprite &StarSprite = gGraphics.getSprite(mSprVar,starSprite);
+      GsSprite &StarSprite = gGraphics.getSprite(mSprVar,starSprite);
       
       int yoffset = (StarSprite.getHeight()<<STC);
       int xoffset = (StarSprite.getWidth()<<STC);

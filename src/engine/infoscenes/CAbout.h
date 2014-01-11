@@ -12,7 +12,7 @@
 #include <string>
 #include <memory>
 #include "CInfoScene.h"
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 #include "common/CMap.h"
 #include "fileio/CExeFile.h"
 
@@ -28,7 +28,7 @@ public:
 	
 private:
 	static const int m_numberoflines=11;	// number of lines to print
-	CBitmap* mp_bmp;
+	GsBitmap* mp_bmp;
 	
 	std::shared_ptr <CMap> mpMap;
 	std::shared_ptr<SDL_Surface> mpLogoBMP;

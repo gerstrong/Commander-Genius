@@ -58,7 +58,7 @@ private:
     CWorldMap m_WorldMap;
     CLevelPlay m_LevelPlay;
     CSaveGameController &m_SavedGame;
-    CBitmap m_BackgroundBitmap;
+    GsBitmap m_BackgroundBitmap;
     std::list< std::shared_ptr<CMessageBoxGalaxy> > mMessageBoxes;
     stCheat m_Cheatmode;
 

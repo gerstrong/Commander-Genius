@@ -9,7 +9,7 @@
 #define CGUIBITMAP_H_
 
 #include "CGUIControl.h"
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 #include <memory>
 #include <string>
 
@@ -18,7 +18,7 @@ class CGUIBitmap : public CGUIControl
 public:
 
 	// Loads an Bitmap that is given directly
-	CGUIBitmap(std::unique_ptr<CBitmap>&& pBitmap);
+	CGUIBitmap(std::unique_ptr<GsBitmap>&& pBitmap);
 
 	// Load an Bitmap using an internal string ID of all the loaded Bitmaps
 	CGUIBitmap(const std::string &text);
@@ -32,7 +32,7 @@ public:
 
 private:
 
-	std::unique_ptr<CBitmap> mpBitmap;
+	std::unique_ptr<GsBitmap> mpBitmap;
     std::string mTextID;
 };
 

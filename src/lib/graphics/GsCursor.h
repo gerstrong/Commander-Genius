@@ -1,5 +1,5 @@
 /*
- * CCursor.h
+ * GsCursor.h
  *
  *  Created on: 11.04.2010
  *      Author: gerstrong
@@ -9,23 +9,23 @@
  *  but more elements are planned.
 */
 
-#ifndef CCURSOR_H_
-#define CCURSOR_H_
+#ifndef GsCursor_H_
+#define GsCursor_H_
 
 #include <graphics/GsFont.h>
 #include <SDL.h>
 
-class CCursor
+class GsCursor
 {
 public:
-	CCursor(SDL_Surface *p_screen);
+	GsCursor(SDL_Surface *p_screen);
 	void generateTwirls(GsFont &Font);
 	void draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y);
-	virtual ~CCursor();
+	virtual ~GsCursor();
 
 private:
 	SDL_Surface *mp_Surface;
 
 };
 
-#endif /* CCURSOR_H_ */
+#endif /* GsCursor_H_ */

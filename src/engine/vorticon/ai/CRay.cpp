@@ -26,7 +26,7 @@ m_speed(speed)
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 
-    CSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 	m_BBox.x1 = rSprite.m_bboxX1;		m_BBox.x2 = rSprite.m_bboxX2;
 	m_BBox.y1 = rSprite.m_bboxY1;		m_BBox.y2 = rSprite.m_bboxY2;
 

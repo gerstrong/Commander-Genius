@@ -9,7 +9,7 @@
 #define CFINALESTATICSCENE_H_
 
 #include "engine/vorticon/dialog/CMessageBoxVort.h"
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 #include <SDL.h>
 #include <string>
 #include <list>
@@ -17,7 +17,7 @@
 
 struct bitmap_structure
 {
-    CBitmap bitmap;
+    GsBitmap bitmap;
 	SDL_Rect dest_rect;
 	Uint16 from_count;
 	Uint16 to_count;

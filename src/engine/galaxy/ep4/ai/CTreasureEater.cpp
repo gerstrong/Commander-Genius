@@ -39,7 +39,7 @@ mStolen(false)
 	setupGalaxyObjectOnMap( 0x31E2, A_SMIRKY_LOOK );
 	xDirection = LEFT;
 	
-    CSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 	processMove( 0, rSprite.m_bboxY1-rSprite.m_bboxY2 );
 	performCollisions();
 	

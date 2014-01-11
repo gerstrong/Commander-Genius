@@ -128,7 +128,7 @@ void CCeilick::draw()
     if( sprite == BLANKSPRITE || dontdraw )
         return;
 
-    CSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
 
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;

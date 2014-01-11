@@ -853,7 +853,7 @@ void CPlayerLevel::processCliffClimbingUp()
 	{
 		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 		const int spriteID = getSpriteIDFromAction(A_KEEN_STAND);
-        CSprite &standSpr = gGraphics.getSprite(mSprVar,spriteID);
+        GsSprite &standSpr = gGraphics.getSprite(mSprVar,spriteID);
 
 
 		if( xDirection < 0 ) // left upper
@@ -1550,7 +1550,7 @@ void CPlayerLevel::processPressUp() {
 				    setAction(A_KEEN_ENTER_DOOR);
 				    
 				    setActionSprite();
-                    CSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+                    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 
 				    // Here the Player will be snapped to the center
 
@@ -1589,7 +1589,7 @@ void CPlayerLevel::processPressUp() {
 				setAction(A_KEEN_ENTER_DOOR);
 				
 				setActionSprite();
-                CSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+                GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 
 				// Here the Player will be snapped to the center
 

@@ -108,6 +108,6 @@ void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 		tile = (mTwirliconID && mHovered) ? 93 : 92;
 	}
 
-    CTilemap &Tilemap = gGraphics.getTileMap(2);
+    GsTilemap &Tilemap = gGraphics.getTileMap(2);
     Tilemap.drawTile(blitsfc, lRect.x, lRect.y, tile);
 }

@@ -137,7 +137,7 @@ void CStatusScreenGalaxyEp5::GenerateStatus()
 	gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mpStatusSurface.get());
 
 	// Press a Key Sign
-	CTilemap &Tilemap = gGraphics.getTileMap(2);
+	GsTilemap &Tilemap = gGraphics.getTileMap(2);
 	TempRect.x = EditRect.x+(EditRect.w-80)/2;
 	TempRect.y = EditRect.y+110;
 	for( int c=0 ; c<10 ; c++ )

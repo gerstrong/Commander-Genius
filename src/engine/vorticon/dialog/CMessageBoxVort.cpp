@@ -21,7 +21,7 @@ CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::EXPAND)
 // This special Messagebox can hold up to 4 images
 void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 {
-	CTilemap &tilemap = gGraphics.getTileMap(1);
+	GsTilemap &tilemap = gGraphics.getTileMap(1);
 
 	const int tileDim = tilemap.getDimension();
 
@@ -42,7 +42,7 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	fRect.transformInverse(gameRect);
 	fRect.transform(mRect);
 
-	std::unique_ptr<CBitmap> pBitmap(new CBitmap(bmpSfc));
+	std::unique_ptr<GsBitmap> pBitmap(new GsBitmap(bmpSfc));
 
 	addControl( new CGUIBitmap(move(pBitmap)), fRect );
 }

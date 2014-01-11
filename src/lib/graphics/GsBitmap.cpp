@@ -1,27 +1,27 @@
 /*
- * CBitmap.cpp
+ * GsBitmap.cpp
  *
  *  Created on: 03.09.2009
  *      Author: gerstrong
  */
 
-#include "CBitmap.h"
-#include "CPalette.h"
+#include "GsBitmap.h"
+#include "GsPalette.h"
 #include <base/FindFile.h>
 #include <base/video/CVideoDriver.h>
 
 #include <lib/base/GsLogging.h>
 
-CBitmap::CBitmap()
+GsBitmap::GsBitmap()
 {}
 
 
-CBitmap::CBitmap(const std::shared_ptr<SDL_Surface> &bmpSfc)
+GsBitmap::GsBitmap(const std::shared_ptr<SDL_Surface> &bmpSfc)
 {
 	mpBitmapSurface = bmpSfc;
 }
 
-CBitmap::CBitmap(const CBitmap &bitmap) :
+GsBitmap::GsBitmap(const GsBitmap &bitmap) :
 mName(bitmap.getName())
 {
 	SDL_Surface *sfc = bitmap.getSDLSurface();
@@ -37,7 +37,7 @@ mName(bitmap.getName())
 ///
 // Creation Routines
 ///
-bool CBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
+bool GsBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
 {        
     mpBitmapSurface.reset( SDL_CreateRGBSurface(flags, rect.w, rect.h, 8, 0, 0, 0, 0 ), &SDL_FreeSurface );
 
@@ -58,7 +58,7 @@ bool CBitmap::createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette)
 	  return false;
 }
 
-bool CBitmap::optimizeSurface()
+bool GsBitmap::optimizeSurface()
 {
 	if(mpBitmapSurface)
 	{
@@ -71,7 +71,7 @@ bool CBitmap::optimizeSurface()
 		return false;
 }
 
-bool CBitmap::loadHQBitmap( const std::string& filename )
+bool GsBitmap::loadHQBitmap( const std::string& filename )
 {
 	if(!IsFileAvailable(filename))
 		return false;
@@ -93,7 +93,7 @@ bool CBitmap::loadHQBitmap( const std::string& filename )
 	return false;
 }
 
-void CBitmap::exchangeColor( const Uint32 oldColor, const Uint32 newColor )
+void GsBitmap::exchangeColor( const Uint32 oldColor, const Uint32 newColor )
 {
     SDL_Surface *bmpSfc = mpBitmapSurface.get();
 
@@ -129,7 +129,7 @@ void CBitmap::exchangeColor( const Uint32 oldColor, const Uint32 newColor )
         SDL_UnlockSurface(bmpSfc);
 }
 
-void CBitmap::exchangeColor( const Uint8 oldR, const Uint8 oldG, const Uint8 oldB,
+void GsBitmap::exchangeColor( const Uint8 oldR, const Uint8 oldG, const Uint8 oldB,
                              const Uint8 newR, const Uint8 newG, const Uint8 newB)
 {
     SDL_Surface *bmpSfc = mpBitmapSurface.get();
@@ -140,7 +140,7 @@ void CBitmap::exchangeColor( const Uint8 oldR, const Uint8 oldG, const Uint8 old
     exchangeColor( oldColor, newColor );
 }
 
-void CBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
+void GsBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
 {
     auto bmpSfc = mpBitmapSurface.get();
     auto format = bmpSfc->format;
@@ -153,7 +153,7 @@ void CBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
 #endif
 }
 
-bool CBitmap::scaleTo(const GsRect<Uint16> &gameRes)
+bool GsBitmap::scaleTo(const GsRect<Uint16> &gameRes)
 {
     SDL_Rect newRect = gameRes.SDLRect();
 
@@ -219,7 +219,7 @@ bool CBitmap::scaleTo(const GsRect<Uint16> &gameRes)
  * \param x		 		X-Coordinate, indicating the position on dst
  * \param y				Y-Coordinate, indicating the position on dst
  */
-void CBitmap::draw(const int x, const int y)
+void GsBitmap::draw(const int x, const int y)
 {
     _draw( x, y, gVideoDriver.getBlitSurface() );
 }
@@ -230,7 +230,7 @@ void CBitmap::draw(const int x, const int y)
  * \param y				Y-Coordinate, indicating the position on dst
  * \param dst           Surface where to blit that Bitmap
  */
-void CBitmap::_draw(const int x, const int y, SDL_Surface *dst) const
+void GsBitmap::_draw(const int x, const int y, SDL_Surface *dst) const
 {
     SDL_Rect dst_rect, src_rect;
 

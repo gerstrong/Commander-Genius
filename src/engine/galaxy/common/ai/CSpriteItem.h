@@ -9,8 +9,8 @@
  *  Both item types exist altough I think we really don't need items, oh well...
  */
 
-#ifndef CSPRITEITEM_H_
-#define CSPRITEITEM_H_
+#ifndef CSpriteItem_H_
+#define CSpriteItem_H_
 
 #include "engine/galaxy/common/CGalaxySpriteObject.h"
 
@@ -32,4 +32,4 @@ private:
 
 }
 
-#endif /* CSPRITEITEM_H_ */
+#endif /* CSpriteItem_H_ */

@@ -14,7 +14,7 @@
 #include <SDL.h>
 #include "fileio/CExeFile.h"
 #include "engine/CEGAGraphics.h"
-#include "graphics/CTilemap.h"
+#include "graphics/GsTilemap.h"
 
 #include "EGAStructs.h"
 
@@ -47,10 +47,10 @@ public:
 	bool readMaskedBitmaps();
 	bool readTilemaps( size_t NumTiles, size_t pbasetilesize,
 			size_t rowlength, size_t IndexOfTiles,
-			CTilemap &Tilemap, bool tileoff );
+			GsTilemap &Tilemap, bool tileoff );
 	bool readMaskedTilemaps( size_t NumTiles, size_t pbasetilesize,
 			size_t rowlength, size_t IndexOfTiles,
-			CTilemap &Tilemap, bool tileoff );
+			GsTilemap &Tilemap, bool tileoff );
 	bool readTexts();
 
     bool readMiscStuff();

@@ -95,7 +95,7 @@ void CPlayGameVorticon::setupPlayers()
         player.pdie = PDIE_NODIE;
 
 		// Calibrate Player to the right position, so it won't fall when level starts
-        CSprite &sprite = gGraphics.getSprite(i,PSTANDFRAME);
+        GsSprite &sprite = gGraphics.getSprite(i,PSTANDFRAME);
         player.w = sprite.getWidth()<<STC;
         player.h = sprite.getHeight();
 		mMap->m_Dark = false;
@@ -302,7 +302,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
 		}
 		else // Bitmap must first be created
 		{
-            CBitmap *pBitmap = gGraphics.getBitmapFromStr("GAMEOVER");
+            GsBitmap *pBitmap = gGraphics.getBitmapFromStr("GAMEOVER");
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 			mpGameoverBmp.reset( new CEGABitmap( mMap.get() , gVideoDriver.getBlitSurface(), pBitmap) );
 

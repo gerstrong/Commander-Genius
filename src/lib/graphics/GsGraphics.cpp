@@ -16,16 +16,16 @@
 void GsGraphics::createEmptyTilemaps(size_t num)
 {
 	freeTilemap();
-	CTilemap oneTilemap;
+    GsTilemap oneTilemap;
 	Tilemap.assign(num, oneTilemap);
 }
 
 void GsGraphics::createEmptySprites(const int numVar, const int num_sprites)
 {
 	freeSprites();
-	CSprite sprite;
+    GsSprite sprite;
 
-    std::vector<CSprite> spriteVec;
+    std::vector<GsSprite> spriteVec;
 
     spriteVec.assign(num_sprites, sprite);
 
@@ -36,7 +36,7 @@ void GsGraphics::dumpSprites()
 {
     for(size_t i = 0; i < Sprite[0].size(); i++)
 	{
-        CSprite &thisSprite = Sprite[0][i];
+        GsSprite &thisSprite = Sprite[0][i];
 
 		// Temporary for testing!!
 		std::string fname = "sprite";
@@ -49,22 +49,22 @@ void GsGraphics::dumpSprites()
 void GsGraphics::createEmptyBitmaps(Uint16 num_bmps)
 {
 	freeBitmaps(Bitmap);
-	CBitmap bitmap;
+    GsBitmap bitmap;
 	Bitmap.assign(num_bmps, bitmap);
 }
 
 void GsGraphics::createEmptyMaskedBitmaps(Uint16 num_bmps)
 {
 	freeBitmaps(maskedBitmap);
-	CBitmap bitmap;
+    GsBitmap bitmap;
 	maskedBitmap.assign(num_bmps, bitmap);
 }
 
-void GsGraphics::createEmptyMiscBitmaps(Uint16 num_bmps)
+void GsGraphics::createEmptyMisGsBitmaps(Uint16 num_bmps)
 {
-    freeBitmaps(miscBitmap);
-    CBitmap bitmap;
-    miscBitmap.assign(num_bmps, bitmap);
+    freeBitmaps(misGsBitmap);
+    GsBitmap bitmap;
+    misGsBitmap.assign(num_bmps, bitmap);
 }
 
 
@@ -79,7 +79,7 @@ void GsGraphics::createEmptyFontmaps(Uint8 num_fonts)
 void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
 {
 	freeCursor();
-	mpCursor.reset(new CCursor(surface));
+    mpCursor.reset(new GsCursor(surface));
 }
 
 /**
@@ -87,7 +87,7 @@ void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
  */
 void GsGraphics::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface)
 {
-	CTilemap &Tilemap = getTileMap(2);
+    GsTilemap &Tilemap = getTileMap(2);
 
 	for(Uint16 i=0 ; i<text.size() ; i++)
 	{
@@ -101,7 +101,7 @@ void GsGraphics::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Sur
  */
 void GsGraphics::drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface)
 {
-	CTilemap &Tilemap = getTileMap(2);
+    GsTilemap &Tilemap = getTileMap(2);
 	Tilemap.drawTile(blitsurface, x, y, c);
 }
 
@@ -124,7 +124,7 @@ void GsGraphics::freeFonts()
     Font.pop_back();
 }
 
-void GsGraphics::freeBitmaps(std::vector<CBitmap> &Bitmap)
+void GsGraphics::freeBitmaps(std::vector<GsBitmap> &Bitmap)
 {
 	while ( !Bitmap.empty() )
 	{
@@ -202,7 +202,7 @@ void GsGraphics::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 // Getters
 ///
 
-CBitmap *GsGraphics::getBitmapFromStr(const std::string &name) const
+GsBitmap *GsGraphics::getBitmapFromStr(const std::string &name) const
 {
 	std::string s_name;
 	for(unsigned int i=0 ; i<Bitmap.size() ; i++)
@@ -210,7 +210,7 @@ CBitmap *GsGraphics::getBitmapFromStr(const std::string &name) const
 		s_name = Bitmap[i].getName();
 
 		if(s_name == name)
-			return const_cast<CBitmap*>(&Bitmap[i]);
+            return const_cast<GsBitmap*>(&Bitmap[i]);
 	}
 
 	std::string error = "Ooops! Wrong TextID ";
@@ -221,7 +221,7 @@ CBitmap *GsGraphics::getBitmapFromStr(const std::string &name) const
 	return NULL;
 }
 
-CSprite *GsGraphics::getSprite(const int var, const std::string &name) const
+GsSprite *GsGraphics::getSprite(const int var, const std::string &name) const
 {
 	std::string s_name;
     for(unsigned int i=0 ; i<Sprite[var].size() ; i++)
@@ -229,7 +229,7 @@ CSprite *GsGraphics::getSprite(const int var, const std::string &name) const
         s_name = Sprite[var][i].getName();
 
 		if(s_name == name)
-            return const_cast<CSprite*>(&(Sprite[var][i]));
+            return const_cast<GsSprite*>(&(Sprite[var][i]));
 	}
 
 	return NULL;

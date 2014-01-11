@@ -399,7 +399,7 @@ void CSpriteObject::draw()
     if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
-    CSprite &Sprite = gGraphics.getSprite(mSprVar, sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar, sprite);
 
     if(!Sprite.valid())
         return;

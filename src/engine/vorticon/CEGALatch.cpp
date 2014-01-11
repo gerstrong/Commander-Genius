@@ -56,7 +56,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 	{
 		std::string name;
 		//char name[9];
-        CBitmap &Bitmap = gGraphics.getBitmapFromId(i);
+        GsBitmap &Bitmap = gGraphics.getBitmapFromId(i);
 		memcpy(&bmpRect.w,data+16*i,2);
 		memcpy(&bmpRect.h,data+16*i+2,2);
 		name = static_cast<const char*>(data+16*i+8);
@@ -98,7 +98,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 
 
 
-void CEGALatch::loadTilemap(CTilemap &Tilemap, CPlanes &Planes, const int episode, const std::string &path)
+void CEGALatch::loadTilemap(GsTilemap &Tilemap, CPlanes &Planes, const int episode, const std::string &path)
 {
 	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();
@@ -243,7 +243,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	{
 		for(int b=0 ; b<m_bitmaps ; b++)
 		{
-            CBitmap &bitmap = gGraphics.getBitmapFromId(b);
+            GsBitmap &bitmap = gGraphics.getBitmapFromId(b);
 			// this points to the location that we're currently
 			// decoding bitmap data to
 
@@ -264,7 +264,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// optimize the bitmaps and load hq bitmaps if there are some.
     /*for(int b=0 ; b<m_bitmaps ; b++)
 	{
-		CBitmap &bitmap = gGraphics.getBitmap(b);
+		GsBitmap &bitmap = gGraphics.getBitmap(b);
 		bitmap.optimizeSurface();
     }*/
 
@@ -280,7 +280,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	{
 		std::string filename=*it;
 		int num = getRessourceID(filename, "bitmap");
-        CBitmap &bitmap = gGraphics.getBitmapFromId(num);
+        GsBitmap &bitmap = gGraphics.getBitmapFromId(num);
 		filename = getResourceFilename("gfx/" + filename, path, false);
 		bitmap.loadHQBitmap(filename);
 	}

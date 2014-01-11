@@ -11,7 +11,7 @@
 #include <SDL.h>
 #include <string>
 #include "../../common/CTileProperties.h"
-#include "graphics/CTilemap.h"
+#include "graphics/GsTilemap.h"
 #include "engine/CPlanes.h"
 #include <vector>
 
@@ -39,7 +39,7 @@ public:
 
 private:
   
-	void loadTilemap(CTilemap &Tilemap, CPlanes &Planes, const int episode, const std::string &path);
+	void loadTilemap(GsTilemap &Tilemap, CPlanes &Planes, const int episode, const std::string &path);
   
 	int m_num_Latches;
 	int m_latchplanesize;

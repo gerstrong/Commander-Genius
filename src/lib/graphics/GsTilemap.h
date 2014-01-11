@@ -1,22 +1,22 @@
 /*
- * CTilemap.h
+ * GsTilemap.h
  *
  *  Created on: 29.08.2009
  *      Author: gerstrong
  */
 
-#ifndef CTILEMAP_H_
-#define CTILEMAP_H_
+#ifndef GsTilemap_H_
+#define GsTilemap_H_
 
 #define MAX_TILES    800
 
 #include <SDL.h>
 #include <string>
 
-class CTilemap
+class GsTilemap
 {
 public:
-	CTilemap();
+	GsTilemap();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags,
 			Uint16 numtiles, Uint16 pbasesize, Uint16 column);
@@ -30,7 +30,7 @@ public:
 
     void drawTile(SDL_Surface *dst, int x, int y, Uint16 t);
 
-	virtual ~CTilemap();
+	virtual ~GsTilemap();
 
 private:
 	SDL_Surface *m_Tilesurface;
@@ -39,4 +39,4 @@ private:
 	Uint16 m_pbasesize;
 	Uint16 m_column;
 };
-#endif /* CTILEMAP_H_ */
+#endif /* GsTilemap_H_ */

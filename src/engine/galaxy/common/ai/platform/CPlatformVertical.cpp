@@ -120,7 +120,7 @@ void CPlatformVertical::draw()
     if( dontdraw )
         return;
     
-    CSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar,sprite);
 
     scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
     scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
@@ -137,8 +137,8 @@ void CPlatformVertical::draw()
 
         if(drawFire && dimFire)
         {
-            CSprite &fireSpriteR = gGraphics.getSprite(mSprVar,m_FireSprite);
-            CSprite &fireSpriteL = gGraphics.getSprite(mSprVar,m_FireSprite+2);
+            GsSprite &fireSpriteR = gGraphics.getSprite(mSprVar,m_FireSprite);
+            GsSprite &fireSpriteL = gGraphics.getSprite(mSprVar,m_FireSprite+2);
 
             const int lw = fireSpriteL.getWidth();
             const int lh = fireSpriteL.getHeight();
@@ -156,7 +156,7 @@ void CPlatformVertical::draw()
             if(!player)
                 continue;
 
-            CSprite &playSprite = gGraphics.getSprite(player->getSpriteVariantId(),
+            GsSprite &playSprite = gGraphics.getSprite(player->getSpriteVariantId(),
                                                           player->sprite);
             int distx = player->getXPosition()-getXPosition();
             int disty = player->getYPosition()-getYPosition();

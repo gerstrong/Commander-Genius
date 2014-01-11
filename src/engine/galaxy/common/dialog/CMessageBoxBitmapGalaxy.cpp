@@ -12,7 +12,7 @@
 const int FONT_ID = 0;
 
 CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy( const std::string& Text,
-														 const CBitmap &BitmapRef,
+														 const GsBitmap &BitmapRef,
 														 const direction_t alignment ) :
 CMessageBoxGalaxy(Text),
 mBitmap(BitmapRef),

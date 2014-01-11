@@ -25,7 +25,7 @@ CGalaxySpriteObject(pmap, foeID, x, y, 0)
 	solid = false;
 	m_ieffect = ieffect;
 			
-    CSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(mSprVar,sprite);
 
 	int moveup = (1<<CSF)-1;
 	moveup -= ((rSprite.getHeight()+1)<<STC);

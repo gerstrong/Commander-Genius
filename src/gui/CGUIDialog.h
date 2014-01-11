@@ -15,7 +15,7 @@
 #include "utils/Geometry.h"
 #include "CGUIControl.h"
 #include "engine/CEvent.h"
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 #include <sdl/extensions.h>
 #include <list>
 #include <memory>
@@ -116,7 +116,7 @@ private:
 
 	// SDL_Surface of the Background
     std::shared_ptr<SDL_Surface>    mpBackgroundSfc;
-    CBitmap mBackgroundBmp;
+    GsBitmap mBackgroundBmp;
     std::shared_ptr<SDL_Surface>    mpTempSfc;
 
 	int mSelection;

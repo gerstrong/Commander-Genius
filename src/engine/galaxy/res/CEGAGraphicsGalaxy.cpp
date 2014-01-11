@@ -734,7 +734,7 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
 	{
-        CBitmap &Bitmap = gGraphics.getBitmapFromId(i);
+        GsBitmap &Bitmap = gGraphics.getBitmapFromId(i);
 		bmpRect.w = BmpHead[i].Width*8;
 		bmpRect.h = BmpHead[i].Height;
 		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags, bmpRect, Palette);
@@ -759,14 +759,14 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 	SDL_Color *Palette = gGraphics.Palette.m_Palette;
 
 	gGraphics.createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
-    gGraphics.createEmptyMiscBitmaps(2);
+    gGraphics.createEmptyMisGsBitmaps(2);
 
 	SDL_Rect bmpRect;
 	bmpRect.x = bmpRect.y = 0;
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
 	{
-		CBitmap &Bitmap = gGraphics.getMaskedBitmap(i);
+		GsBitmap &Bitmap = gGraphics.getMaskedBitmap(i);
 		bmpRect.w = BmpMaskedHead[i].Width*8;
 		bmpRect.h = BmpMaskedHead[i].Height;
 
@@ -781,7 +781,7 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 
 bool CEGAGraphicsGalaxy::readTilemaps(	size_t NumTiles, size_t pbasetilesize,
 										size_t rowlength, size_t IndexOfTiles,
-										CTilemap &Tilemap, bool tileoff)
+										GsTilemap &Tilemap, bool tileoff)
 {
 	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
 							NumTiles, pbasetilesize, rowlength );
@@ -801,7 +801,7 @@ bool CEGAGraphicsGalaxy::readTilemaps(	size_t NumTiles, size_t pbasetilesize,
 
 bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesize,
 											size_t rowlength, size_t IndexOfTiles,
-											CTilemap &Tilemap, bool tileoff)
+											GsTilemap &Tilemap, bool tileoff)
 {
 	Tilemap.CreateSurface( gGraphics.Palette.m_Palette, SDL_SWSURFACE,
 							NumTiles, pbasetilesize, rowlength );
@@ -840,7 +840,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		SpriteHeadStruct Head = SprHead[i];
 		std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
 
-        CSprite &Sprite = gGraphics.getSprite(0,i);
+        GsSprite &Sprite = gGraphics.getSprite(0,i);
 		Sprite.setSize( Head.Width*8, Head.Height );
 
         Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
@@ -1043,7 +1043,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         SDL_Rect bmpRect;
 
-        CBitmap &Bitmap = gGraphics.getMiscBitmap(misc-1);
+        GsBitmap &Bitmap = gGraphics.getMisGsBitmap(misc-1);
         bmpRect.w = width;
         bmpRect.h = height;
 
@@ -1106,7 +1106,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         if(amountOfPixels != height*width)
         {
-            gLogging.ftextOut("Warning! Someting is wrong with the amount of read pixels in MiscBitmap %d.\n", misc);
+            gLogging.ftextOut("Warning! Someting is wrong with the amount of read pixels in MisGsBitmap %d.\n", misc);
         }
 
         SDL_UnlockSurface(bmp);

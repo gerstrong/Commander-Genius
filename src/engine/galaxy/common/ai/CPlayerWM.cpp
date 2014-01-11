@@ -987,7 +987,7 @@ bool CPlayerWM::finishLevel(const int object)
 		VectorD2<Uint32> src(getXPosition(), getYPosition());
 
 		// Here we move the coordinates in order get it positioned correctly in the pole
-        CSprite &FlagSprite = gGraphics.getSprite(mSprVar,WAVING_BASEFRAME);
+        GsSprite &FlagSprite = gGraphics.getSprite(mSprVar,WAVING_BASEFRAME);
 
 		unsigned int csfX = (x<<CSF);
 		unsigned int csfY = (y<<CSF);

@@ -1,19 +1,19 @@
 /*
- * CSprite.cpp
+ * GsSprite.cpp
  *
  *  Created on: 02.09.2009
  *      Author: gerstrong
  */
 
-#include "CSprite.h"
-#include "CPalette.h"
+#include "GsSprite.h"
+#include "GsPalette.h"
 #include <base/FindFile.h>
 #include <string.h>
 #include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
 #include "graphics/GsGraphics.h"
 
-CSprite::CSprite() :
+GsSprite::GsSprite() :
 m_alpha(255)
 {
 	m_xsize = m_ysize = 0;
@@ -22,19 +22,19 @@ m_alpha(255)
 	m_xoffset = m_yoffset = 0;
 }
 
-CSprite::CSprite(const CSprite& original)
+GsSprite::GsSprite(const GsSprite& original)
 {
     this->copy(original);
 }
 
-CSprite CSprite::operator=(const CSprite& original)
+GsSprite GsSprite::operator=(const GsSprite& original)
 {
     this->copy(original);
     return *this;
 }
 
 
-std::shared_ptr<SDL_Surface> CSprite::createCopySDLSurface(
+std::shared_ptr<SDL_Surface> GsSprite::createCopySDLSurface(
         const std::shared_ptr<SDL_Surface>& original)
 {
     std::shared_ptr<SDL_Surface> surface;
@@ -64,7 +64,7 @@ std::shared_ptr<SDL_Surface> CSprite::createCopySDLSurface(
 }
 
 
-void CSprite::copy(const CSprite& original)
+void GsSprite::copy(const GsSprite& original)
 {
     m_alpha = original.getAlpha();
     original.readSize(m_xsize, m_ysize);
@@ -93,7 +93,7 @@ void CSprite::copy(const CSprite& original)
 // Initialization Routines //
 /////////////////////////////
 
-bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
+bool GsSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 {        
 	mpSurface.reset(SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0), &SDL_FreeSurface);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -116,7 +116,7 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 	return ( !mpSurface && !mpMasksurface );
 }
 
-bool CSprite::optimizeSurface()
+bool GsSprite::optimizeSurface()
 {
     if(mpSurface)
     {
@@ -129,7 +129,7 @@ bool CSprite::optimizeSurface()
 
 
 
-void CSprite::generateSprite( const int points )
+void GsSprite::generateSprite( const int points )
 {
 	Uint32 color = 0;
 	Uint8 r,g,b,a;
@@ -193,7 +193,7 @@ void CSprite::generateSprite( const int points )
 
 
 
-bool CSprite::loadHQSprite( const std::string& filename )
+bool GsSprite::loadHQSprite( const std::string& filename )
 {
 	if(!IsFileAvailable(filename))
 		return false;
@@ -220,7 +220,7 @@ bool CSprite::loadHQSprite( const std::string& filename )
  * \brief Reads the mask of a created modkeen style bitmap und converts that mask to 8-bit
  * 		  so it can be applied to the others. This is for HQ Sprites, the other have in internal algorithm
  */
-void CSprite::readMask(SDL_Surface *displaysurface)
+void GsSprite::readMask(SDL_Surface *displaysurface)
 {
 	Uint8 *maskpx, *pixel;
 	Uint32 color = 0;
@@ -267,12 +267,12 @@ void CSprite::readMask(SDL_Surface *displaysurface)
 /**
  * \brief Reads the bounding box of a created modkeen style bitmap and assigns new coordinates
  */
-void CSprite::readBBox(SDL_Surface *displaysurface)
+void GsSprite::readBBox(SDL_Surface *displaysurface)
 {
 	// TODO: That code need to be implemented
 }
 
-void CSprite::applyTransparency()
+void GsSprite::applyTransparency()
 {
 	Uint8 *pixel;
 	Uint8 *maskpx;
@@ -318,7 +318,7 @@ void CSprite::applyTransparency()
 	if(SDL_MUSTLOCK(mpSurface)) SDL_LockSurface(mpSurface.get());
 }
 
-void CSprite::applyTranslucency(Uint8 value)
+void GsSprite::applyTranslucency(Uint8 value)
 {
 	Uint8 *pixel;
 	Uint32 colour = 0;
@@ -380,7 +380,7 @@ void CSprite::applyTranslucency(Uint8 value)
 ///
 // Getters and Setters
 ///
-void CSprite::setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 )
+void GsSprite::setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bboxx2, Sint32 bboxy2 )
 {
 	m_bboxX1 = bboxx1;
 	m_bboxY1 = bboxy1;
@@ -388,7 +388,7 @@ void CSprite::setBoundingBoxCoordinates( Sint32 bboxx1, Sint32 bboxy1, Sint32 bb
 	m_bboxY2 = bboxy2;
 }
 
-void CSprite::copy( CSprite &Destination, SDL_Color *Palette )
+void GsSprite::copy( GsSprite &Destination, SDL_Color *Palette )
 {
 	Destination.m_bboxX1 = m_bboxX1;
 	Destination.m_bboxY1 = m_bboxY1;
@@ -406,7 +406,7 @@ void CSprite::copy( CSprite &Destination, SDL_Color *Palette )
 // color replace, as long as the y is greater than miny
 // NOTE: This only can be used, when the surface is at 8-bit colours
 // and palettized. Don't use it, after it has been optimized
-void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
+void GsSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 {
 	Uint16 x,y;
 	Uint8* pixel;
@@ -426,7 +426,7 @@ void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 
 
 
-void CSprite::exchangeSpriteColor( const Uint16 find1, const Uint16 find2, Uint16 miny )
+void GsSprite::exchangeSpriteColor( const Uint16 find1, const Uint16 find2, Uint16 miny )
 {
     if(!mpSurface) // TODO: This should throw an exception
         return;
@@ -506,7 +506,7 @@ void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
  * \param x				X-Coordinate, indicating the position on dst
  * \param y				Y-Coordinate, indicating the position on dst
  */
-void CSprite::drawSprite(const int x, const int y, const int w, const int h, const Uint8 alpha )
+void GsSprite::drawSprite(const int x, const int y, const int w, const int h, const Uint8 alpha )
 {
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -518,7 +518,7 @@ void CSprite::drawSprite(const int x, const int y, const int w, const int h, con
     drawSprite( gVideoDriver.getBlitSurface(), x, y, w, h );
 }
 
-void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y, const int w, const int h )
+void GsSprite::drawSprite( SDL_Surface *dst, const int x, const int y, const int w, const int h )
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;
@@ -562,7 +562,7 @@ void CSprite::drawSprite( SDL_Surface *dst, const int x, const int y, const int 
  * \param x	X-Coordinate, indicating the position on dst
  * \param y	Y-Coordinate, indicating the position on dst
  */
-void CSprite::drawBlinkingSprite( int x, int y )
+void GsSprite::drawBlinkingSprite( int x, int y )
 {
     _drawBlinkingSprite(gVideoDriver.getBlitSurface(), x, y);
 }
@@ -574,7 +574,7 @@ void CSprite::drawBlinkingSprite( int x, int y )
  * \param x				X-Coordinate, indicating the position on dst
  * \param y				Y-Coordinate, indicating the position on dst
  */
-void CSprite::_drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
+void GsSprite::_drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;

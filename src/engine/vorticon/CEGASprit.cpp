@@ -134,7 +134,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     gGraphics.createEmptySprites(4,MAX_SPRITES+1);
 	for(int i=0 ; i<m_numsprites ; i++)
 	{
-        CSprite &Sprite = gGraphics.getSprite(0,i);
+        GsSprite &Sprite = gGraphics.getSprite(0,i);
 		Sprite.setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
 		Sprite.setBoundingBoxCoordinates( (EGASpriteModell[i].hitbox_l << STC),
 				(EGASpriteModell[i].hitbox_u << STC),
@@ -173,7 +173,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// use white on black masks whereas keen uses black on white.
 	for(int s=0 ; s<m_numsprites ; s++)
 	{
-        CSprite &Sprite = gGraphics.getSprite(0,s);
+        GsSprite &Sprite = gGraphics.getSprite(0,s);
 		SDL_Surface *pixsfc = Sprite.getSDLSurface();
 		SDL_Surface *masksfc = Sprite.getSDLMaskSurface();
 
@@ -254,7 +254,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     {
         for(Uint16 s=0 ; s<gGraphics.getSpriteVec(i).size() ; s++)
         {
-            CSprite &Sprite = gGraphics.getSprite(i,s);
+            GsSprite &Sprite = gGraphics.getSprite(i,s);
             Sprite.optimizeSurface();
 
             percent = (s*50)/m_numsprites;
@@ -278,7 +278,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		int num = getRessourceID(name, "sprite");
 		if(num < m_numsprites )
 		{
-            CSprite &Sprite = gGraphics.getSprite(0,num);
+            GsSprite &Sprite = gGraphics.getSprite(0,num);
 			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
 			Sprite.loadHQSprite(filename);
 		}
@@ -325,7 +325,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
 // load special clonekeen-specific sprites from the .raw files
 // Code by Caitlin Shaw
-void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
+void CEGASprit::LoadSpecialSprites( std::vector<GsSprite> &sprite )
 {
 	sprite[PT100_SPRITE].generateSprite( 100 );
 	sprite[PT200_SPRITE].generateSprite( 200 );
@@ -334,11 +334,11 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 	sprite[PT5000_SPRITE].generateSprite( 5000 );
 }
 
-void CEGASprit::DerivePlayerSprites( const int id, std::vector<CSprite> &sprites )
+void CEGASprit::DerivePlayerSprites( const int id, std::vector<GsSprite> &sprites )
 {
     for(Uint16 s=0 ; s<gGraphics.getSpriteVec(id).size() ; s++)
 	{
-        CSprite &Sprite = gGraphics.getSprite(id,s);
+        GsSprite &Sprite = gGraphics.getSprite(id,s);
 		Sprite.optimizeSurface();
 	}
 
@@ -355,7 +355,7 @@ void CEGASprit::DerivePlayerSprites( const int id, std::vector<CSprite> &sprites
         std::string name = *it;
 
         const int num = getRessourceID(name, spriteFn);
-        CSprite &Sprite = gGraphics.getSprite(id,num);
+        GsSprite &Sprite = gGraphics.getSprite(id,num);
         std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
         Sprite.loadHQSprite(filename);
         Sprite.applyTransparency();
@@ -365,7 +365,7 @@ void CEGASprit::DerivePlayerSprites( const int id, std::vector<CSprite> &sprites
 // This function has the task to make some items-tiles
 // be painted into yellow, so they look nice, when they are
 // collected
-void CEGASprit::DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &sprites )
+void CEGASprit::DeriveSpecialSprites( GsTilemap &tilemap, std::vector<GsSprite> &sprites )
 {
 	std::vector<CTileProperties>& TileProperties = g_pBehaviorEngine->getTileProperties();
 	// Yellow sprites a special effect when items are collected
@@ -407,7 +407,7 @@ void CEGASprit::DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &s
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 }
 
-void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprite& sprite )
+void CEGASprit::CreateYellowSpriteofTile( GsTilemap &tilemap, Uint16 tile, GsSprite& sprite )
 {
 	SDL_Rect tile_rect;
 	

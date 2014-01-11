@@ -104,7 +104,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	m_StatusRect.h = dlgH*8;
 	
 	SDL_Surface *p_surface = CreateStatusSfc();
-	CTilemap &Tilemap = gGraphics.getTileMap(1);
+	GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	gGraphics.drawDialogBox( p_surface, 0, 0, dlgW,dlgH, Font.getBGColour(p_surface->format, true));
 	Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP1_StatusBox"), 1<<3, 1<<3, true);
@@ -206,7 +206,7 @@ void CStatusScreen::createInventorySfcEp1(const int varSpr)
 	if (i>6) i=6;
 	for(j=0;j<i;j++)
 	{
-        CSprite &Sprite = gGraphics.getSprite(varSpr,m_baseframe);
+        GsSprite &Sprite = gGraphics.getSprite(varSpr,m_baseframe);
         const int w = Sprite.getWidth();
         const int h = Sprite.getHeight();
         Sprite.drawSprite( p_surface, x, (0+4)<<3, w, h);
@@ -237,7 +237,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	m_StatusRect.h = dlgH*8;
 
 	SDL_Surface *p_surface = CreateStatusSfc();
-    CTilemap &Tilemap = gGraphics.getTileMap(1);
+    GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	tempbuf = g_pBehaviorEngine->getString("EP2_StatusBox");
 	gGraphics.drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
@@ -320,7 +320,7 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-        CSprite &Sprite = gGraphics.getSprite(0,m_baseframe);
+        GsSprite &Sprite = gGraphics.getSprite(0,m_baseframe);
         const int w = Sprite.getWidth();
         const int h = Sprite.getHeight();
         Sprite.drawSprite( p_surface, x, (0+4)<<3, w, h );
@@ -361,7 +361,7 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	m_StatusRect.h = dlgH*8;
 
 	SDL_Surface *p_surface = CreateStatusSfc();
-    CTilemap &Tilemap = gGraphics.getTileMap(1);
+    GsTilemap &Tilemap = gGraphics.getTileMap(1);
 
 	tempbuf = g_pBehaviorEngine->getString("EP3_StatusBox");
 	gGraphics.drawDialogBox( p_surface, 0,0,dlgW,dlgH, Font.getBGColour(true));
@@ -451,7 +451,7 @@ void CStatusScreen::createInventorySfcEp3(const int varSpr)
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-        CSprite &Sprite = gGraphics.getSprite(0,m_baseframe);
+        GsSprite &Sprite = gGraphics.getSprite(0,m_baseframe);
         const int w = Sprite.getWidth();
         const int h = Sprite.getHeight();
         Sprite.drawSprite(  p_surface, x, (0+4)<<3, w, h);

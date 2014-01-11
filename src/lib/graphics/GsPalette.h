@@ -1,13 +1,13 @@
 /*
- * CPalette.h
+ * GsPalette.h
  *
  *  Created on: 05.09.2009
  *      Author: gerstrong
  *  This one manages the Palette and fade effects
  */
 
-#ifndef CPALETTE_H_
-#define CPALETTE_H_
+#ifndef GsPalette_H_
+#define GsPalette_H_
 
 #define COLORKEY 16 // Used only for the 8-bit tile. Colour number COLORKEY in the Palette
 
@@ -24,9 +24,9 @@
 #include <SDL.h>
 #include "../fileio/TypeDefinitions.h"
 
-class CPalette {
+class GsPalette {
 public:
-	CPalette();
+	GsPalette();
 
 	void fadeto(Uint8 alpha, Uint8 fadespeed);
 	void applyFade();
@@ -52,4 +52,4 @@ public:
 	bool m_dark;
 };
 
-#endif /* CPALETTE_H_ */
+#endif /* GsPalette_H_ */

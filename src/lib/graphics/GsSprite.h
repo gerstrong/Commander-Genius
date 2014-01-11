@@ -1,29 +1,29 @@
 /*
- * CSprite.h
+ * GsSprite.h
  *
  *  Created on: 02.09.2009
  *      Author: gerstrong
  */
 
-#ifndef CSPRITE_H_
-#define CSPRITE_H_
+#ifndef GsSprite_H_
+#define GsSprite_H_
 
 #include <SDL.h>
 #include <string>
 #include <vector>
 #include <memory>
 
-class CSprite
+class GsSprite
 {
 public:
-    CSprite();
+    GsSprite();
 
 
     std::shared_ptr<SDL_Surface> createCopySDLSurface(const std::shared_ptr<SDL_Surface>& original);
 
-    CSprite(const CSprite& original);
-    CSprite operator=(const CSprite& original);    
-    void copy(const CSprite& original);
+    GsSprite(const GsSprite& original);
+    GsSprite operator=(const GsSprite& original);    
+    void copy(const GsSprite& original);
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
@@ -31,7 +31,7 @@ public:
 	void readBBox(SDL_Surface *displaysurface);
 	void applyTransparency();
 	void applyTranslucency(Uint8 value);
-	void copy( CSprite &Destination, SDL_Color *Palette );
+	void copy( GsSprite &Destination, SDL_Color *Palette );
     void replaceSpriteColor( const Uint16 find, const Uint16 replace, const Uint16 miny );
     void exchangeSpriteColor(const Uint16 find1, const Uint16 find2, const Uint16 miny );
 
@@ -103,4 +103,4 @@ private:
 	Uint8 m_alpha;
 };
 
-#endif /* CSPRITE_H_ */
+#endif /* GsSprite_H_ */

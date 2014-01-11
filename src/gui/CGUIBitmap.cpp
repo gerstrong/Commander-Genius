@@ -9,7 +9,7 @@
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 
-CGUIBitmap::CGUIBitmap(std::unique_ptr<CBitmap>&& pBitmap) :
+CGUIBitmap::CGUIBitmap(std::unique_ptr<GsBitmap>&& pBitmap) :
 mpBitmap(move(pBitmap))
 {}
 
@@ -25,7 +25,7 @@ mTextID(text)
 void CGUIBitmap::updateGraphics()
 {
     GsRect<Uint16> sizeForScreen = gVideoDriver.getGameResolution();
-    mpBitmap.reset(new CBitmap( *gGraphics.getBitmapFromStr(mTextID) ));
+    mpBitmap.reset(new GsBitmap( *gGraphics.getBitmapFromStr(mTextID) ));
 
     sizeForScreen.w /= 320;
     sizeForScreen.h /= 200;

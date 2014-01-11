@@ -1,12 +1,12 @@
 /*
- * CBitmap.h
+ * GsBitmap.h
  *
  *  Created on: 03.09.2009
  *      Author: gerstrong
  */
 
-#ifndef CBITMAP_H_
-#define CBITMAP_H_
+#ifndef GsBitmap_H_
+#define GsBitmap_H_
 
 #include <SDL.h>
 #include <vector>
@@ -15,15 +15,15 @@
 
 #include "utils/Geometry.h"
 
-class CBitmap
+class GsBitmap
 {
 public:
 
-	CBitmap();
+	GsBitmap();
 
-	CBitmap(const std::shared_ptr<SDL_Surface> &bmpSfc);
+	GsBitmap(const std::shared_ptr<SDL_Surface> &bmpSfc);
 
-	explicit CBitmap(const CBitmap &bitmap);
+	explicit GsBitmap(const GsBitmap &bitmap);
 
 	bool createSurface(Uint32 flags, SDL_Rect rect, SDL_Color *Palette);
 	bool optimizeSurface();
@@ -56,4 +56,4 @@ private:
 	std::shared_ptr<SDL_Surface> mpBitmapSurface;
 };
 
-#endif /* CBITMAP_H_ */
+#endif /* GsBitmap_H_ */

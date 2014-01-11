@@ -34,10 +34,10 @@ public:
     void (CPassiveGalaxy::*processPonderMode)();
     void (CPassiveGalaxy::*processRenderMode)();
 
-	CBitmap m_BackgroundBitmap;
-    CBitmap mCommanderTextSfc;
-    CBitmap mKeenTextSfc;
-    CBitmap mCurrentLogoBmp;
+	GsBitmap m_BackgroundBitmap;
+    GsBitmap mCommanderTextSfc;
+    GsBitmap mKeenTextSfc;
+    GsBitmap mCurrentLogoBmp;
 
     std::shared_ptr<SDL_Surface> mpZoomSurface;
 

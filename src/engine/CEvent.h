@@ -17,7 +17,7 @@
 #include <list>
 #include "common/direction.h"
 #include "CVec.h"
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 #include <vector>
 #include <memory>
 
@@ -109,9 +109,9 @@ struct EventSendDialog : CEvent
 
 struct EventSendBitmapDialogMsg : EventSendDialog
 {
-	const CBitmap &BitmapRef;
+	const GsBitmap &BitmapRef;
 	const direction_t Direction;
-	EventSendBitmapDialogMsg(const CBitmap &lBitmapRef,
+	EventSendBitmapDialogMsg(const GsBitmap &lBitmapRef,
 				 const std::string& lMsg,
 				 const direction_t& lDirection = LEFT) :
 				  EventSendDialog(lMsg),

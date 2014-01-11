@@ -13,7 +13,7 @@
 #include <vector>
 #include <list>
 
-#include "graphics/CTilemap.h"
+#include "graphics/GsTilemap.h"
 #include "fileio/TypeDefinitions.h"
 #include "CPlane.h"
 #include "engine/CEvent.h"
@@ -34,7 +34,7 @@ class CMap
 public:
 	CMap();
 
-	void setTileMap( CTilemap &Tilemap );
+	void setTileMap( GsTilemap &Tilemap );
 
     void setLevel( const Uint16 level );
 	Uint16 getLevel();
@@ -169,7 +169,7 @@ private:
 	Uint16 m_mapy;         	// map Y location shown at scrollbuffer column 0
 	Uint16 m_mapystripepos;  	// Y pixel position of next stripe column
 
-	std::vector<CTilemap> &m_Tilemaps;
+	std::vector<GsTilemap> &m_Tilemaps;
 
 	float mAnimtileTimer;	
 

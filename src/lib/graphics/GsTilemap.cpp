@@ -1,5 +1,5 @@
 /*
- * CTilemap.cpp
+ * GsTilemap.cpp
  *
  *  Created on: 29.08.2009
  *      Author: gerstrong
@@ -10,12 +10,12 @@
 #include <base/video/CVideoDriver.h>
 #include <SDL_image.h>
 #include <base/FindFile.h>
-#include "CTilemap.h"
-#include "CPalette.h"
+#include "GsTilemap.h"
+#include "GsPalette.h"
 #include <lib/base/GsLogging.h>
 #include <stdlib.h>
 
-CTilemap::CTilemap() :
+GsTilemap::GsTilemap() :
 m_Tilesurface(NULL),
 m_EmptyBackgroundTile(143),
 m_numtiles(0),
@@ -23,7 +23,7 @@ m_pbasesize(0),
 m_column(0)
 { }
 
-bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
+bool GsTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 				Uint16 numtiles, Uint16 pbasesize, Uint16 column)
 {
 	m_numtiles = numtiles;
@@ -45,7 +45,7 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 
 std::string exts[] = { "png", "bmp", "tif", "jpg" };
 
-bool CTilemap::loadHiresTile( const std::string& filename, const std::string& path )
+bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& path )
 {  
 	std::string fullfilename;  
 	// Cycle through possible filename extensions, when more formats are supported
@@ -79,7 +79,7 @@ bool CTilemap::loadHiresTile( const std::string& filename, const std::string& pa
 	return false;
 }
 
-bool CTilemap::optimizeSurface()
+bool GsTilemap::optimizeSurface()
 {
 	if(m_Tilesurface)
 	{
@@ -100,7 +100,7 @@ bool CTilemap::optimizeSurface()
 ///////////////////////////////////
 ///// Initialization Routines /////
 ///////////////////////////////////
-SDL_Surface *CTilemap::getSDLSurface()
+SDL_Surface *GsTilemap::getSDLSurface()
 {
 	return m_Tilesurface;
 }
@@ -112,7 +112,7 @@ SDL_Surface *CTilemap::getSDLSurface()
 ////////////////////////////
 
 
-int CTilemap::getDimension()
+int GsTilemap::getDimension()
 {
 	return (1<<m_pbasesize);
 }
@@ -183,7 +183,7 @@ void FillSlopeRect(SDL_Surface *dst, const SDL_Rect dst_rect, Uint32 color, Sint
 }
 #endif
 
-void CTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
+void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 {
     SDL_Rect src_rect, dst_rect;
 	src_rect.x = (t%m_column)<<m_pbasesize;
@@ -212,7 +212,7 @@ void CTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 
 }
 
-CTilemap::~CTilemap() 
+GsTilemap::~GsTilemap() 
 {
 	if(m_Tilesurface) 
 	    SDL_FreeSurface(m_Tilesurface);

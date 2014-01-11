@@ -14,19 +14,19 @@
 #include <base/Singleton.h>
 
 #include "GsFont.h"
-#include "CTilemap.h"
-#include "CSprite.h"
-#include "CBitmap.h"
-#include "CPalette.h"
-#include "CCursor.h"
+#include "GsTilemap.h"
+#include "GsSprite.h"
+#include "GsBitmap.h"
+#include "GsPalette.h"
+#include "GsCursor.h"
 
 #include <base/video/GsEffectController.h>
 #include <vector>
 #include <memory>
 
 
-
 #define gGraphics GsGraphics::get()
+
 
 class GsGraphics : public GsSingleton<GsGraphics>
 {
@@ -37,7 +37,7 @@ public:
 	void dumpSprites();
 	void createEmptyBitmaps(Uint16 num_bmps);
     void createEmptyMaskedBitmaps(Uint16 num_bmps);
-    void createEmptyMiscBitmaps(Uint16 num_bmps);
+    void createEmptyMisGsBitmaps(Uint16 num_bmps);
     void createEmptyFontmaps(Uint8 num_fonts);
 	void createEmptyTilemaps(size_t num);
 	void createEmptyCursorMap(SDL_Surface *surface);
@@ -45,7 +45,7 @@ public:
 	void drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface);
 	void drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface);
 
-	void freeBitmaps(std::vector<CBitmap> &Bitmap);
+    void freeBitmaps(std::vector<GsBitmap> &Bitmap);
 	void freeSprites();
 	void freeTilemap();
 	void freeFonts();
@@ -56,37 +56,37 @@ public:
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour = 0xFFFFFF);
     int getNumSprites(const int var) { return Sprite[var].size(); }
 
-	CTilemap &getTileMap(size_t tilemap) { return Tilemap.at(tilemap); }
-	std::vector<CTilemap> &getTileMaps() { return Tilemap; }
-    CBitmap &getBitmapFromId(Uint16 slot) { return Bitmap.at(slot); }
-    CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
-    CBitmap &getMiscBitmap(Uint16 slot) { return miscBitmap.at(slot); }
-    CBitmap *getBitmapFromStr(const std::string &name) const;
+    GsTilemap &getTileMap(size_t tilemap) { return Tilemap.at(tilemap); }
+    std::vector<GsTilemap> &getTileMaps() { return Tilemap; }
+    GsBitmap &getBitmapFromId(Uint16 slot) { return Bitmap.at(slot); }
+    GsBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
+    GsBitmap &getMisGsBitmap(Uint16 slot) { return misGsBitmap.at(slot); }
+    GsBitmap *getBitmapFromStr(const std::string &name) const;
 
-    CSprite *getSprite(const int var, const std::string &name) const;
+    GsSprite *getSprite(const int var, const std::string &name) const;
 
 
 	
-    CSprite &getSprite(const int var, const int slot) { return Sprite[var][slot]; }
-    std::vector<CSprite> &getSpriteVec(const int var) { return Sprite[var]; }
+    GsSprite &getSprite(const int var, const int slot) { return Sprite[var][slot]; }
+    std::vector<GsSprite> &getSpriteVec(const int var) { return Sprite[var]; }
 	GsFont &getFont(Uint8 index) { return Font.at(index); }
-	CCursor *getCursor() { return mpCursor.get(); }
+    GsCursor *getCursor() { return mpCursor.get(); }
 
 
 	
     void ponder();
     void render();
 	
-	CPalette Palette;
+    GsPalette Palette;
 	
 private:
-	std::vector<CTilemap> Tilemap;
+    std::vector<GsTilemap> Tilemap;
 	std::vector<GsFont> Font;
-	std::vector<CBitmap> Bitmap;
-    std::vector<CBitmap> maskedBitmap;
-    std::vector<CBitmap> miscBitmap;
-    std::vector< std::vector<CSprite> > Sprite;
-	std::unique_ptr<CCursor> mpCursor;
+    std::vector<GsBitmap> Bitmap;
+    std::vector<GsBitmap> maskedBitmap;
+    std::vector<GsBitmap> misGsBitmap;
+    std::vector< std::vector<GsSprite> > Sprite;
+    std::unique_ptr<GsCursor> mpCursor;
 };
 
 #endif /* __GSGRAPHICS_H__ */

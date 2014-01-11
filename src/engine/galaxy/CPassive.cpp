@@ -25,8 +25,8 @@ CPassiveGalaxy::CPassiveGalaxy() :
 processPonderMode(&CPassiveGalaxy::processIntro),
 processRenderMode(&CPassiveGalaxy::renderIntro),
 m_BackgroundBitmap(*gGraphics.getBitmapFromStr("TITLE")),
-mCommanderTextSfc(gGraphics.getMiscBitmap(0)),
-mKeenTextSfc(gGraphics.getMiscBitmap(1))
+mCommanderTextSfc(gGraphics.getMisGsBitmap(0)),
+mKeenTextSfc(gGraphics.getMisGsBitmap(1))
 {
     const int episode = g_pBehaviorEngine->getEpisode();
 

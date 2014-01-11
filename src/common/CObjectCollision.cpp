@@ -39,7 +39,7 @@ void CSpriteObject::performCollisionsSameBox()
  */
 void CSpriteObject::calcBoundingBoxes()
 {
-    CSprite &rSprite = gGraphics.getSprite(0,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(0,sprite);
 
 	m_BBox.x1 = rSprite.m_bboxX1;
 	m_BBox.x2 = rSprite.m_bboxX2;

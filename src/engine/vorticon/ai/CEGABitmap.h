@@ -10,20 +10,20 @@
 #ifndef CEGABITMAP_H_
 #define CEGABITMAP_H_
 
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 #include "engine/vorticon/CVorticonSpriteObject.h"
 #include <SDL.h>
 
 class CEGABitmap : public CVorticonSpriteObject
 {
 public:
-	CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap);
+	CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, GsBitmap *pBitmap);
 	void setPos(int px, int py);
     void draw();
 
 private:
 	SDL_Surface *mp_Surface;
-	CBitmap *mp_Bitmap;
+	GsBitmap *mp_Bitmap;
 };
 
 #endif /* CEGABITMAP_H_ */

@@ -51,11 +51,11 @@ private:
 		// in DOS but are ignored here.
 	}*EGASpriteModell;
 
-	void generateSprite( const int points, CSprite &sprite );
-	void LoadSpecialSprites( std::vector<CSprite> &sprite );
-    void DerivePlayerSprites( const int id, std::vector<CSprite> &sprites );
-	void DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &sprites );
-	void CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprite& sprite );
+	void generateSprite( const int points, GsSprite &sprite );
+	void LoadSpecialSprites( std::vector<GsSprite> &sprite );
+    void DerivePlayerSprites( const int id, std::vector<GsSprite> &sprites );
+	void DeriveSpecialSprites( GsTilemap &tilemap, std::vector<GsSprite> &sprites );
+	void CreateYellowSpriteofTile( GsTilemap &tilemap, Uint16 tile, GsSprite& sprite );
 	void ApplySpecialFX();
 };
 

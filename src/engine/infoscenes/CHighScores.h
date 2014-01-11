@@ -9,14 +9,14 @@
 #define CHIGHSCORES_H_
 
 #include "common/CMap.h"
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 #include "CInfoScene.h"
 #include <string>
 #include <vector>
 
 struct stBitmap
 {
-	CBitmap *p_Bitmap;
+	GsBitmap *p_Bitmap;
 	SDL_Rect rect;
 };
 

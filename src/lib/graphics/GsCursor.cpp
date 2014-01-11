@@ -1,5 +1,5 @@
 /*
- * CCursor.cpp
+ * GsCursor.cpp
  *
  *  Created on: 11.04.2010
  *      Author: gerstrong
@@ -9,13 +9,13 @@
  *  but more elements are planned.
  */
 
-#include "CCursor.h"
+#include "GsCursor.h"
 
 #include <base/video/CVideoDriver.h>
 #include <cstring>
 #include <cstdio>
 
-CCursor::CCursor(SDL_Surface *p_screen)
+GsCursor::GsCursor(SDL_Surface *p_screen)
 {
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -25,7 +25,7 @@ CCursor::CCursor(SDL_Surface *p_screen)
 //#endif
 }
 
-void CCursor::generateTwirls(GsFont &Font)
+void GsCursor::generateTwirls(GsFont &Font)
 {
 	// The positions from the fonts are from 9 to 14
 	// You see, just six direction
@@ -79,7 +79,7 @@ void CCursor::generateTwirls(GsFont &Font)
 	SDL_BlitSurface(srcsfc, &twrect, mp_Surface, &fmrect);
 }
 
-void CCursor::draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y)
+void GsCursor::draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y)
 {
 	SDL_Rect src_rect, dst_rect;
 
@@ -93,7 +93,7 @@ void CCursor::draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y)
 	SDL_BlitSurface(mp_Surface, &src_rect, dst, &dst_rect);
 }
 
-CCursor::~CCursor()
+GsCursor::~GsCursor()
 {
 	SDL_FreeSurface(mp_Surface);
 }

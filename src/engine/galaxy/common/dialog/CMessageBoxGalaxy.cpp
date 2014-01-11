@@ -70,7 +70,7 @@ void CMessageBoxGalaxy::initGalaxyFrame()
 	rect.w -= 16;
 	rect.h -= 16;
 
-	CTilemap &Tilemap = gGraphics.getTileMap(3);
+	GsTilemap &Tilemap = gGraphics.getTileMap(3);
 
 	/// Now draw the borders
 	// Upper Left corner

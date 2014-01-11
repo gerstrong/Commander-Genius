@@ -27,7 +27,7 @@ mMap(map)
 bool CTitle::init(int Episode)
 {
 	SDL_Surface *pSurface;
-	CBitmap *pBitmap;
+	GsBitmap *pBitmap;
 	gTimer.ResetSecondsTimer();
 	mTime = 10; // show the title screen for 10 secs.
 	pSurface = gVideoDriver.mpVideoEngine->getBlitSurface();

@@ -9,8 +9,8 @@
  */
 
 
-#ifndef __CSPRITEOBJECT_H_
-#define __CSPRITEOBJECT_H_
+#ifndef __CSpriteObject_H_
+#define __CSpriteObject_H_
 
 #include <lib/base/GsEvent.h>
 
@@ -141,7 +141,7 @@ public:
 	bool blockedl, blockedr, blockedu, blockedd;
 	bool onslope;
 	signed int xinertia, yinertia;
-	CSpriteObject *pSupportedbyobject;
+    CSpriteObject *pSupportedbyobject;
 
 	bool dead, dying;
 
@@ -222,7 +222,7 @@ public:
 
 
 
-	bool hitdetect(CSpriteObject &hitobject);
+    bool hitdetect(CSpriteObject &hitobject);
     bool hitdetectWithTile(const int num, const int lx, const int ly, const int lw, const int lh, const int res);
 	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, const int lw, const int lh, const int res);
 	bool hitdetectWithTilePropertyRectRO(const Uint16 Property, const int lx, const int ly, const int lw, const int lh, const int res);
@@ -283,9 +283,9 @@ public:
 	void processFallPhysics();
 	virtual void processFalling();
     virtual void getTouchedBy(CSpriteObject &theObject) {}
-	virtual bool isNearby(CSpriteObject &theObject) { return true; }
+    virtual bool isNearby(CSpriteObject &theObject) { return true; }
 	virtual void getShotByRay(object_t &obj_type);
-	void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
+    void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
 	CMap *getMapPtr() { return mp_Map; }
 
 	/**
@@ -296,7 +296,7 @@ public:
 
 	virtual void draw();
 
-	virtual ~CSpriteObject();
+    virtual ~CSpriteObject();
 
     int getSpriteVariantId() const
     {   return mSprVar;    }
@@ -321,4 +321,4 @@ protected:
     int mSprVar; // Sprite variant, which is used by the Spritemap
 };
 
-#endif // __CSPRITEOBJECT_H_
+#endif // __CSpriteObject_H_

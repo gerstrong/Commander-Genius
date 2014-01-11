@@ -234,7 +234,7 @@ void CResourceLoader::renderLoadingGraphic()
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
 	{
-        CBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
+        GsBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
 		SDL_Rect rect;
 		int width = Bitmap.getWidth();
 		int height = Bitmap.getHeight();
@@ -436,7 +436,7 @@ void CResourceLoaderBackground::render()
     }
     else if(m_style == PROGRESS_STYLE_BITMAP)
     {
-        CBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
+        GsBitmap &Bitmap = *gGraphics.getBitmapFromStr("ONEMOMEN");
         SDL_Rect rect;
         int width = Bitmap.getWidth();
         int height = Bitmap.getHeight();

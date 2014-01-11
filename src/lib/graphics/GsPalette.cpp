@@ -1,11 +1,11 @@
 /*
- * CPalette.cpp
+ * GsPalette.cpp
  *
  *  Created on: 05.09.2009
  *      Author: gerstrong
  */
 
-#include "CPalette.h"
+#include "GsPalette.h"
 #include "../graphics/PerSurfaceAlpha.h"
 #include <base/video/CVideoDriver.h>
 
@@ -16,7 +16,7 @@
 ///
 // Initialization
 ///
-CPalette::CPalette()
+GsPalette::GsPalette()
 {
 	m_numcolors = 17;
 	m_alpha = 0;
@@ -30,7 +30,7 @@ CPalette::CPalette()
  * This function checks whether the palette is patched or not.
  * It has to look for a certain binary code, to know that...
  */
-bool CPalette::patchedPalette(byte *p_exedata, int m_episode)
+bool GsPalette::patchedPalette(byte *p_exedata, int m_episode)
 {
 	// go to the offset where we check the patched code
 	if(m_episode == 1)
@@ -53,7 +53,7 @@ bool CPalette::patchedPalette(byte *p_exedata, int m_episode)
 /**
  * Reads the patched code and sets it up...
  */
-void CPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
+void GsPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
 {
 	if(m_episode == 1)
 		p_exedata += 0x13054;
@@ -76,7 +76,7 @@ void CPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
 	setPaletteColour(16, 0x00, 0xff, 0xff);
 }
 
-void CPalette::setupColorPalettes(byte *p_exedata, int m_episode)
+void GsPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 {
 	// TODO: Try to add patching code for palette patches of mods here!
 
@@ -111,7 +111,7 @@ void CPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 // Getters and Setters
 ///
 
-void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
+void GsPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
 {
     m_Palette[c].r = r;
     m_Palette[c].g = g;
@@ -124,7 +124,7 @@ void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
 }
 
 // sets whether to use the "dark" (lights off) or not
-void CPalette::setdark(bool dark)
+void GsPalette::setdark(bool dark)
 {
 	m_dark = dark;
 
@@ -136,7 +136,7 @@ void CPalette::setdark(bool dark)
 	fadeto( m_dark ? m_darkness : 0, FADE_SPEED_SLOW);
 }
 
-void CPalette::setdarkness(Uint8 darkness)
+void GsPalette::setdarkness(Uint8 darkness)
 {
 	m_darkness = darkness;
 }
@@ -144,7 +144,7 @@ void CPalette::setdarkness(Uint8 darkness)
 
 // returns the index of a color in the current palette with an RGB value
 // identical to the one given, or -1.
-int CPalette::getcolor(unsigned char r, unsigned char g, unsigned char b)
+int GsPalette::getcolor(unsigned char r, unsigned char g, unsigned char b)
 {
 	for(int i=0;i<m_numcolors;i++)
 	{
@@ -157,12 +157,12 @@ int CPalette::getcolor(unsigned char r, unsigned char g, unsigned char b)
 ///
 // Fading Routines
 ///
-bool CPalette::in_progress(void)		// return whether or not a fade is in progress
+bool GsPalette::in_progress(void)		// return whether or not a fade is in progress
 {
 	return m_fade_in_progess;
 }
 
-void CPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
+void GsPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
 {
 	if(m_alpha != alpha)
 	{
@@ -172,7 +172,7 @@ void CPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
 	}
 }
 
-void CPalette::applyFade()
+void GsPalette::applyFade()
 {
     /*SDL_Surface *overlay = gVideoDriver.getOverlaySurface();
 

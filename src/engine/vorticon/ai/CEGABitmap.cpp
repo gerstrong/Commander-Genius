@@ -10,7 +10,7 @@
 ///
 // Initialization Routine
 ///
-CEGABitmap::CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap) :
+CEGABitmap::CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, GsBitmap *pBitmap) :
 CVorticonSpriteObject(p_Map,0,0, OBJ_NONE, 0)
 {
 	mp_Surface = pSurface;

@@ -13,7 +13,7 @@
 #include "engine/vorticon/CVorticonSpriteObject.h"
 #include "common/CMap.h"
 #include "engine/vorticon/ai/CVorticonSpriteObjectAI.h"
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 //#include "sdl/CVideoDriver.h"
 
 class CTantalusRay : public CFinale
@@ -36,7 +36,7 @@ private:
 	std::unique_ptr<CMessageBox> mp_MessageBox;
 	std::shared_ptr<CVorticonSpriteObjectAI> mObjectAI;
 	Uint32 m_timer;
-	CBitmap *mp_Bitmap;
+	GsBitmap *mp_Bitmap;
 
 	int shot_x, shot_y;
 

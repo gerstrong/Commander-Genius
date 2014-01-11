@@ -15,7 +15,7 @@
 #include <memory>
 #include "Playerdefines.h"
 #include "engine/spritedefines.h"
-#include "graphics/CSprite.h"
+#include "graphics/GsSprite.h"
 #include "sdl/extensions.h"
 
 #ifndef CHUD_H_
@@ -68,7 +68,7 @@ private:
 	unsigned long m_oldScore;
 	unsigned int m_oldCharges;
 
-    CSprite mHUDBox;
+    GsSprite mHUDBox;
 
 	std::shared_ptr<SDL_Surface> mpBackground;
 	std::shared_ptr<SDL_Surface> mpHUDBlit;
@@ -77,8 +77,8 @@ private:
 
 	int timer;
 
-    CSprite mKeenHeadSprite;
-    CSprite mKeenGunSprite;
+    GsSprite mKeenHeadSprite;
+    GsSprite mKeenGunSprite;
 };
 
 #endif /* CHUD_H_ */
