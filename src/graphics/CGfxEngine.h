@@ -8,8 +8,8 @@
  *  It blit with SDL directly instead of using arrays copies
  */
 
-#ifndef CGFXENGINE_H_
-#define CGFXENGINE_H_
+#ifndef __GSGRAPHICS_H__
+#define __GSGRAPHICS_H__
 
 #include <graphics/GsFont.h>
 #include "CTilemap.h"
@@ -89,4 +89,4 @@ private:
 	std::unique_ptr<CCursor> mpCursor;
 };
 
-#endif /* CGFXENGINE_H_ */
+#endif /* __GSGRAPHICS_H__ */
