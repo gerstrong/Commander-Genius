@@ -108,8 +108,12 @@ void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
-	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> pTextSfc(Font.fetchColoredTextSfc( mText, SDL_MapRGB( format, 0, 0, 0 ) ));
-	SDL_BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
+    GsSurface textSfc(Font.fetchColoredTextSfc( mText, SDL_MapRGB( format, 0, 0, 0 ) ));
+
+    GsSurface mbSurface(mpMBSurface.get());
+    mbSurface.disownSfc();
+
+    textSfc.blitTo(mbSurface, rect);
 }
 
 void CMessageBoxGalaxy::ponder()

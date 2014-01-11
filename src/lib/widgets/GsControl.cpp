@@ -5,13 +5,15 @@
  *      Author: gerstrong
  */
 
-#include "GsControl.h"
 #include <base/video/CVideoDriver.h>
 #include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 #include <lib/base/PointDevice.h>
+
+
+#include "GsControl.h"
 
 int CGUIControl::mTwirliconID;
 

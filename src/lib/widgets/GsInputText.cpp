@@ -8,13 +8,12 @@
 #include "GsInputText.h"
 #include <graphics/GsGraphics.h>
 #include <base/CInput.h>
-//#include "sdl/input/InputEvents.h"
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 
-#include "sdl/extensions.h"
-#include "common/CBehaviorEngine.h"
-#include "core/mode/CGameMode.h"
+//#include "sdl/extensions.h"
+//#include "common/CBehaviorEngine.h"
+//#include "core/mode/CGameMode.h"
 
 #ifdef ANDROID
 #if SDL_VERSION_ATLEAST(2, 0, 0)
@@ -36,7 +35,7 @@ mTick(false),
 drawButton(&CGUIInputText::drawNoStyle)
 {
 
-	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
+    /*if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
 	{
 		mFontID = 1;
 		drawButton = &CGUIInputText::drawVorticonStyle;
@@ -45,7 +44,7 @@ drawButton(&CGUIInputText::drawNoStyle)
 	{
 		mFontID = 1;
 		drawButton = &CGUIInputText::drawGalaxyStyle;
-	}
+    }*/
 
 }
 

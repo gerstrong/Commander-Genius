@@ -8,11 +8,11 @@
 #include "GsMenuController.h"
 #include <base/CInput.h>
 
-#include "common/CBehaviorEngine.h"
-#include "common/Menu/CControlsettings.h"
-#include "common/Menu/CMainMenu.h"
+//#include "common/CBehaviorEngine.h"
+//#include "common/Menu/CControlsettings.h"
+//#include "common/Menu/CMainMenu.h"
 
-#include "sdl/music/CMusic.h"
+//#include "sdl/music/CMusic.h"
 
 
 void CMenuController::emptyMenuStack()
@@ -27,9 +27,9 @@ void CMenuController::openMainMenu()
 	if(mLocked)
 	    return;
 
-    gEventManager.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
-	g_pBehaviorEngine->setPause(true);
-	g_pMusicPlayer->pause();	
+    //gEventManager.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
+    //g_pBehaviorEngine->setPause(true);
+    //g_pMusicPlayer->pause();
 	
 	// When menu is opened show the cursor
 	SDL_ShowCursor(SDL_ENABLE);
@@ -38,8 +38,6 @@ void CMenuController::openMainMenu()
 
 void CMenuController::pumpEvent(const CEvent *evPtr)
 {
-    CEventContainer &EventContainer = gEventManager;
-
     if( const OpenMenuEvent* openMenu = dynamic_cast<const OpenMenuEvent*>(evPtr) )
     {
         CBaseMenu &menu = *openMenu->mMenuDialogPointer.get();
@@ -58,19 +56,19 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
     {
         popBackMenu();
 
-        if(mMenuStack.empty())
-            g_pMusicPlayer->play();
+        //if(mMenuStack.empty())
+          //  g_pMusicPlayer->play();
     }
 
     if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
     {
         emptyMenuStack();
 
-        g_pMusicPlayer->play();
+        //g_pMusicPlayer->play();
     }
 
     // Control Menu Events
-    if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
+    /*if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
     {
         const int players = ctrlMenu->mSelection;
         EventContainer.add( new OpenMenuEvent(
@@ -89,7 +87,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
         const int players = ctrlMenu->mSelection;
         EventContainer.add( new OpenMenuEvent(
                                 new CControlsettings(players) ) );
-    }
+    }*/
 }
 
 

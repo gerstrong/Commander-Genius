@@ -11,7 +11,7 @@
 #include "GsControl.h"
 #include <string>
 
-#include "engine/CEvent.h"
+//#include "engine/CEvent.h"
 
 class CGUIInputText : public CGUIControl
 {

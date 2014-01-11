@@ -17,7 +17,7 @@
 #include "fileio/TypeDefinitions.h"
 #include "CPlane.h"
 #include "engine/CEvent.h"
-#include "utils/Geometry.h"
+#include <base/utils/Geometry.h>
 #include <map>
 
 // animation rate of animated tiles

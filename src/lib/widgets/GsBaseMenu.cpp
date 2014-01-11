@@ -5,9 +5,11 @@
  *      Author: gerstrong
  */
 
-#include "GsBaseMenu.h"
 #include <base/CInput.h>
 #include <widgets/GsMenuController.h>
+
+
+#include "GsBaseMenu.h"
 #include "GsBitmap.h"
 
 CBaseMenu::CBaseMenu(const GsRect<float>& rect) :

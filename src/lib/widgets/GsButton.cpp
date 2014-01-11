@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 
-#include "GsButton.h"
 #include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
@@ -13,8 +12,7 @@
 #include <widgets/GsMenuController.h>
 #include <base/PointDevice.h>
 
-//#include <core/mode/CGameMode.h>
-//#include "sdl/extensions.h"
+#include "GsButton.h"
 
 
 CGUIButton::CGUIButton(const std::string& text,
@@ -70,9 +68,9 @@ void CGUIButton::setupButtonSurface()
 	GsFont &Font = gGraphics.getFont(mFontID);
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
-	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38)));
-	mpTextLightSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84)));
-	mpTextDisabledSfc.reset(Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123)));
+    mTextDarkSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38));
+    mTextLightSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84));
+    mTextDisabledSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123));
 
 }
 
@@ -161,21 +159,21 @@ void CGUIButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
 
 void CGUIButton::drawGalaxyStyle(SDL_Rect& lRect)
 {
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    GsSurface blitsfc( gVideoDriver.getBlitSurface() );
 
 	if(!mEnabled)
 	{
-		SDL_BlitSurface(mpTextDisabledSfc.get(), NULL, blitsfc, &lRect);
+        mTextDisabledSfc.blitTo(blitsfc, lRect);
 	}
 	else
 	{
 		if(mHovered)
 		{
-			SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
+            mTextLightSfc.blitTo(blitsfc, lRect);
 		}
 		else // Button is not hovered
 		{
-			SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
+            mTextDarkSfc.blitTo(blitsfc, lRect);
 		}
 	}
 

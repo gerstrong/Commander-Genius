@@ -21,6 +21,8 @@
 #include "engine/CEvent.h"
 #include "common/Menu/CSelectionMenu.h"
 
+#include "CResourceLoader.h"
+
 
 // The directory/path to start the search at
 #define DIR_ROOT        "."

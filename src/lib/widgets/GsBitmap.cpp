@@ -5,9 +5,10 @@
  *      Author: gerstrong
  */
 
-#include "GsBitmap.h"
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
+
+#include "GsBitmap.h"
 
 CGUIBitmap::CGUIBitmap(std::unique_ptr<GsBitmap>&& pBitmap) :
 mpBitmap(move(pBitmap))

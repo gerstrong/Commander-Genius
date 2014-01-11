@@ -5,10 +5,11 @@
  *      Author: gerstrong
  */
 
-#include "GsBaseMenu.h"
 #include <base/GsEvent.h>
 #include <base/Singleton.h>
 #include <memory>
+
+#include "GsBaseMenu.h"
 
 #ifndef __GSMENUCONTROLLER_H__
 #define __GSMENUCONTROLLER_H__

@@ -10,9 +10,11 @@
 #ifndef CGUITEXTSELECTIONLIST_H_
 #define CGUITEXTSELECTIONLIST_H_
 
+#include "GsControl.h"
+
 #include <list>
 #include <string>
-#include "GsControl.h"
+
 
 class CGUITextSelectionList : public CGUIControl
 {

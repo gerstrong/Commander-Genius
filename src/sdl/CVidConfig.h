@@ -24,7 +24,7 @@ const unsigned int RES_BPP = 32;
 #endif
 #endif
 
-#include "utils/Geometry.h"
+#include <base/utils/Geometry.h>
 
 struct st_camera_bounds
 {

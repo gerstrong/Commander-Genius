@@ -5,12 +5,14 @@
  *      Author: gerstrong
  */
 
-#include "GsSwitch.h"
 #include <base/utils/StringUtils.h>
 #include <base/video/CVideoDriver.h>
 #include <graphics/GsGraphics.h>
 
-#include "common/CBehaviorEngine.h"
+
+#include "GsSwitch.h"
+
+//#include "common/CBehaviorEngine.h"
 
 CGUISwitch::CGUISwitch( const std::string& text ) :
 CGUIComboSelection( text, filledStrList( 2, "off", "on" ) )
@@ -50,9 +52,9 @@ void CGUISwitch::processRender(const GsRect<float> &RectDispCoordFloat)
 	// Transform to the display coordinates
 	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
-	SDL_Rect lRect = displayRect.SDLRect();
+/*	SDL_Rect lRect = displayRect.SDLRect();
 
-	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
+    if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
 	{
 		drawVorticonStyle(lRect);
 	}
@@ -60,5 +62,5 @@ void CGUISwitch::processRender(const GsRect<float> &RectDispCoordFloat)
 	{
 		(this->*drawButton)(lRect);
 	}
-
+*/
 }

@@ -8,10 +8,12 @@
 #ifndef CGUIBITMAP_H_
 #define CGUIBITMAP_H_
 
-#include "GsControl.h"
-#include "GsBitmap.h"
 #include <memory>
 #include <string>
+
+
+#include "GsControl.h"
+#include "GsBitmap.h"
 
 class CGUIBitmap : public CGUIControl
 {

@@ -11,7 +11,7 @@
 #include <SDL.h>
 #include <string>
 #include <list>
-#include "utils/Geometry.h"
+#include <base/utils/Geometry.h>
 #include <base/GsEvent.h>
 #include <base/InputEvents.h>
 //#include "InputEvents.h"

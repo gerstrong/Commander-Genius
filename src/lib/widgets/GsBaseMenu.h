@@ -8,12 +8,14 @@
 #ifndef CBASEMENU_H_
 #define CBASEMENU_H_
 
+#include <list>
+#include <memory>
+
+
 const int NO_SELECTION = -1;
 
 #include "GsDialog.h"
 #include "GsButton.h"
-#include <list>
-#include <memory>
 
 class CBaseMenu
 {

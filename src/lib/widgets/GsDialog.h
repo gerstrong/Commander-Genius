@@ -14,13 +14,15 @@
 #include <list>
 #include <memory>
 
-#include "GsControl.h"
 #include <engine/CEvent.h>
+
+
+#include "GsControl.h"
 #include "GsBitmap.h"
 
-#include "CResourceLoader.h"
-#include "utils/Geometry.h"
-#include <sdl/extensions.h>
+//#include "CResourceLoader.h"
+//#include <base/utils/Geometry.h>
+//#include <sdl/extensions.h>
 
 
 class CGUIDialog

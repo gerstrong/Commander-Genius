@@ -15,7 +15,8 @@
 #ifndef GsFont_H_
 #define GsFont_H_
 
-#include <SDL.h>
+#include <graphics/GsSurface.h>
+
 #include <string>
 #include <vector>
 #include <memory>
@@ -49,7 +50,7 @@ public:
 	/**
 	 * Allocates a colored surface with the given Text printed in.
 	 */
-	SDL_Surface* fetchColoredTextSfc(const std::string& text, const Uint32 fgColor );
+    GsSurface fetchColoredTextSfc(const std::string& text, const Uint32 fgColor );
 
 	/*
 	 * \brief This will retrieve the total width in pixels of the Font.

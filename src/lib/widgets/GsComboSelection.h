@@ -10,12 +10,13 @@
 
 #include <string>
 #include <memory>
+#include <graphics/GsSurface.h>
+
 #include "GsControl.h"
 
-#include "sdl/extensions.h"
-#include "engine/CEvent.h"
+//#include "sdl/extensions.h"
+//#include "engine/CEvent.h"
 
-struct SDL_Surface_Deleter;
 
 class CGUIComboSelection : public CGUIControl
 {
@@ -51,9 +52,9 @@ protected:
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
 
-	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextDarkSfc;
-	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextLightSfc;
-	std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpTextDisabledSfc;
+    GsSurface mTextDarkSfc;
+    GsSurface mTextLightSfc;
+    GsSurface mTextDisabledSfc;
 
 	void (CGUIComboSelection::*drawButton)(SDL_Rect&);
 

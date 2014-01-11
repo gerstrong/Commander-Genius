@@ -13,7 +13,7 @@
 #include <string>
 #include <memory>
 
-#include "utils/Geometry.h"
+#include <base/utils/Geometry.h>
 
 class GsBitmap
 {

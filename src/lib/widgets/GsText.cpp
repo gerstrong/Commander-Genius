@@ -5,10 +5,12 @@
  *      Author: gerstrong
  */
 
-#include "GsText.h"
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
+
+
+#include "GsText.h"
 
 CGUIText::CGUIText(const std::string& text)
 {

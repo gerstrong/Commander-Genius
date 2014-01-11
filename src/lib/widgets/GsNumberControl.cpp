@@ -5,15 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "GsNumberControl.h"
 #include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 #include <base/utils/StringUtils.h>
 
-#include "common/CBehaviorEngine.h"
-#include "core/mode/CGameMode.h"
+#include "GsNumberControl.h"
+
+//#include "common/CBehaviorEngine.h"
+//#include "core/mode/CGameMode.h"
 
 
 int CGUINumberControl::mTwirliconID = 10;
@@ -40,14 +41,14 @@ drawButton(&CGUINumberControl::drawNoStyle)
 {
 	mFontID = 1;
     
-	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
+/*	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
 	{
 	    drawButton = &CGUINumberControl::drawVorticonStyle;
 	}
 	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
 	    drawButton = &CGUINumberControl::drawGalaxyStyle;		
-	}
+    }*/
 	
 	setupButtonSurface();
 }
@@ -126,8 +127,10 @@ std::string CGUINumberControl::sliderStr()
 
 void CGUINumberControl::setupButtonSurface()
 {
+    /*
     if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
-	return;
+        return;
+    */
     
 	GsFont &Font = gGraphics.getFont(mFontID);
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
@@ -135,12 +138,11 @@ void CGUINumberControl::setupButtonSurface()
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
 	const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
 	const std::string showTextR = "  " + mText + ": " + itoa(mValue) + ">";
-	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38)));
-	mpTextLightSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84)));
-	mpTextLightSfcR.reset(Font.fetchColoredTextSfc( showTextR, SDL_MapRGB( format, 84, 234, 84)));
-	mpTextLightSfcL.reset(Font.fetchColoredTextSfc( showTextL, SDL_MapRGB( format, 84, 234, 84)));
-
-	mpTextDisabledSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123)));
+    mTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
+    mTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
+    mTextLightSfcR = Font.fetchColoredTextSfc( showTextR, SDL_MapRGB( format, 84, 234, 84));
+    mTextLightSfcL = Font.fetchColoredTextSfc( showTextL, SDL_MapRGB( format, 84, 234, 84));
+    mTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));
 }
 
 
@@ -214,26 +216,26 @@ void CGUINumberControl::processLogic()
 
 void CGUINumberControl::drawGalaxyStyle(SDL_Rect& lRect)
 {
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    GsSurface blitsfc(gVideoDriver.getBlitSurface());
 
 	if(!mEnabled)
 	{
-		SDL_BlitSurface(mpTextDisabledSfc.get(), NULL, blitsfc, &lRect);
+        mTextDisabledSfc.blitTo(blitsfc, lRect);
 	}
 	else
 	{
 		if(mHovered)
 		{
 		    if(mDecSel)
-			SDL_BlitSurface(mpTextLightSfcL.get(), NULL, blitsfc, &lRect);
+                mTextLightSfcL.blitTo(blitsfc, lRect);
 		    else if(mIncSel)
-			SDL_BlitSurface(mpTextLightSfcR.get(), NULL, blitsfc, &lRect);
+                mTextLightSfcR.blitTo(blitsfc, lRect);
 		    else
-			SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
+                mTextLightSfc.blitTo(blitsfc, lRect);
 		}
 		else // Button is not hovered
 		{
-		    SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
+            mTextDarkSfc.blitTo(blitsfc, lRect);
 		}
 	}
 

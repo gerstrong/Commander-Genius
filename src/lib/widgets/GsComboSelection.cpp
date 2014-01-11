@@ -8,14 +8,12 @@
 #include "GsComboSelection.h"
 #include <graphics/GsGraphics.h>
 #include <base/CInput.h>
-//#include "sdl/input/InputEvents.h"
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>
 
-
-#include "common/CBehaviorEngine.h"
-#include "core/mode/CGameMode.h"
-#include "Utils.h"
+//#include "common/CBehaviorEngine.h"
+//#include "core/mode/CGameMode.h"
+//#include "Utils.h"
 
 
 CGUIComboSelection::CGUIComboSelection( const std::string& text,
@@ -26,7 +24,7 @@ mOLCurrent( mOptionsList.begin() ),
 drawButton(&CGUIComboSelection::drawNoStyle)
 {
 
-	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
+/*	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
 	{
 		mFontID = 1;
 		drawButton = &CGUIComboSelection::drawVorticonStyle;
@@ -35,7 +33,7 @@ drawButton(&CGUIComboSelection::drawNoStyle)
 	{
 		mFontID = 1;
 		drawButton = &CGUIComboSelection::drawGalaxyStyle;
-	}
+    }*/
 }
 
 void CGUIComboSelection::setupButtonSurface(const std::string &optionText)
@@ -44,9 +42,9 @@ void CGUIComboSelection::setupButtonSurface(const std::string &optionText)
 	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	const std::string showText = "  " + mText + ": " + optionText;
-	mpTextDarkSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38)));
-	mpTextLightSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84)));
-	mpTextDisabledSfc.reset(Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123)));
+    mTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
+    mTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
+    mTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));
 }
 
 const std::string& CGUIComboSelection::getSelection()
@@ -62,10 +60,10 @@ void CGUIComboSelection::cycleOption()
 	if( mOLCurrent == mOptionsList.end() )
 		mOLCurrent =  mOptionsList.begin();
 
-	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
+    /*if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
 		setupButtonSurface(*mOLCurrent);
-	}
+    }*/
 }
 
 
@@ -86,7 +84,7 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
 
 	std::list<std::string>::const_iterator ptr = mOLCurrent;
 
-	do
+    /*do
 	{
 		if( *mOLCurrent == selectionText )
 		{
@@ -100,7 +98,7 @@ void CGUIComboSelection::setSelection( const std::string& selectionText )
 
 		cycleOption();
 
-	} while( ptr != mOLCurrent );
+    } while( ptr != mOLCurrent );*/
 
 	// Getting at this point means, that this option never existed
 	mOptionsList.push_back( selectionText );
@@ -192,21 +190,22 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 
 void CGUIComboSelection::drawGalaxyStyle(SDL_Rect& lRect)
 {
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    GsSurface sfc(gVideoDriver.getBlitSurface());
+    sfc.disownSfc();
 
 	if(!mEnabled)
-	{
-		SDL_BlitSurface(mpTextDisabledSfc.get(), NULL, blitsfc, &lRect);
+	{        
+        mTextDisabledSfc.blitTo(sfc, lRect);
 	}
 	else
 	{
 		if(mHovered)
 		{
-			SDL_BlitSurface(mpTextLightSfc.get(), NULL, blitsfc, &lRect);
+            mTextLightSfc.blitTo(sfc, lRect);
 		}
 		else // Button is not hovered
 		{
-			SDL_BlitSurface(mpTextDarkSfc.get(), NULL, blitsfc, &lRect);
+            mTextDarkSfc.blitTo(sfc, lRect);
 		}
 	}
 

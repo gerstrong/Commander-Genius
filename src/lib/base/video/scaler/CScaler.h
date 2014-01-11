@@ -9,7 +9,7 @@
 #define CSCALER_H_
 
 #include <SDL.h>
-#include <utils/Geometry.h>
+#include <base/utils/Geometry.h>
 
 enum filterOptionType
 {

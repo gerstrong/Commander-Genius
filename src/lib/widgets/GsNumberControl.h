@@ -8,11 +8,12 @@
 #ifndef CGUINUMBERCONTROL_H_
 #define CGUINUMBERCONTROL_H_
 
-#include <string>
 #include "GsControl.h"
 
+#include <string>
+#include <graphics/GsSurface.h>
 
-#include "engine/CEvent.h"
+//#include "engine/CEvent.h"
 
 
 class CGUINumberControl: public CGUIControl
@@ -63,12 +64,12 @@ private:
 	static int mTwirliconID;
 	const bool mSlider;
 
-	std::unique_ptr<SDL_Surface> mpTextDarkSfc;
-	std::unique_ptr<SDL_Surface> mpTextLightSfc;
-	std::unique_ptr<SDL_Surface> mpTextLightSfcR;
-	std::unique_ptr<SDL_Surface> mpTextLightSfcL;
-	std::unique_ptr<SDL_Surface> mpTextDisabledSfc;
 
+    GsSurface mTextDarkSfc;
+    GsSurface mTextLightSfc;
+    GsSurface mTextLightSfcR;
+    GsSurface mTextLightSfcL;
+    GsSurface mTextDisabledSfc;
 
 	void (CGUINumberControl::*drawButton)(SDL_Rect&);
 
