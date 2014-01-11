@@ -74,10 +74,10 @@ public:
 CProfilesMenu::CProfilesMenu() :
 CBaseMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 {
-	mpMenuDialog->addControl(new CGUIButton( "Classic mode",
+	mpMenuDialog->addControl(new GsButton( "Classic mode",
 										     new SetDefaultClassic() ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Enhanced mode",
+	mpMenuDialog->addControl(new GsButton( "Enhanced mode",
 										     new SetDefaultEnhanced() ) );
 
 	setMenuLabel("OPTIONSMENULABEL");

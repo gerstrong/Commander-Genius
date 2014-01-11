@@ -57,14 +57,14 @@ public:
 				else
 					playerStr = "Player " + itoa(i);
 
-				CGUIButton *button = new CGUIButton( playerStr, new _T(i) );
+				GsButton *button = new GsButton( playerStr, new _T(i) );
 
 				mpButtonList.push_back( button );
 				mpMenuDialog->addControl( mpButtonList.back() );
 			}
 	}
 
-	std::list<CGUIButton*> mpButtonList;
+	std::list<GsButton*> mpButtonList;
 };
 
 
@@ -76,12 +76,12 @@ public:
         CBaseMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
 	{
 
-		mpMenuDialog->addControl( new CGUIButton( "Easy", new StartNewGameEvent(EASY) ) );
-		mpMenuDialog->addControl( new CGUIButton( "Normal", new StartNewGameEvent(NORMAL) ) );
-        mpMenuDialog->addControl( new CGUIButton( "Hard", new StartNewGameEvent(HARD) ) );
-        mpMenuDialog->addControl( new CGUIButton( "Expert", new StartNewGameEvent(EXPERT) ) );
-        mpMenuDialog->addControl( new CGUIButton( "Ninja", new StartNewGameEvent(NINJA) ) );
-        mpMenuDialog->addControl( new CGUIButton( "Elite", new StartNewGameEvent(ELITE) ) );
+		mpMenuDialog->addControl( new GsButton( "Easy", new StartNewGameEvent(EASY) ) );
+		mpMenuDialog->addControl( new GsButton( "Normal", new StartNewGameEvent(NORMAL) ) );
+        mpMenuDialog->addControl( new GsButton( "Hard", new StartNewGameEvent(HARD) ) );
+        mpMenuDialog->addControl( new GsButton( "Expert", new StartNewGameEvent(EXPERT) ) );
+        mpMenuDialog->addControl( new GsButton( "Ninja", new StartNewGameEvent(NINJA) ) );
+        mpMenuDialog->addControl( new GsButton( "Elite", new StartNewGameEvent(ELITE) ) );
         setMenuLabel("NEWGAMELABEL");
 
 	}

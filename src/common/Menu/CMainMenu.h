@@ -7,7 +7,7 @@
 
 #include <widgets/GsBaseMenu.h>
 
-#include "engine/CEvent.h"
+#include <base/GsEvent.h>
 
 #ifndef CMAINMENU_H_
 #define CMAINMENU_H_
@@ -21,5 +21,6 @@ public:
 	void createGalaxyMenu( const bool openedGamePlay );
 };
 
+struct OpenMainMenuEvent : public CEvent {};
 
 #endif /* CMAINMENU_H_ */

@@ -36,12 +36,12 @@ CBaseMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	// Load the state-file list
 	const CGUIControl::Style style =
 			( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY ) ?
-					CGUIButton::GALAXY_BORDERED : CGUIButton::VORTICON;
+					GsButton::GALAXY_BORDERED : GsButton::VORTICON;
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 	std::vector<std::string>::iterator it = StateFileList.begin();
 
 	Uint32 i=1;
-	CGUIButton *button;
+	GsButton *button;
 	std::string text;
 
 	for( ; it != StateFileList.end() && i<8 ; i++,it++ )
@@ -50,7 +50,7 @@ CBaseMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 
 		if( !text.empty() )
 		{
-			button = new CGUIButton( text,
+			button = new GsButton( text,
 									new LoadGameSlotFunctorEvent(i),
 									style );
 			mpMenuDialog->addControl( button );
@@ -62,7 +62,7 @@ CBaseMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	for( int j = i ; j<8 ; j++ )
 	{
 		text = "Empty";
-		button = new CGUIButton( text,
+		button = new GsButton( text,
 								new LoadGameSlotFunctorEvent(j),
 								style );
 		mpMenuDialog->addControl( button );

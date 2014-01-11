@@ -57,7 +57,7 @@ private:
 
 	int mSelectedPlayer;
 
-	std::vector<CGUIButton*> mpButtonList;
+	std::vector<GsButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 	
 	bool mapping;
@@ -79,7 +79,7 @@ private:
 
 	int mSelectedPlayer;
 
-	std::vector<CGUIButton*> mpButtonList;
+	std::vector<GsButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 	
 	bool mapping;

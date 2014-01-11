@@ -63,7 +63,7 @@ public:
 
 protected:
 	std::unique_ptr<CGUIDialog> mpMenuDialog;
-	CGUIButton *mpReturnButton;
+	GsButton *mpReturnButton;
 	std::list< std::unique_ptr<CEvent> > mEventList;
 };
 

@@ -51,8 +51,6 @@ public:
 
 	void emptyMenuStack();
 
-	void openMainMenu();
-
     void pumpEvent(const CEvent *evPtr);
 
     void ponder(const float deltaT);
@@ -65,8 +63,14 @@ public:
     void lock(const bool value)
     {	mLocked = value;	}
 
+    bool isLocked()
+    {   return mLocked; }
+
     void hide(const bool value)
     {	mHidden = value;	}
+
+    bool empty()
+    {   return mMenuStack.empty();    }
 
 	bool mOpenedGamePlay;
 
@@ -78,7 +82,7 @@ private:
 	
 	std::list< std::shared_ptr<CBaseMenu> > mMenuStack;
 
-	bool mLocked;
+    bool mLocked;
     bool mHidden;
 };
 

@@ -29,7 +29,7 @@ m_mustclose(false)
 	const char closeChar = 0x1F;
 	std::string closeString;
 	closeString = closeChar;
-	CGUIButton*	pButton	= new CGUIButton( closeString, new CloseDialog(m_mustclose), CGUIButton::NONE );
+	GsButton*	pButton	= new GsButton( closeString, new CloseDialog(m_mustclose), GsButton::NONE );
 
 	addControl( pButton, GsRect<float>(0.0f, 0.0f, 0.06f/0.8f, 0.06f/0.8f) );
 

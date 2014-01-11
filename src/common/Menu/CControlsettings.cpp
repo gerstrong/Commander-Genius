@@ -29,7 +29,7 @@ public:
 		mpButton(NULL)
 		{}
 
-	void setButtonPtr(CGUIButton* button)
+	void setButtonPtr(GsButton* button)
 	{
 		mpButton = button;
 	}
@@ -45,7 +45,7 @@ public:
 	int mSelPlayer;
 	InputCommands mCommand;
 	const std::string mCommandName;
-	CGUIButton* mpButton;
+	GsButton* mpButton;
 };
 
 
@@ -74,12 +74,12 @@ CControlsettings::CControlsettings( const int selectedPlayer ) :
 CBaseMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f) ),
 mSelectedPlayer(selectedPlayer)
 {
-	CGUIButton *button;
+	GsButton *button;
 
-	button = new CGUIButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer) );
+	button = new GsButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer) );
 	mpMenuDialog->addControl( button );
 
-	button = new CGUIButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
+	button = new GsButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
 	mpMenuDialog->addControl( button );
 
 	mpTwoButtonSwitch = new CGUISwitch( "Two Button Fire" );
@@ -102,7 +102,7 @@ mSelectedPlayer(selectedPlayer)
 	mpMenuDialog->addControl( mpSuperPogoSwitch );
 	mpMenuDialog->addControl( mpImpPogoSwitch );
 	mpMenuDialog->addControl( mpAutoGunSwitch );
-	mpMenuDialog->addControl( new CGUIButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1) ) );
+	mpMenuDialog->addControl( new GsButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1) ) );
     
     setMenuLabel("KEYBMENULABEL");
 
@@ -153,7 +153,7 @@ void CControlSettingsMovement::init()
 		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-		CGUIButton	*guiButton = new CGUIButton( buf+buf2, rie );
+		GsButton	*guiButton = new GsButton( buf+buf2, rie );
 		rie->setButtonPtr(guiButton);
 
 		mpButtonList.push_back( guiButton );
@@ -177,7 +177,7 @@ void CControlSettingsMovement::ponder()
 	    // mapping changed!
 	    mapping = false;
 	 
-	    CGUIButton *button = dynamic_cast<CGUIButton*>(mpMenuDialog->CurrentControl());
+	    GsButton *button = dynamic_cast<GsButton*>(mpMenuDialog->CurrentControl());
 	    if(button)
 	    {
 		int pos; unsigned char input;
@@ -228,7 +228,7 @@ void CControlSettingsButtons::init()
 		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-		CGUIButton	*guiButton = new CGUIButton( buf+buf2, rie );
+		GsButton	*guiButton = new GsButton( buf+buf2, rie );
 		rie->setButtonPtr(guiButton);
 
 
@@ -254,7 +254,7 @@ void CControlSettingsButtons::ponder()
             // mapping changed!
             mapping = false;
 
-            CGUIButton *button = dynamic_cast<CGUIButton*>(mpMenuDialog->CurrentControl());
+            GsButton *button = dynamic_cast<GsButton*>(mpMenuDialog->CurrentControl());
             if(button)
             {
                 int pos; unsigned char input;

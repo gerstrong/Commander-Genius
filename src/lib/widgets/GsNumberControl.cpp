@@ -217,6 +217,7 @@ void CGUINumberControl::processLogic()
 void CGUINumberControl::drawGalaxyStyle(SDL_Rect& lRect)
 {
     GsSurface blitsfc(gVideoDriver.getBlitSurface());
+    blitsfc.disownSfc();
 
 	if(!mEnabled)
 	{

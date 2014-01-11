@@ -44,7 +44,7 @@ private:
 	CGUIComboSelection	*mpAspectSelection;
 	CGUISwitch		*mpVSyncSwitch;
 	CGUISwitch		*mpSFXSwitch;
-	CGUIButton		*mpFullScreenSwitch;
+	GsButton		*mpFullScreenSwitch;
     CGUIComboSelection	*mpResolutionSelection;
     CGUIComboSelection	*mpGameResSelection;
 

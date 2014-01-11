@@ -95,7 +95,7 @@ CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
         filledStrList(1, "?x?") );
     mpMenuDialog->addControl( mpResolutionSelection );
 
-	mpFullScreenSwitch = new CGUIButton( "Unknown mode",
+	mpFullScreenSwitch = new GsButton( "Unknown mode",
 										new toggleFullscreenFunctor(*this) );
 	mpMenuDialog->addControl( mpFullScreenSwitch );
 #endif

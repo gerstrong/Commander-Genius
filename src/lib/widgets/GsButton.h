@@ -7,8 +7,8 @@
  *  This is the text control for our new GUI
  */
 
-#ifndef CGUIBUTTON_H_
-#define CGUIBUTTON_H_
+#ifndef GsButton_H_
+#define GsButton_H_
 
 #include "GsControl.h"
 #include <string>
@@ -19,14 +19,11 @@
 #include <graphics/GsSurface.h>
 
 
-//#include "sdl/extensions.h"
-
-
-class CGUIButton : public CGUIControl
+class GsButton : public CGUIControl
 {
 public:
 
-	CGUIButton(const std::string& text,
+    GsButton(const std::string& text,
 			CEvent *ev,
 			const Style style=UNSET);
 
@@ -44,8 +41,7 @@ public:
 
 	void drawGalaxyStyle(SDL_Rect& lRect);
 
-
-    void processRender(const GsRect<float> &RectDispCoordFloat);
+    virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
 	void setText(const std::string& text)
 	{
@@ -56,18 +52,19 @@ public:
 	std::string getText()
 	{	return mText;	}
 
-private:
+    virtual void setupButtonSurface() {}
 
-	void setupButtonSurface();
+protected:
 
-	std::string mText;
-	std::shared_ptr<CEvent> mEvent;
+    std::string mText;
     GsSurface mTextDarkSfc;
     GsSurface mTextLightSfc;
     GsSurface mTextDisabledSfc;
-	std::map< Style, EngineType > mMapping;
 
-	void (CGUIButton::*drawButton)(SDL_Rect&);
+
+private:
+
+	std::shared_ptr<CEvent> mEvent;
 };
 
-#endif /* CGUIBUTTON_H_ */
+#endif /* GsButton_H_ */

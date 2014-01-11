@@ -15,7 +15,7 @@
 #include "graphics/GsGraphics.h"
 #include "graphics/effects/CPixelate.h"
 #include "sdl/extensions.h"
-//#include "core/CGameLauncherMenu.h"
+#include "common/Menu/CMainMenu.h"
 
 
 namespace galaxy
@@ -320,7 +320,7 @@ void CPassiveGalaxy::processTitle()
 		if( gInput.getPressedAnyCommand() )
 		{
             gInput.flushAll();
-		    gMenuController.openMainMenu();
+            gEventManager.add(new OpenMainMenuEvent);
 		}	    
 	}    
 }

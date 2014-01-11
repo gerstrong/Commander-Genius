@@ -11,15 +11,21 @@ public:
                const int ep,
                const std::string &dataPath) :
         GameEngine(openedGamePlay, dataPath),
-        mEp(ep) {}
+        mEp(ep),
+        mLockedMenu(true) {}
+
+    void openMainMenu();
 
     void start();
 
     virtual void pumpEvent(const CEvent *evPtr);
 
+    void ponder(const float deltaT);
+
     virtual bool loadResources( const Uint8 flags ) = 0;
 
 protected:
+
 
     enum load_states
     {
@@ -30,6 +36,7 @@ protected:
     };
 
     const int mEp;
+    bool mLockedMenu;
 };
 
 

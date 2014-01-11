@@ -430,7 +430,7 @@ void CGUIDialog::processLogic()
 
             ctrl->processLogic();
 
-            if( dynamic_cast<CGUIButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
+            if( dynamic_cast<GsButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
             {
                 if( ctrl->getHovered() )
                 {

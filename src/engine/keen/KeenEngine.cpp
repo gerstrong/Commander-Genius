@@ -8,6 +8,47 @@
 #include "fileio/ResourceMgmt.h"
 #include "fileio/CSaveGameController.h"
 
+#include "sdl/music/CMusic.h"
+#include "common/Menu/CMainMenu.h"
+
+void KeenEngine::openMainMenu()
+{
+    if(gMenuController.isLocked())
+        return;
+
+    gEventManager.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
+    g_pBehaviorEngine->setPause(true);
+    g_pMusicPlayer->pause();
+
+
+    /*
+    // Control Menu Events
+    if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        EventContainer.add( new OpenMenuEvent(
+                                new CControlSettingsMovement(players) ) );
+    }
+
+    if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        EventContainer.add( new OpenMenuEvent(
+                                new CControlSettingsButtons(players) ) );
+    }
+
+    if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        EventContainer.add( new OpenMenuEvent(
+                                new CControlsettings(players) ) );
+    }*/
+
+
+    // When menu is opened show the cursor
+    SDL_ShowCursor(SDL_ENABLE);
+}
+
 
 void KeenEngine::start()
 {
@@ -58,6 +99,30 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
             EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
                                     DataDirectory,
                                     m_start_level) );*/
+    }
+    else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
+    {
+        openMainMenu();
+    }
+}
+
+void KeenEngine::ponder(const float deltaT)
+{
+    GameEngine::ponder(deltaT);
+
+    CEventContainer &EventContainer = gEventManager;
+
+    // Did the player press the quit/back button
+    if( gInput.getPressedCommand(IC_BACK) )
+    {
+        if( gMenuController.empty() ) // If no menu is open, open the main menu
+        {
+            openMainMenu();
+        }
+        else // Close the menu which is open. Might go back if it is a submenu
+        {
+            EventContainer.add( new CloseMenuEvent() );
+        }
     }
 }
 

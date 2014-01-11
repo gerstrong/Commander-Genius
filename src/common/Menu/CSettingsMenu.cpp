@@ -26,13 +26,13 @@
 CSettingsMenu::CSettingsMenu() :
 CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 {
- 	mpMenuDialog->addControl(new CGUIButton( "Video",
+ 	mpMenuDialog->addControl(new GsButton( "Video",
 									new OpenMenuEvent( new CVideoSettings() ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Audio",
+	mpMenuDialog->addControl(new GsButton( "Audio",
 									new OpenMenuEvent( new CAudioSettings() ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Options",
+	mpMenuDialog->addControl(new GsButton( "Options",
 									new OpenMenuEvent( new COptions() ) ) );
 
 
@@ -46,20 +46,20 @@ CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 	 * */
 
 #if defined (SINGLEPLAYER)
-	mpMenuDialog->addControl( new CGUIButton( "Controls",
+	mpMenuDialog->addControl( new GsButton( "Controls",
 									new OpenMenuEvent(	new CControlsettings(1) ) ) );
 #else
-    mpMenuDialog->addControl(new CGUIButton( "Controls",
+    mpMenuDialog->addControl(new GsButton( "Controls",
                                     new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
 #endif
 
 
 #if !defined(EMBEDDED)
-	mpMenuDialog->addControl( new CGUIButton( "Camera",
+	mpMenuDialog->addControl( new GsButton( "Camera",
 									new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
 
-	mpMenuDialog->addControl(new CGUIButton( "Profile",
+	mpMenuDialog->addControl(new GsButton( "Profile",
 									new OpenMenuEvent( new CProfilesMenu() ) ) );
 
 	setMenuLabel("CONFIGMENULABEL");

@@ -8,7 +8,7 @@
 #include "CMainMenu.h"
 #include <base/GsApp.h>
 #include <widgets/GsMenuController.h>
-#include <widgets/GsButton.h>
+
 
 #include "common/Menu/CSettingsMenu.h"
 #include "common/Menu/CSelectionMenu.h"
@@ -19,8 +19,8 @@
 #include "common/CBehaviorEngine.h"
 
 #include "core/mode/CGameMode.h"
-//#include "core/CGameLauncherMenu.h"
 
+#include "engine/galaxy/menu/GalaxyButton.h"
 
 
 void CMainMenu::createVorticonMenu( const bool openedGamePlay )
@@ -28,10 +28,10 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 
 #if defined (SINGLEPLAYER)
 	g_pBehaviorEngine->mPlayers = 1;
-	CGUIButton *button = new CGUIButton( "New Game",
+    GsButton *button = new GsButton( "New Game",
 										new OpenMenuEvent(new CDifficultySelection) );
 #else
-	CGUIButton *button = new CGUIButton( "New Game",
+    GsButton *button = new GsButton( "New Game",
 									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
 #endif
 
@@ -40,32 +40,32 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 
 	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
 
-	CGUIButton *loadButton = new CGUIButton( "Load",
+    GsButton *loadButton = new GsButton( "Load",
 										new OpenMenuEvent( new CLoadMenu() ) );
 	mpMenuDialog->addControl( loadButton );
 	loadButton->mEnabled = true;
 
-	CGUIButton *saveButton = new CGUIButton( "Save",
+    GsButton *saveButton = new GsButton( "Save",
 									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
-	mpMenuDialog->addControl(new CGUIButton( "Configure",
+    mpMenuDialog->addControl(new GsButton( "Configure",
 												new OpenMenuEvent( new CSettingsMenu() ) ) );
 
-	CGUIButton *highscoreButton = new CGUIButton( "High Scores",
+    GsButton *highscoreButton = new GsButton( "High Scores",
 													new StartInfoSceneEvent( new CHighScores ) );
 	mpMenuDialog->addControl( highscoreButton );
 	highscoreButton->mEnabled = true;
 
-	CGUIButton *infoButton = new CGUIButton( "Info",
+    GsButton *infoButton = new GsButton( "Info",
 											new OpenMenuEvent( new CHelpMenu() ) );
 	mpMenuDialog->addControl( infoButton );
 	infoButton->mEnabled = true;
 
-	mpMenuDialog->addControl(new CGUIButton( "End Game", new EventEndGamePlay() ) );
+    mpMenuDialog->addControl(new GsButton( "End Game", new EventEndGamePlay() ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ) );
+    mpMenuDialog->addControl(new GsButton( "Quit", new GMQuit() ) );
 
 	setMenuLabel("MAINMENULABEL");
 
@@ -76,10 +76,10 @@ void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 {
 #if defined (SINGLEPLAYER)
     g_pBehaviorEngine->mPlayers = 1;
-    CGUIButton *button = new CGUIButton( "New Game",
+    GsButton *button = new GalaxyButton( "New Game",
                                         new OpenMenuEvent(new CDifficultySelection) );
 #else
-    CGUIButton *button = new CGUIButton( "New Game",
+    GsButton *button = new GalaxyButton( "New Game",
                                     new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
 #endif
 
@@ -87,32 +87,32 @@ void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
 
 	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
 
-	CGUIButton *loadButton = new CGUIButton( "Load",
+    GsButton *loadButton = new GsButton( "Load",
 										new OpenMenuEvent( new CLoadMenu() ) );
 	mpMenuDialog->addControl( loadButton );
 	loadButton->mEnabled = true;
 
-	CGUIButton *saveButton = new CGUIButton( "Save",
+    GsButton *saveButton = new GsButton( "Save",
 									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
-	mpMenuDialog->addControl(new CGUIButton( "Configure",
+    mpMenuDialog->addControl(new GsButton( "Configure",
 												new OpenMenuEvent( new CSettingsMenu() ) ) );
 
-	CGUIButton *highscoreButton = new CGUIButton( "High Scores",
+    GsButton *highscoreButton = new GsButton( "High Scores",
 													new StartInfoSceneEvent( new CHighScores ) );
 	mpMenuDialog->addControl( highscoreButton );
 	highscoreButton->mEnabled = false;
 
-	CGUIButton *infoButton = new CGUIButton( "Info",
+    GsButton *infoButton = new GsButton( "Info",
 											new OpenMenuEvent( new CHelpMenu() ) );
 	mpMenuDialog->addControl( infoButton );
 	infoButton->mEnabled = false;
 
-	mpMenuDialog->addControl(new CGUIButton( "End Game", new EventEndGamePlay() ) );
+    mpMenuDialog->addControl(new GsButton( "End Game", new EventEndGamePlay() ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Quit", new GMQuit() ) );
+    mpMenuDialog->addControl(new GsButton( "Quit", new GMQuit() ) );
 
 	setMenuLabel("MAINMENULABEL");
 

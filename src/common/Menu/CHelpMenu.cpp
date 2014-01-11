@@ -22,22 +22,22 @@ CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	// Create the Menu Dialog and entries
 
-	mpMenuDialog->addControl(new CGUIButton( "The Game",
+	mpMenuDialog->addControl(new GsButton( "The Game",
 						new StartInfoSceneEvent( new CHelp("Game") ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "The Story",
+	mpMenuDialog->addControl(new GsButton( "The Story",
 						new StartInfoSceneEvent( new CStory ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Ordering Info",
+	mpMenuDialog->addControl(new GsButton( "Ordering Info",
 						new StartInfoSceneEvent( new COrderingInfo ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "About ID",
+	mpMenuDialog->addControl(new GsButton( "About ID",
 						new StartInfoSceneEvent( new CAbout("ID") ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "About CG",
+	mpMenuDialog->addControl(new GsButton( "About CG",
 						new StartInfoSceneEvent( new CAbout("CG") ) ) );
 
-	mpMenuDialog->addControl(new CGUIButton( "Credits",
+	mpMenuDialog->addControl(new GsButton( "Credits",
 						new StartInfoSceneEvent( new CCredits() ) ) );
 	
 	std::string filename = "previews.ck";
@@ -46,7 +46,7 @@ CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	if( filename != "" )
 	{
-	    mpMenuDialog->addControl(new CGUIButton( "Previews!",
+	    mpMenuDialog->addControl(new GsButton( "Previews!",
 					new StartInfoSceneEvent( new CPreviews() ) ) );
 		    
 	}	

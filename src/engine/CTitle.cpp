@@ -16,6 +16,8 @@
 #include <widgets/GsMenuController.h>
 #include <base/CInput.h>
 
+#include "common/Menu/CMainMenu.h"
+
 ////
 // Creation Routine
 ////
@@ -86,7 +88,7 @@ void CTitle::ponder()
 	{
 		if( gInput.getPressedAnyCommand() )
 		{
-		    gMenuController.openMainMenu();
+            gEventManager.add(new OpenMainMenuEvent());
 		}	    
 	}
 
