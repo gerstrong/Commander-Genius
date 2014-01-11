@@ -1,7 +1,6 @@
 #include "CGUIBanner.h"
 
-#include "graphics/GsGraphics.h"
-
+#include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
 

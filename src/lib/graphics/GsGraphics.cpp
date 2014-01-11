@@ -76,11 +76,11 @@ void GsGraphics::createEmptyFontmaps(Uint8 num_fonts)
 	Font.assign(num_fonts, font);
 }
 
-void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
+/*void GsGraphics::createEmptyCursorMap(SDL_Surface *surface)
 {
 	freeCursor();
     mpCursor.reset(new GsCursor(surface));
-}
+}*/
 
 /**
  * Draws some digits using galaxy style
@@ -109,10 +109,10 @@ void GsGraphics::drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Sur
 ///
 // Destructors
 ///
-void GsGraphics::freeCursor()
+/*void GsGraphics::freeCursor()
 {
 	mpCursor.release();
-}
+}*/
 void GsGraphics::freeTilemap()
 {
 	if( !Tilemap.empty() )
@@ -243,7 +243,7 @@ GsSprite *GsGraphics::getSprite(const int var, const std::string &name) const
 
 GsGraphics::~GsGraphics()
 {
-	freeCursor();
+//	freeCursor();
 	freeBitmaps(maskedBitmap);
 	freeBitmaps(Bitmap);
 	freeSprites();

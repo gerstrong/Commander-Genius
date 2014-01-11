@@ -6,7 +6,7 @@
  */
 
 #include "CGUIText.h"
-#include "graphics/GsGraphics.h"
+#include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>
 
