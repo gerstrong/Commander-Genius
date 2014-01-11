@@ -8,8 +8,8 @@
 #ifndef CGUIBITMAP_H_
 #define CGUIBITMAP_H_
 
-#include "CGUIControl.h"
-#include "graphics/GsBitmap.h"
+#include "GsControl.h"
+#include "GsBitmap.h"
 #include <memory>
 #include <string>
 

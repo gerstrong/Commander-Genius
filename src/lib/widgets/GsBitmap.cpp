@@ -5,8 +5,8 @@
  *      Author: gerstrong
  */
 
-#include "CGUIBitmap.h"
-#include "graphics/GsGraphics.h"
+#include "GsBitmap.h"
+#include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
 CGUIBitmap::CGUIBitmap(std::unique_ptr<GsBitmap>&& pBitmap) :

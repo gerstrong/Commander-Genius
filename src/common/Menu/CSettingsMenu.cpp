@@ -5,6 +5,11 @@
  *      Author: gerstrong
  */
 
+#include <lib/base/GsTimer.h>
+#include <widgets/GsButton.h>
+#include <widgets/GsMenuController.h>
+
+
 #include "CSettingsMenu.h"
 #include "CVideoSettings.h"
 #include "CCameraSettings.h"
@@ -13,11 +18,9 @@
 #include "CControlsettings.h"
 #include "CProfilesMenu.h"
 #include "CSelectionMenu.h"
-#include <lib/base/GsTimer.h>
-//#include "sdl/CVideoDriver.h"
-#include "gui/CGUIButton.h"
 
-#include <widgets/CMenuController.h>
+//#include "sdl/CVideoDriver.h"
+
 
 
 CSettingsMenu::CSettingsMenu() :

@@ -5,18 +5,20 @@
  *      Author: gerstrong
  */
 
-#include "hardware/Configurator.h"
-#include "common/CSettings.h"
-#include "CCameraSettings.h"
 #include <base/CInput.h>
 #include <base/GsTimer.h>
 #include <base/video/resolutionlist.h>
 #include <base/video/CVideoDriver.h>
+#include <base/utils/StringUtils.h>
+#include <widgets/GsMenuController.h>
+
+
+#include "hardware/Configurator.h"
+#include "common/CSettings.h"
+#include "CCameraSettings.h"
 #include "CVideoSettings.h"
 #include "CSettingsMenu.h"
-#include <base/utils/StringUtils.h>
 #include "Utils.h"
-#include <widgets/CMenuController.h>
 
 
 static const char* aspectList[] =

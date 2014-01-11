@@ -10,8 +10,8 @@
 
 const int NO_SELECTION = -1;
 
-#include "gui/CGUIDialog.h"
-#include "gui/CGUIButton.h"
+#include "GsDialog.h"
+#include "GsButton.h"
 #include <list>
 #include <memory>
 

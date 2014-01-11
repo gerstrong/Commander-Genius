@@ -10,8 +10,9 @@
 
 #include <string>
 #include <memory>
+#include "GsControl.h"
+
 #include "sdl/extensions.h"
-#include "CGUIControl.h"
 #include "engine/CEvent.h"
 
 struct SDL_Surface_Deleter;

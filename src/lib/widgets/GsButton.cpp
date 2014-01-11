@@ -5,16 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "CGUIButton.h"
-#include "graphics/GsGraphics.h"
+#include "GsButton.h"
+#include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
-#include "core/mode/CGameMode.h"
 #include <base/GsTimer.h>
-#include "sdl/extensions.h"
-#include <widgets/CMenuController.h>
+#include <widgets/GsMenuController.h>
 #include <base/PointDevice.h>
 
+//#include <core/mode/CGameMode.h>
+//#include "sdl/extensions.h"
 
 
 CGUIButton::CGUIButton(const std::string& text,

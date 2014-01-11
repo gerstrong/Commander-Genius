@@ -5,13 +5,14 @@
  *      Author: gerstrong
  */
 
-#include "common/CSettings.h"
 #include "CAudioSettings.h"
 #include <base/utils/StringUtils.h>
+#include <widgets/GsButton.h>
+
+#include "common/CSettings.h"
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
 
-#include "gui/CGUIButton.h"
 
 CAudioSettings::CAudioSettings() :
 CBaseMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )

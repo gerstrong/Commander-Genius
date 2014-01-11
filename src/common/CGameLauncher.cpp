@@ -10,19 +10,19 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <base/GsApp.h>
+#include <widgets/GsTextSelectionList.h>
+#include <widgets/GsBanner.h>
+#include <widgets/GsButton.h>
+#include <widgets/GsText.h>
+#include <graphics/GsGraphics.h>
+#include <base/FindFile.h>
+#include <base/utils/StringUtils.h>
+#include <widgets/GsMenuController.h>
 
-#include "sdl/sound/CSound.h"
-#include "gui/CGUITextSelectionList.h"
-#include "gui/CGUIBanner.h"
-#include "gui/CGUIButton.h"
-#include "gui/CGUIText.h"
-#include "graphics/GsGraphics.h"
 #include "graphics/effects/CScrollEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
-#include <base/FindFile.h>
-#include <base/utils/StringUtils.h>
-#include <widgets/CMenuController.h>
+#include "sdl/sound/CSound.h"
 
 #include "CResourceLoader.h"
 

@@ -11,14 +11,17 @@
 #ifndef CGUIDIALOG_H_
 #define CGUIDIALOG_H_
 
-#include "CResourceLoader.h"
-#include "utils/Geometry.h"
-#include "CGUIControl.h"
-#include "engine/CEvent.h"
-#include "graphics/GsBitmap.h"
-#include <sdl/extensions.h>
 #include <list>
 #include <memory>
+
+#include "GsControl.h"
+#include <engine/CEvent.h>
+#include "GsBitmap.h"
+
+#include "CResourceLoader.h"
+#include "utils/Geometry.h"
+#include <sdl/extensions.h>
+
 
 class CGUIDialog
 {    

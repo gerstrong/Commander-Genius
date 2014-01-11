@@ -6,7 +6,10 @@
  */
 
 #include "CMainMenu.h"
-#include <widgets/CMenuController.h>
+#include <base/GsApp.h>
+#include <widgets/GsMenuController.h>
+#include <widgets/GsButton.h>
+
 #include "common/Menu/CSettingsMenu.h"
 #include "common/Menu/CSelectionMenu.h"
 #include "common/Menu/CLoadMenu.h"
@@ -14,10 +17,10 @@
 #include "common/Menu/CHelpMenu.h"
 #include "engine/infoscenes/CHighScores.h"
 #include "common/CBehaviorEngine.h"
-#include "gui/CGUIButton.h"
+
 #include "core/mode/CGameMode.h"
 //#include "core/CGameLauncherMenu.h"
-#include <base/GsApp.h>
+
 
 
 void CMainMenu::createVorticonMenu( const bool openedGamePlay )

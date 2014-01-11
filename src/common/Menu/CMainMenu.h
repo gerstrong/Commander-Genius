@@ -5,7 +5,7 @@
  *      Author: gerstrong and pizza2004
  */
 
-#include <widgets/CBaseMenu.h>
+#include <widgets/GsBaseMenu.h>
 
 #include "engine/CEvent.h"
 

@@ -44,12 +44,6 @@ public:
 	
 	void drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface);
 	void drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface);
-
-    void freeBitmaps(std::vector<GsBitmap> &Bitmap);
-	void freeSprites();
-	void freeTilemap();
-	void freeFonts();
-	void freeCursor();
 	
     void copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 ntilestocopy );
 	
@@ -64,22 +58,25 @@ public:
     GsBitmap *getBitmapFromStr(const std::string &name) const;
 
     GsSprite *getSprite(const int var, const std::string &name) const;
-
-
 	
     GsSprite &getSprite(const int var, const int slot) { return Sprite[var][slot]; }
     std::vector<GsSprite> &getSpriteVec(const int var) { return Sprite[var]; }
 	GsFont &getFont(Uint8 index) { return Font.at(index); }
     //GsCursor *getCursor() { return mpCursor.get(); }
-
-
-	
-    void ponder();
-    void render();
 	
     GsPalette Palette;
+
+    void freeTilemap();
+    void freeFonts();
+
 	
 private:
+
+    void freeBitmaps(std::vector<GsBitmap> &Bitmap);
+    void freeSprites();
+    //void freeCursor();
+
+
     std::vector<GsTilemap> Tilemap;
 	std::vector<GsFont> Font;
     std::vector<GsBitmap> Bitmap;

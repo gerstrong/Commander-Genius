@@ -12,7 +12,7 @@
 
 #include <list>
 #include <string>
-#include "CGUIControl.h"
+#include "GsControl.h"
 
 class CGUITextSelectionList : public CGUIControl
 {

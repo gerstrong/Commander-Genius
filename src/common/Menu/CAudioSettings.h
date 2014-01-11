@@ -8,15 +8,15 @@
 #ifndef CAUDIOSETTINGS_H_
 #define CAUDIOSETTINGS_H_
 
-#include <widgets/CBaseMenu.h>
+#include <widgets/GsBaseMenu.h>
+#include <widgets/GsComboSelection.h>
+#include <widgets/GsSwitch.h>
+#include <widgets/GsNumberControl.h>
 
 #include "fileio/CExeFile.h"
 #include <SDL.h>
 #include <string>
 
-#include "gui/CGUIComboSelection.h"
-#include "gui/CGUISwitch.h"
-#include "gui/CGUINumberControl.h"
 
 
 class CAudioSettings : public CBaseMenu

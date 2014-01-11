@@ -10,7 +10,7 @@
 #ifndef CGUITEXT_H_
 #define CGUITEXT_H_
 
-#include "CGUIControl.h"
+#include "GsControl.h"
 #include <string>
 
 class CGUIText : public CGUIControl

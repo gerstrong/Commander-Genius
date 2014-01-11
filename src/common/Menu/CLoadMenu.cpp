@@ -6,11 +6,12 @@
  */
 
 #include "CLoadMenu.h"
-#include "common/CBehaviorEngine.h"
-#include "gui/CGUIText.h"
-#include "gui/CGUIButton.h"
-#include <widgets/CMenuController.h>
+#include <widgets/GsText.h>
+#include <widgets/GsButton.h>
+#include <widgets/GsMenuController.h>
+
 #include "fileio/CSaveGameController.h"
+#include "common/CBehaviorEngine.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 

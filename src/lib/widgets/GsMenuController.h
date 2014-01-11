@@ -5,13 +5,13 @@
  *      Author: gerstrong
  */
 
-#include "CBaseMenu.h"
+#include "GsBaseMenu.h"
 #include <base/GsEvent.h>
 #include <base/Singleton.h>
 #include <memory>
 
-#ifndef CMENUCONTROLLER_H_
-#define CMENUCONTROLLER_H_
+#ifndef __GSMENUCONTROLLER_H__
+#define __GSMENUCONTROLLER_H__
 
 
 #define gMenuController CMenuController::get()
@@ -81,4 +81,4 @@ private:
     bool mHidden;
 };
 
-#endif /* CMENUCONTROLLER_H_ */
+#endif /* __GSMENUCONTROLLER_H__ */

@@ -8,10 +8,11 @@
 #ifndef COPTIONS_H_
 #define COPTIONS_H_
 
-#include <widgets/CBaseMenu.h>
-#include "gui/CGUISwitch.h"
-#include "common/CBehaviorEngine.h"
+#include <widgets/GsBaseMenu.h>
+#include <widgets/GsSwitch.h>
 #include <list>
+
+#include "common/CBehaviorEngine.h"
 
 class COptions : public CBaseMenu
 {

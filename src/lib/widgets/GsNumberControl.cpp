@@ -5,14 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "CGUINumberControl.h"
-#include "graphics/GsGraphics.h"
+#include "GsNumberControl.h"
+#include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
-#include "common/CBehaviorEngine.h"
-#include "core/mode/CGameMode.h"
 #include <lib/base/GsTimer.h>
 #include <base/utils/StringUtils.h>
+
+#include "common/CBehaviorEngine.h"
+#include "core/mode/CGameMode.h"
+
 
 int CGUINumberControl::mTwirliconID = 10;
 

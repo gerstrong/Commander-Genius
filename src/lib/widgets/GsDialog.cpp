@@ -7,14 +7,17 @@
  *  GUI Class for a Dialog which is able to carry other controls
  */
 
-#include "CGUIDialog.h"
-#include "CGUIButton.h"
-#include "CGUIInputText.h"
+#include "GsDialog.h"
+#include "GsButton.h"
+#include "GsInputText.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include "sdl/extensions.h"
-#include "graphics/GsGraphics.h"
+#include <graphics/GsGraphics.h>
+
+
 #include "common/CBehaviorEngine.h"
+#include "sdl/extensions.h"
+
 
 const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
 const unsigned int MAX_STEPS = 20;

@@ -5,14 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "CGUIComboSelection.h"
-#include "graphics/GsGraphics.h"
+#include "GsComboSelection.h"
+#include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 //#include "sdl/input/InputEvents.h"
 #include <base/video/CVideoDriver.h>
+#include <lib/base/GsTimer.h>
+
+
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
-#include <lib/base/GsTimer.h>
 #include "Utils.h"
 
 

@@ -5,10 +5,10 @@
  *      Author: gerstrong
  */
 
+#include "GsBaseMenu.h"
 #include <base/CInput.h>
-#include "CBaseMenu.h"
-#include <widgets/CMenuController.h>
-#include "gui/CGUIBitmap.h"
+#include <widgets/GsMenuController.h>
+#include "GsBitmap.h"
 
 CBaseMenu::CBaseMenu(const GsRect<float>& rect) :
 mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) )

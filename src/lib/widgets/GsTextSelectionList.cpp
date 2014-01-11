@@ -5,14 +5,14 @@
  *      Author: gerstrong
  */
 
-#include "CGUITextSelectionList.h"
-#include "common/CBehaviorEngine.h"
+#include "GsTextSelectionList.h"
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
 //#include "sdl/input/InputEvents.h"
 #include <base/CInput.h>
-
 #include <lib/base/PointDevice.h>
+
+#include "common/CBehaviorEngine.h"
 
 const float TEXT_HEIGHT = 10.0f;
 

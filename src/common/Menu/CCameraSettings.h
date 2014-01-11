@@ -8,11 +8,10 @@
 #ifndef CCAMERASETTINGS_H_
 #define CCAMERASETTINGS_H_
 
-#include <widgets/CBaseMenu.h>
+#include <widgets/GsBaseMenu.h>
+#include <widgets/GsNumberControl.h>
 
 #include "sdl/CVidConfig.h"
-#include "gui/CGUINumberControl.h"
-
 
 class CCameraSettings : public CBaseMenu
 {

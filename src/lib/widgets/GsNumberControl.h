@@ -9,7 +9,9 @@
 #define CGUINUMBERCONTROL_H_
 
 #include <string>
-#include "CGUIControl.h"
+#include "GsControl.h"
+
+
 #include "engine/CEvent.h"
 
 

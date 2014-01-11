@@ -8,15 +8,17 @@
 #ifndef CCONTROLSETTINGS_H_
 #define CCONTROLSETTINGS_H_
 
-#include <widgets/CBaseMenu.h>
+#include <widgets/GsBaseMenu.h>
 
 #include <base/utils/StringUtils.h>
-#include "gui/CGUIButton.h"
-#include "gui/CGUISwitch.h"
-#include "engine/CEvent.h"
-#include "CSelectionMenu.h"
+#include <widgets/GsButton.h>
+#include <widgets/GsSwitch.h>
 #include <vector>
 #include <map>
+
+#include "engine/CEvent.h"
+#include "CSelectionMenu.h"
+
 
 
 // Main Class for Controller Config

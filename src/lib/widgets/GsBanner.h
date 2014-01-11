@@ -1,7 +1,7 @@
 #ifndef CGUIBANNER_H
 #define CGUIBANNER_H
 
-#include "CGUIText.h"
+#include "GsText.h"
 
 class CGUIBanner : public CGUIText
 {

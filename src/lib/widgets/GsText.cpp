@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "CGUIText.h"
+#include "GsText.h"
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 #include <base/utils/StringUtils.h>

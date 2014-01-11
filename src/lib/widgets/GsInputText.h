@@ -8,8 +8,9 @@
 #ifndef CGUIINPUTTEXT_H_
 #define CGUIINPUTTEXT_H_
 
-#include "CGUIControl.h"
+#include "GsControl.h"
 #include <string>
+
 #include "engine/CEvent.h"
 
 class CGUIInputText : public CGUIControl

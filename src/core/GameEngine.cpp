@@ -5,20 +5,18 @@
  *      Author: gerstrong
  */
 
+#include <base/CInput.h>
+#include <widgets/GsMenuController.h>
+
+
 #include "GameEngine.h"
 #include "common/CBehaviorEngine.h"
 #include "mode/CGamePassiveMode.h"
 #include "mode/CGamePlayMode.h"
 #include "core/mode/CGameMode.h"
-#include <widgets/CMenuController.h>
 #include "common/Menu/CSelectionMenu.h"
-#include <base/CInput.h>
-
 #include "common/Menu/CMainMenu.h"
 #include "common/Menu/CHelpMenu.h"
-
-
-
 
 
 void GameEngine::switchToGamePlayMode()

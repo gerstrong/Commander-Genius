@@ -10,15 +10,17 @@
 
 #include <base/GsEngine.h>
 
-#include "core/LogicDrawSplitter.h"
-#include "fileio/CExeFile.h"
-#include "gui/CGUIDialog.h"
-#include "gui/CGUIText.h"
-#include "gui/CGUITextSelectionList.h"
+#include <widgets/GsDialog.h>
+#include <widgets/GsText.h>
+#include <widgets/GsTextSelectionList.h>
 
 #include <string>
 #include <vector>
 #include <ostream>
+
+#include "engine/CEvent.h"
+#include "common/Menu/CSelectionMenu.h"
+
 
 // The directory/path to start the search at
 #define DIR_ROOT        "."

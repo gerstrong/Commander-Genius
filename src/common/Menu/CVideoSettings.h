@@ -8,15 +8,16 @@
 #ifndef CVIDEOSETTINGS_H_
 #define CVIDEOSETTINGS_H_
 
-#include <widgets/CBaseMenu.h>
-
-#include "sdl/CVidConfig.h"
 #include <SDL.h>
 #include <string>
 
-#include "gui/CGUIComboSelection.h"
-#include "gui/CGUISwitch.h"
-#include "gui/CGUINumberControl.h"
+#include <widgets/GsBaseMenu.h>
+#include <widgets/GsComboSelection.h>
+#include <widgets/GsSwitch.h>
+#include <widgets/GsNumberControl.h>
+
+#include "sdl/CVidConfig.h"
+
 
 class CVideoSettings : public CBaseMenu
 {

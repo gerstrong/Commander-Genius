@@ -5,12 +5,14 @@
  *      Author: gerstrong
  */
 
+#include <widgets/GsMenuController.h>
+#include <base/GsApp.h>
+
+
 #include "CGamePassiveMode.h"
 #include "sdl/sound/CSound.h"
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/galaxy/CPassive.h"
-#include <widgets/CMenuController.h>
-#include <base/GsApp.h>
 #include "common/CGameLauncher.h"
 #include "common/Menu/CSelectionMenu.h"
 

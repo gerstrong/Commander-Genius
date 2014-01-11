@@ -8,7 +8,7 @@
 #ifndef CPROFILESMENU_H_
 #define CPROFILESMENU_H_
 
-#include <widgets/CBaseMenu.h>
+#include <widgets/GsBaseMenu.h>
 
 class CProfilesMenu : public CBaseMenu
 {

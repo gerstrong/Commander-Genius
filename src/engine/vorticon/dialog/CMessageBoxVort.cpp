@@ -5,13 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "CMessageBoxVort.h"
+#include <memory>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <widgets/GsBitmap.h>
+
+
+#include "CMessageBoxVort.h"
 #include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
-#include "gui/CGUIBitmap.h"
-#include <memory>
+
 
 CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
 CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::EXPAND)

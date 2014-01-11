@@ -16,13 +16,12 @@
 #include <base/video/CVideoDriver.h>
 #include <base/video/GsEffectController.h>
 #include <base/utils/StringUtils.h>
-#include <widgets/CMenuController.h>
+#include <widgets/GsMenuController.h>
 
 
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include "common/CSettings.h"
-#include <widgets/CMenuController.h>
 
 #include "graphics/GsGraphics.h"
 

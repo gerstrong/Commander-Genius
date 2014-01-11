@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "CGUIComboSelection.h"
+#include "GsComboSelection.h"
 #include "Utils.h"
 
 #ifndef CGUISWITCH_H_

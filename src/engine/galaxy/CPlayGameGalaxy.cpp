@@ -5,23 +5,22 @@
  *      Author: gerstrong
  */
 
+#include <base/CInput.h>
+#include <base/utils/StringUtils.h>
+#include <widgets/GsMenuController.h>
+#include <iostream>
+#include <boost/property_tree/ptree.hpp>
+
 #include "CPlayGameGalaxy.h"
 #include "common/CMapLoaderGalaxy.h"
-
 #include "graphics/GsGraphics.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
-#include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
-#include <base/utils/StringUtils.h>
-#include <widgets/CMenuController.h>
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
 
-#include <iostream>
-
-#include <boost/property_tree/ptree.hpp>
 
 namespace galaxy
 {

@@ -5,17 +5,17 @@
  *      Author: gerstrong
  */
 
-#include "CPassive.h"
-
-#include "graphics/GsGraphics.h"
-#include "graphics/effects/CPixelate.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <widgets/GsMenuController.h>
+#include <base/video/GsEffectController.h>
+
+
+#include "CPassive.h"
+#include "graphics/GsGraphics.h"
+#include "graphics/effects/CPixelate.h"
 #include "sdl/extensions.h"
 //#include "core/CGameLauncherMenu.h"
-#include <widgets/CMenuController.h>
-
-#include <base/video/GsEffectController.h>
 
 
 namespace galaxy

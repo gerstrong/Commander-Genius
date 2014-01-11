@@ -1,4 +1,4 @@
-#include "CGUIBanner.h"
+#include "GsBanner.h"
 
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>

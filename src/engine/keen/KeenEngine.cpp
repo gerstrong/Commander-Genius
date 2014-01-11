@@ -1,6 +1,6 @@
 #include <base/GsEvent.h>
 #include <base/GsLogging.h>
-#include <widgets/CMenuController.h>
+#include <widgets/GsMenuController.h>
 
 #include "common/CGameLauncher.h"
 #include "core/mode/CGamePassiveMode.h"

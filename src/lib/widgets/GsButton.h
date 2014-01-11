@@ -10,13 +10,15 @@
 #ifndef CGUIBUTTON_H_
 #define CGUIBUTTON_H_
 
-#include "CGUIControl.h"
-#include "engine/CEvent.h"
-#include "common/CBehaviorEngine.h"
-#include "sdl/extensions.h"
+#include "GsControl.h"
 #include <string>
 #include <memory>
 #include <map>
+
+#include <engine/CEvent.h>
+#include <common/CBehaviorEngine.h>
+#include "sdl/extensions.h"
+
 
 
 class CGUIButton : public CGUIControl

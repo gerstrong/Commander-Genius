@@ -5,11 +5,13 @@
  *      Author: gerstrong
  */
 
-#include "CMenuController.h"
+#include "GsMenuController.h"
+#include <base/CInput.h>
+
 #include "common/CBehaviorEngine.h"
 #include "common/Menu/CControlsettings.h"
 #include "common/Menu/CMainMenu.h"
-#include <base/CInput.h>
+
 #include "sdl/music/CMusic.h"
 
 

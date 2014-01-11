@@ -11,13 +11,14 @@
 #ifndef CMESSAGEBOX_H_
 #define CMESSAGEBOX_H_
 
-#include "dialog/CDlgFrame.h"
-#include "common/CBehaviorEngine.h"
-#include "gui/CGUIDialog.h"
-#include "gui/CGUIText.h"
-#include "gui/CGUIButton.h"
+#include <widgets/GsDialog.h>
+#include <widgets/GsText.h>
+#include <widgets/GsButton.h>
 #include <string>
 #include <vector>
+
+#include "dialog/CDlgFrame.h"
+#include "common/CBehaviorEngine.h"
 
 
 class CMessageBox : public CGUIDialog
