@@ -6,8 +6,8 @@
  */
 
 #include "CBerkeloid.h"
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
-#include "engine/galaxy/common/ai/CBullet.h"
+#include "../../common/ai/CPlayerLevel.h"
+#include "../../common/ai/CBullet.h"
 #include "misc.h"
 
 namespace galaxy {

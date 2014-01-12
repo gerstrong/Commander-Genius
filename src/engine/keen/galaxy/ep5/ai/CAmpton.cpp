@@ -7,8 +7,7 @@
 
 
 #include "CAmpton.h"
-#include "engine/galaxy/common/ai/CPlayerBase.h"
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include "../../common/ai/CPlayerLevel.h"
 #include "misc.h"
 
 

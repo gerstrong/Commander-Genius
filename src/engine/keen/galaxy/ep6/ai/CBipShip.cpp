@@ -1,7 +1,7 @@
 #include "CBipShip.h"
 #include "CBip.h"
 
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
+#include "../../common/ai/CPlayerLevel.h"
 #include <engine/galaxy/common/ai/CBullet.h>
 #include <engine/galaxy/common/ai/CEnemyShot.h>
 

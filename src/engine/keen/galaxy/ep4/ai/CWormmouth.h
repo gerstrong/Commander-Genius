@@ -8,7 +8,7 @@
 #ifndef CWORMMOUTH_H_
 #define CWORMMOUTH_H_
 
-#include "engine/galaxy/common/ai/CStunnable.h"
+#include "../../common/ai/CStunnable.h"
 
 namespace galaxy {
 

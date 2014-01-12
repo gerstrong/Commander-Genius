@@ -7,7 +7,7 @@
 
 #include "CLick.h"
 
-#include "engine/galaxy/common/ai/CPlayerBase.h"
+#include "../../common/ai/CPlayerBase.h"
 #include "misc.h"
 
 namespace galaxy {

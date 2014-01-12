@@ -6,10 +6,10 @@
  */
 
 #include "CTreasureEater.h"
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
-#include "engine/galaxy/common/ai/CBullet.h"
-#include "engine/galaxy/common/ai/CSpriteItem.h"
-#include "engine/galaxy/common/ai/CItemEffect.h"
+#include "../../common/ai/CPlayerLevel.h"
+#include "../../common/ai/CBullet.h"
+#include "../../common/ai/CSpriteItem.h"
+#include "../../common/ai/CItemEffect.h"
 #include "misc.h"
 
 namespace galaxy {

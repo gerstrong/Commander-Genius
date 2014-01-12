@@ -8,7 +8,7 @@
 #ifndef CMIMROCK_H_
 #define CMIMROCK_H_
 
-#include "engine/galaxy/common/ai/CStunnable.h"
+#include "../../common/ai/CStunnable.h"
 
 namespace galaxy {
 

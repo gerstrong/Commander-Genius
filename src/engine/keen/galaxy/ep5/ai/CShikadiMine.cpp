@@ -5,12 +5,13 @@
  *      Author: Gerstrong
  */
 
+#include <base/video/CVideoDriver.h>
+
 
 #include "sdl/music/CMusic.h"
-#include <base/video/CVideoDriver.h>
 #include "CShikadiMine.h"
-#include "engine/galaxy/common/ai/CPlayerBase.h"
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
+#include "../../common/ai/CPlayerBase.h"
+#include "../../common/ai/CPlayerLevel.h"
 #include "misc.h"
 
 /*

@@ -23,15 +23,15 @@
 #include "ai/CShikadiMaster.h"
 
 // Episode 5
-#include "engine/galaxy/common/ai/CPlayerWM.h"
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
+#include "../common/ai/CPlayerWM.h"
+#include "../common/ai/CPlayerLevel.h"
 
 // TODO: I'm not sure yet if those are really common platforms
-#include "engine/galaxy/common/ai/platforms.h"
-#include "engine/galaxy/common/ai/CFlag.h"
-#include "engine/galaxy/common/ai/CSpriteItem.h"
-#include <engine/galaxy/common/ai/platform/CPlatformSit.h>
-#include <engine/galaxy/common/ai/Autogun.h>
+#include "../common/ai/platforms.h"
+#include "../common/ai/CFlag.h"
+#include "../common/ai/CSpriteItem.h"
+#include "../common/ai/platform/CPlatformSit.h"
+#include "../common/ai/Autogun.h"
 
 namespace galaxy
 {

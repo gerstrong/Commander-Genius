@@ -11,7 +11,7 @@
 #define CKORATH_H_
 
 #include <vector>
-#include "engine/galaxy/common/ai/CStunnable.h"
+#include "../../common/ai/CStunnable.h"
 
 namespace galaxy {
 

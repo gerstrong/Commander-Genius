@@ -6,7 +6,7 @@
  */
 
 #include "CMiragia.h"
-#include "engine/galaxy/common/ai/CPlayerWM.h"
+#include "../../common/ai/CPlayerWM.h"
 
 namespace galaxy
 {

@@ -11,7 +11,7 @@
 #define CFUSE_H_
 
 #include <vector>
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy {
 

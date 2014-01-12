@@ -8,8 +8,8 @@
 #include "CMapLoaderGalaxyEp4.h"
 
 // Episode 4
-#include "engine/galaxy/common/ai/CPlayerWM.h"
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
+#include "../../common/ai/CPlayerWM.h"
+#include "../../common/ai/CPlayerLevel.h"
 #include "engine/galaxy/ep4/ai/CPlayerDive.h"
 #include "engine/galaxy/ep4/ai/CPoisonSlug.h"
 #include "engine/galaxy/ep4/ai/CMadMushroom.h"
@@ -35,10 +35,10 @@
 #include "engine/galaxy/ep4/ai/CInchWorm.h"
 #include "engine/galaxy/ep4/ai/CFoot.h"
 
-#include "engine/galaxy/common/ai/platforms.h"
-#include "engine/galaxy/common/ai/CFlag.h"
-#include "engine/galaxy/common/ai/Autogun.h"
-#include "engine/galaxy/common/ai/CSpriteItem.h"
+#include "../../common/ai/platforms.h"
+#include "../../common/ai/CFlag.h"
+#include "../../common/ai/Autogun.h"
+#include "../../common/ai/CSpriteItem.h"
 
 namespace galaxy
 {

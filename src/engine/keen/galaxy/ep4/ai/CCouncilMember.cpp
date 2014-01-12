@@ -6,7 +6,7 @@
  */
 
 #include "CCouncilMember.h"
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
+#include "../../common/ai/CPlayerLevel.h"
 #include "misc.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"

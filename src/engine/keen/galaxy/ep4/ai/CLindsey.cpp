@@ -6,7 +6,7 @@
  */
 
 #include "CLindsey.h"
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
+#include "../../common/ai/CPlayerLevel.h"
 
 namespace galaxy {
 

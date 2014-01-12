@@ -1,7 +1,7 @@
 #ifndef CBABOBBA_H
 #define CBABOBBA_H
 
-#include "engine/galaxy/common/ai/CStunnable.h"
+#include "../../common/ai/CStunnable.h"
 #include <engine/galaxy/common/ai/CGalaxyActionSpriteObject.h>
 
 namespace galaxy {

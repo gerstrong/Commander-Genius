@@ -11,8 +11,8 @@
 #define CVOLTEFACE_H_
 
 #include <vector>
-#include "engine/galaxy/common/ai/CStunnable.h"
-#include "engine/galaxy/common/ai/CMoveTarget.h"
+#include "../../common/ai/CStunnable.h"
+#include "../../common/ai/CMoveTarget.h"
 
 namespace galaxy {
 
