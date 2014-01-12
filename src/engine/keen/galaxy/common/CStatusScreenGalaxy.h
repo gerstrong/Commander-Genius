@@ -13,7 +13,7 @@
 #include <SDL.h>
 #include <string>
 #include <memory>
-#include "engine/galaxy/res/ItemsGalaxy.h"
+#include "../res/ItemsGalaxy.h"
 
 class CStatusScreenGalaxy
 {

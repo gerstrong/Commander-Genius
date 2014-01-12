@@ -13,9 +13,9 @@
 #include "graphics/effects/CScrollEffect.h"
 
 
-#include "engine/galaxy/ep4/CStatusScreenGalaxyEp4.h"
-#include "engine/galaxy/ep5/CStatusScreenGalaxyEp5.h"
-#include "engine/galaxy/ep6/CStatusScreenGalaxyEp6.h"
+#include "../ep4/CStatusScreenGalaxyEp4.h"
+#include "../ep5/CStatusScreenGalaxyEp5.h"
+#include "../ep6/CStatusScreenGalaxyEp6.h"
 
 
 CInventory::CInventory(const int id) :

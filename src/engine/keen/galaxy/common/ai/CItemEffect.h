@@ -8,7 +8,7 @@
 #ifndef CITEMEFFECT_H_
 #define CITEMEFFECT_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../CGalaxySpriteObject.h"
 
 
 namespace galaxy {

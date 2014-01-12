@@ -11,7 +11,8 @@
 #ifndef CFLAG_H_
 #define CFLAG_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../CGalaxySpriteObject.h"
+
 #include "CVec.h"
 
 const Uint16 WAVING_BASEFRAME = 181;

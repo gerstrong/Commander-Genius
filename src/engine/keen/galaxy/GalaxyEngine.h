@@ -2,8 +2,7 @@
 #define __GALAXYENGINE_H__
 
 #include "engine/keen/KeenEngine.h"
-
-#include "engine/galaxy/res/CEGAGraphicsGalaxy.h"
+#include "res/CEGAGraphicsGalaxy.h"
 
 /**
  * The Galaxy engine derived from KeenEngine has the task to manage the whole Keen 4-6

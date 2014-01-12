@@ -8,7 +8,7 @@
 #ifndef CSTUNNABLE_H_
 #define CSTUNNABLE_H_
 
-#include "engine/galaxy/common/ai/CBullet.h"
+#include "../../common/ai/CBullet.h"
 #include "CGalaxyActionSpriteObject.h"
 #include <map>
 

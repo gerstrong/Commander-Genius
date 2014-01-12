@@ -1,7 +1,7 @@
 #ifndef CGALAXYACTIONSPRITEOBJECT_H
 #define CGALAXYACTIONSPRITEOBJECT_H
 
-#include <engine/galaxy/common/CGalaxySpriteObject.h>
+#include "../CGalaxySpriteObject.h"
 
 namespace galaxy
 {

@@ -6,7 +6,7 @@
  */
 
 #include "engine/CEvent.h"
-#include "engine/infoscenes/CInfoScene.h"
+//#include "engine/infoscenes/CInfoScene.h"
 #include "core/mode/CGameMode.h"
 #include "CResourceLoader.h"
 
@@ -37,7 +37,7 @@ protected:
 
 	void switchToGamePlayMode();
 
-    std::shared_ptr<CInfoScene> mpInfoScene;
+    //std::shared_ptr<CInfoScene> mpInfoScene;
     std::unique_ptr<CGameMode> mpGameMode;
 
     bool mOpenedGamePlay;

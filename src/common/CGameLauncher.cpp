@@ -31,8 +31,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "engine/vorticon/VorticonEngine.h"
-#include "engine/galaxy/GalaxyEngine.h"
+#include "engine/keen/vorticon/VorticonEngine.h"
+#include "engine/keen/galaxy/GalaxyEngine.h"
 
 
 

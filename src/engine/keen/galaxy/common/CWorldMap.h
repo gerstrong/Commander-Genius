@@ -10,7 +10,7 @@
 #ifndef CWORLDMAP_H_
 #define CWORLDMAP_H_
 
-#include "engine/galaxy/CMapPlayGalaxy.h"
+#include "../CMapPlayGalaxy.h"
 #include <boost/property_tree/ptree.hpp>
 
 namespace galaxy {

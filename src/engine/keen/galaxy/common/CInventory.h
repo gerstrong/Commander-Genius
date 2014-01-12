@@ -13,7 +13,7 @@
 #define CINVENTORY_H_
 
 #include "common/CHUD.h"
-#include "engine/galaxy/res/ItemsGalaxy.h"
+#include "../res/ItemsGalaxy.h"
 #include "CStatusScreenGalaxy.h"
 #include "fileio/CSaveGameController.h"
 #include <memory>

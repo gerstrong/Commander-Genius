@@ -19,7 +19,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "engine/galaxy/res/EGAStructs.h"
+//#include "engine/galaxy/res/EGAStructs.h"
 #include "hardware/Configurator.h"
 #include "fileio/CExeFile.h"
 #include "CTileProperties.h"
@@ -75,8 +75,8 @@ class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 public:
 	CBehaviorEngine() : 	mPlayers(0),
 				mDifficulty(EASY),
-				mPausedGamePlay(false),
-				pEpisodeInfo(NULL) {}
+                mPausedGamePlay(false)/*,
+                pEpisodeInfo(NULL)*/ {}
 
 	void setMessage(const std::string &name,
 					const std::string &message);
@@ -113,11 +113,11 @@ public:
 	unsigned int mPlayers;
 	Difficulty mDifficulty;
 
-	EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
+/*	EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
 	{	return &pEpisodeInfo[episode-4];	}
 
 	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
-	{	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
+    {	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}*/
 	
 	
 	std::string mapLevelName;
@@ -134,7 +134,7 @@ private:
 
 	bool mPausedGamePlay;
 
-	EpisodeInfoStruct *pEpisodeInfo;
+//	EpisodeInfoStruct *pEpisodeInfo;
 		
 };
 

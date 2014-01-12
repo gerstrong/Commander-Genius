@@ -10,7 +10,7 @@
 #ifndef CBULLET_H_
 #define CBULLET_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy
 {

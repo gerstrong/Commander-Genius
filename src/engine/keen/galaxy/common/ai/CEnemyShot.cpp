@@ -6,7 +6,7 @@
  */
 
 #include "CEnemyShot.h"
-#include "engine/galaxy/common/ai/CPlayerBase.h"
+#include "CPlayerBase.h"
 
 namespace galaxy {
 

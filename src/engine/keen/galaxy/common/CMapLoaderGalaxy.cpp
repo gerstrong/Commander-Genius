@@ -24,7 +24,7 @@
 /// AI Headers
 
 // General stuff
-#include "engine/galaxy/common/ai/CSpriteItem.h"
+#include "../common/ai/CSpriteItem.h"
 
 #include <fstream>
 

@@ -9,7 +9,8 @@
 #include "CBullet.h"
 #include "common/CBehaviorEngine.h"
 #include "platform/CPlatform.h"
-#include <engine/galaxy/ep5/ai/CSecurityDoor.h>
+#include "../CGalaxySpriteObject.h"
+#include "../../ep5/ai/CSecurityDoor.h"
 #include <base/CInput.h>
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"

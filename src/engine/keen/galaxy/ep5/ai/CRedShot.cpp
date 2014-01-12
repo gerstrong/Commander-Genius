@@ -1,6 +1,6 @@
 #include "CRedShot.h"
 
-#include "engine/galaxy/common/ai/CPlayerBase.h"
+#include "../../common/ai/CPlayerBase.h"
 
 /*
 $27ACW #Robo Red shot

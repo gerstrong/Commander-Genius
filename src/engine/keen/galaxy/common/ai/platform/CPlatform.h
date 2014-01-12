@@ -10,8 +10,8 @@
 #ifndef CPLATFORM_H_
 #define CPLATFORM_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
-#include "engine/galaxy/common/ai/CPlayerLevel.h"
+#include "../../CGalaxySpriteObject.h"
+#include "../CPlayerLevel.h"
 
 namespace galaxy {
 

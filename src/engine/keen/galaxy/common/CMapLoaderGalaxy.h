@@ -8,17 +8,17 @@
 #ifndef CVorticonMapLoaderGALAXY_H_
 #define CVorticonMapLoaderGALAXY_H_
 
+#include <memory>
+#include <vector>
+#include <string>
+#include <SDL.h>
+
 #include "fileio/CExeFile.h"
 #include "fileio/TypeDefinitions.h"
 #include "common/CMap.h"
 #include "common/Cheat.h"
-#include "engine/galaxy/common/CInventory.h"
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
-#include <memory>
-#include <vector>
-
-#include <string>
-#include <SDL.h>
+#include "CInventory.h"
+#include "CGalaxySpriteObject.h"
 
 namespace galaxy
 {

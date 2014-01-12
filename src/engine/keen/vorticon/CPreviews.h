@@ -10,7 +10,7 @@
 
 #include "engine/infoscenes/CInfoScene.h"
 #include "fileio/CExeFile.h"
-#include "engine/vorticon/finale/CFinaleStaticScene.h"
+#include "finale/CFinaleStaticScene.h"
 #include "common/CMap.h"
 #include "dialog/CTextViewer.h"
 #include "fileio/CExeFile.h"

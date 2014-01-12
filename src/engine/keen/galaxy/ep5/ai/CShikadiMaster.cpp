@@ -7,7 +7,7 @@
 
 
 #include "CShikadiMaster.h"
-#include <engine/galaxy/common/ai/CEnemyShot.h>
+#include "../../common/ai/CEnemyShot.h"
 #include "misc.h"
 
 /*

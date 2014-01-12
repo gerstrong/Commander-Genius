@@ -6,8 +6,8 @@
  */
 
 #include "CGamePlayMode.h"
-#include "engine/galaxy/CPlayGameGalaxy.h"
-#include "engine/vorticon/playgame/CPlayGameVorticon.h"
+//#include "engine/galaxy/CPlayGameGalaxy.h"
+//#include "engine/vorticon/playgame/CPlayGameVorticon.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/music/CMusicPlayer.h"
 #include <base/GsTimer.h>
@@ -31,11 +31,11 @@ m_DataDirectory(gpmode.m_DataDirectory)
 
 void CGamePlayMode::init()
 {
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-    CEventContainer& EventContainer = gEventManager;
+//	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+//    CEventContainer& EventContainer = gEventManager;
 
 	// If no level has been set or is out of bound, set it to map.
-	if(m_startLevel > 100 || m_startLevel < 0 )
+/*	if(m_startLevel > 100 || m_startLevel < 0 )
 		m_startLevel = WORLD_MAP_LEVEL_VORTICON;
 
 	bool ok = true;
@@ -65,8 +65,8 @@ void CGamePlayMode::init()
 
 	if(!ok)
 	{
-        EventContainer.add( new GMSwitchToPassiveMode(/*m_DataDirectory, m_Episode*/));
-	}
+        EventContainer.add( new GMSwitchToPassiveMode(*//*m_DataDirectory, m_Episode*//*));
+    }*/
 }
 
 
@@ -102,7 +102,7 @@ void CGamePlayMode::ponder(const float deltaT)
 	if( mp_PlayGame->getEndGame() )
 	{
 		m_startLevel = 0;
-		g_pMusicPlayer->stop();
+//		g_pMusicPlayer->stop();
         EventContainer.add( new GMSwitchToPassiveMode(/*m_DataDirectory, m_Episode*/) );
 	}
 	else if( mp_PlayGame->getStartGame() )
@@ -135,7 +135,7 @@ void CGamePlayMode::render()
 
         std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());
         SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
-        gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
+        //gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
 
         SDL_BlitSurface(mpFPSSurface.get(), NULL, gVideoDriver.getBlitSurface(), &rect);
     }

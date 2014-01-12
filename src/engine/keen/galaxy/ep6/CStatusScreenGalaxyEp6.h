@@ -10,7 +10,7 @@
 #ifndef CSTATUSSCREENGALAXYEP6_H_
 #define CSTATUSSCREENGALAXYEP6_H_
 
-#include "engine/galaxy/common/CStatusScreenGalaxy.h"
+#include "../common/CStatusScreenGalaxy.h"
 
 class CStatusScreenGalaxyEp6: public CStatusScreenGalaxy
 {

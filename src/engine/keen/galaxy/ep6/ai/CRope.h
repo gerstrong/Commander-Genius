@@ -1,7 +1,7 @@
 #ifndef CROPE_H
 #define CROPE_H
 
-#include <engine/galaxy/common/ai/CGalaxyActionSpriteObject.h>
+#include "../../common/ai/CGalaxyActionSpriteObject.h"
 
 namespace galaxy
 {

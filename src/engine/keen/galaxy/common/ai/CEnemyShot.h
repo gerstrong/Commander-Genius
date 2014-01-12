@@ -11,7 +11,7 @@
 #ifndef CENEMYSHOT_H_
 #define CENEMYSHOT_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../CGalaxySpriteObject.h"
 
 namespace galaxy {
 

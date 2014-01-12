@@ -19,7 +19,7 @@
 #include <ostream>
 
 #include "engine/CEvent.h"
-#include "common/Menu/CSelectionMenu.h"
+//#include "common/Menu/CSelectionMenu.h"
 
 #include "CResourceLoader.h"
 

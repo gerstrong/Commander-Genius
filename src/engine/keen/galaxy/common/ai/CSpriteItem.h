@@ -12,7 +12,7 @@
 #ifndef CSpriteItem_H_
 #define CSpriteItem_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../CGalaxySpriteObject.h"
 
 namespace galaxy {
 

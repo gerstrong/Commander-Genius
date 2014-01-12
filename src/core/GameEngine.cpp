@@ -14,9 +14,9 @@
 #include "mode/CGamePassiveMode.h"
 #include "mode/CGamePlayMode.h"
 #include "core/mode/CGameMode.h"
-#include "common/Menu/CSelectionMenu.h"
+/*#include "common/Menu/CSelectionMenu.h"
 #include "common/Menu/CMainMenu.h"
-#include "common/Menu/CHelpMenu.h"
+#include "common/Menu/CHelpMenu.h"*/
 
 
 void GameEngine::switchToGamePlayMode()
@@ -56,7 +56,7 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
         mOpenedGamePlay = true;
         EventContainer.add( new CloseAllMenusEvent() );
     }
-    else if( const StartInfoSceneEvent *scene = dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
+    /*else if( const StartInfoSceneEvent *scene = dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
     {
         gMenuController.lock(true);
         gMenuController.hide(true);
@@ -96,7 +96,7 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
 
         mOpenedGamePlay = true;
         EventContainer.add( new CloseAllMenusEvent() );
-    }
+    }*/
     else if(mpGameMode) // Otherwise send to the existing created mGameMode Object
     {
         mpGameMode->pumpEvent(evPtr);
@@ -113,7 +113,7 @@ void GameEngine::ponder(const float deltaT)
         return;
     }
 
-	if( mpInfoScene )
+/*	if( mpInfoScene )
 	{
         mpInfoScene->ponder();
 		if( mpInfoScene->destroyed() )
@@ -125,7 +125,7 @@ void GameEngine::ponder(const float deltaT)
             gMenuController.hide(false);
 		}
 	}
-	else
+    else*/
 	{
 		// Process the game mode object
         mpGameMode->ponder(deltaT);
@@ -140,14 +140,13 @@ void GameEngine::render()
         return;
     }
 
-    if( !mpInfoScene )
+    //if( !mpInfoScene )
     {
         // Render the game mode object
         mpGameMode->render();
     }
-    else
+    /*else
     {
         mpInfoScene->render();
-    }
-
+    }*/
 }

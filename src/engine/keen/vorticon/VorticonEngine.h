@@ -3,7 +3,7 @@
 
 #include "engine/keen/KeenEngine.h"
 
-#include "engine/vorticon/CEGAGraphicsVort.h"
+#include "engine/keen/vorticon/CEGAGraphicsVort.h"
 
 namespace vorticon
 {

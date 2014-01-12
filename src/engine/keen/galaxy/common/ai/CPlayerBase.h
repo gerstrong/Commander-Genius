@@ -15,12 +15,13 @@
 #ifndef CPLAYERBASE_H_
 #define CPLAYERBASE_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../CGalaxySpriteObject.h"
+#include "../CInventory.h"
+
 #include "common/Playerdefines.h"
 #include "engine/CEvent.h"
 #include "common/Cheat.h"
 #include "engine/CCamera.h"
-#include "engine/galaxy/common/CInventory.h"
 
 namespace galaxy
 {

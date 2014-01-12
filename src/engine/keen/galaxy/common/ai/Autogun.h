@@ -1,7 +1,7 @@
 #ifndef AUTOGUN_H
 #define AUTOGUN_H
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../CGalaxySpriteObject.h"
 
 namespace galaxy
 {

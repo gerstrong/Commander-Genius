@@ -1,7 +1,7 @@
 #ifndef CSECURITYDOOR_H
 #define CSECURITYDOOR_H
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 
 class CSecurityDoor : public CGalaxySpriteObject

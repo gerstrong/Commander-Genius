@@ -8,7 +8,7 @@
 #ifndef CEGAGRAPHICSVORT_H_
 #define CEGAGRAPHICSVORT_H_
 
-#include "../CEGAGraphics.h"
+#include "engine/CEGAGraphics.h"
 #include "CEGALatch.h"
 #include "CEGASprit.h"
 

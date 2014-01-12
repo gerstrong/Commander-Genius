@@ -8,8 +8,9 @@
 #ifndef CVARPLATFORM_H_
 #define CVARPLATFORM_H_
 
+#include "../CMoveTarget.h"
+
 #include "CPlatform.h"
-#include <engine/galaxy/common/ai/CMoveTarget.h>
 #include "CVec.h"
 
 #include <boost/property_tree/ptree.hpp>

@@ -11,10 +11,10 @@
 
 #include "CGamePassiveMode.h"
 #include "sdl/sound/CSound.h"
-#include "engine/vorticon/CPassiveVort.h"
-#include "engine/galaxy/CPassive.h"
+//#include "engine/vorticon/CPassiveVort.h"
+//#include "engine/galaxy/CPassive.h"
 #include "common/CGameLauncher.h"
-#include "common/Menu/CSelectionMenu.h"
+//#include "common/Menu/CSelectionMenu.h"
 
 
 CGamePassiveMode::CGamePassiveMode() :
@@ -31,11 +31,11 @@ void CGamePassiveMode::pumpEvent(const CEvent *evPtr)
 void CGamePassiveMode::init()
 {
 	// Create mp_PassiveMode object used for the screens while Player is not playing
-	const int episode = g_pBehaviorEngine->getEpisode();
-	if(episode >= 4)
+/*	const int episode = g_pBehaviorEngine->getEpisode();
+    if(episode >= 4)
 		mpPassive.reset( new galaxy::CPassiveGalaxy() );
 	else
-		mpPassive.reset( new vorticon::CPassiveVort() );
+        mpPassive.reset( new vorticon::CPassiveVort() );*/
 
 	if( mpPassive->init() ) return;
 
