@@ -13,8 +13,8 @@
 #include "graphics/GsGraphics.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/sound/CSound.h"
-#include "engine/vorticon/ai/CTeleporter.h"
-#include "engine/vorticon/ai/CMessie.h"
+#include "../ai/CTeleporter.h"
+#include "../ai/CMessie.h"
 
 const int LVLS_SHIP = 20;
 

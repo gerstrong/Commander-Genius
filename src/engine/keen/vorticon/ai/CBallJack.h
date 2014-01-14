@@ -8,8 +8,8 @@
 #ifndef CBALLJACK_H_
 #define CBALLJACK_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 #include <vector>
 
 class CBallJack : public CVorticonSpriteObject

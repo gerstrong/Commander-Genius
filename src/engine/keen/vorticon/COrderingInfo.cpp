@@ -8,10 +8,11 @@
 #include "COrderingInfo.h"
 #include <base/CInput.h>
 #include <lib/base/GsLogging.h>
-#include "fileio/CExeFile.h"
-#include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
-#include "common/CVorticonMapLoader.h"
+#include <graphics/GsGraphics.h>
+
+#include "fileio/CExeFile.h"
+#include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 

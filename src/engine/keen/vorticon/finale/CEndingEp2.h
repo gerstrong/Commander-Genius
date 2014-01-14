@@ -10,8 +10,8 @@
 
 #include "CFinale.h"
 #include "common/CMap.h"
-#include "common/CPlayer.h"
-#include "engine/vorticon/dialog/CMessageBoxVort.h"
+#include "../ai/CPlayer.h"
+#include "../dialog/CMessageBoxVort.h"
 #include <vector>
 #include <SDL.h>
 

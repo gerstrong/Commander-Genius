@@ -8,8 +8,8 @@
 #ifndef _CTELEPORTER_H_
 #define _CTELEPORTER_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 
 enum teleportation_state{
 TELEPORTING_OUT,

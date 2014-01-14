@@ -8,8 +8,8 @@
 #ifndef CMEEP_H_
 #define CMEEP_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 
 class CMeep : public CVorticonSpriteObject
 {

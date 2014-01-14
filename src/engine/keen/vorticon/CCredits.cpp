@@ -9,7 +9,7 @@
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
-#include "common/CVorticonMapLoader.h"
+#include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 void CCredits::init()

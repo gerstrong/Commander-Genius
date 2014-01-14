@@ -8,7 +8,7 @@
 #ifndef CSCRUB_H_
 #define CSCRUB_H_
 
-#include "engine/vorticon/ai/CCarrier.h"
+#include "CCarrier.h"
 
 class CScrub : public CCarrier
 {

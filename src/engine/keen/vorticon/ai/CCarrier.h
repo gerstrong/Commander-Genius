@@ -1,8 +1,8 @@
 #ifndef CCARRIER_H
 #define CCARRIER_H
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 
 
 class CCarrier : public CVorticonSpriteObject

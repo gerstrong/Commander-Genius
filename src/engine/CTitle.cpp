@@ -10,13 +10,13 @@
 #include "CTitle.h"
 #include <lib/base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
-#include "vorticon/ai/CEGABitmap.h"
+//#include "ai/CEGABitmap.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CPixelate.h"
 #include <widgets/GsMenuController.h>
 #include <base/CInput.h>
 
-#include "common/Menu/CMainMenu.h"
+/*#include "common/Menu/CMainMenu.h"
 
 ////
 // Creation Routine
@@ -101,4 +101,4 @@ void CTitle::render()
         obj->draw();
     }
 
-}
+}*/

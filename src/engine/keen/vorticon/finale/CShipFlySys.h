@@ -8,7 +8,7 @@
 #ifndef CSHIPFLYSYS_H_
 #define CSHIPFLYSYS_H_
 
-#include "common/CPlayer.h"
+#include "../ai/CPlayer.h"
 
 #define CMD_MOVE                0
 #define CMD_WAIT                1

@@ -19,7 +19,8 @@
 #include "engine/CEvent.h"
 #include "SelectionMenu.h"
 
-
+namespace galaxy
+{
 
 // Main Class for Controller Config
 class CControlsettings : public CBaseMenu
@@ -92,22 +93,23 @@ private:
 struct OpenControlMenuEvent : SelectionEvent
 {
 	OpenControlMenuEvent(const int players) :
-		SelectionEvent(players) {};
+        SelectionEvent(players) {}
 };
 
 
 struct OpenButtonsControlMenuEvent : OpenControlMenuEvent
 {
 	OpenButtonsControlMenuEvent(const int option) :
-		OpenControlMenuEvent(option) {};
+        OpenControlMenuEvent(option) {}
 };
 
 struct OpenMovementControlMenuEvent : OpenControlMenuEvent
 {
 	OpenMovementControlMenuEvent(const int option) :
-		OpenControlMenuEvent(option) {};
+        OpenControlMenuEvent(option) {}
 
 };
 
+}
 
 #endif /* CCONTROLSETTINGS_H_ */

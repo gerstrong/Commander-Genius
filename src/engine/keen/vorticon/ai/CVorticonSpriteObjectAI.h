@@ -11,7 +11,7 @@
 #include "common/CMap.h"
 #include "common/CSpriteObject.h"
 #include "common/options.h"
-#include "common/CPlayer.h"
+#include "CPlayer.h"
 #include "common/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
 #include <vector>

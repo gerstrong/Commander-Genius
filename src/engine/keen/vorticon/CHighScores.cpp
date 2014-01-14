@@ -15,7 +15,7 @@
 //#include "StringUtils.h"
 #include <base/FindFile.h>
 #include <base/video/CVideoDriver.h>
-#include "common/CVorticonMapLoader.h"
+#include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 const int HIGHSCORETABLE_X = 1344;

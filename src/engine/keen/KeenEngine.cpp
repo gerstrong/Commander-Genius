@@ -9,16 +9,16 @@
 #include "fileio/CSaveGameController.h"
 
 #include "sdl/music/CMusic.h"
-#include "common/Menu/CMainMenu.h"
+//#include "common/Menu/CMainMenu.h"
 
 void KeenEngine::openMainMenu()
 {
-    if(gMenuController.isLocked())
+    /*if(gMenuController.isLocked())
         return;
 
     gEventManager.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
     g_pBehaviorEngine->setPause(true);
-    g_pMusicPlayer->pause();
+    g_pMusicPlayer->pause();*/
 
 
     /*
@@ -100,10 +100,10 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
                                     DataDirectory,
                                     m_start_level) );*/
     }
-    else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
+    /*else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         openMainMenu();
-    }
+    }*/
 }
 
 void KeenEngine::ponder(const float deltaT)

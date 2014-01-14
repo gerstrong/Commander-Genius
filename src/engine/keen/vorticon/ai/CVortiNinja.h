@@ -8,8 +8,8 @@
 #ifndef CVORTININJA_H_
 #define CVORTININJA_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 
 // Ninja AI (the black, bear-like karate-kicking creature in ep3)
 enum ninja_actions{

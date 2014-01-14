@@ -14,8 +14,8 @@
 #include "sdl/music/CMusic.h"
 #include "common/CBehaviorEngine.h"
 
-#include "engine/vorticon/CAudioVorticon.h"
-#include "engine/galaxy/res/CAudioGalaxy.h"
+//#include "engine/vorticon/CAudioVorticon.h"
+//#include "engine/galaxy/res/CAudioGalaxy.h"
 
 #include <fstream>
 
@@ -356,7 +356,7 @@ void CSound::playStereosoundSlot(unsigned char slotplay, const char mode, const 
 
 bool CSound::loadSoundData()
 {
-	const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+/*	const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	const unsigned int ep = ExeFile.getEpisode();
 	if(ep >= 1 && ep <= 3) // Vorticon based Keengame
 	{
@@ -373,7 +373,7 @@ bool CSound::loadSoundData()
 	    sndSlotMap = galaxyAudio->sndSlotMapGalaxy[ep];
 	    mpAudioRessources = move(galaxyAudio);
 	    return ok;
-	}
+    }*/
 
 	return false;
 }

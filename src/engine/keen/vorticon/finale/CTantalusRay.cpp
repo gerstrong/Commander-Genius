@@ -10,11 +10,11 @@
 #include "graphics/GsGraphics.h"
 #include "sdl/sound/CSound.h"
 #include <base/CInput.h>
-#include "common/CVorticonMapLoader.h"
+#include "../CVorticonMapLoader.h"
 
-#include "engine/vorticon/ai/CRay.h"
-#include "engine/vorticon/ai/CEarthExplosion.h"
-#include "engine/vorticon/ai/CEarthChunk.h"
+#include "../ai/CRay.h"
+#include "../ai/CEarthExplosion.h"
+#include "../ai/CEarthChunk.h"
 
 unsigned int rnd(void);
 

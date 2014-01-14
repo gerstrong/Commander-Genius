@@ -7,12 +7,12 @@
 
 #include "CHelpMenu.h"
 
-#include "engine/infoscenes/CStory.h"
-#include "engine/infoscenes/CCredits.h"
-#include "engine/infoscenes/COrderingInfo.h"
-#include "engine/infoscenes/CAbout.h"
-#include "engine/infoscenes/CHelp.h"
-#include "engine/infoscenes/CPreviews.h"
+#include "../CStory.h"
+#include "../CCredits.h"
+#include "../COrderingInfo.h"
+#include "../CAbout.h"
+#include "../CHelp.h"
+#include "../CPreviews.h"
 #include "fileio/ResourceMgmt.h"
 
 

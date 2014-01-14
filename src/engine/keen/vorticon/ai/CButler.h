@@ -8,8 +8,8 @@
 #ifndef CBUTLER_H_
 #define CBUTLER_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 #include <vector>
 
 #define BUTLER_WALK_SPEED        28

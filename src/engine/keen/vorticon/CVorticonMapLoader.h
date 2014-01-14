@@ -8,10 +8,10 @@
 #ifndef CVorticonMapLoader_H_
 #define CVorticonMapLoader_H_
 
-#include "CMap.h"
-#include "CPlayer.h"
-#include "CSpriteObject.h"
-#include "options.h"
+#include "common/CMap.h"
+#include "ai/CPlayer.h"
+#include "common/CSpriteObject.h"
+#include "common/options.h"
 #include "sdl/music/CMusic.h"
 #include "common/CBehaviorEngine.h"
 #include <string>

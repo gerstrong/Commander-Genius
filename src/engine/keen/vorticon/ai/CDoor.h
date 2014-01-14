@@ -8,7 +8,7 @@
 #ifndef CDOOR_H_
 #define CDOOR_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 
 // "AI" for the door object (to do the animation when a door
 // opens, the door tiles are removed and replaced with a sprite

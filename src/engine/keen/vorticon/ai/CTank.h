@@ -6,8 +6,8 @@
 #ifndef TANKEP1_H_
 #define TANKEP1_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 
 #define TANK_SAME_LEVEL_TIME   25
 

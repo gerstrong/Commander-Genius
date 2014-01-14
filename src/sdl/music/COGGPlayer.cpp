@@ -9,7 +9,7 @@
 
 #include "COGGPlayer.h"
 
-#include "engine/galaxy/res/CAudioGalaxy.h"
+//#include "engine/galaxy/res/CAudioGalaxy.h"
 #include <base/FindFile.h>
 #include "sdl/sound/Sampling.h"
 #include "fileio/ResourceMgmt.h"
@@ -113,7 +113,7 @@ bool COGGPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 	// Now get the proper music slot reading the assignment table.
 	Uint16 music_order = 0;
 	const int Idx = ExeFile.getEpisode()-4;
-	memcpy( &music_order, ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16), sizeof(Uint16));
+//	memcpy( &music_order, ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16), sizeof(Uint16));
 	
 	if(music_order > 20)
 	{

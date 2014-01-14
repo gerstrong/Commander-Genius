@@ -26,7 +26,7 @@ EC_DOWNLEFT,
 EC_DOWNRIGHT
 };
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 
 class CEarthChunk : public CVorticonSpriteObject
 {

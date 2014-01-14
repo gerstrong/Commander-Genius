@@ -9,14 +9,15 @@
  *  more games.
  */
 
+#include <base/video/CVideoDriver.h>
+#include <base/utils/StringUtils.h>
+
 #include "CStatusScreen.h"
 #include "graphics/GsGraphics.h"
-#include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
-#include <base/utils/StringUtils.h>
 #include "common/Playerdefines.h"
 #include "common/CBehaviorEngine.h"
-#include "engine/vorticon/ai/CAnkhShield.h"
+#include "ai/CAnkhShield.h"
 
 #define FADE_SPEED	10
 

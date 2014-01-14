@@ -8,7 +8,7 @@
 #ifndef CFINALESTATICSCENE_H_
 #define CFINALESTATICSCENE_H_
 
-#include "engine/vorticon/dialog/CMessageBoxVort.h"
+#include "../dialog/CMessageBoxVort.h"
 #include "graphics/GsBitmap.h"
 #include <SDL.h>
 #include <string>

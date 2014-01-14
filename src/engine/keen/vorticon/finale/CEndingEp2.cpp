@@ -10,8 +10,8 @@
 #include <lib/base/GsTimer.h>
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
-#include "common/CVorticonMapLoader.h"
-#include "common/Playerdefines.h"
+#include "../CVorticonMapLoader.h"
+#include "../common/Playerdefines.h"
 
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;

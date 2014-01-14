@@ -12,19 +12,19 @@
 
 #include "graphics/GsGraphics.h"
 #include "fileio/CSaveGameController.h"
-#include "common/CPlayer.h"
+#include "../ai/CPlayer.h"
 #include "common/CTileProperties.h"
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 #include "common/CMap.h"
 #include "common/options.h"
 #include "common/CHUD.h"
-#include "engine/vorticon/ai/CVorticonSpriteObjectAI.h"
-#include "engine/vorticon/ai/CEGABitmap.h"
-#include "engine/vorticon/dialog/CMessageBoxVort.h"
+#include "../ai/CVorticonSpriteObjectAI.h"
+#include "../ai/CEGABitmap.h"
+#include "../dialog/CMessageBoxVort.h"
 #include "sdl/music/CMusic.h"
-#include "engine/infoscenes/CHighScores.h"
+#include "../CHighScores.h"
 #include "engine/playgame/CPlayGame.h"
-#include "engine/vorticon/finale/CFinale.h"
+#include "../finale/CFinale.h"
 #include <SDL.h>
 #include <string>
 #include <vector>

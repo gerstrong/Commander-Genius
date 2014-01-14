@@ -6,7 +6,7 @@
  */
 
 #include "CProfilesMenu.h"
-#include "common/Menu/CSelectionMenu.h"
+#include "CSelectionMenu.h"
 #include "common/CSettings.h"
 #include <base/video/CVideoDriver.h>
 #include <lib/base/GsTimer.h>

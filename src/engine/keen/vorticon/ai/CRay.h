@@ -6,8 +6,8 @@
 #define RAY_AUTO_SPEED		120
 #define RAY_ZAPZOT_TIME    	10
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 #include "common/objenums.h"
 #include <vector>
 

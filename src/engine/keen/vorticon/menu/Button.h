@@ -3,10 +3,13 @@
 
 #include <widgets/GsButton.h>
 
-class VorticonButton : public GsButton
+namespace vorticon
+{
+
+class Button : public GsButton
 {
 public:
-    VorticonButton(const std::string& text,
+    Button(const std::string& text,
                  CEvent *ev);
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
@@ -18,5 +21,7 @@ private:
     void drawVorticonStyle(SDL_Rect& lRect);
 
 };
+
+}
 
 #endif /* __VORTICONBUTTON_H__ */

@@ -12,7 +12,7 @@
 #include "fileio/CExeFile.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
-#include "common/CVorticonMapLoader.h"
+#include "CVorticonMapLoader.h"
 #include "fileio/ResourceMgmt.h"
 #include "sdl/extensions.h"
 

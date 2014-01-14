@@ -9,10 +9,10 @@
 #define CTANTALUSRAY_H_
 
 #include "CFinale.h"
-#include "engine/vorticon/dialog/CMessageBoxVort.h"
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../dialog/CMessageBoxVort.h"
+#include "../CVorticonSpriteObject.h"
 #include "common/CMap.h"
-#include "engine/vorticon/ai/CVorticonSpriteObjectAI.h"
+#include "../ai/CVorticonSpriteObjectAI.h"
 #include "graphics/GsBitmap.h"
 //#include "sdl/CVideoDriver.h"
 

@@ -9,13 +9,13 @@
 #define CPLAYER_H_
 
 #include <SDL.h>
-#include "inventory.h"
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include <engine/vorticon/ai/CMessie.h>
-#include "CMap.h"
-#include "CStatusScreen.h"
-#include "Playerdefines.h"
-#include "options.h"
+//#include "inventory.h"
+#include "../CVorticonSpriteObject.h"
+#include "../ai/CMessie.h"
+#include "common/CMap.h"
+#include "../CStatusScreen.h"
+#include "common/Playerdefines.h"
+#include "common/options.h"
 #include "engine/CCamera.h"
 #include "common/CBehaviorEngine.h"
 #include <vector>

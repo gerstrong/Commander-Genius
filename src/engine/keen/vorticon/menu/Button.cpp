@@ -2,9 +2,12 @@
 #include <base/video/CVideoDriver.h>
 #include <graphics/GsGraphics.h>
 
-#include "VorticonButton.h"
+#include "Button.h"
 
-VorticonButton::VorticonButton(const std::string& text,
+namespace vorticon
+{
+
+Button::Button(const std::string& text,
              CEvent *ev) :
 GsButton(text, ev)
 {
@@ -12,7 +15,7 @@ GsButton(text, ev)
 }
 
 
-void VorticonButton::setupButtonSurface()
+void Button::setupButtonSurface()
 {
     GsFont &Font = gGraphics.getFont(mFontID);
     SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
@@ -23,7 +26,7 @@ void VorticonButton::setupButtonSurface()
 }
 
 
-void VorticonButton::drawVorticonStyle(SDL_Rect& lRect)
+void Button::drawVorticonStyle(SDL_Rect& lRect)
 {
     SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
@@ -42,7 +45,7 @@ void VorticonButton::drawVorticonStyle(SDL_Rect& lRect)
 }
 
 
-void VorticonButton::processRender(const GsRect<float> &RectDispCoordFloat)
+void Button::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
@@ -50,4 +53,6 @@ void VorticonButton::processRender(const GsRect<float> &RectDispCoordFloat)
     SDL_Rect lRect = displayRect.SDLRect();
 
     drawVorticonStyle(lRect);
+}
+
 }

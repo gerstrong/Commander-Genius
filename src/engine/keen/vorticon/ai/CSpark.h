@@ -8,7 +8,7 @@
 #ifndef CSPARK_H_
 #define CSPARK_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 #include "engine/spritedefines.h"
 
 class CSpark : public CVorticonSpriteObject {

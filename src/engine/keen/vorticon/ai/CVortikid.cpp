@@ -1,7 +1,7 @@
-#include "../../../sdl/sound/CSound.h"
+#include <sdl/sound/CSound.h>
 
 #include "CVortiKid.h"
-#include "../../../misc.h"
+#include "misc.h"
 
 // Baby Vorticon (the superfast little blue creatures that knock you down)
 // (ep 2 & 3)

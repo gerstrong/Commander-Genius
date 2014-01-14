@@ -7,15 +7,15 @@
 
 #include "CPlayer.h"
 
-#include "engine/vorticon/ai/CManglingMachine.h"
-#include "engine/vorticon/ai/CRay.h"
-#include "engine/vorticon/ai/CBridges.h"
+#include "CManglingMachine.h"
+#include "CRay.h"
+#include "CBridges.h"
 #include "engine/spritedefines.h"
 #include "sdl/sound/CSound.h"
 #include <base/CInput.h>
 #include "sdl/music/CMusic.h"
 #include "graphics/GsGraphics.h"
-#include "CPhysicsSettings.h"
+#include "common/CPhysicsSettings.h"
 
 #define PDIEFRAME             22
 

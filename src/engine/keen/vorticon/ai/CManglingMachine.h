@@ -11,7 +11,7 @@
 #ifndef SE_H_
 #define SE_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 
 // "Sector Effector" types
 enum sector_effector_type{

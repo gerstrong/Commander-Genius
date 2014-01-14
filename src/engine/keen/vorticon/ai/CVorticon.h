@@ -2,8 +2,8 @@
 #ifndef __CVORTICON__
 #define __CVORTICON__
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 #include <vector>
 
 // TODO: VOrticon, when charges. His speed is 37. Need to implement it still.

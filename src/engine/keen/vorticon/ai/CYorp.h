@@ -8,9 +8,9 @@
 #ifndef CYORP_H_
 #define CYORP_H_
 
-#include "../../../common/CPlayer.h"
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CMap.h"
+#include "CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "common/CMap.h"
 
 #define OBJ_YORP_DEFSPRITE       50
 

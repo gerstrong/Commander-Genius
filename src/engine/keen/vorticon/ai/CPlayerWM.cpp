@@ -6,7 +6,7 @@
  */
 
 #include "CPlayer.h"
-#include "engine/vorticon/ai/CMessie.h"
+#include "CMessie.h"
 #include "graphics/GsGraphics.h"
 #include <base/CInput.h>
 

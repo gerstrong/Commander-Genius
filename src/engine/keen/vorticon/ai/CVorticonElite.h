@@ -9,7 +9,7 @@
 #define CVORTICONELITE_H_
 
 #include "CVorticon.h"
-#include "../../../common/CPlayer.h"
+#include "CPlayer.h"
 #include <vector>
 
 // the "Vorticon Elite" enemies in ep2

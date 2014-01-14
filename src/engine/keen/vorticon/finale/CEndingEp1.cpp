@@ -10,7 +10,7 @@
 #include <lib/base/GsTimer.h>
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
-#include "common/CVorticonMapLoader.h"
+#include "../CVorticonMapLoader.h"
 #include "common/Playerdefines.h"
 
 CEndingEp1::CEndingEp1(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,

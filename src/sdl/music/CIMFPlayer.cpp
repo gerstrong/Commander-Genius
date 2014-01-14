@@ -7,7 +7,7 @@
  *  Player which reproduces the IMF Data
  */
 
-#include "engine/galaxy/res/CAudioGalaxy.h"
+//#include "engine/galaxy/res/CAudioGalaxy.h"
 #include "CIMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
@@ -289,8 +289,8 @@ bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
 	// Now get the proper music slot reading the assignment table.
 	Uint16 music_order = 0;
 	const int Idx = ExeFile.getEpisode()-4;
-	byte *data = ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16);
-	memcpy( &music_order, data, sizeof(Uint16));
+//	byte *data = ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16);
+//	memcpy( &music_order, data, sizeof(Uint16));
 	
 	if(music_order > 20)
 	{

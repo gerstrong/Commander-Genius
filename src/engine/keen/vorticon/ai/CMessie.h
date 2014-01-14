@@ -8,8 +8,8 @@
 #ifndef CMESSIE_H_
 #define CMESSIE_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 #include "engine/CEvent.h"
 
 

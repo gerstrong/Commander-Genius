@@ -8,6 +8,8 @@
 #include "CGalaxySpriteObject.h"
 #include "common/CBehaviorEngine.h"
 
+#include "../res/EGAStructs.h"
+
 static int spriteOffset;
 
 CGalaxySpriteObject::CGalaxySpriteObject(CMap *pmap, const Uint16 foeID,
@@ -32,8 +34,8 @@ mClipped(false),
 m_jumpdown(false),
 mEndOfAction(false)
 {
-//	EpisodeInfoStruct* eiStructPtr = g_pBehaviorEngine->getEpisodeInfoStructRef(g_pBehaviorEngine->getEpisode());
-//	spriteOffset = eiStructPtr->IndexSprites;
+    EpisodeInfoStruct* eiStructPtr = g_pBehaviorEngine->getEpisodeInfoStructRef(g_pBehaviorEngine->getEpisode());
+    spriteOffset = eiStructPtr->IndexSprites;
 }
 
 void CGalaxySpriteObject::setupGalaxyObjectOnMap(const size_t ActionBaseOffset,

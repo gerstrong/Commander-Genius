@@ -15,14 +15,14 @@
 #include "CPlayGameVorticon.h"
 #include "sdl/sound/CSound.h"
 #include "core/mode/CGameMode.h"
-#include "common/CVorticonMapLoader.h"
+#include "../CVorticonMapLoader.h"
 #include "graphics/GsGraphics.h"
 //#include "StringUtils.h"
-#include "engine/vorticon/ai/CTeleporter.h"
+#include "../ai/CTeleporter.h"
 #include "sdl/extensions.h"
-#include "engine/vorticon/finale/CEndingEp1.h"
-#include "engine/vorticon/finale/CEndingEp2.h"
-#include "engine/vorticon/finale/CEndingEp3.h"
+#include "../finale/CEndingEp1.h"
+#include "../finale/CEndingEp2.h"
+#include "../finale/CEndingEp3.h"
 
 ////
 // Creation Routine

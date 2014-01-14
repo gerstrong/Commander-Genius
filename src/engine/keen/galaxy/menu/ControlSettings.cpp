@@ -14,6 +14,10 @@
 #include <base/CInput.h>
 
 
+
+namespace galaxy
+{
+
 /**
  * \brief This sets the default settings for a classic gameplay
  */
@@ -277,3 +281,4 @@ void CControlSettingsButtons::release()
 	gInput.saveControlconfig();
 }
 
+}

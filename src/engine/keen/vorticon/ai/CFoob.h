@@ -10,8 +10,8 @@
 #ifndef CFOOB_H_
 #define CFOOB_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 #include <vector>
 
 #define FOOB_WALK_SPEED      15

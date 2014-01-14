@@ -8,7 +8,7 @@
 #ifndef CRISINGPOINTS_H_
 #define CRISINGPOINTS_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 
 class CRisingPoints : public CVorticonSpriteObject
 {

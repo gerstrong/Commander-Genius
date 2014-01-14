@@ -11,7 +11,7 @@
 #define CEGABITMAP_H_
 
 #include "graphics/GsBitmap.h"
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 #include <SDL.h>
 
 class CEGABitmap : public CVorticonSpriteObject

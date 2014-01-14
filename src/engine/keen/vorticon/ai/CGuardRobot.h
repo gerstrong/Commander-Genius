@@ -8,8 +8,8 @@
 #ifndef CGUARDROBOT_H_
 #define CGUARDROBOT_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 
 //reference to ../misc.cpp
 unsigned int rnd(void);

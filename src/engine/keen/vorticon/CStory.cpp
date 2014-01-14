@@ -10,7 +10,7 @@
 #include <fstream>
 
 #include "CStory.h"
-#include "common/CVorticonMapLoader.h"
+#include "CVorticonMapLoader.h"
 #include "fileio/CExeFile.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>

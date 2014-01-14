@@ -8,7 +8,7 @@
 #ifndef CPREVIEWS_H_
 #define CPREVIEWS_H_
 
-#include "engine/infoscenes/CInfoScene.h"
+#include "CInfoScene.h"
 #include "fileio/CExeFile.h"
 #include "finale/CFinaleStaticScene.h"
 #include "common/CMap.h"

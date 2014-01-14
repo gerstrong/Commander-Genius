@@ -8,8 +8,8 @@
 #ifndef CVORTIKID_H_
 #define CVORTIKID_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 #include <vector>
 
 enum vort_baby_actions{

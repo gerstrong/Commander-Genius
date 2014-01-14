@@ -21,6 +21,7 @@
 
 //#include "sdl/CVideoDriver.h"
 
+#include "Button.h"
 
 
 CSettingsMenu::CSettingsMenu() :
@@ -50,7 +51,7 @@ CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 									new OpenMenuEvent(	new CControlsettings(1) ) ) );
 #else
     mpMenuDialog->addControl(new GsButton( "Controls",
-                                    new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
+                                    new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent, vorticon::Button>() ) ) );
 #endif
 
 

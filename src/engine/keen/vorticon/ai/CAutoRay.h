@@ -8,7 +8,7 @@
 #ifndef CAUTORAY_H_
 #define CAUTORAY_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 
 #define GUNFIRE_TIMER 128
 

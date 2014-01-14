@@ -8,8 +8,8 @@
 #ifndef CPLATFORM_H_
 #define CPLATFORM_H_
 
-#include "engine/vorticon/ai/CCarrier.h"
-#include "common/CPlayer.h"
+#include "CCarrier.h"
+#include "CPlayer.h"
 #include <vector>
 
 class CPlatform : public CCarrier

@@ -1,5 +1,5 @@
-#include "../../../sdl/sound/CSound.h"
-#include "../../../misc.h"
+#include <sdl/sound/CSound.h>
+#include <misc.h>
 #include "CMeep.h"
 #include "CSoundWave.h"
 

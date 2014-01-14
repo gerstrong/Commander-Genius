@@ -8,8 +8,8 @@
 #ifndef CVORTIMOM_H_
 #define CVORTIMOM_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
-#include "../../../common/CPlayer.h"
+#include "../CVorticonSpriteObject.h"
+#include "CPlayer.h"
 #include <vector>
 
 enum vortimom_actions{

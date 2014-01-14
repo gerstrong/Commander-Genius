@@ -12,7 +12,7 @@ enum ropestates{
 ROPE_IDLE, ROPE_DROPSTONE
 };
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 
 class CRope : public CVorticonSpriteObject
 {

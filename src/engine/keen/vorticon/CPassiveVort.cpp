@@ -8,7 +8,7 @@
 #include "CPassiveVort.h"
 
 #include "graphics/GsGraphics.h"
-#include "common/CVorticonMapLoader.h"
+#include "CVorticonMapLoader.h"
 #include "common/CTileProperties.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>

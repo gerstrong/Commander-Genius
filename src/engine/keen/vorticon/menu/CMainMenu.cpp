@@ -10,17 +10,18 @@
 #include <widgets/GsMenuController.h>
 
 
-#include "common/Menu/CSettingsMenu.h"
-#include "common/Menu/CSelectionMenu.h"
-#include "common/Menu/CLoadMenu.h"
-#include "common/Menu/CSaveMenu.h"
-#include "common/Menu/CHelpMenu.h"
-#include "engine/infoscenes/CHighScores.h"
+#include "CSettingsMenu.h"
+#include "CSelectionMenu.h"
+#include "CLoadMenu.h"
+#include "CSaveMenu.h"
+#include "CHelpMenu.h"
+#include "../CHighScores.h"
 #include "common/CBehaviorEngine.h"
 
 #include "core/mode/CGameMode.h"
 
-#include "engine/galaxy/menu/GalaxyButton.h"
+#include "Button.h"
+
 
 
 void CMainMenu::createVorticonMenu( const bool openedGamePlay )
@@ -32,7 +33,7 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 										new OpenMenuEvent(new CDifficultySelection) );
 #else
     GsButton *button = new GsButton( "New Game",
-									new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
+                                    new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent, vorticon::Button>(true) ) );
 #endif
 
 	mpMenuDialog->addControl( button );
@@ -72,53 +73,6 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 }
 
 
-void CMainMenu::createGalaxyMenu( const bool openedGamePlay )
-{
-#if defined (SINGLEPLAYER)
-    g_pBehaviorEngine->mPlayers = 1;
-    GsButton *button = new GalaxyButton( "New Game",
-                                        new OpenMenuEvent(new CDifficultySelection) );
-#else
-    GsButton *button = new GalaxyButton( "New Game",
-                                    new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
-#endif
-
-	mpMenuDialog->addControl( button );
-
-	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
-
-    GsButton *loadButton = new GsButton( "Load",
-										new OpenMenuEvent( new CLoadMenu() ) );
-	mpMenuDialog->addControl( loadButton );
-	loadButton->mEnabled = true;
-
-    GsButton *saveButton = new GsButton( "Save",
-									new OpenMenuEvent( new CSaveMenu() ) );
-	mpMenuDialog->addControl( saveButton );
-	saveButton->mEnabled = openedGamePlay;
-
-    mpMenuDialog->addControl(new GsButton( "Configure",
-												new OpenMenuEvent( new CSettingsMenu() ) ) );
-
-    GsButton *highscoreButton = new GsButton( "High Scores",
-													new StartInfoSceneEvent( new CHighScores ) );
-	mpMenuDialog->addControl( highscoreButton );
-	highscoreButton->mEnabled = false;
-
-    GsButton *infoButton = new GsButton( "Info",
-											new OpenMenuEvent( new CHelpMenu() ) );
-	mpMenuDialog->addControl( infoButton );
-	infoButton->mEnabled = false;
-
-    mpMenuDialog->addControl(new GsButton( "End Game", new EventEndGamePlay() ) );
-
-    mpMenuDialog->addControl(new GsButton( "Quit", new GMQuit() ) );
-
-	setMenuLabel("MAINMENULABEL");
-
-}
-
-
 
 CMainMenu::CMainMenu( const bool openedGamePlay ) :
 CBaseMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
@@ -132,3 +86,4 @@ CBaseMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 		createVorticonMenu(openedGamePlay);
 	}
 }
+

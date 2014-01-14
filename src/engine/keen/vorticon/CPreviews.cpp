@@ -12,7 +12,7 @@
 //#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
 //#include "StringUtils.h"
-#include "common/CVorticonMapLoader.h"
+#include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
 void CPreviews::init()

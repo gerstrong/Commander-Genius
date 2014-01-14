@@ -11,7 +11,7 @@
 #ifndef CANKHSHIELD_H_
 #define CANKHSHIELD_H_
 
-#include "../../../common/CPlayer.h"
+#include "CPlayer.h"
 
 // for ankh shield...
 // stage1 is no flicker of the shield, changes colors

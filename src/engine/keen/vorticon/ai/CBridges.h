@@ -8,7 +8,7 @@
 #ifndef CBRIDGES_H_
 #define CBRIDGES_H_
 
-#include "engine/vorticon/CVorticonSpriteObject.h"
+#include "../CVorticonSpriteObject.h"
 
 
 class CBridges : public CVorticonSpriteObject

@@ -9,15 +9,15 @@
  *  mainly for goodies
  */
 
-#include "CPlayer.h"
+#include "ai/CPlayer.h"
 
 #include "sdl/sound/CSound.h"
 #include "graphics/GsGraphics.h"
 #include "engine/spritedefines.h"
-#include "engine/vorticon/ai/CManglingMachine.h"
-#include "engine/vorticon/ai/CDoor.h"
-#include "engine/vorticon/ai/CRisingPoints.h"
-#include "engine/vorticon/ai/CAnkhShield.h"
+#include "ai/CManglingMachine.h"
+#include "ai/CDoor.h"
+#include "ai/CRisingPoints.h"
+#include "ai/CAnkhShield.h"
 #include <base/utils/StringUtils.h>
 
 #define DOOR_YELLOW        2
