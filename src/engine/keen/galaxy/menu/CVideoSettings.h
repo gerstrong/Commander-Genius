@@ -18,6 +18,8 @@
 
 #include "sdl/CVidConfig.h"
 
+namespace galaxy
+{
 
 class CVideoSettings : public CBaseMenu
 {
@@ -49,5 +51,7 @@ private:
     CGUIComboSelection	*mpGameResSelection;
 
 };
+
+}
 
 #endif /* CVIDEOSETTINGS_H_ */

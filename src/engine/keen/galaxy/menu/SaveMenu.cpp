@@ -19,6 +19,9 @@
 
 const std::string EMPTY_TEXT = "EMPTY";
 
+namespace galaxy
+{
+
 CSaveMenu::CSaveMenu() :
 CBaseMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
 mp_OverwriteMenu(NULL),
@@ -106,4 +109,6 @@ void CSaveMenu::release()
     {
         pInput->setTypeMode(false);
     }
+}
+
 }

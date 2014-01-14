@@ -14,6 +14,9 @@
 #include "sdl/sound/CSound.h"
 
 
+namespace galaxy
+{
+
 CAudioSettings::CAudioSettings() :
 CBaseMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 {
@@ -86,4 +89,6 @@ void CAudioSettings::release()
 	g_pMusicPlayer->reload();
 
 	g_pSettings->saveDrvCfg();
+}
+
 }

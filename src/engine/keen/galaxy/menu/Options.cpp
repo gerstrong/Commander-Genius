@@ -10,6 +10,8 @@
 //#include "sdl/CVideoDriver.h"
 #include "common/CSettings.h"
 
+namespace galaxy
+{
 
 COptions::COptions() :
 CBaseMenu( GsRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
@@ -48,4 +50,6 @@ void COptions::ponder(const float deltaT)
 void COptions::release()
 {
 	g_pSettings->saveGameOptions();
+}
+
 }

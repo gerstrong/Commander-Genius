@@ -32,6 +32,8 @@ static const char* aspectList[] =
 
 const unsigned int NUM_ASPECTS = sizeof(aspectList)/sizeof(char*);
 
+namespace galaxy
+{
 
 
 class toggleFullscreenFunctor : public InvokeFunctorEvent
@@ -51,6 +53,7 @@ private:
 
 	CVideoSettings& mVSettings;
 };
+
 
 
 CVideoSettings::CVideoSettings() :
@@ -255,4 +258,6 @@ void CVideoSettings::release()
 	g_pSettings->saveDrvCfg();
 
     gMenuController.updateGraphics();
+}
+
 }

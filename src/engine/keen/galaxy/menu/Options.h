@@ -14,6 +14,9 @@
 
 #include "common/CBehaviorEngine.h"
 
+namespace galaxy
+{
+
 class COptions : public CBaseMenu
 {
 public:
@@ -29,5 +32,7 @@ private:
 	std::list<CGUISwitch*> mpOptionList;
 	stOption *mpOption;
 };
+
+}
 
 #endif /* COPTIONS_H_ */

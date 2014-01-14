@@ -51,8 +51,8 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
-    mpMenuDialog->addControl(new GalaxyButton( "Configure",
-                                                new OpenMenuEvent( new SettingsMenu() ) ) );
+/*    mpMenuDialog->addControl(new GalaxyButton( "Configure",
+                                                new OpenMenuEvent( new SettingsMenu() ) ) );*/
 
 /*    GsButton *highscoreButton = new GalaxyButton( "High Scores",
 													new StartInfoSceneEvent( new CHighScores ) );
@@ -77,14 +77,7 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 MainMenu::MainMenu( const bool openedGamePlay ) :
 CBaseMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
-	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-	{
-		createGalaxyMenu(openedGamePlay);
-	}
-	else if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
-	{
-		createVorticonMenu(openedGamePlay);
-	}
+    createGalaxyMenu(openedGamePlay);
 }
 
 

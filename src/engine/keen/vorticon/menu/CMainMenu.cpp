@@ -77,13 +77,6 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 CMainMenu::CMainMenu( const bool openedGamePlay ) :
 CBaseMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
-	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-	{
-		createGalaxyMenu(openedGamePlay);
-	}
-	else if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
-	{
-		createVorticonMenu(openedGamePlay);
-	}
+    createVorticonMenu(openedGamePlay);
 }
 

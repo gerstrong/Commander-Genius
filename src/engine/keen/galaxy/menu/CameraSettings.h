@@ -13,6 +13,9 @@
 
 #include "sdl/CVidConfig.h"
 
+namespace galaxy
+{
+
 class CCameraSettings : public CBaseMenu
 {
 public:
@@ -32,5 +35,7 @@ private:
 	CGUINumberControl	*mpBottomAdjust;
 	CGUINumberControl	*mpSpeedAdjust;
 };
+
+}
 
 #endif /* CCAMERASETTINGS_H_ */

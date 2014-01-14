@@ -18,6 +18,9 @@
 #include <string>
 
 
+namespace galaxy
+{
+
 
 class CAudioSettings : public CBaseMenu
 {
@@ -46,5 +49,8 @@ private:
 	// This one does not really set the volume at all, it only verifies, if it changed...
 	int mSoundVolume;
 };
+
+
+}
 
 #endif /* CAUDIOSETTINGS_H_ */

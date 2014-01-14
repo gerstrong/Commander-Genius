@@ -10,10 +10,14 @@
 
 #include <widgets/GsBaseMenu.h>
 
+namespace galaxy
+{
+
 class CProfilesMenu : public CBaseMenu
 {
 public:
 	CProfilesMenu();
 };
 
+}
 #endif /* CPROFILESMENU_H_ */

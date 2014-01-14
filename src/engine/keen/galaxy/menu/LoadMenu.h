@@ -11,10 +11,15 @@
 #include <widgets/GsBaseMenu.h>
 
 
+namespace galaxy
+{
+
 class CLoadMenu : public CBaseMenu
 {
 public:
 	CLoadMenu();
 };
+
+}
 
 #endif /* CLOADMENU_H_ */

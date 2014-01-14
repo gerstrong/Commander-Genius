@@ -16,6 +16,9 @@
 #include <string>
 
 
+namespace galaxy
+{
+
 /**
  * \brief This sets the default settings for a classic gameplay
  */
@@ -83,3 +86,5 @@ CBaseMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 	setMenuLabel("OPTIONSMENULABEL");
 }
 
+
+}

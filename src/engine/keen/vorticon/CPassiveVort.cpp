@@ -49,8 +49,8 @@ bool CPassiveVort::init(char mode)
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
 		mpMap->drawAll();
-		mpTitleScreen.reset( new CTitle( *mpMap.get() ) );
-		mpTitleScreen->init(m_Episode);
+//		mpTitleScreen.reset( new CTitle( *mpMap.get() ) );
+//		mpTitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
 	{
@@ -97,7 +97,7 @@ void CPassiveVort::ponder()
 	}
 	else if( m_mode == TITLE )
 	{
-        mpTitleScreen->ponder();
+        //mpTitleScreen->ponder();
 	}
 	else if( m_mode == DEMO )
 	{
@@ -131,7 +131,7 @@ void CPassiveVort::render()
     }
     else if( m_mode == TITLE )
     {
-        mpTitleScreen->render();
+        //mpTitleScreen->render();
     }
 
 }

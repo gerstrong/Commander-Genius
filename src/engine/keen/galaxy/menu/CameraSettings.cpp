@@ -10,6 +10,9 @@
 #include "common/CSettings.h"
 #include <base/utils/StringUtils.h>
 
+namespace galaxy
+{
+
 CCameraSettings::CCameraSettings():
 CBaseMenu(GsRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
 m_CameraBounds(gVideoDriver.getCameraBounds())
@@ -62,4 +65,6 @@ void CCameraSettings::release()
 	gVideoDriver.saveCameraBounds(m_CameraBounds);
 
 	g_pSettings->saveDrvCfg();
+}
+
 }
