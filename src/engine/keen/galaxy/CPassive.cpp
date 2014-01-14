@@ -15,7 +15,7 @@
 #include "graphics/GsGraphics.h"
 #include "graphics/effects/CPixelate.h"
 #include "sdl/extensions.h"
-#include "common/Menu/CMainMenu.h"
+#include "menu/MainMenu.h"
 
 
 namespace galaxy

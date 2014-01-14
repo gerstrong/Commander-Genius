@@ -1,7 +1,7 @@
 #ifndef CGRABBITER_H
 #define CGRABBITER_H
 
-#include <engine/galaxy/common/ai/CStunnable.h>
+#include "../../common/ai/CStunnable.h"
 
 namespace galaxy
 {

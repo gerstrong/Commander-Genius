@@ -8,7 +8,7 @@
 #ifndef CBLUEBIRD_H_
 #define CBLUEBIRD_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy {
 

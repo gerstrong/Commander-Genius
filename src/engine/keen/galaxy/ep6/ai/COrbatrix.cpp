@@ -1,8 +1,10 @@
 #include "COrbatrix.h"
-#include <engine/galaxy/common/ai/CBullet.h>
-#include <engine/galaxy/common/ai/CPlayerBase.h>
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
-#include <engine/galaxy/common/ai/CItemEffect.h>
+
+#include "../../common/ai/CBullet.h"
+#include "../../common/ai/CPlayerBase.h"
+#include "../../common/ai/CPlayerLevel.h"
+#include "../../common/ai/CItemEffect.h"
+
 #include <misc.h>
 
 namespace galaxy

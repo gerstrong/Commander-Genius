@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "CSaveMenu.h"
+#include "SaveMenu.h"
 
 #include <base/CInput.h>
 #include <widgets/GsBaseMenu.h>

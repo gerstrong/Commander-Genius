@@ -10,7 +10,7 @@
 #include <widgets/GsMenuController.h>
 
 
-#include "GalaxySettingsMenu.h"
+#include "SettingsMenu.h"
 
 /*#include "CVideoSettings.h"
 #include "CCameraSettings.h"

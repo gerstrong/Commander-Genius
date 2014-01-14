@@ -9,7 +9,7 @@
 #ifndef CSKYPEST_H_
 #define CSKYPEST_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy {
 

@@ -1,14 +1,17 @@
 /*
+ *
  * CLoadMenu.cpp
  *
  *  Created on: 22.05.2010
  *      Author: gerstrong
  */
 
-#include "CLoadMenu.h"
 #include <widgets/GsText.h>
 #include <widgets/GsButton.h>
 #include <widgets/GsMenuController.h>
+
+
+#include "LoadMenu.h"
 
 #include "fileio/CSaveGameController.h"
 #include "common/CBehaviorEngine.h"

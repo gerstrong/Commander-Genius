@@ -1,7 +1,7 @@
 #include "CBlooglet.h"
 
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
-#include <engine/galaxy/common/ai/CSpriteItem.h>
+#include "../../common/ai/CPlayerLevel.h"
+#include "../../common/ai/CSpriteItem.h"
 
 
 namespace galaxy {

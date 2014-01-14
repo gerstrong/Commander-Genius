@@ -1,6 +1,7 @@
 #ifndef CMOLLY_H
 #define CMOLLY_H
-#include <engine/galaxy/common/CGalaxySpriteObject.h>
+
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy
 {

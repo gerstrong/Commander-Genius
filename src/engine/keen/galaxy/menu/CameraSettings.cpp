@@ -6,7 +6,7 @@
  */
 
 #include <base/video/CVideoDriver.h>
-#include "CCameraSettings.h"
+#include "CameraSettings.h"
 #include "common/CSettings.h"
 #include <base/utils/StringUtils.h>
 

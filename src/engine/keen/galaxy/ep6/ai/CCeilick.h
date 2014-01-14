@@ -1,7 +1,7 @@
 #ifndef CCEILICK_H
 #define CCEILICK_H
 
-#include <engine/galaxy/common/ai/CStunnable.h>
+#include "../../common/ai/CStunnable.h"
 
 namespace galaxy
 {

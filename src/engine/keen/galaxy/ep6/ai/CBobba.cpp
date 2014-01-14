@@ -1,6 +1,6 @@
 #include "CBobba.h"
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
-#include <engine/galaxy/common/ai/CEnemyShot.h>
+#include "../../common/ai/CPlayerLevel.h"
+#include "../../common/ai/CEnemyShot.h"
 #include <misc.h>
 
 /*

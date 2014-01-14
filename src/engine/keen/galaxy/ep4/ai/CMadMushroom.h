@@ -8,7 +8,7 @@
 #ifndef CMADMUSHROOM_H_
 #define CMADMUSHROOM_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy
 {

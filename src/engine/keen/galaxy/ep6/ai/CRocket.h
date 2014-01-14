@@ -1,8 +1,8 @@
 #ifndef CROCKET_H
 #define CROCKET_H
-#include <engine/galaxy/common/ai/CGalaxyActionSpriteObject.h>
-#include <engine/galaxy/common/ai/CMoveTarget.h>
-#include <engine/galaxy/common/ai/CPlayerBase.h>
+#include "../../common/ai/CGalaxyActionSpriteObject.h"
+#include "../../common/ai/CMoveTarget.h"
+#include "../../common/ai/CPlayerBase.h"
 
 namespace galaxy
 {

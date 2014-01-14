@@ -1,6 +1,7 @@
 #ifndef CBOBBA_H
 #define CBOBBA_H
-#include <engine/galaxy/common/ai/CGalaxyActionSpriteObject.h>
+
+#include "../../common/ai/CGalaxyActionSpriteObject.h"
 
 namespace galaxy
 {

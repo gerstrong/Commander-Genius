@@ -27,14 +27,14 @@
 #include "ai/CSatelite.h"
 #include "ai/CMolly.h"
 
-#include "../../common/ai/CPlayerWM.h"
-#include "../../common/ai/CPlayerLevel.h"
+#include "../common/ai/CPlayerWM.h"
+#include "../common/ai/CPlayerLevel.h"
 
-#include "../../common/ai/platforms.h"
-#include "../../common/ai/CFlag.h"
-#include "../../common/ai/CSpriteItem.h"
-#include <engine/galaxy/common/ai/platform/CPlatformSit.h>
-#include <engine/galaxy/common/ai/Autogun.h>
+#include "../common/ai/platforms.h"
+#include "../common/ai/CFlag.h"
+#include "../common/ai/CSpriteItem.h"
+#include "../common/ai/platform/CPlatformSit.h"
+#include "../common/ai/Autogun.h"
 
 namespace galaxy
 {

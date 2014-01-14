@@ -8,7 +8,7 @@
 #ifndef CTHUNDERCLOUD_H_
 #define CTHUNDERCLOUD_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy
 {

@@ -1,7 +1,7 @@
 #ifndef CSMOKEPUFF_H
 #define CSMOKEPUFF_H
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 
 namespace galaxy {

@@ -1,7 +1,7 @@
 #ifndef CFLEEX_H
 #define CFLEEX_H
 
-#include <engine/galaxy/common/ai/CStunnable.h>
+#include "../../common/ai/CStunnable.h"
 
 namespace galaxy
 {

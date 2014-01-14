@@ -8,7 +8,7 @@
 #ifndef CFOOT_H_
 #define CFOOT_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy {
 

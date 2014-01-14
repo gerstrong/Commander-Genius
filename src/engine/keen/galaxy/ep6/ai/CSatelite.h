@@ -1,8 +1,9 @@
 #ifndef CSATELITE_H
 #define CSATELITE_H
-#include <engine/galaxy/common/CGalaxySpriteObject.h>
-#include <engine/galaxy/common/ai/CMoveTarget.h>
-#include <engine/galaxy/common/ai/CPlayerWM.h>
+
+#include "../../common/CGalaxySpriteObject.h"
+#include "../../common/ai/CMoveTarget.h"
+#include "../../common/ai/CPlayerWM.h"
 
 namespace galaxy
 {

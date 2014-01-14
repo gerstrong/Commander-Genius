@@ -8,7 +8,7 @@
 #ifndef CPASSIVE_GALAXY_H_
 #define CPASSIVE_GALAXY_H_
 
-#include "../CPassive.h"
+#include "../../CPassive.h"
 #include <string>
 
 namespace galaxy

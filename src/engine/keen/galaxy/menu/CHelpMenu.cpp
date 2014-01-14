@@ -7,7 +7,7 @@
 
 #include "CHelpMenu.h"
 
-#include "engine/infoscenes/CStory.h"
+/*#include "engine/infoscenes/CStory.h"
 #include "engine/infoscenes/CCredits.h"
 #include "engine/infoscenes/COrderingInfo.h"
 #include "engine/infoscenes/CAbout.h"
@@ -54,4 +54,4 @@ CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 }
 
-
+*/

@@ -1,5 +1,5 @@
 #include "CMolly.h"
-#include <engine/galaxy/common/ai/CPlayerBase.h>
+#include "../../common/ai/CPlayerBase.h"
 
 namespace galaxy 
 {

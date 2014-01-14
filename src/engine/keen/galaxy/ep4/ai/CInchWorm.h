@@ -10,7 +10,7 @@
 #ifndef CINCHWORM_H_
 #define CINCHWORM_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy
 {

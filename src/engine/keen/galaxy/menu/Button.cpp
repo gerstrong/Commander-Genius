@@ -2,7 +2,7 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
-#include "GalaxyButton.h"
+#include "Button.h"
 
 
 GalaxyButton::GalaxyButton(const std::string& text,

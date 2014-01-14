@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "CAudioSettings.h"
+#include "AudioSettings.h"
 #include <base/utils/StringUtils.h>
 #include <widgets/GsButton.h>
 

@@ -1,6 +1,7 @@
 #include "CSatelite.h"
-#include <engine/galaxy/common/ai/CPlayerBase.h>
-#include <engine/galaxy/common/ai/CPlayerWM.h>
+
+#include "../../common/ai/CPlayerBase.h"
+#include "../../common/ai/CPlayerWM.h"
 
 /*
 $1C70W  #Keen hang from satelite

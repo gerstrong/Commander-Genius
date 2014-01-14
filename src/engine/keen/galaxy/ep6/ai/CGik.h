@@ -1,8 +1,8 @@
 #ifndef CGIK_H
 #define CGIK_H
 
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
-#include <engine/galaxy/common/ai/CGalaxyActionSpriteObject.h>
+#include "../../common/ai/CPlayerLevel.h"
+#include "../../common/ai/CGalaxyActionSpriteObject.h"
 
 namespace galaxy
 {

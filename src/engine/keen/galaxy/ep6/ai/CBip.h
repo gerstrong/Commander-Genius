@@ -1,6 +1,7 @@
 #ifndef CBIP_H
 #define CBIP_H
-#include <engine/galaxy/common/ai/CGalaxyActionSpriteObject.h>
+
+#include "../../common/ai/CGalaxyActionSpriteObject.h"
 
 
 namespace galaxy

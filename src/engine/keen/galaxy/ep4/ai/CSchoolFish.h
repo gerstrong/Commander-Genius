@@ -10,7 +10,7 @@
 #ifndef CSCHOOLFISH_H_
 #define CSCHOOLFISH_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy
 {

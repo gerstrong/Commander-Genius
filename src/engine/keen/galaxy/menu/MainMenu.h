@@ -12,15 +12,20 @@
 #ifndef CMAINMENU_H_
 #define CMAINMENU_H_
 
-class CMainMenu : public CBaseMenu
+namespace galaxy
+{
+
+class MainMenu : public CBaseMenu
 {
 public:
-	CMainMenu(const bool openedGamePlay);
+    MainMenu(const bool openedGamePlay);
 
 	void createVorticonMenu( const bool openedGamePlay );
 	void createGalaxyMenu( const bool openedGamePlay );
 };
 
 struct OpenMainMenuEvent : public CEvent {};
+
+}
 
 #endif /* CMAINMENU_H_ */

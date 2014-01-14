@@ -1,5 +1,6 @@
 #include "CRope.h"
-#include <engine/galaxy/common/ai/CPlayerBase.h>
+
+#include "../../common/ai/CPlayerBase.h"
 
 /*
 $1B9EW  #Keen throw rope

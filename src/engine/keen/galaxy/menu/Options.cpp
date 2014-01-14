@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "COptions.h"
+#include "Options.h"
 #include <base/CInput.h>
 //#include "sdl/CVideoDriver.h"
 #include "common/CSettings.h"

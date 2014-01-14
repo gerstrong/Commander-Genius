@@ -1,7 +1,8 @@
-#include "CCeilick.h"
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
 #include <base/video/CVideoDriver.h>
 #include <misc.h>
+
+#include "CCeilick.h"
+#include "../../common/ai/CPlayerLevel.h"
 
 namespace galaxy
 {

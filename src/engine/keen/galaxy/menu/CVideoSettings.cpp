@@ -15,7 +15,7 @@
 
 #include "hardware/Configurator.h"
 #include "common/CSettings.h"
-#include "CCameraSettings.h"
+#include "CameraSettings.h"
 #include "CVideoSettings.h"
 //#include "CSettingsMenu.h"
 #include "Utils.h"

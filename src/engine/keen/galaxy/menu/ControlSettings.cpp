@@ -6,8 +6,9 @@
  */
 
 #include <base/utils/StringUtils.h>
-#include "CSelectionMenu.h"
-#include "CControlsettings.h"
+
+#include "SelectionMenu.h"
+#include "ControlSettings.h"
 #include "common/CBehaviorEngine.h"
 
 #include <base/CInput.h>

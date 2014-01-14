@@ -1,7 +1,7 @@
 #include "CNospike.h"
 #include <misc.h>
 
-#include <engine/galaxy/common/ai/CPlayerLevel.h>
+#include "../../common/ai/CPlayerLevel.h"
 
 
 /*

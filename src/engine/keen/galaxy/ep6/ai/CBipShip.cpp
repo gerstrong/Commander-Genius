@@ -2,8 +2,8 @@
 #include "CBip.h"
 
 #include "../../common/ai/CPlayerLevel.h"
-#include <engine/galaxy/common/ai/CBullet.h>
-#include <engine/galaxy/common/ai/CEnemyShot.h>
+#include "../../common/ai/CBullet.h"
+#include "../../common/ai/CEnemyShot.h"
 
 
 namespace galaxy

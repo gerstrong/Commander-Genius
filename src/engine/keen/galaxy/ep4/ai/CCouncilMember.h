@@ -10,7 +10,7 @@
 #ifndef CCOUNCIL_MEMBER_H_
 #define CCOUNCIL_MEMBER_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 #include <map>
 #include <string>
 

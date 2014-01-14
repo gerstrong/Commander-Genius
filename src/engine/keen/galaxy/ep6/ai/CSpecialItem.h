@@ -1,7 +1,7 @@
 #ifndef CSPECIALITEM_H
 #define CSPECIALITEM_H
 
-#include <engine/galaxy/common/CGalaxySpriteObject.h>
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy
 {

@@ -10,7 +10,7 @@
 #ifndef CBUBBLES_H_
 #define CBUBBLES_H_
 
-#include "engine/galaxy/common/CGalaxySpriteObject.h"
+#include "../../common/CGalaxySpriteObject.h"
 
 namespace galaxy {
 

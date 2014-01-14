@@ -2,7 +2,7 @@
 #define CBABOBBA_H
 
 #include "../../common/ai/CStunnable.h"
-#include <engine/galaxy/common/ai/CGalaxyActionSpriteObject.h>
+#include "../../common/ai/CGalaxyActionSpriteObject.h"
 
 namespace galaxy {
 
