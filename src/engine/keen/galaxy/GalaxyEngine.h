@@ -27,6 +27,8 @@ public:
 
     bool loadResources( const Uint8 flags );
 
+    void pumpEvent(const CEvent *evPtr);
+
 private:
     //std::unique_ptr<CEGAGraphicsGalaxy> mpEGAGraphics;
 };

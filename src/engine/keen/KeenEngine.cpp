@@ -79,7 +79,7 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
 {
     GameEngine::pumpEvent(evPtr);
 
-    if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    /*if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
         // Now look if there are any old savegames that need to be converted
         CSaveGameController &savedgames = *gpSaveGameController;
@@ -91,15 +91,15 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
         mpGameMode = move(passive);
         mpGameMode->init();
         mOpenedGamePlay = false;
-        gMenuController.emptyMenuStack();
+        gMenuController.emptyMenuStack();*/
 
         //if(m_start_level == -1) // Starts normally
             //gEventManager.add( new GMSwitchToPassiveMode(mDataPath, mEp) );
         /*else // This happens, when a level was passed as argument when launching CG
             EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
                                     DataDirectory,
-                                    m_start_level) );*/
-    }
+                                    m_start_level) );*//*
+    }*/
     /*else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         openMainMenu();

@@ -7,9 +7,11 @@
 #include "GalaxyEngine.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/CPatcher.h"
+#include "fileio/CSaveGameController.h"
 #include "engine/CMessages.h"
 #include "sdl/sound/CSound.h"
 
+#include "CPassive.h"
 
 namespace galaxy
 {
@@ -104,5 +106,42 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
     return true;
 }
+
+void GalaxyEngine::pumpEvent(const CEvent *evPtr)
+{
+    KeenEngine::pumpEvent(evPtr);
+
+    if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    {
+        // Now look if there are any old savegames that need to be converted
+        CSaveGameController &savedgames = *gpSaveGameController;
+        savedgames.setGameDirectory(mDataPath);
+        savedgames.setEpisode(mEp);
+        savedgames.convertAllOldFormats();
+
+        mpGameMode.reset( new galaxy::CPassiveGalaxy() );
+
+        mpGameMode->init();
+
+        /*if(  )
+        {
+            gEventManager.add( new GMSwitchToGameLauncher(-1, -1) );
+        }
+        else*/
+        {
+            mOpenedGamePlay = false;
+        }
+
+        /*gMenuController.emptyMenuStack();*/
+
+        //if(m_start_level == -1) // Starts normally
+            //gEventManager.add( new GMSwitchToPassiveMode(mDataPath, mEp) );
+        /*else // This happens, when a level was passed as argument when launching CG
+            EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
+                                    DataDirectory,
+                                    m_start_level) );*/
+    }
+}
+
 
 }

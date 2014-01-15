@@ -101,17 +101,15 @@ mKeenTextSfc(gGraphics.getMisGsBitmap(1))
     gInput.flushAll();
 }
 
-bool CPassiveGalaxy::init(char mode)
+void CPassiveGalaxy::init()
 {
     auto blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
-
-	return true;
 }
 
 // This function is always called from the base class.
 // Here it will execute the mode we are currently running
-void CPassiveGalaxy::ponder()
+void CPassiveGalaxy::ponder(const float deltaT)
 {		
     (this->*processPonderMode)();
 }

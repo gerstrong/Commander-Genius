@@ -17,13 +17,14 @@
 #include "CTitle.h"
 #include "common/CMap.h"
 #include "common/CSpriteObject.h"
+#include "core/mode/CGameMode.h"
 #include "fileio/CSaveGameController.h"
 #include <string>
 #include <vector>
 #include <memory>
 
 
-class CPassive
+class CPassive : public CGameMode
 {
 public:
 
@@ -36,9 +37,11 @@ public:
 	
     void pumpEvent(const CEvent *evPtr);
 
-    virtual bool init(char mode = INTRO) {return false;}
+    //virtual bool init(char mode) {return false;}
+
+    virtual void init() {}
 	
-    virtual void ponder() = 0;
+    virtual void ponder(const float deltaT) = 0;
 
     virtual void render() = 0;
 	

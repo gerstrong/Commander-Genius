@@ -19,8 +19,8 @@ class CPassiveGalaxy : public CPassive
 public:
 	CPassiveGalaxy();
 
-	bool init(char mode);
-    void ponder();
+    void init();
+    void ponder(const float deltaT);
     void render();
 
     void processIntro();

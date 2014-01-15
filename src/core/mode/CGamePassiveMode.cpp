@@ -37,16 +37,12 @@ void CGamePassiveMode::init()
 	else
         mpPassive.reset( new vorticon::CPassiveVort() );*/
 
-	if( mpPassive->init() ) return;
-
-    CEventContainer& EventContainer = gEventManager;
-	EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
 }
 
 
 void CGamePassiveMode::ponder(const float deltaT)
 {
-    mpPassive->ponder();
+    mpPassive->ponder(deltaT);
 
 	// Process Events
 
