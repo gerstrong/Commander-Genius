@@ -20,7 +20,6 @@ void KeenEngine::openMainMenu()
     g_pBehaviorEngine->setPause(true);
     g_pMusicPlayer->pause();*/
 
-
     /*
     // Control Menu Events
     if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
@@ -99,8 +98,8 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
             EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
                                     DataDirectory,
                                     m_start_level) );*//*
-    }*/
-    /*else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
+    }
+    else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         openMainMenu();
     }*/

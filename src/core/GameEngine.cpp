@@ -38,7 +38,7 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
     // process any triggered Game Main related event
     auto &EventContainer = gEventManager;
 
-    if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
+    /*if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
     {
         std::unique_ptr<CGamePassiveMode> passive(new CGamePassiveMode());
         mpGameMode = move(passive);
@@ -46,7 +46,7 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
         mOpenedGamePlay = false;
         gMenuController.emptyMenuStack();
     }
-    else if( const GMSwitchToPlayGameMode* p_PlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
+    else */if( const GMSwitchToPlayGameMode* p_PlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
         // TODO: This const_cast must be removed. So adapt the rest of the structure to make it more secure
         GMSwitchToPlayGameMode *playGame = const_cast<GMSwitchToPlayGameMode*>(p_PlayGame);

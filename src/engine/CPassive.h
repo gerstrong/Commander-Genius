@@ -39,7 +39,7 @@ public:
 
     //virtual bool init(char mode) {return false;}
 
-    virtual void init() {}
+    virtual bool init() = 0;
 	
     virtual void ponder(const float deltaT) = 0;
 

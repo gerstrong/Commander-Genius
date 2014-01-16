@@ -235,7 +235,7 @@ bool CPlayGameGalaxy::init()
 		m_LevelPlay.setActive(true);
 	}
 
-	return true;
+    return true;
 }
 
 

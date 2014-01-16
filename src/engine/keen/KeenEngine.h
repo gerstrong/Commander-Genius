@@ -14,7 +14,7 @@ public:
         mEp(ep),
         mLockedMenu(true) {}
 
-    void openMainMenu();
+    virtual void openMainMenu();
 
     void start();
 

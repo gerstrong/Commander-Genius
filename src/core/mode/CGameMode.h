@@ -60,7 +60,7 @@ public:
 
     virtual void pumpEvent(const CEvent *evPtr) = 0;
 
-	virtual void init() = 0;
+    virtual bool init() = 0;
 };
 
 

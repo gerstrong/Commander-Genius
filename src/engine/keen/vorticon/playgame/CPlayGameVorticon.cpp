@@ -123,7 +123,7 @@ bool CPlayGameVorticon::init()
     const int numPlayers = g_pBehaviorEngine->mPlayers;
 
 	// load level map
-	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
+    if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
 	gpSaveGameController->setLevel(m_Level);
     mMap->setLevel(m_Level);
 
@@ -175,7 +175,7 @@ bool CPlayGameVorticon::init()
 	    g_pSound->playSound(SOUND_MORTIMER);
 	}
 
-	return true;
+    return true;
 }
 
 bool CPlayGameVorticon::StatusScreenOpen()
@@ -206,6 +206,8 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
     {
         m_endgame = true;
     }
+
+
 
 }
 

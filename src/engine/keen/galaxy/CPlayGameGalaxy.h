@@ -34,7 +34,7 @@ public:
     //bool saveGameState();
     bool loadXMLGameState();
     bool saveXMLGameState();
-	bool init();
+    bool init();
 
     void looseManagement(const int playerID,
                          const bool playerGameOver,

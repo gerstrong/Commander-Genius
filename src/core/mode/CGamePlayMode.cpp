@@ -29,7 +29,7 @@ m_Episode(gpmode.m_Episode),
 m_DataDirectory(gpmode.m_DataDirectory)
 {}
 
-void CGamePlayMode::init()
+bool CGamePlayMode::init()
 {
 //	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 //    CEventContainer& EventContainer = gEventManager;
@@ -67,6 +67,8 @@ void CGamePlayMode::init()
 	{
         EventContainer.add( new GMSwitchToPassiveMode(*//*m_DataDirectory, m_Episode*//*));
     }*/
+
+    return true;
 }
 
 

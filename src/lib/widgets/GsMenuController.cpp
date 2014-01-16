@@ -31,15 +31,17 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
 
         mMenuStack.push_back( openMenu->mMenuDialogPointer );
     }
-
-    if( dynamic_cast<const CloseMenuEvent*>(evPtr) )
+    else if( dynamic_cast<const CloseMenuEvent*>(evPtr) )
     {
         popBackMenu();
     }
-
-    if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
+    else if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
     {
         emptyMenuStack();
+    }
+    else
+    {
+        //mMenuStack.back()->release().pump();
     }
 }
 

@@ -101,10 +101,11 @@ mKeenTextSfc(gGraphics.getMisGsBitmap(1))
     gInput.flushAll();
 }
 
-void CPassiveGalaxy::init()
+bool CPassiveGalaxy::init()
 {
     auto blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
+    return true;
 }
 
 // This function is always called from the base class.

@@ -48,7 +48,7 @@ public:
               CSaveGameController &SavedGame);
 
 	void setupPlayers();
-	bool init();
+    bool init();
 
 	// Game states
 	bool loadGameState();

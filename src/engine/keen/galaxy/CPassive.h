@@ -19,7 +19,7 @@ class CPassiveGalaxy : public CPassive
 public:
 	CPassiveGalaxy();
 
-    void init();
+    bool init();
     void ponder(const float deltaT);
     void render();
 

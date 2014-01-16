@@ -21,7 +21,7 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 
-	void init();
+    bool init();
     void ponder(const float deltaT);
     void render();
 

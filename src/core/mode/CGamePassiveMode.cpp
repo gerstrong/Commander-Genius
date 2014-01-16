@@ -28,7 +28,7 @@ void CGamePassiveMode::pumpEvent(const CEvent *evPtr)
 }
 
 
-void CGamePassiveMode::init()
+bool CGamePassiveMode::init()
 {
 	// Create mp_PassiveMode object used for the screens while Player is not playing
 /*	const int episode = g_pBehaviorEngine->getEpisode();
@@ -37,6 +37,7 @@ void CGamePassiveMode::init()
 	else
         mpPassive.reset( new vorticon::CPassiveVort() );*/
 
+    return true;
 }
 
 

@@ -25,7 +25,7 @@ public:
 
 	
 
-	void init();
+    bool init();
 
 	void loadGame();
 

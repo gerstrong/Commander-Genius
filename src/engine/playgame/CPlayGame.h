@@ -15,6 +15,7 @@
 #include "core/LogicDrawSplitter.h"
 #include "common/options.h"
 #include "common/CBehaviorEngine.h"
+#include "core/mode/CGameMode.h"
 #include "fileio/CSaveGameController.h"
 #include <string>
 #include <SDL.h>
@@ -22,7 +23,7 @@
 const int WM_MAP_NUM = 80;
 
 
-class CPlayGame : public GameState
+class CPlayGame : public CGameMode
 {
 public:
     CPlayGame(CExeFile &ExeFile, char level);
@@ -31,7 +32,6 @@ public:
     //virtual bool saveGameState() = 0;
     virtual bool loadXMLGameState() = 0;
     virtual bool saveXMLGameState() = 0;
-    virtual bool init() = 0;
 	virtual void cleanup() = 0;
 
     virtual void pumpEvent(const CEvent *evPtr) {}

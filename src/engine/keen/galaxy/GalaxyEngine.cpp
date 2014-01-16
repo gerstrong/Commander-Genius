@@ -2,6 +2,7 @@
 #include <base/GsTimer.h>
 #include <base/GsApp.h>
 #include <base/utils/StringUtils.h>
+#include <lib/widgets/GsMenuController.h>
 
 #include "CResourceLoader.h"
 #include "GalaxyEngine.h"
@@ -12,10 +13,18 @@
 #include "sdl/sound/CSound.h"
 
 #include "CPassive.h"
+#include "CPlayGameGalaxy.h"
+
+#include "menu/MainMenu.h"
 
 namespace galaxy
 {
 
+
+void GalaxyEngine::openMainMenu()
+{
+    //gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+}
 
 ///
 // This is used for loading all the resources of the game the use has chosen.
@@ -140,7 +149,18 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
             EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
                                     DataDirectory,
                                     m_start_level) );*/
+    }    
+    else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
+    {
+        // TODO: This const_cast must be removed. So adapt the rest of the structure to make it more secure
+        //GMSwitchToPlayGameMode *playGame = const_cast<GMSwitchToPlayGameMode*>(pPlayGame);
+        //mpGameMode.reset( new CPlayGameGalaxy(*playGame) );
+        mpGameMode->init();
+        mOpenedGamePlay = true;
+        //gEventManager.add( new CloseAllMenusEvent() );
     }
+
+    openMainMenu();
 }
 
 
