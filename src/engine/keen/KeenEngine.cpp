@@ -99,10 +99,7 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
                                     DataDirectory,
                                     m_start_level) );*//*
     }
-    else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
-    {
-        openMainMenu();
-    }*/
+    else*/
 }
 
 void KeenEngine::ponder(const float deltaT)

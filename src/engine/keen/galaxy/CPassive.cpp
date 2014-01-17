@@ -319,7 +319,7 @@ void CPassiveGalaxy::processTitle()
 		if( gInput.getPressedAnyCommand() )
 		{
             gInput.flushAll();
-            gEventManager.add(new OpenMainMenuEvent);
+            gEventManager.add(new OpenMainMenuEvent());
 		}	    
 	}    
 }

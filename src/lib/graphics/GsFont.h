@@ -50,7 +50,7 @@ public:
 	/**
 	 * Allocates a colored surface with the given Text printed in.
 	 */
-    GsSurface fetchColoredTextSfc(const std::string& text, const Uint32 fgColor );
+    GsSurface* fetchColoredTextSfc(const std::string& text, const Uint32 fgColor );
 
 	/*
 	 * \brief This will retrieve the total width in pixels of the Font.

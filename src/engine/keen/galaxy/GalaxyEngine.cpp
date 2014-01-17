@@ -23,7 +23,7 @@ namespace galaxy
 
 void GalaxyEngine::openMainMenu()
 {
-    //gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+    gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
 }
 
 ///
@@ -158,9 +158,11 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         mpGameMode->init();
         mOpenedGamePlay = true;
         //gEventManager.add( new CloseAllMenusEvent() );
+    }    
+    else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
+    {
+        openMainMenu();
     }
-
-    openMainMenu();
 }
 
 

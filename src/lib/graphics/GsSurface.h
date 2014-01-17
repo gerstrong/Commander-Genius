@@ -16,6 +16,21 @@ public:
     GsSurface(SDL_Surface *sfc) :
         mpSurface(sfc) {}
 
+    GsSurface(GsSurface *sfc) :
+        mpSurface(sfc->getSDLSurface())
+    {
+        sfc->disownSfc();
+    }
+
+    void set(GsSurface *surface)
+    {
+        if(mpSurface != nullptr)
+            SDL_FreeSurface(mpSurface);
+
+        surface->disownSfc();
+
+        mpSurface = surface->getSDLSurface();
+    }
 
     ~GsSurface()
     {
