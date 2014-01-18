@@ -27,9 +27,9 @@ public:
         if(mpSurface != nullptr)
             SDL_FreeSurface(mpSurface);
 
-        surface->disownSfc();
-
         mpSurface = surface->getSDLSurface();
+
+        surface->disownSfc();
     }
 
     ~GsSurface()

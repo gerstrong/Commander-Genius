@@ -47,6 +47,15 @@ public:
 
 	Uint32 getFGColor();
 
+    /**
+     * Allocates a colored surface with the given Text printed in.
+     */
+    void createTextSurface(GsSurface &sfc,
+                                   const std::string& text,
+                                   unsigned char r,
+                                   unsigned char g,
+                                   unsigned char b);
+
 	/**
 	 * Allocates a colored surface with the given Text printed in.
 	 */

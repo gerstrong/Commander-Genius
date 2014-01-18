@@ -246,6 +246,44 @@ Uint32 GsFont::getFGColor()
     return SDL_MapRGB(pPixelformat, color[15].r, color[15].g, color[15].b);
 }
 
+void GsFont::createTextSurface(GsSurface &sfc,
+                               const std::string& text,
+                               unsigned char r,
+                               unsigned char g,
+                               unsigned char b)
+{
+    SDL_Rect rect;
+    rect.x = rect.y = 0;
+    rect.w = getPixelTextWidth(text);
+    rect.h = getPixelTextHeight()*calcNumLines(text);
+
+    SDL_Surface *blit = gVideoDriver.getBlitSurface();
+    SDL_PixelFormat *format = blit->format;
+
+    sfc.create(SDL_SWSURFACE,
+               rect.w, rect.h,
+               format->BitsPerPixel,
+               format->Rmask,
+               format->Gmask,
+               format->Bmask,
+               format->Amask);
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceBlendMode(pColoredTextSurface, SDL_BLENDMODE_BLEND);
+#endif
+
+    sfc.fillRGBA(0, 0, 0, 0);
+
+    const Uint32 oldColor = getFGColor();
+
+    const Uint32 fgColor = sfc.mapRGB( r, g, b );
+
+    setupColor( fgColor );
+
+    drawFont( sfc.getSDLSurface(), text, 0, 0);
+
+    setupColor( oldColor );
+}
 
 GsSurface *GsFont::fetchColoredTextSfc(const std::string& text, const Uint32 fgColor )
 {
