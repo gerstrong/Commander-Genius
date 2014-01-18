@@ -24,7 +24,6 @@ mBordered(bordered)
 void GalaxyButton::setupButtonSurface()
 {
     GsFont &Font = gGraphics.getFont(mFontID);
-    //SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
     Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
     Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
@@ -65,7 +64,7 @@ void GalaxyButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
 
 void GalaxyButton::drawGalaxyStyle(SDL_Rect& lRect)
 {
-    GsSurface blitsfc( gVideoDriver.getBlitSurface() );    
+    GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
 
     if(!mEnabled)
     {
@@ -84,8 +83,6 @@ void GalaxyButton::drawGalaxyStyle(SDL_Rect& lRect)
     }
 
     drawBlinker(lRect);
-
-    blitsfc.disownSfc();
 }
 
 void GalaxyButton::processRender(const GsRect<float> &RectDispCoordFloat)

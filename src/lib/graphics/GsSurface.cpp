@@ -4,7 +4,7 @@
 #include "GsSurface.h"
 
 
-GsRect<Uint16> GsSurface::calcBlitRect(const GsRect<float> &rect)
+GsRect<Uint16> GsWeakSurface::calcBlitRect(const GsRect<float> &rect)
 {
     GsRect<Uint16> absRect(0, 0, mpSurface->w, mpSurface->h);
 
@@ -13,7 +13,7 @@ GsRect<Uint16> GsSurface::calcBlitRect(const GsRect<float> &rect)
 }
 
 
-void GsSurface::drawRect(const GsRect<Uint16> &rect,
+void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
                          const int thickness,
                          const Uint32 contourColor )
 {
@@ -43,7 +43,7 @@ void GsSurface::drawRect(const GsRect<Uint16> &rect,
 }
 
 
-void GsSurface::drawRect(const GsRect<Uint16> &rect,
+void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
                          const int thickness,
                          const Uint32 contourColor,
                          const Uint32 fillColor )

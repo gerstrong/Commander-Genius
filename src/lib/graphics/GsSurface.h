@@ -6,37 +6,21 @@
 #include <memory>
 
 
-class GsSurface
+class GsWeakSurface
 {
 public:
 
-    GsSurface() :
+    GsWeakSurface() :
         mpSurface(nullptr) {}
 
-    GsSurface(SDL_Surface *sfc) :
+    GsWeakSurface(SDL_Surface *sfc) :
         mpSurface(sfc) {}
 
-    GsSurface(GsSurface *sfc) :
+    /*GsWeakSurface(GsSurface *sfc) :
         mpSurface(sfc->getSDLSurface())
     {
         sfc->disownSfc();
-    }
-
-    void set(GsSurface *surface)
-    {
-        if(mpSurface != nullptr)
-            SDL_FreeSurface(mpSurface);
-
-        mpSurface = surface->getSDLSurface();
-
-        surface->disownSfc();
-    }
-
-    ~GsSurface()
-    {
-        if(mpSurface != nullptr)
-            SDL_FreeSurface(mpSurface);
-    }
+    }*/
 
 
 
@@ -70,42 +54,20 @@ public:
 
     GsRect<Uint16> calcBlitRect(const GsRect<float> &rect);
 
-    int blitTo(GsSurface &sfc)
+    int blitTo(GsWeakSurface &sfc)
     {
         return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, nullptr );
     }
 
-    int blitTo(GsSurface &sfc, GsRect<Uint16> &dstRect)
+    int blitTo(GsWeakSurface &sfc, GsRect<Uint16> &dstRect)
     {
         SDL_Rect sdlRect = dstRect.SDLRect();
         return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, &sdlRect );
     }
 
-    int blitTo(GsSurface &sfc, const SDL_Rect &sdlRect)
+    int blitTo(GsWeakSurface &sfc, const SDL_Rect &sdlRect)
     {
         return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, const_cast<SDL_Rect*>(&sdlRect) );
-    }
-
-    int setVideoMode(const int width,
-                 const int height,
-                 const int bpp,
-                 const Uint32 flags)
-    {
-        if(mpSurface)
-            SDL_FreeSurface(mpSurface);
-
-        mpSurface = SDL_SetVideoMode(width, height, bpp, flags);
-        return 0;
-    }
-
-    void create(Uint32 flags, int width, int height, int depth,
-                Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
-    {
-        if(mpSurface)
-            SDL_FreeSurface(mpSurface);
-
-        mpSurface = SDL_CreateRGBSurface(flags, width, height, depth,
-                                         Rmask, Gmask, Bmask, Amask);
     }
 
     Uint32 mapRGB(const Uint8 r, const Uint8 g, const Uint8 b)
@@ -156,6 +118,40 @@ public:
         return (mpSurface!=nullptr);
     }
 
+    SDL_Surface *getSDLSurface()
+    {
+        return mpSurface;
+    }
+
+protected:
+
+    SDL_Surface *mpSurface;
+};
+
+// Normal Surface
+
+class GsSurface : public GsWeakSurface
+{
+public:
+
+    GsSurface() {}
+
+    GsSurface(SDL_Surface *sfc) :
+        GsWeakSurface(sfc) {}
+
+    GsSurface(GsSurface *sfc) :
+        GsWeakSurface(sfc->getSDLSurface())
+    {
+        sfc->disownSfc();
+    }
+
+
+    ~GsSurface()
+    {
+        if(mpSurface != nullptr)
+            SDL_FreeSurface(mpSurface);
+    }
+
 
     // Use this, if you don't need to access the surface and another process
     // will free it. If you used setVideoMode(...)
@@ -165,15 +161,44 @@ public:
         mpSurface = nullptr;
     }
 
-    SDL_Surface *getSDLSurface()
+    void create(Uint32 flags, int width, int height, int depth,
+                Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask)
     {
-        return mpSurface;
+        if(mpSurface)
+            SDL_FreeSurface(mpSurface);
+
+        mpSurface = SDL_CreateRGBSurface(flags, width, height, depth,
+                                         Rmask, Gmask, Bmask, Amask);
     }
 
+  /*  void set(GsSurface *surface)
+    {
+        if(mpSurface != nullptr)
+            SDL_FreeSurface(mpSurface);
 
-private:
+        mpSurface = surface->getSDLSurface();
 
-    SDL_Surface *mpSurface;
+        surface->disownSfc();
+    }
+*/
+
+};
+
+
+class GsVideoSurface : public GsWeakSurface
+{
+
+public:
+
+    int setVideoMode(const int width,
+                 const int height,
+                 const int bpp,
+                 const Uint32 flags)
+    {
+        mpSurface = SDL_SetVideoMode(width, height, bpp, flags);
+        return 0;
+    }
+
 };
 
 #endif // __GS_SURFACE__
