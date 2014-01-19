@@ -1185,7 +1185,7 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
 
 bool CInput::mouseClicked()
 {
-	// If you click, then open the menu
+    // If you click, open the menu
 	std::deque< std::shared_ptr<CEvent> >::iterator it = m_EventList.begin();
 
 	for( ; it != m_EventList.end() ; it++ )

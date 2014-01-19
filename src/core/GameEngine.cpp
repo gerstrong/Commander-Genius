@@ -106,7 +106,6 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
 
 void GameEngine::ponder(const float deltaT)
 {
-
     if(mEngineLoader.isRunning())
     {
         mEngineLoader.run(deltaT);

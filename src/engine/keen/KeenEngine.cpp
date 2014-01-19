@@ -104,9 +104,12 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
 
 void KeenEngine::ponder(const float deltaT)
 {
+    if(gMenuController.active())
+        return;
+
     GameEngine::ponder(deltaT);
 
-    CEventContainer &EventContainer = gEventManager;
+    //CEventContainer &EventContainer = gEventManager;
 
     // Did the player press the quit/back button
     if( gInput.getPressedCommand(IC_BACK) )
@@ -115,10 +118,10 @@ void KeenEngine::ponder(const float deltaT)
         {
             openMainMenu();
         }
-        else // Close the menu which is open. Might go back if it is a submenu
+        /*else // Close the menu which is open. Might go back if it is a submenu
         {
             EventContainer.add( new CloseMenuEvent() );
-        }
+        }*/
     }
 }
 

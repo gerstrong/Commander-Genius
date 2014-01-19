@@ -66,7 +66,7 @@ void CMenuController::popBackMenu()
         g_pBehaviorEngine->setPause(false);
 		
         // When menu is closed hide the cursor
-        SDL_ShowCursor(SDL_DISABLE);
+        //SDL_ShowCursor(SDL_DISABLE);
     }
 }
 

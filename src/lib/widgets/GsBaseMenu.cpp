@@ -65,6 +65,13 @@ void CBaseMenu::setMenuLabel(const std::string &label)
 
 void CBaseMenu::ponder(const float deltaT)
 {
+    // If IC_BACK is invoked, make the menu controller close the controller
+    if( gInput.getPressedCommand(IC_BACK) )
+    {
+        gEventManager.add( new CloseMenuEvent() );
+        return;
+    }
+
 	// Command (Keyboard/Joystick) are handled here
 	for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
 	{
@@ -77,7 +84,6 @@ void CBaseMenu::ponder(const float deltaT)
 	}
 
 	mpMenuDialog->processLogic();
-
 }
 
 

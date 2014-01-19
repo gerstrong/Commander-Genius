@@ -113,15 +113,15 @@ bool CPassiveGalaxy::init()
 // Here it will execute the mode we are currently running
 void CPassiveGalaxy::ponder(const float deltaT)
 {		
-    if( PointingDevEvent *pde = gInput.m_EventList.occurredEvent<PointingDevEvent>() )
+    /*if( PointingDevEvent *pde = gInput.m_EventList.occurredEvent<PointingDevEvent>() )
     {
         if(pde->Type == PDE_BUTTONUP) // Someone touched or clicked, skip a section!
         {
             mSkipSection = true;
         }
-    }
+    }*/
 
-    if( gInput.getPressedAnyCommand() )
+    if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
     {
         mSkipSection = true;
     }
