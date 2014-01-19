@@ -121,6 +121,9 @@ void CPassiveGalaxy::ponder(const float deltaT)
         }
     }*/
 
+    if(gEffectController.runningEffect())
+       return;
+
     if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
     {
         mSkipSection = true;

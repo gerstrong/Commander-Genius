@@ -260,6 +260,7 @@ void GsApp::ponder(const float deltaT)
     if(mpCurEngine)
         mpCurEngine->ponder(deltaT);
 
+    // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
     gEffectController.run(deltaT);
 
     gMenuController.ponder(deltaT);
@@ -343,9 +344,6 @@ void GsApp::runMainCycle()
               previousState = currentState;
               integrate( currentState, logicLatency );
             */
-
-            // Apply graphical effects if any. It does not render, it only prepares for the rendering task.
-            gEffectController.run(logicLatency);
 
             acc -= logicLatency;
         }

@@ -90,7 +90,7 @@ void CPixelate::ponder(const float deltaT)
 	if(m_line < gameres.h)
 	{
 		m_line+=m_speed;
-		if(m_line > gameres.h) m_line=gameres.h;
+        if(m_line > gameres.h || mFinished) m_line=gameres.h;
 	}
 
 	if( m_lines_completed >= m_line )
