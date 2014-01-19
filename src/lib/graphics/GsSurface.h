@@ -107,9 +107,16 @@ public:
         SDL_FillRect( mpSurface, &sdlRect, color );
     }
 
-    bool flip()
+    void setColorMask(const unsigned char r,
+                      const unsigned char g,
+                      const unsigned char b)
     {
-        return (SDL_Flip(mpSurface)!=-1);
+        SDL_SetColorKey( mpSurface, SDL_SRCCOLORKEY, mapRGB(r, g, b) );
+    }
+
+    void setAlpha(const unsigned char alpha)
+    {
+        SDL_SetAlpha(mpSurface, SDL_SRCALPHA, alpha);
     }
 
     // bool operator
@@ -190,6 +197,7 @@ class GsVideoSurface : public GsWeakSurface
 
 public:
 
+    // Wrapper for SDL_SetVideoMode
     int setVideoMode(const int width,
                  const int height,
                  const int bpp,
@@ -197,6 +205,12 @@ public:
     {
         mpSurface = SDL_SetVideoMode(width, height, bpp, flags);
         return 0;
+    }
+
+    // Wrapper for SDL_Flip
+    bool flip()
+    {
+        return (SDL_Flip(mpSurface)!=-1);
     }
 
 };

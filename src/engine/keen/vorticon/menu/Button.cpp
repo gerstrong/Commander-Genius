@@ -18,11 +18,10 @@ GsButton(text, ev)
 void Button::setupButtonSurface()
 {
     GsFont &Font = gGraphics.getFont(mFontID);
-    SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
-    mTextDarkSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 38, 134, 38));
-    mTextLightSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 84, 234, 84));
-    mTextDisabledSfc = Font.fetchColoredTextSfc( "  " + mText, SDL_MapRGB( format, 123, 150, 123));
+    Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
+    Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
+    Font.createTextSurface(mTextDisabledSfc, "  " + mText, 123, 150, 123 );
 }
 
 

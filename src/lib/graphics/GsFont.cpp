@@ -260,23 +260,33 @@ void GsFont::createTextSurface(GsSurface &sfc,
     SDL_Surface *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
+    /*sfc.create(SDL_SWSURFACE,
+               rect.w, rect.h,
+               format->BitsPerPixel,
+               format->Rmask,
+               format->Gmask,
+               format->Bmask,
+               format->Amask);*/
+
     sfc.create(SDL_SWSURFACE,
                rect.w, rect.h,
                format->BitsPerPixel,
                format->Rmask,
                format->Gmask,
                format->Bmask,
-               format->Amask);
+               0);
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(pColoredTextSurface, SDL_BLENDMODE_BLEND);
+#else
+    sfc.setColorMask(0, 255, 255);
 #endif
 
-    sfc.fillRGBA(0, 0, 0, 0);
+    sfc.fillRGB(0, 255, 255);
 
     const Uint32 oldColor = getFGColor();
 
-    const Uint32 fgColor = sfc.mapRGB( r, g, b );
+    const Uint32 fgColor = sfc.mapRGB( r, g, b );        
 
     setupColor( fgColor );
 
@@ -284,44 +294,6 @@ void GsFont::createTextSurface(GsSurface &sfc,
 
     setupColor( oldColor );
 }
-
-GsSurface *GsFont::fetchColoredTextSfc(const std::string& text, const Uint32 fgColor )
-{
-	SDL_Rect rect;
-	rect.x = rect.y = 0;
-	rect.w = getPixelTextWidth(text);
-	rect.h = getPixelTextHeight()*calcNumLines(text);
-
-    SDL_Surface *blit = gVideoDriver.getBlitSurface();
-    SDL_PixelFormat *format = blit->format;
-
-    GsSurface *coloredTextSurface = new GsSurface;
-
-    coloredTextSurface->create(SDL_SWSURFACE,
-                              rect.w, rect.h,
-                              format->BitsPerPixel,
-                              format->Rmask,
-                              format->Gmask,
-                              format->Bmask,
-                              format->Amask);
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(pColoredTextSurface, SDL_BLENDMODE_BLEND);
-#endif
-
-    coloredTextSurface->fillRGBA(0, 0, 0, 0);
-
-	const Uint32 oldColor = getFGColor();
-
-	setupColor( fgColor );
-
-    drawFont( coloredTextSurface->getSDLSurface(), text, 0, 0);
-
-	setupColor( oldColor );
-
-    return coloredTextSurface;
-}
-
 
 
 unsigned int GsFont::getPixelTextWidth( const std::string& text )

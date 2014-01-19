@@ -9,7 +9,8 @@ GalaxyButton::GalaxyButton(const std::string& text,
                            CEvent *ev,
                            const bool bordered) :
 GsButton(text, ev),
-mBordered(bordered)
+mBordered(bordered),
+mLightRatio(128)
 {
     mFontID = 1;
 
@@ -18,6 +19,31 @@ mBordered(bordered)
     else
         drawButton = &GsButton::drawGalaxyStyle;*/
     setupButtonSurface();
+}
+
+const int BLEND_SPEED = 8;
+
+void GalaxyButton::processLogic()
+{
+    GsButton::processLogic();
+
+    if(mEnabled)
+    {
+        if(mHovered)
+        {
+            if(mLightRatio+BLEND_SPEED < 255)
+               mLightRatio += BLEND_SPEED;
+            else
+               mLightRatio = 255;
+        }
+        else // Button is not hovered
+        {
+            if(mLightRatio-BLEND_SPEED > 0)
+               mLightRatio -= BLEND_SPEED;
+            else
+               mLightRatio = 0;
+        }
+    }
 }
 
 
@@ -60,6 +86,21 @@ void GalaxyButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
     Font.setupColor( oldcolor );
 }
 
+void GalaxyButton::drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect& lRect)
+{
+    mTextLightSfc.setAlpha(mLightRatio);
+    mTextDarkSfc.setAlpha(255-mLightRatio);
+
+    if(mLightRatio > 0)
+    {
+        mTextLightSfc.blitTo(blitsfc, lRect);
+    }
+
+    if(mLightRatio < 255)
+    {
+        mTextDarkSfc.blitTo(blitsfc, lRect);
+    }
+}
 
 
 void GalaxyButton::drawGalaxyStyle(SDL_Rect& lRect)
@@ -72,18 +113,13 @@ void GalaxyButton::drawGalaxyStyle(SDL_Rect& lRect)
     }
     else
     {
-        if(mHovered)
-        {
-            mTextLightSfc.blitTo(blitsfc, lRect);
-        }
-        else // Button is not hovered
-        {
-            mTextDarkSfc.blitTo(blitsfc, lRect);
-        }
+        drawEnabledButton(blitsfc, lRect);
     }
 
     drawBlinker(lRect);
 }
+
+
 
 void GalaxyButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {

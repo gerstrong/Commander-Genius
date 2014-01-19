@@ -31,7 +31,7 @@ public:
 
     void updateGraphics();
 
-	void processLogic();
+    virtual void processLogic();
 
 	void drawNoStyle(SDL_Rect& lRect);
 

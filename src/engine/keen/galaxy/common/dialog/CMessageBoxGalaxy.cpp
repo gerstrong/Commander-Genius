@@ -106,12 +106,10 @@ void CMessageBoxGalaxy::initText(const SDL_Rect &rect)
 {
 	GsFont &Font = gGraphics.getFont(FONT_ID);
 
-	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
+    GsSurface textSfc;
+    GsWeakSurface mbSurface(mpMBSurface.get());
 
-    GsSurface textSfc(Font.fetchColoredTextSfc( mText, SDL_MapRGB( format, 0, 0, 0 ) ));
-
-    GsSurface mbSurface(mpMBSurface.get());
-    mbSurface.disownSfc();
+    Font.createTextSurface(textSfc, mText, 0, 0, 0 );
 
     textSfc.blitTo(mbSurface, rect);
 }
