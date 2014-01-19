@@ -91,10 +91,7 @@ struct EventPlayerRideFoot : CEvent {
 };
 
 
-struct EventPlayTrack : CEvent {
-	const uint32_t track;
-	EventPlayTrack(const uint16_t t) : track(t) {}
-};
+
 
 
 /**

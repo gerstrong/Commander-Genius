@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <base/GsEvent.h>
 
 #include "CSingleton.h"
 #define g_pMusicPlayer CMusic::Get()
@@ -52,6 +53,11 @@ public:
 
 	std::unique_ptr<CMusicPlayer> mpPlayer;
 	bool m_busy;
+};
+
+struct EventPlayTrack : CEvent {
+    const uint32_t track;
+    EventPlayTrack(const uint16_t t) : track(t) {}
 };
 
 #endif /* CMUSIC_H_ */
