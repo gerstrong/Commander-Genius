@@ -108,20 +108,9 @@ bool COGGPlayer::open()
 }
 
 
-bool COGGPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
-{
-	// Now get the proper music slot reading the assignment table.
-	Uint16 music_order = 0;
-	const int Idx = ExeFile.getEpisode()-4;
-//	memcpy( &music_order, ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16), sizeof(Uint16));
-	
-	if(music_order > 20)
-	{
-	  gLogging.textOut("Sorry, this track is invalid! Please report the developers.");
-	  return false;
-	}
-	
-	m_filename = "slot" + itoa(music_order) + ".ogg";
+bool COGGPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
+{	
+    m_filename = "slot" + itoa(track) + ".ogg";
 	m_filename = getResourceFilename(JoinPaths("music", m_filename), ExeFile.getDataDirectory(), false, false);
 
 	if(m_filename.empty())	

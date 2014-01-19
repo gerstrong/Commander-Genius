@@ -21,6 +21,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include <base/utils/Base64.h>
 
+#include "GalaxyEngine.h"
+
 CMapPlayGalaxy::CMapPlayGalaxy(CExeFile &ExeFile, std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
 mActive(false),
 mExeFile(ExeFile),
@@ -340,7 +342,8 @@ bool CMapPlayGalaxy::operator<<(CSaveGameController &savedGame)
     // Load the Background Music
 	g_pMusicPlayer->stop();
 
-    if( !g_pMusicPlayer->load(mExeFile, level) )
+
+    if( !galaxy::loadLevelMusic(level) )
     	gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
     	g_pMusicPlayer->play();
@@ -525,7 +528,7 @@ void CMapPlayGalaxy::operator<<(boost::property_tree::ptree &levelNode)
     // Load the Background Music
     g_pMusicPlayer->stop();
 
-    if( !g_pMusicPlayer->load(mExeFile, level) )
+    if( !galaxy::loadLevelMusic(level) )
         gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
         g_pMusicPlayer->play();

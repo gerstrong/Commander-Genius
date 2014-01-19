@@ -9,6 +9,8 @@
 #include "fileio/CSaveGameController.h"
 #include "graphics/effects/CColorMerge.h"
 
+#include "../GalaxyEngine.h"
+
 namespace galaxy {
 
 CWorldMap::CWorldMap(CExeFile &ExeFile,
@@ -51,7 +53,7 @@ void CWorldMap::init()
 void CWorldMap::loadAndPlayMusic()
 {
 	g_pMusicPlayer->stop();
-	if(g_pMusicPlayer->load(mExeFile, 0))
+    if(loadLevelMusic(0))
 		g_pMusicPlayer->play();
 }
 

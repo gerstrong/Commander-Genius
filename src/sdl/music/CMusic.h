@@ -32,8 +32,7 @@ public:
 	 * Loads certain track of the Keen Music
 	 */
 	bool loadTrack(const CExeFile& ExeFile, const int track);
-	bool load(const CExeFile& ExeFile, const int level);
-	bool load(const std::string &musicfile);
+    bool load(const std::string &musicfile);
 	void reload();
 	void play();
 	void pause();

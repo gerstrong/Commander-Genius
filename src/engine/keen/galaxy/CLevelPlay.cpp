@@ -18,6 +18,8 @@
 
 #include "CMapPlayGalaxy.h"
 
+#include "GalaxyEngine.h"
+
 namespace galaxy {
 
 CLevelPlay::CLevelPlay(CExeFile &ExeFile,
@@ -44,7 +46,7 @@ void CLevelPlay::loadMap(const int level)
     // Load the Background Music
 	g_pMusicPlayer->stop();
 
-    if( !g_pMusicPlayer->load(mExeFile, level) )
+    if( loadLevelMusic(level) )
     	gLogging.textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
     	g_pMusicPlayer->play();

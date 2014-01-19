@@ -34,7 +34,6 @@ public:
 	 * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
 	 * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
 	 */
-	bool loadMusicForLevel(const CExeFile& ExeFile, const int level);
 	bool loadMusicTrack(const CExeFile& ExeFile, const int track);
 	bool loadMusicFromFile(const std::string& filename);
 

@@ -40,6 +40,25 @@ bool setupAudio()
     return false;
 }
 
+bool loadLevelMusic(const int level)
+{
+    Uint16 track;
+
+    CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    const int Idx = ExeFile.getEpisode()-4;
+
+    byte* musictable_start = ExeFile.getRawData()+GalaxySongAssignments[Idx];
+    memcpy( &track, musictable_start+level*sizeof(Uint16), sizeof(Uint16));
+
+    if(track > 20)
+    {
+      gLogging.textOut("Sorry, this track is invalid! Please report the developers.");
+      return false;
+    }
+
+    return g_pMusicPlayer->loadTrack(ExeFile, track);
+}
+
 
 void GalaxyEngine::openMainMenu()
 {

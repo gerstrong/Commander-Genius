@@ -284,23 +284,6 @@ bool CIMFPlayer::unpackAudioInterval(	const CExeFile& ExeFile,
 	}
 }
 
-bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
-{
-	// Now get the proper music slot reading the assignment table.
-	Uint16 music_order = 0;
-	const int Idx = ExeFile.getEpisode()-4;
-//	byte *data = ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16);
-//	memcpy( &music_order, data, sizeof(Uint16));
-	
-	if(music_order > 20)
-	{
-	  gLogging.textOut("Sorry, this track is invalid! Please report it the developers.");
-	  return false;
-	}
-
-	return loadMusicTrack(ExeFile, music_order);
-}
-
 bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 {
 	// Now get the proper music slot reading the assignment table.

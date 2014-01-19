@@ -12,8 +12,9 @@
 namespace galaxy
 {
 
-
 bool setupAudio();
+
+bool loadLevelMusic(const int level);
 
 class GalaxyEngine : public KeenEngine
 {
