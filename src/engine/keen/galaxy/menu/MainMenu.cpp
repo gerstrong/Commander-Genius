@@ -15,13 +15,12 @@
 #include "LoadMenu.h"
 #include "SaveMenu.h"
 #include "CHelpMenu.h"
-//#include "engine/infoscenes/CHighScores.h"
 #include "common/CBehaviorEngine.h"
 
 #include "core/mode/CGameMode.h"
 
 #include "Button.h"
-
+#include "../../menu/CSelectionMenu.h"
 
 namespace galaxy
 {

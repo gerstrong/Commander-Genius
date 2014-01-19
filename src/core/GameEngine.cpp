@@ -64,22 +64,14 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
         mpInfoScene->init();
 
         return;
-    }
-    else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
-    {
-        g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
-        EventContainer.add( new OpenMenuEvent(new CDifficultySelection) );
-        return;
-    }
-
-    else if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
+    }*/
+    /*else if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
     {
         g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
         switchToGamePlayMode();
         return;
-    }
-
-    else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
+    }*/
+    /*else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
         // TODO: we need to pass less arguments here! Make this code more pleasant
 

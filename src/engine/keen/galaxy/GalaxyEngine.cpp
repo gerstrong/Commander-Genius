@@ -16,6 +16,8 @@
 #include "CPlayGameGalaxy.h"
 
 #include "menu/MainMenu.h"
+#include "menu/Button.h"
+#include "../menu/CSelectionMenu.h"
 
 namespace galaxy
 {
@@ -129,7 +131,6 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         savedgames.convertAllOldFormats();
 
         mpGameMode.reset( new galaxy::CPassiveGalaxy() );
-
         mpGameMode->init();
 
         /*if(  )
@@ -150,6 +151,12 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
                                     DataDirectory,
                                     m_start_level) );*/
     }    
+    else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
+    {
+        g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
+        gEventManager.add( new OpenMenuEvent(new CDifficultySelection<GalaxyButton>) );
+        return;
+    }
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
         // TODO: This const_cast must be removed. So adapt the rest of the structure to make it more secure
