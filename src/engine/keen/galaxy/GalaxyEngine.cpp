@@ -17,7 +17,7 @@
 
 #include "menu/MainMenu.h"
 #include "menu/Button.h"
-#include "../menu/CSelectionMenu.h"
+#include "menu/SelectionMenu.h"
 
 namespace galaxy
 {
@@ -154,7 +154,7 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
         g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
-        gEventManager.add( new OpenMenuEvent(new CDifficultySelection<GalaxyButton>) );
+        gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
         return;
     }
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )

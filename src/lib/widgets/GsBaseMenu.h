@@ -60,6 +60,7 @@ public:
         mpMenuDialog->updateGraphics();
     }
 
+    virtual void formatMenu() {}
 
 protected:
 	std::unique_ptr<CGUIDialog> mpMenuDialog;

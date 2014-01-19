@@ -32,8 +32,18 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
     GsButton *button = new GsButton( "New Game",
 										new OpenMenuEvent(new CDifficultySelection) );
 #else
-    GsButton *button = new GsButton( "New Game",
-                                    new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent, vorticon::Button>(true) ) );
+    GsButton *button = new GsButton
+    ( "New Game",
+              new OpenMenuEvent
+              (
+                 new CPlayersSelection
+                 <
+                   NewGamePlayersEvent,
+                   vorticon::Button
+                 >
+                 (true)
+              )
+    );
 #endif
 
 	mpMenuDialog->addControl( button );

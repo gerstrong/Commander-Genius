@@ -47,7 +47,7 @@ class CPlayersSelection : public CBaseMenu
 
 public:
 	CPlayersSelection(bool numFirst = false) :
-		CBaseMenu( GsRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
+        CBaseMenu( GsRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
 	{
 			std::string	playerStr;
 			for( unsigned int i = 1 ; i <= MAX_PLAYERS ; i++ )
@@ -64,7 +64,7 @@ public:
 			}
 	}
 
-	std::list<GsButton*> mpButtonList;
+    std::list<GsButton*> mpButtonList;
 };
 
 

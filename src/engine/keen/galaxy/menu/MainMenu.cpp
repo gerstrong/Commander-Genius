@@ -33,7 +33,7 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
                                         new OpenMenuEvent(new CDifficultySelection) );
 #else
     GsButton *button = new GalaxyButton( "New Game",
-             new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent, GalaxyButton>(true) ) );
+             new OpenMenuEvent( new CPlayersSelection<NewGamePlayersEvent>(true) ) );
 #endif
 
 	mpMenuDialog->addControl( button );
@@ -76,6 +76,12 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 MainMenu::MainMenu( const bool openedGamePlay ) :
 CBaseMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
+    GsRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
+    mpMenuDialog->setRect(rect);
+    mpReturnButton = new GalaxyButton( "x", new CloseMenuEvent() );
+    mpMenuDialog->addControl( mpReturnButton, GsRect<float>(-0.1f, 0.1f, 0.03f/rect.w, 0.03f/rect.h) );
+    mpReturnButton->setDown(true);
+
     createGalaxyMenu(openedGamePlay);
 }
 
