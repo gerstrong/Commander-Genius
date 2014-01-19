@@ -69,6 +69,10 @@ public:
 			 	 	  const bool useSB );
 
 	bool loadSoundData();
+
+    void setupSoundData(const std::map<GameSound, int> &slotMap,
+                               CAudioResources *audioResPtr);
+
 	void unloadSoundData();
 
 	// Tell whether a sound is played which has to stop the gameplay
@@ -82,7 +86,7 @@ protected:
 	SDL_AudioSpec mAudioSpec;
 
 private:
-    	std::vector<CSoundChannel>	m_soundchannel;	
+    std::vector<CSoundChannel>	m_soundchannel;
 	std::unique_ptr<CAudioResources> mpAudioRessources;
 	unsigned short m_mixing_channels;
 	Uint8 m_MusicVolume;

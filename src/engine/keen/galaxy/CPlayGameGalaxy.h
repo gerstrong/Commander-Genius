@@ -27,8 +27,8 @@ namespace galaxy
 class CPlayGameGalaxy : public CPlayGame
 {
 public:
-    CPlayGameGalaxy(CExeFile &ExeFile, char level,
-             CSaveGameController &SavedGame);
+
+    CPlayGameGalaxy(const GMSwitchToPlayGameMode &info);
 
     bool loadGameState();
     //bool saveGameState();

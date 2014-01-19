@@ -356,26 +356,57 @@ void CSound::playStereosoundSlot(unsigned char slotplay, const char mode, const 
 
 bool CSound::loadSoundData()
 {
-/*	const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-	const unsigned int ep = ExeFile.getEpisode();
-	if(ep >= 1 && ep <= 3) // Vorticon based Keengame
-	{
-	    std::unique_ptr<CAudioVorticon> vorticonAudio(new CAudioVorticon(ExeFile, mAudioSpec));
-	    const bool ok = vorticonAudio->loadSoundData();
-	    sndSlotMap = vorticonAudio->sndSlotMap;
-	    mpAudioRessources = move(vorticonAudio);
-	    return ok;
-	}
-	else if(ep >= 4 && ep <= 7) // Galaxy based Keengame
-	{
-	    std::unique_ptr<CAudioGalaxy> galaxyAudio(new CAudioGalaxy(ExeFile, mAudioSpec));
-	    const bool ok = galaxyAudio->loadSoundData();
-	    sndSlotMap = galaxyAudio->sndSlotMapGalaxy[ep];
-	    mpAudioRessources = move(galaxyAudio);
-	    return ok;
+    /*const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    const unsigned int ep = ExeFile.getEpisode();
+    if(ep >= 1 && ep <= 3) // Vorticon based Keengame
+    {
+        std::unique_ptr<CAudioVorticon> vorticonAudio(new CAudioVorticon(ExeFile, mAudioSpec));
+        const bool ok = vorticonAudio->loadSoundData();
+        sndSlotMap = vorticonAudio->sndSlotMap;
+        mpAudioRessources = move(vorticonAudio);
+        return ok;
+    }
+    else if(ep >= 4 && ep <= 7) // Galaxy based Keengame
+    {
+        std::unique_ptr<CAudioGalaxy> galaxyAudio(new CAudioGalaxy(ExeFile, mAudioSpec));
+        const bool ok = galaxyAudio->loadSoundData();
+        sndSlotMap = galaxyAudio->sndSlotMapGalaxy[ep];
+        mpAudioRessources = move(galaxyAudio);
+        return ok;
     }*/
 
-	return false;
+    return false;
+}
+
+void CSound::setupSoundData(const std::map<GameSound, int> &slotMap,
+                           CAudioResources *audioResPtr)
+{
+    assert(audioResPtr);
+
+    sndSlotMap = slotMap;
+    mpAudioRessources.reset(audioResPtr);
+
+
+    /*const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    const unsigned int ep = ExeFile.getEpisode();
+    if(ep >= 1 && ep <= 3) // Vorticon based Keengame
+    {
+        std::unique_ptr<CAudioVorticon> vorticonAudio(new CAudioVorticon(ExeFile, mAudioSpec));
+        const bool ok = vorticonAudio->loadSoundData();
+        sndSlotMap = vorticonAudio->sndSlotMap;
+        mpAudioRessources = move(vorticonAudio);
+        return ok;
+    }*/
+    /*else if(ep >= 4 && ep <= 7) // Galaxy based Keengame
+    {
+        std::unique_ptr<CAudioGalaxy> galaxyAudio(new CAudioGalaxy(ExeFile, mAudioSpec));
+        const bool ok = galaxyAudio->loadSoundData();
+        sndSlotMap = galaxyAudio->sndSlotMapGalaxy[ep];
+        mpAudioRessources = move(galaxyAudio);
+        return ok;
+    }*/
+
+    return ok;
 }
 
 void CSound::unloadSoundData()

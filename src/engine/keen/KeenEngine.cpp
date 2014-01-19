@@ -11,6 +11,22 @@
 #include "sdl/music/CMusic.h"
 //#include "common/Menu/CMainMenu.h"
 
+
+void KeenEngine::switchToGamePlayMode()
+{
+    const int episode = g_pBehaviorEngine->getEpisode();
+
+    auto &numPlayers = g_pBehaviorEngine->mPlayers;
+
+    // If you get here, you always have at least one player
+    if(numPlayers <= 0)
+        numPlayers = 1;
+
+    std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
+    gEventManager.add( new GMSwitchToPlayGameMode( episode, numPlayers, DataDirectory ) );
+}
+
+
 void KeenEngine::openMainMenu()
 {
     /*if(gMenuController.isLocked())
@@ -98,8 +114,15 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
             EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
                                     DataDirectory,
                                     m_start_level) );*//*
+    }*/
+
+    if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
+    {
+        g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
+        switchToGamePlayMode();
+        return;
     }
-    else*/
+
 }
 
 void KeenEngine::ponder(const float deltaT)

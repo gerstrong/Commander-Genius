@@ -13,6 +13,9 @@
 
 #include "hardware/Configurator.h"
 #include "common/CBehaviorEngine.h"
+
+#include "../KeenEngine.h"
+
 #include <widgets/GsBaseMenu.h>
 #include <base/utils/StringUtils.h>
 
@@ -29,15 +32,6 @@ struct NewGamePlayersEvent : SelectionEvent
 {
 	NewGamePlayersEvent(const int players) :
         SelectionEvent(players) {}
-};
-
-// Invoked when New Game -> Players selected -> Difficulty selected
-struct StartNewGameEvent : CEvent
-{
-	StartNewGameEvent(const Difficulty difficulty) :
-        mDifficulty(difficulty) {}
-
-	const Difficulty mDifficulty;
 };
 
 

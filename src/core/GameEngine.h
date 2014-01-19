@@ -33,9 +33,7 @@ public:
 
 protected:
 
-    CResourceLoaderBackground mEngineLoader;
-
-	void switchToGamePlayMode();
+    CResourceLoaderBackground mEngineLoader;	
 
     //std::shared_ptr<CInfoScene> mpInfoScene;
     std::unique_ptr<CGameMode> mpGameMode;

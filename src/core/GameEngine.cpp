@@ -19,19 +19,6 @@
 #include "common/Menu/CHelpMenu.h"*/
 
 
-void GameEngine::switchToGamePlayMode()
-{
-	const int episode = g_pBehaviorEngine->getEpisode();
-
-	// If you get here, you always have at least one player
-	if(g_pBehaviorEngine->mPlayers <= 0)
-		g_pBehaviorEngine->mPlayers = 1;
-
-	const int Numplayers = g_pBehaviorEngine->mPlayers;
-	std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
-    gEventManager.add( new GMSwitchToPlayGameMode( episode, Numplayers, DataDirectory ) );
-}
-
 
 void GameEngine::pumpEvent(const CEvent *evPtr)
 {
@@ -63,12 +50,6 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
         mpInfoScene = scene->mpScene;
         mpInfoScene->init();
 
-        return;
-    }*/
-    /*else if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
-    {
-        g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
-        switchToGamePlayMode();
         return;
     }*/
     /*else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...

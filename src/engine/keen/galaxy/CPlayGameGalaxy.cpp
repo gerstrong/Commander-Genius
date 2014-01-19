@@ -25,12 +25,12 @@
 namespace galaxy
 {
 
-CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
-                                 CSaveGameController &SavedGame) :
-CPlayGame(ExeFile, level),
-m_WorldMap(ExeFile, mInventoryVec, m_Cheatmode),
-m_LevelPlay(ExeFile, mInventoryVec, m_Cheatmode),
-m_SavedGame(SavedGame)
+
+CPlayGameGalaxy::CPlayGameGalaxy(const GMSwitchToPlayGameMode &info) :
+CPlayGame(g_pBehaviorEngine->m_ExeFile, info.m_startlevel),
+m_WorldMap(g_pBehaviorEngine->m_ExeFile, mInventoryVec, m_Cheatmode),
+m_LevelPlay(g_pBehaviorEngine->m_ExeFile, mInventoryVec, m_Cheatmode),
+m_SavedGame(*gpSaveGameController)
 {
     const int numPlayers = g_pBehaviorEngine->mPlayers;
     mDead.assign(numPlayers, false);
@@ -44,8 +44,27 @@ m_SavedGame(SavedGame)
     }
 
     m_WorldMap.init();
-}
 
+    m_Level = info.m_startlevel;
+
+    // If no level has been set or is out of bound, set it to map.
+    if(m_Level > 100 || m_Level < 0 )
+        m_Level = WORLD_MAP_LEVEL_GALAXY;
+
+    bool ok = true;
+
+    // Create the special merge effect (Fadeout)
+    CColorMerge *pColorMergeFX = new CColorMerge(8);
+
+    ok &= init();
+
+    gEffectController.setupEffect(pColorMergeFX);
+
+    /*if(!ok)
+        {
+            EventContainer.add( new GMSwitchToPassiveMode(*//*m_DataDirectory, m_Episode*//*));
+        }*/
+}
 
 // NOTE: Only for compatibility mode. Since CG 1.5 it is only used for
 // supporting older versions of Savegame states of CG
@@ -486,7 +505,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
             m_WorldMap.ponder(deltaT);
 		}
 
-		// process World Map if active. At the start it's disabled, m_WorldMap turns it on.
+        // process inlevel play if active. At the start it's disabled, m_WorldMap turns it on.
 		if(m_LevelPlay.isActive())
 		{
             m_LevelPlay.setMsgBoxOpen(msgboxactive);

@@ -13,6 +13,7 @@
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
 
+#include "../GalaxyEngine.h"
 
 namespace galaxy
 {
@@ -85,7 +86,9 @@ void CAudioSettings::release()
 	g_pSound->destroy();
 	g_pSound->setSettings(mAudioSpec, mSoundblaster);
 	g_pSound->init();
-	g_pSound->loadSoundData();
+
+    setupAudio();
+
 	g_pMusicPlayer->reload();
 
 	g_pSettings->saveDrvCfg();

@@ -2,6 +2,7 @@
 #define __KEENENGINE_H__
 
 #include "core/GameEngine.h"
+#include "common/CBehaviorEngine.h"
 
 class KeenEngine : public GameEngine
 {
@@ -13,6 +14,8 @@ public:
         GameEngine(openedGamePlay, dataPath),
         mEp(ep),
         mLockedMenu(true) {}
+
+    void switchToGamePlayMode();
 
     virtual void openMainMenu();
 
@@ -41,6 +44,16 @@ protected:
 
 
 struct FinishedLoadingResources : CEvent {};
+
+// Invoked when New Game -> Players selected -> Difficulty selected
+struct StartNewGameEvent : CEvent
+{
+    StartNewGameEvent(const Difficulty difficulty) :
+        mDifficulty(difficulty) {}
+
+    const Difficulty mDifficulty;
+};
+
 
 
 #endif /* __KEENENGINE_H__ */

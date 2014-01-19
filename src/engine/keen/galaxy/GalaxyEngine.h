@@ -13,6 +13,8 @@ namespace galaxy
 {
 
 
+bool setupAudio();
+
 class GalaxyEngine : public KeenEngine
 {
 public:

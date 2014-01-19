@@ -18,9 +18,27 @@
 #include "menu/MainMenu.h"
 #include "menu/Button.h"
 #include "menu/SelectionMenu.h"
+#include "res/CAudioGalaxy.h"
 
 namespace galaxy
 {
+
+
+bool setupAudio()
+{
+    const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    const unsigned int ep = ExeFile.getEpisode();
+
+    CAudioGalaxy *audio = new CAudioGalaxy(ExeFile, g_pSound->getAudioSpec());
+
+    if(audio->loadSoundData())
+    {
+        g_pSound->setupSoundData(audio->sndSlotMapGalaxy[ep], audio);
+        return true;
+    }
+
+    return false;
+}
 
 
 void GalaxyEngine::openMainMenu()
@@ -87,8 +105,9 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSND) == LOADSND )
             {
                 gLogging.ftextOut("Loading audio... <br>");
-                // Load the sound data
-                g_pSound->loadSoundData();
+                // Load the sound data                
+                setupAudio();
+
                 mLoader.setPermilage(900);
                 gLogging.ftextOut("Done loading audio.<br>");
             }
@@ -160,11 +179,11 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
         // TODO: This const_cast must be removed. So adapt the rest of the structure to make it more secure
-        //GMSwitchToPlayGameMode *playGame = const_cast<GMSwitchToPlayGameMode*>(pPlayGame);
-        //mpGameMode.reset( new CPlayGameGalaxy(*playGame) );
+        GMSwitchToPlayGameMode *playGame = const_cast<GMSwitchToPlayGameMode*>(pPlayGame);
+        mpGameMode.reset( new CPlayGameGalaxy(*playGame) );
         mpGameMode->init();
         mOpenedGamePlay = true;
-        //gEventManager.add( new CloseAllMenusEvent() );
+        gEventManager.add( new CloseAllMenusEvent() );
     }    
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
