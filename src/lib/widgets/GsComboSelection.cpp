@@ -39,12 +39,11 @@ drawButton(&CGUIComboSelection::drawNoStyle)
 void CGUIComboSelection::setupButtonSurface(const std::string &optionText)
 {
 	GsFont &Font = gGraphics.getFont(mFontID);
-	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	const std::string showText = "  " + mText + ": " + optionText;
-    /*mTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
-    mTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
-    mTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));*/
+    Font.createTextSurface(mTextDarkSfc, showText, 38, 134, 38 );
+    Font.createTextSurface(mTextLightSfc, showText, 84, 234, 84 );
+    Font.createTextSurface(mTextDisabledSfc, showText, 123, 150, 123 );
 }
 
 const std::string& CGUIComboSelection::getSelection()
@@ -131,23 +130,23 @@ void CGUIComboSelection::processLogic()
 		return;
 
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( MouseMoveEvent *mouseevent = gInput.m_EventList.occurredEvent<MouseMoveEvent>() )
+	if( PointingDevEvent *mouseevent = gInput.m_EventList.occurredEvent<PointingDevEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
 
 		if( mRect.HasPoint(MousePos) )
 		{
-			if(mouseevent->Type == MOUSEEVENT_MOVED)
+			if(mouseevent->Type == PDE_MOVED)
 			{
 				mHovered = true;
 				gInput.m_EventList.pop_Event();
 			}
-			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
+			else if(mouseevent->Type == PDE_BUTTONDOWN)
 			{
                 mPressed = true;
 				gInput.m_EventList.pop_Event();
 			}
-			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
+			else if(mouseevent->Type == PDE_BUTTONUP)
 			{
                 mReleased = true;
 				mHovered = true;
@@ -190,8 +189,7 @@ void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
 
 void CGUIComboSelection::drawGalaxyStyle(SDL_Rect& lRect)
 {
-    GsSurface sfc(gVideoDriver.getBlitSurface());
-    sfc.disownSfc();
+    GsWeakSurface sfc(gVideoDriver.getBlitSurface());
 
 	if(!mEnabled)
 	{        
@@ -247,7 +245,6 @@ void CGUIComboSelection::drawNoStyle(SDL_Rect& lRect)
 
 void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 {
-
 	// Transform to the display coordinates
     GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);

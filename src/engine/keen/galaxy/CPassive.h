@@ -55,6 +55,8 @@ public:
     int mTerminatorTimer;
     int mTerminatorLogoNum;
     int mCreditsBmpID;
+
+    bool mSkipSection;
 };
 
 }

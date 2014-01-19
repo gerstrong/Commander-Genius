@@ -35,18 +35,18 @@ enum InputCommands
 	MAX_COMMANDS
 };
 
-enum MouseEventTypes
+enum PointingDevEventTypes
 {
-	MOUSEEVENT_MOVED = 0,
-	MOUSEEVENT_BUTTONDOWN,
-	MOUSEEVENT_BUTTONUP
+    PDE_MOVED = 0,
+    PDE_BUTTONDOWN,
+    PDE_BUTTONUP
 };
 
-struct MouseMoveEvent : CEvent
+struct PointingDevEvent : CEvent
 {
 	CVec Pos;
-	MouseEventTypes Type;
-	MouseMoveEvent(const CVec &New_Pos, MouseEventTypes New_Type ) :
+    PointingDevEventTypes Type;
+    PointingDevEvent(const CVec &New_Pos, PointingDevEventTypes New_Type ) :
 		Pos(New_Pos), Type(New_Type) {}
 };
 

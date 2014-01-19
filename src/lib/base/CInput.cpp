@@ -607,14 +607,14 @@ void CInput::pollEvents()
 
 		case SDL_MOUSEBUTTONDOWN:
             transMouseRelCoord(Pos, Event.motion, clickGameArea);
-            m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONDOWN ) );
+            m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
             gPointDevice.mPointingState.mActionButton = 1;
             gPointDevice.mPointingState.mPos = Pos;
 			break;
 
 		case SDL_MOUSEBUTTONUP:
             transMouseRelCoord(Pos, Event.motion, clickGameArea);
-            m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_BUTTONUP ) );
+            m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
             gPointDevice.mPointingState.mActionButton = 0;
             gPointDevice.mPointingState.mPos = Pos;
 
@@ -622,7 +622,7 @@ void CInput::pollEvents()
 
 		case SDL_MOUSEMOTION:
             transMouseRelCoord(Pos, Event.motion, clickGameArea);
-            m_EventList.add( new MouseMoveEvent( Pos, MOUSEEVENT_MOVED ) );
+            m_EventList.add( new PointingDevEvent( Pos, PDE_MOVED ) );
             gPointDevice.mPointingState.mPos = Pos;
 			break;
 		}
@@ -1190,10 +1190,10 @@ bool CInput::mouseClicked()
 
 	for( ; it != m_EventList.end() ; it++ )
 	{
-		if( MouseMoveEvent *mouseevent = dynamic_cast<MouseMoveEvent*> (it->get()) )
+        if( PointingDevEvent *mouseevent = dynamic_cast<PointingDevEvent*> (it->get()) )
 		{
 			// Here we check if the mouse-cursor/Touch entry clicked on our Button
-			if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
+            if(mouseevent->Type == PDE_BUTTONUP)
 			{
 				m_EventList.erase(it);
 				return true;

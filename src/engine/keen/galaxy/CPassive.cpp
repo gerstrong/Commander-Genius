@@ -26,7 +26,8 @@ processPonderMode(&CPassiveGalaxy::processIntro),
 processRenderMode(&CPassiveGalaxy::renderIntro),
 m_BackgroundBitmap(*gGraphics.getBitmapFromStr("TITLE")),
 mCommanderTextSfc(gGraphics.getMisGsBitmap(0)),
-mKeenTextSfc(gGraphics.getMisGsBitmap(1))
+mKeenTextSfc(gGraphics.getMisGsBitmap(1)),
+mSkipSection(false)
 {
     const int episode = g_pBehaviorEngine->getEpisode();
 
@@ -112,6 +113,19 @@ bool CPassiveGalaxy::init()
 // Here it will execute the mode we are currently running
 void CPassiveGalaxy::ponder(const float deltaT)
 {		
+    if( PointingDevEvent *pde = gInput.m_EventList.occurredEvent<PointingDevEvent>() )
+    {
+        if(pde->Type == PDE_BUTTONUP) // Someone touched or clicked, skip a section!
+        {
+            mSkipSection = true;
+        }
+    }
+
+    if( gInput.getPressedAnyCommand() )
+    {
+        mSkipSection = true;
+    }
+
     (this->*processPonderMode)();
 }
 
@@ -193,7 +207,7 @@ void CPassiveGalaxy::processIntro()
 
     const int textSeparation = (mCommanderTextPos.x+mCommanderTextSfc.getWidth()) - mKeenTextPos.x;
 
-    if(textSeparation <= -mMaxSeparationWidth || gInput.getPressedAnyCommand())
+    if(textSeparation <= -mMaxSeparationWidth || mSkipSection)
     {        
         mZoomSfcPos.x = (gameRes.w-mpZoomSurface->w)/2;
         mZoomSfcZoom.x = mpZoomSurface->w;
@@ -209,6 +223,7 @@ void CPassiveGalaxy::processIntro()
         mKeenTextSfc._draw(mCommanderTextSfc.getWidth()+59*mScaleFactor, 0, mpZoomSurface.get() );
 
         mTerminatorTimer = 0;
+        mSkipSection = false;
     }
 }
 
@@ -257,7 +272,7 @@ void CPassiveGalaxy::processIntroZoom()
          mZoomSfcPos.y <= 8 &&
          mZoomSfcZoom.x <= gameRes.w &&
          mZoomSfcZoom.y <= mScaleFactor*32 ) ||
-         gInput.getPressedAnyCommand())
+         mSkipSection)
     {
         gInput.flushAll();
         processPonderMode = &CPassiveGalaxy::processTitle;
@@ -268,6 +283,7 @@ void CPassiveGalaxy::processIntroZoom()
         m_BackgroundBitmap.scaleTo(gameRes);
         renderIntroZoom();
         gEffectController.setupEffect(new CPixelate(2));
+        mSkipSection = false;
     }
 }
 
@@ -306,7 +322,7 @@ void CPassiveGalaxy::renderIntroZoom()
 
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
-    blitScaled( zoomSfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter ); // TODO: This still makes CG crash!!
+    blitScaled( zoomSfc, srGsRect, blitSfc, dstRect, vidConf.m_ScaleXFilter );
 }
 
 
@@ -316,10 +332,11 @@ void CPassiveGalaxy::processTitle()
     // If something is pressed, popup the menu
     if( !gEffectController.runningEffect() && !gMenuController.active() )
 	{
-		if( gInput.getPressedAnyCommand() )
+        if( mSkipSection )
 		{
             gInput.flushAll();
             gEventManager.add(new OpenMainMenuEvent());
+            mSkipSection = false;
 		}	    
 	}    
 }

@@ -133,16 +133,16 @@ void CGUINumberControl::setupButtonSurface()
     */
     
 	GsFont &Font = gGraphics.getFont(mFontID);
-	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
 
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
 	const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
 	const std::string showTextR = "  " + mText + ": " + itoa(mValue) + ">";
-    /*mTextDarkSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 38, 134, 38));
-    mTextLightSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 84, 234, 84));
-    mTextLightSfcR = Font.fetchColoredTextSfc( showTextR, SDL_MapRGB( format, 84, 234, 84));
-    mTextLightSfcL = Font.fetchColoredTextSfc( showTextL, SDL_MapRGB( format, 84, 234, 84));
-    mTextDisabledSfc = Font.fetchColoredTextSfc( showText, SDL_MapRGB( format, 123, 150, 123));*/
+
+    Font.createTextSurface(mTextDarkSfc, showText, 38, 134, 38 );
+    Font.createTextSurface(mTextLightSfc, showText, 84, 234, 84 );
+    Font.createTextSurface(mTextLightSfcR, showTextR, 84, 234, 84 );
+    Font.createTextSurface(mTextLightSfcL, showTextL, 84, 234, 84 );
+    Font.createTextSurface(mTextDisabledSfc, showText, 123, 150, 123 );
 }
 
 
@@ -151,13 +151,13 @@ void CGUINumberControl::setupButtonSurface()
 void CGUINumberControl::processLogic()
 {
 	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( MouseMoveEvent *mouseevent = gInput.m_EventList.occurredEvent<MouseMoveEvent>() )
+	if( PointingDevEvent *mouseevent = gInput.m_EventList.occurredEvent<PointingDevEvent>() )
 	{
 		CVec MousePos = mouseevent->Pos;
 
 		if( mRect.HasPoint(MousePos) )
 		{
-			if(mouseevent->Type == MOUSEEVENT_MOVED)
+			if(mouseevent->Type == PDE_MOVED)
 			{
 				mDecSel = false;
 				mIncSel = false;
@@ -170,12 +170,12 @@ void CGUINumberControl::processLogic()
 				mHovered = true;
 				gInput.m_EventList.pop_Event();
 			}
-			else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
+			else if(mouseevent->Type == PDE_BUTTONDOWN)
 			{
 				mPressed = true;
 				gInput.m_EventList.pop_Event();
 			}
-			else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)
+			else if(mouseevent->Type == PDE_BUTTONUP)
 			{
 				mReleased = true;
 				mHovered = true;
