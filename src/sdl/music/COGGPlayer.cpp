@@ -212,9 +212,7 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
         open();
         play(true);
         return;
-    }
-
-    memset(m_Audio_cvt.buf, 0, length);
+    }    
 
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format

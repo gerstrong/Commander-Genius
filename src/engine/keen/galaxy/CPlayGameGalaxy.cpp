@@ -56,7 +56,7 @@ m_SavedGame(*gpSaveGameController)
     // Create the special merge effect (Fadeout)
     CColorMerge *pColorMergeFX = new CColorMerge(8);
 
-    ok &= init();
+    //ok &= init();
 
     gEffectController.setupEffect(pColorMergeFX);
 
