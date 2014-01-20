@@ -7,6 +7,7 @@
 
 #include <base/utils/StringUtils.h>
 
+#include "GalaxyMenu.h"
 #include "SelectionMenu.h"
 #include "ControlSettings.h"
 #include "common/CBehaviorEngine.h"
@@ -76,15 +77,15 @@ public:
 
 
 CControlsettings::CControlsettings( const int selectedPlayer ) :
-CBaseMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f) ),
+GalaxyMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f) ),
 mSelectedPlayer(selectedPlayer)
 {
 	GsButton *button;
 
-	button = new GsButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer) );
+    button = new GalaxyButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer) );
 	mpMenuDialog->addControl( button );
 
-	button = new GsButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
+    button = new GalaxyButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
 	mpMenuDialog->addControl( button );
 
 	mpTwoButtonSwitch = new CGUISwitch( "Two Button Fire" );
@@ -132,7 +133,7 @@ void CControlsettings::release()
 
 // Movements Parts of the Control Settings
 CControlSettingsMovement::CControlSettingsMovement(const int selectedPlayer) :
-CBaseMenu( GsRect<float>(0.01f, (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
+GalaxyMenu( GsRect<float>(0.01f, (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
 mSelectedPlayer(selectedPlayer)
 {}
 
@@ -192,7 +193,7 @@ void CControlSettingsMovement::ponder()
 	    }
 	}
     }	
-    CBaseMenu::ponder(0);
+    GalaxyMenu::ponder(0);
 }
 
 void CControlSettingsMovement::release()
@@ -207,7 +208,7 @@ void CControlSettingsMovement::release()
 
 // Movements Parts of the Control Settings
 CControlSettingsButtons::CControlSettingsButtons(const int selectedPlayer) :
-CBaseMenu( GsRect<float>(0.01f, (1.0f-(MAX_COMMANDS/2.0f+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
+GalaxyMenu( GsRect<float>(0.01f, (1.0f-(MAX_COMMANDS/2.0f+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
 mSelectedPlayer(selectedPlayer),
 mapping(false)
 {}
@@ -270,7 +271,7 @@ void CControlSettingsButtons::ponder()
         }
     }
     
-    CBaseMenu::ponder(0);
+    GalaxyMenu::ponder(0);
 }
 
 void CControlSettingsButtons::release()

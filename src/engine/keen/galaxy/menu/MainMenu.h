@@ -5,7 +5,7 @@
  *      Author: gerstrong and pizza2004
  */
 
-#include <widgets/GsBaseMenu.h>
+#include "GalaxyMenu.h"
 
 #include <base/GsEvent.h>
 
@@ -15,7 +15,7 @@
 namespace galaxy
 {
 
-class MainMenu : public CBaseMenu
+class MainMenu : public GalaxyMenu
 {
 public:
     MainMenu(const bool openedGamePlay);

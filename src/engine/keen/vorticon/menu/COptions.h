@@ -8,13 +8,13 @@
 #ifndef COPTIONS_H_
 #define COPTIONS_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 #include <widgets/GsSwitch.h>
 #include <list>
 
 #include "common/CBehaviorEngine.h"
 
-class COptions : public CBaseMenu
+class COptions : public VorticonMenu
 {
 public:
 	COptions();

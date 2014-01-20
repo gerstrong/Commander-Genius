@@ -20,12 +20,12 @@ namespace galaxy
 {
 
 template <class _T>
-class CPlayersSelection : public CBaseMenu
+class CPlayersSelection : public GalaxyMenu
 {
 
 public:
     CPlayersSelection(bool numFirst = false) :
-        CBaseMenu( GsRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
+        GalaxyMenu( GsRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
     {
         GsRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
         mpMenuDialog->setRect(rect);
@@ -52,12 +52,12 @@ public:
 };
 
 
-class CDifficultySelection : public CBaseMenu
+class CDifficultySelection : public GalaxyMenu
 {
 
 public:
     CDifficultySelection() :
-        CBaseMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
+        GalaxyMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
     {
         GsRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
         mpMenuDialog->setRect(rect);

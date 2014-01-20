@@ -8,11 +8,11 @@
 #ifndef CCONFIRMMENU_H_
 #define CCONFIRMMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 
 #include <string>
 
-class CConfirmMenu : public CBaseMenu
+class CConfirmMenu : public VorticonMenu
 {
 public:
 	CConfirmMenu(const std::string &question, bool &to_be_confirmed, Uint8 dlg_theme);

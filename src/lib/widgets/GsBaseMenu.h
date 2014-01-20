@@ -28,7 +28,8 @@ public:
 	};
 
 
-	CBaseMenu( const GsRect<float>& rect );
+    CBaseMenu( const GsRect<float>& rect,
+               GsButton *returnButton );
 
     virtual ~CBaseMenu() { }
 

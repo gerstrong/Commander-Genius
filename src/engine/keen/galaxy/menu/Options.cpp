@@ -14,7 +14,7 @@ namespace galaxy
 {
 
 COptions::COptions() :
-CBaseMenu( GsRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
+GalaxyMenu( GsRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
 mpOption(g_pBehaviorEngine->m_option)
 {
 
@@ -39,7 +39,7 @@ void COptions::init()
 
 void COptions::ponder(const float deltaT)
 {
-    CBaseMenu::ponder(0);
+    GalaxyMenu::ponder(0);
 
     auto it = mpOptionList.begin();
 

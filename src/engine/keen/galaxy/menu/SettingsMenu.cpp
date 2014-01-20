@@ -9,47 +9,51 @@
 #include <widgets/GsButton.h>
 #include <widgets/GsMenuController.h>
 
+#include "GalaxyMenu.h"
 
 #include "SettingsMenu.h"
 
-/*#include "CVideoSettings.h"
-#include "CCameraSettings.h"
-#include "CAudioSettings.h"
-#include "COptions.h"
-#include "CControlsettings.h"
+#include "CVideoSettings.h"
+#include "CameraSettings.h"
+#include "AudioSettings.h"
+#include "Options.h"
+#include "ControlSettings.h"
 #include "CProfilesMenu.h"
-#include "CSelectionMenu.h"
+#include "SelectionMenu.h"
 
-
-CSettingsMenu::CSettingsMenu() :
-CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
+namespace galaxy
 {
-    mpMenuDialog->addControl(new GsButton( "Video",
+
+SettingsMenu::SettingsMenu() :
+GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
+{
+    mpMenuDialog->addControl(new GalaxyButton( "Video",
                                     new OpenMenuEvent( new CVideoSettings() ) ) );
 
-    mpMenuDialog->addControl(new GsButton( "Audio",
+    mpMenuDialog->addControl(new GalaxyButton( "Audio",
                                     new OpenMenuEvent( new CAudioSettings() ) ) );
 
-    mpMenuDialog->addControl(new GsButton( "Options",
+    mpMenuDialog->addControl(new GalaxyButton( "Options",
                                     new OpenMenuEvent( new COptions() ) ) );
 
 #if defined (SINGLEPLAYER)
-    mpMenuDialog->addControl( new GsButton( "Controls",
+    mpMenuDialog->addControl( new GalaxyButton( "Controls",
                                     new OpenMenuEvent(	new CControlsettings(1) ) ) );
 #else
-    mpMenuDialog->addControl(new GsButton( "Controls",
+    mpMenuDialog->addControl(new GalaxyButton( "Controls",
                                     new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent>() ) ) );
 #endif
 
 
 #if !defined(EMBEDDED)
-    mpMenuDialog->addControl( new GsButton( "Camera",
+    mpMenuDialog->addControl( new GalaxyButton( "Camera",
                                     new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
 
-    mpMenuDialog->addControl(new GsButton( "Profile",
+    mpMenuDialog->addControl(new GalaxyButton( "Profile",
                                     new OpenMenuEvent( new CProfilesMenu() ) ) );
 
     setMenuLabel("CONFIGMENULABEL");
-}*/
+}
 
+}

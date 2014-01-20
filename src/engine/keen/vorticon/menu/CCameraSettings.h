@@ -8,12 +8,12 @@
 #ifndef CCAMERASETTINGS_H_
 #define CCAMERASETTINGS_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 #include <widgets/GsNumberControl.h>
 
 #include "sdl/CVidConfig.h"
 
-class CCameraSettings : public CBaseMenu
+class CCameraSettings : public VorticonMenu
 {
 public:
 	CCameraSettings();

@@ -8,12 +8,12 @@
 #ifndef CPROFILESMENU_H_
 #define CPROFILESMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "GalaxyMenu.h"
 
 namespace galaxy
 {
 
-class CProfilesMenu : public CBaseMenu
+class CProfilesMenu : public GalaxyMenu
 {
 public:
 	CProfilesMenu();

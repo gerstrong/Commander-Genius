@@ -13,7 +13,7 @@
 namespace galaxy
 {
 
-class CSaveMenu : public CBaseMenu
+class CSaveMenu : public GalaxyMenu
 {
 public:
 	CSaveMenu();

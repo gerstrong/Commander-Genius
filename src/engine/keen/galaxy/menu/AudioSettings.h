@@ -8,7 +8,7 @@
 #ifndef CAUDIOSETTINGS_H_
 #define CAUDIOSETTINGS_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "GalaxyMenu.h"
 #include <widgets/GsComboSelection.h>
 #include <widgets/GsSwitch.h>
 #include <widgets/GsNumberControl.h>
@@ -22,7 +22,7 @@ namespace galaxy
 {
 
 
-class CAudioSettings : public CBaseMenu
+class CAudioSettings : public GalaxyMenu
 {
 public:
 	CAudioSettings();

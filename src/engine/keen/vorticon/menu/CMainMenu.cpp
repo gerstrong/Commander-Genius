@@ -36,11 +36,8 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
     ( "New Game",
               new OpenMenuEvent
               (
-                 new CPlayersSelection
-                 <
-                   NewGamePlayersEvent,
-                   vorticon::Button
-                 >
+                 new vorticon::CPlayersSelection
+                 <NewGamePlayersEvent>
                  (true)
               )
     );
@@ -85,7 +82,7 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 
 
 CMainMenu::CMainMenu( const bool openedGamePlay ) :
-CBaseMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
+VorticonMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
     createVorticonMenu(openedGamePlay);
 }

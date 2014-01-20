@@ -55,9 +55,9 @@ private:
 
 CVideoSettings::CVideoSettings() :
 #if defined(EMBEDDED)
-CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.25f) )
+VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.25f) )
 #else
-CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
+VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 #endif
 {
 	// Create the fps config selection control

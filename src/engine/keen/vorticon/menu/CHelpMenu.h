@@ -8,10 +8,9 @@
 #ifndef CHELPMENU_H_
 #define CHELPMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 
-
-class CHelpMenu : public CBaseMenu
+class CHelpMenu : public VorticonMenu
 {
 public:
 	CHelpMenu();

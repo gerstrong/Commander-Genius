@@ -37,7 +37,7 @@ namespace galaxy
 {
 
 CLoadMenu::CLoadMenu() :
-CBaseMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
+GalaxyMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 {
 	// Load the state-file list
 	const CGUIControl::Style style =
@@ -56,7 +56,7 @@ CBaseMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 
 		if( !text.empty() )
 		{
-			button = new GsButton( text,
+            button = new GalaxyButton( text,
 									new LoadGameSlotFunctorEvent(i),
 									style );
 			mpMenuDialog->addControl( button );
@@ -68,7 +68,7 @@ CBaseMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	for( int j = i ; j<8 ; j++ )
 	{
 		text = "Empty";
-		button = new GsButton( text,
+        button = new GalaxyButton( text,
 								new LoadGameSlotFunctorEvent(j),
 								style );
 		mpMenuDialog->addControl( button );

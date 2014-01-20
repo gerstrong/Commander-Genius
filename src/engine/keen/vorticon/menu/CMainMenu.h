@@ -5,14 +5,14 @@
  *      Author: gerstrong and pizza2004
  */
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 
 #include <base/GsEvent.h>
 
 #ifndef CMAINMENU_H_
 #define CMAINMENU_H_
 
-class CMainMenu : public CBaseMenu
+class CMainMenu : public VorticonMenu
 {
 public:
 	CMainMenu(const bool openedGamePlay);

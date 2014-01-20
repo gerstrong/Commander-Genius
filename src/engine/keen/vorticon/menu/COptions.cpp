@@ -7,12 +7,11 @@
 
 #include "COptions.h"
 #include <base/CInput.h>
-//#include "sdl/CVideoDriver.h"
 #include "common/CSettings.h"
 
 
 COptions::COptions() :
-CBaseMenu( GsRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
+VorticonMenu( GsRect<float>(0.1f, 0.14f, 0.8f, NUM_OPTIONS*0.07f) ),
 mpOption(g_pBehaviorEngine->m_option)
 {
 

@@ -11,7 +11,7 @@
 #include <SDL.h>
 #include <string>
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 #include <widgets/GsComboSelection.h>
 #include <widgets/GsSwitch.h>
 #include <widgets/GsNumberControl.h>
@@ -19,7 +19,7 @@
 #include "sdl/CVidConfig.h"
 
 
-class CVideoSettings : public CBaseMenu
+class CVideoSettings : public VorticonMenu
 {
 public:
 	CVideoSettings();

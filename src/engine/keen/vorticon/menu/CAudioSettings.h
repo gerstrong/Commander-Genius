@@ -8,7 +8,7 @@
 #ifndef CAUDIOSETTINGS_H_
 #define CAUDIOSETTINGS_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 #include <widgets/GsComboSelection.h>
 #include <widgets/GsSwitch.h>
 #include <widgets/GsNumberControl.h>
@@ -19,7 +19,7 @@
 
 
 
-class CAudioSettings : public CBaseMenu
+class CAudioSettings : public VorticonMenu
 {
 public:
 	CAudioSettings();

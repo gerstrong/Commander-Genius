@@ -31,7 +31,7 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 
 
 CLoadMenu::CLoadMenu() :
-CBaseMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
+VorticonMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 {
 	// Load the state-file list
 	const CGUIControl::Style style =

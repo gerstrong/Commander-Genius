@@ -12,33 +12,10 @@
 #include "GsBaseMenu.h"
 #include "GsBitmap.h"
 
-CBaseMenu::CBaseMenu(const GsRect<float>& rect) :
-mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) )
-{
-    /*std::string closeString;
-    GsButton*	pButton;*/
-
-    mpMenuDialog->updateBackground();
-
-    /*if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-	{
-        GsRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
-		mpMenuDialog->setRect(rect);
-		closeString = "x";
-		pButton	= new GsButton( closeString, new CloseMenuEvent(), GsButton::GALAXY );
-		mpMenuDialog->addControl( pButton, GsRect<float>(-0.1f, 0.1f, 0.03f/rect.w, 0.03f/rect.h) );
-	}
-	else
-	{
-		const char closeChar = 0x1F;
-		closeString = closeChar;
-		pButton	= new GsButton( closeString, new CloseMenuEvent(), GsButton::NONE );
-		mpMenuDialog->addControl( pButton, GsRect<float>(0.0f, 0.0f, 0.06f/rect.w, 0.06f/rect.h) );
-    }
-
-	pButton->setDown(true);
-    mpReturnButton = pButton;*/
-}
+CBaseMenu::CBaseMenu(const GsRect<float>& rect, GsButton *returnButton) :
+mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) ),
+mpReturnButton(returnButton)
+{}
 
 
 void CBaseMenu::select(const size_t value)

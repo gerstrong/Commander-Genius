@@ -58,9 +58,9 @@ private:
 
 CVideoSettings::CVideoSettings() :
 #if defined(EMBEDDED)
-CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.25f) )
+GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.25f) )
 #else
-CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
+GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 #endif
 {
 	// Create the fps config selection control
@@ -98,7 +98,7 @@ CBaseMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
         filledStrList(1, "?x?") );
     mpMenuDialog->addControl( mpResolutionSelection );
 
-	mpFullScreenSwitch = new GsButton( "Unknown mode",
+    mpFullScreenSwitch = new GalaxyButton( "Unknown mode",
 										new toggleFullscreenFunctor(*this) );
 	mpMenuDialog->addControl( mpFullScreenSwitch );
 #endif

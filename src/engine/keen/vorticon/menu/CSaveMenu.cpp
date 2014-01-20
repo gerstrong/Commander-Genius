@@ -20,7 +20,7 @@
 const std::string EMPTY_TEXT = "EMPTY";
 
 CSaveMenu::CSaveMenu() :
-CBaseMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
+VorticonMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
 mp_OverwriteMenu(NULL),
 m_overwrite(false)
 {

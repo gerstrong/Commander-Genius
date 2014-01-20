@@ -19,7 +19,7 @@ namespace galaxy
 {
 
 CAudioSettings::CAudioSettings() :
-CBaseMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
+GalaxyMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 {
 
 	mpRate = new CGUIComboSelection( "Rate", g_pSound->getAvailableRateList());
@@ -62,7 +62,7 @@ void CAudioSettings::init()
 
 void CAudioSettings::ponder(const float deltaT)
 {
-    CBaseMenu::ponder(0);
+    GalaxyMenu::ponder(0);
 
 	if( mSoundVolume != mpSoundVolume->getSelection() )
 		g_pSound->playSound(SOUND_GET_ITEM);

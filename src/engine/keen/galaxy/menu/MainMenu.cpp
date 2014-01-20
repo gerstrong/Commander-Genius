@@ -50,8 +50,8 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
-/*    mpMenuDialog->addControl(new GalaxyButton( "Configure",
-                                                new OpenMenuEvent( new SettingsMenu() ) ) );*/
+    mpMenuDialog->addControl(new GalaxyButton( "Configure",
+                                                new OpenMenuEvent( new SettingsMenu() ) ) );
 
 /*    GsButton *highscoreButton = new GalaxyButton( "High Scores",
 													new StartInfoSceneEvent( new CHighScores ) );
@@ -74,14 +74,8 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 
 
 MainMenu::MainMenu( const bool openedGamePlay ) :
-CBaseMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
+GalaxyMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
-    GsRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
-    mpMenuDialog->setRect(rect);
-    mpReturnButton = new GalaxyButton( "x", new CloseMenuEvent() );
-    mpMenuDialog->addControl( mpReturnButton, GsRect<float>(-0.1f, 0.1f, 0.03f/rect.w, 0.03f/rect.h) );
-    mpReturnButton->setDown(true);
-
     createGalaxyMenu(openedGamePlay);
 }
 

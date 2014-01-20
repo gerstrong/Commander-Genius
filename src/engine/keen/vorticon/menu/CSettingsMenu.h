@@ -8,13 +8,13 @@
 #ifndef CSETTINGSMENU_H_
 #define CSETTINGSMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 
 #include "common/options.h"
 #include "fileio/CExeFile.h"
 #include "common/CBehaviorEngine.h"
 
-class CSettingsMenu : public CBaseMenu
+class CSettingsMenu : public VorticonMenu
 {
 public:
 	CSettingsMenu();

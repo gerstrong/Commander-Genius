@@ -10,7 +10,7 @@
 
 #include "CConfirmMenu.h"
 
-class CSaveMenu : public CBaseMenu
+class CSaveMenu : public VorticonMenu
 {
 public:
 	CSaveMenu();

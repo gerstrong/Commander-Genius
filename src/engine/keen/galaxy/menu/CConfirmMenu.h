@@ -8,11 +8,11 @@
 #ifndef CCONFIRMMENU_H_
 #define CCONFIRMMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "GalaxyMenu.h"
 
 #include <string>
 
-class CConfirmMenu : public CBaseMenu
+class CConfirmMenu : public GalaxyMenu
 {
 public:
 	CConfirmMenu(const std::string &question, bool &to_be_confirmed, Uint8 dlg_theme);

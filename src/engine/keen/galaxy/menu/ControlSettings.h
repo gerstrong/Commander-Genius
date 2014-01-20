@@ -23,7 +23,7 @@ namespace galaxy
 {
 
 // Main Class for Controller Config
-class CControlsettings : public CBaseMenu
+class CControlsettings : public GalaxyMenu
 {
 public:
 	CControlsettings(const int selectedPlayer);
@@ -45,7 +45,7 @@ private:
 
 
 // Movement config Part
-class CControlSettingsMovement : public CBaseMenu
+class CControlSettingsMovement : public GalaxyMenu
 {
 public:
 	CControlSettingsMovement(const int selectedPlayer);
@@ -67,7 +67,7 @@ private:
 
 
 // Buttons config Part
-class CControlSettingsButtons : public CBaseMenu
+class CControlSettingsButtons : public GalaxyMenu
 {
 public:
 	CControlSettingsButtons(const int selectedPlayer);

@@ -8,13 +8,13 @@
 #ifndef CLOADMENU_H_
 #define CLOADMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "GalaxyMenu.h"
 
 
 namespace galaxy
 {
 
-class CLoadMenu : public CBaseMenu
+class CLoadMenu : public GalaxyMenu
 {
 public:
 	CLoadMenu();

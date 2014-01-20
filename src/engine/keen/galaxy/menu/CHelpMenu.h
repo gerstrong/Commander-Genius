@@ -8,10 +8,9 @@
 #ifndef CHELPMENU_H_
 #define CHELPMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "GalaxyMenu.h"
 
-
-class CHelpMenu : public CBaseMenu
+class CHelpMenu : public GalaxyMenu
 {
 public:
 	CHelpMenu();

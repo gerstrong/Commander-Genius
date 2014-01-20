@@ -8,7 +8,7 @@
 #ifndef CCONTROLSETTINGS_H_
 #define CCONTROLSETTINGS_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 
 #include <base/utils/StringUtils.h>
 #include <widgets/GsButton.h>
@@ -22,7 +22,7 @@
 
 
 // Main Class for Controller Config
-class CControlsettings : public CBaseMenu
+class CControlsettings : public VorticonMenu
 {
 public:
 	CControlsettings(const int selectedPlayer);
@@ -44,7 +44,7 @@ private:
 
 
 // Movement config Part
-class CControlSettingsMovement : public CBaseMenu
+class CControlSettingsMovement : public VorticonMenu
 {
 public:
 	CControlSettingsMovement(const int selectedPlayer);
@@ -66,7 +66,7 @@ private:
 
 
 // Buttons config Part
-class CControlSettingsButtons : public CBaseMenu
+class CControlSettingsButtons : public VorticonMenu
 {
 public:
 	CControlSettingsButtons(const int selectedPlayer);

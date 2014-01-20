@@ -8,10 +8,10 @@
 #ifndef CLOADMENU_H_
 #define CLOADMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 
 
-class CLoadMenu : public CBaseMenu
+class CLoadMenu : public VorticonMenu
 {
 public:
 	CLoadMenu();

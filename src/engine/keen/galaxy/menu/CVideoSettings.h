@@ -21,7 +21,7 @@
 namespace galaxy
 {
 
-class CVideoSettings : public CBaseMenu
+class CVideoSettings : public GalaxyMenu
 {
 public:
 	CVideoSettings();

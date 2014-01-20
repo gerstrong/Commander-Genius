@@ -17,7 +17,7 @@
 
 
 CHelpMenu::CHelpMenu() :
-CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
+VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 {
 
 	// Create the Menu Dialog and entries

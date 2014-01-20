@@ -5,7 +5,7 @@
 #ifndef __GALAXY_SETTINGSMENU_H__
 #define __GALAXY_SETTINGSMENU_H__
 
-#include <widgets/GsBaseMenu.h>
+#include "GalaxyMenu.h"
 
 #include "common/options.h"
 #include "fileio/CExeFile.h"
@@ -14,7 +14,7 @@
 namespace galaxy
 {
 
-class SettingsMenu : public CBaseMenu
+class SettingsMenu : public GalaxyMenu
 {
 public:
     SettingsMenu();

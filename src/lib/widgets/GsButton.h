@@ -43,11 +43,11 @@ public:
 
     virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
-	void setText(const std::string& text)
+    void setText(const std::string& text)
 	{
 		mText = text;
 		setupButtonSurface();
-	}
+    }
 
 	std::string getText()
 	{	return mText;	}

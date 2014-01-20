@@ -75,12 +75,12 @@ public:
 };
 
 CProfilesMenu::CProfilesMenu() :
-CBaseMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
+GalaxyMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 {
-	mpMenuDialog->addControl(new GsButton( "Classic mode",
+    mpMenuDialog->addControl(new GalaxyButton( "Classic mode",
 										     new SetDefaultClassic() ) );
 
-	mpMenuDialog->addControl(new GsButton( "Enhanced mode",
+    mpMenuDialog->addControl(new GalaxyButton( "Enhanced mode",
 										     new SetDefaultEnhanced() ) );
 
 	setMenuLabel("OPTIONSMENULABEL");

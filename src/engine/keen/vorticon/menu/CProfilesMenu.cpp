@@ -12,6 +12,7 @@
 #include <lib/base/GsTimer.h>
 #include "common/CBehaviorEngine.h"
 #include "engine/CEvent.h"
+#include "VorticonMenu.h"
 #include <list>
 #include <string>
 
@@ -72,7 +73,7 @@ public:
 };
 
 CProfilesMenu::CProfilesMenu() :
-CBaseMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
+VorticonMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 {
 	mpMenuDialog->addControl(new GsButton( "Classic mode",
 										     new SetDefaultClassic() ) );

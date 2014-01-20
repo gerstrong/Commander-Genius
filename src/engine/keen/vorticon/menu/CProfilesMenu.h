@@ -8,9 +8,9 @@
 #ifndef CPROFILESMENU_H_
 #define CPROFILESMENU_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "VorticonMenu.h"
 
-class CProfilesMenu : public CBaseMenu
+class CProfilesMenu : public VorticonMenu
 {
 public:
 	CProfilesMenu();

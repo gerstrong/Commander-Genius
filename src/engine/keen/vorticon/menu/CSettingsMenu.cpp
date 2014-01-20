@@ -25,7 +25,7 @@
 
 
 CSettingsMenu::CSettingsMenu() :
-CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
+VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 {
  	mpMenuDialog->addControl(new GsButton( "Video",
 									new OpenMenuEvent( new CVideoSettings() ) ) );
@@ -48,10 +48,10 @@ CBaseMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 
 #if defined (SINGLEPLAYER)
 	mpMenuDialog->addControl( new GsButton( "Controls",
-									new OpenMenuEvent(	new CControlsettings(1) ) ) );
+                                    new OpenMenuEvent(	new vorticon::CControlsettings(1) ) ) );
 #else
     mpMenuDialog->addControl(new GsButton( "Controls",
-                                    new OpenMenuEvent( new CPlayersSelection<OpenControlMenuEvent, vorticon::Button>() ) ) );
+                                    new OpenMenuEvent( new vorticon::CPlayersSelection<OpenControlMenuEvent>() ) ) );
 #endif
 
 

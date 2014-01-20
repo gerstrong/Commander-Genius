@@ -8,7 +8,7 @@
 #include "CConfirmMenu.h"
 
 /*CConfirmMenu::CConfirmMenu(const std::string &question, bool &to_be_confirmed, Uint8 dlg_theme) :
-CBaseMenu(dlg_theme),
+GalaxyMenu(dlg_theme),
 m_question(question),
 m_to_be_confirmed(to_be_confirmed)
 {*/

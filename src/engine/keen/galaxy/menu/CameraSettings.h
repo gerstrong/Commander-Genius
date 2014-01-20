@@ -8,7 +8,8 @@
 #ifndef CCAMERASETTINGS_H_
 #define CCAMERASETTINGS_H_
 
-#include <widgets/GsBaseMenu.h>
+#include "GalaxyMenu.h"
+
 #include <widgets/GsNumberControl.h>
 
 #include "sdl/CVidConfig.h"
@@ -16,7 +17,7 @@
 namespace galaxy
 {
 
-class CCameraSettings : public CBaseMenu
+class CCameraSettings : public GalaxyMenu
 {
 public:
 	CCameraSettings();
