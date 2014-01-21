@@ -13,9 +13,6 @@
 
 #include "GsNumberControl.h"
 
-//#include "common/CBehaviorEngine.h"
-//#include "core/mode/CGameMode.h"
-
 
 int CGUINumberControl::mTwirliconID = 10;
 
@@ -32,10 +29,10 @@ CGUINumberControl::CGUINumberControl(	const std::string& text,
 mIncSel(false),
 mDecSel(false),
 mText(text),
+mValue(value),
 mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue),
-mValue(value),
 mSlider(slider)
 {
 	mFontID = 1;
@@ -124,26 +121,6 @@ std::string CGUINumberControl::sliderStr()
 }
 
 
-void CGUINumberControl::setupButtonSurface()
-{
-    /*
-    if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
-        return;
-    */
-
-    GsFont &Font = gGraphics.getFont(mFontID);
-
-	const std::string showText = "  " + mText + ": " + itoa(mValue);
-	const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
-	const std::string showTextR = "  " + mText + ": " + itoa(mValue) + ">";
-
-    Font.createTextSurface(mTextDarkSfc, showText, 38, 134, 38 );
-    Font.createTextSurface(mTextLightSfc, showText, 84, 234, 84 );
-    Font.createTextSurface(mTextLightSfcR, showTextR, 84, 234, 84 );
-    Font.createTextSurface(mTextLightSfcL, showTextL, 84, 234, 84 );
-    Font.createTextSurface(mTextDisabledSfc, showText, 123, 150, 123 );
-}
-
 
 
 
@@ -156,14 +133,16 @@ void CGUINumberControl::processLogic()
 
 		if( mRect.HasPoint(MousePos) )
 		{
+            const float xMid = mRect.x+(mRect.w)/2.0f;
+
 			if(mouseevent->Type == PDE_MOVED)
 			{
 				mDecSel = false;
 				mIncSel = false;
 
-				if( MousePos.x < mRect.x+(mRect.w)/2.0f )
+                if( MousePos.x < xMid )
 					mDecSel = true;
-				else if( MousePos.x > mRect.x+(mRect.w)/2.0f )
+                else if( MousePos.x > xMid )
 					mIncSel = true;
 
 				mHovered = true;
@@ -181,13 +160,13 @@ void CGUINumberControl::processLogic()
 				mPressed = false;
 
 
-				if( MousePos.x < mRect.x+(mRect.w)/2.0f )
+                if( MousePos.x < xMid )
 				{
 					// Cycle through the values
 					if( mValue > mStartValue )
 						decrement();
 				}
-				else if( MousePos.x > mRect.x+(mRect.w)/2.0f )
+                else if( MousePos.x > xMid )
 				{
 					// Cycle through the values
 					if( mValue < mEndValue )

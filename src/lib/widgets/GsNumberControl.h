@@ -33,7 +33,7 @@ public:
 	const int getSelection();
 	void setSelection( const int value );
 
-    virtual void setupButtonSurface();
+    virtual void setupButtonSurface() {};
 
     void processLogic();
 
@@ -52,16 +52,18 @@ protected:
     GsSurface mTextLightSfcL;
     GsSurface mTextDisabledSfc;
 
+    std::string	mText;
+    int mValue;
+
 private:
 
 	// draws the slider to the corresponding value
 	std::string sliderStr();
 
-	std::string	mText;
 	const int mStartValue;
 	const int mEndValue;
 	const int mDeltaValue;
-	int mValue;
+
 	static int mTwirliconID;
 	const bool mSlider;    
 };

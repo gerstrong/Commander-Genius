@@ -16,7 +16,7 @@ public:
                   const int value,
                   const bool slider);
 
-    void setupButtonSurface() {}
+    virtual void setupButtonSurface();
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };
