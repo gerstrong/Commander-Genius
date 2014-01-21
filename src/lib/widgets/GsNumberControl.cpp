@@ -29,15 +29,14 @@ CGUINumberControl::CGUINumberControl(	const std::string& text,
 					const int deltaValue,
 					const int value,
 					const bool slider ) :
+mIncSel(false),
+mDecSel(false),
 mText(text),
 mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue),
 mValue(value),
-mIncSel(false),
-mDecSel(false),
-mSlider(slider),
-drawButton(&CGUINumberControl::drawNoStyle)
+mSlider(slider)
 {
 	mFontID = 1;
     
@@ -47,7 +46,7 @@ drawButton(&CGUINumberControl::drawNoStyle)
 	}
 	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
 	{
-	    drawButton = &CGUINumberControl::drawGalaxyStyle;		
+
     }*/
 	
 	setupButtonSurface();
@@ -131,8 +130,8 @@ void CGUINumberControl::setupButtonSurface()
     if(g_pBehaviorEngine->getEngine() != ENGINE_GALAXY)
         return;
     */
-    
-	GsFont &Font = gGraphics.getFont(mFontID);
+
+    GsFont &Font = gGraphics.getFont(mFontID);
 
 	const std::string showText = "  " + mText + ": " + itoa(mValue);
 	const std::string showTextL = "  " + mText + ":<" + itoa(mValue);
@@ -211,41 +210,6 @@ void CGUINumberControl::processLogic()
 }
 
 
-
-
-
-void CGUINumberControl::drawGalaxyStyle(SDL_Rect& lRect)
-{
-    GsSurface blitsfc(gVideoDriver.getBlitSurface());
-    blitsfc.disownSfc();
-
-	if(!mEnabled)
-	{
-        mTextDisabledSfc.blitTo(blitsfc, lRect);
-	}
-	else
-	{
-		if(mHovered)
-		{
-		    if(mDecSel)
-                mTextLightSfcL.blitTo(blitsfc, lRect);
-		    else if(mIncSel)
-                mTextLightSfcR.blitTo(blitsfc, lRect);
-		    else
-                mTextLightSfc.blitTo(blitsfc, lRect);
-		}
-		else // Button is not hovered
-		{
-            mTextDarkSfc.blitTo(blitsfc, lRect);
-		}
-	}
-
-	drawBlinker(lRect);
-}
-
-
-
-
 void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 {
 
@@ -278,36 +242,6 @@ void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
 }
 
 
-void CGUINumberControl::drawNoStyle(SDL_Rect& lRect)
-{
-
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-	if( mReleased )
-	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
-	}
-	else if( mPressed )
-	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
-	}
-	else if( mHovered )
-	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
-	}
-	else
-	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
-	}
-
-	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
-
-	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
-
-}
-
-
 void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 
@@ -316,6 +250,29 @@ void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
-	(this->*drawButton)(lRect);
+    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+
+    if( mReleased )
+    {
+        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
+    }
+    else if( mPressed )
+    {
+        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
+    }
+    else if( mHovered )
+    {
+        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
+    }
+    else
+    {
+        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
+    }
+
+    // Now lets draw the text of the list control
+    GsFont &Font = gGraphics.getFont(mFontID);
+
+    Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+
 
 }

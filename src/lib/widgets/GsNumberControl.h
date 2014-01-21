@@ -13,9 +13,6 @@
 #include <string>
 #include <graphics/GsSurface.h>
 
-//#include "engine/CEvent.h"
-
-
 class CGUINumberControl: public CGUIControl
 {
 public:
@@ -36,18 +33,24 @@ public:
 	const int getSelection();
 	void setSelection( const int value );
 
-	void setupButtonSurface();
+    virtual void setupButtonSurface();
 
-	void processLogic();
-
-	void drawNoStyle(SDL_Rect& lRect);
-
-	void drawGalaxyStyle(SDL_Rect& lRect);
+    void processLogic();
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
 
 	void processRender(const GsRect<float> &RectDispCoordFloat);
+
+protected:
+    bool mIncSel;
+    bool mDecSel;
+
+    GsSurface mTextDarkSfc;
+    GsSurface mTextLightSfc;
+    GsSurface mTextLightSfcR;
+    GsSurface mTextLightSfcL;
+    GsSurface mTextDisabledSfc;
 
 private:
 
@@ -59,20 +62,8 @@ private:
 	const int mEndValue;
 	const int mDeltaValue;
 	int mValue;
-	bool mIncSel;
-	bool mDecSel;
 	static int mTwirliconID;
-	const bool mSlider;
-
-
-    GsSurface mTextDarkSfc;
-    GsSurface mTextLightSfc;
-    GsSurface mTextLightSfcR;
-    GsSurface mTextLightSfcL;
-    GsSurface mTextDisabledSfc;
-
-	void (CGUINumberControl::*drawButton)(SDL_Rect&);
-
+	const bool mSlider;    
 };
 
 #endif /* CGUINUMBERCONTROL_H_ */

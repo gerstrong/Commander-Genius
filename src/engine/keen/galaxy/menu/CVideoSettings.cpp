@@ -1,3 +1,4 @@
+
 /*
  * CVideoSettings.cpp
  *
@@ -19,6 +20,8 @@
 #include "CVideoSettings.h"
 //#include "CSettingsMenu.h"
 #include "Utils.h"
+
+#include "numbercontrol.h"
 
 
 static const char* aspectList[] =
@@ -68,7 +71,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	for( int i = 10 ; i <= 120 ; i += 10 )
 		List.push_back( itoa (i) );
 
-	mpFPSSelection = new CGUINumberControl( "FPS", 10, 120, 10, 60, false );
+    mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60, false );
 	mpMenuDialog->addControl( mpFPSSelection );
 
     mpGameResSelection = new CGUIComboSelection( "GameRes",
