@@ -1,4 +1,5 @@
-#include "numbercontrol.h"
+
+#include "NumberControl.h"
 
 #include <base/video/CVideoDriver.h>
 

@@ -62,7 +62,6 @@ public:
     GsSprite &getSprite(const int var, const int slot) { return Sprite[var][slot]; }
     std::vector<GsSprite> &getSpriteVec(const int var) { return Sprite[var]; }
 	GsFont &getFont(Uint8 index) { return Font.at(index); }
-    //GsCursor *getCursor() { return mpCursor.get(); }
 	
     GsPalette Palette;
 
@@ -74,8 +73,6 @@ private:
 
     void freeBitmaps(std::vector<GsBitmap> &Bitmap);
     void freeSprites();
-    //void freeCursor();
-
 
     std::vector<GsTilemap> Tilemap;
 	std::vector<GsFont> Font;
@@ -83,7 +80,7 @@ private:
     std::vector<GsBitmap> maskedBitmap;
     std::vector<GsBitmap> misGsBitmap;
     std::vector< std::vector<GsSprite> > Sprite;
-//    std::unique_ptr<GsCursor> mpCursor;
+
 };
 
 #endif /* __GSGRAPHICS_H__ */

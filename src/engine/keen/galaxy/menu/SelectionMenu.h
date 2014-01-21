@@ -14,7 +14,7 @@
 #include <widgets/GsMenuController.h>
 
 #include "../../menu/CSelectionMenu.h"
-#include "Button.h"
+#include "widgets/Button.h"
 
 namespace galaxy
 {
@@ -27,12 +27,6 @@ public:
     CPlayersSelection(bool numFirst = false) :
         GalaxyMenu( GsRect<float>(0.25f, 0.35f, 0.5f, 0.3f) )
     {
-        GsRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
-        mpMenuDialog->setRect(rect);
-        mpReturnButton = new GalaxyButton( "<<", new CloseMenuEvent() );
-        mpMenuDialog->addControl( mpReturnButton, GsRect<float>(-0.1f, 0.1f, 0.03f/rect.w, 0.03f/rect.h) );
-        mpReturnButton->setDown(true);
-
         std::string	playerStr;
         for( unsigned int i = 1 ; i <= MAX_PLAYERS ; i++ )
         {
@@ -59,12 +53,6 @@ public:
     CDifficultySelection() :
         GalaxyMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
     {
-        GsRect<float> rect(0.30f, 0.282f, 0.5f, 0.5f);
-        mpMenuDialog->setRect(rect);
-        mpReturnButton = new GalaxyButton( "<<", new CloseMenuEvent() );
-        mpMenuDialog->addControl( mpReturnButton, GsRect<float>(-0.1f, 0.1f, 0.03f/rect.w, 0.03f/rect.h) );
-        mpReturnButton->setDown(true);
-
         mpMenuDialog->addControl( new GalaxyButton( "Easy", new StartNewGameEvent(EASY) ) );
         mpMenuDialog->addControl( new GalaxyButton( "Normal", new StartNewGameEvent(NORMAL) ) );
         mpMenuDialog->addControl( new GalaxyButton( "Hard", new StartNewGameEvent(HARD) ) );

@@ -21,7 +21,8 @@
 //#include "CSettingsMenu.h"
 #include "Utils.h"
 
-#include "numbercontrol.h"
+#include "widgets/NumberControl.h"
+#include "widgets/ComboSelection.h"
 
 
 static const char* aspectList[] =
@@ -74,19 +75,19 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60, false );
 	mpMenuDialog->addControl( mpFPSSelection );
 
-    mpGameResSelection = new CGUIComboSelection( "GameRes",
+    mpGameResSelection = new ComboSelection( "GameRes",
         filledStrList(1, "?x?") );
     mpMenuDialog->addControl( mpGameResSelection );
 	
 #if !defined(EMBEDDED)	
 	
-    mpAspectSelection = new CGUIComboSelection( "Aspect",
+    mpAspectSelection = new ComboSelection( "Aspect",
 		filledStrList(1, "disabled") );
 	
 	mpMenuDialog->addControl( mpAspectSelection );
 
     mpFilterSelection =
-            new CGUIComboSelection( "Filter",
+            new ComboSelection( "Filter",
                 filledStrList( 4, "none",
                                   "scale2x",
                                   "scale3x",
@@ -97,7 +98,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	mpVSyncSwitch = new CGUISwitch( "VSync" );
 	mpMenuDialog->addControl( mpVSyncSwitch );
 
-    mpResolutionSelection = new CGUIComboSelection( "Size",
+    mpResolutionSelection = new ComboSelection( "Size",
         filledStrList(1, "?x?") );
     mpMenuDialog->addControl( mpResolutionSelection );
 
@@ -110,7 +111,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
     mpMenuDialog->addControl( mpOpenGLSwitch );
 
-    mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
+    mpOGLFilterSelection = new ComboSelection( "OGL Filter",
         filledStrList( 2, "nearest", "linear" ) );
     mpMenuDialog->addControl( mpOGLFilterSelection );
 #endif

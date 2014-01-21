@@ -19,7 +19,7 @@
 
 #include "core/mode/CGameMode.h"
 
-#include "Button.h"
+#include "widgets/Button.h"
 #include "../../menu/CSelectionMenu.h"
 
 namespace galaxy

@@ -51,19 +51,9 @@ m_SavedGame(*gpSaveGameController)
     if(m_Level > 100 || m_Level < 0 )
         m_Level = WORLD_MAP_LEVEL_GALAXY;
 
-    bool ok = true;
-
     // Create the special merge effect (Fadeout)
     CColorMerge *pColorMergeFX = new CColorMerge(8);
-
-    //ok &= init();
-
     gEffectController.setupEffect(pColorMergeFX);
-
-    /*if(!ok)
-        {
-            EventContainer.add( new GMSwitchToPassiveMode(*//*m_DataDirectory, m_Episode*//*));
-        }*/
 }
 
 // NOTE: Only for compatibility mode. Since CG 1.5 it is only used for

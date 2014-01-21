@@ -16,7 +16,6 @@
 #include "CPlayGameGalaxy.h"
 
 #include "menu/MainMenu.h"
-#include "menu/Button.h"
 #include "menu/SelectionMenu.h"
 #include "res/CAudioGalaxy.h"
 
