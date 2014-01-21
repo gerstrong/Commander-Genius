@@ -13,10 +13,9 @@ NumberControl::NumberControl(const std::string &text,
                              const int startValue,
                              const int endValue,
                              const int deltaValue,
-                             const int value,
-                             const bool slider) :
+                             const int value) :
 CGUINumberControl(text, startValue, endValue,
-                    deltaValue, value, slider)
+                    deltaValue, value, false)
 {
 
 }

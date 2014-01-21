@@ -9,9 +9,12 @@
 #define CAUDIOSETTINGS_H_
 
 #include "GalaxyMenu.h"
-#include <widgets/GsComboSelection.h>
+
 #include <widgets/GsSwitch.h>
-#include <widgets/GsNumberControl.h>
+
+#include "widgets/Button.h"
+#include "widgets/ComboSelection.h"
+#include "widgets/NumberControl.h"
 
 #include "fileio/CExeFile.h"
 #include <SDL.h>
@@ -36,12 +39,12 @@ public:
 
 private:
 
-	CGUIComboSelection	*mpRate;
-	CGUISwitch			*mpStereo;
-	CGUIComboSelection	*mpDepth;
-	CGUIComboSelection	*mpSBToggle;
-	CGUINumberControl	*mpSoundVolume;
-	CGUINumberControl	*mpMusicVolume;
+    ComboSelection	*mpRate;
+    CGUISwitch		*mpStereo;
+    ComboSelection	*mpDepth;
+    ComboSelection	*mpSBToggle;
+    NumberControl	*mpSoundVolume;
+    NumberControl	*mpMusicVolume;
 
 	SDL_AudioSpec	mAudioSpec;
 	bool mSoundblaster;

@@ -7,7 +7,6 @@
 
 #include "AudioSettings.h"
 #include <base/utils/StringUtils.h>
-#include <widgets/GsButton.h>
 
 #include "common/CSettings.h"
 #include "sdl/music/CMusic.h"
@@ -22,23 +21,23 @@ CAudioSettings::CAudioSettings() :
 GalaxyMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 {
 
-	mpRate = new CGUIComboSelection( "Rate", g_pSound->getAvailableRateList());
+    mpRate = new ComboSelection( "Rate", g_pSound->getAvailableRateList());
 	mpMenuDialog->addControl( mpRate );
 
 	mpStereo = new CGUISwitch( "Stereo" );
 	mpMenuDialog->addControl( mpStereo );
 
-	mpDepth = new CGUIComboSelection( "Depth", filledStrList( 2, "8-bit", "16-bit" ) );
+    mpDepth = new ComboSelection( "Depth", filledStrList( 2, "8-bit", "16-bit" ) );
 	mpMenuDialog->addControl( mpDepth );
 
-	mpSBToggle = new CGUIComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ) );
+    mpSBToggle = new ComboSelection( "Card", filledStrList( 2, "PC Speaker", "Soundblaster" ) );
 	mpMenuDialog->addControl( mpSBToggle );
 
-	mpSoundVolume = new CGUINumberControl( "Sound Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getSoundVolume() );
+    mpSoundVolume = new NumberControl( "Sound Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getSoundVolume() );
 	mpMenuDialog->addControl( mpSoundVolume );
 
 
-	mpMusicVolume = new CGUINumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getMusicVolume() );
+    mpMusicVolume = new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getMusicVolume() );
 	mpMenuDialog->addControl( mpMusicVolume );
 
 	setMenuLabel("SNDEFFMENULABEL");
@@ -51,6 +50,9 @@ void CAudioSettings::init()
 	mAudioSpec = g_pSound->getAudioSpec();
 	mSoundblaster = g_pSound->getSoundBlasterMode();
 	mSoundVolume = mpSoundVolume->getSelection();
+
+    mpSoundVolume->setSelection(g_pSound->getSoundVolume());
+    mpMusicVolume->setSelection(g_pSound->getMusicVolume());
 
 	mpRate->setSelection( itoa(mAudioSpec.freq) );
 	mpStereo->enable( mAudioSpec.channels == 2 );

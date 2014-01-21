@@ -13,8 +13,7 @@ public:
                   const int startValue,
                   const int endValue,
                   const int deltaValue,
-                  const int value,
-                  const bool slider);
+                  const int value);
 
     virtual void setupButtonSurface();
 
