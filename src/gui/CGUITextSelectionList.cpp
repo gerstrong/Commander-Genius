@@ -14,6 +14,12 @@
 
 const float TEXT_HEIGHT = 10.0f;
 
+CGUITextSelectionList::CGUITextSelectionList() :
+mHoverSelection(0),
+mSelection(-1),
+mScrollPos(0)
+{}
+
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
 {
 	mConfirmEvent.reset(ev);
@@ -69,17 +75,21 @@ void CGUITextSelectionList::processLogic()
 {
 	// Here we check if the mouse-cursor/Touch entry clicked on something!!
 
-	//const float bw = g_pVideoDriver->getGameResolution().w;
+    const float bw = g_pVideoDriver->getGameResolution().w;
 	const float bh = g_pVideoDriver->getGameResolution().h;
 
-	const float fx = mRect.x;
+    const float fx = mRect.x;
 	const float fw = mRect.w;
 	const float fy = mRect.y;
 	const float fh = mRect.h;
 
-	const float y_innerbound_min = fy + static_cast<float>(TEXT_HEIGHT)/bh;
-	const float y_innerbound_max = y_innerbound_min +
-			static_cast<float>( mItemList.size()*TEXT_HEIGHT )/bh;
+    const float y_innerbound_min = fy + static_cast<float>(TEXT_HEIGHT)/bh;
+    const float y_innerbound_max = y_innerbound_min +
+            static_cast<float>( mItemList.size()*TEXT_HEIGHT )/bh;
+
+    const float x_innerbound_min = fx + static_cast<float>(TEXT_HEIGHT)/bw;
+    /*const float x_innerbound_max = x_innerbound_min +
+                                    static_cast<float>(10)/bw;*/
 
 	CRect<float> rRect(fx, fy, fw, fh);
 
@@ -93,15 +103,44 @@ void CGUITextSelectionList::processLogic()
 			{
 				int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1;
 
-				if(mouseevent->Type == MOUSEEVENT_MOVED)
-					mHoverSelection = newselection;
-				else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
-					mSelection = newselection;
+                if( MousePos.x > x_innerbound_min)
+                {
+                    if(mouseevent->Type == MOUSEEVENT_MOVED)
+                        mHoverSelection = newselection;
+                    else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
+                        mSelection = newselection;
+                }
 			}
 
 			g_pInput->m_EventList.pop_Event();
 		}
 	}
+}
+
+void CGUITextSelectionList::drawScrollBar(const SDL_Rect &lRect)
+{
+    SDL_Rect scrollRect = lRect;
+    SDL_Surface *Blitsurface = g_pVideoDriver->getBlitSurface();
+
+    scrollRect.x += 1;
+    scrollRect.y += 1;
+    scrollRect.w  = 10;
+    scrollRect.h -= 2;
+
+    SDL_Rect bDownRect = scrollRect;
+
+    bDownRect.x += 1;
+    bDownRect.y += 1;
+    bDownRect.w  = 8;
+    bDownRect.h  = 8;
+
+    SDL_Rect bUpRect = bDownRect;
+
+    bUpRect.y = (scrollRect.y+scrollRect.h) - (bDownRect.h+1);
+
+    SDL_FillRect(Blitsurface, &scrollRect, 0xFFAFAFAF);
+    SDL_FillRect(Blitsurface, &bUpRect,    0xFF4F4F4F);
+    SDL_FillRect(Blitsurface, &bDownRect,  0xFF4F4F4F);
 }
 
 void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat)
@@ -120,17 +159,24 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 	CFont &Font = g_pGfxEngine->getFont(mFontID);
 
 	// Move 16 Pixel so we have space for the cursor/twirl to show the selection
-	const int xpos = lRect.x+16+1;
-	const int ypos = lRect.y+10;
+    const int sepHeight = Font.getPixelTextHeight()+2;
+    const int xpos = lRect.x+16+1;
+    const int ypos = lRect.y+sepHeight;
 	unsigned int textlimitWidth = (lRect.w-16)/8;
+
+    const unsigned int lastToShow = (lRect.h/sepHeight)-1;
+
 	lRect.h = 10;
+    lRect.x += 12;
+    lRect.w -= 12;
 	std::string trimmedText;
 	std::list<std::string> :: iterator it = mItemList.begin();
-	for ( int line = 0; it != mItemList.end() ; it++, line++ )
+
+    for ( unsigned int line = 0; line<lastToShow ; it++, line++ )
 	{
-		if(mSelection == line)
+        if(mSelection == (int)line)
 		{
-			lRect.y = ypos+(line*10)-1;
+            lRect.y = ypos+(line*sepHeight)-1;
 			SDL_FillRect(Blitsurface, &lRect, 0xFFC5C5F1);
 		}
 
@@ -140,5 +186,12 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 
 		Font.drawFont(Blitsurface, trimmedText, xpos, ypos+(line*10), false);
 	}
+
+    // Do we need a scrollbar?
+    if(lastToShow<mItemList.size())
+    {
+        drawScrollBar(displayRect.SDLRect());
+    }
+
 
 }
