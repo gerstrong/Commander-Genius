@@ -14,7 +14,8 @@
 #include <string>
 #include "CGUIControl.h"
 
-class CGUITextSelectionList : public CGUIControl {
+class CGUITextSelectionList : public CGUIControl
+{
 public:
 
     CGUITextSelectionList();
@@ -33,14 +34,14 @@ public:
 
 	int mHoverSelection;
 	int mSelection;
-	
+
 private:
-    
+
 	int mTextWidthLimit;
 
     int mScrollPos;
     int mMaxScrollAmt;
-	
+
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;
 };

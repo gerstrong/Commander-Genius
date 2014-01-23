@@ -203,7 +203,7 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 
     for(int i=0 ; i<mScrollPos ; it++, i++);
 
-    for ( unsigned int line = 0; line<lastToShow ; it++, line++ )
+    for ( unsigned int line = 0;  it != mItemList.end() && line<lastToShow ; it++, line++ )
 	{
         if(mSelection == int(line) + mScrollPos)
 		{

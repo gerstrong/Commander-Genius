@@ -45,12 +45,12 @@ bool CGameLauncher::init()
     // Scan for games...
     m_DirList.clear();
     m_Entries.clear();
-	
+
     g_pLogFile->ftextOut("Game Autodetection Started<br>" );
-	
+
     // Process any custom labels
     getLabels();
-	
+
     // Scan VFS DIR_ROOT for exe's
     if (scanExecutables(DIR_ROOT))
         gamedetected = true;
@@ -95,9 +95,9 @@ bool CGameLauncher::init()
     mLauncherDialog.setSelection(2);
 
     g_pResourceLoader->setPermilage(1000);
-	
+
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
-    
+
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
                     "By Gerstrong,\n"
@@ -105,12 +105,12 @@ bool CGameLauncher::init()
                     "NY00123,\n"
                     "Pelya,\n"
 					"and the CG Contributors\n");
-    
+
     mLauncherDialog.addControl( banner, CRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 
     if(!gamedetected)
         return false;
-    
+
     return true;
 }
 
@@ -127,37 +127,37 @@ struct FileListAdder
 bool CGameLauncher::scanSubDirectories(const std::string& path, size_t maxdepth)
 {
     bool gamedetected = false;
-	
+
 	std::set<std::string> dirs;
 	FileListAdder fileListAdder;
 	GetFileList(dirs, fileListAdder, path, false, FM_DIR);
-	
+
 	for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
 	{
 		std::string newpath = path + '/' +  *i;
-		
+
 		if(scanExecutables(newpath))
 			gamedetected = true;
-		
+
 		if(maxdepth > 1 && scanSubDirectories(newpath, maxdepth - 1))
 			gamedetected = true;
 	}
-	
+
     return gamedetected;
 }
 
 bool CGameLauncher::scanExecutables(const std::string& path)
 {
     bool result = false;
-	
+
     g_pLogFile->ftextOut("Search: %s<br>", path.c_str() );
-	
+
 	for(int i = 1; i <= 6; ++i) {
 		CExeFile executable;
 		// Load the exe into memory
 		if(!executable.readData(i, path))
 			continue;
-	   
+
 		// Process the exe for type
 		GameEntry newentry;
 		newentry.crcpass = executable.getEXECrc();
@@ -168,7 +168,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		newentry.exefilename = executable.getFileName();
 		// Check for an existing custom label for the menu
 		newentry.name    = scanLabels(executable.getFileName());
-		
+
 		std::string verstr;
 		std::string gamespecstring = "Detected game Name: " + executable.getFileName();
 		if( newentry.version<=0 ) // Version couldn't be read!
@@ -184,8 +184,8 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 			gamespecstring += "<br>";
 		}
 
-		
-		
+
+
 		if( newentry.name.length() <= 0 )
 		{
 			//newentry.name = "Episode: " + itoa(newentry.episode);
@@ -194,12 +194,12 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		}
 
 		newentry.name += " ";
-		
+
 		// Save the type information about the exe
 		m_Entries.push_back(newentry);
 
 		g_pLogFile->textOut(gamespecstring);
-		
+
 		// The original episode 1 exe is needed to load gfx's for game launcher menu
 		if ( m_ep1slot <= -1 && newentry.crcpass == true )
 		{
@@ -208,7 +208,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		}
 		result = true;
 	}
-	
+
     return result;
 }
 
@@ -223,8 +223,8 @@ void CGameLauncher::ponder()
         m_mustquit = true;
         return;
     }
-    
-    
+
+
     // Command (Keyboard/Joystick) are handled here
     for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
     {
@@ -234,7 +234,7 @@ void CGameLauncher::ponder()
             break;
         }
     }
-    
+
     // Check if the selection changed. Update the right data panel
     if(mSelection != mpSelList->mSelection)
     {
@@ -245,9 +245,9 @@ void CGameLauncher::ponder()
         fVer /= 100.0f;
         mpVersionText->setText("Version: " + ftoa(fVer));
     }
-    
+
     mLauncherDialog.processLogic();
-    
+
     if( GMStart *Starter = g_pBehaviorEngine->m_EventList.occurredEvent<GMStart>() )
     {
         setChosenGame(Starter->mSlot);
@@ -268,12 +268,12 @@ void CGameLauncher::ponder()
         g_pGfxEngine->setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
         g_pBehaviorEngine->m_EventList.pop_Event();
     }
-    
+
 }
 
 
 void CGameLauncher::render()
-{      
+{
     if(g_pGfxEngine->applyingEffects())
         return;
 
@@ -288,21 +288,21 @@ void CGameLauncher::getLabels()
     Uint16 i;
     std::string line, dir;
     std::ifstream gamescfg;
-	
+
     m_Names.clear();
     m_Paths.clear();
-	
+
     OpenGameFileR(gamescfg, GAMESCFG);
     if (gamescfg.is_open())
     {
         while ( !gamescfg.eof() )
         {
             getline(gamescfg,line);
-			
+
             if (strncmp(line.c_str(),GAMESCFG_DIR,strlen(GAMESCFG_DIR)) == 0)
             {
                 dir = line.substr(strlen(GAMESCFG_DIR));
-				
+
                 // Check for duplicates
                 found = false;
                 for ( i=0; i<m_Paths.size(); i++ )
@@ -313,7 +313,7 @@ void CGameLauncher::getLabels()
                         break;
                     }
                 }
-				
+
                 // If not a duplicate get the custom name
                 if (!found)
                 {
@@ -333,7 +333,7 @@ void CGameLauncher::getLabels()
 std::string CGameLauncher::scanLabels(const std::string& path)
 {
     Uint16 i;
-	
+
     for ( i=0; i<m_Paths.size(); i++ )
     {
         if (strncmp(m_Paths.at(i).c_str(),path.c_str(),path.length()) == 0)
@@ -369,7 +369,7 @@ void CGameLauncher::putLabels()
 // Cleanup Routine
 ////
 void CGameLauncher::cleanup()
-{	
+{
     // destroy the menu
 
 }
