@@ -1,6 +1,7 @@
-v1.6.5.5 Beta:
---------------
+v1.6.5.5 Release:
+-----------------
 - Added Scrollbar for a bigger list of games
+- Wormmoutch bites again!
 
 
 v1.6.5.3 Beta:
