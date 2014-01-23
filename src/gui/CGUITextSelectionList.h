@@ -39,6 +39,7 @@ private:
 	int mTextWidthLimit;
 
     int mScrollPos;
+    int mMaxScrollAmt;
 	
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;

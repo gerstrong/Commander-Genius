@@ -83,9 +83,10 @@ void CGUITextSelectionList::processLogic()
 	const float fy = mRect.y;
 	const float fh = mRect.h;
 
-    const float y_innerbound_min = fy + static_cast<float>(TEXT_HEIGHT)/bh;
-    const float y_innerbound_max = y_innerbound_min +
+    const float y_innerbound_min_text = fy + static_cast<float>(TEXT_HEIGHT)/bh;
+    const float y_innerbound_max = y_innerbound_min_text +
             static_cast<float>( mItemList.size()*TEXT_HEIGHT )/bh;
+
 
     const float x_innerbound_min = fx + static_cast<float>(TEXT_HEIGHT)/bw;
     /*const float x_innerbound_max = x_innerbound_min +
@@ -93,28 +94,47 @@ void CGUITextSelectionList::processLogic()
 
 	CRect<float> rRect(fx, fy, fw, fh);
 
-	if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
-	{
-		CVec MousePos = mouseevent->Pos;
+    if( MouseMoveEvent *mouseevent = g_pInput->m_EventList.occurredEvent<MouseMoveEvent>() )
+    {
+        CVec MousePos = mouseevent->Pos;
 
-		if( rRect.HasPoint(MousePos) )
-		{
-			if( MousePos.y > y_innerbound_min && MousePos.y < y_innerbound_max )
-			{
-				int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1;
+        if( rRect.HasPoint(MousePos) )
+        {
+            if( MousePos.y < y_innerbound_max )
+            {
 
-                if( MousePos.x > x_innerbound_min)
+                if( MousePos.y > fy )
                 {
-                    if(mouseevent->Type == MOUSEEVENT_MOVED)
-                        mHoverSelection = newselection;
-                    else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
-                        mSelection = newselection;
-                }
-			}
+                    int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1 + mScrollPos;
 
-			g_pInput->m_EventList.pop_Event();
-		}
-	}
+                    if( MousePos.x > x_innerbound_min && MousePos.y > y_innerbound_min_text)
+                    {
+                        if(mouseevent->Type == MOUSEEVENT_MOVED)
+                            mHoverSelection = newselection;
+                        else if(mouseevent->Type == MOUSEEVENT_BUTTONDOWN)
+                            mSelection = newselection;
+                    }
+                    else if(mouseevent->Type == MOUSEEVENT_BUTTONUP)// If clicked on scroll bar
+                    {
+                        const float midPart_y = (y_innerbound_min_text+y_innerbound_max)/2.0;
+
+                        if(MousePos.y < midPart_y) // Go up!
+                        {
+                            if(mScrollPos > 0)
+                                mScrollPos--;
+                        }
+                        else if(MousePos.y > midPart_y) // Go down!
+                        {
+                            if(mScrollPos < mMaxScrollAmt)
+                                mScrollPos++;
+                        }
+                    }
+                }
+            }
+
+            g_pInput->m_EventList.pop_Event();
+        }
+    }
 }
 
 void CGUITextSelectionList::drawScrollBar(const SDL_Rect &lRect)
@@ -127,20 +147,29 @@ void CGUITextSelectionList::drawScrollBar(const SDL_Rect &lRect)
     scrollRect.w  = 10;
     scrollRect.h -= 2;
 
-    SDL_Rect bDownRect = scrollRect;
+    SDL_Rect bScUpRect = scrollRect;
 
-    bDownRect.x += 1;
-    bDownRect.y += 1;
-    bDownRect.w  = 8;
-    bDownRect.h  = 8;
+    bScUpRect.x += 1;
+    bScUpRect.y += 1;
+    bScUpRect.w  = 8;
+    bScUpRect.h  = 8;
 
-    SDL_Rect bUpRect = bDownRect;
+    SDL_Rect bScDownRect = bScUpRect;
 
-    bUpRect.y = (scrollRect.y+scrollRect.h) - (bDownRect.h+1);
+    bScDownRect.y = (scrollRect.y+scrollRect.h) - (bScUpRect.h+1);
 
     SDL_FillRect(Blitsurface, &scrollRect, 0xFFAFAFAF);
-    SDL_FillRect(Blitsurface, &bUpRect,    0xFF4F4F4F);
-    SDL_FillRect(Blitsurface, &bDownRect,  0xFF4F4F4F);
+
+    // Now show the slider
+    float relPos = float(mScrollPos) / float(mMaxScrollAmt);
+    const int posSpace = int(relPos * float(scrollRect.h - (2*9+8) ));
+    SDL_Rect bSliderRect = bScDownRect;
+    bSliderRect.y = (bScUpRect.y + bScUpRect.h) + posSpace;
+    SDL_FillRect(Blitsurface, &bSliderRect, 0xFF2F2F2F);
+
+    // Set the up and down arrows
+    SDL_FillRect(Blitsurface, &bScUpRect,  0xFF4F4F4F);
+    SDL_FillRect(Blitsurface, &bScDownRect,    0xFF4F4F4F);
 }
 
 void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat)
@@ -172,9 +201,11 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 	std::string trimmedText;
 	std::list<std::string> :: iterator it = mItemList.begin();
 
+    for(int i=0 ; i<mScrollPos ; it++, i++);
+
     for ( unsigned int line = 0; line<lastToShow ; it++, line++ )
 	{
-        if(mSelection == (int)line)
+        if(mSelection == int(line) + mScrollPos)
 		{
             lRect.y = ypos+(line*sepHeight)-1;
 			SDL_FillRect(Blitsurface, &lRect, 0xFFC5C5F1);
@@ -185,10 +216,12 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 			trimmedText = trimmedText.substr(0, textlimitWidth);
 
 		Font.drawFont(Blitsurface, trimmedText, xpos, ypos+(line*10), false);
-	}
+    }
+
+    mMaxScrollAmt = mItemList.size()-lastToShow;
 
     // Do we need a scrollbar?
-    if(lastToShow<mItemList.size())
+    if(mMaxScrollAmt>0)
     {
         drawScrollBar(displayRect.SDLRect());
     }
