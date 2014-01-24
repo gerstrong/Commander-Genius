@@ -17,7 +17,8 @@ const int A_WORMMOUTH_LOOK = 1;
 const int A_WORMMOUTH_EAT = 9;
 const int A_WORMMOUTH_STUNNED = 14;
 
-const int DIST_TO_EAT = (1<<CSF)/2;
+const int DIST_TO_EAT_X = (1<<CSF)/2;
+const int DIST_TO_EAT_Y = 2<<CSF;
 const int LOOK_TIMER = 10;
 
 CWormmouth::CWormmouth(CMap *pmap, const Uint16 foeID, Uint32 x, Uint32 y) :
@@ -88,8 +89,9 @@ bool CWormmouth::isNearby(CSpriteObject &theObject)
 
 		const int diffX = playerX - wormmouthX;
 		const int diffY = playerY - wormmouthY;
-		if( abs(diffX) < DIST_TO_EAT && abs(diffY) < DIST_TO_EAT
-				&& !getActionNumber(A_WORMMOUTH_EAT) )
+        if( abs(diffX) < DIST_TO_EAT_X &&
+            abs(diffY) < DIST_TO_EAT_Y &&
+            !getActionNumber(A_WORMMOUTH_EAT) )
 		{
 			setAction(A_WORMMOUTH_EAT);
 			playSound( SOUND_WORMOUTH_STRIKE );

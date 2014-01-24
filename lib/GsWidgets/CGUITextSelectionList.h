@@ -14,12 +14,11 @@
 #include <string>
 #include "CGUIControl.h"
 
-class CGUITextSelectionList : public CGUIControl {
+class CGUITextSelectionList : public CGUIControl
+{
 public:
 
-	CGUITextSelectionList() :
-	mHoverSelection(0),
-    mSelection(-1) {}
+    CGUITextSelectionList();
 
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
@@ -29,16 +28,20 @@ public:
 	void processLogic();
 	void processRender(const CRect<float> &RectDispCoordFloat);
 
+    void drawScrollBar(const SDL_Rect &lRect);
 
 	std::list<std::string> mItemList;
 
 	int mHoverSelection;
 	int mSelection;
-	
+
 private:
-    
+
 	int mTextWidthLimit;
-	
+
+    int mScrollPos;
+    int mMaxScrollAmt;
+
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;
 };

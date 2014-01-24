@@ -23,7 +23,9 @@ public:
 	CGUITextSelectionList() :
 	mHoverSelection(0),
     mPressedSelection(-1),
-    mReleasedSelection(-1) {}
+    mReleasedSelection(-1),
+    mScrollPos(0),
+    mMaxScrollAmt(0) {}
 
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
@@ -32,6 +34,7 @@ public:
 	void addText(const std::string &text);
 	void processLogic();
     void processRender(const GsRect<float> &RectDispCoordFloat);
+    void drawScrollBar(const SDL_Rect &lRect);
 
     int getSelection() const
     { return mReleasedSelection; }
@@ -46,9 +49,11 @@ private:
     int mHoverSelection;
     int mPressedSelection;
     int mReleasedSelection;
-
     
 	int mTextWidthLimit;
+
+    int mScrollPos;
+    int mMaxScrollAmt;
 	
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;

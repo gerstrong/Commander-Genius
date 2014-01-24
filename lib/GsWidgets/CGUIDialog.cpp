@@ -94,13 +94,13 @@ void CGUIDialog::addControl( CGUIControl *newControl,
 		 	 const CRect<float>& RelRect )
 {
     std::unique_ptr<CGUIControl> ctrl(newControl);
-    addControl( ctrl, RelRect );    
+    addControl( ctrl, RelRect );
 }
 
 void CGUIDialog::addControl( CGUIControl *newControl )
 {
     std::unique_ptr<CGUIControl> ctrl(newControl);
-    addControl(ctrl);    
+    addControl(ctrl);
 }
 
 
@@ -131,7 +131,7 @@ void CGUIDialog::selectPrevItem()
 
 		mSelection--;
 	}
-    
+
     if( mSelection < 0 ) {
 		mSelection = mControlList.size()-1;
         it = mControlList.end();
@@ -168,7 +168,7 @@ void CGUIDialog::selectNextItem()
 
 		mSelection++;
 	}
-    
+
     if( mSelection >= static_cast<int>(mControlList.size()) ) {
 		mSelection = 0;
         it = mControlList.begin();
@@ -205,7 +205,7 @@ bool CGUIDialog::sendEvent( const std::shared_ptr<CEvent> &command )
 		// Send all the other events the active control element
 		int i=0;
         for( auto &it : mControlList )
-        {            
+        {
             if( i == mSelection )
             {
                 if( !it->getHovered() )
@@ -288,8 +288,8 @@ void CGUIDialog::initEmptyBackround()
 
     mpBackgroundSfc.reset( g_pVideoDriver->convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
 
-	SDL_Surface *sfc = mpBackgroundSfc.get();    
-    SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );        
+	SDL_Surface *sfc = mpBackgroundSfc.get();
+    SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );
 }
 
 
@@ -346,7 +346,7 @@ void CGUIDialog::initVorticonBackground()
 		{
 			Font.drawCharacter( backSfc, 32, x, y );
 		}
-	}            
+	}
 
 	// Now draw the borders
     drawBorderRect(backSfc, Rect);
@@ -355,8 +355,8 @@ void CGUIDialog::initVorticonBackground()
 }
 
 void CGUIDialog::initGalaxyBackround()
-{   
-    mBackgroundBmp = *g_pGfxEngine->getBitmap("KEENSWATCH");
+{
+    mBackgroundBmp = *g_pGfxEngine->getBitmapFromStr("KEENSWATCH");
 
     CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
     mBackgroundBmp.scaleTo(gameRes);
@@ -452,7 +452,7 @@ void CGUIDialog::processRendering()
 
 
 void CGUIDialog::processRendering(SDL_Surface *blit)
-{        
+{
     CRect<Uint16> GameRes = g_pVideoDriver->getGameResolution();
     CRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
@@ -517,5 +517,5 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
 	for( auto &it : mControlList )
 	{
         it->processRender(screenRect);
-	}       
+	}
 }
