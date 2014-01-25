@@ -95,7 +95,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
     mpMenuDialog->addControl( mpFilterSelection );
 
-	mpVSyncSwitch = new CGUISwitch( "VSync" );
+    mpVSyncSwitch = new Switch( "VSync" );
 	mpMenuDialog->addControl( mpVSyncSwitch );
 
     mpResolutionSelection = new ComboSelection( "Size",
@@ -108,7 +108,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 #endif
 
 #if defined(USE_OPENGL)
-    mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
+    mpOpenGLSwitch = new Switch( "OpenGL" );
     mpMenuDialog->addControl( mpOpenGLSwitch );
 
     mpOGLFilterSelection = new ComboSelection( "OGL Filter",
@@ -117,7 +117,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 #endif
 
 
-    mpSFXSwitch = new CGUISwitch( "Special FX" );
+    mpSFXSwitch = new Switch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
 
 	setMenuLabel("OPTIONSMENULABEL");

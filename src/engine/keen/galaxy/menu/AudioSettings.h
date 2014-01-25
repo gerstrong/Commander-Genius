@@ -10,8 +10,7 @@
 
 #include "GalaxyMenu.h"
 
-#include <widgets/GsSwitch.h>
-
+#include "widgets/Switch.h"
 #include "widgets/Button.h"
 #include "widgets/ComboSelection.h"
 #include "widgets/NumberControl.h"
@@ -40,7 +39,7 @@ public:
 private:
 
     ComboSelection	*mpRate;
-    CGUISwitch		*mpStereo;
+    Switch		*mpStereo;
     ComboSelection	*mpDepth;
     ComboSelection	*mpSBToggle;
     NumberControl	*mpSoundVolume;

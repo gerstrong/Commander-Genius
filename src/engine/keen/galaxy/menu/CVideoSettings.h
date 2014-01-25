@@ -12,9 +12,10 @@
 #include <string>
 
 #include <widgets/GsBaseMenu.h>
-#include <widgets/GsComboSelection.h>
-#include <widgets/GsSwitch.h>
-#include <widgets/GsNumberControl.h>
+#include "widgets/ComboSelection.h"
+#include "widgets/Switch.h"
+#include "widgets/NumberControl.h"
+#include "widgets/Button.h"
 
 #include "sdl/CVidConfig.h"
 
@@ -35,20 +36,20 @@ public:
 private:
 
 
-	CGUINumberControl	*mpFPSSelection;
+    NumberControl	*mpFPSSelection;
 
 #if defined(USE_OPENGL)
-	CGUISwitch			*mpOpenGLSwitch;
-	CGUIComboSelection	*mpOGLFilterSelection;
+    Switch			*mpOpenGLSwitch;
+    ComboSelection	*mpOGLFilterSelection;
 #endif
 
-    CGUIComboSelection	*mpFilterSelection;
-	CGUIComboSelection	*mpAspectSelection;
-	CGUISwitch		*mpVSyncSwitch;
-	CGUISwitch		*mpSFXSwitch;
-	GsButton		*mpFullScreenSwitch;
-    CGUIComboSelection	*mpResolutionSelection;
-    CGUIComboSelection	*mpGameResSelection;
+    ComboSelection	*mpFilterSelection;
+    ComboSelection	*mpAspectSelection;
+    Switch		*mpVSyncSwitch;
+    Switch		*mpSFXSwitch;
+    GalaxyButton		*mpFullScreenSwitch;
+    ComboSelection	*mpResolutionSelection;
+    ComboSelection	*mpGameResSelection;
 
 };
 

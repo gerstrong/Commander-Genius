@@ -9,7 +9,7 @@
 #define COPTIONS_H_
 
 #include "GalaxyMenu.h"
-#include <widgets/GsSwitch.h>
+#include "widgets/Switch.h"
 #include <list>
 
 #include "common/CBehaviorEngine.h"
@@ -29,7 +29,7 @@ public:
 	void release();
 
 private:
-	std::list<CGUISwitch*> mpOptionList;
+    std::list<Switch*> mpOptionList;
 	stOption *mpOption;
 };
 

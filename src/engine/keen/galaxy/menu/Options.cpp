@@ -7,7 +7,6 @@
 
 #include "Options.h"
 #include <base/CInput.h>
-//#include "sdl/CVideoDriver.h"
 #include "common/CSettings.h"
 
 namespace galaxy
@@ -20,7 +19,7 @@ mpOption(g_pBehaviorEngine->m_option)
 
 	for( int i = 0 ; i < NUM_OPTIONS ; i++ )
 	{
-		mpOptionList.push_back( new CGUISwitch(mpOption[i].menuname) );
+        mpOptionList.push_back( new Switch(mpOption[i].menuname) );
 		mpMenuDialog->addControl( mpOptionList.back() );
 	}
 
@@ -29,7 +28,7 @@ mpOption(g_pBehaviorEngine->m_option)
 
 void COptions::init()
 {
-	std::list<CGUISwitch*>::iterator it = mpOptionList.begin();
+    std::list<Switch*>::iterator it = mpOptionList.begin();
 
 	for( int i=0 ; it != mpOptionList.end() ; it++, i++ )
 		(*it)->enable( mpOption[i].value );

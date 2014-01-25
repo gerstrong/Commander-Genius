@@ -24,7 +24,7 @@ GalaxyMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
     mpRate = new ComboSelection( "Rate", g_pSound->getAvailableRateList());
 	mpMenuDialog->addControl( mpRate );
 
-	mpStereo = new CGUISwitch( "Stereo" );
+    mpStereo = new Switch( "Stereo" );
 	mpMenuDialog->addControl( mpStereo );
 
     mpDepth = new ComboSelection( "Depth", filledStrList( 2, "8-bit", "16-bit" ) );

@@ -292,7 +292,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     if(Width>1024 || Height>1024)
     {
-        g_pLogFile->textOut("Sorry, but I cannot uncompress this map and must give up."
+        gLogging.textOut("Sorry, but I cannot uncompress this map and must give up."
             "Please report this to the developers and send that version to them in order to fix it.<br>" );
         return false;
     }
