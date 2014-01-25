@@ -29,6 +29,7 @@
  */
 
 #include "../version.h"
+#include "common/CSettings.h"
 
 #ifdef ANDROID
 	#include <SDL_main.h>
@@ -108,6 +109,8 @@ int main(int argc, char *argv[])
         //////////////////////////////
         app.runMainCycle();
 	}
+
+    g_pSettings->saveDispCfg();
 
 	UnInitThreadPool();
 	return 0;

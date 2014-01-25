@@ -1,5 +1,6 @@
 v1.7.1 Alpha:
 -------------
+- Last window size is now saved automatically.
 - Heavy engine independent code cleanups which will make CG more flexible for new game engines besides Commander Keen
 - New GsLib will take more work at low level functions and will as wrapper for SDL and GUI elements
 - Multiple selection should be fixed now.

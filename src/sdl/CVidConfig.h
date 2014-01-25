@@ -52,6 +52,7 @@ public:
 	void setResolution(const GsRect<Uint16>& res);
 
 	GsRect<Uint16> m_GameRect;	// Also called Screenspace.
+    GsRect<Uint16> mWindowRect; // Window size
 	GsRect<Uint16> m_DisplayRect; // The Fullscreen-Resolution or the Window Size
 
 	bool Fullscreen;

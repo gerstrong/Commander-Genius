@@ -548,6 +548,8 @@ void CInput::pollEvents()
 
     GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
 
+    auto &dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
+
     if( !gVideoDriver.isOpenGL() )
     {
         clickGameArea.x = 0;
@@ -596,12 +598,16 @@ void CInput::pollEvents()
                 gVideoDriver.mpVideoEngine->resizeDisplayScreen(
                         GsRect<Uint16>(Event.window.data1,
                                       Event.window.data2) );
+                dispRect.w = Event.window.data1;
+                dispRect.h = Event.window.data2;
             }
             break;
 #else
 		case SDL_VIDEORESIZE:
             gVideoDriver.mpVideoEngine->resizeDisplayScreen(
 					GsRect<Uint16>(Event.resize.w, Event.resize.h) );
+            dispRect.w = Event.resize.w;
+            dispRect.h = Event.resize.h;
 			break;
 #endif
 

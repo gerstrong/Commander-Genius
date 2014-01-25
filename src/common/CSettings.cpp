@@ -29,6 +29,23 @@ CSettings::CSettings()
 	notes << "Will write game options to " << GetWriteFullFileName(CONFIGFILENAME, true) << endl;
 }
 
+
+/**
+ * \brief	Only saves the last used resolution or window size.
+ * \return	If the configuration has been saved successfully, it return true, else it's false.
+ */
+bool CSettings::saveDispCfg()
+{
+    CConfiguration Configuration(CONFIGFILENAME);
+    Configuration.Parse();
+
+    CVidConfig &VidConf = gVideoDriver.getVidConfig();
+    Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
+    Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+
+    return Configuration.saveCfgFile();
+}
+
 /**
  * \brief	Write the whole configuration of the settings.
  * 			Note: See also CConfiguration to understand better the concept of saving...
@@ -49,8 +66,10 @@ bool CSettings::saveDrvCfg()
 
     Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
     Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+
     Configuration.WriteInt("Video", "gameWidth", VidConf.m_GameRect.w);
     Configuration.WriteInt("Video", "gameHeight", VidConf.m_GameRect.h);
+
     Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #if defined(USE_OPENGL)
     Configuration.WriteString("Video", "OGLfilter", VidConf.m_opengl_filter == GL_NEAREST ? "nearest" : "linear" );
