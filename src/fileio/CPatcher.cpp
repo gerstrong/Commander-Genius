@@ -28,6 +28,17 @@ m_is_a_mod(is_a_mod)
 }
 
 
+// Some mods seems to have messy pat file! If a filename is given but some more mess
+// this routine cuts it down!
+void filterFilename(std::string &fileName)
+{
+    // Those filenames can only have extensions up to three chars. Cut it down...
+    const size_t pos = fileName.find(".")+4;
+    const std::string newFileName = fileName.substr(0,pos);
+    fileName = newFileName;
+}
+
+
 void CPatcher::process()
 {
 	if(!loadPatchfile()) return;
@@ -119,6 +130,7 @@ void CPatcher::process()
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
+            filterFilename(newfileName);
 			gpResource->mapheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "patch" )

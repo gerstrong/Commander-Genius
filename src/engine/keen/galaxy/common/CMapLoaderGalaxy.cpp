@@ -193,10 +193,11 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   byte *Maphead = m_ExeFile.getRawData() + getMapheadOffset();
   
   // In case there is an external file read it into the container and replace the pointer
-  if(gpResource->mapheadFilename != "")
+  const std::string mapHeadFilename = gpResource->mapheadFilename;
+  if(mapHeadFilename != "")
   {
     std::ifstream MapHeadFile;
-    if(OpenGameFileR(MapHeadFile, getResourceFilename(gpResource->mapheadFilename,path,true,false), std::ios::binary))
+    if(OpenGameFileR(MapHeadFile, getResourceFilename(mapHeadFilename,path,true,false), std::ios::binary))
     {
       // get length of file:
       MapHeadFile.seekg (0, std::ios::end);
@@ -209,6 +210,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     else
     {
       gLogging.textOut("ERROR The MapHead File was not found. Please check that file or take a look into your patch file");
+      return false;
     }
   }
   
@@ -286,6 +288,15 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 
     Width = fgetw(MapFile);
     Height = fgetw(MapFile);
+
+
+    if(Width>1024 || Height>1024)
+    {
+        g_pLogFile->textOut("Sorry, but I cannot uncompress this map and must give up."
+            "Please report this to the developers and send that version to them in order to fix it.<br>" );
+        return false;
+    }
+
 
     for(int c=0 ; c<16 ; c++)
     {
