@@ -11,8 +11,8 @@
 #include <widgets/GsBaseMenu.h>
 
 #include <base/utils/StringUtils.h>
-#include <widgets/GsButton.h>
-#include <widgets/GsSwitch.h>
+#include "widgets/Button.h"
+#include "widgets/Switch.h"
 #include <vector>
 #include <map>
 
@@ -36,11 +36,11 @@ private:
 
 	int mSelectedPlayer;
 
-	CGUISwitch *mpTwoButtonSwitch;
-	CGUISwitch *mpAnalogSwitch;
-	CGUISwitch *mpSuperPogoSwitch;
-	CGUISwitch *mpImpPogoSwitch;
-	CGUISwitch *mpAutoGunSwitch;
+    Switch *mpTwoButtonSwitch;
+    Switch *mpAnalogSwitch;
+    Switch *mpSuperPogoSwitch;
+    Switch *mpImpPogoSwitch;
+    Switch *mpAutoGunSwitch;
 };
 
 
@@ -58,7 +58,7 @@ private:
 
 	int mSelectedPlayer;
 
-	std::vector<GsButton*> mpButtonList;
+    std::vector<GalaxyButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 	
 	bool mapping;
@@ -80,7 +80,7 @@ private:
 
 	int mSelectedPlayer;
 
-	std::vector<GsButton*> mpButtonList;
+    std::vector<GalaxyButton*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 	
 	bool mapping;
@@ -107,7 +107,6 @@ struct OpenMovementControlMenuEvent : OpenControlMenuEvent
 {
 	OpenMovementControlMenuEvent(const int option) :
         OpenControlMenuEvent(option) {}
-
 };
 
 }

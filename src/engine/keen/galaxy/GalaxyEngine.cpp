@@ -17,6 +17,7 @@
 
 #include "menu/MainMenu.h"
 #include "menu/SelectionMenu.h"
+#include "menu/ControlSettings.h"
 #include "res/CAudioGalaxy.h"
 
 namespace galaxy
@@ -193,6 +194,25 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
         g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
         gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
         return;
+    }    
+    // Control Menu Events
+    else if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        gEventManager.add( new OpenMenuEvent(
+                                new CControlSettingsMovement(players) ) );
+    }
+    else if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        gEventManager.add( new OpenMenuEvent(
+                                new CControlSettingsButtons(players) ) );
+    }
+    else if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        gEventManager.add( new OpenMenuEvent(
+                                new CControlsettings(players) ) );
     }
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {

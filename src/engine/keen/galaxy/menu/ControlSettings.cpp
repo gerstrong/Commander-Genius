@@ -88,19 +88,19 @@ mSelectedPlayer(selectedPlayer)
     button = new GalaxyButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
 	mpMenuDialog->addControl( button );
 
-	mpTwoButtonSwitch = new CGUISwitch( "Two Button Fire" );
+    mpTwoButtonSwitch = new Switch( "Two Button Fire" );
 	mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
 
-	mpAnalogSwitch = new CGUISwitch( "Analog Movement" );
+    mpAnalogSwitch = new Switch( "Analog Movement" );
 	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
 
-	mpSuperPogoSwitch = new CGUISwitch( "Super Pogo" );
+    mpSuperPogoSwitch = new Switch( "Super Pogo" );
 	mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
 
-	mpImpPogoSwitch = new CGUISwitch( "Impossible Pogo" );
+    mpImpPogoSwitch = new Switch( "Impossible Pogo" );
 	mpImpPogoSwitch->enable(gInput.ImpossiblePogo(mSelectedPlayer-1));
 
-	mpAutoGunSwitch = new CGUISwitch( "Auto Gun" );
+    mpAutoGunSwitch = new Switch( "Auto Gun" );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
 	mpMenuDialog->addControl( mpTwoButtonSwitch );
@@ -108,7 +108,7 @@ mSelectedPlayer(selectedPlayer)
 	mpMenuDialog->addControl( mpSuperPogoSwitch );
 	mpMenuDialog->addControl( mpImpPogoSwitch );
 	mpMenuDialog->addControl( mpAutoGunSwitch );
-	mpMenuDialog->addControl( new GsButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1) ) );
+    mpMenuDialog->addControl( new GalaxyButton( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1) ) );
     
     setMenuLabel("KEYBMENULABEL");
 
@@ -159,7 +159,7 @@ void CControlSettingsMovement::init()
 		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-		GsButton	*guiButton = new GsButton( buf+buf2, rie );
+        GalaxyButton	*guiButton = new GalaxyButton( buf+buf2, rie );
 		rie->setButtonPtr(guiButton);
 
 		mpButtonList.push_back( guiButton );
@@ -183,15 +183,15 @@ void CControlSettingsMovement::ponder()
 	    // mapping changed!
 	    mapping = false;
 	 
-	    GsButton *button = dynamic_cast<GsButton*>(mpMenuDialog->CurrentControl());
-	    if(button)
-	    {
-		int pos; unsigned char input;
-		std::string evName = gInput.getNewMappedEvent(pos, input);		
-		InputCommands com = static_cast<InputCommands>(pos);		
-		button->setText(mCommandName[com] + evName);
-	    }
-	}
+        GalaxyButton *button = dynamic_cast<GalaxyButton*>(mpMenuDialog->CurrentControl());
+        if(button)
+        {
+            int pos; unsigned char input;
+            std::string evName = gInput.getNewMappedEvent(pos, input);
+            InputCommands com = static_cast<InputCommands>(pos);
+            button->setText(mCommandName[com] + evName);
+        }
+    }
     }	
     GalaxyMenu::ponder(0);
 }
@@ -234,7 +234,7 @@ void CControlSettingsButtons::init()
 		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-		GsButton	*guiButton = new GsButton( buf+buf2, rie );
+        GalaxyButton	*guiButton = new GalaxyButton( buf+buf2, rie );
 		rie->setButtonPtr(guiButton);
 
 
@@ -260,7 +260,7 @@ void CControlSettingsButtons::ponder()
             // mapping changed!
             mapping = false;
 
-            GsButton *button = dynamic_cast<GsButton*>(mpMenuDialog->CurrentControl());
+            GalaxyButton *button = dynamic_cast<GalaxyButton*>(mpMenuDialog->CurrentControl());
             if(button)
             {
                 int pos; unsigned char input;

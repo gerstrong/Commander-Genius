@@ -18,23 +18,23 @@ GalaxyMenu(GsRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
 m_CameraBounds(gVideoDriver.getCameraBounds())
 {
 
-	mpLeftAdjust = new CGUINumberControl( "Left",
+    mpLeftAdjust = new NumberControl( "Left",
 											 50, 270, 10, 60 );
 	mpMenuDialog->addControl( mpLeftAdjust );
 
-	mpRightAdjust = new CGUINumberControl( "Right",
+    mpRightAdjust = new NumberControl( "Right",
 											 50, 270, 10, 60 );
 	mpMenuDialog->addControl( mpRightAdjust );
 
-	mpTopAdjust = new CGUINumberControl( "Top",
+    mpTopAdjust = new NumberControl( "Top",
 											 50, 150, 10, 60 );
 	mpMenuDialog->addControl( mpTopAdjust );
 
-	mpBottomAdjust = new CGUINumberControl( "Bottom",
+    mpBottomAdjust = new NumberControl( "Bottom",
 											 50, 150, 10, 60 );
 	mpMenuDialog->addControl( mpBottomAdjust );
 
-	mpSpeedAdjust = new CGUINumberControl( "Speed",
+    mpSpeedAdjust = new NumberControl( "Speed",
 											 1, 50, 1, 25 );
 	mpMenuDialog->addControl( mpSpeedAdjust );
 
