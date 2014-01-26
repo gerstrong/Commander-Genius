@@ -26,50 +26,19 @@ public:
 			const int endValue,
 			const int deltaValue,
 			const int value,
-			const bool slider = true);
+            const bool slider);
 
-
-	void increment();
-	void decrement();
 
 	bool sendEvent(const InputCommands command);
 
-	const int getSelection();
-	void setSelection( const int value );
-
     virtual void setupButtonSurface() {}
 
-    void processLogic();
+    std::string sliderStr();
 
 	void drawVorticonStyle(SDL_Rect& lRect);
 
 
 	void processRender(const GsRect<float> &RectDispCoordFloat);
-
-protected:
-    bool mIncSel;
-    bool mDecSel;
-
-    GsSurface mTextDarkSfc;
-    GsSurface mTextLightSfc;
-    GsSurface mTextLightSfcR;
-    GsSurface mTextLightSfcL;
-    GsSurface mTextDisabledSfc;
-
-    std::string	mText;
-    int mValue;
-
-private:
-
-	// draws the slider to the corresponding value
-	std::string sliderStr();
-
-	const int mStartValue;
-	const int mEndValue;
-	const int mDeltaValue;
-
-	static int mTwirliconID;
-	const bool mSlider;    
 };
 
 }

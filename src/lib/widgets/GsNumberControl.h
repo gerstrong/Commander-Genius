@@ -33,12 +33,9 @@ public:
 	const int getSelection();
 	void setSelection( const int value );
 
-    virtual void setupButtonSurface() {};
+    virtual void setupButtonSurface() {}
 
     void processLogic();
-
-	void drawVorticonStyle(SDL_Rect& lRect);
-
 
 	void processRender(const GsRect<float> &RectDispCoordFloat);
 
@@ -54,18 +51,16 @@ protected:
 
     std::string	mText;
     int mValue;
+    const bool mSlider;
+
+    const int mStartValue;
+    const int mEndValue;
 
 private:
 
-	// draws the slider to the corresponding value
-	std::string sliderStr();
-
-	const int mStartValue;
-	const int mEndValue;
 	const int mDeltaValue;
 
 	static int mTwirliconID;
-	const bool mSlider;    
 };
 
 #endif /* CGUINUMBERCONTROL_H_ */

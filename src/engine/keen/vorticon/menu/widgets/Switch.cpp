@@ -5,15 +5,15 @@
  *      Author: gerstrong
  */
 
-/*#include <base/utils/StringUtils.h>
+#include <base/utils/StringUtils.h>
 #include <base/video/CVideoDriver.h>
-#include <graphics/GsGraphics.h>*/
+#include <graphics/GsGraphics.h>
 
-//#include "Switch.h"
+#include "Switch.h"
 
-//#include "common/CBehaviorEngine.h"
+#include "common/CBehaviorEngine.h"
 
-/*
+
 namespace vorticon
 {
 
@@ -60,4 +60,4 @@ void Switch::processRender(const GsRect<float> &RectDispCoordFloat)
 
 }
 
-*/
+

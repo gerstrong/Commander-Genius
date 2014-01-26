@@ -5,14 +5,17 @@
  *      Author: gerstrong
  */
 
-#ifndef CSETTINGSMENU_H_
-#define CSETTINGSMENU_H_
+#ifndef __VORTICONSETTINGSMENU_H_
+#define __VORTICONSETTINGSMENU_H_
 
 #include "VorticonMenu.h"
 
 #include "common/options.h"
 #include "fileio/CExeFile.h"
 #include "common/CBehaviorEngine.h"
+
+namespace vorticon
+{
 
 class CSettingsMenu : public VorticonMenu
 {
@@ -22,4 +25,6 @@ public:
 private:
 };
 
-#endif /* CSETTINGSMENU_H_ */
+}
+
+#endif /* __VORTICONSETTINGSMENU_H_ */

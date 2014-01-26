@@ -23,6 +23,8 @@
 
 #include "widgets/Button.h"
 
+namespace vorticon
+{
 
 CSettingsMenu::CSettingsMenu() :
 VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
@@ -30,8 +32,8 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
  	mpMenuDialog->addControl(new GsButton( "Video",
 									new OpenMenuEvent( new CVideoSettings() ) ) );
 
-	mpMenuDialog->addControl(new GsButton( "Audio",
-									new OpenMenuEvent( new CAudioSettings() ) ) );
+    mpMenuDialog->addControl(new GsButton( "Audio",
+                                    new OpenMenuEvent( new CAudioSettings() ) ) );
 
 	mpMenuDialog->addControl(new GsButton( "Options",
 									new OpenMenuEvent( new COptions() ) ) );
@@ -66,4 +68,4 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 	setMenuLabel("CONFIGMENULABEL");
 }
 
-
+}

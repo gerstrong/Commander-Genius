@@ -30,4 +30,6 @@ public:
 	void processRender(const GsRect<float> &RectDispCoordFloat);
 };
 
+}
+
 #endif /* __VORTION_SWITCH_H__ */

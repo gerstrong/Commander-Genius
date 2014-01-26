@@ -18,7 +18,6 @@
 namespace vorticon
 {
 
-
 class ComboSelection : public CGUIComboSelection
 {
 public:
@@ -54,5 +53,7 @@ protected:
     GsSurface mTextLightSfc;
     GsSurface mTextDisabledSfc;
 };
+
+}
 
 #endif /* __VORTICON_COMBOSELECTION_H_ */

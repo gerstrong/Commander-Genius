@@ -5,13 +5,13 @@
  *      Author: gerstrong
  */
 
-/*#include "ComboSelection.h"
+#include "ComboSelection.h"
 #include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
-#include <lib/base/GsTimer.h>*/
+#include <lib/base/GsTimer.h>
 
-/*
+
 namespace vorticon
 {
 
@@ -97,7 +97,7 @@ void ComboSelection::processLogic()
 			}
 			else if(mouseevent->Type == PDE_BUTTONDOWN)
 			{
-                mPressed = true;Building CXX object CMakeFiles/CommanderGenius.dir/src/engine/keen/vorticon/menu/widgets/NumberControl.cpp.o
+                mPressed = true;
 				gInput.m_EventList.pop_Event();
 			}
 			else if(mouseevent->Type == PDE_BUTTONUP)
@@ -146,7 +146,7 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 	// Transform to the display coordinates
     GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
-    SDL_Rect lRect = displayRect.SDLRect();Building CXX object CMakeFiles/CommanderGenius.dir/src/engine/keen/vorticon/menu/widgets/NumberControl.cpp.o
+    SDL_Rect lRect = displayRect.SDLRect();
 
     if(!mEnabled)
         return;
@@ -177,4 +177,4 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 }
 
 }
-*/
+

@@ -30,10 +30,10 @@ mIncSel(false),
 mDecSel(false),
 mText(text),
 mValue(value),
+mSlider(slider),
 mStartValue(startValue),
 mEndValue(endValue),
-mDeltaValue(deltaValue),
-mSlider(slider)
+mDeltaValue(deltaValue)
 {
 	mFontID = 1;
     
@@ -97,28 +97,6 @@ void CGUINumberControl::setSelection( const int value )
 }
 
 
-std::string CGUINumberControl::sliderStr()
-{
-	int ch;
-	ch = (mDecSel) ? 8 : 1;
-	std::string slider;
-	slider = static_cast<char>(ch);
-
-	const int sVal = (SLIDER_WIDTH-3)*(mValue - mStartValue) / (mEndValue - mStartValue);
-
-	for( int l=0 ; l<sVal ; l++)
-		slider += '\04';
-
-	slider += '\05';
-
-	for( int l=0 ; l<(SLIDER_WIDTH-3)-sVal ; l++)
-		slider += '\06';
-
-	ch = (mIncSel) ? 9 : 7;
-	slider += static_cast<char>(ch);
-
-	return slider;
-}
 
 
 
@@ -189,38 +167,6 @@ void CGUINumberControl::processLogic()
 }
 
 
-void CGUINumberControl::drawVorticonStyle(SDL_Rect& lRect)
-{
-
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
-
-	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
-	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
-
-	if(mSlider)
-	{
-		gGraphics.getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
-	}
-	else
-	{
-		std::string text = (mDecSel) ? "\025" : " ";
-		text += itoa(mValue);
-		if(mIncSel)
-			text += static_cast<char>(17);
-		else
-			text += " ";
-
-		Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
-	}
-
-	drawTwirl(lRect);
-
-}
-
-
 void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 
@@ -252,6 +198,4 @@ void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
     GsFont &Font = gGraphics.getFont(mFontID);
 
     Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
-
-
 }
