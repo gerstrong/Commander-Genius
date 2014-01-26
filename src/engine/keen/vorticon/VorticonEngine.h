@@ -21,6 +21,8 @@ public:
         mEp(ep) {}
 
     bool loadResources( const Uint8 flags );
+
+    void pumpEvent(const CEvent *evPtr);
 };
 
 }

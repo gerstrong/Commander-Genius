@@ -18,17 +18,10 @@
 namespace vorticon
 {
 
-bool CPassiveVort::init(char mode)
-{
-	m_mode = mode;
-
-
+bool CPassiveVort::init()
+{    
 	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
     mpTextSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
-//#endif
 	SDL_FreeSurface(temp);
 
 	if( m_mode == INTRO )
@@ -61,7 +54,7 @@ bool CPassiveVort::init(char mode)
 	return true;
 }
 
-void CPassiveVort::ponder()
+void CPassiveVort::ponder(const float deltaT)
 {
 
 	CEventContainer& EventContainer = gEventManager;
@@ -92,7 +85,8 @@ void CPassiveVort::ponder()
 		if( mpIntroScreen->isFinished() )
 		{
 			// Shutdown mp_IntroScreen and show load Title Screen
-			init(TITLE);
+            m_mode = TITLE;
+            init();
 		}
 	}
 	else if( m_mode == TITLE )
@@ -103,7 +97,8 @@ void CPassiveVort::ponder()
 	{
 		// TODO: Demo modes are processed here!
 		// TODO: Implement Demos here!
-		init(TITLE);
+        m_mode = TITLE;
+        init();
 	}
 
 }

@@ -143,15 +143,13 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 			return 1;
 		}
 	};
-	
-	
-    gResourceLoader.setStyle(PROGRESS_STYLE_BITMAP);
-	gResourceLoader.RunLoadAction(
-					new SpriteLoad(m_Sprit,
-							((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(m_episode),
-							(compressed>>1)),
-							 "Loading Sprites", 0, 1000);
 
+    SpriteLoad sprLoad(m_Sprit,
+                       ((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(m_episode),
+                       (compressed>>1));
+	
+    sprLoad.handle();
+	
     return true;
 }
 

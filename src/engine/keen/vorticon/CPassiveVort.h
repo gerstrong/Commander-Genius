@@ -20,9 +20,9 @@ class CPassiveVort : public CPassive
 {
 public:
 
-	bool init(char mode = INTRO);
+    bool init();
 
-    void ponder();
+    void ponder(const float deltaT);
     void render();
 
 private:

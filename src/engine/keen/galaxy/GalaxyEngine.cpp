@@ -180,14 +180,6 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
             mOpenedGamePlay = false;
         }
 
-        /*gMenuController.emptyMenuStack();*/
-
-        //if(m_start_level == -1) // Starts normally
-            //gEventManager.add( new GMSwitchToPassiveMode(mDataPath, mEp) );
-        /*else // This happens, when a level was passed as argument when launching CG
-            EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
-                                    DataDirectory,
-                                    m_start_level) );*/
     }    
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
