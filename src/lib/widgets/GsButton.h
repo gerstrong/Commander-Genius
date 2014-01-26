@@ -61,6 +61,7 @@ protected:
     GsSurface mTextLightSfc;
     GsSurface mTextDisabledSfc;
 
+    int mLightRatio; // This will blend between selected and unselected item.
 
 private:
 

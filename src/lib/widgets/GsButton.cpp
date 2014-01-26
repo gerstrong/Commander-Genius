@@ -15,10 +15,14 @@
 #include "GsButton.h"
 
 
+const int BLEND_SPEED = 8;
+
+
 GsButton::GsButton(const std::string& text,
 			CEvent *ev,
 			const Style style) :
 mText(text),
+mLightRatio(128),
 mEvent(ev)
 {}
 
@@ -46,13 +50,29 @@ void GsButton::processLogic()
 {        
     processPointingState();
 
-    if(!mEnabled)
-        return;
-
-    // If button was pushed and gets released, trigger the assigned event.
-    if(mReleased)
+    if(mEnabled)
     {
-        gEventManager.add(mEvent);
+        // For some nice special effects
+        if(mHovered)
+        {
+            if(mLightRatio+BLEND_SPEED < 255)
+               mLightRatio += BLEND_SPEED;
+            else
+               mLightRatio = 255;
+        }
+        else // Button is not hovered
+        {
+            if(mLightRatio-BLEND_SPEED > 0)
+               mLightRatio -= BLEND_SPEED;
+            else
+               mLightRatio = 0;
+        }
+
+        // If button was pushed and gets released, trigger the assigned event.
+        if(mReleased)
+        {
+            gEventManager.add(mEvent);
+        }
     }
 }
 
@@ -63,28 +83,25 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
     if(!mEnabled) // TODO: I think, if it is disabled, it should use another color
         return;
 
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    if( mHovered )
-    {
-        if( mPressed )
-        {
-            drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFCFCFCF );
-        }
-        else
-        {
-            drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFDFDFDF );
-        }
-    }
+    int lComp;
+
+    if( mPressed )
+        lComp = 0xFF - (mLightRatio*(0xFF-0xCF)/255);
     else
-    {
-        drawRect( blitsfc, &lRect, 1, 0xFFBBBBBB, 0xFFFFFFFF );
-    }
+        lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);
+
+    const Uint32 fillColor = blitsfc.mapRGBA( lComp, lComp, lComp, 0xFF);
+
+    GsRect<Uint16> rect(lRect);
+
+    blitsfc.drawRect( rect, 1, 0xFFBBBBBB, fillColor );
 
 	// Now lets draw the text of the list control
 	GsFont &Font = gGraphics.getFont(mFontID);
 
-	Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+    Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
 }
 
 

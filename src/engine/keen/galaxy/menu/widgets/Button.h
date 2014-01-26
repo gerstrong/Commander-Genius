@@ -10,11 +10,9 @@ public:
                  CEvent *ev,
                  const bool bordered = false);
 
-    void processLogic();
-
     void drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect &lRect);
 
-    void processRender(const GsRect<float> &RectDispCoordFloat);
+    void processRender(const GsRect<float> &RectDispCoordFloat);        
 
 private:
 
@@ -23,8 +21,7 @@ private:
     void drawGalaxyStyle(SDL_Rect& lRect);
     void drawGalaxyBorderedStyle(SDL_Rect& lRect);
 
-    const bool mBordered;
-    int mLightRatio; // This will blend between selected and unselected item.
+    const bool mBordered;    
 };
 
 #endif /* __GALAXYBUTTON_H__ */

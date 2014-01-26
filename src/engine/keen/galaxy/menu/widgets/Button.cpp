@@ -9,8 +9,7 @@ GalaxyButton::GalaxyButton(const std::string& text,
                            CEvent *ev,
                            const bool bordered) :
 GsButton(text, ev),
-mBordered(bordered),
-mLightRatio(128)
+mBordered(bordered)
 {
     mFontID = 1;
 
@@ -20,32 +19,6 @@ mLightRatio(128)
         drawButton = &GsButton::drawGalaxyStyle;*/
     setupButtonSurface();
 }
-
-const int BLEND_SPEED = 8;
-
-void GalaxyButton::processLogic()
-{
-    GsButton::processLogic();
-
-    if(mEnabled)
-    {
-        if(mHovered)
-        {
-            if(mLightRatio+BLEND_SPEED < 255)
-               mLightRatio += BLEND_SPEED;
-            else
-               mLightRatio = 255;
-        }
-        else // Button is not hovered
-        {
-            if(mLightRatio-BLEND_SPEED > 0)
-               mLightRatio -= BLEND_SPEED;
-            else
-               mLightRatio = 0;
-        }
-    }
-}
-
 
 void GalaxyButton::setupButtonSurface()
 {
