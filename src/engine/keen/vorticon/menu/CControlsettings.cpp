@@ -12,6 +12,8 @@
 
 #include <base/CInput.h>
 
+namespace vorticon
+{
 
 /**
  * \brief This sets the default settings for a classic gameplay
@@ -29,7 +31,7 @@ public:
 		mpButton(NULL)
 		{}
 
-	void setButtonPtr(GsButton* button)
+    void setButtonPtr(Button* button)
 	{
 		mpButton = button;
 	}
@@ -45,7 +47,7 @@ public:
 	int mSelPlayer;
 	InputCommands mCommand;
 	const std::string mCommandName;
-	GsButton* mpButton;
+    Button* mpButton;
 };
 
 
@@ -76,25 +78,25 @@ mSelectedPlayer(selectedPlayer)
 {
 	GsButton *button;
 
-	button = new GsButton( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer) );
+    button = new Button( "Movement", new OpenMovementControlMenuEvent(mSelectedPlayer) );
 	mpMenuDialog->addControl( button );
 
-	button = new GsButton( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
+    button = new Button( "Buttons", new OpenButtonsControlMenuEvent(mSelectedPlayer) );
 	mpMenuDialog->addControl( button );
 
-	mpTwoButtonSwitch = new CGUISwitch( "Two Button Fire" );
+    mpTwoButtonSwitch = new Switch( "Two Button Fire" );
 	mpTwoButtonSwitch->enable(gInput.getTwoButtonFiring(mSelectedPlayer-1));
 
-	mpAnalogSwitch = new CGUISwitch( "Analog Movement" );
+    mpAnalogSwitch = new Switch( "Analog Movement" );
 	mpAnalogSwitch->enable(gInput.isAnalog(mSelectedPlayer-1));
 
-	mpSuperPogoSwitch = new CGUISwitch( "Super Pogo" );
+    mpSuperPogoSwitch = new Switch( "Super Pogo" );
 	mpSuperPogoSwitch->enable(gInput.SuperPogo(mSelectedPlayer-1));
 
-	mpImpPogoSwitch = new CGUISwitch( "Impossible Pogo" );
+    mpImpPogoSwitch = new Switch( "Impossible Pogo" );
 	mpImpPogoSwitch->enable(gInput.ImpossiblePogo(mSelectedPlayer-1));
 
-	mpAutoGunSwitch = new CGUISwitch( "Auto Gun" );
+    mpAutoGunSwitch = new Switch( "Auto Gun" );
 	mpAutoGunSwitch->enable(gInput.AutoGun(mSelectedPlayer-1));
 
 	mpMenuDialog->addControl( mpTwoButtonSwitch );
@@ -153,7 +155,7 @@ void CControlSettingsMovement::init()
 		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-		GsButton	*guiButton = new GsButton( buf+buf2, rie );
+        Button	*guiButton = new Button( buf+buf2, rie );
 		rie->setButtonPtr(guiButton);
 
 		mpButtonList.push_back( guiButton );
@@ -167,26 +169,26 @@ void CControlSettingsMovement::ponder()
 {
     if( !mapping )
     {
-	if(gInput.MappingInput()) // mapping changed!
-	    mapping = true;
+        if(gInput.MappingInput()) // mapping changed!
+            mapping = true;
     }
     else
     {
-	if( !gInput.MappingInput() )
-	{
-	    // mapping changed!
-	    mapping = false;
-	 
-	    GsButton *button = dynamic_cast<GsButton*>(mpMenuDialog->CurrentControl());
-	    if(button)
-	    {
-		int pos; unsigned char input;
-		std::string evName = gInput.getNewMappedEvent(pos, input);		
-		InputCommands com = static_cast<InputCommands>(pos);		
-		button->setText(mCommandName[com] + evName);
-	    }
-	}
-    }	
+        if( !gInput.MappingInput() )
+        {
+            // mapping changed!
+            mapping = false;
+
+            Button *button = dynamic_cast<Button*>(mpMenuDialog->CurrentControl());
+            if(button)
+            {
+                int pos; unsigned char input;
+                std::string evName = gInput.getNewMappedEvent(pos, input);
+                InputCommands com = static_cast<InputCommands>(pos);
+                button->setText(mCommandName[com] + evName);
+            }
+        }
+    }
     CBaseMenu::ponder(0);
 }
 
@@ -228,7 +230,7 @@ void CControlSettingsButtons::init()
 		const std::string buf2 = gInput.getEventShortName( it->first, mSelectedPlayer-1 );
 
 		ReadInputEvent *rie = new ReadInputEvent(mSelectedPlayer, it->first, it->second);
-		GsButton	*guiButton = new GsButton( buf+buf2, rie );
+        Button	*guiButton = new Button( buf+buf2, rie );
 		rie->setButtonPtr(guiButton);
 
 
@@ -254,7 +256,7 @@ void CControlSettingsButtons::ponder()
             // mapping changed!
             mapping = false;
 
-            GsButton *button = dynamic_cast<GsButton*>(mpMenuDialog->CurrentControl());
+            Button *button = dynamic_cast<Button*>(mpMenuDialog->CurrentControl());
             if(button)
             {
                 int pos; unsigned char input;
@@ -274,5 +276,7 @@ void CControlSettingsButtons::release()
 		mCommandName.clear();
 	
 	gInput.saveControlconfig();
+}
+
 }
 

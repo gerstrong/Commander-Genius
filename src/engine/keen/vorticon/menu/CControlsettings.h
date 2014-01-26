@@ -11,15 +11,16 @@
 #include "VorticonMenu.h"
 
 #include <base/utils/StringUtils.h>
-#include <widgets/GsButton.h>
-#include <widgets/GsSwitch.h>
+#include "widgets/Button.h"
+#include "widgets/Switch.h"
 #include <vector>
 #include <map>
 
 #include "engine/CEvent.h"
 #include "CSelectionMenu.h"
 
-
+namespace vorticon
+{
 
 // Main Class for Controller Config
 class CControlsettings : public VorticonMenu
@@ -35,11 +36,11 @@ private:
 
 	int mSelectedPlayer;
 
-	CGUISwitch *mpTwoButtonSwitch;
-	CGUISwitch *mpAnalogSwitch;
-	CGUISwitch *mpSuperPogoSwitch;
-	CGUISwitch *mpImpPogoSwitch;
-	CGUISwitch *mpAutoGunSwitch;
+    Switch *mpTwoButtonSwitch;
+    Switch *mpAnalogSwitch;
+    Switch *mpSuperPogoSwitch;
+    Switch *mpImpPogoSwitch;
+    Switch *mpAutoGunSwitch;
 };
 
 
@@ -57,7 +58,7 @@ private:
 
 	int mSelectedPlayer;
 
-	std::vector<GsButton*> mpButtonList;
+    std::vector<Button*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 	
 	bool mapping;
@@ -79,7 +80,7 @@ private:
 
 	int mSelectedPlayer;
 
-	std::vector<GsButton*> mpButtonList;
+    std::vector<Button*> mpButtonList;
 	std::map<InputCommands, std::string> mCommandName;
 	
 	bool mapping;
@@ -92,22 +93,24 @@ private:
 struct OpenControlMenuEvent : SelectionEvent
 {
 	OpenControlMenuEvent(const int players) :
-		SelectionEvent(players) {};
+        SelectionEvent(players) {}
 };
 
 
 struct OpenButtonsControlMenuEvent : OpenControlMenuEvent
 {
 	OpenButtonsControlMenuEvent(const int option) :
-		OpenControlMenuEvent(option) {};
+        OpenControlMenuEvent(option) {}
 };
 
 struct OpenMovementControlMenuEvent : OpenControlMenuEvent
 {
 	OpenMovementControlMenuEvent(const int option) :
-		OpenControlMenuEvent(option) {};
+        OpenControlMenuEvent(option) {}
 
 };
+
+}
 
 
 #endif /* CCONTROLSETTINGS_H_ */

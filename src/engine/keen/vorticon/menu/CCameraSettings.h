@@ -9,9 +9,12 @@
 #define CCAMERASETTINGS_H_
 
 #include "VorticonMenu.h"
-#include <widgets/GsNumberControl.h>
+#include "widgets/NumberControl.h"
 
 #include "sdl/CVidConfig.h"
+
+namespace vorticon
+{
 
 class CCameraSettings : public VorticonMenu
 {
@@ -26,11 +29,13 @@ private:
 	st_camera_bounds m_CameraBounds;
 	int m_changeint;
 
-	CGUINumberControl	*mpLeftAdjust;
-	CGUINumberControl	*mpRightAdjust;
-	CGUINumberControl	*mpTopAdjust;
-	CGUINumberControl	*mpBottomAdjust;
-	CGUINumberControl	*mpSpeedAdjust;
+    NumberControl	*mpLeftAdjust;
+    NumberControl	*mpRightAdjust;
+    NumberControl	*mpTopAdjust;
+    NumberControl	*mpBottomAdjust;
+    NumberControl	*mpSpeedAdjust;
 };
+
+}
 
 #endif /* CCAMERASETTINGS_H_ */

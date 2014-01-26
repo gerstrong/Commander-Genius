@@ -11,29 +11,32 @@
 #include "common/CSettings.h"
 #include <base/utils/StringUtils.h>
 
+namespace vorticon
+{
+
 CCameraSettings::CCameraSettings():
 VorticonMenu(GsRect<float>(0.1f, 0.24f, 0.8f, 0.4f) ),
 m_CameraBounds(gVideoDriver.getCameraBounds())
 {
 
-	mpLeftAdjust = new CGUINumberControl( "Left",
-											 50, 270, 10, 60 );
+    mpLeftAdjust = new NumberControl( "Left",
+                                             50, 270, 10, 60, false );
 	mpMenuDialog->addControl( mpLeftAdjust );
 
-	mpRightAdjust = new CGUINumberControl( "Right",
-											 50, 270, 10, 60 );
+    mpRightAdjust = new NumberControl( "Right",
+                                             50, 270, 10, 60, false );
 	mpMenuDialog->addControl( mpRightAdjust );
 
-	mpTopAdjust = new CGUINumberControl( "Top",
-											 50, 150, 10, 60 );
+    mpTopAdjust = new NumberControl( "Top",
+                                             50, 150, 10, 60, false );
 	mpMenuDialog->addControl( mpTopAdjust );
 
-	mpBottomAdjust = new CGUINumberControl( "Bottom",
-											 50, 150, 10, 60 );
+    mpBottomAdjust = new NumberControl( "Bottom",
+                                             50, 150, 10, 60, false );
 	mpMenuDialog->addControl( mpBottomAdjust );
 
-	mpSpeedAdjust = new CGUINumberControl( "Speed",
-											 1, 50, 1, 25 );
+    mpSpeedAdjust = new NumberControl( "Speed",
+                                             1, 50, 1, 25, false );
 	mpMenuDialog->addControl( mpSpeedAdjust );
 
 	setMenuLabel("OPTIONSMENULABEL");
@@ -63,4 +66,6 @@ void CCameraSettings::release()
 	gVideoDriver.saveCameraBounds(m_CameraBounds);
 
 	g_pSettings->saveDrvCfg();
+}
+
 }
