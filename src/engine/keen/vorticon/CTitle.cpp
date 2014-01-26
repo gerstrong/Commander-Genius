@@ -16,17 +16,21 @@
 #include <widgets/GsMenuController.h>
 #include <base/CInput.h>
 
-/*#include "common/Menu/CMainMenu.h"
+#include "menu/CMainMenu.h"
+#include "ai/CEGABitmap.h"
+
+namespace vorticon
+{
 
 ////
 // Creation Routine
 ////
-CTitle::CTitle( CMap &map ) :
+Title::Title( CMap &map ) :
 mTime(0),
 mMap(map)
 {}
 
-bool CTitle::init(int Episode)
+bool Title::init(int Episode)
 {
 	SDL_Surface *pSurface;
 	GsBitmap *pBitmap;
@@ -74,7 +78,7 @@ bool CTitle::init(int Episode)
 ////
 // Process Routines
 ////
-void CTitle::ponder()
+void Title::ponder()
 {
 	if( mTime == 0) mFinished = true;
 	else mTime -= gTimer.HasSecElapsed();
@@ -94,11 +98,13 @@ void CTitle::ponder()
 
 }
 
-void CTitle::render()
+void Title::render()
 {
     for( auto &obj : mObjects )
     {
         obj->draw();
     }
 
-}*/
+}
+
+}

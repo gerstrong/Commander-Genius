@@ -42,8 +42,8 @@ bool CPassiveVort::init()
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mpMap->gotoPos( 32, 32 ); // Coordinates of title screen
 		mpMap->drawAll();
-//		mpTitleScreen.reset( new CTitle( *mpMap.get() ) );
-//		mpTitleScreen->init(m_Episode);
+        mpTitleScreen.reset( new Title( *mpMap.get() ) );
+        mpTitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
 	{
@@ -57,7 +57,7 @@ bool CPassiveVort::init()
 void CPassiveVort::ponder(const float deltaT)
 {
 
-	CEventContainer& EventContainer = gEventManager;
+    /*CEventContainer& EventContainer = gEventManager;
 
 	if(!EventContainer.empty())
 	{
@@ -73,7 +73,7 @@ void CPassiveVort::ponder(const float deltaT)
 		    EventContainer.pop_Event();
 		    m_modeg = true;
 		}		
-	}
+    }*/
 
 
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
@@ -91,7 +91,7 @@ void CPassiveVort::ponder(const float deltaT)
 	}
 	else if( m_mode == TITLE )
 	{
-        //mpTitleScreen->ponder();
+        mpTitleScreen->ponder();
 	}
 	else if( m_mode == DEMO )
 	{
@@ -126,7 +126,7 @@ void CPassiveVort::render()
     }
     else if( m_mode == TITLE )
     {
-        //mpTitleScreen->render();
+        mpTitleScreen->render();
     }
 
 }

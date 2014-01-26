@@ -9,13 +9,16 @@
 
 #include <base/GsEvent.h>
 
-#ifndef CMAINMENU_H_
-#define CMAINMENU_H_
+#ifndef _VORTICON_MAINMENU_H_
+#define _VORTICON_MAINMENU_H_
 
-class CMainMenu : public VorticonMenu
+namespace vorticon
+{
+
+class MainMenu : public VorticonMenu
 {
 public:
-	CMainMenu(const bool openedGamePlay);
+    MainMenu(const bool openedGamePlay);
 
 	void createVorticonMenu( const bool openedGamePlay );
 	void createGalaxyMenu( const bool openedGamePlay );
@@ -23,4 +26,6 @@ public:
 
 struct OpenMainMenuEvent : public CEvent {};
 
-#endif /* CMAINMENU_H_ */
+}
+
+#endif /* _VORTICON_MAINMENU_H_ */

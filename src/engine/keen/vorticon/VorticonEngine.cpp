@@ -3,6 +3,8 @@
 #include <base/GsApp.h>
 #include <base/utils/StringUtils.h>
 
+#include <widgets/GsMenuController.h>
+
 #include "CResourceLoader.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/CPatcher.h"
@@ -12,6 +14,8 @@
 #include "VorticonEngine.h"
 
 #include "CPassiveVort.h"
+
+#include "menu/CMainMenu.h"
 
 namespace vorticon
 {
@@ -100,6 +104,8 @@ bool VorticonEngine::loadResources( const Uint8 flags )
 
 void VorticonEngine::pumpEvent(const CEvent *evPtr)
 {
+    KeenEngine::pumpEvent(evPtr);
+
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
         // Now look if there are any old savegames that need to be converted
@@ -121,6 +127,48 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         }
 
     }
+
+    /*
+    else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
+    {
+        g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
+        gEventManager.add( new OpenMenuEvent(new CDifficultySelection) );
+        return;
+    }
+    // Control Menu Events
+    else if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        gEventManager.add( new OpenMenuEvent(
+                                new CControlSettingsMovement(players) ) );
+    }
+    else if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        gEventManager.add( new OpenMenuEvent(
+                                new CControlSettingsButtons(players) ) );
+    }
+    else if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
+    {
+        const int players = ctrlMenu->mSelection;
+        gEventManager.add( new OpenMenuEvent(
+                                new CControlsettings(players) ) );
+    }
+    else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
+    {
+        // TODO: This const_cast must be removed. So adapt the rest of the structure to make it more secure
+        GMSwitchToPlayGameMode *playGame = const_cast<GMSwitchToPlayGameMode*>(pPlayGame);
+        mpGameMode.reset( new CPlayGameGalaxy(*playGame) );
+        mpGameMode->init();
+        mOpenedGamePlay = true;
+        gEventManager.add( new CloseAllMenusEvent() );
+    }    */
+    else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
+    {
+        gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+    }
+
+
 }
 
 }

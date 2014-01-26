@@ -14,7 +14,6 @@
 #ifndef CPASSIVE_H_
 #define CPASSIVE_H_
 
-#include "CTitle.h"
 #include "common/CMap.h"
 #include "common/CSpriteObject.h"
 #include "core/mode/CGameMode.h"

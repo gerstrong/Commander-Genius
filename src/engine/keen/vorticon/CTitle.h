@@ -13,8 +13,8 @@
  */
 
 
-#ifndef CTITLE_H_
-#define CTITLE_H_
+#ifndef __VORTICON_TITLE_H__
+#define __VORTICON_TITLE_H__
 
 #include <SDL.h>
 #include <vector>
@@ -23,11 +23,14 @@
 #include "common/CSpriteObject.h"
 #include "common/CMap.h"
 
-class CTitle
+namespace vorticon
+{
+
+class Title
 {
 public:
 
-	CTitle(CMap &map);
+    Title(CMap &map);
 
 	bool init(int Episode);
     void ponder();
@@ -42,4 +45,7 @@ private:
 	unsigned int mTime;
 	CMap &mMap;
 };
-#endif /* CTITLE_H_ */
+
+}
+
+#endif /* __VORTICON_TITLE_H__ */

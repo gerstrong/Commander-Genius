@@ -23,8 +23,11 @@
 #include "Button.h"
 
 
+namespace vorticon
+{
 
-void CMainMenu::createVorticonMenu( const bool openedGamePlay )
+
+void MainMenu::createVorticonMenu( const bool openedGamePlay )
 {
 
 #if defined (SINGLEPLAYER)
@@ -81,9 +84,11 @@ void CMainMenu::createVorticonMenu( const bool openedGamePlay )
 
 
 
-CMainMenu::CMainMenu( const bool openedGamePlay ) :
+MainMenu::MainMenu( const bool openedGamePlay ) :
 VorticonMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
 {
     createVorticonMenu(openedGamePlay);
+}
+
 }
 

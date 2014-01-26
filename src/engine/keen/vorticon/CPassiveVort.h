@@ -11,6 +11,7 @@
 #include "engine/CPassive.h"
 #include "common/CBehaviorEngine.h"
 #include "engine/CIntro.h"
+#include "CTitle.h"
 #include <memory>
 
 namespace vorticon
@@ -27,7 +28,7 @@ public:
 
 private:
 	std::unique_ptr<CIntro> mpIntroScreen;
-	std::unique_ptr<CTitle> mpTitleScreen;
+    std::unique_ptr<Title> mpTitleScreen;
 	std::shared_ptr<CMap> mpMap;
 };
 
