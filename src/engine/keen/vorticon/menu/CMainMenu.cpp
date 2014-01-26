@@ -20,7 +20,7 @@
 
 #include "core/mode/CGameMode.h"
 
-#include "Button.h"
+#include "widgets/Button.h"
 
 
 namespace vorticon
@@ -32,10 +32,10 @@ void MainMenu::createVorticonMenu( const bool openedGamePlay )
 
 #if defined (SINGLEPLAYER)
 	g_pBehaviorEngine->mPlayers = 1;
-    GsButton *button = new GsButton( "New Game",
+    Button *button = new Button( "New Game",
 										new OpenMenuEvent(new CDifficultySelection) );
 #else
-    GsButton *button = new GsButton
+    Button *button = new Button
     ( "New Game",
               new OpenMenuEvent
               (
@@ -51,32 +51,32 @@ void MainMenu::createVorticonMenu( const bool openedGamePlay )
 
 	// TODO: Some items are still disabled, because those are not yet implemented in Galaxy
 
-    GsButton *loadButton = new GsButton( "Load",
+    GsButton *loadButton = new Button( "Load",
 										new OpenMenuEvent( new CLoadMenu() ) );
 	mpMenuDialog->addControl( loadButton );
 	loadButton->mEnabled = true;
 
-    GsButton *saveButton = new GsButton( "Save",
+    GsButton *saveButton = new Button( "Save",
 									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
 	saveButton->mEnabled = openedGamePlay;
 
-    mpMenuDialog->addControl(new GsButton( "Configure",
+    mpMenuDialog->addControl(new Button( "Configure",
 												new OpenMenuEvent( new CSettingsMenu() ) ) );
 
-    GsButton *highscoreButton = new GsButton( "High Scores",
+    GsButton *highscoreButton = new Button( "High Scores",
 													new StartInfoSceneEvent( new CHighScores ) );
 	mpMenuDialog->addControl( highscoreButton );
 	highscoreButton->mEnabled = true;
 
-    GsButton *infoButton = new GsButton( "Info",
+    GsButton *infoButton = new Button( "Info",
 											new OpenMenuEvent( new CHelpMenu() ) );
 	mpMenuDialog->addControl( infoButton );
 	infoButton->mEnabled = true;
 
-    mpMenuDialog->addControl(new GsButton( "End Game", new EventEndGamePlay() ) );
+    mpMenuDialog->addControl(new Button( "End Game", new EventEndGamePlay() ) );
 
-    mpMenuDialog->addControl(new GsButton( "Quit", new GMQuit() ) );
+    mpMenuDialog->addControl(new Button( "Quit", new GMQuit() ) );
 
 	setMenuLabel("MAINMENULABEL");
 

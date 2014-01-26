@@ -21,7 +21,6 @@ public:
     MainMenu(const bool openedGamePlay);
 
 	void createVorticonMenu( const bool openedGamePlay );
-	void createGalaxyMenu( const bool openedGamePlay );
 };
 
 struct OpenMainMenuEvent : public CEvent {};

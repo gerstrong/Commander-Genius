@@ -2,7 +2,6 @@
 #define __VORTICONMENU_H__
 
 #include <widgets/GsBaseMenu.h>
-#include "Button.h"
 
 #include <lib/widgets/GsMenuController.h>
 

@@ -46,6 +46,9 @@ void GsButton::processLogic()
 {        
     processPointingState();
 
+    if(!mEnabled)
+        return;
+
     // If button was pushed and gets released, trigger the assigned event.
     if(mReleased)
     {

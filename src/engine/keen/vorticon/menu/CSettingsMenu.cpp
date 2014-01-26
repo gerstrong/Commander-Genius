@@ -21,7 +21,7 @@
 
 //#include "sdl/CVideoDriver.h"
 
-#include "Button.h"
+#include "widgets/Button.h"
 
 
 CSettingsMenu::CSettingsMenu() :
