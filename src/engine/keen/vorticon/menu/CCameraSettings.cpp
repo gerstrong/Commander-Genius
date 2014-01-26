@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 
+
 #include <base/video/CVideoDriver.h>
 #include "CCameraSettings.h"
 #include "common/CSettings.h"

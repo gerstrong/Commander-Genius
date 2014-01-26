@@ -14,6 +14,7 @@
 
 #include "../../menu/CSelectionMenu.h"
 #include "VorticonMenu.h"
+#include "widgets/Button.h"
 
 namespace vorticon
 {
@@ -34,14 +35,14 @@ public:
                 else
                     playerStr = "Player " + itoa(i);
 
-                GsButton *button = new GsButton( playerStr, new _T(i) );
+                Button *button = new Button( playerStr, new _T(i) );
 
                 mpButtonList.push_back( button );
                 mpMenuDialog->addControl( mpButtonList.back() );
             }
     }
 
-    std::list<GsButton*> mpButtonList;
+    std::list<Button*> mpButtonList;
 };
 
 
@@ -52,12 +53,12 @@ public:
     CDifficultySelection() :
         VorticonMenu( GsRect<float>(0.25f, 0.2f, 0.5f, 0.5f) )
     {
-        mpMenuDialog->addControl( new GsButton( "Easy", new StartNewGameEvent(EASY) ) );
-        mpMenuDialog->addControl( new GsButton( "Normal", new StartNewGameEvent(NORMAL) ) );
-        mpMenuDialog->addControl( new GsButton( "Hard", new StartNewGameEvent(HARD) ) );
-        mpMenuDialog->addControl( new GsButton( "Expert", new StartNewGameEvent(EXPERT) ) );
-        mpMenuDialog->addControl( new GsButton( "Ninja", new StartNewGameEvent(NINJA) ) );
-        mpMenuDialog->addControl( new GsButton( "Elite", new StartNewGameEvent(ELITE) ) );
+        mpMenuDialog->addControl( new Button( "Easy", new StartNewGameEvent(EASY) ) );
+        mpMenuDialog->addControl( new Button( "Normal", new StartNewGameEvent(NORMAL) ) );
+        mpMenuDialog->addControl( new Button( "Hard", new StartNewGameEvent(HARD) ) );
+        mpMenuDialog->addControl( new Button( "Expert", new StartNewGameEvent(EXPERT) ) );
+        mpMenuDialog->addControl( new Button( "Ninja", new StartNewGameEvent(NINJA) ) );
+        mpMenuDialog->addControl( new Button( "Elite", new StartNewGameEvent(ELITE) ) );
         setMenuLabel("NEWGAMELABEL");
     }
 };

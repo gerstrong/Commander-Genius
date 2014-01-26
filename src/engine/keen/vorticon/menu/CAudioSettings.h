@@ -5,19 +5,20 @@
  *      Author: gerstrong
  */
 
-#ifndef CAUDIOSETTINGS_H_
-#define CAUDIOSETTINGS_H_
+#ifndef __VORTICON_AUDIOSETTINGS_H_
+#define __VORTICON_AUDIOSETTINGS_H_
 
 #include "VorticonMenu.h"
-#include <widgets/GsComboSelection.h>
-#include <widgets/GsSwitch.h>
-#include <widgets/GsNumberControl.h>
+#include "widgets/ComboSelection.h"
+#include "widgets/Switch.h"
+#include "widgets/NumberControl.h"
 
 #include "fileio/CExeFile.h"
 #include <SDL.h>
 #include <string>
 
-
+namespace vorticon
+{
 
 class CAudioSettings : public VorticonMenu
 {
@@ -33,12 +34,12 @@ public:
 
 private:
 
-	CGUIComboSelection	*mpRate;
-	CGUISwitch			*mpStereo;
-	CGUIComboSelection	*mpDepth;
-	CGUIComboSelection	*mpSBToggle;
-	CGUINumberControl	*mpSoundVolume;
-	CGUINumberControl	*mpMusicVolume;
+    ComboSelection	*mpRate;
+    Switch			*mpStereo;
+    ComboSelection	*mpDepth;
+    ComboSelection	*mpSBToggle;
+    NumberControl	*mpSoundVolume;
+    NumberControl	*mpMusicVolume;
 
 	SDL_AudioSpec	mAudioSpec;
 	bool mSoundblaster;
@@ -47,4 +48,6 @@ private:
 	int mSoundVolume;
 };
 
-#endif /* CAUDIOSETTINGS_H_ */
+}
+
+#endif /* __VORTICON_AUDIOSETTINGS_H_ */
