@@ -105,11 +105,11 @@ void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 
 	if(!mEnabled)
 	{
-        tile = (blink) ? 97 : 96;
+        tile = blink ? 97 : 96;
 	}
 	else
 	{
-        tile = (blink) ? 93 : 92;
+        tile = blink ? 93 : 92;
 	}
 
     GsTilemap &Tilemap = gGraphics.getTileMap(2);

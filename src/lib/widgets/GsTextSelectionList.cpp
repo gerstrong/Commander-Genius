@@ -165,27 +165,33 @@ void CGUITextSelectionList::drawScrollBar(const SDL_Rect &lRect)
     scrollRect.h -= 2;
 
     SDL_Rect bScUpRect = scrollRect;
-    bScUpRect.x += 1;
-    bScUpRect.y += 1;
-    bScUpRect.w  = 8;
-    bScUpRect.h  = 8;
+    bScUpRect.w  = 10;
+    bScUpRect.h  = 10;
 
     SDL_Rect bScDownRect = bScUpRect;
 
-    bScDownRect.y = (scrollRect.y+scrollRect.h) - (bScUpRect.h+1);
+    bScDownRect.y = (scrollRect.y+scrollRect.h) - (bScUpRect.h);
 
-    SDL_FillRect(Blitsurface, &scrollRect, 0xFFAFAFAF);
+    SDL_FillRect(Blitsurface, &scrollRect, 0xFFBFBFBF);
 
     // Now show the slider
     float relPos = float(mScrollPos) / float(mMaxScrollAmt);
-    const int posSpace = int(relPos * float(scrollRect.h - (2*9+8) ));
+    const int posSpace = int(relPos * float(scrollRect.h - (3*10))) + 1;
     SDL_Rect bSliderRect = bScDownRect;
+    bSliderRect.x++;
     bSliderRect.y = (bScUpRect.y + bScUpRect.h) + posSpace;
+    bSliderRect.w = 8;
+    bSliderRect.h = 8;
     SDL_FillRect(Blitsurface, &bSliderRect, 0xFF2F2F2F);
 
+    const Uint32 scButtonColor = 0xFF7F7F7F;
+
     // Set the up and down arrows
-    SDL_FillRect(Blitsurface, &bScUpRect,  0xFF4F4F4F);
-    SDL_FillRect(Blitsurface, &bScDownRect,    0xFF4F4F4F);
+    GsFont &Font = gGraphics.getFont(mFontID);
+    SDL_FillRect(Blitsurface, &bScUpRect,   scButtonColor);
+    Font.drawFont(Blitsurface, "\017", bScUpRect.x+1, bScUpRect.y+2, false);
+    SDL_FillRect(Blitsurface, &bScDownRect, scButtonColor);
+    Font.drawFont(Blitsurface, "\023", bScDownRect.x+1, bScDownRect.y, false);
 }
 
 
@@ -221,7 +227,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 
     for(int i=0 ; i<mScrollPos ; it++, i++);
 
-    for ( unsigned int line = 0;  it != mItemList.end() && line<mlastToShow ; it++, line++ )
+    for ( int line = 0;  it != mItemList.end() && line<mlastToShow ; it++, line++ )
 	{
         if(mPressedSelection == int(line) + mScrollPos )
         {
