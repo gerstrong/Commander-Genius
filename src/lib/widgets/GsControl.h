@@ -44,11 +44,17 @@ public:
 	void enable( const bool value )
     {	mEnabled = value;	}
 
-	void setHovered( const bool value )
-	{	mHovered = value;	}
+    /*void setHovered( const bool value )
+    {	mHovered = value;	}*/
 
-	bool getHovered()
-	{	return mHovered;	}
+    void select( const bool value )
+    { mSelected = value; }
+
+    bool isSelected()
+    { return mSelected; }
+
+    /*bool getHovered()
+    {	return mHovered;	}*/
 
 
     bool Up()
@@ -74,9 +80,14 @@ public:
 protected:
     
 	int mFontID;
+
+    // For mouse/touch we have those
 	bool mHovered;
     bool mPressed;
     bool mReleased;
+
+    // This is needed for gamepad/keyboard input
+    bool mSelected;
 
 	static int mTwirliconID;
 

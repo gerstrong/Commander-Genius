@@ -25,7 +25,8 @@ public:
     mPressedSelection(-1),
     mReleasedSelection(-1),
     mScrollPos(0),
-    mMaxScrollAmt(0) {}
+    mMaxScrollAmt(0),
+    mlastToShow(0) {}
 
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
@@ -54,6 +55,7 @@ private:
 
     int mScrollPos;
     int mMaxScrollAmt;
+    int mlastToShow;
 	
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;

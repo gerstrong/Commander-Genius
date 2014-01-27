@@ -82,11 +82,11 @@ public:
 	void addControl( CGUIControl *newControl );
 
 
-	bool sendEvent( const std::shared_ptr<CEvent> &command );
+    bool sendEvent( const std::shared_ptr<CEvent> &event );
 
-	bool sendEvent( CEvent *pCommand )
+    bool sendEvent( CEvent *pEvent )
 	{
-	    return sendEvent(std::shared_ptr<CEvent>(pCommand));
+        return sendEvent(std::shared_ptr<CEvent>(pEvent));
 	}
 
 	void fit();

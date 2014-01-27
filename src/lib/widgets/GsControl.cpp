@@ -22,7 +22,8 @@ mEnabled(true),
 mFontID(0),
 mHovered(false),
 mPressed(false),
-mReleased(false)
+mReleased(false),
+mSelected(false)
 {
     GsRect<float> NewRect(0.0f, 0.0f, 0.0f, 0.0f);
 	mRect = NewRect;
@@ -100,13 +101,15 @@ void CGUIControl::drawBlinker( const SDL_Rect& lRect )
 
 	int tile;
 
+    const bool blink = (mHovered || mSelected) && mTwirliconID;
+
 	if(!mEnabled)
 	{
-		tile = (mHovered && mTwirliconID) ? 97 : 96;
+        tile = (blink) ? 97 : 96;
 	}
 	else
 	{
-		tile = (mTwirliconID && mHovered) ? 93 : 92;
+        tile = (blink) ? 93 : 92;
 	}
 
     GsTilemap &Tilemap = gGraphics.getTileMap(2);

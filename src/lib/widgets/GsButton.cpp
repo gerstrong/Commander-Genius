@@ -53,7 +53,7 @@ void GsButton::processLogic()
     if(mEnabled)
     {
         // For some nice special effects
-        if(mHovered)
+        if(mHovered || mSelected)
         {
             if(mLightRatio+BLEND_SPEED < 255)
                mLightRatio += BLEND_SPEED;
@@ -87,7 +87,7 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
     int lComp;
 
-    if( mPressed )
+    if( mPressed || mSelected )
         lComp = 0xFF - (mLightRatio*(0xFF-0xCF)/255);
     else
         lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);

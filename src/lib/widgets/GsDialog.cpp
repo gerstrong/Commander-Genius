@@ -109,8 +109,8 @@ void CGUIDialog::addControl( CGUIControl *newControl )
 
 void CGUIDialog::selectPrevItem()
 {
-	if(mpCurrentCtrl->getHovered())
-		mpCurrentCtrl->setHovered(false);
+    if(mpCurrentCtrl->isSelected())
+        mpCurrentCtrl->select(false);
 
 	mSelection--;
 
@@ -139,15 +139,15 @@ void CGUIDialog::selectPrevItem()
         it = mControlList.end();
     }
 
-	(*it)->setHovered(true);
+    (*it)->select(true);
 	mpCurrentCtrl = it->get();
 }
 
 
 void CGUIDialog::selectNextItem()
 {
-	if(mpCurrentCtrl->getHovered())
-		mpCurrentCtrl->setHovered(false);
+    if(mpCurrentCtrl->isSelected())
+        mpCurrentCtrl->select(false);
 
 	mSelection++;
 
@@ -176,7 +176,7 @@ void CGUIDialog::selectNextItem()
         it = mControlList.begin();
     }
 
-	(*it)->setHovered(true);
+    (*it)->select(true);
 	mpCurrentCtrl = it->get();
 }
 
@@ -200,9 +200,9 @@ void CGUIDialog::setSelection(const unsigned int sel)
 	}
 }
 
-bool CGUIDialog::sendEvent( const std::shared_ptr<CEvent> &command )
+bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
 {
-	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
+    if( CommandEvent *ev = dynamic_cast<CommandEvent*>(event.get()) )
 	{
 		// Send all the other events the active control element
 		int i=0;
@@ -210,29 +210,24 @@ bool CGUIDialog::sendEvent( const std::shared_ptr<CEvent> &command )
         {            
             if( i == mSelection )
             {
-                if( !it->getHovered() )
-                {
-                    it->setHovered( (i == mSelection) );
-                }
-                else
-                {
-                    if( it->sendEvent(ev->mCommand) )
-                        return true;
-                }
+               if( it->sendEvent(ev->mCommand) )
+                   return true;
+               else
+                   it->select( false );
             }
             else
             {
-                it->setHovered( false );
+                it->select( false );
             }
             i++;
         }
 
-		if(ev->mCommand == IC_DOWN)
+        if(ev->mCommand == IC_DOWN || ev->mCommand == IC_RIGHT)
 		{
 			selectNextItem();
 			return true;
 		}
-		else if(ev->mCommand == IC_UP)
+        else if(ev->mCommand == IC_UP || ev->mCommand == IC_LEFT)
 		{
 			selectPrevItem();
 			return true;
@@ -432,7 +427,7 @@ void CGUIDialog::processLogic()
 
             if( dynamic_cast<GsButton*>(ctrl) || dynamic_cast<CGUIInputText*>(ctrl) )
             {
-                if( ctrl->getHovered() )
+                if( ctrl->isSelected() )
                 {
                     mpCurrentCtrl = ctrl;
                     mSelection = sel;
