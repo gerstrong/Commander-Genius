@@ -29,49 +29,6 @@ m_Episode(gpmode.m_Episode),
 m_DataDirectory(gpmode.m_DataDirectory)
 {}
 
-bool CGamePlayMode::init()
-{
-//	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-//    CEventContainer& EventContainer = gEventManager;
-
-	// If no level has been set or is out of bound, set it to map.
-/*	if(m_startLevel > 100 || m_startLevel < 0 )
-		m_startLevel = WORLD_MAP_LEVEL_VORTICON;
-
-	bool ok = true;
-
-	if(m_Episode >= 4)
-	{
-		if(m_startLevel == WORLD_MAP_LEVEL_VORTICON)
-		{
-		    m_startLevel = WORLD_MAP_LEVEL_GALAXY;
-		}
-        mp_PlayGame.reset( new galaxy::CPlayGameGalaxy( ExeFile, m_startLevel, m_SavedGame) );
-	}
-	else
-	{
-		if(m_startLevel == WORLD_MAP_LEVEL_GALAXY)
-			m_startLevel = WORLD_MAP_LEVEL_VORTICON;
-        mp_PlayGame.reset( new CPlayGameVorticon( ExeFile, m_startLevel, m_SavedGame) );
-	}
-
-	// Create the special merge effect (Fadeout)
-	CColorMerge *pColorMergeFX = new CColorMerge(8);
-
-	ok &= mp_PlayGame->init();
-
-    gEffectController.setupEffect(pColorMergeFX);
-
-
-	if(!ok)
-	{
-        EventContainer.add( new GMSwitchToPassiveMode(*//*m_DataDirectory, m_Episode*//*));
-    }*/
-
-    return true;
-}
-
-
 void CGamePlayMode::loadGame()
 {
     mp_PlayGame->ponder(0);
@@ -104,7 +61,6 @@ void CGamePlayMode::ponder(const float deltaT)
 	if( mp_PlayGame->getEndGame() )
 	{
 		m_startLevel = 0;
-//		g_pMusicPlayer->stop();
         EventContainer.add( new GMSwitchToPassiveMode(/*m_DataDirectory, m_Episode*/) );
 	}
 	else if( mp_PlayGame->getStartGame() )

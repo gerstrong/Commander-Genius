@@ -25,8 +25,6 @@ public:
 
 	
 
-    bool init();
-
 	void loadGame();
 
     void pumpEvent(const CEvent *evPtr);
