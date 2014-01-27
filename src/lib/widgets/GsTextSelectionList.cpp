@@ -13,8 +13,6 @@
 
 #include "GsTextSelectionList.h"
 
-//#include "common/CBehaviorEngine.h"
-
 const float TEXT_HEIGHT = 10.0f;
 
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
@@ -97,7 +95,7 @@ void CGUITextSelectionList::processLogic()
     if( rRect.HasPoint(MousePos) )
     {
 
-        if( MousePos.y > y_innerbound_min && MousePos.y < y_innerbound_max )
+        if( MousePos.y > fy && MousePos.y < y_innerbound_max )
         {
             int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1 + mScrollPos;
 

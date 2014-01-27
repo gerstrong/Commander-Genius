@@ -122,6 +122,7 @@ bool CGameLauncher::loadResources()
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
                     "By Gerstrong,\n"
                     "Hagel,\n"
+                    "Tulip,\n"
                     "NY00123,\n"
                     "Pelya,\n"
 					"and the CG Contributors\n");
