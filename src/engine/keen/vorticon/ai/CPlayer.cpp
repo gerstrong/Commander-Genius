@@ -559,12 +559,19 @@ void CPlayer::pumpEvent(const CEvent *evPtr)
     mpCamera->pumpEvent(evPtr);
 }
 
+
+void CPlayer::processEvents()
+{
+    CSpriteObject::processEvents();
+    mpCamera->processEvents();
+}
+
 /*
  * This function calls the camera object of the player
  */
 void CPlayer::processCamera()
 {
-	mpCamera->process();
+    mpCamera->process();
 }
 
 

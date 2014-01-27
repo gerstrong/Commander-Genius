@@ -15,7 +15,6 @@
 #include "common/CBehaviorEngine.h"
 
 //#include "engine/vorticon/CAudioVorticon.h"
-//#include "engine/galaxy/res/CAudioGalaxy.h"
 
 #include <fstream>
 
@@ -352,30 +351,6 @@ void CSound::playStereosoundSlot(unsigned char slotplay, const char mode, const 
 			break;
 		}
 	}
-}
-
-bool CSound::loadSoundData()
-{
-    /*const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-    const unsigned int ep = ExeFile.getEpisode();
-    if(ep >= 1 && ep <= 3) // Vorticon based Keengame
-    {
-        std::unique_ptr<CAudioVorticon> vorticonAudio(new CAudioVorticon(ExeFile, mAudioSpec));
-        const bool ok = vorticonAudio->loadSoundData();
-        sndSlotMap = vorticonAudio->sndSlotMap;
-        mpAudioRessources = move(vorticonAudio);
-        return ok;
-    }
-    else if(ep >= 4 && ep <= 7) // Galaxy based Keengame
-    {
-        std::unique_ptr<CAudioGalaxy> galaxyAudio(new CAudioGalaxy(ExeFile, mAudioSpec));
-        const bool ok = galaxyAudio->loadSoundData();
-        sndSlotMap = galaxyAudio->sndSlotMapGalaxy[ep];
-        mpAudioRessources = move(galaxyAudio);
-        return ok;
-    }*/
-
-    return false;
 }
 
 void CSound::setupSoundData(const std::map<GameSound, int> &slotMap,

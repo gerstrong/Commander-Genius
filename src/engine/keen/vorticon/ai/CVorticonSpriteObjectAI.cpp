@@ -133,7 +133,7 @@ void CVorticonSpriteObjectAI::process()
 	    // Try always to remove the last objects if they aren't used anymore!
 	    if(!m_Objvect.back()->exists)
 	    {
-		m_Objvect.pop_back();
+            m_Objvect.pop_back();
 	    }
 	}
 

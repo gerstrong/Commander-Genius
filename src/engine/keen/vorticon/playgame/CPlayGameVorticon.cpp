@@ -24,15 +24,30 @@
 #include "../finale/CEndingEp2.h"
 #include "../finale/CEndingEp3.h"
 
+#include "graphics/effects/CColorMerge.h"
+
+
+
 ////
 // Creation Routine
 ////
-CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
-                                      CSaveGameController &SavedGame) :
-CPlayGame(ExeFile, level)
+/// \brief CPlayGameVorticon::CPlayGameVorticon
+/// \param ExeFile
+/// \param level
+/// \param SavedGame
+///
+///
+CPlayGameVorticon::CPlayGameVorticon(const GMSwitchToPlayGameMode &info) :
+CPlayGame(g_pBehaviorEngine->m_ExeFile, info.m_startlevel)
 {
+    m_Level = info.m_startlevel;
+
+    // If no level has been set or is out of bound, set it to map.
+    if(m_Level > 100 || m_Level < 0 )
+        m_Level = WORLD_MAP_LEVEL_VORTICON;
+
 	mMap.reset(new CMap());
-	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
+    m_level_command = (m_Level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
 
 	if(!m_Player.empty())
 		m_Player.clear();
@@ -64,13 +79,16 @@ CPlayGame(ExeFile, level)
 		gGraphics.Palette.setdarkness(FADE_DARKNESS);
 	else
 		gGraphics.Palette.setdarkness(FADE_DARKNESS_HARD);
+
+    // Create the special merge effect (Fadeout)
+    CColorMerge *pColorMergeFX = new CColorMerge(8);
+    gEffectController.setupEffect(pColorMergeFX);
 }
 
 // Setup all the players, when one level is started
 void CPlayGameVorticon::setupPlayers()
 {
 	m_showKeensLeft=false;
-	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 
     if(!mpHUDVec.empty())
         mpHUDVec.clear();
@@ -123,8 +141,10 @@ bool CPlayGameVorticon::init()
     const int numPlayers = g_pBehaviorEngine->mPlayers;
 
 	// load level map
-    if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
-	gpSaveGameController->setLevel(m_Level);
+    if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) )
+        return false;
+
+    gpSaveGameController->setLevel(m_Level);
     mMap->setLevel(m_Level);
 
 	//// If those worked fine, continue the initialization
@@ -132,7 +152,7 @@ bool CPlayGameVorticon::init()
 	mMap->drawAll();
 
 	// Now Scroll to the position of the player and center him
-	mMap->gotoPos( 32, 64 ); // Assure that the edges are never seen
+    mMap->gotoPos( 32, 64 ); // Ensure that the edges are never seen
 
 	setupPlayers();
 
@@ -146,7 +166,7 @@ bool CPlayGameVorticon::init()
             numPlayers, m_Episode, m_Level,
 			mMap->m_Dark) );
 
-	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
+    // Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode is reached
 	verifyFinales();
 
 	// When Level starts it's never dark!
@@ -229,12 +249,14 @@ void CPlayGameVorticon::ponder(const float deltaT)
 			  // The following functions must be worldmap dependent
 			  if( m_Level == WORLD_MAP_LEVEL_VORTICON )
 			  {
-			    processOnWorldMap();
+                processOnWorldMap(); // TODO: I think the main loop of that should be here!
 			  }
 			  else
 			  {
-			    processInLevel();
+                processInLevel(); // TODO: I think the main loop of that should be here!
 			  }
+
+
 
               if(m_Player.size() > (unsigned int)mCamLead )
               {
@@ -254,9 +276,10 @@ void CPlayGameVorticon::ponder(const float deltaT)
                       {
                           // Process Players' Cameras
                           player.processCamera();
+                          player.processEvents();
                       }
                   }
-              }
+              }                            
             }
 
 		}

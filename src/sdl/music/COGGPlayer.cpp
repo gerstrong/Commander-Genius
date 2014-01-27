@@ -9,7 +9,6 @@
 
 #include "COGGPlayer.h"
 
-//#include "engine/galaxy/res/CAudioGalaxy.h"
 #include <base/FindFile.h>
 #include "sdl/sound/Sampling.h"
 #include "fileio/ResourceMgmt.h"

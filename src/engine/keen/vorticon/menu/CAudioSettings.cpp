@@ -87,7 +87,6 @@ void CAudioSettings::release()
 	g_pSound->destroy();
 	g_pSound->setSettings(mAudioSpec, mSoundblaster);
 	g_pSound->init();
-	g_pSound->loadSoundData();
 	g_pMusicPlayer->reload();
 
     g_pSettings->saveDrvCfg();

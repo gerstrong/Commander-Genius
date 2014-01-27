@@ -31,6 +31,8 @@
 #include <list>
 #include <memory>
 
+#include "../core/mode/CGameMode.h"
+
 const int WORLD_MAP_LEVEL_VORTICON = 80;
 
 enum door_colours{
@@ -44,8 +46,7 @@ class CPlayGameVorticon : public CPlayGame
 {
 public:
 
-	CPlayGameVorticon(CExeFile &ExeFile, char level,
-              CSaveGameController &SavedGame);
+    CPlayGameVorticon(const GMSwitchToPlayGameMode &info);
 
 	void setupPlayers();
     bool init();

@@ -208,9 +208,8 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     }
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
-        // TODO: This const_cast must be removed. So adapt the rest of the structure to make it more secure
-        GMSwitchToPlayGameMode *playGame = const_cast<GMSwitchToPlayGameMode*>(pPlayGame);
-        mpGameMode.reset( new CPlayGameGalaxy(*playGame) );
+        const GMSwitchToPlayGameMode &playGame = const_cast<GMSwitchToPlayGameMode&>(*pPlayGame);
+        mpGameMode.reset( new CPlayGameGalaxy(playGame) );
         mpGameMode->init();
         mOpenedGamePlay = true;
         gEventManager.add( new CloseAllMenusEvent() );

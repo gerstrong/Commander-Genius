@@ -863,15 +863,9 @@ void CSpriteObject::processEvents()
     if(mMoveTasks.empty())
         return;
 
-    //while(!mMoveTasks.empty())
     for( auto task : mMoveTasks)
     {
         ObjMove *objMove = task;
-
-        /*if( ObjMove* pObjMove = dynamic_cast<>(taskPtr) )
-        {
-
-        }*/
 
         if( ObjMoveCouple* pObjMove = dynamic_cast<ObjMoveCouple*>(objMove) )
         {
@@ -899,12 +893,6 @@ void CSpriteObject::processEvents()
         {
             processMove(objMove->m_Vec);
         }
-
-        /*if( ObjMove* pObjMove = m_EventCont.occurredEvent<ObjMove>())
-        {
-            processMove(pObjMove->m_Vec);
-            m_EventCont.pop_Event();
-        }*/
 
         delete task;
     }

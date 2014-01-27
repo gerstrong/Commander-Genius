@@ -14,11 +14,33 @@
 #include "VorticonEngine.h"
 
 #include "CPassiveVort.h"
+#include "CAudioVorticon.h"
 
 #include "menu/CMainMenu.h"
+#include "menu/CSelectionMenu.h"
+#include "menu/CControlsettings.h"
+
+#include "playgame/CPlayGameVorticon.h"
 
 namespace vorticon
 {
+
+
+bool setupAudio()
+{
+    const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+
+    CAudioVorticon *audio = new CAudioVorticon(ExeFile, g_pSound->getAudioSpec());
+
+    if(audio->loadSoundData())
+    {
+        g_pSound->setupSoundData(audio->sndSlotMap, audio);
+        return true;
+    }
+
+    return false;
+}
+
 
 ///
 // This is used for loading all the resources of the game the use has chosen.
@@ -82,7 +104,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             if( (mFlags & LOADSND) == LOADSND )
             {
                 // Load the sound data
-                g_pSound->loadSoundData();
+                setupAudio();
             }
 
             g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(mEp, p_exedata);
@@ -127,8 +149,6 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         }
 
     }
-
-    /*
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
         g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
@@ -156,13 +176,13 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     }
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
-        // TODO: This const_cast must be removed. So adapt the rest of the structure to make it more secure
-        GMSwitchToPlayGameMode *playGame = const_cast<GMSwitchToPlayGameMode*>(pPlayGame);
-        mpGameMode.reset( new CPlayGameGalaxy(*playGame) );
+        const GMSwitchToPlayGameMode &playGame = *pPlayGame;
+        mpGameMode.reset( new CPlayGameVorticon(playGame) );
         mpGameMode->init();
         mOpenedGamePlay = true;
         gEventManager.add( new CloseAllMenusEvent() );
-    }    */
+
+    }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );

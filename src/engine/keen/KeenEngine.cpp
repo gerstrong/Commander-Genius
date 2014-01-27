@@ -61,7 +61,7 @@ void KeenEngine::openMainMenu()
 
 
     // When menu is opened show the cursor
-    SDL_ShowCursor(SDL_ENABLE);
+    //SDL_ShowCursor(SDL_ENABLE);
 }
 
 
