@@ -1,0 +1,21 @@
+List of bugs that need to be fixed:
+-----------------------------------
+NOTE: This list represents the most critical bugs in my opinion. I consider it a todo list.
+There is more stuff at github and also from emails I receive from people. Not everything is listed here.
+Nevertheless I take a look on those other resources as well and see what I can do.
+
+- keyboard and joystick should control the Gamelauncher and all the other menus
+- Make the scrollbars more pleasing to the eye
+- Check Multiplayer.
+- keen cannot carry other player.
+- Game gets frozen when in multiplayer one finishes the level
+- Can I pass parameters to directly load a level -> Galaxy -> Check!
+- Can I pass parameters to directly load a level -> Vorticon -> Check!
+- Title Screen Vorticon not shown. Menu in vorticon is missing.
+- Loading screen in vorticon not seen anymore!
+- lad time very long and mostly stuck at around 60%
+- Vorticon keen engine runs, but Keen cannot shoot anymore
+- Vorticon keen engine runs, but Keen cannot die correctly. He gets stuck
+
+
+
