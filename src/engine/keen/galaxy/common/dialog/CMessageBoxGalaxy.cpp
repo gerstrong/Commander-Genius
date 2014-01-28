@@ -24,9 +24,10 @@ namespace galaxy
 
 const int FONT_ID = 0;
 
-CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text) :
+CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text, const CEvent *closeEv) :
 mMustClose(false),
-mText(Text)
+mText(Text),
+mCloseEv(closeEv)
 {
 	GsFont &Font = gGraphics.getFont(FONT_ID);
 
@@ -124,6 +125,7 @@ void CMessageBoxGalaxy::ponder()
     // Look, if somebody pressed a button, and close this dialog!
     if( gInput.getPressedAnyCommand() )
     {
+        gEventManager.add( const_cast<CEvent*>(mCloseEv) );
         mMustClose = true;
         gInput.flushCommands();
         return;
@@ -137,25 +139,10 @@ void CMessageBoxGalaxy::render()
 }
 
 
-// Triggered Message Box Part
-
-void CMessageBoxGalaxyWithEvent::ponder()
+void showMsg( const std::string &text, const CEvent *closeEv )
 {
-    // Look, if somebody pressed a button, and close this dialog!
-    if( gInput.getPressedAnyCommand() )
-    {
-        mMustClose = true;
-        gInput.flushCommands();
-        gEventManager.add(mpTriggerEvent);
-        return;
-    }
-}
-
-
-void showMsg( const std::string &text )
-{
-    CMessageBoxGalaxy *msgBox = new CMessageBoxGalaxy(text);
-    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBox*>(msgBox) ) );
+    CMessageBoxGalaxy *msgBox = new CMessageBoxGalaxy(text, closeEv);
+    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBoxGalaxy*>(msgBox) ) );
 }
 
 

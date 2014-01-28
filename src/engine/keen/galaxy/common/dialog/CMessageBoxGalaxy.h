@@ -26,7 +26,7 @@ public:
 	 * \brief This constructor creates a typical Keen 4 Message Box
 	 * \param Text 				Message to be shown
 	 */
-    CMessageBoxGalaxy(const std::string& Text);
+    CMessageBoxGalaxy(const std::string& Text, const CEvent *closeEv);
 
 	virtual void init();
 
@@ -54,34 +54,22 @@ protected:
 	std::string mText;
 	std::shared_ptr<SDL_Surface> mpMBSurface;
 	unsigned int mTextHeight;
-
+    const CEvent *mCloseEv;
 };
 
+void showMsg(const std::string &text, const CEvent *closeEv = nullptr);
 
-// This class is the same CMessageBoxGalaxy with the only difference,
-// that if the MessageBox is closed it will push an event to the Event Manager
 
-class CMessageBoxGalaxyWithEvent : public CMessageBoxGalaxy
+struct EventSendDialog : CEvent
 {
-public:
+    std::shared_ptr<CMessageBoxGalaxy> mMsgBox;
 
-    CMessageBoxGalaxyWithEvent(const std::string& text) :
-        CMessageBoxGalaxy(text) {}
+    EventSendDialog(std::shared_ptr<CMessageBoxGalaxy>& msgBox) :
+        mMsgBox( msgBox ) {}
 
-    CMessageBoxGalaxyWithEvent(const std::string& text,
-                      std::shared_ptr<CEvent> &event) :
-        CMessageBoxGalaxy(text),
-        mpTriggerEvent(event) {}
-
-    virtual void ponder();
-
-private:
-
-    std::shared_ptr<CEvent> mpTriggerEvent;
-
+    EventSendDialog(CMessageBoxGalaxy *msgBox) :
+        mMsgBox( msgBox ) {}
 };
-
-void showMsg( const std::string &text );
 
 }
 

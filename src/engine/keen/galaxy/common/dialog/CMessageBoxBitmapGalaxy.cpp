@@ -16,9 +16,10 @@ namespace galaxy
 const int FONT_ID = 0;
 
 CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy( const std::string& Text,
-														 const GsBitmap &BitmapRef,
-														 const direction_t alignment ) :
-CMessageBoxGalaxy(Text),
+                                                  const GsBitmap &BitmapRef,
+                                                  const direction_t alignment,
+                                                  const CEvent *closeEv) :
+CMessageBoxGalaxy(Text, closeEv),
 mBitmap(BitmapRef),
 mAlignment(alignment)
 {
@@ -69,30 +70,32 @@ void CMessageBoxBitmapGalaxy::init()
 
 void showMsgWithBmp( const std::string &text,
                                const std::string &bmp,
-                               const direction_t alignment )
+                               const direction_t alignment,
+                               const CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
                 new CMessageBoxBitmapGalaxy( text,
                                              *gGraphics.getBitmapFromStr(bmp),
-                                             alignment ) ;
+                                             alignment, closeEv ) ;
 
     pMsgBoxBmp->init();
 
-    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBox*>(pMsgBoxBmp) ) );
+    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBoxGalaxy*>(pMsgBoxBmp) ) );
 }
 
 void showMsgWithBmp( const std::string &text,
                      const unsigned int bmpID,
-                     const direction_t alignment )
+                     const direction_t alignment,
+                     const CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
                 new CMessageBoxBitmapGalaxy( text,
                                              gGraphics.getBitmapFromId(bmpID),
-                                             alignment ) ;
+                                             alignment, closeEv ) ;
 
     pMsgBoxBmp->init();
 
-    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBox*>(pMsgBoxBmp) ) );
+    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBoxGalaxy*>(pMsgBoxBmp) ) );
 }
 
 

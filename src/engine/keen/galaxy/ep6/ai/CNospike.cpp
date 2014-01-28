@@ -239,6 +239,8 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
 
             std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
 
+
+
             std::unique_ptr<EventSendBitmapDialogMsg> msg1(
                         new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(3), "Thanks for the rescue", LEFT));
             std::unique_ptr<EventSendBitmapDialogMsg> msg2(
