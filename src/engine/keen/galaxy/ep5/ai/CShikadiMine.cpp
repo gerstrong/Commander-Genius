@@ -492,17 +492,17 @@ void CMineShards::process()
 	    dx >>= CSF; dy >>= CSF;
 	    dx--;	dy--;
 
-	    for(int i=0 ; i<4 ; i++)
-	    {
-		const int t1 = mp_Map->at(i,0);
-		const int t2 = mp_Map->at(i,1);
-		const int t3 = mp_Map->at(i+4,0);
-		const int t4 = mp_Map->at(i+4,1);
-		mp_Map->setTile(dx+i, dy,   t1, true, 1);
-		mp_Map->setTile(dx+i, dy+1, t2, true, 1);
-		mp_Map->setTile(dx+i, dy+2, t3, true, 1);
-		mp_Map->setTile(dx+i, dy+3, t4, true, 1);
-	    }
+        for(int i=0 ; i<4 ; i++)
+        {
+            const int t1 = mp_Map->at(i,0);
+            const int t2 = mp_Map->at(i,1);
+            const int t3 = mp_Map->at(i+4,0);
+            const int t4 = mp_Map->at(i+4,1);
+            mp_Map->setTile(dx+i, dy,   t1, true, 1);
+            mp_Map->setTile(dx+i, dy+1, t2, true, 1);
+            mp_Map->setTile(dx+i, dy+2, t3, true, 1);
+            mp_Map->setTile(dx+i, dy+3, t4, true, 1);
+        }
 
 
         //CEventContainer& EventContainer = gEventManager;

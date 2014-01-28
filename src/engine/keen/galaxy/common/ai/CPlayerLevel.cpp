@@ -1432,12 +1432,10 @@ void CPlayerLevel::processExiting()
 	{
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 		g_pMusicPlayer->stop();
-        //CEventContainer& EventContainer = gEventManager;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        //EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         gEffectController.setupEffect(new CDimDark(8));
-        showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT );
-        assert(0);
+        showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT,
+                        new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         m_Inventory.Item.m_gem.clear();
 		mExitTouched = true;
 	}

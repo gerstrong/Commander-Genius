@@ -3,6 +3,8 @@
 
 #include "../../common/ai/CPlayerLevel.h"
 
+#include "../../common/dialog/CMessageBoxGalaxy.h"
+
 
 /*
 $2460W  #Nospike sit 0
@@ -235,20 +237,10 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
     {
         if( mCanFinishGame && getActionNumber(A_NOSPIKE_STUNNED) ) // This will only happen in the Keen 8 Mod!
         {
-            CEventContainer& EventContainer = gEventManager;
+            std::vector< CMessageBoxGalaxy* > msg;
 
-            std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
-
-
-
-            std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                        new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(3), "Thanks for the rescue", LEFT));
-            std::unique_ptr<EventSendBitmapDialogMsg> msg2(
-                        new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), "Null Problemo", RIGHT));
-            msgs.push_back( move(msg1) );
-            msgs.push_back( move(msg2) );
-
-            EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+            msg.push_back( new CMessageBoxBitmapGalaxy(gGraphics.getBitmapFromId(3), "Thanks for the rescue", LEFT));
+            msg.push_back( new CMessageBoxBitmapGalaxy(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), "Null Problemo", RIGHT));
 
             const std::string end_text("End of Episode.\n"
                                        "The game will be restarted.\n"
@@ -256,9 +248,10 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
                                        "try another Episode for more fun!\n"
                                        "The original epilog is under construction.");
 
-            EventContainer.add( new EventSendDialog(end_text) );
-            EventContainer.add( new EventEndGamePlay() );
-            assert(0);
+            msg.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) )
+
+            showMsgVec(msg);
+
             dead = true;
         }
         else

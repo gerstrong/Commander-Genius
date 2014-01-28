@@ -18,6 +18,7 @@
 namespace galaxy
 {
 
+
 class CMessageBoxGalaxy
 {
 public:
@@ -26,7 +27,7 @@ public:
 	 * \brief This constructor creates a typical Keen 4 Message Box
 	 * \param Text 				Message to be shown
 	 */
-    CMessageBoxGalaxy(const std::string& Text, const CEvent *closeEv);
+    CMessageBoxGalaxy(const std::string& Text, CEvent *closeEv = nullptr);
 
 	virtual void init();
 
@@ -54,11 +55,11 @@ protected:
 	std::string mText;
 	std::shared_ptr<SDL_Surface> mpMBSurface;
 	unsigned int mTextHeight;
-    const CEvent *mCloseEv;
+    std::unique_ptr<CEvent> mCloseEv;
 };
 
-void showMsg(const std::string &text, const CEvent *closeEv = nullptr);
 
+void showMsg(const std::string &text, CEvent *closeEv = nullptr);
 
 struct EventSendDialog : CEvent
 {
@@ -70,6 +71,8 @@ struct EventSendDialog : CEvent
     EventSendDialog(CMessageBoxGalaxy *msgBox) :
         mMsgBox( msgBox ) {}
 };
+
+void showMsgVec( std::vector< CMessageBoxGalaxy* > &msgs );
 
 }
 

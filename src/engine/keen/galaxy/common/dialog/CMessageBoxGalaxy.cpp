@@ -24,7 +24,7 @@ namespace galaxy
 
 const int FONT_ID = 0;
 
-CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text, const CEvent *closeEv) :
+CMessageBoxGalaxy::CMessageBoxGalaxy(const std::string& Text, CEvent *closeEv) :
 mMustClose(false),
 mText(Text),
 mCloseEv(closeEv)
@@ -125,7 +125,8 @@ void CMessageBoxGalaxy::ponder()
     // Look, if somebody pressed a button, and close this dialog!
     if( gInput.getPressedAnyCommand() )
     {
-        gEventManager.add( const_cast<CEvent*>(mCloseEv) );
+        std::shared_ptr<CEvent> ev(std::move(mCloseEv));
+        gEventManager.add( ev );
         mMustClose = true;
         gInput.flushCommands();
         return;
@@ -139,10 +140,16 @@ void CMessageBoxGalaxy::render()
 }
 
 
-void showMsg( const std::string &text, const CEvent *closeEv )
+void showMsg( const std::string &text, CEvent *closeEv )
 {
     CMessageBoxGalaxy *msgBox = new CMessageBoxGalaxy(text, closeEv);
-    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBoxGalaxy*>(msgBox) ) );
+    gEventManager.add( new EventSendDialog( msgBox ) );
+}
+
+
+void showMsgVec(std::vector<CMessageBoxGalaxy *> &msgs )
+{
+// TODO: Code for joining
 }
 
 

@@ -26,7 +26,7 @@ public:
 	 */
     CMessageBoxBitmapGalaxy(const std::string& Text, const GsBitmap &BitmapRef,
                             const direction_t alignment,
-                            const CEvent *closeEv);
+                            CEvent *closeEv);
 
     virtual ~CMessageBoxBitmapGalaxy() {}
 
@@ -46,6 +46,7 @@ void showMsgWithBmp(const std::string &text,
                     const unsigned int bmpID,
                     const direction_t alignment ,
                     const CEvent *closeEv = nullptr);
+
 
 }
 

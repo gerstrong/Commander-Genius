@@ -18,7 +18,7 @@ const int FONT_ID = 0;
 CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy( const std::string& Text,
                                                   const GsBitmap &BitmapRef,
                                                   const direction_t alignment,
-                                                  const CEvent *closeEv) :
+                                                  CEvent *closeEv) :
 CMessageBoxGalaxy(Text, closeEv),
 mBitmap(BitmapRef),
 mAlignment(alignment)
@@ -71,7 +71,7 @@ void CMessageBoxBitmapGalaxy::init()
 void showMsgWithBmp( const std::string &text,
                                const std::string &bmp,
                                const direction_t alignment,
-                               const CEvent *closeEv)
+                               CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
                 new CMessageBoxBitmapGalaxy( text,
@@ -86,7 +86,7 @@ void showMsgWithBmp( const std::string &text,
 void showMsgWithBmp( const std::string &text,
                      const unsigned int bmpID,
                      const direction_t alignment,
-                     const CEvent *closeEv)
+                     CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
                 new CMessageBoxBitmapGalaxy( text,
@@ -97,6 +97,7 @@ void showMsgWithBmp( const std::string &text,
 
     gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBoxGalaxy*>(pMsgBoxBmp) ) );
 }
+
 
 
 }
