@@ -19,6 +19,7 @@
 #include "CMapPlayGalaxy.h"
 
 #include "GalaxyEngine.h"
+#include "common/dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {
 
@@ -67,11 +68,11 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 		
 	// Add the load message
 	const std::string level_text = "LEVEL" + itoa(level) + "_LOAD_TEXT";
-	const std::string loading_text = g_pBehaviorEngine->getString(level_text);
+    const std::string loading_text = g_pBehaviorEngine->getString(level_text);
 
     gEffectController.setupEffect(new CDimDark(8));
-    gEventManager.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
-							  loading_text, LEFT) );
+
+    showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT );
 
 	mMap.drawAll();
 	return true;

@@ -10,6 +10,7 @@
 #include "graphics/effects/CColorMerge.h"
 
 #include "../GalaxyEngine.h"
+#include "dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {
 
@@ -40,7 +41,7 @@ void CWorldMap::init()
 	
 	if(!gpSaveGameController->busy())
 	{
-        gEventManager.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
+        showMsgWithBmp(loading_text, "KEENTHUMBSUP", LEFT);
 	}
 
 	mMap.drawAll();

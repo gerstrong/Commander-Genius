@@ -21,6 +21,8 @@
 #include "CVec.h"
 #include <lib/base/GsLogging.h>
 
+#include "../dialog/CMessageBoxBitmapGalaxy.h"
+
 namespace galaxy {
 
 
@@ -1430,11 +1432,12 @@ void CPlayerLevel::processExiting()
 	{
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 		g_pMusicPlayer->stop();
-        CEventContainer& EventContainer = gEventManager;
+        //CEventContainer& EventContainer = gEventManager;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        //EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         gEffectController.setupEffect(new CDimDark(8));
-        EventContainer.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
+        showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT );
+        assert(0);
         m_Inventory.Item.m_gem.clear();
 		mExitTouched = true;
 	}
@@ -1740,11 +1743,12 @@ void CPlayerLevel::processEnterDoor()
 		// TODO: Figure out what this does
 		g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );
-        CEventContainer& EventContainer = gEventManager;
-		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        EventContainer.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
-		
-        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar) );
+        //CEventContainer& EventContainer = gEventManager;
+
+		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");        
+        showMsgWithBmp(loading_text, "KEENTHUMBSUP",LEFT);
+        assert(0);
+        //gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar) );
 				
 		dontdraw = true;
         m_Inventory.Item.m_gem.clear();
@@ -1757,10 +1761,11 @@ void CPlayerLevel::processEnterDoor()
 		//o->action = ACTION_KEENENTEREDDOOR;
 		g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );		
-        CEventContainer& EventContainer = gEventManager;
+        //CEventContainer& EventContainer = gEventManager;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        EventContainer.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
-        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        showMsgWithBmp(loading_text, "KEENTHUMBSUP",LEFT);
+        assert(0);
+        //gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		dontdraw = true;
         m_Inventory.Item.m_gem.clear();
 		return;
@@ -2615,11 +2620,12 @@ void CPlayerLevel::process()
 	    // TODO: Need to spawn other messages here!
 	    g_pMusicPlayer->stop();
 	    g_pSound->playSound( SOUND_LEVEL_DONE );
-        CEventContainer& EventContainer = gEventManager;
+        //CEventContainer& EventContainer = gEventManager;
 	    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-	    EventContainer.wait(1.0f);
-        EventContainer.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), loading_text, LEFT) );
-        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        //EventContainer.wait(1.0f);
+        showMsgWithBmp(loading_text, "KEENTHUMBSUP", LEFT);
+        //gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        assert(0);
         m_Inventory.Item.m_gem.clear();
         m_Inventory.Item.fuse_levels_completed++;
 	    mp_Map->mFuseInLevel = false;

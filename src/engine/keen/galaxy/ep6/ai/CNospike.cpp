@@ -205,64 +205,65 @@ bool CNospike::isNearby(CSpriteObject& theObject)
 void CNospike::getTouchedBy(CSpriteObject& theObject)
 {
     if(dead || theObject.dead)
-	return;
+        return;
     
     CStunnable::getTouchedBy(theObject);
     
     // Was it a bullet? Then loose health.
     if( dynamic_cast<CBullet*>(&theObject) )
     {
-	mHealth--;
-	theObject.dead = true;
-	
-	if(mHealth == 0)
-	{
-	    setAction(A_NOSPIKE_STUNNED);
-	    
-	    if(!mCanFinishGame)
-	    {
-	      dead = true;
-	    }
-	}
-	else
-	{
-	    blink(10);
-	}
+        mHealth--;
+        theObject.dead = true;
+
+        if(mHealth == 0)
+        {
+            setAction(A_NOSPIKE_STUNNED);
+
+            if(!mCanFinishGame)
+            {
+                dead = true;
+            }
+        }
+        else
+        {
+            blink(10);
+        }
     }
     
     
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
-      if( mCanFinishGame && getActionNumber(A_NOSPIKE_STUNNED) ) // This will only happen in the Keen 8 Mod!
-      {
-	CEventContainer& EventContainer = gEventManager;
-      
-	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
-      
-    std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(3), "Thanks for the rescue", LEFT));
-    std::unique_ptr<EventSendBitmapDialogMsg> msg2(
-                new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), "Null Problemo", RIGHT));
-	msgs.push_back( move(msg1) );
-	msgs.push_back( move(msg2) );
-      
-	EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
-      
-	const std::string end_text("End of Episode.\n"
-			"The game will be restarted.\n"
-			"You can replay it again or\n" 
-			"try another Episode for more fun!\n"
-			"The original epilog is under construction.");
-      
-	EventContainer.add( new EventSendDialog(end_text) );
-	EventContainer.add( new EventEndGamePlay() );
-	dead = true;
-      }
-      else
-      {      
-	player->kill();
-      }
-    }      
+        if( mCanFinishGame && getActionNumber(A_NOSPIKE_STUNNED) ) // This will only happen in the Keen 8 Mod!
+        {
+            CEventContainer& EventContainer = gEventManager;
+
+            std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
+
+            std::unique_ptr<EventSendBitmapDialogMsg> msg1(
+                        new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(3), "Thanks for the rescue", LEFT));
+            std::unique_ptr<EventSendBitmapDialogMsg> msg2(
+                        new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), "Null Problemo", RIGHT));
+            msgs.push_back( move(msg1) );
+            msgs.push_back( move(msg2) );
+
+            EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+
+            const std::string end_text("End of Episode.\n"
+                                       "The game will be restarted.\n"
+                                       "You can replay it again or\n"
+                                       "try another Episode for more fun!\n"
+                                       "The original epilog is under construction.");
+
+            EventContainer.add( new EventSendDialog(end_text) );
+            EventContainer.add( new EventEndGamePlay() );
+            assert(0);
+            dead = true;
+        }
+        else
+        {
+            player->kill();
+        }
+    }
 }
 
 

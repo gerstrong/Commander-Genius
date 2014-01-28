@@ -91,20 +91,7 @@ struct EventPlayerRideFoot : CEvent {
 };
 
 
-
-
-
-/**
- *	Event designated for a Bitmap Message like those when Keen talks
- *	to the council Members or Princess Lindsey
- */
-struct EventSendDialog : CEvent
-{
-	const std::string Msg;
-	EventSendDialog(const std::string& lMsg) : Msg(lMsg) {}
-};
-
-struct EventSendBitmapDialogMsg : EventSendDialog
+/*struct EventSendBitmapDialogMsg : EventSendDialog
 {
 	const GsBitmap &BitmapRef;
 	const direction_t Direction;
@@ -116,20 +103,20 @@ struct EventSendBitmapDialogMsg : EventSendDialog
 				  Direction(lDirection)
 				  {}
 };
-
+*/
 
 /**
  * This event collects a vector of EventSendBitmapDialogMsg event, so all
  * the message boxes are loading at once and display one by one holding the paused game
  */
 
-struct EventSendBitmapDialogMessages : CEvent
+/*struct EventSendBitmapDialogMessages : CEvent
 {
 	EventSendBitmapDialogMessages( std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > lMsgs ) :
 		msgs(lMsgs) {}
 
 	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
-};
+};*/
 
 
 

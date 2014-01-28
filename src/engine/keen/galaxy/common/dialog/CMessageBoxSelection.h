@@ -11,6 +11,8 @@
 #include "CMessageBoxGalaxy.h"
 #include "engine/CEvent.h"
 
+namespace galaxy
+{
 
 class CMessageBoxSelection : public CMessageBoxGalaxy
 {
@@ -37,5 +39,7 @@ private:
 	int blend;
 	bool blendup;
 };
+
+}
 
 #endif /* CMESSAGEBOXSELECTION_H_ */

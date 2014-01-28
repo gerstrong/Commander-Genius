@@ -13,6 +13,8 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "misc.h"
+#include "../../common/dialog/CMessageBoxGalaxy.h"
+
 
 /*
 $2608W #Shikadi mine sit 0
@@ -503,7 +505,7 @@ void CMineShards::process()
 	    }
 
 
-		CEventContainer& EventContainer = gEventManager;
+        //CEventContainer& EventContainer = gEventManager;
 
 		const std::string end_text("End of Episode.\n"
 					       "The game will be restarted.\n"
@@ -511,9 +513,12 @@ void CMineShards::process()
 					       "try another Episode for more fun!\n"
 					       "The original epilog is under construction.");
 
-		EventContainer.wait(1.0f);
-		EventContainer.add( new EventSendDialog(end_text) );
-		EventContainer.add( new EventEndGamePlay() );
+        //EventContainer.wait(1.0f);
+        //EventContainer.add( new EventSendDialog(end_text) );
+
+        showMsg(end_text);
+        //EventContainer.add( new EventEndGamePlay() );
+        assert(0);
 		dead = true;
 		exists = false;
 

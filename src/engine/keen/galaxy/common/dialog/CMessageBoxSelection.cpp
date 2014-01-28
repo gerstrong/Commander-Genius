@@ -12,11 +12,15 @@
 #include "common/CBehaviorEngine.h"
 #include <base/utils/StringUtils.h>
 
+namespace galaxy
+{
+
 const int FONT_ID = 0;
 
 const int BLEND_SPEED = 15;
 
-CMessageBoxSelection::CMessageBoxSelection( const std::string& Text, const std::list<TextEventMatchOption> &Options ) :
+CMessageBoxSelection::CMessageBoxSelection( const std::string& Text,
+                                            const std::list<TextEventMatchOption> &Options) :
 CMessageBoxGalaxy(Text),
 m_Options(Options),
 m_selection(0),
@@ -100,7 +104,6 @@ void CMessageBoxSelection::init()
 	// Create the Border and with two Surfaces of different colors create the rectangle
 	SDL_Rect selRect;
 	SDL_Rect cutRect;
-	
 	selRect.x = selRect.y = 0;
 	selRect.w = rect.w-rect.x;
 	selRect.h = 14;
@@ -163,7 +166,7 @@ void CMessageBoxSelection::ponder()
 	else if(gInput.getPressedCommand(IC_DOWN))
 	{
 		if(m_selection >= ((int)m_Options.size()-1) )
-			m_selection = 0;
+            m_selection = 0;
 		else
 			m_selection++;
 	}
@@ -223,3 +226,4 @@ void CMessageBoxSelection::render()
     }
 }
 
+}

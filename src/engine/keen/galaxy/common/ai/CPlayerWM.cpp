@@ -16,6 +16,7 @@
 #include "common/CBehaviorEngine.h"
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
+#include "../dialog/CMessageBoxBitmapGalaxy.h"
 
 const int TIME_TO_WAVE = 400;
 
@@ -318,12 +319,8 @@ void CPlayerWM::processMoving()
             }
             else
             {
-                // Tell the player he cannot climb yet
-                CEventContainer& EventContainer = gEventManager;
-                EventContainer.add( new EventSendBitmapDialogMsg(
-                                        gGraphics.getBitmapFromId(29),
-                                        g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), RIGHT) );
-
+                // Tell the player he cannot climb yet                
+                showMsgWithBmp(g_pBehaviorEngine->getString("KEEN_ROPE_REQUIRED"), 29, RIGHT);
                 moveYDir(-(climbDir<<CSF)/2);
             }
         }
@@ -433,11 +430,8 @@ void CPlayerWM::processMoving()
         {
             if( !m_cantswim )
             {
-                CEventContainer& EventContainer = gEventManager;
-
                 g_pSound->playSound( SOUND_CANT_DO, PLAY_PAUSEALL );
-                EventContainer.add( new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(105),
-                                                                 g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), LEFT) );
+                showMsgWithBmp(g_pBehaviorEngine->getString("CANT_SWIM_TEXT"), 105, LEFT);
 
                 m_cantswim = true;
             }

@@ -66,6 +66,12 @@ private:
     std::vector<bool> mGameOver;
 };
 
+struct ShowBmpMsgAndTrigger : EventSendBitmapDialogMessages
+{
+    ShowBmpMsgAndTrigger( std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > lMsgs ) :
+        EventSendBitmapDialogMessages(lMsgs) {}
+};
+
 }
 
 #endif /* CPLAYGAMEGALAXY_H_ */

@@ -51,4 +51,19 @@ protected:
 	CGUIText *mpTextCtrl;
 };
 
+/**
+ *	Event designated for a Bitmap Message like those when Keen talks
+ *	to the council Members or Princess Lindsey
+ */
+struct EventSendDialog : CEvent
+{
+    std::shared_ptr<CMessageBox> mMsgBox;
+
+    EventSendDialog(std::shared_ptr<CMessageBox>& msgBox) :
+        mMsgBox( msgBox ) {}
+
+    EventSendDialog(CMessageBox *msgBox) :
+        mMsgBox( msgBox ) {}
+};
+
 #endif /* CMESSAGEBOX_H_ */

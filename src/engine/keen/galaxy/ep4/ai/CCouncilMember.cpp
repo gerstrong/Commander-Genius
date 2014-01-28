@@ -160,8 +160,6 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 	{
 		int &rescuedelders = player->m_Inventory.Item.m_special.ep4.elders;
 
-		CEventContainer& EventContainer = gEventManager;
-
 		// TODO: In this part we have to check which level we are and send the proper messages
 
 		if(mp_Map->isSecret)
@@ -172,7 +170,7 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 
 
 		g_pSound->playSound(SOUND_RESCUE_COUNCIL_MEMBER, PLAY_PAUSEALL);
-		EventContainer.add( new EventPlayTrack(5) );
+        gEventManager.add( new EventPlayTrack(5) );
 
 		std::string elder_text[2];
 
@@ -197,14 +195,19 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		msgs.push_back( move(msg1) );
 		msgs.push_back( move(msg2) );
 
-		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+        gEventManager.add( new EventSendBitmapDialogMessages(msgs) );
 		
 		rescuedelders++;
 		
 		if(rescuedelders >= NumberToRescue) // In this case the game ends.
 		{
             std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                        new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), g_pBehaviorEngine->getString(answermap[8]), RIGHT));
+                        new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                                                     g_pBehaviorEngine->getString(answermap[8]),
+                        RIGHT));
+
+            std::unique_ptr<EventSendBitmapDialogMsg> new CMessageBoxBitmapGalaxy
+
 		    msgs.push_back( move(msg1) );
 		    
 		    const std::string end_text("End of Episode.\n"
@@ -213,12 +216,12 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 					       "try another Episode for more fun!\n"
 					       "The original epilog is under construction.");
 		    
-		    EventContainer.add( new EventSendDialog(end_text) );
-		    EventContainer.add( new EventEndGamePlay() );
+            gEventManager.add( new EventSendDialog(end_text) );
+            gEventManager.add( new EventEndGamePlay() );
 		}
 		else
 		{
-            EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+            gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		}
 		
         player->m_Inventory.Item.m_gem.clear();

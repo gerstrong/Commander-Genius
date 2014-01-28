@@ -8,6 +8,10 @@
 #include "CMessageBoxBitmapGalaxy.h"
 #include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
+#include "dialog/CMessageBox.h"
+
+namespace galaxy
+{
 
 const int FONT_ID = 0;
 
@@ -60,4 +64,36 @@ void CMessageBoxBitmapGalaxy::init()
 	const Uint16 bmpX = ( mAlignment == LEFT ) ? 10 : mMBRect.w-(mBitmap.getWidth()+32);
 
     mBitmap._draw( bmpX, 10, mpMBSurface.get() );
+}
+
+
+void showMsgWithBmp( const std::string &text,
+                               const std::string &bmp,
+                               const direction_t alignment )
+{
+    CMessageBoxBitmapGalaxy *pMsgBoxBmp =
+                new CMessageBoxBitmapGalaxy( text,
+                                             *gGraphics.getBitmapFromStr(bmp),
+                                             alignment ) ;
+
+    pMsgBoxBmp->init();
+
+    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBox*>(pMsgBoxBmp) ) );
+}
+
+void showMsgWithBmp( const std::string &text,
+                     const unsigned int bmpID,
+                     const direction_t alignment )
+{
+    CMessageBoxBitmapGalaxy *pMsgBoxBmp =
+                new CMessageBoxBitmapGalaxy( text,
+                                             gGraphics.getBitmapFromId(bmpID),
+                                             alignment ) ;
+
+    pMsgBoxBmp->init();
+
+    gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBox*>(pMsgBoxBmp) ) );
+}
+
+
 }

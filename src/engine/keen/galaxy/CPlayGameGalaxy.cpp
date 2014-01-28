@@ -382,7 +382,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         mMessageBoxes.push_back( move(pMsgBox) );
     }
 
-    if(mMessageBoxes.empty())
+    //if(mMessageBoxes.empty())
     {
         if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
         {

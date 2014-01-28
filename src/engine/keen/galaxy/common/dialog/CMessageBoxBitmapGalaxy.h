@@ -12,6 +12,9 @@
 #include "graphics/GsGraphics.h"
 #include "common/CSpriteObject.h"
 
+namespace galaxy
+{
+
 class CMessageBoxBitmapGalaxy : public CMessageBoxGalaxy
 {
 public:
@@ -21,8 +24,8 @@ public:
 	 * \param Text 				Message to be shown
 	 * \param BitmapId 			Bitmap that will be shown to the left side in the box
 	 */
-	CMessageBoxBitmapGalaxy( const std::string& Text, const GsBitmap &BitmapRef,
-							const direction_t alignment = LEFT );
+    CMessageBoxBitmapGalaxy( const std::string& Text, const GsBitmap &BitmapRef,
+                            const direction_t alignment = LEFT );
 
     virtual ~CMessageBoxBitmapGalaxy() {}
 
@@ -30,7 +33,17 @@ public:
 
 private:
 	const GsBitmap &mBitmap;
-	const direction_t mAlignment;
+	const direction_t mAlignment;    
 };
+
+void showMsgWithBmp( const std::string &text,
+                               const std::string &bmp,
+                               const direction_t alignment );
+
+void showMsgWithBmp( const std::string &text,
+                     const unsigned int bmpID,
+                     const direction_t alignment );
+
+}
 
 #endif /* CMESSAGEBOXBITMAPGALAXY_H_ */
