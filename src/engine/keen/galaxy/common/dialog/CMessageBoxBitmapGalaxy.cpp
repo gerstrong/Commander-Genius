@@ -15,7 +15,7 @@ namespace galaxy
 
 const int FONT_ID = 0;
 
-CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy( const std::string& Text,
+CMessageBoxBitmapGalaxy::CMessageBoxBitmapGalaxy(const std::string& Text,
                                                   const GsBitmap &BitmapRef,
                                                   const direction_t alignment,
                                                   CEvent *closeEv) :
