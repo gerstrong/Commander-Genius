@@ -69,9 +69,9 @@ void CMessageBoxBitmapGalaxy::init()
 
 
 void showMsgWithBmp( const std::string &text,
-                               const std::string &bmp,
-                               const direction_t alignment,
-                               CEvent *closeEv)
+                     const std::string &bmp,
+                     const direction_t alignment,
+                     CEvent *closeEv)
 {
     CMessageBoxBitmapGalaxy *pMsgBoxBmp =
                 new CMessageBoxBitmapGalaxy( text,
@@ -97,7 +97,6 @@ void showMsgWithBmp( const std::string &text,
 
     gEventManager.add( new EventSendDialog( dynamic_cast<CMessageBoxGalaxy*>(pMsgBoxBmp) ) );
 }
-
 
 
 }

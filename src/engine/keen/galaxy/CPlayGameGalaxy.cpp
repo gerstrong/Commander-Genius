@@ -282,8 +282,7 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
     if(allGameOver) // Game over?
     {
         const std::string end_text("GAME OVER!\n");
-        eventContainer.add( new EventSendDialog(end_text) );
-        eventContainer.add( new EventEndGamePlay() );
+        showMsg(end_text, new EventEndGamePlay());
         return;
     }
     else if(allDead) // not yet!
@@ -320,57 +319,10 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     // In this part we will poll all the relevant Events that are important for the
     // Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
     // are some of those events.
-    CEventContainer &eventContainer = gEventManager;
 
-    if( const EventSendBitmapDialogMsg *ev = dynamic_cast<const EventSendBitmapDialogMsg*>(evPtr) )
+    if( const EventSendDialog *ev = dynamic_cast<const EventSendDialog*>(evPtr) )
     {
-        std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( ev->Msg, ev->BitmapRef, ev->Direction ) );
-        pMsgBox->init();
-
-        // Create the special merge effect (Fadeout) if requested
-        if( gEffectController.runningEffect() )
-        {
-            CColorMerge *pColorMerge = dynamic_cast<CColorMerge*>(gEffectController.Effect());
-            if( pColorMerge != NULL )
-            {
-                SDL_Surface *fxSfc = pColorMerge->getSfc().get();
-                SDL_Rect cutRect = pMsgBox->getRect();
-                SDL_Surface *msgSfc = pMsgBox->getSfc();
-                SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
-            }
-
-            CDimDark *pDimDark = dynamic_cast<CDimDark*>(gEffectController.Effect());
-            if( pDimDark != NULL )
-            {
-                SDL_Surface *fxSfc = pDimDark->getSfc().get();
-                SDL_Surface *darkSfc = pDimDark->getDarkSfc().get();
-                SDL_Rect cutRect = pMsgBox->getRect();
-                SDL_Surface *msgSfc = pMsgBox->getSfc();
-                SDL_BlitSurface(msgSfc, NULL, fxSfc, &cutRect);
-                SDL_BlitSurface(msgSfc, NULL, darkSfc, &cutRect);
-            }
-        }
-
-        gInput.flushAll();
-        mMessageBoxes.push_back( move(pMsgBox) );
-    }
-    else if( const EventSendBitmapDialogMessages *ev = dynamic_cast<const EventSendBitmapDialogMessages*>(evPtr) )
-    {
-        for( auto &it : ev->msgs )
-        {
-            std::unique_ptr<CMessageBoxBitmapGalaxy> pMsgBox( new CMessageBoxBitmapGalaxy( it->Msg, it->BitmapRef, it->Direction ) );
-            pMsgBox->init();
-
-            mMessageBoxes.push_back( move(pMsgBox) );
-        }
-        gInput.flushAll();
-    }
-    else if( const EventSendDialog *ev = dynamic_cast<const EventSendDialog*>(evPtr) )
-    {
-        std::unique_ptr<CMessageBoxGalaxy> pMsgBox( new CMessageBoxGalaxy( ev->Msg ) );
-        pMsgBox->init();
-
-        mMessageBoxes.push_back( move(pMsgBox) );
+        mMessageBoxes.push_back( ev->mMsgBox );
         gInput.flushAll();
     }
     else if( const EventSendSelectionDialogMsg* ev = dynamic_cast<const EventSendSelectionDialogMsg*>(evPtr) )
@@ -382,65 +334,63 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         mMessageBoxes.push_back( move(pMsgBox) );
     }
 
-    //if(mMessageBoxes.empty())
+    else if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
     {
-        if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
+        if(ev->data >= 0xC000)	// Start a new level!
         {
-            if(ev->data >= 0xC000)	// Start a new level!
+            const Uint16 NewLevel = ev->data - 0xC000;
+            if(NewLevel < 50)
             {
-                const Uint16 NewLevel = ev->data - 0xC000;
-                if(NewLevel < 50)
-                {
-                    g_pMusicPlayer->stop();
-                    m_WorldMap.setActive(false);
-                    m_LevelPlay.loadLevel(NewLevel);
-                    g_pSound->playSound( SOUND_ENTER_LEVEL );
-                    m_LevelPlay.setActive(true);
-                }
+                g_pMusicPlayer->stop();
+                m_WorldMap.setActive(false);
+                m_LevelPlay.loadLevel(NewLevel);
+                g_pSound->playSound( SOUND_ENTER_LEVEL );
+                m_LevelPlay.setActive(true);
             }
         }
-        else if( dynamic_cast<const EventRestartLevel*>(evPtr) )
-        {
-            g_pMusicPlayer->stop();
-            m_LevelPlay.reloadLevel();
-        }
-        else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
-        {
-            m_LevelPlay.setActive(false);
-            m_WorldMap.setActive(true);
-            m_WorldMap.loadAndPlayMusic();
-
-            const EventExitLevel &evCopy = *ev;
-
-            eventContainer.add( new EventPlayerEndLevel(evCopy) );
-        }
-        else if( const EventDieKeenPlayer *ev = dynamic_cast<const EventDieKeenPlayer*>(evPtr) )
-        {
-            looseManagement(ev->playerID,
-                            ev->gameOver,
-                            ev->levelObj,
-                            ev->levelName);
-
-        }
-        else if( const EventExitLevelWithFoot *ev = dynamic_cast<const EventExitLevelWithFoot*>(evPtr) )
-        {
-            g_pMusicPlayer->stop();
-            m_LevelPlay.setActive(false);
-            m_WorldMap.setActive(true);
-            m_WorldMap.loadAndPlayMusic();
-            eventContainer.add( new EventPlayerRideFoot(*ev) );
-        }
-        else if( const EventPlayTrack *ev =  dynamic_cast<const EventPlayTrack*>(evPtr) )
-        {
-            g_pMusicPlayer->stop();
-            if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
-                g_pMusicPlayer->play();
-        }
-        else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
-        {
-            m_endgame = true;
-        }
     }
+    else if( dynamic_cast<const EventRestartLevel*>(evPtr) )
+    {
+        g_pMusicPlayer->stop();
+        m_LevelPlay.reloadLevel();
+    }
+    else if( const EventExitLevel *ev = dynamic_cast<const EventExitLevel*>(evPtr) )
+    {
+        m_LevelPlay.setActive(false);
+        m_WorldMap.setActive(true);
+        m_WorldMap.loadAndPlayMusic();
+
+        const EventExitLevel &evCopy = *ev;
+
+        gEventManager.add( new EventPlayerEndLevel(evCopy) );
+    }
+    else if( const EventDieKeenPlayer *ev = dynamic_cast<const EventDieKeenPlayer*>(evPtr) )
+    {
+        looseManagement(ev->playerID,
+                        ev->gameOver,
+                        ev->levelObj,
+                        ev->levelName);
+
+    }
+    else if( const EventExitLevelWithFoot *ev = dynamic_cast<const EventExitLevelWithFoot*>(evPtr) )
+    {
+        g_pMusicPlayer->stop();
+        m_LevelPlay.setActive(false);
+        m_WorldMap.setActive(true);
+        m_WorldMap.loadAndPlayMusic();
+        gEventManager.add( new EventPlayerRideFoot(*ev) );
+    }
+    else if( const EventPlayTrack *ev =  dynamic_cast<const EventPlayTrack*>(evPtr) )
+    {
+        g_pMusicPlayer->stop();
+        if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
+            g_pMusicPlayer->play();
+    }
+    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    {
+        m_endgame = true;
+    }
+
 
     m_WorldMap.pumpEvent(evPtr);
     m_LevelPlay.pumpEvent(evPtr);
@@ -454,9 +404,6 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 	if(g_pSound->pauseGamePlay() )
 		return;
 	
-    CEventContainer &eventContainer = gEventManager;
-    //eventContainer.update();
-
 	if( !gMenuController.active() )
 	{
         processInput();
@@ -523,18 +470,18 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 				m_Cheatmode.jump = !m_Cheatmode.jump;
 				std::string jumpstring = "Jump-Cheat has been ";
 				jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
-				eventContainer.add( new EventSendDialog(jumpstring) );
+                showMsg(jumpstring);
 			}
 			else if(gInput.getHoldedKey(KG))
 			{
 				m_Cheatmode.god = !m_Cheatmode.god;
 				std::string godstring = "God-Mode has been ";
 				godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
-				eventContainer.add( new EventSendDialog(godstring) );
+                showMsg(godstring);
 			}
 			else if(gInput.getHoldedKey(KI))
 			{
-				eventContainer.add( new EventSendDialog("Get all Items!") );
+                showMsg("Get all Items!");
 
                 for( auto &inv : mInventoryVec )
                     inv.Item.triggerAllItemsCheat();
@@ -544,7 +491,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 			else if(gInput.getHoldedKey(KN))
 			{
 				m_Cheatmode.noclipping = true;
-				eventContainer.add( new EventSendDialog("No clipping toggle!") );
+                showMsg("No clipping toggle!");
 			}
 			else if(gInput.getHoldedKey(KS))
 			{
@@ -554,7 +501,7 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 				m_Cheatmode.items = true;
 				m_Cheatmode.god = true;
 				m_Cheatmode.jump = true;
-				eventContainer.add( new EventSendDialog("Super Cheat!") );
+                showMsg("Super Cheat!");
 			}
 		}
 

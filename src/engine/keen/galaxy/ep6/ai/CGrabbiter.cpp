@@ -1,5 +1,6 @@
 #include "CGrabbiter.h"
 #include "../../common/ai/CPlayerBase.h"
+#include "../../common/dialog/CMessageBoxGalaxy.h"
 
 namespace galaxy
 {
@@ -55,7 +56,8 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 	   player->m_Inventory.Item.m_special.ep6.sandwich--; 
 	   
 	    // Show grabbiter message
-	    EventContainer.add( new EventSendDialog( g_pBehaviorEngine->getString("KEEN_GRABBITER_SLEEPY") ) );
+        showMsg( g_pBehaviorEngine->getString("KEEN_GRABBITER_SLEEPY") );
+
 	    setAction(A_GRABBITER_NAPPING);
 	    playSound(SOUND_GRABBITER_SLEEP);
 	}
@@ -65,7 +67,7 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
 	    g_pSound->playSound(SOUND_GRABBITER_HUNGRY, PLAY_PAUSEALL);	
 	    
 	    // Show grabbiter message
-	    EventContainer.add( new EventSendDialog( g_pBehaviorEngine->getString("KEEN_GRABBITER_HUNGRY") ) );
+        showMsg( g_pBehaviorEngine->getString("KEEN_GRABBITER_HUNGRY") );
 	}
     }    
 }

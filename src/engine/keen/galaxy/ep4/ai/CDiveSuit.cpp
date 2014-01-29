@@ -7,6 +7,7 @@
 
 #include "CDiveSuit.h"
 #include "../../common/ai/CPlayerLevel.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {
 
@@ -37,10 +38,9 @@ void CDiveSuit::getTouchedBy(CSpriteObject &theObject)
 		g_pSound->playSound( SOUND_GET_WETSUIT, PLAY_PAUSEALL );
 		taken = swimsuit = true;
 
-        EventContainer.add( new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
-				g_pBehaviorEngine->getString("SWIM_SUIT_TEXT"), LEFT) );
+        showMsgWithBmp("SWIM_SUIT_TEXT", "KEENTHUMBSUP", LEFT,
+                       new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar));
 
-        EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         player->m_Inventory.Item.m_gem.clear();
 	}
 }

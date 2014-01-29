@@ -7,6 +7,7 @@
 
 #include "CCouncilMember.h"
 #include "../../common/ai/CPlayerLevel.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "misc.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
@@ -118,8 +119,6 @@ void CCouncilMember::process()
 
 void CCouncilMember::performJanitorMode()
 {
-	CEventContainer& EventContainer = gEventManager;
-
 	std::string elder_text[4];
 
 	elder_text[0] = g_pBehaviorEngine->getString("JANITOR_TEXT1");
@@ -127,23 +126,14 @@ void CCouncilMember::performJanitorMode()
 	elder_text[2] = g_pBehaviorEngine->getString("JANITOR_TEXT3");
 	elder_text[3] = g_pBehaviorEngine->getString("JANITOR_TEXT4");
 
-	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
+    std::vector<CMessageBoxGalaxy*> msgs;
 
-    std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(104), elder_text[0], LEFT) );
-    std::unique_ptr<EventSendBitmapDialogMsg> msg2(
-                new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(104), elder_text[1], LEFT) );
-    std::unique_ptr<EventSendBitmapDialogMsg> msg3(
-                new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTALKING"), elder_text[2], RIGHT) );
-    std::unique_ptr<EventSendBitmapDialogMsg> msg4(
-                new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(104), elder_text[3], LEFT) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0], gGraphics.getBitmapFromId(104), LEFT) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1], gGraphics.getBitmapFromId(104), LEFT) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[2], *gGraphics.getBitmapFromStr("KEENTALKING"), RIGHT) );
+    msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[3], gGraphics.getBitmapFromId(104), LEFT) );
 
-	msgs.push_back( move(msg1) );
-	msgs.push_back( move(msg2) );
-	msgs.push_back( move(msg3) );
-	msgs.push_back( move(msg4) );
-
-	EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+    showMsgVec( msgs );
 
 	rescued = true;
 }
@@ -155,7 +145,6 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		return;
 
 	// When Keen touches the Council Member exit the level and add one to the council list
-	//if( typeid(theObject) == typeid(CPlayerLevel) )
 	if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
 	{
 		int &rescuedelders = player->m_Inventory.Item.m_special.ep4.elders;
@@ -186,44 +175,45 @@ void CCouncilMember::getTouchedBy(CSpriteObject &theObject)
 		}
 
 
-		std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
+        std::vector<CMessageBoxGalaxy*> msgs;
 
-        std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                    new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(104), elder_text[0], LEFT));
-        std::unique_ptr<EventSendBitmapDialogMsg> msg2(
-                    new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), elder_text[1], RIGHT));
-		msgs.push_back( move(msg1) );
-		msgs.push_back( move(msg2) );
+        msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[0], gGraphics.getBitmapFromId(104), LEFT) );
 
-        gEventManager.add( new EventSendBitmapDialogMessages(msgs) );
-		
 		rescuedelders++;
 		
 		if(rescuedelders >= NumberToRescue) // In this case the game ends.
 		{
-            std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                        new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
-                                                     g_pBehaviorEngine->getString(answermap[8]),
-                        RIGHT));
+            msgs.push_back( new CMessageBoxBitmapGalaxy(elder_text[1],
+                                    *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                                    RIGHT) );
 
-            std::unique_ptr<EventSendBitmapDialogMsg> new CMessageBoxBitmapGalaxy
 
-		    msgs.push_back( move(msg1) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(g_pBehaviorEngine->getString(answermap[8]),
+                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT) );
+
+
+
 		    
 		    const std::string end_text("End of Episode.\n"
 					       "The game will be restarted.\n"
 					       "You can replay it again or\n" 
 					       "try another Episode for more fun!\n"
 					       "The original epilog is under construction.");
-		    
-            gEventManager.add( new EventSendDialog(end_text) );
-            gEventManager.add( new EventEndGamePlay() );
+
+            msgs.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
+
 		}
 		else
 		{
-            gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+            msgs.push_back( new CMessageBoxBitmapGalaxy(
+                                elder_text[1],
+                                *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                                RIGHT,
+                                new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar)) );
 		}
-		
+
+        showMsgVec( msgs );
+
         player->m_Inventory.Item.m_gem.clear();
 
 		rescued = true;

@@ -1,5 +1,6 @@
 #include "CRocket.h"
 #include "../../common/ai/CPlayerBase.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 
 namespace galaxy
@@ -135,12 +136,7 @@ void CRocket::getTouchedBy(CSpriteObject& theObject)
 	    else
 	    {
 		    // Tell the player he cannot climb yet
-		    CEventContainer& EventContainer = gEventManager;
-		    EventContainer.add( new EventSendBitmapDialogMsg(
-            gGraphics.getBitmapFromId(29),
-			g_pBehaviorEngine->getString("KEEN_KEYCARD_REQUIRED"), 
-			RIGHT) );
-		    
+            showMsgWithBmp(g_pBehaviorEngine->getString("KEEN_KEYCARD_REQUIRED"), 29, RIGHT);
 		    player->moveYDir((1<<CSF)/2);		
 	    }
 	}

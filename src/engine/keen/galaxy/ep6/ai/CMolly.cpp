@@ -1,5 +1,6 @@
 #include "CMolly.h"
 #include "../../common/ai/CPlayerBase.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy 
 {
@@ -48,25 +49,20 @@ void CMolly::getTouchedBy(CSpriteObject& theObject)
 	{
 		CEventContainer& EventContainer = gEventManager;
 
-		std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
+        std::vector<CMessageBoxGalaxy*> msgs;
 
-        std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                    new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(3), "Thanks for the rescue", LEFT));
-        std::unique_ptr<EventSendBitmapDialogMsg> msg2(
-                    new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), "Null Problemo", RIGHT));
-		msgs.push_back( move(msg1) );
-		msgs.push_back( move(msg2) );
+        msgs.push_back( new CMessageBoxBitmapGalaxy( "Thanks for the rescue", gGraphics.getBitmapFromId(3), LEFT) );
+        msgs.push_back( new CMessageBoxBitmapGalaxy( "Null Problemo", *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT ) );
 
-		EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
-		
-		const std::string end_text("End of Episode.\n"
-					   "The game will be restarted.\n"
-					   "You can replay it again or\n" 
-					   "try another Episode for more fun!\n"
-					   "The original epilog is under construction.");
-		    
-		EventContainer.add( new EventSendDialog(end_text) );
-		EventContainer.add( new EventEndGamePlay() );
+        const std::string end_text("End of Episode.\n"
+                       "The game will be restarted.\n"
+                       "You can replay it again or\n"
+                       "try another Episode for more fun!\n"
+                       "The original epilog is under construction.");
+
+        msgs.push_back( new CMessageBoxGalaxy( end_text, new EventEndGamePlay() ) );
+
+        showMsgVec(msgs);
 
 		rescued = true;
 	}    

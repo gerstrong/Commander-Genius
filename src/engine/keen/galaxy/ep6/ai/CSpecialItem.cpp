@@ -1,5 +1,6 @@
 #include "CSpecialItem.h"
 #include "../../common/ai/CPlayerBase.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy 
 {
@@ -31,9 +32,7 @@ void CSpecialItem::getTouchedBy(CSpriteObject& theObject)
 		g_pSound->playSound(SOUND_GET_SPECIAL_ITEM, PLAY_PAUSEALL);
 
 		// Show got item message
-		EventContainer.add( new EventSendBitmapDialogMsg(
-            gGraphics.getBitmapFromId(30),g_pBehaviorEngine->getString(answermap[mFoeID-0x63]), LEFT) );
-		
+        showMsgWithBmp( g_pBehaviorEngine->getString(answermap[mFoeID-0x63]), 30, LEFT );
 
 		switch(mFoeID)
 		{

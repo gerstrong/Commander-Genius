@@ -147,9 +147,9 @@ void showMsg( const std::string &text, CEvent *closeEv )
 }
 
 
-void showMsgVec(std::vector<CMessageBoxGalaxy *> &msgs )
+void showMsgVec( std::vector<CMessageBoxGalaxy*> &msgs )
 {
-// TODO: Code for joining
+    // TODO: Code for joining
 }
 
 

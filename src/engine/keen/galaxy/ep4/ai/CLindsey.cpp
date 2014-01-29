@@ -7,6 +7,7 @@
 
 #include "CLindsey.h"
 #include "../../common/ai/CPlayerLevel.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {
 
@@ -81,19 +82,13 @@ void CLindsey::getTouchedBy(CSpriteObject &theObject)
         }
 
 
-        std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
+        std::vector<CMessageBoxGalaxy*> msgs;
 
-        std::unique_ptr<EventSendBitmapDialogMsg> msg1(
-                    new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(108), lindsey_text[0], LEFT) );
-        std::unique_ptr<EventSendBitmapDialogMsg> msg2(
-                    new EventSendBitmapDialogMsg(gGraphics.getBitmapFromId(108), lindsey_text[1], LEFT) );
-        std::unique_ptr<EventSendBitmapDialogMsg> msg3(
-                    new EventSendBitmapDialogMsg(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), lindsey_text[2], RIGHT) );
-        msgs.push_back( move(msg1) );
-        msgs.push_back( move(msg2) );
-        msgs.push_back( move(msg3) );
+        msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[0], gGraphics.getBitmapFromId(108), LEFT) );
+        msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[1], gGraphics.getBitmapFromId(108), LEFT) );
+        msgs.push_back( new CMessageBoxBitmapGalaxy(lindsey_text[2], *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT) );
 
-        EventContainer.add( new EventSendBitmapDialogMessages(msgs) );
+        showMsgVec( msgs );
 
         prepareToVanish = true;
     }

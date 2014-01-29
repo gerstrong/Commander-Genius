@@ -3,7 +3,7 @@
 
 #include "../../common/ai/CPlayerLevel.h"
 
-#include "../../common/dialog/CMessageBoxGalaxy.h"
+#include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
 
 
 /*
@@ -237,10 +237,10 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
     {
         if( mCanFinishGame && getActionNumber(A_NOSPIKE_STUNNED) ) // This will only happen in the Keen 8 Mod!
         {
-            std::vector< CMessageBoxGalaxy* > msg;
+            std::vector<CMessageBoxGalaxy*> msg;
 
-            msg.push_back( new CMessageBoxBitmapGalaxy(gGraphics.getBitmapFromId(3), "Thanks for the rescue", LEFT));
-            msg.push_back( new CMessageBoxBitmapGalaxy(*gGraphics.getBitmapFromStr("KEENTHUMBSUP"), "Null Problemo", RIGHT));
+            msg.push_back( new CMessageBoxBitmapGalaxy( "Thanks for the rescue", gGraphics.getBitmapFromId(3), LEFT));
+            msg.push_back( new CMessageBoxBitmapGalaxy( "Null Problemo", *gGraphics.getBitmapFromStr("KEENTHUMBSUP"), RIGHT));
 
             const std::string end_text("End of Episode.\n"
                                        "The game will be restarted.\n"
@@ -248,7 +248,7 @@ void CNospike::getTouchedBy(CSpriteObject& theObject)
                                        "try another Episode for more fun!\n"
                                        "The original epilog is under construction.");
 
-            msg.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) )
+            msg.push_back( new CMessageBoxGalaxy(end_text, new EventEndGamePlay()) );
 
             showMsgVec(msg);
 

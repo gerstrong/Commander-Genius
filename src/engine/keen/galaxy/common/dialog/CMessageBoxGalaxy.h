@@ -72,7 +72,7 @@ struct EventSendDialog : CEvent
         mMsgBox( msgBox ) {}
 };
 
-void showMsgVec( std::vector< CMessageBoxGalaxy* > &msgs );
+void showMsgVec( std::vector<CMessageBoxGalaxy*> &msgs );
 
 }
 
