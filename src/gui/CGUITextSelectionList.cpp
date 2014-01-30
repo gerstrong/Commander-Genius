@@ -17,7 +17,9 @@ const float TEXT_HEIGHT = 10.0f;
 CGUITextSelectionList::CGUITextSelectionList() :
 mHoverSelection(0),
 mSelection(-1),
-mScrollPos(0)
+mScrollPos(0),
+mMaxScrollAmt(0),
+mLastToShow(0)
 {}
 
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
@@ -89,8 +91,13 @@ void CGUITextSelectionList::processLogic()
 
 
     const float x_innerbound_min = fx + static_cast<float>(TEXT_HEIGHT)/bw;
-    /*const float x_innerbound_max = x_innerbound_min +
-                                    static_cast<float>(10)/bw;*/
+
+    // If scroll-position gets out of sight adjust it!
+    /*if(mSelection > mLastToShow)
+        mScrollPos++;
+
+    if(mSelection < mScrollPos)
+        mScrollPos--;*/
 
 	CRect<float> rRect(fx, fy, fw, fh);
 
@@ -128,6 +135,8 @@ void CGUITextSelectionList::processLogic()
                             if(mScrollPos < mMaxScrollAmt)
                                 mScrollPos++;
                         }
+
+                        g_pInput->flushAll();
                     }
                 }
             }
@@ -193,7 +202,7 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
     const int ypos = lRect.y+sepHeight;
 	unsigned int textlimitWidth = (lRect.w-16)/8;
 
-    const unsigned int lastToShow = (lRect.h/sepHeight)-1;
+    mLastToShow = (lRect.h/sepHeight)-1;
 
 	lRect.h = 10;
     lRect.x += 12;
@@ -203,7 +212,7 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 
     for(int i=0 ; i<mScrollPos ; it++, i++);
 
-    for ( unsigned int line = 0;  it != mItemList.end() && line<lastToShow ; it++, line++ )
+    for ( int line = 0;  it != mItemList.end() && line<mLastToShow ; it++, line++ )
 	{
         if(mSelection == int(line) + mScrollPos)
 		{
@@ -218,13 +227,11 @@ void CGUITextSelectionList::processRender(const CRect<float> &RectDispCoordFloat
 		Font.drawFont(Blitsurface, trimmedText, xpos, ypos+(line*10), false);
     }
 
-    mMaxScrollAmt = mItemList.size()-lastToShow;
+    mMaxScrollAmt = mItemList.size()-mLastToShow;
 
     // Do we need a scrollbar?
     if(mMaxScrollAmt>0)
     {
         drawScrollBar(displayRect.SDLRect());
     }
-
-
 }

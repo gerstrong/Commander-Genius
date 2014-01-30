@@ -296,7 +296,7 @@
 	"CGUIControl.h"
 	<string>
 
-1390502507 c:\users\admin\desktop\commander-genius\src\gui\cguitextselectionlist.h
+1390655316 c:\users\admin\desktop\commander-genius\src\gui\cguitextselectionlist.h
 	<list>
 	<string>
 	"CGUIControl.h"
@@ -675,7 +675,7 @@
 	"FindFile.h"
 	"Debug.h"
 
-1390498164 c:\users\admin\desktop\commander-genius\version.h
+1390654952 c:\users\admin\desktop\commander-genius\version.h
 
 1376493144 c:\users\admin\desktop\commander-genius\src\findfile.h
 	<iomanip>
@@ -3336,7 +3336,7 @@
 	"sdl/CVideoDriver.h"
 	"StringUtils.h"
 
-1390502492 source:c:\users\admin\desktop\commander-genius\src\gui\cguitextselectionlist.cpp
+1390655533 source:c:\users\admin\desktop\commander-genius\src\gui\cguitextselectionlist.cpp
 	"CGUITextSelectionList.h"
 	"common/CBehaviorEngine.h"
 	"sdl/CVideoDriver.h"
