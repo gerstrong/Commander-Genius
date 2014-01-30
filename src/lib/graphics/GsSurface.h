@@ -111,12 +111,23 @@ public:
                       const unsigned char g,
                       const unsigned char b)
     {
-        SDL_SetColorKey( mpSurface, SDL_SRCCOLORKEY, mapRGB(r, g, b) );
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetColorKey(mpSurface, SDL_TRUE, mapRGB(r, g, b));
+    SDL_SetSurfaceBlendMode(mpSurface, SDL_BLENDMODE_BLEND);
+#else
+    SDL_SetColorKey( mpSurface, SDL_SRCCOLORKEY, mapRGB(r, g, b) );
+#endif
     }
 
     void setAlpha(const unsigned char alpha)
     {
-        SDL_SetAlpha(mpSurface, SDL_SRCALPHA, alpha);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceAlphaMod( mpSurface, alpha);
+#else
+    SDL_SetAlpha(mpSurface, SDL_SRCALPHA, alpha);
+#endif
+
+
     }
 
     // bool operator
@@ -203,14 +214,21 @@ public:
                  const int bpp,
                  const Uint32 flags)
     {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
         mpSurface = SDL_SetVideoMode(width, height, bpp, flags);
+#endif
         return 0;
     }
 
     // Wrapper for SDL_Flip
     bool flip()
     {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        return true;
+#else
         return (SDL_Flip(mpSurface)!=-1);
+#endif
     }
 
 };

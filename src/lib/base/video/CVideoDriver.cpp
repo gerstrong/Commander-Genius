@@ -89,7 +89,7 @@ void CVideoDriver::initResolutionList()
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsRect<Uint16> resolution(CRect<Uint16>(320,200));
+    GsRect<Uint16> resolution(GsRect<Uint16>(320,200));
 #else
     GsRect<Uint16> resolution(SDL_GetVideoInfo());
 #endif
@@ -98,7 +98,7 @@ void CVideoDriver::initResolutionList()
 	resolution.w = 320;
 	resolution.h = 200;
 #endif
-	
+
 	GsRect<Uint16> desktopResolution(resolution);
 
 	// We have a resolution list, clear it and create a new one.
@@ -159,7 +159,7 @@ void CVideoDriver::initResolutionList()
 }
 
 void CVideoDriver::verifyResolution(GsRect<Uint16>& resolution,
-		const int flags) 
+		const int flags)
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
