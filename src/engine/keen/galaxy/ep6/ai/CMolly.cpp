@@ -47,7 +47,7 @@ void CMolly::getTouchedBy(CSpriteObject& theObject)
 	//if( typeid(theObject) == typeid(CPlayerLevel) )
 	if( /*CPlayerBase *player = */dynamic_cast<CPlayerBase*>(&theObject) )
 	{
-		CEventContainer& EventContainer = gEventManager;
+        //CEventContainer& EventContainer = gEventManager;
 
         std::vector<CMessageBoxGalaxy*> msgs;
 

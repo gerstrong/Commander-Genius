@@ -44,6 +44,9 @@ public:
 	{	return mMustClose;	}
 
 
+    void setCloseEvent(std::unique_ptr<CEvent> &ev)
+    {  mCloseEv = std::move(ev); }
+
 protected:
 
 	void initGalaxyFrame();

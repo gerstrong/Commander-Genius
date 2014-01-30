@@ -1759,11 +1759,9 @@ void CPlayerLevel::processEnterDoor()
 		//o->action = ACTION_KEENENTEREDDOOR;
 		g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );		
-        //CEventContainer& EventContainer = gEventManager;
 		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        showMsgWithBmp(loading_text, "KEENTHUMBSUP",LEFT);
-        assert(0);
-        //gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        showMsgWithBmp(loading_text, "KEENTHUMBSUP",LEFT,
+                       new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar));
 		dontdraw = true;
         m_Inventory.Item.m_gem.clear();
 		return;

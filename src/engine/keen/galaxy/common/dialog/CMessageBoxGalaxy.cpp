@@ -143,13 +143,25 @@ void CMessageBoxGalaxy::render()
 void showMsg( const std::string &text, CEvent *closeEv )
 {
     CMessageBoxGalaxy *msgBox = new CMessageBoxGalaxy(text, closeEv);
-    gEventManager.add( new EventSendDialog( msgBox ) );
+    msgBox->init();
+    gEventManager.add( new EventSendDialog( msgBox ) );    
 }
 
 
 void showMsgVec( std::vector<CMessageBoxGalaxy*> &msgs )
 {
-    // TODO: Code for joining
+    assert(msgs.size() > 0);
+
+    for( CMessageBoxGalaxy* msg : msgs )
+        msg->init();
+
+    const unsigned msgSize = msgs.size();
+    for( size_t i=0 ; i<msgSize-1 ; i++ )
+    {
+        std::unique_ptr<CEvent> ev(new EventSendDialog(msgs[i+1]));
+        msgs[i]->setCloseEvent(ev);
+    }
+    gEventManager.add( new EventSendDialog( msgs[0] ) );
 }
 
 
