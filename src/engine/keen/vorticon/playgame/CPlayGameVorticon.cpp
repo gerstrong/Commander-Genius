@@ -279,11 +279,17 @@ void CPlayGameVorticon::ponder(const float deltaT)
                       {
                           // Process Players' Cameras
                           player.processCamera();
-                          player.processEvents();
                       }
                   }
               }                            
             }
+
+            for(auto &player : m_Player)
+            {
+                // Process Players' Events
+                player.processEvents();
+            }
+
 
 		}
 	}

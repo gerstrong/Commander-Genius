@@ -53,7 +53,6 @@ void CRay::setSpeed(size_t speed)
 
 void CRay::process()
 {
-	std::vector<CVorticonSpriteObject*>::iterator it_obj;
 	switch(state)
 	{
 		case RAY_STATE_FLY:
