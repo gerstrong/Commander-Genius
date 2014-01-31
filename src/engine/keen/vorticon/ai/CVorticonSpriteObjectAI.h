@@ -25,6 +25,8 @@ public:
 				int NumPlayers, int episode, 
 				int level, bool &dark);
 
+    void pumpEvent(const CEvent *evPtr);
+
 	// main functions
 	void process();
 

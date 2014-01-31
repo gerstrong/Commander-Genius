@@ -27,6 +27,45 @@ m_dark(dark)
 	m_gunfiretimer = 0;
 }
 
+
+//////////////////
+// Pump Events  //
+//////////////////
+
+void CVorticonSpriteObjectAI::pumpEvent(const CEvent *evPtr)
+{
+    if( const EventSpawnObject *ev =  dynamic_cast<const EventSpawnObject*>(evPtr) )
+    {
+        CVorticonSpriteObject *ptr = (CVorticonSpriteObject*)(ev->pObject);
+        std::unique_ptr<CVorticonSpriteObject> obj( ptr );
+        m_Objvect.push_back( move(obj) );
+    }
+
+    if( dynamic_cast<const EventEraseAllEnemies*>(evPtr) )
+    {
+        for( auto &obj : m_Objvect )
+        {
+            // Only remove non-player objects!
+            if( dynamic_cast<CPlayer*>(obj.get()) == nullptr )
+            {
+                obj->exists = false;
+            }
+        }
+    }
+
+    if( dynamic_cast<const EventEraseAllMeeps*>(evPtr) )
+    {
+        for( auto &obj : m_Objvect )
+        {
+            // Only remove non-player objects!
+            if( dynamic_cast<CMeep*>(obj.get()) != nullptr )
+            {
+                obj->exists = false;
+            }
+        }
+    }
+}
+
 //////////////////
 // AI Processes //
 //////////////////
@@ -90,43 +129,6 @@ void CVorticonSpriteObjectAI::process()
 			object.InertiaAndFriction_X();
 		}
 	}
-	
-	
-	CEventContainer &EventContainer = gEventManager;
-	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
-	{
-	    CVorticonSpriteObject *ptr = (CVorticonSpriteObject*)(ev->pObject);
-	    std::unique_ptr<CVorticonSpriteObject> obj( ptr );
-	    m_Objvect.push_back( move(obj) );
-	    EventContainer.pop_Event();
-	}
-
-    if( EventContainer.occurredEvent<EventEraseAllEnemies>() )
-    {
-        for( auto &obj : m_Objvect )
-        {
-            // Only remove non-player objects!
-            if( dynamic_cast<CPlayer*>(obj.get()) == nullptr )
-            {
-                obj->exists = false;
-            }
-        }
-        EventContainer.pop_Event();
-    }
-
-    if( EventContainer.occurredEvent<EventEraseAllMeeps>() )
-    {
-        for( auto &obj : m_Objvect )
-        {
-            // Only remove non-player objects!
-            if( dynamic_cast<CMeep*>(obj.get()) != nullptr )
-            {
-                obj->exists = false;
-            }
-        }
-        EventContainer.pop_Event();
-    }
-
 
 	if( !m_Objvect.empty() )
 	{	

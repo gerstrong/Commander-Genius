@@ -227,7 +227,10 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
         m_endgame = true;
     }
 
-
+    if(mpObjectAI)
+    {
+        mpObjectAI->pumpEvent(evPtr);
+    }
 
 }
 
