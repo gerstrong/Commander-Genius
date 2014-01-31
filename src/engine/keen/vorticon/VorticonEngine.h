@@ -20,6 +20,8 @@ public:
         KeenEngine(openedGamePlay, ep, dataPath),
         mEp(ep) {}
 
+    void openMainMenu();
+
     bool loadResources( const Uint8 flags );
 
     void pumpEvent(const CEvent *evPtr);

@@ -42,6 +42,13 @@ bool setupAudio()
 }
 
 
+
+void VorticonEngine::openMainMenu()
+{
+    gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+}
+
+
 ///
 // This is used for loading all the resources of the game the use has chosen.
 // It loads graphics, sound and text into the memory
