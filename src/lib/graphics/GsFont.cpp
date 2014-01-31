@@ -187,7 +187,7 @@ void GsFont::tintColor( const Uint32 fgColor )
     SDL_Surface *sfc = mFontSurface.get();
     Uint32 color = 0;
     Uint8 r, g, b, a;
-    
+
     if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 
     // This makes the white pixel transparent
@@ -202,7 +202,7 @@ void GsFont::tintColor( const Uint32 fgColor )
 			SDL_GetRGBA( color, sfc->format, &r, &g, &b, &a );
 
 			if( a>0 )
-			{				
+			{
 			    memcpy( pixel, &fgColor, sfc->format->BytesPerPixel );
 			}
 
@@ -227,8 +227,8 @@ void GsFont::setupColor( const Uint32 fgColor )
 	// Change palette colors to the desired one
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetPaletteColors(mFontSurface->format->palette, color, 0, 255);
-    SDL_SetColorKey( mFontSurface.get(), SDL_TRUE, COLORKEY);
-#else    
+    SDL_SetColorKey( mFontSurface.get(), SDL_TRUE, 16);
+#else
 	SDL_SetColors( mFontSurface.get(), color, 0, 16);
 #endif
 }
@@ -277,7 +277,7 @@ void GsFont::createTextSurface(GsSurface &sfc,
                0);
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(pColoredTextSurface, SDL_BLENDMODE_BLEND);
+    SDL_SetSurfaceBlendMode(sfc.getSDLSurface(), SDL_BLENDMODE_BLEND);
 #else
     sfc.setColorMask(0, 255, 255);
 #endif
@@ -286,7 +286,7 @@ void GsFont::createTextSurface(GsSurface &sfc,
 
     const Uint32 oldColor = getFGColor();
 
-    const Uint32 fgColor = sfc.mapRGB( r, g, b );        
+    const Uint32 fgColor = sfc.mapRGB( r, g, b );
 
     setupColor( fgColor );
 
@@ -376,7 +376,7 @@ void GsFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint
 	SDL_Rect scrrect, dstrect;
 
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 //#else
     scrrect.x = (mFontSurface->w/16)*(character%16);
 	scrrect.y = (mFontSurface->h/16)*(character/16);
@@ -391,7 +391,7 @@ void GsFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint
 void GsFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
 {
 	unsigned int i,x=xoff,y=yoff;
-	
+
 	if(text.size() != 0)
 	{
 		for(i=0;i<text.size();i++)
@@ -444,7 +444,7 @@ void GsFont::drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xof
 			}
 		}
 	}
-	
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod(mFontSurface.get(), SDL_ALPHA_OPAQUE);
 #else
@@ -505,23 +505,23 @@ void GsFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 
 {
 	Uint16 xmidpos = 0;
 	Uint16 ymidpos = 0;
-	
+
 	Uint16 ylineoff = yoff;
 
 	for( unsigned int i=0 ; i<text.size() ; i++)
 	{
 		xmidpos += mWidthtable[ static_cast<unsigned int>(text[i]) ];
-		
+
 		if ( endofText( text.substr(i) ) )
 		{
 		    xmidpos = (width-xmidpos)/2+x;
 		    ymidpos = ylineoff + (height - 8)/2;
 		    ylineoff += height;
 
-		    drawFont(dst, text, xmidpos, ymidpos, highlight);			
+		    drawFont(dst, text, xmidpos, ymidpos, highlight);
 		}
 	}
-	
+
 	xmidpos = (width-xmidpos)/2+x;
 	ymidpos = ylineoff + (height - 8)/2;
 
