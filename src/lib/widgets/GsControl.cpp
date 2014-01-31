@@ -78,7 +78,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 			mTwirliconID = 9;
 	}
 
-    if( mPressed )
+    if( mPressed || mSelected )
 	{
 		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+12, lRect.y );
 	}
