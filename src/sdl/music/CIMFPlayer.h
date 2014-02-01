@@ -67,7 +67,7 @@ private:
 	Uint32 m_numreadysamples;
 	Uint32 m_samplesPerMusicTick;
 	unsigned int m_IMFDelay;
-	std::unique_ptr<Sint32[]> mMixBuffer;
+    std::vector<Sint32> mMixBuffer;
 };
 
 #endif /* CIMFPLAYER_H_ */

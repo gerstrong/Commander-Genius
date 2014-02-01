@@ -184,18 +184,23 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
         const GMSwitchToPlayGameMode &playGame = *pPlayGame;
-        mpGameMode.reset( new CPlayGameVorticon(playGame) );
+        mpGameMode.reset( new CPlayGameVorticon(playGame.m_startlevel) );
         mpGameMode->init();
         mOpenedGamePlay = true;
         gEventManager.add( new CloseAllMenusEvent() );
-
+    }
+    else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
+    {
+        std::unique_ptr<CPlayGameVorticon> pgVort(new CPlayGameVorticon());
+        pgVort->init();
+        pgVort->loadGame();
+        mpGameMode = std::move(pgVort);
+        mOpenedGamePlay = true;
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
     }
-
-
 }
 
 }

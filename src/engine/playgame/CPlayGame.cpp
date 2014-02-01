@@ -28,6 +28,15 @@ mp_option(g_pBehaviorEngine->m_option)
 	mCamLead = 0;
 }
 
+void CPlayGame::loadGame()
+{
+    // This is for the new xml based savegame format since version 1.6.0
+    if(loadXMLGameState())
+        return;
+
+    // This is for legacy savegame state formats
+    loadGameState();
+}
 
 // Getters
 bool CPlayGame::getEndGame() { return m_endgame; }

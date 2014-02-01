@@ -7,7 +7,7 @@
 
 #include "CLoadMenu.h"
 #include <widgets/GsText.h>
-#include <widgets/GsButton.h>
+#include "widgets/Button.h"
 #include <widgets/GsMenuController.h>
 
 #include "fileio/CSaveGameController.h"
@@ -15,6 +15,8 @@
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 
+namespace vorticon
+{
 
 struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 {
@@ -34,14 +36,11 @@ CLoadMenu::CLoadMenu() :
 VorticonMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 {
 	// Load the state-file list
-	const CGUIControl::Style style =
-			( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY ) ?
-					GsButton::GALAXY_BORDERED : GsButton::VORTICON;
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 	std::vector<std::string>::iterator it = StateFileList.begin();
 
 	Uint32 i=1;
-	GsButton *button;
+    Button *button;
 	std::string text;
 
 	for( ; it != StateFileList.end() && i<8 ; i++,it++ )
@@ -50,9 +49,8 @@ VorticonMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 
 		if( !text.empty() )
 		{
-			button = new GsButton( text,
-									new LoadGameSlotFunctorEvent(i),
-									style );
+            button = new Button( text,
+                                    new LoadGameSlotFunctorEvent(i) );
 			mpMenuDialog->addControl( button );
 
 			button->enable( true );
@@ -62,13 +60,14 @@ VorticonMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	for( int j = i ; j<8 ; j++ )
 	{
 		text = "Empty";
-		button = new GsButton( text,
-								new LoadGameSlotFunctorEvent(j),
-								style );
+        button = new Button( text,
+                                new LoadGameSlotFunctorEvent(j) );
 		mpMenuDialog->addControl( button );
 
 		button->enable( false );
 	}
 
 	setMenuLabel("LOADMENULABEL");
+}
+
 }

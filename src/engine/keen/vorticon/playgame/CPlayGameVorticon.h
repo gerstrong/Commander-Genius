@@ -46,7 +46,7 @@ class CPlayGameVorticon : public CPlayGame
 {
 public:
 
-    CPlayGameVorticon(const GMSwitchToPlayGameMode &info);
+    CPlayGameVorticon(const int startlevel = 0);
 
 	void setupPlayers();
     bool init();

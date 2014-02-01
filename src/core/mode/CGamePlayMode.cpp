@@ -6,8 +6,6 @@
  */
 
 #include "CGamePlayMode.h"
-//#include "engine/galaxy/CPlayGameGalaxy.h"
-//#include "engine/vorticon/playgame/CPlayGameVorticon.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/music/CMusicPlayer.h"
 #include <base/GsTimer.h>
@@ -29,15 +27,6 @@ m_Episode(gpmode.m_Episode),
 m_DataDirectory(gpmode.m_DataDirectory)
 {}
 
-void CGamePlayMode::loadGame()
-{
-    mp_PlayGame->ponder(0);
-
-    if(mp_PlayGame->loadXMLGameState())
-        return;
-
-    mp_PlayGame->loadGameState();
-}
 
 void CGamePlayMode::pumpEvent(const CEvent *evPtr)
 {

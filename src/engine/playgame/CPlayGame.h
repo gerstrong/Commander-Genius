@@ -28,6 +28,8 @@ class CPlayGame : public CGameMode
 public:
     CPlayGame(CExeFile &ExeFile, char level);
 
+    void loadGame();
+
     virtual bool loadGameState() = 0;
     //virtual bool saveGameState() = 0;
     virtual bool loadXMLGameState() = 0;

@@ -10,11 +10,15 @@
 
 #include "VorticonMenu.h"
 
+namespace vorticon
+{
 
 class CLoadMenu : public VorticonMenu
 {
 public:
 	CLoadMenu();
 };
+
+}
 
 #endif /* CLOADMENU_H_ */

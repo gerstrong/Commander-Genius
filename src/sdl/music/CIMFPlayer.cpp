@@ -23,7 +23,7 @@ m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
 m_IMFDelay(0),
-mMixBuffer(new Sint32[m_AudioDevSpec.samples])
+mMixBuffer(m_AudioDevSpec.samples, 0)
 {}
 
 
@@ -328,13 +328,13 @@ void CIMFPlayer::close()
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {
-    if(!mMixBuffer)
+    if(mMixBuffer.empty())
     {
         gLogging.textOut("Warning OPL Buffer is empty!");
         return;
     }
 
-    m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.get() );
+    m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.data() );
 
     // Mix into the destination buffer, doubling up into stereo.
 	if(m_AudioDevSpec.format == AUDIO_S16)

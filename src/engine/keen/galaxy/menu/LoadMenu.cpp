@@ -19,6 +19,10 @@
 #include "core/mode/CGameMode.h"
 
 
+namespace galaxy
+{
+
+
 struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 {
 	LoadGameSlotFunctorEvent(const Uint32 slot) : mSlot(slot) {}
@@ -33,16 +37,10 @@ struct LoadGameSlotFunctorEvent : public InvokeFunctorEvent
 };
 
 
-namespace galaxy
-{
-
 CLoadMenu::CLoadMenu() :
 GalaxyMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 {
 	// Load the state-file list
-	const CGUIControl::Style style =
-			( g_pBehaviorEngine->getEngine() == ENGINE_GALAXY ) ?
-					GsButton::GALAXY_BORDERED : GsButton::VORTICON;
 	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
 	std::vector<std::string>::iterator it = StateFileList.begin();
 
@@ -58,7 +56,7 @@ GalaxyMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 		{
             button = new GalaxyButton( text,
 									new LoadGameSlotFunctorEvent(i),
-									style );
+                                    false );
 			mpMenuDialog->addControl( button );
 
 			button->enable( true );
@@ -70,7 +68,7 @@ GalaxyMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 		text = "Empty";
         button = new GalaxyButton( text,
 								new LoadGameSlotFunctorEvent(j),
-								style );
+                                false );
 		mpMenuDialog->addControl( button );
 
 		button->enable( false );
