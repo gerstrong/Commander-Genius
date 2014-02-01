@@ -8,14 +8,15 @@
 #include "CVorticonMapLoader.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include <base/FindFile.h>
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
+#include <base/video/CVideoDriver.h>
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CRLE.h"
 #include "common/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
-#include <base/video/CVideoDriver.h>
 #include "CResourceLoader.h"
 
 #include "ai/CYorp.h"
@@ -66,27 +67,35 @@ mPlayerContainer(playerContainer)
 
 void CVorticonMapLoaderBase::blitPlaneToMap(std::vector<Uint16> &planeitems, const Uint16 planesize, const Uint16 planeID, const Uint16 tilemapID)
 {
-	    unsigned int curmapx = 0, curmapy = 0;
-	    
-	    for( size_t c=0 ; c<planesize ; c++ ) // Check against Tilesize
-	    {
-		int t = planeitems.at(planesize*planeID+c+17);
-						
-		mpMap->setTile(curmapx, curmapy, t, false, tilemapID);
-		
-		curmapx++;
-		if (curmapx >= mpMap->m_width)
-		{
-		    curmapx = 0;
-		    curmapy++;
-		    if (curmapy >= mpMap->m_height) break;
-		}
-		
-		/*if(t > 255)
-		{
-		    t=0; // If there are some invalid values in the file, set them to zero.
-		}*/
-	    }  
+    unsigned int curmapx = 0, curmapy = 0;
+
+    const unsigned int startOffest = planesize*planeID+17;
+
+    // Some mods seem to incorrectly read the planes, so if there is no data left, just break wiht
+    // this trick.
+    const unsigned int realSize = planeitems.size()-startOffest;
+    const unsigned int desiredSize = planesize;
+    const unsigned int obtainedSize = std::min(realSize, desiredSize);
+
+    for( size_t c=0 ; c<obtainedSize ; c++ ) // Check against Tilesize
+    {
+        int t = planeitems.at(startOffest+c);
+
+        mpMap->setTile(curmapx, curmapy, t, false, tilemapID);
+
+        curmapx++;
+        if (curmapx >= mpMap->m_width)
+        {
+            curmapx = 0;
+            curmapy++;
+            if (curmapy >= mpMap->m_height) break;
+        }
+
+        /*if(t > 255)
+        {
+            t=0; // If there are some invalid values in the file, set them to zero.
+        }*/
+    }
 }
 
 
@@ -99,7 +108,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
     
 	std::vector<Uint16> planeitems;
     
-    	std::string levelname = "level";
+    std::string levelname = "level";
 	if(level < 10) levelname += "0";
 	levelname += itoa(level) + ".ck" + itoa(episode);
 
@@ -143,7 +152,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	MapFile.close();
 
 	CRLE RLE;
-	RLE.expandSwapped(planeitems,compdata, 0xFEFE);
+    RLE.expandSwapped(planeitems, compdata, 0xFEFE);
 
 	// Here goes the memory allocation function
 	const Uint16 w =  planeitems.at(1);

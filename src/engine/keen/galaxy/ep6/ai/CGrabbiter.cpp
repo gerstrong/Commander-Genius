@@ -46,30 +46,28 @@ void CGrabbiter::getTouchedBy(CSpriteObject& theObject)
     
     if( CPlayerBase *player = dynamic_cast<CPlayerBase*>(&theObject) )
     {
-	const int diffX = getXMidPos()-player->getXMidPos();
+        const int diffX = getXMidPos()-player->getXMidPos();
         player->moveXDir(-diffX/4);
 
-	CEventContainer& EventContainer = gEventManager;
-	
-	if(player->m_Inventory.Item.m_special.ep6.sandwich > 0)
-	{
-	   player->m_Inventory.Item.m_special.ep6.sandwich--; 
-	   
-	    // Show grabbiter message
-        showMsg( g_pBehaviorEngine->getString("KEEN_GRABBITER_SLEEPY") );
+        if(player->m_Inventory.Item.m_special.ep6.sandwich > 0)
+        {
+            player->m_Inventory.Item.m_special.ep6.sandwich--;
 
-	    setAction(A_GRABBITER_NAPPING);
-	    playSound(SOUND_GRABBITER_SLEEP);
-	}
-	else
-	{	    
-	    // Sound play
-	    g_pSound->playSound(SOUND_GRABBITER_HUNGRY, PLAY_PAUSEALL);	
-	    
-	    // Show grabbiter message
-        showMsg( g_pBehaviorEngine->getString("KEEN_GRABBITER_HUNGRY") );
-	}
-    }    
+            // Show grabbiter message
+            showMsg( g_pBehaviorEngine->getString("KEEN_GRABBITER_SLEEPY") );
+
+            setAction(A_GRABBITER_NAPPING);
+            playSound(SOUND_GRABBITER_SLEEP);
+        }
+        else
+        {
+            // Sound play
+            g_pSound->playSound(SOUND_GRABBITER_HUNGRY, PLAY_PAUSEALL);
+
+            // Show grabbiter message
+            showMsg( g_pBehaviorEngine->getString("KEEN_GRABBITER_HUNGRY") );
+        }
+    }
 }
 
 
