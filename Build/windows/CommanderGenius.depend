@@ -1492,14 +1492,14 @@
 	"engine/infoscenes/CInfoScene.h"
 	<memory>
 
-1391107203 c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.h
+1391331849 c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.h
 	"CGameMode.h"
 	"engine/playgame/CPlayGame.h"
 	"fileio/CSaveGameController.h"
 	<memory>
 	<string>
 
-1391107204 c:\users\admin\desktop\commander-genius\src\engine\playgame\cplaygame.h
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\playgame\cplaygame.h
 	"fileio/CExeFile.h"
 	"core/LogicDrawSplitter.h"
 	"common/options.h"
@@ -1595,7 +1595,7 @@
 	"../CPassive.h"
 	<string>
 
-1391107203 source:c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.cpp
 	"CGamePlayMode.h"
 	"graphics/effects/CColorMerge.h"
 	"sdl/music/CMusicPlayer.h"
@@ -2620,7 +2620,7 @@
 	"sdl/input/CInput.h"
 	"FindFile.h"
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\playgame\cplaygame.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\playgame\cplaygame.cpp
 	"CPlayGame.h"
 	"graphics/GsGraphics.h"
 
@@ -3421,7 +3421,7 @@
 	"common/CBehaviorEngine.h"
 	"sys/wizgp2x.h"
 
-1391107205 source:c:\users\admin\desktop\commander-genius\src\sdl\music\cimfplayer.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\sdl\music\cimfplayer.cpp
 	"CIMFPlayer.h"
 	"fileio/ResourceMgmt.h"
 	"fileio/compression/CHuffman.h"
@@ -3432,7 +3432,7 @@
 	<cassert>
 	<fstream>
 
-1391107205 c:\users\admin\desktop\commander-genius\src\sdl\music\cimfplayer.h
+1391331849 c:\users\admin\desktop\commander-genius\src\sdl\music\cimfplayer.h
 	"CMusicPlayer.h"
 	"fileio/TypeDefinitions.h"
 	"fileio/CExeFile.h"
@@ -10554,7 +10554,7 @@
 	"GsDialog.h"
 	"GsButton.h"
 
-1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\vorticonengine.h
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\vorticonengine.h
 	"engine/keen/KeenEngine.h"
 	"engine/keen/vorticon/CEGAGraphicsVort.h"
 
@@ -11623,7 +11623,7 @@
 	"../../common/ai/CPlayerLevel.h"
 	"../../common/ai/CGalaxyActionSpriteObject.h"
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cgrabbiter.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cgrabbiter.cpp
 	"CGrabbiter.h"
 	"../../common/ai/CPlayerBase.h"
 	"../../common/dialog/CMessageBoxGalaxy.h"
@@ -11891,7 +11891,7 @@
 	"widgets/Button.h"
 	"sdl/CVidConfig.h"
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\loadmenu.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\loadmenu.cpp
 	<widgets/GsText.h>
 	<widgets/GsButton.h>
 	<widgets/GsMenuController.h>
@@ -12259,7 +12259,7 @@
 	"graphics/GsGraphics.h"
 	<base/CInput.h>
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cray.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cray.cpp
 	"sdl/sound/CSound.h"
 	"CRay.h"
 	"engine/spritedefines.h"
@@ -12345,12 +12345,12 @@
 	"CPlayer.h"
 	<vector>
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticonspriteobjectai.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticonspriteobjectai.cpp
 	"CVorticonSpriteObjectAI.h"
 	<lib/base/GsLogging.h>
 	"CMeep.h"
 
-1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticonspriteobjectai.h
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticonspriteobjectai.h
 	"common/CMap.h"
 	"common/CSpriteObject.h"
 	"common/options.h"
@@ -12670,18 +12670,19 @@
 	<widgets/GsBaseMenu.h>
 	<lib/widgets/GsMenuController.h>
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cvorticonmaploader.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cvorticonmaploader.cpp
 	"CVorticonMapLoader.h"
 	<iostream>
 	<fstream>
+	<algorithm>
 	<base/FindFile.h>
-	<lib/base/GsLogging.h>
+	<base/GsLogging.h>
+	<base/video/CVideoDriver.h>
 	"fileio.h"
 	"fileio/ResourceMgmt.h"
 	"fileio/compression/CRLE.h"
 	"common/CBehaviorEngine.h"
 	"graphics/GsGraphics.h"
-	<base/video/CVideoDriver.h>
 	"CResourceLoader.h"
 	"ai/CYorp.h"
 	"ai/CGarg.h"
@@ -12915,17 +12916,17 @@
 1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\chelpmenu.h
 	"VorticonMenu.h"
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cloadmenu.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cloadmenu.cpp
 	"CLoadMenu.h"
 	<widgets/GsText.h>
-	<widgets/GsButton.h>
+	"widgets/Button.h"
 	<widgets/GsMenuController.h>
 	"fileio/CSaveGameController.h"
 	"common/CBehaviorEngine.h"
 	"common/CBehaviorEngine.h"
 	"core/mode/CGameMode.h"
 
-1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cloadmenu.h
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cloadmenu.h
 	"VorticonMenu.h"
 
 1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cmainmenu.cpp
@@ -13056,7 +13057,7 @@
 1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamedialogs.cpp
 	"CPlayGameVorticon.h"
 
-1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.h
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.h
 	"graphics/GsGraphics.h"
 	"fileio/CSaveGameController.h"
 	"../ai/CPlayer.h"
@@ -13092,7 +13093,7 @@
 	"sdl/sound/CSound.h"
 	"../finale/CTantalusRay.h"
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.cpp
 	<lib/base/GsTimer.h>
 	<base/video/CVideoDriver.h>
 	<base/CInput.h>
@@ -13121,7 +13122,7 @@
 	"../ai/CTeleporter.h"
 	"../ai/CMessie.h"
 
-1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\vorticonengine.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\vorticonengine.cpp
 	<base/GsLogging.h>
 	<base/GsTimer.h>
 	<base/GsApp.h>
@@ -13377,7 +13378,7 @@
 	<base/video/CVideoDriver.h>
 	<lib/base/GsTimer.h>
 
-1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gscontrol.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gscontrol.cpp
 	<base/video/CVideoDriver.h>
 	<graphics/GsGraphics.h>
 	<base/CInput.h>

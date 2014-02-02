@@ -25,7 +25,7 @@ mVDir(vDir)
 }
 
 void CScrollEffect::ponder(const float deltaT)
-{        
+{
     if(mSpeed < 0)
 	{
         if(mSpeed < -1)
@@ -52,7 +52,7 @@ void CScrollEffect::ponder(const float deltaT)
             posOldSfc = gVideoDriver.getBlitSurface()->h;
             posScrollSfc = mpScrollSurface->h;
         }
-        else if(mHDir == RIGHT)
+        else
         {
             posOldSfc = gVideoDriver.getBlitSurface()->w;
             posScrollSfc = mpScrollSurface->w;
