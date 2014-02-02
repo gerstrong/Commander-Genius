@@ -132,17 +132,6 @@ bool VorticonEngine::loadResources( const Uint8 flags )
 }
 
 
-void VorticonEngine::ponder(const float deltaT)
-{
-    KeenEngine::ponder(deltaT);
-
-    if(mpGameMode.)
-    {
-
-    }
-}
-
-
 
 void VorticonEngine::pumpEvent(const CEvent *evPtr)
 {
