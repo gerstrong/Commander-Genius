@@ -36,8 +36,6 @@ public:
 	
     void pumpEvent(const CEvent *evPtr);
 
-    //virtual bool init(char mode) {return false;}
-
     virtual bool init() = 0;
 	
     virtual void ponder(const float deltaT) = 0;

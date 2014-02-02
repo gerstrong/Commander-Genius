@@ -389,6 +389,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
         m_endgame = true;
+        gMenuController.clearMenuStack();
     }
 
 

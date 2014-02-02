@@ -49,7 +49,7 @@ public:
                           mLocked(false),
                           mHidden(false) {}
 
-	void emptyMenuStack();
+    void clearMenuStack();
 
     void pumpEvent(const CEvent *evPtr);
 

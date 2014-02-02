@@ -11,7 +11,6 @@
 
 #include "GameEngine.h"
 #include "common/CBehaviorEngine.h"
-#include "mode/CGamePassiveMode.h"
 #include "mode/CGamePlayMode.h"
 #include "core/mode/CGameMode.h"
 /*#include "common/Menu/CSelectionMenu.h"

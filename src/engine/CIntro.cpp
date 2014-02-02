@@ -57,7 +57,7 @@ void CIntro::ponder()
 	}
 
 	
-	if( gInput.getPressedAnyCommand() )
+    if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
 	{
 	    m_finished = true;
 	}

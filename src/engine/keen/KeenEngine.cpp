@@ -3,13 +3,12 @@
 #include <widgets/GsMenuController.h>
 
 #include "common/CGameLauncher.h"
-#include "core/mode/CGamePassiveMode.h"
 #include "KeenEngine.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/CSaveGameController.h"
 
 #include "sdl/music/CMusic.h"
-//#include "common/Menu/CMainMenu.h"
+#include <base/CInput.h>
 
 
 void KeenEngine::switchToGamePlayMode()

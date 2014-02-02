@@ -90,7 +90,7 @@ void Title::ponder()
 	
     if( !gEffectController.runningEffect() && !gMenuController.active() )
 	{
-		if( gInput.getPressedAnyCommand() )
+        if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
 		{
             gEventManager.add(new OpenMainMenuEvent());
 		}	    

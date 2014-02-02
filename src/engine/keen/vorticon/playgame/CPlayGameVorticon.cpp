@@ -217,11 +217,15 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
     // Process Related Events.
     if( dynamic_cast<const ResetScrollSurface*>(evPtr) )
     {
-        gVideoDriver.updateScrollBuffer(mMap);
-        return;
+        if(mMap)
+        {
+            gVideoDriver.updateScrollBuffer(mMap);
+            return;
+        }
     }
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
+        gMenuController.clearMenuStack();
         m_endgame = true;
     }
 

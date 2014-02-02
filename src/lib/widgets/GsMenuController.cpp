@@ -9,7 +9,7 @@
 #include <base/CInput.h>
 
 
-void CMenuController::emptyMenuStack()
+void CMenuController::clearMenuStack()
 {
 	while(!mMenuStack.empty())
 		popBackMenu();
@@ -37,7 +37,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
     }
     else if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
     {
-        emptyMenuStack();
+        clearMenuStack();
     }
     else
     {

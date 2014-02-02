@@ -505,19 +505,13 @@ void CMineShards::process()
         }
 
 
-        //CEventContainer& EventContainer = gEventManager;
-
 		const std::string end_text("End of Episode.\n"
 					       "The game will be restarted.\n"
 					       "You can replay it again or\n"
 					       "try another Episode for more fun!\n"
 					       "The original epilog is under construction.");
 
-        //EventContainer.wait(1.0f);
-        //EventContainer.add( new EventSendDialog(end_text) );
-
-        showMsg(end_text);
-        //EventContainer.add( new EventEndGamePlay() );
+        showMsg(end_text, new EventEndGamePlay());
         assert(0);
 		dead = true;
 		exists = false;

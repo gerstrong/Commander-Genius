@@ -8,7 +8,8 @@
 
 #include "CPassive.h"
 #include "common/CBehaviorEngine.h"
-
+#include <base/video/CVideoDriver.h>
+#include <widgets/GsMenuController.h>
 
 CPassive::CPassive()
 {
@@ -24,6 +25,7 @@ void CPassive::pumpEvent(const CEvent *evPtr)
 {
     if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
+        gMenuController.clearMenuStack();
         m_modeg = true;
     }
 }

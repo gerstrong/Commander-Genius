@@ -46,7 +46,7 @@ m_start_game_no(start_game_no),
 m_start_level(start_level)
 {
     g_pSound->unloadSoundData();
-    gMenuController.emptyMenuStack();
+    gMenuController.clearMenuStack();
 }
 
 ////

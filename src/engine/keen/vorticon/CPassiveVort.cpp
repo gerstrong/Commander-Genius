@@ -14,6 +14,7 @@
 #include <base/CInput.h>
 #include "sdl/extensions.h"
 #include "core/mode/CGameMode.h"
+#include "common/CGameLauncher.h"
 
 namespace vorticon
 {
@@ -29,7 +30,12 @@ bool CPassiveVort::init()
 		mpIntroScreen.reset(new CIntro());
 		mpMap.reset(new CMap);
 		CVorticonMapLoaderBase MapLoader( mpMap );
-		MapLoader.load( m_Episode, 90, m_DataDirectory);
+
+        if(!MapLoader.load( m_Episode, 90, m_DataDirectory))
+        {
+            gEventManager.add(new EventEndGamePlay);
+        }
+
 		mpMap->gotoPos( 64+5*320, 32); // Coordinates of star sky
 		mpMap->drawAll();
 		mpIntroScreen->init();
@@ -54,35 +60,31 @@ bool CPassiveVort::init()
 	return true;
 }
 
+void CPassiveVort::pumpEvent(const CEvent *evPtr)
+{
+    if( dynamic_cast<const ResetScrollSurface*>(evPtr) )
+    {
+        if(mpMap)
+        {
+            gVideoDriver.updateScrollBuffer( mpMap );
+            return;
+        }
+    }
+    else
+    {
+        CPassive::pumpEvent(evPtr);
+    }
+}
+
 void CPassiveVort::ponder(const float deltaT)
 {
-
-    /*CEventContainer& EventContainer = gEventManager;
-
-	if(!EventContainer.empty())
-	{
-		if( EventContainer.occurredEvent<ResetScrollSurface>() )
-		{
-		    gVideoDriver.updateScrollBuffer( mpMap );
-		    EventContainer.pop_Event();
-		    return;
-		}
-		
-		else if( EventContainer.occurredEvent<EventEndGamePlay>() )
-		{
-		    EventContainer.pop_Event();
-		    m_modeg = true;
-		}		
-    }*/
-
-
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
 	if( m_mode == INTRO )
 	{
 		// Intro code goes here!
         mpIntroScreen->ponder();
 
-		if( mpIntroScreen->isFinished() )
+        if( mpIntroScreen->isFinished() )
 		{
 			// Shutdown mp_IntroScreen and show load Title Screen
             m_mode = TITLE;
@@ -100,6 +102,13 @@ void CPassiveVort::ponder(const float deltaT)
         m_mode = TITLE;
         init();
 	}
+
+    if(getchooseGame())
+    {
+        // TODO: Some of game resources are still not cleaned up here!
+        gEventManager.add( new GMSwitchToGameLauncher(-1, -1) );
+        return;
+    }
 
 }
 
