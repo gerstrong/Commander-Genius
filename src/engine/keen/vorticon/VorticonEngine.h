@@ -24,6 +24,8 @@ public:
 
     bool loadResources( const Uint8 flags );
 
+    void ponder(const float deltaT);
+
     void pumpEvent(const CEvent *evPtr);
 };
 

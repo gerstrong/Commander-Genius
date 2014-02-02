@@ -226,7 +226,7 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
         gMenuController.clearMenuStack();
-        m_endgame = true;
+        gEventManager.add<GMSwitchToPassiveMode>();
     }
 
     if(mpObjectAI)

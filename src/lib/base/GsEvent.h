@@ -93,6 +93,15 @@ public:
         m_EventList.push_back(ev);
     }
 
+    // template version
+    template <class _T>
+    void add()
+    {
+        _T *ev = new _T;
+        m_EventList.push_back(std::shared_ptr<CEvent>(ev));
+    }
+
+
     void add(CEvent *ev)
     {
         m_EventList.push_back(std::shared_ptr<CEvent>(ev));

@@ -131,6 +131,19 @@ bool VorticonEngine::loadResources( const Uint8 flags )
 
 }
 
+
+void VorticonEngine::ponder(const float deltaT)
+{
+    KeenEngine::ponder(deltaT);
+
+    if(mpGameMode.)
+    {
+
+    }
+}
+
+
+
 void VorticonEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
@@ -188,6 +201,11 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         mpGameMode->init();
         mOpenedGamePlay = true;
         gEventManager.add( new CloseAllMenusEvent() );
+    }
+    else if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
+    {
+        mpGameMode.reset( new vorticon::CPassiveVort() );
+        mpGameMode->init();
     }
     else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
