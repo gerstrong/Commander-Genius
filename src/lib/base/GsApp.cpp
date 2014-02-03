@@ -20,6 +20,7 @@
 
 
 #include <base/CInput.h>
+#include <base/GsArguments.h>
 #include "sdl/sound/CSound.h"
 #include "common/CSettings.h"
 
@@ -101,6 +102,9 @@ GsApp::~GsApp()
  */
 bool GsApp::init(int argc, char *argv[])
 {
+    // Pass all the arguments
+    gArgs.passArgs(argc, argv);
+
 	// Check if there are settings on the PC, otherwise use defaults.
 	if(!g_pSettings->loadDrvCfg())
 	{
