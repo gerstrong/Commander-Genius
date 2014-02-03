@@ -10,6 +10,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <widgets/GsMenuController.h>
+#include <base/GsArguments.h>
 
 
 #include "CPlayGameVorticon.h"
@@ -170,9 +171,14 @@ bool CPlayGameVorticon::init()
 	// When Level starts it's never dark!
 	gGraphics.Palette.setdark(false);
 
-	if(m_level_command == GOTO_FINALE)
-	  createFinale();
-	else if(m_showKeensLeft)	
+    const std::string finaleStr = gArgs.getValue("finale");
+    if(finaleStr == "on")
+    {
+        createFinale();
+        gArgs.removeTag("finale");
+    }
+
+    if(m_showKeensLeft)
 	  g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
 
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages

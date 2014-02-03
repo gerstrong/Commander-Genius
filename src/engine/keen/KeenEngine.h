@@ -23,7 +23,7 @@ public:
 
     virtual void pumpEvent(const CEvent *evPtr);
 
-    void ponder(const float deltaT);
+    virtual void ponder(const float deltaT);
 
     virtual bool loadResources( const Uint8 flags ) = 0;
 

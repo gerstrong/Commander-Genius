@@ -4,6 +4,7 @@
 #include <base/utils/StringUtils.h>
 
 #include <widgets/GsMenuController.h>
+#include <base/GsArguments.h>
 
 #include "CResourceLoader.h"
 #include "common/CBehaviorEngine.h"
@@ -41,6 +42,12 @@ bool setupAudio()
     return false;
 }
 
+VorticonEngine::VorticonEngine(const bool openedGamePlay,
+               const int ep,
+               const std::string &dataPath) :
+KeenEngine(openedGamePlay, ep, dataPath),
+mEp(ep)
+{}
 
 
 void VorticonEngine::openMainMenu()
@@ -128,7 +135,6 @@ bool VorticonEngine::loadResources( const Uint8 flags )
     mEngineLoader.start();
 
     return true;
-
 }
 
 
@@ -157,6 +163,11 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
             mOpenedGamePlay = false;
         }
 
+        const std::string finaleStr = gArgs.getValue("finale");
+        if(finaleStr == "on")
+        {
+            gEventManager.add( new StartNewGameEvent(EASY) );
+        }
     }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {

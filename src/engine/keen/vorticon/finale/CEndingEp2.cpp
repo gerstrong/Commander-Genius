@@ -43,6 +43,8 @@ void CEndingEp2::ponder()
 		m_mustfinishgame = true;
 		break;
 	}
+
+    m_Player[0].processEvents();
 }
 
 void CEndingEp2::render()

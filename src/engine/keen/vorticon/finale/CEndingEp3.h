@@ -18,7 +18,8 @@
 #include <SDL.h>
 #include <memory>
 
-class CEndingEp3 : public CFinale {
+class CEndingEp3 : public CFinale
+{
 public:
 	CEndingEp3(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 			const std::shared_ptr<CMap> &pMap, 

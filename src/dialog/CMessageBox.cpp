@@ -69,8 +69,10 @@ m_mustclose(false)
 
 void CMessageBox::processLogic()
 {
-	if(gInput.getPressedCommand(IC_STATUS))
+    if( gInput.getPressedCommand(IC_STATUS) )
+    {
 		m_mustclose = true;
+    }
 
 	CGUIDialog::processLogic();
     render();
