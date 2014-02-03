@@ -38,6 +38,13 @@ public:
      */
     std::string getValue(const std::string &flag);
 
+    /**
+     * @brief removeTag will delete the given tag. This can be useful when you launch something with a parameter,
+     *        and you want to function that flag only once.
+     * @param flag
+     */
+    void removeTag(const std::string &flag);
+
 private:
     std::map<std::string, std::string> mArgMap;
 

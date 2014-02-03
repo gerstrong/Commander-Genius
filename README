@@ -219,7 +219,8 @@ Normally when you start Commander Genius you see the launcher menu in which you 
 
 Optionally you can pass launch arguments to Commander Genius. These are:
 
--game		Takes the number of game detected, like shown in the launcher menu and starts it up that game directly
+dir=<game-directory>	This will launch the game of the given directory, in case it can be launched, otherwise it will launch the game launcher.
+                        vg.: "CGenius.exe dir=games/keen4"
 
 -level		If you just want to check a specific level in the given game use that parameter.
 

@@ -4,8 +4,6 @@ NOTE: This list represents the most critical bugs in my opinion. I consider it a
 There is more stuff at github and also from emails I receive from people. Not everything is listed here.
 Nevertheless I take a look on those other resources as well and see what I can do.
 
-- Can I pass parameters to directly load a level -> Galaxy -> Check!
-- Can I pass parameters to directly load a level -> Vorticon -> Check!
 - Finale in Ep1-3 doesn't work anymore!
 - Loading screen in vorticon not seen anymore!
 - load time very long and mostly stuck at around 60%

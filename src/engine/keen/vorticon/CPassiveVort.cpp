@@ -12,9 +12,9 @@
 #include "common/CTileProperties.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include "common/CGameLauncher.h"
 #include "sdl/extensions.h"
 #include "core/mode/CGameMode.h"
-#include "common/CGameLauncher.h"
 
 namespace vorticon
 {

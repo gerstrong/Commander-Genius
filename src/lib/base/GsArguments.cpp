@@ -33,3 +33,11 @@ std::string GsArguments::getValue(const std::string &flag)
     else
         return "";
 }
+
+void GsArguments::removeTag(const std::string &flag)
+{
+    std::map<std::string, std::string>::iterator it = mArgMap.find(flag);
+
+    if( it != mArgMap.end() )
+        mArgMap.erase(it);
+}

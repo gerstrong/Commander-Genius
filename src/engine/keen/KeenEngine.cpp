@@ -2,8 +2,8 @@
 #include <base/GsLogging.h>
 #include <widgets/GsMenuController.h>
 
-#include "common/CGameLauncher.h"
 #include "KeenEngine.h"
+#include "common/CGameLauncher.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/CSaveGameController.h"
 

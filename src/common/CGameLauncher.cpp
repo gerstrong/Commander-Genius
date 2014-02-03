@@ -18,6 +18,7 @@
 #include <base/FindFile.h>
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
+#include <base/GsArguments.h>
 
 #include "graphics/effects/CScrollEffect.h"
 #include "common/CBehaviorEngine.h"
@@ -130,6 +131,29 @@ bool CGameLauncher::loadResources()
 
     if(!gamedetected)
         return false;
+
+    const std::string gameDir = gArgs.getValue("dir");
+    if(!gameDir.empty())
+    {
+        int chosenGame = 0;
+
+        // Check if the given parameter makes one game start.
+        for( GameEntry &entry : m_Entries)
+        {
+            if(entry.path == gameDir)
+            {
+                // found!
+                m_chosenGame = chosenGame;
+                gLogging.textOut("Launching game from directory: \"" + gameDir + "\"\n");
+                gArgs.removeTag("dir");
+                break;
+            }
+            chosenGame++;
+        }
+
+        gLogging.textOut("The game from directory: \"" + gameDir + "\" cannot the launched." +
+                         "Maybe it's missing or not compatible. Please check if you can run that throught the game launcher.\n");
+    }
 
     return true;
 }
@@ -348,7 +372,7 @@ void CGameLauncher::ponder(const float deltaT)
         mpVersionText->setText("Version: " + ftoa(fVer));
     }
 
-    mLauncherDialog.processLogic();
+    mLauncherDialog.processLogic();   
 
     // Launch the code of the Startmenu here in case a game has been chosen
     if( m_chosenGame >= 0 ) // Means a game has been selected
