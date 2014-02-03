@@ -304,6 +304,9 @@ void CSound::playStereosound(const GameSound snd, const char mode, const short b
 {
 	if( m_mixing_channels == 0 ) return;
 
+    if(!mpAudioRessources)
+        return;
+
 	CSoundSlot *mp_Slots = mpAudioRessources->getSlotPtr();
 	int slotplay = sndSlotMap[snd];
 	const int speaker_snds_end_off = mpAudioRessources->getNumberofSounds()/2;
