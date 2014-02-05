@@ -72,13 +72,16 @@ bool VorticonEngine::loadResources( const Uint8 flags )
         const int mEp;
         const Uint8 mFlags;
         const std::string &mDataPath;
+        CResourceLoaderBackground &mLoader;
 
         VorticonDataLoad(const int ep,
                          const Uint8 flags,
-                         const std::string &datapath) :
+                         const std::string &datapath,
+                         CResourceLoaderBackground &loader) :
             mEp(ep),
             mFlags(flags),
-            mDataPath(datapath) {}
+            mDataPath(datapath),
+            mLoader(loader) {}
 
         int handle()
         {
@@ -96,6 +99,8 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
             Patcher.process();
 
+            mLoader.setPermilage(100);
+
             gTimer.setLPS(DEFAULT_LPS_VORTICON);
 
             g_pBehaviorEngine->readTeleporterTable(p_exedata);
@@ -106,6 +111,8 @@ bool VorticonEngine::loadResources( const Uint8 flags )
                 // This will also read the Tile-Properties
                 CEGAGraphicsVort graphics(mEp, mDataPath);
                 graphics.loadData(version, p_exedata);
+                mLoader.setPermilage(400);
+                mLoader.setStyle(PROGRESS_STYLE_BITMAP);
             }
 
             if( (mFlags & LOADSTR) == LOADSTR )
@@ -113,25 +120,30 @@ bool VorticonEngine::loadResources( const Uint8 flags )
                 // load the strings.
                 CMessages Messages(p_exedata, mEp, version);
                 Messages.extractGlobalStrings();
+                mLoader.setPermilage(500);
             }
 
             if( (mFlags & LOADSND) == LOADSND )
             {
                 // Load the sound data
                 setupAudio();
+                mLoader.setPermilage(800);
             }
 
             g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(mEp, p_exedata);
+            mLoader.setPermilage(900);
 
             // If there are patches left that must be apllied later, do it here!
             Patcher.postProcess();
+
+            mLoader.setPermilage(1000);
 
             gEventManager.add(new FinishedLoadingResources());
             return 1;
         }
     };
 
-    mEngineLoader.RunLoadActionBackground(new VorticonDataLoad(mEp, flags, mDataPath));
+    mEngineLoader.RunLoadActionBackground(new VorticonDataLoad(mEp, flags, mDataPath, mEngineLoader));
     mEngineLoader.start();
 
     return true;
