@@ -102,7 +102,10 @@ private:
     int m_start_game_no;
     int m_start_level;
 
-	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);
+    bool scanSubDirectories(const std::string& path,
+                            const size_t maxdepth,
+                            const size_t startPermil,
+                            const size_t endPermil);
 	bool scanExecutables(const std::string& path);
 
     void getLabels();

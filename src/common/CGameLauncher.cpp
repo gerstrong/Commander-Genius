@@ -76,15 +76,14 @@ bool CGameLauncher::loadResources()
     // Scan VFS DIR_ROOT for exe's
     if (scanExecutables(DIR_ROOT))
         gamedetected = true;
-    mGameScanner.setPermilage(300);
+    mGameScanner.setPermilage(100);
     // Recursivly scan into DIR_ROOT VFS subdir's for exe's
-    if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT))
-        gamedetected = true;
-    mGameScanner.setPermilage(600);
+    if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT, 0, 200))
+        gamedetected = true;   
+
     // Recursivly scan into DIR_GAMES subdir's for exe's
-    if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES))
+    if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900))
         gamedetected = true;
-    mGameScanner.setPermilage(900);
 
     mpSelList = new CGUITextSelectionList();
 
@@ -168,13 +167,29 @@ struct FileListAdder
     }
 };
 
-bool CGameLauncher::scanSubDirectories(const std::string& path, size_t maxdepth)
+bool CGameLauncher::scanSubDirectories(const std::string& path,
+                                       const size_t maxdepth,
+                                       const size_t startPermil,
+                                       const size_t endPermil)
 {
     bool gamedetected = false;
 
 	std::set<std::string> dirs;
 	FileListAdder fileListAdder;
 	GetFileList(dirs, fileListAdder, path, false, FM_DIR);
+
+    size_t interval = dirs.size();
+
+    if(interval <= 0)
+        interval = 1;
+
+    size_t deltaPerMil = (endPermil-startPermil)/interval;
+    size_t permil = startPermil;
+
+    if(deltaPerMil < 1)
+        deltaPerMil = 1;
+
+    mGameScanner.setPermilage(startPermil);
 
 	for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
 	{
@@ -183,9 +198,19 @@ bool CGameLauncher::scanSubDirectories(const std::string& path, size_t maxdepth)
 		if(scanExecutables(newpath))
 			gamedetected = true;
 
-		if(maxdepth > 1 && scanSubDirectories(newpath, maxdepth - 1))
+        size_t lastPermil = permil + deltaPerMil;
+        if(lastPermil>endPermil)
+            lastPermil = endPermil;
+
+        if(maxdepth > 1 && scanSubDirectories(newpath, maxdepth - 1, permil, lastPermil))
 			gamedetected = true;
+
+        permil = lastPermil;
+
+        mGameScanner.setPermilage(permil);
 	}
+
+    mGameScanner.setPermilage(endPermil);
 
     return gamedetected;
 }
