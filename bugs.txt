@@ -4,7 +4,6 @@ NOTE: This list represents the most critical bugs in my opinion. I consider it a
 There is more stuff at github and also from emails I receive from people. Not everything is listed here.
 Nevertheless I take a look on those other resources as well and see what I can do.
 
-- load time very long and mostly stuck at around 60%
 - Check Multiplayer.
 - keen cannot carry other player.
 - Game gets frozen when in multiplayer one finishes the level

@@ -206,7 +206,6 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 			gamedetected = true;
 
         permil = lastPermil;
-
         mGameScanner.setPermilage(permil);
 	}
 
