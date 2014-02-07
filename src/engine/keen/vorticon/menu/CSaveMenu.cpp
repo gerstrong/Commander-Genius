@@ -33,7 +33,7 @@ m_overwrite(false)
 		if(i <= StateFileList.size())
 			text = StateFileList.at(i-1);
 
-		mpMenuDialog->addControl(new CGUIInputText( text, CGUIInputText::VORTICON ) );
+        mpMenuDialog->addControl(new CGUIInputText( text, CGUIInputText::VORTICON ) );
 	}
 
 	setMenuLabel("SAVEMENULABEL");

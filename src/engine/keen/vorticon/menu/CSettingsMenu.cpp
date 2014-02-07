@@ -29,13 +29,13 @@ namespace vorticon
 CSettingsMenu::CSettingsMenu() :
 VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 {
- 	mpMenuDialog->addControl(new GsButton( "Video",
+    mpMenuDialog->addControl(new Button( "Video",
 									new OpenMenuEvent( new CVideoSettings() ) ) );
 
-    mpMenuDialog->addControl(new GsButton( "Audio",
+    mpMenuDialog->addControl(new Button( "Audio",
                                     new OpenMenuEvent( new CAudioSettings() ) ) );
 
-	mpMenuDialog->addControl(new GsButton( "Options",
+    mpMenuDialog->addControl(new Button( "Options",
 									new OpenMenuEvent( new COptions() ) ) );
 
 
@@ -49,20 +49,20 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 	 * */
 
 #if defined (SINGLEPLAYER)
-	mpMenuDialog->addControl( new GsButton( "Controls",
+    mpMenuDialog->addControl( new Button( "Controls",
                                     new OpenMenuEvent(	new vorticon::CControlsettings(1) ) ) );
 #else
-    mpMenuDialog->addControl(new GsButton( "Controls",
+    mpMenuDialog->addControl(new Button( "Controls",
                                     new OpenMenuEvent( new vorticon::CPlayersSelection<OpenControlMenuEvent>() ) ) );
 #endif
 
 
 #if !defined(EMBEDDED)
-	mpMenuDialog->addControl( new GsButton( "Camera",
+    mpMenuDialog->addControl( new Button( "Camera",
 									new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
 
-	mpMenuDialog->addControl(new GsButton( "Profile",
+    mpMenuDialog->addControl(new Button( "Profile",
 									new OpenMenuEvent( new CProfilesMenu() ) ) );
 
 	setMenuLabel("CONFIGMENULABEL");

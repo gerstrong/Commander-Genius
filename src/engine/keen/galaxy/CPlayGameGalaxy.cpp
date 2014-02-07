@@ -391,10 +391,14 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         m_endgame = true;
         gMenuController.clearMenuStack();
     }
-
-
-    m_WorldMap.pumpEvent(evPtr);
-    m_LevelPlay.pumpEvent(evPtr);
+    else if(m_WorldMap.isActive())
+    {
+        m_WorldMap.pumpEvent(evPtr);
+    }
+    else if(m_LevelPlay.isActive())
+    {
+        m_LevelPlay.pumpEvent(evPtr);
+    }
 }
 
 /**

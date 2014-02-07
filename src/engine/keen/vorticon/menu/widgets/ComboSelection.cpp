@@ -148,6 +148,8 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
 
+    drawVorticonStyle(lRect);
+    /*
     if(!mEnabled)
         return;
 
@@ -173,7 +175,7 @@ void ComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     // Now lets draw the text of the list control
     GsFont &Font = gGraphics.getFont(mFontID);
 
-    Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+    Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );*/
 }
 
 }

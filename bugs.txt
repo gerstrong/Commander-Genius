@@ -5,6 +5,20 @@ There is more stuff at github and also from emails I receive from people. Not ev
 Nevertheless I take a look on those other resources as well and see what I can do.
 
 - Check Multiplayer.
+- MouseWheel should also work!
 - keen cannot carry other player.
-- Game gets frozen when in multiplayer one finishes the level
+- Game gets frozen when in multiplayer one finishes the level (Galaxy only)
 - Look for all asserts to ensure, that the functions work again properly
+- Controls settings do not work!
+- What about highscores in vorticons does it work.
+- Do the help dialogs in vorticon at least work
+
+
+Keen 1:
+
+- Momentum bei Ice Cannon viel zu stark
+
+Keen 4:
+- Mimrock springt instant wenn man sich auf selber höhe wie er befindet.
+- Level 1 secret (viele 1ups): Falling platform muss endlos fallen und nicht wieder zurückkehren
+- Zurückkehren von falling platform an sich zu langsam, muss in etwa so schnell wie der Fall sein.

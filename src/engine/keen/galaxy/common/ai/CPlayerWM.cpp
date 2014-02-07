@@ -129,9 +129,9 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
     // Events for the Player are processed here.
     if( const EventPlayerEndLevel* ev = dynamic_cast<const EventPlayerEndLevel*>(evPtr) )
     {
-        gEventManager.flush();
         if(ev->who == mSprVar)
         {            
+            gEventManager.flush();
             if(ev->sucess)
             {                
                 finishLevel(ev->levelObject);
@@ -967,16 +967,16 @@ bool CPlayerWM::finishLevel(const int object)
 	// if a door or other blocker was found remove it
 	int x, y;
 	Uint16 door = object + 0xD000;
-	while(mp_Map->findTile(door, &x, &y, 2))
+    while( mp_Map->findTile(door, &x, &y, 2) )
 	{
-		// Open blocks in case there are
+        // Remove blocks in case there are
 		mp_Map->setTile( x, y, 0, true, 1);
 		mp_Map->setTile( x, y, 0, true, 2);
 		mp_Map->redrawAt( x, y);
 	}
 
 	Uint16 flag_dest = object + 0xF000;
-	if(mp_Map->findTile(flag_dest, &x, &y, 2))
+    if( mp_Map->findTile(flag_dest, &x, &y, 2) )
 	{
 		// spawn the flag
 		const auto episode = g_pBehaviorEngine->getEpisode();
@@ -1011,8 +1011,7 @@ bool CPlayerWM::finishLevel(const int object)
 		}
 		
 
-		VectorD2<Uint32> dst(csfX, csfY);
-
+		VectorD2<Uint32> dst(csfX, csfY);       
 
         CFlag *pFlag = new CFlag(mp_Map, src, dst, mSprVar, true, true);
 		spawnObj(pFlag);

@@ -65,6 +65,42 @@ std::string CMapPlayGalaxy::getLevelName()
 
 void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
 {
+    if( const EventSpawnObject *ev = dynamic_cast<const EventSpawnObject*>(evPtr) )
+    {
+        std::shared_ptr<CGalaxySpriteObject> obj( static_cast<CGalaxySpriteObject*>(
+                            const_cast<CSpriteObject*>(ev->pObject) ) );
+        mObjectPtr.push_back( move(obj) );
+    }
+    else if( const EventSpawnFoot *ev = dynamic_cast<const EventSpawnFoot*>(evPtr) ) // Special Case where the Foot is created
+    {                                                                                // Episode 4 Secret level
+        // kill all the InchWorms in that case, so they can't do any spawning
+        for( auto obj=mObjectPtr.rbegin() ; obj!=mObjectPtr.rend() ; obj++ )
+        {
+            galaxy::CInchWorm *inchworm = dynamic_cast<galaxy::CInchWorm*>(obj->get());
+            if( inchworm != NULL )
+            {
+                inchworm->exists = false;
+            }
+        }
+
+
+        // Create the foot with Smoke Puff
+        int posX = ev->x;
+        int posY = ev->y-(4<<CSF);
+        for( int x=-1 ; x<2 ; x++ )
+        {
+            for( int y=-1 ; y<2 ; y++ )
+            {
+            std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+(y<<CSF), 0 ));
+            mObjectPtr.push_back( smoke );
+            }
+        }
+
+        std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
+        mObjectPtr.push_back( foot );
+    }
+
+
     for( auto obj = mObjectPtr.begin(); obj != mObjectPtr.end() ; obj++)
     {
         auto &objRef = *(obj->get());
@@ -146,51 +182,6 @@ void CMapPlayGalaxy::ponder(const float deltaT)
         }
 	}
 
-
-
-    CEventContainer &EventContainer = gEventManager;
-	if( EventSpawnObject *ev =  EventContainer.occurredEvent<EventSpawnObject>() )
-	{
-	    std::shared_ptr<CGalaxySpriteObject> obj( static_cast<CGalaxySpriteObject*>(
-						    const_cast<CSpriteObject*>(ev->pObject) ) );
-		mObjectPtr.push_back( move(obj) );
-		EventContainer.pop_Event();
-	}
-
-	// Special Case where the Foot is created
-	if( EventSpawnFoot *ev =  EventContainer.occurredEvent<EventSpawnFoot>() )
-	{
-		// kill all the InchWorms in that case, so they can't do any spawning
-        for( auto obj=mObjectPtr.rbegin() ;
-                  obj!=mObjectPtr.rend() ;
-                  obj++ )
-		{
-			galaxy::CInchWorm *inchworm = dynamic_cast<galaxy::CInchWorm*>(obj->get());
-			if( inchworm != NULL )
-			{
-				inchworm->exists = false;
-			}
-		}
-
-
-		// Create the foot with Smoke Puff
-		int posX = ev->x;
-		int posY = ev->y-(4<<CSF);
-		for( int x=-1 ; x<2 ; x++ )
-		{
-		    for( int y=-1 ; y<2 ; y++ )
-		    {
-            std::shared_ptr<CGalaxySpriteObject> smoke(new galaxy::CSmokePuff( &mMap, posX+(x<<CSF), posY+(y<<CSF), 0 ));
-			mObjectPtr.push_back( smoke );
-		    }
-		}
-
-		std::shared_ptr<CGalaxySpriteObject> foot(new galaxy::CFoot( &mMap, ev->foeID, 0x2EF4, posX, posY));
-		mObjectPtr.push_back( foot );
-
-		// Flush all the pending events. This help catch cases when more than one more of the worms try to create the foot
-		EventContainer.clear();
-	}
 
 }
 

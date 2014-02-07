@@ -17,7 +17,6 @@
 #include "common/CSettings.h"
 #include "CCameraSettings.h"
 #include "CVideoSettings.h"
-//#include "CSettingsMenu.h"
 #include "Utils.h"
 
 
@@ -33,6 +32,8 @@ static const char* aspectList[] =
 const unsigned int NUM_ASPECTS = sizeof(aspectList)/sizeof(char*);
 
 
+namespace vorticon
+{
 
 class toggleFullscreenFunctor : public InvokeFunctorEvent
 {
@@ -65,22 +66,22 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	for( int i = 10 ; i <= 120 ; i += 10 )
 		List.push_back( itoa (i) );
 
-	mpFPSSelection = new CGUINumberControl( "FPS", 10, 120, 10, 60, false );
+    mpFPSSelection = new NumberControl( "FPS", 10, 120, 10, 60, false );
 	mpMenuDialog->addControl( mpFPSSelection );
 
-    mpGameResSelection = new CGUIComboSelection( "GameRes",
+    mpGameResSelection = new ComboSelection( "GameRes",
         filledStrList(1, "?x?") );
     mpMenuDialog->addControl( mpGameResSelection );
 	
 #if !defined(EMBEDDED)	
 	
-    mpAspectSelection = new CGUIComboSelection( "Aspect",
+    mpAspectSelection = new ComboSelection( "Aspect",
 		filledStrList(1, "disabled") );
 	
 	mpMenuDialog->addControl( mpAspectSelection );
 
     mpFilterSelection =
-            new CGUIComboSelection( "Filter",
+            new ComboSelection( "Filter",
                 filledStrList( 4, "none",
                                   "scale2x",
                                   "scale3x",
@@ -88,29 +89,29 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
     mpMenuDialog->addControl( mpFilterSelection );
 
-	mpVSyncSwitch = new CGUISwitch( "VSync" );
+    mpVSyncSwitch = new Switch( "VSync" );
 	mpMenuDialog->addControl( mpVSyncSwitch );
 
-    mpResolutionSelection = new CGUIComboSelection( "Size",
+    mpResolutionSelection = new ComboSelection( "Size",
         filledStrList(1, "?x?") );
     mpMenuDialog->addControl( mpResolutionSelection );
 
-	mpFullScreenSwitch = new GsButton( "Unknown mode",
+    mpFullScreenSwitch = new Button( "Unknown mode",
 										new toggleFullscreenFunctor(*this) );
 	mpMenuDialog->addControl( mpFullScreenSwitch );
 #endif
 
 #if defined(USE_OPENGL)
-    mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
+    mpOpenGLSwitch = new Switch( "OpenGL" );
     mpMenuDialog->addControl( mpOpenGLSwitch );
 
-    mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
+    mpOGLFilterSelection = new ComboSelection( "OGL Filter",
         filledStrList( 2, "nearest", "linear" ) );
     mpMenuDialog->addControl( mpOGLFilterSelection );
 #endif
 
 
-    mpSFXSwitch = new CGUISwitch( "Special FX" );
+    mpSFXSwitch = new Switch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
 
 	setMenuLabel("OPTIONSMENULABEL");
@@ -255,4 +256,6 @@ void CVideoSettings::release()
 	g_pSettings->saveDrvCfg();
 
     gMenuController.updateGraphics();
+}
+
 }
