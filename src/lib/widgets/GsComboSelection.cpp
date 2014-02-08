@@ -127,26 +127,6 @@ void CGUIComboSelection::processLogic()
 }
 
 
-void CGUIComboSelection::drawVorticonStyle(SDL_Rect& lRect)
-{
-	if(!mEnabled)
-		return;
-
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
-
-	Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y, false );
-	Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, lRect.y, false );
-	const std::string text = (*mOLCurrent);
-	Font.drawFont( blitsfc, text, lRect.x+24+(mText.size()+2)*8, lRect.y, false );
-
-	drawTwirl(lRect);
-
-}
-
-
 void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates

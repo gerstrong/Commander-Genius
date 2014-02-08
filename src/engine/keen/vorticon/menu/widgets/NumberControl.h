@@ -29,14 +29,7 @@ public:
             const bool slider);
 
 
-	bool sendEvent(const InputCommands command);
-
-    virtual void setupButtonSurface() {}
-
     std::string sliderStr();
-
-	void drawVorticonStyle(SDL_Rect& lRect);
-
 
 	void processRender(const GsRect<float> &RectDispCoordFloat);
 };

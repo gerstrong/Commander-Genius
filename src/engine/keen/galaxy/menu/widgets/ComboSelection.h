@@ -20,6 +20,12 @@ public:
     void setSelection( const std::string& selectionText );
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
+
+private:
+    GsSurface mTextDarkSfc;
+    GsSurface mTextLightSfc;
+    GsSurface mTextDisabledSfc;
+
 };
 
 }

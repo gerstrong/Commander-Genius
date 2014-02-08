@@ -22,8 +22,6 @@ public:
     CGUIComboSelection( const std::string& text,
                         const std::list<std::string>& optionsList );
 
-	void setupButtonSurface(const std::string &optionText);
-
 	const std::string& getSelection();
 
     virtual void cycleOption();
@@ -36,8 +34,6 @@ public:
 
 	void processLogic();
 
-	virtual void drawVorticonStyle(SDL_Rect& lRect);
-
 	virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
 protected:
@@ -45,13 +41,6 @@ protected:
 	std::string mText;
 	std::list<std::string> mOptionsList;
 	std::list<std::string>::const_iterator mOLCurrent;
-
-    GsSurface mTextDarkSfc;
-    GsSurface mTextLightSfc;
-    GsSurface mTextDisabledSfc;
-
-	void (CGUIComboSelection::*drawButton)(SDL_Rect&);
-
 };
 
 #endif /* CGUICOMBOSELECTION_H_ */

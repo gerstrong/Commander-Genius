@@ -4,9 +4,8 @@ NOTE: This list represents the most critical bugs in my opinion. I consider it a
 There is more stuff at github and also from emails I receive from people. Not everything is listed here.
 Nevertheless I take a look on those other resources as well and see what I can do.
 
-- Check Multiplayer.
 - MouseWheel should also work!
-- keen cannot carry other player.
+- keen cannot carry the other player anymore.
 - Game gets frozen when in multiplayer one finishes the level (Galaxy only)
 - Look for all asserts to ensure, that the functions work again properly
 - Controls settings do not work!

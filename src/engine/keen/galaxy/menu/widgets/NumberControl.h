@@ -15,7 +15,9 @@ public:
                   const int deltaValue,
                   const int value);
 
-    virtual void setupButtonSurface();
+    void setupButtonSurface();
+
+    void processLogic();
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };

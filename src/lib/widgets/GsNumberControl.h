@@ -33,8 +33,6 @@ public:
 	const int getSelection();
 	void setSelection( const int value );
 
-    virtual void setupButtonSurface() {}
-
     void processLogic();
 
 	void processRender(const GsRect<float> &RectDispCoordFloat);
@@ -55,12 +53,13 @@ protected:
 
     const int mStartValue;
     const int mEndValue;
+    bool mMustRedraw;
 
 private:
 
 	const int mDeltaValue;
 
-	static int mTwirliconID;
+	static int mTwirliconID;    
 };
 
 #endif /* CGUINUMBERCONTROL_H_ */

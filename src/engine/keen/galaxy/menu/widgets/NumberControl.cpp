@@ -17,7 +17,7 @@ NumberControl::NumberControl(const std::string &text,
 CGUINumberControl(text, startValue, endValue,
                     deltaValue, value, false)
 {
-
+    setupButtonSurface();
 }
 
 
@@ -34,6 +34,18 @@ void NumberControl::setupButtonSurface()
     Font.createTextSurface(mTextLightSfcR, showTextR, 84, 234, 84 );
     Font.createTextSurface(mTextLightSfcL, showTextL, 84, 234, 84 );
     Font.createTextSurface(mTextDisabledSfc, showText, 123, 150, 123 );
+}
+
+
+void NumberControl::processLogic()
+{
+    CGUINumberControl::processLogic();
+
+    if(mMustRedraw)
+    {
+        mMustRedraw = false;
+        setupButtonSurface();
+    }
 }
 
 

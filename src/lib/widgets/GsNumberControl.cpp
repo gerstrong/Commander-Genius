@@ -36,17 +36,6 @@ mEndValue(endValue),
 mDeltaValue(deltaValue)
 {
 	mFontID = 1;
-    
-/*	if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
-	{
-	    drawButton = &CGUINumberControl::drawVorticonStyle;
-	}
-	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-	{
-
-    }*/
-	
-	setupButtonSurface();
 }
 
 
@@ -93,14 +82,8 @@ void CGUINumberControl::setSelection( const int value )
 	else
 		mValue = value;
 
-	setupButtonSurface();
+    mMustRedraw = true;
 }
-
-
-
-
-
-
 
 void CGUINumberControl::processLogic()
 {
@@ -151,7 +134,7 @@ void CGUINumberControl::processLogic()
 						increment();
 				}
 
-				setupButtonSurface();
+                mMustRedraw = true;
 				gInput.m_EventList.pop_Event();
 			}
 		}
