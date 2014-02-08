@@ -48,7 +48,6 @@ void NumberControl::processLogic()
     }
 }
 
-
 void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates

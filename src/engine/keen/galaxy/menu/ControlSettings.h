@@ -44,46 +44,44 @@ private:
 };
 
 
-// Movement config Part
-class CControlSettingsMovement : public GalaxyMenu
+class CControlSettingsBase : public GalaxyMenu
 {
 public:
-	CControlSettingsMovement(const int selectedPlayer);
+    CControlSettingsBase(const int selectedPlayer);
 
-	void init();
-    void ponder();
-	void release();
+    virtual void ponder(const float deltaT);
+    virtual void release();
 
-private:
-
-	int mSelectedPlayer;
+protected:
+    int mSelectedPlayer;
 
     std::vector<GalaxyButton*> mpButtonList;
-	std::map<InputCommands, std::string> mCommandName;
-	
-	bool mapping;
+    std::map<InputCommands, std::string> mCommandName;
+
+    bool mapping;
+};
+
+
+// Movement config Part
+class CControlSettingsMovement : public CControlSettingsBase
+{
+public:
+    CControlSettingsMovement(const int selectedPlayer) :
+        CControlSettingsBase(selectedPlayer) {}
+
+    void init();
 };
 
 
 
 // Buttons config Part
-class CControlSettingsButtons : public GalaxyMenu
+class CControlSettingsButtons : public CControlSettingsBase
 {
 public:
-	CControlSettingsButtons(const int selectedPlayer);
+    CControlSettingsButtons(const int selectedPlayer) :
+        CControlSettingsBase(selectedPlayer) {}
 
 	void init();
-    void ponder();
-	void release();
-
-private:
-
-	int mSelectedPlayer;
-
-    std::vector<GalaxyButton*> mpButtonList;
-	std::map<InputCommands, std::string> mCommandName;
-	
-	bool mapping;
 };
 
 // Create the Control-Menu for the indicated Player

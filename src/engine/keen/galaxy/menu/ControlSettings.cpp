@@ -132,14 +132,51 @@ void CControlsettings::release()
 
 
 // Movements Parts of the Control Settings
-CControlSettingsMovement::CControlSettingsMovement(const int selectedPlayer) :
+CControlSettingsBase::CControlSettingsBase(const int selectedPlayer) :
 GalaxyMenu( GsRect<float>(0.01f, (1.0f-((MAX_COMMANDS/2.0f)+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
 mSelectedPlayer(selectedPlayer)
 {}
 
 
+void CControlSettingsBase::ponder(const float deltaT)
+{
+    if( !mapping && gInput.MappingInput() ) // mapping changed!
+    {
+        mapping = true;
+    }
+    else if( !gInput.MappingInput() )
+    {
+        if(mapping) // mapping changed!
+        {
+            mapping = false;
+
+            GalaxyButton *button = dynamic_cast<GalaxyButton*>(mpMenuDialog->CurrentControl());
+            if(button)
+            {
+                int pos; unsigned char input;
+                std::string evName = gInput.getNewMappedEvent(pos, input);
+                InputCommands com = static_cast<InputCommands>(pos);
+                button->setText(mCommandName[com] + evName);
+            }
+        }
+
+        GalaxyMenu::ponder(0);
+    }
+}
+
+void CControlSettingsBase::release()
+{
+    if(!mCommandName.empty())
+        mCommandName.clear();
+
+    gInput.saveControlconfig();
+}
+
+
+
 void CControlSettingsMovement::init()
 {
+    mapping = false;
 	mCommandName[IC_LEFT]		= "Left:   ";
 	mCommandName[IC_RIGHT]		= "Right:  ";
 	mCommandName[IC_UP]		= "Up:     ";
@@ -169,53 +206,12 @@ void CControlSettingsMovement::init()
 	setMenuLabel("MOVEMENULABEL");
 }
 
-void CControlSettingsMovement::ponder()
-{
-    if( !mapping )
-    {
-	if(gInput.MappingInput()) // mapping changed!
-	    mapping = true;
-    }
-    else
-    {
-	if( !gInput.MappingInput() )
-	{
-	    // mapping changed!
-	    mapping = false;
-	 
-        GalaxyButton *button = dynamic_cast<GalaxyButton*>(mpMenuDialog->CurrentControl());
-        if(button)
-        {
-            int pos; unsigned char input;
-            std::string evName = gInput.getNewMappedEvent(pos, input);
-            InputCommands com = static_cast<InputCommands>(pos);
-            button->setText(mCommandName[com] + evName);
-        }
-    }
-    }	
-    GalaxyMenu::ponder(0);
-}
-
-void CControlSettingsMovement::release()
-{
-	if(!mCommandName.empty())
-		mCommandName.clear();
-	
-	gInput.saveControlconfig();
-}
-
 
 
 // Movements Parts of the Control Settings
-CControlSettingsButtons::CControlSettingsButtons(const int selectedPlayer) :
-GalaxyMenu( GsRect<float>(0.01f, (1.0f-(MAX_COMMANDS/2.0f+2)*0.06f)*0.5f, 0.98f,(MAX_COMMANDS/2.0f+2)*0.06f) ),
-mSelectedPlayer(selectedPlayer),
-mapping(false)
-{}
-
-
 void CControlSettingsButtons::init()
 {
+    mapping = false;
 	mCommandName[IC_JUMP] 		= "Jump:   ";
 	mCommandName[IC_POGO] 		= "Pogo:   ";
 	mCommandName[IC_FIRE]		= "Fire:   ";
@@ -246,40 +242,5 @@ void CControlSettingsButtons::init()
 	setMenuLabel("BUTTONMENULABEL");
 }
 
-void CControlSettingsButtons::ponder()
-{
-    if( !mapping )
-    {
-        if(gInput.MappingInput()) // mapping changed!
-            mapping = true;
-    }
-    else
-    {
-        if( !gInput.MappingInput() )
-        {
-            // mapping changed!
-            mapping = false;
-
-            GalaxyButton *button = dynamic_cast<GalaxyButton*>(mpMenuDialog->CurrentControl());
-            if(button)
-            {
-                int pos; unsigned char input;
-                std::string evName = gInput.getNewMappedEvent(pos, input);
-                InputCommands com = static_cast<InputCommands>(pos);
-                button->setText(mCommandName[com] + evName);
-            }
-        }
-    }
-    
-    GalaxyMenu::ponder(0);
-}
-
-void CControlSettingsButtons::release()
-{
-	if(!mCommandName.empty())
-		mCommandName.clear();
-	
-	gInput.saveControlconfig();
-}
 
 }

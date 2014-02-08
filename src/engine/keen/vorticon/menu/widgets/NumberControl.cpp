@@ -67,7 +67,7 @@ void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     // Now lets draw the text of the list control
     GsFont &Font = gGraphics.getFont(mFontID);

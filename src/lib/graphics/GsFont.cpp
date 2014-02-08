@@ -388,7 +388,11 @@ void GsFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint
 	SDL_BlitSurface(mFontSurface.get(), &scrrect, dst, &dstrect);
 }
 
-void GsFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
+void GsFont::drawFont(SDL_Surface* dst,
+                      const std::string& text,
+                      const Uint16 xoff,
+                      const Uint16 yoff,
+                      const bool highlight)
 {
 	unsigned int i,x=xoff,y=yoff;
 
@@ -501,7 +505,13 @@ void GsFont::drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Ui
 	drawFontAlpha(dst, text, xmidpos, ymidpos, alpha);
 }
 
-void GsFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, bool highlight)
+void GsFont::drawFontCentered(SDL_Surface* dst,
+                              const std::string& text,
+                              const Uint16 x,
+                              const Uint16 width,
+                              const Uint16 yoff,
+                              const Uint16 height,
+                              const bool highlight)
 {
 	Uint16 xmidpos = 0;
 	Uint16 ymidpos = 0;

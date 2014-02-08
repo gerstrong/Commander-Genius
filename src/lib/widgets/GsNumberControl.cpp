@@ -156,29 +156,32 @@ void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 	// Transform to the display coordinates
 	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
-	SDL_Rect lRect = displayRect.SDLRect();
+    GsRect<Uint16> lRect(displayRect);
 
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     if( mReleased )
     {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
+        blitsfc.drawRect( lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
     }
     else if( mPressed )
     {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
+        blitsfc.drawRect( lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
     }
     else if( mHovered )
     {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
+        blitsfc.drawRect( lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
     }
     else
     {
-        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
+        blitsfc.drawRect( lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
     }
 
     // Now lets draw the text of the list control
     GsFont &Font = gGraphics.getFont(mFontID);
 
-    Font.drawFontCentered( blitsfc, mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+    Font.drawFontCentered( blitsfc,
+                           mText,
+                           lRect,
+                           false );
 }

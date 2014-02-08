@@ -16,14 +16,6 @@ public:
     GsWeakSurface(SDL_Surface *sfc) :
         mpSurface(sfc) {}
 
-    /*GsWeakSurface(GsSurface *sfc) :
-        mpSurface(sfc->getSDLSurface())
-    {
-        sfc->disownSfc();
-    }*/
-
-
-
     /**
      * \brief Draws rect different than the SDL_Fillrect, because it has a contour and is filled
      * \param sfc Surface where to draw it

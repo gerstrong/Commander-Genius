@@ -86,15 +86,37 @@ public:
 	void getBGColour(Uint8 *r, Uint8 *g, Uint8 *b, const bool highlight = false);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
-	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false);
-	void drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, const Uint8 alpha);
+    void drawFont(SDL_Surface* dst, const std::string& text, const Uint16 xoff, const Uint16 yoff, const bool highlight = false);
+    void drawFont(GsWeakSurface &dst, const std::string& text, const Uint16 xoff, const Uint16 yoff, const bool highlight = false)
+    {
+        drawFont(dst.getSDLSurface(), text, xoff, yoff, highlight);
+    }
+
+    void drawFontAlpha(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, const Uint8 alpha);
 	void drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, bool highlight = false);
 	void drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, bool highlight = false);
 	void drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, const Uint8 alpha);
 	void drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, const Uint8 alpha);
 	void drawFontCenteredAlpha(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, const Uint8 alpha);
-	void drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, Uint16 height, bool highlight = false);
-	void drawMap(SDL_Surface* dst);
+    void drawFontCentered(SDL_Surface* dst,
+                          const std::string& text,
+                          const Uint16 x,
+                          const Uint16 width,
+                          const Uint16 yoff,
+                          const Uint16 height,
+                          const bool highlight = false);
+
+    void drawFontCentered(GsWeakSurface &dst,
+                          const std::string& text,
+                          const GsRect<Uint16> &rect,
+                          const bool highlight = false)
+    {
+        drawFontCentered(dst.getSDLSurface(),
+                         text, rect.x, rect.w, rect.y, rect.h,
+                         highlight);
+    }
+
+    void drawMap(SDL_Surface* dst);
 
 private:
 	std::shared_ptr<SDL_Surface> mFontSurface;

@@ -78,11 +78,11 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 			mTwirliconID = 9;
 	}
 
-    if( mPressed || mSelected )
+    if( mPressed )
 	{
 		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+12, lRect.y );
 	}
-	else if( mHovered )
+    else if( mHovered || mSelected )
 	{
 		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+8, lRect.y );
 	}

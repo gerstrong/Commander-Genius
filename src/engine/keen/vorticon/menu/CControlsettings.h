@@ -28,8 +28,7 @@ class CControlsettings : public VorticonMenu
 public:
 	CControlsettings(const int selectedPlayer);
 
-	void init();
-
+    void init();
 	void release();
 
 private:
@@ -44,46 +43,44 @@ private:
 };
 
 
-// Movement config Part
-class CControlSettingsMovement : public VorticonMenu
+class CControlSettingsBase : public VorticonMenu
 {
 public:
-	CControlSettingsMovement(const int selectedPlayer);
+    CControlSettingsBase(const int selectedPlayer);
 
-	void init();
-    void ponder();
-	void release();
+    virtual void ponder(const float deltaT);
+    void release();
 
-private:
-
-	int mSelectedPlayer;
+protected:
+    int mSelectedPlayer;
 
     std::vector<Button*> mpButtonList;
-	std::map<InputCommands, std::string> mCommandName;
-	
-	bool mapping;
+    std::map<InputCommands, std::string> mCommandName;
+
+    bool mapping;
+};
+
+
+
+
+// Movement config Part
+class CControlSettingsMovement : public CControlSettingsBase
+{
+public:
+    CControlSettingsMovement(const int selectedPlayer) :
+        CControlSettingsBase(selectedPlayer) {}
+    void init();
 };
 
 
 
 // Buttons config Part
-class CControlSettingsButtons : public VorticonMenu
+class CControlSettingsButtons : public CControlSettingsBase
 {
 public:
-	CControlSettingsButtons(const int selectedPlayer);
-
+    CControlSettingsButtons(const int selectedPlayer) :
+        CControlSettingsBase(selectedPlayer) {}
 	void init();
-    void ponder();
-	void release();
-
-private:
-
-	int mSelectedPlayer;
-
-    std::vector<Button*> mpButtonList;
-	std::map<InputCommands, std::string> mCommandName;
-	
-	bool mapping;
 };
 
 // Create the Control-Menu for the indicated Player

@@ -9,10 +9,13 @@
 #define COPTIONS_H_
 
 #include "VorticonMenu.h"
-#include <widgets/GsSwitch.h>
+#include "widgets/Switch.h"
 #include <list>
 
 #include "common/CBehaviorEngine.h"
+
+namespace vorticon
+{
 
 class COptions : public VorticonMenu
 {
@@ -26,8 +29,10 @@ public:
 	void release();
 
 private:
-	std::list<CGUISwitch*> mpOptionList;
+    std::list<Switch*> mpOptionList;
 	stOption *mpOption;
 };
+
+}
 
 #endif /* COPTIONS_H_ */
