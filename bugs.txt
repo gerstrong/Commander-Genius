@@ -4,13 +4,10 @@ NOTE: This list represents the most critical bugs in my opinion. I consider it a
 There is more stuff at github and also from emails I receive from people. Not everything is listed here.
 Nevertheless I take a look on those other resources as well and see what I can do.
 
-- MouseWheel should also work!
-- keen cannot carry the other player anymore.
-- Game gets frozen when in multiplayer one finishes the level (Galaxy only)
-- Look for all asserts to ensure, that the functions work again properly
-- Controls settings do not work!
-- What about highscores in vorticons does it work.
-- Do the help dialogs in vorticon at least work
+- Galaxy, when Keen finishes a level it doesn't look that good! Check! -> Transition effect is bad!
+- What about highscores in vorticons does it work?
+- Do the help dialogs in vorticon at least work?
+- Changing Games Resolution when game is running provides a big mess. ScrollBuffer is still wrong! (Tested in Galaxy)
 
 
 Keen 1:

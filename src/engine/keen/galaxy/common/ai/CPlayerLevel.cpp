@@ -599,7 +599,6 @@ void CPlayerLevel::getTouchedBy(CSpriteObject &theObject)
     {
         if(player->getYDownPos() < getYUpPos()+(6<<STC) )
         {
-
             // The other keen might be able use this one to reach higher places
             const int myAction = getActionNumber();
 
@@ -2614,12 +2613,9 @@ void CPlayerLevel::process()
 	    // TODO: Need to spawn other messages here!
 	    g_pMusicPlayer->stop();
 	    g_pSound->playSound( SOUND_LEVEL_DONE );
-        //CEventContainer& EventContainer = gEventManager;
 	    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        //EventContainer.wait(1.0f);
-        showMsgWithBmp(loading_text, "KEENTHUMBSUP", LEFT);
-        //gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
-        assert(0);
+        showMsgWithBmp(loading_text, "KEENTHUMBSUP", LEFT,
+                       new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         m_Inventory.Item.m_gem.clear();
         m_Inventory.Item.fuse_levels_completed++;
 	    mp_Map->mFuseInLevel = false;

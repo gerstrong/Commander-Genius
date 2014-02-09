@@ -512,7 +512,6 @@ void CMineShards::process()
 					       "The original epilog is under construction.");
 
         showMsg(end_text, new EventEndGamePlay());
-        assert(0);
 		dead = true;
 		exists = false;
 

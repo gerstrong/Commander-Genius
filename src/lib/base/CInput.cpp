@@ -622,13 +622,13 @@ void CInput::pollEvents()
                 gPointDevice.mPointingState.mActionButton = 1;
                 gPointDevice.mPointingState.mPos = Pos;
             }
-            else if(Event.button.button == 4) // scroll down
+            else if(Event.button.button == 4) // scroll up
             {                
-                gEventManager.add( new MouseWheelEvent( CVec(0.0, 1.0) ) );
-            }
-            else if(Event.button.button == 5) // scroll up
-            {
                 gEventManager.add( new MouseWheelEvent( CVec(0.0, -1.0) ) );
+            }
+            else if(Event.button.button == 5) // scroll down
+            {
+                gEventManager.add( new MouseWheelEvent( CVec(0.0, 1.0) ) );
             }
 
 			break;
