@@ -240,13 +240,15 @@ public:
 
     void shutdown();
 
-	// Input Events
-    CEventContainer m_EventList;
-
 	bool MappingInput()
 	{ return remapper.mappingInput; }
 
 private:
+
+    // Input Events
+    CEventContainer m_EventList;
+
+
 	SDL_Event Event;
 	std::list<SDL_Joystick*> mp_Joysticks;
 

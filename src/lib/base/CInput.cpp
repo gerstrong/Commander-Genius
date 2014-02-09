@@ -524,6 +524,8 @@ void CInput::transMouseRelCoord(CVec &Pos,
  */
 void CInput::pollEvents()
 {
+    if(!m_EventList.empty())
+        m_EventList.clear();
 
     if(remapper.mappingInput)
     {
@@ -612,10 +614,23 @@ void CInput::pollEvents()
 #endif
 
 		case SDL_MOUSEBUTTONDOWN:
-            transMouseRelCoord(Pos, Event.motion, clickGameArea);
-            m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
-            gPointDevice.mPointingState.mActionButton = 1;
-            gPointDevice.mPointingState.mPos = Pos;
+
+            if(Event.button.button <= 3)
+            {
+                transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
+                gPointDevice.mPointingState.mActionButton = 1;
+                gPointDevice.mPointingState.mPos = Pos;
+            }
+            else if(Event.button.button == 4) // scroll down
+            {                
+                gEventManager.add( new MouseWheelEvent( CVec(0.0, 1.0) ) );
+            }
+            else if(Event.button.button == 5) // scroll up
+            {
+                gEventManager.add( new MouseWheelEvent( CVec(0.0, -1.0) ) );
+            }
+
 			break;
 
 		case SDL_MOUSEBUTTONUP:

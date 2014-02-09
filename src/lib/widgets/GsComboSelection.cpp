@@ -85,45 +85,17 @@ void CGUIComboSelection::setList(const char **strArray, const int numElem)
 
 
 void CGUIComboSelection::processLogic()
-{
+{        
 	if(!mEnabled)
 		return;
 
-	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( PointingDevEvent *mouseevent = gInput.m_EventList.occurredEvent<PointingDevEvent>() )
-	{
-		CVec MousePos = mouseevent->Pos;
+    processPointingState();
 
-		if( mRect.HasPoint(MousePos) )
-		{
-			if(mouseevent->Type == PDE_MOVED)
-			{
-				mHovered = true;
-				gInput.m_EventList.pop_Event();
-			}
-			else if(mouseevent->Type == PDE_BUTTONDOWN)
-			{
-                mPressed = true;
-				gInput.m_EventList.pop_Event();
-			}
-			else if(mouseevent->Type == PDE_BUTTONUP)
-			{
-                mReleased = true;
-				mHovered = true;
-                mPressed = false;
-
-				cycleOption();
-
-				gInput.m_EventList.pop_Event();
-			}
-		}
-		else
-		{
-			mHovered = false;
-            mPressed = false;
-            mReleased = false;
-		}
-	}
+    // If combo selecton was pushed and gets released, cycle one option
+    if(mReleased)
+    {
+        cycleOption();
+    }
 }
 
 

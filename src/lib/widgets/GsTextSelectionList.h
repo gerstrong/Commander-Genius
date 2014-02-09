@@ -32,7 +32,9 @@ public:
 	void setBackButtonEvent(CEvent *ev);
 
 	bool sendEvent(const InputCommands command);
-	void addText(const std::string &text);
+	void addText(const std::string &text);    
+    void scrollUp();
+    void scrollDown();
 	void processLogic();
     void processRender(const GsRect<float> &RectDispCoordFloat);
     void drawScrollBar(const SDL_Rect &lRect);

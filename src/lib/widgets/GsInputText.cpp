@@ -86,38 +86,13 @@ void CGUIInputText::processLogic()
 		mReleased = false;
 	}
 
-	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( PointingDevEvent *mouseevent = gInput.m_EventList.occurredEvent<PointingDevEvent>() )
-	{
-		CVec MousePos = mouseevent->Pos;
+    processPointingState();
 
-		if( mRect.HasPoint(MousePos) )
-		{
-			if(mouseevent->Type == PDE_MOVED)
-			{
-				mHovered = true;
-				gInput.m_EventList.pop_Event();
-			}
-			else if(mouseevent->Type == PDE_BUTTONDOWN)
-			{
-				mPressed = true;
-				mTyping = !mTyping;
-				gInput.m_EventList.pop_Event();
-			}
-			else if(mouseevent->Type == PDE_BUTTONUP)
-			{
-				mReleased = true;
-				gInput.m_EventList.pop_Event();
-			}
-		}
-		else
-		{
-
-			mHovered = false;
-			mPressed = false;
-			mReleased = false;
-		}
-	}
+    // If Input Text control was clicked
+    if(mReleased)
+    {
+        mTyping = !mTyping;
+    }
 }
 
 

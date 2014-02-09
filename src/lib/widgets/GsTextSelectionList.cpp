@@ -88,6 +88,22 @@ void CGUITextSelectionList::addText(const std::string &text)
 	mItemList.push_back(text);
 }
 
+
+void CGUITextSelectionList::scrollUp()
+{
+    if(mScrollPos > 0)
+        mScrollPos--;
+}
+
+
+void CGUITextSelectionList::scrollDown()
+{
+    if(mScrollPos < mMaxScrollAmt)
+        mScrollPos++;
+}
+
+
+
 void CGUITextSelectionList::processLogic()
 {
 	// Here we check if the mouse-cursor/Touch entry clicked on something!!
@@ -110,7 +126,7 @@ void CGUITextSelectionList::processLogic()
 
     GsPointingState &pointingState = gPointDevice.mPointingState;
 
-    processPointingState();
+    processPointingState();        
 
     CVec MousePos = pointingState.mPos;
 
@@ -136,13 +152,11 @@ void CGUITextSelectionList::processLogic()
 
                 if(MousePos.y < midPart_y) // Go up!
                 {
-                    if(mScrollPos > 0)
-                        mScrollPos--;
+                    scrollUp();
                 }
                 else if(MousePos.y > midPart_y) // Go down!
                 {
-                    if(mScrollPos < mMaxScrollAmt)
-                        mScrollPos++;
+                    scrollDown();
                 }
             }
         }

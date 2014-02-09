@@ -51,6 +51,14 @@ struct PointingDevEvent : CEvent
 };
 
 
+struct MouseWheelEvent : CEvent
+{
+    CVec amount;
+    MouseWheelEvent(const CVec &newAmount ) :
+        amount(newAmount) {}
+};
+
+
 struct CommandEvent : public CEvent
 {
 	CommandEvent(const InputCommands command) :

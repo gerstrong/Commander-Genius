@@ -436,9 +436,6 @@ void CGUIDialog::processLogic()
             sel++;
         }
     }
-
-    if(!gInput.m_EventList.empty())
-        gInput.m_EventList.clear();
 }
 
 void CGUIDialog::processRendering()

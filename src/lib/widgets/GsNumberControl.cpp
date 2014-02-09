@@ -8,8 +8,10 @@
 #include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
+#include <base/PointDevice.h>
 #include <base/utils/StringUtils.h>
+
 
 #include "GsNumberControl.h"
 
@@ -87,66 +89,61 @@ void CGUINumberControl::setSelection( const int value )
 
 void CGUINumberControl::processLogic()
 {
-	// Here we check if the mouse-cursor/Touch entry clicked on our Button
-	if( PointingDevEvent *mouseevent = gInput.m_EventList.occurredEvent<PointingDevEvent>() )
-	{
-		CVec MousePos = mouseevent->Pos;
+    GsPointingState &pointingState = gPointDevice.mPointingState;
 
-		if( mRect.HasPoint(MousePos) )
-		{
-            const float xMid = mRect.x+(mRect.w)/2.0f;
+    const bool hasPoint = mRect.HasPoint(pointingState.mPos);
+    const bool bDown = (pointingState.mActionButton>0);
 
-			if(mouseevent->Type == PDE_MOVED)
-			{
-				mDecSel = false;
-				mIncSel = false;
+    const float xMid = mRect.x+(mRect.w/2.0f);
 
-                if( MousePos.x < xMid )
-					mDecSel = true;
-                else if( MousePos.x > xMid )
-					mIncSel = true;
+    mReleased = false;
 
-				mHovered = true;
-				gInput.m_EventList.pop_Event();
-			}
-			else if(mouseevent->Type == PDE_BUTTONDOWN)
-			{
-				mPressed = true;
-				gInput.m_EventList.pop_Event();
-			}
-			else if(mouseevent->Type == PDE_BUTTONUP)
-			{
-				mReleased = true;
-				mHovered = true;
-				mPressed = false;
+    mDecSel = false;
+    mIncSel = false;
+
+    CVec mousePos = pointingState.mPos;
+
+    if( mousePos.x < xMid )
+        mDecSel = true;
+    else if( mousePos.x > xMid )
+        mIncSel = true;
 
 
-                if( MousePos.x < xMid )
-				{
-					// Cycle through the values
-					if( mValue > mStartValue )
-						decrement();
-				}
-                else if( MousePos.x > xMid )
-				{
-					// Cycle through the values
-					if( mValue < mEndValue )
-						increment();
-				}
+    if(!bDown && mPressed)
+    {
+        mPressed = false;
 
-                mMustRedraw = true;
-				gInput.m_EventList.pop_Event();
-			}
-		}
-		else
-		{
-			mIncSel = false;
-			mDecSel = false;
-			mHovered = false;
-			mPressed = false;
-			mReleased = false;
-		}
-	}
+        if(hasPoint)
+        {
+            mReleased = true;
+        }
+    }
+
+    if(!bDown || mPressed)
+    {
+        mHovered = hasPoint;
+    }
+
+    if(mHovered && bDown)
+    {
+        mPressed = true;
+
+        if( mDecSel )
+        {
+            // Cycle through the values -> go one value down
+            if( mValue > mStartValue )
+                decrement();
+        }
+        else if( mIncSel )
+        {
+            // Cycle through the values -> go one value up
+            if( mValue < mEndValue )
+                increment();
+        }
+
+        mMustRedraw = true;
+    }
+
 }
 
 

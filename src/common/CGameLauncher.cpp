@@ -352,6 +352,20 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 
         gEffectController.setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
     }
+
+    // Check Scroll events happening on this Launcher
+    if( const MouseWheelEvent *mwe = dynamic_cast<const MouseWheelEvent*>(evPtr) )
+    {
+        // Wrapper for the simple mouse scroll event
+        if(mwe->amount.y < 0.0)
+        {
+            mLauncherDialog.sendEvent(new CommandEvent( IC_UP ));
+        }
+        else if(mwe->amount.y > 0.0)
+        {
+            mLauncherDialog.sendEvent(new CommandEvent( IC_DOWN ));
+        }
+    }
 }
 
 
@@ -373,7 +387,6 @@ void CGameLauncher::ponder(const float deltaT)
         m_mustquit = true;
         return;
     }
-
 
     // Command (Keyboard/Joystick) are handled here
     for( int cmd = IC_LEFT ; cmd < MAX_COMMANDS ; cmd++ )
