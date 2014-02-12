@@ -122,6 +122,12 @@ public:
 
     }
 
+    Uint16 width() const
+    {   return mpSurface->w;   }
+
+    Uint16 height() const
+    {   return mpSurface->h;   }
+
     // bool operator
     operator bool() const
     {
@@ -144,7 +150,7 @@ class GsSurface : public GsWeakSurface
 {
 public:
 
-    GsSurface() {}
+    GsSurface() : GsWeakSurface() {}
 
     GsSurface(SDL_Surface *sfc) :
         GsWeakSurface(sfc) {}
@@ -180,18 +186,6 @@ public:
         mpSurface = SDL_CreateRGBSurface(flags, width, height, depth,
                                          Rmask, Gmask, Bmask, Amask);
     }
-
-  /*  void set(GsSurface *surface)
-    {
-        if(mpSurface != nullptr)
-            SDL_FreeSurface(mpSurface);
-
-        mpSurface = surface->getSDLSurface();
-
-        surface->disownSfc();
-    }
-*/
-
 };
 
 

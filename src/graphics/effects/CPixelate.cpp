@@ -77,8 +77,6 @@ void CPixelate::getSnapshot()
     #endif
     }
 
-    //SDL_FillRect(mp_OldSurface, nullptr, SDL_MapRGB(mp_OldSurface->format, 0x0, 0x0, 0x0) );
-
     SDL_BlitSurface(gVideoDriver.getBlitSurface(), nullptr, mp_OldSurface, nullptr);
 }
 

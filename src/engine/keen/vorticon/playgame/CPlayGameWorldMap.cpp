@@ -127,7 +127,7 @@ void CPlayGameVorticon::goBacktoMap()
 
         const int varId = player->getSpriteVariantId();
 
-		// Now, that the level is complete, sprite can be shown again, and now goto map!
+        // Now, that the level is complete, sprite can be shown again, and now goto the world map!
 		int width = player->w>>(CSF-4);
 
 		if(width > 0)

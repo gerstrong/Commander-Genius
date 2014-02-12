@@ -1431,10 +1431,8 @@ void CPlayerLevel::processExiting()
 	{
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 		g_pMusicPlayer->stop();
-		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        gEffectController.setupEffect(new CDimDark(8));
-        showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT,
-                        new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+
+        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         m_Inventory.Item.m_gem.clear();
 		mExitTouched = true;
 	}
@@ -1741,9 +1739,7 @@ void CPlayerLevel::processEnterDoor()
 		g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );
 
-		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");        
-        showMsgWithBmp(loading_text, "KEENTHUMBSUP",LEFT,
-                       new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar));
+        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, mustTeleportOnMap, mSprVar) );
 				
 		dontdraw = true;
         m_Inventory.Item.m_gem.clear();
@@ -1756,9 +1752,7 @@ void CPlayerLevel::processEnterDoor()
 		//o->action = ACTION_KEENENTEREDDOOR;
 		g_pMusicPlayer->stop();
 		g_pSound->playSound( SOUND_LEVEL_DONE );		
-		const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        showMsgWithBmp(loading_text, "KEENTHUMBSUP",LEFT,
-                       new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar));
+        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
 		dontdraw = true;
         m_Inventory.Item.m_gem.clear();
 		return;
@@ -2613,9 +2607,7 @@ void CPlayerLevel::process()
 	    // TODO: Need to spawn other messages here!
 	    g_pMusicPlayer->stop();
 	    g_pSound->playSound( SOUND_LEVEL_DONE );
-	    const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
-        showMsgWithBmp(loading_text, "KEENTHUMBSUP", LEFT,
-                       new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
         m_Inventory.Item.m_gem.clear();
         m_Inventory.Item.fuse_levels_completed++;
 	    mp_Map->mFuseInLevel = false;

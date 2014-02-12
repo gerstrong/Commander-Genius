@@ -360,6 +360,10 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         m_WorldMap.setActive(true);
         m_WorldMap.loadAndPlayMusic();
 
+        const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
+        showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT);
+        gEffectController.setupEffect(new CDimDark(8));
+
         const EventExitLevel &evCopy = *ev;
 
         gEventManager.add( new EventPlayerEndLevel(evCopy) );
