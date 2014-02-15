@@ -17,6 +17,7 @@
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
+#include "graphics/effects/CDimDark.h"
 
 const int TIME_TO_WAVE = 400;
 
@@ -956,6 +957,7 @@ void CPlayerWM::startLevel(Uint16 object)
     if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
     {
         gEventManager.add(new EventEnterLevel(object));
+        gEffectController.setupEffect(new CDimDark(8));
     }
 }
 

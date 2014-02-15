@@ -94,22 +94,20 @@ int main(int argc, char *argv[])
 
     gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 
-    GsApp app;
-	
 	////////////////////////////
 	// Initialize Game Engine //
 	////////////////////////////
-    if( app.init( argc, argv ) )
+    if( gApp.init( argc, argv ) )
 	{
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////
-        app.setEngine(new CGameLauncher(false));
+        gApp.setEngine(new CGameLauncher(false));
 
         //////////////////////////////
         // Run the Commander Genius //
         //////////////////////////////
-        app.runMainCycle();
+        gApp.runMainCycle();
 	}
 
     g_pSettings->saveDispCfg();

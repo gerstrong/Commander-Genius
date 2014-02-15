@@ -7,6 +7,7 @@
 
 #include "CDimDark.h"
 #include <base/video/CVideoDriver.h>
+#include <base/GsApp.h>
 
 CDimDark::CDimDark(const Uint8 speed) :
 m_Speed(speed),
@@ -18,7 +19,7 @@ dimDark(true)
 // get the Snapshot of the old surface, so the the effect can be applied on it!
 void CDimDark::getSnapshot()
 {
-    gVideoDriver.collectSurfaces();
+    gApp.render();
 
     GsWeakSurface blitSfc(gVideoDriver.getBlitSurface());
 
@@ -34,7 +35,7 @@ void CDimDark::getSnapshot()
                        0);
 
     // Surface might have alpha mask. In that case the mColorKey can be zero
-    auto format = mOldSurface.getSDLSurface()->format;
+    /*auto format = mOldSurface.getSDLSurface()->format;
     if(format->Amask != 0)
     {
         mColorkey = SDL_MapRGBA( format, 0, 0, 0, 0 );
@@ -50,9 +51,11 @@ void CDimDark::getSnapshot()
     #else
         SDL_SetColorKey( mOldSurface.getSDLSurface(), SDL_SRCCOLORKEY, mColorkey );
     #endif
-    }
+    }*/
 
-    blitSfc.blitTo(mOldSurface);
+    blitSfc.blitTo(mOldSurface);    
+
+    //mOldSurface.fillRGB(0, 255, 0);
 
     mDarkSurface.create(SDL_SWSURFACE,
                         blitSfc.width(),
@@ -68,15 +71,19 @@ void CDimDark::getSnapshot()
 
 void CDimDark::ponder(const float deltaT)
 {
+    // If there is no pointer set, do it now.
+    if(!mOldSurface)
+    {
+        getSnapshot();
+    }
+
     if(dimDark) // dim dark here
     {
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_SetSurfaceAlphaMod( mDarkSurface.getSDLSurface(), m_Alpha );
 #else
         SDL_SetAlpha( mDarkSurface.getSDLSurface(), SDL_SRCALPHA, m_Alpha );
 #endif
-
 
         const int sum = m_Alpha + m_Speed;
 
@@ -123,14 +130,13 @@ void CDimDark::render()
 
     GsWeakSurface blitSfc(gVideoDriver.getBlitSurface());
 
+
     if(dimDark) // dim dark here
     {
         // Process the effect
         mOldSurface.blitTo(blitSfc);
     }
-    else // Undim the upcoming surface.
-    {
-        mDarkSurface.blitTo(blitSfc);
-    }
+
+    mDarkSurface.blitTo(blitSfc);
 }
 

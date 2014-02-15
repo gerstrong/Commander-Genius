@@ -10,9 +10,12 @@
 
 #include <base/GsEvent.h>
 #include <base/GsEngine.h>
+#include <base/Singleton.h>
 
 #include <memory>
 
+
+#define gApp GsApp::get()
 
 // Forward declaration
 class GsApp;
@@ -32,7 +35,7 @@ private:
 
 };
 
-class GsApp
+class GsApp : public GsSingleton<GsApp>
 {
 public:
     GsApp();

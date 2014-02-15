@@ -341,9 +341,9 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
             const Uint16 NewLevel = ev->data - 0xC000;
             if(NewLevel < 50)
             {
-                g_pMusicPlayer->stop();
+                g_pMusicPlayer->stop();                
                 m_WorldMap.setActive(false);
-                m_LevelPlay.loadLevel(NewLevel);
+                m_LevelPlay.loadLevel(NewLevel);                
                 g_pSound->playSound( SOUND_ENTER_LEVEL );
                 m_LevelPlay.setActive(true);
             }
