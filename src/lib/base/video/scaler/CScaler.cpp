@@ -45,6 +45,8 @@ void scaleDynamic( SDL_Surface *srcSfc,
 	const bool equalWidth  = (dstRect.w == srcSfc->w);
 	const bool equalHeight = (dstRect.h == srcSfc->h);
 
+
+
 	if(equalWidth && equalHeight)
 	{
 		SDL_Rect sdldstrect;
@@ -53,6 +55,8 @@ void scaleDynamic( SDL_Surface *srcSfc,
         SDL_BlitSurface(srcSfc, &srGsRect, dstSfc, &sdldstrect);
 		return;
 	}
+
+    //SDL_FillRect( dstSfc, nullptr, SDL_MapRGB(dstSfc->format, 0, 0, 0) );
 
     SDL_LockSurface( srcSfc );
     SDL_LockSurface( dstSfc );
@@ -64,7 +68,7 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
     // Pass those numbers to the stack, they are used very often.
     const float wFac = (float(srcSfc->w)) / (float(dstRect.w));
-    const float hFac = (float(srGsRect.h)) / (float(dstRect.h));
+    const float hFac = (float(srcSfc->h)) / (float(dstRect.h));
 
     int pitch = dstRect.y*dstSfc->w;
 
@@ -84,6 +88,9 @@ void scaleDynamic( SDL_Surface *srcSfc,
 	float xSrc, ySrc;
 
     ySrc = 0.0f;
+
+    SDL_PixelFormat *format = srcSfc->format;
+
 
     if(equalWidth)
     {
@@ -105,7 +112,16 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
             for( int xDst = 0; xDst<dstRect.w ; xDst++ )
             {
-                *dstPixel = srcPixel[pitch+Uint32(xSrc)];
+                const Uint32 newPixel = srcPixel[pitch+Uint32(xSrc)];
+
+                Uint8 r, g, b, a;
+
+                SDL_GetRGBA(newPixel, format,&r, &g, &b, &a);
+
+                if(a > 0)
+                {
+                    *dstPixel = newPixel;
+                }
 
                 xSrc += wFac;
                 dstPixel++;
@@ -113,7 +129,7 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
             dstPixel = dstFirstPixel + (dstSfc->w*yDst);
 
-            ySrc += hFac;
+            ySrc = yDst*hFac;
         }
     }
 
