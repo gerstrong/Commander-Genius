@@ -72,11 +72,15 @@ void CInventory::toggleStatusScreen()
 {
 	mp_StatusScreen->m_showstatus = !mp_StatusScreen->m_showstatus;
 
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
+    const int scaleFac = gameres.h/200;
+
 	if(mp_StatusScreen->m_showstatus)
 	{
 		int scroll_pos = 0;
 
 		mp_StatusScreen->GenerateStatus();
+        mp_StatusScreen->scaleToResolution();
 		gVideoDriver.collectSurfaces();
 
         mp_StatusBgrnd = gVideoDriver.convertThroughBlitSfc(gVideoDriver.mpVideoEngine->getBlitSurface());
@@ -86,11 +90,12 @@ void CInventory::toggleStatusScreen()
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
 
-        gEffectController.setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, 10, CENTER, DOWN));
+        gEffectController.setupEffect(
+                    new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, 10*scaleFac*scaleFac, CENTER, DOWN));
 	}
 	else
 	{		
-		int scroll_pos = 160;
+        int scroll_pos = 160*scaleFac;
 
         CScrollEffect* ScrollEffect = dynamic_cast<CScrollEffect*>(gEffectController.Effect());
 
@@ -98,7 +103,9 @@ void CInventory::toggleStatusScreen()
 		if( ScrollEffect )
 			scroll_pos = ScrollEffect->getScrollPosition();
 
-        gEffectController.setupEffect(new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, -10, CENTER, DOWN));
+        gEffectController.setupEffect(
+                    new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, -10*scaleFac*scaleFac, CENTER, DOWN));
+
 		if(mp_StatusBgrnd)
 			SDL_FreeSurface(mp_StatusBgrnd);
 		mp_StatusBgrnd = NULL;

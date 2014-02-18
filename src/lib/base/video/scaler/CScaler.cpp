@@ -45,8 +45,6 @@ void scaleDynamic( SDL_Surface *srcSfc,
 	const bool equalWidth  = (dstRect.w == srcSfc->w);
 	const bool equalHeight = (dstRect.h == srcSfc->h);
 
-
-
 	if(equalWidth && equalHeight)
 	{
 		SDL_Rect sdldstrect;

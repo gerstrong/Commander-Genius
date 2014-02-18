@@ -115,10 +115,24 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	EditRect.h = BackRect.h-32;
 }
 
-void CStatusScreenGalaxy::draw()
+void CStatusScreenGalaxy::scaleToResolution()
 {
     SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     const int scaleFac = gameres.h/200;
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+
+    SDL_PixelFormat *format = mpStatusSurface->format;
+
+    mStatusSfcTransformed.create(0,
+                                 blit.width(),
+                                 blit.height(),
+                                 32,
+                                 format->Rmask,
+                                 format->Gmask,
+                                 format->Bmask,
+                                 format->Amask );
+
+    SDL_SetAlpha(mpStatusSurface.get(), 0, 0);
 
     SDL_Rect src = mpStatusSurface->clip_rect;
     src.w *= scaleFac;
@@ -126,8 +140,13 @@ void CStatusScreenGalaxy::draw()
 
     blitScaled(mpStatusSurface.get(),
                src,
-               gVideoDriver.getBlitSurface(),
+               mStatusSfcTransformed.getSDLSurface(),
                src,
                NONE);
+}
 
+void CStatusScreenGalaxy::draw()
+{
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    mStatusSfcTransformed.blitTo(blit);
 }
