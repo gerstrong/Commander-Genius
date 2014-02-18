@@ -92,11 +92,10 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
     if(equalWidth)
     {
-        pitch = Uint32(ySrc)*srcSfc->w;
-
-        for( int yDst = 0 ; yDst<dstRect.h ; yDst++ )
+        for( int yDst = 0 ; yDst<dstSfc->h ; yDst++ )
         {
-            memcpy(dstPixel, srcPixel+pitch, srcSfc->pitch);
+            const Uint32 posY = (yDst*srcSfc->h)/dstSfc->h;
+            memcpy(dstPixel, srcPixel+(posY*dstSfc->w), srcSfc->pitch);
             dstPixel += dstSfc->w;
         }
     }

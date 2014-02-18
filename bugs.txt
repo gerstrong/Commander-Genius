@@ -4,9 +4,7 @@ NOTE: This list represents the most critical bugs in my opinion. I consider it a
 There is more stuff at github and also from emails I receive from people. Not everything is listed here.
 Nevertheless I take a look on those other resources as well and see what I can do.
 
-- Hud looks like shit in 640x480 mode
-- 320x240 mode doesn't work at all.
-- What about highscores in vorticons does it work?
+- What about highscores in vorticons, does it work?
 - Do the help dialogs in vorticon at least work?
 - Changing Games Resolution when game is running provides a big mess. ScrollBuffer is still wrong! (Tested in Galaxy)
 

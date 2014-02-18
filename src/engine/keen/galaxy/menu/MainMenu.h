@@ -20,7 +20,6 @@ class MainMenu : public GalaxyMenu
 public:
     MainMenu(const bool openedGamePlay);
 
-    void createVorticonMenu( const bool openedGamePlay );
 	void createGalaxyMenu( const bool openedGamePlay );
 };
 
