@@ -256,6 +256,8 @@ void CVideoSettings::release()
 	g_pSettings->saveDrvCfg();
 
     gMenuController.updateGraphics();
+
+    gVideoDriver.setRefreshSignal(true);
 }
 
 }
