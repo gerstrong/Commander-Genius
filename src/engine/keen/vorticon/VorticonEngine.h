@@ -2,8 +2,8 @@
 #define __VORTICONENGINE_H__
 
 #include "engine/keen/KeenEngine.h"
-
-#include "engine/keen/vorticon/CEGAGraphicsVort.h"
+#include "CEGAGraphicsVort.h"
+#include "CInfoScene.h"
 
 namespace vorticon
 {
@@ -18,11 +18,19 @@ public:
                    const int ep,
                    const std::string &dataPath);
 
+    void ponder(const float deltaT);
+
+    void render();
+
     void openMainMenu();
 
     bool loadResources( const Uint8 flags );
 
     void pumpEvent(const CEvent *evPtr);
+
+private:
+    std::shared_ptr<CInfoScene> mpInfoScene;
+
 };
 
 }

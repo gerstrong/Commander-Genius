@@ -50,6 +50,39 @@ mEp(ep)
 {}
 
 
+void VorticonEngine::ponder(const float deltaT)
+{
+    if( mpInfoScene )
+    {
+        mpInfoScene->ponder();
+        if( mpInfoScene->destroyed() )
+        {
+            mpInfoScene->teardown();
+            mpInfoScene = nullptr;
+            gInput.flushAll();
+            gMenuController.lock(false);
+            gMenuController.hide(false);
+        }
+    }
+    else
+    {
+        KeenEngine::ponder(deltaT);
+    }
+}
+
+void VorticonEngine::render()
+{
+    if(mpInfoScene)
+    {
+        mpInfoScene->render();
+    }
+    else
+    {
+        KeenEngine::render();
+    }
+}
+
+
 void VorticonEngine::openMainMenu()
 {
     gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
@@ -230,6 +263,13 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
+    }
+    else if( const StartInfoSceneEvent *scene = dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
+    {
+        gMenuController.lock(true);
+        gMenuController.hide(true);
+        mpInfoScene = scene->mpScene;
+        mpInfoScene->init();
     }
 }
 

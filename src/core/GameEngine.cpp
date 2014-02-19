@@ -42,15 +42,7 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
         mOpenedGamePlay = true;
         EventContainer.add( new CloseAllMenusEvent() );
     }*/
-    /*else if( const StartInfoSceneEvent *scene = dynamic_cast<const StartInfoSceneEvent*>(evPtr) )
-    {
-        gMenuController.lock(true);
-        gMenuController.hide(true);
-        mpInfoScene = scene->mpScene;
-        mpInfoScene->init();
 
-        return;
-    }*/
     /*else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
     {
         // TODO: we need to pass less arguments here! Make this code more pleasant
@@ -84,23 +76,8 @@ void GameEngine::ponder(const float deltaT)
         return;
     }
 
-/*	if( mpInfoScene )
-	{
-        mpInfoScene->ponder();
-		if( mpInfoScene->destroyed() )
-		{		    
-			mpInfoScene->teardown();
-			mpInfoScene = nullptr;
-			gInput.flushAll();
-            gMenuController.lock(false);
-            gMenuController.hide(false);
-		}
-	}
-    else*/
-	{
-		// Process the game mode object
-        mpGameMode->ponder(deltaT);
-	}
+    // Process the game mode object
+    mpGameMode->ponder(deltaT);
 }
 
 void GameEngine::render()
@@ -111,13 +88,6 @@ void GameEngine::render()
         return;
     }
 
-    //if( !mpInfoScene )
-    {
-        // Render the game mode object
-        mpGameMode->render();
-    }
-    /*else
-    {
-        mpInfoScene->render();
-    }*/
+    // Render the game mode object
+    mpGameMode->render();
 }
