@@ -14,7 +14,10 @@
 #include "../CHelp.h"
 #include "../CPreviews.h"
 #include "fileio/ResourceMgmt.h"
+#include "widgets/Button.h"
 
+namespace vorticon
+{
 
 CHelpMenu::CHelpMenu() :
 VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
@@ -22,22 +25,22 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	// Create the Menu Dialog and entries
 
-	mpMenuDialog->addControl(new GsButton( "The Game",
+    mpMenuDialog->addControl(new Button( "The Game",
 						new StartInfoSceneEvent( new CHelp("Game") ) ) );
 
-	mpMenuDialog->addControl(new GsButton( "The Story",
+    mpMenuDialog->addControl(new Button( "The Story",
 						new StartInfoSceneEvent( new CStory ) ) );
 
-	mpMenuDialog->addControl(new GsButton( "Ordering Info",
+    mpMenuDialog->addControl(new Button( "Ordering Info",
 						new StartInfoSceneEvent( new COrderingInfo ) ) );
 
-	mpMenuDialog->addControl(new GsButton( "About ID",
+    mpMenuDialog->addControl(new Button( "About ID",
 						new StartInfoSceneEvent( new CAbout("ID") ) ) );
 
-	mpMenuDialog->addControl(new GsButton( "About CG",
+    mpMenuDialog->addControl(new Button( "About CG",
 						new StartInfoSceneEvent( new CAbout("CG") ) ) );
 
-	mpMenuDialog->addControl(new GsButton( "Credits",
+    mpMenuDialog->addControl(new Button( "Credits",
 						new StartInfoSceneEvent( new CCredits() ) ) );
 	
 	std::string filename = "previews.ck";
@@ -46,7 +49,7 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 
 	if( filename != "" )
 	{
-	    mpMenuDialog->addControl(new GsButton( "Previews!",
+        mpMenuDialog->addControl(new Button( "Previews!",
 					new StartInfoSceneEvent( new CPreviews() ) ) );
 		    
 	}	
@@ -55,3 +58,4 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 }
 
 
+}

@@ -26,27 +26,12 @@
 const int MAX_TICK = 8; // Units in a logical loop
 
 
-CGUIInputText::CGUIInputText( const std::string& text,
-							  const Style	style ) :
+CGUIInputText::CGUIInputText( const std::string& text ) :
 mText(text),
 mTyping(false),
 mTypeTick(0),
-mTick(false),
-drawButton(&CGUIInputText::drawNoStyle)
-{
-
-    /*if(g_pBehaviorEngine->getEngine() == ENGINE_VORTICON)
-	{
-		mFontID = 1;
-		drawButton = &CGUIInputText::drawVorticonStyle;
-	}
-	else if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-	{
-		mFontID = 1;
-		drawButton = &CGUIInputText::drawGalaxyStyle;
-    }*/
-
-}
+mTick(false)
+{}
 
 
 bool CGUIInputText::sendEvent(const InputCommands command)
@@ -96,85 +81,6 @@ void CGUIInputText::processLogic()
 }
 
 
-void CGUIInputText::drawGalaxyStyle(SDL_Rect& lRect)
-{
-	if(!mEnabled)
-		return;
-
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
-
-	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
-
-
-	const Uint32 oldcolor = Font.getFGColor();
-
-
-	Uint32 newcolor;
-
-	if(mHovered || mPressed)
-		newcolor = SDL_MapRGB( format, 84, 234, 84);
-	else
-		newcolor = SDL_MapRGB( format, 38, 134, 38);
-
-	Font.setupColor( newcolor );
-
-	drawEmptyRect( blitsfc, &lRect, newcolor);
-
-	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y+2, false );
-
-	Font.setupColor( oldcolor );
-}
-
-void CGUIInputText::drawVorticonStyle(SDL_Rect& lRect)
-{
-
-	if(!mEnabled)
-		return;
-
-
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
-
-	Font.drawFont( blitsfc, getInputString(), lRect.x+24, lRect.y, false );
-
-	drawTwirl(lRect);
-}
-
-void CGUIInputText::drawNoStyle(SDL_Rect& lRect)
-{
-	if(!mEnabled)
-		return;
-
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-	if( mReleased )
-	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
-	}
-	else if( mPressed )
-	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
-	}
-	else if( mHovered )
-	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
-	}
-	else
-	{
-		drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
-	}
-
-	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(mFontID);
-
-	Font.drawFontCentered( blitsfc, getInputString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
-}
-
 
 void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
 {
@@ -183,7 +89,32 @@ void CGUIInputText::processRender(const GsRect<float> &RectDispCoordFloat)
 	displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
-	(this->*drawButton)(lRect);
+    if(!mEnabled)
+        return;
+
+    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+
+    if( mReleased )
+    {
+        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
+    }
+    else if( mPressed )
+    {
+        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
+    }
+    else if( mHovered )
+    {
+        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
+    }
+    else
+    {
+        drawRect( blitsfc, &lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
+    }
+
+    // Now lets draw the text of the list control
+    GsFont &Font = gGraphics.getFont(mFontID);
+
+    Font.drawFontCentered( blitsfc, getInputString(), lRect.x, lRect.w, lRect.y, lRect.h,false );
 }
 
 

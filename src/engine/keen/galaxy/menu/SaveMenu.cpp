@@ -9,13 +9,14 @@
 
 #include <base/CInput.h>
 #include <widgets/GsBaseMenu.h>
-#include <widgets/GsInputText.h>
 #include <widgets/GsMenuController.h>
 
 #include "CConfirmMenu.h"
 
 #include "fileio/CSaveGameController.h"
 #include "common/CBehaviorEngine.h"
+
+#include "widgets/InputText.h"
 
 const std::string EMPTY_TEXT = "EMPTY";
 
@@ -36,7 +37,7 @@ m_overwrite(false)
 		if(i <= StateFileList.size())
 			text = StateFileList.at(i-1);
 
-		mpMenuDialog->addControl(new CGUIInputText( text, CGUIInputText::VORTICON ) );
+        mpMenuDialog->addControl(new InputText( text ) );
 	}
 
 	setMenuLabel("SAVEMENULABEL");
@@ -44,7 +45,7 @@ m_overwrite(false)
 
 void CSaveMenu::ponder()
 {
-    CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
+    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
 
     int minIC = IC_LEFT;
 
@@ -78,7 +79,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 		const int sel = mpMenuDialog->Selection();
 		if( sel > 0 )
 		{
-            CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
+            InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
 
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
 			{			
@@ -103,7 +104,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 
 void CSaveMenu::release()
 {
-    CGUIInputText *pInput = dynamic_cast<CGUIInputText*>(mpMenuDialog->CurrentControl());
+    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
 
     if(pInput)
     {

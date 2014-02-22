@@ -10,6 +10,9 @@
 
 #include "CConfirmMenu.h"
 
+namespace vorticon
+{
+
 class CSaveMenu : public VorticonMenu
 {
 public:
@@ -23,5 +26,7 @@ private:
 	CConfirmMenu *mp_OverwriteMenu;
 	bool m_overwrite;
 };
+
+}
 
 #endif /* CSAVEMENU_H_ */

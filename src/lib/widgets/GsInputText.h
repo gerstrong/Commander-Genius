@@ -17,21 +17,14 @@ class CGUIInputText : public CGUIControl
 {
 public:
 
-	CGUIInputText(const std::string& text,
-				  const Style	style);
+    CGUIInputText(const std::string& text);
 
 	bool sendEvent(const InputCommands command);
 
 	void processLogic();
 
-	void drawNoStyle(SDL_Rect& lRect);
 
-	void drawVorticonStyle(SDL_Rect& lRect);
-
-	void drawGalaxyStyle(SDL_Rect& lRect);
-
-
-	void processRender(const GsRect<float> &RectDispCoordFloat);
+    virtual void processRender(const GsRect<float> &RectDispCoordFloat);
 
 	void setText(const std::string& text)
 	{	mText = text;	}
@@ -42,7 +35,7 @@ public:
 	bool Typing() const { return mTyping; }
 	void setTypeMode( const bool value );
 
-private:
+protected:
 
 	// Returns the string that has to be displayed on the gui
 	// It should say empty if it's so or a character when ticking
@@ -56,8 +49,6 @@ private:
 	bool mTick;
 
 	std::unique_ptr<SDL_Surface> mpTextSfc;
-
-	void (CGUIInputText::*drawButton)(SDL_Rect&);
 
 };
 

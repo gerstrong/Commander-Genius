@@ -58,10 +58,10 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 	mpMenuDialog->addControl( highscoreButton );
     highscoreButton->mEnabled = false;*/
 
-    GsButton *infoButton = new GalaxyButton( "Info",
-											new OpenMenuEvent( new CHelpMenu() ) );
-	mpMenuDialog->addControl( infoButton );
-	infoButton->mEnabled = false;
+/*    GsButton *infoButton = new GalaxyButton( "Info",
+                                            new OpenMenuEvent( new CHelpMenu() ) );
+    mpMenuDialog->addControl( infoButton );
+    infoButton->mEnabled = false;*/
 
     mpMenuDialog->addControl(new GalaxyButton( "End Game", new EventEndGamePlay() ) );
 
