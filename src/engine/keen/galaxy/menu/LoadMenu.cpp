@@ -10,13 +10,14 @@
 #include <widgets/GsButton.h>
 #include <widgets/GsMenuController.h>
 
-
 #include "LoadMenu.h"
 
 #include "fileio/CSaveGameController.h"
 #include "common/CBehaviorEngine.h"
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
+
+#include "widgets/BorderedButton.h"
 
 
 namespace galaxy
@@ -54,9 +55,8 @@ GalaxyMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 
 		if( !text.empty() )
 		{
-            button = new GalaxyButton( text,
-									new LoadGameSlotFunctorEvent(i),
-                                    false );
+            button = new BorderedButton( text,
+                                    new LoadGameSlotFunctorEvent(i) );
 			mpMenuDialog->addControl( button );
 
 			button->enable( true );
@@ -66,9 +66,8 @@ GalaxyMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	for( int j = i ; j<8 ; j++ )
 	{
 		text = "Empty";
-        button = new GalaxyButton( text,
-								new LoadGameSlotFunctorEvent(j),
-                                false );
+        button = new BorderedButton( text,
+                                new LoadGameSlotFunctorEvent(j));
 		mpMenuDialog->addControl( button );
 
 		button->enable( false );

@@ -6,17 +6,11 @@
 
 
 GalaxyButton::GalaxyButton(const std::string& text,
-                           CEvent *ev,
-                           const bool bordered) :
-GsButton(text, ev),
-mBordered(bordered)
+                           CEvent *ev) :
+GsButton(text, ev)
 {
     mFontID = 1;
 
-/*    if(style == GALAXY_BORDERED)
-        drawButton = &GsButton::drawGalaxyBorderedStyle;
-    else
-        drawButton = &GsButton::drawGalaxyStyle;*/
     setupButtonSurface();
 }
 
@@ -30,34 +24,7 @@ void GalaxyButton::setupButtonSurface()
 }
 
 
-void GalaxyButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
-{
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
 
-    // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
-
-    SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
-
-    const Uint32 oldcolor = Font.getFGColor();
-
-    Uint32 newcolor;
-
-    if(!mEnabled)
-        newcolor = SDL_MapRGB( format, 123, 150, 123);
-    else if(mHovered || mPressed)
-        newcolor = SDL_MapRGB( format, 84, 234, 84);
-    else
-        newcolor = SDL_MapRGB( format, 38, 134, 38);
-
-    Font.setupColor( newcolor );
-
-    drawEmptyRect( blitsfc, &lRect, newcolor);
-
-    Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y+2, false );
-
-    Font.setupColor( oldcolor );
-}
 
 void GalaxyButton::drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect& lRect)
 {
