@@ -8,7 +8,7 @@
 #include "CPlatformDrop.h"
 
 // If the max Speed is reached, the platform won't return.
-const int DROP_MAX_SPEED_LIMIT = 60;
+const int DROP_MAX_SPEED_LIMIT = 65;
 
 const int BLOCKSPRITEID = 0x1F;
 
@@ -20,7 +20,8 @@ CGalaxySpriteObject(pmap, foeID, x, y, sprVar),
 CPlatform(pmap, foeID, x, y),
 m_delay_for_drop(0),
 m_drop_speed(0),
-m_Origin(m_Pos)
+m_Origin(m_Pos),
+mAllowReturn(false)
 {
 	m_ActionBaseOffset = actionOff;
 	xDirection = 0;
@@ -48,14 +49,43 @@ m_Origin(m_Pos)
         hoverSpeed = DROP_MAX_SPEED_LIMIT/2;
     }
 
+
 	setActionForce(A_PLATFORM_DROP);
 	setActionSprite();
 	calcBoundingBoxes();
+
+    // Decide whether plat can return or must fall forever
+    VectorD2<Uint32> blockerPos = getPosition();
+
+    // Scan the map for blockers, if there is one, it may return, otherwise not...
+    for( ; blockerPos.y < (mp_Map->m_height<<CSF) ; blockerPos.y += (1<<CSF) )
+    {
+        const Uint16 object = mp_Map->getPlaneDataAt(2, blockerPos);
+        if( object == BLOCKSPRITEID )
+        {
+            mAllowReturn = true;
+            break;
+        }
+    }
+
 }
+
+void CPlatformDrop::procPlatdrop()
+{
+    // move down
+    movePlatDown(m_drop_speed);
+
+    // If speed is lower than max increase it...
+    if(m_drop_speed < DROP_MAX_SPEED_LIMIT)
+        m_drop_speed += dropSpeedAcc;
+    else // else set the max speed
+        m_drop_speed = DROP_MAX_SPEED_LIMIT;
+}
+
 
 void CPlatformDrop::process()
 {    
-	Uint16 object = mp_Map->getPlaneDataAt(2, getPosition());
+    const Uint16 object = mp_Map->getPlaneDataAt(2, getPosition());
 	
 	bool blockerDetected = false;
 	
@@ -81,26 +111,23 @@ void CPlatformDrop::process()
 	{
         if(!blockerDetected)
         {
-            // move down
-            movePlatDown(m_drop_speed);
-
-            // If speed is lower than max increase it...
-            if(m_drop_speed < DROP_MAX_SPEED_LIMIT)
-                m_drop_speed += dropSpeedAcc;
-            else // else set the max speed
-                m_drop_speed = DROP_MAX_SPEED_LIMIT;
+            procPlatdrop();
         }
 	}
-	else // Player is not on the platform
-	{
+    else if(mAllowReturn) // Player is not on the platform and may return
+	{        
 		m_delay_for_drop = 0;
 		m_drop_speed = 0;
 
-		if(m_Origin.y < m_Pos.y)
+        if(m_Origin.y < m_Pos.y)
             moveUp(hoverSpeed);
 		else if(m_Origin.y > m_Pos.y)
 			moveDown(1);
 	}
+    else if(m_drop_speed > 0) // not even a blocker. continue moving until out of map.
+    {
+        procPlatdrop();
+    }
 
 	CPlatform::process();
 }

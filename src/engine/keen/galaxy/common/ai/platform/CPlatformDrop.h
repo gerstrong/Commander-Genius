@@ -22,6 +22,9 @@ public:
     CPlatformDrop(CMap *pmap, const Uint16 foeID,
               const Uint32 x, const Uint32 y, const int actionOff, const int sprVar);
 
+    // Most accurate platform drop movement, hopefully
+    void procPlatdrop();
+
 	/**
 	 * \brief Processes the platforms AI. It's just simple moving around of course
 	 */
@@ -38,6 +41,8 @@ private:
     int hoverSpeed;
 
 	const VectorD2<Uint32> m_Origin;
+
+    bool mAllowReturn;
 };
 
 }

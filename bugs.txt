@@ -12,7 +12,6 @@ Keen 1:
 
 Keen 4:
 - Mimrock springt instant wenn man sich auf selber höhe wie er befindet.
-- Level 1 secret (viele 1ups): Falling platform muss endlos fallen und nicht wieder zurückkehren
 
 - End game in Galaxy in Gameplay not possible anymore, maybe same goes for vorticon.
 - Saving highscore in Vorticon possible?
