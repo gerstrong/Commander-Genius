@@ -28,19 +28,19 @@ m_Origin(m_Pos)
     solid = false;
 
     dropSpeedAcc = 5;
-    hoverSpeed = 25;
+    hoverSpeed = DROP_MAX_SPEED_LIMIT;
 
     auto diff = g_pBehaviorEngine->mDifficulty;
 
     if(diff > NINJA)
     {
         dropSpeedAcc = 10;
-        hoverSpeed = 10;
+        hoverSpeed = DROP_MAX_SPEED_LIMIT;
     }
     if(diff > EXPERT)
     {
         dropSpeedAcc = 5;
-        hoverSpeed = 10;
+        hoverSpeed = DROP_MAX_SPEED_LIMIT;
     }
     if(diff > HARD)
     {
