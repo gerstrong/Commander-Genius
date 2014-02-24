@@ -30,7 +30,7 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
 
     Uint32 newcolor;
 
-    if(mHovered || mPressed)
+    if(mHovered || mPressed || mSelected)
         newcolor = SDL_MapRGB( format, 84, 234, 84);
     else
         newcolor = SDL_MapRGB( format, 38, 134, 38);

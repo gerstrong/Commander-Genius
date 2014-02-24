@@ -39,13 +39,6 @@ void CGamePlayMode::ponder(const float deltaT)
     CEventContainer& EventContainer = gEventManager;
 
     mp_PlayGame->ponder(deltaT);
-	
-	if( EventContainer.occurredEvent<SaveGameEvent>() )
-	{
-        mp_PlayGame->saveXMLGameState();
-        EventContainer.pop_Event();
-	}
-
 
 	if( mp_PlayGame->getEndGame() )
 	{

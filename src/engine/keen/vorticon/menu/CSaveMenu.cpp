@@ -71,15 +71,15 @@ void CSaveMenu::ponder()
 
 void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 {
+    InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
+
 	// Before all events are sent to the dialog which handles selection catch some specific events
 	// required for the saving process.
 	if( CommandEvent *ev = dynamic_cast<CommandEvent*>(command.get()) )
 	{
 		const int sel = mpMenuDialog->Selection();
 		if( sel > 0 )
-		{
-            InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());
-
+		{            
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
 			{			
 				if(pInput->Typing())
@@ -97,6 +97,13 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 			}
 		}
 	}
+
+    if(pInput)
+    {
+        if(pInput->Typing())
+            return;
+    }
+
 
 	mpMenuDialog->sendEvent(command);
 }

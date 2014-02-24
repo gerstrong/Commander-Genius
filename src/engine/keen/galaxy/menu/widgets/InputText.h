@@ -9,7 +9,7 @@ namespace galaxy
 class InputText : public CGUIInputText
 {
 public:
-    InputText(const std::string &text) : CGUIInputText(text) {}
+    InputText(const std::string &text) : CGUIInputText(text, 1) {}
 
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };

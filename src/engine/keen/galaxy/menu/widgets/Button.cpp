@@ -43,8 +43,15 @@ void GalaxyButton::drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect& lRe
 }
 
 
-void GalaxyButton::drawGalaxyStyle(SDL_Rect& lRect)
+
+
+void GalaxyButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {
+    // Transform to the display coordinates
+    GsRect<float> displayRect = mRect;
+    displayRect.transform(RectDispCoordFloat);
+    SDL_Rect lRect = displayRect.SDLRect();
+
     GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
 
     if(!mEnabled)
@@ -57,16 +64,4 @@ void GalaxyButton::drawGalaxyStyle(SDL_Rect& lRect)
     }
 
     drawBlinker(lRect);
-}
-
-
-
-void GalaxyButton::processRender(const GsRect<float> &RectDispCoordFloat)
-{
-    // Transform to the display coordinates
-    GsRect<float> displayRect = mRect;
-    displayRect.transform(RectDispCoordFloat);
-    SDL_Rect lRect = displayRect.SDLRect();
-
-    drawGalaxyStyle(lRect);
 }

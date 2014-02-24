@@ -209,11 +209,20 @@ void GalaxyEngine::pumpEvent(const CEvent *evPtr)
     else if( const GMSwitchToPlayGameMode* pPlayGame = dynamic_cast<const GMSwitchToPlayGameMode*>(evPtr) )
     {
         const GMSwitchToPlayGameMode &playGame = const_cast<GMSwitchToPlayGameMode&>(*pPlayGame);
-        mpGameMode.reset( new CPlayGameGalaxy(playGame) );
+        mpGameMode.reset( new CPlayGameGalaxy(playGame.m_startlevel) );
         mpGameMode->init();
         mOpenedGamePlay = true;
         gEventManager.add( new CloseAllMenusEvent() );
     }    
+    else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
+    {
+        std::unique_ptr<CPlayGameGalaxy> pgGalaxy(new CPlayGameGalaxy(0));
+        pgGalaxy->init();
+        pgGalaxy->loadGame();
+        mpGameMode = std::move(pgGalaxy);
+        mOpenedGamePlay = true;
+        gEventManager.add( new CloseAllMenusEvent() );
+    }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {
         openMainMenu();

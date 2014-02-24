@@ -17,7 +17,7 @@ class CGUIInputText : public CGUIControl
 {
 public:
 
-    CGUIInputText(const std::string& text);
+    CGUIInputText(const std::string& text, const int fontID = 0);
 
 	bool sendEvent(const InputCommands command);
 

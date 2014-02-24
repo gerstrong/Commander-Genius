@@ -16,8 +16,6 @@ public:
 private:
 
     void setupButtonSurface();
-
-    void drawGalaxyStyle(SDL_Rect& lRect);
 };
 
 #endif /* __GALAXYBUTTON_H__ */

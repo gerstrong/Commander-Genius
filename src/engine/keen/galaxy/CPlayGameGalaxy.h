@@ -19,7 +19,7 @@
 #include <list>
 #include <string>
 
-const int WORLD_MAP_LEVEL_GALAXY=0;
+const int WORLD_MAP_LEVEL_GALAXY = 0;
 
 namespace galaxy
 {
@@ -28,7 +28,7 @@ class CPlayGameGalaxy : public CPlayGame
 {
 public:
 
-    CPlayGameGalaxy(const GMSwitchToPlayGameMode &info);
+    CPlayGameGalaxy(const int startlevel);
 
     bool loadGameState();
     //bool saveGameState();

@@ -15,7 +15,6 @@
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"
-#include "graphics/effects/CDimDark.h"
 
 #include <lib/base/GsTimer.h>
 #include "CVec.h"

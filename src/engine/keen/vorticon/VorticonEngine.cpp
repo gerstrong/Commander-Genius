@@ -259,6 +259,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         pgVort->loadGame();
         mpGameMode = std::move(pgVort);
         mOpenedGamePlay = true;
+        gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
     {

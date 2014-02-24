@@ -11,8 +11,6 @@ class BorderedButton : public GalaxyButton
 public:
     BorderedButton(const std::string& text, CEvent *ev);
 
-    void drawGalaxyBorderedStyle(SDL_Rect& lRect);
-
     void processRender(const GsRect<float> &RectDispCoordFloat);
 };
 

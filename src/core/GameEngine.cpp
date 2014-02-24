@@ -43,24 +43,6 @@ void GameEngine::pumpEvent(const CEvent *evPtr)
         EventContainer.add( new CloseAllMenusEvent() );
     }*/
 
-    /*else if( dynamic_cast<const LoadGameEvent*>(evPtr) ) // If GamePlayMode is not running but loading is requested...
-    {
-        // TODO: we need to pass less arguments here! Make this code more pleasant
-
-        const unsigned int ep = g_pBehaviorEngine->getEpisode();
-        const std::string &dir = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
-
-        std::unique_ptr<CGamePlayMode> gameplay(new CGamePlayMode( ep, dir, 0));
-
-        gameplay->init();
-
-        gameplay->loadGame();
-
-        mpGameMode = move(gameplay);
-
-        mOpenedGamePlay = true;
-        EventContainer.add( new CloseAllMenusEvent() );
-    }*/
     /*else*/ if(mpGameMode) // Otherwise send to the existing created mGameMode Object
     {
         mpGameMode->pumpEvent(evPtr);

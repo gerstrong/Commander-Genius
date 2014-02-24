@@ -26,8 +26,8 @@ namespace galaxy
 {
 
 
-CPlayGameGalaxy::CPlayGameGalaxy(const GMSwitchToPlayGameMode &info) :
-CPlayGame(g_pBehaviorEngine->m_ExeFile, info.m_startlevel),
+CPlayGameGalaxy::CPlayGameGalaxy(const int startlevel) :
+CPlayGame(g_pBehaviorEngine->m_ExeFile, startlevel),
 m_WorldMap(g_pBehaviorEngine->m_ExeFile, mInventoryVec, m_Cheatmode),
 m_LevelPlay(g_pBehaviorEngine->m_ExeFile, mInventoryVec, m_Cheatmode),
 m_SavedGame(*gpSaveGameController)
@@ -45,7 +45,7 @@ m_SavedGame(*gpSaveGameController)
 
     m_WorldMap.init();
 
-    m_Level = info.m_startlevel;
+    m_Level = startlevel;
 
     // If no level has been set or is out of bound, set it to map.
     if(m_Level > 100 || m_Level < 0 )
@@ -320,7 +320,12 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     // Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
     // are some of those events.
 
-    if( const EventSendDialog *ev = dynamic_cast<const EventSendDialog*>(evPtr) )
+    if( dynamic_cast<const SaveGameEvent*>(evPtr) )
+    {
+        saveXMLGameState();
+        gInput.flushAll();
+    }
+    else if( const EventSendDialog *ev = dynamic_cast<const EventSendDialog*>(evPtr) )
     {
         mMessageBoxes.push_back( ev->mMsgBox );
         gInput.flushAll();

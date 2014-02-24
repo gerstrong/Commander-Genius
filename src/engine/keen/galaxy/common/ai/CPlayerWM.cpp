@@ -397,7 +397,9 @@ void CPlayerWM::processMoving()
     if( m_playcontrol[PA_JUMP] )
     {
         // Get the object
-        Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+        const int x = getXMidPos();
+        const int y = getYMidPos();
+        Uint16 object = mp_Map->getPlaneDataAt(2, x, y);
         if(object) // if we found an object
         {
             // start the level
@@ -957,7 +959,11 @@ void CPlayerWM::startLevel(Uint16 object)
     if(mp_Map->findTile(flag_dest, &x, &y, 2) || g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value || level >= shipLevel)
     {
         gEventManager.add(new EventEnterLevel(object));
-        gEffectController.setupEffect(new CDimDark(8));
+
+        if(level > 0 && level < 50)
+        {
+            gEffectController.setupEffect(new CDimDark(8));
+        }
     }
 }
 

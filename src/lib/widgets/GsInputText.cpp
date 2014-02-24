@@ -26,20 +26,23 @@
 const int MAX_TICK = 8; // Units in a logical loop
 
 
-CGUIInputText::CGUIInputText( const std::string& text ) :
+CGUIInputText::CGUIInputText(const std::string& text , const int fontID) :
 mText(text),
 mTyping(false),
 mTypeTick(0),
 mTick(false)
-{}
+{
+    mFontID = fontID;
+}
 
 
 bool CGUIInputText::sendEvent(const InputCommands command)
 {
-	/*if(command == IC_STATUS)
-	{
-		mTyping = !mTyping;
-	}*/
+    if(command == IC_STATUS || command == IC_JUMP)
+    {
+        mTyping = !mTyping;
+        return true;
+    }
 	return false;
 }
 

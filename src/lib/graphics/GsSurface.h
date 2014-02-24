@@ -44,6 +44,19 @@ public:
                   const Uint32 fillColor );
 
 
+    /**
+     * \brief Draws rect different than the SDL_Fillrect, because it has only a contour
+     * \param sfc Surface where to draw it
+     * \param rect pointer to the given rect in which it has to be drawn. If it's NULL, than the dimensions
+     * 			   of sfc is used
+     * \param thickness Thickness of the contour
+     * \param ContourColor Color of the contour
+     */
+    void drawFrameRect(const GsRect<Uint16> &rect,
+                  const int thickness,
+                  const Uint32 contourColor);
+
+
     GsRect<Uint16> calcBlitRect(const GsRect<float> &rect);
 
     int blitTo(GsWeakSurface &sfc)

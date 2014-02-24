@@ -15,34 +15,6 @@ GalaxyButton(text, ev)
 }
 
 
-void BorderedButton::drawGalaxyBorderedStyle(SDL_Rect& lRect)
-{
-    SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
-
-    // Now lets draw the text of the list control
-    GsFont &Font = gGraphics.getFont(mFontID);
-
-    SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
-
-    const Uint32 oldcolor = Font.getFGColor();
-
-    Uint32 newcolor;
-
-    if(!mEnabled)
-        newcolor = SDL_MapRGB( format, 123, 150, 123);
-    else if(mHovered || mPressed)
-        newcolor = SDL_MapRGB( format, 84, 234, 84);
-    else
-        newcolor = SDL_MapRGB( format, 38, 134, 38);
-
-    Font.setupColor( newcolor );
-
-    drawEmptyRect( blitsfc, &lRect, newcolor);
-
-    Font.drawFont( blitsfc, mText, lRect.x+24, lRect.y+2, false );
-
-    Font.setupColor( oldcolor );
-}
 
 
 void BorderedButton::processRender(const GsRect<float> &RectDispCoordFloat)
@@ -52,7 +24,30 @@ void BorderedButton::processRender(const GsRect<float> &RectDispCoordFloat)
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
 
-    drawGalaxyBorderedStyle(lRect);
+    GsWeakSurface blitsfc( gVideoDriver.getBlitSurface() );
+
+    Uint32 newcolor;
+
+    if(!mEnabled)
+        newcolor = blitsfc.mapRGB(123, 150, 123);
+    else if(mHovered || mPressed)
+        newcolor = blitsfc.mapRGB(84, 234, 84);
+    else
+        newcolor = blitsfc.mapRGB(38, 134, 38);
+
+    blitsfc.drawFrameRect( lRect, 1, newcolor);
+
+    lRect.y +=2;
+    lRect.x +=2;
+
+    if(!mEnabled)
+    {
+        mTextDisabledSfc.blitTo(blitsfc, lRect);
+    }
+    else
+    {
+        drawEnabledButton(blitsfc, lRect);
+    }
 }
 
 

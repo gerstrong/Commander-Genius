@@ -221,7 +221,12 @@ bool CPlayGameVorticon::StatusScreenOpen()
 void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
 {
     // Process Related Events.
-    if( dynamic_cast<const ResetScrollSurface*>(evPtr) )
+    if( dynamic_cast<const SaveGameEvent*>(evPtr) )
+    {
+        saveXMLGameState();
+        gInput.flushAll();
+    }
+    else if( dynamic_cast<const ResetScrollSurface*>(evPtr) )
     {
         if(mMap)
         {
