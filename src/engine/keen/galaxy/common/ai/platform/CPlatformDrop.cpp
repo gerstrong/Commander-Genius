@@ -8,7 +8,7 @@
 #include "CPlatformDrop.h"
 
 // If the max Speed is reached, the platform won't return.
-const int DROP_MAX_SPEED_LIMIT = 200;
+const int DROP_MAX_SPEED_LIMIT = 60;
 
 const int BLOCKSPRITEID = 0x1F;
 
@@ -45,7 +45,7 @@ m_Origin(m_Pos)
     if(diff > HARD)
     {
         dropSpeedAcc = 5;
-        hoverSpeed = 20;
+        hoverSpeed = DROP_MAX_SPEED_LIMIT/2;
     }
 
 	setActionForce(A_PLATFORM_DROP);
