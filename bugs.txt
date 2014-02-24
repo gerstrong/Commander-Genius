@@ -1,0 +1,21 @@
+List of bugs that need to be fixed:
+-----------------------------------
+NOTE: This list represents the most critical bugs in my opinion. I consider it a todo list.
+There is more stuff at github and also from emails I receive from people. Not everything is listed here.
+Nevertheless I take a look on those other resources as well and see what I can do.
+
+- In the master and v171 branches, none of the arguments -lSDL_image and -lSDL2_image is added to the linker.
+- In v171, CStatusScreenGalaxy.cpp can't be compiled if SDL 2.0 is used, the reason being a call to SDL_SetAlpha from SDL 1.2. Should SDL_SetSurfaceAlphaMod be used in some way in that case? (I don't see the status window in Keen 4 with SDL_SetSurfaceAlphaMode(mpStatusSurface.get(), 0), while it is shown with SDL 1.2. Possibly the wrong thing to do.) 
+
+Keen 1:
+
+- Momentum bei Ice Cannon viel zu stark
+
+Keen 4:
+- Mimrock springt instant wenn man sich auf selber höhe wie er befindet.
+- Level 1 secret (viele 1ups): Falling platform muss endlos fallen und nicht wieder zurückkehren
+- Zurückkehren von falling platform an sich zu langsam, muss in etwa so schnell wie der Fall sein.
+
+- End game in Galaxy in Gameplay not possible anymore, maybe same goes for vorticon.
+- Saving highscore in Vorticon possible?
+- Music in main menu should disabled, and not stopped when mainmenu is closed.
