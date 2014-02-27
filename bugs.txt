@@ -16,3 +16,9 @@ Keen 4:
 - End game in Galaxy in Gameplay not possible anymore, maybe same goes for vorticon.
 - Saving highscore in Vorticon possible?
 - Music in main menu should disabled, and not stopped when mainmenu is closed.
+
+
+Feature to add:
+---------------
+- Preview image in the selection screen which automatically extracted
+
