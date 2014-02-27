@@ -325,10 +325,10 @@ ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 if(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL2_LIBRARY})
-    target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
+    target_link_libraries(CommanderGenius ${SDLIMAGE_LIBRARY})
 else(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL_LIBRARY})
-    target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
+    target_link_libraries(CommanderGenius ${SDLIMAGE_LIBRARY})
 endif(SDL2_FOUND)
 
 
@@ -344,7 +344,7 @@ endif(SDL2_FOUND)
 #MESSAGE( "CMAKE_LIBRARY_PATH = ${CMAKE_LIBRARY_PATH}" )
 #MESSAGE( "SDL_INCLUDE_DIRS = ${SDL_INCLUDE_DIRS}" )
 MESSAGE( "SDL_LIBRARY = ${SDL_LIBRARY}" )
-MESSAGE( "SDL_IMAGE_LIBRARIES = ${SDL_IMAGE_LIBRARIES}" )
+MESSAGE( "SDLIMAGE_LIBRARY = ${SDLIMAGE_LIBRARY}" )
 
 #MESSAGE( "Compile it with OpenGL : OPENGL = ${OPENGL}" )
 #MESSAGE( "We use OGG Vorbis : OGG = ${OGG}" )
