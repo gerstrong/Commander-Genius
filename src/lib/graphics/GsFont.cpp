@@ -276,12 +276,7 @@ void GsFont::createTextSurface(GsSurface &sfc,
                format->Bmask,
                0);
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(sfc.getSDLSurface(), SDL_BLENDMODE_BLEND);
-#else
     sfc.setColorMask(0, 255, 255);
-#endif
-
     sfc.fillRGB(0, 255, 255);
 
     const Uint32 oldColor = getFGColor();
