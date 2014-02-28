@@ -79,6 +79,8 @@ void CDimDark::ponder(const float deltaT)
 
     if(dimDark) // dim dark here
     {
+        mDarkSurface.setAlpha(m_Alpha);
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_SetSurfaceAlphaMod( mDarkSurface.getSDLSurface(), m_Alpha );
 #else

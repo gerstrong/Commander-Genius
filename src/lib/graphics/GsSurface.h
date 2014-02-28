@@ -112,6 +112,11 @@ public:
         SDL_FillRect( mpSurface, &sdlRect, color );
     }
 
+    void fill(const Uint32 color)
+    {
+        SDL_FillRect( mpSurface, nullptr, color );
+    }
+
     void setColorMask(const unsigned char r,
                       const unsigned char g,
                       const unsigned char b)
@@ -131,8 +136,6 @@ public:
 #else
     SDL_SetAlpha(mpSurface, SDL_SRCALPHA, alpha);
 #endif
-
-
     }
 
     Uint16 width() const

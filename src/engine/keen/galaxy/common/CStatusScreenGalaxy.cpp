@@ -132,7 +132,12 @@ void CStatusScreenGalaxy::scaleToResolution()
                                  format->Bmask,
                                  format->Amask );
 
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceBlendMode(mpStatusSurface.get(), SDL_BLENDMODE_NONE);
+#else
     SDL_SetAlpha(mpStatusSurface.get(), 0, 0);
+#endif
 
     SDL_Rect src = mpStatusSurface->clip_rect;
     src.w *= scaleFac;

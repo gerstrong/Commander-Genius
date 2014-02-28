@@ -14,6 +14,7 @@
 
 #include <memory>
 #include <base/video/GsEffectController.h>
+#include <graphics/GsSurface.h>
 
 #include <lib/base/GsTimer.h>
 
@@ -41,8 +42,8 @@ private:
 	Uint8 m_Alpha;
 	fade_dir m_FadeDir;
 	Uint8 m_Style;
-	Uint8 m_MaxAlpha;
-	std::shared_ptr<SDL_Surface> mpFadeSurface;
+	Uint8 m_MaxAlpha;   
+    GsSurface mFadeSurface;
 };
 
 #endif /* CFLASH_H_ */

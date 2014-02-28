@@ -32,9 +32,9 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color) :
     m_FadeDir(FADE_IN),
     m_Style(FADE_PULSE),
     m_MaxAlpha(255),
-    mpFadeSurface(gVideoDriver.convertThroughBlitSfc(gVideoDriver.getBlitSurface()), &SDL_FreeSurface)
+    mFadeSurface(gVideoDriver.convertThroughBlitSfc(gVideoDriver.getBlitSurface()))
 {
-    SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
+    mFadeSurface.fill(m_Color);
 }
 //#endif
 
@@ -64,9 +64,9 @@ CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
     m_FadeDir(FADE_IN),
     m_Style(FADE_NORMAL),
     m_MaxAlpha(m_maxalpha),
-    mpFadeSurface(gVideoDriver.convertThroughBlitSfc(gVideoDriver.getBlitSurface()), &SDL_FreeSurface)
+    mFadeSurface(gVideoDriver.convertThroughBlitSfc(gVideoDriver.getBlitSurface()))
 {
-    SDL_FillRect(mpFadeSurface.get(), NULL, m_Color);
+    mFadeSurface.fill(m_Color);
 }
 //#endif
 
@@ -75,11 +75,7 @@ void CFlash::ponder(const float deltaT)
 {
     Uint32 ElapsedTime = gTimer.getTicks() - m_StartTime;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod(mpFadeSurface.get(), m_Alpha);
-#else
-    SDL_SetAlpha(mpFadeSurface.get(), SDL_SRCALPHA, m_Alpha);
-#endif
+    mFadeSurface.setAlpha(m_Alpha);
 
     if(m_FadeDir == FADE_IN)
     {
@@ -111,6 +107,6 @@ void CFlash::ponder(const float deltaT)
 void CFlash::render()
 {
     // Blit it and free temp surface
-    SDL_BlitSurface( mpFadeSurface.get(), NULL,
-                     gVideoDriver.getBlitSurface(), NULL );
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    mFadeSurface.blitTo(blit);
 }
