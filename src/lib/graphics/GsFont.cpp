@@ -260,14 +260,6 @@ void GsFont::createTextSurface(GsSurface &sfc,
     SDL_Surface *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
-    /*sfc.create(SDL_SWSURFACE,
-               rect.w, rect.h,
-               format->BitsPerPixel,
-               format->Rmask,
-               format->Gmask,
-               format->Bmask,
-               format->Amask);*/
-
     sfc.create(SDL_SWSURFACE,
                rect.w, rect.h,
                format->BitsPerPixel,

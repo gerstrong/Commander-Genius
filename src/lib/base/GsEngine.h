@@ -24,6 +24,9 @@ public:
     virtual void pumpEvent(const CEvent *evPtr) = 0;
     virtual void ponder(const float deltaT) = 0;
     virtual void render() = 0;
+private:
+
+
 };
 
 

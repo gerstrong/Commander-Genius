@@ -7,6 +7,7 @@
 #include "CResourceLoader.h"
 #include "GalaxyEngine.h"
 #include "common/CBehaviorEngine.h"
+#include "common/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/CMessages.h"
@@ -156,31 +157,41 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
     return true;
 }
 
+
+void GalaxyEngine::switchToPassive()
+{
+    // Now look if there are any old savegames that need to be converted
+    CSaveGameController &savedgames = *gpSaveGameController;
+    savedgames.setGameDirectory(mDataPath);
+    savedgames.setEpisode(mEp);
+
+    mpGameMode.reset( new galaxy::CPassiveGalaxy() );
+    mpGameMode->init();
+
+    mOpenedGamePlay = false;
+}
+
+
 void GalaxyEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
 
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
     {
-        // Now look if there are any old savegames that need to be converted
-        CSaveGameController &savedgames = *gpSaveGameController;
-        savedgames.setGameDirectory(mDataPath);
-        savedgames.setEpisode(mEp);
-        savedgames.convertAllOldFormats();
-
-        mpGameMode.reset( new galaxy::CPassiveGalaxy() );
-        mpGameMode->init();
-
-        /*if(  )
+        switchToPassive();
+        gpSaveGameController->convertAllOldFormats();
+    }
+    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    {
+        if( dynamic_cast<CPlayGameGalaxy*>(mpGameMode.get()) )
         {
-            gEventManager.add( new GMSwitchToGameLauncher(-1, -1) );
+            switchToPassive();
         }
-        else*/
+        else
         {
-            mOpenedGamePlay = false;
+            gEventManager.add(new GMSwitchToGameLauncher);
         }
-
-    }    
+    }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
         g_pBehaviorEngine->mPlayers = pNewGame->mSelection;

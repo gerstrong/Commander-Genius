@@ -8,6 +8,8 @@
 #include "CPlayGame.h"
 #include "graphics/GsGraphics.h"
 
+#include <widgets/GsMenuController.h>
+
 CPlayGame::CPlayGame(CExeFile &ExeFile, char level) :
 m_endgame(false),
 m_ExeFile(ExeFile),
@@ -26,6 +28,15 @@ mp_option(g_pBehaviorEngine->m_option)
 	m_checkpoint_x = m_checkpoint_y = 0;
 	m_checkpointset = false;
 	mCamLead = 0;
+}
+
+void CPlayGame::pumpEvent(const CEvent *evPtr)
+{
+    if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    {
+        gMenuController.clearMenuStack();
+        m_endgame = true;
+    }
 }
 
 void CPlayGame::loadGame()

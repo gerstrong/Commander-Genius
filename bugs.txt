@@ -13,7 +13,7 @@ Keen 1:
 Keen 4:
 - Mimrock springt instant wenn man sich auf selber höhe wie er befindet.
 
-- End game in Galaxy in Gameplay not possible anymore, maybe same goes for vorticon.
+- End game in Galaxy in Gameplay not possible anymore, same goes for vorticon.
 - Saving highscore in Vorticon possible?
 - Music in main menu should disabled, and not stopped when mainmenu is closed.
 

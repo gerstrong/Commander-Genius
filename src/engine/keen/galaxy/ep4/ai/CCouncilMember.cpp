@@ -8,6 +8,7 @@
 #include "CCouncilMember.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
+#include "core/mode/CGameMode.h"
 #include "misc.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"

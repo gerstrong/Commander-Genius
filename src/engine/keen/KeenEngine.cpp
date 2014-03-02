@@ -93,35 +93,12 @@ void KeenEngine::pumpEvent(const CEvent *evPtr)
 {
     GameEngine::pumpEvent(evPtr);
 
-    /*if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
-    {
-        // Now look if there are any old savegames that need to be converted
-        CSaveGameController &savedgames = *gpSaveGameController;
-        savedgames.setGameDirectory(mDataPath);
-        savedgames.setEpisode(mEp);
-        savedgames.convertAllOldFormats();
-
-        std::unique_ptr<CGamePassiveMode> passive(new CGamePassiveMode());
-        mpGameMode = move(passive);
-        mpGameMode->init();
-        mOpenedGamePlay = false;
-        gMenuController.emptyMenuStack();*/
-
-        //if(m_start_level == -1) // Starts normally
-            //gEventManager.add( new GMSwitchToPassiveMode(mDataPath, mEp) );
-        /*else // This happens, when a level was passed as argument when launching CG
-            EventContainer.add( new GMSwitchToPlayGameMode(episode, 1,
-                                    DataDirectory,
-                                    m_start_level) );*//*
-    }*/
-
     if( const StartNewGameEvent* pStart = dynamic_cast<const StartNewGameEvent*>(evPtr) )
     {
         g_pBehaviorEngine->mDifficulty = pStart->mDifficulty;
         switchToGamePlayMode();
         return;
-    }
-
+    }       
 }
 
 void KeenEngine::ponder(const float deltaT)

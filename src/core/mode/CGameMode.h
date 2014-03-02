@@ -43,6 +43,10 @@ struct GMSwitchToPlayGameMode : CEvent
 struct GMStart : CEvent {};
 
 
+// Happens when in the menu the user decides to end the game or he reached
+// the finale
+struct EventEndGamePlay : CEvent {};
+
 ///////
 // Base Class for the modes
 //////

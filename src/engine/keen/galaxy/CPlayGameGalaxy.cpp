@@ -338,7 +338,11 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         mMessageBoxes.push_back( move(pMsgBox) );
     }
-
+    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    {
+        m_endgame = true;
+        gMenuController.clearMenuStack();
+    }
     else if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
     {
         if(ev->data >= 0xC000)	// Start a new level!
@@ -394,11 +398,6 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
         g_pMusicPlayer->stop();
         if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
             g_pMusicPlayer->play();
-    }
-    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
-    {
-        m_endgame = true;
-        gMenuController.clearMenuStack();
     }
     else if(m_WorldMap.isActive())
     {

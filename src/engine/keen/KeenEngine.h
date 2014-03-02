@@ -42,7 +42,7 @@ protected:
     bool mLockedMenu;
 };
 
-
+// Event pushed when all the resources have been loaded
 struct FinishedLoadingResources : CEvent {};
 
 // Invoked when New Game -> Players selected -> Difficulty selected

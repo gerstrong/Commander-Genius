@@ -32,6 +32,8 @@ public:
 
     bool loadResources( const Uint8 flags );
 
+    void switchToPassive();
+
     void pumpEvent(const CEvent *evPtr);
 
 private:

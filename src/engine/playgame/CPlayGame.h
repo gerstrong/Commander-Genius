@@ -36,7 +36,7 @@ public:
     virtual bool saveXMLGameState() = 0;
 	virtual void cleanup() = 0;
 
-    virtual void pumpEvent(const CEvent *evPtr) {}
+    virtual void pumpEvent(const CEvent *evPtr);
 
 	bool isFinished();
 	bool getEndGame();

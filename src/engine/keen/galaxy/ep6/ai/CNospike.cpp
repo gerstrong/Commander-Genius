@@ -2,8 +2,8 @@
 #include <misc.h>
 
 #include "../../common/ai/CPlayerLevel.h"
-
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
+#include "core/mode/CGameMode.h"
 
 
 /*

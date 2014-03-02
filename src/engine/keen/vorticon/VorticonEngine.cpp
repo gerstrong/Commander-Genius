@@ -8,6 +8,7 @@
 
 #include "CResourceLoader.h"
 #include "common/CBehaviorEngine.h"
+#include "common/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/CMessages.h"
@@ -182,36 +183,43 @@ bool VorticonEngine::loadResources( const Uint8 flags )
     return true;
 }
 
+void VorticonEngine::switchToPassiveMode()
+{
+    // Now look if there are any old savegames that need to be converted
+    CSaveGameController &savedgames = *gpSaveGameController;
+    savedgames.setGameDirectory(mDataPath);
+    savedgames.setEpisode(mEp);
 
+    mpGameMode.reset( new vorticon::CPassiveVort() );
+    mpGameMode->init();
+
+    mOpenedGamePlay = false;
+
+    const std::string finaleStr = gArgs.getValue("finale");
+    if(finaleStr == "on")
+    {
+        gEventManager.add( new StartNewGameEvent(EASY) );
+    }
+}
 
 void VorticonEngine::pumpEvent(const CEvent *evPtr)
 {
     KeenEngine::pumpEvent(evPtr);
 
     if( dynamic_cast<const FinishedLoadingResources*>(evPtr) )
+    {        
+        switchToPassiveMode();
+        gpSaveGameController->convertAllOldFormats();
+    }
+    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
-        // Now look if there are any old savegames that need to be converted
-        CSaveGameController &savedgames = *gpSaveGameController;
-        savedgames.setGameDirectory(mDataPath);
-        savedgames.setEpisode(mEp);
-        savedgames.convertAllOldFormats();
-
-        mpGameMode.reset( new vorticon::CPassiveVort() );
-        mpGameMode->init();
-
-        /*if(  )
+        if( dynamic_cast<CPlayGameVorticon*>(mpGameMode.get()) )
         {
-            gEventManager.add( new GMSwitchToGameLauncher(-1, -1) );
+            switchToPassiveMode();
         }
-        else*/
+        else
         {
-            mOpenedGamePlay = false;
-        }
-
-        const std::string finaleStr = gArgs.getValue("finale");
-        if(finaleStr == "on")
-        {
-            gEventManager.add( new StartNewGameEvent(EASY) );
+            gEventManager.add(new GMSwitchToGameLauncher);
         }
     }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )

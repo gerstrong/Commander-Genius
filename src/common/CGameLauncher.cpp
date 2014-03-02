@@ -220,7 +220,8 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
     gLogging.ftextOut("Search: %s<br>", path.c_str() );
 
-	for(int i = 1; i <= 6; ++i) {
+    for(int i = 1; i <= 6; ++i)
+    {
 		CExeFile executable;
 		// Load the exe into memory
 		if(!executable.readData(i, path))

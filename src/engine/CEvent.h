@@ -37,8 +37,6 @@ struct InvokeFunctorEvent : CEvent
     virtual void operator()() const = 0;
 };
 
-struct EventEndGamePlay : CEvent
-{};
 
 struct EventDieKeenPlayer  : CEvent
 {

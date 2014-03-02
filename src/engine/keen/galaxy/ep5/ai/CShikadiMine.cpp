@@ -14,6 +14,7 @@
 #include "../../common/ai/CPlayerLevel.h"
 #include "misc.h"
 #include "../../common/dialog/CMessageBoxGalaxy.h"
+#include "core/mode/CGameMode.h"
 
 
 /*
