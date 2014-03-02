@@ -211,17 +211,6 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         switchToPassiveMode();
         gpSaveGameController->convertAllOldFormats();
     }
-    else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
-    {
-        if( dynamic_cast<CPlayGameVorticon*>(mpGameMode.get()) )
-        {
-            switchToPassiveMode();
-        }
-        else
-        {
-            gEventManager.add(new GMSwitchToGameLauncher);
-        }
-    }
     else if( const NewGamePlayersEvent* pNewGame = dynamic_cast<const NewGamePlayersEvent*>(evPtr) )
     {
         g_pBehaviorEngine->mPlayers = pNewGame->mSelection;
