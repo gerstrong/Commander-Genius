@@ -7,6 +7,7 @@
 
 #include "GsMenuController.h"
 #include <base/CInput.h>
+#include "sdl/music/CMusic.h"
 
 
 void CMenuController::clearMenuStack()
@@ -64,6 +65,14 @@ void CMenuController::popBackMenu()
     {
         // The last menu has been removed. Restore back the game status
         g_pBehaviorEngine->setPause(false);
+
+        // Check if music was playing
+        if(g_pMusicPlayer->active())
+        {
+            if(!g_pMusicPlayer->playing())
+                g_pMusicPlayer->play();
+        }
+
 		
         // When menu is closed hide the cursor
         //SDL_ShowCursor(SDL_DISABLE);

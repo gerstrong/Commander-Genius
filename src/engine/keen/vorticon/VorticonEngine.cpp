@@ -86,6 +86,12 @@ void VorticonEngine::render()
 
 void VorticonEngine::openMainMenu()
 {
+    // Check if music is playing and pause if it is
+    if(g_pMusicPlayer->active())
+    {
+       g_pMusicPlayer->pause();
+    }
+
     gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
 }
 
@@ -194,6 +200,7 @@ void VorticonEngine::switchToPassiveMode()
     mpGameMode->init();
 
     mOpenedGamePlay = false;
+    g_pMusicPlayer->stop();
 
     const std::string finaleStr = gArgs.getValue("finale");
     if(finaleStr == "on")

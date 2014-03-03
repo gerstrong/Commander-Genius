@@ -42,13 +42,20 @@ public:
 	bool LoadfromSonglist(const std::string &gamepath, const int &level);
 
 	bool playing()
-	{
-		if(mpPlayer)
-		{
-		  return mpPlayer->playing();
-		}
-		return false;
-	}
+    {
+        if(!active())
+            return false;
+
+        return mpPlayer->playing();
+    }
+
+    bool active()
+    {
+        if(mpPlayer)
+            return true;
+        else
+            return false;
+    }
 
 	std::unique_ptr<CMusicPlayer> mpPlayer;
 	bool m_busy;

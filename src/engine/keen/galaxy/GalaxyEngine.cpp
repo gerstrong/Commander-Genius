@@ -62,7 +62,13 @@ bool loadLevelMusic(const int level)
 
 
 void GalaxyEngine::openMainMenu()
-{
+{    
+    // Check if music is playing and pause if it is
+    if(g_pMusicPlayer->active())
+    {
+       g_pMusicPlayer->pause();
+    }
+
     gEventManager.add( new OpenMenuEvent( new MainMenu(mOpenedGamePlay) ) );
 }
 
@@ -167,6 +173,8 @@ void GalaxyEngine::switchToPassive()
 
     mpGameMode.reset( new galaxy::CPassiveGalaxy() );
     mpGameMode->init();
+
+    g_pMusicPlayer->stop();
 
     mOpenedGamePlay = false;
 }

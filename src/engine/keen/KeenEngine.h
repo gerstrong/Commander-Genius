@@ -17,7 +17,7 @@ public:
 
     void switchToGamePlayMode();
 
-    virtual void openMainMenu();
+    virtual void openMainMenu() = 0;
 
     void start();
 

@@ -26,43 +26,6 @@ void KeenEngine::switchToGamePlayMode()
 }
 
 
-void KeenEngine::openMainMenu()
-{
-    /*if(gMenuController.isLocked())
-        return;
-
-    gEventManager.add( new OpenMenuEvent( new CMainMenu(mOpenedGamePlay) ) );
-    g_pBehaviorEngine->setPause(true);
-    g_pMusicPlayer->pause();*/
-
-    /*
-    // Control Menu Events
-    if( const OpenMovementControlMenuEvent* ctrlMenu = dynamic_cast<const OpenMovementControlMenuEvent*>(evPtr) )
-    {
-        const int players = ctrlMenu->mSelection;
-        EventContainer.add( new OpenMenuEvent(
-                                new CControlSettingsMovement(players) ) );
-    }
-
-    if( const OpenButtonsControlMenuEvent* ctrlMenu = dynamic_cast<const OpenButtonsControlMenuEvent*>(evPtr) )
-    {
-        const int players = ctrlMenu->mSelection;
-        EventContainer.add( new OpenMenuEvent(
-                                new CControlSettingsButtons(players) ) );
-    }
-
-    if( const OpenControlMenuEvent* ctrlMenu = dynamic_cast<const OpenControlMenuEvent*>(evPtr) )
-    {
-        const int players = ctrlMenu->mSelection;
-        EventContainer.add( new OpenMenuEvent(
-                                new CControlsettings(players) ) );
-    }*/
-
-
-    // When menu is opened show the cursor
-    //SDL_ShowCursor(SDL_ENABLE);
-}
-
 
 void KeenEngine::start()
 {
@@ -117,10 +80,6 @@ void KeenEngine::ponder(const float deltaT)
         {
             openMainMenu();
         }
-        /*else // Close the menu which is open. Might go back if it is a submenu
-        {
-            EventContainer.add( new CloseMenuEvent() );
-        }*/
     }
 }
 
