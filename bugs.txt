@@ -5,10 +5,6 @@ There is more stuff at github and also from emails I receive from people. Not ev
 Nevertheless I take a look on those other resources as well and see what I can do.
 
 
-Keen 4:
-- Mimrock springt instant wenn man sich auf selber höhe wie er befindet.
-
-
 Feature to add:
 ---------------
 - Preview image in the selection screen which automatically extracted
