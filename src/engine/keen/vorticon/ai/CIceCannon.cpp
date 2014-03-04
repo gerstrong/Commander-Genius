@@ -99,35 +99,38 @@ void CIceChunk::getTouchedBy(CVorticonSpriteObject &theObject)
 {
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-	// freeze the player if it touches him
-	CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
-	// make him start sliding in the direction of the impact
-	if (vector_x > 0)
-	{
-	    player->pDir.x = player->pShowDir.x = RIGHT;
-	    player->xinertia = Physics.player.max_x_speed;
-	    player->bump( RIGHT );
-	}
-	else if (vector_x < 0)
-	{
-	    player->pDir.x = player->pShowDir.x = LEFT;
-	    player->xinertia = -Physics.player.max_x_speed;
-	    player->bump( LEFT );
-	}
-	else	// perfectly vertical ice cannons
-	{
-	    const int UPDNCANNON_PUSHAMT = 16;
-	    if (player->xinertia < UPDNCANNON_PUSHAMT)
-	    {
-		if (rnd()&1)
-		    player->xinertia = UPDNCANNON_PUSHAMT;
-		else
-		    player->xinertia = -UPDNCANNON_PUSHAMT;
-	    }
-	}
-	
-	player->freeze();
-	smash();    
+        // freeze the player if it touches him
+        CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+        // make him start sliding in the direction of the impact
+
+        const int iceInertia = Physics.player.max_x_speed;
+
+        if (vector_x > 0)
+        {
+            player->pDir.x = player->pShowDir.x = RIGHT;
+            player->xinertia = iceInertia;
+            player->bump( RIGHT, iceInertia );
+        }
+        else if (vector_x < 0)
+        {
+            player->pDir.x = player->pShowDir.x = LEFT;
+            player->xinertia = -iceInertia;
+            player->bump( LEFT, iceInertia );
+        }
+        else	// perfectly vertical ice cannons
+        {
+            const int UPDNCANNON_PUSHAMT = 16;
+            if (player->xinertia < UPDNCANNON_PUSHAMT)
+            {
+                if (rnd()&1)
+                    player->xinertia = UPDNCANNON_PUSHAMT;
+                else
+                    player->xinertia = -UPDNCANNON_PUSHAMT;
+            }
+        }
+
+        player->freeze();
+        smash();
     }
 }
 
