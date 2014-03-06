@@ -24,6 +24,7 @@
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/sound/CSound.h"
+#include "fileio/ResourceMgmt.h"
 
 #include "CResourceLoader.h"
 
@@ -31,6 +32,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <SDL_image.h>
 
 #include "engine/keen/vorticon/VorticonEngine.h"
 #include "engine/keen/galaxy/GalaxyEngine.h"
@@ -90,20 +92,42 @@ bool CGameLauncher::loadResources()
     // Save any custom labels
     putLabels();
 
+    // Create an empty Bitmap control
+    mLauncherDialog.addControl( new CGUIBitmap(),
+                                GsRect<float>(0.51f, 0.07f, 0.48f, 0.48f) );
+
+    mCurrentBmp = std::dynamic_pointer_cast< CGUIBitmap >
+                  ( mLauncherDialog.getControlList().back() );
+
+    mpPrevievBmpVec.resize(m_Entries.size());
 
 	std::vector<GameEntry>::iterator it = m_Entries.begin();
+    unsigned int i=0;
     for( ; it != m_Entries.end() ; it++	)
     {
     	mpSelList->addText(it->name);
+
+        // And try to add a preview bitmap
+        std::string fullfilename = "preview.png";
+        fullfilename = getResourceFilename(fullfilename, it->path, false);
+
+        if(IsFileAvailable(fullfilename))
+        {
+            SDL_Surface *pPrimBmp = IMG_Load(GetFullFileName(fullfilename).c_str());
+            std::shared_ptr<SDL_Surface> bmpSfcPtr( pPrimBmp );
+            std::shared_ptr<GsBitmap> pBmp(new GsBitmap(bmpSfcPtr));
+            mpPrevievBmpVec[i] = pBmp;
+        }
+        i++;
     }
 
     mpSelList->setConfirmButtonEvent(new GMStart());
     mpSelList->setBackButtonEvent(new GMQuit());
 
-
     mLauncherDialog.addControl(new CGUIText("Pick a Game"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
     mLauncherDialog.addControl(new GsButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mLauncherDialog.addControl(mpSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
+
 
     mLauncherDialog.addControl(new GsButton( "Start >", new GMStart() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 
@@ -157,15 +181,6 @@ bool CGameLauncher::loadResources()
     return true;
 }
 
-struct FileListAdder
-{
-    void operator()(std::set<std::string>& dirs, const std::string& path) {
-        std::string basepath = GetBaseFilename(path);
-        if(basepath != "" && basepath[0] != '.') {
-            dirs.insert(basepath);
-        }
-    }
-};
 
 bool CGameLauncher::scanSubDirectories(const std::string& path,
                                        const size_t maxdepth,
@@ -408,6 +423,9 @@ void CGameLauncher::ponder(const float deltaT)
         float fVer = m_Entries[mSelection].version;
         fVer /= 100.0f;
         mpVersionText->setText("Version: " + ftoa(fVer));
+
+        // Now update the bitmap
+        mCurrentBmp->setBitmapPtr(mpPrevievBmpVec[mSelection]);
     }
 
     mLauncherDialog.processLogic();   

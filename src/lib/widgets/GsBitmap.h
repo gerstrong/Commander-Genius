@@ -19,8 +19,14 @@ class CGUIBitmap : public CGUIControl
 {
 public:
 
+    // Create an empty bitmap
+    CGUIBitmap() {}
+
 	// Loads an Bitmap that is given directly
-	CGUIBitmap(std::unique_ptr<GsBitmap>&& pBitmap);
+    CGUIBitmap(std::shared_ptr<GsBitmap> &pBitmap);
+
+    // Sets another Bitmap Pointer
+    void setBitmapPtr(std::shared_ptr<GsBitmap> &pBitmap);
 
 	// Load an Bitmap using an internal string ID of all the loaded Bitmaps
 	CGUIBitmap(const std::string &text);
@@ -34,7 +40,8 @@ public:
 
 private:
 
-	std::unique_ptr<GsBitmap> mpBitmap;
+    std::shared_ptr<GsBitmap> mpBitmap;
+    GsBitmap mScaledBitmap;
     std::string mTextID;
 };
 

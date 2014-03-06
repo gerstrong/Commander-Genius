@@ -275,7 +275,6 @@ void blitScaled(SDL_Surface *srcSfc,
     SDL_Rect lSrGsRect = srGsRect;
     SDL_Rect lDstRect = dstRect;
 
-
     // Check for filter and reduce if the surface to be scaled is way too small
     while( filter>NONE )
     {

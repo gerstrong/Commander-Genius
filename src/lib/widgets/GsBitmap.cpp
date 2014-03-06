@@ -10,9 +10,20 @@
 
 #include "GsBitmap.h"
 
-CGUIBitmap::CGUIBitmap(std::unique_ptr<GsBitmap>&& pBitmap) :
-mpBitmap(move(pBitmap))
+CGUIBitmap::CGUIBitmap(std::shared_ptr<GsBitmap> &pBitmap) :
+mpBitmap(pBitmap),
+mScaledBitmap(*mpBitmap)
 {}
+
+void CGUIBitmap::setBitmapPtr(std::shared_ptr<GsBitmap> &pBitmap)
+{
+    mpBitmap = pBitmap;
+
+    if(mpBitmap)
+        mScaledBitmap = *mpBitmap;
+    else
+        mScaledBitmap.clear();
+}
 
 
 
@@ -45,12 +56,25 @@ void CGUIBitmap::processLogic()
 
 
 void CGUIBitmap::processRender(const GsRect<float> &RectDispCoordFloat)
-{
+{    
+    if(mScaledBitmap.empty())
+        return;
+
 	// Transform to the display coordinates
 	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
-	SDL_Rect lRect = displayRect.SDLRect();
+    GsRect<Uint16> lRect = displayRect.SDLRect();
 
-	mpBitmap->draw( lRect.x, lRect.y );
+    if( mScaledBitmap.getWidth() != lRect.w ||
+        mScaledBitmap.getHeight() != lRect.h )
+    {
+        mScaledBitmap = GsBitmap( *mpBitmap.get() );
+        lRect.x = 0;    lRect.y = 0;
+        mScaledBitmap.scaleTo(lRect);
+    }
+    else
+    {
+        mScaledBitmap.draw( lRect.x, lRect.y );
+    }
 }
 

@@ -93,6 +93,8 @@ private:
 	CGUIDialog mLauncherDialog;
     CResourceLoaderBackground mGameScanner;
 
+    std::shared_ptr<CGUIBitmap> mCurrentBmp;
+    std::vector< std::shared_ptr<GsBitmap> > mpPrevievBmpVec;
 	CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
 	CGUITextSelectionList *mpSelList;

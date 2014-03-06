@@ -153,9 +153,9 @@ void GsBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
 #endif
 }
 
-bool GsBitmap::scaleTo(const GsRect<Uint16> &gameRes)
+bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
 {
-    SDL_Rect newRect = gameRes.SDLRect();
+    SDL_Rect newRect = destRes.SDLRect();
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
@@ -173,13 +173,12 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &gameRes)
     auto bmpFormat = bmpSfc->format;
 
     newSfc.reset( SDL_CreateRGBSurface(bmpSfc->flags,
-                                       newRect.w,
-                                       newRect.h,
+                                       newRect.w, newRect.h,
                                        bmpFormat->BitsPerPixel,
-                                       0,
-                                       0,
-                                       0,
-                                       0 ),
+                                       bmpFormat->Rmask,
+                                       bmpFormat->Gmask,
+                                       bmpFormat->Bmask,
+                                       bmpFormat->Amask ),
                     &SDL_FreeSurface );
 
     if(!newSfc)
@@ -197,6 +196,7 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &gameRes)
 
 
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
+
 
     blitScaled(bmpSfc,
                bmpSfc->clip_rect,

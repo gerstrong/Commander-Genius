@@ -34,7 +34,21 @@ public:
     void exchangeColor( const Uint32 oldColor, const Uint32 newColor );
     void makeBlackTransparent();
 
-	SDL_Surface *getSDLSurface() const
+    bool empty() const
+    {
+        if(!mpBitmapSurface)
+            return true;
+        else
+            return false;
+    }
+
+    void clear()
+    {
+        if(mpBitmapSurface)
+            mpBitmapSurface = nullptr;
+    }
+
+    SDL_Surface *getSDLSurface() const
 	{
 		return mpBitmapSurface.get();
 	}
@@ -43,7 +57,7 @@ public:
 	Uint16 getHeight() const { return mpBitmapSurface->h; }
 
     void setColorKey(const Uint8 r, const Uint8 g, const Uint8 b);
-    bool scaleTo(const GsRect<Uint16> &gameRes);
+    bool scaleTo(const GsRect<Uint16> &destRes);
 
 	std::string getName() const { return mName; }
 	void setName(const std::string &name) { mName = name; }

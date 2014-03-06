@@ -354,6 +354,8 @@ ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 if(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL2_LIBRARY})
+    # Workaround since there is no SDL2_Image cmake yet
+    set(SDL_IMAGE_LIBRARIES "SDL2_image")
     target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
 else(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL_LIBRARY})

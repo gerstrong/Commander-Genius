@@ -45,7 +45,6 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	fRect.transformInverse(gameRect);
 	fRect.transform(mRect);
 
-	std::unique_ptr<GsBitmap> pBitmap(new GsBitmap(bmpSfc));
-
-	addControl( new CGUIBitmap(move(pBitmap)), fRect );
+    std::shared_ptr<GsBitmap> pBitmap(new GsBitmap(bmpSfc));
+    addControl( new CGUIBitmap(pBitmap), fRect );
 }
