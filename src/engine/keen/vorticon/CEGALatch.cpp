@@ -91,6 +91,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		Bitmap.createSurface(gVideoDriver.getScrollSurface()->flags,
 							bmpRect,
 							gGraphics.Palette.m_Palette);
+
 	}
 	return true;
 }
@@ -261,13 +262,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		}
 	}
 
-	// optimize the bitmaps and load hq bitmaps if there are some.
-    /*for(int b=0 ; b<m_bitmaps ; b++)
-	{
-		GsBitmap &bitmap = gGraphics.getBitmap(b);
-		bitmap.optimizeSurface();
-    }*/
-
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;
 	std::string gfxpath = JoinPaths(path, "gfx");
@@ -286,6 +280,16 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 
 	if(RawData){ delete[] RawData; RawData = NULL;}
+
+    // Create an intro in case it does not exist yet
+    std::string fullpath = getResourceFilename("preview.bmp", path, false);
+    if( fullpath == "" )
+    {   // Not found create it
+        fullpath = path + "/preview.bmp";
+        fullpath = GetWriteFullFileName(fullpath, false);
+        GsBitmap *pBitmap = gGraphics.getBitmapFromStr("TITLE");
+        SDL_SaveBMP( pBitmap->getSDLSurface(), fullpath.c_str());
+    }
 
 	return true;
 }

@@ -183,6 +183,18 @@ bool CEGAGraphicsGalaxy::loadData()
 	//k456_export_demos();
 	//k456_export_end();
 
+    // Now try to store a preview if possible
+    // Create an intro in case it does not exist yet
+    const std::string  path = m_Exefile.getDataDirectory();
+    std::string fullpath = getResourceFilename("preview.bmp", path, false);
+    if( fullpath == "" )
+    {   // Not found create it
+        fullpath = JoinPaths(path, "preview.bmp");
+        fullpath = GetWriteFullFileName(fullpath, false);
+        GsBitmap *pBitmap = gGraphics.getBitmapFromStr("TITLE");
+        SDL_SaveBMP( pBitmap->getSDLSurface(), fullpath.c_str());
+    }
+
 	return true;
 }
 

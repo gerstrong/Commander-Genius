@@ -108,12 +108,13 @@ bool CGameLauncher::loadResources()
     	mpSelList->addText(it->name);
 
         // And try to add a preview bitmap
-        std::string fullfilename = "preview.png";
+        std::string fullfilename = "preview.bmp";
         fullfilename = getResourceFilename(fullfilename, it->path, false);
+        fullfilename = GetAbsolutePath(fullfilename);
 
         if(IsFileAvailable(fullfilename))
         {
-            SDL_Surface *pPrimBmp = IMG_Load(GetFullFileName(fullfilename).c_str());
+            SDL_Surface *pPrimBmp = SDL_LoadBMP(GetFullFileName(fullfilename).c_str());
             std::shared_ptr<SDL_Surface> bmpSfcPtr( pPrimBmp );
             std::shared_ptr<GsBitmap> pBmp(new GsBitmap(bmpSfcPtr));
             mpPrevievBmpVec[i] = pBmp;
