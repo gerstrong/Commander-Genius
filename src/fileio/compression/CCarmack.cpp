@@ -6,8 +6,8 @@
  */
 
 #include "CCarmack.h"
-#include "../../CLogFile.h"
-#include "../../StringUtils.h"
+#include <lib/base/GsLogging.h>
+#include <lib/base/utils/StringUtils.h>
 
 CCarmack::CCarmack()
 {
@@ -47,7 +47,7 @@ void CCarmack::expand( std::vector<byte>& dst, std::vector<byte>& src )
 	{
         if(TAG >= srcSize)
         {
-            g_pLogFile->textOut("Something went wrong with the Carmack compression!\n");
+            gLogging.textOut("Something went wrong with the Carmack compression!\n");
             return;
         }
 
@@ -92,7 +92,7 @@ void CCarmack::expand( std::vector<byte>& dst, std::vector<byte>& src )
 					}
 					else
 					{
-						g_pLogFile->textOut("ERROR Offset overflow offset="+ itoa(j) +", actual size="+itoa(dst.size())+"\n");
+						gLogging.textOut("ERROR Offset overflow offset="+ itoa(j) +", actual size="+itoa(dst.size())+"\n");
 						return;
 					}
 				}

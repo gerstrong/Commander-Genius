@@ -8,10 +8,10 @@
 #include "CHUD.h"
 #include "engine/CCamera.h"
 #include "common/CBehaviorEngine.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/extensions.h"
-#include "graphics/CGfxEngine.h"
-#include "StringUtils.h"
+#include "graphics/GsGraphics.h"
+#include <base/utils/StringUtils.h>
 
 const int EFFECT_TIME = 10;
 const int EFFECT_SPEED = 10;
@@ -34,11 +34,11 @@ void CHUD::createHUDBlit()
 {    
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     mpHUDBlit.reset( CG_CreateRGBSurface( m_Rect ), &SDL_FreeSurface );
-    mpHUDBlit.reset(g_pVideoDriver->convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
+    mpHUDBlit.reset(gVideoDriver.convertThroughBlitSfc(mpHUDBlit.get()), &SDL_FreeSurface);
 
     SDL_SetSurfaceAlphaMod( mpHUDBlit.get(), 220);
 #else    
-    auto *blit = g_pVideoDriver->getBlitSurface();
+    auto *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
     SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
@@ -75,7 +75,7 @@ void CHUD::setup(const int id)
     else // Galaxy HUD
     {
         m_Rect.w = 80;	m_Rect.h = 30;
-        mHUDBox = *g_pGfxEngine->getSprite(mId,"HUDBACKGROUND");
+        mHUDBox = *gGraphics.getSprite(mId,"HUDBACKGROUND");
 
         #if SDL_VERSION_ATLEAST(2, 0, 0)
         #else
@@ -109,15 +109,15 @@ void CHUD::CreateVorticonBackground()
         SDL_SetAlpha(mpBackground.get(), 0, 0);
     #endif
 
-	SDL_Rect headsrcrect, headdstrect;
-	headsrcrect.x = 0;
-	headsrcrect.y = 0;
-	headdstrect.w = headsrcrect.w = 16;
-	headdstrect.h = headsrcrect.h = 16;
+	SDL_Rect headsrGsRect, headdstrect;
+	headsrGsRect.x = 0;
+	headsrGsRect.y = 0;
+	headdstrect.w = headsrGsRect.w = 16;
+	headdstrect.h = headsrGsRect.h = 16;
     headdstrect.x = 0;
     headdstrect.y = 11;
 
-    mKeenHeadSprite = g_pGfxEngine->getSprite(mId,PMAPDOWNFRAME);
+    mKeenHeadSprite = gGraphics.getSprite(mId,PMAPDOWNFRAME);
 
     SDL_Surface *keenHeadSfc = mKeenHeadSprite.getSDLSurface();
 
@@ -127,7 +127,7 @@ void CHUD::CreateVorticonBackground()
     SDL_SetAlpha(keenHeadSfc, 0, 0);
 #endif
 
-    SDL_BlitSurface( keenHeadSfc, &headsrcrect, mpBackground.get(), &headdstrect );
+    SDL_BlitSurface( keenHeadSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
 
 
 	int sprite=0;
@@ -137,11 +137,11 @@ void CHUD::CreateVorticonBackground()
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 
 	// Draw the shot
-    mKeenGunSprite = g_pGfxEngine->getSprite(mId,sprite);
-    headdstrect.w = headsrcrect.w = mKeenGunSprite.getWidth();
-    headdstrect.h = headsrcrect.h = mKeenGunSprite.getHeight();
-    headdstrect.x = 45-(headsrcrect.w/2);
-    headdstrect.y = 19-(headsrcrect.h/2);
+    mKeenGunSprite = gGraphics.getSprite(mId,sprite);
+    headdstrect.w = headsrGsRect.w = mKeenGunSprite.getWidth();
+    headdstrect.h = headsrGsRect.h = mKeenGunSprite.getHeight();
+    headdstrect.x = 45-(headsrGsRect.w/2);
+    headdstrect.y = 19-(headsrGsRect.h/2);
 
     SDL_Surface *keenGunSfc = mKeenGunSprite.getSDLSurface();
 
@@ -152,7 +152,7 @@ void CHUD::CreateVorticonBackground()
 #endif
 
 
-    SDL_BlitSurface( keenGunSfc, &headsrcrect, mpBackground.get(), &headdstrect );
+    SDL_BlitSurface( keenGunSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
 
 	// Draw the rounded borders
     DrawCircle(0, 0, 76);
@@ -166,7 +166,7 @@ void CHUD::DrawCircle(int x, int y, int width)
 	SDL_Rect text, outline;
 
 	Uint8 r,g,b;
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 	Font.getBGColour(&r, &g, &b);
 
 	outline.x = x+4;
@@ -227,9 +227,9 @@ void CHUD::renderGalaxy()
 
   if(lives >= 0)
   {
-    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
-    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
-    g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(score),9), 4, 4, blitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(charges),2),60, 20, blitsfc );
+    gGraphics.drawDigits(getRightAlignedString(itoa(lives),2), 20, 20, blitsfc );
 
     if(g_pBehaviorEngine->mPlayers > 1 && mId == CCamera::getLead())
     {
@@ -242,7 +242,7 @@ void CHUD::renderGalaxy()
   }
 
 
-  SDL_BlitSurface( blitsfc, NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );
+  SDL_BlitSurface( blitsfc, NULL, gVideoDriver.getBlitSurface(), &m_Rect );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -259,7 +259,7 @@ void CHUD::renderVorticon()
 	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 
 
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 
 	// Draw the lives
     Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(lives),2), 15, 15);
@@ -269,7 +269,7 @@ void CHUD::renderVorticon()
 
     Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2);
 
-    SDL_BlitSurface( mpHUDBlit.get(), NULL, g_pVideoDriver->getBlitSurface(), &m_Rect );   
+    SDL_BlitSurface( mpHUDBlit.get(), NULL, gVideoDriver.getBlitSurface(), &m_Rect );   
 }
 
 

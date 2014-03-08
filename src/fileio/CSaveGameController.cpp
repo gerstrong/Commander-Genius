@@ -7,7 +7,7 @@
  *  Routines for handling save&load of savegames
  */
 
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "CSaveGameController.h"
 #include "common/CBehaviorEngine.h"
 #include <ctime>
@@ -207,13 +207,13 @@ bool CSaveGameController::loadSaveGameVersion5(const std::string &fname, OldSave
 	FILE *fp;
 	unsigned char episode, level, lives, numplayers;
 
-	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
+	gLogging.ftextOut("Loading game from file %s\n", fname.c_str());
 	fp = OpenGameFile(fname, "rb");
-	if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return false; }
+	if (!fp) { gLogging.ftextOut("unable to open %s\n",fname.c_str()); return false; }
 
 	readOldHeader(fp, &episode, &level, &lives, &numplayers);
 
-	g_pLogFile->ftextOut("game_load: restoring structures...\n");
+	gLogging.ftextOut("game_load: restoring structures...\n");
 	/*primaryplayer =*/ fgetc(fp); // primary player doesn't exist anymore! Jump that!
 
 	sgrle_compress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl));
@@ -263,11 +263,11 @@ bool CSaveGameController::loadSaveGameVersion4(const std::string &fname, OldSave
 	//unsigned char episode, level, lives;
 	unsigned int numplayers;
 
-	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
+	gLogging.ftextOut("Loading game from file %s\n", fname.c_str());
 	fp = OpenGameFile(fname, "rb");
-	if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return false; }
+	if (!fp) { gLogging.ftextOut("unable to open %s\n",fname.c_str()); return false; }
 
-	g_pLogFile->ftextOut("game_load: restoring structures...\n");
+	gLogging.ftextOut("game_load: restoring structures...\n");
 	if (fgetc(fp) != 'S') { fclose(fp); return false; }
 	if (fgetc(fp) != OLDSAVEGAMEVERSION4) { fclose(fp); return false; }
 	fgetc(fp);
@@ -321,7 +321,7 @@ bool CSaveGameController::convertOldFormat(size_t slot)
 
 	if(alreadyExits())
 	{
-		g_pLogFile->textOut("You already have \""+m_statefilename+"\". If you want to export an old savegame erase it, or erase the old savegame if it's already exported!" );
+		gLogging.textOut("You already have \""+m_statefilename+"\". If you want to export an old savegame erase it, or erase the old savegame if it's already exported!" );
 		return false;
 	}
 
@@ -385,7 +385,7 @@ bool CSaveGameController::convertOldFormat(size_t slot)
 		// store completed levels
 		addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
 
-		g_pLogFile->ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
+		gLogging.ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
 	}
 	else if(version == 4)
 	{
@@ -447,17 +447,17 @@ bool CSaveGameController::convertOldFormat(size_t slot)
 		// store completed levels
 		addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
 
-		g_pLogFile->ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
+		gLogging.ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
 	}
 	else
 	{
-		g_pLogFile->ftextOut("Sorry, but the old save game format is unknown\n");
+		gLogging.ftextOut("Sorry, but the old save game format is unknown\n");
 		return false;
 	}
 
 	save();
 
-	g_pLogFile->ftextOut("The old savegame has been converted successfully OK\n");
+	gLogging.ftextOut("The old savegame has been converted successfully OK\n");
 
 	return true;
 }
@@ -569,7 +569,7 @@ bool CSaveGameController::prepareSaveGame( int SaveSlot, const std::string &Name
 
 	m_offset = 0;
 
-	g_pBehaviorEngine->EventList().add( new SaveGameEvent() );
+	gEventManager.add( new SaveGameEvent() );
 
 	return true;
 }
@@ -586,7 +586,7 @@ bool CSaveGameController::prepareLoadGame(int SaveSlot)
 
     m_datablock.clear();
 
-    g_pBehaviorEngine->EventList().add( new LoadGameEvent() );
+    gEventManager.add( new LoadGameEvent() );
 
 	return true;
 }
@@ -601,7 +601,7 @@ bool CSaveGameController::load()
 
     if (!StateFile.is_open())
     {
-    	g_pLogFile->textOut("Error loading \"" + fullpath + "\". Please check the status of that file.\n" );
+    	gLogging.textOut("Error loading \"" + fullpath + "\". Please check the status of that file.\n" );
     	return false;
     }
 
@@ -620,7 +620,7 @@ bool CSaveGameController::load()
 	StateFile.close();
 
 	// Done!
-	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully loaded. Size: "+itoa(m_datablock.size())+"\n");
+	gLogging.textOut("File \""+ fullpath +"\" was sucessfully loaded. Size: "+itoa(m_datablock.size())+"\n");
 	m_offset = 0;
 	m_statefilename.clear();
 	m_statename.clear();
@@ -654,7 +654,7 @@ bool CSaveGameController::save()
 
     if (!open)
     {
-    	g_pLogFile->textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
+    	gLogging.textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
     	return false;
     }
 
@@ -696,7 +696,7 @@ bool CSaveGameController::save()
 	m_datablock.clear();
 
 	// Done!
-	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully saved. Size: "+itoa(size)+"\n");
+	gLogging.textOut("File \""+ fullpath +"\" was sucessfully saved. Size: "+itoa(size)+"\n");
 	m_statefilename.clear();
 	m_statename.clear();
 
@@ -720,7 +720,7 @@ bool CSaveGameController::saveXMLTree(boost::property_tree::ptree &pt)
     if (!open)
     {
         std::string fullpath = GetFullFileName(m_stateXMLfilename);
-        g_pLogFile->textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
+        gLogging.textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
         return false;
     }
 

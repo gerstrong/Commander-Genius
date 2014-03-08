@@ -9,8 +9,8 @@
 
 #include <SDL_thread.h>
 #include "ThreadPool.h"
-#include "Debug.h"
-#include "CLogFile.h"
+#include <base/Debug.h>
+#include <lib/base/GsLogging.h>
 //#include "AuxLib.h"
 #include "ReadWriteLock.h" // for ScopedLock
 //#include "OLXCommand.h"
@@ -93,10 +93,10 @@ int ThreadPool::threadWrapper(void* param) {
 		SDL_mutexV(data->pool->mutex);
 		
 		SDL_CondSignal(data->pool->threadStartedWork);
-		g_pLogFile->textOut("Running Thread: " + data->name);
+        gLogging.textOut("Running Thread: " + data->name);
 		data->ret = act->handle();
 		delete act;
-		g_pLogFile->textOut( data->name + " [finished]" );
+        gLogging.textOut( data->name + " [finished]" );
 		SDL_mutexP(data->pool->mutex);
 		data->finished = true;
 		SDL_CondSignal(data->pool->threadStatusChanged);
@@ -117,7 +117,8 @@ int ThreadPool::threadWrapper(void* param) {
 	return 0;
 }
 
-ThreadPoolItem* ThreadPool::start(Action* act, const std::string& name, bool headless) {
+ThreadPoolItem* ThreadPool::start(Action* act, const std::string& name, bool headless)
+{
 	SDL_mutexP(startMutex); // If start() method will be called from different threads without mutex, hard-to-find crashes will occur
 	SDL_mutexP(mutex);
 	if(availableThreads.size() == 0) {

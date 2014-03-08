@@ -8,6 +8,8 @@
 
 #include "CPassive.h"
 #include "common/CBehaviorEngine.h"
+#include <base/video/CVideoDriver.h>
+#include <widgets/GsMenuController.h>
 
 CPassive::CPassive()
 {
@@ -19,9 +21,19 @@ CPassive::CPassive()
 }
 
 
+void CPassive::pumpEvent(const CEvent *evPtr)
+{
+    if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
+    {
+        gMenuController.clearMenuStack();
+        m_modeg = true;
+    }
+}
+
+
 void CPassive::createOutlinedText(const int splash_x, const int splash_y, const std::string &text)
 {
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 	SDL_Surface *sfc = mpTextSfc.get();
 	SDL_PixelFormat *format = sfc->format;
 

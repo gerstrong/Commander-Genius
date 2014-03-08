@@ -9,11 +9,10 @@
 
 #include "COGGPlayer.h"
 
-#include "engine/galaxy/res/CAudioGalaxy.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
 #include "sdl/sound/Sampling.h"
 #include "fileio/ResourceMgmt.h"
-#include "CLogFile.h"
+#include <lib/base/GsLogging.h>
 
 
 COGGPlayer::COGGPlayer(const SDL_AudioSpec& AudioSpec) :
@@ -88,7 +87,7 @@ bool COGGPlayer::open()
     m_pcm_size *= (mVorbisInfo->channels*sizeof(Sint16));
     m_music_pos = 0;
 
-	g_pLogFile->ftextOut("OGG-Player: File \"%s\" was opened successfully!<br>", m_filename.c_str());
+	gLogging.ftextOut("OGG-Player: File \"%s\" was opened successfully!<br>", m_filename.c_str());
 	int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
 			m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
 			m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
@@ -108,20 +107,9 @@ bool COGGPlayer::open()
 }
 
 
-bool COGGPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
-{
-	// Now get the proper music slot reading the assignment table.
-	Uint16 music_order = 0;
-	const int Idx = ExeFile.getEpisode()-4;
-	memcpy( &music_order, ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16), sizeof(Uint16));
-	
-	if(music_order > 20)
-	{
-	  g_pLogFile->textOut("Sorry, this track is invalid! Please report the developers.");
-	  return false;
-	}
-	
-	m_filename = "slot" + itoa(music_order) + ".ogg";
+bool COGGPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
+{	
+    m_filename = "slot" + itoa(track) + ".ogg";
 	m_filename = getResourceFilename(JoinPaths("music", m_filename), ExeFile.getDataDirectory(), false, false);
 
 	if(m_filename.empty())	
@@ -223,9 +211,7 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
         open();
         play(true);
         return;
-    }
-
-    memset(m_Audio_cvt.buf, 0, length);
+    }    
 
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format

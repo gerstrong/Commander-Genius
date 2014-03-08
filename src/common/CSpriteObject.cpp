@@ -7,8 +7,8 @@
 
 #include "engine/spritedefines.h"
 #include "CSpriteObject.h"
-#include "CLogFile.h"
-#include "sdl/CVideoDriver.h"
+#include <lib/base/GsLogging.h>
+#include <base/video/CVideoDriver.h>
 
 int CSpriteObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
 
@@ -78,7 +78,7 @@ bool CSpriteObject::calcVisibility()
 {
 	int visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
 	const Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
 							(mp_Map->m_scrollx<<STC)-(visibility<<CSF);
@@ -210,7 +210,7 @@ void CSpriteObject::moveLeft(const int amnt, const bool force)
 	if(amnt <= 0)
 		return;
 
-	m_EventCont.add(new ObjMove(-amnt,0));
+    mMoveTasks.push_back(new ObjMove(-amnt, 0));
 }
 
 void CSpriteObject::moveRight(const int amnt, const bool force)
@@ -218,7 +218,7 @@ void CSpriteObject::moveRight(const int amnt, const bool force)
 	if(amnt <= 0)
 		return;
 
-	m_EventCont.add(new ObjMove(amnt,0));
+    mMoveTasks.push_back(new ObjMove(amnt, 0));
 }
 
 void CSpriteObject::moveUp(const int amnt)
@@ -226,7 +226,7 @@ void CSpriteObject::moveUp(const int amnt)
 	if(amnt <= 0)
 		return;
 
-	m_EventCont.add(new ObjMove(0,-amnt));
+    mMoveTasks.push_back(new ObjMove(0, -amnt));
 }
 
 void CSpriteObject::moveDown(const int amnt)
@@ -235,7 +235,7 @@ void CSpriteObject::moveDown(const int amnt)
 	if(amnt <= 0)
 		return;
 
-	m_EventCont.add(new ObjMove(0, amnt));
+    mMoveTasks.push_back(new ObjMove(0, amnt));
 }
 
 // This decreases the inertia we have of the object in X-direction.
@@ -329,7 +329,7 @@ void CSpriteObject::getShotByRay(object_t &obj_type)
 {
 	if( !m_invincible && mHealthPoints>0)
 	{
-		if(mHealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+		if(mHealthPoints>1 && gVideoDriver.getSpecialFXConfig())
 			blink(10);
 		mHealthPoints--;
 	}
@@ -399,7 +399,7 @@ void CSpriteObject::draw()
     if( sprite == BLANKSPRITE || dontdraw )
 		return;
 
-    CSprite &Sprite = g_pGfxEngine->getSprite(mSprVar, sprite);
+    GsSprite &Sprite = gGraphics.getSprite(mSprVar, sprite);
 
     if(!Sprite.valid())
         return;
@@ -407,7 +407,7 @@ void CSpriteObject::draw()
 	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
 	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
 
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
 	if( scrx < gameres.w && scry < gameres.h && exists )
 	{
@@ -417,7 +417,7 @@ void CSpriteObject::draw()
         int w = Sprite.getWidth();
         int h = Sprite.getHeight();
 
-        auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
+        auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
         if( showX+Sprite.getWidth() < visGA.x || showX > visGA.x+visGA.w+16 )
             return;
@@ -451,4 +451,10 @@ CSpriteObject::~CSpriteObject()
 	if(m_number_of_objects > 0)
 		m_number_of_objects--;
 }
+
+void spawnObj(const CSpriteObject *obj)
+{
+    gEventManager.add(new EventSpawnObject( obj ));
+}
+
 

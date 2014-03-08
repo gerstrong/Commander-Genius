@@ -10,9 +10,9 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
-#include "StringUtils.h"
-#include "FindFile.h"
-#include "CLogFile.h"
+//#include "StringUtils.h"
+#include <base/FindFile.h>
+#include <lib/base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
 
 CExeFile::CExeFile() :
@@ -71,7 +71,7 @@ unsigned long CExeFile::fetchUncompressedHeaderSize(void *m_headerdata)
 			return c;
 	}
 
-	g_pLogFile->textOut("The Exe file has an invalid header size!");
+	gLogging.textOut("The Exe file has an invalid header size!");
 
 	return 0;
 }
@@ -161,7 +161,7 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 
 	m_crc = getcrc32( mData.data(), m_datasize );
 
-	g_pLogFile->ftextOut( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
+	gLogging.ftextOut( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
 
 	return true;
 }

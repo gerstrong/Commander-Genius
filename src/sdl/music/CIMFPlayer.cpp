@@ -7,12 +7,11 @@
  *  Player which reproduces the IMF Data
  */
 
-#include "engine/galaxy/res/CAudioGalaxy.h"
 #include "CIMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
-#include "FindFile.h"
-#include "CLogFile.h"
+#include <base/FindFile.h>
+#include <lib/base/GsLogging.h>
 #include <fstream>
 #include <string>
 #include <cassert>
@@ -24,7 +23,7 @@ m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
 m_IMFDelay(0),
-mMixBuffer(new Sint32[m_AudioDevSpec.samples])
+mMixBuffer(m_AudioDevSpec.samples, 0)
 {}
 
 
@@ -57,7 +56,7 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
     m_IMF_Data.reserve(imf_chunks);
     
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
-	g_pLogFile->textOut("The IMF-File seems to be corrupt.");
+	gLogging.textOut("The IMF-File seems to be corrupt.");
     else
 	ok = true;
     
@@ -284,23 +283,6 @@ bool CIMFPlayer::unpackAudioInterval(	const CExeFile& ExeFile,
 	}
 }
 
-bool CIMFPlayer::loadMusicForLevel(const CExeFile& ExeFile, const int level)
-{
-	// Now get the proper music slot reading the assignment table.
-	Uint16 music_order = 0;
-	const int Idx = ExeFile.getEpisode()-4;
-	byte *data = ExeFile.getRawData()+GalaxySongAssignments[Idx]+level*sizeof(Uint16);
-	memcpy( &music_order, data, sizeof(Uint16));
-	
-	if(music_order > 20)
-	{
-	  g_pLogFile->textOut("Sorry, this track is invalid! Please report it the developers.");
-	  return false;
-	}
-
-	return loadMusicTrack(ExeFile, music_order);
-}
-
 bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 {
 	// Now get the proper music slot reading the assignment table.
@@ -346,13 +328,13 @@ void CIMFPlayer::close()
 
 void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {
-    if(!mMixBuffer)
+    if(mMixBuffer.empty())
     {
-        g_pLogFile->textOut("Warning OPL Buffer is empty!");
+        gLogging.textOut("Warning OPL Buffer is empty!");
         return;
     }
 
-    m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.get() );
+    m_opl_emulator.Chip__GenerateBlock2( length, mMixBuffer.data() );
 
     // Mix into the destination buffer, doubling up into stereo.
 	if(m_AudioDevSpec.format == AUDIO_S16)

@@ -138,8 +138,35 @@ configure_file(README.in README)
 
 # main includes
 INCLUDE_DIRECTORIES(src)
+INCLUDE_DIRECTORIES(src/lib)
 
-file(GLOB_RECURSE ALL_SRCS src/*.c* src/*.h*)
+file(GLOB ALL_SRCS_PART_ROOT src/*.c* src/*.h*)
+#file(GLOB_RECURSE ALL_SRCS_PART_LIB src/lib/*.c* src/lib/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_COMMON src/common/*.c* src/common/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_CORE src/core/*.c* src/core/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_DIALOG src/dialog/*.c* src/dialog/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_ENGINE src/engine/*.c* src/engine/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_FILEIO src/fileio/*.c* src/fileio/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_GRAPHICS src/graphics/*.c* src/graphics/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_GUI src/gui/*.c* src/gui/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_HARDWARE src/hardware/*.c* src/hardware/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_SDL src/sdl/*.c* src/sdl/*.h*)
+file(GLOB_RECURSE ALL_SRCS_PART_UTILS src/utils/*.c* src/utils/*.h*)
+
+
+SET(ALL_SRCS ${ALL_SRCS_PART_LIB}
+             ${ALL_SRCS_PART_ROOT}
+             ${ALL_SRCS_PART_COMMON}
+             ${ALL_SRCS_PART_CORE}
+             ${ALL_SRCS_PART_DIALOG}
+             ${ALL_SRCS_PART_ENGINE}
+             ${ALL_SRCS_PART_FILEIO}
+             ${ALL_SRCS_PART_GRAPHICS}
+             ${ALL_SRCS_PART_GUI}
+             ${ALL_SRCS_PART_HARDWARE}
+             ${ALL_SRCS_PART_SDL}
+             ${ALL_SRCS_PART_UTILS}
+             ${ALL_SRCS_PART_GRAPHICS})
 
 IF(UNIX)
 # Compilation under Linux
@@ -283,6 +310,8 @@ ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 # Executable definition
 ADD_EXECUTABLE(CommanderGenius ${ALL_SRCS})
 
+target_link_libraries(CommanderGenius GsKit)
+
 # Linking part under Linux
 IF(BUILD_TARGET STREQUAL WIN32)
 	TARGET_LINK_LIBRARIES(CommanderGenius mingw32)
@@ -325,11 +354,16 @@ ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 if(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL2_LIBRARY})
-    target_link_libraries(CommanderGenius ${SDLIMAGE_LIBRARY})
+    # Workaround since there is no SDL2_Image cmake yet
+    set(SDL_IMAGE_LIBRARIES "SDL2_image")
+    target_link_libraries(CommanderGenius ${SDL_IMAGE_LIBRARIES})
 else(SDL2_FOUND)
     target_link_libraries(CommanderGenius ${SDL_LIBRARY})
     target_link_libraries(CommanderGenius ${SDLIMAGE_LIBRARY})
 endif(SDL2_FOUND)
+
+# Add GsKit
+add_subdirectory("src/lib")
 
 
 #MESSAGE( "BUILD_TARGET = ${BUILD_TARGET}" )

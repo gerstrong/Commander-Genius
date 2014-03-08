@@ -9,22 +9,27 @@
 #ifndef CDIMDARK_H
 #define CDIMDARK_H
 
-#include "CEffects.h"
+#include <base/video/GsEffectController.h>
+#include <graphics/GsSurface.h>
+
 #include <memory>
 
 class CDimDark : public CEffects
 {
 
 public:
-    CDimDark(const Uint8 speed);
-    void ponder();
+    CDimDark(const Uint8 speed);    
+
+    void getSnapshot();
+
+    void ponder(const float deltaT);
     void render();
     
-    std::shared_ptr<SDL_Surface> &getDarkSfc()
-    {  return mpDarkSurface;  }
+    GsSurface &getDarkSfc()
+    {  return mDarkSurface;  }
     
-    std::shared_ptr<SDL_Surface> &getSfc()
-    {  return mpOldSurface;  }
+    GsSurface &getSfc()
+    {  return mOldSurface;  }
 
     
 private:
@@ -33,8 +38,10 @@ private:
     int m_Alpha;
 	bool dimDark;
 
-	std::shared_ptr<SDL_Surface> mpOldSurface;    
-	std::shared_ptr<SDL_Surface> mpDarkSurface;
+    GsSurface mOldSurface;
+    GsSurface mDarkSurface;
+
+    Uint32 mColorkey;
 };
 
 #endif // CDIMDARK_H

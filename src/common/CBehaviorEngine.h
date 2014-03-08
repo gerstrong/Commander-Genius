@@ -19,14 +19,16 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "engine/galaxy/res/EGAStructs.h"
+#include "../engine/keen/galaxy/res/EGAStructs.h"
 #include "hardware/Configurator.h"
 #include "fileio/CExeFile.h"
 #include "CTileProperties.h"
 #include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
-#include "engine/CEventContainer.h"
+#include <base/GsEvent.h>
 #include "common/options.h"
+
+#include <lib/base/GsEvent.h>
 
 #include "CSingleton.h"
 
@@ -73,8 +75,8 @@ class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 public:
 	CBehaviorEngine() : 	mPlayers(0),
 				mDifficulty(EASY),
-				mPausedGamePlay(false),
-				pEpisodeInfo(NULL) {}
+                mPausedGamePlay(false)/*,
+                pEpisodeInfo(NULL)*/ {}
 
 	void setMessage(const std::string &name,
 					const std::string &message);
@@ -94,7 +96,7 @@ public:
 	{ return m_TeleporterTable; }
 
 	CEventContainer &EventList()
-	{	return m_EventList;	}
+    {	return gEventManager;	}
 
 	void setEpisode(size_t Episode);
 
@@ -104,8 +106,6 @@ public:
 	bool paused()
 	{	return mPausedGamePlay;	}
 
-	// TODO: EventList must an own singleton Container, as it very often used.
-	CEventContainer m_EventList;
 	CExeFile m_ExeFile;
 	bool m_is_a_mod;
 	stOption m_option[NUM_OPTIONS];
@@ -113,11 +113,11 @@ public:
 	unsigned int mPlayers;
 	Difficulty mDifficulty;
 
-	EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
+    EpisodeInfoStruct* getEpisodeInfoStructRef(const unsigned int episode)
 	{	return &pEpisodeInfo[episode-4];	}
 
 	void setEpisodeInfoStructPtr(const EpisodeInfoStruct* epStruct)
-	{	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
+    {	pEpisodeInfo = const_cast<EpisodeInfoStruct*>(epStruct);	}
 	
 	
 	std::string mapLevelName;
@@ -134,7 +134,7 @@ private:
 
 	bool mPausedGamePlay;
 
-	EpisodeInfoStruct *pEpisodeInfo;
+    EpisodeInfoStruct *pEpisodeInfo;
 		
 };
 

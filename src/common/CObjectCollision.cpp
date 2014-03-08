@@ -10,7 +10,7 @@
 
 #include "CSpriteObject.h"
 #include "engine/spritedefines.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 
 /*
  * \brief Performs collision without bouncing box recalculation
@@ -39,7 +39,7 @@ void CSpriteObject::performCollisionsSameBox()
  */
 void CSpriteObject::calcBoundingBoxes()
 {
-    CSprite &rSprite = g_pGfxEngine->getSprite(0,sprite);
+    GsSprite &rSprite = gGraphics.getSprite(0,sprite);
 
 	m_BBox.x1 = rSprite.m_bboxX1;
 	m_BBox.x2 = rSprite.m_bboxX2;
@@ -849,42 +849,53 @@ void CSpriteObject::processPushOutCollision()
 	}
 }
 
+void CSpriteObject::pumpEvent(const CEvent *evPtr)
+{
+    /*if( ObjMove* pObjMove = dynamic_cast<ObjMove>(evPtr))
+    {
+        processMove(pObjMove->m_Vec);
+        //m_EventCont.pop_Event();
+    }*/
+}
+
 void CSpriteObject::processEvents()
 {
-	while(!m_EventCont.empty())
-	{	    
-        if( ObjMoveCouple* pObjMove =  m_EventCont.occurredEvent<ObjMoveCouple>())
+    if(mMoveTasks.empty())
+        return;
+
+    for( auto task : mMoveTasks)
+    {
+        ObjMove *objMove = task;
+
+        if( ObjMoveCouple* pObjMove = dynamic_cast<ObjMoveCouple*>(objMove) )
         {
             auto move = pObjMove->m_Vec;
             processMove(move);
             pObjMove->mSecond.processMove(move);
-            m_EventCont.pop_Event();
         }
-
-        if( ObjMoveCouples* pObjMove =  m_EventCont.occurredEvent<ObjMoveCouples>())
+        else if( ObjMoveCouples* pObjMove = dynamic_cast<ObjMoveCouples*>(objMove) )
         {
             auto move = pObjMove->m_Vec;
             auto playerVec = pObjMove->mCarriedObjVec;
 
             processMove(move);
 
-            for(auto &player : playerVec)                
+            for(auto &player : playerVec)
             {
-                if(player)
-                {
-                    if(!player->m_jumpdownfromobject)
-                      player->processMove(move);
-                }
-            }
+                if(!player)
+                    continue;
 
-            m_EventCont.pop_Event();
+                if(!player->m_jumpdownfromobject)
+                    player->processMove(move);
+            }
+        }
+        else
+        {
+            processMove(objMove->m_Vec);
         }
 
-	    
-	    if( ObjMove* pObjMove =  m_EventCont.occurredEvent<ObjMove>())
-	    {
-            processMove(pObjMove->m_Vec);
-            m_EventCont.pop_Event();
-	    }
-	}
+        delete task;
+    }
+
+    mMoveTasks.clear();
 }

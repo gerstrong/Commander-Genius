@@ -21,7 +21,7 @@ public:
 
 	void initialize();
 	void renderBox();
-    void ponder();
+    void ponder(const float deltaT);
     void render();
 
 	void formatText(const std::string &text);

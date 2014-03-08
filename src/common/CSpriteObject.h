@@ -9,10 +9,11 @@
  */
 
 
-#ifndef __CSPRITEOBJECT_H_
-#define __CSPRITEOBJECT_H_
+#ifndef __CSpriteObject_H_
+#define __CSpriteObject_H_
 
-#include "engine/CEventContainer.h"
+#include <lib/base/GsEvent.h>
+
 #include "ActionFormat.h"
 #include "CVec.h"
 #include "direction.h"
@@ -20,7 +21,7 @@
 
 // structures for each AI module's data
 #include "CMap.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "options.h"
 #include "sdl/sound/CSound.h"
 #include "CVec.h"
@@ -60,43 +61,48 @@ struct BoundingBox
 class CSpriteObject;
 
 // Event that will be used to move the objects in the game
-struct ObjMove : public CEvent
+struct ObjMove
 {
 	VectorD2<int> m_Vec;
-	ObjMove(const VectorD2<int>& Vector) : m_Vec(Vector) {}
-	ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
+
+    ObjMove(const VectorD2<int>& Vector) : m_Vec(Vector) {}
+    ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
+
+    virtual ~ObjMove() {}
 };
 
 // Event that will be used to move the objects in the game together with another object.
 // This is applied for example whenever keen is being moved on the platform
-struct ObjMoveCouple : public CEvent
+struct ObjMoveCouple : ObjMove
 {
-    VectorD2<int> m_Vec;
     CSpriteObject &mSecond;
-    ObjMoveCouple(const VectorD2<int>& Vector,
+    ObjMoveCouple(const VectorD2<int>& vec,
                       CSpriteObject &second) :
-            m_Vec(Vector), mSecond(second)  {}
+        ObjMove(vec), mSecond(second)  {}
 
     ObjMoveCouple(const int offx, const int offy,
                       CSpriteObject &second) :
-            m_Vec(offx, offy), mSecond(second) {}
+        ObjMove(offx, offy), mSecond(second) {}
 };
 
 // Same as above but for multiple couples
 
-struct ObjMoveCouples : public CEvent
+struct ObjMoveCouples : ObjMove
 {
-    VectorD2<int> m_Vec;
     std::vector<CSpriteObject*> mCarriedObjVec;
+
     ObjMoveCouples(const VectorD2<int>& Vector,
                       std::vector<CSpriteObject*> &carriedObjVec) :
-            m_Vec(Vector), mCarriedObjVec(carriedObjVec)  {}
+            ObjMove(Vector), mCarriedObjVec(carriedObjVec)  {}
 
     ObjMoveCouples(const int offx, const int offy,
                       std::vector<CSpriteObject*> &carriedObjVec) :
-            m_Vec(offx, offy), mCarriedObjVec(carriedObjVec) {}
+            ObjMove(offx, offy), mCarriedObjVec(carriedObjVec) {}
 };
 
+
+// Small special routine for spawning objects. Might be called by other objects and the level manager
+void spawnObj(const CSpriteObject *obj);
 
 class CSpriteObject
 {
@@ -112,6 +118,10 @@ public:
 	int yDirection;					// same for vertical
 
 	int scrx, scry;           		// x,y pixel position on screen
+
+    virtual void pumpEvent(const CEvent *evPtr);
+
+    virtual void processEvents();
 	
 	// Bounding Boxes
 	BoundingBox m_BBox;
@@ -131,12 +141,13 @@ public:
 	bool blockedl, blockedr, blockedu, blockedd;
 	bool onslope;
 	signed int xinertia, yinertia;
-	CSpriteObject *pSupportedbyobject;
+    CSpriteObject *pSupportedbyobject;
 
 	bool dead, dying;
 
 	// This container will held the triggered events of the object
-	CEventContainer m_EventCont;
+
+    std::vector< ObjMove* > mMoveTasks;
 
     bool m_jumpdownfromobject;
 
@@ -207,14 +218,11 @@ public:
 
 	virtual void process() { }
 	
-	// The object can hold events process them here!
-    virtual void processEvents();
-
 	bool turnAroundOnCliff( int x1, int x2, int y2 );
 
 
 
-	bool hitdetect(CSpriteObject &hitobject);
+    bool hitdetect(CSpriteObject &hitobject);
     bool hitdetectWithTile(const int num, const int lx, const int ly, const int lw, const int lh, const int res);
 	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, const int lw, const int lh, const int res);
 	bool hitdetectWithTilePropertyRectRO(const Uint16 Property, const int lx, const int ly, const int lw, const int lh, const int res);
@@ -275,9 +283,9 @@ public:
 	void processFallPhysics();
 	virtual void processFalling();
     virtual void getTouchedBy(CSpriteObject &theObject) {}
-	virtual bool isNearby(CSpriteObject &theObject) { return true; }
+    virtual bool isNearby(CSpriteObject &theObject) { return true; }
 	virtual void getShotByRay(object_t &obj_type);
-	void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
+    void kill_intersecting_tile(int mpx, int mpy, CSpriteObject &theObject);
 	CMap *getMapPtr() { return mp_Map; }
 
 	/**
@@ -288,7 +296,7 @@ public:
 
 	virtual void draw();
 
-	virtual ~CSpriteObject();
+    virtual ~CSpriteObject();
 
     int getSpriteVariantId() const
     {   return mSprVar;    }
@@ -313,4 +321,4 @@ protected:
     int mSprVar; // Sprite variant, which is used by the Spritemap
 };
 
-#endif // __CSPRITEOBJECT_H_
+#endif // __CSpriteObject_H_

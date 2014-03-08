@@ -6,47 +6,86 @@
  */
 
 #include "CDimDark.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
+#include <base/GsApp.h>
 
 CDimDark::CDimDark(const Uint8 speed) :
 m_Speed(speed),
 m_Alpha(0),
 dimDark(true)
+{}
+
+
+// get the Snapshot of the old surface, so the the effect can be applied on it!
+void CDimDark::getSnapshot()
 {
-    g_pVideoDriver->collectSurfaces();
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
-    mpOldSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
-    //mpDarkSurface.reset( g_pVideoDriver->convertThroughBlitSfc( g_pVideoDriver->mpVideoEngine->getBlitSurface() ), &SDL_FreeSurface );
-//#endif
+    gApp.render();
 
-    auto *blit = g_pVideoDriver->getBlitSurface();
-    SDL_PixelFormat *format = blit->format;
+    GsWeakSurface blitSfc(gVideoDriver.getBlitSurface());
 
-    SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
-                blit->w, blit->h, RES_BPP,
-                format->Rmask,
-                format->Gmask,
-                format->Bmask,
-                0 );
+    auto blitFormat = blitSfc.getSDLSurface()->format;
 
-    mpDarkSurface.reset( sfc, &SDL_FreeSurface );
+    mOldSurface.create(SDL_SWSURFACE,
+                       blitSfc.width(),
+                       blitSfc.height(),
+                       32,
+                       blitFormat->Rmask,
+                       blitFormat->Gmask,
+                       blitFormat->Bmask,
+                       0);
 
-    SDL_FillRect( mpDarkSurface.get(), NULL, SDL_MapRGB(mpDarkSurface->format, 0, 0, 0) );
+    // Surface might have alpha mask. In that case the mColorKey can be zero
+    /*auto format = mOldSurface.getSDLSurface()->format;
+    if(format->Amask != 0)
+    {
+        mColorkey = SDL_MapRGBA( format, 0, 0, 0, 0 );
+    }
+    else
+    {
+        //Map the color key
+        //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
+
+        mColorkey = SDL_MapRGB( format, 0, 0xFF, 0xFF );
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
+        SDL_SetColorKey( mOldSurface.getSDLSurface(), SDL_TRUE, mColorkey );
+    #else
+        SDL_SetColorKey( mOldSurface.getSDLSurface(), SDL_SRCCOLORKEY, mColorkey );
+    #endif
+    }*/
+
+    blitSfc.blitTo(mOldSurface);    
+
+    //mOldSurface.fillRGB(0, 255, 0);
+
+    mDarkSurface.create(SDL_SWSURFACE,
+                        blitSfc.width(),
+                        blitSfc.height(),
+                        RES_BPP,
+                        blitFormat->Rmask,
+                        blitFormat->Gmask,
+                        blitFormat->Bmask,
+                        0);
+
+    mDarkSurface.fillRGB(0,0,0);
 }
 
-void CDimDark::ponder()
+void CDimDark::ponder(const float deltaT)
 {
+    // If there is no pointer set, do it now.
+    if(!mOldSurface)
+    {
+        getSnapshot();
+    }
+
     if(dimDark) // dim dark here
     {
+        mDarkSurface.setAlpha(m_Alpha);
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        SDL_SetSurfaceAlphaMod( mpDarkSurface.get(), m_Alpha );
+        SDL_SetSurfaceAlphaMod( mDarkSurface.getSDLSurface(), m_Alpha );
 #else
-        SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, m_Alpha );
+        SDL_SetAlpha( mDarkSurface.getSDLSurface(), SDL_SRCALPHA, m_Alpha );
 #endif
-
 
         const int sum = m_Alpha + m_Speed;
 
@@ -64,9 +103,9 @@ void CDimDark::ponder()
     {
         // Process the effect
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-        SDL_SetSurfaceAlphaMod( mpDarkSurface.get(), 255-m_Alpha );
+        SDL_SetSurfaceAlphaMod( mDarkSurface.getSDLSurface(), 255-m_Alpha );
 #else
-        SDL_SetAlpha( mpDarkSurface.get(), SDL_SRCALPHA, 255-m_Alpha );
+        SDL_SetAlpha( mDarkSurface.getSDLSurface(), SDL_SRCALPHA, 255-m_Alpha );
 #endif
 
         const int sum = m_Alpha + m_Speed;
@@ -85,21 +124,21 @@ void CDimDark::ponder()
 
 void CDimDark::render()
 {
+    // If there is no pointer set, do it now.
+    if(!mOldSurface)
+    {
+        getSnapshot();
+    }
+
+    GsWeakSurface blitSfc(gVideoDriver.getBlitSurface());
+
+
     if(dimDark) // dim dark here
     {
         // Process the effect
-        SDL_BlitSurface( mpOldSurface.get(), NULL,
-                         g_pVideoDriver->getBlitSurface(), NULL );
-
-        SDL_BlitSurface( mpDarkSurface.get(), NULL,
-                         g_pVideoDriver->getBlitSurface(), NULL );
-
+        mOldSurface.blitTo(blitSfc);
     }
-    else // Undim the upcoming surface.
-    {
 
-        SDL_BlitSurface( mpDarkSurface.get(), NULL,
-                         g_pVideoDriver->getBlitSurface(), NULL );
-    }
+    mDarkSurface.blitTo(blitSfc);
 }
 

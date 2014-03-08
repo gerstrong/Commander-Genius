@@ -7,8 +7,8 @@
  *
  */
 
-#include "Debug.h"
-#include "StringUtils.h"
+#include <base/Debug.h>
+#include <base/utils/StringUtils.h>
 #include "CrashHandler.h"
 #include <stdio.h>
 #include <string.h>
@@ -122,7 +122,7 @@ void RaiseDebugger() {
 
 #ifdef WIN32
 
-#include "StringUtils.h"
+//#include "StringUtils.h"
 
 #define itoa _itoa
 
@@ -519,7 +519,7 @@ Logger errors(-1,-1,1, "E: ");
 #include <iostream>
 #include <sstream>
 #include "ThreadPool.h"
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #ifdef ANDROID
 #include <android/log.h>
 #endif

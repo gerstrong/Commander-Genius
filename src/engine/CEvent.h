@@ -17,16 +17,14 @@
 #include <list>
 #include "common/direction.h"
 #include "CVec.h"
-#include "graphics/CBitmap.h"
+#include "graphics/GsBitmap.h"
 #include <vector>
 #include <memory>
 
+#include <base/GsEvent.h>
+
 class CSpriteObject;
 
-
-// TODO: These Event Interfaces must go to another file. Those are Inlevel Galaxy Events
-
-struct CEvent { virtual ~CEvent() {} };
 
 struct EventEnterLevel : CEvent {
 	uint16_t data;
@@ -36,11 +34,9 @@ struct EventEnterLevel : CEvent {
 
 struct InvokeFunctorEvent : CEvent
 {
-	virtual void operator()() = 0;
+    virtual void operator()() const = 0;
 };
 
-struct EventEndGamePlay : CEvent
-{};
 
 struct EventDieKeenPlayer  : CEvent
 {
@@ -54,8 +50,6 @@ struct EventDieKeenPlayer  : CEvent
         levelObj(lo), levelName(ln){}
 };
 
-struct EventPlayerTeleportFromLevel : CEvent
-{};
 
 struct EventExitLevel : CEvent {
 	const uint16_t levelObject;
@@ -80,9 +74,12 @@ struct EventPlayerEndLevel : CEvent {
 	const uint16_t levelObject;
 	const bool sucess;
     const int who;
+    const bool teleport;
 	EventPlayerEndLevel(const EventExitLevel &ev) :
-                    levelObject(ev.levelObject), sucess(ev.sucess),
-                    who(ev.who) {}
+                    levelObject(ev.levelObject),
+                    sucess(ev.sucess),
+                    who(ev.who),
+                    teleport(ev.teleport){}
 };
 
 struct EventPlayerRideFoot : CEvent {
@@ -92,27 +89,11 @@ struct EventPlayerRideFoot : CEvent {
 };
 
 
-struct EventPlayTrack : CEvent {
-	const uint32_t track;
-	EventPlayTrack(const uint16_t t) : track(t) {}
-};
-
-
-/**
- *	Event designated for a Bitmap Message like those when Keen talks
- *	to the council Members or Princess Lindsey
- */
-struct EventSendDialog : CEvent
+/*struct EventSendBitmapDialogMsg : EventSendDialog
 {
-	const std::string Msg;
-	EventSendDialog(const std::string& lMsg) : Msg(lMsg) {}
-};
-
-struct EventSendBitmapDialogMsg : EventSendDialog
-{
-	const CBitmap &BitmapRef;
+	const GsBitmap &BitmapRef;
 	const direction_t Direction;
-	EventSendBitmapDialogMsg(const CBitmap &lBitmapRef,
+	EventSendBitmapDialogMsg(const GsBitmap &lBitmapRef,
 				 const std::string& lMsg,
 				 const direction_t& lDirection = LEFT) :
 				  EventSendDialog(lMsg),
@@ -120,20 +101,20 @@ struct EventSendBitmapDialogMsg : EventSendDialog
 				  Direction(lDirection)
 				  {}
 };
-
+*/
 
 /**
  * This event collects a vector of EventSendBitmapDialogMsg event, so all
  * the message boxes are loading at once and display one by one holding the paused game
  */
 
-struct EventSendBitmapDialogMessages : CEvent
+/*struct EventSendBitmapDialogMessages : CEvent
 {
 	EventSendBitmapDialogMessages( std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > lMsgs ) :
 		msgs(lMsgs) {}
 
 	std::vector< std::shared_ptr<EventSendBitmapDialogMsg> > msgs;
-};
+};*/
 
 
 

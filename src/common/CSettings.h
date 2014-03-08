@@ -22,6 +22,7 @@ class CSettings : public CSingleton<CSettings>
 public:
 
 	CSettings();
+    bool saveDispCfg();
 	bool saveDrvCfg();
 	bool loadDrvCfg();
 	void loadDefaultGraphicsCfg();

@@ -15,7 +15,7 @@
 
 #include "Unicode.h"
 #include "MathLib.h" // for SIGN
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 
 
 // Table used for removing diacritics and other backward incompatible characters

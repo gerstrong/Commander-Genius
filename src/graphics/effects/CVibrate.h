@@ -10,15 +10,16 @@
 
 #include <memory>
 
-#include "CEffects.h"
-#include "sdl/CTimer.h"
+#include <base/video/GsEffectController.h>
+
+#include <lib/base/GsTimer.h>
 
 class CVibrate : public CEffects
 {
 public:
 	CVibrate(Uint32 msecs);
 
-    void ponder();
+    void ponder(const float deltaT);
     void render();
 
 private:

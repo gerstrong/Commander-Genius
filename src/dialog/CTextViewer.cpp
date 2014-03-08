@@ -7,14 +7,13 @@
 
 #include <fstream>
 
-#include "sdl/input/CInput.h"
+#include <base/CInput.h>
 #include "CTextViewer.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
-#include "sdl/CVideoDriver.h"
-
-#include "FindFile.h"
-#include "CLogFile.h"
+#include <base/video/CVideoDriver.h>
+#include <base/FindFile.h>
+#include <base/GsLogging.h>
 
 CTextViewer::CTextViewer(int x, int y, int w, int h) :
 m_timer(0)
@@ -26,12 +25,12 @@ m_timer(0)
 	m_8x8tilewidth = m_8x8tileheight = 8;
 	m_mustclose = false;
 
-	SDL_Surface *temp = CG_CreateRGBSurface( g_pVideoDriver->getGameResolution().SDLRect() );
+	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     
 //#else
-    mpTextVSfc.reset(g_pVideoDriver->convertThroughBlitSfc(temp), &SDL_FreeSurface);
+    mpTextVSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 //#endif
 	SDL_FreeSurface(temp);
 }
@@ -178,7 +177,7 @@ bool CTextViewer::loadTextfromFile(const std::string &filename)
     }
     else
     {
-    	g_pLogFile->textOut("Error reading \"" + filename + "\". Check if this file is in your directory!");
+    	gLogging.textOut("Error reading \"" + filename + "\". Check if this file is in your directory!");
     	return false;
     }
 
@@ -197,7 +196,7 @@ unsigned char CTextViewer::getnextwordlength(const std::string nextword)
 void CTextViewer::drawTextlines()
 {
 	for(int i=1 ; i<(m_h/m_8x8tileheight) && i<(int)m_textline.size()-m_linepos ; i++)
-		g_pGfxEngine->getFont(1).drawFont(mpTextVSfc.get(),
+		gGraphics.getFont(1).drawFont(mpTextVSfc.get(),
 									 m_textline[i+m_linepos-1],
 									 m_x+m_8x8tilewidth,
 									 m_y + (i)*m_8x8tileheight-m_scrollpos,
@@ -205,16 +204,16 @@ void CTextViewer::drawTextlines()
 }
 
 // Most common render function for this TextViewer
-void CTextViewer::ponder()
+void CTextViewer::ponder(const float deltaT)
 {
 	 // Normal Keys/Axes
-	 if( g_pInput->getHoldedCommand(IC_DOWN) )
+	 if( gInput.getHoldedCommand(IC_DOWN) )
 	 {
 		 m_timer++;
 		 if(m_timer >= 2)
 			 scrollDown();
 	 }
-	 if( g_pInput->getHoldedCommand(IC_UP) )
+	 if( gInput.getHoldedCommand(IC_UP) )
 	 {
 		 m_timer++;
 		 if(m_timer >= 2)
@@ -222,14 +221,14 @@ void CTextViewer::ponder()
 	 }
 	 
 	 // Page Keys
-	 if( g_pInput->getPressedKey(KPGDN) )
+	 if( gInput.getPressedKey(KPGDN) )
 		 setPosition(m_linepos+16);
-	 if( g_pInput->getPressedKey(KPGUP) )
+	 if( gInput.getPressedKey(KPGUP) )
 		 setPosition(m_linepos-16);
 	 
 	 if(m_timer>=8) m_timer=0;
 	 
-	 if(g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedKey(KQ) || g_pInput->getPressedCommand(IC_BACK) )
+	 if(gInput.getPressedKey(KQUIT) || gInput.getPressedKey(KQ) || gInput.getPressedCommand(IC_BACK) )
 		 m_mustclose = true;	 
 }
 
@@ -240,7 +239,7 @@ void CTextViewer::render()
     renderBox();
     // This comes after, because it does use semi-transparent overlay
 
-    SDL_BlitSurface(mpTextVSfc.get(), NULL, g_pVideoDriver->getBlitSurface(), NULL);
+    SDL_BlitSurface(mpTextVSfc.get(), NULL, gVideoDriver.getBlitSurface(), NULL);
 }
 
 
@@ -251,7 +250,7 @@ void CTextViewer::renderBox()
 	SDL_Surface *sfc = mpTextVSfc.get();
 
 	// first draw the blank rect
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 	int i, j;
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 	{

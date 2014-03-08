@@ -14,7 +14,7 @@
 class GameState
 {
   public:
-    virtual void ponder() = 0;
+    virtual void ponder(const float deltaT) = 0;
     virtual void render() = 0;
 
     // copy operator

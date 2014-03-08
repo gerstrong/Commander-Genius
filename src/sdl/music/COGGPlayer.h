@@ -33,7 +33,7 @@ public:
 	COGGPlayer(const SDL_AudioSpec& AudioSpec);
 	virtual ~COGGPlayer();
 
-	bool loadMusicForLevel(const CExeFile& ExeFile, const int level);
+    bool loadMusicTrack(const CExeFile& ExeFile, const int track);
 	bool open();
 	void readBuffer(Uint8* buffer, Uint32 length);
 	void close();

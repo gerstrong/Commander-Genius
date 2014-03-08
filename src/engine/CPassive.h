@@ -14,16 +14,16 @@
 #ifndef CPASSIVE_H_
 #define CPASSIVE_H_
 
-#include "CTitle.h"
 #include "common/CMap.h"
 #include "common/CSpriteObject.h"
+#include "core/mode/CGameMode.h"
 #include "fileio/CSaveGameController.h"
 #include <string>
 #include <vector>
 #include <memory>
 
 
-class CPassive
+class CPassive : public CGameMode
 {
 public:
 
@@ -34,9 +34,11 @@ public:
 	
 	CPassive();
 	
-	virtual bool init(char mode = INTRO) {return false;};
+    void pumpEvent(const CEvent *evPtr);
+
+    virtual bool init() = 0;
 	
-    virtual void ponder() = 0;
+    virtual void ponder(const float deltaT) = 0;
 
     virtual void render() = 0;
 	
@@ -50,7 +52,7 @@ public:
 	bool mustStartGame() { return (m_mode==STARTGAME); }
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
 	
-	virtual void cleanup() {};
+    virtual void cleanup() {}
 	
 	void createOutlinedText(const int splash_x, const int splash_y, const std::string &text);
 

@@ -9,8 +9,8 @@
  */
 
 #include "ResourceMgmt.h"
-#include "FindFile.h"
-#include "CLogFile.h"
+#include <base/FindFile.h>
+#include <lib/base/GsLogging.h>
 
 const std::string GLOBAL_DIR = "global";
 
@@ -93,7 +93,7 @@ std::string getResourceFilename(const std::string& filename, const std::string& 
 		text += "found!\n";
 
 	if(!text.empty())
-	    g_pLogFile->textOut(GREEN, text);
+	    gLogging.textOut(GREEN, text);
 
 	return vfs_path;
 }

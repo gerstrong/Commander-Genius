@@ -7,13 +7,13 @@
 #include <vector>
 #include <stdio.h>
 
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "sdl/sound/CSound.h"
 #include "fileio.h"
-#include "CLogFile.h"
-#include "StringUtils.h"
-#include "Debug.h"
-#include "FindFile.h"
+#include <lib/base/GsLogging.h>
+#include <base/utils/StringUtils.h>
+#include <base/Debug.h>
+#include <base/FindFile.h>
 
 #ifdef TARGET_WIN32
 #define uint unsigned int

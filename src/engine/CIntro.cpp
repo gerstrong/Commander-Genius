@@ -6,9 +6,10 @@
  */
 
 #include "CIntro.h"
-#include "sdl/input/CInput.h"
-#include "sdl/CVideoDriver.h"
-#include "sdl/CTimer.h"
+#include <base/CInput.h>
+#include <base/GsTimer.h>
+#include <base/video/CVideoDriver.h>
+
 
 CIntro::CIntro()
 {
@@ -17,21 +18,21 @@ CIntro::CIntro()
 	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
 	m_scrolly = 200;
 	m_finished = false;
-	mp_bmp_surface = g_pVideoDriver->mpVideoEngine->getBlitSurface();
+	mp_bmp_surface = gVideoDriver.mpVideoEngine->getBlitSurface();
 	SDL_FillRect(mp_bmp_surface, NULL, 0);
 }
 
 void CIntro::init()
 {
 	// Load the Title Bitmap
-    mp_bm[0] = g_pGfxEngine->getBitmapFromStr("AN");
-    mp_bm[1] = g_pGfxEngine->getBitmapFromStr("APOGEE");
-    mp_bm[2] = g_pGfxEngine->getBitmapFromStr("PRESENT");
-    mp_bm[3] = g_pGfxEngine->getBitmapFromStr("OFAN");
-    mp_bm[4] = g_pGfxEngine->getBitmapFromStr("IDSOFT");
-    mp_bm[5] = g_pGfxEngine->getBitmapFromStr("PRODUCT");
+    mp_bm[0] = gGraphics.getBitmapFromStr("AN");
+    mp_bm[1] = gGraphics.getBitmapFromStr("APOGEE");
+    mp_bm[2] = gGraphics.getBitmapFromStr("PRESENT");
+    mp_bm[3] = gGraphics.getBitmapFromStr("OFAN");
+    mp_bm[4] = gGraphics.getBitmapFromStr("IDSOFT");
+    mp_bm[5] = gGraphics.getBitmapFromStr("PRODUCT");
 
-    CRect<Uint16> gameRes = g_pVideoDriver->getGameResolution();
+    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 	
 	for(int j=0 ; j<6 ; j++)
 	{
@@ -43,7 +44,7 @@ void CIntro::init()
             m_mid[j] = gameRes.w - (320/2)-(mp_bm[j]->getWidth()/2);
 	}
 	
-	g_pTimer->ResetSecondsTimer();
+	gTimer.ResetSecondsTimer();
 }
 
 void CIntro::ponder()
@@ -56,13 +57,13 @@ void CIntro::ponder()
 	}
 
 	
-	if( g_pInput->getPressedAnyCommand() )
+    if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )
 	{
 	    m_finished = true;
 	}
 	
 	// Check if time for Intro is out
-	if(g_pTimer->HasSecElapsed())
+	if(gTimer.HasSecElapsed())
 	{
 		if(m_introtime <= 0) m_finished = true;
 		else m_introtime--;

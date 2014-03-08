@@ -22,19 +22,27 @@
  - The Commander Genius Team
 
  CloneKeen          2003-2005   Caitlin Shaw
- CloneKeenPlus      2008-2013   Gerstrong
- Commander Genius   2009-2012   Tulip, Pickle, DaVince, Albert and Pizza2004
+ CloneKeenPlus      2008-2014   Gerstrong
+ Commander Genius   2009-2014   Tulip,
+ Commander Genius   2009-2013   NY00123,
+ Commander Genius   2009-2014   Pickle, DaVince, Albert and Pizza2004
  Commander Genius   2010-2012   Lemm, Commander Spleen, Zear, Pelya and FCTW
- Commander Genius   2012-2013   Hagel
+ Commander Genius   2013-2014   Hagel
  */
+
+#include "../version.h"
+#include "common/CSettings.h"
 
 #ifdef ANDROID
 	#include <SDL_main.h>
 #endif
 
-#include "CGame.h"
-#include "FindFile.h"
+#include <base/FindFile.h>
+#include <base/GsApp.h>
+#include <lib/base/GsLogging.h>
+
 #include "ThreadPool.h"
+#include "common/CGameLauncher.h"
 
 /**
  * \brief  This is the function where CG beings
@@ -84,24 +92,25 @@ int main(int argc, char *argv[])
 	InitThreadPool();
 	InitSearchPaths();
 
-	g_pLogFile->CreateLogfile("CGLog.html");
+    gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 
-	// The Game Class instance is the main class managing whole
-	// interpreter instance. TODO: It should be a singleton
-	CGame Game;
-	
 	////////////////////////////
 	// Initialize Game Engine //
 	////////////////////////////
-	if( Game.init( argc, argv ) )
+    if( gApp.init( argc, argv ) )
 	{
-		///////////////////////
-		// Start Game Engine //
-		///////////////////////
-		Game.run();
+        ////////////////////////////////
+        // Set GameLauncher as Engine //
+        ////////////////////////////////
+        gApp.setEngine(new CGameLauncher(false));
+
+        //////////////////////////////
+        // Run the Commander Genius //
+        //////////////////////////////
+        gApp.runMainCycle();
 	}
 
-	std::cout << "Thank you very much for playing this game!" << std::endl;
+    g_pSettings->saveDispCfg();
 
 	UnInitThreadPool();
 	return 0;

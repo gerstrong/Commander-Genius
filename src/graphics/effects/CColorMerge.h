@@ -14,7 +14,8 @@
 #include <SDL.h>
 #include <memory>
 
-#include "CEffects.h"
+#include <base/video/GsEffectController.h>
+
 
 
 class CColorMerge : public CEffects
@@ -22,7 +23,7 @@ class CColorMerge : public CEffects
 public:
 	CColorMerge(const Uint8 speed);
 
-    void ponder();
+    void ponder(const float deltaT);
     void render();
 	
 	std::shared_ptr<SDL_Surface> &getSfc()

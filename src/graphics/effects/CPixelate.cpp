@@ -10,11 +10,11 @@
  */
 
 #include "CPixelate.h"
-#include "sdl/CVideoDriver.h"
-#include "sdl/input/CInput.h"
-#include "sdl/CTimer.h"
+#include <base/video/CVideoDriver.h>
+#include <base/CInput.h>
+#include <lib/base/GsTimer.h>
 
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 #include <cstring>
 #include <cstdio>
@@ -25,7 +25,7 @@ CPixelate::CPixelate(unsigned short speed) :
 mp_OldSurface(nullptr),
 m_speed(speed)
 {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 	getSnapshot();
 
 	m_line = 0;
@@ -44,9 +44,9 @@ m_speed(speed)
 // get the Snapshot of the old surface, so the the effect can be applied on it!
 void CPixelate::getSnapshot()
 {
-	g_pVideoDriver->collectSurfaces();
+	gVideoDriver.collectSurfaces();
 
-    SDL_Surface *blitSfc = g_pVideoDriver->getBlitSurface();
+    SDL_Surface *blitSfc = gVideoDriver.getBlitSurface();
 
     if(!mp_OldSurface)
     {
@@ -77,20 +77,18 @@ void CPixelate::getSnapshot()
     #endif
     }
 
-    //SDL_FillRect(mp_OldSurface, nullptr, SDL_MapRGB(mp_OldSurface->format, 0x0, 0x0, 0x0) );
-
-    SDL_BlitSurface(g_pVideoDriver->getBlitSurface(), nullptr, mp_OldSurface, nullptr);
+    SDL_BlitSurface(gVideoDriver.getBlitSurface(), nullptr, mp_OldSurface, nullptr);
 }
 
 // Effect cycle
-void CPixelate::ponder()
+void CPixelate::ponder(const float deltaT)
 {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+	SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
 	if(m_line < gameres.h)
 	{
 		m_line+=m_speed;
-		if(m_line > gameres.h) m_line=gameres.h;
+        if(m_line > gameres.h || mFinished) m_line=gameres.h;
 	}
 
 	if( m_lines_completed >= m_line )
@@ -102,7 +100,7 @@ void CPixelate::ponder()
 
 void CPixelate::render()
 {
-    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 
     SDL_LockSurface(mp_OldSurface);
 
@@ -145,7 +143,7 @@ void CPixelate::render()
 
     SDL_UnlockSurface(mp_OldSurface);
 
-    SDL_BlitSurface( mp_OldSurface, NULL, g_pVideoDriver->getBlitSurface(), NULL );
+    SDL_BlitSurface( mp_OldSurface, NULL, gVideoDriver.getBlitSurface(), NULL );
 }
 
 CPixelate::~CPixelate()

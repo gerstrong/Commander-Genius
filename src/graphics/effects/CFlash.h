@@ -13,8 +13,10 @@
 #define CFLASH_H_
 
 #include <memory>
-#include "CEffects.h"
-#include "sdl/CTimer.h"
+#include <base/video/GsEffectController.h>
+#include <graphics/GsSurface.h>
+
+#include <lib/base/GsTimer.h>
 
 class CFlash : public CEffects
 {
@@ -25,7 +27,7 @@ public:
 	CFlash(Uint32 msecs, Uint8 speed=1,Uint32 color=0xFFFFFF );
 	CFlash(Uint32 msecs, Uint8 speed=1,Uint32 color=0xFFFFFF, Uint8 m_maxalpha=128 );
 
-    void ponder();
+    void ponder(const float deltaT);
     void render();
 
 private:
@@ -40,8 +42,8 @@ private:
 	Uint8 m_Alpha;
 	fade_dir m_FadeDir;
 	Uint8 m_Style;
-	Uint8 m_MaxAlpha;
-	std::shared_ptr<SDL_Surface> mpFadeSurface;
+	Uint8 m_MaxAlpha;   
+    GsSurface mFadeSurface;
 };
 
 #endif /* CFLASH_H_ */

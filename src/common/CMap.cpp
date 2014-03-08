@@ -7,11 +7,11 @@
 
 #include "CMap.h"
 #include "common/CBehaviorEngine.h"
-#include "FindFile.h"
-#include "CLogFile.h"
-#include "sdl/CVideoDriver.h"
-#include "sdl/CTimer.h"
-#include "graphics/CGfxEngine.h"
+#include <base/FindFile.h>
+#include <lib/base/GsLogging.h>
+#include <base/video/CVideoDriver.h>
+#include <lib/base/GsTimer.h>
+#include "graphics/GsGraphics.h"
 #include <iostream>
 #include <fstream>
 
@@ -22,7 +22,7 @@ m_animation_enabled(true),
 m_Dark(false),
 mNumFuses(0),
 mFuseInLevel(false),
-m_Tilemaps(g_pGfxEngine->getTileMaps()),
+m_Tilemaps(gGraphics.getTileMaps()),
 mAnimtileTimer(0.0f),
 mLocked(false)
 {
@@ -73,7 +73,7 @@ void CMap::resetScrolls()
 {
     m_scrollx = m_scrolly = 0;
 
-    g_pVideoDriver->mpVideoEngine->resetScrollbuffer();
+    gVideoDriver.mpVideoEngine->resetScrollbuffer();
 
     m_scrollpix = m_scrollpixy = 0;
     m_mapx = m_mapy = 0;           // map X location shown at scrollbuffer row 0
@@ -380,11 +380,11 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane)
 // used normally, when items are picked up
 bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 {
-    const int drawMask = g_pVideoDriver->getScrollSurface()->w-1;
+    const int drawMask = gVideoDriver.getScrollSurface()->w-1;
 
 	if( setTile( x, y, t ) )
 	{
-        m_Tilemaps.at(1).drawTile(g_pVideoDriver->getScrollSurface(), (x<<4)&drawMask, (y<<4)&drawMask, t);
+        m_Tilemaps.at(1).drawTile(gVideoDriver.getScrollSurface(), (x<<4)&drawMask, (y<<4)&drawMask, t);
 		return true;
 	}
 	return false;
@@ -397,7 +397,7 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
  */
 void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
 {
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
 	const Uint16 x2 = x+gameres.w/16;
 	const Uint16 y2 = y+h;
 
@@ -449,17 +449,17 @@ bool CMap::gotoPos(int x, int y)
 // scrolls the map one pixel right
 bool CMap::scrollRight(const bool force)
 {   
-    const int res_width = g_pVideoDriver->getGameResolution().w;
+    const int res_width = gVideoDriver.getGameResolution().w;
 
     if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
 		return false;
 
-    const int squareSize = g_pVideoDriver->getScrollSurface()->w;
+    const int squareSize = gVideoDriver.getScrollSurface()->w;
 
     if(m_scrollx < ((m_width-2)<<4) - res_width)
 	{
 		m_scrollx++;
-        g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx, squareSize-1);
+        gVideoDriver.mpVideoEngine->UpdateScrollBufX(m_scrollx, squareSize-1);
 
 		m_scrollpix++;
         if (m_scrollpix >= 16)
@@ -484,12 +484,12 @@ bool CMap::scrollLeft(const bool force)
     if( !force && findVerticalScrollBlocker((m_scrollx)<<STC) )
         return false;
 
-    const int squareSize = g_pVideoDriver->getScrollSurface()->w;
+    const int squareSize = gVideoDriver.getScrollSurface()->w;
 
 	if( m_scrollx > 32 )
 	{
 		m_scrollx--;
-        g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx, squareSize-1);
+        gVideoDriver.mpVideoEngine->UpdateScrollBufX(m_scrollx, squareSize-1);
 
 		if (m_scrollpix==0)
 		{  // need to draw a new stripe
@@ -515,17 +515,17 @@ bool CMap::scrollLeft(const bool force)
 
 bool CMap::scrollDown(const bool force)
 {
-	const int res_height = g_pVideoDriver->getGameResolution().h;
+    const int res_height = gVideoDriver.getGameResolution().h;
 
     if( !force && findHorizontalScrollBlocker((m_scrolly+res_height)<<STC) )
 		return false;
 
-    const int squareSize = g_pVideoDriver->getScrollSurface()->w;
+    const int squareSize = gVideoDriver.getScrollSurface()->w;
 
 	if(m_scrolly < ((m_height-2)<<4) - res_height )
 	{
 		m_scrolly++;
-        g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly, squareSize-1);
+        gVideoDriver.mpVideoEngine->UpdateScrollBufY(m_scrolly, squareSize-1);
 
 		m_scrollpixy++;
 		if (m_scrollpixy>=16)
@@ -552,12 +552,12 @@ bool CMap::scrollUp(const bool force)
     if( !force && findHorizontalScrollBlocker((m_scrolly-1)<<STC) )
 		return false;
 
-    const int squareSize = g_pVideoDriver->getScrollSurface()->w;
+    const int squareSize = gVideoDriver.getScrollSurface()->w;
 
 	if( m_scrolly > 32 )
 	{
 		m_scrolly--;
-        g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly, squareSize-1);
+        gVideoDriver.mpVideoEngine->UpdateScrollBufY(m_scrolly, squareSize-1);
 
 		if (m_scrollpixy==0)
 		{  // need to draw a new stripe
@@ -610,33 +610,33 @@ void CMap::calcVisibleArea()
 
 void CMap::refreshVisibleArea()
 {
-    CRect<int> relativeVisGameArea;
+    GsRect<int> relativeVisGameArea;
 
     relativeVisGameArea.x = (mVisArea.x>>STC)-m_scrollx;
     relativeVisGameArea.y = (mVisArea.y>>STC)-m_scrolly;
     relativeVisGameArea.w = (mVisArea.w>>STC)-16;
     relativeVisGameArea.h = (mVisArea.h>>STC)-16;
 
-    CRect<int> gameResolution(g_pVideoDriver->getGameResolution());
+    GsRect<int> gameResolution(gVideoDriver.getGameResolution());
 
     // Using the GameResolution to intersect the
     // calculated visible area we get another one
     // which is the rect allowed for blit operations
     gameResolution.intersect(relativeVisGameArea);
 
-    g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea = gameResolution;
+    gVideoDriver.mpVideoEngine->mRelativeVisGameArea = gameResolution;
 }
 
 
 
 void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 {
-	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+    SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
 	// Go throught the list and just draw all the tiles that need to be animated
 	const Uint32 num_h_tiles = ScrollSurface->h/16;
 	const Uint32 num_v_tiles = ScrollSurface->w/16;
 
-    const int drawMask = g_pVideoDriver->getScrollSurface()->w-1;
+    const int drawMask = gVideoDriver.getScrollSurface()->w-1;
 
 	if(  mx >= m_mapx && my >= m_mapy &&
 			mx < m_mapx + num_v_tiles && my < m_mapy + num_h_tiles 	)
@@ -660,15 +660,15 @@ void CMap::drawAll()
 {
     refreshVisibleArea();
 
-    SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+    SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
 
     const int drawMask = ScrollSurface->w-1;
 
     Uint32 num_h_tiles = ScrollSurface->h/16;
     Uint32 num_v_tiles = ScrollSurface->w/16;
 
-    g_pVideoDriver->mpVideoEngine->UpdateScrollBufX(m_scrollx, drawMask);
-    g_pVideoDriver->mpVideoEngine->UpdateScrollBufY(m_scrolly, drawMask);
+    gVideoDriver.mpVideoEngine->UpdateScrollBufX(m_scrollx, drawMask);
+    gVideoDriver.mpVideoEngine->UpdateScrollBufY(m_scrolly, drawMask);
 
     if(num_v_tiles+m_mapx >= m_width)
         num_v_tiles = m_width-m_mapx;
@@ -695,10 +695,10 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 {    
 	if(mpy >= m_height) return;
 
-	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+    SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
 	Uint32 num_v_tiles= ScrollSurface->w/16;
 
-    const int drawMask = g_pVideoDriver->getScrollSurface()->w-1;
+    const int drawMask = gVideoDriver.getScrollSurface()->w-1;
 
 	if( num_v_tiles+m_mapx >= m_width )
 		num_v_tiles = m_width-m_mapx;
@@ -717,7 +717,7 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 // draws a vertical stripe from map position mapx to scrollbuffer position x
 void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 {
-	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+    SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
 
     const int drawMask = ScrollSurface->w-1;
 
@@ -746,7 +746,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 void CMap::_drawForegroundTiles()
 {
     // TODO: This event pushing here is to much information that is pushed to the event list. Please reduce this!
-	SDL_Surface *surface = g_pVideoDriver->getBlitSurface();
+    SDL_Surface *surface = gVideoDriver.getBlitSurface();
 	const Uint16 num_h_tiles = surface->h;
 	const Uint16 num_v_tiles = surface->w;
     Uint16 x1 = m_scrollx>>TILE_S;
@@ -757,7 +757,7 @@ void CMap::_drawForegroundTiles()
 	std::vector<CTileProperties> &TileProperties =
 			g_pBehaviorEngine->getTileProperties(1);
 
-    auto visGA = g_pVideoDriver->mpVideoEngine->mRelativeVisGameArea;
+    auto visGA = gVideoDriver.mpVideoEngine->mRelativeVisGameArea;
 
     for( size_t y=y1 ; y<=y2 ; y++)
     {
@@ -797,7 +797,7 @@ Uint8 CMap::getAnimtiletimer()
 
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
-    m_Tilemaps[1].drawTile( g_pVideoDriver->getBlitSurface(), mx, my, tile);
+    m_Tilemaps[1].drawTile( gVideoDriver.getBlitSurface(), mx, my, tile);
 }
 
 void CMap::animateAllTiles()
@@ -805,17 +805,17 @@ void CMap::animateAllTiles()
     if(!m_animation_enabled)
         return;
 
-    if(g_pVideoDriver->getRefreshSignal())
+    if(gVideoDriver.getRefreshSignal())
     {
         refreshStripes();
         drawAll();
 
-        g_pVideoDriver->blitScrollSurface();
-        g_pVideoDriver->setRefreshSignal(false);
+        gVideoDriver.blitScrollSurface();
+        gVideoDriver.setRefreshSignal(false);
     }
 
 
-    SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+    SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
 
     const int drawMask = ScrollSurface->w-1;
 

@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <base/GsEvent.h>
 
 #include "CSingleton.h"
 #define g_pMusicPlayer CMusic::Get()
@@ -31,8 +32,7 @@ public:
 	 * Loads certain track of the Keen Music
 	 */
 	bool loadTrack(const CExeFile& ExeFile, const int track);
-	bool load(const CExeFile& ExeFile, const int level);
-	bool load(const std::string &musicfile);
+    bool load(const std::string &musicfile);
 	void reload();
 	void play();
 	void pause();
@@ -42,16 +42,28 @@ public:
 	bool LoadfromSonglist(const std::string &gamepath, const int &level);
 
 	bool playing()
-	{
-		if(mpPlayer)
-		{
-		  return mpPlayer->playing();
-		}
-		return false;
-	}
+    {
+        if(!active())
+            return false;
+
+        return mpPlayer->playing();
+    }
+
+    bool active()
+    {
+        if(mpPlayer)
+            return true;
+        else
+            return false;
+    }
 
 	std::unique_ptr<CMusicPlayer> mpPlayer;
 	bool m_busy;
+};
+
+struct EventPlayTrack : CEvent {
+    const uint32_t track;
+    EventPlayTrack(const uint16_t t) : track(t) {}
 };
 
 #endif /* CMUSIC_H_ */

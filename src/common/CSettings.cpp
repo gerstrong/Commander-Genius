@@ -5,13 +5,13 @@
  *      Author: gerstrong
  */
 
-#include "CLogFile.h"
-#include "FindFile.h"
+#include <lib/base/GsLogging.h>
+#include <base/FindFile.h>
 #include "ConfigHandler.h"
 #include "CSettings.h"
-#include "sdl/CTimer.h"
+#include <lib/base/GsTimer.h>
 #include "sdl/sound/CSound.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 #include "common/options.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/CConfiguration.h"
@@ -29,6 +29,23 @@ CSettings::CSettings()
 	notes << "Will write game options to " << GetWriteFullFileName(CONFIGFILENAME, true) << endl;
 }
 
+
+/**
+ * \brief	Only saves the last used resolution or window size.
+ * \return	If the configuration has been saved successfully, it return true, else it's false.
+ */
+bool CSettings::saveDispCfg()
+{
+    CConfiguration Configuration(CONFIGFILENAME);
+    Configuration.Parse();
+
+    CVidConfig &VidConf = gVideoDriver.getVidConfig();
+    Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
+    Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+
+    return Configuration.saveCfgFile();
+}
+
 /**
  * \brief	Write the whole configuration of the settings.
  * 			Note: See also CConfiguration to understand better the concept of saving...
@@ -43,15 +60,16 @@ bool CSettings::saveDrvCfg()
 	int i = 1;
 	for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
 		Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
-
-	CVidConfig &VidConf = g_pVideoDriver->getVidConfig();
+	CVidConfig &VidConf = gVideoDriver.getVidConfig();
 	Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
 	Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
 
     Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
     Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+
     Configuration.WriteInt("Video", "gameWidth", VidConf.m_GameRect.w);
     Configuration.WriteInt("Video", "gameHeight", VidConf.m_GameRect.h);
+
     Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #if defined(USE_OPENGL)
     Configuration.WriteString("Video", "OGLfilter", VidConf.m_opengl_filter == GL_NEAREST ? "nearest" : "linear" );
@@ -59,7 +77,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
 	Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
-	Configuration.WriteInt("Video", "fps", g_pTimer->FPS());
+	Configuration.WriteInt("Video", "fps", gTimer.FPS());
 	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
 
 	const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
@@ -97,8 +115,8 @@ bool CSettings::loadDrvCfg()
 	else
 	{
 		CVidConfig VidConf;
-        CRect<Uint16> &res = VidConf.m_DisplayRect;
-        CRect<Uint16> &gamesRes = VidConf.m_GameRect;
+        GsRect<Uint16> &res = VidConf.m_DisplayRect;
+        GsRect<Uint16> &gamesRes = VidConf.m_GameRect;
         int value = 0;
         Configuration.ReadInteger("Video", "width", &value, 320);
         res.w = value;
@@ -112,7 +130,7 @@ bool CSettings::loadDrvCfg()
 
 		if(res.w*res.h <= 0)
 		{
-			g_pLogFile->ftextOut(RED,"Error reading the configuration file! The resolution is all wrong!<br>");
+			gLogging.ftextOut(RED,"Error reading the configuration file!<br>");
 			return false;
 		}
 
@@ -163,11 +181,11 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Bound", "up", &CameraBounds.up, 92);
 		Configuration.ReadInteger("Bound", "down", &CameraBounds.down, 108);
 		Configuration.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
-		g_pVideoDriver->setVidConfig(VidConf);
+		gVideoDriver.setVidConfig(VidConf);
 
 		int framerate;
 		Configuration.ReadInteger("Video", "fps", &framerate, 60);
-		g_pTimer->setFPS( framerate );
+		gTimer.setFPS( framerate );
 
 
 		int audio_rate, audio_channels, audio_format;
@@ -191,23 +209,23 @@ bool CSettings::loadDrvCfg()
 
 void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 {
-	g_pVideoDriver->setMode(320,200,32);
-	g_pVideoDriver->isFullscreen(false);
+	gVideoDriver.setMode(320,200,32);
+	gVideoDriver.isFullscreen(false);
 
 #if defined(USE_OPENGL)
-	g_pVideoDriver->enableOpenGL(false);
-	g_pVideoDriver->setOGLFilter(GL_LINEAR);
+	gVideoDriver.enableOpenGL(false);
+	gVideoDriver.setOGLFilter(GL_LINEAR);
 #endif
 
-	g_pVideoDriver->setZoom(1);
-	g_pTimer->setFPS(60);
-#if defined(ANDROID)
-	g_pVideoDriver->setAspectCorrection(0,0);
+	gVideoDriver.setZoom(1);
+	gTimer.setFPS(60);
+#if defined(ANDROID)	
+	gVideoDriver.setAspectCorrection(0,0);
 #else
-	g_pVideoDriver->setAspectCorrection(4,3);
+	gVideoDriver.setAspectCorrection(4,3);
 #endif
-    g_pVideoDriver->setFilter(NONE);
-	g_pVideoDriver->setScaleType(true);
+    gVideoDriver.setFilter(NONE);
+	gVideoDriver.setScaleType(true);
 
 }
 
@@ -265,8 +283,8 @@ bool CSettings::loadGameOptions()
 		Configuration.ReadKeyword("Game", p_option[i].name, &newvalue, false);
 		p_option[i].value = (newvalue) ? 1 : 0;
 	}
-
-	g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
+	
+	gLogging.ftextOut("<br>Your personal settings were loaded successfully...<br>");
 	return true;
 }
 

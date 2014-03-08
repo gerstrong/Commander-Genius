@@ -6,7 +6,7 @@
  */
 
 #include "CScrollEffect.h"
-#include "sdl/CVideoDriver.h"
+#include <base/video/CVideoDriver.h>
 
 #include <cassert>
 
@@ -21,11 +21,11 @@ mScrollPos(initialPos),
 mHDir(hDir),
 mVDir(vDir)
 {
-    mpScrollSurface.reset( g_pVideoDriver->convertThroughBlitSfc(pScrollSurface), &SDL_FreeSurface );
+    mpScrollSurface.reset( gVideoDriver.convertThroughBlitSfc(pScrollSurface), &SDL_FreeSurface );
 }
 
-void CScrollEffect::ponder()
-{        
+void CScrollEffect::ponder(const float deltaT)
+{
     if(mSpeed < 0)
 	{
         if(mSpeed < -1)
@@ -49,12 +49,12 @@ void CScrollEffect::ponder()
 
         if(mVDir == DOWN)
         {
-            posOldSfc = g_pVideoDriver->getBlitSurface()->h;
+            posOldSfc = gVideoDriver.getBlitSurface()->h;
             posScrollSfc = mpScrollSurface->h;
         }
-        else if(mHDir == RIGHT)
+        else
         {
-            posOldSfc = g_pVideoDriver->getBlitSurface()->w;
+            posOldSfc = gVideoDriver.getBlitSurface()->w;
             posScrollSfc = mpScrollSurface->w;
         }
 
@@ -69,7 +69,7 @@ void CScrollEffect::ponder()
 
 void CScrollEffect::render()
 {
-    SDL_Rect gameres = g_pVideoDriver->getGameResolution().SDLRect();
+    SDL_Rect gameres = gVideoDriver.getGameResolution().SDLRect();
     SDL_Rect dest = gameres;
     SDL_Rect src = mpScrollSurface->clip_rect;
 
@@ -86,7 +86,7 @@ void CScrollEffect::render()
 
     SDL_BlitSurface(mpScrollSurface.get(),
                    &src,
-                   g_pVideoDriver->getBlitSurface(),
+                   gVideoDriver.getBlitSurface(),
                    &dest);
 
 }

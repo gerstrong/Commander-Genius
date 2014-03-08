@@ -8,14 +8,15 @@
 #ifndef CPIXELATE_H_
 #define CPIXELATE_H_
 
-#include "CEffects.h"
+#include <base/video/GsEffectController.h>
+
 
 class CPixelate  : public CEffects
 {
 public:
 	CPixelate(unsigned short speed);
 	void getSnapshot();
-    void ponder();
+    void ponder(const float deltaT);
     void render();
 	virtual ~CPixelate();
 

@@ -13,11 +13,11 @@
 #include <vector>
 #include <list>
 
-#include "graphics/CTilemap.h"
+#include "graphics/GsTilemap.h"
 #include "fileio/TypeDefinitions.h"
 #include "CPlane.h"
 #include "engine/CEvent.h"
-#include "utils/Geometry.h"
+#include <base/utils/Geometry.h>
 #include <map>
 
 // animation rate of animated tiles
@@ -34,7 +34,7 @@ class CMap
 public:
 	CMap();
 
-	void setTileMap( CTilemap &Tilemap );
+	void setTileMap( GsTilemap &Tilemap );
 
     void setLevel( const Uint16 level );
 	Uint16 getLevel();
@@ -140,7 +140,7 @@ public:
 	Uint16 m_scrollx;      		// Amount of how much is scrolled on the map relative to (0,0) in X
 	Uint16 m_scrolly;    		// Amount of how much is scrolled on the map relative to (0,0) in Y
 
-	Uint32 m_width, m_height;            // size of the map
+    Uint32 m_width, m_height;            // size of the map (in tile units)
 	bool m_worldmap;             // if 1, this is the world map
 
 	std::string m_gamepath;
@@ -169,7 +169,7 @@ private:
 	Uint16 m_mapy;         	// map Y location shown at scrollbuffer column 0
 	Uint16 m_mapystripepos;  	// Y pixel position of next stripe column
 
-	std::vector<CTilemap> &m_Tilemaps;
+	std::vector<GsTilemap> &m_Tilemaps;
 
 	float mAnimtileTimer;	
 
@@ -181,7 +181,7 @@ private:
 
     bool mLocked;
 
-    CRect<int> mVisArea;
+    GsRect<int> mVisArea;
 
     std::map< int, VectorD2<int> > mSpriteOriginList;
 };

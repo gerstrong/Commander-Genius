@@ -2,15 +2,15 @@
              Commander Genius                
               (CloneKeenPlus)               
                                             
-    (c)2008-2013            Gerstrong       
+    (c)2008-2014            Gerstrong
     (c)2009-2013            Albert          
-    (c)2009-2013            Tulip           
-    (c)2009-2013            NY00123
-    (c)2013                 Hagel
+    (c)2009-2014            Tulip
+    (c)2009-2014            NY00123
+    (c)2013-2014            Hagel
 
 Ports:
     (c)2009-2013            Pizza2004 (MacOs X)
-    (c)2010-2013            Pelya (Android)
+    (c)2010-2014            Pelya (Android)
 
            Released under GNU/GPL           
                                             
@@ -219,9 +219,11 @@ Normally when you start Commander Genius you see the launcher menu in which you 
 
 Optionally you can pass launch arguments to Commander Genius. These are:
 
--game		Takes the number of game detected, like shown in the launcher menu and starts it up that game directly
+dir=<game-directory>	This will launch the game of the given directory, in case it can be launched, otherwise it will launch the game launcher.
+                        vg.: "CGenius.exe dir=games/keen4"
 
--level		If you just want to check a specific level in the given game use that parameter.
+finale=<on/off>		If you want to directly show the finale of a game pass this parameter and it will be done
+			vg.: "CGenius.exe finale=on"
 
 -diff		This will make you choose the difficulty in the game. This only works in conjunction with the level parameter
                 (1=Easy 2=NORMAL 3=HARD)

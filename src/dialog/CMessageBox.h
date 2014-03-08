@@ -11,13 +11,14 @@
 #ifndef CMESSAGEBOX_H_
 #define CMESSAGEBOX_H_
 
-#include "dialog/CDlgFrame.h"
-#include "common/CBehaviorEngine.h"
-#include "gui/CGUIDialog.h"
-#include "gui/CGUIText.h"
-#include "gui/CGUIButton.h"
+#include <widgets/GsDialog.h>
+#include <widgets/GsText.h>
+#include <widgets/GsButton.h>
 #include <string>
 #include <vector>
+
+#include "dialog/CDlgFrame.h"
+#include "common/CBehaviorEngine.h"
 
 
 class CMessageBox : public CGUIDialog
@@ -45,9 +46,24 @@ public:
 
 protected:
 	bool m_mustclose;
-	CGUIButton *mpReturnButton;
+	GsButton *mpReturnButton;
 
 	CGUIText *mpTextCtrl;
+};
+
+/**
+ *	Event designated for a Bitmap Message like those when Keen talks
+ *	to the council Members or Princess Lindsey
+ */
+struct EventSendDialog : CEvent
+{
+    std::shared_ptr<CMessageBox> mMsgBox;
+
+    EventSendDialog(std::shared_ptr<CMessageBox>& msgBox) :
+        mMsgBox( msgBox ) {}
+
+    EventSendDialog(CMessageBox *msgBox) :
+        mMsgBox( msgBox ) {}
 };
 
 #endif /* CMESSAGEBOX_H_ */

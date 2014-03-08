@@ -1,8 +1,18 @@
+v1.7.1 Alpha:
+-------------
+- Last window size is now saved automatically.
+- Heavy engine independent code cleanups which will make CG more flexible for new game engines besides Commander Keen
+- New GsLib will take more work at low level functions and will as wrapper for SDL and GUI elements
+- Multiple selection should be fixed now.
+- New Menu Multiple High
+- Even more smooth effects readded
+- More bug fixes
+- New pump event concept will solve a lot of deadlocks we previously had on the android versions.
+
 v1.6.5.5 Release:
 -----------------
 - Added Scrollbar for a bigger list of games
 - Wormmoutch bites again!
-
 
 v1.6.5.3 Beta:
 --------------

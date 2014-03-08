@@ -6,32 +6,32 @@
  */
 
 #include "CMessageBox.h"
-#include "sdl/CVideoDriver.h"
-#include "sdl/input/CInput.h"
-#include "graphics/CGfxEngine.h"
-#include "StringUtils.h"
+#include <base/video/CVideoDriver.h>
+#include <base/CInput.h>
+#include "graphics/GsGraphics.h"
+#include <base/utils/StringUtils.h>
 
 // This is a local functor that is invoked when the dialog has be closed
 struct CloseDialog : public InvokeFunctorEvent
 {
 	CloseDialog(bool &mustClose) : mMustClose(mustClose) {}
 
-	void operator()()
+    void operator()() const
 	{		mMustClose = true;	}
 
 	bool &mMustClose;
 };
 
 CMessageBox::CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound, const FXState fx) :
-CGUIDialog(CRect<float>(0.1f, 0.1f, 0.8f, 0.8f), fx),
+CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.8f), fx),
 m_mustclose(false)
 {
 	const char closeChar = 0x1F;
 	std::string closeString;
 	closeString = closeChar;
-	CGUIButton*	pButton	= new CGUIButton( closeString, new CloseDialog(m_mustclose), CGUIButton::NONE );
+	GsButton*	pButton	= new GsButton( closeString, new CloseDialog(m_mustclose), GsButton::NONE );
 
-	addControl( pButton, CRect<float>(0.0f, 0.0f, 0.06f/0.8f, 0.06f/0.8f) );
+	addControl( pButton, GsRect<float>(0.0f, 0.0f, 0.06f/0.8f, 0.06f/0.8f) );
 
 	mpReturnButton = pButton;
 
@@ -39,15 +39,15 @@ m_mustclose(false)
 
 	// Those formulas work well with our constellation but I don't think they are perfect.
 	// They transform the Message Box the way the text fits perfectly in.
-	const float screenW = g_pVideoDriver->getGameResolution().w;
-	const float screenH = g_pVideoDriver->getGameResolution().h;
+	const float screenW = gVideoDriver.getGameResolution().w;
+	const float screenH = gVideoDriver.getGameResolution().h;
 	mRect.w = static_cast<float>( (mpTextCtrl->mTextDim.w+4)*8 )/screenW;
 	mRect.h = static_cast<float>( (mpTextCtrl->mTextDim.h+2)*8 )/screenH;
 	mRect.x = (1.0f - mRect.w)/2.0f;
 	mRect.y = (1.0f - mRect.h)/2.0f;
 
 	// now let's center that long text...
-	CRect<float> TextRect;
+	GsRect<float> TextRect;
 	TextRect.w = ((mpTextCtrl->mTextDim.w*8)/screenW) / mRect.w;
 	TextRect.h = ((mpTextCtrl->mTextDim.h*8)/screenH) / mRect.h;
 	TextRect.x = (2.5f*TextRect.w)/(static_cast<float>(mpTextCtrl->mTextDim.w));
@@ -60,7 +60,7 @@ m_mustclose(false)
 
 	addControl( mpTextCtrl, TextRect );
 
-	CRect<float> closeRect = pButton->mRect;
+	GsRect<float> closeRect = pButton->mRect;
 	closeRect.x = mRect.x;
 	closeRect.y = mRect.y;
 	pButton->setRect(closeRect);
@@ -69,8 +69,10 @@ m_mustclose(false)
 
 void CMessageBox::processLogic()
 {
-	if(g_pInput->getPressedCommand(IC_STATUS))
+    if( gInput.getPressedCommand(IC_STATUS) )
+    {
 		m_mustclose = true;
+    }
 
 	CGUIDialog::processLogic();
     render();

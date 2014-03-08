@@ -10,8 +10,8 @@
  */
 
 #include "CMessages.h"
-#include "StringUtils.h"
-#include "CLogFile.h"
+//#include "StringUtils.h"
+#include <lib/base/GsLogging.h>
 #include "common/CBehaviorEngine.h"
 
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
@@ -362,24 +362,24 @@ bool CMessages::extractGlobalStrings()
 		case 4:
 		{
 			if(!extractEp4Strings(StringMap))
-				g_pLogFile->textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(RED,"This version of the game is not supported!");
 		} break;
 
 		case 5:
 		{
 			if(!extractEp5Strings(StringMap))
-				g_pLogFile->textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(RED,"This version of the game is not supported!");
 		} break;
 
 		case 6:
 		{
 			if(!extractEp6Strings(StringMap))
-				g_pLogFile->textOut(RED,"This version of the game is not supported!");
+				gLogging.textOut(RED,"This version of the game is not supported!");
 		} break;
 
 		default:
 		{
-			g_pLogFile->textOut(RED,"This version of the game is not supported!");
+			gLogging.textOut(RED,"This version of the game is not supported!");
 			return false;
 		}
 	}
@@ -394,7 +394,7 @@ bool CMessages::extractGlobalStrings()
 		{
 			g_pBehaviorEngine->setMessage(i->first, i->second);
 		}
-		g_pLogFile->ftextOut("Loaded %d strings from the exe-file.<br>", StringMap.size());
+		gLogging.ftextOut("Loaded %d strings from the exe-file.<br>", StringMap.size());
 		return true;
 	}
 	return false;

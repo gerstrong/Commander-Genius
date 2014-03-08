@@ -7,10 +7,10 @@
 
 #include "sdl/sound/CSound.h"
 #include "sdl/sound/Sampling.h"
-#include "StringUtils.h"
+//#include "StringUtils.h"
 #include "CMusic.h"
-#include "CLogFile.h"
-#include "FindFile.h"
+#include <lib/base/GsLogging.h>
+#include <base/FindFile.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
 #include "sdl/music/COGGPlayer.h"
@@ -21,8 +21,18 @@
 
 bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 {
+
+#if defined(OGG) || defined(TREMOR)
+    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
+    if(oggPlayer->loadMusicTrack(ExeFile, track))
+    {
+        mpPlayer = move(oggPlayer);
+        return true;
+    }
+#endif
+
 	std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
-	imfPlayer->loadMusicTrack(ExeFile, track);
+    imfPlayer->loadMusicTrack(ExeFile, track);
 
 	if(!imfPlayer->open())
 	{
@@ -34,31 +44,6 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 	return true;
 }
 
-
-bool CMusic::load(const CExeFile& ExeFile, const int level)
-{
-
-#if defined(OGG) || defined(TREMOR)
-    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
-    if(oggPlayer->loadMusicForLevel(ExeFile, level))
-    {
-        mpPlayer = move(oggPlayer);
-        return true;
-    }
-#endif
-
-    std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
-    imfPlayer->loadMusicForLevel(ExeFile, level);
-
-    if(!imfPlayer->open())
-    {
-        return false;
-    }
-
-    mpPlayer = move(imfPlayer);
-
-    return true;
-}
 
 bool CMusic::load(const std::string &musicfile)
 {
@@ -88,7 +73,7 @@ bool CMusic::load(const std::string &musicfile)
 		    std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(musicfile, audioSpec) );
 		    mpPlayer = move( oggPlayer );
 #else
-		    g_pLogFile->ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");
+		    gLogging.ftextOut("Music Manager: Neither OGG bor TREMOR-Support are enabled! Please use another build<br>");
 		    return false;
 #endif
 		}
@@ -96,7 +81,7 @@ bool CMusic::load(const std::string &musicfile)
 		if(!mpPlayer->open())
 		{
 		    mpPlayer.reset();
-		    g_pLogFile->textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
+		    gLogging.textOut(PURPLE,"Music Manager: File could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
 		    return false;
 		}
 		return true;
@@ -104,7 +89,7 @@ bool CMusic::load(const std::string &musicfile)
 	}
 	else
 	{
-		g_pLogFile->textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
+		gLogging.textOut(PURPLE,"Music Manager: I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
 	}
 
 	return false;

@@ -8,7 +8,7 @@
  */
 
 #include "../../fileio.h"
-#include "../../CLogFile.h"
+#include <lib/base/GsLogging.h>
 
 #define SGRLE_RLEMARKERNEW         0xFE
 #define SGRLE_RLEMARKEROLD         255
@@ -60,8 +60,8 @@ char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 	bytes = fgetl(fp);
 	if (bytes != nbytes)
 	{
-		g_pLogFile->ftextOut("sgrle_decompress: bytes stored != bytes asked for ($%08x / $%08x)\n", bytes, nbytes);
-		g_pLogFile->ftextOut("Trying to extract as much as possible...\n");
+		gLogging.ftextOut("sgrle_decompress: bytes stored != bytes asked for ($%08x / $%08x)\n", bytes, nbytes);
+		gLogging.ftextOut("Trying to extract as much as possible...\n");
 		//return 1;
 	}
 	

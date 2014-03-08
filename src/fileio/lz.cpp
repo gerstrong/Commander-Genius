@@ -2,7 +2,7 @@
  This file contains the functions which decompress the graphics
  data from Keen 1.
  */
-#include "../CLogFile.h"
+#include <lib/base/GsLogging.h>
 #include <cstdio>
 
 #define LZ_STARTBITS        9
@@ -104,7 +104,7 @@ char lz_decompress(FILE *lzfile, unsigned char *outbuffer)
 		lzdict[i] = new stLZDictionaryEntry;
 		if (!lzdict[i])
 		{
-			g_pLogFile->textOut("lz_decompress(): unable to allocate memory for dictionary!<br>");
+			gLogging.textOut("lz_decompress(): unable to allocate memory for dictionary!<br>");
 			return 1;
 		}
 	}
@@ -176,7 +176,7 @@ char lz_decompress(FILE *lzfile, unsigned char *outbuffer)
 			// ensure we haven't overflowed the buffer
 			if (lzdict[dictindex]->stringlen >= (LZ_MAXSTRINGSIZE-1))
 			{
-				g_pLogFile->ftextOut("lz_decompress(): lzdict[%d]->stringlen is too long...max length is %d<br>", dictindex, LZ_MAXSTRINGSIZE);
+				gLogging.ftextOut("lz_decompress(): lzdict[%d]->stringlen is too long...max length is %d<br>", dictindex, LZ_MAXSTRINGSIZE);
 				return 1;
 			}
 			

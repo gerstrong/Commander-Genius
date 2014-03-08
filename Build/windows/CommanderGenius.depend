@@ -29,15 +29,16 @@
 	<string>
 	<memory>
 
-1372344663 c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.h
-	"core/LogicDrawSplitter.h"
-	"fileio/CExeFile.h"
-	"gui/CGUIDialog.h"
-	"gui/CGUIText.h"
-	"gui/CGUITextSelectionList.h"
+1391107203 c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.h
+	<base/GsEngine.h>
+	<widgets/GsDialog.h>
+	<widgets/GsText.h>
+	<widgets/GsTextSelectionList.h>
 	<string>
 	<vector>
 	<ostream>
+	"engine/CEvent.h"
+	"CResourceLoader.h"
 
 1355227553 c:\users\admin\desktop\commander-genius\src\fileio\cexefile.h
 	"fileio/crc.h"
@@ -242,9 +243,10 @@
 	<list>
 	<memory>
 
-1359807654 c:\users\admin\desktop\commander-genius\src\cresourceloader.h
-	"CSingleton.h"
+1391107203 c:\users\admin\desktop\commander-genius\src\cresourceloader.h
+	<base/Singleton.h>
 	"ThreadPool.h"
+	<base/GsGear.h>
 	<memory>
 	<SDL.h>
 
@@ -270,15 +272,16 @@
 	"engine/CEvent.h"
 	"CVec.h"
 
-1388304883 c:\users\admin\desktop\commander-genius\src\engine\cevent.h
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\cevent.h
 	<cstdint>
 	<string>
 	<list>
 	"common/direction.h"
 	"CVec.h"
-	"graphics/CBitmap.h"
+	"graphics/GsBitmap.h"
 	<vector>
 	<memory>
+	<base/GsEvent.h>
 
 1355227553 c:\users\admin\desktop\commander-genius\src\common\direction.h
 
@@ -326,18 +329,19 @@
 	<memory>
 	<map>
 
-1376807758 c:\users\admin\desktop\commander-genius\src\common\cbehaviorengine.h
+1391107203 c:\users\admin\desktop\commander-genius\src\common\cbehaviorengine.h
 	<vector>
 	<string>
 	<map>
-	"engine/galaxy/res/EGAStructs.h"
+	"../engine/keen/galaxy/res/EGAStructs.h"
 	"hardware/Configurator.h"
 	"fileio/CExeFile.h"
 	"CTileProperties.h"
 	"CPhysicsSettings.h"
 	"fileio/TypeDefinitions.h"
-	"engine/CEventContainer.h"
+	<base/GsEvent.h>
 	"common/options.h"
+	<lib/base/GsEvent.h>
 	"CSingleton.h"
 
 1355227553 c:\users\admin\desktop\commander-genius\src\engine\galaxy\egastructs.h
@@ -360,7 +364,7 @@
 	"mode/CGameMode.h"
 	"core/LogicDrawSplitter.h"
 
-1372344663 c:\users\admin\desktop\commander-genius\src\core\mode\cgamemode.h
+1391107203 c:\users\admin\desktop\commander-genius\src\core\mode\cgamemode.h
 	"engine/CEvent.h"
 	"core/LogicDrawSplitter.h"
 	<string>
@@ -368,17 +372,17 @@
 1372344663 c:\users\admin\desktop\commander-genius\src\engine\infoscenes\cinfoscene.h
 	"engine/CEvent.h"
 
-1355227553 c:\users\admin\desktop\commander-genius\src\engine\cegagraphics.h
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\cegagraphics.h
 	<string>
 
 1366213702 c:\users\admin\desktop\commander-genius\src\engine\cmessages.h
 	<string>
 	<map>
 
-1372347464 c:\users\admin\desktop\commander-genius\src\engine\cpassive.h
-	"CTitle.h"
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\cpassive.h
 	"common/CMap.h"
 	"common/CSpriteObject.h"
+	"core/mode/CGameMode.h"
 	"fileio/CSaveGameController.h"
 	<string>
 	<vector>
@@ -432,14 +436,14 @@
 	<SDL.h>
 	"core/LogicDrawSplitter.h"
 
-1388304883 c:\users\admin\desktop\commander-genius\src\common\cspriteobject.h
-	"engine/CEventContainer.h"
+1391107203 c:\users\admin\desktop\commander-genius\src\common\cspriteobject.h
+	<lib/base/GsEvent.h>
 	"ActionFormat.h"
 	"CVec.h"
 	"direction.h"
 	"CBehaviorEngine.h"
 	"CMap.h"
-	"graphics/CGfxEngine.h"
+	"graphics/GsGraphics.h"
 	"options.h"
 	"sdl/sound/CSound.h"
 	"CVec.h"
@@ -450,23 +454,23 @@
 	<stdio.h>
 	<string.h>
 
-1383483470 c:\users\admin\desktop\commander-genius\src\common\cmap.h
+1391107203 c:\users\admin\desktop\commander-genius\src\common\cmap.h
 	<SDL.h>
 	<string>
 	<vector>
 	<list>
-	"graphics/CTilemap.h"
+	"graphics/GsTilemap.h"
 	"fileio/TypeDefinitions.h"
 	"CPlane.h"
 	"engine/CEvent.h"
-	"utils/Geometry.h"
+	<base/utils/Geometry.h>
 	<map>
 
 1355227553 c:\users\admin\desktop\commander-genius\src\common\cplane.h
 	"../fileio/TypeDefinitions.h"
 	<SDL.h>
 
-1359807654 c:\users\admin\desktop\commander-genius\src\sdl\sound\csound.h
+1391107205 c:\users\admin\desktop\commander-genius\src\sdl\sound\csound.h
 	"CSingleton.h"
 	<string>
 	<SDL.h>
@@ -504,14 +508,14 @@
 
 1355227553 c:\users\admin\desktop\commander-genius\src\common\objenums.h
 
-1376493144 c:\users\admin\desktop\commander-genius\src\fileio\csavegamecontroller.h
+1391107204 c:\users\admin\desktop\commander-genius\src\fileio\csavegamecontroller.h
 	<string>
 	<vector>
 	<SDL.h>
 	<iostream>
 	<fstream>
-	"CLogFile.h"
-	"StringUtils.h"
+	<lib/base/GsLogging.h>
+	<base/utils/StringUtils.h>
 	"fileio/TypeDefinitions.h"
 	"CSingleton.h"
 	"engine/CEvent.h"
@@ -578,13 +582,13 @@
 	<list>
 	<memory>
 
-1388304883 c:\users\admin\desktop\commander-genius\src\sdl\cvidconfig.h
+1391107205 c:\users\admin\desktop\commander-genius\src\sdl\cvidconfig.h
 	<SDL.h>
 	"hardware/Configurator.h"
-	"sdl/video/scalers/CScaler.h"
+	<base/video/scaler/CScaler.h>
 	<SDL_opengl.h>
 	<SDL_opengles.h>
-	"utils/Geometry.h"
+	<base/utils/Geometry.h>
 
 1355036213 c:\program files (x86)\codeblocks\mingw\include\sdl\sdl_opengl.h
 	"SDL_config.h"
@@ -649,7 +653,7 @@
 	<sys/ioctl.h>
 	<sys/soundcard.h>
 
-1355227553 c:\users\admin\desktop\commander-genius\src\common\csettings.h
+1391107203 c:\users\admin\desktop\commander-genius\src\common\csettings.h
 	<string>
 	"common/options.h"
 	"fileio/CConfiguration.h"
@@ -659,8 +663,8 @@
 	"IniReader.h"
 	<string>
 
-1355227553 c:\users\admin\desktop\commander-genius\src\fileio\inireader.h
-	"../StringUtils.h"
+1391107204 c:\users\admin\desktop\commander-genius\src\fileio\inireader.h
+	<base/utils/StringUtils.h>
 	<map>
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\cglogo.rc
@@ -675,7 +679,7 @@
 	"FindFile.h"
 	"Debug.h"
 
-1390654952 c:\users\admin\desktop\commander-genius\version.h
+1391107233 c:\users\admin\desktop\commander-genius\version.h
 
 1376493144 c:\users\admin\desktop\commander-genius\src\findfile.h
 	<iomanip>
@@ -735,87 +739,92 @@
 	"ActionFormat.h"
 	"common/CBehaviorEngine.h"
 
-1359808311 source:c:\users\admin\desktop\commander-genius\src\common\caudioresources.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\caudioresources.cpp
 	"CAudioResources.h"
 	"fileio/ResourceMgmt.h"
-	"FindFile.h"
-	"CLogFile.h"
+	<base/FindFile.h>
+	<lib/base/GsLogging.h>
 	"sdl/sound/CSound.h"
 	<SDL.h>
 
-1359807654 c:\users\admin\desktop\commander-genius\src\fileio\resourcemgmt.h
+1391107204 c:\users\admin\desktop\commander-genius\src\fileio\resourcemgmt.h
 	<string>
 	<set>
-	"StringUtils.h"
+	<base/utils/StringUtils.h>
 	"CSingleton.h"
 
-1366213702 source:c:\users\admin\desktop\commander-genius\src\common\cbehaviorengine.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\cbehaviorengine.cpp
 	"common/CBehaviorEngine.h"
-	"CLogFile.h"
+	<lib/base/GsLogging.h>
 
-1390503388 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
 	"CGameLauncher.h"
-	"CLogFile.h"
-	"gui/CGUIText.h"
-	"sdl/CVideoDriver.h"
-	"sdl/input/CInput.h"
-	"gui/CGUITextSelectionList.h"
-	"gui/CGUIBanner.h"
-	"gui/CGUIButton.h"
-	"graphics/CGfxEngine.h"
+	<base/GsLogging.h>
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	<base/GsApp.h>
+	<widgets/GsTextSelectionList.h>
+	<widgets/GsBanner.h>
+	<widgets/GsButton.h>
+	<widgets/GsText.h>
+	<graphics/GsGraphics.h>
+	<base/FindFile.h>
+	<base/utils/StringUtils.h>
+	<widgets/GsMenuController.h>
 	"graphics/effects/CScrollEffect.h"
 	"common/CBehaviorEngine.h"
 	"core/mode/CGameMode.h"
-	"StringUtils.h"
+	"sdl/sound/CSound.h"
 	"CResourceLoader.h"
-	"FindFile.h"
 	"../version.h"
 	<iostream>
 	<fstream>
+	"engine/keen/vorticon/VorticonEngine.h"
+	"engine/keen/galaxy/GalaxyEngine.h"
 
 1355227553 c:\users\admin\desktop\commander-genius\src\gui\cguibanner.h
 	"CGUIText.h"
 
-1383483470 source:c:\users\admin\desktop\commander-genius\src\common\chud.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\chud.cpp
 	"CHUD.h"
 	"engine/CCamera.h"
 	"common/CBehaviorEngine.h"
-	"sdl/CVideoDriver.h"
+	<base/video/CVideoDriver.h>
 	"sdl/extensions.h"
-	"graphics/CGfxEngine.h"
-	"StringUtils.h"
+	"graphics/GsGraphics.h"
+	<base/utils/StringUtils.h>
 
-1381154893 c:\users\admin\desktop\commander-genius\src\common\chud.h
+1391107203 c:\users\admin\desktop\commander-genius\src\common\chud.h
 	<SDL.h>
 	<string>
 	<functional>
 	<memory>
 	"Playerdefines.h"
 	"engine/spritedefines.h"
-	"graphics/CSprite.h"
+	"graphics/GsSprite.h"
 	"sdl/extensions.h"
 
 1355227553 c:\users\admin\desktop\commander-genius\src\engine\spritedefines.h
 
-1386584211 source:c:\users\admin\desktop\commander-genius\src\common\cmap.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\cmap.cpp
 	"CMap.h"
 	"common/CBehaviorEngine.h"
-	"FindFile.h"
-	"CLogFile.h"
-	"sdl/CVideoDriver.h"
-	"sdl/CTimer.h"
-	"graphics/CGfxEngine.h"
+	<base/FindFile.h>
+	<lib/base/GsLogging.h>
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	"graphics/GsGraphics.h"
 	<iostream>
 	<fstream>
 
-1388304883 source:c:\users\admin\desktop\commander-genius\src\common\cobjectcollision.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\cobjectcollision.cpp
 	"CSpriteObject.h"
 	"engine/spritedefines.h"
-	"sdl/CTimer.h"
+	<lib/base/GsTimer.h>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\common\cphysicssettings.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\cphysicssettings.cpp
 	"CPhysicsSettings.h"
-	"sdl/CTimer.h"
+	<lib/base/GsTimer.h>
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\common\cplane.cpp
 	"CPlane.h"
@@ -905,13 +914,14 @@
 1355227553 c:\users\admin\desktop\commander-genius\src\engine\vorticon\ai\cbridges.h
 	"engine/vorticon/CVorticonSpriteObject.h"
 
-1355227553 c:\users\admin\desktop\commander-genius\src\sdl\music\cmusic.h
+1391107205 c:\users\admin\desktop\commander-genius\src\sdl\music\cmusic.h
 	"fileio/CExeFile.h"
 	"sdl/music/CMusicPlayer.h"
 	<SDL.h>
 	<string>
 	<vector>
 	<memory>
+	<base/GsEvent.h>
 	"CSingleton.h"
 
 1355227553 c:\users\admin\desktop\commander-genius\src\sdl\music\cmusicplayer.h
@@ -923,31 +933,31 @@
 	"graphics/CGfxEngine.h"
 	"sdl/input/CInput.h"
 
-1388309760 source:c:\users\admin\desktop\commander-genius\src\common\csettings.cpp
-	"CLogFile.h"
-	"FindFile.h"
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\csettings.cpp
+	<lib/base/GsLogging.h>
+	<base/FindFile.h>
 	"ConfigHandler.h"
 	"CSettings.h"
-	"sdl/CTimer.h"
+	<lib/base/GsTimer.h>
 	"sdl/sound/CSound.h"
-	"sdl/CVideoDriver.h"
+	<base/video/CVideoDriver.h>
 	"common/options.h"
 	"common/CBehaviorEngine.h"
 	"fileio/CConfiguration.h"
 
-1355227553 c:\users\admin\desktop\commander-genius\src\confighandler.h
+1391107203 c:\users\admin\desktop\commander-genius\src\confighandler.h
 	"CVec.h"
-	"StringUtils.h"
+	<base/utils/StringUtils.h>
 	"MathLib.h"
 	<string>
 	<SDL.h>
 	<vector>
 
-1383483470 source:c:\users\admin\desktop\commander-genius\src\common\cspriteobject.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\common\cspriteobject.cpp
 	"engine/spritedefines.h"
 	"CSpriteObject.h"
-	"CLogFile.h"
-	"sdl/CVideoDriver.h"
+	<lib/base/GsLogging.h>
+	<base/video/CVideoDriver.h>
 
 1388304883 source:c:\users\admin\desktop\commander-genius\src\common\cstatusscreen.cpp
 	"CStatusScreen.h"
@@ -1219,7 +1229,7 @@
 	<memory>
 	<string.h>
 
-1372344663 c:\users\admin\desktop\commander-genius\src\dialog\ctextviewer.h
+1391107203 c:\users\admin\desktop\commander-genius\src\dialog\ctextviewer.h
 	<SDL.h>
 	<vector>
 	<string>
@@ -1279,14 +1289,14 @@
 1355227553 c:\users\admin\desktop\commander-genius\src\engine\vorticon\dialog\cmessageboxvort.h
 	"dialog/CMessageBox.h"
 
-1372347464 c:\users\admin\desktop\commander-genius\src\dialog\cmessagebox.h
-	"dialog/CDlgFrame.h"
-	"common/CBehaviorEngine.h"
-	"gui/CGUIDialog.h"
-	"gui/CGUIText.h"
-	"gui/CGUIButton.h"
+1391107203 c:\users\admin\desktop\commander-genius\src\dialog\cmessagebox.h
+	<widgets/GsDialog.h>
+	<widgets/GsText.h>
+	<widgets/GsButton.h>
 	<string>
 	<vector>
+	"dialog/CDlgFrame.h"
+	"common/CBehaviorEngine.h"
 
 1355227553 c:\users\admin\desktop\commander-genius\src\dialog\cdlgframe.h
 	<SDL.h>
@@ -1446,12 +1456,12 @@
 	<SDL.h>
 	<string>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\confighandler.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\confighandler.cpp
 	<map>
 	<string>
 	"ConfigHandler.h"
-	"FindFile.h"
-	"StringUtils.h"
+	<base/FindFile.h>
+	<base/utils/StringUtils.h>
 	"MathLib.h"
 
 1388304883 source:c:\users\admin\desktop\commander-genius\src\core\cgamecontrol.cpp
@@ -1482,23 +1492,24 @@
 	"engine/infoscenes/CInfoScene.h"
 	<memory>
 
-1376807758 c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.h
+1391331849 c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.h
 	"CGameMode.h"
 	"engine/playgame/CPlayGame.h"
 	"fileio/CSaveGameController.h"
 	<memory>
 	<string>
 
-1376807758 c:\users\admin\desktop\commander-genius\src\engine\playgame\cplaygame.h
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\playgame\cplaygame.h
 	"fileio/CExeFile.h"
 	"core/LogicDrawSplitter.h"
 	"common/options.h"
 	"common/CBehaviorEngine.h"
+	"core/mode/CGameMode.h"
 	"fileio/CSaveGameController.h"
 	<string>
 	<SDL.h>
 
-1372344663 c:\users\admin\desktop\commander-genius\src\core\mode\cgamepassivemode.h
+1391107203 c:\users\admin\desktop\commander-genius\src\core\mode\cgamepassivemode.h
 	"CGameMode.h"
 	"engine/CPassive.h"
 	"common/CMap.h"
@@ -1564,14 +1575,12 @@
 	"common/Menu/CMainMenu.h"
 	"common/Menu/CHelpMenu.h"
 
-1372344663 source:c:\users\admin\desktop\commander-genius\src\core\mode\cgamepassivemode.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\core\mode\cgamepassivemode.cpp
+	<widgets/GsMenuController.h>
+	<base/GsApp.h>
 	"CGamePassiveMode.h"
 	"sdl/sound/CSound.h"
-	"engine/vorticon/CPassiveVort.h"
-	"engine/galaxy/CPassive.h"
-	"common/Menu/CMenuController.h"
-	"core/CGameLauncherMenu.h"
-	"common/Menu/CSelectionMenu.h"
+	"common/CGameLauncher.h"
 
 1372344663 c:\users\admin\desktop\commander-genius\src\engine\vorticon\cpassivevort.h
 	"engine/CPassive.h"
@@ -1579,20 +1588,20 @@
 	"engine/CIntro.h"
 	<memory>
 
-1372344663 c:\users\admin\desktop\commander-genius\src\engine\cintro.h
-	"graphics/CGfxEngine.h"
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\cintro.h
+	"graphics/GsGraphics.h"
 
 1381154893 c:\users\admin\desktop\commander-genius\src\engine\galaxy\cpassive.h
 	"../CPassive.h"
 	<string>
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\core\mode\cgameplaymode.cpp
 	"CGamePlayMode.h"
-	"engine/galaxy/CPlayGameGalaxy.h"
-	"engine/vorticon/playgame/CPlayGameVorticon.h"
 	"graphics/effects/CColorMerge.h"
 	"sdl/music/CMusicPlayer.h"
-	"sdl/CTimer.h"
+	<base/GsTimer.h>
+	<base/video/CVideoDriver.h>
+	<base/GsApp.h>
 	<memory>
 
 1386584211 c:\users\admin\desktop\commander-genius\src\engine\galaxy\cplaygamegalaxy.h
@@ -1752,19 +1761,19 @@
 	<SDL.h>
 	<memory>
 
-1372344663 c:\users\admin\desktop\commander-genius\src\graphics\effects\ccolormerge.h
+1391107204 c:\users\admin\desktop\commander-genius\src\graphics\effects\ccolormerge.h
 	<SDL.h>
 	<memory>
-	"CEffects.h"
+	<base/video/GsEffectController.h>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\crashhandler.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\crashhandler.cpp
 	"CrashHandler.h"
-	"StringUtils.h"
-	"Debug.h"
+	<base/utils/StringUtils.h>
+	<base/Debug.h>
 	<setjmp.h>
 	<DbgHelp.h>
 	<ShlObj.h>
-	"FindFile.h"
+	<base/FindFile.h>
 	<stdio.h>
 	<stdlib.h>
 	<signal.h>
@@ -1776,18 +1785,18 @@
 
 1355227553 c:\users\admin\desktop\commander-genius\src\crashhandler.h
 
-1388304883 source:c:\users\admin\desktop\commander-genius\src\cresourceloader.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\cresourceloader.cpp
 	"CResourceLoader.h"
-	"graphics/CGfxEngine.h"
+	"graphics/GsGraphics.h"
 	"sdl/extensions.h"
-	"sdl/CVideoDriver.h"
-	"sdl/CTimer.h"
-	"StringUtils.h"
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	<base/utils/StringUtils.h>
 	<cassert>
 
-1381157450 source:c:\users\admin\desktop\commander-genius\src\debug.cpp
-	"Debug.h"
-	"StringUtils.h"
+1391107997 source:c:\users\admin\desktop\commander-genius\src\debug.cpp
+	<base/Debug.h>
+	<base/utils/StringUtils.h>
 	"CrashHandler.h"
 	<stdio.h>
 	<string.h>
@@ -1803,7 +1812,6 @@
 	<cstring>
 	<unistd.h>
 	<signal.h>
-	"StringUtils.h"
 	<google/coredumper.h>
 	<unistd.h>
 	<sys/types.h>
@@ -1815,71 +1823,65 @@
 	<iostream>
 	<sstream>
 	"ThreadPool.h"
-	"StringUtils.h"
+	<base/utils/StringUtils.h>
 	<android/log.h>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\dialog\cdlgframe.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\dialog\cdlgframe.cpp
 	"CDlgFrame.h"
-	"graphics/CGfxEngine.h"
+	"graphics/GsGraphics.h"
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\dialog\cdlgoptiontext.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\dialog\cdlgoptiontext.cpp
 	"CDlgOptionText.h"
-	"../graphics/CGfxEngine.h"
+	<graphics/GsGraphics.h>
 
 1355227553 c:\users\admin\desktop\commander-genius\src\dialog\cdlgoptiontext.h
 	<string>
 	<SDL.h>
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\dialog\cmessagebox.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\dialog\cmessagebox.cpp
 	"CMessageBox.h"
-	"sdl/CVideoDriver.h"
-	"sdl/input/CInput.h"
-	"graphics/CGfxEngine.h"
-	"StringUtils.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	"graphics/GsGraphics.h"
+	<base/utils/StringUtils.h>
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\dialog\ctextviewer.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\dialog\ctextviewer.cpp
 	<fstream>
-	"sdl/input/CInput.h"
+	<base/CInput.h>
 	"CTextViewer.h"
-	"graphics/CGfxEngine.h"
+	"graphics/GsGraphics.h"
 	"sdl/extensions.h"
-	"sdl/CVideoDriver.h"
-	"FindFile.h"
-	"CLogFile.h"
+	<base/video/CVideoDriver.h>
+	<base/FindFile.h>
+	<base/GsLogging.h>
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\engine\ccamera.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\ccamera.cpp
 	"CCamera.h"
-	"CLogFile.h"
-	"sdl/CVideoDriver.h"
-	"sdl/input/CInput.h"
+	<lib/base/GsLogging.h>
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
 	"engine/spritedefines.h"
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\engine\cegagraphics.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\cegagraphics.cpp
 	"CEGAGraphics.h"
-	"fileio/ResourceMgmt.h"
-	"FindFile.h"
-	"CLogFile.h"
-	"sdl/CVideoDriver.h"
-	"graphics/CGfxEngine.h"
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\engine\ceventcontainer.cpp
 	"CEventContainer.h"
 	<string.h>
 	"CLogFile.h"
 
-1388304883 source:c:\users\admin\desktop\commander-genius\src\engine\cintro.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\cintro.cpp
 	"CIntro.h"
-	"sdl/input/CInput.h"
-	"sdl/CVideoDriver.h"
-	"sdl/CTimer.h"
+	<base/CInput.h>
+	<base/GsTimer.h>
+	<base/video/CVideoDriver.h>
 
-1383483470 source:c:\users\admin\desktop\commander-genius\src\engine\cmessages.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\cmessages.cpp
 	"CMessages.h"
-	"StringUtils.h"
-	"CLogFile.h"
+	<lib/base/GsLogging.h>
 	"common/CBehaviorEngine.h"
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\engine\cpassive.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\cpassive.cpp
 	"CPassive.h"
 	"common/CBehaviorEngine.h"
 
@@ -1900,8 +1902,8 @@
 	"common/Menu/CMenuController.h"
 	"sdl/input/CInput.h"
 
-1372344663 c:\users\admin\desktop\commander-genius\src\graphics\effects\cpixelate.h
-	"CEffects.h"
+1391107204 c:\users\admin\desktop\commander-genius\src\graphics\effects\cpixelate.h
+	<base/video/GsEffectController.h>
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ai\autogun.cpp
 	"Autogun.h"
@@ -1974,8 +1976,8 @@
 	"engine/galaxy/CGalaxySpriteObject.h"
 	"engine/galaxy/ai/CPlayerLevel.h"
 
-1386584211 c:\users\admin\desktop\commander-genius\src\graphics\effects\cdimdark.h
-	"CEffects.h"
+1391107204 c:\users\admin\desktop\commander-genius\src\graphics\effects\cdimdark.h
+	<base/video/GsEffectController.h>
 	<memory>
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\engine\galaxy\ai\cplayerwm.cpp
@@ -2312,8 +2314,8 @@
 	<cstring>
 	<SDL.h>
 
-1367339945 c:\users\admin\desktop\commander-genius\src\fileio\ctileloader.h
-	"graphics/CTilemap.h"
+1391107204 c:\users\admin\desktop\commander-genius\src\fileio\ctileloader.h
+	"graphics/GsTilemap.h"
 	"common/CBehaviorEngine.h"
 	"CExeFile.h"
 	<map>
@@ -2332,10 +2334,10 @@
 	"CStatusScreenGalaxyEp4.h"
 	"CStatusScreenGalaxyEp5.h"
 
-1388304883 c:\users\admin\desktop\commander-genius\src\graphics\effects\cscrolleffect.h
+1391107204 c:\users\admin\desktop\commander-genius\src\graphics\effects\cscrolleffect.h
 	<SDL.h>
 	<memory>
-	"CEffects.h"
+	<base/video/GsEffectController.h>
 	"common/direction.h"
 
 1355227553 c:\users\admin\desktop\commander-genius\src\engine\galaxy\cstatusscreengalaxyep4.h
@@ -2618,9 +2620,9 @@
 	"sdl/input/CInput.h"
 	"FindFile.h"
 
-1376807758 source:c:\users\admin\desktop\commander-genius\src\engine\playgame\cplaygame.cpp
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\playgame\cplaygame.cpp
 	"CPlayGame.h"
-	"graphics/CGfxEngine.h"
+	"graphics/GsGraphics.h"
 
 1376493144 source:c:\users\admin\desktop\commander-genius\src\engine\vorticon\ai\cankhshield.cpp
 	"CAnkhShield.h"
@@ -2709,10 +2711,10 @@
 	"graphics/effects/CVibrate.h"
 	"common/CBehaviorEngine.h"
 
-1372344663 c:\users\admin\desktop\commander-genius\src\graphics\effects\cvibrate.h
+1391107204 c:\users\admin\desktop\commander-genius\src\graphics\effects\cvibrate.h
 	<memory>
-	"CEffects.h"
-	"sdl/CTimer.h"
+	<base/video/GsEffectController.h>
+	<lib/base/GsTimer.h>
 
 1376493144 source:c:\users\admin\desktop\commander-genius\src\engine\vorticon\ai\cmeep.cpp
 	"../../../sdl/sound/CSound.h"
@@ -2782,10 +2784,10 @@
 	"graphics/effects/CFlash.h"
 	"CVorticon.h"
 
-1372344663 c:\users\admin\desktop\commander-genius\src\graphics\effects\cflash.h
+1391107204 c:\users\admin\desktop\commander-genius\src\graphics\effects\cflash.h
 	<memory>
-	"CEffects.h"
-	"sdl/CTimer.h"
+	<base/video/GsEffectController.h>
+	<lib/base/GsTimer.h>
 
 1386584211 source:c:\users\admin\desktop\commander-genius\src\engine\vorticon\ai\cvorticonelite.cpp
 	"misc.h"
@@ -3024,47 +3026,46 @@
 	"engine/vorticon/ai/CTeleporter.h"
 	"engine/vorticon/ai/CMessie.h"
 
-1359807654 source:c:\users\admin\desktop\commander-genius\src\fileio.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio.cpp
 	<unistd.h>
 	<sys/types.h>
 	<vector>
 	<stdio.h>
-	"sdl/CVideoDriver.h"
+	<base/video/CVideoDriver.h>
 	"sdl/sound/CSound.h"
 	"fileio.h"
-	"CLogFile.h"
-	"StringUtils.h"
-	"Debug.h"
-	"FindFile.h"
+	<lib/base/GsLogging.h>
+	<base/utils/StringUtils.h>
+	<base/Debug.h>
+	<base/FindFile.h>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\fileio\cconfiguration.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\cconfiguration.cpp
 	"CConfiguration.h"
-	"../FindFile.h"
+	<base/FindFile.h>
 	<fstream>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\fileio\cexefile.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\cexefile.cpp
 	"CExeFile.h"
 	"compression/Cunlzexe.h"
 	<cstring>
 	<iostream>
 	<fstream>
-	"StringUtils.h"
-	"FindFile.h"
-	"CLogFile.h"
+	<base/FindFile.h>
+	<lib/base/GsLogging.h>
 	"fileio/ResourceMgmt.h"
 
 1355227553 c:\users\admin\desktop\commander-genius\src\fileio\compression\cunlzexe.h
 	<vector>
 	<stdint.h>
 
-1383483470 source:c:\users\admin\desktop\commander-genius\src\fileio\compression\ccarmack.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\compression\ccarmack.cpp
 	"CCarmack.h"
-	"../../CLogFile.h"
-	"../../StringUtils.h"
+	<lib/base/GsLogging.h>
+	<lib/base/utils/StringUtils.h>
 
-1359999365 source:c:\users\admin\desktop\commander-genius\src\fileio\compression\chuffman.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\compression\chuffman.cpp
 	"CHuffman.h"
-	"FindFile.h"
+	<base/FindFile.h>
 	<fstream>
 
 1372344663 source:c:\users\admin\desktop\commander-genius\src\fileio\compression\crle.cpp
@@ -3077,70 +3078,67 @@
 	<string.h>
 	<string>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\fileio\compression\sgrle.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\compression\sgrle.cpp
 	"../../fileio.h"
-	"../../CLogFile.h"
+	<lib/base/GsLogging.h>
 
-1383483470 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcher.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcher.cpp
 	"CPatcher.h"
 	<string.h>
 	<fstream>
 	<iostream>
-	"FindFile.h"
-	"StringUtils.h"
-	"CLogFile.h"
+	<base/FindFile.h>
+	<lib/base/GsLogging.h>
 	"fileio/ResourceMgmt.h"
 	"common/CBehaviorEngine.h"
 
-1360002943 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcherutils.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\cpatcherutils.cpp
 	"CPatcher.h"
 	<string.h>
 	<fstream>
-	"../FindFile.h"
-	"../StringUtils.h"
-	"../CLogFile.h"
+	<base/FindFile.h>
+	<lib/base/GsLogging.h>
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\fileio\crc.cpp
 	"crc.h"
 	<stdlib.h>
 	<string.h>
 
-1376493144 source:c:\users\admin\desktop\commander-genius\src\fileio\csavegamecontroller.cpp
-	"FindFile.h"
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\csavegamecontroller.cpp
+	<base/FindFile.h>
 	"CSaveGameController.h"
 	"common/CBehaviorEngine.h"
 	<ctime>
 	<boost/property_tree/ptree.hpp>
 	<boost/property_tree/xml_parser.hpp>
 
-1367339945 source:c:\users\admin\desktop\commander-genius\src\fileio\ctileloader.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\ctileloader.cpp
 	"CTileLoader.h"
-	"../CLogFile.h"
-	"../StringUtils.h"
-	"../FindFile.h"
+	<base/GsLogging.h>
+	<base/FindFile.h>
 	"TypeDefinitions.h"
 	<cstdlib>
 	<string>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\fileio\inireader.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\inireader.cpp
 	"IniReader.h"
-	"../FindFile.h"
-	"../Debug.h"
+	<base/FindFile.h>
+	<base/Debug.h>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\fileio\lz.cpp
-	"../CLogFile.h"
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\lz.cpp
+	<lib/base/GsLogging.h>
 	<cstdio>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\fileio\resourcemgmt.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\fileio\resourcemgmt.cpp
 	"ResourceMgmt.h"
-	"FindFile.h"
-	"CLogFile.h"
+	<base/FindFile.h>
+	<lib/base/GsLogging.h>
 
-1383483470 source:c:\users\admin\desktop\commander-genius\src\findfile.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\findfile.cpp
 	<fstream>
-	"FindFile.h"
-	"StringUtils.h"
-	"Debug.h"
+	<base/FindFile.h>
+	<base/Debug.h>
+	<base/utils/StringUtils.h>
 	"ConfigHandler.h"
 	"common/CSettings.h"
 	<shlobj.h>
@@ -3217,36 +3215,36 @@
 	"CLogFile.h"
 	<stdlib.h>
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\ccolormerge.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\ccolormerge.cpp
 	"CColorMerge.h"
-	"sdl/CVideoDriver.h"
+	<base/video/CVideoDriver.h>
 
-1386584211 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cdimdark.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cdimdark.cpp
 	"CDimDark.h"
-	"sdl/CVideoDriver.h"
+	<base/video/CVideoDriver.h>
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cflash.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cflash.cpp
 	"CFlash.h"
-	"../../sdl/CVideoDriver.h"
+	<base/video/CVideoDriver.h>
 
-1388304883 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cpixelate.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cpixelate.cpp
 	"CPixelate.h"
-	"sdl/CVideoDriver.h"
-	"sdl/input/CInput.h"
-	"sdl/CTimer.h"
-	"graphics/CGfxEngine.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	<lib/base/GsTimer.h>
+	"graphics/GsGraphics.h"
 	<cstring>
 	<cstdio>
 	<cstdlib>
 
-1388304883 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cscrolleffect.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cscrolleffect.cpp
 	"CScrollEffect.h"
-	"sdl/CVideoDriver.h"
+	<base/video/CVideoDriver.h>
 	<cassert>
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cvibrate.cpp
+1391107204 source:c:\users\admin\desktop\commander-genius\src\graphics\effects\cvibrate.cpp
 	"CVibrate.h"
-	"sdl/CVideoDriver.h"
+	<base/video/CVideoDriver.h>
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\gui\cguibanner.cpp
 	"CGUIBanner.h"
@@ -3356,11 +3354,15 @@
 	<string.h>
 	"dbopl.h"
 
-1383483470 source:c:\users\admin\desktop\commander-genius\src\main.cpp
+1391107205 source:c:\users\admin\desktop\commander-genius\src\main.cpp
+	"../version.h"
+	"common/CSettings.h"
 	<SDL_main.h>
-	"CGame.h"
-	"FindFile.h"
+	<base/FindFile.h>
+	<base/GsApp.h>
+	<lib/base/GsLogging.h>
 	"ThreadPool.h"
+	"common/CGameLauncher.h"
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\misc.cpp
 	"misc.h"
@@ -3374,7 +3376,7 @@
 	"StringUtils.h"
 	"common/CBehaviorEngine.h"
 
-1388314635 source:c:\users\admin\desktop\commander-genius\src\sdl\cvidconfig.cpp
+1391107205 source:c:\users\admin\desktop\commander-genius\src\sdl\cvidconfig.cpp
 	"CVidConfig.h"
 	<cstring>
 	<cstdio>
@@ -3398,10 +3400,10 @@
 1381154893 c:\users\admin\desktop\commander-genius\src\sdl\video\csdlvideo.h
 	"sdl/video/CVideoEngine.h"
 
-1388304883 source:c:\users\admin\desktop\commander-genius\src\sdl\extensions.cpp
+1391107205 source:c:\users\admin\desktop\commander-genius\src\sdl\extensions.cpp
 	"extensions.h"
-	"sdl/CVideoDriver.h"
-	"CLogFile.h"
+	<base/video/CVideoDriver.h>
+	<lib/base/GsLogging.h>
 	<cstring>
 	<cstdio>
 
@@ -3419,19 +3421,18 @@
 	"common/CBehaviorEngine.h"
 	"sys/wizgp2x.h"
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\sdl\music\cimfplayer.cpp
-	"engine/galaxy/res/CAudioGalaxy.h"
+1391331849 source:c:\users\admin\desktop\commander-genius\src\sdl\music\cimfplayer.cpp
 	"CIMFPlayer.h"
 	"fileio/ResourceMgmt.h"
 	"fileio/compression/CHuffman.h"
-	"FindFile.h"
-	"CLogFile.h"
+	<base/FindFile.h>
+	<lib/base/GsLogging.h>
 	<fstream>
 	<string>
 	<cassert>
 	<fstream>
 
-1366213702 c:\users\admin\desktop\commander-genius\src\sdl\music\cimfplayer.h
+1391331849 c:\users\admin\desktop\commander-genius\src\sdl\music\cimfplayer.h
 	"CMusicPlayer.h"
 	"fileio/TypeDefinitions.h"
 	"fileio/CExeFile.h"
@@ -3442,13 +3443,12 @@
 
 1355227553 c:\users\admin\desktop\commander-genius\src\cringbuffer.h
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\sdl\music\cmusic.cpp
+1391107205 source:c:\users\admin\desktop\commander-genius\src\sdl\music\cmusic.cpp
 	"sdl/sound/CSound.h"
 	"sdl/sound/Sampling.h"
-	"StringUtils.h"
 	"CMusic.h"
-	"CLogFile.h"
-	"FindFile.h"
+	<lib/base/GsLogging.h>
+	<base/FindFile.h>
 	"fileio/ResourceMgmt.h"
 	"fileio/compression/CHuffman.h"
 	"sdl/music/COGGPlayer.h"
@@ -3459,7 +3459,7 @@
 1355227553 c:\users\admin\desktop\commander-genius\src\sdl\sound\sampling.h
 	<SDL.h>
 
-1381154893 c:\users\admin\desktop\commander-genius\src\sdl\music\coggplayer.h
+1391107205 c:\users\admin\desktop\commander-genius\src\sdl\music\coggplayer.h
 	<cstdio>
 	<iostream>
 	"sdl/music/CMusicPlayer.h"
@@ -3472,25 +3472,21 @@
 1355227553 source:c:\users\admin\desktop\commander-genius\src\sdl\music\cmusicplayer.cpp
 	"CMusicPlayer.h"
 
-1386584211 source:c:\users\admin\desktop\commander-genius\src\sdl\music\coggplayer.cpp
+1391107205 source:c:\users\admin\desktop\commander-genius\src\sdl\music\coggplayer.cpp
 	"COGGPlayer.h"
-	"engine/galaxy/res/CAudioGalaxy.h"
-	"FindFile.h"
+	<base/FindFile.h>
 	"sdl/sound/Sampling.h"
 	"fileio/ResourceMgmt.h"
-	"CLogFile.h"
+	<lib/base/GsLogging.h>
 
-1388304883 source:c:\users\admin\desktop\commander-genius\src\sdl\sound\csound.cpp
+1391107205 source:c:\users\admin\desktop\commander-genius\src\sdl\sound\csound.cpp
 	"CSound.h"
 	"fileio.h"
 	"fileio/ResourceMgmt.h"
-	"CLogFile.h"
-	"StringUtils.h"
-	"FindFile.h"
+	<lib/base/GsLogging.h>
+	<base/FindFile.h>
 	"sdl/music/CMusic.h"
 	"common/CBehaviorEngine.h"
-	"engine/vorticon/CAudioVorticon.h"
-	"engine/galaxy/res/CAudioGalaxy.h"
 	<fstream>
 
 1355227553 c:\users\admin\desktop\commander-genius\src\sdl\sound\mixer.h
@@ -3509,18 +3505,18 @@
 1355036300 c:\program files (x86)\codeblocks\mingw\include\vorbis\codec.h
 	<ogg/ogg.h>
 
-1381154893 source:c:\users\admin\desktop\commander-genius\src\sdl\sound\csoundslot.cpp
+1391107205 source:c:\users\admin\desktop\commander-genius\src\sdl\sound\csoundslot.cpp
 	<stdio.h>
 	<string.h>
 	<fstream>
 	<vector>
 	"CSoundSlot.h"
-	"CLogFile.h"
+	<lib/base/GsLogging.h>
 	"fileio.h"
 	"fileio/ResourceMgmt.h"
 	"fileio/TypeDefinitions.h"
 	"sdl/sound/Sampling.h"
-	"FindFile.h"
+	<base/FindFile.h>
 	<vorbisfile.h>
 	<ivorbisfile.h>
 
@@ -3610,22 +3606,22 @@
 	<sstream>
 	<iomanip>
 
-1366213702 source:c:\users\admin\desktop\commander-genius\src\threadpool.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\threadpool.cpp
 	<SDL_thread.h>
 	"ThreadPool.h"
-	"Debug.h"
-	"CLogFile.h"
+	<base/Debug.h>
+	<lib/base/GsLogging.h>
 	"ReadWriteLock.h"
 
-1355227553 c:\users\admin\desktop\commander-genius\src\readwritelock.h
+1391107203 c:\users\admin\desktop\commander-genius\src\readwritelock.h
 	<SDL.h>
 	"ThreadPool.h"
-	"Debug.h"
+	<base/Debug.h>
 
-1355227553 source:c:\users\admin\desktop\commander-genius\src\unicode.cpp
+1391107203 source:c:\users\admin\desktop\commander-genius\src\unicode.cpp
 	"Unicode.h"
 	"MathLib.h"
-	"StringUtils.h"
+	<base/utils/StringUtils.h>
 	<windows.h>
 
 1355227553 source:c:\users\admin\desktop\commander-genius\src\utils\geometry.cpp
@@ -5148,7 +5144,7 @@
 	"CSpecialItem.h"
 	<engine/galaxy/common/ai/CPlayerBase.h>
 
-1372344663 c:\users\admin\desktop\commander-genius\src\core\logicdrawsplitter.h
+1391107203 c:\users\admin\desktop\commander-genius\src\core\logicdrawsplitter.h
 
 1305568206 c:\mingw95\mingw\include\boost\property_tree\ptree.hpp
 	<boost/property_tree/ptree_fwd.hpp>
@@ -10337,4 +10333,3104 @@
 1383484416 c:\users\admin\desktop\commander-genius\src\sdl\sdl_rotozoom.h
 	<math.h>
 	"SDL.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\res\egastructs.h
+	<vector>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\gsevent.h
+	<base/Singleton.h>
+	<ctime>
+	<vector>
+	<deque>
+	<list>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\singleton.h
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\utils\stringutils.h
+	<SDL.h>
+	<cstdio>
+	<string>
+	<sstream>
+	<vector>
+	<cassert>
+	<list>
+	<limits.h>
+	"Color.h"
+	"Iterator.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\lib\base\findfile.h
+	<iomanip>
+	<string>
+	<list>
+	<vector>
+	<set>
+	"Unicode.h"
+	"Debug.h"
+	"Mutex.h"
+	"Iterator.h"
+	"RefCounter.h"
+	"Event.h"
+	<base/utils/StringUtils.h>
+	<dirent.h>
+	<unistd.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<windows.h>
+	<io.h>
+	<direct.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\lib\base\debug.h
+	<string>
+	<cassert>
+	<base/utils/StringUtils.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\gslogging.h
+	<base/Singleton.h>
+	<string>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\gsengine.h
+	<base/GsEvent.h>
+	<vector>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsdialog.h
+	<list>
+	<memory>
+	<engine/CEvent.h>
+	"GsControl.h"
+	"GsBitmap.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\gsbitmap.h
+	<SDL.h>
+	<vector>
+	<string>
+	<memory>
+	<base/utils/Geometry.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\utils\geometry.h
+	<SDL.h>
+	<CVec.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gscontrol.h
+	<base/InputEvents.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\inputevents.h
+	"engine/CEvent.h"
+	"CVec.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbitmap.h
+	<memory>
+	<string>
+	"GsControl.h"
+	"GsBitmap.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gstext.h
+	<string>
+	"GsControl.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gstextselectionlist.h
+	"GsControl.h"
+	<list>
+	<string>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\gsgear.h
+	<base/GsEvent.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideodriver.h
+	<base/Singleton.h>
+	<base/video/CVideoEngine.h>
+	<base/GsEvent.h>
+	"common/CMap.h"
+	<base/video/COpenGL.h>
+	<SDL.h>
+	<iostream>
+	<list>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideoengine.h
+	<SDL.h>
+	<string>
+	"sdl/CVidConfig.h"
+	"sdl/extensions.h"
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\scaler\cscaler.h
+	<SDL.h>
+	<base/utils/Geometry.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\gstilemap.h
+	<SDL.h>
+	<string>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\copengl.h
+	<SDL.h>
+	<OpenGLES/ES1/gl.h>
+	<OpenGLES/ES1/glext.h>
+	<SDL_opengl.h>
+	<base/video/CVideoEngine.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\lib\base\cinput.h
+	<SDL.h>
+	<string>
+	<list>
+	<base/utils/Geometry.h>
+	<base/GsEvent.h>
+	<base/InputEvents.h>
+	<base/Singleton.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\lib\base\gsapp.h
+	<base/GsEvent.h>
+	<base/GsEngine.h>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbanner.h
+	"GsText.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbutton.h
+	"GsControl.h"
+	<string>
+	<memory>
+	<map>
+	<engine/CEvent.h>
+	<common/CBehaviorEngine.h>
+	<graphics/GsSurface.h>
+
+1391107963 c:\users\admin\desktop\commander-genius\src\lib\graphics\gssurface.h
+	<base/utils/Geometry.h>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\gsgraphics.h
+	<base/Singleton.h>
+	"GsFont.h"
+	"GsTilemap.h"
+	"GsSprite.h"
+	"GsBitmap.h"
+	"GsPalette.h"
+	"GsCursor.h"
+	<base/video/GsEffectController.h>
+	<vector>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\gsfont.h
+	<graphics/GsSurface.h>
+	<string>
+	<vector>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\gssprite.h
+	<SDL.h>
+	<string>
+	<vector>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\gspalette.h
+	<SDL.h>
+	"../fileio/TypeDefinitions.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\gscursor.h
+	<graphics/GsFont.h>
+	<SDL.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\gseffectcontroller.h
+	<base/Singleton.h>
+	<base/video/CEffects.h>
+	<base/CInput.h>
+	<memory>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\ceffects.h
+	<SDL.h>
+	"core/LogicDrawSplitter.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsmenucontroller.h
+	<base/GsEvent.h>
+	<base/Singleton.h>
+	<memory>
+	"GsBaseMenu.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbasemenu.h
+	<list>
+	<memory>
+	"GsDialog.h"
+	"GsButton.h"
+
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\vorticonengine.h
+	"engine/keen/KeenEngine.h"
+	"engine/keen/vorticon/CEGAGraphicsVort.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\keenengine.h
+	"core/GameEngine.h"
+	"common/CBehaviorEngine.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\core\gameengine.h
+	"engine/CEvent.h"
+	"core/mode/CGameMode.h"
+	"CResourceLoader.h"
+	<base/GsEngine.h>
+	<memory>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cegagraphicsvort.h
+	"engine/CEGAGraphics.h"
+	"CEGALatch.h"
+	"CEGASprit.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cegalatch.h
+	<SDL.h>
+	<string>
+	"common/CTileProperties.h"
+	"graphics/GsTilemap.h"
+	"engine/CPlanes.h"
+	<vector>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cegasprit.h
+	<string>
+	<SDL.h>
+	<vector>
+	"graphics/GsGraphics.h"
+	"common/CTileProperties.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\galaxyengine.h
+	"engine/keen/KeenEngine.h"
+	"res/CEGAGraphicsGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\res\cegagraphicsgalaxy.h
+	<string>
+	<vector>
+	<map>
+	<SDL.h>
+	"fileio/CExeFile.h"
+	"engine/CEGAGraphics.h"
+	"graphics/GsTilemap.h"
+	"EGAStructs.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\gstimer.h
+	<SDL.h>
+	<base/Singleton.h>
+	"sys/wizgp2x.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\core\gameengine.cpp
+	<base/CInput.h>
+	<widgets/GsMenuController.h>
+	"GameEngine.h"
+	"common/CBehaviorEngine.h"
+	"mode/CGamePassiveMode.h"
+	"mode/CGamePlayMode.h"
+	"core/mode/CGameMode.h"
+	"common/Menu/CMainMenu.h"
+	"common/Menu/CHelpMenu.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\clevelplay.cpp
+	<memory>
+	"CLevelPlay.h"
+	"ep4/CMapLoaderGalaxyEp4.h"
+	"ep5/CMapLoaderGalaxyEp5.h"
+	<base/CInput.h>
+	"sdl/music/CMusic.h"
+	"graphics/effects/CDimDark.h"
+	<lib/base/GsLogging.h>
+	"CMapPlayGalaxy.h"
+	"GalaxyEngine.h"
+	"common/dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\clevelplay.h
+	"CMapPlayGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cmapplaygalaxy.h
+	"common/Cheat.h"
+	"fileio/CExeFile.h"
+	"common/CInventory.h"
+	"common/CGalaxySpriteObject.h"
+	"common/CBehaviorEngine.h"
+	"ep4/CMapLoaderGalaxyEp4.h"
+	"ep5/CMapLoaderGalaxyEp5.h"
+	"ep6/CMapLoaderGalaxyEp6.h"
+	<base/CInput.h>
+	"sdl/music/CMusic.h"
+	"core/LogicDrawSplitter.h"
+	<base/utils/StringUtils.h>
+	<memory>
+	<vector>
+	<list>
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cinventory.h
+	"common/CHUD.h"
+	"../res/ItemsGalaxy.h"
+	"CStatusScreenGalaxy.h"
+	"fileio/CSaveGameController.h"
+	<memory>
+	<string>
+	<SDL.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\res\itemsgalaxy.h
+	"common/CBehaviorEngine.h"
+	<boost/property_tree/ptree.hpp>
+	<string>
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cstatusscreengalaxy.h
+	<SDL.h>
+	<string>
+	<memory>
+	"../res/ItemsGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cgalaxyspriteobject.h
+	"common/CSpriteObject.h"
+	<fileio/CSaveGameController.h>
+	<boost/property_tree/ptree.hpp>
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\cmaploadergalaxyep4.h
+	"../common/CMapLoaderGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cmaploadergalaxy.h
+	<memory>
+	<vector>
+	<string>
+	<SDL.h>
+	"fileio/CExeFile.h"
+	"fileio/TypeDefinitions.h"
+	"common/CMap.h"
+	"common/Cheat.h"
+	"CInventory.h"
+	"CGalaxySpriteObject.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\cmaploadergalaxyep5.h
+	"../common/CMapLoaderGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\cmaploadergalaxyep6.h
+	"../common/CMapLoaderGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\dialog\cmessageboxbitmapgalaxy.h
+	"CMessageBoxGalaxy.h"
+	"graphics/GsGraphics.h"
+	"common/CSpriteObject.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\dialog\cmessageboxgalaxy.h
+	"CVec.h"
+	<string>
+	<SDL.h>
+	<memory>
+	<base/GsEvent.h>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cmapplaygalaxy.cpp
+	"CMapPlayGalaxy.h"
+	"common/ai/platform/CPlatform.h"
+	"common/ai/CPlayerBase.h"
+	"common/CBehaviorEngine.h"
+	"ep4/CMapLoaderGalaxyEp4.h"
+	"ep5/CMapLoaderGalaxyEp5.h"
+	"ep6/CMapLoaderGalaxyEp6.h"
+	"ep4/ai/CInchWorm.h"
+	"ep4/ai/CFoot.h"
+	"ep4/ai/CSmokePuff.h"
+	<base/GsLogging.h>
+	<base/video/CVideoDriver.h>
+	<boost/property_tree/ptree.hpp>
+	<base/utils/Base64.h>
+	"GalaxyEngine.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatform.h
+	"../../CGalaxySpriteObject.h"
+	"../CPlayerLevel.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cplayerlevel.h
+	"CPlayerBase.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cplayerbase.h
+	"../CGalaxySpriteObject.h"
+	"../CInventory.h"
+	"common/Playerdefines.h"
+	"engine/CEvent.h"
+	"common/Cheat.h"
+	"engine/CCamera.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cinchworm.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cfoot.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\csmokepuff.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\utils\base64.h
+	<string>
+	<vector>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\autogun.cpp
+	"Autogun.h"
+	"CPlayerBase.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\autogun.h
+	"../CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cbullet.cpp
+	"CBullet.h"
+	"CPlayerLevel.h"
+	"sdl/sound/CSound.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cbullet.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cenemyshot.cpp
+	"CEnemyShot.h"
+	"CPlayerBase.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cenemyshot.h
+	"../CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cflag.cpp
+	"CFlag.h"
+	"sdl/sound/CSound.h"
+	"common/CBehaviorEngine.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cflag.h
+	"../CGalaxySpriteObject.h"
+	"CVec.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cgalaxyactionspriteobject.cpp
+	"CGalaxyActionSpriteObject.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cgalaxyactionspriteobject.h
+	"../CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\citemeffect.cpp
+	"CItemEffect.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\citemeffect.h
+	"../CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cmovetarget.cpp
+	"CMoveTarget.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cmovetarget.h
+	"CVec.h"
+	"common/direction.h"
+	"common/CMap.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cplayerbase.cpp
+	"CPlayerBase.h"
+	"CItemEffect.h"
+	"CSpriteItem.h"
+	<base/CInput.h>
+	"sdl/sound/CSound.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cspriteitem.h
+	"../CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cplayerlevel.cpp
+	"CPlayerLevel.h"
+	"CBullet.h"
+	"common/CBehaviorEngine.h"
+	"platform/CPlatform.h"
+	"../CGalaxySpriteObject.h"
+	"../../ep5/ai/CSecurityDoor.h"
+	<base/CInput.h>
+	"sdl/music/CMusic.h"
+	"sdl/sound/CSound.h"
+	"graphics/effects/CColorMerge.h"
+	"graphics/effects/CDimDark.h"
+	<lib/base/GsTimer.h>
+	"CVec.h"
+	<lib/base/GsLogging.h>
+	"../dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\csecuritydoor.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cplayerwm.cpp
+	<base/CInput.h>
+	"../../ep6/ai/CRope.h"
+	"CPlayerWM.h"
+	"CFlag.h"
+	"common/CBehaviorEngine.h"
+	"sdl/sound/CSound.h"
+	"CVec.h"
+	"../dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\crope.h
+	"../../common/ai/CGalaxyActionSpriteObject.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cplayerwm.h
+	"CPlayerBase.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cspriteitem.cpp
+	"CSpriteItem.h"
+	"CItemEffect.h"
+	"CPlayerBase.h"
+	"sdl/sound/CSound.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cstunnable.cpp
+	"CStunnable.h"
+	"CBullet.h"
+	"common/CBehaviorEngine.h"
+	<base/video/CVideoDriver.h>
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\cstunnable.h
+	"../../common/ai/CBullet.h"
+	"CGalaxyActionSpriteObject.h"
+	<map>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatform.cpp
+	"CPlatform.h"
+	<lib/base/GsLogging.h>
+	<base/video/CVideoDriver.h>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformdrop.cpp
+	"CPlatformDrop.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformdrop.h
+	"CPlatform.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformhorizontal.cpp
+	"CPlatformHorizontal.h"
+	"common/CBehaviorEngine.h"
+	<base/video/CVideoDriver.h>
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformhorizontal.h
+	"CPlatform.h"
+	<memory>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformmoveaway.cpp
+	"CPlatformMoveAway.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformmoveaway.h
+	"CPlatform.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformsit.cpp
+	"CPlatformSit.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformsit.h
+	"CPlatform.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformvertical.cpp
+	"CPlatformVertical.h"
+	"common/CBehaviorEngine.h"
+	<base/video/CVideoDriver.h>
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cplatformvertical.h
+	"CPlatform.h"
+	<memory>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cvarplatform.cpp
+	"CVarPlatform.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platform\cvarplatform.h
+	"../CMoveTarget.h"
+	"CPlatform.h"
+	"CVec.h"
+	<boost/property_tree/ptree.hpp>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cgalaxyspriteobject.cpp
+	"CGalaxySpriteObject.h"
+	"common/CBehaviorEngine.h"
+	"../res/EGAStructs.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cinventory.cpp
+	"CInventory.h"
+	"common/CBehaviorEngine.h"
+	"graphics/GsGraphics.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	"graphics/effects/CScrollEffect.h"
+	"../ep4/CStatusScreenGalaxyEp4.h"
+	"../ep5/CStatusScreenGalaxyEp5.h"
+	"../ep6/CStatusScreenGalaxyEp6.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\cstatusscreengalaxyep4.h
+	"../common/CStatusScreenGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\cstatusscreengalaxyep5.h
+	"../common/CStatusScreenGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\cstatusscreengalaxyep6.h
+	"../common/CStatusScreenGalaxy.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cmaploadergalaxy.cpp
+	"CMapLoaderGalaxy.h"
+	<base/utils/StringUtils.h>
+	<base/FindFile.h>
+	"fileio/ResourceMgmt.h"
+	"fileio/compression/CCarmack.h"
+	"fileio/compression/CRLE.h"
+	"fileio.h"
+	<base/video/CVideoDriver.h>
+	"sdl/music/CMusic.h"
+	<lib/base/GsLogging.h>
+	"engine/CCamera.h"
+	"../common/ai/CSpriteItem.h"
+	<fstream>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cstatusscreengalaxy.cpp
+	"CStatusScreenGalaxy.h"
+	"graphics/GsGraphics.h"
+	<base/video/CVideoDriver.h>
+	"common/CBehaviorEngine.h"
+	"sdl/extensions.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cworldmap.cpp
+	"CWorldMap.h"
+	"fileio/CSaveGameController.h"
+	"graphics/effects/CColorMerge.h"
+	"../GalaxyEngine.h"
+	"dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\cworldmap.h
+	"../CMapPlayGalaxy.h"
+	<boost/property_tree/ptree.hpp>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\dialog\cmessageboxbitmapgalaxy.cpp
+	"CMessageBoxBitmapGalaxy.h"
+	<base/video/CVideoDriver.h>
+	"sdl/extensions.h"
+	"dialog/CMessageBox.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\dialog\cmessageboxgalaxy.cpp
+	"CMessageBoxGalaxy.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	"graphics/GsGraphics.h"
+	"sdl/extensions.h"
+	<base/utils/StringUtils.h>
+	<memory>
+	"dialog/CMessageBox.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\dialog\cmessageboxselection.cpp
+	"CMessageBoxSelection.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	"graphics/GsGraphics.h"
+	"common/CBehaviorEngine.h"
+	<base/utils/StringUtils.h>
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\dialog\cmessageboxselection.h
+	"CMessageBoxGalaxy.h"
+	"engine/CEvent.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cpassive.cpp
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	<widgets/GsMenuController.h>
+	<base/video/GsEffectController.h>
+	"CPassive.h"
+	"graphics/GsGraphics.h"
+	"graphics/effects/CPixelate.h"
+	"sdl/extensions.h"
+	"menu/MainMenu.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cpassive.h
+	"../../CPassive.h"
+	<string>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\mainmenu.h
+	"GalaxyMenu.h"
+	<base/GsEvent.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\galaxymenu.h
+	<widgets/GsBaseMenu.h>
+	"widgets/Button.h"
+	<lib/widgets/GsMenuController.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\widgets\button.h
+	<widgets/GsButton.h>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cplaygamegalaxy.cpp
+	<base/CInput.h>
+	<base/utils/StringUtils.h>
+	<widgets/GsMenuController.h>
+	<iostream>
+	<boost/property_tree/ptree.hpp>
+	"CPlayGameGalaxy.h"
+	"common/CMapLoaderGalaxy.h"
+	"graphics/GsGraphics.h"
+	"common/dialog/CMessageBoxBitmapGalaxy.h"
+	"common/dialog/CMessageBoxSelection.h"
+	"sdl/sound/CSound.h"
+	"sdl/music/CMusic.h"
+	"graphics/effects/CColorMerge.h"
+	"graphics/effects/CDimDark.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cplaygamegalaxy.h
+	"engine/playgame/CPlayGame.h"
+	"common/CInventory.h"
+	"common/dialog/CMessageBoxGalaxy.h"
+	"common/CMap.h"
+	"common/CWorldMap.h"
+	"CLevelPlay.h"
+	<memory>
+	<vector>
+	<list>
+	<string>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\carachnut.cpp
+	"CArachnut.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CBullet.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\carachnut.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cberkeloid.cpp
+	"CBerkeloid.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CBullet.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cberkeloid.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cbluebird.cpp
+	"CBlueBird.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CBullet.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cbluebird.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cbounder.cpp
+	"CBounder.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cbounder.h
+	"../../common/ai/CStunnable.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cbubbles.cpp
+	"CBubbles.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cbubbles.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\ccouncilmember.cpp
+	"CCouncilMember.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/dialog/CMessageBoxBitmapGalaxy.h"
+	"misc.h"
+	"sdl/sound/CSound.h"
+	"sdl/music/CMusic.h"
+	<typeinfo>
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\ccouncilmember.h
+	"../../common/CGalaxySpriteObject.h"
+	<map>
+	<string>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cdevilsprite.cpp
+	"CDevilSprite.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CEnemyShot.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cdevilsprite.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cdivesuit.cpp
+	"CDiveSuit.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cdivesuit.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cdopefish.cpp
+	"CDopeFish.h"
+	"CPlayerDive.h"
+	"CSchoolFish.h"
+	"CBubbles.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cdopefish.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cplayerdive.h
+	"../../common/ai/CPlayerBase.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cschoolfish.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cegg.cpp
+	"CEgg.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CBullet.h"
+	"CBlueBird.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cegg.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cfoot.cpp
+	"CFoot.h"
+	"../../common/ai/CPlayerBase.h"
+	"common/CBehaviorEngine.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cinchworm.cpp
+	"CInchWorm.h"
+	"../../common/ai/CPlayerBase.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\click.cpp
+	"CLick.h"
+	"../../common/ai/CPlayerBase.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\click.h
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\clindsey.cpp
+	"CLindsey.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\clindsey.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cmadmushroom.cpp
+	"CMadMushroom.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CBullet.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cmadmushroom.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cmimrock.cpp
+	"CMimrock.h"
+	"../../common/ai/CPlayerBase.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cmimrock.h
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cmiragia.cpp
+	"CMiragia.h"
+	"../../common/ai/CPlayerWM.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cmiragia.h
+	"../../common/CGalaxySpriteObject.h"
+	"CVec.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cplayerdive.cpp
+	"CPlayerDive.h"
+	<base/CInput.h>
+	"CBubbles.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cpoisonslug.cpp
+	"CPoisonSlug.h"
+	"CSlugSlime.h"
+	"../../common/ai/CPlayerBase.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cpoisonslug.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cslugslime.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cschoolfish.cpp
+	"CSchoolFish.h"
+	"../../common/ai/CPlayerBase.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cskypest.cpp
+	"CSkypest.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cskypest.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cslugslime.cpp
+	"CSlugSlime.h"
+	"../../common/ai/CPlayerBase.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\csmokepuff.cpp
+	"CSmokePuff.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cthundercloud.cpp
+	"CThunderCloud.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CBullet.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cthundercloud.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\ctreasureeater.cpp
+	"CTreasureEater.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CBullet.h"
+	"../../common/ai/CSpriteItem.h"
+	"../../common/ai/CItemEffect.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\ctreasureeater.h
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cwatermine.cpp
+	"CWaterMine.h"
+	"../../common/ai/CPlayerBase.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cwatermine.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cwormmouth.cpp
+	"CWormmouth.h"
+	"../../common/ai/CPlayerBase.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\ai\cwormmouth.h
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\cmaploadergalaxyep4.cpp
+	"CMapLoaderGalaxyEp4.h"
+	"../common/ai/CPlayerWM.h"
+	"../common/ai/CPlayerLevel.h"
+	"ai/CPlayerDive.h"
+	"ai/CPoisonSlug.h"
+	"ai/CMadMushroom.h"
+	"ai/CCouncilMember.h"
+	"ai/CMiragia.h"
+	"ai/CDiveSuit.h"
+	"ai/CArachnut.h"
+	"ai/CBounder.h"
+	"ai/CDopeFish.h"
+	"ai/CWaterMine.h"
+	"ai/CDevilSprite.h"
+	"ai/CSchoolFish.h"
+	"ai/CLick.h"
+	"ai/CLindsey.h"
+	"ai/CWormmouth.h"
+	"ai/CSkypest.h"
+	"ai/CMimrock.h"
+	"ai/CEgg.h"
+	"ai/CBerkeloid.h"
+	"ai/CBlueBird.h"
+	"ai/CThunderCloud.h"
+	"ai/CTreasureEater.h"
+	"ai/CInchWorm.h"
+	"ai/CFoot.h"
+	"../common/ai/platforms.h"
+	"../common/ai/CFlag.h"
+	"../common/ai/Autogun.h"
+	"../common/ai/CSpriteItem.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\common\ai\platforms.h
+	"platform/CPlatformHorizontal.h"
+	"platform/CPlatformVertical.h"
+	"platform/CVarPlatform.h"
+	"platform/CPlatformMoveAway.h"
+	"platform/CPlatformDrop.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep4\cstatusscreengalaxyep4.cpp
+	"CStatusScreenGalaxyEp4.h"
+	"graphics/GsGraphics.h"
+	"common/CBehaviorEngine.h"
+	<base/utils/StringUtils.h>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\campton.cpp
+	"CAmpton.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\campton.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cfuse.cpp
+	"CFuse.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cfuse.h
+	<vector>
+	"../../common/CGalaxySpriteObject.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\ckorath.cpp
+	"CKorath.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\ckorath.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cmastersshot.cpp
+	"CMastersShot.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cmastersshot.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cmastersspark.cpp
+	"CMastersSpark.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cmastersspark.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\credshot.cpp
+	"CRedShot.h"
+	"../../common/ai/CPlayerBase.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\credshot.h
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\crobored.cpp
+	"CRoboRed.h"
+	"CRedShot.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107203 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\crobored.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\csecuritydoor.cpp
+	"CSecurityDoor.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshelly.cpp
+	"CShelly.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshelly.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshikadi.cpp
+	"CShikadi.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CEnemyShot.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshikadi.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshikadimaster.cpp
+	"CShikadiMaster.h"
+	"../../common/ai/CEnemyShot.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshikadimaster.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshikadimine.cpp
+	<base/video/CVideoDriver.h>
+	"sdl/music/CMusic.h"
+	"CShikadiMine.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+	"../../common/dialog/CMessageBoxGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshikadimine.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshockshound.cpp
+	"CShockshound.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CEnemyShot.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cshockshound.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cslicestar.cpp
+	"CSlicestar.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cslicestar.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\csparky.cpp
+	"CSparky.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\csparky.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\csphereful.cpp
+	"CSphereful.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\csphereful.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cspindred.cpp
+	"CSpindred.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cspindred.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cspirogrip.cpp
+	"CSpirogrip.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cspirogrip.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cvolteface.cpp
+	"CVolteface.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerLevel.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\ai\cvolteface.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+	"../../common/ai/CMoveTarget.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\cmaploadergalaxyep5.cpp
+	"CMapLoaderGalaxyEp5.h"
+	"ai/CSparky.h"
+	"ai/CAmpton.h"
+	"ai/CRoboRed.h"
+	"ai/CVolteface.h"
+	"ai/CKorath.h"
+	"ai/CSlicestar.h"
+	"ai/CSphereful.h"
+	"ai/CShikadi.h"
+	"ai/CSpirogrip.h"
+	"ai/CFuse.h"
+	"ai/CShockshound.h"
+	"ai/CShikadiMine.h"
+	"ai/CSpindred.h"
+	"ai/CShelly.h"
+	"ai/CShikadiMaster.h"
+	"../common/ai/CPlayerWM.h"
+	"../common/ai/CPlayerLevel.h"
+	"../common/ai/platforms.h"
+	"../common/ai/CFlag.h"
+	"../common/ai/CSpriteItem.h"
+	"../common/ai/platform/CPlatformSit.h"
+	"../common/ai/Autogun.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep5\cstatusscreengalaxyep5.cpp
+	"CStatusScreenGalaxyEp5.h"
+	"graphics/GsGraphics.h"
+	"common/CBehaviorEngine.h"
+	<base/utils/StringUtils.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbabobba.cpp
+	"CBabobba.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerLevel.h"
+	<misc.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbabobba.h
+	"../../common/ai/CStunnable.h"
+	"../../common/ai/CGalaxyActionSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbip.cpp
+	"CBip.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbip.h
+	"../../common/ai/CGalaxyActionSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbipship.cpp
+	"CBipShip.h"
+	"CBip.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CBullet.h"
+	"../../common/ai/CEnemyShot.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbipship.h
+	"../../common/ai/CGalaxyActionSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbloog.cpp
+	"CBloog.h"
+	"../../common/ai/CPlayerBase.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbloog.h
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cblooglet.cpp
+	"CBlooglet.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CSpriteItem.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cblooglet.h
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cblooguard.cpp
+	"CBlooguard.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cblooguard.h
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cblorb.cpp
+	"CBlorb.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cblorb.h
+	<vector>
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbobba.cpp
+	"CBobba.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CEnemyShot.h"
+	<misc.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cbobba.h
+	"../../common/ai/CGalaxyActionSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cceilick.cpp
+	<base/video/CVideoDriver.h>
+	<misc.h>
+	"CCeilick.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cceilick.h
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cflect.cpp
+	"CFlect.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cflect.h
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cfleex.cpp
+	"CFleex.h"
+	"../../common/ai/CPlayerLevel.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cfleex.h
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cgik.cpp
+	"CGik.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cgik.h
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CGalaxyActionSpriteObject.h"
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cgrabbiter.cpp
+	"CGrabbiter.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/dialog/CMessageBoxGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cgrabbiter.h
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cmolly.cpp
+	"CMolly.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cmolly.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cnospike.cpp
+	"CNospike.h"
+	<misc.h>
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cnospike.h
+	"../../common/ai/CStunnable.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\corbatrix.cpp
+	"COrbatrix.h"
+	"../../common/ai/CBullet.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerLevel.h"
+	"../../common/ai/CItemEffect.h"
+	<misc.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\corbatrix.h
+	"../../common/ai/CGalaxyActionSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\crocket.cpp
+	"CRocket.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\crocket.h
+	"../../common/ai/CGalaxyActionSpriteObject.h"
+	"../../common/ai/CMoveTarget.h"
+	"../../common/ai/CPlayerBase.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\crope.cpp
+	"CRope.h"
+	"../../common/ai/CPlayerBase.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\csatelite.cpp
+	"CSatelite.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/ai/CPlayerWM.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\csatelite.h
+	"../../common/CGalaxySpriteObject.h"
+	"../../common/ai/CMoveTarget.h"
+	"../../common/ai/CPlayerWM.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cspecialitem.cpp
+	"CSpecialItem.h"
+	"../../common/ai/CPlayerBase.h"
+	"../../common/dialog/CMessageBoxBitmapGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\ai\cspecialitem.h
+	"../../common/CGalaxySpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\cmaploadergalaxyep6.cpp
+	"CMapLoaderGalaxyEp6.h"
+	"ai/CBloog.h"
+	"ai/CBlooguard.h"
+	"ai/CBlooglet.h"
+	"ai/CFlect.h"
+	"ai/CBipShip.h"
+	"ai/CBlorb.h"
+	"ai/CGrabbiter.h"
+	"ai/CSpecialItem.h"
+	"ai/CBabobba.h"
+	"ai/CBip.h"
+	"ai/CBobba.h"
+	"ai/CCeilick.h"
+	"ai/CGik.h"
+	"ai/CNospike.h"
+	"ai/COrbatrix.h"
+	"ai/CFleex.h"
+	"ai/CRope.h"
+	"ai/CRocket.h"
+	"ai/CSatelite.h"
+	"ai/CMolly.h"
+	"../common/ai/CPlayerWM.h"
+	"../common/ai/CPlayerLevel.h"
+	"../common/ai/platforms.h"
+	"../common/ai/CFlag.h"
+	"../common/ai/CSpriteItem.h"
+	"../common/ai/platform/CPlatformSit.h"
+	"../common/ai/Autogun.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\ep6\cstatusscreengalaxyep6.cpp
+	"CStatusScreenGalaxyEp6.h"
+	"graphics/GsGraphics.h"
+	"common/CBehaviorEngine.h"
+	<base/utils/StringUtils.h>
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\galaxyengine.cpp
+	<base/GsLogging.h>
+	<base/GsTimer.h>
+	<base/GsApp.h>
+	<base/utils/StringUtils.h>
+	<lib/widgets/GsMenuController.h>
+	"CResourceLoader.h"
+	"GalaxyEngine.h"
+	"common/CBehaviorEngine.h"
+	"fileio/CPatcher.h"
+	"fileio/CSaveGameController.h"
+	"engine/CMessages.h"
+	"sdl/sound/CSound.h"
+	"CPassive.h"
+	"CPlayGameGalaxy.h"
+	"menu/MainMenu.h"
+	"menu/SelectionMenu.h"
+	"menu/ControlSettings.h"
+	"res/CAudioGalaxy.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\selectionmenu.h
+	<widgets/GsMenuController.h>
+	"../../menu/CSelectionMenu.h"
+	"widgets/Button.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\menu\cselectionmenu.h
+	"hardware/Configurator.h"
+	"common/CBehaviorEngine.h"
+	"../KeenEngine.h"
+	<widgets/GsBaseMenu.h>
+	<base/utils/StringUtils.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\controlsettings.h
+	<widgets/GsBaseMenu.h>
+	<base/utils/StringUtils.h>
+	"widgets/Button.h"
+	"widgets/Switch.h"
+	<vector>
+	<map>
+	"engine/CEvent.h"
+	"SelectionMenu.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\widgets\switch.h
+	"ComboSelection.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\widgets\comboselection.h
+	<widgets/GsComboSelection.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gscomboselection.h
+	<string>
+	<memory>
+	<graphics/GsSurface.h>
+	"GsControl.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\res\caudiogalaxy.h
+	"common/CAudioResources.h"
+	"fileio/CExeFile.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\audiosettings.cpp
+	"AudioSettings.h"
+	<base/utils/StringUtils.h>
+	"common/CSettings.h"
+	"sdl/music/CMusic.h"
+	"sdl/sound/CSound.h"
+	"../GalaxyEngine.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\audiosettings.h
+	"GalaxyMenu.h"
+	"widgets/Switch.h"
+	"widgets/Button.h"
+	"widgets/ComboSelection.h"
+	"widgets/NumberControl.h"
+	"fileio/CExeFile.h"
+	<SDL.h>
+	<string>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\widgets\numbercontrol.h
+	<widgets/GsNumberControl.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsnumbercontrol.h
+	"GsControl.h"
+	<string>
+	<graphics/GsSurface.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\camerasettings.cpp
+	<base/video/CVideoDriver.h>
+	"CameraSettings.h"
+	"common/CSettings.h"
+	<base/utils/StringUtils.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\camerasettings.h
+	"GalaxyMenu.h"
+	"widgets/NumberControl.h"
+	"sdl/CVidConfig.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cconfirmmenu.cpp
+	"CConfirmMenu.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cconfirmmenu.h
+	"GalaxyMenu.h"
+	<string>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\chelpmenu.cpp
+	"CHelpMenu.h"
+	"engine/infoscenes/CCredits.h"
+	"engine/infoscenes/COrderingInfo.h"
+	"engine/infoscenes/CAbout.h"
+	"engine/infoscenes/CHelp.h"
+	"engine/infoscenes/CPreviews.h"
+	"fileio/ResourceMgmt.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\chelpmenu.h
+	"GalaxyMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\controlsettings.cpp
+	<base/utils/StringUtils.h>
+	"GalaxyMenu.h"
+	"SelectionMenu.h"
+	"ControlSettings.h"
+	"common/CBehaviorEngine.h"
+	<base/CInput.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cprofilesmenu.cpp
+	"CProfilesMenu.h"
+	"engine/keen/menu/CSelectionMenu.h"
+	"common/CSettings.h"
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	"common/CBehaviorEngine.h"
+	"engine/CEvent.h"
+	<list>
+	<string>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cprofilesmenu.h
+	"GalaxyMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cvideosettings.cpp
+	<base/CInput.h>
+	<base/GsTimer.h>
+	<base/video/resolutionlist.h>
+	<base/video/CVideoDriver.h>
+	<base/utils/StringUtils.h>
+	<widgets/GsMenuController.h>
+	"hardware/Configurator.h"
+	"common/CSettings.h"
+	"CameraSettings.h"
+	"CVideoSettings.h"
+	"Utils.h"
+	"widgets/NumberControl.h"
+	"widgets/ComboSelection.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\resolutionlist.h
+	<string>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cvideosettings.h
+	<SDL.h>
+	<string>
+	<widgets/GsBaseMenu.h>
+	"widgets/ComboSelection.h"
+	"widgets/Switch.h"
+	"widgets/NumberControl.h"
+	"widgets/Button.h"
+	"sdl/CVidConfig.h"
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\loadmenu.cpp
+	<widgets/GsText.h>
+	<widgets/GsButton.h>
+	<widgets/GsMenuController.h>
+	"LoadMenu.h"
+	"fileio/CSaveGameController.h"
+	"common/CBehaviorEngine.h"
+	"common/CBehaviorEngine.h"
+	"core/mode/CGameMode.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\loadmenu.h
+	"GalaxyMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\mainmenu.cpp
+	"MainMenu.h"
+	<base/GsApp.h>
+	<widgets/GsMenuController.h>
+	"SettingsMenu.h"
+	"SelectionMenu.h"
+	"LoadMenu.h"
+	"SaveMenu.h"
+	"CHelpMenu.h"
+	"common/CBehaviorEngine.h"
+	"core/mode/CGameMode.h"
+	"widgets/Button.h"
+	"../../menu/CSelectionMenu.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\settingsmenu.h
+	"GalaxyMenu.h"
+	"common/options.h"
+	"fileio/CExeFile.h"
+	"common/CBehaviorEngine.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\savemenu.h
+	"CConfirmMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\options.cpp
+	"Options.h"
+	<base/CInput.h>
+	"common/CSettings.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\options.h
+	"GalaxyMenu.h"
+	"widgets/Switch.h"
+	<list>
+	"common/CBehaviorEngine.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\savemenu.cpp
+	"SaveMenu.h"
+	<base/CInput.h>
+	<widgets/GsBaseMenu.h>
+	<widgets/GsInputText.h>
+	<widgets/GsMenuController.h>
+	"CConfirmMenu.h"
+	"fileio/CSaveGameController.h"
+	"common/CBehaviorEngine.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsinputtext.h
+	"GsControl.h"
+	<string>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\settingsmenu.cpp
+	<lib/base/GsTimer.h>
+	<widgets/GsButton.h>
+	<widgets/GsMenuController.h>
+	"GalaxyMenu.h"
+	"SettingsMenu.h"
+	"CVideoSettings.h"
+	"CameraSettings.h"
+	"AudioSettings.h"
+	"Options.h"
+	"ControlSettings.h"
+	"CProfilesMenu.h"
+	"SelectionMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\widgets\button.cpp
+	<graphics/GsGraphics.h>
+	<base/video/CVideoDriver.h>
+	"Button.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\widgets\comboselection.cpp
+	"ComboSelection.h"
+	<graphics/GsGraphics.h>
+	<base/video/CVideoDriver.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\widgets\numbercontrol.cpp
+	"NumberControl.h"
+	<base/video/CVideoDriver.h>
+	<base/utils/StringUtils.h>
+	<graphics/GsGraphics.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\widgets\switch.cpp
+	"Switch.h"
+	<base/utils/StringUtils.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\res\caudiogalaxy.cpp
+	<fstream>
+	"CAudioGalaxy.h"
+	<lib/base/GsLogging.h>
+	<base/FindFile.h>
+	"fileio/ResourceMgmt.h"
+	"sdl/sound/CSound.h"
+	"fileio/compression/CHuffman.h"
+	"common/CBehaviorEngine.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\res\cegagraphicsgalaxy.cpp
+	"CEGAGraphicsGalaxy.h"
+	"graphics/GsGraphics.h"
+	"fileio/ResourceMgmt.h"
+	"common/CBehaviorEngine.h"
+	"fileio/compression/CHuffman.h"
+	<base/FindFile.h>
+	<lib/base/GsLogging.h>
+	<base/utils/StringUtils.h>
+	<base/video/CVideoDriver.h>
+	"fileio/CTileLoader.h"
+	"common/CSpriteObject.h"
+	"engine/CPlanes.h"
+	<fstream>
+	<cstring>
+	<SDL.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\res\graphicsids.cpp
+	"CEGAGraphicsGalaxy.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\res\itemsgalaxy.cpp
+	"ItemsGalaxy.h"
+
+1391107203 source:c:\users\admin\desktop\commander-genius\src\engine\keen\keenengine.cpp
+	<base/GsEvent.h>
+	<base/GsLogging.h>
+	<widgets/GsMenuController.h>
+	"common/CGameLauncher.h"
+	"core/mode/CGamePassiveMode.h"
+	"KeenEngine.h"
+	"fileio/ResourceMgmt.h"
+	"fileio/CSaveGameController.h"
+	"sdl/music/CMusic.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cankhshield.cpp
+	"CAnkhShield.h"
+	"engine/spritedefines.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cankhshield.h
+	"CPlayer.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplayer.h
+	<SDL.h>
+	"../CVorticonSpriteObject.h"
+	"../ai/CMessie.h"
+	"common/CMap.h"
+	"../CStatusScreen.h"
+	"common/Playerdefines.h"
+	"common/options.h"
+	"engine/CCamera.h"
+	"common/CBehaviorEngine.h"
+	<vector>
+	<string>
+	<memory>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cvorticonspriteobject.h
+	"common/CSpriteObject.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cmessie.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	"engine/CEvent.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cstatusscreen.h
+	<SDL.h>
+	"common/inventory.h"
+	<memory>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cautoray.cpp
+	"engine/spritedefines.h"
+	"sdl/sound/CSound.h"
+	"common/CBehaviorEngine.h"
+	"CRay.h"
+	"CAutoRay.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cray.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	"common/objenums.h"
+	<vector>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cautoray.h
+	"../CVorticonSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cballjack.cpp
+	"CBallJack.h"
+	"engine/spritedefines.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cballjack.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cbridges.cpp
+	"CBridges.h"
+	"engine/spritedefines.h"
+	<lib/base/GsLogging.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cbridges.h
+	"../CVorticonSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cbutler.cpp
+	"CButler.h"
+	"sdl/sound/CSound.h"
+	"graphics/GsGraphics.h"
+	"common/CBehaviorEngine.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cbutler.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\ccarrier.cpp
+	"CCarrier.h"
+	<base/video/CVideoDriver.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\ccarrier.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cdoor.cpp
+	"CDoor.h"
+	"graphics/GsGraphics.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cdoor.h
+	"../CVorticonSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cearthchunk.cpp
+	"CEarthChunk.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cearthchunk.h
+	"../CVorticonSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cearthexplosion.cpp
+	"CEarthExplosion.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cearthexplosion.h
+	"CRay.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cegabitmap.cpp
+	"CEGABitmap.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cegabitmap.h
+	"graphics/GsBitmap.h"
+	"../CVorticonSpriteObject.h"
+	<SDL.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cfireball.cpp
+	"CFireBall.h"
+	"sdl/sound/CSound.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cfireball.h
+	"CRay.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cfoob.cpp
+	"CFoob.h"
+	"sdl/sound/CSound.h"
+	"graphics/GsGraphics.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cfoob.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cgarg.cpp
+	"CGarg.h"
+	"sdl/sound/CSound.h"
+	<vector>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cgarg.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cguardrobot.cpp
+	"sdl/sound/CSound.h"
+	"engine/spritedefines.h"
+	"CGuardRobot.h"
+	"CRay.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cguardrobot.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cicecannon.cpp
+	"CIceCannon.h"
+	"engine/spritedefines.h"
+	"sdl/sound/CSound.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cicecannon.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cmanglingmachine.cpp
+	"CRay.h"
+	"CManglingMachine.h"
+	"engine/spritedefines.h"
+	"sdl/sound/CSound.h"
+	<lib/base/GsLogging.h>
+	"graphics/effects/CVibrate.h"
+	"common/CBehaviorEngine.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cmanglingmachine.h
+	"../CVorticonSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cmeep.cpp
+	<sdl/sound/CSound.h>
+	<misc.h>
+	"CMeep.h"
+	"CSoundWave.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cmeep.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\csoundwave.h
+	"CRay.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cmessie.cpp
+	"CMessie.h"
+	<base/CInput.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplatform.cpp
+	"engine/spritedefines.h"
+	"CPlatform.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplatform.h
+	"CCarrier.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplatformvert.cpp
+	"CPlatform.h"
+	"engine/spritedefines.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplayer.cpp
+	"CPlayer.h"
+	<base/CInput.h>
+	"sdl/sound/CSound.h"
+	<base/video/CVideoDriver.h>
+	"graphics/GsGraphics.h"
+	"engine/spritedefines.h"
+	<stdlib.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplayerlevel.cpp
+	"CPlayer.h"
+	"CManglingMachine.h"
+	"CRay.h"
+	"CBridges.h"
+	"engine/spritedefines.h"
+	"sdl/sound/CSound.h"
+	<base/CInput.h>
+	"sdl/music/CMusic.h"
+	"graphics/GsGraphics.h"
+	"common/CPhysicsSettings.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplayerwm.cpp
+	"CPlayer.h"
+	"CMessie.h"
+	"graphics/GsGraphics.h"
+	<base/CInput.h>
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cray.cpp
+	"sdl/sound/CSound.h"
+	"CRay.h"
+	"engine/spritedefines.h"
+	"common/CBehaviorEngine.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\crisingpoints.cpp
+	"CRisingPoints.h"
+	"graphics/GsGraphics.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\crisingpoints.h
+	"../CVorticonSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\crope.cpp
+	"graphics/effects/CVibrate.h"
+	"engine/spritedefines.h"
+	"sdl/sound/CSound.h"
+	"CVorticon.h"
+	"CRope.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticon.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\crope.h
+	"../CVorticonSpriteObject.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cscrub.cpp
+	<sdl/sound/CSound.h>
+	"CScrub.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cscrub.h
+	"CCarrier.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\csoundwave.cpp
+	"CSoundWave.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cspark.cpp
+	"CSpark.h"
+	"CRay.h"
+	"sdl/sound/CSound.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cspark.h
+	"../CVorticonSpriteObject.h"
+	"engine/spritedefines.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\ctank.cpp
+	"engine/spritedefines.h"
+	"sdl/sound/CSound.h"
+	"CTank.h"
+	"CRay.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\ctank.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cteleporter.cpp
+	"CTeleporter.h"
+	<sdl/sound/CSound.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cteleporter.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticon.cpp
+	"misc.h"
+	"sdl/sound/CSound.h"
+	"graphics/GsGraphics.h"
+	"graphics/effects/CFlash.h"
+	"CVorticon.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticonelite.cpp
+	"misc.h"
+	"sdl/sound/CSound.h"
+	<base/video/CVideoDriver.h>
+	"graphics/GsGraphics.h"
+	"engine/spritedefines.h"
+	"CVorticonElite.h"
+	"CRay.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticonelite.h
+	"CVorticon.h"
+	"CPlayer.h"
+	<vector>
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticonspriteobjectai.cpp
+	"CVorticonSpriteObjectAI.h"
+	<lib/base/GsLogging.h>
+	"CMeep.h"
+
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvorticonspriteobjectai.h
+	"common/CMap.h"
+	"common/CSpriteObject.h"
+	"common/options.h"
+	"CPlayer.h"
+	"common/CBehaviorEngine.h"
+	"graphics/GsGraphics.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvortikid.cpp
+	<sdl/sound/CSound.h>
+	"CVortiKid.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvortikid.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvortimom.cpp
+	<sdl/sound/CSound.h>
+	<base/video/CVideoDriver.h>
+	"misc.h"
+	"CVortiMom.h"
+	"CFireBall.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvortimom.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvortininja.cpp
+	"sdl/sound/CSound.h"
+	"CVortiNinja.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cvortininja.h
+	"../CVorticonSpriteObject.h"
+	"CPlayer.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cyorp.cpp
+	"CYorp.h"
+	"sdl/sound/CSound.h"
+	"misc.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cyorp.h
+	"CPlayer.h"
+	"../CVorticonSpriteObject.h"
+	"common/CMap.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cabout.cpp
+	"CAbout.h"
+	<base/FindFile.h>
+	<base/CInput.h>
+	<lib/base/GsLogging.h>
+	"fileio/CExeFile.h"
+	"graphics/GsGraphics.h"
+	<base/video/CVideoDriver.h>
+	"CVorticonMapLoader.h"
+	"fileio/ResourceMgmt.h"
+	"sdl/extensions.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cabout.h
+	<vector>
+	<string>
+	<memory>
+	"CInfoScene.h"
+	"graphics/GsBitmap.h"
+	"common/CMap.h"
+	"fileio/CExeFile.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cinfoscene.h
+	"engine/CEvent.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cvorticonmaploader.h
+	"common/CMap.h"
+	"ai/CPlayer.h"
+	"common/CSpriteObject.h"
+	"common/options.h"
+	"sdl/music/CMusic.h"
+	"common/CBehaviorEngine.h"
+	<string>
+	<vector>
+	<memory>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\caudiovorticon.cpp
+	"CAudioVorticon.h"
+	<lib/base/GsLogging.h>
+	<base/FindFile.h>
+	"fileio/ResourceMgmt.h"
+	<fstream>
+	<math.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\caudiovorticon.h
+	"common/CAudioResources.h"
+	"fileio/CExeFile.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ccredits.cpp
+	"CCredits.h"
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	"graphics/GsGraphics.h"
+	"CVorticonMapLoader.h"
+	"sdl/extensions.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ccredits.h
+	<vector>
+	<string>
+	<memory>
+	"CInfoScene.h"
+	"common/CMap.h"
+	<graphics/GsFont.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cegagraphicsvort.cpp
+	"CEGAGraphicsVort.h"
+	"CResourceLoader.h"
+	"fileio/CTileLoader.h"
+	<dir.h>
+	<fstream>
+	<vector>
+	<base/FindFile.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cegalatch.cpp
+	"CEGALatch.h"
+	"fileio/ResourceMgmt.h"
+	"fileio/lz.h"
+	"graphics/GsGraphics.h"
+	<base/video/CVideoDriver.h>
+	"fileio/TypeDefinitions.h"
+	"common/CBehaviorEngine.h"
+	<lib/base/GsLogging.h>
+	"engine/CPlanes.h"
+	<base/FindFile.h>
+	<SDL.h>
+	<stdio.h>
+	<string.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cegasprit.cpp
+	"CEGASprit.h"
+	"engine/CPlanes.h"
+	<base/FindFile.h>
+	<base/video/CVideoDriver.h>
+	"engine/spritedefines.h"
+	"fileio/lz.h"
+	"fileio/ResourceMgmt.h"
+	"common/CBehaviorEngine.h"
+	"CVorticonSpriteObject.h"
+	"CResourceLoader.h"
+	"graphics/GsGraphics.h"
+	<SDL.h>
+	<stdio.h>
+	<string.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\chelp.cpp
+	"CHelp.h"
+	"fileio/CExeFile.h"
+	"CVorticonMapLoader.h"
+	"graphics/GsGraphics.h"
+	<base/CInput.h>
+	<base/FindFile.h>
+	<fstream>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\chelp.h
+	"CInfoScene.h"
+	"common/CMap.h"
+	"dialog/CTextViewer.h"
+	"fileio/CExeFile.h"
+	<string.h>
+	<memory>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\chighscores.cpp
+	<iostream>
+	<fstream>
+	<string>
+	"CHighScores.h"
+	<base/CInput.h>
+	"graphics/GsGraphics.h"
+	<base/FindFile.h>
+	<base/video/CVideoDriver.h>
+	"CVorticonMapLoader.h"
+	"sdl/extensions.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\chighscores.h
+	"common/CMap.h"
+	"graphics/GsBitmap.h"
+	"CInfoScene.h"
+	<string>
+	<vector>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cinfoscene.cpp
+	"CInfoScene.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\corderinginfo.cpp
+	"COrderingInfo.h"
+	<base/CInput.h>
+	<lib/base/GsLogging.h>
+	<base/video/CVideoDriver.h>
+	<graphics/GsGraphics.h>
+	"fileio/CExeFile.h"
+	"CVorticonMapLoader.h"
+	"sdl/extensions.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\corderinginfo.h
+	<vector>
+	<string>
+	<memory>
+	"CInfoScene.h"
+	"common/CMap.h"
+	"fileio/CExeFile.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cpassivevort.cpp
+	"CPassiveVort.h"
+	"graphics/GsGraphics.h"
+	"CVorticonMapLoader.h"
+	"common/CTileProperties.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	"sdl/extensions.h"
+	"core/mode/CGameMode.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cpassivevort.h
+	"engine/CPassive.h"
+	"common/CBehaviorEngine.h"
+	"engine/CIntro.h"
+	"CTitle.h"
+	<memory>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ctitle.h
+	<SDL.h>
+	<vector>
+	<memory>
+	"graphics/GsGraphics.h"
+	"common/CSpriteObject.h"
+	"common/CMap.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cplayeritems.cpp
+	"ai/CPlayer.h"
+	"sdl/sound/CSound.h"
+	"graphics/GsGraphics.h"
+	"engine/spritedefines.h"
+	"ai/CManglingMachine.h"
+	"ai/CDoor.h"
+	"ai/CRisingPoints.h"
+	"ai/CAnkhShield.h"
+	<base/utils/StringUtils.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cpreviews.cpp
+	"CPreviews.h"
+	"common/CBehaviorEngine.h"
+	<base/FindFile.h>
+	<base/CInput.h>
+	"CVorticonMapLoader.h"
+	"sdl/extensions.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cpreviews.h
+	"CInfoScene.h"
+	"fileio/CExeFile.h"
+	"finale/CFinaleStaticScene.h"
+	"common/CMap.h"
+	"dialog/CTextViewer.h"
+	"fileio/CExeFile.h"
+	<memory>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cfinalestaticscene.h
+	"../dialog/CMessageBoxVort.h"
+	"graphics/GsBitmap.h"
+	<SDL.h>
+	<string>
+	<list>
+	<memory>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\dialog\cmessageboxvort.h
+	"dialog/CMessageBox.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cstatusscreen.cpp
+	<base/video/CVideoDriver.h>
+	<base/utils/StringUtils.h>
+	"CStatusScreen.h"
+	"graphics/GsGraphics.h"
+	"sdl/extensions.h"
+	"common/Playerdefines.h"
+	"common/CBehaviorEngine.h"
+	"ai/CAnkhShield.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cstory.cpp
+	<fstream>
+	"CStory.h"
+	"CVorticonMapLoader.h"
+	"fileio/CExeFile.h"
+	"graphics/GsGraphics.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	<base/FindFile.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cstory.h
+	"CInfoScene.h"
+	"common/CMap.h"
+	"dialog/CTextViewer.h"
+	"fileio/CExeFile.h"
+	<memory>
+	<string.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ctitle.cpp
+	"CTitle.h"
+	<lib/base/GsTimer.h>
+	<base/video/CVideoDriver.h>
+	"graphics/effects/CColorMerge.h"
+	"graphics/effects/CPixelate.h"
+	<widgets/GsMenuController.h>
+	<base/CInput.h>
+	"menu/CMainMenu.h"
+	"ai/CEGABitmap.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cmainmenu.h
+	"VorticonMenu.h"
+	<base/GsEvent.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\vorticonmenu.h
+	<widgets/GsBaseMenu.h>
+	<lib/widgets/GsMenuController.h>
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cvorticonmaploader.cpp
+	"CVorticonMapLoader.h"
+	<iostream>
+	<fstream>
+	<algorithm>
+	<base/FindFile.h>
+	<base/GsLogging.h>
+	<base/video/CVideoDriver.h>
+	"fileio.h"
+	"fileio/ResourceMgmt.h"
+	"fileio/compression/CRLE.h"
+	"common/CBehaviorEngine.h"
+	"graphics/GsGraphics.h"
+	"CResourceLoader.h"
+	"ai/CYorp.h"
+	"ai/CGarg.h"
+	"ai/CAutoRay.h"
+	"ai/CVorticon.h"
+	"ai/CManglingMachine.h"
+	"ai/CVortiKid.h"
+	"ai/CVorticonElite.h"
+	"ai/CVortiMom.h"
+	"ai/CVortiNinja.h"
+	"ai/CBallJack.h"
+	"ai/CButler.h"
+	"ai/CDoor.h"
+	"ai/CFoob.h"
+	"ai/CTank.h"
+	"ai/CGuardRobot.h"
+	"ai/CTeleporter.h"
+	"ai/CMessie.h"
+	"ai/CMeep.h"
+	"ai/CPlatform.h"
+	"ai/CRope.h"
+	"ai/CScrub.h"
+	"ai/CIceCannon.h"
+	"ai/CSpark.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cvorticonspriteobject.cpp
+	"CVorticonSpriteObject.h"
+	"engine/spritedefines.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\dialog\cmessageboxvort.cpp
+	<memory>
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	<widgets/GsBitmap.h>
+	"CMessageBoxVort.h"
+	"graphics/GsGraphics.h"
+	"sdl/extensions.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cendingep1.cpp
+	"CEndingEp1.h"
+	<base/utils/StringUtils.h>
+	<lib/base/GsTimer.h>
+	<base/CInput.h>
+	"graphics/GsGraphics.h"
+	"../CVorticonMapLoader.h"
+	"common/Playerdefines.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cendingep1.h
+	"CFinale.h"
+	"common/CMap.h"
+	"../ai/CPlayer.h"
+	"../dialog/CMessageBoxVort.h"
+	<memory>
+	<vector>
+	<SDL.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cfinale.h
+	"dialog/CTextViewer.h"
+	"common/CMap.h"
+	"CShipFlySys.h"
+	"CFinaleStaticScene.h"
+	<memory>
+	<string>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cshipflysys.h
+	"../ai/CPlayer.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cendingep2.cpp
+	"CEndingEp2.h"
+	<base/utils/StringUtils.h>
+	<lib/base/GsTimer.h>
+	<base/CInput.h>
+	"graphics/GsGraphics.h"
+	"../CVorticonMapLoader.h"
+	"../common/Playerdefines.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cendingep2.h
+	"CFinale.h"
+	"common/CMap.h"
+	"../ai/CPlayer.h"
+	"../dialog/CMessageBoxVort.h"
+	<vector>
+	<SDL.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cendingep3.cpp
+	"CEndingEp3.h"
+	<base/utils/StringUtils.h>
+	<base/CInput.h>
+	"graphics/effects/CFlash.h"
+	"graphics/GsGraphics.h"
+	"../CVorticonMapLoader.h"
+	"common/Playerdefines.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cendingep3.h
+	"CFinale.h"
+	"common/CMap.h"
+	"../ai/CPlayer.h"
+	"../dialog/CMessageBoxVort.h"
+	<lib/base/GsTimer.h>
+	<vector>
+	<list>
+	<SDL.h>
+	<memory>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cfinale.cpp
+	"CFinale.h"
+	<lib/base/GsLogging.h>
+	<base/FindFile.h>
+	<fstream>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cfinalestaticscene.cpp
+	"CFinaleStaticScene.h"
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	"sdl/sound/CSound.h"
+	"graphics/GsGraphics.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cshipflysys.cpp
+	"CShipFlySys.h"
+	"../ai/CYorp.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\ctantalusray.cpp
+	"CTantalusRay.h"
+	"graphics/effects/CVibrate.h"
+	"graphics/GsGraphics.h"
+	"sdl/sound/CSound.h"
+	<base/CInput.h>
+	"../CVorticonMapLoader.h"
+	"../ai/CRay.h"
+	"../ai/CEarthExplosion.h"
+	"../ai/CEarthChunk.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\ctantalusray.h
+	"CFinale.h"
+	"../dialog/CMessageBoxVort.h"
+	"../CVorticonSpriteObject.h"
+	"common/CMap.h"
+	"../ai/CVorticonSpriteObjectAI.h"
+	"graphics/GsBitmap.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\finale.cpp
+	"fileio.h"
+	"fileio/ResourceMgmt.h"
+	<base/FindFile.h>
+	<fstream>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\caudiosettings.cpp
+	"CAudioSettings.h"
+	"widgets/Button.h"
+	"common/CSettings.h"
+	"sdl/music/CMusic.h"
+	"sdl/sound/CSound.h"
+	<base/utils/StringUtils.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\caudiosettings.h
+	"VorticonMenu.h"
+	"widgets/ComboSelection.h"
+	"widgets/Switch.h"
+	"widgets/NumberControl.h"
+	"fileio/CExeFile.h"
+	<SDL.h>
+	<string>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\widgets\comboselection.h
+	<string>
+	<memory>
+	<graphics/GsSurface.h>
+	<widgets/GsComboSelection.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\widgets\switch.h
+	"ComboSelection.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\widgets\numbercontrol.h
+	<lib/widgets/GsNumberControl.h>
+	<string>
+	<graphics/GsSurface.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\widgets\button.h
+	<widgets/GsButton.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\ccamerasettings.cpp
+	<base/video/CVideoDriver.h>
+	"CCameraSettings.h"
+	"common/CSettings.h"
+	<base/utils/StringUtils.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\ccamerasettings.h
+	"VorticonMenu.h"
+	"widgets/NumberControl.h"
+	"sdl/CVidConfig.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cconfirmmenu.cpp
+	"CConfirmMenu.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cconfirmmenu.h
+	"VorticonMenu.h"
+	<string>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\ccontrolsettings.cpp
+	<base/utils/StringUtils.h>
+	"CSelectionMenu.h"
+	"CControlsettings.h"
+	"common/CBehaviorEngine.h"
+	<base/CInput.h>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cselectionmenu.h
+	"../../menu/CSelectionMenu.h"
+	"VorticonMenu.h"
+	"widgets/Button.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\ccontrolsettings.h
+	"VorticonMenu.h"
+	<base/utils/StringUtils.h>
+	"widgets/Button.h"
+	"widgets/Switch.h"
+	<vector>
+	<map>
+	"engine/CEvent.h"
+	"CSelectionMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\chelpmenu.cpp
+	"CHelpMenu.h"
+	"../CStory.h"
+	"../CCredits.h"
+	"../COrderingInfo.h"
+	"../CAbout.h"
+	"../CHelp.h"
+	"../CPreviews.h"
+	"fileio/ResourceMgmt.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\chelpmenu.h
+	"VorticonMenu.h"
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cloadmenu.cpp
+	"CLoadMenu.h"
+	<widgets/GsText.h>
+	"widgets/Button.h"
+	<widgets/GsMenuController.h>
+	"fileio/CSaveGameController.h"
+	"common/CBehaviorEngine.h"
+	"common/CBehaviorEngine.h"
+	"core/mode/CGameMode.h"
+
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cloadmenu.h
+	"VorticonMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cmainmenu.cpp
+	"CMainMenu.h"
+	<base/GsApp.h>
+	<widgets/GsMenuController.h>
+	"CSettingsMenu.h"
+	"CSelectionMenu.h"
+	"CLoadMenu.h"
+	"CSaveMenu.h"
+	"CHelpMenu.h"
+	"../CHighScores.h"
+	"common/CBehaviorEngine.h"
+	"core/mode/CGameMode.h"
+	"widgets/Button.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\csettingsmenu.h
+	"VorticonMenu.h"
+	"common/options.h"
+	"fileio/CExeFile.h"
+	"common/CBehaviorEngine.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\csavemenu.h
+	"CConfirmMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\coptions.cpp
+	"COptions.h"
+	<base/CInput.h>
+	"common/CSettings.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\coptions.h
+	"VorticonMenu.h"
+	<widgets/GsSwitch.h>
+	<list>
+	"common/CBehaviorEngine.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsswitch.h
+	"GsComboSelection.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cprofilesmenu.cpp
+	"CProfilesMenu.h"
+	"CSelectionMenu.h"
+	"common/CSettings.h"
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	"common/CBehaviorEngine.h"
+	"engine/CEvent.h"
+	"VorticonMenu.h"
+	<list>
+	<string>
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cprofilesmenu.h
+	"VorticonMenu.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\csavemenu.cpp
+	"CSaveMenu.h"
+	<base/CInput.h>
+	<widgets/GsBaseMenu.h>
+	<widgets/GsInputText.h>
+	<widgets/GsMenuController.h>
+	"CConfirmMenu.h"
+	"fileio/CSaveGameController.h"
+	"common/CBehaviorEngine.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\csettingsmenu.cpp
+	<lib/base/GsTimer.h>
+	<widgets/GsButton.h>
+	<widgets/GsMenuController.h>
+	"CSettingsMenu.h"
+	"CVideoSettings.h"
+	"CCameraSettings.h"
+	"CAudioSettings.h"
+	"COptions.h"
+	"CControlsettings.h"
+	"CProfilesMenu.h"
+	"CSelectionMenu.h"
+	"widgets/Button.h"
+
+1391107204 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cvideosettings.h
+	<SDL.h>
+	<string>
+	"VorticonMenu.h"
+	<widgets/GsComboSelection.h>
+	<widgets/GsSwitch.h>
+	<widgets/GsNumberControl.h>
+	"sdl/CVidConfig.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cvideosettings.cpp
+	<base/CInput.h>
+	<base/GsTimer.h>
+	<base/video/resolutionlist.h>
+	<base/video/CVideoDriver.h>
+	<base/utils/StringUtils.h>
+	<widgets/GsMenuController.h>
+	"hardware/Configurator.h"
+	"common/CSettings.h"
+	"CCameraSettings.h"
+	"CVideoSettings.h"
+	"Utils.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\widgets\button.cpp
+	<base/video/CVideoDriver.h>
+	<graphics/GsGraphics.h>
+	"Button.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\widgets\comboselection.cpp
+	"ComboSelection.h"
+	<graphics/GsGraphics.h>
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\widgets\numbercontrol.cpp
+	<graphics/GsGraphics.h>
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	<base/utils/StringUtils.h>
+	"NumberControl.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\widgets\switch.cpp
+	<base/utils/StringUtils.h>
+	<base/video/CVideoDriver.h>
+	<graphics/GsGraphics.h>
+	"Switch.h"
+	"common/CBehaviorEngine.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamedialogs.cpp
+	"CPlayGameVorticon.h"
+
+1391331849 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.h
+	"graphics/GsGraphics.h"
+	"fileio/CSaveGameController.h"
+	"../ai/CPlayer.h"
+	"common/CTileProperties.h"
+	"../CVorticonSpriteObject.h"
+	"common/CMap.h"
+	"common/options.h"
+	"common/CHUD.h"
+	"../ai/CVorticonSpriteObjectAI.h"
+	"../ai/CEGABitmap.h"
+	"../dialog/CMessageBoxVort.h"
+	"sdl/music/CMusic.h"
+	"../CHighScores.h"
+	"engine/playgame/CPlayGame.h"
+	"../finale/CFinale.h"
+	<SDL.h>
+	<string>
+	<vector>
+	<list>
+	<memory>
+	"../core/mode/CGameMode.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamegamestate.cpp
+	"CPlayGameVorticon.h"
+	"graphics/effects/CColorMerge.h"
+	"../CVorticonMapLoader.h"
+	<base/utils/Base64.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamelevel.cpp
+	"CPlayGameVorticon.h"
+	"../ai/CManglingMachine.h"
+	"common/objenums.h"
+	"sdl/sound/CSound.h"
+	"../finale/CTantalusRay.h"
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.cpp
+	<lib/base/GsTimer.h>
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	<widgets/GsMenuController.h>
+	"CPlayGameVorticon.h"
+	"sdl/sound/CSound.h"
+	"core/mode/CGameMode.h"
+	"../CVorticonMapLoader.h"
+	"graphics/GsGraphics.h"
+	"../ai/CTeleporter.h"
+	"sdl/extensions.h"
+	"../finale/CEndingEp1.h"
+	"../finale/CEndingEp2.h"
+	"../finale/CEndingEp3.h"
+	"graphics/effects/CColorMerge.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygameworldmap.cpp
+	"CPlayGameVorticon.h"
+	<lib/base/GsTimer.h>
+	<base/CInput.h>
+	"sdl/sound/CSound.h"
+	<base/video/CVideoDriver.h>
+	"graphics/GsGraphics.h"
+	"graphics/effects/CColorMerge.h"
+	"sdl/sound/CSound.h"
+	"../ai/CTeleporter.h"
+	"../ai/CMessie.h"
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\vorticonengine.cpp
+	<base/GsLogging.h>
+	<base/GsTimer.h>
+	<base/GsApp.h>
+	<base/utils/StringUtils.h>
+	<widgets/GsMenuController.h>
+	"CResourceLoader.h"
+	"common/CBehaviorEngine.h"
+	"fileio/CPatcher.h"
+	"fileio/CSaveGameController.h"
+	"engine/CMessages.h"
+	"sdl/sound/CSound.h"
+	"VorticonEngine.h"
+	"CPassiveVort.h"
+	"CAudioVorticon.h"
+	"menu/CMainMenu.h"
+	"menu/CSelectionMenu.h"
+	"menu/CControlsettings.h"
+	"playgame/CPlayGameVorticon.h"
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\lib\base\cinput.cpp
+	<SDL.h>
+	<stdio.h>
+	<base/InputEvents.h>
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	<base/GsLogging.h>
+	<base/FindFile.h>
+	<base/PointDevice.h>
+	"common/CSettings.h"
+	"sys/wizgp2x.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\pointdevice.h
+	"CVec.h"
+	<lib/base/Singleton.h>
+	<SDL.h>
+
+1391107204 source:c:\users\admin\desktop\commander-genius\src\lib\base\gsapp.cpp
+	"GsApp.h"
+	<base/GsTimer.h>
+	<base/GsLogging.h>
+	<base/video/CVideoDriver.h>
+	<base/video/GsEffectController.h>
+	<base/utils/StringUtils.h>
+	<widgets/GsMenuController.h>
+	<base/CInput.h>
+	"sdl/sound/CSound.h"
+	"common/CSettings.h"
+	"graphics/GsGraphics.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\gslogging.cpp
+	<stdarg.h>
+	<iostream>
+	<string.h>
+	<fstream>
+	<lib/base/GsLogging.h>
+	<lib/base/FindFile.h>
+	<lib/base/Debug.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\gstimer.cpp
+	<SDL.h>
+	<base/GsLogging.h>
+	"GsTimer.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\utils\base64.cpp
+	"Base64.h"
+	<stdexcept>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\utils\geometry.cpp
+	"Geometry.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\utils\stringbuf.cpp
+	"StringBuf.h"
+	"StringUtils.h"
+	<base/Debug.h>
+	"Utils.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\utils\stringbuf.h
+	<string>
+	<vector>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\utils\stringutils.cpp
+	"StringUtils.h"
+	"MathLib.h"
+	"StringBuf.h"
+	<sstream>
+	<iomanip>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\copengl.cpp
+	"hardware/Configurator.h"
+	"COpenGL.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	"graphics/GsGraphics.h"
+	<lib/base/GsLogging.h>
+	"graphics/PerSurfaceAlpha.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\csdlvideo.cpp
+	"CSDLVideo.h"
+	"CVideoEngine.h"
+	<lib/base/GsLogging.h>
+	"graphics/GsGraphics.h"
+	"graphics/PerSurfaceAlpha.h"
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\csdlvideo.h
+	<base/video/CVideoEngine.h>
+
+1391108497 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideodriver.cpp
+	"CVideoDriver.h"
+	<base/video/CSDLVideo.h>
+	<base/video/COpenGL.h>
+	"resolutionlist.h"
+	"graphics/GsGraphics.h"
+	<lib/base/GsLogging.h>
+	<base/FindFile.h>
+	"graphics/PerSurfaceAlpha.h"
+	<iostream>
+	<fstream>
+	<SDL_syswm.h>
+	<SDL_image.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideoengine.cpp
+	<lib/base/GsTimer.h>
+	"CVideoEngine.h"
+	<lib/base/GsLogging.h>
+	<SDL_syswm.h>
+	<base/video/scaler/scalebit.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\scaler\scalebit.h
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\scaler\cscaler.cpp
+	"CScaler.h"
+	"scalebit.h"
+	<cstdio>
+	<cstdlib>
+	<cstring>
+	<cassert>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\scaler\scale2x.cpp
+	<config.h>
+	"scale2x.h"
+	<assert.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\scaler\scale2x.h
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\scaler\scale3x.cpp
+	<config.h>
+	"scale3x.h"
+	<assert.h>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\base\video\scaler\scale3x.h
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\scaler\scalebit.cpp
+	<config.h>
+	"scale2x.h"
+	"scale3x.h"
+	<malloc.h>
+	<alloca.h>
+	<assert.h>
+	<stdlib.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\graphics\gsbitmap.cpp
+	"GsBitmap.h"
+	"GsPalette.h"
+	<base/FindFile.h>
+	<base/video/CVideoDriver.h>
+	<lib/base/GsLogging.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\graphics\gscursor.cpp
+	"GsCursor.h"
+	<base/video/CVideoDriver.h>
+	<cstring>
+	<cstdio>
+
+1391108941 source:c:\users\admin\desktop\commander-genius\src\lib\graphics\gsfont.cpp
+	"GsFont.h"
+	<base/FindFile.h>
+	<base/video/CVideoDriver.h>
+	"GsFont.xpm"
+	"AlternateFont.xpm"
+	<string.h>
+	<cstdlib>
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\gsfont.xpm
+
+1391107205 c:\users\admin\desktop\commander-genius\src\lib\graphics\alternatefont.xpm
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\graphics\gsgraphics.cpp
+	"GsGraphics.h"
+	<base/GsLogging.h>
+	<base/utils/StringUtils.h>
+	<base/CInput.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\graphics\gspalette.cpp
+	"GsPalette.h"
+	"../graphics/PerSurfaceAlpha.h"
+	<base/video/CVideoDriver.h>
+	<cstring>
+	<cstdio>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\graphics\gssprite.cpp
+	"GsSprite.h"
+	"GsPalette.h"
+	<base/FindFile.h>
+	<string.h>
+	<base/video/CVideoDriver.h>
+	"sdl/extensions.h"
+	"graphics/GsGraphics.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\graphics\gssurface.cpp
+	<base/utils/Geometry.h>
+	"GsSurface.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\graphics\gstilemap.cpp
+	"fileio/CTileLoader.h"
+	"fileio/ResourceMgmt.h"
+	<base/video/CVideoDriver.h>
+	<SDL_image.h>
+	<base/FindFile.h>
+	"GsTilemap.h"
+	"GsPalette.h"
+	<lib/base/GsLogging.h>
+	<stdlib.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbanner.cpp
+	"GsBanner.h"
+	<graphics/GsGraphics.h>
+	<base/video/CVideoDriver.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbasemenu.cpp
+	<base/CInput.h>
+	<widgets/GsMenuController.h>
+	"GsBaseMenu.h"
+	"GsBitmap.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbitmap.cpp
+	<graphics/GsGraphics.h>
+	<base/video/CVideoDriver.h>
+	"GsBitmap.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbutton.cpp
+	<graphics/GsGraphics.h>
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	<base/GsTimer.h>
+	<widgets/GsMenuController.h>
+	<base/PointDevice.h>
+	"GsButton.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gscomboselection.cpp
+	"GsComboSelection.h"
+	<graphics/GsGraphics.h>
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+
+1391331849 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gscontrol.cpp
+	<base/video/CVideoDriver.h>
+	<graphics/GsGraphics.h>
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	<lib/base/PointDevice.h>
+	"GsControl.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsdialog.cpp
+	"GsDialog.h"
+	"GsButton.h"
+	"GsInputText.h"
+	<base/video/CVideoDriver.h>
+	<base/CInput.h>
+	<graphics/GsGraphics.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsinputtext.cpp
+	"GsInputText.h"
+	<graphics/GsGraphics.h>
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	<SDL_screenkeyboard.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsmenucontroller.cpp
+	"GsMenuController.h"
+	<base/CInput.h>
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsnumbercontrol.cpp
+	<graphics/GsGraphics.h>
+	<base/CInput.h>
+	<base/video/CVideoDriver.h>
+	<lib/base/GsTimer.h>
+	<base/utils/StringUtils.h>
+	"GsNumberControl.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsswitch.cpp
+	<base/utils/StringUtils.h>
+	<base/video/CVideoDriver.h>
+	<graphics/GsGraphics.h>
+	"GsSwitch.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gstext.cpp
+	<graphics/GsGraphics.h>
+	<base/video/CVideoDriver.h>
+	<base/utils/StringUtils.h>
+	"GsText.h"
+
+1391107205 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gstextselectionlist.cpp
+	<base/video/CVideoDriver.h>
+	<graphics/GsGraphics.h>
+	<base/CInput.h>
+	<lib/base/PointDevice.h>
+	"GsTextSelectionList.h"
 

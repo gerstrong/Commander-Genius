@@ -19,13 +19,7 @@
 ///////////////////////
 // This event switches to the PassiveMode
 struct GMSwitchToPassiveMode : CEvent
-{
-	const std::string m_DataDirectory;
-	const int m_Episode;
-	GMSwitchToPassiveMode( const std::string& DataDirectory, const int& Episode ) :
-		m_DataDirectory(DataDirectory),
-		m_Episode(Episode){}
-};
+{};
 
 // This event switches to the PlayGameMode
 struct GMSwitchToPlayGameMode : CEvent
@@ -44,18 +38,14 @@ struct GMSwitchToPlayGameMode : CEvent
 				{}
 };
 
-// It's a simple quit event which will force CG to close the App
-struct GMQuit : CEvent {};
 
-// It's a simple start event which will force CG launch a game from a specified slot
-struct GMStart : CEvent
-{
-	GMStart(int &Slot) :
-	mSlot(Slot)
-	{}
+// It's a simple start event which will force CG launch a game
+struct GMStart : CEvent {};
 
-	int &mSlot;
-};
+
+// Happens when in the menu the user decides to end the game or he reached
+// the finale
+struct EventEndGamePlay : CEvent {};
 
 ///////
 // Base Class for the modes
@@ -66,7 +56,9 @@ public:
 	CGameMode() {}
 	virtual ~CGameMode() {}
 
-	virtual void init() = 0;
+    virtual void pumpEvent(const CEvent *evPtr) = 0;
+
+    virtual bool init() = 0;
 };
 
 

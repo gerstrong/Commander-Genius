@@ -9,8 +9,8 @@
 
 #include "extensions.h"
 
-#include "sdl/CVideoDriver.h"
-#include "CLogFile.h"
+#include <base/video/CVideoDriver.h>
+#include <lib/base/GsLogging.h>
 
 #include <cstring>
 #include <cstdio>
@@ -104,7 +104,7 @@ inline Colormask getColourMask32bit()
 
 SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
 {
-    auto *blit = g_pVideoDriver->getBlitSurface();
+    auto *blit = gVideoDriver.getBlitSurface();
     SDL_PixelFormat *format = blit->format;
 
     SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,

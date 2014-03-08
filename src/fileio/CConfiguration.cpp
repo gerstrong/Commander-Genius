@@ -7,7 +7,7 @@
 
 #include "CConfiguration.h"
 
-#include "../FindFile.h"
+#include <base/FindFile.h>
 #include <fstream>
 
 CConfiguration::CConfiguration(const std::string& filename) :

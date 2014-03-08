@@ -13,7 +13,7 @@
 
 #include <SDL.h>
 #include "hardware/Configurator.h"
-#include "sdl/video/scalers/CScaler.h"
+#include <base/video/scaler/CScaler.h>
 
 const unsigned int RES_BPP = 32;
 
@@ -24,7 +24,7 @@ const unsigned int RES_BPP = 32;
 #endif
 #endif
 
-#include "utils/Geometry.h"
+#include <base/utils/Geometry.h>
 
 struct st_camera_bounds
 {
@@ -49,17 +49,18 @@ public:
 	void reset();
 
 	void setResolution(const int width, const int height, const int depth);
-	void setResolution(const CRect<Uint16>& res);
+	void setResolution(const GsRect<Uint16>& res);
 
-	CRect<Uint16> m_GameRect;	// Also called Screenspace.
-	CRect<Uint16> m_DisplayRect; // The Fullscreen-Resolution or the Window Size
+	GsRect<Uint16> m_GameRect;	// Also called Screenspace.
+    GsRect<Uint16> mWindowRect; // Window size
+	GsRect<Uint16> m_DisplayRect; // The Fullscreen-Resolution or the Window Size
 
 	bool Fullscreen;
     filterOptionType m_ScaleXFilter;
 	bool m_normal_scale;
 	unsigned short Zoom;
 	bool m_opengl;
-	CRect<int> mAspectCorrection;
+	GsRect<int> mAspectCorrection;
 	bool m_special_fx;
 	bool vsync;
 

@@ -10,7 +10,7 @@
 
 #include <string>
 #include <set>
-#include "StringUtils.h"
+#include <base/utils/StringUtils.h>
 #include "CSingleton.h"
 
 

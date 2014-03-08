@@ -25,11 +25,8 @@ public:
 
 	
 
-	void init();
-
-	void loadGame();
-
-    void ponder();
+    void pumpEvent(const CEvent *evPtr);
+    void ponder(const float deltaT);
     void render();
 
 private:

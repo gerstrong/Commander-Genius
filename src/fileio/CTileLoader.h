@@ -8,7 +8,7 @@
 #ifndef CTILELOADER_H_
 #define CTILELOADER_H_
 
-#include "graphics/CTilemap.h"
+#include "graphics/GsTilemap.h"
 #include "common/CBehaviorEngine.h"
 #include "CExeFile.h"
 #include <map>

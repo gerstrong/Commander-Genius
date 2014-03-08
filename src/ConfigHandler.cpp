@@ -20,8 +20,8 @@
 #include <map>
 #include <string>
 #include "ConfigHandler.h"
-#include "FindFile.h"
-#include "StringUtils.h"
+#include <base/FindFile.h>
+#include <base/utils/StringUtils.h>
 #include "MathLib.h"
 
 

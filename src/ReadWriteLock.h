@@ -9,7 +9,7 @@
 
 #include <SDL.h>
 #include "ThreadPool.h"
-#include "Debug.h"
+#include <base/Debug.h>
 
 class ReadWriteLock {
 private:

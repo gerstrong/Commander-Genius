@@ -6,7 +6,7 @@
  */
 
 #include "CDlgFrame.h"
-#include "graphics/CGfxEngine.h"
+#include "graphics/GsGraphics.h"
 
 CDlgFrame::CDlgFrame(int x, int y, int w, int h, int tilewidth, int tileheight)
 {
@@ -33,7 +33,7 @@ void CDlgFrame::draw(SDL_Surface *dst)
 	if( m_theme == ENGINE_VORTICON )
 	{
 		drawVorticonFrame(dst);
-	}
+    }
 	else if(m_theme == ENGINE_GALAXY )
 	{
 		//drawGalaxyFrame(dst);
@@ -60,7 +60,7 @@ void CDlgFrame::setPos(const Uint32 x, const Uint32 y)
 
 void CDlgFrame::drawVorticonFrame(SDL_Surface *dst)
 {
-	CFont &Font = g_pGfxEngine->getFont(1);
+	GsFont &Font = gGraphics.getFont(1);
 
 	// first draw the blank rect
 	int i, j;

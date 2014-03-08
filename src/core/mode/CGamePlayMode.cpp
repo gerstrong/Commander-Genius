@@ -6,11 +6,11 @@
  */
 
 #include "CGamePlayMode.h"
-#include "engine/galaxy/CPlayGameGalaxy.h"
-#include "engine/vorticon/playgame/CPlayGameVorticon.h"
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/music/CMusicPlayer.h"
-#include "sdl/CTimer.h"
+#include <base/GsTimer.h>
+#include <base/video/CVideoDriver.h>
+#include <base/GsApp.h>
 #include <memory>
 
 CGamePlayMode::CGamePlayMode(const int Episode,
@@ -27,78 +27,23 @@ m_Episode(gpmode.m_Episode),
 m_DataDirectory(gpmode.m_DataDirectory)
 {}
 
-void CGamePlayMode::init()
+
+void CGamePlayMode::pumpEvent(const CEvent *evPtr)
 {
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
-	// If no level has been set or is out of bound, set it to map.
-	if(m_startLevel > 100 || m_startLevel < 0 )
-		m_startLevel = WORLD_MAP_LEVEL_VORTICON;
-
-	bool ok = true;
-
-	if(m_Episode >= 4)
-	{
-		if(m_startLevel == WORLD_MAP_LEVEL_VORTICON)
-		{
-		    m_startLevel = WORLD_MAP_LEVEL_GALAXY;
-		}
-        mp_PlayGame.reset( new galaxy::CPlayGameGalaxy( ExeFile, m_startLevel, m_SavedGame) );
-	}
-	else
-	{
-		if(m_startLevel == WORLD_MAP_LEVEL_GALAXY)
-			m_startLevel = WORLD_MAP_LEVEL_VORTICON;
-        mp_PlayGame.reset( new CPlayGameVorticon( ExeFile, m_startLevel, m_SavedGame) );
-	}
-
-	// Create the special merge effect (Fadeout)
-	CColorMerge *pColorMergeFX = new CColorMerge(8);
-
-	ok &= mp_PlayGame->init();
-
-	g_pGfxEngine->setupEffect(pColorMergeFX);
-
-
-	if(!ok)
-	{
-		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode));
-	}
+    mp_PlayGame->pumpEvent(evPtr);
 }
 
-
-void CGamePlayMode::loadGame()
-{
-    mp_PlayGame->ponder();
-
-    if(mp_PlayGame->loadXMLGameState())
-        return;
-
-    mp_PlayGame->loadGameState();
-}
-
-
-void CGamePlayMode::ponder()
+void CGamePlayMode::ponder(const float deltaT)
 {
 	// The player is playing the game. It also includes scenes like ending
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+    CEventContainer& EventContainer = gEventManager;
 
-    mp_PlayGame->ponder();
-	
-	if( EventContainer.occurredEvent<SaveGameEvent>() )
-	{
-        mp_PlayGame->saveXMLGameState();
-        //mp_PlayGame->saveGameState();
-        EventContainer.pop_Event();
-	}
-
+    mp_PlayGame->ponder(deltaT);
 
 	if( mp_PlayGame->getEndGame() )
 	{
 		m_startLevel = 0;
-		g_pMusicPlayer->stop();
-		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode) );
+        EventContainer.add( new GMSwitchToPassiveMode(/*m_DataDirectory, m_Episode*/) );
 	}
 	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game
@@ -128,11 +73,11 @@ void CGamePlayMode::render()
             mpFPSSurface.reset(CG_CreateRGBSurface(rect), &SDL_FreeSurface);
         }
 
-        std::string tempbuf = "FPS: " + ftoa(g_pTimer->LastFPS());
+        std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());
         SDL_FillRect(mpFPSSurface.get(),NULL,0x88888888);
-        g_pGfxEngine->getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
+        //gGraphics.getFont(1).drawFont(mpFPSSurface.get(), tempbuf, 1, 1, false);
 
-        SDL_BlitSurface(mpFPSSurface.get(), NULL, g_pVideoDriver->getBlitSurface(), &rect);
+        SDL_BlitSurface(mpFPSSurface.get(), NULL, gVideoDriver.getBlitSurface(), &rect);
     }
 }
 
