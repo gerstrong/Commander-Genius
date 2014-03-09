@@ -467,11 +467,11 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 
 
 
-void dumpData(const std::string &dumpfile, byte *in, const uint inlen)
+/*void dumpData(const std::string &dumpfile, byte *in, const uint inlen)
 {
     std::ofstream ofile( dumpfile.c_str() );
     ofile.write( reinterpret_cast<char*>(in), inlen );
-}
+}*/
 
 
 
@@ -617,8 +617,8 @@ bool CEGAGraphicsGalaxy::begin()
 
 			Huffman.expand(in, out, inlen, outlen);
 
-            dumpData("indump.dat", in, inlen);
-            dumpData("outdump.dat", out, outlen);
+            //dumpData("indump.dat", in, inlen);
+            //dumpData("outdump.dat", out, outlen);
 
 			//printf("%d %d\n", *out, *in);
 
@@ -949,7 +949,7 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
     for( unsigned int i=1 ; i<4 ; i++ )
     {
-        gGraphics.getSpriteVec(i) = SpriteOrigVec;                
+        gGraphics.getSpriteVec(i) = SpriteOrigVec;
     }
 
     // For the other variant let's exchange some colors
