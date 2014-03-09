@@ -79,8 +79,16 @@ void CHuffman::readDictionaryAt( byte *p_exedata, unsigned long offset)
 }
 
 /* Expand huffman-compressed input file into output buffer */
-void CHuffman::expand(byte *pin, byte *pout, unsigned long inlen, unsigned long outlen)
+void CHuffman::expand(byte *pin, byte *pout, const unsigned long inlen, const unsigned long outlen)
 {
+    // If the inlen and outlen are the same, we do not decompress
+    if(inlen == outlen)
+    {
+        memcpy(pout, pin, inlen*sizeof(byte));
+        return;
+    }
+
+
 	unsigned short curnode;
 	unsigned long incnt = 0, outcnt = 0;
 	unsigned char c, mask;

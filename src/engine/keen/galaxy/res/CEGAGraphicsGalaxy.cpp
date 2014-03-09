@@ -125,10 +125,6 @@ m_Exefile(ExeFile)
 	g_pBehaviorEngine->setEpisodeInfoStructPtr(EpisodeInfo);
 }
 
-int CEGAGraphicsGalaxy::getNumSprites()
-{ return 0; }
-short CEGAGraphicsGalaxy::getNumTiles()
-{ return 0; }
 
 /**
  * \brief	load the data into the structure
@@ -396,32 +392,34 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
 	byte *p_head = nullptr;
 
-	std::vector<char> EgaGraphData;
+    std::vector<char> egaHeadData;
 
 	size_t numChunks = EpisodeInfo[ep].NumChunks;
 
-	if(File) // File exists!
+    if(File) // File exists!
 	{
-		size_t egagraphlen = 0;
+        size_t egaheadlen = 0;
 		File.seekg(1,std::ios::end);
-		egagraphlen = File.tellg();
-		numChunks = egagraphlen/3; // 24-bit chunks
-		if(egagraphlen != 0) // File not empty!
+        egaheadlen = File.tellg();
+
+        // TODO: Keen 6 vs Mirror mod. Mirror mod shows as count one chunk more, please check!
+        numChunks = egaheadlen/3; // 24-bit chunks
+        if(egaheadlen != 0) // File not empty!
 		{
-			egagraphlen--;
+            egaheadlen--;
 			File.seekg(0,std::ios::beg);
 
 			char b;
 			while(!File.eof())
 			{
 				File.get(b);
-				EgaGraphData.push_back(b);
+                egaHeadData.push_back(b);
 			}
 
-			p_head = reinterpret_cast<byte*>(&EgaGraphData.front());
+            p_head = reinterpret_cast<byte*>(&egaHeadData.front());
 		}
 	} // no external file. Read it from the exe then
-	else
+    else
 	{
 		byte *p_data = reinterpret_cast<byte*>(m_Exefile.getHeaderData());
 
@@ -446,17 +444,18 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 	if (ep < 3) offset_limit = 0x00FFFFFF;
 	else offset_limit = 0xFFFFFFFF;
 
-	for(size_t i = 0 ; i < numChunks ; i++)
+    // TODO: The 4-byte offset should go outside the loop... somehow...
+    for(size_t i = 0 ; i < numChunks ; i++)
 	{
 		if (ep != 3)
 		{
-			memcpy(&offset, p_head,3); // Keen 4-6
+            memcpy(&offset, p_head, 3); // Keen 4-6
 			p_head += 3;
 			offset &= offset_limit;
 		}
 		else
 		{
-			memcpy(&offset, p_head,4); // KeenDreams
+            memcpy(&offset, p_head, 4); // KeenDreams
 			p_head += 4;
 		}
 		m_egahead.push_back(offset);
@@ -466,6 +465,13 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 }
 
 
+
+
+void dumpData(const std::string &dumpfile, byte *in, const uint inlen)
+{
+    std::ofstream ofile( dumpfile.c_str() );
+    ofile.write( reinterpret_cast<char*>(in), inlen );
+}
 
 
 
@@ -556,7 +562,7 @@ bool CEGAGraphicsGalaxy::begin()
 
 	// Now lets decompress the graphics
 	auto offPtr = m_egahead.begin();
-	for(size_t i = 0; offPtr != m_egahead.end() ; offPtr++, i++)
+    for(size_t i = 0 ; offPtr != m_egahead.end() ; offPtr++, i++)
 	{
 		// Show that something is happening
 		offset = *offPtr;
@@ -610,6 +616,9 @@ bool CEGAGraphicsGalaxy::begin()
 			byte *out = &m_egagraph[i].data[0];
 
 			Huffman.expand(in, out, inlen, outlen);
+
+            dumpData("indump.dat", in, inlen);
+            dumpData("outdump.dat", out, outlen);
 
 			//printf("%d %d\n", *out, *in);
 
@@ -839,17 +848,17 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 {
 	// Create all the sprites
-    gGraphics.createEmptySprites(4,NumSprites);
+    gGraphics.createEmptySprites(4, NumSprites);
 
 	int ep = m_episode - 4;
 
 	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-	SpriteHeadStruct SprHead[NumSprites];
-	memcpy( SprHead, &(m_egagraph.at(2).data.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
+    std::vector<SpriteHeadStruct> sprHead(NumSprites, SpriteHeadStruct());
+    memcpy( sprHead.data(), &(m_egagraph.at(2).data.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
 
 	for(size_t i = 0; i < NumSprites; i++)
 	{
-		SpriteHeadStruct Head = SprHead[i];
+        SpriteHeadStruct Head = sprHead[i];
 		std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
 
         GsSprite &Sprite = gGraphics.getSprite(0,i);
