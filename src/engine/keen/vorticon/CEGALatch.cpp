@@ -286,7 +286,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
     if( fullpath == "" )
     {   // Not found create it
         fullpath = path + "/preview.bmp";
-        fullpath = GetWriteFullFileName(fullpath, false);
+        fullpath = GetWriteFullFileName(fullpath, true);
         GsBitmap *pBitmap = gGraphics.getBitmapFromStr("TITLE");
         SDL_SaveBMP( pBitmap->getSDLSurface(), fullpath.c_str());
     }

@@ -39,6 +39,9 @@ public:
 	void extractMaskedTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
 			Uint16 size, Uint16 columns, size_t tile, bool usetileoffset);
 
+    std::vector<unsigned long> readOutLenVec(const int ep,
+                                             const std::vector<unsigned char> &compEgaGraphData);
+
 	bool begin();
 	Uint8 getBit(unsigned char data, Uint8 leftshift);
 	bool readEGAHead();

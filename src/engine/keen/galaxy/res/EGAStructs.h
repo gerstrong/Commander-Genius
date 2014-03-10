@@ -32,7 +32,10 @@ struct EpisodeInfoStruct
 	unsigned int NumDemos, IndexDemos;
 };
 
-struct ChunkStruct{
+struct ChunkStruct
+{
+    ChunkStruct() : len(0) {}
+
 	unsigned long len;
 	std::vector<unsigned char> data;
 };

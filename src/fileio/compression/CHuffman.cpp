@@ -92,7 +92,7 @@ void CHuffman::expand(byte *pin, byte *pout, const unsigned long inlen, const un
     // If the inlen and outlen are the same,
     // and last byte at 0th bit has zero we do not decompress
     // TODO: It does not work with Keen 4
-    /*if(inlen == outlen && nextnode == 0)
+    /*if(inlen == outlen)
     {
         memcpy(pout, pin, inlen*sizeof(byte));
         return;

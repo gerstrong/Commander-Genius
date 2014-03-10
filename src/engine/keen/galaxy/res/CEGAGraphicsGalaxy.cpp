@@ -186,7 +186,7 @@ bool CEGAGraphicsGalaxy::loadData()
     if( fullpath == "" )
     {   // Not found create it
         fullpath = JoinPaths(path, "preview.bmp");
-        fullpath = GetWriteFullFileName(fullpath, false);
+        fullpath = GetWriteFullFileName(fullpath, true);
         GsBitmap *pBitmap = gGraphics.getBitmapFromStr("TITLE");
         SDL_SaveBMP( pBitmap->getSDLSurface(), fullpath.c_str());
     }
@@ -474,6 +474,60 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 }*/
 
 
+std::vector<unsigned long> CEGAGraphicsGalaxy::readOutLenVec(const int ep,
+                                                             const std::vector<unsigned char> &compEgaGraphData)
+{
+    unsigned long offset = 0;
+    unsigned long offset_limit;
+
+    // For some reason, MultiMania's KDR support uses a slightly different limit
+    // in offset ops. We're not in DOS, so we don't have to worry about
+    // memory here >:P
+    if (ep < 3) offset_limit = 0x00FFFFFF;
+    else offset_limit = 0xFFFFFFFF;
+
+
+    std::vector<unsigned long> outLenVec;
+
+    std::vector<unsigned long>::iterator offPtr = m_egahead.begin();
+
+    for(size_t i = 0 ; offPtr != m_egahead.end() ; offPtr++, i++)
+    {
+        // Show that something is happening
+        offset = *offPtr;
+
+        unsigned long outlen = 0;
+
+        // Make sure the chunk is valid
+        if(offset < offset_limit && offset + 4 <= compEgaGraphData.size())
+        {
+            // Get the expanded length of the chunk
+            if(i >= EpisodeInfo[ep].Index8Tiles && i < EpisodeInfo[ep].Index16MaskedTiles + EpisodeInfo[ep].Num16MaskedTiles)
+            {
+                // Expanded sizes of 8, 16,and 32 tiles are implicit
+                if(i >= EpisodeInfo[ep].Index16MaskedTiles) // 16x16 tiles are one/chunk
+                    outlen = 2 * 16 * 5;
+                else if(i >= EpisodeInfo[ep].Index16Tiles)
+                    outlen = 2 * 16 * 4;
+                else if(i >= EpisodeInfo[ep].Index8MaskedTiles)	// 8x8 tiles are all in one chunk!
+                    outlen = EpisodeInfo[ep].Num8MaskedTiles * 8 * 5;
+                else if(i >= EpisodeInfo[ep].Index8Tiles)
+                    outlen = EpisodeInfo[ep].Num8Tiles * 8 * 4;
+            }
+            else
+            {
+                memcpy(&outlen, &compEgaGraphData[offset], 4);
+                offset += 4;
+            }
+
+        }
+
+        outLenVec.push_back(outlen);
+    }
+
+    return outLenVec;
+}
+
 
 /**
  * \brief	prepares to load the data. Does a bit of extraction
@@ -560,6 +614,10 @@ bool CEGAGraphicsGalaxy::begin()
 	if (ep < 3) offset_limit = 0x00FFFFFF;
 	else offset_limit = 0xFFFFFFFF;
 
+
+    std::vector<unsigned long> outLenVec = readOutLenVec(ep, CompEgaGraphData);
+
+
 	// Now lets decompress the graphics
 	auto offPtr = m_egahead.begin();
     for(size_t i = 0 ; offPtr != m_egahead.end() ; offPtr++, i++)
@@ -567,27 +625,34 @@ bool CEGAGraphicsGalaxy::begin()
 		// Show that something is happening
 		offset = *offPtr;
 
+        outlen = outLenVec[i];
+
+        /*if(outlen == 0)
+            continue;*/
+
 		// Make sure the chunk is valid
 		if(offset < offset_limit && offset + 4 <= CompEgaGraphData.size())
 		{
-			// Get the expanded length of the chunk
-			if(i >= EpisodeInfo[ep].Index8Tiles && i < EpisodeInfo[ep].Index16MaskedTiles + EpisodeInfo[ep].Num16MaskedTiles)
-			{
-				// Expanded sizes of 8, 16,and 32 tiles are implicit
-				if(i >= EpisodeInfo[ep].Index16MaskedTiles) // 16x16 tiles are one/chunk
-					outlen = 2 * 16 * 5;
-				else if(i >= EpisodeInfo[ep].Index16Tiles)
-					outlen = 2 * 16 * 4;
-				else if(i >= EpisodeInfo[ep].Index8MaskedTiles)	// 8x8 tiles are all in one chunk!
-					outlen = EpisodeInfo[ep].Num8MaskedTiles * 8 * 5;
-				else if(i >= EpisodeInfo[ep].Index8Tiles)
-					outlen = EpisodeInfo[ep].Num8Tiles * 8 * 4;
-			}
-			else
-			{
-				memcpy(&outlen, &CompEgaGraphData[offset], 4);
-				offset += 4;
-			}
+
+            // Get the expanded length of the chunk
+            if(i >= EpisodeInfo[ep].Index8Tiles && i < EpisodeInfo[ep].Index16MaskedTiles + EpisodeInfo[ep].Num16MaskedTiles)
+            {
+                // Expanded sizes of 8, 16,and 32 tiles are implicit
+                if(i >= EpisodeInfo[ep].Index16MaskedTiles) // 16x16 tiles are one/chunk
+                    outlen = 2 * 16 * 5;
+                else if(i >= EpisodeInfo[ep].Index16Tiles)
+                    outlen = 2 * 16 * 4;
+                else if(i >= EpisodeInfo[ep].Index8MaskedTiles)	// 8x8 tiles are all in one chunk!
+                    outlen = EpisodeInfo[ep].Num8MaskedTiles * 8 * 5;
+                else if(i >= EpisodeInfo[ep].Index8Tiles)
+                    outlen = EpisodeInfo[ep].Num8Tiles * 8 * 4;
+            }
+            else
+            {
+                memcpy(&outlen, &CompEgaGraphData[offset], 4);
+                offset += 4;
+            }
+
 
 			// Allocate memory and decompress the chunk
 			m_egagraph[i].len = outlen;
@@ -604,8 +669,8 @@ bool CEGAGraphicsGalaxy::begin()
 			    const unsigned long second = *secondOffPtr;
 			    if(second != offset_limit)
 			    {
-				inlen = second - offset;
-				break;
+                    inlen = second - offset;
+                    break;
 			    }
 			}
 
