@@ -31,7 +31,9 @@ m_mustclose(false)
 	closeString = closeChar;
 	GsButton*	pButton	= new GsButton( closeString, new CloseDialog(m_mustclose), GsButton::NONE );
 
-	addControl( pButton, GsRect<float>(0.0f, 0.0f, 0.06f/0.8f, 0.06f/0.8f) );
+    GsRect<float> closeButtonRect(0.0f, 0.0f, (0.06f)/0.8f, (0.06f)/0.8f);
+
+    addControl( pButton, closeButtonRect );
 
 	mpReturnButton = pButton;
 

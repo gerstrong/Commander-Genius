@@ -40,6 +40,20 @@ public:
 	bool applyMode();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
 	
+
+    /**
+     * @brief getGameResFactors return scale dimesions relative to the original resolution
+     * @return the resolution scale
+     */
+    GsRect<float> getGameResFactors()
+    {
+        const float wFac = float(getGameResolution().w)/320.0f;
+        const float hFac = float(getGameResolution().h)/200.0f;
+
+        GsRect<float> scaledDownRect(wFac, hFac);
+        return scaledDownRect;
+    }
+
 	bool start();
 	void isFullscreen(bool value);
 

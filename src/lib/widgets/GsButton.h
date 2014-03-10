@@ -63,7 +63,7 @@ protected:
 
     int mLightRatio; // This will blend between selected and unselected item.
 
-private:
+private:        
 
 	std::shared_ptr<CEvent> mEvent;
 };

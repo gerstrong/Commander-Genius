@@ -108,8 +108,13 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates
+    GsRect<float> gameResFacs = gVideoDriver.getGameResFactors();
     GsRect<float> displayRect = mRect;
-	displayRect.transform(RectDispCoordFloat);
+
+    displayRect.w /= gameResFacs.w;
+    displayRect.h /= gameResFacs.h;
+
+    displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
 
     drawNoStyle(lRect);
