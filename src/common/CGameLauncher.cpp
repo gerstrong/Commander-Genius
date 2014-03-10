@@ -69,7 +69,7 @@ bool CGameLauncher::loadResources()
     // Scan for games...
     m_DirList.clear();
     m_Entries.clear();
-	
+
     gLogging.ftextOut("Game Autodetection Started<br>" );
 
     // Process any custom labels
@@ -81,7 +81,7 @@ bool CGameLauncher::loadResources()
     mGameScanner.setPermilage(100);
     // Recursivly scan into DIR_ROOT VFS subdir's for exe's
     if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT, 0, 200))
-        gamedetected = true;   
+        gamedetected = true;
 
     // Recursivly scan into DIR_GAMES subdir's for exe's
     if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900))
@@ -110,7 +110,7 @@ bool CGameLauncher::loadResources()
         // And try to add a preview bitmap
         std::string fullfilename = "preview.bmp";
         fullfilename = getResourceFilename(fullfilename, it->path, false);
-        fullfilename = GetAbsolutePath(fullfilename);
+        fullfilename = GetFullFileName(fullfilename);
 
         if(IsFileAvailable(fullfilename))
         {
@@ -141,7 +141,7 @@ bool CGameLauncher::loadResources()
     mLauncherDialog.setSelection(2);
 
     mGameScanner.setPermilage(1000);
-	
+
     gLogging.ftextOut("Game Autodetection Finished<br>" );
     // Banner. TODO: Create a class for that...
     CGUIBanner *banner = new CGUIBanner("Commander Genius " CGVERSION "\n"
@@ -429,7 +429,7 @@ void CGameLauncher::ponder(const float deltaT)
         mCurrentBmp->setBitmapPtr(mpPrevievBmpVec[mSelection]);
     }
 
-    mLauncherDialog.processLogic();   
+    mLauncherDialog.processLogic();
 
     // Launch the code of the Startmenu here in case a game has been chosen
     if( m_chosenGame >= 0 ) // Means a game has been selected
@@ -478,7 +478,7 @@ void CGameLauncher::ponder(const float deltaT)
 
 
 void CGameLauncher::render()
-{          
+{
     // If GameScanner is running, don't do anything else
     if(mGameScanner.isRunning())
     {

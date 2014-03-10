@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Release" />
+	<ActiveTarget name="Debug" />
+	<File name="..\..\src\ThreadPool.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2824" topLine="82" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\keen\galaxy\res\CEGAGraphicsGalaxy.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="17342" topLine="584" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\fileio\ResourceMgmt.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1718" topLine="43" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\common\CBehaviorEngine.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="692" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\common\CGameLauncher.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3179" topLine="94" />
+		</Cursor>
+	</File>
+	<File name="..\..\version.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="101" topLine="0" />
+		</Cursor>
+	</File>
 </CodeBlocks_layout_file>

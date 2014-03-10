@@ -19,6 +19,7 @@
 					<Add directory="C:/mingw95/MinGW/include/SDL" />
 					<Add directory="C:/mingw95/MinGW/include/ogg" />
 					<Add directory="C:/mingw95/MinGW/include/vorbis" />
+					<Add directory="../../src/lib" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -54,7 +55,6 @@
 			<Add directory="../../../Commander-Genius" />
 		</ResourceCompiler>
 		<Linker>
-			<Add option="-mwindows" />
 			<Add library="mingw32" />
 			<Add library="SDL2main" />
 			<Add library="SDL2" />
@@ -130,8 +130,6 @@
 		<Unit filename="../../src/core/GameEngine.h" />
 		<Unit filename="../../src/core/LogicDrawSplitter.h" />
 		<Unit filename="../../src/core/mode/CGameMode.h" />
-		<Unit filename="../../src/core/mode/CGamePassiveMode.cpp" />
-		<Unit filename="../../src/core/mode/CGamePassiveMode.h" />
 		<Unit filename="../../src/core/mode/CGamePlayMode.cpp" />
 		<Unit filename="../../src/core/mode/CGamePlayMode.h" />
 		<Unit filename="../../src/dialog/CDlgFrame.cpp" />
@@ -392,10 +390,14 @@
 		<Unit filename="../../src/engine/keen/galaxy/menu/SelectionMenu.h" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/SettingsMenu.cpp" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/SettingsMenu.h" />
+		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/BorderedButton.cpp" />
+		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/BorderedButton.h" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/Button.cpp" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/Button.h" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/ComboSelection.cpp" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/ComboSelection.h" />
+		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/InputText.cpp" />
+		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/InputText.h" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/NumberControl.cpp" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/NumberControl.h" />
 		<Unit filename="../../src/engine/keen/galaxy/menu/widgets/Switch.cpp" />
@@ -566,6 +568,8 @@
 		<Unit filename="../../src/engine/keen/vorticon/menu/widgets/Button.h" />
 		<Unit filename="../../src/engine/keen/vorticon/menu/widgets/ComboSelection.cpp" />
 		<Unit filename="../../src/engine/keen/vorticon/menu/widgets/ComboSelection.h" />
+		<Unit filename="../../src/engine/keen/vorticon/menu/widgets/Inputtext.cpp" />
+		<Unit filename="../../src/engine/keen/vorticon/menu/widgets/Inputtext.h" />
 		<Unit filename="../../src/engine/keen/vorticon/menu/widgets/NumberControl.cpp" />
 		<Unit filename="../../src/engine/keen/vorticon/menu/widgets/NumberControl.h" />
 		<Unit filename="../../src/engine/keen/vorticon/menu/widgets/Switch.cpp" />
@@ -636,6 +640,8 @@
 		<Unit filename="../../src/lib/base/FindFile.h" />
 		<Unit filename="../../src/lib/base/GsApp.cpp" />
 		<Unit filename="../../src/lib/base/GsApp.h" />
+		<Unit filename="../../src/lib/base/GsArguments.cpp" />
+		<Unit filename="../../src/lib/base/GsArguments.h" />
 		<Unit filename="../../src/lib/base/GsEngine.h" />
 		<Unit filename="../../src/lib/base/GsEvent.h" />
 		<Unit filename="../../src/lib/base/GsGear.h" />
