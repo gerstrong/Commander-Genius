@@ -16,51 +16,27 @@ CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::
 m_mustclose(false),
 m_timer(0)
 {
-    mpSceneSurface.reset(SDL_CreateRGBSurface( 0, 320, 200, 8, 0, 0, 0, 0),
-                         &SDL_FreeSurface);
+    std::shared_ptr<SDL_Surface> sceneSfc(SDL_CreateRGBSurface( 0, 320, 200, 8, 0, 0, 0, 0),
+                                          &SDL_FreeSurface);
+    SDL_Surface *pSceneSurface = sceneSfc.get();
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetPaletteColors(mpSceneSurface->format->palette, gGraphics.Palette.m_Palette, 0, 255);
-    SDL_SetColorKey(mpSceneSurface.get(), SDL_TRUE, COLORKEY);
+    SDL_SetPaletteColors(pSceneSurface->format->palette, gGraphics.Palette.m_Palette, 0, 255);
+    SDL_SetColorKey(pSceneSurface, SDL_TRUE, COLORKEY);
 #else
-    SDL_SetColors(mpSceneSurface.get(), gGraphics.Palette.m_Palette, 0, 255);
-    SDL_SetColorKey(mpSceneSurface.get(), SDL_SRCCOLORKEY, COLORKEY);
+    SDL_SetColors(pSceneSurface, gGraphics.Palette.m_Palette, 0, 255);
+    SDL_SetColorKey(pSceneSurface, SDL_SRCCOLORKEY, COLORKEY);
 #endif
 
-    if( finale_draw( mpSceneSurface.get(), scene_file, game_path) )
+    if( finale_draw( pSceneSurface, scene_file, game_path) )
 	{
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-        
-#else
-        mpSceneSurface.reset(gVideoDriver.convertThroughBlitSfc(mpSceneSurface.get()), &SDL_FreeSurface);
-#endif
+        mSceneBmp = GsBitmap(sceneSfc);
 
-        SDL_Surface *blit = gVideoDriver.getBlitSurface();
+        GsWeakSurface blit( gVideoDriver.getBlitSurface() );
 
-        std::shared_ptr<SDL_Surface> scaledScene(
-                    SDL_ConvertSurface(blit, blit->format, 0),
-                    &SDL_FreeSurface);
+        const GsRect<Uint16> scaleRect(0, 0, blit.width(), blit.height());
 
-
-        SDL_Rect srGsRect, dstRect;
-
-        srGsRect.x = 0;  srGsRect.y = 0;
-        srGsRect.w = mpSceneSurface->w;
-        srGsRect.h = mpSceneSurface->h;
-
-        dstRect.x = 0;  dstRect.y = 0;
-        dstRect.w = scaledScene->w;
-        dstRect.h = scaledScene->h;
-
-        SDL_FillRect(scaledScene.get(), nullptr, SDL_MapRGB(scaledScene->format, 0, 0, 0) );
-
-        blitScaled(mpSceneSurface.get(),
-                   srGsRect,
-                   scaledScene.get(),
-                   dstRect,
-                   NONE);
-
-        mpSceneSurface = scaledScene;
+        mSceneBmp.scaleTo(scaleRect);
     }
 	else
 	{
@@ -71,7 +47,7 @@ m_timer(0)
 
 void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y)
 {
-    const int scaleFactor = mpSceneSurface->w / 320;
+    const int scaleFactor = mSceneBmp.getWidth() / 320;
 
 	bitmap_structure bmp_struct;
 
@@ -106,10 +82,9 @@ void CFinaleStaticScene::ponder()
 
 void CFinaleStaticScene::render(const int step)
 {
-    if(mpSceneSurface)
+    if(!mSceneBmp.empty())
     {
-        SDL_Surface *sfc = gVideoDriver.getBlitSurface();
-        SDL_BlitSurface(mpSceneSurface.get(), nullptr, sfc, nullptr);        
+        mSceneBmp.draw(0, 0);
     }
 
     if(m_timer <= 0)
