@@ -29,13 +29,16 @@ m_mustclose(false)
 	const char closeChar = 0x1F;
 	std::string closeString;
 	closeString = closeChar;
-	GsButton*	pButton	= new GsButton( closeString, new CloseDialog(m_mustclose), GsButton::NONE );
+    //GsButton*	pButton	= new GsButton( closeString, new CloseDialog(m_mustclose), GsButton::NONE );
 
     GsRect<float> closeButtonRect(0.0f, 0.0f, (0.06f)/0.8f, (0.06f)/0.8f);
 
-    addControl( pButton, closeButtonRect );
+    GsRect<float> facRect( gVideoDriver.getGameResFactors() );
+    closeButtonRect.transformInverse(facRect);
 
-	mpReturnButton = pButton;
+    //addControl( pButton, closeButtonRect );
+
+    //mpReturnButton = pButton;
 
 	mpTextCtrl = new CGUIText( Text );
 
@@ -62,16 +65,16 @@ m_mustclose(false)
 
 	addControl( mpTextCtrl, TextRect );
 
-	GsRect<float> closeRect = pButton->mRect;
-	closeRect.x = mRect.x;
-	closeRect.y = mRect.y;
-	pButton->setRect(closeRect);
+    //GsRect<float> closeRect = pButton->mRect;
+    //closeRect.x = mRect.x;
+    //closeRect.y = mRect.y;
+    //pButton->setRect(closeRect);
     updateBackground();
 }
 
 void CMessageBox::processLogic()
 {
-    if( gInput.getPressedCommand(IC_STATUS) )
+    if( gInput.getPressedCommand(IC_STATUS) || gInput.mouseClicked() )
     {
 		m_mustclose = true;
     }

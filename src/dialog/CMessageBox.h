@@ -46,7 +46,6 @@ public:
 
 protected:
 	bool m_mustclose;
-	GsButton *mpReturnButton;
 
 	CGUIText *mpTextCtrl;
 };

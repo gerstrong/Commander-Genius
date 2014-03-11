@@ -50,7 +50,7 @@ public:
         const float wFac = float(getGameResolution().w)/320.0f;
         const float hFac = float(getGameResolution().h)/200.0f;
 
-        GsRect<float> scaledDownRect(wFac, hFac);
+        GsRect<float> scaledDownRect(0.0f, 0.0f, wFac, hFac);
         return scaledDownRect;
     }
 

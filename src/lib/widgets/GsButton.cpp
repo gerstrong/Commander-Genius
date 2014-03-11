@@ -76,8 +76,6 @@ void GsButton::processLogic()
     }
 }
 
-
-
 void GsButton::drawNoStyle(SDL_Rect& lRect)
 {
     if(!mEnabled) // TODO: I think, if it is disabled, it should use another color
@@ -104,15 +102,10 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
     Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
 }
 
-
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {
 	// Transform to the display coordinates
-    GsRect<float> gameResFacs = gVideoDriver.getGameResFactors();
     GsRect<float> displayRect = mRect;
-
-    displayRect.w /= gameResFacs.w;
-    displayRect.h /= gameResFacs.h;
 
     displayRect.transform(RectDispCoordFloat);
 	SDL_Rect lRect = displayRect.SDLRect();
