@@ -118,7 +118,6 @@ void CControlsettings::init()
 {}
 
 
-
 void CControlsettings::release()
 {
 	gInput.setTwoButtonFiring(mSelectedPlayer-1, mpTwoButtonSwitch->isEnabled() );
@@ -150,14 +149,14 @@ void CControlSettingsBase::ponder(const float deltaT)
         {
             mapping = false;
 
-            GalaxyButton *button = dynamic_cast<GalaxyButton*>(mpMenuDialog->CurrentControl());
-            if(button)
-            {
-                int pos; unsigned char input;
-                std::string evName = gInput.getNewMappedEvent(pos, input);
-                InputCommands com = static_cast<InputCommands>(pos);
-                button->setText(mCommandName[com] + evName);
-            }
+            int pos; unsigned char input;
+            std::string evName = gInput.getNewMappedEvent(pos, input);
+            InputCommands com = static_cast<InputCommands>(pos);
+
+            if(pos >= MID_COMMANDS_OFFSETS)
+                pos -= MID_COMMANDS_OFFSETS;
+
+            mpButtonList[pos]->setText(mCommandName[com] + evName);
         }
 
         GalaxyMenu::ponder(0);

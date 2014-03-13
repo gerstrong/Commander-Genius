@@ -143,14 +143,14 @@ void CControlSettingsBase::ponder(const float deltaT)
         {
             mapping = false;
 
-            Button *button = dynamic_cast<Button*>(mpMenuDialog->CurrentControl());
-            if(button)
-            {
-                int pos; unsigned char input;
-                std::string evName = gInput.getNewMappedEvent(pos, input);
-                InputCommands com = static_cast<InputCommands>(pos);
-                button->setText(mCommandName[com] + evName);
-            }
+            int pos; unsigned char input;
+            std::string evName = gInput.getNewMappedEvent(pos, input);
+            InputCommands com = static_cast<InputCommands>(pos);
+
+            if(pos >= MID_COMMANDS_OFFSETS)
+                pos -= MID_COMMANDS_OFFSETS;
+
+            mpButtonList[pos]->setText(mCommandName[com] + evName);
         }
 
         CBaseMenu::ponder(0);

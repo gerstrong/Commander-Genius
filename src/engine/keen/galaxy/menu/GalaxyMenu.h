@@ -22,6 +22,7 @@ public:
         mpMenuDialog->updateBackground();
     }
 
+
 };
 
 #endif /* __GALAXYMENU_H__ */

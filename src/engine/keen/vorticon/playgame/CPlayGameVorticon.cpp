@@ -311,7 +311,7 @@ void CPlayGameVorticon::ponder(const float deltaT)
     {
         mpFinale->ponder();
 
-        if(mpFinale->getHasFinished()) // -> This shouldn't be here!
+        if( mpFinale->getHasFinished() )
         {
             mpFinale.release();
 

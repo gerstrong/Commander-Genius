@@ -12,10 +12,10 @@
 #define CGUIDIALOG_H_
 
 #include "CResourceLoader.h"
-#include "utils/Geometry.h"
+//#include "utils/Geometry.h"
 #include "CGUIControl.h"
 #include "engine/CEvent.h"
-#include "graphics/CBitmap.h"
+//#include "graphics/CBitmap.h"
 #include <sdl/extensions.h>
 #include <list>
 #include <memory>
@@ -97,8 +97,8 @@ public:
 
 	void setSelection(const unsigned int sel);
 
-	CGUIControl* CurrentControl()
-	{	return 	mpCurrentCtrl;	}
+    CGUIControl* CurrentControl()
+    {	return 	mpCurrentCtrl;	}
 
 protected:
 

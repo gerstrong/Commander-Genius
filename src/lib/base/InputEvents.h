@@ -35,6 +35,8 @@ enum InputCommands
 	MAX_COMMANDS
 };
 
+const int MID_COMMANDS_OFFSETS = 8;
+
 enum PointingDevEventTypes
 {
     PDE_MOVED = 0,

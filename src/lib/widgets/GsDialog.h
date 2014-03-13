@@ -105,6 +105,10 @@ public:
 	CGUIControl* CurrentControl()
 	{	return 	mpCurrentCtrl;	}
 
+    void setCurrentControl(CGUIControl* control)
+    {	mpCurrentCtrl = control;	}
+
+
 protected:
 
 	void selectPrevItem();
