@@ -28,9 +28,10 @@ mName(bitmap.getName())
 
     if( sfc != nullptr )
     {
-        // Create new and compatible surface for that bitmap
-        SDL_Surface *optSfc = gVideoDriver.convertThroughBlitSfc( sfc );
-        mpBitmapSurface.reset( optSfc, &SDL_FreeSurface );
+        // Create a copy of the surface for that bitmap
+        SDL_Surface *copySfc = SDL_ConvertSurface(sfc, sfc->format, 0 );
+
+        mpBitmapSurface.reset( copySfc, &SDL_FreeSurface );
     }
 }
 
@@ -157,12 +158,8 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
 {
     SDL_Rect newRect = destRes.SDLRect();
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
     if(newRect.w == mpBitmapSurface->w && newRect.h == mpBitmapSurface->h)
         return true;
-
-#endif
 
     std::shared_ptr<SDL_Surface> newSfc;
 

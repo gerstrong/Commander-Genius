@@ -85,6 +85,7 @@ mSkipSection(false)
     mCurrentLogoBmp.exchangeColor( 0x0 , 0xa8, 0x0,
                                    0x55, 0x55 , 0xFF);
 
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceAlphaMod( mCommanderTextSfc.getSDLSurface(), 128);
     SDL_SetSurfaceAlphaMod( mKeenTextSfc.getSDLSurface(), 128);
