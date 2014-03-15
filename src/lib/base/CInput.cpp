@@ -508,14 +508,8 @@ void CInput::transMouseRelCoord(CVec &Pos,
 								const SDL_MouseMotionEvent motion,
 								const GsRect<Uint16> &transformRect)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    Pos.x = ( static_cast<float>(motion.x)/static_cast<float>(transformRect.w) );
-    Pos.y = ( static_cast<float>(motion.y)/static_cast<float>(transformRect.h) );
-#else
     Pos.x = ( static_cast<float>(motion.x-transformRect.x)/static_cast<float>(transformRect.w) );
     Pos.y = ( static_cast<float>(motion.y-transformRect.y)/static_cast<float>(transformRect.h) );
-#endif
-
 }
 
 
