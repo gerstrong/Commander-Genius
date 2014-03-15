@@ -19,8 +19,6 @@
 #include "CProfilesMenu.h"
 #include "CSelectionMenu.h"
 
-//#include "sdl/CVideoDriver.h"
-
 #include "widgets/Button.h"
 
 namespace vorticon

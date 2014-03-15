@@ -201,37 +201,37 @@ void CInput::loadControlconfig(void)
 			section = "input" + itoa(i);
 
 			std::string value;
-			Configuration.ReadString( section, "Left", value, "Key 276 (left)");
+            Configuration.ReadString( section, "Left", value, "Left");
 			setupInputCommand( InputCommand[i], IC_LEFT, value );
-			Configuration.ReadString( section, "Up", value, "Key 273 (up)");
+            Configuration.ReadString( section, "Up", value, "Up");
 			setupInputCommand( InputCommand[i], IC_UP, value );
-			Configuration.ReadString( section, "Right", value, "Key 275 (right)");
+            Configuration.ReadString( section, "Right", value, "Right");
 			setupInputCommand( InputCommand[i], IC_RIGHT, value );
-			Configuration.ReadString( section, "Down", value, "Key 274 (down)");
+            Configuration.ReadString( section, "Down", value, "Down");
 			setupInputCommand( InputCommand[i], IC_DOWN, value );
 
-			Configuration.ReadString( section, "Lower-Left", value, "Key 279 (end)");
+            Configuration.ReadString( section, "Lower-Left", value, "End");
 			setupInputCommand( InputCommand[i], IC_LOWERLEFT, value );
-			Configuration.ReadString( section, "Lower-Right", value, "Key 281 (page down)");
+            Configuration.ReadString( section, "Lower-Right", value, "Page Down");
 			setupInputCommand( InputCommand[i], IC_LOWERRIGHT, value );
-			Configuration.ReadString( section, "Upper-Left", value, "Key 278 (home)");
+            Configuration.ReadString( section, "Upper-Left", value, "Home");
 			setupInputCommand( InputCommand[i], IC_UPPERLEFT, value );
-			Configuration.ReadString( section, "Upper-Right", value, "Key 280 (page up)");
+            Configuration.ReadString( section, "Upper-Right", value, "Page Up");
 			setupInputCommand( InputCommand[i], IC_UPPERRIGHT, value );
 
-			Configuration.ReadString( section, "Jump", value, "Key 306 (left ctrl)");
+            Configuration.ReadString( section, "Jump", value, "Left ctrl");
 			setupInputCommand( InputCommand[i], IC_JUMP, value );
-			Configuration.ReadString( section, "Pogo", value, "Key 308 (left alt)");
+            Configuration.ReadString( section, "Pogo", value, "Left alt");
 			setupInputCommand( InputCommand[i], IC_POGO, value );
-			Configuration.ReadString( section, "Fire", value, "Key 32 (space)");
+            Configuration.ReadString( section, "Fire", value, "Space");
 			setupInputCommand( InputCommand[i], IC_FIRE, value );
-			Configuration.ReadString( section, "Status", value, "Key 13 (return)");
+            Configuration.ReadString( section, "Status", value, "Return");
 			setupInputCommand( InputCommand[i], IC_STATUS, value );
-			Configuration.ReadString( section, "Camlead", value, "Key 99 (c)");
+            Configuration.ReadString( section, "Camlead", value, "c");
 			setupInputCommand( InputCommand[i], IC_CAMLEAD, value );
-			Configuration.ReadString( section, "Help", value, "Key 282 (f1)");
+            Configuration.ReadString( section, "Help", value, "F11");
 			setupInputCommand( InputCommand[i], IC_HELP, value );
-			Configuration.ReadString( section, "Back", value, "Key 27 (escape)");
+            Configuration.ReadString( section, "Back", value, "Escape");
 			setupInputCommand( InputCommand[i], IC_BACK, value );
 
 			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], false);
