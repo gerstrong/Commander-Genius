@@ -757,7 +757,7 @@
 	"common/CBehaviorEngine.h"
 	<lib/base/GsLogging.h>
 
-1394262615 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
+1394474100 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
 	"CGameLauncher.h"
 	<base/GsLogging.h>
 	<base/video/CVideoDriver.h>
@@ -1292,7 +1292,7 @@
 1355227553 c:\users\admin\desktop\commander-genius\src\engine\vorticon\dialog\cmessageboxvort.h
 	"dialog/CMessageBox.h"
 
-1394262615 c:\users\admin\desktop\commander-genius\src\dialog\cmessagebox.h
+1394882251 c:\users\admin\desktop\commander-genius\src\dialog\cmessagebox.h
 	<widgets/GsDialog.h>
 	<widgets/GsText.h>
 	<widgets/GsButton.h>
@@ -1841,7 +1841,7 @@
 	<string>
 	<SDL.h>
 
-1394262615 source:c:\users\admin\desktop\commander-genius\src\dialog\cmessagebox.cpp
+1394882251 source:c:\users\admin\desktop\commander-genius\src\dialog\cmessagebox.cpp
 	"CMessageBox.h"
 	<base/video/CVideoDriver.h>
 	<base/CInput.h>
@@ -10403,7 +10403,7 @@
 	<vector>
 	<memory>
 
-1394262618 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsdialog.h
+1394882251 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsdialog.h
 	<list>
 	<memory>
 	<engine/CEvent.h>
@@ -10424,7 +10424,7 @@
 1394262618 c:\users\admin\desktop\commander-genius\src\lib\widgets\gscontrol.h
 	<base/InputEvents.h>
 
-1394262617 c:\users\admin\desktop\commander-genius\src\lib\base\inputevents.h
+1394882251 c:\users\admin\desktop\commander-genius\src\lib\base\inputevents.h
 	"engine/CEvent.h"
 	"CVec.h"
 
@@ -10446,7 +10446,7 @@
 1394262617 c:\users\admin\desktop\commander-genius\src\lib\base\gsgear.h
 	<base/GsEvent.h>
 
-1394262617 c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideodriver.h
+1394882251 c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideodriver.h
 	<base/Singleton.h>
 	<base/video/CVideoEngine.h>
 	<base/GsEvent.h>
@@ -10497,7 +10497,7 @@
 1394262618 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbanner.h
 	"GsText.h"
 
-1394262618 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbutton.h
+1394882251 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbutton.h
 	"GsControl.h"
 	<string>
 	<memory>
@@ -11036,7 +11036,7 @@
 	"GalaxyMenu.h"
 	<base/GsEvent.h>
 
-1394262615 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\galaxymenu.h
+1394882251 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\galaxymenu.h
 	<widgets/GsBaseMenu.h>
 	"widgets/Button.h"
 	<lib/widgets/GsMenuController.h>
@@ -11858,7 +11858,7 @@
 1394262615 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\chelpmenu.h
 	"GalaxyMenu.h"
 
-1394262615 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\controlsettings.cpp
+1394882251 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\controlsettings.cpp
 	<base/utils/StringUtils.h>
 	"GalaxyMenu.h"
 	"SelectionMenu.h"
@@ -12631,9 +12631,10 @@
 	"fileio/CExeFile.h"
 	<memory>
 
-1394262616 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cfinalestaticscene.h
+1394882251 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cfinalestaticscene.h
 	"../dialog/CMessageBoxVort.h"
-	"graphics/GsBitmap.h"
+	<graphics/GsBitmap.h>
+	<graphics/GsSurface.h>
 	<SDL.h>
 	<string>
 	<list>
@@ -12685,9 +12686,10 @@
 	"VorticonMenu.h"
 	<base/GsEvent.h>
 
-1394262616 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\vorticonmenu.h
+1394882251 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\vorticonmenu.h
 	<widgets/GsBaseMenu.h>
 	<lib/widgets/GsMenuController.h>
+	<lib/base/video/CVideoDriver.h>
 
 1394262616 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cvorticonmaploader.cpp
 	"CVorticonMapLoader.h"
@@ -12812,7 +12814,7 @@
 	<base/FindFile.h>
 	<fstream>
 
-1394262616 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cfinalestaticscene.cpp
+1394882251 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\finale\cfinalestaticscene.cpp
 	"CFinaleStaticScene.h"
 	<base/video/CVideoDriver.h>
 	<lib/base/GsTimer.h>
@@ -12900,7 +12902,7 @@
 	"VorticonMenu.h"
 	<string>
 
-1394262616 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\ccontrolsettings.cpp
+1394882251 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\ccontrolsettings.cpp
 	<base/utils/StringUtils.h>
 	"CSelectionMenu.h"
 	"CControlsettings.h"
@@ -13011,7 +13013,7 @@
 	"fileio/CSaveGameController.h"
 	"common/CBehaviorEngine.h"
 
-1394262616 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\csettingsmenu.cpp
+1394882251 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\csettingsmenu.cpp
 	<lib/base/GsTimer.h>
 	<widgets/GsButton.h>
 	<widgets/GsMenuController.h>
@@ -13114,7 +13116,7 @@
 	"sdl/sound/CSound.h"
 	"../finale/CTantalusRay.h"
 
-1394262616 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.cpp
+1394882251 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.cpp
 	<lib/base/GsTimer.h>
 	<base/video/CVideoDriver.h>
 	<base/CInput.h>
@@ -13387,7 +13389,7 @@
 	<base/video/CVideoDriver.h>
 	"GsBitmap.h"
 
-1394262618 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbutton.cpp
+1394882251 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsbutton.cpp
 	<graphics/GsGraphics.h>
 	<base/CInput.h>
 	<base/video/CVideoDriver.h>

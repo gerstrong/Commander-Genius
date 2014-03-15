@@ -546,7 +546,9 @@ void CInput::pollEvents()
 
     auto &dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
 
+#ifndef WIN32 // For some odd reason under Windows the clickGameArea must be zero
     if( !gVideoDriver.isOpenGL() )
+#endif
     {
         clickGameArea.x = 0;
         clickGameArea.y = 0;
@@ -617,7 +619,7 @@ void CInput::pollEvents()
                 gPointDevice.mPointingState.mPos = Pos;
             }
             else if(Event.button.button == 4) // scroll up
-            {                
+            {
                 gEventManager.add( new MouseWheelEvent( CVec(0.0, -1.0) ) );
             }
             else if(Event.button.button == 5) // scroll down
