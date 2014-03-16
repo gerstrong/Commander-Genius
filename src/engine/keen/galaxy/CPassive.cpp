@@ -105,6 +105,9 @@ mSkipSection(false)
 
 bool CPassiveGalaxy::init()
 {
+    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
+    gVideoDriver.setNativeResolution(gameRect);
+
     auto blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
     return true;

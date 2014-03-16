@@ -79,9 +79,6 @@ CPlayGame(g_pBehaviorEngine->m_ExeFile, startlevel)
 	else
 		gGraphics.Palette.setdarkness(FADE_DARKNESS_HARD);
 
-    // Create the special merge effect (Fadeout)
-    CColorMerge *pColorMergeFX = new CColorMerge(8);
-    gEffectController.setupEffect(pColorMergeFX);
 }
 
 // Setup all the players, when one level is started
@@ -134,7 +131,15 @@ void CPlayGameVorticon::setupPlayers()
 }
 
 bool CPlayGameVorticon::init()
-{
+{    
+    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
+    gVideoDriver.setNativeResolution(gameRect);
+
+    // Create the special merge effect (Fadeout)
+    CColorMerge *pColorMergeFX = new CColorMerge(8);
+    gEffectController.setupEffect(pColorMergeFX);
+
+
 	CVorticonMapLoaderWithPlayer MapLoader( mMap, m_Player, mSpriteObjectContainer );
 	MapLoader.m_checkpointset = m_checkpointset;
     const int numPlayers = g_pBehaviorEngine->mPlayers;

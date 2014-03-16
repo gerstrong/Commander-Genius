@@ -21,6 +21,9 @@ namespace vorticon
 
 bool CPassiveVort::init()
 {    
+    const GsRect<Uint16> gameRect(320, 200);
+    gVideoDriver.setNativeResolution(gameRect);
+
 	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
     mpTextSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 	SDL_FreeSurface(temp);

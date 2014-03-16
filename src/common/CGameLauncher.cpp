@@ -303,7 +303,7 @@ void CGameLauncher::start()
     // Here it always makes sense to have the mouse cursor active
     SDL_ShowCursor(SDL_ENABLE);
 
-    // Set the netive resolution
+    // Set the native resolution
     gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().m_DisplayRect);
 
     // In some cases especially when another game was running, the scene wasn't cleaned up.
@@ -442,7 +442,7 @@ void CGameLauncher::ponder(const float deltaT)
                 // Create temporary surface to be scaled
                 GsSurface scaledBlit;*/
 
-                const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
+                //const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
 
                 /*GsWeakSurface blitOld( gVideoDriver.getBlitSurface() );
                 scaledBlit.createCopy(blitOld);
@@ -452,7 +452,7 @@ void CGameLauncher::ponder(const float deltaT)
                 scaledBlit.scaleTo(gameRect, vidConf.m_ScaleXFilter);*/
 
                 // Set the game resolution the user want for the started game
-                gVideoDriver.setNativeResolution(gameRect);
+                //gVideoDriver.setNativeResolution(gameRect);
 
                 // Taken out because it looks ugly if the resolution changes.
                 //gEffectController.setupEffect(new CScrollEffect(scaledBlit, scaledBlit.width(), -18, RIGHT, CENTER));
