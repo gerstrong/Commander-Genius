@@ -2,6 +2,7 @@
 #ifndef __GS_SURFACE__
 #define __GS_SURFACE__
 
+#include <base/video/scaler/CScaler.h>
 #include <base/utils/Geometry.h>
 #include <memory>
 
@@ -155,6 +156,7 @@ public:
         return mpSurface;
     }
 
+
 protected:
 
     SDL_Surface *mpSurface;
@@ -202,6 +204,37 @@ public:
         mpSurface = SDL_CreateRGBSurface(flags, width, height, depth,
                                          Rmask, Gmask, Bmask, Amask);
     }
+
+
+
+    /**
+     * @brief createCopy will create a copy of another surface
+     * @param orig Orignal surface to copy
+     */
+    void createCopy(GsWeakSurface &orig)
+    {
+        SDL_Surface *sdlSfc = orig.getSDLSurface();
+        SDL_PixelFormat *format = sdlSfc->format;
+        create(sdlSfc->flags,
+               sdlSfc->w,
+               sdlSfc->h,
+               format->BitsPerPixel,
+               format->Rmask,
+               format->Gmask,
+               format->Bmask,
+               format->Amask);
+
+        orig.blitTo(*this);
+    }
+
+    /// Scale routines
+    /**
+     * @brief scaleTo will scale to rect to the given newRect Size
+     * @param scaledRect x and y coordinates are ignored. Only w and h will be taken for scaling
+     * @return true, if scaling was performed, otherwise false
+     */
+    bool scaleTo(const GsRect<Uint16> &scaledRect, const filterOptionType filter);
+
 };
 
 

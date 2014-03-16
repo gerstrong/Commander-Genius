@@ -139,14 +139,14 @@ void CStatusScreenGalaxy::scaleToResolution()
     SDL_SetAlpha(mpStatusSurface.get(), 0, 0);
 #endif
 
-    SDL_Rect src = mpStatusSurface->clip_rect;
-    src.w *= scaleFac;
-    src.h *= scaleFac;
+    SDL_Rect srcRect = mpStatusSurface->clip_rect;
+    srcRect.w *= scaleFac;
+    srcRect.h *= scaleFac;
 
     blitScaled(mpStatusSurface.get(),
-               src,
+               srcRect,
                mStatusSfcTransformed.getSDLSurface(),
-               src,
+               srcRect,
                NONE);
 }
 

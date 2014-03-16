@@ -75,3 +75,53 @@ void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
 }
 
 
+
+
+bool GsSurface::scaleTo(const GsRect<Uint16> &scaledRect, const filterOptionType filter)
+{
+    SDL_Rect newRect = scaledRect.SDLRect();
+
+    if(newRect.w == mpSurface->w && newRect.h == mpSurface->h)
+        return true;
+
+
+    // Need to do that, otherwise it won't work.
+    //optimizeSurface();
+
+    auto sfcFormat = mpSurface->format;
+
+    SDL_Surface *newSfc =
+            SDL_CreateRGBSurface(mpSurface->flags,
+                                 newRect.w, newRect.h,
+                                 sfcFormat->BitsPerPixel,
+                                 sfcFormat->Rmask,
+                                 sfcFormat->Gmask,
+                                 sfcFormat->Bmask,
+                                 sfcFormat->Amask  );
+
+    if(!newSfc)
+      return false;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+    SDL_BlendMode blendMode;
+
+    SDL_GetSurfaceBlendMode(mpSurface, &blendMode);
+    SDL_SetSurfaceBlendMode(newSfc.get(), blendMode);
+
+#endif
+
+    blitScaled(mpSurface,
+               mpSurface->clip_rect,
+               newSfc,
+               newRect,
+               filter);
+
+    // Tear down old surface!
+    SDL_FreeSurface(mpSurface);
+
+    // And set the newly created and scaled one
+    mpSurface = newSfc;
+
+    return true;
+}

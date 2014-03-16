@@ -14,12 +14,16 @@
 #include <memory>
 
 #include <base/utils/Geometry.h>
+#include <graphics/GsSurface.h>
 
 class GsBitmap
 {
 public:
 
 	GsBitmap();
+
+    // Will create a copy of the bitmap
+    GsBitmap(const GsWeakSurface &sfc);
 
 	GsBitmap(const std::shared_ptr<SDL_Surface> &bmpSfc);
 

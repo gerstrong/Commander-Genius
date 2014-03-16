@@ -190,8 +190,6 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
 
 #endif
 
-
-
     CVidConfig &vidConf = gVideoDriver.getVidConfig();
 
 
