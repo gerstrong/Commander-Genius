@@ -29,12 +29,14 @@ public:
 
 private:
 
-
 	void processDiving();
 	void processDead();
 
 	int m_swimupspeed;
 	int m_breathtimer;
+
+    // This will ensure that the player presses multiple times the jump button to swim up...
+    bool mDidSwimUp;
 };
 
 }

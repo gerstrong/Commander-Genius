@@ -26,7 +26,14 @@ void CPlayer::processWorldMap()
    	if(!hideplayer && !beingteleported) ProcessInput();
    	setWorldMapdir();
 	
-    if(!hideplayer && !beingteleported)	Walking();
+    if(!hideplayer && !beingteleported)
+    {
+        Walking();
+
+        // if we bump against a wall all inertia stops
+        if (xinertia > 0 && blockedr) xinertia = 0;
+        if (xinertia < 0 && blockedl) xinertia = 0;
+    }
 
     if(!beingteleported)
     {

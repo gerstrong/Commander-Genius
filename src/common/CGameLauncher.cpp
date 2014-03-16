@@ -351,32 +351,6 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     if( dynamic_cast<const GMStart*>(evPtr) )
     {
         setChosenGame(mpSelList->getSelection());
-
-        // Create a surface which only will contain the dialog and else transparent background
-        mLauncherDialog.processRendering();
-
-        // Because we are going to cahnge the resolutions, to get swipe effect correctly, we need to update the graphics by scaling
-        // a copied surface
-        mLauncherDialog.updateGraphics();
-        mLauncherDialog.processRendering();
-
-        // Create temporary surface to be scaled
-        GsSurface scaledBlit;
-
-        const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
-
-        GsWeakSurface blitOld( gVideoDriver.getBlitSurface() );
-        scaledBlit.createCopy(blitOld);
-
-        // Use the filter supplied by the user to scale down the stuff
-        CVidConfig &vidConf = gVideoDriver.getVidConfig();
-        scaledBlit.scaleTo(gameRect, vidConf.m_ScaleXFilter);
-
-        // Set the game resolution the user want for the started game
-        gVideoDriver.setNativeResolution(gameRect);
-
-        // Taken out because it looks ugly if the resolution changes.
-        //gEffectController.setupEffect(new CScrollEffect(scaledBlit, scaledBlit.width(), -18, RIGHT, CENTER));
     }
 
     // Check Scroll events happening on this Launcher
@@ -459,6 +433,30 @@ void CGameLauncher::ponder(const float deltaT)
             }
             else
             {
+
+                // Because we are going to change the resolutions, to get swipe effect correctly, we need to update the graphics by scaling
+                // a copied surface
+                /*mLauncherDialog.updateGraphics();
+                mLauncherDialog.processRendering();
+
+                // Create temporary surface to be scaled
+                GsSurface scaledBlit;*/
+
+                const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
+
+                /*GsWeakSurface blitOld( gVideoDriver.getBlitSurface() );
+                scaledBlit.createCopy(blitOld);
+
+                // Use the filter supplied by the user to scale down the stuff
+                CVidConfig &vidConf = gVideoDriver.getVidConfig();
+                scaledBlit.scaleTo(gameRect, vidConf.m_ScaleXFilter);*/
+
+                // Set the game resolution the user want for the started game
+                gVideoDriver.setNativeResolution(gameRect);
+
+                // Taken out because it looks ugly if the resolution changes.
+                //gEffectController.setupEffect(new CScrollEffect(scaledBlit, scaledBlit.width(), -18, RIGHT, CENTER));
+
 
                 if(episode >= 1 && episode <= 7)
                 {

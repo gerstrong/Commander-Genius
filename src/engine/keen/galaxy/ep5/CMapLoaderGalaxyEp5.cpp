@@ -56,6 +56,13 @@ const unsigned int PLATFORM_HORIZ = 30;
 const unsigned int PLATFORM_DROP = 32;
 
 const unsigned int DIVE_SUIT = 35;
+
+bool CMapLoaderGalaxyEp5::isKeenPlayer(const int foeID)
+{
+    return (foeID > 0 && foeID <= 3);
+}
+
+
 /**
  * @brief	Loads a foe given by the coordiantes
  */

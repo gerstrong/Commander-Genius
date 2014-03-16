@@ -269,7 +269,12 @@ void CPlayer::Walking()
     }
 	
     // test if we're trying to walk
-    if ((psemisliding && xinertia!=0) || (((playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) || (( (playcontrol[PA_Y] < 0) || (playcontrol[PA_Y] > 0)) && m_playingmode == WORLDMAP )) && !inhibitwalking))
+    if ((psemisliding && xinertia!=0)
+            || (((playcontrol[PA_X] < 0) ||
+                 (playcontrol[PA_X] > 0) ||
+                 (( (playcontrol[PA_Y] < 0) ||
+                    (playcontrol[PA_Y] > 0))
+               && m_playingmode == WORLDMAP )) && !inhibitwalking))
     {
 		// we just started walking or we changed directions suddenly?
 		if (pwalking == 0 || ((lastPDir.x==RIGHT && pDir.x==LEFT)||(lastPDir.x==LEFT && pDir.x==RIGHT)))
@@ -328,97 +333,101 @@ void CPlayer::Walking()
 	else
         cur_pfastincrate = PFASTINCRATE;
 
-	if (playcontrol[PA_X] > 0 && !ppogostick)
-	{   // RIGHT key down
-		// quickly reach PLAYER_FASTINCMAXSPEED
+    if(!ppogostick && !pfalling)
+    {
 
-		if( xinertia<0 )
-			xinertia = 0;
+        if (playcontrol[PA_X] > 0)
+        {   // RIGHT key down
+            // quickly reach PLAYER_FASTINCMAXSPEED
 
-		if (pwalkincreasetimer>=cur_pfastincrate)
-		{
-			if(pfalling) xinertia+=(1<<2);
-			else xinertia += (1<<3);
-			pwalkincreasetimer=0;
-		}
-		else	pwalkincreasetimer++;
-		
-		// prevent sliding on map
-		if ( m_playingmode == WORLDMAP )
-		{
-			if(xinertia < 0)  xinertia = 0;
-			else	xinertia = playcontrol[PA_X]*PhysicsSettings.player.max_x_speed/150;
-		}
-		
-		// increase up to max speed every time frame is changed
-		if (!pwalkanimtimer && xinertia < pmaxspeed)
-		{
-			xinertia += (1<<4);
-			if(xinertia > pmaxspeed)
-				xinertia = pmaxspeed;
-		}
-	}
-	else if (playcontrol[PA_X] < 0 && !ppogostick)
-	{ 	// LEFT key down
-		// quickly reach PFASTINCMAXSPEED
-		if( xinertia>0 )
-			xinertia = 0;
+            if( xinertia<0 )
+                xinertia = 0;
 
-		if (pwalkincreasetimer>=cur_pfastincrate)
-		{
-			if(pfalling) xinertia-=(1<<2);
-			else xinertia -= (1<<3);
-			pwalkincreasetimer=0;
-		}
-		else	pwalkincreasetimer++;
-		
-		// prevent sliding on map
-		if ( m_playingmode == WORLDMAP )
-		{
-			if(xinertia > 0)  xinertia = 0;
-			else	xinertia = playcontrol[PA_X]*PhysicsSettings.player.max_x_speed/150;
-		}
-		
-		// decrease down to max speed every time frame is changed
-		if (!pwalkanimtimer && xinertia > -pmaxspeed)
-		{
-			xinertia -= (1<<4);
-			if(xinertia < -pmaxspeed)
-				xinertia = -pmaxspeed;
-		}
-	}
-	
-	if (playcontrol[PA_Y] > 0)
-	{
-		// quickly reach PFASTINCMAXSPEED
-		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y<PhysicsSettings.player.max_x_speed)
-		{
-			pinertia_y++;
-			pwalkincreasetimer=0;
-		}
-		else
-		{
-			pwalkincreasetimer++;
-		}
-		// increase up to max speed every time frame is changed
-		if (!pwalkanimtimer && pinertia_y<pmaxspeed)
-		{
-			pinertia_y++;
-		}
-		
-		// prevent sliding on map
-		if ( m_playingmode == WORLDMAP )
-		{
-			if(pinertia_y < 0)
-			{
-				pinertia_y = 0;
-			}
-			else
-			{
-				pinertia_y=playcontrol[PA_Y]*PhysicsSettings.player.max_x_speed/150;
-			}
-		}
-		
+            if (pwalkincreasetimer>=cur_pfastincrate)
+            {
+                if(pfalling) xinertia+=(1<<2);
+                else xinertia += (1<<3);
+                pwalkincreasetimer=0;
+            }
+            else	pwalkincreasetimer++;
+
+            // prevent sliding on map
+            if ( m_playingmode == WORLDMAP )
+            {
+                if(xinertia < 0)  xinertia = 0;
+                else	xinertia = playcontrol[PA_X]*PhysicsSettings.player.max_x_speed/150;
+            }
+
+            // increase up to max speed every time frame is changed
+            if (!pwalkanimtimer && xinertia < pmaxspeed)
+            {
+                xinertia += (1<<4);
+                if(xinertia > pmaxspeed)
+                    xinertia = pmaxspeed;
+            }
+        }
+        else if (playcontrol[PA_X] < 0)
+        { 	// LEFT key down
+            // quickly reach PFASTINCMAXSPEED
+            if( xinertia>0 )
+                xinertia = 0;
+
+            if (pwalkincreasetimer>=cur_pfastincrate)
+            {
+                if(pfalling) xinertia-=(1<<2);
+                else xinertia -= (1<<3);
+                pwalkincreasetimer=0;
+            }
+            else	pwalkincreasetimer++;
+
+            // prevent sliding on map
+            if ( m_playingmode == WORLDMAP )
+            {
+                if(xinertia > 0)  xinertia = 0;
+                else	xinertia = playcontrol[PA_X]*PhysicsSettings.player.max_x_speed/150;
+            }
+
+            // decrease down to max speed every time frame is changed
+            if (!pwalkanimtimer && xinertia > -pmaxspeed)
+            {
+                xinertia -= (1<<4);
+                if(xinertia < -pmaxspeed)
+                    xinertia = -pmaxspeed;
+            }
+        }
+    }
+
+    if (playcontrol[PA_Y] > 0)
+    {
+        // quickly reach PFASTINCMAXSPEED
+        if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y<PhysicsSettings.player.max_x_speed)
+        {
+            pinertia_y++;
+            pwalkincreasetimer=0;
+        }
+        else
+        {
+            pwalkincreasetimer++;
+        }
+        // increase up to max speed every time frame is changed
+        if (!pwalkanimtimer && pinertia_y<pmaxspeed)
+        {
+            pinertia_y++;
+        }
+
+        // prevent sliding on map
+        if ( m_playingmode == WORLDMAP )
+        {
+            if(pinertia_y < 0)
+            {
+                pinertia_y = 0;
+            }
+            else
+            {
+                pinertia_y=playcontrol[PA_Y]*PhysicsSettings.player.max_x_speed/150;
+            }
+        }
+
 	}
 	else if (playcontrol[PA_Y] < 0)
 	{
@@ -451,11 +460,6 @@ void CPlayer::Walking()
 			}
 		}
 	}
-
-	// if we jump against a wall all inertia stops
-	if (xinertia > 0 && blockedr) xinertia = 0;
-	if (xinertia < 0 && blockedl) xinertia = 0;
-
 }
 
 // rate at which player walking animation is shown

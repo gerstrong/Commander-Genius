@@ -29,7 +29,8 @@ CPlayerBase(pmap, foeID, x, y,
         Cheatmode,
         playerID),
 m_swimupspeed(0),
-m_breathtimer(0)
+m_breathtimer(0),
+mDidSwimUp(false)
 {
 	mActionMap[A_KEENSWIM_MOVE] = (void (CPlayerBase::*)()) &CPlayerDive::processDiving;
 
@@ -76,8 +77,12 @@ void CPlayerDive::processDiving()
 	}
 
 
+    // If Released set to false
+    if(!m_playcontrol[PA_JUMP])
+        mDidSwimUp = false;
+
 	// If Player presses Jump button, make Keen swim faster
-	if(gInput.getPressedCommand(IC_JUMP))
+    if(m_playcontrol[PA_JUMP] && !mDidSwimUp)
 	{
 		// Animate more Keen when pressing Jump button
 		if(getActionNumber(A_KEENSWIM_MOVE))
@@ -87,34 +92,41 @@ void CPlayerDive::processDiving()
 
 		if(m_swimupspeed<MAXMOVESPEED)
 			m_swimupspeed = MAXMOVESPEED;
+
+        mDidSwimUp = true;
 	}
 
-	// Swimming - Left and Right
-	if(gInput.getHoldedCommand(IC_LEFT))
-	{
-		if(!gInput.getHoldedCommand(IC_UP) && !gInput.getHoldedCommand(IC_DOWN))
-			yDirection = 0;
+    const int pax = m_playcontrol[PA_X];
+    const int pay = m_playcontrol[PA_Y];
 
-		moveLeft(MOVESPEED+m_swimupspeed);
-		xDirection = LEFT;
-	}
-	else if(gInput.getHoldedCommand(IC_RIGHT))
-	{
-		if(!gInput.getHoldedCommand(IC_UP) && !gInput.getHoldedCommand(IC_DOWN))
-			yDirection = 0;
+    if( pax != 0 )
+    {
+        // but y movement, set direction to zero
+        if(pay == 0)
+            yDirection = 0;
 
-		moveRight(MOVESPEED+m_swimupspeed);
-		xDirection = RIGHT;
-	}
+        // Swimming - Left and Right
+        if(pax < 0)
+        {
+            moveLeft(MOVESPEED+m_swimupspeed);
+            xDirection = LEFT;
+        }
+        else if(pax > 0)
+        {
+            moveRight(MOVESPEED+m_swimupspeed);
+            xDirection = RIGHT;
+        }
+    }
+
 
 	// Up and down swimming
-	if( gInput.getHoldedCommand(IC_UP))
+    if(m_playcontrol[PA_Y] < 0)
 	{
 		moveUp(MOVESPEED+m_swimupspeed);
 		yDirection = UP;
 	}
 	
-	else if(gInput.getHoldedCommand(IC_DOWN))
+    else if(m_playcontrol[PA_Y] > 0)
 	{
 		moveDown(MOVESPEED+m_swimupspeed);
 		yDirection = DOWN;
@@ -149,7 +161,9 @@ void CPlayerDive::processDiving()
 }
 
 void CPlayerDive::process()
-{
+{    
+    processInput();
+
 	(this->*mp_processState)();
 
 	processLevelMiscFlagsCheck();

@@ -39,6 +39,8 @@ public:
 	{ return mLevelName; }
 	
 	
+    virtual bool isKeenPlayer(const int foeID) = 0;
+
 	virtual CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y) = 0;
 	virtual ~CMapLoaderGalaxy() {}
 

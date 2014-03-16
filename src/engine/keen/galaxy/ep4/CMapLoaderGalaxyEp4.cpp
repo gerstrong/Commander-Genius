@@ -63,6 +63,13 @@ const unsigned int PLATFORM_HORIZ = 30;
 const unsigned int PLATFORM_DROP = 32;
 
 const unsigned int DIVE_SUIT = 35;
+
+
+bool CMapLoaderGalaxyEp4::isKeenPlayer(const int foeID)
+{
+    return ((foeID > 0 && foeID <= 3) || (foeID == 0x2A));
+}
+
 /**
  * @brief	Loads a foe given by the coordiantes
  */
@@ -287,10 +294,14 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 	//case 0x29: break; // Unused
 
 	case 0x2A:
-		// This is Keen in the swimming suit
-        inventory.Item.mLevelName = Map.getLevelName();
-		p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
-                        RIGHT, inventory, m_Cheatmode, mNumLoadedPlayers);
+
+        if(inventory.Item.m_lifes >= 0)
+        {
+            // This is Keen in the diving suit
+            inventory.Item.mLevelName = Map.getLevelName();
+            p_newfoe = new galaxy::CPlayerDive(&Map, foe, x, y,
+                            RIGHT, inventory, m_Cheatmode, mNumLoadedPlayers);
+        }
         mNumLoadedPlayers++;
 		break;
 	

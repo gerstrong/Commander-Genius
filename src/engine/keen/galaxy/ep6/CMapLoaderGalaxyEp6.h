@@ -20,9 +20,11 @@ public:
 			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
             std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 
+    bool isKeenPlayer(const int foeID);
+
 	CGalaxySpriteObject* addFoe(CMap &Map, word foe, size_t x, size_t y);
 };
 
-};
+}
 
 #endif /* CMAPLOADERGALAXYEP6_H_ */

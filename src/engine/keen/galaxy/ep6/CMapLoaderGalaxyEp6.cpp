@@ -46,6 +46,10 @@ CMapLoaderGalaxyEp6::CMapLoaderGalaxyEp6(CExeFile &ExeFile,
 CMapLoaderGalaxy( ExeFile, ObjectPtr, inventoryVec, Cheatmode)
 {}
 
+bool CMapLoaderGalaxyEp6::isKeenPlayer(const int foeID)
+{
+    return (foeID > 0 && foeID <= 3);
+}
 
 
 /**

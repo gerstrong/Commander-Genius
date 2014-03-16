@@ -25,6 +25,8 @@ public:
 	// Some defines are hardcoded so it is easier to
 	// identify what type of foe/stuff is loaded
 
+    bool isKeenPlayer(const int foeID);
+
 	/**
 	 * @brief	Loads a foe given by the coordiantes
 	 */

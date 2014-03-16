@@ -112,7 +112,7 @@ bool CVorticonMapLoaderBase::loadBase(  Uint8 episode,
 	if(level < 10) levelname += "0";
 	levelname += itoa(level) + ".ck" + itoa(episode);
 
-	mpMap->resetScrolls();
+    mpMap->resetScrolls();
 	mpMap->m_gamepath = path;
 	mpMap->m_worldmap = (level == 80);
 

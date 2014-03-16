@@ -55,6 +55,11 @@ void CPlayer::processInLevel()
 			if(!pjumping)
 			{
 				Walking();
+
+                // if we bump against a wall all inertia stops
+                if (xinertia > 0 && blockedr) xinertia = 0;
+                if (xinertia < 0 && blockedl) xinertia = 0;
+
 				WalkingAnimation();
 			}
 		}
@@ -570,7 +575,7 @@ void CPlayer::JumpAndPogo()
 	}
 	else if(pfalling)
 	{
-		boostInertia(3);
+        boostInertia(1);
 	}
 	
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly

@@ -343,6 +343,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   return true;
 }
 
+
 /**
  * @brief	This will setup the enemies on the map. They are pushed in a objects vector,
  * 			so they can interact all the time
@@ -372,7 +373,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
             const int foeID = *data_ptr;
 
             // Check if it is the player, because in multiplayer we spawn multiple keens
-            if(foeID > 0 && foeID <= 3) // World Map only
+            if(isKeenPlayer(foeID)) // World Map only
             {
                 for(int i = 0 ; i < numPlayers ; i++)
                 {
