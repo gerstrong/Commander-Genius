@@ -107,7 +107,7 @@ bool GsSurface::scaleTo(const GsRect<Uint16> &scaledRect, const filterOptionType
     SDL_BlendMode blendMode;
 
     SDL_GetSurfaceBlendMode(mpSurface, &blendMode);
-    SDL_SetSurfaceBlendMode(newSfc.get(), blendMode);
+    SDL_SetSurfaceBlendMode(newSfc, blendMode);
 
 #endif
 

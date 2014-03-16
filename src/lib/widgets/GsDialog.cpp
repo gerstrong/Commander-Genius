@@ -14,9 +14,6 @@
 #include <base/CInput.h>
 #include <graphics/GsGraphics.h>
 
-//#include "common/CBehaviorEngine.h"
-//#include "sdl/extensions.h"
-
 
 const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
 const unsigned int MAX_STEPS = 20;
