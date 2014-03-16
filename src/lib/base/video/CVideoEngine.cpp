@@ -223,12 +223,12 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 
 bool CVideoEngine::createSurfaces()
 {
-    // Configure the Scaler
-    //Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
-    //Scaler.setFilterType(m_VidConfig.m_normal_scale);
+    return createSurfaces(m_VidConfig.m_GameRect);
+}
 
-    const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
 
+bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
+{
     gLogging.textOut("Blitsurface creation!\n");
 
 
@@ -278,11 +278,6 @@ bool CVideoEngine::createSurfaces()
     m_dst_slice = mpScreenSfc->pitch;
 
     initOverlaySurface(false, blit->w, blit->h);
-
-    /*Scaler.setFilterFactor(m_VidConfig.m_ScaleXFilter);
-    Scaler.setFilterType(m_VidConfig.m_normal_scale);
-    Scaler.setDynamicFactor( float(FilteredSurface->w)/float(aspectCorrectionRect.w),
-                             float(FilteredSurface->h)/float(aspectCorrectionRect.h));*/
 
     return true;
 }

@@ -35,9 +35,6 @@ public:
     void switchToPassive();
 
     void pumpEvent(const CEvent *evPtr);
-
-private:
-    //std::unique_ptr<CEGAGraphicsGalaxy> mpEGAGraphics;
 };
 
 }

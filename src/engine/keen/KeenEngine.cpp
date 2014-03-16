@@ -9,6 +9,8 @@
 
 #include "sdl/music/CMusic.h"
 #include <base/CInput.h>
+#include <base/video/CVideoDriver.h>
+
 
 
 void KeenEngine::switchToGamePlayMode()
@@ -70,8 +72,6 @@ void KeenEngine::ponder(const float deltaT)
         return;
 
     GameEngine::ponder(deltaT);
-
-    //CEventContainer &EventContainer = gEventManager;
 
     // Did the player press the quit/back button
     if( gInput.getPressedCommand(IC_BACK) )

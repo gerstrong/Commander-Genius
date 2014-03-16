@@ -24,6 +24,19 @@ mVDir(vDir)
     mpScrollSurface.reset( gVideoDriver.convertThroughBlitSfc(pScrollSurface), &SDL_FreeSurface );
 }
 
+CScrollEffect::CScrollEffect(GsWeakSurface &scrollSurface,
+                             const Sint16 initialPos, Sint8 speed,
+                             const direction_t hDir, const direction_t vDir) :
+mInitSpeed(speed),
+mSpeed(2*speed),
+mInitialSpeed(speed),
+mScrollPos(initialPos),
+mHDir(hDir),
+mVDir(vDir)
+{
+    mpScrollSurface.reset( gVideoDriver.convertThroughBlitSfc(scrollSurface.getSDLSurface()), &SDL_FreeSurface );
+}
+
 void CScrollEffect::ponder(const float deltaT)
 {
     if(mSpeed < 0)

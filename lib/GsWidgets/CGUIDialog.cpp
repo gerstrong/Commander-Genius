@@ -7,7 +7,7 @@
  *  GUI Class for a Dialog which is able to carry other controls
  */
 
-#include "CGUIDialog.h"
+/*#include "CGUIDialog.h"
 #include "CGUIButton.h"
 #include "CGUIInputText.h"
 #include "sdl/CVideoDriver.h"
@@ -519,3 +519,4 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
         it->processRender(screenRect);
 	}
 }
+*/

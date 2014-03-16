@@ -303,17 +303,13 @@ void CGameLauncher::start()
     // Here it always makes sense to have the mouse cursor active
     SDL_ShowCursor(SDL_ENABLE);
 
+    // Set the netive resolution
+    gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().m_DisplayRect);
+
     // In some cases especially when another game was running, the scene wasn't cleaned up.
     // We do this here
-    SDL_Surface *blit = gVideoDriver.getBlitSurface();
-    SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0, 0, 0) );
-
-    // If game was started for the first time, also open the firsttime dialog with configs.
-    /*if(m_firsttime)
-    {
-        m_firsttime = false;
-        //mp_FirstTimeMenu = new CProfilesMenu(DLG_THEME_RED);
-    }*/
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    blit.fillRGB(0, 0, 0);
 
     // Load the graphics for menu and background.
     // Resources for the main menu
@@ -342,13 +338,6 @@ void CGameLauncher::start()
         }
     };
 
-    //const std::string threadname = "Scanning Game-Directory";
-    // He we start the thread for cycling the loading screen
-    /*gResourceLoader.setStyle(PROGRESS_STYLE_TEXT);
-    if(gResourceLoader.RunLoadActionBackground(new GamesScan(mGameLauncher), threadname) != 0)
-    {
-        mGameLauncher.setChosenGame(m_start_game_no);
-    }*/
 
     mGameScanner.setStyle(PROGRESS_STYLE_TEXT);
     mGameScanner.RunLoadActionBackground(new GamesScan(*this));
@@ -364,10 +353,17 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         setChosenGame(mpSelList->getSelection());
 
         // Create a surface which only will contain the dialog and else transparent background
-        SDL_Surface *blit = gVideoDriver.getBlitSurface();
         mLauncherDialog.processRendering();
 
-        gEffectController.setupEffect(new CScrollEffect(blit, blit->w, -18, RIGHT, CENTER));
+        // Set the game resolution the user want for the started game
+        gVideoDriver.setNativeResolution(gVideoDriver.getVidConfig().m_GameRect);
+
+        // Because we cahnged the resolutions, to get swipe effect correctly, we need to update the graphics and redraw
+        mLauncherDialog.updateGraphics();
+        mLauncherDialog.processRendering();
+
+        GsWeakSurface blit( gVideoDriver.getBlitSurface() );
+        gEffectController.setupEffect(new CScrollEffect(blit, blit.width(), -1/*8*/, RIGHT, CENTER));
     }
 
     // Check Scroll events happening on this Launcher
@@ -450,14 +446,24 @@ void CGameLauncher::ponder(const float deltaT)
             }
             else
             {
-                // Now let's decide which engine we have to start.
-                if(episode >= 1 && episode <= 3)
+
+                if(episode >= 1 && episode <= 7)
                 {
-                    gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
+                    // Now let's decide which engine we have to start.
+                    if(episode >= 1 && episode <= 3)
+                    {
+                        gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
+                    }
+                    else if(episode >= 4 && episode <= 7)
+                    {
+                        gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
+                    }
+
                 }
-                else if(episode >= 4 && episode <= 7)
+
+                else // Everything cannot be
                 {
-                    gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
+                    gLogging.textOut("Something is wrong with your Episode configuration! Please check the game your chose");
                 }
             }
         }

@@ -15,14 +15,10 @@
 #include <memory>
 
 #include <engine/CEvent.h>
-
+#include <graphics/GsSurface.h>
 
 #include "GsControl.h"
 #include "GsBitmap.h"
-
-//#include "CResourceLoader.h"
-//#include <base/utils/Geometry.h>
-//#include <sdl/extensions.h>
 
 
 class CGUIDialog
@@ -124,8 +120,8 @@ private:
 	std::list< std::shared_ptr<CGUIControl> > mControlList;
 
 	// SDL_Surface of the Background
-    std::shared_ptr<SDL_Surface>    mpBackgroundSfc;
-    GsBitmap mBackgroundBmp;
+    //std::shared_ptr<SDL_Surface>    mBackgroundSfc;
+    GsSurface    mBackgroundSfc;
     std::shared_ptr<SDL_Surface>    mpTempSfc;
 
 	int mSelection;

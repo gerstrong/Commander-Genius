@@ -54,6 +54,8 @@ public:
         return scaledDownRect;
     }
 
+    bool setNativeResolution(const GsRect<Uint16> &dispRect);
+
 	bool start();
 	void isFullscreen(bool value);
 
@@ -89,9 +91,14 @@ public:
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
 	unsigned short getDepth() const;
-	GsRect<Uint16> getGameResolution() const { return m_VidConfig.m_GameRect; }
 
-	SDL_Surface *getBlitSurface() { return mpVideoEngine->getBlitSurface(); }
+
+    GsRect<Uint16> getGameResolution() const
+    {
+        return GsRect<Uint16>(getBlitSurface()->clip_rect);
+    }
+
+    SDL_Surface *getBlitSurface() const { return mpVideoEngine->getBlitSurface(); }
 
     SDL_Surface *convertThroughBlitSfc( SDL_Surface *sfc );
 
@@ -138,7 +145,6 @@ public:
 	  m_VidConfig.mAspectCorrection.w = w; 
 	  m_VidConfig.mAspectCorrection.h = h; 
 	}
-	//bool getAspectCorrection(void) { return m_VidConfig.m_aspect_correction; }
 	bool getSpecialFXConfig(void) { return m_VidConfig.m_special_fx; }
 	bool getRefreshSignal() { return m_mustrefresh; }
 	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }

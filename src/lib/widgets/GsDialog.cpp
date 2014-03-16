@@ -279,12 +279,29 @@ void CGUIDialog::setPosition(const float x, const float y)
 void CGUIDialog::initEmptyBackround()
 {
     const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
-    mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
 
-    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+    /*auto *blit = gVideoDriver.getBlitSurface();
+    SDL_PixelFormat *format = blit->format;
 
-	SDL_Surface *sfc = mpBackgroundSfc.get();    
-    SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );        
+    SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
+                rect.w,
+                rect.h,
+                RES_BPP,
+                format->Rmask,
+                format->Gmask,
+                format->Bmask,
+                format->Amask );-*/
+
+    mBackgroundSfc.create(0, lRect.w, lRect.h, RES_BPP, 0, 0, 0, 0);
+
+    /*mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
+
+    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );*/
+
+
+    mBackgroundSfc.fillRGB(230, 230, 230);
+    /*SDL_Surface *sfc = mpBackgroundSfc.get();
+    SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );        */
 }
 
 
@@ -323,13 +340,14 @@ void CGUIDialog::drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect)
 void CGUIDialog::initVorticonBackground()
 {
     const SDL_Rect Rect = gVideoDriver.toBlitRect(mRect);
-    mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
-    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );
+    /*mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
+    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );*/
+    mBackgroundSfc.create(0, Rect.w, Rect.h, RES_BPP, 0, 0, 0, 0);
 
 	// Now lets draw the text of the list control
 	GsFont &Font = gGraphics.getFont(1);
 
-	SDL_Surface *backSfc = mpBackgroundSfc.get();
+    SDL_Surface *backSfc = mBackgroundSfc.getSDLSurface();
 
 
 	// Draw the character so the classical vorticon menu is drawn
@@ -351,18 +369,21 @@ void CGUIDialog::initVorticonBackground()
 
 void CGUIDialog::initGalaxyBackround()
 {   
-    mBackgroundBmp = *gGraphics.getBitmapFromStr("KEENSWATCH");
+    GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr("KEENSWATCH") );
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-    mBackgroundBmp.scaleTo(gameRes);
+    backgroundBmp.scaleTo(gameRes);
 
-    SDL_Surface *swatchBmp = mBackgroundBmp.getSDLSurface();
+    GsRect<Uint16> bmpRect(backgroundBmp.getWidth(), backgroundBmp.getHeight());
 
-    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( swatchBmp ), &SDL_FreeSurface );
+    GsWeakSurface swatchSfc(backgroundBmp.getSDLSurface());
+
+    mBackgroundSfc.create( 0, bmpRect.w, bmpRect.h, RES_BPP, 0, 0, 0, 0);
+    swatchSfc.blitTo(mBackgroundSfc);
 
 
     // Besides the Background Bitmap we need to draw two lines
-	SDL_Surface *backSfc = mpBackgroundSfc.get();
+    SDL_Surface *backSfc = mBackgroundSfc.getSDLSurface();
 
     Uint32 color = SDL_MapRGB( backSfc->format, 84, 234, 84 );
 	SDL_Rect scoreRect;
@@ -450,7 +471,7 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
     GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
     auto engine = g_pBehaviorEngine->getEngine();
-    auto *bgSfc = mpBackgroundSfc.get();
+    auto *bgSfc = mBackgroundSfc.getSDLSurface();
 
     if( engine == ENGINE_GALAXY )
 	{

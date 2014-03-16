@@ -235,6 +235,11 @@ bool CVideoDriver::applyMode()
 	return true;
 }
 
+bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect)
+{
+    return mpVideoEngine->createSurfaces(dispRect);
+}
+
 bool CVideoDriver::start()
 {
 	bool retval;

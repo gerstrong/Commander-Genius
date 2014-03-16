@@ -56,7 +56,8 @@ public:
 	virtual void shutdown();
 
     SDL_Surface *createSurface(std::string name, bool alpha, int width, int height, int bpp, int mode);
-    virtual bool createSurfaces();
+    bool createSurfaces();
+    bool createSurfaces(const GsRect<Uint16> &gamerect);
 
     virtual bool initOverlaySurface( const bool useAlpha,
                              const Uint16 width,

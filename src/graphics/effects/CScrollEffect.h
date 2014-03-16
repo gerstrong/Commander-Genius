@@ -12,6 +12,7 @@
 #include <memory>
 
 #include <base/video/GsEffectController.h>
+#include <graphics/GsSurface.h>
 
 #include "common/direction.h"
 
@@ -21,6 +22,9 @@ class CScrollEffect : public CEffects
 public:        
 
     CScrollEffect(SDL_Surface *pScrollSurface,
+            const Sint16 initialPos, Sint8 speed, const direction_t hDir, const direction_t vDir);
+
+    CScrollEffect(GsWeakSurface &scrollSurface,
             const Sint16 initialPos, Sint8 speed, const direction_t hDir, const direction_t vDir);
 
     void ponder(const float deltaT);

@@ -37,7 +37,14 @@ mTextID(text)
 void CGUIBitmap::updateGraphics()
 {
     GsRect<Uint16> sizeForScreen = gVideoDriver.getGameResolution();
-    mpBitmap.reset(new GsBitmap( *gGraphics.getBitmapFromStr(mTextID) ));
+
+    // If mTextID is not empty, the bitmap is part of the gGraphics database.
+    // Otherwise it is an external and original does not exist.
+    // In that case we just will try to scale it somehow...
+    if(!mTextID.empty())
+    {
+        mpBitmap.reset(new GsBitmap( *gGraphics.getBitmapFromStr(mTextID) ));
+    }
 
     sizeForScreen.w /= 320;
     sizeForScreen.h /= 200;

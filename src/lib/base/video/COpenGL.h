@@ -42,7 +42,6 @@ public:
 	void setUpViewPort(const GsRect<Uint16> &newDim);
 	bool resizeDisplayScreen(const GsRect<Uint16>& newDim);
 	void loadSurface(GLuint texture, SDL_Surface* surface);
-    //bool createSurfaces();
 	void collectSurfaces();
 	void clearSurfaces();
 

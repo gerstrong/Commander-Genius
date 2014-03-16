@@ -20,6 +20,7 @@
 #include "menu/SelectionMenu.h"
 #include "menu/ControlSettings.h"
 #include "res/CAudioGalaxy.h"
+#include <base/video/CVideoDriver.h>
 
 namespace galaxy
 {
