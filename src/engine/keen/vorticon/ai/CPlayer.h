@@ -94,6 +94,7 @@ public:
     void bump( const direction_t direction );
     void bump( const direction_t direction, const int amount );
 	void push( CSpriteObject &theObject );
+    void pushDown( CSpriteObject &theObject );
 	void checkSolidDoors();
 	void SelectFrame();
 	LEVEL_TRIGGER pollLevelTrigger();

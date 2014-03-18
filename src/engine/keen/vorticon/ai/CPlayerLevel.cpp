@@ -905,6 +905,21 @@ void CPlayer::push( CSpriteObject &theObject )
 	pwalking = true;
 }
 
+// plats in keen 3 can push him down as well
+void CPlayer::pushDown( CSpriteObject &theObject )
+{
+    if( dead || level_done!=LEVEL_NOT_DONE )
+        return;
+
+    int objY = theObject.getYDownPos();
+    int ry = getYUpPos();
+
+    moveDown(objY - ry);
+    pDir.y = pShowDir.y = DOWN;
+
+    pwalking = true;
+}
+
 void CPlayer::checkSolidDoors()
 {
 	int mx1 = getXLeftPos();

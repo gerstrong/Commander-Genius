@@ -17,6 +17,8 @@ public:
 	
 	void process();
 
+    virtual void getTouchedBy(CVorticonSpriteObject& theObject);
+
 private:
     
 	void walkLeft(int mx, int my);
