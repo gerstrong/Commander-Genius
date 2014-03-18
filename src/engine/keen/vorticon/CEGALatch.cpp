@@ -300,6 +300,11 @@ void CEGALatch::applyMasks()
 	SDL_Surface *frontSfc = gGraphics.getTileMap(1).getSDLSurface();
 	SDL_Surface *backSfc = gGraphics.getTileMap(0).getSDLSurface();
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+    SDL_SetSurfaceBlendMode(frontSfc, SDL_BLENDMODE_BLEND);
+
+#endif
 
 
 	if(SDL_MUSTLOCK(frontSfc)) SDL_LockSurface(frontSfc);
@@ -328,11 +333,6 @@ void CEGALatch::applyMasks()
 				memcpy( &u_colour, u_offset, bpp );
 				SDL_GetRGB( u_colour, backSfc->format, &r, &g, &b );
 
-				/*SDL_Rect dstRect;
-				srGsRect.w = srGsRect.h = 1;
-				srGsRect.x = 16*((t+1)%13) + x;
-				srGsRect.y = y+16*((t+1)/13);*/
-
 				Uint8 alpha;
 					
 				if( r>=250 && g>=250 && b>=250 ) // In this case set it to zero
@@ -349,8 +349,6 @@ void CEGALatch::applyMasks()
 				
 				SDL_Rect srGsRect;
 				srGsRect.w = srGsRect.h = 1;
-				//srGsRect.x = 16*((t+1)%13) + x;
-				//srGsRect.y = y+16*((t+1)/13);
 				srGsRect.x = 16*((t)%13) + x;
 				srGsRect.y = y+16*((t)/13);
 				

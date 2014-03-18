@@ -176,22 +176,7 @@ bool CPlayGameVorticon::loadGameState()
 	mMap->m_Dark = dark;
 	gGraphics.Palette.setdark(mMap->m_Dark);
 	
-	
-	
-	// left-right scrolling
-	/*for(int scrollPos = 0 ; scrollPos<320 ; scrollPos++ )
-	{
-	  mMap->scrollRight();	  
-	  mMap->scrollDown();
-	}	
-	for(int scrollPos = 0 ; scrollPos<320 ; scrollPos++ )
-	{
-	  mMap->scrollLeft();	  
-	  mMap->scrollUp();
-	}	*/
-	
-	
-	m_Player[0].mpCamera->reAdjust();
+		m_Player[0].mpCamera->reAdjust();
 	
 	
 	return ok;
