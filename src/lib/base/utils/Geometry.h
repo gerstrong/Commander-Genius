@@ -28,7 +28,10 @@ struct GsRect
 
     GsRect( const T lwidth = 0,
 		   const T lheight = 0 )
-		{ w=lwidth; h=lheight; }
+		{
+		    x=0 ; y=0;
+		    w=lwidth; h=lheight;
+        }
 
     GsRect( const T lx,
 		   const T ly,
@@ -47,7 +50,7 @@ struct GsRect
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 #else
     GsRect( const SDL_VideoInfo* InfoPtr )
 		{ w=InfoPtr->current_w; h=InfoPtr->current_h; };

@@ -13,6 +13,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <graphics/GsGraphics.h>
+#include <base/GsLogging.h>
 
 
 const unsigned int MAX_ELEMENTS_PER_PAGE = 7;
@@ -93,13 +94,13 @@ void CGUIDialog::addControl( CGUIControl *newControl,
              const GsRect<float>& RelRect )
 {
     std::unique_ptr<CGUIControl> ctrl(newControl);
-    addControl( ctrl, RelRect );    
+    addControl( ctrl, RelRect );
 }
 
 void CGUIDialog::addControl( CGUIControl *newControl )
 {
     std::unique_ptr<CGUIControl> ctrl(newControl);
-    addControl(ctrl);    
+    addControl(ctrl);
 }
 
 
@@ -130,7 +131,7 @@ void CGUIDialog::selectPrevItem()
 
 		mSelection--;
 	}
-    
+
     if( mSelection < 0 ) {
 		mSelection = mControlList.size()-1;
         it = mControlList.end();
@@ -167,7 +168,7 @@ void CGUIDialog::selectNextItem()
 
 		mSelection++;
 	}
-    
+
     if( mSelection >= static_cast<int>(mControlList.size()) ) {
 		mSelection = 0;
         it = mControlList.begin();
@@ -204,7 +205,7 @@ bool CGUIDialog::sendEvent(const std::shared_ptr<CEvent> &event )
 		// Send all the other events the active control element
 		int i=0;
         for( auto &it : mControlList )
-        {            
+        {
             if( i == mSelection )
             {
                if( it->sendEvent(ev->mCommand) )
@@ -356,7 +357,7 @@ void CGUIDialog::initVorticonBackground()
 		{
 			Font.drawCharacter( backSfc, 32, x, y );
 		}
-	}            
+	}
 
 	// Now draw the borders
     drawBorderRect(backSfc, Rect);
@@ -365,7 +366,7 @@ void CGUIDialog::initVorticonBackground()
 }
 
 void CGUIDialog::initGalaxyBackround()
-{   
+{
     GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr("KEENSWATCH") );
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
@@ -463,7 +464,7 @@ void CGUIDialog::processRendering()
 
 
 void CGUIDialog::processRendering(SDL_Surface *blit)
-{        
+{
     GsRect<Uint16> GameRes = gVideoDriver.getGameResolution();
     GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
@@ -528,5 +529,5 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
 	for( auto &it : mControlList )
 	{
         it->processRender(screenRect);
-	}       
+	}
 }

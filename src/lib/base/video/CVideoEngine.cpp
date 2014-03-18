@@ -167,15 +167,11 @@ void CVideoEngine::updateAspectRect(const GsRect<Uint16>& displayRes, const int 
 
     if (aspHeight*displayRes.w >= aspWidth*displayRes.h) // Wider than width:height, so shrink width
 	{
-        //mAspectCorrectionRect.h = displayRes.h-displayRes.h%aspHeight;
-        //mAspectCorrectionRect.w = displayRes.h/aspHeight*aspWidth;
         mAspectCorrectionRect.h = displayRes.h;
         mAspectCorrectionRect.w = (displayRes.h*aspWidth)/aspHeight;
     }
     else // Taller than width:height so shrink height
 	{
-        //mAspectCorrectionRect.w = displayRes.w-displayRes.w%aspWidth;
-        //mAspectCorrectionRect.h = displayRes.w/aspWidth*aspHeight;
         mAspectCorrectionRect.w = displayRes.w;
         mAspectCorrectionRect.h = (displayRes.w*aspHeight)/aspWidth;
     }
@@ -229,7 +225,8 @@ bool CVideoEngine::createSurfaces()
 
 bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 {
-    gLogging.textOut("Blitsurface creation!\n");
+    gLogging.ftextOut("Blitsurface creation of %dx%d!\n<br>",
+                     gamerect.w, gamerect.h );
 
 
     mpGameSfc.reset(SDL_CreateRGBSurface( m_Mode, gamerect.w, gamerect.h, RES_BPP,
@@ -245,6 +242,9 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 
     const int squareSize = getPowerOfTwo( gamerect.h > gamerect.w ? gamerect.h : gamerect.w );
 
+    gLogging.ftextOut("ScrollSurface creation of %dx%d!\n<br>",
+                     squareSize, squareSize );
+
     // This function creates the surfaces which are needed for the game.
     ScrollSurface = SDL_CreateRGBSurface( m_Mode,
                                           squareSize,
@@ -254,9 +254,12 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                                           0x000000FF,
                                           0x00000000);
 
-    gLogging.textOut("FilteredSurface creation!\n");
-
     auto blit = mpGameSfc.get();
+
+    gLogging.ftextOut("ScreenSurface creation of %dx%d!\n<br>",
+                     blit->w, blit->h );
+
+
     auto *format = blit->format;
 
     if(m_VidConfig.m_ScaleXFilter > 1)
