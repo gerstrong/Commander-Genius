@@ -14,10 +14,23 @@
 #include <SDL.h>
 #include <string>
 
-//#include "scalers/CScaler.h"
 #include "sdl/CVidConfig.h"
 #include "sdl/extensions.h"
 #include <memory>
+
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+struct SDL_Texture_Deleter
+{
+    void operator()(SDL_Texture* sfc)
+    {
+        SDL_DestroyTexture(sfc);
+    }
+};
+#endif
+
+
+
 
 
 /**
@@ -93,20 +106,20 @@ public:
 
 	void readScrollBuffer(Sint16 &x, Sint16 &y)
 	{	x = mSbufferx; y = mSbuffery;}
-    
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_GLContext glcontext;
 #endif
 
-    GsRect<int> mRelativeVisGameArea;        
+    GsRect<int> mRelativeVisGameArea;
 
 protected:
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_Texture *sdlTexture;
+    std::unique_ptr<SDL_Texture, SDL_Texture_Deleter> mpSdlTexture;
 #else
     SDL_Surface *mDisplaySfc;                // the actual video memory/window
 #endif

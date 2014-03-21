@@ -51,22 +51,15 @@ bool CSDLVideo::init()
 
     updateAspectRect(m_VidConfig.m_DisplayRect, aspW, aspH);
 
-    const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
-
     //SDL_RenderSetLogicalSize(renderer, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
     resizeDisplayScreen(m_VidConfig.m_DisplayRect);
 
-    if(sdlTexture)
-    {
-        SDL_DestroyTexture(sdlTexture);
-    }
-
-
-    sdlTexture = SDL_CreateTexture(renderer,
+    const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
+    mpSdlTexture.reset( SDL_CreateTexture(renderer,
                                    SDL_PIXELFORMAT_ARGB8888,
                                    SDL_TEXTUREACCESS_STREAMING,
                                    gamerect.w*m_VidConfig.m_ScaleXFilter,
-                                   gamerect.h*m_VidConfig.m_ScaleXFilter);
+                                   gamerect.h*m_VidConfig.m_ScaleXFilter) );
 
 #else
 
@@ -97,8 +90,10 @@ bool CSDLVideo::init()
 
 bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
-    const int w = m_VidConfig.mAspectCorrection.w;
-    const int h = m_VidConfig.mAspectCorrection.h;
+    //const int w = m_VidConfig.mAspectCorrection.w;
+    //const int h = m_VidConfig.mAspectCorrection.h;
+    const int w = 0;
+    const int h = 0;
 
     updateAspectRect(newDim, w, h);
 
@@ -213,11 +208,11 @@ void CSDLVideo::transformScreenToDisplay()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     auto screen = mpScreenSfc.get();
     SDL_LockSurface(screen);
-    SDL_UpdateTexture(sdlTexture, nullptr, screen->pixels, screen->w * sizeof (Uint32));
+    SDL_UpdateTexture(mpSdlTexture.get(), nullptr, screen->pixels, screen->w * sizeof (Uint32));
     SDL_UnlockSurface(screen);
 
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, sdlTexture, NULL, NULL);
+    SDL_RenderCopy(renderer, mpSdlTexture.get(), NULL, NULL);
     SDL_RenderPresent(renderer);
 #else
 

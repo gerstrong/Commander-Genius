@@ -45,11 +45,11 @@
 			<Add option="-DOGG" />
 			<Add option="-DOPENGL" />
 			<Add directory="../../src" />
-			<Add directory="C:/mingw95/MinGW/include" />
-			<Add directory="C:/mingw95/MinGW/include/SDL2" />
-			<Add directory="C:/mingw95/MinGW/include/OGG" />
-			<Add directory="C:/mingw95/MinGW/include/vorbis" />
-			<Add directory="C:/mingw95/MinGW/include/gl" />
+			<Add directory="C:/mingw11/include" />
+			<Add directory="C:/mingw11/include/SDL2" />
+			<Add directory="C:/mingw11/include/OGG" />
+			<Add directory="C:/mingw11/include/vorbis" />
+			<Add directory="C:/mingw11/include/gl" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="../../../Commander-Genius" />

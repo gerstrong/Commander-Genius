@@ -237,7 +237,13 @@ bool CVideoDriver::applyMode()
 
 bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect)
 {
-    return mpVideoEngine->createSurfaces(dispRect);
+    bool ok = true;
+
+    ok &= mpVideoEngine->createSurfaces(dispRect);
+    //ok &= mpVideoEngine->resizeDisplayScreen(dispRect);
+    const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
+
+    return ok;
 }
 
 bool CVideoDriver::start()

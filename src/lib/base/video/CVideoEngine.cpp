@@ -24,7 +24,6 @@ CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     window(nullptr),
     renderer(nullptr),
-    sdlTexture(nullptr),
 #else
     mDisplaySfc(nullptr),
 #endif
@@ -39,11 +38,6 @@ m_Mode(0)
 CVideoEngine::~CVideoEngine()
 {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-
-    if(sdlTexture)
-    {
-        SDL_DestroyTexture(sdlTexture);
-    }
 
     if(renderer)
     {
@@ -281,6 +275,14 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     m_dst_slice = mpScreenSfc->pitch;
 
     initOverlaySurface(false, blit->w, blit->h);
+
+    //const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
+    mpSdlTexture.reset( SDL_CreateTexture(renderer,
+                                   SDL_PIXELFORMAT_ARGB8888,
+                                   SDL_TEXTUREACCESS_STREAMING,
+                                   gamerect.w*m_VidConfig.m_ScaleXFilter,
+                                   gamerect.h*m_VidConfig.m_ScaleXFilter) );
+
 
     return true;
 }
