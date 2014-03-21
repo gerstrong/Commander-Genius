@@ -54,13 +54,6 @@ bool CSDLVideo::init()
     //SDL_RenderSetLogicalSize(renderer, m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h);
     resizeDisplayScreen(m_VidConfig.m_DisplayRect);
 
-    const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
-    mpSdlTexture.reset( SDL_CreateTexture(renderer,
-                                   SDL_PIXELFORMAT_ARGB8888,
-                                   SDL_TEXTUREACCESS_STREAMING,
-                                   gamerect.w*m_VidConfig.m_ScaleXFilter,
-                                   gamerect.h*m_VidConfig.m_ScaleXFilter) );
-
 #else
 
     mDisplaySfc = SDL_SetVideoMode( m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, 32, m_Mode );
@@ -119,15 +112,16 @@ bool CSDLVideo::initOverlaySurface( const bool useAlpha,
 
     mpOverlaySurface.reset( overlay );
 
+    if(!mpOverlaySurface)
+        return false;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceBlendMode( overlay, SDL_BLENDMODE_BLEND);
     SDL_SetSurfaceAlphaMod( overlay, 0);
 #else
     SDL_SetAlpha( overlay, SDL_SRCALPHA, 0);
 #endif
 
-    if(!mpOverlaySurface)
-        return false;
 
     return true;
 }

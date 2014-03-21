@@ -132,7 +132,7 @@ void CVideoSettings::init()
 	mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
 
 #if defined(USE_OPENGL)
-	std::string OGLFilterStr;
+    //std::string OGLFilterStr;
 	mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
 	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==GL_LINEAR ? "linear" : "nearest" );
 	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
@@ -189,8 +189,7 @@ void CVideoSettings::release()
 
 #if defined(USE_OPENGL)
 	mUserVidConf.m_opengl_filter = mpOGLFilterSelection->getSelection() == "linear" ? GL_LINEAR : GL_NEAREST;
-    //mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
-    mUserVidConf.m_opengl = true;
+    mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
 #endif
 
 	

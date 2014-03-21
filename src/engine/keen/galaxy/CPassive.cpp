@@ -30,6 +30,9 @@ mCommanderTextSfc(gGraphics.getMisGsBitmap(0)),
 mKeenTextSfc(gGraphics.getMisGsBitmap(1)),
 mSkipSection(false)
 {
+    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
+    gVideoDriver.setNativeResolution(gameRect);
+
     const int episode = g_pBehaviorEngine->getEpisode();
 
     if(episode == 4)
@@ -105,9 +108,6 @@ mSkipSection(false)
 
 bool CPassiveGalaxy::init()
 {
-    const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
-    gVideoDriver.setNativeResolution(gameRect);
-
     auto blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
     return true;
