@@ -679,7 +679,7 @@
 	"FindFile.h"
 	"Debug.h"
 
-1394887528 c:\users\admin\desktop\commander-genius\version.h
+1395484056 c:\users\admin\desktop\commander-genius\version.h
 
 1376493144 c:\users\admin\desktop\commander-genius\src\findfile.h
 	<iomanip>
@@ -757,7 +757,7 @@
 	"common/CBehaviorEngine.h"
 	<lib/base/GsLogging.h>
 
-1395152767 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
+1395483950 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
 	"CGameLauncher.h"
 	<base/GsLogging.h>
 	<base/video/CVideoDriver.h>
@@ -936,7 +936,7 @@
 	"graphics/CGfxEngine.h"
 	"sdl/input/CInput.h"
 
-1394262615 source:c:\users\admin\desktop\commander-genius\src\common\csettings.cpp
+1395483950 source:c:\users\admin\desktop\commander-genius\src\common\csettings.cpp
 	<lib/base/GsLogging.h>
 	<base/FindFile.h>
 	"ConfigHandler.h"
@@ -3386,7 +3386,7 @@
 	"StringUtils.h"
 	"common/CBehaviorEngine.h"
 
-1394262618 source:c:\users\admin\desktop\commander-genius\src\sdl\cvidconfig.cpp
+1395483950 source:c:\users\admin\desktop\commander-genius\src\sdl\cvidconfig.cpp
 	"CVidConfig.h"
 	<cstring>
 	<cstdio>
@@ -11020,7 +11020,7 @@
 	"CMessageBoxGalaxy.h"
 	"engine/CEvent.h"
 
-1395148397 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cpassive.cpp
+1395483950 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cpassive.cpp
 	<base/video/CVideoDriver.h>
 	<base/CInput.h>
 	<widgets/GsMenuController.h>
@@ -11885,7 +11885,7 @@
 1394262615 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cprofilesmenu.h
 	"GalaxyMenu.h"
 
-1394262615 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cvideosettings.cpp
+1395483950 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cvideosettings.cpp
 	<base/CInput.h>
 	<base/GsTimer.h>
 	<base/video/resolutionlist.h>
@@ -13043,7 +13043,7 @@
 	"widgets/Button.h"
 	"sdl/CVidConfig.h"
 
-1394262616 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cvideosettings.cpp
+1395483950 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cvideosettings.cpp
 	<base/CInput.h>
 	<base/GsTimer.h>
 	<base/video/resolutionlist.h>
@@ -13252,7 +13252,7 @@
 	<lib/base/GsLogging.h>
 	"graphics/PerSurfaceAlpha.h"
 
-1395418490 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\csdlvideo.cpp
+1395483950 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\csdlvideo.cpp
 	"CSDLVideo.h"
 	"CVideoEngine.h"
 	<lib/base/GsLogging.h>
@@ -13262,7 +13262,7 @@
 1395148397 c:\users\admin\desktop\commander-genius\src\lib\base\video\csdlvideo.h
 	<base/video/CVideoEngine.h>
 
-1395419138 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideodriver.cpp
+1395483950 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideodriver.cpp
 	"CVideoDriver.h"
 	<base/video/CSDLVideo.h>
 	<base/video/COpenGL.h>
