@@ -29,7 +29,7 @@
 	<string>
 	<memory>
 
-1394262615 c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.h
+1395488539 c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.h
 	<base/GsEngine.h>
 	<widgets/GsDialog.h>
 	<widgets/GsText.h>
@@ -757,7 +757,7 @@
 	"common/CBehaviorEngine.h"
 	<lib/base/GsLogging.h>
 
-1395483950 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
+1395488539 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
 	"CGameLauncher.h"
 	<base/GsLogging.h>
 	<base/video/CVideoDriver.h>
