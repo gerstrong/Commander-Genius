@@ -1,10 +1,16 @@
+v1.7.2 Beta:
+------------
+- More native resolutions if higher modes are used, especially in the launcher
+- Some improved physics
+- general bugs fixes as usual
+- Shorter game names
+
 v1.7.1 Alpha:
 -------------
 - Last window size is now saved automatically.
 - Heavy engine independent code cleanups which will make CG more flexible for new game engines besides Commander Keen
 - New GsLib will take more work at low level functions and will as wrapper for SDL and GUI elements
-- Multiple selection should be fixed now.
-- New Menu Multiple High
+- Multiple selection problem should be fixed now.
 - Even more smooth effects readded
 - More bug fixes
 - New pump event concept will solve a lot of deadlocks we previously had on the android versions.
