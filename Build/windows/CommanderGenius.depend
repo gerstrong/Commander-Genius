@@ -3386,7 +3386,7 @@
 	"StringUtils.h"
 	"common/CBehaviorEngine.h"
 
-1395483950 source:c:\users\admin\desktop\commander-genius\src\sdl\cvidconfig.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\sdl\cvidconfig.cpp
 	"CVidConfig.h"
 	<cstring>
 	<cstdio>
@@ -3616,7 +3616,7 @@
 	<sstream>
 	<iomanip>
 
-1394262615 source:c:\users\admin\desktop\commander-genius\src\threadpool.cpp
+1395491752 source:c:\users\admin\desktop\commander-genius\src\threadpool.cpp
 	<SDL_thread.h>
 	"ThreadPool.h"
 	<base/Debug.h>
@@ -11020,7 +11020,7 @@
 	"CMessageBoxGalaxy.h"
 	"engine/CEvent.h"
 
-1395483950 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cpassive.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\cpassive.cpp
 	<base/video/CVideoDriver.h>
 	<base/CInput.h>
 	<widgets/GsMenuController.h>
@@ -11885,7 +11885,7 @@
 1394262615 c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cprofilesmenu.h
 	"GalaxyMenu.h"
 
-1395483950 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cvideosettings.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\engine\keen\galaxy\menu\cvideosettings.cpp
 	<base/CInput.h>
 	<base/GsTimer.h>
 	<base/video/resolutionlist.h>
@@ -13043,7 +13043,7 @@
 	"widgets/Button.h"
 	"sdl/CVidConfig.h"
 
-1395483950 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cvideosettings.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\menu\cvideosettings.cpp
 	<base/CInput.h>
 	<base/GsTimer.h>
 	<base/video/resolutionlist.h>
@@ -13252,7 +13252,7 @@
 	<lib/base/GsLogging.h>
 	"graphics/PerSurfaceAlpha.h"
 
-1395483950 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\csdlvideo.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\csdlvideo.cpp
 	"CSDLVideo.h"
 	"CVideoEngine.h"
 	<lib/base/GsLogging.h>
@@ -13276,7 +13276,7 @@
 	<SDL_syswm.h>
 	<SDL_image.h>
 
-1395419147 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideoengine.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideoengine.cpp
 	<lib/base/GsTimer.h>
 	"CVideoEngine.h"
 	<lib/base/GsLogging.h>
@@ -13420,7 +13420,7 @@
 	<lib/base/PointDevice.h>
 	"GsControl.h"
 
-1395155478 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsdialog.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\lib\widgets\gsdialog.cpp
 	"GsDialog.h"
 	"GsButton.h"
 	"GsInputText.h"

@@ -19,13 +19,13 @@
 
 ThreadPool::ThreadPool(unsigned int size) {
 	nextAction = NULL; nextIsHeadless = false; nextData = NULL;
-	quitting = false;	
+	quitting = false;
 	mutex = SDL_CreateMutex();
 	awakeThread = SDL_CreateCond();
 	threadStartedWork = SDL_CreateCond();
 	threadStatusChanged = SDL_CreateCond();
 	startMutex = SDL_CreateMutex();
-	
+
 	notes << "ThreadPool: creating " << size << " threads ..." << endl;
 	while(availableThreads.size() < size)
 		prepareNewThread();
@@ -49,7 +49,7 @@ ThreadPool::~ThreadPool() {
 	}
 	availableThreads.clear();
 	SDL_mutexV(mutex);
-	
+
 	SDL_DestroyMutex(startMutex);
 	SDL_DestroyCond(threadStartedWork);
 	SDL_DestroyCond(threadStatusChanged);
@@ -66,8 +66,7 @@ void ThreadPool::prepareNewThread() {
 	t->working = false;
 	availableThreads.insert(t);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    const char name = 't';
-    t->thread = SDL_CreateThread(threadWrapper, &name, t);
+    t->thread = SDL_CreateThread(threadWrapper, "t", t);
 #else
     t->thread = SDL_CreateThread(threadWrapper, t);
 #endif
@@ -75,7 +74,7 @@ void ThreadPool::prepareNewThread() {
 
 int ThreadPool::threadWrapper(void* param) {
 	ThreadPoolItem* data = (ThreadPoolItem*)param;
-	
+
 	SDL_mutexP(data->pool->mutex);
 	while(true) {
 		while(data->pool->nextAction == NULL && !data->pool->quitting)
@@ -83,7 +82,7 @@ int ThreadPool::threadWrapper(void* param) {
 		if(data->pool->quitting) break;
 		data->pool->usedThreads.insert(data);
 		data->pool->availableThreads.erase(data);
-		
+
 		Action* act = data->pool->nextAction; data->pool->nextAction = NULL;
 		data->headless = data->pool->nextIsHeadless;
 		data->name = data->pool->nextName;
@@ -91,7 +90,7 @@ int ThreadPool::threadWrapper(void* param) {
 		data->working = true;
 		data->pool->nextData = data;
 		SDL_mutexV(data->pool->mutex);
-		
+
 		SDL_CondSignal(data->pool->threadStartedWork);
         gLogging.textOut("Running Thread: " + data->name);
 		data->ret = act->handle();
@@ -100,7 +99,7 @@ int ThreadPool::threadWrapper(void* param) {
 		SDL_mutexP(data->pool->mutex);
 		data->finished = true;
 		SDL_CondSignal(data->pool->threadStatusChanged);
-		
+
 		if(!data->headless) { // headless means that we just can clean it up right now without waiting
 			SDL_CondSignal(data->finishedSignal);
 			while(data->working) SDL_CondWait(data->readyForNewWork, data->pool->mutex);
@@ -113,7 +112,7 @@ int ThreadPool::threadWrapper(void* param) {
 	}
 
 	SDL_mutexV(data->pool->mutex);
-		
+
 	return 0;
 }
 
@@ -130,12 +129,12 @@ ThreadPoolItem* ThreadPool::start(Action* act, const std::string& name, bool hea
 	nextAction = act;
 	nextIsHeadless = headless;
 	nextName = name;
-	
+
 	SDL_CondSignal(awakeThread);
 	while(nextData == NULL) SDL_CondWait(threadStartedWork, mutex);
 	ThreadPoolItem* data = nextData; nextData = NULL;
 	SDL_mutexV(mutex);
-		
+
 	SDL_mutexV(startMutex);
 	return data;
 }
@@ -166,7 +165,7 @@ bool ThreadPool::wait(ThreadPoolItem* thread, int* status) {
 	if(status) *status = thread->ret;
 	thread->working = false;
 	SDL_mutexV(mutex);
-	
+
 	SDL_CondSignal(thread->readyForNewWork);
 	return true;
 }
@@ -175,7 +174,7 @@ bool ThreadPool::wait(ThreadPoolItem* thread, int* status) {
 bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
 	if(!thread) return false;
 	SDL_mutexP(mutex);
-	
+
 	if(!thread->working) {
 		warnings << "given thread " << thread->name << " is not working anymore" << endl;
 		SDL_mutexV(mutex);
@@ -186,11 +185,11 @@ bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
 		if(status) *status = thread->ret;
 		thread->working = false;
 		SDL_mutexV(mutex);
-		
+
 		SDL_CondSignal(thread->readyForNewWork);
 		return true;
 	}
-	
+
 	SDL_mutexV(mutex);
 	return false;
 }
@@ -198,7 +197,7 @@ bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
 
 bool ThreadPool::waitAll() {
 	SDL_mutexP(mutex);
-	while(usedThreads.size() > 0) {		
+	while(usedThreads.size() > 0) {
 		warnings << "ThreadPool: waiting for " << usedThreads.size() << " threads to finish:" << endl;
 		for(std::set<ThreadPoolItem*>::iterator i = usedThreads.begin(); i != usedThreads.end(); ++i) {
 			if((*i)->working && (*i)->finished) {
@@ -219,7 +218,7 @@ bool ThreadPool::waitAll() {
 		SDL_CondWait(threadStatusChanged, mutex);
 	}
 	SDL_mutexV(mutex);
-	
+
 	return true;
 }
 

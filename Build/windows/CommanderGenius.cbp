@@ -14,11 +14,6 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DOGG" />
-					<Add directory="C:/Users/admin/Desktop/src" />
-					<Add directory="C:/mingw95/MinGW/include" />
-					<Add directory="C:/mingw95/MinGW/include/SDL" />
-					<Add directory="C:/mingw95/MinGW/include/ogg" />
-					<Add directory="C:/mingw95/MinGW/include/vorbis" />
 					<Add directory="../../src/lib" />
 				</Compiler>
 			</Target>
@@ -65,7 +60,7 @@
 			<Add library="user32" />
 			<Add library="gdi32" />
 			<Add library="SDL2_image" />
-			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.1/i686-w64-mingw32/lib" />
+			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/lib" />
 			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/i686-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="../../src/CGLogo.rc">
