@@ -80,8 +80,8 @@ bool CGameLauncher::loadResources()
         gamedetected = true;
     mGameScanner.setPermilage(100);
     // Recursivly scan into DIR_ROOT VFS subdir's for exe's
-    if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT, 0, 200))
-        gamedetected = true;
+    /*if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT, 0, 200))
+        gamedetected = true;*/
 
     // Recursivly scan into DIR_GAMES subdir's for exe's
     if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900))
@@ -547,7 +547,25 @@ void CGameLauncher::getLabels()
                     if (strncmp(line.c_str(),GAMESCFG_NAME,strlen(GAMESCFG_NAME)) == 0)
                     {
                         m_Paths.push_back( dir );
-                        m_Names.push_back( line.substr(strlen(GAMESCFG_NAME)) );
+
+                        std::string gameName = line;
+
+                        size_t pos = 0;
+
+                        while(1)
+                        {
+                            if( (pos = gameName.find("\\")) == gameName.npos)
+                            {
+                                if( (pos = gameName.find("/")) == gameName.npos)
+                                {
+                                    break;
+                                }
+                            }
+
+                            gameName = gameName.substr(pos+1);
+                        }
+
+                        m_Names.push_back( gameName );
                     }
                 }
             }
