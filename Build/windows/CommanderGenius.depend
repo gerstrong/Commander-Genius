@@ -29,7 +29,7 @@
 	<string>
 	<memory>
 
-1395488539 c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.h
+1395489901 c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.h
 	<base/GsEngine.h>
 	<widgets/GsDialog.h>
 	<widgets/GsText.h>
@@ -679,7 +679,7 @@
 	"FindFile.h"
 	"Debug.h"
 
-1395484056 c:\users\admin\desktop\commander-genius\version.h
+1395489901 c:\users\admin\desktop\commander-genius\version.h
 
 1376493144 c:\users\admin\desktop\commander-genius\src\findfile.h
 	<iomanip>
@@ -757,7 +757,7 @@
 	"common/CBehaviorEngine.h"
 	<lib/base/GsLogging.h>
 
-1395488539 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\common\cgamelauncher.cpp
 	"CGameLauncher.h"
 	<base/GsLogging.h>
 	<base/video/CVideoDriver.h>
@@ -936,7 +936,7 @@
 	"graphics/CGfxEngine.h"
 	"sdl/input/CInput.h"
 
-1395483950 source:c:\users\admin\desktop\commander-genius\src\common\csettings.cpp
+1395489901 source:c:\users\admin\desktop\commander-genius\src\common\csettings.cpp
 	<lib/base/GsLogging.h>
 	<base/FindFile.h>
 	"ConfigHandler.h"
@@ -10420,7 +10420,7 @@
 	<base/utils/Geometry.h>
 	<graphics/GsSurface.h>
 
-1395152899 c:\users\admin\desktop\commander-genius\src\lib\base\utils\geometry.h
+1395489901 c:\users\admin\desktop\commander-genius\src\lib\base\utils\geometry.h
 	<SDL.h>
 	<CVec.h>
 
@@ -10460,7 +10460,7 @@
 	<list>
 	<memory>
 
-1395417981 c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideoengine.h
+1395489901 c:\users\admin\desktop\commander-genius\src\lib\base\video\cvideoengine.h
 	<SDL.h>
 	<string>
 	"sdl/CVidConfig.h"
