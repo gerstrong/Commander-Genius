@@ -230,6 +230,28 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
     return gamedetected;
 }
 
+std::string CGameLauncher::filterGameName(const std::string &path)
+{
+    size_t pos = 0;
+
+    std::string text = path;
+
+    while(1)
+    {
+        if( (pos = text.find("\\")) == text.npos)
+        {
+            if( (pos = text.find("/")) == text.npos)
+            {
+                break;
+            }
+        }
+
+        text = text.substr(pos+1);
+    }
+
+    return text;
+}
+
 bool CGameLauncher::scanExecutables(const std::string& path)
 {
     bool result = false;
@@ -275,7 +297,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		{
 			//newentry.name = "Episode: " + itoa(newentry.episode);
 			//newentry.name += " " + verstr + " " + newentry.path;
-			newentry.name = newentry.path;
+            newentry.name = filterGameName(newentry.path);
 		}
 
 		newentry.name += " ";
@@ -548,24 +570,9 @@ void CGameLauncher::getLabels()
                     {
                         m_Paths.push_back( dir );
 
-                        std::string gameName = line;
+                        std::string gamePath = line.substr(strlen(GAMESCFG_NAME));
 
-                        size_t pos = 0;
-
-                        while(1)
-                        {
-                            if( (pos = gameName.find("\\")) == gameName.npos)
-                            {
-                                if( (pos = gameName.find("/")) == gameName.npos)
-                                {
-                                    break;
-                                }
-                            }
-
-                            gameName = gameName.substr(pos+1);
-                        }
-
-                        m_Names.push_back( gameName );
+                        m_Names.push_back( filterGameName(gamePath) );
                     }
                 }
             }

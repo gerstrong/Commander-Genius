@@ -108,6 +108,9 @@ private:
                             const size_t maxdepth,
                             const size_t startPermil,
                             const size_t endPermil);
+
+    std::string filterGameName(const std::string &path);
+
 	bool scanExecutables(const std::string& path);
 
     void getLabels();
