@@ -43,7 +43,7 @@ void CGamePlayMode::ponder(const float deltaT)
 	if( mp_PlayGame->getEndGame() )
 	{
 		m_startLevel = 0;
-        EventContainer.add( new GMSwitchToPassiveMode(/*m_DataDirectory, m_Episode*/) );
+        EventContainer.add( new GMSwitchToPassiveMode() );
 	}
 	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game

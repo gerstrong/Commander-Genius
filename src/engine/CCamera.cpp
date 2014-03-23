@@ -22,10 +22,7 @@ std::array<bool, 4> CCamera::mDontUseThisLead;
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
 CSpriteObject(pmap, x, y, 0),
-mp_AttachedObject(p_attacher),
-mMaxShakeTime(0),
-mMaxShakeVAmt(0),
-mShakeDir(0)
+mp_AttachedObject(p_attacher)
 {
 	m_relcam.x = 0;
 	m_relcam.y = 0;
@@ -102,36 +99,6 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
     mp_Map->mGamePlayPos = newpos;
 	
 	reAdjust();
-}
-
-void CCamera::processShaking()
-{
-    if(!mTimer.HasTimeElapsed(mMaxShakeTime))
-    {
-        // shake by changing the relative position
-        if(mShakeDir > 0)
-        { // Shake downwards
-            for(int i=0 ; i<mMaxShakeVAmt ; i++)
-                mp_Map->scrollDown();
-
-            mShakeDir = -1;
-        }
-        else
-        { // Shake upwards
-            for(int i=0 ; i<mMaxShakeVAmt ; i++)
-                mp_Map->scrollUp();
-
-            mShakeDir = 1;
-        }
-    }
-    else
-    {
-        // Stop the shaking
-        mMaxShakeTime = 0;
-        mShakeDir = 0;
-        mTimer.ResetSecondsTimer();
-    }
-
 }
 
 void CCamera::process()
@@ -214,15 +181,6 @@ void CCamera::process()
 	}
 
 
-    if(mMaxShakeTime > 0)
-    {
-        // Shaking if enabled
-        processShaking();
-
-        return;
-    }
-
-
     Uint16 &scroll_x = mp_Map->m_scrollx;
     Uint16 &scroll_y = mp_Map->m_scrolly;
 
@@ -279,14 +237,6 @@ void CCamera::process()
 		}while(delta_y < up-speed);
 	}
 
-}
-
-void CCamera::shakeVertView( const uint time, const uint vAmount )
-{
-    // TODO: This implementation does not sync well with the render of the map so more stuff needs to be done there...
-    mMaxShakeVAmt = vAmount;
-    mMaxShakeTime = time;
-    mShakeDir = 1;
 }
 
 void CCamera::reAdjust() 

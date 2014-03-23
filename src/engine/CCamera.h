@@ -13,7 +13,6 @@
  */
 
 #include "common/CSpriteObject.h"
-#include <lib/base/GsTimer.h>
 
 #include <array>
 
@@ -107,17 +106,7 @@ public:
 
 private:
 
-    /**
-     * @brief processShaking internal shaking routine for blooglet when player gets stubbed
-     */
-    void processShaking();
-
 	CSpriteObject *mp_AttachedObject;
-
-    CTimer mTimer;
-    uint mMaxShakeTime;
-    int mMaxShakeVAmt;
-    int mShakeDir;
 
     static int mCamlead;
     static bool mCamLeadChange;   

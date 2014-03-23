@@ -214,6 +214,9 @@ void CMapPlayGalaxy::render()
         player[i]->draw();
     }
 
+    // RenderShake Effect
+    mMap.renderShaking();
+
     // Draw foregroundtiles here!
     mMap._drawForegroundTiles();
 

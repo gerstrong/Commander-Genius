@@ -91,7 +91,7 @@ bool CBlooguard::isNearby(CSpriteObject& theObject)
             mStubPlayer = false;
 		    if(player->stun())
 		    {
-              player->m_camera.shakeVertView( 1000, 6 );
+                mp_Map->triggerShake( 10, 5 );
             }
 		    
 		    return true;

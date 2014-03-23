@@ -24,7 +24,11 @@ mNumFuses(0),
 mFuseInLevel(false),
 m_Tilemaps(gGraphics.getTileMaps()),
 mAnimtileTimer(0.0f),
-mLocked(false)
+mLocked(false),
+mShakeCounter(0),
+mMaxShakeCounter(0),
+mMaxShakeVAmt(0),
+mShakeDir(0)
 {
 	resetScrolls();
 	m_Level = 0;
@@ -738,6 +742,50 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
         m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&drawMask, fg);
 	}
 }
+
+
+void CMap::triggerShake( const uint cycles, const uint vAmount )
+{
+    mMaxShakeVAmt = vAmount;
+    mMaxShakeCounter = cycles;
+    mShakeDir = 1;
+}
+
+
+void CMap::renderShaking()
+{
+    if(mMaxShakeCounter == 0)
+        return;
+
+    if(mShakeCounter < mMaxShakeCounter)
+    {
+        // shake by changing the relative position
+        if(mShakeDir > 0)
+        { // Shake downwards
+            for(int i=0 ; i<mMaxShakeVAmt ; i++)
+                scrollDown();
+
+            mShakeDir = -1;
+        }
+        else
+        { // Shake upwards
+            for(int i=0 ; i<mMaxShakeVAmt ; i++)
+                scrollUp();
+
+            mShakeDir = 1;
+        }
+        mShakeCounter++;
+    }
+    else
+    {
+        // Stop the shaking
+        mMaxShakeCounter = 0;
+        mShakeDir = 0;
+        mShakeCounter = 0;
+    }
+}
+
+
 
 /**
  * \brief This function draws all the masked and foreground tiles

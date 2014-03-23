@@ -660,6 +660,9 @@ void CPlayGameVorticon::drawAllElements()
     // Draw all objects to the screen
     drawObjects();
 
+    // RenderShake Effect
+    mMap->renderShaking();
+
     // Draw masked tiles here!
     mMap->_drawForegroundTiles();
 
