@@ -22,7 +22,10 @@ std::array<bool, 4> CCamera::mDontUseThisLead;
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CSpriteObject *p_attacher) :
 CSpriteObject(pmap, x, y, 0),
-mp_AttachedObject(p_attacher)
+mp_AttachedObject(p_attacher),
+mMaxShakeTime(0),
+mMaxShakeVAmt(0),
+mShakeDir(0)
 {
 	m_relcam.x = 0;
 	m_relcam.y = 0;
@@ -101,7 +104,37 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 	reAdjust();
 }
 
-void CCamera::process(const bool force)
+void CCamera::processShaking()
+{
+    if(!mTimer.HasTimeElapsed(mMaxShakeTime))
+    {
+        // shake by changing the relative position
+        if(mShakeDir > 0)
+        { // Shake downwards
+            for(int i=0 ; i<mMaxShakeVAmt ; i++)
+                mp_Map->scrollDown();
+
+            mShakeDir = -1;
+        }
+        else
+        { // Shake upwards
+            for(int i=0 ; i<mMaxShakeVAmt ; i++)
+                mp_Map->scrollUp();
+
+            mShakeDir = 1;
+        }
+    }
+    else
+    {
+        // Stop the shaking
+        mMaxShakeTime = 0;
+        mShakeDir = 0;
+        mTimer.ResetSecondsTimer();
+    }
+
+}
+
+void CCamera::process()
 {
     // Cycle Cam Code
     if( gInput.getPressedCommand(mCamlead, IC_CAMLEAD) )
@@ -131,8 +164,7 @@ void CCamera::process(const bool force)
 
 	if(!m_attached)
 	{	// This means, that there is no attached object. Let the camera scroll freely!
-		size_t movespeed = 100;
-
+        const size_t movespeed = 100;
 		if(gInput.getHoldedCommand(IC_LEFT))
 			moveLeft(movespeed);
 		else if(gInput.getHoldedCommand(IC_RIGHT))
@@ -181,12 +213,24 @@ void CCamera::process(const bool force)
 		}
 	}
 
-	Uint16 &scroll_x = mp_Map->m_scrollx;
-	Uint16 &scroll_y = mp_Map->m_scrolly;
 
-	// delta is how much we need to scroll in order to get the camera stalled
-	int delta_x = (getXPosition()>>STC)-scroll_x;
-	int delta_y = (getYPosition()>>STC)-scroll_y;
+    if(mMaxShakeTime > 0)
+    {
+        // Shaking if enabled
+        processShaking();
+
+        return;
+    }
+
+
+    Uint16 &scroll_x = mp_Map->m_scrollx;
+    Uint16 &scroll_y = mp_Map->m_scrolly;
+
+    // delta is how much we need to scroll in order to get the camera stalled
+    int delta_x = (getXPosition()>>STC)-scroll_x;
+    int delta_y = (getYPosition()>>STC)-scroll_y;
+
+
 
     // The bounds are relatively scaled for bigger game resolutions
     const int scFacW = gamerect.w/320;
@@ -234,6 +278,15 @@ void CCamera::process(const bool force)
 				break;
 		}while(delta_y < up-speed);
 	}
+
+}
+
+void CCamera::shakeVertView( const uint time, const uint vAmount )
+{
+    // TODO: This implementation does not sync well with the render of the map so more stuff needs to be done there...
+    mMaxShakeVAmt = vAmount;
+    mMaxShakeTime = time;
+    mShakeDir = 1;
 }
 
 void CCamera::reAdjust() 

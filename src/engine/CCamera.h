@@ -13,6 +13,7 @@
  */
 
 #include "common/CSpriteObject.h"
+#include <lib/base/GsTimer.h>
 
 #include <array>
 
@@ -54,7 +55,8 @@ public:
 	 *
 	 * \param force If on the map are scrollblockers, they will be ignored when this is enabled
 	 */
-	void process(const bool force = false);
+    void process();
+
 
 	/**
 	 * \brief
@@ -68,6 +70,13 @@ public:
 	 * this function will adjust the camera to the proper edges in the level
 	 */
 	void reAdjust();
+
+    /**
+     * @brief shakeVertView This will make the camera shake a bit.
+     * @param time      time in milliseconds for how long the camera shakes
+     * @param vAmount   amount of vertical placement which provides that effect
+     */
+    void shakeVertView( const uint time, const uint vAmount );
 
 	bool outOfSight();
 
@@ -97,7 +106,19 @@ public:
 	}m_relcam;
 
 private:
+
+    /**
+     * @brief processShaking internal shaking routine for blooglet when player gets stubbed
+     */
+    void processShaking();
+
 	CSpriteObject *mp_AttachedObject;
+
+    CTimer mTimer;
+    uint mMaxShakeTime;
+    int mMaxShakeVAmt;
+    int mShakeDir;
+
     static int mCamlead;
     static bool mCamLeadChange;   
     static std::array<bool, 4> mDontUseThisLead;
