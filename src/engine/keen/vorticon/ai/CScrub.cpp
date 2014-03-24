@@ -108,40 +108,6 @@ void CScrub::process()
 void CScrub::getTouchedBy(CVorticonSpriteObject& theObject)
 {
     CCarrier::getTouchedBy(theObject);
-
-    /*if(CPlayer *player = dynamic_cast<CPlayer*>(&theObject))
-    {
-        const int m_py2 = player->getYMidPos();
-        const int m_y2 = getYUpPos()+(4<<STC);
-
-        if(m_py2 > m_y2)
-        {
-            if( (player->getXMidPos() < getXMidPos() && yDirection >= 0) || yDirection <= 0 )
-            {
-                player->push(*this);
-                player->pjustjumped = true;
-                player->yinertia = 0;
-                player->pfalling = true;
-            }
-        }
-        else
-        {
-            bool playerFound = false;
-
-            for(auto &carriedPlayer : mCarriedPlayerVec)
-            {
-                if(carriedPlayer == player)
-                    playerFound = true;
-            }
-
-            if(!playerFound)
-            {
-                mCarriedPlayerVec.push_back(player);
-                player->pSupportedbyobject = this;
-                player->dontdraw = true;
-            }
-        }
-    }*/
 }
 
 

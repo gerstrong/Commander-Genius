@@ -20,9 +20,7 @@ void CCarrier::getTouchedBy(CVorticonSpriteObject& theObject)
             if( (player->getXMidPos() < getXMidPos() && yDirection >= 0) || yDirection <= 0 )
             {
                 player->push(*this);
-                player->pjustjumped = true;
                 player->yinertia = 0;
-                player->pfalling = true;
             }
         }
         else
