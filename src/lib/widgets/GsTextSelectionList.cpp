@@ -38,9 +38,9 @@ bool CGUITextSelectionList::sendEvent(const InputCommands command)
             return false;
         }
 
-        if(mReleasedSelection < mScrollPos)
+        if( mReleasedSelection < mScrollbar.scrollPos() )
         {
-            mScrollPos--;
+            mScrollbar.scrollUp();
         }
 
 		return true;
@@ -58,9 +58,9 @@ bool CGUITextSelectionList::sendEvent(const InputCommands command)
             return false;
         }
 
-        if(mReleasedSelection >= mlastToShow - mScrollPos)
+        if( mReleasedSelection >= mScrollbar.lastToShow() - mScrollbar.scrollPos() )
         {
-            mScrollPos++;
+            mScrollbar.scrollDown();
         }
 
 		return true;
@@ -87,22 +87,6 @@ void CGUITextSelectionList::addText(const std::string &text)
 {
 	mItemList.push_back(text);
 }
-
-
-void CGUITextSelectionList::scrollUp()
-{
-    if(mScrollPos > 0)
-        mScrollPos--;
-}
-
-
-void CGUITextSelectionList::scrollDown()
-{
-    if(mScrollPos < mMaxScrollAmt)
-        mScrollPos++;
-}
-
-
 
 void CGUITextSelectionList::processLogic()
 {
@@ -135,7 +119,7 @@ void CGUITextSelectionList::processLogic()
 
         if( MousePos.y > fy && MousePos.y < y_innerbound_max )
         {
-            int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1 + mScrollPos;
+            int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1 + mScrollbar.scrollPos();
 
             if( MousePos.x > x_innerbound_min && MousePos.y > y_innerbound_min)
             {
@@ -152,11 +136,11 @@ void CGUITextSelectionList::processLogic()
 
                 if(MousePos.y < midPart_y) // Go up!
                 {
-                    scrollUp();
+                    mScrollbar.scrollUp();
                 }
                 else if(MousePos.y > midPart_y) // Go down!
                 {
-                    scrollDown();
+                    mScrollbar.scrollDown();
                 }
             }
         }
@@ -189,7 +173,7 @@ void CGUITextSelectionList::drawScrollBar(const SDL_Rect &lRect)
     SDL_FillRect(Blitsurface, &scrollRect, 0xFFBFBFBF);
 
     // Now show the slider
-    float relPos = float(mScrollPos) / float(mMaxScrollAmt);
+    float relPos = float(mScrollbar.scrollPos()) / float(mScrollbar.mMaxScrollAmt);
     const int posSpace = int(relPos * float(scrollRect.h - (3*10))) + 1;
     SDL_Rect bSliderRect = bScDownRect;
     bSliderRect.x++;
@@ -231,7 +215,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 	const int ypos = lRect.y+10;
 	unsigned int textlimitWidth = (lRect.w-16)/8;
 
-    mlastToShow = (lRect.h/sepHeight)-1;
+    mScrollbar.mLastToShow = (lRect.h/sepHeight)-1;
 
 	lRect.h = 10;
     lRect.x += 12;
@@ -239,16 +223,16 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 	std::string trimmedText;
 	std::list<std::string> :: iterator it = mItemList.begin();
 
-    for(int i=0 ; i<mScrollPos ; it++, i++);
+    for(int i=0 ; i<mScrollbar.scrollPos() ; it++, i++);
 
-    for ( int line = 0;  it != mItemList.end() && line<mlastToShow ; it++, line++ )
+    for ( int line = 0;  it != mItemList.end() && line<mScrollbar.mLastToShow ; it++, line++ )
 	{
-        if(mPressedSelection == int(line) + mScrollPos )
+        if(mPressedSelection == int(line) + mScrollbar.scrollPos() )
         {
             lRect.y = ypos+(line*10)-1;
             SDL_FillRect(Blitsurface, &lRect, 0xFFA5A5F1);
         }
-        else if(mReleasedSelection == int(line) + mScrollPos )
+        else if(mReleasedSelection == int(line) + mScrollbar.scrollPos() )
 		{
             lRect.y = ypos+(line*10)-1;
 
@@ -257,7 +241,7 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
             else
                 SDL_FillRect(Blitsurface, &lRect, 0xFFC5C5C5);
 		}
-        else if(mHoverSelection == int(line) + mScrollPos )
+        else if(mHoverSelection == int(line) + mScrollbar.scrollPos() )
         {
             lRect.y = ypos+(line*sepHeight)-1;
             SDL_FillRect(Blitsurface, &lRect, 0xFFE5E5F1);
@@ -271,10 +255,10 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
 		Font.drawFont(Blitsurface, trimmedText, xpos, ypos+(line*10), false);
 	}
 
-    mMaxScrollAmt = mItemList.size()-mlastToShow;
+    mScrollbar.mMaxScrollAmt = mItemList.size()-mScrollbar.lastToShow();
 
     // Do we need a scrollbar?
-    if(mMaxScrollAmt>0)
+    if(mScrollbar.mMaxScrollAmt>0)
     {
         drawScrollBar(displayRect.SDLRect());
     }

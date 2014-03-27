@@ -13,6 +13,7 @@
 #include <list>
 #include <string>
 #include "CGUIControl.h"
+#include <widgets/GsScrollbar.h>
 
 class CGUITextSelectionList : public CGUIControl
 {
@@ -36,11 +37,6 @@ public:
 	int mSelection;
 
 private:
-
-	int mTextWidthLimit;
-    int mScrollPos;
-    int mMaxScrollAmt;
-    int mLastToShow;
 
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;
