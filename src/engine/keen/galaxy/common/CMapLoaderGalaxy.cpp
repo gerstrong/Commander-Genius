@@ -194,11 +194,10 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   
   // In case there is an external file read it into the container and replace the pointer
   const std::string mapHeadFilename = gpResource->mapheadFilename;
-  if(mapHeadFilename != "")
+  std::ifstream MapHeadFile;
+
+  if(OpenGameFileR(MapHeadFile, getResourceFilename(mapHeadFilename,path,true,false), std::ios::binary))
   {
-    std::ifstream MapHeadFile;
-    if(OpenGameFileR(MapHeadFile, getResourceFilename(mapHeadFilename,path,true,false), std::ios::binary))
-    {
       // get length of file:
       MapHeadFile.seekg (0, std::ios::end);
       unsigned int length = MapHeadFile.tellg();
@@ -206,12 +205,6 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
       mapHeadContainer.resize(length);
       MapHeadFile.read(&mapHeadContainer[0],length*sizeof(char));
       Maphead = reinterpret_cast<byte*>(&mapHeadContainer[0]);
-    }
-    else
-    {
-      gLogging.textOut("ERROR The MapHead File was not found. Please check that file or take a look into your patch file");
-      return false;
-    }
   }
   
   word magic_word;
