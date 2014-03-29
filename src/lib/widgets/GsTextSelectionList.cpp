@@ -13,7 +13,17 @@
 
 #include "GsTextSelectionList.h"
 
-const float TEXT_HEIGHT = 10.0f;
+const float TEXT_SIZE = 10.0f;
+
+CGUITextSelectionList::CGUITextSelectionList()  :
+    mHoverSelection(0),
+    mPressedSelection(-1),
+    mReleasedSelection(-1),
+    mScrollbar(this)
+{
+    GsRect<float> scrollRect(0.01f, 0.01f, 0.09f, 0.98f);
+    mScrollbar.setRect(scrollRect);
+}
 
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
 {
@@ -100,11 +110,12 @@ void CGUITextSelectionList::processLogic()
 	const float fy = mRect.y;
 	const float fh = mRect.h;
 
-	const float y_innerbound_min = fy + static_cast<float>(TEXT_HEIGHT)/bh;
+    const float y_innerbound_min = fy + static_cast<float>(TEXT_SIZE)/bh;
 	const float y_innerbound_max = y_innerbound_min +
-			static_cast<float>( mItemList.size()*TEXT_HEIGHT )/bh;
+            static_cast<float>( mItemList.size()*TEXT_SIZE )/bh;
 
-    const float x_innerbound_min = fx + static_cast<float>(TEXT_HEIGHT)/bw;
+    const float x_innerbound_min = fx + static_cast<float>(TEXT_SIZE)/bw;
+
 
     GsRect<float> rRect(fx, fy, fw, fh);
 
@@ -112,16 +123,18 @@ void CGUITextSelectionList::processLogic()
 
     processPointingState();        
 
-    CVec MousePos = pointingState.mPos;
+    CVec mousePos = pointingState.mPos;
 
-    if( rRect.HasPoint(MousePos) )
+    if( rRect.HasPoint(mousePos) )
     {
+        // Let scrollbar do it's work
+        mScrollbar.processLogic();
 
-        if( MousePos.y > fy && MousePos.y < y_innerbound_max )
+        if( mousePos.y > fy && mousePos.y < y_innerbound_max )
         {
-            int newselection = ((MousePos.y-fy)*bh/TEXT_HEIGHT) - 1 + mScrollbar.scrollPos();
+            int newselection = ((mousePos.y-fy)*bh/TEXT_SIZE) - 1 + mScrollbar.scrollPos();
 
-            if( MousePos.x > x_innerbound_min && MousePos.y > y_innerbound_min)
+            if( mousePos.x > x_innerbound_min && mousePos.y > y_innerbound_min)
             {
                 if(mHovered)
                     mHoverSelection = newselection;
@@ -129,19 +142,6 @@ void CGUITextSelectionList::processLogic()
                     mPressedSelection = newselection;
                 if(mReleased)
                     mReleasedSelection = newselection;
-            }
-            else if(mReleased)// If clicked on scroll bar
-            {
-                const float midPart_y = (fy+y_innerbound_max)/2.0;
-
-                if(MousePos.y < midPart_y) // Go up!
-                {
-                    mScrollbar.scrollUp();
-                }
-                else if(MousePos.y > midPart_y) // Go down!
-                {
-                    mScrollbar.scrollDown();
-                }
             }
         }
     }
@@ -151,48 +151,6 @@ void CGUITextSelectionList::processLogic()
         mPressedSelection = -1;
     }
 }
-
-void CGUITextSelectionList::drawScrollBar(const SDL_Rect &lRect)
-{
-    SDL_Rect scrollRect = lRect;
-    SDL_Surface *Blitsurface = gVideoDriver.getBlitSurface();
-
-    scrollRect.x += 1;
-    scrollRect.y += 1;
-    scrollRect.w  = 10;
-    scrollRect.h -= 2;
-
-    SDL_Rect bScUpRect = scrollRect;
-    bScUpRect.w  = 10;
-    bScUpRect.h  = 10;
-
-    SDL_Rect bScDownRect = bScUpRect;
-
-    bScDownRect.y = (scrollRect.y+scrollRect.h) - (bScUpRect.h);
-
-    SDL_FillRect(Blitsurface, &scrollRect, 0xFFBFBFBF);
-
-    // Now show the slider
-    float relPos = float(mScrollbar.scrollPos()) / float(mScrollbar.mMaxScrollAmt);
-    const int posSpace = int(relPos * float(scrollRect.h - (3*10))) + 1;
-    SDL_Rect bSliderRect = bScDownRect;
-    bSliderRect.x++;
-    bSliderRect.y = (bScUpRect.y + bScUpRect.h) + posSpace;
-    bSliderRect.w = 8;
-    bSliderRect.h = 8;
-    SDL_FillRect(Blitsurface, &bSliderRect, 0xFF2F2F2F);
-
-    const Uint32 scButtonColor = 0xFF7F7F7F;
-
-    // Set the up and down arrows
-    GsFont &Font = gGraphics.getFont(mFontID);
-    SDL_FillRect(Blitsurface, &bScUpRect,   scButtonColor);
-    Font.drawFont(Blitsurface, "\017", bScUpRect.x+1, bScUpRect.y+2, false);
-    SDL_FillRect(Blitsurface, &bScDownRect, scButtonColor);
-    Font.drawFont(Blitsurface, "\023", bScDownRect.x+1, bScDownRect.y, false);
-}
-
-
 
 void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloat)
 {
@@ -260,7 +218,8 @@ void CGUITextSelectionList::processRender(const GsRect<float> &RectDispCoordFloa
     // Do we need a scrollbar?
     if(mScrollbar.mMaxScrollAmt>0)
     {
-        drawScrollBar(displayRect.SDLRect());
+        mScrollbar.processRender(displayRect);
+        //drawScrollBar(displayRect.SDLRect());
     }
 
 }

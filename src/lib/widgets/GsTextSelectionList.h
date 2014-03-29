@@ -21,10 +21,7 @@ class CGUITextSelectionList : public CGUIControl
 {
 public:
 
-	CGUITextSelectionList() :
-	mHoverSelection(0),
-    mPressedSelection(-1),
-    mReleasedSelection(-1) {}
+    CGUITextSelectionList();
 
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
@@ -33,7 +30,6 @@ public:
 	void addText(const std::string &text);    
 	void processLogic();
     void processRender(const GsRect<float> &RectDispCoordFloat);
-    void drawScrollBar(const SDL_Rect &lRect);
 
     int getSelection() const
     { return mReleasedSelection; }

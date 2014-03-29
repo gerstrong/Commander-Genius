@@ -31,11 +31,11 @@ mSelected(false)
 }
 
 
-void CGUIControl::processPointingState()
+void CGUIControl::processPointingState(const GsRect<float> &rect)
 {
     GsPointingState &pointingState = gPointDevice.mPointingState;
 
-    const bool hasPoint = mRect.HasPoint(pointingState.mPos);
+    const bool hasPoint = rect.HasPoint(pointingState.mPos);
     const bool bDown = (pointingState.mActionButton>0);
 
     mReleased = false;

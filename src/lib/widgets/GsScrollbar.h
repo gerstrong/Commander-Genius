@@ -9,6 +9,8 @@ public:
 
     void processLogic();
 
+    void drawScrollBar(const SDL_Rect &lRect);
+
     void processRender(const GsRect<float> &RectDispCoordFloat);
 
     bool sendEvent(const InputCommands command);
@@ -35,15 +37,19 @@ public:
         return mLastToShow;
     }
 
-    GsScrollbar() :
+    GsScrollbar(CGUIControl *parent) :
         mScrollPos(0),
         mMaxScrollAmt(0),
-        mLastToShow(0) {}
+        mLastToShow(0),
+        mpParent(parent) {}
 
 
     int mScrollPos;
     int mMaxScrollAmt;
     int mLastToShow;
+
+private:
+    CGUIControl *mpParent;
 
 };
 
