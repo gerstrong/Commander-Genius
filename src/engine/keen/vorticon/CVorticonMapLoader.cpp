@@ -18,6 +18,7 @@
 #include "common/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
 #include "CResourceLoader.h"
+#include "fileio/Oldsavegamestructs.h"
 
 #include "ai/CYorp.h"
 #include "ai/CGarg.h"
@@ -287,7 +288,7 @@ void CVorticonMapLoaderWithPlayer::addWorldMapObject(unsigned int t, Uint16 x, U
         if(!mPlayerContainer.empty())
         {
 
-            if ((t&0x7fff) <= 16 && mPlayerContainer.front().mp_levels_completed[t&0x00ff])
+            if ((t&0x7fff) <= MAX_LEVELS_VORTICON && mPlayerContainer.front().mp_levels_completed[t&0x00ff])
             {
                 // Change the level tile to a done sign
                 int newtile = g_pBehaviorEngine->getTileProperties()[mpMap->at(x,y)].chgtile;

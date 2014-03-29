@@ -16,7 +16,7 @@ const int WALK_SPEED = 30;
 
 const int CSF_DISTANCE_TO_CLUB = 6<<CSF;
 
-const int TIME_UNTIL_CLUB = 15;
+const int TIME_UNTIL_CLUB = 38;
 
 CBlooguard::CBlooguard(CMap* pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
 CStunnable(pmap, foeID, x, y),
@@ -39,22 +39,22 @@ void CBlooguard::processWalking()
     // Move normally in the direction
     if( xDirection == RIGHT )
     {
-	moveRight( WALK_SPEED );
+        moveRight( WALK_SPEED );
     }
     else
     {
-	moveLeft( WALK_SPEED );
+        moveLeft( WALK_SPEED );
     }
     
     mTimer++;
-    if( mTimer < TIME_UNTIL_CLUB )  
-	return;
+    if( mTimer < TIME_UNTIL_CLUB )
+        return;
     
     mTimer = 0;
     
     if(mGoodClubChance)
     {
-	setAction(A_BLOOGUARD_CLUBBING);
+        setAction(A_BLOOGUARD_CLUBBING);
     }
 }
 
@@ -88,11 +88,11 @@ bool CBlooguard::isNearby(CSpriteObject& theObject)
 		// Code for setting player stunned here!
 		if(mStubPlayer)
 		{
-		    mStubPlayer = false;
+            mStubPlayer = false;
 		    if(player->stun())
 		    {
-		      player->m_camera.m_relcam.y = (8<<CSF);
-		    }
+                mp_Map->triggerShake( 10, 5 );
+            }
 		    
 		    return true;
 		}

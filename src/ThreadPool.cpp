@@ -76,7 +76,8 @@ int ThreadPool::threadWrapper(void* param) {
 	ThreadPoolItem* data = (ThreadPoolItem*)param;
 
 	SDL_mutexP(data->pool->mutex);
-	while(true) {
+    while(true)
+    {
 		while(data->pool->nextAction == NULL && !data->pool->quitting)
 			SDL_CondWait(data->pool->awakeThread, data->pool->mutex);
 		if(data->pool->quitting) break;

@@ -22,11 +22,11 @@
 ///
 // Initialization Part
 ///
-CPlayer::CPlayer(bool *mp_level_completed,
+CPlayer::CPlayer(bool *mpLevelCompleted,
                  CMap &map, const int sprVar) :
 CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER, sprVar),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
-mp_levels_completed(mp_level_completed),
+mp_levels_completed(mpLevelCompleted),
 mp_option(g_pBehaviorEngine->m_option)
 {
     canbezapped = true;
@@ -634,7 +634,7 @@ void CPlayer::InertiaAndFriction_X()
 		verifySolidLevels();
 	
 	// apply xinertia
-	// (unless we're about to make a pogo jump)
+    // (unless we're about to make a pogo or jump)
 	if ( pjumping != PPREPAREPOGO && pjumping != PPREPAREJUMP)
 	{
 		int dx = xinertia;
@@ -677,6 +677,9 @@ void CPlayer::InertiaAndFriction_X()
 					{
 						friction_rate = 3*friction_rate;
 					}
+
+                    if(pfalling)
+                        friction_rate /= 2;
 
 					decreaseXInertia(friction_rate);
 				}

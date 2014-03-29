@@ -33,7 +33,7 @@ private:
 	char m_episode;
 	int m_baseframe;
 	stInventory *mp_inventory;
-    bool *mp_level_completed;
+    bool *mpLevelCompleted;
     int &m_ankhtime;
 
 	bool m_closing, m_closed;

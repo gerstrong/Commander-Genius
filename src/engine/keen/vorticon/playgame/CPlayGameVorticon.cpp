@@ -53,7 +53,7 @@ CPlayGame(g_pBehaviorEngine->m_ExeFile, startlevel)
 
     const int numPlayers = g_pBehaviorEngine->mPlayers;
 
-    m_Player.assign( numPlayers, CPlayer(mp_level_completed, *mMap.get(), 0) );
+    m_Player.assign( numPlayers, CPlayer(mpLevelCompleted, *mMap.get(), 0) );
 
     for(int i=0 ; i<numPlayers ; i++ )
     {
@@ -68,7 +68,7 @@ CPlayGame(g_pBehaviorEngine->m_ExeFile, startlevel)
 
 
 	// Set the whole completed level list to false
-	memset( mp_level_completed, false, MAX_LEVELS_VORTICON*sizeof(bool));
+	memset( mpLevelCompleted, false, MAX_LEVELS_VORTICON*sizeof(bool));
 
 	m_showPauseDialog = false;
 
@@ -542,21 +542,21 @@ void CPlayGameVorticon::verifyFinales()
 	else if(m_Episode == 2)
 	{
 		bool allCitiesSaved;
-		allCitiesSaved = mp_level_completed[4];
-		allCitiesSaved &= mp_level_completed[6];
-		allCitiesSaved &= mp_level_completed[7];
-		allCitiesSaved &= mp_level_completed[9];
-		allCitiesSaved &= mp_level_completed[11];
-		allCitiesSaved &= mp_level_completed[13];
-		allCitiesSaved &= mp_level_completed[15];
-		allCitiesSaved &= mp_level_completed[16];
+		allCitiesSaved = mpLevelCompleted[4];
+		allCitiesSaved &= mpLevelCompleted[6];
+		allCitiesSaved &= mpLevelCompleted[7];
+		allCitiesSaved &= mpLevelCompleted[9];
+		allCitiesSaved &= mpLevelCompleted[11];
+		allCitiesSaved &= mpLevelCompleted[13];
+		allCitiesSaved &= mpLevelCompleted[15];
+		allCitiesSaved &= mpLevelCompleted[16];
 
 		if(allCitiesSaved)
 			createFinale();
 	}
 	else if(m_Episode == 3)
 	{
-		if(mp_level_completed[16] == true) // If this level is completed, Mortimer has been killed!
+		if(mpLevelCompleted[16] == true) // If this level is completed, Mortimer has been killed!
 			createFinale();
 	}
 }
@@ -613,14 +613,14 @@ void CPlayGameVorticon::collectHighScoreInfo(CHighScores &highScores)
 	{
 		// episode 2: game is won when all cities are saved
 		int saved_cities=0;
-		if (mp_level_completed[4]) saved_cities++;
-		if (mp_level_completed[6]) saved_cities++;
-		if (mp_level_completed[7]) saved_cities++;
-		if (mp_level_completed[13]) saved_cities++;
-		if (mp_level_completed[11]) saved_cities++;
-		if (mp_level_completed[9]) saved_cities++;
-		if (mp_level_completed[15]) saved_cities++;
-		if (mp_level_completed[16]) saved_cities++;
+		if (mpLevelCompleted[4]) saved_cities++;
+		if (mpLevelCompleted[6]) saved_cities++;
+		if (mpLevelCompleted[7]) saved_cities++;
+		if (mpLevelCompleted[13]) saved_cities++;
+		if (mpLevelCompleted[11]) saved_cities++;
+		if (mpLevelCompleted[9]) saved_cities++;
+		if (mpLevelCompleted[15]) saved_cities++;
+		if (mpLevelCompleted[16]) saved_cities++;
 
 		highScores.writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
 	}
@@ -659,6 +659,9 @@ void CPlayGameVorticon::drawAllElements()
 
     // Draw all objects to the screen
     drawObjects();
+
+    // RenderShake Effect
+    mMap->renderShaking();
 
     // Draw masked tiles here!
     mMap->_drawForegroundTiles();

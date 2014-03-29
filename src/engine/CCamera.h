@@ -54,7 +54,8 @@ public:
 	 *
 	 * \param force If on the map are scrollblockers, they will be ignored when this is enabled
 	 */
-	void process(const bool force = false);
+    void process();
+
 
 	/**
 	 * \brief
@@ -68,6 +69,13 @@ public:
 	 * this function will adjust the camera to the proper edges in the level
 	 */
 	void reAdjust();
+
+    /**
+     * @brief shakeVertView This will make the camera shake a bit.
+     * @param time      time in milliseconds for how long the camera shakes
+     * @param vAmount   amount of vertical placement which provides that effect
+     */
+    void shakeVertView( const uint time, const uint vAmount );
 
 	bool outOfSight();
 
@@ -97,7 +105,9 @@ public:
 	}m_relcam;
 
 private:
+
 	CSpriteObject *mp_AttachedObject;
+
     static int mCamlead;
     static bool mCamLeadChange;   
     static std::array<bool, 4> mDontUseThisLead;

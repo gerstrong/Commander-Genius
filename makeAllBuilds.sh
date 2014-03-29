@@ -6,8 +6,8 @@ make package -j 4
 rm CMakeFiles -R
 
 # Linux 64-bit Version
-cmake . -DBUILD_TARGET=LINUX -DBUILD_ARCH=amd64 -DCMAKE_BUILD_TYPE=Release -DOGG=yes -DTREMOR=NO -DCREATE_DEBS=1 -DCREATE_RPMS=1
-make package_source
+cmake . -DBUILD_TARGET=LINUX -DBUILD_ARCH=amd64 -DCMAKE_BUILD_TYPE=Release -DOGG=yes -DTREMOR=NO -DCREATE_DEBS=1 -DCREATE_RPMS=1 -DUSE_SDL2=yes
+#make package_source
 make package -j 4
 rm CMakeFiles -R
 

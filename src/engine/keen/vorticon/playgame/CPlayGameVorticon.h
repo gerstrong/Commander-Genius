@@ -110,7 +110,7 @@ private:
 	// Tell whether any of the Players' status screen is open
 	bool StatusScreenOpen();
 
-	bool mp_level_completed[MAX_LEVELS_VORTICON];
+	bool mpLevelCompleted[MAX_LEVELS_VORTICON];
 
 	std::shared_ptr<CMap> mMap;
 	std::vector<CPlayer> m_Player;

@@ -276,12 +276,14 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 
     initOverlaySurface(false, blit->w, blit->h);
 
-    //const GsRect<Uint16> &gamerect = m_VidConfig.m_GameRect;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     mpSdlTexture.reset( SDL_CreateTexture(renderer,
                                    SDL_PIXELFORMAT_ARGB8888,
                                    SDL_TEXTUREACCESS_STREAMING,
                                    gamerect.w*m_VidConfig.m_ScaleXFilter,
                                    gamerect.h*m_VidConfig.m_ScaleXFilter) );
+#endif
 
 
     return true;

@@ -21,6 +21,7 @@ resetLogic(false)
 #endif
 	setFPS(DEFAULT_LPS_VORTICON);
 	gLogging.textOut(GREEN, true, "Starting timer driver...\n");
+    ResetSecondsTimer();
 }
 
 

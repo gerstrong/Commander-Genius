@@ -16,10 +16,7 @@ const float TEXT_HEIGHT = 10.0f;
 
 CGUITextSelectionList::CGUITextSelectionList() :
 mHoverSelection(0),
-mSelection(-1),
-mScrollPos(0),
-mMaxScrollAmt(0),
-mLastToShow(0)
+mSelection(-1)
 {}
 
 void CGUITextSelectionList::setConfirmButtonEvent(CEvent *ev)
@@ -89,15 +86,7 @@ void CGUITextSelectionList::processLogic()
     const float y_innerbound_max = y_innerbound_min_text +
             static_cast<float>( mItemList.size()*TEXT_HEIGHT )/bh;
 
-
     const float x_innerbound_min = fx + static_cast<float>(TEXT_HEIGHT)/bw;
-
-    // If scroll-position gets out of sight adjust it!
-    /*if(mSelection > mLastToShow)
-        mScrollPos++;
-
-    if(mSelection < mScrollPos)
-        mScrollPos--;*/
 
 	CRect<float> rRect(fx, fy, fw, fh);
 

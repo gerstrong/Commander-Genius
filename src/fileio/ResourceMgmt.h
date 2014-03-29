@@ -33,19 +33,20 @@ struct CResource : public CSingleton<CResource>
 	    
 	    if(episode <= 6)
 	    {
-		// Only the files which are standard can be set.
-		// If other files are in the directory, the patch files have assign that!
-		egagraphFilename = "egagraph.ck" + epStr;
-		egaheadFilename = "egahead.ck" + epStr;
-		egadictFilename = "egadct.ck" + epStr;
-		audioFilename = "audio.ck" + epStr;
-		audioHedFilename = "audiohed.ck" + epStr;
-		audioDictFilename = "audiodct.ck" + epStr;
-		gamemapsFilename = "gamemaps.ck" + epStr;
+            // Only the files which are standard can be set.
+            // If other files are in the directory, the patch files have assign that!
+            egagraphFilename = "egagraph.ck" + epStr;
+            egaheadFilename = "egahead.ck" + epStr;
+            egadictFilename = "egadct.ck" + epStr;
+            audioFilename = "audio.ck" + epStr;
+            audioHedFilename = "audiohed.ck" + epStr;
+            audioDictFilename = "audiodct.ck" + epStr;
+            gamemapsFilename = "gamemaps.ck" + epStr;
+            mapheadFilename = "maphead.ck" + epStr;
 	    }
 	    else // Keen Dreams
 	    {
-		egadictFilename = "KDREAMSDICT.EGA";
+            egadictFilename = "KDREAMSDICT.EGA";
 	    }
 	}
 };

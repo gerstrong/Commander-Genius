@@ -15,7 +15,7 @@
 #include "GsButton.h"
 
 
-const int BLEND_SPEED = 8;
+const int BLEND_SPEED = 16;
 
 
 GsButton::GsButton(const std::string& text,

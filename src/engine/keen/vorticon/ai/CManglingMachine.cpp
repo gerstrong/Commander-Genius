@@ -440,6 +440,7 @@ void CManglingMachine::se_mortimer_heart(CVorticonSpriteObject *obj)
                 if (my > MORTIMER_MACHINE_YEND)
                 {
                     exists = false;
+                    mp_Map->triggerShake( 1000, 7 );
                 }
                 else my++;
             }

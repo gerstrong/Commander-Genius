@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <lib/base/GsTimer.h>
+
 
 #include "graphics/GsTilemap.h"
 #include "fileio/TypeDefinitions.h"
@@ -64,6 +66,17 @@ public:
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );
 
+    /**
+     * @brief shakMap will make the currently running map shake for a certain amount of time
+     * @param cycles
+     * @param vAmount
+     */
+    void triggerShake(const uint cycles, const uint vAmount );
+
+    /**
+     * @brief renderShaking internal shaking routine for blooglet or when in EP3 Mortimer Machine is getting destroyed
+     */
+    void renderShaking();
 	void _drawForegroundTiles();
 
 	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);
@@ -184,6 +197,11 @@ private:
     GsRect<int> mVisArea;
 
     std::map< int, VectorD2<int> > mSpriteOriginList;
+
+    int mShakeCounter;
+    int mMaxShakeCounter;
+    int mMaxShakeVAmt;
+    int mShakeDir;
 };
 
 

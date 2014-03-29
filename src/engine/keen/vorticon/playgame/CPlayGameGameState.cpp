@@ -63,7 +63,7 @@ bool CPlayGameVorticon::loadGameState()
 	
 	for( size_t i=0 ; i < m_Player.size() ; i++ )
 	{
-      m_Player.push_back( CPlayer(mp_level_completed, *mMap.get(), i) );
+      m_Player.push_back( CPlayer(mpLevelCompleted, *mMap.get(), i) );
 	  m_Player.at(i).m_index = i;
 	  m_Player.at(i).setDatatoZero();
 	}
@@ -150,7 +150,7 @@ bool CPlayGameVorticon::loadGameState()
 	ok &= savedGame.readDataBlock( reinterpret_cast<byte*>(mMap->getForegroundData()) );
 	
 	// Load completed levels
-	ok &= savedGame.readDataBlock( (byte*)(mp_level_completed) );
+	ok &= savedGame.readDataBlock( (byte*)(mpLevelCompleted) );
 	
     m_Player[0].setMapData(mMap.get());
 	m_Player[0].setupCameraObject();
@@ -254,7 +254,7 @@ bool CPlayGameVorticon::loadXMLGameState()
         const std::string tag = stateTree.first;
         if(tag == "Player")
         {
-            CPlayer loadedPlayer(mp_level_completed, *(mMap.get()), 0 );
+            CPlayer loadedPlayer(mpLevelCompleted, *(mMap.get()), 0 );
 
             m_Player.push_back(loadedPlayer);
 
@@ -346,7 +346,7 @@ bool CPlayGameVorticon::loadXMLGameState()
     }
 
     const std::string b64text = stateNode.get<std::string>("complete");
-    base64Decode( reinterpret_cast<byte*>(mp_level_completed), b64text);
+    base64Decode( reinterpret_cast<byte*>(mpLevelCompleted), b64text);
 
 
     // adjust camera settings
@@ -469,7 +469,7 @@ bool CPlayGameVorticon::saveXMLGameState()
         mapNode.put("fgdata", b64text);
     }
 
-    stateNode.put("complete", base64Encode( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON) );    
+    stateNode.put("complete", base64Encode( (byte*)(mpLevelCompleted), MAX_LEVELS_VORTICON) );    
 
     CSaveGameController &savedGame = *(gpSaveGameController);
     savedGame.saveXMLTree(pt);
@@ -548,7 +548,7 @@ bool CPlayGameVorticon::saveGameState()
 													2*mMap->m_width*mMap->m_height );
 
 	// store completed levels
-	savedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );
+	savedGame.addData( (byte*)(mpLevelCompleted), MAX_LEVELS_VORTICON );
 
     return savedGame.save();
 }

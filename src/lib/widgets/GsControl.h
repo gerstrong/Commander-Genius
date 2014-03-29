@@ -30,7 +30,12 @@ public:
 
 	virtual void processLogic() = 0;
 
-    void processPointingState();
+    void processPointingState()
+    {
+        processPointingState(mRect);
+    }
+
+    void processPointingState(const GsRect<float> &rect);
 
     virtual void processRender(const GsRect<float> &RectDispCoordFloat) = 0;
 

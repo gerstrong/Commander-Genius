@@ -120,7 +120,7 @@ struct GsRect
 
 	// Check whether a point given by a Vector is with that Rect.
 	// The operation is simple but very often used.
-	bool HasPoint(VectorD2<T>& Pos)
+    bool _HasPoint(VectorD2<T>& Pos) const
 	{
 		// check X coordinate. is it outside, return false
         if( Pos.x < x || Pos.x >= x+w )
@@ -134,12 +134,12 @@ struct GsRect
 	}
 
 	template <typename T2>
-	bool HasPoint(VectorD2<T2>& Pos)
+    bool HasPoint(VectorD2<T2>& Pos) const
 	{
 		VectorD2<T> NewPos;
 		NewPos.x = static_cast<T>(Pos.x);
 		NewPos.y = static_cast<T>(Pos.y);
-		return HasPoint(NewPos);
+        return _HasPoint(NewPos);
 	}
 
 

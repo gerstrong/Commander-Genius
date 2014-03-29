@@ -11,6 +11,7 @@
 #define CGUITEXTSELECTIONLIST_H_
 
 #include "GsControl.h"
+#include "GsScrollbar.h"
 
 #include <list>
 #include <string>
@@ -20,24 +21,15 @@ class CGUITextSelectionList : public CGUIControl
 {
 public:
 
-	CGUITextSelectionList() :
-	mHoverSelection(0),
-    mPressedSelection(-1),
-    mReleasedSelection(-1),
-    mScrollPos(0),
-    mMaxScrollAmt(0),
-    mlastToShow(0) {}
+    CGUITextSelectionList();
 
 	void setConfirmButtonEvent(CEvent *ev);
 	void setBackButtonEvent(CEvent *ev);
 
 	bool sendEvent(const InputCommands command);
 	void addText(const std::string &text);    
-    void scrollUp();
-    void scrollDown();
 	void processLogic();
     void processRender(const GsRect<float> &RectDispCoordFloat);
-    void drawScrollBar(const SDL_Rect &lRect);
 
     int getSelection() const
     { return mReleasedSelection; }
@@ -53,11 +45,7 @@ private:
     int mPressedSelection;
     int mReleasedSelection;
     
-	int mTextWidthLimit;
-
-    int mScrollPos;
-    int mMaxScrollAmt;
-    int mlastToShow;
+    GsScrollbar mScrollbar;
 	
 	std::shared_ptr<CEvent> mConfirmEvent;
 	std::shared_ptr<CEvent> mBackEvent;

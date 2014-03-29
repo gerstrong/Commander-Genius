@@ -32,9 +32,16 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	SDL_Rect rect;
 	rect.x = rect.y = 0;
 	rect.w = rect.h = tileDim;
-	std::shared_ptr<SDL_Surface> bmpSfc( CG_CreateRGBSurface(rect), &SDL_FreeSurface );
 
-	SDL_FillRect(bmpSfc.get(), NULL, 0xFFFFFFFF);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    std::shared_ptr<SDL_Surface> bmpSfc( CG_CreateRGBSurface( rect ), &SDL_FreeSurface );
+    bmpSfc.reset(gVideoDriver.convertThroughBlitSfc(bmpSfc.get()), &SDL_FreeSurface);
+
+#else
+    std::shared_ptr<SDL_Surface> bmpSfc( CG_CreateRGBSurface(rect), &SDL_FreeSurface );
+#endif
+
+    SDL_FillRect(bmpSfc.get(), NULL, 0xFF00FFFF);
 	tilemap.drawTile(bmpSfc.get(), 0, 0, tile);
 
 	rect.x = x;	rect.y = y;
@@ -42,8 +49,14 @@ void CMessageBoxVort::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	GsRect<float> fRect( x, y, 16.0f, 16.0f);
 
 	GsRect<float> gameRect = gVideoDriver.getGameResolution();
-	fRect.transformInverse(gameRect);
-	fRect.transform(mRect);
+    fRect.transformInverse(gameRect);
+
+    GsRect<float> scaleRect = mRect;
+
+    scaleRect.x = 0;
+    scaleRect.y = 0;
+
+    fRect.transformInverse(scaleRect);
 
     std::shared_ptr<GsBitmap> pBitmap(new GsBitmap(bmpSfc));
     addControl( new CGUIBitmap(pBitmap), fRect );

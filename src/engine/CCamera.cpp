@@ -101,7 +101,7 @@ void CCamera::setPosition(const VectorD2<int>& newpos)
 	reAdjust();
 }
 
-void CCamera::process(const bool force)
+void CCamera::process()
 {
     // Cycle Cam Code
     if( gInput.getPressedCommand(mCamlead, IC_CAMLEAD) )
@@ -131,8 +131,7 @@ void CCamera::process(const bool force)
 
 	if(!m_attached)
 	{	// This means, that there is no attached object. Let the camera scroll freely!
-		size_t movespeed = 100;
-
+        const size_t movespeed = 100;
 		if(gInput.getHoldedCommand(IC_LEFT))
 			moveLeft(movespeed);
 		else if(gInput.getHoldedCommand(IC_RIGHT))
@@ -181,12 +180,15 @@ void CCamera::process(const bool force)
 		}
 	}
 
-	Uint16 &scroll_x = mp_Map->m_scrollx;
-	Uint16 &scroll_y = mp_Map->m_scrolly;
 
-	// delta is how much we need to scroll in order to get the camera stalled
-	int delta_x = (getXPosition()>>STC)-scroll_x;
-	int delta_y = (getYPosition()>>STC)-scroll_y;
+    Uint16 &scroll_x = mp_Map->m_scrollx;
+    Uint16 &scroll_y = mp_Map->m_scrolly;
+
+    // delta is how much we need to scroll in order to get the camera stalled
+    int delta_x = (getXPosition()>>STC)-scroll_x;
+    int delta_y = (getYPosition()>>STC)-scroll_y;
+
+
 
     // The bounds are relatively scaled for bigger game resolutions
     const int scFacW = gamerect.w/320;
@@ -234,6 +236,7 @@ void CCamera::process(const bool force)
 				break;
 		}while(delta_y < up-speed);
 	}
+
 }
 
 void CCamera::reAdjust() 
