@@ -63,9 +63,9 @@ public:
 	 *
 	 * \return true if the Attached object is outside the camera, else false
 	 */
-	
+
 	/**
-	 * in case the map is loaded or the player warped to another point, 
+	 * in case the map is loaded or the player warped to another point,
 	 * this function will adjust the camera to the proper edges in the level
 	 */
 	void reAdjust();
@@ -75,7 +75,7 @@ public:
      * @param time      time in milliseconds for how long the camera shakes
      * @param vAmount   amount of vertical placement which provides that effect
      */
-    void shakeVertView( const uint time, const uint vAmount );
+    void shakeVertView( const unsigned int time, const unsigned int vAmount );
 
 	bool outOfSight();
 
@@ -91,7 +91,7 @@ public:
         mCamlead = 0;
         mCamLeadChange = false;
     }
-	
+
 	bool m_attached;
 	bool m_freeze;
 	bool m_moving;
@@ -109,7 +109,7 @@ private:
 	CSpriteObject *mp_AttachedObject;
 
     static int mCamlead;
-    static bool mCamLeadChange;   
+    static bool mCamLeadChange;
     static std::array<bool, 4> mDontUseThisLead;
 };
 

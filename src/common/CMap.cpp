@@ -69,7 +69,7 @@ bool CMap::createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height)
 	m_width = width;
 	m_height = height;
 	m_Plane[plane].createDataMap(m_width, m_height);
-	
+
 	return true;
 }
 
@@ -452,7 +452,7 @@ bool CMap::gotoPos(int x, int y)
 
 // scrolls the map one pixel right
 bool CMap::scrollRight(const bool force)
-{   
+{
     const int res_width = gVideoDriver.getGameResolution().w;
 
     if( !force && findVerticalScrollBlocker((m_scrollx+res_width)<<STC) )
@@ -650,8 +650,8 @@ void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 
 		const size_t bg = m_Plane[0].getMapDataAt(mx, my);
 		const size_t fg = m_Plane[1].getMapDataAt(mx, my);
-		
-		m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);		
+
+		m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
 		if(fg)
 		  m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
 	}
@@ -696,7 +696,7 @@ void CMap::drawAll()
 
 // draw a horizontal stripe, for vertical scrolling
 void CMap::drawHstripe(unsigned int y, unsigned int mpy)
-{    
+{
 	if(mpy >= m_height) return;
 
     SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
@@ -711,11 +711,11 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 	{
 	  Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, mpy);
 	  Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
-	  
+
       m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask, y, bg);
 	  if(fg)
         m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&drawMask, y, fg);
-	}	
+	}
 }
 
 // draws a vertical stripe from map position mapx to scrollbuffer position x
@@ -736,7 +736,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 	{
 	  Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
 	  Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
-	  
+
       m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&drawMask, bg);
 	  if(fg)
         m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&drawMask, fg);
@@ -744,7 +744,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 }
 
 
-void CMap::triggerShake( const uint cycles, const uint vAmount )
+void CMap::triggerShake( const unsigned int cycles, const unsigned int vAmount )
 {
     mMaxShakeVAmt = vAmount;
     mMaxShakeCounter = cycles;

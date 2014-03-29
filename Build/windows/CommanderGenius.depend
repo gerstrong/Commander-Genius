@@ -454,11 +454,12 @@
 	<stdio.h>
 	<string.h>
 
-1394262615 c:\users\admin\desktop\commander-genius\src\common\cmap.h
+1396123326 c:\users\admin\desktop\commander-genius\src\common\cmap.h
 	<SDL.h>
 	<string>
 	<vector>
 	<list>
+	<lib/base/GsTimer.h>
 	"graphics/GsTilemap.h"
 	"fileio/TypeDefinitions.h"
 	"CPlane.h"
@@ -558,7 +559,7 @@
 
 1394262615 c:\users\admin\desktop\commander-genius\src\ref.h
 
-1394262616 c:\users\admin\desktop\commander-genius\src\fileio\oldsavegamestructs.h
+1396122718 c:\users\admin\desktop\commander-genius\src\fileio\oldsavegamestructs.h
 	"common/Playerdefines.h"
 	"common/inventory.h"
 
@@ -679,7 +680,7 @@
 	"FindFile.h"
 	"Debug.h"
 
-1395489901 c:\users\admin\desktop\commander-genius\version.h
+1396123157 c:\users\admin\desktop\commander-genius\version.h
 
 1376493144 c:\users\admin\desktop\commander-genius\src\findfile.h
 	<iomanip>
@@ -747,7 +748,7 @@
 	"sdl/sound/CSound.h"
 	<SDL.h>
 
-1394262616 c:\users\admin\desktop\commander-genius\src\fileio\resourcemgmt.h
+1396122718 c:\users\admin\desktop\commander-genius\src\fileio\resourcemgmt.h
 	<string>
 	<set>
 	<base/utils/StringUtils.h>
@@ -869,7 +870,7 @@
 	"inventory.h"
 	<memory>
 
-1394262615 c:\users\admin\desktop\commander-genius\src\engine\ccamera.h
+1396123350 c:\users\admin\desktop\commander-genius\src\engine\ccamera.h
 	"common/CSpriteObject.h"
 	<array>
 
@@ -3515,7 +3516,7 @@
 1355036300 c:\program files (x86)\codeblocks\mingw\include\vorbis\codec.h
 	<ogg/ogg.h>
 
-1394262618 source:c:\users\admin\desktop\commander-genius\src\sdl\sound\csoundslot.cpp
+1395502902 source:c:\users\admin\desktop\commander-genius\src\sdl\sound\csoundslot.cpp
 	<stdio.h>
 	<string.h>
 	<fstream>
@@ -10420,11 +10421,11 @@
 	<base/utils/Geometry.h>
 	<graphics/GsSurface.h>
 
-1395489901 c:\users\admin\desktop\commander-genius\src\lib\base\utils\geometry.h
+1396122718 c:\users\admin\desktop\commander-genius\src\lib\base\utils\geometry.h
 	<SDL.h>
 	<CVec.h>
 
-1394262618 c:\users\admin\desktop\commander-genius\src\lib\widgets\gscontrol.h
+1396122718 c:\users\admin\desktop\commander-genius\src\lib\widgets\gscontrol.h
 	<base/InputEvents.h>
 
 1394882251 c:\users\admin\desktop\commander-genius\src\lib\base\inputevents.h
@@ -10441,8 +10442,9 @@
 	<string>
 	"GsControl.h"
 
-1394262618 c:\users\admin\desktop\commander-genius\src\lib\widgets\gstextselectionlist.h
+1396122718 c:\users\admin\desktop\commander-genius\src\lib\widgets\gstextselectionlist.h
 	"GsControl.h"
+	"GsScrollbar.h"
 	<list>
 	<string>
 
@@ -12061,7 +12063,7 @@
 1394262616 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cankhshield.h
 	"CPlayer.h"
 
-1395148397 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplayer.h
+1396122718 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\ai\cplayer.h
 	<SDL.h>
 	"../CVorticonSpriteObject.h"
 	"../ai/CMessie.h"
@@ -12083,7 +12085,7 @@
 	"CPlayer.h"
 	"engine/CEvent.h"
 
-1394262616 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cstatusscreen.h
+1396122718 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\cstatusscreen.h
 	<SDL.h>
 	"common/inventory.h"
 	<memory>
@@ -13086,7 +13088,7 @@
 1394262616 source:c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamedialogs.cpp
 	"CPlayGameVorticon.h"
 
-1394262616 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.h
+1396122718 c:\users\admin\desktop\commander-genius\src\engine\keen\vorticon\playgame\cplaygamevorticon.h
 	"graphics/GsGraphics.h"
 	"fileio/CSaveGameController.h"
 	"../ai/CPlayer.h"
@@ -19548,4 +19550,7 @@
 	<UIKit/UIKit.h>
 	<mir_toolkit/mir_client_library.h>
 	"close_code.h"
+
+1396122718 c:\users\admin\desktop\commander-genius\src\lib\widgets\gsscrollbar.h
+	"GsControl.h"
 

@@ -71,7 +71,7 @@ public:
      * @param cycles
      * @param vAmount
      */
-    void triggerShake(const uint cycles, const uint vAmount );
+    void triggerShake(const unsigned int cycles, const unsigned int vAmount );
 
     /**
      * @brief renderShaking internal shaking routine for blooglet or when in EP3 Mortimer Machine is getting destroyed
@@ -119,12 +119,12 @@ public:
 	word *getInfoData();
 	word *getForegroundData();
 	word *getBackgroundData();
-	
+
 	/**
 	 * This awesome method collects the coordinates in where the blockers are, so the checking routine obtains them at a faster way
 	 */
 	void collectBlockersCoordiantes();
-	
+
 	void fetchNearestVertBlockers(const int x, int &leftCoord, int &rightCoord);
 	void fetchNearestHorBlockers(const int y, int &upCoord, int &downCoord);
 
@@ -168,10 +168,10 @@ public:
     VectorD2<int> mGamePlayPos;
 
 private:
-    
+
     bool findVerticalScrollBlocker(const int x);
     bool findHorizontalScrollBlocker(const int y);
-	
+
 
 
 	Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe
@@ -184,7 +184,7 @@ private:
 
 	std::vector<GsTilemap> &m_Tilemaps;
 
-	float mAnimtileTimer;	
+	float mAnimtileTimer;
 
 	CPlane m_Plane[3];
 	Uint16 m_Level;
