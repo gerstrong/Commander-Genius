@@ -41,7 +41,9 @@ public:
         mScrollPos(0),
         mMaxScrollAmt(0),
         mLastToShow(0),
-        mpParent(parent) {}
+        mpParent(parent),
+        mSliderHeight(0.0f),
+        mArrowHeight(0.0f) {}
 
 
     int mScrollPos;
@@ -51,6 +53,8 @@ public:
 private:
     CGUIControl *mpParent;
 
+    float mSliderHeight;
+    float mArrowHeight;
 };
 
 #endif // GSSCROLLBAR_H
