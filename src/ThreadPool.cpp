@@ -66,7 +66,7 @@ void ThreadPool::prepareNewThread() {
 	t->working = false;
 	availableThreads.insert(t);
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    t->thread = SDL_CreateThread(threadWrapper, "t", t);
+    t->thread = SDL_CreateThread(threadWrapper, "threadWrapper", t);
 #else
     t->thread = SDL_CreateThread(threadWrapper, t);
 #endif

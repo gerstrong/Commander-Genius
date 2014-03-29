@@ -3616,7 +3616,7 @@
 	<sstream>
 	<iomanip>
 
-1395491752 source:c:\users\admin\desktop\commander-genius\src\threadpool.cpp
+1395492937 source:c:\users\admin\desktop\commander-genius\src\threadpool.cpp
 	<SDL_thread.h>
 	"ThreadPool.h"
 	<base/Debug.h>
@@ -19192,4 +19192,360 @@
 	<inttypes.h>
 	<stdint.h>
 	<sys/types.h>
+
+1376152742 c:\users\admin\desktop\sdl2_image-2.0.0\i686-w64-mingw32\include\sdl2\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_assert.h"
+	"SDL_atomic.h"
+	"SDL_audio.h"
+	"SDL_clipboard.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_filesystem.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_haptic.h"
+	"SDL_hints.h"
+	"SDL_loadso.h"
+	"SDL_log.h"
+	"SDL_messagebox.h"
+	"SDL_mutex.h"
+	"SDL_power.h"
+	"SDL_render.h"
+	"SDL_rwops.h"
+	"SDL_system.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_version.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<math.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_config.h
+	"SDL_platform.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_platform.h
+	"AvailabilityMacros.h"
+	"TargetConditionals.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\begin_code.h
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\close_code.h
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_assert.h
+	"SDL_config.h"
+	"begin_code.h"
+	<signal.h>
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_atomic.h
+	"SDL_stdinc.h"
+	"SDL_platform.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_endian.h
+	"SDL_stdinc.h"
+	<endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_atomic.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_clipboard.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	<intrin.h>
+	<intrin.h>
+	<altivec.h>
+	<mmintrin.h>
+	<mm3dnow.h>
+	<xmmintrin.h>
+	<emmintrin.h>
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_quit.h"
+	"SDL_gesture.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_surface.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_pixels.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_rect.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_pixels.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_surface.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_blendmode.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_blendmode.h
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keycode.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_keycode.h
+	"SDL_stdinc.h"
+	"SDL_scancode.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_scancode.h
+	"SDL_stdinc.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_gamecontroller.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_gesture.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_touch.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_filesystem.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_haptic.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_hints.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_log.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_messagebox.h
+	"SDL_stdinc.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_power.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_render.h
+	"SDL_stdinc.h"
+	"SDL_rect.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_system.h
+	"SDL_stdinc.h"
+	"SDL_keyboard.h"
+	"SDL_render.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_opengl.h
+	"SDL_config.h"
+	<windows.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+	<windows.h>
+	<stddef.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_opengles.h
+	<OpenGLES/ES1/gl.h>
+	<OpenGLES/ES1/glext.h>
+	<GLES/gl.h>
+	<GLES/glext.h>
+
+1394253593 c:\users\admin\desktop\sdl2-2.0.3\include\sdl_syswm.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	<windows.h>
+	<X11/Xlib.h>
+	<X11/Xatom.h>
+	<directfb.h>
+	<Cocoa/Cocoa.h>
+	<UIKit/UIKit.h>
+	<mir_toolkit/mir_client_library.h>
+	"close_code.h"
 

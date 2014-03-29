@@ -34,6 +34,9 @@ m_pAudioSpec(NULL)
 #if !defined(TARGET_OS_IPHONE) || !defined(TARGET_IPHONE_SIMULATOR)
 void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen)
 {
+
+#if defined(OGG) || defined(TREMOR)
+
     OggVorbis_File  oggStream;     				// stream handle
     const unsigned int BUFFER_SIZE = 32768;     // 32 KB buffers
     SoundBuffer = NULL;
@@ -90,6 +93,7 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
         SoundBuffer = (Uint8*) malloc(SoundLen*sizeof(Uint8));
         memcpy(SoundBuffer, &(buffer[0]), SoundLen);
     }
+    #endif
 }
 #endif
 
