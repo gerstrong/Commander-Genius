@@ -23,7 +23,7 @@
 
 CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, bool *p_level_completed, int &ankhtime,
                              int baseframe, int varSprite ) :
- mp_level_completed(p_level_completed),
+ mpLevelCompleted(p_level_completed),
  m_ankhtime(ankhtime),
  m_closing(false),
  m_closed(false)
@@ -329,14 +329,14 @@ void CStatusScreen::createInventorySfcEp2(const int varSpr)
 	}
 
 	// cities saved
-	if (mp_level_completed[4]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL4_TargetName"), (0+1)<<3, (0+8)<<3);
-	if (mp_level_completed[6]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL6_TargetName"), (0+8)<<3, (0+8)<<3);
-	if (mp_level_completed[7]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL7_TargetName"), (0+1)<<3, (0+9)<<3);
-	if (mp_level_completed[13]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL13_TargetName"), (0+8)<<3, (0+9)<<3);
-	if (mp_level_completed[11]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL11_TargetName"), (0+1)<<3, (0+10)<<3);
-	if (mp_level_completed[9]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL9_TargetName"), (0+8)<<3, (0+10)<<3);
-	if (mp_level_completed[15]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL15_TargetName"), (0+1)<<3, (0+11)<<3);
-	if (mp_level_completed[16]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL16_TargetName"), (0+8)<<3, (0+11)<<3);
+	if (mpLevelCompleted[4]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL4_TargetName"), (0+1)<<3, (0+8)<<3);
+	if (mpLevelCompleted[6]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL6_TargetName"), (0+8)<<3, (0+8)<<3);
+	if (mpLevelCompleted[7]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL7_TargetName"), (0+1)<<3, (0+9)<<3);
+	if (mpLevelCompleted[13]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL13_TargetName"), (0+8)<<3, (0+9)<<3);
+	if (mpLevelCompleted[11]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL11_TargetName"), (0+1)<<3, (0+10)<<3);
+	if (mpLevelCompleted[9]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL9_TargetName"), (0+8)<<3, (0+10)<<3);
+	if (mpLevelCompleted[15]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL15_TargetName"), (0+1)<<3, (0+11)<<3);
+	if (mpLevelCompleted[16]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL16_TargetName"), (0+8)<<3, (0+11)<<3);
 
 	// Now draw the difficulty at the bottom
 	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);

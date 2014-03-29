@@ -22,11 +22,11 @@
 ///
 // Initialization Part
 ///
-CPlayer::CPlayer(bool *mp_level_completed,
+CPlayer::CPlayer(bool *mpLevelCompleted,
                  CMap &map, const int sprVar) :
 CVorticonSpriteObject(&map, 0, 0, OBJ_PLAYER, sprVar),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
-mp_levels_completed(mp_level_completed),
+mp_levels_completed(mpLevelCompleted),
 mp_option(g_pBehaviorEngine->m_option)
 {
     canbezapped = true;

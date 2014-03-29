@@ -13,7 +13,7 @@
  */
 
 #define MAX_LEVELS_V4     100	// Depracated for older formats
-#define MAX_LEVELS_VORTICON     20
+#define MAX_LEVELS_VORTICON     80
 
 #ifndef OLDSAVEGAMESTRUCTS_H_
 #define OLDSAVEGAMESTRUCTS_H_
