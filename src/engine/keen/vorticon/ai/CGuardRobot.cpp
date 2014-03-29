@@ -1,5 +1,4 @@
 #include "sdl/sound/CSound.h"
-//#include "sdl/CVideoDriver.h"
 #include "engine/spritedefines.h"
 
 #include "CGuardRobot.h"
@@ -208,7 +207,7 @@ void CGuardRobot::guard_fire()
 	pausetime = FIRE_PAUSE_TIME;
 }
 
-void CGuardRobot::getTouchedBy(CSpriteObject &theObject)
+void CGuardRobot::getTouchedBy(CVorticonSpriteObject &theObject)
 {
 	if ( g_pBehaviorEngine->mDifficulty>=NORMAL )
 	{
