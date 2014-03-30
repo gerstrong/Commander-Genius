@@ -45,6 +45,7 @@
 			<Add directory="C:/mingw11/include/OGG" />
 			<Add directory="C:/mingw11/include/vorbis" />
 			<Add directory="C:/mingw11/include/gl" />
+			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/x86_64-w64-mingw32/include/SDL2" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="../../../Commander-Genius" />
@@ -59,9 +60,8 @@
 			<Add library="opengl32" />
 			<Add library="user32" />
 			<Add library="gdi32" />
-			<Add library="SDL2_image" />
-			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/lib" />
 			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/i686-w64-mingw32/lib" />
+			<Add directory="C:/mingw11/lib" />
 		</Linker>
 		<Unit filename="../../src/CGLogo.rc">
 			<Option compilerVar="WINDRES" />
@@ -711,6 +711,8 @@
 		<Unit filename="../../src/lib/widgets/GsMenuController.h" />
 		<Unit filename="../../src/lib/widgets/GsNumberControl.cpp" />
 		<Unit filename="../../src/lib/widgets/GsNumberControl.h" />
+		<Unit filename="../../src/lib/widgets/GsScrollbar.cpp" />
+		<Unit filename="../../src/lib/widgets/GsScrollbar.h" />
 		<Unit filename="../../src/lib/widgets/GsSwitch.cpp" />
 		<Unit filename="../../src/lib/widgets/GsSwitch.h" />
 		<Unit filename="../../src/lib/widgets/GsText.cpp" />

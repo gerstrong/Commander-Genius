@@ -11,10 +11,7 @@
 #include "ThreadPool.h"
 #include <base/Debug.h>
 #include <lib/base/GsLogging.h>
-//#include "AuxLib.h"
 #include "ReadWriteLock.h" // for ScopedLock
-//#include "OLXCommand.h"
-
 
 
 ThreadPool::ThreadPool(unsigned int size) {
@@ -30,6 +27,7 @@ ThreadPool::ThreadPool(unsigned int size) {
 	while(availableThreads.size() < size)
 		prepareNewThread();
 }
+
 
 ThreadPool::~ThreadPool() {
 	waitAll();
