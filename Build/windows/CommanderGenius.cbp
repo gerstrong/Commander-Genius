@@ -38,14 +38,11 @@
 			<Add option="-DWIN32" />
 			<Add option="-DTARGET_WIN32" />
 			<Add option="-DOGG" />
-			<Add option="-DOPENGL" />
 			<Add directory="../../src" />
-			<Add directory="C:/mingw11/include" />
-			<Add directory="C:/mingw11/include/SDL2" />
-			<Add directory="C:/mingw11/include/OGG" />
-			<Add directory="C:/mingw11/include/vorbis" />
-			<Add directory="C:/mingw11/include/gl" />
-			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/i686-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/include/SDL2" />
+			<Add directory="C:/MinGW10/include/ogg" />
+			<Add directory="C:/MinGW10/include/vorbis" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="../../../Commander-Genius" />
@@ -54,14 +51,13 @@
 			<Add library="mingw32" />
 			<Add library="SDL2main" />
 			<Add library="SDL2" />
+			<Add library="SDL2_image" />
 			<Add library="vorbisfile" />
 			<Add library="vorbis" />
 			<Add library="ogg" />
-			<Add library="opengl32" />
-			<Add library="user32" />
-			<Add library="gdi32" />
 			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/i686-w64-mingw32/lib" />
-			<Add directory="C:/mingw11/lib" />
+			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/lib" />
+			<Add directory="C:/MinGW10/i686-pc-mingw32/lib" />
 		</Linker>
 		<Unit filename="../../src/CGLogo.rc">
 			<Option compilerVar="WINDRES" />
