@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Commander Genius
+Comment=Play natively Commander Keen Games
+Exec=CommanderGenius
+Icon=cgenius
+Terminal=false
+Type=Application
+Categories=Games
+

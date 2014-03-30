@@ -1,6 +1,8 @@
 OPTION(CREATE_DEBS "Will create DEBs" No)
 OPTION(CREATE_RPMS "Will create RPMs" No)
 
+SET(CGENIUS_DESKTOP_DIR "${CMAKE_CURRENT_BINARY_DIR}/usr/share/applications/")
+
 # Now let's setup the package for installation. You can create the package of the chosen build
 # running make package, and if needed just runs that package
 # For Linux it will create Debian Packages and replace the manual script I have been using in the past.
@@ -23,6 +25,7 @@ IF(BUILD_TARGET STREQUAL WIN32)
 ELSE(BUILD_TARGET STREQUAL WIN32)
 	SET(CPACK_PACKAGE_INSTALL_DIRECTORY "/usr/games")
 	SET(CPACK_GENERATOR "TGZ")
+	INSTALL(FILES share/cgenius.desktop DESTINATION ${CGENIUS_DESKTOP_DIR})
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 IF(BUILD_TARGET STREQUAL WIN32)
