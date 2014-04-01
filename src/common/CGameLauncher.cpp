@@ -369,22 +369,43 @@ void CGameLauncher::start()
 }
 
 
+struct PatchListFiller
+{
+    std::set<std::string> list;
+
+    bool operator() (const std::string& filename) {
+        std::string ext = GetFileExtension(filename);
+        if (stringcaseequal(ext, "pat"))
+            list.insert(filename);
+
+        return true;
+    }
+};
+
+
 void CGameLauncher::setupModsDialog()
 {
-    std::vector<std::string> patchFileList;
+    const std::string dataDir = getDirectory( m_chosenGame );
 
-    // TODO: fetch the List of avialable patch files
+    // TODO: fetch the List of available patch files
+    //Get the list of ".pat" files
+    PatchListFiller patchlist;
+    FindFiles(patchlist, dataDir, false, FM_REG);
+
+    if( patchlist.list.empty() )
+        return;
 
     // If the there are not at least 2 mods to select, do not create the patch selection dialog
-    if( patchFileList.size() <= 1 )
+    if( patchlist.list.size() == 1 )
     {
+        mPatchFilename = *(patchlist.list.begin());
         mDonePatchSelection=true;
         return;
     }
 
-    // TODO: fetch the List of avialable patch files
-
-
+    // TODO: Create the dialog with the List of available patches
+    mPatchFilename = *(patchlist.list.begin()); // ->  Workaround
+    mDonePatchSelection=true;
 }
 
 
@@ -475,6 +496,8 @@ void CGameLauncher::ponderPatchDialog()
 
         // We have to check which Episode will be used
         const int episode = getEpisode( m_chosenGame );
+
+        g_pBehaviorEngine->mPatchFname = mPatchFilename;
 
         if( episode > 0 ) // The game has to have a valid episode!
         {

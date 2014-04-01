@@ -107,7 +107,7 @@ public:
 	{	return mPausedGamePlay;	}
 
 	CExeFile m_ExeFile;
-	bool m_is_a_mod;
+    std::string mPatchFname;
 	stOption m_option[NUM_OPTIONS];
 
 	unsigned int mPlayers;

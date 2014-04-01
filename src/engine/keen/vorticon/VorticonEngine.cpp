@@ -136,7 +136,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
             }
 
             // Patch the EXE-File-Data directly in the memory.
-            CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
+            CPatcher Patcher(ExeFile, g_pBehaviorEngine->mPatchFname);
             Patcher.process();
 
             mLoader.setPermilage(100);

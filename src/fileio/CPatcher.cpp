@@ -16,15 +16,14 @@
 #include "common/CBehaviorEngine.h"
 
 
-CPatcher::CPatcher(CExeFile &ExeFile, bool &is_a_mod) :
-m_is_a_mod(is_a_mod)
+CPatcher::CPatcher(CExeFile &ExeFile, const std::string &patchFname) :
+mPatchFname(patchFname)
 {
 	m_episode = ExeFile.getEpisode();
 	m_version = ExeFile.getEXEVersion();
 	m_data = ExeFile.getRawData();
 	m_datadirectory = ExeFile.getDataDirectory();
 	m_datasize = ExeFile.getExeDataSize();
-	m_is_a_mod = false;
 }
 
 
@@ -41,15 +40,13 @@ void filterFilename(std::string &fileName)
 
 void CPatcher::process()
 {
-	if(!loadPatchfile()) return;
+    if(!loadPatchfile(mPatchFname)) return;
 
 	// If the file was found and read into the m_TextList,
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
 
-
 	gLogging.textOut("Trying to load and apply the patch we found...<br>");
-	m_is_a_mod = true;
 
 	filterPatches(m_TextList);
 
@@ -228,7 +225,7 @@ void CPatcher::process()
 void CPatcher::postProcess()
 {
   // Mods only!
-  if(!m_is_a_mod)
+  if(mPatchFname.empty())
     return;
 
 	auto it = mPostPatchItems.begin();
@@ -259,53 +256,24 @@ void CPatcher::postProcess()
 
 
 
-struct PatchListFiller
-{
-	std::set<std::string> list;
-
-	bool operator() (const std::string& filename) {
-		std::string ext = GetFileExtension(filename);
-		if (stringcaseequal(ext, "pat"))
-			list.insert(filename);
-
-		return true;
-	}
-};
-
 /**
  * \brief this reads the patch into the m_TextList and m_PostTextList
  * \return	true if something could be read. Otherwise false
  */
-bool CPatcher::loadPatchfile()
+bool CPatcher::loadPatchfile(const std::string &patchFname)
 {
-	std::string path = m_datadirectory;
+    std::ifstream Patchfile;
+    if(!OpenGameFileR(Patchfile, patchFname))
+        return false;
 
-	//Get the list of ".pat" files
-	PatchListFiller patchlist;
-	FindFiles(patchlist, path, false, FM_REG);
-
-	// Nothing to patch, just quit
-	if (!patchlist.list.size())
-		return false;
-
-	if (patchlist.list.size() > 1)
-		gLogging.textOut(PURPLE,"Multiple Patches are not yet supported! Please remove a file. Taking one File.<br>");
-
-	while(!patchlist.list.empty())
-	{
-		std::string buf = *patchlist.list.begin();
-		std::ifstream Patchfile; OpenGameFileR(Patchfile, buf);
-
-		while(!Patchfile.eof())
-		{
-			char buf[256];
-			Patchfile.getline(buf, sizeof(buf));
-			fix_markend(buf);
-			m_TextList.push_back(buf);
-		}
-		Patchfile.close();
-		patchlist.list.clear();
-	}
+    while(!Patchfile.eof())
+    {
+        char buf[256];
+        Patchfile.getline(buf, sizeof(buf));
+        fix_markend(buf);
+        m_TextList.push_back(buf);
+    }
+    Patchfile.close();
 
 	return true;
 }

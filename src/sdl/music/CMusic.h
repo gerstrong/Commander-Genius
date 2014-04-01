@@ -26,6 +26,8 @@
 class CMusic : public CSingleton<CMusic>
 {
 public:
+    CMusic() : m_busy(false) {}
+
 	virtual ~CMusic();
 
 	/**

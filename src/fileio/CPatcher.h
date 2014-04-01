@@ -20,7 +20,7 @@
 
 class CPatcher {
 public:
-	CPatcher(CExeFile &ExeFile, bool &is_a_mod);
+    CPatcher(CExeFile &ExeFile, const std::string &patchFname);
 
 	void process();
 	void postProcess();
@@ -43,14 +43,13 @@ private:
 	void filterPatches(std::list<std::string> &textlist);
 	bool readNextPatchItem(patch_item &PatchItem, std::list<std::string> &textList);
 
-	bool loadPatchfile();
+    bool loadPatchfile(const std::string &patchFname);
 
 	int m_episode;
 	int m_version;
 	unsigned char *m_data;
 	std::string m_datadirectory;
 	size_t m_datasize;
-	bool &m_is_a_mod;
 
 	std::list<std::string> m_TextList;
 
@@ -58,6 +57,8 @@ private:
 	// Some items need to be patched after all resources have been loaded.
 	// It makes some modding much more flexible
 	std::list<patch_item> mPostPatchItems;
+
+    const std::string &mPatchFname;
 };
 
 #endif /* CPATCHER_H_ */
