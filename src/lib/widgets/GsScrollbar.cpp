@@ -69,7 +69,8 @@ void GsScrollbar::processLogic()
 void GsScrollbar::drawScrollBar(const SDL_Rect &lRect)
 {
     SDL_Rect scrollRect = lRect;
-    SDL_Surface *Blitsurface = gVideoDriver.getBlitSurface();
+    scrollRect.w = 10; // -> This can always stay at font size, the rest must be scaled to the parent control
+    GsWeakSurface blitSurface( gVideoDriver.getBlitSurface() );
 
     SDL_Rect bScUpRect = scrollRect;
     bScUpRect.w  = scrollRect.w;
@@ -79,7 +80,7 @@ void GsScrollbar::drawScrollBar(const SDL_Rect &lRect)
 
     bScDownRect.y = (scrollRect.y+scrollRect.h) - (bScUpRect.h);
 
-    SDL_FillRect(Blitsurface, &scrollRect, 0xFFBFBFBF);
+    blitSurface.fillRGB( scrollRect, 0xBF, 0xBF, 0xBF);
 
     // Now show the slider
     float relPos = float(mScrollPos) / float(mMaxScrollAmt);
@@ -89,18 +90,15 @@ void GsScrollbar::drawScrollBar(const SDL_Rect &lRect)
     bSliderRect.y = (bScUpRect.y + bScUpRect.h) + posSpace;
     bSliderRect.w = bScUpRect.w - 2;
     bSliderRect.h = bScUpRect.h - 2;
-    SDL_FillRect(Blitsurface, &bSliderRect, 0xFF2F2F2F);
+    blitSurface.fillRGB( bSliderRect, 0x2F, 0x2F, 0x2F);
 
-    const Uint32 scButtonColor = 0xFF7F7F7F;
 
     // Set the up and down arrows
     GsFont &Font = gGraphics.getFont(mFontID);
-    SDL_FillRect(Blitsurface, &bScUpRect,   scButtonColor);
-    Font.drawFontCentered(Blitsurface,"\017", bScUpRect.x, bScUpRect.w, bScUpRect.y, false );
-    //Font.drawFont(Blitsurface, "\017", bScUpRect.x+Font.w, bScUpRect.y+2, false);
-    SDL_FillRect(Blitsurface, &bScDownRect, scButtonColor);
-    //Font.drawFont(Blitsurface, "\023", bScDownRect.x+1, bScDownRect.y, false);
-    Font.drawFontCentered(Blitsurface,"\023", bScDownRect.x, bScDownRect.w, bScDownRect.y, false );
+    blitSurface.fillRGB( bScUpRect, 0x7F, 0x7F, 0x7F);
+    Font.drawFontCentered(blitSurface.getSDLSurface(), "\017", bScUpRect.x, bScUpRect.w, bScUpRect.y, false );
+    blitSurface.fillRGB( bScDownRect, 0x7F, 0x7F, 0x7F);
+    Font.drawFontCentered(blitSurface.getSDLSurface(), "\023", bScDownRect.x, bScDownRect.w, bScDownRect.y, false );
 
     mArrowHeight = 10.0f/float(lRect.h);
     mSliderHeight = 8.0f/float(lRect.h);
@@ -108,15 +106,11 @@ void GsScrollbar::drawScrollBar(const SDL_Rect &lRect)
 
 void GsScrollbar::processRender(const GsRect<float> &RectDispCoordFloat)
 {
-    // Blit the List surface
-    GsWeakSurface blitsurface(gVideoDriver.getBlitSurface());
-
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
     displayRect.transform(RectDispCoordFloat);
 
     SDL_Rect lRect = displayRect.SDLRect();
-    blitsurface.fillRGB(lRect, 0, 128, 0);
 
     drawScrollBar(lRect);
 }

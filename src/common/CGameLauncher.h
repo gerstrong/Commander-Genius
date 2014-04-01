@@ -66,14 +66,24 @@ public:
     void cleanup();
 
     void start();
+
+
+    void setupModsDialog();
     void pumpEvent(const CEvent *evPtr);
+    void ponderGameSelDialog(const float deltaT);
+    void ponderPatchDialog();
     void ponder(const float deltaT);
     void render();
 
 	int getChosengame(){ return m_chosenGame; }
 	bool setChosenGame(int chosengame) { m_chosenGame = chosengame; return waschosen();  }
 	bool waschosen(){ return (m_chosenGame>=0); }
-	void letchooseagain() { m_chosenGame=-1; }
+    void letchooseagain()
+    {
+        m_chosenGame=-1;
+        mDonePatchSelection = false;
+        mPatchFilename = "";
+    }
 
 	bool getQuit(){ return m_mustquit; }
 	std::string getDirectory(Uint8 slot) { return m_Entries.at(slot).path; }
@@ -84,13 +94,16 @@ private:
 
 	bool m_mustquit;
 	int m_chosenGame;
+    bool mDonePatchSelection; // Tells if the Patch file has been selected if any
+    std::string mPatchFilename;
 	Uint8 m_episode;
 	DirList m_DirList;
 	Sint8 m_ep1slot;
 	std::vector<GameEntry> m_Entries;
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
-	CGUIDialog mLauncherDialog;
+    CGUIDialog mLauncherDialog;
+    CGUIDialog mPatchDialog;
     CResourceLoaderBackground mGameScanner;
 
     std::shared_ptr<CGUIBitmap> mCurrentBmp;

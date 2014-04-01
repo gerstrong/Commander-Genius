@@ -21,7 +21,7 @@ CGUITextSelectionList::CGUITextSelectionList()  :
     mReleasedSelection(-1),
     mScrollbar(this)
 {
-    GsRect<float> scrollRect(0.01f, 0.01f, 0.09f, 0.98f);
+    GsRect<float> scrollRect(0.0f, 0.0f, 0.1f, 1.0f);
     mScrollbar.setRect(scrollRect);
 }
 

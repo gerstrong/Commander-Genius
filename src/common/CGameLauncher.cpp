@@ -43,6 +43,7 @@ CGameLauncher::CGameLauncher(const bool first_time,
                              const int start_game_no,
                              const int start_level) :
 mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND)),
+mPatchDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND)),
 mGameScanner(),
 m_firsttime(first_time),
 m_start_game_no(start_game_no),
@@ -59,6 +60,7 @@ bool CGameLauncher::loadResources()
 {
     g_pBehaviorEngine->setEpisode(0);
     m_mustquit      = false;
+    mDonePatchSelection = false;
     m_chosenGame    = -1;
     m_ep1slot       = -1;
     mLauncherDialog.updateBackground();
@@ -367,12 +369,36 @@ void CGameLauncher::start()
 }
 
 
+void CGameLauncher::setupModsDialog()
+{
+    std::vector<std::string> patchFileList;
+
+    // TODO: fetch the List of avialable patch files
+
+    // If the there are not at least 2 mods to select, do not create the patch selection dialog
+    if( patchFileList.size() <= 1 )
+    {
+        mDonePatchSelection=true;
+        return;
+    }
+
+    // TODO: fetch the List of avialable patch files
+
+
+}
+
 
 void CGameLauncher::pumpEvent(const CEvent *evPtr)
 {
     if( dynamic_cast<const GMStart*>(evPtr) )
     {
         setChosenGame(mpSelList->getSelection());
+
+        if(m_chosenGame >= 0)
+        {
+            setupModsDialog();
+        }
+
     }
 
     // Check Scroll events happening on this Launcher
@@ -391,10 +417,8 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
 }
 
 
-////
-// Process Routine
-////
-void CGameLauncher::ponder(const float deltaT)
+
+void CGameLauncher::ponderGameSelDialog(const float deltaT)
 {
     // If GameScanner is running, don't do anything else
     if(mGameScanner.isRunning())
@@ -435,9 +459,15 @@ void CGameLauncher::ponder(const float deltaT)
     }
 
     mLauncherDialog.processLogic();
+}
+
+
+void CGameLauncher::ponderPatchDialog()
+{
+    //mPatchDialog.processLogic();
 
     // Launch the code of the Startmenu here in case a game has been chosen
-    if( m_chosenGame >= 0 ) // Means a game has been selected
+    if( mDonePatchSelection ) // Means a game has been selected
     {
         //// Game has been chosen. Launch it!
         // Get the path were to Launch the game
@@ -455,31 +485,6 @@ void CGameLauncher::ponder(const float deltaT)
             }
             else
             {
-
-                // Because we are going to change the resolutions, to get swipe effect correctly, we need to update the graphics by scaling
-                // a copied surface
-                /*mLauncherDialog.updateGraphics();
-                mLauncherDialog.processRendering();
-
-                // Create temporary surface to be scaled
-                GsSurface scaledBlit;*/
-
-                //const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
-
-                /*GsWeakSurface blitOld( gVideoDriver.getBlitSurface() );
-                scaledBlit.createCopy(blitOld);
-
-                // Use the filter supplied by the user to scale down the stuff
-                CVidConfig &vidConf = gVideoDriver.getVidConfig();
-                scaledBlit.scaleTo(gameRect, vidConf.m_ScaleXFilter);*/
-
-                // Set the game resolution the user want for the started game
-                //gVideoDriver.setNativeResolution(gameRect);
-
-                // Taken out because it looks ugly if the resolution changes.
-                //gEffectController.setupEffect(new CScrollEffect(scaledBlit, scaledBlit.width(), -18, RIGHT, CENTER));
-
-
                 if(episode >= 1 && episode <= 7)
                 {
                     // Now let's decide which engine we have to start.
@@ -506,13 +511,28 @@ void CGameLauncher::ponder(const float deltaT)
             gLogging.textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
         }
     }
+
+}
+
+
+////
+// Process Routine
+////
+void CGameLauncher::ponder(const float deltaT)
+{
+    if(!mDonePatchSelection && m_chosenGame < 0)
+    {
+        ponderGameSelDialog(deltaT);
+    }
+    else if(m_chosenGame >= 0)
+    {
+        ponderPatchDialog();
+    }
     else if(getQuit())
     {
         // User chose "exit". So make CG quit...
         gEventManager.add( new GMQuit() );
     }
-
-
 }
 
 
