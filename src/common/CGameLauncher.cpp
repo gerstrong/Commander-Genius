@@ -424,8 +424,8 @@ void CGameLauncher::setupModsDialog()
     mpPatchSelList->setConfirmButtonEvent(new GMPatchSelected());
     mpPatchSelList->setBackButtonEvent(new GMQuit());
 
-    mPatchDialog.addControl(new CGUIText("Choose the patch file"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    mPatchDialog.addControl(new GsButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
+    mPatchDialog.addControl(new CGUIText("Choose your patch:"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+    //mPatchDialog.addControl(new GsButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mPatchDialog.addControl(mpPatchSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
 
