@@ -105,6 +105,17 @@ public:
     {	mpCurrentCtrl = control;	}
 
 
+    bool empty() const
+    {
+        return mControlList.empty();
+    }
+
+    void clear()
+    {
+        mpCurrentCtrl = nullptr;
+        mControlList.clear();
+    }
+
 protected:
 
 	void selectPrevItem();

@@ -110,8 +110,12 @@ private:
     std::vector< std::shared_ptr<GsBitmap> > mpPrevievBmpVec;
 	CGUIText *mpEpisodeText;
 	CGUIText *mpVersionText;
-	CGUITextSelectionList *mpSelList;
-	int mSelection;
+
+    CGUITextSelectionList *mpSelList;
+    CGUITextSelectionList *mpPatchSelList;
+    std::vector<std::string> mPatchStrVec;
+
+    int mSelection;
 
     bool m_firsttime;
     int m_start_game_no;

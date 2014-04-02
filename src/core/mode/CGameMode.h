@@ -42,6 +42,8 @@ struct GMSwitchToPlayGameMode : CEvent
 // It's a simple start event which will force CG launch a game
 struct GMStart : CEvent {};
 
+struct GMPatchSelected : CEvent {};
+
 
 // Happens when in the menu the user decides to end the game or he reached
 // the finale

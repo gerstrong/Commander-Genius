@@ -64,6 +64,7 @@ bool CGameLauncher::loadResources()
     m_chosenGame    = -1;
     m_ep1slot       = -1;
     mLauncherDialog.updateBackground();
+    mPatchDialog.updateBackground();
     mSelection      = -1;
 
     bool gamedetected = false;
@@ -81,9 +82,6 @@ bool CGameLauncher::loadResources()
     if (scanExecutables(DIR_ROOT))
         gamedetected = true;
     mGameScanner.setPermilage(100);
-    // Recursivly scan into DIR_ROOT VFS subdir's for exe's
-    /*if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT, 0, 200))
-        gamedetected = true;*/
 
     // Recursivly scan into DIR_GAMES subdir's for exe's
     if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900))
@@ -297,8 +295,6 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
 		if( newentry.name.length() <= 0 )
 		{
-			//newentry.name = "Episode: " + itoa(newentry.episode);
-			//newentry.name += " " + verstr + " " + newentry.path;
             newentry.name = filterGameName(newentry.path);
 		}
 
@@ -376,7 +372,9 @@ struct PatchListFiller
     bool operator() (const std::string& filename) {
         std::string ext = GetFileExtension(filename);
         if (stringcaseequal(ext, "pat"))
+        {
             list.insert(filename);
+        }
 
         return true;
     }
@@ -403,9 +401,35 @@ void CGameLauncher::setupModsDialog()
         return;
     }
 
-    // TODO: Create the dialog with the List of available patches
-    mPatchFilename = *(patchlist.list.begin()); // ->  Workaround
-    mDonePatchSelection=true;
+    // There are at least two mods, create the dialog with the List of available patches
+    if(!mPatchDialog.empty())
+        mPatchDialog.clear();
+
+
+    if(!mPatchStrVec.empty())
+        mPatchStrVec.clear();
+
+    mpPatchSelList = new CGUITextSelectionList();
+
+
+    for( auto &elem : patchlist.list )
+    {
+        const std::string dirname = GetDirName(elem);
+        std::string name = elem.substr(dirname.size()+1);
+        name = name.substr(0, name.size()-4);
+        mPatchStrVec.push_back(elem);
+        mpPatchSelList->addText(name);
+    }
+
+    mpPatchSelList->setConfirmButtonEvent(new GMPatchSelected());
+    mpPatchSelList->setBackButtonEvent(new GMQuit());
+
+    mPatchDialog.addControl(new CGUIText("Choose the patch file"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
+    mPatchDialog.addControl(new GsButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
+    mPatchDialog.addControl(mpPatchSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
+
+
+    mPatchDialog.addControl(new GsButton( "Start >", new GMPatchSelected() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 }
 
 
@@ -420,6 +444,11 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
             setupModsDialog();
         }
 
+    }
+    else if( dynamic_cast<const GMPatchSelected*>(evPtr) )
+    {
+        mPatchFilename = mPatchStrVec[mpPatchSelList->getSelection()];
+        mDonePatchSelection = true;
     }
 
     // Check Scroll events happening on this Launcher
@@ -485,7 +514,7 @@ void CGameLauncher::ponderGameSelDialog(const float deltaT)
 
 void CGameLauncher::ponderPatchDialog()
 {
-    //mPatchDialog.processLogic();
+    mPatchDialog.processLogic();
 
     // Launch the code of the Startmenu here in case a game has been chosen
     if( mDonePatchSelection ) // Means a game has been selected
@@ -561,15 +590,24 @@ void CGameLauncher::ponder(const float deltaT)
 
 void CGameLauncher::render()
 {
-    // If GameScanner is running, don't do anything else
-    if(mGameScanner.isRunning())
-    {
-        mGameScanner.render();
-        return;
-    }
 
-    // Get the draw routines here!
-    mLauncherDialog.processRendering();
+    if(!mDonePatchSelection && m_chosenGame < 0)
+    {
+        // If GameScanner is running, don't do anything else
+        if(mGameScanner.isRunning())
+        {
+            mGameScanner.render();
+            return;
+        }
+
+        // Do the rendering of the dialog
+        mLauncherDialog.processRendering();
+    }
+    else if(m_chosenGame >= 0)
+    {
+        // Do the rendering of the dialog
+        mPatchDialog.processRendering();
+    }
 }
 
 
