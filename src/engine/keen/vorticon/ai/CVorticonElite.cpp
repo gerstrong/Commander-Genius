@@ -95,18 +95,27 @@ bool CVorticonElite::isNearby(CVorticonSpriteObject &theObject)
     {
         if(state == VORTELITE_WALK)
         {
-            // If Player is nearby, make vorticon go faster
-            state = VORTELITE_WALK;
 
             if(getYDownPos() > player->getYDownPos()-(2<<CSF) and
                     getYDownPos() < player->getYDownPos()+(2<<CSF) )
             {
                 int dist;
                 if(getXMidPos() > player->getXMidPos())
-                    dist = getXMidPos()-player->getXMidPos();
-                else
-                    dist = player->getXMidPos()-getXMidPos();
+                {
+                    if (rand()%10 != 0)
+                        movedir = LEFT;
 
+                    dist = getXMidPos()-player->getXMidPos();
+                }
+                else
+                {
+                    if (rand()%10 != 0)
+                        movedir = RIGHT;
+
+                    dist = player->getXMidPos()-getXMidPos();
+                }
+
+                // If Player is nearby, make vorticon go faster
                 if(dist < PLAYER_DISTANCE)
                     state = VORTELITE_CHARGE;
             }
