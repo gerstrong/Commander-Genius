@@ -427,28 +427,54 @@ bool CSpriteObject::turnAroundOnCliff( int x1, int x2, int y2 )
 	const int floorleft = TileProperty[mp_Map->at(x_left, y_bottom)].bup;
 	const int floorright = TileProperty[mp_Map->at(x_right, y_bottom)].bup;
 
-	if( floorleft == 0 && xDirection == LEFT && floorright==1 )
+    bool isSlope = false;
+
+    if( floorleft == 0 && xDirection == LEFT && floorright>=1 )
 	{
 	    for(int x=x_left ; x<=x_right ; x++ )
 	    {
-		const int tile = TileProperty[mp_Map->at(x, y_bottom)].bup;
-		if( tile>=2 && tile<=7  )
-		    return false;
+            const int tile = TileProperty[mp_Map->at(x, y_bottom)].bup;
+            if( tile>=2 && tile<=7  )
+            {
+                isSlope = true;
+            }
 	    }
+
+        if(isSlope)
+        {
+            // look further
+            if(TileProperty[mp_Map->at(x_left, y_bottom+1)].bup != 0)
+            {
+                return false;
+            }
+        }
+
 	
 	    blockedl = floorright;
 	    return true;
 	}
 
-	if( floorright == 0 && xDirection == RIGHT && floorleft==1 )
+    if( floorright == 0 && xDirection == RIGHT && floorleft==1 )
 	{
-	    for(int x=x_left ; x<=x_right ; x++ )
-	    {
-		const int tile = TileProperty[mp_Map->at(x, y_bottom)].bup;
-		if( tile>=2 && tile<=7  )
-		    return false;
-	    }
-	
+        for(int x=x_left ; x<=x_right ; x++ )
+        {
+            const int tile = TileProperty[mp_Map->at(x, y_bottom)].bup;
+            if( tile>=2 && tile<=7  )
+            {
+                isSlope = true;
+            }
+        }
+
+        if(isSlope)
+        {
+            // look further
+            if(TileProperty[mp_Map->at(x_right, y_bottom+1)].bup != 0)
+            {
+                return false;
+            }
+        }
+
+
 	    blockedr = floorleft;
 	    return true;
 	}	

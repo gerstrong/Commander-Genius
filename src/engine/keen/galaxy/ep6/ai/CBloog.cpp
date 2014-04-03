@@ -115,7 +115,7 @@ void CBloog::getTouchedBy(CSpriteObject &theObject)
 
 int CBloog::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
-	turnAroundOnCliff( x1, x2, y2 );
+    turnAroundOnCliff( x1, x2, y2 );
 
 	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }

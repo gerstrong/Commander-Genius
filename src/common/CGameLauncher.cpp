@@ -386,12 +386,16 @@ void CGameLauncher::setupModsDialog()
     const std::string dataDir = getDirectory( m_chosenGame );
 
     // TODO: fetch the List of available patch files
-    //Get the list of ".pat" files
+    // Get the list of ".pat" files
     PatchListFiller patchlist;
     FindFiles(patchlist, dataDir, false, FM_REG);
 
     if( patchlist.list.empty() )
+    {
+        mPatchFilename = "";
+        mDonePatchSelection=true;
         return;
+    }
 
     // If the there are not at least 2 mods to select, do not create the patch selection dialog
     if( patchlist.list.size() == 1 )
@@ -425,7 +429,6 @@ void CGameLauncher::setupModsDialog()
     mpPatchSelList->setBackButtonEvent(new GMQuit());
 
     mPatchDialog.addControl(new CGUIText("Choose your patch:"), GsRect<float>(0.0f, 0.0f, 1.0f, 0.05f));
-    //mPatchDialog.addControl(new GsButton( "x", new GMQuit() ), GsRect<float>(0.0f, 0.0f, 0.07f, 0.07f) );
     mPatchDialog.addControl(mpPatchSelList, GsRect<float>(0.01f, 0.07f, 0.49f, 0.87f));
 
 
