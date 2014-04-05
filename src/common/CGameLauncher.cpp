@@ -303,7 +303,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 		// Save the type information about the exe
 		m_Entries.push_back(newentry);
 
-	        gLogging.textOut(gamespecstring);
+        gLogging.textOut(gamespecstring);
 
 		// The original episode 1 exe is needed to load gfx's for game launcher menu
 		if ( m_ep1slot <= -1 && newentry.crcpass == true )
