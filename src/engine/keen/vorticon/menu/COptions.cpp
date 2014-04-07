@@ -22,8 +22,6 @@ mpOption(g_pBehaviorEngine->m_option)
         mpOptionList.push_back( new Switch(mpOption[i].menuname) );
 		mpMenuDialog->addControl( mpOptionList.back() );
 	}
-
-	setMenuLabel("OPTIONSMENULABEL");
 }
 
 void COptions::init()

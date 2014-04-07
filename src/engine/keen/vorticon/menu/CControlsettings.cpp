@@ -108,8 +108,6 @@ void CControlsettings::init()
     mpMenuDialog->addControl( mpImpPogoSwitch );
     mpMenuDialog->addControl( mpAutoGunSwitch );
     mpMenuDialog->addControl( new Button( "Reset Controls", new ResetInputEvent(mSelectedPlayer-1) ) );
-
-    setMenuLabel("KEYBMENULABEL");
 }
 
 
@@ -196,8 +194,6 @@ void CControlSettingsMovement::init()
 		mpButtonList.push_back( guiButton );
 		mpMenuDialog->addControl( guiButton );
 	}
-
-	setMenuLabel("MOVEMENULABEL");
 }
 
 
@@ -231,8 +227,6 @@ void CControlSettingsButtons::init()
 		mpMenuDialog->addControl( guiButton );
 
 	}
-
-	setMenuLabel("BUTTONMENULABEL");
 }
 
 

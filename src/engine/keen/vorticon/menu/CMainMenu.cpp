@@ -78,8 +78,6 @@ void MainMenu::createVorticonMenu( const bool openedGamePlay )
 
     mpMenuDialog->addControl(new Button( "Quit", new GMQuit() ) );
 
-	setMenuLabel("MAINMENULABEL");
-
 }
 
 

@@ -113,8 +113,6 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
     mpSFXSwitch = new Switch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
-
-	setMenuLabel("OPTIONSMENULABEL");
 }
 
 void CVideoSettings::init()

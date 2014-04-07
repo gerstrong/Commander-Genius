@@ -38,8 +38,6 @@ m_overwrite(false)
 
         mpMenuDialog->addControl(new InputText( text ) );
 	}
-
-	setMenuLabel("SAVEMENULABEL");
 }
 
 void CSaveMenu::ponder()

@@ -3,13 +3,13 @@
 
 //#include <base/Event.h>
 //#include <lib/base/Vector2D.h>
-#include "CVec.h"
-#include <lib/base/Singleton.h>
+#include "Vector2D.h"
+#include <base/Singleton.h>
 #include <SDL.h>
 
 struct GsPointingState
 {
-    GsPointingState(const CVec &pos,
+    GsPointingState(const Vector2D<float> &pos,
                  const Uint32 actionbutton) :
         mPos(pos),
         mActionButton(actionbutton)   {}
@@ -17,7 +17,7 @@ struct GsPointingState
     GsPointingState()
         {}
 
-    CVec mPos;
+    Vector2D<float> mPos;
     Uint32 mActionButton;
 };
 

@@ -41,9 +41,6 @@ VorticonMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 
     mpMusicVolume = new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getMusicVolume(), true );
     mpMenuDialog->addControl( mpMusicVolume );
-
-    setMenuLabel("SNDEFFMENULABEL");
-
 }
 
 

@@ -14,7 +14,7 @@
 #include <list>
 #include <memory>
 
-#include <engine/CEvent.h>
+//#include <engine/CEvent.h>
 #include <graphics/GsSurface.h>
 
 #include "GsControl.h"

@@ -66,8 +66,6 @@ VorticonMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 
 		button->enable( false );
 	}
-
-	setMenuLabel("LOADMENULABEL");
 }
 
 }

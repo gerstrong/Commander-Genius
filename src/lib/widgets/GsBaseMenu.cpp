@@ -30,13 +30,10 @@ void CBaseMenu::select(const size_t value)
 
 void CBaseMenu::setMenuLabel(const std::string &label)
 {
-	if(g_pBehaviorEngine->getEngine() == ENGINE_GALAXY)
-	{
-		GsRect<float> rect(-0.08f, -0.08f, 1.0f, 1.0f);
-        CGUIBitmap* control = new CGUIBitmap(label);
-		mpMenuDialog->addControl(control, rect);
-        control->mEnabled = false;
-	}
+    GsRect<float> rect(-0.08f, -0.08f, 1.0f, 1.0f);
+    CGUIBitmap* control = new CGUIBitmap(label);
+    mpMenuDialog->addControl(control, rect);
+    control->mEnabled = false;
 }
 
 

@@ -14,13 +14,17 @@
 #define CEFFECTS_H_
 
 #include <SDL.h>
-#include "core/LogicDrawSplitter.h"
+//#include "core/LogicDrawSplitter.h"
 
-class CEffects : public GameState
+class CEffects
 {
 public:
 	CEffects() :
 	mFinished(false) {}
+
+    virtual void ponder(const float deltaT) = 0;
+
+    virtual void render() = 0;
 
 	bool finished() { return mFinished; }
     void setFinished(const bool value) { mFinished = true; }

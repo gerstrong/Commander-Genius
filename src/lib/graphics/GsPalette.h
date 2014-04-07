@@ -22,7 +22,7 @@
 #define FADE_DARKNESS_EASY 166
 
 #include <SDL.h>
-#include "../fileio/TypeDefinitions.h"
+#include "base/TypeDefinitions.h"
 
 class GsPalette {
 public:

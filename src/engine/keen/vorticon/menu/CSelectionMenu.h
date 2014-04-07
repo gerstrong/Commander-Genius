@@ -59,7 +59,6 @@ public:
         mpMenuDialog->addControl( new Button( "Expert", new StartNewGameEvent(EXPERT) ) );
         mpMenuDialog->addControl( new Button( "Ninja", new StartNewGameEvent(NINJA) ) );
         mpMenuDialog->addControl( new Button( "Elite", new StartNewGameEvent(ELITE) ) );
-        setMenuLabel("NEWGAMELABEL");
     }
 };
 

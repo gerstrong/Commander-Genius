@@ -504,7 +504,7 @@ bool CInput::isAnalog(const int player) { return mAnalogAxesMovement[player]; }
 void CInput::enableAnalog(const int player, const bool value) { mAnalogAxesMovement[player]=value; }
 
 
-void CInput::transMouseRelCoord(CVec &Pos,
+void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 								const SDL_MouseMotionEvent motion,
 								const GsRect<Uint16> &transformRect)
 {
@@ -527,7 +527,7 @@ void CInput::pollEvents()
         return;
     }
 
-	CVec Pos;
+    Vector2D<float> Pos;
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 
 #else

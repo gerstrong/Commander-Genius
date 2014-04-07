@@ -62,8 +62,6 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
 
     mpMenuDialog->addControl(new Button( "Profile",
 									new OpenMenuEvent( new CProfilesMenu() ) ) );
-
-	setMenuLabel("CONFIGMENULABEL");
 }
 
 }

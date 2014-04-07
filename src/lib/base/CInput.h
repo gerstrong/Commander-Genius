@@ -161,7 +161,7 @@ public:
 	/**
 	 * \brief transforms a mouse click from the screen coordinates to the relative coordinates
 	 */
-	void transMouseRelCoord(CVec &Pos,
+    void transMouseRelCoord(Vector2D<float> &Pos,
 							const SDL_MouseMotionEvent motion,
 							const GsRect<Uint16> &transformRect);
 

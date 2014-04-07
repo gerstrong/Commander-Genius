@@ -31,7 +31,7 @@ struct Vector2D
 	
     _T Scalar(const Vector2D& vec) const { return x*vec.x + y*vec.y; }
 	
-    Vector2D orthogonal() const { return VectorD2(y, -x); }
+    Vector2D orthogonal() const { return Vector2D(y, -x); }
 	
     _T Cross(const Vector2D& oth) const { return x * oth.y - y * oth.x; }
 	
@@ -45,20 +45,20 @@ struct Vector2D
 
 	// Overloads
     Vector2D operator*(const float scalar) const {
-		return VectorD2(x*scalar,y*scalar);
+        return Vector2D(x*scalar,y*scalar);
 	}
     Vector2D operator*(const int scalar) const {
-		return VectorD2(x*scalar,y*scalar);
+        return Vector2D(x*scalar,y*scalar);
 	}
 
     Vector2D operator/(const float scalar) const {
-		return VectorD2(x/scalar,y/scalar);
+        return Vector2D(x/scalar,y/scalar);
 	}
     Vector2D operator/(const int scalar) const {
-		return VectorD2(x/scalar,y/scalar);
+        return Vector2D(x/scalar,y/scalar);
 	}
     Vector2D operator+(const Vector2D& vec) const {
-		return VectorD2(x+vec.x,y+vec.y);
+        return Vector2D(x+vec.x,y+vec.y);
 	}
     Vector2D operator-(const Vector2D& vec) const {
         return Vector2D(x-vec.x,y-vec.y);

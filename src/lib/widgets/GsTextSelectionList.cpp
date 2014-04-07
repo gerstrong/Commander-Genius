@@ -123,7 +123,7 @@ void CGUITextSelectionList::processLogic()
 
     processPointingState();        
 
-    CVec mousePos = pointingState.mPos;
+    Vector2D<float> mousePos = pointingState.mPos;
 
     if( rRect.HasPoint(mousePos) )
     {

@@ -38,8 +38,6 @@ m_CameraBounds(gVideoDriver.getCameraBounds())
     mpSpeedAdjust = new NumberControl( "Speed",
                                              1, 50, 1, 25, false );
 	mpMenuDialog->addControl( mpSpeedAdjust );
-
-	setMenuLabel("OPTIONSMENULABEL");
 }
 
 

@@ -9,7 +9,7 @@
  */
 
 #include "engine/CEvent.h"
-#include "CVec.h"
+#include "Vector2D.h"
 
 #ifndef INPUTEVENTS_H_
 #define INPUTEVENTS_H_
@@ -46,17 +46,17 @@ enum PointingDevEventTypes
 
 struct PointingDevEvent : CEvent
 {
-	CVec Pos;
+    Vector2D<float> Pos;
     PointingDevEventTypes Type;
-    PointingDevEvent(const CVec &New_Pos, PointingDevEventTypes New_Type ) :
+    PointingDevEvent(const Vector2D<float> &New_Pos, PointingDevEventTypes New_Type ) :
 		Pos(New_Pos), Type(New_Type) {}
 };
 
 
 struct MouseWheelEvent : CEvent
 {
-    CVec amount;
-    MouseWheelEvent(const CVec &newAmount ) :
+    Vector2D<float> amount;
+    MouseWheelEvent(const Vector2D<float> &newAmount ) :
         amount(newAmount) {}
 };
 

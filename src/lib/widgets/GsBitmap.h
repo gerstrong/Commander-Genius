@@ -13,7 +13,7 @@
 
 
 #include "GsControl.h"
-#include "GsBitmap.h"
+#include "graphics/GsBitmap.h"
 
 class CGUIBitmap : public CGUIControl
 {

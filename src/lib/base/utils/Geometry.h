@@ -10,7 +10,7 @@
 #define GEOMETRY_H_
 
 #include <SDL.h>
-#include <CVec.h>
+#include "../Vector2D.h"
 
 /**
  * This structure defines the resolution composed of width height and depth
@@ -120,7 +120,7 @@ struct GsRect
 
 	// Check whether a point given by a Vector is with that Rect.
 	// The operation is simple but very often used.
-    bool _HasPoint(VectorD2<T>& Pos) const
+    bool _HasPoint(Vector2D<T>& Pos) const
 	{
 		// check X coordinate. is it outside, return false
         if( Pos.x < x || Pos.x >= x+w )
@@ -134,9 +134,9 @@ struct GsRect
 	}
 
 	template <typename T2>
-    bool HasPoint(VectorD2<T2>& Pos) const
+    bool HasPoint(Vector2D<T2>& Pos) const
 	{
-		VectorD2<T> NewPos;
+        Vector2D<T> NewPos;
 		NewPos.x = static_cast<T>(Pos.x);
 		NewPos.y = static_cast<T>(Pos.y);
         return _HasPoint(NewPos);

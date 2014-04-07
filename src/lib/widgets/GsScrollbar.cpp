@@ -26,7 +26,7 @@ void GsScrollbar::processLogic()
 
     processPointingState(rRect);
 
-    CVec MousePos = pointingState.mPos;
+    Vector2D<float> MousePos = pointingState.mPos;
 
     const bool scrollAction = mReleased || mPressed;
 
