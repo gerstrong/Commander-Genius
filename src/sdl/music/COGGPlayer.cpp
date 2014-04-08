@@ -12,7 +12,7 @@
 #include <base/FindFile.h>
 #include "sdl/sound/Sampling.h"
 #include "fileio/ResourceMgmt.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 
 COGGPlayer::COGGPlayer(const SDL_AudioSpec& AudioSpec) :

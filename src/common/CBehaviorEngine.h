@@ -28,7 +28,7 @@
 #include <base/GsEvent.h>
 #include "common/options.h"
 
-#include <lib/base/GsEvent.h>
+#include <base/GsEvent.h>
 
 #include "CSingleton.h"
 

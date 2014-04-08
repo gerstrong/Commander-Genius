@@ -10,7 +10,7 @@
 #include <base/video/CVideoDriver.h>
 #include "sdl/sound/CSound.h"
 #include "fileio.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 #include <base/Debug.h>
 #include <base/FindFile.h>

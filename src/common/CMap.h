@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 #include <list>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 
 
 #include "graphics/GsTilemap.h"

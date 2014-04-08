@@ -12,7 +12,7 @@
 #ifndef __CSpriteObject_H_
 #define __CSpriteObject_H_
 
-#include <lib/base/GsEvent.h>
+#include <base/GsEvent.h>
 
 #include "ActionFormat.h"
 #include "CVec.h"

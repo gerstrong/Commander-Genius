@@ -9,7 +9,7 @@
 #include "engine/keen/menu/CSelectionMenu.h"
 #include "common/CSettings.h"
 #include <base/video/CVideoDriver.h>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include "common/CBehaviorEngine.h"
 #include "engine/CEvent.h"
 #include <list>

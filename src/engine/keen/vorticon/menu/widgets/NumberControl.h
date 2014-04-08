@@ -8,7 +8,7 @@
 #ifndef __VORTICONNUMBERCONTROL_H_
 #define __VORTICONNUMBERCONTROL_H_
 
-#include <lib/widgets/GsNumberControl.h>
+#include <widgets/GsNumberControl.h>
 
 #include <string>
 #include <graphics/GsSurface.h>

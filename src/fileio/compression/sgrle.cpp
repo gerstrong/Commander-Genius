@@ -8,7 +8,7 @@
  */
 
 #include "../../fileio.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 #define SGRLE_RLEMARKERNEW         0xFE
 #define SGRLE_RLEMARKEROLD         255

@@ -7,7 +7,7 @@
 
 #include "COrderingInfo.h"
 #include <base/CInput.h>
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <graphics/GsGraphics.h>
 

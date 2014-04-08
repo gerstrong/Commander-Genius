@@ -31,7 +31,7 @@
 #include <list>
 #include <memory>
 
-#include "../core/mode/CGameMode.h"
+#include "core/mode/CGameMode.h"
 
 const int WORLD_MAP_LEVEL_VORTICON = 80;
 

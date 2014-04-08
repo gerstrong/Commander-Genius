@@ -12,7 +12,7 @@
 #include "common/CMap.h"
 #include "../ai/CPlayer.h"
 #include "../dialog/CMessageBoxVort.h"
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <vector>
 #include <list>
 #include <SDL.h>

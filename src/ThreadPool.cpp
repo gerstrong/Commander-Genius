@@ -10,7 +10,7 @@
 #include <SDL_thread.h>
 #include "ThreadPool.h"
 #include <base/Debug.h>
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include "ReadWriteLock.h" // for ScopedLock
 
 

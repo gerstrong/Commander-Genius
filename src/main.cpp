@@ -39,7 +39,7 @@
 
 #include <base/FindFile.h>
 #include <base/GsApp.h>
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 #include "ThreadPool.h"
 #include "common/CGameLauncher.h"

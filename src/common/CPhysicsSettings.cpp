@@ -6,7 +6,7 @@
  */
 
 #include "CPhysicsSettings.h"
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 
 CPhysicsSettings::CPhysicsSettings()
 {

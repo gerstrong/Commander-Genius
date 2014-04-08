@@ -5,7 +5,7 @@
 
 #include "widgets/Button.h"
 
-#include <lib/widgets/GsMenuController.h>
+#include <widgets/GsMenuController.h>
 
 class GalaxyMenu : public CBaseMenu
 {

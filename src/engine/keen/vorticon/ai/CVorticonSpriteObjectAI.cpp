@@ -7,7 +7,7 @@
 
 #include "CVorticonSpriteObjectAI.h"
 //#include "sdl/CVideoDriver.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 #include "CMeep.h"
 

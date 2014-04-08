@@ -16,9 +16,9 @@
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"
 
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include "CVec.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 

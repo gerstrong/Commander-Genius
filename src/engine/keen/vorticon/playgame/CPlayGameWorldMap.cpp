@@ -6,7 +6,7 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/CInput.h>
 #include "sdl/sound/CSound.h"
 #include <base/video/CVideoDriver.h>

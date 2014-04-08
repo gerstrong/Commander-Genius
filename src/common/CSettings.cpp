@@ -5,11 +5,11 @@
  *      Author: gerstrong
  */
 
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include <base/FindFile.h>
 #include "ConfigHandler.h"
 #include "CSettings.h"
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include "sdl/sound/CSound.h"
 #include <base/video/CVideoDriver.h>
 #include "common/options.h"

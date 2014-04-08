@@ -6,7 +6,7 @@
  *
  */
 
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <widgets/GsMenuController.h>

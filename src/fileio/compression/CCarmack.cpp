@@ -6,8 +6,8 @@
  */
 
 #include "CCarmack.h"
-#include <lib/base/GsLogging.h>
-#include <lib/base/utils/StringUtils.h>
+#include <base/GsLogging.h>
+#include <base/utils/StringUtils.h>
 
 CCarmack::CCarmack()
 {

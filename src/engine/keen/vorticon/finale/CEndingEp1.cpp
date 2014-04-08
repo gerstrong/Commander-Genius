@@ -7,7 +7,7 @@
 
 #include "CEndingEp1.h"
 #include <base/utils/StringUtils.h>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
 #include "../CVorticonMapLoader.h"

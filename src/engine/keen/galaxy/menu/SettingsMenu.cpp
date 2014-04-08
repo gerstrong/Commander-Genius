@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <widgets/GsButton.h>
 #include <widgets/GsMenuController.h>
 

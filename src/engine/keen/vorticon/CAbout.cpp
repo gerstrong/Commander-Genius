@@ -8,7 +8,7 @@
 #include "CAbout.h"
 #include <base/FindFile.h>
 #include <base/CInput.h>
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include "fileio/CExeFile.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>

@@ -7,11 +7,11 @@
 
 #include "CEndingEp2.h"
 #include <base/utils/StringUtils.h>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
 #include "../CVorticonMapLoader.h"
-#include "../common/Playerdefines.h"
+#include "common/Playerdefines.h"
 
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;

@@ -14,7 +14,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 #include "fileio/TypeDefinitions.h"
 #include "CSingleton.h"

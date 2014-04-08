@@ -9,7 +9,7 @@
 #include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
 #include <base/video/CVideoDriver.h>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/utils/StringUtils.h>
 #include <cassert>
 

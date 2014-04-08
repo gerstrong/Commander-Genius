@@ -15,7 +15,7 @@
  */
 
 #include "common/CBehaviorEngine.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 void CBehaviorEngine::setMessage(const std::string &name, const std::string &message)
 {	

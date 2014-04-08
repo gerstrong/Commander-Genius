@@ -8,9 +8,9 @@
 #include "CMap.h"
 #include "common/CBehaviorEngine.h"
 #include <base/FindFile.h>
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include "graphics/GsGraphics.h"
 #include <iostream>
 #include <fstream>

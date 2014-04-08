@@ -7,7 +7,7 @@
 
 #include "CBridges.h"
 #include "engine/spritedefines.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 unsigned int CBridges::m_bgtile = 0;
 

@@ -2,7 +2,7 @@
 #include <base/GsTimer.h>
 #include <base/GsApp.h>
 #include <base/utils/StringUtils.h>
-#include <lib/widgets/GsMenuController.h>
+#include <widgets/GsMenuController.h>
 
 #include "CResourceLoader.h"
 #include "GalaxyEngine.h"

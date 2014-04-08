@@ -138,7 +138,7 @@ configure_file(README.in README)
 
 # main includes
 INCLUDE_DIRECTORIES(src)
-INCLUDE_DIRECTORIES(src/lib)
+INCLUDE_DIRECTORIES(lib/GsKit)
 
 file(GLOB ALL_SRCS_PART_ROOT src/*.c* src/*.h*)
 #file(GLOB_RECURSE ALL_SRCS_PART_LIB src/lib/*.c* src/lib/*.h*)
@@ -363,7 +363,7 @@ else(SDL2_FOUND)
 endif(SDL2_FOUND)
 
 # Add GsKit
-add_subdirectory("src/lib")
+add_subdirectory("lib/GsKit")
 
 
 #MESSAGE( "BUILD_TARGET = ${BUILD_TARGET}" )
