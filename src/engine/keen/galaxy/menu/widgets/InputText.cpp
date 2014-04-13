@@ -23,18 +23,14 @@ void InputText::processRender(const GsRect<float> &RectDispCoordFloat)
     // Now lets draw the text of the list control
     GsFont &Font = gGraphics.getFont(mFontID);
 
-    SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
-
-
     const Uint32 oldcolor = Font.getFGColor();
-
 
     Uint32 newcolor;
 
     if(mHovered || mPressed || mSelected)
-        newcolor = SDL_MapRGB( format, 84, 234, 84);
+        newcolor = blit.mapRGB(84, 234, 84);
     else
-        newcolor = SDL_MapRGB( format, 38, 134, 38);
+        newcolor = blit.mapRGB(38, 134, 38);
 
     Font.setupColor( newcolor );
 
