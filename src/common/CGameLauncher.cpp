@@ -45,12 +45,14 @@ CGameLauncher::CGameLauncher(const bool first_time,
 mLauncherDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND)),
 mPatchDialog(CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND)),
 mGameScanner(),
+mDonePatchSelection(false),
 m_firsttime(first_time),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
 {
     g_pSound->unloadSoundData();
     gMenuController.clearMenuStack();
+    letchooseagain();
 }
 
 ////
