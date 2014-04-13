@@ -12,7 +12,7 @@
 #define CVIDCONFIG_H_
 
 #include <SDL.h>
-#include "hardware/Configurator.h"
+//#include "hardware/Configurator.h"
 #include <base/video/scaler/CScaler.h>
 
 const unsigned int RES_BPP = 32;

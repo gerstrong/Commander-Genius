@@ -17,7 +17,7 @@
 #include "widgets/NumberControl.h"
 #include "widgets/Button.h"
 
-#include "sdl/CVidConfig.h"
+#include <base/video/CVidConfig.h>
 
 namespace galaxy
 {
