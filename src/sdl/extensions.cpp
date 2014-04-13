@@ -20,65 +20,7 @@
 //#include "SDL_rotozoom.h"
 #endif
 
-Uint32 getPixel(SDL_Surface *surface, int x, int y)
-{
-    int bpp = surface->format->BytesPerPixel;
-    /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-    Uint32 pixColor = 0;
 
-    switch(bpp)
-    {
-    case 1:
-    	pixColor = *p;
-    	break;
-
-    case 2:
-    	memcpy(&pixColor, p, sizeof(Uint16));
-    	break;
-
-    case 3:
-    	if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-    		return p[0] << 16 | p[1] << 8 | p[2];
-    	else
-    		return p[0] | p[1] << 8 | p[2] << 16;
-    	break;
-
-    case 4:
-    	memcpy(&pixColor, p, sizeof(Uint32));
-    	break;
-
-    default:
-    	return 0;       /* shouldn't happen, but avoids warnings */
-    }
-
-    return pixColor;
-}
-
-
-void drawEmptyRect(SDL_Surface *sfc, SDL_Rect *pRect, Uint32 color)
-{
-	SDL_Rect tempRect = *pRect;
-
-	tempRect.h = 1;
-
-	SDL_FillRect(sfc, &tempRect, color);
-
-	tempRect.y = pRect->y + pRect->h - 1;
-
-	SDL_FillRect(sfc, &tempRect, color);
-
-	tempRect.w = 1;
-	tempRect.h = pRect->h;
-	tempRect.y = pRect->y;
-
-	SDL_FillRect(sfc, &tempRect, color);
-
-	tempRect.x = pRect->x + pRect->w - 1;
-
-	SDL_FillRect(sfc, &tempRect, color);
-
-}
 
 
 inline Colormask getColourMask32bit()

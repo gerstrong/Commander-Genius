@@ -52,7 +52,19 @@ blendup(true)
 
 void CMessageBoxSelection::init()
 {
-    mpMBSurface.reset(CG_CreateRGBSurface( mMBRect ), &SDL_FreeSurface);
+    auto *blit = gVideoDriver.getBlitSurface();
+    SDL_PixelFormat *format = blit->format;
+
+    mpMBSurface.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
+                mMBRect.w,
+                mMBRect.h,
+                RES_BPP,
+                format->Rmask,
+                format->Gmask,
+                format->Bmask,
+                format->Amask ), &SDL_FreeSurface );
+
+
     mpMBSurface.reset(gVideoDriver.convertThroughBlitSfc( mpMBSurface.get() ), &SDL_FreeSurface);
 
 	initGalaxyFrame();
@@ -65,9 +77,15 @@ void CMessageBoxSelection::init()
     
 	GsFont &Font = gGraphics.getFont(FONT_ID);
 
-	SDL_PixelFormat *format = gVideoDriver.getBlitSurface()->format;
-	
-	SDL_Surface *pColoredTextSurface = CG_CreateRGBSurface(rect);
+    SDL_Surface *pColoredTextSurface = SDL_CreateRGBSurface( SDL_SWSURFACE,
+                                                             rect.w,
+                                                             rect.h,
+                                                             RES_BPP,
+                                                             format->Rmask,
+                                                             format->Gmask,
+                                                             format->Bmask,
+                                                             format->Amask );
+
 
 	const Uint32 oldColor = Font.getFGColor();
 

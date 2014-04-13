@@ -70,7 +70,17 @@ void CGamePlayMode::render()
 
         if(!mpFPSSurface)
         {
-            mpFPSSurface.reset(CG_CreateRGBSurface(rect), &SDL_FreeSurface);
+            auto *blit = gVideoDriver.getBlitSurface();
+            SDL_PixelFormat *format = blit->format;
+
+            mpFPSSurface.reset( SDL_CreateRGBSurface( SDL_SWSURFACE,
+                        rect.w,
+                        rect.h,
+                        RES_BPP,
+                        format->Rmask,
+                        format->Gmask,
+                        format->Bmask,
+                        format->Amask ), &SDL_FreeSurface );
         }
 
         std::string tempbuf = "FPS: " + ftoa(gTimer.LastFPS());

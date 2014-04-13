@@ -24,13 +24,6 @@ SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect );
 
 void drawEmptyRect(SDL_Surface *sfc, SDL_Rect *pRect, Uint32 color);
 
-struct SDL_Surface_Deleter
-{
-    void operator()(SDL_Surface* sfc)
-    {
-        SDL_FreeSurface(sfc);
-    }
-};
 
 
 #endif /* SDL_EXTENSIONS_H_ */
