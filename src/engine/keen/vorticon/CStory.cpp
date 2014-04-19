@@ -15,7 +15,7 @@
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 
 
 void CStory::init()

@@ -1,6 +1,7 @@
 #include <sdl/sound/CSound.h>
 #include <base/video/CVideoDriver.h>
-#include "misc.h"
+#include <base/utils/misc.h>
+
 
 #include "CVortiMom.h"
 #include "CFireBall.h"

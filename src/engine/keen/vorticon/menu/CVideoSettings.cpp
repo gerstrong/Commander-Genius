@@ -13,11 +13,11 @@
 #include <widgets/GsMenuController.h>
 
 
-#include "hardware/Configurator.h"
+//#include "hardware/Configurator.h"
 #include "common/CSettings.h"
 #include "CCameraSettings.h"
 #include "CVideoSettings.h"
-#include "Utils.h"
+//#include "Utils.h"
 
 
 static const char* aspectList[] =

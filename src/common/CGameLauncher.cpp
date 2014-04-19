@@ -15,7 +15,7 @@
 #include <widgets/GsButton.h>
 #include <widgets/GsText.h>
 #include <graphics/GsGraphics.h>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
 #include <base/GsArguments.h>
@@ -24,7 +24,8 @@
 #include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/sound/CSound.h"
-#include "fileio/ResourceMgmt.h"
+#include <fileio/ResourceMgmt.h>
+#include "fileio/KeenFiles.h"
 
 #include "CResourceLoader.h"
 
@@ -51,6 +52,8 @@ m_start_game_no(start_game_no),
 m_start_level(start_level)
 {
     g_pSound->unloadSoundData();
+    // The last menu has been removed. Restore back the game status
+    g_pBehaviorEngine->setPause(false);
     gMenuController.clearMenuStack();
     letchooseagain();
 }

@@ -8,7 +8,7 @@
 
 #include "CKorath.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include "misc.h"
+#include <base/utils/misc.h>
 
 /*
 $30D2W #Korath walking

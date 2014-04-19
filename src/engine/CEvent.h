@@ -16,7 +16,7 @@
 #include <string>
 #include <list>
 #include "common/direction.h"
-#include "CVec.h"
+#include <base/utils/CVec.h>
 #include "graphics/GsBitmap.h"
 #include <vector>
 #include <memory>
@@ -32,10 +32,6 @@ struct EventEnterLevel : CEvent {
 };
 
 
-struct InvokeFunctorEvent : CEvent
-{
-    virtual void operator()() const = 0;
-};
 
 
 struct EventDieKeenPlayer  : CEvent

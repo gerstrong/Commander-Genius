@@ -4,8 +4,9 @@
 
 #include "KeenEngine.h"
 #include "common/CGameLauncher.h"
-#include "fileio/ResourceMgmt.h"
+#include <fileio/ResourceMgmt.h>
 #include "fileio/CSaveGameController.h"
+#include "fileio/KeenFiles.h"
 
 #include "sdl/music/CMusic.h"
 #include <base/CInput.h>
@@ -46,7 +47,7 @@ void KeenEngine::start()
         return;
     }
 
-    gpResource->setupFilenames(mEp);
+    gpKeenFiles->setupFilenames(mEp);
 
     g_pBehaviorEngine->setEpisode(mEp);
 

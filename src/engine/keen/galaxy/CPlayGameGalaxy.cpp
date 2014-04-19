@@ -341,6 +341,8 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
         m_endgame = true;
+        // The last menu has been removed. Restore back the game status
+        g_pBehaviorEngine->setPause(false);
         gMenuController.clearMenuStack();
     }
     else if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )

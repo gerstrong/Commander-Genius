@@ -15,7 +15,7 @@
 #include <base/GsEvent.h>
 
 #include "ActionFormat.h"
-#include "CVec.h"
+#include <base/utils/CVec.h>
 #include "direction.h"
 #include "CBehaviorEngine.h"
 
@@ -24,7 +24,6 @@
 #include "graphics/GsGraphics.h"
 #include "options.h"
 #include "sdl/sound/CSound.h"
-#include "CVec.h"
 
 // Enumerations are here
 #include "objenums.h"

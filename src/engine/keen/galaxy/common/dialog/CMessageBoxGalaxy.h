@@ -8,7 +8,7 @@
 #ifndef CMESSAGEBOXGALAXY_H_
 #define CMESSAGEBOXGALAXY_H_
 
-#include "CVec.h"
+#include <base/utils/CVec.h>
 #include <string>
 #include <SDL.h>
 #include <memory>

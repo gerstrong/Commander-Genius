@@ -7,7 +7,7 @@
 
 #include "CMap.h"
 #include "common/CBehaviorEngine.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>

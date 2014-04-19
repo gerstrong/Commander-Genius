@@ -9,7 +9,7 @@
 
 #include "COGGPlayer.h"
 
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include "sdl/sound/Sampling.h"
 #include "fileio/ResourceMgmt.h"
 #include <base/GsLogging.h>

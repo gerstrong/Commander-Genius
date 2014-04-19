@@ -11,7 +11,7 @@
 #ifndef CSELECTIONMENU_H_
 #define CSELECTIONMENU_H_
 
-#include "hardware/Configurator.h"
+//#include "hardware/Configurator.h"
 #include "common/CBehaviorEngine.h"
 
 #include "../KeenEngine.h"

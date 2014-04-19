@@ -6,7 +6,7 @@
  */
 
 #include "CAbout.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/CInput.h>
 #include <base/GsLogging.h>
 #include "fileio/CExeFile.h"

@@ -37,12 +37,13 @@
 	#include <SDL_main.h>
 #endif
 
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/GsApp.h>
 #include <base/GsLogging.h>
 
-#include "ThreadPool.h"
+//#include "ThreadPool.h"
 #include "common/CGameLauncher.h"
+#include "sdl/sound/CSound.h"
 
 /**
  * \brief  This is the function where CG beings
@@ -94,11 +95,28 @@ int main(int argc, char *argv[])
 
     gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 
-	////////////////////////////
-	// Initialize Game Engine //
-	////////////////////////////
+    // Check if there are settings on the PC, otherwise use defaults.
+    if(!g_pSettings->loadDrvCfg())
+    {
+        //m_firsttime = true;
+        gLogging.textOut(RED,"First time message: CG didn't find the driver config file. ");
+        gLogging.textOut(RED,"However, it generated some default values and will save them now.\n");
+        g_pSettings->saveDrvCfg();
+    }
+
+    if(!g_pSettings->loadGameOptions())
+    {
+        g_pSettings->loadDefaultGameCfg();
+    }
+
+    ////////////////////////////////////////////////////
+    // Initialize CG and run the main cycle if worthy //
+    ////////////////////////////////////////////////////
     if( gApp.init( argc, argv ) )
 	{
+        // Init the Game sound
+        g_pSound->init();
+
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////

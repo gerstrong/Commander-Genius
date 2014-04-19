@@ -9,7 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include "fileio.h"
@@ -212,7 +212,8 @@ bool CVorticonMapLoaderBase::load( Uint8 episode,
 	}
 	
 	// Set Map Delegation Object and refresh whole level
-	gVideoDriver.updateScrollBuffer( mpMap );
+    mpMap->drawAll();
+    gVideoDriver.updateScrollBuffer( mpMap->m_scrollx, mpMap->m_scrolly );
 
 	return true;
 }
@@ -234,7 +235,8 @@ bool CVorticonMapLoaderWithPlayer::load( Uint8 episode,
     }
 
     // Set Map Delegation Object and refresh whole level
-    gVideoDriver.updateScrollBuffer( mpMap );
+    mpMap->drawAll();
+    gVideoDriver.updateScrollBuffer( mpMap->m_scrollx, mpMap->m_scrolly );
 
     return true;
 }

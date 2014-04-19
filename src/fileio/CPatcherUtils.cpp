@@ -10,7 +10,7 @@
 #include "CPatcher.h"
 #include <string.h>
 #include <fstream>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 //#include "../StringUtils.h"
 #include <base/GsLogging.h>
 

@@ -11,7 +11,7 @@
 #include "../CMoveTarget.h"
 
 #include "CPlatform.h"
-#include "CVec.h"
+#include <base/utils/CVec.h>
 
 #include <boost/property_tree/ptree.hpp>
 

@@ -1,4 +1,5 @@
-#include "misc.h"
+#include <base/utils/misc.h>
+
 #include "sdl/sound/CSound.h"
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"

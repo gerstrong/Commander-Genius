@@ -7,7 +7,7 @@
  *  Routines for handling save&load of savegames
  */
 
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include "CSaveGameController.h"
 #include "common/CBehaviorEngine.h"
 #include <ctime>

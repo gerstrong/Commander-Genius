@@ -8,7 +8,7 @@
 
 #include "CShikadiMaster.h"
 #include "../../common/ai/CEnemyShot.h"
-#include "misc.h"
+#include <base/utils/misc.h>
 
 /*
 $2AF4W #Shikadi master stand

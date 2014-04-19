@@ -6,8 +6,8 @@
  */
 
 #include <base/GsLogging.h>
-#include <base/FindFile.h>
-#include "ConfigHandler.h"
+#include <base/utils/FindFile.h>
+#include <base/utils/ConfigHandler.h>
 #include "CSettings.h"
 #include <base/GsTimer.h>
 #include "sdl/sound/CSound.h"
@@ -15,6 +15,7 @@
 #include "common/options.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/CConfiguration.h"
+#include "fileio/KeenFiles.h"
 
 
 /**

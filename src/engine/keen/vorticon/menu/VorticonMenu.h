@@ -18,6 +18,7 @@ public:
                                                                 0.06f/rect.w,
                                                                 0.06f/rect.h) );
         mpReturnButton->setDown(true);
+        mpMenuDialog->initVorticonBackground();
         mpMenuDialog->updateBackground();
     }
 

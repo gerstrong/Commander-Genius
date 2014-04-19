@@ -17,7 +17,8 @@
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
 #include "fileio/compression/CHuffman.h"
-#include <base/FindFile.h>
+#include "fileio/KeenFiles.h"
+#include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 #include <base/video/CVideoDriver.h>
@@ -27,6 +28,7 @@
 #include <fstream>
 #include <cstring>
 #include <SDL.h>
+
 
 namespace galaxy
 {
@@ -553,8 +555,8 @@ bool CEGAGraphicsGalaxy::begin()
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
 	// Try to read it either from a file
 
-	if(!gpResource->egadictFilename.empty())
-	    filename =  m_path + gpResource->egadictFilename;
+    if(!gpKeenFiles->egadictFilename.empty())
+        filename =  m_path + gpKeenFiles->egadictFilename;
 
 	if( Huffman.readDictionaryFromFile(filename) )
 	{

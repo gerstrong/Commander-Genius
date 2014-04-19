@@ -12,7 +12,7 @@
 #include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
 #include <base/video/CVideoDriver.h>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 
 CTextViewer::CTextViewer(int x, int y, int w, int h) :

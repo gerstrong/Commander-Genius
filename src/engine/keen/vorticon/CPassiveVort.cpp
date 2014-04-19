@@ -69,7 +69,8 @@ void CPassiveVort::pumpEvent(const CEvent *evPtr)
     {
         if(mpMap)
         {
-            gVideoDriver.updateScrollBuffer( mpMap );
+            mpMap->drawAll();
+            gVideoDriver.updateScrollBuffer( mpMap->m_scrollx, mpMap->m_scrolly );
             return;
         }
     }

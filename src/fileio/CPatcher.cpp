@@ -9,8 +9,9 @@
 #include <string.h>
 #include <fstream>
 #include <iostream>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 //#include "StringUtils.h"
+#include "fileio/KeenFiles.h"
 #include <base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
 #include "common/CBehaviorEngine.h"
@@ -94,41 +95,41 @@ void CPatcher::process()
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-			gpResource->egaheadFilename = newfileName;
+            gpKeenFiles->egaheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "egadict")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-			gpResource->egadictFilename = newfileName;
+            gpKeenFiles->egadictFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "audiohed")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-			gpResource->audioHedFilename = newfileName;
+            gpKeenFiles->audioHedFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "audiodict")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-			gpResource->audioDictFilename = newfileName;
+            gpKeenFiles->audioDictFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "gamemaps")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-			gpResource->gamemapsFilename = newfileName;
+            gpKeenFiles->gamemapsFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "maphead")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
             filterFilename(newfileName);
-			gpResource->mapheadFilename = newfileName;
+            gpKeenFiles->mapheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "patch" )
 		{

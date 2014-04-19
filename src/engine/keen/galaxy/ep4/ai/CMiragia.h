@@ -13,7 +13,7 @@
 #define CMIRAGIA_H_
 
 #include "../../common/CGalaxySpriteObject.h"
-#include "CVec.h"
+#include <base/utils/CVec.h>
 
 namespace galaxy {
 

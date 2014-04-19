@@ -45,7 +45,8 @@ void CMapPlayGalaxy::setActive(bool value)
 
 	if(mActive)
 	{
-	    gVideoDriver.updateScrollBuffer(mMap);
+        mMap.drawAll();
+        gVideoDriver.updateScrollBuffer(mMap.m_scrollx, mMap.m_scrolly);
         gVideoDriver.setRefreshSignal(true);
 	}
 }

@@ -6,7 +6,8 @@
 
 #ifndef CMOVETARGET_H
 #define CMOVETARGET_H
-#include "CVec.h"
+
+#include <base/utils/CVec.h>
 #include "common/direction.h"
 #include "common/CMap.h"
 

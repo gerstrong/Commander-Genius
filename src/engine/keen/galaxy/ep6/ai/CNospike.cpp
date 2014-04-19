@@ -1,5 +1,5 @@
 #include "CNospike.h"
-#include <misc.h>
+#include <base/utils/misc.h>
 
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"

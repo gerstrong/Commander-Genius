@@ -10,7 +10,8 @@
 #include "CIMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
-#include <base/FindFile.h>
+#include "fileio/KeenFiles.h"
+#include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <fstream>
 #include <string>
@@ -99,7 +100,7 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 	AudioFile.read((char*) &(AudioCompFileData.front()), audiofilecompsize);
 	AudioFile.close();
 
-	std::string audiohedfile = gpResource->audioHedFilename;
+    std::string audiohedfile = gpKeenFiles->audioHedFilename;
 	
 	if(!audiohedfile.empty())
 	    audiohedfile = getResourceFilename( audiohedfile, ExeFile.getDataDirectory(), false, false);
@@ -240,7 +241,7 @@ bool CIMFPlayer::unpackAudioInterval(	const CExeFile& ExeFile,
 	// Open the Huffman dictionary and get AUDIODICT
 	CHuffman Huffman;
 	
-	std::string audioDictfilename = getResourceFilename( gpResource->audioDictFilename, ExeFile.getDataDirectory(), false, false);
+    std::string audioDictfilename = getResourceFilename( gpKeenFiles->audioDictFilename, ExeFile.getDataDirectory(), false, false);
 	
 	if(audioDictfilename.empty())
 	    Huffman.readDictionaryNumber( ExeFile, 0 );

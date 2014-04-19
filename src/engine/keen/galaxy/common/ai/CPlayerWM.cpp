@@ -15,7 +15,7 @@
 #include "CFlag.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/sound/CSound.h"
-#include "CVec.h"
+#include <base/utils/CVec.h>
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 #include "graphics/effects/CDimDark.h"
 

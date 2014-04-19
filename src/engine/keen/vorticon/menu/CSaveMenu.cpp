@@ -83,6 +83,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 				if(pInput->Typing())
 				{
 					gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
+                    g_pBehaviorEngine->setPause(false);
 					gEventManager.add( new CloseAllMenusEvent() );
 				}
 				else

@@ -11,10 +11,11 @@
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include "fileio/TypeDefinitions.h"
+#include "fileio/KeenFiles.h"
 #include "common/CBehaviorEngine.h"
 #include <base/GsLogging.h>
 #include "engine/CPlanes.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>

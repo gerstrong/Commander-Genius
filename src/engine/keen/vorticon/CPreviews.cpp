@@ -8,7 +8,7 @@
 #include "CPreviews.h"
 
 #include "common/CBehaviorEngine.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 //#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
 //#include "StringUtils.h"

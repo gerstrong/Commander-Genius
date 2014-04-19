@@ -14,12 +14,12 @@
 #include <widgets/GsMenuController.h>
 
 
-#include "hardware/Configurator.h"
+//#include "hardware/Configurator.h"
 #include "common/CSettings.h"
 #include "CameraSettings.h"
 #include "CVideoSettings.h"
 //#include "CSettingsMenu.h"
-#include "Utils.h"
+#include <base/utils/Utils.h>
 
 #include "widgets/NumberControl.h"
 #include "widgets/ComboSelection.h"

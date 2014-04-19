@@ -235,12 +235,15 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
     {
         if(mMap)
         {
-            gVideoDriver.updateScrollBuffer(mMap);
+            mMap->drawAll();
+            gVideoDriver.updateScrollBuffer(mMap->m_scrollx, mMap->m_scrolly);
             return;
         }
     }
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
+        // The last menu has been removed. Restore back the game status
+        g_pBehaviorEngine->setPause(false);
         gMenuController.clearMenuStack();
         gEventManager.add<GMSwitchToPassiveMode>();
     }

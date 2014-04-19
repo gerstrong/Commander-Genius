@@ -17,7 +17,7 @@
 #include "graphics/effects/CColorMerge.h"
 
 #include <base/GsTimer.h>
-#include "CVec.h"
+#include <base/utils/CVec.h>
 #include <base/GsLogging.h>
 
 #include "../dialog/CMessageBoxBitmapGalaxy.h"

@@ -11,11 +11,12 @@
 
 #include "CEGASprit.h"
 #include "engine/CPlanes.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/video/CVideoDriver.h>
 #include "engine/spritedefines.h"
 #include "fileio/lz.h"
-#include "fileio/ResourceMgmt.h"
+#include "fileio/KeenFiles.h"
+#include <fileio/ResourceMgmt.h>
 #include "common/CBehaviorEngine.h"
 #include "CVorticonSpriteObject.h"
 #include "CResourceLoader.h"

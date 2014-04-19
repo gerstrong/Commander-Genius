@@ -12,7 +12,7 @@
 #include "CShikadiMine.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include "misc.h"
+#include <base/utils/misc.h>
 #include "../../common/dialog/CMessageBoxGalaxy.h"
 #include "core/mode/CGameMode.h"
 

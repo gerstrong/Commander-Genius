@@ -6,7 +6,7 @@
  */
 
 #include "CHuffman.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <fstream>
 
 const unsigned int DICT_SIG_BYTES = 6;

@@ -17,7 +17,7 @@
 #include <fstream>
 #include <vector>
 //#include "StringUtils.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 
 namespace vorticon
 {

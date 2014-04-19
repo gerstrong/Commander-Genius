@@ -20,7 +20,7 @@
 #include <string>
 #include <map>
 #include "../engine/keen/galaxy/res/EGAStructs.h"
-#include "hardware/Configurator.h"
+#include <base/Configurator.h>
 #include "fileio/CExeFile.h"
 #include "CTileProperties.h"
 #include "CPhysicsSettings.h"
@@ -75,8 +75,7 @@ class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 public:
 	CBehaviorEngine() : 	mPlayers(0),
 				mDifficulty(EASY),
-                mPausedGamePlay(false)/*,
-                pEpisodeInfo(NULL)*/ {}
+                mPausedGamePlay(false) {}
 
 	void setMessage(const std::string &name,
 					const std::string &message);

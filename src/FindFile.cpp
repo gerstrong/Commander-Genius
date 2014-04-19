@@ -24,10 +24,10 @@
 #endif
 
 #include <fstream>
-#include <base/FindFile.h>
-#include <base/Debug.h>
+#include <base/utils/FindFile.h>
+#include <base/utils/Debug.h>
 #include <base/utils/StringUtils.h>
-#include "ConfigHandler.h"
+#include <base/utils/ConfigHandler.h>
 #include "common/CSettings.h"
 
 #ifdef WIN32

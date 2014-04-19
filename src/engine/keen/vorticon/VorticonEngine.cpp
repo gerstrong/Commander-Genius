@@ -249,7 +249,8 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         mpGameMode.reset( new CPlayGameVorticon(playGame.m_startlevel) );
         mpGameMode->init();
         mOpenedGamePlay = true;
-        gEventManager.add( new CloseAllMenusEvent() );
+        g_pBehaviorEngine->setPause(false);
+        gEventManager.add( new CloseAllMenusEvent() );        
     }
     else if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
     {
@@ -263,6 +264,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         pgVort->loadGame();
         mpGameMode = std::move(pgVort);
         mOpenedGamePlay = true;
+        g_pBehaviorEngine->setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )
