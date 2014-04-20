@@ -29,5 +29,5 @@ if(UNIX)
 	add_definitions(-DSYSTEM_DATA_DIR="${FULL_GAMES_SHAREDIR}")
 endif(UNIX)
 
-INCLUDE(package.cmake)
+#INCLUDE(package.cmake)
 

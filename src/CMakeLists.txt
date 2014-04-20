@@ -238,8 +238,12 @@ include_directories (${CommanderGenius_SOURCE_DIR}/lib/GsKit)
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
 
+# We need that so we can compile dosbox fusion
+include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion)
+include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 
-#add_subdirectory(common)
+
+add_subdirectory(common)
 #add_subdirectory(core)
 #add_subdirectory(dialog)
 #add_subdirectory(engine)
@@ -250,10 +254,14 @@ link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
 
 
 # File globbing
-file(GLOB_RECURSE ALL_SRCS *.c* *.h*)
+file(GLOB SRCS *.c* *.h*)
 
 # Add executable Commander Genius
-add_executable (CGeniusExe ${ALL_SRCS})
+add_executable (CGeniusExe CGenius.cpp)
+
+
+# Link internal CG Stuff
+target_link_libraries(CGeniusExe common)
 
 # Link GsKit
 target_link_libraries (CGeniusExe GsKit) 

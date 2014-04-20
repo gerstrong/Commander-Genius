@@ -28,7 +28,6 @@
 #include <base/utils/Debug.h>
 #include <base/utils/StringUtils.h>
 #include <base/utils/ConfigHandler.h>
-#include "common/CSettings.h"
 
 #ifdef WIN32
 #	ifndef _WIN32_IE
@@ -71,7 +70,7 @@ using std::hash_set;
 
 
 
-void InitSearchPaths()
+void InitSearchPaths(const std::string &cfgFname)
 
 {
 	// have to set to find the config at some of the default places
@@ -84,7 +83,7 @@ void InitSearchPaths()
 	{
 
 		std::string value;
-		if(!ReadString(g_pSettings->getConfigFileName(), "FileHandling", "SearchPath" + itoa(i), value, ""))
+		if(!ReadString(cfgFname, "FileHandling", "SearchPath" + itoa(i), value, ""))
 			break;
 
 		AddToFileList(&tSearchPaths, value);
@@ -793,7 +792,16 @@ std::string GetSystemDataDir() {
 
 std::string	binary_dir; // given by argv[0], set by main()
 
-std::string GetBinaryDir() {
+
+void SetBinaryDir(const std::string &binDir) 
+{
+	binary_dir = binDir;
+}
+
+
+
+std::string GetBinaryDir() 
+{
 	return binary_dir;
 }
 

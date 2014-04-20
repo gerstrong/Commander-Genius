@@ -11,12 +11,11 @@
 #ifndef __UNICODE_H__
 #define __UNICODE_H__
 
-#include <SDL.h> // for Uint32
 #include <string>
 
-typedef Uint32 UnicodeChar;
+typedef uint32_t UnicodeChar;
 typedef std::basic_string<UnicodeChar> UnicodeString;
-typedef Uint16 Utf16Char;
+typedef uint16_t Utf16Char;
 typedef std::basic_string<Utf16Char> Utf16String;
 
 struct ConversionItem {

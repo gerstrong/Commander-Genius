@@ -62,7 +62,7 @@ inline bool S_ISLNK(unsigned short d)  { return (d & S_IFLNK) != 0; }
 #	define	SYSTEM_DATA_DIR	"/usr/share"
 #endif
 
-extern	std::string		binary_dir;
+//extern	std::string		binary_dir;
 
 //
 //	Drive types
@@ -164,7 +164,7 @@ inline bool GetExactFileName(const std::string& abs_searchname, std::string& fil
 
 extern searchpathlist	basesearchpaths;
 void	InitBaseSearchPaths();
-void	InitSearchPaths();
+void	InitSearchPaths(const std::string &cfgFname);
 
 // this does a search on all searchpaths for the file and returns the first one found
 // if none was found, NULL will be returned
@@ -229,6 +229,9 @@ std::string	GetSystemDataDir();
 std::string	GetBinaryDir();
 // returns the temp-dir of the system
 std::string	GetTempDir();
+
+// Sets the binary string.
+void SetBinaryDir(const std::string &binDir);
 
 
 typedef char filemodes_t;

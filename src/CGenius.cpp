@@ -1,31 +1,29 @@
-/* MAIN.C
- This is CloneKeen's main source file.
+/**
+ CGenius.cpp
+ This is Commander Genius main source file.
 
- The CloneKeen source may be freely distributed and
+ The Commander Genius source may be freely distributed and
  modified as per the GPL but please give credit to
- the original author, Caitlin Shaw and to the new author
- Gerstrong.
+ the original authors.
 
  If you make any changes or improvements to the code that
  you feel merit inclusion in the source tree email them
- to me at gerstrong@gmail.com or get my latest email
- from the SourceForge site.
+ to me at gerstrong@gmail.com.
 
- Thanks to ID Software for the "Commander Keen: Invasion of
- the Vorticons" games. "Commander Keen" and it's associated
+ Thanks to ID Software for the "Commander Keen" series. 
+ "Commander Keen" and it's associated
  graphics, level, and sound files are the property of ID
  Software. Commander Genius requires the original version of a
- Commander Keen game in order to be able to interpret that
- episode.
+ Commander Keen game in order to be able to interpret them.
 
- Enjoy the Code
+ Enjoy our hard work!
  - The Commander Genius Team
 
  CloneKeen          2003-2005   Caitlin Shaw
  CloneKeenPlus      2008-2014   Gerstrong
  Commander Genius   2009-2014   Tulip,
  Commander Genius   2009-2013   NY00123,
- Commander Genius   2009-2014   Pickle, DaVince, Albert and Pizza2004
+ Commander Genius   2009-2013   Pickle, DaVince, Albert and Pizza2004
  Commander Genius   2010-2012   Lemm, Commander Spleen, Zear, Pelya and FCTW
  Commander Genius   2013-2014   Hagel
  */
@@ -43,6 +41,7 @@
 
 //#include "ThreadPool.h"
 #include "common/CGameLauncher.h"
+//#include "common/CSettings.h"
 #include "sdl/sound/CSound.h"
 
 /**
@@ -67,8 +66,9 @@ int main(int argc, char *argv[])
 #endif
 
 	// Check if CG should look into a given directory
+	std::string binary_dir;
 	if(argc >= 1)
-	{
+	{		
 		binary_dir = argv[0];
 		size_t slashpos = findLastPathSep(binary_dir);
 		
@@ -88,10 +88,10 @@ int main(int argc, char *argv[])
 		binary_dir = ".";
 	}
 
-	binary_dir = GetAbsolutePath(binary_dir);
+	SetBinaryDir( GetAbsolutePath(binary_dir) );
 
 	InitThreadPool();
-	InitSearchPaths();
+	InitSearchPaths(g_pSettings->getConfigFileName());
 
     gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 
@@ -120,7 +120,9 @@ int main(int argc, char *argv[])
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////
-        gApp.setEngine(new CGameLauncher(false));
+        //gApp.setEngine(new CGameLauncher(false));
+        // TODO: Still need to check this dependency
+        assert(0);
 
         //////////////////////////////
         // Run the Commander Genius //

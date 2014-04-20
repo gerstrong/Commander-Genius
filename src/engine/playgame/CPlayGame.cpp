@@ -10,6 +10,8 @@
 
 #include <widgets/GsMenuController.h>
 
+// TODO: I think this should go into the keen directory, maybe, because many elements are keen related, not all though.
+
 CPlayGame::CPlayGame(CExeFile &ExeFile, char level) :
 m_endgame(false),
 m_ExeFile(ExeFile),

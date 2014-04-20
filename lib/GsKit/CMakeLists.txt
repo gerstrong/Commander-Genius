@@ -3,12 +3,10 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-project(GsKit)
-
-
 # Make this C++11. We need that in GsKit
 ADD_DEFINITIONS(-std=c++11)
 
+Project(GsKit)
 
 if(USE_SDL2)
 
