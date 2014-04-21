@@ -1,4 +1,4 @@
-/*
+/**
  * CBehaviorEngine.h
  *
  *  Created on: 11.06.2010
@@ -9,7 +9,7 @@
  *  gamedata files.
  *
  *  An example are the TileProperties. At some places
- *  of AI they are needed and especially for the collision
+ *  of AI they are needed and of course the collision
  */
 
 
@@ -19,13 +19,13 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "../engine/keen/galaxy/res/EGAStructs.h"
+#include "engine/keen/galaxy/res/EGAStructs.h"
 #include <base/Configurator.h>
-#include "CTileProperties.h"
+#include "fileio/CTileProperties.h"
 //#include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
 #include <base/GsEvent.h>
-#include "common/options.h"
+#include "engine/core/options.h"
 
 #include <base/GsEvent.h>
 

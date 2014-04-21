@@ -12,8 +12,8 @@
 #include <base/GsTimer.h>
 #include "sdl/audio/Audio.h"
 #include <base/video/CVideoDriver.h>
-#include "common/options.h"
-#include "common/CBehaviorEngine.h"
+#include "options.h"
+#include "CBehaviorEngine.h"
 #include "fileio/CConfiguration.h"
 #include "fileio/KeenFiles.h"
 

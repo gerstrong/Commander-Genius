@@ -243,12 +243,9 @@ include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion)
 include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 
 
-add_subdirectory(common)
+add_subdirectory(engine)
 add_subdirectory(sdl)
 add_subdirectory(fileio)
-
-#add_dependencies(sdl fileio)
-#add_dependencies(sdl fileio_compression)
 
 #add_subdirectory(core)
 #add_subdirectory(dialog)
@@ -257,16 +254,12 @@ add_subdirectory(fileio)
 #add_subdirectory(hardware)
 
 
-
-# File globbing
-file(GLOB SRCS *.c* *.h*)
-
 # Add executable Commander Genius
 add_executable (CGeniusExe CGenius.cpp)
 
 
 # Link internal CG Stuff
-target_link_libraries(CGeniusExe common)
+target_link_libraries(CGeniusExe engine)
 target_link_libraries(CGeniusExe sdl)
 target_link_libraries(CGeniusExe fileio)
 

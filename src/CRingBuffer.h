@@ -27,6 +27,8 @@
 #ifndef CRINGBUFFER_H_
 #define CRINGBUFFER_H_
 
+// TODO: It is more of a container. We should rename that to Ring or RingComposite or similar.
+
 template <typename T>
 class RingBuffer {
 public:

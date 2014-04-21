@@ -14,7 +14,7 @@
 #include "fileio/KeenFiles.h"
 #include <base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 
 CPatcher::CPatcher(CExeFile &ExeFile, const std::string &patchFname) :

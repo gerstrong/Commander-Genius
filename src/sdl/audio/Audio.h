@@ -22,7 +22,7 @@
 #include <memory>
 
 #include "sound/CSoundChannel.h"
-#include "common/CAudioResources.h"
+#include "CAudioResources.h"
 
 class Audio : public CSingleton<Audio>
 {

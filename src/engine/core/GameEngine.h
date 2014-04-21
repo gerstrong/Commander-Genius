@@ -5,16 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "engine/CEvent.h"
+//#include "engine/CEvent.h"
 //#include "engine/infoscenes/CInfoScene.h"
-#include "core/mode/CGameMode.h"
+#include "mode/CGameMode.h"
 #include "CResourceLoader.h"
 
 #include <base/GsEngine.h>
 #include <memory>
 
-#ifndef __GAMEENGINE_H_
-#define __GAMEENGINE_H_
+#ifndef __GAMEENGINE_H__
+#define __GAMEENGINE_H__
 
 class GameEngine : public GsEngine
 {
@@ -43,4 +43,4 @@ protected:
 };
 
 
-#endif /* __GAMEENGINE_H_ */
+#endif /* __GAMEENGINE_H__ */

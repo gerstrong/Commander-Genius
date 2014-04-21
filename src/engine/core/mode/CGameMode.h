@@ -10,8 +10,8 @@
 #ifndef CGAMEMODE_H_
 #define CGAMEMODE_H_
 
-#include "engine/CEvent.h"
-#include "core/LogicDrawSplitter.h"
+//#include "engine/CEvent.h"
+//#include "core/LogicDrawSplitter.h"
 #include <string>
 
 ///////////////////////
@@ -52,7 +52,7 @@ struct EventEndGamePlay : CEvent {};
 ///////
 // Base Class for the modes
 //////
-class CGameMode : public GameState
+class CGameMode
 {
 public:
 	CGameMode() {}
@@ -61,6 +61,8 @@ public:
     virtual void pumpEvent(const CEvent *evPtr) = 0;
 
     virtual bool init() = 0;
+    virtual void ponder(const float deltaT) = 0;
+    virtual void render() = 0;
 };
 
 

@@ -10,7 +10,6 @@
 
 #include "CMusicPlayer.h"
 #include "fileio/TypeDefinitions.h"
-#include "fileio/CExeFile.h"
 #include "sdl/audio/Audio.h"
 #include "CRingBuffer.h"
 #include <SDL.h>
@@ -34,8 +33,8 @@ public:
 	 * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
 	 * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
 	 */
-	bool loadMusicTrack(const CExeFile& ExeFile, const int track);
-	bool loadMusicFromFile(const std::string& filename);
+//	bool loadMusicTrack(const CExeFile& ExeFile, const int track);
+    bool loadMusicFromFile(const std::string& filename);
 
 	void OPLUpdate(byte *buffer, const unsigned int length);
 
@@ -43,22 +42,28 @@ public:
 	void close();
 	void readBuffer(Uint8* buffer, Uint32 length);
 
+    /**
+      * \brief If any other entity already created a ring of data suitable for the player,
+      *        use this method and pass the data.
+      */
+    void swapRing(RingBuffer<IMFChunkType> &&ring);
+
 private:
-	bool readCompressedAudiointoMemory(const CExeFile& ExeFile,
+    /*bool readCompressedAudiointoMemory(const CExeFile& ExeFile,
 					       std::vector<uint32_t> &musiched,
-						std::vector<uint8_t> &AudioCompFileData);
+                        std::vector<uint8_t> &AudioCompFileData);*/
 
 	bool readMusicHedFromFile(const std::string fname, 
 				  std::vector<uint32_t> &musiched);
 	
-	bool readMusicHedInternal(const CExeFile& ExeFile,
+/*	bool readMusicHedInternal(const CExeFile& ExeFile,
 				std::vector<uint32_t> &musiched,
-				const size_t audiofilecompsize);		
+                const size_t audiofilecompsize);		*/
 	
-	bool unpackAudioInterval(	const CExeFile& ExeFile,
-				const std::vector<uint8_t> &AudioCompFileData,
-				const int start,
-				const int end);
+    bool unpackAudioInterval(const std::string &dataPath,
+                const std::vector<uint8_t> &AudioCompFileData,
+                const int start,
+                const int end);
 
 	RingBuffer<IMFChunkType> m_IMF_Data;
     const SDL_AudioSpec& m_AudioDevSpec;

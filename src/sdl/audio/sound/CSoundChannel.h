@@ -10,7 +10,8 @@
 
 #include <SDL.h>
 #include <map>
-#include "common/CAudioResources.h"
+#include "CSoundSlot.h"
+//#include "common/CAudioResources.h"
 
 // sound play modes
 // start playing sound now, unless a higher priority sound is playing
@@ -48,7 +49,8 @@ PLAY_PAUSEALL
 // The higher it is, the faster sound is played!
 
 
-class CSoundChannel {
+class CSoundChannel
+{
 public:
 	CSoundChannel(SDL_AudioSpec AudioSpec);
 

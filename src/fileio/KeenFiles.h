@@ -12,7 +12,7 @@
 #include <set>
 #include <base/utils/StringUtils.h>
 #include "CSingleton.h"
-
+#include "CExeFile.h"
 
 #define gpKeenFiles CResource::Get()
 
@@ -26,7 +26,8 @@ struct CResource : public CSingleton<CResource>
 	std::string audioHedFilename;
 	std::string audioDictFilename;
 	std::string mapheadFilename;
-	std::string gamemapsFilename;
+	std::string gamemapsFilename;    
+    CExeFile exeFile;
 
 	void setupFilenames(const unsigned int episode)
 	{

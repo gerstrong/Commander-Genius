@@ -18,10 +18,10 @@
 #include <vector>
 #include <ostream>
 
-#include "engine/CEvent.h"
+//#include "engine/CEvent.h"
 //#include "common/Menu/CSelectionMenu.h"
 
-#include "CResourceLoader.h"
+#include "core/CResourceLoader.h"
 
 
 // The directory/path to start the search at

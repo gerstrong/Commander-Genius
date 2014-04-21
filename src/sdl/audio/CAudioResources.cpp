@@ -10,8 +10,7 @@
 #include "fileio/ResourceMgmt.h"
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
-#include "sdl/sound/CSound.h"
-#include <SDL.h>
+#include "Audio.h"
 
 CAudioResources::CAudioResources(const SDL_AudioSpec &AudioSpec) :
 m_AudioSpec(AudioSpec)

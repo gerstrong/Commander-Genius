@@ -31,7 +31,8 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 #endif
 
 	std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
-    imfPlayer->loadMusicTrack(ExeFile, track);
+    //imfPlayer->loadMusicTrack(ExeFile, track);
+    assert(0);
 
 	if(!imfPlayer->open())
 	{

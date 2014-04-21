@@ -2,14 +2,16 @@
 add_subdirectory(compression)
 
 include_directories(${SDL_INCLUDE_DIR})
-add_library(fileio CExeFile.cpp CExeFile.h
-		   CPatcher.cpp CPatcher.h
+
+add_library(fileio CPatcher.cpp CPatcher.h
 		   CPatcherUtils.cpp 
 		   crc.cpp crc.h
 		   CSavedGameCoder.h
                    CSaveGameController.h
                    CTileLoader.cpp CTileLoader.h
-                   KeenFiles.cpp KeenFiles.h
+                   CTileProperties.cpp CTileProperties.h
+                   #KeenFiles.cpp KeenFiles.h
+                   CExeFile.cpp CExeFile.h
                    lz.cpp lz.h
                    Oldsavegamestructs.h
                    TypeDefinitions.h)

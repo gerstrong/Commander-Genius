@@ -29,7 +29,7 @@
  */
 
 #include "../version.h"
-#include "common/CSettings.h"
+#include "engine/core/CSettings.h"
 
 #ifdef ANDROID
 	#include <SDL_main.h>
@@ -40,8 +40,7 @@
 #include <base/GsLogging.h>
 
 //#include "ThreadPool.h"
-#include "common/CGameLauncher.h"
-#include "common/CSettings.h"
+#include "engine/CGameLauncher.h"
 
 /**
  * \brief  This is the function where CG beings

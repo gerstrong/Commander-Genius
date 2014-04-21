@@ -10,9 +10,9 @@
 
 
 #include "GameEngine.h"
-#include "common/CBehaviorEngine.h"
+#include "CBehaviorEngine.h"
 #include "mode/CGamePlayMode.h"
-#include "core/mode/CGameMode.h"
+#include "mode/CGameMode.h"
 /*#include "common/Menu/CSelectionMenu.h"
 #include "common/Menu/CMainMenu.h"
 #include "common/Menu/CHelpMenu.h"*/

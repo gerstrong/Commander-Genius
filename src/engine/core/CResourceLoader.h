@@ -6,7 +6,7 @@
  *
  * This class will handle the Loadscreen when something is loaded and the user
  * has to wait. It's only duty is to manage another thread where the stuff is loaded, while the
- * user sees a loading screen.
+ * user sees the loading screen.
  */
 
 #ifndef CRESOURCELOADER_H_

@@ -6,7 +6,7 @@
  */
 
 #include <string>
-#include "common/options.h"
+#include "options.h"
 #include "fileio/CConfiguration.h"
 
 

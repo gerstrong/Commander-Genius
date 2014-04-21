@@ -12,7 +12,7 @@
 //#include "StringUtils.h"
 #include <base/utils/FindFile.h>
 #include "sdl/audio/music/CMusic.h"
-#include "common/CBehaviorEngine.h"
+//#include "common/CBehaviorEngine.h"
 
 //#include "engine/vorticon/AudioVorticon.h"
 

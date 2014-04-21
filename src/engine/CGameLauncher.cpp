@@ -20,14 +20,14 @@
 #include <widgets/GsMenuController.h>
 #include <base/GsArguments.h>
 
-#include "graphics/effects/CScrollEffect.h"
-#include "common/CBehaviorEngine.h"
+//#include "graphics/effects/CScrollEffect.h"
+//#include "common/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include <fileio/ResourceMgmt.h>
 #include "fileio/KeenFiles.h"
 
-#include "CResourceLoader.h"
+//#include "CResourceLoader.h"
 
 #include "../version.h"
 
@@ -50,8 +50,7 @@ mGameScanner(),
 m_firsttime(first_time),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
-{
-	
+{	
     g_pSound->unloadSoundData();
     // The last menu has been removed. Restore back the game status
     g_pBehaviorEngine->setPause(false);
@@ -68,7 +67,7 @@ m_start_level(start_level)
 ////
 bool CGameLauncher::loadResources()
 {
-    g_pBehaviorEngine->setEpisode(0);
+    //g_pBehaviorEngine->setEpisode(0);
     m_mustquit      = false;
     mDonePatchSelection = false;
     m_chosenGame    = -1;
@@ -544,7 +543,7 @@ void CGameLauncher::ponderPatchDialog()
         if( episode > 0 ) // The game has to have a valid episode!
         {
             // Get the EXE-Data of the game and load it into the memory.
-            if(!g_pBehaviorEngine->m_ExeFile.readData(episode, DataDirectory))
+            if(!gpKeenFiles->exeFile.readData(episode, DataDirectory))
             {
                 letchooseagain();
             }
