@@ -19,7 +19,7 @@ build/windows
 cmake_install.cmake
 install_manifest.txt
 *.dll
-*.dll
+*.a
 */.DS_Store
 .DS_Store
 readme.txt
