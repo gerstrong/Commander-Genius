@@ -11,6 +11,7 @@
 #include "fileio/TypeDefinitions.h"
 #include <string>
 #include <vector>
+#include <SDL.h>
 
 class CSoundSlot {
 public:

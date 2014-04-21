@@ -13,7 +13,7 @@
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/TypeDefinitions.h"
-#include "sdl/sound/Sampling.h"
+#include "sdl/audio/base/Sampling.h"
 #include <base/utils/FindFile.h>
 
 

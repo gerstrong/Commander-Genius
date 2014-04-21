@@ -5,16 +5,15 @@
  *      Author: gerstrong
  */
 
-#include "sdl/sound/CSound.h"
-#include "sdl/sound/Sampling.h"
-//#include "StringUtils.h"
+#include "sdl/audio/Audio.h"
+#include "sdl/audio/base/Sampling.h"
+#include "sdl/audio/music/COGGPlayer.h"
+#include "sdl/audio/music/CIMFPlayer.h"
 #include "CMusic.h"
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
-#include "sdl/music/COGGPlayer.h"
-#include "sdl/music/CIMFPlayer.h"
 #include <fstream>
 #include <string.h>
 

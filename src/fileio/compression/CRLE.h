@@ -17,7 +17,6 @@ public:
 	CRLE();
 	void expand( std::vector<word>& dst, std::vector<byte>& src, word key );
 	void expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word key );
-	virtual ~CRLE();
 };
 
 #endif /* CRLE_H_ */

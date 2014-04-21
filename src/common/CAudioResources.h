@@ -9,7 +9,7 @@
 #define CAUDIORESOURCES_H_
 
 #include "sdl/audio/sound/CSoundSlot.h"
-#include "sdl/audio/emulator/COPLEmulator.h"
+#include "sdl/audio/base/COPLEmulator.h"
 #include <string>
 #include <vector>
 

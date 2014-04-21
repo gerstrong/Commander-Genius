@@ -13,7 +13,7 @@
 #include <cstdio>
 #include <iostream>
 
-#include "sdl/music/CMusicPlayer.h"
+#include "CMusicPlayer.h"
 
 #ifdef OGG
 #include <vorbisfile.h>

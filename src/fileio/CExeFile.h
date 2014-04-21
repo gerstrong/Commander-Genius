@@ -25,10 +25,17 @@ class CExeFile {
 public:
 	CExeFile();
 	
-	char getEpisode() const;
-	std::string getDataDirectory() const;
-	std::string getFileName() { return m_filename; }
-	size_t getExeDataSize() const;
+    char getEpisode() const
+    { return m_episode;	}
+
+    size_t getExeDataSize() const
+    { return m_datasize;	}
+
+    std::string getDataDirectory() const
+    { return m_datadirectory;	}
+
+    std::string getFileName()
+    { return m_filename; }
 
 	unsigned long fetchUncompressedHeaderSize(void *m_headerdata);
 
@@ -46,9 +53,16 @@ public:
 	int getEXECrc();
 	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
 	
-	byte* getRawData() const;
-	void* getHeaderData() const;
-	byte* getDSegPtr() const;
+
+    byte* getRawData() const
+    {	return m_rawdata;	}
+
+    void* getHeaderData() const
+    {	return m_headerdata;	}
+
+    byte* getDSegPtr() const
+    {	return m_data_segment; }
+
 
 private:
 

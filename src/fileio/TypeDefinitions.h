@@ -10,7 +10,8 @@
 #ifndef TYOEDEFINITIONS_H_
 #define TYOEDEFINITIONS_H_
 
-#include <SDL.h>
+
+#include <cstdint>
 
 typedef uint8_t byte;
 typedef uint16_t word;

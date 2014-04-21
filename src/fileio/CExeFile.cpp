@@ -53,14 +53,6 @@ m_datadirectory("")
 
 }
 
-char CExeFile::getEpisode() const
-{ return m_episode;	}
-
-std::string CExeFile::getDataDirectory() const
-{ return m_datadirectory;	}
-
-size_t CExeFile::getExeDataSize() const
-{ return m_datasize;	}
 
 unsigned long CExeFile::fetchUncompressedHeaderSize(void *m_headerdata)
 {
@@ -360,14 +352,4 @@ bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imgl
 	*imglen = *headerlen = 0;
 	return false;
 }
-
-byte* CExeFile::getRawData() const
-{	return m_rawdata;	}
-
-void* CExeFile::getHeaderData() const
-{	return m_headerdata;	}
-
-byte* CExeFile::getDSegPtr() const
-{	return m_data_segment; }
-
 
