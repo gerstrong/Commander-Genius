@@ -16,16 +16,12 @@
 #include <base/video/CVideoDriver.h>
 #include <base/video/GsEffectController.h>
 #include <base/utils/StringUtils.h>
+#include <graphics/GsGraphics.h>
 #include <widgets/GsMenuController.h>
 
 
 #include <base/CInput.h>
 #include <base/GsArguments.h>
-//#include "sdl/sound/CSound.h"
-//#include "CSettings.h"
-
-#include "graphics/GsGraphics.h"
-
 
 
 std::string getArgument( int argc, char *argv[], const std::string& text )
@@ -108,7 +104,7 @@ bool GsApp::init(int argc, char *argv[])
 	gLogging.textOut(GREEN,"Loading hardware settings...<br>");
     if(!loadDrivers())
 	{
-		gLogging.textOut(RED,"The game cannot start, because you do not meet the hardware requirements.<br>");
+        gLogging.textOut(RED,"The program cannot start, because you do not meet the hardware requirements.<br>");
 		return false;
 	}
 	

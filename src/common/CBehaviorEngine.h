@@ -21,9 +21,8 @@
 #include <map>
 #include "../engine/keen/galaxy/res/EGAStructs.h"
 #include <base/Configurator.h>
-#include "fileio/CExeFile.h"
 #include "CTileProperties.h"
-#include "CPhysicsSettings.h"
+//#include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
 #include <base/GsEvent.h>
 #include "common/options.h"
@@ -83,7 +82,7 @@ public:
 	bool readTeleporterTable(byte *p_exedata);
 
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
-	CPhysicsSettings &getPhysicsSettings();
+    //CPhysicsSettings &getPhysicsSettings();
 	std::string getString(const std::string& name);
 
 	// This function evaluates if the used engine is galaxy or vorticon
@@ -105,7 +104,6 @@ public:
 	bool paused()
 	{	return mPausedGamePlay;	}
 
-	CExeFile m_ExeFile;
     std::string mPatchFname;
 	stOption m_option[NUM_OPTIONS];
 
@@ -123,7 +121,7 @@ public:
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];
-	CPhysicsSettings m_PhysicsSettings;
+    //CPhysicsSettings m_PhysicsSettings;
 
 	std::map<std::string,std::string> stringmap;
 	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations

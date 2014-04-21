@@ -8,8 +8,8 @@
 #ifndef CAUDIORESOURCES_H_
 #define CAUDIORESOURCES_H_
 
-#include "sdl/sound/CSoundSlot.h"
-#include "hardware/COPLEmulator.h"
+#include "sdl/audio/sound/CSoundSlot.h"
+#include "sdl/audio/emulator/COPLEmulator.h"
 #include <string>
 #include <vector>
 

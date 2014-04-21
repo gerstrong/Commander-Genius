@@ -21,29 +21,6 @@
 #endif
 
 
-
-
-inline Colormask getColourMask32bit()
-{
-	Colormask mask;
-
-    #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        mask.r = 0xFF000000;
-        mask.g = 0x00FF0000;
-        mask.b = 0x0000FF00;
-        mask.a = 0x000000FF;
-    #else
-        mask.r = 0x000000FF;
-        mask.g = 0x0000FF00;
-        mask.b = 0x00FF0000;
-        mask.a = 0xFF000000;
-    #endif
-
-	return mask;
-}
-
-
-
 SDL_Surface *CG_CreateRGBSurface( const SDL_Rect rect )
 {
     auto *blit = gVideoDriver.getBlitSurface();

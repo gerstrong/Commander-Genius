@@ -269,28 +269,8 @@ void CGUIDialog::initEmptyBackround()
 {
     const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
 
-    /*auto *blit = gVideoDriver.getBlitSurface();
-    SDL_PixelFormat *format = blit->format;
-
-    SDL_Surface *sfc = SDL_CreateRGBSurface( SDL_SWSURFACE,
-                rect.w,
-                rect.h,
-                RES_BPP,
-                format->Rmask,
-                format->Gmask,
-                format->Bmask,
-                format->Amask );-*/
-
     mBackgroundSfc.create(0, lRect.w, lRect.h, RES_BPP, 0, 0, 0, 0);
-
-    /*mpBackgroundSfc.reset( CG_CreateRGBSurface( lRect ), &SDL_FreeSurface );
-
-    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );*/
-
-
     mBackgroundSfc.fillRGB(230, 230, 230);
-    /*SDL_Surface *sfc = mpBackgroundSfc.get();
-    SDL_FillRect( sfc, NULL, SDL_MapRGB( sfc->format, 230, 230, 230) );        */
 }
 
 

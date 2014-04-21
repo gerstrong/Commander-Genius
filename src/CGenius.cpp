@@ -41,8 +41,7 @@
 
 //#include "ThreadPool.h"
 #include "common/CGameLauncher.h"
-//#include "common/CSettings.h"
-#include "sdl/sound/CSound.h"
+#include "common/CSettings.h"
 
 /**
  * \brief  This is the function where CG beings
@@ -114,9 +113,6 @@ int main(int argc, char *argv[])
     ////////////////////////////////////////////////////
     if( gApp.init( argc, argv ) )
 	{
-        // Init the Game sound
-        g_pSound->init();
-
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////

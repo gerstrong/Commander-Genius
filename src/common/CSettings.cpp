@@ -10,7 +10,7 @@
 #include <base/utils/ConfigHandler.h>
 #include "CSettings.h"
 #include <base/GsTimer.h>
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include <base/video/CVideoDriver.h>
 #include "common/options.h"
 #include "common/CBehaviorEngine.h"
@@ -193,7 +193,7 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Audio", "channels", &audio_channels, 2);
 		Configuration.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
 		Configuration.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
-		g_pSound->setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
+        g_pSound->setSettings(audio_rate, audio_channels, audio_format, audio_sndblaster);
 
 
 		int sound_vol, music_vol;
