@@ -3,11 +3,11 @@ add_subdirectory(compression)
 
 include_directories(${SDL_INCLUDE_DIR})
 
-add_library(fileio CPatcher.cpp CPatcher.h
-		   CPatcherUtils.cpp 
-		   crc.cpp crc.h
-		   CSavedGameCoder.h
-                   CSaveGameController.h
+add_library(fileio OBJECT CPatcher.cpp CPatcher.h
+                          CPatcherUtils.cpp
+                          crc.cpp crc.h
+                          CSavedGameCoder.h
+                          CSaveGameController.h
                    CTileLoader.cpp CTileLoader.h
                    CTileProperties.cpp CTileProperties.h
                    #KeenFiles.cpp KeenFiles.h
@@ -16,4 +16,4 @@ add_library(fileio CPatcher.cpp CPatcher.h
                    Oldsavegamestructs.h
                    TypeDefinitions.h)
 
-target_link_libraries(fileio fileio_compression)
+set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:fileio>)

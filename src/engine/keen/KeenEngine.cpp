@@ -3,12 +3,12 @@
 #include <widgets/GsMenuController.h>
 
 #include "KeenEngine.h"
-#include "common/CGameLauncher.h"
+#include "../CGameLauncher.h"
 #include <fileio/ResourceMgmt.h>
 #include "fileio/CSaveGameController.h"
 #include "fileio/KeenFiles.h"
 
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/music/CMusic.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 

@@ -253,15 +253,11 @@ add_subdirectory(fileio)
 #add_subdirectory(graphics)
 #add_subdirectory(hardware)
 
+# Get all the o-files from the different targets and link'em
+get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 
 # Add executable Commander Genius
-add_executable (CGeniusExe CGenius.cpp)
-
-
-# Link internal CG Stuff
-target_link_libraries(CGeniusExe engine)
-target_link_libraries(CGeniusExe sdl)
-target_link_libraries(CGeniusExe fileio)
+add_executable (CGeniusExe CGenius.cpp ${cg_obj_libs})
 
 
 # Link GsKit

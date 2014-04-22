@@ -12,6 +12,7 @@
 #define __AUDIO_H__
 
 #include "CSingleton.h"
+
 #define g_pSound Audio::Get()
 
 #include <string>
