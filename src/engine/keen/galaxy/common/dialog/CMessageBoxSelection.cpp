@@ -9,7 +9,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/utils/StringUtils.h>
 
 namespace galaxy

@@ -6,7 +6,7 @@
  */
 
 #include "CPlatformHorizontal.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
 
 const int FIRE_CHANGE_TIME = 5;

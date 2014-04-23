@@ -8,7 +8,7 @@
 #ifndef CPLANE_H_
 #define CPLANE_H_
 
-#include "../fileio/TypeDefinitions.h"
+#include "fileio/TypeDefinitions.h"
 #include <SDL.h>
 
 class CPlane

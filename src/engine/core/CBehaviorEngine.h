@@ -19,10 +19,11 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <SDL.h>
 #include "engine/keen/galaxy/res/EGAStructs.h"
 #include <base/Configurator.h>
 #include "fileio/CTileProperties.h"
-//#include "CPhysicsSettings.h"
+#include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
 #include <base/GsEvent.h>
 #include "engine/core/options.h"
@@ -63,11 +64,12 @@ enum Difficulty
 };
 
 
-typedef struct{
+typedef struct
+{
 	Uint8 objectnumber1; // Andy (Adurdin) calls that sprite, not all his numbers seem to be right
 	Uint8 objectnumber2; // Alternate number
 	Uint16 x, y;
-}stTeleporterTable;
+} stTeleporterTable;
 
 class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 {
@@ -82,7 +84,11 @@ public:
 	bool readTeleporterTable(byte *p_exedata);
 
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
-    //CPhysicsSettings &getPhysicsSettings();
+    CPhysicsSettings &getPhysicsSettings()
+    {
+        return m_PhysicsSettings;
+    }
+
 	std::string getString(const std::string& name);
 
 	// This function evaluates if the used engine is galaxy or vorticon
@@ -121,7 +127,7 @@ public:
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];
-    //CPhysicsSettings m_PhysicsSettings;
+    CPhysicsSettings m_PhysicsSettings;
 
 	std::map<std::string,std::string> stringmap;
 	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations

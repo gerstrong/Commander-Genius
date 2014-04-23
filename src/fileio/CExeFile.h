@@ -31,9 +31,6 @@ public:
     size_t getExeDataSize() const
     { return m_datasize;	}
 
-    std::string getDataDirectory() const
-    { return m_datadirectory;	}
-
     std::string getFileName()
     { return m_filename; }
 
@@ -92,7 +89,6 @@ private:
 	void *m_headerdata;
 	byte *m_rawdata;
 	byte *m_data_segment;
-	std::string m_datadirectory;
 	std::string m_filename;
 
 	std::map< size_t, std::map<int , bool> > m_supportmap;

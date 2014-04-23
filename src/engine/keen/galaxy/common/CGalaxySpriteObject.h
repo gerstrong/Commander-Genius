@@ -8,10 +8,23 @@
 #ifndef CGALAXYSPRITEOBJECT_H_
 #define CGALAXYSPRITEOBJECT_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/core/CSpriteObject.h"
 #include <fileio/CSaveGameController.h>
 
 #include <boost/property_tree/ptree.hpp>
+
+/**
+ *	\description This event will spawn a new object
+ *
+ *	\param		pObject Pointer to the allocated memory of the Object. Caution: This allocation
+ */
+struct EventSpawnObject : CEvent {
+
+    const CSpriteObject *pObject;
+
+    EventSpawnObject( const CSpriteObject* pObject ) :
+                      pObject( pObject ) {}
+};
 
 class CGalaxySpriteObject: public CSpriteObject
 {

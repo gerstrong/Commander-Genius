@@ -8,8 +8,8 @@
 #define CMOVETARGET_H
 
 #include <base/utils/CVec.h>
-#include "common/direction.h"
-#include "common/CMap.h"
+#include "engine/core/direction.h"
+#include "engine/core/CMap.h"
 
 
 class CMoveTarget

@@ -9,7 +9,7 @@
 #define CDLGFRAME_H_
 
 #include <SDL.h>
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 
 class CDlgFrame

@@ -9,7 +9,7 @@
 #include "CItemEffect.h"
 #include "CSpriteItem.h"
 #include <base/CInput.h>
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 namespace galaxy {
 

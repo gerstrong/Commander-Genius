@@ -18,7 +18,7 @@
 #include "graphics/GsTilemap.h"
 #include "fileio/TypeDefinitions.h"
 #include "CPlane.h"
-#include "engine/CEvent.h"
+#include <base/GsEvent.h>
 #include <base/utils/Geometry.h>
 #include <map>
 

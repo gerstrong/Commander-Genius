@@ -10,10 +10,11 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
-//#include "StringUtils.h"
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
+#include "fileio/KeenFiles.h"
+
 
 CExeFile::CExeFile() :
 m_datasize(0),
@@ -21,8 +22,7 @@ m_headersize(0),
 m_episode(0),
 m_crc(0),
 m_headerdata(NULL),
-m_rawdata(NULL),
-m_datadirectory("")
+m_rawdata(NULL)
 {
 
 	// Setup support map
@@ -102,8 +102,11 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 
 	m_filename = filename;
 	m_episode = episode;
-	m_datadirectory = datadirectory;
-	if( m_datadirectory != "") if(*(m_datadirectory.end()-1) != '/') m_datadirectory += "/";
+
+    std::string localDataDir = datadirectory;
+    if( localDataDir != "") if(*(localDataDir.end()-1) != '/') localDataDir += "/";
+
+    gKeenFiles.gameDir = localDataDir;
 		
 	File.seekg(0,std::ios::end);
 	m_datasize = File.tellg();

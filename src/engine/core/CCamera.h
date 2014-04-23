@@ -12,7 +12,7 @@
  *  the active Level viewer feature.
  */
 
-#include "common/CSpriteObject.h"
+#include "engine/core/CSpriteObject.h"
 
 #include <array>
 

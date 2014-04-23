@@ -11,13 +11,13 @@
 #include <string>
 #include <set>
 #include <base/utils/StringUtils.h>
-#include "CSingleton.h"
+#include <base/Singleton.h>
 #include "CExeFile.h"
 
-#define gpKeenFiles CResource::Get()
+#define gKeenFiles CResource::get()
 
 // TODO: We should rename that class...
-struct CResource : public CSingleton<CResource>
+struct CResource : public GsSingleton<CResource>
 {
 	std::string egagraphFilename;
 	std::string egaheadFilename;
@@ -27,6 +27,7 @@ struct CResource : public CSingleton<CResource>
 	std::string audioDictFilename;
 	std::string mapheadFilename;
 	std::string gamemapsFilename;    
+    std::string gameDir;
     CExeFile exeFile;
 
 	void setupFilenames(const unsigned int episode)

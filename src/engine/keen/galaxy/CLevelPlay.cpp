@@ -12,7 +12,7 @@
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include <base/CInput.h>
 //#include "sdl/CVideoDriver.h"
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/music/CMusic.h"
 #include "graphics/effects/CDimDark.h"
 #include <base/GsLogging.h>
 

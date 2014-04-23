@@ -14,6 +14,7 @@
 #include "fileio/KeenFiles.h"
 #include <base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
+#include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"
 
 
@@ -23,7 +24,6 @@ mPatchFname(patchFname)
 	m_episode = ExeFile.getEpisode();
 	m_version = ExeFile.getEXEVersion();
 	m_data = ExeFile.getRawData();
-	m_datadirectory = ExeFile.getDataDirectory();
 	m_datasize = ExeFile.getExeDataSize();
 }
 
@@ -95,41 +95,41 @@ void CPatcher::process()
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-            gpKeenFiles->egaheadFilename = newfileName;
+            gKeenFiles.egaheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "egadict")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-            gpKeenFiles->egadictFilename = newfileName;
+            gKeenFiles.egadictFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "audiohed")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-            gpKeenFiles->audioHedFilename = newfileName;
+            gKeenFiles.audioHedFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "audiodict")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-            gpKeenFiles->audioDictFilename = newfileName;
+            gKeenFiles.audioDictFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "gamemaps")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-            gpKeenFiles->gamemapsFilename = newfileName;
+            gKeenFiles.gamemapsFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "maphead")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
             filterFilename(newfileName);
-            gpKeenFiles->mapheadFilename = newfileName;
+            gKeenFiles.mapheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "patch" )
 		{

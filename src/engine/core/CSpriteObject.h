@@ -23,7 +23,7 @@
 #include "CMap.h"
 #include "graphics/GsGraphics.h"
 #include "options.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 // Enumerations are here
 #include "objenums.h"

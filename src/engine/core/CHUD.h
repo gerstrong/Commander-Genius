@@ -14,7 +14,7 @@
 #include <functional>
 #include <memory>
 #include "Playerdefines.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 #include "graphics/GsSprite.h"
 #include "sdl/extensions.h"
 

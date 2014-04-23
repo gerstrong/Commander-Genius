@@ -12,7 +12,7 @@
 
 #include "CStunnable.h"
 #include "CBullet.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
 
 const int STARRING_SPRITE = 40;

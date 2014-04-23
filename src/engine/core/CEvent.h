@@ -149,18 +149,7 @@ struct EventSendSelectionDialogMsg : CEvent {
 	}
 };
 
-/**
- *	\description This event will spawn a new object
- *
- *	\param		pObject Pointer to the allocated memory of the Object. Caution: This allocation
- */
-struct EventSpawnObject : CEvent {
 
-	const CSpriteObject *pObject;
-
-	EventSpawnObject( const CSpriteObject* pObject ) :
-					  pObject( pObject ) {}
-};
 
 /**
  *	\description This event will erase all the enemies, etc, except the player

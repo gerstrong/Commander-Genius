@@ -18,7 +18,7 @@
 #include <vector>
 
 #include "dialog/CDlgFrame.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 
 class CMessageBox : public CGUIDialog

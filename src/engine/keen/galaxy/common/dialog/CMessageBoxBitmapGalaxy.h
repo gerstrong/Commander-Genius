@@ -10,7 +10,7 @@
 
 #include "CMessageBoxGalaxy.h"
 #include "graphics/GsGraphics.h"
-#include "common/CSpriteObject.h"
+#include "engine/core/CSpriteObject.h"
 
 namespace galaxy
 {

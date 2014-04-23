@@ -18,10 +18,10 @@
 #include "../CGalaxySpriteObject.h"
 #include "../CInventory.h"
 
-#include "common/Playerdefines.h"
-#include "engine/CEvent.h"
-#include "common/Cheat.h"
-#include "engine/CCamera.h"
+#include "engine/core/Playerdefines.h"
+#include <base/GsEvent.h>
+#include "engine/core/Cheat.h"
+#include "engine/core/CCamera.h"
 
 namespace galaxy
 {
