@@ -9,7 +9,7 @@
 #include "CAudioSettings.h"
 
 #include "widgets/Button.h"
-#include "common/CSettings.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "sdl/music/CMusic.h"
 #include "sdl/sound/CSound.h"
 

@@ -44,7 +44,7 @@ public:
 	 * function can resolve such issues
 	 * \param newpos New Position for the camera as math vector
 	 */
-	void setPosition(const VectorD2<int>& newpos);
+    void setPosition(const Vector2D<int>& newpos);
 
 	/**
 	 * \brief

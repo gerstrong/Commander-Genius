@@ -55,7 +55,7 @@ mAllowReturn(false)
 	calcBoundingBoxes();
 
     // Decide whether plat can return or must fall forever
-    VectorD2<Uint32> blockerPos = getPosition();
+    Vector2D<Uint32> blockerPos = getPosition();
 
     // Scan the map for blockers, if there is one, it may return, otherwise not...
     for( ; blockerPos.y < (mp_Map->m_height<<CSF) ; blockerPos.y += (1<<CSF) )

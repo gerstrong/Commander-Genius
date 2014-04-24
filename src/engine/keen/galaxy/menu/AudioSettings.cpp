@@ -8,9 +8,10 @@
 #include "AudioSettings.h"
 #include <base/utils/StringUtils.h>
 
-#include "common/CSettings.h"
-#include "sdl/music/CMusic.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/core/CSettings.h"
+#include "sdl/audio/music/CMusic.h"
+#include "sdl/audio/Audio.h"
 
 #include "../GalaxyEngine.h"
 

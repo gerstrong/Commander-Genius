@@ -110,7 +110,7 @@ public:
 		return m_Plane[plane].getMapDataAt(x>>CSF, y>>CSF);
 	}
 
-	Uint16 getPlaneDataAt(int plane, VectorD2<Uint32> pos)
+    Uint16 getPlaneDataAt(int plane, Vector2D<Uint32> pos)
 	{
 		return m_Plane[plane].getMapDataAt(pos.x>>CSF, pos.y>>CSF);
 	}
@@ -139,12 +139,12 @@ public:
     { return mLocked; }
 
 
-    void setSpriteOrigin(const int sprId, const VectorD2<int> &origin)
+    void setSpriteOrigin(const int sprId, const Vector2D<int> &origin)
     {
         mSpriteOriginList[sprId] = origin;
     }
 
-    VectorD2<int> getSpriteOrigin(const int sprId)
+    Vector2D<int> getSpriteOrigin(const int sprId)
     {
         return mSpriteOriginList[sprId];
     }
@@ -165,7 +165,7 @@ public:
     bool mFuseInLevel;
 
 
-    VectorD2<int> mGamePlayPos;
+    Vector2D<int> mGamePlayPos;
 
 private:
 
@@ -196,7 +196,7 @@ private:
 
     GsRect<int> mVisArea;
 
-    std::map< int, VectorD2<int> > mSpriteOriginList;
+    std::map< int, Vector2D<int> > mSpriteOriginList;
 
     int mShakeCounter;
     int mMaxShakeCounter;

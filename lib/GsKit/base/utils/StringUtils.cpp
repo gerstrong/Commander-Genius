@@ -1113,7 +1113,7 @@ bool strSeemsLikeChatCommand(const std::string& str) {
 
 
 
-template<> VectorD2<int> from_string< VectorD2<int> >(const std::string& s, bool& fail) {
+/*template<> VectorD2<int> from_string< VectorD2<int> >(const std::string& s, bool& fail) {
 	std::string tmp = s;
 	TrimSpaces(tmp);
 	if(tmp.size() > 2 && tmp[0] == '(' && tmp[tmp.size()-1] == ')')
@@ -1127,4 +1127,4 @@ template<> VectorD2<int> from_string< VectorD2<int> >(const std::string& s, bool
 	v.y = from_string<int>(tmp.substr(f + 1), fail);
 	if(fail) return VectorD2<int>();
 	return v;
-}
+}*/

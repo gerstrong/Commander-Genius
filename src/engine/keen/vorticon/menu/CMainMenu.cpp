@@ -16,7 +16,7 @@
 #include "CSaveMenu.h"
 #include "CHelpMenu.h"
 #include "../CHighScores.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 #include "core/mode/CGameMode.h"
 

@@ -6,7 +6,7 @@
  */
 
 #include "CInventory.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>

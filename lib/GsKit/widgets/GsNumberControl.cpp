@@ -101,7 +101,7 @@ void CGUINumberControl::processLogic()
     mDecSel = false;
     mIncSel = false;
 
-    CVec mousePos = pointingState.mPos;
+    Vector2D<float> mousePos = pointingState.mPos;
 
     if( mousePos.x < xMid )
         mDecSel = true;

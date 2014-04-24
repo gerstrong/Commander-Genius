@@ -17,7 +17,7 @@
 #include "common/Playerdefines.h"
 #include "common/options.h"
 #include "engine/CCamera.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -170,7 +170,7 @@ public:
     int ankhtime;
 
 
-	VectorD2<int> pDir,pShowDir,lastPDir;
+	Vector2D<int> pDir,pShowDir,lastPDir;
 
 	char pfireframetimer;
 	bool inhibitwalking;

@@ -86,7 +86,7 @@ void CEndingEp2::HeadsForEarth()
 
 		int x, y;
 		mpMap->findTile(593, &x, &y);
-		m_Player[0].moveTo(VectorD2<int>(x<<CSF, y<<CSF));
+		m_Player[0].moveTo(Vector2D<int>(x<<CSF, y<<CSF));
 
 		addMsgBoxString("EP2_ESEQ_PART1");
 
@@ -119,7 +119,7 @@ void CEndingEp2::LimpsHome()
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].moveTo(VectorD2<int>(8<<CSF, 26<<CSF));
+		m_Player[0].moveTo(Vector2D<int>(8<<CSF, 26<<CSF));
 		m_Player[0].solid = false;
 
 		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP ) );

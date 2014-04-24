@@ -15,7 +15,7 @@
 #include <base/utils/FindFile.h>
 #include <base/PointDevice.h>
 #include <fileio/CConfiguration.h>
-//#include "common/CSettings.h"
+//#include "engine/core/CBehaviorEngine.h"
 
 // Input Events
 
@@ -621,11 +621,11 @@ void CInput::pollEvents()
             }
             else if(Event.button.button == 4) // scroll up
             {
-                gEventManager.add( new MouseWheelEvent( CVec(0.0, -1.0) ) );
+                gEventManager.add( new MouseWheelEvent( Vector2D<float>(0.0, -1.0) ) );
             }
             else if(Event.button.button == 5) // scroll down
             {
-                gEventManager.add( new MouseWheelEvent( CVec(0.0, 1.0) ) );
+                gEventManager.add( new MouseWheelEvent( Vector2D<float>(0.0, 1.0) ) );
             }
 
 			break;

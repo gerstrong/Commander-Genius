@@ -24,8 +24,8 @@ namespace galaxy  {
   public:
     static const unsigned int FOE_ID = 200;
     
-    CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
-      const VectorD2<Uint32> &Destination, const int sprVar,
+    CFlag(CMap *pmap, const Vector2D<Uint32> &Location,
+      const Vector2D<Uint32> &Destination, const int sprVar,
       const bool newAction, const bool canLock );
     
     
@@ -73,7 +73,7 @@ namespace galaxy  {
     
   private:
     // Where the flag/sign will pop in
-    VectorD2<Uint32> m_destination;
+    Vector2D<Uint32> m_destination;
     Uint16 m_baseframe;
     void (CFlag::*processState)();	
     std::map< size_t, void (CFlag::*)() > mActionMap;

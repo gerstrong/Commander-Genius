@@ -15,7 +15,7 @@
 #include <graphics/GsGraphics.h>
 #include <base/GsLogging.h>
 
-//#include "common/CBehaviorEngine.h"
+//#include "engine/core/CBehaviorEngine.h"
 
 
 const unsigned int MAX_ELEMENTS_PER_PAGE = 7;

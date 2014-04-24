@@ -62,9 +62,9 @@ class CSpriteObject;
 // Event that will be used to move the objects in the game
 struct ObjMove
 {
-	VectorD2<int> m_Vec;
+    Vector2D<int> m_Vec;
 
-    ObjMove(const VectorD2<int>& Vector) : m_Vec(Vector) {}
+    ObjMove(const Vector2D<int>& Vector) : m_Vec(Vector) {}
     ObjMove(const int offx, const int offy) : m_Vec(offx, offy) {}
 
     virtual ~ObjMove() {}
@@ -75,7 +75,7 @@ struct ObjMove
 struct ObjMoveCouple : ObjMove
 {
     CSpriteObject &mSecond;
-    ObjMoveCouple(const VectorD2<int>& vec,
+    ObjMoveCouple(const Vector2D<int>& vec,
                       CSpriteObject &second) :
         ObjMove(vec), mSecond(second)  {}
 
@@ -90,7 +90,7 @@ struct ObjMoveCouples : ObjMove
 {
     std::vector<CSpriteObject*> mCarriedObjVec;
 
-    ObjMoveCouples(const VectorD2<int>& Vector,
+    ObjMoveCouples(const Vector2D<int>& Vector,
                       std::vector<CSpriteObject*> &carriedObjVec) :
             ObjMove(Vector), mCarriedObjVec(carriedObjVec)  {}
 
@@ -179,12 +179,12 @@ public:
 
 
 	// Moving parts
-	void moveToForce(const VectorD2<int> &dir);
+    void moveToForce(const Vector2D<int> &dir);
 	void moveToForce(const int new_x, const int new_y);
-	void moveDir(const VectorD2<int> &dir);
+    void moveDir(const Vector2D<int> &dir);
 	void moveToHorizontal(const int& new_x);
 	void moveToVertical(const int& new_y);
-	void moveTo(const VectorD2<Uint32> &new_loc);
+    void moveTo(const Vector2D<Uint32> &new_loc);
 	void moveTo(const int new_x, const int new_y);
 	void moveXDir(const int amount, const bool force = false);
 	void moveYDir(const int amount);
@@ -198,7 +198,7 @@ public:
 	 * \brief	This function checks if there is any collision and moves the object safely
 	 * \param	dir	The direction where the object has to go to...
 	 */
-	void processMove(const VectorD2<int>& dir);
+    void processMove(const Vector2D<int>& dir);
 	void processMoveBitLeft();
 	void processMoveBitRight();
 	virtual void processMoveBitDown();
@@ -257,7 +257,7 @@ public:
 	void moveSlopedTileUp( int x, int y, const int xspeed );
 
 	// getters for positions
-    VectorD2<Uint32> &getPosition()
+    Vector2D<Uint32> &getPosition()
     { return m_Pos; }
     Uint32 getXPosition() const
 	{ return m_Pos.x; }
@@ -275,8 +275,8 @@ public:
 	{ return m_Pos.y+m_BBox.y2; }
 	Uint32 getYMidPos()
 	{ return m_Pos.y+(m_BBox.y2-m_BBox.y1)/2; }	
-    VectorD2<Uint32> getMidPos()
-    { return VectorD2<Uint32>(getXMidPos(), getYMidPos()); }
+    Vector2D<Uint32> getMidPos()
+    { return Vector2D<Uint32>(getXMidPos(), getYMidPos()); }
 	
 	void processFallPhysics(const int boost);
 	void processFallPhysics();
@@ -308,7 +308,7 @@ protected:
 
 	Uint16 m_blinktime;
 	bool m_invincible;
-	VectorD2<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
+    Vector2D<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
 
 	static int m_number_of_objects;
 

@@ -14,7 +14,7 @@
 #include <base/video/GsEffectController.h>
 #include <graphics/GsSurface.h>
 
-#include "core/direction.h"
+#include "engine/core/direction.h"
 
 
 class CScrollEffect : public CEffects

@@ -14,7 +14,7 @@
 #include "CConfirmMenu.h"
 
 #include "fileio/CSaveGameController.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 #include "widgets/InputText.h"
 

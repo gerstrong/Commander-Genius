@@ -22,7 +22,7 @@
 
 #include <cmath>
 
-template<typename _T>
+/*template<typename _T>
 struct VectorD2 {
 	// Constructor
 	VectorD2() : x(0), y(0) {}
@@ -67,7 +67,7 @@ struct VectorD2 {
 	}
 	VectorD2 operator*(const int scalar) const {		
 		return VectorD2(x*scalar,y*scalar);
-	}
+    }*/
 	/*
 	 VectorD2 operator*(const VectorD2& vec) const {
 	 // WARNING: this doesn't make any sense (in most 'mathematical' cases)
@@ -75,7 +75,7 @@ struct VectorD2 {
 	 return VectorD2(x*vec.x,y*vec.y);
 	 }
 	 */
-	VectorD2 operator/(const float scalar) const {		
+    /*VectorD2 operator/(const float scalar) const {
 		return VectorD2(x/scalar,y/scalar);
 	}
 	VectorD2 operator/(const int scalar) const {		
@@ -145,11 +145,11 @@ struct VectorD2__absolute_less {
 	bool operator()(const VectorD2<_T> v1, const VectorD2<_T> v2) const {
 		return (v1-zero).GetLength2() < (v2-zero).GetLength2();
 	}
-};
+};*/
 
 
 
-typedef VectorD2<float> CVec;
+/*typedef VectorD2<float> CVec;
 
 template<typename _T>
 struct MatrixD2 {
@@ -178,6 +178,6 @@ struct MatrixD2 {
 	}
 };
 
-
+*/
 
 #endif  //  __CVEC_H__

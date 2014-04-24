@@ -8,7 +8,7 @@
 
 #include <base/video/CVideoDriver.h>
 #include "CCameraSettings.h"
-#include "common/CSettings.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/utils/StringUtils.h>
 
 namespace vorticon

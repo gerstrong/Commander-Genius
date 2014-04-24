@@ -13,7 +13,7 @@
 #include "common/CSpriteObject.h"
 #include "common/options.h"
 #include "sdl/music/CMusic.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <string>
 #include <vector>
 #include <memory>

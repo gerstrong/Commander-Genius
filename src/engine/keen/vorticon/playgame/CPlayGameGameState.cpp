@@ -86,7 +86,7 @@ bool CPlayGameVorticon::loadGameState()
 	  player->setupforLevelPlay();
 	  ok &= savedGame.decodeData(x);
 	  ok &= savedGame.decodeData(y);
-	  player->moveToForce(VectorD2<int>(x,y));
+	  player->moveToForce(Vector2D<int>(x,y));
 	  ok &= savedGame.decodeData(player->blockedd);
 	  ok &= savedGame.decodeData(player->blockedu);
 	  ok &= savedGame.decodeData(player->blockedl);
@@ -114,7 +114,7 @@ bool CPlayGameVorticon::loadGameState()
 	  ok &= savedGame.decodeData(object.m_type);
 	  ok &= savedGame.decodeData(x);
 	  ok &= savedGame.decodeData(y);
-	  object.moveToForce(VectorD2<int>(x,y));
+	  object.moveToForce(Vector2D<int>(x,y));
 	  ok &= savedGame.decodeData(object.dead);
 	  ok &= savedGame.decodeData(object.onscreen);
 	  ok &= savedGame.decodeData(object.hasbeenonscreen);
@@ -302,7 +302,7 @@ bool CPlayGameVorticon::loadXMLGameState()
             y = spriteTree.get<int>("y", 0);
 
             spriteObj.m_type = type;
-            spriteObj.moveToForce(VectorD2<int>(x,y));
+            spriteObj.moveToForce(Vector2D<int>(x,y));
             spriteObj.dead = spriteTree.get<bool>("dead", false);
             spriteObj.onscreen = spriteTree.get<bool>("onscreen", false);
             spriteObj.hasbeenonscreen = spriteTree.get<bool>("hasbeenonscreen", false);

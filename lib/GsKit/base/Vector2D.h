@@ -1,7 +1,7 @@
 
 
-#ifndef __VECTOR2D_H__
-#define __VECTOR2D_H__
+#ifndef __Vector2D_H__
+#define __Vector2D_H__
 
 #include <cmath>
 
@@ -114,4 +114,4 @@ struct Vector2D
 };
 
 
-#endif  // __VECTOR2D_H__
+#endif  // __Vector2D_H__

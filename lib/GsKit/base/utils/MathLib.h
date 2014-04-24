@@ -44,13 +44,13 @@ int		Round(float x);
  #endif*/
 
 
-float	CalculateDistance(CVec p1, CVec p2);
+/*float	CalculateDistance(CVec p1, CVec p2);
 float	NormalizeVector(CVec *vec);
 CVec	GetRandomVec();
 void	GetVecsFromAngle(int yaw,CVec *forward, CVec *right);
 float	VectorAngle(CVec vec1, CVec vec2);
 float	VectorLength(CVec vec);
-float   fastSQRT(float x);
+float   fastSQRT(float x);*/
 
 #define SIGN(x) (((x) > 0)?1:(((x) < 0)?-1:0))
 #define SQR(x) ((x)*(x))
@@ -80,7 +80,7 @@ template <typename T> void RESET_SMALL(T& v, const T& limit) {
 template <typename T> void MOD(T& a, const T& b) { a %= b; if(a < 0) a += b; }
 template <typename T> void FMOD(T& a, const T& b) { a -= b * floor(a / b); if(a < 0) a += b; }
 
-
+/*
 template<typename _T>
 class SquareMatrix {
 public:
@@ -148,8 +148,8 @@ public:
 	}
 	
 };
-
-
+*/
+/*
 class Parabola  {
 public:
 	float a, b, c; // a*x^2 + b*x + c
@@ -170,7 +170,7 @@ public:
 		return (p1.y == (a * p1.x * p1.x ) + (b * p1.x) + c);
 	}
 };
-
+*/
 
 // Random number generator with save()/restore() methods that will save and restore generator's state
 // This generator should produce the same numbers on any CPU architecture, if initialized with the same seed.

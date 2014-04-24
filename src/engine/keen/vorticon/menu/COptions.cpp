@@ -7,7 +7,7 @@
 
 #include "COptions.h"
 #include <base/CInput.h>
-#include "common/CSettings.h"
+#include "engine/core/CBehaviorEngine.h"
 
 namespace vorticon
 {

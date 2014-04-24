@@ -9,7 +9,7 @@
 #define CPASSIVEVORT_H_
 
 #include "engine/CPassive.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "engine/CIntro.h"
 #include "CTitle.h"
 #include <memory>

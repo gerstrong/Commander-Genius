@@ -25,7 +25,7 @@ mGravity(gravity)
 	calcBoundingBoxes();
 	inhibitfall = true;
 	yinertia = -70;
-    pmap->setSpriteOrigin(foeID, VectorD2<int>(x, y));
+    pmap->setSpriteOrigin(foeID, Vector2D<int>(x, y));
 }
 
 void CSpriteItem::process()

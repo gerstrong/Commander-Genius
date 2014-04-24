@@ -16,7 +16,7 @@
 #include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
 #include "common/Playerdefines.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "ai/CAnkhShield.h"
 
 #define FADE_SPEED	10

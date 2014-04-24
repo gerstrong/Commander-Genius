@@ -8,7 +8,7 @@
 #include "CMapPlayGalaxy.h"
 #include "common/ai/platform/CPlatform.h"
 #include "common/ai/CPlayerBase.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"

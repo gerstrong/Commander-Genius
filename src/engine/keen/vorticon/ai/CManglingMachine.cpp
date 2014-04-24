@@ -6,7 +6,7 @@
 #include "sdl/sound/CSound.h"
 #include <base/GsLogging.h>
 #include "graphics/effects/CVibrate.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 // Arm parts
 #define ARM_GO          0

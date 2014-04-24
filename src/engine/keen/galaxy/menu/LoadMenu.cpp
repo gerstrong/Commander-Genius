@@ -13,9 +13,8 @@
 #include "LoadMenu.h"
 
 #include "fileio/CSaveGameController.h"
-#include "common/CBehaviorEngine.h"
-#include "common/CBehaviorEngine.h"
-#include "core/mode/CGameMode.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/core/mode/CGameMode.h"
 
 #include "widgets/BorderedButton.h"
 

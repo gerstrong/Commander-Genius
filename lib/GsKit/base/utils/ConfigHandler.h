@@ -60,7 +60,7 @@ bool ReadArray(const std::string& filename, const std::string& section, const st
 	return num == arr.size();
 }
 
-template<typename T>
+/*template<typename T>
 bool ReadVectorD2(const std::string& filename, const std::string& section, const std::string& key, VectorD2<T>& v, VectorD2<T> defv = VectorD2<T>()) {
 	v = defv;
 
@@ -80,7 +80,7 @@ bool ReadMatrixD2(const std::string& filename, const std::string& section, const
 
 	v.v1.x = _v[0]; v.v1.y = _v[1]; v.v2.x = _v[2]; v.v2.y = _v[3];
 	return true;
-}
+}*/
 
 
 

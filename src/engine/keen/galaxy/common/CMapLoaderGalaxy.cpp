@@ -17,9 +17,9 @@
 #include "fileio/compression/CRLE.h"
 #include "fileio.h"
 #include <base/video/CVideoDriver.h>
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/music/CMusic.h"
 #include <base/GsLogging.h>
-#include "engine/CCamera.h"
+#include "engine/core/CCamera.h"
 #include "fileio/KeenFiles.h"
 
 /// AI Headers
@@ -182,7 +182,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 {
   // Get the MAPHEAD Location from within the Exe File or an external file
   std::vector<char> mapHeadContainer;
-  std::string path = m_ExeFile.getDataDirectory();
+  std::string path = gKeenFiles.gameDir;
   
   
   Map.gotoPos(0,0);
@@ -194,7 +194,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   byte *Maphead = m_ExeFile.getRawData() + getMapheadOffset();
   
   // In case there is an external file read it into the container and replace the pointer
-  const std::string mapHeadFilename = gpKeenFiles->mapheadFilename;
+  const std::string mapHeadFilename = gKeenFiles.mapheadFilename;
   std::ifstream MapHeadFile;
 
   if(OpenGameFileR(MapHeadFile, getResourceFilename(mapHeadFilename,path,true,false), std::ios::binary))
@@ -220,7 +220,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   level_offset = READLONGWORD(Maphead);
   
   // Open the Gamemaps file
-  std::string gamemapfile = gpKeenFiles->gamemapsFilename;
+  std::string gamemapfile = gKeenFiles.gamemapsFilename;
   
   std::ifstream MapFile;
   if(OpenGameFileR(MapFile, getResourceFilename(gamemapfile,path,true,false), std::ios::binary))

@@ -12,7 +12,7 @@
 #include <base/GsTimer.h>
 
 //#include "sdl/extensions.h"
-//#include "common/CBehaviorEngine.h"
+//#include "engine/core/CBehaviorEngine.h"
 //#include "core/mode/CGameMode.h"
 
 #ifdef ANDROID

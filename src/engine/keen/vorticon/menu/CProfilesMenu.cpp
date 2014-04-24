@@ -7,10 +7,10 @@
 
 #include "CProfilesMenu.h"
 #include "CSelectionMenu.h"
-#include "common/CSettings.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "engine/CEvent.h"
 #include "VorticonMenu.h"
 #include <list>

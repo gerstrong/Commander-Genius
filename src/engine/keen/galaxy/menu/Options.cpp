@@ -7,7 +7,7 @@
 
 #include "Options.h"
 #include <base/CInput.h>
-#include "common/CSettings.h"
+#include "engine/core/CSettings.h"
 
 namespace galaxy
 {

@@ -15,7 +15,7 @@
 #include "CEGAGraphicsGalaxy.h"
 #include "graphics/GsGraphics.h"
 #include "fileio/ResourceMgmt.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "fileio/compression/CHuffman.h"
 #include "fileio/KeenFiles.h"
 #include <base/utils/FindFile.h>

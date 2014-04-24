@@ -21,7 +21,7 @@
 #include <base/GsArguments.h>
 
 //#include "graphics/effects/CScrollEffect.h"
-//#include "common/CBehaviorEngine.h"
+//#include "engine/core/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/audio/Audio.h"
 #include <fileio/ResourceMgmt.h>

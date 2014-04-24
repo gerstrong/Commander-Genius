@@ -12,7 +12,7 @@
 #include "widgets/Switch.h"
 #include <list>
 
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 namespace vorticon
 {

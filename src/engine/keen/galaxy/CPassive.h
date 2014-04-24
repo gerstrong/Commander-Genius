@@ -41,10 +41,10 @@ public:
 
     std::shared_ptr<SDL_Surface> mpZoomSurface;
 
-    VectorD2<int> mCommanderTextPos;
-    VectorD2<int> mKeenTextPos;
-    VectorD2<int> mZoomSfcPos;
-    VectorD2<int> mZoomSfcZoom;
+    Vector2D<int> mCommanderTextPos;
+    Vector2D<int> mKeenTextPos;
+    Vector2D<int> mZoomSfcPos;
+    Vector2D<int> mZoomSfcZoom;
 
     int mMaxSeparationWidth;
     int mLogoPosY;

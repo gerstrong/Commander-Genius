@@ -11,8 +11,8 @@
 #include <widgets/GsMenuController.h>
 
 #include "fileio/CSaveGameController.h"
-#include "common/CBehaviorEngine.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 
 namespace vorticon

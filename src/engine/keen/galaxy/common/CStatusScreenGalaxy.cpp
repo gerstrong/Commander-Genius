@@ -8,7 +8,7 @@
 #include "CStatusScreenGalaxy.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "sdl/extensions.h"
 
 CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item) :

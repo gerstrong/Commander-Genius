@@ -43,7 +43,7 @@ private:
   static const int FLY_SPEED = 160;
   static const int WAIT_TIME = 150;
   
-  VectorD2<Uint32> origin;
+  Vector2D<Uint32> origin;
   int mBaseSprite;
   int mNumAnimSprites;
   int mTimer;

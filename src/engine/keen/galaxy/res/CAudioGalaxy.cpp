@@ -13,7 +13,7 @@
 #include "sdl/sound/CSound.h"
 #include "fileio/compression/CHuffman.h"
 #include "fileio/KeenFiles.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 CAudioGalaxy::CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),

@@ -49,7 +49,7 @@ void CSatelite::processFlying()
     {
 	const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
 	
-	VectorD2<int> speed(xBlockPos, yBlockPos);	    
+	Vector2D<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);	
 	
 	mTilesUntilumount++;
@@ -61,7 +61,7 @@ void CSatelite::processFlying()
 	    // Positions where keen migh mount or land
 	    if(spot1 == 0x2D || spot2 == 0x2C)
 	    {	    
-		VectorD2<int> newPlayerPos = target;
+		Vector2D<int> newPlayerPos = target;
 		
 		if(spot1 == 0x2D)
 		{
@@ -94,7 +94,7 @@ void CSatelite::processFlying()
 	detectNextTarget(target, xDirection, yDirection);
     }
     
-    VectorD2<int> speed;
+    Vector2D<int> speed;
     
     if(yDirection == UP)
     {

@@ -8,13 +8,13 @@
 #include <base/video/CVideoDriver.h>
 
 
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/music/CMusic.h"
 #include "CShikadiMine.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include <base/utils/misc.h>
 #include "../../common/dialog/CMessageBoxGalaxy.h"
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
 
 
 /*

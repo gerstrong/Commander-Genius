@@ -6,8 +6,8 @@
  */
 
 #include "CFlag.h"
-#include "sdl/sound/CSound.h"
-#include "common/CBehaviorEngine.h"
+#include "sdl/audio/Audio.h"
+//#include "engine/core/CBehaviorEngine.h"
 
 
 namespace galaxy {    
@@ -25,8 +25,8 @@ const Uint16 FLYING_BASEFRAME_EP5 = 173;
 const Uint16 ANIMATION_TIME = 8;
 const Uint16 SPEED = 64;
 
-CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
-			const VectorD2<Uint32> &Destination,
+CFlag::CFlag(CMap *pmap, const Vector2D<Uint32> &Location,
+            const Vector2D<Uint32> &Destination,
             const int sprVar, bool newAction, const bool canLock ) :
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
 m_destination(Destination),
@@ -105,9 +105,9 @@ void CFlag::processFlipping()
 {
 	if(m_Pos != m_destination)
 	{        
-		VectorD2<int> dir = m_destination - m_Pos;
+        Vector2D<int> dir = m_destination - m_Pos;
 		float length = dir.GetLength();
-		VectorD2<float> base_dir( dir.x/length, dir.y/length );
+        Vector2D<float> base_dir( dir.x/length, dir.y/length );
 
 		if( fabs(length) < SPEED )
 		{
@@ -127,7 +127,7 @@ void CFlag::processFlipping()
 	    const auto episode = g_pBehaviorEngine->getEpisode();
         if(episode == 6)
         {
-            VectorD2<int> tilePos = m_Pos;
+            Vector2D<int> tilePos = m_Pos;
 
             tilePos.y = getYDownPos();
 

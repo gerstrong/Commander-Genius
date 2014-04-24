@@ -15,7 +15,7 @@
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CRLE.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
 #include "CResourceLoader.h"
 #include "fileio/Oldsavegamestructs.h"

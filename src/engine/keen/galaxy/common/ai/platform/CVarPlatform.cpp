@@ -46,7 +46,7 @@ void CVarPlatform::process()
     {
         const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
 
-        VectorD2<int> speed(xBlockPos, yBlockPos);
+        Vector2D<int> speed(xBlockPos, yBlockPos);
         movePlat(speed);
 
         readDirection(object, xDirection, yDirection );
@@ -63,7 +63,7 @@ void CVarPlatform::process()
     else if(xDirection == LEFT && blockedl)
         xDirection = RIGHT;
     
-    VectorD2<int> speed;
+    Vector2D<int> speed;
     
     if(yDirection == UP)
     {

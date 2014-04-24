@@ -17,7 +17,7 @@
 #include "fileio/lz.h"
 #include "fileio/KeenFiles.h"
 #include <fileio/ResourceMgmt.h>
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "CVorticonSpriteObject.h"
 #include "CResourceLoader.h"
 #include "graphics/GsGraphics.h"

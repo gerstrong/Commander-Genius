@@ -12,7 +12,7 @@
 
 #include "GsSwitch.h"
 
-//#include "common/CBehaviorEngine.h"
+//#include "engine/core/CBehaviorEngine.h"
 
 CGUISwitch::CGUISwitch( const std::string& text ) :
 CGUIComboSelection( text, filledStrList( 2, "off", "on" ) )

@@ -23,6 +23,44 @@
 #include "engine/core/Cheat.h"
 #include "engine/core/CCamera.h"
 
+
+struct EventEnterLevel : CEvent {
+    uint16_t data;
+    EventEnterLevel(const uint16_t d) : data(d) {}
+};
+
+
+
+
+struct EventExitLevel : CEvent {
+    const uint16_t levelObject;
+    const bool sucess;
+    const bool teleport;
+    const int who;
+    EventExitLevel(const uint16_t l, const bool s, const bool t, const bool lWho) :
+        levelObject(l), sucess(s), teleport(t), who(lWho) {}
+};
+
+struct EventExitLevelWithFoot : CEvent {
+    const uint16_t levelObject;
+    const int who;
+    EventExitLevelWithFoot(const uint16_t l, const int lWho) : levelObject(l), who(lWho) {}
+};
+
+
+struct EventDieKeenPlayer  : CEvent
+{
+    const int playerID;
+    const bool gameOver;
+    const int levelObj;
+    const std::string levelName;
+
+    EventDieKeenPlayer(const int id, const bool go, const int lo, const std::string &ln) :
+        playerID(id), gameOver(go),
+        levelObj(lo), levelName(ln){}
+};
+
+
 namespace galaxy
 {
 
@@ -146,7 +184,7 @@ public:
 	 * Make keen move with x/y speed move towards a target which is held in the variable "mTarget"
 	 * it only moves towards, this routines is exec'd several times in order achieve a smooth transition.
 	 */
-	void guideToTarget(const VectorD2<int> &speed);
+    void guideToTarget(const Vector2D<int> &speed);
 
 
 	/**
@@ -200,7 +238,7 @@ protected:
 	// Assignment for the same player for all the episodes
 	static const int mEpisodeActionNumMap[3][NUM_KEEN_ACTIONS];
 
-	VectorD2<int> mTarget;
+    Vector2D<int> mTarget;
 };
 
 };

@@ -12,7 +12,7 @@
 #define CSELECTIONMENU_H_
 
 //#include "hardware/Configurator.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 #include "../KeenEngine.h"
 

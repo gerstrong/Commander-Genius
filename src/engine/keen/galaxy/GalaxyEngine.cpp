@@ -6,7 +6,7 @@
 
 #include "CResourceLoader.h"
 #include "GalaxyEngine.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "common/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"

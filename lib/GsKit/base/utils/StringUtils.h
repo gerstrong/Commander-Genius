@@ -270,8 +270,8 @@ inline bool from_string<bool>(const std::string& s, bool& fail) {
 	return from_string<int>(s, fail) != 0;
 }
 
-template<> VectorD2<int> from_string< VectorD2<int> >(const std::string& s, bool& fail);
-template<> inline std::string to_string< VectorD2<int> >(VectorD2<int> v) { return "(" + to_string(v.x) + "," + to_string(v.y) + ")"; }
+/*template<> VectorD2<int> from_string< VectorD2<int> >(const std::string& s, bool& fail);
+template<> inline std::string to_string< VectorD2<int> >(VectorD2<int> v) { return "(" + to_string(v.x) + "," + to_string(v.y) + ")"; }*/
 
 template<typename T>
 T from_string(const std::string& s) {

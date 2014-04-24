@@ -16,7 +16,7 @@
 #include "fileio/CExeFile.h"
 #include "common/CInventory.h"
 #include "common/CGalaxySpriteObject.h"
-//#include "common/CBehaviorEngine.h"
+//#include "engine/core/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"

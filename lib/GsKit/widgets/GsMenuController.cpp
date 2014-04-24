@@ -8,7 +8,7 @@
 #include "GsMenuController.h"
 #include <base/CInput.h>
 //#include "sdl/music/CMusic.h"
-//#include "common/CBehaviorEngine.h"
+//#include "engine/core/CBehaviorEngine.h"
 
 void CMenuController::clearMenuStack()
 {

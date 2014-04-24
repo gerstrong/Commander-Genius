@@ -12,7 +12,7 @@
 #include <base/video/CVideoDriver.h>
 #include "fileio/TypeDefinitions.h"
 #include "fileio/KeenFiles.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/GsLogging.h>
 #include "engine/CPlanes.h"
 #include <base/utils/FindFile.h>

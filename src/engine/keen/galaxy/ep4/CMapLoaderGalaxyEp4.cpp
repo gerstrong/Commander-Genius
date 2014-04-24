@@ -112,7 +112,7 @@ CGalaxySpriteObject* CMapLoaderGalaxyEp4::addFoe(CMap &Map, word foe, size_t x, 
 		return p_newfoe;
 
 	// otherwise look for special foe.
-	VectorD2<Uint32> loc(x,y);
+	Vector2D<Uint32> loc(x,y);
     auto &inventory = mInventoryVec[mNumLoadedPlayers];
 
 	switch(foe)

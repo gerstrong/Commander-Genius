@@ -12,7 +12,7 @@
 #include "common/CSpriteObject.h"
 #include "common/options.h"
 #include "CPlayer.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
 #include <vector>
 

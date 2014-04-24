@@ -10,7 +10,7 @@
 #include "GalaxyMenu.h"
 #include "SelectionMenu.h"
 #include "ControlSettings.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 #include <base/CInput.h>
 

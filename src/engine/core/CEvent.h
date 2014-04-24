@@ -26,63 +26,12 @@
 class CSpriteObject;
 
 
-struct EventEnterLevel : CEvent {
-	uint16_t data;
-	EventEnterLevel(const uint16_t d) : data(d) {}
-};
 
 
-
-
-struct EventDieKeenPlayer  : CEvent
-{
-    const int playerID;
-    const bool gameOver;
-    const int levelObj;
-    const std::string levelName;
-
-    EventDieKeenPlayer(const int id, const bool go, const int lo, const std::string &ln) :
-        playerID(id), gameOver(go),
-        levelObj(lo), levelName(ln){}
-};
-
-
-struct EventExitLevel : CEvent {
-	const uint16_t levelObject;
-	const bool sucess;
-	const bool teleport;
-    const int who;
-    EventExitLevel(const uint16_t l, const bool s, const bool t, const bool lWho) :
-        levelObject(l), sucess(s), teleport(t), who(lWho) {}
-};
-
-struct EventExitLevelWithFoot : CEvent {
-	const uint16_t levelObject;
-    const int who;
-    EventExitLevelWithFoot(const uint16_t l, const int lWho) : levelObject(l), who(lWho) {}
-};
 
 
 struct EventRestartLevel : CEvent {};
 
-
-struct EventPlayerEndLevel : CEvent {
-	const uint16_t levelObject;
-	const bool sucess;
-    const int who;
-    const bool teleport;
-	EventPlayerEndLevel(const EventExitLevel &ev) :
-                    levelObject(ev.levelObject),
-                    sucess(ev.sucess),
-                    who(ev.who),
-                    teleport(ev.teleport){}
-};
-
-struct EventPlayerRideFoot : CEvent {
-	const uint16_t levelObject;
-	EventPlayerRideFoot(const EventExitLevelWithFoot ev) :
-					levelObject(ev.levelObject) {}
-};
 
 
 /*struct EventSendBitmapDialogMsg : EventSendDialog

@@ -15,7 +15,7 @@
 
 #include "widgets/Inputtext.h"
 #include "fileio/CSaveGameController.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 const std::string EMPTY_TEXT = "EMPTY";
 
