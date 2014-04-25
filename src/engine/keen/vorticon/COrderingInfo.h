@@ -12,7 +12,7 @@
 #include <string>
 #include <memory>
 #include "CInfoScene.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "fileio/CExeFile.h"
 
 class COrderingInfo : public CInfoScene

@@ -1,9 +1,9 @@
 #include <base/utils/misc.h>
 
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 
 #include "CVorticonElite.h"
 #include "CRay.h"

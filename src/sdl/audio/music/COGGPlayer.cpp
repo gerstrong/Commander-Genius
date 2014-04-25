@@ -14,6 +14,8 @@
 #include "fileio/ResourceMgmt.h"
 #include <base/GsLogging.h>
 
+#include "fileio/KeenFiles.h"
+
 
 COGGPlayer::COGGPlayer(const SDL_AudioSpec& AudioSpec) :
 m_AudioSpec(AudioSpec),
@@ -110,7 +112,7 @@ bool COGGPlayer::open()
 bool COGGPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 {	
     m_filename = "slot" + itoa(track) + ".ogg";
-	m_filename = getResourceFilename(JoinPaths("music", m_filename), ExeFile.getDataDirectory(), false, false);
+    m_filename = getResourceFilename(JoinPaths("music", m_filename), gKeenFiles.gameDir, false, false);
 
 	if(m_filename.empty())	
 	   return false;

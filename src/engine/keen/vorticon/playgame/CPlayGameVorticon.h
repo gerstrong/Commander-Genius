@@ -13,15 +13,15 @@
 #include "graphics/GsGraphics.h"
 #include "fileio/CSaveGameController.h"
 #include "../ai/CPlayer.h"
-#include "common/CTileProperties.h"
+#include "fileio/CTileProperties.h"
 #include "../CVorticonSpriteObject.h"
-#include "common/CMap.h"
-#include "common/options.h"
-#include "common/CHUD.h"
+#include "engine/core/CMap.h"
+#include "engine/core/options.h"
+#include "engine/core/CHUD.h"
 #include "../ai/CVorticonSpriteObjectAI.h"
 #include "../ai/CEGABitmap.h"
 #include "../dialog/CMessageBoxVort.h"
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/music/CMusic.h"
 #include "../CHighScores.h"
 #include "engine/playgame/CPlayGame.h"
 #include "../finale/CFinale.h"
@@ -31,7 +31,7 @@
 #include <list>
 #include <memory>
 
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
 
 const int WORLD_MAP_LEVEL_VORTICON = 80;
 

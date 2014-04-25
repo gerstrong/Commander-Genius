@@ -9,11 +9,12 @@
 
 
 #include "ActionFormat.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "fileio/KeenFiles.h"
 
 void ActionFormatType::setActionFormat( const size_t sprite_offset )
 {
-	byte *ptr = g_pBehaviorEngine->m_ExeFile.getDSegPtr();
+	byte *ptr = gKeenFiles.exeFile.getDSegPtr();
 	
 	ptr += sprite_offset;
 	memcpy( this, ptr, 15*sizeof(int16_t) );	
@@ -34,7 +35,7 @@ void ActionFormatType::setNextActionFormat()
 
 bool ActionFormatType::getActionFormat( const size_t sprite_offset )
 {
-	byte *ptr = g_pBehaviorEngine->m_ExeFile.getDSegPtr();
+	byte *ptr = gKeenFiles.exeFile.getDSegPtr();
 	ptr += sprite_offset;
 	return (memcmp( this, ptr, 15*sizeof(int16_t) ) == 0);
 }

@@ -6,7 +6,7 @@
  */
 
 #include "CVorticonSpriteObject.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 
 
 CVorticonSpriteObject::CVorticonSpriteObject(CMap *pmap,

@@ -2,11 +2,12 @@
 #include "CRay.h"
 #include "CManglingMachine.h"
 
-#include "engine/spritedefines.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/spritedefines.h"
+#include "sdl/audio/Audio.h"
 #include <base/GsLogging.h>
 #include "graphics/effects/CVibrate.h"
 #include "engine/core/CBehaviorEngine.h"
+#include "CVorticonSpriteObjectAI.h"
 
 // Arm parts
 #define ARM_GO          0

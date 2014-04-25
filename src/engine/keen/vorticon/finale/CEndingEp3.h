@@ -9,7 +9,7 @@
 #define CENDINGEP3_H_
 
 #include "CFinale.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "../ai/CPlayer.h"
 #include "../dialog/CMessageBoxVort.h"
 #include <base/GsTimer.h>

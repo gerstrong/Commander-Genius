@@ -8,10 +8,11 @@
 #include "CCouncilMember.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
 #include <base/utils/misc.h>
-#include "sdl/sound/CSound.h"
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/Audio.h"
+#include "sdl/audio/music/CMusic.h"
+#include "fileio/KeenFiles.h"
 #include <typeinfo>
 
 namespace galaxy {
@@ -46,7 +47,7 @@ m_timer(0)
 	answermap[8] = "KEEN_LAST_ELDER_TEXT";
 	
 	NumberToRescue = 0;
-	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    byte *ptr = gKeenFiles.exeFile.getRawData();
 	ptr += 0x6AE6;
 	memcpy(&NumberToRescue, ptr, 1 );
 }

@@ -11,7 +11,7 @@
 #include "CInfoScene.h"
 #include "fileio/CExeFile.h"
 #include "finale/CFinaleStaticScene.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "dialog/CTextViewer.h"
 #include "fileio/CExeFile.h"
 #include <memory>

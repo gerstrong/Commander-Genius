@@ -1,5 +1,5 @@
 #include "CFoob.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include "graphics/GsGraphics.h"
 
 CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y):

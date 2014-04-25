@@ -8,7 +8,7 @@
 #include "CFinaleStaticScene.h"
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include "graphics/GsGraphics.h"
 //#include "sdl/video/scalers/CScaler.h"
 

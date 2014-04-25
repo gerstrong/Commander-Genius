@@ -13,7 +13,7 @@
 #include <memory>
 #include "CInfoScene.h"
 #include "graphics/GsBitmap.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "fileio/CExeFile.h"
 
 class CAbout : public CInfoScene

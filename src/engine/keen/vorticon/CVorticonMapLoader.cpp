@@ -17,7 +17,7 @@
 #include "fileio/compression/CRLE.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
-#include "CResourceLoader.h"
+#include "engine/core/CResourceLoader.h"
 #include "fileio/Oldsavegamestructs.h"
 
 #include "ai/CYorp.h"

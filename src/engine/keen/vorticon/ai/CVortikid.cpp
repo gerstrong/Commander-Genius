@@ -1,4 +1,4 @@
-#include <sdl/sound/CSound.h>
+#include "sdl/audio/Audio.h"
 
 #include "CVortiKid.h"
 #include <base/utils/misc.h>

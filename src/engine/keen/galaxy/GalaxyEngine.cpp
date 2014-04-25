@@ -4,14 +4,14 @@
 #include <base/utils/StringUtils.h>
 #include <widgets/GsMenuController.h>
 
-#include "CResourceLoader.h"
+#include "engine/core/CResourceLoader.h"
 #include "GalaxyEngine.h"
 #include "engine/core/CBehaviorEngine.h"
-#include "common/CGameLauncher.h"
+#include "engine/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
-#include "engine/CMessages.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/CMessages.h"
+#include "sdl/audio/Audio.h"
 
 #include "CPassive.h"
 #include "CPlayGameGalaxy.h"
@@ -21,6 +21,7 @@
 #include "menu/ControlSettings.h"
 #include "res/CAudioGalaxy.h"
 #include <base/video/CVideoDriver.h>
+#include "fileio/KeenFiles.h"
 
 namespace galaxy
 {
@@ -28,7 +29,7 @@ namespace galaxy
 
 bool setupAudio()
 {
-    const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    const CExeFile &ExeFile = gKeenFiles.exeFile;
     const unsigned int ep = ExeFile.getEpisode();
 
     CAudioGalaxy *audio = new CAudioGalaxy(ExeFile, g_pSound->getAudioSpec());
@@ -46,7 +47,8 @@ bool loadLevelMusic(const int level)
 {
     Uint16 track;
 
-    CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+
+    CExeFile &ExeFile = gKeenFiles.exeFile;
     const int Idx = ExeFile.getEpisode()-4;
 
     byte* musictable_start = ExeFile.getRawData()+GalaxySongAssignments[Idx];
@@ -97,7 +99,7 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
 
         int handle()
         {
-            CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+            CExeFile &ExeFile = gKeenFiles.exeFile;
             int version = ExeFile.getEXEVersion();
             unsigned char *p_exedata = ExeFile.getRawData();
             const int Episode = ExeFile.getEpisode();

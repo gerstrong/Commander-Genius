@@ -10,16 +10,16 @@
  */
 
 #include "CEGASprit.h"
-#include "engine/CPlanes.h"
+#include "engine/core/CPlanes.h"
 #include <base/utils/FindFile.h>
 #include <base/video/CVideoDriver.h>
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 #include "fileio/lz.h"
 #include "fileio/KeenFiles.h"
 #include <fileio/ResourceMgmt.h>
 #include "engine/core/CBehaviorEngine.h"
 #include "CVorticonSpriteObject.h"
-#include "CResourceLoader.h"
+#include "engine/core/CResourceLoader.h"
 #include "graphics/GsGraphics.h"
 #include <SDL.h>
 #include <stdio.h>

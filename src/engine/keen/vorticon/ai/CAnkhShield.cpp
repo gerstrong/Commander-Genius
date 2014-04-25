@@ -6,7 +6,7 @@
  */
 
 #include "CAnkhShield.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 
 const unsigned int ANKH_FLICKER_DELAY = 3;
 const unsigned int ANKH_SHIELD_FRAME = 61;

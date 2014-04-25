@@ -6,7 +6,7 @@
  */
 
 #include "CMap.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>

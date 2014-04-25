@@ -23,8 +23,8 @@
 #include <base/utils/StringUtils.h>
 #include <base/video/CVideoDriver.h>
 #include "fileio/CTileLoader.h"
-#include "common/CSpriteObject.h"
-#include "engine/CPlanes.h"
+#include "engine/core/CSpriteObject.h"
+#include "engine/core/CPlanes.h"
 #include <fstream>
 #include <cstring>
 #include <SDL.h>
@@ -120,7 +120,7 @@ static EpisodeInfoStruct EpisodeInfo[] =
  * \param	ExeFile		Object to ExeFile in which the
  */
 CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(CExeFile &ExeFile) :
-CEGAGraphics(ExeFile.getEpisode(), ExeFile.getDataDirectory()),
+CEGAGraphics(ExeFile.getEpisode(), gKeenFiles.gameDir),
 m_Exefile(ExeFile)
 {
 	createBitmapsIDs();
@@ -183,7 +183,7 @@ bool CEGAGraphicsGalaxy::loadData()
 
     // Now try to store a preview if possible
     // Create an intro in case it does not exist yet
-    const std::string  path = m_Exefile.getDataDirectory();
+    const std::string  path = gKeenFiles.gameDir;
     std::string fullpath = getResourceFilename("preview.bmp", path, false);
     if( fullpath == "" )
     {   // Not found create it
@@ -555,8 +555,8 @@ bool CEGAGraphicsGalaxy::begin()
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
 	// Try to read it either from a file
 
-    if(!gpKeenFiles->egadictFilename.empty())
-        filename =  m_path + gpKeenFiles->egadictFilename;
+    if(!gKeenFiles.egadictFilename.empty())
+        filename =  m_path + gKeenFiles.egadictFilename;
 
 	if( Huffman.readDictionaryFromFile(filename) )
 	{

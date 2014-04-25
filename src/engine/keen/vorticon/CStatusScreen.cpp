@@ -15,7 +15,7 @@
 #include "CStatusScreen.h"
 #include "graphics/GsGraphics.h"
 #include "sdl/extensions.h"
-#include "common/Playerdefines.h"
+#include "engine/core/Playerdefines.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "ai/CAnkhShield.h"
 

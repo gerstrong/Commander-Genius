@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 #include "CSpriteObject.h"
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
@@ -148,18 +148,18 @@ void CSpriteObject::performCliffStop(const int &speed)
 
 // Used in some setup mode, like putting the player to
 // the current map position
-void CSpriteObject::moveToForce(const VectorD2<int> &dir)
+void CSpriteObject::moveToForce(const Vector2D<int> &dir)
 {
 	m_Pos = dir;
 }
 
 void CSpriteObject::moveToForce(const int new_x, const int new_y)
 {
-	moveToForce(VectorD2<int>(new_x, new_y));
+    moveToForce(Vector2D<int>(new_x, new_y));
 }
 
 // For the vector functions
-void CSpriteObject::moveDir(const VectorD2<int> &dir)
+void CSpriteObject::moveDir(const Vector2D<int> &dir)
 {
 	moveXDir(dir.x);
 	moveYDir(dir.y);
@@ -177,9 +177,9 @@ void CSpriteObject::moveToVertical(const int& new_y)
 	moveYDir(pos_y);
 }
 
-void CSpriteObject::moveTo(const VectorD2<Uint32> &new_loc)
+void CSpriteObject::moveTo(const Vector2D<Uint32> &new_loc)
 {
-	VectorD2<int> amount = new_loc - m_Pos;
+    Vector2D<int> amount = new_loc - m_Pos;
 
 	moveXDir(amount.x);
 	moveYDir(amount.y);
@@ -187,7 +187,7 @@ void CSpriteObject::moveTo(const VectorD2<Uint32> &new_loc)
 
 void CSpriteObject::moveTo(const int new_x, const int new_y)
 {
-	moveTo(VectorD2<Uint32>(new_x, new_y));
+    moveTo(Vector2D<Uint32>(new_x, new_y));
 }
 
 void CSpriteObject::moveXDir(const int amount, const bool force)

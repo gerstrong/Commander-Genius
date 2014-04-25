@@ -7,7 +7,7 @@
 
 #include "GalaxyMenu.h"
 
-#include "common/options.h"
+#include "engine/core/options.h"
 #include "fileio/CExeFile.h"
 #include "engine/core/CBehaviorEngine.h"
 

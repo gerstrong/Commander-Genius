@@ -1,5 +1,5 @@
 #include "CPlatform.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 // vertically-moving platform (ep3)
 
 enum platver_actions{

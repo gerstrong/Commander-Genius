@@ -14,13 +14,14 @@
 #include "fileio/CExeFile.h"
 #include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
+#include "fileio/KeenFiles.h"
 
 
 void COrderingInfo::init()
 {
     CInfoScene::init();
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-	std::string datadirectory = ExeFile.getDataDirectory();
+    CExeFile &ExeFile = gKeenFiles.exeFile;
+    std::string datadirectory = gKeenFiles.gameDir;
 	char episode = ExeFile.getEpisode();
 
 	mpMap.reset(new CMap);

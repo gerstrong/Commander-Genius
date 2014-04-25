@@ -1,6 +1,6 @@
 #include "CIceCannon.h"
-#include "engine/spritedefines.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/spritedefines.h"
+#include "sdl/audio/Audio.h"
 
 // the chunks of ice shot out by an ice cannon (ep1)
 const int ICECHUNK_SPEED = 60;

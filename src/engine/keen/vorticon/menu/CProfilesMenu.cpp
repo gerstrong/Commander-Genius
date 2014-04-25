@@ -11,7 +11,8 @@
 #include <base/video/CVideoDriver.h>
 #include <base/GsTimer.h>
 #include "engine/core/CBehaviorEngine.h"
-#include "engine/CEvent.h"
+#include "engine/core/CSettings.h"
+#include <base/GsEvent.h>
 #include "VorticonMenu.h"
 #include <list>
 #include <string>

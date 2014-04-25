@@ -9,11 +9,13 @@
 
 #include <base/utils/FindFile.h>
 #include "CSaveGameController.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <ctime>
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+
+#include "fileio/KeenFiles.h"
 
 
 void sgrle_initdecompression(void);
@@ -25,7 +27,7 @@ void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 CSaveGameController::CSaveGameController() :
 m_offset(0)
 {
-	setGameDirectory(g_pBehaviorEngine->m_ExeFile.getDataDirectory());
+    setGameDirectory(gKeenFiles.gameDir);
 	setEpisode(g_pBehaviorEngine->getEpisode());
 }
 

@@ -18,6 +18,8 @@
 #include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
+#include "fileio/KeenFiles.h"
+
 const int HIGHSCORETABLE_X = 1344;
 const int HIGHSCORETABLE_Y = 32;
 const int BLINK_TIME = 25;
@@ -55,7 +57,7 @@ void CHighScores::fetchScoreTable()
 	mp_process = &CHighScores::processShowing;
 	
 	m_Episode = g_pBehaviorEngine->getEpisode();
-	m_DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
+    m_DataDirectory = gKeenFiles.gameDir;
 	
 	loadHighScoreTable();
 

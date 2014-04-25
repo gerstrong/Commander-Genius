@@ -8,7 +8,7 @@
 #ifndef CAUDIOGALAXY_H_
 #define CAUDIOGALAXY_H_
 
-#include "common/CAudioResources.h"
+#include "sdl/audio/CAudioResources.h"
 #include "fileio/CExeFile.h"
 
 const Uint32 GalaxySongAssignments[] =

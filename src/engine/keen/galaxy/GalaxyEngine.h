@@ -3,6 +3,7 @@
 
 #include "engine/keen/KeenEngine.h"
 #include "res/CEGAGraphicsGalaxy.h"
+#include <base/GsEvent.h>
 
 /**
  * The Galaxy engine derived from KeenEngine has the task to manage the whole Keen 4-6

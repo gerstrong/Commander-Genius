@@ -11,7 +11,7 @@
 #include "engine/playgame/CPlayGame.h"
 #include "common/CInventory.h"
 #include "common/dialog/CMessageBoxGalaxy.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "common/CWorldMap.h"
 #include "CLevelPlay.h"
 #include <memory>

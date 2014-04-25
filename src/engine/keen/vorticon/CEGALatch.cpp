@@ -14,7 +14,7 @@
 #include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"
 #include <base/GsLogging.h>
-#include "engine/CPlanes.h"
+#include "engine/core/CPlanes.h"
 #include <base/utils/FindFile.h>
 #include <SDL.h>
 #include <stdio.h>

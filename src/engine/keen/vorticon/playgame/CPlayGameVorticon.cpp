@@ -14,8 +14,8 @@
 
 
 #include "CPlayGameVorticon.h"
-#include "sdl/sound/CSound.h"
-#include "core/mode/CGameMode.h"
+#include "sdl/audio/Audio.h"
+#include "engine/core/mode/CGameMode.h"
 #include "../CVorticonMapLoader.h"
 #include "graphics/GsGraphics.h"
 //#include "StringUtils.h"
@@ -27,6 +27,7 @@
 
 #include "graphics/effects/CColorMerge.h"
 
+#include <fileio/KeenFiles.h>
 
 
 ////
@@ -39,7 +40,7 @@
 ///
 ///
 CPlayGameVorticon::CPlayGameVorticon(const int startlevel) :
-CPlayGame(g_pBehaviorEngine->m_ExeFile, startlevel)
+CPlayGame(gKeenFiles.exeFile, startlevel)
 {
     // If no level has been set or is out of bound, set it to map.
     if(m_Level > 100 || m_Level <= 0 )

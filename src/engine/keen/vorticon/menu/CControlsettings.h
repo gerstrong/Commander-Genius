@@ -16,7 +16,7 @@
 #include <vector>
 #include <map>
 
-#include "engine/CEvent.h"
+#include <base/GsEvent.h>
 #include "CSelectionMenu.h"
 
 namespace vorticon

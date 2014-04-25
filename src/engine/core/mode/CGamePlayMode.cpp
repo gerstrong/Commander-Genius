@@ -7,7 +7,7 @@
 
 #include "CGamePlayMode.h"
 #include "graphics/effects/CColorMerge.h"
-#include "sdl/music/CMusicPlayer.h"
+#include "sdl/audio/music/CMusicPlayer.h"
 #include <base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
 #include <base/GsApp.h>

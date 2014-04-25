@@ -11,7 +11,7 @@
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
 #include "../CVorticonMapLoader.h"
-#include "common/Playerdefines.h"
+#include "engine/core/Playerdefines.h"
 
 CEndingEp1::CEndingEp1(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 						const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player,

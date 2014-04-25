@@ -1,7 +1,7 @@
 #include "CMolly.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
 
 namespace galaxy 
 {

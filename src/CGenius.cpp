@@ -115,9 +115,7 @@ int main(int argc, char *argv[])
         ////////////////////////////////
         // Set GameLauncher as Engine //
         ////////////////////////////////
-        //gApp.setEngine(new CGameLauncher(false));
-        // TODO: Still need to check this dependency
-        assert(0);
+        gApp.setEngine(new CGameLauncher(false));
 
         //////////////////////////////
         // Run the Commander Genius //

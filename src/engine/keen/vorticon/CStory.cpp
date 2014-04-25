@@ -17,13 +17,14 @@
 #include <base/CInput.h>
 #include <base/utils/FindFile.h>
 
+#include <fileio/KeenFiles.h>
 
 void CStory::init()
 {
     CInfoScene::init();
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    CExeFile &ExeFile = gKeenFiles.exeFile;
 	const char episode = ExeFile.getEpisode();
-	std::string DataDirectory = ExeFile.getDataDirectory();
+    std::string DataDirectory = gKeenFiles.gameDir;
 
 	mpMap.reset(new CMap());
 	CVorticonMapLoaderBase Maploader(mpMap);
@@ -34,7 +35,7 @@ void CStory::init()
 	if(episode==1)
 	{
 		// We suppose that we are using version 131. Maybe it must be extended
-		std::string filename = ExeFile.getDataDirectory();
+        std::string filename = DataDirectory;
 		if(DataDirectory != "")
 			filename += "/";
 		

@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include <base/video/CVideoDriver.h>
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include "fileio.h"
 #include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>

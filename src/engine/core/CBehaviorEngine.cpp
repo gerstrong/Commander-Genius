@@ -14,7 +14,7 @@
  *  belong to this class
  */
 
-#include "common/CBehaviorEngine.h"
+#include "CBehaviorEngine.h"
 #include <base/GsLogging.h>
 
 void CBehaviorEngine::setMessage(const std::string &name, const std::string &message)
@@ -74,9 +74,6 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 
 std::vector<CTileProperties> &CBehaviorEngine::getTileProperties(size_t tmnum)
 {	return m_TileProperties[tmnum];	}
-
-CPhysicsSettings &CBehaviorEngine::getPhysicsSettings()
-{	return m_PhysicsSettings;	}
 
 // returns a pointer to the string with name 'name'
 std::string CBehaviorEngine::getString(const std::string& name)

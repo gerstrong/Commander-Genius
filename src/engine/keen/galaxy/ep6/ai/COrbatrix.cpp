@@ -4,6 +4,7 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CItemEffect.h"
+#include "fileio/KeenFiles.h"
 
 #include <base/utils/misc.h>
 
@@ -70,7 +71,7 @@ mGivesKey(false)
 
     xDirection = LEFT;        
     
-    byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    byte *ptr = gKeenFiles.exeFile.getRawData();
     ptr += 0x114F2;
     
     const byte endpattern[] =

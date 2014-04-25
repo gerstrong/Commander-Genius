@@ -8,7 +8,7 @@
 #ifndef CHIGHSCORES_H_
 #define CHIGHSCORES_H_
 
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "graphics/GsBitmap.h"
 #include "CInfoScene.h"
 #include <string>

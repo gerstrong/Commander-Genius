@@ -24,6 +24,8 @@
 #include "widgets/NumberControl.h"
 #include "widgets/ComboSelection.h"
 
+#include "engine/core/CSettings.h"
+
 
 static const char* aspectList[] =
 {

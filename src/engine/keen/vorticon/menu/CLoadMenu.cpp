@@ -13,7 +13,7 @@
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
 #include "engine/core/CBehaviorEngine.h"
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
 
 namespace vorticon
 {

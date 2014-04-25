@@ -11,12 +11,13 @@
 #include <widgets/GsBaseMenu.h>
 
 #include <base/utils/StringUtils.h>
+#include <base/GsEvent.h>
 #include "widgets/Button.h"
 #include "widgets/Switch.h"
 #include <vector>
 #include <map>
 
-#include "engine/CEvent.h"
+
 #include "SelectionMenu.h"
 
 namespace galaxy

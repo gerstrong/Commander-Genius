@@ -14,6 +14,7 @@
 #include "../CHelp.h"
 #include "../CPreviews.h"
 #include "fileio/ResourceMgmt.h"
+#include "fileio/KeenFiles.h"
 #include "widgets/Button.h"
 #include <base/utils/StringUtils.h>
 
@@ -46,7 +47,7 @@ VorticonMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.5f) )
 	
 	std::string filename = "previews.ck";
 	filename += itoa(g_pBehaviorEngine->getEpisode());	
-	filename = getResourceFilename( filename, g_pBehaviorEngine->m_ExeFile.getDataDirectory(), false, false);
+    filename = getResourceFilename( filename, gKeenFiles.gameDir, false, false);
 
 	if( filename != "" )
 	{

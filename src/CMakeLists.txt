@@ -246,18 +246,14 @@ include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 add_subdirectory(engine)
 add_subdirectory(sdl)
 add_subdirectory(fileio)
-
-#add_subdirectory(core)
-#add_subdirectory(dialog)
-#add_subdirectory(engine)
-#add_subdirectory(graphics)
-#add_subdirectory(hardware)
+add_subdirectory(dialog)
+add_subdirectory(graphics)
 
 # Get all the o-files from the different targets and link'em
 get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 
 # Add executable Commander Genius
-add_executable (CGeniusExe CGenius.cpp ${cg_obj_libs})
+add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 
 
 # Link GsKit

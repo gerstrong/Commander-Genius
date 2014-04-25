@@ -1,5 +1,5 @@
 #include "CFireBall.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 // fireball projectile shot out by Vorticon Mother (Ep3)
 

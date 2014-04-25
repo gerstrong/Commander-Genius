@@ -543,7 +543,7 @@ void CGameLauncher::ponderPatchDialog()
         if( episode > 0 ) // The game has to have a valid episode!
         {
             // Get the EXE-Data of the game and load it into the memory.
-            if(!gpKeenFiles->exeFile.readData(episode, DataDirectory))
+            if(!gKeenFiles.exeFile.readData(episode, DataDirectory))
             {
                 letchooseagain();
             }

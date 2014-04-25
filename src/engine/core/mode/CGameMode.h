@@ -10,7 +10,8 @@
 #ifndef CGAMEMODE_H_
 #define CGAMEMODE_H_
 
-//#include "engine/CEvent.h"
+#include <base/GsEvent.h>
+
 //#include "core/LogicDrawSplitter.h"
 #include <string>
 

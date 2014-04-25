@@ -1,4 +1,4 @@
-#include <sdl/sound/CSound.h>
+#include <sdl/audio/Audio.h>
 #include <base/utils/misc.h>
 #include "CMeep.h"
 #include "CSoundWave.h"

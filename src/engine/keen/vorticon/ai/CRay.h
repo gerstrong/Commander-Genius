@@ -8,7 +8,7 @@
 
 #include "../CVorticonSpriteObject.h"
 #include "CPlayer.h"
-#include "common/objenums.h"
+#include "engine/core/objenums.h"
 #include <vector>
 
 // reference to ../misc.cpp

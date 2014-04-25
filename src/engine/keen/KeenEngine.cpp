@@ -24,7 +24,7 @@ void KeenEngine::switchToGamePlayMode()
     if(numPlayers <= 0)
         numPlayers = 1;
 
-    std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
+    std::string DataDirectory = gKeenFiles.gameDir;
     gEventManager.add( new GMSwitchToPlayGameMode( episode, numPlayers, DataDirectory ) );
 }
 
@@ -34,7 +34,7 @@ void KeenEngine::start()
 {
     int version;
 
-    CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    CExeFile &ExeFile = gKeenFiles.exeFile;
 
     version = ExeFile.getEXEVersion();
 
@@ -47,7 +47,7 @@ void KeenEngine::start()
         return;
     }
 
-    gpKeenFiles->setupFilenames(mEp);
+    gKeenFiles.setupFilenames(mEp);
 
     g_pBehaviorEngine->setEpisode(mEp);
 

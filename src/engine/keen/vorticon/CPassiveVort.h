@@ -8,9 +8,9 @@
 #ifndef CPASSIVEVORT_H_
 #define CPASSIVEVORT_H_
 
-#include "engine/CPassive.h"
+#include "engine/core/CPassive.h"
 #include "engine/core/CBehaviorEngine.h"
-#include "engine/CIntro.h"
+#include "engine/core/CIntro.h"
 #include "CTitle.h"
 #include <memory>
 

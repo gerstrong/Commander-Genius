@@ -1,5 +1,5 @@
-#include "sdl/sound/CSound.h"
-#include "engine/spritedefines.h"
+#include "sdl/audio/Audio.h"
+#include "engine/core/spritedefines.h"
 
 #include "CGuardRobot.h"
 #include "CRay.h"

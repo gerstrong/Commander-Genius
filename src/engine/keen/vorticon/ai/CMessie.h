@@ -10,7 +10,7 @@
 
 #include "../CVorticonSpriteObject.h"
 #include "CPlayer.h"
-#include "engine/CEvent.h"
+#include <base/GsEvent.h>
 
 
 

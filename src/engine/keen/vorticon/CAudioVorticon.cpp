@@ -12,6 +12,8 @@
 #include <fstream>
 #include <math.h>
 
+#include <fileio/KeenFiles.h>
+
 /**
  * This variables describes the possible maximum number of sounds the vorticon keen can have
  * As the mapping in vorticon is not as flexible we need that in order to be able to switch between hq sounds and
@@ -33,8 +35,8 @@ m_ExeFile(ExeFile)
 Uint8* CAudioVorticon::loadSoundStream(Uint32 &buffer_size, Uint8* exedata)
 {
 	Uint8 *buffer = NULL;
-	buffer_size = 0;
-	const std::string gamepath = m_ExeFile.getDataDirectory();
+	buffer_size = 0;    
+    const std::string gamepath = gKeenFiles.gameDir;
 	const std::string soundfile = "sounds.ck" + itoa(m_ExeFile.getEpisode());
 	gLogging.ftextOut("loadSoundStream(): trying to open the game audio...<br>");
 
@@ -237,8 +239,8 @@ bool CAudioVorticon::loadSoundData()
 
 	bool ok = true;
 	const int episode = m_ExeFile.getEpisode();
-	const std::string soundfile = "sounds.ck" + itoa(episode);
-	const std::string DataDirectory = m_ExeFile.getDataDirectory();
+    //const std::string soundfile = "sounds.ck" + itoa(episode);
+    const std::string DataDirectory = gKeenFiles.gameDir;
 
 	gLogging.ftextOut("loadSoundData(): loading all sounds...<br>");
 

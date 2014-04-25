@@ -12,9 +12,8 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "core/LogicDrawSplitter.h"
 
-class CTextViewer : public GameState
+class CTextViewer
 {
 public:
 	CTextViewer(int x, int y, int w, int h);

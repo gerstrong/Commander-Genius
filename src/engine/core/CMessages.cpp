@@ -12,7 +12,7 @@
 #include "CMessages.h"
 //#include "StringUtils.h"
 #include <base/GsLogging.h>
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
 	mp_exe(p_exebuf),

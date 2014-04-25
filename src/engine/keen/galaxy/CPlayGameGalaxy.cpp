@@ -16,20 +16,27 @@
 #include "graphics/GsGraphics.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
-#include "sdl/sound/CSound.h"
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/Audio.h"
+#include "sdl/audio/music/CMusic.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
+
+#include "ep4/ai/CInchWorm.h"
+#include "common/ai/CPlayerLevel.h"
+#include "common/ai/CPlayerWM.h"
+
+#include <fileio/KeenFiles.h>
 
 
 namespace galaxy
 {
 
 
+
 CPlayGameGalaxy::CPlayGameGalaxy(const int startlevel) :
-CPlayGame(g_pBehaviorEngine->m_ExeFile, startlevel),
-m_WorldMap(g_pBehaviorEngine->m_ExeFile, mInventoryVec, m_Cheatmode),
-m_LevelPlay(g_pBehaviorEngine->m_ExeFile, mInventoryVec, m_Cheatmode),
+CPlayGame(gKeenFiles.exeFile, startlevel),
+m_WorldMap(gKeenFiles.exeFile, mInventoryVec, m_Cheatmode),
+m_LevelPlay(gKeenFiles.exeFile, mInventoryVec, m_Cheatmode),
 m_SavedGame(*gpSaveGameController)
 {
     const int numPlayers = g_pBehaviorEngine->mPlayers;
@@ -247,6 +254,34 @@ bool CPlayGameGalaxy::init()
     return true;
 }
 
+
+/**
+ *	\description This event triggers a MessageBox where you can select multiple items
+ *
+ *	\param		Message This Text will be shown when the Box is triggered
+ *	\param 		OptionStrings The Text to the option which can be selected
+ *							  Depending on the size of the
+ */
+struct EventSendSelectionDialogMsg : CEvent {
+
+    const std::string Message;
+    std::list<TextEventMatchOption> Options;
+
+    EventSendSelectionDialogMsg(const std::string& lMsg) :
+                                Message(lMsg){}
+
+    void addOption(const std::string& ltext, CEvent *levent)
+    {
+        TextEventMatchOption NewOption;
+        NewOption.text = ltext;
+        NewOption.event.reset( levent );
+        Options.push_back(NewOption);
+    }
+};
+
+
+
+struct EventRestartLevel : CEvent {};
 
 
 void CPlayGameGalaxy::looseManagement( const int playerID,

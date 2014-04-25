@@ -9,7 +9,7 @@
 #define CSPARK_H_
 
 #include "../CVorticonSpriteObject.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 
 class CSpark : public CVorticonSpriteObject {
 public:

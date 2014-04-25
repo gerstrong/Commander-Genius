@@ -7,8 +7,8 @@
 
 #include "CPlayGameVorticon.h"
 #include "../ai/CManglingMachine.h"
-#include "common/objenums.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/objenums.h"
+#include "sdl/audio/Audio.h"
 #include "../finale/CTantalusRay.h"
 
 void CPlayGameVorticon::processInLevel()

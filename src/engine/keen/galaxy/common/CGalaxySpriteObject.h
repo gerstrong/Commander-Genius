@@ -13,18 +13,6 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-/**
- *	\description This event will spawn a new object
- *
- *	\param		pObject Pointer to the allocated memory of the Object. Caution: This allocation
- */
-struct EventSpawnObject : CEvent {
-
-    const CSpriteObject *pObject;
-
-    EventSpawnObject( const CSpriteObject* pObject ) :
-                      pObject( pObject ) {}
-};
 
 class CGalaxySpriteObject: public CSpriteObject
 {

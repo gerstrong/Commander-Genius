@@ -6,7 +6,7 @@
  */
 
 #include "CEGAGraphicsVort.h"
-#include "CResourceLoader.h"
+#include "engine/core/CResourceLoader.h"
 
 //#include "sdl/CVideoDriver.h"
 #include "fileio/CTileLoader.h"

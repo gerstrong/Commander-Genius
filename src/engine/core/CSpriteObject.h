@@ -28,6 +28,9 @@
 // Enumerations are here
 #include "objenums.h"
 
+
+
+
 const int COLISION_RES = (1<<STC);
 
 // The bouncing box used by the object which is used to determine the collisions
@@ -318,6 +321,19 @@ protected:
 	Uint8 transluceny;
 
     int mSprVar; // Sprite variant, which is used by the Spritemap
+};
+
+/**
+ *	\description This event will spawn a new object
+ *
+ *	\param		pObject Pointer to the allocated memory of the Object. Caution: This allocation
+ */
+struct EventSpawnObject : CEvent {
+
+    const CSpriteObject *pObject;
+
+    EventSpawnObject( const CSpriteObject* pObject ) :
+                      pObject( pObject ) {}
 };
 
 #endif // __CSpriteObject_H_

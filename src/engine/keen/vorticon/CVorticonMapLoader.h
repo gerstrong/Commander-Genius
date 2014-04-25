@@ -8,11 +8,11 @@
 #ifndef CVorticonMapLoader_H_
 #define CVorticonMapLoader_H_
 
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "ai/CPlayer.h"
-#include "common/CSpriteObject.h"
-#include "common/options.h"
-#include "sdl/music/CMusic.h"
+#include "engine/core/CSpriteObject.h"
+#include "engine/core/options.h"
+#include "sdl/audio/music/CMusic.h"
 #include "engine/core/CBehaviorEngine.h"
 #include <string>
 #include <vector>

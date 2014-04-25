@@ -9,7 +9,7 @@
 #define CFINALE_H_
 
 #include "dialog/CTextViewer.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "CShipFlySys.h"
 #include "CFinaleStaticScene.h"
 #include <memory>

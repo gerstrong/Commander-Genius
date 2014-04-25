@@ -7,17 +7,19 @@
  */
 
 #include "CPassive.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
 #include <widgets/GsMenuController.h>
 
+#include "fileio/KeenFiles.h"
+
 CPassive::CPassive()
 {
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    CExeFile &ExeFile = gKeenFiles.exeFile;
 	m_modeg = false;
 	m_mode = INTRO;
 	m_Episode = ExeFile.getEpisode();
-	m_DataDirectory = ExeFile.getDataDirectory();
+    m_DataDirectory = gKeenFiles.gameDir;
 }
 
 

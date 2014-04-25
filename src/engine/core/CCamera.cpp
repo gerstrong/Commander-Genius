@@ -13,7 +13,7 @@
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 
 int CCamera::mCamlead = 0;
 bool CCamera::mCamLeadChange = false;
@@ -66,7 +66,7 @@ void CCamera::attachObject(CSpriteObject *p_attacher)
 	mp_AttachedObject = p_attacher;
 }
 
-void CCamera::setPosition(const VectorD2<int>& newpos)
+void CCamera::setPosition(const Vector2D<int>& newpos)
 {
 
 	int cam_x = newpos.x-((gVideoDriver.getGameResolution().w/2)<<STC);

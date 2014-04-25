@@ -18,7 +18,7 @@
 #include "../CHighScores.h"
 #include "engine/core/CBehaviorEngine.h"
 
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
 
 #include "widgets/Button.h"
 

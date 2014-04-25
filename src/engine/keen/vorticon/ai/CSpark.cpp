@@ -8,7 +8,7 @@
 #include "CSpark.h"
 #include "CRay.h"
 
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 #define SPARK_BASEFRAME         OBJ_SPARK_DEFSPRITE_EP2
 #define SPARK_ANIMRATE          5

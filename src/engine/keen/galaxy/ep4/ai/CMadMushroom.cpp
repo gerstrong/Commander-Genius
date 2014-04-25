@@ -8,6 +8,7 @@
 #include "CMadMushroom.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CBullet.h"
+#include "fileio/KeenFiles.h"
 
 int bounceAmount;
 
@@ -28,7 +29,8 @@ jumpcounter(0)
 	honorPriority = false;
 	
 	bounceAmount = 0;
-	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+
+    byte *ptr = gKeenFiles.exeFile.getRawData();
 	ptr += 0xFF90;
 	memcpy(&bounceAmount, ptr, 1 );
 }

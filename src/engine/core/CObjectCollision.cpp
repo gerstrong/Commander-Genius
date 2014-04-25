@@ -9,7 +9,7 @@
  */
 
 #include "CSpriteObject.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 #include <base/GsTimer.h>
 
 /*
@@ -752,7 +752,7 @@ void CSpriteObject::processMoveBitDown()
 }
 
 
-void CSpriteObject::processMove(const VectorD2<int>& dir)
+void CSpriteObject::processMove(const Vector2D<int>& dir)
 {
 	processMove(dir.x, dir.y);
 }

@@ -9,7 +9,7 @@
 #define CSTORY_H_
 
 #include "CInfoScene.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "dialog/CTextViewer.h"
 #include "fileio/CExeFile.h"
 #include <memory>

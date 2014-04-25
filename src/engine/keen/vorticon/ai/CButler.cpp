@@ -1,5 +1,5 @@
 #include "CButler.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include "graphics/GsGraphics.h"
 #include "engine/core/CBehaviorEngine.h"
 

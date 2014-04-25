@@ -29,11 +29,6 @@ class CSpriteObject;
 
 
 
-
-struct EventRestartLevel : CEvent {};
-
-
-
 /*struct EventSendBitmapDialogMsg : EventSendDialog
 {
 	const GsBitmap &BitmapRef;
@@ -74,52 +69,6 @@ struct TextEventMatchOption
 	std::shared_ptr<CEvent> event;
 };
 
-/**
- *	\description This event triggers a MessageBox where you can select multiple items
- *
- *	\param		Message This Text will be shown when the Box is triggered
- *	\param 		OptionStrings The Text to the option which can be selected
- *							  Depending on the size of the
- */
-struct EventSendSelectionDialogMsg : CEvent {
-
-	const std::string Message;
-	std::list<TextEventMatchOption> Options;
-
-	EventSendSelectionDialogMsg(const std::string& lMsg) :
-								Message(lMsg){}
-
-	void addOption(const std::string& ltext, CEvent *levent)
-	{
-		TextEventMatchOption NewOption;
-		NewOption.text = ltext;
-		NewOption.event.reset( levent );
-		Options.push_back(NewOption);
-	}
-};
-
-
-
-/**
- *	\description This event will erase all the enemies, etc, except the player
- */
-struct EventEraseAllEnemies : CEvent {};
-
-
-/**
- *	\description This event will erase all the enemies, etc, except the player
- */
-struct EventEraseAllMeeps : CEvent {};
-
-
-struct EventSpawnFoot : CEvent {
-
-	const int x,y;
-	const int foeID;
-
-	EventSpawnFoot( const int lx, const int ly, const int lfoe ) :
-					  x(lx), y(ly), foeID(lfoe) {}
-};
 
 
 

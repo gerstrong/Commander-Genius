@@ -16,7 +16,7 @@
 #include "graphics/effects/CPixelate.h"
 #include "sdl/extensions.h"
 #include "menu/MainMenu.h"
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/music/CMusic.h"
 
 
 namespace galaxy

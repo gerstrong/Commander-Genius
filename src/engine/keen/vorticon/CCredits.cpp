@@ -12,18 +12,21 @@
 #include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
+#include <fileio/KeenFiles.h>
+
 void CCredits::init()
 {
     CInfoScene::init();
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	mpMap.reset( new CMap );
 	
 	//creditFont = gGraphics.getFont(0);
 	//creditFont.tintColor(SDL_MapRGB( creditFont.getSDLSurface()->format, 255, 0, 0) );
 
 	CVorticonMapLoaderBase Maploader(mpMap);
-	
-	Maploader.load( ExeFile.getEpisode(), 90, ExeFile.getDataDirectory() );
+
+    CExeFile &ExeFile = gKeenFiles.exeFile;
+
+    Maploader.load( ExeFile.getEpisode(), 90, gKeenFiles.gameDir );
 	mpMap->gotoPos( 104<<4, 16 );
 	
 	m_scrolltext[0] = "Commander Genius";

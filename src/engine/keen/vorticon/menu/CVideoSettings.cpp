@@ -17,6 +17,7 @@
 #include "engine/core/CBehaviorEngine.h"
 #include "CCameraSettings.h"
 #include "CVideoSettings.h"
+#include "engine/core/CSettings.h"
 //#include "Utils.h"
 
 

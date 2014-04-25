@@ -11,7 +11,7 @@
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
 #include "../CVorticonMapLoader.h"
-#include "common/Playerdefines.h"
+#include "engine/core/Playerdefines.h"
 
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
