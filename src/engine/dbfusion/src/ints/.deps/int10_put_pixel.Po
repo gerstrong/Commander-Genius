@@ -1,0 +1,19 @@
+int10_put_pixel.o: int10_put_pixel.cpp /usr/include/stdc-predef.h \
+ ../../include/dosbox.h ../../config.h ../../include/logging.h \
+ ../../include/mem.h ../../include/inout.h int10.h ../../include/vga.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:
+
+../../include/mem.h:
+
+../../include/inout.h:
+
+int10.h:
+
+../../include/vga.h:

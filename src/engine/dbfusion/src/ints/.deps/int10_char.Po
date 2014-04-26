@@ -1,0 +1,22 @@
+int10_char.o: int10_char.cpp /usr/include/stdc-predef.h \
+ ../../include/dosbox.h ../../config.h ../../include/logging.h \
+ ../../include/bios.h ../../include/mem.h ../../include/inout.h int10.h \
+ ../../include/vga.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:
+
+../../include/bios.h:
+
+../../include/mem.h:
+
+../../include/inout.h:
+
+int10.h:
+
+../../include/vga.h:

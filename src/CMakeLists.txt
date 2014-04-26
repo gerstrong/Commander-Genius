@@ -273,6 +273,12 @@ IF(BUILD_TARGET STREQUAL WIN32)
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 
+# SDL Stuff
+FIND_PACKAGE( SDL_net REQUIRED )
+
+# OpenGL Parsing
+find_package(OpenGL REQUIRED)
+
 IF(OPENGL)
     IF(BUILD_TARGET STREQUAL WIN32)
 	TARGET_LINK_LIBRARIES(CGeniusExe opengl32)
@@ -314,6 +320,24 @@ ENDIF(BUILD_TARGET STREQUAL WIN32)
 #endif(SDL2_FOUND)
 
 include_directories(${SDL_INCLUDE_DIR})
+
+
+# SDL stuff to link
+target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
+
+# OpenGL stuff to link
+target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
+
+# Misc. Stuff I call it that way for now...
+#LIBS = -lSDL_sound -lasound -lm -ldl -lpthread -L/usr/lib -lSDL -lpng -lz -lSDL_net -lX11 -lGL
+target_link_libraries(CGeniusExe SDL_sound)
+target_link_libraries(CGeniusExe asound)
+target_link_libraries(CGeniusExe m)
+target_link_libraries(CGeniusExe dl)
+target_link_libraries(CGeniusExe pthread)
+target_link_libraries(CGeniusExe png)
+target_link_libraries(CGeniusExe z)
+target_link_libraries(CGeniusExe X11)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)

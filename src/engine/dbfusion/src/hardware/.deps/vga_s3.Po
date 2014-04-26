@@ -1,0 +1,17 @@
+vga_s3.o: vga_s3.cpp /usr/include/stdc-predef.h ../../include/dosbox.h \
+ ../../config.h ../../include/logging.h ../../include/inout.h \
+ ../../include/vga.h ../../include/mem.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:
+
+../../include/inout.h:
+
+../../include/vga.h:
+
+../../include/mem.h:
