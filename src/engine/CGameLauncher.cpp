@@ -140,7 +140,10 @@ bool CGameLauncher::loadResources()
 
 
     mLauncherDialog.addControl(new GsButton( "Start >", new GMStart() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
+
+#ifdef DBFUSION
     mLauncherDialog.addControl(new GsButton( "DosBox >", new GMDBFusionStart() ), GsRect<float>(0.65f, 0.565f, 0.3f, 0.07f) );
+#endif
 
     mpEpisodeText = new CGUIText("Game");
     mpVersionText = new CGUIText("Version");
@@ -448,11 +451,15 @@ void CGameLauncher::setupModsDialog()
 
 void CGameLauncher::pumpEvent(const CEvent *evPtr)
 {
+
+#ifdef DBFUSION
     if( dynamic_cast<const GMDBFusionStart*>(evPtr) )
     {
         gEventManager.add( new StartDBFusionEngine() );
     }
-    else if( dynamic_cast<const GMStart*>(evPtr) )
+    else
+#endif
+    if( dynamic_cast<const GMStart*>(evPtr) )
     {
         setChosenGame(mpSelList->getSelection());
 

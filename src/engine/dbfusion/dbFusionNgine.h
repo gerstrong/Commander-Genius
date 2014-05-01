@@ -4,8 +4,12 @@
 #include <base/GsEvent.h>
 #include <base/GsEngine.h>
 
+#ifdef DBFUSION
+
 namespace dbfusion
 {
+
+
 
 class DBFusionEngine : public GsEngine
 {
@@ -14,6 +18,7 @@ class DBFusionEngine : public GsEngine
     void ponder(const float deltaT);
     void render();
 };
+
 
 }
 
@@ -27,5 +32,7 @@ struct StartDBFusionEngine : public SwitchEngineEvent
         SwitchEngineEvent( new dbfusion::DBFusionEngine() )
         { }
 };
+
+#endif
 
 #endif /* __DBFUSIONNGINE_H__ */
