@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef TYOEDEFINITIONS_H_
-#define TYOEDEFINITIONS_H_
+#ifndef __TYPEDEFINITIONS_H__
+#define __TYPEDEFINITIONS_H__
 
 #include <SDL.h>
 
@@ -49,4 +49,4 @@ static inline longword READLONGWORD(byte *&ptr)
 }
 
 
-#endif /* TYOEDEFINITIONS_H_ */
+#endif /* __TYPEDEFINITIONS_H__ */

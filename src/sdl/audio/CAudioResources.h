@@ -67,6 +67,7 @@ SOUND_SWITCH_TOGGLE,
 SOUND_EARTHPOW,
 SOUND_TANK_FIRE,
 SOUND_KEEN_BLOK,
+SOUND_WLD_WALK,
 
 // Ep3 Specific
 SOUND_MEEP,
@@ -182,20 +183,29 @@ public:
 		if (isVorticons)
 		{
 			const unsigned int wavetime = m_AudioSpec.freq*1000/145575;
-			for (sample = READWORD(inBuffer); sample != 0xffff; sample = READWORD(inBuffer))
-			{
-				#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
-				if (prevsample != 0)
-					freqtimer %= m_AudioSpec.freq*prevsample;
-				#else
-				// On Keen 1-3, separated consecutive samples are always separated.
-				wave = m_AudioSpec.silence - AMP;
-				freqtimer = 0;
-				#endif
-				generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (m_AudioSpec.freq>>1)*Uint64(sample));
-				prevsample = sample;
-			}
-		}
+
+            while(1)
+            {
+                sample = READWORD(inBuffer);
+
+                if(sample == 0xffff)
+                    break;
+
+                #ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
+                    if (prevsample != 0)
+                        freqtimer %= m_AudioSpec.freq*prevsample;
+                #else
+                    // On Keen 1-3, separated consecutive samples are always separated.
+                    wave = m_AudioSpec.silence - AMP;
+                    freqtimer = 0;
+                #endif
+
+                generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (m_AudioSpec.freq>>1)*Uint64(sample));
+                prevsample = sample;
+
+
+            }
+        }
 		/** Effective number of samples is actually size-1, so we enumerate from 1.
 		 * Reason: The vanilla way, right after beginning the very last sample output,
 		 * it's stopped. (That should be validated in some way...)
