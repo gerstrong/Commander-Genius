@@ -4,7 +4,7 @@
 #include <string>
 #include <cstdio>
 #include <fstream>
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 
 unsigned int fgeti(FILE *fp);
 unsigned long fgetl(FILE *fp);

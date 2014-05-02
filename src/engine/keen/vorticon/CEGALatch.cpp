@@ -10,7 +10,7 @@
 #include "fileio/lz.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"
 #include <base/GsLogging.h>

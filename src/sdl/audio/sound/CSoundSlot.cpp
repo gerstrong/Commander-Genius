@@ -12,7 +12,7 @@
 #include <base/GsLogging.h>
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "sdl/audio/base/Sampling.h"
 #include <base/utils/FindFile.h>
 

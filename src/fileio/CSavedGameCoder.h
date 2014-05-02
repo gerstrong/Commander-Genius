@@ -14,7 +14,7 @@
 #ifndef CPlayGameCoder_H_
 #define CPlayGameCoder_H_
 
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 
 // This functions are used for enconding/decoding a variable to the game data format.
 // It makes everything platform independent

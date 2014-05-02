@@ -17,7 +17,7 @@
 #include <base/GsLogging.h>
 #include <base/GsEvent.h>
 #include <base/utils/StringUtils.h>
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "CSingleton.h"
 //#include "engine/CEvent.h"
 #include "Oldsavegamestructs.h"

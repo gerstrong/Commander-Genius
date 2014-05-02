@@ -9,7 +9,7 @@
 #define CIMFPLAYER_H_
 
 #include "CMusicPlayer.h"
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "sdl/audio/Audio.h"
 #include "CRingBuffer.h"
 #include <SDL.h>

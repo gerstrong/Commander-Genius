@@ -12,7 +12,7 @@
 #ifndef CHUFFMAN_H_
 #define CHUFFMAN_H_
 
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "fileio/CExeFile.h"
 #include <string>
 

@@ -8,7 +8,7 @@
 #ifndef COPLEMULATOR_H_
 #define COPLEMULATOR_H_
 
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "dbopl.h"
 #include <SDL.h>
 

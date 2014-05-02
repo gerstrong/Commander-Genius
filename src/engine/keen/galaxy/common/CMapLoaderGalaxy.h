@@ -14,7 +14,7 @@
 #include <SDL.h>
 
 #include "fileio/CExeFile.h"
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "engine/core/CMap.h"
 #include "engine/core/Cheat.h"
 #include "CInventory.h"

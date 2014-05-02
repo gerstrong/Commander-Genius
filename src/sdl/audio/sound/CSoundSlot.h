@@ -8,7 +8,7 @@
 #ifndef CSOUNDSLOT_H_
 #define CSOUNDSLOT_H_
 
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include <string>
 #include <vector>
 #include <SDL.h>

@@ -24,7 +24,7 @@
 #include <base/Configurator.h>
 #include "fileio/CTileProperties.h"
 #include "CPhysicsSettings.h"
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include <base/GsEvent.h>
 #include "engine/core/options.h"
 

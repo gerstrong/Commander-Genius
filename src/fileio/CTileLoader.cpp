@@ -7,9 +7,8 @@
 
 #include "CTileLoader.h"
 #include <base/GsLogging.h>
-//#include "../StringUtils.h"
 #include <base/utils/FindFile.h>
-#include "TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "engine/core/CBehaviorEngine.h"
 #include <cstdlib>
 #include <string>

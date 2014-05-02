@@ -11,7 +11,7 @@
 #define CCARMACK_H_
 
 #include <vector>
-#include "../TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 
 class CCarmack
 {
