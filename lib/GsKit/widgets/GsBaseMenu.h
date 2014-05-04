@@ -29,7 +29,8 @@ public:
 
 
     CBaseMenu( const GsRect<float>& rect,
-               GsButton *returnButton );
+               GsButton *returnButton,
+               const CGUIDialog::FXState fx = CGUIDialog::FXState(0));
 
     virtual ~CBaseMenu() { }
 

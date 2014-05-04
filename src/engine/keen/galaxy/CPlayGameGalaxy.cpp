@@ -408,7 +408,6 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
         showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT);
-        gEffectController.setupEffect(new CDimDark(8));
 
         const EventExitLevel &evCopy = *ev;
 

@@ -28,7 +28,7 @@ public:
 
     enum FXState
     {
-        NONE,
+        NONE = 0,
         EXPAND
     };
 

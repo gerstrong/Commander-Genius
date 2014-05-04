@@ -12,8 +12,10 @@
 #include "GsBaseMenu.h"
 #include "GsBitmap.h"
 
-CBaseMenu::CBaseMenu(const GsRect<float>& rect, GsButton *returnButton) :
-mpMenuDialog( new CGUIDialog(rect, CGUIDialog::EXPAND) ),
+CBaseMenu::CBaseMenu(const GsRect<float>& rect,
+                     GsButton *returnButton,
+                     const CGUIDialog::FXState fx) :
+mpMenuDialog( new CGUIDialog(rect, fx) ),
 mpReturnButton(returnButton)
 {}
 

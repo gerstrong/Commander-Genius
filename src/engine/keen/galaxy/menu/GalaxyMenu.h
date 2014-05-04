@@ -11,7 +11,7 @@ class GalaxyMenu : public CBaseMenu
 {
 public:
     GalaxyMenu( const GsRect<float>& rect ):
-        CBaseMenu( rect, new GalaxyButton( "x", new CloseMenuEvent()) )
+        CBaseMenu( rect, new GalaxyButton( "x", new CloseMenuEvent()), CGUIDialog::FXState(0) )
     {
         GsRect<float> localRect(0.30f, 0.282f, 0.5f, 0.5f);
         mpMenuDialog->setRect(localRect);
