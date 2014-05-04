@@ -15,6 +15,7 @@
 #include <string>
 
 #include "CVidConfig.h"
+#include <graphics/GsSurface.h>
 #include <memory>
 
 
@@ -91,7 +92,7 @@ public:
 
     virtual void setLightIntensity(const float intensity) = 0;
 
-    SDL_Surface *getBlitSurface() { return mpGameSfc.get(); }
+    SDL_Surface *getBlitSurface() { return mGameSfc.getSDLSurface(); }
 
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 
@@ -128,25 +129,36 @@ protected:
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     std::unique_ptr<SDL_Texture, SDL_Texture_Deleter> mpSdlTexture;
 #else
-    SDL_Surface *mDisplaySfc;                // the actual video memory/window
+
+    // it is what you see on your monitor in the end in the window or on fullscreen
+    GsWeakSurface mDisplaySfc;      // the actual video memory/window
 #endif
 
-    std::shared_ptr<SDL_Surface> mpGameSfc;
-    std::shared_ptr<SDL_Surface> mpScreenSfc;
+    // Were all the game is rendered
+    GsSurface mGameSfc;
 
-    //SDL_Surface *BlitSurface;
-    //SDL_Surface *FilteredSurface;
+    // Were the game is transformed to. This is used for internal transformations
+    // before it is shown on the display.
+    // it is not required in case no transformations should performed.
+    GsSurface mFilteredSfc;
+
+    // So the transformation goes in two steps
+    // mGameSfc -> mFilteredSfc -> mDisplaySurface or Texture or similar
+    // Sometimes you have this situation:
+    // mGameSfc -> mDisplaySurface or Texture or similar
+    // This case happens when you don't want to use any software filtering within the game
+    // before you pass it to the view.
+    // Through a pointer called mpScreenSfc
+
+    GsSurface *mpScreenSfc;
+
+
     SDL_Surface *ScrollSurface;       	// Squared scroll buffer
-
-    //CScaler Scaler;
 
 	const CVidConfig &m_VidConfig;
 
 	Sint16 mSbufferx;
 	Sint16 mSbuffery;
-
-	// Those variables are used for the rendering process, so they don't need to be recalculated
-	unsigned m_dst_slice, m_src_slice;
 
 	unsigned int m_Mode;
 

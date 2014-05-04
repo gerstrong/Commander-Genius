@@ -24,9 +24,8 @@ CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     window(nullptr),
     renderer(nullptr),
-#else
-    mDisplaySfc(nullptr),
 #endif
+mpScreenSfc(nullptr),
 ScrollSurface(nullptr),       // Squared scroll buffer
 m_VidConfig(VidConfig),
 mSbufferx(0),
@@ -179,7 +178,6 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 
     //Colormask mask = getColourMask32bit();
 
-    //temporary = SDL_CreateRGBSurface( mode, width, height, bpp, mask.r, mask.g, mask.b, mask.a);
     temporary = SDL_CreateRGBSurface( mode, width, height, bpp, 0, 0, 0, 0);
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
     //Temporary fix until we figure out how to create our own version of DisplayFormatAlpha and DisplayFormat
@@ -190,7 +188,9 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
        return temporary;
     }
 
-    optimized = SDL_ConvertSurface(temporary, mpGameSfc->format, mpGameSfc->flags );
+    SDL_Surface *gameSfc = mGameSfc.getSDLSurface();
+
+    optimized = SDL_ConvertSurface(temporary, gameSfc->format, gameSfc->flags );
 
     /*if (alpha && bpp==32)
         optimized = gVideoDriver.convertThroughBlitSfc( temporary );
@@ -223,14 +223,15 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                      gamerect.w, gamerect.h );
 
 
-    mpGameSfc.reset(SDL_CreateRGBSurface( m_Mode, gamerect.w, gamerect.h, RES_BPP,
-                                          0x00FF0000,
-                                          0x0000FF00,
-                                          0x000000FF,
-                                          0xFF000000), SDL_FreeSurface );
+    mGameSfc.create(m_Mode, gamerect.w, gamerect.h, RES_BPP,
+                    0x00FF0000,
+                    0x0000FF00,
+                    0x000000FF,
+                    0xFF000000);
+
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(mpGameSfc.get(), SDL_BLENDMODE_NONE);
+    SDL_SetSurfaceBlendMode(mGameSfc.get(), SDL_BLENDMODE_NONE);
 #endif
 
 
@@ -248,7 +249,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                                           0x000000FF,
                                           0x00000000);
 
-    auto blit = mpGameSfc.get();
+    auto blit = mGameSfc.getSDLSurface();
 
     gLogging.ftextOut("ScreenSurface creation of %dx%d!\n<br>",
                      blit->w, blit->h );
@@ -258,21 +259,15 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 
     if(m_VidConfig.m_ScaleXFilter > 1)
     {
-        mpScreenSfc.reset(SDL_CreateRGBSurface( m_Mode,
-                                                blit->w*m_VidConfig.m_ScaleXFilter,
-                                                blit->h*m_VidConfig.m_ScaleXFilter,
-                                                RES_BPP,
-                                                format->Rmask,
-                                                format->Gmask,
-                                                format->Bmask,
-                                                format->Amask ), SDL_FreeSurface);
+        mFilteredSfc.create(m_Mode, blit->w*m_VidConfig.m_ScaleXFilter, blit->h*m_VidConfig.m_ScaleXFilter,
+                            RES_BPP, 0, 0, 0, 0);
+
+        mpScreenSfc = &mFilteredSfc;
     }
     else
     {
-        mpScreenSfc = mpGameSfc;
+        mpScreenSfc = &mGameSfc;
     }
-
-    m_dst_slice = mpScreenSfc->pitch;
 
     initOverlaySurface(blit->w, blit->h);
 
@@ -294,7 +289,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 {									   // The name should be changed
 	SDL_Rect srGsRect, dstrect;
     int sbufferx, sbuffery;
-    auto BlitSurface = mpGameSfc.get();
+    auto BlitSurface = mGameSfc.getSDLSurface();
     SDL_Rect Gamerect = m_VidConfig.m_GameRect.SDLRect();
 
     const int scrollSfcWidth = ScrollSurface->w;
@@ -401,8 +396,8 @@ void CVideoEngine::filterUp()
     // Otherwise screensurface point to gameSfc and nothing needs to be done
     if(m_VidConfig.m_ScaleXFilter > 1)
     {
-        auto srcSfc = mpGameSfc.get();
-        auto dstSfc = mpScreenSfc.get();
+        auto srcSfc = mGameSfc.getSDLSurface();
+        auto dstSfc = mFilteredSfc.getSDLSurface();
 
         SDL_LockSurface( srcSfc );
         SDL_LockSurface( dstSfc );
@@ -419,6 +414,11 @@ void CVideoEngine::filterUp()
         SDL_UnlockSurface( dstSfc );
         SDL_UnlockSurface( srcSfc );
     }
+    else
+    {
+        mGameSfc.blitTo(mFilteredSfc);
+    }
+
 }
 
 void CVideoEngine::shutdown()

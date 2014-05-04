@@ -54,8 +54,6 @@ void scaleDynamic( SDL_Surface *srcSfc,
 		return;
 	}
 
-    //SDL_FillRect( dstSfc, nullptr, SDL_MapRGB(dstSfc->format, 0, 0, 0) );
-
     SDL_LockSurface( srcSfc );
     SDL_LockSurface( dstSfc );
 
@@ -101,6 +99,7 @@ void scaleDynamic( SDL_Surface *srcSfc,
     }
     else
     {
+
         for( int yDst = 0 ; yDst<dstRect.h ; yDst++ )
         {
             xSrc = 0.0f;
@@ -109,24 +108,14 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
             for( int xDst = 0; xDst<dstRect.w ; xDst++ )
             {
-                const Uint32 newPixel = srcPixel[pitch+Uint32(xSrc)];
-
-                Uint8 r, g, b, a;
-
-                SDL_GetRGBA(newPixel, format,&r, &g, &b, &a);
-
-                if(a > 0)
-                {
-                    *dstPixel = newPixel;
-                }
-
+                *dstPixel = srcPixel[pitch+Uint32(xSrc)];
                 xSrc += wFac;
                 dstPixel++;
             }
 
-            dstPixel = dstFirstPixel + (dstSfc->w*yDst);
+            ySrc += hFac;
 
-            ySrc = yDst*hFac;
+            dstPixel = dstFirstPixel + (dstSfc->w*yDst);            
         }
     }
 
@@ -135,98 +124,9 @@ void scaleDynamic( SDL_Surface *srcSfc,
 }
 
 
-// Software implementation of linear interpolation - too slow for us.
-// The interpolation itself is based on code by Bruno Augier http://dzzd.net/
-// See here for the code: http://www.java-gaming.org/index.php?topic=22121.0
-/*void CScaler::scaleDynamicLinear( SDL_Surface *srcSfc,
-							SDL_Surface *dstSfc )
-{
-	if((dstSfc->w == srcSfc->w) && (dstSfc->h == srcSfc->h))
-	{
-		SDL_BlitSurface(srcSfc, NULL, dstSfc, NULL);
-		return;
-	}
-
-	const Uint32 srcWidthInt  = srcSfc->w;
-	const float srcWidthMinusOne  = float(srcSfc->w-1);
-	const float srcHeightMinusOne = float(srcSfc->h-1);
-	const float dstWidth  = float(dstSfc->w);
-	const float dstHeight = float(dstSfc->h);
-
-	Uint32 *dstPixel = static_cast<Uint32*>(dstSfc->pixels);
-	Uint32 *srcPixel = static_cast<Uint32*>(srcSfc->pixels);
-	Uint32 pitch;
-
-	Uint32 *topLeftPixel, *topRightPixel, *bottomLeftPixel, *bottomRightPixel;
-	Uint32 blackPixel[] = {0};
-
-	// Pass those numbers to the stack
-	const float l_wFac = wFac;
-	const float l_hFac = hFac;
-
-	float xSrc, ySrc;
-	Uint32 xSrcInt;
-
-	//int channel;
-
-	Uint8 bX, bY, f24, f23, f14, f13;
-	//float xSmallWeight, ySmallWeight, yHighWeight;
-
-	ySrc = 0.0f;
-	for( Uint32 yDst = 0, xDst ; yDst<dstHeight ; yDst++ )
-	{
-		//ySrcInt = Uint32(ySrc);
-		//ySmallWeight = ySrc-Uint32(ySrc);
-		//yHighWeight  = 1 - ySmallWeight;
-		bY = Uint8((ySrc-Uint32(ySrc))*256);
-		xSrc = 0.0f;
-
-		pitch = Uint32(ySrc)*srcWidthInt;
-		for( xDst = 0; xDst<dstWidth ; xDst++ )
-		{
-			xSrcInt = Uint32(xSrc);
-			//xSmallWeight = xSrc-xSrcInt;
-			bX = Uint8((xSrc-xSrcInt)*256);
-			f24=(bX*bY)>>8;
-			f23=bX-f24;
-			f14=bY-f24;
-			f13=((255-bX)*(255-bY))>>8;
-			topLeftPixel = srcPixel+pitch+xSrcInt;
-			// We should take care of the right and bottom edges
-			if (xSrc < srcWidthMinusOne)
-			{
-				topRightPixel = topLeftPixel+1;
-				if (ySrc < srcHeightMinusOne)
-				{
-					bottomLeftPixel = topLeftPixel+srcWidthInt;
-					bottomRightPixel = bottomLeftPixel+1;
-				}
-				else
-					bottomLeftPixel = bottomRightPixel = blackPixel;
-			}
-			else
-			{
-				topRightPixel = bottomRightPixel = blackPixel;
-				bottomLeftPixel = (ySrc < srcHeightMinusOne) ? topLeftPixel+srcWidthInt : blackPixel;
-			}
-
-//			*dstPixel = Uint32((1-xSmallWeight)*(*topLeftPixel*yHighWeight+*bottomLeftPixel*ySmallWeight)+
-//			                   xSmallWeight*(*topRightPixel*yHighWeight+*bottomRightPixel*ySmallWeight));
-			*dstPixel = ((((*topLeftPixel&0xFF00FF)*f13+(*topRightPixel&0xFF00FF)*f23+(*bottomLeftPixel&0xFF00FF)*f14+(*bottomRightPixel&0xFF00FF)*f24)&0xFF00FF00)|
-			             (((*topLeftPixel&0x00FF00)*f13+(*topRightPixel&0x00FF00)*f23+(*bottomLeftPixel&0x00FF00)*f14+(*bottomRightPixel&0x00FF00)*f24)&0x00FF0000))>>8;
-//			             (((*topLeftPixel&0xFF00FF00)*f13+(*topRightPixel&0xFF00FF00)*f23+(*bottomLeftPixel&0xFF00FF00)*f14+(*bottomRightPixel&0xFF00FF00)*f24)&0xFF00FF0000))>>8;
-
-			xSrc += l_wFac;
-			dstPixel++;
-		}
-
-		ySrc += l_hFac;
-	}
-
-}*/
-
-/*void CScaler::scaleNormal( SDL_Surface *srcSfc,
-                           SDL_Surface *dstSfc )
+void scaleNormal( SDL_Surface *srcSfc,
+                  SDL_Surface *dstSfc,
+                  const Uint32 filterFac)
 {
     if( (dstSfc->w == srcSfc->w) && (dstSfc->h == srcSfc->h) )
 	{
@@ -248,17 +148,17 @@ void scaleDynamic( SDL_Surface *srcSfc,
 	{
 		// First we just stretch a row horizontally
 		for( xSrc = 0 ; xSrc<srcWidth ; xSrc++, srcPixel++ )
-			for( zoomIndex = 0; zoomIndex < FilterFactor; zoomIndex++, dstPixel++ )
+            for( zoomIndex = 0; zoomIndex < filterFac; zoomIndex++, dstPixel++ )
 				*dstPixel = *srcPixel;
 		// Maybe a POT surface is used
 		dstPixel+=dstWidth-(dstPixel-origDstPixel);
 		// Now we make copies of the stretched row
-		for( zoomIndex = 1; zoomIndex < FilterFactor; zoomIndex++, dstPixel+=dstWidth )
+        for( zoomIndex = 1; zoomIndex < filterFac; zoomIndex++, dstPixel+=dstWidth )
 			memcpy(dstPixel, origDstPixel, dstPitch);
 		origDstPixel += zoomIndex*dstWidth;
 	}
 }
-*/
+
 
 void blitScaled(SDL_Surface *srcSfc,
                       SDL_Rect &srGsRect,
@@ -267,9 +167,7 @@ void blitScaled(SDL_Surface *srcSfc,
                       filterOptionType filter)
 {            
 
-#ifdef DEBUG
     assert(filter>=NONE && filter<=SCALE_4X);
-#endif
 
     // First phase: Filter the surface (scaleX)
     SDL_Rect lSrGsRect = srGsRect;
@@ -317,6 +215,7 @@ void blitScaled(SDL_Surface *srcSfc,
 #else
 
     scaleDynamic( srcSfc, lSrGsRect, dstSfc, lDstRect );
+    //scaleNormal(srcSfc, dstSfc, (Uint32)SCALE_4X );
 
 #endif
 

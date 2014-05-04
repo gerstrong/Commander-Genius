@@ -41,8 +41,8 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     const int w = m_VidConfig.mAspectCorrection.w;
     const int h = m_VidConfig.mAspectCorrection.h;
 
-    // Render a black surface which cleans the screen, in case there already is some content in the screen
-    if(mpScreenSfc)
+    // Render a black surface which cleans the screen, in case there already is some content in the screen    
+    if(mpScreenSfc->empty())
     {
         clearSurfaces();
         transformScreenToDisplay();
@@ -55,9 +55,9 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     setUpViewPort(mAspectCorrectionRect);
 
 #else
-    mDisplaySfc = SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode );
+    mDisplaySfc.setPtr(SDL_SetVideoMode( newDim.w, newDim.h, 32, m_Mode ));
 
-    if (!mDisplaySfc)
+    if (mDisplaySfc.empty())
 	{
 		gLogging.textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
@@ -80,8 +80,7 @@ void COpenGL::collectSurfaces()
 
 void COpenGL::clearSurfaces()
 {
-    auto screen = mpScreenSfc.get();
-    SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format,0,0,0) );
+    mpScreenSfc->fillRGB(0,0,0);
 }
 
 
@@ -282,7 +281,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
     
 //#else
 
-    SDL_LockSurface(mpScreenSfc.get());
+    mpScreenSfc->lock();
 
 	// First apply the conventional filter if any (GameScreen -> FilteredScreen)
     /*if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
@@ -301,12 +300,12 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
     }*/
 
 	glTexImage2D(m_texparam, 0, internalFormat,
-                mpScreenSfc->w,
-                mpScreenSfc->h,
+                mpScreenSfc->width(),
+                mpScreenSfc->height(),
 				0, externalFormat,
-                GL_UNSIGNED_BYTE, mpScreenSfc->pixels);
+                GL_UNSIGNED_BYTE, mpScreenSfcgetSDLSurface()->pixels);
 
-    SDL_UnlockSurface(mpScreenSfc.get());
+    mpScreenSfc->unlock();
 //#endif
 }
 
@@ -340,7 +339,7 @@ void COpenGL::transformScreenToDisplay()
 
 	glEnable(GL_BLEND);
 
-    loadSurface(m_texture, mpScreenSfc.get());
+    loadSurface(m_texture, *mpScreenSfc.getSDLSurface());
 	renderTexture(m_texture);
 
 	glDisableClientState(GL_VERTEX_ARRAY);

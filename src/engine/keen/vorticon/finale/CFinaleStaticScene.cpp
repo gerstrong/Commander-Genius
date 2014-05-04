@@ -10,7 +10,6 @@
 #include <base/GsTimer.h>
 #include "sdl/audio/Audio.h"
 #include "graphics/GsGraphics.h"
-//#include "sdl/video/scalers/CScaler.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 m_mustclose(false),

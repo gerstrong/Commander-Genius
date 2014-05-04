@@ -40,8 +40,6 @@ public:
 private:
 
     GsSurface mOverlaySurface;
-    //std::unique_ptr<SDL_Surface, SDL_Surface_Deleter> mpOverlaySurface; // For some situations like darkrooms we need to use that surface!
-
 };
 
 #endif /* CSDLVIDEO_H_ */

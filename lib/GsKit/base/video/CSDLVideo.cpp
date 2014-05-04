@@ -55,16 +55,15 @@ bool CSDLVideo::init()
 
 #else
 
-    mDisplaySfc = SDL_SetVideoMode( m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, 32, m_Mode );
+    mDisplaySfc.setPtr(SDL_SetVideoMode( m_VidConfig.m_DisplayRect.w, m_VidConfig.m_DisplayRect.h, 32, m_Mode ));
 
-    if (!mDisplaySfc)
+    if (mDisplaySfc.empty())
 	{
 		gLogging.textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
 	}
 
     const GsRect<Uint16> &GameRect = m_VidConfig.m_GameRect;
-    m_src_slice = GameRect.w*mDisplaySfc->format->BytesPerPixel;
 
     /*aspectCorrectResizing(newDim, w, h);
 
@@ -91,6 +90,8 @@ bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_RenderSetLogicalSize(renderer, mAspectCorrectionRect.w, mAspectCorrectionRect.h);
+#else
+    mDisplaySfc.setPtr(SDL_SetVideoMode( mAspectCorrectionRect.w, mAspectCorrectionRect.h, 32, m_Mode ));
 #endif
 
     return true;
@@ -125,15 +126,14 @@ void CSDLVideo::collectSurfaces()
 {
     if( mOverlaySurface.getAlpha() > 0 )
     {
-        GsWeakSurface gameSfc(mpGameSfc.get());
-        mOverlaySurface.blitTo(gameSfc);
+        mOverlaySurface.blitTo(mGameSfc);
     }
 }
 
 void CSDLVideo::clearSurfaces()
 {
-    mOverlaySurface.fillRGB(0, 0, 0);
-    SDL_FillRect(mpGameSfc.get(), NULL, 0x0);
+    mOverlaySurface.fillRGB(0,0,0);
+    mGameSfc.fillRGB(0,0,0);
 }
 
 
@@ -177,21 +177,22 @@ void CSDLVideo::transformScreenToDisplay()
     }*/
 
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    auto screen = mpScreenSfc.get();
-    SDL_LockSurface(screen);
-    SDL_UpdateTexture(mpSdlTexture.get(), nullptr, screen->pixels, screen->w * sizeof (Uint32));
-    SDL_UnlockSurface(screen);
+#if SDL_VERSION_ATLEAST(2, 0, 0)            
+    mpScreenSfc->lock();
+    SDL_UpdateTexture(mpSdlTexture.get(), nullptr, mpScreenSfc->getSDLSurface()->pixels, mpScreenSfc->width() * sizeof (Uint32));
+    mpScreenSfc->unlock();
 
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, mpSdlTexture.get(), NULL, NULL);
     SDL_RenderPresent(renderer);
 #else
 
-    SDL_BlitSurface(mpScreenSfc.get(), NULL, mDisplaySfc, NULL);
+    // Blit the stuff
+    mpScreenSfc->blitScaledTo(mDisplaySfc);
 
-	// Flip the screen (We use double-buffering on some systems.)
-    SDL_Flip(mDisplaySfc);
+    // Flip the screen (We use double-buffering on some systems.)
+    mDisplaySfc.flip();
+
 #endif
 
 }
