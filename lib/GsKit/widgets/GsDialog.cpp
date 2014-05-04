@@ -37,14 +37,14 @@ mFXvStep(0)
 }
 
 
-void CGUIDialog::updateBackground()
+void CGUIDialog::setBackground(GsSurface &bgSfc)
 {
-    initEmptyBackround();
+    mBackgroundSfc = bgSfc;
 }
 
 void CGUIDialog::updateGraphics()
 {
-    updateBackground();
+    //updateBackground();
     for( auto &control : mControlList )
     {
         control->updateGraphics();
@@ -265,7 +265,7 @@ void CGUIDialog::setPosition(const float x, const float y)
 
 
 
-void CGUIDialog::initEmptyBackround()
+void CGUIDialog::initEmptyBackground()
 {
     const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
 
@@ -336,37 +336,6 @@ void CGUIDialog::initVorticonBackground()
     mpTempSfc.reset( gVideoDriver.convertThroughBlitSfc( backSfc ), &SDL_FreeSurface );
 }
 
-void CGUIDialog::initGalaxyBackround()
-{
-    GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr("KEENSWATCH") );
-
-    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
-    backgroundBmp.scaleTo(gameRes);
-
-    GsRect<Uint16> bmpRect(backgroundBmp.getWidth(), backgroundBmp.getHeight());
-
-    GsWeakSurface swatchSfc(backgroundBmp.getSDLSurface());
-
-    mBackgroundSfc.create( 0, bmpRect.w, bmpRect.h, RES_BPP, 0, 0, 0, 0);
-    swatchSfc.blitTo(mBackgroundSfc);
-
-
-    // Besides the Background Bitmap we need to draw two lines
-    SDL_Surface *backSfc = mBackgroundSfc.getSDLSurface();
-
-    Uint32 color = SDL_MapRGB( backSfc->format, 84, 234, 84 );
-	SDL_Rect scoreRect;
-    scoreRect.w = 15*gameRes.w/32;
-    scoreRect.h = gameRes.h/200;
-    scoreRect.x = gameRes.w/4;
-
-    if(gameRes.h > 200) // This will display the line score correctly.
-        scoreRect.y = 55*gameRes.h/202;
-    else
-        scoreRect.y = 55;
-
-	SDL_FillRect(backSfc, &scoreRect, color);
-}
 
 
 void CGUIDialog::processLogic()

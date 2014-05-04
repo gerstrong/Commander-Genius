@@ -72,8 +72,8 @@ bool CGameLauncher::loadResources()
     mDonePatchSelection = false;
     m_chosenGame    = -1;
     m_ep1slot       = -1;
-    mLauncherDialog.updateBackground();
-    mPatchDialog.updateBackground();
+    mLauncherDialog.initEmptyBackground();
+    mPatchDialog.initEmptyBackground();
     mSelection      = -1;
 
     bool gamedetected = false;

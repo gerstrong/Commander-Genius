@@ -19,10 +19,18 @@ public:
                                   GsRect<float>(
                                       -0.1f, 0.1f, 0.03f/localRect.w, 0.03f/localRect.h) );
         mpReturnButton->setDown(true);
-        mpMenuDialog->initGalaxyBackround();
-        mpMenuDialog->updateBackground();
+
+        GsSurface background;
+
+        initGalaxyBackground();
     }
 
+    void initGalaxyBackground();
+
+    void render();
+
+private:
+    GsSurface mBackground;
 
 };
 

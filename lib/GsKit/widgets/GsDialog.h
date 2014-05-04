@@ -40,13 +40,13 @@ public:
 	void initBackground();
 
 	// Empty Background draw function. Just fills the Rect with a standard gray color
-	void initEmptyBackround();
+    void initEmptyBackground();
 
 	// Vorticon Menu draw function
     void initVorticonBackground();
 
 	// Galaxy Menu draw function
-    void initGalaxyBackround();
+    void initGalaxyBackground();
 
     // This draws the borders around the dialog
     void drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect);
@@ -60,8 +60,8 @@ public:
 	// processes the whole rendering of the Dialog
     void processRendering(SDL_Surface *blit);
 
-    // Update the backround. Happens when the Menu is created or graphical settings are changed within the game
-    void updateBackground();
+    // Update the background. Happens when the Menu is created or graphical settings are changed within the game
+    void setBackground(GsSurface &bgSfc);
 
     // Update all graphics. Happens when Video settings are normally changed
     void updateGraphics();
@@ -131,9 +131,8 @@ private:
 	std::list< std::shared_ptr<CGUIControl> > mControlList;
 
 	// SDL_Surface of the Background
-    //std::shared_ptr<SDL_Surface>    mBackgroundSfc;
-    GsSurface    mBackgroundSfc;
     std::shared_ptr<SDL_Surface>    mpTempSfc;
+    GsSurface    mBackgroundSfc;
 
 	int mSelection;
 	CGUIControl *mpCurrentCtrl;

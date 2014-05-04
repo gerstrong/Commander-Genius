@@ -119,10 +119,10 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	SDL_AudioCVT  Audio_cvt;
 
 	std::string buf;
-	m_sounddata = NULL;
+    m_sounddata = nullptr;
 
 	Uint32 length = 0;
-	Uint8 *snddata = NULL;
+    Uint8 *snddata = nullptr;
 
 #if defined(OGG) || defined(TREMOR)
 	buf = getResourceFilename("snd/" + soundname + ".OGG", gamepath, false, true); // Start with OGG
@@ -132,7 +132,10 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 		openOGGSound(buf, &AudioFileSpec, snddata, length);
 
 		if(snddata == NULL)
-			return false;
+        {
+            gLogging.textOut(PURPLE,"Something is wrong with \"%s\"<br>", buf);
+			return false;            
+        }
 #else
 		gLogging.textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
 #endif
