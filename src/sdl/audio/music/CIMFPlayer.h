@@ -49,17 +49,10 @@ public:
     void swapRing(RingBuffer<IMFChunkType> &&ring);
 
 private:
-    /*bool readCompressedAudiointoMemory(const CExeFile& ExeFile,
-					       std::vector<uint32_t> &musiched,
-                        std::vector<uint8_t> &AudioCompFileData);*/
 
 	bool readMusicHedFromFile(const std::string fname, 
 				  std::vector<uint32_t> &musiched);
-	
-/*	bool readMusicHedInternal(const CExeFile& ExeFile,
-				std::vector<uint32_t> &musiched,
-                const size_t audiofilecompsize);		*/
-	
+		
     bool unpackAudioInterval(const std::string &dataPath,
                 const std::vector<uint8_t> &AudioCompFileData,
                 const int start,

@@ -358,15 +358,15 @@ bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imgl
 
 /**** Moved from IMF Player   *****/
 
-/*
 
-bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
+
+bool CExeFile::loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track)
 {
     // Now get the proper music slot reading the assignment table.
     std::vector<uint8_t> AudioCompFileData;
     std::vector<uint32_t> musiched;
 
-    if( readCompressedAudiointoMemory(ExeFile, musiched, AudioCompFileData) )
+    if( readCompressedAudiointoMemory(imfData, musiched, AudioCompFileData) )
     {
         unpackAudioInterval(ExeFile,
                 AudioCompFileData,
@@ -379,7 +379,7 @@ bool CIMFPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
 
 
 
-bool CIMFPlayer::unpackAudioInterval( const std::string	&dataPath,
+bool CExeFile::unpackAudioInterval( const std::string	&dataPath,
                 const std::vector<uint8_t> &AudioCompFileData,
                 const int audio_start,
                 const int audio_end)
@@ -430,7 +430,7 @@ bool CIMFPlayer::unpackAudioInterval( const std::string	&dataPath,
     }
 }
 
-bool CIMFPlayer::readMusicHedInternal(const CExeFile& ExeFile,
+bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
                     std::vector<uint32_t> &musiched,
                     const size_t audiofilecompsize)
 {
@@ -502,7 +502,8 @@ bool CIMFPlayer::readMusicHedInternal(const CExeFile& ExeFile,
 }
 
 
-bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
+
+bool CExeFile::readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
                            std::vector<uint32_t> &musiched,
                         std::vector<uint8_t> &AudioCompFileData)
 
@@ -551,5 +552,3 @@ bool CIMFPlayer::readCompressedAudiointoMemory(const CExeFile& ExeFile,
 }
 
 
-
-*/

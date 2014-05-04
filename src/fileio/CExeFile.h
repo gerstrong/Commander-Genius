@@ -17,6 +17,8 @@
 #include "fileio/crc.h"
 #include <base/TypeDefinitions.h>
 
+#include "sdl/audio/music/CIMFPlayer.h"
+
 #include <vector>
 #include <string>
 #include <map>
@@ -59,6 +61,8 @@ public:
 
     byte* getDSegPtr() const
     {	return m_data_segment; }
+
+    bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track);
 
 
 private:

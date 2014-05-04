@@ -31,7 +31,16 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 #endif
 
 	std::unique_ptr<CIMFPlayer> imfPlayer( new CIMFPlayer(g_pSound->getAudioSpec()) );
-    //imfPlayer->loadMusicTrack(ExeFile, track);
+
+    RingBuffer<IMFChunkType> imfData;
+
+    if(!ExeFile->loadMusicTrack(imfData, track))
+    {
+        return false;
+    }
+
+    imfPlayer->swapRing(imfData);
+
     assert(0);
 
 	if(!imfPlayer->open())

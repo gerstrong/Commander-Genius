@@ -68,7 +68,7 @@ bool CIMFPlayer::loadMusicFromFile(const std::string& filename)
 
 void CIMFPlayer::swapRing(RingBuffer<IMFChunkType> &&ring)
 {
-
+    m_IMF_Data = std::move(ring);
 }
 
 
