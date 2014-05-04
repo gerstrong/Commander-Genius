@@ -32,10 +32,11 @@
 template <typename T>
 class RingBuffer {
 public:
+
 	RingBuffer():
-		mp_start(NULL),
-		mp_cur(NULL),
-		mp_end(NULL),
+        mp_start(nullptr),
+        mp_cur(nullptr),
+        mp_end(nullptr),
 		m_size(0)
 	{}
 
@@ -44,6 +45,21 @@ public:
 		if(!empty())
 			clear();
 	}
+
+
+
+    RingBuffer &operator=(RingBuffer &&second)
+    {
+        mp_start = second.mp_start;
+        mp_cur = second.mp_start;
+        mp_end = second.mp_end;
+        m_size = second.m_size;
+
+        second.mp_start = nullptr;
+        second.mp_cur = nullptr;
+        second.mp_end = nullptr;
+        second.m_size = 0;
+    }
 
 	/**
 	 * Allocates memory for the Ring buffer

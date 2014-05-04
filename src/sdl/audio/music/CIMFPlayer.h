@@ -50,8 +50,6 @@ public:
 
 private:
 
-	bool readMusicHedFromFile(const std::string fname, 
-				  std::vector<uint32_t> &musiched);
 		
     bool unpackAudioInterval(const std::string &dataPath,
                 const std::vector<uint8_t> &AudioCompFileData,

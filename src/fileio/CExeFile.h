@@ -62,10 +62,28 @@ public:
     byte* getDSegPtr() const
     {	return m_data_segment; }
 
-    bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track);
+    bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const;
 
 
 private:
+
+    bool readMusicHedFromFile(const std::string &fname,
+                  std::vector<uint32_t> &musiched) const;
+
+    bool unpackAudioInterval(RingBuffer<IMFChunkType> &imfData,
+                              const std::vector<uint8_t> &AudioCompFileData,
+                              const int audio_start,
+                              const int audio_end) const;
+
+    bool readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
+                              std::vector<uint32_t> &musiched,
+                              const size_t audiofilecompsize) const;
+
+
+    bool readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
+                                       std::vector<uint32_t> &musiched,
+                                       std::vector<uint8_t> &AudioCompFileData) const;
+
 
 	struct EXE_HEADER
 	{

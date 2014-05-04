@@ -14,7 +14,7 @@
 #include <base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
-
+#include "fileio/compression/CHuffman.h"
 
 CExeFile::CExeFile() :
 m_datasize(0),
@@ -356,41 +356,19 @@ bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imgl
 	return false;
 }
 
-/**** Moved from IMF Player   *****/
 
-
-
-bool CExeFile::loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track)
-{
-    // Now get the proper music slot reading the assignment table.
-    std::vector<uint8_t> AudioCompFileData;
-    std::vector<uint32_t> musiched;
-
-    if( readCompressedAudiointoMemory(imfData, musiched, AudioCompFileData) )
-    {
-        unpackAudioInterval(ExeFile,
-                AudioCompFileData,
-                musiched[track],
-                musiched[track+1]);
-    }
-
-    return true;
-}
-
-
-
-bool CExeFile::unpackAudioInterval( const std::string	&dataPath,
+bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
                 const std::vector<uint8_t> &AudioCompFileData,
                 const int audio_start,
-                const int audio_end)
+                const int audio_end) const
 {
-    std::string audioDictfilename = getResourceFilename( gpKeenFiles->audioDictFilename, dataPath, false, false);
+    std::string audioDictfilename = getResourceFilename( gKeenFiles.audioDictFilename, gKeenFiles.gameDir, false, false);
 
     // Open the Huffman dictionary and get AUDIODICT
     CHuffman Huffman;
 
     if(audioDictfilename.empty())
-        Huffman.readDictionaryNumber( ExeFile, 0 );
+        Huffman.readDictionaryNumber( *this, 0 );
     else
         Huffman.readDictionaryFromFile( audioDictfilename );
 
@@ -416,12 +394,12 @@ bool CExeFile::unpackAudioInterval( const std::string	&dataPath,
         }
 
 
-        if(!m_IMF_Data.empty())
-            m_IMF_Data.clear();
+        if(!imfData.empty())
+            imfData.clear();
 
         const word imf_chunks = data_size/sizeof(IMFChunkType);
-        m_IMF_Data.reserve(imf_chunks);
-        memcpy(m_IMF_Data.getStartPtr(), imf_data_ptr, data_size);
+        imfData.reserve(imf_chunks);
+        memcpy(imfData.getStartPtr(), imf_data_ptr, data_size);
         return true;
     }
     else
@@ -432,21 +410,21 @@ bool CExeFile::unpackAudioInterval( const std::string	&dataPath,
 
 bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
                     std::vector<uint32_t> &musiched,
-                    const size_t audiofilecompsize)
+                    const size_t audiofilecompsize) const
 {
-        uint32_t number_of_audiorecs = 0;
+    uint32_t number_of_audiorecs = 0;
 
     bool empty = true;
 
-    const uint32_t *starthedptr = reinterpret_cast<uint32_t*>(ExeFile.getHeaderData());
+    const uint32_t *starthedptr = reinterpret_cast<uint32_t*>(getHeaderData());
     uint32_t *audiohedptr = const_cast<uint32_t*>(starthedptr);
-    for( const uint32_t *endptr = (uint32_t*) (void*) ExeFile.getHeaderData()+ExeFile.getExeDataSize()/sizeof(uint32_t);
+    for( const uint32_t *endptr = (uint32_t*) (void*) getHeaderData()+getExeDataSize()/sizeof(uint32_t);
             audiohedptr < endptr ;
             audiohedptr++ )
     {
         if(*audiohedptr == audiofilecompsize)
         {
-            for( const uint32_t *startptr = (uint32_t*) (void*) ExeFile.getHeaderData() ;
+            for( const uint32_t *startptr = (uint32_t*) (void*) getHeaderData() ;
                     audiohedptr > startptr ; audiohedptr-- )
             {
                 // Get the number of Audio files we have
@@ -466,9 +444,9 @@ bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
     uint16_t music_start = 0;
 
 
-    if(ExeFile.getEpisode() == 4)
+    if(getEpisode() == 4)
     {
-        memcpy(&music_start, ExeFile.getRawData() + 0x8CEF, sizeof(uint16_t) );
+        memcpy(&music_start, getRawData() + 0x8CEF, sizeof(uint16_t) );
     }
     else
     {
@@ -503,22 +481,68 @@ bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
 
 
 
+bool CExeFile::readMusicHedFromFile(const std::string &fname, std::vector<uint32_t> &musiched) const
+{
+    if(fname.empty())
+        return false;
+
+    std::ifstream file;
+
+    if(!OpenGameFileR(file, fname, std::ios::binary))
+    return false;
+
+    file.seekg(0, std::ios::end);
+    size_t length = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    std::vector<uint32_t> audiohed(length/sizeof(uint32_t));
+
+    file.read( reinterpret_cast<char*> (&audiohed.front()), length);
+
+    file.close();
+
+    size_t music_start = 0;
+
+    // Find the start of the embedded IMF files
+    for( int slot = audiohed.size()-2 ; slot>=0 ; slot-- )
+    {
+        const uint32_t audio_start = audiohed[slot];
+        const uint32_t audio_end = audiohed[slot+1];
+
+        // Caution: There are cases where audio_start > audio_end. I don't understand why, but in the original games it happens.
+        // Those slots are invalid. In mods it doesn't seem to happen!
+        // If they are equal, then the music starts there.
+        if(audio_start >= audio_end)
+        {
+            music_start = slot + 1;
+            break;
+        }
+    }
+
+    for( size_t i=music_start ; i<audiohed.size() ; i++ )
+    {
+        musiched.push_back(audiohed[i]);
+    }
+
+
+    return true;
+}
+
+
+
 bool CExeFile::readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
                            std::vector<uint32_t> &musiched,
-                        std::vector<uint8_t> &AudioCompFileData)
+                           std::vector<uint8_t> &AudioCompFileData) const
 
 
 {
-    const int episode = ExeFile.getEpisode();
-
-    if(m_AudioDevSpec.format == 0)
-        return false;
+    const int episode = getEpisode();
 
     /// First get the size of the AUDIO.CK? File.
     uint32_t audiofilecompsize;
     std::string init_audiofilename = "AUDIO.CK" + itoa(episode);
 
-    std::string audiofilename = getResourceFilename( init_audiofilename, ExeFile.getDataDirectory(), true, false);
+    std::string audiofilename = getResourceFilename( init_audiofilename, gKeenFiles.gameDir, true, false);
 
     if( audiofilename == "" )
         return false;
@@ -536,19 +560,39 @@ bool CExeFile::readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
     AudioFile.read((char*) &(AudioCompFileData.front()), audiofilecompsize);
     AudioFile.close();
 
-    std::string audiohedfile = gpKeenFiles->audioHedFilename;
+    std::string audiohedfile = gKeenFiles.audioHedFilename;
 
     if(!audiohedfile.empty())
-        audiohedfile = getResourceFilename( audiohedfile, ExeFile.getDataDirectory(), false, false);
+        audiohedfile = getResourceFilename( audiohedfile, gKeenFiles.gameDir, false, false);
 
     // The musiched is just one part of the AUDIOHED. It's not a separate file.
     // Open the AUDIOHED so we know where to mp_IMF_Data decompress
     if(readMusicHedFromFile(audiohedfile, musiched) == false)
     {
-        return readMusicHedInternal(ExeFile, musiched, audiofilecompsize);
+        return readMusicHedInternal(imfData, musiched, audiofilecompsize);
     }
 
     return !musiched.empty();
 }
+
+
+
+bool CExeFile::loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const
+{
+    // Now get the proper music slot reading the assignment table.
+    std::vector<uint8_t> AudioCompFileData;
+    std::vector<uint32_t> musiched;
+
+    if( readCompressedAudiointoMemory(imfData, musiched, AudioCompFileData) )
+    {
+        unpackAudioInterval(imfData,
+                AudioCompFileData,
+                musiched[track],
+                musiched[track+1]);
+    }
+
+    return true;
+}
+
 
 

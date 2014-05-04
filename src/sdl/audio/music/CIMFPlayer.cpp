@@ -73,52 +73,6 @@ void CIMFPlayer::swapRing(RingBuffer<IMFChunkType> &&ring)
 
 
 
-bool CIMFPlayer::readMusicHedFromFile(const std::string fname, std::vector<uint32_t> &musiched)
-{
-    if(fname.empty())
-        return false;
-    
-    std::ifstream file; 
-    
-    if(!OpenGameFileR(file, fname, std::ios::binary))
-	return false;
-    
-    file.seekg(0, std::ios::end);
-    size_t length = file.tellg();
-    file.seekg(0, std::ios::beg);
-    
-    std::vector<uint32_t> audiohed(length/sizeof(uint32_t));
-    
-    file.read( reinterpret_cast<char*> (&audiohed.front()), length);
-    
-    file.close();
-    
-    size_t music_start = 0;
-    
-    // Find the start of the embedded IMF files
-    for( int slot = audiohed.size()-2 ; slot>=0 ; slot-- )
-    {
-        const uint32_t audio_start = audiohed[slot];
-        const uint32_t audio_end = audiohed[slot+1];
-
-        // Caution: There are cases where audio_start > audio_end. I don't understand why, but in the original games it happens.
-        // Those slots are invalid. In mods it doesn't seem to happen!
-        // If they are equal, then the music starts there.
-        if(audio_start >= audio_end)
-        {
-            music_start = slot + 1;
-            break;
-        }
-    }
-    
-    for( size_t i=music_start ; i<audiohed.size() ; i++ )
-    {
-        musiched.push_back(audiohed[i]);
-    }    
-
-    
-    return true;
-}
 
 
 bool CIMFPlayer::open()
@@ -199,7 +153,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 {
     if(!m_playing)
-	return;
+        return;
     
     /// if a delay of the instruments is pending, play it
 	Uint32 sampleslen = m_AudioDevSpec.samples;

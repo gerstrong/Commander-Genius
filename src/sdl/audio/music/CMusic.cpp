@@ -34,14 +34,12 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 
     RingBuffer<IMFChunkType> imfData;
 
-    if(!ExeFile->loadMusicTrack(imfData, track))
+    if(!ExeFile.loadMusicTrack(imfData, track))
     {
         return false;
     }
 
-    imfPlayer->swapRing(imfData);
-
-    assert(0);
+    imfPlayer->swapRing(std::move(imfData));
 
 	if(!imfPlayer->open())
 	{
