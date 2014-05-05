@@ -116,6 +116,11 @@ public:
         mControlList.clear();
     }
 
+    GsRect<float> getRect() const
+    {
+        return mRect;
+    }
+
 protected:
 
 	void selectPrevItem();

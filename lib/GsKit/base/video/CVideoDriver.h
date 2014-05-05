@@ -74,7 +74,7 @@ public:
     }
 
 	// Drawing related stuff
-	SDL_Rect toBlitRect(const GsRect<float> &rect);
+    SDL_Rect toBlitRect(const GsRect<float> &rect);
 
 	/**
 	 * \description This function saves the given camera bounds. It is usually called

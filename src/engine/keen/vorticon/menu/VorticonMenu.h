@@ -18,10 +18,15 @@ public:
                                                                 0.06f/rect.w,
                                                                 0.06f/rect.h) );
         mpReturnButton->setDown(true);
-        mpMenuDialog->initVorticonBackground();
-        //mpMenuDialog->updateBackground();
+        initVorticonBackground();
     }
 
+    void initVorticonBackground();
+
+    void render();
+
+private:
+    GsSurface mBackground;
 };
 
 #endif /* __VORTICONMENU_H__ */

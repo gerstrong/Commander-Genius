@@ -305,39 +305,6 @@ void CGUIDialog::drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect)
     Font.drawCharacter( backSfc, 8, Rect.w-8, Rect.h-8 );
 }
 
-
-void CGUIDialog::initVorticonBackground()
-{
-    const SDL_Rect Rect = gVideoDriver.toBlitRect(mRect);
-    /*mpBackgroundSfc.reset( CG_CreateRGBSurface( Rect ), &SDL_FreeSurface );
-    mpBackgroundSfc.reset( gVideoDriver.convertThroughBlitSfc( mpBackgroundSfc.get() ), &SDL_FreeSurface );*/
-    mBackgroundSfc.create(0, Rect.w, Rect.h, RES_BPP, 0, 0, 0, 0);
-
-	// Now lets draw the text of the list control
-	GsFont &Font = gGraphics.getFont(1);
-
-    SDL_Surface *backSfc = mBackgroundSfc.getSDLSurface();
-
-
-	// Draw the character so the classical vorticon menu is drawn
-
-	// Start with the blank space (normally it's white. Might be different in some mods)
-	for( int x=8 ; x<Rect.w-8 ; x+=8 )
-	{
-		for( int y=8 ; y<Rect.h-8 ; y+=8 )
-		{
-			Font.drawCharacter( backSfc, 32, x, y );
-		}
-	}
-
-	// Now draw the borders
-    drawBorderRect(backSfc, Rect);
-
-    mpTempSfc.reset( gVideoDriver.convertThroughBlitSfc( backSfc ), &SDL_FreeSurface );
-}
-
-
-
 void CGUIDialog::processLogic()
 {
     // For the special effect not used in the galaxy engine
