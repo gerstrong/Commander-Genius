@@ -206,14 +206,15 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
     LoadSpecialSprites( gGraphics.getSpriteVec(0) );
 
+
     for(unsigned int i=1 ; i<4 ; i++)
     {
         gGraphics.getSpriteVec(i) = gGraphics.getSpriteVec(0);
     }
 
+
     // For the other variant let's exchange some colors
     auto &SpriteVecPlayer2 = gGraphics.getSpriteVec(1);
-    //for( auto &sprite : SpriteVecPlayer2)
     for( unsigned int i = 0 ; i < SpriteVecPlayer2.size() ; i++)
     {
         auto &sprite = SpriteVecPlayer2[i];
@@ -225,6 +226,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
         sprite.exchangeSpriteColor( 2, 6, 0 );
         sprite.exchangeSpriteColor( 10, 14, 0 );
     }
+
 
     auto &SpriteVecPlayer3 = gGraphics.getSpriteVec(2);
     for( auto &sprite : SpriteVecPlayer3)
@@ -263,6 +265,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
         }
     }
 
+
     gResourceLoader.setPermilage(350);
 
     std::set<std::string> filelist;
@@ -271,15 +274,20 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
 	FilterFilelist(filelist, "sprite");
 
+
 	std::set<std::string>::iterator it = filelist.begin();
 	int listsize = filelist.size();
-	for( int c=0 ; it != filelist.end() ; it++, c++ )
+    for( int c=0 ; it != filelist.end() ; it++, c++ )
 	{
 		std::string name=*it;
+
+        if(name.find("_") != name.npos)
+            continue;
+
 		int num = getRessourceID(name, "sprite");
 		if(num < m_numsprites )
 		{
-            GsSprite &Sprite = gGraphics.getSprite(0,num);
+            GsSprite &Sprite = gGraphics.getSprite(0, num);
 			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
 			Sprite.loadHQSprite(filename);
 		}
@@ -287,6 +295,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		percent = (c*150)/listsize;
 		gResourceLoader.setPermilage(350+percent);
     }
+
+
 
 	gResourceLoader.setPermilage(500);
 
