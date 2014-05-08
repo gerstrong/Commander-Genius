@@ -74,6 +74,11 @@ void KeenEngine::ponder(const float deltaT)
 
     GameEngine::ponder(deltaT);
 
+    if(g_pMusicPlayer->active() && !g_pMusicPlayer->playing())
+    {
+       g_pMusicPlayer->play();
+    }
+
     // Did the player press the quit/back button
     if( gInput.getPressedCommand(IC_BACK) )
     {

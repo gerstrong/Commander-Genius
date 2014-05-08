@@ -16,6 +16,7 @@
 
 #include <base/utils/StringUtils.h>
 
+#include "../VorticonEngine.h"
 
 namespace vorticon
 {
@@ -85,9 +86,12 @@ void CAudioSettings::release()
 	g_pSound->destroy();
 	g_pSound->setSettings(mAudioSpec, mSoundblaster);
 	g_pSound->init();
+
+    setupAudio();
+
 	g_pMusicPlayer->reload();
 
-    g_pSettings->saveDrvCfg();
+    g_pSettings->saveDrvCfg();       
 }
 
 }
