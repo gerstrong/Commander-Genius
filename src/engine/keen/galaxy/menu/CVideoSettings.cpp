@@ -54,7 +54,7 @@ private:
 	{
 		mVSettings.mUserVidConf.Fullscreen = !mVSettings.mUserVidConf.Fullscreen;
 		mVSettings.release();
-		mVSettings.init();
+        mVSettings.refresh();
 	}
 
 	CVideoSettings& mVSettings;
