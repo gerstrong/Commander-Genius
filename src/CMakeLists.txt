@@ -130,33 +130,6 @@ SET(EXECUTABLE_OUTPUT_PATH ${BUILD_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/GsKit)
 
-#file(GLOB ALL_SRCS_PART_ROOT src/*.c* src/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_LIB src/lib/*.c* src/lib/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_COMMON src/common/*.c* src/common/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_CORE src/core/*.c* src/core/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_DIALOG src/dialog/*.c* src/dialog/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_ENGINE src/engine/*.c* src/engine/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_FILEIO src/fileio/*.c* src/fileio/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_GRAPHICS src/graphics/*.c* src/graphics/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_GUI src/gui/*.c* src/gui/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_HARDWARE src/hardware/*.c* src/hardware/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_SDL src/sdl/*.c* src/sdl/*.h*)
-#file(GLOB_RECURSE ALL_SRCS_PART_UTILS src/utils/*.c* src/utils/*.h*)
-
-
-#SET(ALL_SRCS ${ALL_SRCS_PART_LIB}
- #            ${ALL_SRCS_PART_ROOT}
-  #           ${ALL_SRCS_PART_COMMON}
-   #          ${ALL_SRCS_PART_CORE}
-    #         ${ALL_SRCS_PART_DIALOG}
-     #        ${ALL_SRCS_PART_ENGINE}
-      #       ${ALL_SRCS_PART_FILEIO}
-       #      ${ALL_SRCS_PART_GRAPHICS}
-        #     ${ALL_SRCS_PART_GUI}
-         #    ${ALL_SRCS_PART_HARDWARE}
-          #   ${ALL_SRCS_PART_SDL}
-           #  ${ALL_SRCS_PART_UTILS}
-            # ${ALL_SRCS_PART_GRAPHICS})
 
 IF(UNIX)
 # Compilation under Linux
@@ -243,6 +216,45 @@ include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion)
 include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 
 
+
+if(USE_SDL2)
+
+    INCLUDE(FindPkgConfig)
+    PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+
+    include(FindSDL2 OPTIONAL)
+
+    if(SDL2_FOUND)
+        message("Using shared SDL Version 2")
+        include_directories(${SDL2_INCLUDE_DIR})
+        include_directories(/usr/include/SDL2/)
+    endif(SDL2_FOUND)
+
+else(USE_SDL2)
+        # SDL2 not found, try SDL
+        FIND_PACKAGE( SDL REQUIRED )
+        if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+                include(FindSDL OPTIONAL)
+        endif()
+        if(SDL_FOUND)
+                message("Using shared SDL Version 1.2")
+                include_directories(${SDL_INCLUDE_DIR})
+                INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
+        else(SDL_FOUND)
+                # TODO: Use the prebuilt one on Windows
+                message("Using static SDL from Externals")
+                include_directories(Externals/SDL Externals/SDL/include)
+                add_subdirectory(Externals/SDL)
+        endif(SDL_FOUND)
+
+        # SDL stuff to link
+        target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
+
+endif(USE_SDL2)
+
+
+
+
 add_subdirectory(engine)
 add_subdirectory(sdl)
 add_subdirectory(fileio)
@@ -259,10 +271,6 @@ add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 # Link GsKit
 target_link_libraries (CGeniusExe GsKit) 
 
-# Executable definition
-#ADD_EXECUTABLE(CommanderGenius ${ALL_SRCS})
-
-
 # Linking part under Linux
 IF(BUILD_TARGET STREQUAL WIN32)
 	TARGET_LINK_LIBRARIES(CGeniusExe mingw32)
@@ -274,7 +282,7 @@ ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 
 # SDL Stuff
-FIND_PACKAGE( SDL_net REQUIRED )
+#FIND_PACKAGE( SDL_net REQUIRED )
 
 # OpenGL Parsing
 find_package(OpenGL REQUIRED)
@@ -309,21 +317,7 @@ IF(BUILD_TARGET STREQUAL WIN32)
 	MESSAGE( "Will build with the CG-Icon for Windows." )
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
-#if(SDL2_FOUND)
-#    target_link_libraries(CGeniusExe ${SDL2_LIBRARY})
-#    # Workaround since there is no SDL2_Image cmake yet
-#    set(SDL_IMAGE_LIBRARIES "SDL2_image")
-#    target_link_libraries(CGeniusExe ${SDL_IMAGE_LIBRARIES})
-#else(SDL2_FOUND)
-#    target_link_libraries(CGeniusExe ${SDL_LIBRARY})
-#    target_link_libraries(CGeniusExe ${SDLIMAGE_LIBRARY})
-#endif(SDL2_FOUND)
 
-include_directories(${SDL_INCLUDE_DIR})
-
-
-# SDL stuff to link
-target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
 
 # OpenGL stuff to link
 target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})

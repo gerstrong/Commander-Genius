@@ -231,7 +231,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceBlendMode(mGameSfc.get(), SDL_BLENDMODE_NONE);
+    SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
 #endif
 
 

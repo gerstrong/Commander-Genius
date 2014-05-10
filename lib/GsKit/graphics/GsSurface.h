@@ -251,7 +251,10 @@ public:
      */
     void flip()
     {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
         SDL_Flip(mpSurface);
+#endif
     }
 
 

@@ -11,6 +11,7 @@
 #include "sdl/audio/Audio.h"
 #include "graphics/GsGraphics.h"
 
+
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 m_mustclose(false),
 m_timer(0)

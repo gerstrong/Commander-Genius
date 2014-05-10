@@ -10,8 +10,8 @@ Project(GsKit)
 
 if(USE_SDL2)
 
-    #INCLUDE(FindPkgConfig)
-    #PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+    INCLUDE(FindPkgConfig)
+    PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 
     include(FindSDL2 OPTIONAL)
 
@@ -87,7 +87,7 @@ add_library(GsKit ${ALL_SRCS_GSKIT_BASE})
 
 
 if(SDL2_FOUND)
-    target_link_libraries(GsKit ${SDL2_LIBRARY})
+    target_link_libraries(GsKit ${SDL2_LIBRARIES})
     # Workaround since there is no SDL2_Image cmake yet
     set(SDL_IMAGE_LIBRARIES "SDL2_image")
     target_link_libraries(GsKit ${SDL_IMAGE_LIBRARIES})
@@ -95,4 +95,6 @@ else(SDL2_FOUND)
     target_link_libraries(GsKit ${SDL_LIBRARY})
     target_link_libraries(GsKit ${SDLIMAGE_LIBRARY})
 endif(SDL2_FOUND)
+
+
 

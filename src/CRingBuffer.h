@@ -48,7 +48,7 @@ public:
 
 
 
-    RingBuffer &operator=(RingBuffer &&second)
+    void operator=(RingBuffer &&second)
     {
         mp_start = second.mp_start;
         mp_cur = second.mp_start;

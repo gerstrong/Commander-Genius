@@ -14,7 +14,6 @@
 #define CEFFECTS_H_
 
 #include <SDL.h>
-//#include "core/LogicDrawSplitter.h"
 
 class CEffects
 {
