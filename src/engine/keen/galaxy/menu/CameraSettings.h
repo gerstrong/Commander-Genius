@@ -22,7 +22,7 @@ class CCameraSettings : public GalaxyMenu
 public:
 	CCameraSettings();
 
-	void init();
+    void refresh();
 
 	void release();
 

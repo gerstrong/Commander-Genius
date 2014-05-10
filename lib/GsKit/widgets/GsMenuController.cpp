@@ -7,8 +7,6 @@
 
 #include "GsMenuController.h"
 #include <base/CInput.h>
-//#include "sdl/music/CMusic.h"
-//#include "engine/core/CBehaviorEngine.h"
 
 void CMenuController::clearMenuStack()
 {
@@ -22,7 +20,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
     if( const OpenMenuEvent* openMenu = dynamic_cast<const OpenMenuEvent*>(evPtr) )
     {
         CBaseMenu &menu = *openMenu->mMenuDialogPointer.get();
-        menu.init();
+        menu.refresh();
 
         // Select the second element. The first one (0) is the close button.
         menu.select(1);
@@ -39,10 +37,6 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const CloseAllMenusEvent*>(evPtr) )
     {
         clearMenuStack();
-    }
-    else
-    {
-        //mMenuStack.back()->release().pump();
     }
 }
 

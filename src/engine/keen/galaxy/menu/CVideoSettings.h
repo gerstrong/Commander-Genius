@@ -27,7 +27,7 @@ class CVideoSettings : public GalaxyMenu
 public:
 	CVideoSettings();
 
-	void init();
+    void refresh();
 
 	void release();
 

@@ -29,7 +29,7 @@ class CControlsettings : public GalaxyMenu
 public:
 	CControlsettings(const int selectedPlayer);
 
-	void init();
+    void refresh();
 
 	void release();
 
@@ -70,7 +70,7 @@ public:
     CControlSettingsMovement(const int selectedPlayer) :
         CControlSettingsBase(selectedPlayer) {}
 
-    void init();
+    void refresh();
 };
 
 
@@ -82,7 +82,7 @@ public:
     CControlSettingsButtons(const int selectedPlayer) :
         CControlSettingsBase(selectedPlayer) {}
 
-	void init();
+    void refresh();
 };
 
 // Create the Control-Menu for the indicated Player

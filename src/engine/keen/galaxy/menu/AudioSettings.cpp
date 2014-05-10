@@ -46,7 +46,7 @@ GalaxyMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 }
 
 
-void CAudioSettings::init()
+void CAudioSettings::refresh()
 {
 	mAudioSpec = g_pSound->getAudioSpec();
 	mSoundblaster = g_pSound->getSoundBlasterMode();

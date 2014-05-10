@@ -22,7 +22,7 @@ class COptions : public GalaxyMenu
 public:
 	COptions();
 
-	void init();
+    void refresh();
 
     void ponder(const float deltaT);
 

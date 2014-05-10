@@ -125,7 +125,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	setMenuLabel("OPTIONSMENULABEL");
 }
 
-void CVideoSettings::init()
+void CVideoSettings::refresh()
 {
 	mUserVidConf = gVideoDriver.getVidConfig();
 

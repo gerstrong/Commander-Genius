@@ -114,7 +114,7 @@ mSelectedPlayer(selectedPlayer)
 
 }
 
-void CControlsettings::init()
+void CControlsettings::refresh()
 {}
 
 
@@ -173,7 +173,7 @@ void CControlSettingsBase::release()
 
 
 
-void CControlSettingsMovement::init()
+void CControlSettingsMovement::refresh()
 {
     mapping = false;
 	mCommandName[IC_LEFT]		= "Left:   ";
@@ -208,7 +208,7 @@ void CControlSettingsMovement::init()
 
 
 // Movements Parts of the Control Settings
-void CControlSettingsButtons::init()
+void CControlSettingsButtons::refresh()
 {
     mapping = false;
 	mCommandName[IC_JUMP] 		= "Jump:   ";
