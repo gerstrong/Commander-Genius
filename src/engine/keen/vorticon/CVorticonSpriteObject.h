@@ -8,7 +8,8 @@
 #ifndef CVORTICONSPRITEOBJECT_H_
 #define CVORTICONSPRITEOBJECT_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/core/CSpriteObject.h"
+#include <base/GsEvent.h>
 
 class CVorticonSpriteObject : public CSpriteObject
 {

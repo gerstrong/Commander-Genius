@@ -60,7 +60,7 @@ m_mustclose(false)
 
 	addControl( mpTextCtrl, TextRect );
 
-    updateBackground();
+    initEmptyBackground();
 }
 
 void CMessageBox::processLogic()

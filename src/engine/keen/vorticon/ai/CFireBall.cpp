@@ -1,5 +1,5 @@
 #include "CFireBall.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 // fireball projectile shot out by Vorticon Mother (Ep3)
 
@@ -22,7 +22,7 @@ CRay(p_map, x, y, dir, CENTER, 0, byType, byID)
 	blockedl = blockedr = 0;
 	canbezapped = 1;
 	if(dir == LEFT)
-		m_Pos -= VectorD2<Uint32>(14<<STC,0);
+		m_Pos -= Vector2D<Uint32>(14<<STC,0);
 
 	m_speed = (g_pBehaviorEngine->mDifficulty>=NORMAL) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
 	sprite = (m_HorDir == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;

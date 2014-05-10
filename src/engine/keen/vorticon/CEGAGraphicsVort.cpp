@@ -6,7 +6,7 @@
  */
 
 #include "CEGAGraphicsVort.h"
-#include "CResourceLoader.h"
+#include "engine/core/CResourceLoader.h"
 
 //#include "sdl/CVideoDriver.h"
 #include "fileio/CTileLoader.h"
@@ -17,7 +17,7 @@
 #include <fstream>
 #include <vector>
 //#include "StringUtils.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 
 namespace vorticon
 {

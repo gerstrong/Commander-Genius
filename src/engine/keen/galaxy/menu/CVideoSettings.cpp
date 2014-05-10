@@ -14,15 +14,17 @@
 #include <widgets/GsMenuController.h>
 
 
-#include "hardware/Configurator.h"
-#include "common/CSettings.h"
+//#include "hardware/Configurator.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "CameraSettings.h"
 #include "CVideoSettings.h"
 //#include "CSettingsMenu.h"
-#include "Utils.h"
+#include <base/utils/Utils.h>
 
 #include "widgets/NumberControl.h"
 #include "widgets/ComboSelection.h"
+
+#include "engine/core/CSettings.h"
 
 
 static const char* aspectList[] =
@@ -52,7 +54,7 @@ private:
 	{
 		mVSettings.mUserVidConf.Fullscreen = !mVSettings.mUserVidConf.Fullscreen;
 		mVSettings.release();
-		mVSettings.init();
+        mVSettings.refresh();
 	}
 
 	CVideoSettings& mVSettings;
@@ -123,7 +125,7 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 	setMenuLabel("OPTIONSMENULABEL");
 }
 
-void CVideoSettings::init()
+void CVideoSettings::refresh()
 {
 	mUserVidConf = gVideoDriver.getVidConfig();
 

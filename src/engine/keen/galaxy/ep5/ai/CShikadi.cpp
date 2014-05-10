@@ -10,7 +10,7 @@
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/ai/CEnemyShot.h"
-#include "misc.h"
+#include <base/utils/misc.h>
 
 /*
 $2D10W #Shikadi stand

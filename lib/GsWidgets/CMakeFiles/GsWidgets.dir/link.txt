@@ -1,2 +1,0 @@
-/usr/bin/ar cr libGsWidgets.a  CMakeFiles/GsWidgets.dir/CGUIControl.cpp.o
-/usr/bin/ranlib libGsWidgets.a

@@ -7,7 +7,7 @@
 
 #include "CBullet.h"
 #include "CPlayerLevel.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 size_t bulletActionMap[] =
 {	0x1738, 0x1502,0x153E	};

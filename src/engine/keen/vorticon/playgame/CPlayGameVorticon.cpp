@@ -6,7 +6,7 @@
  *
  */
 
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
 #include <widgets/GsMenuController.h>
@@ -14,8 +14,8 @@
 
 
 #include "CPlayGameVorticon.h"
-#include "sdl/sound/CSound.h"
-#include "core/mode/CGameMode.h"
+#include "sdl/audio/Audio.h"
+#include "engine/core/mode/CGameMode.h"
 #include "../CVorticonMapLoader.h"
 #include "graphics/GsGraphics.h"
 //#include "StringUtils.h"
@@ -27,6 +27,7 @@
 
 #include "graphics/effects/CColorMerge.h"
 
+#include <fileio/KeenFiles.h>
 
 
 ////
@@ -39,7 +40,7 @@
 ///
 ///
 CPlayGameVorticon::CPlayGameVorticon(const int startlevel) :
-CPlayGame(g_pBehaviorEngine->m_ExeFile, startlevel)
+CPlayGame(gKeenFiles.exeFile, startlevel)
 {
     // If no level has been set or is out of bound, set it to map.
     if(m_Level > 100 || m_Level <= 0 )
@@ -235,12 +236,15 @@ void CPlayGameVorticon::pumpEvent(const CEvent *evPtr)
     {
         if(mMap)
         {
-            gVideoDriver.updateScrollBuffer(mMap);
+            mMap->drawAll();
+            gVideoDriver.updateScrollBuffer(mMap->m_scrollx, mMap->m_scrolly);
             return;
         }
     }
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
+        // The last menu has been removed. Restore back the game status
+        g_pBehaviorEngine->setPause(false);
         gMenuController.clearMenuStack();
         gEventManager.add<GMSwitchToPassiveMode>();
     }

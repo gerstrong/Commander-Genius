@@ -13,14 +13,14 @@
 #define CMIRAGIA_H_
 
 #include "../../common/CGalaxySpriteObject.h"
-#include "CVec.h"
+#include <base/utils/CVec.h>
 
 namespace galaxy {
 
 class CMiragia : public CGalaxySpriteObject
 {
 public:
-	CMiragia(CMap *pmap, const Uint16 foeID, const VectorD2<Uint32> &Location);
+	CMiragia(CMap *pmap, const Uint16 foeID, const Vector2D<Uint32> &Location);
 
 	/**
 	 * Main process cycle

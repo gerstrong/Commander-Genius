@@ -10,9 +10,9 @@
 
 #include <SDL.h>
 #include <string>
-#include "common/CTileProperties.h"
-#include "graphics/GsTilemap.h"
-#include "engine/CPlanes.h"
+//#include "common/CTileProperties.h"
+#include <graphics/GsTilemap.h>
+#include "engine/core/CPlanes.h"
 #include <vector>
 
 class CEGALatch {

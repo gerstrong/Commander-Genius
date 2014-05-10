@@ -10,9 +10,9 @@
 #include "CPatcher.h"
 #include <string.h>
 #include <fstream>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 //#include "../StringUtils.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 
 /**
  * \brief   given a text line(string) with various items to patch, it will read of those

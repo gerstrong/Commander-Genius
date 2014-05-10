@@ -7,7 +7,7 @@
 
 #include "CFoot.h"
 #include "../../common/ai/CPlayerBase.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 namespace galaxy {
 

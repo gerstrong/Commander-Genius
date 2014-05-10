@@ -1,6 +1,6 @@
 // ai for the ball and the jack in ep3
 #include "CBallJack.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 
 #define BALL_SPEED      120
 #define JACK_SPEED      120

@@ -12,7 +12,7 @@
 #include "widgets/Switch.h"
 #include <list>
 
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 namespace galaxy
 {
@@ -22,7 +22,7 @@ class COptions : public GalaxyMenu
 public:
 	COptions();
 
-	void init();
+    void refresh();
 
     void ponder(const float deltaT);
 

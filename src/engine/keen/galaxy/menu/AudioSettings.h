@@ -35,6 +35,7 @@ public:
 
 	void release();
 
+    void refresh();
 
 private:
 

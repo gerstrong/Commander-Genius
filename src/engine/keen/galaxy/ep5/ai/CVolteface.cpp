@@ -9,7 +9,7 @@
 #include "CVolteface.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include "misc.h"
+#include <base/utils/misc.h>
 
 /*
 $1CCCW #Volte Face
@@ -63,7 +63,7 @@ void CVolteface::processMoving()
     {
 	const Uint16 object = mp_Map->getPlaneDataAt(2, target.x, target.y);
 	
-	VectorD2<int> speed(xBlockPos, yBlockPos);	    
+	Vector2D<int> speed(xBlockPos, yBlockPos);	    
 	moveDir(speed);
 	
 	// If there is an object that changes the direction of the plat, apply it!
@@ -71,7 +71,7 @@ void CVolteface::processMoving()
 	detectNextTarget(target, xDirection, yDirection);
     }
     
-    VectorD2<int> speed;
+    Vector2D<int> speed;
     
     if(yDirection == UP)
     {

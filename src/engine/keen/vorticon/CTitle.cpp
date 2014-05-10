@@ -8,7 +8,7 @@
  */
 
 #include "CTitle.h"
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
 //#include "ai/CEGABitmap.h"
 #include "graphics/effects/CColorMerge.h"

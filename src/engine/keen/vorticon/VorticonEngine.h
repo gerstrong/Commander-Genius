@@ -9,6 +9,8 @@ namespace vorticon
 {
 
 
+bool setupAudio();
+
 class VorticonEngine : public KeenEngine
 {
 public:

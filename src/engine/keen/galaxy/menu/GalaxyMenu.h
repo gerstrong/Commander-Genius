@@ -5,13 +5,13 @@
 
 #include "widgets/Button.h"
 
-#include <lib/widgets/GsMenuController.h>
+#include <widgets/GsMenuController.h>
 
 class GalaxyMenu : public CBaseMenu
 {
 public:
     GalaxyMenu( const GsRect<float>& rect ):
-        CBaseMenu( rect, new GalaxyButton( "x", new CloseMenuEvent()) )
+        CBaseMenu( rect, new GalaxyButton( "x", new CloseMenuEvent()), CGUIDialog::FXState(0) )
     {
         GsRect<float> localRect(0.30f, 0.282f, 0.5f, 0.5f);
         mpMenuDialog->setRect(localRect);
@@ -19,9 +19,18 @@ public:
                                   GsRect<float>(
                                       -0.1f, 0.1f, 0.03f/localRect.w, 0.03f/localRect.h) );
         mpReturnButton->setDown(true);
-        mpMenuDialog->updateBackground();
+
+        GsSurface background;
+
+        createGalaxyBackground();
     }
 
+    void createGalaxyBackground();
+
+    void render();
+
+private:
+    GsSurface mBackground;
 
 };
 

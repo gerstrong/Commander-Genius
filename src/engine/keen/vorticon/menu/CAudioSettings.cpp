@@ -9,12 +9,14 @@
 #include "CAudioSettings.h"
 
 #include "widgets/Button.h"
-#include "common/CSettings.h"
-#include "sdl/music/CMusic.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "sdl/audio/music/CMusic.h"
+#include "sdl/audio/Audio.h"
+#include "engine/core/CSettings.h"
 
 #include <base/utils/StringUtils.h>
 
+#include "../VorticonEngine.h"
 
 namespace vorticon
 {
@@ -41,9 +43,6 @@ VorticonMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 
     mpMusicVolume = new NumberControl( "Music Vol", 0, SDL_MIX_MAXVOLUME, 8, g_pSound->getMusicVolume(), true );
     mpMenuDialog->addControl( mpMusicVolume );
-
-    setMenuLabel("SNDEFFMENULABEL");
-
 }
 
 
@@ -87,9 +86,12 @@ void CAudioSettings::release()
 	g_pSound->destroy();
 	g_pSound->setSettings(mAudioSpec, mSoundblaster);
 	g_pSound->init();
+
+    setupAudio();
+
 	g_pMusicPlayer->reload();
 
-    g_pSettings->saveDrvCfg();
+    g_pSettings->saveDrvCfg();       
 }
 
 }

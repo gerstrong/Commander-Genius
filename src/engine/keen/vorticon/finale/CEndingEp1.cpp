@@ -7,11 +7,11 @@
 
 #include "CEndingEp1.h"
 #include <base/utils/StringUtils.h>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/CInput.h>
 #include "graphics/GsGraphics.h"
 #include "../CVorticonMapLoader.h"
-#include "common/Playerdefines.h"
+#include "engine/core/Playerdefines.h"
 
 CEndingEp1::CEndingEp1(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 						const std::shared_ptr<CMap> &pMap, std::vector<CPlayer> &Player,
@@ -69,7 +69,7 @@ void CEndingEp1::ReturnsToShip()
   	    // draw keen next to his ship
 		m_Player[0].hideplayer = false;
 		m_Player[0].solid = false;
-		m_Player[0].moveTo(VectorD2<int>(6636, 19968));
+		m_Player[0].moveTo(Vector2D<int>(6636, 19968));
 		m_Player[0].sprite = PMAPLEFTFRAME;
         m_Player[0].processEvents();
 
@@ -104,7 +104,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].moveTo(VectorD2<int>(6<<CSF, 5<<CSF));
+		m_Player[0].moveTo(Vector2D<int>(6<<CSF, 5<<CSF));
 
 		mpShipFlySys.reset( new CShipFlySys( m_Player[0], mpMap, SPR_SHIP_RIGHT, SPR_SHIP_LEFT) );
 
@@ -219,7 +219,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		m_Player[0].hideplayer = false;
 		x = 48<<CSF;
 		y = 23<<CSF;
-		m_Player[0].moveTo( VectorD2<int>(x,y) );
+		m_Player[0].moveTo( Vector2D<int>(x,y) );
 
 		mpMap->gotoPos((x>>STC)-100, (y>>STC)-160);
 

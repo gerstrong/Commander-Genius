@@ -7,11 +7,11 @@
 
 #include "CProfilesMenu.h"
 #include "engine/keen/menu/CSelectionMenu.h"
-#include "common/CSettings.h"
+#include "engine/core/CSettings.h"
 #include <base/video/CVideoDriver.h>
-#include <lib/base/GsTimer.h>
-#include "common/CBehaviorEngine.h"
-#include "engine/CEvent.h"
+#include <base/GsTimer.h>
+#include "engine/core/CBehaviorEngine.h"
+#include <base/GsEvent.h>
 #include <list>
 #include <string>
 

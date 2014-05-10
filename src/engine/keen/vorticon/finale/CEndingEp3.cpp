@@ -11,7 +11,7 @@
 #include "graphics/effects/CFlash.h"
 #include "graphics/GsGraphics.h"
 #include "../CVorticonMapLoader.h"
-#include "common/Playerdefines.h"
+#include "engine/core/Playerdefines.h"
 
 CEndingEp3::CEndingEp3(std::list< std::shared_ptr<CMessageBoxVort> > &messageBoxes,
 			const std::shared_ptr<CMap> &pMap, 
@@ -68,7 +68,7 @@ void CEndingEp3::HonorScene()
 		MapLoader.load(3, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].moveTo(VectorD2<int>(244<<STC, 104<<STC));
+		m_Player[0].moveTo(Vector2D<int>(244<<STC, 104<<STC));
 		m_Player[0].sprite = 0;
 
 		mpMap->gotoPos(32, 32);
@@ -118,7 +118,7 @@ void CEndingEp3::PaparazziScene()
 		m_step++;
 		m_mustsetup = true;
 		m_Player[0].hideplayer = true;
-		m_Player[0].moveToForce(VectorD2<int>(330<<STC, 104<<STC));
+		m_Player[0].moveToForce(Vector2D<int>(330<<STC, 104<<STC));
 		m_Player[0].sprite = 0;
 	}
 }

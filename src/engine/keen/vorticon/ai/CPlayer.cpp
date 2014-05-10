@@ -13,10 +13,10 @@
 #include "CPlayer.h"
 
 #include <base/CInput.h>
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include <base/video/CVideoDriver.h>
 #include "graphics/GsGraphics.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 #include <stdlib.h>
 
 ///
@@ -131,9 +131,9 @@ void CPlayer::setDatatoZero()
     const int level = mp_Map->getLevel();
 
     if(level==80)
-		pShowDir = VectorD2<direction_t>(CENTER,DOWN);
+		pShowDir = Vector2D<direction_t>(CENTER,DOWN);
 	else
-		pShowDir = VectorD2<direction_t>(RIGHT,CENTER);
+		pShowDir = Vector2D<direction_t>(RIGHT,CENTER);
 
 	pDir = pShowDir;
 	inhibitfall = hideplayer = false;

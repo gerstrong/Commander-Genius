@@ -9,11 +9,13 @@
 #include <string.h>
 #include <fstream>
 #include <iostream>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 //#include "StringUtils.h"
-#include <lib/base/GsLogging.h>
+#include "fileio/KeenFiles.h"
+#include <base/GsLogging.h>
 #include "fileio/ResourceMgmt.h"
-#include "common/CBehaviorEngine.h"
+#include "fileio/KeenFiles.h"
+#include "engine/core/CBehaviorEngine.h"
 
 
 CPatcher::CPatcher(CExeFile &ExeFile, const std::string &patchFname) :
@@ -22,7 +24,6 @@ mPatchFname(patchFname)
 	m_episode = ExeFile.getEpisode();
 	m_version = ExeFile.getEXEVersion();
 	m_data = ExeFile.getRawData();
-	m_datadirectory = ExeFile.getDataDirectory();
 	m_datasize = ExeFile.getExeDataSize();
 }
 
@@ -94,41 +95,41 @@ void CPatcher::process()
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-			gpResource->egaheadFilename = newfileName;
+            gKeenFiles.egaheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "egadict")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-			gpResource->egadictFilename = newfileName;
+            gKeenFiles.egadictFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "audiohed")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-			gpResource->audioHedFilename = newfileName;
+            gKeenFiles.audioHedFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "audiodict")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
 
-			gpResource->audioDictFilename = newfileName;
+            gKeenFiles.audioDictFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "gamemaps")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
-			gpResource->gamemapsFilename = newfileName;
+            gKeenFiles.gamemapsFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "maphead")
 		{
 			std::string newfileName = PatchItem.value.front();
 			TrimSpaces(newfileName);
             filterFilename(newfileName);
-			gpResource->mapheadFilename = newfileName;
+            gKeenFiles.mapheadFilename = newfileName;
 		}
 		else if(PatchItem.keyword == "patch" )
 		{

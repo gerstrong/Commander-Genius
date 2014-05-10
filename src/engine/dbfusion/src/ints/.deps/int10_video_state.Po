@@ -1,0 +1,19 @@
+int10_video_state.o: int10_video_state.cpp /usr/include/stdc-predef.h \
+ ../../include/dosbox.h ../../config.h ../../include/logging.h \
+ ../../include/mem.h ../../include/inout.h int10.h ../../include/vga.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:
+
+../../include/mem.h:
+
+../../include/inout.h:
+
+int10.h:
+
+../../include/vga.h:

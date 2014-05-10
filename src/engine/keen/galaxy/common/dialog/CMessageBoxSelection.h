@@ -9,7 +9,16 @@
 #define CMESSAGEBOXSELECTION_H_
 
 #include "CMessageBoxGalaxy.h"
-#include "engine/CEvent.h"
+#include <base/GsEvent.h>
+
+/**
+ *  \description small structure which bind a string to an event.
+ */
+struct TextEventMatchOption
+{
+    std::string text;
+    std::shared_ptr<CEvent> event;
+};
 
 namespace galaxy
 {

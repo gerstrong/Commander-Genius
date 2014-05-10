@@ -36,7 +36,7 @@ public:
 	void process();
 
 private:
-	const VectorD2<Uint32> m_Origin;
+    const Vector2D<Uint32> m_Origin;
 	void (CPlatformMoveAway::*mpActionProc)();
 	int mSpeed;
 };

@@ -1,7 +1,7 @@
 #include "CButler.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include "graphics/GsGraphics.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 CButler::CButler(CMap *pmap, Uint32 x, Uint32 y) :
 CVorticonSpriteObject(pmap, x, y, OBJ_BUTLER),

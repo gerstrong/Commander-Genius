@@ -1,0 +1,3 @@
+cdrom_ioctl_win32.o: cdrom_ioctl_win32.cpp /usr/include/stdc-predef.h
+
+/usr/include/stdc-predef.h:

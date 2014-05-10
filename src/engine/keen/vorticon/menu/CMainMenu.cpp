@@ -16,9 +16,9 @@
 #include "CSaveMenu.h"
 #include "CHelpMenu.h"
 #include "../CHighScores.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
 
 #include "widgets/Button.h"
 
@@ -77,8 +77,6 @@ void MainMenu::createVorticonMenu( const bool openedGamePlay )
     mpMenuDialog->addControl(new Button( "End Game", new EventEndGamePlay() ) );
 
     mpMenuDialog->addControl(new Button( "Quit", new GMQuit() ) );
-
-	setMenuLabel("MAINMENULABEL");
 
 }
 

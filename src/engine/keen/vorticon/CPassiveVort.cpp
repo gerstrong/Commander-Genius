@@ -9,12 +9,12 @@
 
 #include "graphics/GsGraphics.h"
 #include "CVorticonMapLoader.h"
-#include "common/CTileProperties.h"
+#include "fileio/CTileProperties.h"
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
-#include "common/CGameLauncher.h"
+#include "engine/CGameLauncher.h"
 #include "sdl/extensions.h"
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
 
 namespace vorticon
 {
@@ -69,7 +69,8 @@ void CPassiveVort::pumpEvent(const CEvent *evPtr)
     {
         if(mpMap)
         {
-            gVideoDriver.updateScrollBuffer( mpMap );
+            mpMap->drawAll();
+            gVideoDriver.updateScrollBuffer( mpMap->m_scrollx, mpMap->m_scrolly );
             return;
         }
     }

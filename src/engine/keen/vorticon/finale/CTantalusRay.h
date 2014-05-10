@@ -11,7 +11,7 @@
 #include "CFinale.h"
 #include "../dialog/CMessageBoxVort.h"
 #include "../CVorticonSpriteObject.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "../ai/CVorticonSpriteObjectAI.h"
 #include "graphics/GsBitmap.h"
 //#include "sdl/CVideoDriver.h"

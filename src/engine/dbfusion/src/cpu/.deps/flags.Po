@@ -1,0 +1,24 @@
+flags.o: flags.cpp /usr/include/stdc-predef.h ../../include/dosbox.h \
+ ../../config.h ../../include/logging.h ../../include/cpu.h \
+ ../../include/regs.h ../../include/mem.h lazyflags.h \
+ ../../include/regs.h ../../include/pic.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:
+
+../../include/cpu.h:
+
+../../include/regs.h:
+
+../../include/mem.h:
+
+lazyflags.h:
+
+../../include/regs.h:
+
+../../include/pic.h:

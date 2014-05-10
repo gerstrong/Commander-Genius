@@ -10,7 +10,7 @@
 
 #include "CPlayer.h"
 #include "../CVorticonSpriteObject.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 
 #define OBJ_YORP_DEFSPRITE       50
 

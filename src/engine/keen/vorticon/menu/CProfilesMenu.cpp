@@ -7,11 +7,12 @@
 
 #include "CProfilesMenu.h"
 #include "CSelectionMenu.h"
-#include "common/CSettings.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
-#include <lib/base/GsTimer.h>
-#include "common/CBehaviorEngine.h"
-#include "engine/CEvent.h"
+#include <base/GsTimer.h>
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/core/CSettings.h"
+#include <base/GsEvent.h>
 #include "VorticonMenu.h"
 #include <list>
 #include <string>
@@ -80,7 +81,5 @@ VorticonMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 
 	mpMenuDialog->addControl(new GsButton( "Enhanced mode",
 										     new SetDefaultEnhanced() ) );
-
-	setMenuLabel("OPTIONSMENULABEL");
 }
 

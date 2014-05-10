@@ -16,7 +16,7 @@
 #include "graphics/effects/CPixelate.h"
 #include "sdl/extensions.h"
 #include "menu/MainMenu.h"
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/music/CMusic.h"
 
 
 namespace galaxy
@@ -73,8 +73,8 @@ mSkipSection(false)
     mKeenTextSfc.scaleTo(keenTextRect);
     mKeenTextSfc.setColorKey( 0, 0, 0 );
 
-    mCommanderTextPos = VectorD2<int>(gameRes.w, (gameRes.h-cmdTextRect.h)/2 );
-    mKeenTextPos = VectorD2<int>(-mKeenTextSfc.getWidth(), (gameRes.h-cmdTextRect.h)/2 );
+    mCommanderTextPos = Vector2D<int>(gameRes.w, (gameRes.h-cmdTextRect.h)/2 );
+    mKeenTextPos = Vector2D<int>(-mKeenTextSfc.getWidth(), (gameRes.h-cmdTextRect.h)/2 );
 
     GsRect<Uint16> logoBmpRect;
     logoBmpRect.w = mCurrentLogoBmp.getWidth();

@@ -1,7 +1,9 @@
-#include "engine/spritedefines.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/spritedefines.h"
+#include "sdl/audio/Audio.h"
 #include "CTank.h"
 #include "CRay.h"
+
+#include "fileio/KeenFiles.h"
 
 CTank::CTank(CMap *p_map, Uint32 x, Uint32 y, object_t objtype) :
 CVorticonSpriteObject(p_map, x, y, objtype, 0)
@@ -21,7 +23,7 @@ CVorticonSpriteObject(p_map, x, y, objtype, 0)
 	
 	// Read this from the Exe-File. Patchwork Mod 1 uses different one!
 	shotHeight = 0; 
-	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    byte *ptr = gKeenFiles.exeFile.getRawData();
 	ptr += 0x4900;
 	memcpy(&shotHeight, ptr, 1 );	
 	shotHeight <<= STC;

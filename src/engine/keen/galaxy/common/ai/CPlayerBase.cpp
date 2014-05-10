@@ -9,7 +9,7 @@
 #include "CItemEffect.h"
 #include "CSpriteItem.h"
 #include <base/CInput.h>
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 namespace galaxy {
 
@@ -388,7 +388,7 @@ void CPlayerBase::processLevelMiscFlagsCheck()
 
 
 
-void CPlayerBase::guideToTarget(const VectorD2<int> &speed)
+void CPlayerBase::guideToTarget(const Vector2D<int> &speed)
 {
 	// Check x and y diff
 	const int xDiff = mTarget.x - getXMidPos();
@@ -397,7 +397,7 @@ void CPlayerBase::guideToTarget(const VectorD2<int> &speed)
 	const int yAbsDiff = abs(yDiff);
 
 	// obtained speed
-	VectorD2<int> obtSpeed = speed;
+    Vector2D<int> obtSpeed = speed;
 
 	while( xAbsDiff < obtSpeed.x )
 		obtSpeed.x /= 2;
@@ -486,7 +486,7 @@ void CPlayerBase::respawnImportantItem(const int itemId)
 
         if(itemId == 4)
         {
-            VectorD2<int> where = mp_Map->getSpriteOrigin(105);
+            Vector2D<int> where = mp_Map->getSpriteOrigin(105);
             spawnObj( new galaxy::CSpriteItem(mp_Map, 0x46, where.x, where.y, 105, 0) );
             return;
         }
@@ -500,7 +500,7 @@ void CPlayerBase::respawnImportantItem(const int itemId)
     const Uint32 newsprite = epOffset+2*itemId;
 
     // Now respawn the item
-    VectorD2<int> where = mp_Map->getSpriteOrigin(itemId+itemOffset);
+    Vector2D<int> where = mp_Map->getSpriteOrigin(itemId+itemOffset);
     spawnObj( new galaxy::CSpriteItem(mp_Map, itemId+itemOffset, where.x, where.y, newsprite, 0) );
 }
 

@@ -8,9 +8,10 @@
 #include "AudioSettings.h"
 #include <base/utils/StringUtils.h>
 
-#include "common/CSettings.h"
-#include "sdl/music/CMusic.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/core/CSettings.h"
+#include "sdl/audio/music/CMusic.h"
+#include "sdl/audio/Audio.h"
 
 #include "../GalaxyEngine.h"
 
@@ -45,7 +46,7 @@ GalaxyMenu(GsRect<float>(0.075f, 0.24f, 0.85f, 0.4f) )
 }
 
 
-void CAudioSettings::init()
+void CAudioSettings::refresh()
 {
 	mAudioSpec = g_pSound->getAudioSpec();
 	mSoundblaster = g_pSound->getSoundBlasterMode();

@@ -7,7 +7,8 @@
 
 #include "CMimrock.h"
 #include "../../common/ai/CPlayerBase.h"
-#include "misc.h"
+#include <base/utils/misc.h>
+
 
 namespace galaxy {
     

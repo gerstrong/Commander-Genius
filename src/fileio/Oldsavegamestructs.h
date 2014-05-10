@@ -18,8 +18,8 @@
 #ifndef OLDSAVEGAMESTRUCTS_H_
 #define OLDSAVEGAMESTRUCTS_H_
 
-#include "common/Playerdefines.h"
-#include "common/inventory.h"
+#include "engine/core/Playerdefines.h"
+#include "engine/core/inventory.h"
 
 struct OldSaveGameFormatV5
 {

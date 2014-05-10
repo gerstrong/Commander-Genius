@@ -1,0 +1,54 @@
+core_full.o: core_full.cpp /usr/include/stdc-predef.h \
+ ../../include/dosbox.h ../../config.h ../../include/logging.h \
+ ../../include/pic.h ../../include/regs.h ../../include/mem.h \
+ ../../include/cpu.h lazyflags.h ../../include/paging.h \
+ ../../include/fpu.h ../../include/debug.h ../../include/inout.h \
+ ../../include/callback.h core_full/loadwrite.h core_full/support.h \
+ core_full/optable.h instructions.h core_full/load.h \
+ core_full/ea_lookup.h core_full/string.h core_full/op.h core_full/save.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:
+
+../../include/pic.h:
+
+../../include/regs.h:
+
+../../include/mem.h:
+
+../../include/cpu.h:
+
+lazyflags.h:
+
+../../include/paging.h:
+
+../../include/fpu.h:
+
+../../include/debug.h:
+
+../../include/inout.h:
+
+../../include/callback.h:
+
+core_full/loadwrite.h:
+
+core_full/support.h:
+
+core_full/optable.h:
+
+instructions.h:
+
+core_full/load.h:
+
+core_full/ea_lookup.h:
+
+core_full/string.h:
+
+core_full/op.h:
+
+core_full/save.h:

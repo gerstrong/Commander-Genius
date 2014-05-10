@@ -14,11 +14,12 @@
 #include <iostream>
 #include <fstream>
 
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
+#include <base/GsEvent.h>
 #include <base/utils/StringUtils.h>
-#include "fileio/TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
 #include "CSingleton.h"
-#include "engine/CEvent.h"
+//#include "engine/CEvent.h"
 #include "Oldsavegamestructs.h"
 
 #include <boost/property_tree/ptree.hpp>

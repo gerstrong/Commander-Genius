@@ -12,7 +12,7 @@
 
 #include "widgets/NumberControl.h"
 
-#include "sdl/CVidConfig.h"
+#include <base/video/CVidConfig.h>
 
 namespace galaxy
 {
@@ -22,7 +22,7 @@ class CCameraSettings : public GalaxyMenu
 public:
 	CCameraSettings();
 
-	void init();
+    void refresh();
 
 	void release();
 

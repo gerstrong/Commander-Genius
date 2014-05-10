@@ -8,12 +8,12 @@
 #include <stdio.h>
 
 #include <base/video/CVideoDriver.h>
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include "fileio.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
-#include <base/Debug.h>
-#include <base/FindFile.h>
+#include <base/utils/Debug.h>
+#include <base/utils/FindFile.h>
 
 #ifdef TARGET_WIN32
 #define uint unsigned int

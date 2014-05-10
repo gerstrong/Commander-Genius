@@ -8,13 +8,30 @@
 #ifndef __CVORTICONSPRITEOBJECTAI_H_
 #define __CVORTICONSPRITEOBJECTAI_H_
 
-#include "common/CMap.h"
-#include "common/CSpriteObject.h"
-#include "common/options.h"
+#include "engine/core/CMap.h"
+#include "engine/core/CSpriteObject.h"
+#include "engine/core/options.h"
 #include "CPlayer.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
 #include <vector>
+
+
+
+/**
+ *	\description This event will erase all the enemies, etc, except the player
+ */
+struct EventEraseAllEnemies : CEvent {};
+
+
+
+/**
+ *	\description This event will erase all the enemies, etc, except the player
+ */
+struct EventEraseAllMeeps : CEvent {};
+
+
+
 
 class CVorticonSpriteObjectAI
 {

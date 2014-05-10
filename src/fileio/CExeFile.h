@@ -15,7 +15,9 @@
 #define CEXEFILE_H_
 
 #include "fileio/crc.h"
-#include "TypeDefinitions.h"
+#include <base/TypeDefinitions.h>
+
+#include "sdl/audio/music/CIMFPlayer.h"
 
 #include <vector>
 #include <string>
@@ -25,10 +27,14 @@ class CExeFile {
 public:
 	CExeFile();
 	
-	char getEpisode() const;
-	std::string getDataDirectory() const;
-	std::string getFileName() { return m_filename; }
-	size_t getExeDataSize() const;
+    char getEpisode() const
+    { return m_episode;	}
+
+    size_t getExeDataSize() const
+    { return m_datasize;	}
+
+    std::string getFileName()
+    { return m_filename; }
 
 	unsigned long fetchUncompressedHeaderSize(void *m_headerdata);
 
@@ -46,11 +52,38 @@ public:
 	int getEXECrc();
 	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
 	
-	byte* getRawData() const;
-	void* getHeaderData() const;
-	byte* getDSegPtr() const;
+
+    byte* getRawData() const
+    {	return m_rawdata;	}
+
+    void* getHeaderData() const
+    {	return m_headerdata;	}
+
+    byte* getDSegPtr() const
+    {	return m_data_segment; }
+
+    bool loadMusicTrack(RingBuffer<IMFChunkType> &imfData, const int track) const;
+
 
 private:
+
+    bool readMusicHedFromFile(const std::string &fname,
+                  std::vector<uint32_t> &musiched) const;
+
+    bool unpackAudioInterval(RingBuffer<IMFChunkType> &imfData,
+                              const std::vector<uint8_t> &AudioCompFileData,
+                              const int audio_start,
+                              const int audio_end) const;
+
+    bool readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
+                              std::vector<uint32_t> &musiched,
+                              const size_t audiofilecompsize) const;
+
+
+    bool readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
+                                       std::vector<uint32_t> &musiched,
+                                       std::vector<uint8_t> &AudioCompFileData) const;
+
 
 	struct EXE_HEADER
 	{
@@ -78,7 +111,6 @@ private:
 	void *m_headerdata;
 	byte *m_rawdata;
 	byte *m_data_segment;
-	std::string m_datadirectory;
 	std::string m_filename;
 
 	std::map< size_t, std::map<int , bool> > m_supportmap;

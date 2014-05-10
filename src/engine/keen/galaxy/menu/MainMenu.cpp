@@ -15,9 +15,9 @@
 #include "LoadMenu.h"
 #include "SaveMenu.h"
 #include "CHelpMenu.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
-#include "core/mode/CGameMode.h"
+//#include "core/mode/CGameMode.h"
 
 #include "widgets/Button.h"
 #include "../../menu/CSelectionMenu.h"

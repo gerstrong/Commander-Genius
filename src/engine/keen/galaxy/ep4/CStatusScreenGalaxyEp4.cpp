@@ -7,8 +7,9 @@
 
 #include "CStatusScreenGalaxyEp4.h"
 #include "graphics/GsGraphics.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/utils/StringUtils.h>
+#include "fileio/KeenFiles.h"
 
 CStatusScreenGalaxyEp4::CStatusScreenGalaxyEp4(const stItemGalaxy& Item) :
 CStatusScreenGalaxy(Item)
@@ -58,7 +59,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	SDL_FillRect(mpStatusSurface.get(), &TempRect, 0xFF000000);
 	gGraphics.drawDigits(getRightAlignedString(itoa(m_Item.m_lifeAt), 8), TempRect.x, TempRect.y+2, mpStatusSurface.get());
 
-	byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    byte *ptr = gKeenFiles.exeFile.getRawData();
 			
 	std::string rescLine = "RESCUED           LEVEL";
 	std::string dropsLine;

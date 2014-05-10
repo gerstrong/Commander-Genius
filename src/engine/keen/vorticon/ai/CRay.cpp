@@ -1,9 +1,9 @@
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "CRay.h"
-#include "engine/spritedefines.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/spritedefines.h"
+#include "engine/core/CBehaviorEngine.h"
 //#include "sdl/CVideoDriver.h"
 
 #define Sprite gGraphics.Sprite

@@ -9,7 +9,8 @@
 #define CTILELOADER_H_
 
 #include "graphics/GsTilemap.h"
-#include "common/CBehaviorEngine.h"
+//#include "core/CBehaviorEngine.h"
+#include "CTileProperties.h"
 #include "CExeFile.h"
 #include <map>
 

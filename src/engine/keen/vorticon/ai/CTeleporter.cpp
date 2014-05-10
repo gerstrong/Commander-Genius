@@ -1,5 +1,5 @@
 #include "CTeleporter.h"
-#include <sdl/sound/CSound.h>
+#include "sdl/audio/Audio.h"
 
 // Teleporter on world map
 // (animates the teleporter and moves the player)
@@ -119,7 +119,7 @@ void CTeleporter::process()
 			// In this part the player must be invisible and go to the new position, then get teleported out.
 			x = destx<<CSF;
 			y = desty<<CSF;
-			moveTo(VectorD2<int>(x, y));
+			moveTo(Vector2D<int>(x, y));
 			m_Player[player].pDir.y = DOWN;
 			m_Player[player].beingteleported = true;
 			m_Player[player].solid = false;
@@ -147,7 +147,7 @@ void CTeleporter::process()
 
 			if(diff_x<=TELEPORTATION_SPEED && diff_y<=TELEPORTATION_SPEED)
 			{
-				m_Player[player].moveTo(VectorD2<int>(x, y));
+				m_Player[player].moveTo(Vector2D<int>(x, y));
 				direction = TELEPORTING_OUT;
 
 				idleframe = mp_Map->at(x>>CSF, y>>CSF);

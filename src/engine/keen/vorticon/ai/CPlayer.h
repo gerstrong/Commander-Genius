@@ -12,12 +12,12 @@
 //#include "inventory.h"
 #include "../CVorticonSpriteObject.h"
 #include "../ai/CMessie.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include "../CStatusScreen.h"
-#include "common/Playerdefines.h"
-#include "common/options.h"
-#include "engine/CCamera.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/Playerdefines.h"
+#include "engine/core/options.h"
+#include "engine/core/CCamera.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -170,7 +170,7 @@ public:
     int ankhtime;
 
 
-	VectorD2<int> pDir,pShowDir,lastPDir;
+	Vector2D<int> pDir,pShowDir,lastPDir;
 
 	char pfireframetimer;
 	bool inhibitwalking;

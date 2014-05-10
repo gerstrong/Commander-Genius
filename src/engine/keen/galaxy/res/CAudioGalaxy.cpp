@@ -7,12 +7,13 @@
 
 #include <fstream>
 #include "CAudioGalaxy.h"
-#include <lib/base/GsLogging.h>
-#include <base/FindFile.h>
+#include <base/GsLogging.h>
+#include <base/utils/FindFile.h>
 #include "fileio/ResourceMgmt.h"
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include "fileio/compression/CHuffman.h"
-#include "common/CBehaviorEngine.h"
+#include "fileio/KeenFiles.h"
+#include "engine/core/CBehaviorEngine.h"
 
 CAudioGalaxy::CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),
@@ -61,8 +62,8 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
  */
 void CAudioGalaxy::setupAudioMap()
 {
-    // Preparation which might help wehn some patches are applied
-    byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    // Preparation which might help wehn some patches are applied    
+    byte *ptr = gKeenFiles.exeFile.getRawData();
     auto episode = g_pBehaviorEngine->getEpisode();
     size_t holder = 0;
 
@@ -284,7 +285,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		// Open the Huffman dictionary and get AUDIODICT
 		CHuffman Huffman;
 
-		std::string audioDictfilename = getResourceFilename( gpResource->audioDictFilename, ExeFile.getDataDirectory(), false, false);
+        std::string audioDictfilename = getResourceFilename( gKeenFiles.audioDictFilename, gKeenFiles.gameDir, false, false);
 
 		if(audioDictfilename.empty())
 		    Huffman.readDictionaryNumber( ExeFile, 0 );
@@ -293,9 +294,9 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 		/// First get the size of the AUDIO.CK? File.
 		uint32_t audiofilecompsize;
-		std::string init_audiofilename = gpResource->audioFilename;
+        std::string init_audiofilename = gKeenFiles.audioFilename;
 
-		std::string audiofilename = getResourceFilename( init_audiofilename, ExeFile.getDataDirectory(), true, false);
+        std::string audiofilename = getResourceFilename( init_audiofilename, gKeenFiles.gameDir, true, false);
 
 		if( audiofilename == "" )
 		{
@@ -318,8 +319,8 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 		// Open the AUDIOHED so we know where to decompress the audio
 
-		std::string audiohedfilename = gpResource->audioHedFilename;
-		audiohedfilename = getResourceFilename( audiohedfilename, ExeFile.getDataDirectory(), false, false);
+        std::string audiohedfilename = gKeenFiles.audioHedFilename;
+        audiohedfilename = getResourceFilename( audiohedfilename, gKeenFiles.gameDir, false, false);
 
 		uint32_t *audiostarthedptr;
 		uint32_t *audioendhedptr;

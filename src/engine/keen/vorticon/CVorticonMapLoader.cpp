@@ -9,15 +9,15 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CRLE.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "graphics/GsGraphics.h"
-#include "CResourceLoader.h"
+#include "engine/core/CResourceLoader.h"
 #include "fileio/Oldsavegamestructs.h"
 
 #include "ai/CYorp.h"
@@ -212,7 +212,8 @@ bool CVorticonMapLoaderBase::load( Uint8 episode,
 	}
 	
 	// Set Map Delegation Object and refresh whole level
-	gVideoDriver.updateScrollBuffer( mpMap );
+    mpMap->drawAll();
+    gVideoDriver.updateScrollBuffer( mpMap->m_scrollx, mpMap->m_scrolly );
 
 	return true;
 }
@@ -234,7 +235,8 @@ bool CVorticonMapLoaderWithPlayer::load( Uint8 episode,
     }
 
     // Set Map Delegation Object and refresh whole level
-    gVideoDriver.updateScrollBuffer( mpMap );
+    mpMap->drawAll();
+    gVideoDriver.updateScrollBuffer( mpMap->m_scrollx, mpMap->m_scrolly );
 
     return true;
 }

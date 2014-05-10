@@ -12,7 +12,7 @@
 #include <string>
 #include <memory>
 #include "CInfoScene.h"
-#include "common/CMap.h"
+#include "engine/core/CMap.h"
 #include <graphics/GsFont.h>
 
 class CCredits : public CInfoScene

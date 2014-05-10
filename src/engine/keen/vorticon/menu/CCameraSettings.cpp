@@ -8,7 +8,8 @@
 
 #include <base/video/CVideoDriver.h>
 #include "CCameraSettings.h"
-#include "common/CSettings.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/core/CSettings.h"
 #include <base/utils/StringUtils.h>
 
 namespace vorticon
@@ -38,8 +39,6 @@ m_CameraBounds(gVideoDriver.getCameraBounds())
     mpSpeedAdjust = new NumberControl( "Speed",
                                              1, 50, 1, 25, false );
 	mpMenuDialog->addControl( mpSpeedAdjust );
-
-	setMenuLabel("OPTIONSMENULABEL");
 }
 
 

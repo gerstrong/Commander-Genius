@@ -8,7 +8,7 @@
 
 #include "CMastersShot.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include "misc.h"
+#include <base/utils/misc.h>
 
 /*
 $2C20W #Master's shot

@@ -13,7 +13,7 @@
 #include <map>
 #include <SDL.h>
 #include "fileio/CExeFile.h"
-#include "engine/CEGAGraphics.h"
+#include "engine/core/CEGAGraphics.h"
 #include "graphics/GsTilemap.h"
 
 #include "EGAStructs.h"

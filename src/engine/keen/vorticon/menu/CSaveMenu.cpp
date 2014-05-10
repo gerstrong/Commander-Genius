@@ -15,7 +15,7 @@
 
 #include "widgets/Inputtext.h"
 #include "fileio/CSaveGameController.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 const std::string EMPTY_TEXT = "EMPTY";
 
@@ -38,8 +38,30 @@ m_overwrite(false)
 
         mpMenuDialog->addControl(new InputText( text ) );
 	}
+}
 
-	setMenuLabel("SAVEMENULABEL");
+
+void CSaveMenu::refresh()
+{
+    // Load the state-file list
+    std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
+
+    std::list< std::shared_ptr<CGUIControl> > &list = mpMenuDialog->getControlList();
+
+    auto itCtrl = list.begin();
+    itCtrl++;
+
+    for(Uint32 i=0 ;i<8 ; i++)
+    {
+        std::string text = EMPTY_TEXT;
+        if(i <= StateFileList.size())
+            text = StateFileList.at(i);
+
+        std::shared_ptr<CGUIControl> &ctrl = *itCtrl;
+        InputText *input = dynamic_cast<InputText*>( ctrl.get() );
+
+        input->setText(text);
+    }
 }
 
 void CSaveMenu::ponder()
@@ -85,6 +107,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 				if(pInput->Typing())
 				{
 					gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
+                    g_pBehaviorEngine->setPause(false);
 					gEventManager.add( new CloseAllMenusEvent() );
 				}
 				else

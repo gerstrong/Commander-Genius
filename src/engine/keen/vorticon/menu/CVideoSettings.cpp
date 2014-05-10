@@ -13,11 +13,12 @@
 #include <widgets/GsMenuController.h>
 
 
-#include "hardware/Configurator.h"
-#include "common/CSettings.h"
+//#include "hardware/Configurator.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "CCameraSettings.h"
 #include "CVideoSettings.h"
-#include "Utils.h"
+#include "engine/core/CSettings.h"
+//#include "Utils.h"
 
 
 static const char* aspectList[] =
@@ -113,8 +114,6 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
 
     mpSFXSwitch = new Switch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch );
-
-	setMenuLabel("OPTIONSMENULABEL");
 }
 
 void CVideoSettings::init()

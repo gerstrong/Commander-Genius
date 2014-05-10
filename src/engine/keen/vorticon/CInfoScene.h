@@ -10,7 +10,8 @@
 #ifndef CINFOSCENE_H_
 #define CINFOSCENE_H_
 
-#include "engine/CEvent.h"
+#include <base/GsEvent.h>
+
 
 class CInfoScene
 {

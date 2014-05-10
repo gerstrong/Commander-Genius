@@ -1,4 +1,4 @@
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 
 #include "CPlatform.h"
 

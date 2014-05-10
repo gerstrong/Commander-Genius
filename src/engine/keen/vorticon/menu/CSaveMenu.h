@@ -17,6 +17,7 @@ class CSaveMenu : public VorticonMenu
 {
 public:
 	CSaveMenu();
+    void refresh();
     void processSpecific(){}
     void ponder();
 	void sendEvent(std::shared_ptr<CEvent> &command);

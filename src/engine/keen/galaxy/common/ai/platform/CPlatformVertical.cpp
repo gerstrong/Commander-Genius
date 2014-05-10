@@ -6,7 +6,7 @@
  */
 
 #include "CPlatformVertical.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include <base/video/CVideoDriver.h>
 
 

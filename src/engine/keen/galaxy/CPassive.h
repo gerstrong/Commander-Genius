@@ -8,7 +8,7 @@
 #ifndef CPASSIVE_GALAXY_H_
 #define CPASSIVE_GALAXY_H_
 
-#include "../../CPassive.h"
+#include "engine/core/CPassive.h"
 #include <string>
 
 namespace galaxy
@@ -41,10 +41,10 @@ public:
 
     std::shared_ptr<SDL_Surface> mpZoomSurface;
 
-    VectorD2<int> mCommanderTextPos;
-    VectorD2<int> mKeenTextPos;
-    VectorD2<int> mZoomSfcPos;
-    VectorD2<int> mZoomSfcZoom;
+    Vector2D<int> mCommanderTextPos;
+    Vector2D<int> mKeenTextPos;
+    Vector2D<int> mZoomSfcPos;
+    Vector2D<int> mZoomSfcZoom;
 
     int mMaxSeparationWidth;
     int mLogoPosY;

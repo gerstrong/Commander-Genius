@@ -20,8 +20,8 @@
 #include <vector>
 #include <memory>
 #include "graphics/GsGraphics.h"
-#include "common/CSpriteObject.h"
-#include "common/CMap.h"
+#include "engine/core/CSpriteObject.h"
+#include "engine/core/CMap.h"
 
 namespace vorticon
 {

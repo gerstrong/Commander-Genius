@@ -9,7 +9,7 @@
 
 
 #include "ItemsGalaxy.h"
-
+#include "engine/core/CBehaviorEngine.h"
 
 
 void stItemGalaxy::reset()

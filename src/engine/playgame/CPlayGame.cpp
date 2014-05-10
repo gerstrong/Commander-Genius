@@ -9,6 +9,9 @@
 #include "graphics/GsGraphics.h"
 
 #include <widgets/GsMenuController.h>
+#include <fileio/KeenFiles.h>
+
+// TODO: I think this should go into the keen directory, maybe, because many elements are keen related, not all though.
 
 CPlayGame::CPlayGame(CExeFile &ExeFile, char level) :
 m_endgame(false),
@@ -22,7 +25,7 @@ m_restartVideo(false),
 mp_option(g_pBehaviorEngine->m_option)
 {
     m_NumSprites = gGraphics.getNumSprites(0);
-	m_Gamepath = ExeFile.getDataDirectory();
+    m_Gamepath = gKeenFiles.gameDir;
 	m_alldead = false;
 	m_hideobjects = false;
 	m_checkpoint_x = m_checkpoint_y = 0;
@@ -34,6 +37,8 @@ void CPlayGame::pumpEvent(const CEvent *evPtr)
 {
     if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
+        // The last menu has been removed. Restore back the game status
+        g_pBehaviorEngine->setPause(false);
         gMenuController.clearMenuStack();
         m_endgame = true;
     }

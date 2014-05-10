@@ -12,7 +12,7 @@
 
 #include <base/video/GsEffectController.h>
 
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 
 class CVibrate : public CEffects
 {

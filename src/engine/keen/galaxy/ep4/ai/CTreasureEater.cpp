@@ -10,7 +10,8 @@
 #include "../../common/ai/CBullet.h"
 #include "../../common/ai/CSpriteItem.h"
 #include "../../common/ai/CItemEffect.h"
-#include "misc.h"
+#include <base/utils/misc.h>
+
 
 namespace galaxy {
 

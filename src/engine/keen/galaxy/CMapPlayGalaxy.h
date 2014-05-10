@@ -12,24 +12,23 @@
 #ifndef CMAPPLAYGALAXY_H_
 #define CMAPPLAYGALAXY_H_
 
-#include "common/Cheat.h"
+#include "engine/core/Cheat.h"
 #include "fileio/CExeFile.h"
 #include "common/CInventory.h"
 #include "common/CGalaxySpriteObject.h"
-#include "common/CBehaviorEngine.h"
+//#include "engine/core/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"
 #include <base/CInput.h>
 //#include "sdl/CVideoDriver.h"
-#include "sdl/music/CMusic.h"
-#include "core/LogicDrawSplitter.h"
+#include "sdl/audio/music/CMusic.h"
 #include <base/utils/StringUtils.h>
 #include <memory>
 #include <vector>
 #include <list>
 
-class CMapPlayGalaxy : public GameState
+class CMapPlayGalaxy
 {
 public:
     CMapPlayGalaxy(CExeFile &ExeFile, std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);

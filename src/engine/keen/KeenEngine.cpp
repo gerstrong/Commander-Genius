@@ -3,11 +3,12 @@
 #include <widgets/GsMenuController.h>
 
 #include "KeenEngine.h"
-#include "common/CGameLauncher.h"
-#include "fileio/ResourceMgmt.h"
+#include "../CGameLauncher.h"
+#include <fileio/ResourceMgmt.h>
 #include "fileio/CSaveGameController.h"
+#include "fileio/KeenFiles.h"
 
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/music/CMusic.h"
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
 
@@ -23,7 +24,7 @@ void KeenEngine::switchToGamePlayMode()
     if(numPlayers <= 0)
         numPlayers = 1;
 
-    std::string DataDirectory = g_pBehaviorEngine->m_ExeFile.getDataDirectory();
+    std::string DataDirectory = gKeenFiles.gameDir;
     gEventManager.add( new GMSwitchToPlayGameMode( episode, numPlayers, DataDirectory ) );
 }
 
@@ -33,7 +34,7 @@ void KeenEngine::start()
 {
     int version;
 
-    CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    CExeFile &ExeFile = gKeenFiles.exeFile;
 
     version = ExeFile.getEXEVersion();
 
@@ -46,7 +47,7 @@ void KeenEngine::start()
         return;
     }
 
-    gpResource->setupFilenames(mEp);
+    gKeenFiles.setupFilenames(mEp);
 
     g_pBehaviorEngine->setEpisode(mEp);
 
@@ -72,6 +73,11 @@ void KeenEngine::ponder(const float deltaT)
         return;
 
     GameEngine::ponder(deltaT);
+
+    if(g_pMusicPlayer->active() && !g_pMusicPlayer->playing())
+    {
+       g_pMusicPlayer->play();
+    }
 
     // Did the player press the quit/back button
     if( gInput.getPressedCommand(IC_BACK) )

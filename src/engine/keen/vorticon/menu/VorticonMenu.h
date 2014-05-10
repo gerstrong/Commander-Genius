@@ -3,8 +3,8 @@
 
 #include <widgets/GsBaseMenu.h>
 
-#include <lib/widgets/GsMenuController.h>
-#include <lib/base/video/CVideoDriver.h>
+#include <widgets/GsMenuController.h>
+#include <base/video/CVideoDriver.h>
 
 
 class VorticonMenu : public CBaseMenu
@@ -18,9 +18,15 @@ public:
                                                                 0.06f/rect.w,
                                                                 0.06f/rect.h) );
         mpReturnButton->setDown(true);
-        mpMenuDialog->updateBackground();
+        initVorticonBackground();
     }
 
+    void initVorticonBackground();
+
+    void render();
+
+private:
+    GsSurface mBackground;
 };
 
 #endif /* __VORTICONMENU_H__ */

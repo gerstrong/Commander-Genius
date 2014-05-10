@@ -8,10 +8,11 @@
 #ifndef CGALAXYSPRITEOBJECT_H_
 #define CGALAXYSPRITEOBJECT_H_
 
-#include "common/CSpriteObject.h"
+#include "engine/core/CSpriteObject.h"
 #include <fileio/CSaveGameController.h>
 
 #include <boost/property_tree/ptree.hpp>
+
 
 class CGalaxySpriteObject: public CSpriteObject
 {
@@ -53,7 +54,7 @@ public:
 	uint16_t mFoeID;
 	uint16_t m_ActionTicker;
 	uint16_t m_ActionNumber;
-	//VectorD2<int> next;
+	//Vector2D<int> next;
 	size_t m_ActionBaseOffset;
 
 	int nextX;

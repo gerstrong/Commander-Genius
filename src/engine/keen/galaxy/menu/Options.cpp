@@ -7,7 +7,7 @@
 
 #include "Options.h"
 #include <base/CInput.h>
-#include "common/CSettings.h"
+#include "engine/core/CSettings.h"
 
 namespace galaxy
 {
@@ -26,7 +26,7 @@ mpOption(g_pBehaviorEngine->m_option)
 	setMenuLabel("OPTIONSMENULABEL");
 }
 
-void COptions::init()
+void COptions::refresh()
 {
     std::list<Switch*>::iterator it = mpOptionList.begin();
 

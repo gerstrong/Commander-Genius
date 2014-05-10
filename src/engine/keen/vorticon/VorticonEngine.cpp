@@ -6,13 +6,13 @@
 #include <widgets/GsMenuController.h>
 #include <base/GsArguments.h>
 
-#include "CResourceLoader.h"
-#include "common/CBehaviorEngine.h"
-#include "common/CGameLauncher.h"
+#include "engine/core/CResourceLoader.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/CGameLauncher.h"
 #include "fileio/CPatcher.h"
 #include "fileio/CSaveGameController.h"
-#include "engine/CMessages.h"
-#include "sdl/sound/CSound.h"
+#include "engine/core/CMessages.h"
+#include "sdl/audio/Audio.h"
 #include "VorticonEngine.h"
 
 #include "CPassiveVort.h"
@@ -24,13 +24,15 @@
 
 #include "playgame/CPlayGameVorticon.h"
 
+#include <fileio/KeenFiles.h>
+
 namespace vorticon
 {
 
 
 bool setupAudio()
 {
-    const CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    const CExeFile &ExeFile = gKeenFiles.exeFile;
 
     CAudioVorticon *audio = new CAudioVorticon(ExeFile, g_pSound->getAudioSpec());
 
@@ -125,7 +127,7 @@ bool VorticonEngine::loadResources( const Uint8 flags )
 
         int handle()
         {
-            CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+            CExeFile &ExeFile = gKeenFiles.exeFile;
             int version = ExeFile.getEXEVersion();
             unsigned char *p_exedata = ExeFile.getRawData();
 
@@ -249,7 +251,8 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         mpGameMode.reset( new CPlayGameVorticon(playGame.m_startlevel) );
         mpGameMode->init();
         mOpenedGamePlay = true;
-        gEventManager.add( new CloseAllMenusEvent() );
+        g_pBehaviorEngine->setPause(false);
+        gEventManager.add( new CloseAllMenusEvent() );        
     }
     else if( dynamic_cast<const GMSwitchToPassiveMode*>(evPtr) )
     {
@@ -263,6 +266,7 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
         pgVort->loadGame();
         mpGameMode = std::move(pgVort);
         mOpenedGamePlay = true;
+        g_pBehaviorEngine->setPause(false);
         gEventManager.add( new CloseAllMenusEvent() );
     }
     else if( dynamic_cast<const OpenMainMenuEvent*>(evPtr) )

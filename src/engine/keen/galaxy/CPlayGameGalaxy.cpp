@@ -16,20 +16,27 @@
 #include "graphics/GsGraphics.h"
 #include "common/dialog/CMessageBoxBitmapGalaxy.h"
 #include "common/dialog/CMessageBoxSelection.h"
-#include "sdl/sound/CSound.h"
-#include "sdl/music/CMusic.h"
+#include "sdl/audio/Audio.h"
+#include "sdl/audio/music/CMusic.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CDimDark.h"
+
+#include "ep4/ai/CInchWorm.h"
+#include "common/ai/CPlayerLevel.h"
+#include "common/ai/CPlayerWM.h"
+
+#include <fileio/KeenFiles.h>
 
 
 namespace galaxy
 {
 
 
+
 CPlayGameGalaxy::CPlayGameGalaxy(const int startlevel) :
-CPlayGame(g_pBehaviorEngine->m_ExeFile, startlevel),
-m_WorldMap(g_pBehaviorEngine->m_ExeFile, mInventoryVec, m_Cheatmode),
-m_LevelPlay(g_pBehaviorEngine->m_ExeFile, mInventoryVec, m_Cheatmode),
+CPlayGame(gKeenFiles.exeFile, startlevel),
+m_WorldMap(gKeenFiles.exeFile, mInventoryVec, m_Cheatmode),
+m_LevelPlay(gKeenFiles.exeFile, mInventoryVec, m_Cheatmode),
 m_SavedGame(*gpSaveGameController)
 {
     const int numPlayers = g_pBehaviorEngine->mPlayers;
@@ -248,6 +255,34 @@ bool CPlayGameGalaxy::init()
 }
 
 
+/**
+ *	\description This event triggers a MessageBox where you can select multiple items
+ *
+ *	\param		Message This Text will be shown when the Box is triggered
+ *	\param 		OptionStrings The Text to the option which can be selected
+ *							  Depending on the size of the
+ */
+struct EventSendSelectionDialogMsg : CEvent {
+
+    const std::string Message;
+    std::list<TextEventMatchOption> Options;
+
+    EventSendSelectionDialogMsg(const std::string& lMsg) :
+                                Message(lMsg){}
+
+    void addOption(const std::string& ltext, CEvent *levent)
+    {
+        TextEventMatchOption NewOption;
+        NewOption.text = ltext;
+        NewOption.event.reset( levent );
+        Options.push_back(NewOption);
+    }
+};
+
+
+
+struct EventRestartLevel : CEvent {};
+
 
 void CPlayGameGalaxy::looseManagement( const int playerID,
                                        const bool playerGameOver,
@@ -341,6 +376,8 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( dynamic_cast<const EventEndGamePlay*>(evPtr) )
     {
         m_endgame = true;
+        // The last menu has been removed. Restore back the game status
+        g_pBehaviorEngine->setPause(false);
         gMenuController.clearMenuStack();
     }
     else if( const EventEnterLevel *ev = dynamic_cast<const EventEnterLevel*>(evPtr) )
@@ -371,7 +408,6 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
 
         const std::string loading_text = g_pBehaviorEngine->getString("WORLDMAP_LOAD_TEXT");
         showMsgWithBmp( loading_text, "KEENTHUMBSUP", LEFT);
-        gEffectController.setupEffect(new CDimDark(8));
 
         const EventExitLevel &evCopy = *ev;
 

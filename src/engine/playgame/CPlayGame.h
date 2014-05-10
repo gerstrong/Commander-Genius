@@ -12,10 +12,9 @@
 #define CPLAYGAME_H_
 
 #include "fileio/CExeFile.h"
-#include "core/LogicDrawSplitter.h"
-#include "common/options.h"
-#include "common/CBehaviorEngine.h"
-#include "core/mode/CGameMode.h"
+#include "engine/core/options.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/core/mode/CGameMode.h"
 #include "fileio/CSaveGameController.h"
 #include <string>
 #include <SDL.h>

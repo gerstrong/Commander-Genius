@@ -1,0 +1,10 @@
+core_dyn_x86.o: core_dyn_x86.cpp /usr/include/stdc-predef.h \
+ ../../include/dosbox.h ../../config.h ../../include/logging.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:

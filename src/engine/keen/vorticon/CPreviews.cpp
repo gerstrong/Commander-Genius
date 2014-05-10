@@ -7,20 +7,22 @@
 
 #include "CPreviews.h"
 
-#include "common/CBehaviorEngine.h"
-#include <base/FindFile.h>
+#include "engine/core/CBehaviorEngine.h"
+#include <base/utils/FindFile.h>
 //#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
 //#include "StringUtils.h"
 #include "CVorticonMapLoader.h"
 #include "sdl/extensions.h"
 
+#include "fileio/KeenFiles.h"
+
 void CPreviews::init()
 {
     CInfoScene::init();
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    CExeFile &ExeFile = gKeenFiles.exeFile;
 	m_episode = ExeFile.getEpisode();
-	std::string DataDirectory = ExeFile.getDataDirectory();
+    std::string DataDirectory = gKeenFiles.gameDir;
 	mpMap.reset(new CMap());
 
 	CVorticonMapLoaderBase Maploader(mpMap);
@@ -52,7 +54,7 @@ int CPreviews::openNextScene()
 	}
 	else
 	{
-		std::string filename = JoinPaths(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), "previews.ck");
+        std::string filename = JoinPaths(gKeenFiles.gameDir, "previews.ck");
 		filename += itoa(g_pBehaviorEngine->getEpisode());
 
 		mp_TextViewer.reset( new CTextViewer(0, 8, 320, 160) );
@@ -70,7 +72,7 @@ int CPreviews::openNextScene()
 bool CPreviews::openScene(const std::string& filename)
 {
 	// This will open one the preview scenes
-	mp_StaticScene.reset( new CFinaleStaticScene(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), filename) );
+    mp_StaticScene.reset( new CFinaleStaticScene(gKeenFiles.gameDir, filename) );
 
 	if( mp_StaticScene->mustclose() )
 		return false;

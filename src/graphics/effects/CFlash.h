@@ -16,7 +16,7 @@
 #include <base/video/GsEffectController.h>
 #include <graphics/GsSurface.h>
 
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 
 class CFlash : public CEffects
 {

@@ -1,0 +1,17 @@
+modrm.o: modrm.cpp /usr/include/stdc-predef.h ../../include/cpu.h \
+ ../../include/dosbox.h ../../config.h ../../include/logging.h \
+ ../../include/regs.h ../../include/mem.h
+
+/usr/include/stdc-predef.h:
+
+../../include/cpu.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:
+
+../../include/regs.h:
+
+../../include/mem.h:

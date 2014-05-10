@@ -1,4 +1,4 @@
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 
 #include "CVortiNinja.h"
 

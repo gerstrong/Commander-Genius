@@ -10,7 +10,7 @@
 #include "CRedShot.h"
 #include "../../common/ai/CPlayerBase.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include "misc.h"
+#include <base/utils/misc.h>
 
 /*
 $2734W #Robo Red move

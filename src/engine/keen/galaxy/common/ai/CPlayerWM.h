@@ -10,6 +10,26 @@
 
 #include "CPlayerBase.h"
 
+
+struct EventPlayerEndLevel : CEvent {
+    const uint16_t levelObject;
+    const bool sucess;
+    const int who;
+    const bool teleport;
+    EventPlayerEndLevel(const EventExitLevel &ev) :
+                    levelObject(ev.levelObject),
+                    sucess(ev.sucess),
+                    who(ev.who),
+                    teleport(ev.teleport){}
+};
+
+struct EventPlayerRideFoot : CEvent {
+    const uint16_t levelObject;
+    EventPlayerRideFoot(const EventExitLevelWithFoot ev) :
+                    levelObject(ev.levelObject) {}
+};
+
+
 namespace galaxy {
 
 class CPlayerWM : public CPlayerBase
@@ -24,7 +44,7 @@ public:
             const unsigned int actionoffset,
             const int playerID);
 
-	VectorD2<int> fetchFootDestCoord();
+    Vector2D<int> fetchFootDestCoord();
 
     void pumpEvent(const CEvent *evPtr);
 	
@@ -70,7 +90,7 @@ public:
 	void processOpeningElevator();
 	void processLeavingElevator();
 
-    void setupTeleportAnimation(const bool unset, const VectorD2<int> &pos);
+    void setupTeleportAnimation(const bool unset, const Vector2D<int> &pos);
 	void processEnteringTeleporter();
 	void processWarpInTeleporter();
 	void processLeavingTeleporter();
@@ -106,7 +126,7 @@ private:
 	Uint8 m_animation_time;
 	Uint8 m_animation_ticker;
 	bool m_cantswim;
-	VectorD2<int> target;
+    Vector2D<int> target;
 	int elevator_close_timer;
 	int elevator_frames;
 	int waveTimer;

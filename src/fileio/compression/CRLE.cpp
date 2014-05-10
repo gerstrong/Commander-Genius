@@ -45,15 +45,15 @@ CRLE::CRLE()
 
 void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word key )
 {
-	size_t finsize, howmany;
+    std::size_t finsize, howmany;
 	word value;
-	size_t inc;
+    std::size_t inc;
 
 	finsize = (src.at(1)<<8) | src.at(0);
 	finsize /= 2;
 
 
-	for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
+    for(std::size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {
 		// Read datum (word)
 		value = (src.at(i+1)<<8)+src.at(i);
@@ -65,7 +65,7 @@ void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word k
 			value = (src.at(i+5)<<8)+src.at(i+4);
 
 			// Do count times
-			for(Uint32 j=0;j<howmany;j++)
+            for(std::size_t j=0 ; j<howmany ; j++)
 				dst.push_back(value);
 
 			inc = 3*WORDSIZE;
@@ -82,7 +82,7 @@ void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
 {
     uint16_t word, count, inc;
 
-	size_t finsize;
+    std::size_t finsize;
 	byte high_byte, low_byte;
 
 	low_byte = src.at(1);
@@ -90,7 +90,7 @@ void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
 	finsize = (high_byte<<8) | low_byte;
 	finsize /= 2;
 
-    for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
+    for(std::size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {
       if(i+1 >= src.size())
       {
@@ -110,7 +110,7 @@ void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
 			word = (src.at(i+4)<<8)+src.at(i+5);
 
             // Do count times
-			for(Uint32 j=0;j<count;j++)
+            for(std::size_t j=0;j<count;j++)
 				dst.push_back(word);
 
             inc = 3*WORDSIZE;
@@ -122,9 +122,4 @@ void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
 			inc = WORDSIZE;
         }
     }
-}
-
-CRLE::~CRLE()
-{
-	// TODO Auto-generated destructor stub
 }

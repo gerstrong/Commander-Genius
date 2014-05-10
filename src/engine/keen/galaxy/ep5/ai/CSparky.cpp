@@ -8,7 +8,7 @@
 
 #include "CSparky.h"
 #include "../../common/ai/CPlayerLevel.h"
-#include "misc.h"
+#include <base/utils/misc.h>
 
 
 namespace galaxy {  

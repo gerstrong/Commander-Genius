@@ -8,11 +8,12 @@
 #ifndef CAUDIOVORTICON_H_
 #define CAUDIOVORTICON_H_
 
-#include "common/CAudioResources.h"
+#include "sdl/audio/CAudioResources.h"
 #include "fileio/CExeFile.h"
 
 
-class CAudioVorticon : public CAudioResources {
+class CAudioVorticon : public CAudioResources
+{
 public:
 	CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec);
 
@@ -24,16 +25,17 @@ public:
 private:
 	void setupAudioMap();
     
-	Uint8* loadSoundStream(Uint32 &buffer_size, Uint8* exedata);
+    void loadSoundStream(Uint8* exedata);
 
 	template <typename T>
-	bool loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
-			std::vector<T> &waveform, const std::string& searchname,
+    bool loadPCSpeakerSound(std::vector<T> &waveform, const std::string& searchname,
 			bool IsSigned, Uint16& Priority);
 
-	bool loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum);
+    bool loadSound(const std::string& path, const std::string& searchname, unsigned int loadnum);
 
 	const CExeFile &m_ExeFile;
+
+    std::vector<byte> mFileBuffer;
 };
 
 #endif /* CAUDIOVORTICON_H_ */

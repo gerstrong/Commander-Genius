@@ -7,7 +7,7 @@
 
 #include <base/video/CVideoDriver.h>
 #include "CameraSettings.h"
-#include "common/CSettings.h"
+#include "engine/core/CSettings.h"
 #include <base/utils/StringUtils.h>
 
 namespace galaxy
@@ -42,7 +42,7 @@ m_CameraBounds(gVideoDriver.getCameraBounds())
 }
 
 
-void CCameraSettings::init()
+void CCameraSettings::refresh()
 {
 	// Load the config into the GUI
 	mpLeftAdjust->setSelection( m_CameraBounds.left );

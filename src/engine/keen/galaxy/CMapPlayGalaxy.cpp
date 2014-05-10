@@ -8,7 +8,7 @@
 #include "CMapPlayGalaxy.h"
 #include "common/ai/platform/CPlatform.h"
 #include "common/ai/CPlayerBase.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include "ep6/CMapLoaderGalaxyEp6.h"
@@ -45,7 +45,8 @@ void CMapPlayGalaxy::setActive(bool value)
 
 	if(mActive)
 	{
-	    gVideoDriver.updateScrollBuffer(mMap);
+        mMap.drawAll();
+        gVideoDriver.updateScrollBuffer(mMap.m_scrollx, mMap.m_scrolly);
         gVideoDriver.setRefreshSignal(true);
 	}
 }

@@ -8,7 +8,7 @@
 #include <graphics/GsGraphics.h>
 #include <base/CInput.h>
 #include <base/video/CVideoDriver.h>
-#include <lib/base/GsTimer.h>
+#include <base/GsTimer.h>
 #include <base/utils/StringUtils.h>
 
 #include "NumberControl.h"

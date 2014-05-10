@@ -6,15 +6,17 @@
  */
 
 #include "CAbout.h"
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 #include <base/CInput.h>
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include "fileio/CExeFile.h"
 #include "graphics/GsGraphics.h"
 #include <base/video/CVideoDriver.h>
 #include "CVorticonMapLoader.h"
 #include "fileio/ResourceMgmt.h"
 #include "sdl/extensions.h"
+
+#include <fileio/KeenFiles.h>
 
 CAbout::CAbout(const std::string &type) :
 m_type(type)
@@ -23,11 +25,11 @@ m_type(type)
 void CAbout::init()
 {
     CInfoScene::init();
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+    CExeFile &ExeFile = gKeenFiles.exeFile;
 	mpMap.reset(new CMap);
 	CVorticonMapLoaderBase Maploader(mpMap);
 	
-	Maploader.load(ExeFile.getEpisode(), 90, ExeFile.getDataDirectory());
+    Maploader.load(ExeFile.getEpisode(), 90, gKeenFiles.gameDir);
 	mpMap->gotoPos( 1008, 28 );
 	
 	// Load the SDL_Bitmap
@@ -102,55 +104,55 @@ void CAbout::init()
 		}
 	}
 	else if(m_type == "CG")
-	{
-		std::string path = getResourceFilename("gfx/CGLogo.bmp", ExeFile.getDataDirectory(), true, true);
-		mpLogoBMP.reset( SDL_LoadBMP(GetFullFileName(path).c_str()), &SDL_FreeSurface );
-		
-		m_lines.push_back("Commander Genius is an interpreter");
-		m_lines.push_back("made with the goal of recreating");
-		m_lines.push_back("the engine that was used to power");
-		m_lines.push_back("the Commander Keen series.");
-		m_lines.push_back("");
-		m_lines.push_back("However, we are also trying to add");
-		m_lines.push_back("better support for modern systems");
-		m_lines.push_back("to the games, so they can run more");
-		m_lines.push_back("smoothly than they did under DOS.");
-		m_lines.push_back("");
-		m_lines.push_back("Thank you for supporting us by");
-		m_lines.push_back("downloading Commander Genius and");
-		m_lines.push_back("we hope you will report any bugs.");
-	}
-	
-	switch(ExeFile.getEpisode())
-	{
-		case 1:
-			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
-			for(int i=0; i<30 ; i++)
-			{
-				mpMap->changeTile(22+i, 15, 14*13);
-				mpMap->changeTile(22+i, 16, 14*13+3);
-			}
-			break;
-	}
-	
-	m_logo_rect.x = m_logo_rect.y = 0;
-	m_logo_rect.h = m_logo_rect.w = 0;
-	
-	if(mpLogoBMP)
-	{
-		m_logo_rect.w = mpLogoBMP->w;
-		m_logo_rect.h = mpLogoBMP->h;
-		m_logo_rect.x = 160-m_logo_rect.w/2;
-		m_logo_rect.y = 22;
-	}
+    {
+        const std::string path = getResourceFilename("gfx/CGLogo.bmp", gKeenFiles.gameDir, true, true);
+        mpLogoBMP.reset( SDL_LoadBMP(GetFullFileName(path).c_str()), &SDL_FreeSurface );
 
-	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
+        m_lines.push_back("Commander Genius is an interpreter");
+        m_lines.push_back("made with the goal of recreating");
+        m_lines.push_back("the engine that was used to power");
+        m_lines.push_back("the Commander Keen series.");
+        m_lines.push_back("");
+        m_lines.push_back("However, we are also trying to add");
+        m_lines.push_back("better support for modern systems");
+        m_lines.push_back("to the games, so they can run more");
+        m_lines.push_back("smoothly than they did under DOS.");
+        m_lines.push_back("");
+        m_lines.push_back("Thank you for supporting us by");
+        m_lines.push_back("downloading Commander Genius and");
+        m_lines.push_back("we hope you will report any bugs.");
+    }
+
+    switch(ExeFile.getEpisode())
+    {
+        case 1:
+            // Change the ugly lower Tiles which are seen, when using 320x240 base resolution
+            for(int i=0; i<30 ; i++)
+            {
+                mpMap->changeTile(22+i, 15, 14*13);
+                mpMap->changeTile(22+i, 16, 14*13+3);
+            }
+            break;
+    }
+
+    m_logo_rect.x = m_logo_rect.y = 0;
+    m_logo_rect.h = m_logo_rect.w = 0;
+
+    if(mpLogoBMP)
+    {
+        m_logo_rect.w = mpLogoBMP->w;
+        m_logo_rect.h = mpLogoBMP->h;
+        m_logo_rect.x = 160-m_logo_rect.w/2;
+        m_logo_rect.y = 22;
+    }
+
+    SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 //#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
+
 //#else
     mpDrawSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
 //#endif
-	SDL_FreeSurface(temp);
+    SDL_FreeSurface(temp);
 }
 
 
@@ -185,11 +187,11 @@ void CAbout::render()
 
 void CAbout::teardown()
 {
-	if(!m_lines.empty())
-		m_lines.clear();
-	mpDrawSfc = NULL;
-	mpMap = NULL;
-	CEventContainer &EventContainer = gEventManager;
-	EventContainer.add(new ResetScrollSurface);
+    if(!m_lines.empty())
+        m_lines.clear();
+    mpDrawSfc = NULL;
+    mpMap = NULL;
+    CEventContainer &EventContainer = gEventManager;
+    EventContainer.add(new ResetScrollSurface);
 }
 

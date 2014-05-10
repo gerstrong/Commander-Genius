@@ -1,0 +1,15 @@
+vga_gfx.o: vga_gfx.cpp /usr/include/stdc-predef.h ../../include/dosbox.h \
+ ../../config.h ../../include/logging.h ../../include/inout.h \
+ ../../include/vga.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:
+
+../../include/inout.h:
+
+../../include/vga.h:

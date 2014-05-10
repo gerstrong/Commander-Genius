@@ -9,7 +9,7 @@
 #define CSTATUSSCREEN_H_
 
 #include <SDL.h>
-#include "common/inventory.h"
+#include "engine/core/inventory.h"
 #include <memory>
 
 class CStatusScreen

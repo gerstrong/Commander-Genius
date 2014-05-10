@@ -13,11 +13,12 @@
 
 #include "CPlayerWM.h"
 #include "CFlag.h"
-#include "common/CBehaviorEngine.h"
-#include "sdl/sound/CSound.h"
-#include "CVec.h"
+//#include "engine/core/CBehaviorEngine.h"
+#include "sdl/audio/Audio.h"
+#include <base/utils/CVec.h>
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 #include "graphics/effects/CDimDark.h"
+#include "fileio/KeenFiles.h"
 
 const int TIME_TO_WAVE = 400;
 
@@ -69,13 +70,13 @@ mounted(false)
 /**
  * Before Keen rides on the foot we get the location where to ride
  */
-VectorD2<int> CPlayerWM::fetchFootDestCoord()
+Vector2D<int> CPlayerWM::fetchFootDestCoord()
 {
-	VectorD2<int> location1;
-	VectorD2<int> location2;
+    Vector2D<int> location1;
+    Vector2D<int> location2;
 	int coordData;
 
-	const byte *dataPtr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    const byte *dataPtr = gKeenFiles.exeFile.getRawData();
 	//const byte *dataPtr = g_pBehaviorEngine->m_ExeFile.getDSegPtr(); // only Zeros here!
 	//const byte *dataPtr = (byte*) g_pBehaviorEngine->m_ExeFile.getHeaderData();
 
@@ -91,10 +92,10 @@ VectorD2<int> CPlayerWM::fetchFootDestCoord()
 
 
 	// Check for the first location
-	VectorD2<int> vec1;
-	VectorD2<int> vec2;
+    Vector2D<int> vec1;
+    Vector2D<int> vec2;
 
-	VectorD2<int> levelCoord;
+    Vector2D<int> levelCoord;
 
 	levelCoord = getPosition();
 
@@ -109,7 +110,7 @@ VectorD2<int> CPlayerWM::fetchFootDestCoord()
 	const int dist1 = vec1.GetLength2();
 	const int dist2 = vec2.GetLength2();
 
-	VectorD2<int> newCoord;
+    Vector2D<int> newCoord;
 
 	if(dist2 > dist1)
 		newCoord = location2;
@@ -476,10 +477,10 @@ void CPlayerWM::processRiding()
 {
 	// Ride while trying to reach the destination coords
 	// Move the player to the target
-	VectorD2<int> pos(getXPosition(), getYPosition());
-	VectorD2<int> vec = target-pos;
+    Vector2D<int> pos(getXPosition(), getYPosition());
+    Vector2D<int> vec = target-pos;
 
-	VectorD2<int> vec_norm = vec;
+    Vector2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -571,11 +572,11 @@ const int ELEVATOR_CLOSE_TIME = 5;
 void CPlayerWM::processEnteringElevator()
 {
 	// Move him to the target
-	VectorD2<int> pos(getXPosition(), getYPosition());
-	VectorD2<int> vec = target-pos;
+    Vector2D<int> pos(getXPosition(), getYPosition());
+    Vector2D<int> vec = target-pos;
 
 
-	VectorD2<int> vec_norm = vec;
+    Vector2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -660,11 +661,11 @@ void CPlayerWM::processClosingElevator()
 void CPlayerWM::processElevating()
 {
 	// Move the player to the target
-	VectorD2<int> pos(getXPosition(), getYPosition());
-	VectorD2<int> vec = target-pos;
+    Vector2D<int> pos(getXPosition(), getYPosition());
+    Vector2D<int> vec = target-pos;
 
 
-	VectorD2<int> vec_norm = vec;
+    Vector2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -731,10 +732,10 @@ void CPlayerWM::processOpeningElevator()
 void CPlayerWM::processLeavingElevator()
 {
 	// Move him to the target
-	VectorD2<int> pos(getXPosition(), getYPosition());
-	VectorD2<int> vec = target-pos;
+    Vector2D<int> pos(getXPosition(), getYPosition());
+    Vector2D<int> vec = target-pos;
 
-	VectorD2<int> vec_norm = vec;
+    Vector2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -765,7 +766,7 @@ void CPlayerWM::processLeavingElevator()
 
 // Teleporter
 
-void CPlayerWM::setupTeleportAnimation(const bool unset, const VectorD2<int> &pos)
+void CPlayerWM::setupTeleportAnimation(const bool unset, const Vector2D<int> &pos)
 {
     const int x = pos.x;
     const int y = pos.y;
@@ -791,11 +792,11 @@ void CPlayerWM::setupTeleportAnimation(const bool unset, const VectorD2<int> &po
 void CPlayerWM::processEnteringTeleporter()
 {
 	// Move him to the target
-	VectorD2<int> pos(getXPosition(), getYPosition());
-	VectorD2<int> vec = target-pos;
+    Vector2D<int> pos(getXPosition(), getYPosition());
+    Vector2D<int> vec = target-pos;
 
 
-	VectorD2<int> vec_norm = vec;
+    Vector2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -867,7 +868,7 @@ void CPlayerWM::processEnteringTeleporter()
 void CPlayerWM::processWarpInTeleporter()
 {
 	// Move the player to the target directly
-	VectorD2<int> new_pos(target);
+    Vector2D<int> new_pos(target);
 	moveToForce(target);
 	new_pos.x += ((m_BBox.x2-m_BBox.x1)/2);
 	new_pos.y += ((m_BBox.y2-m_BBox.y1)/2);
@@ -889,10 +890,10 @@ void CPlayerWM::processWarpInTeleporter()
 void CPlayerWM::processLeavingTeleporter()
 {
 	// Move him to the target
-	VectorD2<int> pos(getXPosition(), getYPosition());
-	VectorD2<int> vec = target-pos;
+    Vector2D<int> pos(getXPosition(), getYPosition());
+    Vector2D<int> vec = target-pos;
 
-	VectorD2<int> vec_norm = vec;
+    Vector2D<int> vec_norm = vec;
 
 	const int dist_x = abs(vec.x);
 	const int dist_y = abs(vec.y);
@@ -911,7 +912,7 @@ void CPlayerWM::processLeavingTeleporter()
 		solid = true;
 		moveDir(vec);
 
-        VectorD2<int> animTilePos = target;
+        Vector2D<int> animTilePos = target;
         animTilePos.y -= (1<<CSF);
         setupTeleportAnimation(true, animTilePos);
 		mProcessPtr = &CPlayerWM::processMoving;
@@ -988,7 +989,7 @@ bool CPlayerWM::finishLevel(const int object)
 	{
 		// spawn the flag
 		const auto episode = g_pBehaviorEngine->getEpisode();
-		VectorD2<Uint32> src(getXPosition(), getYPosition());
+        Vector2D<Uint32> src(getXPosition(), getYPosition());
 
 		// Here we move the coordinates in order get it positioned correctly in the pole
         GsSprite &FlagSprite = gGraphics.getSprite(mSprVar,WAVING_BASEFRAME);
@@ -1019,7 +1020,7 @@ bool CPlayerWM::finishLevel(const int object)
 		}
 		
 
-		VectorD2<Uint32> dst(csfX, csfY);       
+        Vector2D<Uint32> dst(csfX, csfY);
 
         CFlag *pFlag = new CFlag(mp_Map, src, dst, mSprVar, true, true);
 		spawnObj(pFlag);

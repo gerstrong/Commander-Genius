@@ -14,10 +14,11 @@
 #include "graphics/GsGraphics.h"
 //#include "sdl/CVideoDriver.h"
 #include <base/CInput.h>
-#include <base/FindFile.h>
+#include <base/utils/FindFile.h>
 
 #include <fstream>
 
+#include <fileio/KeenFiles.h>
 
 CHelp::CHelp(const std::string &type) :
 mTextType(type)
@@ -27,8 +28,8 @@ void CHelp::init()
 {
     CInfoScene::init();
 	std::string Text;
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-	const std::string DataDirectory = ExeFile.getDataDirectory();
+    CExeFile &ExeFile = gKeenFiles.exeFile;
+    const std::string DataDirectory = gKeenFiles.gameDir;
 	const char episode = ExeFile.getEpisode();
 	
 	// Read the Storytext

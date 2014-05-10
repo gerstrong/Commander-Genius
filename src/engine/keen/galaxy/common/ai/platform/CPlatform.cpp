@@ -6,7 +6,7 @@
  */
 
 #include "CPlatform.h"
-#include <lib/base/GsLogging.h>
+#include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 
 namespace galaxy {
@@ -110,7 +110,7 @@ void CPlatform::movePlatDown(const int amnt)
 	moveDown(amnt);
 }
 
-void CPlatform::movePlat(const VectorD2<int> &speed)
+void CPlatform::movePlat(const Vector2D<int> &speed)
 {
     movePlatX(speed.x);
     movePlatY(speed.y);    

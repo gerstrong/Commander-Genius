@@ -1,8 +1,8 @@
 #ifndef __KEENENGINE_H__
 #define __KEENENGINE_H__
 
-#include "core/GameEngine.h"
-#include "common/CBehaviorEngine.h"
+#include "engine/core/GameEngine.h"
+#include "engine/core/CBehaviorEngine.h"
 
 class KeenEngine : public GameEngine
 {

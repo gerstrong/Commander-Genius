@@ -70,10 +70,10 @@ void CMoveTarget::readDirection(const int object, int &xDirection, int &yDirecti
 	}
 }
 
-void CMoveTarget::detectNextTarget(const VectorD2<int>& oldTarget,
-				    const int xDirection, const int yDirection)
+void CMoveTarget::detectNextTarget(const Vector2D<int> &oldTarget,
+                    const int xDirection, const int yDirection)
 {
-    VectorD2<int> potTarget(oldTarget);
+    Vector2D<int> potTarget(oldTarget);
     
     potTarget = (potTarget>>CSF);
         

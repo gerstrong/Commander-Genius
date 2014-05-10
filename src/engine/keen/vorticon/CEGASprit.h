@@ -12,7 +12,7 @@
 #include <SDL.h>
 #include <vector>
 #include "graphics/GsGraphics.h"
-#include "common/CTileProperties.h"
+//#include "common/CTileProperties.h"
 
 
 class CEGASprit {

@@ -11,14 +11,16 @@
 
 #include "ai/CPlayer.h"
 
-#include "sdl/sound/CSound.h"
+#include "sdl/audio/Audio.h"
 #include "graphics/GsGraphics.h"
-#include "engine/spritedefines.h"
+#include "engine/core/spritedefines.h"
 #include "ai/CManglingMachine.h"
 #include "ai/CDoor.h"
 #include "ai/CRisingPoints.h"
 #include "ai/CAnkhShield.h"
 #include <base/utils/StringUtils.h>
+
+#include <fileio/KeenFiles.h>
 
 #define DOOR_YELLOW        2
 #define DOOR_RED           3
@@ -80,8 +82,8 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 	else if (behaviour > 10 && behaviour < 16)
 		playSound(SOUND_GET_ITEM);
 	
-	char shotInc = 5; 
-	byte *exeptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+	char shotInc = 5;     
+    byte *exeptr = gKeenFiles.exeFile.getRawData();
 	
 	switch(behaviour)
 	{

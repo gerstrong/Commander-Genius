@@ -7,7 +7,8 @@
 
 #include "COptions.h"
 #include <base/CInput.h>
-#include "common/CSettings.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/core/CSettings.h"
 
 namespace vorticon
 {
@@ -22,8 +23,6 @@ mpOption(g_pBehaviorEngine->m_option)
         mpOptionList.push_back( new Switch(mpOption[i].menuname) );
 		mpMenuDialog->addControl( mpOptionList.back() );
 	}
-
-	setMenuLabel("OPTIONSMENULABEL");
 }
 
 void COptions::init()

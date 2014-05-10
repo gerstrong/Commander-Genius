@@ -14,9 +14,9 @@
 #include <SDL.h>
 
 #include "fileio/CExeFile.h"
-#include "fileio/TypeDefinitions.h"
-#include "common/CMap.h"
-#include "common/Cheat.h"
+#include <base/TypeDefinitions.h>
+#include "engine/core/CMap.h"
+#include "engine/core/Cheat.h"
 #include "CInventory.h"
 #include "CGalaxySpriteObject.h"
 

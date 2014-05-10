@@ -1,9 +1,10 @@
 #include "CNospike.h"
-#include <misc.h>
+#include <base/utils/misc.h>
 
 #include "../../common/ai/CPlayerLevel.h"
 #include "../../common/dialog/CMessageBoxBitmapGalaxy.h"
-#include "core/mode/CGameMode.h"
+#include "engine/core/mode/CGameMode.h"
+#include "fileio/KeenFiles.h"
 
 
 /*
@@ -64,11 +65,12 @@ mCanFinishGame(false)
     
     xDirection = LEFT;
     
-    byte *ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+
+    byte *ptr = gKeenFiles.exeFile.getRawData();
     ptr += 0x10D35;
     memcpy(&mHealth, ptr, 1 );
     
-    ptr = g_pBehaviorEngine->m_ExeFile.getRawData();
+    ptr = gKeenFiles.exeFile.getRawData();
     ptr += 0x1256C;
     
     const byte endpattern[] =

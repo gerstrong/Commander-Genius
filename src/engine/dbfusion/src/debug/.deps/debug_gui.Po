@@ -1,0 +1,10 @@
+debug_gui.o: debug_gui.cpp /usr/include/stdc-predef.h \
+ ../../include/dosbox.h ../../config.h ../../include/logging.h
+
+/usr/include/stdc-predef.h:
+
+../../include/dosbox.h:
+
+../../config.h:
+
+../../include/logging.h:

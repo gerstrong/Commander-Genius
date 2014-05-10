@@ -8,6 +8,9 @@
 #include "CInchWorm.h"
 #include "../../common/ai/CPlayerBase.h"
 
+
+
+
 namespace galaxy {
 
 CInchWorm::CInchWorm(CMap *pmap, const Uint16 foeID, const Uint32 x, const Uint32 y) :
