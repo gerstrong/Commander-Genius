@@ -17,6 +17,8 @@ class CLoadMenu : public VorticonMenu
 {
 public:
 	CLoadMenu();
+
+    void refresh();
 };
 
 }

@@ -40,6 +40,30 @@ m_overwrite(false)
 	}
 }
 
+
+void CSaveMenu::refresh()
+{
+    // Load the state-file list
+    std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
+
+    std::list< std::shared_ptr<CGUIControl> > &list = mpMenuDialog->getControlList();
+
+    auto itCtrl = list.begin();
+    itCtrl++;
+
+    for(Uint32 i=0 ;i<8 ; i++)
+    {
+        std::string text = EMPTY_TEXT;
+        if(i <= StateFileList.size())
+            text = StateFileList.at(i);
+
+        std::shared_ptr<CGUIControl> &ctrl = *itCtrl;
+        InputText *input = dynamic_cast<InputText*>( ctrl.get() );
+
+        input->setText(text);
+    }
+}
+
 void CSaveMenu::ponder()
 {
     InputText *pInput = dynamic_cast<InputText*>(mpMenuDialog->CurrentControl());

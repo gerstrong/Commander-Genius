@@ -18,6 +18,8 @@ class CLoadMenu : public GalaxyMenu
 {
 public:
 	CLoadMenu();
+
+    void refresh();
 };
 
 }

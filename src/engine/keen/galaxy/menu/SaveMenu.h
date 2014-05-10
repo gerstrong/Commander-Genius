@@ -17,10 +17,12 @@ class CSaveMenu : public GalaxyMenu
 {
 public:
 	CSaveMenu();
+    void refresh();
     void processSpecific(){}
-    void ponder();
+    void ponder(const float deltaT);
 	void sendEvent(std::shared_ptr<CEvent> &command);
     void release();
+
 
 private:
 	CConfirmMenu *mp_OverwriteMenu;
