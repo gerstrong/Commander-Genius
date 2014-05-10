@@ -3,10 +3,9 @@
               (CloneKeenPlus)               
                                             
     (c)2008-2014            Gerstrong
-    (c)2009-2013            Albert          
     (c)2009-2014            Tulip
-    (c)2009-2014            NY00123
     (c)2013-2014            Hagel
+    (c)2014                 Mancus
 
 Ports:
     (c)2009-2013            Pizza2004 (MacOs X)
@@ -14,8 +13,8 @@ Ports:
 
            Released under GNU/GPL           
                                             
-           Release v1.7.3.0-Release 
-           Build: Linux                                       
+           Release v1.7.4.0-Beta 
+           Build: LINUX                                       
 **********************************************
 
 Welcome to Commander Genius!
@@ -293,7 +292,8 @@ A: You can decrease the fps under settings->video. OpenGL may also help on some 
 Q: When can I play Keen Dreams?
 A: Dreams isn't supported by CG at all, although there is the galaxy code base
    which can be used to make it playable. Shouldn't be hard though.
-   Nevertheless the fans around that project decided to focus more on multiplayer awesomness for now
+   Nevertheless the fans around that project decided to focus more on multiplayer awesomness for now and dosbox fusion, 
+   which at some stage maybe very soon might make it run.
  
   
   
@@ -335,6 +335,13 @@ Hans de Goede (The Fedora Guy)
 Levellass (Keen EXE-Information)
 ZidaneA (For his music tracks!)
 Iv4n (wiivn)
+
+Retired Devs:
+-------------
+Albert Zeyer
+Pizza2004
+Pickle
+NY00123
 
 
 Also many special thanks to Martin Hauber (Tulip) who has been supporting me all the time in testing
