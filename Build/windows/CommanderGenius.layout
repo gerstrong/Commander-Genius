@@ -1,194 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\src\engine\keen\galaxy\CLevelPlay.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="301" topLine="53" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\ThreadPool.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="694" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\video\COpenGL.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="163" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\ThreadPool.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="973" topLine="26" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\video\CVideoEngine.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7226" topLine="263" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\sdl\extensions.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="463" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\video\COpenGL.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="850" topLine="32" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\sdl\music\COGGPlayer.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="195" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\CCamera.h" open="0" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2679" topLine="66" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\common\ActionFormat.cpp" open="0" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="394" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\video\CVideoEngine.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="360" topLine="7" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\utils\Geometry.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="501" topLine="20" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\common\CMap.cpp" open="0" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="17963" topLine="735" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\video\CSDLVideo.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2654" topLine="77" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\widgets\GsDialog.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="10738" topLine="458" />
-		</Cursor>
-	</File>
-	<File name="..\..\version.h" open="0" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="90" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\main.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2386" topLine="85" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\CResourceLoader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1932" topLine="68" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\CInput.cpp" open="0" top="0" tabpos="23" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="42344" topLine="1308" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\common\CMap.h" open="0" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1621" topLine="60" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\fileio\CExeFile.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="552" topLine="15" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\sdl\sound\CSound.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="350" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\Unicode.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="36570" topLine="1096" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\graphics\effects\CDimDark.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1562" topLine="46" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\graphics\GsTilemap.cpp" open="0" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2077" topLine="42" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\keen\vorticon\VorticonEngine.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2331" topLine="96" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\CInput.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2196" topLine="150" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\keen\galaxy\CPassive.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3457" topLine="95" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\keen\vorticon\CPassiveVort.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="529" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\graphics\effects\CDimDark.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="515" topLine="15" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\common\options.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="306" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\common\CBehaviorEngine.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="692" topLine="14" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\keen\galaxy\res\CEGAGraphicsGalaxy.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="17342" topLine="575" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\Color.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="324" topLine="3" />
-		</Cursor>
-	</File>
 	<File name="..\..\src\lib\base\video\CSDLVideo.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="307" topLine="7" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\common\CGameLauncher.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1422" topLine="34" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\sdl\sound\CSoundSlot.cpp" open="0" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="857" topLine="24" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\lib\base\video\CVideoDriver.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="937" topLine="31" />
 		</Cursor>
 	</File>
 	<File name="..\..\src\engine\keen\galaxy\common\dialog\CMessageBoxSelection.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -201,14 +16,34 @@
 			<Cursor1 position="6469" topLine="217" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\FindFile.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4182" topLine="185" />
-		</Cursor>
-	</File>
 	<File name="..\..\src\lib\base\GsLogging.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="239" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\sound\CSoundSlot.cpp" open="0" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="857" topLine="24" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\video\CVideoDriver.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="937" topLine="31" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\fileio\ResourceMgmt.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1718" topLine="43" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\video\COpenGL.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="163" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\FindFile.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4182" topLine="185" />
 		</Cursor>
 	</File>
 	<File name="..\..\src\lib\base\video\CVideoDriver.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -216,9 +51,174 @@
 			<Cursor1 position="4592" topLine="136" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\fileio\ResourceMgmt.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\keen\galaxy\res\CEGAGraphicsGalaxy.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1718" topLine="43" />
+			<Cursor1 position="17342" topLine="575" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\ThreadPool.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="694" topLine="12" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\video\COpenGL.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="850" topLine="32" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\ThreadPool.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="973" topLine="26" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\keen\galaxy\CLevelPlay.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="301" topLine="53" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\video\CVideoEngine.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7226" topLine="263" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\utils\Geometry.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="501" topLine="20" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\extensions.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="463" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\common\CMap.cpp" open="0" top="0" tabpos="22" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="17963" topLine="735" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\video\CSDLVideo.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2654" topLine="77" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\music\COGGPlayer.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="195" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\keen\vorticon\VorticonEngine.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2331" topLine="81" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\common\ActionFormat.cpp" open="0" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="394" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\video\CVideoEngine.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="360" topLine="7" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\CCamera.h" open="0" top="0" tabpos="21" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2679" topLine="66" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\keen\vorticon\CPassiveVort.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="529" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\CInput.cpp" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="43762" topLine="1373" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\common\CMap.h" open="0" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1621" topLine="60" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\widgets\GsDialog.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10738" topLine="458" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\fileio\CExeFile.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="552" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\graphics\effects\CDimDark.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1562" topLine="46" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\main.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2386" topLine="85" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\CResourceLoader.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1932" topLine="68" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\base\CInput.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2196" topLine="150" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\sound\CSound.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="350" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\Unicode.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="36570" topLine="1096" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\graphics\effects\CDimDark.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="515" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\lib\graphics\GsTilemap.cpp" open="0" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2077" topLine="42" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\common\options.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="306" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\common\CBehaviorEngine.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="692" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="..\..\version.h" open="0" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="90" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\keen\galaxy\CPassive.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3457" topLine="95" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\common\CGameLauncher.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1422" topLine="34" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\Color.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="324" topLine="3" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
