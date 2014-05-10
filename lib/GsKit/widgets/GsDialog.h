@@ -45,9 +45,6 @@ public:
 	// Vorticon Menu draw function
     void initVorticonBackground();
 
-	// Galaxy Menu draw function
-    void initGalaxyBackground();
-
     // This draws the borders around the dialog
     void drawBorderRect(SDL_Surface *backSfc, const SDL_Rect &Rect);
 

@@ -2,7 +2,7 @@
 #include <graphics/GsGraphics.h>
 #include <base/video/CVideoDriver.h>
 
-void GalaxyMenu::initGalaxyBackground()
+void GalaxyMenu::createGalaxyBackground()
 {
     GsBitmap backgroundBmp( *gGraphics.getBitmapFromStr("KEENSWATCH") );
 

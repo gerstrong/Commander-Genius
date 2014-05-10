@@ -22,10 +22,10 @@ public:
 
         GsSurface background;
 
-        initGalaxyBackground();
+        createGalaxyBackground();
     }
 
-    void initGalaxyBackground();
+    void createGalaxyBackground();
 
     void render();
 
