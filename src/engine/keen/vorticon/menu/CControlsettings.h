@@ -67,7 +67,11 @@ class CControlSettingsMovement : public CControlSettingsBase
 {
 public:
     CControlSettingsMovement(const int selectedPlayer) :
-        CControlSettingsBase(selectedPlayer) {}
+        CControlSettingsBase(selectedPlayer)
+    {
+        init();
+    }
+
     void init();
 };
 
@@ -78,7 +82,11 @@ class CControlSettingsButtons : public CControlSettingsBase
 {
 public:
     CControlSettingsButtons(const int selectedPlayer) :
-        CControlSettingsBase(selectedPlayer) {}
+        CControlSettingsBase(selectedPlayer)
+    {
+        init();
+    }
+
 	void init();
 };
 
