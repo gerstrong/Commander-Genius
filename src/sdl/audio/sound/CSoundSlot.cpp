@@ -131,7 +131,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	{
 		openOGGSound(buf, &AudioFileSpec, snddata, length);
 
-		if(snddata == NULL)
+        if(snddata == nullptr)
         {
             gLogging.textOut(PURPLE,"Something is wrong with \"%s\"<br>", buf);
 			return false;            

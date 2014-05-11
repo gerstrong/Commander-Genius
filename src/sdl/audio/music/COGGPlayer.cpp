@@ -109,7 +109,7 @@ bool COGGPlayer::open()
 }
 
 
-bool COGGPlayer::loadMusicTrack(const CExeFile& ExeFile, const int track)
+bool COGGPlayer::loadMusicTrack(const int track)
 {	
     m_filename = "slot" + itoa(track) + ".ogg";
     m_filename = getResourceFilename(JoinPaths("music", m_filename), gKeenFiles.gameDir, false, false);

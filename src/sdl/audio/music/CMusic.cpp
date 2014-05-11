@@ -23,7 +23,7 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 
 #if defined(OGG) || defined(TREMOR)
     std::unique_ptr<COGGPlayer> oggPlayer( new COGGPlayer(g_pSound->getAudioSpec()) );
-    if(oggPlayer->loadMusicTrack(ExeFile, track))
+    if(oggPlayer->loadMusicTrack(track))
     {
         mpPlayer = move(oggPlayer);
         return true;

@@ -27,6 +27,14 @@ or directly to me (tulip) at haubaer1981@yahoo.de
 Update Log
 ----------
 
+Release 2.1 (2014-05-11)
+- Minor Revisions
+- New Keen5 tunes, enjoy!
+- Fixed bumphead sound, which was zero bytes long. (Thanks to Mancus for this report)
+
+Release 2.0 (2013-02-16)
+- Keen 4 new Music. Thanks to Tomer Feiner for the great tunes
+
 Release 1.9 (2012-12-01)
 - Fixed EP3 Tiles
 - Martha is now second Player in Keen 3
@@ -36,7 +44,7 @@ Release 1.8 (2011-05-01)
 - Updated the HQP tileset of episode 3
 
 Release 1.6 (2010-08-16)
-- Added Spot Sprite for 2nd Player
+- Added Spot Sprite for 2nd Player in Keen 1
 - Added some other minor sprites
 
 Release 1.5 (2010-05-16)

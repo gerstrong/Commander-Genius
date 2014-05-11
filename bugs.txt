@@ -6,3 +6,16 @@ Nevertheless I take a look on those other resources as well and see what I can d
 
 
 
+Spiel startet erst mal unter Windwos 8 nur mit explizietem zustimmen, wegen irgendwelcher verbotener Befehle die Windows für einen Virus hält.
+
+Das Spiel funktionert nur mit der Standartkonfig.
+Wenn man etwas ändern will passiert nix und die aktuelle Einstellung wird auch nicht angezeigt. Auflösung z.B. ?x? Und es tut sich auch nix.
+
+Savegame spielt keine Rolle ob auf Karte oder nicht, Ergebnis absturz!
+
+Mit der alten Konfiguration ging der Kontroller. Nach ner neuen Konfig konnte ich auch die Kontrolls nicht ändern oO bzw die anzeige dafür (diese Tafel) war komplett weiß.
+
+Der Fullscreenbug ist immer noch vorhanden.
+
+Der Crash mit den SND files mit HQ-Pack ist auch immer noch vorhanden.
+
