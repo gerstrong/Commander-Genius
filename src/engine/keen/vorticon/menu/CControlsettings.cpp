@@ -75,9 +75,6 @@ public:
 CControlsettings::CControlsettings( const int selectedPlayer ) :
 VorticonMenu( GsRect<float>(0.1f, 0.25f, 0.8f, 0.5f) ),
 mSelectedPlayer(selectedPlayer)
-{}
-
-void CControlsettings::init()
 {
     GsButton *button;
 

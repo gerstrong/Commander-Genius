@@ -28,7 +28,6 @@ class CControlsettings : public VorticonMenu
 public:
 	CControlsettings(const int selectedPlayer);
 
-    void init();
 	void release();
 
 private:

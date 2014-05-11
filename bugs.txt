@@ -5,6 +5,4 @@ There is more stuff at github and also from emails I receive from people. Not ev
 Nevertheless I take a look on those other resources as well and see what I can do.
 
 
-- Preview image seems not be created, if the game directory in users path is missing. Need to fix that.
-- Keen 10 Final : Mirror Menace -> Problem with Huffman Decompression. It doesn't need to decompress but still tries and produces garbage.
 
