@@ -15,7 +15,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
+
+#if 0
 
 #include <string.h>
 #include "cdrom.h"
@@ -93,5 +94,7 @@ bool CDROM_Interface_Ioctl::SetDevice(char* path, int forceCD)
 	
 	return success;
 }
+
+#endif
 
 #endif

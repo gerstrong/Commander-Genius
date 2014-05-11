@@ -17,6 +17,8 @@
  */
 
 
+#if 0
+
 // ******************************************************
 // SDL CDROM 
 // ******************************************************
@@ -215,4 +217,4 @@ bool CDROM_Interface_Fake :: GetMediaTrayStatus(bool& mediaPresent, bool& mediaC
 	return true;
 }
 
-
+#endif

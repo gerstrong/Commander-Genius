@@ -172,14 +172,14 @@ public:
 			return;
 		}
 		/* Show list of cdroms */
-		if (cmd->FindExist("-cd",false)) {
+        /*if (cmd->FindExist("-cd",false)) {
 			int num = SDL_CDNumDrives();
    			WriteOut(MSG_Get("PROGRAM_MOUNT_CDROMS_FOUND"),num);
 			for (int i=0; i<num; i++) {
 				WriteOut("%2d. %s\n",i,SDL_CDName(i));
 			};
 			return;
-		}
+        }*/
 
 		std::string type="dir";
 		cmd->FindString("-t",type,true);
@@ -307,7 +307,7 @@ public:
 
 			if (temp_line[temp_line.size()-1]!=CROSS_FILESPLIT) temp_line+=CROSS_FILESPLIT;
 			Bit8u bit8size=(Bit8u) sizes[1];
-			if (type=="cdrom") {
+            /*if (type=="cdrom") {
 				int num = -1;
 				cmd->FindInt("-usecd",num,true);
 				int error = 0;
@@ -354,7 +354,9 @@ public:
 					delete newdrive;
 					return;
 				}
-			} else {
+            }
+            else */
+            {
 				/* Give a warning when mount c:\ or the / */
 #if defined (WIN32) || defined(OS2)
 				if( (temp_line == "c:\\") || (temp_line == "C:\\") || 
@@ -1311,7 +1313,7 @@ public:
 						imageDiskList[0] = ((fatDrive *)newdrive)->loadedDisk;
 					}
 				}
-			} else if (fstype=="iso") {
+            }/* else if (fstype=="iso") {
 
 				if (Drives[drive-'A']) {
 					WriteOut(MSG_Get("PROGRAM_IMGMOUNT_ALREADY_MOUNTED"));
@@ -1361,7 +1363,7 @@ public:
 				}
 				WriteOut(MSG_Get("PROGRAM_MOUNT_STATUS_2"), drive, tmp.c_str());
 
-			} else {
+            }*/ else {
 				FILE *newDisk = fopen(temp_line.c_str(), "rb+");
 				fseek(newDisk,0L, SEEK_END);
 				imagesize = (ftell(newDisk) / 1024);

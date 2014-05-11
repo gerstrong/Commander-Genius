@@ -16,6 +16,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#if 0
 
 #include <cctype>
 #include <cstring>
@@ -545,3 +546,5 @@ bool isoDrive :: lookup(isoDirEntry *de, const char *path) {
 	}
 	return true;
 }
+
+#endif

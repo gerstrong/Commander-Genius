@@ -20,6 +20,8 @@
 #ifndef __CDROM_INTERFACE__
 #define __CDROM_INTERFACE__
 
+#if 0
+
 #define MAX_ASPI_CDROM	5
 
 #include <string.h>
@@ -395,3 +397,5 @@ private:
 #endif /* LINUX */
 
 #endif /* __CDROM_INTERFACE__ */
+
+#endif // disabled

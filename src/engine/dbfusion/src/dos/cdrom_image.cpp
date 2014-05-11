@@ -16,6 +16,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#if 0
 
 #include <cctype>
 #include <cmath>
@@ -751,3 +752,5 @@ void CDROM_Image_Init(Section* section) {
 	section->AddDestroyFunction(CDROM_Image_Destroy, false);
 #endif
 }
+
+#endif // #if 0
