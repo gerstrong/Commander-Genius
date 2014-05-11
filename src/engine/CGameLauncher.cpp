@@ -55,9 +55,6 @@ m_start_level(start_level)
     // The last menu has been removed. Restore back the game status
     g_pBehaviorEngine->setPause(false);
 
-    // Init the Game sound
-    g_pSound->init();
-
     gMenuController.clearMenuStack();
     letchooseagain();
 }

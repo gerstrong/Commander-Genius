@@ -39,8 +39,9 @@
 #include <base/GsApp.h>
 #include <base/GsLogging.h>
 
-//#include "ThreadPool.h"
 #include "engine/CGameLauncher.h"
+
+#include "sdl/audio/Audio.h"
 
 /**
  * \brief  This is the function where CG beings
@@ -106,6 +107,9 @@ int main(int argc, char *argv[])
     {
         g_pSettings->loadDefaultGameCfg();
     }
+
+    // Init the Game sound
+    g_pSound->init();
 
     ////////////////////////////////////////////////////
     // Initialize CG and run the main cycle if worthy //
