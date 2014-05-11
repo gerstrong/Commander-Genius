@@ -2,6 +2,7 @@
 #include <base/utils/Geometry.h>
 
 #include "GsSurface.h"
+#include <cstring>
 
 
 Uint32 GsWeakSurface::getPixel(const int x, const int y)
@@ -100,7 +101,7 @@ void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
                          const int thickness,
                          const Uint32 contourColor,
                          const Uint32 fillColor )
-{        
+{
     // Create the proper rect for all this
     GsRect<Uint16> fillRect = rect;
 
