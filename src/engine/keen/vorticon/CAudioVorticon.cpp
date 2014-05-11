@@ -19,10 +19,9 @@
  * As the mapping in vorticon is not as flexible we need that in order to be able to switch between hq sounds and
  * pc speaker sounds.
  */
-const unsigned int MAX_NUM_SOUNDS = 40;
+const unsigned int MAX_NUM_SOUNDS = 50;
 
-CAudioVorticon::CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
-CAudioResources(AudioSpec),
+CAudioVorticon::CAudioVorticon(const CExeFile &ExeFile) :
 m_ExeFile(ExeFile)
 {}
 
@@ -34,8 +33,6 @@ m_ExeFile(ExeFile)
  */
 void CAudioVorticon::loadSoundStream(Uint8* exedata)
 {
-	Uint8 *buffer = NULL;
-    Uint32 buffer_size = 0;
     const std::string gamepath = gKeenFiles.gameDir;
 	const std::string soundfile = "sounds.ck" + itoa(m_ExeFile.getEpisode());
 	gLogging.ftextOut("loadSoundStream(): trying to open the game audio...<br>");
@@ -63,15 +60,15 @@ void CAudioVorticon::loadSoundStream(Uint8* exedata)
 			gLogging.ftextOut("Warning: I cannot extract sounds from that game. Please provide a \"sounds.ck%d\" for that game.", m_ExeFile.getEpisode());
 		}
 
-		buffer_size = sounds_end-sounds_start;
+        const Uint32 buffer_size = sounds_end-sounds_start;
         mFileBuffer.resize(buffer_size);
 
-		memcpy(buffer, exedata+sounds_start, buffer_size);
+        memcpy((char*)mFileBuffer.data(), exedata+sounds_start, buffer_size);
 	}
 	else
 	{
 		file.seekg(0, std::ios::end);
-		buffer_size = file.tellg();
+        const Uint32 buffer_size = file.tellg();
 		file.seekg(0, std::ios::beg);
 
         mFileBuffer.resize(buffer_size);
@@ -120,7 +117,7 @@ bool CAudioVorticon::loadPCSpeakerSound(std::vector<T> &waveform, const std::str
 			buf_ptr = buffer+offset;
 
 			const int AMP = ((IsSigned ? ((1<<(sizeof(T)*8))>>2)-1 : (1<<(sizeof(T)*8)>>1)-1)*PC_Speaker_Volume)/100;
-			generateWave(waveform, buf_ptr, 0, true, AMP);
+            generateWave(waveform, buf_ptr, 0, true, AMP, g_pSound->getAudioSpec());
 			gLogging.ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());
 
 			return true;
@@ -143,8 +140,6 @@ bool CAudioVorticon::loadSound( const std::string& path, const std::string& sear
 {
 	CSoundSlot &current_snd_slot = m_soundslot[loadnum];
 	CSoundSlot &current_hq_snd_slot = m_soundslot[loadnum+MAX_NUM_SOUNDS];
-	current_snd_slot.setupAudioSpec(&m_AudioSpec);
-	current_hq_snd_slot.setupAudioSpec(&m_AudioSpec);
 
 	current_snd_slot.unload();
 	current_hq_snd_slot.unload();
@@ -154,28 +149,32 @@ bool CAudioVorticon::loadSound( const std::string& path, const std::string& sear
     Uint8* buf = nullptr;
 	bool ok = false;
 
-	if( m_AudioSpec.format == AUDIO_S8 )
+    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+
+    const Uint16 format = g_pSound->getAudioSpec().format;
+
+    if( format == AUDIO_S8 )
 	{
 		std::vector<Sint8> waveform;
         ok = loadPCSpeakerSound(waveform, searchname, false, current_snd_slot.priority);
 		buf = (Uint8*)&waveform[0];
 		current_snd_slot.setupWaveForm( buf, waveform.size()*sizeof(Sint8) );
 	}
-	else if( m_AudioSpec.format == AUDIO_U8 )
+    else if( format == AUDIO_U8 )
 	{
 		std::vector<Uint8> waveform;
         ok = loadPCSpeakerSound(waveform, searchname, true, current_snd_slot.priority);
 		buf = (Uint8*)&waveform[0];
 		current_snd_slot.setupWaveForm( buf, waveform.size()*sizeof(Uint8) );
 	}
-	else if( m_AudioSpec.format == AUDIO_U16 )
+    else if( format == AUDIO_U16 )
 	{
 		std::vector<Uint16> waveform;
         ok = loadPCSpeakerSound(waveform, searchname, false, current_snd_slot.priority);
 		buf = (Uint8*)&waveform[0];
 		current_snd_slot.setupWaveForm( buf, waveform.size()*sizeof(Uint16) );
 	}
-	else if( m_AudioSpec.format == AUDIO_S16 )
+    else if( format == AUDIO_S16 )
 	{
 		std::vector<Sint16> waveform;
         ok = loadPCSpeakerSound(waveform, searchname, true, current_snd_slot.priority);

@@ -21,7 +21,7 @@ const Uint32 GalaxySongAssignments[] =
 
 class CAudioGalaxy : public CAudioResources {
 public:
-	CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec);
+    CAudioGalaxy(const CExeFile &ExeFile);
 
 	bool readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize, const Uint8 formatsize );
 

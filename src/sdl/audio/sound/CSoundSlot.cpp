@@ -14,6 +14,7 @@
 #include "fileio/ResourceMgmt.h"
 #include <base/TypeDefinitions.h>
 #include "sdl/audio/base/Sampling.h"
+#include "sdl/audio/Audio.h"
 #include <base/utils/FindFile.h>
 
 
@@ -26,9 +27,7 @@ int ov_fopen(char *path,OggVorbis_File *vf);
 
 
 CSoundSlot::CSoundSlot() :
-m_sounddata(NULL),
-m_soundlength(0),
-m_pAudioSpec(NULL)
+m_soundlength(0)
 {}
 
 #if !defined(TARGET_OS_IPHONE) || !defined(TARGET_IPHONE_SIMULATOR)
@@ -41,7 +40,7 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
     const unsigned int BUFFER_SIZE = 32768;     // 32 KB buffers
     SoundBuffer = NULL;
 
-    SDL_AudioSpec &AudioSpec = *m_pAudioSpec;
+    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
 
     if(ov_fopen( (char *)GetFullFileName(filename).c_str(), &oggStream ) == 0)
     {
@@ -66,10 +65,10 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
         // we set m_AudioFileSpec frequency to the same as the one of the SDL initialized AudioSpec
         // scale just the buffer using readOGGStreamAndResample.
         // This is base problem, but we have workarounds for that...
-        if( (pspec->freq%AudioSpec.freq != 0) &&
-            (AudioSpec.freq%pspec->freq != 0) )
+        if( (pspec->freq%audioSpec.freq != 0) &&
+            (audioSpec.freq%pspec->freq != 0) )
         {
-            pspec->freq = AudioSpec.freq;
+            pspec->freq = audioSpec.freq;
             mHasCommonFreqBase = false;
         }
 
@@ -101,25 +100,26 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
 void CSoundSlot::setupWaveForm( Uint8 *buf, Uint32 len )
 {
 	m_soundlength = len;
-	m_sounddata = new Uint8[m_soundlength];
-	memcpy(m_sounddata, buf, m_soundlength);
+    mSounddata.resize(m_soundlength);
+    memcpy(mSounddata.data(), buf, m_soundlength);
 }
 
 void CSoundSlot::setupWaveForm( const std::vector<Uint8>& waveform )
 {
 	m_soundlength = waveform.size();
-	m_sounddata = new Uint8[m_soundlength];
-	memcpy(m_sounddata, &waveform[0], m_soundlength);
+    mSounddata.resize(m_soundlength);
+    memcpy(mSounddata.data(), &waveform[0], m_soundlength);
 }
 
 bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& soundname)
 {
 	SDL_AudioSpec AudioFileSpec;
-	SDL_AudioSpec &AudioSpec = *m_pAudioSpec;
+
+    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+
 	SDL_AudioCVT  Audio_cvt;
 
 	std::string buf;
-    m_sounddata = nullptr;
 
 	Uint32 length = 0;
     Uint8 *snddata = nullptr;
@@ -161,7 +161,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	// Build AudioCVT (This is needed for the conversion from one format to the one used in the game)
 	const int ret = SDL_BuildAudioCVT(&Audio_cvt,
 							AudioFileSpec.format, AudioFileSpec.channels, AudioFileSpec.freq,
-							AudioSpec.format, AudioSpec.channels, AudioSpec.freq);
+                            audioSpec.format, audioSpec.channels, audioSpec.freq);
 
 	// Check that the convert was built
 	if(ret == -1)
@@ -185,13 +185,13 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	// copy the converted stuff to the original soundbuffer
     if( !mHasCommonFreqBase )
 	{
-        const float factor = float(AudioSpec.freq)/mOggFreq;
+        const float factor = float(audioSpec.freq)/mOggFreq;
 		length = Audio_cvt.len_cvt;
 		const unsigned long out_len = (float)length*factor;
 		snddata = (Uint8*) malloc(out_len);
 
 		resample(snddata, Audio_cvt.buf,
-                out_len, length, AudioSpec.format, AudioSpec.channels);
+                out_len, length, audioSpec.format, audioSpec.channels);
 		length = out_len;
 	}
 	else
@@ -214,12 +214,8 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 
 void CSoundSlot::unload()
 {
-	if(m_sounddata){ delete[] m_sounddata; }
-	m_sounddata = NULL;
-}
-
-CSoundSlot::~CSoundSlot() {
-	unload();
+    if(!mSounddata.empty())
+        mSounddata.clear();
 }
 
 

@@ -15,7 +15,7 @@
 class CAudioVorticon : public CAudioResources
 {
 public:
-	CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec);
+    CAudioVorticon(const CExeFile &ExeFile);
 
 	bool loadSoundData();
 	void unloadSound();

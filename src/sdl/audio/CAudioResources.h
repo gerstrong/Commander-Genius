@@ -164,25 +164,25 @@ SOUND_BABOBBA_CINDER
 class CAudioResources
 {
 public:
-	CAudioResources(const SDL_AudioSpec &AudioSpec);
+    CAudioResources();
 	virtual ~CAudioResources() {}
 
 	virtual bool loadSoundData() = 0;
 	virtual void unloadSound() = 0;
 
 	template <typename T>
-	void generateWave(std::vector<T> &waveform, byte *inBuffer, unsigned int numOfBeeps, bool isVorticons, const int& AMP)
+    void generateWave(std::vector<T> &waveform, byte *inBuffer, unsigned int numOfBeeps, bool isVorticons, const int& AMP, const SDL_AudioSpec &audioSpec)
 	{
 		/** If PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74 is defined, we attempt
 		 * to simulate the way vanilla DOSBox v0.74 emulates the PC Speaker.
 		 * Might be useful for some Commander Keen packs with alternate sounds effects.
 		 */
 		Uint64 freqtimer = 0;
-		word prevsample = 0, sample;
-		T wave = m_AudioSpec.silence - AMP;
+		word prevsample = 0, sample;                
+        T wave = audioSpec.silence - AMP;
 		if (isVorticons)
 		{
-			const unsigned int wavetime = m_AudioSpec.freq*1000/145575;
+            const unsigned int wavetime = audioSpec.freq*1000/145575;
 
             while(1)
             {
@@ -193,14 +193,14 @@ public:
 
                 #ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
                     if (prevsample != 0)
-                        freqtimer %= m_AudioSpec.freq*prevsample;
+                        freqtimer %= audioSpec.freq*prevsample;
                 #else
                     // On Keen 1-3, separated consecutive samples are always separated.
-                    wave = m_AudioSpec.silence - AMP;
+                    wave = audioSpec.silence - AMP;
                     freqtimer = 0;
                 #endif
 
-                generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (m_AudioSpec.freq>>1)*Uint64(sample));
+                generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
                 prevsample = sample;
 
 
@@ -212,25 +212,25 @@ public:
 		 */
 		else
 		{
-			const unsigned int wavetime = m_AudioSpec.freq*1000/140026;
+            const unsigned int wavetime = audioSpec.freq*1000/140026;
 			for(unsigned pos=1 ; pos<numOfBeeps ; pos++)
 			{
 				// Multiplying by some constant (60 in our case) seems to reproduces the right sound.
 				sample = *(inBuffer++) * 60;
 				#ifdef PC_SPEAKER_WORKS_LIKE_DOSBOX_V0_74
 				if (prevsample != 0)
-					freqtimer %= m_AudioSpec.freq*prevsample;
+                    freqtimer %= audioSpec.freq*prevsample;
 				#else
 				/** On Keen 4-6, consecutive samples of the exact
 				 * same frequency are merged into a single tone.
 				 */
 				if (prevsample != sample)
 				{
-					wave = m_AudioSpec.silence - AMP;
+                    wave = audioSpec.silence - AMP;
 					freqtimer = 0;
 				}
 				#endif
-				generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (m_AudioSpec.freq>>1)*Uint64(sample));
+                generateBeep(waveform, sample, wave, freqtimer, AMP, wavetime, (audioSpec.freq>>1)*Uint64(sample),audioSpec);
 				prevsample = sample;
 			}
 		}
@@ -243,13 +243,12 @@ public:
 	unsigned int getNumberofSounds() {	return m_soundslot.size();	}
 
 protected:
-	std::vector<CSoundSlot>m_soundslot;
-	const SDL_AudioSpec &m_AudioSpec;
+    std::vector<CSoundSlot> m_soundslot;
 
 private:
 	template <typename T>
-	void generateBeep(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, const int& AMP, const unsigned int& wavetime, const Uint64& changerate)
-	{
+    void generateBeep(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, const int& AMP, const unsigned int& wavetime, const Uint64& changerate, const SDL_AudioSpec &audioSpec)
+	{        
 		if (sample != 0)
 			for (unsigned int j=0; j<wavetime; j++)
 			{
@@ -257,18 +256,18 @@ private:
 				{
 					freqtimer %= changerate;
 
-					if (wave == m_AudioSpec.silence - AMP)
-						wave = m_AudioSpec.silence + AMP;
+                    if (wave == audioSpec.silence - AMP)
+                        wave = audioSpec.silence + AMP;
 					else
-						wave = m_AudioSpec.silence - AMP;
+                        wave = audioSpec.silence - AMP;
 				}
 				freqtimer += PCSpeakerTime;
 
-				for(Uint8 chnl=0 ; chnl<m_AudioSpec.channels ; chnl++ )
+                for(Uint8 chnl=0 ; chnl<audioSpec.channels ; chnl++ )
 					waveform.push_back(wave);
 			}
 		else
-			for (unsigned int j=0; j<wavetime*m_AudioSpec.channels; j++)
+            for (unsigned int j=0; j<wavetime*audioSpec.channels; j++)
 				waveform.push_back(wave);
 	}
 };

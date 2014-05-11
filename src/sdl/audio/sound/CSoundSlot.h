@@ -23,21 +23,19 @@ public:
 	void setupWaveForm( const std::vector<Uint8>& waveform );
 	bool HQSndLoad(const std::string& gamepath, const std::string& soundname);
 	void unload();
-	
-	void setupAudioSpec(const SDL_AudioSpec *pAudioSpec){ m_pAudioSpec = const_cast<SDL_AudioSpec*>(pAudioSpec); }
-	
-	byte *getSoundData() const { return m_sounddata; }
-	SDL_AudioSpec &getAudioSpec() const { return *m_pAudioSpec; }
+		
 	unsigned int getSoundlength() const { return m_soundlength; }
-	
-	~CSoundSlot();
 
+    byte *getSoundData()
+    {
+        return mSounddata.data();
+    }
+	
 	word priority;
 
 private:
-	byte *m_sounddata;
+    std::vector<byte> mSounddata;
 	unsigned int m_soundlength;
-	SDL_AudioSpec *m_pAudioSpec;
     bool mHasCommonFreqBase;
     int mOggFreq;
 };

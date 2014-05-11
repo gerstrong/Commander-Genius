@@ -469,7 +469,7 @@ void CPlayGameVorticon::handleFKeys()
 		for( ; it_player != m_Player.end() ; it_player++)
 		{
 			it_player->godmode ^= 1;
-			// If player on map, make disable the solid property of the players
+            // If player on map, disable the solid property of the players
 			if(m_Level == 80)
 				it_player->solid = !it_player->godmode;
 			it_player->performCollisions();

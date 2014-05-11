@@ -12,8 +12,7 @@
 #include <base/GsLogging.h>
 #include "Audio.h"
 
-CAudioResources::CAudioResources(const SDL_AudioSpec &AudioSpec) :
-m_AudioSpec(AudioSpec)
+CAudioResources::CAudioResources()
 {}
 
 bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize, const Uint8 formatsize )
@@ -21,7 +20,6 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	byte *imfdata_ptr = (byte*)imfdata;
 	const longword size = READLONGWORD(imfdata_ptr);
 	soundslot.priority = READWORD(imfdata_ptr);
-	soundslot.setupAudioSpec(&m_AudioSpec);
 	COPLEmulator &OPLEmulator = *g_pSound->getOPLEmulatorPtr();
 
 	// It's time make it Adlib Sound structure and read it into the waveform
@@ -40,9 +38,12 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	}
 	OPLEmulator.AlSetFXInst(AL_Sound.inst);
 
-	const unsigned int samplesPerMusicTick = m_AudioSpec.freq/OPLEmulator.getIMFClockRate();
+    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+
+
+    const unsigned int samplesPerMusicTick = audioSpec.freq/OPLEmulator.getIMFClockRate();
 	const unsigned waittimes = 4;
-	const unsigned int wavesize = (data_size*waittimes*samplesPerMusicTick*m_AudioSpec.channels*formatsize );
+    const unsigned int wavesize = (data_size*waittimes*samplesPerMusicTick*audioSpec.channels*formatsize );
 	byte waveform[wavesize];
 	byte *waveform_ptr = waveform;
 	Bit32s mix_buffer[samplesPerMusicTick];
@@ -74,13 +75,13 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
    				// Mix into the destination buffer, doubling up into stereo.
    				for (unsigned int i=0; i<samplesPerMusicTick; ++i)
    				{
-				    for( unsigned int ch=0 ; ch<m_AudioSpec.channels ; ch++ )
+                    for( unsigned int ch=0 ; ch<audioSpec.channels ; ch++ )
 				    {
-   					buffer[i * m_AudioSpec.channels + ch] = (int16_t) (mix_buffer[i]+m_AudioSpec.silence);
+                        buffer[i * audioSpec.channels + ch] = (int16_t) (mix_buffer[i]+audioSpec.silence);
 				    }
    				}
 
-   				waveform_ptr += samplesPerMusicTick*m_AudioSpec.channels*formatsize;
+                waveform_ptr += samplesPerMusicTick*audioSpec.channels*formatsize;
    			}
    		}
    		else // 8-Bit Sound
@@ -94,13 +95,13 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
    				// Mix into the destination buffer, doubling up into stereo.
    				for (unsigned int i=0; i<samplesPerMusicTick; ++i)
    				{
-				    for( unsigned int ch=0 ; ch<m_AudioSpec.channels ; ch++ )
+                    for( unsigned int ch=0 ; ch<audioSpec.channels ; ch++ )
 				    {
-   					buffer[i * m_AudioSpec.channels + ch] = (Uint8) ((mix_buffer[i]>>8)+m_AudioSpec.silence);
+                    buffer[i * audioSpec.channels + ch] = (Uint8) ((mix_buffer[i]>>8)+audioSpec.silence);
 				    }
    				}
 
-   				waveform_ptr += samplesPerMusicTick*m_AudioSpec.channels*formatsize;
+                waveform_ptr += samplesPerMusicTick*audioSpec.channels*formatsize;
    			}
    		}
 	}

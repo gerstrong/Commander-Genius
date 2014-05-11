@@ -15,8 +15,7 @@
 #include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"
 
-CAudioGalaxy::CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
-CAudioResources(AudioSpec),
+CAudioGalaxy::CAudioGalaxy(const CExeFile &ExeFile) :
 m_ExeFile(ExeFile)
 {}
 
@@ -29,17 +28,18 @@ bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const b
 	byte *pcsdata_ptr = (byte*)pcsdata;
 	const longword size = READLONGWORD(pcsdata_ptr);
 	soundslot.priority = READWORD(pcsdata_ptr);
-	soundslot.setupAudioSpec(&m_AudioSpec);
+
+    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
 
 	std::vector<Sint16> waveform;
 	// TODO:  There should be a better way of determining if sound is signed or not...
 	int AMP;
-	if ((m_AudioSpec.format == AUDIO_S8) || (m_AudioSpec.format == AUDIO_S16))
+    if ((audioSpec.format == AUDIO_S8) || (audioSpec.format == AUDIO_S16))
 		AMP = ((((1<<(formatsize*8))>>2)-1)*PC_Speaker_Volume)/100;
 	else
 		AMP = ((((1<<(formatsize*8))>>1)-1)*PC_Speaker_Volume)/100;
 
-	generateWave(waveform, pcsdata_ptr, size, false, AMP);
+    generateWave(waveform, pcsdata_ptr, size, false, AMP, audioSpec);
 
 	if(formatsize == 1)
 	{
@@ -280,7 +280,9 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 {
     setupAudioMap();
 
-	if(m_AudioSpec.format != 0)
+    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
+
+    if(audioSpec.format != 0)
 	{
 		// Open the Huffman dictionary and get AUDIODICT
 		CHuffman Huffman;
@@ -417,9 +419,9 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 				Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
 
 				if(snd>=al_snd_start)
-					readISFintoWaveForm( m_soundslot[snd], imfdata, outsize, (m_AudioSpec.format == AUDIO_S16) ? 2 : 1 );
+                    readISFintoWaveForm( m_soundslot[snd], imfdata, outsize, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
 				else
-					readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, outsize, (m_AudioSpec.format == AUDIO_S16) ? 2 : 1 );
+                    readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, outsize, (audioSpec.format == AUDIO_S16) ? 2 : 1 );
 			}
 		}
 

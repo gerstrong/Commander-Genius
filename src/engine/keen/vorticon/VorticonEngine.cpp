@@ -34,7 +34,7 @@ bool setupAudio()
 {
     const CExeFile &ExeFile = gKeenFiles.exeFile;
 
-    CAudioVorticon *audio = new CAudioVorticon(ExeFile, g_pSound->getAudioSpec());
+    CAudioVorticon *audio = new CAudioVorticon(ExeFile);
 
     if(audio->loadSoundData())
     {
