@@ -18,7 +18,50 @@
 
 CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
 CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::EXPAND)
-{}
+{
+   initVorticonBackground();
+}
+
+
+void CMessageBoxVort::initVorticonBackground()
+{
+    GsRect<float> rect = getRect();
+
+    const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
+    mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
+
+    // Now lets draw the text of the list control
+    GsFont &Font = gGraphics.getFont(1);
+
+    SDL_Surface *backSfc = mBackground.getSDLSurface();
+
+    // Draw the character so the classical vorticon menu is drawn
+
+    // Start with the blank space (normally it's white. Might be different in some mods)
+    for( int x=8 ; x<sdlRect.w-8 ; x+=8 )
+    {
+        for( int y=8 ; y<sdlRect.h-8 ; y+=8 )
+        {
+            Font.drawCharacter( mBackground.getSDLSurface(), 32, x, y );
+        }
+    }
+
+    // Now draw the borders
+    drawBorderRect(backSfc, sdlRect);
+
+    processRendering(mBackground.getSDLSurface());
+}
+
+
+void CMessageBoxVort::render()
+{
+    GsRect<float> rect = getRect();
+    const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
+
+    drawBorderRect( gVideoDriver.getBlitSurface(), sdlRect );
+}
+
+
 
 // This function is used in your Ship need those parts.
 // This special Messagebox can hold up to 4 images

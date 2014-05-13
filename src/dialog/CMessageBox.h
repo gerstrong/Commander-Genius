@@ -33,7 +33,7 @@ public:
 	 */
     void processLogic();
 
-    void render();
+    virtual void render();
 
 
 
