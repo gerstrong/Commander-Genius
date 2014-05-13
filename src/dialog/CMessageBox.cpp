@@ -76,7 +76,7 @@ void CMessageBox::processLogic()
 
 void CMessageBox::render()
 {
-    CGUIDialog::processRendering();
+    CGUIDialog::processRendering();    
 }
 
 

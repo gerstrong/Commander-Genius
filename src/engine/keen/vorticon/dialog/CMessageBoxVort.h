@@ -26,9 +26,6 @@ public:
 	 */
 	void addTileAt(Uint16 tile, Uint16 x, Uint16 y);
 
-private:
-    GsSurface mBackground;
-
 };
 
 #endif /* CMESSAGEBOXVORT_H_ */

@@ -126,6 +126,7 @@ protected:
 
 
 	GsRect<float> mRect;
+    GsSurface    mBackgroundSfc;
 
 private:
 
@@ -134,7 +135,6 @@ private:
 
 	// SDL_Surface of the Background
     std::shared_ptr<SDL_Surface>    mpTempSfc;
-    GsSurface    mBackgroundSfc;
 
 	int mSelection;
 	CGUIControl *mpCurrentCtrl;

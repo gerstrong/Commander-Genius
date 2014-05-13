@@ -19,21 +19,30 @@
 CMessageBoxVort::CMessageBoxVort(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
 CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::EXPAND)
 {
-   initVorticonBackground();
+   initVorticonBackground();   
 }
 
 
 void CMessageBoxVort::initVorticonBackground()
 {
+//    return;
+    const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
+
+    mBackgroundSfc.create(0, lRect.w, lRect.h, RES_BPP, 0, 0, 0, 0);
+    mBackgroundSfc.fillRGB(230, 230, 230);
+
+
     GsRect<float> rect = getRect();
 
     const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
-    mBackground.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
+    mBackgroundSfc.create(0, sdlRect.w, sdlRect.h, RES_BPP, 0, 0, 0, 0);
 
     // Now lets draw the text of the list control
     GsFont &Font = gGraphics.getFont(1);
 
-    SDL_Surface *backSfc = mBackground.getSDLSurface();
+    // Now draw the borders
+    SDL_Surface *backSfc = mBackgroundSfc.getSDLSurface();
+    drawBorderRect(backSfc, sdlRect);
 
     // Draw the character so the classical vorticon menu is drawn
 
@@ -42,23 +51,24 @@ void CMessageBoxVort::initVorticonBackground()
     {
         for( int y=8 ; y<sdlRect.h-8 ; y+=8 )
         {
-            Font.drawCharacter( mBackground.getSDLSurface(), 32, x, y );
+            Font.drawCharacter( backSfc, 32, x, y );
         }
     }
 
-    // Now draw the borders
-    drawBorderRect(backSfc, sdlRect);
-
-    processRendering(mBackground.getSDLSurface());
+    processRendering(mBackgroundSfc.getSDLSurface());
 }
 
 
 void CMessageBoxVort::render()
 {
-    GsRect<float> rect = getRect();
-    const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
+    CMessageBox::render();
+    //GsRect<float> rect = getRect();
+    //const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
 
-    drawBorderRect( gVideoDriver.getBlitSurface(), sdlRect );
+    //GsWeakSurface blit(gVideoDriver.getBlitSurface());
+
+    //mBackgroundSfc.blitTo(blit, sdlRect);
+    //CGUIDialog::processRendering();
 }
 
 
