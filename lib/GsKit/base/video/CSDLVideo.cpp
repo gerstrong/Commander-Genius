@@ -81,10 +81,10 @@ bool CSDLVideo::init()
 
 bool CSDLVideo::resizeDisplayScreen(const GsRect<Uint16>& newDim)
 {
-    //const int w = m_VidConfig.mAspectCorrection.w;
-    //const int h = m_VidConfig.mAspectCorrection.h;
-    const int w = 0;
-    const int h = 0;
+    const int w = m_VidConfig.mAspectCorrection.w;
+    const int h = m_VidConfig.mAspectCorrection.h;
+    //const int w = 0;
+    //const int h = 0;
 
     updateAspectRect(newDim, w, h);
 

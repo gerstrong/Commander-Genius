@@ -48,7 +48,7 @@ private:
 	{
 		mVSettings.mUserVidConf.Fullscreen = !mVSettings.mUserVidConf.Fullscreen;
 		mVSettings.release();
-		mVSettings.init();
+        mVSettings.refresh();
 	}
 
 	CVideoSettings& mVSettings;
@@ -116,7 +116,7 @@ VorticonMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpMenuDialog->addControl( mpSFXSwitch );
 }
 
-void CVideoSettings::init()
+void CVideoSettings::refresh()
 {
 	mUserVidConf = gVideoDriver.getVidConfig();
 

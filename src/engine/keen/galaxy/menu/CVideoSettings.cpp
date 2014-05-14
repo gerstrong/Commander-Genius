@@ -123,6 +123,8 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpMenuDialog->addControl( mpSFXSwitch );
 
 	setMenuLabel("OPTIONSMENULABEL");
+
+    refresh();
 }
 
 void CVideoSettings::refresh()

@@ -255,8 +255,6 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
                      blit->w, blit->h );
 
 
-    auto *format = blit->format;
-
     if(m_VidConfig.m_ScaleXFilter > 1)
     {
         mFilteredSfc.create(m_Mode, blit->w*m_VidConfig.m_ScaleXFilter, blit->h*m_VidConfig.m_ScaleXFilter,
