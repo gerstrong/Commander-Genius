@@ -77,7 +77,7 @@ public:
     virtual void transformScreenToDisplay() = 0;
 	virtual void shutdown();
 
-    SDL_Surface *createSurface(std::string name, bool alpha, int width, int height, int bpp, int mode);
+    //SDL_Surface *createSurface(std::string name, bool alpha, int width, int height, int bpp, int mode);
     bool createSurfaces();
     bool createSurfaces(const GsRect<Uint16> &gamerect);
 

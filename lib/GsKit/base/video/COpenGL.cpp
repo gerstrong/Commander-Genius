@@ -109,13 +109,23 @@ bool COpenGL::init()
 	CVideoEngine::init();
 	const GLint oglfilter = m_VidConfig.m_opengl_filter;
 
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
+
+    Uint32 flags = SDL_WINDOW_OPENGL;
+
+    if(m_VidConfig.Fullscreen)
+        flags |= SDL_WINDOW_FULLSCREEN;
+    else
+        flags |= (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
+
     window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
                               m_VidConfig.m_DisplayRect.w,
                               m_VidConfig.m_DisplayRect.h,
-                              SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                              flags);
 
     glcontext = SDL_GL_CreateContext(window);
     
