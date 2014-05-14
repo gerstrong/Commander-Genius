@@ -149,8 +149,6 @@ bool CAudioVorticon::loadSound( const std::string& path, const std::string& sear
     Uint8* buf = nullptr;
 	bool ok = false;
 
-    const SDL_AudioSpec &audioSpec = g_pSound->getAudioSpec();
-
     const Uint16 format = g_pSound->getAudioSpec().format;
 
     if( format == AUDIO_S8 )
