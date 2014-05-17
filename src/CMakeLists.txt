@@ -233,6 +233,7 @@ if(USE_SDL2)
 else(USE_SDL2)
         # SDL2 not found, try SDL
         FIND_PACKAGE( SDL REQUIRED )
+        FIND_PACKAGE( SDL_net REQUIRED )
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)
         endif()
@@ -267,7 +268,7 @@ add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 
 if(USE_SDL2)
 else(USE_SDL2)
-        # SDL stuff to link
+        # SDL stuff to link        
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
 endif(USE_SDL2)
 
@@ -284,9 +285,6 @@ IF(BUILD_TARGET STREQUAL WIN32)
 	TARGET_LINK_LIBRARIES(CGeniusExe opengl32)
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
-
-# SDL Stuff
-#FIND_PACKAGE( SDL_net REQUIRED )
 
 # OpenGL Parsing
 find_package(OpenGL REQUIRED)

@@ -577,13 +577,13 @@ bool MSCDEX_GetVolumeName(Bit8u subUnit, char* name);
 cdromDrive::cdromDrive(const char driveLetter, const char * startdir,Bit16u _bytes_sector,Bit8u _sectors_cluster,Bit16u _total_clusters,Bit16u _free_clusters,Bit8u _mediaid, int& error)
 		   :localDrive(startdir,_bytes_sector,_sectors_cluster,_total_clusters,_free_clusters,_mediaid) {
 	// Init mscdex
-	error = MSCDEX_AddDrive(driveLetter,startdir,subUnit);
+    //error = MSCDEX_AddDrive(driveLetter,startdir,subUnit);
 	strcpy(info, "CDRom ");
 	strcat(info, startdir);
 	this->driveLetter = driveLetter;
 	// Get Volume Label
 	char name[32];
-	if (MSCDEX_GetVolumeName(subUnit,name)) dirCache.SetLabel(name,true,true);
+    //if (MSCDEX_GetVolumeName(subUnit,name)) dirCache.SetLabel(name,true,true);
 }
 
 bool cdromDrive::FileOpen(DOS_File * * file,char * name,Bit32u flags) {
@@ -631,23 +631,23 @@ bool cdromDrive::GetFileAttr(char * name,Bit16u * attr) {
 
 bool cdromDrive::FindFirst(char * _dir,DOS_DTA & dta,bool /*fcb_findfirst*/) {
 	// If media has changed, reInit drivecache.
-	if (MSCDEX_HasMediaChanged(subUnit)) {
+    /*if (MSCDEX_HasMediaChanged(subUnit)) {
 		dirCache.EmptyCache();
 		// Get Volume Label
 		char name[32];
 		if (MSCDEX_GetVolumeName(subUnit,name)) dirCache.SetLabel(name,true,true);
-	}
+    }*/
 	return localDrive::FindFirst(_dir,dta);
 }
 
 void cdromDrive::SetDir(const char* path) {
 	// If media has changed, reInit drivecache.
-	if (MSCDEX_HasMediaChanged(subUnit)) {
+    /*if (MSCDEX_HasMediaChanged(subUnit)) {
 		dirCache.EmptyCache();
 		// Get Volume Label
 		char name[32];
 		if (MSCDEX_GetVolumeName(subUnit,name)) dirCache.SetLabel(name,true,true);
-	}
+    }*/
 	localDrive::SetDir(path);
 }
 
@@ -660,9 +660,9 @@ bool cdromDrive::isRemovable(void) {
 }
 
 Bits cdromDrive::UnMount(void) {
-	if(MSCDEX_RemoveDrive(driveLetter)) {
+    /*if(MSCDEX_RemoveDrive(driveLetter)) {
 		delete this;
 		return 0;
-	}
+    }*/
 	return 2;
 }
