@@ -70,7 +70,7 @@ public:
                   const Uint32 contourColor);
 
 
-    /**
+    /**SDLKey
      * @brief getPixel given the coordinate it will return the pixel color as Uint32.
      * @param x
      * @param y

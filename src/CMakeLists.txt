@@ -247,9 +247,6 @@ else(USE_SDL2)
                 add_subdirectory(Externals/SDL)
         endif(SDL_FOUND)
 
-        # SDL stuff to link
-        target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
-
 endif(USE_SDL2)
 
 
@@ -266,6 +263,13 @@ get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 
 # Add executable Commander Genius
 add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
+
+
+if(USE_SDL2)
+else(USE_SDL2)
+        # SDL stuff to link
+        target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
+endif(USE_SDL2)
 
 
 # Link GsKit

@@ -15,22 +15,17 @@
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 m_mustclose(false),
 m_timer(0)
-{
-    std::shared_ptr<SDL_Surface> sceneSfc(SDL_CreateRGBSurface( 0, 320, 200, 8, 0, 0, 0, 0),
-                                          &SDL_FreeSurface);
-    SDL_Surface *pSceneSurface = sceneSfc.get();
+{        
+    SDL_Rect rect;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetPaletteColors(pSceneSurface->format->palette, gGraphics.Palette.m_Palette, 0, 255);
-    SDL_SetColorKey(pSceneSurface, SDL_TRUE, COLORKEY);
-#else
-    SDL_SetColors(pSceneSurface, gGraphics.Palette.m_Palette, 0, 255);
-    SDL_SetColorKey(pSceneSurface, SDL_SRCCOLORKEY, COLORKEY);
-#endif
+    rect.x = 0;     rect.y = 0;
+    rect.w = 320;   rect.h = 200;
 
-    if( finale_draw( pSceneSurface, scene_file, game_path) )
+    mSceneBmp.createSurface(0, rect, gGraphics.Palette.m_Palette);
+
+    if( finale_draw( mSceneBmp.getSDLSurface(), scene_file, game_path) )
 	{
-        mSceneBmp = GsBitmap(sceneSfc);
+        //mSceneBmp = GsBitmap(sceneSfc);
 
         GsWeakSurface blit( gVideoDriver.getBlitSurface() );
 
