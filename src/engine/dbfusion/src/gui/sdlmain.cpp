@@ -50,6 +50,8 @@
 #include "cross.h"
 #include "control.h"
 
+#include <base/video/CVideoDriver.h>
+
 #define MAPPERFILE "mapper-" VERSION ".map"
 //#define DISABLE_JOYSTICK
 
@@ -520,7 +522,7 @@ dosurface:
 				}
 				SDL_InitSubSystem(SDL_INIT_VIDEO);
 				GFX_SetIcon(); //Set Icon again
-				sdl.surface = SDL_SetVideoMode(width,height,bpp,SDL_HWSURFACE);
+                //sdl.surface = SDL_SetVideoMode(width,height,bpp,SDL_HWSURFACE);
 				if(sdl.surface) GFX_SetTitle(-1,-1,false); //refresh title.
 			}
 #endif
@@ -1239,9 +1241,12 @@ static void GUI_StartUp(Section * sec) {
 	}
 
     //sdl.overlay=0;
+
+    sdl.surface = gVideoDriver.getBlitSurface();
+
 #if C_OPENGL
    if(sdl.desktop.want_type==SCREEN_OPENGL){ /* OPENGL is requested */
-//	sdl.surface=SDL_SetVideoMode(640,400,0,SDL_OPENGL);
+//	sdl.surface=SDL_SetVideoMode(640,400,0,SDL_OPENGL);                     
 	if (sdl.surface == NULL) {
 		LOG_MSG("Could not initialize OpenGL, switching back to surface");
 		sdl.desktop.want_type=SCREEN_SURFACE;
@@ -1835,8 +1840,8 @@ int dosbox_main(int argc, char* argv[]) {
 		Config myconf(&com_line);
 		control=&myconf;
 		/* Init the configuration system and add default values */
-		Config_Add_SDL();
-		DOSBOX_Init();
+        Config_Add_SDL();
+        DOSBOX_Init();
 
 		std::string editor;
 		if(control->cmdline->FindString("-editconf",editor,false)) launcheditor();
@@ -1845,7 +1850,8 @@ int dosbox_main(int argc, char* argv[]) {
 		if(control->cmdline->FindExist("-resetconf")) eraseconfigfile();
 		if(control->cmdline->FindExist("-erasemapper")) erasemapperfile();
 		if(control->cmdline->FindExist("-resetmapper")) erasemapperfile();
-		
+		        
+
 		/* Can't disable the console with debugger enabled */
 #if defined(WIN32) && !(C_DEBUG)
 		if (control->cmdline->FindExist("-noconsole")) {
@@ -1901,6 +1907,7 @@ int dosbox_main(int argc, char* argv[]) {
 	LOG_MSG("Copyright 2002-2013 DOSBox Team, published under GNU GPL.");
 	LOG_MSG("---");
 
+
 	/* Init SDL */
 #if SDL_VERSION_ATLEAST(1, 2, 14)
 	/* Or debian/ubuntu with older libsdl version as they have done this themselves, but then differently.
@@ -1914,11 +1921,11 @@ int dosbox_main(int argc, char* argv[]) {
         ) < 0 ) E_Exit("Can't init SDL %s",SDL_GetError());*/
 	sdl.inited = true;
 
-#ifndef DISABLE_JOYSTICK
+/*#ifndef DISABLE_JOYSTICK
 	//Initialise Joystick seperately. This way we can warn when it fails instead
 	//of exiting the application
-	if( SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) LOG_MSG("Failed to init joystick support");
-#endif
+    if( SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) LOG_MSG("Failed to init joystick support");
+#endif*/
 
 	sdl.laltstate = SDL_KEYUP;
 	sdl.raltstate = SDL_KEYUP;
@@ -1954,6 +1961,7 @@ int dosbox_main(int argc, char* argv[]) {
 #endif
 	sdl.num_joysticks=SDL_NumJoysticks();
 
+
 	/* Parse configuration files */
 	std::string config_file,config_path;
 	Cross::GetPlatformConfigDir(config_path);
@@ -1978,6 +1986,8 @@ int dosbox_main(int argc, char* argv[]) {
 			}
 		}
 	}
+
+
 
 	//Second parse -conf switches
 	while(control->cmdline->FindString("-conf",config_file,true)) {
@@ -2010,6 +2020,7 @@ int dosbox_main(int argc, char* argv[]) {
 			LOG_MSG("CONFIG: Using default settings. Create a configfile to change them");
 		}
 	}
+
 
 
 #if (ENVIRON_LINKED)
@@ -2058,6 +2069,9 @@ int dosbox_main(int argc, char* argv[]) {
 	catch(...){
 		; // Unknown error, let's just exit.
 	}
+
+
+
 #if defined (WIN32)
 	sticky_keys(true); //Might not be needed if the shutdown function switches to windowed mode, but it doesn't hurt
 #endif 
@@ -2065,7 +2079,7 @@ int dosbox_main(int argc, char* argv[]) {
 //	SDL_WM_GrabInput(SDL_GRAB_OFF);
 	SDL_ShowCursor(SDL_ENABLE);
 
-	SDL_Quit();//Let's hope sdl will quit as well when it catches an exception
+    SDL_Quit();//Let's hope sdl will quit as well when it catches an exception
 	return 0;
 }
 

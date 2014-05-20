@@ -135,6 +135,7 @@ static Bitu Normal_Loop(void) {
     while (1) {
         if (PIC_RunQueue()) {
             ret = (*cpudecoder)();
+
             if (GCC_UNLIKELY(ret<0)) return 1;
             if (ret>0) {
                 if (GCC_UNLIKELY(ret >= CB_MAX)) return 0;
@@ -248,6 +249,7 @@ void DOSBOX_SetNormalLoop() {
 }
 
 void DOSBOX_RunMachine(void){
+
     Bitu ret;
     do {
         ret=(*loop)();

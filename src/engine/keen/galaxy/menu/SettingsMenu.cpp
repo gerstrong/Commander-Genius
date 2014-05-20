@@ -50,8 +50,8 @@ GalaxyMenu( GsRect<float>(0.25f, 0.24f, 0.5f, 0.32f) )
                                     new OpenMenuEvent( new CCameraSettings() ) ) );
 #endif
 
-    mpMenuDialog->addControl(new GalaxyButton( "Profile",
-                                    new OpenMenuEvent( new CProfilesMenu() ) ) );
+    /*mpMenuDialog->addControl(new GalaxyButton( "Profile",
+                                    new OpenMenuEvent( new CProfilesMenu() ) ) );*/
 
     setMenuLabel("CONFIGMENULABEL");
 }
