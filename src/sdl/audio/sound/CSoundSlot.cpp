@@ -19,6 +19,7 @@
 
 
 #if defined(OGG)
+#define OV_EXCLUDE_STATIC_CALLBACKS // Will reduce some nasty warning, since we don't use those callbacks
 #include <vorbisfile.h>
 #elif defined(TREMOR)
 #include <ivorbisfile.h>
@@ -135,7 +136,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
         if(oggdata == nullptr)
         {
             gLogging.textOut(PURPLE,"Something is wrong with \"%s\"<br>", buf);
-			return false;            
+			return false;
         }
 #else
 		gLogging.textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
