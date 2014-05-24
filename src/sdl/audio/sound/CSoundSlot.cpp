@@ -122,16 +122,17 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	std::string buf;
 
 	Uint32 length = 0;
-    Uint8 *snddata = nullptr;
+    Uint8 *oggdata = nullptr;
+    Uint8 *wavdata = nullptr;
 
 #if defined(OGG) || defined(TREMOR)
 	buf = getResourceFilename("snd/" + soundname + ".OGG", gamepath, false, true); // Start with OGG
 
 	if(buf != "")
 	{
-		openOGGSound(buf, &AudioFileSpec, snddata, length);
+        openOGGSound(buf, &AudioFileSpec, oggdata, length);
 
-        if(snddata == nullptr)
+        if(oggdata == nullptr)
         {
             gLogging.textOut(PURPLE,"Something is wrong with \"%s\"<br>", buf);
 			return false;            
@@ -152,7 +153,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 			return false;
 
 		// Check, if it is a wav file or go back to classic sounds
-		if (SDL_LoadWAV (Utf8ToSystemNative(GetFullFileName(buf)).c_str(), &AudioFileSpec, &snddata, &length) == NULL)
+        if (SDL_LoadWAV (Utf8ToSystemNative(GetFullFileName(buf)).c_str(), &AudioFileSpec, &wavdata, &length) == NULL)
 			return false;
 
 #if defined(OGG) || defined(TREMOR)
@@ -167,43 +168,52 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	if(ret == -1)
 	{
 		gLogging.textOut(PURPLE,"Couldn't convert the sound correctly!<br>");
-		SDL_FreeWAV(snddata);
+        SDL_FreeWAV(wavdata);
 		return false;
 	}
 
 	// Setup for conversion, copy original data to new buffer
 	Audio_cvt.buf = (Uint8*) malloc(length * Audio_cvt.len_mult);
 	Audio_cvt.len = length;
-	memcpy(Audio_cvt.buf, snddata, length);
+
+    if(oggdata)
+        memcpy(Audio_cvt.buf, oggdata, length);
+    else
+        memcpy(Audio_cvt.buf, wavdata, length);
 
 	// We can delete to original WAV data now
-	SDL_FreeWAV(snddata);
+    if(oggdata)
+        free(oggdata);
+    else
+        SDL_FreeWAV(wavdata);
+
 
 	// And now we're ready to convert
 	SDL_ConvertAudio(&Audio_cvt);
 
 	// copy the converted stuff to the original soundbuffer
+    Uint8 *buffer;
     if( !mHasCommonFreqBase )
 	{
         const float factor = float(audioSpec.freq)/mOggFreq;
 		length = Audio_cvt.len_cvt;
-		const unsigned long out_len = (float)length*factor;
-		snddata = (Uint8*) malloc(out_len);
+		const unsigned long out_len = (float)length*factor;        
+        buffer = (Uint8*) malloc(out_len);
 
-		resample(snddata, Audio_cvt.buf,
+        resample(buffer, Audio_cvt.buf,
                 out_len, length, audioSpec.format, audioSpec.channels);
 		length = out_len;
 	}
 	else
 	{
 		length = Audio_cvt.len_cvt;
-		snddata = (Uint8*) malloc(length);
-		memcpy(snddata, Audio_cvt.buf, length);
+        buffer = (Uint8*) malloc(length);
+        memcpy(buffer, Audio_cvt.buf, length);
 	}
 
-	setupWaveForm(snddata, length);
+    setupWaveForm(buffer, length);
 
-	free(snddata);
+    free(buffer);
 
 	// Structure Audio_cvt must be freed!
 	free(Audio_cvt.buf);
