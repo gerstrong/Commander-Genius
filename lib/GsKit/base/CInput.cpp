@@ -547,7 +547,9 @@ void CInput::pollEvents()
 
     auto &dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
 
-#ifndef WIN32 // For some odd reason under Windows the clickGameArea must be zero
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
     if( !gVideoDriver.isOpenGL() )
 #endif
     {
