@@ -548,10 +548,10 @@ void CInput::pollEvents()
     auto &dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
 
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+/*#if SDL_VERSION_ATLEAST(2, 0, 0)
 #else
-    if( !gVideoDriver.isOpenGL() )
-#endif
+    //if( !gVideoDriver.isOpenGL() )
+#endif*/
     {
         clickGameArea.x = 0;
         clickGameArea.y = 0;
