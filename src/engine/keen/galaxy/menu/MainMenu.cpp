@@ -17,8 +17,6 @@
 #include "CHelpMenu.h"
 #include "engine/core/CBehaviorEngine.h"
 
-//#include "core/mode/CGameMode.h"
-
 #include "widgets/Button.h"
 #include "../../menu/CSelectionMenu.h"
 

@@ -27,6 +27,10 @@ or directly to me (tulip) at haubaer1981@yahoo.de
 Update Log
 ----------
 
+Release 2.2 (2014-05-24)
+- Minor Revisions on Keen5, they should sound better now
+- New Keen6 tunes, enjoy!
+
 Release 2.1 (2014-05-11)
 - Minor Revisions
 - New Keen5 tunes, enjoy!

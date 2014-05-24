@@ -16,7 +16,6 @@ void GalaxyMenu::createGalaxyBackground()
     mBackground.create( 0, bmpRect.w, bmpRect.h, RES_BPP, 0, 0, 0, 0);
     swatchSfc.blitTo(mBackground);
 
-
     // Besides the Background Bitmap we need to draw two lines
     SDL_Surface *backSfc = mBackground.getSDLSurface();
 

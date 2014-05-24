@@ -158,13 +158,15 @@ bool GsBitmap::scaleTo(const GsRect<Uint16> &destRes)
 {
     SDL_Rect newRect = destRes.SDLRect();
 
-    if(newRect.w == mpBitmapSurface->w && newRect.h == mpBitmapSurface->h)
-        return true;
-
-    std::shared_ptr<SDL_Surface> newSfc;
-
     // Need to do that, otherwise it won't work.
     optimizeSurface();
+
+    if(newRect.w == mpBitmapSurface->w &&
+       newRect.h == mpBitmapSurface->h)
+        return true;
+
+
+    std::shared_ptr<SDL_Surface> newSfc;
 
     auto bmpSfc = mpBitmapSurface.get();
     auto bmpFormat = bmpSfc->format;
