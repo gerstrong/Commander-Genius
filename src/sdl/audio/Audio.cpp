@@ -45,7 +45,7 @@ static const int availableRates[numAvailableRates]=
 
 // define a callback function we can work with
 inline static void CCallback(void *unused, Uint8 *stream, int len)
-{    
+{
     SDL_memset(stream, 0, len);
 
     // let it call a method on my (singleton) sound object
@@ -125,7 +125,7 @@ bool Audio::init()
    // gLogging.ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
 #endif
 
-    const uint channels = 32;
+    const unsigned int channels = 32;
 
     if(!mSndChnlVec.empty())
         mSndChnlVec.clear();
@@ -163,7 +163,7 @@ void Audio::destroy()
 
 // stops all currently playing sounds
 void Audio::stopAllSounds()
-{        
+{
     for( auto &snd_chnl : mSndChnlVec )
 		snd_chnl.stopSound();
 }
