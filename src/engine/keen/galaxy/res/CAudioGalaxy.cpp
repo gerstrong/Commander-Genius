@@ -438,7 +438,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
  */
 bool CAudioGalaxy::loadSoundData()
 {
-    COPLEmulator &OPLEmulator = *g_pSound->getOPLEmulatorPtr();
+    COPLEmulator &OPLEmulator = g_pSound->getOPLEmulatorRef();
 
     OPLEmulator.shutdown();
     OPLEmulator.init();

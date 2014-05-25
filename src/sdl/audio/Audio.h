@@ -41,9 +41,9 @@ public:
 	void resumeSounds(void);
 	void playSound(	const GameSound snd,
 					const SoundPlayMode mode = PLAY_NOW );
-	void playStereofromCoord(const GameSound snd,
-							 const SoundPlayMode mode,
-							 const int xcoordinate);
+    void playStereofromCoord(const GameSound snd,
+                             const SoundPlayMode mode,
+                             const int xCoord);
 	void playStereosound(const GameSound snd, const char mode, const short balance);
 	void playStereosoundSlot(unsigned char slotplay, const char mode, const short balance);
 	bool isPlaying(const GameSound snd);
@@ -59,7 +59,7 @@ public:
 	const SDL_AudioSpec	&getAudioSpec() const  { return const_cast<const SDL_AudioSpec&>(mAudioSpec); }
 	unsigned short 	getMixingchannels() const { return m_mixing_channels; }
 	bool getSoundBlasterMode() {	return m_sound_blaster_mode;	}
-	COPLEmulator *getOPLEmulatorPtr() { return &m_OPL_Player; }
+    COPLEmulator &getOPLEmulatorRef() { return m_OPL_Player; }
 
 	void setSettings( const int rate,
 							  const int channels,

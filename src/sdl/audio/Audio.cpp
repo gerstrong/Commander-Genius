@@ -274,11 +274,11 @@ void Audio::playSound(	const GameSound snd,
 
 void Audio::playStereofromCoord( const GameSound snd,
 				  const SoundPlayMode mode,
-				  const int xcoordinate )
+                  const int xCoord )
 {
     if(mAudioSpec.channels == 2)
     {
-    	int bal = (xcoordinate - (320>>1));	// Faster calculation of balance transformation
+        int bal = (xCoord - (320>>1));	// Faster calculation of balance transformation
 
     	if(bal < -255)
 	{
