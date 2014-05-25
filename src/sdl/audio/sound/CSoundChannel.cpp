@@ -12,31 +12,37 @@
 #include <cstring>
 
 
-CSoundChannel::CSoundChannel(SDL_AudioSpec AudioSpec) :
+CSoundChannel::CSoundChannel(const SDL_AudioSpec &AudioSpec) :
 mp_current_SndSlot(nullptr),
 m_AudioSpec(AudioSpec)
 {
-	m_sound_ptr = 0;
-	m_sound_playing = false;
-	m_sound_paused = true;
-	m_sound_forced = false;
-	m_balance = 0;
+    stopSound();
 }
 
 void CSoundChannel::stopSound()
 {
+    SDL_LockAudio();
+
+    mp_current_SndSlot = nullptr;
 	m_balance = 0;
     m_sound_ptr = 0;
+    m_sound_paused = true;
     m_sound_playing = false;
+
+    SDL_UnlockAudio();
 }
 
 void CSoundChannel::setupSound( CSoundSlot &SndSlottoPlay,
 								const bool sound_forced )
 {
+    SDL_LockAudio();
+
 	mp_current_SndSlot = &SndSlottoPlay;
 	m_sound_playing = true;
 	m_sound_ptr = 0;
 	m_sound_forced = sound_forced;
+
+    SDL_UnlockAudio();
 }
 
 /** \brief This program reads the balance information and balances the stereo sound

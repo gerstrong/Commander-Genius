@@ -45,14 +45,12 @@ PLAY_PAUSEALL
 #define WAVE_OUT_S16		(WAVE_SILENCE_S16+WAVEFORM_VOLUME_16)
 
 #define SLOW_RATE      90		// Wait time for resampling PC Speaker Sound.
-//#define SLOW_RATE      45		// Wait time for resampling PC Speaker Sound.
-// The higher it is, the faster sound is played!
 
 
 class CSoundChannel
 {
 public:
-	CSoundChannel(SDL_AudioSpec AudioSpec);
+    CSoundChannel(const SDL_AudioSpec &AudioSpec);
 
 	void stopSound();
 	bool isPlaying() { return m_sound_playing; }

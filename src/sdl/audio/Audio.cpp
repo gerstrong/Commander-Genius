@@ -9,12 +9,8 @@
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include <base/GsLogging.h>
-//#include "StringUtils.h"
 #include <base/utils/FindFile.h>
 #include "sdl/audio/music/CMusic.h"
-//#include "engine/core/CBehaviorEngine.h"
-
-//#include "engine/vorticon/AudioVorticon.h"
 
 #include <fstream>
 
@@ -58,10 +54,9 @@ inline static void CCallback(void *unused, Uint8 *stream, int len)
 
 Audio::Audio() :
 m_callback_running(false),
-m_mixing_channels(0),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
-m_sound_blaster_mode(false),
+mUseSoundBlaster(false),
 m_OPL_Player(mAudioSpec),
 m_pause_gameplay(false)
 {
@@ -130,14 +125,14 @@ bool Audio::init()
    // gLogging.ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
 #endif
 
-	//m_mixing_channels = 15;
-	m_mixing_channels = 32;
+    const uint channels = 32;
 
-	if(!m_soundchannel.empty())
-		m_soundchannel.clear();
-    m_soundchannel.assign(m_mixing_channels, CSoundChannel(mAudioSpec));
+    if(!mSndChnlVec.empty())
+        mSndChnlVec.clear();
 
-	SDL_PauseAudio(0);
+    mSndChnlVec.assign(channels, CSoundChannel(mAudioSpec));
+
+    SDL_PauseAudio(0);
 
 	gLogging.ftextOut("Sound System: SDL sound system initialized.<br>");
 
@@ -153,13 +148,12 @@ void Audio::destroy()
 
     SDL_LockAudio();
 	SDL_CloseAudio();
-	m_mixing_channels = 0;
 
 	if(!m_MixedForm.empty())
 		m_MixedForm.clear();
 
-	if(!m_soundchannel.empty())
-		m_soundchannel.clear();
+    if(!mSndChnlVec.empty())
+        mSndChnlVec.clear();
 
 	// Shutdown the OPL Emulator here!
 	gLogging.ftextOut("SoundDrv_Stop(): shut down.<br>");
@@ -169,8 +163,8 @@ void Audio::destroy()
 
 // stops all currently playing sounds
 void Audio::stopAllSounds()
-{
-	for( auto &snd_chnl : m_soundchannel )
+{        
+    for( auto &snd_chnl : mSndChnlVec )
 		snd_chnl.stopSound();
 }
 
@@ -189,8 +183,8 @@ void Audio::resumeSounds()
 // returns true if sound snd is currently playing
 bool Audio::isPlaying(const GameSound snd)
 {
-	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
-	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++ )
+    std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
+    for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++ )
 	{
 		if (snd_chnl->isPlaying())
 		{
@@ -202,11 +196,11 @@ bool Audio::isPlaying(const GameSound snd)
 	return false;
 }
 
-// if sound snd is currently playing, stops it immediately
+// if sound snd is currently playing, stop it immediately
 void Audio::stopSound(const GameSound snd)
 {
-	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
-	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+    std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
+    for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
 	{
 		if (snd_chnl->isPlaying())
 		{
@@ -218,10 +212,10 @@ void Audio::stopSound(const GameSound snd)
 }
 
 // returns true if a sound is currently playing in PLAY_FORCE mode
-bool Audio::forcedisPlaying(void)
+bool Audio::forcedisPlaying()
 {
-	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
-	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+    std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
+    for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
 		if(snd_chnl->isForcedPlaying())
 			return true;
 
@@ -244,8 +238,8 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
     }
 
     bool any_sound_playing = false;
-	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
-	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+    std::vector<CSoundChannel>::iterator snd_chnl = mSndChnlVec.begin();
+    for( ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
    	{
 		if(snd_chnl->isPlaying())
 		{
@@ -302,7 +296,7 @@ void Audio::playStereofromCoord( const GameSound snd,
 
 void Audio::playStereosound(const GameSound snd, const char mode, const short balance)
 {
-	if( m_mixing_channels == 0 ) return;
+    if( mSndChnlVec.empty() ) return;
 
     if(!mpAudioRessources)
         return;
@@ -314,7 +308,7 @@ void Audio::playStereosound(const GameSound snd, const char mode, const short ba
 	if(slotplay >= speaker_snds_end_off)
 		return;
 
-	if(m_sound_blaster_mode && mp_Slots[slotplay+speaker_snds_end_off].getSoundData())
+    if(mUseSoundBlaster && mp_Slots[slotplay+speaker_snds_end_off].getSoundData())
 		slotplay += speaker_snds_end_off;
 
 	if (mode==PLAY_NORESTART && isPlaying(snd))
@@ -332,16 +326,13 @@ void Audio::playStereosoundSlot(unsigned char slotplay, const char mode, const s
 	if(mode==PLAY_PAUSEALL)
 		m_pause_gameplay = true;
 
-	// if a forced sound is playing then let it play
-	if (forcedisPlaying()) return;
-
 	// stop all other sounds if this sound has maximum priority
 	if ( mode==PLAY_FORCE )
 		stopAllSounds();
 
 	// first try to find an empty channel
 	std::vector<CSoundChannel>::iterator snd_chnl;
-	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+    for( snd_chnl = mSndChnlVec.begin() ; snd_chnl != mSndChnlVec.end() ; snd_chnl++)
 	{
 		CSoundSlot &current_slot = *snd_chnl->getCurrentSoundPtr();
 
@@ -361,8 +352,12 @@ void Audio::setupSoundData(const std::map<GameSound, int> &slotMap,
 {
     assert(audioResPtr);
 
+    SDL_LockAudio();
+
     sndSlotMap = slotMap;
     mpAudioRessources.reset(audioResPtr);
+
+    SDL_UnlockAudio();
 }
 
 void Audio::unloadSoundData()
@@ -370,8 +365,12 @@ void Audio::unloadSoundData()
     // Wait for callback to finish running...
     while(m_callback_running);
 
+    SDL_LockAudio();
+
     mpAudioRessources.release();
     m_MixedForm.clear();
+
+    SDL_UnlockAudio();
 }
 
 
@@ -398,7 +397,7 @@ std::list<std::string> Audio::getAvailableRateList() const
 void Audio::setSettings( const SDL_AudioSpec& audioSpec,
 	 	  	  	  	  	  const bool useSB )
 {
-	m_sound_blaster_mode = useSB;
+    mUseSoundBlaster = useSB;
 
 	// Check if rate matches to those available in the system
 	for( unsigned int i=0 ; i<numAvailableRates ; i++ )

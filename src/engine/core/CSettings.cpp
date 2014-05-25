@@ -95,7 +95,6 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
 	Configuration.WriteInt("Audio", "rate", (g_pSound->getAudioSpec()).freq);
 	Configuration.SetKeyword("Audio", "sndblaster", g_pSound->getSoundBlasterMode());
-	Configuration.WriteInt("Audio", "mixerch", (g_pSound->getMixingchannels()));
 	Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
 	Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
 

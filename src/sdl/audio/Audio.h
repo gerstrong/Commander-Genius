@@ -35,7 +35,7 @@ public:
 	void stop();
 
 	void stopAllSounds();
-	bool forcedisPlaying(void);
+    bool forcedisPlaying();
 	void callback(void *unused, Uint8 *stream, int len);
 	void pauseSound(void);
 	void resumeSounds(void);
@@ -57,8 +57,7 @@ public:
 
 
 	const SDL_AudioSpec	&getAudioSpec() const  { return const_cast<const SDL_AudioSpec&>(mAudioSpec); }
-	unsigned short 	getMixingchannels() const { return m_mixing_channels; }
-	bool getSoundBlasterMode() {	return m_sound_blaster_mode;	}
+    bool getSoundBlasterMode() {	return mUseSoundBlaster;	}
     COPLEmulator &getOPLEmulatorRef() { return m_OPL_Player; }
 
 	void setSettings( const int rate,
@@ -87,12 +86,15 @@ protected:
 	SDL_AudioSpec mAudioSpec;
 
 private:
-    std::vector<CSoundChannel>	m_soundchannel;
+
+    // Channels of sound which can be played at the same time.
+    std::vector<CSoundChannel>	mSndChnlVec;
     std::unique_ptr<CAudioResources> mpAudioRessources;
-	unsigned short m_mixing_channels;
 	Uint8 m_MusicVolume;
 	Uint8 m_SoundVolume;
-	bool m_sound_blaster_mode;
+
+    // Boolean that holds if the Soundblaster is to be used. If set false it will use the PC Speaker emulation
+    bool mUseSoundBlaster;
 
 	std::vector<Uint8> m_MixedForm;	// Mainly used by the callback function. Declared once and allocated
     									// for the whole program
