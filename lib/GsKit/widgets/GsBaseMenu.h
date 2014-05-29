@@ -65,6 +65,7 @@ public:
 
     void updateGraphics()
     {
+        refresh();
         mpMenuDialog->updateGraphics();
     }
 
