@@ -18,6 +18,12 @@ public:
                                                                 0.06f/rect.w,
                                                                 0.06f/rect.h) );
         mpReturnButton->setDown(true);
+        refresh();
+    }
+
+    virtual void refresh()
+    {
+        CBaseMenu::refresh();
         initVorticonBackground();
     }
 
