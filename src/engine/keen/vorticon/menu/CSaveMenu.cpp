@@ -54,7 +54,7 @@ void CSaveMenu::refresh()
     for(Uint32 i=0 ;i<8 ; i++)
     {
         std::string text = EMPTY_TEXT;
-        if(i <= StateFileList.size())
+        if(i < StateFileList.size())
             text = StateFileList.at(i);
 
         std::shared_ptr<CGUIControl> &ctrl = *itCtrl;
