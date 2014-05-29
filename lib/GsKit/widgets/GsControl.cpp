@@ -64,8 +64,7 @@ void CGUIControl::processPointingState(const GsRect<float> &rect)
 
 void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 {
-
-	SDL_Surface *blitsfc = gVideoDriver.getBlitSurface();
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
 
 	// Now lets draw the text of the list control
 	GsFont &Font = gGraphics.getFont(mFontID);
@@ -80,12 +79,20 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
 
     if( mPressed )
 	{
-		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+12, lRect.y );
+        Font.drawCharacter( blit.getSDLSurface(), mTwirliconID, lRect.x+12, lRect.y );
 	}
-    else if( mHovered || mSelected )
+    else if( mSelected )
 	{
-		Font.drawCharacter( blitsfc, mTwirliconID, lRect.x+8, lRect.y );
+        Font.drawCharacter( blit.getSDLSurface(), mTwirliconID, lRect.x+8, lRect.y );
 	}
+
+    // Now lets draw the text of the button
+    if(mHovered)
+    {
+        GsRect<Uint16> lineRect(lRect.x+2*lRect.h, lRect.y+lRect.h, lRect.w, 1);
+        const Uint32 color = mPressed ? blit.mapRGB(200, 50, 50) : blit.mapRGB(50, 200, 50);
+        blit.drawRect(lineRect, 1, color);
+    }
 
 }
 

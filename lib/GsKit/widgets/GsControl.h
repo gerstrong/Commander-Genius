@@ -47,7 +47,7 @@ public:
 	{	mRect = rect;	}
 
 
-	void enable( const bool value )
+    void enable( const bool value )
     {	mEnabled = value;	}
 
     bool isEnabled()
@@ -61,9 +61,6 @@ public:
 
     bool isSelected()
     { return mSelected; }
-
-    /*bool getHovered()
-    {	return mHovered;	}*/
 
 
     bool Up()

@@ -64,23 +64,32 @@ void GsWeakSurface::drawRect(const GsRect<Uint16> &rect,
     contRect.h = thickness;
     fill(contRect, contourColor);
 
-    // Left side contour
+    // Left side contour, if possible
+    if(rect.h <= 2*thickness)
+        return;
+
     contRect.y = rect.y + thickness;
-    contRect.w = thickness;
+    contRect.w = thickness;            
     contRect.h = rect.h - (2 * thickness);
     fill(contRect, contourColor);
 
-    // Right side contour
+    // Right side contour, if possible
+    if(rect.w <= thickness)
+        return;
+
     contRect.x = rect.x + rect.w - thickness;
     fill(contRect, contourColor);
 
+    // And last but not least the lower side contour
+    if(rect.h <= thickness)
+        return;
 
-    // Lower side contour
     contRect.x = rect.x;
     contRect.y = rect.y + rect.h - thickness;
     contRect.w = rect.w;
     contRect.h = thickness;
     fill(contRect, contourColor);
+
 }
 
 

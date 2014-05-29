@@ -1218,7 +1218,6 @@ bool CInput::mouseClicked()
 				m_EventList.erase(it);
 				return true;
 			}
-
 		}
 	}
 	return false;

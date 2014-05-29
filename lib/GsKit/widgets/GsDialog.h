@@ -93,7 +93,7 @@ public:
 	const int Selection() const
 	{	return mSelection;	}
 
-	void setSelection(const unsigned int sel);
+    void setSelection(const unsigned int sel);
 
 	CGUIControl* CurrentControl()
 	{	return 	mpCurrentCtrl;	}
