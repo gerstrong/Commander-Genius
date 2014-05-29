@@ -27,8 +27,10 @@ or directly to me (tulip) at haubaer1981@yahoo.de
 Update Log
 ----------
 
-Not Released
-- keen 2 map song remixed a bit
+Release 2.3 (2014-05-29)
+- Keen 2 map song got remixed a bit
+- Some new Keen vorticon sounds
+- Normalized some songs that were too loud
 
 Release 2.2 (2014-05-24)
 - Minor Revisions on Keen5, they should sound better now
