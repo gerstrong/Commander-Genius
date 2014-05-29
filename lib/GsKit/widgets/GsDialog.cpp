@@ -117,7 +117,7 @@ void CGUIDialog::selectPrevItem()
 	// Ensures that disabled items are skipped
 	for( ; it != mControlList.begin() ; it-- )
 	{
-		if( (*it)->mEnabled )
+        if( (*it)->isEnabled() )
 			break;
 
 		mSelection--;
@@ -154,7 +154,7 @@ void CGUIDialog::selectNextItem()
 	// Ensures that disabled items are skipped
 	for( ; it != mControlList.end() ; it++ )
 	{
-		if( (*it)->mEnabled )
+        if( (*it)->isEnabled() )
 			break;
 
 		mSelection++;

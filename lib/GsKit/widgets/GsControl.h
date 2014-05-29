@@ -50,6 +50,9 @@ public:
 	void enable( const bool value )
     {	mEnabled = value;	}
 
+    bool isEnabled()
+    {   return mEnabled;    }
+
     /*void setHovered( const bool value )
     {	mHovered = value;	}*/
 
@@ -81,9 +84,10 @@ public:
     // The relative rect describes the rect which is normally tied to its parent.
     GsRect<float> mRect;
 	
-    bool mEnabled;
 
 protected:
+
+    bool mEnabled;
     
 	int mFontID;
 

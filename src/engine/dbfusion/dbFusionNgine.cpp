@@ -11,6 +11,7 @@ void DBFusionEngine::start()
 {
     const int argc = 1;
     char* argv[1] = { "dosbox" };
+
     dosbox_main(argc, argv);
 }
 

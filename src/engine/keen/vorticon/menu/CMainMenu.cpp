@@ -54,12 +54,12 @@ void MainMenu::createVorticonMenu( const bool openedGamePlay )
     GsButton *loadButton = new Button( "Load",
 										new OpenMenuEvent( new CLoadMenu() ) );
 	mpMenuDialog->addControl( loadButton );
-	loadButton->mEnabled = true;
+    loadButton->enable(true);
 
     GsButton *saveButton = new Button( "Save",
 									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
-	saveButton->mEnabled = openedGamePlay;
+    saveButton->enable(openedGamePlay);
 
     mpMenuDialog->addControl(new Button( "Configure",
 												new OpenMenuEvent( new CSettingsMenu() ) ) );
@@ -67,12 +67,12 @@ void MainMenu::createVorticonMenu( const bool openedGamePlay )
     GsButton *highscoreButton = new Button( "High Scores",
 													new StartInfoSceneEvent( new CHighScores ) );
 	mpMenuDialog->addControl( highscoreButton );
-	highscoreButton->mEnabled = true;
+    highscoreButton->enable(true);
 
     GsButton *infoButton = new Button( "Info",
 											new OpenMenuEvent( new CHelpMenu() ) );
 	mpMenuDialog->addControl( infoButton );
-	infoButton->mEnabled = true;
+    infoButton->enable(true);
 
     mpMenuDialog->addControl(new Button( "End Game", new EventEndGamePlay() ) );
 

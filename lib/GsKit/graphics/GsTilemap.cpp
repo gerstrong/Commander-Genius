@@ -62,7 +62,7 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 
 	if(m_Tilesurface)
 	{	  	  
-		SDL_Surface *temp_surface = IMG_Load(GetFullFileName(fullfilename).c_str());
+        SDL_Surface *temp_surface = IMG_Load(GetFullFileName(fullfilename).c_str());
 		if(temp_surface)
 		{
 			SDL_FreeSurface(m_Tilesurface);

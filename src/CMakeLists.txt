@@ -206,14 +206,14 @@ ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 
 # Make sure the compiler can find include files from our Gskit library.
-include_directories (${CommanderGenius_SOURCE_DIR}/lib/GsKit)
+#include_directories (${CommanderGenius_SOURCE_DIR}/../lib/GsKit)
 
 # Make sure the linker can find the GsKit library once it is built.
 link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
 
 # We need that so we can compile dosbox fusion
-include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion)
-include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
+#include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion)
+#include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 
 
 
@@ -270,6 +270,8 @@ if(USE_SDL2)
 else(USE_SDL2)
         # SDL stuff to link        
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
+        target_link_libraries(CGeniusExe ${SDL_LIBRARY})
+        target_link_libraries(CGeniusExe ${SDLIMAGE_LIBRARY})
 endif(USE_SDL2)
 
 

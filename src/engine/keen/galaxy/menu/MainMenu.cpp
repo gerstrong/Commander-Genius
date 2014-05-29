@@ -41,12 +41,12 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
     GsButton *loadButton = new GalaxyButton( "Load",
 										new OpenMenuEvent( new CLoadMenu() ) );
 	mpMenuDialog->addControl( loadButton );
-	loadButton->mEnabled = true;
+    loadButton->enable(true);
 
     GsButton *saveButton = new GalaxyButton( "Save",
 									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
-	saveButton->mEnabled = openedGamePlay;
+    saveButton->enable(openedGamePlay);
 
     mpMenuDialog->addControl(new GalaxyButton( "Configure",
                                                 new OpenMenuEvent( new SettingsMenu() ) ) );

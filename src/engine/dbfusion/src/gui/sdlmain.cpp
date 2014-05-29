@@ -1840,8 +1840,12 @@ int dosbox_main(int argc, char* argv[]) {
 		Config myconf(&com_line);
 		control=&myconf;
 		/* Init the configuration system and add default values */
+
+
+
         Config_Add_SDL();
         DOSBOX_Init();
+
 
 		std::string editor;
 		if(control->cmdline->FindString("-editconf",editor,false)) launcheditor();
