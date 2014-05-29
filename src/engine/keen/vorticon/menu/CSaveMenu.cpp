@@ -11,7 +11,7 @@
 #include <widgets/GsBaseMenu.h>
 #include <widgets/GsMenuController.h>
 
-#include "CConfirmMenu.h"
+//#include "CConfirmMenu.h"
 
 #include "widgets/Inputtext.h"
 #include "fileio/CSaveGameController.h"

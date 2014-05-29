@@ -89,7 +89,7 @@ void CGUIControl::drawTwirl( const SDL_Rect& lRect )
     // Now lets draw the text of the button
     if(mHovered)
     {
-        GsRect<Uint16> lineRect(lRect.x+2*lRect.h, lRect.y+lRect.h, lRect.w, 1);
+        GsRect<Uint16> lineRect(lRect.x, lRect.y+lRect.h, lRect.w, 1);
         const Uint32 color = mPressed ? blit.mapRGB(200, 50, 50) : blit.mapRGB(50, 200, 50);
         blit.drawRect(lineRect, 1, color);
     }

@@ -25,7 +25,7 @@ mpOption(g_pBehaviorEngine->m_option)
 	}
 }
 
-void COptions::init()
+void COptions::refresh()
 {
     std::list<Switch*>::iterator it = mpOptionList.begin();
 

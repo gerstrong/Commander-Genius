@@ -25,7 +25,7 @@ class CAudioSettings : public VorticonMenu
 public:
 	CAudioSettings();
 
-	void init();
+    void refresh();
 
     void ponder(const float deltaT);
 

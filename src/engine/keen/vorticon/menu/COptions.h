@@ -22,7 +22,7 @@ class COptions : public VorticonMenu
 public:
 	COptions();
 
-	void init();
+    void refresh();
 
     void ponder(const float deltaT);
 

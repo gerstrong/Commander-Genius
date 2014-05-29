@@ -21,7 +21,7 @@ class CCameraSettings : public VorticonMenu
 public:
 	CCameraSettings();
 
-	void init();
+    void refresh();
 
 	void release();
 

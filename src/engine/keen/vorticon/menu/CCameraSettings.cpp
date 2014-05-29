@@ -42,7 +42,7 @@ m_CameraBounds(gVideoDriver.getCameraBounds())
 }
 
 
-void CCameraSettings::init()
+void CCameraSettings::refresh()
 {
 	// Load the config into the GUI
 	mpLeftAdjust->setSelection( m_CameraBounds.left );

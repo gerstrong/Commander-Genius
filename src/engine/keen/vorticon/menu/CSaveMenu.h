@@ -8,7 +8,7 @@
 #ifndef CSAVEMENU_H_
 #define CSAVEMENU_H_
 
-#include "CConfirmMenu.h"
+//#include "CConfirmMenu.h"
 
 namespace vorticon
 {
