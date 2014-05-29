@@ -24,7 +24,7 @@ namespace vorticon
 
 CSaveMenu::CSaveMenu() :
 VorticonMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
-mp_OverwriteMenu(NULL),
+/*mp_OverwriteMenu(NULL),*/
 m_overwrite(false)
 {
 	// Load the state-file list

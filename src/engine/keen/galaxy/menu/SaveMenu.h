@@ -25,7 +25,7 @@ public:
 
 
 private:
-	CConfirmMenu *mp_OverwriteMenu;
+    //CConfirmMenu *mp_OverwriteMenu;
 	bool m_overwrite;
 };
 
