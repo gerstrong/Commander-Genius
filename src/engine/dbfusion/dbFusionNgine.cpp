@@ -1,7 +1,7 @@
 #include "dbFusionNgine.h"
 #include "engine/CGameLauncher.h"
 
-int dosbox_main(int argc, char* argv[]);
+int dosbox_main(int argc, const char* argv[]);
 
 namespace dbfusion
 {
@@ -10,7 +10,7 @@ namespace dbfusion
 void DBFusionEngine::start()
 {
     const int argc = 1;
-    char* argv[1] = { "dosbox" };
+    const char* argv[1] = { "dosbox" };
 
     dosbox_main(argc, argv);
 }

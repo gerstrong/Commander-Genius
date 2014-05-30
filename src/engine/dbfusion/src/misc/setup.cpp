@@ -725,8 +725,10 @@ Section_line* Config::AddSection_line(char const * const _name,void (*_initfunct
 }
 
 
-void Config::Init() {
-	for (const_it tel=sectionlist.begin(); tel!=sectionlist.end(); tel++){ 
+void Config::Init()
+{
+    for (const_it tel=sectionlist.begin(); tel!=sectionlist.end(); tel++)
+    {
 		(*tel)->ExecuteInit();
 	}
 }

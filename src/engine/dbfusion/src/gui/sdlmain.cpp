@@ -1834,16 +1834,17 @@ static void erasemapperfile() {
 
 
 //extern void UI_Init(void);
-int dosbox_main(int argc, char* argv[]) {
+int dosbox_main(int argc, const char* argv[])
+{
+
 	try {
 		CommandLine com_line(argc,argv);
 		Config myconf(&com_line);
 		control=&myconf;
 		/* Init the configuration system and add default values */
 
-
-
         Config_Add_SDL();
+
         DOSBOX_Init();
 
 
@@ -1970,6 +1971,7 @@ int dosbox_main(int argc, char* argv[]) {
 	std::string config_file,config_path;
 	Cross::GetPlatformConfigDir(config_path);
 	
+
 	//First parse -userconf
 	if(control->cmdline->FindExist("-userconf",true)){
 		config_file.clear();
@@ -2033,7 +2035,11 @@ int dosbox_main(int argc, char* argv[]) {
 //		UI_Init();
 //		if (control->cmdline->FindExist("-startui")) UI_Run(false);
 		/* Init all the sections */
+
 		control->Init();
+
+        return 0;
+
 		/* Some extra SDL Functions */
 		Section_prop * sdl_sec=static_cast<Section_prop *>(control->GetSection("sdl"));
 
