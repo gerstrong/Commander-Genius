@@ -229,27 +229,32 @@ void CVorticon::process()
 			sprite = WalkLeftFrame + frame;
 
 			if (!blockedl)
+            {
 				xinertia = -VORT_WALK_SPEED;
-            else if(!m_Dark)
+            }
+            else
 			{
 				frame = 0;
 				animtimer = 0;
 				state = VORT_LOOK;
 
-				// if we only traveled a tiny amount before hitting a wall, we've
-				// probably fallen into a small narrow area, and we need to try
-				// to jump out of it
-				if (dist_traveled < VORT_TRAPPED_DIST && !m_Dark && blockedd
-						&& !blockedu) {
-					initiateJump();
-					if (rnd() & 1)
-						yinertia = -VORT_MAX_JUMP_HEIGHT;
-					else
-						yinertia = -VORT_MIN_JUMP_HEIGHT;
+                if(!m_Dark)
+                {
+                    // if we only traveled a tiny amount before hitting a wall, we've
+                    // probably fallen into a small narrow area, and we need to try
+                    // to jump out of it
+                    if (dist_traveled < VORT_TRAPPED_DIST && !m_Dark && blockedd
+                            && !blockedu) {
+                        initiateJump();
+                        if (rnd() & 1)
+                            yinertia = -VORT_MAX_JUMP_HEIGHT;
+                        else
+                            yinertia = -VORT_MIN_JUMP_HEIGHT;
 
-					goto vort_reprocess;
-				} else
-					dist_traveled = 0;
+                        goto vort_reprocess;
+                    } else
+                        dist_traveled = 0;
+                }
 			}
         }
         else
@@ -257,24 +262,29 @@ void CVorticon::process()
 			sprite = WalkRightFrame + frame;
 
 			if (!blockedr)
+            {
 				xinertia = VORT_WALK_SPEED;
-            else if(!m_Dark)
+            }
+            else
 			{
 				frame = 0;
 				animtimer = 0;
 				state = VORT_LOOK;
 
-				if (dist_traveled < VORT_TRAPPED_DIST && !m_Dark && blockedd
-						&& !blockedu) {
-					initiateJump();
-					if (rnd() & 1) {
-						yinertia = -VORT_MAX_JUMP_HEIGHT;
-					} else {
-						yinertia = -VORT_MIN_JUMP_HEIGHT;
-					}
-					goto vort_reprocess;
-				} else
-					dist_traveled = 0;
+                if(!m_Dark)
+                {
+                    if (dist_traveled < VORT_TRAPPED_DIST && !m_Dark && blockedd
+                            && !blockedu) {
+                        initiateJump();
+                        if (rnd() & 1) {
+                            yinertia = -VORT_MAX_JUMP_HEIGHT;
+                        } else {
+                            yinertia = -VORT_MIN_JUMP_HEIGHT;
+                        }
+                        goto vort_reprocess;
+                    } else
+                        dist_traveled = 0;
+                }
 			}
 		}
 		// walk animation

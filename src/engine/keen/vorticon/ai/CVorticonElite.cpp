@@ -202,7 +202,10 @@ void CVorticonElite::process()
 					initiatejump();
 					goto reprocess;
 				}
-				else dist_traveled = 0;
+                else if(mp_Map->m_Dark)
+                {
+                    dist_traveled = 0;
+                }
 			}
 		}
 		else
@@ -224,8 +227,11 @@ void CVorticonElite::process()
 					initiatejump();
 					goto reprocess;
 				}
-				else dist_traveled = 0;
-			}
+                else if(mp_Map->m_Dark)
+                {
+                    dist_traveled = 0;
+                }
+            }
 		}
 
 		// walk animation
