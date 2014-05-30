@@ -3,7 +3,7 @@ include_directories(${SDL_INCLUDE_DIR})
 
 add_subdirectory(src)
 
-FILE(GLOB include/*.h)
+FILE(GLOB INCLUDES ./include/*.h)
 
 if(DBFUSION)
     add_definitions(-DDBFUSION)
