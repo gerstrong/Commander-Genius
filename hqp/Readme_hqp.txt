@@ -27,8 +27,8 @@ or directly to me (tulip) at haubaer1981@yahoo.de
 Update Log
 ----------
 
-Release 2.4 (2014-05-30)
-- Normalized tracks for Keen 2 and 3
+Release 2.4 (2014-05-31)
+- Some normalized tracks for Keen 2 and 3
 
 Release 2.3 (2014-05-29)
 - Keen 2 map song got remixed a bit
