@@ -93,16 +93,31 @@ mSkipSection(false)
     SDL_SetSurfaceAlphaMod( mCommanderTextSfc.getSDLSurface(), 128);
     SDL_SetSurfaceAlphaMod( mKeenTextSfc.getSDLSurface(), 128);
 #else
+
+
+    //mCommanderTextSfc.setColorKey( 0, 0, 0 );
+    //mCommanderTextSfc.optimizeSurface();
+    //mCommanderTextSfc.exchangeColor( 0x0 , 0xa8, 0x0,
+                                   //0x55, 0x55 , 0xFF);
+
+    //mKeenTextSfc.setColorKey( 0, 0, 0 );
+    //mKeenTextSfc.optimizeSurface();
+    //mKeenTextSfc.exchangeColor( 0x0 , 0xa8, 0x0,
+                                   //0x55, 0x55 , 0xFF);
+
+
     SDL_SetAlpha(mCommanderTextSfc.getSDLSurface(), SDL_SRCALPHA, 128);
     SDL_SetAlpha(mKeenTextSfc.getSDLSurface(), SDL_SRCALPHA, 128);
 #endif
 
     mpZoomSurface.reset( SDL_CreateRGBSurface(0,
-                                            cmdTextRect.w+
-                                            keenTextRect.w+
-                                            mMaxSeparationWidth,
-                                            cmdTextRect.h,
-                                            32, 0, 0, 0, 0), &SDL_FreeSurface );
+                                              cmdTextRect.w+
+                                              keenTextRect.w+
+                                              mMaxSeparationWidth,
+                                              cmdTextRect.h,
+                                              32, 0, 0, 0, 0), &SDL_FreeSurface );
+
+
     gInput.flushAll();
 }
 
@@ -197,10 +212,10 @@ void CPassiveGalaxy::processIntro()
             logoBmpRect.w *= mScaleFactor;
 
             mCurrentLogoBmp.scaleTo(logoBmpRect);            
+            mCurrentLogoBmp.setColorKey( 0, 0, 0 );
+            mCurrentLogoBmp.optimizeSurface();
             mCurrentLogoBmp.exchangeColor( 0x0 , 0xa8, 0x0,
                                            0x55, 0x55 , 0xFF);
-            mCurrentLogoBmp.setColorKey( 0, 0, 0 );
-
         }
     }
 

@@ -211,17 +211,23 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     gLogging.ftextOut("Blitsurface creation of %dx%d!\n<br>",
                      gamerect.w, gamerect.h );
 
-
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
     mGameSfc.create(m_Mode, gamerect.w, gamerect.h, RES_BPP,
                     0x00FF0000,
                     0x0000FF00,
                     0x000000FF,
                     0xFF000000);
-
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
 #endif
+/*#else
+    mGameSfc.create(m_Mode, gamerect.w, gamerect.h, RES_BPP,
+                    0x00FF0000,
+                    0x0000FF00,
+                    0x000000FF,
+                    0x00000000);
+
+#endif*/
 
 
     const int squareSize = getPowerOfTwo( gamerect.h > gamerect.w ? gamerect.h : gamerect.w );
