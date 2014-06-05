@@ -487,7 +487,7 @@ dosurface:
 		sdl.clip.w=width;
 		sdl.clip.h=height;
 
-        sdl.surface = nullptr;
+        //sdl.surface = nullptr;
 
 		if (sdl.desktop.fullscreen) {
 			if (sdl.desktop.full.fixed) {
@@ -545,7 +545,7 @@ dosurface:
                 break;
 			}
 
-            sdl.blit.surface = nullptr;
+            //sdl.blit.surface = nullptr;
 
 /*			if (retFlags && (sdl.surface->flags & SDL_HWSURFACE))
 				retFlags |= GFX_HARDWARE;
@@ -2038,7 +2038,7 @@ int dosbox_main(int argc, const char* argv[])
 
 		control->Init();
 
-        return 0;
+
 
 		/* Some extra SDL Functions */
 		Section_prop * sdl_sec=static_cast<Section_prop *>(control->GetSection("sdl"));
@@ -2053,7 +2053,7 @@ int dosbox_main(int argc, const char* argv[])
 		MAPPER_Init();
 		if (control->cmdline->FindExist("-startmapper")) MAPPER_RunInternal();
 		/* Start up main machine */
-		control->StartUp();
+        control->StartUp();
 		/* Shutdown everything */
 	} catch (char * error) {
 #if defined (WIN32)

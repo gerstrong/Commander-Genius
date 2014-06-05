@@ -3,6 +3,7 @@
 
 #include <base/GsEvent.h>
 #include <base/GsEngine.h>
+#include <base/utils/ThreadPool.h>
 
 #ifdef DBFUSION
 
@@ -17,6 +18,9 @@ class DBFusionEngine : public GsEngine
     void pumpEvent(const CEvent *evPtr);
     void ponder(const float deltaT);
     void render();
+
+private:
+    std::unique_ptr<ThreadPoolItem> mp_Thread;
 };
 
 

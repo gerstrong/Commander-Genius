@@ -197,8 +197,8 @@ static void UI_Shutdown(GUI::ScreenSDL *screen) {
 	SDL_ShowCursor(cursor);
 	SDL_FreeSurface(background);
 	SDL_FreeSurface(screenshot);
-	SDL_FreeSurface(sdlscreen);
-	screen->setSurface(NULL);
+    //SDL_FreeSurface(sdlscreen);
+    //screen->setSurface(NULL);
 	GFX_ResetScreen();
 	SDL_EnableUNICODE(old_unicode);
 	SDL_EnableKeyRepeat(0,0);
