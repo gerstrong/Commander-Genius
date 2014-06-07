@@ -156,7 +156,7 @@ struct stInputCommand
 class CInput : public GsSingleton<CInput>
 {
 public:
-	CInput();
+    CInput();
 
 	/**
 	 * \brief transforms a mouse click from the screen coordinates to the relative coordinates
@@ -243,11 +243,25 @@ public:
 	bool MappingInput()
 	{ return remapper.mappingInput; }
 
+    /**
+     * @brief readSDLEventVec Use this for engine which want to access the SDL Events directly
+     */
+    bool readSDLEventVec(std::vector<SDL_Event> &evVec);
+
 private:
 
     // Input Events
     CEventContainer m_EventList;
 
+
+
+    // SDL_Event Vector
+    //
+    /**
+     * @brief mSDLEventVec  A vector which stores after every poll process the Event that were triggered.
+     *        For the Dosbox fusion this is needed, since our system can only use polling once otherwise it might get confused.
+     */
+    std::vector<SDL_Event> mSDLEventVec;
 
 	SDL_Event Event;
 	std::list<SDL_Joystick*> mp_Joysticks;
@@ -286,5 +300,6 @@ private:
 	void processMouse(SDL_Event& ev);
 	void processMouse(int x, int y, bool down, int index);
 };
+
 
 #endif /* CINPUT_H_ */

@@ -21,6 +21,8 @@
 #define _GNU_SOURCE
 #endif
 
+#include <base/CInput.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -1442,6 +1444,36 @@ bool GFX_IsFullscreen(void) {
 	return sdl.desktop.fullscreen;
 }
 
+void pollSDL_Events()
+{
+    std::vector<SDL_Event> eventVec;
+
+/*#if defined (REDUCE_JOYSTICK_POLLING)
+    static int poll_delay=0;
+    int time=GetTicks();
+    if (time-poll_delay>20) {
+        poll_delay=time;
+        if (sdl.num_joysticks>0) SDL_JoystickUpdate();
+        MAPPER_UpdateJoysticks();
+    }
+#endif*/
+
+    gInput.readSDLEventVec(eventVec);
+
+    GFX_Events();
+
+    /*for( SDL_Event ev : eventVec)
+    {
+        switch (ev.type)
+        {
+
+        default:
+            void MAPPER_CheckEvent(SDL_Event * event);
+            MAPPER_CheckEvent(&ev);
+        }
+    }*/
+}
+
 void GFX_Events() {
 	SDL_Event event;
 #if defined (REDUCE_JOYSTICK_POLLING)
@@ -2051,6 +2083,7 @@ int dosbox_main(int argc, const char* argv[])
 
 		/* Init the keyMapper */
 		MAPPER_Init();
+
 		if (control->cmdline->FindExist("-startmapper")) MAPPER_RunInternal();
 		/* Start up main machine */
         control->StartUp();

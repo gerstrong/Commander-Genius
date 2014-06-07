@@ -19,6 +19,7 @@
 
 // Input Events
 
+
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
 #endif
@@ -514,13 +515,22 @@ void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 }
 
 
+
+bool SDLPollFlush = false;
+
+
 /**
  * \brief	Called every logic cycle. This triggers the events that occur and process them trough various functions
  */
 void CInput::pollEvents()
 {
-    if(!m_EventList.empty())
-        m_EventList.clear();
+    if(SDLPollFlush)
+        return;
+
+
+    // Same for the SDL Events
+    if(!mSDLEventVec.empty())
+        mSDLEventVec.clear();
 
     if(remapper.mappingInput)
     {
@@ -560,18 +570,20 @@ void CInput::pollEvents()
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
 	{
+        mSDLEventVec.push_back(Event);
+
 		switch( Event.type )
 		{
 		case SDL_QUIT:
 			gLogging.textOut("SDL: Got quit event!");
 			m_exit = true;
 			break;
-		case SDL_KEYDOWN:
+        case SDL_KEYDOWN:
 			processKeys(1);
 			break;
 		case SDL_KEYUP:
 			processKeys(0);
-			break;
+            break;
 		case SDL_JOYAXISMOTION:
 			processJoystickAxis();
 			break;
@@ -701,16 +713,6 @@ void CInput::pollEvents()
 #if defined(WIZ) || defined(GP2X)
 	WIZ_AdjustVolume( volume_direction );
 #endif
-
-    // Fix up settings if everything gets messed up
-    /*if (gInput.getHoldedKey(KF) &&
-		gInput.getHoldedKey(KI) &&
-		gInput.getHoldedKey(KX))
-	{
-		g_pSettings->loadDefaultGraphicsCfg();
-		g_pSettings->saveDrvCfg();
-        gVideoDriver.start();
-    }*/
 }
 
 /**
@@ -1539,4 +1541,17 @@ void CInput::shutdown()
 	}
 }
 
+bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
+{
+    SDLPollFlush = true;
+
+    // TODO: primitive thread barrier, but sure we need something better...
+    /*while(mPollRunning);
+
+    evVec = mSDLEventVec;
+
+    SDLPollFlush = true;
+
+    return true;*/
+}
 

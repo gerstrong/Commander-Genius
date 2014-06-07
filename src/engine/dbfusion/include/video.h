@@ -54,6 +54,7 @@ struct GFX_PalEntry {
 
 #define GFX_CAN_RANDOM	0x4000		//If the interface can also do random access surface
 
+
 void GFX_Events(void);
 void GFX_SetPalette(Bitu start,Bitu count,GFX_PalEntry * entries);
 Bitu GFX_GetBestMode(Bitu flags);

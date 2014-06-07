@@ -130,11 +130,11 @@ protected:
     std::unique_ptr<SDL_Texture, SDL_Texture_Deleter> mpSdlTexture;
 #else
 
-    // it is what you see on your monitor in the end in the window or on fullscreen
+    // it is what you see on your monitor in the end in your window or on fullscreen
     GsWeakSurface mDisplaySfc;      // the actual video memory/window
 #endif
 
-    // Were all the game is rendered
+    // Where all the game is rendered
     GsSurface mGameSfc;
 
     // Were the game is transformed to. This is used for internal transformations
@@ -148,8 +148,8 @@ protected:
     // mGameSfc -> mDisplaySurface or Texture or similar
     // This case happens when you don't want to use any software filtering within the game
     // before you pass it to the view.
-    // Through a pointer called mpScreenSfc
 
+    // Through a pointer called mpScreenSfc it is set how the stuff will be rendered on screen
     GsSurface *mpScreenSfc;
 
 

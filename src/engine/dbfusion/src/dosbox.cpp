@@ -129,6 +129,8 @@ Bit32s ticksDone;
 Bit32u ticksScheduled;
 bool ticksLocked;
 
+void pollSDL_Events();
+
 
 static Bitu Normal_Loop(void) {
     Bits ret;
@@ -145,8 +147,17 @@ static Bitu Normal_Loop(void) {
 #if C_DEBUG
             if (DEBUG_ExitLoop()) return 0;
 #endif
-        } else {
-            GFX_Events();
+        }
+        else
+        {
+
+            // TODO: We need to find a way to separate The GFX_Event an
+            // input events we are processed in that routine as well...
+
+            //GFX_Events();
+
+            pollSDL_Events();
+
             if (ticksRemain>0) {
                 TIMER_AddTick();
                 ticksRemain--;
