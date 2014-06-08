@@ -2130,7 +2130,7 @@ int dosbox_main(int argc, const char* argv[])
 //	SDL_WM_GrabInput(SDL_GRAB_OFF);
 	SDL_ShowCursor(SDL_ENABLE);
 
-    SDL_Quit();//Let's hope sdl will quit as well when it catches an exception
+    //SDL_Quit();//Let's hope sdl will quit as well when it catches an exception
 	return 0;
 }
 
