@@ -31,7 +31,7 @@
 Bitu call_shellstop;
 /* Larger scope so shell_del autoexec can use it to
  * remove things from the environment */
-Program * first_shell = 0; 
+Program * first_shell = nullptr;
 
 static Bitu shellstop_handler(void) {
 	return CBRET_STOP;
@@ -453,7 +453,15 @@ static char const * const comspec_string="COMSPEC=Z:\\COMMAND.COM";
 static char const * const full_name="Z:\\COMMAND.COM";
 static char const * const init_line="/INIT AUTOEXEC.BAT";
 
-void SHELL_Init() {
+
+
+void SHELL_Run();
+
+void SHELL_Shutdown();
+
+
+void SHELL_Init()
+{
 	/* Add messages */
 	MSG_Add("SHELL_ILLEGAL_PATH","Illegal Path.\n");
 	MSG_Add("SHELL_CMD_HELP","If you want a list of all supported commands type \033[33;1mhelp /all\033[0m .\nA short list of the most often used commands:\n");
@@ -668,7 +676,21 @@ void SHELL_Init() {
 
 	
 	SHELL_ProgramStart(&first_shell);
-	first_shell->Run();
-	delete first_shell;
-	first_shell = 0;//Make clear that it shouldn't be used anymore
+
+    SHELL_Run();
+
+    SHELL_Shutdown();
+}
+
+
+void SHELL_Run()
+{
+    first_shell->Run();
+}
+
+void SHELL_Shutdown()
+{
+    delete first_shell;
+
+    first_shell = nullptr;//Make clear that it shouldn't be used anymore
 }

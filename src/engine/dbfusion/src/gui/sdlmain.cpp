@@ -2085,8 +2085,10 @@ int dosbox_main(int argc, const char* argv[])
 		MAPPER_Init();
 
 		if (control->cmdline->FindExist("-startmapper")) MAPPER_RunInternal();
+
 		/* Start up main machine */
         control->StartUp();
+
 		/* Shutdown everything */
 	} catch (char * error) {
 #if defined (WIN32)

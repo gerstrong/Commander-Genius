@@ -240,7 +240,7 @@ static Bitu Normal_Loop(void) {
         else
         {
 
-            // TODO: We need to find a way to separate The GFX_Event an
+            // TODO: We need to find a way to separate The GFX_Event and
             // input events we are processed in that routine as well...
 
             //GFX_Events();
