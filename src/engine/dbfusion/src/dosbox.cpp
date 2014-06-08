@@ -132,39 +132,8 @@ bool ticksLocked;
 void pollSDL_Events();
 
 
-static Bitu Normal_Loop(void) {
-    Bits ret;
-    while (1) {
-        if (PIC_RunQueue()) {
-            ret = (*cpudecoder)();
-
-            if (GCC_UNLIKELY(ret<0)) return 1;
-            if (ret>0) {
-                if (GCC_UNLIKELY(ret >= CB_MAX)) return 0;
-                Bitu blah = (*CallBack_Handlers[ret])();
-                if (GCC_UNLIKELY(blah)) return blah;
-            }
-#if C_DEBUG
-            if (DEBUG_ExitLoop()) return 0;
-#endif
-        }
-        else
-        {
-
-            // TODO: We need to find a way to separate The GFX_Event an
-            // input events we are processed in that routine as well...
-
-            //GFX_Events();
-
-            pollSDL_Events();
-
-            if (ticksRemain>0) {
-                TIMER_AddTick();
-                ticksRemain--;
-            } else goto increaseticks;
-        }
-    }
-increaseticks:
+void increaseTicks()
+{
     if (GCC_UNLIKELY(ticksLocked)) {
         ticksRemain=5;
         /* Reset any auto cycle guessing for this frame */
@@ -248,6 +217,50 @@ increaseticks:
                 ticksDone = 0;
         }
     }
+
+}
+
+
+static Bitu Normal_Loop(void) {
+    Bits ret;
+    while (1) {
+        if (PIC_RunQueue()) {
+            ret = (*cpudecoder)();
+
+            if (GCC_UNLIKELY(ret<0)) return 1;
+            if (ret>0) {
+                if (GCC_UNLIKELY(ret >= CB_MAX)) return 0;
+                Bitu blah = (*CallBack_Handlers[ret])();
+                if (GCC_UNLIKELY(blah)) return blah;
+            }
+#if C_DEBUG
+            if (DEBUG_ExitLoop()) return 0;
+#endif
+        }
+        else
+        {
+
+            // TODO: We need to find a way to separate The GFX_Event an
+            // input events we are processed in that routine as well...
+
+            //GFX_Events();
+
+            pollSDL_Events();
+
+            if (ticksRemain>0)
+            {
+                TIMER_AddTick();
+                ticksRemain--;
+            }
+            else
+            {
+                increaseTicks();
+            }
+        }
+    }
+
+    increaseTicks();
+
     return 0;
 }
 
