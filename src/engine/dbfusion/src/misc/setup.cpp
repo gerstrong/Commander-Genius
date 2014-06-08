@@ -870,15 +870,40 @@ void Config::ParseEnv(char ** envp) {
 	}
 }
 
-void Config::SetStartUp(void (*_function)(void)) { 
+void Config::SetStartUp(void (*_function)(void))
+{
 	_start_function=_function;
 }
 
-
-void Config::StartUp(void) {
-	initialised=true;
-	(*_start_function)();
+void Config::SetRun(void (*_function)(void))
+{
+    _run_function = _function;
 }
+
+void Config::SetShutdown(void (*_function)(void))
+{
+    _shutdown_function = _function;
+}
+
+
+
+void Config::StartUp()
+{
+    initialised=true;
+    (*_start_function)();
+}
+
+void Config::Run()
+{
+    (*_run_function)();
+}
+
+void Config::Shutdown()
+{
+    (*_shutdown_function)();
+}
+
+
 
 bool CommandLine::FindExist(char const * const name,bool remove) {
 	cmd_it it;

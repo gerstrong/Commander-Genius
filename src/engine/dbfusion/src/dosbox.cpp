@@ -114,7 +114,11 @@ void XMS_Init(Section*);
 void DOS_KeyboardLayout_Init(Section*);
 
 void AUTOEXEC_Init(Section*);
-void SHELL_Init(void);
+
+
+void SHELL_Init();
+void SHELL_Run();
+void SHELL_Shutdown();
 
 void INT10_Init(Section*);
 
@@ -739,4 +743,8 @@ void DOSBOX_Init(void) {
     MSG_Add("CONFIG_SUGGESTED_VALUES", "Possible values");
 
     control->SetStartUp(&SHELL_Init);
+
+    control->SetRun(&SHELL_Run);
+
+    control->SetShutdown(&SHELL_Shutdown);
 }

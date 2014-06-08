@@ -39,6 +39,7 @@ extern Bitu call_shellstop;
  * by "external" programs. (config) */
 extern Program * first_shell;
 
+
 class DOS_Shell;
 
 class BatchFile {

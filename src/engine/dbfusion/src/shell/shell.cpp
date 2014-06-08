@@ -455,11 +455,6 @@ static char const * const init_line="/INIT AUTOEXEC.BAT";
 
 
 
-void SHELL_Run();
-
-void SHELL_Shutdown();
-
-
 void SHELL_Init()
 {
 	/* Add messages */
@@ -676,10 +671,6 @@ void SHELL_Init()
 
 	
 	SHELL_ProgramStart(&first_shell);
-
-    SHELL_Run();
-
-    SHELL_Shutdown();
 }
 
 
