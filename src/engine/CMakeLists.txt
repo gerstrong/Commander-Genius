@@ -11,7 +11,6 @@ if(DBFUSION)
     add_definitions(-DDBFUSION)
 endif()
 
-add_library(engine OBJECT CGameLauncher.cpp CGameLauncher.h 
-			playgame/CPlayGame.cpp playgame/CPlayGame.h)
+add_library(engine OBJECT CGameLauncher.cpp CGameLauncher.h)
 
 set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:engine>)
