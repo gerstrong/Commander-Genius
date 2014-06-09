@@ -582,7 +582,7 @@ cdromDrive::cdromDrive(const char driveLetter, const char * startdir,Bit16u _byt
 	strcat(info, startdir);
 	this->driveLetter = driveLetter;
 	// Get Volume Label
-	char name[32];
+    //char name[32];
     //if (MSCDEX_GetVolumeName(subUnit,name)) dirCache.SetLabel(name,true,true);
 }
 

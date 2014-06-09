@@ -25,6 +25,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <math.h>
+#include "../../../../sdl/audio/Audio.h"
 
 #if defined (WIN32)
 //Midi listing
@@ -70,7 +71,7 @@ static struct {
 	float mastervol[2];
 	MixerChannel * channels;
 	bool nosound;
-	Bit32u freq;
+    int freq;
 	Bit32u blocksize;
 } mixer;
 
@@ -382,7 +383,8 @@ static void MIXER_MixData(Bitu needed) {
 	mixer.done = needed;
 }
 
-static void MIXER_Mix(void) {
+static void MIXER_Mix(void)
+{
 	SDL_LockAudio();
 	MIXER_MixData(mixer.needed);
 	mixer.tick_remain+=mixer.tick_add;
@@ -623,28 +625,36 @@ void MIXER_Init(Section* sec) {
 	mixer.mastervol[1]=1.0f;
 
 	/* Start the Mixer using SDL Sound at 22 khz */
-	SDL_AudioSpec spec;
+    /*SDL_AudioSpec spec;*/
 	SDL_AudioSpec obtained;
 
-	spec.freq=mixer.freq;
+    /*spec.freq=mixer.freq;
 	spec.format=AUDIO_S16SYS;
 	spec.channels=2;
 	spec.callback=MIXER_CallBack;
 	spec.userdata=NULL;
-	spec.samples=(Uint16)mixer.blocksize;
+    spec.samples=(Uint16)mixer.blocksize;*/
 
 	mixer.tick_remain=0;
 	if (mixer.nosound) {
 		LOG_MSG("MIXER:No Sound Mode Selected.");
 		mixer.tick_add=((mixer.freq) << MIXER_SHIFT)/1000;
 		TIMER_AddTickHandler(MIXER_Mix_NoSound);
-	} else if (SDL_OpenAudio(&spec, &obtained) <0 ) {
+    }
+    // Since CG and GsKit take control of the sound, we don't need to do that...
+    /*else if (SDL_OpenAudio(&spec, &obtained) <0 )
+    {
 		mixer.nosound = true;
 		LOG_MSG("MIXER:Can't open audio: %s , running in nosound mode.",SDL_GetError());
 		mixer.tick_add=((mixer.freq) << MIXER_SHIFT)/1000;
 		TIMER_AddTickHandler(MIXER_Mix_NoSound);
-	} else {
-		if((mixer.freq != obtained.freq) || (mixer.blocksize != obtained.samples))
+    } */
+    else
+    {
+        obtained = g_pSound->getAudioSpec();
+
+        // TODO: But we still need to ask for some data here
+        if((mixer.freq != obtained.freq) || (mixer.blocksize != obtained.samples))
 			LOG_MSG("MIXER:Got different values from SDL: freq %d, blocksize %d",obtained.freq,obtained.samples);
 		mixer.freq=obtained.freq;
 		mixer.blocksize=obtained.samples;
