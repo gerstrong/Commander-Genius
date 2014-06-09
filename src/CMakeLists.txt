@@ -234,7 +234,7 @@ if(USE_SDL2)
     endif(SDL2_FOUND)
 
 else(USE_SDL2)
-        # SDL2 not found, try SDL
+        # SDL2 not found, try SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
         FIND_PACKAGE( SDL_net REQUIRED )
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
