@@ -23,7 +23,7 @@
 #include "../dialog/CMessageBoxVort.h"
 #include "sdl/audio/music/CMusic.h"
 #include "../CHighScores.h"
-#include "engine/playgame/CPlayGame.h"
+#include "engine/core/mode/CPlayGame.h"
 #include "../finale/CFinale.h"
 #include <SDL.h>
 #include <string>

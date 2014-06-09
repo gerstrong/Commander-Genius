@@ -8,7 +8,7 @@
 #ifndef CPLAYGAMEGALAXY_H_
 #define CPLAYGAMEGALAXY_H_
 
-#include "engine/playgame/CPlayGame.h"
+#include "engine/core/mode/CPlayGame.h"
 #include "common/CInventory.h"
 #include "common/dialog/CMessageBoxGalaxy.h"
 #include "engine/core/CMap.h"

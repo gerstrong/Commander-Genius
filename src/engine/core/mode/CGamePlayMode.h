@@ -9,7 +9,7 @@
 #define CGAMEPLAYMODE_H_
 
 #include "CGameMode.h"
-#include "engine/playgame/CPlayGame.h"
+#include "CPlayGame.h"
 #include "fileio/CSaveGameController.h"
 #include <memory>
 #include <string>
