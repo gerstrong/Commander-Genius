@@ -1280,6 +1280,7 @@ static void GUI_StartUp(Section * sec) {
 #endif	//OPENGL
 	/* Initialize screen for first time */
 //	sdl.surface=SDL_SetVideoMode(640,400,0,0);
+
 	if (sdl.surface == NULL) E_Exit("Could not initialize video: %s",SDL_GetError());
 	sdl.desktop.bpp=sdl.surface->format->BitsPerPixel;
 	if (sdl.desktop.bpp==24) {
@@ -1460,9 +1461,9 @@ void pollSDL_Events()
 
     gInput.readSDLEventVec(eventVec);
 
-    GFX_Events();
+    //GFX_Events();
 
-    /*for( SDL_Event ev : eventVec)
+    for( SDL_Event ev : eventVec)
     {
         switch (ev.type)
         {
@@ -1471,7 +1472,7 @@ void pollSDL_Events()
             void MAPPER_CheckEvent(SDL_Event * event);
             MAPPER_CheckEvent(&ev);
         }
-    }*/
+    }
 }
 
 void GFX_Events() {

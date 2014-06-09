@@ -20,6 +20,10 @@
 // Input Events
 
 
+bool pollLocked = false;
+SDL_sem *pollSem = nullptr;
+
+
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
 #endif
@@ -45,6 +49,10 @@ CInput::CInput()
 	loadControlconfig(); // we want to have the default settings in all cases
 	startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
 #endif
+
+
+     //Create the semaphor
+    pollSem = SDL_CreateSemaphore(1);
 }
 
 /**
@@ -425,6 +433,7 @@ void CInput::setupNewEvent(Uint8 device, int position)
  */
 void CInput::readNewEvent()
 {
+
 	stInputCommand &lokalInput = InputCommand[remapper.mapDevice][remapper.mapPosition];
 
 	// This function is used to configure new input keys.
@@ -516,21 +525,14 @@ void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 
 
 
-bool SDLPollFlush = false;
-
 
 /**
  * \brief	Called every logic cycle. This triggers the events that occur and process them trough various functions
  */
 void CInput::pollEvents()
 {
-    if(SDLPollFlush)
-        return;
-
-
-    // Same for the SDL Events
-    if(!mSDLEventVec.empty())
-        mSDLEventVec.clear();
+    // Semaphore
+    SDL_SemWait( pollSem );
 
     if(remapper.mappingInput)
     {
@@ -713,6 +715,8 @@ void CInput::pollEvents()
 #if defined(WIZ) || defined(GP2X)
 	WIZ_AdjustVolume( volume_direction );
 #endif
+
+    SDL_SemPost( pollSem );
 }
 
 /**
@@ -1543,15 +1547,20 @@ void CInput::shutdown()
 
 bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
 {
-    SDLPollFlush = true;
+    SDL_SemWait( pollSem );
 
-    // TODO: primitive thread barrier, but sure we need something better...
-    /*while(mPollRunning);
+    if(mSDLEventVec.empty())
+    {
+        SDL_SemPost( pollSem );
+        return false;
+    }
 
     evVec = mSDLEventVec;
 
-    SDLPollFlush = true;
+    mSDLEventVec.clear();
 
-    return true;*/
+    SDL_SemPost( pollSem );
+
+    return true;
 }
 

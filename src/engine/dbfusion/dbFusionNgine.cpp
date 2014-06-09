@@ -1,6 +1,8 @@
 #include "dbFusionNgine.h"
 #include "engine/CGameLauncher.h"
 
+#include <base/video/CVideoDriver.h>
+
 int dosbox_main(int argc, const char* argv[]);
 
 namespace dbfusion
@@ -19,6 +21,10 @@ int mainDosbox(void*)
 
 void DBFusionEngine::start()
 {
+    const GsRect<Uint16> dosRect(640,400);
+    gVideoDriver.setNativeResolution(dosRect);
+
+
     mp_Thread.reset(threadPool->start(mainDosbox, nullptr, "DosBoxMain"));        
 }
 

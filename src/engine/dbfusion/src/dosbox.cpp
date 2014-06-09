@@ -276,10 +276,12 @@ void DOSBOX_SetNormalLoop() {
     loop=Normal_Loop;
 }
 
-void DOSBOX_RunMachine(void){
-
+void DOSBOX_RunMachine(void)
+{
     Bitu ret;
-    do {
+
+    do
+    {
         ret=(*loop)();
     } while (!ret);
 }
