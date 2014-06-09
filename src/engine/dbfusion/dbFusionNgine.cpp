@@ -21,7 +21,7 @@ int mainDosbox(void*)
 
 void DBFusionEngine::start()
 {
-    const GsRect<Uint16> dosRect(640,400);
+    const GsRect<Uint16> dosRect(640, 400);
     gVideoDriver.setNativeResolution(dosRect);
 
 

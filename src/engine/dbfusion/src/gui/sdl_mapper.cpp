@@ -1334,7 +1334,8 @@ void CBindGroup::DeactivateBindList(CBindList * list,bool ev_trigger) {
 	}
 }
 
-static void DrawText(Bitu x,Bitu y,const char * text,Bit8u color) {
+static void DrawText(Bitu x,Bitu y,const char * text,Bit8u color)
+{
 	Bit8u * draw=((Bit8u *)mapper.surface->pixels)+(y*mapper.surface->pitch)+x;
 	while (*text) {
 		Bit8u * font=&int10_font_14[(*text)*14];
@@ -1770,7 +1771,8 @@ static void SetActiveEvent(CEvent * event) {
 	}
 }
 
-static void DrawButtons(void) {
+static void DrawButtons(void)
+{
 	SDL_FillRect(mapper.surface,0,0);
 	SDL_LockSurface(mapper.surface);
 	for (CButton_it but_it = buttons.begin();but_it!=buttons.end();but_it++) {

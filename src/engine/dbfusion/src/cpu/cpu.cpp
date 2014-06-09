@@ -48,10 +48,12 @@ CPU_Regs cpu_regs;
 CPUBlock cpu;
 Segments Segs;
 
+const Bit32s CPU_Default_Cycles = 9000;
+
 Bit32s CPU_Cycles = 0;
-Bit32s CPU_CycleLeft = 3000;
-Bit32s CPU_CycleMax = 3000;
-Bit32s CPU_OldCycleMax = 3000;
+Bit32s CPU_CycleLeft = CPU_Default_Cycles;
+Bit32s CPU_CycleMax = CPU_Default_Cycles;
+Bit32s CPU_OldCycleMax = CPU_Default_Cycles;
 Bit32s CPU_CyclePercUsed = 100;
 Bit32s CPU_CycleLimit = -1;
 Bit32s CPU_CycleUp = 0;
@@ -2243,7 +2245,8 @@ public:
 		std::string type = p->GetSection()->Get_string("type");
 		std::string str ;
 		CommandLine cmd(0,p->GetSection()->Get_string("parameters"));
-		if (type=="max") {
+        if (type=="max")
+        {
 			CPU_CycleMax=0;
 			CPU_CyclePercUsed=100;
 			CPU_CycleAutoAdjust=true;
@@ -2267,11 +2270,14 @@ public:
 					}
 				}
 			}
-		} else {
-			if (type=="auto") {
+        }
+        else
+        {
+            if (type=="auto")
+            {
 				CPU_AutoDetermineMode|=CPU_AUTODETERMINE_CYCLES;
-				CPU_CycleMax=3000;
-				CPU_OldCycleMax=3000;
+                CPU_CycleMax = CPU_Default_Cycles;
+                CPU_OldCycleMax = CPU_CycleMax;
 				CPU_CyclePercUsed=100;
 				for (Bitu cmdnum=0; cmdnum<=cmd.GetCount(); cmdnum++) {
 					if (cmd.FindCommand(cmdnum,str)) {
@@ -2300,13 +2306,17 @@ public:
 						}
 					}
 				}
-			} else if(type =="fixed") {
+            }
+            else if(type =="fixed")
+            {
 				cmd.FindCommand(1,str);
 				int rmdval=0;
 				std::istringstream stream(str);
 				stream >> rmdval;
 				CPU_CycleMax=(Bit32s)rmdval;
-			} else {
+            }
+            else
+            {
 				std::istringstream stream(type);
 				int rmdval=0;
 				stream >> rmdval;
@@ -2395,7 +2405,7 @@ public:
 		else CPU_extflags_toggle=0;
 
 
-		if(CPU_CycleMax <= 0) CPU_CycleMax = 3000;
+        if(CPU_CycleMax <= 0) CPU_CycleMax = CPU_Default_Cycles;
 		if(CPU_CycleUp <= 0)   CPU_CycleUp = 500;
 		if(CPU_CycleDown <= 0) CPU_CycleDown = 20;
 		if (CPU_CycleAutoAdjust) GFX_SetTitle(CPU_CyclePercUsed,-1,false);

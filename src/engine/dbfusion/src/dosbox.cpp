@@ -138,27 +138,34 @@ void pollSDL_Events();
 
 void increaseTicks()
 {
-    if (GCC_UNLIKELY(ticksLocked)) {
+    if (GCC_UNLIKELY(ticksLocked))
+    {
         ticksRemain=5;
         /* Reset any auto cycle guessing for this frame */
         ticksLast = GetTicks();
         ticksAdded = 0;
         ticksDone = 0;
         ticksScheduled = 0;
-    } else {
-        Bit32u ticksNew;
-        ticksNew=GetTicks();
+    }
+    else
+    {
+        Bit32u ticksNew = GetTicks();
         ticksScheduled += ticksAdded;
-        if (ticksNew > ticksLast) {
+        if (ticksNew > ticksLast)
+        {
             ticksRemain = ticksNew-ticksLast;
             ticksLast = ticksNew;
             ticksDone += ticksRemain;
-            if ( ticksRemain > 20 ) {
+            if ( ticksRemain > 20 )
+            {
                 ticksRemain = 20;
             }
+
             ticksAdded = ticksRemain;
-            if (CPU_CycleAutoAdjust && !CPU_SkipCycleAutoAdjust) {
-                if (ticksScheduled >= 250 || ticksDone >= 250 || (ticksAdded > 15 && ticksScheduled >= 5) ) {
+            if (CPU_CycleAutoAdjust && !CPU_SkipCycleAutoAdjust)
+            {
+                if (ticksScheduled >= 250 || ticksDone >= 250 || (ticksAdded > 15 && ticksScheduled >= 5) )
+                {
                     if(ticksDone < 1) ticksDone = 1; // Protect against div by zero
                     /* ratio we are aiming for is around 90% usage*/
                     Bit32s ratio = (ticksScheduled * (CPU_CyclePercUsed*90*1024/100/100)) / ticksDone;
