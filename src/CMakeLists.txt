@@ -222,11 +222,14 @@ if(USE_SDL2)
     INCLUDE(FindPkgConfig)
     PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 
+    FIND_PACKAGE( SDL2_net REQUIRED )
+
     include(FindSDL2 OPTIONAL)
 
     if(SDL2_FOUND)
         message("Using shared SDL Version 2")
         include_directories(${SDL2_INCLUDE_DIR})
+        include_directories(${SDL2_NET_INCLUDE_DIRS})
         include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
@@ -267,6 +270,8 @@ add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 
 
 if(USE_SDL2)
+    # SDL stuff to link
+    target_link_libraries(CGeniusExe ${SDL2_NET_LIBRARIES})
 else(USE_SDL2)
         # SDL stuff to link        
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})

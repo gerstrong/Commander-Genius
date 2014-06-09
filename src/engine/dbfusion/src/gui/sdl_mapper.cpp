@@ -1777,7 +1777,10 @@ static void DrawButtons(void) {
 		(*but_it)->Draw();
 	}
 	SDL_UnlockSurface(mapper.surface);
+
+#if !SDL_VERSION_ATLEAST(2,0,0)
 	SDL_Flip(mapper.surface);
+#endif
 }
 
 static CKeyEvent * AddKeyButtonEvent(Bitu x,Bitu y,Bitu dx,Bitu dy,char const * const title,char const * const entry,KBD_KEYS key) {
@@ -2492,7 +2495,10 @@ void MAPPER_RunInternal() {
 
 
 	/* Set some palette entries */
-	SDL_SetPalette(mapper.surface, SDL_LOGPAL|SDL_PHYSPAL, map_pal, 0, 5);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+#else
+    SDL_SetPalette(mapper.surface, SDL_LOGPAL|SDL_PHYSPAL, map_pal, 0, 5);
+#endif
 	if (last_clicked) {
 		last_clicked->SetColor(CLR_WHITE);
 		last_clicked=NULL;
@@ -2568,6 +2574,8 @@ void MAPPER_StartUp(Section * sec) {
 		virtual_joysticks[0].axis_pos[i]=0;
 		virtual_joysticks[1].axis_pos[i]=0;
 	}
+
+#if !SDL_VERSION_ATLEAST(2,0,0)
 
 	usescancodes = false;
 
@@ -2678,6 +2686,8 @@ void MAPPER_StartUp(Section * sec) {
 			if (key<MAX_SDLKEYS) scancode_map[key]=(Bit8u)i;
 		}
 	}
+
+#endif	// !SDL_VERSION_ATLEAST(2,0,0)
 
 	Prop_path* pp = section->Get_path("mapperfile");
 	mapper.filename = pp->realpath;
