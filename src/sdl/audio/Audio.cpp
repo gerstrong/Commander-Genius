@@ -224,10 +224,18 @@ bool Audio::forcedisPlaying()
 
 void Audio::callback(void *unused, Uint8 *stream, int len)
 {
-	if(!mpAudioRessources)
-		return;
+    m_callback_running = true;
 
-	m_callback_running = true;
+    for(auto &subCallback : mSubCallbackVec)
+    {
+        subCallback(unused, stream, len);
+    }
+
+	if(!mpAudioRessources)        
+    {
+        m_callback_running = false;
+		return;
+    }
 
 	Uint8* buffer = m_MixedForm.data();
 

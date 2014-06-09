@@ -635,6 +635,8 @@ void MIXER_Init(Section* sec) {
 	spec.userdata=NULL;
     spec.samples=(Uint16)mixer.blocksize;*/
 
+    g_pSound->addSubCallback(MIXER_CallBack);
+
 	mixer.tick_remain=0;
 	if (mixer.nosound) {
 		LOG_MSG("MIXER:No Sound Mode Selected.");

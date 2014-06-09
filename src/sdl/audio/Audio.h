@@ -81,9 +81,16 @@ public:
 	// Returns as list of strings the frequencies
 	std::list<std::string> getAvailableRateList() const;
 
+    void addSubCallback( void (SDLCALL *callback)(void *, Uint8 *, int) )
+    {
+        mSubCallbackVec.push_back(callback);
+    }
+
 protected:
 	bool m_callback_running;
 	SDL_AudioSpec mAudioSpec;
+
+    std::vector< void (SDLCALL *)(void *, Uint8 *, int) > mSubCallbackVec;
 
 private:
 
