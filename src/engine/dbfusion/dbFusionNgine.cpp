@@ -34,10 +34,14 @@ void DBFusionEngine::pumpEvent(const CEvent *evPtr)
 }
 
 void DBFusionEngine::ponder(const float deltaT)
-{
-    if(mp_Thread->finished)
+{    
+    int status;
+
+    if(threadPool->finalizeIfReady(mp_Thread.get(), &status))
     {
         gEventManager.add(new GMSwitchToGameLauncher);
+
+        mp_Thread.release();
     }
 }
 
