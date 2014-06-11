@@ -1473,6 +1473,11 @@ void pollSDL_Events()
             MAPPER_CheckEvent(&ev);
         }
     }
+
+    if(gInput.getExitEvent())
+    {
+        throw(0);
+    }
 }
 
 void GFX_Events() {
