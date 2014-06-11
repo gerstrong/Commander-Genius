@@ -140,6 +140,7 @@ bool CGameLauncher::loadResources()
 
 #ifdef DBFUSION
     mLauncherDialog.addControl(new GsButton( "DosBox Fusion Shell >", new GMDBFusionStart() ), GsRect<float>(0.01f, 0.865f, 0.3f, 0.07f) );
+    mLauncherDialog.addControl(new GsButton( "Dos Fusion! >", new GMDosFusionStart() ), GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
 #endif
 
     mpEpisodeText = new CGUIText("Game");

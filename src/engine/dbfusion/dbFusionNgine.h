@@ -29,6 +29,9 @@ private:
 // It's a simple start event which will force CG launch a game
 struct GMDBFusionStart : CEvent {};
 
+// This will start a game choosen from the list directly
+struct GMDosFusionStart : CEvent {};
+
 // Events
 struct StartDBFusionEngine : public SwitchEngineEvent
 {
