@@ -140,7 +140,7 @@ bool CGameLauncher::loadResources()
 
 #ifdef DBFUSION
     mLauncherDialog.addControl(new GsButton( "DosBox Fusion Shell >", new GMDBFusionStart() ), GsRect<float>(0.01f, 0.865f, 0.3f, 0.07f) );
-    mLauncherDialog.addControl(new GsButton( "Dos Fusion! >", new GMDosFusionStart() ), GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
+    mLauncherDialog.addControl(new GsButton( "Dos Fusion! >", new GMDosGameFusionStart() ), GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
 #endif
 
     mpEpisodeText = new CGUIText("Game");
@@ -455,6 +455,16 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     {
         gEventManager.add( new StartDBFusionEngine() );
     }
+    else if(  dynamic_cast<const GMDosGameFusionStart*>(evPtr) )
+    {
+        setChosenGame(mpSelList->getSelection());
+
+        if(m_chosenGame >= 0)
+        {
+            const std::string dataDir = getDirectory( m_chosenGame );
+            gEventManager.add( new StartDBFusionEngine(dataDir) );
+        }
+    }
     else
 #endif
     if( dynamic_cast<const GMStart*>(evPtr) )
@@ -465,13 +475,13 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         {
             setupModsDialog();
         }
-
     }
     else if( dynamic_cast<const GMPatchSelected*>(evPtr) )
     {
         mPatchFilename = mPatchStrVec[mpPatchSelList->getSelection()];
         mDonePatchSelection = true;
     }
+
 
     // Check Scroll events happening on this Launcher
     if( const MouseWheelEvent *mwe = dynamic_cast<const MouseWheelEvent*>(evPtr) )

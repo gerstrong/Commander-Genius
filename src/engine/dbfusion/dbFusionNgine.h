@@ -42,7 +42,7 @@ private:
 struct GMDBFusionStart : CEvent {};
 
 // This will start a game choosen from the list directly
-struct GMDosFusionStart : CEvent {};
+struct GMDosGameFusionStart : CEvent {};
 
 // Events
 struct StartDBFusionEngine : public SwitchEngineEvent
@@ -50,6 +50,11 @@ struct StartDBFusionEngine : public SwitchEngineEvent
     StartDBFusionEngine() :
         SwitchEngineEvent( new dbfusion::DBFusionEngine() )
         { }
+
+    StartDBFusionEngine(const std::string &dataDir) :
+        SwitchEngineEvent( new dbfusion::DBFusionEngine(dataDir) )
+        { }
+
 };
 
 #endif
