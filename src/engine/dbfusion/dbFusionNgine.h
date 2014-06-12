@@ -4,6 +4,7 @@
 #include <base/GsEvent.h>
 #include <base/GsEngine.h>
 #include <base/utils/ThreadPool.h>
+#include <string>
 
 #ifdef DBFUSION
 
@@ -14,13 +15,24 @@ namespace dbfusion
 
 class DBFusionEngine : public GsEngine
 {
+public:
+    // Constructor in case you want to be dropped into shell and nothing else
+    DBFusionEngine() {}
+
+    // In case you want to directly start the DOS game
+    DBFusionEngine(const std::string gamepath) : mGamePath(gamepath) {}
+
+
+private:
+
     void start();
     void pumpEvent(const CEvent *evPtr);
     void ponder(const float deltaT);
     void render();
 
-private:
     std::unique_ptr<ThreadPoolItem> mp_Thread;
+
+    const std::string mGamePath;
 };
 
 

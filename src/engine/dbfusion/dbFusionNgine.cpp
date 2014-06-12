@@ -8,13 +8,40 @@ int dosbox_main(int argc, const char* argv[]);
 namespace dbfusion
 {
 
+std::string globGamePath;
+
+const unsigned int maxStrLen = 256;
 
 int mainDosbox(void*)
 {
-    const int argc = 1;
-    const char* argv[1] = { "dosbox" };
+    int argc = 1;
 
-    dosbox_main(argc, argv);
+    char **argv;
+
+    if(!globGamePath.empty())
+    {
+        argc = 2;
+    }
+
+    // Allocate the more or less primitive way
+    argv = new char* [2];
+    for(int i=0 ; i<argc ; i++)
+    {
+        argv[i] = new char[maxStrLen];
+    }
+
+    strcpy(argv[0], "dosbox");
+    strcpy(argv[1], globGamePath.c_str());
+
+    dosbox_main(argc, (const char**) argv);
+
+    // Deallocate the more or less primitive way
+    for(int i=0 ; i<argc ; i++)
+    {
+        delete [] argv[i];
+    }
+    delete [] argv;
+
 
     return 0;
 }
@@ -24,8 +51,9 @@ void DBFusionEngine::start()
     const GsRect<Uint16> dosRect(640, 400);
     gVideoDriver.setNativeResolution(dosRect);
 
+    globGamePath = mGamePath;
 
-    mp_Thread.reset(threadPool->start(mainDosbox, nullptr, "DosBoxMain"));        
+    mp_Thread.reset(threadPool->start(mainDosbox, nullptr, "DosBoxMain"));
 }
 
 void DBFusionEngine::pumpEvent(const CEvent *evPtr)
