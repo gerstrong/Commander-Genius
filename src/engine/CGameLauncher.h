@@ -69,6 +69,9 @@ public:
 
 
     void setupModsDialog();
+
+    void setupDosExecDialog();
+
     void pumpEvent(const CEvent *evPtr);
     void ponderGameSelDialog(const float deltaT);
     void ponderPatchDialog();
@@ -94,8 +97,13 @@ private:
 
 	bool m_mustquit;
 	int m_chosenGame;
+
     bool mDonePatchSelection; // Tells if the Patch file has been selected if any
     std::string mPatchFilename;
+
+    bool mDoneExecSelection; // Tells if the Patch file has been selected if any
+    std::string mExecFilename;
+
 	Uint8 m_episode;
 	DirList m_DirList;
 	Sint8 m_ep1slot;
@@ -103,7 +111,10 @@ private:
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
     CGUIDialog mLauncherDialog;
-    CGUIDialog mPatchDialog;
+
+    std::unique_ptr<CGUIDialog> mpPatchDialog;
+    std::unique_ptr<CGUIDialog> mpDosExecDialog;
+
     CResourceLoaderBackground mGameScanner;
 
     std::shared_ptr<CGUIBitmap> mCurrentBmp;
@@ -113,7 +124,11 @@ private:
 
     CGUITextSelectionList *mpSelList;
     CGUITextSelectionList *mpPatchSelList;
+    CGUITextSelectionList *mpDosExecSelList;
+
     std::vector<std::string> mPatchStrVec;
+
+    std::vector<std::string> mDosExecStrVec;
 
     int mSelection;
 

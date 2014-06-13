@@ -2,6 +2,7 @@
 #include "engine/CGameLauncher.h"
 
 #include <base/video/CVideoDriver.h>
+#include <base/utils/FindFile.h>
 
 int dosbox_main(int argc, const char* argv[]);
 
@@ -31,7 +32,11 @@ int mainDosbox(void*)
     }
 
     strcpy(argv[0], "dosbox");
-    strcpy(argv[1], globGamePath.c_str());
+
+    if(!globGamePath.empty())
+    {
+        strcpy(argv[1], globGamePath.c_str());
+    }
 
     dosbox_main(argc, (const char**) argv);
 
@@ -51,7 +56,7 @@ void DBFusionEngine::start()
     const GsRect<Uint16> dosRect(640, 400);
     gVideoDriver.setNativeResolution(dosRect);
 
-    globGamePath = mGamePath;
+    globGamePath = GetAbsolutePath(mGamePath);
 
     mp_Thread.reset(threadPool->start(mainDosbox, nullptr, "DosBoxMain"));
 }
