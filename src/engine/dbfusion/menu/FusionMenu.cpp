@@ -2,12 +2,27 @@
 
 
 void FusionMenu::initFusionBackground()
-{
+{    
     GsWeakSurface blit( gVideoDriver.getBlitSurface() );
+    mBackground.createCopy(blit);
 
-    mBackground.create( 0, blit.width(), blit.height(), RES_BPP, 0, 0, 0, 0);
+    GsSurface layer;
 
-    mBackground.fillRGBA(50, 70, 50, 128);
+    /*SDL_PixelFormat blitFormat = blit.getSDLSurface()->format;
+    mBackground.create(SDL_SWSURFACE,
+                        blit.width(),
+                        blit.height(),
+                        RES_BPP,
+                        blitFormat->Rmask,
+                        blitFormat->Gmask,
+                        blitFormat->Bmask,
+                        0);*/
+
+    layer.create( 0, blit.width(), blit.height(), RES_BPP, 0, 0, 0, 0);
+    layer.fillRGB(50, 70, 50);
+    layer.setAlpha(220);
+
+    layer.blitTo(mBackground);
 }
 
 void FusionMenu::render()

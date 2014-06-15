@@ -196,6 +196,7 @@ public:
     void setAlpha(const unsigned char alpha)
     {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceBlendMode( mpSurface, SDL_BLENDMODE_BLEND );
     SDL_SetSurfaceAlphaMod( mpSurface, alpha);
 #else
     SDL_SetAlpha(mpSurface, SDL_SRCALPHA, alpha);
