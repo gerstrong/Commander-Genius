@@ -64,13 +64,19 @@ void DBFusionEngine::start()
     const GsRect<Uint16> dosRect(640, 400);
     gVideoDriver.setNativeResolution(dosRect);
 
+
     globGamePath = GetAbsolutePath(mGamePath);
 
     mp_Thread.reset(threadPool->start(mainDosbox, nullptr, "DosBoxMain"));
 }
 
 void DBFusionEngine::pumpEvent(const CEvent *evPtr)
-{
+{    
+    if( dynamic_cast<const BackButtonSendDosFusion*>(evPtr) )
+    {
+        gInput.addBackButtonEvent();
+        gEventManager.add(new CloseMenuEvent());
+    }
 }
 
 void DBFusionEngine::ponder(const float deltaT)
@@ -80,6 +86,9 @@ void DBFusionEngine::ponder(const float deltaT)
     if( gMenuController.empty() && dosFusionPause )
     {
         dosFusionPause = false;
+
+        GsWeakSurface blit(gVideoDriver.getBlitSurface());
+        mBackbuffer.blitTo(blit);
     }
 
     if(threadPool->finalizeIfReady(mp_Thread.get(), &status))
@@ -97,6 +106,9 @@ void DBFusionEngine::ponder(const float deltaT)
         {
             gEventManager.add( new OpenMenuEvent( new MainMenu() ) );
             dosFusionPause = true;
+
+            GsWeakSurface blit(gVideoDriver.getBlitSurface());
+            mBackbuffer.createCopy(blit);
         }
     }
 

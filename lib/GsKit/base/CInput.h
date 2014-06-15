@@ -247,6 +247,12 @@ public:
      */
     bool readSDLEventVec(std::vector<SDL_Event> &evVec);
 
+    /**
+     * @brief addBackButtonEvent Use this if want to add the event that normally would
+     *        make open the menu. This event will be processed by the engine for other stuff
+     */
+    void addBackButtonEvent();
+
 private:
 
     // Input Events
@@ -261,6 +267,7 @@ private:
      *        For the Dosbox fusion this is needed, since our system can only use polling once otherwise it might get confused.
      */
     std::vector<SDL_Event> mSDLEventVec;
+    SDL_Event mBackEventBuffer;
 
 	SDL_Event Event;
 	std::list<SDL_Joystick*> mp_Joysticks;

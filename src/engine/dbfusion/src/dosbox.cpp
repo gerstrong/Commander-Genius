@@ -245,7 +245,6 @@ static Bitu Normal_Loop(void) {
             SDL_Delay(1);
         }
 
-
         if (PIC_RunQueue()) {
             ret = (*cpudecoder)();
 

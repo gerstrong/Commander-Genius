@@ -15,10 +15,8 @@
 #include <base/utils/FindFile.h>
 #include <base/PointDevice.h>
 #include <fileio/CConfiguration.h>
-//#include "engine/core/CBehaviorEngine.h"
 
 // Input Events
-
 
 bool pollLocked = false;
 SDL_sem *pollSem = nullptr;
@@ -527,7 +525,7 @@ void CInput::transMouseRelCoord(Vector2D<float> &Pos,
 
 
 /**
- * \brief	Called every logic cycle. This triggers the events that occur and process them trough various functions
+ * \brief	Called every logic cycle. This triggers the events that occur and process them through various functions
  */
 void CInput::pollEvents()
 {
@@ -664,8 +662,12 @@ void CInput::pollEvents()
 		}
 
         if(passSDLEventVec)
-        {
+        {            
             mSDLEventVec.push_back(Event);
+        }
+        else
+        {
+            mBackEventBuffer = Event;
         }
 	}
 #ifdef MOUSEWRAPPER
@@ -1584,5 +1586,14 @@ bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
     SDL_SemPost( pollSem );
 
     return true;
+}
+
+void CInput::addBackButtonEvent()
+{
+    SDL_SemWait( pollSem );
+
+    mSDLEventVec.push_back(mBackEventBuffer);
+
+    SDL_SemPost( pollSem );    
 }
 

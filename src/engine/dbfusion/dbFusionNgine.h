@@ -4,6 +4,7 @@
 #include <base/GsEvent.h>
 #include <base/GsEngine.h>
 #include <base/utils/ThreadPool.h>
+#include <graphics/GsSurface.h>
 #include <string>
 
 #ifdef DBFUSION
@@ -40,6 +41,9 @@ private:
     std::unique_ptr<ThreadPoolItem> mp_Thread;
 
     const std::string mGamePath;
+
+    // Used, when the menu is open. After it is closed you might want to get the last frame.
+    GsSurface mBackbuffer;
 };
 
 
