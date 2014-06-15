@@ -74,7 +74,7 @@ void DBFusionEngine::pumpEvent(const CEvent *evPtr)
 {    
     if( dynamic_cast<const BackButtonSendDosFusion*>(evPtr) )
     {
-        gInput.addBackButtonEvent();
+        gInput.pushBackButtonEventExtEng();
         gEventManager.add(new CloseMenuEvent());
     }
 }

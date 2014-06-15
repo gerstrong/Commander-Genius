@@ -667,7 +667,7 @@ void CInput::pollEvents()
         }
         else
         {
-            mBackEventBuffer = Event;
+            mBackEventBuffer.push_back(Event);
         }
 	}
 #ifdef MOUSEWRAPPER
@@ -1588,11 +1588,22 @@ bool CInput::readSDLEventVec(std::vector<SDL_Event> &evVec)
     return true;
 }
 
-void CInput::addBackButtonEvent()
+void CInput::pushBackButtonEventExtEng()
 {
     SDL_SemWait( pollSem );
 
-    mSDLEventVec.push_back(mBackEventBuffer);
+    if(mBackEventBuffer.empty())
+    {
+        SDL_SemPost( pollSem );
+        return;
+    }
+
+    for( SDL_Event &ev : mBackEventBuffer )
+    {
+        mSDLEventVec.push_back(ev);
+    }
+
+    mBackEventBuffer.clear();
 
     SDL_SemPost( pollSem );    
 }

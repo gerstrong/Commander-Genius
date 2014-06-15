@@ -11,7 +11,7 @@
 
 #include "CPixelate.h"
 #include <base/video/CVideoDriver.h>
-#include <base/CInput.h>
+//#include <base/CInput.h>
 #include <base/GsTimer.h>
 
 #include "graphics/GsGraphics.h"
