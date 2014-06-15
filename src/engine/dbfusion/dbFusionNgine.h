@@ -8,9 +8,16 @@
 
 #ifdef DBFUSION
 
+extern bool dosFusionPause;
+
 namespace dbfusion
 {
 
+
+struct OpenMainMenuEvent : public CEvent {};
+
+// Pauses the Dos Fusion
+struct PauseDosFusion : public CEvent {};
 
 
 class DBFusionEngine : public GsEngine

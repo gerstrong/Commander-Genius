@@ -1,10 +1,18 @@
 #include "dbFusionNgine.h"
 #include "engine/CGameLauncher.h"
 
+#include "menu/MainMenu.h"
+
 #include <base/video/CVideoDriver.h>
 #include <base/utils/FindFile.h>
 
+#include <base/CInput.h>
+#include <widgets/GsMenuController.h>
+
 int dosbox_main(int argc, const char* argv[]);
+
+
+bool dosFusionPause;
 
 namespace dbfusion
 {
@@ -63,19 +71,35 @@ void DBFusionEngine::start()
 
 void DBFusionEngine::pumpEvent(const CEvent *evPtr)
 {
-
 }
 
 void DBFusionEngine::ponder(const float deltaT)
 {    
     int status;
 
+    if( gMenuController.empty() && dosFusionPause )
+    {
+        dosFusionPause = false;
+    }
+
     if(threadPool->finalizeIfReady(mp_Thread.get(), &status))
     {
         gEventManager.add(new GMSwitchToGameLauncher);
 
         mp_Thread.release();
+        return;
     }
+
+    // Did the player press the quit/back button
+    if( gInput.getPressedCommand(IC_BACK) )
+    {
+        if( gMenuController.empty() ) // If no menu is open, open the main menu
+        {
+            gEventManager.add( new OpenMenuEvent( new MainMenu() ) );
+            dosFusionPause = true;
+        }
+    }
+
 }
 
 void DBFusionEngine::render()

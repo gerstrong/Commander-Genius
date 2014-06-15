@@ -14,7 +14,6 @@
 #include <base/utils/Geometry.h>
 #include <base/GsEvent.h>
 #include <base/InputEvents.h>
-//#include "InputEvents.h"
 
 #include <base/Singleton.h>
 
@@ -291,7 +290,7 @@ private:
 	    int mapPosition;
 	} remapper;
 
-	void processKeys(int value);
+    bool processKeys(int value);
 	void processJoystickAxis();
 	void processJoystickHat();
 	void processJoystickButton(int value);

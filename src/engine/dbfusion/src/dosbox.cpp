@@ -43,6 +43,10 @@
 #include "render.h"
 #include "pci_bus.h"
 
+#include "../dbFusionNgine.h"
+
+extern bool dosFusionPause;
+
 Config * control;
 MachineType machine;
 SVGACards svgaCard;
@@ -235,6 +239,13 @@ void increaseTicks()
 static Bitu Normal_Loop(void) {
     Bits ret;
     while (1) {
+
+        while(dosFusionPause)
+        {
+            SDL_Delay(1);
+        }
+
+
         if (PIC_RunQueue()) {
             ret = (*cpudecoder)();
 
@@ -290,7 +301,7 @@ void DOSBOX_RunMachine(void)
     do
     {
         ret=(*loop)();
-    } while (!ret);
+    } while (!ret);            
 }
 
 static void DOSBOX_UnlockSpeed( bool pressed ) {

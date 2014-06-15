@@ -1464,12 +1464,12 @@ void pollSDL_Events()
     //GFX_Events();
 
     for( SDL_Event ev : eventVec)
-    {
+    {                
         switch (ev.type)
         {
 
         default:
-            void MAPPER_CheckEvent(SDL_Event * event);
+            void MAPPER_CheckEvent(SDL_Event * event);                       
             MAPPER_CheckEvent(&ev);
         }
     }

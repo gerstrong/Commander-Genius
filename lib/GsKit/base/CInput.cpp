@@ -569,10 +569,12 @@ void CInput::pollEvents()
         clickGameArea.y = 0;
     }
 
+
+
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
-	{
-        mSDLEventVec.push_back(Event);
+	{        
+        bool passSDLEventVec = true;
 
 		switch( Event.type )
 		{
@@ -581,10 +583,10 @@ void CInput::pollEvents()
 			m_exit = true;
 			break;
         case SDL_KEYDOWN:
-			processKeys(1);
+            passSDLEventVec = processKeys(1);
 			break;
 		case SDL_KEYUP:
-			processKeys(0);
+            passSDLEventVec = processKeys(0);
             break;
 		case SDL_JOYAXISMOTION:
 			processJoystickAxis();
@@ -660,6 +662,11 @@ void CInput::pollEvents()
             gPointDevice.mPointingState.mPos = Pos;
 			break;
 		}
+
+        if(passSDLEventVec)
+        {
+            mSDLEventVec.push_back(Event);
+        }
 	}
 #ifdef MOUSEWRAPPER
 	// Handle mouse emulation layer
@@ -805,18 +812,30 @@ void CInput::sendKey(int key){	immediate_keytable[key] = true;	}
  * 			was triggered.
  * \param	keydown	this parameter tells if the keys is down or has already been released.
  */
-void CInput::processKeys(int keydown)
+bool CInput::processKeys(int keydown)
 {
+    bool passSDLEventVec = true;
+
 	// Input for player commands
-	for(int i=0 ; i<MAX_COMMANDS ; i++)
+    for(int j=0 ; j<NUM_INPUTS ; j++)
 	{
-		for(int j=0 ; j<NUM_INPUTS ; j++)
+        for(int i=0 ; i<MAX_COMMANDS ; i++)
 		{
 			if(InputCommand[j][i].keysym == Event.key.keysym.sym &&
 					InputCommand[j][i].joyeventtype == ETYPE_KEYBOARD)
+            {
 				InputCommand[j][i].active = (keydown) ? true : false;
+
+                if(i == IC_BACK)
+                {
+                    passSDLEventVec = false;
+                }
+            }
 		}
 	}
+
+
+
 
 	// ... and for general keys
     switch(Event.key.keysym.sym)
@@ -884,7 +903,7 @@ void CInput::processKeys(int keydown)
 
 		case SDLK_F1:immediate_keytable[KF1]	= keydown;  break;
 		case SDLK_F2:immediate_keytable[KF2]	= keydown;  break;
-		case SDLK_F3:immediate_keytable[KF3]	= keydown;  break;
+        case SDLK_F3:immediate_keytable[KF3]	= keydown;  break;
 		case SDLK_F4:immediate_keytable[KF4]	= keydown;  break;
 		case SDLK_F5:immediate_keytable[KF5]	= keydown;  break;
 		case SDLK_F6:immediate_keytable[KF6]	= keydown;  break;
@@ -949,6 +968,9 @@ void CInput::processKeys(int keydown)
 		if(getPressedKey(KPERIOD)) immediate_keytable[KGREATER] = keydown;
 		if(getPressedKey(KSLASH)) immediate_keytable[KQUESTION] = keydown;
 	}
+
+    return passSDLEventVec;
+
 }
 
 #ifdef MOUSEWRAPPER

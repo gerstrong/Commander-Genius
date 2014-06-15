@@ -7,6 +7,7 @@ FILE(GLOB INCLUDES ./include/*.h)
 
 if(DBFUSION)
     add_definitions(-DDBFUSION)
+    add_subdirectory(menu)
 endif()
 
 add_library(dbfusion OBJECT config.h dbFusionNgine.h dbFusionNgine.cpp ${INCLUDES})
