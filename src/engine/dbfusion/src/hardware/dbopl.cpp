@@ -290,10 +290,10 @@ inline void Operator::UpdateAttack( const Chip* chip ) {
 	if ( rate ) {
 		Bit8u val = (rate << 2) + ksr;
 		attackAdd = chip->attackRates[ val ];
-		rateZero &= ~(1 << ATTACK);
+        rateZero &= ~(1 << OPS_ATTACK);
 	} else {
 		attackAdd = 0;
-		rateZero |= (1 << ATTACK);
+        rateZero |= (1 << OPS_ATTACK);
 	}
 }
 inline void Operator::UpdateDecay( const Chip* chip ) {
@@ -301,10 +301,10 @@ inline void Operator::UpdateDecay( const Chip* chip ) {
 	if ( rate ) {
 		Bit8u val = (rate << 2) + ksr;
 		decayAdd = chip->linearRates[ val ];
-		rateZero &= ~(1 << DECAY);
+        rateZero &= ~(1 << OPS_DECAY);
 	} else {
 		decayAdd = 0;
-		rateZero |= (1 << DECAY);
+        rateZero |= (1 << OPS_DECAY);
 	}
 }
 inline void Operator::UpdateRelease( const Chip* chip ) {
@@ -314,13 +314,13 @@ inline void Operator::UpdateRelease( const Chip* chip ) {
 		releaseAdd = chip->linearRates[ val ];
 		rateZero &= ~(1 << RELEASE);
 		if ( !(reg20 & MASK_SUSTAIN ) ) {
-			rateZero &= ~( 1 << SUSTAIN );
+            rateZero &= ~( 1 << OPS_SUSTAIN );
 		}	
 	} else {
 		rateZero |= (1 << RELEASE);
 		releaseAdd = 0;
 		if ( !(reg20 & MASK_SUSTAIN ) ) {
-			rateZero |= ( 1 << SUSTAIN );
+            rateZero |= ( 1 << OPS_SUSTAIN );
 		}	
 	}
 }
@@ -384,9 +384,9 @@ Bits Operator::TemplateVolume(  ) {
 	Bit32s vol = volume;
 	Bit32s change;
 	switch ( yes ) {
-	case OFF:
+    case OPS_OFF:
 		return ENV_MAX;
-	case ATTACK:
+    case OPS_ATTACK:
 		change = RateForward( attackAdd );
 		if ( !change )
 			return vol;
@@ -394,25 +394,25 @@ Bits Operator::TemplateVolume(  ) {
 		if ( vol < ENV_MIN ) {
 			volume = ENV_MIN;
 			rateIndex = 0;
-			SetState( DECAY );
+            SetState( OPS_DECAY );
 			return ENV_MIN;
 		}
 		break;
-	case DECAY:
+    case OPS_DECAY:
 		vol += RateForward( decayAdd );
 		if ( GCC_UNLIKELY(vol >= sustainLevel) ) {
 			//Check if we didn't overshoot max attenuation, then just go off
 			if ( GCC_UNLIKELY(vol >= ENV_MAX) ) {
 				volume = ENV_MAX;
-				SetState( OFF );
+                SetState( OPS_OFF );
 				return ENV_MAX;
 			}
 			//Continue as sustain
 			rateIndex = 0;
-			SetState( SUSTAIN );
+            SetState( OPS_SUSTAIN );
 		}
 		break;
-	case SUSTAIN:
+    case OPS_SUSTAIN:
 		if ( reg20 & MASK_SUSTAIN ) {
 			return vol;
 		}
@@ -421,7 +421,7 @@ Bits Operator::TemplateVolume(  ) {
 		vol += RateForward( releaseAdd );;
 		if ( GCC_UNLIKELY(vol >= ENV_MAX) ) {
 			volume = ENV_MAX;
-			SetState( OFF );
+            SetState( OPS_OFF );
 			return ENV_MAX;
 		}
 		break;
@@ -431,11 +431,11 @@ Bits Operator::TemplateVolume(  ) {
 }
 
 static const VolumeHandler VolumeHandlerTable[5] = {
-	&Operator::TemplateVolume< Operator::OFF >,
-	&Operator::TemplateVolume< Operator::RELEASE >,
-	&Operator::TemplateVolume< Operator::SUSTAIN >,
-	&Operator::TemplateVolume< Operator::DECAY >,
-	&Operator::TemplateVolume< Operator::ATTACK >
+    &Operator::TemplateVolume< Operator::OPS_OFF >,
+    &Operator::TemplateVolume< Operator::OPS_RELEASE >,
+    &Operator::TemplateVolume< Operator::OPS_SUSTAIN >,
+    &Operator::TemplateVolume< Operator::OPS_DECAY >,
+    &Operator::TemplateVolume< Operator::OPS_ATTACK >
 };
 
 INLINE Bitu Operator::ForwardVolume() {
@@ -462,9 +462,9 @@ void Operator::Write20( const Chip* chip, Bit8u val ) {
 	}
 	//With sustain enable the volume doesn't change
 	if ( reg20 & MASK_SUSTAIN || ( !releaseAdd ) ) {
-		rateZero |= ( 1 << SUSTAIN );
+        rateZero |= ( 1 << OPS_SUSTAIN );
 	} else {
-		rateZero &= ~( 1 << SUSTAIN );
+        rateZero &= ~( 1 << OPS_SUSTAIN );
 	}
 	//Frequency multiplier or vibrato changed
 	if ( change & (0xf | MASK_VIBRATO) ) {
@@ -555,7 +555,7 @@ void Operator::KeyOn( Bit8u mask ) {
 		waveIndex = 0;
 #endif
 		rateIndex = 0;
-		SetState( ATTACK );
+        SetState( OPS_ATTACK );
 	}
 	keyOn |= mask;
 }
@@ -563,8 +563,8 @@ void Operator::KeyOn( Bit8u mask ) {
 void Operator::KeyOff( Bit8u mask ) {
 	keyOn &= ~mask;
 	if ( !keyOn ) {
-		if ( state != OFF ) {
-			SetState( RELEASE );
+        if ( state != OPS_OFF ) {
+            SetState( OPS_RELEASE );
 		}
 	}
 }
@@ -612,8 +612,8 @@ Operator::Operator() {
 	reg60 = 0;
 	reg80 = 0;
 	regE0 = 0;
-	SetState( OFF );
-	rateZero = (1 << OFF);
+    SetState( OPS_OFF );
+    rateZero = (1 << OPS_OFF);
 	sustainLevel = ENV_MAX;
 	currentLevel = ENV_MAX;
 	totalLevel = ENV_MAX;
@@ -635,7 +635,7 @@ Channel::Channel() {
 	feedback = 31;
 	fourMask = 0;
 	synthHandler = &Channel::BlockTemplate< sm2FM >;
-};
+}
 
 void Channel::SetChanData( const Chip* chip, Bit32u data ) {
 	Bit32u change = chanData ^ data;

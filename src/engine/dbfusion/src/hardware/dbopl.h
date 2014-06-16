@@ -75,11 +75,11 @@ public:
 	};
 
 	typedef enum {
-		OFF,
-		RELEASE,
-		SUSTAIN,
-		DECAY,
-		ATTACK,
+        OPS_OFF,
+        OPS_RELEASE,
+        OPS_SUSTAIN,
+        OPS_DECAY,
+        OPS_ATTACK,
 	} State;
 
 	VolumeHandler volHandler;
