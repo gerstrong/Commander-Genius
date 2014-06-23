@@ -37,6 +37,8 @@
 #include "mapper.h"
 #include "setup.h"
 
+#include <base/video/CVideoDriver.h>
+
 enum {
 	CLR_BLACK=0,
 	CLR_WHITE=1,
@@ -75,34 +77,34 @@ enum BC_Types {
 #define MAXBUTTON 32
 #define MAXBUTTON_CAP 16
 
-class CEvent;
+class CDBSDLEvent;
 class CHandlerEvent;
 class CButton;
 class CBind;
 class CBindGroup;
 
-static void SetActiveEvent(CEvent * event);
+static void SetActiveEvent(CDBSDLEvent * event);
 static void SetActiveBind(CBind * _bind);
 extern Bit8u int10_font_14[256 * 14];
 
-static std::vector<CEvent *> events;
+static std::vector<CDBSDLEvent *> events;
 static std::vector<CButton *> buttons;
 static std::vector<CBindGroup *> bindgroups;
 static std::vector<CHandlerEvent *> handlergroup;
 typedef std::list<CBind *> CBindList;
-typedef std::list<CEvent *>::iterator CEventList_it;
+typedef std::list<CDBSDLEvent *>::iterator CEventList_it;
 typedef std::list<CBind *>::iterator CBindList_it;
 typedef std::vector<CButton *>::iterator CButton_it;
-typedef std::vector<CEvent *>::iterator CEventVector_it;
+typedef std::vector<CDBSDLEvent *>::iterator CEventVector_it;
 typedef std::vector<CHandlerEvent *>::iterator CHandlerEventVector_it;
 typedef std::vector<CBindGroup *>::iterator CBindGroup_it;
 
 static CBindList holdlist;
 
 
-class CEvent {
+class CDBSDLEvent {
 public:
-	CEvent(char const * const _entry) {
+    CDBSDLEvent(char const * const _entry) {
 		safe_strncpy(entry,_entry,16);
 		events.push_back(this);
 		bindlist.clear();
@@ -110,7 +112,7 @@ public:
 		current_value=0;
 	}
 	void AddBind(CBind * bind);
-	virtual ~CEvent() {}
+    virtual ~CDBSDLEvent() {}
 	virtual void Active(bool yesno)=0;
 	virtual void ActivateEvent(bool ev_trigger,bool skip_action)=0;
 	virtual void DeActivateEvent(bool ev_trigger)=0;
@@ -131,9 +133,9 @@ protected:
 };
 
 /* class for events which can be ON/OFF only: key presses, joystick buttons, joystick hat */
-class CTriggeredEvent : public CEvent {
+class CTriggeredEvent : public CDBSDLEvent {
 public:
-	CTriggeredEvent(char const * const _entry) : CEvent(_entry) {}
+    CTriggeredEvent(char const * const _entry) : CDBSDLEvent(_entry) {}
 	virtual bool IsTrigger(void) {
 		return true;
 	}
@@ -157,9 +159,9 @@ public:
 };
 
 /* class for events which have a non-boolean state: joystick axis movement */
-class CContinuousEvent : public CEvent {
+class CContinuousEvent : public CDBSDLEvent {
 public:
-	CContinuousEvent(char const * const _entry) : CEvent(_entry) {}
+    CContinuousEvent(char const * const _entry) : CDBSDLEvent(_entry) {}
 	virtual bool IsTrigger(void) {
 		return false;
 	}
@@ -266,17 +268,17 @@ public:
    
 	Bitu mods,flags;
 	Bit16s value;
-	CEvent * event;
+    CDBSDLEvent * event;
 	CBindList * list;
 	bool active,holding;
 };
 
 
-void CEvent::AddBind(CBind * bind) {
+void CDBSDLEvent::AddBind(CBind * bind) {
 	bindlist.push_front(bind);
 	bind->event=this;
 }
-void CEvent::DeActivateAll(void) {
+void CDBSDLEvent::DeActivateAll(void) {
 	for (CBindList_it bit=bindlist.begin();bit!=bindlist.end();bit++) {
 		(*bit)->DeActivateBind(true);
 	}
@@ -1300,7 +1302,7 @@ static struct CMapper {
 	SDL_Surface * surface;
 	SDL_Surface * draw_surface;
 	bool exit;
-	CEvent * aevent;				//Active Event
+    CDBSDLEvent * aevent;				//Active Event
 	CBind * abind;					//Active Bind
 	CBindList_it abindit;			//Location of active bind in list
 	bool redraw;
@@ -1406,7 +1408,7 @@ static CEventButton * last_clicked = NULL;
 
 class CEventButton : public CTextButton {
 public:
-	CEventButton(Bitu _x,Bitu _y,Bitu _dx,Bitu _dy,const char * _text,CEvent * _event) 
+    CEventButton(Bitu _x,Bitu _y,Bitu _dx,Bitu _dy,const char * _text,CDBSDLEvent * _event)
 	: CTextButton(_x,_y,_dx,_dy,_text) 	{ 
 		event=_event;	
 	}
@@ -1417,7 +1419,7 @@ public:
 		last_clicked=this;
 	}
 protected:
-	CEvent * event;
+    CDBSDLEvent * event;
 };
 
 class CCaptionButton : public CButton {
@@ -1752,7 +1754,7 @@ static void SetActiveBind(CBind * _bind) {
 	}
 }
 
-static void SetActiveEvent(CEvent * event) {
+static void SetActiveEvent(CDBSDLEvent * event) {
 	mapper.aevent=event;
 	mapper.redraw=true;
 	mapper.addbind=false;
@@ -2094,7 +2096,7 @@ static SDL_Color map_pal[5]={
 static void CreateStringBind(char * line) {
 	line=trim(line);
 	char * eventname=StripWord(line);
-	CEvent * event;
+    CDBSDLEvent * event;
 	for (CEventVector_it ev_it=events.begin();ev_it!=events.end();ev_it++) {
 		if (!strcasecmp((*ev_it)->GetName(),eventname)) {
 			event=*ev_it;
@@ -2289,7 +2291,7 @@ static void MAPPER_SaveBinds(void) {
 	}
 	char buf[128];
 	for (CEventVector_it event_it=events.begin();event_it!=events.end();event_it++) {
-		CEvent * event=*(event_it);
+        CDBSDLEvent * event=*(event_it);
 		fprintf(savefile,"%s ",event->GetName());
 		for (CBindList_it bind_it=event->bindlist.begin();bind_it!=event->bindlist.end();bind_it++) {
 			CBind * bind=*(bind_it);
@@ -2492,6 +2494,7 @@ void MAPPER_RunInternal() {
 	/* Be sure that there is no update in progress */
 	GFX_EndUpdate( 0 );
     //mapper.surface=SDL_SetVideoMode(640,480,8,0);
+    mapper.surface = gVideoDriver.getBlitSurface();
 	if (mapper.surface == NULL) E_Exit("Could not initialize video mode for mapper: %s",SDL_GetError());
 
 

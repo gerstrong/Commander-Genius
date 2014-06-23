@@ -312,12 +312,12 @@ inline void Operator::UpdateRelease( const Chip* chip ) {
 	if ( rate ) {
 		Bit8u val = (rate << 2) + ksr;
 		releaseAdd = chip->linearRates[ val ];
-		rateZero &= ~(1 << RELEASE);
+        rateZero &= ~(1 << OPS_RELEASE);
 		if ( !(reg20 & MASK_SUSTAIN ) ) {
             rateZero &= ~( 1 << OPS_SUSTAIN );
 		}	
 	} else {
-		rateZero |= (1 << RELEASE);
+        rateZero |= (1 << OPS_RELEASE);
 		releaseAdd = 0;
 		if ( !(reg20 & MASK_SUSTAIN ) ) {
             rateZero |= ( 1 << OPS_SUSTAIN );
@@ -417,8 +417,8 @@ Bits Operator::TemplateVolume(  ) {
 			return vol;
 		}
 		//In sustain phase, but not sustaining, do regular release
-	case RELEASE: 
-		vol += RateForward( releaseAdd );;
+    case OPS_RELEASE:
+        vol += RateForward( releaseAdd );
 		if ( GCC_UNLIKELY(vol >= ENV_MAX) ) {
 			volume = ENV_MAX;
             SetState( OPS_OFF );

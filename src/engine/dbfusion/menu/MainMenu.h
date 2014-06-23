@@ -15,12 +15,7 @@ class MainMenu : public FusionMenu
 {
 
 public:
-    MainMenu() : FusionMenu(GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
-    {
-        GsButton *mpGameMenuButton = new GsButton( "DOS Game Menu", new BackButtonSendDosFusion());
-
-        mpMenuDialog->addControl( mpGameMenuButton, GsRect<float>(0.2f, 0.2f, 0.6f, 0.05f) );
-    }
+    MainMenu();
 
 };
 

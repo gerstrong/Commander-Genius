@@ -2092,6 +2092,8 @@ int dosbox_main(int argc, const char* argv[])
 
 		if (control->cmdline->FindExist("-startmapper")) MAPPER_RunInternal();
 
+        //MAPPER_RunInternal();
+
         /* Start up main machine */
         control->StartUp();
 
