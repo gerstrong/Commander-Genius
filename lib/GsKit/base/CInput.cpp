@@ -587,16 +587,20 @@ void CInput::pollEvents()
             passSDLEventVec = processKeys(0);
             break;
 		case SDL_JOYAXISMOTION:
+            passSDLEventVec = true;
 			processJoystickAxis();
 			break;
 		case SDL_JOYBUTTONDOWN:
+            passSDLEventVec = true;
 			processJoystickButton(1);
 			break;
 		case SDL_JOYBUTTONUP:
+            passSDLEventVec = true;
 			processJoystickButton(0);
 			break;
 
 		case SDL_JOYHATMOTION:
+            passSDLEventVec = true;
 			processJoystickHat();
 			break;
 

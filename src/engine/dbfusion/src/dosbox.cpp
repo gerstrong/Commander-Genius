@@ -242,7 +242,7 @@ static Bitu Normal_Loop(void) {
 
         while(dosFusionPause)
         {
-            SDL_Delay(1);
+            SDL_Delay(20);
         }
 
         if (PIC_RunQueue()) {
