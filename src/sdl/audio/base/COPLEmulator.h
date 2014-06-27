@@ -55,8 +55,8 @@ public:
 	 * It should be called whenever the Sound Device starts or restarts after changing audio settings
 	 */
 	void init();
-	
-	// Call this if a new song is loaded or audio settings are changed. 
+
+	// Call this if a new song is loaded or audio settings are changed.
 	// init() calls this as well.
 	void setup();
 
@@ -72,12 +72,12 @@ public:
 	/**
 	 * Wrapper for the original C Emulator function Chip__GenerateBlock2(&m_opl_chip, length, mix_buffer )
 	 */
-	inline void Chip__GenerateBlock2(const Bitu total, Bit32s* output )
+	inline void Chip__GenerateBlock2(const uintptr_t total, Bit32s* output )
 	{
 	    ::Chip__GenerateBlock2( &m_opl_chip, total, output );
 	}
-	
-	
+
+
 	/**
 	 * Wrapper for the original C Emulator function Chip__WriteReg(Chip *self, Bit32u reg, Bit8u val )
 	 */
@@ -104,9 +104,9 @@ public:
 	 * or restarted like when the user changes the audio settings in the configuration while playing
 	 */
 	void shutdown();
-	
+
 	void clear();
-	
+
 	void dump();
 
 private:

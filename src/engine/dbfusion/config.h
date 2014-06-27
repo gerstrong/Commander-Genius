@@ -64,11 +64,17 @@
 #define C_HAS_BUILTIN_EXPECT 1
 
 /* Define to 1 if you have the mprotect function */
+#if !defined (WIN32)
 #define C_HAVE_MPROTECT 1
+#else
+#define C_HAVE_MPROTECT 0
+#endif
 
 /* Define to 1 to enable heavy debugging, also have to enable C_DEBUG */
 /* #undef C_HEAVY_DEBUG */
 
+
+#if !defined (WIN32)
 /* Define to 1 to enable IPX over Internet networking, requires SDL_net */
 #define C_IPX 1
 
@@ -77,6 +83,7 @@
 
 /* Define to 1 to use opengl display output support */
 #define C_OPENGL 1
+
 
 /* Define to 1 to enable SDL_sound support */
 //#define C_SDL_SOUND 0
@@ -96,6 +103,38 @@
 /* define to 1 if you have XKBlib.h and X11 lib */
 #define C_X11_XKB 1
 
+
+#else
+/* Define to 1 to enable IPX over Internet networking, requires SDL_net */
+#define C_IPX 0
+
+/* Define to 1 to enable internal modem support, requires SDL_net */
+#define C_MODEM 0
+
+/* Define to 1 to use opengl display output support */
+#define C_OPENGL 0
+
+
+/* Define to 1 to enable SDL_sound support */
+//#define C_SDL_SOUND 0
+
+/* Define to 1 if you have setpriority support */
+#define C_SET_PRIORITY 0
+
+/* Define to 1 to enable screenshots, requires libpng */
+//#define C_SSHOT 1
+
+/* The type of cpu this target has */
+#define C_TARGETCPU X86_64
+
+/* Define to 1 to use a unaligned memory access */
+#define C_UNALIGNED_MEMORY 1
+
+/* define to 1 if you have XKBlib.h and X11 lib */
+//#define C_X11_XKB 1
+
+#endif
+
 /* libm doesn't include powf */
 /* #undef DB_HAVE_NO_POWF */
 
@@ -108,8 +147,10 @@
 /* environ can be linked */
 #define ENVIRON_LINKED 1
 
+#if !defined (WIN32)
 /* Define to 1 to use ALSA for MIDI */
 #define HAVE_ALSA 1
+#endif
 
 /* Define to 1 if you have the <ddraw.h> header file. */
 /* #undef HAVE_DDRAW_H */
@@ -153,8 +194,10 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
 
+#if !defined (WIN32)
 /* Compiling on GNU/Linux */
 #define LINUX 1
+#endif
 
 /* Compiling on Mac OS X */
 /* #undef MACOSX */

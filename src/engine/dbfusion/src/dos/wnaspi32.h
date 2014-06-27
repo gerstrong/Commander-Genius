@@ -14,6 +14,8 @@
 **
 ******************************************************************************/
 
+#if 0
+
 #ifndef __WNASPI32_H__
 #define __WNASPI32_H__
 
@@ -299,7 +301,7 @@ typedef struct
 //          %%% PROTOTYPES - User Callable ASPI for Win32 Functions %%%
 //*****************************************************************************
 
-typedef struct 
+typedef struct
 {
   BYTE      SRB_Cmd;
   BYTE      SRB_Status;
@@ -352,3 +354,5 @@ extern BOOL TranslateASPI32Address( PDWORD, PDWORD );
 #endif //__cplusplus
 
 #endif //__WNASPI32_H__
+
+#endif

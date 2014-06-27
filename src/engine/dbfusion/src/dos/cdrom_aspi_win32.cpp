@@ -16,6 +16,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#if 0
 
 #if defined (WIN32)
 
@@ -32,7 +33,7 @@
 #include <ntddcdrm.h>			// Ioctl stuff
 #include <ntddscsi.h>
 #include <winioctl.h>			// Ioctl stuff
-#else 
+#else
 #include "ddk/ntddcdrm.h"		// Ioctl stuff
 #include "ddk/ntddscsi.h"
 #endif
@@ -81,7 +82,7 @@ CDROM_Interface_Aspi::~CDROM_Interface_Aspi(void)
 
 bool GetRegistryValue(HKEY& hKey,char* valueName, char* buffer, ULONG bufferSize)
 // hKey has to be open
-{	
+{
 	// Read subkey
 	ULONG valType;
 	ULONG result;
@@ -103,12 +104,12 @@ BYTE CDROM_Interface_Aspi::GetHostAdapter(char* hardwareID)
 		sh.hainquiry.SRB_HaId = i;
 		pSendASPI32Command((LPSRB)&sh);
 		if (sh.hainquiry.SRB_Status!=SS_COMP) continue;
-		
+
 		// Indicates the maximum number of targets the adapter supports
 		// If the value is not 8 or 16, then it should be assumed max target is 8
 		max = (int)sh.hainquiry.HA_Unique[3];
 		if ((max!=8) && (max!=16)) max = 8;
-		
+
 		for(j=0; j<max; j++) {
 			for(k=0; k<8; k++) {
 				memset(&sd, 0, sizeof(sd));
@@ -118,16 +119,16 @@ BYTE CDROM_Interface_Aspi::GetHostAdapter(char* hardwareID)
 				sd.gdevblock.SRB_Lun    = k;
 				pSendASPI32Command((LPSRB)&sd);
 				if (sd.gdevblock.SRB_Status == SS_COMP) {
-					if (sd.gdevblock.SRB_DeviceType == DTYPE_CDROM) {						
+					if (sd.gdevblock.SRB_DeviceType == DTYPE_CDROM) {
 						if ((target==j) && (lun==k)) {
-							LOG(LOG_MISC,LOG_NORMAL)("SCSI: Getting Hardware vendor.");								
+							LOG(LOG_MISC,LOG_NORMAL)("SCSI: Getting Hardware vendor.");
 							// "Hardware ID = vendor" match ?
 							char vendor[64];
 							if (GetVendor(i,target,lun,vendor)) {
-								LOG(LOG_MISC,LOG_NORMAL)("SCSI: Vendor : %s",vendor);	
+								LOG(LOG_MISC,LOG_NORMAL)("SCSI: Vendor : %s",vendor);
 								if (strstr(strupr(hardwareID),strupr(vendor))) {
-									LOG(LOG_MISC,LOG_NORMAL)("SCSI: Host Adapter found: %d",i);								
-									return i;								
+									LOG(LOG_MISC,LOG_NORMAL)("SCSI: Host Adapter found: %d",i);
+									return i;
 								}
 							};
 						}
@@ -136,7 +137,7 @@ BYTE CDROM_Interface_Aspi::GetHostAdapter(char* hardwareID)
 			}
 		}
 	}
-	LOG(LOG_MISC,LOG_ERROR)("SCSI: Host Adapter not found: %d",i);									
+	LOG(LOG_MISC,LOG_ERROR)("SCSI: Host Adapter not found: %d",i);
 	return 0;
 };
 
@@ -149,7 +150,7 @@ bool CDROM_Interface_Aspi::ScanRegistryFindKey(HKEY& hKeyBase)
 	char		buffer[256];
 	ULONG		subKeySize = 256;
 	HKEY		hNewKey;
-	
+
 	ULONG index = 0;
 	do {
 		result = RegEnumKeyEx (hKeyBase,index,&subKey[0],&subKeySize,NULL,NULL,0,&time);
@@ -159,23 +160,23 @@ bool CDROM_Interface_Aspi::ScanRegistryFindKey(HKEY& hKeyBase)
 			if (newKeyResult==ERROR_SUCCESS) {
 				static const char drive_letter_assignment[] = "CurrentDriveLetterAssignment";
 				if (GetRegistryValue(hNewKey,(char*)&drive_letter_assignment,buffer,256)) {
-					LOG(LOG_MISC,LOG_NORMAL)("SCSI: Drive Letter found: %s",buffer);					
+					LOG(LOG_MISC,LOG_NORMAL)("SCSI: Drive Letter found: %s",buffer);
 					// aha, something suspicious...
 					if (buffer[0]==letter) {
 						char hardwareID[256];
-						// found it... lets see if we can get the scsi values				
+						// found it... lets see if we can get the scsi values
 						static const char SCSI_LUN[] = "SCSILUN";
 						bool v1 = GetRegistryValue(hNewKey,(char*)SCSI_LUN,buffer,256);
-						LOG(LOG_MISC,LOG_NORMAL)("SCSI: SCSILUN found: %s",buffer);					
+						LOG(LOG_MISC,LOG_NORMAL)("SCSI: SCSILUN found: %s",buffer);
 						lun		= buffer[0]-'0';
 						static const char SCSI_TargetID[] = "SCSITargetID";
 						bool v2 = GetRegistryValue(hNewKey,(char*)SCSI_TargetID,buffer,256);
-						LOG(LOG_MISC,LOG_NORMAL)("SCSI: SCSITargetID found: %s",buffer);					
+						LOG(LOG_MISC,LOG_NORMAL)("SCSI: SCSITargetID found: %s",buffer);
 						target  = buffer[0]-'0';
 						static const char Hardware_ID[] = "HardwareID";
 						bool v3 = GetRegistryValue(hNewKey,(char*)Hardware_ID,hardwareID,256);
 						RegCloseKey(hNewKey);
-						if (v1 && v2 && v3) {	
+						if (v1 && v2 && v3) {
 							haId = GetHostAdapter(hardwareID);
 							return true;
 						};
@@ -189,7 +190,7 @@ bool CDROM_Interface_Aspi::ScanRegistryFindKey(HKEY& hKeyBase)
 	return false;
 };
 
-bool CDROM_Interface_Aspi::GetVendor(BYTE HA_num, BYTE SCSI_Id, BYTE SCSI_Lun, char* szBuffer) 
+bool CDROM_Interface_Aspi::GetVendor(BYTE HA_num, BYTE SCSI_Id, BYTE SCSI_Lun, char* szBuffer)
 {
 	ASPI_SRB srbExec;
 	//	SRB_ExecSCSICmd srbExec;
@@ -212,10 +213,10 @@ bool CDROM_Interface_Aspi::GetVendor(BYTE HA_num, BYTE SCSI_Id, BYTE SCSI_Lun, c
 
 	ResetEvent(hEvent);
 	int dwStatus = pSendASPI32Command ((LPSRB)&srbExec);
-//	LOG(LOG_MISC|LOG_ERROR,"SCSI: Get vendor command send");					
-	
+//	LOG(LOG_MISC|LOG_ERROR,"SCSI: Get vendor command send");
+
 	if (dwStatus==SS_PENDING) WaitForSingleObject(hEvent,30000);
-//	LOG(LOG_MISC|LOG_ERROR,"SCSI: Pending done.");					
+//	LOG(LOG_MISC|LOG_ERROR,"SCSI: Pending done.");
 
 	CloseHandle(hEvent);
 	if (srbExec.execscsicmd.SRB_Status != SS_COMP) {
@@ -237,7 +238,7 @@ bool CDROM_Interface_Aspi::ScanRegistry(HKEY& hKeyBase)
 	char		subKey[256];
 	ULONG		subKeySize= 256;
 	HKEY		hNewKey;
-	
+
 	ULONG index = 0;
 	do {
 		result = RegEnumKeyEx (hKeyBase,index,&subKey[0],&subKeySize,NULL,NULL,0,&time);
@@ -273,7 +274,7 @@ bool CDROM_Interface_Aspi::SetDevice(char* path, int forceCD)
 	osi.dwOSVersionInfoSize = sizeof(osi);
 	GetVersionEx(&osi);
 	if ((osi.dwPlatformId==VER_PLATFORM_WIN32_NT) && (osi.dwMajorVersion>4)) {
-		if (GetDriveType(path)==DRIVE_CDROM) {	
+		if (GetDriveType(path)==DRIVE_CDROM) {
 			// WIN XP/NT/2000
 			int iDA,iDT,iDL;
 			letter = path[0];
@@ -295,14 +296,14 @@ bool CDROM_Interface_Aspi::SetDevice(char* path, int forceCD)
 		strcpy(key,"ENUM\\SCSI");
 		if (RegOpenKeyEx (HKEY_LOCAL_MACHINE,key,0,KEY_READ,&hKeyBase)==ERROR_SUCCESS) {
 			found = ScanRegistry(hKeyBase);
-		};	
+		};
 		RegCloseKey(hKeyBase);
 		return found;
-	} 
+	}
 	return false;
 };
 
-bool CDROM_Interface_Aspi::GetAudioTracks(int& stTrack, int& endTrack, TMSF& leadOut) 
+bool CDROM_Interface_Aspi::GetAudioTracks(int& stTrack, int& endTrack, TMSF& leadOut)
 {
 	TOC toc;
 	if (GetTOC((LPTOC)&toc) == SS_COMP) {
@@ -325,7 +326,7 @@ bool CDROM_Interface_Aspi::GetAudioTrackInfo	(int track, TMSF& start, unsigned c
 		start.fr	= (unsigned char)(toc.tracks[track-1].lAddr >> 24) &0xFF;
 		attr		= (toc.tracks[track-1].cAdrCtrl << 4) & 0xEF;
 		return true;
-	};		
+	};
 	return false;
 };
 
@@ -337,7 +338,7 @@ HANDLE CDROM_Interface_Aspi::OpenIOCTLFile(char cLetter,BOOL bAsync)
 	DWORD dwFlags;
 	DWORD dwIOCTLAttr;
 //	if(bAsync) dwIOCTLAttr=FILE_FLAG_OVERLAPPED;
-//	else       
+//	else
 	dwIOCTLAttr=0;
 
 	memset(&ov,0,sizeof(OSVERSIONINFO));
@@ -360,7 +361,7 @@ HANDLE CDROM_Interface_Aspi::OpenIOCTLFile(char cLetter,BOOL bAsync)
 					NULL,OPEN_EXISTING,dwIOCTLAttr,NULL);
 		if (hF==INVALID_HANDLE_VALUE) return NULL;
 	}
-	return hF;                                          
+	return hF;
 }
 
 void CDROM_Interface_Aspi::GetIOCTLAdapter(HANDLE hF,int * iDA,int * iDT,int * iDL)
@@ -376,7 +377,7 @@ void CDROM_Interface_Aspi::GetIOCTLAdapter(HANDLE hF,int * iDA,int * iDT,int * i
 
 	pSA=(PSCSI_ADDRESS)szBuf;
 	pSA->Length=sizeof(SCSI_ADDRESS);
-                                               
+
 	if(!DeviceIoControl(hF,IOCTL_SCSI_GET_ADDRESS,NULL,
 					 0,pSA,sizeof(SCSI_ADDRESS),
 					 &dwRet,NULL))
@@ -507,7 +508,7 @@ bool CDROM_Interface_Aspi::GetAudioSub(unsigned char& attr, unsigned char& track
 //	SRB_ExecSCSICmd s;
 	ASPI_SRB s;
 	DWORD dwStatus;
-	
+
 	hEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
 
 	memset(&s,0,sizeof(s));
@@ -530,7 +531,7 @@ bool CDROM_Interface_Aspi::GetAudioSub(unsigned char& attr, unsigned char& track
 	s.execscsicmd.CDBByte[3]     = 0x01;            // curr pos info
 	s.execscsicmd.CDBByte[6]     = 0;               // track number (only in isrc mode, ignored)
 	s.execscsicmd.CDBByte[7]     = 0;               // alloc len
-	s.execscsicmd.CDBByte[8]     = sizeof(pos);		
+	s.execscsicmd.CDBByte[8]     = sizeof(pos);
 
 	ResetEvent(hEvent);
 
@@ -539,7 +540,7 @@ bool CDROM_Interface_Aspi::GetAudioSub(unsigned char& attr, unsigned char& track
 	if (dwStatus==SS_PENDING) WaitForSingleObject(hEvent,0xFFFFFFFF);
 
 	CloseHandle(hEvent);
-	
+
 	if (s.execscsicmd.SRB_Status!=SS_COMP) return false;
 
 	attr		= (pos.Control<<4) &0xEF;
@@ -551,7 +552,7 @@ bool CDROM_Interface_Aspi::GetAudioSub(unsigned char& attr, unsigned char& track
 	relPos.min	= pos.TrackRelativeAddress[1];
 	relPos.sec	= pos.TrackRelativeAddress[2];
 	relPos.fr	= pos.TrackRelativeAddress[3];
-	
+
 	return true;
 };
 
@@ -565,7 +566,7 @@ bool CDROM_Interface_Aspi::GetUPC(unsigned char& attr, char* upcdata)
 	hEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
 
 	memset(&s,0,sizeof(s));
-	
+
 	s.execscsicmd.SRB_Cmd        = SC_EXEC_SCSI_CMD;
 	s.execscsicmd.SRB_HaId       = haId;
 	s.execscsicmd.SRB_Target     = target;
@@ -584,7 +585,7 @@ bool CDROM_Interface_Aspi::GetUPC(unsigned char& attr, char* upcdata)
 	s.execscsicmd.CDBByte[3]     = 0x02;            // get upc
 	s.execscsicmd.CDBByte[6]     = 0;               // track number (only in isrc mode, ignored)
 	s.execscsicmd.CDBByte[7]     = 0;               // alloc len
-	s.execscsicmd.CDBByte[8]     = sizeof(upc);		
+	s.execscsicmd.CDBByte[8]     = sizeof(upc);
 
 	ResetEvent(hEvent);
 
@@ -608,7 +609,7 @@ bool CDROM_Interface_Aspi::GetUPC(unsigned char& attr, char* upcdata)
 bool CDROM_Interface_Aspi::GetAudioStatus(bool& playing, bool& pause)
 {
 	playing = pause = false;
-	
+
 	SUB_Q_HEADER sub;
 //	SRB_ExecSCSICmd s;
 	ASPI_SRB s;
@@ -617,7 +618,7 @@ bool CDROM_Interface_Aspi::GetAudioStatus(bool& playing, bool& pause)
 	hEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
 
 	memset(&s,0,sizeof(s));
-	
+
 	s.execscsicmd.SRB_Cmd        = SC_EXEC_SCSI_CMD;
 	s.execscsicmd.SRB_HaId       = haId;
 	s.execscsicmd.SRB_Target     = target;
@@ -636,7 +637,7 @@ bool CDROM_Interface_Aspi::GetAudioStatus(bool& playing, bool& pause)
 	s.execscsicmd.CDBByte[3]     = 0x00;            // dont care
 	s.execscsicmd.CDBByte[6]     = 0;               // track number (only in isrc mode, ignored)
 	s.execscsicmd.CDBByte[7]     = 0;               // alloc len
-	s.execscsicmd.CDBByte[8]     = sizeof(sub);		
+	s.execscsicmd.CDBByte[8]     = sizeof(sub);
 
 	ResetEvent(hEvent);
 
@@ -663,7 +664,7 @@ bool CDROM_Interface_Aspi::LoadUnloadMedia(bool unload)
 	hEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
 
 	memset(&s,0,sizeof(s));
-	
+
 	s.execscsicmd.SRB_Cmd        = SC_EXEC_SCSI_CMD;
 	s.execscsicmd.SRB_HaId       = haId;
 	s.execscsicmd.SRB_Target     = target;
@@ -679,7 +680,7 @@ bool CDROM_Interface_Aspi::LoadUnloadMedia(bool unload)
 	s.execscsicmd.CDBByte[0]     = SCSI_LOAD_UN;
 	s.execscsicmd.CDBByte[1]     = (lun<<5)|1; // lun & immediate
 	s.execscsicmd.CDBByte[4]     = (unload ? 0x02:0x03);		// unload/load media
-	
+
 	ResetEvent(hEvent);
 
 	dwStatus = pSendASPI32Command((LPSRB)&s);
@@ -760,5 +761,7 @@ bool CDROM_Interface_Aspi::ReadSectors(PhysPt buffer, bool raw, unsigned long se
 
 	return (s.execscsicmd.SRB_Status==SS_COMP);
 };
+
+#endif
 
 #endif

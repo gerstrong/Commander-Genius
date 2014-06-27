@@ -32,8 +32,8 @@ typedef struct _Chip Chip;
 typedef struct _Operator Operator;
 typedef struct _Channel Channel;
 
-typedef uintptr_t       Bitu;
-typedef intptr_t        Bits;
+//typedef uintptr_t       Bitu;
+//typedef intptr_t        Bits;
 typedef uint32_t        Bit32u;
 typedef int32_t         Bit32s;
 typedef uint16_t        Bit16u;
@@ -47,7 +47,7 @@ typedef Bits ( DB_FASTCALL *WaveHandler) ( Bitu i, Bitu volume );
 
 #define DB_FASTCALL
 
-typedef Bits (*VolumeHandler)(Operator *self);
+typedef intptr_t (*VolumeHandler)(Operator *self);
 typedef Channel* (*SynthHandler)(Channel *self, Chip* chip, Bit32u samples, Bit32s* output );
 
 //Different synth modes that can generate blocks of data
@@ -92,7 +92,7 @@ struct _Operator {
 	VolumeHandler volHandler;
 
 #if (DBOPL_WAVE == WAVE_HANDLER)
-	WaveHandler waveHandler;	//Routine that generate a wave 
+	WaveHandler waveHandler;	//Routine that generate a wave
 #else
 	Bit16s* waveBase;
 	Bit32u waveMask;
@@ -109,7 +109,7 @@ struct _Operator {
 	Bit32s totalLevel;			//totalLevel is added to every generated volume
 	Bit32u currentLevel;		//totalLevel + tremolo
 	Bit32s volume;				//The currently active volume
-	
+
 	Bit32u attackAdd;			//Timers for the different states of the envelope
 	Bit32u decayAdd;
 	Bit32u releaseAdd;
@@ -149,7 +149,7 @@ struct _Chip {
 	//This is used as the base counter for vibrato and tremolo
 	Bit32u lfoCounter;
 	Bit32u lfoAdd;
-	
+
 
 	Bit32u noiseCounter;
 	Bit32u noiseAdd;
@@ -191,6 +191,6 @@ void Chip__Setup(Chip *self, Bit32u rate );
 void DBOPL_InitTables( void );
 void Chip__Chip(Chip *self);
 void Chip__WriteReg(Chip *self, Bit32u reg, Bit8u val );
-void Chip__GenerateBlock2(Chip *self, Bitu total, Bit32s* output );
+void Chip__GenerateBlock2(Chip *self, uintptr_t total, Bit32s* output );
 
 
