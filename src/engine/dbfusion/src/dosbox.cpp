@@ -45,7 +45,7 @@
 
 #include "../dbFusionNgine.h"
 
-extern bool dosFusionPause;
+extern bool dosMachinePause;
 
 Config * control;
 MachineType machine;
@@ -236,11 +236,14 @@ void increaseTicks()
 }
 
 
+extern bool dosMapperRunning;
+
+
 static Bitu Normal_Loop(void) {
     Bits ret;
     while (1) {
 
-        while(dosFusionPause)
+        while(dosMachinePause || dosMapperRunning)
         {
             SDL_Delay(20);
         }

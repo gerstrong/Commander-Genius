@@ -41,6 +41,8 @@
 #include <base/CInput.h>
 #include <base/PointDevice.h>
 
+bool dosMapperRunning;
+
 enum {
     /*CLR_BLACK=0,
 	CLR_WHITE=1,
@@ -2556,7 +2558,11 @@ void MAPPER_Run(bool pressed) {
 	MAPPER_RunInternal();
 }
 
-void MAPPER_RunInternal() {
+
+void MAPPER_RunInternal()
+{
+    dosMapperRunning = true;
+
 	int cursor = SDL_ShowCursor(SDL_QUERY);
 	SDL_ShowCursor(SDL_ENABLE);
 	bool mousetoggle=false;
@@ -2614,6 +2620,8 @@ void MAPPER_RunInternal() {
 	if(mousetoggle) GFX_CaptureMouse();
 	SDL_ShowCursor(cursor);
 	GFX_ResetScreen();
+
+    dosMapperRunning = false;
 }
 
 void MAPPER_Init(void) {

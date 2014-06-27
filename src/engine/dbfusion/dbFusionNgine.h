@@ -9,7 +9,7 @@
 
 #ifdef DBFUSION
 
-extern bool dosFusionPause;
+extern bool dosMachinePause;
 
 namespace dbfusion
 {
@@ -25,7 +25,7 @@ class DBFusionEngine : public GsEngine
 {
 public:
     // Constructor in case you want to be dropped into shell and nothing else
-    DBFusionEngine() {}
+    DBFusionEngine() : mMenuLocked(false) {}
 
     // In case you want to directly start the DOS game
     DBFusionEngine(const std::string gamepath) : mGamePath(gamepath) {}
@@ -44,6 +44,8 @@ private:
 
     // Used, when the menu is open. After it is closed you might want to get the last frame.
     GsSurface mBackbuffer;
+
+    bool mMenuLocked;
 };
 
 

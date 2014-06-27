@@ -12,7 +12,7 @@
 int dosbox_main(int argc, const char* argv[]);
 
 
-bool dosFusionPause;
+bool dosMachinePause;
 
 namespace dbfusion
 {
@@ -77,15 +77,22 @@ void DBFusionEngine::pumpEvent(const CEvent *evPtr)
         gInput.pushBackButtonEventExtEng();
         gEventManager.add(new CloseMenuEvent());
     }
+
+    if( const ExecuteMappperEvent *eme = dynamic_cast<const ExecuteMappperEvent*>(evPtr) )
+    {
+        (*eme)();
+        gEventManager.add(new CloseMenuEvent());
+    }
+
 }
 
 void DBFusionEngine::ponder(const float deltaT)
 {    
     int status;
 
-    if( gMenuController.empty() && dosFusionPause )
+    if( gMenuController.empty() && dosMachinePause )
     {
-        dosFusionPause = false;
+        dosMachinePause = false;
 
         GsWeakSurface blit(gVideoDriver.getBlitSurface());
         mBackbuffer.blitTo(blit);
@@ -99,16 +106,19 @@ void DBFusionEngine::ponder(const float deltaT)
         return;
     }
 
-    // Did the player press the quit/back button
-    if( gInput.getPressedCommand(IC_BACK) )
+    if(!mMenuLocked)
     {
-        if( gMenuController.empty() ) // If no menu is open, open the main menu
+        // Did the player press the quit/back button
+        if( gInput.getPressedCommand(IC_BACK) )
         {
-            gEventManager.add( new OpenMenuEvent( new MainMenu() ) );
-            dosFusionPause = true;
+            if( gMenuController.empty() ) // If no menu is open, open the main menu
+            {
+                gEventManager.add( new OpenMenuEvent( new MainMenu() ) );
+                dosMachinePause = true;
 
-            GsWeakSurface blit(gVideoDriver.getBlitSurface());
-            mBackbuffer.createCopy(blit);
+                GsWeakSurface blit(gVideoDriver.getBlitSurface());
+                mBackbuffer.createCopy(blit);
+            }
         }
     }
 
