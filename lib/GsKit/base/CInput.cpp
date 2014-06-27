@@ -651,6 +651,7 @@ void CInput::pollEvents()
 			break;
 
 		case SDL_MOUSEBUTTONUP:
+            passSDLEventVec = true;
             transMouseRelCoord(Pos, Event.motion, clickGameArea);
             m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
             gPointDevice.mPointingState.mActionButton = 0;
@@ -1239,7 +1240,7 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
 
 bool CInput::mouseClicked()
 {
-    // If you click, open the menu
+    // Check event queue for the clicked button
 	std::deque< std::shared_ptr<CEvent> >::iterator it = m_EventList.begin();
 
 	for( ; it != m_EventList.end() ; it++ )

@@ -39,6 +39,7 @@
 
 #include <base/video/CVideoDriver.h>
 #include <base/CInput.h>
+#include <base/PointDevice.h>
 
 enum {
     /*CLR_BLACK=0,
@@ -2368,38 +2369,47 @@ void MAPPER_CheckEvent(SDL_Event * event)
 	}
 }
 
+
+bool clicked = false;
+bool bDown = false;
+
 void BIND_MappingEvents(void)
 {
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_MOUSEBUTTONUP:
-			/* Check the press */
-			for (CButton_it but_it = buttons.begin();but_it!=buttons.end();but_it++) {
-                if ((*but_it)->OnTop(event.button.x,event.button.y)) {
-					(*but_it)->Click();
-				}
-			}	
-			break;
-		case SDL_QUIT:
-			mapper.exit=true;
-			break;
-		default:
-            break;
-            /*if (mapper.addbind) for (CBindGroup_it it=bindgroups.begin();it!=bindgroups.end();it++)
-            {
-				CBind * newbind=(*it)->CreateEventBind(&event);
-				if (!newbind) continue;
-				mapper.aevent->AddBind(newbind);
-				SetActiveEvent(mapper.aevent);
-				mapper.addbind=false;
-				break;
-            }*/
-		}
-	}
 
     std::vector<SDL_Event> eventVec;
     gInput.readSDLEventVec(eventVec);
+
+
+    GsPointingState &pointingState = gPointDevice.mPointingState;
+    Vector2D<float> mouseRelPos = pointingState.mPos;
+
+    Vector2D<uint> mousePos;
+    mousePos.x = (mouseRelPos.x*mapper.surface->w);
+    mousePos.y = (mouseRelPos.y*mapper.surface->h);
+
+    clicked = false;
+
+    // Make a correct mouse click
+    if(bDown && pointingState.mActionButton==0)
+    {
+        clicked = true;
+    }
+
+    bDown = (pointingState.mActionButton>0);
+
+    if(clicked)
+    {
+        /* Check the press */
+        for (CButton_it but_it = buttons.begin();but_it!=buttons.end();but_it++)
+        {
+            if ((*but_it)->OnTop(mousePos.x,mousePos.y))
+            {
+                (*but_it)->Click();
+            }
+        }
+
+    }
+
 
     for( SDL_Event ev : eventVec )
     {
@@ -2410,7 +2420,6 @@ void BIND_MappingEvents(void)
             mapper.aevent->AddBind(newbind);
             SetActiveEvent(mapper.aevent);
             mapper.addbind=false;
-            break;
         }
     }
 
