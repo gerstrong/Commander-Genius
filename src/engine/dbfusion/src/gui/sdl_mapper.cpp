@@ -38,6 +38,7 @@
 #include "setup.h"
 
 #include <base/video/CVideoDriver.h>
+#include <base/CInput.h>
 
 enum {
     /*CLR_BLACK=0,
@@ -542,8 +543,9 @@ public:
         #else
                 return CreateKeyBind((SDLKey)GetKeyCode(event->key.keysym));
         #endif
-	};
-	bool CheckEvent(SDL_Event * event) {
+    }
+    bool CheckEvent(SDL_Event * event)
+    {
 		if (event->type!=SDL_KEYDOWN && event->type!=SDL_KEYUP) return false;
 
 #if SDL_VERSION_ATLEAST(2,0,0)
@@ -781,10 +783,11 @@ public:
 		} else return 0;
 	}
 
-	virtual bool CheckEvent(SDL_Event * event) {
+    virtual bool CheckEvent(SDL_Event * event)
+    {
 		SDL_JoyAxisEvent * jaxis = NULL;
 		SDL_JoyButtonEvent * jbutton = NULL;
-		Bitu but = 0;
+        //Bitu but = 0;
 
 		switch(event->type) {
 			case SDL_JOYAXISMOTION:
@@ -801,10 +804,10 @@ public:
 				jbutton = &event->jbutton;
 				bool state;
 				state=jbutton->type==SDL_JOYBUTTONDOWN;
-				but = jbutton->button % emulated_buttons;
+                /*but = jbutton->button % emulated_buttons;
 				if (jbutton->which == stick) {
 					JOYSTICK_Button(emustick,but,state);
-				}
+                }*/
 				break;
 		}
 		return false;
@@ -1375,7 +1378,7 @@ public:
     {
 		if (!enabled) return;
 
-        Uint32 * point=((Uint32 *)mapper.surface->pixels)+(y*mapper.surface->w)+x;
+        Uint32 * point=((Uint32 *)mapper.surface->pixels)+(y*mapper.surface->w)+x;                
 
         for (Bitu lines=0;lines<dy;lines++)
         {
@@ -1400,7 +1403,7 @@ public:
 		enabled=yes; 
 		mapper.redraw=true;
 	}
-	void SetColor(Bit8u _col) { color=_col; }
+    void SetColor(Uint32 _col) { color=_col; }
 protected:
 	Bitu x,y,dx,dy;
     Uint32 color;
@@ -1791,10 +1794,16 @@ static void SetActiveEvent(CDBSDLEvent * event) {
 
 static void DrawButtons(void)
 {
-    //SDL_FillRect(mapper.surface,0,0);
+
+    SDL_sem *pPollSem = gVideoDriver.mpPollSem;
+
+    SDL_SemWait( pPollSem );
+
+    SDL_FillRect(mapper.surface,0,0);
     //SDL_FillRect(mapper.surface,0,0xff00ff00);
 	SDL_LockSurface(mapper.surface);
-	for (CButton_it but_it = buttons.begin();but_it!=buttons.end();but_it++) {
+    for (CButton_it but_it = buttons.begin();but_it!=buttons.end();but_it++)
+    {
 		(*but_it)->Draw();
 	}
 	SDL_UnlockSurface(mapper.surface);
@@ -1802,6 +1811,8 @@ static void DrawButtons(void)
 #if !SDL_VERSION_ATLEAST(2,0,0)
 	SDL_Flip(mapper.surface);
 #endif
+
+    SDL_SemPost( pPollSem );
 }
 
 static CKeyEvent * AddKeyButtonEvent(Bitu x,Bitu y,Bitu dx,Bitu dy,char const * const title,char const * const entry,KBD_KEYS key) {
@@ -2347,13 +2358,18 @@ static bool MAPPER_LoadBinds(void) {
 	return true;
 }
 
-void MAPPER_CheckEvent(SDL_Event * event) {
-	for (CBindGroup_it it=bindgroups.begin();it!=bindgroups.end();it++) {
-		if ((*it)->CheckEvent(event)) return;
+void MAPPER_CheckEvent(SDL_Event * event)
+{
+
+    for (CBindGroup_it it=bindgroups.begin();it!=bindgroups.end();it++)
+    {
+        if ((*it)->CheckEvent(event))
+            return;
 	}
 }
 
-void BIND_MappingEvents(void) {
+void BIND_MappingEvents(void)
+{
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
@@ -2369,16 +2385,35 @@ void BIND_MappingEvents(void) {
 			mapper.exit=true;
 			break;
 		default:
-			if (mapper.addbind) for (CBindGroup_it it=bindgroups.begin();it!=bindgroups.end();it++) {
+            break;
+            /*if (mapper.addbind) for (CBindGroup_it it=bindgroups.begin();it!=bindgroups.end();it++)
+            {
 				CBind * newbind=(*it)->CreateEventBind(&event);
 				if (!newbind) continue;
 				mapper.aevent->AddBind(newbind);
 				SetActiveEvent(mapper.aevent);
 				mapper.addbind=false;
 				break;
-			}
+            }*/
 		}
 	}
+
+    std::vector<SDL_Event> eventVec;
+    gInput.readSDLEventVec(eventVec);
+
+    for( SDL_Event ev : eventVec )
+    {
+        if (mapper.addbind) for (CBindGroup_it it=bindgroups.begin();it!=bindgroups.end();it++)
+        {
+            CBind * newbind=(*it)->CreateEventBind(&ev);
+            if (!newbind) continue;
+            mapper.aevent->AddBind(newbind);
+            SetActiveEvent(mapper.aevent);
+            mapper.addbind=false;
+            break;
+        }
+    }
+
 }
 
 static void InitializeJoysticks(void) {
@@ -2448,14 +2483,14 @@ static void CreateBindGroups(void) {
     #endif
 
 	if (joytype != JOY_NONE) {
-#if defined (REDUCE_JOYSTICK_POLLING)
+/*#if defined (REDUCE_JOYSTICK_POLLING)
 		// direct access to the SDL joystick, thus removed from the event handling
 		if (mapper.sticks.num) SDL_JoystickEventState(SDL_DISABLE);
 #else
 		// enable joystick event handling
 		if (mapper.sticks.num) SDL_JoystickEventState(SDL_ENABLE);
 		else return;
-#endif
+#endif*/
 		Bit8u joyno=0;
 		switch (joytype) {
 		case JOY_NONE:
@@ -2542,36 +2577,38 @@ void MAPPER_RunInternal() {
 	mapper.exit=false;	
 	mapper.redraw=true;
 	SetActiveEvent(0);
-#if defined (REDUCE_JOYSTICK_POLLING)
+/*#if defined (REDUCE_JOYSTICK_POLLING)
 	SDL_JoystickEventState(SDL_ENABLE);
-#endif
+#endif*/
 
     // Only draw at 100ms, so we have 10 fps for drawing buttons.
     int drawCounter = 0;
 
     SDL_FillRect(mapper.surface,0,0);
 
-	while (!mapper.exit) {
+    while (!mapper.exit)
+    {
         if (drawCounter >= 100)
         {
             drawCounter = 0;
 			mapper.redraw=false;		
 			DrawButtons();
+            SDL_Delay(20);
 		}
         drawCounter++;
 		BIND_MappingEvents();
-		SDL_Delay(1);
+
 	}
-#if defined (REDUCE_JOYSTICK_POLLING)
+/*#if defined (REDUCE_JOYSTICK_POLLING)
 	SDL_JoystickEventState(SDL_DISABLE);
-#endif
+#endif*/
 	if(mousetoggle) GFX_CaptureMouse();
 	SDL_ShowCursor(cursor);
 	GFX_ResetScreen();
 }
 
 void MAPPER_Init(void) {
-    InitializeJoysticks();
+    //InitializeJoysticks();
 	CreateLayout();
 	CreateBindGroups();
 	if (!MAPPER_LoadBinds()) CreateDefaultBinds();

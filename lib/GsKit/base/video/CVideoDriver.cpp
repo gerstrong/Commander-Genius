@@ -28,6 +28,8 @@ m_mustrefresh(false),
 mSDLImageInUse(false)
 {
 	resetSettings();
+
+    mpPollSem = SDL_CreateSemaphore(1);
 }
 
 CVideoDriver::~CVideoDriver()
@@ -326,8 +328,12 @@ void CVideoDriver::clearSurfaces()
 
 void CVideoDriver::updateDisplay()
 {
+    SDL_SemWait( mpPollSem );
+
     mpVideoEngine->filterUp();
     mpVideoEngine->transformScreenToDisplay();
+
+    SDL_SemPost( mpPollSem );
 }
 
 void CVideoDriver::saveCameraBounds(st_camera_bounds &CameraBounds)

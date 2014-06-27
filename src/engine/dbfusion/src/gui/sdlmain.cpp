@@ -1449,7 +1449,7 @@ void pollSDL_Events()
 {
     std::vector<SDL_Event> eventVec;
 
-/*#if defined (REDUCE_JOYSTICK_POLLING)
+#if defined (REDUCE_JOYSTICK_POLLING)
     static int poll_delay=0;
     int time=GetTicks();
     if (time-poll_delay>20) {
@@ -1457,14 +1457,14 @@ void pollSDL_Events()
         if (sdl.num_joysticks>0) SDL_JoystickUpdate();
         MAPPER_UpdateJoysticks();
     }
-#endif*/
+#endif
 
     gInput.readSDLEventVec(eventVec);
 
     //GFX_Events();
 
     for( SDL_Event ev : eventVec)
-    {                
+    {
         switch (ev.type)
         {
 
@@ -1480,7 +1480,8 @@ void pollSDL_Events()
     }
 }
 
-void GFX_Events() {
+void GFX_Events()
+{
 	SDL_Event event;
 #if defined (REDUCE_JOYSTICK_POLLING)
 	static int poll_delay=0;

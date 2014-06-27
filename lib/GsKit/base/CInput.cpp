@@ -154,12 +154,12 @@ bool CInput::startJoyDriver()
 {
 	gLogging.textOut("JoyDrv_Start() : ");
 
-	if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
+    if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
 	{
 		gLogging.ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
 		return 1;
 	}
-	else
+    else
 	{
 		const size_t joyNum = SDL_NumJoysticks();
 		if( joyNum > 0 )
@@ -666,7 +666,7 @@ void CInput::pollEvents()
 		}
 
         if(passSDLEventVec)
-        {            
+        {
             mSDLEventVec.push_back(Event);
         }
         else

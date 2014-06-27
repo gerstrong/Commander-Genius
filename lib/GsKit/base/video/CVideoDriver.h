@@ -156,10 +156,13 @@ public:
 	std::list< GsRect<Uint16> > m_Resolutionlist;
 	std::list< GsRect<Uint16> > :: iterator m_Resolution_pos;
 
+    SDL_sem *mpPollSem;
+
 private:
 
 	CVidConfig m_VidConfig;
 	bool m_mustrefresh;
-	bool mSDLImageInUse;
+	bool mSDLImageInUse;    
+
 };
 #endif /* CVIDEODRIVER_H_ */
