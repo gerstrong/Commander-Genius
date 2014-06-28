@@ -40,6 +40,9 @@
 #include <string.h>
 #include "dbopl.h"
 
+typedef int64_t Bits;
+typedef uint64_t Bitu;
+
 _Chip::_Chip()
 {
     //memset(chan, 0, 18*sizeof(Channel));    
