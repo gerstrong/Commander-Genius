@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="..\..\src\sdl\audio\music\COGGPlayer.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\dbfusion\config.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="389" topLine="0" />
+			<Cursor1 position="5429" topLine="179" />
 		</Cursor>
 	</File>
-	<File name="..\..\lib\GsKit\base\CInput.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\sdl\audio\base\COPLEmulator.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="43387" topLine="1372" />
+			<Cursor1 position="1683" topLine="65" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\sdl\audio\sound\CSoundSlot.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\lib\GsKit\graphics\GsSurface.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="509" topLine="8" />
+			<Cursor1 position="80" topLine="21" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\sdl\audio\sound\CSoundSlot.h" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\sdl\audio\sound\CSoundSlot.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="734" topLine="17" />
 		</Cursor>
@@ -26,14 +26,64 @@
 			<Cursor1 position="5214" topLine="146" />
 		</Cursor>
 	</File>
-	<File name="..\..\lib\GsKit\graphics\GsSurface.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="80" topLine="21" />
-		</Cursor>
-	</File>
 	<File name="..\..\lib\GsKit\graphics\GsSurface.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="7162" topLine="242" />
+		</Cursor>
+	</File>
+	<File name="..\..\lib\GsKit\base\utils\CrashHandler.cpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4070" topLine="157" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\hardware\iohandler.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4080" topLine="128" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\audio\base\dbopl.cpp" open="1" top="1" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2019" topLine="36" />
+		</Cursor>
+	</File>
+	<File name="..\..\lib\GsKit\base\CInput.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="43387" topLine="1372" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\hardware\serialport\libserial.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7124" topLine="249" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\audio\base\dbopl.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5596" topLine="174" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\audio\music\COGGPlayer.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="389" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\misc\cross.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1032" topLine="26" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\gui\sdl_mapper.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="77968" topLine="2420" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\gui\sdlmain.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="62746" topLine="1981" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\audio\sound\CSoundSlot.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="509" topLine="8" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

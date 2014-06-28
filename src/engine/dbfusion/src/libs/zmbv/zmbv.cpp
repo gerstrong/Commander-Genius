@@ -16,6 +16,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+ #if 0
+
 #include <zlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -151,7 +153,7 @@ template<class P>
 INLINE int VideoCodec::PossibleBlock(int vx,int vy,FrameBlock * block) {
 	int ret=0;
 	P * pold=((P*)oldframe)+block->start+(vy*pitch)+vx;
-	P * pnew=((P*)newframe)+block->start;;	
+	P * pnew=((P*)newframe)+block->start;;
 	for (int y=0;y<block->dy;y+=4) {
 		for (int x=0;x<block->dx;x+=4) {
 			int test=0-((pold[x]-pnew[x])&0x00ffffff);
@@ -167,7 +169,7 @@ template<class P>
 INLINE int VideoCodec::CompareBlock(int vx,int vy,FrameBlock * block) {
 	int ret=0;
 	P * pold=((P*)oldframe)+block->start+(vy*pitch)+vx;
-	P * pnew=((P*)newframe)+block->start;;	
+	P * pnew=((P*)newframe)+block->start;;
 	for (int y=0;y<block->dy;y++) {
 		for (int x=0;x<block->dx;x++) {
 			int test=0-((pold[x]-pnew[x])&0x00ffffff);
@@ -290,7 +292,7 @@ bool VideoCodec::PrepareCompressFrame(int flags,  zmbv_format_t _format, char * 
 		if (palsize) {
 			if (pal)
 				memcpy(&palette, pal, sizeof(palette));
-			else 
+			else
 				memset(&palette,0, sizeof(palette));
 			/* keyframes get the full palette */
 			for (i=0;i<palsize;i++) {
@@ -332,7 +334,7 @@ int VideoCodec::FinishCompressFrame( void ) {
 	if (firstByte & Mask_KeyFrame) {
 		int i;
 		/* Add the full frame data */
-		unsigned char * readFrame = newframe + pixelsize*(MAX_VECTOR+MAX_VECTOR*pitch);	
+		unsigned char * readFrame = newframe + pixelsize*(MAX_VECTOR+MAX_VECTOR*pitch);
 		for (i=0;i<height;i++) {
 			memcpy(&work[workUsed], readFrame, width*pixelsize);
 			readFrame += pitch*pixelsize;
@@ -418,12 +420,12 @@ bool VideoCodec::DecompressFrame(void * framedata, int size) {
 		size -= sizeof(KeyframeHeader);data += sizeof(KeyframeHeader);
 		if (size<=0)
             return false;
-		if (header->low_version != DBZV_VERSION_LOW || header->high_version != DBZV_VERSION_HIGH) 
+		if (header->low_version != DBZV_VERSION_LOW || header->high_version != DBZV_VERSION_HIGH)
 			return false;
 		if (format != (zmbv_format_t)header->format && !SetupBuffers((zmbv_format_t)header->format, header->blockwidth, header->blockheight))
 			return false;
 		inflateReset(&zstream);
-	} 
+	}
 	zstream.next_in = (Bytef *)data;
 	zstream.avail_in = size;
 	zstream.total_in = 0;
@@ -444,7 +446,7 @@ bool VideoCodec::DecompressFrame(void * framedata, int size) {
 		}
 		newframe = buf1;
 		oldframe = buf2;
-		unsigned char * writeframe = newframe + pixelsize*(MAX_VECTOR+MAX_VECTOR*pitch);	
+		unsigned char * writeframe = newframe + pixelsize*(MAX_VECTOR+MAX_VECTOR*pitch);
 		for (i=0;i<height;i++) {
 			memcpy(writeframe,&work[workPos],width*pixelsize);
 			writeframe+=pitch*pixelsize;
@@ -548,3 +550,5 @@ VideoCodec::VideoCodec() {
 	work = 0;
 	memset( &zstream, 0, sizeof(zstream));
 }
+
+#endif
