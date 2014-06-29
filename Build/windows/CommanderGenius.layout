@@ -29,86 +29,12 @@
 	<File name="..\..\src\engine\dbfusion\config.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="9338" topLine="330" />
+
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\dbfusion\src\cpu\core_normal\prefix_none.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\dbfusion\src\dosbox.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="841" topLine="10" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\sdl\audio\base\dbopl.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2039" topLine="45" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\gui\midi_win32.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1716" topLine="36" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\sdl\audio\base\dbopl.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5596" topLine="170" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\core\CObjectCollision.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="17772" topLine="694" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\cpu\core_full.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2060" topLine="73" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\sdl\audio\music\COGGPlayer.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="389" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\hardware\iohandler.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4080" topLine="128" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\misc\setup.cpp" open="0" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="25417" topLine="883" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\include\regs.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2457" topLine="76" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\libs\zmbv\zmbv.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="14479" topLine="531" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\cpu\core_normal.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4652" topLine="163" />
-		</Cursor>
-	</File>
-	<File name="..\..\lib\GsKit\base\utils\CrashHandler.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4070" topLine="157" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\hardware\serialport\libserial.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7124" topLine="249" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\gui\midi.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2297" topLine="69" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\shell\shell.cpp" open="0" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="27380" topLine="661" />
+			<Cursor1 position="2" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="..\..\src\engine\dbfusion\src\cpu\core_normal\helpers.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -116,49 +42,39 @@
 			<Cursor1 position="4534" topLine="133" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\sdl\audio\sound\CSoundSlot.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\dbfusion\src\cpu\core_full.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="509" topLine="8" />
+			<Cursor1 position="2060" topLine="73" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\dbfusion\src\shell\shell_batch.cpp" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\dbfusion\include\regs.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1089" topLine="14" />
+			<Cursor1 position="2457" topLine="76" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\sdl\audio\base\COPLEmulator.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\dbfusion\src\hardware\serialport\libserial.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1683" topLine="65" />
+			<Cursor1 position="7124" topLine="249" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\dbfusion\include\callback.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\lib\GsKit\base\CInput.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1253" topLine="29" />
+			<Cursor1 position="85" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\dbfusion\src\gui\sdl_mapper.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\engine\dbfusion\src\dos\dos_memory.cpp" open="0" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="77968" topLine="2420" />
+			<Cursor1 position="11594" topLine="373" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\dbfusion\src\dosbox.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+	<File name="..\..\src\engine\dbfusion\src\hardware\iohandler.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8308" topLine="250" />
+			<Cursor1 position="4080" topLine="128" />
 		</Cursor>
 	</File>
-	<File name="..\..\src\engine\keen\vorticon\CAudioVorticon.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="..\..\src\sdl\audio\base\dbopl.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5214" topLine="146" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\sdl\audio\sound\CSoundSlot.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="734" topLine="17" />
-		</Cursor>
-	</File>
-	<File name="..\..\src\engine\dbfusion\src\shell\shell_cmds.cpp" open="0" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5738" topLine="139" />
+			<Cursor1 position="2039" topLine="45" />
 		</Cursor>
 	</File>
 	<File name="..\..\lib\GsKit\graphics\GsSurface.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -166,9 +82,109 @@
 			<Cursor1 position="80" topLine="21" />
 		</Cursor>
 	</File>
+	<File name="..\..\src\engine\dbfusion\src\gui\sdl_mapper.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="77968" topLine="2420" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\misc\setup.cpp" open="0" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="25417" topLine="883" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\keen\vorticon\CAudioVorticon.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5214" topLine="146" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\audio\base\dbopl.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5596" topLine="170" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\libs\zmbv\zmbv.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="14479" topLine="531" />
+		</Cursor>
+	</File>
+	<File name="..\..\lib\GsKit\graphics\GsSurface.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7162" topLine="242" />
+		</Cursor>
+	</File>
 	<File name="..\..\src\engine\dbfusion\src\gui\sdlmain.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="65719" topLine="2084" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\audio\music\COGGPlayer.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="389" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\gui\midi_win32.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1716" topLine="36" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\cpu\core_normal\prefix_none.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="24468" topLine="802" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\include\callback.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1253" topLine="29" />
+		</Cursor>
+	</File>
+	<File name="..\..\lib\GsKit\base\utils\CrashHandler.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4070" topLine="157" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\shell\shell.cpp" open="0" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="27380" topLine="661" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\menu\MainMenu.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="406" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\shell\shell_batch.cpp" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1089" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\cpu\callback.cpp" open="0" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2879" topLine="93" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\gui\midi.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2297" topLine="69" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\sdl\audio\sound\CSoundSlot.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="509" topLine="8" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\shell\shell_cmds.cpp" open="0" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5738" topLine="139" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\dbfusion\src\hardware\iohandler.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4080" topLine="128" />
+		</Cursor>
+	</File>
+	<File name="..\..\src\engine\core\inventory.h" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="208" topLine="61" />
 		</Cursor>
 	</File>
 	<File name="..\..\src\engine\dbfusion\src\misc\cross.cpp" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
