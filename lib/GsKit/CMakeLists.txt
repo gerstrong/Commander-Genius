@@ -8,7 +8,7 @@ ADD_DEFINITIONS(-std=c++11)
 
 Project(GsKit)
 
-if(USE_SDL2)
+if(SDL2)
 
     INCLUDE(FindPkgConfig)
     PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
@@ -21,7 +21,7 @@ if(USE_SDL2)
         include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
-else(USE_SDL2)
+else(SDL2)
         # SDL2 not found, try SDL
         FIND_PACKAGE( SDL REQUIRED )
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -37,7 +37,7 @@ else(USE_SDL2)
                 include_directories(Externals/SDL Externals/SDL/include)
                 add_subdirectory(Externals/SDL)
         endif(SDL_FOUND)
-endif(USE_SDL2)
+endif(SDL2)
 
 
 #IF(BUILD_TARGET STREQUAL WIN32)

@@ -1,8 +1,14 @@
 
-OPTION(OPENGL "OpenGL support" Yes)
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
-OPTION(USE_SDL2 "SDL2 support" No)
+OPTION(SDL2 "SDL2 support" No)
+
+if(SDL2)
+    OPTION(OPENGL "OpenGL support" Yes)
+else()
+    OPTION(OPENGL "OpenGL support" No)
+endif()
+
 
 
 #
@@ -217,7 +223,7 @@ link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
 
 
 
-if(USE_SDL2)
+if(SDL2)
 
     INCLUDE(FindPkgConfig)
     PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
@@ -230,7 +236,7 @@ if(USE_SDL2)
         include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
-else(USE_SDL2)
+else(SDL2)
         # SDL2 not found, try SDL
         FIND_PACKAGE( SDL REQUIRED )
         FIND_PACKAGE( SDL_net REQUIRED )
@@ -248,7 +254,7 @@ else(USE_SDL2)
                 add_subdirectory(Externals/SDL)
         endif(SDL_FOUND)
 
-endif(USE_SDL2)
+endif(SDL2)
 
 
 
@@ -266,13 +272,13 @@ get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 
 
-if(USE_SDL2)
-else(USE_SDL2)
+if(SDL2)
+else(SDL2)
         # SDL stuff to link        
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
         target_link_libraries(CGeniusExe ${SDL_LIBRARY})
         target_link_libraries(CGeniusExe ${SDLIMAGE_LIBRARY})
-endif(USE_SDL2)
+endif(SDL2)
 
 
 # Link GsKit
