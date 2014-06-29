@@ -40,13 +40,14 @@
 			<Add option="-DOGG" />
 			<Add option="-DDBFUSION" />
 			<Add directory="../../src" />
-			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/i686-w64-mingw32/include/SDL2" />
-			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/include/SDL2" />
-			<Add directory="C:/MinGW10/include/ogg" />
-			<Add directory="C:/MinGW10/include/vorbis" />
+			<Add directory="C:/Program Files/CodeBlocks/SDL2_image-2.0.0/i686-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Program Files/CodeBlocks/SDL2-2.0.3/i686-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Program Files/CodeBlocks/MinGW10/include/ogg" />
+			<Add directory="C:/Program Files/CodeBlocks/MinGW10/include/vorbis" />
 			<Add directory="../../lib/GsKit" />
 			<Add directory="../../src/engine/dbfusion/include" />
 			<Add directory="../../src/engine/dbfusion" />
+			<Add directory="../../../../../../../Program Files/CodeBlocks/MinGW10/include" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="../../../Commander-Genius" />
