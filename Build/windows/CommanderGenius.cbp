@@ -59,6 +59,7 @@
 			<Add library="vorbisfile" />
 			<Add library="vorbis" />
 			<Add library="ogg" />
+			<Add library="winmm" />
 			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/i686-w64-mingw32/lib" />
 			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/lib" />
 			<Add directory="C:/MinGW10/i686-pc-mingw32/lib" />
