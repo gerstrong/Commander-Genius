@@ -4,9 +4,9 @@ OPTION(TREMOR "Tremor support" No)
 OPTION(SDL2 "SDL2 support" No)
 
 if(SDL2)
-    OPTION(OPENGL "OpenGL support" Yes)
-else()
     OPTION(OPENGL "OpenGL support" No)
+else()
+    OPTION(OPENGL "OpenGL support" Yes)
 endif()
 
 
