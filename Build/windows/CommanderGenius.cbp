@@ -40,13 +40,14 @@
 			<Add option="-DOGG" />
 			<Add option="-DDBFUSION" />
 			<Add directory="../../src" />
-			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/i686-w64-mingw32/include/SDL2" />
-			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/include/SDL2" />
-			<Add directory="C:/MinGW10/include/ogg" />
-			<Add directory="C:/MinGW10/include/vorbis" />
 			<Add directory="../../lib/GsKit" />
 			<Add directory="../../src/engine/dbfusion/include" />
 			<Add directory="../../src/engine/dbfusion" />
+			<Add directory="C:/Program Files/CodeBlocks/SDL2_image-2.0.0/i686-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Program Files/CodeBlocks/SDL2-2.0.3/i686-w64-mingw32/include/SDL2" />
+			<Add directory="C:/Program Files/CodeBlocks/MinGW10/include/ogg" />
+			<Add directory="C:/Program Files/CodeBlocks/MinGW10/include/vorbis" />
+			<Add directory="C:/Program Files/CodeBlocks/MinGW10/include" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="../../../Commander-Genius" />
@@ -59,9 +60,10 @@
 			<Add library="vorbisfile" />
 			<Add library="vorbis" />
 			<Add library="ogg" />
-			<Add directory="C:/Users/admin/Desktop/SDL2_image-2.0.0/i686-w64-mingw32/lib" />
-			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/lib" />
-			<Add directory="C:/MinGW10/i686-pc-mingw32/lib" />
+			<Add library="winmm" />
+			<Add directory="C:/Program Files/CodeBlocks/SDL2_image-2.0.0/i686-w64-mingw32/lib" />
+			<Add directory="C:/Program Files/CodeBlocks/SDL2-2.0.3/i686-w64-mingw32/lib" />
+			<Add directory="C:/Program Files/CodeBlocks/MinGW10/i686-pc-mingw32/lib" />
 		</Linker>
 		<Unit filename="../../lib/GsKit/base/CInput.cpp" />
 		<Unit filename="../../lib/GsKit/base/CInput.h" />
@@ -243,6 +245,7 @@
 		<Unit filename="../../src/engine/core/mode/CGameMode.h" />
 		<Unit filename="../../src/engine/core/mode/CGamePlayMode.cpp" />
 		<Unit filename="../../src/engine/core/mode/CGamePlayMode.h" />
+		<Unit filename="../../src/engine/core/mode/CPlayGame.cpp" />
 		<Unit filename="../../src/engine/core/objenums.h" />
 		<Unit filename="../../src/engine/core/options.h" />
 		<Unit filename="../../src/engine/core/spritedefines.h" />
@@ -923,7 +926,6 @@
 		<Unit filename="../../src/engine/keen/vorticon/playgame/CPlayGameVorticon.cpp" />
 		<Unit filename="../../src/engine/keen/vorticon/playgame/CPlayGameVorticon.h" />
 		<Unit filename="../../src/engine/keen/vorticon/playgame/CPlayGameWorldMap.cpp" />
-		<Unit filename="../../src/engine/playgame/CPlayGame.cpp" />
 		<Unit filename="../../src/fileio.cpp" />
 		<Unit filename="../../src/fileio.h" />
 		<Unit filename="../../src/fileio/CExeFile.cpp" />

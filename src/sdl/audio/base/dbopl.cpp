@@ -40,8 +40,8 @@
 #include <string.h>
 #include "dbopl.h"
 
-typedef int64_t Bits;
-typedef uint64_t Bitu;
+typedef intptr_t Bits;
+typedef uintptr_t Bitu;
 
 _Chip::_Chip()
 {

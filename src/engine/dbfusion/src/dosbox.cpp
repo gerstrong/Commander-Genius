@@ -239,7 +239,8 @@ void increaseTicks()
 extern bool dosMapperRunning;
 
 
-static Bitu Normal_Loop(void) {
+static Bitu Normal_Loop(void)
+{
     Bits ret;
     while (1) {
 
@@ -248,7 +249,8 @@ static Bitu Normal_Loop(void) {
             SDL_Delay(20);
         }
 
-        if (PIC_RunQueue()) {
+        if (PIC_RunQueue())
+        {
             ret = (*cpudecoder)();
 
             if (GCC_UNLIKELY(ret<0)) return 1;
@@ -303,7 +305,7 @@ void DOSBOX_RunMachine(void)
     do
     {
         ret=(*loop)();
-    } while (!ret);            
+    } while (!ret);
 }
 
 static void DOSBOX_UnlockSpeed( bool pressed ) {
@@ -409,7 +411,7 @@ void DOSBOX_Init(void) {
 #if C_DEBUG
     LOG_StartUp();
 #endif
-	
+
     secprop->AddInitFunction(&IO_Init);//done
     secprop->AddInitFunction(&PAGING_Init);//done
     secprop->AddInitFunction(&MEM_Init);//done
@@ -491,7 +493,7 @@ void DOSBOX_Init(void) {
     Pstring->Set_values(cyclest);
 
     Pstring = Pmulti_remain->GetSection()->Add_string("parameters",Property::Changeable::Always,"");
-	
+
     Pint = secprop->Add_int("cycleup",Property::Changeable::Always,10);
     Pint->SetMinMax(1,1000000);
     Pint->Set_help("Amount of cycles to decrease/increase with keycombos.(CTRL-F11/CTRL-F12)");
@@ -499,7 +501,7 @@ void DOSBOX_Init(void) {
     Pint = secprop->Add_int("cycledown",Property::Changeable::Always,20);
     Pint->SetMinMax(1,1000000);
     Pint->Set_help("Setting it lower than 100 will be a percentage.");
-		
+
 #if C_FPU
     secprop->AddInitFunction(&FPU_Init);
 #endif
@@ -533,7 +535,7 @@ void DOSBOX_Init(void) {
 
     secprop=control->AddSection_prop("midi",&MIDI_Init,true);//done
     secprop->AddInitFunction(&MPU401_Init,true);//done
-	
+
     const char* mputypes[] = { "intelligent", "uart", "none",0};
     // FIXME: add some way to offer the actually available choices.
     const char *devices[] = { "default", "win32", "alsa", "oss", "coreaudio", "coremidi","none", 0};
@@ -557,7 +559,7 @@ void DOSBOX_Init(void) {
 #endif
 
     secprop=control->AddSection_prop("sblaster",&SBLASTER_Init,true);//done
-	
+
     const char* sbtypes[] = { "sb1", "sb2", "sbpro1", "sbpro2", "sb16", "gb", "none", 0 };
     Pstring = secprop->Add_string("sbtype",Property::Changeable::WhenIdle,"sb16");
     Pstring->Set_values(sbtypes);
@@ -637,13 +639,13 @@ void DOSBOX_Init(void) {
     Pstring = secprop->Add_string("tandy",Property::Changeable::WhenIdle,"auto");
     Pstring->Set_values(tandys);
     Pstring->Set_help("Enable Tandy Sound System emulation. For 'auto', emulation is present only if machine is set to 'tandy'.");
-	
+
     Pint = secprop->Add_int("tandyrate",Property::Changeable::WhenIdle,44100);
     Pint->Set_values(rates);
     Pint->Set_help("Sample rate of the Tandy 3-Voice generation.");
 
     secprop->AddInitFunction(&DISNEY_Init,true);//done
-	
+
     Pbool = secprop->Add_bool("disney",Property::Changeable::WhenIdle,true);
     Pbool->Set_help("Enable Disney Sound Source emulation. (Covox Voice Master and Speech Thing compatible).");
 
@@ -669,7 +671,7 @@ void DOSBOX_Init(void) {
 
     Pbool = secprop->Add_bool("autofire",Property::Changeable::WhenIdle,false);
     Pbool->Set_help("continuously fires as long as you keep the button pressed.");
-	
+
     Pbool = secprop->Add_bool("swap34",Property::Changeable::WhenIdle,false);
     Pbool->Set_help("swap the 3rd and the 4th axis. can be useful for certain joysticks.");
 
@@ -679,7 +681,7 @@ void DOSBOX_Init(void) {
     secprop=control->AddSection_prop("serial",&SERIAL_Init,true);
     const char* serials[] = { "dummy", "disabled", "modem", "nullmodem",
                               "directserial",0 };
-   
+
     Pmulti_remain = secprop->Add_multiremain("serial1",Property::Changeable::WhenIdle," ");
     Pstring = Pmulti_remain->GetSection()->Add_string("type",Property::Changeable::WhenIdle,"dummy");
     Pmulti_remain->SetValue("dummy");
