@@ -44,6 +44,7 @@
 			<Add directory="C:/Users/admin/Desktop/SDL2-2.0.3/i686-w64-mingw32/include/SDL2" />
 			<Add directory="C:/MinGW10/include/ogg" />
 			<Add directory="C:/MinGW10/include/vorbis" />
+			<Add directory="C:/MinGW10/include" />
 			<Add directory="../../lib/GsKit" />
 			<Add directory="../../src/engine/dbfusion/include" />
 			<Add directory="../../src/engine/dbfusion" />
@@ -924,7 +925,6 @@
 		<Unit filename="../../src/engine/keen/vorticon/playgame/CPlayGameVorticon.cpp" />
 		<Unit filename="../../src/engine/keen/vorticon/playgame/CPlayGameVorticon.h" />
 		<Unit filename="../../src/engine/keen/vorticon/playgame/CPlayGameWorldMap.cpp" />
-		<Unit filename="../../src/engine/playgame/CPlayGame.cpp" />
 		<Unit filename="../../src/fileio.cpp" />
 		<Unit filename="../../src/fileio.h" />
 		<Unit filename="../../src/fileio/CExeFile.cpp" />
