@@ -289,15 +289,17 @@ IF(BUILD_TARGET STREQUAL WIN32)
 	TARGET_LINK_LIBRARIES(CGeniusExe mingw32)
 	TARGET_LINK_LIBRARIES(CGeniusExe SDLmain)
 	TARGET_LINK_LIBRARIES(CGeniusExe SDL)
+    IF(OPENGL)
 	TARGET_LINK_LIBRARIES(CGeniusExe glu32)
 	TARGET_LINK_LIBRARIES(CGeniusExe opengl32)
+    ENDIF(OPENGL)
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 
-# OpenGL Parsing
-find_package(OpenGL REQUIRED)
-
 IF(OPENGL)
+    # OpenGL Parsing
+    find_package(OpenGL REQUIRED)
+
     IF(BUILD_TARGET STREQUAL WIN32)
 	TARGET_LINK_LIBRARIES(CGeniusExe opengl32)
     ELSE()
@@ -328,9 +330,10 @@ IF(BUILD_TARGET STREQUAL WIN32)
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 
-
-# OpenGL stuff to link
-target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
+IF(OPENGL)
+    # OpenGL stuff to link
+    target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
+ENDIF(OPENGL)
 
 # Misc. Stuff I call it that way for now...
 #LIBS = -lSDL_sound -lasound -lm -ldl -lpthread -L/usr/lib -lSDL -lpng -lz -lSDL_net -lX11 -lGL
