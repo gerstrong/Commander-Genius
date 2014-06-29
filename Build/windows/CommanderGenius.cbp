@@ -245,6 +245,7 @@
 		<Unit filename="../../src/engine/core/mode/CGameMode.h" />
 		<Unit filename="../../src/engine/core/mode/CGamePlayMode.cpp" />
 		<Unit filename="../../src/engine/core/mode/CGamePlayMode.h" />
+		<Unit filename="../../src/engine/core/mode/CPlayGame.cpp" />
 		<Unit filename="../../src/engine/core/objenums.h" />
 		<Unit filename="../../src/engine/core/options.h" />
 		<Unit filename="../../src/engine/core/spritedefines.h" />
