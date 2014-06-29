@@ -2,6 +2,7 @@
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
 OPTION(SDL2 "SDL2 support" No)
+OPTION(DBFUSION "Dosbox fusion" No)
 
 if(SDL2)
     OPTION(OPENGL "OpenGL support" No)
@@ -337,14 +338,16 @@ ENDIF(OPENGL)
 
 # Misc. Stuff I call it that way for now...
 #LIBS = -lSDL_sound -lasound -lm -ldl -lpthread -L/usr/lib -lSDL -lpng -lz -lSDL_net -lX11 -lGL
-target_link_libraries(CGeniusExe SDL_sound)
-target_link_libraries(CGeniusExe asound)
-target_link_libraries(CGeniusExe m)
-target_link_libraries(CGeniusExe dl)
-target_link_libraries(CGeniusExe pthread)
-target_link_libraries(CGeniusExe png)
-target_link_libraries(CGeniusExe z)
-target_link_libraries(CGeniusExe X11)
+if(DBFUSION)
+    target_link_libraries(CGeniusExe SDL_sound)
+    target_link_libraries(CGeniusExe asound)
+    target_link_libraries(CGeniusExe m)
+    target_link_libraries(CGeniusExe dl)
+    target_link_libraries(CGeniusExe pthread)
+    target_link_libraries(CGeniusExe png)
+    target_link_libraries(CGeniusExe z)
+    target_link_libraries(CGeniusExe X11)
+endif(DBFUSION)
 
 # Stuff definitions in case we want to install it
 INCLUDE(install.cmake)
