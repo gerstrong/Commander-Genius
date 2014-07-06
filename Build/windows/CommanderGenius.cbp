@@ -34,7 +34,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=gnu++0x" />
+			<Add option="-std=gnu++0x -mno-ms-bitfields" />
 			<Add option="-DWIN32" />
 			<Add option="-DTARGET_WIN32" />
 			<Add option="-DOGG" />
