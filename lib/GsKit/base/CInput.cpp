@@ -571,7 +571,7 @@ void CInput::pollEvents()
 
 	// While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
-	{        
+	{
         bool passSDLEventVec = true;
 
 		switch( Event.type )
@@ -1610,6 +1610,6 @@ void CInput::pushBackButtonEventExtEng()
 
     mBackEventBuffer.clear();
 
-    SDL_SemPost( pollSem );    
+    SDL_SemPost( pollSem );
 }
 

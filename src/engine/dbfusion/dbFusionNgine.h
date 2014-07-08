@@ -28,7 +28,7 @@ public:
     DBFusionEngine() : mMenuLocked(false) {}
 
     // In case you want to directly start the DOS game
-    DBFusionEngine(const std::string gamepath) : mGamePath(gamepath) {}
+    DBFusionEngine(const std::string gamepath) : mGamePath(gamepath),  mMenuLocked(false) {}
 
 
 private:

@@ -19,7 +19,7 @@ struct ExecuteMappperEvent : CEvent
 {
     virtual void operator()() const
     {
-        ThreadPoolItem *thread = threadPool->start(mapperRun, nullptr, "DosBoxMain");
+        threadPool->start(mapperRun, nullptr, "DosBoxMain");
     }
 };
 

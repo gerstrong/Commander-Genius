@@ -14,6 +14,8 @@ int dosbox_main(int argc, const char* argv[]);
 
 bool dosMachinePause;
 
+extern bool dosMapperRunning;
+
 namespace dbfusion
 {
 
@@ -71,7 +73,7 @@ void DBFusionEngine::start()
 }
 
 void DBFusionEngine::pumpEvent(const CEvent *evPtr)
-{    
+{
     if( dynamic_cast<const BackButtonSendDosFusion*>(evPtr) )
     {
         gInput.pushBackButtonEventExtEng();
@@ -87,7 +89,7 @@ void DBFusionEngine::pumpEvent(const CEvent *evPtr)
 }
 
 void DBFusionEngine::ponder(const float deltaT)
-{    
+{
     int status;
 
     if( gMenuController.empty() && dosMachinePause )
@@ -106,7 +108,7 @@ void DBFusionEngine::ponder(const float deltaT)
         return;
     }
 
-    if(!mMenuLocked)
+    if(!mMenuLocked && !dosMapperRunning)
     {
         // Did the player press the quit/back button
         if( gInput.getPressedCommand(IC_BACK) )
