@@ -238,8 +238,6 @@ void increaseTicks()
 
 extern bool dosMapperRunning;
 
-Bits retChange = 0;
-
 static Bitu Normal_Loop(void)
 {
     Bits ret;
@@ -254,18 +252,9 @@ static Bitu Normal_Loop(void)
         {
             ret = (*cpudecoder)();
 
-            if(ret && retChange != ret)
-            {
-                retChange = ret;
-            }
-
-            if(ret == 6)
-            {
-                printf("Stop!");
-            }
-
             if (GCC_UNLIKELY(ret<0)) return 1;
-            if (ret>0) {
+            if (ret>0)
+            {
                 if (GCC_UNLIKELY(ret >= CB_MAX)) return 0;
                 Bitu blah = (*CallBack_Handlers[ret])();
                 if (GCC_UNLIKELY(blah)) return blah;

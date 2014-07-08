@@ -39,7 +39,7 @@ PagingBlock paging;
 
 
 Bitu PageHandler::readb(PhysPt addr) {
-	E_Exit("No byte handler for read from %d",addr);	
+	E_Exit("No byte handler for read from %d",addr);
 	return 0;
 }
 Bitu PageHandler::readw(PhysPt addr) {
@@ -56,7 +56,7 @@ Bitu PageHandler::readd(PhysPt addr) {
 }
 
 void PageHandler::writeb(PhysPt addr,Bitu /*val*/) {
-	E_Exit("No byte handler for write to %d",addr);	
+	E_Exit("No byte handler for write to %d",addr);
 }
 
 void PageHandler::writew(PhysPt addr,Bitu val) {
@@ -118,7 +118,7 @@ static Bits PageFaultCore(void) {
 	Bits ret=CPU_Core_Full_Run();
 	CPU_CycleLeft+=CPU_Cycles;
 	if (ret<0) E_Exit("Got a dosbox close machine in pagefault core?");
-	if (ret) 
+	if (ret)
 		return ret;
 	if (!pf_queue.used) E_Exit("PF Core without PF");
 	PF_Entry * entry=&pf_queue.entries[pf_queue.used-1];
@@ -202,7 +202,7 @@ static INLINE void InitPageCheckPresence(PhysPt lin_addr,bool writing,X86PageEnt
 			E_Exit("Pagefault didn't correct page");
 	}
 }
-			
+
 static INLINE bool InitPageCheckPresence_CheckOnly(PhysPt lin_addr,bool writing,X86PageEntry& table,X86PageEntry& entry) {
 	Bitu lin_page=lin_addr >> 12;
 	Bitu d_index=lin_page >> 10;
@@ -389,7 +389,7 @@ public:
 			}
 
 			phys_page=entry.block.base;
-			
+
 			// now see how the page should be linked best, if we need to catch privilege
 			// checks later on it should be linked as read-only page
 			if (priv_check==0) {
@@ -691,7 +691,7 @@ void PAGING_MapPage(Bitu lin_page,Bitu phys_page) {
 void PAGING_LinkPage(Bitu lin_page,Bitu phys_page) {
 	PageHandler * handler=MEM_GetPageHandler(phys_page);
 	Bitu lin_base=lin_page << 12;
-	if (lin_page>=TLB_SIZE || phys_page>=TLB_SIZE) 
+	if (lin_page>=TLB_SIZE || phys_page>=TLB_SIZE)
 		E_Exit("Illegal page");
 
 	if (paging.links.used>=PAGING_LINKS) {
@@ -702,13 +702,7 @@ void PAGING_LinkPage(Bitu lin_page,Bitu phys_page) {
 	paging.tlb.phys_page[lin_page]=phys_page;
     if (handler->flags & PFLAG_READABLE)
     {
-        if(lin_page == 1)
-        {
-            printf("Stop");
-        }
-
         const HostPt result = handler->GetHostReadPt(phys_page)-lin_base;
-
         paging.tlb.read[lin_page] = result;
     }
 	else paging.tlb.read[lin_page]=0;
@@ -729,7 +723,7 @@ void PAGING_LinkPage(Bitu lin_page,Bitu phys_page) {
 void PAGING_LinkPage_ReadOnly(Bitu lin_page,Bitu phys_page) {
 	PageHandler * handler=MEM_GetPageHandler(phys_page);
 	Bitu lin_base=lin_page << 12;
-	if (lin_page>=TLB_SIZE || phys_page>=TLB_SIZE) 
+	if (lin_page>=TLB_SIZE || phys_page>=TLB_SIZE)
 		E_Exit("Illegal page");
 
 	if (paging.links.used>=PAGING_LINKS) {
@@ -742,13 +736,7 @@ void PAGING_LinkPage_ReadOnly(Bitu lin_page,Bitu phys_page) {
 
     if (handler->flags & PFLAG_READABLE)
     {
-        if(lin_page == 1)
-        {
-            printf("Stop");
-        }
-
         const HostPt result = handler->GetHostReadPt(phys_page)-lin_base;
-
         paging.tlb.read[lin_page] = result;
     }
 	else paging.tlb.read[lin_page]=0;
@@ -820,7 +808,7 @@ void PAGING_MapPage(Bitu lin_page,Bitu phys_page) {
 void PAGING_LinkPage(Bitu lin_page,Bitu phys_page) {
 	PageHandler * handler=MEM_GetPageHandler(phys_page);
 	Bitu lin_base=lin_page << 12;
-	if (lin_page>=(TLB_SIZE*(TLB_BANKS+1)) || phys_page>=(TLB_SIZE*(TLB_BANKS+1))) 
+	if (lin_page>=(TLB_SIZE*(TLB_BANKS+1)) || phys_page>=(TLB_SIZE*(TLB_BANKS+1)))
 		E_Exit("Illegal page");
 
 	if (paging.links.used>=PAGING_LINKS) {
@@ -843,7 +831,7 @@ void PAGING_LinkPage(Bitu lin_page,Bitu phys_page) {
 void PAGING_LinkPage_ReadOnly(Bitu lin_page,Bitu phys_page) {
 	PageHandler * handler=MEM_GetPageHandler(phys_page);
 	Bitu lin_base=lin_page << 12;
-	if (lin_page>=(TLB_SIZE*(TLB_BANKS+1)) || phys_page>=(TLB_SIZE*(TLB_BANKS+1))) 
+	if (lin_page>=(TLB_SIZE*(TLB_BANKS+1)) || phys_page>=(TLB_SIZE*(TLB_BANKS+1)))
 		E_Exit("Illegal page");
 
 	if (paging.links.used>=PAGING_LINKS) {
@@ -867,7 +855,7 @@ void PAGING_LinkPage_ReadOnly(Bitu lin_page,Bitu phys_page) {
 
 void PAGING_SetDirBase(Bitu cr3) {
 	paging.cr3=cr3;
-	
+
 	paging.base.page=cr3 >> 12;
 	paging.base.addr=cr3 & ~4095;
 //	LOG(LOG_PAGING,LOG_NORMAL)("CR3:%X Base %X",cr3,paging.base.page);

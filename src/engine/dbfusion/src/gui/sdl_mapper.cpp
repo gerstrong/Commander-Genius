@@ -562,12 +562,6 @@ public:
 
 #endif
 
-        if(key == SDL_SCANCODE_RETURN)
-        {
-            printf("Stop!");
-        }
-
-
         if (event->type==SDL_KEYDOWN) ActivateBindList(&lists[key],0x7fff,true);
 		else DeactivateBindList(&lists[key],true);
 		return 0;

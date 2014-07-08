@@ -39,7 +39,7 @@
 #define SaveMb(off,val)	mem_writeb(off,val)
 #define SaveMw(off,val)	mem_writew(off,val)
 #define SaveMd(off,val)	mem_writed(off,val)
-#else 
+#else
 #include "paging.h"
 #define LoadMb(off) mem_readb_inline(off)
 #define LoadMw(off) mem_readw_inline(off)
@@ -157,12 +157,6 @@ Bits CPU_Core_Normal_Run(void) {
 restart_opcode:
 
         const Bit8u fetch = Fetchb();
-
-        if(fetch == 0xbc || fetch == 0xcb)
-        {
-            printf("Stop!");
-        }
-
         switch (core.opcode_index+fetch) {
 		#include "core_normal/prefix_none.h"
 		#include "core_normal/prefix_0f.h"
@@ -170,7 +164,7 @@ restart_opcode:
 		#include "core_normal/prefix_66_0f.h"
 		default:
 		illegal_opcode:
-#if C_DEBUG	
+#if C_DEBUG
 			{
 				Bitu len=(GETIP-reg_eip);
 				LOADIP;

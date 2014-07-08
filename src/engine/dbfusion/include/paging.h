@@ -176,7 +176,7 @@ struct PagingBlock {
 	bool		enabled;
 };
 
-extern PagingBlock paging; 
+extern PagingBlock paging;
 
 /* Some support functions */
 
@@ -288,16 +288,7 @@ static INLINE Bit32u mem_readd_inline(PhysPt address) {
 
 static INLINE void mem_writeb_inline(PhysPt address,Bit8u val)
 {
-    if(address == 6688)
-    {
-        if(val == 0xbc)
-        {
-            printf("Stop Instruction");
-        }
-    }
-
-
-	HostPt tlb_addr=get_tlb_write(address);        
+	HostPt tlb_addr=get_tlb_write(address);
 	if (tlb_addr) host_writeb(tlb_addr+address,val);
 	else (get_tlb_writehandler(address))->writeb(address,val);
 }
