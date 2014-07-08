@@ -175,7 +175,16 @@ void DOS_PSP::MakeNew(Bit16u mem_size) {
 //	DOS_PSP prevpsp(dos.psp());
 	/* Clear it first */
 	Bitu i;
-	for (i=0;i<sizeof(sPSP);i++) mem_writeb(pt+i,0);
+
+    const Bitu Bit8uSize = sizeof(Bit8u);
+    const Bitu Bit16uSize = sizeof(Bit16u);
+    const Bitu RealPtSize = sizeof(RealPt);
+    const Bitu CommandTailSize = sizeof(CommandTail);
+
+
+
+    const Bitu sizePSP = sizeof(sPSP);
+    for (i=0;i<sizePSP;i++) mem_writeb(pt+i,0);
 	// Set size
 	sSave(sPSP,next_seg,seg+mem_size);
 	/* far call opcode */

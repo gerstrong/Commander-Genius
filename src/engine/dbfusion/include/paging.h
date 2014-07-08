@@ -196,8 +196,9 @@ bool mem_unalignedwrited_checked(PhysPt address,Bit32u val);
 
 #if defined(USE_FULL_TLB)
 
-static INLINE HostPt get_tlb_read(PhysPt address) {
-	return paging.tlb.read[address>>12];
+static INLINE HostPt get_tlb_read(PhysPt address)
+{
+    return paging.tlb.read[address>>12];
 }
 static INLINE HostPt get_tlb_write(PhysPt address) {
 	return paging.tlb.write[address>>12];
@@ -258,6 +259,7 @@ static INLINE PhysPt PAGING_GetPhysicalAddress(PhysPt linAddr) {
 }
 #endif
 
+
 /* Special inlined memory reading/writing */
 
 static INLINE Bit8u mem_readb_inline(PhysPt address) {
@@ -282,8 +284,20 @@ static INLINE Bit32u mem_readd_inline(PhysPt address) {
 	} else return mem_unalignedreadd(address);
 }
 
-static INLINE void mem_writeb_inline(PhysPt address,Bit8u val) {
-	HostPt tlb_addr=get_tlb_write(address);
+#include <cstdio>
+
+static INLINE void mem_writeb_inline(PhysPt address,Bit8u val)
+{
+    if(address == 6688)
+    {
+        if(val == 0xbc)
+        {
+            printf("Stop Instruction");
+        }
+    }
+
+
+	HostPt tlb_addr=get_tlb_write(address);        
 	if (tlb_addr) host_writeb(tlb_addr+address,val);
 	else (get_tlb_writehandler(address))->writeb(address,val);
 }

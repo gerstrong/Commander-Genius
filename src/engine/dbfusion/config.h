@@ -76,10 +76,10 @@
 
 #if !defined (WIN32)
 /* Define to 1 to enable IPX over Internet networking, requires SDL_net */
-#define C_IPX 1
+#define C_IPX 0
 
 /* Define to 1 to enable internal modem support, requires SDL_net */
-#define C_MODEM 1
+#define C_MODEM 0
 
 /* Define to 1 to use opengl display output support */
 #define C_OPENGL 1
@@ -92,7 +92,7 @@
 #define C_SET_PRIORITY 1
 
 /* Define to 1 to enable screenshots, requires libpng */
-#define C_SSHOT 1
+#define C_SSHOT 0
 
 /* The type of cpu this target has */
 #define C_TARGETCPU X86_64

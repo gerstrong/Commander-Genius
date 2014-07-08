@@ -498,11 +498,13 @@ Bit32u mem_readd(PhysPt address) {
 	return mem_readd_inline(address);
 }
 
-void mem_writeb(PhysPt address,Bit8u val) {
+void mem_writeb(PhysPt address,Bit8u val)
+{
 	mem_writeb_inline(address,val);
 }
 
-void mem_writew(PhysPt address,Bit16u val) {
+void mem_writew(PhysPt address,Bit16u val)
+{
 	mem_writew_inline(address,val);
 }
 

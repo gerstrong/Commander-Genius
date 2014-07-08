@@ -677,11 +677,14 @@ void CGameLauncher::ponderPatchDialog()
         }
     }
 
+
+#ifdef DBFUSION
     if(mDoneExecSelection)
     {
         mpDosExecDialog = nullptr;
         gEventManager.add( new StartDBFusionEngine(mExecFilename) );
     }
+#endif
 
 }
 

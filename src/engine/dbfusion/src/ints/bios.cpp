@@ -1022,7 +1022,11 @@ public:
 			if (machine==MCH_TANDY) mem_writew(BIOS_MEMORY_SIZE,624);
 			else mem_writew(BIOS_MEMORY_SIZE,640);
 			mem_writew(BIOS_TRUE_MEMORY_SIZE,640);
-		} else mem_writew(BIOS_MEMORY_SIZE,640);
+        }
+        else
+        {
+            mem_writew(BIOS_MEMORY_SIZE,640);
+        }
 		
 		/* INT 13 Bios Disk Support */
 		BIOS_SetupDisks();

@@ -155,7 +155,15 @@ Bits CPU_Core_Normal_Run(void) {
 		cycle_count++;
 #endif
 restart_opcode:
-		switch (core.opcode_index+Fetchb()) {
+
+        const Bit8u fetch = Fetchb();
+
+        if(fetch == 0xbc || fetch == 0xcb)
+        {
+            printf("Stop!");
+        }
+
+        switch (core.opcode_index+fetch) {
 		#include "core_normal/prefix_none.h"
 		#include "core_normal/prefix_0f.h"
 		#include "core_normal/prefix_66.h"

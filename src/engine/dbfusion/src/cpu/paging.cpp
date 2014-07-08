@@ -700,9 +700,25 @@ void PAGING_LinkPage(Bitu lin_page,Bitu phys_page) {
 	}
 
 	paging.tlb.phys_page[lin_page]=phys_page;
-	if (handler->flags & PFLAG_READABLE) paging.tlb.read[lin_page]=handler->GetHostReadPt(phys_page)-lin_base;
+    if (handler->flags & PFLAG_READABLE)
+    {
+        if(lin_page == 1)
+        {
+            printf("Stop");
+        }
+
+        const HostPt result = handler->GetHostReadPt(phys_page)-lin_base;
+
+        paging.tlb.read[lin_page] = result;
+    }
 	else paging.tlb.read[lin_page]=0;
-	if (handler->flags & PFLAG_WRITEABLE) paging.tlb.write[lin_page]=handler->GetHostWritePt(phys_page)-lin_base;
+
+    if (handler->flags & PFLAG_WRITEABLE)
+    {
+        const HostPt result = handler->GetHostWritePt(phys_page)-lin_base;
+
+        paging.tlb.write[lin_page] = result;
+    }
 	else paging.tlb.write[lin_page]=0;
 
 	paging.links.entries[paging.links.used++]=lin_page;
@@ -722,7 +738,19 @@ void PAGING_LinkPage_ReadOnly(Bitu lin_page,Bitu phys_page) {
 	}
 
 	paging.tlb.phys_page[lin_page]=phys_page;
-	if (handler->flags & PFLAG_READABLE) paging.tlb.read[lin_page]=handler->GetHostReadPt(phys_page)-lin_base;
+
+
+    if (handler->flags & PFLAG_READABLE)
+    {
+        if(lin_page == 1)
+        {
+            printf("Stop");
+        }
+
+        const HostPt result = handler->GetHostReadPt(phys_page)-lin_base;
+
+        paging.tlb.read[lin_page] = result;
+    }
 	else paging.tlb.read[lin_page]=0;
 	paging.tlb.write[lin_page]=0;
 

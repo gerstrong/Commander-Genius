@@ -339,8 +339,7 @@ IF(OPENGL)
     target_link_libraries(CGeniusExe ${OPENGL_LIBRARIES})
 ENDIF(OPENGL)
 
-# Misc. Stuff I call it that way for now...
-#LIBS = -lSDL_sound -lasound -lm -ldl -lpthread -L/usr/lib -lSDL -lpng -lz -lSDL_net -lX11 -lGL
+# Only if you want to use Dosfusion
 if(DBFUSION)
     target_link_libraries(CGeniusExe SDL_sound)
     target_link_libraries(CGeniusExe asound)

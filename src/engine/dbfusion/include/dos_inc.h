@@ -337,7 +337,7 @@ private:
 		Bit8u	fcb2[16];			/* second FCB */
 		Bit8u	fill_4[4];			/* unused */
 		CommandTail cmdtail;		
-	} GCC_ATTRIBUTE(packed);
+    } GCC_ATTRIBUTE(packed);
 	#ifdef _MSC_VER
 	#pragma pack()
 	#endif
