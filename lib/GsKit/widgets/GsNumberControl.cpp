@@ -27,6 +27,7 @@ CGUINumberControl::CGUINumberControl(	const std::string& text,
 					const int endValue,
 					const int deltaValue,
 					const int value,
+                    const int fontid,
 					const bool slider ) :
 mIncSel(false),
 mDecSel(false),
@@ -37,7 +38,7 @@ mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue)
 {
-	mFontID = 1;
+    mFontID = fontid;
 }
 
 

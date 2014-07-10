@@ -15,7 +15,7 @@ NumberControl::NumberControl(const std::string &text,
                              const int deltaValue,
                              const int value) :
 CGUINumberControl(text, startValue, endValue,
-                    deltaValue, value, false)
+                    deltaValue, value, 1,false)
 {
     setupButtonSurface();
 }

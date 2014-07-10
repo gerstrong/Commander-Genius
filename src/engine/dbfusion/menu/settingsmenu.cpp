@@ -1,4 +1,5 @@
 #include "settingsmenu.h"
+#include "videosettings.h"
 
 namespace dbfusion
 {
@@ -6,11 +7,12 @@ namespace dbfusion
 SettingsMenu::SettingsMenu() :
     FusionMenu(GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
 {      
-/*    // Settingssubmenu buttons
-    mpMenuDialog->addControl(new GalaxyButton( "Video",
-                                    new OpenMenuEvent( new CVideoSettings() ) ) );
+    // Settingssubmenu buttons
+    mpMenuDialog->addControl(new GsButton( "Video",
+                                    new OpenMenuEvent( new VideoSettings() ) ),
+                                        GsRect<float>(0.2f, 0.2f, 0.6f, 0.05f) );
 
-    mpMenuDialog->addControl(new GalaxyButton( "Audio",
+/*    mpMenuDialog->addControl(new GalaxyButton( "Audio",
                                     new OpenMenuEvent( new CAudioSettings() ) ) );
 
     mpMenuDialog->addControl(new GalaxyButton( "Options",

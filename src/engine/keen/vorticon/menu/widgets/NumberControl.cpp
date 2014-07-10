@@ -30,7 +30,7 @@ CGUINumberControl(text,
     startValue,
     endValue,
     deltaValue,
-    value,
+    value, 1,
     slider )
 {
 	mFontID = 1;    

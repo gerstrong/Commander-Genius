@@ -13,7 +13,7 @@
 #include <string>
 #include <graphics/GsSurface.h>
 
-class CGUINumberControl: public CGUIControl
+class CGUINumberControl : public CGUIControl
 {
 public:
 
@@ -22,7 +22,8 @@ public:
 			const int endValue,
 			const int deltaValue,
 			const int value,
-			const bool slider = true);
+            const int fontid,
+            const bool slider);
 
 
 	void increment();
