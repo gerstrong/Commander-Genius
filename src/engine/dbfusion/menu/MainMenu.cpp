@@ -1,4 +1,5 @@
 #include "MainMenu.h"
+#include "settingsmenu.h"
 
 #include <base/GsEvent.h>
 
@@ -20,6 +21,12 @@ MainMenu::MainMenu() : FusionMenu(GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
 
     GsButton *pMapperButton = new GsButton( "Mapper", new ExecuteMappperEvent);
     mpMenuDialog->addControl( pMapperButton, GsRect<float>(0.2f, 0.3f, 0.6f, 0.05f) );
+
+    mpMenuDialog->addControl(new GsButton( "Configure",
+                                            new OpenMenuEvent( new SettingsMenu() ) ),
+                                                GsRect<float>(0.2f, 0.4f, 0.6f, 0.05f) );
+
+
 
 }
 
