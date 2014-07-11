@@ -36,28 +36,6 @@ CGUINumberControl(text,
 	mFontID = 1;    
 }
 
-std::string NumberControl::sliderStr()
-{
-    int ch;
-    ch = (mDecSel) ? 8 : 1;
-    std::string slider;
-    slider = static_cast<char>(ch);
-
-    const int sVal = (SLIDER_WIDTH-3)*(mValue - mStartValue) / (mEndValue - mStartValue);
-
-    for( int l=0 ; l<sVal ; l++)
-        slider += '\04';
-
-    slider += '\05';
-
-    for( int l=0 ; l<(SLIDER_WIDTH-3)-sVal ; l++)
-        slider += '\06';
-
-    ch = (mIncSel) ? 9 : 7;
-    slider += static_cast<char>(ch);
-
-    return slider;
-}
 
 
 void NumberControl::processRender(const GsRect<float> &RectDispCoordFloat)

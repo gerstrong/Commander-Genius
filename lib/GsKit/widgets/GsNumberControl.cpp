@@ -19,7 +19,7 @@
 int CGUINumberControl::mTwirliconID = 10;
 
 const int SLIDER_WIDTH = 16;
-
+const int BLEND_SPEED = 16;
 
 
 CGUINumberControl::CGUINumberControl(	const std::string& text,
@@ -34,6 +34,7 @@ mDecSel(false),
 mText(text),
 mValue(value),
 mSlider(slider),
+mLightRatio(128),
 mStartValue(startValue),
 mEndValue(endValue),
 mDeltaValue(deltaValue)
@@ -145,12 +146,55 @@ void CGUINumberControl::processLogic()
         mMustRedraw = true;
     }
 
+
+    if(mEnabled)
+    {
+        // For some nice special effects
+        if(mHovered || mSelected)
+        {
+            if(mLightRatio+BLEND_SPEED < 255)
+               mLightRatio += BLEND_SPEED;
+            else
+               mLightRatio = 255;
+        }
+        else // Button is not hovered
+        {
+            if(mLightRatio-BLEND_SPEED > 0)
+               mLightRatio -= BLEND_SPEED;
+            else
+               mLightRatio = 0;
+        }
+    }
+
+}
+
+
+std::string CGUINumberControl::sliderStr()
+{
+    int ch;
+    ch = (mDecSel) ? 8 : 1;
+    std::string slider;
+    slider = static_cast<char>(ch);
+
+    const int sVal = (SLIDER_WIDTH-3)*(mValue - mStartValue) / (mEndValue - mStartValue);
+
+    for( int l=0 ; l<sVal ; l++)
+        slider += '\04';
+
+    slider += '\05';
+
+    for( int l=0 ; l<(SLIDER_WIDTH-3)-sVal ; l++)
+        slider += '\06';
+
+    ch = (mIncSel) ? 9 : 7;
+    slider += static_cast<char>(ch);
+
+    return slider;
 }
 
 
 void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 {
-
 	// Transform to the display coordinates
 	GsRect<float> displayRect = mRect;
 	displayRect.transform(RectDispCoordFloat);
@@ -158,28 +202,45 @@ void CGUINumberControl::processRender(const GsRect<float> &RectDispCoordFloat)
 
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
-    if( mReleased )
-    {
-        blitsfc.drawRect( lRect, 1, 0x00BBBBBB, 0x00CFCFCF );
-    }
-    else if( mPressed )
-    {
-        blitsfc.drawRect( lRect, 1, 0x00BBBBBB, 0x00DFDFDF );
-    }
-    else if( mHovered )
-    {
-        blitsfc.drawRect( lRect, 1, 0x00BBBBBB, 0x00EFEFEF );
-    }
+    int lComp;
+
+    if( mPressed || mSelected )
+        lComp = 0xFF - (mLightRatio*(0xFF-0xCF)/255);
     else
-    {
-        blitsfc.drawRect( lRect, 1, 0x00BBBBBB, 0x00FFFFFF );
-    }
+        lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);
+
+    const Uint32 fillColor = blitsfc.mapRGBA( lComp, lComp, lComp, 0xFF);
+
+    GsRect<Uint16> rect(lRect);
+
+    blitsfc.drawRect( rect, 1, 0xFFBBBBBB, fillColor );
+
 
     // Now lets draw the text of the list control
     GsFont &Font = gGraphics.getFont(mFontID);
 
-    Font.drawFontCentered( blitsfc,
-                           mText,
-                           lRect,
-                           false );
+    const int fontHeight = 8;
+    const int textX = lRect.x+24+(mText.size()+2)*8;
+    const int textY = lRect.y+((lRect.h-fontHeight)/2);
+
+
+    Font.drawFont( blitsfc, mText, lRect.x+24, textY, false );
+    Font.drawFont( blitsfc, ":", lRect.x+24+mText.size()*8, textY, false );
+
+    if(mSlider)
+    {
+        gGraphics.getFont(2).drawFont( blitsfc, sliderStr(), lRect.x+16+(mText.size()+2)*8, lRect.y, false );
+    }
+    else
+    {
+        std::string text = (mDecSel) ? "\025" : " ";
+        text += itoa(mValue);
+        if(mIncSel)
+            text += static_cast<char>(17);
+        else
+            text += " ";
+
+        Font.drawFont( blitsfc, text, textX, textY, false );
+    }
+
 }

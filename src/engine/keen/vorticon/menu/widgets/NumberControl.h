@@ -29,7 +29,6 @@ public:
             const bool slider);
 
 
-    std::string sliderStr();
 
 	void processRender(const GsRect<float> &RectDispCoordFloat);
 };

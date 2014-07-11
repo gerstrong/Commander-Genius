@@ -36,6 +36,8 @@ public:
 
     void processLogic();
 
+    std::string sliderStr();
+
 	void processRender(const GsRect<float> &RectDispCoordFloat);
 
 protected:
@@ -51,6 +53,8 @@ protected:
     std::string	mText;
     int mValue;
     const bool mSlider;
+
+    int mLightRatio; // This will blend between selected and unselected item.
 
     const int mStartValue;
     const int mEndValue;
