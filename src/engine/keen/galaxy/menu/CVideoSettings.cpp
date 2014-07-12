@@ -25,18 +25,7 @@
 #include "widgets/ComboSelection.h"
 
 #include "engine/core/CSettings.h"
-
-
-static const char* aspectList[] =
-{
-"disabled",
-"4:3",
-"16:9",
-"16:10",
-"5:4",
-};
-
-const unsigned int NUM_ASPECTS = sizeof(aspectList)/sizeof(char*);
+#include "engine/core/videoAspect.h"
 
 namespace galaxy
 {

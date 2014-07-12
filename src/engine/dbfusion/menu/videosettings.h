@@ -16,9 +16,9 @@ class VideoSettings : public FusionMenu
 public:
     VideoSettings();
 
-    /*void refresh();
+    void refresh();
 
-    void release();*/
+    void release();
 
     CVidConfig mUserVidConf;
 
@@ -38,7 +38,7 @@ private:
     CGUISwitch		*mpSFXSwitch;
     GsButton		*mpFullScreenSwitch;
     CGUIComboSelection	*mpResolutionSelection;
-    CGUIComboSelection	*mpGameResSelection;
+    //CGUIComboSelection	*mpGameResSelection;
 
 };
 

@@ -12,32 +12,19 @@
 #include "videosettings.h"
 #include <base/utils/Utils.h>
 
-/*#include "widgets/NumberControl.h"
-#include "widgets/ComboSelection.h"*/
-
 #include "engine/core/CSettings.h"
+#include "engine/core/videoAspect.h"
 
 
-
-static const char* aspectList[] =
-{
-"disabled",
-"4:3",
-"16:9",
-"16:10",
-"5:4",
-};
-
-const unsigned int NUM_ASPECTS = sizeof(aspectList)/sizeof(char*);
 
 namespace dbfusion
 {
 
 
-/*class toggleFullscreenFunctor : public InvokeFunctorEvent
+class toggleFullscreenFunctor : public InvokeFunctorEvent
 {
 public:
-    toggleFullscreenFunctor( CVideoSettings& VSettings ) :
+    toggleFullscreenFunctor( VideoSettings& VSettings ) :
         mVSettings(VSettings) {}
 
 private:
@@ -49,9 +36,9 @@ private:
         mVSettings.refresh();
     }
 
-    CVideoSettings& mVSettings;
+    VideoSettings& mVSettings;
 };
-*/
+
 
 
 VideoSettings::VideoSettings() :
@@ -65,57 +52,57 @@ FusionMenu( GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) )
     mpFPSSelection = new CGUINumberControl( "FPS", 10, 120, 10, 60, 0, false );
     mpMenuDialog->addControl( mpFPSSelection, GsRect<float>(0.2f, 0.2f, 0.6f, 0.05f) );
 
- /*   mpGameResSelection = new ComboSelection( "GameRes",
+    /*mpGameResSelection = new CGUIComboSelection( "GameRes",
         filledStrList(1, "?x?") );
-    mpMenuDialog->addControl( mpGameResSelection );
+    mpMenuDialog->addControl( mpGameResSelection, GsRect<float>(0.2f, 0.25f, 0.6f, 0.05f) );*/
 
 #if !defined(EMBEDDED)
 
-    mpAspectSelection = new ComboSelection( "Aspect",
+    mpAspectSelection = new CGUIComboSelection( "Aspect",
         filledStrList(1, "disabled") );
 
-    mpMenuDialog->addControl( mpAspectSelection );
+    mpMenuDialog->addControl( mpAspectSelection, GsRect<float>(0.2f, 0.3f, 0.6f, 0.05f) );
 
     mpFilterSelection =
-            new ComboSelection( "Filter",
+            new CGUIComboSelection( "Filter",
                 filledStrList( 4, "none",
                                   "scale2x",
                                   "scale3x",
                                   "scale4x" ) );
 
-    mpMenuDialog->addControl( mpFilterSelection );
+    mpMenuDialog->addControl( mpFilterSelection, GsRect<float>(0.2f, 0.35f, 0.6f, 0.05f) );
 
-    mpVSyncSwitch = new Switch( "VSync" );
-    mpMenuDialog->addControl( mpVSyncSwitch );
+    mpVSyncSwitch = new CGUISwitch( "VSync" );
+    mpMenuDialog->addControl( mpVSyncSwitch, GsRect<float>(0.2f, 0.6f, 0.40f, 0.05f) );
 
-    mpResolutionSelection = new ComboSelection( "Size",
+    mpResolutionSelection = new CGUIComboSelection( "Size",
         filledStrList(1, "?x?") );
-    mpMenuDialog->addControl( mpResolutionSelection );
+    mpMenuDialog->addControl( mpResolutionSelection, GsRect<float>(0.2f, 0.45f, 0.6f, 0.05f) );
 
-    mpFullScreenSwitch = new GalaxyButton( "Unknown mode",
+    mpFullScreenSwitch = new GsButton( "Unknown mode",
                                         new toggleFullscreenFunctor(*this) );
-    mpMenuDialog->addControl( mpFullScreenSwitch );
+    mpMenuDialog->addControl( mpFullScreenSwitch, GsRect<float>(0.2f, 0.5f, 0.6f, 0.05f) );
 #endif
 
 #if defined(USE_OPENGL)
-    mpOpenGLSwitch = new Switch( "OpenGL" );
-    mpMenuDialog->addControl( mpOpenGLSwitch );
+    mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
+    mpMenuDialog->addControl( mpOpenGLSwitch, GsRect<float>(0.2f, 0.55f, 0.6f, 0.05f) );
 
-    mpOGLFilterSelection = new ComboSelection( "OGL Filter",
+    mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
         filledStrList( 2, "nearest", "linear" ) );
-    mpMenuDialog->addControl( mpOGLFilterSelection );
+    mpMenuDialog->addControl( mpOGLFilterSelection, GsRect<float>(0.2f, 0.6f, 0.6f, 0.05f) );
 #endif
 
 
-    mpSFXSwitch = new Switch( "Special FX" );
-    mpMenuDialog->addControl( mpSFXSwitch );
+    mpSFXSwitch = new CGUISwitch( "Special FX" );
+    mpMenuDialog->addControl( mpSFXSwitch, GsRect<float>(0.2f, 0.65f, 0.6f, 0.05f) );
 
 
 
-    refresh();*/
+    refresh();
 }
 
-/*void VideoSettings::refresh()
+void VideoSettings::refresh()
 {
     mUserVidConf = gVideoDriver.getVidConfig();
 
@@ -133,7 +120,6 @@ FusionMenu( GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) )
     mpSFXSwitch->enable( mUserVidConf.m_special_fx );
 
 #if !defined(EMBEDDED)
-    //mpAspectSwitch->enable( mUserVidConf.m_aspect_correction );
     mpAspectSelection->setList( aspectList, NUM_ASPECTS );
     std::string arcStr;
     arcStr = itoa(mUserVidConf.mAspectCorrection.w);
@@ -160,19 +146,19 @@ FusionMenu( GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) )
     mpResolutionSelection->setSelection(resStr);
 
 
-    mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
+    /*mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
 
     resStr = itoa(mUserVidConf.m_GameRect.w);
     resStr += "x";
     resStr += itoa(mUserVidConf.m_GameRect.h);
-    mpGameResSelection->setSelection(resStr);
+    mpGameResSelection->setSelection(resStr);*/
 
 
 #endif
 
-}*/
+}
 
-/*
+
 void VideoSettings::release()
 {
     // Save up the changed stuff
@@ -193,8 +179,8 @@ void VideoSettings::release()
     const std::string res = mpResolutionSelection->getSelection();
     sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
 
-    const std::string GameResStr = mpGameResSelection->getSelection();
-    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.m_GameRect.w, &mUserVidConf.m_GameRect.h );
+    /*const std::string GameResStr = mpGameResSelection->getSelection();
+    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.m_GameRect.w, &mUserVidConf.m_GameRect.h );*/
 
     int w, h;
     const std::string aspect = mpAspectSelection->getSelection();
@@ -253,6 +239,6 @@ void VideoSettings::release()
     g_pSettings->saveDrvCfg();
 
     gMenuController.updateGraphics();
-}*/
+}
 
 }
