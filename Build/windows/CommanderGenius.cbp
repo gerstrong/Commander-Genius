@@ -64,6 +64,7 @@
 			<Add directory="C:/Program Files/CodeBlocks/SDL2_image-2.0.0/i686-w64-mingw32/lib" />
 			<Add directory="C:/Program Files/CodeBlocks/SDL2-2.0.3/i686-w64-mingw32/lib" />
 			<Add directory="C:/Program Files/CodeBlocks/MinGW10/i686-pc-mingw32/lib" />
+			<Add directory="C:/Program Files/CodeBlocks/MinGW10/lib" />
 		</Linker>
 		<Unit filename="../../lib/GsKit/base/CInput.cpp" />
 		<Unit filename="../../lib/GsKit/base/CInput.h" />
