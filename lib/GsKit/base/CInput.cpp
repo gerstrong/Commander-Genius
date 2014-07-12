@@ -504,8 +504,6 @@ void CInput::readNewEvent()
     }
 }
 
-bool CInput::getExitEvent(void) {	return m_exit;	}
-
 bool CInput::getTwoButtonFiring(int player) { return TwoButtonFiring[player]; }
 void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player]=value; }
 

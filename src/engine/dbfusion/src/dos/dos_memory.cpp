@@ -390,11 +390,12 @@ static Bitu DOS_default_handler(void) {
 }
 
 static	CALLBACK_HandlerObject callbackhandler;
-void DOS_SetupMemory(void) {
+void DOS_SetupMemory(void)
+{
 	/* Let dos claim a few bios interrupts. Makes DOSBox more compatible with 
 	 * buggy games, which compare against the interrupt table. (probably a 
 	 * broken linked list implementation) */
-	callbackhandler.Allocate(&DOS_default_handler,"DOS default int");
+    callbackhandler.SafeAllocate(&DOS_default_handler,"DOS default int");
 	Bit16u ihseg = 0x70;
 	Bit16u ihofs = 0x08;
 	real_writeb(ihseg,ihofs+0x00,(Bit8u)0xFE);	//GRP 4

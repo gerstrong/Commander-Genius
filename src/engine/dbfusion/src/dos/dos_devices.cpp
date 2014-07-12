@@ -178,13 +178,32 @@ void DOS_DelDevice(DOS_Device * dev) {
 	for (Bitu i = 0; i <DOS_DEVICES;i++) {
 		if(Devices[i] && !strcasecmp(Devices[i]->name,dev->name)){
 			delete Devices[i];
-			Devices[i] = 0;
+            Devices[i] = nullptr;
 			return;
 		}
 	}
 }
 
-void DOS_SetupDevices(void) {
+void DOS_ClearDevices(void)
+{
+
+    for(Bitu i = 0; i < DOS_DEVICES;i++)
+    {
+        if(Devices[i])
+        {
+            delete Devices[i];
+            Devices[i] = nullptr;
+        }
+    }
+
+}
+
+
+void DOS_SetupDevices(void)
+{
+    // If dosfusion is started the second time, the devices must be cleared
+    DOS_ClearDevices();
+
 	DOS_Device * newdev;
 	newdev=new device_CON();
 	DOS_AddDevice(newdev);
@@ -195,3 +214,5 @@ void DOS_SetupDevices(void) {
 	newdev3=new device_LPT1();
 	DOS_AddDevice(newdev3);
 }
+
+

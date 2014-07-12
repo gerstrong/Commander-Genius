@@ -188,7 +188,8 @@ public:
 	bool getPressedCommand(int player, int command);
 	bool getPressedAnyCommand(const int player);
 	bool getPressedAnyButtonCommand(const int player);
-	bool getExitEvent(void);
+    bool getExitEvent()
+    {  return m_exit;  }
 
 	bool getTwoButtonFiring(int player);
 	void setTwoButtonFiring(int player, bool value);

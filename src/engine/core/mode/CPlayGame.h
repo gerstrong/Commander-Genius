@@ -40,7 +40,10 @@ public:
 	bool isFinished();
 	bool getEndGame();
 	bool getStartGame();
-	bool getExitEvent();
+
+    bool getExitEvent()
+    {	return m_exitgame;	}
+
 	char getEpisode();
 	char getNumPlayers();
 	CSaveGameController getSavedGameBlock();

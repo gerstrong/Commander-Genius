@@ -98,8 +98,9 @@ public:
 	void Uninstall();
 
 	//Only allocate a callback number
-	void Allocate(CallBack_Handler handler,const char* description=0);
-	Bit16u Get_callback() {
+    void SafeAllocate(CallBack_Handler handler,const char* description=0);
+    void Allocate(CallBack_Handler handler,const char* description=0);
+    Bit16u Get_callback() {
 		return (Bit16u)m_callback;
 	}
 	RealPt Get_RealPointer() {

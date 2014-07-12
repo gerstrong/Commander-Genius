@@ -1233,8 +1233,10 @@ public:
 		dos.version.major=5;
 		dos.version.minor=0;
 	}
-	~DOS(){
-		for (Bit16u i=0;i<DOS_DRIVES;i++) delete Drives[i];
+    ~DOS()
+    {
+        for (Bit16u i=0;i<DOS_DRIVES;i++)
+            delete Drives[i];
 	}
 };
 

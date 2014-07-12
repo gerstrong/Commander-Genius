@@ -44,6 +44,7 @@
 #include "pci_bus.h"
 
 #include "../dbFusionNgine.h"
+#include <base/CInput.h>
 
 extern bool dosMachinePause;
 
@@ -246,6 +247,9 @@ static Bitu Normal_Loop(void)
         while(dosMachinePause || dosMapperRunning)
         {
             SDL_Delay(20);
+
+            if(gInput.getExitEvent())
+                exit(0);
         }
 
         if (PIC_RunQueue())

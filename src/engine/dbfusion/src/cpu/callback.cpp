@@ -519,6 +519,18 @@ void CALLBACK_HandlerObject::Install(CallBack_Handler handler,Bitu type,PhysPt a
 	} else E_Exit("Callback handler object already installed");
 }
 
+
+void CALLBACK_HandlerObject::SafeAllocate(CallBack_Handler handler,const char* description)
+{
+    if(installed)
+    {
+        Uninstall();
+    }
+
+    Allocate(handler, description);
+}
+
+
 void CALLBACK_HandlerObject::Allocate(CallBack_Handler handler,const char* description) {
 	if(!installed) {
 		installed=true;
