@@ -97,8 +97,6 @@ FusionMenu( GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) )
     mpSFXSwitch = new CGUISwitch( "Special FX" );
     mpMenuDialog->addControl( mpSFXSwitch, GsRect<float>(0.2f, 0.65f, 0.6f, 0.05f) );
 
-
-
     refresh();
 }
 

@@ -29,13 +29,14 @@ int mainDosbox(void*)
 
     char **argv;
 
+    // Check if dosfusion must be started with a game or the shell was just started
     if(!globGamePath.empty())
     {
-        argc = 2;
+        argc = 3;
     }
 
     // Allocate the more or less primitive way
-    argv = new char* [2];
+    argv = new char* [argc];
     for(int i=0 ; i<argc ; i++)
     {
         argv[i] = new char[maxStrLen];
@@ -46,6 +47,7 @@ int mainDosbox(void*)
     if(!globGamePath.empty())
     {
         strcpy(argv[1], globGamePath.c_str());
+        strcpy(argv[2], "-exit");
     }
 
     dosbox_main(argc, (const char**) argv);
