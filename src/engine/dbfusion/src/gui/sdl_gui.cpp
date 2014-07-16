@@ -177,7 +177,8 @@ static GUI::ScreenSDL *UI_Startup(GUI::ScreenSDL *screen) {
 }
 
 /* Restore screen */
-static void UI_Shutdown(GUI::ScreenSDL *screen) {
+static void UI_Shutdown(GUI::ScreenSDL *screen)
+{
 	SDL_Surface *sdlscreen = screen->getSurface();
 	render.src.bpp = saved_bpp;
 
@@ -599,7 +600,8 @@ public:
 /*********************************************************************************************************************/
 /* UI control functions */
 
-static void UI_Execute(GUI::ScreenSDL *screen) {
+static void UI_Execute(GUI::ScreenSDL *screen)
+{
 	SDL_Surface *sdlscreen = screen->getSurface();
 	new ConfigurationWindow(screen, 30, 30, "DOSBox Configuration");
 

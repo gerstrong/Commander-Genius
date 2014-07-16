@@ -52,16 +52,12 @@ FusionMenu( GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) )
     mpFPSSelection = new CGUINumberControl( "FPS", 10, 120, 10, 60, 0, false );
     mpMenuDialog->addControl( mpFPSSelection, GsRect<float>(0.2f, 0.2f, 0.6f, 0.05f) );
 
-    /*mpGameResSelection = new CGUIComboSelection( "GameRes",
-        filledStrList(1, "?x?") );
-    mpMenuDialog->addControl( mpGameResSelection, GsRect<float>(0.2f, 0.25f, 0.6f, 0.05f) );*/
-
 #if !defined(EMBEDDED)
 
     mpAspectSelection = new CGUIComboSelection( "Aspect",
         filledStrList(1, "disabled") );
 
-    mpMenuDialog->addControl( mpAspectSelection, GsRect<float>(0.2f, 0.3f, 0.6f, 0.05f) );
+    mpMenuDialog->addControl( mpAspectSelection, GsRect<float>(0.2f, 0.25f, 0.6f, 0.05f) );
 
     mpFilterSelection =
             new CGUIComboSelection( "Filter",
@@ -70,32 +66,29 @@ FusionMenu( GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) )
                                   "scale3x",
                                   "scale4x" ) );
 
-    mpMenuDialog->addControl( mpFilterSelection, GsRect<float>(0.2f, 0.35f, 0.6f, 0.05f) );
+    mpMenuDialog->addControl( mpFilterSelection, GsRect<float>(0.2f, 0.30f, 0.6f, 0.05f) );
 
     mpVSyncSwitch = new CGUISwitch( "VSync" );
-    mpMenuDialog->addControl( mpVSyncSwitch, GsRect<float>(0.2f, 0.6f, 0.40f, 0.05f) );
+    mpMenuDialog->addControl( mpVSyncSwitch, GsRect<float>(0.2f, 0.6f, 0.35f, 0.05f) );
 
     mpResolutionSelection = new CGUIComboSelection( "Size",
         filledStrList(1, "?x?") );
-    mpMenuDialog->addControl( mpResolutionSelection, GsRect<float>(0.2f, 0.45f, 0.6f, 0.05f) );
+    mpMenuDialog->addControl( mpResolutionSelection, GsRect<float>(0.2f, 0.30f, 0.6f, 0.05f) );
 
     mpFullScreenSwitch = new GsButton( "Unknown mode",
                                         new toggleFullscreenFunctor(*this) );
-    mpMenuDialog->addControl( mpFullScreenSwitch, GsRect<float>(0.2f, 0.5f, 0.6f, 0.05f) );
+    mpMenuDialog->addControl( mpFullScreenSwitch, GsRect<float>(0.2f, 0.35f, 0.6f, 0.05f) );
 #endif
 
 #if defined(USE_OPENGL)
     mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
-    mpMenuDialog->addControl( mpOpenGLSwitch, GsRect<float>(0.2f, 0.55f, 0.6f, 0.05f) );
+    mpMenuDialog->addControl( mpOpenGLSwitch, GsRect<float>(0.2f, 0.45f, 0.6f, 0.05f) );
 
     mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
         filledStrList( 2, "nearest", "linear" ) );
-    mpMenuDialog->addControl( mpOGLFilterSelection, GsRect<float>(0.2f, 0.6f, 0.6f, 0.05f) );
+    mpMenuDialog->addControl( mpOGLFilterSelection, GsRect<float>(0.2f, 0.50f, 0.6f, 0.05f) );
 #endif
 
-
-    mpSFXSwitch = new CGUISwitch( "Special FX" );
-    mpMenuDialog->addControl( mpSFXSwitch, GsRect<float>(0.2f, 0.65f, 0.6f, 0.05f) );
 
     refresh();
 }
@@ -105,7 +98,6 @@ void VideoSettings::refresh()
     mUserVidConf = gVideoDriver.getVidConfig();
 
     // Load the config into the GUI
-    // TODO: Temporary. This must become a float later...
     mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
 
 #if defined(USE_OPENGL)
@@ -114,8 +106,6 @@ void VideoSettings::refresh()
     mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==GL_LINEAR ? "linear" : "nearest" );
     mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
 #endif
-
-    mpSFXSwitch->enable( mUserVidConf.m_special_fx );
 
 #if !defined(EMBEDDED)
     mpAspectSelection->setList( aspectList, NUM_ASPECTS );
@@ -143,15 +133,6 @@ void VideoSettings::refresh()
     resStr += itoa(mUserVidConf.m_DisplayRect.h);
     mpResolutionSelection->setSelection(resStr);
 
-
-    /*mpGameResSelection->setList( GamesResList, NUM_GAME_RESOLUTIONS );
-
-    resStr = itoa(mUserVidConf.m_GameRect.w);
-    resStr += "x";
-    resStr += itoa(mUserVidConf.m_GameRect.h);
-    mpGameResSelection->setSelection(resStr);*/
-
-
 #endif
 
 }
@@ -170,15 +151,12 @@ void VideoSettings::release()
 
 
 #if !defined(EMBEDDED)
-    //mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();
     mUserVidConf.vsync = mpVSyncSwitch->isEnabled();
     std::string scalerStr = mpFilterSelection->getSelection();
 
     const std::string res = mpResolutionSelection->getSelection();
     sscanf( res.c_str(), "%hux%hux", &mUserVidConf.m_DisplayRect.w, &mUserVidConf.m_DisplayRect.h );
 
-    /*const std::string GameResStr = mpGameResSelection->getSelection();
-    sscanf( GameResStr.c_str(), "%hux%hux", &mUserVidConf.m_GameRect.w, &mUserVidConf.m_GameRect.h );*/
 
     int w, h;
     const std::string aspect = mpAspectSelection->getSelection();
@@ -212,8 +190,6 @@ void VideoSettings::release()
     mUserVidConf.m_DisplayRect.h = 200;
 #endif
 
-
-    mUserVidConf.m_special_fx = mpSFXSwitch->isEnabled();
 
     // In case the user changed something in the camera settings, reload that.
     mUserVidConf.m_CameraBounds = gVideoDriver.getCameraBounds();

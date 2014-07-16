@@ -13,10 +13,8 @@
 #define CVIDEODRIVER_H_
 
 #include <base/Singleton.h>
-//#include "CVidConfig.h"
 #include <base/video/CVideoEngine.h>
 #include <base/GsEvent.h>
-//#include "common/CMap.h"
 
 #ifdef USE_OPENGL
     #include <base/video/COpenGL.h>
