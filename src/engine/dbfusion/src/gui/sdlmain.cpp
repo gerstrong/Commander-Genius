@@ -885,16 +885,20 @@ void GFX_EndUpdate( const Bit16u *changedLines ) {
 #endif
 	if (!sdl.updating)
 		return;
+
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+
+
 	sdl.updating=false;
 	switch (sdl.desktop.type) {
 	case SCREEN_SURFACE:
-		if (SDL_MUSTLOCK(sdl.surface)) {
+        if (SDL_MUSTLOCK(sfc)) {
 			if (sdl.blit.surface) {
 				SDL_UnlockSurface(sdl.blit.surface);
-				int Blit = SDL_BlitSurface( sdl.blit.surface, 0, sdl.surface, &sdl.clip );
+                int Blit = SDL_BlitSurface( sdl.blit.surface, 0, sfc, &sdl.clip );
 				LOG(LOG_MISC,LOG_WARN)("BlitSurface returned %d",Blit);
 			} else {
-				SDL_UnlockSurface(sdl.surface);
+                SDL_UnlockSurface(sfc);
 			}
 //			SDL_Flip(sdl.surface);
 		} else if (changedLines) {
@@ -909,8 +913,8 @@ void GFX_EndUpdate( const Bit16u *changedLines ) {
 					rect->w = (Bit16u)sdl.draw.width;
 					rect->h = changedLines[index];
 #if 0
-					if (rect->h + rect->y > sdl.surface->h) {
-						LOG_MSG("WTF %d +  %d  >%d",rect->h,rect->y,sdl.surface->h);
+                    if (rect->h + rect->y > sfc->h) {
+                        LOG_MSG("WTF %d +  %d  >%d",rect->h,rect->y,sfc->h);
 					}
 #endif
 					y += changedLines[index];
@@ -925,7 +929,7 @@ void GFX_EndUpdate( const Bit16u *changedLines ) {
 	case SCREEN_SURFACE_DDRAW:
 		SDL_UnlockSurface(sdl.blit.surface);
 		ret=IDirectDrawSurface3_Blt(
-			sdl.surface->hwdata->dd_writebuf,&sdl.blit.rect,
+            sfc->hwdata->dd_writebuf,&sdl.blit.rect,
 			sdl.blit.surface->hwdata->dd_surface,0,
 			DDBLT_WAIT, NULL);
 		switch (ret) {
@@ -933,12 +937,12 @@ void GFX_EndUpdate( const Bit16u *changedLines ) {
 			break;
 		case DDERR_SURFACELOST:
 			IDirectDrawSurface3_Restore(sdl.blit.surface->hwdata->dd_surface);
-			IDirectDrawSurface3_Restore(sdl.surface->hwdata->dd_surface);
+            IDirectDrawSurface3_Restore(sfc->hwdata->dd_surface);
 			break;
 		default:
 			LOG_MSG("DDRAW:Failed to blit, error %X",ret);
 		}
-		SDL_Flip(sdl.surface);
+        SDL_Flip(sfc);
 		break;
 #endif
     /*case SCREEN_OVERLAY:
@@ -997,10 +1001,13 @@ void GFX_SetPalette(Bitu start,Bitu count,GFX_PalEntry * entries) {
 }
 
 Bitu GFX_GetRGB(Bit8u red,Bit8u green,Bit8u blue) {
+
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+
 	switch (sdl.desktop.type) {
 	case SCREEN_SURFACE:
 	case SCREEN_SURFACE_DDRAW:
-		return SDL_MapRGB(sdl.surface->format,red,green,blue);
+        return SDL_MapRGB(sfc->format,red,green,blue);
 	case SCREEN_OVERLAY:
 		{
 			Bit8u y =  ( 9797*(red) + 19237*(green) +  3734*(blue) ) >> 15;
@@ -1252,11 +1259,12 @@ static void GUI_StartUp(Section * sec) {
     //sdl.overlay=0;
 
     sdl.surface = gVideoDriver.getBlitSurface();
+    SDL_Surface *sfc = sdl.surface;
 
 #if C_OPENGL
    if(sdl.desktop.want_type==SCREEN_OPENGL){ /* OPENGL is requested */
 //	sdl.surface=SDL_SetVideoMode(640,400,0,SDL_OPENGL);
-	if (sdl.surface == NULL) {
+    if (sfc == NULL) {
 		LOG_MSG("Could not initialize OpenGL, switching back to surface");
 		sdl.desktop.want_type=SCREEN_SURFACE;
 	} else {
@@ -1288,8 +1296,8 @@ static void GUI_StartUp(Section * sec) {
 	/* Initialize screen for first time */
 //	sdl.surface=SDL_SetVideoMode(640,400,0,0);
 
-	if (sdl.surface == NULL) E_Exit("Could not initialize video: %s",SDL_GetError());
-	sdl.desktop.bpp=sdl.surface->format->BitsPerPixel;
+    if (sfc == NULL) E_Exit("Could not initialize video: %s",SDL_GetError());
+    sdl.desktop.bpp=sfc->format->BitsPerPixel;
 	if (sdl.desktop.bpp==24) {
 		LOG_MSG("SDL:You are running in 24 bpp mode, this will slow down things!");
 	}
@@ -1344,24 +1352,24 @@ static void GUI_StartUp(Section * sec) {
 			if (exit_splash) break;
 
 			if (ct<1) {
-				SDL_FillRect(sdl.surface, NULL, SDL_MapRGB(sdl.surface->format, 0, 0, 0));
+                SDL_FillRect(sfc, NULL, SDL_MapRGB(sfc->format, 0, 0, 0));
 //				SDL_SetAlpha(splash_surf, SDL_SRCALPHA,255);
-				SDL_BlitSurface(splash_surf, NULL, sdl.surface, NULL);
-    //			SDL_Flip(sdl.surface);
+                SDL_BlitSurface(splash_surf, NULL, sfc, NULL);
+    //			SDL_Flip(sfc);
 			} else if (ct>=max_splash_loop-splash_fade) {
 				if (use_fadeout) {
-					SDL_FillRect(sdl.surface, NULL, SDL_MapRGB(sdl.surface->format, 0, 0, 0));
+                    SDL_FillRect(sfc, NULL, SDL_MapRGB(sfc->format, 0, 0, 0));
         //			SDL_SetAlpha(splash_surf, SDL_SRCALPHA, (Bit8u)((max_splash_loop-1-ct)*255/(splash_fade-1)));
-					SDL_BlitSurface(splash_surf, NULL, sdl.surface, NULL);
-            //		SDL_Flip(sdl.surface);
+                    SDL_BlitSurface(splash_surf, NULL, sfc, NULL);
+            //		SDL_Flip(sfc);
 				}
 			}
 
 		}
 
     /*	if (use_fadeout) {
-			SDL_FillRect(sdl.surface, NULL, SDL_MapRGB(sdl.surface->format, 0, 0, 0));
-			SDL_Flip(sdl.surface);
+            SDL_FillRect(sfc, NULL, SDL_MapRGB(sfc->format, 0, 0, 0));
+            SDL_Flip(sfc);
         }*/
 		SDL_FreeSurface(splash_surf);
 		delete [] tmpbufp;
