@@ -824,7 +824,7 @@ bool GFX_StartUpdate(Bit8u * & pixels,Bitu & pitch) {
 	if (!sdl.active || sdl.updating)
 		return false;
 
-//    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
 
 
 	switch (sdl.desktop.type) {
@@ -835,12 +835,12 @@ bool GFX_StartUpdate(Bit8u * & pixels,Bitu & pitch) {
 			pixels=(Bit8u *)sdl.blit.surface->pixels;
 			pitch=sdl.blit.surface->pitch;
 		} else {
-			if (SDL_MUSTLOCK(sdl.surface) && SDL_LockSurface(sdl.surface))
+            if (SDL_MUSTLOCK(sfc) && SDL_LockSurface(sfc))
 				return false;
-			pixels=(Bit8u *)sdl.surface->pixels;
-			pixels+=sdl.clip.y*sdl.surface->pitch;
-			pixels+=sdl.clip.x*sdl.surface->format->BytesPerPixel;
-			pitch=sdl.surface->pitch;
+            pixels=(Bit8u *)sfc->pixels;
+            pixels+=sdl.clip.y*sfc->pitch;
+            pixels+=sdl.clip.x*sfc->format->BytesPerPixel;
+            pitch=sfc->pitch;
 		}
 		sdl.updating=true;
 		return true;
