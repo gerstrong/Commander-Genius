@@ -1718,7 +1718,7 @@ void Config_Add_SDL() {
 }
 
 static void show_warning(char const * const message) {
-	bool textonly = true;
+    /*bool textonly = true;
 #ifdef WIN32
 	textonly = false;
 	if ( !sdl.inited && SDL_Init(SDL_INIT_VIDEO|SDL_INIT_NOPARACHUTE) < 0 ) textonly = true;
@@ -1757,7 +1757,7 @@ static void show_warning(char const * const message) {
 
 	SDL_BlitSurface(splash_surf, NULL, sdl.surface, NULL);
 //	SDL_Flip(sdl.surface);
-	SDL_Delay(12000);
+    SDL_Delay(12000);*/
 }
 
 static void launcheditor() {
