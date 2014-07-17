@@ -418,7 +418,7 @@ static SDL_Surface * GFX_SetupSurfaceScaled(Bit32u sdl_flags, Bit32u bpp) {
         //sdl_flags |= SDL_HWSURFACE;
 	}
 
-    sdl.surface = nullptr;
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
 
 	if (fixedWidth && fixedHeight) {
 		double ratio_w=(double)fixedWidth/(sdl.draw.width*sdl.draw.scalex);
@@ -441,14 +441,16 @@ static SDL_Surface * GFX_SetupSurfaceScaled(Bit32u sdl_flags, Bit32u bpp) {
 			sdl.clip.x = 0;
 			sdl.clip.y = 0;
 		}
-		return sdl.surface;
+        //return sdl.surface;
 	} else {
 		sdl.clip.x=0;sdl.clip.y=0;
 		sdl.clip.w=(Bit16u)(sdl.draw.width*sdl.draw.scalex);
 		sdl.clip.h=(Bit16u)(sdl.draw.height*sdl.draw.scaley);
         //sdl.surface=SDL_SetVideoMode(sdl.clip.w,sdl.clip.h,bpp,sdl_flags);
-		return sdl.surface;
+        //return sdl.surface;
 	}
+
+    return sfc;
 }
 
 void GFX_TearDown(void) {
@@ -478,6 +480,9 @@ Bitu GFX_SetSize(Bitu width,Bitu height,Bitu flags,double scalex,double scaley,G
 		SDL_FreeSurface(sdl.blit.surface);
 		sdl.blit.surface=0;
 	}
+
+    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+
 	switch (sdl.desktop.want_type) {
 	case SCREEN_SURFACE:
 dosurface:
@@ -489,8 +494,6 @@ dosurface:
 		sdl.clip.w=width;
 		sdl.clip.h=height;
 
-        //sdl.surface = nullptr;
-
 		if (sdl.desktop.fullscreen) {
 			if (sdl.desktop.full.fixed) {
 				sdl.clip.x=(Sint16)((sdl.desktop.full.width-width)/2);
@@ -498,20 +501,20 @@ dosurface:
                 /*sdl.surface=SDL_SetVideoMode(sdl.desktop.full.width,sdl.desktop.full.height,bpp,
 					SDL_FULLSCREEN | ((flags & GFX_CAN_RANDOM) ? SDL_SWSURFACE : SDL_HWSURFACE) |
                     (sdl.desktop.doublebuf ? SDL_DOUBLEBUF|SDL_ASYNCBLIT : 0) | SDL_HWPALETTE);*/
-				if (sdl.surface == NULL) E_Exit("Could not set fullscreen video mode %ix%i-%i: %s",sdl.desktop.full.width,sdl.desktop.full.height,bpp,SDL_GetError());
+                if (sfc == NULL) E_Exit("Could not set fullscreen video mode %ix%i-%i: %s",sdl.desktop.full.width,sdl.desktop.full.height,bpp,SDL_GetError());
 			} else {
 				sdl.clip.x=0;sdl.clip.y=0;
                 /*sdl.surface=SDL_SetVideoMode(width,height,bpp,
 					SDL_FULLSCREEN | ((flags & GFX_CAN_RANDOM) ? SDL_SWSURFACE : SDL_HWSURFACE) |
                     (sdl.desktop.doublebuf ? SDL_DOUBLEBUF|SDL_ASYNCBLIT  : 0)|SDL_HWPALETTE);*/
-				if (sdl.surface == NULL)
+                if (sfc == NULL)
 					E_Exit("Could not set fullscreen video mode %ix%i-%i: %s",(int)width,(int)height,bpp,SDL_GetError());
 			}
 		} else {
 			sdl.clip.x=0;sdl.clip.y=0;
             //sdl.surface=SDL_SetVideoMode(width,height,bpp,(flags & GFX_CAN_RANDOM) ? SDL_SWSURFACE : SDL_HWSURFACE);
 #ifdef WIN32
-			if (sdl.surface == NULL) {
+            if (sfc == NULL) {
 				SDL_QuitSubSystem(SDL_INIT_VIDEO);
 				if (!sdl.using_windib) {
 					LOG_MSG("Failed to create hardware surface.\nRestarting video subsystem with windib enabled.");
@@ -525,14 +528,14 @@ dosurface:
 				SDL_InitSubSystem(SDL_INIT_VIDEO);
 				GFX_SetIcon(); //Set Icon again
                 //sdl.surface = SDL_SetVideoMode(width,height,bpp,SDL_HWSURFACE);
-				if(sdl.surface) GFX_SetTitle(-1,-1,false); //refresh title.
+                if(sfc) GFX_SetTitle(-1,-1,false); //refresh title.
 			}
 #endif
-			if (sdl.surface == NULL)
+            if (sfc == NULL)
 				E_Exit("Could not set windowed video mode %ix%i-%i: %s",(int)width,(int)height,bpp,SDL_GetError());
 		}
-		if (sdl.surface) {
-			switch (sdl.surface->format->BitsPerPixel) {
+        if (sfc) {
+            switch (sfc->format->BitsPerPixel) {
 			case 8:
 				retFlags = GFX_CAN_8;
                 break;
@@ -574,10 +577,10 @@ dosurface:
 		sdl.blit.rect.right=sdl.clip.x+sdl.clip.w;
 		sdl.blit.rect.bottom=sdl.clip.y+sdl.clip.h;
 		sdl.blit.surface=SDL_CreateRGBSurface(SDL_HWSURFACE,sdl.draw.width,sdl.draw.height,
-				sdl.surface->format->BitsPerPixel,
-				sdl.surface->format->Rmask,
-				sdl.surface->format->Gmask,
-				sdl.surface->format->Bmask,
+                sfc->format->BitsPerPixel,
+                sfc->format->Rmask,
+                sfc->format->Gmask,
+                sfc->format->Bmask,
 				0);
 		if (!sdl.blit.surface || (!sdl.blit.surface->flags&SDL_HWSURFACE)) {
 			if (sdl.blit.surface) {
@@ -587,7 +590,7 @@ dosurface:
 			LOG_MSG("Failed to create ddraw surface, back to normal surface.");
 			goto dosurface;
 		}
-		switch (sdl.surface->format->BitsPerPixel) {
+        switch (sfc->format->BitsPerPixel) {
 		case 15:
 			retFlags = GFX_CAN_15 | GFX_SCALING | GFX_HARDWARE;
 			break;
@@ -637,7 +640,7 @@ dosurface:
 		SDL_GL_SetAttribute( SDL_GL_SWAP_CONTROL, 0 );
 #endif
 //		GFX_SetupSurfaceScaled(SDL_OPENGL,0);
-		if (!sdl.surface || sdl.surface->format->BitsPerPixel<15) {
+        if (!sfc || sfc->format->BitsPerPixel<15) {
 			LOG_MSG("SDL:OPENGL:Can't open drawing surface, are you running in 16bpp(or higher) mode?");
 			goto dosurface;
 		}
@@ -820,6 +823,10 @@ void GFX_RestoreMode(void) {
 bool GFX_StartUpdate(Bit8u * & pixels,Bitu & pitch) {
 	if (!sdl.active || sdl.updating)
 		return false;
+
+//    SDL_Surface *sfc = gVideoDriver.getBlitSurface();
+
+
 	switch (sdl.desktop.type) {
 	case SCREEN_SURFACE:
 		if (sdl.blit.surface) {
