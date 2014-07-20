@@ -2,6 +2,7 @@
 #include "settingsmenu.h"
 
 #include <base/GsEvent.h>
+#include <base/CInput.h>
 
 
 namespace dbfusion
@@ -10,6 +11,7 @@ namespace dbfusion
 int mapperRun(void*)
 {
     MAPPER_RunInternal();
+    return 0;
 }
 
 
@@ -25,8 +27,6 @@ MainMenu::MainMenu() : FusionMenu(GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f))
     mpMenuDialog->addControl(new GsButton( "Configure",
                                             new OpenMenuEvent( new SettingsMenu() ) ),
                                                 GsRect<float>(0.2f, 0.4f, 0.6f, 0.05f) );
-
-
 
 }
 

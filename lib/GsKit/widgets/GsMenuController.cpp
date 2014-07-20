@@ -7,6 +7,7 @@
 
 #include "GsMenuController.h"
 #include <base/CInput.h>
+#include <cassert>
 
 void CMenuController::clearMenuStack()
 {
@@ -26,7 +27,7 @@ void CMenuController::pumpEvent(const CEvent *evPtr)
         menu.select(1);
 
         if( !mMenuStack.empty() )
-        menu.setProperty( CBaseMenu::CANGOBACK );
+            menu.setProperty( CBaseMenu::CANGOBACK );
 
         mMenuStack.push_back( openMenu->mMenuDialogPointer );
     }
@@ -52,6 +53,9 @@ void CMenuController::ponder(const float deltaT)
 
 void CMenuController::popBackMenu()
 {
+    // This should not be called when menu stack is empty
+    assert(!mMenuStack.empty());
+
     mMenuStack.back()->release();
     mMenuStack.pop_back();
     

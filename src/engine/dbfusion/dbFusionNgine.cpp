@@ -123,6 +123,15 @@ void DBFusionEngine::ponder(const float deltaT)
                 GsWeakSurface blit(gVideoDriver.getBlitSurface());
                 mBackbuffer.createCopy(blit);
             }
+            else
+            {
+                // Well, send the event again, while menu is open,
+                // let's send it towards to dosfusion
+                //gEventManager.add( new BackButtonSendDosFusion() );
+                //mMenuLocked = true;
+                gInput.pushBackButtonEventExtEng();
+                gEventManager.add(new CloseMenuEvent());
+            }
         }
     }
 

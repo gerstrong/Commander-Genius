@@ -1601,9 +1601,14 @@ void CInput::pushBackButtonEventExtEng()
         return;
     }
 
-    for( SDL_Event &ev : mBackEventBuffer )
+    // Take one event and send an down and up event
+    for( SDL_Event ev : mBackEventBuffer )
     {
+        ev.type = SDL_KEYDOWN;
         mSDLEventVec.push_back(ev);
+        ev.type = SDL_KEYUP;
+        mSDLEventVec.push_back(ev);
+        break;
     }
 
     mBackEventBuffer.clear();
