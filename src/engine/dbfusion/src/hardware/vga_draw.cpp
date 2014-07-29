@@ -1532,7 +1532,8 @@ void VGA_SetupDrawing(Bitu /*val*/) {
 		PIC_RemoveEvents(VGA_VerticalTimer);
 		PIC_RemoveEvents(VGA_PanningLatch);
 		PIC_RemoveEvents(VGA_DisplayStartLatch);
-		VGA_VerticalTimer(0);
+
+		VGA_VerticalTimer(0);        
 	}
 
 #if C_DEBUG
