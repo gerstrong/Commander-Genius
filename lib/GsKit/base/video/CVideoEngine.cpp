@@ -172,32 +172,6 @@ void CVideoEngine::updateAspectRect(const GsRect<Uint16>& displayRes, const int 
     mAspectCorrectionRect.y = (displayRes.h-mAspectCorrectionRect.h)/2;
 }
 
-/*SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode)
-{
-	SDL_Surface *temporary, *optimized;
-
-    temporary = SDL_CreateRGBSurface( mode, width, height, bpp, 0, 0, 0, 0);
-
-    //if(!BlitSurface)
-    {
-       return temporary;
-    }
-
-    SDL_Surface *gameSfc = mGameSfc.getSDLSurface();
-
-    optimized = SDL_ConvertSurface(temporary, gameSfc->format, gameSfc->flags );
-
-    SDL_FreeSurface(temporary);
-
-	if (!optimized)
-	{
-		gLogging.textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
-		return NULL;
-	}
-
-	bpp = optimized->format->BitsPerPixel;
-	return optimized;
-}*/
 
 
 bool CVideoEngine::createSurfaces()
@@ -211,7 +185,6 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
     gLogging.ftextOut("Blitsurface creation of %dx%d!\n<br>",
                      gamerect.w, gamerect.h );
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
     mGameSfc.create(m_Mode, gamerect.w, gamerect.h, RES_BPP,
                     0x00FF0000,
                     0x0000FF00,
@@ -220,14 +193,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_SetSurfaceBlendMode(mGameSfc.getSDLSurface(), SDL_BLENDMODE_NONE);
 #endif
-/*#else
-    mGameSfc.create(m_Mode, gamerect.w, gamerect.h, RES_BPP,
-                    0x00FF0000,
-                    0x0000FF00,
-                    0x000000FF,
-                    0x00000000);
 
-#endif*/
 
 
     const int squareSize = getPowerOfTwo( gamerect.h > gamerect.w ? gamerect.h : gamerect.w );
@@ -262,8 +228,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
         mpScreenSfc = &mGameSfc;
     }
 
-    initOverlaySurface(blit->w, blit->h);
-
+    initOverlaySurface(blit->w, blit->h);       
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     mpSdlTexture.reset( SDL_CreateTexture(renderer,

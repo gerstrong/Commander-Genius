@@ -102,10 +102,14 @@ GalaxyMenu(GsRect<float>(0.15f, 0.24f, 0.65f, 0.55f) )
     mpOpenGLSwitch = new Switch( "OpenGL" );
     mpMenuDialog->addControl( mpOpenGLSwitch );
 
-    mpOGLFilterSelection = new ComboSelection( "OGL Filter",
+    mpRenderScaleQualitySel = new ComboSelection( "Quality",
         filledStrList( 2, "nearest", "linear" ) );
-    mpMenuDialog->addControl( mpOGLFilterSelection );
+#else
+    mpRenderScaleQualitySel = new ComboSelection( "Quality",
+        filledStrList( 3, "nearest", "linear", "best" ) );
 #endif
+
+    mpMenuDialog->addControl( mpRenderScaleQualitySel );
 
 
     mpSFXSwitch = new Switch( "Special FX" );
@@ -124,12 +128,11 @@ void CVideoSettings::refresh()
 	// TODO: Temporary. This must become a float later...
 	mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
 
-#if defined(USE_OPENGL)
-    //std::string OGLFilterStr;
+#if defined(USE_OPENGL)    
 	mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
-	mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==GL_LINEAR ? "linear" : "nearest" );
-	mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
 #endif
+
+    mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
 
 	mpSFXSwitch->enable( mUserVidConf.m_special_fx );	
 
@@ -181,10 +184,10 @@ void CVideoSettings::release()
 	gTimer.setFPS( mpFPSSelection->getSelection() );
 
 #if defined(USE_OPENGL)
-	mUserVidConf.m_opengl_filter = mpOGLFilterSelection->getSelection() == "linear" ? GL_LINEAR : GL_NEAREST;
     mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
 #endif
 
+    mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 	
 #if !defined(EMBEDDED)	
 	//mUserVidConf.m_aspect_correction = mpAspectSwitch->isEnabled();	

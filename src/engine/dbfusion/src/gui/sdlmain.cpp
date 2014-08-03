@@ -619,7 +619,7 @@ dosurface:
 		sdl.desktop.type=SCREEN_OVERLAY;
 		retFlags = GFX_CAN_32 | GFX_SCALING | GFX_HARDWARE;
         break;*/
-#if C_OPENGL
+/*#if C_OPENGL
 	case SCREEN_OPENGL:
 	{
 		if (sdl.opengl.pixel_buffer_object) {
@@ -643,9 +643,9 @@ dosurface:
         if (!sfc || sfc->format->BitsPerPixel<15) {
 			LOG_MSG("SDL:OPENGL:Can't open drawing surface, are you running in 16bpp(or higher) mode?");
 			goto dosurface;
-		}
+        }*/
 		/* Create the texture and display list */
-		if (sdl.opengl.pixel_buffer_object) {
+/*		if (sdl.opengl.pixel_buffer_object) {
 			glGenBuffersARB(1, &sdl.opengl.buffer);
 			glBindBufferARB(GL_PIXEL_UNPACK_BUFFER_EXT, sdl.opengl.buffer);
 			glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_EXT, width*height*4, NULL, GL_STREAM_DRAW_ARB);
@@ -708,7 +708,7 @@ dosurface:
 			retFlags |= GFX_HARDWARE;
 	break;
 		}//OPENGL
-#endif	//C_OPENGL
+#endif	//C_OPENGL*/
 	default:
 		goto dosurface;
 		break;
@@ -949,7 +949,7 @@ void GFX_EndUpdate( const Bit16u *changedLines ) {
 		SDL_UnlockYUVOverlay(sdl.overlay);
 		SDL_DisplayYUVOverlay(sdl.overlay,&sdl.clip);
         break;*/
-#if C_OPENGL
+/*#if C_OPENGL
 	case SCREEN_OPENGL:
 		if (sdl.opengl.pixel_buffer_object) {
 			glUnmapBufferARB(GL_PIXEL_UNPACK_BUFFER_EXT);
@@ -980,7 +980,7 @@ void GFX_EndUpdate( const Bit16u *changedLines ) {
     //		SDL_GL_SwapBuffers();
 		}
 		break;
-#endif
+#endif*/
 	default:
 		break;
 	}
@@ -1261,8 +1261,8 @@ static void GUI_StartUp(Section * sec) {
     sdl.surface = gVideoDriver.getBlitSurface();
     SDL_Surface *sfc = sdl.surface;
 
-#if C_OPENGL
-   if(sdl.desktop.want_type==SCREEN_OPENGL){ /* OPENGL is requested */
+/*#if C_OPENGL
+   if(sdl.desktop.want_type==SCREEN_OPENGL){ // OPENGL is requested
 //	sdl.surface=SDL_SetVideoMode(640,400,0,SDL_OPENGL);
     if (sfc == NULL) {
 		LOG_MSG("Could not initialize OpenGL, switching back to surface");
@@ -1272,15 +1272,15 @@ static void GUI_StartUp(Section * sec) {
 	sdl.opengl.framebuf=0;
 	sdl.opengl.texture=0;
 	sdl.opengl.displaylist=0;
-	glGetIntegerv (GL_MAX_TEXTURE_SIZE, &sdl.opengl.max_texsize);
+//	glGetIntegerv (GL_MAX_TEXTURE_SIZE, &sdl.opengl.max_texsize);
 	glGenBuffersARB = (PFNGLGENBUFFERSARBPROC)SDL_GL_GetProcAddress("glGenBuffersARB");
 	glBindBufferARB = (PFNGLBINDBUFFERARBPROC)SDL_GL_GetProcAddress("glBindBufferARB");
 	glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)SDL_GL_GetProcAddress("glDeleteBuffersARB");
 	glBufferDataARB = (PFNGLBUFFERDATAARBPROC)SDL_GL_GetProcAddress("glBufferDataARB");
 	glMapBufferARB = (PFNGLMAPBUFFERARBPROC)SDL_GL_GetProcAddress("glMapBufferARB");
 	glUnmapBufferARB = (PFNGLUNMAPBUFFERARBPROC)SDL_GL_GetProcAddress("glUnmapBufferARB");
-	const char * gl_ext = (const char *)glGetString (GL_EXTENSIONS);
-	if(gl_ext && *gl_ext){
+//	const char * gl_ext = (const char *)glGetString (GL_EXTENSIONS);
+    if(gl_ext && *gl_ext){
 		sdl.opengl.packed_pixel=(strstr(gl_ext,"EXT_packed_pixels") > 0);
 		sdl.opengl.paletted_texture=(strstr(gl_ext,"EXT_paletted_texture") > 0);
 		sdl.opengl.pixel_buffer_object=(strstr(gl_ext,"GL_ARB_pixel_buffer_object") >0 ) &&
@@ -1288,11 +1288,11 @@ static void GUI_StartUp(Section * sec) {
 		    glMapBufferARB && glUnmapBufferARB;
     	} else {
 		sdl.opengl.packed_pixel=sdl.opengl.paletted_texture=false;
+    }
 	}
-	}
-	} /* OPENGL is requested end */
+    } // OPENGL is requested end
 
-#endif	//OPENGL
+#endif	//OPENGL*/
 	/* Initialize screen for first time */
 //	sdl.surface=SDL_SetVideoMode(640,400,0,0);
 

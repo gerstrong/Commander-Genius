@@ -106,9 +106,7 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 
 bool COpenGL::init()
 {
-	CVideoEngine::init();
-	const GLint oglfilter = m_VidConfig.m_opengl_filter;
-
+	CVideoEngine::init();	
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
@@ -167,6 +165,12 @@ bool COpenGL::init()
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
     
+
+    GLint oglfilter = GL_LINEAR;
+    if(m_VidConfig.mRenderScQuality == "nearest")
+        const GLint oglfilter = GL_NEAREST;
+
+
     createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
 	
 	if(m_VidConfig.m_ScaleXFilter <= 1)
@@ -213,10 +217,7 @@ bool COpenGL::init()
 	{ // In that case we can do a texture based rendering
 	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
 	} 
-    /*else
-	{
-	  createTexture(m_texFX, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h, true);
-    }*/
+
 #endif
 	
 	// If there were any errors

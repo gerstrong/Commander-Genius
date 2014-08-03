@@ -12,8 +12,9 @@
 #define CVIDCONFIG_H_
 
 #include <SDL.h>
-//#include "hardware/Configurator.h"
 #include <base/video/scaler/CScaler.h>
+
+#include <string>
 
 const unsigned int RES_BPP = 32;
 
@@ -65,9 +66,7 @@ public:
 
 	st_camera_bounds m_CameraBounds;
 
-#if defined(USE_OPENGL)
-	GLint m_opengl_filter;
-#endif
+    std::string mRenderScQuality;
 	
 };
 

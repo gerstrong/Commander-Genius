@@ -84,11 +84,14 @@ FusionMenu( GsRect<float>(0.0f, 0.0f, 1.0f, 1.0f) )
     mpOpenGLSwitch = new CGUISwitch( "OpenGL" );
     mpMenuDialog->addControl( mpOpenGLSwitch, GsRect<float>(0.2f, 0.45f, 0.6f, 0.05f) );
 
-    mpOGLFilterSelection = new CGUIComboSelection( "OGL Filter",
+    mpRenderScaleQualitySel = new CGUIComboSelection( "Quality",
         filledStrList( 2, "nearest", "linear" ) );
-    mpMenuDialog->addControl( mpOGLFilterSelection, GsRect<float>(0.2f, 0.50f, 0.6f, 0.05f) );
+#else
+    mpRenderScaleQualitySel = new CGUIComboSelection( "Quality",
+        filledStrList( 3, "nearest", "linear", "best" ) );
 #endif
 
+    mpMenuDialog->addControl( mpRenderScaleQualitySel, GsRect<float>(0.2f, 0.50f, 0.6f, 0.05f) );
 
     refresh();
 }
@@ -101,11 +104,10 @@ void VideoSettings::refresh()
     mpFPSSelection->setSelection( static_cast<int>( gTimer.FPS() ) );
 
 #if defined(USE_OPENGL)
-    //std::string OGLFilterStr;
-    mpOpenGLSwitch->enable( mUserVidConf.m_opengl );
-    mpOGLFilterSelection->setSelection( mUserVidConf.m_opengl_filter==GL_LINEAR ? "linear" : "nearest" );
-    mpOGLFilterSelection->enable( mUserVidConf.m_opengl );
+    mpOpenGLSwitch->enable( mUserVidConf.m_opengl );    
 #endif
+
+    mpRenderScaleQualitySel->setSelection(mUserVidConf.mRenderScQuality);
 
 #if !defined(EMBEDDED)
     mpAspectSelection->setList( aspectList, NUM_ASPECTS );
@@ -145,9 +147,10 @@ void VideoSettings::release()
     gTimer.setFPS( mpFPSSelection->getSelection() );
 
 #if defined(USE_OPENGL)
-    mUserVidConf.m_opengl_filter = mpOGLFilterSelection->getSelection() == "linear" ? GL_LINEAR : GL_NEAREST;
     mUserVidConf.m_opengl = mpOpenGLSwitch->isEnabled();
 #endif
+
+    mUserVidConf.mRenderScQuality = mpRenderScaleQualitySel->getSelection();
 
 
 #if !defined(EMBEDDED)

@@ -28,9 +28,10 @@ private:
     CGUINumberControl	*mpFPSSelection;
 
 #if defined(USE_OPENGL)
-    CGUISwitch			*mpOpenGLSwitch;
-    CGUIComboSelection	*mpOGLFilterSelection;
+    CGUISwitch			*mpOpenGLSwitch;    
 #endif
+
+    CGUIComboSelection	*mpRenderScaleQualitySel;
 
     CGUIComboSelection	*mpFilterSelection;
     CGUIComboSelection	*mpAspectSelection;

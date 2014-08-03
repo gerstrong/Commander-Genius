@@ -55,7 +55,6 @@ void CVidConfig::reset()
 	Zoom=1;
 
 #ifdef USE_OPENGL
-	m_opengl_filter = GL_LINEAR;
     m_opengl = true;
 #else
     m_opengl = false; // Must stay optional for better compatibility

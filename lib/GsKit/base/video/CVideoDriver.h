@@ -59,8 +59,6 @@ public:
 
 	void blitScrollSurface();
     void updateScrollBuffer(const Sint16 SBufferX, const Sint16 SBufferY);
-    //void updateScrollBuffer(std::shared_ptr<CMap> &map)
-    //{ updateScrollBuffer(*map.get()); }
 	
 	void collectSurfaces();
 	void clearSurfaces();
@@ -101,11 +99,7 @@ public:
     SDL_Surface *convertThroughBlitSfc( SDL_Surface *sfc );
 
 	bool isOpenGL(void) { return m_VidConfig.m_opengl; }
-#ifdef USE_OPENGL
-	unsigned char getOGLFilter(void) { return m_VidConfig.m_opengl_filter; }
-#else
-	unsigned char getOGLFilter(void) { return 0; }
-#endif
+
 	SDL_Surface *getScrollSurface(void);
 
 	void setVidConfig(const CVidConfig& VidConf);
@@ -116,12 +110,12 @@ public:
 	void setScaleType(bool IsNormal);
 	void setZoom(short vale);
 #ifdef USE_OPENGL
-	void enableOpenGL(bool value) { m_VidConfig.m_opengl = value; }
-	void setOGLFilter(GLint value) { m_VidConfig.m_opengl_filter = value; }
+	void enableOpenGL(bool value) { m_VidConfig.m_opengl = value; }	
 #else
 	void enableOpenGL(bool value) { m_VidConfig.m_opengl = false; }
-	void setOGLFilter(unsigned char value) { }
 #endif
+
+    void setRenderQuality(const std::string &value) { m_VidConfig.mRenderScQuality = value; }
 
 	/*
 	 * \brief Check whether this resolution is okay to be used or needs some adjustments if possible.

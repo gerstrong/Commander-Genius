@@ -40,8 +40,8 @@ private:
 
 #if defined(USE_OPENGL)
     Switch			*mpOpenGLSwitch;
-    ComboSelection	*mpOGLFilterSelection;
 #endif
+    ComboSelection	*mpRenderScaleQualitySel;
 
     ComboSelection	*mpFilterSelection;
     ComboSelection	*mpAspectSelection;

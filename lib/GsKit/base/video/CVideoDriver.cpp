@@ -233,6 +233,7 @@ bool CVideoDriver::applyMode()
 		m_VidConfig.Zoom = 1;
 
 	m_VidConfig.m_DisplayRect = *m_Resolution_pos;
+
 	return true;
 }
 

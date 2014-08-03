@@ -20,7 +20,10 @@ bool CSDLVideo::init()
     if(!CVideoEngine::init())
         return false;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)    
+
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, m_VidConfig.mRenderScQuality.c_str());
+
     const int aspW = m_VidConfig.mAspectCorrection.w;
     const int aspH = m_VidConfig.mAspectCorrection.h;
 
