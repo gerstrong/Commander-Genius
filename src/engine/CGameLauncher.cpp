@@ -27,8 +27,6 @@
 #include <fileio/ResourceMgmt.h>
 #include "fileio/KeenFiles.h"
 
-//#include "CResourceLoader.h"
-
 #include "../version.h"
 
 #include <iostream>
@@ -39,6 +37,7 @@
 #include "keen/galaxy/GalaxyEngine.h"
 #include "dbfusion/dbFusionNgine.h"
 
+bool disallowDBFusion = false;
 
 CGameLauncher::CGameLauncher(const bool first_time,
                              const int start_game_no,
@@ -138,8 +137,18 @@ bool CGameLauncher::loadResources()
     mLauncherDialog.addControl(new GsButton( "Start >", new GMStart() ), GsRect<float>(0.65f, 0.865f, 0.3f, 0.07f) );
 
 #ifdef DBFUSION
-    mLauncherDialog.addControl(new GsButton( "DosBox Fusion Shell >", new GMDBFusionStart() ), GsRect<float>(0.01f, 0.865f, 0.3f, 0.07f) );
-    mLauncherDialog.addControl(new GsButton( "Dos Fusion! >", new GMDosGameFusionStart() ), GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
+
+    GsButton *fusionShellBtn = new GsButton( "DosFusion Shell >", new GMDBFusionStart() );
+    GsButton *fusionBtn = new GsButton( "DosFusion! >", new GMDosGameFusionStart() );
+
+    if(disallowDBFusion)
+    {
+        fusionShellBtn->enable(false);
+        fusionBtn->enable(false);
+    }
+
+    mLauncherDialog.addControl( fusionShellBtn, GsRect<float>(0.01f, 0.865f, 0.3f, 0.07f) );
+    mLauncherDialog.addControl( fusionBtn, GsRect<float>(0.35f, 0.865f, 0.3f, 0.07f) );
 #endif
 
     mpEpisodeText = new CGUIText("Game");
@@ -525,6 +534,7 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
     if( dynamic_cast<const GMDBFusionStart*>(evPtr) )
     {
         gEventManager.add( new StartDBFusionEngine() );
+        disallowDBFusion = true;
     }
     else if( dynamic_cast<const GMDosGameFusionStart*>(evPtr) )
     {
@@ -683,6 +693,7 @@ void CGameLauncher::ponderPatchDialog()
     {
         mpDosExecDialog = nullptr;
         gEventManager.add( new StartDBFusionEngine(mExecFilename) );
+        disallowDBFusion = true;
     }
 #endif
 

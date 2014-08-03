@@ -77,18 +77,22 @@ void GsButton::processLogic()
 }
 
 void GsButton::drawNoStyle(SDL_Rect& lRect)
-{
-    if(!mEnabled) // TODO: I think, if it is disabled, it should use another color
-        return;
-
+{        
     GsWeakSurface blitsfc(gVideoDriver.getBlitSurface());
 
     int lComp;
 
-    if( mPressed || mSelected )
-        lComp = 0xFF - (mLightRatio*(0xFF-0xCF)/255);
+    if(mEnabled)
+    {
+        if( mPressed || mSelected )
+            lComp = 0xFF - (mLightRatio*(0xFF-0xCF)/255);
+        else
+            lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);
+    }
     else
-        lComp = 0xFF - (mLightRatio*(0xFF-0xDF)/255);
+    {
+        lComp = 0xFF;
+    }
 
     const Uint32 fillColor = blitsfc.mapRGBA( lComp, lComp, lComp, 0xFF);
 
@@ -96,10 +100,14 @@ void GsButton::drawNoStyle(SDL_Rect& lRect)
 
     blitsfc.drawRect( rect, 1, 0xFFBBBBBB, fillColor );
 
+
 	// Now lets draw the text of the list control
 	GsFont &Font = gGraphics.getFont(mFontID);
 
-    Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h,false );
+    if(mEnabled) // If the button is enabled use the normal text, otherwise the highlighted color
+        Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h, false );
+    else
+        Font.drawFontCentered( blitsfc.getSDLSurface(), mText, lRect.x, lRect.w, lRect.y, lRect.h, true );
 }
 
 void GsButton::processRender(const GsRect<float> &RectDispCoordFloat)

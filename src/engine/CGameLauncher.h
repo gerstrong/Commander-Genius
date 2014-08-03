@@ -58,7 +58,7 @@ class CGameLauncher : public GsEngine
 public:
     CGameLauncher(const bool first_time,
                   const int start_game_no = -1,
-                  const int start_level = -1 );
+                  const int start_level = -1);
 
 	typedef std::vector<std::string> DirList;
 
