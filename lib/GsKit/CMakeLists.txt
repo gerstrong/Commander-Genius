@@ -48,8 +48,6 @@ endif(SDL2)
 #    pkg_check_modules(SDL sdl)
 #ENDIF(BUILD_TARGET STREQUAL WIN32)
 
-Find_Package ( SDL_image REQUIRED )
-
 
 
 #temporary fix for the mingw compilation process
@@ -76,8 +74,6 @@ if(OPENGL)
 endif()
 
 
-
-
 # TODO: From this point we should recursively glob the files. I think it is the easiest way but maybe not the best, I don't know yet.
 
 file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
@@ -92,6 +88,7 @@ if(SDL2_FOUND)
     set(SDL_IMAGE_LIBRARIES "SDL2_image")
     target_link_libraries(GsKit ${SDL_IMAGE_LIBRARIES})
 else(SDL2_FOUND)
+    Find_Package ( SDL_image REQUIRED )
     target_link_libraries(GsKit ${SDL_LIBRARY})
     target_link_libraries(GsKit ${SDLIMAGE_LIBRARY})
 endif(SDL2_FOUND)
