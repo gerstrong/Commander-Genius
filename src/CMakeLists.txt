@@ -232,7 +232,7 @@ if(SDL2)
     include(FindSDL2 OPTIONAL)
 
     if(SDL2_FOUND)
-        message("Using shared SDL Version 2")
+        message(STATUS "Using shared SDL Version 2 for GsKit")
         include_directories(${SDL2_INCLUDE_DIR})
         include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
