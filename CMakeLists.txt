@@ -12,8 +12,6 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 # Generate the README file with the correct version string
 configure_file(README.in README)
 
-set(GAMES_SHAREDIR "/usr/share/games")
-
 
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
 if(UNIX)
