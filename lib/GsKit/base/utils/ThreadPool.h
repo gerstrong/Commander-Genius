@@ -46,8 +46,8 @@ private:
 	Action* nextAction; bool nextIsHeadless; std::string nextName;
 	ThreadPoolItem* nextData;
 	bool quitting;
-	std::set<ThreadPoolItem*> availableThreads;
-	std::set<ThreadPoolItem*> usedThreads;
+    std::set< ThreadPoolItem* > availableThreads;
+    std::set< ThreadPoolItem* > usedThreads;
 	void prepareNewThread();
 	static int threadWrapper(void* param);
 	SDL_mutex* startMutex;

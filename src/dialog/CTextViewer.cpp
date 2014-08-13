@@ -27,12 +27,9 @@ m_timer(0)
 
 	SDL_Surface *temp = CG_CreateRGBSurface( gVideoDriver.getGameResolution().SDLRect() );
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    
-//#else
     mpTextVSfc.reset(gVideoDriver.convertThroughBlitSfc(temp), &SDL_FreeSurface);
-//#endif
-	SDL_FreeSurface(temp);
+
+    SDL_FreeSurface(temp);
 }
 
 void CTextViewer::scrollDown()
@@ -74,8 +71,10 @@ void CTextViewer::setPrevPos()
 {	setPosition(m_linepos-1);	}
 
 void CTextViewer::setPosition(int pos)
-{	if( pos>=0 && pos < (int) m_textline.size() - (m_h/m_8x8tileheight-1) )
-	m_linepos = pos;	}
+{
+    if( pos>=0 && pos < (int) m_textline.size() - (m_h/m_8x8tileheight-1) )
+        m_linepos = pos;
+}
 
 /**
  * \brief 	This function formats the text the way it's correctly shown in the
@@ -96,6 +95,8 @@ void CTextViewer::formatText(const std::string &text)
 		
 		if( mp_text[i] == '\n' )
 		{
+            if(!buf.empty())
+                buf.pop_back();
 			m_textline.push_back(buf);
 			buf.clear();
 			continue;
@@ -116,8 +117,10 @@ void CTextViewer::formatText(const std::string &text)
 		else
 			totlen=buf.size() + getnextwordlength(mp_text.c_str()+i);
 
-		if( totlen > (m_w/m_8x8tilewidth-2) && mp_text[i] != '_' ) // Or does the next fit into the line?
+        if( totlen > (m_w/m_8x8tilewidth-2) && mp_text[i] != '_' ) // Or does the next one fit into the line?
 		{
+            if(!buf.empty())
+                buf.pop_back();
 			m_textline.push_back(buf);
 			buf = "";
 		}
@@ -133,26 +136,24 @@ void CTextViewer::formatText(const std::string &text)
 	
 	// Change the colours to read and grey background, when '~' is detected at the beginning
 	// Also remove the escape sequences
-	std::vector<std::string>::iterator it;
-	for( it = m_textline.begin() ; it != m_textline.end()  ; it++  )
+    for( auto &textitem : m_textline  )
 	{
-		for(unsigned int j=0 ; j < it->size() ; j++ )
+        for(unsigned int j=0 ; j < textitem.size() ; j++ )
 		{
-			if( (*it)[j] == 31 ||
-			   (*it)[j] ==	13 ||
-			   (*it)[j] == 10 )  (*it)[j] = ' ';
+            if(textitem[j] == 31 || textitem[j] ==	13 || textitem[j] == 10 )
+                textitem[j] = ' ';
 		}
 		
-		if( (*it)[0] == '~' )
+        if( textitem[0] == '~' )
 		{
-			for(unsigned int j=1 ; j < it->size() ; j++ )
+            for(unsigned int j=1 ; j < textitem.size() ; j++ )
 			{
-				(*it)[j] += 128;        // Magic number that makes the text red with grey background
-				(*it)[j-1] = (*it)[j];  // Move all the character one unit to the left
+                textitem[j] += 128;        // Magic number that makes the text red with grey background
+                textitem[j-1] = textitem[j];  // Move all the character one unit to the left
 			}
 			
-			while( it->size() < (unsigned int)(m_w/m_8x8tilewidth) ) // if the text is smaller than the width of the textbox, fill it with grey background
-				it->push_back(' ' + 128);
+            while( textitem.size() < (unsigned int)((m_w-1)/m_8x8tilewidth) ) // if the text is smaller than the width of the textbox, fill it with grey background
+                textitem.push_back(' ' + 128);
 		}
 	}
 }
@@ -196,11 +197,13 @@ unsigned char CTextViewer::getnextwordlength(const std::string nextword)
 void CTextViewer::drawTextlines()
 {
 	for(int i=1 ; i<(m_h/m_8x8tileheight) && i<(int)m_textline.size()-m_linepos ; i++)
+    {
 		gGraphics.getFont(1).drawFont(mpTextVSfc.get(),
 									 m_textline[i+m_linepos-1],
-                                     m_x/*+m_8x8tilewidth*/,
+                                     m_x+m_8x8tilewidth,
 									 m_y + (i)*m_8x8tileheight-m_scrollpos,
 									 false);
+    }
 }
 
 // Most common render function for this TextViewer

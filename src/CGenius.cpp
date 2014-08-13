@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 	SetBinaryDir( GetAbsolutePath(binary_dir) );
 
 	InitThreadPool();
-	InitSearchPaths(g_pSettings->getConfigFileName());
+    InitSearchPaths(g_pSettings->getConfigFileName());
 
     gLogging.CreateLogfile("CGLog.html", APP_NAME, CGVERSION);
 

@@ -37,13 +37,14 @@ ThreadPool::~ThreadPool() {
 	nextAction = NULL;
 	quitting = true;
 	SDL_CondBroadcast(awakeThread);
-	for(std::set<ThreadPoolItem*>::iterator i = availableThreads.begin(); i != availableThreads.end(); ++i) {
+    for(auto &threadItem : availableThreads)
+    {
 		SDL_mutexV(mutex);
-		SDL_WaitThread((*i)->thread, NULL);
+        SDL_WaitThread(threadItem->thread, NULL);
 		SDL_mutexP(mutex);
-		SDL_DestroyCond((*i)->finishedSignal);
-		SDL_DestroyCond((*i)->readyForNewWork);
-		delete *i;
+        SDL_DestroyCond(threadItem->finishedSignal);
+        SDL_DestroyCond(threadItem->readyForNewWork);
+        delete threadItem;
 	}
 	availableThreads.clear();
 	SDL_mutexV(mutex);
@@ -62,27 +63,43 @@ void ThreadPool::prepareNewThread() {
 	t->readyForNewWork = SDL_CreateCond();
 	t->finished = false;
 	t->working = false;
-	availableThreads.insert(t);
+
+    availableThreads.insert(t);
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    t->thread = SDL_CreateThread(threadWrapper, "threadWrapper", t);
+    const unsigned int numThreads = availableThreads.size();
+
+    // TODO: This is bad name, We should improve that, and be able to pass real thread names.
+    const std::string threadName = "threadItem" + std::to_string(numThreads);
+
+    SDL_Thread *sdlThread = SDL_CreateThread(threadWrapper, threadName.c_str(), t);
+
+    if(!sdlThread)
+    {
+        gLogging.ftextOut("Thread creation failed: %s\n", SDL_GetError());
+        return;
+    }
+
+    t->thread = sdlThread;
 #else
     t->thread = SDL_CreateThread(threadWrapper, t);
 #endif
 }
 
-int ThreadPool::threadWrapper(void* param) {
+int ThreadPool::threadWrapper(void* param)
+{
 	ThreadPoolItem* data = (ThreadPoolItem*)param;
 
 	SDL_mutexP(data->pool->mutex);
     while(true)
     {
-		while(data->pool->nextAction == NULL && !data->pool->quitting)
+        while(data->pool->nextAction == nullptr && !data->pool->quitting)
 			SDL_CondWait(data->pool->awakeThread, data->pool->mutex);
 		if(data->pool->quitting) break;
 		data->pool->usedThreads.insert(data);
 		data->pool->availableThreads.erase(data);
 
-		Action* act = data->pool->nextAction; data->pool->nextAction = NULL;
+        Action* act = data->pool->nextAction; data->pool->nextAction = nullptr;
 		data->headless = data->pool->nextIsHeadless;
 		data->name = data->pool->nextName;
 		data->finished = false;

@@ -234,7 +234,7 @@ if(SDL2)
     include(FindSDL2 OPTIONAL)
 
     if(SDL2_FOUND)
-        message("Using shared SDL Version 2")
+        message(STATUS "Using shared SDL Version 2 for Commander Genius")
         include_directories(${SDL2_INCLUDE_DIR})
         include_directories(${SDL2_NET_INCLUDE_DIRS})
         include_directories(/usr/include/SDL2/)
