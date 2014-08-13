@@ -68,14 +68,26 @@ void ThreadPool::prepareNewThread() {
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
     const unsigned int numThreads = availableThreads.size();
+
+    // TODO: This is bad name, We should improve that, and be able to pass real thread names.
     const std::string threadName = "threadItem" + std::to_string(numThreads);
-    t->thread = SDL_CreateThread(threadWrapper, threadName.c_str(), t);
+
+    SDL_Thread *sdlThread = SDL_CreateThread(threadWrapper, threadName.c_str(), t);
+
+    if(!sdlThread)
+    {
+        gLogging.ftextOut("Thread creation failed: %s\n", SDL_GetError());
+        return;
+    }
+
+    t->thread = sdlThread;
 #else
     t->thread = SDL_CreateThread(threadWrapper, t);
 #endif
 }
 
-int ThreadPool::threadWrapper(void* param) {
+int ThreadPool::threadWrapper(void* param)
+{
 	ThreadPoolItem* data = (ThreadPoolItem*)param;
 
 	SDL_mutexP(data->pool->mutex);
@@ -87,7 +99,7 @@ int ThreadPool::threadWrapper(void* param) {
 		data->pool->usedThreads.insert(data);
 		data->pool->availableThreads.erase(data);
 
-		Action* act = data->pool->nextAction; data->pool->nextAction = NULL;
+        Action* act = data->pool->nextAction; data->pool->nextAction = nullptr;
 		data->headless = data->pool->nextIsHeadless;
 		data->name = data->pool->nextName;
 		data->finished = false;

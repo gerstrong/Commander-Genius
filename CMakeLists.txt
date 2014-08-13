@@ -15,15 +15,15 @@ configure_file(README.in README)
 
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
 if(UNIX)
-	if(NOT IS_ABSOLUTE ${GAMES_SHAREDIR})
-		set(FULL_GAMES_SHAREDIR "${CMAKE_INSTALL_PREFIX}/${GAMES_SHAREDIR}")
-	else()
+        if(NOT IS_ABSOLUTE ${GAMES_SHAREDIR})
+                set(FULL_GAMES_SHAREDIR "${CMAKE_INSTALL_PREFIX}/${GAMES_SHAREDIR}")
+        else()
                 set(FULL_GAMES_SHAREDIR ${GAMES_SHAREDIR})
-	endif()
+        endif()
 
         MESSAGE(STATUS "Setting SYSTEM_DATA_DIR to ${FULL_GAMES_SHAREDIR}" )
 
-	add_definitions(-DSYSTEM_DATA_DIR="${FULL_GAMES_SHAREDIR}")
+        add_definitions(-DSYSTEM_DATA_DIR="${FULL_GAMES_SHAREDIR}")
 endif(UNIX)
 
 
