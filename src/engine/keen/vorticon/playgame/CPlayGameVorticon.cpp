@@ -11,7 +11,7 @@
 #include <base/CInput.h>
 #include <widgets/GsMenuController.h>
 #include <base/GsArguments.h>
-
+#include <algorithm>
 
 #include "CPlayGameVorticon.h"
 #include "sdl/audio/Audio.h"
@@ -177,7 +177,8 @@ bool CPlayGameVorticon::init()
 	// When Level starts it's never dark!
 	gGraphics.Palette.setdark(false);
 
-    const std::string finaleStr = gArgs.getValue("finale");
+    std::string finaleStr = gArgs.getValue("finale");
+    std::transform(finaleStr.begin(), finaleStr.end(), finaleStr.begin(), ::tolower);
     if(finaleStr == "on")
     {
         createFinale();

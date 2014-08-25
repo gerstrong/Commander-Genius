@@ -1,6 +1,5 @@
-**********************************************                                   
+**************************************************************
              Commander Genius                
-              (CloneKeenPlus)               
                                             
     (c)2008-2014            Gerstrong
     (c)2009-2014            Tulip
@@ -8,14 +7,14 @@
     (c)2014                 Mancus
 
 Ports:
-    (c)2009-2013            Pizza2004 (MacOs X)
+    (c)2009-2013            Pizza2004 (MacOs X (Discontinued))
     (c)2010-2014            Pelya (Android)
 
            Released under GNU/GPL           
                                             
            Release v${CG_VERSION} 
            Build: ${BUILD_TARGET}                                       
-**********************************************
+**************************************************************
 
 Welcome to Commander Genius!
 
@@ -24,12 +23,13 @@ Commander Keen which allows you to play
 the games, and a majority of the mods
 made for it.  All of the original data files
 are required to do so, however, we convienently
-include Episode 1 and 4 for your enjoyment.
+include Episode 1 and 4 for your enjoyment. We also
+include the inofficial mod Keen 7, so more is to do :-)
 
 So far Commander Keen 1-6 are fully supported.
 Keen Dreams is the only game where we don't
-have support. Being considered not as popular,
-we might support it later.
+have support, except with the Dos-Fusion Engine.
+Being considered not as popular, we might support it later or not.
 
 Commander Genius runs on Linux/X11, Windows,
 MacOS X, Wiz, and GP2X, with plans
@@ -39,12 +39,13 @@ please send us a message and we will do our
 best to help you.
 
 The main goal of Commander Genius is to copy
-the original gameplay feeling as much as possible, 
-although there're also a number of improvements like:
+the original gameplay feeling as much as possible,
+and extend it further so you get a native implementation with
+even more features like:
 
 - Mod Support
 - OpenGL Acceleration
-- Better graphical Effects
+- New graphical Effects
 - Multiplayer Support
 - High Quality Packs which make the game look better and 
   provide better sounds and even music you might never have heard
@@ -52,7 +53,7 @@ although there're also a number of improvements like:
 - Ingame Menu
 - Named save slots
 - Unrestricted Joystick Support
-- and many more!
+- and a lot more
 
 
 - Mission -
@@ -68,9 +69,17 @@ advantage of newer hardware meaning there are some enhancements over
 the original games. There is also Chocolate Keen by NY00123 which tries
 to be as original as possible including even the frame rates as they were.
 
-Now modern hardware offers much more, than what we had since. Commander Genius
-tries to take advantage of that modern hardware and yet bring an awesome 
-bit of old school experience to the Commander Keen games.
+Now modern hardware offers much more, than what we had since back in the 90s.
+Commander Genius tries to take advantage of that modern
+hardware and bring an awesome bit of old school
+experience to the Commander Keen games.
+
+Imagine Commander Genius of a platform base for the keen games how it would be on modern
+hardware. That means there are some differences. The physics is close to the original but
+you might notice some details of you are an expert on Keen games. I think CG delivers a
+faster gameplay than the original ones. Since the framerate for graphics is higher it feels
+a bit more like that. Soem people might not like that, so I recommend them to stick with dosbox
+or use dosfusion all the way. More explained later in this readme.
 
 It is bit hard to define what that experience is obviously, because many people
 experienced that gameplay differently. Some people had soundblaster, others didn't.
@@ -224,14 +233,12 @@ dir=<game-directory>	This will launch the game of the given directory, in case i
 finale=<on/off>		If you want to directly show the finale of a game pass this parameter and it will be done
 			vg.: "CGenius.exe finale=on"
 
--diff		This will make you choose the difficulty in the game. This only works in conjunction with the level parameter
-                (1=Easy 2=NORMAL 3=HARD)
+Example: If you want to start the game of the path "C:\games\keen5" type:
 
-Example: If you want to start the second level of the first game detected by CG, type:
+CGenius -dir=C:\games\keen5
 
-CGenius -game1 -level2
-
-As easy as that!
+Remember, the path must be known by the game launcher. We might change that in future. Also there is yet no way to launch Dosfusion that using
+the command line, but plans are to extend it.
 
    
 - VIDEO SYSTEM -

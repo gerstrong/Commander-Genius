@@ -205,6 +205,7 @@ void VorticonEngine::switchToPassiveMode()
     g_pMusicPlayer->stop();
 
     const std::string finaleStr = gArgs.getValue("finale");
+    std::transform(finaleStr.begin(), finaleStr.end(), finaleStr.begin(), ::tolower);
     if(finaleStr == "on")
     {
         gEventManager.add( new StartNewGameEvent(EASY) );
