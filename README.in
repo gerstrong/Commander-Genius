@@ -235,10 +235,11 @@ finale=<on/off>		If you want to directly show the finale of a game pass this par
 
 Example: If you want to start the game of the path "C:\games\keen5" type:
 
-CGenius -dir=C:\games\keen5
+CGenius dir=keen5
 
-Remember, the path must be known by the game launcher. We might change that in future. Also there is yet no way to launch Dosfusion that using
-the command line, but plans are to extend it.
+Remember, the path must be known by the game launcher. Absolute paths of games, can be defined in the cgenius.cfg in the [FileHandling] Section.
+We might improve that in future.
+Also there is yet no way to launch Dosfusion using the command line, but plans are to add it.
 
    
 - VIDEO SYSTEM -
