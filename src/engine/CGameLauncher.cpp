@@ -180,6 +180,9 @@ bool CGameLauncher::loadResources()
                 m_chosenGame = chosenGame;
                 gLogging.textOut("Launching game from directory: \"" + gameDir + "\"\n");
                 gArgs.removeTag("dir");
+
+                setupModsDialog();
+                // Nothing else to do, break the loop
                 break;
             }
             chosenGame++;
