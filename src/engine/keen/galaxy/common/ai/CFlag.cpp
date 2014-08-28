@@ -26,10 +26,10 @@ const Uint16 ANIMATION_TIME = 8;
 const Uint16 SPEED = 64;
 
 CFlag::CFlag(CMap *pmap, const Vector2D<Uint32> &Location,
-            const Vector2D<Uint32> &Destination,
+            const Vector2D<Uint32> &dest,
             const int sprVar, bool newAction, const bool canLock ) :
 CGalaxySpriteObject(pmap, FOE_ID, Location.x, Location.y, sprVar),
-m_destination(Destination),
+m_destination(dest),
 m_baseframe(0)
 {
 	solid = false;
@@ -59,8 +59,8 @@ m_baseframe(0)
 	    setupGalaxyObjectOnMap(0x15EE, A_FLAG_FLIP);        
 	}
 	    
-	if(!newAction)
-	    moveTo(m_destination);   
+    /*if(!newAction)
+        moveTo(m_destination);   */
 }
 
 void CFlag::getTouchedBy(CSpriteObject &theObject)
