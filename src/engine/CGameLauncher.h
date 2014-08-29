@@ -18,9 +18,6 @@
 #include <vector>
 #include <ostream>
 
-//#include "engine/CEvent.h"
-//#include "common/Menu/CSelectionMenu.h"
-
 #include "core/CResourceLoader.h"
 
 
@@ -68,6 +65,7 @@ public:
     void start();
 
 
+    void showMessageBox(const std::string &text);
     void setupModsDialog();
 
     void setupDosExecDialog();
@@ -115,6 +113,9 @@ private:
     std::unique_ptr<CGUIDialog> mpPatchDialog;
     std::unique_ptr<CGUIDialog> mpDosExecDialog;
 
+
+    // This dialog is used for some messages serving as some sort of feedback
+    std::unique_ptr<CGUIDialog> mpMsgDialog;
     CResourceLoaderBackground mGameScanner;
 
     std::shared_ptr<CGUIBitmap> mCurrentBmp;

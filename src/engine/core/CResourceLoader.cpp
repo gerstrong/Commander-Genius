@@ -55,7 +55,7 @@ int CResourceLoader::RunLoadAction(Action* act,
 	m_min_permil = min_permil;
 	m_permil = m_min_permil;
 	m_permiltarget = m_min_permil;
-	mp_Thread.reset(threadPool->start(act, threadname));
+    mp_Thread = threadPool->start(act, threadname);
 	gVideoDriver.clearSurfaces();
 	
 	int ret = 0;
@@ -158,7 +158,7 @@ bool CResourceLoader::process(int* ret)
 		}
 
         if(!threadFinalized)
-            threadFinalized = threadPool->finalizeIfReady(mp_Thread.get(), ret);
+            threadFinalized = threadPool->finalizeIfReady(mp_Thread, ret);
 	}
 	
 	// Draw the last Frame, so transition looks complete!
@@ -169,7 +169,7 @@ bool CResourceLoader::process(int* ret)
 	
 	m_permiltarget = m_permil = m_min_permil;
 	
-	mp_Thread.release();
+    mp_Thread = nullptr;
 	
     gTimer.setLogicReset(true);
 	
@@ -343,7 +343,7 @@ void CResourceLoaderBackground::RunLoadActionBackground(Action* act,
 
 void CResourceLoaderBackground::start()
 {
-    mpThread.reset(threadPool->start(mpAction, "Loading Resources"));
+    mpThread = threadPool->start(mpAction, "Loading Resources");
 }
 
 
@@ -380,10 +380,10 @@ void CResourceLoaderBackground::setPermilage(const int permil)
 void CResourceLoaderBackground::run(const float deltaT)
 {
     int ret;
-    if(threadPool->finalizeIfReady(mpThread.get(), &ret))
+    if(threadPool->finalizeIfReady(mpThread, &ret))
     {
         mRunning = false;
-        mpThread.release();
+        mpThread = nullptr;
     }
 
     if(m_permil >= m_permiltarget)

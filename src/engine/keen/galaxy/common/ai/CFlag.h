@@ -25,7 +25,7 @@ namespace galaxy  {
     static const unsigned int FOE_ID = 200;
     
     CFlag(CMap *pmap, const Vector2D<Uint32> &Location,
-      const Vector2D<Uint32> &Destination, const int sprVar,
+      const Vector2D<Uint32> &dest, const int sprVar,
       const bool newAction, const bool canLock );
     
     

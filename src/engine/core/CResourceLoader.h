@@ -54,7 +54,7 @@ private:
 	int m_max_permil;
 
 	ProgressStyle m_style;
-	std::unique_ptr<ThreadPoolItem> mp_Thread;
+    ThreadPoolItem *mp_Thread;
 	std::shared_ptr<SDL_Surface> mpProgressSfc;
 };
 
@@ -96,7 +96,7 @@ private:
     bool mRunning;
 
     ProgressStyle m_style;
-    std::unique_ptr<ThreadPoolItem> mpThread;
+    ThreadPoolItem *mpThread;
     std::shared_ptr<SDL_Surface> mpProgressSfc;
 };
 

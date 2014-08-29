@@ -34,7 +34,7 @@ public:
      * @brief Use this method to get an entry of the given parameters.
      *        if the parameter doesn't exist, the returned string is empty
      * @param text that might be contained in the parameter
-     * @return if entry found it will return the whole passed parameter containing your text parameter
+     * @return if entry was found it will return the whole passed parameter containing your given text. be careful with upper lower cases
      */
     std::string getValue(const std::string &flag);
 

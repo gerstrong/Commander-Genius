@@ -20,8 +20,6 @@
 #include <widgets/GsMenuController.h>
 #include <base/GsArguments.h>
 
-//#include "graphics/effects/CScrollEffect.h"
-//#include "engine/core/CBehaviorEngine.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/audio/Audio.h"
 #include <fileio/ResourceMgmt.h>
@@ -189,13 +187,20 @@ bool CGameLauncher::loadResources()
                 m_chosenGame = chosenGame;
                 gLogging.textOut("Launching game from directory: \"" + gameDir + "\"\n");
                 gArgs.removeTag("dir");
+
+                setupModsDialog();
+                // Nothing else to do, break the loop
                 break;
             }
             chosenGame++;
         }
 
-        gLogging.textOut("The game from directory: \"" + gameDir + "\" cannot the launched." +
-                         "Maybe it's missing or not compatible. Please check if you can run that throught the game launcher.\n");
+        const std::string err = "The game from directory: \"" + gameDir + "\" cannot the launched." +
+                "Maybe it's missing or not compatible. Please check if you can run that throught the game launcher.\n";
+
+        gLogging.textOut(err);
+
+        showMessageBox("Given path :\"" + gameDir + "\" unknown.\nPlease check the CGLog File!");
     }
 
     return true;
@@ -400,6 +405,32 @@ struct PatchListFiller
 };
 
 
+struct CloseBoxEvent : CEvent
+{};
+
+
+
+void CGameLauncher::showMessageBox(const std::string &text)
+{
+    std::vector<std::string> strVec = explode(text, "\n");
+
+    mpMsgDialog.reset(new CGUIDialog(GsRect<float>(0.1f, 0.1f, 0.8f, 0.85f), CGUIDialog::EXPAND));
+
+    mpMsgDialog->initEmptyBackground();
+
+    float yStart = 0.1f;
+    for( auto &txtItem : strVec)
+    {
+        mpMsgDialog->addControl(new CGUIText(txtItem), GsRect<float>(0.1f, yStart, 0.8f, 0.05f));
+        yStart += 0.05f;
+    }
+
+
+
+    mpMsgDialog->addControl(new GsButton("Ok", new CloseBoxEvent()), GsRect<float>(0.4f, 0.85f, 0.2f, 0.05f) );
+
+}
+
 void CGameLauncher::setupModsDialog()
 {
     const std::string dataDir = getDirectory( m_chosenGame );
@@ -566,6 +597,10 @@ void CGameLauncher::pumpEvent(const CEvent *evPtr)
         mPatchFilename = mPatchStrVec[mpPatchSelList->getSelection()];
         mDonePatchSelection = true;
     }
+    else if( dynamic_cast<const CloseBoxEvent*>(evPtr) )
+    {
+        mpMsgDialog = nullptr;
+    }
 
 
     // Check Scroll events happening on this Launcher
@@ -705,6 +740,13 @@ void CGameLauncher::ponderPatchDialog()
 ////
 void CGameLauncher::ponder(const float deltaT)
 {
+    if(mpMsgDialog)
+    {
+        mpMsgDialog->processLogic();
+        return;
+    }
+
+
     if(!mDonePatchSelection && m_chosenGame < 0)
     {
         ponderGameSelDialog(deltaT);
@@ -723,6 +765,11 @@ void CGameLauncher::ponder(const float deltaT)
 
 void CGameLauncher::render()
 {
+    if(mpMsgDialog)
+    {
+        mpMsgDialog->processRendering();
+        return;
+    }
 
     if(!mDonePatchSelection && m_chosenGame < 0)
     {
