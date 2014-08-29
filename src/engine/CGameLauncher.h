@@ -68,6 +68,7 @@ public:
     void start();
 
 
+    void showMessageBox(const std::string &text);
     void setupModsDialog();
     void pumpEvent(const CEvent *evPtr);
     void ponderGameSelDialog(const float deltaT);
@@ -104,6 +105,9 @@ private:
 	std::vector<std::string> m_Names;
     CGUIDialog mLauncherDialog;
     CGUIDialog mPatchDialog;
+
+    // This dialog is used for some messages serving as some sort of feedback
+    std::unique_ptr<CGUIDialog> mpMsgDialog;
     CResourceLoaderBackground mGameScanner;
 
     std::shared_ptr<CGUIBitmap> mCurrentBmp;
