@@ -1006,7 +1006,7 @@ bool CPlayerWM::finishLevel(const int object)
 		if(episode == 5)
 		{
 		    csfX -= (14<<STC);
-		    csfY -= (1<<CSF);
+            csfY -= (2<<CSF);
 		}
 		else
 		{
