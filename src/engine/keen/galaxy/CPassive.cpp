@@ -95,17 +95,6 @@ mSkipSection(false)
 #else
 
 
-    //mCommanderTextSfc.setColorKey( 0, 0, 0 );
-    //mCommanderTextSfc.optimizeSurface();
-    //mCommanderTextSfc.exchangeColor( 0x0 , 0xa8, 0x0,
-                                   //0x55, 0x55 , 0xFF);
-
-    //mKeenTextSfc.setColorKey( 0, 0, 0 );
-    //mKeenTextSfc.optimizeSurface();
-    //mKeenTextSfc.exchangeColor( 0x0 , 0xa8, 0x0,
-                                   //0x55, 0x55 , 0xFF);
-
-
     SDL_SetAlpha(mCommanderTextSfc.getSDLSurface(), SDL_SRCALPHA, 128);
     SDL_SetAlpha(mKeenTextSfc.getSDLSurface(), SDL_SRCALPHA, 128);
 #endif
@@ -125,6 +114,7 @@ bool CPassiveGalaxy::init()
 {
     auto blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
+    gInput.flushAll();
     return true;
 }
 
@@ -228,8 +218,6 @@ void CPassiveGalaxy::processIntro()
         mZoomSfcZoom.y = mpZoomSurface->h;
         processPonderMode = &CPassiveGalaxy::processIntroZoom;
         processRenderMode = &CPassiveGalaxy::renderIntroZoom;
-        //processPonderMode = &CPassiveGalaxy::processTitle;
-        //processRenderMode = &CPassiveGalaxy::renderTitle;
 
         gInput.flushAll();
 

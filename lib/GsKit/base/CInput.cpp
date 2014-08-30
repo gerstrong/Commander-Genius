@@ -1316,6 +1316,14 @@ void CInput::flushKeys(void)
 	memset(firsttime_immediate_keytable,false,KEYTABLE_SIZE);
 }
 
+/**
+  * @brief flushEvent This will clear the whole event list
+  */
+void CInput::flushEvents()
+{
+    m_EventList.clear();
+}
+
 struct TouchButton
 {
 	stInputCommand* cmd;
@@ -1555,9 +1563,15 @@ void CInput::renderOverlay()
 }
 
 /**
- * \brief	flushes both key and commands queue
+ * \brief	flushes all the input events
  */
-void CInput::flushAll(void){ flushKeys(); flushCommands(); }
+void CInput::flushAll()
+{
+    flushKeys();
+    flushCommands();
+    flushEvents();
+}
+
 
 /**
  * \brief	shuts down the input driver.

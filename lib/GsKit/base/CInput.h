@@ -230,11 +230,12 @@ public:
 	bool startJoyDriver();
 	void saveControlconfig();
 
-	void flushKeys(void);
-	void flushCommands(void);
+    void flushCommands();
 	void flushCommand(int command);
 	void flushCommand(int player, int command);
-	void flushAll(void);
+    void flushKeys();
+    void flushEvents();
+    void flushAll();
 
 	void renderOverlay(); // for mouse wrapper gfx or other stuff
 
