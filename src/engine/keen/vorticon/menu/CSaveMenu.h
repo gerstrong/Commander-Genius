@@ -8,7 +8,6 @@
 #ifndef CSAVEMENU_H_
 #define CSAVEMENU_H_
 
-//#include "CConfirmMenu.h"
 #include "VorticonMenu.h"
 
 
@@ -26,7 +25,6 @@ public:
     void release();
 
 private:
-    //CConfirmMenu *mp_OverwriteMenu;
 	bool m_overwrite;
 };
 

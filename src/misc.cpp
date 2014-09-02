@@ -2,6 +2,10 @@
 
 #include <cstdlib>
 
+#include <iostream>
+#include <ctime>
+
+
 unsigned int rnd(void)
 {
 	return std::rand();
@@ -16,4 +20,21 @@ unsigned int rnd(void)
 bool getProbability(unsigned short prob)
 {
 	return ( (rnd()%1000) <= prob ) ? true : false;
+}
+
+
+
+std::string getTimeStr()
+{
+  time_t rawtime;
+  struct tm * timeinfo;
+  char buffer[80];
+
+  time (&rawtime);
+  timeinfo = localtime(&rawtime);
+
+  strftime(buffer,80,"%d-%m-%Y %H:%M:%S",timeinfo);
+  std::string str(buffer);
+
+  return str;
 }

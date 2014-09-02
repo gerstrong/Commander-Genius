@@ -11,12 +11,13 @@
 #include <widgets/GsBaseMenu.h>
 #include <widgets/GsMenuController.h>
 
-//#include "CConfirmMenu.h"
 
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
 
 #include "widgets/InputText.h"
+
+#include <base/utils/misc.h>
 
 const std::string EMPTY_TEXT = "EMPTY";
 
@@ -109,12 +110,19 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 		{            
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
             {
+#ifdef NOTYPESAVE
+                const std::string saveText = getTimeStr();
+
+#else
                 // we are typing...
 				if(pInput->Typing())
 				{
-					gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
+                    const std::string saveText = pInput->getText();
+#endif
+                    gpSaveGameController->prepareSaveGame( sel, saveText );
                     g_pBehaviorEngine->setPause(false);
 					gEventManager.add( new CloseAllMenusEvent() );
+#ifndef NOTYPESAVE
 				}
 				else
 				{
@@ -122,6 +130,7 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 						pInput->setText("");
 					pInput->setTypeMode(true);
 				}
+#endif
 				return;
 			}
 		}

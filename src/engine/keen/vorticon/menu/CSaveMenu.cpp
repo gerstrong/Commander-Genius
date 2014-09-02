@@ -10,12 +10,16 @@
 #include <base/CInput.h>
 #include <widgets/GsBaseMenu.h>
 #include <widgets/GsMenuController.h>
+#include <base/utils/misc.h>
 
-//#include "CConfirmMenu.h"
 
 #include "widgets/Inputtext.h"
 #include "fileio/CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
+
+#include <iostream>
+#include <iomanip>
+#include <ctime>
 
 const std::string EMPTY_TEXT = "EMPTY";
 
@@ -24,7 +28,6 @@ namespace vorticon
 
 CSaveMenu::CSaveMenu() :
 VorticonMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
-/*mp_OverwriteMenu(NULL),*/
 m_overwrite(false)
 {
 	// Load the state-file list
@@ -104,18 +107,28 @@ void CSaveMenu::sendEvent(std::shared_ptr<CEvent> &command)
 		{            
 			if(ev->mCommand == IC_JUMP || ev->mCommand == IC_STATUS)
 			{			
+
+#ifdef NOTYPESAVE
+                const std::string saveText = getTimeStr();
+
+#else
 				if(pInput->Typing())
-				{
-					gpSaveGameController->prepareSaveGame( sel, pInput->getText() );
+                {
+                    const std::string saveText = pInput->getText();
+#endif
+                    gpSaveGameController->prepareSaveGame( sel, saveText );
                     g_pBehaviorEngine->setPause(false);
 					gEventManager.add( new CloseAllMenusEvent() );
-				}
+#ifndef NOTYPESAVE
+				}          
 				else
 				{
 					if(pInput->getText() == EMPTY_TEXT)
 						pInput->setText("");
 					pInput->setTypeMode(true);
 				}
+#endif
+
 				return;
 			}
 		}
