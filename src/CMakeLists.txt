@@ -341,7 +341,7 @@ ENDIF(OPENGL)
 
 # Only if you want to use Dosfusion
 if(DBFUSION)
-    target_link_libraries(CGeniusExe SDL_sound)
+    #target_link_libraries(CGeniusExe SDL_sound)
     target_link_libraries(CGeniusExe asound)
     target_link_libraries(CGeniusExe m)
     target_link_libraries(CGeniusExe dl)

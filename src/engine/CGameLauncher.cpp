@@ -177,6 +177,7 @@ bool CGameLauncher::loadResources()
     if(!gameDir.empty())
     {
         int chosenGame = 0;
+        bool found=false;
 
         // Check if the given parameter makes one game start.
         for( GameEntry &entry : m_Entries)
@@ -190,17 +191,21 @@ bool CGameLauncher::loadResources()
 
                 setupModsDialog();
                 // Nothing else to do, break the loop
+                found = true;
                 break;
             }
             chosenGame++;
         }
 
-        const std::string err = "The game from directory: \"" + gameDir + "\" cannot the launched." +
-                "Maybe it's missing or not compatible. Please check if you can run that throught the game launcher.\n";
+        if(!found)
+        {
+            const std::string err = "The game from directory: \"" + gameDir + "\" cannot the launched." +
+                    "Maybe it's missing or not compatible. Please check if you can run that throught the game launcher.\n";
 
-        gLogging.textOut(err);
+            gLogging.textOut(err);
 
-        showMessageBox("Given path :\"" + gameDir + "\" unknown.\nPlease check the CGLog File!");
+            showMessageBox("Given path :\"" + gameDir + "\" unknown.\nPlease check the CGLog File!");
+        }
     }
 
     return true;
