@@ -59,6 +59,7 @@ protected:
     std::string mText;
     GsSurface mTextDarkSfc;
     GsSurface mTextLightSfc;
+    GsSurface mTextRedSfc;
     GsSurface mTextDisabledSfc;
 
     int mLightRatio; // This will blend between selected and unselected item.

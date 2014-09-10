@@ -21,19 +21,23 @@ void GalaxyButton::setupButtonSurface()
     Font.createTextSurface(mTextDarkSfc, "  " + mText, 38, 134, 38 );
     Font.createTextSurface(mTextLightSfc, "  " + mText, 84, 234, 84 );
     Font.createTextSurface(mTextDisabledSfc, "  " + mText, 123, 150, 123 );
+    Font.createTextSurface(mTextRedSfc, "  " + mText, 180, 50, 23 );
 }
 
 
 
 
-void GalaxyButton::drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect& lRect)
+void GalaxyButton::drawEnabledButton(GsWeakSurface &blitsfc, const SDL_Rect& lRect, const bool alternate)
 {
     mTextLightSfc.setAlpha(mLightRatio);
     mTextDarkSfc.setAlpha(255-mLightRatio);
 
     if(mLightRatio > 0)
     {
-        mTextLightSfc.blitTo(blitsfc, lRect);
+        if(alternate)
+            mTextRedSfc.blitTo(blitsfc, lRect);
+        else
+            mTextLightSfc.blitTo(blitsfc, lRect);
     }
 
     if(mLightRatio < 255)
@@ -60,7 +64,10 @@ void GalaxyButton::processRender(const GsRect<float> &RectDispCoordFloat)
     }
     else
     {
-        drawEnabledButton(blitsfc, lRect);
+        if(mHovered)
+            drawEnabledButton(blitsfc, lRect, true);
+        else
+            drawEnabledButton(blitsfc, lRect, false);
     }
 
     drawBlinker(lRect);
