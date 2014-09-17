@@ -14,6 +14,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/version.hpp>
 
 #include "fileio/KeenFiles.h"
 
@@ -711,7 +712,11 @@ bool CSaveGameController::saveXMLTree(boost::property_tree::ptree &pt)
 {
     // Write the xml-file
     using boost::property_tree::ptree;
+#if BOOST_VERSION >= 105600
+    boost::property_tree::xml_writer_settings<std::string> settings('\t', 1);
+#else
     boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+#endif
 
     // The savegame internal name
     pt.put("GameState.<xmlattr>.name", m_statename);
