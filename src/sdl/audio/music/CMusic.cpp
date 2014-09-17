@@ -15,7 +15,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
 #include <fstream>
-#include <string.h>
+#include <limits>
 
 
 bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
@@ -171,21 +171,19 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
     {
     	std::string str_buf;
     	std::string music_filename;
-    	char c_buf[256];
     	int detected_level=-1;
     	size_t next_pos = 0;
 
     	while(!Tablefile.eof())
     	{
-        	Tablefile.getline(c_buf, 256);
+    		getline(Tablefile, str_buf);
 
-        	str_buf = c_buf;
         	next_pos = str_buf.find(' ')+1;
         	str_buf = str_buf.substr(next_pos);
         	next_pos = str_buf.find(' ');
 
         	// Get level number
-        	detected_level = atoi(str_buf.substr(0, next_pos).c_str());
+        	detected_level = stoi(str_buf.substr(0, next_pos));
 
         	str_buf = str_buf.substr(next_pos);
         	next_pos = str_buf.find('"')+1;
@@ -201,11 +199,9 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
     			std::string filename = getResourceFilename( music_filename, gamepath, false, true);
     			if( load(filename) )
     				play();
-    			Tablefile.close();
     			return true;
     		}
     	}
-    	Tablefile.close();
     }
 	return false;
 }
@@ -223,29 +219,23 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     if(fileloaded)
     {
     	std::string str_buf;
-    	char c_buf[256];
 
     	while(!Tablefile.eof())
     	{
-        	Tablefile.get(c_buf, 256, ' ');
-    		while(c_buf[0] == '\n') memmove (c_buf, c_buf+1, 254);
-        	str_buf = c_buf;
+    		getline(Tablefile, str_buf, ' ');
+    		str_buf.erase(0, str_buf.find_first_not_of('\n'));
     		if( str_buf == levelfilename )	// found the level! Load the song!
     		{
     			// Get the song filename and load it!
-    			Tablefile.get(c_buf, 256);
-    			str_buf = c_buf;
+    			getline(Tablefile, str_buf);
     			TrimSpaces(str_buf);
     			std::string filename = getResourceFilename(JoinPaths("music", str_buf), gamepath, false, true);
     			if( load(filename) )
     				play();
-    			Tablefile.close();
     			return true;
     		}
-    		Tablefile.get(c_buf, 256);
-    		while(!Tablefile.get() == '\n'); // Skip the '\n' delimiters, so next name will be read.
+    		Tablefile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     	}
-    	Tablefile.close();
     }
 	return false;
 }
