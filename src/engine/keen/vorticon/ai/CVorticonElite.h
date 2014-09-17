@@ -34,7 +34,7 @@ private:
 	unsigned char timer,timer2;
 	unsigned int animtimer;
 	unsigned char frame;
-	unsigned char movedir;
+	direction_t movedir;
 	unsigned int timesincefire;
 	int m_speed;
 
