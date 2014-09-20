@@ -91,11 +91,14 @@ bool CVorticon::isNearby(CVorticonSpriteObject &theObject)
             {
                 if (frame > 0)
                 {
-                    int absdist = abs(player->getXPosition() < getXPosition());
+                    bool isleft = player->getXPosition() < getXPosition();
+                    int absdist = isleft ?
+                                 getXPosition() - player->getXPosition()
+                                 : player->getXPosition() - getXPosition();
 
                     if(absdist <= VORTICON_PLAYER_MIN_DIST)
                     {
-                        if (player->getXPosition() < getXPosition() && !blockedl)
+                        if (isleft && !blockedl)
                             movedir = LEFT;
                         else if( !blockedr )
                             movedir = RIGHT;
