@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 		if(slashpos != std::string::npos)
 		{
 			binary_dir.erase(slashpos);
-			binary_dir = SystemNativeToUtf8(binary_dir);
+            binary_dir = SystemNativeToUtf8(binary_dir);
 		}
 		else
 		{

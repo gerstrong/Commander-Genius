@@ -48,13 +48,13 @@ int highestBit(T d) {
 }
 
 
-class DontCopyTag {
+/*class DontCopyTag {
 public:
 	DontCopyTag() {}
 private:
 	DontCopyTag(const DontCopyTag&) { assert(false); }
 	DontCopyTag& operator=(const DontCopyTag&) { assert(false); }
-};
+};*/
 
 
 template<typename T>

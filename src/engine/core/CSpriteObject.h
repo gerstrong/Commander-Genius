@@ -140,7 +140,7 @@ public:
 
 	bool cansupportplayer;
 	
-	bool blockedl, blockedr, blockedu, blockedd;
+    unsigned char blockedl, blockedr, blockedu, blockedd;
 	bool onslope;
 	signed int xinertia, yinertia;
     CSpriteObject *pSupportedbyobject;

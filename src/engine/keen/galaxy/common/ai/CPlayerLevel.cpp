@@ -995,7 +995,7 @@ void CPlayerLevel::processPogoCommon()
 	if (blockedu)
 	{
 		//TODO: Something to do with poles (push keen into the centre)
-		if (blockedu == 17)	//Pole
+        if (blockedu == 17)	//Pole
 		{
 			//obj->posY -= 32;
 			//obj->clipRects.unitY1 -= 32;
