@@ -70,7 +70,7 @@ void ThreadPool::prepareNewThread() {
     const unsigned int numThreads = availableThreads.size();
 
     // TODO: This is bad name, We should improve that, and be able to pass real thread names.
-    const std::string threadName = "threadItem" + std::to_string(numThreads);
+    const std::string threadName = "threadItem" + to_string(numThreads);
 
     SDL_Thread *sdlThread = SDL_CreateThread(threadWrapper, threadName.c_str(), t);
 

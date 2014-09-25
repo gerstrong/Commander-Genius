@@ -227,7 +227,10 @@ link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
 if(SDL2)
 
     INCLUDE(FindPkgConfig)
+
+IF(BUILD_TARGET STREQUAL WIN32)
     PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+endif()
 
     FIND_PACKAGE( SDL2_net REQUIRED )
 

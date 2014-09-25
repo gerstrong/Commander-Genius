@@ -10,8 +10,10 @@ Project(GsKit)
 
 if(SDL2)
 
+IF(BUILD_TARGET STREQUAL WIN32)
     INCLUDE(FindPkgConfig)
     PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+endif()
 
     include(FindSDL2 OPTIONAL)
 
