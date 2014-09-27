@@ -72,15 +72,15 @@ inline int strncasecmp(const char *str1, const char *str2, size_t l) {
 #	define snprintf	 _snprintf
 #	define stricmp _stricmp
 #	define fcloseall _fcloseall
-#	define strcasecmp	stricmp
-#else
-inline void strlwr(char* string) {
+//#	define strcasecmp	stricmp
+/*#else
+/*inline void strlwr(char* string) {
 	if(string)
 		while( *string ) {
 			*string = (char)tolower( *string );
 			string++;
 		}
-}
+}*/
 #endif
 
 

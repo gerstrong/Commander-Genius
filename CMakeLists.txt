@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 2.8)
 
 Project(CommanderGenius)
 
+
 MESSAGE(STATUS "Preparing the Build-System for Commander Genius" )
 execute_process(COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
 string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
@@ -27,8 +28,59 @@ if(UNIX)
 endif(UNIX)
 
 
+# Force SDL2 on windows systems
+IF(WIN32)
+
+    include(FindSDL2.cmake)	
+	include(FindSDL2_net.cmake)	
+
+    if(SDL2_FOUND)
+        message(STATUS "Using shared SDL Version 2 for Commander Genius")
+        include_directories(${SDL2_INCLUDE_DIR})
+        include_directories(${SDL2_NET_INCLUDE_DIRS})
+        include_directories(/usr/include/SDL2/)
+    endif(SDL2_FOUND)	
+	
+else(WIN32)
+
+
+	if(SDL2)
+ 
+		INCLUDE(FindPkgConfig)    
+		PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+		FIND_PACKAGE( SDL2_net REQUIRED )
+   
+		if(SDL2_FOUND)
+			message(STATUS "Using shared SDL Version 2 for Commander Genius")
+			include_directories(${SDL2_INCLUDE_DIR})
+			include_directories(${SDL2_NET_INCLUDE_DIRS})
+			include_directories(/usr/include/SDL2/)
+		endif(SDL2_FOUND)
+
+	else(SDL2)
+        # SDL2 not found, try SDL1.2
+        FIND_PACKAGE( SDL REQUIRED )
+        FIND_PACKAGE( SDL_net REQUIRED )
+        if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+                include(FindSDL OPTIONAL)
+        endif()
+        if(SDL_FOUND)
+                message("Using shared SDL Version 1.2")
+                include_directories(${SDL_INCLUDE_DIR})
+                INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
+        else(SDL_FOUND)
+                # TODO: Use the prebuilt one on Windows
+                message("Using static SDL from Externals")
+                include_directories(Externals/SDL Externals/SDL/include)
+                add_subdirectory(Externals/SDL)
+        endif(SDL_FOUND)
+
+	endif(SDL2)
+
+endif(WIN32)
+
 # Add GsKit
-add_subdirectory("lib/GsKit")
+add_subdirectory("./lib/GsKit")
 
 
 # Compile to internal Commander Genius sources

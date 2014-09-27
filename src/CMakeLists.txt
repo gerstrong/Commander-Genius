@@ -11,6 +11,10 @@ else()
 endif()
 
 
+if(WIN32)
+set(mingw64dir "C:/MinGW64/")
+endif(WIN32)
+
 
 #
 # If the user specifies -DCMAKE_BUILD_TYPE on the command line, take their definition
@@ -25,9 +29,15 @@ ENDIF()
 
 
 IF(NOT DEFINED BUILD_TARGET)
+IF(WIN32)
+	SET(BUILD_TARGET WIN32)
+		ADD_DEFINITIONS(-DWIN32)
+		ADD_DEFINITIONS(-DTARGET_WIN32)	
+ELSE(WIN32)
 	SET(BUILD_TARGET LINUX)
-	MESSAGE( "WARNING: You did not specify the build type with the -DBUILD_TARGET= Parameter. LINUX has been choosen" )
-	MESSAGE( "Available builds are: WIN32, LINUX GP2X. WIZ, CAANOO, DINGOO, NANONOTE" )
+ENDIF(WIN32)
+MESSAGE( STATUS "WARNING: You did not specify the build type with the -DBUILD_TARGET= Parameter. ${BUILD_TARGET} has been choosen" )
+MESSAGE( STATUS "Available builds are: WIN32, LINUX GP2X. WIZ, CAANOO, DINGOO, NANONOTE" )
 ENDIF(NOT DEFINED BUILD_TARGET)
 
 
@@ -223,18 +233,20 @@ link_directories (${CommanderGenius_BINARY_DIR}/lib/GsKit)
 #include_directories (${CommanderGenius_SOURCE_DIR}/src/engine/dbfusion/include)
 
 
+FIND_PACKAGE(Boost)
+IF (Boost_FOUND)
+	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+	ADD_DEFINITIONS( "-DHAS_BOOST" )
+ENDIF()	
 
-if(SDL2)
-
-    INCLUDE(FindPkgConfig)
-
-IF(BUILD_TARGET STREQUAL WIN32)
+if(SDL2)     
+   
+IF(WIN32)
+    include(FindSDL2 OPTIONAL)	
+else()
+	INCLUDE(FindPkgConfig)
     PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
 endif()
-
-    FIND_PACKAGE( SDL2_net REQUIRED )
-
-    include(FindSDL2 OPTIONAL)
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
@@ -246,7 +258,6 @@ endif()
 else(SDL2)
         # SDL2 not found, try SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
-        FIND_PACKAGE( SDL_net REQUIRED )
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)
         endif()
@@ -307,7 +318,7 @@ IF(OPENGL)
     # OpenGL Parsing
     find_package(OpenGL REQUIRED)
 
-    IF(BUILD_TARGET STREQUAL WIN32)
+    IF(WIN32)
 	TARGET_LINK_LIBRARIES(CGeniusExe opengl32)
     ELSE()
 	TARGET_LINK_LIBRARIES(CGeniusExe GL)
@@ -315,7 +326,11 @@ IF(OPENGL)
 ENDIF(OPENGL)
 
 IF(OGG)
-	TARGET_LINK_LIBRARIES(CGeniusExe vorbis vorbisfile)
+	if(WIN32)
+		TARGET_LINK_LIBRARIES(CGeniusExe vorbisfile vorbis ogg)
+	else(WIN32)
+		TARGET_LINK_LIBRARIES(CGeniusExe vorbis vorbisfile)
+	endif(WIN32)		
 ENDIF(OGG)
 
 IF(TREMOR)
@@ -326,16 +341,29 @@ ENDIF(TREMOR)
 # The Windows Version has an icon in the executable
 
 
-IF(BUILD_TARGET STREQUAL WIN32)
-	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius.exe")
-	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )
-	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND icotool -c -o ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.ico ${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cglogo512.png )
-	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND /usr/bin/i686-w64-mingw32-windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
-	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-L/opt/mingw32/lib ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")	
-	LINK_DIRECTORIES(/opt/mingw32/lib)
-	MESSAGE( "Will build with the CG-Icon for Windows." )
-ENDIF(BUILD_TARGET STREQUAL WIN32)
+IF(WIN32)
+	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")
+#	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )
+#	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND ${mingw64dir}bin/icotool -c -o ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.ico ${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cglogo512.png )
+	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND ${mingw64dir}bin/windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
+	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")	
+#	LINK_DIRECTORIES(/opt/mingw32/lib)
+	MESSAGE(STATUS "Will build with the CG-Icon for Windows." )
+ENDIF(WIN32)
 
+		
+
+# Only for SDL2 and Win32 since it is updated for that platform. SDL 1.2 must be tested in case someone wants to use it on windows
+if(WIN32)	
+	target_link_libraries(CGeniusExe mingw32)
+	target_link_libraries(CGeniusExe user32)
+	target_link_libraries(CGeniusExe gdi32)		
+	target_link_libraries(CGeniusExe SDL2Main SDL2)
+	target_link_libraries(CGeniusExe SDL2_image)
+	target_link_libraries(CGeniusExe winmm)
+	target_link_libraries(CGeniusExe Imm32)
+	target_link_libraries(CGeniusExe Version)
+endif(WIN32)
 
 IF(OPENGL)
     # OpenGL stuff to link
@@ -352,6 +380,11 @@ if(DBFUSION)
     target_link_libraries(CGeniusExe png)
     target_link_libraries(CGeniusExe z)
     target_link_libraries(CGeniusExe X11)
+	
+	if(WIN32)
+		target_link_libraries(CGeniusExe SDL2_net)
+	endif(WIN32)
+	
 endif(DBFUSION)
 
 # Stuff definitions in case we want to install it
