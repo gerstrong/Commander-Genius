@@ -846,7 +846,7 @@ void CPlayerLevel::processCliffHanging()
 
 
 
-const int PLAYER_CLIMB_SPEED_Y = 24;
+const int PLAYER_CLIMB_SPEED_Y = 15;
 
 void CPlayerLevel::processCliffClimbingUp()
 {
@@ -907,8 +907,7 @@ void CPlayerLevel::processCliffClimbingUp()
 
 	const int abs_y = abs(yDiff);
 	if( abs_y < 24 )
-	{
-	    
+	{	    
 	    mp_processState = (void (CPlayerBase::*)()) &CPlayerLevel::processCliffClimbingOntoFloor;
 	}
 }
@@ -927,13 +926,13 @@ void CPlayerLevel::processCliffClimbingOntoFloor()
 	    const int abs_x = abs(xDiff);
 	    if(abs_x < mClimbSpeedX)
 	    {				
-		solid = true;
-		setActionSprite();
-		calcBoundingBoxes();
-		makeHimStand();
-		calcBoundingBoxes();
-		processMove(0,-(1<<CSF));
-		processMove(0,(1<<CSF));
+            solid = true;
+            setActionSprite();
+            calcBoundingBoxes();
+            makeHimStand();
+            calcBoundingBoxes();
+            processMove(0,-(1<<CSF));
+            processMove(0,(1<<CSF));
 	    }
 	}
 }
