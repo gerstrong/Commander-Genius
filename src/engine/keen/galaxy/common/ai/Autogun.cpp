@@ -85,7 +85,7 @@ void AutoShot::waiting()
   if(m_Pos != origin)
   {
     moveToForce(origin);  
-    onslope = blockedd = blockedl = blockedr = blockedu = false;
+    onslope = ( blockedd = ( blockedl = ( blockedr = (blockedu = false) ) ) );
   }
   
   dontdraw = false;

@@ -84,7 +84,7 @@ void CBounder::getTouchedBy(CSpriteObject &theObject)
 
 void CBounder::processBounce()
 {
-    	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+    std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	
 	int xMid = getXMidPos();
 	int y2 = getYDownPos();
@@ -278,16 +278,19 @@ void CBounder::process()
 
 	(this->*mp_processState)();
 
-	if( blockedl )
-	{
-		xDirection = RIGHT;
-		setAction( A_BOUNDER_MOVE );
-	}
-	else if(blockedr)
-	{
-		xDirection = LEFT;
-		setAction( A_BOUNDER_MOVE+1 );
-	}
+    if(!onslope)
+    {
+        if( blockedl )
+        {
+            xDirection = RIGHT;
+            setAction( A_BOUNDER_MOVE );
+        }
+        else if(blockedr)
+        {
+            xDirection = LEFT;
+            setAction( A_BOUNDER_MOVE+1 );
+        }
+    }
 
 	// check if someone is still standing on the platform
 	if( mpInteractPlayer )
