@@ -38,6 +38,8 @@ void CSlugSlime::getTouchedBy(CSpriteObject &theObject)
 void CSlugSlime::process()
 {
 	performCollisions();
+
+    performGravityHigh();
 	
     if( m_timer < POISON_TIME )
     {
