@@ -3,7 +3,7 @@ OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
 OPTION(SDL2 "SDL2 support" No)
 OPTION(DBFUSION "Dosbox fusion" No)
-
+# 
 if(SDL2)
     OPTION(OPENGL "OpenGL support" No)
 else()
@@ -12,7 +12,7 @@ endif()
 
 
 if(WIN32)
-set(mingw64dir "C:/MinGW64/")
+  set(mingw64dir "C:/MinGW64/")
 endif(WIN32)
 
 
@@ -147,36 +147,6 @@ SET(EXECUTABLE_OUTPUT_PATH ${BUILD_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib/GsKit)
 
-
-IF(UNIX)
-# Compilation under Linux
-	IF(BUILD_TARGET STREQUAL WIN32)
-	
-		set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
-		set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
-	
-		# the name of the target operating system
-		SET(CMAKE_SYSTEM_NAME Windows)
-		option(MINGW "Use MingW" yes)		
-		set(MINGW_PREFIX "mingw32")
-		set(PREFIX /opt/${MINGW_PREFIX})		
-		set(CMAKE_PREFIX_PATH ${PREFIX})
-		set(CMAKE_C_COMPILER /usr/bin/i686-w64-mingw32-gcc)
-		set(CMAKE_CXX_COMPILER /usr/bin/i686-w64-mingw32-g++)
-		set(CMAKE_INCLUDE_PATH ${PREFIX}/include)
-		set(CMAKE_FIND_ROOT_PATH ${PREFIX})
-		set(CMAKE_INSTALL_PREFIX ${PREFIX})
-		set(CMAKE_LIBRARY_PATH ${PREFIX}/lib)	
-		ADD_DEFINITIONS(-DWIN32)
-		ADD_DEFINITIONS(-DTARGET_WIN32)
-		
-	ELSEIF(BUILD_TARGET STREQUAL LINUX)
-		ADD_DEFINITIONS("-DTARGET_LNX")
-	ELSE(BUILD_TARGET STREQUAL WIN32)
-	ENDIF(BUILD_TARGET STREQUAL WIN32)
-	
-ENDIF(UNIX)
-
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/)
 
 
@@ -241,17 +211,21 @@ ENDIF()
 
 if(SDL2)     
    
-IF(WIN32)
-    include(FindSDL2 OPTIONAL)	
-else()
-	INCLUDE(FindPkgConfig)
-    PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-endif()
+    IF(WIN32)
+      include(FindSDL2 OPTIONAL)	
+    else()
+      INCLUDE(FindPkgConfig)
+      PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+      PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+    endif()
 
     if(SDL2_FOUND)
         message(STATUS "Using shared SDL Version 2 for Commander Genius")
-        include_directories(${SDL2_INCLUDE_DIR})
-        include_directories(${SDL2_NET_INCLUDE_DIRS})
+        include_directories(${SDL2_INCLUDE_DIRS})
+        include_directories(${SDL2IMAGE_INCLUDE_DIRS})        
+        
+        #include_directories(${SDL2_NET_INCLUDE_DIRS})
+               
         include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
@@ -291,6 +265,9 @@ add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 
 
 if(SDL2)
+        target_link_libraries(CGeniusExe ${SDL2_LIBRARIES})
+        target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARIES})
+        
 else(SDL2)
         # SDL stuff to link        
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
@@ -301,17 +278,6 @@ endif(SDL2)
 
 # Link GsKit
 target_link_libraries (CGeniusExe GsKit) 
-
-# Linking part under Linux
-IF(BUILD_TARGET STREQUAL WIN32)
-	TARGET_LINK_LIBRARIES(CGeniusExe mingw32)
-	TARGET_LINK_LIBRARIES(CGeniusExe SDLmain)
-	TARGET_LINK_LIBRARIES(CGeniusExe SDL)
-    IF(OPENGL)
-	TARGET_LINK_LIBRARIES(CGeniusExe glu32)
-	TARGET_LINK_LIBRARIES(CGeniusExe opengl32)
-    ENDIF(OPENGL)
-ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 
 IF(OPENGL)
