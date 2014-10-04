@@ -248,7 +248,7 @@ else(SDL2)
 
 endif(SDL2)
 
-
+MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )	
 
 
 add_subdirectory(engine)
