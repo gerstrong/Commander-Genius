@@ -42,8 +42,6 @@ IF(WIN32)
     endif(SDL2_FOUND)	
 	
 else(WIN32)
-
-
 	if(SDL2)
  
 		INCLUDE(FindPkgConfig)    

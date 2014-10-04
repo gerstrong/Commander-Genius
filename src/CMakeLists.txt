@@ -250,6 +250,13 @@ endif(SDL2)
 
 MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )	
 
+if(DBFUSION)
+	if(WIN32)
+		# For the Windows build you need this flag or is dosbox part is going to hang while mounting the drive
+		ADD_DEFINITIONS("-fpermissive -mno-ms-bitfields")
+	endif(WIN32)
+endif(DBFUSION)
+
 
 add_subdirectory(engine)
 add_subdirectory(sdl)
@@ -339,8 +346,6 @@ ENDIF(OPENGL)
 # Only if you want to use Dosfusion
 if(DBFUSION)
     #target_link_libraries(CGeniusExe SDL_sound)
-	
-	
 	
     target_link_libraries(CGeniusExe m)
     target_link_libraries(CGeniusExe png)
