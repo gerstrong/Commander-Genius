@@ -68,6 +68,12 @@ public:
 	void setSettings( const SDL_AudioSpec& audioSpec,
 			 	 	  const bool useSB );
 
+
+    /**
+     * @brief updateFuncPtrs Depending on the audio setup it will update the mixAudio function pointer.
+     */
+    void updateFuncPtrs();
+
 	bool loadSoundData();
 
     void setupSoundData(const std::map<GameSound, int> &slotMap,
@@ -104,7 +110,7 @@ private:
     bool mUseSoundBlaster;
 
 	std::vector<Uint8> m_MixedForm;	// Mainly used by the callback function. Declared once and allocated
-    									// for the whole program
+                                    // for the whole runtime
 
     std::map<GameSound, int> sndSlotMap;
 

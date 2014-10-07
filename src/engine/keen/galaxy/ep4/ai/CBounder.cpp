@@ -90,10 +90,10 @@ void CBounder::processBounce()
 	int y2 = getYDownPos();
 
 	// When bounder hits the floor start the inertia again.
-	if( blockedd || TileProperty[mp_Map->at(xMid>>CSF, (y2+1)>>CSF)].bup>1 )
+    if( blockedd || TileProperty[mp_Map->at(xMid>>CSF, (y2+1)>>CSF)].bup>1 )
 	{
 		setAction( A_BOUNDER_ONFLOOR );
-		return;
+        //return;
 	}
 
 	// Will block the player when bounder touches him, but he is not riding him

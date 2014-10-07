@@ -17,43 +17,56 @@
 #define WAVE_SILENCE_U16        32768
 #define WAVE_SILENCE_S16        0
 
+
+#define CHUNKSIZE 4
+
 /**
  * This will mix 16-bit signed streams together.
  */
-void mixAudioSinged16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
+void mixAudioSigned16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint32 volume)
 {
 	len /= 2;
-	Sint16 *s_dst = (Sint16*) (void *)dst;
+
+    // let's try to unroll loops and get SSE/AVX work better
+    const Uint32 chunks = len/CHUNKSIZE;
+
+    Sint16 *s_dst = (Sint16*) (void *)dst;
 	Sint16 *s_src = (Sint16*) (void *)src;
-	Sint32 chnl_src=0;
-	Sint32 chnl_dst=0;
-	Sint32 outputValue=0;
+    Sint32 chnl_src[CHUNKSIZE];
+    Sint32 chnl_dst[CHUNKSIZE];
+    Sint32 outputValue[CHUNKSIZE];
 
-    for ( Uint32 i=0 ; i<len ; i++ ) 
+    for ( Uint32 j=0 ; j<chunks ; j++ )
     {
-    	chnl_src = *s_src;
-    	chnl_dst = *s_dst;
+        for ( Uint32 i=0 ; i<CHUNKSIZE ; i++ )
+        {
+            chnl_src[i] = s_src[i];
+            chnl_dst[i] = s_dst[i];
 
-        chnl_src *= volume;
-        chnl_src /= SDL_MIX_MAXVOLUME;
+            chnl_src[i] *= volume;
+            chnl_src[i] /= SDL_MIX_MAXVOLUME;
 
-        outputValue = chnl_src + chnl_dst;  // just add the channels
-        if (outputValue > WAVE_SILENCE_U16-1)
-            outputValue = WAVE_SILENCE_U16-1;        // and clip the result
-        if (outputValue < -WAVE_SILENCE_U16)
-            outputValue = -WAVE_SILENCE_U16;	// and clip the result
+            // Add the channels and normalize the volume
+            outputValue[i] = chnl_src[i] + chnl_dst[i];// just add the channels
 
-        *s_dst = outputValue;
+            // And clip the result
+            if (outputValue[i] > WAVE_SILENCE_U16-1)
+                outputValue[i] = WAVE_SILENCE_U16-1;
+            else if(outputValue[i] < -WAVE_SILENCE_U16)
+                outputValue[i] = -WAVE_SILENCE_U16;
 
-        s_src++;
-        s_dst++;
+            // And pass result to the destination
+            s_dst[i] = outputValue[i];
+        }
+        s_src += CHUNKSIZE;
+        s_dst += CHUNKSIZE;
     }
 }
 
 /**
  * This will mix 8-bit unsigned streams together.
  */
-void mixAudioUnsinged8(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
+void mixAudioUnsigned8(Uint8 *dst, const Uint8 *src, Uint32 len, Uint32 volume)
 {
     Sint32 chnl_src=0;
     Sint32 chnl_dst=0;
@@ -79,16 +92,5 @@ void mixAudioUnsinged8(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
         src++;
         dst++;
     }
-}
-
-/**
- * Our own Mix function for Audio Streams
- */
-void mixAudio(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume, Uint16 format)
-{
-	if(format == AUDIO_S16)
-		mixAudioSinged16(dst, src, len, volume);
-	else if(format == AUDIO_U8)
-		mixAudioUnsinged8(dst, src, len, volume);
 }
 

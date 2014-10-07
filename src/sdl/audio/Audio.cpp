@@ -15,10 +15,6 @@
 #include <fstream>
 
 
-// Forward declaration which makes Mixer.h obsolete.
-void mixAudio(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume, Uint16 format);
-
-
 // This central list tells which frequencies can be used for your soundcard.
 // In case you want to add some more, just modify this list
 #if defined(ANDROID)
@@ -63,6 +59,8 @@ m_pause_gameplay(false)
 	mAudioSpec.channels = 2; // Stereo Sound
 	mAudioSpec.format = AUDIO_S16; // 16-bit sound
 	mAudioSpec.freq = 44100; // high quality
+
+    updateFuncPtrs();
 }
 
 Audio::~Audio()
@@ -101,7 +99,7 @@ bool Audio::init()
 
 	mAudioSpec = obtained;
 
-	m_MixedForm.reserve(mAudioSpec.size);
+    m_MixedForm.resize(mAudioSpec.size);
 
 	gLogging.ftextOut("SDL_AudioSpec:<br>");
 	gLogging.ftextOut("  freq: %d<br>", mAudioSpec.freq);
@@ -139,8 +137,30 @@ bool Audio::init()
 	// Let's initialize the OPL Emulator here!
 	m_OPL_Player.init();
 
+    updateFuncPtrs();
+
 	return true;
 }
+
+
+void (*mixAudio)(Uint8*, const Uint8*, Uint32, Uint32);
+
+void mixAudioUnsigned8(Uint8 *dst, const Uint8 *src, Uint32 len, Uint32 volume);
+
+void mixAudioSigned16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint32 volume);
+
+
+/**
+ * @brief updateFuncPtrs Depending on the audio setup it will update the mixAudio function pointer.
+ */
+void Audio::updateFuncPtrs()
+{
+    if(mAudioSpec.format == AUDIO_S16)
+        mixAudio = mixAudioSigned16;
+    else if(mAudioSpec.format == AUDIO_U8)
+        mixAudio = mixAudioUnsigned8;
+}
+
 
 void Audio::destroy()
 {
@@ -226,6 +246,7 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 {
     m_callback_running = true;
 
+    // Subcallbacks for so far are only used by the dosfusion system
     for(auto &subCallback : mSubCallbackVec)
     {
         subCallback(unused, stream, len);
@@ -237,12 +258,14 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 		return;
     }
 
+    m_MixedForm.resize(len);
+
 	Uint8* buffer = m_MixedForm.data();
 
     if (g_pMusicPlayer->playing())
     {
     	g_pMusicPlayer->readWaveform(buffer, len);
-    	mixAudio(stream, buffer, len, m_MusicVolume, mAudioSpec.format);
+        mixAudio(stream, buffer, len, m_MusicVolume);
     }
 
     bool any_sound_playing = false;
@@ -253,7 +276,7 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 		{
 			any_sound_playing |= true;
 			snd_chnl->readWaveform( buffer, len);
-   			mixAudio(stream, buffer, len, m_SoundVolume, mAudioSpec.format);
+            mixAudio(stream, buffer, len, m_SoundVolume);
 		}
     }
 
@@ -417,7 +440,7 @@ void Audio::setSettings( const SDL_AudioSpec& audioSpec,
 		}
 	}
 
-
+    updateFuncPtrs();
 }
 
 
@@ -435,3 +458,8 @@ void Audio::setSettings( const int rate,
 
 	setSettings(nAudio, useSB);
 }
+
+
+
+
+

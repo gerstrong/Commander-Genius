@@ -229,10 +229,11 @@ It is good to take a look at that file if something in CG goes wrong.
 
 Optionally you can pass launch arguments to Commander Genius. These are:
 
-dir=<game-directory>	This will launch the game of the given directory, in case it can be launched, otherwise it will launch the game launcher.
+dir=<game-directory>	This will launch the game of the given directory, in case it can be started, 
+                        otherwise it will go to the game launcher with a warning shown.
                         vg.: "CGenius.exe dir=games/keen4"
 
-finale=<on/off>		If you want to directly show the finale of a game pass this parameter and it will be done
+finale=<on/off>		If you want to directly show the finale of a game pass this parameter:
 			vg.: "CGenius.exe finale=on"
 
 Example: If you want to start the game of the path "C:\games\keen5" type:
