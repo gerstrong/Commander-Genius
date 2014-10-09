@@ -236,7 +236,7 @@ else(USE_SDL2)
                 include(FindSDL OPTIONAL)
         endif()
         if(SDL_FOUND)
-                message("Using shared SDL Version 1.2")
+                message(STATUS "Using shared SDL Version 1.2")
                 include_directories(${SDL_INCLUDE_DIR})
                 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
         else(SDL_FOUND)
@@ -271,16 +271,16 @@ get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 
 
-if(SDL2)
+if(USE_SDL2)
         target_link_libraries(CGeniusExe ${SDL2_LIBRARIES})
         target_link_libraries(CGeniusExe ${SDL2IMAGE_LIBRARIES})
         
-else(SDL2)
+else(USE_SDL2)
         # SDL stuff to link        
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
         target_link_libraries(CGeniusExe ${SDL_LIBRARY})
         target_link_libraries(CGeniusExe ${SDLIMAGE_LIBRARY})
-endif(SDL2)
+endif(USE_SDL2)
 
 
 # Link GsKit
