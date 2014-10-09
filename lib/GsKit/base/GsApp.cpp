@@ -301,13 +301,6 @@ void GsApp::runMainCycle()
 
         start = timerTicks();
 
-        // GameState previous;
-        // GameState current;
-
-        /*if ( elapsed > 0.25 )
-             elapsed = 0.25;	  // note: max frame time to avoid spiral of death
-        */
-
         acc += elapsed;
 
         // Perform the game cycle
@@ -321,11 +314,6 @@ void GsApp::runMainCycle()
 
             // Ponder Game Control
             ponder(logicLatency);
-
-            /*
-              previousState = currentState;
-              integrate( currentState, logicLatency );
-            */
 
             acc -= logicLatency;
         }
@@ -343,13 +331,6 @@ void GsApp::runMainCycle()
         // When enabled, it also will apply Filters
         gVideoDriver.updateDisplay();
 
-        /*
-         const double alpha = acc / logicLatency;
-
-         State state = currentState*alpha + previousState * ( 1.0 - alpha );
-
-         render( state );
-        */
 
         elapsed = timerTicks() - start;
         total_elapsed += elapsed;

@@ -54,8 +54,9 @@ static void W32_ConfDir(std::string& in,bool create) {
 }
 #endif
 
-void Cross::GetPlatformConfigDir(std::string& in) {
-#ifdef WIN32
+void Cross::GetPlatformConfigDir(std::string& in)
+{
+/*#ifdef WIN32
 	W32_ConfDir(in,false);
 	in += "\\DOSBox";
 #elif defined(MACOSX)
@@ -65,7 +66,7 @@ void Cross::GetPlatformConfigDir(std::string& in) {
 	in = "~/.dosbox";
 	ResolveHomedir(in);
 #endif
-	in += CROSS_FILESPLIT;
+    in += CROSS_FILESPLIT;*/
 }
 
 void Cross::GetPlatformConfigName(std::string& in) {

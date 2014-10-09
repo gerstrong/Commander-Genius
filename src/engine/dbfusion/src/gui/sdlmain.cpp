@@ -22,6 +22,7 @@
 #endif
 
 #include <base/CInput.h>
+#include <base/utils/FindFile.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -1851,16 +1852,20 @@ static void printconfiglocation() {
 	exit(0);
 }
 
-static void eraseconfigfile() {
+static void eraseconfigfile()
+{
+    const std::string path = GetWriteFullFileName("dosbox.conf");
+
 	FILE* f = fopen("dosbox.conf","r");
 	if(f) {
 		fclose(f);
 		show_warning("Warning: dosbox.conf exists in current working directory.\nThis will override the configuration file at runtime.\n");
 	}
-	std::string path,file;
-	Cross::GetPlatformConfigDir(path);
+    /*std::string path,file;
+
+    Cross::GetPlatformConfigDir(path);
 	Cross::GetPlatformConfigName(file);
-	path += file;
+    path += file;*/
 	f = fopen(path.c_str(),"r");
 	if(!f) exit(0);
 	fclose(f);
@@ -1876,9 +1881,10 @@ static void erasemapperfile() {
 		             "Please reset configuration as well and delete the dosbox.conf.\n");
 	}
 
-	std::string path,file=MAPPERFILE;
-	Cross::GetPlatformConfigDir(path);
-	path += file;
+    std::string file=MAPPERFILE;
+
+    const std::string path = GetWriteFullFileName(file);
+
 	FILE* f = fopen(path.c_str(),"r");
 	if(!f) exit(0);
 	fclose(f);
@@ -2022,23 +2028,20 @@ int dosbox_main(int argc, const char* argv[])
 
 
 	/* Parse configuration files */
-	std::string config_file,config_path;
-	Cross::GetPlatformConfigDir(config_path);
+    std::string config_file;
+
+    Cross::GetPlatformConfigName(config_file);
+
+    const std::string config_path = GetWriteFullFileName(config_file);
 
 
-	//First parse -userconf
+    //First parse -userconf
 	if(control->cmdline->FindExist("-userconf",true)){
 		config_file.clear();
-		Cross::GetPlatformConfigDir(config_path);
-		Cross::GetPlatformConfigName(config_file);
-		config_path += config_file;
 		control->ParseConfigFile(config_path.c_str());
 		if(!control->configfiles.size()) {
 			//Try to create the userlevel configfile.
 			config_file.clear();
-			Cross::CreatePlatformConfigDir(config_path);
-			Cross::GetPlatformConfigName(config_file);
-			config_path += config_file;
 			if(control->PrintConfig(config_path.c_str())) {
 				LOG_MSG("CONFIG: Generating default configuration.\nWriting it to %s",config_path.c_str());
 				//Load them as well. Makes relative paths much easier
@@ -2069,9 +2072,10 @@ int dosbox_main(int argc, const char* argv[])
 	if(!control->configfiles.size()) {
 		//Try to create the userlevel configfile.
 		config_file.clear();
-		Cross::CreatePlatformConfigDir(config_path);
+        /*Cross::CreatePlatformConfigDir(config_path);*/
 		Cross::GetPlatformConfigName(config_file);
-		config_path += config_file;
+        //config_path += config_file;
+        const std::string config_path = GetWriteFullFileName(config_file);
 		if(control->PrintConfig(config_path.c_str())) {
 			LOG_MSG("CONFIG: Generating default configuration.\nWriting it to %s",config_path.c_str());
 			//Load them as well. Makes relative paths much easier

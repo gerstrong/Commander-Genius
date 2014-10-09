@@ -32,6 +32,8 @@
 #include "control.h"
 #include "shell.h"
 
+#include <base/utils/FindFile.h>
+
 Bitu call_program;
 
 /* This registers a file on the virtual drive and creates the correct structure for it*/
@@ -256,9 +258,11 @@ private:
 	void writeconf(std::string name, bool configdir) {
 		if (configdir) {
 			// write file to the default config directory
-			std::string config_path;
-			Cross::GetPlatformConfigDir(config_path);
-			name = config_path + name;
+            /*std::string config_path;
+            Cross::GetPlatformConfigDir(config_path);*/
+
+            name = GetWriteFullFileName(name);
+            //name = config_path + name;
 		}
 		WriteOut(MSG_Get("PROGRAM_CONFIG_FILE_WHICH"),name.c_str());
 		if (!control->PrintConfig(name.c_str())) {
@@ -320,8 +324,10 @@ void CONFIG::Run(void) {
 		
 		case P_LISTCONF: {
 			Bitu size = control->configfiles.size();
-			std::string config_path;
-			Cross::GetPlatformConfigDir(config_path);
+
+            std::string config_path;
+
+            Cross::GetPlatformConfigDir(config_path);
 			WriteOut(MSG_Get("PROGRAM_CONFIG_CONFDIR"), VERSION,config_path.c_str());
 			if (size==0) WriteOut(MSG_Get("PROGRAM_CONFIG_NOCONFIGFILE"));
 			else {
