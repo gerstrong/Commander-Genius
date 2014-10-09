@@ -209,7 +209,7 @@ IF (Boost_FOUND)
 	ADD_DEFINITIONS( "-DHAS_BOOST" )
 ENDIF()	
 
-if(SDL2)     
+if(USE_SDL2)
    
     IF(WIN32)
       include(FindSDL2 OPTIONAL)	
@@ -229,7 +229,7 @@ if(SDL2)
         include_directories(/usr/include/SDL2/)
     endif(SDL2_FOUND)
 
-else(SDL2)
+else(USE_SDL2)
         # SDL2 not found, try SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -246,7 +246,7 @@ else(SDL2)
                 add_subdirectory(Externals/SDL)
         endif(SDL_FOUND)
 
-endif(SDL2)
+endif(USE_SDL2)
 
 MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )	
 

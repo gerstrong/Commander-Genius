@@ -42,7 +42,7 @@ IF(WIN32)
     endif(SDL2_FOUND)	
 	
 else(WIN32)
-	if(SDL2)
+        if(USE_SDL2)
  
 		INCLUDE(FindPkgConfig)    
 		PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
@@ -55,8 +55,8 @@ else(WIN32)
 			include_directories(/usr/include/SDL2/)
 		endif(SDL2_FOUND)
 
-	else(SDL2)
-        # SDL2 not found, try SDL1.2
+        else(USE_SDL2)
+        # SDL2 not defined, try SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
         FIND_PACKAGE( SDL_net REQUIRED )
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -73,7 +73,7 @@ else(WIN32)
                 add_subdirectory(Externals/SDL)
         endif(SDL_FOUND)
 
-	endif(SDL2)
+        endif(USE_SDL2)
 
 endif(WIN32)
 
