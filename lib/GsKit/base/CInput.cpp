@@ -533,6 +533,7 @@ void CInput::pollEvents()
     if(remapper.mappingInput)
     {
         readNewEvent();
+        SDL_SemPost( pollSem );
         return;
     }
 
