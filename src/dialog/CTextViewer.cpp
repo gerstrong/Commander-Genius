@@ -96,7 +96,8 @@ void CTextViewer::formatText(const std::string &text)
 		if( mp_text[i] == '\n' )
 		{
             if(!buf.empty())
-                buf.pop_back();
+                buf = buf.substr(0, buf.size()-1);
+
 			m_textline.push_back(buf);
 			buf.clear();
 			continue;
@@ -120,7 +121,8 @@ void CTextViewer::formatText(const std::string &text)
         if( totlen > (m_w/m_8x8tilewidth-2) && mp_text[i] != '_' ) // Or does the next one fit into the line?
 		{
             if(!buf.empty())
-                buf.pop_back();
+                buf = buf.substr(0, buf.size()-1);
+
 			m_textline.push_back(buf);
 			buf = "";
 		}

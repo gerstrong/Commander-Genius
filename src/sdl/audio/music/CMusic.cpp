@@ -182,8 +182,8 @@ bool CMusic::LoadfromSonglist(const std::string &gamepath, const int &level)
         	str_buf = str_buf.substr(next_pos);
         	next_pos = str_buf.find(' ');
 
-        	// Get level number
-        	detected_level = stoi(str_buf.substr(0, next_pos));
+        	// Get level number            
+            detected_level = atoi(str_buf.substr(0, next_pos).c_str());
 
         	str_buf = str_buf.substr(next_pos);
         	next_pos = str_buf.find('"')+1;
