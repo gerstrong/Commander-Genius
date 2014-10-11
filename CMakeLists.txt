@@ -56,22 +56,23 @@ else(WIN32)
 		endif(SDL2_FOUND)
 
         else(USE_SDL2)
-        # SDL2 not defined, try SDL1.2
-        FIND_PACKAGE( SDL REQUIRED )
-        FIND_PACKAGE( SDL_net REQUIRED )
-        if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+            # SDL2 not defined, try SDL1.2
+            FIND_PACKAGE( SDL REQUIRED )
+            FIND_PACKAGE( SDL_net REQUIRED )
+            if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)
-        endif()
-        if(SDL_FOUND)
+            endif()
+
+            if(SDL_FOUND)
                 message(STATUS "Using shared SDL Version 1.2")
                 include_directories(${SDL_INCLUDE_DIR})
                 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIRS})
-        else(SDL_FOUND)
+            else(SDL_FOUND)
                 # TODO: Use the prebuilt one on Windows
                 message("Using static SDL from Externals")
                 include_directories(Externals/SDL Externals/SDL/include)
                 add_subdirectory(Externals/SDL)
-        endif(SDL_FOUND)
+            endif(SDL_FOUND)
 
         endif(USE_SDL2)
 

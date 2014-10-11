@@ -230,8 +230,12 @@ if(USE_SDL2)
     endif(SDL2_FOUND)
 
 else(USE_SDL2)
+        INCLUDE(FindPkgConfig)
         # SDL2 not found, try SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
+        #FIND_PACKAGE( SDL_image REQUIRED)
+        PKG_SEARCH_MODULE(SDLIMAGE REQUIRED SDL_image)
+
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)
         endif()
@@ -279,7 +283,7 @@ else(USE_SDL2)
         # SDL stuff to link        
         target_link_libraries(CGeniusExe ${SDL_NET_LIBRARIES})
         target_link_libraries(CGeniusExe ${SDL_LIBRARY})
-        target_link_libraries(CGeniusExe ${SDLIMAGE_LIBRARY})
+        target_link_libraries(CGeniusExe ${SDL_IMAGE_LIBRARY})
 endif(USE_SDL2)
 
 

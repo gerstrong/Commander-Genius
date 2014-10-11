@@ -10,6 +10,8 @@
 #include <base/GsLogging.h>
 #include <SDL_syswm.h>
 #include <base/video/scaler/scalebit.h>
+#include <SDL_version.h>
+
 
 
 Uint16 getPowerOfTwo(const Uint16 value)

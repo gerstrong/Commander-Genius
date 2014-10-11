@@ -6,7 +6,7 @@
 #include <base/utils/Geometry.h>
 #include <base/video/scaler/CScaler.h>
 #include <memory>
-
+#include <cassert>
 
 class GsWeakSurface
 {
@@ -82,24 +82,30 @@ public:
 
     int blitTo(GsWeakSurface &sfc)
     {
+        assert(sfc.mpSurface);
         return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, nullptr );
     }
 
     int blitTo(GsWeakSurface &sfc, GsRect<Uint16> &dstRect)
     {
+        assert(mpSurface);
+        assert(sfc.mpSurface);
         SDL_Rect sdlRect = dstRect.SDLRect();
         return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, &sdlRect );
     }
 
     int blitTo(GsWeakSurface &sfc, const SDL_Rect &sdlRect)
     {
+        assert(mpSurface);
+        assert(sfc.mpSurface);
         return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, const_cast<SDL_Rect*>(&sdlRect) );
     }
 
 
     void blitScaledTo(GsWeakSurface &sfc)
-    {
+    {        
         SDL_Surface *dst = sfc.getSDLSurface();
+        assert(dst);
         blitScaled(mpSurface,
                    mpSurface->clip_rect,
                    dst,
@@ -166,10 +172,10 @@ public:
                       const unsigned char b)
     {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetColorKey(mpSurface, SDL_TRUE, mapRGB(r, g, b));
-    SDL_SetSurfaceBlendMode(mpSurface, SDL_BLENDMODE_BLEND);
+        SDL_SetColorKey(mpSurface, SDL_TRUE, mapRGB(r, g, b));
+        SDL_SetSurfaceBlendMode(mpSurface, SDL_BLENDMODE_BLEND);
 #else
-    SDL_SetColorKey( mpSurface, SDL_SRCCOLORKEY, mapRGB(r, g, b) );
+        SDL_SetColorKey( mpSurface, SDL_SRCCOLORKEY, mapRGB(r, g, b) );
 #endif
     }
 

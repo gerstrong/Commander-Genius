@@ -334,9 +334,10 @@ public:
 		pnt = (void*) scp->si_regs.pc ;
 #		endif
 #	elif defined(__i386__)
-		
-		/*ucontext_t* uc = (ucontext_t*) secret;
-		pnt = (void*) uc->uc_mcontext.gregs[REG_EIP] ;*/
+        // Does not work on Android
+        /*ucontext_t* uc = (ucontext_t*) secret;
+        pnt = (void*) uc->uc_mcontext.gregs[REG_EIP] ;*/
+
 #	else
 #		warning mcontext is not defined for this arch, thus a dumped backtrace could be crippled
 #	endif
