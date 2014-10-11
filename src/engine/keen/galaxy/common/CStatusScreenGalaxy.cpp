@@ -59,7 +59,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	SupportRect.h = SupportBmp.getSDLSurface()->h;
 	Dest.x = (DestRect.w-SupportRect.w)/2;	Dest.y = 0; 
 
-    SDL_BlitSurface( SupportBmp.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
+    BlitSurface( SupportBmp.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
 
 	// Draw the gray surface
 	SDL_Rect BackRect;
@@ -76,7 +76,7 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	CableRect.h = Cables_Bitmap.getSDLSurface()->h;
 	Dest.x = BackRect.x - CableRect.w;	Dest.y = 0;
 
-    SDL_BlitSurface( Cables_Bitmap.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
+    BlitSurface( Cables_Bitmap.getSDLSurface(), NULL, mpStatusSurface.get(), &Dest );
 
 	// Now draw the borders
 	GsTilemap &Tilemap = gGraphics.getTileMap(2);

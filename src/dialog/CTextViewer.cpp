@@ -244,7 +244,7 @@ void CTextViewer::render()
     renderBox();
     // This comes after, because it does use semi-transparent overlay
 
-    SDL_BlitSurface(mpTextVSfc.get(), NULL, gVideoDriver.getBlitSurface(), NULL);
+    BlitSurface(mpTextVSfc.get(), NULL, gVideoDriver.getBlitSurface(), NULL);
 }
 
 

@@ -53,7 +53,7 @@ std::shared_ptr<SDL_Surface> GsSprite::createCopySDLSurface(
         auto *origSfcPtr = original.get();
 
         SDL_FillRect( surface.get(), NULL, COLORKEY );
-        SDL_BlitSurface( origSfcPtr, NULL, surface.get(), NULL);
+        BlitSurface( origSfcPtr, NULL, surface.get(), NULL);
     }
     else
     {
@@ -209,7 +209,7 @@ bool GsSprite::loadHQSprite( const std::string& filename )
 			      displaysurface( SDL_ConvertSurface(temp_surface.get(), mpSurface->format, mpSurface->flags));
 			readMask(displaysurface.get());
 			readBBox(displaysurface.get());
-			SDL_BlitSurface(displaysurface.get(), NULL, mpSurface.get(), NULL);
+			BlitSurface(displaysurface.get(), NULL, mpSurface.get(), NULL);
 			return true;
 		}
 	}
@@ -283,7 +283,7 @@ void GsSprite::applyTransparency()
 
     if(mpSurface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat before ???
 	{
-		SDL_BlitSurface(mpMasksurface.get(), NULL, mpSurface.get(), NULL);
+		BlitSurface(mpMasksurface.get(), NULL, mpSurface.get(), NULL);
 		return;
     }
 	
@@ -399,7 +399,7 @@ void GsSprite::copy( GsSprite &Destination, SDL_Color *Palette )
 	Destination.createSurface( mpSurface->flags, Palette );
 	
 	SDL_FillRect(Destination.getSDLSurface(), NULL, COLORKEY);
-	SDL_BlitSurface( mpSurface.get(), NULL, Destination.getSDLSurface(), NULL);
+	BlitSurface( mpSurface.get(), NULL, Destination.getSDLSurface(), NULL);
 }
 
 // replaces all instances of color find in sprite s with
@@ -554,7 +554,7 @@ void GsSprite::drawSprite( SDL_Surface *dst, const int x, const int y, const int
 
 	SDL_Surface *src = mpSurface.get();
 
-	SDL_BlitSurface( src, &src_rect, dst, &dst_rect );
+	BlitSurface( src, &src_rect, dst, &dst_rect );
 }
 
 /**
@@ -589,7 +589,7 @@ void GsSprite::_drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 //#else
     SDL_Surface *blanksfc = gVideoDriver.convertThroughBlitSfc(mpSurface.get());
 	blitMaskedSprite(blanksfc, mpSurface.get(), 0xFFFFFF);
-	SDL_BlitSurface( blanksfc, &src_rect, dst, &dst_rect );
+	BlitSurface( blanksfc, &src_rect, dst, &dst_rect );
 	SDL_FreeSurface(blanksfc);
 //#endif
 }

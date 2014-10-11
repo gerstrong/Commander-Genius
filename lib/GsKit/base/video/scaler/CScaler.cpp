@@ -8,6 +8,8 @@
 #include "CScaler.h"
 #include "scalebit.h"
 
+#include <graphics/GsSurface.h>
+
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -50,7 +52,10 @@ void scaleDynamic( SDL_Surface *srcSfc,
 		SDL_Rect sdldstrect;
 		sdldstrect.x = dstRect.x; sdldstrect.y = dstRect.y;
 		sdldstrect.w = dstRect.w; sdldstrect.h = dstRect.h;
-        SDL_BlitSurface(srcSfc, &srGsRect, dstSfc, &sdldstrect);
+
+        assert(srcSfc);
+        assert(dstSfc);
+        BlitSurface(srcSfc, &srGsRect, dstSfc, &sdldstrect);
 		return;
 	}
 
@@ -130,7 +135,9 @@ void scaleNormal( SDL_Surface *srcSfc,
 {
     if( (dstSfc->w == srcSfc->w) && (dstSfc->h == srcSfc->h) )
 	{
-		SDL_BlitSurface(srcSfc, NULL, dstSfc, NULL);
+        assert(srcSfc);
+        assert(dstSfc);
+        BlitSurface(srcSfc, NULL, dstSfc, NULL);
 		return;
 	}
 

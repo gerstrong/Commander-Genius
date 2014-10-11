@@ -279,7 +279,7 @@ void CResourceLoader::renderLoadingGraphic()
 
     SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0,0,0) );
 
-    SDL_BlitSurface( mpProgressSfc.get(), nullptr, blit, nullptr );
+    BlitSurface( mpProgressSfc.get(), nullptr, blit, nullptr );
 }
 
 
@@ -481,7 +481,7 @@ void CResourceLoaderBackground::render()
 
     SDL_FillRect( blit, nullptr, SDL_MapRGB(blit->format, 0,0,0) );
 
-    SDL_BlitSurface( mpProgressSfc.get(), nullptr, blit, nullptr );
+    BlitSurface( mpProgressSfc.get(), nullptr, blit, nullptr );
 }
 
 

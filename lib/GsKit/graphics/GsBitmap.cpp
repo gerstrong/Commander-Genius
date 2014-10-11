@@ -85,7 +85,10 @@ bool GsBitmap::loadHQBitmap( const std::string& filename )
             SDL_Surface *displaysurface = SDL_ConvertSurface(tempSurface,
                                                              mpBitmapSurface->format,
                                                              mpBitmapSurface->flags);
-			SDL_BlitSurface(displaysurface, NULL, mpBitmapSurface.get(), NULL);
+            assert(displaysurface);
+            assert(mpBitmapSurface.get());
+
+            BlitSurface(displaysurface, NULL, mpBitmapSurface.get(), NULL);
 			SDL_FreeSurface(displaysurface);
 			SDL_FreeSurface(tempSurface);
 			return true;
@@ -264,7 +267,10 @@ void GsBitmap::_draw(const int x, const int y, SDL_Surface *dst) const
         src_rect.h = dst->h - dst_rect.y;
     }
 
-    SDL_BlitSurface( bmpPtr, &src_rect, dst, &dst_rect );
+    assert(bmpPtr);
+    assert(dst);
+
+    BlitSurface( bmpPtr, &src_rect, dst, &dst_rect );
 }
 
 

@@ -174,7 +174,7 @@ void CAbout::render()
     else if(m_type == "CG")
     {
         if(mpLogoBMP)
-            SDL_BlitSurface(mpLogoBMP.get(), nullptr, gVideoDriver.getBlitSurface(), &m_logo_rect);
+            BlitSurface(mpLogoBMP.get(), nullptr, gVideoDriver.getBlitSurface(), &m_logo_rect);
     }
 
     for(std::size_t i=0 ; i<m_lines.size() ; i++)
@@ -182,7 +182,7 @@ void CAbout::render()
         gGraphics.getFont(1).drawFont(mpDrawSfc.get(), m_lines.at(i), 24, 72+i*8, true);
     }
 
-    SDL_BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
+    BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
 }
 
 void CAbout::teardown()

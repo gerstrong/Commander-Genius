@@ -433,7 +433,7 @@ void CEGASprit::CreateYellowSpriteofTile( GsTilemap &tilemap, Uint16 tile, GsSpr
 	
 	SDL_Surface *src_sfc = sprite.getSDLSurface();
 	
-	SDL_BlitSurface(tilemap.getSDLSurface(), &tile_rect, src_sfc, NULL);
+	BlitSurface(tilemap.getSDLSurface(), &tile_rect, src_sfc, NULL);
 	
 	if(SDL_MUSTLOCK(src_sfc)) SDL_LockSurface(src_sfc);
 	

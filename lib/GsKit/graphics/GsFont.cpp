@@ -371,7 +371,7 @@ void GsFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint
 	dstrect.x = xoff;	dstrect.y = yoff;
 //#endif
 
-	SDL_BlitSurface(mFontSurface.get(), &scrrect, dst, &dstrect);
+	BlitSurface(mFontSurface.get(), &scrrect, dst, &dstrect);
 }
 
 void GsFont::drawFont(SDL_Surface* dst,
@@ -527,5 +527,5 @@ void GsFont::drawFontCentered(SDL_Surface* dst,
 
 void GsFont::drawMap(SDL_Surface* dst)
 {
-	SDL_BlitSurface(mFontSurface.get(), NULL, dst, NULL);
+	BlitSurface(mFontSurface.get(), NULL, dst, NULL);
 }

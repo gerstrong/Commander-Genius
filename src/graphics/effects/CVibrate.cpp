@@ -48,6 +48,6 @@ void CVibrate::render()
     mVibRect.w = gamerect.h;
 
     // Blit it and free temp surface
-    SDL_BlitSurface( mpVibSfc.get(), &gamerect,
+    BlitSurface( mpVibSfc.get(), &gamerect,
                      gVideoDriver.getBlitSurface(), &mVibRect );
 }

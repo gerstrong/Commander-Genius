@@ -127,7 +127,7 @@ void CHUD::CreateVorticonBackground()
     SDL_SetAlpha(keenHeadSfc, 0, 0);
 #endif
 
-    SDL_BlitSurface( keenHeadSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
+    BlitSurface( keenHeadSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
 
 
 	int sprite=0;
@@ -152,7 +152,7 @@ void CHUD::CreateVorticonBackground()
 #endif
 
 
-    SDL_BlitSurface( keenGunSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
+    BlitSurface( keenGunSfc, &headsrGsRect, mpBackground.get(), &headdstrect );
 
 	// Draw the rounded borders
     DrawCircle(0, 0, 76);
@@ -242,7 +242,7 @@ void CHUD::renderGalaxy()
   }
 
 
-  SDL_BlitSurface( blitsfc, NULL, gVideoDriver.getBlitSurface(), &m_Rect );
+  BlitSurface( blitsfc, NULL, gVideoDriver.getBlitSurface(), &m_Rect );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -256,7 +256,7 @@ void CHUD::renderVorticon()
 	charges = (m_oldCharges<99) ? m_oldCharges : 99;
 
 	// Draw the background
-	SDL_BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
+	BlitSurface(mpBackground.get(), NULL, mpHUDBlit.get(), NULL );
 
 
 	GsFont &Font = gGraphics.getFont(1);
@@ -269,7 +269,7 @@ void CHUD::renderVorticon()
 
     Font.drawFont(mpHUDBlit.get(), getRightAlignedString(itoa(score),8),8, 2);
 
-    SDL_BlitSurface( mpHUDBlit.get(), NULL, gVideoDriver.getBlitSurface(), &m_Rect );   
+    BlitSurface( mpHUDBlit.get(), NULL, gVideoDriver.getBlitSurface(), &m_Rect );   
 }
 
 

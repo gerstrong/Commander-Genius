@@ -41,7 +41,7 @@ void GsCursor::generateTwirls(GsFont &Font)
 	twrect.y = fmrect.x = 0;
 	twrect.w = fmrect.w = 5*8;
 	twrect.h = fmrect.h = 8;	fmrect.y=0;
-	SDL_BlitSurface(srcsfc, &twrect, mp_Surface, &fmrect);
+    BlitSurface(srcsfc, &twrect, mp_Surface, &fmrect);
 
 	// now the complex stuff for the extra two tiles
 	// Draw tile 9 and 10 inverted
@@ -76,7 +76,7 @@ void GsCursor::generateTwirls(GsFont &Font)
 	twrect.x=14*8;	twrect.y=0;
 	twrect.w = fmrect.w = twrect.h = fmrect.h = 8;
 	fmrect.x = 7*8;	fmrect.y = 0;
-	SDL_BlitSurface(srcsfc, &twrect, mp_Surface, &fmrect);
+    BlitSurface(srcsfc, &twrect, mp_Surface, &fmrect);
 }
 
 void GsCursor::draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y)
@@ -90,7 +90,7 @@ void GsCursor::draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y)
 	dst_rect.w = src_rect.w = 8;
 	dst_rect.h = src_rect.h = 8;
 
-	SDL_BlitSurface(mp_Surface, &src_rect, dst, &dst_rect);
+    BlitSurface(mp_Surface, &src_rect, dst, &dst_rect);
 }
 
 GsCursor::~GsCursor()

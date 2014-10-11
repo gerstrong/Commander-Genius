@@ -97,7 +97,7 @@ void CScrollEffect::render()
         dest.w = mScrollPos;
     }
 
-    SDL_BlitSurface(mpScrollSurface.get(),
+    BlitSurface(mpScrollSurface.get(),
                    &src,
                    gVideoDriver.getBlitSurface(),
                    &dest);
