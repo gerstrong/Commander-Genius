@@ -374,10 +374,6 @@ void CVideoEngine::filterUp()
         SDL_UnlockSurface( dstSfc );
         SDL_UnlockSurface( srcSfc );
     }
-    else
-    {
-        mGameSfc.blitTo(mFilteredSfc);
-    }
 
 }
 
