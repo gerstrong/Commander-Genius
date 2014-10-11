@@ -206,7 +206,7 @@ void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
         src_rect.w = dst->w - dst_rect.x;
     }
 
-    SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
+    BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
 
 #ifdef DEBUG_COLLISION
 	//std::vector<CTileProperties> &TileProp = g_pBehaviorEngine->getTileProperties(1);

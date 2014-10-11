@@ -6,7 +6,18 @@
 #include <base/utils/Geometry.h>
 #include <base/video/scaler/CScaler.h>
 #include <memory>
+
 #include <cassert>
+
+static inline int BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
+                       SDL_Surface *dst, SDL_Rect *dstrect)
+{
+    assert(src);    assert(dst);
+    return SDL_BlitSurface(src, srcrect, dst, dstrect);
+}
+
+
+
 
 class GsWeakSurface
 {
@@ -83,7 +94,7 @@ public:
     int blitTo(GsWeakSurface &sfc)
     {
         assert(sfc.mpSurface);
-        return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, nullptr );
+        return BlitSurface( mpSurface, nullptr, sfc.mpSurface, nullptr );
     }
 
     int blitTo(GsWeakSurface &sfc, GsRect<Uint16> &dstRect)
@@ -91,14 +102,14 @@ public:
         assert(mpSurface);
         assert(sfc.mpSurface);
         SDL_Rect sdlRect = dstRect.SDLRect();
-        return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, &sdlRect );
+        return BlitSurface( mpSurface, nullptr, sfc.mpSurface, &sdlRect );
     }
 
     int blitTo(GsWeakSurface &sfc, const SDL_Rect &sdlRect)
     {
         assert(mpSurface);
         assert(sfc.mpSurface);
-        return SDL_BlitSurface( mpSurface, nullptr, sfc.mpSurface, const_cast<SDL_Rect*>(&sdlRect) );
+        return BlitSurface( mpSurface, nullptr, sfc.mpSurface, const_cast<SDL_Rect*>(&sdlRect) );
     }
 
 

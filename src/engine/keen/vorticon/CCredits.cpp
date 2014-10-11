@@ -131,7 +131,7 @@ void CCredits::render()
         }
     }
 
-    SDL_BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
+    BlitSurface(mpDrawSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
 }
 
 

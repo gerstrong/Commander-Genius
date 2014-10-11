@@ -249,7 +249,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 {									   // The name should be changed
 	SDL_Rect srGsRect, dstrect;
     int sbufferx, sbuffery;
-    auto BlitSurface = mGameSfc.getSDLSurface();
+    auto blitSurface = mGameSfc.getSDLSurface();
     SDL_Rect Gamerect = m_VidConfig.m_GameRect.SDLRect();
 
     const int scrollSfcWidth = ScrollSurface->w;
@@ -272,7 +272,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
         sbuffery -= scrollSfcHeight;
 
 
-    SDL_FillRect(BlitSurface, nullptr, SDL_MapRGB(BlitSurface->format, 0, 0, 0));
+    SDL_FillRect(blitSurface, nullptr, SDL_MapRGB(blitSurface->format, 0, 0, 0));
 
     srGsRect.x =	sbufferx;
     srGsRect.y = sbuffery;
@@ -284,7 +284,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
     srGsRect.w = wraphoz ? (scrollSfcWidth-sbufferx) : Gamerect.w;
     srGsRect.h = wrapvrt ? (scrollSfcHeight-sbuffery) : Gamerect.h;
 
-    SDL_BlitSurface(ScrollSurface, &srGsRect, BlitSurface, &dstrect);
+    BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
 
     const Uint16 upperLeftW = srGsRect.w;
     const Uint16 upperLeftH =  srGsRect.h;
@@ -296,7 +296,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
         srGsRect.x = 0;
         dstrect.x = Gamerect.x + upperLeftW;
 
-		SDL_BlitSurface(ScrollSurface, &srGsRect, BlitSurface, &dstrect);
+        BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
     }
 
     // lower-right part
@@ -306,7 +306,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
         srGsRect.y = 0;
         dstrect.y = Gamerect.y + upperLeftH;
 
-		SDL_BlitSurface(ScrollSurface, &srGsRect, BlitSurface, &dstrect);
+        BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
 	}
 
     if(!wraphoz || !wrapvrt)
@@ -320,7 +320,7 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
     dstrect.x = Gamerect.x;
     dstrect.y = Gamerect.y+upperLeftH;
 
-    SDL_BlitSurface(ScrollSurface, &srGsRect, BlitSurface, &dstrect);
+    BlitSurface(ScrollSurface, &srGsRect, blitSurface, &dstrect);
 }
 
 /*void CVideoEngine::stop()

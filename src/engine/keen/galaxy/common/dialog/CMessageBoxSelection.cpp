@@ -116,7 +116,7 @@ void CMessageBoxSelection::init()
 	Font.setupColor( oldColor );
 
 	std::unique_ptr<SDL_Surface,SDL_Surface_Deleter> pTextSfc(pColoredTextSurface);			
-	SDL_BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
+	BlitSurface(pTextSfc.get(), NULL, mpMBSurface.get(), const_cast<SDL_Rect*>(&rect));
 	
 	
 	// Create the Border and with two Surfaces of different colors create the rectangle
@@ -199,7 +199,7 @@ void CMessageBoxSelection::ponder()
 
 void CMessageBoxSelection::render()
 {
-    SDL_BlitSurface(mpMBSurface.get(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
+    BlitSurface(mpMBSurface.get(), nullptr, gVideoDriver.getBlitSurface(), &mMBRect);
 
     // now draw the glowing rectangle. It fades here!
     if(blendup)
@@ -238,8 +238,8 @@ void CMessageBoxSelection::render()
         if(i == m_selection)
         {
             cursorSel.y = mMBRect.y + 12*i + 44;
-            SDL_BlitSurface(mpSelSurface1.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
-            SDL_BlitSurface(mpSelSurface2.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
+            BlitSurface(mpSelSurface1.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
+            BlitSurface(mpSelSurface2.get(), nullptr, gVideoDriver.getBlitSurface(), &cursorSel);
         }
     }
 }

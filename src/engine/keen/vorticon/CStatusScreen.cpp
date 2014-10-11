@@ -60,7 +60,7 @@ void CStatusScreen::draw()
         m_StatusRect.x = (blit->w-m_StatusRect.w)/2;
         m_StatusRect.y = (blit->h-m_StatusRect.h)/2;
 
-        SDL_BlitSurface( mpStatusSfc.get(), NULL, blit, &m_StatusRect);
+        BlitSurface( mpStatusSfc.get(), NULL, blit, &m_StatusRect);
 	}
 }
 

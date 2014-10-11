@@ -305,7 +305,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
     //else // Otherwise, blit to a POT-sized surface
     /*{
 		// While blitting, no involved surface should be locked.
-        SDL_BlitSurface(surface, NULL, FilteredSurface, NULL);
+        BlitSurface(surface, NULL, FilteredSurface, NULL);
 
         SDL_LockSurface(FilteredSurface);
     }*/

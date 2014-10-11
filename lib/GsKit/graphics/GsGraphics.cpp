@@ -156,7 +156,7 @@ void GsGraphics::copyTileToSprite( const int var, Uint16 t, Uint16 s, Uint16 nti
 		dst_rect.x = 0;
 		dst_rect.y = 16*i;
 
-        SDL_BlitSurface( Tilemap.at(1).getSDLSurface(), &src_rect, Sprite[var][s].getSDLSurface(), &dst_rect);
+        BlitSurface( Tilemap.at(1).getSDLSurface(), &src_rect, Sprite[var][s].getSDLSurface(), &dst_rect);
 	}
 }
 

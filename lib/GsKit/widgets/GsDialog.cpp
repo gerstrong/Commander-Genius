@@ -375,61 +375,66 @@ void CGUIDialog::processRendering(SDL_Surface *blit)
     GsRect<Uint16> GameRes = gVideoDriver.getGameResolution();
     GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 
-    auto *bgSfc = mBackgroundSfc.getSDLSurface();
+    SDL_Surface *bgSfc = mBackgroundSfc.getSDLSurface();
 
-    if( mFXSetup == NONE )
-	{
-        SDL_BlitSurface( bgSfc, nullptr, blit, nullptr );
-	}
-	else
+    if(bgSfc)
     {
-        SDL_Rect lRect;
 
-        if( mFXhStep == 0 && mFXvStep == 0 )
+        if( mFXSetup == NONE )
         {
-            lRect = gVideoDriver.toBlitRect(mRect);
-            SDL_BlitSurface( bgSfc, nullptr, blit, &lRect );
+            BlitSurface( bgSfc, nullptr, blit, nullptr );
         }
         else
         {
-            GsRect<float> fxRect = mRect;
+            SDL_Rect lRect;
 
-            if( mFXhStep > 0 )
+            if( mFXhStep == 0 && mFXvStep == 0 )
             {
-                fxRect.w = (MAX_STEPS-mFXhStep)*(mRect.w/float(MAX_STEPS));
-                fxRect.x = fxRect.x + (mRect.w-fxRect.w)/2;
-            }
-
-            if( mFXvStep > 0 )
-            {
-                fxRect.h = (MAX_STEPS-mFXvStep)*(mRect.h/float(MAX_STEPS));;
-                fxRect.y = fxRect.y + (mRect.h-fxRect.h)/2;
-            }
-
-            lRect = gVideoDriver.toBlitRect(fxRect);
-
-            // Makes the Border look more like in DOS-Keen
-            if( mFXSetup == EXPAND && lRect.h < 16 )
-                lRect.h = 16;
-
-            auto srGsRect = lRect;
-            srGsRect.y = srGsRect.x = 0;
-
-            if( mpTempSfc && mFXSetup == EXPAND )
-            {
-                auto *tmpSfc = mpTempSfc.get();
-                SDL_FillRect( tmpSfc, &srGsRect, 0xFFFFFFFF );
-                drawBorderRect( tmpSfc, srGsRect );
-                SDL_BlitSurface( tmpSfc, &srGsRect, blit, &lRect );
+                lRect = gVideoDriver.toBlitRect(mRect);
+                BlitSurface( bgSfc, nullptr, blit, &lRect );
             }
             else
             {
-                SDL_BlitSurface( bgSfc, &srGsRect, blit, &lRect );
+                GsRect<float> fxRect = mRect;
+
+                if( mFXhStep > 0 )
+                {
+                    fxRect.w = (MAX_STEPS-mFXhStep)*(mRect.w/float(MAX_STEPS));
+                    fxRect.x = fxRect.x + (mRect.w-fxRect.w)/2;
+                }
+
+                if( mFXvStep > 0 )
+                {
+                    fxRect.h = (MAX_STEPS-mFXvStep)*(mRect.h/float(MAX_STEPS));;
+                    fxRect.y = fxRect.y + (mRect.h-fxRect.h)/2;
+                }
+
+                lRect = gVideoDriver.toBlitRect(fxRect);
+
+                // Makes the Border look more like in DOS-Keen
+                if( mFXSetup == EXPAND && lRect.h < 16 )
+                    lRect.h = 16;
+
+                auto srGsRect = lRect;
+                srGsRect.y = srGsRect.x = 0;
+
+                if( mpTempSfc && mFXSetup == EXPAND )
+                {
+                    auto *tmpSfc = mpTempSfc.get();
+                    SDL_FillRect( tmpSfc, &srGsRect, 0xFFFFFFFF );
+                    drawBorderRect( tmpSfc, srGsRect );
+                    BlitSurface( tmpSfc, &srGsRect, blit, &lRect );
+                }
+                else
+                {
+                    BlitSurface( bgSfc, &srGsRect, blit, &lRect );
+                }
             }
+
+            if( mFXhStep > 0 || mFXvStep > 0 )
+                return;
         }
 
-        if( mFXhStep > 0 || mFXvStep > 0 )
-            return;
     }
 
 	for( auto &it : mControlList )

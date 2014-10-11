@@ -262,7 +262,7 @@ void CPlayGameVorticon::showKeensLeft()
 		}
 		else
 		{
-            SDL_BlitSurface(mpKeenLeftSfc.get(), nullptr, gVideoDriver.getBlitSurface(), &keenleft_rect);
+            BlitSurface(mpKeenLeftSfc.get(), nullptr, gVideoDriver.getBlitSurface(), &keenleft_rect);
 		}
 	}
 }

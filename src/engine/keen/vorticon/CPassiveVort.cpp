@@ -125,7 +125,7 @@ void CPassiveVort::render()
     // Blit the background
     gVideoDriver.blitScrollSurface();
 
-    SDL_BlitSurface( mpTextSfc.get(),
+    BlitSurface( mpTextSfc.get(),
                      nullptr,
                      gVideoDriver.getBlitSurface(),
                      nullptr );

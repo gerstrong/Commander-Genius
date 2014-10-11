@@ -77,7 +77,7 @@ void CPixelate::getSnapshot()
     #endif
     }
 
-    SDL_BlitSurface(gVideoDriver.getBlitSurface(), nullptr, mp_OldSurface, nullptr);
+    BlitSurface(gVideoDriver.getBlitSurface(), nullptr, mp_OldSurface, nullptr);
 }
 
 // Effect cycle
@@ -143,7 +143,7 @@ void CPixelate::render()
 
     SDL_UnlockSurface(mp_OldSurface);
 
-    SDL_BlitSurface( mp_OldSurface, NULL, gVideoDriver.getBlitSurface(), NULL );
+    BlitSurface( mp_OldSurface, NULL, gVideoDriver.getBlitSurface(), NULL );
 }
 
 CPixelate::~CPixelate()

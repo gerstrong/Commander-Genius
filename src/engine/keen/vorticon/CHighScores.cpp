@@ -220,7 +220,7 @@ void CHighScores::render()
             Font.drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
     }
 
-    SDL_BlitSurface(mpTextSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
+    BlitSurface(mpTextSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
 }
 
 

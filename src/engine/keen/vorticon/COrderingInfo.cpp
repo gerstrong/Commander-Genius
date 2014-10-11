@@ -174,7 +174,7 @@ void COrderingInfo::render()
                                             160-m_Textline[i].size()*4, 8*(i+m_starty), true);
     }
 
-    SDL_BlitSurface(mpTextSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
+    BlitSurface(mpTextSfc.get(), nullptr, gVideoDriver.getBlitSurface(), nullptr);
 }
 
 void COrderingInfo::teardown()
