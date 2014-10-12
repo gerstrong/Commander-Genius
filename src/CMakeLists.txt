@@ -185,9 +185,12 @@ ENDIF (OPENGL)
 # If we want to debug set the proper flags or have release etc.
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	ADD_DEFINITIONS(-DDEBUG)
+        ADD_DEFINITIONS(-g)
+        ADD_DEFINITIONS(-O0)
 	ADD_DEFINITIONS(-Wall)
 ELSEIF(CMAKE_BUILD_TYPE STREQUAL "Release")
 	ADD_DEFINITIONS(-DRELEASE)
+        ADD_DEFINITIONS(-O3)
 ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 
@@ -231,10 +234,10 @@ if(USE_SDL2)
 
 else(USE_SDL2)
         INCLUDE(FindPkgConfig)
-        # SDL2 not found, try SDL1.2
+        # SDL2 not found, try to use SDL1.2
         FIND_PACKAGE( SDL REQUIRED )
-        #FIND_PACKAGE( SDL_image REQUIRED)
-        PKG_SEARCH_MODULE(SDLIMAGE REQUIRED SDL_image)
+        FIND_PACKAGE( SDL_image REQUIRED )
+        #PKG_SEARCH_MODULE(SDLIMAGE REQUIRED SDL_image)
 
         if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 include(FindSDL OPTIONAL)

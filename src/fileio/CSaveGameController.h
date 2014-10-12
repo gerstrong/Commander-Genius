@@ -46,8 +46,7 @@ public:
 	void setEpisode(char Episode);
 	void setLevel(int Level);
 
-	// Getters
-	std::vector<std::string> getSlotList();
+    bool readSlotList(std::vector<std::string> &list);
 
 	bool convertOldFormat(size_t slot);
 	void convertAllOldFormats();

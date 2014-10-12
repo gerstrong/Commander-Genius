@@ -106,7 +106,8 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
     std::string localDataDir = datadirectory;
     if( localDataDir != "") if(*(localDataDir.end()-1) != '/') localDataDir += "/";
 
-    gKeenFiles.gameDir = localDataDir;
+    CResource &keenFiles = gKeenFiles;
+    keenFiles.gameDir = localDataDir;
 		
 	File.seekg(0,std::ios::end);
 	m_datasize = File.tellg();

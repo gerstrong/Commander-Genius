@@ -25,6 +25,7 @@ namespace galaxy
 
 void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 {
+
 #if defined (SINGLEPLAYER)
     g_pBehaviorEngine->mPlayers = 1;
     GsButton *button = new GalaxyButton( "New Game",
@@ -65,7 +66,7 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 
     mpMenuDialog->addControl(new GalaxyButton( "Quit", new GMQuit() ) );
 
-	setMenuLabel("MAINMENULABEL");
+    setMenuLabel("MAINMENULABEL");
 
 }
 
@@ -73,7 +74,7 @@ void MainMenu::createGalaxyMenu( const bool openedGamePlay )
 
 MainMenu::MainMenu( const bool openedGamePlay ) :
 GalaxyMenu( GsRect<float>(0.25f, 0.23f, 0.5f, 0.5f) )
-{
+{   
     createGalaxyMenu(openedGamePlay);
 }
 

@@ -182,7 +182,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 {
   // Get the MAPHEAD Location from within the Exe File or an external file
   std::vector<char> mapHeadContainer;
-  std::string path = gKeenFiles.gameDir;
+  const std::string &path = gKeenFiles.gameDir;
   
   
   Map.gotoPos(0,0);
