@@ -118,6 +118,7 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 
     //Get the list of ".ck?" and ".cx?" files
 	StateFileListFiller sfilelist;
+    gLogging.ftextOut("Reading savegames from \"%s\"", m_savedir.c_str());
 	FindFiles(sfilelist, m_savedir, false, FM_REG);
 
     for( const std::string &filename : sfilelist.list )
@@ -139,7 +140,7 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
                 buf = getSlotNameXML(filename);
 
             if(pos+1 > list.size())
-                list.resize(pos+1, "");
+                list.resize(pos+1);
 
             list.at(pos) = buf;
 		}
