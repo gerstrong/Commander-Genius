@@ -24,6 +24,8 @@ void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 
+using namespace std;
+
 // Initialization Routines
 CSaveGameController::CSaveGameController() :
 m_offset(0)
@@ -114,28 +116,27 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
     if(!list.empty())
         list.clear();
 
-	std::string buf;
-
     //Get the list of ".ck?" and ".cx?" files
 	StateFileListFiller sfilelist;
 	FindFiles(sfilelist, m_savedir, false, FM_REG);
 
-	std::set<std::string>::iterator i;
-	for( i=sfilelist.list.begin() ; i!=sfilelist.list.end() ; i++ )
-	{
-		buf = i->substr(i->size()-1);
+    for( const std::string &filename : sfilelist.list )
+    {
+        std::string buf = filename.substr(filename.size()-1);
+
+        const int foundEp = atoi(buf.c_str());
 
 		// Check if the file fits to this episode
-		if(atoi(buf) == m_Episode)
+        if(foundEp == m_Episode)
 		{
-			Uint32 pos = getSlotNumber(*i)-1;
+            Uint32 pos = getSlotNumber(filename)-1;
 
-            const std::string ext = getExtension(*i);
+            const std::string ext = getExtension(filename);
 
             if(ext == "ck")
-                buf = getSlotName(*i);
+                buf = getSlotName(filename);
             else if(ext == "cx")
-                buf = getSlotNameXML(*i);
+                buf = getSlotNameXML(filename);
 
             if(pos+1 > list.size())
                 list.resize(pos+1, "");
