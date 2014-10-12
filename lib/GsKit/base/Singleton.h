@@ -19,6 +19,7 @@ class GsSingleton
 {	
 public:
     static T& get();
+
     GsSingleton() {}
 
 private:    
@@ -32,4 +33,4 @@ T& GsSingleton<T>::get()
     return instance;
 }
 
-#endif /* CSINGLETON_H_ */ 
+#endif /* SINGLETON_H_ */

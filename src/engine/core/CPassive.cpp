@@ -15,7 +15,8 @@
 
 CPassive::CPassive()
 {
-    CExeFile &ExeFile = gKeenFiles.exeFile;
+    CResource &keenFiles = gKeenFiles;
+    CExeFile &ExeFile = keenFiles.exeFile;
 	m_modeg = false;
 	m_mode = INTRO;
 	m_Episode = ExeFile.getEpisode();

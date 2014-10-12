@@ -28,7 +28,9 @@ void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 CSaveGameController::CSaveGameController() :
 m_offset(0)
 {
-    setGameDirectory(gKeenFiles.gameDir);
+    CResource &keenFiles = gKeenFiles;
+
+    setGameDirectory(keenFiles.gameDir);
 	setEpisode(g_pBehaviorEngine->getEpisode());
 }
 
@@ -107,9 +109,11 @@ struct StateFileListFiller
 // This method returns the the list of files we can use for the menu
 // It will filter by episode and sort the list by number of slot
 // It also takes care of the slotname resolution
-std::vector<std::string> CSaveGameController::getSlotList()
+bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 {
-	std::vector<std::string> filelist;
+    if(!list.empty())
+        list.clear();
+
 	std::string buf;
 
     //Get the list of ".ck?" and ".cx?" files
@@ -133,14 +137,14 @@ std::vector<std::string> CSaveGameController::getSlotList()
             else if(ext == "cx")
                 buf = getSlotNameXML(*i);
 
-			if(pos+1 > filelist.size())
-				filelist.resize(pos+1, "");
+            if(pos+1 > list.size())
+                list.resize(pos+1, "");
 
-			filelist.at(pos) = buf;
+            list.at(pos) = buf;
 		}
 	}
 
-	return filelist;
+    return !list.empty();
 }
 
 /* --- Functions for older savegames START --- */

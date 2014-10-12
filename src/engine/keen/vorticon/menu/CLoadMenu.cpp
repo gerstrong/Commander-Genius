@@ -51,7 +51,9 @@ VorticonMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 void CLoadMenu::refresh()
 {
     // Load the state-file list
-    std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
+    std::vector<std::string> StateFileList;
+    gpSaveGameController->readSlotList(StateFileList);
+
     std::vector<std::string>::iterator it = StateFileList.begin();
 
     Uint32 i=0;

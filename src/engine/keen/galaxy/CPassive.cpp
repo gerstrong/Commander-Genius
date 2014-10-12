@@ -331,7 +331,7 @@ void CPassiveGalaxy::renderIntroZoom()
 // Just show the title screen with the pixelation effect
 void CPassiveGalaxy::processTitle()
 {
-    // If something is pressed, popup the menu
+    // If something is pressed at this section, open the menu
     if( !gEffectController.runningEffect() && !gMenuController.active() )
 	{
         if( mSkipSection )

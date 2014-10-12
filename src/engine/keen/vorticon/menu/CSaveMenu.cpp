@@ -31,7 +31,8 @@ VorticonMenu(GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) ),
 m_overwrite(false)
 {
 	// Load the state-file list
-	std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
+    std::vector<std::string> StateFileList;
+    gpSaveGameController->readSlotList(StateFileList);
 
 	for(Uint32 i=1;i<=8;i++)
 	{
@@ -47,7 +48,8 @@ m_overwrite(false)
 void CSaveMenu::refresh()
 {
     // Load the state-file list
-    std::vector<std::string> StateFileList = gpSaveGameController->getSlotList();
+    std::vector<std::string> StateFileList;
+    gpSaveGameController->readSlotList(StateFileList);
 
     std::list< std::shared_ptr<CGUIControl> > &list = mpMenuDialog->getControlList();
 

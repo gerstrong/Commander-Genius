@@ -10,6 +10,18 @@ IF(WIN32)
 	ADD_DEFINITIONS(-DWIN32)
 ENDIF(WIN32)
 
+# If we want to debug set the proper flags or have release etc.
+IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        ADD_DEFINITIONS(-DDEBUG)
+        ADD_DEFINITIONS(-g)
+        ADD_DEFINITIONS(-O0)
+        ADD_DEFINITIONS(-Wall)
+ELSEIF(CMAKE_BUILD_TYPE STREQUAL "Release")
+        ADD_DEFINITIONS(-DRELEASE)
+        ADD_DEFINITIONS(-O3)
+ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+
 Project(GsKit)
 
 # TODO: From this point we should recursively glob the files. I think it is the easiest way but maybe not the best, I don't know yet.
