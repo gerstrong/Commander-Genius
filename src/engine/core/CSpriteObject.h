@@ -111,7 +111,7 @@ class CSpriteObject
 public:
     CSpriteObject(CMap *pmap, Uint32 x, Uint32 y, const int spriteVar);
 	
-	char mHealthPoints;              // episode 1 style four-shots-to-kill
+    unsigned int mHealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
