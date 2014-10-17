@@ -10,10 +10,15 @@
 
 #include "VorticonMenu.h"
 
+namespace vorticon
+{
+
 class CProfilesMenu : public VorticonMenu
 {
 public:
 	CProfilesMenu();
+};
+
 };
 
 #endif /* CPROFILESMENU_H_ */
