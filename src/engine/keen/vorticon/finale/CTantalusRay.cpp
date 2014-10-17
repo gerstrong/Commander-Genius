@@ -38,7 +38,6 @@ CTantalusRay::CTantalusRay(std::list< std::shared_ptr<CMessageBoxVort> > &messag
 CFinale(messageBoxes, pMap, vect_obj),
 m_mustsetup(true),
 m_alternate_sprite(0),
-mp_MessageBox(new CMessageBoxVort("Uh-Oh")),
 mObjectAI(objectai),
 m_timer(0),
 mp_Bitmap(gGraphics.getBitmapFromStr("GAMEOVER")),
@@ -49,19 +48,9 @@ mp_process(&CTantalusRay::shootray)
 
 void CTantalusRay::ponder()
 {
-	if(mp_MessageBox)
-	{
-		mp_MessageBox->processLogic();
+    (this->*mp_process)();
 
-		if(mp_MessageBox->isFinished())
-		  mp_MessageBox.release();
-	}
-	else
-	{
-		(this->*mp_process)();
-
-		mObjectAI->process();
-	}
+    mObjectAI->process();
 }
 
 void CTantalusRay::render()
