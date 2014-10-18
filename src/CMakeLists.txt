@@ -1,7 +1,7 @@
 
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
-OPTION(SDL2 "SDL2 support" No)
+OPTION(USE_SDL2 "SDL2 support" Yes)
 OPTION(DBFUSION "Dosbox fusion" No)
 # 
 if(SDL2)

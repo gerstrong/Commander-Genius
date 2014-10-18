@@ -184,7 +184,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   std::vector<char> mapHeadContainer;
   const std::string &path = gKeenFiles.gameDir;
   
-  
+  // Set Map position and some flags for the freshly loaded level
   Map.gotoPos(0,0);
   Map.setLevel(level);
   Map.isSecret = false;
