@@ -94,6 +94,6 @@ INCLUDE(CPack)
 MESSAGE( "CPACK_PACKAGE_VERSION = ${CPACK_PACKAGE_VERSION}" )
 
 
-MESSAGE( "Build system is prepared. To Build the project just type \"make\"" )
-MESSAGE( "If you want to create the installation package just type \"make package\" after you build the project" )
+MESSAGE( STATUS "Build system is prepared. To Build the project just type \"make\"" )
+MESSAGE( STATUS "If you want to create the installation package just type \"make package\" after you build the project" )
 
