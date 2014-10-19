@@ -30,6 +30,8 @@ public:
 
     void drawTile(SDL_Surface *dst, int x, int y, Uint16 t);
 
+    void applyGalaxyMask();
+
 	virtual ~GsTilemap();
 
 private:

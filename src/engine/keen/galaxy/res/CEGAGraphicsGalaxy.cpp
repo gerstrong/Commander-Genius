@@ -867,7 +867,7 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 	return true;
 }
 
-bool CEGAGraphicsGalaxy::readTilemaps(	size_t NumTiles, size_t pbasetilesize,
+bool CEGAGraphicsGalaxy::readTilemaps( const size_t NumTiles, size_t pbasetilesize,
 										size_t rowlength, size_t IndexOfTiles,
 										GsTilemap &Tilemap, bool tileoff)
 {
@@ -882,7 +882,13 @@ bool CEGAGraphicsGalaxy::readTilemaps(	size_t NumTiles, size_t pbasetilesize,
 		extractTile(sfc, m_egagraph.at(IndexOfTiles + (tileoff ? 0 : i)).data, (1<<pbasetilesize), rowlength, i, tileoff);
 	}
 
-	SDL_UnlockSurface(sfc);
+    SDL_UnlockSurface(sfc);
+
+    /// Let's see if there is a high colour tilemap we can load instead
+    if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
+    {
+        Tilemap.loadHiresTile("gfx/4TIL0000", m_path);
+    }
 
 	return true;
 }
@@ -903,6 +909,17 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 	}
 
 	SDL_UnlockSurface(sfc);
+
+    /// Let's see if there is a high colour tilemap we can load instead
+    if(pbasetilesize == 4) // Only valid for the 16x16 tiles tilemap!
+    {
+        // Looking for high color pictures
+        if( Tilemap.loadHiresTile("gfx/4TIL0001", m_path) )
+        {
+            Tilemap.applyGalaxyMask();
+        }
+    }
+
 
 	return true;
 }

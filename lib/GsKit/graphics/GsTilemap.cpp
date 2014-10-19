@@ -77,6 +77,8 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 		  gLogging.textOut(RED, "IMG_Load: CG will ignore those images\n");
 		}
 	}
+#else
+    // TODO: Code for older SDL 1.2
 #endif
 	
 	return false;
@@ -213,6 +215,56 @@ void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 	//FillSlopeRect(dst, dst_rect, 0xFFFFFFFF, TileProp[t].bup);
 #endif
 
+}
+
+void GsTilemap::applyGalaxyMask()
+{
+    const SDL_PixelFormat *format = m_Tilesurface->format;
+    const Uint32 maskColor = SDL_MapRGB(format, 0x0, 0xFF, 0xFF);
+    //SDL_SetColorKey(m_Tilesurface, SDL_TRUE, maskColor);
+
+    SDL_LockSurface(m_Tilesurface);
+
+    // Pointer of start pixel
+    Uint8 *pxStart = static_cast<Uint8*>(m_Tilesurface->pixels);
+
+    // From 0 to half width for every row ...
+    int midRow = m_Tilesurface->w/2;
+
+
+    for( int y=0 ; y<m_Tilesurface->h ; y++ )
+    {
+        Uint8 *pxRow = pxStart + y*m_Tilesurface->pitch;
+        for( int x=0 ; x<midRow ; x++ )
+        {
+            Uint8 *px = pxRow + x*format->BytesPerPixel;
+            Uint8 *pxMask = px + midRow*format->BytesPerPixel;
+
+            const Uint32 pix = *((Uint32*)(px));
+            const Uint32 mask = *((Uint32*)(pxMask));
+
+            // Get the mask part
+            Uint8 mask_r, mask_g, mask_b;
+            SDL_GetRGB(mask, format, &mask_r, &mask_g, &mask_b);
+
+            // Get the color
+            Uint8 r, g, b;
+            SDL_GetRGB(pix, format, &r, &g, &b);
+
+            // Calculate the new alpha, which will do the transparency and even allow translucency
+            const Uint8 alpha = 255-(( (mask_r<<16) + (mask_g<<8) + mask_b ) >> 16);
+
+            Uint32 *newColorPtr = (Uint32*)(px);
+            *newColorPtr = SDL_MapRGBA( format, r, g, b, alpha );
+
+            /*if(alpha < 128)
+            {
+                *newColorPtr = maskColor;
+            }*/
+        }
+    }
+
+    SDL_UnlockSurface(m_Tilesurface);
 }
 
 GsTilemap::~GsTilemap() 

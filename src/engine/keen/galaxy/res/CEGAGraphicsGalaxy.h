@@ -48,9 +48,9 @@ public:
 	bool readfonts();
 	bool readBitmaps();
 	bool readMaskedBitmaps();
-	bool readTilemaps( size_t NumTiles, size_t pbasetilesize,
-			size_t rowlength, size_t IndexOfTiles,
-			GsTilemap &Tilemap, bool tileoff );
+    bool readTilemaps(const size_t NumTiles, size_t pbasetilesize,
+            size_t rowlength, size_t IndexOfTiles,
+            GsTilemap &Tilemap, bool tileoff );
 	bool readMaskedTilemaps( size_t NumTiles, size_t pbasetilesize,
 			size_t rowlength, size_t IndexOfTiles,
 			GsTilemap &Tilemap, bool tileoff );

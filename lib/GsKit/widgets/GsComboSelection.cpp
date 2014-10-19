@@ -121,7 +121,7 @@ void CGUIComboSelection::processRender(const GsRect<float> &RectDispCoordFloat)
     GsFont &Font = gGraphics.getFont(mFontID);
 
     const int fontHeight = 8;
-    const int textX = lRect.x+24+(mText.size()+2)*fontHeight;
+    //const int textX = lRect.x+24+(mText.size()+2)*fontHeight;
     const int textY = lRect.y+((lRect.h-fontHeight)/2);
 
 

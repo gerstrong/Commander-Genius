@@ -8,8 +8,6 @@
  *  The Rendering itself is performed under COpenGL or CSDLVideo Class depending on what is enabled.
  */
 #include "CVideoDriver.h"
-//#include "input/CInput.h"
-//#include <base/GsTimer.h>
 
 #include <base/video/CSDLVideo.h>
 #include <base/video/COpenGL.h>
@@ -245,7 +243,7 @@ bool CVideoDriver::setNativeResolution(const GsRect<Uint16> &dispRect)
 bool CVideoDriver::start()
 {
 	bool retval;
-	std::string caption = "Commander Genius";
+    const std::string caption = "Commander Genius";
 #if !SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 #endif
@@ -276,7 +274,8 @@ bool CVideoDriver::start()
     else
 #endif
     {
-		mpVideoEngine.reset(new CSDLVideo(m_VidConfig));
+        CSDLVideo *sdlVideoPtr = new CSDLVideo(m_VidConfig);
+        mpVideoEngine.reset(sdlVideoPtr);
 		retval = mpVideoEngine->init();
         gLogging.textOut("will be using SDL Video<br>");
 	}

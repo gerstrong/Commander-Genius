@@ -90,7 +90,7 @@ void scaleDynamic( SDL_Surface *srcSfc,
 
     ySrc = 0.0f;
 
-    SDL_PixelFormat *format = srcSfc->format;
+    //SDL_PixelFormat *format = srcSfc->format;
 
 
     if(equalWidth)
