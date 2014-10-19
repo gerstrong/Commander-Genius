@@ -10,9 +10,7 @@ namespace galaxy
 
 BorderedButton::BorderedButton(const std::string &text, CEvent *ev) :
 GalaxyButton(text, ev)
-{
-
-}
+{}
 
 
 
@@ -21,6 +19,7 @@ void BorderedButton::processRender(const GsRect<float> &RectDispCoordFloat)
 {
     // Transform to the display coordinates
     GsRect<float> displayRect = mRect;
+
     displayRect.transform(RectDispCoordFloat);
     SDL_Rect lRect = displayRect.SDLRect();
 

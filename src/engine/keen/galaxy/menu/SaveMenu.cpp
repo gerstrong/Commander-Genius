@@ -39,7 +39,10 @@ m_overwrite(false)
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
-        mpMenuDialog->addControl(new InputText( text ) );
+        mpMenuDialog->addControl( new InputText( text ),
+                                  GsRect<float>(
+                                      0.0f, 0.1f+(i*0.1f), 0.8f, 0.1f) );
+
 	}
 
 	setMenuLabel("SAVEMENULABEL");
