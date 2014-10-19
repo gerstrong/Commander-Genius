@@ -221,7 +221,7 @@ void GsTilemap::applyGalaxyMask()
 {
     const SDL_PixelFormat *format = m_Tilesurface->format;
     const Uint32 maskColor = SDL_MapRGB(format, 0x0, 0xFF, 0xFF);
-    //SDL_SetColorKey(m_Tilesurface, SDL_TRUE, maskColor);
+    SDL_SetColorKey(m_Tilesurface, SDL_TRUE, maskColor);
 
     SDL_LockSurface(m_Tilesurface);
 
@@ -255,12 +255,12 @@ void GsTilemap::applyGalaxyMask()
             const Uint8 alpha = 255-(( (mask_r<<16) + (mask_g<<8) + mask_b ) >> 16);
 
             Uint32 *newColorPtr = (Uint32*)(px);
-            *newColorPtr = SDL_MapRGBA( format, r, g, b, alpha );
+            //*newColorPtr = SDL_MapRGBA( format, r, g, b, alpha );
 
-            /*if(alpha < 128)
+            if(alpha < 128)
             {
                 *newColorPtr = maskColor;
-            }*/
+            }
         }
     }
 
