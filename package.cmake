@@ -59,7 +59,7 @@ IF(CREATE_DEBS)
 		ENDIF(BUILD_ARCH STREQUAL amd64)
 
 
-		SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libvorbis0a (>= 1.2.3), libvorbisenc2 (>> 1.2.3), libvorbisfile3 (>= 1.2.3), libsdl1.2debian (>= 1.2.14), libgl1-mesa-glx (>= 7.7.1), libsdl-image1.2 (>= 1.2.10-3)")
+                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libvorbis0a (>= 1.2.3), libvorbisenc2 (>> 1.2.3), libvorbisfile3 (>= 1.2.3), libsdl2debian (>= 2.0), libgl1-mesa-glx (>= 7.7.1), libsdl-image2 (>= 2.0)")
 		SET(CPACK_DEBIAN_PACKAGE_SECTION "games")
 		SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
 	ENDIF(BUILD_TARGET STREQUAL WIN32)

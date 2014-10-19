@@ -86,5 +86,5 @@ add_subdirectory("./lib/GsKit")
 add_subdirectory("src")
 
 
-#INCLUDE(package.cmake)
+INCLUDE(package.cmake)
 
