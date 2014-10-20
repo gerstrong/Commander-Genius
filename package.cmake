@@ -1,7 +1,8 @@
 OPTION(CREATE_DEBS "Will create DEBs" No)
 OPTION(CREATE_RPMS "Will create RPMs" No)
 
-SET(CGENIUS_DESKTOP_DIR "${CMAKE_CURRENT_BINARY_DIR}/usr/share/applications/")
+SET(CGENIUS_DESKTOP_DIR "usr/share/applications/")
+
 
 # Now let's setup the package for installation. You can create the package of the chosen build
 # running make package, and if needed just runs that package
@@ -25,7 +26,7 @@ IF(BUILD_TARGET STREQUAL WIN32)
 ELSE(BUILD_TARGET STREQUAL WIN32)
 	SET(CPACK_PACKAGE_INSTALL_DIRECTORY "/usr/games")
 	SET(CPACK_GENERATOR "TGZ")
-	INSTALL(FILES share/cgenius.desktop DESTINATION ${CGENIUS_DESKTOP_DIR})
+	INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/share/cgenius.desktop DESTINATION ${CGENIUS_DESKTOP_DIR})
 ENDIF(BUILD_TARGET STREQUAL WIN32)
 
 IF(BUILD_TARGET STREQUAL WIN32)
@@ -59,7 +60,7 @@ IF(CREATE_DEBS)
 		ENDIF(BUILD_ARCH STREQUAL amd64)
 
 
-                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libvorbis0a (>= 1.2.3), libvorbisenc2 (>> 1.2.3), libvorbisfile3 (>= 1.2.3), libsdl2debian (>= 2.0), libgl1-mesa-glx (>= 7.7.1), libsdl-image2 (>= 2.0)")
+                SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libvorbis0a (>= 1.2.3), libvorbisenc2 (>> 1.2.3), libvorbisfile3 (>= 1.2.3), libsdl2-2.0-0 (>= 2.0.0), libgl1-mesa-glx (>= 7.7.1), libsdl2-image-2.0-0 (>= 2.0)")
 		SET(CPACK_DEBIAN_PACKAGE_SECTION "games")
 		SET(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
 	ENDIF(BUILD_TARGET STREQUAL WIN32)
@@ -85,7 +86,7 @@ IF(CREATE_RPMS)
 		SET(CPACK_RPM_PACKAGE_GROUP "Amusements/Games")
 		SET(CPACK_RPM_PACKAGE_VENDOR "${CPACK_PACKAGE_VENDOR}")
 		SET(CPACK_RPM_PACKAGE_DESCRIPTION "${CPACK_PACKAGE_DESCRIPTION_SUMMARY}\n .\n ${CPACK_PACKAGE_DESCRIPTION}")
-		SET(CPACK_RPM_PACKAGE_REQUIRES "SDL >= 1.2, libvorbis >= 1.3, mesa-libGL >= 7.7")
+		SET(CPACK_RPM_PACKAGE_REQUIRES "SDL >= 2.0, libvorbis >= 1.3, mesa-libGL >= 7.7")
 	ENDIF(BUILD_TARGET STREQUAL WIN32)
 ENDIF(CREATE_RPMS)
 
