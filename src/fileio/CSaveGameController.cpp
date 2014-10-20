@@ -146,6 +146,8 @@ bool CSaveGameController::readSlotList(std::vector<std::string> &list)
 		}
 	}
 
+    gLogging.ftextOut("Done");
+
     return !list.empty();
 }
 

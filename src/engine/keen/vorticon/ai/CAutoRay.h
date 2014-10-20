@@ -10,7 +10,7 @@
 
 #include "../CVorticonSpriteObject.h"
 
-#define GUNFIRE_TIMER 128
+#define GUNFIRE_TIMER 256
 
 
 class CAutoRay : public CVorticonSpriteObject
@@ -25,6 +25,8 @@ public:
 private:
 	stRayAlignment m_type;
 	bool silent;
+
+    int mGunTimer;
 };
 
 #endif /* CAUTORAY_H_ */

@@ -33,7 +33,6 @@ public:
 private:
 	bool m_mustsetup;
 	int m_alternate_sprite;
-	std::unique_ptr<CMessageBox> mp_MessageBox;
 	std::shared_ptr<CVorticonSpriteObjectAI> mObjectAI;
 	Uint32 m_timer;
 	GsBitmap *mp_Bitmap;

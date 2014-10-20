@@ -56,7 +56,7 @@ void MainMenu::createVorticonMenu( const bool openedGamePlay )
 	mpMenuDialog->addControl( loadButton );
     loadButton->enable(true);
 
-    GsButton *saveButton = new Button( "Save",
+    Button *saveButton = new Button( "Save",
 									new OpenMenuEvent( new CSaveMenu() ) );
 	mpMenuDialog->addControl( saveButton );
     saveButton->enable(openedGamePlay);

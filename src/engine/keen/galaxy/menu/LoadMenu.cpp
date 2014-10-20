@@ -45,7 +45,9 @@ GalaxyMenu( GsRect<float>(0.1f, 0.0f, 0.8f, 1.0f) )
 	{
         GsButton *button = new BorderedButton( "Empty",
                                 new LoadGameSlotFunctorEvent(j));
-		mpMenuDialog->addControl( button );
+        mpMenuDialog->addControl( button,
+                                  GsRect<float>(
+                                      0.0f, 0.1f+(j*0.1f), 0.8f, 0.1f) );
 
 		button->enable( false );
 	}

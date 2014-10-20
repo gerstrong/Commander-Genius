@@ -90,6 +90,7 @@ void CSpark::process()
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->setOwner(m_type, m_index);
 			gEventManager.add( new EventSpawnObject(newobject) );
+            gEventManager.add( new AddPointsToAllPlayers(10000) );
 			playSound(SOUND_SHOT_HIT);
 
 			blowy++;

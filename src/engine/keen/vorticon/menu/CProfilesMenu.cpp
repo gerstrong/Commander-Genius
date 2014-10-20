@@ -14,6 +14,7 @@
 #include "engine/core/CSettings.h"
 #include <base/GsEvent.h>
 #include "VorticonMenu.h"
+#include "widgets/Button.h"
 #include <list>
 #include <string>
 
@@ -73,13 +74,17 @@ public:
 	}
 };
 
+namespace vorticon
+{
+
 CProfilesMenu::CProfilesMenu() :
 VorticonMenu( GsRect<float>(0.25f, 0.4f, 0.5f, 0.2f) )
 {
-	mpMenuDialog->addControl(new GsButton( "Classic mode",
+    mpMenuDialog->addControl(new Button( "Classic mode",
 										     new SetDefaultClassic() ) );
 
-	mpMenuDialog->addControl(new GsButton( "Enhanced mode",
+    mpMenuDialog->addControl(new Button( "Enhanced mode",
 										     new SetDefaultEnhanced() ) );
 }
 
+};

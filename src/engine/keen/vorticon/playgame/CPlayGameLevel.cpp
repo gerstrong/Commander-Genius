@@ -91,6 +91,9 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 		g_pMusicPlayer->stop();
 		gGraphics.Palette.setdark(mMap->m_Dark);
 		mpFinale.reset( new CTantalusRay( mMessageBoxes, mMap, mSpriteObjectContainer, mpObjectAI ) );	
+
+        std::shared_ptr<CMessageBoxVort> msg(new CMessageBoxVort("Uh-Oh"));
+        mMessageBoxes.push_back( msg );
 		
 		m_Player[0].dontdraw = true;
 		m_gameover = true;

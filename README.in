@@ -7,8 +7,7 @@
     (c)2014                 Mancus
 
 Ports:
-    (c)2009-2013            Pizza2004 (MacOs X (Discontinued))
-    (c)2010-2014            Pelya (Android)
+    (c)2010-2014            Pelya (Android-Distro)
 
            Released under GNU/GPL           
                                             
@@ -45,12 +44,13 @@ even more features like:
 
 - Mod Support
 - OpenGL Acceleration
+- SDL 2.0 Support
 - New graphical Effects
-- Multiplayer Support
+- Multiplayer Support (Up to four players helping on the quest)
 - High Quality Packs which make the game look better and 
   provide better sounds and even music you might never have heard
-  in this game before
-- Ingame Menu
+  in some of these games before
+- Ingame Menu for vorticons Keen as well as a new HUD
 - Named save slots
 - Unrestricted Joystick Support
 - and a lot more
@@ -78,20 +78,20 @@ Imagine Commander Genius of a platform base for the keen games how it would be o
 hardware. That means there are some differences. The physics is close to the original but
 you might notice some details of you are an expert on Keen games. I think CG delivers a
 faster gameplay than the original ones. Since the framerate for graphics is higher it feels
-a bit more like that. Soem people might not like that, so I recommend them to stick with dosbox
-or use dosfusion all the way. More explained later in this readme.
+a bit more like that. Some people might not like that, so I recommend them to stick with dosbox
+or use dosfusion which we also provide. More explained later in this readme.
 
 It is bit hard to define what that experience is obviously, because many people
 experienced that gameplay differently. Some people had soundblaster, others didn't.
 Some had a joystick, others prefered keyboard.
 
-So getting an experience like old school is difficult for everyone.
+So getting an experience like old school is difficult for everybody.
 
-So what does Commander Genius do? Interpreting those games on modern systems. 
+What does Commander Genius do then? Interpreting those games on modern systems.
 It can draw more colors on your screen and fix issues the original 
 games had back then. For example Vorticon Keen has two-button firing as option. 
 All buttons can be mapped to any input device.
-Well, the mouse is still there for menus.
+And well, the mouse is still there for menus like in Galaxy.
 
 The original Keen games also have some bugs and given that the hardware 
 was very limited back then, it has some weird frameskips. There are many details
@@ -107,6 +107,11 @@ DOS-Version taking advantage of your powerful computer or smartphone.
 That's strength of Commander Genius! if you are one of those people who want
 to experience Commander Keen some new ways, then this is the software for you!
 
+The Dosfusion is a compilation of dosbox code into Commander Genius. It uses
+SDL 2.0 is a bit more recent, so you can get more out of it. You have some
+other grapical filters, the ones CG was built for and a mapper like in dosbox,
+sharing the experience you love to know. Many thanks to Qbix and his team
+for his awesome program.
 
 
 - History -
@@ -135,16 +140,19 @@ remember to give credit to the original
 authors. We work very hard on on this project
 and we deserve at least those credits!
 
+Also give credits to the others who provided
+us with some code. They deserve it as well.
+
 - Setup  -
 ==========
 
 You have two options:
 
-1.- Get one of the bundled versions, run it's setup and you can play episodes 1 and 4. 
+1.- Get one of the bundled versions, run it's setup and you can play episodes 1, 4 and 7.
 Those games are in a directory where you can put other Keen games and mods. That subdirectory
 is called "games". Anyway you can start playing right off those two games. Enjoy!
 
-If you want to accostumize more out of it, well then continue reading
+If you want to accostumize more out of it or add more episodes, well then continue reading.
 
 2.- We suppose you already have installed the copy of your game, so what's next, well?
 
@@ -158,6 +166,19 @@ Setting up the data of the game:
    If you connect your Android Device to the PC normally you find a directory a path called like
    "/Android/data/net.sourceforge.clonekeenplus/files/games". 
    Copy the games there were the shareware versions are and you should be fine.
+
+   You should note, that following versions of Keen work the best:
+   Keen 1 - Version 1.33
+   Keen 2 - Version 1.33
+   Keen 3 - Version 1.33
+   Keen 4 - Version 1.4
+   Keen 5 - Version 1.4
+   Keen 6 - Version 1.4
+
+   Other version might work, but we cannot guarantee. If you happen to own another version, I would
+   recommend it patching it first. There are free patches for that around the net
+   Also Keen 6 works on CG. Don't use the 1.5 version, this one is not supported, sorry,
+   get the 1.4 version.
 
  * If you want to use some patched mods just copy them as separate games to that path as well
  
@@ -186,18 +207,30 @@ How to compile it under Ubuntu:
  * This is based on the source code that we provide on our website
  * As we know which packages are needed, because we use Ubuntu, here is an extra guide. 
  * Install through Synaptic or "sudo apt-get install" following packages:
+   For SDL 1.2:
  	- build-essential
  	- libvorbis-dev
+        - libogg-dev
  	- libsdl1.2-dev
  	- libsdl-image1.2-dev
+        - libgl1-mesa-dev               
+        - libboost
+
+    For SDL2:
+        - build-essential
+        - libvorbis-dev
+        - libogg-dev
+        - libsdl2-dev
+        - libsdl-image2-dev
         - libgl1-mesa-dev
         - libboost
+
  * extract my source code into "CGenius".
  * cd into the source directory "CGenius"
- * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64" depending on what 
+ * Run "cmake -DBUILD_TYPE=LINUX32 -DUSE_SDL2=yes" or "cmake -DBUILD_TYPE=LINUX64 -DUSE_SDL2=yes" depending on what 
    system you have.
  * Run "make".
- * Then, you can run "CGenius". Copy the files, wherever you want them together 
+ * Then, you can run "CGeniusExe". Copy the files, wherever you want them together 
    with the data directory. "make install" does not work though.
 
 Compiling CG on any Linux/UNIX (other than Ubuntu):
@@ -208,9 +241,9 @@ Compiling CG on any Linux/UNIX (other than Ubuntu):
    it successfully compiled.
  * extract my source code to "cgenius". 
  * cd into the "cgenius" subdirectory.
- * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64"
+ * Run "cmake -DBUILD_TYPE=LINUX32 -DUSE_SDL2=yes" or "cmake -DBUILD_TYPE=LINUX64 -DUSE_SDL2=yes"
  * Run "make".
- * Then, you can run "CGenius". Copy the files, 
+ * Then, you can run "CGeniusExe". Copy the files, 
    wherever you want them together with the data directory. 
    "make install" does not work though.
    
@@ -254,14 +287,14 @@ you want to support other resolutions that you don't find in the options list ju
 "cgenius.cfg" file by hand. CG always reads this file and checks whether your card and 
 monitor support it and if possible use it. But, use it at your own risk.
 
-CAUTION: This is recommended for advanced users who know what they do. The team won't take 
-any responsibility if you use a wrong configuration. If you want to see other resolutions to 
-in future versions of CG, mail us ;-).
+CAUTION: This is recommended for advanced users who know what they do. The team won't bother
+if you use a wrong configuration, because you just manually edited it.
 
 - GAME PLAY -
 =============
 Before you play the game, you should take a look at the controls. Normally LAlt, Ctrl, Space and Enter
-are the action keys. You can also assign joystick buttons, axes and hats to those actions.
+are the action keys. You can also assign joystick buttons, axes and hats to those actions or just
+change the keys.
 
 
 - CHEAT CODES -
@@ -276,20 +309,21 @@ KEY        	ACTION             DESCRIPTION
 G+O+D	   	godmode		   In god mode you are invincible!
 C+T+SPACE  	All Items      Gives all items, similar to the original.
 
-Galaxy Keen (4):						   
+Galaxy Keen (4-6):
 KEY        	ACTION             DESCRIPTION
-F10+G	   	godmode		   In god mode you are invincible!
+F10+G	   	Godmode        In god mode you are invincible!
 F10+I	  	All Items      Gives all items, similar to the original.
-F10+J	  	Fly	      	   This will make Keen fly at any time
-F10+N	  	No Clip	       With this cheat you will go through walls. Be careful, you might also fall
-                           through the floor sometimes
+F10+J	  	Fly	       This will make Keen fly at any time
+F10+N	  	No Clipping    With this cheat you will go through walls. Be careful, you might also fall
+                               through the floor sometimes
 						   
 
 - SAVE/LOAD GAME -
 ==================
 The game can be saved from the menu at any time.
 Keen will be saved at the exact position it was left.
-In the vorticons engine it will save the game within the level also
+In the vorticons engine it will save the game within the level as well.
+On Galaxy it works like known.
 
 
 - FAQ -
@@ -303,8 +337,10 @@ A: You can decrease the fps under settings->video. OpenGL may also help on some 
 Q: When can I play Keen Dreams?
 A: Dreams isn't supported by CG at all, although there is the galaxy code base
    which can be used to make it playable. Shouldn't be hard though.
-   Nevertheless the fans around that project decided to focus more on multiplayer awesomness for now and dosbox fusion, 
+   Nevertheless the fans around that project decided to focus more on multiplayer awesomeness for now and dosbox fusion,
    which at some stage maybe very soon might make it run.
+   Since Keen Dreams source code has been released, there are ports like chocolate Keen dreams by NY00123,
+   which run Keen Dreams. Are you a developer and want to integrate it? Let us know :-)
  
   
   
@@ -317,6 +353,8 @@ Sending us the "CGLog.html" or "stdout.txt" file might help tracking the error.
 Also remember to test the lastest version from the testing repo we sometimes provide. 
 Your error might have been already fixed there. If there is no testing version after the release, 
 just report it. ;-)
+
+Of course you can send an email, but Github at this stage is more useful for us.
 
 http://github.com/gerstrong/Commander-Genius/issues
 
@@ -337,6 +375,7 @@ Lemm
 Markus Arnold (ThinkLabs. Thanks for your generous contribution)
 DSL (Nice icon contribution)
 Motorfingers
+Qbix and his Dosbox team (For creating Dosbox, which made dosfusion possible)
 Chrisfischtopher
 Commander Spleen
 Dreams
@@ -359,9 +398,12 @@ Also many special thanks to Martin Hauber (Tulip) who has been supporting me all
 the Windows version of CKP and giving me access to a lot of information about the games. 
 Without you it wouldn't be that great!
 
-And also special thanks to Chad Ian Anderson (Pizza2004) in helping us so much in many points of the game.
+Also Hagel and Mancus has been supporting us very much. Thanks a lot guys!
+
+And also special thanks to Chad Ian Anderson (Pizza2004) in helping us so
+much in many points of the game.
 Every time I had chance to test his port in Mac it was awesome. I like his work!
-Even in difficult times he always supports us.
+Even in difficult times he always supported us.
 
 Furthermore special thanks to Scott (Pickle) and Albert Zeyer
 for his changes. They helped out a lot on the quality of the code and performance incrate.

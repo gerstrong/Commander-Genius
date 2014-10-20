@@ -5,6 +5,8 @@
  *      Author: gerstrong
  */
 
+#include <base/CInput.h>
+
 #include "CPlayer.h"
 
 #include "CManglingMachine.h"
@@ -12,7 +14,6 @@
 #include "CBridges.h"
 #include "engine/core/spritedefines.h"
 #include "sdl/audio/Audio.h"
-#include <base/CInput.h>
 #include "sdl/audio/music/CMusic.h"
 #include "graphics/GsGraphics.h"
 #include "engine/core/CPhysicsSettings.h"

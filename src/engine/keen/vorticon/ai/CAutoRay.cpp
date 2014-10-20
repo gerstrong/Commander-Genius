@@ -17,29 +17,31 @@ const int SILENT_DIST = 20<<CSF;
 CAutoRay::CAutoRay(CMap *pmap, Uint32 x, Uint32 y, stRayAlignment type) :
 CVorticonSpriteObject(pmap, x, y, (type==HORIZONTAL) ? OBJ_AUTORAY : OBJ_AUTORAY_V),
 m_type(type),
-silent(false)
+silent(false),
+mGunTimer(0)
 {
 	sprite = BLANKSPRITE;
 	inhibitfall = true;
 	hasbeenonscreen = true;
+
 }
 
 bool CAutoRay::isNearby(CVorticonSpriteObject &theObject)
 {       
     if( CPlayer *player = dynamic_cast<CPlayer*>(&theObject) )
     {
-	int distx = player->getXPosition() - getXPosition();
-	if(distx<0)
-	    distx = -distx;
-	
-	int disty = player->getYPosition() - getYPosition();
-	if(disty<0)
-	    disty = -disty;
-	
-	if( disty < SILENT_DIST && distx < SILENT_DIST )
-	{
-	    silent = false;	
-	}
+        int distx = player->getXPosition() - getXPosition();
+        if(distx<0)
+            distx = -distx;
+
+        int disty = player->getYPosition() - getYPosition();
+        if(disty<0)
+            disty = -disty;
+
+        if( disty < SILENT_DIST && distx < SILENT_DIST )
+        {
+            silent = false;
+        }
     }
 
     return true;
@@ -47,7 +49,7 @@ bool CAutoRay::isNearby(CVorticonSpriteObject &theObject)
 
 void CAutoRay::process()
 {
-	if( (mp_Map->getAnimtiletimer()%GUNFIRE_TIMER) == 0 )
+    if( (mGunTimer%GUNFIRE_TIMER) == 0 )
 	{
 		unsigned int x,y;
 		CRay *NewRay;
@@ -74,6 +76,8 @@ void CAutoRay::process()
 		    silent = true;
 		}		
 	}
+
+    mGunTimer++;
 }
 
 

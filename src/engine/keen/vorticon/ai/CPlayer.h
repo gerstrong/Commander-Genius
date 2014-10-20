@@ -8,8 +8,12 @@
 #ifndef CPLAYER_H_
 #define CPLAYER_H_
 
+#include <base/GsEvent.h>
 #include <SDL.h>
-//#include "inventory.h"
+#include <vector>
+#include <string>
+#include <memory>
+
 #include "../CVorticonSpriteObject.h"
 #include "../ai/CMessie.h"
 #include "engine/core/CMap.h"
@@ -18,9 +22,6 @@
 #include "engine/core/options.h"
 #include "engine/core/CCamera.h"
 #include "engine/core/CBehaviorEngine.h"
-#include <vector>
-#include <string>
-#include <memory>
 
 
 enum LEVEL_TRIGGER
@@ -32,6 +33,14 @@ enum LEVEL_TRIGGER
 };
 
 
+
+struct AddPointsToAllPlayers : CEvent
+{
+    const int mPoints;
+
+    AddPointsToAllPlayers( const int points ) :
+                      mPoints( points ) {}
+};
 ///
 // Class definition starts here!
 ///
@@ -134,8 +143,6 @@ public:
 	unsigned int h;
 
 	e_playingmodes m_playingmode;
-//	Sint8 m_episode;
-//	Sint8 m_level;
 
 	bool godmode;
 

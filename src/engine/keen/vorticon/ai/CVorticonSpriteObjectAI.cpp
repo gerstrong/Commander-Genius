@@ -39,7 +39,20 @@ void CVorticonSpriteObjectAI::pumpEvent(const CEvent *evPtr)
         CVorticonSpriteObject *ptr = (CVorticonSpriteObject*)(ev->pObject);
         std::unique_ptr<CVorticonSpriteObject> obj( ptr );
         m_Objvect.push_back( move(obj) );
+    }    
+
+    if( const AddPointsToAllPlayers *ev = dynamic_cast<const AddPointsToAllPlayers*>(evPtr) )
+    {
+        for( auto &obj : m_Objvect )
+        {
+            // Only remove non-player objects!
+            if( CPlayer *player = dynamic_cast<CPlayer*>(obj.get()) )
+            {
+                player->inventory.score += ev->mPoints;
+            }
+        }
     }
+
 
     if( dynamic_cast<const EventEraseAllEnemies*>(evPtr) )
     {

@@ -9,7 +9,8 @@ SET(SHAREDIR share CACHE PATH "System share dir location")
 # seperate SHAREDIR and GAMES_SHAREDIR
 # for cases where we want /usr/share/games for the data
 # and /usr/share for desktop-files/pixmaps and such
-SET(GAMES_SHAREDIR "${SHAREDIR}/games" CACHE PATH "Game data root dir")
+#SET(GAMES_SHAREDIR "${SHAREDIR}" CACHE PATH "Game data root dir")
+SET(GAMES_SHAREDIR "usr/local/share/games/" CACHE PATH "Game data root dir")
 SET(DATADIR "${GAMES_SHAREDIR}/commandergenius")
 SET(APPDIR games CACHE PATH "Binary destination")
 SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")

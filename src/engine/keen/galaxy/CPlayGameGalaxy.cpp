@@ -338,10 +338,11 @@ void CPlayGameGalaxy::looseManagement( const int playerID,
 
     // Now let's check for important items
     // If one player goes game over on of the other should get the item then.
-    if( nextAliveID < mDead.size() )
+    const unsigned int numDeadPlayers = mDead.size();
+    if( numDeadPlayers > 1 && nextAliveID < numDeadPlayers )
     {
-        auto &next = mInventoryVec[nextAliveID];
-        auto &dying = mInventoryVec[playerID];
+        CInventory &next = mInventoryVec[nextAliveID];
+        CInventory &dying = mInventoryVec[playerID];
 
         next.fetchImportantStuff(dying);
     }

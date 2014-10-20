@@ -46,7 +46,7 @@ else(WIN32)
  
 		INCLUDE(FindPkgConfig)    
 		PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-		#FIND_PACKAGE( SDL2_net REQUIRED )
+                #FIND_PACKAGE( SDL2_net REQUIRED )
    
 		if(SDL2_FOUND)
 			message(STATUS "Using shared SDL Version 2 for Commander Genius")
@@ -86,5 +86,5 @@ add_subdirectory("./lib/GsKit")
 add_subdirectory("src")
 
 
-#INCLUDE(package.cmake)
+INCLUDE(package.cmake)
 

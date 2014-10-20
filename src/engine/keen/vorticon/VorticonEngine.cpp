@@ -250,6 +250,10 @@ void VorticonEngine::pumpEvent(const CEvent *evPtr)
     {
         const GMSwitchToPlayGameMode &playGame = *pPlayGame;
         mpGameMode.reset( new CPlayGameVorticon(playGame.m_startlevel) );
+
+        if(!gEventManager.empty())
+            gEventManager.clear();
+
         mpGameMode->init();
         mOpenedGamePlay = true;
         g_pBehaviorEngine->setPause(false);

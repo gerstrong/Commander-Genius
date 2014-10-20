@@ -10,7 +10,8 @@
 #include <cstring>
 #include <cstdio>
 
-CVidConfig::CVidConfig()
+CVidConfig::CVidConfig() :
+mRenderScQuality("nearest")
 {
 	reset();
 }
