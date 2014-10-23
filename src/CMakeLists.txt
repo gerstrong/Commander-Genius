@@ -1,9 +1,5 @@
 
-OPTION(OGG "Ogg/Vorbis support" Yes)
-OPTION(TREMOR "Tremor support" No)
-OPTION(USE_SDL2 "SDL2 support" Yes)
-OPTION(DBFUSION "Dosbox fusion" No)
-# 
+ 
 if(SDL2)
     OPTION(OPENGL "OpenGL support" No)
 else()
@@ -277,6 +273,9 @@ get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 # Add executable Commander Genius
 add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
 
+# Link GsKit
+target_link_libraries (CGeniusExe GsKit) 
+
 
 if(USE_SDL2)
         target_link_libraries(CGeniusExe ${SDL2_LIBRARIES})
@@ -288,10 +287,6 @@ else(USE_SDL2)
         target_link_libraries(CGeniusExe ${SDL_LIBRARY})
         target_link_libraries(CGeniusExe ${SDL_IMAGE_LIBRARY})
 endif(USE_SDL2)
-
-
-# Link GsKit
-target_link_libraries (CGeniusExe GsKit) 
 
 
 IF(OPENGL)
