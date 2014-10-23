@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Commander Genius
 Comment=Play natively Commander Keen Games
-Exec=CommanderGenius
-Icon=cgenius
+Exec=CGeniusExe
+Icon=CGLogo.png
 Terminal=false
 Type=Application
 Categories=Game;
