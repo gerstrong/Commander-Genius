@@ -1,3 +1,9 @@
+v1.8.0 Release:
+---------------
+- Dosbox fusion
+- A lot of dosbox fixes
+- Better mouse controls
+
 v1.7.3 Release:
 ---------------
 - New submenu for mods
@@ -6,7 +12,6 @@ v1.7.3 Release:
 v1.7.2 Release:
 ---------------
 - A lot of fixes
-
 
 v1.7.2 Beta:
 ------------

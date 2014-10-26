@@ -21,17 +21,17 @@ INSTALL(TARGETS CGeniusExe
 	DESTINATION ${APPDIR})
 
 # This will copy the resources files to the proper directory
-IF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
-	INSTALL(DIRECTORY vfsroot/ 
+IF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/../vfsroot")
+	INSTALL(DIRECTORY ../vfsroot/ 
 		DESTINATION ${DATADIR})
-ENDIF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/vfsroot")
+ENDIF(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/../vfsroot")
 
 # This will copy the readme file. 
 INSTALL(FILES "${CMAKE_BINARY_DIR}/README"
 	DESTINATION ${DOCDIR})
 
-# This will copy the readme file. 
-INSTALL(FILES changelog.txt 
+# This will copy the changelog file. 
+INSTALL(FILES ../changelog.txt 
 	DESTINATION ${DOCDIR})
 
 # Windows might not have those dlls so we ship them with the packages
