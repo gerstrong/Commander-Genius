@@ -1,7 +1,7 @@
 OPTION(CREATE_DEBS "Will create DEBs" No)
 OPTION(CREATE_RPMS "Will create RPMs" No)
 
-SET(CGENIUS_DESKTOP_DIR "usr/share/applications/")
+SET(CGENIUS_DESKTOP_DIR "share/applications/")
 
 
 # Now let's setup the package for installation. You can create the package of the chosen build
