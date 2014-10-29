@@ -309,7 +309,7 @@ void CPlayerLevel::prepareToShoot()
 	// He could shoot
 	if( m_playcontrol[PA_FIRE] && !m_fire_recharge_time )
 	{
-		const int newx = getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC));
+        const int newx = getXPosition();
 		const int newy = getYPosition()+(6<<STC);
 
         const Vector2D<int> newVec(newx, newy);
@@ -2155,7 +2155,7 @@ void CPlayerLevel::performPoleHandleInput()
 		{
 			m_fire_recharge_time = FIRE_RECHARGE_TIME;
 			setActionForce(A_KEEN_POLE_SHOOT);
-            const Vector2D<int> newVec(getXPosition() + ((xDirection == LEFT) ? -(16<<STC) : (16<<STC)),
+            const Vector2D<int> newVec(getXPosition(),
 										getYPosition()+(4<<STC));
 			tryToShoot(newVec, xDirection, yDirection);
 			return;
