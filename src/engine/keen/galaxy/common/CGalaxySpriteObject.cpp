@@ -189,7 +189,7 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	y2 += COLISION_RES;
+    y2 += COLISION_RES;
 
 	// Check for sloped tiles here. They must be handled differently
 	if(solid)
@@ -222,8 +222,11 @@ int CGalaxySpriteObject::checkSolidD( int x1, int x2, int y2, const bool push_mo
 			return blockedu;
 	}
 
+    const int y2CSFed = (y2>>CSF);
+    const int y2TILEed = (y2CSFed<<TILE_S);
+    const int y2STCed = (y2>>STC);
 
-	if( ( (y2>>STC) != ((y2>>CSF)<<TILE_S) ) && !push_mode )
+    if( ( y2STCed != y2TILEed ) && !push_mode )
 		return 0;
 
 
