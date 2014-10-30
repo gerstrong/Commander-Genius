@@ -84,15 +84,6 @@ int CBlooglet::checkSolidD( int x1, int x2, int y2, const bool push_mode )
 {
 	turnAroundOnCliff( x1, x2, y2 );
 
-    // Another property of the tiles may kill keen, also in god mode
-    std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
-    // TODO: Workaround! It seems that the deadly tiles are 17 tiles behind. Not sure, why!
-    const int tileIDl = mp_Map->getPlaneDataAt(1, x1, y2);
-    if(Tile[tileIDl].bup == 9)
-    {
-        printf("Stop!");
-    }
-
 	return CGalaxySpriteObject::checkSolidD(x1, x2, y2, push_mode);
 }
 
