@@ -313,8 +313,14 @@ void CPlayerWM::processMoving()
                 int x = getXMidPos();
                 int y = getYMidPos();
 
-                x = x>>CSF; y = y>>CSF;
-                x = x<<CSF; y = (y+climbDir)<<CSF;
+                x = x>>CSF;
+                y = y>>CSF;
+
+                x = x<<CSF;
+                if(climbDir == UP)
+                    y = (y+2*climbDir)<<CSF;
+                else
+                    y = (y+climbDir)<<CSF;
 
                 spawnObj(new CRope(mp_Map, x, y));
                 playSound(SOUND_ROPE_THROW);
