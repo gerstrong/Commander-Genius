@@ -2035,8 +2035,9 @@ void CPlayerLevel::openDoorsTile()
         const int freeTileno = mp_Map->getPlaneDataAt(1, (newX+1)<<CSF, newY<<CSF);
         const bool isBlock = tilePropVec[freeTileno].bup;
 
-        if( !isBlock ) // Freeshot for some doors, which might have strange
-            continue;   // tiles setup. v.g. Keen 7 Krodacia
+        /*if( isBlock ) // Freeshot for some doors, which might have strange
+            continue;   // tiles setup. v.g. Keen 7 Krodacia        */ // Disabled, because not sure how valid this is.
+        // It would break some doors in Keen 6.
 
         if( next_tileno != tileno && next_tileno != tileno+18 && next_tileno != tileno+2*18)
             break;
