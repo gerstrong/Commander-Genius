@@ -110,7 +110,7 @@ bool CMapLoaderGalaxy::gotoNextSignature(std::ifstream &MapFile)
 }
 
 void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
-					CMap &Map, size_t PlaneNumber,
+                    CMap &Map, const size_t planeNumber,
 					longword offset, longword length,
 					word magic_word)
 {
@@ -154,12 +154,17 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
     	RLE.expand(Plane, RLE_Plane, magic_word);
     	RLE_Plane.clear();
 
-    	word *ptr = Map.getData(PlaneNumber);
-    	for(size_t y=0; y<Map.m_height ; y++)
+        word *ptr = Map.getData(planeNumber);
+        for(size_t y=0; y<Map.m_height ; ++y)
     	{
-    		for(size_t x=0; x<Map.m_width ; x++)
+            const int stride = y*Map.m_width;
+
+            for(size_t x=0; x<Map.m_width ; ++x)
     		{
-    			*ptr = Plane.at(y*Map.m_width+x);
+                const int offset = stride+x;
+                word tile = Plane.at(offset);
+
+                *ptr = tile;
     			ptr++;
     		}
     	}
