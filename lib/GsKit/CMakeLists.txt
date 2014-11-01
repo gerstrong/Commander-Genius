@@ -24,7 +24,7 @@ ENDIF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 Project(GsKit)
 
-# TODO: From this point we should recursively glob the files. I think it is the easiest way but maybe not the best, I don't know yet.
+# From this point files are globbed for compilation and project setup
 file(GLOB_RECURSE ALL_SRCS_GSKIT_BASE *.c* *.h*)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 

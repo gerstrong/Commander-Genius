@@ -16,6 +16,8 @@
 #include <base/InputEvents.h>
 
 #include <base/Singleton.h>
+#include <base/GsVirtualinput.h>
+
 
 #define gInput	CInput::get()
 
@@ -262,6 +264,9 @@ public:
     void pushBackButtonEventExtEng();
 
 private:
+
+    // Class for overlays when a virtual gamepad or keyboard is needed. For example on mobiles devices
+    GsVirtualInput mVirtualInput;
 
     // Input Events
     CEventContainer m_EventList;

@@ -51,6 +51,8 @@ CInput::CInput()
 
      //Create the semaphor
     pollSem = SDL_CreateSemaphore(1);
+
+    mVirtualInput.init();
 }
 
 /**
@@ -329,14 +331,11 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 
 void CInput::render()
 {
-    /*GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    if(!mVirtualInput.active())
+        return;
 
-    GsRect<Uint16> rect(100,100,50,50);
-
-    SDL_PixelFormat *format = blit.getSDLSurface()->format;
-
-    blit.fill(rect, SDL_MapRGBA(format, 128, 0, 0, 128 ));*/
-
+    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    mVirtualInput.render(blit);
 }
 
 
