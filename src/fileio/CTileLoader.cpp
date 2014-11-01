@@ -54,8 +54,6 @@ void CTileLoader::setupOffsetMap()
 
 bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 {
-	std::string fname;
-	
 	if(m_offsetMap[m_episode][m_version])
 	{
 		if(m_episode == 1 || m_episode == 2 || m_episode == 3 )

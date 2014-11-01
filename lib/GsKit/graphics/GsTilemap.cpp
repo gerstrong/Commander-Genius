@@ -217,11 +217,23 @@ void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 
 }
 
-void GsTilemap::applyGalaxyMask()
+void GsTilemap::applyGalaxyHiColourMask()
 {
+    SDL_Surface *newSfc =
+            SDL_ConvertSurfaceFormat(m_Tilesurface, SDL_PIXELFORMAT_RGBA8888, 0);
+
+    SDL_FreeSurface(m_Tilesurface);
+
+    m_Tilesurface = newSfc;
+
     const SDL_PixelFormat *format = m_Tilesurface->format;
-    const Uint32 maskColor = SDL_MapRGB(format, 0x0, 0xFF, 0xFF);
-    SDL_SetColorKey(m_Tilesurface, SDL_TRUE, maskColor);
+
+    // TODO: We might define that as a GsSurface
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+        SDL_SetSurfaceBlendMode(m_Tilesurface, SDL_BLENDMODE_BLEND);
+#else
+        SDL_SetColorKey( m_Tilesurface, SDL_SRCCOLORKEY, maskColor );
+#endif
 
     SDL_LockSurface(m_Tilesurface);
 
@@ -240,8 +252,10 @@ void GsTilemap::applyGalaxyMask()
             Uint8 *px = pxRow + x*format->BytesPerPixel;
             Uint8 *pxMask = px + midRow*format->BytesPerPixel;
 
-            const Uint32 pix = *((Uint32*)(px));
-            const Uint32 mask = *((Uint32*)(pxMask));
+            Uint32 pix = 0;
+            Uint32 mask = 0;
+            memcpy(&pix, px, format->BytesPerPixel);
+            memcpy(&mask, pxMask, format->BytesPerPixel);
 
             // Get the mask part
             Uint8 mask_r, mask_g, mask_b;
@@ -254,13 +268,10 @@ void GsTilemap::applyGalaxyMask()
             // Calculate the new alpha, which will do the transparency and even allow translucency
             const Uint8 alpha = 255-(( (mask_r<<16) + (mask_g<<8) + mask_b ) >> 16);
 
-            Uint32 *newColorPtr = (Uint32*)(px);
-            //*newColorPtr = SDL_MapRGBA( format, r, g, b, alpha );
+            pix = SDL_MapRGBA( format, r, g, b, alpha );
 
-            if(alpha < 128)
-            {
-                *newColorPtr = maskColor;
-            }
+            memcpy(px, &pix, format->BytesPerPixel);
+
         }
     }
 
