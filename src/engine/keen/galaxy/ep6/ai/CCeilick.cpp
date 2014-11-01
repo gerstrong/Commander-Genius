@@ -141,7 +141,7 @@ void CCeilick::draw()
         Uint16 showX = scrx+Sprite.getXOffset();
 
         // Here we use the crawl effect to smoothen the movement of the ceilick.
-        Uint16 showY = scry - 16 + mCrawlPos;
+        Uint16 showY = scry + mCrawlPos;
 
         if(mCrawlPos < 0)
             mCrawlPos++;
