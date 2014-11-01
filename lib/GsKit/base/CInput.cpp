@@ -325,6 +325,23 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 	return buf;
 }
 
+
+
+void CInput::render()
+{
+    /*GsWeakSurface blit(gVideoDriver.getBlitSurface());
+
+    GsRect<Uint16> rect(100,100,50,50);
+
+    SDL_PixelFormat *format = blit.getSDLSurface()->format;
+
+    blit.fill(rect, SDL_MapRGBA(format, 128, 0, 0, 128 ));*/
+
+}
+
+
+
+
 std::string CInput::getEventName(int command, unsigned char input)
 {
 	std::string buf;
