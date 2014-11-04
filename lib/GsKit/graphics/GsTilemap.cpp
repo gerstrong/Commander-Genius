@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 
-//#include "fileio/CTileLoader.h"
 #include <fileio/ResourceMgmt.h>
 #include <base/video/CVideoDriver.h>
 #include <SDL_image.h>
@@ -14,6 +13,7 @@
 #include "GsPalette.h"
 #include <base/GsLogging.h>
 #include <stdlib.h>
+#include <SDL_image.h>
 
 GsTilemap::GsTilemap() :
 m_Tilesurface(NULL),

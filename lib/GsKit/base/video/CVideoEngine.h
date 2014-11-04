@@ -17,6 +17,7 @@
 #include "CVidConfig.h"
 #include <graphics/GsSurface.h>
 #include <memory>
+#include <queue>
 
 
 struct SDL_Surface_Deleter
@@ -119,6 +120,14 @@ public:
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_GLContext glcontext;
+
+    /**
+     * @brief mRenderTextures queue that manages pointers to textures defined somewhere in the to be rendered.
+     *        This functionality only works with SDL 2.0 so but might get extended later
+     * @note  Do not manage the memory of these pointers. The owers of the textures have to do that!
+     */
+    std::queue< std::tuple< SDL_Texture*, const GsRect<Uint16>, const GsRect<Uint16> > > mRenderTexturePtrs;
+
 #endif
 
     GsRect<int> mRelativeVisGameArea;
@@ -127,7 +136,7 @@ protected:
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-    std::unique_ptr<SDL_Texture, SDL_Texture_Deleter> mpSdlTexture;
+    std::unique_ptr<SDL_Texture, SDL_Texture_Deleter> mpSDLScreenTexture;
 #else
 
     // it is what you see on your monitor in the end in your window or on fullscreen
