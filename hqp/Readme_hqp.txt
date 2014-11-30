@@ -27,6 +27,9 @@ or directly to me (tulip) at haubaer1981@yahoo.de
 Update Log
 ----------
 
+Release 2.6 (2014-11-30)
+- New tilemaps fro Commander Keen 4 which pushes the graphics to a new level of gameplay experience
+
 Release 2.4 (2014-05-31)
 - Some normalized tracks for Keen 2 and 3
 
