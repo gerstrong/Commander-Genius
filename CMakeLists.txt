@@ -1,6 +1,8 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
+#TODO: Search SDL_image 2.0 still fails
+
 cmake_minimum_required(VERSION 2.8)
 
 OPTION(OGG "Ogg/Vorbis support" Yes)
