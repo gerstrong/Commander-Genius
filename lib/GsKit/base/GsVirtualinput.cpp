@@ -2,6 +2,7 @@
 
 #include <base/video/CVideoDriver.h>
 #include <SDL_image.h>
+#include <cstdio>
 
 GsVirtualInput::GsVirtualInput() :
 mEnabled(true)
