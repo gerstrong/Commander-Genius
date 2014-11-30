@@ -11,8 +11,8 @@ Ports:
 
            Released under GNU/GPL           
                                             
-           Release v1.8.0.0-Release 
-           Build: LINUX                                       
+           Release v 
+           Build:                                        
 **************************************************************
 
 Welcome to Commander Genius!
@@ -227,10 +227,10 @@ How to compile it under Ubuntu:
 
  * extract my source code into "CGenius".
  * cd into the source directory "CGenius"
- * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64" depending on what 
+ * Run "cmake -DBUILD_TYPE=LINUX32 -DUSE_SDL2=yes" or "cmake -DBUILD_TYPE=LINUX64 -DUSE_SDL2=yes" depending on what 
    system you have.
  * Run "make".
- * Then, you can run "CGenius". Copy the files, wherever you want them together 
+ * Then, you can run "CGeniusExe". Copy the files, wherever you want them together 
    with the data directory. "make install" does not work though.
 
 Compiling CG on any Linux/UNIX (other than Ubuntu):
@@ -241,9 +241,9 @@ Compiling CG on any Linux/UNIX (other than Ubuntu):
    it successfully compiled.
  * extract my source code to "cgenius". 
  * cd into the "cgenius" subdirectory.
- * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64"
+ * Run "cmake -DBUILD_TYPE=LINUX32 -DUSE_SDL2=yes" or "cmake -DBUILD_TYPE=LINUX64 -DUSE_SDL2=yes"
  * Run "make".
- * Then, you can run "CGenius". Copy the files, 
+ * Then, you can run "CGeniusExe". Copy the files, 
    wherever you want them together with the data directory. 
    "make install" does not work though.
    
