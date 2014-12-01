@@ -4,14 +4,17 @@
 #include <SDL_image.h>
 #include <cstdio>
 
+
+
 GsVirtualInput::GsVirtualInput() :
 mEnabled(true)
 {}
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 
 //Current displayed texture
 // TODO: Should be part of the class maybe
-SDL_Texture* gTexture = NULL;
+SDL_Texture* gTexture = nullPtr;
 
 
 SDL_Texture* loadTexture( const std::string &path )
@@ -79,9 +82,11 @@ void close()
     SDL_Quit();*/
 }
 
+#endif
 
 bool GsVirtualInput::init()
 {
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
     SDL_PixelFormat *format = blit.getSDLSurface()->format;
 
@@ -112,6 +117,7 @@ bool GsVirtualInput::init()
     // TODO: Down arrow
 
     /// TODO: Draw action and menu Buttons    
+    #endif
 
     return true;
 }
@@ -125,3 +131,4 @@ void GsVirtualInput::render(GsWeakSurface &sfc)
 
     //gVideoDriver.addTextureRefToRender(*gTexture, dpadRect);
 }
+
