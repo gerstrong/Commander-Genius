@@ -260,7 +260,7 @@ void Audio::callback(void *unused, Uint8 *stream, int len)
 
     m_MixedForm.resize(len);
 
-	Uint8* buffer = m_MixedForm.data();
+	Uint8* buffer = m_MixedForm.data();        
 
     if (g_pMusicPlayer->playing())
     {

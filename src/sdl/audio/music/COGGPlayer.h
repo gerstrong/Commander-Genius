@@ -54,6 +54,8 @@ private:
 	int m_bitStream;
     vorbis_info*    mVorbisInfo;    // some formatting data
     bool mHasCommonFreqBase;
+
+    std::vector<Uint8> mResampleBuf;
 };
 
 #if defined(TREMOR)
