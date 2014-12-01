@@ -742,10 +742,10 @@ void CSpriteObject::processMoveBitDown()
     const unsigned int x2 = getXPosition()+m_BBox.x2;
     const unsigned int y2 = getYPosition()+m_BBox.y2;
 
-    if( ( blockedd = checkSolidD(x1, x2, y2) ) == true )
-    {
+    blockedd = checkSolidD(x1, x2, y2);
+
+    if(blockedd)
         return;
-    }
 
     // if we are here, the tiles aren't blocking us.
     // TODO: Here we need the Object collision part

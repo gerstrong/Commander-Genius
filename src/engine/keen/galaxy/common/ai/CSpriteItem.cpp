@@ -85,6 +85,12 @@ void CSpriteItem::getTouchedBy(CSpriteObject &theObject)
 			}
 			g_pSound->playSound( SOUND_GET_BONUS );
 		}
+
+        if(Item.m_points >= Item.m_lifeAt)
+        {
+            pPlayer->getAnotherLife(getXPosition()>>CSF, getYPosition()>>CSF, false, true);
+            Item.m_lifeAt *= 2;
+        }
 		
 		// Check for the extra life
 		if ( relBase == 115 )

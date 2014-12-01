@@ -109,12 +109,15 @@ void CGik::getTouchedBy(CSpriteObject &theObject)
 
     if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
     {
-        mpInteractPlayer = player;
+        if(player->getActionNumber() != A_KEEN_ENTER_DOOR)
+        {
+            mpInteractPlayer = player;
 
-        const int m_py2 = player->getYDownPos();
-        const int m_y2 = getYUpPos()+(4<<STC);
-        if( m_py2 <= m_y2 && !player->pSupportedbyobject && !player->m_jumpdownfromobject )
-            player->pSupportedbyobject = this;
+            const int m_py2 = player->getYDownPos();
+            const int m_y2 = getYUpPos()+(4<<STC);
+            if( m_py2 <= m_y2 && !player->pSupportedbyobject && !player->m_jumpdownfromobject )
+                player->pSupportedbyobject = this;
+        }
     }
 }
 

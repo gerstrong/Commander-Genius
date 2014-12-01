@@ -916,7 +916,7 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
         // Looking for high color pictures
         if( Tilemap.loadHiresTile("gfx/4TIL0001", m_path) )
         {
-            Tilemap.applyGalaxyMask();
+            Tilemap.applyGalaxyHiColourMask();
         }
     }
 

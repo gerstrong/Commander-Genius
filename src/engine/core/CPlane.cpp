@@ -20,24 +20,10 @@ void CPlane::createDataMap(Uint16 width, Uint16 height)
 	m_width = width;
 	m_height = height;
 	mp_data = new word[m_width*m_height];
+    mTimers.assign(m_width*m_height, 0);
 }
 
-word *CPlane::getMapDataPtr()
-{
-	return mp_data;
-}
 
-word CPlane::getMapDataAt(Uint16 x, Uint16 y)
-{
-	if( x < m_width && y < m_height )
-		return mp_data[y*m_width+x];
-	return 0;
-}
-
-void CPlane::setMapDataAt(Uint16 t, Uint16 x, Uint16 y)
-{
-	mp_data[y*m_width+x] = t;
-}
 
 bool CPlane::empty()
 {	return (mp_data == NULL);	}

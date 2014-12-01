@@ -1,7 +1,14 @@
 # CMake file for development of Commander Genius (taken from OLX)
 # This CMake file is used under Linux normally. 
 
+#TODO: Search SDL_image 2.0 still fails
+
 cmake_minimum_required(VERSION 2.8)
+
+OPTION(OGG "Ogg/Vorbis support" Yes)
+OPTION(TREMOR "Tremor support" No)
+OPTION(DBFUSION "Dosbox fusion" No)
+OPTION(USE_SDL2 "SDL2 support" Yes)
 
 Project(CommanderGenius)
 
@@ -79,7 +86,7 @@ else(WIN32)
 endif(WIN32)
 
 # Add GsKit
-add_subdirectory("./lib/GsKit")
+add_subdirectory("lib/GsKit")
 
 
 # Compile to internal Commander Genius sources

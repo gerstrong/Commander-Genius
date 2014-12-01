@@ -47,6 +47,17 @@ struct GsRect
     {}
 
 
+    /**
+     * @brief empty The rect is empty when height or width at least is empty. This special case means, that nothing is indicated
+     *              and if a surface or texture is passed it should fill the whole destination to which it is blit.
+     *              and if x and y are zero it doesn't matter anymore. The blitters of SDL should get a null pointer
+     *              and know what they have to do.
+     * @return true if empty, otherwise false.
+     */
+    bool empty() const
+    {
+        return (h==0 || w==0) && ( x==0 && y==0 );
+    }
 
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)

@@ -254,6 +254,8 @@ void GsApp::render()
         mpCurEngine->render();
 
     gMenuController.render();
+
+    gInput.render();
 }
 
 

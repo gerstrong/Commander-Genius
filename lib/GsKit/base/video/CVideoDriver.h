@@ -15,6 +15,7 @@
 #include <base/Singleton.h>
 #include <base/video/CVideoEngine.h>
 #include <base/GsEvent.h>
+#include <queue>
 
 #ifdef USE_OPENGL
     #include <base/video/COpenGL.h>
@@ -27,6 +28,7 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include <tuple>
 
 class CVideoDriver : public GsSingleton<CVideoDriver>
 {
@@ -137,9 +139,45 @@ public:
 	  m_VidConfig.mAspectCorrection.w = w; 
 	  m_VidConfig.mAspectCorrection.h = h; 
 	}
+
 	bool getSpecialFXConfig(void) { return m_VidConfig.m_special_fx; }
 	bool getRefreshSignal() { return m_mustrefresh; }
 	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_Renderer& getRendererRef()
+    {
+        return *(mpVideoEngine->renderer);
+    }
+
+    /**
+     * @brief addTextureToRender add texture ptr to the that will be renderered
+     * @param texturePtr    pointer to the SDL Texture
+     */
+    void addTextureRefToRender(SDL_Texture& textureRef)
+    {
+        std::tuple< SDL_Texture*, const GsRect<Uint16>, const GsRect<Uint16> >
+                triple( &textureRef, {0, 0, 0, 0}, {0, 0, 0, 0 } );
+
+        mpVideoEngine->mRenderTexturePtrs.push(triple);
+    }
+
+
+    /**
+     * @brief addTextureRefToRender add texture ptr to the that will be renderered
+     * @param textureRef    pointer to the SDL Texture
+     * @param dstRect       Rect where to put this texture on
+     */
+    void addTextureRefToRender(SDL_Texture& textureRef, const GsRect<Uint16> &dstRect)
+    {
+        std::tuple< SDL_Texture*, const GsRect<Uint16>, const GsRect<Uint16> >
+                triple( &textureRef, {0, 0, 0, 0}, dstRect );
+
+        mpVideoEngine->mRenderTexturePtrs.push(triple);
+    }
+
+
+#endif
 
 	st_camera_bounds &getCameraBounds();
 

@@ -144,11 +144,51 @@ void CSDLVideo::transformScreenToDisplay()
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)            
     mpScreenSfc->lock();
-    SDL_UpdateTexture(mpSdlTexture.get(), nullptr, mpScreenSfc->getSDLSurface()->pixels, mpScreenSfc->width() * sizeof (Uint32));
+    SDL_UpdateTexture(mpSDLScreenTexture.get(), nullptr, mpScreenSfc->getSDLSurface()->pixels, mpScreenSfc->width() * sizeof (Uint32));
     mpScreenSfc->unlock();
 
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, mpSdlTexture.get(), NULL, NULL);
+    SDL_RenderCopy(renderer, mpSDLScreenTexture.get(), NULL, NULL);
+
+    // Now render the textures which additionally sent over...
+    while(!mRenderTexturePtrs.empty())
+    {
+        auto &triple = mRenderTexturePtrs.front();
+
+        SDL_Texture *texture = std::get<0>(triple);
+        const GsRect<Uint16> &src = std::get<1>(triple);
+        const GsRect<Uint16> &dst = std::get<2>(triple);
+
+        if(src.empty())
+        {
+            if(dst.empty())
+            {
+                SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+            }
+            else
+            {
+                SDL_Rect dstSDL = dst.SDLRect();
+                SDL_RenderCopy(renderer, texture, nullptr, &dstSDL);
+            }
+        }
+        else
+        {
+            SDL_Rect srcSDL = src.SDLRect();
+            if(dst.empty())
+            {
+                SDL_RenderCopy(renderer, texture, &srcSDL, nullptr);
+            }
+            else
+            {
+                SDL_Rect dstSDL = dst.SDLRect();
+                SDL_RenderCopy(renderer, texture, &srcSDL, &dstSDL);
+            }
+        }
+
+        mRenderTexturePtrs.pop();
+    }
+
+
     SDL_RenderPresent(renderer);
 #else
 

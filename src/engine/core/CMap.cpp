@@ -870,10 +870,24 @@ void CMap::animateAllTiles()
 
     // Let the animation timer tick!!
     mAnimtileTimer += 1.0f;
-    const Uint8 animtileTimerInt = static_cast<Uint8>(mAnimtileTimer);
+    //const Uint8 animtileTimerInt = static_cast<Uint8>(mAnimtileTimer);
+
 
     if( mAnimtileTimer > 256.0f )
         mAnimtileTimer = 0.0f;
+
+
+    static int animtileTimerInt = 0;
+    static Uint8 timeIt = 0;
+
+    timeIt++;
+
+    //if(timeIt >= 10)
+    {
+        animtileTimerInt++;
+        timeIt = 0;
+    }
+
 
     // Go throught the list and just draw all the tiles that need to be animated
     Uint32 num_h_tiles = ScrollSurface->h/16;
@@ -892,40 +906,61 @@ void CMap::animateAllTiles()
     std::vector<CTileProperties> &backTileProperties =
             g_pBehaviorEngine->getTileProperties(0);
     word *p_back_tile = m_Plane[0].getMapDataPtr();
+
+    std::vector<Uint8> &timersBack = m_Plane[0].getTimers();
+    std::vector<Uint8> &timersFront = m_Plane[1].getTimers();
+
     for( size_t y=0 ; y<m_height ; y++)
     {
+        const int stride = m_width*y;
+
         for( size_t x=0 ; x<m_width ; x++)
         {
             bool draw = false;
 
-            CTileProperties &back_tile = backTileProperties[*p_back_tile];
-            if( back_tile.animationtime && (animtileTimerInt % back_tile.animationtime == 0) )
-            {
-                *p_back_tile += back_tile.nextTile;
-                draw = true;
-            }
-            p_back_tile++;
+            const int offset = stride + x;
 
+            const CTileProperties &back_tile = backTileProperties[*p_back_tile];
+            const CTileProperties &front_tile = frontTileProperties[*p_front_tile];
 
-            CTileProperties &front_tile = frontTileProperties[*p_front_tile];
-            if( front_tile.animationtime && (animtileTimerInt % front_tile.animationtime == 0) )
+            if( back_tile.animationtime )
             {
-                *p_front_tile += front_tile.nextTile;
-                draw = true;
+                if(timersBack[offset] == 0)
+                {
+                    *p_back_tile += back_tile.nextTile;
+                    timersBack[offset] = backTileProperties[*p_back_tile].animationtime;
+                    draw = true;
+                }
+
+                timersBack[offset]--;
             }
-            p_front_tile++;
+
+            if( front_tile.animationtime )
+            {
+                if(timersFront[offset] == 0)
+                {
+                    *p_front_tile += front_tile.nextTile;
+                    timersFront[offset] = frontTileProperties[*p_front_tile].animationtime;
+                    draw = true;
+                }
+
+                timersFront[offset]--;
+            }
 
             if( draw && x >= m_mapx && y >= m_mapy &&
-                    x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
+                x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles )
             {
-                Uint16 bg = m_Plane[0].getMapDataAt(x,y);
-                Uint16 fg = m_Plane[1].getMapDataAt(x,y);
+                const Uint16 bg = *p_back_tile;
+                const Uint16 fg = *p_front_tile;
                 const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos)&drawMask;
                 const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos)&drawMask;
                 m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
                 if(fg)
                     m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
             }
+
+            p_back_tile++;
+            p_front_tile++;
         }
     }
 }

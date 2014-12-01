@@ -55,10 +55,10 @@ public:
     }
 
 protected:
-	void unpackPlaneData(std::ifstream &MapFile,
-			CMap &Map, size_t PlaneNumber,
-			longword offset, longword length,
-			word magic_word);
+    void unpackPlaneData(std::ifstream &MapFile,
+            CMap &Map, const size_t planeNumber,
+            longword offset, longword length,
+            word magic_word);
 
 	CExeFile &m_ExeFile;
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &m_ObjectPtr;

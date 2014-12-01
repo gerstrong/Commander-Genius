@@ -16,6 +16,8 @@
 #include <base/InputEvents.h>
 
 #include <base/Singleton.h>
+#include <base/GsVirtualinput.h>
+
 
 #define gInput	CInput::get()
 
@@ -197,7 +199,7 @@ public:
 	bool isAnalog(const int player);
 	void enableAnalog(const int player, const bool value);
 
-	bool SuperPogo(const int player) { return mSuperPogo[player]; }
+    bool SuperPogo(const int player) { return mSuperPogo[player]; }
 	void setSuperPogo(const int player, const bool value) { mSuperPogo[player] = value; }
 
 	bool ImpossiblePogo(const int player) { return mImpPogo[player]; }
@@ -205,6 +207,12 @@ public:
 
 	bool AutoGun(const int player) { return mFullyAutomatic[player]; }
 	void setAutoGun(const int player, const bool value) { mFullyAutomatic[player] = value; }
+
+    /**
+     * @brief render will render stuff the input want's to get on the screen.
+     *        These are usually overlay where you can touch or click, like virtual gamepads.
+     */
+    void render();
 
 
 	/**
@@ -256,6 +264,9 @@ public:
     void pushBackButtonEventExtEng();
 
 private:
+
+    // Class for overlays when a virtual gamepad or keyboard is needed. For example on mobiles devices
+    GsVirtualInput mVirtualInput;
 
     // Input Events
     CEventContainer m_EventList;
