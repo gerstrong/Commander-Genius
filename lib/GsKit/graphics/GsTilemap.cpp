@@ -61,7 +61,7 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 		return false;
 
     // For some odd readon, SDL 1.2 image seems to be broken. For now, it is disabled.
-#if SDL_VERSION_ATLEAST(2, 0, 0)
+//#if SDL_VERSION_ATLEAST(2, 0, 0)
 	if(m_Tilesurface)
 	{	  	  
         SDL_Surface *temp_surface = IMG_Load(GetFullFileName(fullfilename).c_str());
@@ -77,9 +77,9 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 		  gLogging.textOut(RED, "IMG_Load: CG will ignore those images\n");
 		}
 	}
-#else
+//#else
     // TODO: Code for older SDL 1.2
-#endif
+//#endif
 	
 	return false;
 }
