@@ -60,9 +60,7 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 	if(!IsFileAvailable(fullfilename))
 		return false;
 
-    // For some odd readon, SDL 1.2 image seems to be broken. For now, it is disabled.
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-	if(m_Tilesurface)
+    if(m_Tilesurface)
 	{	  	  
         SDL_Surface *temp_surface = IMG_Load(GetFullFileName(fullfilename).c_str());
 		if(temp_surface)
@@ -77,10 +75,7 @@ bool GsTilemap::loadHiresTile( const std::string& filename, const std::string& p
 		  gLogging.textOut(RED, "IMG_Load: CG will ignore those images\n");
 		}
 	}
-#else
-    // TODO: Code for older SDL 1.2
-#endif
-	
+
 	return false;
 }
 
@@ -219,8 +214,15 @@ void GsTilemap::drawTile(SDL_Surface *dst, int x, int y, Uint16 t)
 
 void GsTilemap::applyGalaxyHiColourMask()
 {
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_Surface *newSfc =
             SDL_ConvertSurfaceFormat(m_Tilesurface, SDL_PIXELFORMAT_RGBA8888, 0);
+#else
+    SDL_Surface *blit = gVideoDriver.getBlitSurface();
+    SDL_Surface *newSfc = SDL_ConvertSurface(m_Tilesurface, blit->format, 0 );
+#endif
+
 
     SDL_FreeSurface(m_Tilesurface);
 
@@ -231,8 +233,6 @@ void GsTilemap::applyGalaxyHiColourMask()
     // TODO: We might define that as a GsSurface
 #if SDL_VERSION_ATLEAST(2, 0, 0)
         SDL_SetSurfaceBlendMode(m_Tilesurface, SDL_BLENDMODE_BLEND);
-#else
-        SDL_SetColorKey( m_Tilesurface, SDL_SRCCOLORKEY, maskColor );
 #endif
 
     SDL_LockSurface(m_Tilesurface);

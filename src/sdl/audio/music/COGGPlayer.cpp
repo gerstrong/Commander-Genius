@@ -81,13 +81,16 @@ bool COGGPlayer::open()
     if( (m_AudioFileSpec.freq%m_AudioSpec.freq != 0) &&
         (m_AudioSpec.freq%m_AudioFileSpec.freq != 0) )
     {
+      #if SDL_VERSION_ATLEAST(2, 0, 0)
         m_AudioFileSpec.freq = m_AudioSpec.freq;
+      #endif
         mHasCommonFreqBase = false;
     }
 
     m_pcm_size = ov_pcm_total(&m_oggStream,-1);
     m_pcm_size *= (mVorbisInfo->channels*sizeof(Sint16));
     m_music_pos = 0;
+
 
 	gLogging.ftextOut("OGG-Player: File \"%s\" was opened successfully!<br>", m_filename.c_str());
 	int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
@@ -96,8 +99,11 @@ bool COGGPlayer::open()
 	if(ret == -1)
 		return false;
 
-	const size_t length = m_AudioSpec.size;
-    //m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
+    const size_t length = m_AudioSpec.size;
+    #if SDL_VERSION_ATLEAST(2, 0, 0)
+    #else
+        m_Audio_cvt.len_cvt = 0;
+    #endif
 
     m_Audio_cvt.len = (length)/m_Audio_cvt.len_ratio;
 
@@ -156,11 +162,15 @@ bool COGGPlayer::readOGGStream( OggVorbis_File  &oggStream, char *buffer, const 
 
 bool COGGPlayer::readOGGStreamAndResample( OggVorbis_File  &oggStream,
                                            Uint8 *buffer,
-                                           const size_t output_size,
+                                           const int output_size,
                                            const size_t input_size,
                                            const SDL_AudioSpec &OGGAudioSpec )
 {
     mResampleBuf.resize(input_size);
+
+    // In case format has not been converted yet...
+    if(output_size<0)
+        return false;
 
     bool eof = readOGGStream( oggStream, reinterpret_cast<char*>(mResampleBuf.data()), input_size, OGGAudioSpec );
 
@@ -231,7 +241,7 @@ void COGGPlayer::close()
 {
  	if(m_Audio_cvt.buf)
 		delete [] m_Audio_cvt.buf;
-	m_Audio_cvt.buf = NULL;
+    m_Audio_cvt.buf = nullptr;
 	
 	m_playing = false;
 	while(m_reading_stream);

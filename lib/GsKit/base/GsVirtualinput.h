@@ -1,6 +1,8 @@
 #ifndef GSVIRTUALINPUT_H
 #define GSVIRTUALINPUT_H
 
+
+
 #include "graphics/GsSurface.h"
 
 /**
@@ -44,5 +46,6 @@ private:
     GsSurface mOverlay;
 
 };
+
 
 #endif // GSVIRTUALINPUT_H

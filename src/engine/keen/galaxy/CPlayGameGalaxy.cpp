@@ -505,8 +505,10 @@ void CPlayGameGalaxy::ponder(const float deltaT)
 			CMessageBoxGalaxy *pMB = mMessageBoxes.front().get();
             pMB->ponder();
 
-			if(pMB->isFinished())
+            if(pMB->isFinished() && !mMessageBoxes.empty())
+            {
 				mMessageBoxes.pop_front();
+            }
 
 			return;
 		}
