@@ -102,7 +102,7 @@ bool COGGPlayer::open()
     const size_t length = m_AudioSpec.size;
     #if SDL_VERSION_ATLEAST(2, 0, 0)
     #else
-        m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
+        m_Audio_cvt.len_cvt = 0;
     #endif
 
     m_Audio_cvt.len = (length)/m_Audio_cvt.len_ratio;
