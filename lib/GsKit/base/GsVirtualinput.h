@@ -2,6 +2,7 @@
 #define GSVIRTUALINPUT_H
 
 #include "graphics/GsSurface.h"
+#include "graphics/GsTexture.h"
 
 /**
  * @brief The GsVirtualInput class represents input devices which might be absent yet required for the program
@@ -42,6 +43,12 @@ private:
     bool mEnabled;
 
     GsSurface mOverlay;
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+    GsTexture mDPadTexture;
+
+#endif
 
 };
 
