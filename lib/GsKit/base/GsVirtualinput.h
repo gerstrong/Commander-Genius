@@ -1,16 +1,14 @@
 #ifndef GSVIRTUALINPUT_H
 #define GSVIRTUALINPUT_H
 
-
-
 #include "graphics/GsSurface.h"
 
 /**
  * @brief The GsVirtualInput class represents input devices which might be absent yet required for the program
- *        to run. For example Commander Genius as of Commander Keen need Keyboard or Joystick.
+ *        to run. For example Commander Genius as of Commander Keen need Keyboard or Joystick in general.
  *        If you happen to play this on a mobile device, the touch controls should be translated within that class
  *        for controls.
- *        Since Pelya created for SDL 1.2 an overlay handling that, this will be made for SDL 2.0 only. Time to move on...
+ *        Since Pelya created for SDL 1.2 an overlay is handling that, so this class will be made for SDL 2.0 only. Time to move on...
  */
 
 class GsVirtualInput

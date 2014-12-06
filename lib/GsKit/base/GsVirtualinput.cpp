@@ -14,7 +14,7 @@ mEnabled(true)
 
 //Current displayed texture
 // TODO: Should be part of the class maybe
-SDL_Texture* gTexture = nullPtr;
+SDL_Texture* gTexture = nullptr;
 
 
 SDL_Texture* loadTexture( const std::string &path )
