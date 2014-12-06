@@ -60,6 +60,6 @@ void GsVirtualInput::render(GsWeakSurface &sfc)
 
     const GsRect<Uint16> dpadRect(0, blit.height()-buttonSize, buttonSize, buttonSize);
 
-    //gVideoDriver.addTextureRefToRender(*gTexture, dpadRect);
+    gVideoDriver.addTextureRefToRender(mDPadTexture, dpadRect);
 }
 
