@@ -255,7 +255,7 @@ void GsApp::render()
 
     gMenuController.render();
 
-    gInput.render();
+    gInput.render();    
 }
 
 

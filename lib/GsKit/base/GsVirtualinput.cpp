@@ -7,7 +7,8 @@
 
 
 GsVirtualInput::GsVirtualInput() :
-mEnabled(true)
+mEnabled(true),
+mTranslucency(0.5f)
 {}
 
 bool GsVirtualInput::init()
@@ -41,6 +42,8 @@ bool GsVirtualInput::init()
         return false;
     }
 
+    mDPadTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+
     // TODO: Up arrow
 
     // TODO: Right arrow
@@ -56,10 +59,73 @@ bool GsVirtualInput::init()
 void GsVirtualInput::render(GsWeakSurface &sfc)
 {
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
-    const int buttonSize = 50;
+    //const int buttonSize = 50;
 
-    const GsRect<Uint16> dpadRect(0, blit.height()-buttonSize, buttonSize, buttonSize);
+    GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
+
+    const float dpadSize = 0.2;
+
+    const Uint16 dpadWidth = clickGameArea.w * dpadSize;
+    const Uint16 dpadHeight = clickGameArea.h * dpadSize;
+
+    const GsRect<Uint16> dpadRect(0, blit.height()-dpadHeight, dpadWidth, dpadHeight);
 
     gVideoDriver.addTextureRefToRender(mDPadTexture, dpadRect);
 }
 
+
+void GsVirtualInput::mouseState(const Vector2D<float> &Pos, const bool down)
+{
+    /// Dpad presses
+    const float dpadSize = 0.2f;
+
+    // Size of the buttons on the dpad
+    const float dpadSizePiece = 0.3f*dpadSize;
+
+    const float yBottom = 1.0f;
+    const float yTop = yBottom-dpadSize;
+    if(Pos.y >= yTop && Pos.y < 1.0f &&
+       Pos.x >= 0.0f && Pos.x < dpadSize )
+    {
+        SDL_Event ev;
+        ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
+
+        // Y-Direction
+        // Up presses
+        if(Pos.y<yTop+dpadSizePiece)
+        {
+            ev.key.keysym.sym = SDLK_UP;
+            SDL_PushEvent(&ev);
+        }
+        // Down presses
+        else if(Pos.y>=yBottom-dpadSizePiece)
+        {
+            ev.key.keysym.sym = SDLK_DOWN;
+            SDL_PushEvent(&ev);
+        }
+
+        // X-Direction
+        // Left presses
+        if(Pos.x<dpadSizePiece)
+        {
+            ev.key.keysym.sym = SDLK_LEFT;
+            SDL_PushEvent(&ev);
+        }
+        // Right presses
+        else if(Pos.x>=dpadSize-dpadSizePiece)
+        {
+            ev.key.keysym.sym = SDLK_RIGHT;
+            SDL_PushEvent(&ev);
+        }
+    }
+}
+
+void GsVirtualInput::mouseDown(const Vector2D<float> &Pos)
+{
+    mouseState(Pos, true);
+}
+
+void GsVirtualInput::mouseUp(const Vector2D<float> &Pos)
+{
+    mouseState(Pos, false);
+}
