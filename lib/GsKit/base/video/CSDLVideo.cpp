@@ -155,7 +155,8 @@ void CSDLVideo::transformScreenToDisplay()
     {
         auto &triple = mRenderTexturePtrs.front();
 
-        SDL_Texture *texture = (std::get<0>(triple)).getPtr();
+        GsTexture &gsTexture = std::get<0>(triple);
+        SDL_Texture *texture = gsTexture.getPtr();
         const GsRect<Uint16> &src = std::get<1>(triple);
         const GsRect<Uint16> &dst = std::get<2>(triple);
 

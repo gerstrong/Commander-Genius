@@ -51,8 +51,6 @@ CInput::CInput()
 
      //Create the semaphor
     pollSem = SDL_CreateSemaphore(1);
-
-    mVirtualInput.init();
 }
 
 /**
@@ -331,11 +329,14 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 
 void CInput::render()
 {
-    if(!mVirtualInput.active())
+    if(!mpVirtPad)
+        return;
+
+    if(!mpVirtPad->active())
         return;
 
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
-    mVirtualInput.render(blit);
+    mpVirtPad->render(blit);
 }
 
 
@@ -648,12 +649,12 @@ void CInput::pollEvents()
 		case SDL_MOUSEBUTTONDOWN:
 
             // If Virtual gamepad takes control...
-            if(mVirtualInput.active())
-            {
+            if(mpVirtPad && mpVirtPad->active())
+            {                                                
                 if(Event.button.button <= 3)
                 {
                     transMouseRelCoord(Pos, Event.motion, clickGameArea);
-                    mVirtualInput.mouseDown(Pos);
+                    mpVirtPad->mouseDown(Pos);
                 }
             }
             else
@@ -678,10 +679,10 @@ void CInput::pollEvents()
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-            if(mVirtualInput.active())
+            if(mpVirtPad && mpVirtPad->active())
             {
                 transMouseRelCoord(Pos, Event.motion, clickGameArea);
-                mVirtualInput.mouseUp(Pos);
+                mpVirtPad->mouseUp(Pos);
             }
             else
             {
