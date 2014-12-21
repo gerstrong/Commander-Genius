@@ -74,7 +74,7 @@ static bool AmIBeingDebugged()
 #include <unistd.h>
 
 
-static bool AmIBeingDebugged() {
+/*static bool AmIBeingDebugged() {
 	// We can look in /proc/self/status for TracerPid.  We are likely used in crash
 	// handling, so we are careful not to use the heap or have side effects.
 	int status_fd = open("/proc/self/status", O_RDONLY);
@@ -98,14 +98,14 @@ static bool AmIBeingDebugged() {
 	// Our pid is 0 without a debugger, assume this for any pid starting with 0.
 	f += strlen(searchStr);
 	return f < &buf[num_read] && *f != '0';
-}
+}*/
 
 #endif // OSX/LINUX
 
 #include <signal.h>
 
 void RaiseDebugger() {
-	if(AmIBeingDebugged()) {
+    /*if(AmIBeingDebugged()) {
 		printf("I am being debugged, raising debugger ...\n");
 		CrashHandler::get()->disable();
 		// TODO: We need a way to set another ucontext here. (And that should be specified via a parameter
@@ -114,7 +114,7 @@ void RaiseDebugger() {
 		raise(SIGABRT);
 		CrashHandler::get()->enable();
 	} else
-		printf("I am not being debugged, ignoring debugger raise.\n");
+        printf("I am not being debugged, ignoring debugger raise.\n");*/
 }
 
 #endif

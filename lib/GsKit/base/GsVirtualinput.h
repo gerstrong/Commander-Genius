@@ -65,14 +65,6 @@ protected:
 
     float mTranslucency;
 
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-
-    GsTexture mDPadTexture;
-
-#endif
-
-
-
 };
 
 
