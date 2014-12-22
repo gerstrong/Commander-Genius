@@ -226,6 +226,12 @@ m_start_level(start_level)
     gInput.mpVirtPad->init();
 }
 
+CGameLauncher::~CGameLauncher()
+{
+    // The virtual pad must not exist anymore!
+    gInput.mpVirtPad = nullptr;
+}
+
 ////
 // Initialization Routine
 ////

@@ -115,6 +115,8 @@ public:
                   const int start_game_no = -1,
                   const int start_level = -1);
 
+    ~CGameLauncher();
+
 	typedef std::vector<std::string> DirList;
 
     bool loadResources();
