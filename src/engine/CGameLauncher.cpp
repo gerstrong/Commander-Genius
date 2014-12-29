@@ -222,8 +222,8 @@ m_start_level(start_level)
     gMenuController.clearMenuStack();
     letchooseagain();
 
-    gInput.mpVirtPad.reset(new VirtualMenuControl);
-    gInput.mpVirtPad->init();
+    //gInput.mpVirtPad.reset(new VirtualMenuControl);
+    //gInput.mpVirtPad->init();
 }
 
 CGameLauncher::~CGameLauncher()
