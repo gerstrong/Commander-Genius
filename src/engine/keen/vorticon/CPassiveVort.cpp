@@ -82,30 +82,33 @@ void CPassiveVort::pumpEvent(const CEvent *evPtr)
 
 void CPassiveVort::ponder(const float deltaT)
 {
-	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
-	if( m_mode == INTRO )
-	{
-		// Intro code goes here!
-        mpIntroScreen->ponder();
+    if(!mEndEpisode)
+    {
+        // Modes. We have three: Intro, Main-tile and Demos. We could add more.
+        if( m_mode == INTRO )
+        {
+            // Intro code goes here!
+            mpIntroScreen->ponder();
 
-        if( mpIntroScreen->isFinished() )
-		{
-			// Shutdown mp_IntroScreen and show load Title Screen
+            if( mpIntroScreen->isFinished() )
+            {
+                // Shutdown mp_IntroScreen and show load Title Screen
+                m_mode = TITLE;
+                init();
+            }
+        }
+        else if( m_mode == TITLE )
+        {
+            mpTitleScreen->ponder();
+        }
+        else if( m_mode == DEMO )
+        {
+            // TODO: Demo modes are processed here!
+            // TODO: Implement Demos here!
             m_mode = TITLE;
             init();
-		}
-	}
-	else if( m_mode == TITLE )
-	{
-        mpTitleScreen->ponder();
-	}
-	else if( m_mode == DEMO )
-	{
-		// TODO: Demo modes are processed here!
-		// TODO: Implement Demos here!
-        m_mode = TITLE;
-        init();
-	}
+        }
+    }
 
     if(getchooseGame())
     {

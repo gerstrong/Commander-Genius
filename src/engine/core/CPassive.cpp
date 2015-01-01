@@ -17,7 +17,7 @@ CPassive::CPassive()
 {
     CResource &keenFiles = gKeenFiles;
     CExeFile &ExeFile = keenFiles.exeFile;
-	m_modeg = false;
+    mEndEpisode = false;
 	m_mode = INTRO;
 	m_Episode = ExeFile.getEpisode();
     m_DataDirectory = gKeenFiles.gameDir;
@@ -31,7 +31,7 @@ void CPassive::pumpEvent(const CEvent *evPtr)
         // The last menu has been removed. Restore back the game status
         g_pBehaviorEngine->setPause(false);
         gMenuController.clearMenuStack();
-        m_modeg = true;
+        mEndEpisode = true;
     }
 }
 
