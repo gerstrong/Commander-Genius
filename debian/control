@@ -1,0 +1,11 @@
+Source: commandergenius
+Section: contrib/games
+Priority: extra
+Maintainer: Gerhard Stein <gerstrong@gmail.com>
+Build-Depends: cmake, build-essential, libsdl2-dev, libogg-dev, libvorbis-dev, libboost1.54-dev, libsdl2-image-dev
+Homepage: http://clonekeenplus.sourceforge.net
+
+Package: commandergenius
+Architecture: any
+Depends: libsdl2-2.0-0, libogg0, libvorbis0a, libboost1.54-dev, libsdl2-image-2.0-0
+Description: Nice little game that interpretes the Commander Keen games which existed for DOS back in the 90s. This package contains the Commander Genius engine
