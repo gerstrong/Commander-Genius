@@ -16,6 +16,8 @@
 #include "sdl/extensions.h"
 #include "engine/core/mode/CGameMode.h"
 
+#include "engine/core/VGamepads/vgamepadsimple.h"
+
 namespace vorticon
 {
 
@@ -59,7 +61,15 @@ bool CPassiveVort::init()
 		// TODO: Setup the demo environment
 	}
 	else
+    {
 		return false;
+    }
+
+#ifdef TOUCHCONTROLS
+    gInput.mpVirtPad.reset(new VirtualMenuControl);
+    gInput.mpVirtPad->init();
+#endif
+
 	return true;
 }
 

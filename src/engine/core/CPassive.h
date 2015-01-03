@@ -33,6 +33,7 @@ public:
 	};
 	
 	CPassive();
+    virtual ~CPassive();
 	
     void pumpEvent(const CEvent *evPtr);
 

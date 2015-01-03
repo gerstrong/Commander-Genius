@@ -18,6 +18,7 @@
 #include "menu/MainMenu.h"
 #include "sdl/audio/music/CMusic.h"
 
+#include "engine/core/VGamepads/vgamepadsimple.h"
 
 namespace galaxy
 {
@@ -115,6 +116,12 @@ bool CPassiveGalaxy::init()
     auto blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
     gInput.flushAll();
+
+#ifdef TOUCHCONTROLS
+    gInput.mpVirtPad.reset(new VirtualMenuControl);
+    gInput.mpVirtPad->init();
+#endif
+
     return true;
 }
 

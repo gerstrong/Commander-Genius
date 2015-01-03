@@ -1,7 +1,8 @@
 
+OPTION(TOUCHCONTROLS "Touchcontrols support" No)
  
 if(SDL2)
-    OPTION(OPENGL "OpenGL support" No)
+    OPTION(OPENGL "OpenGL support" No)    
 else()
     OPTION(OPENGL "OpenGL support" Yes)
 endif()
@@ -176,6 +177,9 @@ IF (OPENGL)
 	ADD_DEFINITIONS(-DUSE_OPENGL)
 ENDIF (OPENGL)
 
+IF (TOUCHCONTROLS)
+        ADD_DEFINITIONS(-DTOUCHCONTROLS)
+ENDIF (TOUCHCONTROLS)
 
 # If we want to debug set the proper flags or have release etc.
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")

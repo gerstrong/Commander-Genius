@@ -20,9 +20,10 @@
 #include <widgets/GsMenuController.h>
 #include <base/GsArguments.h>
 
+#include "core/VGamepads/vgamepadsimple.h"
 #include "core/mode/CGameMode.h"
 #include "sdl/audio/Audio.h"
-#include <fileio/ResourceMgmt.h>
+#include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
 
 #include "../version.h"
@@ -38,169 +39,6 @@
 bool disallowDBFusion = false;
 
 
-
-bool VirtualMenuControl::init()
-{
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
-    GsWeakSurface blit(gVideoDriver.getBlitSurface());
-    SDL_PixelFormat *format = blit.getSDLSurface()->format;
-
-    const int buttonSize = 50;
-
-
-    // Create the overlay surface and fill it with alpha 0
-    mOverlay.create(0, blit.width(), blit.height(), 32, 0, 0, 0, 0);
-
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
-    mOverlay.setBlendMode(SDL_BLENDMODE_BLEND);
-    mOverlay.setAlpha(uint8_t(255.0f*mTranslucency));
-//#endif
-
-    mOverlay.fill(SDL_MapRGBA(format, 0, 0, 0, 0 ));
-
-    /// Draw a D-Pad
-
-    // Left arrow
-    const GsRect<Uint16> upRect(0, blit.height()-buttonSize, buttonSize, buttonSize);
-    mOverlay.fill(upRect, SDL_MapRGBA(format, 128, 0, 0, 128 ));
-
-    /// Load Textures
-    {
-        // Dpad
-        const std::string dpadFname = getResourceFilename("dpad.png", "", true, true);
-        if(dpadFname == "") return false;
-
-        mDPadTexture.load(GetFullFileName(dpadFname), gVideoDriver.getRendererRef());
-        if( !mDPadTexture )
-        {
-            printf( "Failed to load texture image for dpad!\n" );
-            return false;
-        }
-
-        mDPadTexture.setBlendMode(SDL_BLENDMODE_BLEND);
-
-        // Confirm Button
-        const std::string confirmFname = getResourceFilename("confirm.png", "", true, true);
-        if(confirmFname == "") return false;
-
-        mConfirmButtonTexture.load(GetFullFileName(confirmFname), gVideoDriver.getRendererRef());
-        if( !mConfirmButtonTexture )
-        {
-            printf( "Failed to load texture image confirm!\n" );
-            return false;
-        }
-
-        mConfirmButtonTexture.setBlendMode(SDL_BLENDMODE_BLEND);
-    }
-
-    // TODO: Up arrow
-
-    // TODO: Right arrow
-
-    // TODO: Down arrow
-
-    /// TODO: Draw action and menu Buttons
-    #endif
-
-    return true;
-}
-
-void VirtualMenuControl::render(GsWeakSurface &sfc)
-{
-    GsWeakSurface blit(gVideoDriver.getBlitSurface());
-
-    GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
-
-    /// DPad
-    {
-        const float dpadSize = 0.2f;
-
-        const Uint16 dpadWidth = clickGameArea.w * dpadSize;
-        const Uint16 dpadHeight = clickGameArea.h * dpadSize;
-
-        const GsRect<Uint16> dpadRect(0, blit.height()-dpadHeight, dpadWidth, dpadHeight);
-        mDPadTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mDPadTexture, dpadRect);
-    }
-
-    /// Confirm Button
-    {
-        const float buttonSize = 0.1f;
-
-        const Uint16 width = clickGameArea.w * buttonSize;
-        const Uint16 height = clickGameArea.h * buttonSize;
-
-        const GsRect<Uint16> confirmRect(blit.width()-2*width, blit.height()-2*height, width, height);
-        mConfirmButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mConfirmButtonTexture, confirmRect);
-    }
-}
-
-
-void VirtualMenuControl::mouseState(const Vector2D<float> &Pos, const bool down)
-{
-    /// Menu Control process of one mouse state
-    const float dpadSize = 0.2f;
-
-    // Size of the buttons on the dpad
-    const float dpadSizePiece = 0.3f*dpadSize;
-
-    const float yBottom = 1.0f;
-    const float yTop = yBottom-dpadSize;
-
-
-    if(Pos.y >= yTop && Pos.y < 1.0f)
-    {        
-        SDL_Event ev;
-        ev.type = (down ? SDL_KEYDOWN : SDL_KEYUP);
-
-        /// Dpad presses
-        if(Pos.x >= 0.0f && Pos.x < dpadSize)
-        {
-            // Y-Direction
-            // Up presses
-            if(Pos.y<yTop+dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_UP;
-                SDL_PushEvent(&ev);
-            }
-            // Down presses
-            else if(Pos.y>=yBottom-dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_DOWN;
-                SDL_PushEvent(&ev);
-            }
-
-            // X-Direction
-            // Left presses
-            if(Pos.x<dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_LEFT;
-                SDL_PushEvent(&ev);
-            }
-            // Right presses
-            else if(Pos.x>=dpadSize-dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_RIGHT;
-                SDL_PushEvent(&ev);
-            }
-        }
-        else
-        {
-            // Was the confirm button pressed?
-            const float buttonSize = 0.1f;
-            GsRect<float> confirmRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
-
-            if( confirmRect.HasPoint(Pos) )
-            {
-                ev.key.keysym.sym = SDLK_RETURN;
-                SDL_PushEvent(&ev);
-            }
-        }
-    }
-
-
-}
 
 
 /// Main Class implementation
@@ -222,8 +60,11 @@ m_start_level(start_level)
     gMenuController.clearMenuStack();
     letchooseagain();
 
-    //gInput.mpVirtPad.reset(new VirtualMenuControl);
-    //gInput.mpVirtPad->init();
+#ifdef TOUCHCONTROLS
+    gInput.mpVirtPad.reset(new VirtualMenuControl);
+    gInput.mpVirtPad->init();
+#endif
+
 }
 
 CGameLauncher::~CGameLauncher()
