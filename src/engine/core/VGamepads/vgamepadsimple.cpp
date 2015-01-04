@@ -72,7 +72,7 @@ bool VirtualMenuControl::init()
 
 void VirtualMenuControl::render(GsWeakSurface &sfc)
 {
-    GsWeakSurface blit(gVideoDriver.getBlitSurface());
+    GsRect<Uint16> dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
 
     GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
 
@@ -83,7 +83,7 @@ void VirtualMenuControl::render(GsWeakSurface &sfc)
         const Uint16 dpadWidth = clickGameArea.w * dpadSize;
         const Uint16 dpadHeight = clickGameArea.h * dpadSize;
 
-        const GsRect<Uint16> dpadRect(0, blit.height()-dpadHeight, dpadWidth, dpadHeight);
+        const GsRect<Uint16> dpadRect(0, dispRect.h-dpadHeight, dpadWidth, dpadHeight);
         mDPadTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mDPadTexture, dpadRect);
     }
@@ -95,7 +95,7 @@ void VirtualMenuControl::render(GsWeakSurface &sfc)
         const Uint16 width = clickGameArea.w * buttonSize;
         const Uint16 height = clickGameArea.h * buttonSize;
 
-        const GsRect<Uint16> confirmRect(blit.width()-2*width, blit.height()-2*height, width, height);
+        const GsRect<Uint16> confirmRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
         mConfirmButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mConfirmButtonTexture, confirmRect);
     }
