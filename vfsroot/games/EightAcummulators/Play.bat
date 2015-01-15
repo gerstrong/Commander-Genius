@@ -1,0 +1,1 @@
+ck4patch mymod.pat
