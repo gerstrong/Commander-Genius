@@ -88,9 +88,10 @@ void CPatcher::process()
 				std::string patch_file_name = newbuf.substr(p);
 				TrimSpaces(patch_file_name);
 
-                const std::string filepath = JoinPaths(m_datadirectory, patch_file_name);
+                const std::string dataDir = gKeenFiles.gameDir;
 
-                //patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
+                const std::string filepath = JoinPaths(dataDir, patch_file_name);
+
                 patchMemfromFile(filepath, offset);
 			}
 		}
