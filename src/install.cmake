@@ -40,7 +40,6 @@ INSTALL(FILES "${CMAKE_SOURCE_DIR}/changelog.txt"
 
 # Windows might not have those dlls so we ship them with the packages
 IF(WIN32)
-    INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/dlls"
-	   DESTINATION ${APPDIR})
+    INSTALL(DIRECTORY "${CMAKE_SOURCE_DIR}/dlls/" DESTINATION "${APPDIR}")
 ENDIF(WIN32)   
 
