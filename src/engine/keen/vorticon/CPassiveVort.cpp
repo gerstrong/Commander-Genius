@@ -59,7 +59,12 @@ bool CPassiveVort::init()
 		// TODO: Setup the demo environment
 	}
 	else
+    {
 		return false;
+    }
+
+    gInput.flushAll();
+
 	return true;
 }
 

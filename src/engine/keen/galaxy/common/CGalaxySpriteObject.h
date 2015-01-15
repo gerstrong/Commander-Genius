@@ -8,10 +8,9 @@
 #ifndef CGALAXYSPRITEOBJECT_H_
 #define CGALAXYSPRITEOBJECT_H_
 
-#include "engine/core/CSpriteObject.h"
 #include <fileio/CSaveGameController.h>
 
-#include <boost/property_tree/ptree.hpp>
+#include "engine/core/CSpriteObject.h"
 
 
 class CGalaxySpriteObject: public CSpriteObject
