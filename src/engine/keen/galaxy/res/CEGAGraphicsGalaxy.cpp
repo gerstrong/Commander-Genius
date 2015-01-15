@@ -387,7 +387,7 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 {
 	// The file can be embedded in an exe file or separate on disk. Look for the disk one first!
 	std::string filename;
-    if (m_episode <= 6) filename = JoinPaths(m_path, "EGAHEAD.CK" + std::to_string(m_episode));
+    if (m_episode <= 6) filename = JoinPaths(m_path, "EGAHEAD.CK" + to_string(m_episode));
     else filename =  JoinPaths(m_path, "KDREAMSHEAD.EGA"); // Not sure about that one
 	const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc.
 
@@ -577,7 +577,7 @@ bool CEGAGraphicsGalaxy::begin()
 	}
 
 	// Now read the EGAGRAPH
-    if (m_episode <= 6) filename = JoinPaths(m_path, "EGAGRAPH.CK" + std::to_string(m_episode));
+    if (m_episode <= 6) filename = JoinPaths(m_path, "EGAGRAPH.CK" + to_string(m_episode));
     else filename = JoinPaths(m_path, "KDREAMS.EGA");
 
 	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);

@@ -21,6 +21,7 @@ SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYRIGHT")
 
 
 IF(WIN32)
+	SET(APPDIR CGenius)
 	SET(CPACK_PACKAGE_INSTALL_DIRECTORY ${APPDIR})
 	SET(CPACK_GENERATOR "ZIP;NSIS")
 ELSE(WIN32)
@@ -31,7 +32,7 @@ ENDIF(WIN32)
 
 IF(WIN32)
   # There is a bug in NSI that does not handle full unix paths properly. Make
-  # sure there is at least one set of four (4) backlasshes.
+  # sure there is at least one set of four (4) backlasshes.    
   SET(CPACK_NSIS_INSTALLED_ICON_NAME "CGenius.exe")
   SET(CPACK_NSIS_DISPLAY_NAME "Commander-Genius")
   SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\clonekeenplus.sourceforge.net")
