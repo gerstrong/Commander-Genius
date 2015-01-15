@@ -387,8 +387,8 @@ bool CEGAGraphicsGalaxy::readEGAHead()
 {
 	// The file can be embedded in an exe file or separate on disk. Look for the disk one first!
 	std::string filename;
-	if (m_episode <= 6) filename =  m_path + "EGAHEAD.CK" + itoa(m_episode);
-	else filename =  m_path + "KDREAMSHEAD.EGA"; // Not sure about that one
+    if (m_episode <= 6) filename = JoinPaths(m_path, "EGAHEAD.CK" + std::to_string(m_episode));
+    else filename =  JoinPaths(m_path, "KDREAMSHEAD.EGA"); // Not sure about that one
 	const int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc.
 
 	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
@@ -556,7 +556,9 @@ bool CEGAGraphicsGalaxy::begin()
 	// Try to read it either from a file
 
     if(!gKeenFiles.egadictFilename.empty())
-        filename =  m_path + gKeenFiles.egadictFilename;
+    {
+        filename =  JoinPaths(m_path, gKeenFiles.egadictFilename);
+    }
 
 	if( Huffman.readDictionaryFromFile(filename) )
 	{
@@ -575,8 +577,8 @@ bool CEGAGraphicsGalaxy::begin()
 	}
 
 	// Now read the EGAGRAPH
-	if (m_episode <= 6) filename =  m_path + "EGAGRAPH.CK" + itoa(m_episode);
-	else filename =  m_path + "KDREAMS.EGA";
+    if (m_episode <= 6) filename = JoinPaths(m_path, "EGAGRAPH.CK" + std::to_string(m_episode));
+    else filename = JoinPaths(m_path, "KDREAMS.EGA");
 
 	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
 
@@ -683,15 +685,6 @@ bool CEGAGraphicsGalaxy::begin()
 			byte *out = &m_egagraph[i].data[0];
 
 			Huffman.expand(in, out, inlen, outlen);
-
-            //dumpData("indump.dat", in, inlen);
-            //dumpData("outdump.dat", out, outlen);
-
-			//printf("%d %d\n", *out, *in);
-
-			//m_egagraph[i].len = inlen;
-			//m_egagraph[i].data.assign(inlen, 0);
-			//memcpy(&m_egagraph[i].data[0], &CompEgaGraphData[offset], inlen);
 		}
 		else
 		{

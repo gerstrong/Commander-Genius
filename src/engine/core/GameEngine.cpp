@@ -36,6 +36,9 @@ void GameEngine::ponder(const float deltaT)
         return;
     }
 
+    if(!mpGameMode)
+        return;
+
     // Process the game mode object
     mpGameMode->ponder(deltaT);
 }
