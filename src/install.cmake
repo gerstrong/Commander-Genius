@@ -1,10 +1,12 @@
 ########################################################################
 ############### Prepare the installation of the compiled stuff here!
 
-IF(BUILD_TARGET STREQUAL WIN32)
+IF(WIN32)
 SET(DATADIR CGenius)
 SET(APPDIR CGenius)
-ELSE(BUILD_TARGET STREQUAL WIN32)
+SET(GAMES_SHAREDIR "${APPDIR}" CACHE PATH "Game data root dir")
+SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
+ELSE(WIN32)
 SET(SHAREDIR share CACHE PATH "System share dir location")
 # seperate SHAREDIR and GAMES_SHAREDIR
 # for cases where we want /usr/share/games for the data
@@ -14,7 +16,7 @@ SET(GAMES_SHAREDIR "share/games/" CACHE PATH "Game data root dir")
 SET(DATADIR "${GAMES_SHAREDIR}/commandergenius")
 SET(APPDIR games CACHE PATH "Binary destination")
 SET(DOCDIR ${DATADIR} CACHE PATH "Docs destination")
-ENDIF(BUILD_TARGET STREQUAL WIN32)
+ENDIF(WIN32)
 
 # This will install the application itself
 INSTALL(TARGETS CGeniusExe 
