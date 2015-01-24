@@ -120,6 +120,11 @@ bool CPassiveGalaxy::init()
 #ifdef TOUCHCONTROLS
     gInput.mpVirtPad.reset(new VirtualKeenControl);
     gInput.mpVirtPad->init();
+
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    assert(vkc);
+    vkc->mShowDPad = false;
+
 #endif
 
     return true;
@@ -344,6 +349,13 @@ void CPassiveGalaxy::processTitle()
         if( mSkipSection )
 		{
             gInput.flushAll();
+
+#ifdef TOUCHCONTROLS
+            VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+            assert(vkc);
+            vkc->mShowDPad = true;
+#endif
+
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
 		}	    

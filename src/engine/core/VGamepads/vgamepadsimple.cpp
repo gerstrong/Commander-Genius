@@ -68,6 +68,7 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
     GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
 
     /// DPad
+    if(mShowDPad)
     {
         const float dpadSize = 0.2f;
 
@@ -79,7 +80,7 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         gVideoDriver.addTextureRefToRender(mDPadTexture, dpadRect);
     }
 
-    /// Confirm Button
+    /// Confirm or Enter Button
     {
         const float buttonSize = 0.1f;
 
@@ -113,32 +114,35 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         /// Dpad presses
         if(Pos.x >= 0.0f && Pos.x < dpadSize)
         {
-            // Y-Direction
-            // Up presses
-            if(Pos.y<yTop+dpadSizePiece)
+            if(mShowDPad)
             {
-                ev.key.keysym.sym = SDLK_UP;
-                SDL_PushEvent(&ev);
-            }
-            // Down presses
-            else if(Pos.y>=yBottom-dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_DOWN;
-                SDL_PushEvent(&ev);
-            }
+                // Y-Direction
+                // Up presses
+                if(Pos.y<yTop+dpadSizePiece)
+                {
+                    ev.key.keysym.sym = SDLK_UP;
+                    SDL_PushEvent(&ev);
+                }
+                // Down presses
+                else if(Pos.y>=yBottom-dpadSizePiece)
+                {
+                    ev.key.keysym.sym = SDLK_DOWN;
+                    SDL_PushEvent(&ev);
+                }
 
-            // X-Direction
-            // Left presses
-            if(Pos.x<dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_LEFT;
-                SDL_PushEvent(&ev);
-            }
-            // Right presses
-            else if(Pos.x>=dpadSize-dpadSizePiece)
-            {
-                ev.key.keysym.sym = SDLK_RIGHT;
-                SDL_PushEvent(&ev);
+                // X-Direction
+                // Left presses
+                if(Pos.x<dpadSizePiece)
+                {
+                    ev.key.keysym.sym = SDLK_LEFT;
+                    SDL_PushEvent(&ev);
+                }
+                // Right presses
+                else if(Pos.x>=dpadSize-dpadSizePiece)
+                {
+                    ev.key.keysym.sym = SDLK_RIGHT;
+                    SDL_PushEvent(&ev);
+                }
             }
         }
         else
