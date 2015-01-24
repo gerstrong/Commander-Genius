@@ -57,8 +57,6 @@ class VirtualMenuControl : public GsVirtualInput
 {
 public:
 
-    //VirtualMenuControl() : GsVirtualInput() {}
-
     /**
      * @brief init initialize the object
      * @return true if everything went right, otherwise false.
