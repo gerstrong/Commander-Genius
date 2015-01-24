@@ -3,9 +3,27 @@
 
 #include <base/GsVirtualinput.h>
 
-class VirtualMenuControl : public GsVirtualInput
+class VirtualKeenControl : public GsVirtualInput
 {
 public:
+
+    // OK => Only show Ok Button
+    // WMAP => Shows Enter Button for the world map and another one for the item box and one for the main menu
+    // ACTION => Shows the three action button for jumping, pogo and fire as well as the item box button and the main menu button
+    enum BUTTON_MODE
+    {
+        OK = 0,
+        WMAP = 1,
+        ACTION = 2
+    };
+
+    /**
+     * @brief VirtualKeenControl Will initialize
+     */
+    VirtualKeenControl() :
+        mShowDPad(true),
+        mHideEnterButton(false),
+        mButtonMode(OK) {}
 
 
     /**
@@ -53,6 +71,10 @@ public:
 
 #endif
 
+    bool mShowDPad;
+    bool mHideEnterButton;
+
+    BUTTON_MODE mButtonMode;
 };
 
 #endif // VGAMEPADSIMPLE_H

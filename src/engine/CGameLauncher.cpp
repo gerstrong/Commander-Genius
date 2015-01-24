@@ -61,7 +61,7 @@ m_start_level(start_level)
     letchooseagain();
 
 #ifdef TOUCHCONTROLS
-    gInput.mpVirtPad.reset(new VirtualMenuControl);
+    gInput.mpVirtPad.reset(new VirtualKeenControl);
     gInput.mpVirtPad->init();
 #endif
 

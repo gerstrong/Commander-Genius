@@ -4,9 +4,9 @@
 #include <fileio/ResourceMgmt.h>
 #include <base/utils/FindFile.h>
 
-bool VirtualMenuControl::init()
+bool VirtualKeenControl::init()
 {
-    #if SDL_VERSION_ATLEAST(2, 0, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
     SDL_PixelFormat *format = blit.getSDLSurface()->format;
 
@@ -16,10 +16,8 @@ bool VirtualMenuControl::init()
     // Create the overlay surface and fill it with alpha 0
     mOverlay.create(0, blit.width(), blit.height(), 32, 0, 0, 0, 0);
 
-//#if SDL_VERSION_ATLEAST(2, 0, 0)
     mOverlay.setBlendMode(SDL_BLENDMODE_BLEND);
     mOverlay.setAlpha(uint8_t(255.0f*mTranslucency));
-//#endif
 
     mOverlay.fill(SDL_MapRGBA(format, 0, 0, 0, 0 ));
 
@@ -58,19 +56,12 @@ bool VirtualMenuControl::init()
         mConfirmButtonTexture.setBlendMode(SDL_BLENDMODE_BLEND);
     }
 
-    // TODO: Up arrow
-
-    // TODO: Right arrow
-
-    // TODO: Down arrow
-
-    /// TODO: Draw action and menu Buttons
-    #endif
+#endif
 
     return true;
 }
 
-void VirtualMenuControl::render(GsWeakSurface &sfc)
+void VirtualKeenControl::render(GsWeakSurface &sfc)
 {
     GsRect<Uint16> dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
 
@@ -102,7 +93,7 @@ void VirtualMenuControl::render(GsWeakSurface &sfc)
 }
 
 
-void VirtualMenuControl::mouseState(const Vector2D<float> &Pos, const bool down)
+void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
     /// Menu Control process of one mouse state
     const float dpadSize = 0.2f;
