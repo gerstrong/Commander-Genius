@@ -7,15 +7,15 @@
 
 #include "CPlayerLevel.h"
 #include "CBullet.h"
-//#include "engine/core/CBehaviorEngine.h"
 #include "platform/CPlatform.h"
 #include "../CGalaxySpriteObject.h"
 #include "../../ep5/ai/CSecurityDoor.h"
-#include <base/CInput.h>
+
 #include "sdl/audio/music/CMusic.h"
 #include "sdl/audio/Audio.h"
 #include "graphics/effects/CColorMerge.h"
 
+#include <base/CInput.h>
 #include <base/GsTimer.h>
 #include <base/utils/CVec.h>
 #include <base/GsLogging.h>
@@ -2032,7 +2032,7 @@ void CPlayerLevel::openDoorsTile()
 		newY++;
 		next_tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
 
-        const int freeTileno = mp_Map->getPlaneDataAt(1, (newX+1)<<CSF, newY<<CSF);
+        //const int freeTileno = mp_Map->getPlaneDataAt(1, (newX+1)<<CSF, newY<<CSF);
         //const bool isBlock = tilePropVec[freeTileno].bup;
 
         /*if( isBlock ) // Freeshot for some doors, which might have strange

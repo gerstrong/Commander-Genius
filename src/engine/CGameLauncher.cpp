@@ -717,6 +717,8 @@ void CGameLauncher::ponderPatchDialog()
             }
             else
             {
+                gKeenFiles.gameDir = DataDirectory;
+
                 if(episode >= 1 && episode <= 7)
                 {
                     // Now let's decide which engine we have to start.

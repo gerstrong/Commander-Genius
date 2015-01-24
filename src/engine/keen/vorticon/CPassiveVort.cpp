@@ -70,6 +70,8 @@ bool CPassiveVort::init()
     gInput.mpVirtPad->init();
 #endif
 
+    gInput.flushAll();
+
 	return true;
 }
 

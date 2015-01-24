@@ -88,7 +88,11 @@ void CPatcher::process()
 				std::string patch_file_name = newbuf.substr(p);
 				TrimSpaces(patch_file_name);
 
-				patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
+                const std::string dataDir = gKeenFiles.gameDir;
+
+                const std::string filepath = JoinPaths(dataDir, patch_file_name);
+
+                patchMemfromFile(filepath, offset);
 			}
 		}
 		else if(PatchItem.keyword == "egahead")
@@ -284,9 +288,10 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 	unsigned char *buf_to_patch;
 	unsigned char byte;
 
-	std::ifstream Patchfile; OpenGameFileR(Patchfile, patch_file_name, std::ios::binary);
+    std::ifstream patchfile;
+    OpenGameFileR(patchfile, patch_file_name, std::ios::binary);
 
-	if(!Patchfile) return;
+    if(!patchfile) return;
 
 	if(!m_data)
 	{
@@ -297,14 +302,14 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 	buf_to_patch = m_data + offset;
 
 	long counter = 0;
-	while(!Patchfile.eof())
+    while(!patchfile.eof())
 	{
-		byte = (unsigned char) Patchfile.get();
+        byte = (unsigned char) patchfile.get();
 		memcpy(buf_to_patch+counter,&byte,1); // one byte every time ;-)
 		counter++;
 	}
 
-	Patchfile.close();
+    patchfile.close();
 }
 
 void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)

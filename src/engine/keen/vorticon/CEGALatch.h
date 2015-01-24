@@ -29,7 +29,12 @@ public:
 			  long bitmaplocation);
 
 	bool loadHead(char *data, short m_episode );
-	bool loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata );
+
+    bool loadData(const std::string &path,
+                  const short episode,
+                  const int version,
+                  const unsigned char *data,
+                  const bool compresseddata );
 
 	void applyMasks();
 
