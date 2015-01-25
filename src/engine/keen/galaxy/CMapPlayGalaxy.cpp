@@ -15,6 +15,7 @@
 #include "ep4/ai/CInchWorm.h"
 #include "ep4/ai/CFoot.h"
 #include "ep4/ai/CSmokePuff.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
 #include <base/GsLogging.h>
 #include <base/video/CVideoDriver.h>
 
@@ -114,6 +115,14 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
 void CMapPlayGalaxy::ponder(const float deltaT)
 {
     const bool msgboxactive = mMsgBoxOpen;
+
+
+#ifdef TOUCHCONTROLS
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    assert(vkc);
+    vkc->mButtonMode = VirtualKeenControl::WMAP;
+    vkc->mHideEnterButton = true;
+#endif
 
     bool pause = msgboxactive;
 

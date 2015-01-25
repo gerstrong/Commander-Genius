@@ -24,6 +24,7 @@
 #include "ep4/ai/CInchWorm.h"
 #include "common/ai/CPlayerLevel.h"
 #include "common/ai/CPlayerWM.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
 
 #include <fileio/KeenFiles.h>
 
@@ -451,153 +452,168 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
  */
 void CPlayGameGalaxy::ponder(const float deltaT)
 {
-	if(g_pSound->pauseGamePlay() )
-		return;
-	
-	if( !gMenuController.active() )
-	{
-        processInput();
+    if(g_pSound->pauseGamePlay() )
+        return;
 
-        const bool msgboxactive = !mMessageBoxes.empty();
+    if( gMenuController.active() )
+        return;
 
-        int playerCount = 0;
-        for( auto &inv : mInventoryVec )
+    processInput();
+
+    const bool msgboxactive = !mMessageBoxes.empty();
+
+    int playerCount = 0;
+    for( auto &inv : mInventoryVec )
+    {
+        // Trigger the Status screen here
+        if(inv.showStatus())
         {
-            // Trigger the Status screen here
-            if(inv.showStatus())
+            if( gInput.getPressedAnyButtonCommand(playerCount) )
             {
-                if( gInput.getPressedAnyButtonCommand(playerCount) )
-                {
-                    g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
-                    inv.toggleStatusScreen();
-                }
+                g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
+                inv.toggleStatusScreen();
             }
-            else
+        }
+        else
+        {
+            if(!msgboxactive && gInput.getPressedCommand(playerCount, IC_STATUS))
             {
-                if(!msgboxactive && gInput.getPressedCommand(playerCount, IC_STATUS))
-                {
-                    g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
-                    inv.toggleStatusScreen();
-                }
+                g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
+                inv.toggleStatusScreen();
             }
-
-            playerCount++;
         }
 
+        playerCount++;
+    }
 
-		// process World Map if active. At the start it's enabled
-		if(m_WorldMap.isActive())
-		{
-            m_WorldMap.setMsgBoxOpen(msgboxactive);
-            m_WorldMap.ponder(deltaT);
-		}
 
-        // process inlevel play if active. At the start it's disabled, m_WorldMap turns it on.
-		if(m_LevelPlay.isActive())
-		{
-            m_LevelPlay.setMsgBoxOpen(msgboxactive);
-            m_LevelPlay.ponder(deltaT);
-		}                
+    // process World Map if active. At the start it's enabled
+    if(m_WorldMap.isActive())
+    {
+        m_WorldMap.setMsgBoxOpen(msgboxactive);
+        m_WorldMap.ponder(deltaT);
+    }
 
-		// Draw some Textboxes with Messages only if one of those is open and needs to be drawn
-		if(msgboxactive)
-		{
-			CMessageBoxGalaxy *pMB = mMessageBoxes.front().get();
-            pMB->ponder();
+    // process inlevel play if active. At the start it's disabled, m_WorldMap turns it on.
+    if(m_LevelPlay.isActive())
+    {
+        m_LevelPlay.setMsgBoxOpen(msgboxactive);
+        m_LevelPlay.ponder(deltaT);
+    }
 
-            if(pMB->isFinished() && !mMessageBoxes.empty())
-            {
-				mMessageBoxes.pop_front();
-            }
+    // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
+    if(msgboxactive)
+    {
+        CMessageBoxGalaxy *pMB = mMessageBoxes.front().get();
+        pMB->ponder();
 
-			return;
-		}
+        if(pMB->isFinished() && !mMessageBoxes.empty())
+        {
+            mMessageBoxes.pop_front();
+        }
 
-		//// Special Keyboard Input
-		/// Cheat Codes
-		if( gInput.getHoldedKey(KF10) )
-		{
-			if(gInput.getHoldedKey(KJ))
-			{
-				m_Cheatmode.jump = !m_Cheatmode.jump;
-				std::string jumpstring = "Jump-Cheat has been ";
-				jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
-                showMsg(jumpstring);
-			}
-			else if(gInput.getHoldedKey(KG))
-			{
-				m_Cheatmode.god = !m_Cheatmode.god;
-				std::string godstring = "God-Mode has been ";
-				godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
-                showMsg(godstring);
-			}
-			else if(gInput.getHoldedKey(KI))
-			{
-                showMsg("Get all Items!");
+        return;
+    }
 
-                for( auto &inv : mInventoryVec )
-                    inv.Item.triggerAllItemsCheat();
+    //// Special Keyboard Input
+    /// Cheat Codes
+    if( gInput.getHoldedKey(KF10) )
+    {
+        if(gInput.getHoldedKey(KJ))
+        {
+            m_Cheatmode.jump = !m_Cheatmode.jump;
+            std::string jumpstring = "Jump-Cheat has been ";
+            jumpstring += ((m_Cheatmode.jump) ? "enabled" : "disabled");
+            showMsg(jumpstring);
+        }
+        else if(gInput.getHoldedKey(KG))
+        {
+            m_Cheatmode.god = !m_Cheatmode.god;
+            std::string godstring = "God-Mode has been ";
+            godstring += ((m_Cheatmode.god) ? "enabled" : "disabled");
+            showMsg(godstring);
+        }
+        else if(gInput.getHoldedKey(KI))
+        {
+            showMsg("Get all Items!");
 
-				m_Cheatmode.items = true;
-			}
-			else if(gInput.getHoldedKey(KN))
-			{
-				m_Cheatmode.noclipping = true;
-                showMsg("No clipping toggle!");
-			}
-			else if(gInput.getHoldedKey(KS))
-			{
-		for( auto &inv : mInventoryVec )
-		    inv.Item.triggerAllItemsCheat();
+            for( auto &inv : mInventoryVec )
+                inv.Item.triggerAllItemsCheat();
 
-				m_Cheatmode.items = true;
-				m_Cheatmode.god = true;
-				m_Cheatmode.jump = true;
-                showMsg("Super Cheat!");
-			}
-		}
+            m_Cheatmode.items = true;
+        }
+        else if(gInput.getHoldedKey(KN))
+        {
+            m_Cheatmode.noclipping = true;
+            showMsg("No clipping toggle!");
+        }
+        else if(gInput.getHoldedKey(KS))
+        {
+            for( auto &inv : mInventoryVec )
+                inv.Item.triggerAllItemsCheat();
 
-	}
+            m_Cheatmode.items = true;
+            m_Cheatmode.god = true;
+            m_Cheatmode.jump = true;
+            showMsg("Super Cheat!");
+        }
+    }
 
 }
 
 void CPlayGameGalaxy::render()
 {
-    if( !gMenuController.active() )
+    if( gMenuController.active() )
+        return;
+
+    // process World Map if active. At the start it's enabled
+    if(m_WorldMap.isActive())
     {
+        m_WorldMap.render();
+    }
 
-        // process World Map if active. At the start it's enabled
-        if(m_WorldMap.isActive())
-        {
-            m_WorldMap.render();
-        }
+    // process World Map if active. At the start it's disabled, m_WorldMap turns it on.
+    if(m_LevelPlay.isActive())
+    {
+        m_LevelPlay.render();
+    }
 
-        // process World Map if active. At the start it's disabled, m_WorldMap turns it on.
-        if(m_LevelPlay.isActive())
-        {
-            m_LevelPlay.render();
-        }
+    // We have to show the status screen, do so...
+    for( auto &inv : mInventoryVec )
+    {
+        if( inv.showStatus() )
+            inv.drawStatus();
+    }
 
-        // We have to show the status screen, do so...
-        for( auto &inv : mInventoryVec )
-        {
-            if( inv.showStatus() )
-                inv.drawStatus();
-        }
+    const bool msgboxactive = !mMessageBoxes.empty();
 
-        const bool msgboxactive = !mMessageBoxes.empty();
-
-        // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
-        if(msgboxactive)
-        {
-            mMessageBoxes.front()->render();
-            return;
-        }
-    }      
+    // Draw some Textboxes with Messages only if one of those is open and needs to be drawn
+    if(msgboxactive)
+    {
+        mMessageBoxes.front()->render();
+        return;
+    }
 }
 
 void CPlayGameGalaxy::processInput()
-{}
+{
+
+#ifdef TOUCHCONTROLS
+
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+
+    if(!vkc)
+    {
+        gInput.mpVirtPad.reset(new VirtualKeenControl);
+        gInput.mpVirtPad->init();
+        vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    }
+
+    assert(vkc);
+    vkc->mShowDPad = true;
+
+#endif
+}
 
 
 }

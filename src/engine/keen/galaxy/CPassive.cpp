@@ -216,8 +216,8 @@ void CPassiveGalaxy::processIntro()
             mCurrentLogoBmp.scaleTo(logoBmpRect);            
             mCurrentLogoBmp.setColorKey( 0, 0, 0 );
             mCurrentLogoBmp.optimizeSurface();
-            mCurrentLogoBmp.exchangeColor( 0x0 , 0xa8, 0x0,
-                                           0x55, 0x55 , 0xFF);
+            mCurrentLogoBmp.exchangeColor( 0x00, 0xa8, 0x00,
+                                           0x55, 0x55, 0xFF);
         }
     }
 

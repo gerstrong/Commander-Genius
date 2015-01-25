@@ -80,7 +80,8 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         gVideoDriver.addTextureRefToRender(mDPadTexture, dpadRect);
     }
 
-    /// Confirm or Enter Button
+    /// Confirm Button
+    if(mButtonMode == OK)
     {
         const float buttonSize = 0.1f;
 
@@ -147,14 +148,19 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
         }
         else
         {
-            // Was the confirm button pressed?
+            /// Then, if any other button was pressed...
             const float buttonSize = 0.1f;
-            GsRect<float> confirmRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
 
-            if( confirmRect.HasPoint(Pos) )
+            if(mButtonMode == OK)
             {
-                ev.key.keysym.sym = SDLK_RETURN;
-                SDL_PushEvent(&ev);
+                // Was the Ok button pressed?
+                GsRect<float> confirmRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
+
+                if( confirmRect.HasPoint(Pos) )
+                {
+                    ev.key.keysym.sym = SDLK_RETURN;
+                    SDL_PushEvent(&ev);
+                }
             }
         }
     }
