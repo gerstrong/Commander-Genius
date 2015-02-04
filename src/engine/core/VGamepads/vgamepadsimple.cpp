@@ -1,8 +1,9 @@
 #include "vgamepadsimple.h"
 
 #include <base/video/CVideoDriver.h>
-#include <fileio/ResourceMgmt.h>
 #include <base/utils/FindFile.h>
+#include <base/CInput.h>
+#include <fileio/ResourceMgmt.h>
 
 bool VirtualKeenControl::init()
 {
@@ -92,6 +93,18 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         mConfirmButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mConfirmButtonTexture, confirmRect);
     }
+
+    if(mButtonMode == WMAP && !mHideEnterButton)
+    {
+        const float buttonSize = 0.1f;
+
+        const Uint16 width = clickGameArea.w * buttonSize;
+        const Uint16 height = clickGameArea.h * buttonSize;
+
+        const GsRect<Uint16> confirmRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
+        mConfirmButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+        gVideoDriver.addTextureRefToRender(mConfirmButtonTexture, confirmRect);
+    }
 }
 
 
@@ -160,6 +173,17 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
                 {
                     ev.key.keysym.sym = SDLK_RETURN;
                     SDL_PushEvent(&ev);
+                }
+            }
+
+            if(mButtonMode == WMAP && !mHideEnterButton)
+            {
+                // Was the Ok button pressed?
+                GsRect<float> confirmRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
+
+                if( confirmRect.HasPoint(Pos) )
+                {
+                    gInput.setCommand(0, IC_JUMP);
                 }
             }
         }
