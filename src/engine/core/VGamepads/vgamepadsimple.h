@@ -68,6 +68,7 @@ public:
 
     GsTexture mDPadTexture;
     GsTexture mConfirmButtonTexture;
+    GsTexture mStartButtonTexture;
 
 #endif
 

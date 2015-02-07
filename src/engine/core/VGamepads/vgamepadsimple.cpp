@@ -55,6 +55,20 @@ bool VirtualKeenControl::init()
         }
 
         mConfirmButtonTexture.setBlendMode(SDL_BLENDMODE_BLEND);
+
+        // Start Button
+        const std::string startFname = getResourceFilename("start.png", "", true, true);
+        if(startFname == "") return false;
+
+        mStartButtonTexture.load(GetFullFileName(startFname), gVideoDriver.getRendererRef());
+        if( !mStartButtonTexture )
+        {
+            printf( "Failed to load texture image start!\n" );
+            return false;
+        }
+
+        mStartButtonTexture.setBlendMode(SDL_BLENDMODE_BLEND);
+
     }
 
 #endif
@@ -102,8 +116,8 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         const Uint16 height = clickGameArea.h * buttonSize;
 
         const GsRect<Uint16> confirmRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
-        mConfirmButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mConfirmButtonTexture, confirmRect);
+        mStartButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+        gVideoDriver.addTextureRefToRender(mStartButtonTexture, confirmRect);
     }
 }
 
