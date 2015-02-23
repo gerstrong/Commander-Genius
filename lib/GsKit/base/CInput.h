@@ -263,14 +263,13 @@ public:
      */
     void pushBackButtonEventExtEng();
 
-private:
+    // One virtual input overlay can be active be processed. This is useful for game to ported on mobile devices
+    std::unique_ptr<GsVirtualInput> mpVirtPad;
 
-    // Class for overlays when a virtual gamepad or keyboard is needed. For example on mobiles devices
-    GsVirtualInput mVirtualInput;
+private:
 
     // Input Events
     CEventContainer m_EventList;
-
 
 
     // SDL_Event Vector

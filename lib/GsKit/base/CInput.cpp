@@ -51,8 +51,6 @@ CInput::CInput()
 
      //Create the semaphor
     pollSem = SDL_CreateSemaphore(1);
-
-    mVirtualInput.init();
 }
 
 /**
@@ -331,11 +329,14 @@ std::string CInput::getEventShortName(int command, unsigned char input)
 
 void CInput::render()
 {
-    if(!mVirtualInput.active())
+    if(!mpVirtPad)
+        return;
+
+    if(!mpVirtPad->active())
         return;
 
     GsWeakSurface blit(gVideoDriver.getBlitSurface());
-    mVirtualInput.render(blit);
+    mpVirtPad->render(blit);
 }
 
 
@@ -647,30 +648,50 @@ void CInput::pollEvents()
 
 		case SDL_MOUSEBUTTONDOWN:
 
-            if(Event.button.button <= 3)
-            {
-                transMouseRelCoord(Pos, Event.motion, clickGameArea);
-                m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
-                gPointDevice.mPointingState.mActionButton = 1;
-                gPointDevice.mPointingState.mPos = Pos;
+            // If Virtual gamepad takes control...
+            if(mpVirtPad && mpVirtPad->active())
+            {                                                
+                if(Event.button.button <= 3)
+                {
+                    transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                    mpVirtPad->mouseDown(Pos);
+                }
             }
-            else if(Event.button.button == 4) // scroll up
+            else
             {
-                gEventManager.add( new MouseWheelEvent( Vector2D<float>(0.0, -1.0) ) );
-            }
-            else if(Event.button.button == 5) // scroll down
-            {
-                gEventManager.add( new MouseWheelEvent( Vector2D<float>(0.0, 1.0) ) );
+                if(Event.button.button <= 3)
+                {
+                    transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                    m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONDOWN ) );
+                    gPointDevice.mPointingState.mActionButton = 1;
+                    gPointDevice.mPointingState.mPos = Pos;
+                }
+                else if(Event.button.button == 4) // scroll up
+                {
+                    gEventManager.add( new MouseWheelEvent( Vector2D<float>(0.0, -1.0) ) );
+                }
+                else if(Event.button.button == 5) // scroll down
+                {
+                    gEventManager.add( new MouseWheelEvent( Vector2D<float>(0.0, 1.0) ) );
+                }
             }
 
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-            passSDLEventVec = true;
-            transMouseRelCoord(Pos, Event.motion, clickGameArea);
-            m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
-            gPointDevice.mPointingState.mActionButton = 0;
-            gPointDevice.mPointingState.mPos = Pos;
+            if(mpVirtPad && mpVirtPad->active())
+            {
+                transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                mpVirtPad->mouseUp(Pos);
+            }
+            else
+            {
+                passSDLEventVec = true;
+                transMouseRelCoord(Pos, Event.motion, clickGameArea);
+                m_EventList.add( new PointingDevEvent( Pos, PDE_BUTTONUP ) );
+                gPointDevice.mPointingState.mActionButton = 0;
+                gPointDevice.mPointingState.mPos = Pos;
+            }
 
 			break;
 

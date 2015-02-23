@@ -1,0 +1,11 @@
+Source: commandergenius
+Section: contrib/games
+Priority: extra
+Maintainer: Gerhard Stein <gerstrong@gmail.com>
+Build-Depends: cmake, build-essential, libsdl2-dev, libogg-dev, libvorbis-dev, libboost1.54-dev, libsdl2-image-dev
+Homepage: http://clonekeenplus.sourceforge.net
+
+Package: commandergenius
+Architecture: any
+Depends: libsdl2-2.0-0, libogg0, libvorbis0a, libboost1.54-dev, libsdl2-image-2.0-0
+Description: Commander-Genius aka CloneKeenPlus is an engine which interprets Commander Keen 1-6 (Vorticons and Galaxy Series).\n .\n As fans and developers we try to implement new features, improve the gameplay and give the feeling, you are playing the original game.\n .\n Obviously you need the game data of the games to play it.\n Commander Keen 1 and 4 come included in this package.\n Episode 2, 3, 5 and 6 are registered versions which can be purchased by 3D Realms or Apogee, or bought by someone else.\n If you still have the old games of the registered version, then give it a try. You will be surprised, how well they will look!

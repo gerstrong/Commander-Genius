@@ -126,7 +126,11 @@ void CEGALatch::loadTilemap(GsTilemap &Tilemap, CPlanes &Planes, const int episo
 
 
 
-bool CEGALatch::loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata )
+bool CEGALatch::loadData( const std::string &path,
+                          const short episode,
+                          const int version,
+                          const unsigned char *data,
+                          const bool compresseddata )
 {
 	std::string filename;
 	byte *RawData;

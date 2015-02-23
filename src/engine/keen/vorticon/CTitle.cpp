@@ -87,7 +87,8 @@ void Title::ponder()
 	{
 	    obj->process();
 	}
-	
+
+    // If menu is closed, no effects are running, furthermore if a button was pressed
     if( !gEffectController.runningEffect() && !gMenuController.active() )
 	{
         if( gInput.getPressedAnyCommand() || gInput.mouseClicked() )

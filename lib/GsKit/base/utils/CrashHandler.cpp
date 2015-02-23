@@ -7,7 +7,7 @@
  created 09-07-2008 by Albert Zeyer
  */
 
-#include "CrashHandler.h"
+/*#include "CrashHandler.h"
 #include <base/utils/StringUtils.h>
 #include <base/utils/Debug.h>
 
@@ -23,7 +23,7 @@ void SetCrashHandlerReturnPoint(const char* name) {
 #ifndef WIN32
 	if(sigsetjmp(longJumpBuffer, true) != 0) {
 		hints << "returned from sigsetjmp in " << name << endl;
-		if(/*tLXOptions->bFullscreen*/ false) {
+        if(*//*tLXOptions->bFullscreen*//* false) {
 			notes << "we are in fullscreen, going to window mode now" << endl;
 			//	tLXOptions->bFullscreen = false;
 			//	doSetVideoModeInMainThread();
@@ -171,9 +171,9 @@ LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo)
 
 #if defined(__linux__) && !defined(ANDROID) // || defined(__APPLE__)
 // TODO: why is execinfo needed here? at least on MacOSX, it's not needed here
-//#include <execinfo.h>
+//#include <execinfo.h>*/
 /* get REG_EIP / REG_RIP from ucontext.h */
-#include <ucontext.h>
+/*#include <ucontext.h>
 #endif
 
 #ifndef EIP
@@ -182,8 +182,8 @@ LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo)
 
 #if (defined (__x86_64__))
 #ifndef REG_RIP
-#define REG_RIP REG_INDEX(rip) /* seems to be 16 */
-#endif
+#define REG_RIP REG_INDEX(rip)*/ /* seems to be 16 */
+/*#endif
 #endif
 
 
@@ -279,11 +279,11 @@ public:
 			printf("Got signal 0x%02X (%s): %s\n", signr, d->name, d->description);
 		else
 			printf("Got signal 0x%02X\n", signr);
-		
+        */
 		/* 
 		 see this article for further details: (thanks also for some code snippets)
 		 http://www.linuxjournal.com/article/6391 */
-		
+        /*
 		void *pnt = NULL;
 #if defined(__APPLE__)
 #	if defined(__x86_64__)
@@ -334,17 +334,17 @@ public:
 		pnt = (void*) scp->si_regs.pc ;
 #		endif
 #	elif defined(__i386__)
-        // Does not work on Android
+        // Does not work on Android*/
         /*ucontext_t* uc = (ucontext_t*) secret;
         pnt = (void*) uc->uc_mcontext.gregs[REG_EIP] ;*/
-
-#	else
+/*#	else
+>>>>>>> 8d3e9d573a837c9089046b9938e0ef75f45686d0
 #		warning mcontext is not defined for this arch, thus a dumped backtrace could be crippled
 #	endif
 #else
 #	warning mcontest is not defined for this system, thus a dumped backtraced could be crippled
 #endif
-		
+        */
 		/* potentially correct for other archs:
 		 * alpha: ucp->m_context.sc_pc
 		 * arm: ucp->m_context.ctx.arm_pc
@@ -352,10 +352,10 @@ public:
 		 * mips: ucp->m_context.sc_pc
 		 * s390: ucp->m_context.sregs->regs.psw.addr
 		 */
-		
+        /*
 		if (signr == SIGSEGV || signr == SIGBUS)
 			printf("Faulty address is %p, called from %p\n", info->si_addr, pnt);
-		
+*/
 		/* The first two entries in the stack frame chain when you
 		 * get into the signal handler contain, respectively, a
 		 * return address inside your signal handler and one inside
@@ -372,7 +372,7 @@ public:
 		// WARNING: dont use cout here in this function, it sometimes screws the cout up
 		// look at signal(2) for a list of safe functions
 		
-		DumpCallstackPrintf(pnt);
+        /*DumpCallstackPrintf(pnt);
 		
 #ifdef DEBUG
 		// commented out for now because it still doesn't work that good
@@ -519,9 +519,9 @@ public:
 
 #endif
 
-CrashHandlerImpl* crashHandlerInstance = NULL;
+CrashHandlerImpl* crashHandlerInstance = NULL;*/
 
-void CrashHandler::init() {
+/*void CrashHandler::init() {
 	if(crashHandlerInstance) {
 		warnings << "CrashHandler tried to init twice" << endl;
 		return;
@@ -540,3 +540,4 @@ void CrashHandler::uninit() {
 CrashHandler* CrashHandler::get() {
 	return crashHandlerInstance;
 }
+*/

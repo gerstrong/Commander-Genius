@@ -62,20 +62,26 @@ m_fireTimer(0)
 
 void CPlatformVertical::process()
 {
-    	Uint16 object = 0; 
-	
-	object = mp_Map->getPlaneDataAt(2, getPosition());
+    Uint16 object = 0;
+
+    Vector2D<Uint32> pos = getPosition();
+
+    if( yDirection == DOWN )
+        pos.y += 1<<CSF;
+    else if(yDirection == UP)
+        pos.y -= 1<<CSF;
+
+    object = mp_Map->getPlaneDataAt(2, pos);
 
 	performCollisions();
-	
+
 	// If there is a blocker, change the direction
-	if( object == 31 )
+    if( object == 31 )
 	{
 	    yDirection = (yDirection == UP) ? DOWN : UP;
 	}
 	
-	
-	// If fire needs to be drawn, well check for dimming
+    // If fire under the plats needs to be drawn dim it in case the platform goes down
 	if( yDirection == DOWN )
 	    dimFire = !dimFire;
 	else

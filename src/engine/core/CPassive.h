@@ -48,7 +48,7 @@ public:
 	CSaveGameController getSavedGameBlock() { return m_SavedGame; }
 	std::string getGamePath() { return m_DataDirectory; }
 	
-	bool getchooseGame() { return m_modeg; }
+    bool getchooseGame() { return mEndEpisode; }
 	bool mustStartGame() { return (m_mode==STARTGAME); }
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
 	
@@ -63,7 +63,7 @@ protected:
 	char m_Difficulty;
 	
 	// TODO: Bad variable name. Think about something better
-	bool m_modeg;
+    bool mEndEpisode;
 	std::string m_DataDirectory;
 	CSaveGameController m_SavedGame;
 	std::shared_ptr<SDL_Surface> mpTextSfc;

@@ -48,7 +48,6 @@ private:
 	int m_episode;
 	int m_version;
 	unsigned char *m_data;
-	std::string m_datadirectory;
 	size_t m_datasize;
 
 	std::list<std::string> m_TextList;

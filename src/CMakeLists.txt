@@ -1,3 +1,6 @@
+# Platform specific things can be put here
+# Compilers and other specific variables can be found here:
+# http://www.cmake.org/Wiki/CMake_Useful_Variables
 
  
 if(SDL2)
@@ -7,21 +10,15 @@ else()
 endif()
 
 
-if(WIN32)
-  set(mingw64dir "C:/MinGW64/")
-endif(WIN32)
-
-
-#
-# If the user specifies -DCMAKE_BUILD_TYPE on the command line, take their definition
-# and dump it in the cache along with proper documentation, otherwise set CMAKE_BUILD_TYPE
-# to Debug prior to calling PROJECT()
-IF(DEFINED CMAKE_BUILD_TYPE)
-   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.")
-ELSE()
-   SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.")
-ENDIF()
-
+#------------------------------------------------------------------------------
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to 'Debug' as none was specified.")
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+    "MinSizeRel" "RelWithDebInfo")
+endif()
 
 
 IF(NOT DEFINED BUILD_TARGET)
@@ -36,10 +33,6 @@ MESSAGE( STATUS "WARNING: You did not specify the build type with the -DBUILD_TA
 MESSAGE( STATUS "Available builds are: WIN32, LINUX GP2X. WIZ, CAANOO, DINGOO, NANONOTE" )
 ENDIF(NOT DEFINED BUILD_TARGET)
 
-
-# Platform specific things can be put here
-# Compilers and other specific variables can be found here:
-# http://www.cmake.org/Wiki/CMake_Useful_Variables
 
 SET(USRDIR /usr)
 
@@ -130,12 +123,12 @@ ADD_DEFINITIONS(-std=c++11)
 
 
 # Directory creation of all the chosen build 
-set(BUILD_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Build")
-set(BUILD_DIR "${BUILD_BASE_DIR}/${BUILD_TARGET}")
-execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_BASE_DIR})
-execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_DIR})
+#set(BUILD_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Build")
+#set(BUILD_DIR "${BUILD_BASE_DIR}/${BUILD_TARGET}")
+#execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_BASE_DIR})
+#execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_DIR})
 
-SET(EXECUTABLE_OUTPUT_PATH ${BUILD_DIR})
+#SET(EXECUTABLE_OUTPUT_PATH ${BUILD_DIR})
 
 
 # main includes
@@ -319,7 +312,7 @@ IF(WIN32)
 	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES OUTPUT_NAME "CGenius")
 #	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc )
 #	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND ${mingw64dir}bin/icotool -c -o ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.ico ${CMAKE_CURRENT_SOURCE_DIR}/vfsroot/cglogo512.png )
-	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND ${mingw64dir}bin/windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
+	ADD_CUSTOM_COMMAND(TARGET CGeniusExe PRE_LINK COMMAND windres ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.rc ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o)
 	SET_TARGET_PROPERTIES(CGeniusExe PROPERTIES LINK_FLAGS "-mwindows ${CMAKE_CURRENT_SOURCE_DIR}/CGLogo.o")	
 #	LINK_DIRECTORIES(/opt/mingw32/lib)
 	MESSAGE(STATUS "Will build with the CG-Icon for Windows." )

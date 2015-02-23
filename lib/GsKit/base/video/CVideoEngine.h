@@ -16,6 +16,7 @@
 
 #include "CVidConfig.h"
 #include <graphics/GsSurface.h>
+#include <graphics/GsTexture.h>
 #include <memory>
 #include <queue>
 
@@ -126,7 +127,7 @@ public:
      *        This functionality only works with SDL 2.0 so but might get extended later
      * @note  Do not manage the memory of these pointers. The owers of the textures have to do that!
      */
-    std::queue< std::tuple< SDL_Texture*, const GsRect<Uint16>, const GsRect<Uint16> > > mRenderTexturePtrs;
+    std::queue< std::tuple< GsTexture&, const GsRect<Uint16>, const GsRect<Uint16> > > mRenderTexturePtrs;
 
 #endif
 

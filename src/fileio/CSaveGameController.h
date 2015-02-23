@@ -10,7 +10,6 @@
 
 #include <string>
 #include <vector>
-#include <SDL.h>
 #include <iostream>
 #include <fstream>
 
@@ -19,10 +18,7 @@
 #include <base/utils/StringUtils.h>
 #include <base/TypeDefinitions.h>
 #include "CSingleton.h"
-//#include "engine/CEvent.h"
 #include "Oldsavegamestructs.h"
-
-#include <boost/property_tree/ptree.hpp>
 
 
 #define SG_HEADERSIZE			7

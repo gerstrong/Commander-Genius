@@ -73,7 +73,7 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
  */
 bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long int &output, size_t &width)
 {
-	if(strStartsWith(input, "$") or strCaseStartsWith(input, "0x"))
+    if(strStartsWith(input, "$") || strCaseStartsWith(input, "0x"))
 	{
 		std::string line = input;
 		// it is a hexadecimal number
@@ -114,7 +114,10 @@ bool CPatcher::readIntValueAndWidth(const std::string &input, unsigned long int 
 		return true;
 
 	if(input == "00" || input == "0")
+    {
+        width = 1;
 		return true;
+    }
 
 	return false;
 }

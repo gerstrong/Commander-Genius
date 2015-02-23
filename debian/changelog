@@ -1,0 +1,67 @@
+commandergenius (1.8.1.4) trusty; urgency=low
+
+  * Version update. This solves some vorticon issues and enhances the mod support.
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 15 Jan 2015 13:39:49 +0100
+
+ commandergenius (1.8.1.3ppa9) trusty; urgency=low
+
+  * Package dependency fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 16:21:31 +0100
+ 
+ commandergenius (1.8.1.3ppa8) trusty; urgency=low
+
+  * Removed Temp files
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 16:21:31 +0100
+
+ commandergenius (1.8.1.3ppa7) trusty; urgency=low
+
+  * Corrected dependency of SDL2 Image
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 15:59:48 +0100
+
+commandergenius (1.8.1.3ppa6) trusty; urgency=low
+
+  * Cleanups
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 14:46:31 +0100
+
+
+commandergenius (1.8.1.3ppa5) trusty; urgency=low
+
+  * Removed annoying Cmake caches
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 14:30:52 +0100
+
+commandergenius (1.8.1.3ppa4) trusty; urgency=low
+
+  * CMake and Build essential dependencies added. Of course we need those!
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 14:24:15 +0100
+
+commandergenius (1.8.1.3ppa3) trusty; urgency=low
+
+  * Source package fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 14:19:07 +0100
+
+
+commandergenius (1.8.1.3ppa2) trusty; urgency=low
+
+  * control file fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 14:11:07 +0100
+
+commandergenius (1.8.1.3ppa1) trusty; urgency=low
+
+  * Better dependencies!
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 13:45:30 +0100
+
+commandergenius (1.8.1.3ppa0) trusty; urgency=low
+
+  * Initial upload!
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 01 Jan 2015 18:40:17 +0100
