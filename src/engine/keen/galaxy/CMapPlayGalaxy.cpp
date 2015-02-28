@@ -120,7 +120,7 @@ void CMapPlayGalaxy::ponder(const float deltaT)
 #ifdef TOUCHCONTROLS
     VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
     assert(vkc);
-    vkc->mButtonMode = VirtualKeenControl::WMAP;
+    vkc->mButtonMode = VirtualKeenControl::ACTION;
     vkc->mHideEnterButton = true;
 #endif
 

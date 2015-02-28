@@ -47,17 +47,23 @@ bool VirtualKeenControl::init()
             return true;
         };
 
-        // Start Button
-        if( !loadButtonTexture("start.png", mStartButtonTexture) )
+        // Dpad
+        if( !loadButtonTexture("dpad.png", mDPadTexture) )
             return false;
 
         // Confirm Button
         if( !loadButtonTexture("confirm.png", mConfirmButtonTexture) )
             return false;
 
-        // Dpad
-        if( !loadButtonTexture("dpad.png", mDPadTexture) )
+        // Start Button
+        if( !loadButtonTexture("start.png", mStartButtonTexture) )
             return false;
+
+        // Jump Button
+        if( !loadButtonTexture("1.png", mJumpButtonTexture) )
+            return false;
+
+
     }
 
 #endif
@@ -118,8 +124,8 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         const Uint16 height = clickGameArea.h * buttonSize;
 
         const GsRect<Uint16> jumpButtonRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
-        mStartButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mStartButtonTexture, jumpButtonRect);
+        mJumpButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+        gVideoDriver.addTextureRefToRender(mJumpButtonTexture, jumpButtonRect);
     }
 }
 
@@ -192,6 +198,7 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
                 }
             }
 
+            // On map if we can enter a level, let's enter!
             if(mButtonMode == WMAP && !mHideEnterButton)
             {
                 // Was the Ok button pressed?
@@ -199,7 +206,19 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 
                 if( confirmRect.HasPoint(Pos) )
                 {
-                    gInput.setCommand(0, IC_JUMP);
+                    gInput.setCommand(0, IC_JUMP, down);
+                }
+            }
+
+
+            if(mButtonMode == ACTION)
+            {
+                // Was the Ok button pressed?
+                GsRect<float> jumpButtonRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
+
+                if( jumpButtonRect.HasPoint(Pos) )
+                {
+                    gInput.setCommand(0, IC_JUMP, down);
                 }
             }
         }

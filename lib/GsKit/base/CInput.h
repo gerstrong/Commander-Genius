@@ -247,10 +247,11 @@ public:
      * @brief setCommand    Sets a given command.
      * @param player        player to which the command wil be setCommand;
      * @param command       Command object to be set
+     * @param active        Will the command be set active or unactive
      */
-    void setCommand(const int player, const int command)
+    void setCommand(const int player, const int command, const bool active)
     {
-        InputCommand[player][command].active = true;
+        InputCommand[player][command].active = active;
     }
 
 
