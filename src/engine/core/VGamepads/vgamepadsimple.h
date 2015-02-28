@@ -72,6 +72,9 @@ public:
 
     // Control buttons
     GsTexture mJumpButtonTexture;
+    GsTexture mShootButtonTexture;
+    GsTexture mPogoButtonTexture;
+    GsTexture mStatusButtonTexture;
 
 #endif
 
