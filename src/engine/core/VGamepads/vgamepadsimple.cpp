@@ -3,6 +3,7 @@
 #include <base/video/CVideoDriver.h>
 #include <base/utils/FindFile.h>
 #include <base/CInput.h>
+#include <base/GsLogging.h>
 #include <fileio/ResourceMgmt.h>
 
 bool VirtualKeenControl::init()
@@ -30,45 +31,33 @@ bool VirtualKeenControl::init()
 
     /// Load Textures
     {
-        // Dpad
-        const std::string dpadFname = getResourceFilename("dpad.png", "", true, true);
-        if(dpadFname == "") return false;
-
-        mDPadTexture.load(GetFullFileName(dpadFname), gVideoDriver.getRendererRef());
-        if( !mDPadTexture )
+        auto loadButtonTexture = [&](const std::string &fname, GsTexture &texture) -> bool
         {
-            printf( "Failed to load texture image for dpad!\n" );
-            return false;
-        }
+            const std::string buttonFname = getResourceFilename(fname, "", true, true);
+            if(buttonFname == "") return false;
 
-        mDPadTexture.setBlendMode(SDL_BLENDMODE_BLEND);
+            texture.load(GetFullFileName(buttonFname), gVideoDriver.getRendererRef());
+            if( !texture )
+            {
+                gLogging.ftextOut("Failed to load the texture: %s!\n", fname.c_str());
+                return false;
+            }
 
-        // Confirm Button
-        const std::string confirmFname = getResourceFilename("confirm.png", "", true, true);
-        if(confirmFname == "") return false;
-
-        mConfirmButtonTexture.load(GetFullFileName(confirmFname), gVideoDriver.getRendererRef());
-        if( !mConfirmButtonTexture )
-        {
-            printf( "Failed to load texture image confirm!\n" );
-            return false;
-        }
-
-        mConfirmButtonTexture.setBlendMode(SDL_BLENDMODE_BLEND);
+            texture.setBlendMode(SDL_BLENDMODE_BLEND);
+            return true;
+        };
 
         // Start Button
-        const std::string startFname = getResourceFilename("start.png", "", true, true);
-        if(startFname == "") return false;
-
-        mStartButtonTexture.load(GetFullFileName(startFname), gVideoDriver.getRendererRef());
-        if( !mStartButtonTexture )
-        {
-            printf( "Failed to load texture image start!\n" );
+        if( !loadButtonTexture("start.png", mStartButtonTexture) )
             return false;
-        }
 
-        mStartButtonTexture.setBlendMode(SDL_BLENDMODE_BLEND);
+        // Confirm Button
+        if( !loadButtonTexture("confirm.png", mConfirmButtonTexture) )
+            return false;
 
+        // Dpad
+        if( !loadButtonTexture("dpad.png", mDPadTexture) )
+            return false;
     }
 
 #endif
@@ -108,6 +97,7 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         gVideoDriver.addTextureRefToRender(mConfirmButtonTexture, confirmRect);
     }
 
+    // On map, show the start button if keen approaches a level
     if(mButtonMode == WMAP && !mHideEnterButton)
     {
         const float buttonSize = 0.1f;
@@ -118,6 +108,18 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         const GsRect<Uint16> confirmRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
         mStartButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mStartButtonTexture, confirmRect);
+    }
+
+    if(mButtonMode == ACTION)
+    {
+        const float buttonSize = 0.1f;
+
+        const Uint16 width = clickGameArea.w * buttonSize;
+        const Uint16 height = clickGameArea.h * buttonSize;
+
+        const GsRect<Uint16> jumpButtonRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
+        mStartButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+        gVideoDriver.addTextureRefToRender(mStartButtonTexture, jumpButtonRect);
     }
 }
 

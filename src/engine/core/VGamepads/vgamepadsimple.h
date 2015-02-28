@@ -70,6 +70,9 @@ public:
     GsTexture mConfirmButtonTexture;
     GsTexture mStartButtonTexture;
 
+    // Control buttons
+    GsTexture mJumpButtonTexture;
+
 #endif
 
     bool mShowDPad;
