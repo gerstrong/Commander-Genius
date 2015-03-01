@@ -135,13 +135,10 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         const Uint16 width = clickGameArea.w * buttonSize;
         const Uint16 height = clickGameArea.h * buttonSize;
 
+        // Main controls
         const GsRect<Uint16> shootButtonRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
         mShootButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mShootButtonTexture, shootButtonRect);
-
-        /*const GsRect<Uint16> statusButtonRect(dispRect.w-2*width, dispRect.h-2*height, width, height);
-        mStatusButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
-        gVideoDriver.addTextureRefToRender(mPogoButtonTexture, statusButtonRect);*/
 
         const GsRect<Uint16> jumpButtonRect(dispRect.w-2*width, dispRect.h-height, width, height);
         mJumpButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
@@ -150,6 +147,10 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         const GsRect<Uint16> pogoButtonRect(dispRect.w-width, dispRect.h-height, width, height);
         mPogoButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mPogoButtonTexture, pogoButtonRect);
+
+        const GsRect<Uint16> statusButtonRect(dispRect.w*0.5f, dispRect.h-height, width, height);
+        mStatusButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
+        gVideoDriver.addTextureRefToRender(mStatusButtonTexture, statusButtonRect);
     }
 }
 
@@ -165,7 +166,7 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
     const float yBottom = 1.0f;
     const float yTop = yBottom-dpadSize;
 
-    auto verifyButtonMatch = [&](GsRect<float> &buttonRect, InputCommands cmd)
+    auto verifyButtonMatch = [&](const GsRect<float> &buttonRect, InputCommands cmd)
     {
         if( buttonRect.HasPoint(Pos) )
         {
@@ -243,16 +244,20 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
             if(mButtonMode == ACTION)
             {
                 // Was the Shoot button pressed?
-                GsRect<float> shootButtonRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
+                const GsRect<float> shootButtonRect(1.0f-2.0f*buttonSize, 1.0f-2.0f*buttonSize, buttonSize, buttonSize);
                 verifyButtonMatch(shootButtonRect, IC_FIRE);
 
                 // Was the Jump button pressed?
-                GsRect<float> jumpButtonRect(1.0f-2.0f*buttonSize, 1.0f-buttonSize, buttonSize, buttonSize);
+                const GsRect<float> jumpButtonRect(1.0f-2.0f*buttonSize, 1.0f-buttonSize, buttonSize, buttonSize);
                 verifyButtonMatch(jumpButtonRect, IC_JUMP);
 
                 // Was the Pogo button pressed?
-                GsRect<float> pogoButtonRect(1.0f-buttonSize, 1.0f-buttonSize, buttonSize, buttonSize);
+                const GsRect<float> pogoButtonRect(1.0f-buttonSize, 1.0f-buttonSize, buttonSize, buttonSize);
                 verifyButtonMatch(pogoButtonRect, IC_POGO);
+
+                // Was the Status button pressed?
+                const GsRect<float> statusButtonRect(0.5f, 1.0f-buttonSize, buttonSize, buttonSize);
+                verifyButtonMatch(statusButtonRect, IC_STATUS);
             }
         }
     }
