@@ -421,6 +421,16 @@ SDL_Rect CVideoDriver::toBlitRect(const GsRect<float> &rect)
 	GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 	GsRect<float> RectDispCoordFloat = rect;
 
+    if(RectDispCoordFloat.x < 0.0)
+        RectDispCoordFloat.x = 0.0;
+    if(RectDispCoordFloat.y < 0.0)
+        RectDispCoordFloat.y = 0.0;
+
+    if(RectDispCoordFloat.h > 1.0)
+        RectDispCoordFloat.h = 1.0;
+    if(RectDispCoordFloat.w > 1.0)
+        RectDispCoordFloat.w = 1.0;
+
 	// Transform to the blit coordinates
 	RectDispCoordFloat.transform(screenRect);
 
