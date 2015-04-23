@@ -24,10 +24,9 @@
 
 namespace galaxy {
 
-CLevelPlay::CLevelPlay(CExeFile &ExeFile,
-        std::vector<CInventory> &inventory,
+CLevelPlay::CLevelPlay(std::vector<CInventory> &inventory,
 		stCheat &Cheatmode) :
-CMapPlayGalaxy(ExeFile, inventory, Cheatmode)
+CMapPlayGalaxy(inventory, Cheatmode)
 { }
 
 
@@ -39,11 +38,11 @@ void CLevelPlay::loadMap(const int level)
     const int episode = g_pBehaviorEngine->getEpisode();
 
     if(episode == 4)
-        MapLoader.reset(new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp4(mObjectPtr, mInventoryVec, mCheatmode));
     else if(episode == 5)
-        MapLoader.reset(new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp5(mObjectPtr, mInventoryVec, mCheatmode));
     else if(episode == 6)
-        MapLoader.reset(new CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp6(mObjectPtr, mInventoryVec, mCheatmode));
 
 	MapLoader->loadMap( mMap, level );
 

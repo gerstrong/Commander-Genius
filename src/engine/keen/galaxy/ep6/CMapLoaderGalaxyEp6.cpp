@@ -40,10 +40,9 @@ namespace galaxy
 {
 
 
-CMapLoaderGalaxyEp6::CMapLoaderGalaxyEp6(CExeFile &ExeFile,
-		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
+CMapLoaderGalaxyEp6::CMapLoaderGalaxyEp6(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
         std::vector<CInventory> &inventoryVec, stCheat &Cheatmode) :
-CMapLoaderGalaxy( ExeFile, ObjectPtr, inventoryVec, Cheatmode)
+CMapLoaderGalaxy(ObjectPtr, inventoryVec, Cheatmode)
 {}
 
 bool CMapLoaderGalaxyEp6::isKeenPlayer(const int foeID)

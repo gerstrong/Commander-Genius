@@ -17,7 +17,7 @@ namespace galaxy {
 class CLevelPlay : public CMapPlayGalaxy
 {
 public:
-    CLevelPlay(CExeFile &ExeFile, std::vector<CInventory> &inventory, stCheat &Cheatmode);
+    CLevelPlay(std::vector<CInventory> &inventory, stCheat &Cheatmode);
 
     /**
      * @brief loadLevel Makes this class load the map of the given level and the loading message. calls loadMap

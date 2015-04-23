@@ -14,11 +14,12 @@
 #include <base/utils/FindFile.h>
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
+#include "fileio/KeenFiles.h"
 #include <fstream>
 #include <limits>
 
 
-bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
+bool CMusic::loadTrack(const int track)
 {
 
 #if defined(OGG) || defined(TREMOR)
@@ -34,7 +35,7 @@ bool CMusic::loadTrack(const CExeFile& ExeFile, const int track)
 
     RingBuffer<IMFChunkType> imfData;
 
-    if(!ExeFile.loadMusicTrack(imfData, track))
+    if(!gKeenFiles.exeFile.loadMusicTrack(imfData, track))
     {
         return false;
     }

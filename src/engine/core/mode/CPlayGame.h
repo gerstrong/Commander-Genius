@@ -25,7 +25,7 @@ const int WM_MAP_NUM = 80;
 class CPlayGame : public CGameMode
 {
 public:
-    CPlayGame(CExeFile &ExeFile, char level);
+    CPlayGame(char level);
 
     void loadGame();
 
@@ -50,7 +50,6 @@ public:
 
 protected:
 	bool m_endgame;
-	CExeFile &m_ExeFile;
 	char m_Episode;
 	short m_Level;
 	int mCamLead;

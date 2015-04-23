@@ -35,9 +35,9 @@ namespace galaxy
 
 
 CPlayGameGalaxy::CPlayGameGalaxy(const int startlevel) :
-CPlayGame(gKeenFiles.exeFile, startlevel),
-m_WorldMap(gKeenFiles.exeFile, mInventoryVec, m_Cheatmode),
-m_LevelPlay(gKeenFiles.exeFile, mInventoryVec, m_Cheatmode),
+CPlayGame(startlevel),
+m_WorldMap( mInventoryVec, m_Cheatmode),
+m_LevelPlay( mInventoryVec, m_Cheatmode),
 m_SavedGame(*gpSaveGameController)
 {
     const int numPlayers = g_pBehaviorEngine->mPlayers;
@@ -434,7 +434,7 @@ void CPlayGameGalaxy::pumpEvent(const CEvent *evPtr)
     else if( const EventPlayTrack *ev =  dynamic_cast<const EventPlayTrack*>(evPtr) )
     {
         g_pMusicPlayer->stop();
-        if( g_pMusicPlayer->loadTrack(m_ExeFile, ev->track) )
+        if( g_pMusicPlayer->loadTrack(ev->track) )
             g_pMusicPlayer->play();
     }
     else if(m_WorldMap.isActive())

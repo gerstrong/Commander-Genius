@@ -60,7 +60,7 @@ bool loadLevelMusic(const int level)
       return false;
     }
 
-    return g_pMusicPlayer->loadTrack(ExeFile, track);
+    return g_pMusicPlayer->loadTrack(track);
 }
 
 
