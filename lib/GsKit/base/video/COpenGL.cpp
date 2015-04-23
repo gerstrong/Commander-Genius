@@ -41,13 +41,6 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     const int w = m_VidConfig.mAspectCorrection.w;
     const int h = m_VidConfig.mAspectCorrection.h;
 
-    // Render a black surface which cleans the screen, in case there already is some content in the screen    
-    if(mpScreenSfc->empty())
-    {
-        clearSurfaces();
-        transformScreenToDisplay();
-    }
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)        
   
     updateAspectRect(newDim, w, h);
@@ -106,7 +99,8 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 
 bool COpenGL::init()
 {
-	CVideoEngine::init();	
+    if(!CVideoEngine::init())
+        return false;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
@@ -328,7 +322,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
                 mpScreenSfc->width(),
                 mpScreenSfc->height(),
 				0, externalFormat,
-                GL_UNSIGNED_BYTE, mpScreenSfcgetSDLSurface()->pixels);
+                GL_UNSIGNED_BYTE, mpScreenSfc->getSDLSurface()->pixels);
 
     mpScreenSfc->unlock();
 //#endif
@@ -364,7 +358,7 @@ void COpenGL::transformScreenToDisplay()
 
 	glEnable(GL_BLEND);
 
-    loadSurface(m_texture, *mpScreenSfc.getSDLSurface());
+    loadSurface(m_texture, mpScreenSfc->getSDLSurface());
 	renderTexture(m_texture);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
