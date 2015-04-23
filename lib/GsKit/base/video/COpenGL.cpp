@@ -118,6 +118,16 @@ bool COpenGL::init()
         flags |= (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
 
+    // set the opengl context version
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+
+    // turn on double buffering set the depth buffer to 24 bits
+    // you may need to change this to 16 or 32 for your system
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+
     window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
@@ -125,7 +135,11 @@ bool COpenGL::init()
                               m_VidConfig.m_DisplayRect.h,
                               flags);
 
+
     glcontext = SDL_GL_CreateContext(window);
+
+    // sync buffer swap with monitor's vertical refresh rate
+    SDL_GL_SetSwapInterval(1);
     
 	// Set clear colour
 	glClearColor(0,0,0,0);
