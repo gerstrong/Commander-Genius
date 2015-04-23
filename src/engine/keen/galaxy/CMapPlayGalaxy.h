@@ -43,7 +43,11 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 
-    void ponder(const float deltaT);
+    /**
+     * @brief ponderBase Think method
+     * @param deltaT for this iteration how much time to think
+     */
+    void ponderBase(const float deltaT);
 
     void render();
 

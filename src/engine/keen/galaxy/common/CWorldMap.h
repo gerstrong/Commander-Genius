@@ -23,6 +23,8 @@ public:
 	void init();
 	void loadAndPlayMusic();
 
+    void ponder(const float deltaT);
+
     // Saves the inventory using the Savegamecontroller.
     //void operator>>(boost::property_tree::ptree &invNode);
 

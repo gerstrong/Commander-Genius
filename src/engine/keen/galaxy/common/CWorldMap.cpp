@@ -8,6 +8,8 @@
 #include "CWorldMap.h"
 #include "fileio/CSaveGameController.h"
 #include "graphics/effects/CColorMerge.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
+
 
 #include "../GalaxyEngine.h"
 #include "dialog/CMessageBoxBitmapGalaxy.h"
@@ -56,6 +58,18 @@ void CWorldMap::loadAndPlayMusic()
 	g_pMusicPlayer->stop();
     if(loadLevelMusic(0))
 		g_pMusicPlayer->play();
+}
+
+void CWorldMap::ponder(const float deltaT)
+{
+#ifdef TOUCHCONTROLS
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    assert(vkc);
+    vkc->mButtonMode = VirtualKeenControl::WMAP;
+    vkc->mHideEnterButton = true;
+#endif
+
+    ponderBase(deltaT);
 }
 
 

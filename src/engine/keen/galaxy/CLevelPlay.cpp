@@ -11,10 +11,11 @@
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include <base/CInput.h>
-//#include "sdl/CVideoDriver.h"
 #include "sdl/audio/music/CMusic.h"
 #include "graphics/effects/CDimDark.h"
 #include <base/GsLogging.h>
+
+#include "engine/core/VGamepads/vgamepadsimple.h"
 
 #include "CMapPlayGalaxy.h"
 
@@ -78,5 +79,16 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	return true;
 }
 
+void CLevelPlay::ponder(const float deltaT)
+{
+#ifdef TOUCHCONTROLS
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    assert(vkc);
+    vkc->mButtonMode = VirtualKeenControl::ACTION;
+    vkc->mHideEnterButton = true;
+#endif
+
+    ponderBase(deltaT);
+}
 
 }

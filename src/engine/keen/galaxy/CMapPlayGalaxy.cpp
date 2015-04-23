@@ -112,17 +112,9 @@ void CMapPlayGalaxy::pumpEvent(const CEvent *evPtr)
 
 
 
-void CMapPlayGalaxy::ponder(const float deltaT)
+void CMapPlayGalaxy::ponderBase(const float deltaT)
 {
     const bool msgboxactive = mMsgBoxOpen;
-
-
-#ifdef TOUCHCONTROLS
-    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
-    assert(vkc);
-    vkc->mButtonMode = VirtualKeenControl::ACTION;
-    vkc->mHideEnterButton = true;
-#endif
 
     bool pause = msgboxactive;
 

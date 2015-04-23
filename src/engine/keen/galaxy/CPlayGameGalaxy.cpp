@@ -606,8 +606,8 @@ void CPlayGameGalaxy::processInput()
     {
         gInput.mpVirtPad.reset(new VirtualKeenControl);
         gInput.mpVirtPad->init();
-        vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
-    }
+        vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());        
+    }        
 
     assert(vkc);
     vkc->mShowDPad = true;

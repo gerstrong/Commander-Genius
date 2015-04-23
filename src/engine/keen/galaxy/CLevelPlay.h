@@ -31,6 +31,11 @@ public:
      */
     void reloadLevel();
 
+    /**
+     * @brief ponder think about what must happen in the level play.
+     * @param deltaT for how much time in this iteration
+     */
+    void ponder(const float deltaT);
 
 private:
 
