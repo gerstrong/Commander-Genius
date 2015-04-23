@@ -18,6 +18,7 @@
 #include "menu/MainMenu.h"
 #include "sdl/audio/music/CMusic.h"
 
+#include "engine/core/VGamepads/vgamepadsimple.h"
 
 namespace galaxy
 {
@@ -115,6 +116,17 @@ bool CPassiveGalaxy::init()
     auto blit = gVideoDriver.getBlitSurface();
     SDL_FillRect( blit, NULL, SDL_MapRGB(blit->format,0,0,0));
     gInput.flushAll();
+
+#ifdef TOUCHCONTROLS
+    gInput.mpVirtPad.reset(new VirtualKeenControl);
+    gInput.mpVirtPad->init();
+
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    assert(vkc);
+    vkc->mShowDPad = false;
+
+#endif
+
     return true;
 }
 
@@ -204,8 +216,8 @@ void CPassiveGalaxy::processIntro()
             mCurrentLogoBmp.scaleTo(logoBmpRect);            
             mCurrentLogoBmp.setColorKey( 0, 0, 0 );
             mCurrentLogoBmp.optimizeSurface();
-            mCurrentLogoBmp.exchangeColor( 0x0 , 0xa8, 0x0,
-                                           0x55, 0x55 , 0xFF);
+            mCurrentLogoBmp.exchangeColor( 0x00, 0xa8, 0x00,
+                                           0x55, 0x55, 0xFF);
         }
     }
 
@@ -337,6 +349,13 @@ void CPassiveGalaxy::processTitle()
         if( mSkipSection )
 		{
             gInput.flushAll();
+
+#ifdef TOUCHCONTROLS
+            VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+            assert(vkc);
+            vkc->mShowDPad = true;
+#endif
+
             gEventManager.add(new OpenMainMenuEvent());
             mSkipSection = false;
 		}	    

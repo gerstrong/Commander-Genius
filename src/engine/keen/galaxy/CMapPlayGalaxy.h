@@ -13,7 +13,6 @@
 #define CMAPPLAYGALAXY_H_
 
 #include "engine/core/Cheat.h"
-#include "fileio/CExeFile.h"
 #include "common/CInventory.h"
 #include "common/CGalaxySpriteObject.h"
 //#include "engine/core/CBehaviorEngine.h"
@@ -31,7 +30,7 @@
 class CMapPlayGalaxy
 {
 public:
-    CMapPlayGalaxy(CExeFile &ExeFile, std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
+    CMapPlayGalaxy(std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 
 	bool isActive();
 	void setActive(const bool value);
@@ -43,7 +42,11 @@ public:
 
     void pumpEvent(const CEvent *evPtr);
 
-    void ponder(const float deltaT);
+    /**
+     * @brief ponderBase Think method
+     * @param deltaT for this iteration how much time to think
+     */
+    void ponderBase(const float deltaT);
 
     void render();
 
@@ -72,7 +75,6 @@ protected:
 	bool mActive;        
 
 	CMap mMap;
-	CExeFile &mExeFile;
 	std::vector<CInventory> &mInventoryVec;
 	stOption *mpOption;
 	stCheat &mCheatmode;

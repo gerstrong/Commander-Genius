@@ -9,7 +9,6 @@
 #define CPLATFORMHORIZONTAL_H_
 
 #include "CPlatform.h"
-#include <memory>
 
 namespace galaxy {
 

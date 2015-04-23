@@ -96,6 +96,8 @@ public:
 
     SDL_Surface *getBlitSurface() { return mGameSfc.getSDLSurface(); }
 
+    GsSurface &getScreenSurface() { return *mpScreenSfc; }
+
 	SDL_Surface *getScrollSurface() { return ScrollSurface; }
 
     GsRect<Uint16> &getAspectCorrRect() { return mAspectCorrectionRect; }
@@ -159,7 +161,7 @@ protected:
     // This case happens when you don't want to use any software filtering within the game
     // before you pass it to the view.
 
-    // Through a pointer called mpScreenSfc it is set how the stuff will be rendered on screen
+    // Through a pointer called mpScreenSfc it is setup how the stuff will be rendered on screen
     GsSurface *mpScreenSfc;
 
 

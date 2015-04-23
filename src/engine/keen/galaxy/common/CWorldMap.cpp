@@ -8,16 +8,17 @@
 #include "CWorldMap.h"
 #include "fileio/CSaveGameController.h"
 #include "graphics/effects/CColorMerge.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
+
 
 #include "../GalaxyEngine.h"
 #include "dialog/CMessageBoxBitmapGalaxy.h"
 
 namespace galaxy {
 
-CWorldMap::CWorldMap(CExeFile &ExeFile,
-                    std::vector<CInventory> &inventoryVec,
+CWorldMap::CWorldMap(std::vector<CInventory> &inventoryVec,
 					stCheat &Cheatmode):
-CMapPlayGalaxy(ExeFile, inventoryVec, Cheatmode)
+CMapPlayGalaxy(inventoryVec, Cheatmode)
 {}
 
 void CWorldMap::init()
@@ -26,11 +27,11 @@ void CWorldMap::init()
 	std::unique_ptr<CMapLoaderGalaxy> MapLoader;
 
 	if(g_pBehaviorEngine->getEpisode() == 4)
-        MapLoader.reset( new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
+        MapLoader.reset( new CMapLoaderGalaxyEp4( mObjectPtr, mInventoryVec, mCheatmode) );
 	else if(g_pBehaviorEngine->getEpisode() == 5)
-        MapLoader.reset( new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
+        MapLoader.reset( new CMapLoaderGalaxyEp5( mObjectPtr, mInventoryVec, mCheatmode) );
 	else if(g_pBehaviorEngine->getEpisode() == 6)
-        MapLoader.reset( new CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventoryVec, mCheatmode) );
+        MapLoader.reset( new CMapLoaderGalaxyEp6( mObjectPtr, mInventoryVec, mCheatmode) );
 
 	MapLoader->loadMap( mMap, 0 );
 	g_pBehaviorEngine->mapLevelName = MapLoader->getLevelName();
@@ -56,6 +57,18 @@ void CWorldMap::loadAndPlayMusic()
 	g_pMusicPlayer->stop();
     if(loadLevelMusic(0))
 		g_pMusicPlayer->play();
+}
+
+void CWorldMap::ponder(const float deltaT)
+{
+#ifdef TOUCHCONTROLS
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    assert(vkc);
+    vkc->mButtonMode = VirtualKeenControl::WMAP;
+    vkc->mHideEnterButton = true;
+#endif
+
+    ponderBase(deltaT);
 }
 
 

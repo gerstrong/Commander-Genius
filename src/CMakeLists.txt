@@ -2,9 +2,10 @@
 # Compilers and other specific variables can be found here:
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 
+OPTION(TOUCHCONTROLS "Touchcontrols support" No)
  
 if(SDL2)
-    OPTION(OPENGL "OpenGL support" No)
+    OPTION(OPENGL "OpenGL support" No)    
 else()
     OPTION(OPENGL "OpenGL support" Yes)
 endif()
@@ -85,8 +86,6 @@ ENDIF (TREMOR)
 
 
 
-
-
 # If we want to debug set the proper flags or have release etc.
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
 	ADD_DEFINITIONS(-DDEBUG)
@@ -164,6 +163,10 @@ IF (OPENGL)
         ADD_DEFINITIONS(-DGL)
         ADD_DEFINITIONS(-DUSE_OPENGL)
 ENDIF (OPENGL)
+
+IF (TOUCHCONTROLS)
+        ADD_DEFINITIONS(-DTOUCHCONTROLS)
+ENDIF (TOUCHCONTROLS)
 
 
 MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )	

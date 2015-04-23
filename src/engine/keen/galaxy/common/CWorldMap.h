@@ -18,10 +18,12 @@ namespace galaxy {
 class CWorldMap : public CMapPlayGalaxy
 {
 public:
-    CWorldMap(CExeFile &ExeFile, std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
+    CWorldMap(std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 
 	void init();
 	void loadAndPlayMusic();
+
+    void ponder(const float deltaT);
 
     // Saves the inventory using the Savegamecontroller.
     //void operator>>(boost::property_tree::ptree &invNode);
