@@ -15,7 +15,16 @@
 class CTileProperties
 {
 public:
-	CTileProperties();
+    CTileProperties() :
+    chgtile(0),
+    nextTile(0),
+    animationtime(0),
+    behaviour(0),
+    bup(0),
+    bright(0),
+    bdown(0),
+    bleft(0),
+    slippery(0) {}
 
 	int chgtile;         // tile to change to when level completed (for wm)
 	// or tile to change to when picked up (in-level)

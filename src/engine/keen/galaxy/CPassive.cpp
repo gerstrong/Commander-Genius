@@ -243,36 +243,38 @@ void CPassiveGalaxy::processIntro()
 
 void CPassiveGalaxy::processIntroZoom()
 {
-    GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
+    const int leftEdge = 8;
+    const int topEdge = 8;
+    const int maxWidth = (19*gVideoDriver.getGameResolution().w)/20;
 
-    if(mZoomSfcPos.x < 16)
+    if(mZoomSfcPos.x < leftEdge)
     {
         mZoomSfcPos.x += 20;
-        mZoomSfcZoom.x -= 4;
+        mZoomSfcZoom.x -= 3;
     }
     else
     {
-        mZoomSfcPos.x = 16;
+        mZoomSfcPos.x = leftEdge;
     }
 
-    if(mZoomSfcZoom.x > gameRes.w)
+    if(mZoomSfcZoom.x > maxWidth)
     {
        mZoomSfcZoom.x -= mScaleFactor*8;
     }
     else
     {
-        mZoomSfcZoom.x = gameRes.w;
+        mZoomSfcZoom.x = maxWidth;
     }
 
 
-    if(mZoomSfcPos.y > 8)
+    if(mZoomSfcPos.y > topEdge)
     {
         mZoomSfcPos.y -= 20;
         mZoomSfcZoom.y -= 4;
     }
     else
     {
-        mZoomSfcPos.y = 8;
+        mZoomSfcPos.y = topEdge;
     }
 
     if(mZoomSfcZoom.y > mScaleFactor*32)
@@ -282,9 +284,9 @@ void CPassiveGalaxy::processIntroZoom()
 
 
 
-    if( (mZoomSfcPos.x >= 16 &&
-         mZoomSfcPos.y <= 8 &&
-         mZoomSfcZoom.x <= gameRes.w &&
+    if( (mZoomSfcPos.x >= leftEdge &&
+         mZoomSfcPos.y <= topEdge &&
+         mZoomSfcZoom.x <= maxWidth &&
          mZoomSfcZoom.y <= mScaleFactor*32 ) ||
          mSkipSection)
     {

@@ -21,9 +21,6 @@
  */
 const unsigned int MAX_NUM_SOUNDS = 50;
 
-CAudioVorticon::CAudioVorticon(const CExeFile &ExeFile) :
-m_ExeFile(ExeFile)
-{}
 
 /**
 	\brief This will load the Audio into the buffer from vorticon based keen games
@@ -34,13 +31,13 @@ m_ExeFile(ExeFile)
 void CAudioVorticon::loadSoundStream(Uint8* exedata)
 {
     const std::string gamepath = gKeenFiles.gameDir;
-	const std::string soundfile = "sounds.ck" + itoa(m_ExeFile.getEpisode());
+    const std::string soundfile = "sounds.ck" + itoa(gKeenFiles.exeFile.getEpisode());
 	gLogging.ftextOut("loadSoundStream(): trying to open the game audio...<br>");
 
 	std::ifstream file;
 	if(!OpenGameFileR(file, getResourceFilename(soundfile, gamepath, false, true), std::ios::binary))
 	{
-        const int ep = m_ExeFile.getEpisode();
+        const int ep = gKeenFiles.exeFile.getEpisode();
 		Uint32 sounds_start, sounds_end;
 
         // if not available try to extract it.
@@ -57,7 +54,7 @@ void CAudioVorticon::loadSoundStream(Uint8* exedata)
 		}
 		else
 		{
-			gLogging.ftextOut("Warning: I cannot extract sounds from that game. Please provide a \"sounds.ck%d\" for that game.", m_ExeFile.getEpisode());
+            gLogging.ftextOut("Warning: I cannot extract sounds from that game. Please provide a \"sounds.ck%d\" for that game.", gKeenFiles.exeFile.getEpisode());
 		}
 
         const Uint32 buffer_size = sounds_end-sounds_start;
@@ -239,12 +236,12 @@ bool CAudioVorticon::loadSoundData()
     setupAudioMap();
 
 	bool ok = true;
-	const int episode = m_ExeFile.getEpisode();
+    const int episode = gKeenFiles.exeFile.getEpisode();
     const std::string datadir = gKeenFiles.gameDir;
 
 	gLogging.ftextOut("loadSoundData(): loading all sounds...<br>");
 
-    loadSoundStream( m_ExeFile.getRawData() );
+    loadSoundStream( gKeenFiles.exeFile.getRawData() );
 	CSoundSlot zeroslot;
 	m_soundslot.assign(2*MAX_NUM_SOUNDS, zeroslot);
 

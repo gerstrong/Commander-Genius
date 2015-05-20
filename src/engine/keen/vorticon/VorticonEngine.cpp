@@ -32,9 +32,7 @@ namespace vorticon
 
 bool setupAudio()
 {
-    const CExeFile &ExeFile = gKeenFiles.exeFile;
-
-    CAudioVorticon *audio = new CAudioVorticon(ExeFile);
+    CAudioVorticon *audio = new CAudioVorticon;
 
     if(audio->loadSoundData())
     {

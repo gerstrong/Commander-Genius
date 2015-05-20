@@ -6,13 +6,15 @@
  */
 
 #include "CPatcher.h"
+
 #include <string.h>
 #include <fstream>
 #include <iostream>
+
 #include <base/utils/FindFile.h>
-//#include "StringUtils.h"
-#include "fileio/KeenFiles.h"
 #include <base/GsLogging.h>
+
+#include "fileio/KeenFiles.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/KeenFiles.h"
 #include "engine/core/CBehaviorEngine.h"

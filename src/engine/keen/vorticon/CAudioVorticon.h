@@ -15,7 +15,6 @@
 class CAudioVorticon : public CAudioResources
 {
 public:
-    CAudioVorticon(const CExeFile &ExeFile);
 
 	bool loadSoundData();
 	void unloadSound();
@@ -32,8 +31,6 @@ private:
 			bool IsSigned, Uint16& Priority);
 
     bool loadSound(const std::string& path, const std::string& searchname, unsigned int loadnum);
-
-	const CExeFile &m_ExeFile;
 
     std::vector<byte> mFileBuffer;
 };
