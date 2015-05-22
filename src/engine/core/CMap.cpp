@@ -636,7 +636,7 @@ void CMap::refreshVisibleArea()
 void CMap::redrawAt(const Uint32 mx, const Uint32 my)
 {
     SDL_Surface *ScrollSurface = gVideoDriver.getScrollSurface();
-	// Go throught the list and just draw all the tiles that need to be animated
+	// Go through the list and just draw all the tiles that need to be animated
 	const Uint32 num_h_tiles = ScrollSurface->h/16;
 	const Uint32 num_v_tiles = ScrollSurface->w/16;
 
@@ -889,7 +889,7 @@ void CMap::animateAllTiles()
     }
 
 
-    // Go throught the list and just draw all the tiles that need to be animated
+    // Go through the list and just draw all the tiles that need to be animated
     Uint32 num_h_tiles = ScrollSurface->h/16;
     Uint32 num_v_tiles = ScrollSurface->w/16;
 
