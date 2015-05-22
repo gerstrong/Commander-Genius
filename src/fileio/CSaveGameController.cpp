@@ -631,7 +631,7 @@ bool CSaveGameController::load()
 	StateFile.close();
 
 	// Done!
-	gLogging.textOut("File \""+ fullpath +"\" was sucessfully loaded. Size: "+itoa(m_datablock.size())+"\n");
+	gLogging.textOut("File \""+ fullpath +"\" was successfully loaded. Size: "+itoa(m_datablock.size())+"\n");
 	m_offset = 0;
 	m_statefilename.clear();
 	m_statename.clear();
@@ -707,7 +707,7 @@ bool CSaveGameController::save()
 	m_datablock.clear();
 
 	// Done!
-	gLogging.textOut("File \""+ fullpath +"\" was sucessfully saved. Size: "+itoa(size)+"\n");
+	gLogging.textOut("File \""+ fullpath +"\" was successfully saved. Size: "+itoa(size)+"\n");
 	m_statefilename.clear();
 	m_statename.clear();
 

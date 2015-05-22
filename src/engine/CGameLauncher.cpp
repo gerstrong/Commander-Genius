@@ -217,7 +217,7 @@ bool CGameLauncher::loadResources()
         if(!found)
         {
             const std::string err = "The game from directory: \"" + gameDir + "\" cannot the launched." +
-                    "Maybe it's missing or not compatible. Please check if you can run that throught the game launcher.\n";
+                    "Maybe it's missing or not compatible. Please check if you can run that through the game launcher.\n";
 
             gLogging.textOut(err);
 

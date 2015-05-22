@@ -16,7 +16,7 @@ binary-indep:
 
 binary-arch:
 	cd $(BUILDDIR); cmake -P cmake_install.cmake
-	mkdir debian/tmp/DEBIAN
+	mkdir -p debian/tmp/DEBIAN
 	dpkg-gencontrol -pcommandergenius
 	dpkg --build debian/tmp ..
 
