@@ -2,12 +2,12 @@ Source: commandergenius
 Section: contrib/games
 Priority: extra
 Maintainer: Gerhard Stein <gerstrong@gmail.com>
-Build-Depends: cmake, build-essential, libsdl2-dev, libogg-dev, libvorbis-dev, libboost1.54-dev, libsdl2-image-dev
+Build-Depends: cmake, libsdl2-dev, libogg-dev, libvorbis-dev, libboost1.54-dev, libsdl2-image-dev, debhelper (>= 9)
 Homepage: http://clonekeenplus.sourceforge.net
 
 Package: commandergenius
 Architecture: any
-Depends: libsdl2-2.0-0, libogg0, libvorbis0a, libboost1.54-dev, libsdl2-image-2.0-0
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: engine used to play the "Commander Keen" game series
  Commander-Genius aka CloneKeenPlus is an engine which interprets
  Commander Keen 1-6 (Vorticons and Galaxy Series).
