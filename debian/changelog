@@ -4,19 +4,19 @@ commandergenius (1.8.1.4) trusty; urgency=low
 
  -- Gerhard Stein <gerstrong@gmail.com>  Thu, 15 Jan 2015 13:39:49 +0100
 
- commandergenius (1.8.1.3ppa9) trusty; urgency=low
+commandergenius (1.8.1.3ppa9) trusty; urgency=low
 
   * Package dependency fixes
 
  -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 16:21:31 +0100
  
- commandergenius (1.8.1.3ppa8) trusty; urgency=low
+commandergenius (1.8.1.3ppa8) trusty; urgency=low
 
   * Removed Temp files
 
  -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 16:21:31 +0100
 
- commandergenius (1.8.1.3ppa7) trusty; urgency=low
+commandergenius (1.8.1.3ppa7) trusty; urgency=low
 
   * Corrected dependency of SDL2 Image
 
