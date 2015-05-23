@@ -1,18 +1,36 @@
-####################################################################
-#                    Commander Genius                              #
-####################################################################
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Commander-Genius
+Source: https://github.com/gerstrong/Commander-Genius/
 
-Copyright (C) 2015 Gerhard Stein
+Files: *
+Copyright: 2008-2015 Gerhard Stein
+License: GPL-3+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or 
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Files: vfsroot/games/*
+Copyright: 1990-1991 id Software / Apogee
+License: shareware
+ Here is an excerpt from /usr/share/doc/commandergenius/VENDOR.DOC
+ please have a look at this file for the full licensing terms.
+ .
+ ------------------------------------------------------------------
+ .
+ [*] Everyone can -- and is encouraged! -- to copy, upload and
+     generally pass around this Program without charging for it.
+ .
+ [1] All of the Program's files, including this one, as
+     released by us must be included without modification.
