@@ -102,6 +102,11 @@ bool COpenGL::init()
     if(!CVideoEngine::init())
         return false;
 
+    // Set by user the chosen filter
+    GLint oglfilter = GL_LINEAR;
+    if(m_VidConfig.mRenderScQuality == "nearest")
+        oglfilter = GL_NEAREST;
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
     Uint32 flags = SDL_WINDOW_OPENGL;
@@ -172,11 +177,7 @@ bool COpenGL::init()
     
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
-    
 
-    GLint oglfilter = GL_LINEAR;
-    if(m_VidConfig.mRenderScQuality == "nearest")
-        const GLint oglfilter = GL_NEAREST;
 
 
     createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);

@@ -85,6 +85,7 @@ bool VirtualKeenControl::init()
 
 void VirtualKeenControl::render(GsWeakSurface &sfc)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     GsRect<Uint16> dispRect = gVideoDriver.getVidConfig().m_DisplayRect;
 
     GsRect<Uint16> clickGameArea = gVideoDriver.mpVideoEngine->getAspectCorrRect();
@@ -152,11 +153,13 @@ void VirtualKeenControl::render(GsWeakSurface &sfc)
         mStatusButtonTexture.setAlpha(uint8_t(255.0f*mTranslucency));
         gVideoDriver.addTextureRefToRender(mStatusButtonTexture, statusButtonRect);
     }
+#endif
 }
 
 
 void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
     /// Menu Control process of one mouse state
     const float dpadSize = 0.2f;
 
@@ -261,6 +264,6 @@ void VirtualKeenControl::mouseState(const Vector2D<float> &Pos, const bool down)
             }
         }
     }
-
+#endif
 
 }
