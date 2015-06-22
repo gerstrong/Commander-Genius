@@ -1,3 +1,11 @@
+commandergenius (1.8.2ppa1) trusty; urgency=low
+
+  * AI fixes
+  * Better SDL 2 support
+  * Improved OpenGL support
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 22 Jun 2015 18:26:00 +0100
+
 commandergenius (1.8.1.4ppa2) trusty; urgency=low
 
   * Galaxy engine fixes
