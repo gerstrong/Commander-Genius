@@ -247,8 +247,10 @@ bool CVideoDriver::start()
 #if !SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 #endif
-	// When the program is through executing, call SDL_Quit
+
+#ifndef WIN32
 	atexit(SDL_Quit);
+#endif
 
 	gLogging.textOut("Starting graphics driver...<br>");
 
