@@ -13,10 +13,9 @@
 
 // TODO: I think this should go into the keen directory, maybe, because many elements are keen related, not all though.
 
-CPlayGame::CPlayGame(CExeFile &ExeFile, char level) :
+CPlayGame::CPlayGame(char level) :
 m_endgame(false),
-m_ExeFile(ExeFile),
-m_Episode(ExeFile.getEpisode()),
+m_Episode(gKeenFiles.exeFile.getEpisode()),
 m_Level(level),
 m_startgame(false),
 m_exitgame(false),
@@ -57,4 +56,4 @@ void CPlayGame::loadGame()
 // Getters
 bool CPlayGame::getEndGame() { return m_endgame; }
 bool CPlayGame::getStartGame() { return m_startgame; }
-char CPlayGame::getEpisode() { return m_Episode; }
+/*char CPlayGame::getEpisode() { return m_Episode; }*/

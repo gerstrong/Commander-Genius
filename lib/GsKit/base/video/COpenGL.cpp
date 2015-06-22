@@ -41,13 +41,6 @@ bool COpenGL::resizeDisplayScreen(const GsRect<Uint16>& newDim)
     const int w = m_VidConfig.mAspectCorrection.w;
     const int h = m_VidConfig.mAspectCorrection.h;
 
-    // Render a black surface which cleans the screen, in case there already is some content in the screen    
-    if(mpScreenSfc->empty())
-    {
-        clearSurfaces();
-        transformScreenToDisplay();
-    }
-
 #if SDL_VERSION_ATLEAST(2, 0, 0)        
   
     updateAspectRect(newDim, w, h);
@@ -106,7 +99,13 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 
 bool COpenGL::init()
 {
-	CVideoEngine::init();	
+    if(!CVideoEngine::init())
+        return false;
+
+    // Set by user the chosen filter
+    GLint oglfilter = GL_LINEAR;
+    if(m_VidConfig.mRenderScQuality == "nearest")
+        oglfilter = GL_NEAREST;
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)    
 
@@ -118,6 +117,16 @@ bool COpenGL::init()
         flags |= (SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
 
+    // set the opengl context version
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+
+    // turn on double buffering set the depth buffer to 24 bits
+    // you may need to change this to 16 or 32 for your system
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+
     window = SDL_CreateWindow("Commander Genius",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED,
@@ -125,7 +134,11 @@ bool COpenGL::init()
                               m_VidConfig.m_DisplayRect.h,
                               flags);
 
+
     glcontext = SDL_GL_CreateContext(window);
+
+    // sync buffer swap with monitor's vertical refresh rate
+    SDL_GL_SetSwapInterval(1);
     
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -164,11 +177,7 @@ bool COpenGL::init()
     
 	// Enable Texture loading for the blit screen
 	glEnable(m_texparam);
-    
 
-    GLint oglfilter = GL_LINEAR;
-    if(m_VidConfig.mRenderScQuality == "nearest")
-        const GLint oglfilter = GL_NEAREST;
 
 
     createTexture(m_texture, oglfilter, m_GamePOTScaleDim.w, m_GamePOTScaleDim.h);
@@ -314,7 +323,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
                 mpScreenSfc->width(),
                 mpScreenSfc->height(),
 				0, externalFormat,
-                GL_UNSIGNED_BYTE, mpScreenSfcgetSDLSurface()->pixels);
+                GL_UNSIGNED_BYTE, mpScreenSfc->getSDLSurface()->pixels);
 
     mpScreenSfc->unlock();
 //#endif
@@ -350,7 +359,7 @@ void COpenGL::transformScreenToDisplay()
 
 	glEnable(GL_BLEND);
 
-    loadSurface(m_texture, *mpScreenSfc.getSDLSurface());
+    loadSurface(m_texture, mpScreenSfc->getSDLSurface());
 	renderTexture(m_texture);
 
 	glDisableClientState(GL_VERTEX_ARRAY);

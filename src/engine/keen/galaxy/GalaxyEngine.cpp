@@ -60,7 +60,7 @@ bool loadLevelMusic(const int level)
       return false;
     }
 
-    return g_pMusicPlayer->loadTrack(ExeFile, track);
+    return g_pMusicPlayer->loadTrack(track);
 }
 
 
@@ -117,7 +117,9 @@ bool GalaxyEngine::loadResources( const Uint8 flags )
                 // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
                 CEGAGraphicsGalaxy graphics(ExeFile);
                 if( !graphics.loadData() )
+                {
                     return 0;
+                }
 
                 mLoader.setPermilage(400);
             }

@@ -2023,7 +2023,7 @@ void CPlayerLevel::openDoorsTile()
 	Uint32 tileno, next_tileno;
 
     // Get the tile position of the last tile to change. on the right of
-    std::vector<CTileProperties> &tilePropVec = g_pBehaviorEngine->getTileProperties(1);
+    //std::vector<CTileProperties> &tilePropVec = g_pBehaviorEngine->getTileProperties(1);
 
     while(1)
 	{

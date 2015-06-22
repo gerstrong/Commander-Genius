@@ -99,6 +99,8 @@ public:
 
     SDL_Surface *getBlitSurface() const { return mpVideoEngine->getBlitSurface(); }
 
+    GsSurface &getScreenSurface() const { return mpVideoEngine->getScreenSurface(); }
+
     SDL_Surface *convertThroughBlitSfc( SDL_Surface *sfc );
 
 	bool isOpenGL(void) { return m_VidConfig.m_opengl; }

@@ -11,10 +11,11 @@
 #include "ep4/CMapLoaderGalaxyEp4.h"
 #include "ep5/CMapLoaderGalaxyEp5.h"
 #include <base/CInput.h>
-//#include "sdl/CVideoDriver.h"
 #include "sdl/audio/music/CMusic.h"
 #include "graphics/effects/CDimDark.h"
 #include <base/GsLogging.h>
+
+#include "engine/core/VGamepads/vgamepadsimple.h"
 
 #include "CMapPlayGalaxy.h"
 
@@ -23,10 +24,9 @@
 
 namespace galaxy {
 
-CLevelPlay::CLevelPlay(CExeFile &ExeFile,
-        std::vector<CInventory> &inventory,
+CLevelPlay::CLevelPlay(std::vector<CInventory> &inventory,
 		stCheat &Cheatmode) :
-CMapPlayGalaxy(ExeFile, inventory, Cheatmode)
+CMapPlayGalaxy(inventory, Cheatmode)
 { }
 
 
@@ -38,11 +38,11 @@ void CLevelPlay::loadMap(const int level)
     const int episode = g_pBehaviorEngine->getEpisode();
 
     if(episode == 4)
-        MapLoader.reset(new CMapLoaderGalaxyEp4(mExeFile, mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp4(mObjectPtr, mInventoryVec, mCheatmode));
     else if(episode == 5)
-        MapLoader.reset(new CMapLoaderGalaxyEp5(mExeFile, mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp5(mObjectPtr, mInventoryVec, mCheatmode));
     else if(episode == 6)
-        MapLoader.reset(new CMapLoaderGalaxyEp6(mExeFile, mObjectPtr, mInventoryVec, mCheatmode));
+        MapLoader.reset(new CMapLoaderGalaxyEp6(mObjectPtr, mInventoryVec, mCheatmode));
 
 	MapLoader->loadMap( mMap, level );
 
@@ -78,5 +78,16 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	return true;
 }
 
+void CLevelPlay::ponder(const float deltaT)
+{
+#ifdef TOUCHCONTROLS
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    assert(vkc);
+    vkc->mButtonMode = VirtualKeenControl::ACTION;
+    vkc->mHideEnterButton = true;
+#endif
+
+    ponderBase(deltaT);
+}
 
 }

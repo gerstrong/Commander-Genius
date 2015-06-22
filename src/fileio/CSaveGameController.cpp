@@ -10,8 +10,8 @@
 #include <base/utils/FindFile.h>
 #include "CSaveGameController.h"
 #include "engine/core/CBehaviorEngine.h"
-#include <ctime>
 
+#include <ctime>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/version.hpp>
@@ -631,7 +631,7 @@ bool CSaveGameController::load()
 	StateFile.close();
 
 	// Done!
-	gLogging.textOut("File \""+ fullpath +"\" was sucessfully loaded. Size: "+itoa(m_datablock.size())+"\n");
+	gLogging.textOut("File \""+ fullpath +"\" was successfully loaded. Size: "+itoa(m_datablock.size())+"\n");
 	m_offset = 0;
 	m_statefilename.clear();
 	m_statename.clear();
@@ -707,7 +707,7 @@ bool CSaveGameController::save()
 	m_datablock.clear();
 
 	// Done!
-	gLogging.textOut("File \""+ fullpath +"\" was sucessfully saved. Size: "+itoa(size)+"\n");
+	gLogging.textOut("File \""+ fullpath +"\" was successfully saved. Size: "+itoa(size)+"\n");
 	m_statefilename.clear();
 	m_statename.clear();
 

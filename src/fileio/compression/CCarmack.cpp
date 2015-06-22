@@ -9,10 +9,6 @@
 #include <base/GsLogging.h>
 #include <base/utils/StringUtils.h>
 
-CCarmack::CCarmack()
-{
-	// TODO Auto-generated constructor stub
-}
 
 #define NEARTAG     0xA7
 #define FARTAG      0xA8

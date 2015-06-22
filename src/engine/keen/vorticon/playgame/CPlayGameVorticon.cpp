@@ -40,7 +40,7 @@
 ///
 ///
 CPlayGameVorticon::CPlayGameVorticon(const int startlevel) :
-CPlayGame(gKeenFiles.exeFile, startlevel)
+CPlayGame(startlevel)
 {
     // If no level has been set or is out of bound, set it to map.
     if(m_Level > 100 || m_Level <= 0 )

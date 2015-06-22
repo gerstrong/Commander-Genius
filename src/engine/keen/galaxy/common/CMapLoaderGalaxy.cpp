@@ -34,10 +34,8 @@ namespace galaxy
 
 
 
-CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile,
-		std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
+CMapLoaderGalaxy::CMapLoaderGalaxy(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
         std::vector<CInventory> &inventoryVec, stCheat &Cheatmode):
-m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
 mInventoryVec(inventoryVec),
 m_Cheatmode(Cheatmode),
@@ -49,7 +47,8 @@ size_t CMapLoaderGalaxy::getMapheadOffset()
 {
 	size_t offset = 0;
 
-	switch(m_ExeFile.getEpisode())
+
+    switch(gKeenFiles.exeFile.getEpisode())
 	{
 	case 4:	offset = 0x24830; break;
 	case 5:	offset = 0x25990; break;
@@ -196,7 +195,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
   Map.mNumFuses = 0;
   
   // In case no external file was read, let's use data from the embedded data
-  byte *Maphead = m_ExeFile.getRawData() + getMapheadOffset();
+  byte *Maphead = gKeenFiles.exeFile.getRawData() + getMapheadOffset();
   
   // In case there is an external file read it into the container and replace the pointer
   const std::string mapHeadFilename = gKeenFiles.mapheadFilename;
@@ -395,6 +394,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		}
 	}
 
+    /// Only for testing loaded Objects
 	/*std::ofstream File("objlayer.txt");
 
 	// Note: This is just for tracing stuff from the level maps

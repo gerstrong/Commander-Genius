@@ -10,7 +10,6 @@
 #include "CTitle.h"
 #include <base/GsTimer.h>
 #include <base/video/CVideoDriver.h>
-//#include "ai/CEGABitmap.h"
 #include "graphics/effects/CColorMerge.h"
 #include "graphics/effects/CPixelate.h"
 #include <widgets/GsMenuController.h>

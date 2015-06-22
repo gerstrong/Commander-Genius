@@ -2,9 +2,10 @@
 # Compilers and other specific variables can be found here:
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 
+OPTION(TOUCHCONTROLS "Touchcontrols support" No)
  
 if(SDL2)
-    OPTION(OPENGL "OpenGL support" No)
+    OPTION(OPENGL "OpenGL support" No)    
 else()
     OPTION(OPENGL "OpenGL support" Yes)
 endif()
@@ -36,86 +37,8 @@ ENDIF(NOT DEFINED BUILD_TARGET)
 
 SET(USRDIR /usr)
 
-# Compilation Flags and executables
-IF (BUILD_TARGET STREQUAL GP2X OR
-    BUILD_TARGET STREQUAL WIZ OR
-    BUILD_TARGET STREQUAL CAANOO OR
-    BUILD_TARGET STREQUAL DINGOO OR
-    BUILD_TARGET STREQUAL PANDORA OR
-    BUILD_TARGET STREQUAL NANONOTE)
-	IF (BUILD_TARGET STREQUAL GP2X)
-		SET(USRDIR /mythtv/media/devel/toolchains/open2x/gcc-4.1.1-glibc-2.3.6)
-		SET(CMAKE_C_COMPILER ${USRDIR}/bin/arm-open2x-linux-gcc)
-		SET(CMAKE_CXX_COMPILER ${USRDIR}/bin/arm-open2x-linux-g++)
-		ADD_DEFINITIONS(-DGP2X)
-		ADD_DEFINITIONS(-DNOKEYBOARD)
-		SET(OGG Yes)
-	ELSEIF(BUILD_TARGET STREQUAL WIZ)
-		SET(USRDIR /mythtv/media/devel/toolchains/openwiz/arm-openwiz-linux-gnu)
-		SET(CMAKE_C_COMPILER ${USRDIR}/bin/arm-openwiz-linux-gnu-gcc)
-		SET(CMAKE_CXX_COMPILER ${USRDIR}/bin/arm-openwiz-linux-gnu-g++)
-		ADD_DEFINITIONS(-DWIZ)
-                ADD_DEFINITIONS(-DNOKEYBOARD)
-		SET(OGG Yes)
-        ELSEIF(BUILD_TARGET STREQUAL CAANOO)
-                SET(USRDIR /mythtv/media/devel/toolchains/caanoo/GPH_SDK)
-                SET(CMAKE_C_COMPILER ${USRDIR}/tools/gcc-4.2.4-glibc-2.7-eabi/bin/arm-gph-linux-gnueabi-gcc)
-                SET(CMAKE_CXX_COMPILER ${USRDIR}/tools/gcc-4.2.4-glibc-2.7-eabi/bin/arm-gph-linux-gnueabi-g++)
-                ADD_DEFINITIONS(-DCAANOO)
-                SET(OGG Yes)
+include(oldArch.cmake)
 
-                include_directories(${USRDIR}/DGE/include)
-                include_directories(${USRDIR}/DGE/include/vorbis)
-                link_directories(${USRDIR}/DGE/lib/target)
-                ADD_DEFINITIONS(-DCAANOO)
-                ADD_DEFINITIONS(-DNOKEYBOARD)
-                SET(OGG Yes)
-	ELSEIF(BUILD_TARGET STREQUAL DINGOO)
-		SET(USRDIR /opt/opendingux-toolchain/usr/)
-		SET(CMAKE_C_COMPILER ${USRDIR}/bin/mipsel-linux-gcc)
-		SET(CMAKE_CXX_COMPILER ${USRDIR}/bin/mipsel-linux-g++)
-                include_directories(${USRDIR}/include/tremor)
-		ADD_DEFINITIONS(-DDINGOO)
-                ADD_DEFINITIONS(-DNOKEYBOARD)
-		SET(OGG No)
-		SET(TREMOR Yes)
-	ELSEIF(BUILD_TARGET STREQUAL PANDORA)
-		SET(USRDIR /mythtv/media/devel/toolchains/pandora/arm-2007q3)
-		SET(CMAKE_C_COMPILER ${USRDIR}/bin/arm-none-linux-gnueabi-gcc)
-		SET(CMAKE_CXX_COMPILER ${USRDIR}/bin/arm-none-linux-gnueabi-g++)
-		ADD_DEFINITIONS(-DPANDORA)
-                ADD_DEFINITIONS(-mcpu=cortex-a8 -mtune=cortex-a8 -march=armv7-a)
-                ADD_DEFINITIONS(-mfloat-abi=softfp -mfpu=neon -ftree-vectorize -fno-strict-aliasing -fsingle-precision-constant)
-
-		SET(OGG Yes)
-	ELSEIF(BUILD_TARGET STREQUAL NANONOTE)
-		SET(USRDIR /usr/local/jlime/mipsel-toolchain/usr)
-		SET(CMAKE_C_COMPILER ${USRDIR}/bin/mipsel-linux-gcc)
-		SET(CMAKE_CXX_COMPILER ${USRDIR}/bin/mipsel-linux-g++)
-		ADD_DEFINITIONS(-DNANONOTE)
-		SET(OGG No)
-		SET(TREMOR No)
-	ENDIF(BUILD_TARGET STREQUAL GP2X)
-	SET(CMAKE_SYSTEM_NAME Linux)
-	SET(CMAKE_FIND_ROOT_PATH ${USRDIR})
-	SET(CMAKE_INSTALL_USRDIR ${USRDIR})
-	SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-	SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-	SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-	SET(CMAKE_FIND_LIBRARY_USRDIRES lib)
-	SET(CMAKE_FIND_LIBRARY_SUFFIXES .a)
-	SET(OPENGL No)
-	SET(CMAKE_VERBOSE_MAKEFILE ON)
-
-	ADD_DEFINITIONS(-fsigned-char)
-	ADD_DEFINITIONS(-ffast-math)
-	ADD_DEFINITIONS(-fomit-frame-pointer)
-        IF (NOT BUILD_TARGET STREQUAL CAANOO)
-                include_directories(${USRDIR}/include)
-                include_directories(${USRDIR}/include/vorbis)
-                link_directories(${USRDIR}/lib)
-        ENDIF (NOT BUILD_TARGET STREQUAL CAANOO)
-ENDIF ()
 
 
 # Make this C++11. We need that in Commander Genius
@@ -161,13 +84,6 @@ IF (TREMOR)
 	ADD_DEFINITIONS(-DTREMOR)
 ENDIF (TREMOR)
 
-
-
-
-IF (OPENGL)
-	ADD_DEFINITIONS(-DGL)
-	ADD_DEFINITIONS(-DUSE_OPENGL)
-ENDIF (OPENGL)
 
 
 # If we want to debug set the proper flags or have release etc.
@@ -242,6 +158,16 @@ else(USE_SDL2)
         endif(SDL_FOUND)
 
 endif(USE_SDL2)
+
+IF (OPENGL)
+        ADD_DEFINITIONS(-DGL)
+        ADD_DEFINITIONS(-DUSE_OPENGL)
+ENDIF (OPENGL)
+
+IF (TOUCHCONTROLS)
+        ADD_DEFINITIONS(-DTOUCHCONTROLS)
+ENDIF (TOUCHCONTROLS)
+
 
 MESSAGE( STATUS "DOSBox-Fusion: ${DBFUSION}" )	
 

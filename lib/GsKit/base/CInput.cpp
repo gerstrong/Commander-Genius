@@ -1344,6 +1344,8 @@ void CInput::flushCommand(int player, int command)
 	InputCommand[player][command].firsttimeactive = false;
 }
 
+
+
 /**
  * \brief	this will forget every key that was typed before
  */

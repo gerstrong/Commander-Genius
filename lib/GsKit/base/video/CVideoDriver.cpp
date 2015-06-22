@@ -247,8 +247,10 @@ bool CVideoDriver::start()
 #if !SDL_VERSION_ATLEAST(2, 0, 0)
     SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 #endif
-	// When the program is through executing, call SDL_Quit
+
+#ifndef WIN32
 	atexit(SDL_Quit);
+#endif
 
 	gLogging.textOut("Starting graphics driver...<br>");
 
@@ -420,6 +422,16 @@ SDL_Rect CVideoDriver::toBlitRect(const GsRect<float> &rect)
 	GsRect<Uint16> GameRes = getGameResolution();
 	GsRect<float> screenRect(0, 0, GameRes.w, GameRes.h);
 	GsRect<float> RectDispCoordFloat = rect;
+
+    if(RectDispCoordFloat.x < 0.0)
+        RectDispCoordFloat.x = 0.0;
+    if(RectDispCoordFloat.y < 0.0)
+        RectDispCoordFloat.y = 0.0;
+
+    if(RectDispCoordFloat.h > 1.0)
+        RectDispCoordFloat.h = 1.0;
+    if(RectDispCoordFloat.w > 1.0)
+        RectDispCoordFloat.w = 1.0;
 
 	// Transform to the blit coordinates
 	RectDispCoordFloat.transform(screenRect);

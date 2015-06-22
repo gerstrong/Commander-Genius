@@ -16,8 +16,6 @@
 #include <cstdio>
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-#else
-//#include "SDL_rotozoom.h"
 #endif
 
 

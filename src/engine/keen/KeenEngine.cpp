@@ -74,6 +74,9 @@ void KeenEngine::ponder(const float deltaT)
 
     GameEngine::ponder(deltaT);
 
+    if(!mpGameMode)
+        return;
+
     if(g_pMusicPlayer->active() && !g_pMusicPlayer->playing())
     {
        g_pMusicPlayer->play();

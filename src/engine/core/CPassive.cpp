@@ -13,6 +13,7 @@
 
 #include "fileio/KeenFiles.h"
 
+
 CPassive::CPassive()
 {
     CResource &keenFiles = gKeenFiles;
@@ -21,8 +22,16 @@ CPassive::CPassive()
 	m_mode = INTRO;
 	m_Episode = ExeFile.getEpisode();
     m_DataDirectory = gKeenFiles.gameDir;
+
 }
 
+
+CPassive::~CPassive()
+{
+
+    gInput.mpVirtPad = nullptr;
+
+}
 
 void CPassive::pumpEvent(const CEvent *evPtr)
 {
