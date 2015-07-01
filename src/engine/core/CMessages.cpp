@@ -192,14 +192,10 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
 			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
 
-			// Elder Janitor Text. Strangely it is the end of the level load text being to only
-			// in that data segment
-			StringMap.insert( extractNextString( "FUSE_TEXT1" ) );
-			StringMap.insert( extractNextString( "FUSE_TEXT2" ) );
-			StringMap.insert( extractNextString( "FUSE_TEXT3" ) );
-			StringMap.insert( extractNextString( "FUSE_TEXT4" ) );
-			
-			StringMap.insert( extractNextString( "FUSE_TEXT5" ) );
+            // Fuse text. This text is loaded when you break one of the fuses
+            setDecodeOffset(0x31BFB);
+            StringMap.insert( extractNextString( "FUSE_WONDER" ) );
+            StringMap.insert( extractNextString( "FUSE_CASUAL" ) );
 
 			return true;
 		} break;

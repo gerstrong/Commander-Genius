@@ -141,8 +141,8 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
 
                 if(g_pBehaviorEngine->getEpisode() == 5)
                 {
-                    // enough fuses broken, in fact of all the fuses levels, except the secret one.
-                    // then open the elevator door for the last level!
+                    // enough fuses broken, which are all the fuse levels, except the secret one.
+                    // In this case open the elevator door for the last level!
                     // NOTE: I'm not sure, if there is a better way to do it.
                     // if you know one, go ahead and improve this!
                     if(m_Inventory.Item.fuse_levels_completed >= 4)
