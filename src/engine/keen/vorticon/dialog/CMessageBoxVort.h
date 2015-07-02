@@ -17,9 +17,6 @@ public:
 
     void initVorticonBackground();
 
-    void render();
-
-
 
 	/**
 	 * \brief This will add an extra tile to the message box. Mostly used by the dialog "Ship missing" in Keen 1

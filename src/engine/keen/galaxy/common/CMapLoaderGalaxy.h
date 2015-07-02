@@ -13,7 +13,6 @@
 #include <string>
 #include <SDL.h>
 
-#include "fileio/CExeFile.h"
 #include <base/TypeDefinitions.h>
 #include "engine/core/CMap.h"
 #include "engine/core/Cheat.h"
@@ -26,8 +25,7 @@ namespace galaxy
 class CMapLoaderGalaxy
 {
 public:
-	CMapLoaderGalaxy(CExeFile &ExeFile,
-			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
+    CMapLoaderGalaxy(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
             std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 	
 	size_t getMapheadOffset();
@@ -60,7 +58,6 @@ protected:
             longword offset, longword length,
             word magic_word);
 
-	CExeFile &m_ExeFile;
 	std::vector< std::shared_ptr<CGalaxySpriteObject> > &m_ObjectPtr;
     std::vector<CInventory> &mInventoryVec;
 	stCheat &m_Cheatmode;

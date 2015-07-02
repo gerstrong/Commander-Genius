@@ -16,8 +16,7 @@ namespace galaxy
 class CMapLoaderGalaxyEp4 : public CMapLoaderGalaxy
 {
 public:
-	CMapLoaderGalaxyEp4(CExeFile &ExeFile,
-			std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
+    CMapLoaderGalaxyEp4(std::vector< std::shared_ptr<CGalaxySpriteObject> > &ObjectPtr,
             std::vector<CInventory> &inventoryVec, stCheat &Cheatmode);
 
 	//------------------------------------------------//

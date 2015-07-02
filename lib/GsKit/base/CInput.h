@@ -241,6 +241,20 @@ public:
     void flushCommands();
 	void flushCommand(int command);
 	void flushCommand(int player, int command);
+
+
+    /**
+     * @brief setCommand    Sets a given command.
+     * @param player        player to which the command wil be setCommand;
+     * @param command       Command object to be set
+     * @param active        Will the command be set active or unactive
+     */
+    void setCommand(const int player, const int command, const bool active)
+    {
+        InputCommand[player][command].active = active;
+    }
+
+
     void flushKeys();
     void flushEvents();
     void flushAll();

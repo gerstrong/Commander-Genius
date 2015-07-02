@@ -1045,14 +1045,14 @@ void CPlayerLevel::processPogoCommon()
 	    
 	    if(tileID == 0x078A)
 	    {		
-		const int t1 = mp_Map->getPlaneDataAt(1, 0, 0);
-		const int t2 = mp_Map->getPlaneDataAt(1, 0, (1<<CSF));
-		
-		x >>= CSF; y >>= CSF;
-			
-		mp_Map->setTile(x, y, t1, true);
-		mp_Map->setTile(x, y+1, t2, true);
-		mp_Map->mNumFuses--;
+            const int t1 = mp_Map->getPlaneDataAt(1, 0, 0);
+            const int t2 = mp_Map->getPlaneDataAt(1, 0, (1<<CSF));
+
+            x >>= CSF; y >>= CSF;
+
+            mp_Map->setTile(x, y, t1, true);
+            mp_Map->setTile(x, y+1, t2, true);
+            mp_Map->mNumFuses--;
 	    }
 	}
 }
@@ -2023,7 +2023,7 @@ void CPlayerLevel::openDoorsTile()
 	Uint32 tileno, next_tileno;
 
     // Get the tile position of the last tile to change. on the right of
-    std::vector<CTileProperties> &tilePropVec = g_pBehaviorEngine->getTileProperties(1);
+    //std::vector<CTileProperties> &tilePropVec = g_pBehaviorEngine->getTileProperties(1);
 
     while(1)
 	{
@@ -2604,12 +2604,28 @@ void CPlayerLevel::process()
 	if(mp_Map->mFuseInLevel && mp_Map->mNumFuses == 0)
 	{
 	    // TODO: Need to spawn other messages here!
-	    g_pMusicPlayer->stop();
-	    g_pSound->playSound( SOUND_LEVEL_DONE );
-        gEventManager.add( new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar) );
+        g_pMusicPlayer->stop();
+
         m_Inventory.Item.m_gem.clear();
         m_Inventory.Item.fuse_levels_completed++;
-	    mp_Map->mFuseInLevel = false;
+        mp_Map->mFuseInLevel = false;
+
+        std::vector<CMessageBoxGalaxy*> msgs;
+
+        bool specialLevel = false;
+
+        const std::string fuse_msg = g_pBehaviorEngine->getString( (specialLevel) ? "FUSE_WONDER" : "FUSE_CASUAL");
+
+        g_pSound->playSound( SOUND_LEVEL_DONE );
+
+        msgs.push_back( new CMessageBoxBitmapGalaxy(
+                            fuse_msg,
+                            *gGraphics.getBitmapFromStr("KEENTHUMBSUP"),
+                            RIGHT,
+                            new EventExitLevel(mp_Map->getLevel(), true, false, mSprVar)) );
+
+        showMsgVec( msgs );
+
 	    return;
 	}
 	    

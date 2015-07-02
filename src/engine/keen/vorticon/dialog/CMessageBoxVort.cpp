@@ -25,13 +25,6 @@ CMessageBox(Text, lower, keymsg, leftbound, CGUIDialog::EXPAND)
 
 void CMessageBoxVort::initVorticonBackground()
 {
-//    return;
-    const SDL_Rect lRect = gVideoDriver.toBlitRect(mRect);
-
-    mBackgroundSfc.create(0, lRect.w, lRect.h, RES_BPP, 0, 0, 0, 0);
-    mBackgroundSfc.fillRGB(230, 230, 230);
-
-
     GsRect<float> rect = getRect();
 
     const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
@@ -57,20 +50,6 @@ void CMessageBoxVort::initVorticonBackground()
 
     processRendering(mBackgroundSfc.getSDLSurface());
 }
-
-
-void CMessageBoxVort::render()
-{
-    CMessageBox::render();
-    //GsRect<float> rect = getRect();
-    //const SDL_Rect sdlRect = gVideoDriver.toBlitRect(rect);
-
-    //GsWeakSurface blit(gVideoDriver.getBlitSurface());
-
-    //mBackgroundSfc.blitTo(blit, sdlRect);
-    //CGUIDialog::processRendering();
-}
-
 
 
 // This function is used in your Ship need those parts.

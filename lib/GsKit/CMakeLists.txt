@@ -10,6 +10,12 @@ IF(WIN32)
 	ADD_DEFINITIONS(-DWIN32)
 ENDIF(WIN32)
 
+IF (OPENGL)
+        ADD_DEFINITIONS(-DGL)
+        ADD_DEFINITIONS(-DUSE_OPENGL)
+ENDIF (OPENGL)
+
+
 # If we want to debug set the proper flags or have release etc.
 IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
         ADD_DEFINITIONS(-DDEBUG)

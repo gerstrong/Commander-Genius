@@ -29,8 +29,6 @@
 #include "objenums.h"
 
 
-
-
 const int COLISION_RES = (1<<STC);
 
 // The bouncing box used by the object which is used to determine the collisions
@@ -154,7 +152,11 @@ public:
     bool m_jumpdownfromobject;
 
 
+    /*
+     * \brief Calculate Bounding Boxes fro collision
+     */
 	void calcBoundingBoxes();
+
 	void performCollisionsSameBox();
 	void performCollisions();
 	void alignToTile();

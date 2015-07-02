@@ -1,22 +1,62 @@
+commandergenius (1.8.2.1ppa1) trusty; urgency=low
+
+  *  Message Box is shown in Keen 5 when fuses are broken
+  *  Soft collision detection, so Sprites can go through narrow sections in the games (Keen 5 for example has some levels with this issue)$
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 02 Jul 2015 14:07:37 +0200
+
+ commandergenius (1.8.2ppa3) trusty; urgency=low
+
+  * Rebuild
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sat, 27 Jun 2015 10:21:28 +0200
+
+commandergenius (1.8.2ppa2) trusty; urgency=low
+
+  * Updated documentation rules
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 25 Jun 2015 19:46:39 +0200
+ 
+commandergenius (1.8.2ppa1) trusty; urgency=low
+
+  * AI fixes
+  * Better SDL 2 support
+  * Improved OpenGL support
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 22 Jun 2015 18:26:00 +0100
+
+commandergenius (1.8.1.4ppa2) trusty; urgency=low
+
+  * Galaxy engine fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 15 Jan 2015 19:44:37 +0100
+
+commandergenius (1.8.1.4ppa1) trusty; urgency=low
+
+  * Caches fixes
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 15 Jan 2015 15:20:47 +0100
+
 commandergenius (1.8.1.4) trusty; urgency=low
 
-  * Version update. This solves some vorticon issues and enhances the mod support.
+  * Version update. This solves some vorticon issues
+    and enhances the mod support.
 
  -- Gerhard Stein <gerstrong@gmail.com>  Thu, 15 Jan 2015 13:39:49 +0100
 
- commandergenius (1.8.1.3ppa9) trusty; urgency=low
+commandergenius (1.8.1.3ppa9) trusty; urgency=low
 
   * Package dependency fixes
 
  -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 16:21:31 +0100
  
- commandergenius (1.8.1.3ppa8) trusty; urgency=low
+commandergenius (1.8.1.3ppa8) trusty; urgency=low
 
   * Removed Temp files
 
  -- Gerhard Stein <gerstrong@gmail.com>  Fri, 02 Jan 2015 16:21:31 +0100
 
- commandergenius (1.8.1.3ppa7) trusty; urgency=low
+commandergenius (1.8.1.3ppa7) trusty; urgency=low
 
   * Corrected dependency of SDL2 Image
 

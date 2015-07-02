@@ -38,16 +38,12 @@ void CFuse::getTouchedBy(CSpriteObject &theObject)
 {
 	if(dead || theObject.dead)
 		return;
-
-	/*if( CPlayerLevel *player = dynamic_cast<CPlayerLevel*>(&theObject) )
-	{
-		player->kill();
-	}*/
 }
 
 
 void CFuse::process()
 {
+    // TODO: We might need a scatter effect here
 	//if(!processActionRoutine())
 	  //  exists = false;
 }

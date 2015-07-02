@@ -5,13 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "CTileLoader.h"
+#include <cstdlib>
+#include <string>
+
 #include <base/GsLogging.h>
 #include <base/utils/FindFile.h>
 #include <base/TypeDefinitions.h>
+
 #include "engine/core/CBehaviorEngine.h"
-#include <cstdlib>
-#include <string>
+#include "CTileLoader.h"
+
 
 CTileLoader::CTileLoader(int episode, int version, unsigned char *data)
 {

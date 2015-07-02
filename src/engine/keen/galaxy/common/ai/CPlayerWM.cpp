@@ -19,6 +19,7 @@
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 #include "graphics/effects/CDimDark.h"
 #include "fileio/KeenFiles.h"
+#include "engine/core/VGamepads/vgamepadsimple.h"
 
 const int TIME_TO_WAVE = 400;
 
@@ -140,8 +141,8 @@ void CPlayerWM::pumpEvent(const CEvent *evPtr)
 
                 if(g_pBehaviorEngine->getEpisode() == 5)
                 {
-                    // enough fuses broken, in fact of all the fuses levels, except the secret one.
-                    // then open the elevator door for the last level!
+                    // enough fuses broken, which are all the fuse levels, except the secret one.
+                    // In this case open the elevator door for the last level!
                     // NOTE: I'm not sure, if there is a better way to do it.
                     // if you know one, go ahead and improve this!
                     if(m_Inventory.Item.fuse_levels_completed >= 4)
@@ -399,21 +400,47 @@ void CPlayerWM::processMoving()
         solid = !solid;
         m_Cheatmode.noclipping = false;
     }
-    
-    // perform actions depending on if the jump button was pressed
-    if( m_playcontrol[PA_JUMP] )
+
+#ifdef TOUCHCONTROLS
+    VirtualKeenControl *vkc = dynamic_cast<VirtualKeenControl*>(gInput.mpVirtPad.get());
+    assert(vkc);
+    vkc->mButtonMode = VirtualKeenControl::WMAP;
+    vkc->mHideEnterButton = true;
+#endif
+
+
+    /// Check if Keen is able to access a level
+    // Get the object
+    int x = getXMidPos();
+    int y = getYMidPos();
+    Uint16 object = mp_Map->getPlaneDataAt(2, x, y);
+    if(object) // if we found an object
     {
-        // Get the object
-        const int x = getXMidPos();
-        const int y = getYMidPos();
-        Uint16 object = mp_Map->getPlaneDataAt(2, x, y);
-        if(object) // if we found an object
+
+#ifdef TOUCHCONTROLS
+        int level = object - 0xC000;
+        const Uint16 flag_dest = level + 0xF000;
+
+        const int ep = g_pBehaviorEngine->getEpisode();
+        const int shipLevel = (ep < 6) ? 18 : 17;
+
+        if(mp_Map->findTile(flag_dest, &x, &y, 2) ||
+           g_pBehaviorEngine->m_option[OPT_LVLREPLAYABILITY].value
+           || level >= shipLevel)
+        {
+            vkc->mHideEnterButton = false;
+        }
+#endif
+
+        // Try to start a level
+        if( m_playcontrol[PA_JUMP] )
         {
             // start the level
             startLevel(object);
             gInput.flushCommands();
         }
     }
+
     
     // If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
     if(m_basesprite == walkBaseFrame)

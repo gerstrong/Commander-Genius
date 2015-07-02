@@ -56,17 +56,26 @@ void CSaveMenu::refresh()
     auto itCtrl = list.begin();
     itCtrl++;
 
-    for(Uint32 i=0 ;i<8 ; i++)
+    std::shared_ptr<CGUIControl> &ctrl = *itCtrl;
+    InputText *input = dynamic_cast<InputText*>( ctrl.get() );
+
+    /*for(Uint32 i=0 ;i<8 ; i++)
     {
         std::string text = EMPTY_TEXT;
         if(i < StateFileList.size())
             text = StateFileList.at(i);
 
-        std::shared_ptr<CGUIControl> &ctrl = *itCtrl;
-        InputText *input = dynamic_cast<InputText*>( ctrl.get() );
 
-        input->setText(text);
-    }
+        if(i==0)
+            input->setText(text);
+    }*/
+
+    std::string text = EMPTY_TEXT;
+
+    if(!StateFileList.empty())
+        text = StateFileList[0];
+
+    input->setText(text);
 }
 
 void CSaveMenu::ponder()

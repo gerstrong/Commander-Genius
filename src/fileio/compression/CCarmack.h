@@ -4,7 +4,7 @@
  *  Created on: 30.05.2010
  *      Author: gerstrong
  *
- *  Integration of the Carmack decompression to Commander Genius
+ *  Integration of the Carmack decompression routine to Commander Genius described as class
  */
 
 #ifndef CCARMACK_H_
@@ -15,8 +15,7 @@
 
 class CCarmack
 {
-public:
-	CCarmack();
+public:	
 	void expand( std::vector<byte>& dst, std::vector<byte>& src );
 };
 
