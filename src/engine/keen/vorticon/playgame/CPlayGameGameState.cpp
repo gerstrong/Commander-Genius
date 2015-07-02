@@ -22,7 +22,6 @@ bool CPlayGameVorticon::loadGameState()
         return true;
 
 	CSaveGameController &savedGame = *(gpSaveGameController);
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
 	
 	bool ok = true;
 
@@ -55,13 +54,18 @@ bool CPlayGameVorticon::loadGameState()
 	ok &= savedGame.decodeData(checky);
 	ok &= savedGame.decodeData(dark);
 	
+
 	// Load number of Players
-    ok &= savedGame.decodeData(g_pBehaviorEngine->mPlayers);
-	
+    unsigned int numPlayers;
+    ok &= savedGame.decodeData(numPlayers);
+
+    g_pBehaviorEngine->mPlayers = numPlayers;
+	        
 	if(!m_Player.empty())
 	  m_Player.clear();
 	
-	for( size_t i=0 ; i < m_Player.size() ; i++ )
+    // Start getting data of the loaded players
+    for( size_t i=0 ; i < numPlayers ; i++ )
 	{
       m_Player.push_back( CPlayer(mpLevelCompleted, *mMap.get(), i) );
 	  m_Player.at(i).m_index = i;
@@ -79,20 +83,19 @@ bool CPlayGameVorticon::loadGameState()
 	
 	m_level_command = START_LEVEL;
 	
-	std::vector<CPlayer> :: iterator player;
-	for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) 
+    for(auto &player : m_Player)
 	{
 	  int x, y;
-	  player->setupforLevelPlay();
+      player.setupforLevelPlay();
 	  ok &= savedGame.decodeData(x);
 	  ok &= savedGame.decodeData(y);
-	  player->moveToForce(Vector2D<int>(x,y));
-	  ok &= savedGame.decodeData(player->blockedd);
-	  ok &= savedGame.decodeData(player->blockedu);
-	  ok &= savedGame.decodeData(player->blockedl);
-	  ok &= savedGame.decodeData(player->blockedr);
-	  ok &= savedGame.decodeData(player->inventory);
-	  player->pdie = 0;
+      player.moveToForce(Vector2D<int>(x,y));
+      ok &= savedGame.decodeData(player.blockedd);
+      ok &= savedGame.decodeData(player.blockedu);
+      ok &= savedGame.decodeData(player.blockedl);
+      ok &= savedGame.decodeData(player.blockedr);
+      ok &= savedGame.decodeData(player.inventory);
+      player.pdie = 0;
 	}
 	
 	// load the number of objects on screen

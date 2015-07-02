@@ -158,13 +158,12 @@ void CPlayGameVorticon::YourShipNeedsTheseParts()
 	joy = bat = vac = wis = false;
 
 	// The Multiplayer support for this dialog. You collect those parts together if more than one player.
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
-    for(int i=0 ; i<numPlayers ; i++)
+    for( auto &player : m_Player)
 	{
-		joy |= m_Player[i].inventory.HasJoystick;
-		bat |= m_Player[i].inventory.HasBattery;
-		vac |= m_Player[i].inventory.HasVacuum;
-		wis |= m_Player[i].inventory.HasWiskey;
+        joy |= player.inventory.HasJoystick;
+        bat |= player.inventory.HasBattery;
+        vac |= player.inventory.HasVacuum;
+        wis |= player.inventory.HasWiskey;
 	}
 
 	// draw needed parts
@@ -185,7 +184,7 @@ void CPlayGameVorticon::ShipEp3()
 
 void CPlayGameVorticon::showKeensLeft()
 {    
-    const int numPlayers = g_pBehaviorEngine->mPlayers;
+    const int numPlayers = m_Player.size();
 
     GsRect<Uint16> gameRes = gVideoDriver.getGameResolution();
 
