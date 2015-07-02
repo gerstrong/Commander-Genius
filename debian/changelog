@@ -1,3 +1,22 @@
+commandergenius (1.8.2.1ppa1) trusty; urgency=low
+
+  *  Message Box is shown in Keen 5 when fuses are broken
+  *  Soft collision detection, so Sprites can go through narrow sections in the games (Keen 5 for example has some levels with this issue)$
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 02 Jul 2015 14:07:37 +0200
+
+ commandergenius (1.8.2ppa3) trusty; urgency=low
+
+  * Rebuild
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Sat, 27 Jun 2015 10:21:28 +0200
+
+commandergenius (1.8.2ppa2) trusty; urgency=low
+
+  * Updated documentation rules
+
+ -- Gerhard Stein <gerstrong@gmail.com>  Thu, 25 Jun 2015 19:46:39 +0200
+ 
 commandergenius (1.8.2ppa1) trusty; urgency=low
 
   * AI fixes
