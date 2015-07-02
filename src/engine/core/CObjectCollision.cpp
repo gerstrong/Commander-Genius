@@ -34,17 +34,14 @@ void CSpriteObject::performCollisionsSameBox()
 
 
 
-/*
- * \brief Calculate Bouncing Boxes
- */
 void CSpriteObject::calcBoundingBoxes()
 {
     GsSprite &rSprite = gGraphics.getSprite(0,sprite);
 
-	m_BBox.x1 = rSprite.m_bboxX1;
-	m_BBox.x2 = rSprite.m_bboxX2;
+    m_BBox.x1 = rSprite.m_bboxX1;
+    m_BBox.x2 = rSprite.m_bboxX2;
     m_BBox.y1 = rSprite.m_bboxY1;
-    m_BBox.y2 = rSprite.m_bboxY2;
+    m_BBox.y2 = rSprite.m_bboxY2 ;
 }
 
 /**
@@ -516,6 +513,11 @@ bool CSpriteObject::checkMapBoundaryU(const int y1)
 }
 
 
+// The potential narrow case describes sprites which are trying to get through
+// narrow cases. This is pretty selddom (Only found in one level of Keen5) but mods
+// might take advantage of that.
+const int BLOCK_TOLERANCE = (8<<STC);
+
 int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
@@ -532,8 +534,13 @@ int CSpriteObject::checkSolidR( int x1, int x2, int y1, int y2)
 		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
 			blocker = TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft;
-			if(blocker)
-				return blocker;
+
+            // Start to really test if we blow up the BLOCK_TOLERANCE
+            if(c-y1 > BLOCK_TOLERANCE)
+            {
+                if(blocker)
+                    return blocker;
+            }
 		}
 
 		blocker = TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bleft;
@@ -558,10 +565,15 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 		{
 			blocker = TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright;
 			const bool slope = (TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bup > 1);
-			if(blocker && !slope)
-				return blocker;
-			else if(slope)
-				return 0;
+
+            // Start to really test if we blow up the BLOCK_TOLERANCE
+            if(c-y1 > BLOCK_TOLERANCE)
+            {
+                if(blocker && !slope)
+                    return blocker;
+                else if(slope)
+                    return 0;
+            }
 		}
 
 		blocker = TileProperty[mp_Map->at(x1>>CSF, y2>>CSF)].bright;
@@ -570,7 +582,9 @@ int CSpriteObject::checkSolidL( int x1, int x2, int y1, int y2)
 			return blocker;
 		else if(slope)
 			return 0;
-	}
+
+        // At this point we can say, no blocking path...
+	}        
 
 	return checkMapBoundaryL(x1) ? 1 : 0;
 }
@@ -673,10 +687,12 @@ const int MOVE_RES = 1;
 void CSpriteObject::processMoveBitLeft()
 {
 	/// Now check the neighboring tile to the left
-	const unsigned int x1 = getXPosition()+m_BBox.x1;
-	const unsigned int x2 = getXPosition()+m_BBox.x2;
-	const unsigned int y1 = getYPosition()+m_BBox.y1;
-	const unsigned int y2 = getYPosition()+m_BBox.y2;
+    const unsigned int x = getXPosition();
+    const unsigned int y = getYPosition();
+    const unsigned int x1 = x+m_BBox.x1;
+    const unsigned int x2 = x+m_BBox.x2;
+    const unsigned int y1 = y+m_BBox.y1;
+    const unsigned int y2 = y+m_BBox.y2;
 
 	if( (blockedl = checkSolidL(x1, x2, y1, y2)) == true)
 		return;
@@ -765,34 +781,75 @@ void CSpriteObject::processMove(const int move_x, const int move_y)
     
     int xoff = static_cast<int>(fxoff);
     int yoff = static_cast<int>(fyoff);
-    
+
+    // Maximum possible offset
+    const int maxOffset = 16<<CSF;
+
+    xoff = std::min(maxOffset,xoff);
+    yoff = std::min(maxOffset,yoff);
+
+    while(xoff != 0 || yoff != 0)
+    {
+        // Do we have to move up or down ?
+        if(yoff > 0)
+        {
+            // move down
+            processMoveBitDown();
+            --yoff;
+        }
+        else if(yoff < 0)
+        {
+            // move up
+            processMoveBitUp();
+            ++yoff;
+        }
+
+
+        // Now check if we have to move left or right
+        if(xoff > 0)
+        {
+            // move right
+            processMoveBitRight();
+            --xoff;
+        }
+        else if(xoff < 0)
+        {
+            // move left
+            processMoveBitLeft();
+            ++xoff;
+        }
+    }
+
+    /*
     // Let's check if we have to move left or right
     if(xoff > 0)
     {
-	// move right
-	for(int c = 0 ; c<xoff ; c++ )
-	    processMoveBitRight();
+    // move right
+    for(int c = 0 ; c<xoff ; c++ )
+        processMoveBitRight();
     }
     else if(xoff < 0)
     {
     // move left
-	for(int c = 0 ; c<-xoff ; c++ )
-	    processMoveBitLeft();
+    for(int c = 0 ; c<-xoff ; c++ )
+        processMoveBitLeft();
     }
-    
+
     // Let's check if we have to move up or down
     if(yoff > 0)
     {
-	// move down
-	for(int c = 0 ; c<yoff ; c++ )
-	    processMoveBitDown();
+    // move down
+    for(int c = 0 ; c<yoff ; c++ )
+        processMoveBitDown();
     }
     else if(yoff < 0)
     {
     // move up
-	for(int c = 0 ; c<-yoff ; c++ )
-	    processMoveBitUp();
+    for(int c = 0 ; c<-yoff ; c++ )
+        processMoveBitUp();
     }
+
+    */
 }
 
 void CSpriteObject::processPushOutCollision()
