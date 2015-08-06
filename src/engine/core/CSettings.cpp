@@ -55,48 +55,57 @@ bool CSettings::saveDispCfg()
  */
 bool CSettings::saveDrvCfg()
 {
-	CConfiguration Configuration(CONFIGFILENAME);
-	Configuration.Parse();
+    CConfiguration Configuration(CONFIGFILENAME);
 
-	int i = 1;
-	for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
-		Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
-	CVidConfig &VidConf = gVideoDriver.getVidConfig();
-	Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
-	Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
+    try
+    {
+        Configuration.Parse();
 
-    Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
-    Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
+        int i = 1;
+        for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
+            Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
+        CVidConfig &VidConf = gVideoDriver.getVidConfig();
+        Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
+        Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
 
-    Configuration.WriteInt("Video", "gameWidth", VidConf.m_GameRect.w);
-    Configuration.WriteInt("Video", "gameHeight", VidConf.m_GameRect.h);
+        Configuration.WriteInt("Video", "width", VidConf.m_DisplayRect.w);
+        Configuration.WriteInt("Video", "height", VidConf.m_DisplayRect.h);
 
-    Configuration.WriteInt("Video", "scale", VidConf.Zoom);
+        Configuration.WriteInt("Video", "gameWidth", VidConf.m_GameRect.w);
+        Configuration.WriteInt("Video", "gameHeight", VidConf.m_GameRect.h);
+
+        Configuration.WriteInt("Video", "scale", VidConf.Zoom);
 #if defined(USE_OPENGL)
-    Configuration.WriteString("Video", "OGLfilter", VidConf.mRenderScQuality );
+        Configuration.WriteString("Video", "OGLfilter", VidConf.mRenderScQuality );
 #endif
-	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
-	Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
-	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
-	Configuration.WriteInt("Video", "fps", gTimer.FPS());
-	Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
+        Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
+        Configuration.WriteString("Video", "scaletype", VidConf.m_normal_scale ? "normal" : "scalex" );
+        Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
+        Configuration.WriteInt("Video", "fps", gTimer.FPS());
+        Configuration.SetKeyword("Video", "vsync", VidConf.vsync);
 
-	const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
-	Configuration.WriteString("Video", "aspect", arc_str);
+        const std::string arc_str = itoa(VidConf.mAspectCorrection.w) + ":" + itoa(VidConf.mAspectCorrection.h);
+        Configuration.WriteString("Video", "aspect", arc_str);
 
-	st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
-	Configuration.WriteInt("Bound", "left", CameraBounds.left);
-	Configuration.WriteInt("Bound", "right", CameraBounds.right);
-	Configuration.WriteInt("Bound", "up", CameraBounds.up);
-	Configuration.WriteInt("Bound", "down", CameraBounds.down);
-	Configuration.WriteInt("Bound", "speed", CameraBounds.speed);
+        st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
+        Configuration.WriteInt("Bound", "left", CameraBounds.left);
+        Configuration.WriteInt("Bound", "right", CameraBounds.right);
+        Configuration.WriteInt("Bound", "up", CameraBounds.up);
+        Configuration.WriteInt("Bound", "down", CameraBounds.down);
+        Configuration.WriteInt("Bound", "speed", CameraBounds.speed);
 
-	Configuration.WriteInt("Audio", "channels", (g_pSound->getAudioSpec()).channels);
-	Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
-	Configuration.WriteInt("Audio", "rate", (g_pSound->getAudioSpec()).freq);
-	Configuration.SetKeyword("Audio", "sndblaster", g_pSound->getSoundBlasterMode());
-	Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
-	Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
+        Configuration.WriteInt("Audio", "channels", (g_pSound->getAudioSpec()).channels);
+        Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
+        Configuration.WriteInt("Audio", "rate", (g_pSound->getAudioSpec()).freq);
+        Configuration.SetKeyword("Audio", "sndblaster", g_pSound->getSoundBlasterMode());
+        Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
+        Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
+
+    }
+    catch(...)
+    {
+        gLogging.textOut(RED,"General error writing the files...\n");
+    }
 
     bool ok = Configuration.saveCfgFile();
 
