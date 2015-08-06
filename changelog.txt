@@ -3,6 +3,7 @@ v1.8.2.1 Release:
 -----------------
 - Message Box is shown in Keen 5 when fuses are broken
 - Soft collision detection, so Sprites can go through narrow sections in the games (Keen 5 for example has some levels with that issue)
+- Save name issues solved
 
 v1.8.2 Release:
 ---------------

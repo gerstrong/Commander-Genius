@@ -103,8 +103,10 @@ int main(int argc, char *argv[])
         g_pSettings->saveDrvCfg();
     }
 
+    gLogging.textOut(GREEN,"Loading game options...\n");
     if(!g_pSettings->loadGameOptions())
     {
+        gLogging.textOut(RED,"Cannot do loading defaults...\n");
         g_pSettings->loadDefaultGameCfg();
     }
 
