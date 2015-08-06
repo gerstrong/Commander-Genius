@@ -98,7 +98,16 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
 	Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
 
-	return Configuration.saveCfgFile();
+    bool ok = Configuration.saveCfgFile();
+
+    gLogging.textOut(GREEN,"Saving game options...");
+
+    if(ok)
+        gLogging.textOut(GREEN,"ok.");
+    else
+        gLogging.textOut(RED,"error.");
+
+    return ok;
 }
 
 /**
