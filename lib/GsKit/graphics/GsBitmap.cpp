@@ -144,6 +144,24 @@ void GsBitmap::exchangeColor( const Uint8 oldR, const Uint8 oldG, const Uint8 ol
     exchangeColor( oldColor, newColor );
 }
 
+
+void GsBitmap::setPerSurfaceAlpha(const Uint8 alpha)
+{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+    SDL_SetSurfaceAlphaMod( getSDLSurface(), 128);
+#else
+
+    SDL_SetAlpha(getSDLSurface(), SDL_SRCALPHA, 128);
+
+    // Make it fast and best compatible to the display format.
+    SDL_Surface *newSfc = SDL_DisplayFormat( getSDLSurface() );
+
+    mpBitmapSurface.reset(newSfc, &SDL_FreeSurface);
+
+#endif
+
+}
+
 void GsBitmap::setColorKey(const Uint8 r, const Uint8 g, const Uint8 b)
 {
     auto bmpSfc = mpBitmapSurface.get();

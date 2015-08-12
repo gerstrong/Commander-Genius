@@ -54,7 +54,7 @@ public:
     std::vector<GsTilemap> &getTileMaps() { return Tilemap; }
     GsBitmap &getBitmapFromId(Uint16 slot) { return Bitmap.at(slot); }
     GsBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
-    GsBitmap &getMisGsBitmap(Uint16 slot) { return misGsBitmap.at(slot); }
+    GsBitmap &getMiscGsBitmap(Uint16 slot) { return miscGsBitmap.at(slot); }
     GsBitmap *getBitmapFromStr(const std::string &name) const;
 
     GsSprite *getSprite(const int var, const std::string &name) const;
@@ -78,7 +78,7 @@ private:
 	std::vector<GsFont> Font;
     std::vector<GsBitmap> Bitmap;
     std::vector<GsBitmap> maskedBitmap;
-    std::vector<GsBitmap> misGsBitmap;
+    std::vector<GsBitmap> miscGsBitmap;
     std::vector< std::vector<GsSprite> > Sprite;
 
 };

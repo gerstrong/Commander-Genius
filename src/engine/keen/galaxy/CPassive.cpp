@@ -20,6 +20,11 @@
 
 #include "engine/core/VGamepads/vgamepadsimple.h"
 
+
+
+SDL_Surface *commanderSfc;
+SDL_Surface *keenSfc;
+
 namespace galaxy
 {
 
@@ -27,8 +32,8 @@ CPassiveGalaxy::CPassiveGalaxy() :
 processPonderMode(&CPassiveGalaxy::processIntro),
 processRenderMode(&CPassiveGalaxy::renderIntro),
 m_BackgroundBitmap(*gGraphics.getBitmapFromStr("TITLE")),
-mCommanderTextSfc(gGraphics.getMisGsBitmap(0)),
-mKeenTextSfc(gGraphics.getMisGsBitmap(1)),
+mCommanderTextSfc(gGraphics.getMiscGsBitmap(0)),
+mKeenTextSfc(gGraphics.getMiscGsBitmap(1)),
 mSkipSection(false)
 {
     const GsRect<Uint16> gameRect = gVideoDriver.getVidConfig().m_GameRect;
@@ -89,16 +94,8 @@ mSkipSection(false)
     mCurrentLogoBmp.exchangeColor( 0x0 , 0xa8, 0x0,
                                    0x55, 0x55 , 0xFF);
 
-
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-    SDL_SetSurfaceAlphaMod( mCommanderTextSfc.getSDLSurface(), 128);
-    SDL_SetSurfaceAlphaMod( mKeenTextSfc.getSDLSurface(), 128);
-#else
-
-
-    SDL_SetAlpha(mCommanderTextSfc.getSDLSurface(), SDL_SRCALPHA, 128);
-    SDL_SetAlpha(mKeenTextSfc.getSDLSurface(), SDL_SRCALPHA, 128);
-#endif
+    mCommanderTextSfc.setPerSurfaceAlpha(128);
+    mKeenTextSfc.setPerSurfaceAlpha(128);
 
     mpZoomSurface.reset( SDL_CreateRGBSurface(0,
                                               cmdTextRect.w+
@@ -165,8 +162,8 @@ void CPassiveGalaxy::renderIntro()
     SDL_FillRect( blitSfc, &gameResSDL, SDL_MapRGB(blitSfc->format, 0, 0, 0) );
 
     mCommanderTextSfc.draw(mCommanderTextPos.x, mCommanderTextPos.y);
-
     mKeenTextSfc.draw(mKeenTextPos.x, mKeenTextPos.y);
+
     if(mTerminatorLogoNum < 4)
     {
         mCurrentLogoBmp.draw(logoPosX, mLogoPosY);

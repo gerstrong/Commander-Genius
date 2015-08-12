@@ -91,7 +91,7 @@ void CInventory::toggleStatusScreen()
 			scroll_pos = ScrollEffect->getScrollPosition();
 
         gEffectController.setupEffect(
-                    new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, 10*scaleFac*scaleFac, CENTER, DOWN));
+                    new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, scaleFac*scaleFac, CENTER, DOWN));
 	}
 	else
 	{		
@@ -104,7 +104,7 @@ void CInventory::toggleStatusScreen()
 			scroll_pos = ScrollEffect->getScrollPosition();
 
         gEffectController.setupEffect(
-                    new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, -10*scaleFac*scaleFac, CENTER, DOWN));
+                    new CScrollEffect(mp_StatusScreen->getStatusSfc(), scroll_pos, -scaleFac*scaleFac, CENTER, DOWN));
 
 		if(mp_StatusBgrnd)
 			SDL_FreeSurface(mp_StatusBgrnd);

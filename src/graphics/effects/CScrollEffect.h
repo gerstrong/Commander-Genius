@@ -42,6 +42,8 @@ private:
     const direction_t mVDir;
     std::shared_ptr<SDL_Surface> mpOldSurface;
     std::shared_ptr<SDL_Surface> mpScrollSurface;
+
+    float mRemains = 0.0f;
 };
 
 #endif /* CSCROLLEFFECT_H_ */

@@ -62,9 +62,9 @@ void GsGraphics::createEmptyMaskedBitmaps(Uint16 num_bmps)
 
 void GsGraphics::createEmptyMisGsBitmaps(Uint16 num_bmps)
 {
-    freeBitmaps(misGsBitmap);
+    freeBitmaps(miscGsBitmap);
     GsBitmap bitmap;
-    misGsBitmap.assign(num_bmps, bitmap);
+    miscGsBitmap.assign(num_bmps, bitmap);
 }
 
 
