@@ -28,7 +28,7 @@ CScrollEffect::CScrollEffect(GsWeakSurface &scrollSurface,
                              const Sint16 initialPos, Sint8 speed,
                              const direction_t hDir, const direction_t vDir) :
 mInitSpeed(speed),
-mSpeed(2*speed),
+mSpeed(speed),
 mInitialSpeed(speed),
 mScrollPos(initialPos),
 mHDir(hDir),
@@ -39,45 +39,55 @@ mVDir(vDir)
 
 void CScrollEffect::ponder(const float deltaT)
 {
-    if(mSpeed < 0)
-	{
-        if(mSpeed < -1)
-            mSpeed++;
+    float tdeltaLogic = mRemains + deltaT;
+    mRemains = 0.0f;
 
-		mScrollPos += mSpeed;
-		if(mScrollPos + mSpeed < 0) mScrollPos = 0;
-
-        if(mScrollPos == 0)
-            mFinished = true;
-	}
-	else
-	{
-        if(mSpeed > 1)
-            mSpeed--;
-
-		mScrollPos += mSpeed;
-
-
-        int posOldSfc, posScrollSfc;
-
-        if(mVDir == DOWN)
+    while(tdeltaLogic >= 1.0)
+    {
+        if(mSpeed < 0)
         {
-            posOldSfc = gVideoDriver.getBlitSurface()->h;
-            posScrollSfc = mpScrollSurface->h;
+            if(mSpeed < -1)
+                mSpeed++;
+
+            mScrollPos += mSpeed;
+            if(mScrollPos + mSpeed < 0) mScrollPos = 0;
+
+            if(mScrollPos == 0)
+                mFinished = true;
         }
         else
         {
-            posOldSfc = gVideoDriver.getBlitSurface()->w;
-            posScrollSfc = mpScrollSurface->w;
+            if(mSpeed > 1)
+                mSpeed--;
+
+            mScrollPos += mSpeed;
+
+
+            int posOldSfc, posScrollSfc;
+
+            if(mVDir == DOWN)
+            {
+                posOldSfc = gVideoDriver.getBlitSurface()->h;
+                posScrollSfc = mpScrollSurface->h;
+            }
+            else
+            {
+                posOldSfc = gVideoDriver.getBlitSurface()->w;
+                posScrollSfc = mpScrollSurface->w;
+            }
+
+
+            if(mScrollPos  > posOldSfc)
+                mScrollPos = posScrollSfc;
+
+            if(mScrollPos+mSpeed >= posScrollSfc)
+                mFinished = true;
         }
 
+        tdeltaLogic -= 1.0f;
+    }
 
-        if(mScrollPos  > posOldSfc)
-            mScrollPos = posScrollSfc;
-
-        if(mScrollPos+mSpeed >= posScrollSfc)
-            mFinished = true;
-	}
+    mRemains = tdeltaLogic;
 }
 
 void CScrollEffect::render()
