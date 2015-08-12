@@ -1141,7 +1141,7 @@ bool CEGAGraphicsGalaxy::readMiscStuff()
 
         SDL_Rect bmpRect;
 
-        GsBitmap &Bitmap = gGraphics.getMisGsBitmap(misc-1);
+        GsBitmap &Bitmap = gGraphics.getMiscGsBitmap(misc-1);
         bmpRect.w = width;
         bmpRect.h = height;
 

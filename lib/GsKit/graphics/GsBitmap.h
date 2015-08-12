@@ -36,7 +36,9 @@ public:
     void exchangeColor( const Uint8 oldR, const Uint8 oldG, const Uint8 oldB,
                         const Uint8 newR, const Uint8 newG, const Uint8 newB);
     void exchangeColor( const Uint32 oldColor, const Uint32 newColor );
-    void makeBlackTransparent();
+
+
+    void setPerSurfaceAlpha(const Uint8 alpha);
 
     bool empty() const
     {

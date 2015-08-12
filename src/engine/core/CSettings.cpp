@@ -104,7 +104,7 @@ bool CSettings::saveDrvCfg()
     }
     catch(...)
     {
-        gLogging.textOut(RED,"General error writing the files...\n");
+        gLogging.textOut(RED,"General error writing the configuration file...\n");
     }
 
     bool ok = Configuration.saveCfgFile();
