@@ -37,7 +37,7 @@ CMessages::extractNextString( const std::string matchingstring )
 		if(mp_exe[pos] == 0x0)
 		{
 		    while(mp_exe[pos] == 0x0)
-			pos++;
+                pos++;
 			
 		    mOffset = pos;
 		    break;
@@ -107,7 +107,9 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 		{
 			// Level loading Texts (2E00)
 			setDecodeOffset(0x1F1F0);
-			StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
+
+            StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
+
 			StringMap.insert( extractNextString( "LEVEL1_LOAD_TEXT" ) );
 			StringMap.insert( extractNextString( "LEVEL2_LOAD_TEXT" ) );
 			StringMap.insert( extractNextString( "LEVEL3_LOAD_TEXT" ) );
@@ -125,7 +127,7 @@ bool CMessages::extractEp4Strings(std::map<std::string, std::string>& StringMap)
 			StringMap.insert( extractNextString( "LEVEL15_LOAD_TEXT") );
 			StringMap.insert( extractNextString( "LEVEL16_LOAD_TEXT") );
 			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
+            StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
 
 			// Elder Janitor Text. Strangely it is the end of the level load text being to only
 			// in that data segment
@@ -170,27 +172,19 @@ bool CMessages::extractEp5Strings(std::map<std::string, std::string>& StringMap)
 	{
 		case 140:
 		{
-			// Level loading Texts (2E00)
+            // Level loading Texts (Base is usually at 0x2C00)
 			setDecodeOffset(0x201F0);
 			StringMap.insert( extractNextString( "WORLDMAP_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL1_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL2_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL3_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL4_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL5_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL6_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL7_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL8_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL9_LOAD_TEXT" ) );
-			StringMap.insert( extractNextString( "LEVEL10_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL11_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL12_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL13_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL14_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL15_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL16_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL17_LOAD_TEXT") );
-			StringMap.insert( extractNextString( "LEVEL18_LOAD_TEXT") );
+
+            uint levelOffset = 0x201F0;
+
+            for(uint i=1 ; i<=18 ; i++)
+            {
+                levelOffset += 0x30;
+                setDecodeOffset(levelOffset);
+                const std::string levelKey = "LEVEL" + std::to_string(i) + "_LOAD_TEXT";
+                StringMap.insert( extractNextString( levelKey ) );
+            }
 
             // Fuse text. This text is loaded when you break one of the fuses
             setDecodeOffset(0x31BFB);
