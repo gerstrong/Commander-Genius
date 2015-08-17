@@ -1711,7 +1711,7 @@ asm	mov	[WORD PTR es:di],UPDATETERMINATE
 	if ((id0_longword_t)lasttimecount > SD_GetTimeCount())
 		lasttimecount = SD_GetTimeCount();		// if the game was paused a LONG time
 	// REFKEEN - Some replacement
-	BE_ST_TimeCountWaitFromSrc(lasttimecount, MINTICS);
+//	BE_ST_TimeCountWaitFromSrc(lasttimecount, MINTICS);
 	newtime = SD_GetTimeCount();
 	tics = newtime-lasttimecount;
 #if 0

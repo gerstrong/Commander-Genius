@@ -668,7 +668,7 @@ void MM_SortMem (void)
 
 	VW_ColorBorder (15);
 	// (REFKEEN) HACK: Actually show border color
-	BE_ST_ShortSleep();
+//	BE_ST_ShortSleep();
 
 	if (beforesort)
 		beforesort();

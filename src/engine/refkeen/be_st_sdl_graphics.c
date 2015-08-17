@@ -75,9 +75,9 @@ static int g_sdlTxtColor = 7, g_sdlTxtBackground = 0;
 
 /*** Game controller UI resource definitions ***/
 
-#include "../rsrc/pad_font_mono.xpm"
-#include "../rsrc/pad_thumb_buttons.xpm"
-#include "../rsrc/pad_dpad.xpm"
+//#include "../rsrc/pad_font_mono.xpm"
+//#include "../rsrc/pad_thumb_buttons.xpm"
+//#include "../rsrc/pad_dpad.xpm"
 
 #define ALTCONTROLLER_PAD_PIX_WIDTH 48
 #define ALTCONTROLLER_PAD_PIX_HEIGHT 48
@@ -348,7 +348,7 @@ static void BEL_ST_CreatePadTextureIfNeeded(SDL_Texture **padTexturePtrPtr)
 
 static void BEL_ST_RedrawTextToBuffer(uint32_t *picPtr, int picWidth, const char *text)
 {
-	for (int currRow = 0, fontXpmIndex = 3; currRow < ALTCONTROLLER_CHAR_PIX_HEIGHT; ++currRow, picPtr += picWidth, ++fontXpmIndex)
+    /*for (int currRow = 0, fontXpmIndex = 3; currRow < ALTCONTROLLER_CHAR_PIX_HEIGHT; ++currRow, picPtr += picWidth, ++fontXpmIndex)
 	{
 		const char *fontRowPtr = pad_font_mono_xpm[fontXpmIndex];
 		uint32_t *currPtr = picPtr;
@@ -363,7 +363,7 @@ static void BEL_ST_RedrawTextToBuffer(uint32_t *picPtr, int picWidth, const char
 				}
 			}
 		}
-	}
+    }*/
 }
 
 static const char * BEL_ST_PrepareToShowOnePad(const char *scanCodes, const char **padXpm, SDL_Texture **padTexturePtrPtr, bool *areButtonsShownPtr)
@@ -416,9 +416,9 @@ static const char * BEL_ST_PrepareToShowOnePad(const char *scanCodes, const char
 
 /*static*/ void BEL_ST_PrepareToShowFaceButtonsAndDpad(const char *scanCodes)
 {
-	scanCodes =  BEL_ST_PrepareToShowOnePad(scanCodes, pad_thumb_buttons_xpm, &g_sdlFaceButtonsTexture, &g_sdlFaceButtonsAreShown);
+/*	scanCodes =  BEL_ST_PrepareToShowOnePad(scanCodes, pad_thumb_buttons_xpm, &g_sdlFaceButtonsTexture, &g_sdlFaceButtonsAreShown);
 	if (*scanCodes)
-		BEL_ST_PrepareToShowOnePad(scanCodes, pad_dpad_xpm, &g_sdlDpadTexture, &g_sdlDpadIsShown);
+        BEL_ST_PrepareToShowOnePad(scanCodes, pad_dpad_xpm, &g_sdlDpadTexture, &g_sdlDpadIsShown);*/
 }
 
 static void BEL_ST_CreateTextInputTextureIfNeeded(void)

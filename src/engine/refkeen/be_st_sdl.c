@@ -199,7 +199,7 @@ void BE_ST_InitAll(void)
 
 	BEL_ST_ParseConfig();
 	BE_ST_InitGfx();
-	BE_ST_InitAudio();
+//	BE_ST_InitAudio();
 	if (g_refKeenCfg.autolockCursor || (SDL_GetWindowFlags(g_sdlWindow) & SDL_WINDOW_FULLSCREEN))
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -263,7 +263,7 @@ void BE_ST_ShutdownAll(void)
 	{
 		SDL_ShowCursor(true);
 	}
-	BE_ST_ShutdownAudio();
+//	BE_ST_ShutdownAudio();
 	BE_ST_ShutdownGfx();
 	SDL_Quit();
 }
@@ -1140,7 +1140,7 @@ int16_t BE_ST_BiosScanCode(int16_t command)
 
 	while (!g_sdlLastKeyScanCode)
 	{
-		BE_ST_ShortSleep();
+//		BE_ST_ShortSleep();
 	}
 	int16_t result = g_sdlLastKeyScanCode;
 	g_sdlLastKeyScanCode = 0;
@@ -1875,9 +1875,9 @@ void BE_ST_PollEvents(void)
 	// make the sound callback run (so e.g., no loop gets stuck waiting
 	// for sound playback to complete)
 	extern bool g_sdlAudioSubsystemUp;
-	if (! g_sdlAudioSubsystemUp)
+//	if (! g_sdlAudioSubsystemUp)
 	{
-		BE_ST_PrepareForManualAudioSDServiceCall();
+//		BE_ST_PrepareForManualAudioSDServiceCall();
 	}
 }
 

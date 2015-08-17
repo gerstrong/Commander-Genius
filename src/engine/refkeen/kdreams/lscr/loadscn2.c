@@ -411,7 +411,7 @@ static id0_boolean_t LoadLIBFile(const id0_char_t *LibName, const id0_char_t *Fi
 
 		if (*MemPtr == NULL)
 		{
-			BE_ST_Delay(2000);
+//			BE_ST_Delay(2000);
 			if ((*MemPtr = (id0_char_t *)/*far*/malloc(FileEntry.OrginalLength)) == NULL)
 				TrashProg("Can't get memory");
 		}

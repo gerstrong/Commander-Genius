@@ -647,7 +647,7 @@ static bool BEL_Cross_CheckGameFileDetails(const BE_GameFileDetails_T *details, 
 	if (details->filesize == BE_Cross_FileLengthFromHandle(fp))
 	{
 		uint32_t crc32;
-		if (!Crc32_ComputeFile(fp, &crc32) && (crc32 == details->crc32))
+//		if (!Crc32_ComputeFile(fp, &crc32) && (crc32 == details->crc32))
 		{
 			BE_Cross_close(fp);
 			return true;
@@ -717,7 +717,7 @@ static void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T
 					success = (fread(decompexebuffer, details->decompExeSize, 1, exeFp) != 1);
 					break;
 				case BE_EXECOMPRESSION_LZEXE9X:
-					success = Unlzexe_unpack(exeFp, decompexebuffer, details->decompExeSize);
+//					success = Unlzexe_unpack(exeFp, decompexebuffer, details->decompExeSize);
 					break;
 				}
 

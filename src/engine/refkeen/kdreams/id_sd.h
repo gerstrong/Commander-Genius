@@ -203,12 +203,12 @@ extern	void	SDL_PCPlaySound(PCSound id0_far *sound),
 // Replacements for direct accesses to TimeCount variable
 inline id0_longword_t SD_GetTimeCount(void)
 {
-	return BE_ST_GetTimeCount();
+//	return BE_ST_GetTimeCount();
 }
 
 inline void SD_SetTimeCount(id0_longword_t newcount)
 {
-	BE_ST_SetTimeCount(newcount);
+//	BE_ST_SetTimeCount(newcount);
 }
 
 #endif

@@ -1,3 +1,5 @@
+#if 0
+
 #include "SDL.h"
 
 #include "be_cross.h"
@@ -735,3 +737,4 @@ void BEL_ST_TicksDelayWithOffset(int sdltickstowait)
 	} 
 	g_sdlTicksOffset = (currSdlTicks - nextSdlTicks);
 }
+#endif

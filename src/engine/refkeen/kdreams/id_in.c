@@ -371,13 +371,13 @@ IN_GetJoyButtonsDB(id0_word_t joy)
 	{
 		result1 = INL_GetJoyButtons(joy);
 		lasttime = SD_GetTimeCount();
-		BE_ST_TimeCountWaitFromSrc(lasttime, 1);
+//		BE_ST_TimeCountWaitFromSrc(lasttime, 1);
 #if 0
 		while (TimeCount == lasttime)
 			;
 #endif
 		result2 = INL_GetJoyButtons(joy);
-		BE_ST_ShortSleep();
+    //	BE_ST_ShortSleep();
 	} while (result1 != result2);
 	return(result1);
 }
@@ -924,7 +924,7 @@ IN_WaitForKey(void)
 
 	while (!(result = LastScan))
 	{
-		BE_ST_ShortSleep();
+//		BE_ST_ShortSleep();
 	}
 	LastScan = 0;
 	return(result);
@@ -943,7 +943,7 @@ IN_WaitForASCII(void)
 
 	while (!(result = LastASCII))
 	{
-		BE_ST_ShortSleep();
+//		BE_ST_ShortSleep();
 	}
 	LastASCII = '\0';
 	return(result);
@@ -971,7 +971,7 @@ IN_AckBack(void)
 			{
 				while (INL_GetMouseButtons())
 				{
-					BE_ST_ShortSleep();
+//					BE_ST_ShortSleep();
 				}
 				return;
 			}
@@ -985,13 +985,13 @@ IN_AckBack(void)
 				{
 					while (IN_GetJoyButtonsDB(i))
 					{
-						BE_ST_ShortSleep();
+//						BE_ST_ShortSleep();
 					}
 					return;
 				}
 			}
 		}
-		BE_ST_ShortSleep();
+//		BE_ST_ShortSleep();
 	}
 
 	// REFKEEN - Alternative controllers support
@@ -1017,13 +1017,13 @@ IN_Ack(void)
 	if (MousePresent)
 		while (INL_GetMouseButtons())
 		{
-			BE_ST_ShortSleep();
+//			BE_ST_ShortSleep();
 		}
 	for (i = 0;i < MaxJoys;i++)
 		if (JoysPresent[i])
 			while (IN_GetJoyButtonsDB(i))
 			{
-				BE_ST_ShortSleep();
+//				BE_ST_ShortSleep();
 			}
 	IN_AckBack();
 }
@@ -1070,7 +1070,7 @@ IN_UserInput(id0_longword_t delay,id0_boolean_t clear)
 	lasttime = SD_GetTimeCount();
 	do
 	{
-		BE_ST_ShortSleep();
+//		BE_ST_ShortSleep();
 		if (IN_IsUserInput())
 		{
 			if (clear)
