@@ -1,6 +1,6 @@
 include_directories(${SDL_INCLUDE_DIR})
 
-#FILE(GLOB INCLUDES *.h)
+FILE(GLOB INCLUDES *.h)
 #FILE(GLOB SOURCES *.c)
 
 add_definitions(-DREFKEEN_VER_KDREAMS)
@@ -32,6 +32,7 @@ add_library(refkeen_kdreams OBJECT
         jam_io.c
         lscr/loadscn2.c
         lzhuf.c
+        ${INCLUDES}
         )
 
 

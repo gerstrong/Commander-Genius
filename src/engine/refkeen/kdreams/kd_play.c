@@ -1846,7 +1846,7 @@ void HandleDeath (void)
 			selection = 0;
 		else if (c.yaxis == 1 || LastScan == sc_DownArrow)
 			selection = 1;
-//		BE_ST_ShortSleep();
+        //BE_ST_ShortSleep();
 	} while (1);
 
 }

@@ -1,7 +1,7 @@
 include_directories(${SDL_INCLUDE_DIR})
 
 FILE(GLOB INCLUDES *.h)
-FILE(GLOB SOURCES *.c)
+FILE(GLOB SOURCES *.c *.cpp)
 
 FILE(GLOB SOURCES_COMPAT compat/*.c)
 
@@ -19,8 +19,8 @@ add_subdirectory(kdreams)
 FILE(GLOB INCLUDES_OPL *.h)
 FILE(GLOB SOURCES_OPL *.c)
 
-FILE(GLOB INCLUDES_UNLZEXE *.h)
-FILE(GLOB SOURCES_UNLZEXE *.c)
+FILE(GLOB INCLUDES_UNLZEXE unlzexe/*.h)
+FILE(GLOB SOURCES_UNLZEXE unlzexe/*.c)
 
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/kdreams)
@@ -33,7 +33,8 @@ add_definitions(-DGRMODE=EGAGR)
 
 add_definitions(-DREFKEEN_VER_KDREAMS)
 
-add_library(refkeen OBJECT ${SOURCES} ${INCLUDES})
+add_library(refkeen OBJECT ${SOURCES} ${INCLUDES}
+                           ${SOURCES_UNLZEXE} ${INCLUDES_UNLZEXE})
 
 #target_link_libraries(refkeen refkeen_kdreams)
 

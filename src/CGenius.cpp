@@ -43,6 +43,12 @@
 
 #include "sdl/audio/Audio.h"
 
+
+extern "C"
+{
+int refkeen_main(int argc, char **argv);
+}
+
 /**
  * \brief  This is the function where CG beings
  *
@@ -63,6 +69,10 @@ int main(int argc, char *argv[])
         SDL_SetMainReady( );
     #endif
 #endif
+
+        // TODO: Direct launch of RefKeen. we need to transfer that later to the game selection menu
+        refkeen_main(argc, argv);
+        return 0;
 
 	// Check if CG should look into a given directory
 	std::string binary_dir;

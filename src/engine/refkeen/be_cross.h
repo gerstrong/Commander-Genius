@@ -1,6 +1,10 @@
 #ifndef __BE_CROSS_H__
 #define __BE_CROSS_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <inttypes.h>
@@ -40,21 +44,22 @@ typedef enum BE_Log_Message_Class_T
 #define BE_Cross_SwapGroup32LE(a, b, c, d) d, c, b, a,
 #endif
 
+
 inline char *BE_Cross_ultoa_dec(uint32_t n, char *buffer)
 {
-	sprintf(buffer, "%"PRIu32, n);
+    sprintf(buffer, "%" PRIu32, n);
 	return buffer;
 }
 
 inline char *BE_Cross_ltoa_dec(int32_t n, char *buffer)
 {
-	sprintf(buffer, "%"PRId32, n);
+    sprintf(buffer, "%" PRId32, n);
 	return buffer;
 }
 
 inline char *BE_Cross_itoa_dec(int16_t n, char *buffer)
 {
-	sprintf(buffer, "%"PRId16, n);
+    sprintf(buffer, "%" PRId16, n);
 	return buffer;
 }
 
@@ -234,5 +239,9 @@ inline int32_t BE_Mem_FarCoreLeft(void)
 // Use this in cases an original DOS program attempts to access contents of
 // segment no. 0 for some reason
 extern uint8_t g_be_cross_dosZeroSeg[];
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // BE_CROSS_H

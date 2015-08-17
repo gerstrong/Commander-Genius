@@ -51,6 +51,7 @@ v0.81 Embedded Version for CG by gerstrong. This version only does
 #define FAILURE 1
 #define SUCCESS 0
 
+
 Cunlzexe::Cunlzexe() :
 m_headersize(0)
 {}

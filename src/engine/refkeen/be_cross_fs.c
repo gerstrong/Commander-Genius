@@ -6,6 +6,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+/*#include <vector>
+#include <fstream>
+#include "fileio/compression/Cunlzexe.h"*/
+
 #include "refkeen_config.h" // MUST precede other contents due to e.g., endianness-based ifdefs
 
 // For template implementations of reads/writes of enums from/to 16 little-endian integers...
@@ -28,7 +32,7 @@
 
 //#include "be_cross.h"
 #include "crc32/crc32.h"
-#include "unlzexe/unlzexe.h"
+//#include "unlzexe/unlzexe.h"
 
 #define BE_CROSS_PATH_LEN_BOUND 256
 #define BE_CROSS_MAX_GAME_INSTALLATIONS 4
@@ -569,6 +573,7 @@ static const BE_GameVerDetails_T g_be_gamever_catapoc101 = {
 };
 #endif
 
+
 // C99
 BE_FILE_T BE_Cross_IsFileValid(BE_FILE_T fp);
 int BE_Cross_seek(BE_FILE_T fp, long int offset, int origin);
@@ -685,6 +690,8 @@ static void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T
 	unsigned char *decompexebuffer = NULL;
 	char errorMsg[100];
 
+    //std::vector<unsigned char> exeData;
+
 	for (const BE_EmbeddedGameFileDetails_T *embeddedfileDetailsBuffer = details->embeddedFiles; embeddedfileDetailsBuffer->fileDetails.filename; ++embeddedfileDetailsBuffer)
 		if (!BEL_Cross_CheckGameFileDetails(&embeddedfileDetailsBuffer->fileDetails, gameInstallation->embeddedRsrcPath))
 		{
@@ -710,43 +717,78 @@ static void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T
 					BE_ST_ExitWithErrorMsg(errorMsg);
 				}
 
-				bool success;
-				switch (details->compressionType)
+
+                bool success;
+
+
+                /*std::ifstream exeFile;
+
+                if(!exeFile)
+                {
+                    snprintf(errorMsg, sizeof(errorMsg), "BEL_Cross_ConditionallyAddGameInstallation: Failed to copy EXE in unpacked form!\nFilename: %s", details->exeName);
+                    BE_ST_ExitWithErrorMsg(errorMsg);
+                }
+
+                exeFile.seekg(0,std::ios::end);
+                const uint dataSizePacked = exeFile.tellg();
+                exeFile.seekg(0,std::ios::beg);
+
+                exeData.resize(dataSizePacked);
+
+                exeFile.read((char*)(exeData.data()), dataSizePacked);
+
+                exeFile.close();*/
+
+                switch (details->compressionType)
 				{
 				case BE_EXECOMPRESSION_NONE:
 					success = (fread(decompexebuffer, details->decompExeSize, 1, exeFp) != 1);
 					break;
 				case BE_EXECOMPRESSION_LZEXE9X:
-//					success = Unlzexe_unpack(exeFp, decompexebuffer, details->decompExeSize);
+                    success = Unlzexe_unpack(exeFp, decompexebuffer, details->decompExeSize);
 					break;
-				}
+                }
 
-				fclose(exeFp);
+                /*Cunlzexe UnLZEXE;
+
+                uint datasizeUnpacked = 0;
+
+                std::vector<unsigned char> decdata;
+                if(UnLZEXE.decompress(exeData.data(), decdata))
+                {
+                    datasizeUnpacked = decdata.size();
+                    exeData.resize(datasizeUnpacked);
+                    //m_headersize = UnLZEXE.HeaderSize();
+                    memcpy(exeData.data(), &decdata[0], datasizeUnpacked);
+                }
+*/
+
+                fclose(exeFp);
 				if (!success)
 				{
 					free(decompexebuffer);
 					snprintf(errorMsg, sizeof(errorMsg), "BEL_Cross_ConditionallyAddGameInstallation: Failed to copy EXE in unpacked form!\nFilename: %s", details->exeName);
 					BE_ST_ExitWithErrorMsg(errorMsg);
-				}
+                }
 			}
 			FILE *outFp = BEL_Cross_open_from_dir(embeddedfileDetailsBuffer->fileDetails.filename, true, gameInstallation->embeddedRsrcPath);
 			if (!outFp)
 			{
-				free(decompexebuffer);
+                free(decompexebuffer);
 				snprintf(errorMsg, sizeof(errorMsg), "BEL_Cross_ConditionallyAddGameInstallation: Can't open file for writing!\nFilename: %s", embeddedfileDetailsBuffer->fileDetails.filename);
 				BE_ST_ExitWithErrorMsg(errorMsg);
 			}
-			if (fwrite(decompexebuffer + embeddedfileDetailsBuffer->offset, embeddedfileDetailsBuffer->fileDetails.filesize, 1, outFp) != 1)
+            if (fwrite(decompexebuffer + embeddedfileDetailsBuffer->offset, embeddedfileDetailsBuffer->fileDetails.filesize, 1, outFp) != 1)
 			{
 				fclose(outFp);
-				free(decompexebuffer);
+                free(decompexebuffer);
 				snprintf(errorMsg, sizeof(errorMsg), "BEL_Cross_ConditionallyAddGameInstallation: Can't write to file!\nFilename: %s", embeddedfileDetailsBuffer->fileDetails.filename);
 				BE_ST_ExitWithErrorMsg(errorMsg);
 			}
 			fclose(outFp);
 		}
 
-	free(decompexebuffer);
+    free(decompexebuffer);
 }
 
 
@@ -969,6 +1011,8 @@ void BE_Cross_PrepareGameInstallations(void)
 #endif
 }
 
+
+
 // gameVer should be BE_GAMEVER_LAST if no specific version is desired
 void BE_Cross_SelectGameInstallation(int gameVerVal)
 {
@@ -1001,6 +1045,7 @@ void BE_Cross_SelectGameInstallation(int gameVerVal)
 
 	refkeen_current_gamever = g_be_selectedGameInstallation->verId;
 
+
 	extern void RefKeen_Patch_id_ca(void);
 	RefKeen_Patch_id_ca();
 	extern void RefKeen_Patch_id_us(void);
@@ -1032,7 +1077,10 @@ void BE_Cross_SelectGameInstallation(int gameVerVal)
 	extern void RefKeen_FillObjStatesWithDOSPointers(void);
 	RefKeen_FillObjStatesWithDOSPointers(); // Saved games compatibility
 
+
 }
+
+
 
 int32_t BE_Cross_FileLengthFromHandle(BE_FILE_T fp)
 {
@@ -1172,6 +1220,7 @@ size_t BE_Cross_writeInt16LEBuffer(BE_FILE_T fp, const void *ptr, size_t nbyte)
 	}
 	return result;
 #endif
+
 }
 
 // Template implementation of enum reads/writes
