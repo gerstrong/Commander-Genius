@@ -1,0 +1,42 @@
+589:  No mention of Id software has been removed.  I thought this was
+cleared up last project.  I am proud of CAT3D, and I would have a problem
+with the removal of credit to the development team.
+
+591: The version number is on the intro screen
+
+592: The new piracy screen is in
+
+660: The map view is a debugging tool, not a feature.
+
+682,694,695:  The hang is fixed.  Whenever a monster had no viable move it
+went into a loop (the trolls were all added at the last minute).  Good
+catch.
+
+697: The graphic screw up was fixed by adding two blocks to the map
+
+Everything else:  The single lines are a result of roundoff error between
+two transformations.  When a wall segment disapears it is a result of a
+back trace hitting a side that should by invisable.  The objects showing up
+through walls is a result of the z buffer being kept in pixels (a poor
+design decision).  Not mentioned by you:  The thick bar shown when you look 
+almost straight down a long wall is a result of the tangent table maxing out
+in 16 bits, causing the texture mapping to think it can optimize the wall
+drawing.  The fish eye view when you turn right next to a wall is a result of 
+not having enough compiled scaler routines (memory constraints) to scale 
+thinks closer than the view plane.  These problems are understood, but the
+corrective measures are not really feasable.  I think CAT3D still stands well
+even with these warts.  Over the past several days I have developed a ray
+tracing/intersecting 3-D refresh to replace the image based system from 
+CAT3D, and it has addressed all of these problems.  I would put it in CAT3D
+except for:  it uses 286 specific code in a few places, but no big deal
+to replace.  It is designed to work with a demand paged graphics caching
+system, still no big deal.  I am unsure of its memory requirements,
+potentially a terminal problem.  I haven't tested it with scaled sprites
+yet, this would require one or two additional days.
+
+If gamer's edge ever gets an ok to do a hard drive installable game you will
+probably see the new system.
+
+
+                John Carmack
+

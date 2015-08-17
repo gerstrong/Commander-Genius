@@ -1,0 +1,31 @@
+include_directories(${SDL_INCLUDE_DIR})
+
+FILE(GLOB INCLUDES *.h)
+FILE(GLOB SOURCES *.c)
+
+FILE(GLOB SOURCES_COMPAT compat/*.c)
+
+FILE(GLOB INCLUDES_CRC32 crc32/*.h)
+FILE(GLOB SOURCES_CRC32 crc32/*.c)
+
+FILE(GLOB INCLUDES_ID91_11 id91_11/*.h)
+FILE(GLOB SOURCES_ID91_11 id91_11/*.c)
+
+#FILE(GLOB INCLUDES_KDREAMS kdreams/*.h)
+#FILE(GLOB SOURCES_KDREAMS kdreams/*.c)
+add_subdirectory(kdreams)
+
+FILE(GLOB INCLUDES_OPL *.h)
+FILE(GLOB SOURCES_OPL *.c)
+
+FILE(GLOB INCLUDES_UNLZEXE *.h)
+FILE(GLOB SOURCES_UNLZEXE *.c)
+
+
+add_definitions(-DREFKEEN_VER_KDREAMS)
+
+add_library(refkeen OBJECT ${SOURCES} ${INCLUDES} )
+
+#target_link_libraries(refkeen refkeen_kdreams)
+
+set_property(GLOBAL APPEND PROPERTY CG_OBJ_LIBS $<TARGET_OBJECTS:refkeen>)

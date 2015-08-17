@@ -1,0 +1,3 @@
+VERDIRNAME=catabyss113
+
+include Makefile.common

@@ -1,0 +1,5 @@
+EGABUILD=1
+SHARBUILD=1
+VERDIRNAME=kdshar120
+
+include Makefile.common

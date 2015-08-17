@@ -1,0 +1,30 @@
+Keen Dreams Registered vs Catacomb Apocalypse Gamer's Edge code comparison:
+
+LZHUF.C - Same except for license
+LZHUFF.H - Same except for license
+LZW - We don't use it...
+
+SOFT.C (describing Apocalypse's different "features"):
+* License
+* def.h is included instead of kd_def.h
+* gelib.h is included (not commented out)
+* No lzwBIO
+* Quit -> TrashProg
+* Different "read error" message
+* Different "Unsupported file ver" message
+
+BE CAREFUL THOUGH, WE'VE MODIFIED SOFT.C (for memptr and co).
+
+SOFT.H - Same except for license
+
+JAM_IO.C:
+* License
+* def.h vs kd_def.h
+* gelib.h is included (not commented out)
+* Minor formatting around call to getc (same code/behaviors though)
+
+JAM_IO.H - Same except for license
+
+SL_FILE.H - Same except for license
+
+GELIB - There's a TON of unnecessary code in Apocalypse for us, just re-port.

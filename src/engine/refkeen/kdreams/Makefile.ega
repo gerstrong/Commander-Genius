@@ -1,0 +1,3 @@
+VERDIRNAME=kdreamse
+
+include Makefile.common
