@@ -107,63 +107,8 @@ bool GsApp::init(int argc, char *argv[])
         gLogging.textOut(RED,"The program cannot start, because you do not meet the hardware requirements.<br>");
 		return false;
 	}
-	
-	// Initialize the way the launcher is started
-    bool ok = true;
-    //CEventContainer& EventContainer = gEventManager;
-    std::string argument;
-    argument = getArgument( argc, argv, "-game" );
 
-    // Check if some arguments were given.
-    /*if(argument != "")
-    {
-        // Get the game number according to the created menu list.
-        std::string buf = argument.substr(strlen("-game"));
-        int chosengame = atoi(buf)-1;
-
-        if(chosengame >= 0)
-        {
-            // Tell CG to pass the chosen number of game
-            m_startGame_no = chosengame;
-
-            // Now check, if a level was also passed as parameter
-            argument = getArgument( argc, argv, "-level" );
-            if(argument != "")
-            {
-                buf = argument.substr(strlen("-level"));
-                m_startLevel = atoi(buf);
-            }
-
-            // Now check, if a difficulty was chosen, otherwise choose easy
-            argument = getArgument( argc, argv, "-diff" );
-            if(argument != "")
-            {
-                buf = argument.substr(strlen("-diff"));
-                Difficulty startDifficulty = static_cast<Difficulty>(atoi(buf));
-
-                // catch invalid entries
-                if(startDifficulty < 0 || startDifficulty > 3)
-                {
-                  // TODO: Tell here that difficulty is invalid and that CG continues on easy
-                  startDifficulty = UNKNOWN;
-                }
-
-                g_pBehaviorEngine->mDifficulty = startDifficulty;
-            }
-        }
-    }*/
-
-    // TODO: Check if finale cutscenes must be shown
-    /*if(getBooleanArgument( argc, argv, "-finale" ))
-    {
-        argument = getArgument( argc, argv, "-finale" );
-        m_startGame_no = atoi(argument.c_str()+strlen("-finale"))-1;
-        m_startLevel = WM_MAP_NUM;
-    }*/
-
-    //mpCurEngine->start();
-
-    return ok;
+    return true;
 }
 
 
