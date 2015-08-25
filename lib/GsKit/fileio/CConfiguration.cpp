@@ -77,7 +77,3 @@ void CConfiguration::WriteInt(const std::string &section, const std::string &key
 	WriteString(section, keyword, to_string(value) );
 }
 
-CConfiguration::~CConfiguration()
-{
-	// TODO Auto-generated destructor stub
-}

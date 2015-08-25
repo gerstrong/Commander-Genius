@@ -26,8 +26,6 @@ public:
 	void WriteString(const std::string& section, const std::string& key, const std::string& string);
 	void SetKeyword(const std::string& section, const std::string& keyword, const bool value);
 	void WriteInt(const std::string &section, const std::string &keyword, const int value);
-
-	virtual ~CConfiguration();
 };
 
 #endif /* CCONFIGURATION_H_ */
