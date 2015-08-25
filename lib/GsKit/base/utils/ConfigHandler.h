@@ -20,7 +20,7 @@
 #ifndef __CONFIGHANDLER_H__
 #define __CONFIGHANDLER_H__
 
-#include "CVec.h"
+//#include "CVec.h"
 #include <base/utils/StringUtils.h>
 #include "MathLib.h"
 #include <string>

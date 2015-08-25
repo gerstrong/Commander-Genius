@@ -8,7 +8,7 @@
 #ifndef CMESSAGEBOXGALAXY_H_
 #define CMESSAGEBOXGALAXY_H_
 
-#include <base/utils/CVec.h>
+//#include <base/utils/CVec.h>
 #include <string>
 #include <SDL.h>
 #include <memory>
@@ -24,7 +24,7 @@ class CMessageBoxGalaxy
 public:
 
 	/**
-	 * \brief This constructor creates a typical Keen 4 Message Box
+     * \brief This constructor creates a typical Keen Galaxy Message Box
 	 * \param Text 				Message to be shown
 	 */
     CMessageBoxGalaxy(const std::string& Text, CEvent *closeEv = nullptr);

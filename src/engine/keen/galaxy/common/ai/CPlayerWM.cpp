@@ -15,7 +15,7 @@
 #include "CFlag.h"
 //#include "engine/core/CBehaviorEngine.h"
 #include "sdl/audio/Audio.h"
-#include <base/utils/CVec.h>
+//#include <base/utils/CVec.h>
 #include "../dialog/CMessageBoxBitmapGalaxy.h"
 #include "graphics/effects/CDimDark.h"
 #include "fileio/KeenFiles.h"

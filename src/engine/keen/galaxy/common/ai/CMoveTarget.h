@@ -7,7 +7,7 @@
 #ifndef CMOVETARGET_H
 #define CMOVETARGET_H
 
-#include <base/utils/CVec.h>
+//#include <base/utils/CVec.h>
 #include "engine/core/direction.h"
 #include "engine/core/CMap.h"
 

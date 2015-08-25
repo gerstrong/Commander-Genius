@@ -16,7 +16,7 @@
 #include <string>
 #include <list>
 #include "common/direction.h"
-#include <base/utils/CVec.h>
+//#include <base/utils/CVec.h>
 #include "graphics/GsBitmap.h"
 #include <vector>
 #include <memory>

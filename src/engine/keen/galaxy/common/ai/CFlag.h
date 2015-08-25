@@ -13,7 +13,7 @@
 
 #include "../CGalaxySpriteObject.h"
 
-#include <base/utils/CVec.h>
+//#include <base/utils/CVec.h>
 
 const Uint16 WAVING_BASEFRAME = 181;
 

@@ -13,7 +13,7 @@
 #define CMIRAGIA_H_
 
 #include "../../common/CGalaxySpriteObject.h"
-#include <base/utils/CVec.h>
+//#include <base/utils/CVec.h>
 
 namespace galaxy {
 
@@ -28,7 +28,7 @@ public:
 	void process();
 
 	/**
-	 * What happens when an object touches me...
+     * What happens if an object touches me...
 	 */
 	void getTouchedBy(CSpriteObject &theObject);
 

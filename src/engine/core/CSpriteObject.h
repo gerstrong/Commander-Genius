@@ -15,7 +15,7 @@
 #include <base/GsEvent.h>
 
 #include "ActionFormat.h"
-#include <base/utils/CVec.h>
+//#include <base/utils/CVec.h>
 #include "direction.h"
 #include "CBehaviorEngine.h"
 
