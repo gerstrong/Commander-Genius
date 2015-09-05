@@ -11,6 +11,12 @@
 
 #include "graphics/GsGraphics.h"
 
+// For RefKeen
+extern "C"
+{
+    extern SDL_Renderer *g_sdlRenderer;
+}
+
 CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :
 CVideoEngine(VidConfig)
 {}
@@ -56,6 +62,11 @@ bool CSDLVideo::init()
     }
 
     renderer = SDL_CreateRenderer(window, -1, 0);
+
+//#if defined(REFKEEN) // TODO: Doesn't get defined for some reason
+    // For Ref-Keen passing this pointer
+    g_sdlRenderer = renderer;
+//#endif
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);

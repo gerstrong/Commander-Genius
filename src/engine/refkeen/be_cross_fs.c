@@ -6,9 +6,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-/*#include <vector>
-#include <fstream>
-#include "fileio/compression/Cunlzexe.h"*/
 
 #include "refkeen_config.h" // MUST precede other contents due to e.g., endianness-based ifdefs
 
@@ -591,10 +588,22 @@ static void BEL_Cross_mkdir(const char *path)
 #endif
 }
 
+
 // Opens *existing* file from given directory in a case-insensitive manner
 /*static*/ BE_FILE_T BEL_Cross_open_from_dir(const char *filename, bool isOverwriteRequest, const char *searchdir)
 {
+    char fullpath[256];
+
+    // TODO: Must be improved, bad workaround!
+    strcpy(fullpath, "/home/gerstrong/.CommanderGenius/");
+    strcat(fullpath, searchdir);
+    strcat(fullpath, "/");
+    strcat(fullpath, filename);
+
+    return fopen(fullpath, isOverwriteRequest ? "wb" : "rb");
+
 	/*** TODO - Any reason to save (cache) DIR handles? ***/
+    /*
 	DIR *dir;
 	struct dirent *direntry;
 	dir = opendir(searchdir);
@@ -640,7 +649,7 @@ static void BEL_Cross_mkdir(const char *path)
 	--fullpathPtr;
 	*fullpathPtr = '\0';
 
-	return fopen(fullpath, "wb");
+    return fopen(fullpath, "wb");*/
 }
 
 static bool BEL_Cross_CheckGameFileDetails(const BE_GameFileDetails_T *details, const char *searchdir)
@@ -791,21 +800,26 @@ static void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T
     free(decompexebuffer);
 }
 
+extern char *dreamsengine_datapath;
 
 // Opens file for reading from a "search path" in a case-insensitive manner
 BE_FILE_T BE_Cross_open_for_reading(const char *filename)
 {
 	// Just in case, at least for now
-	BE_FILE_T fp = BEL_Cross_open_from_dir(filename, false, g_be_selectedGameInstallation->writableVanillaFilesPath);
+    /*BE_FILE_T fp = BEL_Cross_open_from_dir(filename, false, g_be_selectedGameInstallation->writableVanillaFilesPath);
 	if (fp)
 		return fp;
-	return BEL_Cross_open_from_dir(filename, false, g_be_selectedGameInstallation->path);
+    return BEL_Cross_open_from_dir(filename, false, g_be_selectedGameInstallation->path);*/
+
+    return BEL_Cross_open_from_dir(filename, false, dreamsengine_datapath);
 }
 
 // Opens file for overwriting from a "search path" (if exists) in a case-insensitive manner
 BE_FILE_T BE_Cross_open_for_overwriting(const char *filename)
 {
-	return BEL_Cross_open_from_dir(filename, true, g_be_selectedGameInstallation->writableVanillaFilesPath);
+    //return BEL_Cross_open_from_dir(filename, true, g_be_selectedGameInstallation->writableVanillaFilesPath);
+
+    return BEL_Cross_open_from_dir(filename, true, dreamsengine_datapath);
 }
 
 // Loads a file originally embedded into the EXE (for DOS) to a newly allocated
@@ -813,7 +827,8 @@ BE_FILE_T BE_Cross_open_for_overwriting(const char *filename)
 // Returns chunk size if successful, or a negative number in case of failure.
 int BE_Cross_load_embedded_rsrc_to_mem(const char *filename, void **ptr)
 {
-	BE_FILE_T fp = BEL_Cross_open_from_dir(filename, false, g_be_selectedGameInstallation->embeddedRsrcPath);
+    //BE_FILE_T fp = BEL_Cross_open_from_dir(filename, false, g_be_selectedGameInstallation->embeddedRsrcPath);
+    BE_FILE_T fp = BEL_Cross_open_from_dir(filename, false, dreamsengine_datapath);
 	if (!fp)
 		return -1;
 
@@ -1027,7 +1042,7 @@ void BE_Cross_SelectGameInstallation(int gameVerVal)
 	else
 	{
 		int gameInstNum;
-		for (gameInstNum = 0; gameInstNum < g_be_gameinstallations_num; ++gameInstNum)
+        for (gameInstNum = 0; gameInstNum < g_be_gameinstallations_num; ++gameInstNum)
 		{
 			if (g_be_gameinstallations[gameInstNum].verId == gameVerVal)
 			{

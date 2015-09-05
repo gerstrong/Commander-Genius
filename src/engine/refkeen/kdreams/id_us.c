@@ -285,10 +285,10 @@ USL_ReadConfig(void)
 	if (BE_Cross_IsFileValid(file = BE_Cross_open_for_reading("CONFIG."EXTENSION)))
 	//if ((file = open("CONFIG."EXTENSION,O_BINARY | O_RDONLY)) != -1)
 #elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
-	if (BE_Cross_IsFileValid(file = BE_Cross_open_for_reading("KDREAMS.CFG")))
+    //if (BE_Cross_IsFileValid(file = BE_Cross_open_for_reading("KDREAMS.CFG")))
 	//if ((file = open("KDREAMS.CFG",O_BINARY | O_RDONLY)) != -1)
 #endif
-	{
+    /*{
 		// REFKEEN Cross Platform file I/O
 		for (int i = 0; i < MaxScores; ++i)
 		{
@@ -317,7 +317,7 @@ USL_ReadConfig(void)
 		HighScoresDirty = false;
 		gotit = true;
 	}
-	else
+    else*/
 	{
 		sd = sdm_Off;
 		sm = smm_Off;

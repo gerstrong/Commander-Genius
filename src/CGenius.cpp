@@ -70,10 +70,6 @@ int main(int argc, char *argv[])
     #endif
 #endif
 
-        // TODO: Direct launch of RefKeen. we need to transfer that later to the game selection menu
-        /*refkeen_main(argc, argv);
-        return 0;*/
-
 	// Check if CG should look into a given directory
 	std::string binary_dir;
 	if(argc >= 1)

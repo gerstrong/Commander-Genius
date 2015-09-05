@@ -5,7 +5,7 @@
 #include "be_st.h"
 
 /*static*/ SDL_Window *g_sdlWindow;
-static SDL_Renderer *g_sdlRenderer;
+/*static*/ SDL_Renderer *g_sdlRenderer;
 static SDL_Texture *g_sdlTexture, *g_sdlTargetTexture;
 static SDL_Rect g_sdlAspectCorrectionRect, g_sdlAspectCorrectionBorderedRect;
 
