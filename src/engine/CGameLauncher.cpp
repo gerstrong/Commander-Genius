@@ -76,9 +76,8 @@ CGameLauncher::~CGameLauncher()
 ////
 // Initialization Routine
 ////
-bool CGameLauncher::loadResources()
+bool CGameLauncher::setupMenu()
 {
-    //g_pBehaviorEngine->setEpisode(0);
     m_mustquit      = false;
     mDonePatchSelection = false;
     m_chosenGame    = -1;
@@ -394,7 +393,7 @@ void CGameLauncher::start()
 
         int handle()
         {
-            if(!mGameLauncher.loadResources())
+            if(!mGameLauncher.setupMenu())
             {
                 gLogging.textOut(RED,"No game can be launched, because game data files are missing.<br>");
                 return 0;
@@ -902,14 +901,3 @@ void CGameLauncher::putLabels()
         gamescfg.close();
     }
 }
-
-
-////
-// Cleanup Routine
-////
-void CGameLauncher::cleanup()
-{
-    // destroy the menu
-
-}
-

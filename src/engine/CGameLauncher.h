@@ -64,8 +64,11 @@ public:
 
 	typedef std::vector<std::string> DirList;
 
-    bool loadResources();
-    void cleanup();
+    /**
+     * @brief setupMenu This will setup the whole menu by scanning all the games in the path and building up the widgets for the selection screen
+     * @return true, if everything went fine, otherwise false.
+     */
+    bool setupMenu();
 
     void start();
 
