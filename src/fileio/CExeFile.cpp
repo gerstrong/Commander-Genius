@@ -46,8 +46,8 @@ m_rawdata(NULL)
 	m_supportmap[236112][6] = false;
 	m_supportmap[271696][6] = false;
 
-
-	// TODO: Setup version map
+    // Dreams
+    m_supportmap[213536][7] = true;
 
 	// TODO: Setup CRC-Map
 
@@ -74,8 +74,10 @@ void CExeFile::dumpFile(const std::string& filename)
 	ofile.write( reinterpret_cast<char*>(m_headerdata), m_datasize );
 }
 
-bool CExeFile::readData(const char episode, const std::string& datadirectory)
+bool CExeFile::readData(const uint episode, const std::string& datadirectory)
 {
+    // TODO: It would be nice to gather a list of executables and by scanning it decide which episode will be played.
+
 	crc32_init();
 
 	std::string filename = datadirectory + "/keen" + itoa(episode) + ".exe";
@@ -106,6 +108,10 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
         // try another filename (Used in Episode 4-6) for demo versions
         filename = datadirectory + "/kdreams.exe";
         OpenGameFileR(File, filename, std::ios::binary);
+
+        // This is only for Keen Dreams so it has to be 7!
+        if(episode != 7)
+            return false;
     }
 
     // If we still have no file found, the directory with the game cannot be used at all.
@@ -116,7 +122,11 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	m_episode = episode;
 
     std::string localDataDir = datadirectory;
-    if( localDataDir != "") if(*(localDataDir.end()-1) != '/') localDataDir += "/";
+    if( localDataDir != "")
+    {
+        if(*(localDataDir.end()-1) != '/')
+            localDataDir += "/";
+    }
 
     CResource &keenFiles = gKeenFiles;
     keenFiles.gameDir = localDataDir;
@@ -125,15 +135,15 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	m_datasize = File.tellg();
 	File.seekg(0,std::ios::beg);
 
-	unsigned char* m_data_temp = new unsigned char[m_datasize];
-	File.read((char*)m_data_temp, m_datasize);
-
+    // Read all the file into the memory
+    std::vector<unsigned char> dataTemp(m_datasize);
+    File.read((char*)dataTemp.data(), m_datasize);
 	File.close();
 
 	Cunlzexe UnLZEXE;
 
 	std::vector<unsigned char> decdata;
-	if(UnLZEXE.decompress(m_data_temp, decdata))
+    if(UnLZEXE.decompress(dataTemp.data(), decdata))
 	{
 		m_datasize = decdata.size();
 		mData.resize(m_datasize);
@@ -143,7 +153,7 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	else
 	{
 		mData.resize(m_datasize);
-		memcpy(mData.data(), m_data_temp,m_datasize);
+        memcpy(mData.data(), dataTemp.data(),m_datasize);
 	}
 
 	m_headerdata = mData.data();
@@ -161,11 +171,9 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 			/*Keen 4:*/ 0x2EE70,
 			/*Keen 5:*/ 0x30340,
 			/*Keen 6:*/ 0x30D30,
-			/*Keen D:*/ 0x23A70
+            /*Keen 7:*/ 0x23A70 // Keen Dreams
 	};
-	m_data_segment = m_rawdata+offset_map[m_episode];
-
-	delete[] m_data_temp;
+    m_data_segment = m_rawdata+offset_map[episode];
 
 	m_crc = getcrc32( mData.data(), m_datasize );
 
@@ -190,88 +198,95 @@ int CExeFile::getEXEVersion()
 {
     switch (m_datasize)
     {
-		case 100274:
-			if(m_episode != 1)
-				return -1;
-			else
-				return 110;
-		case 100484:
-			if(m_episode != 1)
-				return -1;
-			else
-				return 131;
-		case 398:
-			if(m_episode != 1)
-				return -1;
-			else
-				return 134;
+    case 100274:
+        if(m_episode != 1)
+            return -1;
+        else
+            return 110;
+    case 100484:
+        if(m_episode != 1)
+            return -1;
+        else
+            return 131;
+    case 398:
+        if(m_episode != 1)
+            return -1;
+        else
+            return 134;
 
-		case 118626:
-			if(m_episode != 2)
-				return -1;
-			else
-				return 100;
-		case 118672:
-			if(m_episode != 2)
-				return -1;
-			else
-				return 131;
+    case 118626:
+        if(m_episode != 2)
+            return -1;
+        else
+            return 100;
+    case 118672:
+        if(m_episode != 2)
+            return -1;
+        else
+            return 131;
 
-		case 127598:
-			if(m_episode != 3)
-				return -1;
-			else
-				return 100;
-		case 127616:
-			if(m_episode != 3)
-				return -1;
-			else
-				return 131;
+    case 127598:
+        if(m_episode != 3)
+            return -1;
+        else
+            return 100;
+    case 127616:
+        if(m_episode != 3)
+            return -1;
+        else
+            return 131;
 
-		// For Keen 4
-		case 263488:
-			if(m_episode != 4)
-				return -1;
-			else
-				return 140;
-		case 259232:
-			if(m_episode != 4)
-				return -1;
-			else
-				return 110;
-		case 258064:
-			if(m_episode != 4)
-				return -1;
-			else
-				return 100;
+        // For Keen 4
+    case 263488:
+        if(m_episode != 4)
+            return -1;
+        else
+            return 140;
+    case 259232:
+        if(m_episode != 4)
+            return -1;
+        else
+            return 110;
+    case 258064:
+        if(m_episode != 4)
+            return -1;
+        else
+            return 100;
 
-		// For Keen 5
-		case 266096:
-			if(m_episode != 5)
-				return -1;
-			else
-				return 140;
+        // For Keen 5
+    case 266096:
+        if(m_episode != 5)
+            return -1;
+        else
+            return 140;
 
-		case 262176:
-			if(m_episode != 5)
-				return -1;
-			else
-				return 100;
+    case 262176:
+        if(m_episode != 5)
+            return -1;
+        else
+            return 100;
 
-		// For Keen 6
-		case 236112:
-			if(m_episode != 6)
-				return -1;
-			else
-				return 100;
+        // For Keen 6
+    case 236112:
+        if(m_episode != 6)
+            return -1;
+        else
+            return 100;
 
-		case 271696:
-			if(m_episode != 6)
-				return -1;
-			else
-				return 140;
+    case 271696:
+        if(m_episode != 6)
+            return -1;
+        else
+            return 140;
 
-		default: return -2;
+        // Keen Dreams
+    case 213536:
+        if(m_episode != 7)
+            return -1;
+        else
+            return 100; // TODO: Not sure, if it really is version 1.00. Check!
+
+    default: return -2;
     }
 }
 
@@ -281,62 +296,62 @@ int CExeFile::getEXECrc()
 
     switch( m_episode )
     {
-        case 1:
-            switch( version )
-		{
-			case 110:
-				if(m_crc != 1)
-					return -1;
-				else
-					return 1;
-			case 131:
-				if(m_crc != 0x195771AE)
-					return -1;
-				else
-					return true;
-			case 134:
-				if(m_crc != 1)
-					return -1;
-				else
-					return 1;
-			default: return -2;
-		}
-        case 2:
-            switch( version )
-		{
-			case 100:
-				if(m_crc != 1)
-					return -1;
-				else
-					return 1;
-			case 131:
-				if(m_crc != 0x94E464B4)
-					return -1;
-				else
-					return true;
-		}
-        case 3:
-            switch( version )
-		{
-			case 100:
-				if(m_crc != 1)
-					return -1;
-				else
-					return 1;
-			case 131:
-				if(m_crc != 0x70D3264D)
-					return -1;
-				else
-					return 1;
-		}
-        case 4:
-		case 5:
-		case 6:
+    case 1:
+        switch( version )
         {
-        	// TODO: CRC-Flags for Episode 4 must be implemented here!
-        	return 1;
+        case 110:
+            if(m_crc != 1)
+                return -1;
+            else
+                return 1;
+        case 131:
+            if(m_crc != 0x195771AE)
+                return -1;
+            else
+                return true;
+        case 134:
+            if(m_crc != 1)
+                return -1;
+            else
+                return 1;
+        default: return -2;
         }
-		default: return -2;
+    case 2:
+        switch( version )
+        {
+        case 100:
+            if(m_crc != 1)
+                return -1;
+            else
+                return 1;
+        case 131:
+            if(m_crc != 0x94E464B4)
+                return -1;
+            else
+                return true;
+        }
+    case 3:
+        switch( version )
+        {
+        case 100:
+            if(m_crc != 1)
+                return -1;
+            else
+                return 1;
+        case 131:
+            if(m_crc != 0x70D3264D)
+                return -1;
+            else
+                return 1;
+        }
+    case 4:
+    case 5:
+    case 6:
+    {
+        // TODO: CRC-Flags for Episode 4 must be implemented here!
+        return 1;
+    }
+    default: return -2;
     }
 }
 
@@ -347,33 +362,33 @@ const unsigned short EXEZM = 0x4D5A;
  * we might support any exe file in the future */
 bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const
 {
-	EXE_HEADER head;
+    EXE_HEADER head;
 
-	/* Read the header from the file if we can */
-	memcpy(&head, p_data_start,sizeof(EXE_HEADER));
-	/* Check that the 'MZ' id is present */
-	p_data_start += sizeof(EXE_HEADER);
-	if(head.mzid == EXEMZ || head.mzid == EXEZM)
-	{
-		/* Calculate the image size */
-		if (!*headerlen) {
-			*imglen = ((unsigned long)head.image_h - 1) * 512L + head.image_l - (unsigned long)head.header_size * 16L;
-			*headerlen = (unsigned long)head.header_size * 16L;
-		}
-		else *imglen = ((unsigned long)head.image_h - 1) * 512L + head.image_l - *headerlen;
-		return true;
-	}
+    /* Read the header from the file if we can */
+    memcpy(&head, p_data_start,sizeof(EXE_HEADER));
+    /* Check that the 'MZ' id is present */
+    p_data_start += sizeof(EXE_HEADER);
+    if(head.mzid == EXEMZ || head.mzid == EXEZM)
+    {
+        /* Calculate the image size */
+        if (!*headerlen) {
+            *imglen = ((unsigned long)head.image_h - 1) * 512L + head.image_l - (unsigned long)head.header_size * 16L;
+            *headerlen = (unsigned long)head.header_size * 16L;
+        }
+        else *imglen = ((unsigned long)head.image_h - 1) * 512L + head.image_l - *headerlen;
+        return true;
+    }
 
-	// If we got here, something failed
-	*imglen = *headerlen = 0;
-	return false;
+    // If we got here, something failed
+    *imglen = *headerlen = 0;
+    return false;
 }
 
 
 bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
-                const std::vector<uint8_t> &AudioCompFileData,
-                const int audio_start,
-                const int audio_end) const
+                                    const std::vector<uint8_t> &AudioCompFileData,
+                                    const int audio_start,
+                                    const int audio_end) const
 {
     std::string audioDictfilename = getResourceFilename( gKeenFiles.audioDictFilename, gKeenFiles.gameDir, false, false);
 
@@ -422,8 +437,8 @@ bool CExeFile::unpackAudioInterval( RingBuffer<IMFChunkType> &imfData,
 }
 
 bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
-                    std::vector<uint32_t> &musiched,
-                    const size_t audiofilecompsize) const
+                                    std::vector<uint32_t> &musiched,
+                                    const size_t audiofilecompsize) const
 {
     uint32_t number_of_audiorecs = 0;
 
@@ -432,13 +447,13 @@ bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
     const uint32_t *starthedptr = reinterpret_cast<uint32_t*>(getHeaderData());
     uint32_t *audiohedptr = const_cast<uint32_t*>(starthedptr);
     for( const uint32_t *endptr = (uint32_t*) (void*) getHeaderData()+getExeDataSize()/sizeof(uint32_t);
-            audiohedptr < endptr ;
-            audiohedptr++ )
+         audiohedptr < endptr ;
+         audiohedptr++ )
     {
         if(*audiohedptr == audiofilecompsize)
         {
             for( const uint32_t *startptr = (uint32_t*) (void*) getHeaderData() ;
-                    audiohedptr > startptr ; audiohedptr-- )
+                 audiohedptr > startptr ; audiohedptr-- )
             {
                 // Get the number of Audio files we have
                 number_of_audiorecs++;
@@ -466,17 +481,17 @@ bool CExeFile::readMusicHedInternal(RingBuffer<IMFChunkType> &imfData,
         // Find the start of the embedded IMF files
         for( int slot = number_of_audiorecs-2 ; slot>=0 ; slot-- )
         {
-        const uint32_t audio_start = audiohedptr[slot];
-        const uint32_t audio_end = audiohedptr[slot+1];
+            const uint32_t audio_start = audiohedptr[slot];
+            const uint32_t audio_end = audiohedptr[slot+1];
 
-        // Caution: There are cases where audio_start > audio_end. I don't understand why, but in the original games it happens.
-        // Those slots are invalid. In mods it doesn't seem to happen!
-        // If they are equal, then the music starts there.
-        if(audio_start >= audio_end)
-        {
-            music_start = slot + 1;
-            break;
-        }
+            // Caution: There are cases where audio_start > audio_end. I don't understand why, but in the original games it happens.
+            // Those slots are invalid. In mods it doesn't seem to happen!
+            // If they are equal, then the music starts there.
+            if(audio_start >= audio_end)
+            {
+                music_start = slot + 1;
+                break;
+            }
 
         }
     }
@@ -502,7 +517,7 @@ bool CExeFile::readMusicHedFromFile(const std::string &fname, std::vector<uint32
     std::ifstream file;
 
     if(!OpenGameFileR(file, fname, std::ios::binary))
-    return false;
+        return false;
 
     file.seekg(0, std::ios::end);
     size_t length = file.tellg();
@@ -544,8 +559,8 @@ bool CExeFile::readMusicHedFromFile(const std::string &fname, std::vector<uint32
 
 
 bool CExeFile::readCompressedAudiointoMemory(RingBuffer<IMFChunkType> &imfData,
-                           std::vector<uint32_t> &musiched,
-                           std::vector<uint8_t> &AudioCompFileData) const
+                                             std::vector<uint32_t> &musiched,
+                                             std::vector<uint8_t> &AudioCompFileData) const
 
 
 {

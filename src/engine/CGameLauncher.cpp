@@ -34,6 +34,7 @@
 
 #include "keen/vorticon/VorticonEngine.h"
 #include "keen/galaxy/GalaxyEngine.h"
+#include "keen/dreams/dreamsengine.h"
 #include "dbfusion/dbFusionNgine.h"
 
 bool disallowDBFusion = false;
@@ -301,7 +302,8 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
     gLogging.ftextOut("Search: %s<br>", path.c_str() );
 
-    for(int i = 1; i <= 6; ++i)
+    // Episode 1-6 and 7 stands for Keen Dreams
+    for(int i = 1; i <= 7; ++i)
     {
 		CExeFile executable;
 		// Load the exe into memory
@@ -723,9 +725,13 @@ void CGameLauncher::ponderPatchDialog()
                     {
                         gEventManager.add( new StartVorticonEngine(false, episode, DataDirectory) );
                     }
-                    else if(episode >= 4 && episode <= 7)
+                    else if(episode >= 4 && episode <= 6)
                     {
                         gEventManager.add( new StartGalaxyEngine(false, episode, DataDirectory) );
+                    }
+                    else if(episode == 7)
+                    {
+                        gEventManager.add( new StartDreamsEngine(false, DataDirectory) );
                     }
 
                 }

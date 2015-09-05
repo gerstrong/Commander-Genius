@@ -41,7 +41,13 @@ public:
 	// in case you just want to see the Exe-File which CG sustains in the memory
 	void dumpFile(const std::string& filename);
 
-	bool readData(const char episode, const std::string& datadirectory);
+    /**
+     * @brief readData  Attempt to read the data of the given episode
+     * @param episode   Episode for which to read for
+     * @param datadirectory path where the data is located
+     * @return if everything went well true, otherwise false
+     */
+    bool readData(const uint episode, const std::string& datadirectory);
 
 	/**
 	 * \brief Tells whether The Exe-File is supported by CG or not.
