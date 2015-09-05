@@ -85,8 +85,9 @@ bool CGameLauncher::setupMenu()
     mLauncherDialog.initEmptyBackground();
     mSelection      = -1;
 
-    bool gamedetected = false;
+    bool gamesDetected = false;
 
+    // TODO: Put that scanning into a separate so we can show a loading menu
     // Scan for games...
     m_DirList.clear();
     m_Entries.clear();
@@ -97,13 +98,11 @@ bool CGameLauncher::setupMenu()
     getLabels();
 
     // Scan VFS DIR_ROOT for exe's
-    if (scanExecutables(DIR_ROOT))
-        gamedetected = true;
+    gamesDetected |= scanExecutables(DIR_ROOT);
     mGameScanner.setPermilage(100);
 
     // Recursivly scan into DIR_GAMES subdir's for exe's
-    if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900))
-        gamedetected = true;
+    gamesDetected |= scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES, 200, 900);
 
     mpSelList = new CGUITextSelectionList();
 
@@ -186,7 +185,7 @@ bool CGameLauncher::setupMenu()
 					"and the CG Contributors\n");
     mLauncherDialog.addControl( banner, GsRect<float>(0.0f, 0.95f, 1.0f, 0.05f) );
 
-    if(!gamedetected)
+    if(!gamesDetected)
         return false;
 
     const std::string gameDir = gArgs.getValue("dir");
@@ -233,7 +232,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
                                        const size_t startPermil,
                                        const size_t endPermil)
 {
-    bool gamedetected = false;
+    bool gamesDetected = false;
 
 	std::set<std::string> dirs;
 	FileListAdder fileListAdder;
@@ -256,15 +255,14 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 	{
 		std::string newpath = path + '/' +  *i;
 
-		if(scanExecutables(newpath))
-			gamedetected = true;
+        gamesDetected |= scanExecutables(newpath);
 
         size_t lastPermil = permil + deltaPerMil;
         if(lastPermil>endPermil)
             lastPermil = endPermil;
 
         if(maxdepth > 1 && scanSubDirectories(newpath, maxdepth - 1, permil, lastPermil))
-			gamedetected = true;
+            gamesDetected = true;
 
         permil = lastPermil;
         mGameScanner.setPermilage(permil);
@@ -272,7 +270,7 @@ bool CGameLauncher::scanSubDirectories(const std::string& path,
 
     mGameScanner.setPermilage(endPermil);
 
-    return gamedetected;
+    return gamesDetected;
 }
 
 std::string CGameLauncher::filterGameName(const std::string &path)

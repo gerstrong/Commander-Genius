@@ -83,6 +83,7 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	std::ifstream File;
 	OpenGameFileR(File, filename, std::ios::binary);
 
+    // Galaxy Keen games use the "e" letter for whatever reason
 	if(!File)
 	{
 		// try another filename (Used in Episode 4-6)
@@ -90,13 +91,24 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 		OpenGameFileR(File, filename, std::ios::binary);
 	}
 
-	if(!File)
-	{
-		// try another filename (Used in Episode 4-6) for demo versions
-		filename = datadirectory + "/k" + itoa(episode) + "demo.exe";
-		OpenGameFileR(File, filename, std::ios::binary);
-	}
-	
+    // Demo version, I think we support none yet have the suffix "demo" at the end
+    if(!File)
+    {
+        // try another filename (Used in Episode 4-6) for demo versions
+        filename = datadirectory + "/k" + itoa(episode) + "demo.exe";
+        OpenGameFileR(File, filename, std::ios::binary);
+    }
+
+    // Keen Dreams section. It is called "KDREAMS.EXE" for what I know. Remember, case sensitity is
+    // solved by OpenGameFileR.
+    if(!File)
+    {
+        // try another filename (Used in Episode 4-6) for demo versions
+        filename = datadirectory + "/kdreams.exe";
+        OpenGameFileR(File, filename, std::ios::binary);
+    }
+
+    // If we still have no file found, the directory with the game cannot be used at all.
 	if(!File)
 		return false;	
 
