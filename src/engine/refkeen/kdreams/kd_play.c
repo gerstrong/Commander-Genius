@@ -1958,27 +1958,3 @@ done:
 	VW_ClearVideo (FIRSTCOLOR);
 }
 
-// (REFKEEN) Used for patching version-specific stuff
-id0_word_t refkeen_compat_kd_play_objoffset;
-
-void RefKeen_Patch_kd_play(void)
-{
-	switch (refkeen_current_gamever)
-	{
-#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
-	case BE_GAMEVER_KDREAMSC105:
-		refkeen_compat_kd_play_objoffset = 0x7470;
-		break;
-#else
-	case BE_GAMEVER_KDREAMSE113:
-		refkeen_compat_kd_play_objoffset = 0x712A;
-		break;
-	case BE_GAMEVER_KDREAMSE193:
-		refkeen_compat_kd_play_objoffset = 0x707A;
-		break;
-	case BE_GAMEVER_KDREAMSE120:
-		refkeen_compat_kd_play_objoffset = 0x734C;
-		break;
-#endif
-	}
-}

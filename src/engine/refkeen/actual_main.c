@@ -96,8 +96,8 @@ int refkeen_main(int argc, char **argv)
 	}
 	else
 	{
-		BE_Cross_PrepareGameInstallations();
-		BE_Cross_SelectGameInstallation(selectedGameVerVal);
+        //BE_Cross_PrepareGameInstallations();
+        //BE_Cross_SelectGameInstallation(selectedGameVerVal);
 		// Prepare arguments for ported game code
 		id0_argc = argc;
 		// HACK: In Keen Dreams CGA v1.05, even if argc == 1, argv[1] is accessed...

@@ -1068,8 +1068,8 @@ void BE_Cross_SelectGameInstallation(int gameVerVal)
 #ifdef REFKEEN_VER_KDREAMS
 	extern void RefKeen_Patch_id_rf(void);
 	RefKeen_Patch_id_rf();
-	extern void RefKeen_Patch_kd_play(void);
-	RefKeen_Patch_kd_play();
+    //extern void RefKeen_Patch_kd_play(void);
+    //RefKeen_Patch_kd_play();
 #endif
 #ifdef REFKEEN_VER_CAT3D
 	extern void RefKeen_Patch_c3_game(void);

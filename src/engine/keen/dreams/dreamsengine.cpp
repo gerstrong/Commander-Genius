@@ -91,8 +91,34 @@ static const BE_GameVerDetails_T g_be_gamever_kdreamse113 = {
 extern void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr);
 
 
+
+// (REFKEEN) Used for patching version-specific stuff
+uint16_t refkeen_compat_kd_play_objoffset;
+
+extern BE_GameVer_T refkeen_current_gamever;
+
 }
 
+
+
+void setupObjOffset()
+{
+    switch (refkeen_current_gamever)
+    {
+    /*case BE_GAMEVER_KDREAMSC105:
+        refkeen_compat_kd_play_objoffset = 0x7470;
+        break;*/
+    case BE_GAMEVER_KDREAMSE113:
+        refkeen_compat_kd_play_objoffset = 0x712A;
+        break;
+    case BE_GAMEVER_KDREAMSE193:
+        refkeen_compat_kd_play_objoffset = 0x707A;
+        break;
+    case BE_GAMEVER_KDREAMSE120:
+        refkeen_compat_kd_play_objoffset = 0x734C;
+        break;
+    }
+}
 
 
 namespace dreams
@@ -108,7 +134,7 @@ void DreamsEngine::start()
     RefKeen_Patch_id_ca();
     RefKeen_Patch_id_us();
     RefKeen_Patch_id_rf();
-    RefKeen_Patch_kd_play();
+    setupObjOffset();
 
     // TODO: This seems to be the exe with main cycle. We need to break it into draw and logic routines.
     kdreams_exe_main();
