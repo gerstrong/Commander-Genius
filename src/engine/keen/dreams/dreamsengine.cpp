@@ -110,6 +110,7 @@ void DreamsEngine::start()
     RefKeen_Patch_id_rf();
     RefKeen_Patch_kd_play();
 
+    // TODO: This seems to be the exe with main cycle. We need to break it into draw and logic routines.
     kdreams_exe_main();
 }
 
