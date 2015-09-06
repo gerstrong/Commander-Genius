@@ -79,7 +79,7 @@ static	const char        ASCIINames[] =		// Unshifted ASCII for scan codes
 	'q','w','e','r','t','y','u','i','o','p','[',']',13 ,0  ,'a','s',	// 1
 	'd','f','g','h','j','k','l',';',39 ,'`',0  ,92 ,'z','x','c','v',	// 2
 	'b','n','m',',','.','/',0  ,'*',0  ,' ',0  ,0  ,0  ,0  ,0  ,0  ,	// 3
-	0  ,0  ,0  ,0  ,0  ,0  ,0  ,'7','8','9','-','4','5','6','+','1',	// 4
+    0  ,0  ,0  ,0  ,0  ,0  ,0  ,'7','8','9','-','4','5','6','+','1',	// 4
 	'2','3','0',127,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 5
 	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,	// 6
 	0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0  ,0		// 7
@@ -377,7 +377,7 @@ IN_GetJoyButtonsDB(id0_word_t joy)
 			;
 #endif
 		result2 = INL_GetJoyButtons(joy);
-    //	BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	} while (result1 != result2);
 	return(result1);
 }
@@ -924,7 +924,7 @@ IN_WaitForKey(void)
 
 	while (!(result = LastScan))
 	{
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	}
 	LastScan = 0;
 	return(result);
@@ -943,7 +943,7 @@ IN_WaitForASCII(void)
 
 	while (!(result = LastASCII))
 	{
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	}
 	LastASCII = '\0';
 	return(result);
@@ -971,7 +971,7 @@ IN_AckBack(void)
 			{
 				while (INL_GetMouseButtons())
 				{
-//					BE_ST_ShortSleep();
+                    BE_ST_ShortSleep();
 				}
 				return;
 			}
@@ -985,13 +985,13 @@ IN_AckBack(void)
 				{
 					while (IN_GetJoyButtonsDB(i))
 					{
-//						BE_ST_ShortSleep();
+                        BE_ST_ShortSleep();
 					}
 					return;
 				}
 			}
 		}
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	}
 
 	// REFKEEN - Alternative controllers support
@@ -1017,13 +1017,13 @@ IN_Ack(void)
 	if (MousePresent)
 		while (INL_GetMouseButtons())
 		{
-//			BE_ST_ShortSleep();
+            BE_ST_ShortSleep();
 		}
 	for (i = 0;i < MaxJoys;i++)
 		if (JoysPresent[i])
 			while (IN_GetJoyButtonsDB(i))
 			{
-//				BE_ST_ShortSleep();
+                BE_ST_ShortSleep();
 			}
 	IN_AckBack();
 }
@@ -1070,7 +1070,7 @@ IN_UserInput(id0_longword_t delay,id0_boolean_t clear)
 	lasttime = SD_GetTimeCount();
 	do
 	{
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 		if (IN_IsUserInput())
 		{
 			if (clear)

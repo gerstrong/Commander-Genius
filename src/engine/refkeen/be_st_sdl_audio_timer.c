@@ -1,3 +1,6 @@
+// TODO: Big TODO: Rework this routine so it better fits to CG.
+// A lot of stuff, especially audio is already defined at other parts
+
 #if 0
 
 #include "SDL.h"
@@ -698,6 +701,8 @@ void BE_ST_WaitVBL(int16_t number)
 	BEL_ST_TicksDelayWithOffset(nextSdlTicks-currSdlTicks);
 }
 
+#endif
+
 // Call during a busy loop of some unknown duration (e.g., waiting for key press/release)
 void BE_ST_ShortSleep(void)
 {
@@ -707,6 +712,7 @@ void BE_ST_ShortSleep(void)
 	BE_ST_PollEvents();
 }
 
+#if 0
 
 void BE_ST_Delay(uint16_t msec) // Replacement for delay from dos.h
 {

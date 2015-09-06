@@ -1849,7 +1849,7 @@ SD_WaitSoundDone(void)
 {
 	while (SD_SoundPlaying())
 	{
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	}
 }
 

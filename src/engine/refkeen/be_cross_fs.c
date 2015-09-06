@@ -138,7 +138,7 @@ static const BE_GameVerDetails_T g_be_gamever_kdreamsc105 = {
 #endif
 
 #ifdef REFKEEN_VER_KDREAMS_ANYEGA_ALL
-static const BE_GameFileDetails_T g_be_reqgameverfiles_kdreamse113[] = {
+/*static const BE_GameFileDetails_T g_be_reqgameverfiles_kdreamse113[] = {
 	{"KDREAMS.AUD", 3498, 0x80ac85e5},
 	{"KDREAMS.CMP", 14189, 0x97628ca0},
 	{"KDREAMS.EGA", 213045, 0x2dc94687},
@@ -170,7 +170,7 @@ static const BE_GameVerDetails_T g_be_gamever_kdreamse113 = {
 	BE_EXECOMPRESSION_LZEXE9X,
 	BE_GAMEVER_KDREAMSE113
 };
-
+*/
 // Keen Dreams v1.93 and v1.20 actually share the exact same game data,
 // minus the EXE (and v1.92 is also the same, except for KDREAMS.CMP).
 
@@ -652,16 +652,18 @@ static void BEL_Cross_mkdir(const char *path)
     return fopen(fullpath, "wb");*/
 }
 
+extern char *dreamsengine_datapath;
+
 static bool BEL_Cross_CheckGameFileDetails(const BE_GameFileDetails_T *details, const char *searchdir)
 {
-	BE_FILE_T fp = BEL_Cross_open_from_dir(details->filename, false, searchdir);
+    BE_FILE_T fp = BEL_Cross_open_from_dir(details->filename, false, dreamsengine_datapath);
 	if (!fp)
 		return false;
 
 	if (details->filesize == BE_Cross_FileLengthFromHandle(fp))
 	{
 		uint32_t crc32;
-//		if (!Crc32_ComputeFile(fp, &crc32) && (crc32 == details->crc32))
+        //if (!Crc32_ComputeFile(fp, &crc32) && (crc32 == details->crc32))
 		{
 			BE_Cross_close(fp);
 			return true;
@@ -671,8 +673,9 @@ static bool BEL_Cross_CheckGameFileDetails(const BE_GameFileDetails_T *details, 
 	return false;
 }
 
+
 // ***ASSUMPTION: descStr points to a C string literal which is never modified nor deleted!!!***
-static void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr)
+void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *details, const char *searchdir, const char *descStr)
 {
 	for (const BE_GameFileDetails_T *fileDetailsBuffer = details->reqFiles; fileDetailsBuffer->filename; ++fileDetailsBuffer)
 		if (!BEL_Cross_CheckGameFileDetails(fileDetailsBuffer, searchdir))
@@ -699,17 +702,15 @@ static void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T
 	unsigned char *decompexebuffer = NULL;
 	char errorMsg[100];
 
-    //std::vector<unsigned char> exeData;
-
 	for (const BE_EmbeddedGameFileDetails_T *embeddedfileDetailsBuffer = details->embeddedFiles; embeddedfileDetailsBuffer->fileDetails.filename; ++embeddedfileDetailsBuffer)
 		if (!BEL_Cross_CheckGameFileDetails(&embeddedfileDetailsBuffer->fileDetails, gameInstallation->embeddedRsrcPath))
 		{
 			if (!decompexebuffer)
 			{
 				// First time we do this, so create dir (creation isn't recursive)
-				BEL_Cross_mkdir(BE_ALL_REWRITABLE_FILES_DIR); // Non-recursive
-				BEL_Cross_mkdir(writableFilesPath);
-				BEL_Cross_mkdir(gameInstallation->embeddedRsrcPath);
+                //BEL_Cross_mkdir(BE_ALL_REWRITABLE_FILES_DIR); // Non-recursive
+                //BEL_Cross_mkdir(writableFilesPath);
+                //BEL_Cross_mkdir(gameInstallation->embeddedRsrcPath);
 
 				FILE *exeFp = BEL_Cross_open_from_dir(details->exeName, false, searchdir);
 				if (!exeFp)
@@ -780,7 +781,7 @@ static void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T
 					BE_ST_ExitWithErrorMsg(errorMsg);
                 }
 			}
-			FILE *outFp = BEL_Cross_open_from_dir(embeddedfileDetailsBuffer->fileDetails.filename, true, gameInstallation->embeddedRsrcPath);
+            FILE *outFp = BEL_Cross_open_from_dir(embeddedfileDetailsBuffer->fileDetails.filename, true, searchdir);
 			if (!outFp)
 			{
                 free(decompexebuffer);
@@ -800,7 +801,6 @@ static void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T
     free(decompexebuffer);
 }
 
-extern char *dreamsengine_datapath;
 
 // Opens file for reading from a "search path" in a case-insensitive manner
 BE_FILE_T BE_Cross_open_for_reading(const char *filename)
@@ -970,9 +970,9 @@ void BE_Cross_PrepareGameInstallations(void)
 #endif
 
 #ifdef REFKEEN_VER_KDREAMS_ANYEGA_ALL
-	BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse113, ".", "Keen Dreams EGA v1.13 (Local)");
-	BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse193, ".", "Keen Dreams EGA v1.93 (Local)");
-	BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse120, ".", "Keen Dreams EGA v1.20 (Local)");
+    //BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse113, ".", "Keen Dreams EGA v1.13 (Local)");
+    //BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse193, ".", "Keen Dreams EGA v1.93 (Local)");
+    //BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse120, ".", "Keen Dreams EGA v1.20 (Local)");
 #endif
 
 #ifdef REFKEEN_VER_CAT3D

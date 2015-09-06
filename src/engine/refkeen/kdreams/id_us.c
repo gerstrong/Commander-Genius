@@ -1225,7 +1225,7 @@ US_LineInput(id0_int_t x,id0_int_t y,id0_char_t *buf,const id0_char_t *def,id0_b
 
 //	asm	pushf
 //	asm	cli
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 
 		sc = LastScan;
 		LastScan = sc_None;
@@ -1890,7 +1890,7 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 		while (US_UpdateCursor())
 		{
 			VW_UpdateScreen();
-//			BE_ST_ShortSleep();
+            BE_ST_ShortSleep();
 		}
 
 		FlushHelp = true;
@@ -1932,7 +1932,7 @@ USL_TrackItem(id0_word_t hiti,id0_word_t hitn)
 			last = inside;
 		}
 		VW_UpdateScreen();
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	} while (US_UpdateCursor());
 
 	if (op)
@@ -2266,7 +2266,7 @@ USL_CtlCKbdButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 		{
 			while (US_UpdateCursor())
 			{
-//				BE_ST_ShortSleep();
+                BE_ST_ShortSleep();
 			}
 			scan = sc_Escape;
 			break;
@@ -2274,7 +2274,7 @@ USL_CtlCKbdButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 
 //		asm	pushf
 //		asm	cli
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 		if (LastScan == sc_LShift)
 			LastScan = sc_None;
 //		asm	popf
@@ -2345,7 +2345,7 @@ USL_CtlCJoyButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 		VW_UpdateScreen();
 		while ((LastScan != sc_Escape) && !IN_GetJoyButtonsDB(joy))
 		{
-//			BE_ST_ShortSleep();
+            BE_ST_ShortSleep();
 		}
 
 		if (LastScan != sc_Escape)
@@ -2353,14 +2353,14 @@ USL_CtlCJoyButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 			IN_GetJoyAbs(joy,&minx,&miny);
 			while (IN_GetJoyButtonsDB(joy))
 			{
-//				BE_ST_ShortSleep();
+                BE_ST_ShortSleep();
 			}
 
 			USL_ShowHelp("Move Joystick to the Lower-Right");
 			VW_UpdateScreen();
 			while ((LastScan != sc_Escape) && !IN_GetJoyButtonsDB(joy))
 			{
-//				BE_ST_ShortSleep();
+                BE_ST_ShortSleep();
 			}
 
 			if (LastScan != sc_Escape)
@@ -2375,7 +2375,7 @@ USL_CtlCJoyButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 				else
 					while (IN_GetJoyButtonsDB(joy))
 					{
-//						BE_ST_ShortSleep();
+                        BE_ST_ShortSleep();
 					}
 			}
 			else
@@ -2388,7 +2388,7 @@ USL_CtlCJoyButtonCustom(UserCall call,id0_word_t i,id0_word_t n)
 	if (LastScan != sc_Escape)
 		while (IN_GetJoyButtonsDB(joy))
 			{
-//				BE_ST_ShortSleep();
+                BE_ST_ShortSleep();
 			}
 
 	if (LastScan)
@@ -2645,7 +2645,7 @@ USL_DoHelp(memptr text,id0_long_t len)
 		if (waitkey)
 			while (IN_KeyDown(waitkey))
 			{
-//				BE_ST_ShortSleep();
+                BE_ST_ShortSleep();
 			}
 		waitkey = sc_None;
 
@@ -2713,13 +2713,13 @@ USL_DoHelp(memptr text,id0_long_t len)
 				break;
 			}
 		}
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	}
 	IN_ClearKeysDown();
 	do
 	{
 		IN_ReadCursor(&info);
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	} while (info.button0 || info.button1);
 
 	VW_ShowCursor();
@@ -3646,7 +3646,7 @@ US_ControlPanel(void)
 	)
 	{
 		VW_UpdateScreen();
-//		BE_ST_ShortSleep(); // TODO (REFKEEN): Correct place?
+        BE_ST_ShortSleep(); // TODO (REFKEEN): Correct place?
 
 		buttondown = US_UpdateCursor();
 		inrect = USL_IsInRect(CursorX,CursorY,&i,&n);

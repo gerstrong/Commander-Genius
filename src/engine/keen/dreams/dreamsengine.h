@@ -20,6 +20,17 @@ public:
      */
     void start();
 
+    /**
+     * @brief ponder    Everything logic related here
+     * @param deltaT    timestep
+     */
+    void ponder(const float deltaT);
+
+    /**
+     * @brief render    Everything to ne drawn here!
+     */
+    void render();
+
 };
 
 }

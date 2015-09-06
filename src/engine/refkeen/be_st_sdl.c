@@ -1140,7 +1140,7 @@ int16_t BE_ST_BiosScanCode(int16_t command)
 
 	while (!g_sdlLastKeyScanCode)
 	{
-//		BE_ST_ShortSleep();
+        BE_ST_ShortSleep();
 	}
 	int16_t result = g_sdlLastKeyScanCode;
 	g_sdlLastKeyScanCode = 0;

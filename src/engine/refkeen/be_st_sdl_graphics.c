@@ -6,7 +6,7 @@
 
 /*static*/ SDL_Window *g_sdlWindow;
 /*static*/ SDL_Renderer *g_sdlRenderer;
-static SDL_Texture *g_sdlTexture, *g_sdlTargetTexture;
+/*static*/ SDL_Texture *g_sdlTexture, *g_sdlTargetTexture;
 static SDL_Rect g_sdlAspectCorrectionRect, g_sdlAspectCorrectionBorderedRect;
 
 static bool g_sdlDoRefreshGfxOutput;
@@ -217,7 +217,7 @@ void BE_ST_ShutdownGfx(void)
 	g_sdlWindow = NULL;
 }
 
-static void BEL_ST_RecreateTexture(void)
+/*static void BEL_ST_RecreateTexture(void)
 {
 	if (g_sdlTexture)
 	{
@@ -254,7 +254,7 @@ static void BEL_ST_RecreateTexture(void)
 			exit(0);
 		}
 	}
-}
+}*/
 
 // Scancode names for controller face buttons UI and similar
 // (but not a whole on-screen keyboard), based on DOS scancodes
@@ -1107,7 +1107,7 @@ void BE_ST_SetScreenMode(int mode)
 	}
 	g_sdlScreenMode = mode;
 	BE_ST_SetGfxOutputRects();
-	BEL_ST_RecreateTexture();
+//	BEL_ST_RecreateTexture();
 }
 
 void BE_ST_textcolor(int color)
@@ -1328,15 +1328,16 @@ void BEL_ST_UpdateHostDisplay(void)
 		void *pixels;
 		int pitch;
 		SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
-		uint32_t *screenPixelPtr = (uint32_t *)pixels;
+        uint32_t *screenPixelPtrLine = (uint32_t *)pixels;
 		uint8_t currChar;
 		const uint8_t *currCharFontPtr;
 		uint32_t *currScrPixelPtr, currBackgroundColor, currCharColor;
 		int txtByteCounter = 0;
-		int currCharPixX, currCharPixY;
+        int currCharPixX, currCharPixY;
 		for (int currCharY = 0, currCharX; currCharY < TXT_ROWS_NUM; ++currCharY)
 		{
 			// Draw striped lines
+            uint32_t *screenPixelPtr = screenPixelPtrLine;
 			for (currCharX = 0; currCharX < TXT_COLS_NUM; ++currCharX)
 			{
 				currChar = g_sdlVidMem.text[txtByteCounter];
@@ -1351,9 +1352,9 @@ void BEL_ST_UpdateHostDisplay(void)
 					currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[txtByteCounter] & 15];
 				else
 					currCharColor = currBackgroundColor;
-				++txtByteCounter;
+				++txtByteCounter;                
 				currScrPixelPtr = screenPixelPtr;
-				for (currCharPixY = 0; currCharPixY < VGA_TXT_CHAR_PIX_HEIGHT; ++currCharPixY)
+                for (currCharPixY = 0; currCharPixY < VGA_TXT_CHAR_PIX_HEIGHT; ++currCharPixY)
 				{
 					/* NOTE: The char width is actually 8
 					in both of the EGA and VGA fonts. On the
@@ -1367,20 +1368,21 @@ void BEL_ST_UpdateHostDisplay(void)
 					*currScrPixelPtr = ((currChar < 192) || (currChar > 223)) ? currBackgroundColor : *(currScrPixelPtr-1);
 					currScrPixelPtr += (g_sdlTexWidth-VGA_TXT_CHAR_PIX_WIDTH+1);
 				}
-				screenPixelPtr += VGA_TXT_CHAR_PIX_WIDTH;
+				screenPixelPtr += VGA_TXT_CHAR_PIX_WIDTH;                
 			}
 			// Go to the character right below current one
-			screenPixelPtr += g_sdlTexWidth*(VGA_TXT_CHAR_PIX_HEIGHT-1);
+            screenPixelPtrLine += pitch;
 		}
 		// Finish with outputting the cursor if required
 		currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
+        uint32_t *screenPixelPtr = screenPixelPtrLine;
 		if (isBlinkingCursorShown)
 		{
 			screenPixelPtr = (uint32_t *)pixels+g_sdlTexWidth;
-			screenPixelPtr += g_sdlTxtCursorPosY*VGA_TXT_CHAR_PIX_HEIGHT*g_sdlTexWidth;
+            screenPixelPtr += g_sdlTxtCursorPosY*VGA_TXT_CHAR_PIX_HEIGHT*g_sdlTexWidth;
 			screenPixelPtr += g_sdlTxtCursorPosX*VGA_TXT_CHAR_PIX_WIDTH;
 			// Out of 3 last scanlines of char, draw to the first 2.
-			screenPixelPtr += (VGA_TXT_CHAR_PIX_HEIGHT-3)*g_sdlTexWidth;
+            screenPixelPtr += (VGA_TXT_CHAR_PIX_HEIGHT-3)*g_sdlTexWidth;
 			for (currCharPixY = 0; currCharPixY < 2; currCharPixY++)
 			{
 				for (currCharPixX = 0; currCharPixX < VGA_TXT_CHAR_PIX_WIDTH; currCharPixX++, screenPixelPtr++)
