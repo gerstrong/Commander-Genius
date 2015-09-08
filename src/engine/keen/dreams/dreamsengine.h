@@ -16,6 +16,12 @@ public:
     GameEngine(openedGamePlay, dataPath) {}
 
     /**
+     * @brief loadResources Load DOS data.
+     * @return true if everything went well otherwise false.
+     */
+    bool loadResources();
+
+    /**
      * @brief start Starts the Dreams engine which refers to accessing RefKeen code
      */
     void start();

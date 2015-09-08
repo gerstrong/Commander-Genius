@@ -1,6 +1,13 @@
 #include "dreamsengine.h"
 
 #include "../../refkeen/be_cross.h"
+#include "engine/core/CBehaviorEngine.h"
+#include "engine/keen/KeenEngine.h"
+#include <base/GsLogging.h>
+#include <base/GsTimer.h>
+#include <fileio/CExeFile.h>
+#include <fileio/KeenFiles.h>
+#include <fileio/CPatcher.h>
 
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be inmproved in future.
 extern "C"
@@ -97,6 +104,14 @@ uint16_t refkeen_compat_kd_play_objoffset;
 
 extern BE_GameVer_T refkeen_current_gamever;
 
+extern	uint8_t	*EGAhead;
+extern	uint8_t	*EGAdict;
+extern	uint8_t	*maphead;
+extern	uint8_t	*mapdict;
+extern	uint8_t	*audiohead;
+extern	uint8_t	*audiodict;
+
+
 }
 
 
@@ -124,12 +139,130 @@ void setupObjOffset()
 namespace dreams
 {
 
+
+bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
+{
+    // TODO: Extract the stuff from the Exe to the memory
+
+    // User these pointers:
+    /*
+extern	uint8_t	*EGAhead;
+extern	uint8_t	*EGAdict;
+extern	uint8_t	*maphead;
+extern	uint8_t	*mapdict;
+extern	uint8_t	*audiohead;
+extern	uint8_t	*audiodict;
+     */
+
+    return true;
+}
+
+
+///
+// This is used for loading all the resources of the game the use has chosen.
+// It loads graphics, sound and text into the memory
+///
+bool DreamsEngine::loadResources()
+{
+    gLogging.ftextOut("Loading Dreams Engine...<br>");
+
+    gTimer.setLPS(60.0f);
+
+    mEngineLoader.setStyle(PROGRESS_STYLE_BAR);
+    const std::string threadname = "Loading Keen Dreams";
+
+    struct DreamsDataLoad : public Action
+    {
+        CResourceLoaderBackground &mLoader;
+
+        DreamsDataLoad(CResourceLoaderBackground &loader) :
+            mLoader(loader) {}
+
+        int handle()
+        {
+            CExeFile &ExeFile = gKeenFiles.exeFile;
+            int version = ExeFile.getEXEVersion();
+            unsigned char *p_exedata = ExeFile.getRawData();
+            const int Episode = ExeFile.getEpisode();
+
+            mLoader.setPermilage(10);
+
+            // Patch the EXE-File-Data directly in the memory.
+            CPatcher Patcher(ExeFile, g_pBehaviorEngine->mPatchFname);
+            Patcher.process();
+
+            mLoader.setPermilage(50);
+
+            extractEmbeddedFilesIntoMemory(g_be_gamever_kdreamse113);
+
+            /*if( (mFlags & LOADGFX) == LOADGFX )
+            {
+                // Decode the entire graphics for the game (Only EGAGRAPH.CK?)
+                CEGAGraphicsDreams graphics(ExeFile);
+                if( !graphics.loadData() )
+                {
+                    return 0;
+                }
+
+                mLoader.setPermilage(400);
+            }
+
+            if( (mFlags & LOADSTR) == LOADSTR )
+            {
+                // load the strings.
+                CMessages Messages(p_exedata, Episode, version);
+                Messages.extractGlobalStrings();
+                mLoader.setPermilage(450);
+            }
+
+
+            if( (mFlags & LOADSND) == LOADSND )
+            {
+                gLogging.ftextOut("Loading audio... <br>");
+                // Load the sound data
+                setupAudio();
+
+                mLoader.setPermilage(900);
+                gLogging.ftextOut("Done loading audio.<br>");
+            }
+
+            gLogging.ftextOut("Loading game constants...<br>");
+
+            g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(Episode, p_exedata);
+
+            gLogging.ftextOut("Looking for patches...<br>");
+
+            // If there are patches left that must be applied later, do it here!
+            Patcher.postProcess();
+
+            gLogging.ftextOut("Done loading the resources...<br>");
+
+            mLoader.setPermilage(1000);*/
+
+            gEventManager.add(new FinishedLoadingResources());
+
+            return 1;
+        }
+    };
+
+    mEngineLoader.RunLoadActionBackground(new DreamsDataLoad(mEngineLoader));
+    mEngineLoader.start();
+
+    return true;
+}
+
+
+
+
+
 void DreamsEngine::start()
 {
     dreamsengine_datapath = const_cast<char*>(mDataPath.c_str());
 
     // This function extracts the embedded files. TODO: We should integrate that to our existing system
-    BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse113, dreamsengine_datapath, "Keen Dreams EGA v1.13 (Local)");
+    // Load the Resources
+    loadResources();
+    //BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse113, dreamsengine_datapath, "Keen Dreams EGA v1.13 (Local)");
 
     RefKeen_Patch_id_ca();
     RefKeen_Patch_id_us();

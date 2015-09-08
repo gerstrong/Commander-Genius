@@ -707,11 +707,6 @@ void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *detai
 		{
 			if (!decompexebuffer)
 			{
-				// First time we do this, so create dir (creation isn't recursive)
-                //BEL_Cross_mkdir(BE_ALL_REWRITABLE_FILES_DIR); // Non-recursive
-                //BEL_Cross_mkdir(writableFilesPath);
-                //BEL_Cross_mkdir(gameInstallation->embeddedRsrcPath);
-
 				FILE *exeFp = BEL_Cross_open_from_dir(details->exeName, false, searchdir);
 				if (!exeFp)
 				{
@@ -731,24 +726,6 @@ void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *detai
                 bool success;
 
 
-                /*std::ifstream exeFile;
-
-                if(!exeFile)
-                {
-                    snprintf(errorMsg, sizeof(errorMsg), "BEL_Cross_ConditionallyAddGameInstallation: Failed to copy EXE in unpacked form!\nFilename: %s", details->exeName);
-                    BE_ST_ExitWithErrorMsg(errorMsg);
-                }
-
-                exeFile.seekg(0,std::ios::end);
-                const uint dataSizePacked = exeFile.tellg();
-                exeFile.seekg(0,std::ios::beg);
-
-                exeData.resize(dataSizePacked);
-
-                exeFile.read((char*)(exeData.data()), dataSizePacked);
-
-                exeFile.close();*/
-
                 switch (details->compressionType)
 				{
 				case BE_EXECOMPRESSION_NONE:
@@ -759,19 +736,6 @@ void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *detai
 					break;
                 }
 
-                /*Cunlzexe UnLZEXE;
-
-                uint datasizeUnpacked = 0;
-
-                std::vector<unsigned char> decdata;
-                if(UnLZEXE.decompress(exeData.data(), decdata))
-                {
-                    datasizeUnpacked = decdata.size();
-                    exeData.resize(datasizeUnpacked);
-                    //m_headersize = UnLZEXE.HeaderSize();
-                    memcpy(exeData.data(), &decdata[0], datasizeUnpacked);
-                }
-*/
 
                 fclose(exeFp);
 				if (!success)
@@ -805,20 +769,12 @@ void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T *detai
 // Opens file for reading from a "search path" in a case-insensitive manner
 BE_FILE_T BE_Cross_open_for_reading(const char *filename)
 {
-	// Just in case, at least for now
-    /*BE_FILE_T fp = BEL_Cross_open_from_dir(filename, false, g_be_selectedGameInstallation->writableVanillaFilesPath);
-	if (fp)
-		return fp;
-    return BEL_Cross_open_from_dir(filename, false, g_be_selectedGameInstallation->path);*/
-
     return BEL_Cross_open_from_dir(filename, false, dreamsengine_datapath);
 }
 
 // Opens file for overwriting from a "search path" (if exists) in a case-insensitive manner
 BE_FILE_T BE_Cross_open_for_overwriting(const char *filename)
 {
-    //return BEL_Cross_open_from_dir(filename, true, g_be_selectedGameInstallation->writableVanillaFilesPath);
-
     return BEL_Cross_open_from_dir(filename, true, dreamsengine_datapath);
 }
 
