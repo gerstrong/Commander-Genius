@@ -111,6 +111,8 @@ extern	uint8_t	*mapdict;
 extern	uint8_t	*audiohead;
 extern	uint8_t	*audiodict;
 
+// (REFKEEN) Used for patching version-specific stuff
+extern char *gametext, *context, *story;
 
 }
 
@@ -140,19 +142,45 @@ namespace dreams
 {
 
 
+
 bool extractEmbeddedFilesIntoMemory(const BE_GameVerDetails_T &gameVerDetails)
 {
-    // TODO: Extract the stuff from the Exe to the memory
+    // Mapping the strings of the filenames to the pointers where we store the embedded data
+    std::map< std::string, uint8_t **> dataMap;
 
-    // User these pointers:
-    /*
-extern	uint8_t	*EGAhead;
-extern	uint8_t	*EGAdict;
-extern	uint8_t	*maphead;
-extern	uint8_t	*mapdict;
-extern	uint8_t	*audiohead;
-extern	uint8_t	*audiodict;
-     */
+    // CA
+    dataMap.insert ( std::pair<std::string, uint8_t **>("EGAHEAD.KDR", &EGAhead) );
+    dataMap.insert ( std::pair<std::string, uint8_t **>("EGADICT.KDR", &EGAdict) );
+    dataMap.insert ( std::pair<std::string, uint8_t **>("MAPHEAD.KDR", &maphead) );
+    dataMap.insert ( std::pair<std::string, uint8_t **>("MAPDICT.KDR", &mapdict) );
+    dataMap.insert ( std::pair<std::string, uint8_t **>("AUDIOHHD.KDR", &audiohead) );
+    dataMap.insert ( std::pair<std::string, uint8_t **>("AUDIODCT.KDR", &audiodict) );
+
+    // US
+    dataMap.insert ( std::pair<std::string, uint8_t **>("GAMETEXT.KDR", (uint8_t **) &gametext) );
+    dataMap.insert ( std::pair<std::string, uint8_t **>("CONTEXT.KDR", (uint8_t **) &context) );
+    dataMap.insert ( std::pair<std::string, uint8_t **>("STORY.KDR", (uint8_t **) &story) );
+
+
+    CExeFile &ExeFile = gKeenFiles.exeFile;
+
+    uint8_t* headerData = (uint8_t*) ExeFile.getHeaderData();
+
+    for (const BE_EmbeddedGameFileDetails_T *embeddedfileDetailsBuffer = gameVerDetails.embeddedFiles; embeddedfileDetailsBuffer->fileDetails.filename; ++embeddedfileDetailsBuffer)
+    {
+        auto it = dataMap.find(embeddedfileDetailsBuffer->fileDetails.filename);
+
+        if(it == dataMap.end())
+            continue;
+
+        uint8_t **data = it->second;
+
+        const uint dataSize = embeddedfileDetailsBuffer->fileDetails.filesize;
+
+        *data = (uint8_t*) malloc(dataSize);
+
+        memcpy(*data, headerData+embeddedfileDetailsBuffer->offset, dataSize);
+    }
 
     return true;
 }
@@ -262,10 +290,9 @@ void DreamsEngine::start()
     // This function extracts the embedded files. TODO: We should integrate that to our existing system
     // Load the Resources
     loadResources();
-    //BEL_Cross_ConditionallyAddGameInstallation(&g_be_gamever_kdreamse113, dreamsengine_datapath, "Keen Dreams EGA v1.13 (Local)");
 
-    RefKeen_Patch_id_ca();
-    RefKeen_Patch_id_us();
+    //RefKeen_Patch_id_ca();
+    //RefKeen_Patch_id_us();
     RefKeen_Patch_id_rf();
     setupObjOffset();
 
