@@ -41,9 +41,6 @@ void BE_ST_MarkGfxForUpdate(void)
 #define TXT_COLS_NUM 80
 #define TXT_ROWS_NUM 25
 
-#define VGA_TXT_CHAR_PIX_WIDTH (VGA_TXT_TEX_WIDTH/TXT_COLS_NUM)
-#define VGA_TXT_CHAR_PIX_HEIGHT (VGA_TXT_TEX_HEIGHT/TXT_ROWS_NUM)
-
 #define VGA_TXT_CURSOR_BLINK_VERT_FRAME_RATE 8
 #define VGA_TXT_BLINK_VERT_FRAME_RATE 16
 
@@ -186,16 +183,16 @@ void BE_ST_InitGfx(void)
 	}
 #ifdef REFKEEN_VER_ANY_CGA
 	// Vanilla Keen Dreams and Keen 4-6 have no VSync in the CGA builds
-	g_sdlRenderer = SDL_CreateRenderer(g_sdlWindow, g_refKeenCfg.sdlRendererDriver, SDL_RENDERER_ACCELERATED | ((g_refKeenCfg.vSync == VSYNC_ON) ? SDL_RENDERER_PRESENTVSYNC : 0));
+    //g_sdlRenderer = SDL_CreateRenderer(g_sdlWindow, g_refKeenCfg.sdlRendererDriver, SDL_RENDERER_ACCELERATED | ((g_refKeenCfg.vSync == VSYNC_ON) ? SDL_RENDERER_PRESENTVSYNC : 0));
 #else
-	g_sdlRenderer = SDL_CreateRenderer(g_sdlWindow, g_refKeenCfg.sdlRendererDriver, SDL_RENDERER_ACCELERATED | ((g_refKeenCfg.vSync == VSYNC_OFF) ? 0 : SDL_RENDERER_PRESENTVSYNC));
+    //g_sdlRenderer = SDL_CreateRenderer(g_sdlWindow, g_refKeenCfg.sdlRendererDriver, SDL_RENDERER_ACCELERATED | ((g_refKeenCfg.vSync == VSYNC_OFF) ? 0 : SDL_RENDERER_PRESENTVSYNC));
 #endif
-	if (!g_sdlRenderer)
+    /*if (!g_sdlRenderer)
 	{
 		BE_Cross_LogMessage(BE_LOG_MSG_ERROR, "Failed to create SDL2 renderer,\n%s\n", SDL_GetError());
 		//Destroy window?
 		exit(0);
-	}
+    }*/
 	BE_ST_SetScreenMode(3); // Includes SDL_Texture handling and output rects preparation
 }
 
@@ -217,7 +214,7 @@ void BE_ST_ShutdownGfx(void)
 	g_sdlWindow = NULL;
 }
 
-/*static void BEL_ST_RecreateTexture(void)
+static void BEL_ST_RecreateTexture(void)
 {
 	if (g_sdlTexture)
 	{
@@ -254,7 +251,7 @@ void BE_ST_ShutdownGfx(void)
 			exit(0);
 		}
 	}
-}*/
+}
 
 // Scancode names for controller face buttons UI and similar
 // (but not a whole on-screen keyboard), based on DOS scancodes
@@ -1107,7 +1104,7 @@ void BE_ST_SetScreenMode(int mode)
 	}
 	g_sdlScreenMode = mode;
 	BE_ST_SetGfxOutputRects();
-//	BEL_ST_RecreateTexture();
+    BEL_ST_RecreateTexture();
 }
 
 void BE_ST_textcolor(int color)
@@ -1308,6 +1305,9 @@ static void BEL_ST_FinishHostDisplayUpdate(void)
 
 void BEL_ST_UpdateHostDisplay(void)
 {
+    #define VGA_TXT_CHAR_PIX_WIDTH  ((VGA_TXT_TEX_WIDTH)/TXT_COLS_NUM)
+    #define VGA_TXT_CHAR_PIX_HEIGHT ((VGA_TXT_TEX_HEIGHT)/TXT_ROWS_NUM)
+
 	if (g_sdlScreenMode == 3) // Text mode
 	{
 		// For graphics modes we don't have to refresh if g_sdlDoRefreshGfxOutput is set to false,
@@ -1328,7 +1328,7 @@ void BEL_ST_UpdateHostDisplay(void)
 		void *pixels;
 		int pitch;
 		SDL_LockTexture(g_sdlTexture, NULL, &pixels, &pitch);
-        uint32_t *screenPixelPtrLine = (uint32_t *)pixels;
+        uint32_t *screenPixelPtr = (uint32_t *)pixels;
 		uint8_t currChar;
 		const uint8_t *currCharFontPtr;
 		uint32_t *currScrPixelPtr, currBackgroundColor, currCharColor;
@@ -1337,7 +1337,7 @@ void BEL_ST_UpdateHostDisplay(void)
 		for (int currCharY = 0, currCharX; currCharY < TXT_ROWS_NUM; ++currCharY)
 		{
 			// Draw striped lines
-            uint32_t *screenPixelPtr = screenPixelPtrLine;
+            //uint32_t *screenPixelPtr = screenPixelPtrLine;
 			for (currCharX = 0; currCharX < TXT_COLS_NUM; ++currCharX)
 			{
 				currChar = g_sdlVidMem.text[txtByteCounter];
@@ -1360,7 +1360,7 @@ void BEL_ST_UpdateHostDisplay(void)
 					in both of the EGA and VGA fonts. On the
 					VGA case, the 9th pixel is determined
 					according to the 8th and char number. */
-					for (currCharPixX = 0; currCharPixX < 8; ++currCharPixX, ++currCharFontPtr, ++currScrPixelPtr)
+                    for (currCharPixX = 0; currCharPixX < 8; ++currCharPixX, ++currCharFontPtr, ++currScrPixelPtr)
 					{
 						*currScrPixelPtr = (*currCharFontPtr) ? currCharColor : currBackgroundColor;
 					}
@@ -1371,11 +1371,10 @@ void BEL_ST_UpdateHostDisplay(void)
 				screenPixelPtr += VGA_TXT_CHAR_PIX_WIDTH;                
 			}
 			// Go to the character right below current one
-            screenPixelPtrLine += pitch;
+            screenPixelPtr += g_sdlTexWidth*(VGA_TXT_CHAR_PIX_HEIGHT-1);
 		}
 		// Finish with outputting the cursor if required
 		currCharColor = g_sdlEGABGRAScreenColors[g_sdlVidMem.text[1+((TXT_COLS_NUM*g_sdlTxtCursorPosY+g_sdlTxtCursorPosX)<<1)] & 15];
-        uint32_t *screenPixelPtr = screenPixelPtrLine;
 		if (isBlinkingCursorShown)
 		{
 			screenPixelPtr = (uint32_t *)pixels+g_sdlTexWidth;
@@ -1505,7 +1504,8 @@ void BEL_ST_UpdateHostDisplay(void)
 
 	g_sdlDoRefreshGfxOutput = false;
 	SDL_UnlockTexture(g_sdlTexture);
-	SDL_SetRenderDrawColor(g_sdlRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+
+    SDL_SetRenderDrawColor(g_sdlRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(g_sdlRenderer);
 	SDL_SetRenderDrawColor(g_sdlRenderer, (g_sdlEGACurrBGRAPaletteAndBorder[16]>>16)&0xFF, (g_sdlEGACurrBGRAPaletteAndBorder[16]>>8)&0xFF, g_sdlEGACurrBGRAPaletteAndBorder[16]&0xFF, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(g_sdlRenderer, &g_sdlAspectCorrectionBorderedRect);
@@ -1518,7 +1518,8 @@ void BEL_ST_UpdateHostDisplay(void)
 	}
 	else
 	{
-		SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, &g_sdlAspectCorrectionRect);
+        //SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, &g_sdlAspectCorrectionRect);
+        SDL_RenderCopy(g_sdlRenderer, g_sdlTexture, NULL, NULL);
 	}
 
 	BEL_ST_FinishHostDisplayUpdate();

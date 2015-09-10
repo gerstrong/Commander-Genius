@@ -14,10 +14,10 @@
 
 
 // For RefKeen
-extern "C"
+/*extern "C"
 {
     extern SDL_Texture *g_sdlTexture;
-}
+}*/
 
 
 Uint16 getPowerOfTwo(const Uint16 value)
@@ -248,7 +248,7 @@ bool CVideoEngine::createSurfaces(const GsRect<Uint16> &gamerect)
 
 //#if defined(REFKEEN) // TODO: Doesn't get defined for some reason
 // For Ref-Keen passing this pointer
-    g_sdlTexture = mpSDLScreenTexture.get();
+    //g_sdlTexture = mpSDLScreenTexture.get();
 //#endif
 
 #endif
