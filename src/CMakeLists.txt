@@ -45,6 +45,8 @@ include(oldArch.cmake)
 ADD_DEFINITIONS(-std=c++11)
 
 
+
+
 # Directory creation of all the chosen build
 #set(BUILD_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Build")
 #set(BUILD_DIR "${BUILD_BASE_DIR}/${BUILD_TARGET}")
@@ -191,6 +193,10 @@ get_property(cg_obj_libs GLOBAL PROPERTY CG_OBJ_LIBS)
 
 # Add executable Commander Genius
 add_executable (CGeniusExe CGenius.cpp fileio.cpp misc.cpp ${cg_obj_libs})
+
+# Since some RefKeen is used, we also need C99 Standard
+set_property(TARGET CGeniusExe PROPERTY C_STANDARD 99)
+
 
 # Link GsKit
 target_link_libraries (CGeniusExe GsKit)

@@ -728,6 +728,7 @@ void kdreams_exe_main (void)
 
 	InitGame();
 
+    // Here is the main game loop running actually it seems
 	DemoLoop();                                     // DemoLoop calls Quit when everything is done
 	Quit("Demo loop exited???");
 }

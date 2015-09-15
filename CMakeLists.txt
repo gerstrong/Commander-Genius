@@ -3,7 +3,7 @@
 
 #TODO: Search SDL_image 2.0 still fails
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 OPTION(OGG "Ogg/Vorbis support" Yes)
 OPTION(TREMOR "Tremor support" No)
@@ -20,6 +20,7 @@ string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 # Generate the README file with the correct version string
 configure_file(README.in README)
 
+set(CMAKE_C_FLAGS "-std=c99")
 
 # Pass correct definition for SYSTEM_DATA_DIR so packager or distributors can decide where the app should land in
 if(UNIX)

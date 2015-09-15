@@ -991,6 +991,8 @@ IN_AckBack(void)
 				}
 			}
 		}
+
+        // And here we render. So I think this is one of the main loops
         BE_ST_ShortSleep();
 	}
 

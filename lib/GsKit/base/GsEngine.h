@@ -20,11 +20,27 @@ class GsEngine
 public:
     virtual ~GsEngine() {}
 
+    /**
+     * @brief start Usually this is started before anything else but still after construction.
+     */
     virtual void start() = 0;
+
+    /**
+     * @brief pumpEvent Events like user closes windows or mouse presses are processed here.
+     * @param evPtr
+     */
     virtual void pumpEvent(const CEvent *evPtr) = 0;
+
+    /**
+     * @brief ponder    Logic cycle run usually at 120 LPS
+     * @param deltaT    how much time of logic to do
+     */
     virtual void ponder(const float deltaT) = 0;
+
+    /**
+     * @brief render Everything that needs to be rendered representing the current state of the object
+     */
     virtual void render() = 0;
-private:
 
 
 };
