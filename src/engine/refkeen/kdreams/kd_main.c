@@ -442,6 +442,7 @@ void Quit (const id0_char_t *error)
 
 extern id0_byte_t *PIRACY;
 
+/*
 void InitGame (void)
 {
 	id0_int_t i;
@@ -538,7 +539,7 @@ void InitGame (void)
 	VW_SetScreenMode (GRMODE);
 	VW_ClearVideo (BLACK);
 }
-
+*/
 
 
 //===========================================================================
@@ -726,10 +727,10 @@ void kdreams_exe_main (void)
 
 
 
-	InitGame();
+    //InitGame();
 
     // Here is the main game loop running actually it seems
-	DemoLoop();                                     // DemoLoop calls Quit when everything is done
-	Quit("Demo loop exited???");
+    //DemoLoop();                                     // DemoLoop calls Quit when everything is done
+    //Quit("Demo loop exited???");
 }
 

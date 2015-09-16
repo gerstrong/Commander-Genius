@@ -101,6 +101,7 @@ typedef	struct
 // Global stuff
 #define	alEffects	0xbd
 
+
 typedef	struct
 		{
 			id0_byte_t	mChar,cChar,
@@ -110,15 +111,15 @@ typedef	struct
 					mWave,cWave,
 					nConn,
 					unused[5];
-		} __attribute((__packed__)) Instrument;
+        } __attribute((__packed__)) Instrument_Legacy;
 
 typedef	struct
 		{
 			SoundCommon	common;
-			Instrument	inst;
+            Instrument_Legacy	inst;
 			id0_byte_t		block,
 						data[1];
-		} __attribute((__packed__)) AdLibSound;
+        } __attribute((__packed__)) AdLibSound_Legacy;
 
 //
 //	Sequencing stuff
@@ -135,7 +136,7 @@ typedef	struct
 #define	sev_PercOn		6	// Turns a percussive note on
 #define	sev_PercOff		7	// Turns a percussive note off
 #define	sev_SeqEnd		-1	// Terminates a sequence
-
+/*
 typedef	struct
 		{
 			id0_word_t	flags,
@@ -145,15 +146,15 @@ typedef	struct
 
 typedef	struct
 		{
-			/* This part needs to be set up by the user */
+            // This part needs to be set up by the user
 			id0_word_t        mood,*moods[sqMaxMoods];
 
-			/* The rest is set up by the code */
+            // The rest is set up by the code
 			Instrument	inst;
 			id0_word_t		*seq;
 			id0_longword_t	nextevent;
 		} __attribute((__packed__)) ActiveTrack;
-
+*/
 #define	sqmode_Normal		0
 #define	sqmode_FadeIn		1
 #define	sqmode_FadeOut		2
@@ -199,6 +200,8 @@ extern	void	SDL_PCPlaySound(PCSound id0_far *sound),
 				SDL_SSPlaySample(SampledSound id0_far *sample),
 				SDL_SSStopSample(void);
 #endif
+
+
 
 // Replacements for direct accesses to TimeCount variable
 inline id0_longword_t SD_GetTimeCount(void)

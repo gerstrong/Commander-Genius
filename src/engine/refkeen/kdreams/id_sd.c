@@ -47,6 +47,7 @@
 
 //#include <dos.h>
 
+
 #ifdef	_MUSE_      // Will be defined in ID_Types.h
 #include "id_sd.h"
 #else
@@ -1003,10 +1004,11 @@ void
 #else
 static void
 #endif
-SDL_ALPlaySound(AdLibSound id0_far *sound)
+
+SDL_ALPlaySound(AdLibSound_Legacy id0_far *sound)
 {
 	id0_byte_t		c,m;
-	Instrument	id0_far *inst;
+    Instrument_Legacy	id0_far *inst;
 
 //	BE_ST_LockAudioRecursively();
 //asm	pushf
@@ -1042,11 +1044,13 @@ SDL_ALPlaySound(AdLibSound id0_far *sound)
 //asm	popf
 }
 
+
 ///////////////////////////////////////////////////////////////////////////
 //
 // 	SDL_ALSoundService() - Plays the next sample out through the AdLib card
 //
 ///////////////////////////////////////////////////////////////////////////
+
 static void
 SDL_ALSoundService(void)
 {
@@ -1071,6 +1075,7 @@ SDL_ALSoundService(void)
 		}
 	}
 }
+
 
 #if REFKEEN_SD_ENABLE_MUSIC
 ///////////////////////////////////////////////////////////////////////////
@@ -1204,7 +1209,7 @@ SDL_StartAL(void)
 //		emulating an AdLib) present
 //
 ///////////////////////////////////////////////////////////////////////////
-static id0_boolean_t
+/*static*/ id0_boolean_t
 SDL_DetectAdLib(void)
 {
 	// REFKEEN - If there's no emulated OPL chip, just return false
@@ -1751,7 +1756,7 @@ SD_PlaySound(id0_word_t sound)
 		//SDL_PCPlaySound((void id0_far *)s);
 		break;
 	case sdm_AdLib:
-		SDL_ALPlaySound((AdLibSound id0_far *)s);
+        SDL_ALPlaySound((AdLibSound_Legacy id0_far *)s);
 		//SDL_ALPlaySound((void id0_far *)s);
 		break;
 #if REFKEEN_SD_ENABLE_SOUNDBLASTER
@@ -1927,3 +1932,4 @@ SD_MusicPlaying(void)
 // (should be instantiated here even if inline, as of C99)
 id0_longword_t SD_GetTimeCount(void);
 void SD_SetTimeCount(id0_longword_t newcount);
+

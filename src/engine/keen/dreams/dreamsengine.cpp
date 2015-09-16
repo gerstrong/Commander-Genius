@@ -9,6 +9,10 @@
 #include <fileio/KeenFiles.h>
 #include <fileio/CPatcher.h>
 
+#define REFKEEN_VER_KDREAMS_ANYEGA_ALL
+
+#include "../../refkeen/kdreams/id_heads.h"
+
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be inmproved in future.
 extern "C"
 {
@@ -44,12 +48,12 @@ typedef enum {
  * depends on version-related macros
  */
 
-typedef enum {
+/*typedef enum {
     BE_GAMEVER_KDREAMSE113,
     BE_GAMEVER_KDREAMSE193,
     BE_GAMEVER_KDREAMSE120,
     BE_GAMEVER_LAST
-} BE_GameVer_T;
+} BE_GameVer_T;*/
 
 
 typedef struct {
@@ -102,7 +106,7 @@ extern void BEL_Cross_ConditionallyAddGameInstallation(const BE_GameVerDetails_T
 // (REFKEEN) Used for patching version-specific stuff
 uint16_t refkeen_compat_kd_play_objoffset;
 
-extern BE_GameVer_T refkeen_current_gamever;
+//extern BE_GameVer_T refkeen_current_gamever;
 
 extern	uint8_t	*EGAhead;
 extern	uint8_t	*EGAdict;
@@ -281,6 +285,103 @@ bool DreamsEngine::loadResources()
 
 
 
+void DreamsEngine::InitGame()
+{
+    id0_int_t i;
+
+    /*MM_Startup ();
+
+#if 0
+    // Handle piracy screen...
+    //
+    movedata(FP_SEG(PIRACY),(id0_unsigned_t)PIRACY,0xb800,displayofs,4000);
+    while (BE_ST_BiosScanCode(0) != sc_Return);
+    //while ((bioskey(0)>>8) != sc_Return);
+#endif
+
+#if GRMODE == EGAGR
+    if (mminfo.mainmem < 335l*1024)
+    {
+//#pragma warn    -pro
+//#pragma warn    -nod
+#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
+        BE_ST_textcolor(7);
+#endif
+#ifndef REFKEEN_VER_KDREAMS_CGA_ALL
+        if (refkeen_current_gamever == BE_GAMEVER_KDREAMSE113)
+#endif
+        {
+            BE_ST_textbackground(0);
+        }
+//#pragma warn    +nod
+//#pragma warn    +pro
+        BE_ST_clrscr();                       // we can't include CONIO because of a name conflict
+//#pragma warn    +nod
+//#pragma warn    +pro
+        BE_ST_puts ("There is not enough memory available to play the game reliably.  You can");
+        BE_ST_puts ("play anyway, but an out of memory condition will eventually pop up.  The");
+        BE_ST_puts ("correct solution is to unload some TSRs or rename your CONFIG.SYS and");
+        BE_ST_puts ("AUTOEXEC.BAT to free up more memory.\n");
+        BE_ST_puts ("Do you want to (Q)uit, or (C)ontinue?");
+        //i = bioskey (0);
+        //if ( (i>>8) != sc_C)
+        i = BE_ST_BiosScanCode (0);
+        if (i != sc_C)
+            Quit ("");
+    }
+#endif
+
+    US_TextScreen();
+
+    VW_Startup ();
+    RF_Startup ();
+    IN_Startup ();
+    SD_Startup ();
+    US_Startup ();
+
+#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
+    US_UpdateTextScreen();
+#endif
+
+    CA_Startup ();
+    US_Setup ();
+
+//
+// load in and lock down some basic chunks
+//
+
+    CA_ClearMarks ();
+
+    CA_MarkGrChunk(STARTFONT);
+    CA_MarkGrChunk(STARTFONTM);
+    CA_MarkGrChunk(STARTTILE8);
+    CA_MarkGrChunk(STARTTILE8M);
+    for (i=KEEN_LUMP_START;i<=KEEN_LUMP_END;i++)
+        CA_MarkGrChunk(i);
+
+#ifdef REFKEEN_VER_KDREAMS_CGA_ALL
+    CA_CacheMarks (NULL);
+#elif defined REFKEEN_VER_KDREAMS_ANYEGA_ALL
+    CA_CacheMarks (NULL, 0);
+#endif
+
+    MM_SetLock (&grsegs[STARTFONT],true);
+    MM_SetLock (&grsegs[STARTFONTM],true);
+    MM_SetLock (&grsegs[STARTTILE8],true);
+    MM_SetLock (&grsegs[STARTTILE8M],true);
+    for (i=KEEN_LUMP_START;i<=KEEN_LUMP_END;i++)
+        MM_SetLock (&grsegs[i],true);
+
+    CA_LoadAllSounds ();
+
+    fontcolor = WHITE;
+
+    US_FinishTextScreen();
+
+    VW_SetScreenMode (GRMODE);
+    VW_ClearVideo (BLACK);*/
+}
+
 
 
 void DreamsEngine::start()
@@ -297,7 +398,7 @@ void DreamsEngine::start()
     setupObjOffset();
 
     // TODO: This seems to be the exe with main cycle. We need to break it into draw and logic routines.
-    kdreams_exe_main();
+    //kdreams_exe_main();
 }
 
 

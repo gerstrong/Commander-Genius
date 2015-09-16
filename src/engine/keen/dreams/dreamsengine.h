@@ -22,6 +22,12 @@ public:
     bool loadResources();
 
     /**
+     * @brief InitGame initializes all the resources so the main game can run.
+     */
+    void InitGame();
+
+
+    /**
      * @brief start Starts the Dreams engine which refers to accessing RefKeen code
      */
     void start();
