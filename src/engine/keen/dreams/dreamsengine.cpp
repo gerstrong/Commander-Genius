@@ -11,13 +11,19 @@
 
 #define REFKEEN_VER_KDREAMS_ANYEGA_ALL
 
-#include "../../refkeen/kdreams/id_heads.h"
+//#include "../../refkeen/kdreams/id_mm.h"
+
 
 // TODO: Ugly wrapper for the refkeen variables used. It serves as interface to C. Might be inmproved in future.
 extern "C"
 {
 
-void kdreams_exe_main(void);
+
+//void kdreams_exe_main(void);
+
+#include "../../refkeen/kdreams/id_heads.h"
+
+//void MM_Startup (void);
 
 char *dreamsengine_datapath = nullptr;
 
@@ -289,7 +295,7 @@ void DreamsEngine::InitGame()
 {
     id0_int_t i;
 
-    /*MM_Startup ();
+    MM_Startup();
 
 #if 0
     // Handle piracy screen...
@@ -379,7 +385,7 @@ void DreamsEngine::InitGame()
     US_FinishTextScreen();
 
     VW_SetScreenMode (GRMODE);
-    VW_ClearVideo (BLACK);*/
+    VW_ClearVideo (BLACK);
 }
 
 
