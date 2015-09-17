@@ -21,6 +21,10 @@ public:
      */
     bool loadResources();
 
+
+    void DemoLoop();
+
+
     /**
      * @brief InitGame initializes all the resources so the main game can run.
      */
